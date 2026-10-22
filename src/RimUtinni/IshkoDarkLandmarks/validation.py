@@ -25,8 +25,11 @@ Chains (walk: design/validation_walks/RimUtinni/IshkoDarkLandmarks.md):
               mutator. Engine fact (WorldLandmarks.AddLandmark, decompiled 1.6):
               a mutatorChance is added when `Rand.Chance(chance) && ((required &&
               forced) || mutator.IsValidTile(..))`; a Required entry has chance 1,
-              so with forced=true the anchor is certain. Removed again afterwards
-              (and the anchor mutator stripped if the tile did not have it).
+              so with forced=true the anchor is certain. Candidate tiles carry none
+              of the three anchors beforehand (else the bar is vacuous). Restored
+              afterwards by _restore(): landmark removed, every mutator the add
+              introduced (anchor AND optional rolls) removed, any it displaced
+              re-added, then read back -- an unverified restore FAILs.
 
 LEARNED, first live run 2026-10-07 (NORTHSTAR_ISHKO_PILOT_1, live_session on the `ishko` tier):
   * SITE/TIER: the tier needs mandrake.rm.gimmesomeslack. Without it JawaBench's companion tools TypeLoad-fail
@@ -125,30 +128,31 @@ def _parse_defs():
 def source(t):
     """Our own files, read whole. Runs in the live run too: it is what the defs chain
     is checking the RESOLVED game against."""
+    # Each component guards its own body with `if _live(t):` (never `return`): a return inside
+    # the first `with` left the whole chain, so declaration probing (session=None) never saw
+    # the second component (GPT review 2026-10-22, finding 11).
     with _independent(t, "defs_gated_on_odyssey"):
-        if not _live(t):
-            return
-        got = _parse_defs()
-        t._record("defs in %s" % os.path.basename(DEFS_XML), sorted(got))
-        if sorted(got) != sorted(n for n, _, _, _ in LANDMARKS):
-            _fail("LandmarkDefs in the XML are %s, expected exactly %s"
-                  % (sorted(got), [n for n, _, _, _ in LANDMARKS]))
-        bad = [n for n, d in got.items() if d["mayRequire"] != "Ludeon.RimWorld.Odyssey"]
-        if bad:
-            _fail("not MayRequire=\"Ludeon.RimWorld.Odyssey\": %s" % bad)
+        if _live(t):
+            got = _parse_defs()
+            t._record("defs in %s" % os.path.basename(DEFS_XML), sorted(got))
+            if sorted(got) != sorted(n for n, _, _, _ in LANDMARKS):
+                _fail("LandmarkDefs in the XML are %s, expected exactly %s"
+                      % (sorted(got), [n for n, _, _, _ in LANDMARKS]))
+            bad = [n for n, d in got.items() if d["mayRequire"] != "Ludeon.RimWorld.Odyssey"]
+            if bad:
+                _fail("not MayRequire=\"Ludeon.RimWorld.Odyssey\": %s" % bad)
     with _independent(t, "icons_supplied_by_art_mod"):
-        if not _live(t):
-            return
-        if not os.path.isdir(ART_TEX):
-            _unmeasured(t, "art mod source folder not found at %s" % ART_TEX)
-        missing = []
-        for n, d in _parse_defs().items():
-            png = os.path.join(ART_TEX, *(d["icon"].split("/"))) + ".png"
-            t._record("%s icon %s" % (n, d["icon"]), os.path.isfile(png))
-            if not d["icon"] or not os.path.isfile(png):
-                missing.append("%s -> %r" % (n, d["icon"]))
-        if missing:
-            _fail("iconTexturePath not supplied by AshkarrLandmarkArt: %s" % missing)
+        if _live(t):
+            if not os.path.isdir(ART_TEX):
+                _unmeasured(t, "art mod source folder not found at %s" % ART_TEX)
+            missing = []
+            for n, d in _parse_defs().items():
+                png = os.path.join(ART_TEX, *(d["icon"].split("/"))) + ".png"
+                t._record("%s icon %s" % (n, d["icon"]), os.path.isfile(png))
+                if not d["icon"] or not os.path.isfile(png):
+                    missing.append("%s -> %r" % (n, d["icon"]))
+            if missing:
+                _fail("iconTexturePath not supplied by AshkarrLandmarkArt: %s" % missing)
 
 
 # ------------------------------------------------------------------ defs (live readback)
@@ -205,11 +209,20 @@ def defs(t):
             if not ch:
                 _unmeasured(t, "%s.mutatorChances came back unstructured: %r"
                             % (def_name, f.get("mutatorChances")))
-            req = [m for m, _, rq in ch if rq]
-            if req != [anchor]:
+            req = [(m, c) for m, c, rq in ch if rq]
+            if [m for m, _ in req] != [anchor]:
                 _fail("%s Required mutators = %s, expected exactly [%s]" % (def_name, req, anchor))
-            if not f.get("iconTexturePath"):
-                _fail("%s.iconTexturePath is empty" % def_name)
+            try:
+                anchor_chance = float(req[0][1])
+            except (TypeError, ValueError):
+                anchor_chance = None
+            if anchor_chance is None or abs(anchor_chance - 1.0) > 1e-6:
+                _fail("%s anchor %s chance = %r, expected 1 (a Required entry)"
+                      % (def_name, anchor, req[0][1]))
+            want_icon = _parse_defs()[def_name]["icon"]
+            if f.get("iconTexturePath") != want_icon:
+                _fail("%s.iconTexturePath = %r, expected %r (our XML)"
+                      % (def_name, f.get("iconTexturePath"), want_icon))
 
 
 # ------------------------------------------------------------------ placement (behaviour)
@@ -218,8 +231,11 @@ def _candidate_tiles(t, n):
     r = t.bridge_call("jawa/world_mutators_get", range=TILE_SCAN, limit=2000)
     if not (r or {}).get("success"):
         _unmeasured(t, "jawa/world_mutators_get did not answer: %s" % (r or {}).get("message"))
+    anchors = set(a for _, _, _, a in LANDMARKS)
+    # A tile already carrying an anchor would make "placement creates the anchor" vacuous.
     rows = [x for x in (r.get("tiles") or [])
-            if not x.get("waterCovered") and not x.get("landmark")]
+            if not x.get("waterCovered") and not x.get("landmark")
+            and not anchors & set(m.get("def") for m in (x.get("mutators") or []))]
     if len(rows) < n:
         _unmeasured(t, "only %d land tiles without a landmark in %s" % (len(rows), TILE_SCAN))
     return rows[:n]
@@ -246,16 +262,18 @@ def placement(t):
             if picks is None:
                 picks = _candidate_tiles(t, len(LANDMARKS))
             tile = int(picks[i]["tile"])
-            had_anchor = anchor in [m.get("def") for m in (picks[i].get("mutators") or [])]
-            r = t.bridge_call("jawa/world_landmarks_set", action="add", tiles=str(tile),
-                              forced=True, checkValid=True, **{"def": def_name})
+            before = set(m.get("def") for m in (picks[i].get("mutators") or []))
             try:
+                r = t.bridge_call("jawa/world_landmarks_set", action="add", tiles=str(tile),
+                                  forced=True, checkValid=True, **{"def": def_name})
                 if not (r or {}).get("success") or int(r.get("added") or 0) != 1:
                     _fail("world_landmarks_set add %s on tile %d: success=%s added=%s errors=%s"
                           % (def_name, tile, (r or {}).get("success"), (r or {}).get("added"),
                              (r or {}).get("errors")))
                 back = _tile(t, tile)
                 muts = [m.get("def") for m in (back.get("mutators") or [])]
+                # validity is recorded, not asserted: this is FORCED authoring (the owner's hand),
+                # not a claim that the tile is a legal natural site.
                 t._record("tile %d after add" % tile, {"landmark": back.get("landmark"), "mutators": muts,
                                                       "validity": r.get("validity")})
                 if back.get("landmark") != def_name:
@@ -263,8 +281,31 @@ def placement(t):
                 if anchor not in muts:
                     _fail("tile %d carries %s but not its Required anchor %s (mutators %s)"
                           % (tile, def_name, anchor, muts))
-            finally:
-                t.session.call("jawa/world_landmarks_set", action="remove", tiles=str(tile))
-                if not had_anchor:
-                    t.session.call("jawa/world_mutators_set", action="remove", mutators=anchor,
-                                   tiles=str(tile))
+            except BaseException:
+                try:
+                    _restore(t, tile, before)
+                except Exception:                              # noqa: BLE001 -- keep the first failure
+                    pass
+                raise
+            _restore(t, tile, before)
+
+
+def _restore(t, tile, before):
+    """Put the tile back: landmark removed, every mutator AddLandmark added (the anchor AND any
+    optional roll) removed, every one it displaced re-added; then read back and compare. A
+    restore that does not verify is a FAIL, never a silent pass (GPT review 2026-10-22, #3)."""
+    t.session.call("jawa/world_landmarks_set", action="remove", tiles=str(tile))
+    now = _tile(t, tile)
+    cur = set(m.get("def") for m in (now.get("mutators") or []))
+    extra, lost = sorted(cur - before), sorted(before - cur)
+    if extra:
+        t.session.call("jawa/world_mutators_set", action="remove", mutators=",".join(extra), tiles=str(tile))
+    if lost:
+        t.session.call("jawa/world_mutators_set", action="add", mutators=",".join(lost), tiles=str(tile))
+    end = _tile(t, tile)
+    end_m = set(m.get("def") for m in (end.get("mutators") or []))
+    t._record("tile %d restore" % tile, {"removed": extra, "readded": lost,
+                                         "landmark": end.get("landmark"), "mutators": sorted(end_m)})
+    if end.get("landmark") or end_m != before:
+        _fail("tile %d not restored: landmark=%r mutators=%s, expected none and %s"
+              % (tile, end.get("landmark"), sorted(end_m), sorted(before)))
