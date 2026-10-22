@@ -60,6 +60,8 @@ def classify(samples, c):
     seen, on_island, in_trench, near, gone_alive = set(), set(), set(), set(), set()
     last = {}
     moved_late = 0.0
+    # a sample with no position (list_pawns gives x=None for an unspawned pawn) says nothing about where it stood
+    samples = [dict(s, raiders=[r for r in s["raiders"] if r.get("x") is not None and r.get("z") is not None]) for s in samples]
     for s in samples:
         for r in s["raiders"]:
             seen.add(r["id"])
@@ -81,7 +83,8 @@ def classify(samples, c):
                 moved_late += cheb(p, last[r["id"]])
             last[r["id"]] = p
     end = {r["id"]: r for r in (samples[-1]["raiders"] if samples else [])}
-    gone_alive = {i for i in seen if i not in end}
+    ever_dead = {r["id"] for s in samples for r in s["raiders"] if r.get("dead")}
+    gone_alive = {i for i in seen if i not in end and i not in ever_dead}
     alive_near_end = [r for r in end.values() if not r.get("dead") and not r.get("downed") and cheb((r["x"], r["z"]), c) <= NEAR]
     words = []
     if on_island:
@@ -231,8 +234,11 @@ def _run(argv, hold):
     B.call("jawa/static_call", type=PROOF_TYPE, method="ProofResetRect", args="%d;%d;%d;%d" % rect)
     V.prepare_site(B, rect, [], "raid_site")
     ring = [(x, z) for x in range(c[0] - 6, c[0] + 7) for z in range(c[1] - 6, c[1] + 7) if cheb((x, z), c) >= 5]
+    dug = {}   # the depth each ring square actually reached: a dig stopped short (bedrock) is not the raid's fill
     for cell in ring:
-        B.call("jawa/flowworks_excavation_drive", x=cell[0], z=cell[1], deepenLevels=a.depth, setFill=-1)
+        dr0 = B.call("jawa/flowworks_excavation_drive", x=cell[0], z=cell[1], deepenLevels=a.depth, setFill=-1) or {}
+        dug[cell] = dr0.get("depth") if isinstance(dr0.get("depth"), int) else None
+    res["ringShort"] = sorted((c_[0], c_[1], d_) for c_, d_ in dug.items() if d_ is None or d_ < a.depth)
     churn = (c[0] + 9, c[1])
     cols = B.probe_of(HPROBE, "colonists").get("pawns") or []
     for i, p in enumerate(cols):
@@ -379,9 +385,9 @@ def _run(argv, hold):
         for z in range(c[1] - 6, c[1] + 7):
             if cheb((x, z), c) in (5, 6):
                 dr = B.call("jawa/flowworks_excavation_drive", x=x, z=z, deepenLevels=0, setFill=-1) or {}
-                if isinstance(dr.get("depth"), int) and dr["depth"] < a.depth:
+                if isinstance(dr.get("depth"), int) and dug.get((x, z)) is not None and dr["depth"] < dug[(x, z)]:
                     filled.append((x, z, dr["depth"]))
-    det["ringDepth"], det["filledSquares"] = a.depth, filled
+    det["ringDepth"], det["filledSquares"], det["ringDugShort"] = a.depth, filled, res["ringShort"]
     walls = sorted({cheb((w["x"], w["z"]), c) for w in ways})
     both = 5 in walls and 6 in walls
     used = bool(det["onIsland"] or det["inTrench"])
