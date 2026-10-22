@@ -40,6 +40,8 @@ def rect_score(rb, x, z):
     for dz in range(0, H, 14):
         cells = rb.call("rimworld/get_cells_info",
                         {"x": x, "z": z + dz, "width": W, "height": min(14, H - dz)}).get("cells", [])
+        if not cells:                      # an unreadable strip is NOT an open one (score 0 would pick it first)
+            bad += W * min(14, H - dz)
         for c in cells:
             if c.get("roofDefName") or c.get("solidThingDefs") or not c.get("walkable"):
                 bad += 1
