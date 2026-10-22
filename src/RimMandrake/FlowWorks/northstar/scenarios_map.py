@@ -1,6 +1,7 @@
-"""scenarios_map.py -- the FlowWorks COMPOSITE review map: twelve working systems (C1-C12) for one walk.
+"""scenarios_map.py -- the FlowWorks COMPOSITE review map: thirteen working systems (C1-C13) for one walk.
 
-Owner by card 2026-10-21 ~21:23 PDT: build all twelve in one go (REVIEW_SCENARIOS_BUILD_ALL_TWELVE_AT_ONCE). Design:
+Owner by card 2026-10-21 ~21:23 PDT: build all twelve in one go (REVIEW_SCENARIOS_BUILD_ALL_TWELVE_AT_ONCE); by card
+2026-10-22 a thirteenth, C13 The Spill Yard (overflow switch ON), beside the twelve. Design:
 design/RimMandrake/flowworks_composite_review_scenarios_2026-10-21.md. Scenario data: northstar/scenarios/cNN_*.py.
 
     python3    src/RimMandrake/FlowWorks/northstar/scenarios_map.py --plan          # offline: layout + pieces + defs + key sheet
@@ -11,7 +12,7 @@ design/RimMandrake/flowworks_composite_review_scenarios_2026-10-21.md. Scenario 
     python.exe src/RimMandrake/FlowWorks/northstar/scenarios_map.py --stage0 | tr -d '\\r'
     python.exe src/RimMandrake/FlowWorks/northstar/scenarios_map.py --build --fresh-map [--only C3,C12] | tr -d '\\r'
     python.exe src/RimMandrake/FlowWorks/northstar/scenarios_map.py --soak | tr -d '\\r'          # 2 h unattended re-read
-    python.exe src/RimMandrake/FlowWorks/northstar/scenarios_map.py --goto C3 | tr -d '\\r'       # C1..C12, S0, F, Z0
+    python.exe src/RimMandrake/FlowWorks/northstar/scenarios_map.py --goto C3 | tr -d '\\r'       # C1..C13, S0, F, Z0
     python.exe src/RimMandrake/FlowWorks/northstar/scenarios_map.py --labels | tr -d '\\r'
     python3 src/RimMandrake/Utils/save_guard.py run --current-slot none -- \\
         python.exe src/RimMandrake/FlowWorks/northstar/scenarios_map.py --save --name RM_fw_scenarios_20261021
@@ -66,7 +67,7 @@ GOLD, CREAM, TEAL, RUST, VIOLET = "#ffd27f", "#f2e6cf", "#8fd3c7", "#ff9a6b", "#
 # Packing plan, map C (design §5.1, GPT #14): plots 40-48 cells, lanes >= 4 cells, C10 alone on the east edge.
 PLOTS_C = {"C3": (12, 12), "C12": (62, 12), "C5": (112, 12), "C6": (162, 12),
            "C4": (12, 62), "C2": (62, 62), "C8": (112, 62), "C9": (162, 62),
-           "C7": (12, 112), "C10": (196, 112)}
+           "C7": (12, 112), "C10": (196, 112), "C13": (112, 162)}
 FREE = dict(rect=(110, 112, 40, 24),            # round the quicktest colonists (they stand near 125,125)
             stock=[("Steel", 75, (111 + i, 113)) for i in range(4)]
             + [("ComponentIndustrial", 25, (116, 113)), ("WoodLog", 75, (118, 113)), ("WoodLog", 75, (119, 113)),
@@ -397,8 +398,9 @@ def sign_ops(placed, extra_board=True):
     if extra_board:
         bx, bz, bw, bh = BOARD["rect"]
         L.append(RM.sign_book(bx, bz + bh - 1, "S0", "Composite scenarios",
-                              "Twelve working systems; every plot is still until your first poke. Raids and rain: "
-                              "branch saves %s." % ", ".join(BRANCH_SAVE.values()), "", "walk C3 first (the maze)",
+                              "%d working systems; every plot is still until your first poke. Raids and rain: "
+                              "branch saves %s. Canal overflow ships OFF; only C13 turns it on." % (len(SC.ALL), ", ".join(BRANCH_SAVE.values())),
+                              "", "walk C3 first (the maze)",
                               "", more="; ".join("%s %s" % (s["id"], s["name"]) for s in SC.ALL)))
         L.append(RM.sign_book(DBROW["ox"], DBROW["oz"] + 14, "DB", "Drawbridge pictures",
                               "Timber and steel drawbridges, lowered and raised, and two closed gates.",
@@ -499,6 +501,24 @@ def review_class():
                 res = self.static(n, c["typ"], c["method"], args)
                 if "ok=False" in res:          # a proof that answers but did not build (live 2026-10-21: drawbridge)
                     self.notes.append("%s %s(%s): %s" % (n, c["method"], args, res[:240]))
+
+        def after_soak(self, placed):
+            """C13-style state that moves by itself, staged AFTER the soak so the walk starts on it fresh: first each plot's
+            mod settings (set, read back; a mismatch is a note), then its `after_soak` proof calls. A spill answering
+            REFUSED or accepted=0 is a note (the switch is off, or the cell takes nothing)."""
+            for p in placed:
+                sc, (ox, oz) = p["sc"], p["origin"]
+                u, n = sc["setup"], sc["id"]
+                for typ, field, value in u.get("settings", []):
+                    self.call("jawa/mod_settings_field", typeName=typ, action="set", field=field, value=str(value))
+                    back = (self.B.call("jawa/mod_settings_field", typeName=typ, action="get", field=field) or {}).get("value")
+                    if back is not None and str(back).lower() != str(value).lower():
+                        self.notes.append("%s: setting %s reads back %r, wanted %r" % (n, field, back, value))
+                for c in u.get("after_soak", []):
+                    args = c["fmt"].format(*["%d,%d" % (ox + cc[0], oz + cc[1]) for cc in c["cells"]])
+                    res = self.static(n, c["typ"], c["method"], args)
+                    if "accepted=0" in res:
+                        self.notes.append("%s %s(%s): nothing accepted: %s" % (n, c["method"], args, res[:160]))
 
         def gizmos(self, p):
             sc, (ox, oz) = p["sc"], p["origin"]
@@ -720,6 +740,7 @@ def run_build(B, placed, log=None, fresh=False, soak=True, only=None):
     if sg.get("count") != len(ops):
         R.notes.append("sign books: %s of %s placed (%s)" % (sg.get("count"), len(ops), str(sg.get("refused"))[:200]))
     soaked = R.soak(placed) if soak else None
+    R.after_soak(placed)
     B.call("jawa/clear_ui", all=True)
     return dict(verify=ver, soak=soaked, notes=R.notes, signs=sg.get("count"), sign_ops=len(ops),
                 labels=len(label_ops(placed).split("\n")), wall_s=round(time.time() - t0, 1), optional=sorted(ok_opt))

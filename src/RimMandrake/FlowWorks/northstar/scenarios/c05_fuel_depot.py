@@ -90,7 +90,7 @@ SCENARIO = scenario(
             staged("firefoam popper by the canal", "build", "FirefoamPopper", (30, 25), "poked"),
             staged("water canal one wall from the chemfuel", "fluid", "RM_Fluid_Water", (22, 18), "poked"),
             staged("spill pad: liquid spill + tracked tar", "stuffed", "RM_Filth_Tar", (9, 5), "look"),
-            deferred("fuel overflow spreads and burns (D5)", "overflow is built (Stages 1-3) but its master switch ships OFF and this scenario does not turn it on; the canal stands below its brim so a second Dump will spill once the switch is on",
+            deferred("fuel overflow spreads and burns (D5)", "overflow is built (Stages 1-3) but its master switch ships OFF and this scenario does not turn it on (C13 The Spill Yard does); the canal stands below its brim so a second Dump will spill once the switch is on",
                      OVERFLOW_ITEM, (37, 2)),
             deferred("an acid canal beside the chemfuel", "moved to C6 (where corrosion lives); the no-mix poke needs "
                      "only water against chemfuel", "design §3 C5 layout", (37, 5)),
