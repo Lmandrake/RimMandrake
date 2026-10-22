@@ -278,6 +278,15 @@ namespace RimMandrake.FlowWorks
 			return vetoNowSaysNo ? FailKind.Stale : FailKind.Residual;
 		}
 
+		/// <summary>REACH_WINCH_FIX_GHOST_ROAD_RETURNS: a square's walkability changed (RegionDirtyer.Notify_WalkabilityChanged, at
+		/// once, on the main thread). A square the last kinds snapshot read as a WALL that is walkable now is a breach (more
+		/// connected than the labels): rebuild unthrottled. Anything else only makes the labels stale (they over-connect, so the
+		/// throttle can only delay a veto, never invent one).</summary>
+		public static bool WalkabilityBreach(byte lastKind, bool nowWalkable)
+		{
+			return lastKind == Wall && nowWalkable;
+		}
+
 		/// <summary>Bounded logging: the first <paramref name="firstN"/> residuals are logged one by one, then only a summary at
 		/// each power of two (2·firstN, 4·firstN, …), so a looping pawn can never spam the log.</summary>
 		public static bool ShouldLog(int nth, int firstN)
