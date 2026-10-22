@@ -37,6 +37,9 @@ def main():
     tools = real_tools()
     issues = []
     def add(sk, sev, msg): issues.append((sev, sk, msg))
+    if tools is None:
+        # the jawa/<tool> existence check is the point of this script: skipping it must not read as a pass
+        add("(all)", "ERROR", "companion source dir %s is missing - the jawa/ tool-name check did NOT run" % SRC)
 
     for sk in targets:
         d = os.path.join(ROOT, sk); p = os.path.join(d, "SKILL.md")
