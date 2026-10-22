@@ -9,7 +9,7 @@
   patch layer, never the franchise-free RimMandrake tier) onto RM_BlueDesert.
   Shape: WildAnimals_SleepingIce.xml — one PatchOperationAdd, no
   PatchOperationReplace, since RM_BlueDesert already ships its own real cast
-  (RM_Vekkit/RM_Dorrak/RM_Krissek/AA_Thunderbeast) inline, not a Core-only
+  (RM_Vekkit/RM_Dorrak/RM_Krissek/RM_Thunderbeast, among others) inline, not a Core-only
   placeholder.
 
   `Vapaad` is CANON (Legends): "Vaapad", a brown ball-shaped, multi-tentacled
@@ -25,8 +25,9 @@
   rows." Only `Vapaad` is Star Wars IP — `AA_Thunderbeast` is a plain Alpha
   Animals import with no franchise content (same source doc, line 244, gives
   it a native name "yuddra" and explicitly separates it from the one canon
-  row) — so it ships inline on RM_BlueDesert itself instead, MayRequire-gated,
-  matching every sibling RM_ biome mod's own non-Star-Wars donor rows (Q9).
+  row) — so it ships inline on RM_BlueDesert itself instead (now as our own port
+  RM_Thunderbeast; Alpha Animals is retired), matching every sibling RM_ biome mod's
+  own non-Star-Wars rows (Q9).
 
   ⚠️ A patch that matches nothing logs nothing — PatchOperationConditional
   returns true on no match, and an unmatched PatchOperationAdd is silent. A
