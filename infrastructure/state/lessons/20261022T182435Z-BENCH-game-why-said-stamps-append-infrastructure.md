@@ -1,0 +1,1 @@
+./game --why/--said stamps append to infrastructure/state/ledger/events/OWNER.jsonl (not your seat shard): a helper that restarts the game must commit OWNER.jsonl with its work, or ./publish's reset --keep refuses for every helper in the clone once origin's OWNER shard moves (belt 2026-10-22: blocked an hour).
