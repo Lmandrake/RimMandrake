@@ -1,9 +1,9 @@
 {
  "biome": "SUBJECTS_own_render_keep",
- "built": "2026-10-14T20:32:40-0700",
+ "built": "2026-10-20T18:47:53-0700",
  "census": "Transient/biome_ffar/own_render_keep.subjects.json",
  "census_git_head": null,
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 23 mods \u2014 a test list): 551 active",
+ "loadOrder": "live ModsConfig.xml: 325 active",
  "rows": {
   "RM_Cistrel": {
    "columns": {
@@ -13,9 +13,6 @@
     "B": {
      "single": "f094d1372adeacc2551adb0ae234af2ad0a7ae953e30e43092ea9cdac7777b39"
     },
-    "C": {
-     "single": "166fa6792e1d4afd6faafe6d7eca513a2cedd3679a909175067f52d2cda903da"
-    },
     "D": {
      "single": "b7913294e120866632cb5411e92f1b29b0a9b1664ace0d88eaeecc36dcdb9933"
     },
@@ -24,23 +21,26 @@
     },
     "F": {
      "single": "2d8b9724ff6d3d685da04302e798e560916489c0cf6af3e2f7d4a880e004bf9e"
+    },
+    "G": {
+     "single": "22d3316cedbbc132da1da9b6670c45369848bdc6e28a03d5364f2a6a123721e5"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Cistrel/RM_Cistrel_a",
-    "B": "_byname",
-    "C": "_byname",
+    "B": "Things/Plant/RM_Cistrel/RM_Cistrel_a",
     "D": "_byname",
     "E": "_byname",
-    "F": "_byname"
+    "F": "_byname",
+    "G": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 FeverWood",
-    "B": "render regen_fw_cistrel_own_v1",
-    "C": "render regen_fw_cistrel_v2a \u2014 failed canon check",
+    "A": "history FeverWood 2026-09-25",
+    "B": "IN GAME \u2014 FeverWood",
     "D": "render regen_fw_cistrel_v2b",
     "E": "render regen_fw_cistrel_v2c",
-    "F": "render feverwood_plant_cistrel"
+    "F": "render feverwood_plant_cistrel",
+    "G": "render regen_fw_cistrel_v2a \u2014 grader flagged (advisory)"
    },
    "pools": [],
    "res": "Things/Plant/RM_Cistrel/RM_Cistrel_a",
@@ -50,7 +50,8 @@
     "C",
     "D",
     "E",
-    "F"
+    "F",
+    "G"
    ],
    "shownBase": [
     "166fa6792e1d4afd6faafe6d7eca513a2cedd3679a909175067f52d2cda903da",
@@ -67,17 +68,27 @@
     "A": {
      "single": "f7016ea0abf5146ccb4709c70801266ad36b9e10afaa7212e5d8cd6c7b6c0849"
     },
-    "B": {
-     "single": "29ae79060e162f6fc7259a748839739ae3472935fbd61ae52058afa4ab11ff96"
+    "C": {
+     "single": "845e39cc4012eb8f0e1f7be4c29471bbd2cb88d09e8941da4735d424810b42f6"
+    },
+    "D": {
+     "single": "6223da1ecf7ccec9a70d869d2c2c849337ccf3d01e43d869f9b45ce79d4852e9"
+    },
+    "E": {
+     "single": "0165f645b0b207272d8eecc0595967a41c2b77efa2f7ec7457ce35115f49d664"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_LureVenomvine",
-    "B": "Things/Plant/RM_LureVenomvine"
+    "C": "Things/Plant/RM_LureVenomvine",
+    "D": "Things/Plant/RM_LureVenomvine",
+    "E": "Things/Plant/RM_LureVenomvine"
    },
    "labels": {
     "A": "render RM_LureVenomvine",
-    "B": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_LureVenomvine_a (1 of 1) \u2014 LeaningScrub"
+    "C": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_LureVenomvine (1 of 4) \u2014 LeaningScrub",
+    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_LureVenomvine_a (2 of 4) \u2014 LeaningScrub",
+    "E": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_LureVenomvine_b (3 of 4) \u2014 LeaningScrub"
    },
    "pools": [
     "Things/Plant/RM_LureVenomvine"
@@ -85,9 +96,13 @@
    "res": "Things/Plant/RM_LureVenomvine",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D",
+    "E"
    ],
    "shownBase": [
+    "29ae79060e162f6fc7259a748839739ae3472935fbd61ae52058afa4ab11ff96",
     "f7016ea0abf5146ccb4709c70801266ad36b9e10afaa7212e5d8cd6c7b6c0849"
    ],
    "subject_key": "lurevenomvine"
@@ -112,14 +127,14 @@
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Nubrith/RM_Nubrith_a",
-    "B": "_byname",
+    "B": "Things/Plant/RM_Nubrith/RM_Nubrith_a",
     "C": "_byname",
     "D": "_byname",
     "E": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 FeverWood",
-    "B": "render regen_fw_nubrith_own_v1",
+    "A": "history FeverWood 2026-09-25",
+    "B": "IN GAME \u2014 FeverWood",
     "C": "render regen_fw_nubrith_varb_v1",
     "D": "render regen_fw_nubrith_varc_v1",
     "E": "render feverwood_plant_nubrith"
@@ -146,18 +161,36 @@
    "columns": {
     "A": {
      "single": "7b3edc00d671c55b27f4afb0eb2ee1a8e828e83f534343d1d66197d32c5693a4"
+    },
+    "B": {
+     "single": "f824a0fecd9bd310bc489a59c54d690e306aba18a9f4cbdfbdc6a7cae82c4659"
+    },
+    "C": {
+     "single": "c13ac130cf942c7ff91709dbcabb347876f01f654bc70180e789afa25d3fdbff"
+    },
+    "D": {
+     "single": "c46b205a8aba18103a2390c56dc0ffd512908f615a9727ff0b044c35e10b452d"
     }
    },
    "graphic_of": {
-    "A": "_byname"
+    "A": "_byname",
+    "B": "_byname",
+    "C": "_byname",
+    "D": "_byname"
    },
    "labels": {
-    "A": "render RM_SleeperAwakeVenomvine"
+    "A": "render RM_SleeperAwakeVenomvine",
+    "B": "render tallvv_sleeperawake_v1",
+    "C": "render tallvv_sleeperawake_v2",
+    "D": "render tallvv_sleeperawake_v3"
    },
    "pools": [],
    "res": null,
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C",
+    "D"
    ],
    "shownBase": [
     "7b3edc00d671c55b27f4afb0eb2ee1a8e828e83f534343d1d66197d32c5693a4"
@@ -169,17 +202,27 @@
     "A": {
      "single": "95b386818bb65ed7669ba4d49f4663e1c79794716393bc01d5c5e22ff193563e"
     },
-    "B": {
-     "single": "29ae79060e162f6fc7259a748839739ae3472935fbd61ae52058afa4ab11ff96"
+    "C": {
+     "single": "11c939cf70cbe7e7361365f5969e7f0b5c598432887ef4059aa6e011acecad41"
+    },
+    "D": {
+     "single": "754d5c508b6188be5d8057f4f5d283d016d6af3d9d4eae849b18bdc3f641ca19"
+    },
+    "E": {
+     "single": "0c9c9f605615767d89e35dac4d52dfed9732e76b6f2fa2a24cb38e16e7d54aaa"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_SleeperVenomvine",
-    "B": "Things/Plant/RM_SleeperVenomvine"
+    "C": "Things/Plant/RM_SleeperVenomvine",
+    "D": "Things/Plant/RM_SleeperVenomvine",
+    "E": "Things/Plant/RM_SleeperVenomvine"
    },
    "labels": {
     "A": "render RM_SleeperVenomvine",
-    "B": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_SleeperVenomvine_a (1 of 1) \u2014 LeaningScrub"
+    "C": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_SleeperVenomvine (1 of 4) \u2014 LeaningScrub",
+    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_SleeperVenomvine_a (2 of 4) \u2014 LeaningScrub",
+    "E": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_SleeperVenomvine_b (3 of 4) \u2014 LeaningScrub"
    },
    "pools": [
     "Things/Plant/RM_SleeperVenomvine"
@@ -187,9 +230,13 @@
    "res": "Things/Plant/RM_SleeperVenomvine",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D",
+    "E"
    ],
    "shownBase": [
+    "29ae79060e162f6fc7259a748839739ae3472935fbd61ae52058afa4ab11ff96",
     "95b386818bb65ed7669ba4d49f4663e1c79794716393bc01d5c5e22ff193563e"
    ],
    "subject_key": "sleepervenomvine"
@@ -199,17 +246,27 @@
     "A": {
      "single": "2fed69278b86c6792a9cd653afe68a8557b867f4eb986e6fc5b017d3da8c159b"
     },
-    "B": {
-     "single": "29ae79060e162f6fc7259a748839739ae3472935fbd61ae52058afa4ab11ff96"
+    "C": {
+     "single": "8ee3c0c6eb794ef81a6e9f0012c8bde5397c0008b07a77ecadb7a7a63693822b"
+    },
+    "D": {
+     "single": "6e38d352f38390cd1014b89a6fe4bc49dcd608584886820c96a66a8979e82439"
+    },
+    "E": {
+     "single": "3f3bbb941b76f56d2a412f6047a3e87c916f2d9c20485b8e2128c2423f6fa543"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_StranglerVenomvine",
-    "B": "Things/Plant/RM_StranglerVenomvine"
+    "C": "Things/Plant/RM_StranglerVenomvine",
+    "D": "Things/Plant/RM_StranglerVenomvine",
+    "E": "Things/Plant/RM_StranglerVenomvine"
    },
    "labels": {
     "A": "render RM_StranglerVenomvine",
-    "B": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_StranglerVenomvine_a (1 of 1) \u2014 LeaningScrub"
+    "C": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_StranglerVenomvine (1 of 4) \u2014 LeaningScrub",
+    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_StranglerVenomvine_a (2 of 4) \u2014 LeaningScrub",
+    "E": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_StranglerVenomvine_b (3 of 4) \u2014 LeaningScrub"
    },
    "pools": [
     "Things/Plant/RM_StranglerVenomvine"
@@ -217,9 +274,13 @@
    "res": "Things/Plant/RM_StranglerVenomvine",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D",
+    "E"
    ],
    "shownBase": [
+    "29ae79060e162f6fc7259a748839739ae3472935fbd61ae52058afa4ab11ff96",
     "2fed69278b86c6792a9cd653afe68a8557b867f4eb986e6fc5b017d3da8c159b"
    ],
    "subject_key": "stranglervenomvine"
@@ -229,17 +290,27 @@
     "A": {
      "single": "d300d87173ee568f193416ef8ae39bd48a6d092d0d05efca336629deb46045c2"
     },
-    "B": {
-     "single": "29ae79060e162f6fc7259a748839739ae3472935fbd61ae52058afa4ab11ff96"
+    "C": {
+     "single": "8110b4245514bef231692b2a896f84c470c262ac6815a41b88471a80c7780882"
+    },
+    "D": {
+     "single": "f0fa34a322473131b1d05de6f0d7846f5f7f894e49f845842a5d05d263a5863a"
+    },
+    "E": {
+     "single": "b5e7eb767c70daa120fcac6505d9836dfdf332a6461c12d268c4f1f179897da4"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_WeeperVenomvine",
-    "B": "Things/Plant/RM_WeeperVenomvine"
+    "C": "Things/Plant/RM_WeeperVenomvine",
+    "D": "Things/Plant/RM_WeeperVenomvine",
+    "E": "Things/Plant/RM_WeeperVenomvine"
    },
    "labels": {
     "A": "render RM_WeeperVenomvine",
-    "B": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_WeeperVenomvine_a (1 of 1) \u2014 LeaningScrub"
+    "C": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_WeeperVenomvine (1 of 4) \u2014 LeaningScrub",
+    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_WeeperVenomvine_a (2 of 4) \u2014 LeaningScrub",
+    "E": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_WeeperVenomvine_b (3 of 4) \u2014 LeaningScrub"
    },
    "pools": [
     "Things/Plant/RM_WeeperVenomvine"
@@ -247,14 +318,18 @@
    "res": "Things/Plant/RM_WeeperVenomvine",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D",
+    "E"
    ],
    "shownBase": [
+    "29ae79060e162f6fc7259a748839739ae3472935fbd61ae52058afa4ab11ff96",
     "d300d87173ee568f193416ef8ae39bd48a6d092d0d05efca336629deb46045c2"
    ],
    "subject_key": "weepervenomvine"
   }
  },
  "sheetId": "own_render_keep_sheet_2026-10-11",
- "snapshotId": "b7690732e2b09f53"
+ "snapshotId": "d3e1379c6fd800e0"
 }

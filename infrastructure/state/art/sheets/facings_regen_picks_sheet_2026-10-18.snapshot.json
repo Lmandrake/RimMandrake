@@ -1,9 +1,9 @@
 {
  "biome": "SUBJECTS_facings_regen_picks",
- "built": "2026-10-18T17:11:37-0700",
+ "built": "2026-10-20T18:24:50-0700",
  "census": "Transient/biome_ffar/facings_regen_picks.subjects.json",
  "census_git_head": null,
- "loadOrder": "live ModsConfig.xml: 548 active",
+ "loadOrder": "live ModsConfig.xml: 325 active",
  "rows": {
   "RSW_Dragonsnake_A": {
    "columns": {
@@ -376,18 +376,18 @@
      "north": "ef8cec0cad2b4f9a66524bcf2eb484c8ef9036a3e3f0326d173520a2eeda4f2a"
     },
     "C": {
-     "1_east": "a7b5b34ac531bcc04c8e64982d1f1b20fa1eb905cabbe5ee7542eeba1e064f19",
-     "1_north": "b742b9927574c2b08bad22669f8a4fa08fa9ebb087b132f4b4f8bf356abded6e",
-     "1_south": "ba063319304070949dbaf526a323a1a877e9ae06e78868fdaeb251a430c919c9",
-     "2_east": "0396b577a77ec1ec017608a1021a0201f3694239b8cb6877f8fbccf25ac1498b",
-     "2_north": "1796d7c62eb7d37203fc8ea78fd86baeb127f6ff41e2947b466ccd0f432cb4e4",
-     "2_south": "f1bf361b8df0285d41ac0779c64b3c5a3df92ca39da0f9b0ac76d1cd5f725318",
-     "3_east": "044567f5e87ed5eae89163b656580f64e1bcebb991303fa70bab4d35412334f6",
-     "3_north": "8e713f0b0fb3768ac78f04e7f76ff6f4ff8e513e482def4d67abe12929005278",
-     "3_south": "0fbfc37be3e254b11bdc97953506eb97a14a7636fcf201415c72df609853da3d",
-     "4_east": "a7b5b34ac531bcc04c8e64982d1f1b20fa1eb905cabbe5ee7542eeba1e064f19",
-     "4_north": "b742b9927574c2b08bad22669f8a4fa08fa9ebb087b132f4b4f8bf356abded6e",
-     "4_south": "ba063319304070949dbaf526a323a1a877e9ae06e78868fdaeb251a430c919c9"
+     "1_east": "cfbef2bcdeb097facae3eca05f3d791ec6c314edcb43200d7bef82dfd8fbca7b",
+     "1_north": "1901d1e16aa3f7bd26d8edbe3cc5da773fcc864a55eb4c228cc774e8b6d21b8b",
+     "1_south": "560c5d43580364b7067f6204298c7be10de1d6233e23e75d8bc616f25143f60a",
+     "2_east": "e6c2c63e3f9c769f926256bb18d5e4c1d43b5b0331a2aaa5632e860e33044084",
+     "2_north": "c19216898050d4f426edb2526f8b55de2706f20878c81ef452413b60199f9713",
+     "2_south": "a65f0c17bb6e0503a4e76236267656e53a6e2b1b551b2835b78ea5bbcfd5d936",
+     "3_east": "d9e083e2e93074a99dd7e06c27dd59b2a9361844b5c6ea924e616632ae7e391b",
+     "3_north": "4418d65507ee0c029465496fc6ada3d3ec9e5f1edb221da9c3357243eb2758cb",
+     "3_south": "2fa1bf0802767a0d3b1285cd77f59970564aca4e4c9c2b0efb73678495ed245d",
+     "4_east": "31a609a26eda7cabaacfe4a830d756e7e704ee54d6a28fbf208906da0dec28a2",
+     "4_north": "4bbb5e39e3a5622cd21e808e4932ce8d3ad32735b322b80a8b9afc4964d075db",
+     "4_south": "694a9ba42cde6e8cb552a5f7fb38e949be235d7a39789bced8258240d1b695a9"
     }
    },
    "graphic_of": {
@@ -455,5 +455,5 @@
   }
  },
  "sheetId": "facings_regen_picks_sheet_2026-10-18",
- "snapshotId": "ebf5d0c3c5f312ca"
+ "snapshotId": "9e010383a02bfd16"
 }

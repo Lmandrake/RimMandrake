@@ -1,9 +1,9 @@
 {
  "biome": "RM_GelatinousSlime",
- "built": "2026-10-19T05:19:54-0700",
+ "built": "2026-10-20T18:31:49-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "8b1860f2e",
- "loadOrder": "live ModsConfig.xml: 535 active",
+ "census_git_head": "b551136cdd",
+ "loadOrder": "live ModsConfig.xml: 325 active",
  "rows": {
   "RM_Dwommo": {
    "columns": {
@@ -228,24 +228,91 @@
    "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "glurro"
   },
+  "RM_GreaterOomb": {
+   "columns": {
+    "A": {
+     "east": "7873e661605bed42b2689b52bb9fc10bcbefd084f8a7f31d0f4141e5f1c79d43",
+     "north": "180dbf9a945c0d66f1de36096cb2be965535004ec4c2eabcdcb5bdbe3377ab7e",
+     "south": "deb6334af1631f64e36cba0484fa3796e35a69659b7fd6d2a30cd543068da549"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_GreaterOomb/RM_GreaterOomb"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 GelatinousSlime"
+   },
+   "pools": [],
+   "res": "Things/Pawn/Animal/RM_GreaterOomb/RM_GreaterOomb",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "greateroomb"
+  },
+  "RM_LesserOomb": {
+   "columns": {
+    "A": {
+     "east": "bef9a68dabb7b938bb2edf9267ce8ba4f91379a2fb2830e27553eba018734bf2",
+     "north": "97a6080a82e424041c783e04b4a189ca31f162919a1d8b8883df9732370a7067",
+     "south": "8e6a8aec877a7eac51e726c28e7cd92b9eb356f69a3208b8543d09390fea482a"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_LesserOomb/RM_LesserOomb"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 GelatinousSlime"
+   },
+   "pools": [],
+   "res": "Things/Pawn/Animal/RM_LesserOomb/RM_LesserOomb",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "lesseroomb"
+  },
+  "RM_Oomb": {
+   "columns": {
+    "A": {
+     "east": "eb0476d4337af8f4a4af33b67e6242fa0949d898fe610a1a066363863f7d8b5c",
+     "north": "c0a149c5465a716b647d166072b6e128a967cf6e49df3b3376f02622599c7d39",
+     "south": "f1164b61637c60d6f63d3895c118fbd6860b625c92ee4040bda8a3fcd856b1fc"
+    },
+    "B": {
+     "east": "eb0476d4337af8f4a4af33b67e6242fa0949d898fe610a1a066363863f7d8b5c",
+     "north": "8da0d2040801e3545d02269798df4dcc29d25223ea77e6ce14ba3d9d3c18d90f",
+     "south": "f1164b61637c60d6f63d3895c118fbd6860b625c92ee4040bda8a3fcd856b1fc"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Oomb/RM_Oomb",
+    "B": "Things/Pawn/Animal/RM_Oomb/RM_Oomb"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 GelatinousSlime",
+    "B": "render slime_oomb"
+   },
+   "pools": [],
+   "res": "Things/Pawn/Animal/RM_Oomb/RM_Oomb",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "oomb"
+  },
   "RM_Plant_Bellows": {
    "columns": {
     "B": {
      "single": "4c2f39c6562d55aa88e0cfcb4aee822bf5f40c3b30f274baf7f87fcb920b4571"
-    },
-    "C": {
-     "east": "38b547df96afeb49a978415485f4e96ac4b88093cf946912022f99a5ca74b01f",
-     "north": "c247fdb90a3f55d30c7b574b78e6cf6d8377150fedca28c41cc567e0729ed5b5",
-     "south": "4dd6c8157fdab8e394aea69068f2f6de069a55d7ba56243d54976960a20fcf77"
     }
    },
    "graphic_of": {
-    "B": "Things/Plant/RM_Bellows/RM_Bellows",
-    "C": "Things/Plant/RM_Bellows/RM_Bellows"
+    "B": "Things/Plant/RM_Bellows/RM_Bellows"
    },
    "labels": {
-    "B": "IN GAME \u2014 random variant RM_Bellows_a (1 of 1) \u2014 GelatinousSlime",
-    "C": "render kit_bellows_v1"
+    "B": "IN GAME \u2014 random variant RM_Bellows_a (1 of 1) \u2014 GelatinousSlime"
    },
    "pools": [
     "Things/Plant/RM_Bellows/RM_Bellows"
@@ -316,6 +383,9 @@
     },
     "I": {
      "single": "ba56f569fd41e7903b65db989dfd23fcfde2eaa44b2c6221a8884a243920152c"
+    },
+    "J": {
+     "single": "8857c80d807618b22b7adbee511548bf9745430a6fabaad8998db56ab6c0c0fd"
     }
    },
    "graphic_of": {
@@ -325,7 +395,8 @@
     "F": "Things/Plant/RM_SlimeGrass/RM_SlimeGrass",
     "G": "Things/Plant/Grass_Leafless",
     "H": "Things/Plant/Grass_Leafless",
-    "I": "_byname"
+    "I": "_byname",
+    "J": "Things/Plant/RM_SlimeGrass/RM_SlimeGrass"
    },
    "labels": {
     "C": "IN GAME \u2014 random variant RM_SlimeGrass_a (1 of 4) \u2014 GelatinousSlime",
@@ -334,7 +405,8 @@
     "F": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_SlimeGrass_d (4 of 4) \u2014 GelatinousSlime",
     "G": "donor original \u2014 Gerrymon's Upscaled Vanilla Textures",
     "H": "render dregen_RM_HardyGrass_GrassLeafless_v1",
-    "I": "render dregen_RM_Plant_SlimeGrass_RMSlimeGrassa_v1"
+    "I": "render dregen_RM_Plant_SlimeGrass_RMSlimeGrassa_v1",
+    "J": "render dregen_RM_Slime_Grass_SoilRich_v1"
    },
    "pools": [
     "Things/Plant/RM_SlimeGrass/RM_SlimeGrass"
@@ -349,7 +421,8 @@
     "F",
     "G",
     "H",
-    "I"
+    "I",
+    "J"
    ],
    "shownBase": [
     "04e365a819c107a124d380810bd62ff8f15ab6c036636d4b081c5b725adebc3a",
@@ -433,8 +506,38 @@
     "848a265280215bb48affa387396e5ebc4ea1b12f3728cf8330c555bb56b567b1"
    ],
    "subject_key": "titanoslime"
+  },
+  "RM_Wuum": {
+   "columns": {
+    "A": {
+     "east": "70a861ee1d4fe0e7894034f4b539fd16bd2ebfd09d04153c167f5a05dc07b50f",
+     "north": "5fb32189e4293964bfdb328606b1955dd83d55dd6ad79086d2ce5334dce6768d",
+     "south": "ed0cd67d165f829d88c920a011e33c20098e96ecc5c6dc8a6a63533af0409dbd"
+    },
+    "B": {
+     "east": "70a861ee1d4fe0e7894034f4b539fd16bd2ebfd09d04153c167f5a05dc07b50f",
+     "north": "593f1b34d58c66c223a7820d909c8796398b99e555a7790b4ce78c6a5899c2e3",
+     "south": "ed0cd67d165f829d88c920a011e33c20098e96ecc5c6dc8a6a63533af0409dbd"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Wuum/RM_Wuum",
+    "B": "Things/Pawn/Animal/RM_Wuum/RM_Wuum"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 GelatinousSlime",
+    "B": "render slime_wuum"
+   },
+   "pools": [],
+   "res": "Things/Pawn/Animal/RM_Wuum/RM_Wuum",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "wuum"
   }
  },
  "sheetId": "gelatinousslime_sheet_2026-10-05",
- "snapshotId": "eba9c18d6387ca8f"
+ "snapshotId": "37d4eb3824a21889"
 }

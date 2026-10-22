@@ -2,7 +2,7 @@
  "sheetId": "facings_regen_picks_sheet_2026-10-18",
  "posture": "pick-one",
  "snapshot": "infrastructure/state/art/sheets/facings_regen_picks_sheet_2026-10-18.snapshot.json",
- "snapshotId": "ebf5d0c3c5f312ca",
+ "snapshotId": "9e010383a02bfd16",
  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
  "biome": "SUBJECTS_facings_regen_picks",
  "reviewStatus": {

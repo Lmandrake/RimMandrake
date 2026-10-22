@@ -1580,3 +1580,12 @@
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","why":"full 325 list relaunch for R3","ts":"2026-10-21T11:08:54Z","tsn":1792580934115589318}
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","why":"full 325 list up, R3 loaded","ts":"2026-10-21T11:29:06Z","tsn":1792582146882699820}
 {"seat":"OWNER","event":"close","id":"CRADLE_STRIKE_RECONCILE_WITH_LAB_DIVE","sha":"cfa2f408545c","reason":"Verify bar met: the 2026-10-12 ruling (strike OR dive; Rakatan hyperdrive hook) is now in dungeons_arc_spec.md §2.6 and canon.yml assailant_reveal_arc.strike_or_dive_src (cfa2f408545c). Open follow-ups for the owner: spec §2.9 Q1-4.","perRuling":"CRADLE_STRIKE_RECONCILE_WITH_LAB_DIVE","ts":"2026-10-21T11:30:37Z","tsn":1792582237260878966}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"BENCH: deploy offline pile (OFFLINE_PILE_DEPLOY_ONE_TRIP_FOR_ALL)","ts":"2026-10-21T21:06:22Z","tsn":1792616782685361762}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"BENCH: fw_gss_sitting tier load for pile proofs","ts":"2026-10-21T21:09:34Z","tsn":1792616974063183332}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"BENCH: fw_gss_sitting tier up","ts":"2026-10-21T21:10:50Z","tsn":1792617050553604777}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"BENCH: swap to flowworks_hugethings tier + deploy Webwork proof fix","ts":"2026-10-21T21:27:26Z","tsn":1792618046177713193}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"BENCH: flowworks_hugethings tier load (titanoslime g5, webwork rerun)","ts":"2026-10-21T21:30:09Z","tsn":1792618209227501316}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"BENCH: flowworks_hugethings tier up","ts":"2026-10-21T21:31:01Z","tsn":1792618261813754772}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"BENCH: tier proofs done; restoring owner's full list","ts":"2026-10-21T21:32:35Z","tsn":1792618355536212347}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"BENCH: full-list load (owner's list restored; FA opt-out check)","ts":"2026-10-21T21:32:46Z","tsn":1792618366342556326}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"BENCH: full list up at main menu","ts":"2026-10-21T21:50:40Z","tsn":1792619440171377792}

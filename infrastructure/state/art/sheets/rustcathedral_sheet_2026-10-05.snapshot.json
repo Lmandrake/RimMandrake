@@ -1,9 +1,9 @@
 {
  "biome": "RM_RustCathedral",
- "built": "2026-10-14T20:33:46-0700",
+ "built": "2026-10-20T18:50:34-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 23 mods \u2014 a test list): 551 active",
+ "census_git_head": "b551136cdd",
+ "loadOrder": "live ModsConfig.xml: 325 active",
  "rows": {
   "GR_Mecharat": {
    "columns": {
@@ -40,18 +40,26 @@
      "east": "afb2f61d35ba1ad6c3d367477aad0d34cc32574f49d1e47faefc104e451e1f0c",
      "north": "6aef557545c11404640a5fe247a6665f1aa6f5d1079c62f57e013822cd6e7762",
      "south": "436cc5fc81c52a8fccf1fd27569f64947b1b18a3c0ec0b3ecf890411487f7735"
+    },
+    "B": {
+     "east": "afb2f61d35ba1ad6c3d367477aad0d34cc32574f49d1e47faefc104e451e1f0c",
+     "north": "c15c4554c8b4d6a8fc7ee9a361a3f2cebfe176462f61bdaac17fce4793affb24",
+     "south": "f5ef2f5212a71a5e4eb44194c6be4bfb5a4f88c8acf04ec4ebbb7bdfd77595be"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_CathedralRoach/RM_CathedralRoach"
+    "A": "Things/Pawn/Animal/RM_CathedralRoach/RM_CathedralRoach",
+    "B": "Things/Pawn/Animal/RM_CathedralRoach/RM_CathedralRoach"
    },
    "labels": {
-    "A": "IN GAME \u2014 RustCathedral"
+    "A": "history RustCathedral 2026-09-25",
+    "B": "IN GAME \u2014 RustCathedral"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/RM_CathedralRoach/RM_CathedralRoach",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "shownBase": [
     "436cc5fc81c52a8fccf1fd27569f64947b1b18a3c0ec0b3ecf890411487f7735",
@@ -75,19 +83,26 @@
     },
     "D": {
      "single": "869745b2d6618f505d2bf6dadfbc56dadafb08e05e84191beb57f94956a192c4"
+    },
+    "E": {
+     "east": "d322b949ab02c814485482f0f631c012109faba5cc1ecdb7cc11bc972b9e8374",
+     "north": "4ccb2beecc02030138a17535cf5087a5de34135c5c783c5aef0b4fefff811db4",
+     "south": "cc36e331325eb294b977bdad14fb69c8a889ac67a7282f141071c829dc15ac63"
     }
    },
    "graphic_of": {
     "A": "Things/Item/Fish/RM_CoolantEelCatch",
     "B": "Things/Item/Fish/RM_CoolantEelCatch",
     "C": "_reference:RM_CoolantEel",
-    "D": "Things/Item/Fish/RM_CoolantEelCatch"
+    "D": "Things/Item/Fish/RM_CoolantEelCatch",
+    "E": "_reference:RM_CoolantEel"
    },
    "labels": {
     "A": "WAS in game, no longer installed \u2014 ludeon.rimworld.odyssey",
     "B": "render gapall_RM_CoolantEelCatch_v1",
     "C": "render RM_CoolantEel",
-    "D": "IN GAME \u2014 RustCathedral"
+    "D": "IN GAME \u2014 RustCathedral",
+    "E": "render standtall_b1_rm_coolanteel"
    },
    "pools": [],
    "res": "Things/Item/Fish/RM_CoolantEelCatch",
@@ -95,10 +110,12 @@
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "shownBase": [
     "74b6b33887d032ca8b0fe92280bb5a396eb72adf057f413b2021272db0b10034",
+    "869745b2d6618f505d2bf6dadfbc56dadafb08e05e84191beb57f94956a192c4",
     "9bde039faa3fd7fa12e88cc2a035060d378098a6610d696d40ea01431f637424",
     "9c9b54168d25a9ff4467bdcdb76fc5cba20eb716488504c4d55f4547caaeadff",
     "cc36e331325eb294b977bdad14fb69c8a889ac67a7282f141071c829dc15ac63",
@@ -151,21 +168,29 @@
     "B": {
      "east": "ae0b6deb62174d47fc6acc1c76cfb543f3d64a2e11effa1ee04b2c803c439eb5",
      "north": "67d410678f11cc27ff3172f4159f7400c40bbbaf08d7e1fb1c033ff8732da747"
+    },
+    "C": {
+     "east": "ae0b6deb62174d47fc6acc1c76cfb543f3d64a2e11effa1ee04b2c803c439eb5",
+     "north": "67d410678f11cc27ff3172f4159f7400c40bbbaf08d7e1fb1c033ff8732da747",
+     "single": "1597dc451316c23807ed8fbec59dd73cb7e450e58dd67e368be615393823c1b5"
     }
    },
    "graphic_of": {
     "A": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock",
-    "B": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock"
+    "B": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock",
+    "C": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "render warscar_Mynock_v2"
+    "A": "history SWBestiary 2026-09-11",
+    "B": "render warscar_Mynock_v2",
+    "C": "IN GAME \u2014 SWBestiary"
    },
    "pools": [],
    "res": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "shownBase": [
     "1597dc451316c23807ed8fbec59dd73cb7e450e58dd67e368be615393823c1b5",
@@ -190,24 +215,40 @@
      "east": "f398a29e7916a9dfb4ad00a3d47813a1980fc7f52f7c890583d4aeaa1f688dcb",
      "north": "ade25a4b9d3a9c7aa1b3fd873f004ed4cd5f0be8631489f001afb963aa44d6cc",
      "south": "a629e6f732372564bffee23678aad709cecd7fd08a43a683fa00a05f5c533b1e"
+    },
+    "D": {
+     "east": "aed6bf8a93d32478f75d2fbc3b44ffcbfa9651351928ba3143a6f35a0be2cb56",
+     "north": "1848c970fea85ca22815ad7180f6570a6943b75398822da6d20c20282cc9bc28",
+     "south": "a7e86717d4593b5144eca4941c780437cff30f08d39596bf7d00c296af4f10d9"
+    },
+    "E": {
+     "east": "f398a29e7916a9dfb4ad00a3d47813a1980fc7f52f7c890583d4aeaa1f688dcb",
+     "north": "6ea42d0f09dc04e1adaf30d9d2b8bb355b69d930b03d6c0a3123315f5dc67c29",
+     "south": "a629e6f732372564bffee23678aad709cecd7fd08a43a683fa00a05f5c533b1e"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik",
     "B": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik",
-    "C": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik"
+    "C": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik",
+    "D": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik",
+    "E": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik"
    },
    "labels": {
     "A": "history SWBestiary 2026-10-03",
-    "B": "IN GAME \u2014 SWBestiary",
-    "C": "render RM_Vozzik"
+    "B": "render stillsand_regen_RSW_Vozzik_v2",
+    "C": "render RM_Vozzik",
+    "D": "IN GAME \u2014 SWBestiary",
+    "E": "render standtall_b1_rm_vozzik"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D",
+    "E"
    ],
    "shownBase": [
     "54eaebc7955c34272c46e6c9a9db4fe6d6d052fff56a19b7944c62b396aa5492",

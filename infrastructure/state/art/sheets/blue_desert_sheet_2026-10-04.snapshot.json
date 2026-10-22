@@ -1,12 +1,21 @@
 {
  "biome": "RM_BlueDesert",
- "built": "2026-10-19T04:33:25-0700",
+ "built": "2026-10-20T18:10:38-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "8b1860f2e",
- "loadOrder": "live ModsConfig.xml: 542 active",
+ "census_git_head": "b551136cdd",
+ "loadOrder": "live ModsConfig.xml: 325 active",
  "rows": {
   "AA_Thunderbeast": {
    "columns": {
+    "A": {
+     "east": "8fc8cdd1fd2f8ca7abaa36614980b8dff1ad58a6c29516e5f5a9faca9317b04a",
+     "south": "4f847ed83f33280906d5a4eec36d8682c6f56a5e88a73b553e384c7e5e3954ef"
+    },
+    "B": {
+     "east": "ead6ba6a8e111e442ae9c076c42b853adff72be02b8e1686c13eb07265aa83a2",
+     "north": "851362b552407cac05db5cedc0a8f936d2148db0d637ad7621af74040f4964f3",
+     "south": "bace543529b12aa37082cbef81e5061c70f4df069300323c69bee2ed9c8c7d7e"
+    },
     "E": {
      "east": "8fc8cdd1fd2f8ca7abaa36614980b8dff1ad58a6c29516e5f5a9faca9317b04a",
      "north": "740377f579a95a9e48d55c62685103e239b9dd7e7c3f201d3ca6dc79355a7222",
@@ -19,15 +28,18 @@
     }
    },
    "graphic_of": {
+    "A": "Things/Pawn/Animal/AA_Thunderbeast/AA_Thunderbeast",
+    "B": "Things/Pawn/Animal/AA_Thunderbeast/AA_Thunderbeast",
     "E": "Things/Pawn/Animal/AA_Thunderbeast_BlueDesert/AA_Thunderbeast_BlueDesert",
     "G": "_byname"
    },
    "labels": {
+    "A": "render bluedesert_Thunderbeast_v2",
+    "B": "IN GAME \u2014 Alpha Animals",
     "E": "IN GAME \u2014 BlueDesert",
     "G": "render bluedesert_Thunderbeast_v2 \u2014 grader flagged (advisory)"
    },
-   "pools": [],
-   "res": "Things/Pawn/Animal/AA_Thunderbeast_BlueDesert/AA_Thunderbeast_BlueDesert",
+   "res": "Things/Pawn/Animal/AA_Thunderbeast/AA_Thunderbeast",
    "reserved": [
     "A",
     "B",
@@ -37,13 +49,7 @@
     "F",
     "G"
    ],
-   "shownBase": [
-    "4f847ed83f33280906d5a4eec36d8682c6f56a5e88a73b553e384c7e5e3954ef",
-    "851362b552407cac05db5cedc0a8f936d2148db0d637ad7621af74040f4964f3",
-    "8fc8cdd1fd2f8ca7abaa36614980b8dff1ad58a6c29516e5f5a9faca9317b04a",
-    "bace543529b12aa37082cbef81e5061c70f4df069300323c69bee2ed9c8c7d7e",
-    "ead6ba6a8e111e442ae9c076c42b853adff72be02b8e1686c13eb07265aa83a2"
-   ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "thunderbeast"
   },
   "RM_Chimeglobe": {
@@ -539,6 +545,28 @@
    ],
    "subject_key": "qeshra"
   },
+  "RM_Thunderbeast": {
+   "columns": {
+    "A": {
+     "east": "8fc8cdd1fd2f8ca7abaa36614980b8dff1ad58a6c29516e5f5a9faca9317b04a",
+     "north": "740377f579a95a9e48d55c62685103e239b9dd7e7c3f201d3ca6dc79355a7222",
+     "south": "4f847ed83f33280906d5a4eec36d8682c6f56a5e88a73b553e384c7e5e3954ef"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/AA_Thunderbeast_BlueDesert/AA_Thunderbeast_BlueDesert"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 BlueDesert"
+   },
+   "pools": [],
+   "res": "Things/Pawn/Animal/AA_Thunderbeast_BlueDesert/AA_Thunderbeast_BlueDesert",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "thunderbeast"
+  },
   "RM_Utikka": {
    "columns": {
     "B": {
@@ -821,12 +849,52 @@
    ],
    "subject_key": "zhaaz"
   },
-  "Vapaad": {
+  "RSW_Vapaad": {
    "columns": {
+    "A": {
+     "east": "df9220c00d1e8b5a5c897ec9bc5379b53341f7ace8940582f15f68eb75650a81",
+     "north": "4328879aaf0f92e7279612a7c88aa56c33c2f37f4acb545aaff5a0c8190ea712",
+     "south": "0caf52893b2ff2b425444e6d9233ec4974cbabd93908a1e8c3cceb21d421baf5"
+    },
     "B": {
      "east": "8e7994cab2c04cd83d96ada09bfbe0817bc36688f1c0a68e2ad4feadc3567351",
      "north": "5b05061b339e91b7cad670e1b165585c6bbaeb6f1032aef668ab24f6f1dcd45c",
      "south": "517cb7d4b164789b07bff2ea4a7c295e533ff48b68a72b904f409cc6dfc03802"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RUT_Vapaad/RUT_Vapaad",
+    "B": "Things/Pawn/Animal/RUT_Vapaad/RUT_Vapaad"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 UtinniPatches",
+    "B": "render bluedesert_Vapaad_v2"
+   },
+   "pools": [],
+   "res": "Things/Pawn/Animal/RUT_Vapaad/RUT_Vapaad",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "vapaad"
+  },
+  "Vapaad": {
+   "columns": {
+    "A": {
+     "east": "d418708efa632ed653207322bb3ae3eb2aedf42dcaacfd141b9eb37c87be38c7",
+     "north": "888ef88237d28c1172509750e2cd0df3ea1770cb01cefab9bf806e052fe687b1",
+     "south": "f31b5019fc5052940411751ec9f6996c5eefff02c44b19f6992d98e070b3c803"
+    },
+    "B": {
+     "east": "8e7994cab2c04cd83d96ada09bfbe0817bc36688f1c0a68e2ad4feadc3567351",
+     "north": "5b05061b339e91b7cad670e1b165585c6bbaeb6f1032aef668ab24f6f1dcd45c",
+     "south": "517cb7d4b164789b07bff2ea4a7c295e533ff48b68a72b904f409cc6dfc03802"
+    },
+    "C": {
+     "east": "cd24a5ce520a4695da85bf15023f4d8105a66b54977fe9c388258a647666c1ac",
+     "north": "b8c53700fa5cce53c94548c7bab72bc799334a6d783f9a078b490335541ae7a6",
+     "south": "39b0c64d52dac7d974485db77bab17eb114d45a0917c863d7db90ddfdee597a5"
     },
     "G": {
      "east": "df9220c00d1e8b5a5c897ec9bc5379b53341f7ace8940582f15f68eb75650a81",
@@ -835,15 +903,18 @@
     }
    },
    "graphic_of": {
-    "B": "Things/Pawn/Animal/RUT_Vapaad/RUT_Vapaad",
+    "A": "swanimals/Vapaad/Vapaad",
+    "B": "swanimals/Vapaad/Vapaad",
+    "C": "swanimals/Vapaad/Vapaad",
     "G": "Things/Pawn/Animal/RUT_Vapaad/RUT_Vapaad"
    },
    "labels": {
+    "A": "render bluedesert_Vapaad_v1",
     "B": "render bluedesert_Vapaad_v2",
+    "C": "IN GAME \u2014 mlie.starwarsanimalcollection",
     "G": "IN GAME \u2014 UtinniPatches"
    },
-   "pools": [],
-   "res": "Things/Pawn/Animal/RUT_Vapaad/RUT_Vapaad",
+   "res": "swanimals/Vapaad/Vapaad",
    "reserved": [
     "A",
     "B",
@@ -853,17 +924,7 @@
     "F",
     "G"
    ],
-   "shownBase": [
-    "39b0c64d52dac7d974485db77bab17eb114d45a0917c863d7db90ddfdee597a5",
-    "517cb7d4b164789b07bff2ea4a7c295e533ff48b68a72b904f409cc6dfc03802",
-    "5b05061b339e91b7cad670e1b165585c6bbaeb6f1032aef668ab24f6f1dcd45c",
-    "888ef88237d28c1172509750e2cd0df3ea1770cb01cefab9bf806e052fe687b1",
-    "8e7994cab2c04cd83d96ada09bfbe0817bc36688f1c0a68e2ad4feadc3567351",
-    "b8c53700fa5cce53c94548c7bab72bc799334a6d783f9a078b490335541ae7a6",
-    "cd24a5ce520a4695da85bf15023f4d8105a66b54977fe9c388258a647666c1ac",
-    "d418708efa632ed653207322bb3ae3eb2aedf42dcaacfd141b9eb37c87be38c7",
-    "f31b5019fc5052940411751ec9f6996c5eefff02c44b19f6992d98e070b3c803"
-   ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "vapaad"
   }
  },

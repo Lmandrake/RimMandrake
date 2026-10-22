@@ -1,9 +1,9 @@
 {
  "biome": "SUBJECTS_greysea_crown_retracted_and_elder",
- "built": "2026-10-18T17:36:57-0700",
+ "built": "2026-10-20T18:34:59-0700",
  "census": "Transient/biome_ffar/greysea_crown_retracted_and_elder.subjects.json",
  "census_git_head": null,
- "loadOrder": "live ModsConfig.xml: 548 active",
+ "loadOrder": "live ModsConfig.xml: 325 active",
  "rows": {
   "RM_BrineCrown": {
    "columns": {
@@ -15,17 +15,22 @@
     },
     "C": {
      "single": "9e988c1f8caeea392653c8345b8b2ce4ede731ccc60180c184bcc9555fad1843"
+    },
+    "D": {
+     "single": "cbe6318df7d5d3d75b43e6f9c2549161bea6c8aa11275837215278a383986b43"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_GreySea/RM_BrineCrown",
     "B": "Things/Plant/RM_GreySea/RM_BrineCrown",
-    "C": "Things/Plant/RM_GreySea/RM_BrineCrown"
+    "C": "Things/Plant/RM_GreySea/RM_BrineCrown",
+    "D": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 random variant RM_BrineCrown_A (1 of 1) \u2014 TerminalBiomes",
     "B": "render greysea_brinecrown_retracted_v1",
-    "C": "render greysea_brinecrown_retracted_v2"
+    "C": "render greysea_brinecrown_retracted_v2",
+    "D": "render dregen_RM_BrineCrown_RMBrineCrownA_v1"
    },
    "pools": [
     "Things/Plant/RM_GreySea/RM_BrineCrown"
@@ -34,9 +39,14 @@
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "6b2382baec6485fca031d00c424d1401d266b27bdd8f97e4dfe39445d74a0b63",
+    "9e988c1f8caeea392653c8345b8b2ce4ede731ccc60180c184bcc9555fad1843",
+    "e032bfdc364584b66cf4ce5c93c9b03387c8cadf4bec56594b224e87dbf8663e"
+   ],
    "subject_key": "brinecrown"
   },
   "RM_BrineElder": {
@@ -55,26 +65,33 @@
     }
    },
    "graphic_of": {
-    "A": "Things/Building/Natural/RM_SaltChimney",
-    "B": "Things/Building/Natural/RM_SaltChimney",
-    "C": "_byname",
-    "D": "_byname"
+    "A": "Things/Building/Natural/RM_BrineElder",
+    "B": "Things/Building/Natural/RM_BrineElder",
+    "C": "Things/Building/Natural/RM_BrineElder",
+    "D": "Things/Building/Natural/RM_BrineElder"
    },
    "labels": {
-    "A": "IN GAME \u2014 TerminalBiomes",
-    "B": "render greysea_saltchimney_v1",
-    "C": "render greysea_brineelder_v1",
-    "D": "render greysea_brineelder_v2"
+    "A": "WAS in game, no longer installed \u2014 TerminalBiomes",
+    "B": "IN GAME \u2014 random variant RM_BrineElder_b (2 of 4) \u2014 TerminalBiomes",
+    "C": "IN GAME \u2014 random variant RM_BrineElder_a (1 of 4) \u2014 TerminalBiomes",
+    "D": "IN GAME \u2014 random variant RM_BrineElder_d (4 of 4) \u2014 TerminalBiomes"
    },
-   "pools": [],
-   "res": "Things/Building/Natural/RM_SaltChimney",
+   "pools": [
+    "Things/Building/Natural/RM_BrineElder"
+   ],
+   "res": "Things/Building/Natural/RM_BrineElder",
    "reserved": [
     "A",
     "B",
     "C",
     "D"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "0ed56b97384778c9a83bc4379ea9a1e1adad82efb86f0d0996917976a76fd4ae",
+    "943881ebe068cdf73e3cccd0d8079a88d3accfba6a84a371c14c1debebc35786",
+    "fa06377d702abeddf394fc4f6b4385f141414bbc72eafe09e85c804506f05f65",
+    "fd4a58efb3c55bb7bf65f4cfc74ebc5e952b6b87992f89b3994537071ab78c65"
+   ],
    "subject_key": "brineelder"
   }
  },

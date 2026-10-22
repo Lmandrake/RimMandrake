@@ -1,9 +1,9 @@
 {
  "biome": "SUBJECTS_dragonsnake_jfo_pick",
- "built": "2026-10-19T05:07:29-0700",
+ "built": "2026-10-20T18:22:30-0700",
  "census": "Transient/biome_ffar/dragonsnake_jfo_pick.subjects.json",
  "census_git_head": null,
- "loadOrder": "live ModsConfig.xml: 535 active",
+ "loadOrder": "live ModsConfig.xml: 325 active",
  "rows": {
   "Dragonsnake": {
    "columns": {
@@ -315,7 +315,7 @@
     "N": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_D",
     "O": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_D",
     "P": "_byname",
-    "Q": "_byname",
+    "Q": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A_Swim",
     "R": "_byname",
     "S": "_byname",
     "T": "_byname",
@@ -340,7 +340,7 @@
     "N": "render facings_redraw_dragonsnake_d_north_v3",
     "O": "render facings_redraw_dragonsnake_d_north_v2",
     "P": "render facings_redraw_dragonsnake_swim_north_v3",
-    "Q": "render dragonsnake_jfo_vara_v1_swim",
+    "Q": "IN GAME \u2014 SWBestiary",
     "R": "render dragonsnake_jfo_varb_v1_swim",
     "S": "render dragonsnake_jfo_varc_v1_swim",
     "T": "render dragonsnake_jfo_vard_v1_swim",

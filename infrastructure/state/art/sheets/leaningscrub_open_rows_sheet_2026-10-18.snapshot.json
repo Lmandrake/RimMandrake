@@ -1,9 +1,9 @@
 {
  "biome": "SUBJECTS_leaningscrub_open_rows",
- "built": "2026-10-19T22:41:19-0700",
+ "built": "2026-10-20T18:39:46-0700",
  "census": "Transient/biome_ffar/leaningscrub_open_rows.subjects.json",
  "census_git_head": null,
- "loadOrder": "live ModsConfig.xml: 374 active",
+ "loadOrder": "live ModsConfig.xml: 325 active",
  "rows": {
   "RM_Fuzzrunner": {
    "columns": {
@@ -32,7 +32,13 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "2328eb361ccfbf6ced95fdc7d0d966c9e90230155844fa39c67551580f43d45b",
+    "3be3e066f4c459ae98fdaa68227002f9625761697aa96564836ac61551672d79",
+    "4eec55e783afb44ace15bc479cce2134973b5efbe26f2e169960b270d0bb6992",
+    "64f9cea9cf00ce4f17af472fbdc346b26e4e621feb7bfdf74d46aa8f31fd7484",
+    "90099fd69d82e72f24ec0d03a63897fe871f16e4775fe2d65aee88fccffb7ec7"
+   ],
    "subject_key": "fuzzrunner"
   },
   "RM_Fuzzviper": {
@@ -53,8 +59,8 @@
     "B": "Things/Pawn/Animal/RM_Fuzzviper/RM_Fuzzviper"
    },
    "labels": {
-    "A": "IN GAME \u2014 LeaningScrub",
-    "B": "render leaningscrub_fuzzviper_v1"
+    "A": "render standtall_b1_rm_fuzzviper",
+    "B": "IN GAME \u2014 LeaningScrub"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/RM_Fuzzviper/RM_Fuzzviper",
@@ -62,7 +68,13 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "5cf72a82011943a74d47dce57d47667a1c052e6c87a83a4e285097ed9e2068cf",
+    "62fce50c6499f7d5ae946404b76e8c4c63795ab44e1f51bdbe5da5157c7682f7",
+    "70d8112e69f83742271df4cfab6956daa24c5c81f47d2d9bbc1d550f828ba9bc",
+    "cdae58e535b701a0d75545a61d5fe668f6020063fdcc275633f49de832d8a50d",
+    "d33428cad4ebc3c356ec13163ed6a23847b6d5cbff9f668e3b6be66b9c48c694"
+   ],
    "subject_key": "fuzzviper"
   },
   "RM_QuenchVenomvine": {
@@ -138,7 +150,18 @@
     "I",
     "J"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "0edcb618b82e661059eeb2f9ab183268825f5748b9c2a17b6fa658fb31bfc0c2",
+    "29ae79060e162f6fc7259a748839739ae3472935fbd61ae52058afa4ab11ff96",
+    "4c730478af757bec09a0cf7836cd2e2c8ebfe8f6b318136dd9750f9ef414ba4b",
+    "532da9226258562bcd92d0780b4030ba03944834581c1e0f504ebb555e7949e8",
+    "86364a7db3c308183aea4cc64dba862217ca097c4410af16017bc28b5de98e4e",
+    "96300866440ae1735746e686aa08ed139ae6d97a016230be249397428c273140",
+    "bb8a59919e7a99d36f5e67584db60912c6322d45e0ecdfe1b192769f4495bacf",
+    "c9e42034d1f4b90f3e8090281769959f1854a55ef0bbcb409be4dd12c29d96e0",
+    "d400482434cf874fa3a352b587b8605c62ae5b10c3f4ea74d6325b00980f0195",
+    "f0721303d0b190a751841eeeb86edd503fa88b292ad9b2c47b82d04783603b76"
+   ],
    "subject_key": "quenchvenomvine"
   },
   "RM_RearingVenomvine": {
@@ -214,7 +237,18 @@
     "I",
     "J"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "29ae79060e162f6fc7259a748839739ae3472935fbd61ae52058afa4ab11ff96",
+    "3b11bea423dc717c9e04cd7fc3c6b1b5a154fe28a682cd6a160bdddb48d88c1f",
+    "56889c67a32e3582b12ae813a5e2400d5e7c9a998a63b6e5fff8567b9aeb57a9",
+    "94dff53a6f15186a5e172c1af704b2bc28605fb303c29788c9180028ec911a60",
+    "9e677f7f584b375bcb09f23b6e4df8898e34dd24d1390bc2150774834fa730a2",
+    "cd95fd4834e6f5bfb39d78e4b2de0d019f720a1cecc69ef3e6738c8a872109bf",
+    "ddae59d240c77e7f03411b07d565686d843896b5fa8e6c1338d3ff530d5d7b9c",
+    "e46070bca470e15ad8f48b8b02afbb58491d6b636e6fa3c0d298ac45174683a7",
+    "f2bbd4d5569e01dd068efa81cabc7bd3226dcddd70818001e2b63234d41eca77",
+    "f855197e03eb7299db2f7fa336383335fb4ebce33618eb4aac85c92a5c4e9082"
+   ],
    "subject_key": "rearingvenomvine"
   },
   "RM_Vurra": {
@@ -244,7 +278,13 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "1203e1a13fa147827b1c52ce47ec35617a7218600d6b0cb30be630ca5324f2f0",
+    "60dcb8daee30a33b1621618a9269f9cf167d4bf282bffb444671fe3b203daa7c",
+    "aeb65a3bca6335c59402732c6913c329f230b7ff8cbe9ec68edb0b71613fa94f",
+    "d69453ddae76999c2f877c00d99c94065faf4e6f9c8419a37919268c083c5aa7",
+    "e95dc4defd553f749b8532d7bbb6ff31ca5c30d8328316ab8dbda1ca539b22bf"
+   ],
    "subject_key": "vurra"
   },
   "RSW_Anooba": {
@@ -282,7 +322,15 @@
     "B",
     "C"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "269d409cbecb5b94c35adfa9232b97642574e7634939499568d638a45476ccf1",
+    "2cbadfc9c5276d09059b21427d0b5e6f18361464d58c1400b3477a1e3c5c04b1",
+    "4c5c7428147e39e8fba3899540b32321acc1185f0265da3180fae1eaf6eb746d",
+    "9d63a4733f0f8ff358d154e3208731fa31e9f11d165c5fa43be1b010c58f32ba",
+    "a616443d96fbee65ef9170145a450a5d4dace58012cbd5205d4d4f77e03c0d04",
+    "ec084f56df1ff8c64bce291d0d8350e38fdd74fa1672a80e30214ec0abee519a",
+    "eea7e9ae90c7dddb3d7f2f9554c096d07223599a985414dec1828c896817ef2f"
+   ],
    "subject_key": "anooba"
   },
   "RSW_Convor": {
@@ -292,25 +340,10 @@
      "north": "39b4b2c0a9e55bbe48776c730e74f6b77fd4defe2ce8b2feb78284acdc84b95c",
      "south": "406350d7d732d766987e8c37f47d7931d2758f435525d28d7652653a93fe36a9"
     },
-    "B": {
-     "east": "f60d39e95d3acd98fc9cbaa5f34e77dac892e4c46563e20e682bc947990e4cb2",
-     "north": "1516b7ee12d9b1c6e7d6772e34afc89717628e8483f4c20e14c47305f2cd3868",
-     "south": "0ac72b280765e0e43ed53b6399c4d4eafb3e97f6d52aad5fe79373b553433f97"
-    },
     "C": {
      "east": "d1f7c87906618d48004a8794f7ca6af9a4c85c0fb7e2cb65f7520aec4debbb87",
      "north": "2161e64b279cefeadb45863b3640d13bc20a8fab1839bb3b1a0285f16038cfaf",
      "south": "2fc80191c68997f2051b0d4ea71a9d57707f75c3d1fcc47fa9a80579050cf87b"
-    },
-    "D": {
-     "east": "296f437d6d9ed1daa204963512269ac8604fabeff44ef04aca7220210e712360",
-     "north": "980b49b06f96675a3e0992038b1c3c863276a9d111697b00010cd63306eeedfd",
-     "south": "c02dd654f26961c188eb153df2753557c3141121091abdb191d3db8e5587ab2c"
-    },
-    "E": {
-     "east": "b3f22c3fad897eed7d6e79152baf86b1a383434973645fbc8b9de4469bcaffb0",
-     "north": "c46a6827df6faae87f1ca0806d85f4d96f35976d5c82254fd8edb6bae35a88fd",
-     "south": "93c3d7d58fab40a0826afd87ee12e210b010dfcc0340059b929f530f2e918b95"
     },
     "F": {
      "east": "52fb2d350a99cd931e32d3bc748561c6c13db31b10f998f9b81c4c20d6d5ca31",
@@ -344,27 +377,26 @@
      "4_east": "55efc2da767a9da89402316f3d315a7c3a0a2f83c67ec24b4ddff7f08860b0a0",
      "4_north": "eaa9143a524f973c8c3dce80ab5094b7d42ce8a20cad459c5b265a11975a7ed3",
      "4_south": "7d1cc1d5284369c2928a5b9ac966683e5fe3a3f7103e3d53da1effb631226358"
+    },
+    "I": {
+     "east": "fd2e3f8a9a8578839deba5ac99a1055f5dc7ce5a843e82a7777bd7b7b246294c"
     }
    },
    "graphic_of": {
     "A": "swanimals/Convor/Convor",
-    "B": "swanimals/Convor/Convor",
     "C": "swanimals/Convor/Convor",
-    "D": "swanimals/Convor/Convor",
-    "E": "swanimals/Convor/Convor",
     "F": "swanimals/Convor/Convor_f",
     "G": "_flip:swanimals/Convor/Convor_Flying_",
-    "H": "_flip:swanimals/Convor/Convor_f_Flying_"
+    "H": "_flip:swanimals/Convor/Convor_f_Flying_",
+    "I": "swanimals/Convor/Convor_f"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "render dregen_RSW_Convor_Convorf_v1",
     "C": "render regen_ls2_canon_convor_v2",
-    "D": "render leaningscrub_convor_v1",
-    "E": "history SWBestiary 2026-09-12",
     "F": "IN GAME \u2014 SWBestiary",
     "G": "IN GAME \u2014 Convor_Flying_",
-    "H": "IN GAME \u2014 Convor_f_Flying_"
+    "H": "IN GAME \u2014 Convor_f_Flying_",
+    "I": "render enact_3ca8883d_convor_v1"
    },
    "pools": [],
    "res": "swanimals/Convor/Convor",
@@ -376,9 +408,53 @@
     "E",
     "F",
     "G",
-    "H"
+    "H",
+    "I"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "0ac72b280765e0e43ed53b6399c4d4eafb3e97f6d52aad5fe79373b553433f97",
+    "10b4b9ef4ad7f7afb05149181f27718035f9ce10031f464d0f9431d3ed1d2188",
+    "1516b7ee12d9b1c6e7d6772e34afc89717628e8483f4c20e14c47305f2cd3868",
+    "1df7eb5714c5fec155ce51f1570984596cc0bf2517d97c5793b6a37a6eb9d735",
+    "2011533a7186226142c8b7646f9fd1c54b39f02d7a0948fee713c177e5ab4a0c",
+    "2161e64b279cefeadb45863b3640d13bc20a8fab1839bb3b1a0285f16038cfaf",
+    "296f437d6d9ed1daa204963512269ac8604fabeff44ef04aca7220210e712360",
+    "2fc80191c68997f2051b0d4ea71a9d57707f75c3d1fcc47fa9a80579050cf87b",
+    "34ccacb5b68c2a5c0a0f9f1aff3d76cf4d7b258d87416b173c01dec55bec0dec",
+    "360ca5fb897f01bf78417491f298b232e150794946e649576c7c68aa2b51f524",
+    "39b4b2c0a9e55bbe48776c730e74f6b77fd4defe2ce8b2feb78284acdc84b95c",
+    "406350d7d732d766987e8c37f47d7931d2758f435525d28d7652653a93fe36a9",
+    "4458dc8bcef509555c53722d444141ea54edee1d44b125ed95453b5df6f413fd",
+    "52fb2d350a99cd931e32d3bc748561c6c13db31b10f998f9b81c4c20d6d5ca31",
+    "55efc2da767a9da89402316f3d315a7c3a0a2f83c67ec24b4ddff7f08860b0a0",
+    "5bab61a5b11ddb994e31d9ad9dda2a262cc1d9143233d94ec9c4e9e628e8e61d",
+    "6340f28fc215ebd9e28a483cbc305799bfd97e1f38a4f6f109f07521c8651625",
+    "74148c2ae3e091d64f606292973f2f0fd9910bebea25455bef2d0b9aa309c320",
+    "7a0a10afbdbfd9eedeb8d6436a06970ced3ceaaa726a3cec43feb1a09679f4c3",
+    "7d1cc1d5284369c2928a5b9ac966683e5fe3a3f7103e3d53da1effb631226358",
+    "804c3bc6bea09afdc62a852cf6182c8686f23e195ef50244b9664d881011b488",
+    "81aa3a96abf52a6b789671f7c81258b92830823b7e6d385866e6cfc7c9e20043",
+    "92d2782e702eff8b88cca80717f125d540e1202bc216428bc26fb37ad75d4d2a",
+    "93c3d7d58fab40a0826afd87ee12e210b010dfcc0340059b929f530f2e918b95",
+    "96bb487a3542cfc9cf79dc1eb1a3e5619d16fef59632fb79b68ad1923dd8ffd5",
+    "980b49b06f96675a3e0992038b1c3c863276a9d111697b00010cd63306eeedfd",
+    "a8dd1f199a5b1a7b2e6c0d63cde5aa3f10c61e21f2b6906316dc82a8beb890e8",
+    "b3f22c3fad897eed7d6e79152baf86b1a383434973645fbc8b9de4469bcaffb0",
+    "b95ed0b1fb389460f227ac33ffdc3bd8ffe8c71d695fc41f28329a3e3c7f4a35",
+    "c02dd654f26961c188eb153df2753557c3141121091abdb191d3db8e5587ab2c",
+    "c46a6827df6faae87f1ca0806d85f4d96f35976d5c82254fd8edb6bae35a88fd",
+    "c9199f78c620cf702dc2aff13da28278ac0990ea9c4e1989eed658c780844172",
+    "cf8fcfa5ad487cdfc97a0c2284ffb3c530896f26b513f5fab1bb9b081c5e42e6",
+    "d01bc774a48caa84b3973f2f82550dc733dd0bcbc3e9bc61ebe431f52cf5e9cf",
+    "d1f7c87906618d48004a8794f7ca6af9a4c85c0fb7e2cb65f7520aec4debbb87",
+    "d67594dc3f78ef20ef7118421c67ea10746278cf541b6457b1b7370c1607e2cc",
+    "e0aa83483c18ee6835a3770cafc49a9ddf8940f7c3bbd0cebeac398071207919",
+    "eaa9143a524f973c8c3dce80ab5094b7d42ce8a20cad459c5b265a11975a7ed3",
+    "f60d39e95d3acd98fc9cbaa5f34e77dac892e4c46563e20e682bc947990e4cb2",
+    "f9823ce6f53f8cd10057be22ad20fcf23eae6c7d966546726e7efc4a2a42cced",
+    "fa71044cbca1efb3f746a11d0713f4860818e6f079f019562dde3d6e61c39352",
+    "fa7ef3949ca880b50a9f80890bd1599fee7826a016a20d92f737900c9468b3b8"
+   ],
    "subject_key": "convor"
   },
   "RSW_FeralNerf": {
@@ -408,7 +484,13 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "0a20ff93042f043a877cbac86d43c6a84f8d18af65ae4e709b008a5676132086",
+    "1ebb66b07ec805aee4dfe6cf1de38706e2da80d7dc3d4fd4c4f61c3fc9c54d7e",
+    "7fe6f50df8a7e84c9f6874bb071cc38c22e5712d0d9687a9de75e6b765bc007b",
+    "a0060ea348821f8c5ce276c5978c3cfcea454a428b7f25a0a1867bf4eaf82087",
+    "c6fee02abd34428995a367bb5b5a457009afd537e728f587d0743c6abb1eff79"
+   ],
    "subject_key": "feralnerf"
   },
   "RSW_Igitz": {
@@ -436,10 +518,15 @@
      "north": "0a18a1cf7dd73ecd90d5090934dc8fed8046be3635e6f33b7508afd13c8e9888",
      "south": "19b16395d29e5e5dfea50cae851ebb69c5d8bcbfd87f5e1fb9ffdf21c115b469"
     },
-    "F": {
-     "east": "14d24be6f2d927e3977d04a4db817262c3946427ccb9c127e5a9485015a74498",
-     "north": "9e8a9a5c60a54338482b2b8f545b9b1bae4b9cf48addb612e05a7bd25d2767f2",
-     "south": "50a554383f305e9403b54638b7d23c7903b428e9df740e9d1c00d6ee2be57a8a"
+    "G": {
+     "east": "56e494cec78b3cd361161cf972a99c22811b083f8b4d47042599ac81471d1117"
+    },
+    "H": {
+     "east": "14d24be6f2d927e3977d04a4db817262c3946427ccb9c127e5a9485015a74498"
+    },
+    "I": {
+     "east": "a87d9f07adad19c29293a5c45d16dcd572d3a76c44b51e8f07895ee7ce996a7a",
+     "south": "120c5d5b7d70ea0d7b31af1e353a654e7d193f6118ade6a338a2bb4be6d0cf0d"
     }
    },
    "graphic_of": {
@@ -448,7 +535,9 @@
     "C": "swanimals/Igitz/Igitz",
     "D": "swanimals/Igitz/Igitz_Swimming",
     "E": "swanimals/Igitz/Igitz_j",
-    "F": "swanimals/Igitz/Igitz_j"
+    "G": "swanimals/Igitz/Igitz_Swimming",
+    "H": "swanimals/Igitz/Igitz_j",
+    "I": "swanimals/Igitz/Igitz_j"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
@@ -456,7 +545,9 @@
     "C": "render dregen_RSW_Igitz_Igitzj_v1",
     "D": "IN GAME \u2014 SWBestiary",
     "E": "IN GAME \u2014 SWBestiary",
-    "F": "history SWBestiary 2026-09-17"
+    "G": "render enact_d2294d4e_igitz_v1",
+    "H": "history SWBestiary 2026-09-17",
+    "I": "render enact_414c4bc3_igitz_v1"
    },
    "pools": [],
    "res": "swanimals/Igitz/Igitz",
@@ -466,9 +557,28 @@
     "C",
     "D",
     "E",
-    "F"
+    "F",
+    "G",
+    "H",
+    "I"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "0a18a1cf7dd73ecd90d5090934dc8fed8046be3635e6f33b7508afd13c8e9888",
+    "10caa81a881ea11b1d29587a609f4db4944d63f733ef63b6aabf488c4bf52b62",
+    "14d24be6f2d927e3977d04a4db817262c3946427ccb9c127e5a9485015a74498",
+    "19b16395d29e5e5dfea50cae851ebb69c5d8bcbfd87f5e1fb9ffdf21c115b469",
+    "297988fe3fa5fa914455b95fd36fb4397360630651f7eac89d16e3ee3e7c4723",
+    "50a554383f305e9403b54638b7d23c7903b428e9df740e9d1c00d6ee2be57a8a",
+    "5bfa4d8ce19b5bd1fe6e7113693f975224ec6be8c0496040dca9cf6f90a112aa",
+    "656205536317e8c3eec11781596502d49f41c3bc49ebeab0b941039b40525c2c",
+    "6a8a4fb2154c80aea13b03cb3dfd0534b4a122cfa62345e1980e6b00c24fb2ce",
+    "6da6493966ed37bde0676c83672bd6b4ea19f8fd8f9b5bf7975119efdc7875f6",
+    "7cfbab04f40c877b0357ee705c182985a286968c5c7534b2f85b04d554db895b",
+    "9e8a9a5c60a54338482b2b8f545b9b1bae4b9cf48addb612e05a7bd25d2767f2",
+    "a99f2205e6ca79c80a2197dce636e1fbe7faa3299d7442d878c70015dcc15d88",
+    "cc2e332462200852c4f7dc336d61dae864a47e60de69ea6fc3b1fb56b6aca96c",
+    "f8fa6f228aa51b6731929350d9befba4655b4300f4ddb2e0d743f0101280a50f"
+   ],
    "subject_key": "igitz"
   },
   "RSW_Kybuck": {
@@ -477,21 +587,6 @@
      "east": "32df41efef2bb5b7c8159a27cbc6a7526d66604fe679211e363c052d08082cd3",
      "north": "a73315992b06fc2bd804465e304d07202e8d4abb05f3ec9a81132cfdcdb1f89d",
      "south": "4487d2badd999c830e9fec3b4e228ab7223f0219b894946d056c8517ee187ed5"
-    },
-    "B": {
-     "east": "8219f298ad4d90b35256608f2e5b54313220c48662f39ecf02b75031343913a1",
-     "north": "a73315992b06fc2bd804465e304d07202e8d4abb05f3ec9a81132cfdcdb1f89d",
-     "south": "37fc9ca34e927e6709743ccd96992e3e1cdf1a7852f1101f73764ddd1f7d35d2"
-    },
-    "C": {
-     "east": "32df41efef2bb5b7c8159a27cbc6a7526d66604fe679211e363c052d08082cd3",
-     "north": "cf59c1bb8f1fb48fe6e895e8e79d486072914198f8718173e47b30276d554ee0",
-     "south": "4487d2badd999c830e9fec3b4e228ab7223f0219b894946d056c8517ee187ed5"
-    },
-    "D": {
-     "east": "450aaf798bb83a1bacb83ed9b8477542201af380418017efb13832d7675e1b76",
-     "north": "4ca1e6fcf88101135e8190bd52f9081fb3e5afe6137395fd6739e6a641a97184",
-     "south": "d4f88c52c35f947e10571569013a3f52c0257f49e8c24f71eacce8f186d00d77"
     },
     "E": {
      "east": "41979b7937556fa8d4d6e9a70ca3f585ea11c6fb2294f96a7758d0fc892867ef",
@@ -502,23 +597,33 @@
      "east": "f9e444be4e8298ca5465f18b879ad49ee852f4a0cd6132fb78bd7fd2b5d15eea",
      "north": "11b947d5261367d4c5b3cae737fd5683e1f44d040a2d26e50326e12564b96a60",
      "south": "ac505711a6e3975461992d375fa2e0192557a3eb039883181dfc183a65fecb9c"
+    },
+    "G": {
+     "east": "fc8b113b4ca30ec76de6eaab54216e857335d199d8fba589c0ba8c5793db543f"
+    },
+    "H": {
+     "north": "a73315992b06fc2bd804465e304d07202e8d4abb05f3ec9a81132cfdcdb1f89d"
+    },
+    "I": {
+     "east": "32df41efef2bb5b7c8159a27cbc6a7526d66604fe679211e363c052d08082cd3",
+     "south": "4487d2badd999c830e9fec3b4e228ab7223f0219b894946d056c8517ee187ed5"
     }
    },
    "graphic_of": {
     "A": "swanimals/Kybuck/Kybuck",
-    "B": "swanimals/Kybuck/Kybuck",
-    "C": "swanimals/Kybuck/Kybuck",
-    "D": "swanimals/Kybuck/Kybuck",
     "E": "swanimals/Kybuck/Kybuck",
-    "F": "_byname"
+    "F": "_byname",
+    "G": "swanimals/Kybuck/Kybuck",
+    "H": "swanimals/Kybuck/Kybuck",
+    "I": "swanimals/Kybuck/Kybuck"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "render regen_ls2_canon_kybuck_v2",
-    "C": "render regen_ls2_canon_kybuck_v3",
-    "D": "render leaningscrub_kybuck_v1",
     "E": "history SWBestiary 2026-09-17",
-    "F": "render packoverlay_biped_v1"
+    "F": "render packoverlay_biped_v1",
+    "G": "render leaningscrub_kybuck_legends2_v1",
+    "H": "render regen_ls2_canon_kybuck_v2",
+    "I": "render regen_ls2_canon_kybuck_v3"
    },
    "pools": [],
    "res": "swanimals/Kybuck/Kybuck",
@@ -528,9 +633,28 @@
     "C",
     "D",
     "E",
-    "F"
+    "F",
+    "G",
+    "H",
+    "I"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "11b947d5261367d4c5b3cae737fd5683e1f44d040a2d26e50326e12564b96a60",
+    "32df41efef2bb5b7c8159a27cbc6a7526d66604fe679211e363c052d08082cd3",
+    "37fc9ca34e927e6709743ccd96992e3e1cdf1a7852f1101f73764ddd1f7d35d2",
+    "41979b7937556fa8d4d6e9a70ca3f585ea11c6fb2294f96a7758d0fc892867ef",
+    "4487d2badd999c830e9fec3b4e228ab7223f0219b894946d056c8517ee187ed5",
+    "44d6e810a505368c9d7b962e3718fa6b2f89c60ffdb6d936df05f6dbe40d43f0",
+    "450aaf798bb83a1bacb83ed9b8477542201af380418017efb13832d7675e1b76",
+    "4ca1e6fcf88101135e8190bd52f9081fb3e5afe6137395fd6739e6a641a97184",
+    "8219f298ad4d90b35256608f2e5b54313220c48662f39ecf02b75031343913a1",
+    "a73315992b06fc2bd804465e304d07202e8d4abb05f3ec9a81132cfdcdb1f89d",
+    "ac505711a6e3975461992d375fa2e0192557a3eb039883181dfc183a65fecb9c",
+    "cf59c1bb8f1fb48fe6e895e8e79d486072914198f8718173e47b30276d554ee0",
+    "d4f88c52c35f947e10571569013a3f52c0257f49e8c24f71eacce8f186d00d77",
+    "f3f527454d1661a60f870c4d123e76375322aba1f331128de6d845ca937b02d4",
+    "f9e444be4e8298ca5465f18b879ad49ee852f4a0cd6132fb78bd7fd2b5d15eea"
+   ],
    "subject_key": "kybuck"
   },
   "RSW_Massiff": {
@@ -560,7 +684,12 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "18b31e12206cd389893812aaa8807bc188e47676cb7747f6e832ef2f2fa6c8f3",
+    "3ce3b0fbe7de233e20aa4c97b77a06f8767d433df784ddadce1966130e3711e7",
+    "52d55cfe93999b27325a90f1c31c401be58355119eba9b8bdfbf3bf22c91ca3a",
+    "5b31cad119008627ea5bb80b9de87fc95c36231446d1afc06725098a783d833c"
+   ],
    "subject_key": "massiff"
   },
   "RSW_MossBeetle": {
@@ -590,16 +719,16 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "1f5e54fd95e74607a7319bb1d8d6fbbbf7e27a7114636c8a35ce3e90abe2431e",
+    "326e114b1f0bc05980e1c1b46138dc0f7eb73ee247f7a2ac5b11ea0b7ac285ca",
+    "be5d5fc7530ec7caf86b1caeabb7547929a7815d885134ba1fa66d09218f8743",
+    "f33c82cab843bcb89fa6dbb5cbb931f15dcd69404470e966e036d98da69f3ed4"
+   ],
    "subject_key": "mossbeetle"
   },
   "RSW_Mudhorn": {
    "columns": {
-    "A": {
-     "east": "efd7001c713d6a4350ffdedda6b78c31f97ccdd67c97a84d167116cea26af29e",
-     "north": "5a030e0859034113866e9d094a6db7c726c5d93b1a6e3b482ae94bbc89955913",
-     "south": "cd1b27d5f8d54d3097286fd81c92d18301a8941969eb3f00533b3735f03add22"
-    },
     "B": {
      "east": "41347e63189ea74d027c85d490e312abf507066f6f753c94c603cb4e375bdc34",
      "south": "0b8fa1221775c86cbecf07e84b10e212cd651d0fa2825d39219d36999e78a0b6"
@@ -619,27 +748,24 @@
      "north": "3364f5cba421e35113ea97eb1e358f823086e91918c64318e01c3e01f7f0e164",
      "south": "18ba3cef775106285e27d3d2d6260166a4b36532a7c47438eb84775fde5d1a45"
     },
-    "F": {
+    "G": {
      "east": "95afdef9175317bb5197a9a2b088ff26cde2ae63e0a73157b62a31536197c69b",
-     "north": "a2a479e1cba5d2685244aeecc20926a1ecf2285a34f138d79c758786ac4e1db4",
      "south": "18ba3cef775106285e27d3d2d6260166a4b36532a7c47438eb84775fde5d1a45"
     }
    },
    "graphic_of": {
-    "A": "swanimals/Mudhorn/Mudhorn",
     "B": "swanimals/Mudhorn/Mudhorn",
     "C": "swanimals/Mudhorn/Mudhorn",
     "D": "swanimals/Mudhorn/Mudhorn",
     "E": "swanimals/Mudhorn/Mudhorn_j",
-    "F": "swanimals/Mudhorn/Mudhorn_j"
+    "G": "swanimals/Mudhorn/Mudhorn_j"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
     "B": "render dregen_RSW_Mudhorn_Mudhornj_v1",
-    "C": "render canonregen_rsw_mudhorn_v1",
+    "C": "IN GAME \u2014 SWBestiary",
     "D": "render desert_swaca_mudhorn",
     "E": "IN GAME \u2014 SWBestiary",
-    "F": "history SWBestiary 2026-09-12"
+    "G": "history SWBestiary 2026-09-12"
    },
    "pools": [],
    "res": "swanimals/Mudhorn/Mudhorn",
@@ -649,9 +775,25 @@
     "C",
     "D",
     "E",
-    "F"
+    "F",
+    "G"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "0b8fa1221775c86cbecf07e84b10e212cd651d0fa2825d39219d36999e78a0b6",
+    "18ba3cef775106285e27d3d2d6260166a4b36532a7c47438eb84775fde5d1a45",
+    "2b5c503c4f4e11b30f1d8a62525f643e769d3e722c02783e4371fdf5efe0f33a",
+    "3364f5cba421e35113ea97eb1e358f823086e91918c64318e01c3e01f7f0e164",
+    "3526868de291d99c55b63198f42b230fe52de63b09bae91a4f3db62a0c1f66e2",
+    "41347e63189ea74d027c85d490e312abf507066f6f753c94c603cb4e375bdc34",
+    "5a030e0859034113866e9d094a6db7c726c5d93b1a6e3b482ae94bbc89955913",
+    "76f829e7eacbb5b68e15e0e2fad225ca05f6c38401f4e6579968d0fd92d2bb61",
+    "95afdef9175317bb5197a9a2b088ff26cde2ae63e0a73157b62a31536197c69b",
+    "a2a479e1cba5d2685244aeecc20926a1ecf2285a34f138d79c758786ac4e1db4",
+    "aa39b82bdbe2b24753e0020498732c378cf0e268b8fa37d5b4dfa7fbc2e73347",
+    "cd1b27d5f8d54d3097286fd81c92d18301a8941969eb3f00533b3735f03add22",
+    "eb3f0cfd2ef710f3e46cc9f91d86df0770dd793f623a59744bff19ad697a40f0",
+    "efd7001c713d6a4350ffdedda6b78c31f97ccdd67c97a84d167116cea26af29e"
+   ],
    "subject_key": "mudhorn"
   },
   "RSW_Plant_Nysyllin_Wild": {
@@ -752,7 +894,22 @@
     "M",
     "N"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "1a51e709954fc3115d4030e4e66cbca1e26584a0d021a725678a399fd5e22668",
+    "214f49afe055b83dbae0891a2fb4fa1e861345600d781dca0cc192264328fbf9",
+    "354cb8820aa84fa13d2482661e24bd3aa7d69c9a10712a94bb6af166e269852e",
+    "6874a719f777e30b9b104e42e3d29bb0ff57ddbc8f1a85ac9d361cd1ae66a764",
+    "81bff13530c8f80c2d54398fe92bd7c44b13a8f37d71b47dae55f5a6c2e0d72c",
+    "8cdfac26872c60b3159083098bf43892ae0c3da0d18c91e809b6709e11bd7427",
+    "8f416c92e7a7a3f448e52217a7daa052f325bef55c77b28829cb7fe4ac0d6904",
+    "91e1a9ba8e2148684717e55044d79c13106ca192a9a13527d9282b0dc6a0fa5c",
+    "a05a6fae2584960668f383a9cb0a7335ae48a0b2f906313a06f16adbc4cd1096",
+    "a2a117779fbfefb99394d291c58ce8eace9deaa63b1ca92949f6b4c06763ec1a",
+    "ae38f3db6f4ccf5c27600a085c8dd3a96c5f0567053a6e1bc9830b7754723d63",
+    "b2cc062489033687a20ee5dd715bd265fecc7eb3d237854683d7d7c34380a5ed",
+    "e8171f251958d644670b6dfb5bb5ebe05691eea90979b1e7e7ebe638b1c01acb",
+    "f475685d0cf992dda88ff157f323312d1d4bc64c98ea8d11670df70329490042"
+   ],
    "subject_key": "nysyllin_wild"
   },
   "RSW_ScrapNestBird": {
@@ -761,9 +918,6 @@
      "east": "874eeac6e41ab78eab32e609106ddc104e0a968df4db13687037c922b2cbefda",
      "north": "a998fa47bfea563d493c9e45eb31b3f0fa1bb16afeefa96bef9a437e27497200",
      "south": "b6774bdba021c0dda8ade903d6188c944c5ad1db5fed78a26738a7276d9b4809"
-    },
-    "B": {
-     "east": "6852747b094810b483af186f56729b69ae5f20c8ba9c5bdf121a23eddcddef05"
     },
     "C": {
      "east": "0d49c70a645c1f396a224a20c0ec2ec8211f37090cbe8f9ab1891a52da615bdd",
@@ -787,14 +941,12 @@
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RSW_ScrapNestBird/RSW_ScrapNestBird",
-    "B": "Things/Pawn/Animal/RSW_ScrapNestBird/RSW_ScrapNestBird",
     "C": "Things/Pawn/Animal/RSW_ScrapNestBird/RSW_ScrapNestBird",
     "D": "_flip:swanimals/Whisperbird/Whisperbird_Flying_"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "render regen_ls2_x_scrapnestbird_v2 \u2014 grader flagged (advisory)",
-    "C": "render regen_ls2_x_scrapnestbird_v3",
+    "A": "render rsw_scrapnestbird_v1",
+    "C": "IN GAME \u2014 SWBestiary",
     "D": "IN GAME \u2014 Whisperbird_Flying_"
    },
    "pools": [],
@@ -805,10 +957,30 @@
     "C",
     "D"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "0d49c70a645c1f396a224a20c0ec2ec8211f37090cbe8f9ab1891a52da615bdd",
+    "1901d1e16aa3f7bd26d8edbe3cc5da773fcc864a55eb4c228cc774e8b6d21b8b",
+    "2fa1bf0802767a0d3b1285cd77f59970564aca4e4c9c2b0efb73678495ed245d",
+    "31a609a26eda7cabaacfe4a830d756e7e704ee54d6a28fbf208906da0dec28a2",
+    "4418d65507ee0c029465496fc6ada3d3ec9e5f1edb221da9c3357243eb2758cb",
+    "4bbb5e39e3a5622cd21e808e4932ce8d3ad32735b322b80a8b9afc4964d075db",
+    "560c5d43580364b7067f6204298c7be10de1d6233e23e75d8bc616f25143f60a",
+    "6852747b094810b483af186f56729b69ae5f20c8ba9c5bdf121a23eddcddef05",
+    "694a9ba42cde6e8cb552a5f7fb38e949be235d7a39789bced8258240d1b695a9",
+    "874eeac6e41ab78eab32e609106ddc104e0a968df4db13687037c922b2cbefda",
+    "8faacecf4e2ede3496603b0031e4db175acd97591c234def03b750960bf6173e",
+    "a65f0c17bb6e0503a4e76236267656e53a6e2b1b551b2835b78ea5bbcfd5d936",
+    "a998fa47bfea563d493c9e45eb31b3f0fa1bb16afeefa96bef9a437e27497200",
+    "b6774bdba021c0dda8ade903d6188c944c5ad1db5fed78a26738a7276d9b4809",
+    "c19216898050d4f426edb2526f8b55de2706f20878c81ef452413b60199f9713",
+    "cfbef2bcdeb097facae3eca05f3d791ec6c314edcb43200d7bef82dfd8fbca7b",
+    "d45e8c53e0bfda0752f563d9d3f9feffb14e24d92e039897ff750e460e2ce363",
+    "d9e083e2e93074a99dd7e06c27dd59b2a9361844b5c6ea924e616632ae7e391b",
+    "e6c2c63e3f9c769f926256bb18d5e4c1d43b5b0331a2aaa5632e860e33044084"
+   ],
    "subject_key": "scrapnestbird"
   }
  },
  "sheetId": "leaningscrub_open_rows_sheet_2026-10-18",
- "snapshotId": "322f977ca7f3a94f"
+ "snapshotId": "484d4d0396437f3b"
 }
