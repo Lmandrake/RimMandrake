@@ -179,7 +179,7 @@ namespace RimMandrake.FlowWorks.Hose
         {
             list.GapLine();
             Text.Font = GameFont.Medium;
-            list.Label("Hoses and pipes");
+            list.Label("Hoses (and the tank Job button)");
             Text.Font = GameFont.Small;
             searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
             RimMandrake.Shared.SettingsKitMastersDrawer.ResetAllButton(list, "Flow Works hose", ResetAllFields);

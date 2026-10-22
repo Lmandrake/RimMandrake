@@ -107,7 +107,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             {
                 string src = Src("RimMandrakeFlowWorksMod.cs");
                 Has(src, @"if \(n == nameof\(disabledFluids\)\) \{ disabledFluids\?\.Clear\(\); continue; \}", "ResetFields clears the list");
-                Has(src, @"Section\(list, ""Pits, ladders and shooting"", new\[\] \{[^}]*""disabledFluids"" \}\)", "the section's reset names it");
+                Has(src, @"Section\(list, ""Water engine: flow and levelling"", new\[\] \{[^}]*""disabledFluids"" \}\)", "the section's reset names it");
             });
 
             Case("ReviewFix_LiquidDef_unread_fields_are_not_forms", () =>
