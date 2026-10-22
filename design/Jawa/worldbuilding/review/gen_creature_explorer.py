@@ -328,10 +328,15 @@ saveBasket(); draw();
 </script>
 """
 
+if not data or not any(r["nb"] for r in data):
+    # no register rows, or no creature found a roster home: a blind read would publish a page that says every creature
+    # is homeless / the register is empty, with nothing to flag it
+    sys.exit("REFUSED: %d register rows, %d with a roster home -- register or rosters unreadable; %s not written"
+             % (len(data), sum(1 for r in data if r["nb"]), OUT))
 note = ("%d creatures · dump of %d mods · register built %s. Data: creature_register_rows.json (verbatim); "
         "derived axes state their formula." % (meta["n"], meta["dumpMods"], meta["built"][:10]))
 page = TEMPLATE.replace("__META_NOTE__", html.escape(note)).replace(
-    "__DATA__", json.dumps(data, separators=(",", ":")))
+    "__DATA__", json.dumps(data, separators=(",", ":")).replace("</", "<\\/"))
 with open(OUT, "w") as f:
     f.write(page)
 print("wrote %s  (%.1f KB, %d rows)" % (OUT, os.path.getsize(OUT) / 1024, meta["n"]))

@@ -212,7 +212,11 @@ def _theme_kv(t):
     text = str(text)
     if text.startswith("ERROR"):
         raise ExpectationFailed("ProofTheme: %s" % text)
-    return dict(re.findall(r"(\w+)=(\S+)", text)), text
+    kv = dict(re.findall(r"(\w+)=(\S+)", text))
+    if not kv:
+        # an answer with no key=value pairs is a harness/DLL fault, not a pass: callers skip their checks on an empty kv
+        raise ExpectationFailed("ProofTheme answered with no key=value pairs: %s" % text[:200])
+    return kv, text
 
 
 @suite.chain("theme_toggle_applies_and_restores")

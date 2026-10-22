@@ -149,6 +149,9 @@ def load_clean(t):
     mode."""
     with t.component("no_config_or_xml_errors", beyond_toggle=True):
         r = t.bridge_call("jawa/drain_log", limit=400, errorsOnly=True)
+        if t._guard() and not (r or {}).get("success"):
+            # an unreadable log is not a clean log: the needles below would all miss and the row would PASS blind
+            raise ExpectationFailed("UNMEASURED: jawa/drain_log did not answer: %r" % (r,))
         msgs = [m.get("text", "") for m in ((r or {}).get("messages") or [])]
         joined = "\n".join(msgs)
         hits = [n for n in BOOT_ERROR_NEEDLES if n in joined]

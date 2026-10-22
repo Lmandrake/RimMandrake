@@ -209,6 +209,11 @@ def main(argv=None):
         out = argv[argv.index('--out') + 1]
 
     rows, collisions, unbound, offowner = build_rows()
+    if not rows:
+        # a blind read (no rosters, or none bound to an owned biome) must not overwrite the CSV with a header-only file
+        print(f'REFUSED: 0 cast rows from {ROSTERS} (rosters missing/empty, or none bind an owned biome); {out} not written',
+              file=sys.stderr)
+        return 1
     with open(out, 'w', encoding='utf-8', newline='') as fh:
         w = csv.DictWriter(fh, fieldnames=COLUMNS)
         w.writeheader()

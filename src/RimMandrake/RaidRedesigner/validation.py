@@ -275,7 +275,11 @@ def _kv(t, method):
     text = str(text)
     if text.startswith("ERROR"):
         raise ExpectationFailed("%s: %s" % (method, text))
-    return dict(re.findall(r"(\w+)=(\S+)", text)), text
+    kv = dict(re.findall(r"(\w+)=(\S+)", text))
+    if not kv:
+        # callers skip every check on an empty kv, so an answer with no key=value pairs would PASS blind
+        raise ExpectationFailed("%s answered with no key=value pairs: %s" % (method, text[:200]))
+    return kv, text
 
 
 def _want(kv, text, want):

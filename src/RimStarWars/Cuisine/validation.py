@@ -130,6 +130,9 @@ def no_config_or_load_errors(t):
         for tag in ("Config error in mandrake.rsw.cuisine",
                     "ThingDefs_Cuisine.xml", "RecipeDefs_Cuisine.xml"):
             r = t.bridge_call("jawa/drain_log", limit=400, contains=tag)
+            if t._guard() and not (r or {}).get("success"):
+                # an unreadable log is not a clean log
+                raise ExpectationFailed("UNMEASURED: jawa/drain_log did not answer: %r" % (r,))
             msgs = [m.get("text", "") for m in ((r or {}).get("messages") or [])]
             bad = [m for m in msgs if "error" in m.lower()]
             t._record("drain_log(%r) error lines -> %r" % (tag, bad), not bad)
@@ -280,7 +283,9 @@ def rotting_bed_grows_marsh_fungus(t):
         r = _get_defs(t, "ThingDef/RM_RottingBed", "comps")
         row = _row_for(r, "ThingDef/RM_RottingBed")
         if row is None:
-            t._record("RM_RottingBed absent from this load (Miasma not loaded): UNMEASURED", True)
+            # last row of the chain: upstream_failed makes the component UNMEASURED, never a pass
+            t.upstream_reason = "UNMEASURED: RM_RottingBed absent from this load (Miasma not loaded) or get_defs unreadable: %r" % (r,)
+            t.upstream_failed = True
             return
         got = str((row.get("fields") or {}).get("comps", ""))
         ok = "RSW_MarshFungus" in got

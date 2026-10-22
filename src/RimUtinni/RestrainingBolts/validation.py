@@ -229,9 +229,15 @@ def goodwill_cap_follows_bolted_count(t):
                 why = "Free Droid Enclaves faction absent on this world (needs UtinniPatches + a generated FDE): %s" % text
                 t.upstream_reason, t.upstream_failed = why, True     # suite.py: upstream_failed -> UNMEASURED, never PASS
                 raise ExpectationFailed(why)
+            elif kv.get("hediff") != "True":
+                # no bolt hediff def loaded (Droid Depot absent): GetMaxGoodwill early-outs to 100 whatever the count,
+                # so neither bar below could fail -- vacuous, so UNMEASURED rather than PASS
+                why = "OuterRim_RestraintBolt hediff not loaded (needs Droid Depot): the real worker's cap is unreachable: %s" % text
+                t.upstream_reason, t.upstream_failed = why, True
+                raise ExpectationFailed(why)
             else:
                 n = int(kv.get("live_count", "-1"))
-                if kv.get("live_max") != str(expected_ceiling(n)) and kv.get("hediff") == "True":
+                if kv.get("live_max") != str(expected_ceiling(n)):
                     raise ExpectationFailed("real worker on the Enclaves with %d bolted: %s, want %s" % (n, kv.get("live_max"), expected_ceiling(n)))
                 if kv.get("live_off") != "100":
                     raise ExpectationFailed("real worker with enabled off: %s, want 100" % kv.get("live_off"))

@@ -325,6 +325,11 @@ for kind, (field, expo) in sorted(HARVEST_SPEC.items()):
             "        </li>" + NL)
         movers.append((abs(new - old), kind, dn, bs, old, new))
 
+# A blind read (missing/empty dump, empty offline inventory) skips every def and would overwrite the committed patch
+# with an empty <Patch/>, reported as a quiet success: refuse rather than write nothing over something.
+if not ops or len(patchable) < 1000:
+    sys.exit("REFUSED: %d patch op groups from %d offline ThingDefs (skipped %s) -- the dump or the def inventory is blind; "
+             "nothing written" % (len(ops), len(patchable), dict(skipped)))
 os.makedirs(OUTDIR, exist_ok=True)
 out = os.path.join(OUTDIR, "MegafaunaYield.xml")
 # newline="" is load-bearing: without it the Windows interpreter translates every
