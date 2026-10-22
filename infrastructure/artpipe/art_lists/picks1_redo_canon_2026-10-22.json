@@ -1,0 +1,94 @@
+{
+ "generated": "2026-10-22",
+ "item": "picks_dessicated redo rows (owner notes verbatim as owner_note)",
+ "rows": [
+  {
+   "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+   "channel": "codex",
+   "canvas_w": 512,
+   "canvas_h": 512,
+   "facings": [
+    "east",
+    "south",
+    "north"
+   ],
+   "priority": 0,
+   "background": "transparent",
+   "biome_neutral": true,
+   "id": "picks1redo_bordok_v1",
+   "target_def": "RSW_Bordok",
+   "canon": "bordok",
+   "target_texpath": "swanimals/Bordok/Bordok",
+   "slot": "swanimals/Bordok/Bordok",
+   "ask": "slot",
+   "owner_note": "Look carefully at the two Donor images with Ewoks in them. Delete the art that look like two ponies together. The face has a very thick strange mouth, not horse-like.",
+   "prompt": "Owner's note, verbatim, overrides everything below: \"Look carefully at the two Donor images with Ewoks in them. Delete the art that look like two ponies together. The face has a very thick strange mouth, not horse-like.\" RimWorld creature sprite, ground-level side view (east), painterly vanilla-RimWorld animal art style: a bordok of Endor, the Ewoks' pack animal: a pony-sized stocky quadruped with a deep barrel and strong back, olive-tan to mustard-brown hide, two buffalo-like horns curving up and back, a dark red-brown mane, split dark hooves and pale lower legs. Its head is NOT a horse's: a heavy blunt head with a very thick, broad, fleshy, strange-looking mouth and muzzle, thick lips and a wide dark nose pad, like the bordok in the Ewoks comic. Single creature, centred, standing pose, whole body visible, no ground shadow, no background scenery."
+  },
+  {
+   "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+   "channel": "codex",
+   "canvas_w": 512,
+   "canvas_h": 512,
+   "facings": [
+    "east",
+    "south",
+    "north"
+   ],
+   "priority": 0,
+   "background": "transparent",
+   "biome_neutral": true,
+   "id": "picks1redo_gualaar_v1",
+   "target_def": "RSW_Gualaar",
+   "canon": "gualaar",
+   "target_texpath": "RimStarWars/SWBestiary/Gualaar/Gualaar",
+   "slot": "RimStarWars/SWBestiary/Gualaar/Gualaar",
+   "ask": "slot",
+   "owner_note": "Look closely at the canon art. They have this huge bone structure on thier head. Make sure tyou do too. ",
+   "prompt": "Owner's note, verbatim, overrides everything below: \"Look closely at the canon art. They have this huge bone structure on thier head. Make sure tyou do too. \" RimWorld creature sprite, ground-level side view (east), painterly vanilla-RimWorld animal art style: a gualaar of Naboo: a tall, heavy, broad-barrelled white-furred quadruped with a long upright neck and long tail, thick legs with broad heavy feet, a long narrow face with black eyes, and a HUGE bone structure on its head: one very large cream-ivory horn-crest sweeping up and back from the top of the skull, plus two small horns on the snout. Not a slim llama or antelope. Single creature, centred, standing pose, whole body visible, no ground shadow, no background scenery."
+  },
+  {
+   "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+   "channel": "codex",
+   "canvas_w": 512,
+   "canvas_h": 512,
+   "facings": [
+    "east",
+    "south",
+    "north"
+   ],
+   "priority": 0,
+   "background": "transparent",
+   "biome_neutral": true,
+   "id": "picks1redo_bullrancor_v1",
+   "target_def": "RSW_JungleRancor",
+   "canon": "junglerancor",
+   "target_texpath": "swanimals/JungleRancor/BullRancor",
+   "slot": "swanimals/JungleRancor/BullRancor",
+   "ask": "slot",
+   "owner_note": "",
+   "prompt": "RimWorld creature sprite, ground-level side view (east), painterly vanilla-RimWorld animal art style: a male (bull) jungle rancor of Felucia: an enormous hunched turtle-built brute, front-heavy, very long thick forearms that reach the ground like a gorilla's knuckle-walk, short bowed legs; a big forward-set wedge head with a flat beaked snout and a ragged row of pointed teeth, no visible neck; a dark brown-to-charcoal horny carapace over back and shoulders, forearms ringed with thick overlapping bands, rust-red spikes along the arm bands, shoulders and head; pale tan-ochre wrinkled throat, chest and belly. Heavier and more spiked than the female. Never blue or purple, no tusks. Single creature, centred, standing pose, whole body visible, no ground shadow, no background scenery."
+  },
+  {
+   "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+   "channel": "codex",
+   "canvas_w": 512,
+   "canvas_h": 512,
+   "facings": [
+    "east",
+    "south",
+    "north"
+   ],
+   "priority": 0,
+   "background": "transparent",
+   "biome_neutral": true,
+   "id": "picks1redo_mastiffphalone_v1",
+   "target_def": "RSW_MastiffPhalone",
+   "canon": "mastiffphalone",
+   "target_texpath": "swanimals/MastiffPhalone/MastiffPhalone",
+   "slot": "swanimals/MastiffPhalone/MastiffPhalone",
+   "ask": "slot",
+   "owner_note": "Like a vulture lion, look closely at the Canon",
+   "prompt": "Owner's note, verbatim, overrides everything below: \"Like a vulture lion, look closely at the Canon\" RimWorld creature sprite, ground-level side view (east), painterly vanilla-RimWorld animal art style: a mastiff phalone: a vulture-lion, a large long-bodied four-legged griffin-like predator \u2014 a lion's powerful body and stance on four taloned bird-like feet, vestigial wing remnants at the front legs, a vulture's head with a big hooked pale bone-coloured beak and a bright blue bare-skin patch on the face and throat, yellow eye; grey feathers with dark-blue stripe markings, a dark feather mane over neck and shoulders like a lion's, a long feathered tail. Not a two-legged bird, not a furry cat. Single creature, centred, standing pose, whole body visible, no ground shadow, no background scenery."
+  }
+ ]
+}
