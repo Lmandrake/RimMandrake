@@ -263,6 +263,72 @@
   "row": "RD_DBPlanks_Timber",
   "status": "PASS"
  },
+ "RM_DrawbridgeWinch_Timber_Futuristic_rd1a_south": {
+  "coverage": 0.436,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeWinch_Timber_Futuristic_rd1a_south.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_WinchTimber_Futuristic",
+  "status": "PASS"
+ },
+ "RM_DrawbridgeWinch_Timber_Industrial_rd1a_south": {
+  "coverage": 0.428,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeWinch_Timber_Industrial_rd1a_south.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_WinchTimber_Industrial",
+  "status": "PASS"
+ },
+ "RM_DrawbridgeWinch_Timber_Modern_rd1a_south": {
+  "coverage": 0.404,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeWinch_Timber_Modern_rd1a_south.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_WinchTimber_Modern",
+  "status": "PASS"
+ },
+ "RM_DrawbridgeWinch_Timber_Scrapper_rd1a_south": {
+  "coverage": 0.457,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeWinch_Timber_Scrapper_rd1a_south.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_WinchTimber_Scrapper",
+  "status": "PASS"
+ },
+ "RM_DrawbridgeWinch_Timber_rd1a_south": {
+  "coverage": 0.503,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeWinch_Timber_rd1a_south.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_WinchTimber_Timber",
+  "status": "PASS"
+ },
+ "RM_PitCover_PlankLattice_rd1a": {
+  "coverage": 0.72,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_PitCover_PlankLattice_rd1a.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_PitCover_PlankLattice",
+  "status": "PASS"
+ },
  "RM_RaidPlank_Item_rd1a": {
   "coverage": 0.264,
   "findings": [],
@@ -428,6 +494,182 @@
   "row": "RD_Anchor_Timber_Scrapper",
   "status": "PASS"
  },
+ "RM_SuspensionDeck_HeavyGrated_Futuristic_rd1a": {
+  "coverage": 0.596,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionDeck_HeavyGrated_Futuristic_rd1a.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_GratedHeavy_Futuristic",
+  "status": "PASS"
+ },
+ "RM_SuspensionDeck_HeavyGrated_Industrial_rd1a": {
+  "coverage": 0.508,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionDeck_HeavyGrated_Industrial_rd1a.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_GratedHeavy_Industrial",
+  "status": "PASS"
+ },
+ "RM_SuspensionDeck_HeavyGrated_Modern_rd1a": {
+  "coverage": 0.688,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionDeck_HeavyGrated_Modern_rd1a.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_GratedHeavy_Modern",
+  "status": "PASS"
+ },
+ "RM_SuspensionDeck_HeavyGrated_Scrapper_rd1a": {
+  "coverage": 0.598,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionDeck_HeavyGrated_Scrapper_rd1a.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_GratedHeavy_Scrapper",
+  "status": "PASS"
+ },
+ "RM_SuspensionDeck_HeavyGrated_rd1a": {
+  "coverage": 0.673,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionDeck_HeavyGrated_rd1a.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_GratedHeavy_Base",
+  "status": "PASS"
+ },
+ "RM_SuspensionDeck_Heavy_Futuristic_rd1a": {
+  "coverage": 1.0,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionDeck_Heavy_Futuristic_rd1a.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_DeckHeavy_Futuristic",
+  "status": "PASS"
+ },
+ "RM_SuspensionDeck_Heavy_Industrial_rd1a": {
+  "coverage": 1.0,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionDeck_Heavy_Industrial_rd1a.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_DeckHeavy_Industrial",
+  "status": "PASS"
+ },
+ "RM_SuspensionDeck_Heavy_Scrapper_rd1a": {
+  "coverage": 1.0,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionDeck_Heavy_Scrapper_rd1a.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_DeckHeavy_Scrapper",
+  "status": "PASS"
+ },
+ "RM_SuspensionDeck_SteelGrated_Futuristic_rd1a": {
+  "coverage": 0.597,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionDeck_SteelGrated_Futuristic_rd1a.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_GratedSteel_Futuristic",
+  "status": "PASS"
+ },
+ "RM_SuspensionDeck_SteelGrated_Industrial_rd1a": {
+  "coverage": 0.546,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionDeck_SteelGrated_Industrial_rd1a.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_GratedSteel_Industrial",
+  "status": "PASS"
+ },
+ "RM_SuspensionDeck_SteelGrated_Modern_rd1a": {
+  "coverage": 0.633,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionDeck_SteelGrated_Modern_rd1a.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_GratedSteel_Modern",
+  "status": "PASS"
+ },
+ "RM_SuspensionDeck_SteelGrated_Scrapper_rd1a": {
+  "coverage": 0.662,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionDeck_SteelGrated_Scrapper_rd1a.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_GratedSteel_Scrapper",
+  "status": "PASS"
+ },
+ "RM_SuspensionDeck_SteelGrated_rd1a": {
+  "coverage": 0.61,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionDeck_SteelGrated_rd1a.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_GratedSteel_Base",
+  "status": "PASS"
+ },
+ "RM_SuspensionDeck_Steel_Futuristic_rd1a": {
+  "coverage": 1.0,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionDeck_Steel_Futuristic_rd1a.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_DeckSteel_Futuristic",
+  "status": "PASS"
+ },
+ "RM_SuspensionDeck_Steel_Industrial_rd1a": {
+  "coverage": 1.0,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionDeck_Steel_Industrial_rd1a.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_DeckSteel_Industrial",
+  "status": "PASS"
+ },
+ "RM_SuspensionDeck_Steel_Scrapper_rd1a": {
+  "coverage": 1.0,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionDeck_Steel_Scrapper_rd1a.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_DeckSteel_Scrapper",
+  "status": "PASS"
+ },
  "RM_SuspensionDeck_Timber_Futuristic_rd1a": {
   "coverage": 1.0,
   "findings": [],
@@ -459,6 +701,39 @@
    1024
   ],
   "row": "RD_DeckTimber_Modern",
+  "status": "PASS"
+ },
+ "RM_SuspensionJetty_Heavy_Futuristic_rd1a_south": {
+  "coverage": 0.625,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionJetty_Heavy_Futuristic_rd1a_south.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_JettyHeavy_Futuristic",
+  "status": "PASS"
+ },
+ "RM_SuspensionJetty_Heavy_Industrial_rd1a_south": {
+  "coverage": 0.773,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionJetty_Heavy_Industrial_rd1a_south.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_JettyHeavy_Industrial",
+  "status": "PASS"
+ },
+ "RM_SuspensionJetty_Steel_Futuristic_rd1a_south": {
+  "coverage": 0.568,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionJetty_Steel_Futuristic_rd1a_south.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_JettySteel_Futuristic",
   "status": "PASS"
  },
  "RM_SuspensionTower_Futuristic_rd1a": {
