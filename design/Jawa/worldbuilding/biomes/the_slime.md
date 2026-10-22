@@ -194,7 +194,7 @@ draining, potable. No meteorological water rain, ever (R-H1).
 - **Belly and tanks** — endless barely-food, potable flood-water, toxic-water
   distillation feedstock.
 - **Compressed sandstone** — the no-rock economy's answer, one grind at a time.
-- ⭐ **The Throat experiment** (cross-written into `wasteland.md` §10): scoop tons of the
+- ⭐ **The Throat experiment** (cross-written into `wastes.md` §10): scoop tons of the
   living genetic database onto the gravship and pour it down the Glowing Throat — likely
   killing what you poured, maybe neutralizing a planet-scale hazard, with genuinely
   unknown results below. The only disposal option that is an experiment rather than a

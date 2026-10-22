@@ -38,7 +38,7 @@
     wellheads/gas-tap scaffold structures (SS8).
 
     COMMISSION_LEDGER_CLEANUP_1 (2026-09-24/25): the toxic-meat Star Wars cuisine
-    chain landed (RUT_PoisonForestPrizedMeats.xml + Patches/
+    chain landed (RUT_CauldronPrizedMeats.xml + Patches/
     PoisonForest_ToxicPrizedMeat.xml, same mod) — the line above calling it
     out-of-scope was true when written and is not true any more. Also added this
     pass: RSW_VentStalker (the ground-sense ambusher) and RUT_DarkCrust (the
@@ -153,7 +153,7 @@
       <RM_KeeningCordax>0.2</RM_KeeningCordax>  <!-- keening cordax - tree -->
       <!-- SHEET_ORPHAN_CONSUMPTION_1, owner review 2026-09-20: AB_CrystalHorn moved OUT
            ("propane lakes and blue desert only") and AB_GiantToxicFlower moved IN from
-           wasteland ("poison forest"). Both rulings landed in rosters/poison_forest.json
+           wasteland ("poison forest"). Both rulings landed in rosters/cauldron.json
            and reached the game only through BiomeFlora_Ashkarr.xml's now-retired replace
            operation; transplanted here by BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1. -->
       <RM_GiantToxicFlower>0.08</RM_GiantToxicFlower>  <!-- giant toxic flower -->

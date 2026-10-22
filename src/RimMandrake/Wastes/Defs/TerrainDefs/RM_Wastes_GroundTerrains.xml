@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Wastes's own ground (DONOR DECOUPLE, 2026-10-19, world-remake option D). The biome's
+  terrainsByFertility used Advanced Biomes' VolcanoSoil / WastelandAsphalt under MayRequire, so
+  with that mod absent the list was EMPTY: MapGenUtility then logs "No terrain found in biome
+  RM_Wastes" and lays Sand over the whole map. These two defs carry the donor's mechanics
+  (fertility, pathCost, affordances, Beauty/Cleanliness, filth, render precedence — read from
+  DefDump capture 2026-10-19T15-02-31Z). Textures are donor COPIES under StandIn/, installed by
+  donor_standins.py (owner 2026-10-18: "placeholder art for now or donor copies"); a render of
+  ours is still owed for both.
+-->
+<Defs>
+
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_WastesAshySoil</defName>
+    <label>ashy soil</label>
+    <description>Grey soil sifted through with old ash. It still grows things, after a fashion.</description>
+    <texturePath>Terrain/VolcanoSoil</texturePath>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>340</renderPrecedence>
+    <fertility>1</fertility>
+    <pathCost>2</pathCost>
+    <scatterType>Rocky</scatterType>
+    <takeFootprints>false</takeFootprints>
+    <generatedFilth>Filth_Dirt</generatedFilth>
+    <filthAcceptanceMask>Unnatural</filthAcceptanceMask>
+    <statBases>
+      <Beauty>-1</Beauty>
+      <Cleanliness>-1</Cleanliness>
+    </statBases>
+    <affordances>
+      <li>Walkable</li>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+      <li>GrowSoil</li>
+      <li>Diggable</li>
+    </affordances>
+  </TerrainDef>
+
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_WastesBrokenAsphalt</defName>
+    <label>broken asphalt</label>
+    <description>Slabs of ancient paving, heaved and cracked, with grit packed into every seam. Nothing grows from it unaided.</description>
+    <texturePath>Terrain/WastelandAsphalt</texturePath>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>320</renderPrecedence>
+    <fertility>0</fertility>
+    <pathCost>2</pathCost>
+    <scatterType>Rocky</scatterType>
+    <takeFootprints>false</takeFootprints>
+    <generatedFilth>Filth_Dirt</generatedFilth>
+    <filthAcceptanceMask>Unnatural</filthAcceptanceMask>
+    <statBases>
+      <Beauty>-1</Beauty>
+      <Cleanliness>-1</Cleanliness>
+    </statBases>
+    <affordances>
+      <li>Walkable</li>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+      <li>GrowSoil</li>
+      <li>Diggable</li>
+    </affordances>
+  </TerrainDef>
+
+</Defs>

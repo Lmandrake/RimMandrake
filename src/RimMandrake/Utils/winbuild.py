@@ -263,7 +263,7 @@ def staged_win(record, repo_path):
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0],
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("target", help="mod folder name (e.g. NightsideIce) or a csproj path")
+    ap.add_argument("target", help="mod folder name (e.g. SleepingIce) or a csproj path")
     ap.add_argument("-c", "--configuration", default="Release")
     ap.add_argument("--dry-run", action="store_true", help="show what would be staged; build nothing")
     argv = list(sys.argv[1:] if argv is None else argv)

@@ -3,7 +3,7 @@
   RUT_WasteRun - WARCASKET_WASTE_RUN_REMAINDER_1. THE SPEC (rimworld-quests skill, section 2):
     ask       dispose of every wastepack and half-extracted core in the ship's cask bays
     reason    the Junkers' tipping fee is gone and the casks are doses waiting to happen
-    choice    five destinations (wasteland.md section 10), each a verdict; the destination IS the branch
+    choice    five destinations (wastes.md section 10), each a verdict; the destination IS the branch
     failure   30 days and no choice: the window lapses, the waste stays, the quest fails
     reward    none by design: disposal is its own consequence
     deadline  OFFER 6-10 days; after acceptance a shown 30-day timer

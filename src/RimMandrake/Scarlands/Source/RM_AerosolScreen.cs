@@ -280,28 +280,28 @@ namespace RimMandrake.Scarlands
     }
 
     // Wasteland ash fall lives in another assembly that does not reference this one, so it is patched
-    // by name at startup: skipped silently when RM_MapComponent_WastelandStorms (or its private DoFall)
+    // by name at startup: skipped silently when RM_MapComponent_WastesStorms (or its private DoFall)
     // is absent, so this assembly loads with or without the Wasteland mod. DoFall's finalizer clears the
     // flag even if it throws; PollutionGrid.SetPolluted(true) is refused only while the flag is set and
     // only for screened cells, so no other pollution source is touched.
     [StaticConstructorOnStartup]
-    public static class RM_AerosolScreenWastelandBridge
+    public static class RM_AerosolScreenWastesBridge
     {
         [System.ThreadStatic] private static Map fallMap;
 
-        static RM_AerosolScreenWastelandBridge()
+        static RM_AerosolScreenWastesBridge()
         {
             try
             {
-                System.Type t = AccessTools.TypeByName("RimMandrake.Wasteland.RM_MapComponent_WastelandStorms");
+                System.Type t = AccessTools.TypeByName("RimMandrake.Wastes.RM_MapComponent_WastesStorms");
                 System.Reflection.MethodInfo doFall = t == null ? null : AccessTools.Method(t, "DoFall");
                 System.Reflection.MethodInfo setPolluted = AccessTools.Method(typeof(PollutionGrid), nameof(PollutionGrid.SetPolluted));
                 if (doFall == null || setPolluted == null) return;
-                Harmony h = new Harmony("mandrake.rm.warscar.aerosolwasteland");
+                Harmony h = new Harmony("mandrake.rm.warscar.aerosolwastes");
                 h.Patch(doFall,
-                    prefix: new HarmonyMethod(typeof(RM_AerosolScreenWastelandBridge), nameof(FallPrefix)),
-                    finalizer: new HarmonyMethod(typeof(RM_AerosolScreenWastelandBridge), nameof(FallFinalizer)));
-                h.Patch(setPolluted, prefix: new HarmonyMethod(typeof(RM_AerosolScreenWastelandBridge), nameof(SetPollutedPrefix)));
+                    prefix: new HarmonyMethod(typeof(RM_AerosolScreenWastesBridge), nameof(FallPrefix)),
+                    finalizer: new HarmonyMethod(typeof(RM_AerosolScreenWastesBridge), nameof(FallFinalizer)));
+                h.Patch(setPolluted, prefix: new HarmonyMethod(typeof(RM_AerosolScreenWastesBridge), nameof(SetPollutedPrefix)));
             }
             catch (System.Exception e)
             {

@@ -4,7 +4,7 @@
     RM_Cauldron_Terrains.xml    RimMandrake: The Cauldron
 
     POISONFOREST_RM_MOD_BUILD_1: the biome's own NATURAL ground, replacing the
-    donor BiomesPlus terrains (PoisonSoil / PoisonSoilRich) the RUT_PoisonForest
+    donor BiomesPlus terrains (PoisonSoil / PoisonSoilRich) the RUT_Cauldron
     twin used in <terrainsByFertility> with no def backing them anywhere in
     this repo (BiomesPlus's own source is not in vendor/mod_sources — net-new
     content, not a field-for-field port, per the item's own §6). Same shape

@@ -167,7 +167,7 @@
   </ThingDef>
 
   <!-- ═══════════════════════════════════════════════════════════════════
-       RM_WarcasketJunker — the Junker-adjusted variant. wasteland.md §7:
+       RM_WarcasketJunker — the Junker-adjusted variant. wastes.md §7:
        "a dead Junker in an adjusted warcasket is a sealed salvage-within-
        salvage: suit, tools, and the half-extracted core still in its
        grips." Sealed at death by RM_CompSarcophagusSeal; cracked open by

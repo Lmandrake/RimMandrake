@@ -128,12 +128,12 @@ OVERRIDES = {
               "TerrainDef/RM_RootCauseway"],
         note="The 17 typed names are copied from the item's own ## criteria list (foundCount must equal 17)."),
     ("WASTELAND_MECHANICS_BUILD_1", "A1"): dict(
-        defs=["WeatherDef/RM_WastelandAshStorm", "WeatherDef/RM_WastelandRadiationHalo", "WeatherDef/RM_WastelandPlasmaStorm",
+        defs=["WeatherDef/RM_WastesAshStorm", "WeatherDef/RM_WastesRadiationHalo", "WeatherDef/RM_WastesPlasmaStorm",
               "ThingDef/RM_Sloghog", "PawnKindDef/RM_Sloghog", "ThingDef/RM_Sootgrazer", "PawnKindDef/RM_Sootgrazer",
               "ThingDef/RM_Smolderback", "PawnKindDef/RM_Smolderback", "ThingDef/RM_ContaminantBezoar",
               "ThingDef/RM_VitrifiedBezoar", "ThingDef/RM_SootBrick", "ThingDef/RM_Cinderfelt", "ThingDef/RM_Middenshell"],
         note="Built defs for the item's four mechanics. The Middenshell def exists but the ruled 20-cell width exceeds the engine's 4x4 "
-             "footprint (FOUNDRY note 2026-09-30, owner call); RM_WastelandPlasmaStorm is 'def only, UNWIRED'. Presence is not function."),
+             "footprint (FOUNDRY note 2026-09-30, owner call); RM_WastesPlasmaStorm is 'def only, UNWIRED'. Presence is not function."),
     ("SCARLANDS_MECHANICS_2", "A1"): dict(
         defs=["HediffDef/RUT_ScarlandsMark", "GameConditionDef/RUT_ScarlandsMarkLock", "HediffDef/RUT_ScariaIncubation",
               "GameConditionDef/RUT_ScariaOnsetArming", "DutyDef/RUT_SentinelDefend", "ThingDef/RUT_SentinelGraveWard"],

@@ -110,8 +110,8 @@ MAPPING_TARGET_ALIASES = {
     "dune_sea": "dune_sea_deep_desert",
     "fall_line": "fall_line",
     "abyss": "abyss",
-    "nightside_ice": "nightside_ice",
-    "poison_forest": "poison_forest",
+    "sleeping_ice": "sleeping_ice",
+    "cauldron": "cauldron",
     "the_blue_desert": "the_blue_desert",
     "the_contagion": "the_contagion",
     "the_cracked_lands": "the_cracked_lands",
@@ -131,7 +131,7 @@ MAPPING_TARGET_ALIASES = {
     "the_sump": "the_sump",
     "the_twilight_deep": "the_twilight_sea",
     "the_webwork": "the_webwork",
-    "wasteland": "wasteland",
+    "wastes": "wastes",
     "terminator_sea": None,
 }
 

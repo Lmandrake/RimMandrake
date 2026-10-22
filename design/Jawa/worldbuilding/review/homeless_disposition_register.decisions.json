@@ -57,8 +57,8 @@
       "at": "2026-09-11T04:11:53.882Z",
       "decision": "reserve",
       "note": "Watch out. This is a bug. We should let the bug factions control bugs so we don't break infestations.",
-      "placeBiome": "wasteland",
-      "placeBiomePrefill": "wasteland",
+      "placeBiome": "wastes",
+      "placeBiomePrefill": "wastes",
       "prefill": "place"
     },
     "homeless:AA_Ravager": {
@@ -75,8 +75,8 @@
       "at": "2026-09-11T04:12:05.563Z",
       "decision": "cut",
       "note": "",
-      "placeBiome": "wasteland",
-      "placeBiomePrefill": "wasteland",
+      "placeBiome": "wastes",
+      "placeBiomePrefill": "wastes",
       "prefill": "place"
     },
     "homeless:AA_SmallButterfly": {
@@ -207,8 +207,8 @@
     "homeless:BMT_Sacapillar": {
       "decision": "place",
       "note": "",
-      "placeBiome": "wasteland",
-      "placeBiomePrefill": "wasteland",
+      "placeBiome": "wastes",
+      "placeBiomePrefill": "wastes",
       "prefill": "place"
     },
     "homeless:BMT_ShatterjawBeetleLarvae": {
@@ -574,7 +574,7 @@
       "at": "2026-09-11T04:19:34.806Z",
       "decision": "place",
       "note": "Poison Forest",
-      "placeBiome": "poison_forest",
+      "placeBiome": "cauldron",
       "placeBiomePrefill": "",
       "prefill": "reserve"
     },

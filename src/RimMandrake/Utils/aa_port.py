@@ -41,10 +41,10 @@ PORTS = {
     "AA_GiantCrownedSilkie": ("RM_SikkaSikka", "Cauldron", None),
     "AA_Lockjaw": ("RM_Siezer", "Miasma", None),
     "AA_Metallovore": ("RM_Metallovore", "TheForge", None),
-    "AA_ShockGoat": ("RM_Zhissa", "NightsideIce", None),
+    "AA_ShockGoat": ("RM_Zhissa", "SleepingIce", None),
     "AA_Swarmling": ("RM_Chittik", "TheRot", None),
 }
-FOLDER = {"TheRot": "Fauna", "NightsideIce": "Fauna"}      # the folder each mod already keeps its creatures in
+FOLDER = {"TheRot": "Fauna", "SleepingIce": "Fauna"}      # the folder each mod already keeps its creatures in
 # species we do NOT port as a dependency of another: swapped for a vanilla def in exactly these text positions
 SPECIES_SWAP = {
     "AA_Helixien": "Megaspider", "AA_BoulderMit": "Tortoise", "AA_RoughPlatedMonitor": "Iguana",
@@ -437,7 +437,7 @@ REPOINT = {
     "AA_CrystalMit": ("RM_CrystalMit", "mandrake.rm.cauldron"),
     "AA_GiantCrownedSilkie": ("RM_SikkaSikka", "mandrake.rm.cauldron"),
     "AA_Lockjaw": ("RM_Siezer", "mandrake.rm.miasma"), "AA_Metallovore": ("RM_Metallovore", "mandrake.rm.theforge"),
-    "AA_ShockGoat": ("RM_Zhissa", "mandrake.rm.nightsideice"),
+    "AA_ShockGoat": ("RM_Zhissa", "mandrake.rm.sleepingice"),
     "AA_Swarmling": ("RM_Chittik", "mandrake.rm.therot"), "AA_BloodShrimp": ("RM_Zrrik", "mandrake.rm.greentide"),
     "AA_RaptorShrimp": ("RM_Sharpshrimp", "mandrake.rm.miasma"),
     # already ported before this pass (matched by stats, see Transient/phase0_p2_classification.md)

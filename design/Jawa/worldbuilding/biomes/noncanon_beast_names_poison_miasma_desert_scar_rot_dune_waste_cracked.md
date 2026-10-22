@@ -80,7 +80,7 @@ drafted where its job is written), plus:
 
 ---
 
-## Batch 4a — Poison Forest (`poison_forest.json`, 24 rows; 17 in scope, 12 drafted here)
+## Batch 4a — Poison Forest (`cauldron.json`, 24 rows; 17 in scope, 12 drafted here)
 
 *A forest of ambushers under a sourceless twilight, where everything alive is sealed or
 poisoned and the ground hums with chemistry.* The accent is glass and acid — thin vowels,
@@ -160,14 +160,14 @@ Owner's notes on `Transient/biome_ffar/wasteland_sheet_2026-10-05.decisions.json
 2026-10-09 (labels + fresh descriptions together):
 
 - `RSW_FleeceSpider` → **`RM_Frethik`, frethik** — *"Redo Name and Description. RimMandrake tier,
-  NOt star wars at all."* Ported to `mandrake.rm.wasteland` (`RM_Frethik.xml`, eggs alongside), cast
-  inline in `RM_Wasteland_Biome.xml`; a salt-haired brine mite. Wasteland accent: *fr-* the dry
+  NOt star wars at all."* Ported to `mandrake.rm.wastes` (`RM_Frethik.xml`, eggs alongside), cast
+  inline in `RM_Wastes_Biome.xml`; a salt-haired brine mite. Wasteland accent: *fr-* the dry
   rasp, *-eth-*, *-ik* small.
 - `RSW_Maligoat` → **`RM_Kroffa`**, name kroffa kept — *"RimMandrake tier, NOT Star Wars. Never
   was."* Ported with its milk (`RM_KroffaMilk`) and milk thought; description rewritten.
 - `VAEWaste_Megatardi` → **thuffor** (batch 4g draft) — *"Remake N and S. Redo name and
   description."* Label edited in place on our absorbed copy; N/S art redraw queued separately.
-- The RSW_ originals stay in SWBestiary only for the frozen `RUT_Wasteland` twin.
+- The RSW_ originals stay in SWBestiary only for the frozen `RUT_Wastes` twin.
 
 ---
 
@@ -275,7 +275,7 @@ Read aloud with the ruled eight: thozzik, mollith, kerrugoth, illoth, brullith, 
 
 ---
 
-## Batch 4g — the Wasteland (`wasteland.json`, 15 rows; 9 in scope, 4 drafted here)
+## Batch 4g — the Wasteland (`wastes.json`, 15 rows; 9 in scope, 4 drafted here)
 
 *No outlet: a just-lost sunset, flickering with wrathful lightning.* The wretched register is
 already ruled — kroffa, grutt, grithe (and frethik, which replaced puffmite 2026-10-09) — so the four remaining take the same dry,

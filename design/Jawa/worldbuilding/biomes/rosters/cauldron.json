@@ -193,7 +193,7 @@
     },
     {
       "def": "AA_Slurrypede",
-      "disposition": "move:RUT_NightsideIce",
+      "disposition": "move:RUT_SleepingIce",
       "reason": "passes stats but rostered to the nightside shelf instead — one shelf, two claims resolved nightward"
     },
     {
@@ -204,7 +204,7 @@
     {
       "def": "AA_RipperHound",
       "disposition": "homeless-reserve",
-      "reason": "ban 9: spd 5.0 (MEASURED); recognizability (hound). OVERRIDDEN by owner ruling (CAULDRON_RULED_CONTENT_1, wire and keep): wired into RM_PoisonForest and kept; see the import row in fauna. Do not evict."
+      "reason": "ban 9: spd 5.0 (MEASURED); recognizability (hound). OVERRIDDEN by owner ruling (CAULDRON_RULED_CONTENT_1, wire and keep): wired into RM_Cauldron and kept; see the import row in fauna. Do not evict."
     },
     {
       "def": "AA_BoulderMit",
@@ -213,7 +213,7 @@
     },
     {
       "def": "AA_TetraSlug",
-      "disposition": "move:RUT_NightsideIce",
+      "disposition": "move:RUT_SleepingIce",
       "reason": "passes stats; rostered dune sea + nightside (prep §1.2/§7.2)"
     },
     {

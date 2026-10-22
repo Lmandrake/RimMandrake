@@ -57,7 +57,7 @@ the warning); sheet-coined English names kept verbatim under the bladderboil pre
 
 ## 1. The shared law, cited once
 
-Every brief below is audited against `nightside_ice.md` (FROZEN) rather than restating
+Every brief below is audited against `sleeping_ice.md` (FROZEN) rather than restating
 it per-creature:
 
 - **§4 first pass (verbatim-protected):** life catalyses and waits; sessile, laminar,
@@ -667,7 +667,7 @@ carries it). Nothing here pre-empts the sweep.
 
 ## 13. Sources read for this brief
 
-- Biome sheets (all FROZEN): `biomes/nightside_ice.md` (§1–§9 whole, §4 verbatim law,
+- Biome sheets (all FROZEN): `biomes/sleeping_ice.md` (§1–§9 whole, §4 verbatim law,
   visitor clause, thaw pulse, roster consequences); `biomes/the_rust_cathedral.md`
   (§1–§9, §GM, §7b concealment amendment, bans 1/7); `biomes/the_pyrelands.md`
   (§3–§8 verbatim igniter prose, ban 5 as amended 2026-09-10)
@@ -683,7 +683,7 @@ carries it). Nothing here pre-empts the sweep.
   CaveLemming/Razorjack/Barbslinger owner notes, quoted verbatim);
   `review/round2/reserved_groups_draft.md` §3 (flier roster);
   `biomes/_freeze_rulings_2026-09-07.md` R17
-- Rosters: `biomes/rosters/nightside_ice.json` (natives, new_defs, near-empty
+- Rosters: `biomes/rosters/sleeping_ice.json` (natives, new_defs, near-empty
   ruling), `the_rust_cathedral.json` (Ling_Cockroach row, Megaroach eviction, living
   bolts new_defs shape, mechanoid-axis exclusion), `the_pyrelands.json` (built
   igniter rows, PYRELANDS_MECHANICS_1 debts)

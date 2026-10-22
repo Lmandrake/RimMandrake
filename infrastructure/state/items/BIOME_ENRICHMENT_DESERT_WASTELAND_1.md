@@ -26,8 +26,8 @@ tile ID in the CSV has exactly one row in the mutator export (0 missing, 0 extra
 ## Why nothing was placed — the kit is not concrete enough to place without guessing
 
 Checked, in order: `design/Jawa/worldbuilding/biomes/desert.md`,
-`.../wasteland.md`, both biomes' fauna rosters (`rosters/desert.json`,
-`rosters/wasteland.json` — fauna only, not mutators/landmarks),
+`.../wastes.md`, both biomes' fauna rosters (`rosters/desert.json`,
+`rosters/wastes.json` — fauna only, not mutators/landmarks),
 `design/Jawa/worldbuilding/unused_mutators_full_list.csv` (255 unused
 TileMutatorDefs, the actual placeable menu), and
 `design/Jawa/worldbuilding/structure_injection_roster.md` (the only doc that pairs
@@ -37,7 +37,7 @@ this register of content with real defNames).
   crevice shelter, ultracactus, wide gaps as toll points, shade patches as
   middens) is narrative description with no mutator/landmark defName attached
   anywhere in the sheet or its roster.
-- **`wasteland.md` §8's "mutator/injection palette" table is thematic categories,
+- **`wastes.md` §8's "mutator/injection palette" table is thematic categories,
   not defNames** — "hypersaline pools," "vitrified craters," "trench systems,"
   "rib-vaults," "trapped enrichment" etc. None of these strings match any
   TileMutatorDef in the 596-mod load (checked against the unused-mutator census
@@ -73,7 +73,7 @@ often the game's own existing Desert/Wasteland-legal terrain features
 `TileMutatorDef.IsValidTile` for these biomes) already appear COUNTS as
 building the "wide gaps" — no new thematic TileMutatorDefs need to be
 authored, and no new defNames need to be invented to stand in for
-`desert.md`/`wasteland.md`'s narrative categories. This was the item's own
+`desert.md`/`wastes.md`'s narrative categories. This was the item's own
 sole blocker (confirmed via `rimflow why`: "needs owner to name mutators or
 rule on density approach") — now answered, so the item is unblocked. The
 density-raising work itself is still owed.

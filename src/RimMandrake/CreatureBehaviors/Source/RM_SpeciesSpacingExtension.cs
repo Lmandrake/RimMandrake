@@ -3,7 +3,7 @@ using Verse;
 namespace RimMandrake.CreatureBehaviors
 {
     /// <summary>
-    /// WASTELAND_RADIOTHERMAL_SOLITARY_1. wasteland.md §4's "keep distance
+    /// WASTELAND_RADIOTHERMAL_SOLITARY_1. wastes.md §4's "keep distance
     /// from their own kind or cook each other" — attach to a race ThingDef
     /// to make RM_JobGiver_AvoidOwnKind steer it away from other members of
     /// its own PawnKindDef, and (with RM_CompProperties_SpeciesSpacingCook

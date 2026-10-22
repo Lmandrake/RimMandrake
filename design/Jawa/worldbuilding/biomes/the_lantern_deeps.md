@@ -16,7 +16,7 @@ overhead mountain). Thematic handle: **light that is alive** — and its image: 
 lantern burning under the mountain, and a dead miner's suit walking toward it.**_
 
 🔑 **Precedent:** `fall_line.md` (injection layer, no new BiomeDef). **Read against
-`the_blue_desert.md`, `the_propane_lakes.md`, `nightside_ice.md`** (its hosts) and the
+`the_blue_desert.md`, `the_propane_lakes.md`, `sleeping_ice.md`** (its hosts) and the
 caverns sitting of 2026-09-02 (`underground_caverns_deep_design.md` — entrances v1,
 map-chain v1, **persistent layers, no regenerating dungeons**, collapse hazard v1 with
 its dust-and-sand warnings, **darkness as a real mechanic v1**).
@@ -28,7 +28,7 @@ MEASURED 2026-09-06: the former surface def held **578 tiles** (arc 144–162, �
 Ammonia Flats 83, **Lantern Deeps 57**), plus the **829 ring tiles** the Blue Desert
 mosaic had sent it. 🔴 **Re-home ruled (owner, 2026-09-06):** the highland — ring sectors
 1–3 (337 tiles, 308 above 900 m) and the caverns' high tiles in 3/4/5/8 — goes to **the
-ice sheet** (`nightside_ice.md`'s def; plateau lobes, ice on high ground being physics);
+ice sheet** (`sleeping_ice.md`'s def; plateau lobes, ice on high ground being physics);
 the caverns' low tiles in 7/9/10 join the **Blue Desert** core; the propane bulge in 6
 stands. Four defs in the deep-night mosaic; no ring. Rides
 `HORRORWASTES_BIOME_DISSOLVE_1`.
@@ -254,7 +254,7 @@ Full spec: `design/Jawa/kyber_trade_plot_spec.md`.
   `BMT_CrystalCaverns` generates as a cave map (mechanism UNMEASURED: the mod ships no
   entrance def in XML — its transition lives in the DLL or Odyssey's layer system).
 - `HORRORWASTES_BIOME_DISSOLVE_1` — the re-home (highland → ice sheet, lows → Blue
-  Desert); `nightside_ice.md` needs its second pass now that it is load-bearing.
+  Desert); `sleeping_ice.md` needs its second pass now that it is load-bearing.
 - `CRYSTAL_MODS_INGEST_1` — the orange glowing crystal's source mod; unify the crystal
   harvests.
 - `MECHANOID_ORIGIN_CANON_1` — the mindstone race, the wild-cousins reading of the

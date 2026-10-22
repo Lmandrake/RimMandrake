@@ -131,12 +131,12 @@ Order is by **similarity — slowly vary** (owner, 2026-09-05).
 | `cauldron.md` | `Cauldron` | ✅ done |
 | `dune_sea.md` | `ExtremeDesert` → `RM_Stillsand` — the Dune Sea is a REGION within the Stillsand, not a biome (owner, typed, 2026-09-27, `STILLSAND_DESIGN_SITTING_1` Q13) | ✅ done |
 | `terminator_sea.md` | Twilight Sea + Grey Sea (`RUT_TwilightSea`/`RUT_GreySea`, `LIQUID_BIOMES_MAP_1`) | ✅ sheet done for these two; ⚠️ **this row previously said "the three seas" — the Scald is the third and has NO biome sheet** (checked 2026-09-06, `LIQUID_BIOMES_MAP_1_RECONCILIATION.md` §2); `terminator_sea.md` uses the Scald only as a comparison foil, it does not define it |
-| `nightside_ice.md` | `RUT_NightsideIce` (own def, inherits vanilla `IceSheet`; 802 tiles MEASURED — the deep-night highland) — FROZEN 2026-09-24, carries the world until Phase B's repaint; content now lives in the standalone `mandrake.rm.nightsideice` mod's own `RM_NightsideIce` (`NIGHTSIDEICE_RM_MOD_BUILD_1`) | ✅ first pass 2026-09-05; **second pass 2026-09-06** — dirty ice, the thaw pulse, tunnelers, the six reconciliations; first-pass ecology unchanged |
+| `sleeping_ice.md` | `RUT_SleepingIce` (own def, inherits vanilla `IceSheet`; 802 tiles MEASURED — the deep-night highland) — FROZEN 2026-09-24, carries the world until Phase B's repaint; content now lives in the standalone `mandrake.rm.sleepingice` mod's own `RM_SleepingIce` (`NIGHTSIDEICE_RM_MOD_BUILD_1`) | ✅ first pass 2026-09-05; **second pass 2026-09-06** — dirty ice, the thaw pulse, tunnelers, the six reconciliations; first-pass ecology unchanged |
 | `fall_line.md` | **injection layer** over `ExtremeDesert` | ✅ done — no new BiomeDef |
 | `deep_desert.md` | `ExtremeDesert`, far ring | ✅ done |
 | `desert.md` | `Desert` | ✅ done |
 | `arid_shrubland.md` | `AridShrubland` | ✅ done 2026-09-05 |
-| `wasteland.md` | `Wasteland` | ✅ done 2026-09-05 — the dryland ladder is complete |
+| `wastes.md` | `Wasteland` | ✅ done 2026-09-05 — the dryland ladder is complete |
 | `abyss.md` | `AB_RockyCrags` (Abyss, 1,170 tiles MEASURED on V26 — earlier "1,225" and "4,440" here were stale; the sheet's own §0 is the number's home) | ✅ done 2026-09-06 — donor content incorporated wholesale, the Dark's physics ratified |
 | `the_rot.md` | `AB_MycoticJungle` ("The Rot", owner-named; 1,939 tiles MEASURED) | ✅ done 2026-09-06 — the planet's gut; nightside-lush honored; gene-reactor mechanic RESERVED for `AB_GelatinousSuperorganism` |
 | `the_slime.md` | `AB_GelatinousSuperorganism` ("The Slime", owner-named; 96 tiles MEASURED) | ✅ done 2026-09-06 — the living registry; Assailant-sibling of The Rot; gene machine, slime rain, Slime Pit |

@@ -1178,7 +1178,7 @@ z
       </g>
      </g>
      <g id="text_9">
-      <!-- RUT_NightsideIce   [1506 tiles] -->
+      <!-- RUT_SleepingIce   [1506 tiles] -->
       <g transform="translate(67.376687 617.350657) scale(0.076 -0.076)">
        <defs>
         <path id="DejaVuSans-4a" d="M 2906 1791 
@@ -3217,7 +3217,7 @@ z
 " clip-path="url(#p7d7b3a2bf2)" style="fill: #d97706"/>
    </g>
    <g id="text_37">
-    <!-- Commonality mass per biome — the normalization instrument.  Heaviest AridShrubland (Σ 20.99 over 55 species); lightest non-empty RUT_NightsideIce (Σ 0.02 over 6). -->
+    <!-- Commonality mass per biome — the normalization instrument.  Heaviest AridShrubland (Σ 20.99 over 55 species); lightest non-empty RUT_SleepingIce (Σ 0.02 over 6). -->
     <g transform="translate(191.52 32.877129) scale(0.105 -0.105)">
      <defs>
       <path id="DejaVuSans-af6" d="M 313 1978 

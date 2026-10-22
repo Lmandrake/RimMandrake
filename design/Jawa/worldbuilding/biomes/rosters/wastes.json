@@ -1,0 +1,604 @@
+{
+  "authored": "2026-09-09",
+  "confidence": [
+    {
+      "claim": "kept fauna read as wretched/mutated (ban 4 eye component)",
+      "status": "UNMEASURED",
+      "why": "art eye test is the owner's; prep §4.1 recommends a REGENERATE art list alongside (§4.5 q1, unruled)"
+    },
+    {
+      "claim": "anomaly-entity count in roster = 0 (ban 1)",
+      "status": "MEASURED",
+      "why": "kindOf filter excludes entity/mechanoid rows by construction"
+    },
+    {
+      "claim": "SW_Electrictick slow-and-promote (prep §4.5 q3)",
+      "status": "UNMEASURED",
+      "why": "unruled — kept at register speed"
+    },
+    {
+      "claim": "GR_ prefix resolution",
+      "status": "RESOLVED",
+      "why": "GR_ = VGE chimeras, judged per law (GRim* = Grindterra). Restored Beetlefleet/ParagonRat/Molebear/Spidercat per §4.2; the six big predators + Wolfscarab stay evicted on §4.3's own bars. GR_Spidercat spd 6.0 noted: §4.3 names only Wolfscarab (9.0) as a fast-runner evictee and §4.2 protects Spidercat — owner review sheet may override."
+    }
+  ],
+  "defNames": [
+    "RUT_Wastes"
+  ],
+  "evictions": [
+    {
+      "def": "AA_Aerofleet",
+      "disposition": "homeless-reserve",
+      "reason": "§9 (binding): TRIM — its arid home is shrubland fog country — ubiquity-25 §9 trim: terminator-adjacent only (keeps the two seas)"
+    },
+    {
+      "def": "AA_AnimusVox",
+      "disposition": "homeless-reserve",
+      "reason": "§9 (binding): TRIM to one strange home — not this one (unmarked, ban 4)"
+    },
+    {
+      "def": "AA_Atispec",
+      "disposition": "homeless-reserve",
+      "reason": "ban 3: wildlife never the headline threat — large capable predator (bs 7.0, MEASURED; prep §4.3)"
+    },
+    {
+      "def": "AA_Barbslinger",
+      "disposition": "homeless-reserve",
+      "reason": "ban 3: wildlife never the headline threat — large capable predator (bs 2.5, MEASURED; prep §4.3)"
+    },
+    {
+      "def": "AA_BloodShrimp",
+      "disposition": "homeless-reserve",
+      "reason": "ban 4: unmarked wildlife — neither wretched-mutated nor extremophile-odd on sight"
+    },
+    {
+      "def": "AA_BoulderMit",
+      "disposition": "move:ExtremeDesert",
+      "reason": "ExtremeDesert giant keep (prep §1.2)"
+    },
+    {
+      "def": "AA_Bumbledrone",
+      "disposition": "homeless-reserve",
+      "reason": "§9 (binding): TRIM; clean pollinator, unmarked (ban 4)"
+    },
+    {
+      "def": "AA_Cinderlisk",
+      "disposition": "homeless-reserve",
+      "reason": "ban 3: wildlife never the headline threat — large capable predator (bs 2.5, MEASURED; prep §4.3)"
+    },
+    {
+      "def": "AA_ColossalAerofleet",
+      "disposition": "homeless-reserve",
+      "reason": "ban 3: bs 2.0 large; clean floating jelly, unmarked (ban 4)"
+    },
+    {
+      "def": "AA_CrystalMit",
+      "disposition": "move:PoisonForest",
+      "reason": "§9 (binding): CrystalCaverns/PoisonForest"
+    },
+    {
+      "def": "AA_EmpressButterfly",
+      "disposition": "homeless-reserve",
+      "reason": "ban 4: a pretty butterfly is the opposite of pathos (prep §4.3)"
+    },
+    {
+      "def": "AA_Feralisk",
+      "disposition": "homeless-reserve",
+      "reason": "ban 4: unmarked wildlife — neither wretched-mutated nor extremophile-odd on sight"
+    },
+    {
+      "def": "AA_GreatDevourer",
+      "disposition": "homeless-reserve",
+      "reason": "ban 3: wildlife never the headline threat — large capable predator (bs 2.5, MEASURED; prep §4.3)"
+    },
+    {
+      "def": "AA_MegaLouse",
+      "disposition": "homeless-reserve",
+      "reason": "§9 (binding): TRIM — vermin texture capped; VFEI2 swarmlings carry the slot"
+    },
+    {
+      "def": "AA_Nightling",
+      "disposition": "homeless-reserve",
+      "reason": "ban 4: unmarked wildlife — neither wretched-mutated nor extremophile-odd on sight"
+    },
+    {
+      "def": "AA_OcularJelly",
+      "disposition": "move:PoisonForest",
+      "reason": "poison forest import lane (prep §5.2)"
+    },
+    {
+      "def": "AA_PebbleMit",
+      "disposition": "homeless-reserve",
+      "reason": "§9 (binding): rock/cavern biomes — §9 trim target (crags) rejected it on the single-transplanted-family law"
+    },
+    {
+      "def": "AA_Razorjack",
+      "disposition": "homeless-reserve",
+      "reason": "ban 4: unmarked wildlife — neither wretched-mutated nor extremophile-odd on sight"
+    },
+    {
+      "def": "AA_RipperHound",
+      "disposition": "homeless-reserve",
+      "reason": "ban 3: wildlife never the headline threat — large capable predator (bs 1.5, MEASURED; prep §4.3)"
+    },
+    {
+      "def": "AA_RoughPlatedMonitor",
+      "disposition": "homeless-reserve",
+      "reason": "ban 3: wildlife never the headline threat — large capable predator (bs 2.0, MEASURED; prep §4.3)"
+    },
+    {
+      "def": "AA_Skiphound",
+      "disposition": "homeless-reserve",
+      "reason": "ban 4: clean hound, unmarked; Earth-ish name"
+    },
+    {
+      "def": "AA_Slurrypede",
+      "disposition": "homeless-reserve",
+      "reason": "ban 3: wildlife never the headline threat — large capable predator (bs 2.0, MEASURED; prep §4.3)"
+    },
+    {
+      "def": "AA_Swarmling",
+      "disposition": "homeless-reserve",
+      "reason": "§9 (binding): TRIM to 2–3 biomes — the VFEI2 swarmlings carry the vermin slot here"
+    },
+    {
+      "def": "AA_TetraSlug",
+      "disposition": "move:ExtremeDesert",
+      "reason": "ExtremeDesert giant keep (prep §1.2)"
+    },
+    {
+      "def": "AA_Thermadon",
+      "disposition": "homeless-reserve",
+      "reason": "ban 3: wildlife never the headline threat — large capable predator (bs 1.5, MEASURED; prep §4.3)"
+    },
+    {
+      "def": "Aiwha",
+      "disposition": "homeless-reserve",
+      "reason": "ban 3 (bs 3.0 predator, MEASURED) and a flying whale in a fallout pan is a placement absurdity (prep §4.3); sea-beast lane may claim it"
+    },
+    {
+      "def": "DA_Barog",
+      "disposition": "homeless-reserve",
+      "reason": "ban 4: unmarked clean herd beast"
+    },
+    {
+      "def": "DA_DwarvenMuffton",
+      "disposition": "homeless-reserve",
+      "reason": "ban 4: a clean fantasy farm animal — unmarked wildlife fails on sight (prep §4.3)"
+    },
+    {
+      "def": "DA_RedhornedLarpah",
+      "disposition": "homeless-reserve",
+      "reason": "ban 4 unmarked + fast clean runner contradicts pathos (spd 6.5, MEASURED; prep §4.3)"
+    },
+    {
+      "def": "GR_Bearalope",
+      "disposition": "homeless-reserve",
+      "reason": "wasteland ban 3 (§4.3): predator + bodySize 1.5 (MEASURED) — wildlife never the headline threat"
+    },
+    {
+      "def": "GR_Bearcat",
+      "disposition": "homeless-reserve",
+      "reason": "wasteland ban 3 (§4.3): predator + bodySize 1.75 (MEASURED)"
+    },
+    {
+      "def": "GR_Bearhorse",
+      "disposition": "homeless-reserve",
+      "reason": "wasteland ban 3 (§4.3): predator + bodySize 3.5 (MEASURED)"
+    },
+    {
+      "def": "GR_Bearscarab",
+      "disposition": "homeless-reserve",
+      "reason": "wasteland ban 3 (§4.3): predator + bodySize 3.0 (MEASURED)"
+    },
+    {
+      "def": "GR_Spiderhorse",
+      "disposition": "homeless-reserve",
+      "reason": "wasteland ban 3 (§4.3): predator + bodySize 2.4 (MEASURED)"
+    },
+    {
+      "def": "GR_Thrumbocat",
+      "disposition": "homeless-reserve",
+      "reason": "wasteland ban 3 (§4.3): predator + bodySize 2.0 (MEASURED)"
+    },
+    {
+      "def": "GR_Wolfscarab",
+      "disposition": "homeless-reserve",
+      "reason": "§4.3 fast clean runner: moveSpeed 9.0 (MEASURED) contradicts the pathos read"
+    },
+    {
+      "def": "GraniteSlug",
+      "disposition": "move:ExtremeDesert",
+      "reason": "§9 (binding): dune sea + poison forest"
+    },
+    {
+      "def": "AA_AcanthamoebaGiganteaSmall",
+      "disposition": "move:Scarlands",
+      "reason": "owner review 2026-09 (round2 move mapping): scarlands"
+    },
+    {
+      "def": "AA_Eyeling",
+      "disposition": "move:AB_OcularForest",
+      "reason": "owner review 2026-09 (round2 move mapping): ocular"
+    },
+    {
+      "def": "BMT_ColonyPustuleHornetQueen",
+      "disposition": "move:AB_MycoticJungle",
+      "reason": "owner review 2026-09 (round2 move mapping): The Rot"
+    },
+    {
+      "def": "BMT_PustuleHornetQueen",
+      "disposition": "move:AB_MycoticJungle",
+      "reason": "owner review 2026-09 (round2 move mapping): The Rot"
+    },
+    {
+      "def": "BMT_PustuleHornetSpawned",
+      "disposition": "move:AB_MycoticJungle",
+      "reason": "owner review 2026-09 (round2 move mapping): The Rot"
+    },
+    {
+      "def": "SW_Electrictick",
+      "disposition": "move:Scarlands",
+      "reason": "owner review 2026-09 (round2 move mapping): only scarlands"
+    },
+    {
+      "def": "AA_FissionMouse",
+      "disposition": "cut-for-real",
+      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20 — executed the 2026-09-10 sheet's decision=out that was graded and never applied (\"Yes cut the 6 fauna\")"
+    },
+    {
+      "def": "AB_GiantToxicFlower",
+      "disposition": "move:poison_forest",
+      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20, flora move approved; owner review 2026-09-20 (move); wasteland → poison_forest; poison forest"
+    },
+    {
+      "def": "AB_ToxiGrass",
+      "disposition": "move:the_blue_desert",
+      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20, flora move approved; owner review 2026-09-20 (move); wasteland → the_blue_desert; blue desert rare"
+    },
+    {
+      "def": "PoisonPlantTallGrass",
+      "disposition": "move:the_blue_desert",
+      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20, flora move approved; owner review 2026-09-20 (move); wasteland → the_blue_desert; blue desert rare"
+    },
+    {
+      "def": "PoisonShrub",
+      "disposition": "move:the_propane_lakes",
+      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20, flora move approved; owner review 2026-09-20 (move); wasteland → the_propane_lakes; .8 cells, propane lakes"
+    },
+    {
+      "def": "RSW_Stoneback",
+      "disposition": "one-home-elsewhere",
+      "reason": "owner 2026-09-22, correcting BENCH: \"I meant pick one arid home.\" The arid biomes he listed were the CANDIDATE set, not an assignment — a shared habitat class is NOT an in-game reason to multi-home an animal (BIOME_SPECIFIC_FAUNA_LAW_1). The bokka's single home is the Long Shade (RUT_Desert 0.5, its pre-existing wiring). It was never wired here — only admitted — so nothing changes in game; the admission is withdrawn so the roster stops implying a second home. 🔑 If this biome needs a small arid animal, the law's other half applies: fill the hole with a NEW creature, not by borrowing this one."
+    }
+  ],
+  "fauna": [
+    {
+      "action": "adjust-keep",
+      "band": "wretched-small",
+      "commonality": 0.6,
+      "def": "VFEI2_Swarmling",
+      "law": "vermin-of-ruin read (prep §4.2); ban 3 pass: bs 0.2 (MEASURED); trimmed 1.0→0.6 — wildlife never the headline"
+    },
+    {
+      "action": "adjust-keep",
+      "band": "wretched-small",
+      "commonality": 0.6,
+      "def": "VFEI2_BlackSwarmling",
+      "law": "as VFEI2_Swarmling (prep §4.2)"
+    },
+    {
+      "action": "keep",
+      "band": "wretched-small",
+      "commonality": 0.7,
+      "def": "Borcatu",
+      "law": "ruin-scavenger read (prep §4.2); bs 0.4 (MEASURED)"
+    },
+    {
+      "action": "keep",
+      "band": "wretched-small",
+      "commonality": 0.7,
+      "def": "RM_Frethik",
+      "law": "prep §4.2; bs 0.32 (MEASURED); ROSTER_DEAD_BMT_NAMES_SWEEP_1: renamed from BMT_FleeceSpider to the already-ported, already-wired RSW_ name (RUT_Wastes); Wasteland sheet 2026-10-09 (owner): \"Redo Name and Description. RimMandrake tier, NOt star wars at all.\" — ported RSW_FleeceSpider -> RM_Frethik (mandrake.rm.wastes, cast inline in RM_Wastes_Biome.xml), renamed frethik, description rewritten",
+      "label": "frethik",
+      "description": "A palm-sized mite whose back is a dense crown of glassy hairs. They are salt. The frethik drinks the brine that pools where the Wastes' rivers die, and its body pushes the salt out through its hairs, where it sets into needles with a faint pearly sheen. An old frethik drags a crown heavier than itself and leaves a trail of white grit behind it. It eats whatever falls to the ground, and it does not bite unless it is stepped on. Settlers keep them as pets. A frethik shedding its salt on a warm night glitters softly, and few other things in the Wastes are pretty to look at."
+    },
+    {
+      "action": "keep",
+      "band": "wretched-small",
+      "commonality": 0.7,
+      "def": "RSW_BloodletterPetrel",
+      "law": "Polluted Lands — the mod's register is contamination-shaped (prep §4.2); ROSTER_DEAD_BMT_NAMES_SWEEP_1: renamed from BMT_BloodletterPetrel to the already-ported, already-wired RSW_ name (RUT_Wastes)"
+    },
+    {
+      "action": "keep",
+      "band": "wretched-herd",
+      "commonality": 0.4,
+      "def": "RM_Kroffa",
+      "law": "\"maligoat\" is the wretched-herd read exactly (prep §4.2); ROSTER_DEAD_BMT_NAMES_SWEEP_1: renamed from BMT_Maligoat to the already-ported, already-wired RSW_ name (RUT_Wastes); Wasteland sheet 2026-10-09 (owner): \"RimMandrake tier, NOT Star Wars. Never was.\" — ported RSW_Maligoat -> RM_Kroffa (mandrake.rm.wastes, cast inline in RM_Wastes_Biome.xml), name kroffa kept, description rewritten",
+      "label": "kroffa",
+      "description": "A squat, heavy grazer armoured in overlapping plates of hide, each one thick enough to turn a knife. Its blunt face ends in a pair of hooked mouthparts that strip the tough, bitter scrub of the Wastes, and two thick horns curl back over its neck. Kroffa can eat what poisons other grazers and stand where the fallout settles, and they keep their milk clean through all of it. That milk is rich and sweet and good to drink raw, so they are the one animal in the Wastes that settlers seek out. They are slow and do not frighten easily. A herd can be driven, but it cannot be hurried."
+    },
+    {
+      "action": "keep",
+      "band": "extremophile-odd",
+      "commonality": 0.2,
+      "def": "AA_Terramorph",
+      "law": "crust-mimic oddity; slow (spd 1.8, MEASURED); ban 3 pass (non-headline)"
+    },
+    {
+      "action": "import",
+      "band": "wretched-herd",
+      "commonality": 0.4,
+      "def": "Toxalope",
+      "law": "owner card 2026-09-09 (prep §4.4): moves Desert → Wasteland; toxic-cloud death, marked (ban 4 pass)"
+    },
+    {
+      "action": "import",
+      "band": "wretched-pack",
+      "commonality": 0.4,
+      "def": "RSW_Screecher",
+      "law": "Polluted Lands register import (prep §4.4); pack vermin, bs 1.0 < 1.5 (ban 3 pass, MEASURED); ROSTER_DEAD_BMT_NAMES_SWEEP_1: renamed from BMT_Screecher to the already-ported, already-wired RSW_ name (RUT_Wastes)"
+    },
+    {
+      "action": "import",
+      "band": "extremophile-odd",
+      "commonality": 0.18,
+      "def": "VAEWaste_Megatardi",
+      "law": "waste-marked tardigrade-analog — extremophile-odd lane (ban 4 pass by marking); Wasteland sheet 2026-10-09 (owner): \"Remake N and S. Redo name and description.\" — renamed thuffor (label edited in place on our absorbed copy), description rewritten; N/S art redraw queued separately",
+      "label": "thuffor",
+      "description": "A blind, six-legged mountain of a grub-thing, as big as a muffalo and built like a barrel of soft armour. The thuffor eats almost nothing, and it can live off the Wastes' own refuse. It mouths its way through slag, rot and the leaking toxic waste the old world left behind, and it is none the worse for it, because it stores the poison in its own body. It walks very slowly and never seems to be going anywhere, and it does not mind a load strapped to its back, so the people of the Wastes use it as a pack animal. It is gentle and easy to tame. The danger comes when it dies: everything it ever ate leaves it in one choking cloud, and nobody butchers a thuffor upwind."
+    },
+    {
+      "action": "keep",
+      "band": "wretched-small",
+      "commonality": 0.7,
+      "def": "GR_Beetlefleet",
+      "law": "§4.2 wretched register — named keep: vermin-of-ruin read (bs 0.3, spd 2.5 MEASURED); VGE hybrid, protected mechanics lane",
+      "note": "restored 2026-09-09 GR_ prefix correction (was wrongly evicted on the Grindterra card)"
+    },
+    {
+      "action": "keep",
+      "band": "wretched-medium",
+      "commonality": 0.4,
+      "def": "GR_Molebear",
+      "law": "§4.2 VGE-hybrid mutant read — protected mechanics lane, REGENERATE art where too cute (bs 1.0 passes §4.3's bs≥1.5 predator bar, MEASURED)",
+      "note": "restored 2026-09-09 GR_ prefix correction (was wrongly evicted on the Grindterra card)"
+    },
+    {
+      "action": "keep",
+      "band": "wretched-small",
+      "commonality": 0.7,
+      "def": "GR_ParagonRat",
+      "law": "§4.2 wretched register — named keep (bs 0.3 MEASURED); VGE hybrid, protected mechanics lane",
+      "note": "restored 2026-09-09 GR_ prefix correction (was wrongly evicted on the Grindterra card)"
+    },
+    {
+      "action": "keep",
+      "band": "wretched-medium",
+      "commonality": 0.4,
+      "def": "GR_Spidercat",
+      "law": "§4.2 VGE-hybrid mutant read — protected mechanics lane (bs 0.85 passes §4.3's predator bar, MEASURED)",
+      "note": "restored 2026-09-09 GR_ prefix correction (was wrongly evicted on the Grindterra card)"
+    },
+    {
+      "action": "import",
+      "commonality": 0.5,
+      "def": "RSW_Sacapillar",
+      "law": "owner review 2026-09 (round2 move mapping): PLACED: wasteland (homeless disposition sitting, frozen 2026-09-10) | WIRED 2026-09-23 (ROSTER_DEAD_BMT_NAMES_SWEEP_1 step 4) at the ruled 0.5 into RUT_Wastes.xml wildAnimals, gated MayRequire=\"mandrake.rsw.swbestiary\". The one LARGE row (bodySize 2.40) in that step, so the only one that can move ECOSYSTEM_PYRAMID_LAW_1 the wrong way. Not trimmed the way RSW_Korrum was in the Scarlands: that trim answered a MEASURED thin roster (total 1.51); this one is rich (17 rows, total 8.28) so 0.5 is ~6% of spawns. BOUND not a precise claim: at the 2026-09-20 sweep this biome was 73.3% small and adding 0.5 large gives 66.1%, far above the 50% floor; the current split is UNMEASURABLE on the Mac (no defs.sqlite). NEXT: re-run the pyramid sweep on the Desktop."
+    }
+  ],
+  "fish": {
+    "list": [],
+    "ruling": "no fish — the only standing water is hypersaline brine over mineral beds, sealed dead-river termini (§0/§2); nothing vertebrate lives in a half-charged voltaic cell; the pools' owners are the brine-battery archetype (new_defs)"
+  },
+  "flora": [
+    {
+      "commonality": 1.2,
+      "def": "RG_Plant_ToxiGrass",
+      "law": "contamination-marked ground cover — the vegetation is the dosimeter (§4)"
+    },
+    {
+      "commonality": 0.8,
+      "def": "RG_Plant_TallToxiGrass",
+      "law": "contamination-marked"
+    },
+    {
+      "commonality": 0.35,
+      "def": "Plant_GrayGrass",
+      "law": "Biotech pollution flora — the donor spine the sheet's Owed names (prep §4.4)"
+    },
+    {
+      "commonality": 0.3,
+      "def": "RUT_ScorchedStars",
+      "law": "ruin-marked alien (POLLUTED_LANDS_FLORA_PORT_1: ported from donor BMT_Plant_ScorchedStars, shared with RUT_Scarlands)"
+    },
+    {
+      "commonality": 0.1,
+      "def": "AB_ToxiBulb",
+      "law": "contamination-marked"
+    },
+    {
+      "commonality": 0.2,
+      "def": "AB_WeepingToxberry",
+      "law": "contamination-marked"
+    },
+    {
+      "commonality": 0.2,
+      "def": "Plant_Toxipotato",
+      "law": "Biotech pollution donor spine — mutant-marked crop gone feral"
+    },
+    {
+      "commonality": 0.1,
+      "def": "Plant_TreePolux",
+      "law": "Biotech polux tree LITERALLY sequesters pollution — \"plants clean\" is the owner's ruling in one def (§4)"
+    },
+    {
+      "commonality": 0.08,
+      "def": "VRE_PoluxBush",
+      "law": "sequestration flora kin"
+    }
+  ],
+  "flora_purged": [
+    {
+      "def": "PoisonAlocasia",
+      "reason": "clean Earth species name (alocasia) — owner card purge"
+    },
+    {
+      "def": "PoisonRafflesia",
+      "reason": "clean Earth species name (rafflesia)"
+    },
+    {
+      "def": "PoisonMushroom",
+      "reason": "rot runs slow to nothing (§3/ban 6) — a mushroom needs decay; Earth-nameable besides"
+    },
+    {
+      "def": "PoisonPlantDandelion",
+      "reason": "clean Earth species name — the wretched slot is BMT_Plant_TwistedDandelion"
+    },
+    {
+      "def": "PoisonPlantRaspberry",
+      "reason": "clean Earth species name (raspberry)"
+    },
+    {
+      "def": "PoisonPlantTreeCecropia",
+      "reason": "clean Earth tree name; trees break the rib-vault silhouette (§9: horizons of nothing)"
+    },
+    {
+      "def": "PoisonTreeCypress",
+      "reason": "clean Earth tree name"
+    },
+    {
+      "def": "PoisonTreePalm",
+      "reason": "clean Earth tree name"
+    },
+    {
+      "def": "PoisonPlantTreeTeak",
+      "reason": "clean Earth tree name"
+    },
+    {
+      "def": "PoisonTreeWillow",
+      "reason": "clean Earth tree name"
+    },
+    {
+      "def": "Plant_TreeCypress",
+      "reason": "clean Earth tree name"
+    },
+    {
+      "def": "RG_Plant_TreeToxipine",
+      "reason": "Earth tree name (pine); silhouette law §9"
+    },
+    {
+      "def": "RG_Plant_TreeToxiTeak",
+      "reason": "Earth tree name (teak); silhouette law §9"
+    },
+    {
+      "def": "BMT_Plant_CottonCap",
+      "reason": "clean Earth name (cotton); fungal read fails the no-rot ground"
+    },
+    {
+      "def": "BMT_Plant_GreyFern",
+      "reason": "clean Earth species name (fern)"
+    },
+    {
+      "def": "BMT_Plant_PigsEars",
+      "reason": "clean Earth succulent name (pig's ears)"
+    },
+    {
+      "def": "BMT_SpinyHops",
+      "reason": "clean Earth crop name (hops)"
+    },
+    {
+      "def": "BMT_Plant_Rashroot",
+      "reason": "duplicate — BMT_Plant_WildRashroot carries the wild slot"
+    },
+    {
+      "def": "BMT_Plant_GutterPlantain",
+      "reason": "POLLUTED_LANDS_FLORA_PORT_1: biomesteam.biomespollutedlands retired 2026-09-18 (mutation system RULED DROP, caverns_replacement_scoping.md §4/§5); Wasteland's toxic-ground identity already carries via its vanilla/AB_ poison flora (ToxiGrass/PoisonShrub/PoisonPlantBush/Toxipotato/etc.), so this donor filler plant is cut rather than ported"
+    },
+    {
+      "def": "BMT_Plant_ToxicIvy",
+      "reason": "POLLUTED_LANDS_FLORA_PORT_1: biomesteam.biomespollutedlands retired 2026-09-18 (mutation system RULED DROP, caverns_replacement_scoping.md §4/§5); Wasteland's toxic-ground identity already carries via its vanilla/AB_ poison flora (ToxiGrass/PoisonShrub/PoisonPlantBush/Toxipotato/etc.), so this donor filler plant is cut rather than ported"
+    },
+    {
+      "def": "BMT_Plant_TwistedDandelion",
+      "reason": "POLLUTED_LANDS_FLORA_PORT_1: biomesteam.biomespollutedlands retired 2026-09-18 (mutation system RULED DROP, caverns_replacement_scoping.md §4/§5); Wasteland's toxic-ground identity already carries via its vanilla/AB_ poison flora (ToxiGrass/PoisonShrub/PoisonPlantBush/Toxipotato/etc.), so this donor filler plant is cut rather than ported"
+    },
+    {
+      "def": "BMT_Plant_Snaketails",
+      "reason": "POLLUTED_LANDS_FLORA_PORT_1: biomesteam.biomespollutedlands retired 2026-09-18 (mutation system RULED DROP, caverns_replacement_scoping.md §4/§5); Wasteland's toxic-ground identity already carries via its vanilla/AB_ poison flora (ToxiGrass/PoisonShrub/PoisonPlantBush/Toxipotato/etc.), so this donor filler plant is cut rather than ported"
+    },
+    {
+      "def": "BMT_Plant_WildRashroot",
+      "reason": "POLLUTED_LANDS_FLORA_PORT_1: biomesteam.biomespollutedlands retired 2026-09-18 (mutation system RULED DROP, caverns_replacement_scoping.md §4/§5); Wasteland's toxic-ground identity already carries via its vanilla/AB_ poison flora (ToxiGrass/PoisonShrub/PoisonPlantBush/Toxipotato/etc.), so this donor filler plant is cut rather than ported"
+    },
+    {
+      "def": "BMT_Plant_Doomsprout",
+      "reason": "POLLUTED_LANDS_FLORA_PORT_1: biomesteam.biomespollutedlands retired 2026-09-18 (mutation system RULED DROP, caverns_replacement_scoping.md §4/§5); Wasteland's toxic-ground identity already carries via its vanilla/AB_ poison flora (ToxiGrass/PoisonShrub/PoisonPlantBush/Toxipotato/etc.), so this donor filler plant is cut rather than ported"
+    },
+    {
+      "def": "BMT_Plant_TumorbulbHyacinth",
+      "reason": "POLLUTED_LANDS_FLORA_PORT_1: biomesteam.biomespollutedlands retired 2026-09-18 (mutation system RULED DROP, caverns_replacement_scoping.md §4/§5); Wasteland's toxic-ground identity already carries via its vanilla/AB_ poison flora (ToxiGrass/PoisonShrub/PoisonPlantBush/Toxipotato/etc.), so this donor filler plant is cut rather than ported"
+    },
+    {
+      "def": "BMT_Plant_PoxSorghum",
+      "reason": "POLLUTED_LANDS_FLORA_PORT_1: biomesteam.biomespollutedlands retired 2026-09-18 (mutation system RULED DROP, caverns_replacement_scoping.md §4/§5); Wasteland's toxic-ground identity already carries via its vanilla/AB_ poison flora (ToxiGrass/PoisonShrub/PoisonPlantBush/Toxipotato/etc.), so this donor filler plant is cut rather than ported"
+    },
+    {
+      "def": "BMT_RainbowTongue",
+      "reason": "POLLUTED_LANDS_FLORA_PORT_1: biomesteam.biomespollutedlands retired 2026-09-18 (mutation system RULED DROP, caverns_replacement_scoping.md §4/§5); Wasteland's toxic-ground identity already carries via its vanilla/AB_ poison flora (ToxiGrass/PoisonShrub/PoisonPlantBush/Toxipotato/etc.), so this donor filler plant is cut rather than ported"
+    },
+    {
+      "def": "BMT_Plant_EclipsusFlower",
+      "reason": "POLLUTED_LANDS_FLORA_PORT_1: biomesteam.biomespollutedlands retired 2026-09-18 (mutation system RULED DROP, caverns_replacement_scoping.md §4/§5); Wasteland's toxic-ground identity already carries via its vanilla/AB_ poison flora (ToxiGrass/PoisonShrub/PoisonPlantBush/Toxipotato/etc.), so this donor filler plant is cut rather than ported"
+    },
+    {
+      "def": "BMT_Plant_EclipsusLeaves",
+      "reason": "POLLUTED_LANDS_FLORA_PORT_1: biomesteam.biomespollutedlands retired 2026-09-18 (mutation system RULED DROP, caverns_replacement_scoping.md §4/§5); Wasteland's toxic-ground identity already carries via its vanilla/AB_ poison flora (ToxiGrass/PoisonShrub/PoisonPlantBush/Toxipotato/etc.), so this donor filler plant is cut rather than ported"
+    },
+    {
+      "def": "PoisonPlantBush",
+      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20 — executed the 2026-09-10 sheet's decision=out that was graded and never applied (\"4 flora purges remain purged\"). No successor authored — \"I don't want new versions of these silly plants.\""
+    }
+  ],
+  "law_sources": [
+    "wastes.md §4/§6",
+    "_assignment_prep.md §4, §9",
+    "BIOME_FAUNA_ASSIGNMENT_SITTING_1.md owner cards 2026-09-09"
+  ],
+  "new_defs": [
+    {
+      "from_sheet": "wasteland §4 / prep §4.4",
+      "kind": "plant",
+      "mechanic_load": "C#: dose layer; Biotech pollution spine is the donor",
+      "name": "radiotroph flora (dosimeter-lawn, vault-root sequestration trees)"
+    },
+    {
+      "from_sheet": "wasteland §4 / prep §4.4",
+      "kind": "creature",
+      "mechanic_load": "mechanic EXISTS in donors (59 timed-producer rows); bezoar def is new",
+      "name": "excretor herd creature + metal-salt bezoar product def"
+    },
+    {
+      "from_sheet": "wasteland §4 / prep §4.4",
+      "kind": "creature",
+      "mechanic_load": "NEW C#: heat emission + spacing",
+      "name": "radiothermal solitary (living furnace; spacing law)"
+    },
+    {
+      "from_sheet": "wasteland §4 / prep §4.4",
+      "kind": "creature",
+      "mechanic_load": "NEW ART/DEF; EMP/zap comps exist in donor C#",
+      "name": "brine-battery pool owner (ion-gradient discharge)"
+    },
+    {
+      "from_sheet": "wasteland §4b",
+      "kind": "weather",
+      "mechanic_load": "C#: dose + exhumation reshuffle (own ruling owed on mutator churn)",
+      "name": "the three storm weather defs (ash / radiation-halo / plasma-terminator-only)"
+    }
+  ],
+  "sheet": "wastes",
+  "stat_adjustments": [],
+  "tiles": 1126
+}

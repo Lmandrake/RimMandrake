@@ -136,7 +136,7 @@ Every number is an estimate except the first four columns, which are read from t
 | `RM_TheForge` | +57° | 0.4 | 0.05 | 0.02 | `RM_FirevineTree` 3.8 | 0.00 | 0.11 |
 | `RM_FloodedCanyon` (Cracked Lands) | +21° | 0.12 | 0.12 | 0.01 | `RM_CrackedThornwood` 4 | 0.05 | 0.06 |
 | `RM_WeepingStones` | +31° | 0.4 | 0.03 | 0.01 | `RM_Rockfinger` 4.5 | 0.03 | 0.08 |
-| `RM_Wasteland` | ~+3° | 0.12 | 0.11 | 0.01 | `RM_VaultRoot` 5 | 0.16 | 0.03 |
+| `RM_Wastes` | ~+3° | 0.12 | 0.11 | 0.01 | `RM_VaultRoot` 5 | 0.16 | 0.03 |
 | `RM_LongShade` | +14° | 0.05 | 0.08 | 0.004 | `RM_Shadespire` 4.5 | 0.01 | 0.01 |
 | `RM_Stillsand` | +47° | 0.008 | 0.02 | 0.0003 | `RM_Ollim` 10.5 | 0.00 | 0.01 |
 | `RM_LeaningScrub`, `RUT_AridShrubland`, `RM_TheScald` | day side | 0.3–0.35 | 0.05–0.13 | 0.02–0.04 | venomvine thickets 2.4, `RM_Vekkfan` 2 | not simulated | not simulated |

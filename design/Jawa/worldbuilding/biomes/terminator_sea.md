@@ -33,7 +33,7 @@ Not yet painted onto any tile. Full findings, engine facts and what remains owed
    littoral LINE, never a region, drawn against the vast empty dune.
 2. **Terminator:** 🔴 **not lush. SOLITARY.** Sparse, singular, lonely.
 3. **Nightside:** a **different definition of lush** entirely, built from very alien
-   life forms — dense, but not green and not plants. (See `nightside_ice.md` §10.)
+   life forms — dense, but not green and not plants. (See `sleeping_ice.md` §10.)
 
 ⇒ This sheet's job is therefore the opposite of what a coastal biome usually does. It
 has open water, mild temperature and permanent light — every ingredient abundance
@@ -216,7 +216,7 @@ here, and it is a measurable claim, not a mood.**
   🔴 The terminator is **not** a lush band. Checkable: no tile in this biome may
   exceed a low plant-density ceiling, and lush plant defs are barred outright.
   *(Dayside lush is confined to river and coast lines; nightside "lush" is a different
-  thing entirely — see `nightside_ice.md` §10.)*
+  thing entirely — see `sleeping_ice.md` §10.)*
 - ⛔ **No trunk-and-crown trees, no broadleaf canopy, no overhead canopy layer.**
   Flora is planar, vertical, and widely spaced.
 - ⛔ **No heliotropism, no sun-tracking, no plants that open and close.**

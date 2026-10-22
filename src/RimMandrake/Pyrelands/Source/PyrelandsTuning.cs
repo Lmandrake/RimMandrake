@@ -290,10 +290,10 @@ namespace RimMandrake.Pyrelands
         // `PyrelandsBiomeDefNames` above already carries for Pyrelands
         // itself: each bare donor name now also has a campaign
         // `RUT_<Name>` (and, for PoisonForest, a franchise-free
-        // `RM_PoisonForest` too) live on disk — measured 2026-09-26 via
+        // `RM_Cauldron` too) live on disk — measured 2026-09-26 via
         // `defName>RUT_Desert<` / `RUT_ExtremeDesert<` in
-        // Mods/UtinniPatches/Defs/BiomeDefs/, and `RM_PoisonForest.xml` /
-        // `RUT_PoisonForest.xml` under Mods/PoisonForest/ and
+        // Mods/UtinniPatches/Defs/BiomeDefs/, and `RM_Cauldron.xml` /
+        // `RUT_Cauldron.xml` under Mods/PoisonForest/ and
         // Mods/UtinniPatches/. Which of a donor/RUT/RM trio actually carries
         // live tiles on Ash'karr right now is a repaint-pass question this
         // item does not answer (CLAUDE.md: a BiomeDef on 0 tiles
@@ -309,12 +309,9 @@ namespace RimMandrake.Pyrelands
         public static readonly string[] NearTerminatorBiomeDefNames =
         {
             "AB_MycoticJungle", "BMT_FungalForest",
-            // CAULDRON_FULL_RENAME_1 (2026-09-29/30): RM_PoisonForest -> RM_Cauldron,
-            // and (2026-09-30, question-card decision) RUT_PoisonForest ->
-            // RUT_Cauldron -- the 546 live world tiles ride to the paint-once-at-
-            // the-end repaint (CLAUDE.md). Old names kept alongside the new ones,
-            // same "list every plausible name" policy as the comment above.
-            "PoisonForest", "RUT_PoisonForest", "RUT_Cauldron", "RM_PoisonForest", "RM_Cauldron",
+            // "PoisonForest" is the donor biome; the RM_/RUT_PoisonForest names
+            // were retired by CAULDRON_FULL_RENAME_1 (0 tiles, census 2026-10-21).
+            "PoisonForest", "RUT_Cauldron", "RM_Cauldron",
         };
 
         /// <summary>Same cadence as the map leg's own interval, so a herd's

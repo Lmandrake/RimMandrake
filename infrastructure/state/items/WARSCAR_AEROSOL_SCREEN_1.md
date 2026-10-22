@@ -21,7 +21,7 @@ scope, balanced by cost and gating; never narrowed.**
    toxic half calls it too.
 3. **What the screen blocks (broad, ruled):** all airborne toxic exposure; fallout cell effects; the
    Settling film and its lift front; Wasteland ash-fall pollution writes (in-radius check in
-   `RM_MapComponent_WastelandStorms`' fall loop); noxious-haze mood and plant factors in radius;
+   `RM_MapComponent_WastesStorms`' fall loop); noxious-haze mood and plant factors in radius;
    **calibrated:** scrubs `GasType.ToxGas` and slowly un-pollutes ground in radius. Never bullets,
    heat or cold. Works in **every polluted biome** (ruled turn 2).
 4. **Balanced by cost:** 400 W (900 W calibrated); a `CompRefuelable` burning **dielectric gel**

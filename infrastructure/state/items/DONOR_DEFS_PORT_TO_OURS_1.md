@@ -348,37 +348,37 @@ is not an Alpha Animals def at all and is excluded from the table and count.
 | defName | kind | our biome(s) + commonality | cost grade | notes |
 |---|---|---|---|---|
 | `AA_AcanthamoebaGiganteaLarge` | ThingDef+PawnKindDef | RUT_Slime 0.15 | HIGH | private-assembly class: AlphaBehavioursAndEvents.DeathActionWorker_AcidExplosion |
-| `AA_AcanthamoebaGiganteaSmall` | ThingDef+PawnKindDef | RUT_Wasteland 0.1 | HIGH | private-assembly class: AlphaBehavioursAndEvents.DeathActionWorker_AcidExplosion |
+| `AA_AcanthamoebaGiganteaSmall` | ThingDef+PawnKindDef | RUT_Wastes 0.1 | HIGH | private-assembly class: AlphaBehavioursAndEvents.DeathActionWorker_AcidExplosion |
 | `AA_Aerofleet` | ThingDef+PawnKindDef | RUT_GreySea 0.05, RUT_TheForge 0.4, RUT_TwilightSea 0.05 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_AnimalProduct; CompProperties_AsexualReproduction; CompProperties_Floating |
 | `AA_Agaripawn` | ThingDef+PawnKindDef | RM_TheRot 0.2 | HIGH | private-assembly class: AlphaBehavioursAndEvents.CompProperties_GraphicsRefresher |
 | `AA_Agaripod` | ThingDef+PawnKindDef | RM_TheRot 0.25 | HIGH | private-assembly class: AlphaBehavioursAndEvents.CompProperties_GraphicsRefresher |
 | `AA_AngelMoth` | ThingDef+PawnKindDef | RM_TheRot 0.5 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_AnimalProduct; CompProperties_EatWeirdFood; CompProperties_Floating |
 | `AA_AnimaColossus` | ThingDef+PawnKindDef | RM_TheRot 0.5 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_AnimalProduct; CompProperties_AttachEffecter |
 | `AA_AuroraSylph` | ThingDef+PawnKindDef | RUT_PropaneLake 0.5 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_AutoNutrition; CompProperties_CauseIncident; CompProperties_Floating |
-| `AA_BedBug` | ThingDef+PawnKindDef | RUT_PoisonForest 0.3 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension |
+| `AA_BedBug` | ThingDef+PawnKindDef | RUT_Cauldron 0.3 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension |
 | `AA_BloodShrimp` | ThingDef+PawnKindDef | RUT_Contagion 0.2, RUT_Greentide 0.2, RUT_Miasma 0.1 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension |
-| `AA_BoulderMit` | ThingDef+PawnKindDef | RUT_NightsideIce 0.004 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_AnimalProduct |
+| `AA_BoulderMit` | ThingDef+PawnKindDef | RUT_SleepingIce 0.004 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_AnimalProduct |
 | `AA_Bumbledrone` | ThingDef+PawnKindDef | RUT_Sump 0.35 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_Floating |
 | `AA_BumbledroneHierophant` | ThingDef+PawnKindDef | RUT_Sump 0.2 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_Floating |
 | `AA_Cactipine` | ThingDef+PawnKindDef | RUT_AridShrubland 0.25 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_AnimalProduct |
 | `AA_CrepuscularBeetle` | ThingDef+PawnKindDef | RUT_Abyss 0.35 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_InitialHediff |
 | `AA_CrescendoAnole` | ThingDef+PawnKindDef+PawnRenderTreeDef | RUT_TheForge 0.5 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension |
-| `AA_CrystalMit` | ThingDef+PawnKindDef | RUT_PoisonForest 0.15 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_AnimalProduct; CompProperties_EatWeirdFood |
+| `AA_CrystalMit` | ThingDef+PawnKindDef | RUT_Cauldron 0.15 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_AnimalProduct; CompProperties_EatWeirdFood |
 | `AA_DarkVandal` | ThingDef+PawnKindDef | RUT_Abyss 0.15 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_DigWhenHungry |
 | `AA_Darkbeast` | ThingDef+PawnKindDef | RUT_Abyss 0.005 | HIGH | private-assembly class: AlphaBehavioursAndEvents.DeathActionWorker_SummonEclipse |
-| `AA_DecayDrake` | ThingDef+PawnKindDef | RUT_Miasma 0.1, RUT_PoisonForest 0.1, RUT_Slime 0.02 | HIGH | private-assembly class: AlphaBehavioursAndEvents.CompProperties_GraphicsRefresher |
+| `AA_DecayDrake` | ThingDef+PawnKindDef | RUT_Miasma 0.1, RUT_Cauldron 0.1, RUT_Slime 0.02 | HIGH | private-assembly class: AlphaBehavioursAndEvents.CompProperties_GraphicsRefresher |
 | `AA_Drainer` | ThingDef+PawnKindDef | RUT_Contagion 0.15 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_EatWeirdFood; CompProperties_Floating |
 | `AA_DrainerLarva` | ThingDef+PawnKindDef | RUT_Contagion 0.05 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_Metamorphosis |
 | `AA_DuskProwler` | ThingDef+PawnKindDef | RUT_Abyss 0.2 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension |
 | `AA_DuskRat` | ThingDef+PawnKindDef | RUT_Abyss 1.5 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension |
-| `AA_Eyeling` | ThingDef+PawnKindDef | RUT_Wasteland 0.6, RUT_WeepingStones 0.1 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension |
+| `AA_Eyeling` | ThingDef+PawnKindDef | RUT_Wastes 0.6, RUT_WeepingStones 0.1 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension |
 | `AA_FrostboundBehemoth` | ThingDef+PawnKindDef | RUT_FuelSnows 0.126, RUT_Umbra 0.126 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension |
 | `AA_Frostling` | ThingDef+PawnKindDef | RUT_Abyss 0.05 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension |
 | `AA_Frostmite` | ThingDef+PawnKindDef | RUT_FuelSnows 0.35, RUT_Umbra 0.35 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_DigWhenHungry |
-| `AA_GiantCrownedSilkie` | ThingDef+PawnKindDef | RUT_PoisonForest 0.15 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension |
+| `AA_GiantCrownedSilkie` | ThingDef+PawnKindDef | RUT_Cauldron 0.15 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension |
 | `AA_GreenGoo` | ThingDef+PawnKindDef+PawnRenderTreeDef | RUT_Slime 2.0 | HIGH | private-assembly class: AlphaBehavioursAndEvents.DeathActionWorker_AcidExplosion; AlphaBehavioursAndEvents.PawnRenderNodeProperties_SpasticScaled |
-| `AA_Helixien` | ThingDef+PawnKindDef | RUT_Contagion 0.1, RUT_Miasma 0.1, RUT_PoisonForest 0.1, RUT_Scarlands 0.08, RUT_Slime 0.075 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_CorpseDecayer; CompProperties_ThoughtEffecter |
-| `AA_InfectedAerofleet` | ThingDef+PawnKindDef | RUT_Contagion 0.5, RUT_PoisonForest 0.5 | HIGH | private-assembly class: AlphaBehavioursAndEvents.DeathActionWorker_SmallRedAcidExplosion |
+| `AA_Helixien` | ThingDef+PawnKindDef | RUT_Contagion 0.1, RUT_Miasma 0.1, RUT_Cauldron 0.1, RUT_Scarlands 0.08, RUT_Slime 0.075 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_CorpseDecayer; CompProperties_ThoughtEffecter |
+| `AA_InfectedAerofleet` | ThingDef+PawnKindDef | RUT_Contagion 0.5, RUT_Cauldron 0.5 | HIGH | private-assembly class: AlphaBehavioursAndEvents.DeathActionWorker_SmallRedAcidExplosion |
 | `AA_Lockjaw` | ThingDef+PawnKindDef | RUT_Miasma 0.2 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension |
 | `AA_Mantrap` | ThingDef+PawnKindDef+PawnRenderTreeDef | RUT_Miasma 0.2 | HIGH | private-assembly class: AlphaBehavioursAndEvents.PawnRenderNodeProperties_SpasticScaled |
 | `AA_Metallovore` | ThingDef+PawnKindDef | RUT_TheForge 0.15 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_EatWeirdFood |
@@ -390,33 +390,33 @@ is not an Alpha Animals def at all and is excluded from the table and count.
 | `AA_NightMule` | ThingDef+PawnKindDef | RUT_Abyss 0.5 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension |
 | `AA_NightRam` | ThingDef+PawnKindDef | RUT_Abyss 0.09 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension |
 | `AA_Nightling` | ThingDef+PawnKindDef | RUT_Abyss 0.2 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_InitialAbility |
-| `AA_OcularJelly` | ThingDef+PawnKindDef+PawnRenderTreeDef | RUT_Contagion 2.0, RUT_PoisonForest 0.5 | HIGH | private-assembly class: AlphaBehavioursAndEvents.PawnRenderNodeProperties_SpasticScaled |
+| `AA_OcularJelly` | ThingDef+PawnKindDef+PawnRenderTreeDef | RUT_Contagion 2.0, RUT_Cauldron 0.5 | HIGH | private-assembly class: AlphaBehavioursAndEvents.PawnRenderNodeProperties_SpasticScaled |
 | `AA_Plasmorph` | ThingDef+PawnKindDef | RUT_Miasma 0.05, RUT_Slime 0.1 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_InitialAbility |
 | `AA_RaptorShrimp` | ThingDef+PawnKindDef | RUT_Miasma 0.2 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_Regeneration |
-| `AA_RedGoo` | ThingDef+PawnKindDef+PawnRenderTreeDef | RUT_Contagion 0.75, RUT_NightsideIce 0.003 | HIGH | private-assembly class: AlphaBehavioursAndEvents.DeathActionWorker_RedAcidExplosion; AlphaBehavioursAndEvents.PawnRenderNodeProperties_SpasticScaled |
+| `AA_RedGoo` | ThingDef+PawnKindDef+PawnRenderTreeDef | RUT_Contagion 0.75, RUT_SleepingIce 0.003 | HIGH | private-assembly class: AlphaBehavioursAndEvents.DeathActionWorker_RedAcidExplosion; AlphaBehavioursAndEvents.PawnRenderNodeProperties_SpasticScaled |
 | `AA_RedSpore` | ThingDef+PawnKindDef | RUT_Contagion 0.85 | HIGH | private-assembly class: AlphaBehavioursAndEvents.DeathActionWorker_RedAcidExplosion |
 | `AA_RoughPlatedMonitor` | ThingDef+PawnKindDef | RUT_Contagion 0.1 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_AcidImmunity; CompProperties_ExplodingEggLayer |
 | `AA_SandProwler` | ThingDef+PawnKindDef | RUT_Abyss 0.075 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_GraphicByTerrain |
 | `AA_SandSquid` | ThingDef+PawnKindDef | RUT_CrackedLands 0.1 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_TerrainChanger |
 | `AA_ShadowCharger` | ThingDef+PawnKindDef | RUT_Abyss 0.09 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension |
-| `AA_ShockGoat` | ThingDef+PawnKindDef | RUT_NightsideIce 0.03 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension |
+| `AA_ShockGoat` | ThingDef+PawnKindDef | RUT_SleepingIce 0.03 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension |
 | `AA_Skyeel` | ThingDef+PawnKindDef | RUT_PropaneLake 0.5 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_Floating; CompProperties_Regeneration |
-| `AA_Slurrypede` | ThingDef+PawnKindDef | RUT_FuelSnows 0.02, RUT_Miasma 0.1, RUT_NightsideIce 0.002, RUT_Umbra 0.02 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_AnimalProduct |
+| `AA_Slurrypede` | ThingDef+PawnKindDef | RUT_FuelSnows 0.02, RUT_Miasma 0.1, RUT_SleepingIce 0.002, RUT_Umbra 0.02 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_AnimalProduct |
 | `AA_SpinedGow` | ThingDef+PawnKindDef | RUT_Scarlands 0.15 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension |
-| `AA_SummitCrab` | ThingDef+PawnKindDef | RUT_NightsideIce 0.004 | MEDIUM | VEF.AnimalBehaviours only: CompProperties_Untameable |
+| `AA_SummitCrab` | ThingDef+PawnKindDef | RUT_SleepingIce 0.004 | MEDIUM | VEF.AnimalBehaviours only: CompProperties_Untameable |
 | `AA_Swarmling` | ThingDef+PawnKindDef | RUT_Contagion 0.1, RM_TheRot 0.3 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension |
 | `AA_TarGuzzler` | ThingDef+PawnKindDef | RUT_Sump 0.5 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_EatWeirdFood |
-| `AA_Terramorph` | ThingDef+PawnKindDef | RUT_FuelSnows 0.1, RUT_NightsideIce 0.003, RUT_Umbra 0.1, RUT_Wasteland 0.2 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_EatWeirdFood; CompProperties_NearbyEffecter |
-| `AA_TetraSlug` | ThingDef+PawnKindDef | RUT_NightsideIce 0.002 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_Electrified; CompProperties_InitialAbility |
+| `AA_Terramorph` | ThingDef+PawnKindDef | RUT_FuelSnows 0.1, RUT_SleepingIce 0.003, RUT_Umbra 0.1, RUT_Wastes 0.2 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_EatWeirdFood; CompProperties_NearbyEffecter |
+| `AA_TetraSlug` | ThingDef+PawnKindDef | RUT_SleepingIce 0.002 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_Electrified; CompProperties_InitialAbility |
 | `AA_Thermadon` | ThingDef+PawnKindDef | RUT_Miasma 0.1 | HIGH | private-assembly class: AlphaBehavioursAndEvents.CompProperties_GraphicsRefresher |
 | `AA_Thunderbeast` | ThingDef+PawnKindDef | RUT_Slime 0.005 | HIGH | private-assembly class: AlphaBehavioursAndEvents.DeathActionWorker_SummonFlashstorm |
 | `AA_Thunderox` | ThingDef+PawnKindDef | RUT_Abyss 0.09 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_Regeneration |
 | `AA_Wildpawn` | ThingDef+PawnKindDef | RUT_AridShrubland 0.1, RM_TheRot 0.2 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_AnimalProduct; CompProperties_AsexualReproduction; CompProperties_HighlyFlammable |
-| `AA_Wildpod` | ThingDef+PawnKindDef | RUT_AridShrubland 0.025, RUT_PoisonForest 0.05, RM_TheRot 0.2 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_AnimalProduct; CompProperties_AsexualReproduction; CompProperties_HighlyFlammable |
+| `AA_Wildpod` | ThingDef+PawnKindDef | RUT_AridShrubland 0.025, RUT_Cauldron 0.05, RM_TheRot 0.2 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_AnimalProduct; CompProperties_AsexualReproduction; CompProperties_HighlyFlammable |
 
 ### One anomaly found, not part of the table — `VFEI2_BlackSwarmling`
 
-Live in `RUT_Miasma` (0.5) and `RUT_Wasteland` (0.6) with
+Live in `RUT_Miasma` (0.5) and `RUT_Wastes` (0.6) with
 `MayRequire="sarg.alphaanimals"` in our own BiomeDef XML, but **the def does
 not exist anywhere in the Alpha Animals mod's own `Defs/` folder.** The
 defName prefix (`VFEI2_`) and the packageId it actually belongs to
@@ -425,7 +425,7 @@ this item's own donor table) say this is a VFE Insectoid2 def, misguarded on
 Alpha Animals' packageId in our XML. Practical effect: if Alpha Animals is
 ever retired while VFE Insectoid2 stays active, this row would silently
 vanish from both biomes even though its actual donor is still installed —
-worth a fix when someone next touches `RUT_Miasma.xml`/`RUT_Wasteland.xml`,
+worth a fix when someone next touches `RUT_Miasma.xml`/`RUT_Wastes.xml`,
 but out of scope for this read-only census (no XML touched this pass).
 
 
@@ -544,7 +544,7 @@ vanilla/Anomaly-DLC render node classes (`PawnRenderNodeProperties_Parent`/
 | `Bantha` | ThingDef+PawnKindDef | RUT_AridShrubland 0.5; RUT_WeepingStones 0.1 | LOW | stock comps only: CompProperties_Milkable, CompProperties_Shearable |
 | `Beldon` | ThingDef+PawnKindDef+PawnRenderTreeDef | RUT_Greentide 0.008; RUT_TheForge 0.08 | LOW | stock comps only: CompProperties_EggLayer, CompProperties_Milkable, PawnRenderNodeProperties_BulbfreakTentacle, PawnRenderNodeProperties_Carried, PawnRenderNodeProperties_Parent |
 | `Boma` | ThingDef+PawnKindDef | RUT_WeepingStones 0.15 | LOW | stock comps only: CompProperties_EggLayer |
-| `Borcatu` | ThingDef+PawnKindDef | RUT_Wasteland 0.7 | LOW | stock comps + optional MayRequire-guarded ext: NocturnalAnimals.ExtendedRaceProperties |
+| `Borcatu` | ThingDef+PawnKindDef | RUT_Wastes 0.7 | LOW | stock comps + optional MayRequire-guarded ext: NocturnalAnimals.ExtendedRaceProperties |
 | `CanCell` | ThingDef+PawnKindDef | RUT_CrackedLands 0.2 | LOW | stock comps only: CompProperties_EggLayer |
 | `Cannok` | ThingDef+PawnKindDef | RUT_AridShrubland 0.16 | LOW | no comps, plain ThingDef |
 | `Clodhopper` | ThingDef+PawnKindDef | RUT_Greentide 0.7 | LOW | stock comps only: CompProperties_EggLayer |
@@ -563,7 +563,7 @@ vanilla/Anomaly-DLC render node classes (`PawnRenderNodeProperties_Parent`/
 | `Gelagrub` | ThingDef+PawnKindDef | RUT_FeverWood 0.4; RUT_Greentide 0.3 | LOW | stock comps only: CompProperties_EggLayer, CompProperties_Milkable |
 | `Gorg` | ThingDef+PawnKindDef | RUT_AridShrubland 1.0 | LOW | stock comps only: CompProperties_EggLayer |
 | `Gornt` | ThingDef+PawnKindDef | RUT_CrackedLands 0.3 | LOW | no comps, plain ThingDef |
-| `GraniteSlug` | ThingDef+PawnKindDef | RUT_PoisonForest 0.15 | LOW | no comps, plain ThingDef |
+| `GraniteSlug` | ThingDef+PawnKindDef | RUT_Cauldron 0.15 | LOW | no comps, plain ThingDef |
 | `Grank` | ThingDef+PawnKindDef | RUT_AridShrubland 0.2; RUT_Miasma 0.3 | LOW | no comps, plain ThingDef |
 | `Hawkbat` | ThingDef+PawnKindDef | RUT_Greentide 0.18 | LOW | stock comps only: CompProperties_EggLayer |
 | `Hssiss` | ThingDef+PawnKindDef | RUT_Greentide 0.18 | LOW | stock comps only: CompProperties_EggLayer |
@@ -581,8 +581,8 @@ vanilla/Anomaly-DLC render node classes (`PawnRenderNodeProperties_Parent`/
 | `Massiff` | ThingDef+PawnKindDef | RUT_AridShrubland 0.6 | LOW | no comps, plain ThingDef |
 | `Mott` | ThingDef+PawnKindDef | RUT_Greentide 0.4 | LOW | stock comps + optional MayRequire-guarded ext: PathfindingFramework.MovementExtension |
 | `Mudhorn` | ThingDef+PawnKindDef | RUT_AridShrubland 0.8 | LOW | stock comps only: CompProperties_EggLayer, CompProperties_Shearable |
-| `Mynock` | ThingDef+PawnKindDef | RUT_PoisonForest 0.2; RUT_Scarlands 0.5 | LOW | no comps, plain ThingDef |
-| `Neebray` | ThingDef+PawnKindDef | RUT_PoisonForest 0.8 | LOW | no comps, plain ThingDef |
+| `Mynock` | ThingDef+PawnKindDef | RUT_Cauldron 0.2; RUT_Scarlands 0.5 | LOW | no comps, plain ThingDef |
+| `Neebray` | ThingDef+PawnKindDef | RUT_Cauldron 0.8 | LOW | no comps, plain ThingDef |
 | `Ollopom` | ThingDef+PawnKindDef | RUT_WeepingStones 1.3 | LOW | stock comps + optional MayRequire-guarded ext: PathfindingFramework.MovementExtension |
 | `PekoPeko` | ThingDef+PawnKindDef | RUT_Greentide 0.2 | LOW | stock comps only: CompProperties_EggLayer |
 | `Pikobis` | ThingDef+PawnKindDef | RUT_AridShrubland 0.1 | LOW | stock comps + optional MayRequire-guarded ext: PathfindingFramework.MovementExtension |
@@ -713,7 +713,7 @@ defNames, matching the item's own count exactly.
   dependencies a full retirement test (this item's own `verify` section)
   would still trip over.
 
-### `oskarpotocki.vfe.insectoid2` (7 in the table; 2 unique defNames measured live: `VFEI2_Megathrips` in RUT_FeverWood, `VFEI2_Swarmling` in RUT_Greentide/RUT_Miasma/RUT_Wasteland)
+### `oskarpotocki.vfe.insectoid2` (7 in the table; 2 unique defNames measured live: `VFEI2_Megathrips` in RUT_FeverWood, `VFEI2_Swarmling` in RUT_Greentide/RUT_Miasma/RUT_Wastes)
 
 Real donor is content id `3309003431` (`OskarPotocki.VFE.Insectoid2`) — NOT
 `3309022698`, which is "Reel's Insector Faction" and only *depends on* this
@@ -737,7 +737,7 @@ packageId (the trap above).
   `VFEI2_BlackSwarmling` under `sarg.alphaanimals` was plausible-looking in
   the first place — it's the same species family from the same modder.
 
-### `who.vfee.isopodageneline` (4; 3 unique defNames: `SW_Electrictick`, `SW_Electricgryllotalpa` (RUT_Scarlands), `SW_Juggernautbeetles` (RUT_Scarlands), `SW_Electrictick` also in RUT_Wasteland)
+### `who.vfee.isopodageneline` (4; 3 unique defNames: `SW_Electrictick`, `SW_Electricgryllotalpa` (RUT_Scarlands), `SW_Juggernautbeetles` (RUT_Scarlands), `SW_Electrictick` also in RUT_Wastes)
 
 Content id `3357632382` (`Who.VFEE.IsopodaGeneline`). All three inherit
 `VFEI2_BaseInsect` — **this donor's whole cast is itself parented on
@@ -757,7 +757,7 @@ donor's port is not independent of the one above.
 - None reach HIGH on their own defs, but the `VFEI2_BaseInsect` parent
   dependency on the previous donor means "cheap" here is conditional.
 
-### `sarg.alphamemes` (3: `AM_Dryad_Corruptor`, `AM_Dryad_Ocular`, `AM_Dryad_Tumorous`, all RUT_PoisonForest)
+### `sarg.alphamemes` (3: `AM_Dryad_Corruptor`, `AM_Dryad_Ocular`, `AM_Dryad_Tumorous`, all RUT_Cauldron)
 
 Content id `2661356814` (`Sarg.AlphaMemes`, not `3556875187` — the trap
 above). **GRADE HIGH for all three.** These are Gauranlen-tree "dryad"
@@ -773,7 +773,7 @@ merge-into-pod behaviour — a call for the sitting, not this pass. The
 `CompProperties_Spawner` comps on these defs are stock, so the entire cost
 here is the AI tree, not the ThingDef.
 
-### `mlie.horrors` (2: `Terrorworm` RUT_AridShrubland, `Visceral` RUT_PoisonForest)
+### `mlie.horrors` (2: `Terrorworm` RUT_AridShrubland, `Visceral` RUT_Cauldron)
 
 Content id `3535224844` (`Mlie.Horrors`). **GRADE LOW for both** — plain
 `ThingDef`s off `BaseHorror`/`AnimalKindBase`, zero `Class=` attributes
@@ -806,7 +806,7 @@ Content id `2260097569` (`ReGrowth.BOTR.Core`). **GRADE LOW** — stock
 `BigBirdKindBase` not walked further); the donor ships `ReGrowthCore.dll`
 but it isn't referenced by this specific def.
 
-### `vanillaexpanded.vgeneticse` (8 pairs, 7 unique defNames — the item's own table undercounts this one by one, since `GR_Beetlefleet` is wired into both RUT_PoisonForest and RUT_Wasteland)
+### `vanillaexpanded.vgeneticse` (8 pairs, 7 unique defNames — the item's own table undercounts this one by one, since `GR_Beetlefleet` is wired into both RUT_Cauldron and RUT_Wastes)
 
 Content id `2801160906` (`VanillaExpanded.VGeneticsE`; not present as a
 Workshop folder was wrong to assume — it IS cached, the trap above just
@@ -824,7 +824,7 @@ the vendored copy but the live cache confirms the real mod ships
   MEDIUM**, all VEF.AnimalBehaviours-only (`AnimalStatExtension` plus, per
   def, `CompProperties_InitialHediff`/`InitialAbility`/`DigPeriodically`) —
   the same already-load-bearing framework.
-- `GR_Beetlefleet` (RUT_PoisonForest, RUT_Wasteland) — **GRADE MEDIUM**
+- `GR_Beetlefleet` (RUT_Cauldron, RUT_Wastes) — **GRADE MEDIUM**
   (VEF.AnimalBehaviours only: `AnimalProduct`, `AsexualReproduction`,
   `Floating`), but 🔑 **it is defined in the donor's own
   `Mods/AlphaAnimals/` compat sub-folder**, meaning it only exists when

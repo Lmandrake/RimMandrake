@@ -33,7 +33,7 @@
   Terrain_Water.xml: WaterDeepBase, WaterChestDeepBase and WaterShallowBase
   all carry a real Name="..." attribute on their own <TerrainDef> tag (lines
   41, 73, 103), so ParentName against them resolves — unlike Lake/Ocean/
-  IceSheet (see RUT_TheScald.xml / RUT_NightsideIce.xml in this same folder
+  IceSheet (see RUT_TheScald.xml / RUT_SleepingIce.xml in this same folder
   for the trap this is NOT hitting).
 
   Field-by-field provenance, copied from the vanilla leaf each RUT_ScaldWater*

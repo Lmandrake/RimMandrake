@@ -14,12 +14,12 @@ subject: src/RimUtinni/LanternDeeps  (packageId mandrake.rut.lanterndeeps)
 deps: BiomesTeam.BiomesCaverns (modDependencies + loadAfter, for BMT_CrystalCaverns and
 BMT_CrystalsGenerator); m00nl1ght.GeologicalLandforms (loadAfter only, no hard need found
 in this mod's own code/defs). The GenStep's own biome allowlist (BiomeGRimond,
-RUT_NightsideIce, RUT_PropaneLake) names biomes shipped by grimterra.biomesmod (GRiNDTerra
+RUT_SleepingIce, RUT_PropaneLake) names biomes shipped by grimterra.biomesmod (GRiNDTerra
 Biomes, third-party) and this campaign's own src/RimUtinni/UtinniPatches — neither is
 declared as a dependency here, so on any mod list missing all three the GenStep silently
 never scatters (string-equality gate against `map.Biome.defName`, not a defOf reference).
 list: full     # def/load checks only need minimal+BiomesCaverns, but proving the biome
-                # gate actually fires needs a map on RUT_NightsideIce/RUT_PropaneLake/
+                # gate actually fires needs a map on RUT_SleepingIce/RUT_PropaneLake/
                 # BiomeGRimond, which only exist under the full campaign list
 status-hint: Ships the persistent underground "Lantern Deeps" dungeon layer
 (LANTERN_DEEPS_INJECTION_1): a natural-emergence entrance building that scatters onto
@@ -33,7 +33,7 @@ own.
   `portal` block points `pocketMapGenerator` at `RUT_LanternDeepGenerator`, `exitDef` at
   `CaveExit`, `pocketMapSize` at 66.
 - `GenStep_ScatterCavePortal` (extends vanilla `GenStep_ScatterGroup`) only scatters onto
-  maps whose `Biome.defName` is exactly `BiomeGRimond`, `RUT_NightsideIce` or
+  maps whose `Biome.defName` is exactly `BiomeGRimond`, `RUT_SleepingIce` or
   `RUT_PropaneLake` (a hardcoded `HashSet<string>`, because `GenStepDef` has no biome field
   and vanilla ships no `ScattererValidator_Biome`), and even then only rolls
   `Rand.Chance(chancePerMap)` = 0.08 (8%, FOUNDRY's placeholder density) before calling
@@ -72,7 +72,7 @@ own.
    `RimMandrake.Utinni.LanternDeeps.GenStep_ScatterCavePortal`
 5. [D] def read-back (minimal+BiomesCaverns): MapGeneratorDef `MapCommonBase`'s `genSteps`
    list contains `RUT_LanternDeepEmergence_Scatter` (confirms the global patch landed)
-6. [B] (full list, quicktest map on a QUALIFYING biome — `RUT_NightsideIce`,
+6. [B] (full list, quicktest map on a QUALIFYING biome — `RUT_SleepingIce`,
    `RUT_PropaneLake` or `BiomeGRimond`) repeat `jawa/run_genstep`
    `genStepDef=RUT_LanternDeepEmergence_Scatter` enough times to beat the 8% roll, checking
    `jawa/list_things` `defName=RUT_LanternDeepEmergence` after each — expect ≥1 result

@@ -86,8 +86,8 @@ and in the deserts' case the owner named them separately in the ruling.
 | 1 | `RUT_ExtremeDesert` | 3969 | the Stillsand / the Dune Sea (RULED 2026-09-21 — §7 Q2) | `dune_sea.md` + `deep_desert.md` (one merged roster, R22) | `Stillsand` | `mandrake.rm.stillsand` | `RM_Stillsand` | PROPOSED — owner-named standalone |
 | 2 | `RUT_Desert` | 2390 | the Long Shade (RULED 2026-09-21 — §7 Q2) | `desert.md` | `LongShade` | `mandrake.rm.longshade` | `RM_LongShade` | PROPOSED — owner-named standalone; name from the sheet's identity (shadows four times an object's height at a 14° sun) |
 | 3 | `RUT_TheRot` | 2204 | the Rot | `the_rot.md`, `kits/rot_kit_spec.md` | `TheRot` | `mandrake.rm.therot` | `RM_TheRot` | PROPOSED — owner-named standalone; absorbs `mandrake.rut.rotsporekit` (151 files, biome mechanics, not campaign) |
-| 4 | `RUT_Wasteland` | 1853 | the Wasteland | `wasteland.md` | `Wasteland` | `mandrake.rm.wasteland` | `RM_Wasteland` | PROPOSED; owns the `RUT_WastelandBrine*` terrain family |
-| 5 | `RUT_NightsideIce` | 1506 | the Nightside Ice | `nightside_ice.md` | `NightsideIce` | `mandrake.rm.nightsideice` | `RM_NightsideIce` | PROPOSED; thin (no plants by design) but it is a Lantern Deeps host surface |
+| 4 | `RUT_Wastes` | 1853 | the Wasteland | `wastes.md` | `Wasteland` | `mandrake.rm.wastes` | `RM_Wastes` | PROPOSED; owns the `RUT_WastesBrine*` terrain family |
+| 5 | `RUT_SleepingIce` | 1506 | the Nightside Ice | `sleeping_ice.md` | `SleepingIce` | `mandrake.rm.sleepingice` | `RM_SleepingIce` | PROPOSED; thin (no plants by design) but it is a Lantern Deeps host surface |
 | 6 | `RUT_Abyss` | 1135 | the Abyss | `abyss.md` | `Abyss` | `mandrake.rm.abyss` | `RM_Abyss` | PROPOSED |
 | 7 | `RUT_BlueDesert` | 1029 | the Blue Desert | `the_blue_desert.md` | `BlueDesert` | `mandrake.rm.bluedesert` | `RM_BlueDesert` | PROPOSED; `BLUE_DESERT_LIFE_AUTHORING_1` builds INTO this mod, not into UtinniPatches |
 | 8 | `RUT_CrackedLands` | 970 | the Cracked Lands | `the_cracked_lands.md` | `CrackedLands` (EXISTS) | `mandrake.rm.crackedlands` | `RM_FloodedCanyon` | twin pair, §4; §7 Q4 |
@@ -343,7 +343,7 @@ warning, the water comes down"*. Same place, two defs.
 changes tier (§2c). Nothing is deleted; the Kotor stygium gate patch is carved out into
 `UtinniPatches/Patches` and the rest is `git mv`'d to `src/RimMandrake/LanternDeeps` with
 its packageId, namespace and defNames renamed. Its allowlist checks name
-`RUT_NightsideIce` and `RUT_PropaneLake` (`About.xml` line 35, `validation.py` line 83)
+`RUT_SleepingIce` and `RUT_PropaneLake` (`About.xml` line 35, `validation.py` line 83)
 and must follow §2's renames — but note the FROZEN sheet says the host test is
 temperature, so a biome allowlist in the code is already a departure to look at while
 there.

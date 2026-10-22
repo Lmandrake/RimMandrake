@@ -47,7 +47,7 @@ it is not one of "the three seas."
   already expressed at the only granularity the engine has.
 - 🔴 **`Lake` and `Ocean` (`Core/Defs/BiomeDefs/Biomes_Water.xml`) carry no `Name="..."`
   attribute on their own `<BiomeDef>` tag.** Verified by direct read of the file, the
-  same trap `RUT_NightsideIce.xml` already found for `IceSheet`. `ParentName="Lake"` or
+  same trap `RUT_SleepingIce.xml` already found for `IceSheet`. `ParentName="Lake"` or
   `ParentName="Ocean"` would silently fail to resolve — every new def below restates the
   vanilla shape directly instead of inheriting it.
 - Both `Ocean` and `Lake` are otherwise almost field-empty (`isWaterBiome`,
@@ -185,7 +185,7 @@ and is NOT decided here.
   381 (`Ocean` → `RUT_GreySea`), and — separately, gated on its own render decision —
   whichever propane-lake tile subset the owner rules.
 - **A Scald biome sheet** (`the_scald.md` or similar), owner conversation, the same shape
-  `terminator_sea.md`/`nightside_ice.md` already have — needed before `RUT_TheScald`'s
+  `terminator_sea.md`/`sleeping_ice.md` already have — needed before `RUT_TheScald`'s
   `wildAnimals`, `diseases`, `baseWeatherCommonalities`, `settleWarning` etc. can be
   filled in for real.
 - **`README_BIOME_GRAMMAR.md`'s "the three seas ✅ done" line** — overclaims for the

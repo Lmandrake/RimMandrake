@@ -35,8 +35,8 @@ F = {
  "Stillsand":     ("#a88c5c", "#bba27a", "dunes",  4.0, 1, False, [("RimMandrake/Stillsand", "RM_Stillsand"), (U, "RUT_Stillsand")]),
  "LongShade":     ("#9a7a50", "#86705a", "dunes",  4.5, 2, False, [("RimMandrake/LongShade", "RM_LongShade"), (U, "RUT_LongShade")]),
  "LeaningScrub":  ("#8c8c66", "#9a8e5e", "crust",  6.0, 3, False, [("RimMandrake/LeaningScrub", "RM_LeaningScrub"), (U, "RUT_LeaningScrub")]),
- "Wasteland":     ("#9a9282", "#b2ad9e", "salt",   5.0, 4, False, [("RimMandrake/Wasteland", "RM_Wasteland"), (U, "RUT_Wasteland")]),
- "SleepingIce":   ("#b4b9c0", "#9097a3", "ice",    4.5, 5, False, [("RimMandrake/NightsideIce", "RM_SleepingIce"), (U, "RUT_SleepingIce")]),
+ "Wasteland":     ("#9a9282", "#b2ad9e", "salt",   5.0, 4, False, [("RimMandrake/Wastes", "RM_Wastes"), (U, "RUT_Wastes")]),
+ "SleepingIce":   ("#b4b9c0", "#9097a3", "ice",    4.5, 5, False, [("RimMandrake/SleepingIce", "RM_SleepingIce"), (U, "RUT_SleepingIce")]),
  "Umbra":         ("#4c5464", "#4e5e60", "ice",    4.0, 6, True,  [(U, "RUT_Umbra")]),
  "Abyss":         ("#15151d", "#1c2130", "abyss", 5.0, 7, False, [("RimMandrake/Abyss", "RM_Abyss"), (U, "RUT_Abyss")]),
  "BlueDesert":    ("#6e86a2", "#8296ae", "dunes",  4.0, 8, False, [("RimMandrake/BlueDesert", "RM_BlueDesert"), (U, "RUT_BlueDesert")]),
@@ -75,7 +75,7 @@ WATER = {k for k, v in F.items() if v[2] == "water"}
 BRIGHT_OK = {"SleepingIce", "Wasteland", "WeepingStones", "Stillsand"}   # ice / salt / bone: value cap 205
 # dev-world record biome -> art key (live planet uses the RM_ twins; same art)
 RECORD = {"RUT_ExtremeDesert": "Stillsand", "RUT_Umbra": "Umbra", "RUT_Desert": "LongShade", "RUT_TheRot": "TheRot",
-          "RUT_Wasteland": "Wasteland", "RUT_NightsideIce": "SleepingIce", "RUT_BlueDesert": "BlueDesert",
+          "RUT_Wastes": "Wasteland", "RUT_SleepingIce": "SleepingIce", "RUT_BlueDesert": "BlueDesert",
           "RUT_CrackedLands": "CrackedLands", "RUT_AridShrubland": "LeaningScrub", "RUT_TwilightSea": "TwilightSea",
           "RUT_GreySea": "GreySea", "RUT_TheScald": "Scald", "RUT_RustCathedral": "RustCathedral",
           "RUT_Greentide": "Greentide", "RUT_WeepingStones": "WeepingStones", "RUT_Contagion": "Contagion",

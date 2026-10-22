@@ -13,7 +13,7 @@ OUT = sys.argv[1] if len(sys.argv) > 1 else str(_RM_ROOT / 'Transient' / 'ashkar
 # --- naturalistic from-space palette (keyed to ratified artistic themes) ---
 PAL = {
     "Ocean": (22, 50, 79), "Lake": (43, 95, 138), "SeaIce": (184, 204, 216),
-    "IceSheet": (168, 191, 208), "RUT_NightsideIce": (160, 184, 203),
+    "IceSheet": (168, 191, 208), "RUT_SleepingIce": (160, 184, 203),
     "ExtremeDesert": (232, 217, 174), "Desert": (212, 182, 120),
     "AridShrubland": (184, 159, 94), "ZBiome_Badlands": (168, 106, 66),
     "Wasteland": (154, 148, 138), "ZBiome_Grasslands": (163, 168, 98),

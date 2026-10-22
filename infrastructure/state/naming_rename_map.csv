@@ -1439,3 +1439,13 @@ mod,src/RimUtinni/RestrainingBolts,src/RimUtinni/RestrainingBolts,RimUtinni,RULE
 mod,src/RimUtinni/Rites,src/RimUtinni/Rites,RimUtinni,RULED,consolidation map 2026-09-08: stays at current tier
 mod,src/RimUtinni/ShipMemory,src/RimUtinni/ShipMemory,RimUtinni,RULED,consolidation map 2026-09-08: stays at current tier
 mod,src/RimUtinni/StructureInjectionsRUT,src/RimUtinni/StructureInjectionsRUT,RimUtinni,RULED,consolidation map 2026-09-08: stays at current tier
+mod,src/RimMandrake/NightsideIce,src/RimMandrake/SleepingIce,RimMandrake,RULED,BIOME_DEFNAME_MIGRATION_WAVE_1 owner by card 2026-10-21 (do all def renaming)
+mod,src/RimMandrake/Wasteland,src/RimMandrake/Wastes,RimMandrake,RULED,BIOME_DEFNAME_MIGRATION_WAVE_1 owner by card 2026-10-21 (do all def renaming)
+packageId,mandrake.rm.nightsideice,mandrake.rm.sleepingice,RimMandrake,RULED,BIOME_DEFNAME_MIGRATION_WAVE_1 owner by card 2026-10-21 (do all def renaming)
+packageId,mandrake.rm.wasteland,mandrake.rm.wastes,RimMandrake,RULED,BIOME_DEFNAME_MIGRATION_WAVE_1 owner by card 2026-10-21 (do all def renaming)
+namespace,RimMandrake.NightsideIce,RimMandrake.SleepingIce,RimMandrake,RULED,BIOME_DEFNAME_MIGRATION_WAVE_1 owner by card 2026-10-21 (do all def renaming)
+namespace,RimMandrake.Wasteland,RimMandrake.Wastes,RimMandrake,RULED,BIOME_DEFNAME_MIGRATION_WAVE_1 owner by card 2026-10-21 (do all def renaming)
+def,RM_NightsideIce,RM_SleepingIce,RimMandrake,RULED,BIOME_DEFNAME_MIGRATION_WAVE_1 owner by card 2026-10-21 (do all def renaming)
+def,RUT_NightsideIce,RUT_SleepingIce,RimUtinni,RULED,BIOME_DEFNAME_MIGRATION_WAVE_1 owner by card 2026-10-21 (do all def renaming)
+def,RM_Wasteland,RM_Wastes,RimMandrake,RULED,BIOME_DEFNAME_MIGRATION_WAVE_1 owner by card 2026-10-21 (do all def renaming)
+def,RUT_Wasteland,RUT_Wastes,RimUtinni,RULED,BIOME_DEFNAME_MIGRATION_WAVE_1 owner by card 2026-10-21 (do all def renaming)

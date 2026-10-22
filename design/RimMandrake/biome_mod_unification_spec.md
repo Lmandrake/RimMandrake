@@ -70,7 +70,7 @@ as evidence only.
 | LeaningScrub | mandrake.rm.leaningscrub | no | Biome (row 9) |
 | LongShade | mandrake.rm.longshade | yes | Biome (row 2) |
 | Miasma | mandrake.rm.miasma | no | Biome (row 19) |
-| NightsideIce | mandrake.rm.nightsideice | yes | Biome (row 5) |
+| SleepingIce | mandrake.rm.sleepingice | yes | Biome (row 5) |
 | Cauldron | mandrake.rm.cauldron | no | Biome (row 10) |
 | Pyrelands | mandrake.rm.pyrelands | yes | Biome |
 | RustCathedral | mandrake.rm.rustcathedral | no | Biome (row 12); carries 3 DLLs already — precedent for multi-DLL Assemblies |
@@ -81,7 +81,7 @@ as evidence only.
 | TheForge | mandrake.rm.theforge | no | Biome (row 21) |
 | TheRot | mandrake.rm.therot | yes | Biome |
 | TheSump | mandrake.rm.thesump | no | Biome (row 23). Depends on Vanilla Helixien Gas Expanded (Q16) — the unified mod inherits that dependency |
-| Wasteland | mandrake.rm.wasteland | yes | Biome (row 4) |
+| Wasteland | mandrake.rm.wastes | yes | Biome (row 4) |
 | Webwork | mandrake.rm.webwork | no | Biome (row 17) |
 | WeepingStones | mandrake.rm.weepingstones | no | Biome |
 | DivingInteraction | mandrake.rm.divinginteraction | yes | Sea-biome kit: the ship-only dive hatch / underwater pocket maps; consumed by TerminalBiomes XML. (Its XML also names LanternDeeps classes — see UNSURE) |
@@ -371,7 +371,7 @@ exactly once and last:
   content is all new to the list). Cold-load prove; first exception in Player.log,
   not the loudest.
 - **Wave 2 — the on-list 12 fold in, ONE swap.** Add the on-list biome mods
-  (FeverWood, GelatinousSlime, Greentide, LongShade, NightsideIce, Pyrelands,
+  (FeverWood, GelatinousSlime, Greentide, LongShade, SleepingIce, Pyrelands,
   Stillsand, TerminalBiomes, TheRot, Wasteland) + SeaShores + DivingInteraction to
   the compose manifest; then a SINGLE ModsConfig swap that removes those 12
   packageIds in the same write in which the (already-present) unified mod's new

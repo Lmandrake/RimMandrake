@@ -23,7 +23,7 @@ namespace RimMandrake.RustCathedral
     // mod's own new master/roach/cross-biome section.
     //
     // Master toggle shape follows the sibling biome-worker mods
-    // (RM_MiasmaSettings.biomeRarityFactor / RM_PoisonForestMod): 0 = never
+    // (RM_MiasmaSettings.biomeRarityFactor / RM_CauldronMod): 0 = never
     // generates on a new planet. Everything else is a per-mechanic toggle,
     // default = shipped behavior, all-off degrades gracefully.
     // ════════════════════════════════════════════════════════════════════
@@ -66,7 +66,7 @@ namespace RimMandrake.RustCathedral
         // A future pass that actually threads a mechanic onto a foreign
         // biome via these fields does the real work; shipping the toggle
         // early without the wiring would be the settings-screen-that-lies
-        // NightsideIce/Miasma precedent warns against, so the label says so.
+        // SleepingIce/Miasma precedent warns against, so the label says so.
         public static bool crossBiomeEnabled = false;
         public static bool crossBiomeEverywhere = false;
         public static string crossBiomeBiomeList = "";

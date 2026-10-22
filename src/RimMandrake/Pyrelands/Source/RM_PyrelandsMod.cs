@@ -648,7 +648,7 @@ namespace RimMandrake.Pyrelands
                         "Apply to any non-Pyrelands biome. Off: only the biomes named below.");
                     if (!crossBiomeEverywhere)
                     {
-                        list.Label("  Biome defNames, comma-separated (e.g. RM_Wasteland, AridShrubland):");
+                        list.Label("  Biome defNames, comma-separated (e.g. RM_Wastes, AridShrubland):");
                         biomeListBuffer = list.TextEntry(biomeListBuffer);
                         crossBiomeBiomeList = biomeListBuffer;
                     }

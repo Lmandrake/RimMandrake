@@ -70,6 +70,10 @@ HISTORICAL_RENAMES = {
         "RUT_ForsakenCrags": ("RUT_Abyss", "a534284e4 ABYSS_FULL_RENAME_1"),
         "RUT_PoisonForest": ("RUT_Cauldron", "CAULDRON_FULL_RENAME_1, 2026-09-30 (biome_paint_list.md)"),
         "RM_FE_Pyrelands": ("RM_Pyrelands", "84d42c63b owner ruling 2026-09-21"),
+        "RUT_NightsideIce": ("RUT_SleepingIce", "BIOME_DEFNAME_MIGRATION_WAVE_1, owner by card 2026-10-21"),
+        "RM_NightsideIce": ("RM_SleepingIce", "BIOME_DEFNAME_MIGRATION_WAVE_1, owner by card 2026-10-21"),
+        "RUT_Wasteland": ("RUT_Wastes", "BIOME_DEFNAME_MIGRATION_WAVE_1, owner by card 2026-10-21"),
+        "RM_Wasteland": ("RM_Wastes", "BIOME_DEFNAME_MIGRATION_WAVE_1, owner by card 2026-10-21"),
     },
 }
 LAYERS = ("tiles", "links", "mutators", "landmarks", "settlements", "factions", "features", "landforms")

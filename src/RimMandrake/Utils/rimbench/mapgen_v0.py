@@ -124,7 +124,7 @@ SHEET_TO_BIOME = {
     "desert.md": "Desert",
     "arid_shrubland.md": "AridShrubland",
     "deep_desert.md": "ExtremeDesert",
-    "wasteland.md": "Wasteland",
+    "wastes.md": "Wasteland",
 }
 
 COMMON_NOUN = {

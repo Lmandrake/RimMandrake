@@ -465,7 +465,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `longshade_shade_ideation_2026-09-29.md` | The Long Shade — what's in the shade (volley turn 3 ideation, 2026-09-29) | — |
 | `miasma_fauna_roster_2026-09-23.md` | The Miasma fauna roster — the arthropod floor, the composters, and what the stranded actually are, 2026-09-23 | — |
 | `miasma_flora_roster_2026-09-23.md` | The Miasma flora roster — 19 invented plants, 2026-09-23 | — |
-| `nightside_ice.md` | The Nightside Ice — biome definition sheet | — |
+| `sleeping_ice.md` | The Nightside Ice — biome definition sheet | — |
 | `noncanon_beast_names_crags_nightside_contagion_slime.md` | Non-canon beast names — The Abyss, Nightside Ice, the Contagion, the Slime | — |
 | `noncanon_beast_names_poison_miasma_desert_scar_rot_dune_waste_cracked.md` | Non-canon beast names — Poison Forest, Miasma, Desert, Scarlands, the Rot, Dune Sea, Wasteland, Cracked Lands | — |
 | `noncanon_beast_names_propane_arid_forge_pyre_fever_greentide_rust_lantern_blue.md` | Non-canon beast names — Propane Lakes, Arid Shrubland, the Forge, the Pyrelands, Fever Wood, Greentide, Rust Cathedral, Lantern Deeps, Blue Desert | — |
@@ -518,7 +518,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `warscar_bedazzle_cast_2026-09-30.md` | Warscar — bedazzle cast bible (movement 4: ticket-out and commission) | ? cast bible — commissioned under warscar_bedazzle_sitting_1 movement 4 |
 | `warscar_bedazzle_review_2026-09-30.md` | Warscar — bedazzle sitting, movements 1–2 + volley turn 1 (2026-09-30) | — |
 | `warscar_turn3_development_2026-09-30.md` | Warscar — volley turn 3: developing what the owner ruled | — |
-| `wasteland.md` | The Wasteland — definition sheet | — |
+| `wastes.md` | The Wasteland — definition sheet | — |
 | `wasteland_survivor_cast_2026-09-28.md` | The Wasteland survivor cast — full RM_ replacement bible | — |
 | `webwork_egg_blackmarket_2026-09-24.md` | The Webwork egg black market and the assassination quests (design draft) | — |
 | `webwork_fauna_roster_2026-09-23.md` | The Webwork — invented fauna roster (resident cast besides the Ollathrix) | — |

@@ -76,7 +76,7 @@ them pack animals / beasts of burden. No roster edited, no beast moved.
 | RM_LeaningScrub | yes | - | RSW_Eopie, RSW_Mudhorn, RSW_Ronto, RSW_Kybuck, RSW_Bantha, RSW_Skalder | **FIXED** -> RSW_Bantha, RSW_Ronto, RSW_Eopie, RSW_Kybuck, RSW_Skalder (Utinni) |
 | RM_LongShade | yes | RSW_Bantha, RSW_Ronto, RSW_Eopie, RSW_Jamel, RSW_Falumpaset | RM_Ossik, RM_Thurra, RM_Sollak, RM_Gennok, RSW_Bantha, RSW_Jamel, RSW_Ronto, RSW_Eopie, RSW_Skalder, RSW_Uvak, RSW_Varactyl, RSW_Falumpaset, RSW_Nerf, RSW_Shaak, RSW_TeeMuss, RSW_Bolotaur, RSW_Runyip, RSW_Dewback | has list (owned); opened by VanillaBeastExcision_Carriers.xml |
 | RM_Miasma | yes | - | RSW_Runyip | sitting: owned packAnimal RSW_Runyip not described as a beast of burden |
-| RM_NightsideIce | yes | - | Tauntaun | sitting: only DONOR pack beasts (Tauntaun) - needs an owned port or a new creature |
+| RM_SleepingIce | yes | - | Tauntaun | sitting: only DONOR pack beasts (Tauntaun) - needs an owned port or a new creature |
 | RM_Pyrelands | yes | Muffalo, Dromedary, Elephant | RSW_Orray, RSW_Dalgo | has list but vanilla only (Muffalo/Dromedary/Elephant); owned RSW_Orray/RSW_Dalgo in roster - swap at its sitting |
 | RM_RustCathedral | yes | - | - | sitting: no pack beast at all - a NEW creature |
 | RM_SeabedFloor | seabed layer | - | - | sitting: ship-only layer; does a land trade caravan belong at all? |
@@ -93,7 +93,7 @@ them pack animals / beasts of burden. No roster edited, no beast moved.
 | RM_TheSump | yes | - | - | sitting: no pack beast at all - a NEW creature |
 | RM_TwilightSea | no (impassable/no base) | - | - | N/A - no home map, no land caravan |
 | RM_Warscar | yes | - | AA_SpinedGow, RSW_FoundryBeetle | sitting: owned packAnimal RSW_FoundryBeetle not described as a beast of burden; donor AA_SpinedGow |
-| RM_Wasteland | yes | - | VAEWaste_Megatardi, RSW_Sacapillar | sitting: owned packAnimal RSW_Sacapillar not described as a beast of burden; donor VAEWaste_Megatardi |
+| RM_Wastes | yes | - | VAEWaste_Megatardi, RSW_Sacapillar | sitting: owned packAnimal RSW_Sacapillar not described as a beast of burden; donor VAEWaste_Megatardi |
 | RM_Webwork | yes | - | - | sitting: no pack beast at all - a NEW creature |
 | RM_WeepingStones | yes | - | RM_Tirbak, RM_Vellak, RSW_Dewback, RSW_Dactillion, RSW_Bantha, RSW_Eopie, RSW_Jamel | **FIXED** -> RM_Tirbak, RM_Vellak (inline RM_, carried by RM_TraderCarriers_WeepingStones.xml, free tier) + RSW_Dewback, RSW_Bantha, RSW_Eopie, RSW_Jamel (Utinni) |
 | RUT_Abyss | yes | - | AA_NightMule, AA_CrepuscularBeetle, AA_NightAve | sitting: only DONOR pack beasts (AA_NightMule, AA_CrepuscularBeetle, AA_NightAve) - needs an owned port or a new creature |
@@ -110,7 +110,7 @@ them pack animals / beasts of burden. No roster edited, no beast moved.
 | RUT_GreySea | no (impassable/no base) | - | - | N/A - no home map, no land caravan |
 | RUT_Jawa_BackgroundWater | no (impassable/no base) | - | - | N/A - no home map, no land caravan |
 | RUT_Miasma | yes | - | Runyip | sitting: only DONOR pack beasts (Runyip) - needs an owned port or a new creature |
-| RUT_NightsideIce | yes | - | - | sitting: no pack beast at all - a NEW creature |
+| RUT_SleepingIce | yes | - | - | sitting: no pack beast at all - a NEW creature |
 | RUT_PropaneLake | no (impassable/no base) | - | - | N/A - no home map, no land caravan |
 | RUT_RustCathedral | yes | - | - | sitting: no pack beast at all - a NEW creature |
 | RUT_Scarlands | yes | - | RSW_FoundryBeetle, AA_SpinedGow | sitting: owned packAnimal RSW_FoundryBeetle not described as a beast of burden; donor AA_SpinedGow |
@@ -121,6 +121,6 @@ them pack animals / beasts of burden. No roster edited, no beast moved.
 | RUT_TheScald | no (impassable/no base) | - | - | N/A - no home map, no land caravan |
 | RUT_TwilightSea | no (impassable/no base) | - | - | N/A - no home map, no land caravan |
 | RUT_Umbra | yes | - | - | sitting: no pack beast at all - a NEW creature |
-| RUT_Wasteland | yes | - | RSW_Sacapillar, VAEWaste_Megatardi | sitting: owned packAnimal RSW_Sacapillar not described as a beast of burden; donor VAEWaste_Megatardi |
+| RUT_Wastes | yes | - | RSW_Sacapillar, VAEWaste_Megatardi | sitting: owned packAnimal RSW_Sacapillar not described as a beast of burden; donor VAEWaste_Megatardi |
 | RUT_Webwork | yes | - | - | sitting: no pack beast at all - a NEW creature |
 | RUT_WeepingStones | yes | - | Dewback, Dactillion, Bantha, Eopie, Jamel | sitting: only DONOR pack beasts (Dewback, Dactillion, Bantha, Eopie, Jamel) - needs an owned port or a new creature |

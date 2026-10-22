@@ -7,7 +7,7 @@
   Wires the one genuinely canon Star Wars row (Q11a, owner ruling 2026-09-22:
   a genuinely canon name is IP and must route through the Utinni campaign
   patch layer, never the franchise-free RimMandrake tier) onto RM_BlueDesert.
-  Shape: WildAnimals_NightsideIce.xml — one PatchOperationAdd, no
+  Shape: WildAnimals_SleepingIce.xml — one PatchOperationAdd, no
   PatchOperationReplace, since RM_BlueDesert already ships its own real cast
   (RM_Vekkit/RM_Dorrak/RM_Krissek/AA_Thunderbeast) inline, not a Core-only
   placeholder.

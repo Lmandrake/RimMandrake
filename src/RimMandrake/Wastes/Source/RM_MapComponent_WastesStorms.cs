@@ -1,0 +1,204 @@
+using System.Collections.Generic;
+using RimWorld;
+using UnityEngine;
+using Verse;
+
+namespace RimMandrake.Wastes
+{
+    /// <summary>
+    /// WASTELAND_MECHANICS_BUILD_1 §4 — the storm layer. While a weather carrying
+    /// <see cref="RM_WeatherDoseExtension"/> runs on an opted-in biome's map:
+    ///   * every ToxicUtility.CheckInterval ticks, unroofed pawns take the vanilla
+    ///     airborne toxic dose scaled by the weather's factor (the dose layer);
+    ///   * every 250 ticks, fall lands on random unroofed cells — Biotech-polluted
+    ///     where the terrain can be, and remembered as fresh fall;
+    ///   * when that weather ENDS, a fraction of its fresh fall germinates the
+    ///     aftermath plant (the Cinderfelt, which then dies in ~8 days by its own
+    ///     growDays x lifespanDaysPerGrowDays).
+    ///
+    /// Terrain re-deal / exhumation is NOT here: it rides MovingDunes (owner-ruled),
+    /// bound by Patches/RM_Wastes_MovingDunesBinding.xml.
+    ///
+    /// 🔴 Biome gate: this component exists on every map; it returns at once unless
+    /// the map's BiomeDef carries <see cref="RM_WastesStormBiomeExtension"/>.
+    /// </summary>
+    public class RM_MapComponent_WastesStorms : MapComponent
+    {
+        private const int FallIntervalTicks = 250;
+        private const float ReferenceMapCells = 250f * 250f;
+
+        private List<IntVec3> freshFall = new List<IntVec3>();
+        private WeatherDef trackedWeather;
+
+        private int optInCacheState = -1; // -1 unknown, 0 no, 1 yes (unsaved)
+
+        public RM_MapComponent_WastesStorms(Map map) : base(map) { }
+
+        /// <summary>Fresh-fall cells remembered for the current/last storm (debug read).</summary>
+        public int FreshFallCount { get { return freshFall.Count; } }
+
+        private bool OptedIn
+        {
+            get
+            {
+                if (optInCacheState < 0)
+                {
+                    optInCacheState = map.Biome != null
+                        && map.Biome.GetModExtension<RM_WastesStormBiomeExtension>() != null ? 1 : 0;
+                }
+                return optInCacheState == 1;
+            }
+        }
+
+        public override void ExposeData()
+        {
+            base.ExposeData();
+            Scribe_Collections.Look(ref freshFall, "freshFall", LookMode.Value);
+            Scribe_Defs.Look(ref trackedWeather, "trackedWeather");
+            if (Scribe.mode == LoadSaveMode.PostLoadInit && freshFall == null)
+            {
+                freshFall = new List<IntVec3>();
+            }
+        }
+
+        public override void MapComponentTick()
+        {
+            base.MapComponentTick();
+            if (!RM_WastesSettings.wastesEnabled || !OptedIn)
+            {
+                return;
+            }
+            int now = Find.TickManager.TicksGame;
+            bool doseTick = now % ToxicUtility.CheckInterval == 0;
+            bool fallTick = now % FallIntervalTicks == 0;
+            if (!doseTick && !fallTick)
+            {
+                return;
+            }
+
+            WeatherDef cur = map.weatherManager.curWeather;
+            if (fallTick && cur != trackedWeather)
+            {
+                OnWeatherChanged(trackedWeather);
+                trackedWeather = cur;
+            }
+
+            RM_WeatherDoseExtension ext = cur != null ? cur.GetModExtension<RM_WeatherDoseExtension>() : null;
+            // WASTELAND_GPT_ENRICHMENT_1 §1: a named storm's quiet warning holds the
+            // dose and fall until RM_MapComponent_StormPhases hands off.
+            RM_MapComponent_StormPhases phases = ext != null ? map.GetComponent<RM_MapComponent_StormPhases>() : null;
+            if (!RM_StormKernel.LayerRuns(OptedIn, RM_WastesSettings.wastesEnabled, ext != null, phases != null && phases.IsHolding(cur)))
+            {
+                return;
+            }
+            if (doseTick)
+            {
+                DoStormDose(ext);
+            }
+            if (fallTick)
+            {
+                DoFall(ext);
+            }
+        }
+
+        // ------------------------------------------------------------------ dose
+
+        private void DoStormDose(RM_WeatherDoseExtension ext)
+        {
+            if (!RM_StormKernel.DoseActive(RM_WastesSettings.stormDoseEnabled, ext.airborneToxicFactor))
+            {
+                return;
+            }
+            float factor = RM_StormKernel.DoseFactor(ext.airborneToxicFactor, RM_WastesSettings.stormDoseMultiplier);
+            if (factor <= 0f)
+            {
+                return;
+            }
+            IReadOnlyList<Pawn> pawns = map.mapPawns.AllPawnsSpawned;
+            for (int i = 0; i < pawns.Count; i++)
+            {
+                Pawn p = pawns[i];
+                if (p.kindDef != null && p.kindDef.immuneToGameConditionEffects)
+                {
+                    continue;
+                }
+                ToxicUtility.DoAirbornePawnToxicDamage(p, factor);
+            }
+        }
+
+        // ------------------------------------------------------------------ fall
+
+        private void DoFall(RM_WeatherDoseExtension ext)
+        {
+            bool pollute = RM_StormKernel.Pollutes(RM_WastesSettings.ashFallPollutionEnabled, ModsConfig.BiotechActive);
+            bool remember = RM_StormKernel.Remembers(RM_WastesSettings.cinderfeltGerminationEnabled, ext.aftermathPlant != null);
+            if (!RM_StormKernel.FallActive(ext.fallCellsPerDay, pollute, remember))
+            {
+                return;
+            }
+            float perBatch = RM_StormKernel.FallPerBatch(ext.fallCellsPerDay, FallIntervalTicks, GenDate.TicksPerDay,
+                                                         map.cellIndices.NumGridCells, ReferenceMapCells);
+            int count = GenMath.RoundRandom(perBatch);
+            for (int i = 0; i < count; i++)
+            {
+                IntVec3 c = CellFinder.RandomCell(map);
+                if (c.Roofed(map) || !map.pollutionGrid.EverPollutable(c))
+                {
+                    continue;
+                }
+                if (pollute && map.pollutionGrid.CanPollute(c))
+                {
+                    // silent: fall is many cells a day; the per-cell pollution effecter
+                    // would be pure spam and the weather overlay already shows the storm.
+                    map.pollutionGrid.SetPolluted(c, true, silent: true);
+                }
+                if (remember)
+                {
+                    RM_StormKernel.RememberFall(freshFall, c, n => Rand.Range(0, n));
+                }
+            }
+        }
+
+        // ------------------------------------------------------------- aftermath
+
+        private void OnWeatherChanged(WeatherDef ended)
+        {
+            RM_WeatherDoseExtension ext = ended != null ? ended.GetModExtension<RM_WeatherDoseExtension>() : null;
+            if (ext != null && ext.aftermathPlant != null && RM_WastesSettings.cinderfeltGerminationEnabled)
+            {
+                Germinate(ext);
+            }
+            freshFall.Clear();
+        }
+
+        /// <summary>Spawns the aftermath plant on a fraction of the remembered fresh
+        /// fall. Public so a debug action / bridge state-read can drive it.</summary>
+        public int Germinate(RM_WeatherDoseExtension ext)
+        {
+            if (freshFall.Count == 0)
+            {
+                return 0;
+            }
+            ThingDef plantDef = ext.aftermathPlant;
+            int wanted = RM_StormKernel.GerminationDraws(freshFall.Count, ext.aftermathSeedFraction, GenMath.RoundRandom);
+            int spawned = 0;
+            for (int i = 0; i < wanted; i++)
+            {
+                IntVec3 c = freshFall[Rand.Range(0, freshFall.Count)];
+                if (!c.InBounds(map) || c.GetPlant(map) != null || c.GetEdifice(map) != null)
+                {
+                    continue;
+                }
+                if (!plantDef.CanEverPlantAt(c, map))
+                {
+                    continue;
+                }
+                Plant plant = (Plant)ThingMaker.MakeThing(plantDef);
+                plant.Growth = Rand.Range(0.05f, 0.3f);
+                GenSpawn.Spawn(plant, c, map);
+                spawned++;
+            }
+            return spawned;
+        }
+    }
+}

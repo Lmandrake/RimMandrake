@@ -26,7 +26,7 @@ Owner rulings 2026-09-06 (`the_propane_lakes.md` §3 "The machine" and §8).
   The Assailants here are **live but contained/trapped specimens under study** — this
   reads as compatible with `the_propane_lakes.md` hard ban #8 ("study subject, never
   resident weapon-fauna"): live and dangerous if released, but never ambient roaming
-  wildlife on the biome map. `wasteland.md` §10 point 4 is updated to point here by
+  wildlife on the biome map. `wastes.md` §10 point 4 is updated to point here by
   name instead of re-describing a second station.
 - ⭐ **2026-10-10 story sitting (owner)**: this lab IS the Assailant's one impact
   site and the flesh complex of `ASSAILANT_DUNGEON_BUILD_1` — the Rakata *"built the
@@ -83,7 +83,7 @@ authored as `KCSG.StructureLayoutDef`/`KCSG.SymbolDef` XML, `RUT_` tier. No new
 placement C# needed for the dungeon itself — only the ignition→crater world-tile
 mutation needs new code, split out below.
 
-**Layout — three bands**, matching `wasteland.md` §10's reconciliation (live,
+**Layout — three bands**, matching `wastes.md` §10's reconciliation (live,
 contained specimens; never resident weapon-fauna):
 1. **Approach (shielding intact)** — ancient Rakatan hull/shielding material, powered,
    dark but not breached; the submerged entry point.

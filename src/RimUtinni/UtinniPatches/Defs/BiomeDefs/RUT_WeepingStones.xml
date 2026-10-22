@@ -172,7 +172,7 @@
          standalone BiomeDef with no ParentName — it never inherited the
          donor's fishTypes, and no patch ever targeted it. Cross-checked two
          ways: (1) `world/ASHKARR_WORLDMAP_tiles.csv` (2026-09-12, the same
-         full tile census RUT_Wasteland.xml's own wave-2 header already
+         full tile census RUT_Wastes.xml's own wave-2 header already
          trusted for its 1853-tile claim) shows RUT_WeepingStones on all 223
          tiles — matching this file's own MEASURED SS0 figure above — and
          ZBiome_DesertOasis on zero; (2) the donor's live XML

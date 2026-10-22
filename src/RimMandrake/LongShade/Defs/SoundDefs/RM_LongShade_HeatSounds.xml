@@ -11,7 +11,7 @@
                                          the giant is on screen.
 
   PLACEHOLDER AUDIO, same convention as RM_GreentideHummingGrove.xml and
-  RM_WastelandSounds.xml: no audio pipeline exists in this repo, so each grain is a
+  RM_WastesSounds.xml: no audio pipeline exists in this repo, so each grain is a
   verbatim copy of a vanilla grain (the two clipPaths are listed in
   Utils/selftest_sound_paths.py's VANILLA_PACKED with their donor SoundDefs),
   pitched and levelled to be ours:

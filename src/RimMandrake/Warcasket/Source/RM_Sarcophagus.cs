@@ -6,7 +6,7 @@ using Verse.AI;
 namespace RimMandrake.Warcasket
 {
     // WARCASKET_CASK_BAY_AND_SARCOPHAGI_1 — warcasket sarcophagi.
-    // wasteland.md §7, verbatim: "a dead Junker in an adjusted warcasket is a
+    // wastes.md §7, verbatim: "a dead Junker in an adjusted warcasket is a
     // sealed salvage-within-salvage: suit, tools, and the half-extracted core
     // still in its grips."
     //

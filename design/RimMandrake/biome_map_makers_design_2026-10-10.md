@@ -56,7 +56,7 @@ is ever placed by chance. Tiles get a landform by hand at the one painting pass,
 ### 1.3 Per-biome map-gen hooks already in our biome mods (parsed from `Biomes.compose.json` members)
 These are the seeds of each map-maker. None of them builds a biome's macro shape yet:
 - **`extraGenSteps` in use:** Abyss (3), BlueDesert (1), Contagion (1), FloodedCanyon (1),
-  LanternDeeps (1), LeaningScrub (1), LongShade (4), Miasma (1), NightsideIce (1), Pyrelands (1),
+  LanternDeeps (1), LeaningScrub (1), LongShade (4), Miasma (1), SleepingIce (1), Pyrelands (1),
   Stillsand (1), TheRot (1), **Warscar (15**, including vanilla `CratersLarge/Medium/Small`),
   Wasteland (1). Most are the shared `RM_WreckField_<Biome>`.
 - **GenStepDefs that some BiomeDef `extraGenSteps` does not list.** These are reached by another
@@ -190,7 +190,7 @@ means the docs give no macro shape. A "likely landforms" entry is a suggestion, 
 | LeaningScrub `RM_LeaningScrub` | ≈`arid_shrubland.md` | a flat, wind-scoured plain of even, leaning fuzz to every horizon | none (flat) |
 | LongShade `RM_LongShade` | ≈`desert.md` | scattered rock and scarps throwing 4× shadows; shade islands with lethal gaps | Badlands? needs owner |
 | Miasma `RM_Miasma` | `the_miasma.md` | a delta: brackish channels between a dying sea and its rivers | needs owner |
-| NightsideIce `RM_NightsideIce` | `nightside_ice.md` | the highest ground of the night; ice that flows and fractures | Rift? needs owner |
+| SleepingIce `RM_SleepingIce` | `sleeping_ice.md` | the highest ground of the night; ice that flows and fractures | Rift? needs owner |
 | Pyrelands `RM_Pyrelands` | `the_pyrelands.md` | open grass savanna "to the horizon" with a moving burn | none (flat) |
 | RustCathedral `RM_RustCathedral` | `the_rust_cathedral.md` | a flat plateau carrying a circuit-board maze of walls | DesertPlateau |
 | Stillsand `RM_Stillsand` | ≈`dune_sea.md` + `deep_desert.md` | a corrugated plain; every dune runs the same way at the same spacing | none (dune field is map-maker) |
@@ -198,7 +198,7 @@ means the docs give no macro shape. A "likely landforms" entry is a suggestion, 
 | TheRot `RM_TheRot` | `the_rot.md` | a fungal continent of bone and lilac towers, milky ponds | needs owner |
 | TheSump `RM_TheSump` | `the_sump.md` | the lowest basin: flat black pools and glassy sheets | Crater/basin? needs owner |
 | Warscar `RM_Warscar` | `the_scarlands.md` | crater fields and slag hills on shattered megastructure floors | Crater |
-| Wasteland `RM_Wasteland` | `wasteland.md` | where rivers die into salt and brine; craters from old weapons | Crater? needs owner |
+| Wasteland `RM_Wastes` | `wastes.md` | where rivers die into salt and brine; craters from old weapons | Crater? needs owner |
 | Webwork `RM_Webwork` | `the_webwork.md` | a jungle that drank its river; high green shoulders, silk channels | needs owner |
 | WeepingStones `RM_WeepingStones` | `weeping_stones.md` | high pale ridges and shoulders; seeps on shaded faces; pools | LoneMountain/ridge? needs owner |
 | TheScald `RM_TheScald` | `the_scald.md` | a crater sea ringed by geysered shores (water tile; floor = pocket) | n/a: shore via SeaCoast |

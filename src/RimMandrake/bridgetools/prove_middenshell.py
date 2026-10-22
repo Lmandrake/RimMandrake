@@ -4,12 +4,12 @@ Run under Windows python.exe from the repo root, with RimMandrake: Wasteland act
     python.exe src\\RimMandrake\\bridgetools\\prove_middenshell.py
 Needs a playing game or starts a debug quicktest. Steps:
   1. defs: RM_Middenshell (size 20x20), RM_MiddenshellArrives, RM_MiddenshellSeam.
-  2. Make an RM_Wasteland map: set a free world tile's biome, generate its map, switch to it.
+  2. Make an RM_Wastes map: set a free world tile's biome, generate its map, switch to it.
   3. Fire RM_MiddenshellArrives there (the real biome-gated path). If jawa/fire_incident is
      compiled out (GM tool) or refuses, fall back to spawning it directly mid-map.
   4. Read it back: list_things position/rotation + inspect_string "Footprint: WxH".
   5. Step ticks and read again: position must change (it crawls), footprint must stay 20x20.
-Exit 0 = found on an RM_Wasteland map with a 20x20 footprint that moved; 1 otherwise.
+Exit 0 = found on an RM_Wastes map with a 20x20 footprint that moved; 1 otherwise.
 State reads only, no screenshots."""
 import sys, json, re, time
 sys.path.insert(0, r"src\RimMandrake\Utils")
@@ -45,7 +45,7 @@ if st.get("programState") != "Playing":
         time.sleep(1)
 print("programState:", st.get("programState"))
 
-# 2. an RM_Wasteland map
+# 2. an RM_Wastes map
 home = call("jawa/map_info")
 home_tile = home.get("tile")
 print("home map_info:", short(home, 300))
@@ -55,7 +55,7 @@ tile = None if home_tile is None else home_tile + 1
 print("wasteland tile:", tile)
 map_id = None
 if tile is not None:
-    print("world_tile_set:", short(call("jawa/world_tile_set", tiles=str(tile), biome="RM_Wasteland",
+    print("world_tile_set:", short(call("jawa/world_tile_set", tiles=str(tile), biome="RM_Wastes",
                                         elevation=200.0, hilliness="Flat", readBack=1), 300))
     call("jawa/world_commit")
     g = call("jawa/world_tile_map_generate", tile=tile, suggestedMapParent="Settlement", sizeX=150, sizeZ=150)
@@ -98,7 +98,7 @@ logs = call("jawa/drain_log", errorsOnly=True)
 print("errors:", short(logs, 1500))
 
 moved = bool(t1 and t2 and t1.get("position") != t2.get("position"))
-ok = biome == "RM_Wasteland" and fp1 == (20, 20) and fp2 == (20, 20) and moved
+ok = biome == "RM_Wastes" and fp1 == (20, 20) and fp2 == (20, 20) and moved
 print("VERDICT biome=%s footprint=%s->%s moved=%s route=%s => %s"
       % (biome, fp1, fp2, moved, route, "PASS" if ok else "FAIL"))
 sys.exit(0 if ok else 1)

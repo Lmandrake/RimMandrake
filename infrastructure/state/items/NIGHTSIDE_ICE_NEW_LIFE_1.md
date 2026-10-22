@@ -3,7 +3,7 @@
 Decision taken by question card (owner, 2026-10-05): "Design the strange life".
 
 Draft: `design/Jawa/worldbuilding/biomes/nightside_ice_roster_draft_2026-10-05.md` (every row DRAFT).
-Authority: `design/Jawa/worldbuilding/biomes/nightside_ice.md` §4, §4c, §5/§6, roster consequences;
+Authority: `design/Jawa/worldbuilding/biomes/sleeping_ice.md` §4, §4c, §5/§6, roster consequences;
 turn-1 rulings in `nightsideice_bedazzle_review_2026-10-01.md` §8 (kesshet passed, not re-pitched).
 
 ## spec

@@ -53,7 +53,7 @@ OLD_TO_NEW_BIOME = {
                                           # world-carrying twin, identical content)
     'Scarlands': 'RUT_Scarlands',
     'Volcano': 'RUT_TheForge',
-    'Wasteland': 'RM_Wasteland',  # RUT_Wasteland frozen 2026-09-24,
+    'Wasteland': 'RM_Wastes',  # RUT_Wastes frozen 2026-09-24,
                                    # WASTELAND_RM_MOD_BUILD_1 (same pattern as
                                    # AB_MycoticJungle -> RM_TheRot above)
     'ZBiome_Badlands': 'RUT_CrackedLands',

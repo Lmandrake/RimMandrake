@@ -17,16 +17,16 @@ per the Transient convention; full native path only, not cited from a committed 
 | vanilla `IceSheet` | 49 | all -> Ice (`NIGHTSIDE_ICE_DEF_1`) |
 
 **Result: 2,338 tiles repainted** — 1,328 `BiomeGRimond` (Blue Desert core), 802
-`RUT_NightsideIce`, 208 `AB_PropaneLakes` (the sector-6 bulge).
+`RUT_SleepingIce`, 208 `AB_PropaneLakes` (the sector-6 bulge).
 
 🔑 **Calibrated before trusting it**, per the measuring-large-artifacts skill's own
-guidance: `nightside_ice.md` §0 independently states the ice sheet's post-dissolve total
+guidance: `sleeping_ice.md` §0 independently states the ice sheet's post-dissolve total
 as **802 tiles = 337 (ring sectors 1-3) + 416 (CrystalCaverns >=900m) + 49 (own)**. This
 script's derivation reproduces all three sub-totals exactly (337, 416, 802) BEFORE
 painting — which is also what corrected an initial misreading: `the_blue_desert.md`'s
 "4, 5, 8 | the ice sheet takes the former caverns' HIGH tiles" row reads, on a first
 pass, as if it also elevation-splits the RING's own tiles in sectors 4/5/8. It doesn't —
-`nightside_ice.md`'s own 802 total has no room for any ring-4/5/8 contribution, so that
+`sleeping_ice.md`'s own 802 total has no room for any ring-4/5/8 contribution, so that
 row is CrystalCaverns-only; ring tiles in 4/5/8 default to Blue Desert core, same as the
 other non-ice, non-propane sectors.
 
@@ -48,9 +48,9 @@ sole, for IceSheet) destination:
   the ring went there): `the_blue_desert.md` explicitly names the Blue Desert as "the
   Horrors' host" (its intro line), so this is the narratively-correct target, not a
   fallback.
-- `IceSheet` (26 rows) -> `RUT_NightsideIce` (100% of its tiles moved there — unconditional).
-- `BMT_CrystalCaverns` (29 rows) -> `RUT_NightsideIce` (72% of its tiles by elevation, and
-  thematically closer: nightside_ice.md's fauna concept is blind/tunneling/underground,
+- `IceSheet` (26 rows) -> `RUT_SleepingIce` (100% of its tiles moved there — unconditional).
+- `BMT_CrystalCaverns` (29 rows) -> `RUT_SleepingIce` (72% of its tiles by elevation, and
+  thematically closer: sleeping_ice.md's fauna concept is blind/tunneling/underground,
   matching cavern life better than the open Blue Desert plain — flagged as an
   interpretive call, since a real fraction of CrystalCaverns tiles did go to Blue Desert).
 

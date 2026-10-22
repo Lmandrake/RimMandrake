@@ -127,13 +127,13 @@ namespace RimMandrake.FlowWorks
 			{ "RM_WeepingStones", 0.15f }, { "RUT_WeepingStones", 0.15f },   // high stone, ridge and shoulder
 			{ "RM_LanternDeeps", 0.20f },                                     // voids under the thickest crust
 			{ "RM_ChillCrater", 0.10f },                                      // a basin of black glass
-			{ "RM_NightsideIce", 0.10f }, { "RUT_NightsideIce", 0.10f },     // ice that flows and fractures
+			{ "RM_SleepingIce", 0.10f }, { "RUT_SleepingIce", 0.10f },     // ice that flows and fractures
 			{ "RM_Warscar", 0.10f }, { "RUT_Scarlands", 0.10f },             // crater fields
 			// shallower: swamps, sumps, plains, pans, mud
 			{ "RM_TheSump", -0.25f }, { "RUT_Sump", -0.25f },                // flat black pools, the lowest basin
 			{ "RM_FeverWood", -0.25f }, { "RUT_FeverWood", -0.25f },         // shallow surface pools, deep mud beneath
 			{ "RM_Miasma", -0.20f }, { "RUT_Miasma", -0.20f },               // brackish channels
-			{ "RM_Wasteland", -0.20f }, { "RUT_Wasteland", -0.20f },         // salt and brine where rivers die
+			{ "RM_Wastes", -0.20f }, { "RUT_Wastes", -0.20f },         // salt and brine where rivers die
 			{ "RM_Stillsand", -0.20f }, { "RUT_ExtremeDesert", -0.20f },     // a corrugated plain to every horizon
 			{ "RM_LeaningScrub", -0.20f }, { "RUT_AridShrubland", -0.20f },  // fuzz to every horizon
 			{ "RM_Greentide", -0.15f }, { "RUT_Greentide", -0.15f },         // mud deep enough to swallow a boot

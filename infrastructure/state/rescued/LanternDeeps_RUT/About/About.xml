@@ -32,7 +32,7 @@ Also ships the darkness mechanic (carried light draws what lives down there) and
     <li>lee.theforce.lightsaber</li>
     <li>det.epochspyrinth</li>
     <!-- LANTERNDEEPS_GENSTEP_ALLOWLIST_DEAD_1: GenStep_ScatterCavePortal's host-biome
-         allowlist checks map.Biome.defName against RUT_NightsideIce and RUT_PropaneLake
+         allowlist checks map.Biome.defName against RUT_SleepingIce and RUT_PropaneLake
          (mandrake.rut.patches) and BiomeGRimond (grimterra.biomesmod, "GRiNDTerra
          Biomes" - the_blue_desert.md's donor). Neither was declared here, so on most
          lists neither host mod was guaranteed present/ordered relative to this one.

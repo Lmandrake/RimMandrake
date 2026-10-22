@@ -12,7 +12,7 @@ Built offline, never loaded:
   Picked + new `noLoot`), Scald floor (`RM_ScaldFloorWreckHull`, Scald hull art). Floor fields are in BOTH
   `RM_SeabedGenerator_*` and `RM_SeaDiveGenerator_*`. Floor children set Light: `RM_SeaFloorGround` has no Walkable.
 - Step 4: `RM_WreckSurface` building tag on `RM_WreckFamilyBase`; `MapComponent_WreckLichen` seeds beside it.
-  Warscar `RM_WarscarWreck{Hull,Frame}` (Stripped), Wasteland `RM_WastelandWreck{Hull,Tank}` (Irradiated).
+  Warscar `RM_WarscarWreck{Hull,Frame}` (Stripped), Wasteland `RM_WastesWreck{Hull,Tank}` (Irradiated).
 - Step 6: Blue Desert, Miasma, Flooded Canyon, Fever Wood (by patch), Rot (Light), Abyss, Stillsand, Contagion,
   17 children incl. the first Speeder/Carapace/Tread. Deep Desert has no owned BiomeDef, so no field.
 - Step 7 (offline half): `validation.py` refuses a wreck field on any Cleaned biome; Long Shade's crawler road
@@ -27,7 +27,7 @@ Wave 2 (2026-10-07, built offline, never loaded; 9c63abbb5 2d8bcc7c9 0b118fbb5 9
 - Art: 41 renders installed through the art ledger; 24 children carry own texPath + measured shadow.
 - Engine: weathering `extraLoot`, `salvageHediff`, `jacket`; child `extraTierShift`; "Wreck hazards" setting.
 - Grey floor wrecks ringed in RM_BrineJacket + RM_SalvageLoot_GreyShards; Blue Desert in RM_BlueIceMineable.
-- Wasteland: Irradiated doses ToxicBuildup 0.12 x (1-ToxicResistance); RM_WastelandWarcasketSarcophagus (Sealed).
+- Wasteland: Irradiated doses ToxicBuildup 0.12 x (1-ToxicResistance); RM_WastesWarcasketSarcophagus (Sealed).
 - Long Shade road lays from RM_WreckList_CrawlerRoad (cart + RM_LongShadeWreckSpeeder; RSW adds skiff/tread rows).
 - Forge: RUT_FoundrySalvageCache is a Carapace child, RUT_WreckWeathering_ForgeWarm + RUT_SalvageLoot_Foundry.
   Still DEPLOY_HOLD with the F4 tower chain (its art exists; lift with a load round).

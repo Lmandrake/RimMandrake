@@ -8,23 +8,23 @@ already computed in design/Jawa/worldbuilding/horrorwastes_dissolve_mosaic.json
 (2,338 tiles: 1,711 former HorrorWastes ring + 578 BMT_CrystalCaverns + 49
 vanilla IceSheet). It does not re-derive that map.
 
-Rule (the_blue_desert.md §0's table, cross-validated against nightside_ice.md
+Rule (the_blue_desert.md §0's table, cross-validated against sleeping_ice.md
 §0's own tile counts before trusting it — ring sectors 1-3 = 337 matches
 exactly, caverns elev>=900 = 416 matches exactly, total ice = 802 matches
 exactly):
   - Ring (former HorrorWastes) tiles, by 30-degree bearing sector (bearing//30):
       sectors 0,7,9,10,11  -> BiomeGRimond (Blue Desert core)
-      sectors 1,2,3        -> RUT_NightsideIce (the ring's own highland)
+      sectors 1,2,3        -> RUT_SleepingIce (the ring's own highland)
       sectors 4,5,8        -> BiomeGRimond (the elevation split in this band
                                is CrystalCaverns-only, see below -- ring tiles
                                here are NOT re-split by elevation; verified
-                               against nightside_ice.md's own 802 total, which
+                               against sleeping_ice.md's own 802 total, which
                                has no room for a ring-4/5/8 contribution)
       sector 6              -> AB_PropaneLakes (the propane bulge)
   - BMT_CrystalCaverns tiles (no longer a worldmap biome, the_lantern_deeps.md):
-      elev_m >= 900  -> RUT_NightsideIce
+      elev_m >= 900  -> RUT_SleepingIce
       elev_m < 900   -> BiomeGRimond
-  - Vanilla IceSheet's 49 tiles repaint too -> RUT_NightsideIce (NIGHTSIDE_ICE_DEF_1)
+  - Vanilla IceSheet's 49 tiles repaint too -> RUT_SleepingIce (NIGHTSIDE_ICE_DEF_1)
 
 NOT included here, flagged and deferred: the_blue_desert.md's "arc excursion"
 refinement (Blue Desert lobes in sectors 0/11 push further into arc 143-155;

@@ -33,7 +33,7 @@
     `world/ASHKARR_WORLDMAP_tiles.csv`.
 
     allowRoads FALSE, overriding the general "all our biomes allow roads" ruling
-    (RUT_NightsideIce/RUT_TheScald's own comment): dune_sea.md SS6 carries an explicit
+    (RUT_SleepingIce/RUT_TheScald's own comment): dune_sea.md SS6 carries an explicit
     named ban — "No roads through the deep dune (owner's ruling on the Deep Desert
     Tribes)." A sheet-specific hard ban outranks the general default.
 

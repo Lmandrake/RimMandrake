@@ -5,7 +5,7 @@
     RM_Cauldron                    POISONFOREST_RM_MOD_BUILD_1, new 2026-09-25
 
     Copied from the frozen src/RimUtinni/UtinniPatches/Defs/BiomeDefs/
-    RUT_PoisonForest.xml (authored 2026-09-09, most recently updated by
+    RUT_Cauldron.xml (authored 2026-09-09, most recently updated by
     COMMISSION_LEDGER_CLEANUP_1 2026-09-24/25) per
     design/RimMandrake/biome_mod_architecture.md §5 Phase A step 2. Every
     field below is the twin's own content, unchanged, EXCEPT:

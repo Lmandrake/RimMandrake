@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_WastesBrineScatter_Register.xml
+  MAPGEN_SCATTER_NRE_1 (2026-09-30): registers the three RUT_ Wasteland brine-deposit scatters (RUT_WastesBrineScatter.xml) on its OWN biome(s)
+  via BiomeDef.extraGenSteps, which Verse.MapGenerator.GenerateMap appends
+  only when map.Biome is that biome (decompiled 1.6, MapGenerator.cs). It
+  used to be added to the global Base_Player genSteps and relied on a
+  terrain-tag validator to no-op elsewhere; that ran the step on every player
+  map and logged "could not find cell" (or "no filthDef configured") on each.
+  extraGenSteps applies to every map generator on that biome, not only
+  Base_Player; the RUT_WastesBrineShallow terrain validator still confines placement.
+  Nested Conditionals: skip if the biome is not loaded; append to an existing
+  extraGenSteps node, else create one.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="RUT_Wastes"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/BiomeDef[defName="RUT_Wastes"]/extraGenSteps</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/BiomeDef[defName="RUT_Wastes"]/extraGenSteps</xpath>
+        <value>
+          <li MayRequire="Ludeon.RimWorld.Odyssey">RUT_Jawa_ScatterWastesBrineTekk</li>
+          <li MayRequire="Ludeon.RimWorld.Odyssey">RUT_Jawa_ScatterWastesBrineDrazz</li>
+          <li>RUT_Jawa_ScatterWastesBrinePlate</li>
+        </value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>/Defs/BiomeDef[defName="RUT_Wastes"]</xpath>
+        <value>
+          <extraGenSteps>
+            <li MayRequire="Ludeon.RimWorld.Odyssey">RUT_Jawa_ScatterWastesBrineTekk</li>
+            <li MayRequire="Ludeon.RimWorld.Odyssey">RUT_Jawa_ScatterWastesBrineDrazz</li>
+            <li>RUT_Jawa_ScatterWastesBrinePlate</li>
+          </extraGenSteps>
+        </value>
+      </nomatch>
+    </match>
+  </Operation>
+
+</Patch>

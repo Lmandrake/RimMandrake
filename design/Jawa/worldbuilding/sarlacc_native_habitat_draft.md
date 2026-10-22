@@ -69,7 +69,7 @@ malice or hunting, any "boss" framing. A cistern is not hostile. It is a place, 
 
 ## 2. The three stages
 
-Working names for the sitting. The dead state is **the throat** — `wasteland.md`'s word for a
+Working names for the sitting. The dead state is **the throat** — `wastes.md`'s word for a
 dead sarlacc ("a pre-dug descending throat") and already canon; a stage name that survives
 death should not be invented twice.
 

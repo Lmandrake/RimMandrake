@@ -1,7 +1,7 @@
 # The Cauldron (formerly the Poison Forest) — biome definition sheet
 
 > 🔄 **RENAMED — `CAULDRON_FULL_RENAME_1`, 2026-09-29.** "Poison ground gets
-> renamed to this biome" (owner-typed). This file was `poison_forest.md`; the
+> renamed to this biome" (owner-typed). This file was `cauldron.md`; the
 > RM_ tier's defName/mod/namespace all moved to Cauldron naming. The frozen
 > campaign twin was `RUT_PoisonForest` at that pass — 546 live world
 > tiles, defName rename BLOCKED pending an owner call, same shape as

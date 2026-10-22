@@ -200,7 +200,7 @@ tank) and drinks until the need reads full (2-4 drinks), ignoring orders, then t
   medicine, and a colony with no fresh water is in real trouble;
 - the hediff names its cause, so nobody dies without a readable sign.
 
-`RM_BrineShock` (`src/RimMandrake/Wasteland`) is a different thing (a brineleech's charge) and is not reused.
+`RM_BrineShock` (`src/RimMandrake/Wastes`) is a different thing (a brineleech's charge) and is not reused.
 
 ---
 

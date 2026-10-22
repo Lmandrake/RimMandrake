@@ -23,7 +23,7 @@ Full output: `Transient/ecosystem_pyramid_sweep_20260920.txt`.
 |---|---|---|---|
 | `RUT_RustCathedral` | **0.0%** | 1 | roster is one large animal |
 | `RUT_TheScald` | **0.0%** | 2 | both large |
-| `RUT_NightsideIce` | **16.7%** | 6 | |
+| `RUT_SleepingIce` | **16.7%** | 6 | |
 | `RUT_Abyss` | **33.3%** | 14 | 🔴 the worst real roster |
 | `RM_TheRot` | 35.9% | 8 | |
 | `RUT_Webwork` | 36.4% | 4 | |
@@ -31,14 +31,14 @@ Full output: `Transient/ecosystem_pyramid_sweep_20260920.txt`.
 | `RUT_WeepingStones` | 44.4% | 10 | |
 | `RUT_Desert` | 45.0% | 56 | 🔴 the biggest roster in the set |
 
-Passing, for contrast: `RUT_Slime` 91.1%, `RUT_FeverWood` 80.7%, `RUT_PoisonForest`
+Passing, for contrast: `RUT_Slime` 91.1%, `RUT_FeverWood` 80.7%, `RUT_Cauldron`
 80.4%, `RUT_ExtremeDesert` 77.0%, `RUT_AridShrubland` 76.3%, `RUT_Miasma` 76.1%,
-`RUT_CrackedLands` 74.4%, `RUT_Wasteland` 73.3%, `RUT_Contagion` 71.7%,
+`RUT_CrackedLands` 74.4%, `RUT_Wastes` 73.3%, `RUT_Contagion` 71.7%,
 `RUT_Greentide` 63.3%, `RUT_Umbra` 58.7%, `RUT_Scarlands` 53.0%, `RUT_Sump` 52.4%,
 `RUT_GreySea` and `RUT_TwilightSea` 90.9% each.
 
 ⚠️ **Three of the four worst are near-empty rosters, not inverted pyramids.**
-RustCathedral has ONE animal, TheScald has two, NightsideIce six with commonalities
+RustCathedral has ONE animal, TheScald has two, SleepingIce six with commonalities
 summing under 0.02. A roster that small cannot express a pyramid; calling it a
 violation would be reading a ratio off almost no data. The genuine offenders are
 **Abyss, TheRot, Webwork, TheForge, WeepingStones and Desert**.
@@ -50,7 +50,7 @@ Two calls, both one line:
 1. **The threshold.** "Many more smaller than large" needs a number to be checkable.
    Proposed: **small ≥ 60% of a roster's total commonality**, which passes 12 of the
    24 today and fails the 9 above plus the three flat ones. A softer 50% passes 15.
-2. **The near-empty rosters.** RustCathedral, TheScald, NightsideIce and the two seas
+2. **The near-empty rosters.** RustCathedral, TheScald, SleepingIce and the two seas
    have 1–6 entries. Either they are exempt (a shrine, a lava field and an ice cap are
    not ecosystems), or they are owed small fauna. ⇒ **Recommend exempting them and
    filing the fauna gap separately** — inventing critters to satisfy a ratio is the
@@ -99,7 +99,7 @@ named but never wired) — no megafauna cut anywhere, same shape as the Gizka fi
 |---|---|---|---|
 | `RUT_RustCathedral` | 0.0% | **92.5%** | wired `RUT_CathedralRoach` (0.12) + `GR_Mecharat` (0.5) — both already ruled in `rosters/the_rust_cathedral.json` fauna, never wired. Mynock deliberately NOT added: that same roster rules it "homeless-reserve" |
 | `RUT_TheScald` | 0.0% | **96.6%** | wired `RSW_Faa` (0.5) + `RSW_Mee` (0.5) — both already ruled in `rosters/the_scald.json` fauna, never wired |
-| `RUT_NightsideIce` | 16.7% | **68.8%** | wired `AA_ShockGoat` (0.03) — already ruled "visitor" in `rosters/nightside_ice.json`, never wired; the roster's other two unwired visitors (Tauntaun, Wampa) are LARGE and left out on purpose |
+| `RUT_SleepingIce` | 16.7% | **68.8%** | wired `AA_ShockGoat` (0.03) — already ruled "visitor" in `rosters/sleeping_ice.json`, never wired; the roster's other two unwired visitors (Tauntaun, Wampa) are LARGE and left out on purpose |
 | `RUT_Abyss` | 33.3% | **55.6%** | boosted `AA_DuskRat` 0.5→1.5, `AA_Murkling` 0.5→1.0 (no unwired small fauna existed in this biome's own roster to draw on instead) |
 | `RM_TheRot` | 35.9% | **57.6%** | wired `AA_AngelMoth` (0.5) + `Snoruuk` (0.5) — both already ruled in `rosters/the_rot.json` fauna, never wired |
 | `RUT_Webwork` | 36.4% | **58.8%** | boosted `Kreetle` 0.2→0.8 (the roster's two unwired entries, AA_Feralisk/GR_Chickenspider, are bodySize 1.0/1.1 — LARGE, so left out) |
@@ -108,7 +108,7 @@ named but never wired) — no megafauna cut anywhere, same shape as the Gizka fi
 | `RUT_Desert` | 45.0% | **52.8%** | wired `JOE_Landopus` (0.5, this mod's own def, no MayRequire needed) + boosted `Kreetle` 0.8→1.3, `Scavrat` 0.6→1.0, `Sketto` 0.4→0.8, `WompRat` 0.4→0.7, `Rat` 0.1→0.2 |
 
 Files touched (all in `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/`): `RUT_RustCathedral.xml`,
-`RUT_TheScald.xml`, `RUT_NightsideIce.xml`, `RUT_Abyss.xml`, `RUT_TheRot.xml`,
+`RUT_TheScald.xml`, `RUT_SleepingIce.xml`, `RUT_Abyss.xml`, `RUT_TheRot.xml`,
 `RUT_Webwork.xml`, `RUT_TheForge.xml`, `RUT_WeepingStones.xml`, `RUT_Desert.xml`.
 `validate_patch.py` against the live def dump: 0 errors, 0 warnings on all 9. Deployed via
 `deploy_custom_mods.py --mod UtinniPatches --apply` (9 files, verified in sync).

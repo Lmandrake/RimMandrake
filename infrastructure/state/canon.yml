@@ -150,7 +150,7 @@ planet:
   water_pct_src: >
     Transient/CANON_CENSUS_RECOUNT_2026-09-12.md, MEASURED against the frozen CSV
     (sha256_12 756d9ffc8a22): water column 1448/21872 = 6.6203%. Incl-ice adds
-    RUT_NightsideIce (1506 tiles; the CSV's own water column does NOT count it as
+    RUT_SleepingIce (1506 tiles; the CSV's own water column does NOT count it as
     water): 2954/21872 = 13.5059%. The two figures answer different questions.
 
   # The substellar point is the origin of everything: this world is tidally locked
@@ -303,7 +303,7 @@ planet:
     Desert: 2390
     AB_MycoticJungle: 2204
     Wasteland: 1853
-    RUT_NightsideIce: 1506
+    RUT_SleepingIce: 1506
     AB_RockyCrags: 1135
     RUT_BlueDesert: 1029
     ZBiome_Badlands: 970
@@ -674,7 +674,7 @@ ecosystem_laws:
     swept_2026_09_20: >
       Against defs.sqlite mods=617/6a41e05c828eed67, captured 2026-09-20T07:47:24Z. 9 of
       24 biome rosters failed and were fixed same-day: RUT_RustCathedral (0.0% -> 92.5%),
-      RUT_TheScald (0.0% -> 96.6%), RUT_NightsideIce (16.7% -> 68.8%), RUT_Abyss
+      RUT_TheScald (0.0% -> 96.6%), RUT_SleepingIce (16.7% -> 68.8%), RUT_Abyss
       (33.3% -> 55.6%), RM_TheRot (35.9% -> 57.6%), RUT_Webwork (36.4% -> 58.8%),
       RUT_TheForge (43.4% -> 56.1%), RUT_WeepingStones (44.4% -> 54.5%), RUT_Desert
       (45.0% -> 52.8%). Fixed by raising the grain (boosting or wiring already-built,

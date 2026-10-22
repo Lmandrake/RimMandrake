@@ -22,7 +22,7 @@ namespace RimMandrake.Warcasket
     // walk across (TerrainDef.IsWater && no Walkable affordance — vanilla's
     // own "must swim" deep/moving-deep water, and this repo's matching
     // ToxicWaterDeepBase/ToxicWaterChestDeepBase-derived brine, e.g.
-    // RM_WastelandBrineDeep/RM_WastelandBrineMovingChestDeep) counts as
+    // RM_WastesBrineDeep/RM_WastesBrineMovingChestDeep) counts as
     // hazardous. An ordinary shallow ford, marsh edge or shallow brine
     // margin (ToxicWaterShallowBase-derived, Walkable) is NOT — every
     // biome already has pawns cross those freely, and turning that into a

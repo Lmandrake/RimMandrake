@@ -31245,7 +31245,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.2347,
 "vanilla": false,
 "cave": false,
@@ -31364,7 +31364,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.1066,
 "vanilla": false,
 "cave": false,
@@ -31470,7 +31470,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.3111,
 "vanilla": false,
 "cave": false,
@@ -31581,7 +31581,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.2347,
 "vanilla": false,
 "cave": false,
@@ -31708,7 +31708,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.1352,
 "vanilla": false,
 "cave": false,
@@ -32063,7 +32063,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 2.0,
 "vanilla": false,
 "cave": false,
@@ -32164,7 +32164,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.0804,
 "vanilla": false,
 "cave": false,
@@ -32279,7 +32279,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.0569,
 "vanilla": false,
 "cave": false,
@@ -32394,7 +32394,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.2347,
 "vanilla": false,
 "cave": false,
@@ -32494,7 +32494,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.9081,
 "vanilla": false,
 "cave": false,
@@ -32595,7 +32595,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.0569,
 "vanilla": false,
 "cave": false,
@@ -32713,7 +32713,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.066,
 "vanilla": false,
 "cave": false,
@@ -32828,7 +32828,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.0569,
 "vanilla": false,
 "cave": false,
@@ -32948,7 +32948,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.0403,
 "vanilla": false,
 "cave": false,
@@ -33063,7 +33063,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.0569,
 "vanilla": false,
 "cave": false,
@@ -33234,7 +33234,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.0804,
 "vanilla": false,
 "cave": false,
@@ -33360,7 +33360,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.0365,
 "vanilla": false,
 "cave": false,
@@ -33504,7 +33504,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.1066,
 "vanilla": false,
 "cave": false,
@@ -33618,7 +33618,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.0804,
 "vanilla": false,
 "cave": false,
@@ -33744,7 +33744,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.1066,
 "vanilla": false,
 "cave": false,
@@ -33845,7 +33845,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.1066,
 "vanilla": false,
 "cave": false,
@@ -33945,7 +33945,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.1352,
 "vanilla": false,
 "cave": false,
@@ -34046,7 +34046,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.0365,
 "vanilla": false,
 "cave": false,
@@ -34161,7 +34161,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.0365,
 "vanilla": false,
 "cave": false,
@@ -34311,7 +34311,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.0365,
 "vanilla": false,
 "cave": false,
@@ -34462,7 +34462,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.3111,
 "vanilla": false,
 "cave": false,
@@ -34601,7 +34601,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.1066,
 "vanilla": false,
 "cave": false,
@@ -34760,7 +34760,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.0365,
 "vanilla": false,
 "cave": false,
@@ -34872,7 +34872,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.0138,
 "vanilla": false,
 "cave": false,
@@ -34998,7 +34998,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.0138,
 "vanilla": false,
 "cave": false,
@@ -35120,7 +35120,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.0569,
 "vanilla": false,
 "cave": false,
@@ -35218,7 +35218,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.0138,
 "vanilla": false,
 "cave": false,
@@ -35339,7 +35339,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.0138,
 "vanilla": false,
 "cave": false,
@@ -35461,7 +35461,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.0138,
 "vanilla": false,
 "cave": false,
@@ -35582,7 +35582,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.0195,
 "vanilla": false,
 "cave": false,
@@ -35713,7 +35713,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.1066,
 "vanilla": false,
 "cave": false,
@@ -35814,7 +35814,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.1066,
 "vanilla": false,
 "cave": false,
@@ -35915,7 +35915,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.0259,
 "vanilla": false,
 "cave": false,
@@ -36015,7 +36015,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.0195,
 "vanilla": false,
 "cave": false,
@@ -36139,7 +36139,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.01,
 "vanilla": false,
 "cave": false,
@@ -36358,7 +36358,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.0138,
 "vanilla": false,
 "cave": false,
@@ -36480,7 +36480,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.0195,
 "vanilla": false,
 "cave": false,
@@ -36599,7 +36599,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.0195,
 "vanilla": false,
 "cave": false,
@@ -36721,7 +36721,7 @@
 "biomes": [
 {
 "biomeDef": "Wasteland",
-"biome": "wasteland",
+"biome": "wastes",
 "commonality": 0.0138,
 "vanilla": false,
 "cave": false,

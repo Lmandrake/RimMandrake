@@ -23,7 +23,7 @@
       <li>RM_ScrubWind</li>
       <li>RM_FE_Weather_AshFall</li>
       <li>RM_FE_Weather_Cinderfall</li>
-      <li>RM_WastelandAshStorm</li>
+      <li>RM_WastesAshStorm</li>
       <li>RSW_SW_DrySandstorm</li>
     </weathers>
   </RimMandrake.SolarMirrors.RM_MirrorDustWeathersDef>

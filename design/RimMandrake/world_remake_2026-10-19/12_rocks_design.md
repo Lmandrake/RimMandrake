@@ -83,7 +83,7 @@ Costs are in plain terms. "After paint" = can land any time; "before paint" = mu
 
 ### 1. Every one of our biomes gets its own stone set  ⭐ the core idea
 Each `RM_` biome names the stones its maps carry (`forceRockTypes`, vanilla field, already used by Rust
-Cathedral). Volcanic biomes get basalt and obsidian; NightsideIce and The Chill get ice and dark slate;
+Cathedral). Volcanic biomes get basalt and obsidian; SleepingIce and The Chill get ice and dark slate;
 the salt seas get salt rock; Stillsand gets sandstone only; Warscar gets scrap conglomerate (idea 3).
 Biomes he does not rule on stay vanilla.
 - **Buys:** the stone tells you where you are; building materials become a reason to settle somewhere;

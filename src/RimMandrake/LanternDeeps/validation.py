@@ -13,7 +13,7 @@ and `Source/GenStep_ScatterMineshaftPortal.cs` (both extend vanilla
 `GenStep_ScatterGroup`; both self-gate through
 `LanternDeepsSettings.IsEntranceBiome`, a Mod Setting list
 (DEEP_ENTRANCE_BIOMES_SETTING_1) whose DEFAULT is `BiomeGRimond`,
-`RM_NightsideIce`, `RM_TheChill` -- `QUALIFYING_BIOMES` below is that
+`RM_SleepingIce`, `RM_TheChill` -- `QUALIFYING_BIOMES` below is that
 default, read from `UtinniDefaultEntranceBiomes` in `LanternDeepsMod.cs`, and
 holds only while the runner's settings file carries no other list);
 `Source/MapComponent_LanternDeepDarkness.cs` (the darkness
@@ -36,7 +36,7 @@ toggle.
 
 BIOME-GATE COVERAGE IS DYNAMIC, NOT ASSUMED: the walk doc's own `list: full`
 line says proving the POSITIVE scatter (walk step 6) needs a quicktest map
-already on `RM_NightsideIce`/`RM_TheChill`/`BiomeGRimond`, which this
+already on `RM_SleepingIce`/`RM_TheChill`/`BiomeGRimond`, which this
 suite has no tool to force (no bridge verb sets a map's biome after the fact
 -- confirmed absent from `skills/rimbridge/SKILL.md`'s own tool inventory).
 `biome_gate_on_current_map` therefore reads `jawa/map_info`'s own `biome`
@@ -84,13 +84,13 @@ suite.toggles = ["lanternDeepsEnabled",
                  "darknessThresholdMultiplier", "safeLanternEnabled"]
 
 SETTINGS_TYPE = "RimMandrake.LanternDeeps.LanternDeepsSettings"
-# FIX 2026-09-25 (TERMINALBIOMES_RM_MOD_BUILD_1): RUT_NightsideIce/RUT_PropaneLake
+# FIX 2026-09-25 (TERMINALBIOMES_RM_MOD_BUILD_1): RUT_SleepingIce/RUT_PropaneLake
 # restored alongside their RM_ twins. Those RUT_ defs are FROZEN, not deleted --
 # the planet is painted ONCE at the end (BIOME_PAINT_ONCE_AT_THE_END_1) -- and
 # still carry every live Ash'karr tile today; the RM_ twins sit at 0 tiles. A
 # QUALIFYING_BIOMES set missing the RUT_ names would read every real-world
 # entrance as non-qualifying.
-QUALIFYING_BIOMES = {"BiomeGRimond", "RUT_NightsideIce", "RM_NightsideIce",
+QUALIFYING_BIOMES = {"BiomeGRimond", "RUT_SleepingIce", "RM_SleepingIce",
                       "RUT_PropaneLake", "RM_TheChill"}
 EMERGENCE_SCATTER = "RM_LanternDeepEmergence_Scatter"
 MINESHAFT_SCATTER = "RM_LanternDeepMineshaft_Scatter"
@@ -316,7 +316,7 @@ def biome_gate_on_current_map(t):
             if after != before:
                 raise ExpectationFailed(
                     "current map biome %r is NOT in the qualifying set "
-                    "{BiomeGRimond, RM_NightsideIce, RM_TheChill} but "
+                    "{BiomeGRimond, RM_SleepingIce, RM_TheChill} but "
                     "%s count went %d -> %d anyway -- the biome gate is not "
                     "excluding this biome" % (biome, EMERGENCE_THING, before, after))
         t._record("biome_gate branch: biome=%r qualifying=%s"

@@ -45,7 +45,7 @@
     - wildPlants: RM_Glower/RM_ScorchedStars are OWN DUPLICATES (own defNames,
       Defs/ThingDefs_Plants/RM_WarscarFlora.xml) of the frozen twin's own
       RUT_Glower and RUT_ScorchedStars — duplicated rather than moved because
-      RUT_ScorchedStars is also shared with the frozen twin's own RUT_Wasteland
+      RUT_ScorchedStars is also shared with the frozen twin's own RUT_Wastes
       sibling (moving it would make Wasteland depend on this mod) and
       RUT_Glower had to stay live for the frozen twin. RETIRED 2026-10-16 (PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE): both
       originals are gone and the frozen twins name these RM_ defs.

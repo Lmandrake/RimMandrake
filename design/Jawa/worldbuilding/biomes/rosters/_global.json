@@ -441,12 +441,12 @@
   ],
   "AA_AnimusVox": [
    "arid_shrubland",
-   "poison_forest",
+   "cauldron",
    "the_miasma",
    "the_rot",
    "the_sump",
    "the_webwork",
-   "wasteland"
+   "wastes"
   ],
   "AA_ArcticLion": [
    "the_propane_lakes"
@@ -459,7 +459,7 @@
    "the_rust_cathedral"
   ],
   "AA_BlackSpider": [
-   "poison_forest",
+   "cauldron",
    "the_forge"
   ],
   "AA_Bobeene": [
@@ -477,7 +477,7 @@
    "the_rust_cathedral"
   ],
   "AA_EmpressButterfly": [
-   "wasteland"
+   "wastes"
   ],
   "AA_Erin": [
    "arid_shrubland",
@@ -504,7 +504,7 @@
    "the_rot"
   ],
   "AA_GreyCoatedMouflon": [
-   "poison_forest",
+   "cauldron",
    "the_cracked_lands",
    "the_propane_lakes"
   ],
@@ -521,7 +521,7 @@
   "AA_MeadowAve": [
    "arid_shrubland",
    "desert",
-   "poison_forest",
+   "cauldron",
    "the_cracked_lands",
    "the_sump"
   ],
@@ -529,17 +529,17 @@
    "arid_shrubland",
    "desert",
    "abyss",
-   "poison_forest",
+   "cauldron",
    "the_cracked_lands",
    "the_scarlands",
-   "wasteland"
+   "wastes"
   ],
   "AA_PebbleMit": [
    "arid_shrubland",
    "desert",
    "dune_sea + deep_desert",
-   "nightside_ice",
-   "poison_forest",
+   "sleeping_ice",
+   "cauldron",
    "the_contagion",
    "the_miasma",
    "the_propane_lakes",
@@ -548,7 +548,7 @@
    "the_scarlands",
    "the_sump",
    "the_webwork",
-   "wasteland"
+   "wastes"
   ],
   "AA_PedigreedRaptor": [
    "arid_shrubland",
@@ -579,7 +579,7 @@
    "the_cracked_lands",
    "the_slime",
    "the_webwork",
-   "wasteland"
+   "wastes"
   ],
   "AA_UnblinkingEye": [
    "the_contagion"
@@ -604,7 +604,7 @@
    "desert"
   ],
   "Aiwha": [
-   "wasteland"
+   "wastes"
   ],
   "Akk": [
    "arid_shrubland"
@@ -656,14 +656,14 @@
    "the_scarlands"
   ],
   "BMT_FenridStoat": [
-   "poison_forest"
+   "cauldron"
   ],
   "BMT_FireSalamander": [
    "the_scarlands"
   ],
   "BMT_FreezerFrog": [
    "abyss",
-   "nightside_ice",
+   "sleeping_ice",
    "the_propane_lakes"
   ],
   "BMT_FungalFerret": [
@@ -780,7 +780,7 @@
    "the_blue_desert"
   ],
   "DA_Barog": [
-   "wasteland"
+   "wastes"
   ],
   "DA_BeardedTroll": [
    "the_rot"
@@ -791,10 +791,10 @@
    "dune_sea + deep_desert"
   ],
   "DA_DwarvenMuffton": [
-   "wasteland"
+   "wastes"
   ],
   "DA_ImperialRedhound": [
-   "poison_forest"
+   "cauldron"
   ],
   "DA_IroncasketBeetle": [
    "the_slime"
@@ -806,7 +806,7 @@
    "the_miasma"
   ],
   "DA_LeviathanCrab": [
-   "poison_forest"
+   "cauldron"
   ],
   "DA_Phrak": [
    "the_forge",
@@ -819,7 +819,7 @@
    "the_webwork"
   ],
   "DA_RedhornedLarpah": [
-   "wasteland"
+   "wastes"
   ],
   "DA_Snaptoad": [
    "the_forge"
@@ -862,13 +862,13 @@
    "the_sump"
   ],
   "GR_Bearalope": [
-   "wasteland"
+   "wastes"
   ],
   "GR_Bearcat": [
-   "wasteland"
+   "wastes"
   ],
   "GR_Bearhorse": [
-   "wasteland"
+   "wastes"
   ],
   "GR_Bearmole": [
    "the_cracked_lands"
@@ -877,7 +877,7 @@
    "the_pyrelands"
   ],
   "GR_Bearscarab": [
-   "wasteland"
+   "wastes"
   ],
   "GR_Boomabear": [
    "desert"
@@ -999,13 +999,13 @@
    "the_rot"
   ],
   "GR_Ratffalo": [
-   "poison_forest"
+   "cauldron"
   ],
   "GR_Snakecat": [
    "abyss"
   ],
   "GR_Spiderhorse": [
-   "wasteland"
+   "wastes"
   ],
   "GR_Spidersnake": [
    "abyss",
@@ -1022,7 +1022,7 @@
    "the_sump"
   ],
   "GR_Thrumbocat": [
-   "wasteland"
+   "wastes"
   ],
   "GR_Thrumbochicken": [
    "the_rot"
@@ -1041,7 +1041,7 @@
   ],
   "GR_Wolfscarab": [
    "the_forge",
-   "wasteland"
+   "wastes"
   ],
   "GRimLavaSnail": [
    "the_scarlands"
@@ -1245,7 +1245,7 @@
   ],
   "Narglatch": [
    "arid_shrubland",
-   "poison_forest"
+   "cauldron"
   ],
   "Nexu": [
    "arid_shrubland",
@@ -1258,7 +1258,7 @@
    "dune_sea + deep_desert"
   ],
   "PoisonButterfly": [
-   "poison_forest"
+   "cauldron"
   ],
   "Rabbuck": [
    "the_propane_lakes"
@@ -1303,7 +1303,7 @@
    "dune_sea + deep_desert"
   ],
   "TYR_Lemming": [
-   "poison_forest",
+   "cauldron",
    "the_propane_lakes"
   ],
   "Tach": [
@@ -1345,7 +1345,7 @@
    "dune_sea + deep_desert"
   ],
   "VFEI2_BlackEmpress": [
-   "poison_forest"
+   "cauldron"
   ],
   "VFEI2_BlackQueen": [
    "the_miasma"
@@ -1709,7 +1709,7 @@
   },
   {
    "def": "MA_Raptorkhan",
-   "sheet": "poison_forest",
+   "sheet": "cauldron",
    "ruling": "creature_recognizability_rule.md retirement",
    "reason": "ban 9: spd 6.0 (MEASURED); Mythic Ages 0% recognizability survival — retirement ruled (prep §10.4)"
   },
@@ -1901,9 +1901,9 @@
   },
   {
    "def": "VanillaIceSheetZoo",
-   "sheet": "nightside_ice",
-   "ruling": "nightside_ice.md §0 + owner card 2026-09-09",
-   "reason": "NOT A DEF — records that vanilla IceSheet's arctic zoo (bears, muffalo, hares, penguins, fish) is never inherited: RUT_NightsideIce overrides every list (sheet §0, own-def ruling); Earth five appear nowhere (owner card)"
+   "sheet": "sleeping_ice",
+   "ruling": "sleeping_ice.md §0 + owner card 2026-09-09",
+   "reason": "NOT A DEF — records that vanilla IceSheet's arctic zoo (bears, muffalo, hares, penguins, fish) is never inherited: RUT_SleepingIce overrides every list (sheet §0, own-def ruling); Earth five appear nowhere (owner card)"
   },
   {
    "def": "Warg",

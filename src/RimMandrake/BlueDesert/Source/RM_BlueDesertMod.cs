@@ -21,7 +21,7 @@ namespace RimMandrake.BlueDesert
     // No worldgen-rarity slider: workerClass stays the vanilla Core
     // BiomeWorker_IceSheet (no donor type to replace), so there is no custom
     // RM_BiomeWorker_BlueDesert scoring function for a rarity factor to gate,
-    // same reasoning as RM_NightsideIceSettings.
+    // same reasoning as RM_SleepingIceSettings.
     // ════════════════════════════════════════════════════════════════════
     public class RM_BlueDesertSettings : ModSettings
     {
