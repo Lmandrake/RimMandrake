@@ -1,0 +1,1838 @@
+{
+ "script": "drawbridge_proof.py",
+ "started": "2026-10-22T08:53:43",
+ "rows": [
+  {
+   "id": "RAISE_PATH",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "before": "PATH found=True cells=10 decked=6",
+    "after": "PATH found=True cells=22 decked=0",
+    "raisedAt": "True",
+    "toggles": 1,
+    "repaths": 1
+   }
+  },
+  {
+   "id": "RAISE_TIPS_RIDERS",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "preview": "PREVIEW riders=6 land=4 fall=2 free=4",
+    "devSet": "DEVSET target=raised progress=0",
+    "leafAfter": "LEAF leaf=1/1 progress=10 full=120 target=raised raised=4/4 frozen=False winch=True powered=True hold=True auto=False pending=none tip=True hinge=A version=1",
+    "tipped": 4,
+    "fell": 2,
+    "onBank": 4,
+    "inHole": 2,
+    "stillHostile": 6,
+    "cells": [
+     [
+      140,
+      166
+     ],
+     [
+      140,
+      165
+     ],
+     [
+      140,
+      164
+     ],
+     [
+      139,
+      165
+     ],
+     [
+      142,
+      165
+     ],
+     [
+      142,
+      166
+     ]
+    ]
+   }
+  },
+  {
+   "id": "RAISE_SPARES_UNDERPASS",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "underBefore": [
+     142,
+     172
+    ],
+    "underAfter": [
+     142,
+     172
+    ],
+    "band": "BAND under=False onDeck=False passes=False view=floor deckNotches=-1",
+    "riderAt": [
+     140,
+     172
+    ],
+    "tipped": 1
+   }
+  },
+  {
+   "id": "LOWER_ONLY_FROM_WINCH",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "farRaise": "WORK job=True spot=winch raise=True why=-",
+    "farLower": "WORK job=False spot=none raise=False why=unreachable_winch,refused_at_far",
+    "winchLower": "WORK job=True spot=winch raise=False why=-",
+    "leaf": "LEAF leaf=1/1 progress=960 full=960 target=raised raised=4/4 frozen=False winch=True powered=True hold=True auto=False pending=none tip=True hinge=A version=1",
+    "noWalkRound": "behind=PATH found=False cells=0 decked=0 | lip=PATH found=False cells=0 decked=0"
+   }
+  },
+  {
+   "id": "TWO_LEAF_TIPS_OWN_HINGE",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "build": "DRAW ok=True leaves=2 tier=timber hinges=A,B winchAt=139,178|148,178 firstAt=140,178 reason=-",
+    "rider1": [
+     140,
+     178
+    ],
+    "rider2": [
+     147,
+     178
+    ]
+   }
+  },
+  {
+   "id": "HOSTILE_LOCKS",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "freeBefore": "5",
+    "raisedLocked": "LEAF leaf=1/1 progress=480 full=480 target=raised raised=4/4 frozen=False winch=True powered=True hold=False auto=False pending=none tip=True hinge=A version=1",
+    "autoLowering": "LEAF leaf=1/1 progress=450 full=480 target=lowered raised=4/4 frozen=False winch=True powered=True hold=False auto=True pending=none tip=True hinge=A version=1",
+    "afterRaid": "LEAF leaf=1/1 progress=460 full=480 target=raised raised=4/4 frozen=False winch=True powered=True hold=False auto=False pending=none tip=True hinge=A version=1",
+    "trappedFree": "0",
+    "locked": "False"
+   }
+  },
+  {
+   "id": "STEEL_UNPOWERED_FREEZES",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "partWay": "LEAF leaf=1/1 progress=30 full=120 target=raised raised=6/6 frozen=False winch=True powered=True hold=True auto=False pending=none tip=True hinge=A version=1",
+    "unpowered": "LEAF leaf=1/1 progress=30 full=120 target=raised raised=6/6 frozen=True winch=True powered=False hold=True auto=False pending=none tip=True hinge=A version=1",
+    "repowered": "LEAF leaf=1/1 progress=120 full=120 target=raised raised=6/6 frozen=False winch=True powered=True hold=True auto=False pending=none tip=True hinge=A version=1"
+   }
+  },
+  {
+   "id": "WINCH_LOST_CRASHES",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "after": "LEAF leaf=1/1 progress=0 full=960 target=lowered raised=0/4 frozen=False winch=False powered=False hold=False auto=False pending=none tip=False hinge=A version=1",
+    "crashes": 1,
+    "hits": 1,
+    "hediffs": [
+     0,
+     1
+    ],
+    "band": "BAND under=False onDeck=False passes=False view=floor deckNotches=-1"
+   }
+  },
+  {
+   "id": "WINCH_DESPAWN_CRASHES",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "despawn": "DESPAWN ok=True linkedBefore=True linkedAfter=False",
+    "after": "LEAF leaf=1/1 progress=0 full=960 target=lowered raised=0/4 frozen=False winch=False powered=False hold=False auto=False pending=none tip=False hinge=A version=1",
+    "crashes": 1,
+    "hits": 1
+   }
+  },
+  {
+   "id": "RAID_UP",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "assault": {
+     "variant": "assault",
+     "winchJobs": 0,
+     "planksLaid": 0,
+     "plankCarrier": "Human39778",
+     "trenchJobRaiders": [
+      "Human39778",
+      "Human39794"
+     ],
+     "winchAttackRaiders": [],
+     "waitCombatNoTarget": 0,
+     "jobsSeen": {
+      "Ignite": 5,
+      "AttackMelee": 23,
+      "RM_RaiderSetLadder": 7,
+      "GotoWander": 7,
+      "Wait_Wander": 2,
+      "Wait": 2,
+      "Wait_MaintainPosture": 1,
+      "ExtinguishSelf": 1
+     },
+     "reached": [
+      "Human39794"
+     ],
+     "cameNear": [
+      "Human39778",
+      "Human39786",
+      "Human39794",
+      "Human39802"
+     ],
+     "hostileJobsEnded": 0,
+     "ticks": 3000,
+     "decisions": {
+      "Human39778": [
+       [
+        250,
+        "RM_RaiderSetLadder (176, 0, 210) line=0/4/4/0",
+        "RM_DrawbridgeWinch_Steel39723"
+       ],
+       [
+        500,
+        "RM_RaiderSetLadder (176, 0, 210) line=0/4/4/0",
+        "RM_DrawbridgeWinch_Steel39723"
+       ]
+      ],
+      "Human39786": [
+       [
+        250,
+        "RM_RaiderSetLadder (176, 0, 211) line=0/4/4/0",
+        "RM_DrawbridgeWinch_Steel39723"
+       ],
+       [
+        500,
+        "RM_RaiderSetLadder (176, 0, 211) line=0/4/4/0",
+        "RM_DrawbridgeWinch_Steel39723"
+       ]
+      ],
+      "Human39794": [
+       [
+        250,
+        "RM_RaiderSetLadder (176, 0, 212) line=0/4/4/4/0",
+        "RM_DrawbridgeWinch_Steel39723"
+       ],
+       [
+        500,
+        "RM_RaiderSetLadder (176, 0, 211) line=0/4/4/0",
+        "RM_DrawbridgeWinch_Steel39723"
+       ]
+      ],
+      "Human39802": [
+       [
+        250,
+        "RM_RaiderSetLadder (176, 0, 211) line=0/4/4/0",
+        "RM_DrawbridgeWinch_Steel39723"
+       ],
+       [
+        500,
+        "RM_RaiderSetLadder (176, 0, 210) line=0/4/4/0",
+        "RM_DrawbridgeWinch_Steel39723"
+       ]
+      ]
+     }
+    },
+    "sapper": {
+     "variant": "sapper",
+     "winchJobs": 12,
+     "planksLaid": 0,
+     "plankCarrier": null,
+     "trenchJobRaiders": [
+      "Human51695",
+      "Human51701"
+     ],
+     "winchAttackRaiders": [
+      "Human51695",
+      "Human51701",
+      "Human51709",
+      "Human51715"
+     ],
+     "waitCombatNoTarget": 0,
+     "jobsSeen": {
+      "AttackStatic": 8,
+      "AttackMelee": 1,
+      "Goto": 18,
+      "UseVerbOnThing": 2,
+      "RM_RaiderSetLadder": 2,
+      "null": 17
+     },
+     "reached": [
+      "Human51715"
+     ],
+     "cameNear": [
+      "Human51695",
+      "Human51701",
+      "Human51709",
+      "Human51715"
+     ],
+     "hostileJobsEnded": 0,
+     "ticks": 3000,
+     "decisions": {
+      "Human51695": [
+       [
+        250,
+        "RM_RaiderSetLadder (86, 0, 210) line=0/4/4/4/0",
+        "RM_DrawbridgeWinch_Steel51647"
+       ],
+       [
+        500,
+        "RM_RaiderSetLadder (86, 0, 210) line=0/4/4/4/0",
+        "RM_DrawbridgeWinch_Steel51647"
+       ]
+      ],
+      "Human51701": [
+       [
+        250,
+        "RM_RaiderSetLadder (86, 0, 211) line=0/4/4/0",
+        "RM_DrawbridgeWinch_Steel51647"
+       ],
+       [
+        500,
+        "RM_RaiderSetLadder (86, 0, 211) line=0/4/4/0",
+        "RM_DrawbridgeWinch_Steel51647"
+       ]
+      ],
+      "Human51709": [
+       [
+        250,
+        "RM_RaiderSetLadder (86, 0, 212) line=0/4/4/4/0",
+        "RM_DrawbridgeWinch_Steel51647"
+       ],
+       [
+        500,
+        "RM_RaiderSetLadder (86, 0, 212) line=0/4/4/4/0",
+        "RM_DrawbridgeWinch_Steel51647"
+       ]
+      ],
+      "Human51715": [
+       [
+        250,
+        "RM_RaiderSetLadder (86, 0, 212) line=0/4/4/0",
+        "RM_DrawbridgeWinch_Steel51647"
+       ],
+       [
+        500,
+        "RM_RaiderSetLadder (86, 0, 212) line=0/4/4/0",
+        "RM_DrawbridgeWinch_Steel51647"
+       ]
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "RAID_PLANK",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "give1": "GIVE ok=True job=RM_LayRaidPlank plank=61441 reserved=False",
+    "interrupt": "INT ended=True dropped=True",
+    "give2": "GIVE ok=True job=RM_LayRaidPlank plank=61783 reserved=False",
+    "ledger": "PLEDGER crossings=1 laidCells=2 reserved=1",
+    "laid": 1
+   }
+  },
+  {
+   "id": "SAVE_MIDRAISE",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "save": "RM_DRAWBRIDGE_MIDRAISE_20261022T085713",
+    "before": "LEAF leaf=1/1 progress=100 full=480 target=raised raised=6/6 frozen=False winch=True powered=True hold=True auto=False pending=none tip=True hinge=A version=1",
+    "afterLoad": "LEAF leaf=1/1 progress=100 full=480 target=raised raised=6/6 frozen=False winch=True powered=True hold=True auto=False pending=none tip=True hinge=A version=1",
+    "end": "LEAF leaf=1/1 progress=480 full=480 target=raised raised=6/6 frozen=False winch=True powered=True hold=True auto=False pending=none tip=True hinge=A version=1",
+    "tipDeltaLoad": 0,
+    "tipDeltaEnd": 0,
+    "rider": [
+     [
+      140,
+      158
+     ],
+     [
+      140,
+      158
+     ]
+    ]
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/pile_2026-10-22/belt/drawbridge_1.json",
+  "origin": "140,140",
+  "fresh_map": true,
+  "only": "",
+  "raid_ticks": 3000,
+  "mock": false,
+  "mock_faults": ""
+ },
+ "owedProofs": [
+  "ProofDevSet",
+  "ProofGivePlank",
+  "ProofInterrupt",
+  "ProofLeaf",
+  "ProofMakeDrawbridge",
+  "ProofOrder",
+  "ProofPlankLedger",
+  "ProofTipPreview",
+  "ProofWinchDespawn",
+  "ProofWinchPower",
+  "ProofWorkJob"
+ ],
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "1daeeed028bdc18674e5e88ee5882a5e69788e20144128bf339111243a87a49b",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes"
+  ],
+  "assembly_sha256": "5d8daed04f51f9ffebbc8810e0a2e6e1c5e05289cce12a50b101d9bc80f871f4"
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [
+    "RM_Brullith30975",
+    "RM_Grellik30985",
+    "RM_Grellik30986",
+    "RM_Grellik30987",
+    "RM_Illoth30980",
+    "RM_Shambles30982",
+    "RM_Shambles30984",
+    "RM_Thozzik30976",
+    "RM_Thozzik30977",
+    "RM_Thozzik30988",
+    "RM_ThozzikColony30978",
+    "RM_ThozzikColony30979",
+    "RM_ThozzikColonyQueen30983",
+    "RM_ThozzikQueen30981"
+   ],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "raidSamples": {
+  "assault": [
+   {
+    "t": 250,
+    "raiders": [
+     [
+      "Human39778",
+      181,
+      210,
+      false,
+      false,
+      "Ignite",
+      {
+       "id": "RM_SuspensionAnchor_Steel39720",
+       "def": "RM_SuspensionAnchor_Steel",
+       "x": 177,
+       "z": 210
+      },
+      null
+     ],
+     [
+      "Human39786",
+      182,
+      211,
+      false,
+      false,
+      "Ignite",
+      {
+       "id": "RM_SuspensionDeck_Steel39722",
+       "def": "RM_SuspensionDeck_Steel",
+       "x": 176,
+       "z": 210
+      },
+      null
+     ],
+     [
+      "Human39794",
+      183,
+      212,
+      false,
+      false,
+      "AttackMelee",
+      {
+       "id": "RM_SuspensionDeck_Steel39722",
+       "def": "RM_SuspensionDeck_Steel",
+       "x": 176,
+       "z": 210
+      },
+      null
+     ],
+     [
+      "Human39802",
+      191,
+      210,
+      false,
+      false,
+      "AttackMelee",
+      {
+       "id": "RM_SuspensionAnchor_Steel39720",
+       "def": "RM_SuspensionAnchor_Steel",
+       "x": 177,
+       "z": 210
+      },
+      null
+     ]
+    ]
+   },
+   {
+    "t": 500,
+    "raiders": [
+     [
+      "Human39778",
+      178,
+      210,
+      false,
+      false,
+      "Ignite",
+      {
+       "id": "RM_SuspensionAnchor_Steel39720",
+       "def": "RM_SuspensionAnchor_Steel",
+       "x": 177,
+       "z": 210
+      },
+      null
+     ],
+     [
+      "Human39786",
+      177,
+      211,
+      false,
+      false,
+      "Ignite",
+      {
+       "id": "RM_SuspensionDeck_Steel39722",
+       "def": "RM_SuspensionDeck_Steel",
+       "x": 176,
+       "z": 210
+      },
+      null
+     ],
+     [
+      "Human39794",
+      177,
+      211,
+      false,
+      false,
+      "AttackMelee",
+      {
+       "id": "RM_SuspensionDeck_Steel39722",
+       "def": "RM_SuspensionDeck_Steel",
+       "x": 176,
+       "z": 210
+      },
+      null
+     ],
+     [
+      "Human39802",
+      178,
+      210,
+      false,
+      false,
+      "AttackMelee",
+      {
+       "id": "RM_SuspensionAnchor_Steel39720",
+       "def": "RM_SuspensionAnchor_Steel",
+       "x": 177,
+       "z": 210
+      },
+      null
+     ]
+    ]
+   },
+   {
+    "t": 750,
+    "raiders": [
+     [
+      "Human39778",
+      177,
+      211,
+      false,
+      false,
+      "RM_RaiderSetLadder",
+      {
+       "x": 176,
+       "z": 210
+      },
+      null
+     ],
+     [
+      "Human39786",
+      179,
+      214,
+      false,
+      false,
+      "GotoWander",
+      {
+       "x": 181,
+       "z": 216
+      },
+      null
+     ],
+     [
+      "Human39794",
+      177,
+      211,
+      false,
+      false,
+      "AttackMelee",
+      {
+       "id": "RM_SuspensionDeck_Steel39722",
+       "def": "RM_SuspensionDeck_Steel",
+       "x": 176,
+       "z": 210
+      },
+      null
+     ],
+     [
+      "Human39802",
+      178,
+      210,
+      false,
+      false,
+      "AttackMelee",
+      {
+       "id": "RM_SuspensionAnchor_Steel39720",
+       "def": "RM_SuspensionAnchor_Steel",
+       "x": 177,
+       "z": 210
+      },
+      null
+     ]
+    ]
+   },
+   {
+    "t": 1000,
+    "raiders": [
+     [
+      "Human39778",
+      177,
+      211,
+      false,
+      false,
+      "RM_RaiderSetLadder",
+      {
+       "x": 176,
+       "z": 210
+      },
+      null
+     ],
+     [
+      "Human39786",
+      181,
+      216,
+      false,
+      false,
+      "Wait_Wander",
+      null,
+      null
+     ],
+     [
+      "Human39794",
+      177,
+      211,
+      false,
+      false,
+      "AttackMelee",
+      {
+       "id": "RM_SuspensionDeck_Steel39722",
+       "def": "RM_SuspensionDeck_Steel",
+       "x": 176,
+       "z": 210
+      },
+      null
+     ],
+     [
+      "Human39802",
+      178,
+      210,
+      false,
+      false,
+      "AttackMelee",
+      {
+       "id": "RM_SuspensionAnchor_Steel39720",
+       "def": "RM_SuspensionAnchor_Steel",
+       "x": 177,
+       "z": 210
+      },
+      null
+     ]
+    ]
+   },
+   {
+    "t": 1250,
+    "raiders": [
+     [
+      "Human39778",
+      177,
+      211,
+      false,
+      false,
+      "RM_RaiderSetLadder",
+      {
+       "x": 176,
+       "z": 210
+      },
+      null
+     ],
+     [
+      "Human39786",
+      182,
+      218,
+      false,
+      false,
+      "Wait_Wander",
+      null,
+      null
+     ],
+     [
+      "Human39794",
+      177,
+      211,
+      false,
+      false,
+      "AttackMelee",
+      {
+       "id": "RM_SuspensionDeck_Steel39722",
+       "def": "RM_SuspensionDeck_Steel",
+       "x": 176,
+       "z": 210
+      },
+      null
+     ],
+     [
+      "Human39802",
+      178,
+      210,
+      false,
+      false,
+      "AttackMelee",
+      {
+       "id": "RM_SuspensionAnchor_Steel39720",
+       "def": "RM_SuspensionAnchor_Steel",
+       "x": 177,
+       "z": 210
+      },
+      null
+     ]
+    ]
+   },
+   {
+    "t": 1500,
+    "raiders": [
+     [
+      "Human39778",
+      177,
+      210,
+      false,
+      false,
+      "AttackMelee",
+      {
+       "id": "RM_SuspensionDeck_Steel39721",
+       "def": "RM_SuspensionDeck_Steel",
+       "x": 175,
+       "z": 210
+      },
+      null
+     ],
+     [
+      "Human39786",
+      177,
+      210,
+      false,
+      false,
+      "Ignite",
+      {
+       "id": "RM_SuspensionDeck_Steel39721",
+       "def": "RM_SuspensionDeck_Steel",
+       "x": 175,
+       "z": 210
+      },
+      null
+     ],
+     [
+      "Human39794",
+      177,
+      211,
+      false,
+      false,
+      "AttackMelee",
+      {
+       "id": "RM_SuspensionDeck_Steel39722",
+       "def": "RM_SuspensionDeck_Steel",
+       "x": 176,
+       "z": 210
+      },
+      null
+     ],
+     [
+      "Human39802",
+      178,
+      210,
+      false,
+      false,
+      "AttackMelee",
+      {
+       "id": "RM_SuspensionAnchor_Steel39720",
+       "def": "RM_SuspensionAnchor_Steel",
+       "x": 177,
+       "z": 210
+      },
+      null
+     ]
+    ]
+   },
+   {
+    "t": 1750,
+    "raiders": [
+     [
+      "Human39778",
+      177,
+      210,
+      false,
+      false,
+      "Wait",
+      null,
+      null
+     ],
+     [
+      "Human39786",
+      177,
+      210,
+      false,
+      false,
+      "Wait",
+      null,
+      null
+     ],
+     [
+      "Human39794",
+      177,
+      211,
+      false,
+      false,
+      "RM_RaiderSetLadder",
+      {
+       "x": 176,
+       "z": 211
+      },
+      null
+     ],
+     [
+      "Human39802",
+      178,
+      210,
+      false,
+      false,
+      "AttackMelee",
+      {
+       "id": "RM_SuspensionAnchor_Steel39720",
+       "def": "RM_SuspensionAnchor_Steel",
+       "x": 177,
+       "z": 210
+      },
+      null
+     ]
+    ]
+   },
+   {
+    "t": 2000,
+    "raiders": [
+     [
+      "Human39778",
+      177,
+      210,
+      false,
+      false,
+      "Wait_MaintainPosture",
+      null,
+      null
+     ],
+     [
+      "Human39786",
+      177,
+      210,
+      false,
+      false,
+      "GotoWander",
+      {
+       "x": 179,
+       "z": 212
+      },
+      null
+     ],
+     [
+      "Human39794",
+      177,
+      211,
+      false,
+      false,
+      "RM_RaiderSetLadder",
+      {
+       "x": 176,
+       "z": 211
+      },
+      null
+     ],
+     [
+      "Human39802",
+      178,
+      210,
+      false,
+      false,
+      "AttackMelee",
+      {
+       "id": "RM_SuspensionAnchor_Steel39720",
+       "def": "RM_SuspensionAnchor_Steel",
+       "x": 177,
+       "z": 210
+      },
+      null
+     ]
+    ]
+   },
+   {
+    "t": 2250,
+    "raiders": [
+     [
+      "Human39778",
+      180,
+      207,
+      false,
+      false,
+      "GotoWander",
+      {
+       "x": 180,
+       "z": 214
+      },
+      null
+     ],
+     [
+      "Human39786",
+      178,
+      215,
+      false,
+      false,
+      "GotoWander",
+      {
+       "x": 182,
+       "z": 212
+      },
+      null
+     ],
+     [
+      "Human39794",
+      177,
+      211,
+      false,
+      false,
+      "RM_RaiderSetLadder",
+      {
+       "x": 176,
+       "z": 211
+      },
+      null
+     ],
+     [
+      "Human39802",
+      178,
+      210,
+      false,
+      false,
+      "AttackMelee",
+      {
+       "id": "RM_SuspensionAnchor_Steel39720",
+       "def": "RM_SuspensionAnchor_Steel",
+       "x": 177,
+       "z": 210
+      },
+      null
+     ]
+    ]
+   },
+   {
+    "t": 2500,
+    "raiders": [
+     [
+      "Human39778",
+      180,
+      217,
+      false,
+      false,
+      "GotoWander",
+      {
+       "x": 182,
+       "z": 216
+      },
+      null
+     ],
+     [
+      "Human39786",
+      185,
+      216,
+      false,
+      false,
+      "ExtinguishSelf",
+      {
+       "id": "Fire46828",
+       "def": "Fire",
+       "x": 185,
+       "z": 216
+      },
+      null
+     ],
+     [
+      "Human39794",
+      177,
+      211,
+      false,
+      false,
+      "RM_RaiderSetLadder",
+      {
+       "x": 176,
+       "z": 211
+      },
+      null
+     ],
+     [
+      "Human39802",
+      178,
+      210,
+      false,
+      false,
+      "AttackMelee",
+      {
+       "id": "RM_SuspensionAnchor_Steel39720",
+       "def": "RM_SuspensionAnchor_Steel",
+       "x": 177,
+       "z": 210
+      },
+      null
+     ]
+    ]
+   },
+   {
+    "t": 2750,
+    "raiders": [
+     [
+      "Human39778",
+      189,
+      219,
+      false,
+      false,
+      "GotoWander",
+      {
+       "x": 191,
+       "z": 221
+      },
+      null
+     ],
+     [
+      "Human39786",
+      181,
+      215,
+      false,
+      false,
+      "AttackMelee",
+      {
+       "id": "RM_SuspensionWreck47194",
+       "def": "RM_SuspensionWreck",
+       "x": 175,
+       "z": 210
+      },
+      null
+     ],
+     [
+      "Human39794",
+      177,
+      211,
+      false,
+      false,
+      "AttackMelee",
+      {
+       "id": "RM_SuspensionWreck47194",
+       "def": "RM_SuspensionWreck",
+       "x": 175,
+       "z": 210
+      },
+      null
+     ],
+     [
+      "Human39802",
+      178,
+      210,
+      false,
+      false,
+      "AttackMelee",
+      {
+       "id": "RM_SuspensionAnchor_Steel39720",
+       "def": "RM_SuspensionAnchor_Steel",
+       "x": 177,
+       "z": 210
+      },
+      null
+     ]
+    ]
+   },
+   {
+    "t": 3000,
+    "raiders": [
+     [
+      "Human39778",
+      192,
+      225,
+      false,
+      false,
+      "GotoWander",
+      {
+       "x": 191,
+       "z": 224
+      },
+      null
+     ],
+     [
+      "Human39786",
+      177,
+      211,
+      false,
+      false,
+      "AttackMelee",
+      {
+       "id": "RM_SuspensionWreck47194",
+       "def": "RM_SuspensionWreck",
+       "x": 175,
+       "z": 210
+      },
+      null
+     ],
+     [
+      "Human39794",
+      176,
+      211,
+      false,
+      false,
+      "AttackMelee",
+      {
+       "id": "RM_SuspensionWreck47194",
+       "def": "RM_SuspensionWreck",
+       "x": 175,
+       "z": 210
+      },
+      null
+     ],
+     [
+      "Human39802",
+      178,
+      210,
+      false,
+      false,
+      "AttackMelee",
+      {
+       "id": "RM_SuspensionAnchor_Steel39720",
+       "def": "RM_SuspensionAnchor_Steel",
+       "x": 177,
+       "z": 210
+      },
+      null
+     ]
+    ]
+   }
+  ],
+  "sapper": [
+   {
+    "t": 250,
+    "raiders": [
+     [
+      "Human51695",
+      94,
+      210,
+      false,
+      false,
+      "AttackStatic",
+      {
+       "id": "RM_DrawbridgeWinch_Steel51647",
+       "def": "RM_DrawbridgeWinch_Steel",
+       "x": 83,
+       "z": 210
+      },
+      null
+     ],
+     [
+      "Human51701",
+      94,
+      211,
+      false,
+      false,
+      "AttackStatic",
+      {
+       "id": "RM_DrawbridgeWinch_Steel51647",
+       "def": "RM_DrawbridgeWinch_Steel",
+       "x": 83,
+       "z": 210
+      },
+      null
+     ],
+     [
+      "Human51709",
+      93,
+      212,
+      false,
+      false,
+      "AttackStatic",
+      {
+       "id": "RM_DrawbridgeWinch_Steel51647",
+       "def": "RM_DrawbridgeWinch_Steel",
+       "x": 83,
+       "z": 210
+      },
+      null
+     ],
+     [
+      "Human51715",
+      93,
+      213,
+      false,
+      false,
+      "AttackStatic",
+      {
+       "id": "RM_DrawbridgeWinch_Steel51647",
+       "def": "RM_DrawbridgeWinch_Steel",
+       "x": 83,
+       "z": 210
+      },
+      null
+     ]
+    ]
+   },
+   {
+    "t": 500,
+    "raiders": [
+     [
+      "Human51695",
+      94,
+      210,
+      false,
+      false,
+      "AttackStatic",
+      {
+       "id": "RM_DrawbridgeWinch_Steel51647",
+       "def": "RM_DrawbridgeWinch_Steel",
+       "x": 83,
+       "z": 210
+      },
+      null
+     ],
+     [
+      "Human51701",
+      94,
+      211,
+      false,
+      false,
+      "AttackStatic",
+      {
+       "id": "RM_DrawbridgeWinch_Steel51647",
+       "def": "RM_DrawbridgeWinch_Steel",
+       "x": 83,
+       "z": 210
+      },
+      null
+     ],
+     [
+      "Human51709",
+      93,
+      212,
+      false,
+      false,
+      "AttackStatic",
+      {
+       "id": "RM_DrawbridgeWinch_Steel51647",
+       "def": "RM_DrawbridgeWinch_Steel",
+       "x": 83,
+       "z": 210
+      },
+      null
+     ],
+     [
+      "Human51715",
+      93,
+      213,
+      false,
+      false,
+      "AttackStatic",
+      {
+       "id": "RM_DrawbridgeWinch_Steel51647",
+       "def": "RM_DrawbridgeWinch_Steel",
+       "x": 83,
+       "z": 210
+      },
+      null
+     ]
+    ]
+   },
+   {
+    "t": 750,
+    "raiders": [
+     [
+      "Human51695",
+      93,
+      210,
+      false,
+      false,
+      "AttackMelee",
+      {
+       "id": "RM_SuspensionDeck_Steel51646",
+       "def": "RM_SuspensionDeck_Steel",
+       "x": 86,
+       "z": 210
+      },
+      null
+     ],
+     [
+      "Human51701",
+      94,
+      211,
+      false,
+      false,
+      "Goto",
+      {
+       "x": 83,
+       "z": 210
+      },
+      null
+     ],
+     [
+      "Human51709",
+      93,
+      212,
+      false,
+      false,
+      "UseVerbOnThing",
+      {
+       "id": "RM_SuspensionDeck_Steel51645",
+       "def": "RM_SuspensionDeck_Steel",
+       "x": 85,
+       "z": 210
+      },
+      null
+     ],
+     [
+      "Human51715",
+      93,
+      213,
+      false,
+      false,
+      "Goto",
+      {
+       "x": 83,
+       "z": 210
+      },
+      null
+     ]
+    ]
+   },
+   {
+    "t": 1000,
+    "raiders": [
+     [
+      "Human51695",
+      87,
+      204,
+      false,
+      false,
+      "RM_RaiderSetLadder",
+      {
+       "x": 82,
+       "z": 204
+      },
+      null
+     ],
+     [
+      "Human51701",
+      83,
+      203,
+      false,
+      false,
+      "RM_RaiderSetLadder",
+      {
+       "x": 83,
+       "z": 204
+      },
+      null
+     ],
+     [
+      "Human51709",
+      95,
+      212,
+      false,
+      false,
+      "Goto",
+      {
+       "x": 83,
+       "z": 210
+      },
+      null
+     ],
+     [
+      "Human51715",
+      86,
+      217,
+      false,
+      false,
+      "UseVerbOnThing",
+      {
+       "id": "RM_SuspensionWreck54715",
+       "def": "RM_SuspensionWreck",
+       "x": 86,
+       "z": 210
+      },
+      null
+     ]
+    ]
+   },
+   {
+    "t": 1250,
+    "raiders": [
+     [
+      "Human51695",
+      87,
+      205,
+      false,
+      false,
+      "Goto",
+      {
+       "x": 83,
+       "z": 249
+      },
+      null
+     ],
+     [
+      "Human51701",
+      87,
+      209,
+      false,
+      false,
+      "Goto",
+      {
+       "x": 83,
+       "z": 249
+      },
+      null
+     ],
+     [
+      "Human51709",
+      95,
+      218,
+      false,
+      false,
+      "Goto",
+      {
+       "x": 94,
+       "z": 249
+      },
+      null
+     ],
+     [
+      "Human51715",
+      86,
+      217,
+      false,
+      false,
+      "Goto",
+      {
+       "x": 86,
+       "z": 249
+      },
+      null
+     ]
+    ]
+   },
+   {
+    "t": 1500,
+    "raiders": [
+     [
+      "Human51695",
+      87,
+      204,
+      false,
+      false,
+      "Goto",
+      {
+       "x": 84,
+       "z": 249
+      },
+      null
+     ],
+     [
+      "Human51701",
+      90,
+      226,
+      false,
+      false,
+      "Goto",
+      {
+       "x": 90,
+       "z": 249
+      },
+      null
+     ],
+     [
+      "Human51709",
+      93,
+      231,
+      false,
+      false,
+      "Goto",
+      {
+       "x": 94,
+       "z": 249
+      },
+      null
+     ],
+     [
+      "Human51715",
+      89,
+      220,
+      false,
+      false,
+      "Goto",
+      {
+       "x": 89,
+       "z": 249
+      },
+      null
+     ]
+    ]
+   },
+   {
+    "t": 1750,
+    "raiders": [
+     [
+      "Human51695",
+      87,
+      218,
+      false,
+      false,
+      "Goto",
+      {
+       "x": 84,
+       "z": 249
+      },
+      null
+     ],
+     [
+      "Human51701",
+      90,
+      246,
+      false,
+      false,
+      "Goto",
+      {
+       "x": 90,
+       "z": 249
+      },
+      null
+     ],
+     [
+      "Human51709",
+      95,
+      242,
+      false,
+      false,
+      "Goto",
+      {
+       "x": 94,
+       "z": 249
+      },
+      null
+     ],
+     [
+      "Human51715",
+      89,
+      235,
+      false,
+      false,
+      "Goto",
+      {
+       "x": 89,
+       "z": 249
+      },
+      null
+     ]
+    ]
+   },
+   {
+    "t": 2000,
+    "raiders": [
+     [
+      "Human51695",
+      88,
+      232,
+      false,
+      false,
+      "Goto",
+      {
+       "x": 84,
+       "z": 249
+      },
+      null
+     ],
+     [
+      "Human51701",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+     ],
+     [
+      "Human51709",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+     ],
+     [
+      "Human51715",
+      88,
+      247,
+      false,
+      false,
+      "Goto",
+      {
+       "x": 89,
+       "z": 249
+      },
+      null
+     ]
+    ]
+   },
+   {
+    "t": 2250,
+    "raiders": [
+     [
+      "Human51695",
+      86,
+      245,
+      false,
+      false,
+      "Goto",
+      {
+       "x": 84,
+       "z": 249
+      },
+      null
+     ],
+     [
+      "Human51701",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+     ],
+     [
+      "Human51709",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+     ],
+     [
+      "Human51715",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+     ]
+    ]
+   },
+   {
+    "t": 2500,
+    "raiders": [
+     [
+      "Human51695",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+     ],
+     [
+      "Human51701",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+     ],
+     [
+      "Human51709",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+     ],
+     [
+      "Human51715",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+     ]
+    ]
+   },
+   {
+    "t": 2750,
+    "raiders": [
+     [
+      "Human51695",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+     ],
+     [
+      "Human51701",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+     ],
+     [
+      "Human51709",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+     ],
+     [
+      "Human51715",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+     ]
+    ]
+   },
+   {
+    "t": 3000,
+    "raiders": [
+     [
+      "Human51695",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+     ],
+     [
+      "Human51701",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+     ],
+     [
+      "Human51709",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+     ],
+     [
+      "Human51715",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+     ]
+    ]
+   }
+  ]
+ },
+ "midraiseSave": "RM_DRAWBRIDGE_MIDRAISE_20261022T085713",
+ "finished": "2026-10-22T08:57:29"
+}
