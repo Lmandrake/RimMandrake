@@ -80,6 +80,11 @@ namespace RimMandrake.Webwork
 			{
 				return;
 			}
+			RelayCheck();
+		}
+
+		private void RelayCheck()
+		{
 			int now = Find.TickManager.TicksGame;
 			if (now < nextRelayTick)
 			{
@@ -166,7 +171,7 @@ namespace RimMandrake.Webwork
 		public void ProofCheckNow()
 		{
 			nextRelayTick = Find.TickManager.TicksGame;
-			CompTickRare();
+			RelayCheck();   // not CompTickRare(): the base is empty and a Normal-ticker building never calls it, so this did nothing
 		}
 
 		private void CalculateNextRelayTick()
