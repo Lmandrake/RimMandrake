@@ -28,7 +28,7 @@ SETUP = dict(
            ("RM_LadderPortable", 3, 5, None)]                    # portable ladder leaning on the west wall (3 m: fits)
     + [("RM_PitGuardrail", x, z, "Steel") for x, z in GUARD]
     + [("RM_PitCover_PlankLattice", 10 + i, 22 + j, None) for i in range(3) for j in range(3)],
-    ladder=[(4, 25, "raise")],
+    ladder_dev=[(4, 25, "raise")],
     pawns=[("Pirate", 4, 22, "hostile", "prisoner"),
            ("Colonist", 9, 21, "player", "drafted"),              # will be ordered onto the cover
            ("Chicken", 23, 23, "none", None), ("Husky", 25, 25, "none", None), ("Muffalo", 27, 27, "none", None),
@@ -69,7 +69,7 @@ SCENARIO = scenario(
            (35, 21, "thrumbo"), (4, 8, "portable ladder 3 m"), (11, 8, "gear, 5 m"), (18, 8, "jump pack")],
     pieces=[staged("oubliette 3x4, 4 m, prisoner bed", "beds", None, (4, 23)),
             staged("prisoner, hungry-ish and thirsty", "pawn_ops", "RM_Thirst=0.25", (4, 22)),
-            staged("rail ladder on the north wall, RAISED", "ladder", "raise", (4, 25), "poked"),
+            staged("rail ladder on the north wall, RAISED", "ladder_dev", "raise", (4, 25), "poked"),
             staged("guardrail round the lip", "spawn", "RM_PitGuardrail", (2, 21), "look"),
             staged("sluice (wood) in the east wall", "spawn", "RM_Sluice", (6, 23), "poked"),
             staged("security grate (steel) in the east wall", "spawn", "RM_SecurityGrateDoor", (6, 25), "poked"),

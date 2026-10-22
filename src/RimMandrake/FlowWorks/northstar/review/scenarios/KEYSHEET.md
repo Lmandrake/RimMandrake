@@ -1,17 +1,17 @@
 # FlowWorks composite review scenarios - key sheet
 
-Load **RM_fw_scenarios_20261021 (not saved yet)** (map C) and **RM_fw_scenarios_rivers_20261021 (not saved yet)** (map R: C1, C11). Paused at 10:00, god mode on, clear weather, Peaceful, Mod Settings at shipped defaults. **Every plot is still until your first poke: its START.** Reload the save to reset. Raids live in **RM_fw_composite_raid**, rain in **RM_fw_composite_rain** (load the branch, never the main save, for those pokes).
+Load **RM_fw_scenarios_20261021** (map C) and **RM_fw_scenarios_rivers_20261021 (not saved yet)** (map R: C1, C11). Paused at 10:00, god mode on, clear weather, Peaceful, Mod Settings at shipped defaults. **Every plot is still until your first poke: its START.** Reload the save to reset. Raids live in **RM_fw_composite_raid**, rain in **RM_fw_composite_rain** (load the branch, never the main save, for those pokes).
 
 Each scenario has a gold title label (number, name, START, what to look for), its try lines under the plot, small rust labels on every part a poke touches, violet **DEFERRED** labels on every piece not built yet, and in-save sign books (a Novel; mouse over it, press i) at its north-west corner and at each DEFERRED piece - the books survive a plain load with no agent.
 
-Tonight's rulings carried: colonists dig to 2 m; deeper holes are machine-dug (machine dig not built: DEFERRED); pipes half as thick / hoses much thinner: art being redrawn; the CURRENT art is shown; canal overflow ships in 1.0 but only Stage 0 (offline kernel) exists: DEFERRED; reachability option 3 is being built separately (REACH_MAP_BUILD_WALLS_AND_DEPTH_AGREE); a fallen cord lands walkable (fix built).
+Tonight's rulings carried: colonists dig to 2 m; deeper holes are machine-dug (mechanoids and droids dig to 20 m, built 2026-10-21; the ridable digging rig is not built: DEFERRED); pipes half as thick / hoses much thinner: art being redrawn; the CURRENT art is shown; canal overflow ships in 1.0 but only Stage 0 (offline kernel) exists: DEFERRED; reachability option 3 is being built separately (REACH_MAP_BUILD_WALLS_AND_DEPTH_AGREE); a fallen cord lands walkable (fix built).
 
 | # | scenario | map | plot (x,z,w,h) | look | staged / DEFERRED | goto |
 |---|---|---|---|---|---|---|
 | C1 | The Thirsty Terraces | R | river-anchored (live) | all four | 15 / 3 | `--goto C1` (map R: framed by `--river --build`; goto on map R owed) |
 | C2 | The Drowned Keep | C | (62, 62, 44, 44) | Industrial | 19 / 5 | `--goto C2` |
-| C3 | The Labyrinth Rescue | C | (12, 12, 40, 40) | Scrapper | 19 / 4 | `--goto C3` |
-| C4 | The Wet Quarry | C | (12, 62, 40, 40) | Industrial | 13 / 3 | `--goto C4` |
+| C3 | The Labyrinth Rescue | C | (12, 12, 40, 40) | Scrapper | 20 / 3 | `--goto C3` |
+| C4 | The Wet Quarry | C | (12, 62, 40, 40) | Industrial | 14 / 2 | `--goto C4` |
 | C5 | The Fuel Depot | C | (112, 12, 40, 36) | Industrial | 13 / 3 | `--goto C5` |
 | C6 | The Tar Seep | C | (162, 12, 40, 36) | Scrapper | 9 / 2 | `--goto C6` |
 | C7 | The Bathhouse and Water Tower | C | (12, 112, 40, 40) | Modern | 13 / 2 | `--goto C7` |
@@ -22,21 +22,6 @@ Tonight's rulings carried: colonists dig to 2 m; deeper holes are machine-dug (m
 | C12 | The Oubliette and the Kennel | C | (62, 12, 40, 36) | Modern | 15 / 2 | `--goto C12` |
 
 Specials: **S0** status board (12, 170, 40, 20), **F** free area (110, 112, 40, 24), **Z0** Stage 0 swim site (62, 140, 8, 12).
-
-## Offline verification (MOCK - no game)
-
-- MOCK map C: 10 of 10 scenarios verified as staged (dug depths, fills, buildings, pawn kinds); 257 labels; 41 of 41 sign books; soak trivially still (a mock never moves)
-- MOCK C2   OK   dug 569/569
-- MOCK C3   OK   dug 35/35
-- MOCK C4   OK   dug 964/964
-- MOCK C5   OK   dug 46/46
-- MOCK C6   OK   dug 92/92
-- MOCK C7   OK   dug 6/6
-- MOCK C8   OK   dug 128/128
-- MOCK C9   OK   dug 164/164
-- MOCK C10  OK   dug 154/154
-- MOCK C12  OK   dug 156/156
-- MOCK map R (synthetic river): C1 at (101, 110) OK; C11 8 of 8 stations placed; 13 sign books
 
 ## C1 - The Thirsty Terraces (map R, look all four)
 
@@ -95,7 +80,7 @@ A walled keep inside a water moat: the classic defence, built only from FlowWork
 
 **Try:**
 
-1. main save: walk a colonist UNDER the grated suspension bridge along the dry ditch (head clearance) and over its deck; walk the jetty
+1. main save: walk a colonist over the grated suspension bridge across the west moat arm and out the jetty; swim under the deck (live 2026-10-21: a span must cross dug ground only, so it cannot also span the dry ditch)
 2. RAID BRANCH START: open the pen grate, unpause: raiders reach the ditch and moat, lay the plank or swim (2 m: heads and shoulders up), climb, and try the gate (it stays shut to hostiles)
 3. lower the drawbridge (its winch) mid-raid: the leaf drops; the gate still refuses unless held open; let one raider onto the gatehouse cover: he drops onto the spikes
 4. open the gatehouse grate and sluice: the trapped raider's pit floods from the moat; read swim vs drown in the inspect pane
@@ -151,7 +136,7 @@ Hobb is in a 4 m sheer pit in the middle of a maze. Float him out: pond water, b
 
 **Try:**
 
-1. START: reel o1 > Free end: Outflow; unpause: the pond shrinks, Hobb's pit fills; at 2 m or more he swims and climbs out. Select the meter on the pit floor: litres in.
+1. START: reel o1 > Free end: Outflow; unpause: the pond shrinks, Hobb's pit fills; at 2 m he swims but is still 2 m below the lip; only near the BRIM (4 m of water) can he swim out (Stage 0 live, 2026-10-21: PASS_AT_BRIM). Select the meter on the pit floor: litres in.
 2. BEFORE that: wall the gap d1 (the short way): the hose must re-route the long way (over 40 cells): it reels in with a message naming the cells needed; fix it by laying onto relay reel o2
 3. lay o2's hose back onto o1: refused (a relay chain may not loop)
 4. try a portable ladder into Hobb's pit: refused, too deep (3 m reach) - that is why the maze exists
@@ -159,7 +144,7 @@ Hobb is in a 4 m sheer pit in the middle of a maze. Float him out: pond water, b
 6. cut the pump's power: the hose goes flat; rotate the pump: the hose follows the port
 7. reel park (west): choose a style, undraft the colonist to deploy one by hand, retract one
 
-**Look for:** the hose takes the SHORT way through d1 and passes UNDER the wire span; litres out of the pond = litres into the pit; Hobb rises with the water
+**Look for:** the hose takes the SHORT way through d1 and passes UNDER the wire span; litres out of the pond = litres into the pit; Hobb rises with the water and leaves only when it nears the brim
 
 **Broken looks like:** the hose through a wall, over the chasm or on top of the wire span; the long way chosen while d1 is open; a hose that never plumps; Hobb standing on the floor under 2 m of water; the boar swimming; a relay loop accepted
 
@@ -180,18 +165,18 @@ Hobb is in a 4 m sheer pit in the middle of a maze. Float him out: pond water, b
 | boar's pit 2x2, 4 m | staged | demonstrated |  |
 | boar (non-swimmer) | staged | poked |  |
 | chasm (impassable, 6 m) | staged | look |  |
-| GSS wire span on two masts | staged | look |  |
+| GSS wire span on two masts (auto-linked by GSS) | staged | look |  |
 | relay reel o2, wound | staged | poked |  |
 | destination gauge (flow meter) in Hobb's pit | staged | demonstrated |  |
 | reel park: four looks | staged | look |  |
 | reel park: deploy order + walker | staged | poked |  |
 | reel park: dropped carry | staged | look |  |
 | pump power as a GSS power cord | DEFERRED | DEFERRED | a vanilla conduit stands in: no staging surface lays an RM_PowerCord from a script yet - builds under `POWER_CORD_BUILD_BENDS_WHERE_CONDUIT_BREAKS` |
-| swim-out of a flooded SHEER pit | DEFERRED | DEFERRED | no driver row measures the climb-out yet: Stage 0 proof (stage0_swim_pit.py) must pass live before this is trusted; if it fails, a rescue cistern - builds under `DEEP_WATER_BUILD_SWIM_OR_SINK` |
+| swim-out of a flooded sheer pit (Stage 0 live: out only at the brim) | staged | poked | Transient/scenarios_stage0_20261021T220318.json: 2 m FAIL, brim PASS |
 | machine digging Hobb's pit | DEFERRED | DEFERRED | 4 m is past the 2 m colonist cap (owner 2026-10-21); the pit is staged, a machine dig order is not built - builds under `DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL` |
 | thinner hose art | DEFERRED | DEFERRED | pipes and hoses show TODAY's art; the half-girth pipe and much thinner hose are being redrawn (PIPE_GIRTH_TUNE_HALF_AS_THICK, HOSE_GIRTH_TUNE_MUCH_THINNER) - builds under `HOSE_GIRTH_TUNE_MUCH_THINNER` |
 
-Exercises (32 ids): 15 poked, 16 look, 1 DEFERRED.
+Exercises (32 ids): 16 poked, 16 look.
 
 Goal read: route lengths: short way (d1 open) <= 40 cells, long way (d1 walled) > 40 and <= 80; live: ProofReadout on Hobb's pit for litres-to-2 m, never typed
 
@@ -206,7 +191,7 @@ A quarry dug below the water table: the deeper it goes the more it floods; a pum
 **Try:**
 
 1. START: designate the labelled 70-cell strip, unpause: a colonist digs it; about 1 in 70 dug tiles leaves a lump (a letter the first time); soil digs faster than rock and rock drops chunks
-2. order a dig deeper than 2 m: a colonist must refuse (2 m cap, owner 2026-10-21) - see DEFERRED
+2. the sump floor (3 m) carries a 'Dig canal' order: an undrafted colonist will not take it (2 m colonist cap, owner 2026-10-21; right-click says it needs machine labour) and the order stays for a machine
 3. stop the pump (the deliberate flood): the sump rises half a metre at a time from LOW toward HIGH and the workbench; the miner wades, then swims; restart it and the level falls
 4. raise the rail ladder from below, lower it from above (only from above); the geared miner climbs a sheer wall anyway
 5. walk a colonist down the ramp and the benches: lower with each step, never trapped
@@ -232,8 +217,8 @@ A quarry dug below the water table: the deeper it goes the more it floods; a pum
 | rail ladder on the sump's west wall, lowered | staged | poked |  |
 | ramp from the D1 bench to the rim | staged | poked |  |
 | wrecked pumping station on the rim | staged | look |  |
-| a colonist refusing a dig past 2 m | DEFERRED | DEFERRED | owner ruled the 2 m colonist cap tonight; the shipped code cap is still maxDigDepth 16 levels (8 m) as read 2026-10-21, so the refusal cannot show yet - builds under `DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL` |
-| machine digging past 2 m (the sump) | DEFERRED | DEFERRED | droids / ridable machines dig deeper: not built - builds under `DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL` |
+| a colonist refusing a dig past 2 m (the sump floor's order waits for a machine) | staged | poked |  |
+| machine digging past 2 m (the sump) | DEFERRED | DEFERRED | machine labour digs to 20 m (built 2026-10-21, design/RimMandrake/machine_dig_2026-10-21.md); a colony Tunneler under a mechanitor is not staged here yet, and the ridable digging rig is not built - builds under `DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL` |
 | deepstone stratum finds | DEFERRED | DEFERRED | unbuilt - builds under `PIT_DEEPSTONE_BUILD_DIGGING_FINALLY_PAYS` |
 
 Exercises (21 ids): 10 poked, 10 look, 1 demonstrated.

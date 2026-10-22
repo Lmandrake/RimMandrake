@@ -15,6 +15,8 @@ it unchanged. Composite-only keys, staged by scenarios_map.py:
     markers    (method, x, z, tail)               RM_MapControls.Place*: args "x,z|tail" (static_call splits on '|')
     calls      dict(typ, method, fmt, cells)      any other proof surface; fmt's {0},{1}.. become absolute "x,z"
     gizmos     (x, z, prefix, want)               the thing's own button, pressed until it reads `want`
+    ladder_dev (x, z, raise|lower)                 the ladder's own DEV instant button (its player button now ORDERS a job)
+    refill_after_pulse True                       re-pour `fluid` after the build's pulses (C2's moat lost a level)
     pens       (kind, x, z, faction)              hostiles behind a shut grate: spawned ONLY in the raid branch save
     pen_ops    (x, z, op, arg)                    pawn_ops for a pen pawn (raid branch)
     spawn_plants (def, x, z)                      plants (rimworld/spawn_thing)
@@ -143,7 +145,7 @@ def setup_cells(u):
     for k in ("pawns", "pens"):
         for r in u.get(k, []):
             put((r[1], r[2]), "%s:%s" % (k, r[0]))
-    for k in ("tank", "pump", "ladder", "batteries", "flood_trigger", "hose_flow", "hose_reelin", "gizmos"):
+    for k in ("tank", "pump", "ladder", "ladder_dev", "batteries", "flood_trigger", "hose_flow", "hose_reelin", "gizmos"):
         for r in u.get(k, []):
             put((r[0], r[1]), k)
     for r in u.get("markers", []):
@@ -205,8 +207,9 @@ def find_ref(u, piece):
             name, cells = None, [(r[0], r[1])] + list(r[2])
         elif key in ("pawn_ops", "pen_ops"):
             name, cells = r[3], [(r[0], r[1])]
-        elif key in ("tank", "pump", "ladder", "batteries", "flood_trigger", "hose_flow", "hose_reelin", "gizmos", "beds"):
-            name, cells = (r[2] if key in ("pump", "ladder", "tank") and len(r) > 2 else None), [(r[0], r[1])]
+        elif key in ("tank", "pump", "ladder", "ladder_dev", "batteries", "flood_trigger", "hose_flow", "hose_reelin", "gizmos",
+                     "beds"):
+            name, cells = (r[2] if key in ("pump", "ladder", "ladder_dev", "tank") and len(r) > 2 else None), [(r[0], r[1])]
         else:
             return False
         if d is not None and name != d:

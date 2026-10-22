@@ -40,3 +40,13 @@ Started 2026-10-21. Skeleton first; filled as work proceeds.
 - 21:45 scenario modules c01..c12 written (data only, plot-local setups)
 - 21:52 driver scenarios_map.py + mock_bridge + stage0_swim_pit written; --plan OK after fixes it found (guardrail stuff, ladder on spikes, Mech_Centipede -> Mech_CentipedeBlaster, style refs)
 - 21:58 selftest_scenarios_map.py: 107 PASS (probes, layout, signs, pieces, defs, coverage 81/81 bars, MOCK build 10/10 + map R, Stage 0 harness). --mock/--dry-run OK (5308 calls map C). Key sheet written. Bridge HELD by another BENCH helper (reach map option 3) -> Phase 2 skipped: ready for live build.
+
+## Phase 2 (live)
+- 22:03 bridge taken; FlowWorks deploy in sync (b5e399067a); tier fw_gss_sitting (14 active); launched via Steam; menu at 49 s; watchdog HEALTHY
+- 22:03 **Stage 0 swim-out LIVE: PASS_AT_BRIM** (Transient/scenarios_stage0_20261021T220318.json): 2x2 pit 8 levels; dry held (control PASS); 2 m water: swims (deepCell, headUp) but cannot leave (FAIL); brim 4 m: leaves (PASS). C3 sign now says fill to the brim.
+- 22:12 first live build: 9/10 staged; fixes found live: drawbridge must span only dug squares, ladder buttons now ORDER jobs (use DEV instant), C3/C10 reels need west lead-out room, C2 moat lost a level in the pulses (refill), ProofLinkPoles is pipe-poles only, soak compared wild plants/haulers (now staged defs only); C4 hose 'no route' across the benches
+- 22:27 third live build (fresh map): **10/10 map-C scenarios staged and verified** (dug depths, fills, buildings, pawn kinds); 40/40 sign books; soak 2 h: 8 still, C2 moat dropped 2 m -> 1.5 m by itself (351 cells), C12 one colonist moved
+- REAL zoomed screenshots checked (not mock): every plot, Screenshots/scen_C*__cell_rect.png. Seen: C2 spikes drawn ON TOP of the plank cover (cover not hiding the spikes); C6 muffalo drawn on top of the slime; C4 stone floor does not show inside the quarry; C10 small pond NOT drawn down (pulses did not pay it out); C8 three meters show one identical reading
+- Failed to stage: C4 hose up the benches ("no route"); C10 closed-ledger hose ("no room for straight lead-out"); C5 chemfuel adapter (VCHE not on the tier)
+- 22:29 **saved RM_fw_scenarios_20261021** via save_guard (VERIFIED, 373 keepers unchanged); clock re-pinned to 10:00; game UP, paused, camera on C2's sign (map C has no C1); bridge HELD; ModsConfig NOT restored (owner walking)
+- map R (C1, C11) not built yet

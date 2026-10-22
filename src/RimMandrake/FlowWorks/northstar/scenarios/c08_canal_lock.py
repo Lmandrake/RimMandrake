@@ -24,7 +24,7 @@ SETUP = dict(
            (19, 10, 6, 3, 4, W), (25, 11, 1, 1, 4, W), (26, 10, 16, 3, 4, W),  # chamber and lower at 2 m
            (26, 17, 12, 1, 1, W)],
     spawn=[("RM_Sluice", 18, 11, "Steel"), ("RM_Sluice", 25, 11, "Steel"), ("RM_Ladder", 22, 12, None)],
-    ladder=[(22, 12, "lower")],
+    ladder_dev=[(22, 12, "lower")],
     markers=[("PlaceTimer", 18, 14, "hours|13|14.5|false|3"), ("PlaceTimer", 25, 14, "hours|15.5|17|false|3"),
              ("PlaceMeter", 10, 12, ""), ("PlaceMeter", 21, 10, ""), ("PlaceMeter", 33, 12, "")],
     pawns=[("Colonist", 20, 13, "player", "drafted")],
@@ -59,7 +59,7 @@ SCENARIO = scenario(
             staged("timer on S2", "markers", "PlaceTimer", (25, 14), "demonstrated"),
             staged("three meters", "markers", "PlaceMeter", (21, 10)),
             staged("swimmer on the chamber bank, drafted", "pawns", "Colonist", (20, 13), "poked"),
-            staged("chamber ladder (the swimmer's exit)", "ladder", "lower", (22, 12), "poked"),
+            staged("chamber ladder (the swimmer's exit)", "ladder_dev", "lower", (22, 12), "poked"),
             staged("0.5 m silt spur", "fluid", W, (26, 17), "look"),
             deferred("Mode B: level holder + sink switched off", "Place* builds them ON; an OFF-staged holder/sink "
                      "needs a toggle proof surface (owed C#)", "FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS", (41, 21)),

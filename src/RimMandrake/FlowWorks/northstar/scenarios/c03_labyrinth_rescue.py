@@ -38,16 +38,16 @@ SETUP = dict(
        ("RM_HoseReel", 36, 28, None, None),                                   # o2, the relay, wound
        ("RM_AerialMast", 18, 26, None, None), ("RM_AerialMast", 18, 34, None, None)]   # the GSS wire span over the corridor
     # reel park (south-west strip): one reel per look, laid plump / filling / flat, one wound; a deploy order; a dropped carry
-    + [("RM_HoseReel", 1, z, None, None) for z in (2, 7, 12, 17, 22)] + [("RM_HoseReel", 12, 0, None, None)],
-    style=[("RM_HoseReel", 1, z, "RM_HoseReel_" + lk) for z, lk in zip((2, 7, 12, 17), ("Scrapper", "Industrial", "Modern",
+    + [("RM_HoseReel", 1, z, None, None) for z in (3, 7, 12, 17, 22)] + [("RM_HoseReel", 12, 0, None, None)],
+    style=[("RM_HoseReel", 1, z, "RM_HoseReel_" + lk) for z, lk in zip((3, 7, 12, 17), ("Scrapper", "Industrial", "Modern",
                                                                                           "Futuristic"))]
     + [("RM_HoseReel", 6, 30, "RM_HoseReel_Scrapper"), ("RM_HoseReel", 36, 28, "RM_HoseReel_Scrapper")],
     batteries=[(6, 27)],
     tank=[(5, 32, "Store", "RM_Liquid_FreshWater", 4000)],
     pump=[(5, 30, "draw")],
     hose=[(6, 30, PIT_LIP[0], PIT_LIP[1], None),                              # o1 the short way; free end stays Capped
-          (1, 2, 8, 2, None), (1, 7, 8, 7, None), (1, 12, 8, 12, None)],
-    hose_flow=[(6, 30, "Plump"), (1, 2, "Plump"), (1, 7, "Filling")],
+          (1, 3, 8, 3, None), (1, 7, 8, 7, None), (1, 12, 8, 12, None)],
+    hose_flow=[(6, 30, "Plump"), (1, 3, "Plump"), (1, 7, "Filling")],
     hose_order=[(1, 22, 8, 22)],
     hose_trail=[(12, 0, [(x, 1) for x in range(14, 25)])],
     pawns=[("Colonist", 22, 13, "player", "drafted"),                          # Hobb: drafted, so no needs drift
@@ -55,7 +55,6 @@ SETUP = dict(
            ("Colonist", 5, 24, "player", "drafted")],                          # the deploy-order walker (undraft = Start)
     pawn_ops=[(22, 13, "name", "Hobb")],
     markers=[("PlaceMeter", 23, 13, "")],                                      # destination gauge on Hobb's pit floor
-    calls=[dict(typ=LPROOF, method="ProofLinkPoles", fmt="{0};{1}", cells=[(18, 26), (18, 34)])],
     keep=True,
 )
 
@@ -63,8 +62,9 @@ SCENARIO = scenario(
     id="C3", n=3, slug="labyrinth_rescue", name="The Labyrinth Rescue", map="C", size=SIZE, look_style="Scrapper",
     purpose="Hobb is in a 4 m sheer pit in the middle of a maze. Float him out: pond water, by hose, through the maze.",
     start="press reel o1's 'Free end' button until it reads Outflow, then unpause",
-    try_=["START: reel o1 > Free end: Outflow; unpause: the pond shrinks, Hobb's pit fills; at 2 m or more he swims and "
-          "climbs out. Select the meter on the pit floor: litres in.",
+    try_=["START: reel o1 > Free end: Outflow; unpause: the pond shrinks, Hobb's pit fills; at 2 m he swims but is still "
+          "2 m below the lip; only near the BRIM (4 m of water) can he swim out (Stage 0 live, 2026-10-21: "
+          "PASS_AT_BRIM). Select the meter on the pit floor: litres in.",
           "BEFORE that: wall the gap d1 (the short way): the hose must re-route the long way (over 40 cells): it reels in "
           "with a message naming the cells needed; fix it by laying onto relay reel o2",
           "lay o2's hose back onto o1: refused (a relay chain may not loop)",
@@ -73,7 +73,7 @@ SCENARIO = scenario(
           "cut the pump's power: the hose goes flat; rotate the pump: the hose follows the port",
           "reel park (west): choose a style, undraft the colonist to deploy one by hand, retract one"],
     look_for="the hose takes the SHORT way through d1 and passes UNDER the wire span; litres out of the pond = litres "
-             "into the pit; Hobb rises with the water",
+             "into the pit; Hobb rises with the water and leaves only when it nears the brim",
     broken="the hose through a wall, over the chasm or on top of the wire span; the long way chosen while d1 is open; "
            "a hose that never plumps; Hobb standing on the floor under 2 m of water; the boar swimming; a relay loop "
            "accepted",
@@ -83,7 +83,7 @@ SCENARIO = scenario(
     parts=[(D1[0], D1[1] + 1, "d1 short way (wall it?)"), (DEAD_END[0], DEAD_END[1] + 1, "dead end (looks shorter)"),
            (6, 33, "reel o1"), (RELAY_O2[0], RELAY_O2[1] + 2, "relay o2"), (22, 16, "Hobb (trapped, 4 m)"),
            (26, 12, "boar pit"), (30, 22, "chasm 6 m"), (18, 35, "wire span overhead"), (2, 34, "pond"),
-           (5, 25, "pump power"), (23, 12, "meter"), (3, 4, "flat?"), (3, 9, "filling"), (3, 14, "flat"),
+           (5, 25, "pump power"), (23, 12, "meter"), (3, 5, "plump"), (3, 9, "filling"), (3, 14, "flat"),
            (3, 19, "wound"), (3, 24, "deploy order"), (18, 2, "dropped carry")],
     pieces=[staged("pond (limited)", "terrain", "WaterDeep", (0, 26)),
             staged("pump on the pond edge, Drawing", "pump", "draw", (5, 30)),
@@ -98,17 +98,16 @@ SCENARIO = scenario(
             staged("boar's pit 2x2, 4 m", "dig", None, (26, 10)),
             staged("boar (non-swimmer)", "pawns", "WildBoar", (26, 10), "poked"),
             staged("chasm (impassable, 6 m)", "dig", None, (26, 21), "look"),
-            staged("GSS wire span on two masts", "calls", "ProofLinkPoles", (18, 26), "look"),
+            staged("GSS wire span on two masts (auto-linked by GSS)", "build", "RM_AerialMast", (18, 26), "look"),
             staged("relay reel o2, wound", "build", "RM_HoseReel", RELAY_O2, "poked"),
             staged("destination gauge (flow meter) in Hobb's pit", "markers", "PlaceMeter", (23, 13)),
-            staged("reel park: four looks", "style", None, (1, 2), "look"),
+            staged("reel park: four looks", "style", None, (1, 3), "look"),
             staged("reel park: deploy order + walker", "hose_order", None, (1, 22), "poked"),
             staged("reel park: dropped carry", "hose_trail", None, (12, 0), "look"),
             deferred("pump power as a GSS power cord", "a vanilla conduit stands in: no staging surface lays an "
                      "RM_PowerCord from a script yet", "POWER_CORD_BUILD_BENDS_WHERE_CONDUIT_BREAKS", (1, 37)),
-            deferred("swim-out of a flooded SHEER pit", "no driver row measures the climb-out yet: Stage 0 proof "
-                     "(stage0_swim_pit.py) must pass live before this is trusted; if it fails, a rescue cistern",
-                     "DEEP_WATER_BUILD_SWIM_OR_SINK", (4, 37)),
+            staged("swim-out of a flooded sheer pit (Stage 0 live: out only at the brim)", "pawns", "Colonist",
+                   (22, 13), "poked", "Transient/scenarios_stage0_20261021T220318.json: 2 m FAIL, brim PASS"),
             deferred("machine digging Hobb's pit", "4 m is past the 2 m colonist cap (owner 2026-10-21); the pit is "
                      "staged, a machine dig order is not built", DEEP_DIG_ITEM, (7, 37)),
             deferred("thinner hose art", GIRTH_NOTE, "HOSE_GIRTH_TUNE_MUCH_THINNER", (1, 39))],
@@ -123,7 +122,7 @@ SCENARIO = scenario(
                "four_reel_looks_distinguishable": "look", "relay_chain_carries_liquid": "poked",
                "relay_chain_reads_connected": "look", "never_hose_across_impassable": "look",
                "hose_drawn_under_overhead_span": "look", "pump_hose_joins_at_side_port": "look",
-               "hose_thicker_stiffer_than_cord": "look", "deep_water_pawn_swims": "DEFERRED",
+               "hose_thicker_stiffer_than_cord": "look", "deep_water_pawn_swims": "poked",
                "pit_trapped_reads_as_trapped": "look", "reservoir_fill_visibly_drops": "poked"},
     goal="route lengths: short way (d1 open) <= 40 cells, long way (d1 walled) > 40 and <= 80; live: ProofReadout on "
          "Hobb's pit for litres-to-2 m, never typed",
