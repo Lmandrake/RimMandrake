@@ -101,3 +101,7 @@ if a and b:
         bf = r["buy"] / d["buy"] if d["buy"] else 0
         sf = r["sell"] / d["sell"] if d["sell"] else 0
         print("   %-28s buy x%.4f   sell x%.4f" % (r["defName"], bf, sf))
+else:
+    print("\nUNMEASURED: a probe failed (before=%s after=%s) - no delta, no verdict."
+          % ("ok" if a else "FAILED", "ok" if b else "FAILED"))
+    sys.exit(1)

@@ -247,11 +247,17 @@ def main():
     say("  flyers envenomed   : Goose %d/%d, Hare %d/%d" % (g1[0], g1[1], h3[0], h3[1]))
     say("  grounded envenomed : Goose %d/%d, Turkey %d/%d, Hare %d/%d"
         % (g2[0], g2[1], t1[0], t1[1], h4[0], h4[1]))
-    clean = (w1.get("flyingLowWater") == w1.get("count")
+    # None == None must not read as "clean": a failed pawn_flight call has no count at all.
+    clean = (bool(w1.get("count")) and bool(w3.get("count"))
+             and w1.get("flyingLowWater") == w1.get("count")
              and w3.get("flyingLowWater") == w3.get("count"))
+    # An arm with ZERO pawns measured (health read failed) would satisfy every "== 0" and
+    # "n == n" below; 0 of 0 is UNMEASURED, never an observation.
+    measured = all(arm_[1] > 0 for arm_ in (g1, t1, g2, h3, h4))
+    say("  every arm measured >=1 pawn: %s" % measured)
     say("  windows clean (every flyer airborne at every poll): %s" % clean)
     proven = (g1[0] == 0 and h3[0] == 0 and g2[0] == g2[1] and t1[0] == t1[1]
-              and h4[0] == h4[1] and clean)
+              and h4[0] == h4[1] and clean and measured)
     say("  EXEMPTION OBSERVED: %s" % proven)
 
     with open(str(_RM_ROOT / 'Transient' / 'venomvine_flyer_run.txt'), "w",

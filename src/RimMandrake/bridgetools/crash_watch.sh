@@ -17,7 +17,14 @@ PLOG="/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon S
 echo "crash_watch started $(date -u +%FT%TZ)" >> "$MEMLOG"
 
 while true; do
-  LINE=$(tasklist.exe /FI "IMAGENAME eq RimWorldWin64.exe" /FO CSV 2>/dev/null | tail -1)
+  OUT=$(tasklist.exe /FI "IMAGENAME eq RimWorldWin64.exe" /FO CSV 2>/dev/null)
+  if [ $? -ne 0 ] || [ -z "$OUT" ]; then
+    # tasklist itself failed (interop down): UNMEASURED, never a crash report
+    echo "$(date +%s) UNMEASURED tasklist.exe failed" >> "$MEMLOG"
+    sleep 5
+    continue
+  fi
+  LINE=$(echo "$OUT" | tail -1)
   if ! echo "$LINE" | grep -q "RimWorldWin64"; then
     DEATH=$(date -u +%FT%TZ)
     REPORT="$HERE/crash_report_$(date +%Y%m%d_%H%M%S).md"

@@ -162,9 +162,11 @@ def main():
     args = ap.parse_args()
 
     call = make_caller(connect())
-    check_defs(call)
+    missing = check_defs(call)
     if args.generate:
         check_map(call, args.tile)
+    # exit code: 2 = instrument failure (controls missing), 1 = bug present, 0 = fixed
+    return 2 if missing is None else (1 if missing else 0)
 
 
 if __name__ == "__main__":
