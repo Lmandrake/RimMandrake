@@ -131,7 +131,8 @@ namespace RimMandrake.FlowWorks.Pits
 	/// §1.2 model C: "a map component records this span = these cells between these anchors"), its load check, collapse,
 	/// swing-down from a lost support, railings switch and the shared reads the patches make.
 	///
-	/// Load (every 60 ticks): pawns (StatDefOf.Mass), items (mass × stack) and buildings (mass of their cost list) on each
+	/// Load (every 60 ticks): pawns (Mass + what they carry), items (mass × stack) and buildings (their Mass stat, else the
+	/// mass of their cost list) on each
 	/// span's built deck squares, all lanes together, against the span's rating. At 90% it sags (inspect warning, a caution
 	/// message as the creak); over it, the whole span gives way (setting suspensionWeightCollapse).
 	/// </summary>
@@ -206,6 +207,14 @@ namespace RimMandrake.FlowWorks.Pits
 				bandGame = Current.Game;
 				BandTotal = 0;
 			}
+		}
+
+		/// <summary>FlowWorks review 2026-10-22: a NEW game started after one with band pawns zeroes BandTotal here (the
+		/// after-load step covers a loaded game), so the hot band reads skip at once instead of looking up a stale band.</summary>
+		public override void FinalizeInit()
+		{
+			base.FinalizeInit();
+			BandForThisGame();
 		}
 
 		public override void MapRemoved()
@@ -787,7 +796,8 @@ namespace RimMandrake.FlowWorks.Pits
 					}
 				}
 			}
-			if (now % 60 != 0 || bridges.Count == 0)
+			// a lone band pawn or under-thing with no record left still gets swept and pruned (BandTotal returns to 0)
+			if (now % 60 != 0 || (bridges.Count == 0 && floorBand.Count == 0 && underThings.Count == 0))
 			{
 				return;
 			}
@@ -804,16 +814,18 @@ namespace RimMandrake.FlowWorks.Pits
 			for (int b = 0; b < bridges.Count; b++)
 			{
 				SuspensionBridgeRecord r = bridges[b];
-				for (int span = 0; span < r.SpanCount; span++)
+				// read once per record (SpanCount allocates the supports list; the loop breaks right after a collapse)
+				int spanCount = r.SpanCount;
+				float rating = r.RatingKg;
+				for (int span = 0; span < spanCount; span++)
 				{
-					List<Pawn> standing = new List<Pawn>();
 					List<IntVec3> cells = BuiltSpanCells(r, span);
 					if (cells.Count == 0)
 					{
 						continue;
 					}
-					float load = LoadOn(cells, standing);
-					SpanLoadState st = RM_SuspensionMath.Classify(load, r.RatingKg);
+					float load = LoadOn(cells, null);
+					SpanLoadState st = RM_SuspensionMath.Classify(load, rating);
 					long key = ((long)r.id << 8) | (uint)span;
 					if (st == SpanLoadState.Over && RM_SuspensionSettings.suspensionWeightCollapse)
 					{
@@ -831,7 +843,7 @@ namespace RimMandrake.FlowWorks.Pits
 						if (d != null && fallers.Count == 0)
 						{
 							Messages.Message("The " + RM_SuspensionMath.TierLabel(r.tier) + " suspension bridge gave way under its load ("
-								+ RM_SuspensionMath.LoadLine(load, r.RatingKg) + ").", new TargetInfo(cells[0], map), MessageTypeDefOf.NegativeEvent);
+								+ RM_SuspensionMath.LoadLine(load, rating) + ").", new TargetInfo(cells[0], map), MessageTypeDefOf.NegativeEvent);
 						}
 						break;   // the record's spans changed under us; next pass sees the rest
 					}
@@ -840,7 +852,7 @@ namespace RimMandrake.FlowWorks.Pits
 						if (sagging.Add(key))
 						{
 							Messages.Message("A " + RM_SuspensionMath.TierLabel(r.tier) + " suspension bridge creaks and sags: "
-								+ RM_SuspensionMath.LoadLine(load, r.RatingKg) + ".", new TargetInfo(cells[0], map), MessageTypeDefOf.CautionInput);
+								+ RM_SuspensionMath.LoadLine(load, rating) + ".", new TargetInfo(cells[0], map), MessageTypeDefOf.CautionInput);
 						}
 					}
 					else

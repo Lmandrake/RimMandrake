@@ -29,6 +29,8 @@ namespace RimMandrake.FlowWorks.Hose
         {
             public string key;
             public Mesh flat, plump, shadow;
+            /// <summary>The pose these meshes were built from (review 2026-10-22: a cache hit reuses it, no Pose per frame).</summary>
+            public List<V2> pts;
         }
 
         /// <summary>PIPE_ENDS_BUILD_MEET_IN_THE_MIDDLE: a port-coupled hose's run on beneath the tank or machine to its centre,
@@ -50,7 +52,8 @@ namespace RimMandrake.FlowWorks.Hose
         public RM_MapComponent_Hoses(Map map) : base(map) { }
 
         /// <summary>FINAL §3.9 fallback: without the save-skip patch this component would be written into saves by class
-        /// name, so it takes itself off the map instead (hoses draw nothing; reels keep their saved ends). The one red
+        /// name, so MapComponentUpdate takes it off the map on its first frame (not here: see below); MapComponentTick is
+        /// inert until then (hoses draw nothing; reels keep their saved ends). The one red
         /// line naming the missing patch is logged by RM_HoseEssentials.</summary>
         public override void FinalizeInit()
         {
@@ -466,6 +469,16 @@ namespace RimMandrake.FlowWorks.Hose
             if (!RM_HoseEssentials.SaveSkipPatched) return;
             int now = Find.TickManager.TicksGame;
             HoseTuning t = RM_HoseSettings.Tuning();
+            // review 2026-10-22: ghosts were pruned only by DrawGhosts (current map, hoses drawn), so a map nobody viewed kept
+            // every auto reel-in's point list forever; the tick prunes them too (same rule as the draw)
+            if (ghosts.Count > 0 && now % 60 == 0)
+            {
+                for (int gi = ghosts.Count - 1; gi >= 0; gi--)
+                {
+                    Ghost g = ghosts[gi];
+                    if (HoseLive.AutoDone(now - g.start, g.len) || g.reel?.parent == null || !g.reel.parent.Spawned || g.reel.HoseOut) ghosts.RemoveAt(gi);
+                }
+            }
             for (int i = 0; i < reels.Count; i++)
             {
                 CompHoseReel r = reels[i];
@@ -628,16 +641,22 @@ namespace RimMandrake.FlowWorks.Hose
                 PoseInfo pi = Info(r);
                 double amt = RM_HoseSettings.plumpAmount;
                 int T = RM_HoseSettings.Tuning().TransitionTicks;
-                List<V2> pts = HoseMath.Pose(lay, pi.Eased, pi.Wobbling ? pi.SinceChange : int.MaxValue / 2, T, amt);
                 bool settled = !pi.Wobbling && (pi.Blend <= 0 || pi.Blend >= 1);
                 // a transitioning pose depends only on the game tick, so it is cached per tick (a paused game stops re-meshing every frame)
                 string key = (settled ? (pi.Blend >= 1 ? "P" : "F") : "T" + Find.TickManager.TicksGame) + r.layKey + "@" + RankOf(r);
                 // HOSE_ENDS_FIX_MISSES_THE_PORTS: an end coupled to a tank's drawn port bends onto it (TankPortGeometry), so the
                 // coupling DrawEnds puts half a cell past the end sits on the flange, not half a cell beside it
-                if (r.laid && r.carry != HoseCarryState.Retracting && PortEnd(r, out V2 portAt, out V2 portAxis))
+                V2 portAt = default(V2), portAxis = default(V2);
+                bool onPort = r.laid && r.carry != HoseCarryState.Retracting && PortEnd(r, out portAt, out portAxis);
+                if (onPort) key += "|p" + portAt.X.ToString("0.000") + "," + portAt.Z.ToString("0.000");
+                // review 2026-10-22: the key is built first, so a cache hit reuses the pose its meshes were built from
+                meshes.TryGetValue(r, out Cached c);
+                List<V2> pts;
+                if (r.carry != HoseCarryState.Retracting && c != null && c.pts != null && c.key == key) pts = c.pts;
+                else
                 {
-                    pts = HoseMath.EndOnPort(pts, portAt - portAxis * 0.5, portAxis, 1.2);
-                    key += "|p" + portAt.X.ToString("0.000") + "," + portAt.Z.ToString("0.000");
+                    pts = HoseMath.Pose(lay, pi.Eased, pi.Wobbling ? pi.SinceChange : int.MaxValue / 2, T, amt);
+                    if (onPort) pts = HoseMath.EndOnPort(pts, portAt - portAxis * 0.5, portAxis, 1.2);
                 }
                 // rule 3: a joiner that would sit over a hose drawn beneath is left out (HoseMath.Layer)
                 List<int> joints = Layered().Joints.TryGetValue(r.parent.thingIDNumber, out List<int> kept) ? kept : lay.Joints;
@@ -652,7 +671,6 @@ namespace RimMandrake.FlowWorks.Hose
                 }
                 else lastDraw[r] = "lay";
                 lastDrawnLen[r] = Geo.Length(pts);
-                meshes.TryGetValue(r, out Cached c);
                 float vis = (float)pi.Visible;
                 float e = (float)pi.Eased;
                 Mesh fm, pm, sm;
@@ -671,7 +689,7 @@ namespace RimMandrake.FlowWorks.Hose
                     if (key != null)
                     {
                         if (c != null) { DestroyMeshes(c); }
-                        meshes[r] = new Cached { key = key, flat = fm, plump = pm, shadow = sm };
+                        meshes[r] = new Cached { key = key, flat = fm, plump = pm, shadow = sm, pts = pts };
                     }
                     else { frameMeshes.Add(fm); frameMeshes.Add(pm); frameMeshes.Add(sm); }
                 }
@@ -818,8 +836,9 @@ namespace RimMandrake.FlowWorks.Hose
                 V2 d = (pts[Math.Min(n - 1, j + m)] - pts[Math.Max(0, j - m)]).Norm();
                 // 2026-10-05: each half's wrap runs up to the interlocked claws (HoseMath.JoinerWrapIn), no gap
                 float js = (float)HoseMath.FittingSize(vis, PieceBand, CouplingMax);
-                foreach (V2 h in new[] { d, -d })
+                for (int half = 0; half < 2; half++)   // both halves, no per-joint array (review 2026-10-22: this runs every frame)
                 {
+                    V2 h = half == 0 ? d : -d;
                     Piece(hm.CouplingBare, pts[j] - h * (JoinerMesh * js), h, js, y);
                     Wrap(hm, pts[j] - h * (HoseMath.JoinerWrapIn * js + HoseMath.WrapLength / 2), h, vis, y + 0.0002f, wrapTint);
                 }
@@ -861,13 +880,6 @@ namespace RimMandrake.FlowWorks.Hose
             }
         }
 
-        /// <summary>
-        /// PIPE_ENDS_BUILD_MEET_IN_THE_MIDDLE (owner 2026-10-18: "draw pipes as though they are connected into the centers of all
-        /// pipe-receiving items ... so that it appears to continue beneath them through any transparent boundaries"): a hose
-        /// coupled to a tank or liquid machine beside its end runs on from the shared edge to the centre of the building's
-        /// footprint (LiquidJoinRule.CentreStub), in the hose band -- below the building layer, so the building's opaque body
-        /// hides it and its see-through margins show it. Pipes are the section layer's (SectionLayer_RM_PipeCentreStubs).
-        /// </summary>
         /// <summary>HOSE_ENDS_FIX_MISSES_THE_PORTS: the drawn port the reel's laid free end couples to (a 2x2 universal tank's
         /// west/east flange, TankPortGeometry) and the axis into it; false = the shared edge's midpoint, as before.</summary>
         internal bool PortEnd(CompHoseReel r, out V2 port, out V2 axis)
@@ -882,6 +894,13 @@ namespace RimMandrake.FlowWorks.Hose
             return true;
         }
 
+        /// <summary>
+        /// PIPE_ENDS_BUILD_MEET_IN_THE_MIDDLE (owner 2026-10-18: "draw pipes as though they are connected into the centers of all
+        /// pipe-receiving items ... so that it appears to continue beneath them through any transparent boundaries"): a hose
+        /// coupled to a tank or liquid machine beside its end runs on from the shared edge to the centre of the building's
+        /// footprint (LiquidJoinRule.CentreStub), in the hose band -- below the building layer, so the building's opaque body
+        /// hides it and its see-through margins show it. Pipes are the section layer's (SectionLayer_RM_PipeCentreStubs).
+        /// </summary>
         private void DrawPortStub(CompHoseReel r, HoseFreeEnd fe, HoseLookMats hm, float vis, float y)
         {
             if (!RimMandrake.FlowWorks.Machinery.RM_MachinerySettings.pipesUnderToCentre) return;
@@ -1079,10 +1098,6 @@ namespace RimMandrake.FlowWorks.Hose
             }
         }
 
-        /// <summary>Owner review round 2 (2026-10-04, station 16: "the crappy hose reel disconnected from the pipe"): a reel
-        /// beside a pipe or tank (HosePorts / HosePortRule) shows a short flat feed hose from under the reel to the port,
-        /// with a brass coupling on the shared edge. Drawn in the hose band, below buildings, so under a tank it vanishes
-        /// beneath the sprite instead of stopping at its outline; on a pipe it ends on the pipe's centreline.</summary>
         /// <summary>C7a-F7: the feed ribbon of each reel, rebuilt only when its ends, width or band change (it used to be a new
         /// Mesh every rendered frame, paused included).</summary>
         private sealed class FeedCache
@@ -1106,6 +1121,10 @@ namespace RimMandrake.FlowWorks.Hose
             }
         }
 
+        /// <summary>Owner review round 2 (2026-10-04, station 16: "the crappy hose reel disconnected from the pipe"): a reel
+        /// beside a pipe or tank (HosePorts / HosePortRule) shows a short flat feed hose from under the reel to the port,
+        /// with a brass coupling on the shared edge. Drawn in the hose band, below buildings, so under a tank it vanishes
+        /// beneath the sprite instead of stopping at its outline; on a pipe it ends on the pipe's centreline.</summary>
         private void DrawFeed(CompHoseReel r, float y)
         {
             if (r.Port() == null) { DropFeed(r); return; }
