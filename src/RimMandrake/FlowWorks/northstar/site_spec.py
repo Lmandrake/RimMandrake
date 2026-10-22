@@ -164,9 +164,6 @@ SETTINGS = {
         "liquidBathRecipesEnabled": True, "liquidReactionsEnabled": True, "reactionRateMultiplier": 1.0,
         "hotLiquidEnabled": True, "hotLiquidBurnMultiplier": 1.0, "fluidResidueEnabled": True,
     },
-    "RimMandrake.FlowWorks.Machinery.Logistics.RM_SluiceGateSettings": {
-        "sluiceGatesEnabled": True, "sluiceGateOpenDelayTicks": 120, "sluiceGateCloseDelayTicks": 240,
-    },
     # FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS (2026-10-16): the map controls' master switch
     "RimMandrake.FlowWorks.MapControls.RM_MapControlSettings": {
         "mapControlsEnabled": True,
@@ -233,7 +230,6 @@ SETTINGS_SOURCES = {     # type -> C# file (relative to the mod's source folder)
     "RimMandrake.FlowWorks.Quarry.RM_QuarrySettings": os.path.join("Quarry", "RM_QuarrySettings.cs"),
     "RimMandrake.FlowWorks.Hose.RM_HoseSettings": os.path.join("Hose", "RM_HoseSettings.cs"),
     "RimMandrake.FlowWorks.Machinery.Kits.RM_KitSettings": os.path.join("Machinery", "Kits", "RM_KitSettings.cs"),
-    "RimMandrake.FlowWorks.Machinery.Logistics.RM_SluiceGateSettings": os.path.join("Machinery", "Logistics", "RM_SluiceGateSettings.cs"),
     "RimMandrake.FlowWorks.MapControls.RM_MapControlSettings": os.path.join("MapControls", "RM_MapControlSettings.cs"),
     "RimMandrake.FlowWorks.RiverColors.RM_RiverColorsSettings": os.path.join("RiverColors", "RM_RiverColorsSettings.cs"),
     "RimMandrake.FlowWorks.Thirst.RM_ThirstSettings": os.path.join("Thirst", "RM_ThirstSettings.cs"),

@@ -1347,10 +1347,9 @@ TOGGLES_NOT_ON_FLOOR = ["blastsBreakPitCovers", "pitStuckAlertEnabled", "fallDea
                         # LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS (2026-10-16; absorbed into LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD): the cell readout's depth/litres line is UI text
                         # read by eye (review map station pond_bed); no live toggle chain yet
                         "mouseoverDepthEnabled",
-                        # the liquid-kit and sluice-gate sections, registered in site_spec 2026-10-15 (they were scribed
+                        # the liquid-kit section, registered in site_spec 2026-10-15 (they were scribed
                         # all along but missing from the registry): no live row flips them yet
                         "fluidResidueEnabled", "hotLiquidEnabled", "liquidBathRecipesEnabled", "liquidReactionsEnabled",
-                        "sluiceGatesEnabled",
                         # HOSE_JOINTS_REDESIGN_PUMP_TOO_PUNY / FLOWWORKS_WATERBODY_DIAGNOSE_SOIL_THROW (site_spec 2026-10-16):
                         # art/diagnostic switches, no live row flips them yet
                         "pipeLinksIntoMachines", "joinFittings", "waterBodyTypeFlipFixEnabled",

@@ -193,7 +193,7 @@ FEATURES = [
     ("set", r"^(pitExposureEnabled|pitExposureNarrowing|pitTemperatureCoupling|pitResistanceLossMultiplier)$",
      "Exposure in an open pit", "hold_exposure"),
     ("def", r"^(HediffDef/RM_PitExposure|ThoughtDef/RM_ExposedPrisoner)$", "Exposure and its thought", "hold_exposure"),
-    ("set", r"^(flowDoorsSealedFromPitEnabled|sluiceLetsBigThroughEnabled|sluiceGate)", "Sluice and grate doors",
+    ("set", r"^(flowDoorsSealedFromPitEnabled|sluiceLetsBigThroughEnabled)", "Sluice and grate doors",
      "hold_gates"),
     ("def", r"^ThingDef/RM_(Sluice|SecurityGrateDoor)$", "Sluice and security grate", "hold_gates"),
     ("tex", r"Doors/RM_\w+_Mover", "Door leaves (open/shut)", "look_parts"),

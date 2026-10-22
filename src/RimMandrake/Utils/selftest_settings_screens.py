@@ -1113,7 +1113,7 @@ def check_biomes_shell():
 
 # FlowWorks' MAIN screen (RimMandrakeFlowWorksMod.cs) draws `if (Section(list, "title", new[] { names }))` blocks, not Group(...):
 # no scope tags, but the same promises. Titles are the audited section list; names the screen resets that are not Scribe_Values.
-FLOWWORKS_MAIN_SECTIONS = 12
+FLOWWORKS_MAIN_SECTIONS = 19   # 12 -> 19: FLOWWORKS_SETTINGS_UNTANGLE_THE_JUNK_DRAWER (2026-10-22) split pits seven ways, Digging / Water engine
 FLOWWORKS_MAIN_EXTRA = {"disabledFluids"}
 
 

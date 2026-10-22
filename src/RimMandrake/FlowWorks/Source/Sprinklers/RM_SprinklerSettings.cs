@@ -5,7 +5,7 @@ namespace RimMandrake.FlowWorks.Sprinklers
 {
 	/// <summary>Mod Settings section: sprinklers (SPRINKLER_HEADS_BUILD_PUMP_REQUIRED, design sprinklers_design_2026-10-16.md §5).
 	/// Own static class, scribed into the FlowWorks settings file from RimMandrakeFlowWorksSettings.ExposeData and drawn by its
-	/// window, the same shape as RM_SluiceGateSettings. Defaults = the ruled behaviour (OQ-S1..S7).
+	/// window, the same shape as RM_MapControlSettings. Defaults = the ruled behaviour (OQ-S1..S7).
 	/// All off: no native head runs, VFE's sprinkler is exactly as shipped, nothing is sprinkled.</summary>
 	public static class RM_SprinklerSettings
 	{

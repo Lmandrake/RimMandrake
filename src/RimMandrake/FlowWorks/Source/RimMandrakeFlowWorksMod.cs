@@ -715,7 +715,6 @@ namespace RimMandrake.FlowWorks
             Machinery.RM_MachinerySettings.ExposeData();
             // Builder Y sections (2026-10-05): sluice gates, quarry. One line each. (The empty tanker and bottled-blood stubs were
             // deleted 2026-10-11: neither feature is built; its settings arrive with it.)
-            Machinery.Logistics.RM_SluiceGateSettings.ExposeData();
             MapControls.RM_MapControlSettings.ExposeData();   // FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS
             Machinery.Kits.RM_KitSettings.ExposeData();
             Quarry.RM_QuarrySettings.ExposeData();
@@ -966,6 +965,7 @@ namespace RimMandrake.FlowWorks
                   + RM_DigDepthMath.DiggerDays(RM_DigDepthMath.WorkToDig(0, 16, false)).ToString("0.#") + " digger-days. "
                   + "Rock ground multiplies either.");
             }
+            }
 
             list.GapLine();
             if (Section(list, "Finds while digging", new[] { "digFindsEnabled", "digFindsLocalOnly", "digFindChanceMultiplier", "digFindBudgetPercent", "digFindLetterEnabled", "digRockGroundEnabled", "digRockWorkMultiplier", "digRockChunksEnabled", "digRockChunkMultiplier", "digSoilChunkPercent" }))
@@ -1021,8 +1021,6 @@ namespace RimMandrake.FlowWorks
               + "and overflows from a full cell into any neighbour with room. Off: nothing "
               + "pours and a dug channel is inert earthworks. Digging still works, and a "
               + "channel still costs what it costs to cross.");
-
-            }
 
             list.Gap();
             list.Label("Flow pulse: every " + PulseIntervalTicks + " ticks");
@@ -1571,7 +1569,7 @@ namespace RimMandrake.FlowWorks
             }
 
             list.GapLine();
-            if (Section(list, "Pit prisoners, sluices and grates", new[] { "superdeepRoomsEnabled", "pitRoomMinDepthMetres", "captureDownEnabled", "wardenFromLipEnabled", "flowDoorsSealedFromPitEnabled", "sluiceLetsBigThroughEnabled" }))
+            if (Section(list, "Pit prisoners, sluice gates and grates", new[] { "superdeepRoomsEnabled", "pitRoomMinDepthMetres", "captureDownEnabled", "wardenFromLipEnabled", "flowDoorsSealedFromPitEnabled", "sluiceLetsBigThroughEnabled" }))
             {
             list.CheckboxLabeled("An enclosed pit is its own room", ref superdeepRoomsEnabled,
                 "A dug pocket a person cannot climb out of counts as a room of its own, separate "
@@ -1602,13 +1600,13 @@ namespace RimMandrake.FlowWorks
               + "within speaking distance, tending from a cell touching them. Only if no edge cell will do "
               + "does the colonist climb down as usual. Off: they always climb down.");
 
-            list.CheckboxLabeled("Sluices and grates cannot be opened from inside a pit", ref flowDoorsSealedFromPitEnabled,
-                "A pawn held in a superdeep pit cannot open a sluice or a security grate, even one it "
+            list.CheckboxLabeled("Sluice gates and grates cannot be opened from inside a pit", ref flowDoorsSealedFromPitEnabled,
+                "A pawn held in a superdeep pit cannot open a sluice gate or a security grate, even one it "
               + "could open from outside. Off: they open like ordinary doors for anyone allowed through.");
-            list.CheckboxLabeled("A sluice only holds small creatures", ref sluiceLetsBigThroughEnabled,
-                "A sluice is a cheap gate: people (prisoners and raiders included) and any creature too big "
+            list.CheckboxLabeled("A sluice gate only holds small creatures", ref sluiceLetsBigThroughEnabled,
+                "A sluice gate is a cheap canal door: people (prisoners and raiders included) and any creature too big "
               + "for a one-wide pit force their way through it. Use a security grate to hold a real "
-              + "prisoner. A shut sluice holds liquid back; the grate passes liquid open or shut. Off: a sluice holds like an ordinary door.");
+              + "prisoner. A shut sluice gate holds liquid back; the grate passes liquid open or shut. Off: a sluice gate holds like an ordinary door.");
             }
 
             list.GapLine();
@@ -1971,7 +1969,6 @@ namespace RimMandrake.FlowWorks
             Rivers.RM_RiversSettingsWindow.DoSettingsSection(list);
             RiverColors.RM_RiverColorsSettings.DoSettingsSection(list);
             Quarry.RM_QuarrySettings.DoSettingsSection(list);
-            Machinery.Logistics.RM_SluiceGateSettings.DoSettingsSection(list);
             MapControls.RM_MapControlSettings.DoSettingsSection(list);
             Thirst.RM_ThirstSettings.DoSettingsSection(list);
             Sprinklers.RM_SprinklerSettings.DoSettingsSection(list);
