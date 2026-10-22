@@ -118,9 +118,9 @@ def main(argv):
                     if arch not in ARCHETYPES:
                         E("eg-roster-fields", f"{rel} {dn}: {plant} archetype '{arch}' is not an RM_ArchetypeChoice")
                     try:
-                        rc = float(li.findtext("ruptureChance") or -1)
-                        if not (rc == -1 or 0 <= rc <= 1):
-                            E("eg-roster-fields", f"{rel} {dn}: {plant} ruptureChance {rc} is not -1 or in [0,1]")
+                        rch = float(li.findtext("ruptureChance") or -1)       # NOT `rc`: that is the generic lint's exit code, returned below
+                        if not (rch == -1 or 0 <= rch <= 1):
+                            E("eg-roster-fields", f"{rel} {dn}: {plant} ruptureChance {rch} is not -1 or in [0,1]")
                     except ValueError:
                         E("eg-roster-fields", f"{rel} {dn}: {plant} ruptureChance is not a number")
                     for x in li.findall("adaptedLiquids/li"):
