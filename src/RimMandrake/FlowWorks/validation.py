@@ -1362,7 +1362,7 @@ TOGGLES_NOT_ON_FLOOR = ["blastsBreakPitCovers", "pitStuckAlertEnabled", "fallDea
                         # PIPE_ENDS_BUILD_MEET_IN_THE_MIDDLE (built 2026-10-18, registered in site_spec by the F2 settings
                         # audit): their live rows are owed on the items (A1-A5), not yet a toggle chain
                         "trenchCoverEnabled", "trenchAiAvoidsCages", "portableLadderEnabled", "climbingGearEnabled",
-                        "pitJumpLandsSafe", "pitTeleportLandsSafe", "pitFreeTravelEnabled", "pitRescueLadderEnabled", "pipesUnderToCentre",
+                        "pitJumpLandsSafe", "pitTeleportLandsSafe", "pitFreeTravelEnabled", "reachSeesWallsAndCliffs", "pitRescueLadderEnabled", "pipesUnderToCentre",
                         # registered 2026-10-19 (settings audit catch-up): wall climb, raider trench, swim, water mend. Live
                         # rows are owed on their items; not yet a toggle chain
                         "wallClimbEnabled", "raidersMayClimbWalls", "wallClimbAutoRoute", "raidersCarryClimbingGear",

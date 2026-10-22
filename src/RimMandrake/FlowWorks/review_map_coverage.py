@@ -131,6 +131,7 @@ FEATURES = [
     ("def", r"^ThingDef/RM_Spikes$", "Pit spikes", "pit_spikes"),
     ("set", r"^pitGuardrailEnabled$", "Guardrails and fences stop falls (FALL_GUARDRAILS_BUILD_REAL_OBJECT)", "pit_fall"),
     ("set", r"^pitFreeTravelEnabled$", "Flyers, jumpers and floaters cross pits freely, no fall", M + "no frozen station stages a flyer or jumper over a pit; proved by the functional script"),
+    ("set", r"^reachSeesWallsAndCliffs$", "Reach map sees built walls and cliffs, agreeing with the depth engine", M + "no frozen station stages a walled-off reach; proved by the functional script reach_map_proof.py (REACH_MAP_BUILD_WALLS_AND_DEPTH_AGREE)"),
     ("def", r"^ThingDef/RM_PitGuardrail$", "Pit guardrail", "pit_fall"),
     ("tex", r"RM_Spikes\.png$", "Spike art", "pit_spikes"),
     ("set", r"^(pitDrowningEnabled|pitDrowningRateMultiplier|pitDrowningHeadFraction|pitDrowningLyingFraction|poisonFillEnabled)$", "Flooding a pit drowns or poisons",
