@@ -99,9 +99,13 @@ def feature_sheet():
 def derive(m=None, rows=None):
     """-> (m, {feature_id: status}, capd). Statuses from the sheet's own derivation: probes + newest live result."""
     m = m or feature_sheet()
+    stale = False
     if rows is None:
-        _, rows = m.latest_result()
-    capd = {c["id"]: dict(c, d=m.derive_status(c, rows)) for c in m.CAPS}
+        label, rows = m.latest_result()
+        # the sheet's own rule: a PASS from an older mod_hash reads built, not "works in game" (it was dropped here, so
+        # the map's status words could say WORKS IN GAME where the sheet said built)
+        stale = m.result_is_stale(label)
+    capd = {c["id"]: dict(c, d=m.derive_status(c, rows, stale=stale)) for c in m.CAPS}
     st = {f["id"]: m.feature_status(f, capd)[0] for f in m.FEATURES}
     return m, st, capd
 
@@ -1803,6 +1807,8 @@ def build_exit(vis_ok, n_vis, gal_ok, n_gal):
             continue
         parts.append("%s %d/%d" % (name, got, want))
         bad = bad or got < want
+    if vis_ok is None and gal_ok is None:       # --only visuals with no visuals doc: nothing was read, not a pass
+        bad = True
     return (1 if bad else 0), ", ".join(parts)
 
 

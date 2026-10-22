@@ -280,7 +280,8 @@ CAPS = [
          src="Ph6 owed art"),
     dict(id="E06", g="E", label="A burned-out channel reads scorched and empty", item=BP,
          effect="Burned-dry canal cells draw the shipped scorch art (Terrain/FlowWorks/RM_Scorch_*).",
-         probes=["cs:Ash", "tex:(?i)scorch"], bars=["canal_spent_after_burn"], src="Ph6 owed art"),
+         probes=["cs:RM_Scorch_", "tex:(?i)scorch"],   # was cs:Ash, which "Ashkarr" alone satisfies
+         bars=["canal_spent_after_burn"], src="Ph6 owed art"),
     dict(id="E07", g="E", label="Pawns in a burning cell catch fire (D=4 occupant always)", item=BP,
          effect="Fire harms whoever stands in the burning liquid; a trapped occupant always catches (ruling 22).",
          probes=["cs:class RM_LiquidFire"], src="Ruling 22"),

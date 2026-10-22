@@ -52,6 +52,14 @@ for c in f["caps"]:
 _, st2, capd2 = R.derive(m, rows2)
 S2 = R.station_list(m, st2, capd2)
 check(next(s for s in S2 if s["id"] == "flow_spreads")["status"] != "works", "status did not follow the evidence")
+# a PASS from a STALE result (older mod_hash) is built, not "works in game" -- the sheet's rule, kept by the map's derive
+_lr = m.latest_result
+m.latest_result = lambda path=None: ("validation_v2_result_x.json [STALE: result mod_hash a != current b]", rows1)
+try:
+    _, st3, _ = R.derive(m)
+finally:
+    m.latest_result = _lr
+check(st3["flow_spreads"] != "works", "a STALE PASS read as 'works in game' on the map (now %r)" % st3["flow_spreads"])
 
 # layout_check catches an overlap (sanity probe)
 bad = [dict(s) for s in S]
@@ -86,6 +94,7 @@ check(R.build_exit(39, 39, 30, 30)[0] == 0 and R.build_exit(38, 39, 30, 30)[0] =
       and R.build_exit(39, 39, 0, 30)[0] == 1 and R.build_exit(None, 0, 30, 30)[0] == 0,
       "build_exit: %s" % [R.build_exit(38, 39, 30, 30), R.build_exit(39, 39, 0, 30)])
 check("39/39" in R.build_exit(39, 39, None, 0)[1], "build_exit text has no denominator")
+check(R.build_exit(None, 0, None, 0)[0] == 1, "build_exit: a build that verified nothing exits 0")
 # --build --save keeps the agent block: the save path passes live to keysheet
 check("keysheet(S, st, doc, m, live, save=name)" in open(R.__file__, encoding="utf-8").read(),
       "--save rewrites the key sheet without the --build agent block")
@@ -216,6 +225,8 @@ check(not unc, "uncovered: %s" % unc[:5])
 check(not COV.check_targets(S, [s["id"] for s in RV.STATIONS]), "rule names no station: %s" % COV.check_targets(
     S, [s["id"] for s in RV.STATIONS])[:3])
 check(COV.classify(items + [("def", "ThingDef/RM_SelftestThing", "x")])[1], "a planted unknown def was covered")
+check(COV.classify([("def", "UNPARSEABLE/Defs/RM_PipeAdapter_Broken.xml", "x")])[1],
+      "an unparseable Defs file was covered by a loose rule matching its path")
 check(COV.check_targets([s for s in S if s["id"] != "pit_ramp"], [s["id"] for s in RV.STATIONS]),
       "a removed station left its rule unflagged")
 with tempfile.TemporaryDirectory() as d:
