@@ -196,6 +196,8 @@ def _run(argv, hold):
         B.call("rimworld/start_debug_game_ready", readiness="mapData", pauseIfNeeded=True, timeoutMs=280000)
         ok, waited = V._wait_playing(B, leave_s=0)
         say("quicktest map up: %s (%s s)" % (ok, waited))
+    res_calm = V.clear_threat_structures(B)   # TESTENV_PREFLIGHT_HARDEN_TRISPIKE_AT_ARM (storyteller is handled below)
+    say("threat structures: %s" % res_calm)
     B.call("rimworld/pause_game", paused=True)
     B.call("jawa/weather_set", weather="Clear", lockWeather=True)
     B.call("jawa/incident_queue_clear")
