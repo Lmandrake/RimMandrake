@@ -221,6 +221,11 @@ def offline_gate():
     steps["selftest_human_review"] = {"exit": rc, "tail": out.strip().splitlines()[-1:], "wall_s": w}
     if rc:
         red.append("selftest_human_review")
+    # GPT deep review 2026-10-22 E.4: the proof harness's own selftest was run by nobody
+    rc, out, w = _run([sys.executable, os.path.join(HERE, "northstar", "selftest_proof_all.py")])
+    steps["selftest_proof_all"] = {"exit": rc, "tail": out.strip().splitlines()[-1:], "wall_s": w}
+    if rc:
+        red.append("selftest_proof_all")
     os.makedirs(SCRATCH_POSIX, exist_ok=True)
     spec = os.path.join(SCRATCH_POSIX, SPEC_NAME)
     rc, out, w = _run([sys.executable, os.path.join(MX_DIR, "design_spec.py"), "--out", spec])
@@ -636,8 +641,10 @@ class Proof(object):
         det = [s.get("determinism", {}).get("same") for s in R.scenes.values() if s.get("determinism")]
         self.row("session", "D1_zero_tick_rereads_same", "PASS" if det and all(det) else "FAIL", "MOD",
                  "%d/%d scenes: geometry hash + census identical on 2 re-reads after all view toggles" % (sum(1 for d in det if d), len(det)))
-        bad = ["%s %s %s" % (b["id"], b["scenes"], {k: (b.get("fresh") or {}).get(k) for k in ("edges", "different", "missing")})
-               for b in R.boards_out if not b.get("fresh") or (b.get("fresh") or {}).get("different") or (b.get("fresh") or {}).get("missing")]
+        # GPT deep review 2026-10-22 #7: an `extra` edge (cached, absent from a fresh build) is as stale as a missing one
+        bad = ["%s %s %s" % (b["id"], b["scenes"], {k: (b.get("fresh") or {}).get(k) for k in ("edges", "different", "missing", "extra")})
+               for b in R.boards_out if not b.get("fresh") or (b.get("fresh") or {}).get("different") or (b.get("fresh") or {}).get("missing")
+               or (b.get("fresh") or {}).get("extra")]
         rings = [b["id"] for b in R.boards_out if any("_T3_" in s for s in b["scenes"])]
         self.row("session", "D2_fresh_builder_same", "PASS" if R.boards_out and not bad else "FAIL", "MOD",
                  bad or "%d boards (ring boards %s): a fresh CordBuilder on the same map reproduces every laid edge" % (len(R.boards_out), rings))
@@ -695,11 +702,16 @@ class Proof(object):
         with open(os.path.join(V.SAVES, name + ".rws"), "rb") as f:
             blob = f.read()
         # SL2 = M9a (no "GimmeSomeSlack" anywhere) U M16b (no aerial MapComponent) + the legacy namespace (the rename:
-        # nothing may still be written as MessyConduit). Since the hose port GSS has no class that may legitimately be in a
-        # save (the carried-hose job driver is FlowWorks'), so EVERY occurrence of our namespace is a fault.
+        # nothing may still be written as MessyConduit). One class of ours MAY legitimately be in a save: the re-string
+        # JobDriver (Aerial/RestringJob.cs), whose ExposeData keeps a colonist's work progress when saved mid-job -- vanilla
+        # writes a running job's driver by class name (GPT deep review 2026-10-22 #6). Every OTHER occurrence is a fault.
+        allowed = b"RimMandrake.GimmeSomeSlack.Aerial.JobDriver_RestringSpan"
         hits = {k: blob.count(k.encode()) for k in ("GimmeSomeSlack", "RM_MapComponent_Aerial", "RM_MapComponent_CordGraph", "MessyConduit")}
-        offending = [blob[max(0, i - 120):i + 60].decode("utf-8", "replace").strip()[-160:] for i in V._find_all(blob, b"GimmeSomeSlack")]
-        sl2 = all(v == 0 for v in hits.values())
+        hits["restringJobDriver_allowed"] = blob.count(allowed)
+        hits["GimmeSomeSlack"] -= hits["restringJobDriver_allowed"]
+        offending = [blob[max(0, i - 120):i + 60].decode("utf-8", "replace").strip()[-160:] for i in V._find_all(blob, b"GimmeSomeSlack")
+                     if not blob.startswith(allowed, blob.rfind(b"RimMandrake.", 0, i + 1))]
+        sl2 = all(v == 0 for k, v in hits.items() if k != "restringJobDriver_allowed")
         self.row("save_load", "SL2_save_names_no_class_of_ours", "PASS" if sl2 else "FAIL", "MOD",
                  {"counts": hits, "first": offending[:3]})
         ld = B.call("rimworld/load_game", saveName=name)

@@ -13,7 +13,7 @@ savegame**. Keepers stay until he says delete.
 | decisions sheet (non-art, 93 rows: GSS 29, FlowWorks 64) | `Transient/owner_walk_gss_flowworks_2026-10-11/gss_flowworks_owner_walk_2026-10-11.html` (generator `make_sheet.py` beside it) |
 | GSS art at true size (4 rows) | `Transient/biome_ffar/gss_owner_walk_art_sheet_2026-10-11.html` |
 | FlowWorks art at true size (47 rows) | `Transient/biome_ffar/flowworks_owner_walk_art_sheet_2026-10-11.html` |
-| GSS station key | `src/RimMandrake/GimmeSomeSlack/review/KEYSHEET.md` (33 stations) |
+| GSS station key | `src/RimMandrake/GimmeSomeSlack/review/KEYSHEET.md` (count its rows; `human_review.py --plan` prints the live count) |
 | FlowWorks station key | `src/RimMandrake/FlowWorks/northstar/review/map/KEYSHEET.md` (block V + 52 stations) |
 
 ## Before you start

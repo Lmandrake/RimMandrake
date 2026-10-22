@@ -867,7 +867,9 @@ namespace RimMandrake.GimmeSomeSlack
             if (GimmeSomeSlackSettings.enabled)
             {
                 string mk = SwayModeKey();
-                if (swayModeKey != null && mk != swayModeKey && builtFrame != Time.frameCount) StaleOffscreen = true;
+                // GPT deep review 2026-10-22 #8: the key used to be consumed even when a same-frame rebuild suppressed the
+                // flag, so the change was lost; the flag is set unconditionally and the gate below defers it a frame
+                if (swayModeKey != null && mk != swayModeKey) StaleOffscreen = true;
                 swayModeKey = mk;
             }
             if (StaleOffscreen && builtFrame != Time.frameCount && GimmeSomeSlackSettings.enabled)

@@ -137,7 +137,7 @@ the three below.
 | setting | why it has no station |
 |---|---|
 | `gss.maxSparkingEnds` (24) | It only shows once more than 24 live ends are on one map. The matrix covers it. |
-| `aerial.keepWiresOnGravship` | It needs a gravship launch and landing. The live proof covers it. |
+| `aerial.keepWiresOnGravship` | It needs a gravship launch and landing. The live proof checks only the setting round trip (M20d, wiring); the flight itself is owed (a gravship launch rig). |
 | `aerial.kineticSway` | It needs a Kinetic Arms push wave (`KINETIC_BLAST_WEAPONS_1`). Poke it on 6 or 21 if that weapon is loaded. |
 
 `gss.excludedConduits` is a list, so `--set` refuses it. Flip it in the Mod Settings window and watch 24 and 25.
@@ -171,7 +171,7 @@ files on disk at the paths the code reads, so it shrinks as art lands.
 | feature | reason |
 |---|---|
 | Kinetic blasts swing wires instead of cutting them | Needs a Kinetic Arms push wave; see Mod Settings above. |
-| Wires kept strung through a gravship flight | Needs a launch; the live proof covers it. |
+| Wires kept strung through a gravship flight | Needs a launch; owed. The live proof checks only the setting (M20d). |
 | More than 24 sparking ends per map | The matrix covers the budget. |
 | Settings-file key migration (`LegacyName`) | A settings-file rename with nothing to see on a map; `LegacyNameChecks` covers it. |
 | Determinism, motion buckets, cord audit, fuzz, the unroutable census | Offline selftests (`Source/SelfTest`), not a look. |
