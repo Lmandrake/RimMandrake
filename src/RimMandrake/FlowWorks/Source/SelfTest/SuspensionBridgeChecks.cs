@@ -155,7 +155,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 }
                 Assert(!defs.Contains("<label>bridge") && !defs.Contains("span</label>"), "player-facing names never say a bare bridge or span");
                 int noDefault = defs.Split(new[] { "<canGenerateDefaultDesignator>false</canGenerateDefaultDesignator>" }, StringSplitOptions.None).Length - 1;
-                Assert(noDefault == 13, "decks (grated and jetty included), anchors and the railing get no plain per-square button (" + noDefault + ")");
+                Assert(noDefault == 14, "decks (grated and jetty included), anchors, the railing and the tower get no plain per-square button (" + noDefault + ")");
                 string patch = ModFile("Patches", "Pits", "RM_SuspensionBridges.xml");
                 foreach (string n in new[] { "Rope", "Timber", "Steel", "Heavy" })
                 {

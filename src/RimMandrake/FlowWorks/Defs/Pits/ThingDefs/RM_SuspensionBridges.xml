@@ -501,6 +501,7 @@
     <selectable>true</selectable>
     <tickerType>Never</tickerType>
     <designationCategory>Structure</designationCategory>
+    <canGenerateDefaultDesignator>false</canGenerateDefaultDesignator>   <!-- Designator_SuspensionTower: hidden with bridges off (SUSPENSION_BUTTONS_DIAGNOSE_STILL_SHOWING) -->
     <uiOrder>2215</uiOrder>
     <stuffCategories>
       <li>Stony</li>

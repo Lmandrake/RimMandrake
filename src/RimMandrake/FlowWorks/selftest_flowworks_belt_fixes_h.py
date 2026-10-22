@@ -8,6 +8,9 @@ RAILING_MATERIAL_FIX_MADE_OF_NOTHING: RM_SuspensionRailing is madeFromStuff, but
 SETTINGS_SEARCH_FIX_LABELS_NOT_FOUND: Mod Settings search matched a section by title and field names only, so 'Liquid crosses'
   found nothing although the Water engine section draws "Liquid crosses between the pieces of a huge network". The rows' drawn
   labels are recorded per section (RM_SettingsSearchIndex) and a search hits them.
+SUSPENSION_BUTTONS_DIAGNOSE_STILL_SHOWING: with "Suspension bridges can be built" off, every RM_Suspension* build button must
+  hide. MOD half: the tower was vanilla's generated designator (no Visible override) and stayed. HARNESS half: the proof read
+  rimworld/list_architect_designators 'visible' (rules membership, never Designator.Visible); it now reads ProofButtons.
 """
 import os
 import re
@@ -151,10 +154,82 @@ def check_settings_search():
           not gate_hits(old_gate, title, names, labels, "Liquid crosses"))
 
 
+# ── SUSPENSION_BUTTONS_DIAGNOSE_STILL_SHOWING ──────────────────────────────────────────────────────────────────────
+def mod_file(*parts):
+    return open(os.path.join(HERE, *parts), encoding="utf-8").read()
+
+
+def buttons_problems(defs_xml, patch_xml, des_cs):
+    """Every RM_Suspension* def with a designationCategory must be built only through a special designator whose Visible
+    reads suspensionBridgesBuildable (a vanilla generated button ignores the setting)."""
+    probs = []
+    gated = {}
+    for m in re.finditer(r"public (?:abstract )?class (\w+) : (\w+)", des_cs):
+        gated[m.group(1)] = m.group(2)
+    body_of_cls = {}
+    for name in gated:
+        i = des_cs.index("class %s :" % name)
+        j = des_cs.find("\n\tpublic ", i + 1)
+        body_of_cls[name] = des_cs[i:j if j > 0 else len(des_cs)]
+
+    def visible_gated(cls):
+        seen = set()
+        while cls in gated and cls not in seen:
+            seen.add(cls)
+            if "suspensionBridgesBuildable && base.Visible" in body_of_cls[cls]:
+                return True
+            cls = gated[cls]
+        return False
+
+    registered = re.findall(r"<li>RimMandrake\.FlowWorks\.Pits\.(\w+)</li>", patch_xml)
+    placed = {}
+    for cls in registered:
+        m = re.search(r"class %s : \w+\s*\{\s*public %s\(\) : base\(DefDatabase<ThingDef>\.GetNamed\(\"(\w+)\"\)" % (cls, cls), des_cs)
+        if m:
+            placed[m.group(1)] = cls
+    for m in re.finditer(r"<ThingDef[^>]*>(.*?)</ThingDef>", defs_xml, re.S):
+        d = m.group(1)
+        name = re.search(r"<defName>(\w+)</defName>", d)
+        if not name or "<designationCategory>" not in d:
+            continue
+        n = name.group(1)
+        if "<canGenerateDefaultDesignator>false</canGenerateDefaultDesignator>" not in d:
+            probs.append(n + ": vanilla generated button (ignores the setting)")
+        elif n in placed and not visible_gated(placed[n]):
+            probs.append(n + ": special designator %s not gated on the setting" % placed[n])
+    return probs
+
+
+def check_buttons():
+    defs_xml = mod_file("Defs", "Pits", "ThingDefs", "RM_SuspensionBridges.xml")
+    patch_xml = mod_file("Patches", "Pits", "RM_SuspensionBridges.xml")
+    des_cs = read("Pits/Suspension/Designator_SuspensionBridge.cs")
+    p = buttons_problems(defs_xml, patch_xml, des_cs)
+    check("buttons: every suspension button hides with bridges off", not p, "; ".join(p))
+    check("buttons: sanity, the tower is a gated special designator",
+          "Designator_SuspensionTower" in patch_xml and "class Designator_SuspensionTower : Designator_Build" in des_cs)
+    old_defs = defs_xml.replace("    <canGenerateDefaultDesignator>false</canGenerateDefaultDesignator>   <!-- Designator_SuspensionTower", "    <!-- Designator_SuspensionTower")
+    check("buttons: can-fail, a vanilla tower button is caught",
+          old_defs != defs_xml and any("RM_SuspensionTower" in x for x in buttons_problems(old_defs, patch_xml, des_cs)))
+    old_des = des_cs.replace("public override bool Visible => RM_SuspensionSettings.suspensionBridgesBuildable && base.Visible;\n\t}\n\n\t/// <summary>A deck square",
+                             "\n\t}\n\n\t/// <summary>A deck square")
+    check("buttons: can-fail, an ungated tower designator is caught",
+          old_des != des_cs and any("RM_SuspensionTower" in x for x in buttons_problems(defs_xml, patch_xml, old_des)))
+    proofs = read("Pits/Suspension/RM_SuspensionProofs.cs")
+    hook = body_of(proofs, "public static string ProofButtons(")
+    check("buttons: ProofButtons reads Designator.Visible the way the gizmo grid does",
+          "root.Visible && d.Visible" in hook and "ResolvedAllowedDesignators" in hook)
+    live = mod_file("northstar", "suspension_settings_live.py")
+    check("buttons: the live row grades ProofButtons, not the bridge list",
+          'proof("ProofButtons"' in live and '"bridgeListOff": list_off' in live
+          and '"visibleOff": off' not in live)
+
+
 def main():
     print("selftest_flowworks_belt_fixes_h")
     check_railing()
     check_settings_search()
+    check_buttons()
     if FAILS:
         print("FAIL (%d): %s" % (len(FAILS), ", ".join(FAILS)))
         return 1

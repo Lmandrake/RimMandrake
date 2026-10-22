@@ -543,6 +543,18 @@ namespace RimMandrake.FlowWorks.Pits
 		}
 	}
 
+	/// <summary>SUSPENSION_BUTTONS_DIAGNOSE_STILL_SHOWING: the tower's build button. It was vanilla's generated designator, so with
+	/// "Suspension bridges can be built" off (the setting promises "no build buttons") the tower button stayed in the Structure
+	/// tab while every bridge and jetty button hid. Registered as a special designator; the tower def generates no default one.</summary>
+	public class Designator_SuspensionTower : Designator_Build
+	{
+		public Designator_SuspensionTower() : base(DefDatabase<ThingDef>.GetNamed("RM_SuspensionTower"))
+		{
+		}
+
+		public override bool Visible => RM_SuspensionSettings.suspensionBridgesBuildable && base.Visible;
+	}
+
 	/// <summary>A deck square goes over a dug hole at least 0.5 m deep (the designator places them; this guards copy/paste).</summary>
 	public class PlaceWorker_SuspensionOverHole : PlaceWorker
 	{
