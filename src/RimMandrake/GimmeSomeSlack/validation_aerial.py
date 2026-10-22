@@ -548,6 +548,11 @@ def _wire_trial(B, cell, settle=24):
             "start": _pos_of(p0), "end": _pos_of(p1)}
 
 
+def _trial_errors(*trials):
+    """True when any _wire_trial came back as an error dict (spawn or list_pawns failed): it measured nothing."""
+    return any(t.get("error") for t in trials)
+
+
 def _moved(t):
     a, b = t.get("start"), t.get("end")
     if not a or not b or None in a or None in b:
@@ -600,8 +605,11 @@ def flips_block(B, rows, res):
     B.ap("set:fallenWireShock=True")
     B.ticks(250)                    # run 4 (2026-10-12): trial 24 ticks after the flip saw no contact cells -> 0 of 3 shocked
     t_on = _wire_trial(B, tip)
-    V.row(rows, "M20a_fallen_wire_shock_flip", "PASS" if t_on.get("shocked") and t_off.get("shocked") is False else "FAIL", "MOD",
-          {"off": t_off, "on": t_on})
+    if _trial_errors(t_off, t_on):       # a trial that never ran (no pawn spawned / listed) is not "no shock"
+        V.row(rows, "M20a_fallen_wire_shock_flip", "UNMEASURED", "HARNESS", {"off": t_off, "on": t_on})
+    else:
+        V.row(rows, "M20a_fallen_wire_shock_flip", "PASS" if t_on.get("shocked") and t_off.get("shocked") is False else "FAIL", "MOD",
+              {"off": t_off, "on": t_on})
 
     # M20b fallenWireKnockback: 0 -> shocked but not moved; 3 -> shocked and moved (up to 3 fresh pawns: a random direction
     # when the pawn stands on the tip can be blocked by a contact cell, which stops the throw)
@@ -611,9 +619,12 @@ def flips_block(B, rows, res):
     while not (t3[-1].get("shocked") and _moved(t3[-1])) and len(t3) < 3:
         t3.append(_wire_trial(B, tip))
     B.ap("set:fallenWireKnockback=2")
-    V.row(rows, "M20b_fallen_wire_knockback_flip",
-          "PASS" if t0.get("shocked") and not _moved(t0) and any(t.get("shocked") and _moved(t) for t in t3) else "FAIL", "MOD",
-          {"knockback0": t0, "knockback3": t3})
+    if _trial_errors(t0) or (t3 and all(t.get("error") for t in t3)):
+        V.row(rows, "M20b_fallen_wire_knockback_flip", "UNMEASURED", "HARNESS", {"knockback0": t0, "knockback3": t3})
+    else:
+        V.row(rows, "M20b_fallen_wire_knockback_flip",
+              "PASS" if t0.get("shocked") and not _moved(t0) and any(t.get("shocked") and _moved(t) for t in t3) else "FAIL", "MOD",
+              {"knockback0": t0, "knockback3": t3})
 
     # M20c fallenWireIgnites: spilled fuel on the live tip; off -> no fire over 12 sweeps; on -> fire (35% per 250-tick sweep)
     B.ap("set:fallenWireShock=False")                 # no pawn is there, but a shock-free contact map isolates the ignite switch
