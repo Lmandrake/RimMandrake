@@ -444,6 +444,8 @@ def exported_body_equality(paths: list[Path], fc: dict, ref_idx: int) -> dict:
     frames = [np.asarray(Image.open(p).convert("RGBA")) for p in paths]
     if len({f.shape for f in frames}) != 1:
         return {"verdict": "UNMEASURED", "why": "mixed canvas sizes"}
+    if len(frames) < 2:
+        return {"verdict": "UNMEASURED", "why": "%d frame: the master compared with itself proves nothing" % len(frames)}
     ref = frames[ref_idx]
     plate = plate_region(fc, ref.shape[:2])
     amin = np.min([f[..., 3] for f in frames], 0)
@@ -451,6 +453,8 @@ def exported_body_equality(paths: list[Path], fc: dict, ref_idx: int) -> dict:
     # transparent plate pixel) with a wing passing behind it: compositing, not the body (measured 2026-10-21: 277 of
     # 279 first-pass "changes" on the six rebuilt sets were exactly that, on wing edges and rims).
     region = plate & (amin == 255)
+    if not region.any():                                    # nothing solid to compare: IDENTICAL would be vacuous
+        return {"verdict": "UNMEASURED", "why": "no plate pixel is opaque in every frame", "region_px": 0}
     # ...but an ERASED body pixel also drops out of "opaque in every frame". A blob of such pixels (opaque in the
     # master, not in some frame) whose 1 px ring is all solid body is interior, not rim: it counts as changed.
     cand = plate & (ref[..., 3] == 255) & (amin < 255)
