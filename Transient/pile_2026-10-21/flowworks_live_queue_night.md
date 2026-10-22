@@ -25,3 +25,5 @@ Bridge: taken by BENCH (FlowWorks live queue: fallen cord, pit cover, pitfall). 
   Areas: main rows rect (7,94,64,70): ladders, spikes, gates (sluice + grate), shallows, sprinklers; hoses rect (74,94,84,76); bars rect (160,94,62,76): bars_joint/dry/trench/access/bridges/bridge_kinds.
   Failures: hose lay (81,161)->(91,161) refused (no room for lead-out; pipe_beside_hose_6 scene); bars_trench ProofTrenchCover refused x2 (shooter has no ranged verb) - pawns staged, cover numbers not read. Stage-1 overview.png overwritten by stage-2's.
   Camera framed on (7,94,216,77); hour ~10.5, Clear locked, hostiles killed. Game UP, bridge HELD for the owner walk. Player.log: no exceptions storm (harvest --stale-ok: 6 cross-refs + 1 texture path on the 14-mod tier).
+- 03:58Z owner: staged map unusable (no labels). Rebuilding with review_map.py: --plan, then --build --fresh-map --only visuals first.
+- 04:30Z review map visuals block (39/39) built, labels 461 pinned, saved RM_fw_review_20261021; owner finished walk. Gallery not built. Resuming queue.
