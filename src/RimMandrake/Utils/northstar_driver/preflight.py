@@ -136,7 +136,9 @@ def check_dev_god(s, need_dev=True, need_god=False, fix=False):
         if info[key]:
             out.append("%s on" % label)
         elif label == "god" and fix and "rimworld/set_god_mode" in s.tools:
-            s.call("rimworld/set_god_mode", enabled=True)
+            _, serr = _safe(s.call, "rimworld/set_god_mode", enabled=True)
+            if serr:
+                return Check("dev_god_mode", UNMEASURED, "set_god_mode raised: %s" % serr)
             again, _ = _safe(s.call, "rimworld/get_game_info")
             if (again or {}).get(key):
                 out.append("god on (set + re-read)")
