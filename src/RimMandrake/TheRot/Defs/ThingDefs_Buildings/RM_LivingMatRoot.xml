@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ROT_WARM_MAT_BUILD_WORKS_FOR_FOOD. The Rot's warm mat, portable: a root of living mat that works anywhere, gravship
+  included (owner ruling 2026-10-22, card write-in). Spec: design/RimMandrake/rot_warm_mat_portable_2026-10-22.md.
+  Mechanism: Source/RM_LivingMatRoot.cs. No designator and no cost: it is a reward, never built. How it is won is
+  owner open question 1 (spec); until then dev spawn only.
+  Art: REUSES the mat's own terrain texture (RotSporeKit/Terrains/MycelialMatting) drawn 1x1 - a square of the mat.
+  A dedicated sprite is a cosmetic change and waits on the owner (spec open question 4).
+  Numbers marked PROVISIONAL are first-guess tuning (FOUNDRY provisional-numbers rule, 2026-10-03).
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_LivingMatRoot</defName>
+    <label>living mat root</label>
+    <description>A knot of the Rot's living mat, cut with its root-heart still beating. Set down anywhere - on a gravship's deck as well as on the ground - and fed raw food, it creeps out across the bare floor around it, and a room mostly floored in its mat stays warmer than the cold outside, though never above 21 °C. It will not grow past a few strides from the root, and it never climbs onto a floor someone built. Starved, it goes cold at once, and after a couple of days the mat it grew dies back to bare ground. In the Rot it needs nothing: it joins the living ground's network and the ground feeds it.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Terrains/MycelialMatting</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+    <size>(1,1)</size>
+    <rotatable>false</rotatable>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <passability>Standable</passability>
+    <pathCost>4</pathCost>
+    <fillPercent>0.05</fillPercent>
+    <canOverlapZones>true</canOverlapZones>
+    <tickerType>Rare</tickerType>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories>
+      <li>BuildingsMisc</li>
+    </thingCategories>
+    <statBases>
+      <MaxHitPoints>120</MaxHitPoints>
+      <Mass>8</Mass>
+      <Flammability>0.5</Flammability>
+      <Beauty>-2</Beauty>
+      <MarketValue>1200</MarketValue>  <!-- PROVISIONAL -->
+      <WorkToBuild>400</WorkToBuild>  <!-- reinstall work only; it is never built -->
+    </statBases>
+    <building>
+      <isEdifice>false</isEdifice>
+    </building>
+    <comps>
+      <li Class="CompProperties_Refuelable">
+        <fuelLabel>Food</fuelLabel>
+        <fuelGizmoLabel>Food</fuelGizmoLabel>
+        <outOfFuelMessage>Starving: needs raw food</outOfFuelMessage>
+        <fuelFilter>
+          <categories>
+            <li>FoodRaw</li>
+          </categories>
+        </fuelFilter>
+        <fuelCapacity>30</fuelCapacity>  <!-- PROVISIONAL: 10 days of upkeep -->
+        <initialFuelPercent>0.5</initialFuelPercent>
+        <autoRefuelPercent>0.5</autoRefuelPercent>
+        <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
+        <showFuelGizmo>true</showFuelGizmo>
+        <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+        <drawOutOfFuelOverlay>true</drawOutOfFuelOverlay>
+      </li>
+      <li Class="RimMandrake.TheRot.CompProperties_RM_LivingMatRoot">
+        <matTerrain>RM_MycelialMatting</matTerrain>
+        <!-- The same four the Rot's RM_WarmGroundExtension counts as mat (Defs/BiomeDefs/RM_TheRot_Biome.xml). -->
+        <warmTerrains>
+          <li>RM_TheRotGrass</li>
+          <li>RM_TheRotSoilRich</li>
+          <li>RM_MycelialSoil</li>
+          <li>RM_MycelialMatting</li>
+        </warmTerrains>
+        <requiredFloorFraction>0.6</requiredFloorFraction>
+        <maxRoomTemperature>21</maxRoomTemperature>  <!-- the 2026-09-17 ruled cap; never a setting -->
+        <spreadRadius>6</spreadRadius>  <!-- PROVISIONAL -->
+        <upkeepPerDay>3</upkeepPerDay>  <!-- PROVISIONAL -->
+        <spreadCost>1</spreadCost>  <!-- PROVISIONAL -->
+        <spreadIntervalTicks>2500</spreadIntervalTicks>  <!-- PROVISIONAL: one cell per game hour -->
+        <spreadMinFuelPercent>0.5</spreadMinFuelPercent>  <!-- PROVISIONAL -->
+        <starveGraceTicks>120000</starveGraceTicks>  <!-- PROVISIONAL: two days -->
+        <dieBackIntervalTicks>5000</dieBackIntervalTicks>  <!-- PROVISIONAL: one cell per two hours -->
+      </li>
+    </comps>
+    <tradeability>None</tradeability>
+    <genericMarketSellable>false</genericMarketSellable>
+  </ThingDef>
+
+</Defs>

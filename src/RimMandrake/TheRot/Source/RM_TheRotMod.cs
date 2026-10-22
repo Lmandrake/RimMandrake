@@ -26,6 +26,8 @@ namespace RimMandrake.TheRot
     //   sporeCloudIncidentWeight  sporeCloud: 0 = never fires, otherwise scales the incident's chance
     //   sporeAllergy(+Incidence)  sporeAllergy: the RM_Disease_SporeAllergy pair, on/off and chance factor
     //   guardianGroves, paleTreeSpawn, ambrosyxSpawn: the wild-spawn rows leave RM_TheRot's wildPlants at startup (restart)
+    //   portableWarmMat*: RM_LivingMatRoot.cs reads them directly on EVERY map (owner-ordered cross-biome exception,
+    //                  ROT_WARM_MAT_BUILD_WORKS_FOR_FOOD); not routed through RM_KitFronts
     //   crossBiome*: opt-in donor (RM_TheRot's extensions) for non-Rot maps; Coverage scales their intensity
     //   healthSharing: the wound-link / kin-mending comps on the five RM_ bodies (chittik, gromma, rennok natively;
     //                  durrok, mullgoth by Patches/RotSpecies_WoundSharing.xml) are removed again
@@ -79,6 +81,12 @@ namespace RimMandrake.TheRot
         public static bool unjoiningDraught = true;
         public static bool unjoiningOrganDamage = true;
         public static float unjoiningPurgeHours = 24f;
+        // ROT_WARM_MAT_BUILD_WORKS_FOR_FOOD (Ship section 2: the portable warm mat, RM_LivingMatRoot.cs)
+        public static bool portableWarmMat = true;
+        public static float portableWarmMatWarmth = 1f;
+        public static float portableWarmMatAppetite = 1f;
+        public static bool portableWarmMatSpread = true;
+        public static bool portableWarmMatDieBack = true;
 
         public static bool crossBiomeEnabled = false;
         public static bool crossBiomeEverywhere = false;
@@ -131,6 +139,11 @@ namespace RimMandrake.TheRot
             Scribe_Values.Look(ref unjoiningDraught, "unjoiningDraught", true);
             Scribe_Values.Look(ref unjoiningOrganDamage, "unjoiningOrganDamage", true);
             Scribe_Values.Look(ref unjoiningPurgeHours, "unjoiningPurgeHours", 24f);
+            Scribe_Values.Look(ref portableWarmMat, "portableWarmMat", true);
+            Scribe_Values.Look(ref portableWarmMatWarmth, "portableWarmMatWarmth", 1f);
+            Scribe_Values.Look(ref portableWarmMatAppetite, "portableWarmMatAppetite", 1f);
+            Scribe_Values.Look(ref portableWarmMatSpread, "portableWarmMatSpread", true);
+            Scribe_Values.Look(ref portableWarmMatDieBack, "portableWarmMatDieBack", true);
             Scribe_Values.Look(ref crossBiomeEnabled, "crossBiomeEnabled", false);
             Scribe_Values.Look(ref crossBiomeEverywhere, "crossBiomeEverywhere", false);
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
@@ -332,6 +345,23 @@ namespace RimMandrake.TheRot
                 navigatorRuinThreshold = list.Slider(navigatorRuinThreshold, 0f, 90f);
                 list.Label("  Pings per entry of the dead ship's log: " + navigatorPingsPerEntry);
                 navigatorPingsPerEntry = Mathf.RoundToInt(list.Slider(navigatorPingsPerEntry, 1f, 12f));
+                list.GapLine();
+            }
+
+            if (Group(list, "Ship: the portable warm mat", RimMandrake.Shared.SettingScope.Now, new[] { "portableWarmMat", "portableWarmMatWarmth", "portableWarmMatAppetite", "portableWarmMatSpread", "portableWarmMatDieBack" }))
+            {
+                list.CheckboxLabeled("Living mat root works anywhere", ref portableWarmMat,
+                    "A root of the Rot's living mat, installable anywhere (gravship included). Fed raw food, it grows mat "
+                  + "floor around it, and a room mostly floored in its mat warms like a Rot mat room (never above 21 C). "
+                  + "In the Rot it eats nothing. Supported off the Rot by owner order. Off: the root is inert furniture.");
+                list.Label("  Warmth off the Rot: " + portableWarmMatWarmth.ToString("0.00") + "x");
+                portableWarmMatWarmth = list.Slider(portableWarmMatWarmth, 0.25f, 3f);
+                list.Label("  Appetite (upkeep and growth cost): " + portableWarmMatAppetite.ToString("0.00") + "x  [PROVISIONAL tuning]");
+                portableWarmMatAppetite = list.Slider(portableWarmMatAppetite, 0.25f, 3f);
+                list.CheckboxLabeled("  Fed root spreads mat", ref portableWarmMatSpread,
+                    "Off: the root keeps the mat it has and never grows more.");
+                list.CheckboxLabeled("  Starved root's mat dies back", ref portableWarmMatDieBack,
+                    "Off: a starving root still stops heating, but the mat it grew never dies back.");
                 list.GapLine();
             }
 

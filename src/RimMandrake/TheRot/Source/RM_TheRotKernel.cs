@@ -1,4 +1,4 @@
-// TheRot pure kernel: the hwelgrue's gut and swallow timers, the gut-mother vat's digest clock, the swallowed drive core (who carries it,
+// TheRot pure kernel: the living mat root's clocks and heat step, the hwelgrue's gut and swallow timers, the gut-mother vat's digest clock, the swallowed drive core (who carries it,
 // when it pings, how it breaks), the navigator's log, the unjoining draught's sorting, and the biome score. Each used to be an inline
 // expression in a comp, a world component or a recipe tangled with Verse/Unity calls; they live here so an offline fuzz (Source/TheRotFuzz)
 // can drive the SAME code the game runs. NO `using Verse;` / `using UnityEngine;` may ever land in this file: the fuzz project compiles it on
@@ -278,6 +278,90 @@ namespace RimMandrake.TheRot
             if (impassable) return 0f;
             float divisor = (r.rainfallDivisor > 0.0001f) ? r.rainfallDivisor : 1f;
             return r.baseScore + (r.tempMax - temperature) * r.degreeWeight + (r.rainMax - rainfall) / divisor;
+        }
+
+        // ================================================================= the living mat root (ROT_WARM_MAT_BUILD_WORKS_FOR_FOOD)
+
+        public struct MatRootState
+        {
+            public int starvingTicks, spreadTimer, dieBackTimer;
+        }
+
+        /// <summary>What one sweep decided. <c>eat</c> is the upkeep taken this sweep (a spread's cost is charged by the caller
+        /// only when a cell was actually laid).</summary>
+        public struct MatRootSweep
+        {
+            public bool fed, spread, dieBack;
+            public float eat;
+        }
+
+        /// <summary>
+        /// One sweep of the root's clocks. Off the Rot it eats upkeep x appetite per day (never more than it holds) and is fed while any
+        /// food is left; in the Rot it eats nothing and is always fed (the shared-lore exemption). Fed and at least spreadMinFuelPercent
+        /// full (always, in the Rot), it spreads once per spreadInterval. Unfed past starveGrace, its grown mat dies back once per
+        /// dieBackInterval. Feeding resets the starvation and die-back clocks. hurry treats every timer as elapsed (proof calls only).
+        /// </summary>
+        public static MatRootSweep MatRootStep(ref MatRootState s, int sweep, bool hurry, bool inRot, float fuel, float fuelMax,
+            float upkeepPerDay, float appetite, float spreadMinFuelPercent, int spreadInterval, int starveGrace, int dieBackInterval,
+            bool spreadOn, bool dieBackOn)
+        {
+            var o = new MatRootSweep();
+            if (fuel < 0f) fuel = 0f;
+            if (!inRot && fuel > 0f)
+            {
+                float want = Math.Max(0f, upkeepPerDay) * Math.Max(0f, appetite) * sweep / TicksPerDay;
+                o.eat = Math.Min(fuel, want);
+            }
+            float left = fuel - o.eat;
+            o.fed = inRot || left > 0f;
+            if (o.fed)
+            {
+                s.starvingTicks = 0;
+                s.dieBackTimer = 0;
+            }
+            else
+            {
+                s.starvingTicks += sweep;
+            }
+
+            s.spreadTimer += sweep;
+            bool fullEnough = inRot || (fuelMax > 0f && left / fuelMax >= spreadMinFuelPercent);
+            if (o.fed && fullEnough && spreadOn && (hurry || s.spreadTimer >= spreadInterval))
+            {
+                s.spreadTimer = 0;
+                o.spread = true;
+            }
+
+            if (!o.fed && dieBackOn && (hurry || s.starvingTicks >= starveGrace))
+            {
+                s.dieBackTimer += sweep;
+                if (hurry || s.dieBackTimer >= dieBackInterval)
+                {
+                    s.dieBackTimer = 0;
+                    o.dieBack = true;
+                }
+            }
+            return o;
+        }
+
+        /// <summary>A room heats when at least ceil(cells x fraction) (never under 1) of its cells are mat.</summary>
+        public static bool MatRoomQualifies(int matCells, int cells, float fraction)
+        {
+            if (cells <= 0) return false;
+            int needed = Math.Max(1, (int)Math.Ceiling(cells * fraction));
+            return matCells >= needed;
+        }
+
+        /// <summary>Where the mat aims a room: outdoor + offset, never above the ruled cap (21 C).</summary>
+        public static float MatTarget(float outdoor, float offset, float cap) { return Math.Min(outdoor + offset, cap); }
+
+        /// <summary>Degrees the mat adds to a room this sweep: toward the target, at most offset/divisor, 0 when at or above it.</summary>
+        public static float MatHeatStep(float outdoor, float current, float offset, float cap, float divisor)
+        {
+            if (offset <= 0f || divisor <= 0f) return 0f;
+            float target = MatTarget(outdoor, offset, cap);
+            if (current >= target) return 0f;
+            return Math.Min(target - current, offset / divisor);
         }
     }
 }

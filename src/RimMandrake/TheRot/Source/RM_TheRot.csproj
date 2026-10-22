@@ -54,6 +54,7 @@
     <Compile Include="RM_Unjoining.cs" />
     <Compile Include="RM_TheRotKernel.cs" />
     <Compile Include="RM_HediffComp_SpawnOnDeath.cs" />
+    <Compile Include="RM_LivingMatRoot.cs" />
   </ItemGroup>
 
   <ItemGroup>

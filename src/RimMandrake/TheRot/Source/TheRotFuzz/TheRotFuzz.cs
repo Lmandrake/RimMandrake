@@ -5,6 +5,7 @@
 //   core    - the world's one swallowed drive core: who carries it, the ping clock, integrity
 //   log     - the navigator's log cadence and its cut
 //   unjoin  - the unjoining draught's sorting
+//   mat     - the living mat root: food, spread and die-back clocks, the Rot exemption, the heat step and its 21 C cap
 //   units   - tables, boundaries, the biome score
 // The model (reference counters, double-precision oracles) is this file's own; every number under test comes from the production kernel.
 // A failing sequence is shrunk by delta debugging and printed as `family seed N: message | actions`, so it replays exactly.
@@ -612,6 +613,80 @@ namespace RimMandrake.TheRot.Fuzz
             return fails;
         }
 
+        // ===================================================================== mat: the living mat root
+
+        private sealed class MatWorld
+        {
+            public RM_TheRotKernel.MatRootState s;
+            public float fuel = 15f, fuelMax = 30f, appetite = 1f;
+            public bool inRot, spreadOn = true, dieBackOn = true;
+            public int sinceSpread, sinceFed;     // reference counters, in ticks
+            public int sinceDieBack = -1;         // ticks since the last die-back (-1: none since the last feeding)
+            public const int Sweep = 250, Interval = 2500, Grace = 120000, DieBack = 5000;
+            public const float Upkeep = 3f, MinPct = 0.5f;
+        }
+
+        private static void MatStep(MatWorld w, Act a)
+        {
+            switch (a.kind)
+            {
+                case 0: // a sweep (hurried one time in twenty)
+                {
+                    bool hurry = a.c % 20 == 0;
+                    float before = w.fuel;
+                    var d = RM_TheRotKernel.MatRootStep(ref w.s, MatWorld.Sweep, hurry, w.inRot, w.fuel, w.fuelMax, MatWorld.Upkeep, w.appetite,
+                        MatWorld.MinPct, MatWorld.Interval, MatWorld.Grace, MatWorld.DieBack, w.spreadOn, w.dieBackOn);
+                    Check(d.eat >= 0f && d.eat <= before + Eps, "ate " + F(d.eat) + " holding " + F(before));
+                    if (w.inRot) { Check(d.eat == 0f && d.fed, "the Rot root ate or went hungry (shared-lore exemption)"); Hit("mat.rotFree"); }
+                    else
+                    {
+                        double want = Math.Min(before, MatWorld.Upkeep * w.appetite * MatWorld.Sweep / 60000.0);
+                        Check(Math.Abs(d.eat - want) < 1e-5, "upkeep " + F(d.eat) + " != " + F(want));
+                        Check(d.fed == (before - d.eat > 0f), "fed=" + d.fed + " with " + F(before - d.eat) + " left");
+                    }
+                    w.fuel = Math.Max(0f, before - d.eat);
+                    Check(!(d.spread && d.dieBack), "spread and died back in one sweep");
+                    if (d.spread)
+                    {
+                        Check(d.fed && w.spreadOn, "spread while unfed or switched off");
+                        Check(w.inRot || w.fuel / w.fuelMax >= MatWorld.MinPct - Eps, "spread under half full: " + F(w.fuel));
+                        Check(hurry || w.sinceSpread + MatWorld.Sweep >= MatWorld.Interval, "spread early: " + (w.sinceSpread + MatWorld.Sweep));
+                        w.sinceSpread = 0; Hit("mat.spread");
+                    }
+                    else w.sinceSpread += MatWorld.Sweep;
+                    if (d.fed) { w.sinceFed = 0; w.sinceDieBack = -1; Check(w.s.starvingTicks == 0, "a fed root kept a starvation clock"); }
+                    else { w.sinceFed += MatWorld.Sweep; Check(w.s.starvingTicks == w.sinceFed, "starvation clock " + w.s.starvingTicks + " != " + w.sinceFed); Hit("mat.starving"); }
+                    if (d.dieBack)
+                    {
+                        Check(!d.fed && w.dieBackOn, "died back while fed or switched off");
+                        Check(hurry || w.sinceFed >= MatWorld.Grace, "died back inside the grace: " + w.sinceFed);
+                        Check(hurry || w.sinceDieBack < 0 || w.sinceDieBack + MatWorld.Sweep >= MatWorld.DieBack, "died back too fast: " + w.sinceDieBack);
+                        w.sinceDieBack = 0; Hit("mat.dieBack");
+                    }
+                    else if (w.sinceDieBack >= 0) w.sinceDieBack += MatWorld.Sweep;
+                    if (w.fuel <= 0f && !w.inRot) Check(!d.fed, "fed with an empty gauge off the Rot");
+                    break;
+                }
+                case 1: w.fuel = Math.Min(w.fuelMax, w.fuel + a.a % 31); break;                 // a hauler tops it up
+                case 2: w.inRot = !w.inRot; break;                                               // flown into / out of the Rot
+                case 3: w.spreadOn = a.a % 3 != 0; w.dieBackOn = a.b % 3 != 0; break;            // settings
+                case 4: w.appetite = new[] { 0f, 0.25f, 1f, 3f, 50f }[a.a % 5]; break;
+                case 5: // the heat step for a random room
+                {
+                    float outdoor = -60f + a.a % 100, current = -60f + a.b % 100, offset = new[] { 0f, 4.5f, 18f, 54f }[a.c % 4];
+                    float step = RM_TheRotKernel.MatHeatStep(outdoor, current, offset, 21f, 36f);
+                    float target = RM_TheRotKernel.MatTarget(outdoor, offset, 21f);
+                    Check(step >= 0f, "negative heat step");
+                    Check(step <= offset / 36f + Eps, "step " + F(step) + " over the ramp " + F(offset / 36f));
+                    Check(current + step <= Math.Max(current, target) + Eps, "pushed past the target");
+                    Check(current + step <= Math.Max(current, 21f) + Eps, "pushed a room past the 21 C cap");
+                    Check(target <= 21f, "target above the cap");
+                    if (step > 0f) Hit("mat.heat");
+                    break;
+                }
+            }
+        }
+
         // ===================================================================== driver
 
         public static bool Run(double scale, int? oneSeed, string only)
@@ -628,6 +703,7 @@ namespace RimMandrake.TheRot.Fuzz
                 ("core", () => RunFamily("core", N(3000), S(1), 30011, new[] { "Spawn", "Claim", "Die", "Tame", "Engine", "Pings", "ShipHit", "CampaignTile", "Drop", "SpendNoCarrier" }, new[] { 6, 8, 2, 1, 2, 6, 3, 1, 2, 1 }, 100, seed => new CoreWorld(), CoreStep, 200, 100, 100)),
                 ("log", () => RunFamily("log", N(3000), S(1), 15485863, new[] { "Ping", "CarrierDies", "PerEntry" }, new[] { 20, 1, 1 }, 80, seed => new LogWorld(), LogStep, 10, 10, 10)),
                 ("unjoin", () => RunFamily("unjoin", N(2000), S(1), 32452843, new[] { "Sort" }, new[] { 1 }, 20, seed => (object)null, UnjoinStep, 16, 10, 10)),
+                ("mat", () => RunFamily("mat", N(3000), S(1), 49979687, new[] { "Sweep", "Feed", "Rot", "Settings", "Appetite", "Heat" }, new[] { 40, 3, 1, 1, 1, 4 }, 900, seed => new MatWorld(), MatStep, 100, 100, 100)),
                 ("units", () => Units(N(1000), S(1))),
             };
             foreach (var f in fam)
@@ -644,7 +720,7 @@ namespace RimMandrake.TheRot.Fuzz
             if (only == null && !oneSeed.HasValue && scale >= 1)
             {
                 string[] mustSee = { "gut.casting", "gut.overCap", "swallow.begin", "swallow.finish", "swallow.knock", "swallow.release", "swallow.stranger", "vat.accepted", "vat.finished", "vat.dormant", "vat.split",
-                    "core.claimed", "core.carrierDied", "core.ping", "core.engineAppeared", "log.entry", "log.site", "log.cutLetter", "unjoin.removed", "unjoin.husk" };
+                    "core.claimed", "core.carrierDied", "core.ping", "core.engineAppeared", "log.entry", "log.site", "log.cutLetter", "unjoin.removed", "unjoin.husk", "mat.spread", "mat.starving", "mat.dieBack", "mat.rotFree", "mat.heat" };
                 var missing = mustSee.Where(k => !Stats.ContainsKey(k)).ToList();
                 Console.WriteLine("coverage: " + string.Join(" ", mustSee.Select(k => k + "=" + (Stats.TryGetValue(k, out long v) ? v : 0))));
                 if (missing.Count > 0) { Console.WriteLine("FAIL the fuzz never reached: " + string.Join(", ", missing)); ok = false; }

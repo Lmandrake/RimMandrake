@@ -23,6 +23,12 @@ namespace RimMandrake.EnvironmentalHazards
     // reaches a comfortable 20 °C room in real cold) and the ramp cap below,
     // which is what actually decides the equilibrium of a leaky room.
     //
+    // NARROWED 2026-10-22 (Rot Q2, card write-in: "Needs food. ... Rot
+    // doesn't require feeding due to sharing lore."): "free forever" now
+    // holds INSIDE the Rot only, which is all this component runs on.
+    // Off the Rot the mat travels as RimMandrake.TheRot's RM_LivingMatRoot,
+    // which needs food and reuses this file's target, cap and ramp.
+    //
     // No Scribe state: everything is re-derived from live terrain and live
     // room membership every sweep, same reasoning RM_MapComponent_
     // LivingProduce gives — a load re-establishes it within one interval.

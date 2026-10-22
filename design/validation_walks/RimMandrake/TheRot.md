@@ -27,6 +27,10 @@ Sources: `src/RimMandrake/TheRot/About/About.xml`, `Defs/**`, `Source/RM_TheRotM
 - The swallowed navigator's log reads one entry per 4 pings and reveals a salvage site at the second; pings after the carrier dies move nothing; a gravship landing beside a carrier pings at once. → navigator_log.entry_every_n_pings, navigator_log.carrier_death_cuts_log, navigator_log.landing_pings_at_once (UNMEASURED: needs a gravship landing)
 - The Unjoining Draught purges parasites and symbionts (one husk per symbiont, one scar, the purge), gives a clean patient only the purge, and forces a metalhorror implant out. → unjoining.purges_parasites_and_symbionts, unjoining.clean_patient_only_purges, unjoining.forces_metalhorror_out
 - The five Rot network bodies share wounds (chittik, gromma, rennok) or mend among kin (mullgoth, durrok), one RotNetwork tag across species; Health sharing off strips the comps from exactly those five. → UNCOVERED: no live chain yet (static wiring is `validation.py` static_checks, red 2026-10-22 when the donor retirement had dropped chittik/durrok/mullgoth); first poke: spawn two RM_Agaripod, damage one, read the other's health.
+- The living mat root (ROT_WARM_MAT_BUILD_WORKS_FOR_FOOD), off the Rot: fed, it spreads mat floor one cell at a time over bare ground in its own room; a sealed room >= 60% mat warms toward min(outdoor + 18, 21 C) and never past 21 C; it eats food each sweep. → living_mat_root.fed_root_spreads_and_eats, living_mat_root.mat_room_warms_to_cap
+- Starved, it stops heating and the mat it grew dies back to the ground beneath. → living_mat_root.starved_root_dies_back
+- On an `RM_TheRot` map it eats nothing and still spreads (shared-lore exemption). → UNCOVERED: needs an RM_TheRot map; first poke: ProofStage then ProofSweeps "5|fed" on a Rot map, food must not move.
+- It travels on a gravship with its mat floor. → UNCOVERED: needs a gravship launch and landing; first poke: minify, install on substructure, fly, read ProofSweeps "0|fed" on arrival.
 
 ## the walk
 1. [D] `jawa/get_defs` over every def derived from `Defs/**/*.xml`   # defs_resolve

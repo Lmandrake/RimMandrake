@@ -5,7 +5,7 @@ Seeded action sequences over the production kernel (the hwelgrue's gut clock and
 clock, the world's one swallowed drive core, the navigator's log, the unjoining draught's sorting, the biome score), with design invariants
 checked after every step. Same wrapper shape as selftest_miasma_fuzz.py.
 
-    python3 src/RimMandrake/Utils/selftest_therot_fuzz.py [--fuzz-scale F] [--fuzz-seed N] [--fuzz-only gut|swallow|vat|core|log|unjoin|units]
+    python3 src/RimMandrake/Utils/selftest_therot_fuzz.py [--fuzz-scale F] [--fuzz-seed N] [--fuzz-only gut|swallow|vat|core|log|unjoin|mat|units]
 
 A failing case is shrunk and printed as `family seed N: message | actions`; --fuzz-seed N replays it.
 """
