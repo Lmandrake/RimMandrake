@@ -277,7 +277,7 @@ MODS = {
         "Emergent spawn": "Now",
         "Guaranteed nest (WORLDGEN-AFFECTING)": "NewMapsOnly",
         "Egg economy": "Now",
-        "Creeping front and thrixweave (restart)": "NextGameStart",
+        "Thrixweave (restart)": "NextGameStart",
         "Urraveth remains: new maps (WORLDGEN-AFFECTING)": "NewMapsOnly",
         "The dead giant (urraveth remains)": "Now",
         "Web network on new maps (WORLDGEN-AFFECTING)": "NewMapsOnly",

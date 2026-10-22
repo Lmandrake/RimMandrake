@@ -441,4 +441,18 @@ namespace RimMandrake.Webwork
             return (dx, dz);
         }
     }
+
+    /// <summary>WEBWORK_RESELL (owner, Webwork Q8, 2026-10-22): the rare-trader resale of thrixweave.</summary>
+    public static class RM_ThrixweaveResaleKernel
+    {
+        public const float DefaultChance = 0.25f;
+        /// <summary>A trader stocks thrixweave only while the sole-source strip is on (off: vanilla stocking already
+        /// sells it), the resale is on, the chance is positive and the roll lands under it.</summary>
+        public static bool Stocks(bool stripOn, bool resaleOn, float chance, double roll)
+        {
+            return stripOn && resaleOn && chance > 0f && roll < chance;
+        }
+        /// <summary>Units generated: the count rolled by the generator, clamped to [0, stackLimit].</summary>
+        public static int Count(int rolled, int stackLimit) { return Math.Max(0, Math.Min(rolled, stackLimit)); }
+    }
 }
