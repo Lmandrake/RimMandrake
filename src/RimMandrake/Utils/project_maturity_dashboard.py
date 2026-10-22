@@ -1161,7 +1161,11 @@ def main(argv=None):
     print("json -> %s" % json_path)
 
     if os.path.abspath(args.out_dir) == os.path.abspath(DEFAULT_OUT_DIR):
-        refresh_hub_tab()
+        if ledger_ok:
+            refresh_hub_tab()
+        else:
+            print("WARN: hub tab NOT regenerated - this run read no ledger, and its empty registry "
+                  "would overwrite the hub's last real maturity.json.", file=sys.stderr)
 
     if not args.json_only:
         html_path = os.path.join(args.out_dir, "project_maturity_dashboard.html")
