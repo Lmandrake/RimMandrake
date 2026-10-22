@@ -922,7 +922,7 @@ namespace RimMandrake.FlowWorks
             searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
             RimMandrake.Shared.SettingsKitMastersDrawer.ResetAllButton(list, "Flow Works excavation, flow and pit", ResetAllFields);
 
-            if (Section(list, "Excavation and flow", new[] { "depthEngineEnabled", "digToDepthEnabled", "maxDigDepth", "machineDigEnabled", "maxMachineDigDepth", "digCostRisesWithDepth", "pulseIntervalTicks", "flowPerPulse", "maxNetworkCells", "networkSeamsMoveEnabled", "mouseoverDepthEnabled" }))
+            if (Section(list, "Digging", new[] { "mouseoverDepthEnabled", "digToDepthEnabled", "maxDigDepth", "machineDigEnabled", "maxMachineDigDepth", "digCostRisesWithDepth" }))
             {
 
             list.CheckboxLabeled("Show liquid depth and litres under the mouse", ref mouseoverDepthEnabled,
@@ -931,12 +931,6 @@ namespace RimMandrake.FlowWorks
               + "channels and pits show their depth and the water in them; ponds and lakes show their floor and the water standing "
               + "over it; seas and rivers at the map edge say they never run dry. Off: "
               + "vanilla's line only.");
-
-            list.CheckboxLabeled("Depth engine", ref depthEngineEnabled,
-                "The depth/fill engine: liquid pours into the deepest excavated cells first "
-              + "and overflows from a full cell into any neighbour with room. Off: nothing "
-              + "pours and a dug channel is inert earthworks. Digging still works, and a "
-              + "channel still costs what it costs to cross.");
 
             list.CheckboxLabeled("Dig deeper", ref digToDepthEnabled,
                 "Digging a channel that is already dug cuts it another half-metre further down, to the deepest dig set "
@@ -971,6 +965,63 @@ namespace RimMandrake.FlowWorks
                   + "(12,800), so the same square is about "
                   + RM_DigDepthMath.DiggerDays(RM_DigDepthMath.WorkToDig(0, 16, false)).ToString("0.#") + " digger-days. "
                   + "Rock ground multiplies either.");
+            }
+
+            list.GapLine();
+            if (Section(list, "Finds while digging", new[] { "digFindsEnabled", "digFindsLocalOnly", "digFindChanceMultiplier", "digFindBudgetPercent", "digFindLetterEnabled", "digRockGroundEnabled", "digRockWorkMultiplier", "digRockChunksEnabled", "digRockChunkMultiplier", "digSoilChunkPercent" }))
+            {
+            list.CheckboxLabeled("Digging a canal can turn up minerals", ref digFindsEnabled,
+                "Each time a cell is cut a level deeper there is a small chance of a lump of something the land holds, "
+              + "thrown up onto the bank. Deep and superdeep cuts can reach what a deep drill would find under that cell. "
+              + "Where the land holds nothing, you get chunks of the local rock. Filling a cell in and digging it again "
+              + "pays nothing twice. Off: digging only digs.");
+            using (Dependent(list, "digFindsLocalOnly", "digFindChanceMultiplier", "digFindBudgetPercent", "digFindLetterEnabled"))
+            {
+                list.CheckboxLabeled("Finds come only from this map's own rock", ref digFindsLocalOnly,
+                    "On: a find is one of the ores actually in this map's rock (or under the cell, for a deep cut). "
+                  + "Off: any ore the game knows can turn up. Components and plasteel never come out of a hole either way.");
+                list.Label("Find chance: x" + digFindChanceMultiplier.ToString("F2") + "  (1x = 1.5% per cut; first-guess number)");
+                digFindChanceMultiplier = list.Slider(digFindChanceMultiplier, 0f, 10f);
+                list.Label("Loose-find ceiling: " + digFindBudgetPercent.ToString("F1") + "% of the ore in this map's rock");
+                digFindBudgetPercent = list.Slider(digFindBudgetPercent, 0f, 50f);
+                list.Label("Once a map's share is dug out, cuts only turn up rock. Set when the map first finds something.");
+                list.CheckboxLabeled("A letter on the first find of each material", ref digFindLetterEnabled,
+                    "The first time a material turns up on a map you get a letter saying the land holds it; later finds "
+                  + "are a short message. Off: messages only.");
+            }
+
+            list.CheckboxLabeled("Canals can be dug through rock ground", ref digRockGroundEnabled,
+                "On: bare stone floor (rough, rough-hewn or smoothed natural rock) can be marked to dig, and is much slower work "
+              + "than soft ground. Off: only soil can be dug, as before.");
+            using (Dependent(list, "digRockWorkMultiplier"))
+            {
+                list.Label("Rock digging takes x" + digRockWorkMultiplier.ToString("F1") + " the work of soft ground  (a rock wall mines in ~700 ticks; a soil cut is 3200)");
+                digRockWorkMultiplier = list.Slider(digRockWorkMultiplier, 1f, 10f);
+            }
+            list.CheckboxLabeled("Digging can turn up rock chunks", ref digRockChunksEnabled,
+                "Each cut a level deeper through rock ground has the same chance of a chunk of that rock as mining a standing rock wall "
+              + "(25% in the base game). Through anything else (soil, sand, gravel) a chunk is very rare. Shares the guard of mineral finds: "
+              + "filling in and re-digging pays nothing twice.");
+            using (Dependent(list, "digRockChunkMultiplier", "digSoilChunkPercent"))
+            {
+                list.Label("Rock chunk chance in rock: x" + digRockChunkMultiplier.ToString("F2") + " of the wall-mining rate");
+                digRockChunkMultiplier = list.Slider(digRockChunkMultiplier, 0f, 4f);
+                list.Label("Rock chunk chance in non-rock ground: " + digSoilChunkPercent.ToString("F1") + "% per cut");
+                digSoilChunkPercent = list.Slider(digSoilChunkPercent, 0f, 5f);
+            }
+
+            // ── CRACKEDLANDS_MECHANICS_BUILD_1 §1 — the swale ─────────────
+            }
+
+            list.GapLine();
+            if (Section(list, "Water engine: flow and levelling", new[] { "depthEngineEnabled", "pulseIntervalTicks", "flowPerPulse", "maxNetworkCells", "networkSeamsMoveEnabled", "viscosityEnabled", "thickCreepEnabled", "waterFrontCreepEnabled", "levelBySurfaceEnabled", "levelExactEnabled", "levelSetEnabled", "disabledFluids" }))
+            {
+            list.CheckboxLabeled("Depth engine", ref depthEngineEnabled,
+                "The depth/fill engine: liquid pours into the deepest excavated cells first "
+              + "and overflows from a full cell into any neighbour with room. Off: nothing "
+              + "pours and a dug channel is inert earthworks. Digging still works, and a "
+              + "channel still costs what it costs to cross.");
+
             }
 
             list.Gap();
@@ -1012,10 +1063,59 @@ namespace RimMandrake.FlowWorks
                      + "spills into any shallower channel dug at its edge. There is nothing "
                      + "to place and nothing to tune.");
 
+
+            list.Gap(6f);
+            list.Label("Liquids that can fill a cut (off: nothing pours that liquid into a cut — pump, drill or any "
+                     + "other source; what already stands in one stays):");
+            foreach (FluidDef fd in DefDatabase<FluidDef>.AllDefsListForReading)
+            {
+                bool on = FluidAllowed(fd);
+                bool was = on;
+                list.CheckboxLabeled("  " + fd.LabelCap, ref on, "Lets " + fd.label + " stand in a dug cut.");
+                if (on != was)
+                {
+                    if (on) disabledFluids.Remove(fd.defName); else if (!disabledFluids.Contains(fd.defName)) disabledFluids.Add(fd.defName);
+                }
+            }
+
+            list.CheckboxLabeled("Thick liquids flow slower than water", ref viscosityEnabled,
+                "Tar, slime, oil and blood creep along a channel: each level waits several pulses before it moves "
+              + "on (blood 2, oil 3, tar 6, slime 8 pulses to water's 1), so a tar channel fills far behind a water "
+              + "one dug beside it. Off: every liquid flows at water's pace.");
+            using (Dependent(list, "thickCreepEnabled"))
+            {
+                list.CheckboxLabeled("Thick liquids creep one cell at a time", ref thickCreepEnabled,
+                    "Needs 'Thick liquids flow slower'. On: tar, slime, oil and blood advance one cell each time they move, "
+                  + "so a long channel fills at its stated speed instead of all at once on one pulse. Water is not "
+                  + "affected. Off: a thick liquid that reaches a cell can pass on to the next in the same pulse.");
+            }
+            list.CheckboxLabeled("Water fills a channel from the mouth outward", ref waterFrontCreepEnabled,
+                "On: water advances one cell each pulse, so a dug channel wets from the end nearest the water and the wet "
+              + "front visibly travels along it like a flood. Off: a level can be passed the whole run in one pulse, "
+              + "which fills a dead-end channel from its far end first.");
+            list.CheckboxLabeled("Water levels out by its surface", ref levelBySurfaceEnabled,
+                "On: each square holds levels of water (half a metre, 1,000 litres each) and they spread toward the lowest water surface, whatever depth "
+              + "each square was dug to, so a channel settles to within one level everywhere and a draining channel "
+              + "empties instead of leaving deep puddles. Off: water only runs into a deeper square or out of a "
+              + "brim-full one, so partly filled squares of equal depth never even out.");
+            list.CheckboxLabeled("Water stands exactly level", ref levelExactEnabled,
+                "On: water is kept to the litre, and every connected body of water - a canal, a pit, a pond, or all of them "
+              + "joined - stands at one flat surface, so a little water spreads as a thin sheet (24 cm in every square of a "
+              + "canal) instead of whole half-metre steps. Its look follows how deep the water really is. Off: water moves in "
+              + "half-metre steps (\"Water levels out by its surface\" above and the setting below).");
+            if (levelBySurfaceEnabled)
+            {
+                list.CheckboxLabeled("  Water settles to one flat level", ref levelSetEnabled,
+                    "On: each connected body of water is laid out at the flat level it would settle to, so a wide field ends "
+                  + "as an even sheet, or, with too little water to cover it, one patch of the shallowest depth (one level) "
+                  + "and the rest dry. Water never climbs over a dry sill to reach another hole. Off: water moves one level "
+                  + "at a time between neighbours, which can leave a wide field striped wet, dry, wet.");
+            }
+
             }
 
             list.GapLine();
-            if (Section(list, "Unproven mechanics — ON by default", new[] { "liquidCorrosionEnabled", "liquidIgnitionEnabled" }))
+            if (Section(list, "Corrosive and flammable liquids (lightly tested)", new[] { "liquidCorrosionEnabled", "liquidIgnitionEnabled" }))
             {
             list.Label("These came in with the liquid-types merge and have never run inside a "
                      + "live game. They ship on (owner decision 2026-10-15), but they have not had long play, not "
@@ -1039,7 +1139,7 @@ namespace RimMandrake.FlowWorks
             }
 
             list.GapLine();
-            if (Section(list, "Stock, recession and drainage", new[] { "fillInEnabled", "fillInDisplacementEnabled", "sourceBudgetEnabled", "stickyLimitlessEnabled", "wetnessCutoffEnabled", "minLimitlessBodyCells", "recessionEnabled", "recedeKeepsLastCell", "recedeSparesOutflow", "refillEnabled", "pondReturnLegEnabled", "refillWaitsForOccupants", "dugBedLeavesPondEnabled", "pondBedHollowEnabled", "deepBedsEnabled", "deepBedMaxDepth", "lakeDepthScale", "lakeFloorRoughness", "lakeShoreShelfMetres", "lakeWayOutMetres", "drainableLakeMaxCells", "pondDepthEnabled", "pondMudDays", "pondStageWritesPerPulse", "pondHeadRuleEnabled", "refillRateMultiplier", "rainFillsExcavationsEnabled", "rainFillPerPulse", "excavationLoadRepairEnabled", "legacyFillFallbackEnabled", "legacyFloodViaEngineEnabled", "pumpFedSpreadEnabled", "edgeSinksEnabled" }))
+            if (Section(list, "Ponds, lakes, rain and drainage", new[] { "fillInEnabled", "fillInDisplacementEnabled", "sourceBudgetEnabled", "stickyLimitlessEnabled", "wetnessCutoffEnabled", "minLimitlessBodyCells", "recessionEnabled", "recedeKeepsLastCell", "recedeSparesOutflow", "refillEnabled", "pondReturnLegEnabled", "refillWaitsForOccupants", "dugBedLeavesPondEnabled", "pondBedHollowEnabled", "deepBedsEnabled", "deepBedMaxDepth", "lakeDepthScale", "lakeFloorRoughness", "lakeShoreShelfMetres", "lakeWayOutMetres", "drainableLakeMaxCells", "pondDepthEnabled", "pondMudDays", "pondStageWritesPerPulse", "pondHeadRuleEnabled", "refillRateMultiplier", "rainFillsExcavationsEnabled", "rainFillPerPulse", "excavationLoadRepairEnabled", "legacyFillFallbackEnabled", "legacyFloodViaEngineEnabled", "pumpFedSpreadEnabled", "edgeSinksEnabled" }))
             {
             list.Label("How much liquid a natural body actually has, what happens when a canal "
                      + "drinks it dry, and where liquid goes when you fill a channel back in. "
@@ -1306,7 +1406,7 @@ namespace RimMandrake.FlowWorks
             }
 
             list.GapLine();
-            if (Section(list, "Pits, ladders and shooting", new[] { "superdeepCaptureEnabled", "blastsBreakPitCovers", "superdeepCapturesOwnFaction", "pitStuckAlertEnabled", "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "ladderRaiseLowerEnabled", "pitWidthBodySizeMultiplier", "pitRelativeClimbEnabled", "pitClimbAbilityMultiplier", "pitSlowClimbFactor", "pitRampsEnabled", "pitRampMaxSpan", "pitLadderSlowness", "portableLadderEnabled", "portableLadderMaxLevels", "climbingGearEnabled", "climbingGearSlowness", "pitJumpLandsSafe", "pitTeleportLandsSafe", "pitFreeTravelEnabled", "reachSeesWallsAndCliffs", "pitRescueLadderEnabled", "superdeepRoomsEnabled", "pitRoomMinDepthMetres", "captureDownEnabled", "wardenFromLipEnabled", "pitDrowningEnabled", "pitDrowningRateMultiplier", "pitDrowningHeadFraction", "pitDrowningLyingFraction", "poisonFillEnabled", "slimeSlipEnabled", "slimeSlipChanceMultiplier", "slimeSlipStunSeconds", "slimeClimbOutSlipFactor", "pitExposureEnabled", "pitExposureNarrowing", "pitTemperatureCoupling", "pitResistanceLossMultiplier", "pitWalkNormalEnabled", "fallDamageEnabled", "fallDamageMultiplier", "fallDamagePerMetrePast2", "fallDamageCap", "fallDeathEnabled", "fallDeathFromMetres", "fallDeathCertainMetres", "spikesEnabled", "spikeDamageMultiplier", "spikeMinDropMetres", "pitGuardrailEnabled", "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled", "flowDoorsSealedFromPitEnabled", "sluiceLetsBigThroughEnabled", "viscosityEnabled", "thickCreepEnabled", "waterFrontCreepEnabled", "levelBySurfaceEnabled", "levelSetEnabled", "levelExactEnabled", "trapTriggerEnabled", "trapSensitivityMultiplier", "superdeepShootingRuleEnabled", "shootingCliffMetres", "trenchCoverEnabled", "trenchCoverStrength", "trenchCoverCap", "trenchAiAvoidsCages", "disabledFluids" }))
+            if (Section(list, "Pits and climbing", new[] { "superdeepCaptureEnabled", "superdeepCapturesOwnFaction", "pitStuckAlertEnabled", "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "ladderRaiseLowerEnabled", "pitWidthBodySizeMultiplier", "pitRelativeClimbEnabled", "pitClimbAbilityMultiplier", "pitSlowClimbFactor", "pitRampsEnabled", "pitRampMaxSpan", "pitLadderSlowness", "portableLadderEnabled", "portableLadderMaxLevels", "climbingGearEnabled", "climbingGearSlowness", "pitJumpLandsSafe", "pitTeleportLandsSafe", "pitFreeTravelEnabled", "reachSeesWallsAndCliffs", "pitRescueLadderEnabled", "pitWalkNormalEnabled" }))
             {
             list.Label("A pit is any dug pocket nothing can climb out of, nothing more: there is no pit building. "
                      + "What holds a creature is the height of the step it must climb against its own size, never the "
@@ -1317,10 +1417,6 @@ namespace RimMandrake.FlowWorks
               + "they cannot climb out of takes the fall and stays down there, on the map, standing on the pit floor. "
               + "Which pits hold whom is decided by relative height (the next switch). Off: no pit ever traps anyone; "
               + "a deep hole is only a very slow way across.");
-
-            list.CheckboxLabeled("Blasts break concealed pits", ref blastsBreakPitCovers,
-                "A bomb, grenade, mortar or fire blast that reaches a concealed pit breaks its whole lid, and anyone on it "
-              + "falls in. EMP, smoke and stun blasts do not. Off: only weight springs a concealed pit.");
 
             list.CheckboxLabeled("Your own pit takes your own people", ref superdeepCapturesOwnFaction,
                 "Off (the default), a superdeep cell ignores your own colonists unless they jump in, "
@@ -1415,6 +1511,68 @@ namespace RimMandrake.FlowWorks
               + "built, else (too deep) the fixed ladder. Anyone who can climb back out (climbing gear, a big creature) simply "
               + "goes. Off: you place the ladder yourself.");
 
+            list.CheckboxLabeled("Walking along a pit floor is normal speed", ref pitWalkNormalEnabled,
+                "Only climbing into or out of a cut is slow (the deeper, the slower; a ladder too); walking around "
+              + "inside one, at one depth, is ordinary walking, and dropping into a superdeep pit is instant. "
+              + "Off: every step on dug ground costs its depth, as before.");
+            }
+
+            list.GapLine();
+            if (Section(list, "Falls, spikes and guardrails", new[] { "fallDamageEnabled", "fallDamageMultiplier", "fallDamagePerMetrePast2", "fallDamageCap", "fallDeathEnabled", "fallDeathFromMetres", "fallDeathCertainMetres", "spikesEnabled", "spikeDamageMultiplier", "spikeMinDropMetres", "pitGuardrailEnabled" }))
+            {
+            list.CheckboxLabeled("Falling into a pit deals damage", ref fallDamageEnabled,
+                "Anyone pushed, thrown or jumping down a drop taller than they can climb takes blunt damage scaled by their "
+              + "mass and by the metres fallen: a 2 m fall is the full fall, less for shorter drops, more past 2 m (up to the "
+              + "cap below); armour helps. A deep fall can also kill outright (below). Off: the fall is harmless.");
+            using (Dependent(list, "fallDamageMultiplier", "fallDamagePerMetrePast2", "fallDamageCap"))
+            {
+                list.Label("Fall damage multiplier: " + fallDamageMultiplier.ToString("F2"));
+                fallDamageMultiplier = list.Slider(fallDamageMultiplier, 0f, 3f);
+                list.Label("Each metre past 2 m adds " + fallDamagePerMetrePast2.ToStringPercent() + " of the 2 m fall (7 m: x"
+                    + RM_RelativeRulesMath.FallScale(7f, fallDamagePerMetrePast2, fallDamageCap).ToString("0.##") + ")", tooltip:
+                    "How much worse a fall gets for every metre past 2 m. Shipped: 50%. 0 = every fall from 2 m down hurts alike.");
+                fallDamagePerMetrePast2 = Mathf.Round(list.Slider(fallDamagePerMetrePast2, 0f, 1.5f) * 20f) / 20f;
+                list.Label("Worst fall: x" + fallDamageCap.ToString("0.#") + " the 2 m fall", tooltip:
+                    "No fall hurts more than this many 2 m falls, however deep. Shipped: 4 (reached at 8 m).");
+                fallDamageCap = Mathf.Round(list.Slider(fallDamageCap, 1f, 10f) * 2f) / 2f;
+                list.CheckboxLabeled("A deep fall can kill", ref fallDeathEnabled,
+                    "On (shipped), a fall deeper than the first figure below may kill outright, more likely the deeper it is, "
+                  + "and certain at the second. PROVISIONAL numbers. Off: falls only wound.");
+                using (Dependent(list, "fallDeathFromMetres", "fallDeathCertainMetres"))
+                {
+                    list.Label("Falls can kill from " + fallDeathFromMetres.ToString("0.#") + " m; certain at "
+                        + fallDeathCertainMetres.ToString("0.#") + " m (12 m: "
+                        + RM_RelativeRulesMath.FallDeathChance(12f, fallDeathFromMetres, fallDeathCertainMetres).ToStringPercent() + ")");
+                    fallDeathFromMetres = Mathf.Round(list.Slider(fallDeathFromMetres, 2f, 20f) * 2f) / 2f;
+                    fallDeathCertainMetres = Mathf.Round(list.Slider(fallDeathCertainMetres, 4f, 60f) * 2f) / 2f;
+                }
+            }
+
+            list.CheckboxLabeled("Spikes on a pit floor stab whoever drops in", ref spikesEnabled,
+                "Spikes can be built on any dug square at the foot of a sheer drop (see below) and stab anyone who falls, "
+              + "is pushed or jumps into that square: three Sharp hits through armour, bigger for bigger creatures. Never on "
+              + "walking up to the edge or moving along the floor. Off: spikes are harmless.");
+            using (Dependent(list, "spikeDamageMultiplier", "spikeMinDropMetres"))
+            {
+                list.Label("Spike damage multiplier: " + spikeDamageMultiplier.ToString("F2"));
+                spikeDamageMultiplier = list.Slider(spikeDamageMultiplier, 0f, 3f);
+                list.Label("Spikes need a sheer drop of " + spikeMinDropMetres.ToString("0.0") + " m to a neighbour", tooltip:
+                    "Spikes may stand only where some neighbouring square is at least this much higher, at any depth: the "
+                  + "floor of a 2 m pit, or a 7 m core under a 4 m ledge. Never on a gentle slope. Shipped: 2 m.");
+                spikeMinDropMetres = Mathf.Round(list.Slider(spikeMinDropMetres, 0.5f, 5f) * 2f) / 2f;
+            }
+
+            list.CheckboxLabeled("Guardrails and fences stop falls off a lip", ref pitGuardrailEnabled,
+                "A guardrail (Structure tab, built on the lip of a sheer drop) or any fence standing on a lip stops falls over "
+              + "its edges: nobody walks off it, and a blast throwing someone over it stops them at the rail. People still walk "
+              + "along the lip and climb up past it; jumping in on purpose still works; a concealed pit giving way is not stopped. "
+              + "Off: rails and fences stop nothing (the guardrail still stands).");
+
+            }
+
+            list.GapLine();
+            if (Section(list, "Pit prisoners, sluices and grates", new[] { "superdeepRoomsEnabled", "pitRoomMinDepthMetres", "captureDownEnabled", "wardenFromLipEnabled", "flowDoorsSealedFromPitEnabled", "sluiceLetsBigThroughEnabled" }))
+            {
             list.CheckboxLabeled("An enclosed pit is its own room", ref superdeepRoomsEnabled,
                 "A dug pocket a person cannot climb out of counts as a room of its own, separate "
               + "from the ground above, so it has its own temperature and can hold prisoners. Bare, it holds "
@@ -1444,6 +1602,18 @@ namespace RimMandrake.FlowWorks
               + "within speaking distance, tending from a cell touching them. Only if no edge cell will do "
               + "does the colonist climb down as usual. Off: they always climb down.");
 
+            list.CheckboxLabeled("Sluices and grates cannot be opened from inside a pit", ref flowDoorsSealedFromPitEnabled,
+                "A pawn held in a superdeep pit cannot open a sluice or a security grate, even one it "
+              + "could open from outside. Off: they open like ordinary doors for anyone allowed through.");
+            list.CheckboxLabeled("A sluice only holds small creatures", ref sluiceLetsBigThroughEnabled,
+                "A sluice is a cheap gate: people (prisoners and raiders included) and any creature too big "
+              + "for a one-wide pit force their way through it. Use a security grate to hold a real "
+              + "prisoner. A shut sluice holds liquid back; the grate passes liquid open or shut. Off: a sluice holds like an ordinary door.");
+            }
+
+            list.GapLine();
+            if (Section(list, "Drowning, poison, slime and exposure", new[] { "pitDrowningEnabled", "pitDrowningRateMultiplier", "pitDrowningHeadFraction", "pitDrowningLyingFraction", "poisonFillEnabled", "slimeSlipEnabled", "slimeSlipChanceMultiplier", "slimeSlipStunSeconds", "slimeClimbOutSlipFactor", "pitExposureEnabled", "pitExposureNarrowing", "pitTemperatureCoupling", "pitResistanceLossMultiplier" }))
+            {
             list.CheckboxLabeled("Water over the head drowns whoever cannot swim", ref pitDrowningEnabled,
                 "Water over a creature's head drowns it (about an hour), in a pit or a lake alike: a puddle in a deep pit drowns "
               + "nobody, and a sheer 1.5 m pocket brimming with water drowns a person who cannot swim. A creature's height goes "
@@ -1501,58 +1671,71 @@ namespace RimMandrake.FlowWorks
                 pitResistanceLossMultiplier = list.Slider(pitResistanceLossMultiplier, 0f, 4f);
             }
 
-            list.CheckboxLabeled("Walking along a pit floor is normal speed", ref pitWalkNormalEnabled,
-                "Only climbing into or out of a cut is slow (the deeper, the slower; a ladder too); walking around "
-              + "inside one, at one depth, is ordinary walking, and dropping into a superdeep pit is instant. "
-              + "Off: every step on dug ground costs its depth, as before.");
-            list.CheckboxLabeled("Falling into a pit deals damage", ref fallDamageEnabled,
-                "Anyone pushed, thrown or jumping down a drop taller than they can climb takes blunt damage scaled by their "
-              + "mass and by the metres fallen: a 2 m fall is the full fall, less for shorter drops, more past 2 m (up to the "
-              + "cap below); armour helps. A deep fall can also kill outright (below). Off: the fall is harmless.");
-            using (Dependent(list, "fallDamageMultiplier", "fallDamagePerMetrePast2", "fallDamageCap"))
-            {
-                list.Label("Fall damage multiplier: " + fallDamageMultiplier.ToString("F2"));
-                fallDamageMultiplier = list.Slider(fallDamageMultiplier, 0f, 3f);
-                list.Label("Each metre past 2 m adds " + fallDamagePerMetrePast2.ToStringPercent() + " of the 2 m fall (7 m: x"
-                    + RM_RelativeRulesMath.FallScale(7f, fallDamagePerMetrePast2, fallDamageCap).ToString("0.##") + ")", tooltip:
-                    "How much worse a fall gets for every metre past 2 m. Shipped: 50%. 0 = every fall from 2 m down hurts alike.");
-                fallDamagePerMetrePast2 = Mathf.Round(list.Slider(fallDamagePerMetrePast2, 0f, 1.5f) * 20f) / 20f;
-                list.Label("Worst fall: x" + fallDamageCap.ToString("0.#") + " the 2 m fall", tooltip:
-                    "No fall hurts more than this many 2 m falls, however deep. Shipped: 4 (reached at 8 m).");
-                fallDamageCap = Mathf.Round(list.Slider(fallDamageCap, 1f, 10f) * 2f) / 2f;
-                list.CheckboxLabeled("A deep fall can kill", ref fallDeathEnabled,
-                    "On (shipped), a fall deeper than the first figure below may kill outright, more likely the deeper it is, "
-                  + "and certain at the second. PROVISIONAL numbers. Off: falls only wound.");
-                using (Dependent(list, "fallDeathFromMetres", "fallDeathCertainMetres"))
-                {
-                    list.Label("Falls can kill from " + fallDeathFromMetres.ToString("0.#") + " m; certain at "
-                        + fallDeathCertainMetres.ToString("0.#") + " m (12 m: "
-                        + RM_RelativeRulesMath.FallDeathChance(12f, fallDeathFromMetres, fallDeathCertainMetres).ToStringPercent() + ")");
-                    fallDeathFromMetres = Mathf.Round(list.Slider(fallDeathFromMetres, 2f, 20f) * 2f) / 2f;
-                    fallDeathCertainMetres = Mathf.Round(list.Slider(fallDeathCertainMetres, 4f, 60f) * 2f) / 2f;
-                }
             }
 
-            list.CheckboxLabeled("Spikes on a pit floor stab whoever drops in", ref spikesEnabled,
-                "Spikes can be built on any dug square at the foot of a sheer drop (see below) and stab anyone who falls, "
-              + "is pushed or jumps into that square: three Sharp hits through armour, bigger for bigger creatures. Never on "
-              + "walking up to the edge or moving along the floor. Off: spikes are harmless.");
-            using (Dependent(list, "spikeDamageMultiplier", "spikeMinDropMetres"))
+            list.GapLine();
+            if (Section(list, "Concealed pits", new[] { "blastsBreakPitCovers", "trapTriggerEnabled", "trapSensitivityMultiplier" }))
             {
-                list.Label("Spike damage multiplier: " + spikeDamageMultiplier.ToString("F2"));
-                spikeDamageMultiplier = list.Slider(spikeDamageMultiplier, 0f, 3f);
-                list.Label("Spikes need a sheer drop of " + spikeMinDropMetres.ToString("0.0") + " m to a neighbour", tooltip:
-                    "Spikes may stand only where some neighbouring square is at least this much higher, at any depth: the "
-                  + "floor of a 2 m pit, or a 7 m core under a 4 m ledge. Never on a gentle slope. Shipped: 2 m.");
-                spikeMinDropMetres = Mathf.Round(list.Slider(spikeMinDropMetres, 0.5f, 5f) * 2f) / 2f;
+            list.CheckboxLabeled("Blasts break concealed pits", ref blastsBreakPitCovers,
+                "A bomb, grenade, mortar or fire blast that reaches a concealed pit breaks its whole lid, and anyone on it "
+              + "falls in. EMP, smoke and stun blasts do not. Off: only weight springs a concealed pit.");
+
+            list.CheckboxLabeled("Concealed pits give way under enough weight", ref trapTriggerEnabled,
+                "A concealed pit drops whoever stands on it once their combined mass passes "
+              + "its lid's rating. Off: concealed pits never give way on their own.");
+            using (Dependent(list, "trapSensitivityMultiplier"))
+            {
+                list.Label("Cover sensitivity multiplier: " + trapSensitivityMultiplier.ToString("F2"));
+                trapSensitivityMultiplier = list.Slider(trapSensitivityMultiplier, 0.25f, 3f);
             }
 
-            list.CheckboxLabeled("Guardrails and fences stop falls off a lip", ref pitGuardrailEnabled,
-                "A guardrail (Structure tab, built on the lip of a sheer drop) or any fence standing on a lip stops falls over "
-              + "its edges: nobody walks off it, and a blast throwing someone over it stops them at the rail. People still walk "
-              + "along the lip and climb up past it; jumping in on purpose still works; a concealed pit giving way is not stopped. "
-              + "Off: rails and fences stop nothing (the guardrail still stands).");
+            }
 
+            list.GapLine();
+            if (Section(list, "Shooting at pits and trench cover", new[] { "superdeepShootingRuleEnabled", "shootingCliffMetres", "trenchCoverEnabled", "trenchCoverStrength", "trenchCoverCap", "trenchAiAvoidsCages" }))
+            {
+            list.CheckboxLabeled("A cliff edge limits who can shoot whom", ref superdeepShootingRuleEnabled,
+                "No shot crosses a cliff edge: across a sheer rise of the height below or more, whoever is down "
+              + "can only shoot whoever stands right at the edge above, and whoever is up can only shoot down from the "
+              + "edge. Two people on the floor of one big pit, or on the ground on either side of a pit, fight normally. "
+              + "It is a restriction only: it never changes accuracy or sight (trench cover is its own setting below). "
+              + "Off: no shot is blocked by a cliff edge.");
+            using (Dependent(list, "shootingCliffMetres"))
+            {
+                list.Label("A cliff is a rise of " + shootingCliffMetres.ToString("0.0") + " m or more", tooltip:
+                    "How much higher the ground between two shooters must stand than the lower of them before it blocks the "
+                  + "shot. Shipped: 2 m, more than a person's height.");
+                shootingCliffMetres = Mathf.Round(list.Slider(shootingCliffMetres, 0.5f, 5f) * 2f) / 2f;
+            }
+
+            list.CheckboxLabeled("Dug ground gives cover", ref trenchCoverEnabled,
+                "A pawn standing in a dug trench or canal, wet or dry, is covered by the wall facing the shooter, like a "
+              + "sandbag, more the deeper the trench. A shot along the trench gets no cover; a shooter on the lip sees "
+              + "past it. No cover from explosions. Off: depth never affects shooting except the cliff rule above.");
+            using (Dependent(list, "trenchCoverStrength"))
+            {
+                list.Label("Trench cover strength: " + trenchCoverStrength.ToString("F2"), tooltip:
+                    "At 1.0 a waist-deep trench blocks a bit less than sandbags; chest-deep a bit more.");
+                trenchCoverStrength = Mathf.Round(list.Slider(trenchCoverStrength, 0.25f, 1.5f) * 20f) / 20f;
+            }
+            using (Dependent(list, "trenchCoverCap"))
+            {
+                list.Label("Most cover from a trench plus sandbags: " + trenchCoverCap.ToStringPercent(), tooltip:
+                    "Caps the combined block chance when a trench wall and vanilla cover stack. Never lowers vanilla cover.");
+                trenchCoverCap = Mathf.Round(list.Slider(trenchCoverCap, 0.5f, 1f) * 20f) / 20f;
+            }
+            using (Dependent(list, "trenchAiAvoidsCages"))
+            {
+                list.CheckboxLabeled("Raiders won't pick a foxhole they can't climb out of", ref trenchAiAvoidsCages,
+                    "A raider choosing where to fire from skips a square in a pit it could not climb back out of. "
+                  + "Off: raiders may jump into a sheer trench for its cover and be held there.");
+            }
+
+            }
+
+            list.GapLine();
+            if (Section(list, "How cuts and liquids look", new[] { "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled" }))
+            {
             list.CheckboxLabeled("Pawns sink into dug channels and rise out of them", ref pitDepthDrawOffsetEnabled,
                 "A pawn standing in a dug cell is drawn lower the deeper the cell, and rises smoothly as it "
               + "walks out, so every depth reads at a glance. Drawing only: it changes nothing about "
@@ -1639,107 +1822,6 @@ namespace RimMandrake.FlowWorks
                 "Water and other clear liquids standing in a cut let its floor and drowned walls show through, "
               + "fainter the deeper it is. Tar, oil, slime and blood stay opaque. Drawing only. Off: the liquid "
               + "surface hides the cut below it.");
-            list.Gap(6f);
-            list.Label("Liquids that can fill a cut (off: nothing pours that liquid into a cut — pump, drill or any "
-                     + "other source; what already stands in one stays):");
-            foreach (FluidDef fd in DefDatabase<FluidDef>.AllDefsListForReading)
-            {
-                bool on = FluidAllowed(fd);
-                bool was = on;
-                list.CheckboxLabeled("  " + fd.LabelCap, ref on, "Lets " + fd.label + " stand in a dug cut.");
-                if (on != was)
-                {
-                    if (on) disabledFluids.Remove(fd.defName); else if (!disabledFluids.Contains(fd.defName)) disabledFluids.Add(fd.defName);
-                }
-            }
-
-            list.CheckboxLabeled("Sluices and grates cannot be opened from inside a pit", ref flowDoorsSealedFromPitEnabled,
-                "A pawn held in a superdeep pit cannot open a sluice or a security grate, even one it "
-              + "could open from outside. Off: they open like ordinary doors for anyone allowed through.");
-            list.CheckboxLabeled("A sluice only holds small creatures", ref sluiceLetsBigThroughEnabled,
-                "A sluice is a cheap gate: people (prisoners and raiders included) and any creature too big "
-              + "for a one-wide pit force their way through it. Use a security grate to hold a real "
-              + "prisoner. A shut sluice holds liquid back; the grate passes liquid open or shut. Off: a sluice holds like an ordinary door.");
-            list.CheckboxLabeled("Thick liquids flow slower than water", ref viscosityEnabled,
-                "Tar, slime, oil and blood creep along a channel: each level waits several pulses before it moves "
-              + "on (blood 2, oil 3, tar 6, slime 8 pulses to water's 1), so a tar channel fills far behind a water "
-              + "one dug beside it. Off: every liquid flows at water's pace.");
-            using (Dependent(list, "thickCreepEnabled"))
-            {
-                list.CheckboxLabeled("Thick liquids creep one cell at a time", ref thickCreepEnabled,
-                    "Needs 'Thick liquids flow slower'. On: tar, slime, oil and blood advance one cell each time they move, "
-                  + "so a long channel fills at its stated speed instead of all at once on one pulse. Water is not "
-                  + "affected. Off: a thick liquid that reaches a cell can pass on to the next in the same pulse.");
-            }
-            list.CheckboxLabeled("Water fills a channel from the mouth outward", ref waterFrontCreepEnabled,
-                "On: water advances one cell each pulse, so a dug channel wets from the end nearest the water and the wet "
-              + "front visibly travels along it like a flood. Off: a level can be passed the whole run in one pulse, "
-              + "which fills a dead-end channel from its far end first.");
-            list.CheckboxLabeled("Water levels out by its surface", ref levelBySurfaceEnabled,
-                "On: each square holds levels of water (half a metre, 1,000 litres each) and they spread toward the lowest water surface, whatever depth "
-              + "each square was dug to, so a channel settles to within one level everywhere and a draining channel "
-              + "empties instead of leaving deep puddles. Off: water only runs into a deeper square or out of a "
-              + "brim-full one, so partly filled squares of equal depth never even out.");
-            list.CheckboxLabeled("Water stands exactly level", ref levelExactEnabled,
-                "On: water is kept to the litre, and every connected body of water - a canal, a pit, a pond, or all of them "
-              + "joined - stands at one flat surface, so a little water spreads as a thin sheet (24 cm in every square of a "
-              + "canal) instead of whole half-metre steps. Its look follows how deep the water really is. Off: water moves in "
-              + "half-metre steps (\"Water levels out by its surface\" above and the setting below).");
-            if (levelBySurfaceEnabled)
-            {
-                list.CheckboxLabeled("  Water settles to one flat level", ref levelSetEnabled,
-                    "On: each connected body of water is laid out at the flat level it would settle to, so a wide field ends "
-                  + "as an even sheet, or, with too little water to cover it, one patch of the shallowest depth (one level) "
-                  + "and the rest dry. Water never climbs over a dry sill to reach another hole. Off: water moves one level "
-                  + "at a time between neighbours, which can leave a wide field striped wet, dry, wet.");
-            }
-
-            list.CheckboxLabeled("Concealed pits give way under enough weight", ref trapTriggerEnabled,
-                "A concealed pit drops whoever stands on it once their combined mass passes "
-              + "its lid's rating. Off: concealed pits never give way on their own.");
-            using (Dependent(list, "trapSensitivityMultiplier"))
-            {
-                list.Label("Cover sensitivity multiplier: " + trapSensitivityMultiplier.ToString("F2"));
-                trapSensitivityMultiplier = list.Slider(trapSensitivityMultiplier, 0.25f, 3f);
-            }
-
-            list.CheckboxLabeled("A cliff edge limits who can shoot whom", ref superdeepShootingRuleEnabled,
-                "No shot crosses a cliff edge: across a sheer rise of the height below or more, whoever is down "
-              + "can only shoot whoever stands right at the edge above, and whoever is up can only shoot down from the "
-              + "edge. Two people on the floor of one big pit, or on the ground on either side of a pit, fight normally. "
-              + "It is a restriction only: it never changes accuracy or sight (trench cover is its own setting below). "
-              + "Off: no shot is blocked by a cliff edge.");
-            using (Dependent(list, "shootingCliffMetres"))
-            {
-                list.Label("A cliff is a rise of " + shootingCliffMetres.ToString("0.0") + " m or more", tooltip:
-                    "How much higher the ground between two shooters must stand than the lower of them before it blocks the "
-                  + "shot. Shipped: 2 m, more than a person's height.");
-                shootingCliffMetres = Mathf.Round(list.Slider(shootingCliffMetres, 0.5f, 5f) * 2f) / 2f;
-            }
-
-            list.CheckboxLabeled("Dug ground gives cover", ref trenchCoverEnabled,
-                "A pawn standing in a dug trench or canal, wet or dry, is covered by the wall facing the shooter, like a "
-              + "sandbag, more the deeper the trench. A shot along the trench gets no cover; a shooter on the lip sees "
-              + "past it. No cover from explosions. Off: depth never affects shooting except the cliff rule above.");
-            using (Dependent(list, "trenchCoverStrength"))
-            {
-                list.Label("Trench cover strength: " + trenchCoverStrength.ToString("F2"), tooltip:
-                    "At 1.0 a waist-deep trench blocks a bit less than sandbags; chest-deep a bit more.");
-                trenchCoverStrength = Mathf.Round(list.Slider(trenchCoverStrength, 0.25f, 1.5f) * 20f) / 20f;
-            }
-            using (Dependent(list, "trenchCoverCap"))
-            {
-                list.Label("Most cover from a trench plus sandbags: " + trenchCoverCap.ToStringPercent(), tooltip:
-                    "Caps the combined block chance when a trench wall and vanilla cover stack. Never lowers vanilla cover.");
-                trenchCoverCap = Mathf.Round(list.Slider(trenchCoverCap, 0.5f, 1f) * 20f) / 20f;
-            }
-            using (Dependent(list, "trenchAiAvoidsCages"))
-            {
-                list.CheckboxLabeled("Raiders won't pick a foxhole they can't climb out of", ref trenchAiAvoidsCages,
-                    "A raider choosing where to fire from skips a square in a pit it could not climb back out of. "
-                  + "Off: raiders may jump into a sheer trench for its cover and be held there.");
-            }
-
             // ══════════════════════════════════════════════════════════════
             // LIQUID_BOTTLE_LOOP_1 SECTION — kept whole and kept last.
             // ══════════════════════════════════════════════════════════════
@@ -1777,7 +1859,7 @@ namespace RimMandrake.FlowWorks
             }
 
             list.GapLine();
-            if (Section(list, "The liquid tank", new[] { "tankLoopEnabled", "tankCapacityMultiplier", "liquidPumpEnabled" }))
+            if (Section(list, "Tanks, pumps, pipes and hoses", new[] { "tankLoopEnabled", "tankCapacityMultiplier", "liquidPumpEnabled" }))
             {
             list.Label("A patched-together scavenger tank: a big fixed store of ONE liquid at a "
                      + "time, filled by pouring a container in and drained by filling a container "
@@ -1808,6 +1890,10 @@ namespace RimMandrake.FlowWorks
             // MANY_WATERS_DRILL_BUILDINGS_1 SECTION — kept whole and kept last.
             // ══════════════════════════════════════════════════════════════
             }
+
+            Machinery.RM_MachinerySettings.DoSettingsSection(list);
+            Hose.RM_HoseSettings.DoSettingsSection(list);
+            Machinery.Kits.RM_KitSettings.DoSettingsSection(list);
 
             list.GapLine();
             if (Section(list, "Drilling and tapping", new[] { "liquidDrillingEnabled", "drillYieldChanceMultiplier", "drillUnitsPerCycle" }))
@@ -1866,52 +1952,6 @@ namespace RimMandrake.FlowWorks
             }
 
             list.GapLine();
-            if (Section(list, "Finds while digging", new[] { "digFindsEnabled", "digFindsLocalOnly", "digFindChanceMultiplier", "digFindBudgetPercent", "digFindLetterEnabled", "digRockGroundEnabled", "digRockWorkMultiplier", "digRockChunksEnabled", "digRockChunkMultiplier", "digSoilChunkPercent" }))
-            {
-            list.CheckboxLabeled("Digging a canal can turn up minerals", ref digFindsEnabled,
-                "Each time a cell is cut a level deeper there is a small chance of a lump of something the land holds, "
-              + "thrown up onto the bank. Deep and superdeep cuts can reach what a deep drill would find under that cell. "
-              + "Where the land holds nothing, you get chunks of the local rock. Filling a cell in and digging it again "
-              + "pays nothing twice. Off: digging only digs.");
-            using (Dependent(list, "digFindsLocalOnly", "digFindChanceMultiplier", "digFindBudgetPercent", "digFindLetterEnabled"))
-            {
-                list.CheckboxLabeled("Finds come only from this map's own rock", ref digFindsLocalOnly,
-                    "On: a find is one of the ores actually in this map's rock (or under the cell, for a deep cut). "
-                  + "Off: any ore the game knows can turn up. Components and plasteel never come out of a hole either way.");
-                list.Label("Find chance: x" + digFindChanceMultiplier.ToString("F2") + "  (1x = 1.5% per cut; first-guess number)");
-                digFindChanceMultiplier = list.Slider(digFindChanceMultiplier, 0f, 10f);
-                list.Label("Loose-find ceiling: " + digFindBudgetPercent.ToString("F1") + "% of the ore in this map's rock");
-                digFindBudgetPercent = list.Slider(digFindBudgetPercent, 0f, 50f);
-                list.Label("Once a map's share is dug out, cuts only turn up rock. Set when the map first finds something.");
-                list.CheckboxLabeled("A letter on the first find of each material", ref digFindLetterEnabled,
-                    "The first time a material turns up on a map you get a letter saying the land holds it; later finds "
-                  + "are a short message. Off: messages only.");
-            }
-
-            list.CheckboxLabeled("Canals can be dug through rock ground", ref digRockGroundEnabled,
-                "On: bare stone floor (rough, rough-hewn or smoothed natural rock) can be marked to dig, and is much slower work "
-              + "than soft ground. Off: only soil can be dug, as before.");
-            using (Dependent(list, "digRockWorkMultiplier"))
-            {
-                list.Label("Rock digging takes x" + digRockWorkMultiplier.ToString("F1") + " the work of soft ground  (a rock wall mines in ~700 ticks; a soil cut is 3200)");
-                digRockWorkMultiplier = list.Slider(digRockWorkMultiplier, 1f, 10f);
-            }
-            list.CheckboxLabeled("Digging can turn up rock chunks", ref digRockChunksEnabled,
-                "Each cut a level deeper through rock ground has the same chance of a chunk of that rock as mining a standing rock wall "
-              + "(25% in the base game). Through anything else (soil, sand, gravel) a chunk is very rare. Shares the guard of mineral finds: "
-              + "filling in and re-digging pays nothing twice.");
-            using (Dependent(list, "digRockChunkMultiplier", "digSoilChunkPercent"))
-            {
-                list.Label("Rock chunk chance in rock: x" + digRockChunkMultiplier.ToString("F2") + " of the wall-mining rate");
-                digRockChunkMultiplier = list.Slider(digRockChunkMultiplier, 0f, 4f);
-                list.Label("Rock chunk chance in non-rock ground: " + digSoilChunkPercent.ToString("F1") + "% per cut");
-                digSoilChunkPercent = list.Slider(digSoilChunkPercent, 0f, 5f);
-            }
-
-            // ── CRACKEDLANDS_MECHANICS_BUILD_1 §1 — the swale ─────────────
-            }
-
-            list.GapLine();
             if (Section(list, "Swales", new[] { "swaleEnabled", "swaleRateMultiplier" }))
             {
             list.CheckboxLabeled("A watered swale enriches the ground around it", ref swaleEnabled,
@@ -1930,12 +1970,9 @@ namespace RimMandrake.FlowWorks
             // ── Rivers (River Works, merged 2026-10-05) ───────────────────
             Rivers.RM_RiversSettingsWindow.DoSettingsSection(list);
             RiverColors.RM_RiverColorsSettings.DoSettingsSection(list);
-            Machinery.RM_MachinerySettings.DoSettingsSection(list);
+            Quarry.RM_QuarrySettings.DoSettingsSection(list);
             Machinery.Logistics.RM_SluiceGateSettings.DoSettingsSection(list);
             MapControls.RM_MapControlSettings.DoSettingsSection(list);
-            Machinery.Kits.RM_KitSettings.DoSettingsSection(list);
-            Quarry.RM_QuarrySettings.DoSettingsSection(list);
-            Hose.RM_HoseSettings.DoSettingsSection(list);
             Thirst.RM_ThirstSettings.DoSettingsSection(list);
             Sprinklers.RM_SprinklerSettings.DoSettingsSection(list);
             Pits.RM_SuspensionSettings.DoSettingsSection(list);

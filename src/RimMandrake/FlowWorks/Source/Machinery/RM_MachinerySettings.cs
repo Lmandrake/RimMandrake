@@ -174,7 +174,7 @@ namespace RimMandrake.FlowWorks.Machinery
 		public static void DoSettingsSection(Listing_Standard list)
 		{
 			list.GapLine();
-			list.Label("Liquid machinery (universal pipes, stills, found works, adapters)");
+			list.Label("Pipes, stills and found works (universal pipes, adapters, ruined works)");
 			list.CheckboxLabeled("Universal pipes join tanks into a net", ref universalPipesEnabled,
 				"On: a pump, still or adapter reaches every tank on a universal-pipe run that touches it. Off: only tanks touching the machine.");
 			list.Label("Converter throughput: " + converterRateMultiplier.ToString("0.00") + "x");

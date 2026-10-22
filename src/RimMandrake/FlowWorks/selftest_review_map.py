@@ -34,10 +34,18 @@ check(all(s["placeholder"] == (s["status"] == "not") for s in S), "placeholder i
 
 # status is DERIVED: flip one capability's live row and the station follows (sanity: the flip is visible)
 f = next(f for f in m.FEATURES if f["id"] == "flow_spreads")
-check(st["flow_spreads"] == "works", "probe precondition: flow_spreads must start 'works' or the flip proves nothing "
-      "(now %r; refresh the evidence or pick another works feature)" % st["flow_spreads"])
+# The baseline is SEEDED, not read: the newest live result only counts at the current mod hash, so any FlowWorks source edit
+# left flow_spreads 'built' and this precondition red until the next live run (2026-10-22). Seed its rows PASS, prove the
+# seeded baseline reads 'works', then flip the same rows to FAIL.
 _, rows = m.latest_result()
-rows2 = {k: v for k, v in rows.items()}
+rows1 = dict(rows)
+for c in f["caps"]:
+    for r in capd[c].get("rows", []):
+        rows1[r] = ("PASS", "selftest")
+_, st1, _ = R.derive(m, rows1)
+check(st1["flow_spreads"] == "works", "probe precondition: flow_spreads with every row PASS must read 'works' or the flip "
+      "proves nothing (now %r)" % st1["flow_spreads"])
+rows2 = dict(rows1)
 for c in f["caps"]:
     for r in capd[c].get("rows", []):
         rows2[r] = ("FAIL", "selftest")
