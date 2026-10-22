@@ -5,8 +5,8 @@
   ============================================================================
   THEFORGE_RM_MOD_BUILD_1. Wires the campaign's Star Wars fauna onto
   RM_TheForge's wildAnimals, layered on top of the 5 non-Star-Wars/from-
-  scratch rows that mod ships inline (AA_Aerofleet, LavaSnail, AA_Metallovore,
-  RM_Dhoggur, RM_FleetFlier). Per §7 Q11 ("RimMandrake should not name
+  scratch rows that mod ships inline (RM_ColossalAerofleet, RM_Metallovore,
+  RM_Dhoggur, RM_FleetFlier and the rest of its own roster). Per §7 Q11 ("RimMandrake should not name
   star wars ever"), RM_TheForge may not carry any Star Wars creature by any
   route, so every Star Wars row the frozen RUT_TheForge.xml carries rides
   HERE instead. Shape: WildAnimals_Pyrelands.xml / WildAnimals_LeaningScrub.xml.
@@ -48,7 +48,7 @@
         <RSW_Maguana MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Maguana>
         <!-- FORGE_RULED_CONTENT_1 (owner "Wire in all waiting."): the roster's
              Tibidee row, weight from rosters/the_forge.json. Canon, so it rides
-             this layer; no RSW_ port exists, so the donor defName is cast. -->
+             this layer; cast as our RSW_ port. -->
         <RSW_Tibidee MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Tibidee>
       </value>
     </match>
