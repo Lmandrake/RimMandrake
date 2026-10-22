@@ -469,7 +469,10 @@ GPT_READ_FIX_SHAPES = [   # the hose shapes (B1-B14) moved with the hose to Flow
     ("A10 whip tails past the cap drawn still", "RM_MapComponent_CordGraph.cs", "else WhipStillDraws++;"),
     ("A15 restyle never crosses a cut span", "Aerial/RM_MapComponent_ConduitRuns.cs", "s.state == SpanState.Up &&"),
     ("A17 wall home for transmitter buildings", "CordWorldAdapter.cs", "SetWallHome(th, m);   // GPT source read"),
-    ("A18 span meshes destroyed", "Aerial/RM_MapComponent_Aerial.cs", "Notify_SpansChanged() => ClearSpanMeshes();"),
+    # A18/C11 re-shaped 2026-10-22: the pipe-pole commits (681d39c09, f511ec319) turned Notify_SpansChanged into a block and
+    # routed the ghost's look through AerialLineProfiles.LookOfPick; the fixes stand (read), the old literals no longer match
+    ("A18 span meshes destroyed", "Aerial/RM_MapComponent_Aerial.cs", "public void Notify_SpansChanged()\n        {\n            ClearSpanMeshes();"),
+    ("A18b the clear destroys each mesh", "Aerial/RM_MapComponent_Aerial.cs", "if (m?.mesh != null) UnityEngine.Object.Destroy(m.mesh);"),
     ("A19 dark strip aspect", "SectionLayer_RM_MessyCords.cs", "DecalAspect.Of(d.Kind)"),
     ("A20 unhooked lamp message shown", "Aerial/RM_MapComponent_ConduitRuns.cs", "this used to return before any message was shown"),
 ]
@@ -504,7 +507,8 @@ GPT_PRERELEASE_FIX_SHAPES = [
     ("... and only by the wires of the cut his job splices", "Aerial/RM_FallenWireShock.cs", "if (AerialMath.LayTouches(lay, c.x, c.z)) return true;"),
     ("C4 a fallen wire's grounded tail draws under pawns", "Aerial/RM_MapComponent_Aerial.cs", "float vy = AerialMath.FallenPointOnGround(lay, i) ? groundY : y;"),
     ("C10 wire-down alert counts every map", "Aerial/Alert_WireDown.cs", "            foreach (Map m in Find.Maps)\n                foreach (CompAerialAnchor a in Down(m)) culprits.Add(a.parent);"),
-    ("C11 placement ghost picks like auto-link", "Aerial/PlaceWorkers_Aerial.cs", "comp.AutoLinkCandidates(StylePicker.LookOfStyle(picked) ?? StylePicker.DefaultLook, null, center)"),
+    ("C11 placement ghost picks like auto-link", "Aerial/PlaceWorkers_Aerial.cs", "comp.AutoLinkCandidates(AerialLineProfiles.LookOfPick(def, picked), null, center, kind)"),
+    ("C11b a power pole's ghost look is the picked style or the default", "Aerial/AerialLineProfiles.cs", "return StylePicker.LookOfStyle(picked) ?? StylePicker.DefaultLook;"),
     ("D13 join hint cache keyed by map", "Aerial/ConduitStylePicker.cs", "map.uniqueID == hintMap"),
     ("B22 probe requests cleared per game", "GssSessionReset.cs", "GimmeSomeSlackProbe.request = \"\";"),
     ("C15 skip-reseed control cleared per game", "GssSessionReset.cs", "Aerial.CompAerialAnchor.debugSkipReseed = false;"),
