@@ -1,0 +1,2598 @@
+{
+ "phases": {
+  "stage": [
+   {
+    "colonist": "Human37133",
+    "spawnMsg": "Spawned 1/1 Colonist in faction PlayerColony.",
+    "drive": {
+     "success": true,
+     "cell": {
+      "x": 121,
+      "z": 114
+     },
+     "depth": 3,
+     "fillSet": false,
+     "fill": 0,
+     "ticksGame": 201
+    },
+    "depth": 3,
+    "designate": {
+     "success": true,
+     "action": "add",
+     "designation": "RM_DigCanal",
+     "added": 1,
+     "removed": 0,
+     "alreadyPresent": 0,
+     "alreadyAbsent": 0,
+     "skippedWrongType": 0,
+     "targetType": "Cell",
+     "targetedThings": false,
+     "note": "'RM_DigCanal' is a CELL designation - the rect's cells are designated directly.",
+     "onThings": false,
+     "problemCount": 0,
+     "problemListTruncated": false,
+     "problems": [],
+     "totalNow": 1,
+     "ticksGame": 201
+    },
+    "designated": {
+     "success": true,
+     "action": "query",
+     "filter": "RM_DigCanal",
+     "total": 1,
+     "totalAllDesignations": 1,
+     "returned": 1,
+     "truncated": false,
+     "designations": [
+      {
+       "def": "RM_DigCanal",
+       "x": 121,
+       "z": 114
+      }
+     ],
+     "ticksGame": 201
+    },
+    "settings": {
+     "maxDigDepth": "4",
+     "machineDigEnabled": "True",
+     "maxMachineDigDepth": "40",
+     "digToDepthEnabled": "True"
+    },
+    "wall": "08:03:00"
+   }
+  ],
+  "colonist": [
+   {
+    "i": 0,
+    "adv": 500,
+    "depth": 3,
+    "jobs": {
+     "Thing_Human630": [
+      "GotoWander",
+      119,
+      108
+     ],
+     "Thing_Human37133": [
+      "RM_DigCanalJob",
+      120,
+      114
+     ],
+     "Thing_Human626": [
+      "GotoWander",
+      119,
+      112
+     ],
+     "Thing_Human622": [
+      "GotoWander",
+      118,
+      110
+     ]
+    },
+    "wall": "08:03:22"
+   },
+   {
+    "i": 1,
+    "adv": 500,
+    "depth": 3,
+    "jobs": {
+     "Thing_Human630": [
+      "GotoWander",
+      123,
+      110
+     ],
+     "Thing_Human37133": [
+      "RM_DigCanalJob",
+      120,
+      114
+     ],
+     "Thing_Human626": [
+      "GotoWander",
+      115,
+      107
+     ],
+     "Thing_Human622": [
+      "Wait_Wander",
+      123,
+      115
+     ]
+    },
+    "wall": "08:03:30"
+   },
+   {
+    "i": 2,
+    "adv": 500,
+    "depth": 3,
+    "jobs": {
+     "Thing_Human630": [
+      "GotoWander",
+      120,
+      106
+     ],
+     "Thing_Human37133": [
+      "RM_DigCanalJob",
+      120,
+      114
+     ],
+     "Thing_Human626": [
+      "GotoWander",
+      123,
+      115
+     ],
+     "Thing_Human622": [
+      "Wait_Wander",
+      129,
+      110
+     ]
+    },
+    "wall": "08:03:39"
+   },
+   {
+    "i": 3,
+    "adv": 500,
+    "depth": 3,
+    "jobs": {
+     "Thing_Human630": [
+      "Wait_Wander",
+      125,
+      107
+     ],
+     "Thing_Human37133": [
+      "RM_DigCanalJob",
+      120,
+      114
+     ],
+     "Thing_Human626": [
+      "GotoWander",
+      123,
+      116
+     ],
+     "Thing_Human622": [
+      "GotoWander",
+      122,
+      110
+     ]
+    },
+    "wall": "08:03:48"
+   },
+   {
+    "i": 4,
+    "adv": 500,
+    "depth": 3,
+    "jobs": {
+     "Thing_Human630": [
+      "GotoWander",
+      127,
+      116
+     ],
+     "Thing_Human37133": [
+      "RM_DigCanalJob",
+      120,
+      114
+     ],
+     "Thing_Human626": [
+      "Wait_Wander",
+      125,
+      106
+     ],
+     "Thing_Human622": [
+      "Wait_Wander",
+      120,
+      110
+     ]
+    },
+    "wall": "08:03:56"
+   },
+   {
+    "i": 5,
+    "adv": 500,
+    "depth": 3,
+    "jobs": {
+     "Thing_Human630": [
+      "GotoWander",
+      126,
+      118
+     ],
+     "Thing_Human37133": [
+      "RM_DigCanalJob",
+      120,
+      114
+     ],
+     "Thing_Human626": [
+      "Wait_Wander",
+      125,
+      107
+     ],
+     "Thing_Human622": [
+      "Wait_Wander",
+      126,
+      113
+     ]
+    },
+    "wall": "08:04:05"
+   },
+   {
+    "i": 6,
+    "adv": 500,
+    "depth": 3,
+    "jobs": {
+     "Thing_Human630": [
+      "GotoWander",
+      124,
+      113
+     ],
+     "Thing_Human37133": [
+      "RM_DigCanalJob",
+      120,
+      114
+     ],
+     "Thing_Human626": [
+      "Wait_Wander",
+      128,
+      102
+     ],
+     "Thing_Human622": [
+      "Wait_Wander",
+      123,
+      113
+     ]
+    },
+    "wall": "08:04:13"
+   },
+   {
+    "i": 7,
+    "adv": 500,
+    "depth": 3,
+    "jobs": {
+     "Thing_Human630": [
+      "GotoWander",
+      125,
+      108
+     ],
+     "Thing_Human37133": [
+      "RM_DigCanalJob",
+      120,
+      114
+     ],
+     "Thing_Human626": [
+      "GotoWander",
+      128,
+      107
+     ],
+     "Thing_Human622": [
+      "GotoWander",
+      123,
+      106
+     ]
+    },
+    "wall": "08:04:22"
+   },
+   {
+    "i": 8,
+    "adv": 500,
+    "depth": 3,
+    "jobs": {
+     "Thing_Human630": [
+      "GotoWander",
+      122,
+      103
+     ],
+     "Thing_Human37133": [
+      "RM_DigCanalJob",
+      120,
+      114
+     ],
+     "Thing_Human626": [
+      "Wait_Wander",
+      127,
+      103
+     ],
+     "Thing_Human622": [
+      "Wait_Wander",
+      126,
+      100
+     ]
+    },
+    "wall": "08:04:30"
+   },
+   {
+    "i": 9,
+    "adv": 500,
+    "depth": 3,
+    "jobs": {
+     "Thing_Human630": [
+      "Wait_Wander",
+      125,
+      112
+     ],
+     "Thing_Human37133": [
+      "RM_DigCanalJob",
+      120,
+      114
+     ],
+     "Thing_Human626": [
+      "GotoWander",
+      120,
+      104
+     ],
+     "Thing_Human622": [
+      "GotoWander",
+      125,
+      102
+     ]
+    },
+    "wall": "08:04:39"
+   },
+   {
+    "i": 10,
+    "adv": 500,
+    "depth": 3,
+    "jobs": {
+     "Thing_Human630": [
+      "Wait_Wander",
+      127,
+      114
+     ],
+     "Thing_Human37133": [
+      "RM_DigCanalJob",
+      120,
+      114
+     ],
+     "Thing_Human626": [
+      "GotoWander",
+      117,
+      106
+     ],
+     "Thing_Human622": [
+      "GotoWander",
+      120,
+      100
+     ]
+    },
+    "wall": "08:04:47"
+   },
+   {
+    "i": 11,
+    "adv": 500,
+    "depth": 3,
+    "jobs": {
+     "Thing_Human630": [
+      "GotoWander",
+      123,
+      108
+     ],
+     "Thing_Human37133": [
+      "RM_DigCanalJob",
+      120,
+      114
+     ],
+     "Thing_Human626": [
+      "Wait_Wander",
+      117,
+      100
+     ],
+     "Thing_Human622": [
+      "GotoWander",
+      122,
+      104
+     ]
+    },
+    "wall": "08:04:56"
+   },
+   {
+    "redesignate": {
+     "success": true,
+     "action": "add",
+     "designation": "RM_DigCanal",
+     "added": 0,
+     "removed": 0,
+     "alreadyPresent": 1,
+     "alreadyAbsent": 0,
+     "skippedWrongType": 0,
+     "targetType": "Cell",
+     "targetedThings": false,
+     "note": "'RM_DigCanal' is a CELL designation - the rect's cells are designated directly.",
+     "onThings": false,
+     "problemCount": 0,
+     "problemListTruncated": false,
+     "problems": [],
+     "totalNow": 1,
+     "ticksGame": 6201
+    },
+    "depth": 3,
+    "wall": "08:04:56"
+   },
+   {
+    "hold": 0,
+    "adv": 500,
+    "depth": 3,
+    "designated": {
+     "success": true,
+     "action": "query",
+     "filter": "RM_DigCanal",
+     "total": 1,
+     "totalAllDesignations": 1,
+     "returned": 1,
+     "truncated": false,
+     "designations": [
+      {
+       "def": "RM_DigCanal",
+       "x": 121,
+       "z": 114
+      }
+     ],
+     "ticksGame": 6701
+    },
+    "jobs": {
+     "Thing_Human630": [
+      "GotoWander",
+      121,
+      101
+     ],
+     "Thing_Human37133": [
+      "RM_DigCanalJob",
+      120,
+      114
+     ],
+     "Thing_Human626": [
+      "Wait_Wander",
+      118,
+      106
+     ],
+     "Thing_Human622": [
+      "GotoWander",
+      126,
+      113
+     ]
+    },
+    "wall": "08:05:05"
+   },
+   {
+    "hold": 1,
+    "adv": 500,
+    "depth": 3,
+    "designated": {
+     "success": true,
+     "action": "query",
+     "filter": "RM_DigCanal",
+     "total": 1,
+     "totalAllDesignations": 1,
+     "returned": 1,
+     "truncated": false,
+     "designations": [
+      {
+       "def": "RM_DigCanal",
+       "x": 121,
+       "z": 114
+      }
+     ],
+     "ticksGame": 7201
+    },
+    "jobs": {
+     "Thing_Human630": [
+      "GotoWander",
+      122,
+      111
+     ],
+     "Thing_Human37133": [
+      "RM_DigCanalJob",
+      120,
+      114
+     ],
+     "Thing_Human626": [
+      "GotoWander",
+      118,
+      113
+     ],
+     "Thing_Human622": [
+      "GotoWander",
+      127,
+      115
+     ]
+    },
+    "wall": "08:05:14"
+   },
+   {
+    "hold": 2,
+    "adv": 500,
+    "depth": 3,
+    "designated": {
+     "success": true,
+     "action": "query",
+     "filter": "RM_DigCanal",
+     "total": 1,
+     "totalAllDesignations": 1,
+     "returned": 1,
+     "truncated": false,
+     "designations": [
+      {
+       "def": "RM_DigCanal",
+       "x": 121,
+       "z": 114
+      }
+     ],
+     "ticksGame": 7701
+    },
+    "jobs": {
+     "Thing_Human630": [
+      "GotoWander",
+      122,
+      114
+     ],
+     "Thing_Human37133": [
+      "RM_DigCanalJob",
+      120,
+      114
+     ],
+     "Thing_Human626": [
+      "GotoWander",
+      118,
+      116
+     ],
+     "Thing_Human622": [
+      "Wait_Wander",
+      122,
+      108
+     ]
+    },
+    "wall": "08:05:23"
+   },
+   {
+    "hold": 3,
+    "adv": 500,
+    "depth": 3,
+    "designated": {
+     "success": true,
+     "action": "query",
+     "filter": "RM_DigCanal",
+     "total": 1,
+     "totalAllDesignations": 1,
+     "returned": 1,
+     "truncated": false,
+     "designations": [
+      {
+       "def": "RM_DigCanal",
+       "x": 121,
+       "z": 114
+      }
+     ],
+     "ticksGame": 8201
+    },
+    "jobs": {
+     "Thing_Human630": [
+      "Wait_Wander",
+      128,
+      111
+     ],
+     "Thing_Human37133": [
+      "RM_DigCanalJob",
+      120,
+      114
+     ],
+     "Thing_Human626": [
+      "GotoWander",
+      120,
+      111
+     ],
+     "Thing_Human622": [
+      "GotoWander",
+      123,
+      112
+     ]
+    },
+    "wall": "08:05:32"
+   },
+   {
+    "probe_colonist": {
+     "success": true,
+     "kind": "dig",
+     "cell": {
+      "x": 121,
+      "z": 114
+     },
+     "fogged": false,
+     "terrain": "RM_Channel_Deep",
+     "designationPresent": true,
+     "designator": {
+      "accepted": false,
+      "reason": "Already being dug as a canal."
+     },
+     "workGiver": {
+      "def": "RM_DigCanalWorkGiver",
+      "shouldSkip": false,
+      "cellInPotentialWorkCells": true,
+      "hasJobOnCell": true,
+      "jobDef": "RM_DigCanalJob",
+      "designationDeletedByWorkGiver": false,
+      "designationRestored": false
+     },
+     "pawn": {
+      "id": "Human37133",
+      "workType": "Mining",
+      "workTypeDisabled": false,
+      "workActive": true,
+      "priority": 3,
+      "giverInNormalList": true,
+      "canReach": true
+     },
+     "ticksGame": 8201
+    },
+    "wall": "08:05:32"
+   },
+   {
+    "i": 0,
+    "adv": 500,
+    "depth": 3,
+    "jobs": {
+     "Thing_Human630": [
+      "Wait_Wander",
+      127,
+      107
+     ],
+     "Thing_Human37133": [
+      "RM_DigCanalJob",
+      120,
+      114
+     ],
+     "Thing_Human626": [
+      "Wait_Wander",
+      129,
+      110
+     ],
+     "Thing_Human622": [
+      "GotoWander",
+      127,
+      116
+     ]
+    },
+    "wall": "08:06:04"
+   },
+   {
+    "i": 1,
+    "adv": 500,
+    "depth": 3,
+    "jobs": {
+     "Thing_Human630": [
+      "GotoWander",
+      125,
+      108
+     ],
+     "Thing_Human37133": [
+      "RM_DigCanalJob",
+      120,
+      114
+     ],
+     "Thing_Human626": [
+      "GotoWander",
+      125,
+      114
+     ],
+     "Thing_Human622": [
+      "GotoWander",
+      124,
+      119
+     ]
+    },
+    "wall": "08:06:13"
+   },
+   {
+    "i": 2,
+    "adv": 500,
+    "depth": 3,
+    "jobs": {
+     "Thing_Human630": [
+      "Wait_Wander",
+      122,
+      113
+     ],
+     "Thing_Human37133": [
+      "RM_DigCanalJob",
+      120,
+      114
+     ],
+     "Thing_Human626": [
+      "Wait_Wander",
+      120,
+      121
+     ],
+     "Thing_Human622": [
+      "GotoWander",
+      123,
+      115
+     ]
+    },
+    "wall": "08:06:21"
+   },
+   {
+    "i": 3,
+    "adv": 500,
+    "depth": 3,
+    "jobs": {
+     "Thing_Human630": [
+      "GotoWander",
+      116,
+      121
+     ],
+     "Thing_Human37133": [
+      "RM_DigCanalJob",
+      120,
+      114
+     ],
+     "Thing_Human626": [
+      "Wait_Wander",
+      117,
+      120
+     ],
+     "Thing_Human622": [
+      "GotoWander",
+      123,
+      113
+     ]
+    },
+    "wall": "08:06:30"
+   },
+   {
+    "i": 4,
+    "adv": 500,
+    "depth": 4,
+    "jobs": {
+     "Thing_Human630": [
+      "GotoWander",
+      113,
+      122
+     ],
+     "Thing_Human37133": [
+      "Wait_Wander",
+      116,
+      113
+     ],
+     "Thing_Human626": [
+      "GotoWander",
+      116,
+      120
+     ],
+     "Thing_Human622": [
+      "Wait_MaintainPosture",
+      120,
+      114
+     ]
+    },
+    "wall": "08:06:38"
+   },
+   {
+    "redesignate": {
+     "success": true,
+     "action": "add",
+     "designation": "RM_DigCanal",
+     "added": 1,
+     "removed": 0,
+     "alreadyPresent": 0,
+     "alreadyAbsent": 0,
+     "skippedWrongType": 0,
+     "targetType": "Cell",
+     "targetedThings": false,
+     "note": "'RM_DigCanal' is a CELL designation - the rect's cells are designated directly.",
+     "onThings": false,
+     "problemCount": 0,
+     "problemListTruncated": false,
+     "problems": [],
+     "totalNow": 1,
+     "ticksGame": 10701
+    },
+    "depth": 4,
+    "wall": "08:06:39"
+   },
+   {
+    "hold": 0,
+    "adv": 500,
+    "depth": 4,
+    "designated": {
+     "success": true,
+     "action": "query",
+     "filter": "RM_DigCanal",
+     "total": 1,
+     "totalAllDesignations": 1,
+     "returned": 1,
+     "truncated": false,
+     "designations": [
+      {
+       "def": "RM_DigCanal",
+       "x": 121,
+       "z": 114
+      }
+     ],
+     "ticksGame": 11201
+    },
+    "jobs": {
+     "Thing_Human630": [
+      "Wait_Wander",
+      114,
+      115
+     ],
+     "Thing_Human37133": [
+      "GotoWander",
+      123,
+      110
+     ],
+     "Thing_Human626": [
+      "GotoWander",
+      120,
+      110
+     ],
+     "Thing_Human622": [
+      "Wait_Wander",
+      116,
+      117
+     ]
+    },
+    "wall": "08:06:47"
+   },
+   {
+    "hold": 1,
+    "adv": 500,
+    "depth": 4,
+    "designated": {
+     "success": true,
+     "action": "query",
+     "filter": "RM_DigCanal",
+     "total": 1,
+     "totalAllDesignations": 1,
+     "returned": 1,
+     "truncated": false,
+     "designations": [
+      {
+       "def": "RM_DigCanal",
+       "x": 121,
+       "z": 114
+      }
+     ],
+     "ticksGame": 11701
+    },
+    "jobs": {
+     "Thing_Human630": [
+      "GotoWander",
+      117,
+      112
+     ],
+     "Thing_Human37133": [
+      "GotoWander",
+      126,
+      111
+     ],
+     "Thing_Human626": [
+      "GotoWander",
+      116,
+      111
+     ],
+     "Thing_Human622": [
+      "GotoWander",
+      109,
+      116
+     ]
+    },
+    "wall": "08:06:56"
+   },
+   {
+    "hold": 2,
+    "adv": 500,
+    "depth": 4,
+    "designated": {
+     "success": true,
+     "action": "query",
+     "filter": "RM_DigCanal",
+     "total": 1,
+     "totalAllDesignations": 1,
+     "returned": 1,
+     "truncated": false,
+     "designations": [
+      {
+       "def": "RM_DigCanal",
+       "x": 121,
+       "z": 114
+      }
+     ],
+     "ticksGame": 12201
+    },
+    "jobs": {
+     "Thing_Human630": [
+      "GotoWander",
+      113,
+      112
+     ],
+     "Thing_Human37133": [
+      "GotoWander",
+      127,
+      112
+     ],
+     "Thing_Human626": [
+      "GotoWander",
+      120,
+      112
+     ],
+     "Thing_Human622": [
+      "GotoWander",
+      105,
+      114
+     ]
+    },
+    "wall": "08:07:05"
+   },
+   {
+    "hold": 3,
+    "adv": 500,
+    "depth": 4,
+    "designated": {
+     "success": true,
+     "action": "query",
+     "filter": "RM_DigCanal",
+     "total": 1,
+     "totalAllDesignations": 1,
+     "returned": 1,
+     "truncated": false,
+     "designations": [
+      {
+       "def": "RM_DigCanal",
+       "x": 121,
+       "z": 114
+      }
+     ],
+     "ticksGame": 12701
+    },
+    "jobs": {
+     "Thing_Human630": [
+      "GotoWander",
+      122,
+      114
+     ],
+     "Thing_Human37133": [
+      "GotoWander",
+      118,
+      112
+     ],
+     "Thing_Human626": [
+      "Wait_Wander",
+      130,
+      111
+     ],
+     "Thing_Human622": [
+      "GotoWander",
+      110,
+      113
+     ]
+    },
+    "wall": "08:07:13"
+   },
+   {
+    "probe_colonist": {
+     "success": true,
+     "kind": "dig",
+     "cell": {
+      "x": 121,
+      "z": 114
+     },
+     "fogged": false,
+     "terrain": "RM_Channel_Superdeep",
+     "designationPresent": true,
+     "designator": {
+      "accepted": false,
+      "reason": "Already being dug as a canal."
+     },
+     "workGiver": {
+      "def": "RM_DigCanalWorkGiver",
+      "shouldSkip": false,
+      "cellInPotentialWorkCells": true,
+      "hasJobOnCell": false,
+      "designationDeletedByWorkGiver": false,
+      "designationRestored": false
+     },
+     "pawn": {
+      "id": "Human37133",
+      "workType": "Mining",
+      "workTypeDisabled": false,
+      "workActive": true,
+      "priority": 3,
+      "giverInNormalList": true,
+      "canReach": true
+     },
+     "ticksGame": 12701
+    },
+    "wall": "08:07:13"
+   }
+  ],
+  "mech": [
+   {
+    "mechanitor": "Human98123",
+    "mmsg": "Spawned 1/1 Mechanitor_Basic in faction PlayerColony.",
+    "tunneler": "Mech_Tunneler98129",
+    "tmsg": "Spawned 1/1 Mech_Tunneler in faction PlayerColony.",
+    "orderedJob": {
+     "success": true,
+     "accepted": true,
+     "interruptibleBefore": true,
+     "requestedJobDef": "ControlMech",
+     "afterJobDef": "ControlMech",
+     "nowRunningRequested": true,
+     "ticksElapsed": 0,
+     "pausedDuringWait": true,
+     "queueLength": 0
+    },
+    "wall": "08:07:46"
+   },
+   {
+    "control_wait": 0,
+    "draft": {
+     "success": false,
+     "message": "MechanitorUtility.CanDraftMech refused: (no reason given - this mech has no overseer) The draft gizmo is disabled for the same reason. Nothing was changed."
+    },
+    "jobs": {
+     "Thing_Human630": [
+      "Wait_Wander",
+      123,
+      115
+     ],
+     "Thing_Human37133": [
+      "GotoWander",
+      115,
+      112
+     ],
+     "Thing_Human626": [
+      "Wait_Wander",
+      130,
+      111
+     ],
+     "Thing_Human98123": [
+      "ControlMech",
+      123,
+      117
+     ],
+     "Thing_Human622": [
+      "GotoWander",
+      112,
+      112
+     ],
+     "Mech_Tunneler98129": [
+      "mech",
+      124,
+      117,
+      ""
+     ]
+    },
+    "wall": "08:07:48"
+   },
+   {
+    "control_wait": 1,
+    "draft": {
+     "success": false,
+     "message": "MechanitorUtility.CanDraftMech refused: (no reason given - this mech has no overseer) The draft gizmo is disabled for the same reason. Nothing was changed."
+    },
+    "jobs": {
+     "Thing_Human630": [
+      "Wait_Wander",
+      123,
+      115
+     ],
+     "Thing_Human37133": [
+      "GotoWander",
+      113,
+      112
+     ],
+     "Thing_Human626": [
+      "GotoWander",
+      130,
+      111
+     ],
+     "Thing_Human98123": [
+      "ControlMech",
+      123,
+      117
+     ],
+     "Thing_Human622": [
+      "GotoWander",
+      114,
+      112
+     ],
+     "Mech_Tunneler98129": [
+      "mech",
+      124,
+      117,
+      ""
+     ]
+    },
+    "wall": "08:07:51"
+   },
+   {
+    "control_wait": 2,
+    "draft": {
+     "success": false,
+     "message": "MechanitorUtility.CanDraftMech refused: (no reason given - this mech has no overseer) The draft gizmo is disabled for the same reason. Nothing was changed."
+    },
+    "jobs": {
+     "Thing_Human630": [
+      "GotoWander",
+      124,
+      115
+     ],
+     "Thing_Human37133": [
+      "GotoWander",
+      111,
+      112
+     ],
+     "Thing_Human626": [
+      "GotoWander",
+      128,
+      113
+     ],
+     "Thing_Human98123": [
+      "ControlMech",
+      123,
+      117
+     ],
+     "Thing_Human622": [
+      "GotoWander",
+      116,
+      112
+     ],
+     "Mech_Tunneler98129": [
+      "mech",
+      124,
+      117,
+      ""
+     ]
+    },
+    "wall": "08:07:53"
+   },
+   {
+    "control_wait": 3,
+    "draft": {
+     "success": false,
+     "message": "MechanitorUtility.CanDraftMech refused: (no reason given - this mech has no overseer) The draft gizmo is disabled for the same reason. Nothing was changed."
+    },
+    "jobs": {
+     "Thing_Human630": [
+      "GotoWander",
+      126,
+      113
+     ],
+     "Thing_Human37133": [
+      "Wait_Wander",
+      109,
+      112
+     ],
+     "Thing_Human626": [
+      "GotoWander",
+      126,
+      115
+     ],
+     "Thing_Human98123": [
+      "ControlMech",
+      123,
+      117
+     ],
+     "Thing_Human622": [
+      "GotoWander",
+      119,
+      112
+     ],
+     "Mech_Tunneler98129": [
+      "mech",
+      124,
+      117,
+      ""
+     ]
+    },
+    "wall": "08:07:55"
+   },
+   {
+    "control_wait": 4,
+    "draft": {
+     "success": false,
+     "message": "MechanitorUtility.CanDraftMech refused: (no reason given - this mech has no overseer) The draft gizmo is disabled for the same reason. Nothing was changed."
+    },
+    "jobs": {
+     "Thing_Human630": [
+      "Wait_Wander",
+      127,
+      112
+     ],
+     "Thing_Human37133": [
+      "Wait_Wander",
+      109,
+      112
+     ],
+     "Thing_Human626": [
+      "GotoWander",
+      123,
+      115
+     ],
+     "Thing_Human98123": [
+      "ControlMech",
+      123,
+      117
+     ],
+     "Thing_Human622": [
+      "GotoWander",
+      120,
+      111
+     ],
+     "Mech_Tunneler98129": [
+      "mech",
+      124,
+      117,
+      ""
+     ]
+    },
+    "wall": "08:07:57"
+   },
+   {
+    "control_wait": 5,
+    "draft": {
+     "success": false,
+     "message": "MechanitorUtility.CanDraftMech refused: (no reason given - this mech has no overseer) The draft gizmo is disabled for the same reason. Nothing was changed."
+    },
+    "jobs": {
+     "Thing_Human630": [
+      "Wait_Wander",
+      127,
+      112
+     ],
+     "Thing_Human37133": [
+      "GotoWander",
+      110,
+      113
+     ],
+     "Thing_Human626": [
+      "GotoWander",
+      121,
+      115
+     ],
+     "Thing_Human98123": [
+      "ControlMech",
+      123,
+      117
+     ],
+     "Thing_Human622": [
+      "GotoWander",
+      122,
+      110
+     ],
+     "Mech_Tunneler98129": [
+      "mech",
+      124,
+      117,
+      ""
+     ]
+    },
+    "wall": "08:07:59"
+   },
+   {
+    "probe_tunneler": {
+     "success": true,
+     "kind": "dig",
+     "cell": {
+      "x": 121,
+      "z": 114
+     },
+     "fogged": false,
+     "terrain": "RM_Channel_Superdeep",
+     "designationPresent": true,
+     "designator": {
+      "accepted": false,
+      "reason": "Already being dug as a canal."
+     },
+     "workGiver": {
+      "def": "RM_DigCanalWorkGiver",
+      "shouldSkip": false,
+      "cellInPotentialWorkCells": true,
+      "hasJobOnCell": true,
+      "jobDef": "RM_DigCanalJob",
+      "designationDeletedByWorkGiver": false,
+      "designationRestored": false
+     },
+     "pawn": {
+      "id": "Mech_Tunneler98129",
+      "workType": "Mining",
+      "workTypeDisabled": false,
+      "workActive": true,
+      "priority": 3,
+      "giverInNormalList": true,
+      "canReach": true
+     },
+     "ticksGame": 13421
+    },
+    "depth": 4,
+    "designated": {
+     "success": true,
+     "action": "query",
+     "filter": "RM_DigCanal",
+     "total": 1,
+     "totalAllDesignations": 1,
+     "returned": 1,
+     "truncated": false,
+     "designations": [
+      {
+       "def": "RM_DigCanal",
+       "x": 121,
+       "z": 114
+      }
+     ],
+     "ticksGame": 13421
+    },
+    "wall": "08:07:59"
+   },
+   {
+    "notch": 0,
+    "i": 0,
+    "adv": 500,
+    "depth": 4,
+    "jobs": {
+     "Thing_Human630": [
+      "GotoWander",
+      119,
+      112
+     ],
+     "Thing_Human37133": [
+      "Wait_Wander",
+      119,
+      114
+     ],
+     "Thing_Human626": [
+      "Wait_Wander",
+      118,
+      117
+     ],
+     "Thing_Human98123": [
+      "ControlMech",
+      123,
+      117
+     ],
+     "Thing_Human622": [
+      "GotoWander",
+      122,
+      110
+     ],
+     "Mech_Tunneler98129": [
+      "mech",
+      124,
+      117,
+      ""
+     ]
+    },
+    "wall": "08:08:08"
+   },
+   {
+    "notch": 0,
+    "i": 1,
+    "adv": 500,
+    "depth": 4,
+    "jobs": {
+     "Thing_Human630": [
+      "GotoWander",
+      109,
+      107
+     ],
+     "Thing_Human37133": [
+      "GotoWander",
+      114,
+      115
+     ],
+     "Thing_Human626": [
+      "Wait_Wander",
+      112,
+      111
+     ],
+     "Thing_Human98123": [
+      "GotoWander",
+      120,
+      118
+     ],
+     "Thing_Human622": [
+      "GotoWander",
+      120,
+      112
+     ],
+     "Mech_Tunneler98129": [
+      "mech",
+      124,
+      117,
+      ""
+     ]
+    },
+    "wall": "08:08:17"
+   },
+   {
+    "notch": 0,
+    "i": 2,
+    "adv": 500,
+    "depth": 4,
+    "jobs": {
+     "Thing_Human630": [
+      "GotoWander",
+      110,
+      109
+     ],
+     "Thing_Human37133": [
+      "GotoWander",
+      114,
+      116
+     ],
+     "Thing_Human626": [
+      "GotoWander",
+      118,
+      112
+     ],
+     "Thing_Human98123": [
+      "GotoWander",
+      110,
+      115
+     ],
+     "Thing_Human622": [
+      "Wait_Wander",
+      126,
+      117
+     ],
+     "Mech_Tunneler98129": [
+      "mech",
+      122,
+      115,
+      ""
+     ]
+    },
+    "wall": "08:08:26"
+   },
+   {
+    "notch": 0,
+    "i": 3,
+    "adv": 79,
+    "depth": 4,
+    "jobs": {
+     "Thing_Human630": [
+      "GotoWander",
+      110,
+      110
+     ],
+     "Thing_Human37133": [
+      "GotoWander",
+      116,
+      114
+     ],
+     "Thing_Human626": [
+      "GotoWander",
+      120,
+      112
+     ],
+     "Thing_Human98123": [
+      "GotoWander",
+      109,
+      114
+     ],
+     "Thing_Human622": [
+      "Wait_Wander",
+      126,
+      117
+     ],
+     "Mech_Tunneler98129": [
+      "mech",
+      122,
+      115,
+      ""
+     ]
+    },
+    "wall": "08:08:28"
+   },
+   {
+    "notch": 0,
+    "i": 4,
+    "adv": 500,
+    "depth": 4,
+    "jobs": {
+     "Thing_Human630": [
+      "GotoWander",
+      119,
+      118
+     ],
+     "Thing_Human37133": [
+      "GotoWander",
+      119,
+      113
+     ],
+     "Thing_Human626": [
+      "Wait_Wander",
+      123,
+      113
+     ],
+     "Thing_Human98123": [
+      "GotoWander",
+      113,
+      112
+     ],
+     "Thing_Human622": [
+      "GotoWander",
+      123,
+      114
+     ],
+     "Mech_Tunneler98129": [
+      "mech",
+      122,
+      115,
+      ""
+     ]
+    },
+    "wall": "08:08:36"
+   },
+   {
+    "notch": 0,
+    "i": 5,
+    "adv": 500,
+    "depth": 4,
+    "jobs": {
+     "Thing_Human630": [
+      "Wait_Wander",
+      119,
+      117
+     ],
+     "Thing_Human37133": [
+      "Wait_Wander",
+      125,
+      114
+     ],
+     "Thing_Human626": [
+      "Wait_Wander",
+      123,
+      118
+     ],
+     "Thing_Human98123": [
+      "GotoWander",
+      123,
+      113
+     ],
+     "Thing_Human622": [
+      "Wait_Wander",
+      117,
+      109
+     ],
+     "Mech_Tunneler98129": [
+      "mech",
+      122,
+      115,
+      ""
+     ]
+    },
+    "wall": "08:08:45"
+   },
+   {
+    "notch": 0,
+    "i": 6,
+    "adv": 500,
+    "depth": 4,
+    "jobs": {
+     "Thing_Human630": [
+      "GotoWander",
+      115,
+      110
+     ],
+     "Thing_Human37133": [
+      "GotoWander",
+      117,
+      112
+     ],
+     "Thing_Human626": [
+      "Wait_Wander",
+      123,
+      113
+     ],
+     "Thing_Human98123": [
+      "Wait_Wander",
+      132,
+      118
+     ],
+     "Thing_Human622": [
+      "GotoWander",
+      120,
+      107
+     ],
+     "Mech_Tunneler98129": [
+      "mech",
+      122,
+      115,
+      ""
+     ]
+    },
+    "wall": "08:08:54"
+   },
+   {
+    "notch": 0,
+    "i": 7,
+    "adv": 500,
+    "depth": 4,
+    "jobs": {
+     "Thing_Human630": [
+      "MeditatePray",
+      117,
+      105
+     ],
+     "Thing_Human37133": [
+      "GotoWander",
+      113,
+      111
+     ],
+     "Thing_Human626": [
+      "Wait_Wander",
+      127,
+      109
+     ],
+     "Thing_Human98123": [
+      "GotoWander",
+      127,
+      116
+     ],
+     "Thing_Human622": [
+      "GotoWander",
+      123,
+      109
+     ],
+     "Mech_Tunneler98129": [
+      "mech",
+      122,
+      115,
+      ""
+     ]
+    },
+    "wall": "08:09:02"
+   },
+   {
+    "stalled_at": 4,
+    "wall": "08:09:02"
+   },
+   {
+    "final_depth": 4,
+    "designated": {
+     "success": true,
+     "action": "query",
+     "filter": "RM_DigCanal",
+     "total": 1,
+     "totalAllDesignations": 1,
+     "returned": 1,
+     "truncated": false,
+     "designations": [
+      {
+       "def": "RM_DigCanal",
+       "x": 121,
+       "z": 114
+      }
+     ],
+     "ticksGame": 17000
+    },
+    "wall": "08:09:03"
+   }
+  ],
+  "watch": [
+   {
+    "wall": "08:10:27",
+    "tick": 18000,
+    "depth": 4,
+    "who": [
+     [
+      "Human37133",
+      120,
+      108,
+      "Wandering."
+     ],
+     [
+      "Human98123",
+      116,
+      104,
+      "Wandering."
+     ],
+     [
+      "Mech_Tunneler98129",
+      122,
+      115,
+      "Digging a canal."
+     ]
+    ]
+   },
+   {
+    "wall": "08:10:44",
+    "tick": 19000,
+    "depth": 4,
+    "who": [
+     [
+      "Human37133",
+      126,
+      117,
+      "Wandering."
+     ],
+     [
+      "Human98123",
+      121,
+      103,
+      "Wandering."
+     ],
+     [
+      "Mech_Tunneler98129",
+      122,
+      115,
+      "Digging a canal."
+     ]
+    ]
+   },
+   {
+    "wall": "08:11:02",
+    "tick": 20000,
+    "depth": 4,
+    "who": [
+     [
+      "Human37133",
+      132,
+      115,
+      "Wandering."
+     ],
+     [
+      "Human98123",
+      130,
+      111,
+      "Wandering."
+     ],
+     [
+      "Mech_Tunneler98129",
+      122,
+      115,
+      "Digging a canal."
+     ]
+    ]
+   },
+   {
+    "wall": "08:11:20",
+    "tick": 21000,
+    "depth": 5,
+    "who": [
+     [
+      "Human37133",
+      120,
+      109,
+      "Wandering."
+     ],
+     [
+      "Human98123",
+      119,
+      105,
+      "Wandering."
+     ],
+     [
+      "Mech_Tunneler98129",
+      122,
+      114,
+      "Wandering."
+     ]
+    ]
+   },
+   {
+    "wall": "08:11:54",
+    "tick": 22000,
+    "depth": 5,
+    "who": [
+     [
+      "Human37133",
+      115,
+      98,
+      "Wandering."
+     ],
+     [
+      "Human98123",
+      118,
+      104,
+      "Wandering."
+     ],
+     [
+      "Mech_Tunneler98129",
+      122,
+      104,
+      "Wandering."
+     ]
+    ]
+   },
+   {
+    "wall": "08:12:15",
+    "tick": 23000,
+    "depth": 5,
+    "who": [
+     [
+      "Human37133",
+      119,
+      102,
+      "Wandering."
+     ],
+     [
+      "Human98123",
+      124,
+      104,
+      "Wandering."
+     ],
+     [
+      "Mech_Tunneler98129",
+      122,
+      113,
+      "Digging a canal."
+     ]
+    ]
+   },
+   {
+    "wall": "08:12:34",
+    "tick": 24000,
+    "depth": 5,
+    "who": [
+     [
+      "Human37133",
+      102,
+      97,
+      "Wandering."
+     ],
+     [
+      "Human98123",
+      124,
+      88,
+      "Wandering."
+     ],
+     [
+      "Mech_Tunneler98129",
+      122,
+      113,
+      "Digging a canal."
+     ]
+    ]
+   },
+   {
+    "wall": "08:12:51",
+    "tick": 25000,
+    "depth": 5,
+    "who": [
+     [
+      "Human37133",
+      105,
+      97,
+      "Wandering."
+     ],
+     [
+      "Human98123",
+      115,
+      101,
+      "Wandering."
+     ],
+     [
+      "Mech_Tunneler98129",
+      122,
+      113,
+      "Digging a canal."
+     ]
+    ]
+   },
+   {
+    "wall": "08:13:09",
+    "tick": 26000,
+    "depth": 5,
+    "who": [
+     [
+      "Human37133",
+      108,
+      97,
+      "Wandering."
+     ],
+     [
+      "Human98123",
+      112,
+      97,
+      "Wandering."
+     ],
+     [
+      "Mech_Tunneler98129",
+      122,
+      113,
+      "Digging a canal."
+     ]
+    ]
+   },
+   {
+    "wall": "08:13:27",
+    "tick": 27000,
+    "depth": 5,
+    "who": [
+     [
+      "Human37133",
+      111,
+      104,
+      "Wandering."
+     ],
+     [
+      "Human98123",
+      112,
+      98,
+      "Wandering."
+     ],
+     [
+      "Mech_Tunneler98129",
+      122,
+      113,
+      "Digging a canal."
+     ]
+    ]
+   },
+   {
+    "wall": "08:13:46",
+    "tick": 28000,
+    "depth": 5,
+    "who": [
+     [
+      "Human37133",
+      110,
+      98,
+      "Wandering."
+     ],
+     [
+      "Human98123",
+      115,
+      100,
+      "Wandering."
+     ],
+     [
+      "Mech_Tunneler98129",
+      122,
+      113,
+      "Digging a canal."
+     ]
+    ]
+   },
+   {
+    "wall": "08:14:05",
+    "tick": 29000,
+    "depth": 5,
+    "who": [
+     [
+      "Human37133",
+      113,
+      96,
+      "Wandering."
+     ],
+     [
+      "Human98123",
+      116,
+      95,
+      "Wandering."
+     ],
+     [
+      "Mech_Tunneler98129",
+      122,
+      113,
+      "Digging a canal."
+     ]
+    ]
+   },
+   {
+    "wall": "08:14:24",
+    "tick": 30000,
+    "depth": 5,
+    "who": [
+     [
+      "Human37133",
+      107,
+      96,
+      "Wandering."
+     ],
+     [
+      "Human98123",
+      107,
+      95,
+      "Wandering."
+     ],
+     [
+      "Mech_Tunneler98129",
+      122,
+      113,
+      "Digging a canal."
+     ]
+    ]
+   },
+   {
+    "wall": "08:14:42",
+    "tick": 31000,
+    "depth": 6,
+    "who": [
+     [
+      "Human37133",
+      89,
+      102,
+      "Consuming glimmerslime."
+     ],
+     [
+      "Human98123",
+      110,
+      101,
+      "Wandering."
+     ],
+     [
+      "Mech_Tunneler98129",
+      117,
+      109,
+      "Wandering."
+     ]
+    ]
+   },
+   {
+    "wall": "08:15:00",
+    "tick": 32000,
+    "depth": 6,
+    "who": [
+     [
+      "Human37133",
+      92,
+      99,
+      "Wandering."
+     ],
+     [
+      "Human98123",
+      118,
+      111,
+      "Wandering."
+     ],
+     [
+      "Mech_Tunneler98129",
+      111,
+      104,
+      "Digging a canal."
+     ]
+    ]
+   },
+   {
+    "wall": "08:15:18",
+    "tick": 33000,
+    "depth": 6,
+    "who": [
+     [
+      "Human37133",
+      103,
+      97,
+      "Wandering."
+     ],
+     [
+      "Human98123",
+      114,
+      105,
+      "Wandering."
+     ],
+     [
+      "Mech_Tunneler98129",
+      120,
+      113,
+      "Digging a canal."
+     ]
+    ]
+   },
+   {
+    "wall": "08:15:36",
+    "tick": 34000,
+    "depth": 6,
+    "who": [
+     [
+      "Human37133",
+      112,
+      103,
+      "Wandering."
+     ],
+     [
+      "Human98123",
+      113,
+      99,
+      "Wandering."
+     ],
+     [
+      "Mech_Tunneler98129",
+      120,
+      113,
+      "Digging a canal."
+     ]
+    ]
+   },
+   {
+    "wall": "08:15:54",
+    "tick": 35000,
+    "depth": 6,
+    "who": [
+     [
+      "Human37133",
+      116,
+      104,
+      "Drinking water."
+     ],
+     [
+      "Human98123",
+      114,
+      104,
+      "Wandering."
+     ],
+     [
+      "Mech_Tunneler98129",
+      120,
+      113,
+      "Digging a canal."
+     ]
+    ]
+   },
+   {
+    "wall": "08:16:13",
+    "tick": 36000,
+    "depth": 6,
+    "who": [
+     [
+      "Human37133",
+      119,
+      112,
+      "Wandering."
+     ],
+     [
+      "Human98123",
+      113,
+      107,
+      "Wandering."
+     ],
+     [
+      "Mech_Tunneler98129",
+      120,
+      113,
+      "Digging a canal."
+     ]
+    ]
+   },
+   {
+    "wall": "08:16:31",
+    "tick": 37000,
+    "depth": 6,
+    "who": [
+     [
+      "Human37133",
+      113,
+      107,
+      "Wandering."
+     ],
+     [
+      "Human98123",
+      107,
+      107,
+      "Downed, unconscious."
+     ],
+     [
+      "Mech_Tunneler98129",
+      120,
+      113,
+      "Digging a canal."
+     ]
+    ]
+   },
+   {
+    "wall": "08:16:49",
+    "tick": 38000,
+    "depth": 6,
+    "who": [
+     [
+      "Human37133",
+      116,
+      105,
+      "Wandering."
+     ],
+     [
+      "Human98123",
+      107,
+      107,
+      "Downed, unconscious."
+     ],
+     [
+      "Mech_Tunneler98129",
+      120,
+      113,
+      "Digging a canal."
+     ]
+    ]
+   },
+   {
+    "wall": "08:17:07",
+    "tick": 39000,
+    "depth": 6,
+    "who": [
+     [
+      "Human37133",
+      116,
+      109,
+      "Wandering."
+     ],
+     [
+      "Human98123",
+      107,
+      107,
+      "Downed, unconscious."
+     ],
+     [
+      "Mech_Tunneler98129",
+      120,
+      113,
+      "Digging a canal."
+     ]
+    ]
+   },
+   {
+    "wall": "08:17:25",
+    "tick": 40000,
+    "depth": 6,
+    "who": [
+     [
+      "Human37133",
+      110,
+      107,
+      "Downed, unconscious."
+     ],
+     [
+      "Human98123",
+      107,
+      107,
+      "Downed, unconscious."
+     ],
+     [
+      "Mech_Tunneler98129",
+      120,
+      113,
+      "Digging a canal."
+     ]
+    ]
+   },
+   {
+    "wall": "08:17:42",
+    "tick": 41000,
+    "depth": 6,
+    "who": [
+     [
+      "Human37133",
+      110,
+      107,
+      "Downed, unconscious."
+     ],
+     [
+      "Human98123",
+      107,
+      107,
+      "Downed, unconscious."
+     ],
+     [
+      "Mech_Tunneler98129",
+      120,
+      113,
+      "Digging a canal."
+     ]
+    ]
+   },
+   {
+    "wall": "08:17:55",
+    "tick": 42000,
+    "depth": 7,
+    "who": [
+     [
+      "Human37133",
+      110,
+      107,
+      "Downed, unconscious."
+     ],
+     [
+      "Human98123",
+      107,
+      107,
+      "Downed, unconscious."
+     ],
+     [
+      "Mech_Tunneler98129",
+      117,
+      109,
+      "Wandering."
+     ]
+    ]
+   },
+   {
+    "wall": "08:18:07",
+    "tick": 43000,
+    "depth": 7,
+    "who": [
+     [
+      "Human37133",
+      110,
+      107,
+      "Downed, unconscious."
+     ],
+     [
+      "Human98123",
+      107,
+      107,
+      "Downed, unconscious."
+     ],
+     [
+      "Mech_Tunneler98129",
+      120,
+      113,
+      "Digging a canal."
+     ]
+    ]
+   },
+   {
+    "wall": "08:18:34",
+    "tick": 44000,
+    "depth": 7,
+    "who": [
+     [
+      "Human37133",
+      110,
+      107,
+      "Downed, unconscious."
+     ],
+     [
+      "Human98123",
+      107,
+      107,
+      "Downed, unconscious."
+     ],
+     [
+      "Mech_Tunneler98129",
+      120,
+      113,
+      "Digging a canal."
+     ]
+    ]
+   },
+   {
+    "wall": "08:18:47",
+    "tick": 45000,
+    "depth": 7,
+    "who": [
+     [
+      "Human37133",
+      110,
+      107,
+      "Downed, unconscious."
+     ],
+     [
+      "Human98123",
+      107,
+      107,
+      "Downed, unconscious."
+     ],
+     [
+      "Mech_Tunneler98129",
+      120,
+      113,
+      "Digging a canal."
+     ]
+    ]
+   },
+   {
+    "wall": "08:19:00",
+    "tick": 46000,
+    "depth": 7,
+    "who": [
+     [
+      "Human37133",
+      110,
+      107,
+      "Downed, unconscious."
+     ],
+     [
+      "Human98123",
+      107,
+      107,
+      "Downed, unconscious."
+     ],
+     [
+      "Mech_Tunneler98129",
+      120,
+      113,
+      "Digging a canal."
+     ]
+    ]
+   },
+   {
+    "wall": "08:19:13",
+    "tick": 47000,
+    "depth": 7,
+    "who": [
+     [
+      "Human37133",
+      110,
+      107,
+      "Downed, unconscious."
+     ],
+     [
+      "Human98123",
+      107,
+      107,
+      "Downed, unconscious."
+     ],
+     [
+      "Mech_Tunneler98129",
+      120,
+      113,
+      "Digging a canal."
+     ]
+    ]
+   },
+   {
+    "wall": "08:19:26",
+    "tick": 48000,
+    "depth": 7,
+    "who": [
+     [
+      "Human37133",
+      110,
+      107,
+      "Downed, unconscious."
+     ],
+     [
+      "Human98123",
+      107,
+      107,
+      "Downed, unconscious."
+     ],
+     [
+      "Mech_Tunneler98129",
+      120,
+      113,
+      "Digging a canal."
+     ]
+    ]
+   },
+   {
+    "wall": "08:19:39",
+    "tick": 49000,
+    "depth": 7,
+    "who": [
+     [
+      "Human37133",
+      110,
+      107,
+      "Downed, unconscious."
+     ],
+     [
+      "Human98123",
+      107,
+      107,
+      "Downed, unconscious."
+     ],
+     [
+      "Mech_Tunneler98129",
+      120,
+      113,
+      "Digging a canal."
+     ]
+    ]
+   },
+   {
+    "wall": "08:19:52",
+    "tick": 50000,
+    "depth": 7,
+    "who": [
+     [
+      "Human37133",
+      110,
+      107,
+      "Downed, unconscious."
+     ],
+     [
+      "Human98123",
+      107,
+      107,
+      "Downed, unconscious."
+     ],
+     [
+      "Mech_Tunneler98129",
+      120,
+      113,
+      "Digging a canal."
+     ]
+    ]
+   },
+   {
+    "wall": "08:20:04",
+    "tick": 51000,
+    "depth": 7,
+    "who": [
+     [
+      "Human37133",
+      110,
+      107,
+      "Downed, unconscious."
+     ],
+     [
+      "Human98123",
+      107,
+      107,
+      "Downed, unconscious."
+     ],
+     [
+      "Mech_Tunneler98129",
+      120,
+      113,
+      "Digging a canal."
+     ]
+    ]
+   },
+   {
+    "wall": "08:20:17",
+    "tick": 52000,
+    "depth": 7,
+    "who": [
+     [
+      "Human37133",
+      110,
+      107,
+      "Downed, unconscious."
+     ],
+     [
+      "Human98123",
+      107,
+      107,
+      "Downed, unconscious."
+     ],
+     [
+      "Mech_Tunneler98129",
+      120,
+      113,
+      "Digging a canal."
+     ]
+    ]
+   },
+   {
+    "wall": "08:20:29",
+    "tick": 53000,
+    "depth": 8,
+    "who": [
+     [
+      "Human37133",
+      110,
+      107,
+      "Downed, unconscious."
+     ],
+     [
+      "Human98123",
+      107,
+      107,
+      "Downed, unconscious."
+     ],
+     [
+      "Mech_Tunneler98129",
+      119,
+      107,
+      "Wandering."
+     ]
+    ]
+   }
+  ]
+ },
+ "colonist": "Human37133",
+ "mechanitor": "Human98123",
+ "tunneler": "Mech_Tunneler98129",
+ "ids": [
+  "Mech_Tunneler98129",
+  "Human37133",
+  "Human98123"
+ ]
+}

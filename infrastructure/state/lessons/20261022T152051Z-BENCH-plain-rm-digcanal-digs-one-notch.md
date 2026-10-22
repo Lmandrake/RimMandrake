@@ -1,0 +1,1 @@
+Plain RM_DigCanal digs ONE notch per order and notch n costs 3200*n work: a Tunneler (~2.5 work/tick) takes ~38k ticks from 2 m to 4 m; a skill-3 colonist did not finish 1.5->2 m in 8000 ticks (not a stall). Budget dig rows by WorkToCut, not by feel. (2026-10-22)
