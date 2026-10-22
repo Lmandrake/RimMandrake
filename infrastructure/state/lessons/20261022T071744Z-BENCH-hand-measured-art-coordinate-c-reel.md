@@ -1,0 +1,1 @@
+A hand-measured art coordinate in C# (reel nozzle u 9/256 at drawSize 2.8) silently went stale when two art installs and a drawSize change replaced the texture; the hose coupled 1.3 cells west in bare ground. Generate such coordinates from the installed PNG + the def's drawSize and keep a --check selftest (selftest_hose_ports.py) so any reinstall turns red.
