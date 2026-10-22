@@ -14,8 +14,7 @@
      session's sibling item shares).
 
      🔴 DEPENDENCY, RECORDED HONESTLY: `RM_OllathrixEgg` is
-     `WEBWORK_NEST_EGG_ECONOMY_1`'s own build (in flight concurrently this
-     session, not yet landed as of this file). This design's own §4 items
+     `WEBWORK_NEST_EGG_ECONOMY_1`'s own build (since landed). This design's own §4 items
      table places an authoring constraint on that item: the egg must carry an
      EXPLICIT `<tradeability>Sellable</tradeability>` element, not rely on the
      engine's own All default, "or the campaign patch... is a Replace and must

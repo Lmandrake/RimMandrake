@@ -7,8 +7,7 @@
   `body` stays the vanilla Core `QuadrupedAnimalWithHooves` — no BodyDef
   port needed. `leatherDef`/`specificMeatDef` repoint to the already-ported
   RSW_Leather_Saurian/RSW_Saurian_Meat (Wave B). No comps (no egg layer). Its
-  Odyssey `SW_Spur` specialTrainable/ability is vanilla Core content, left
-  unprefixed. Sounds repoint to the already-absorbed sound wave
+  Odyssey `SW_Spur` specialTrainable/ability is our RSW_SW_Spur (RSW_DesertPort ability set). Sounds repoint to the already-absorbed sound wave
   (RSW_Pawn_Dalgo_*, 2026-09-02). texPaths are unchanged text — extracted
   art sits at Textures/swanimals/Dalgo/ (extract_bundle.py against the same
   AssetBundle every prior wave used; 3 extra "DalgoPack" textures in the
