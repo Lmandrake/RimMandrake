@@ -6,7 +6,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RM_HoseReel</defName>
     <label>hose reel</label>
-    <description>A scrap pump hookup with a reel of thick sack-cloth flexible hose, stitched like a Jawa robe. Lay the hose out to any cell within reach in one go and reel it back just as fast. The hose lies flat and limp when empty and plumps up round and taut while liquid moves through it.</description>
+    <description>A reel of thick sack-cloth flexible hose, stitched like a Jawa robe, on a scrap hookup. Build it touching a liquid tank, pump or pipe, then use Deploy hose: a colonist carries the free end out (the reach is in the mod settings) and the hose unrolls behind them. Lay the end on another tank, pump or reel to join them, or leave it lying free as an intake or outflow (the Free end button). Retract hose winds it back in. The hose lies flat and limp when empty and plumps up round and taut while liquid moves through it.</description>
     <thingClass>Building</thingClass>
     <graphicData>
       <texPath>RimMandrake/FlowWorks/Hose/Reel_PumpHookup</texPath>

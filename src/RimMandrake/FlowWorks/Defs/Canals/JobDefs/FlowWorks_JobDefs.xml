@@ -19,7 +19,7 @@
   <JobDef>
     <defName>RM_OperateLadderJob</defName>
     <driverClass>RimMandrake.FlowWorks.JobDriver_RM_OperateLadder</driverClass>
-    <reportString>moving TargetA on its rails.</reportString>
+    <reportString>raising or lowering TargetA.</reportString>
     <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
   </JobDef>
 

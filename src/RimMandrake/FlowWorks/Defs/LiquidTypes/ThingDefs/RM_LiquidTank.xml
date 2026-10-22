@@ -29,7 +29,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RM_LiquidTank</defName>
     <label>liquid tank</label>
-    <description>A squat liquid tank on a skid frame, its valve cluster on top; pick its look on the build button. Holds a real quantity of one liquid at a time: pour a filled bottle, bucket or barrel in to top it up, or fill an empty one from its stock. It does not care which liquid, as long as it is not already holding a different one.</description>
+    <description>A squat liquid tank on a skid frame, its valve cluster on top; pick its look on the build button. Holds a real quantity of one liquid at a time: pour a filled bottle, bucket or barrel in to top it up, or fill an empty one from its stock. It does not care which liquid, as long as it is not already holding a different one. Its Job button decides what it does on its pipes and hoses: Store, Fill (pull from the other tanks), Empty (send to them) or Dump.</description>
     <thingClass>RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank</thingClass>
     <graphicData>
       <texPath>RimMandrake/FlowWorks/Tank/Scrapper/RM_LiquidTank</texPath>
@@ -77,7 +77,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RM_LiquidTankTall</defName>
     <label>tall liquid tank</label>
-    <description>The liquid tank stood upright and built tall: the same footprint, twice the drink. Holds a real quantity of one liquid at a time: pour a filled bottle, bucket or barrel in to top it up, or fill an empty one from its stock. It does not care which liquid, as long as it is not already holding a different one.</description>
+    <description>The liquid tank stood upright and built tall: the same footprint, twice the drink. Holds a real quantity of one liquid at a time: pour a filled bottle, bucket or barrel in to top it up, or fill an empty one from its stock. It does not care which liquid, as long as it is not already holding a different one. Its Job button decides what it does on its pipes and hoses: Store, Fill (pull from the other tanks), Empty (send to them) or Dump.</description>
     <thingClass>RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank</thingClass>
     <graphicData>
       <texPath>RimMandrake/FlowWorks/Tank/Scrapper/RM_LiquidTankTall</texPath>
