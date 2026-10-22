@@ -1,0 +1,327 @@
+{
+ "script": "lines_proof.py",
+ "started": "2026-10-22T09:40:10",
+ "rows": [
+  {
+   "id": "ROPE_DECK_RIGID_REFUSED_FLEX_OK",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE",
+   "detail": {
+    "surface": "SURFACE s=RopeDeck hoseClosed=False band=0 rules=True",
+    "place": {
+     "RM_UniversalPipe": "PLACE ok=False kind=RigidPipe surface=RopeDeck why=Pipe_cannot_be_built_on_a_bridge_deck:_it_is_rigid._Cross_on_poles,_or_use_a_flexible_line.",
+     "PowerConduit": "PLACE ok=False kind=RigidConduit surface=RopeDeck why=Conduit_cannot_be_built_on_a_bridge_deck:_it_is_rigid._Cross_on_poles,_or_use_a_flexible_line.",
+     "RM_PowerCord": "PLACE ok=True kind=FlexCord surface=RopeDeck why=-"
+    },
+    "control": "PLACE ok=True kind=RigidPipe surface=SolidGround why=-",
+    "lay": {
+     "success": true,
+     "cmd": "lay:22,29,40,30",
+     "reason": null,
+     "layOk": true
+    },
+    "hose": "HOSELINE laid=True ramps=0 ladders=0 cut=False cells=32 deck=4 cover=0 dug=0 geom=13875535850071515889 retract=- line=-"
+   }
+  },
+  {
+   "id": "COVER_CARRIES_NO_HOSE",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE",
+   "detail": {
+    "surface": "SURFACE s=Cover hoseClosed=True band=0 rules=True",
+    "lay": {
+     "success": true,
+     "cmd": "lay:22,41,40,42",
+     "reason": null,
+     "layOk": true
+    },
+    "hose": "HOSELINE laid=True ramps=0 ladders=0 cut=False cells=34 deck=0 cover=0 dug=0 geom=14755005507691244600 retract=- line=-"
+   }
+  },
+  {
+   "id": "POLE_SPAN_CARRIES_LIQUID",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE",
+   "detail": {
+    "link": "LINK verdict=AlreadyLinked strung=True spans=1",
+    "net": "NET same=True a=1 b=1 spans=1 aerial=1 fitting=0",
+    "tankBInStore": true,
+    "afterCut": "NET same=False a=1 b=1 spans=0 aerial=0 fitting=0"
+   }
+  },
+  {
+   "id": "DIG_UNDER_PIPE_SPLITS_NET",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE",
+   "detail": {
+    "before": "NET same=True a=1 b=1 spans=0 aerial=0 fitting=0",
+    "after": "NET same=False a=1 b=1 spans=0 aerial=0 fitting=0",
+    "pipeLeft": 0,
+    "broken": 1,
+    "commits": 1,
+    "secondDig": 0
+   }
+  },
+  {
+   "id": "CORD_DECK_LAMP_LIT",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "POWER_CORD_BUILD_BENDS_WHERE_CONDUIT_BREAKS",
+   "detail": {
+    "lampOn": true,
+    "poweredAfterTicks": 120,
+    "deckCord": "CORD cut=False transmits=True net=0 line=Lying_on_a_bridge_deck.",
+    "lamp": "POWER on=True net=0 trader=True",
+    "nearCord": "CORD cut=False transmits=True net=0 line=-"
+   }
+  },
+  {
+   "id": "LEAF_RAISED_LAMP_DARK",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "POWER_CORD_BUILD_BENDS_WHERE_CONDUIT_BREAKS",
+   "detail": {
+    "litFirstAfter": 200,
+    "darkAfter": 0,
+    "raisedCord": "CORD cut=True transmits=False net=-1 line=Disconnected:_the_drawbridge_leaf_under_it_is_raised._It_rejoins_when_the_leaf_is_lowered.",
+    "litAgainAfter": 200,
+    "leaf": "LEAF leaf=1/1 progress=960 full=960 target=raised raised=4/4 frozen=False winch=True powered=True hold=True auto=False pending=none tip=True hinge=A version=1"
+   }
+  },
+  {
+   "id": "COLLAPSE_CORD_SHOCKS_ONCE",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE",
+   "detail": {
+    "cordsDropped": 4,
+    "liveFalls60": 1,
+    "liveFalls360": 1,
+    "liveHalves": 1,
+    "shocks": 1,
+    "victimAt": [
+     32,
+     102
+    ],
+    "hediffs": [
+     "Bite",
+     "RM_FallenWireShock"
+    ],
+    "lampDark": true
+   }
+  },
+  {
+   "id": "LADDER_HOSE_DRAINS_RAISED_STAYS",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE",
+   "detail": {
+    "lay": {
+     "success": true,
+     "cmd": "lay:30,115,39,115",
+     "reason": null,
+     "layOk": true
+    },
+    "hoseBefore": "HOSELINE laid=True ramps=0 ladders=1 cut=False cells=22 deck=0 cover=0 dug=2 geom=9607796467633446993 retract=- line=Hangs_down_a_ladder_into_the_dug_ground.",
+    "pumpPoweredAfterTicks": 30,
+    "pit": [
+     "PITWATER dl=360000 wet=9 cells=9",
+     "PITWATER dl=300000 wet=9 cells=9"
+    ],
+    "tank": [
+     0,
+     59090
+    ],
+    "raise": "LADDER cell=38,115 present=True raised=True want=True ordered=False top=37,115 inspect=Slid_up_onto_the_rim:_nobody_can_climb_down_or_out.",
+    "hoseAfterRaise": "HOSELINE laid=True ramps=0 ladders=1 cut=False cells=22 deck=0 cover=0 dug=2 geom=9607796467633446993 retract=- line=Hangs_down_a_ladder_into_the_dug_ground."
+   }
+  },
+  {
+   "id": "DIG_REROUTES_LAID_HOSE",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE",
+   "detail": {
+    "lay": {
+     "success": true,
+     "cmd": "lay:30,130,46,130",
+     "reason": null,
+     "layOk": true
+    },
+    "before": "HOSELINE laid=True ramps=0 ladders=0 cut=False cells=31 deck=0 cover=0 dug=0 geom=17846165968321553512 retract=- line=-",
+    "dugUnder": "HOSELINE laid=True ramps=0 ladders=0 cut=False cells=31 deck=0 cover=0 dug=3 geom=17846165968321553512 retract=- line=-",
+    "after": "HOSELINE laid=True ramps=0 ladders=0 cut=False cells=31 deck=0 cover=0 dug=0 geom=16303026837383474000 retract=- line=-"
+   }
+  },
+  {
+   "id": "COVER_BREAK_DROPS_RIDER",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "FLOWWORKS_PITCOVER_FIX_BURNS_PAWN_UNHARMED",
+   "detail": {
+    "before": "TRAP descents=0 lastCell=32,125 pos=32,125 held=False last=-",
+    "after": "TRAP descents=1 lastCell=32,125 pos=32,125 held=True last=Human56576@32,125_t=3317_fall=10.0",
+    "descents": 1,
+    "damage": {
+     "success": true,
+     "message": "Damaged 1 thing(s) with Blunt 5000.",
+     "damageDef": "Blunt",
+     "harmsHealth": true,
+     "targetsHit": 1,
+     "colonistsSkipped": 0,
+     "bodyPartNotOnTarget": 0,
+     "results": [
+      {
+       "id": "RM_PitCover_PlankLattice56574",
+       "def": "RM_PitCover_PlankLattice",
+       "isPawn": false,
+       "bodyPartTargeted": true,
+       "hitPointsBefore": 80,
+       "hitPointsAfter": 0,
+       "destroyed": true,
+       "totalDamageDealt": 80.0,
+       "hediffsBefore": 0,
+       "hediffsAfter": 0,
+       "downed": false,
+       "dead": false,
+       "stunTicksLeft": 0
+      }
+     ],
+     "targets": [
+      {
+       "id": "RM_PitCover_PlankLattice56574",
+       "def": "RM_PitCover_PlankLattice",
+       "isPawn": false,
+       "bodyPartTargeted": true,
+       "hitPointsBefore": 80,
+       "hitPointsAfter": 0,
+       "destroyed": true,
+       "totalDamageDealt": 80.0,
+       "hediffsBefore": 0,
+       "hediffsAfter": 0,
+       "downed": false,
+       "dead": false,
+       "stunTicksLeft": 0
+      }
+     ],
+     "resultCount": 1,
+     "verdictFields": [
+      "downed",
+      "dead",
+      "destroyed"
+     ],
+     "ticksGame": 3317,
+     "operation": {
+      "OperationId": "op_60d4f7c44f914e328c126a44aa6d0fbf",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 69
+     },
+     "state": {
+      "programState": "Playing",
+      "hasCurrentGame": true,
+      "paused": true,
+      "timeSpeed": "Paused",
+      "tick": 3317
+     }
+    }
+   }
+  },
+  {
+   "id": "PITFALL_SAVED_ARRIVAL_FALLS",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "FLOWWORKS_PITFALL_FIX_HISTORY_NOT_SAVED",
+   "detail": {
+    "onLip": "TRAP descents=1 lastCell=30,132 pos=30,132 held=False last=Human56576@32,125_t=3317_fall=10.0",
+    "shoved": "TRAP descents=1 lastCell=30,132 pos=32,132 held=False last=Human56576@32,125_t=3317_fall=10.0",
+    "afterLoad": "TRAP descents=1 lastCell=32,132 pos=32,132 held=True last=Human56600@32,132_t=3333_fall=9.7",
+    "afterTicks": "TRAP descents=1 lastCell=32,132 pos=32,132 held=True last=Human56600@32,132_t=3333_fall=9.7"
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/pile_2026-10-22/belt/lines_2.json",
+  "origin": "30,30",
+  "fresh_map": true,
+  "only": "",
+  "drain_ticks": 1500,
+  "mock": false,
+  "mock_faults": ""
+ },
+ "owedProofs": [
+  "ProofCanPlace",
+  "ProofCord",
+  "ProofHoseLine",
+  "ProofHoseRole",
+  "ProofLineCounters",
+  "ProofLinkPoles",
+  "ProofNet",
+  "ProofPitWater",
+  "ProofPower",
+  "ProofSurface"
+ ],
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "813542116684f1d25424c870ca18dc306a2eadd9f44f1d0d4f68e329adc9e909",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes"
+  ],
+  "assembly_sha256": "df0afa4ae71f56bdeec18559a7a04ef348eefb3a21cc90875dd79ac587f3c371"
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [
+    "RM_Brogg35921",
+    "RM_Brogg35922",
+    "RM_Brullith35910",
+    "RM_Brullith35914",
+    "RM_Illoth35913",
+    "RM_Illoth35915",
+    "RM_MycoidColossus35909",
+    "RM_MycoidColossus35920",
+    "RM_Shambles35912",
+    "RM_Shambles35919",
+    "RM_Thozzik35917",
+    "RM_Thozzik35918",
+    "RM_ThozzikColony35911",
+    "RM_ThozzikColony35916"
+   ],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "finished": "2026-10-22T09:42:27"
+}

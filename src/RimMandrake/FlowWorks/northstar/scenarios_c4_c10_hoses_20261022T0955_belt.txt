@@ -1,0 +1,9 @@
+# BENCH belt 2026-10-22: scenarios_map --build --fresh-map --only C4,C10 on deployed c5c0f047ca
+09:50:15 gallery: 2 stations placed
+LIVE build: 2/2 scenarios as staged; soak: MOVED ['C4']; 1 notes; 237.1s
+# verify/soak (Transient/fw_scenarios_verify.json):
+{"verify": {"C4": {"ok": true, "dug": 964, "want_dug": 964, "depth_wrong": 0, "fill_wrong": 0, "missing": {}, "pawns_short": {}, "first_bad": []}, "C10": {"ok": true, "dug": 154, "want_dug": 154, "depth_wrong": 0, "fill_wrong": 0, "missing": {}, "pawns_short": {}, "first_bad": []}}, "soak": {"C4": {"still": false, "dug_changed": 16, "first": [["(27, 79)", [[6, 3], [6, 1]]], ["(26, 76)", [[6, 3], [6, 1]]], ["(27, 77)", [[6, 3], [6, 1]]]], "defs_changed": {}, "pawns_changed": {}}, "C10": {"still": true, "dug_changed": 0, "first": [], "defs_changed": {}, "pawns_changed": {}}}, "notes": ["swept 16 non-colonist pawn(s) (kept 0 held on purpose)"]}
+# RM_LineProofs.ProofHoseLine per reel:
+24,78 (C4) HOSELINE laid=True ramps=3 ladders=0 cut=False cells=28 dug=26 line=Changes_level_3_times,_by_3_ramps.
+211,149 (C10) HOSELINE laid=True ramps=0 cells=9
+237,117 (C10) HOSELINE laid=True ramps=0 cells=7
