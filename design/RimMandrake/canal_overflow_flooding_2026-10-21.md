@@ -377,7 +377,14 @@ source (D2). Rain-swollen lakes stay vanilla `TorrentialRainFlood`.
   burn.
 - **D7 — Overflow ships in FlowWorks 1.0, default ON** once validated.
 - **Pillar 2:** engine-pulse movement is inside *"no per-tick fluid sim, ever"*.
-- **Still open:** D8, D9 and D10 (§6 item 14).
+- **D8 — Sheets lie level** (card 2026-10-22): the level-surface ruling extends to sheets; basins level
+  by priority-flood, not the diffusion kernel alone.
+- **D9 — Retention (1 cm) and micro-relief (±1 cm) are physical rules** (card 2026-10-22): they decide
+  where puddles linger and where a spill stops.
+- **D10 — Cold: a sheet below 0 °C freezes into its own ice tier**, keeping its volume, and thaws back
+  (card 2026-10-22). **Lowering the sheet cap** stops further filling; water already deeper stays and
+  drains by its normal exits (card 2026-10-22). Temp-slot priority stays the §3 rule (sheet yields the
+  picture to vanilla flood/ice, keeps its volume).
 
 ---
 
