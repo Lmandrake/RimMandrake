@@ -179,28 +179,13 @@ fires when the creature's definition is touched; nobody has touched it since.
 
 ---
 
-## Q6. The free Rot's most common fungi wear plain-game art
+## Q6. VOID: the free Rot's fungi already wear our painted art
 
-**What we learned.** The Rot's three most common wild fungi (bryolux, weighted 10; glowstool, 3; the cap that
-replaced the agarilux, 2) draw the **base game's own cave-plant pictures** in the free mod. Our painted
-replacements exist, but they sit in the campaign layer, where they repaint the base game's cave plants everywhere.
-So the free Rot, whose experience you chose as *"a cathedral of mushrooms in the dark"*, looks mostly like a
-vanilla cave floor, while the campaign shows our art. Moving art is a cosmetic change, so it waits for your word.
+Premise was false: `src/RimMandrake/TheRot/Patches/RotSpecies_NamesAndSizes.xml` already repoints RM_Bryolux,
+RM_Glowstool and RM_GlowingAgarilux to `RotSpecies/Bryolux`, `/Glowstool`, `/GlowingAgarilux` (painted art installed
+2026-10-10 inside TheRot Textures). Nothing to decide or build.
 
-**Terms.** *Campaign layer*: the Utinni patches that only load in your Star Wars campaign. *Free mod*: the Rot as
-anyone installs it.
-
-1. **Give the free Rot's fungi their own art paths and install our painted versions there.** Buys: the free Rot
-   looks like ours; the campaign is unchanged. Costs: two copies of each picture to keep in step (or one moved and
-   the campaign pointed at it).
-2. **Move the paintings into the free Rot so they repaint the base game's cave plants for anyone who installs it.**
-   Buys: one copy. Costs: installing the Rot would change the look of every cave in a player's game, outside our
-   biome.
-3. **Leave it: the free Rot keeps the plain art.** Buys: no work. Costs: the free mod's commonest sight is not ours.
-
-**Recommended: 1** — it is the only option that changes nothing outside the Rot.
-
-**ANSWERED 2026-10-22 by question card: option 1, the free Rot gets its own art paths with our painted versions installed there** (owner's word for this cosmetic change). Build filed.
+**ANSWERED 2026-10-22 by question card: option 1, the free Rot gets its own art paths with our painted versions installed there** (owner's word for this cosmetic change). It needed no work: the art was already in place.
 
 ---
 

@@ -6,7 +6,7 @@
     carried, ported as RM_ defs so the donor can leave the mod list. Values are the donor's own; the Rot's campaign
     names and ruled sizes still come from Patches/RotSpecies_NamesAndSizes.xml (retargeted onto these defNames).
     Art: StandIn/<donor texPath> marked stand-in copies (art ledger, provenance kind=donor standin=true) until
-    regenerated; RM_Glowstool/RM_GlowingAgarilux/RM_Bryolux draw vanilla Core cave-plant art (Things/Plant/...).
+    regenerated; RM_Glowstool/RM_GlowingAgarilux/RM_Bryolux are repointed by Patches/RotSpecies_NamesAndSizes.xml to painted art in Textures/RotSpecies/.
     Harvest items the donor defined (coloured raw fungi, psychotropic fungus, poison dart, mushroom stalks) were NOT
     ported: each yields vanilla RawFungus, or our RM_MushroomLog for the stalk-yielders.
   -->
