@@ -1,0 +1,1 @@
+gpt_consult.py inlines text files only; to show GPT images call codex exec with -i <winpath> per image, a '--' terminator, then '-' for a stdin prompt (codex_image.py's run pattern). A 3-image art review answered in 50 s.
