@@ -6772,3 +6772,4 @@
 {"seat":"FOUNDRY","event":"lease","id":"THRIXWEAVE_RESELL_BUILD_DEARLY_SOLD","action":"take","token":"FOUNDRY.pid25793.229f160b","expires":"2026-10-22T17:35:47Z","ts":"2026-10-22T16:50:47Z","tsn":1792687848134393912}
 {"seat":"FOUNDRY","event":"claim","id":"THRIXWEAVE_RESELL_BUILD_DEARLY_SOLD","ts":"2026-10-22T16:50:48Z","tsn":1792687848545146203}
 {"seat":"FOUNDRY","event":"start","id":"THRIXWEAVE_RESELL_BUILD_DEARLY_SOLD","ts":"2026-10-22T16:50:48Z","tsn":1792687848948428811}
+{"seat":"FOUNDRY","event":"implemented","id":"THRIXWEAVE_RESELL_BUILD_DEARLY_SOLD","sha":"64d5f97529de","ref":"origin/main","criteria":[{"id":"A1","level":"L1","text":"Orbital_Exotic carries StockGenerator_ThrixweaveResale in the loaded game (validation.py rare_trader_resale_line)"},{"id":"A2","level":"L4","text":"owner sees thrixweave appear dearly priced at a rare exotic trader"}],"needs":"bridge","ts":"2026-10-22T16:52:45Z","tsn":1792687965834260405}
