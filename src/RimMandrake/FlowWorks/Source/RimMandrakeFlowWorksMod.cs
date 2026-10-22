@@ -1004,6 +1004,7 @@ namespace RimMandrake.FlowWorks
             }
             }
 
+            // ── FLOWWORKS_QUARRY_DIGGING_1 — what a canal cut turns up ────
             if (Section(list, "Finds while digging", new[] { "digFindsEnabled", "digFindsLocalOnly", "digFindChanceMultiplier", "digFindBudgetPercent", "digFindLetterEnabled", "digRockGroundEnabled", "digRockWorkMultiplier", "digRockChunksEnabled", "digRockChunkMultiplier", "digSoilChunkPercent" }))
             {
             list.CheckboxLabeled("Digging a canal can turn up minerals", ref digFindsEnabled,
@@ -1046,7 +1047,6 @@ namespace RimMandrake.FlowWorks
                 digSoilChunkPercent = list.Slider(digSoilChunkPercent, 0f, 5f);
             }
 
-            // ── CRACKEDLANDS_MECHANICS_BUILD_1 §1 — the swale ─────────────
             }
 
             if (Section(list, "Water engine: flow and levelling", new[] { "depthEngineEnabled", "pulseIntervalTicks", "flowPerPulse", "maxNetworkCells", "networkSeamsMoveEnabled", "viscosityEnabled", "thickCreepEnabled", "waterFrontCreepEnabled", "levelBySurfaceEnabled", "levelExactEnabled", "levelSetEnabled", "disabledFluids" }))
@@ -1163,9 +1163,6 @@ namespace RimMandrake.FlowWorks
               + "never spontaneously. Lightly tested, and simpler than the rules under Burning liquid. "
               + "Off: flammable liquids sit there.");
 
-            // ══════════════════════════════════════════════════════════════
-            // PHASE 4 SECTION — kept whole and kept last, see the field block.
-            // ══════════════════════════════════════════════════════════════
             }
 
             if (Section(list, "Ponds, lakes, rain and drainage", new[] { "fillInEnabled", "fillInDisplacementEnabled", "sourceBudgetEnabled", "stickyLimitlessEnabled", "wetnessCutoffEnabled", "minLimitlessBodyCells", "recessionEnabled", "recedeKeepsLastCell", "recedeSparesOutflow", "refillEnabled", "pondReturnLegEnabled", "refillWaitsForOccupants", "dugBedLeavesPondEnabled", "pondBedHollowEnabled", "deepBedsEnabled", "deepBedMaxDepth", "lakeDepthScale", "lakeFloorRoughness", "lakeShoreShelfMetres", "lakeWayOutMetres", "drainableLakeMaxCells", "pondDepthEnabled", "pondMudDays", "pondStageWritesPerPulse", "pondHeadRuleEnabled", "refillRateMultiplier", "rainFillsExcavationsEnabled", "rainFillPerPulse", "excavationLoadRepairEnabled", "legacyFillFallbackEnabled", "legacyFloodViaEngineEnabled", "pumpFedSpreadEnabled", "edgeSinksEnabled" }))
@@ -1349,9 +1346,9 @@ namespace RimMandrake.FlowWorks
               + "water comes from. This also lets you dig in that strip at all, which the game "
               + "normally refuses. Off: the edge strip is undiggable again and nothing drains.");
 
-            // ── LIQUID_HEAT_PUSH_1: hot and icy liquid ──────────────────────
             }
 
+            // ── LIQUID_HEAT_PUSH_1: hot and icy liquid ──────────────────────
             if (Section(list, "Hot and icy liquid", new[] { "liquidHeatPushEnabled", "liquidHeatStrength", "waterBodyTypeFlipFixEnabled" }))
             {
             list.CheckboxLabeled("Boiling and icy liquid warm or chill the room they are in", ref liquidHeatPushEnabled,
@@ -1370,9 +1367,9 @@ namespace RimMandrake.FlowWorks
               + "pond later throws an error and the ground is not changed. On: the square leaves its old pond first. "
               + "Off: the base game's behaviour. Takes effect at once.");
 
-            // ── PHASE 6: fire ───────────────────────────────────────────────
             }
 
+            // ── PHASE 6: fire ───────────────────────────────────────────────
             if (Section(list, "Burning liquid", new[] { "canalFireEnabled", "burnDaysPerNotch", "fireFrontSpeedMultiplier", "sourceFireReach", "explosionIgnitesLiquidEnabled", "foamSmothersLiquidFireEnabled", "rainDousesLiquidFireEnabled", "chemfuelInfernoEnabled", "chemfuelIntensity", "chemfuelSpreadSpeed", "chemfuelBurnRate", "astrofuelDetonationEnabled", "astrofuelBlastScale" }))
             {
             list.CheckboxLabeled("Flammable liquid in channels and ponds can be lit", ref canalFireEnabled,
@@ -1426,9 +1423,6 @@ namespace RimMandrake.FlowWorks
                 }
             }
 
-            // ══════════════════════════════════════════════════════════════
-            // PHASE 5 SECTION — kept whole and kept last, see the field block.
-            // ══════════════════════════════════════════════════════════════
             }
 
             if (Section(list, "Pits and climbing", new[] { "superdeepCaptureEnabled", "superdeepCapturesOwnFaction", "pitStuckAlertEnabled", "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "ladderRaiseLowerEnabled", "pitWidthBodySizeMultiplier", "pitRelativeClimbEnabled", "pitClimbAbilityMultiplier", "pitSlowClimbFactor", "pitRampsEnabled", "pitRampMaxSpan", "pitLadderSlowness", "portableLadderEnabled", "portableLadderMaxLevels", "climbingGearEnabled", "climbingGearSlowness", "pitJumpLandsSafe", "pitTeleportLandsSafe", "pitFreeTravelEnabled", "reachSeesWallsAndCliffs", "pitRescueLadderEnabled", "pitWalkNormalEnabled" }))
@@ -1840,9 +1834,6 @@ namespace RimMandrake.FlowWorks
                 "Water and other clear liquids standing in a cut let its floor and drowned walls show through, "
               + "fainter the deeper it is. Tar, oil, slime and blood stay opaque. Drawing only. Off: the liquid "
               + "surface hides the cut below it.");
-            // ══════════════════════════════════════════════════════════════
-            // LIQUID_BOTTLE_LOOP_1 SECTION — kept whole and kept last.
-            // ══════════════════════════════════════════════════════════════
             }
 
             if (Section(list, "Bottles, buckets, barrels: fill, use, wash", new[] { "bottleLoopEnabled", "bottleDirtyStageEnabled", "bottleRevertEnabled" }))
@@ -1870,9 +1861,6 @@ namespace RimMandrake.FlowWorks
               + "icy water warms to it, after a while (each liquid's own timer — about an hour for boiling, two for "
               + "icy). Off: bottled liquid keeps the state it was filled in.");
 
-            // ══════════════════════════════════════════════════════════════
-            // LIQUID_BOTTLE_LOOP_1 TANK SECTION — kept whole and kept last.
-            // ══════════════════════════════════════════════════════════════
             }
 
             if (Section(list, "Tanks, pumps, pipes and hoses", new[] { "tankLoopEnabled", "tankCapacityMultiplier", "liquidPumpEnabled" }))
@@ -1902,9 +1890,6 @@ namespace RimMandrake.FlowWorks
               + "a cubic metre) every few seconds. A pond it draws from runs down like any other use. Off: pumps sit idle "
               + "and draw no power.");
 
-            // ══════════════════════════════════════════════════════════════
-            // MANY_WATERS_DRILL_BUILDINGS_1 SECTION — kept whole and kept last.
-            // ══════════════════════════════════════════════════════════════
             }
 
             Block(list, "Pipes, stills and found works (universal pipes, adapters, ruined works)", Machinery.RM_MachinerySettings.DoSettingsSection);
@@ -1942,9 +1927,6 @@ namespace RimMandrake.FlowWorks
                          + "The reserve it draws from is finite and never comes back.");
             }
 
-            // ══════════════════════════════════════════════════════════════
-            // WORLDMAP_LIQUID_TAGS_1 SECTION — kept whole and kept last.
-            // ══════════════════════════════════════════════════════════════
             }
 
             if (Section(list, "Typed bodies of water", new[] { "typedLiquidShoresEnabled" }))
@@ -1962,9 +1944,9 @@ namespace RimMandrake.FlowWorks
               + "every map generates exactly as it would without this mod. Either way, a map "
               + "you have already generated keeps the terrain it was generated with.");
 
-            // ── FLOWWORKS_QUARRY_DIGGING_1 — what a canal cut turns up ────
             }
 
+            // ── CRACKEDLANDS_MECHANICS_BUILD_1 §1 — the swale ─────────────
             if (Section(list, "Swales", new[] { "swaleEnabled", "swaleRateMultiplier" }))
             {
             list.CheckboxLabeled("A watered swale enriches the ground around it", ref swaleEnabled,
