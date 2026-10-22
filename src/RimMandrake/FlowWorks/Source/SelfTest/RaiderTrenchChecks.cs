@@ -126,6 +126,45 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_RaiderTrenchMath.JumpLanding(0, 4, 4, i => i >= 1, i => i <= 2) == 1, "the nearest valid landing in range");
                 Assert(RM_RaiderTrenchMath.JumpLanding(0, 4, 4, i => i >= 3, i => i <= 2) == -1, "can-fail: none in range");
             });
+            Case("RaiderTrench_breach_fits_a_raid", () =>
+            {
+                // CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP (belt 2026-10-22): the proof's 4 m ring, two squares wide, a person (k = 2);
+                // Mercenary_Gunner MiningSpeed 0.336; the raid stood at the lip from ~t+2,000 and left at ~t+28,000.
+                int[] d = { 0, 8, 8, 0 };
+                int[] t = RM_RaiderTrenchMath.FillTargets(d, 2);
+                Assert(RM_RaiderTrenchMath.FillLevels(d, t) == 12, "the causeway is 12 levels: " + string.Join(",", t));
+                int perLevel = RM_RaiderTrenchMath.FillTicks(RM_RaiderTrenchMath.FillWorkPerLevel, 0.336f, 1f);
+                Assert(perLevel < 3000, "one level is a shovelling job, not a dig: " + perLevel);
+                int raid = RM_RaiderTrenchMath.BreachTicks(d, t, perLevel, RM_RaiderTrenchMath.MaxFillersPerSquare);
+                Assert(raid <= 15000, "the raid fills the causeway well inside its ~26,000 ticks at the lip: " + raid);
+                // can-fail: the deep-dig curve per level (the old price) and one raider a square (the old reservation)
+                int old = 0;
+                for (int i = 1; i < d.Length - 1; i++)
+                {
+                    for (int lv = d[i]; lv > t[i]; lv--)
+                    {
+                        old += RM_RaiderTrenchMath.FillTicks(RM_DigDepthMath.WorkToCut(lv) / 2, 0.336f, 1f);
+                    }
+                }
+                Assert(old > 26000, "can-fail: the old price could never finish inside a raid: " + old);
+                Assert(RM_RaiderTrenchMath.BreachTicks(d, t, perLevel, 1) > raid, "can-fail: one raider a square is slower");
+                Assert(RM_RaiderTrenchMath.FillWorkPerLevel == RM_DigDepthMath.WorkToCut(1) / 2, "a level of fill = half the first notch's cut, at every depth");
+                // one crossing per raid, kept while it is worked
+                Assert(RM_RaiderTrenchMath.LipTick(false, 0, 100, 2500, false, false) == 100, "no lip yet: remember this one");
+                Assert(RM_RaiderTrenchMath.LipTick(true, 0, 100, 2500, false, false) == -1, "a live lip stands: a later raider's own lip is ignored");
+                Assert(RM_RaiderTrenchMath.LipTick(true, 0, 2400, 2500, true, true) == 2400, "worked on: the lip is renewed");
+                Assert(RM_RaiderTrenchMath.LipTick(true, 2400, 4000, 2500, false, false) == -1,
+                    "renewed, it outlives the first 2,500 ticks (the old memory expired here and the raid scattered over 4 lines)");
+                Assert(RM_RaiderTrenchMath.LipTick(true, 0, 2500, 2500, false, false) == 2500, "can-fail: an abandoned lip still expires");
+                Assert(RM_RaiderTrenchMath.LipTick(true, 0, 100, 2500, true, false) == -1, "planning alone does not renew it");
+                string r = Src("Superdeep", "RM_RaiderTrench.cs");
+                RiverSwitchFlipChecks.Has(r, @"int work = RM_RaiderTrenchMath\.FillWorkPerLevel;", "the driver prices fill flat");
+                RiverSwitchFlipChecks.Has(r, @"IsLadder \? 1 : RM_RaiderTrenchMath\.MaxFillersPerSquare", "fillers share a square, ladders do not");
+                RiverSwitchFlipChecks.Has(r, @"p\.CanReserve\(c, RM_RaiderTrenchMath\.MaxFillersPerSquare\)", "the giver asks for a shared slot");
+                RiverSwitchFlipChecks.Has(r, @"job\.count = t\[i\];", "the job carries the square's causeway target");
+                RiverSwitchFlipChecks.Has(r, @"StepDepthAt\(map, eng, c\) > job\.count", "the last shoveller never over-fills the step");
+                RiverSwitchFlipChecks.Has(r, @"RememberLip\(p, plan\.cells\[0\], true\)", "an issued job renews the raid's crossing");
+            });
             Case("RaiderTrench_wiring", () =>
             {
                 string r = Src("Superdeep", "RM_RaiderTrench.cs");
@@ -148,13 +187,14 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(r, @"if \(r > 0f\)\s*\{\s*verb = v;", "a pack with range 0 falls through to the next source");
                 RiverSwitchFlipChecks.Has(r, @"if \(r > 0f\)\s*\{\s*ability = a;", "a range-0 ability falls through to the next ability");
                 // TRENCH_STRIDE_UNDERPASS_FIX_ONE_BUG minors: ladders that cannot do it after all breach by fill (but a raider
-                // waiting on a ladder another is setting does not start a breach); one raider a square.
-                RiverSwitchFlipChecks.Has(r, @"Job ladder = LadderJob\(p, plan, k, out bool waiting\);\s*return ladder \?\? \(waiting \? null : FillJob\(p, plan, k\)\);",
+                // waiting on a ladder another is setting does not start a breach); one raider a LADDER square (fill squares are
+                // shared up to MaxFillersPerSquare since CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP).
+                RiverSwitchFlipChecks.Has(r, @"Job ladder = LadderJob\(p, plan, k, out bool waiting\);\s*chosen = ladder \?\? \(waiting \? null : FillJob\(p, plan, k\)\);",
                     "a null ladder job falls back to the fill breach unless it is only waiting");
                 RiverSwitchFlipChecks.Has(r, @"if \(!p\.CanReserve\(cell\) \|\| !p\.CanReach\(cell, PathEndMode\.Touch, Danger\.Deadly\)\)\s*\{\s*waiting = true;",
                     "a slot held by another raider, or out of reach, is a wait, not a breach");
-                RiverSwitchFlipChecks.Has(r, @"!eng\.CanFillIn\(c\) \|\| !p\.CanReserve\(c\)", "a square another raider shovels is skipped");
-                RiverSwitchFlipChecks.Has(r, @"TryMakePreToilReservations\(bool errorOnFailed\)\s*\{\s*return pawn\.Reserve\(job\.targetA, job, 1, -1, null, errorOnFailed\);",
+                RiverSwitchFlipChecks.Has(r, @"!eng\.CanFillIn\(c\) \|\| !p\.CanReserve\(c, RM_RaiderTrenchMath\.MaxFillersPerSquare\)", "a square already shovelled by the most raiders is skipped");
+                RiverSwitchFlipChecks.Has(r, @"TryMakePreToilReservations\(bool errorOnFailed\)\s*\{\s*return pawn\.Reserve\(job\.targetA, job, IsLadder \? 1 : RM_RaiderTrenchMath\.MaxFillersPerSquare, -1, null, errorOnFailed\);",
                     "can-fail: the work driver reserves its square");
                 string u = Src("Superdeep", "RM_LadderUtility.cs");
                 RiverSwitchFlipChecks.Has(u, @"MayClimb\(p\) \|\| ClimbsOwnLadder\(ladder, p\)", "the prison door lets a raid climb its own ladder");

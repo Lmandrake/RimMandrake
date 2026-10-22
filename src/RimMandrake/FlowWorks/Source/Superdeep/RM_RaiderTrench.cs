@@ -279,7 +279,7 @@ namespace RimMandrake.FlowWorks
 			return p.Position;
 		}
 
-		internal static void RememberLip(Pawn p, IntVec3 lip)
+		internal static void RememberLip(Pawn p, IntVec3 lip, bool workedHere = false)
 		{
 			Lord lord = p.GetLord();
 			if (dryRun || lord == null)
@@ -292,9 +292,11 @@ namespace RimMandrake.FlowWorks
 				warned.Clear();
 			}
 			int now = Find.TickManager?.TicksGame ?? 0;
-			if (!lordLips.TryGetValue(lord, out (int tick, IntVec3 lip) e) || now - e.tick >= PlanCacheTicks)
+			bool have = lordLips.TryGetValue(lord, out (int tick, IntVec3 lip) e);
+			int t = RM_RaiderTrenchMath.LipTick(have, e.tick, now, PlanCacheTicks, have && e.lip == lip, workedHere);
+			if (t >= 0)
 			{
-				lordLips[lord] = (now, lip);
+				lordLips[lord] = (t, lip);
 			}
 		}
 
@@ -507,12 +509,17 @@ namespace RimMandrake.FlowWorks
 			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
 			IntVec3 c = plan.cells[i];
 			// one raider a square (the driver reserves it): two at once would shovel it past its causeway step
-			if (eng == null || !eng.CanFillIn(c) || !p.CanReserve(c) || !p.CanReach(c, PathEndMode.Touch, Danger.Deadly))
+			// CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP: up to MaxFillersPerSquare raiders share a square (one a square left the rest of
+			// the raid waiting at the lip); job.count carries the square's causeway target, so the driver stops at the step
+			if (eng == null || !eng.CanFillIn(c) || !p.CanReserve(c, RM_RaiderTrenchMath.MaxFillersPerSquare)
+				|| !p.CanReach(c, PathEndMode.Touch, Danger.Deadly))
 			{
 				return null;
 			}
 			Warn(p, "RMFlow_RaidersFillTrench");
-			return JobMaker.MakeJob(RM_RaiderTrenchDefOf.RM_RaiderFillTrench, c);
+			Job job = JobMaker.MakeJob(RM_RaiderTrenchDefOf.RM_RaiderFillTrench, c);
+			job.count = t[i];
+			return job;
 		}
 
 		private static Job GotoJob(IntVec3 c)
@@ -572,23 +579,34 @@ namespace RimMandrake.FlowWorks
 			bool toolUser = ToolUser(p);
 			bool ladderable = jump == null && toolUser && LaddersFeasible(p, plan, k);
 			Job fill = jump == null && toolUser && !ladderable ? FillJob(p, plan, k) : null;
+			Job chosen;
 			switch (RM_RaiderTrenchMath.Choose(true, true, false, false, RM_RaiderTrenchSettings.raiderJumpsEnabled, jump != null,
 				toolUser, RM_RaiderTrenchSettings.raiderLaddersEnabled, ladderable, RM_RaiderTrenchSettings.raiderFillEnabled, fill != null))
 			{
 				case RM_RaiderTrenchMath.Crossing.Jump:
-					return jump;
+					chosen = jump;
+					break;
 				case RM_RaiderTrenchMath.Crossing.Ladder:
 				{
 					// null while the next ladder's square is out of reach or taken: think again later; null because ladders cannot
 					// do it after all (a slot blocked since, the ladders standing and the far side still cut off): breach by fill
 					Job ladder = LadderJob(p, plan, k, out bool waiting);
-					return ladder ?? (waiting ? null : FillJob(p, plan, k));
+					chosen = ladder ?? (waiting ? null : FillJob(p, plan, k));
+					break;
 				}
 				case RM_RaiderTrenchMath.Crossing.Fill:
-					return fill;
+					chosen = fill;
+					break;
 				default:
-					return null;
+					chosen = null;
+					break;
 			}
+			if (chosen != null)
+			{
+				// the raid is still working this crossing: keep it the raid's one crossing past PlanCacheTicks
+				RememberLip(p, plan.cells[0], true);
+			}
+			return chosen;
 		}
 
 		/// <summary>Ladders cannot do it (no slot list, a drop past reach, a blocked square, ladders off): only then breach.</summary>
@@ -708,7 +726,7 @@ namespace RimMandrake.FlowWorks
 		/// <summary>One raider works a square at a time (the givers skip a square another raider holds).</summary>
 		public override bool TryMakePreToilReservations(bool errorOnFailed)
 		{
-			return pawn.Reserve(job.targetA, job, 1, -1, null, errorOnFailed);
+			return pawn.Reserve(job.targetA, job, IsLadder ? 1 : RM_RaiderTrenchMath.MaxFillersPerSquare, -1, null, errorOnFailed);
 		}
 
 		private int WorkTicks()
@@ -717,17 +735,29 @@ namespace RimMandrake.FlowWorks
 			{
 				return RM_RaiderTrenchMath.LadderTicks(Mathf.Max(1, job.count) * RM_Volume.MetresPerLevel, RM_RaiderTrenchSettings.raiderLadderSpeed);
 			}
-			RM_MapComponent_Excavation eng = Map.GetComponent<RM_MapComponent_Excavation>();
-			byte cur = eng == null ? (byte)1 : eng.DepthAt(job.targetA.Cell);
-			int work = RM_ExcavationDepth.WorkToDeepen((byte)Mathf.Max(0, cur - 1)) / 2;
+			// CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP: one level of fill costs the same at every depth (not the deep-dig curve)
+			int work = RM_RaiderTrenchMath.FillWorkPerLevel;
 			float speed = StatDefOf.MiningSpeed.Worker.IsDisabledFor(pawn) ? 0.5f : pawn.GetStatValue(StatDefOf.MiningSpeed);
 			return RM_RaiderTrenchMath.FillTicks(work, speed, RM_RaiderTrenchSettings.raiderFillSpeed);
+		}
+
+		/// <summary>A fill job whose square already stands at its causeway target (job.count; -1 = unknown, an older job):
+		/// another raider sharing the square shovelled the last level.</summary>
+		private bool FillTargetMet()
+		{
+			if (IsLadder || job.count < 0)
+			{
+				return false;
+			}
+			RM_MapComponent_Excavation eng = Map?.GetComponent<RM_MapComponent_Excavation>();
+			return eng != null && RM_SuperdeepTrap.StepDepthAt(Map, eng, job.targetA.Cell) <= job.count;
 		}
 
 		protected override IEnumerable<Toil> MakeNewToils()
 		{
 			AddFinishAction(cond => RM_RaiderTrench.NoteWorkEnd(pawn, job, cond, CurToilIndex));
 			this.FailOn(() => !RM_RaiderTrench.On);
+			AddEndCondition(() => FillTargetMet() ? JobCondition.Succeeded : JobCondition.Ongoing);
 			yield return Toils_Goto.GotoCell(TargetIndex.A, PathEndMode.Touch);
 			Toil work = ToilMaker.MakeToil("RM_RaiderTrenchWork");
 			work.initAction = delegate
@@ -757,7 +787,7 @@ namespace RimMandrake.FlowWorks
 				}
 				if (!IsLadder)
 				{
-					if (eng.CanFillIn(c))
+					if (eng.CanFillIn(c) && (job.count < 0 || RM_SuperdeepTrap.StepDepthAt(map, eng, c) > job.count))
 					{
 						eng.FillIn(c);
 					}
@@ -890,7 +920,7 @@ namespace RimMandrake.FlowWorks
 				"When ladders cannot do it (too deep, too narrow, ladders off), raiders shovel earth into the trench until every "
 			  + "step of a one-square causeway is climbable, then walk across it.");
 			list.Label("  Breach filling speed: x" + raiderFillSpeed.ToString("0.00"), tooltip:
-				"How fast raiders shovel, as a multiple of your own fill-in speed for the same person.");
+				"How fast raiders shovel a breach causeway. At x1 one level of fill is half a first-notch dig at ANY depth (a gunner: about 2,800 ticks a level), up to three raiders to a square.");
 			raiderFillSpeed = Mathf.Round(list.Slider(raiderFillSpeed, 0.25f, 4f) * 20f) / 20f;
 		}
 	}
