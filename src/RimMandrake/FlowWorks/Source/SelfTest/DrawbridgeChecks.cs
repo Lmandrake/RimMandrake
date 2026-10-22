@@ -407,13 +407,17 @@ namespace RimMandrake.FlowWorks.SelfTest
                     foreach (string look in DrawbridgeArtPaths.Looks)
                     {
                         string[] leaf = DrawbridgeArtPaths.LeafUp(t, look, "Face");
-                        Assert(leaf.Length == 2 && leaf[0] == DrawbridgeArtPaths.Dir + "RM_DrawbridgeLeafUp_Face_" + look
-                            && leaf[1] == DrawbridgeArtPaths.Dir + "RM_DrawbridgeLeafUp_" + m + "_Face", "can-fail: leaf look first, then material: " + string.Join(",", leaf));
-                        Assert(DrawbridgeArtPaths.Planks(t, look)[0] == DrawbridgeArtPaths.Dir + "RM_DrawbridgePlanks_" + look, "planks per look");
-                        Assert(DrawbridgeArtPaths.Winch(t, look)[0] == DrawbridgeArtPaths.Dir + "RM_DrawbridgeWinch_" + m + "_" + look,
-                            "can-fail: a look's winch keeps its material (the drive differs)");
-                        Assert(DrawbridgeArtPaths.Gate(t, look, false)[0] == DrawbridgeArtPaths.Dir + "RM_DrawbridgeGate_Closed_" + look
-                            && DrawbridgeArtPaths.Gate(t, look, true)[1] == DrawbridgeArtPaths.Dir + "RM_DrawbridgeGate_" + m + "_Open", "gate look then material");
+                        // DRAWBRIDGE_LOOKS_FIX_HIS_PICKS_OUTRANK (owner by card 2026-10-22, "Material picks win"): material first, look second
+                        Assert(leaf.Length == 2 && leaf[0] == DrawbridgeArtPaths.Dir + "RM_DrawbridgeLeafUp_" + m + "_Face"
+                            && leaf[1] == DrawbridgeArtPaths.Dir + "RM_DrawbridgeLeafUp_Face_" + look, "can-fail: leaf material first, then look: " + string.Join(",", leaf));
+                        Assert(DrawbridgeArtPaths.Planks(t, look)[0] == DrawbridgeArtPaths.Dir + "RM_DrawbridgePlanks_" + m
+                            && DrawbridgeArtPaths.Planks(t, look)[1] == DrawbridgeArtPaths.Dir + "RM_DrawbridgePlanks_" + look, "can-fail: planks material first, then look");
+                        Assert(DrawbridgeArtPaths.Winch(t, look)[0] == DrawbridgeArtPaths.Dir + "RM_DrawbridgeWinch_" + m
+                            && DrawbridgeArtPaths.Winch(t, look)[1] == DrawbridgeArtPaths.Dir + "RM_DrawbridgeWinch_" + m + "_" + look,
+                            "can-fail: winch material first; a look's winch keeps its material (the drive differs)");
+                        Assert(DrawbridgeArtPaths.Gate(t, look, false)[0] == DrawbridgeArtPaths.Dir + "RM_DrawbridgeGate_" + m + "_Closed"
+                            && DrawbridgeArtPaths.Gate(t, look, false)[1] == DrawbridgeArtPaths.Dir + "RM_DrawbridgeGate_Closed_" + look
+                            && DrawbridgeArtPaths.Gate(t, look, true)[0] == DrawbridgeArtPaths.Dir + "RM_DrawbridgeGate_" + m + "_Open", "can-fail: gate material then look");
                     }
                     Assert(DrawbridgeArtPaths.LeafUp(t, null, "Edge").Length == 1, "no looks loaded: the material's picture only");
                 }

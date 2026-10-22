@@ -439,9 +439,10 @@ namespace RimMandrake.FlowWorks
 
 	/// <summary>
 	/// DRAWBRIDGE_LOOKS_WIRE_PICTURES_IN_WINGS: the texPath candidates of every drawbridge picture, best first, for a material
-	/// (Timber/Steel) and a look (Scrapper/Industrial/Modern/Futuristic; null = no looks loaded). The suspension bridge's rule
-	/// (RM_SuspensionStyles.xml): the look's picture wins; a part the look has no picture for falls back to the material's
-	/// picture. Names follow the installed art (bridge_art_redraw, 2026-10-21): material files are &lt;part&gt;_&lt;M&gt;[_&lt;view&gt;], look
+	/// (Timber/Steel) and a look (Scrapper/Industrial/Modern/Futuristic; null = no looks loaded). DRAWBRIDGE_LOOKS_FIX_HIS_PICKS_OUTRANK
+	/// (owner by card 2026-10-22, "Material picks win": a Timber drawbridge always shows your Timber picture; looks only restyle
+	/// pipes and machinery): the MATERIAL's picture wins; a part the material has no picture for falls back to the look's
+	/// picture (today only the timber gate shut). Names follow the installed art (bridge_art_redraw, 2026-10-21): material files are &lt;part&gt;_&lt;M&gt;[_&lt;view&gt;], look
 	/// files &lt;part&gt;_&lt;view|state&gt;_&lt;Look&gt; (the winch keeps its material in the look name, as its drive differs). Pure:
 	/// the game reads the first candidate that exists (RM_DrawbridgeArt); selftest_flowworks_drawbridge_art.py checks them on disk.
 	/// </summary>
@@ -460,7 +461,7 @@ namespace RimMandrake.FlowWorks
 
 		private static string[] LookThenMaterial(string look, string lookPath, string materialPath)
 		{
-			return look == null ? new[] { materialPath } : new[] { lookPath, materialPath };
+			return look == null ? new[] { materialPath } : new[] { materialPath, lookPath };
 		}
 
 		/// <summary>The raised leaf, one view (Face, Underside, Edge); a single picture.</summary>
