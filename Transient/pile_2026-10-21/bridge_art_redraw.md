@@ -34,3 +34,18 @@ Registered as artpipe done jobs (done/<id>.json + _artsrc/<id>/) with rimflow_it
 - 22:21 wave 3 published ff41e45439; wave 4 gen
 - 22:23 wave 4 raw 10/10; finalized; wave 5 gen
 - 22:26 waves 4+5 done: 10+15 PASS
+- 22:26 waves 4-5 published 6cd9a65ab8; wave 6 gen
+- 22:29 wave 6: 21/26 raw
+- 22:31 wave 6 done: 26/26 PASS (101/101 total); building sheet
+- sheet: Transient/biome_ffar/bridge_art_redraw_sheet_2026-10-21.html — 97 rows, 49 current sets + 101 candidates (only new
+  renders: each row's render_match names only this redraw's families); gate PASS v1, game_art deliver OK, sheet_freshness verify 0
+- served by serve_gated.py (detached), URL http://localhost:35861/?t=WhMU9xv5EWH7sl1ozfbmYg answers 200; log beside the sheet
+- trap found: a texture row's render_match is searched in the column LABEL "render <family>" — anchoring it with ^ hides
+  every candidate silently (first build showed 0 candidates, gate still PASS)
+
+## Not done / owed after his pick
+- anchors and jetties are south view only; their north/east facings are owed for the picked set
+- per-tier styled art needs new texPaths in RM_SuspensionStyles.xml at install (today the tiers share one texture per look)
+- deck tiles become atlases via SuspensionLooks/build_deck_atlas.py at install
+- raised-leaf edge views still read thin at 32 px
+- winch/gate north/east views for the drawbridge pieces (the commission's other facings) not redrawn here

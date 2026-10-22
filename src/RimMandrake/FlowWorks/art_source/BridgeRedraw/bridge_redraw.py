@@ -622,7 +622,9 @@ def manifest():
         if not jobs:
             continue
         fams = sorted({next(x["family"] for x in JOBS if x["id"] == j) for j in jobs})
-        rows.append(dict(r, jobs=jobs, render_match="^(" + "|".join(fams) + ")",
+        # an artpipe column is labelled "render <family>" (art_sheet.name_render_cols) and a family carries no facing,
+        # so the row names both the job ids and their families
+        rows.append(dict(r, jobs=sorted(set(jobs) | set(fams)), render_match=r"\b(" + "|".join(fams) + r")\b",
                          reference_textures=[rel(p) for p in r["reference_textures"]]))
     m = {"schema": 1, "rows": rows,
          "lead_html": "<p><b>Bridge art — redraw of all 12</b> (owner by card 2026-10-21: <i>Redraw all 12 now</i>). Each row "
