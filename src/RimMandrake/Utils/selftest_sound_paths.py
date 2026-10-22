@@ -132,6 +132,9 @@ def main():
                 bad.append((os.path.relpath(src_file, REPO_ROOT), clip_path))
 
     print("%d clipPath declaration(s) checked across %s" % (total, ", ".join(TIERS)))
+    if total == 0:
+        print("FAIL  no clipPath declaration found at all -- the walk saw nothing (wrong REPO_ROOT?); 0 unresolved is not a pass")
+        return 1
     for src_file, clip_path in bad:
         print("FAIL  %s: clipPath %r resolves to no .ogg/.wav/.mp3" % (src_file, clip_path))
 
