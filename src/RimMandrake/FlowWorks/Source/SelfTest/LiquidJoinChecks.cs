@@ -24,7 +24,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                 {
                     LiquidJoinRule.Flange(dx, dz, out double ox, out double oz, out double a);
                     // the flange's face = centre + half its size along the facing direction = the cell edge (0.5 from centre)
-                    Assert(Near(Math.Abs(ox + dx * LiquidJoinRule.FlangeSize / 2) + Math.Abs(oz + dz * LiquidJoinRule.FlangeSize / 2), 0.5),
+                    // signed: a flange on the opposite edge (same |offset|) must fail
+                    Assert(Near(ox + dx * LiquidJoinRule.FlangeSize / 2, dx * 0.5) && Near(oz + dz * LiquidJoinRule.FlangeSize / 2, dz * 0.5),
                         $"flange ({dx},{dz}) face on the cell edge, got ({ox},{oz})");
                     Assert(Near(a, ang), $"flange ({dx},{dz}) faces {ang}, got {a}");
                 }

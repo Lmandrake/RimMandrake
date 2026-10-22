@@ -77,9 +77,13 @@ namespace RimMandrake.FlowWorks.SelfTest
                 var pws = d.Element("placeWorkers").Elements("li").Select(e => e.Value).ToList();
                 Assert(pws.Contains("RimMandrake.FlowWorks.Machinery.PlaceWorker_PipePole") && pws.Contains("PlaceWorker_NotUnderRoof"), "placeworkers: ground rule and open sky");
                 string live = Src("Machinery", "RM_PipePoles.cs");
-                string allows = live.Substring(live.IndexOf("public override AcceptanceReport AllowsPlacing", StringComparison.Ordinal));
+                int allowsAt = live.IndexOf("public override AcceptanceReport AllowsPlacing", StringComparison.Ordinal);
+                Assert(allowsAt >= 0, "PlaceWorker_PipePole.AllowsPlacing present");
+                string allows = live.Substring(allowsAt);
+                int allowsEnd = allows.IndexOf("return AcceptanceReport.WasAccepted; } }", StringComparison.Ordinal);
+                Assert(allowsEnd > 0, "AllowsPlacing's end found (an empty body would make the switch check vacuous)");
                 Assert(allows.Contains("RM_LineCrossingMath.RefusalReason(LineKind.PipePole, RM_LineCrossing.SurfaceAt(map, loc))")
-                       && !allows.Substring(0, allows.IndexOf("return AcceptanceReport.WasAccepted; } }", StringComparison.Ordinal) + 1).Contains("lineCrossingRulesEnabled"),
+                       && !allows.Substring(0, allowsEnd + 1).Contains("lineCrossingRulesEnabled"),
                     "can-fail: the placeworker reads the square's surface and applies the support rule whatever the crossing switch");
             });
 

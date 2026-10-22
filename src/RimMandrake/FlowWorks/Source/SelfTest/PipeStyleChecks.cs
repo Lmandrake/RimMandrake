@@ -90,9 +90,14 @@ namespace RimMandrake.FlowWorks.SelfTest
                         tank + ": the Choose style gizmo (CompProperties_TankLook)");
                 }
                 // can-fail: a liquid-tank-class building outside TankDefs would be built with no look at all
+                int tankClass = 0;
                 foreach (XDocument d in new[] { a, b })
                     foreach (XElement td in d.Descendants("ThingDef").Where(e => ((string)e.Element("thingClass") ?? "").EndsWith(".Building_LiquidTank")))
+                    {
+                        tankClass++;
                         Assert(PipeStyles.TankDefs.Contains((string)td.Element("defName")), (string)td.Element("defName") + ": a liquid tank missing from PipeStyles.TankDefs");
+                    }
+                Assert(tankClass >= PipeStyles.TankDefs.Length, "sanity probe: the thingClass scan sees the shipped tanks (" + tankClass + ")");
                 string src = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "PipeLook.cs"));
                 Assert(src.Contains("class CompTankLook") && src.Contains("PipeLook.StyleFor(tank?.def, look)") && src.Contains("tank.SetStyleDef(sd)"),
                     "CompTankLook restyles in place through the shared picker");
