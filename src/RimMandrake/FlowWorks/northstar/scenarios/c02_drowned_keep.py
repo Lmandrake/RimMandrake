@@ -56,14 +56,15 @@ SCENARIO = scenario(
           "swim under the deck (live 2026-10-21: a span must cross dug ground only, so it cannot also span the dry ditch)",
           "RAID BRANCH START: open the pen grate, unpause: raiders reach the ditch and moat, lay the plank or swim (2 m: "
           "heads and shoulders up), climb, and try the gate (it stays shut to hostiles)",
-          "lower the drawbridge (its winch) mid-raid: the leaf drops; the gate still refuses unless held open; let one "
-          "raider onto the gatehouse concealed pit: he drops onto the spikes",
+          "lower the drawbridge (its winch) mid-raid: the leaf drops; the gate still refuses unless held open; raiders "
+          "walk the gatehouse planks like floor: deconstruct (or blast) the cover under one and he drops onto the spikes",
           "open the gatehouse grate and sluice: the trapped raider's pit floods from the moat; read swim vs drown in "
           "the inspect pane",
           "light the chemfuel arm (dev fire at 'light here'): it goes up like gasoline; the grated deck lets the heat up",
           "cut the winch's power (ProofWinchPower off; the GSS cord is DEFERRED): the leaf holds where it is"],
     look_for="the concealed pit invisible at play zoom with a slight seam at max zoom; the bridge reads HUNG, not a pier; "
-             "raiders swim, never walk the moat floor",
+             "raiders swim, never walk the moat floor; the leaf, winch and gate draw the STEEL picture (material first, a look "
+             "only as fallback); the spikes (lift a plank to see them) are his art call",
     broken="the concealed pit visible at play zoom, or NO seam at max zoom; the concealed pit reading like a bridge; raiders walking "
            "on the moat floor; the gate opening for raiders while the leaf is up; a raider unhurt on the spikes; the "
            "bridge drawn as a pier-on-pylons; the sluice open but the pit dry",
