@@ -148,6 +148,12 @@ namespace RimMandrake.GimmeSomeSlack.Core
             var next = new Dictionary<string, LaidPiece>();
             var outp = new List<LaidPiece>();
             LastPlanned = LastReused = 0;
+            // GPT deep review 2026-10-22 #11: a diving piece's corridor is the whole map; hash it ONCE per Build, not once per
+            // cached diving edge (D x map cells). The world is only read during a Build, so the memo is exact.
+            ulong? wholeMapSig = null;
+            ulong Corridor(LaidPiece p) =>
+                p.CX0 == 0 && p.CZ0 == 0 && p.CX1 == w.Width - 1 && p.CZ1 == w.Height - 1
+                    ? (wholeMapSig ??= CorridorHash(w, p)) : CorridorHash(w, p);
             var pairCount = new Dictionary<string, int>();
             List<CordEdge> cordEdges = g.CordEdges().ToList();
             var pairTotal = new Dictionary<string, int>();
@@ -195,7 +201,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 full.Append('#').Append(opt.Lay.Fingerprint()).Append('#').Append(opt.PileFor(g.Nodes[e.A].Cell)).Append(opt.PileFor(g.Nodes[e.B].Cell)).Append(opt.DiveThrough ? "V" : "");
                 string fk = full.ToString();
                 string sig = LaySignature(e, parallel);
-                if (cache.TryGetValue(fk, out LaidPiece old) && old.LaySig == sig && CorridorHash(w, old) == old.CorridorHash)
+                if (cache.TryGetValue(fk, out LaidPiece old) && old.LaySig == sig && Corridor(old) == old.CorridorHash)
                 {
                     next[fk] = old;
                     outp.Add(old);
@@ -205,7 +211,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 LaidPiece lp = LayEdge(w, g, e, ekey, parallel, opt, isLive);
                 lp.Key = fk;
                 lp.LaySig = sig;
-                lp.CorridorHash = CorridorHash(w, lp);
+                lp.CorridorHash = Corridor(lp);
                 next[fk] = lp;
                 outp.Add(lp);
                 LastPlanned++;
