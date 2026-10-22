@@ -387,6 +387,8 @@ namespace RimMandrake.FlowWorks.SelfTest
             "credit site: levelling",
             // CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED stage 1: a backed-up pump spills its level over a full canal's lip
             "credit site: pump overflow spill",
+            // CANAL_OVERFLOW stage 2 (D2 gravity feed): a Dump tank against a full channel spills its surplus over the lip
+            "credit site: gravity overflow",
         };
 
         // review day 3: the decilitre movers (TryPourDl, TryDebitDl, CreditDl, TryReturnDl) joined the list; a site calling one

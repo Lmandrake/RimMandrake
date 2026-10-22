@@ -802,6 +802,25 @@ namespace RimMandrake.FlowWorks.Machinery
 						LiquidDef liquid = tank.storedLiquid;
 						FluidDef fluid = liquid.canalFluid;
 						RM_OutletKind kind = RM_LiquidSpill.Outlet(map, ex, end, liquid, fluid, out IntVec3 cell);
+						// CANAL_OVERFLOW D2 gravity feed (owner card 2026-10-22): a Dump tank stands above the ground, so against a FULL
+						// channel of its water it keeps pushing and the surplus spills over that channel's lip as sheet water (exact
+						// probe first; the tank leg is the reversible one). Switch off, or the sheet full: blocked, as before.
+						if (kind == RM_OutletKind.Blocked && fluid != null)
+						{
+							long head = Sheet.RM_MapComponent_Sheet.GravityProbe(map, end, System.Math.Min(left, tank.storedUnits), fluid);
+							if (head > 0)
+							{
+								RM_TransferLeg lip = Sheet.RM_MapComponent_Sheet.SpillLeg(map, end, RM_SheetMath.Source.Gravity);
+								if (RM_LiquidTransfer.Move((int)head, RM_TransferLeg.Store(k => tank.CanProvide(k), k => tank.TryRemoveLiquid(k), k => tank.TryAddLiquid(liquid, k)), lip, out RM_MoveOutcome gm) > 0)
+								{
+									CreditRoute(map, comps.RouteIn(c, tank, port), liquid, gm.Moved, RM_PumpMath.CycleTicks, FillFrom(tank, liquid));   // credit site: gravity overflow
+									left -= gm.Moved;
+									usedEnds.Add(port);
+									DumpedUnits += gm.Moved;
+								}
+							}
+							continue;
+						}
 						int n = kind == RM_OutletKind.Blocked ? 0 : RM_LiquidNetKernel.DumpTake(left, tank.storedUnits, level, RM_LiquidSpill.WholeLevels(kind));
 						if (n <= 0)
 						{

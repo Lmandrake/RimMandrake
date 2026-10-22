@@ -22,8 +22,8 @@ namespace RimMandrake.FlowWorks.Sheet
 	///   Refused water is refused back to the inflow (back-pressure), never destroyed.
 	/// - <b>Return</b> into a dug channel or a limited pond is the engine's own atomic pour / return leg
 	///   (<see cref="RM_SheetMath.World.Credit"/>); a limitless body is the disclosed "joined the lake" (D6).
-	/// - <b>Losses</b> (D6, disclosed): soak by the base ground's class, evaporation by temperature and roof. PROVISIONAL
-	///   rates (constants below), to be tuned at Stage 3/4.
+	/// - <b>Losses</b> (D6, disclosed): soak by the base ground's class, evaporation by temperature and roof. Mod Settings
+	///   rates (RM_SheetSettings), the placeholders kept as defaults (owner card 2026-10-22), tuned on the walk.
 	/// - <b>Picture</b>: overlay only (§6 item 2): <see cref="SectionLayer_RMSheetWater"/>. No temp terrain is written, so
 	///   nothing vanilla (crop kill, filth wash, fire, path cost) happens yet — those are Stage 2 effects.
 	///
@@ -31,9 +31,9 @@ namespace RimMandrake.FlowWorks.Sheet
 	/// fluid palette (its own, never the engine's compacting palette).</summary>
 	public class RM_MapComponent_Sheet : MapComponent
 	{
-		// PROVISIONAL loss rates (cm a day), per ground class / weather, never per biome (§3 step 4). Not owner-ruled.
-		public const float SoakCmPerDaySand = 4f, SoakCmPerDaySoil = 2f, SoakCmPerDayGravel = 1f;
-		public const float EvapCmPerDayAt20C = 0.5f, EvapRoofedFactor = 0.3f, EvapMaxFactor = 3f;
+		// Loss rates (cm a day) per ground class / weather, never per biome (§3 step 4): Mod Settings (RM_SheetSettings), the
+		// placeholder values kept as the defaults by owner card 2026-10-22, to be tuned on the walk.
+		public const float EvapMaxFactor = 3f;
 		private const int MaxLips = 16, LipWalkCap = 4096;
 
 		private State state;
@@ -88,7 +88,15 @@ namespace RimMandrake.FlowWorks.Sheet
 
 		private void SyncParams()
 		{
-			prm.CropKillPulses = PulsesFor(TicksPerWeek, RimMandrakeFlowWorksSettings.PulseIntervalTicks);
+			// Stage 3: the kernel's numbers are the Mod Settings (defaults = shipped). A lowered cap or wet-square limit only
+			// refuses NEW water (the kernel never cuts a cell down to a cap: D10, §6 item 5).
+			prm.CropKillPulses = Math.Max(1, RM_SheetSettings.cropDrownPulses);
+			prm.SheetCapDl = Math.Max(DlPerCm, RM_SheetSettings.sheetCapCm * DlPerCm);
+			prm.MaxWetCells = Math.Max(1, RM_SheetSettings.maxWetSquares);
+			prm.RetentionDl = Math.Max(1, Mathf.RoundToInt(RM_SheetSettings.retentionCm * DlPerCm));
+			prm.MinReceiveDl = Math.Max(1, prm.RetentionDl / 2);
+			prm.SweepsPerPulse = Mathf.Clamp(RM_SheetSettings.sweepsPerPulse, 1, 12);
+			prm.DoorLeakPermille = Mathf.Clamp(RM_SheetSettings.doorLeakPercent, 0, 100) * 10;
 			for (int k = 0; k < fluids.Count; k++)
 			{
 				FluidDef f = fluids[k];
@@ -202,8 +210,8 @@ namespace RimMandrake.FlowWorks.Sheet
 			float soakCm = map.terrainGrid.UnderTerrainAt(c) != null ? 0f : SoakCmPerDay(baseT);
 			world.SoakMilliDl[idx] = Mathf.RoundToInt(soakCm * DlPerCm * 1000f / pulsesPerDay);
 			float t = GenTemperature.GetTemperatureForCell(c, map);
-			float evapCm = t <= 0f ? 0f : EvapCmPerDayAt20C * Mathf.Min(EvapMaxFactor, t / 20f)
-				* (map.roofGrid.Roofed(c) ? EvapRoofedFactor : 1f);
+			float evapCm = t <= 0f ? 0f : RM_SheetSettings.dryCmPerDayAt20C * Mathf.Min(EvapMaxFactor, t / 20f)
+				* (map.roofGrid.Roofed(c) ? RM_SheetSettings.roofedDryPercent / 100f : 1f);
 			world.EvapMilliDl[idx] = Mathf.RoundToInt(evapCm * DlPerCm * 1000f / pulsesPerDay);
 		}
 
@@ -223,13 +231,13 @@ namespace RimMandrake.FlowWorks.Sheet
 			}
 			if (n.IndexOf("Sand", StringComparison.OrdinalIgnoreCase) >= 0)
 			{
-				return SoakCmPerDaySand;
+				return RM_SheetSettings.soakCmPerDaySand;
 			}
 			if (t.fertility >= 0.5f)
 			{
-				return SoakCmPerDaySoil;
+				return RM_SheetSettings.soakCmPerDaySoil;
 			}
-			return t.fertility > 0f ? SoakCmPerDayGravel : 0f; // fertility 0: rock, smooth stone
+			return t.fertility > 0f ? RM_SheetSettings.soakCmPerDayGravel : 0f; // fertility 0: rock, smooth stone
 		}
 
 		/// <summary>Classify every cell the kernel can touch this pulse: the wet cells and, through sheet-holding cells, the
@@ -419,6 +427,7 @@ namespace RimMandrake.FlowWorks.Sheet
 			int got = ResolveSpills(state, world, prm, new[] { o })[0];
 			if (got > 0)
 			{
+				TellOverflowOnce(origin, from);
 				// a spill between pulses changes the picture now (the overlay draws a fresh square's tier from its dL)
 				foreach (int k in o.LipNearestFirst)
 				{
@@ -503,14 +512,252 @@ namespace RimMandrake.FlowWorks.Sheet
 			{
 				return;
 			}
+			long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
+			long mem0 = GC.GetTotalMemory(false);
 			Ensure();
 			RefreshAround();
 			HandOverTakenCells();
+			long k0 = System.Diagnostics.Stopwatch.GetTimestamp();
 			RM_SheetMath.Pulse(state, world, prm, rep);
+			long k1 = System.Diagnostics.Stopwatch.GetTimestamp();
 			foreach (var (cell, _, _) in rep.TierChanged)
 			{
-				map.mapDrawer.MapMeshDirty(map.cellIndices.IndexToCell(cell), MapMeshFlagDefOf.Terrain);
+				IntVec3 c = map.cellIndices.IndexToCell(cell);
+				map.mapDrawer.MapMeshDirty(c, MapMeshFlagDefOf.Terrain);
+				map.pathing?.RecalculatePerceivedPathCostAt(c);   // Stage 2: the wading cost follows the tier
+				perfDirty++;
 			}
+			Effects();
+			// perf (§6 item 12: kernel and whole pulse recorded separately; RM_SheetProofs.ProofSheetPerf reads these)
+			long t1 = System.Diagnostics.Stopwatch.GetTimestamp();
+			double tick = 1000.0 / System.Diagnostics.Stopwatch.Frequency;
+			perfPulses++;
+			perfKernelMs += (k1 - k0) * tick;
+			double ms = (t1 - t0) * tick;
+			perfPulseMs += ms;
+			perfMaxPulseMs = Math.Max(perfMaxPulseMs, ms);
+			perfAllocB += Math.Max(0, GC.GetTotalMemory(false) - mem0);
+			perfWetMax = Math.Max(perfWetMax, state.WetCount);
+		}
+
+		// ── Stage 2 effects (D3 crops and irrigation, pawns, fire): read from the grid, never from a picture (§6 item 2) ──
+
+		private static readonly List<IntVec3> soakCells = new List<IntVec3>();
+		private static Func<Map, IEnumerable<IntVec3>, int, int> soakApi;
+		private static bool soakLooked;
+
+		/// <summary>ExplosiveGrowthAPI.SoakCells found by name (no hard reference: FlowWorks does not depend on Explosive Growth).
+		/// Null when that mod is not loaded.</summary>
+		public static Func<Map, IEnumerable<IntVec3>, int, int> SoakApi
+		{
+			get
+			{
+				if (!soakLooked)
+				{
+					soakLooked = true;
+					try
+					{
+						Type t = GenTypes.GetTypeInAnyAssembly("RimMandrake.ExplosiveGrowth.ExplosiveGrowthAPI");
+						System.Reflection.MethodInfo m = t?.GetMethod("SoakCells", new[] { typeof(Map), typeof(IEnumerable<IntVec3>), typeof(int) });
+						if (m != null)
+						{
+							soakApi = (Func<Map, IEnumerable<IntVec3>, int, int>)Delegate.CreateDelegate(typeof(Func<Map, IEnumerable<IntVec3>, int, int>), m);
+						}
+					}
+					catch (Exception e)
+					{
+						Log.Warning("[RimMandrake.FlowWorks] spilled water could not find Explosive Growth's soak (" + e.Message + "); it will not irrigate.");
+					}
+				}
+				return soakApi;
+			}
+		}
+
+		/// <summary>How long one pulse's soak keeps a square watered (Explosive Growth reads it as irrigated).</summary>
+		public const int IrrigateTicks = 15000;
+
+		private void Effects()
+		{
+			// D3: a crop under standing overflow for the whole delay drowns (the kernel's timer fired this pulse); a readable sign
+			if (RM_SheetSettings.cropsDrownEnabled && rep.CropKilled.Count > 0)
+			{
+				int killed = 0;
+				IntVec3 at = IntVec3.Invalid;
+				foreach (int k in rep.CropKilled)
+				{
+					IntVec3 c = map.cellIndices.IndexToCell(k);
+					Plant plant = c.GetPlant(map);
+					if (plant != null && !plant.Destroyed && plant.def.plant != null && !plant.def.plant.IsTree)
+					{
+						plant.Kill();
+						killed++;
+						at = c;
+					}
+				}
+				if (killed > 0)
+				{
+					Messages.Message("Standing water drowned " + killed + " plant" + (killed == 1 ? "" : "s") + " after "
+						+ (prm.CropKillPulses * (float)RimMandrakeFlowWorksSettings.PulseIntervalTicks / GenDate.TicksPerDay).ToString("0.#")
+						+ " days under it.", new TargetInfo(at, map), MessageTypeDefOf.NegativeEvent, false);
+				}
+			}
+			// D3: water that soaked in irrigates
+			if (RM_SheetSettings.irrigateEnabled && rep.Soaked.Count > 0 && SoakApi != null)
+			{
+				soakCells.Clear();
+				foreach (var (k, _) in rep.Soaked)
+				{
+					soakCells.Add(map.cellIndices.IndexToCell(k));
+				}
+				try
+				{
+					irrigatedTotal += SoakApi(map, soakCells, IrrigateTicks);
+				}
+				catch (Exception e)
+				{
+					soakApi = null;
+					Log.Warning("[RimMandrake.FlowWorks] Explosive Growth's soak failed (" + e.Message + "); spilled water stops irrigating.");
+				}
+			}
+			// pawns: SoakingWet at sheet depth (vanilla's floodwater thought); the path cost is the PathGrid postfix
+			if (RM_SheetSettings.pawnEffectsEnabled && ThoughtDefOf.SoakingWet != null)
+			{
+				IReadOnlyList<Pawn> pawns = map.mapPawns.AllPawnsSpawned;
+				for (int i = 0; i < pawns.Count; i++)
+				{
+					Pawn p = pawns[i];
+					if (p.Flying || p.needs?.mood?.thoughts?.memories == null)
+					{
+						continue;
+					}
+					Tier t = TierAt(p.Position);
+					if (t == Tier.Sheet || t == Tier.Pool)
+					{
+						p.needs.mood.thoughts.memories.TryGainMemoryFast(ThoughtDefOf.SoakingWet);
+					}
+				}
+			}
+			// fire: a water sheet puts it out (fuel sheets never would: water only today)
+			if (RM_SheetSettings.putsOutFireEnabled)
+			{
+				List<Thing> fires = map.listerThings.ThingsOfDef(ThingDefOf.Fire);
+				for (int i = fires.Count - 1; i >= 0; i--)
+				{
+					Thing f = fires[i];
+					if (f.Spawned && f is Fire fire && fire.parent == null && StandingDlAt(map, f.Position) >= prm.RetentionDl)
+					{
+						f.Destroy();
+					}
+				}
+			}
+		}
+
+		private long irrigatedTotal;
+		private bool toldOverflow;
+
+		/// <summary>The readable sign (§4 stage 2): the first spill on a map says so, once per map (saved).</summary>
+		private void TellOverflowOnce(IntVec3 origin, Source from)
+		{
+			if (toldOverflow)
+			{
+				return;
+			}
+			toldOverflow = true;
+			string what = from == Source.Pump ? "A pump is pouring into a full channel" : from == Source.Rain ? "Rain is filling a full channel"
+				: from == Source.FillIn ? "Filling a channel in squeezed water out" : from == Source.Gravity ? "A tank is draining into a full channel"
+				: "Released water reached a full channel";
+			Messages.Message(what + ": the channel is overflowing and water is spilling onto the ground.", new TargetInfo(origin, map),
+				MessageTypeDefOf.CautionInput, false);
+		}
+
+		/// <summary>Liquid sheet water standing on <paramref name="c"/> in dL (0 when frozen: ice is not water to wade or drown in).</summary>
+		public static int StandingDlAt(Map map, IntVec3 c)
+		{
+			if (anyWet <= 0)
+			{
+				return 0;
+			}
+			RM_MapComponent_Sheet s = Of(map);
+			return s == null || s.TierAt(c) == Tier.Ice ? 0 : s.DlAt(c);
+		}
+
+		/// <summary>The wading cost the PathGrid postfix adds: 0 dry or film, the setting at sheet tier, twice it in a pool.</summary>
+		public static int PathCostAt(Map map, IntVec3 c)
+		{
+			if (anyWet <= 0 || !RM_SheetSettings.pawnEffectsEnabled)
+			{
+				return 0;
+			}
+			RM_MapComponent_Sheet s = Of(map);
+			if (s == null)
+			{
+				return 0;
+			}
+			Tier t = s.TierAt(c);
+			return t == Tier.Sheet ? RM_SheetSettings.sheetPathCost : t == Tier.Pool ? 2 * RM_SheetSettings.sheetPathCost : 0;
+		}
+
+		/// <summary>Squares of spilled water on every map: the cheap gate the path-cost postfix reads before any map lookup.</summary>
+		private static int anyWet;
+		private int countedWet;
+
+		public override void MapComponentTick()
+		{
+			// keep the global gate in step with this map (cheap: one int compare a tick)
+			int w = state?.WetCount ?? 0;
+			if (w != countedWet)
+			{
+				anyWet += w - countedWet;
+				countedWet = w;
+			}
+		}
+
+		public override void MapRemoved()
+		{
+			anyWet -= countedWet;
+			countedWet = 0;
+			base.MapRemoved();
+		}
+
+		// ── D2 gravity feed: a Dump tank (it stands above the ground, so its head is above the brim) keeps pushing into a full
+		// channel; what the channel cannot take spills over its lip ──
+
+		/// <summary>dL a gravity feed at the full channel square <paramref name="end"/> could spill now (exact probe, nothing moves).</summary>
+		public static long GravityProbe(Map map, IntVec3 end, long dl, FluidDef fluid)
+		{
+			RM_MapComponent_Sheet s = Of(map);
+			RM_MapComponent_Excavation e = map?.GetComponent<RM_MapComponent_Excavation>();
+			if (s == null || e == null || !e.IsExcavated(end) || e.FluidAt(end) != fluid || e.WaterDlAt(end) < e.DepthAt(end) * (long)RM_LevelSolve.U)
+			{
+				return 0;
+			}
+			return s.Probe(end, dl, fluid, Source.Gravity);
+		}
+
+		// ── perf counters (RM_SheetProofs.ProofSheetPerf) ──
+		internal int perfPulses, perfDirty, perfWetMax;
+		internal double perfKernelMs, perfPulseMs, perfMaxPulseMs;
+		internal long perfAllocB;
+
+		internal void PerfReset()
+		{
+			perfPulses = perfDirty = perfWetMax = 0;
+			perfKernelMs = perfPulseMs = perfMaxPulseMs = 0;
+			perfAllocB = 0;
+		}
+
+		// ── proof accessors (RM_SheetProofs) ──
+		internal State ProofState => state;
+		internal Params ProofParams { get { Ensure(); return prm; } }
+		internal long IrrigatedTotal => irrigatedTotal;
+
+		/// <summary>What the kernel takes this square to be now (classified fresh from the authoritative layers).</summary>
+		internal Kind KindAt(IntVec3 c)
+		{
+			Ensure();
+			int i = map.cellIndices.CellToIndex(c);
+			Classify(i);
+			return world.Kinds[i];
 		}
 
 		/// <summary>A wet square the engine now owns (dug under the sheet, a pond under it) hands its water over: into the
@@ -613,6 +860,8 @@ namespace RimMandrake.FlowWorks.Sheet
 				DataExposeUtility.LookByteArray(ref data, "RM_sheetState");
 			}
 			Scribe_Collections.Look(ref fluids, "RM_sheetFluids", LookMode.Def);
+			Scribe_Values.Look(ref toldOverflow, "RM_sheetToldOverflow", false);
+			Scribe_Values.Look(ref irrigatedTotal, "RM_sheetIrrigated", 0L);
 			if (Scribe.mode == LoadSaveMode.LoadingVars && data != null)
 			{
 				try

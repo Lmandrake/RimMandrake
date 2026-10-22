@@ -17,6 +17,34 @@ namespace RimMandrake.FlowWorks
     {
         private const string CAT = "RMFlowWorks";
 
+        // CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED: the walk's test switch (the master switch ships OFF until stage 4 signs off)
+        [DebugAction(CAT, "Canal overflow: switch on/off (test)", allowedGameStates = AllowedGameStates.Playing)]
+        private static void ToggleOverflow()
+        {
+            Sheet.RM_SheetSettings.sheetOverflowEnabled = !Sheet.RM_SheetSettings.sheetOverflowEnabled;
+            LoadedModManager.GetMod<RimMandrakeFlowWorksMod>()?.WriteSettings();
+            Messages.Message("Canal overflow is now " + (Sheet.RM_SheetSettings.sheetOverflowEnabled ? "ON" : "OFF") + " (Mod Settings, saved).",
+                RimWorld.MessageTypeDefOf.NeutralEvent, false);
+        }
+
+        [DebugAction(CAT, "Canal overflow: spill 1,000 L of water here", allowedGameStates = AllowedGameStates.PlayingOnMap,
+            actionType = DebugActionType.ToolMap)]
+        private static void SpillHere()
+        {
+            Map map = Find.CurrentMap;
+            IntVec3 c = UI.MouseCell();
+            if (map == null || !c.InBounds(map)) return;
+            long got = Sheet.RM_MapComponent_Sheet.Of(map)?.Offer(c, 10000, RimMandrakeFlowWorks_DefOf.RM_Fluid_Water, RM_SheetMath.Source.Flood) ?? 0;
+            Log.Message("[RMFlowWorksDebug] SHEET_SPILL at " + c + ": accepted " + got + " of 10000 dL"
+                + (Sheet.RM_SheetSettings.sheetOverflowEnabled ? "" : " (overflow is OFF: nothing is accepted)"));
+        }
+
+        [DebugAction(CAT, "Canal overflow: dry all spilled water (disclosed)", allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void DryAllSheet()
+        {
+            Sheet.RM_MapComponent_Sheet.Of(Find.CurrentMap)?.DryAll();
+        }
+
         [DebugAction(CAT, "Instant-dig canal at cell",
             allowedGameStates = AllowedGameStates.PlayingOnMap,
             actionType = DebugActionType.ToolMap)]

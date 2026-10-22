@@ -136,6 +136,8 @@
     <Compile Include="Sheet\RM_MapComponent_Sheet.cs" />
     <Compile Include="Sheet\RM_SheetSettings.cs" />
     <Compile Include="Sheet\SectionLayer_RMSheetWater.cs" />
+    <Compile Include="Sheet\RM_SheetPatches.cs" />
+    <Compile Include="Sheet\RM_SheetProofs.cs" />
     <Compile Include="RM_SlimeSlip.cs" />
     <Compile Include="RM_PitExposureMath.cs" />
     <Compile Include="RM_PitExposure.cs" />
