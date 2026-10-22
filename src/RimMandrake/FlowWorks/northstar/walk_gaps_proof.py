@@ -186,7 +186,10 @@ def thrown_verdict(flyer_new, person_new, launched):
         return "UNMEASURED", "HARNESS"
     if not person_new:
         return "UNMEASURED", "HARNESS"         # the control did not fall: the read is blind, the flyer's 'unhurt' proves nothing
-    return ("PASS" if not flyer_new else "FAIL"), "MOD"
+    # HARNESS (belt live 2026-10-22): RM_PitExposure is the pit's temperature exposure, gained by anything standing in a pit
+    # (the thrown duck AND the person both got it): it is not a fall injury, so it does not count against the flyer
+    hurt = [h for h in flyer_new if h != "RM_PitExposure"]
+    return ("PASS" if not hurt else "FAIL"), "MOD"
 
 
 def spread(fracs):
@@ -445,6 +448,10 @@ def scene_ladder(ctx, mine):
     V.require(k.get("top") == ctx["xz"](P(9, 3)), "its top square is the rim (9,3)", t)
     below = ctx["spawn"](P(11, 3))
     ctx["ticks"](5)
+    # HARNESS (belt live 2026-10-22): the first run's 'pit colonist' read pos=97,41 -- not in this pit at all, so (1) measured
+    # nothing. The row needs him ON the pit floor before the order.
+    kb0, tb0 = ctx["trap"](below)
+    V.require(kb0.get("pos") == ctx["xz"](P(11, 3)), "the pit colonist stands in the ladder's pit", tb0, cls="SITE")
     bound = ctx["a"].job_ticks
 
     def reads(want):
@@ -487,15 +494,27 @@ def scene_travel(ctx, mine):
     B, P, row = ctx["B"], ctx["P"], ctx["row"]
     ctx["pit"](18, 2, 3, 3, 6)
     ctx["pit"](24, 2, 3, 3, 6)
+    # HARNESS (belt live 2026-10-22): 'held' is the superdeep trap's capture, which takes the player's own pawns only with
+    # superdeepCapturesOwnFaction ON (climb_proof sets it for its run): the colonist control read held=False twice. On for
+    # this scene, restored after.
+    S_FW = "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings"
+    own0 = (B.call("jawa/mod_settings_field", typeName=S_FW, action="get", field="superdeepCapturesOwnFaction") or {}).get("value")
+    B.call("jawa/mod_settings_field", typeName=S_FW, action="set", field="superdeepCapturesOwnFaction", value="True")
+    try:
+        person = ctx["spawn"](P(25, 3))
+        ctx["draft"](person, True)
+        # the pocket grid rebuilds on its own cadence (climb_proof waits SETTLE): 70 ticks before the person's read
+        ctx["ticks"](70)
+        kp, tp = ctx["travel"](P(25, 3))
+    finally:
+        if own0 is not None:
+            B.call("jawa/mod_settings_field", typeName=S_FW, action="set", field="superdeepCapturesOwnFaction", value=str(own0))
+    # the duck is read 2 ticks after it lands (a free flyer walks out of the pit: at 70 ticks it was gone, pawn=none)
     duck = ctx["spawn"](P(19, 3), kind=FLYER_KIND, faction="none")
-    person = ctx["spawn"](P(25, 3))
-    ctx["draft"](person, True)
     ctx["ticks"](2)
     kd, td = ctx["travel"](P(19, 3))
     s, c = travel_free_verdict(kd, True)
     row("TRAVEL_FLYER_FREE_ON_FLOOR", s, {"read": td, "kind": FLYER_KIND, "canFly": kd.get("canFly")}, cls=c)
-    ctx["ticks"](10)
-    kp, tp = ctx["travel"](P(25, 3))
     s, c = travel_free_verdict(kp, False)
     row("TRAVEL_PERSON_HELD_CONTROL", s, {"read": tp}, cls=c)
     # a marked race: the first that spawns on this tier
@@ -568,7 +587,8 @@ def scene_tanks(ctx, mine):
     ctx["ticks"](2)
     net = B.hp("net:%d,%d" % roots[0])
     reach = sorted(tuple(t.get("tank") or ()) for t in net.get("tanks") or [])
-    V.require(len(reach) >= 3, "the piped net reaches all three tanks", net)
+    # HARNESS (belt live 2026-10-22): net:x,z lists the OTHER tanks (the origin is "origin"), so all three = 2 listed
+    V.require(len(reach) >= 2, "the piped net reaches all three tanks", net)
     u0 = units()
     ctx["ticks"](2500)
     u1 = units()
