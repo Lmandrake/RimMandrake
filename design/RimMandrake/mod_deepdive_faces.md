@@ -6,9 +6,10 @@ you to deeply assess these facial mods and explore what would be required to rep
 background analysis on this. Look also if the GitHub codes are available to assist this."*
 
 **Nothing in this document removes, disables or reorders any mod.** C16 stands: every facial mod stays loaded
-until a takeover replaces it. Standing rule (CLAUDE.md, "What is where"): **cosmetic changes need the owner's
-permission first — they can break animated faces.** Every phase below that changes what a pawn looks like is
-an owner decision point (§8).
+until a takeover replaces it. Cosmetic changes are delegated (owner, 2026-10-22, `design/RimMandrake/delegation_policy.md`): every phase
+below that changes what a pawn looks like is made once a judge agent returns KEEP against
+`design/RimMandrake/art_judge_brief.md`, whose §F carries the old reason — **they can break animated faces**. §8's
+questions are delegable unless they change a standing ruling of his (C16 included).
 
 Method (FOUNDRY, 2026-10-10, offline; no bridge, no game). Census = parse `About.xml` `<name>`+`<description>`
 of all 589 mods in `facts/universe.json` (sanity probe: the sweep found `nals.facialanimation` with a 687-char
@@ -368,7 +369,7 @@ whether or not the takeover happens.
   to draw on any pawn FA is drawing (check `DrawFaceGraphicsComp.EnableDrawing` via reflection) until cutover.
 - **Visual regression for NPC humans**: players lose FA's expression variety; quality bar is the owner's.
 - **Cosmetic breakage**: any head/eye change can break animated faces (standing rule) — every phase marked
-  "yes" above needs his permission first.
+  "yes" above needs an art-judge KEEP with a spawned-pawn face screenshot (brief §F).
 
 ## 7. Measurement plan (per face mod, memory and TPS)
 
@@ -403,7 +404,7 @@ All offline-prepared, run on the cheap mechanism list (`rimworld-load-round`), n
 | `FACE_MOD_COST_MEASURE_1` | §7 memory/TPS tiers A–D, zoomed in/out | S–M |
 | `MODAUDIT_LOADFOLDERS_TEXTURE_COUNT_1` | `diskfacts.py` counts textures in every version folder and inactive `IfModActive` folders (FA 1,597 MB vs ~239 MB) | S |
 | `FACE_ENGINE_OWN_1` | Build `mandrake.rm.faces` from FAF (Apache-2.0) + GH (MIT) designs | M–L |
-| `FACE_ART_HUMAN_SET_1` | Human face-part art set in our lawset (owner permission first) | L |
+| `FACE_ART_HUMAN_SET_1` | Human face-part art set in our lawset (art judge first, `delegation_policy.md`) | L |
 | `FA_SAVE_MIGRATION_DRYRUN_1` | Keeper-save load with FA family off; log triage | S |
 | `FA_THIRDPARTY_DEFTYPE_STUB_1` | Check the 5 unguarded-looking xpath-patch mods; stub FA def types only if the dry-run errors | S |
 

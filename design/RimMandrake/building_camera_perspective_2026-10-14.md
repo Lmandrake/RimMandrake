@@ -88,7 +88,7 @@ the footprint's south edge. Extra height goes north: keep `drawSize.x = 2`, rais
 | RM_LiquidTankTall (installed 2026-10-14) | b/a 0.37 by fit; a domed head in side elevation, no top face | **violates** — rejected by the owner |
 | RM_UniversalCargoTankXTall (installed 2026-10-14) | fit unusable (rms 17.6 px, lugs cross the rim); hatch drawn as a full circle facing the camera | **violates** — rejected by the owner |
 | RM_LiquidTank (short, horizontal drum) | hatch ellipse ≈ 0.4, no lit top band along the drum; drawing floats 0.25 cell inside the footprint at both ends | **mild violation** — not changed (cosmetic changes need the owner) |
-| RM_UniversalCargoTank (short, horizontal drum) | hatch drawn as a near-frontal circle; side elevation of the drum | **violates** — not changed (cosmetic changes need the owner) |
+| RM_UniversalCargoTank (short, horizontal drum) | hatch drawn as a near-frontal circle; side elevation of the drum | **violates** — not changed yet (a redraw is a delegated art call, `delegation_policy.md`) |
 | RM_LiquidTankTall v2 (candidate) | b/a 0.57 (35°), rms 0.4 px | conforms |
 | RM_UniversalCargoTankXTall v2 (candidate) | b/a 0.56 (34°), rms 0.3 px | conforms |
 

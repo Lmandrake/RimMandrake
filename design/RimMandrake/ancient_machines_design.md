@@ -316,14 +316,12 @@ layer below's defName; the reverse never happens.
 | the Utinni's own wreck placement | 3 | map authoring, not a def |
 | the sacred-scrap deconstruct restriction | 3 | it is a precept/policy, so it is the clan's |
 
-🔴 **Every cosmetic row above is gated on the owner's permission, asked for
-first.** Owner, 2026-09-15: cosmetic changes require asking permission because
-they may break animated faces. That covers all of it — grade art, the layer-2
-reskin, texPath moves, any skin, head, eye or render-node change — and it applies
-to the act of making the change, not to proposing it here. **Nothing in this
-document authorizes an art edit.** The three grade sprites, the layer-2 Rakatan
-reskin and the §10.8 folder rename are each a request to be put to him, one at a
-time.
+🔴 **Every cosmetic row above is a delegated art call** (owner, 2026-10-22,
+`design/RimMandrake/delegation_policy.md`): grade art, the layer-2 reskin, texPath
+moves, any skin, head, eye or render-node change is made once a judge agent (not
+the maker) returns KEEP against `design/RimMandrake/art_judge_brief.md` — which
+keeps the 2026-09-15 reason: a change must not break animated faces. Logged
+`--why "delegated: cosmetic"`; he reviews the curated result.
 
 **Two placements worth stating because they look like layer 1 and are not.**
 Sacred scrap is a *clan rule* — `wrecked_machines_resurrection.md` item 4 ruled
@@ -965,8 +963,8 @@ notably `grab_source_art.py` L187/L208's `("restored", "wrecked", "kludged",
 the `art_source/` and `Textures/` folder names are what `texPath` points at**,
 so either the folders move with the defNames or the folder names stay and
 deliberately diverge from the grades. Decide it once, both sides together — and
-because a folder move is a `texPath` move, **it is a cosmetic change and needs the
-owner's permission before it is made** (§3).
+because a folder move is a `texPath` move, **it is a cosmetic change, judged by a
+second agent before it is made** (§3).
 
 ### 10.9 `design/Jawa/wrecked_machines_resurrection.md`
 

@@ -290,7 +290,7 @@ Today every dug and lakebed terrain has fertility 0 (MEASURED, `FlowWorks_Terrai
 | No ground markers for traps: *"Let's try it without such indicators at first."* (2026-10-12 Q4) | **confirms** | The Q12 alert is about our own colonists, not the ground. |
 | *"Ladders should be able to be raised and lowered ... No need to have the colonists automatically move them"* (2026-10-06) | **confirms** | Unchanged at any depth. |
 | Defence first, then irrigation, then industry, then terraforming (2026-09-16) | **confirms** | Tiers 1-2 feed defence and irrigation directly; drained lakes feed terraforming. |
-| *"Cosmetic changes need his permission first"* (standing) | **applies** | The five wall looks, the floor shade and silt art go to him before shipping. |
+| Art is delegated to a judge agent (owner, 2026-10-22, `delegation_policy.md`) | **applies** | The five wall looks, the floor shade and silt art pass the art judge, then reach him in the curated review before shipping. |
 
 ## 5. Rules that were quietly absolute (fix whatever tier ships)
 

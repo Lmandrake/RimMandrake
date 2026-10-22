@@ -29,7 +29,7 @@
   of the same line (PlaceWorker_BuildOverLowerGrade); reinstalling is free.
 
   ⚠️ PLACEHOLDER ART: every grade reuses the vanilla texture, tinted darker
-  the lower the grade. Real sprites need the owner's permission first.
+  the lower the grade. Real sprites pass the art judge first (delegation_policy.md).
   ⚠️ Where wrecks are found (ruled 2026-10-03: ancient ruin sites) is not
   wired: nothing spawns them yet. Dev-spawn only.
 -->

@@ -150,9 +150,10 @@ donor-identical, so it is the 1.0 case and needs no tier def of its own. **The 0
 `replaceTags` — build the next tier's blueprint over the old footprint, ordinary
 construction, no C#.
 
-⛔ **Cosmetic changes need permission first.** Anything touching art, skin, heads, eyes or
-`renderNodeProperties` may break animated faces — ask rather than fix. That covers this
-mod's `texPath` decisions and every sprite in the ladder.
+**Cosmetic changes are delegated art calls** (owner, 2026-10-22, `design/RimMandrake/delegation_policy.md`).
+Anything touching art, skin, heads, eyes or `renderNodeProperties` may break animated faces, so it
+is made only on a judge agent's KEEP against `design/RimMandrake/art_judge_brief.md` (§F). That
+covers this mod's `texPath` decisions and every sprite in the ladder.
 
 **2. 🔴 Nothing equals or exceeds the original.** Owner, verbatim: *"There is nothing
 beyond or even equal to the original."* The ladder is **asymptotic, capped at 0.75 by
