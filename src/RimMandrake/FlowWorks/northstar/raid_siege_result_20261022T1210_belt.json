@@ -1,0 +1,132 @@
+{
+ "script": "raid_siege_live.py",
+ "started": "2026-10-22T11:35:20",
+ "rows": [
+  {
+   "id": "RAID_SIEGE_DECIDES_SIEGE",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "RAIDERS_TRENCH_BUILD_BREACH_AND_JUMP",
+   "detail": {
+    "decisions": {
+     "Human36589": "siege",
+     "Human36596": "siege",
+     "Human36603": "siege",
+     "Human36611": "siege",
+     "Human36620": "siege"
+    }
+   }
+  },
+  {
+   "id": "RAID_SIEGE_NO_TRENCH_JOBS",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "RAIDERS_TRENCH_BUILD_BREACH_AND_JUMP",
+   "detail": {
+    "bad": [],
+    "jobsSeen": {
+     "Wait_Wander": 6,
+     "Goto": 15,
+     "Wait_MaintainPosture": 1,
+     "Wait_Combat": 29,
+     "HaulToContainer": 2,
+     "FinishFrame": 5,
+     "GotoWander": 2
+    },
+    "anyMoved": true,
+    "ticks": 3000,
+    "decisions": {
+     "Human36589": "siege",
+     "Human36596": "siege",
+     "Human36603": "siege",
+     "Human36611": "siege",
+     "Human36620": "siege"
+    }
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/pile_2026-10-22/belt/siege_2.json",
+  "origin": "125,125",
+  "fresh_map": true,
+  "ticks": 3000
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [
+    "Boomalope36489",
+    "Boomalope36490",
+    "Boomalope36491",
+    "Boomalope36492",
+    "Boomrat36488",
+    "Cougar36498",
+    "Hare36495",
+    "Hare36500",
+    "Ostrich36479",
+    "Quail36496",
+    "Quail36497",
+    "Rat36481",
+    "Rat36493",
+    "Rat36499",
+    "Sparrow36485",
+    "Sparrow36486",
+    "Sparrow36487",
+    "Vulture36478",
+    "Vulture36480",
+    "Vulture36482",
+    "Vulture36483",
+    "Vulture36484",
+    "Vulture36494",
+    "Vulture36501"
+   ],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "lords": {
+  "before": [
+   {
+    "index": 0,
+    "job": "LordJob_FleshbeastAssault",
+    "faction": "Entities",
+    "pawnCount": 3
+   },
+   {
+    "index": 1,
+    "job": "LordJob_AssaultColony",
+    "faction": "PirateYttakin",
+    "pawnCount": 5
+   }
+  ],
+  "setJob": "{'success': True, 'lordIndex': 1, 'lordLoadID': 1, 'faction': 'Sheraesh', 'pawnCount': 5, 'constructorUsed': 'LordJob_Siege(Faction faction, IntVec3 siegeSpot, Single blueprintPoints)', 'argumentsBound': ['faction', 'siegeSpot', 'blueprintPoints'], 'jobBefore': 'LordJob_AssaultColony', 'jobAfter': 'LordJob_Siege', 'toilBefore': 'LordToil_AssaultColony', 'toilAfter': 'LordToil_Travel', 'graphToilCo",
+  "after": [
+   {
+    "index": 0,
+    "job": "LordJob_FleshbeastAssault",
+    "faction": "Entities",
+    "pawnCount": 3
+   },
+   {
+    "index": 1,
+    "job": "LordJob_Siege",
+    "faction": "PirateYttakin",
+    "pawnCount": 5
+   }
+  ]
+ },
+ "finished": "2026-10-22T11:36:34"
+}
