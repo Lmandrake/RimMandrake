@@ -1,9 +1,9 @@
 {
  "biome": "SUBJECTS_drawbridge_art",
- "built": "2026-10-20T22:31:18-0700",
+ "built": "2026-10-21T20:55:09-0700",
  "census": "Transient/biome_ffar/drawbridge_art.subjects.json",
  "census_git_head": null,
- "loadOrder": "live ModsConfig.xml: 325 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 14 mods \u2014 a test list): 325 active",
  "rows": {
   "DB_Futuristic_Gate_Closed": {
    "columns": {},
@@ -66,12 +66,22 @@
    "subject_key": "db_futuristic_planks"
   },
   "DB_Futuristic_Winch_Steel": {
-   "columns": {},
-   "graphic_of": {},
-   "labels": {},
+   "columns": {
+    "A": {
+     "east": "b6a2a8c408cde8db1ad8832584c8ce8ccb9b6018c0399f5c54526bc9b5555387"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgeWinch_Steel"
+   },
+   "labels": {
+    "A": "render RM_DrawbridgeWinch_Steel_Futuristic"
+   },
    "pools": [],
-   "res": null,
-   "reserved": [],
+   "res": "RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgeWinch_Steel",
+   "reserved": [
+    "A"
+   ],
    "shownBase": [],
    "subject_key": "db_futuristic_winch_steel"
   },
@@ -187,12 +197,22 @@
    "subject_key": "db_icon_raise"
   },
   "DB_Industrial_Gate_Closed": {
-   "columns": {},
-   "graphic_of": {},
-   "labels": {},
+   "columns": {
+    "A": {
+     "east": "3e2586cdf35b82183c99ba57585b025acab5401314467d39ec45b81888e33455"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgeGate_Closed"
+   },
+   "labels": {
+    "A": "render RM_DrawbridgeGate_Closed_Industrial"
+   },
    "pools": [],
-   "res": null,
-   "reserved": [],
+   "res": "RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgeGate_Closed",
+   "reserved": [
+    "A"
+   ],
    "shownBase": [],
    "subject_key": "db_industrial_gate_closed"
   },
@@ -247,32 +267,62 @@
    "subject_key": "db_industrial_planks"
   },
   "DB_Industrial_Winch_Steel": {
-   "columns": {},
-   "graphic_of": {},
-   "labels": {},
+   "columns": {
+    "A": {
+     "east": "c9a6284b4e6e452e659408ede73a523d0ff92a0d3dc548bf4b268f3e8b763be6"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgeWinch_Steel"
+   },
+   "labels": {
+    "A": "render RM_DrawbridgeWinch_Steel_Industrial"
+   },
    "pools": [],
-   "res": null,
-   "reserved": [],
+   "res": "RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgeWinch_Steel",
+   "reserved": [
+    "A"
+   ],
    "shownBase": [],
    "subject_key": "db_industrial_winch_steel"
   },
   "DB_Industrial_Winch_Timber": {
-   "columns": {},
-   "graphic_of": {},
-   "labels": {},
+   "columns": {
+    "A": {
+     "east": "d08f27284ad6f46e1e03dbd1a14189441d922563d38a1bb7e3e67c3df53b79b1"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgeWinch_Timber"
+   },
+   "labels": {
+    "A": "render RM_DrawbridgeWinch_Timber_Industrial"
+   },
    "pools": [],
-   "res": null,
-   "reserved": [],
+   "res": "RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgeWinch_Timber",
+   "reserved": [
+    "A"
+   ],
    "shownBase": [],
    "subject_key": "db_industrial_winch_timber"
   },
   "DB_LeafUp_Steel_Edge": {
-   "columns": {},
-   "graphic_of": {},
-   "labels": {},
+   "columns": {
+    "A": {
+     "single": "2347bfc7b4eb6f080a8c2c912f490829a759cc56b42f04242305c44146e49697"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Steel_Edge"
+   },
+   "labels": {
+    "A": "render RM_DrawbridgeLeafUp_Steel_Edge"
+   },
    "pools": [],
-   "res": null,
-   "reserved": [],
+   "res": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Steel_Edge",
+   "reserved": [
+    "A"
+   ],
    "shownBase": [],
    "subject_key": "db_leafup_steel_edge"
   },
@@ -377,12 +427,22 @@
    "subject_key": "db_modern_gate_closed"
   },
   "DB_Modern_Gate_Open": {
-   "columns": {},
-   "graphic_of": {},
-   "labels": {},
+   "columns": {
+    "A": {
+     "east": "920861db757fb60ff585126c4ba065a70311ddbb0c3ac5a5e870e2841a5472a8"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgeGate_Open"
+   },
+   "labels": {
+    "A": "render RM_DrawbridgeGate_Open_Modern"
+   },
    "pools": [],
-   "res": null,
-   "reserved": [],
+   "res": "RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgeGate_Open",
+   "reserved": [
+    "A"
+   ],
    "shownBase": [],
    "subject_key": "db_modern_gate_open"
   },
@@ -417,12 +477,22 @@
    "subject_key": "db_modern_leafup_underside"
   },
   "DB_Modern_Planks": {
-   "columns": {},
-   "graphic_of": {},
-   "labels": {},
+   "columns": {
+    "A": {
+     "single": "60d756cb372da1a4727fe57cb5b5c8b2f181a0f71b786eea3d7a0b262ac790f1"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgePlanks"
+   },
+   "labels": {
+    "A": "render RM_DrawbridgePlanks_Modern"
+   },
    "pools": [],
-   "res": null,
-   "reserved": [],
+   "res": "RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgePlanks",
+   "reserved": [
+    "A"
+   ],
    "shownBase": [],
    "subject_key": "db_modern_planks"
   },
@@ -588,22 +658,42 @@
    "subject_key": "db_scrapper_leafup_edge"
   },
   "DB_Scrapper_LeafUp_Face": {
-   "columns": {},
-   "graphic_of": {},
-   "labels": {},
+   "columns": {
+    "A": {
+     "single": "22bb4ba2e38b017d5ea7e7529b09b69f0b187f0c97be314aacdd412905fc555a"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgeLeafUp_Face"
+   },
+   "labels": {
+    "A": "render RM_DrawbridgeLeafUp_Face_Scrapper"
+   },
    "pools": [],
-   "res": null,
-   "reserved": [],
+   "res": "RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgeLeafUp_Face",
+   "reserved": [
+    "A"
+   ],
    "shownBase": [],
    "subject_key": "db_scrapper_leafup_face"
   },
   "DB_Scrapper_LeafUp_Underside": {
-   "columns": {},
-   "graphic_of": {},
-   "labels": {},
+   "columns": {
+    "A": {
+     "single": "e869fe0aeba0be19227e83cc9940c56dbbd41dd464d79ad3cf615181708d9617"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgeLeafUp_Underside"
+   },
+   "labels": {
+    "A": "render RM_DrawbridgeLeafUp_Underside_Scrapper"
+   },
    "pools": [],
-   "res": null,
-   "reserved": [],
+   "res": "RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgeLeafUp_Underside",
+   "reserved": [
+    "A"
+   ],
    "shownBase": [],
    "subject_key": "db_scrapper_leafup_underside"
   },
@@ -669,25 +759,39 @@
      "south": "209b95b86bf5cf436de3bcd2bbac119645724527e7e0094cc775c7ea0beb9bcb"
     },
     "C": {
-     "east": "43f88169f12efcabeb40c3a80a62eb31edcac12ac4f6d586aa234f7e8f5a07c3"
+     "east": "43f88169f12efcabeb40c3a80a62eb31edcac12ac4f6d586aa234f7e8f5a07c3",
+     "north": "16737a1ea5579192acaa9eb5f5be574a56a58dd7068f66b124eb18c9285fc1f1",
+     "south": "cf148a6f3e73273e958ae09289c0f3dd141d988bf75629267fe9db633637765d"
+    },
+    "D": {
+     "east": "b6a2a8c408cde8db1ad8832584c8ce8ccb9b6018c0399f5c54526bc9b5555387"
+    },
+    "E": {
+     "east": "c9a6284b4e6e452e659408ede73a523d0ff92a0d3dc548bf4b268f3e8b763be6"
     }
    },
    "graphic_of": {
     "A": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Steel",
     "B": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Steel",
-    "C": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Steel"
+    "C": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Steel",
+    "D": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Steel",
+    "E": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Steel"
    },
    "labels": {
     "A": "render RM_DrawbridgeWinch_Steel_Modern",
     "B": "render RM_DrawbridgeWinch_Steel_Scrapper",
-    "C": "render RM_DrawbridgeWinch_Steel"
+    "C": "render RM_DrawbridgeWinch_Steel",
+    "D": "render RM_DrawbridgeWinch_Steel_Futuristic",
+    "E": "render RM_DrawbridgeWinch_Steel_Industrial"
    },
    "pools": [],
    "res": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Steel",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D",
+    "E"
    ],
    "shownBase": [],
    "subject_key": "db_winch_steel"
@@ -702,26 +806,32 @@
      "east": "1f5fced21c2bf5a4dfd9394a0b5459ac179856e361f64def208ac6a1469af220",
      "north": "e9400a2aba5ecbbfd383b17027b41618750035bbbba7cf4fa9f7af449987d101",
      "south": "e1ab3392dfd2159e55002dd6f984b73add7fed0f0bb3ccc6b3ef56aed93832b3"
+    },
+    "C": {
+     "east": "d08f27284ad6f46e1e03dbd1a14189441d922563d38a1bb7e3e67c3df53b79b1"
     }
    },
    "graphic_of": {
     "A": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Timber",
-    "B": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Timber"
+    "B": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Timber",
+    "C": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Timber"
    },
    "labels": {
     "A": "render RM_DrawbridgeWinch_Timber_Scrapper",
-    "B": "render RM_DrawbridgeWinch_Timber"
+    "B": "render RM_DrawbridgeWinch_Timber",
+    "C": "render RM_DrawbridgeWinch_Timber_Industrial"
    },
    "pools": [],
    "res": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Timber",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "shownBase": [],
    "subject_key": "db_winch_timber"
   }
  },
  "sheetId": "drawbridge_art_sheet_2026-10-20",
- "snapshotId": "79f63b28ef6c90ab"
+ "snapshotId": "4fa760060ad1bafb"
 }
