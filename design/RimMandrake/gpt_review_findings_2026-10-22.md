@@ -26,7 +26,7 @@ files the csproj names exist in the repo; the package simply did not copy them.
 | 1 | HIGH → MED-HIGH | CONFIRMED | `Source/Aerial/ConduitStylePicker.cs` `Patch_TryLink_Bridge` | **Fixed `fae484f5a`.** A pipe link now returns before `QueueLink` (`a.Kind != AerialLineKind.Power`). Before this, `RunOf` seeded on the pole plus the conduit next to it, so linking two pipe poles could repaint a separate electrical run. |
 | 2 | HIGH → LOW-MED | CONFIRMED (reproduced in Python) | `Source/Aerial/AerialMath.cs:515,526` | **Open.** The fallen-wire clearance pass samples every 0.25, while the emission pass steps 0.1 then 0.25. GPT's case emits (23.03, 23.98) inside blocked cell (23,23). Fix: test clearance on the exact points pass 2 emits. This changes seeded geometry, so the fuzz fixtures and the digest must be re-baselined in the same change. |
 | 3 | HIGH → MED | CONFIRMED (a documented trade-off) | `Source/Core/CordBuilder.cs:198,384`; `Source/SelfTest/GssFuzz.cs:383` | **Owner question Q3.** The C1 gap is accepted in the fuzz test, but the M4 north-star wording says "same polylines after load" with no exception. |
-| 4 | HIGH → MED | CONFIRMED | `Source/Aerial/RM_FallenWireShock.cs:36` (`CheckInterval = 20`) | **Open.** A pawn walking at normal speed spends about 13 ticks per cell, so it can cross a contact cell between two checks. Fix: lower the interval to 5, or shock on cell entry. A live check is still owed. |
+| 4 | HIGH → MED | CONFIRMED | `Source/Aerial/RM_FallenWireShock.cs:36` (`CheckInterval = 20`) | **Fixed `fcf07424c`.** The interval is now 4. A pawn walking at normal speed spends about 13 ticks per cell, so it used to cross a contact between checks. The live phase-shift check is still owed. |
 | 5 | MED | CONFIRMED | `Source/SectionLayer_RM_MessyCords.cs:131,149` (`continue` before the LOD block at 171); `validation.py:1346` (B12) | **Open.** A lifted swaying strand has no far-zoom representation. B12 passes on any strand's LOD. Fix: build the LOD ribbon before the two `continue`s, and make B12 count LOD pieces that belong to lifted strands. |
 | 6 | HIGH-SUSPECT → LOW | CONFIRMED (a stale contract, not a mod bug) | `northstar/proof_all.py` SL2; `Source/Aerial/RestringJob.cs:103` | **Fixed `fae484f5a`.** SL2 now allow-lists `JobDriver_RestringSpan`, which vanilla saves mid-job by class name, and the false comment is corrected. Whether 1.6 writes that `Class` attribute is UNVERIFIABLE-OFFLINE. |
 | 7 | MED → LOW-MED | CONFIRMED | `northstar/proof_all.py` `determinism()`; `northstar_matrix/run_live.py` | **Fixed `fae484f5a`.** D2 now fails on `extra != 0` and on an empty fresh read. New negative controls are in `northstar/selftest_proof_all.py` §10. |
@@ -100,9 +100,41 @@ Checkable claims from C, D and F:
 
 SelfTest after the fixes: sheet 37/37, stock 831/831, hose 158/158 and 375/375. The FlowWorks python selftests are 62/63 in the parallel sweep. The one red was `selftest_flowworks_stock.py` failing to BUILD under parallel build contention; it passes alone.
 
-## Pyrelands
+## Pyrelands: 20 findings, 19 CONFIRMED, 1 FALSE, 0 STALE
 
-(Written from the verifier's report below. The two FlowWorks loose ends follow it.)
+The only Pyrelands commit since noon, `533d21006` (15:26), predates the snapshot.
+
+| # | GPT sev → ours | verdict | where (current) | outcome |
+|---|---|---|---|---|
+| 1 | BLOCKER → owed | CONFIRMED | `Defs/BiomeDefs/Pyrelands.xml:97-104` (`RM_SunHeatExtension` overhead +10 °C) | **Already planned.** `unified_direct_sun_heat_2026-10-19.md` lists Pyrelands for "drop all heat". It belongs to the shared migration, not a local fix. |
+| 2 | MED-HIGH | CONFIRMED (latch sub-claim FALSE: the world is frozen) | `Source/PyrelandsTuning.cs` `DeepDesertBiomeDefNames` | **Fixed `f41f2eb9e`.** Added `RM_LongShade` and `RM_Stillsand`, the ruled successors (`biome_mod_architecture.md`), per the list's own "every plausible name" rule. |
+| 3 | HIGH | CONFIRMED | `Source/MapComponent_BurnLine.cs` (`Measure()` ran only under `burnLineEnabled`) | **Fixed `f41f2eb9e`.** Burrowing and the furnace thermal cycle read `AnyBurn` under their own switches; with the burn line off they never saw a fire. |
+| 4 | LOW-MED | CONFIRMED | `Source/Kernel/RM_FireEcoKernel.cs:318` | **Open (design).** A fruit can land on bare soil that never burned. The fix needs a "burned" test (`PyrelandsAshField.StampBurn`). |
+| 5 | MED | CONFIRMED | `Source/Kernel/RM_BurnKernel.cs:198-216`; walk bar `Pyrelands.md:92-94` | **Owner question Q7.** |
+| 6 | HIGH (journey) | CONFIRMED | `Defs/ThingDefs_Buildings/RM_StruckGlassRing.xml` (no CompStudiable); rite discovery "unbuilt" | **Owner question Q8.** |
+| 7 | HIGH-MED | CONFIRMED | `northstar_site.py` fixture build | **Fixed `f41f2eb9e`.** The dict comprehension called `reload_fixture` (a `load_game`, budget 420 s) once per key: five loads where one was needed. **This is the biggest single wall-clock saving in this round.** |
+| 8 | — | **FALSE** as stated | `validation.py:1629` | Vanilla's text is "Unrefrigerated, spoils in…", so `'rot'` does not match a fresh stack. The weaker residual is real: a vanished stack is not attributed to rot. LOW. |
+| 9 | MED | CONFIRMED | `validation.py:1664-1682` | **Open.** The fire-hawk row passes without a NEW fire after the drop. Fix: wait for job end and require fire count above baseline, or a Fire instigated by the hawk. |
+| 10 | MED | CONFIRMED | `validation.py:2109`; `debug_process.md` | **Open (harness).** modcheck has no INFERRED verdict, so the accepted inference policy cannot be expressed. |
+| 11 | LOW | CONFIRMED | ember-drop and burrow job drivers | **Open, low.** A running job ignores its setting being switched off. |
+| 12, 13 | LOW | CONFIRMED (12 self-disclosed) | `validation.py:1008`, `:1534` | **Open, low.** |
+| 14 | MED | CONFIRMED (documented) | `preflight_pyrelands.py:438` fixture fingerprint = def names only | **Open.** Add the DLL sha and an XML hash (about 5 lines). |
+| 15 | MED → LOW | CONFIRMED but deliberate | `preflight_pyrelands.py` gate C ("left in place") | **Kept.** Making a new `Mod_*.xml` FAIL would turn every first run of a newly loaded mod red. |
+| 16 | MED | CONFIRMED | `preflight_pyrelands.py` `scan_log` | **Fixed `f41f2eb9e`.** Our own "patch FAILED" and "NOT FOUND" errors now refuse. |
+| 17 | LOW-MED | CONFIRMED | `validation.py:1432` (`windSpeedFactor` alone can make cinderfall "differ") | **Open.** |
+| 18 | LOW | CONFIRMED | `Source/RM_JobDriver_Burrow.cs:83` | **Open (perf).** `FireIsNear` runs every tick per burrower. |
+| 19 | MED | CONFIRMED | `Source/PyrelandsFireFront.cs:107` | **Open.** Fire-front cadence is not in settings ("superb settings" rule); it is design work for the settings retrofit. |
+| 20 | LOW | CONFIRMED | `Source/RM_StruckGlass.cs:79,99` | **Open.** Thin natural roofs pass the filter, and the last fallback ignores it. |
+
+Checkable claims from C, D and F:
+
+- **CONFIRMED:** there are 9 RM_ kinds inline. EmberGrass `FertilitySensitivity` is 0.15 and Quickgrass is 0.1.
+- **CONFIRMED:** the trial plan's `shows=` coverage is 0/19, and it has 13 vanilla placeholders.
+- **CONFIRMED (art hygiene, no action without the owner):** QuickgrassA and `_b` are byte-identical, and the root stage PNGs duplicate `Half/` and `Sprout/`. `FireHawk_Flying__east.png` is an orphan.
+- **FALSE:** "trial plan budgets ash-ladder work" (line 150 says it is retired).
+- **PARTIAL:** "requires retired Alpha Biomes" (line 260 only notes it cannot be excluded).
+
+Selftests after the fixes: 5/5 (site, fruit_clear, review_map, fuzz, lint).
 
 ## Loose ends from other helpers
 
@@ -115,6 +147,7 @@ These are ranked by the wall-clock time they save per acceptance cycle. The esti
 
 | rank | suggestion (source) | saving | verdict |
 |---|---|---|---|
+| 0 | **Audit the harness for repeated expensive calls.** Pyrelands rebuilt every fixture with FIVE `load_game` calls where one was needed (#7); one grep for a bridge call inside a comprehension or loop found it. | up to 4 × (load + settle) per fixture, minutes each | **Adopt now. Done for Pyrelands (`f41f2eb9e`).** A one-line comprehension grep over `src/**/*.py` (2026-10-22) found no other instance. |
 | 1 | **Find fixture bugs offline before taking the bridge.** Check component membership on the exact fixture graph (FW E.1). The 200-rig tank fixture and `carry_tanks` both had no hydraulic path; each would have wasted a live sitting. | a whole sitting (15–60 min) per bad fixture | **Adopt now.** Add a `review_map`/fixture check: every pump station has a network path to its tank (a pure python graph walk over `build=`). |
 | 2 | **Never spend a dedicated cold load on a small mod.** Attach Ishko and other XML packs to the next canonical full-list sitting (Ishko E.4, GSS E.3, FW E.4). | ~15 min per mod | **Adopt now.** This is already doctrine (`rimworld-load-round`); state it in each mod's walk. |
 | 3 | **One minimal-list load, several maps.** One process with separate dry, river and stress maps, rather than several loads (FW E.2, GSS E.3 `fw_gss_sitting` riders). | 15–30 min | **Adopt now.** The `fw_gss_sitting` tier already exists; batch the GSS riders (pipe-link isolation, LOD membership, re-string save, shock crossings) into it. |
@@ -124,8 +157,9 @@ These are ranked by the wall-clock time they save per acceptance cycle. The esti
 | 7 | **Merge duplicate rows:** B8+B12, D1+D2, and toggle rows as one ON→OFF→ON fixture (GSS E.4, FW E.5). | minutes per run | **Adopt later**, when those rows are next edited. |
 | 8 | **Do not re-run green, unchanged scenes** (the theft day/stop scene) (GSS E.3). | 5–10 min | **Adopt now.** This is already the currency rule (fingerprint, not timestamp). |
 | 9 | **Use a disposable fixture, discarded or reloaded, instead of inverse cleanup** (Ishko E.2). | small | **Adopted for Ishko** as a verified restore (`bf28588c1`). Discard-and-reload stays the default for map-level work. |
+| 9b | **Shorten clocks, don't wait them out** (Pyrelands E.11-13). Test the reseed, fresh-burn and spoil waits (120k, 102k and 270k ticks) on a shortened clock plus a read-back of the shipped constant, and record the shipped duration as INFERRED. | 30–75 min per long wait | **Adopt later.** It needs the INFERRED verdict in modcheck (Pyrelands #10); the policy already allows it (`debug_process.md`). |
 | 10 | **Pre-registered structured result lines** such as `GSS_ACCEPT …` and `FW_ACCEPT row=… source=… dll=… running=…` (all three). | makes a sitting decidable by grep | **Adopt later**, as the shape for new rows. Do not rewrite the existing harnesses for it. |
-| — | GPT's wall-clock budgets: GSS 41–54 min automated plus 10–15 owner; Ishko 15–25 (+15 if no shared full load); FW 2.5–4.5 h. | — | Informational; none is measured. |
+| — | GPT's wall-clock budgets: GSS 41–54 min automated plus 10–15 owner; Ishko 15–25 (+15 if no shared full load); FW 2.5–4.5 h; Pyrelands 60–85 min. | — | Informational; none is measured. |
 | — | Ishko: three morphology maps to prove "lightless" or "overhang" geometry. | — | **Reject** unless the owner rules the names are physical promises (Q2). |
 | — | Restoring the old 109-scene GSS matrix. | — | **Reject.** GPT agrees: keep the reduced matrix. |
 | — | Replacing GREEN-FULL with a compatibility smoke test. | — | **Reject.** GPT also says not to; GREEN-FULL is the owner's bar. |
@@ -161,6 +195,16 @@ These are ranked by the wall-clock time they save per acceptance cycle. The esti
 
 - (a) **Recommended:** make ponds pump to the last decilitre too (the exact-dL routines already exist). *Buys:* one rule everywhere. *Costs:* small; one TransferChecks case.
 - (b) Keep a wet, unpumpable remainder in natural ponds. *Buys:* a pond never quite empties. *Costs:* it differs from the channel route, unexplained.
+
+**Q7. Pyrelands: the walk bar says a fresh map shows an active burn line with a scorched trail,** but the first front is armed 2–4 days in.
+
+- (a) **Recommended:** start every fresh Pyrelands map with one small smouldering front. *Buys:* the bar is true at arrival, which is what you will see on a walk. *Costs:* a small code change and one live read.
+- (b) Reword the bar to "within a few days". *Buys:* no code. *Costs:* your re-validation of the bar, and a first visit with nothing burning.
+
+**Q8. Pyrelands: the Struck Glass ring can be fuelled, but nothing lets a colony discover or learn its rite** (no study comp; rite discovery is "unbuilt for every found rite").
+
+- (a) **Recommended:** build rite discovery once, for every found rite. *Buys:* every found rite becomes reachable. *Costs:* a shared design item, not a Pyrelands fix.
+- (b) Give the ring its own study comp now. *Buys:* this rite works sooner. *Costs:* one-off code that the shared system would replace.
 
 GPT's other FlowWorks questions are left as they are in the reply and not pressed here:
 
