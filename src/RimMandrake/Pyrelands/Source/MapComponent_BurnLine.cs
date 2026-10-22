@@ -226,9 +226,11 @@ namespace RimMandrake.Pyrelands
             // independent switches (§6a) — off on one leaves the other running.
             // fireFront.Tick() self-gates on fireClockEnabled (and re-arms its
             // own clock when the toggle flips), so it is always called here.
+            // GPT deep review 2026-10-22 #3: Measure() is the only writer of AnyBurn/burnCenter, which burrowing and the
+            // furnace thermal cycle read under their OWN switches; it used to run only with the burn line on
+            Measure();
             if (RM_PyrelandsSettings.burnLineEnabled)
             {
-                Measure();
                 NudgeBurrowers();
                 AccrueArsonDebt();
                 KeepTheBurnAlive();

@@ -304,8 +304,10 @@ namespace RimMandrake.Pyrelands
         // AB_MycoticJungle and BMT_FungalForest carry no such rename
         // (checked the same pass): still their original donor names only.
         // ---------------------------------------------------------------
+        // GPT deep review 2026-10-22 #2: the franchise-free successors (biome_mod_architecture.md: RUT_ExtremeDesert ->
+        // RM_Stillsand, RUT_Desert -> RM_LongShade) were missing, so a planet painted with them had no herd start.
         public static readonly string[] DeepDesertBiomeDefNames =
-            { "Desert", "RUT_Desert", "ExtremeDesert", "RUT_ExtremeDesert" };
+            { "Desert", "RUT_Desert", "RM_LongShade", "ExtremeDesert", "RUT_ExtremeDesert", "RM_Stillsand" };
         public static readonly string[] NearTerminatorBiomeDefNames =
         {
             "AB_MycoticJungle", "BMT_FungalForest",

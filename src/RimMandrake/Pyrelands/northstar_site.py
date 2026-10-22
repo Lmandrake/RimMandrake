@@ -689,8 +689,9 @@ def build_site(s, k, fingerprint, saves_dir, work_dir, temp=TARGET_TEMP, census=
         rec["saveName"] = name
     finally:
         restore_isolation(s, iso["settingsBefore"])
-    rec["reload"] = {k2: reload_fixture(s, rec["saveName"], centre, sleep=sleep, map_id=rec["mapId"]).get(k2)
-                     for k2 in ("mapId", "tile", "mapBiome", "outdoorTempNow", "season")}
+    # GPT deep review 2026-10-22 #7: ONE reload (the comprehension used to call reload_fixture once per key: 5 loads)
+    ri = reload_fixture(s, rec["saveName"], centre, sleep=sleep, map_id=rec["mapId"])
+    rec["reload"] = {k2: ri.get(k2) for k2 in ("mapId", "tile", "mapBiome", "outdoorTempNow", "season")}
     return rec
 
 
