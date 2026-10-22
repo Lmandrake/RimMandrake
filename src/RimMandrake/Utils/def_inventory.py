@@ -759,6 +759,11 @@ def main(argv=None):
     types = [t.strip() for t in a.types.split(",") if t.strip()] if a.types else None
     ds = build(a.config, a.workshop, a.local, a.data, types=types, quiet=False)
 
+    if not ds.records:
+        print("UNMEASURED: the load set produced 0 def records (%d mods, %d files) -- nothing written"
+              % (len(ds.mods), ds.fileCount))
+        return 2
+
     hist = ds.depth_histogram()
     unres = ds.unresolved()
     print("inheritDepth histogram: " +
