@@ -175,3 +175,4 @@ Started 08:48 PDT. Tier fw_gss_sitting, DLL 41fb948b5e. Owner save RM_fw_walkthr
 - 14:35 NEW glow_tank_live.py (GLOW_TANK_LIQUID_FEED A2/A3): salt tank touching a seeded powered glow tank never drawn (Dry) -> FAIL, filed GLOWTANK_DRINK_DIAGNOSE_DRY_BESIDE_THE_SEA; fresh/brine stay dry (A3 consistent but uninformative while salt fails too); setting-off removes the line PASS — src/RimMandrake/FlowWorks/northstar/glow_tank_result_20261022T1510_belt.json
 - 14:35 raid_trench --direct --depth 8 --ticks 45000 (does the slow fill ever finish?)
 - 14:41 raid_trench depth 8, 45,000 ticks: raiders left at ~t+30000 with 0 squares filled (one notch was due by ~t+23000) — noted on CAUSEWAY (slow AND reset/give-up) — src/RimMandrake/FlowWorks/northstar/raid_trench_result_20261022T1520_depth8_long_belt.json
+- 14:44 exit check: my 09:51 scenarios_map --only C4,C10 build had rewritten the committed walk key sheet (KEYSHEET.md, keysheet.html) -> restored from HEAD; lesson filed
