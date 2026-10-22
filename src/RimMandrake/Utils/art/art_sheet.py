@@ -3520,6 +3520,22 @@ def textures_census(name: str, manifest: Path, label: str | None = None) -> tupl
     return path, key
 
 
+def subjects_with_textures(name: str, manifest: Path, defs, jobs=(), label=None, lead_html="", reopen=(), question=None,
+                           hide_sets=()) -> tuple[Path, str]:
+    """--subjects/--jobs AND --textures: one look-over census of def art plus C#-drawn texture art (owner, 2026-10-21:
+    "a sheet with all your bridge art on it"). The subjects census, with the manifest's rows appended; a key present in
+    both stays the def row. Returns (census path, census key)."""
+    tpath, tkey = textures_census(name, Path(manifest), label)
+    trows = json.loads(Path(tpath).read_text())["biomes"][tkey]["rows"]
+    cpath, key = subjects_census(name, defs, jobs, label, lead_html, reopen, question, hide_sets)
+    cen = json.loads(Path(cpath).read_text())
+    have = {r["key"] for r in cen["biomes"][key]["rows"]}
+    cen["biomes"][key]["rows"] += [r for r in trows if r["key"] not in have]
+    cen["biomes"][key]["textures_manifest"] = str(Path(manifest).resolve())
+    Path(cpath).write_text(json.dumps(cen, indent=1))
+    return cpath, key
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--doubles", action="store_true", help="every texPath shipped by >1 of our mods with different bytes")
@@ -3558,7 +3574,18 @@ def main(argv=None):
     ap.add_argument("--title", default="Art: all versions compared")
     ap.add_argument("--sheet-id")
     a = ap.parse_args(argv)
-    if a.textures:
+    if a.textures and (a.subjects or a.jobs):
+        # one look-over sheet of def art AND C#-drawn texture art (owner, 2026-10-21: "a sheet with all your bridge
+        # art on it"): the subjects census, with the manifest's rows appended (a key already present wins as a def row)
+        if not a.name:
+            ap.error("--subjects/--jobs/--textures need --name")
+        for spec in a.recommend:
+            fam, _, why = spec.partition("=")
+            RECOMMEND[fam.strip()] = why.strip() or "the agent's pick"
+        cpath, key = subjects_with_textures(a.name, Path(a.textures), a.subjects, a.jobs, a.label, a.lead, a.reopen,
+                                            load_question(a.question) if a.question else None, a.hide_sets)
+        a.biome, a.census = [key], str(cpath)
+    elif a.textures:
         if not a.name:
             ap.error("--textures needs --name")
         cpath, key = textures_census(a.name, Path(a.textures), a.label)

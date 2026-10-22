@@ -49,6 +49,8 @@ def main(argv=None):
     ap.add_argument("question", nargs="?", help="the question (or use --prompt-file)")
     ap.add_argument("--prompt-file", help="read the question from this file")
     ap.add_argument("-f", "--file", action="append", default=[], help="inline this file; repeatable")
+    ap.add_argument("-i", "--image", action="append", default=[],
+                    help="attach this image (PNG/JPG) for GPT to look at; repeatable. Copied into the job dir first.")
     ap.add_argument("--out", help="also write the answer here")
     ap.add_argument("-m", "--model", default=DEFAULT_CONSULT_MODEL)
     ap.add_argument("--effort", default="high", help="model_reasoning_effort (default high)")
@@ -72,9 +74,18 @@ def main(argv=None):
            "-c", 'model_reasoning_effort="%s"' % a.effort]
     if a.model and a.model != "inherit":
         cmd += ["-m", a.model]
+    for i, img in enumerate(a.image):                       # codex reads Windows paths; stage beside the prompt
+        src = Path(img)
+        if not src.is_file():
+            sys.exit("cannot read image %s" % img)
+        dst = job / ("img%02d_%s" % (i, src.name))
+        shutil.copyfile(src, dst)
+        cmd += ["-i", codex_image.wsl_to_win(dst)]
+    if a.image:
+        cmd.append("--")                                    # -i is VARIADIC: without this it eats the "-" below
     cmd.append("-")                                         # prompt from stdin
-    print("[consult] %d chars, %d file(s), model %s, job %s" % (
-        len(prompt), len(a.file), a.model, codex_image.wsl_to_win(job)), file=sys.stderr)
+    print("[consult] %d chars, %d file(s), %d image(s), model %s, job %s" % (
+        len(prompt), len(a.file), len(a.image), a.model, codex_image.wsl_to_win(job)), file=sys.stderr)
     started = time.time()
     try:
         with open(job / "prompt.md", "rb") as fin, open(job / "codex.log", "wb") as log:
