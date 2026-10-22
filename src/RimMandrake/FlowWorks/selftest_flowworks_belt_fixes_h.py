@@ -11,6 +11,9 @@ SETTINGS_SEARCH_FIX_LABELS_NOT_FOUND: Mod Settings search matched a section by t
 SUSPENSION_BUTTONS_DIAGNOSE_STILL_SHOWING: with "Suspension bridges can be built" off, every RM_Suspension* build button must
   hide. MOD half: the tower was vanilla's generated designator (no Visible override) and stayed. HARNESS half: the proof read
   rimworld/list_architect_designators 'visible' (rules membership, never Designator.Visible); it now reads ProofButtons.
+GLOWTANK_DRINK_DIAGNOSE_DRY_BESIDE_THE_SEA: LuminousPigment's glow tank calls RM_LiquidNet.TanksFor(glowTank) by reflection;
+  the touch store (OriginTanks) existed only for a Machine, so a salt tank touching the glow tank was never drawn. An outside
+  consumer (no kind of net member) now touches tanks like a machine; tanks, pipes and theft-refused foreign machines do not.
 """
 import os
 import re
@@ -225,11 +228,47 @@ def check_buttons():
           and '"visibleOff": off' not in live)
 
 
+# ── GLOWTANK_DRINK_DIAGNOSE_DRY_BESIDE_THE_SEA ─────────────────────────────────────────────────────────────────────
+ROLES = ("None", "Tank", "Pipe", "Machine")
+
+
+def touch_rule(origin_tanks_body, kernel_src):
+    """(kind, role) -> has a touch store, as the source decides it. kind = RoleOfKind, role = RoleOfThing."""
+    if "TouchesTanks(t)" in origin_tanks_body:
+        m = re.search(r"TouchStoreFor\(RM_NetRole kind, RM_NetRole role\) =>\s*([^;]+);", kernel_src)
+        expr = m.group(1)
+        py = re.sub(r"RM_NetRole\.(\w+)", r"'\1'", expr).replace("||", " or ").replace("&&", " and ")
+        return lambda kind, role: eval(py, {}, {"kind": kind, "role": role})
+    if "RoleOfThing(t) == RM_NetRole.Machine" in origin_tanks_body:
+        return lambda kind, role: role == "Machine"
+    raise ValueError("OriginTanks gate not recognised")
+
+
+def check_glowtank():
+    net = read("Machinery/RM_LiquidNet.cs")
+    kern = read("Machinery/RM_LiquidNetKernel.cs")
+    body = body_of(net, "public IEnumerable<object> OriginTanks(object origin)")
+    rule = touch_rule(body, kern)
+    check("glowtank: an outside consumer (glow tank: kind None) touches tanks", rule("None", "None"))
+    check("glowtank: a machine touches tanks", rule("Machine", "Machine"))
+    check("glowtank: a tank has no touch store", not rule("Tank", "Tank"))
+    check("glowtank: a pipe has no touch store", not rule("Pipe", "Pipe"))
+    check("glowtank: a foreign machine with theft off stays outside", not rule("Machine", "None"))
+    check("glowtank: TouchesTanks reads kind and live role", "RM_LiquidNetKernel.TouchStoreFor(RoleOfKind(t), RoleOfThing(t))"
+          in body_of(net, "public static bool TouchesTanks(Thing t)"))
+    old = body.replace("TouchesTanks(t)", "RoleOfThing(t) == RM_NetRole.Machine")
+    check("glowtank: can-fail, the old Machine-only gate leaves the glow tank dry", not touch_rule(old, kern)("None", "None"))
+    lp = open(os.path.join(HERE, "..", "LuminousPigment", "Source", "FlowWorksWaterBridge.cs"), encoding="utf-8").read()
+    check("glowtank: sanity, LuminousPigment draws through TanksFor(Thing)",
+          'AccessTools.Method(net, "TanksFor", new[] { typeof(Thing) })' in lp)
+
+
 def main():
     print("selftest_flowworks_belt_fixes_h")
     check_railing()
     check_settings_search()
     check_buttons()
+    check_glowtank()
     if FAILS:
         print("FAIL (%d): %s" % (len(FAILS), ", ".join(FAILS)))
         return 1

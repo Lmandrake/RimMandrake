@@ -98,6 +98,17 @@ namespace RimMandrake.FlowWorks.Machinery
 			return role;
 		}
 
+		/// <summary>Whether <paramref name="t"/> draws from the tanks touching it: a machine, or an outside consumer (no kind of net
+		/// member at all). Never a tank, a pipe, or a foreign machine refused by the liquid-theft switch.</summary>
+		public static bool TouchesTanks(Thing t)
+		{
+			if (t == null || !t.Spawned)
+			{
+				return false;
+			}
+			return RM_LiquidNetKernel.TouchStoreFor(RoleOfKind(t), RoleOfThing(t));
+		}
+
 		/// <summary>Owned by a faction that is not the player's (an unowned ruin is not foreign).</summary>
 		public static bool IsForeign(Thing t) => t?.Faction != null && !t.Faction.IsPlayer;
 
@@ -189,8 +200,13 @@ namespace RimMandrake.FlowWorks.Machinery
 
 			public IEnumerable<object> OriginTanks(object origin)
 			{
-				// a machine's touch store (8-way); a tank touches no store of its own
-				return origin is Thing t && RoleOfThing(t) == RM_NetRole.Machine
+				// a machine's touch store (8-way); a tank or pipe touches no store of its own.
+				// GLOWTANK_DRINK_DIAGNOSE_DRY_BESIDE_THE_SEA (live 2026-10-22): an OUTSIDE consumer -- a thing that is no kind of net
+				// member, e.g. LuminousPigment's glow tank calling TanksFor by reflection -- touches tanks the same way. It was empty
+				// for anything not a Machine, so a salt tank touching the glow tank was never drawn ("Dry"), while a pipe beside it
+				// already worked (Seeds read any spawned origin's pipe cells). A foreign machine with liquid theft off stays
+				// outside (its kind is Machine, its role None).
+				return origin is Thing t && TouchesTanks(t)
 					? ThingsIn(GenAdj.CellsAdjacent8Way(t), t, RM_NetRole.Tank)
 					: Enumerable.Empty<object>();
 			}
