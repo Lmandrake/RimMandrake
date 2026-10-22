@@ -30,6 +30,9 @@ Sources: `src/RimMandrake/Webwork/About/About.xml` description, `Defs/**`, `Sour
 - An unloaded piece never creaks (60,000 ticks); a loaded rib creaks for the full warning window, and taking the load off ends it harmlessly. → urraveth_remains.unloaded_bones_never_creak, urraveth_remains.load_creaks_and_clearing_saves_it
 - A rib left loaded past its window collapses into rubble, hurts who is under it, and the piece it held up starts creaking. → urraveth_remains.load_left_collapses_with_rubble_and_spreads
 - The urraveth site is laid inside real Webwork mapgen at about 1 map in 4. → UNCOVERED: the bridge cannot generate an RM_Webwork map (0 tiles until the end paint); ProofSite runs the same PlaceSite on the current map
+- Traction lance (WEBWORK_TRACTION_LANCE_BUILD_1; the pull is CreatureBehaviors' RM_CompTetherPull): a manned thrixweave lance reels a raider toward it; an unmanned one ropes nothing; a steel wall stops the pull with reason "wall"; a downed colonist is pulled in (friendly pull on). → traction_lance.manned_lance_pulls_a_raider, traction_lance.unmanned_lance_does_nothing, traction_lance.wall_stops_the_pull, traction_lance.downed_colonist_pulled_in
+- The tether is fabric-tiered: a thrumbo snaps a cloth tether for mass, and cloth is snappier and shorter-reaching than thrixweave. → traction_lance.over_mass_target_snaps_a_cloth_tether, traction_lance.cloth_weaker_than_thrixweave
+- Friendly pull OFF leaves a downed colonist; an ollathrix pulled out of canopy lands in sun; the gutter-junction and Sump draw-joint studies each finish RM_Research_TractionLance. → UNCOVERED: no proof tool takes a setting, an ollathrix target or a study yet (RM_TractionLanceProof has raider/unmanned/wall/heavy/downed only)
 
 ## the walk
 Run `src/RimMandrake/Webwork/validation.py` (static: `python3 validation.py`); live via the modcheck suite on a tier that loads `mandrake.rm.biomes` (or standalone with CreatureBehaviors).
