@@ -134,10 +134,14 @@ def main(argv=None):
         B = PH.PB()
     # PRECONDITIONS (PROOF_VERDICTS_REPAIR_SAME_BUG_EVERY_ROUND): every reply reaches V.PRE through the guard; each section and
     # step runs in a V.scope, so a refused call, a dead read or a staging that did not take withholds its rows' PASS/FAIL
+    raw = B
     B = V.guard(B)
     out = a.out or os.path.join(HERE, "suspension_bridge_result_%s.json" % time.strftime("%Y%m%dT%H%M%S"))
     rows = []
     res = {"script": "suspension_bridge_proof.py", "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "rows": rows, "args": vars(a)}
+    if not a.mock:
+        import driver_stamp
+        driver_stamp.stamp(res, raw.call)   # validation.py reads a result only at the current mod hash AND deployed DLL
 
     def save():
         with open(out + ".tmp", "w", encoding="utf-8") as f:

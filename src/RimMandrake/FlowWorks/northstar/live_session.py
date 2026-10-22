@@ -1891,6 +1891,21 @@ def print_plan(s, sel):
 ORDER = ("B0", "B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9", "B10")
 
 
+def write_driver_result(s, stamp):
+    """Beside the session in Transient/, one stamped copy of the rows in northstar/ (live_session_result_<stamp>.json): the shape
+    validation.py's driver_rows_at reads (mode 'live', mod hash, loaded-DLL sha), so rows a north-star bar rests on (B2 Endless
+    readouts, B4 gear / jump pack) count at the current mod hash. Same rows as session.json; a partial run (--only) carries
+    only its blocks' rows, and a row no result carries is UNMEASURED there, never PASS."""
+    res = dict(script="live_session.py", started=time.strftime("%Y-%m-%dT%H:%M:%S"), rows=s.rows, args=vars(s.args))
+    import driver_stamp
+    driver_stamp.stamp(res, s.call)
+    p = os.path.join(HERE, "live_session_result_%s.json" % stamp)
+    with open(p + ".tmp", "w", encoding="utf-8") as f:
+        json.dump(res, f, indent=1, default=str)
+    os.replace(p + ".tmp", p)
+    return p
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--dry-run", action="store_true")
@@ -1953,6 +1968,8 @@ def main(argv=None):
         s.timing[bid] = round(time.time() - w0, 1)
     s.timing["total_s"] = round(time.time() - t_start, 1)
     s.save()
+    if not a.mock:
+        write_driver_result(s, stamp)
     p, n = write_verify_lines(s)
     counts = {}
     for r in s.rows:

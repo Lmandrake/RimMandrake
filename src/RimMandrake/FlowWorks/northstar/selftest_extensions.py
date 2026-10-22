@@ -83,6 +83,7 @@ def main():
             sorted(reg - set(V.toggles) - set(vm.TOGGLES_NOT_ON_FLOOR)), sorted((set(V.toggles) | set(vm.TOGGLES_NOT_ON_FLOOR)) - reg),
             sorted(set(V.toggles) & set(vm.TOGGLES_NOT_ON_FLOOR))))
     core_bars = {b for v in list(vm.ROW_SHOWS.values()) + list(vm.HOSE_ROW_SHOWS.values()) for b in v}
+    core_bars |= set(vm.DRIVER_BAR_ROWS)     # bars resting on rows an existing live driver measures (K3)
     # the hose rows (moved from Gimme Some Slack at the hose port): every bar they name is a checklist bar
     probs += ["HOSE_ROW_SHOWS %s names %s, not a checklist bar" % (rid, x) for rid, b in vm.HOSE_ROW_SHOWS.items() for x in b if x not in bars]
     if sorted(bars - core_bars) != sorted(vm.EXTENSION_ONLY_BARS):
@@ -134,6 +135,7 @@ def main():
         probs.append("OFFLINE_IDS != offline_rows() ids: missing %s extra %s" % (
             [i for i in off if i not in vm.OFFLINE_IDS], [i for i in vm.OFFLINE_IDS if i not in off]))
     probs += _core_rows_from_probs(vm)
+    probs += _driver_bar_probs(vm)
     probs += _hose_rows_from_probs(vm)
 
     print("selftest_extensions: %s -- %d core rows, %d extension chains / %d components, %d bars (%d core, %d "
@@ -199,6 +201,66 @@ def _report_rows_adapter_probs(vm):
     got = {c.name: c.verdict for c in t.components}
     want = {"r_pass": "PASS", "r_skip": "UNMEASURED", "r_fail": "FAIL", "r_unb": "UNMEASURED", "r_odd": "UNMEASURED"}
     return [] if got == want else ["_report_rows adapter: got %s want %s (a SKIP must never certify)" % (got, want)]
+
+
+def _driver_bar_probs(vm):
+    """K3: DRIVER_BAR_ROWS names real rows in real drivers, and the reader can go red: PASS only when every named row is PASS at
+    the current hash; a missing row or a SKIP row is UNMEASURED; a FAIL row is FAIL (sanity probes, driver reads patched)."""
+    import contextlib
+    import re
+    probs = []
+    for bar, (ids, drv, _what) in vm.DRIVER_BAR_ROWS.items():
+        path = os.path.join(os.path.dirname(os.path.abspath(__file__)), drv)
+        src = open(path, encoding="utf-8").read() if os.path.isfile(path) else ""
+        if not src:
+            probs.append("DRIVER_BAR_ROWS %s: driver %s not found" % (bar, drv))
+        for i in ids:
+            if not re.search(r'["\']%s["\']' % re.escape(i), src):
+                probs.append("DRIVER_BAR_ROWS %s: row %s is not emitted by %s" % (bar, i, drv))
+
+    class _C(object):
+        def __init__(self, name):
+            self.name, self.verdict, self.detail, self.evidence = name, "PASS", "", []
+
+    class _T(object):
+        def __init__(self):
+            self.components, self.upstream_failed = [], False
+
+        def _guard(self):
+            return True
+
+        @contextlib.contextmanager
+        def component(self, rid, toggle=None, shows=None):
+            c = _C(rid)
+            self.components.append(c)
+            try:
+                yield c
+            except vm.ExpectationFailed as e:
+                c.verdict, c.detail = ("UNMEASURED" if str(e).startswith("UNMEASURED") else "FAIL"), str(e)
+
+    from modcheck import status as st
+    bar = "limitless_body_marked"
+    ids = vm.DRIVER_BAR_ROWS[bar][0]
+    saved = (vm.driver_rows_at, vm.repo_dll_sha256, st.mod_hash)
+    try:
+        vm.repo_dll_sha256 = lambda: "x"
+        st.mod_hash = lambda _d: "h"
+        for label, rows, want in (
+                ("all pass", {i: ({"status": "PASS", "detail": "d"}, "r.json") for i in ids}, "PASS"),
+                ("one missing", {ids[0]: ({"status": "PASS", "detail": "d"}, "r.json")}, "UNMEASURED"),
+                ("one skip", dict({i: ({"status": "PASS", "detail": "d"}, "r.json") for i in ids},
+                                  **{ids[1]: ({"status": "SKIP", "detail": "d"}, "r.json")}), "UNMEASURED"),
+                ("one fail", dict({i: ({"status": "PASS", "detail": "d"}, "r.json") for i in ids},
+                                  **{ids[1]: ({"status": "FAIL", "class": "MOD", "detail": "d"}, "r.json")}), "FAIL"),
+                ("none", {}, "UNMEASURED")):
+            vm.driver_rows_at = lambda *_a, _r=rows, **_k: _r
+            t = _T()
+            vm._driver_bar_component(t, "probe", bar)
+            if [c.verdict for c in t.components] != [want]:
+                probs.append("_driver_bar_component(%s): %s, want %s" % (label, [c.verdict for c in t.components], want))
+    finally:
+        vm.driver_rows_at, vm.repo_dll_sha256, st.mod_hash = saved
+    return probs
 
 
 def _core_rows_from_probs(vm):

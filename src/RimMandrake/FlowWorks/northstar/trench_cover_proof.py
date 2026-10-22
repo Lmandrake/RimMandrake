@@ -97,6 +97,8 @@ def main():
     out = a.out or os.path.join(HERE, "trench_cover_proof_result_%s.json" % time.strftime("%Y%m%dT%H%M%S"))
     rows = []
     res = {"script": "trench_cover_proof.py", "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "rows": rows, "args": vars(a)}
+    import driver_stamp
+    driver_stamp.stamp(res, B.call)         # validation.py reads a result only at the current mod hash AND deployed DLL
 
     def save():
         with open(out + ".tmp", "w", encoding="utf-8") as f:
