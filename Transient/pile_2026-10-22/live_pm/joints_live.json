@@ -1,0 +1,1397 @@
+{
+ "phases": {
+  "prep": [
+   {
+    "huge": "{'blockers': 0, 'tiles': 0, 'blockersLeft': 0}",
+    "wall": "08:41:06"
+   },
+   {
+    "tool": "jawa/destroy_batch",
+    "res": "{'success': True, 'message': 'Destroyed 4898 thing(s) across 6600 cell(s); 4 non-destroyable thing(s) left alone.', 'cellsExamined': 6600, 'outOfBounds': 0, 'destroyed': 4898, 'pawnsSkipped': 0, 'undestroyableSkipped': 4, 'perCategory': {'Plant': 3058, 'Filth': 689, 'Gas': 837, 'Item': 235, 'Buildin",
+    "wall": "08:41:09"
+   },
+   {
+    "tool": "jawa/set_terrain_batch",
+    "res": "{'success': True, 'message': 'Applied 1/1 op(s): 6600 cell(s) changed, 0 already correct.', 'layer': 'top', 'opsRequested': 1, 'opsApplied': 1, 'cellsRequested': 6600, 'cellsChanged': 6600, 'cellsAlreadyCorrect': 0, 'cellsOutOfBounds': 0, 'cellsFailedVerify': 0, 'refreshed': True, 'cellsRefreshed': ",
+    "wall": "08:41:09"
+   },
+   {
+    "tool": "jawa/set_fog",
+    "res": "{'success': True, 'action': 'unfog', 'cellsChanged': 0, 'foggedCellsBefore': 1546, 'foggedCellsNow': 1546, 'mapArea': 62500, 'ticksGame': 1086}",
+    "wall": "08:41:09"
+   },
+   {
+    "tool": "jawa/set_roof_batch",
+    "res": "{'success': True, 'message': 'Roofed 7 cell(s) across 1 op(s).', 'opsRequested': 1, 'cellsChanged': 7, 'cellsFailedVerify': 0, 'cellsOutOfBounds': 0, 'perDef': {'None': 7}, 'errors': [], 'ticksGame': 1086}",
+    "wall": "08:41:09"
+   },
+   {
+    "survey": {
+     "rolled": "True",
+     "hasYield": "False",
+     "yieldedLiquid": "null",
+     "reserveUnits": "0"
+    },
+    "wall": "08:41:09"
+   }
+  ],
+  "reels": [
+   {
+    "placed": [
+     {
+      "rot": 0,
+      "place": {
+       "success": true,
+       "cmd": "place:RM_HoseReel:Scrapper:22,30:0:god",
+       "godMode": true,
+       "designatorStyle": "RM_HoseReel_Scrapper",
+       "made": {
+        "id": 47709,
+        "def": "RM_HoseReel",
+        "x": 22,
+        "z": 30,
+        "rot": 0,
+        "rawStyle": "RM_HoseReel_Scrapper",
+        "style": "RM_HoseReel_Scrapper",
+        "graphicPath": "RimMandrake/FlowWorks/Hose/Reel_PumpHookup",
+        "drawnTex": "Reel_PumpHookup",
+        "kind": "building"
+       }
+      }
+     },
+     {
+      "rot": 1,
+      "place": {
+       "success": true,
+       "cmd": "place:RM_HoseReel:Scrapper:42,30:1:god",
+       "godMode": true,
+       "designatorStyle": "RM_HoseReel_Scrapper",
+       "made": {
+        "id": 47710,
+        "def": "RM_HoseReel",
+        "x": 42,
+        "z": 30,
+        "rot": 1,
+        "rawStyle": "RM_HoseReel_Scrapper",
+        "style": "RM_HoseReel_Scrapper",
+        "graphicPath": "RimMandrake/FlowWorks/Hose/Reel_PumpHookup",
+        "drawnTex": "Reel_PumpHookup",
+        "kind": "building"
+       }
+      }
+     },
+     {
+      "rot": 2,
+      "place": {
+       "success": true,
+       "cmd": "place:RM_HoseReel:Scrapper:62,30:2:god",
+       "godMode": true,
+       "designatorStyle": "RM_HoseReel_Scrapper",
+       "made": {
+        "id": 47711,
+        "def": "RM_HoseReel",
+        "x": 62,
+        "z": 30,
+        "rot": 2,
+        "rawStyle": "RM_HoseReel_Scrapper",
+        "style": "RM_HoseReel_Scrapper",
+        "graphicPath": "RimMandrake/FlowWorks/Hose/Reel_PumpHookup",
+        "drawnTex": "Reel_PumpHookup",
+        "kind": "building"
+       }
+      }
+     },
+     {
+      "rot": 3,
+      "place": {
+       "success": true,
+       "cmd": "place:RM_HoseReel:Scrapper:82,30:3:god",
+       "godMode": true,
+       "designatorStyle": "RM_HoseReel_Scrapper",
+       "made": {
+        "id": 47712,
+        "def": "RM_HoseReel",
+        "x": 82,
+        "z": 30,
+        "rot": 3,
+        "rawStyle": "RM_HoseReel_Scrapper",
+        "style": "RM_HoseReel_Scrapper",
+        "graphicPath": "RimMandrake/FlowWorks/Hose/Reel_PumpHookup",
+        "drawnTex": "Reel_PumpHookup",
+        "kind": "building"
+       }
+      }
+     },
+     {
+      "rot": "3ctl",
+      "place": {
+       "success": true,
+       "cmd": "place:RM_HoseReel:Scrapper:102,30:3:god",
+       "godMode": true,
+       "designatorStyle": "RM_HoseReel_Scrapper",
+       "made": {
+        "id": 47713,
+        "def": "RM_HoseReel",
+        "x": 102,
+        "z": 30,
+        "rot": 3,
+        "rawStyle": "RM_HoseReel_Scrapper",
+        "style": "RM_HoseReel_Scrapper",
+        "graphicPath": "RimMandrake/FlowWorks/Hose/Reel_PumpHookup",
+        "drawnTex": "Reel_PumpHookup",
+        "kind": "building"
+       }
+      }
+     }
+    ],
+    "wall": "08:41:13"
+   },
+   {
+    "reelThings": [
+     {
+      "thingId": null,
+      "id": "RM_HoseReel47709",
+      "x": 22,
+      "z": 30,
+      "rot": 0,
+      "rotation": null,
+      "position": null,
+      "label": "Hose reel"
+     },
+     {
+      "thingId": null,
+      "id": "RM_HoseReel47710",
+      "x": 42,
+      "z": 30,
+      "rot": 1,
+      "rotation": null,
+      "position": null,
+      "label": "Hose reel"
+     },
+     {
+      "thingId": null,
+      "id": "RM_HoseReel47711",
+      "x": 62,
+      "z": 30,
+      "rot": 2,
+      "rotation": null,
+      "position": null,
+      "label": "Hose reel"
+     },
+     {
+      "thingId": null,
+      "id": "RM_HoseReel47712",
+      "x": 82,
+      "z": 30,
+      "rot": 3,
+      "rotation": null,
+      "position": null,
+      "label": "Hose reel"
+     },
+     {
+      "thingId": null,
+      "id": "RM_HoseReel47713",
+      "x": 102,
+      "z": 30,
+      "rot": 3,
+      "rotation": null,
+      "position": null,
+      "label": "Hose reel"
+     }
+    ],
+    "wall": "08:41:13"
+   },
+   {
+    "lays": [
+     {
+      "reel": [
+       22,
+       30
+      ],
+      "rot": 0,
+      "target": [
+       22,
+       38
+      ],
+      "lay": {
+       "success": true,
+       "cmd": "lay:22,30,22,38",
+       "reason": null,
+       "layOk": true
+      }
+     },
+     {
+      "reel": [
+       42,
+       30
+      ],
+      "rot": 1,
+      "target": [
+       50,
+       30
+      ],
+      "lay": {
+       "success": true,
+       "cmd": "lay:42,30,50,30",
+       "reason": null,
+       "layOk": true
+      }
+     },
+     {
+      "reel": [
+       62,
+       30
+      ],
+      "rot": 2,
+      "target": [
+       62,
+       22
+      ],
+      "lay": {
+       "success": true,
+       "cmd": "lay:62,30,62,22",
+       "reason": null,
+       "layOk": true
+      }
+     },
+     {
+      "reel": [
+       82,
+       30
+      ],
+      "rot": 3,
+      "target": [
+       74,
+       30
+      ],
+      "lay": {
+       "success": true,
+       "cmd": "lay:82,30,74,30",
+       "reason": null,
+       "layOk": true
+      }
+     },
+     {
+      "reel": [
+       102,
+       30
+      ],
+      "rot": "3ctl",
+      "target": [
+       110,
+       30
+      ],
+      "lay": {
+       "success": true,
+       "cmd": "lay:102,30,110,30",
+       "reason": null,
+       "layOk": true
+      }
+     }
+    ],
+    "wall": "08:41:14"
+   },
+   {
+    "shot": {
+     "success": false,
+     "message": "Requested cell rectangle does not fit in the viewport at the selected camera root size.",
+     "requestedRect": {
+      "x": 12,
+      "z": 18,
+      "width": 100,
+      "height": 24,
+      "maxX": 111,
+      "maxZ": 41
+     },
+     "paddedRect": {
+      "x": 11,
+      "z": 17,
+      "width": 102,
+      "height": 26,
+      "maxX": 112,
+      "maxZ": 42
+     },
+     "paddingCells": 1,
+     "fullyVisible": false,
+     "rootSizeMode": "current",
+     "requiredRootSize": 26.8606853,
+     "appliedRootSize": 24.0,
+     "cameraBefore": {
+      "success": true,
+      "map": "0",
+      "mapId": "Map_0",
+      "mapIndex": 0,
+      "rootSize": 24.0,
+      "zoomRootSize": 24.0,
+      "zoomRange": "Middle",
+      "sizeRange": {
+       "min": 0.5,
+       "max": 100.0
+      },
+      "cameraZoomExtensionEnabled": false,
+      "mapPosition": {
+       "x": 111,
+       "z": 110
+      },
+      "viewRect": {
+       "minX": 64,
+       "minZ": 85,
+       "maxX": 158,
+       "maxZ": 135,
+       "width": 95,
+       "height": 51
+      }
+     },
+     "cameraDuringCapture": {
+      "success": true,
+      "map": "0",
+      "mapId": "Map_0",
+      "mapIndex": 0,
+      "rootSize": 24.0,
+      "zoomRootSize": 24.0,
+      "zoomRange": "Middle",
+      "sizeRange": {
+       "min": 0.5,
+       "max": 100.0
+      },
+      "cameraZoomExtensionEnabled": false,
+      "mapPosition": {
+       "x": 62,
+       "z": 30
+      },
+      "viewRect": {
+       "minX": 15,
+       "minZ": 5,
+       "maxX": 108,
+       "maxZ": 54,
+       "width": 94,
+       "height": 50
+      }
+     }
+    },
+    "wall": "08:41:16"
+   },
+   {
+    "hoses": [
+     {
+      "reel": [
+       22,
+       30
+      ],
+      "far": [
+       22,
+       38
+      ],
+      "laid": true,
+      "layOk": true,
+      "layReason": null,
+      "draw": {
+       "mode": "lay",
+       "len": 6.7566,
+       "hand": null,
+       "reelArt": "deployed"
+      },
+      "freeEnd": {
+       "cell": [
+        22,
+        38
+       ],
+       "terrain": "Soil",
+       "water": "",
+       "port": "",
+       "portFaction": "",
+       "describe": "lying free"
+      },
+      "visibleWidth": 0.18,
+      "meshWidthFlat": 0.1953
+     },
+     {
+      "reel": [
+       42,
+       30
+      ],
+      "far": [
+       50,
+       30
+      ],
+      "laid": true,
+      "layOk": true,
+      "layReason": null,
+      "draw": {
+       "mode": "lay",
+       "len": 6.8102,
+       "hand": null,
+       "reelArt": "deployed"
+      },
+      "freeEnd": {
+       "cell": [
+        50,
+        30
+       ],
+       "terrain": "Soil",
+       "water": "",
+       "port": "",
+       "portFaction": "",
+       "describe": "lying free"
+      },
+      "visibleWidth": 0.18,
+      "meshWidthFlat": 0.1953
+     },
+     {
+      "reel": [
+       62,
+       30
+      ],
+      "far": [
+       62,
+       22
+      ],
+      "laid": true,
+      "layOk": true,
+      "layReason": null,
+      "draw": {
+       "mode": "lay",
+       "len": 6.7497,
+       "hand": null,
+       "reelArt": "deployed"
+      },
+      "freeEnd": {
+       "cell": [
+        62,
+        22
+       ],
+       "terrain": "Soil",
+       "water": "",
+       "port": "",
+       "portFaction": "",
+       "describe": "lying free"
+      },
+      "visibleWidth": 0.18,
+      "meshWidthFlat": 0.1953
+     },
+     {
+      "reel": [
+       82,
+       30
+      ],
+      "far": [
+       74,
+       30
+      ],
+      "laid": true,
+      "layOk": true,
+      "layReason": null,
+      "draw": {
+       "mode": "lay",
+       "len": 6.7685,
+       "hand": null,
+       "reelArt": "deployed"
+      },
+      "freeEnd": {
+       "cell": [
+        74,
+        30
+       ],
+       "terrain": "Soil",
+       "water": "",
+       "port": "",
+       "portFaction": "",
+       "describe": "lying free"
+      },
+      "visibleWidth": 0.18,
+      "meshWidthFlat": 0.1953
+     },
+     {
+      "reel": [
+       102,
+       30
+      ],
+      "far": [
+       110,
+       30
+      ],
+      "laid": true,
+      "layOk": true,
+      "layReason": null,
+      "draw": {
+       "mode": "lay",
+       "len": 17.865,
+       "hand": null,
+       "reelArt": "deployed"
+      },
+      "freeEnd": {
+       "cell": [
+        110,
+        30
+       ],
+       "terrain": "Soil",
+       "water": "",
+       "port": "",
+       "portFaction": "",
+       "describe": "lying free"
+      },
+      "visibleWidth": 0.18,
+      "meshWidthFlat": 0.1953
+     }
+    ],
+    "defaultLook": "Scrapper",
+    "wall": "08:41:16"
+   },
+   {
+    "rot": 0,
+    "closeup": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\pm_reel_0__cell_rect.png",
+    "wall": "08:41:17"
+   },
+   {
+    "rot": 1,
+    "closeup": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\pm_reel_1__cell_rect.png",
+    "wall": "08:41:17"
+   },
+   {
+    "rot": 2,
+    "closeup": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\pm_reel_2__cell_rect.png",
+    "wall": "08:41:18"
+   },
+   {
+    "rot": 3,
+    "closeup": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\pm_reel_3__cell_rect.png",
+    "wall": "08:41:19"
+   },
+   {
+    "rot": "3ctl",
+    "closeup": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\pm_reel_3ctl__cell_rect.png",
+    "wall": "08:41:19"
+   }
+  ],
+  "tank": [
+   {
+    "build": {
+     "success": true,
+     "placed": 1,
+     "survived": 1,
+     "lostToLaterOps": 0,
+     "failedCount": 0,
+     "failed": [],
+     "displacedCount": 0,
+     "displaced": [],
+     "placeWorkerWarningsCount": 0,
+     "placeWorkerWarnings": [],
+     "qualityIgnoredForDefs": [],
+     "message": "1 placed.",
+     "note": "Walls create NO roof - roof separately. Run jawa/map_commit after the batch.",
+     "things": [
+      {
+       "def": "RM_LiquidTank",
+       "x": 40,
+       "z": 50,
+       "rot": 0,
+       "faction": "PlayerColony",
+       "hitPoints": 220,
+       "maxHitPoints": 220,
+       "destroyed": false
+      }
+     ],
+     "ticksGame": 1147
+    },
+    "wall": "08:42:26"
+   },
+   {
+    "pipes": {
+     "success": true,
+     "placed": 10,
+     "survived": 10,
+     "lostToLaterOps": 0,
+     "failedCount": 0,
+     "failed": [],
+     "displacedCount": 0,
+     "displaced": [],
+     "placeWorkerWarningsCount": 0,
+     "placeWorkerWarnings": [],
+     "qualityIgnoredForDefs": [],
+     "message": "10 placed.",
+     "note": "Walls create NO roof - roof separately. Run jawa/map_commit after the batch.",
+     "things": [
+      {
+       "def": "RM_UniversalPipe",
+       "x": 35,
+       "z": 50,
+       "rot": 0,
+       "faction": "PlayerColony",
+       "hitPoints": 100,
+       "maxHitPoints": 100,
+       "destroyed": false
+      },
+      {
+       "def": "RM_UniversalPipe",
+       "x": 36,
+       "z": 50,
+       "rot": 0,
+       "faction": "PlayerColony",
+       "hitPoints": 100,
+       "maxHitPoints": 100,
+       "destroyed": false
+      },
+      {
+       "def": "RM_UniversalPipe",
+       "x": 37,
+       "z": 50,
+       "rot": 0,
+       "faction": "PlayerColony",
+       "hitPoints": 100,
+       "maxHitPoints": 100,
+       "destroyed": false
+      },
+      {
+       "def": "RM_UniversalPipe",
+       "x": 38,
+       "z": 50,
+       "rot": 0,
+       "faction": "PlayerColony",
+       "hitPoints": 100,
+       "maxHitPoints": 100,
+       "destroyed": false
+      },
+      {
+       "def": "RM_UniversalPipe",
+       "x": 39,
+       "z": 50,
+       "rot": 0,
+       "faction": "PlayerColony",
+       "hitPoints": 100,
+       "maxHitPoints": 100,
+       "destroyed": false
+      },
+      {
+       "def": "RM_UniversalPipe",
+       "x": 42,
+       "z": 50,
+       "rot": 0,
+       "faction": "PlayerColony",
+       "hitPoints": 100,
+       "maxHitPoints": 100,
+       "destroyed": false
+      },
+      {
+       "def": "RM_UniversalPipe",
+       "x": 43,
+       "z": 50,
+       "rot": 0,
+       "faction": "PlayerColony",
+       "hitPoints": 100,
+       "maxHitPoints": 100,
+       "destroyed": false
+      },
+      {
+       "def": "RM_UniversalPipe",
+       "x": 44,
+       "z": 50,
+       "rot": 0,
+       "faction": "PlayerColony",
+       "hitPoints": 100,
+       "maxHitPoints": 100,
+       "destroyed": false
+      }
+     ],
+     "ticksGame": 1147
+    },
+    "wall": "08:42:26"
+   },
+   {
+    "net": {
+     "success": true,
+     "frameworks": [
+      {
+       "name": "VEF PipeSystem",
+       "present": true,
+       "componentType": "PipeSystem.PipeNetManager"
+      },
+      {
+       "name": "Rimefeller",
+       "present": false
+      },
+      {
+       "name": "Dubs Bad Hygiene",
+       "present": false
+      }
+     ],
+     "vefPipeSystem": {
+      "netCount": 0,
+      "nets": []
+     },
+     "ticksGame": 1157
+    },
+    "wall": "08:42:26"
+   },
+   {
+    "things": [
+     {
+      "defName": null,
+      "x": 40,
+      "z": 50,
+      "rot": 0
+     },
+     {
+      "defName": null,
+      "x": 35,
+      "z": 50,
+      "rot": 0
+     },
+     {
+      "defName": null,
+      "x": 36,
+      "z": 50,
+      "rot": 0
+     },
+     {
+      "defName": null,
+      "x": 37,
+      "z": 50,
+      "rot": 0
+     },
+     {
+      "defName": null,
+      "x": 38,
+      "z": 50,
+      "rot": 0
+     },
+     {
+      "defName": null,
+      "x": 39,
+      "z": 50,
+      "rot": 0
+     },
+     {
+      "defName": null,
+      "x": 42,
+      "z": 50,
+      "rot": 0
+     },
+     {
+      "defName": null,
+      "x": 43,
+      "z": 50,
+      "rot": 0
+     },
+     {
+      "defName": null,
+      "x": 44,
+      "z": 50,
+      "rot": 0
+     },
+     {
+      "defName": null,
+      "x": 45,
+      "z": 50,
+      "rot": 0
+     },
+     {
+      "defName": null,
+      "x": 46,
+      "z": 50,
+      "rot": 0
+     }
+    ],
+    "wall": "08:42:26"
+   },
+   {
+    "shot": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\pm_pipe_tank_riser__cell_rect.png",
+    "wall": "08:42:27"
+   }
+  ],
+  "shadow": [
+   {
+    "alphaEmpty": {
+     "success": true,
+     "method": "Double ShadowAlpha(Double)",
+     "result": "0.8",
+     "thingArgs": [],
+     "ticksGame": 1157
+    },
+    "alphaFull": {
+     "success": true,
+     "method": "Double ShadowAlpha(Double)",
+     "result": "0.85",
+     "thingArgs": [],
+     "ticksGame": 1157
+    },
+    "widthEmpty": {
+     "success": true,
+     "method": "Double ShadowWidth(Double)",
+     "result": "1.35",
+     "thingArgs": [],
+     "ticksGame": 1157
+    },
+    "widthFull": {
+     "success": true,
+     "method": "Double ShadowWidth(Double)",
+     "result": "1.5",
+     "thingArgs": [],
+     "ticksGame": 1157
+    },
+    "wall": "08:42:28"
+   }
+  ],
+  "drill": [
+   {
+    "survey": {
+     "rolled": "True",
+     "hasYield": "False",
+     "yieldedLiquid": "null",
+     "reserveUnits": "0"
+    },
+    "wall": "08:42:28"
+   },
+   {
+    "check": "RM_LiquidDrill",
+    "res": {
+     "success": true,
+     "def": "RM_LiquidDrill",
+     "stuff": "Steel",
+     "acceptableCells": 0,
+     "tested": 1,
+     "cellsInRect": 1,
+     "truncated": false,
+     "godMode": false,
+     "cells": [
+      {
+       "x": 70,
+       "z": 50,
+       "canPlace": false,
+       "reason": "Subsurface: nothing drillable under this map. A drill or bleed well here would never pour anything.",
+       "canSpawn": true,
+       "occupants": []
+      }
+     ],
+     "ticksGame": 1157
+    },
+    "wall": "08:42:28"
+   },
+   {
+    "check": "RM_LiquidTap",
+    "res": {
+     "success": true,
+     "def": "RM_LiquidTap",
+     "stuff": "Steel",
+     "acceptableCells": 0,
+     "tested": 1,
+     "cellsInRect": 1,
+     "truncated": false,
+     "godMode": false,
+     "cells": [
+      {
+       "x": 70,
+       "z": 50,
+       "canPlace": false,
+       "reason": "Subsurface: nothing drillable under this map. A drill or bleed well here would never pour anything.",
+       "canSpawn": true,
+       "occupants": []
+      }
+     ],
+     "ticksGame": 1157
+    },
+    "wall": "08:42:28"
+   },
+   {
+    "check": "RM_LiquidTank",
+    "res": {
+     "success": true,
+     "def": "RM_LiquidTank",
+     "stuff": "Steel",
+     "acceptableCells": 1,
+     "tested": 1,
+     "cellsInRect": 1,
+     "truncated": false,
+     "godMode": false,
+     "cells": [
+      {
+       "x": 70,
+       "z": 50,
+       "canPlace": true,
+       "canSpawn": true,
+       "occupants": []
+      }
+     ],
+     "ticksGame": 1157
+    },
+    "wall": "08:42:29"
+   },
+   {
+    "tapSpawn": {
+     "success": true,
+     "placed": 1,
+     "survived": 1,
+     "lostToLaterOps": 0,
+     "failedCount": 0,
+     "failed": [],
+     "displacedCount": 0,
+     "displaced": [],
+     "placeWorkerWarningsCount": 0,
+     "placeWorkerWarnings": [],
+     "qualityIgnoredForDefs": [],
+     "message": "1 placed.",
+     "note": "Walls create NO roof - roof separately. Run jawa/map_commit after the batch.",
+     "things": [
+      {
+       "def": "RM_LiquidTap",
+       "x": 90,
+       "z": 50,
+       "rot": 0,
+       "faction": "PlayerColony",
+       "hitPoints": 120,
+       "maxHitPoints": 120,
+       "destroyed": false
+      }
+     ],
+     "ticksGame": 1157
+    },
+    "wall": "08:42:29"
+   },
+   {
+    "tapLabel": {
+     "success": true,
+     "message": "1 thing(s) inspected, 34161 examined.",
+     "matched": 1,
+     "examined": 34161,
+     "threw": 0,
+     "things": [
+      {
+       "id": "RM_LiquidTap47942",
+       "defName": "RM_LiquidTap",
+       "label": "bleed well",
+       "x": 90,
+       "z": 50,
+       "className": "RimMandrake.FlowWorks.Drilling.Building_LiquidDrill",
+       "inspect": [
+        "Subsurface: nothing drillable found under this map."
+       ]
+      }
+     ],
+     "ticksGame": 1157
+    },
+    "wall": "08:42:29"
+   }
+  ],
+  "cover": [
+   {
+    "depth": [
+     {
+      "x": 60,
+      "z": 46,
+      "d": 8,
+      "f": 0,
+      "dEff": 8,
+      "fEff": 0,
+      "isExcavated": true,
+      "isSource": false,
+      "isSink": false,
+      "terrain": "RM_Channel_Superdeep"
+     },
+     {
+      "x": 61,
+      "z": 46,
+      "d": 8,
+      "f": 0,
+      "dEff": 8,
+      "fEff": 0,
+      "isExcavated": true,
+      "isSource": false,
+      "isSink": false,
+      "terrain": "RM_Channel_Superdeep"
+     },
+     {
+      "x": 62,
+      "z": 46,
+      "d": 8,
+      "f": 0,
+      "dEff": 8,
+      "fEff": 0,
+      "isExcavated": true,
+      "isSource": false,
+      "isSink": false,
+      "terrain": "RM_Channel_Superdeep"
+     },
+     {
+      "x": 63,
+      "z": 46,
+      "d": 8,
+      "f": 0,
+      "dEff": 8,
+      "fEff": 0,
+      "isExcavated": true,
+      "isSource": false,
+      "isSink": false,
+      "terrain": "RM_Channel_Superdeep"
+     },
+     {
+      "x": 64,
+      "z": 46,
+      "d": 8,
+      "f": 0,
+      "dEff": 8,
+      "fEff": 0,
+      "isExcavated": true,
+      "isSource": false,
+      "isSink": false,
+      "terrain": "RM_Channel_Superdeep"
+     },
+     {
+      "x": 60,
+      "z": 47,
+      "d": 8,
+      "f": 0,
+      "dEff": 8,
+      "fEff": 0,
+      "isExcavated": true,
+      "isSource": false,
+      "isSink": false,
+      "terrain": "RM_Channel_Superdeep"
+     },
+     {
+      "x": 61,
+      "z": 47,
+      "d": 8,
+      "f": 0,
+      "dEff": 8,
+      "fEff": 0,
+      "isExcavated": true,
+      "isSource": false,
+      "isSink": false,
+      "terrain": "RM_Channel_Superdeep"
+     },
+     {
+      "x": 62,
+      "z": 47,
+      "d": 8,
+      "f": 0,
+      "dEff": 8,
+      "fEff": 0,
+      "isExcavated": true,
+      "isSource": false,
+      "isSink": false,
+      "terrain": "RM_Channel_Superdeep"
+     },
+     {
+      "x": 63,
+      "z": 47,
+      "d": 8,
+      "f": 0,
+      "dEff": 8,
+      "fEff": 0,
+      "isExcavated": true,
+      "isSource": false,
+      "isSink": false,
+      "terrain": "RM_Channel_Superdeep"
+     },
+     {
+      "x": 64,
+      "z": 47,
+      "d": 8,
+      "f": 0,
+      "dEff": 8,
+      "fEff": 0,
+      "isExcavated": true,
+      "isSource": false,
+      "isSink": false,
+      "terrain": "RM_Channel_Superdeep"
+     },
+     {
+      "x": 60,
+      "z": 48,
+      "d": 8,
+      "f": 0,
+      "dEff": 8,
+      "fEff": 0,
+      "isExcavated": true,
+      "isSource": false,
+      "isSink": false,
+      "terrain": "RM_Channel_Superdeep"
+     },
+     {
+      "x": 61,
+      "z": 48,
+      "d": 8,
+      "f": 0,
+      "dEff": 8,
+      "fEff": 0,
+      "isExcavated": true,
+      "isSource": false,
+      "isSink": false,
+      "terrain": "RM_Channel_Superdeep"
+     },
+     {
+      "x": 62,
+      "z": 48,
+      "d": 8,
+      "f": 0,
+      "dEff": 8,
+      "fEff": 0,
+      "isExcavated": true,
+      "isSource": false,
+      "isSink": false,
+      "terrain": "RM_Channel_Superdeep"
+     },
+     {
+      "x": 63,
+      "z": 48,
+      "d": 8,
+      "f": 0,
+      "dEff": 8,
+      "fEff": 0,
+      "isExcavated": true,
+      "isSource": false,
+      "isSink": false,
+      "terrain": "RM_Channel_Superdeep"
+     },
+     {
+      "x": 64,
+      "z": 48,
+      "d": 8,
+      "f": 0,
+      "dEff": 8,
+      "fEff": 0,
+      "isExcavated": true,
+      "isSource": false,
+      "isSink": false,
+      "terrain": "RM_Channel_Superdeep"
+     }
+    ],
+    "wall": "08:42:54"
+   },
+   {
+    "covers": {
+     "success": true,
+     "placed": 5,
+     "survived": 5,
+     "lostToLaterOps": 0,
+     "failedCount": 0,
+     "failed": [],
+     "displacedCount": 0,
+     "displaced": [],
+     "placeWorkerWarningsCount": 0,
+     "placeWorkerWarnings": [],
+     "qualityIgnoredForDefs": [],
+     "message": "5 placed.",
+     "note": "Walls create NO roof - roof separately. Run jawa/map_commit after the batch.",
+     "things": [
+      {
+       "def": "RM_PitCover_PlankLattice",
+       "x": 60,
+       "z": 47,
+       "rot": 0,
+       "faction": "PlayerColony",
+       "hitPoints": 80,
+       "maxHitPoints": 80,
+       "destroyed": false
+      },
+      {
+       "def": "RM_PitCover_PlankLattice",
+       "x": 61,
+       "z": 47,
+       "rot": 0,
+       "faction": "PlayerColony",
+       "hitPoints": 80,
+       "maxHitPoints": 80,
+       "destroyed": false
+      },
+      {
+       "def": "RM_PitCover_PlankLattice",
+       "x": 62,
+       "z": 47,
+       "rot": 0,
+       "faction": "PlayerColony",
+       "hitPoints": 80,
+       "maxHitPoints": 80,
+       "destroyed": false
+      },
+      {
+       "def": "RM_PitCover_PlankLattice",
+       "x": 63,
+       "z": 47,
+       "rot": 0,
+       "faction": "PlayerColony",
+       "hitPoints": 80,
+       "maxHitPoints": 80,
+       "destroyed": false
+      },
+      {
+       "def": "RM_PitCover_PlankLattice",
+       "x": 64,
+       "z": 47,
+       "rot": 0,
+       "faction": "PlayerColony",
+       "hitPoints": 80,
+       "maxHitPoints": 80,
+       "destroyed": false
+      }
+     ],
+     "ticksGame": 1157
+    },
+    "wall": "08:42:54"
+   },
+   {
+    "go1": {
+     "success": false,
+     "message": "0/1 pawn(s) standing on (56,47) after 302 tick(s); 1 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human161. Pass undraftAfter=true or undraft them yourself.",
+     "arrivedCount": 0,
+     "movedCount": 1,
+     "pawnCount": 1,
+     "destination": {
+      "x": 56,
+      "z": 47
+     },
+     "pathEndMode": "OnCell",
+     "ticksElapsed": 302,
+     "ticksRequested": 300,
+     "timedOut": false,
+     "polls": 44,
+     "waitedSeconds": 4.4,
+     "speedBefore": "Paused",
+     "speedRestored": true,
+     "leftDrafted": [
+      "Human161"
+     ],
+     "noDrafter": [],
+     "pawns": [
+      {
+       "id": "Human161",
+       "name": "Navarro",
+       "kind": "Colonist",
+       "drafted": true,
+       "hasDrafter": true,
+       "requested": {
+        "x": 56,
+        "z": 47
+       },
+       "start": {
+        "x": 127,
+        "z": 147
+       },
+       "end": {
+        "x": 121,
+        "z": 132
+       },
+       "arrived": false,
+       "moved": true,
+       "distanceBefore": 122.64,
+       "distanceAfter": 107.0,
+       "canReach": true,
+       "orderAccepted": true,
+       "stillMoving": true,
+       "pathDestination": {
+        "x": 56,
+        "z": 47
+       },
+       "curJob": "Goto",
+       "downed": false,
+       "note": "Still walking \u2014 en route, not stalled. Re-read with a larger waitTicks, or call again with waitTicks=0 to sample the position."
+      }
+     ],
+     "ticksGame": 1460
+    },
+    "wall": "08:43:00"
+   },
+   {
+    "atStart": {
+     "x": 56,
+     "z": 47
+    },
+    "ticks": 1680,
+    "wall": "08:43:30"
+   },
+   {
+    "pathCovered": {
+     "success": true,
+     "method": "System.String ProofPath(System.String)",
+     "result": "PATH found=True cells=7 decked=0",
+     "thingArgs": [],
+     "ticksGame": 3140
+    },
+    "pathAcross": {
+     "success": true,
+     "method": "System.String ProofPath(System.String)",
+     "result": "PATH found=True cells=12 decked=0",
+     "thingArgs": [],
+     "ticksGame": 3140
+    },
+    "pathOpenPit": {
+     "success": true,
+     "method": "System.String ProofPath(System.String)",
+     "result": "PATH found=False cells=0 decked=0",
+     "thingArgs": [],
+     "ticksGame": 3140
+    },
+    "wall": "08:43:30"
+   },
+   {
+    "go2": {
+     "success": true,
+     "message": "1/1 pawn(s) standing on (62,47) after 304 tick(s); 1 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human161. Pass undraftAfter=true or undraft them yourself.",
+     "arrivedCount": 1,
+     "movedCount": 1,
+     "pawnCount": 1,
+     "destination": {
+      "x": 62,
+      "z": 47
+     },
+     "pathEndMode": "OnCell",
+     "ticksElapsed": 304,
+     "ticksRequested": 300,
+     "timedOut": false,
+     "polls": 44,
+     "waitedSeconds": 4.4,
+     "speedBefore": "Paused",
+     "speedRestored": true,
+     "leftDrafted": [
+      "Human161"
+     ],
+     "noDrafter": [],
+     "pawns": [
+      {
+       "id": "Human161",
+       "name": "Navarro",
+       "kind": "Colonist",
+       "drafted": true,
+       "hasDrafter": true,
+       "requested": {
+        "x": 62,
+        "z": 47
+       },
+       "start": {
+        "x": 56,
+        "z": 47
+       },
+       "end": {
+        "x": 62,
+        "z": 47
+       },
+       "arrived": true,
+       "moved": true,
+       "distanceBefore": 6.0,
+       "distanceAfter": 0.0,
+       "canReach": true,
+       "orderAccepted": true,
+       "stillMoving": false,
+       "curJob": "Wait_Combat",
+       "downed": false
+      }
+     ],
+     "ticksGame": 3445
+    },
+    "wall": "08:43:35"
+   },
+   {
+    "onCover": {
+     "x": 62,
+     "z": 47
+    },
+    "ticks": 30,
+    "job": "Wait_Combat",
+    "wall": "08:43:36"
+   },
+   {
+    "shot": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\pm_pit_cover_walk__cell_rect.png",
+    "wall": "08:43:36"
+   }
+  ]
+ }
+}

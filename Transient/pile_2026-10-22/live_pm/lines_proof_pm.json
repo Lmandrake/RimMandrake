@@ -1,0 +1,498 @@
+{
+ "script": "lines_proof.py",
+ "started": "2026-10-22T08:35:38",
+ "rows": [
+  {
+   "id": "ROPE_DECK_RIGID_REFUSED_FLEX_OK",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "item": "PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE",
+   "detail": {
+    "why": "site not prepared",
+    "rect": [
+     16,
+     22,
+     36,
+     116
+    ],
+    "site": [
+     {
+      "id": "lines_site",
+      "status": "UNMEASURED",
+      "class": "SITE",
+      "detail": {
+       "rect": [
+        16,
+        22,
+        36,
+        116
+       ],
+       "blocked": [
+        "rock/plants/ruins still standing in the site: ['Plant_Grass']"
+       ],
+       "meaning": "the quicktest terrain still blocks the site after clearing; this is environmental, not a mod result"
+      }
+     }
+    ]
+   }
+  },
+  {
+   "id": "COVER_CARRIES_NO_HOSE",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "item": "PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE",
+   "detail": {
+    "why": "site not prepared",
+    "rect": [
+     16,
+     22,
+     36,
+     116
+    ],
+    "site": [
+     {
+      "id": "lines_site",
+      "status": "UNMEASURED",
+      "class": "SITE",
+      "detail": {
+       "rect": [
+        16,
+        22,
+        36,
+        116
+       ],
+       "blocked": [
+        "rock/plants/ruins still standing in the site: ['Plant_Grass']"
+       ],
+       "meaning": "the quicktest terrain still blocks the site after clearing; this is environmental, not a mod result"
+      }
+     }
+    ]
+   }
+  },
+  {
+   "id": "POLE_SPAN_CARRIES_LIQUID",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "item": "PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE",
+   "detail": {
+    "why": "site not prepared",
+    "rect": [
+     16,
+     22,
+     36,
+     116
+    ],
+    "site": [
+     {
+      "id": "lines_site",
+      "status": "UNMEASURED",
+      "class": "SITE",
+      "detail": {
+       "rect": [
+        16,
+        22,
+        36,
+        116
+       ],
+       "blocked": [
+        "rock/plants/ruins still standing in the site: ['Plant_Grass']"
+       ],
+       "meaning": "the quicktest terrain still blocks the site after clearing; this is environmental, not a mod result"
+      }
+     }
+    ]
+   }
+  },
+  {
+   "id": "DIG_UNDER_PIPE_SPLITS_NET",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "item": "PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE",
+   "detail": {
+    "why": "site not prepared",
+    "rect": [
+     16,
+     22,
+     36,
+     116
+    ],
+    "site": [
+     {
+      "id": "lines_site",
+      "status": "UNMEASURED",
+      "class": "SITE",
+      "detail": {
+       "rect": [
+        16,
+        22,
+        36,
+        116
+       ],
+       "blocked": [
+        "rock/plants/ruins still standing in the site: ['Plant_Grass']"
+       ],
+       "meaning": "the quicktest terrain still blocks the site after clearing; this is environmental, not a mod result"
+      }
+     }
+    ]
+   }
+  },
+  {
+   "id": "CORD_DECK_LAMP_LIT",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "item": "POWER_CORD_BUILD_BENDS_WHERE_CONDUIT_BREAKS",
+   "detail": {
+    "why": "site not prepared",
+    "rect": [
+     16,
+     22,
+     36,
+     116
+    ],
+    "site": [
+     {
+      "id": "lines_site",
+      "status": "UNMEASURED",
+      "class": "SITE",
+      "detail": {
+       "rect": [
+        16,
+        22,
+        36,
+        116
+       ],
+       "blocked": [
+        "rock/plants/ruins still standing in the site: ['Plant_Grass']"
+       ],
+       "meaning": "the quicktest terrain still blocks the site after clearing; this is environmental, not a mod result"
+      }
+     }
+    ]
+   }
+  },
+  {
+   "id": "LEAF_RAISED_LAMP_DARK",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "item": "POWER_CORD_BUILD_BENDS_WHERE_CONDUIT_BREAKS",
+   "detail": {
+    "why": "site not prepared",
+    "rect": [
+     16,
+     22,
+     36,
+     116
+    ],
+    "site": [
+     {
+      "id": "lines_site",
+      "status": "UNMEASURED",
+      "class": "SITE",
+      "detail": {
+       "rect": [
+        16,
+        22,
+        36,
+        116
+       ],
+       "blocked": [
+        "rock/plants/ruins still standing in the site: ['Plant_Grass']"
+       ],
+       "meaning": "the quicktest terrain still blocks the site after clearing; this is environmental, not a mod result"
+      }
+     }
+    ]
+   }
+  },
+  {
+   "id": "COLLAPSE_CORD_SHOCKS_ONCE",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "item": "PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE",
+   "detail": {
+    "why": "site not prepared",
+    "rect": [
+     16,
+     22,
+     36,
+     116
+    ],
+    "site": [
+     {
+      "id": "lines_site",
+      "status": "UNMEASURED",
+      "class": "SITE",
+      "detail": {
+       "rect": [
+        16,
+        22,
+        36,
+        116
+       ],
+       "blocked": [
+        "rock/plants/ruins still standing in the site: ['Plant_Grass']"
+       ],
+       "meaning": "the quicktest terrain still blocks the site after clearing; this is environmental, not a mod result"
+      }
+     }
+    ]
+   }
+  },
+  {
+   "id": "LADDER_HOSE_DRAINS_RAISED_STAYS",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "item": "PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE",
+   "detail": {
+    "why": "site not prepared",
+    "rect": [
+     16,
+     22,
+     36,
+     116
+    ],
+    "site": [
+     {
+      "id": "lines_site",
+      "status": "UNMEASURED",
+      "class": "SITE",
+      "detail": {
+       "rect": [
+        16,
+        22,
+        36,
+        116
+       ],
+       "blocked": [
+        "rock/plants/ruins still standing in the site: ['Plant_Grass']"
+       ],
+       "meaning": "the quicktest terrain still blocks the site after clearing; this is environmental, not a mod result"
+      }
+     }
+    ]
+   }
+  },
+  {
+   "id": "DIG_REROUTES_LAID_HOSE",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "item": "PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE",
+   "detail": {
+    "why": "site not prepared",
+    "rect": [
+     16,
+     22,
+     36,
+     116
+    ],
+    "site": [
+     {
+      "id": "lines_site",
+      "status": "UNMEASURED",
+      "class": "SITE",
+      "detail": {
+       "rect": [
+        16,
+        22,
+        36,
+        116
+       ],
+       "blocked": [
+        "rock/plants/ruins still standing in the site: ['Plant_Grass']"
+       ],
+       "meaning": "the quicktest terrain still blocks the site after clearing; this is environmental, not a mod result"
+      }
+     }
+    ]
+   }
+  },
+  {
+   "id": "COVER_BREAK_DROPS_RIDER",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "item": "FLOWWORKS_PITCOVER_FIX_BURNS_PAWN_UNHARMED",
+   "detail": {
+    "why": "site not prepared",
+    "rect": [
+     16,
+     22,
+     36,
+     116
+    ],
+    "site": [
+     {
+      "id": "lines_site",
+      "status": "UNMEASURED",
+      "class": "SITE",
+      "detail": {
+       "rect": [
+        16,
+        22,
+        36,
+        116
+       ],
+       "blocked": [
+        "rock/plants/ruins still standing in the site: ['Plant_Grass']"
+       ],
+       "meaning": "the quicktest terrain still blocks the site after clearing; this is environmental, not a mod result"
+      }
+     }
+    ]
+   }
+  },
+  {
+   "id": "PITFALL_SAVED_ARRIVAL_FALLS",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "item": "FLOWWORKS_PITFALL_FIX_HISTORY_NOT_SAVED",
+   "detail": {
+    "why": "site not prepared",
+    "rect": [
+     16,
+     22,
+     36,
+     116
+    ],
+    "site": [
+     {
+      "id": "lines_site",
+      "status": "UNMEASURED",
+      "class": "SITE",
+      "detail": {
+       "rect": [
+        16,
+        22,
+        36,
+        116
+       ],
+       "blocked": [
+        "rock/plants/ruins still standing in the site: ['Plant_Grass']"
+       ],
+       "meaning": "the quicktest terrain still blocks the site after clearing; this is environmental, not a mod result"
+      }
+     }
+    ]
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/pile_2026-10-22/live_pm/lines_proof_pm.json",
+  "origin": "30,30",
+  "fresh_map": true,
+  "only": "",
+  "drain_ticks": 1500,
+  "mock": false,
+  "mock_faults": ""
+ },
+ "owedProofs": [
+  "ProofCanPlace",
+  "ProofCord",
+  "ProofHoseLine",
+  "ProofHoseRole",
+  "ProofLineCounters",
+  "ProofLinkPoles",
+  "ProofNet",
+  "ProofPitWater",
+  "ProofPower",
+  "ProofSurface"
+ ],
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "861b08f81af40d131d015bf419676567f3828de94263783ac72bbed8bb0c18b1",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes"
+  ],
+  "assembly_sha256": "5d8daed04f51f9ffebbc8810e0a2e6e1c5e05289cce12a50b101d9bc80f871f4"
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [
+    "Bluebird50447",
+    "Bluebird50448",
+    "Boomrat50451",
+    "Cougar50450",
+    "Deer50489",
+    "Deer50490",
+    "Deer50491",
+    "Deer50492",
+    "Deer50493",
+    "Deer50494",
+    "Donkey50443",
+    "Donkey50444",
+    "Donkey50445",
+    "Donkey50446",
+    "Gazelle50452",
+    "Gazelle50453",
+    "Gazelle50454",
+    "Gazelle50455",
+    "Gazelle50456",
+    "Gazelle50457",
+    "Gazelle50458",
+    "Gazelle50459",
+    "Gazelle50460",
+    "Gazelle50461",
+    "Gazelle50462",
+    "Gazelle50463",
+    "Hare50449",
+    "Hare50481",
+    "Hare50482",
+    "Hare50484",
+    "Hare50485",
+    "Megasloth50474",
+    "Mink50488",
+    "Muffalo50471",
+    "Muffalo50472",
+    "Muffalo50473",
+    "Quail50478",
+    "Quail50479",
+    "RM_Ollathrix50495",
+    "Raccoon50467",
+    "Raccoon50469",
+    "Raccoon50477",
+    "Rat50468",
+    "Rat50486",
+    "Rat50487",
+    "Squirrel50465",
+    "Squirrel50475",
+    "Squirrel50476",
+    "Tortoise50480",
+    "Turkey50464",
+    "Turkey50466",
+    "Turkey50483",
+    "Wolverine50470"
+   ],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  }
+ }
+}
