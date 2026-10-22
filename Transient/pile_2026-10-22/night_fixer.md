@@ -16,3 +16,7 @@
 - 01:52 fix 3 published; polling joints_study.md
 - 02:06 D1, D5, stale text published; next: hose lay onto tank cell, morning questions
 - 02:12 morning_questions.md written (Q1-Q5); polling joints_study.md for new defects
+- 02:13 helper FINAL at 02:10 deployed 5ebfd259b2 (has fixes 1-3 + D1). NOT in the walkthrough deploy: d5481252ae (pipe pole span + pole link, DLL + XML + PipePole textures), ba1c8d16ab (hose aimed at a tank). A redeploy from origin/main is needed before those can be seen; the game is UP on RM_fw_walkthrough_20261022 with the bridge held, so the fixer did not deploy.
+- Live checks owed: reach_map_proof WITHOUT --fresh-map (REACH_WINCH_SITE), machine_dig row4 (designation kept with machines off), flowing-hose girth look per style.
+- Not fixed (helper's scenario/site): C4 st4 lay 'no route' up the benches (a hose on dug ground needs a ramp or ladder by the crossing rule), C10 lead-out (D2, Q1).
+- 02:14 defect list exhausted (remaining items need the owner: morning_questions.md Q1-Q5). Stopping.
