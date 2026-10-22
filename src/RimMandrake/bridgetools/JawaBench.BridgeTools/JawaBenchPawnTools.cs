@@ -987,6 +987,7 @@ namespace JawaBench.BridgeTools
 
                     if (A == "add")
                     {
+                        if (!JawaBenchWorldArgsCore.IsFinite(severity)) return Fail("severity must be finite (NaN/Infinity would be written into the saved hediff).");
                         var h = p.health.AddHediff(hd, part);
                         // Finding #17 (COMPANION_HARDENING_AUDIT_2026-09-09): AddHediff's
                         // return was never checked against hediffSet afterward, unlike this
@@ -1009,7 +1010,9 @@ namespace JawaBench.BridgeTools
                     {
                         if (part == null) return Fail("Give a bodyPart for a bionic.");
                         p.health.RestorePart(part);
-                        p.health.AddHediff(hd, part);
+                        var bh = p.health.AddHediff(hd, part);
+                        if (bh == null || !p.health.hediffSet.hediffs.Contains(bh))
+                            return Fail("AddHediff('" + hd.defName + "') did not attach on " + part.def.defName + " after RestorePart (which already ran and wiped that part's hediffs) - bionic install failed.");
                         didWhat = "installed " + hd.defName + " on " + part.def.defName + " (RestorePart then AddHediff - no RecipeDef needed)";
                     }
                     else return Fail("action must be add|remove|bionic|restore|healAll|permanent.");
@@ -1062,6 +1065,7 @@ namespace JawaBench.BridgeTools
                 if (A == "need")
                 {
                     if (string.IsNullOrEmpty(need)) return Fail("Give a NeedDef.");
+                    if (!JawaBenchWorldArgsCore.IsFinite(level)) return Fail("level must be a finite number 0-1 (NaN/Infinity would be written into the saved need).");
                     var nd = DefDatabase<NeedDef>.GetNamedSilentFail(need.Trim());
                     if (nd == null) return Fail("No NeedDef '" + need + "'.", DefSuggestions<NeedDef>(need));
                     var n = p.needs.TryGetNeed(nd);
@@ -1225,6 +1229,7 @@ namespace JawaBench.BridgeTools
                 else if (A == "certainty")
                 {
                     if (p.ideo == null) return Fail("Pawn has no ideo tracker.");
+                    if (!JawaBenchWorldArgsCore.IsFinite(certaintyOffset)) return Fail("certaintyOffset must be finite (NaN/Infinity would poison the saved certainty).");
                     p.ideo.OffsetCertainty(certaintyOffset);
                     notes.Add("Certainty's setter is private; used OffsetCertainty");
                 }
@@ -1673,6 +1678,7 @@ namespace JawaBench.BridgeTools
                     var pe = p.psychicEntropy;
                     if (pe == null) return Fail("Pawn has no psychic entropy tracker.");
                     int requested = 0, failed = 0;
+                    if (!JawaBenchWorldArgsCore.IsFinite(psyfocus)) return Fail("psyfocus must be finite 0-1 (or -1 to leave it).");
                     if (psyfocus >= 0f)
                     {
                         requested++;
@@ -1795,7 +1801,7 @@ namespace JawaBench.BridgeTools
                 {
                     var h = getPreg();
                     if (h == null) return Fail("This pawn is not pregnant.");
-                    if (progress < 0f) return Fail("Give progress 0-1.");
+                    if (!JawaBenchWorldArgsCore.IsFinite(progress) || progress < 0f) return Fail("Give a finite progress 0-1.");
                     h.Severity = Mathf.Clamp01(progress);
                     notes.Add("gestation (= hediff Severity) set to " + h.Severity +
                               (h.Severity >= 1f ? " - LABOUR WILL BEGIN ON THE NEXT TICK" : ""));
