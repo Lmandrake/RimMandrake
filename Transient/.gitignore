@@ -568,6 +568,7 @@
 !/pile_2026-10-22/belt_failures.md
 !/pile_2026-10-22/day_plan.md
 !/pile_2026-10-22/flowworks_ux_review.md
+!/pile_2026-10-22/gate_shut/make.py
 !/pile_2026-10-22/jg_list2.py
 !/pile_2026-10-22/jg_pawn.py
 !/pile_2026-10-22/jg_shoot.py
@@ -612,6 +613,8 @@
 !/pile_2026-10-22/machine_dig_tick.py
 !/pile_2026-10-22/morning_questions.md
 !/pile_2026-10-22/night_fixer.md
+!/pile_2026-10-22/phone/gate_shut_phone.md
+!/pile_2026-10-22/phone/gate_shut_phone.png
 !/pile_2026-10-22/phone/joint_fittings_phone.md
 !/pile_2026-10-22/phone/joint_fittings_phone.png
 !/pile_2026-10-22/phone/make_phone.py
