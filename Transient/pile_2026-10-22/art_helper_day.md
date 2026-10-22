@@ -5,7 +5,8 @@
 PHONE READY: Transient/pile_2026-10-22/phone/joint_fittings_phone.png (+ .md); Transient/pile_2026-10-22/phone/pipe_atlas_phone_{1_layouts,2_pieces_scale,3_pumps}.png (+ pipe_atlas_phone.md)
 
 ## Step 2 — REEL_FACINGS_REDRAW_NORTH_SOUTH_OWED
-- status: pending
+- status: DONE — 16/16 drafts, registered (16 variant events, BENCH.jsonl), not installed.
+PHONE READY: Transient/pile_2026-10-22/phone/reel_ns_phone.png (+ reel_ns_phone.md, letters A-P). Install also owes the ArtPose C# change (north/south stand-in rotation).
 
 ## Step 3 — BRIDGE_ART_REDRAW_CABINETS_GROW_SADDLES gate install
 - status: NOT INSTALLED — no owner pick is recorded.
@@ -23,3 +24,5 @@ PHONE READY: Transient/pile_2026-10-22/phone/joint_fittings_phone.png (+ .md); T
 
 ## Notes / lessons
 - (Step 2) 08:51 filed 16 artpipe jobs reelns_<look>_<stored|laid>_<north|south>_v1 (Transient/pile_2026-10-22/reelns/make_jobs.py -> jobs.json), canon_reference = installed west art per look/state, target_texpath Reel_<state>_<facing>.
+- (Step 2) 08:58 11/16 done, 5 active
+- (Step 2) 08:59 16/16 renders done (0 failed)
