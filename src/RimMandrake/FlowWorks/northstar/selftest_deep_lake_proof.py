@@ -57,5 +57,12 @@ check("can-fail: still in the lake is FAIL", D.walk_verdict({"orderAccepted": Tr
 check("no ticks is UNMEASURED", D.walk_verdict({"orderAccepted": True, "ticksElapsed": 0, "position": {"x": 58, "z": 70}}, R)[0] == "UNMEASURED")
 check("the save/reload row is owed, not claimed", "DL_save_reload_bowl_identical" in D.OWED)
 
+# DRAWDOWN_DIAGNOSE_THIRTEEN_BEFORE_TWELVE (HARNESS): the C# shape read picks shelfCell from any dry square past the deep notch
+# (the shallowest such band, then westmost), not depth == 5 exactly, which a rough LAKE_FLOORS floor can skip entirely.
+_cs = open(os.path.join(HERE, "..", "Source", "RM_NorthstarProofs.cs"), encoding="utf-8").read()
+check("shelfCell: any dry square past the notch, not depth == 5 exactly",
+      "d > RM_Volume.LevelsPerSquare && (!shelfCell.IsValid || d < shelfDepth" in _cs
+      and "d == RM_Volume.LevelsPerSquare + 1 && (!shelfCell.IsValid" not in _cs)
+
 print("%d failed" % len(fails))
 sys.exit(1 if fails else 0)
