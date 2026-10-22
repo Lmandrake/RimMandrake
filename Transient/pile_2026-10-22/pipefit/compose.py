@@ -35,6 +35,9 @@ C = T // 2
 GIRTH = 18       # live pipe band, px (rows 79-96 of every look's straight tile)
 TOP = 79
 MAXC = {"Cross": 0.26, "Tee": 0.26, "Coupling": 0.135, "EndCap": 0.12}   # cells, joints study D9/D11
+# owner card 2026-10-22 (pipe atlases A-D): "redraw the END CAPS ~1.5x bolder in each look first (draft caps vanish at play
+# zoom)" -> every end cap is conformed 1.5x larger (scale, collar threshold and clamp), from the 1024 master, not upscaled
+CAP_BOLD = 1.5
 
 
 def trim(im):
@@ -67,6 +70,8 @@ def conform_piece(piece, look):
     if piece == "Tee":   # its stem points down: the bottom stub is also a stub
         g = (g + stub_girth(t, "bottom")[0]) / 2
     k = GIRTH / g
+    bold = CAP_BOLD if piece == "EndCap" else 1.0
+    k *= bold
     if piece in ("Cross", "Tee"):
         k = min(k, MAXC[piece] * T / min(t.width, t.height) * 2.6)   # never let the hub body run past ~0.26 cell
     s = fit(t, t.width * k, t.height * k)
@@ -83,11 +88,11 @@ def conform_piece(piece, look):
     if piece in ("Coupling", "EndCap"):
         # keep only the collar/cap columns (taller than 1.15x the pipe) + 2 px; the atlas body draws the pipe itself
         a = s.split()[3]
-        tall = [x for x in range(s.width) if sum(1 for y in range(s.height) if a.getpixel((x, y)) > 128) > 1.15 * GIRTH]
+        tall = [x for x in range(s.width) if sum(1 for y in range(s.height) if a.getpixel((x, y)) > 128) > 1.15 * GIRTH * bold]
         if tall:
             s = s.crop((max(0, tall[0] - 2), 0, min(s.width, tall[-1] + 3), s.height))
-        if s.height > MAXC[piece] * T * 1.15:                      # clamp an over-tall collar to the study size
-            k2 = MAXC[piece] * T / s.height
+        if s.height > MAXC[piece] * T * 1.15 * bold:               # clamp an over-tall collar to the study size
+            k2 = MAXC[piece] * bold * T / s.height
             s = fit(s, s.width * k2, s.height * k2)
             info["clamped"] = round(k2, 3)
         info.update(w_cells=round(s.width / T, 3), h_cells=round(s.height / T, 3))
