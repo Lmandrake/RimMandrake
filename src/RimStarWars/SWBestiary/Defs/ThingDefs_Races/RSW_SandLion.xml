@@ -41,10 +41,9 @@
   (`RSW_Vosska`/`RSW_Ossik`) which also ship with no custom vocal
   set.
 
-  Art: donor's own texture used as a loud TEMP PLACEHOLDER (round2 disposition
-  for this species is `"art": "improve"`, not "keep"; v1 (a literal lion) was
-  rejected by the owner 2026-10-15, v2 commissioned in
-  `design/RimMandrake/donor_pack_art_commission4_2026-10-15.json`). Label "vekka" is a DRAFTED
+  Art: the v2 render (commissioned in
+  `design/RimMandrake/donor_pack_art_commission4_2026-10-15.json` after the owner rejected v1, a literal
+  lion, 2026-10-15) was owner-accepted 2026-10-15 and ships under the donor-era path below. Label "vekka" is a DRAFTED
   pseudo-Star-Wars name (`NONCANON_BEAST_RENAME_1` process — agent drafts,
   owner reacts), not yet owner-ruled; "sand lion" is the donor's own plain
   Earth-animal name and is not carried over as the shipped label.

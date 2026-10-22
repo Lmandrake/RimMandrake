@@ -76,12 +76,11 @@
   true on no match, and an unmatched PatchOperationAdd is silent. A clean
   validate_patch.py run is NOT proof a row landed. 🔴 UNVERIFIED AGAINST A LOAD:
   authored offline this pass too (LONGSHADE_RULED_CONTENT_1) — no bridge/def-
-  dump confirmation of the 38-row Add block or the inline 14-row move.
+  dump confirmation of the 36-row Add block or the inline 14-row move.
 -->
 <Patch>
 
-  <!-- The remaining 38 rows: 36 canon Star Wars + the whale's commensal +
-       Dewback, all OUR OWN RSW_ defs (never the donor's bare names).
+  <!-- The 36 rows below (35 canon Star Wars + Dewback), all OUR OWN RSW_ defs (never the donor's bare names).
        Add-only: RM_LongShade's own wildAnimals node already carries its 16
        native/tier-moved rows, guarded on the target node rather than on a
        donor so this is a silent no-op if mandrake.rm.longshade is ever not
