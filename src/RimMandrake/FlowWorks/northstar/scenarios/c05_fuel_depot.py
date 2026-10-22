@@ -64,7 +64,7 @@ SCENARIO = scenario(
           "tank end, leaves the canal spent; pop the firefoam: foamed cells stay out while foam lies",
           "light the astrofuel bund: it detonates, not burns",
           "dig the marked cell in the earth wall between the water and chemfuel canals: they meet and do NOT mix"],
-    look_for="chemfuel, propane and water each their own colour; pipes meet tanks at their centre; the Fill tank is "
+    look_for="chemfuel, propane and water each their own colour; pipes rise onto each tank's flange; the Fill tank is "
              "never emptied by colonists",
     broken="chemfuel, propane and water hoses all one colour; a tank drawn bridging two pipe runs; the Fill tank "
            "emptied; water and chemfuel mixing; a burnt canal that looks fresh; foamed cells relighting under foam; "
@@ -95,7 +95,7 @@ SCENARIO = scenario(
                      OVERFLOW_ITEM, (37, 2)),
             deferred("an acid canal beside the chemfuel", "moved to C6 (where corrosion lives); the no-mix poke needs "
                      "only water against chemfuel", "design §3 C5 layout", (37, 5)),
-            deferred("pipe-to-tank flanges", GIRTH_NOTE, "PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID", (37, 8))],
+            deferred("joint fittings art at the tanks", GIRTH_NOTE, "PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID", (37, 8))],
     exercises={"carry_tanks": "poked", "tank_styles_cargo": "look", "tank_modes": "poked", "pipe_adapter": "poked",
                "hose_their_tank": "look", "carry_bottles": "poked", "carry_containers": "look",
                "containers_styles": "look", "fire_chemfuel": "poked", "fire_astrofuel": "poked", "fire_out": "poked",

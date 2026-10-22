@@ -69,9 +69,10 @@ SCENARIO = scenario(
           "the tower's level drops below the end",
           "run the stills: the fuelled one works day and night; the sun-pan stops at dusk and under a roof",
           "pour poisoned water into the drip filter: a slow, small clean drip"],
-    look_for="pipes end at a tank's CENTRE; tanks on one net hold one level at rest; the bath reads as a bath, not a hole",
+    look_for="a pipe rises onto a tank's flange (never under its skid); tanks on one net hold one level at rest; the bath "
+             "reads as a bath, not a hole",
     broken="tanks on one net at different levels at rest; a gravity hose flowing uphill; brine drunk as water; the "
-           "sun-pan working at night; pipes ending at a tank's edge; the bath pit reading as a hole",
+           "sun-pan working at night; a pipe slipping under a tank's skid; the bath pit reading as a hole",
     idle="the four colonists are drafted (drafted pawns do not drink); the ground tanks are not joined; the tower hose's "
          "end is Capped; the well pump draws the pond into the tower (the pond is limited, so it slows; the soak reads "
          "dug cells and buildings)",

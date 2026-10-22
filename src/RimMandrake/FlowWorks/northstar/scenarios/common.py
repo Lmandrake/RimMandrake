@@ -57,17 +57,26 @@ W, TAR = "RM_Fluid_Water", "RM_Fluid_Tar"
 RULINGS = {
     "dig2m": "colonists dig to 2 m; deeper holes are machine-dug (mechanoids and droids dig to 20 m, built 2026-10-21; "
              "the ridable digging rig is not built: DEFERRED)",
-    "girth": "pipes half as thick and hoses twice the 10-21 girth (owner 2026-10-22 00:00), both built; a FLOWING hose "
-             "still draws too thin (HOSE_PLUMP_FIX_SKINNIER_WHEN_FULL)",
+    "girth": "pipes half as thick and hoses twice the 10-21 girth (owner 2026-10-22 00:00), both built; a flowing hose "
+             "plumps wider than an empty one, and an EMPTY hose casts a darker, wider shadow (built 2026-10-22)",
+    "reel": "a hose reel turns four ways (rotate it like any building); its hose leaves the way it faces. North/south "
+            "art is the west art turned until he picks the drawn views (REEL_FACINGS_REDRAW_NORTH_SOUTH_OWED)",
+    "riser": "a pipe into a tank rises onto the tank's flange (a riser), never slipping under its skid (built 2026-10-22)",
+    "cover": "planked squares of a part-covered pit walk like floor; only the open squares are the pit; a cover gives way "
+             "only when destroyed, blasted or deconstructed (41fb948b5e)",
+    "drill": "a drill or a bleed well is refused on ground the survey found empty (41fb948b5e)",
+    "bleed": "RM_LiquidTap is a BLEED WELL (groundwater seeping up), never a tap or faucet",
+    "drawbridge": "drawbridge leaves, winches and gates draw their MATERIAL picture (timber/steel) first, a look only as "
+                  "fallback (443912e4df)",
     "overflow": "canal overflow ships in 1.0 but only Stage 0 (offline kernel) exists: DEFERRED",
     "reach": "reachability option 3 is being built separately (REACH_MAP_BUILD_WALLS_AND_DEPTH_AGREE)",
     "cord": "a fallen cord lands walkable (fix built)",
 }
 DEEP_DIG_ITEM = "DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL"
 OVERFLOW_ITEM = "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED"
-GIRTH_NOTE = "pipes are half-girth and hoses twice the 10-21 girth (both built 2026-10-22), and a flowing hose plumps " \
-             "wider than an empty one (HOSE_PLUMP_FIX_SKINNIER_WHEN_FULL, built 2026-10-22 night); pipe/hose joints have no " \
-             "flanges yet (PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID)"
+GIRTH_NOTE = "pipes are half-girth and hoses twice the 10-21 girth (both built 2026-10-22); a flowing hose plumps wider " \
+             "than an empty one; a pipe rises onto a tank's flange (built). The joint FITTINGS art (coupler, flange, saddle) " \
+             "is drawn and waits on his pick; nothing is installed (PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID)"
 
 
 # ------------------------------------------------------------------------------------------------ geometry helpers
