@@ -118,7 +118,7 @@ namespace RimMandrake.FlowWorks
 				// job taken before a setting change cannot overshoot.
 				int after = excavation.DeepenWithin(c, RM_DigLabor.CapFor(pawn));
 				cutLanded = after > before;
-				cutRefusedButOwed = after == before && RM_DigDepthMath.MayDeepen(before, RM_DigLabor.DesignationCap);
+				cutRefusedButOwed = after == before && RM_DigDepthMath.MayDeepen(before, RM_DigLabor.OrderCap);
 				// FLOWWORKS_QUARRY_DIGGING_1: a cut that went deeper may turn up something the land holds.
 				if (after > before)
 				{

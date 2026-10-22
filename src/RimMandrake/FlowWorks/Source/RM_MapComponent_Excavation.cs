@@ -982,7 +982,7 @@ namespace RimMandrake.FlowWorks
 		/// order waits for machine labour)?</summary>
 		public bool DigToOwesWork(IntVec3 c)
 		{
-			return RM_DigDepthMath.DigToOwesWork(ExcavatedDepthAt(c), DigTargetAt(c), RM_DigLabor.DesignationCap);
+			return RM_DigDepthMath.DigToOwesWork(ExcavatedDepthAt(c), DigTargetAt(c), RM_DigLabor.OrderCap);
 		}
 
 		/// <summary>Drop targets whose square carries no dig designation any more (cancelled, finished, or never placed).</summary>

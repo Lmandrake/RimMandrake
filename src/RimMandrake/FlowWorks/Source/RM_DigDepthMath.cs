@@ -111,6 +111,15 @@ namespace RimMandrake.FlowWorks
 			return CapFor(true, colonistCap, machineDigOn, machineCap);
 		}
 
+		/// <summary>DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL (night fixer 2026-10-22: "an order should never vanish silently"): the
+		/// deepest a standing ORDER may stay valid to: the machine cap whether or not machine digging is on now. With machines
+		/// off an order past the colonist cap WAITS (alert, right-click reason) instead of being deleted by the work giver;
+		/// a NEW order is still held to <see cref="DesignationCap"/> at placement.</summary>
+		public static int OrderCap(int colonistCap, int machineCap)
+		{
+			return CapFor(true, colonistCap, true, machineCap);
+		}
+
 		/// <summary>"Dig to N m": the target held to 1..cap (a target past the cap digs to the cap).</summary>
 		public static int ClampTarget(int target, int cap)
 		{

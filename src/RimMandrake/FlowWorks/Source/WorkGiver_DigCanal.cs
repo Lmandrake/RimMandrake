@@ -60,21 +60,24 @@ namespace RimMandrake.FlowWorks
 			int depth = eng != null ? eng.ExcavatedDepthAt(c) : RM_ExcavationDepth.DepthOfDryTerrain(terrain);
 			int target = eng?.DigTargetAt(c) ?? 0;
 			// P14: a wet dug square's water is base terrain now; only undug water makes the designation stale.
+			// Night fixer 2026-10-22 (DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL): depth is judged against the ORDER cap, not today's
+			// designation cap: with "Machines dig deeper" switched off an order past the colonist cap WAITS (alert + right-click
+			// reason) instead of being silently deleted here (live: designationDeletedByWorkGiver=True).
 			bool stale = (terrain.IsWater && !(eng != null && eng.IsExcavated(c)))
 				|| c.GetEdifice(pawn.Map) != null
-				|| !RM_DigDepthMath.MayDeepen(depth, RM_DigLabor.DesignationCap)
+				|| !RM_DigDepthMath.MayDeepen(depth, RM_DigLabor.OrderCap)
 				|| (target > 0 && depth >= target)
 				|| (depth == RM_ExcavationDepth.Surface && !terrain.IsSoil && !(RimMandrakeFlowWorksSettings.digRockGroundEnabled && RM_DigDiscovery.RockOfTerrain(terrain) != null))
 				|| (depth != RM_ExcavationDepth.Surface && !RimMandrakeFlowWorksSettings.digToDepthEnabled)
 				// POND_BED (owner by card 2026-10-14): a dry bed already as deep as digging goes is never dug.
-				|| (depth == RM_ExcavationDepth.Surface && eng?.FirstCutDepthAt(c) < 0);
+				|| (depth == RM_ExcavationDepth.Surface && eng?.FirstCutDepthAt(c, RM_DigLabor.OrderCap) < 0);
 			if (stale)
 			{
 				des.Delete();
 				return false;
 			}
 			// DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL (owner card 2026-10-21, "Colonists 2 m, machines deeper"): the order is
-			// valid (someone may dig it: the stale test above holds it to the designation cap), only not by THIS digger. Keep
+			// valid (someone may dig it: the stale test above holds it to the order cap), only not by THIS digger. Keep
 			// the designation for machine labour; say why on the right-click.
 			int myCap = RM_DigLabor.CapFor(pawn);
 			if (!RM_DigDepthMath.MayDeepen(depth, myCap)
