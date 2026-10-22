@@ -2281,6 +2281,10 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>FLOWWORKS_BUILD_PROGRAM_1 Phase 6: fire on the liquid (RM_LiquidFire).</summary>
 		private RM_LiquidFire liquidFire = new RM_LiquidFire();
+
+		/// <summary>FlowWorks GPT review 2026-10-22: redraws the water looks on a tint/band rung crossing (not saved: its first
+		/// check after a load redraws every square that carries a look, once).</summary>
+		private readonly RM_WaterLookWatcher lookWatcher = new RM_WaterLookWatcher();
 		/// <summary>LIQUID_HEAT_PUSH_1: hot/icy liquid warms or chills its room (vanilla heat). Derived, never scribed.</summary>
 		private readonly RM_LiquidHeat liquidHeat = new RM_LiquidHeat();
 		public RM_LiquidHeat LiquidHeat => liquidHeat;
@@ -2645,6 +2649,12 @@ namespace RimMandrake.FlowWorks
 			}
 			// DEEP_WATER_BUILD_SWIM_OR_SINK: swim exhaustion everywhere, drowning on natural water (own 250-tick timer).
 			Swimming.RM_Swim.Tick(map, this);
+			// FlowWorks GPT review 2026-10-22: the water looks redraw when a square crosses a tint step or band rung (own timer:
+			// pumps, hoses and ponds change water between pulses, and the engine may be off)
+			if (Find.TickManager.TicksGame % RM_WaterLookWatcher.IntervalTicks == 17)
+			{
+				lookWatcher.Tick(map, this, excavatedCells);
+			}
 			int now = Find.TickManager.TicksGame;
 			if (!RimMandrakeFlowWorksSettings.depthEngineEnabled)
 			{

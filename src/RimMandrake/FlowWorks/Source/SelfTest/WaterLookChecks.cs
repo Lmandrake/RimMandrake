@@ -99,6 +99,45 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(snap > looks.IndexOf("public static bool wetWallBandEnabled", StringComparison.Ordinal)
                     && snap > looks.IndexOf("public static bool deepWaterTintEnabled", StringComparison.Ordinal), "snapshot below both fields");
             });
+
+            // FlowWorks GPT review 2026-10-22 (RM_WaterLooks.cs:116/207): the looks went stale when water crossed 5 m / 10 m, or a
+            // band's gap changed, without a terrain write. The key changes exactly at a tint step or a band rung; nothing else.
+            Case("WaterLook_key_changes_at_tint_steps_and_band_rungs_only", () =>
+            {
+                int Key(double waterMetres, double gapMetres) => RM_WaterLookMath.LookKey(
+                    (int)RM_WaterLookMath.StepStrength(RM_WaterLadder.DeepStepForMetres(waterMetres)),
+                    RM_WaterLookMath.BandThickness(gapMetres), 0f);
+                Assert(Key(4.99, 0) != Key(5.0, 0) && Key(9.99, 0) != Key(10.0, 0), "crossing 5 m and 10 m changes the key");
+                Assert(Key(5.2, 0) == Key(9.8, 0) && Key(0.3, 0) == Key(4.9, 0), "inside one tint step the key holds (no redraw)");
+                Assert(Key(1, 0) != Key(1, 0.05), "a band appearing changes the key");
+                float rung = 1f / RM_WaterLookMath.BandRungsPerSquare;
+                double gapPerRung = rung / RM_WaterLookMath.BandPerTwoMetres * 2.0;   // ~0.18 m of gap per band rung
+                double centre = 6 * gapPerRung;   // a gap whose band sits exactly on rung 6
+                Assert(Key(1, centre) == Key(1, centre + gapPerRung * 0.3) && Key(1, centre) == Key(1, centre - gapPerRung * 0.3),
+                    "a band edge moving under a third of a rung holds the key");
+                Assert(Key(1, centre) != Key(1, centre + gapPerRung * 1.2), "a band edge moving more than a rung changes it");
+                Assert(RM_WaterLookMath.BandRung(RM_WaterLookMath.BandMin) >= 1 && RM_WaterLookMath.BandRung(0f) == 0, "a sliver is a rung");
+                Assert(RM_WaterLookMath.LookKey(2, RM_WaterLookMath.BandMax, RM_WaterLookMath.BandMax) != RM_WaterLookMath.LookKey(2, RM_WaterLookMath.BandMax, 0f),
+                    "north and west bands do not alias (max rung fits its field)");
+                var watch = new RM_WaterLookMath.Watch();
+                Assert(!watch.Note(3, 10, 0), "dry ground at load needs no redraw");
+                Assert(watch.Note(3, 10, 5) && !watch.Note(3, 10, 5) && watch.Note(3, 10, 6), "a key redraws once per change");
+            });
+
+            Case("WaterLook_layers_listen_to_their_own_flag_and_the_engine_runs_the_watcher", () =>
+            {
+                string looks = RiverSwitchFlipChecks.Src("RM_WaterLooks.cs");
+                string eng = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
+                string def = System.IO.File.ReadAllText(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(
+                    RiverSwitchFlipChecks.SrcPath("RM_WaterLooks.cs")), "..", "Defs", "ManyWaters", "MapMeshFlagDefs", "RM_WaterLooks.xml"));
+                Assert(Regex.Matches(looks, @"relevantChangeTypes = RM_WaterLookDraw\.Flags;").Count == 2, "both layers listen to Terrain | RM_WaterLooks");
+                Assert(!looks.Contains("relevantChangeTypes = MapMeshFlagDefOf.Terrain;"), "no layer is terrain-only any more");
+                RiverSwitchFlipChecks.Has(looks, @"GetNamedSilentFail\(""RM_WaterLooks""\)", "the flag is looked up by its defName");
+                RiverSwitchFlipChecks.Has(def, @"<defName>RM_WaterLooks</defName>", "the flag def exists");
+                RiverSwitchFlipChecks.Has(looks, @"MapMeshDirty\(c, flag, true, false\)", "a changed key dirties only the looks' flag, neighbours included");
+                RiverSwitchFlipChecks.Has(eng, @"lookWatcher\.Tick\(map, this, excavatedCells\);", "the engine runs the watcher");
+                Assert(!Regex.IsMatch(looks, @"new float\[w \* h\];\s*bool any"), "the tint's strength grid is reused, not allocated per regenerate");
+            });
         }
     }
 }

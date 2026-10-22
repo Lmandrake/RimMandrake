@@ -4,10 +4,11 @@
 //     10 m and deeper a darker one. Every such square stays WaterDeep, so swimming, roads and other mods see no change.
 //   - SectionLayer_RMWetWallBand: a wet dug square whose water stands below its lip shows a soft shadow band on its north and
 //     west edges, as thick as the gap between the water and the lip.
-// Both build their mesh whatever the setting and hide through Visible, so a toggle takes effect at once with no redraw. Like
-// SectionLayer_RMExcavationWalls they rebuild on terrain changes only: a level crossing 5 m / 10 m, or a band's gap changing,
-// inside one terrain rung waits for the next terrain write in that section (owed live check A3 on the item). Mod
-// Settings: RM_WaterLookSettings (drawn and Scribed inside the water-body screen, RM_WaterMendSettings).
+// Both build their mesh whatever the setting and hide through Visible, so a toggle takes effect at once with no redraw. They
+// rebuild on a terrain change AND on their own mesh flag RM_WaterLooks (Defs/ManyWaters/MapMeshFlagDefs), which
+// RM_WaterLookWatcher raises for a square whose picture key changed (FlowWorks GPT review 2026-10-22: a level crossing
+// 5 m / 10 m, or a band's gap changing, inside one terrain rung used to leave the picture stale until the next terrain
+// write). Mod Settings: RM_WaterLookSettings (drawn and Scribed inside the water-body screen, RM_WaterMendSettings).
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -49,6 +50,80 @@ namespace RimMandrake.FlowWorks
 	/// <summary>Shared mesh helpers of the two water-look layers.</summary>
 	internal static class RM_WaterLookDraw
 	{
+		private static MapMeshFlagDef lookFlag;
+		private static bool lookFlagResolved;
+
+		/// <summary>The layers' own mesh flag (only these two layers listen to it); 0 if the def is missing, which degrades to
+		/// the old terrain-only redraw rather than throwing.</summary>
+		public static ulong LookFlag
+		{
+			get
+			{
+				if (!lookFlagResolved)
+				{
+					lookFlag = DefDatabase<MapMeshFlagDef>.GetNamedSilentFail("RM_WaterLooks");
+					lookFlagResolved = true;
+				}
+				return lookFlag;
+			}
+		}
+
+		public static ulong Flags => (ulong)MapMeshFlagDefOf.Terrain | LookFlag;
+
+		/// <summary>The square's tint strength (0, 1, 2: its deep step; rivers and dry ground 0).</summary>
+		public static float TintStrength(Map map, RM_MapComponent_Excavation eng, IntVec3 c)
+		{
+			if (!IsStillWater(map, c))
+			{
+				return 0f;
+			}
+			return RM_WaterLookMath.StepStrength(RM_WaterLadder.DeepStepForMetres(WaterMetres(eng, c)));
+		}
+
+		/// <summary>Water that is not a river (a river keeps its own look; the tint is for still water).</summary>
+		public static bool IsStillWater(Map map, IntVec3 c)
+		{
+			if (!c.InBounds(map))
+			{
+				return false;
+			}
+			TerrainDef t = map.terrainGrid.BaseTerrainAt(c);
+			return t != null && t.IsWater && !t.IsRiver;
+		}
+
+		/// <summary>The wall band's north and west thickness on a wet dug square (both 0 elsewhere).</summary>
+		public static void BandAt(Map map, RM_MapComponent_Excavation eng, IntVec3 c, out float tn, out float tw)
+		{
+			tn = tw = 0f;
+			if (!eng.IsExcavated(c) || eng.WaterDlAt(c) <= 0)
+			{
+				return;
+			}
+			int d = eng.HollowDepthAt(c);
+			double water = eng.WaterMetresAt(c);
+			tn = RM_WaterLookMath.BandThickness(RM_WaterLookMath.GapMetres(d, Side(map, eng, c + IntVec3.North, d), water));
+			tw = RM_WaterLookMath.BandThickness(RM_WaterLookMath.GapMetres(d, Side(map, eng, c + IntVec3.West, d), water));
+		}
+
+		/// <summary>The neighbour's floor in notches, for the gap, by the wall drawer's own rule (SectionLayer_RMExcavationWalls
+		/// .NeighbourLevel): the map edge and natural liquid read as this square's own depth (no wall there), dry ground as 0, a
+		/// dug or dried-bed neighbour as its hollow depth.</summary>
+		private static int Side(Map map, RM_MapComponent_Excavation eng, IntVec3 n, int myDepth)
+		{
+			if (!n.InBounds(map) || eng.IsSourceCell(n))
+			{
+				return myDepth;
+			}
+			return eng.HollowDepthAt(n);
+		}
+
+		/// <summary>The square's picture key (RM_WaterLookMath.LookKey) from the same reads the layers draw with.</summary>
+		public static int KeyAt(Map map, RM_MapComponent_Excavation eng, IntVec3 c)
+		{
+			BandAt(map, eng, c, out float tn, out float tw);
+			return RM_WaterLookMath.LookKey((int)TintStrength(map, eng, c), tn, tw);
+		}
+
 		/// <summary>Above the water terrain and the drowned wall faces, below the dry wall faces (RM_ExcavationWalls draws at
 		/// TerrainScatter + 0.002 .. + 0.0039).</summary>
 		public static float TintY => AltitudeLayer.TerrainScatter.AltitudeFor() + 0.0025f;
@@ -113,10 +188,14 @@ namespace RimMandrake.FlowWorks
 	{
 		public SectionLayer_RMDeepWaterTint(Section section) : base(section)
 		{
-			relevantChangeTypes = MapMeshFlagDefOf.Terrain;
+			relevantChangeTypes = RM_WaterLookDraw.Flags;
 		}
 
 		public override bool Visible => DebugViewSettings.drawTerrain && RM_WaterLookSettings.deepWaterTintEnabled;
+
+		// strengths of the grown rect, reused: sections regenerate one at a time on the main thread (GPT review 2026-10-22:
+		// a new float[] per section per regenerate)
+		private static float[] strengthBuffer;
 
 		public override void Regenerate()
 		{
@@ -131,13 +210,17 @@ namespace RimMandrake.FlowWorks
 			CellRect rect = section.CellRect;
 			// strengths of the rect grown by one square (corners need the squares beyond the section's edge)
 			int x0 = rect.minX - 1, z0 = rect.minZ - 1, w = rect.Width + 2, h = rect.Height + 2;
-			float[] s = new float[w * h];
+			if (strengthBuffer == null || strengthBuffer.Length < w * h)
+			{
+				strengthBuffer = new float[w * h];
+			}
+			float[] s = strengthBuffer;
 			bool any = false;
 			for (int dz = 0; dz < h; dz++)
 			{
 				for (int dx = 0; dx < w; dx++)
 				{
-					float v = Strength(map, eng, new IntVec3(x0 + dx, 0, z0 + dz));
+					float v = RM_WaterLookDraw.TintStrength(map, eng, new IntVec3(x0 + dx, 0, z0 + dz));
 					s[dz * w + dx] = v;
 					any |= v > 0f;
 				}
@@ -148,7 +231,7 @@ namespace RimMandrake.FlowWorks
 				float y = RM_WaterLookDraw.TintY;
 				foreach (IntVec3 c in rect)
 				{
-					if (!IsStillWater(map, c))
+					if (!RM_WaterLookDraw.IsStillWater(map, c))
 					{
 						continue;
 					}
@@ -176,25 +259,6 @@ namespace RimMandrake.FlowWorks
 			return 0.25f * (s[(pz - 1) * w + px - 1] + s[(pz - 1) * w + px] + s[pz * w + px - 1] + s[pz * w + px]);
 		}
 
-		/// <summary>Water that is not a river (a river keeps its own look; the tint is for still water).</summary>
-		private static bool IsStillWater(Map map, IntVec3 c)
-		{
-			if (!c.InBounds(map))
-			{
-				return false;
-			}
-			TerrainDef t = map.terrainGrid.BaseTerrainAt(c);
-			return t != null && t.IsWater && !t.IsRiver;
-		}
-
-		private static float Strength(Map map, RM_MapComponent_Excavation eng, IntVec3 c)
-		{
-			if (!IsStillWater(map, c))
-			{
-				return 0f;
-			}
-			return RM_WaterLookMath.StepStrength(RM_WaterLadder.DeepStepForMetres(RM_WaterLookDraw.WaterMetres(eng, c)));
-		}
 	}
 
 	/// <summary>A wet dug square whose water stands below the lip: a soft dark band on its north and west edges, as thick as the
@@ -204,7 +268,7 @@ namespace RimMandrake.FlowWorks
 	{
 		public SectionLayer_RMWetWallBand(Section section) : base(section)
 		{
-			relevantChangeTypes = MapMeshFlagDefOf.Terrain;
+			relevantChangeTypes = RM_WaterLookDraw.Flags;
 		}
 
 		// the band shades a wall face, so it hides with the faces (excavationWallFacesEnabled) too
@@ -222,14 +286,7 @@ namespace RimMandrake.FlowWorks
 				float y = RM_WaterLookDraw.BandY;
 				foreach (IntVec3 c in section.CellRect)
 				{
-					if (!eng.IsExcavated(c) || eng.WaterDlAt(c) <= 0)
-					{
-						continue;
-					}
-					int d = eng.HollowDepthAt(c);
-					double water = eng.WaterMetresAt(c);
-					float tn = RM_WaterLookMath.BandThickness(RM_WaterLookMath.GapMetres(d, Side(map, eng, c + IntVec3.North, d), water));
-					float tw = RM_WaterLookMath.BandThickness(RM_WaterLookMath.GapMetres(d, Side(map, eng, c + IntVec3.West, d), water));
+					RM_WaterLookDraw.BandAt(map, eng, c, out float tn, out float tw);
 					if (tn <= 0f && tw <= 0f)
 					{
 						continue;
@@ -255,17 +312,64 @@ namespace RimMandrake.FlowWorks
 			}
 			FinalizeMesh(MeshParts.All);
 		}
+	}
 
-		/// <summary>The neighbour's floor in notches, for the gap, by the wall drawer's own rule (SectionLayer_RMExcavationWalls
-		/// .NeighbourLevel): the map edge and natural liquid read as this square's own depth (no wall there), dry ground as 0, a
-		/// dug or dried-bed neighbour as its hollow depth.</summary>
-		private static int Side(Map map, RM_MapComponent_Excavation eng, IntVec3 n, int myDepth)
+	/// <summary>FlowWorks GPT review 2026-10-22: redraws the two water looks when a square's picture key changes (a deep step
+	/// crossed, a band edge moved a rung) without a terrain write. Runs on its own 250-tick timer from the depth engine, the
+	/// setting on or off (the meshes are kept current either way, so a toggle shows the right picture at once). Watches only
+	/// squares that can carry a look: every dug square, and natural still water whose floor is 5 m or deeper (rebuilt every
+	/// tenth check; shallower natural water can never reach the 5 m step). A changed key dirties only the looks' own mesh
+	/// flag, on the square and its neighbours (the tint's corners blend over one square).</summary>
+	public sealed class RM_WaterLookWatcher
+	{
+		public const int IntervalTicks = 250;
+		private const int RescanEvery = 10;
+
+		private readonly RM_WaterLookMath.Watch watch = new RM_WaterLookMath.Watch();
+		private readonly System.Collections.Generic.List<IntVec3> naturalDeep = new System.Collections.Generic.List<IntVec3>();
+		private int checks;
+
+		public void Tick(Map map, RM_MapComponent_Excavation eng, System.Collections.Generic.IEnumerable<IntVec3> dug)
 		{
-			if (!n.InBounds(map) || eng.IsSourceCell(n))
+			ulong flag = RM_WaterLookDraw.LookFlag;
+			if (flag == 0UL)
 			{
-				return myDepth;
+				return;   // no flag def: the layers redraw on terrain changes only, as before
 			}
-			return eng.HollowDepthAt(n);
+			if (checks++ % RescanEvery == 0)
+			{
+				Rescan(map, eng);
+			}
+			int cells = map.cellIndices.NumGridCells;
+			foreach (IntVec3 c in dug)
+			{
+				Check(map, eng, c, cells, flag);
+			}
+			for (int i = 0; i < naturalDeep.Count; i++)
+			{
+				Check(map, eng, naturalDeep[i], cells, flag);
+			}
+		}
+
+		private void Check(Map map, RM_MapComponent_Excavation eng, IntVec3 c, int cells, ulong flag)
+		{
+			if (watch.Note(map.cellIndices.CellToIndex(c), cells, RM_WaterLookDraw.KeyAt(map, eng, c)))
+			{
+				map.mapDrawer.MapMeshDirty(c, flag, true, false);
+			}
+		}
+
+		private void Rescan(Map map, RM_MapComponent_Excavation eng)
+		{
+			naturalDeep.Clear();
+			int fiveMetreFloor = (int)System.Math.Ceiling(RM_WaterLadder.DeepStepFiveMetres / RM_Volume.MetresPerNotch);
+			foreach (IntVec3 c in map.AllCells)
+			{
+				if (eng.IsSourceCell(c) && RM_WaterLookDraw.IsStillWater(map, c) && eng.BedLevelsAt(c) >= fiveMetreFloor)
+				{
+					naturalDeep.Add(c);
+				}
+			}
 		}
 	}
 }
