@@ -1,0 +1,468 @@
+{
+ "script": "sheet_overflow_proof.py",
+ "started": "2026-10-22T10:00:44",
+ "rows": [
+  {
+   "id": "PUMP_FULL_CANAL_SPILLS_SHEET",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "item": "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED",
+   "detail": {
+    "pulsesWaited": 4,
+    "tank": [
+     30000,
+     30000
+    ],
+    "canal": [
+     60000,
+     60000
+    ],
+    "inPump": 0,
+    "lips": "SHEETRECT dl=0 wet=0 maxDl=0 edgeMaxDl=0 ice=0 film=0 sheet=0 pool=0",
+    "destroyed": 0,
+    "closes": true,
+    "pump": "PUMP running=False moved=0 pour=True tank=RM_Liquid_FreshWater:30000",
+    "verdictWithheld": "FAIL",
+    "unmeasuredBecause": [
+     {
+      "scope": "PUMP_FULL_CANAL_SPILLS_SHEET",
+      "what": "the pump powered",
+      "why": "False",
+      "class": "SITE"
+     }
+    ]
+   }
+  },
+  {
+   "id": "RAIN_FULL_CANAL_SPILLS_SHEET",
+   "status": "FAIL",
+   "class": "MOD",
+   "item": "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED",
+   "detail": {
+    "weather": true,
+    "pulsesWaited": 12,
+    "inRain": 0,
+    "canal": [
+     60000,
+     60000
+    ],
+    "lips": "SHEETRECT dl=0 wet=0 maxDl=0 edgeMaxDl=0 ice=0 film=0 sheet=0 pool=0",
+    "destroyed": 0,
+    "closes": true
+   }
+  },
+  {
+   "id": "FILLIN_HOMELESS_SPILLS",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED",
+   "detail": {
+    "fillin": "FILLIN homeless=10000 spilled=10000 destroyed=0",
+    "inFillIn": 10000,
+    "destroyed": 0,
+    "closes": true
+   }
+  },
+  {
+   "id": "SHEET_RETURNS_TO_PIT",
+   "status": "FAIL",
+   "class": "MOD",
+   "item": "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED",
+   "detail": {
+    "pulsesWaited": 16,
+    "settled": false,
+    "pitEdge": "SHEETRECT dl=597 wet=3 maxDl=199 edgeMaxDl=0 ice=0 film=3 sheet=0 pool=0",
+    "pit": [
+     0,
+     114586
+    ],
+    "returned": 24586,
+    "left": "SHEETRECT dl=21117 wet=54 maxDl=581 edgeMaxDl=0 ice=0 film=26 sheet=28 pool=0",
+    "retention": 200,
+    "closes": true
+   }
+  },
+  {
+   "id": "SPILL_EXTENT_FINITE",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED",
+   "detail": {
+    "wetSeries": [
+     35,
+     49,
+     56,
+     58,
+     59,
+     59,
+     59,
+     59
+    ],
+    "bound": 200,
+    "minReceive": 100,
+    "retention": 200,
+    "final": "SHEETRECT dl=22874 wet=59 maxDl=546 edgeMaxDl=543 ice=0 film=47 sheet=12 pool=0",
+    "stableFor": 3
+   }
+  },
+  {
+   "id": "BACKPRESSURE_REFUSES_DESTROYS_NOTHING",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED",
+   "detail": {
+    "room": 110000,
+    "offer1": "SPILL offered=330000 accepted=40000",
+    "offer2": "SPILL offered=110000 accepted=0",
+    "yard": "SHEETRECT dl=40000 wet=4 maxDl=10000 edgeMaxDl=10000 ice=0 film=0 sheet=0 pool=4",
+    "outsideOnly": 0,
+    "destroyed": 0,
+    "closes": true
+   }
+  },
+  {
+   "id": "DOOR_LEAKS_SLOWLY",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED",
+   "detail": {
+    "door": "SHEETCELL dl=0 tier=None kind=Door stand=0",
+    "doorRingLost": 715,
+    "gapRingLost": 25785,
+    "outsideDoor": "SHEETRECT dl=75 wet=1 maxDl=75 edgeMaxDl=75 ice=0 film=1 sheet=0 pool=0",
+    "inside": [
+     "SHEETRECT dl=29285 wet=9 maxDl=3416 edgeMaxDl=0 ice=0 film=0 sheet=0 pool=9",
+     "SHEETRECT dl=4215 wet=9 maxDl=638 edgeMaxDl=0 ice=0 film=3 sheet=6 pool=0"
+    ],
+    "closes": true
+   }
+  },
+  {
+   "id": "SETTING_OFF_STOPS_NEW_KEEPS_DRAINING",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED",
+   "detail": {
+    "offerWhileOff": "SPILL offered=10000 accepted=0",
+    "standing": [
+     308970,
+     291787
+    ],
+    "exits": 17183,
+    "purged": 0,
+    "in": 0,
+    "closes": true
+   }
+  },
+  {
+   "id": "CROPS_IRRIGATE_THEN_DROWN",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "item": "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED",
+   "detail": {
+    "field": "cropDrownPulses",
+    "shipped": "1680",
+    "aliveEarly": 12,
+    "soakedEarly": 1130,
+    "drownedAfterPulses": 1,
+    "filmAlive": 3,
+    "control": 4,
+    "tiers": {
+     "sheet": 9,
+     "film": 3
+    },
+    "verdictWithheld": "PASS",
+    "unmeasuredBecause": [
+     {
+      "scope": "CROPS_IRRIGATE_THEN_DROWN",
+      "what": "the staged spill was accepted whole",
+      "why": "SPILL offered=60000 accepted=50000",
+      "class": "SITE"
+     }
+    ]
+   }
+  },
+  {
+   "id": "SHEET_FREEZES_AND_THAWS",
+   "status": "UNMEASURED",
+   "class": "HARNESS",
+   "item": "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED",
+   "detail": {
+    "conditions": [
+     true,
+     true
+    ],
+    "frozeAfterTicks": 6500,
+    "temps": [
+     8.102047,
+     6.75439262,
+     5.05211926,
+     3.67542648,
+     2.28496265,
+     0.880231857,
+     -0.5392189,
+     -1.97379494
+    ],
+    "frozen": {
+     "dl": 17242,
+     "wet": 56,
+     "maxDl": 465,
+     "edgeMaxDl": 465,
+     "ice": 56,
+     "film": 0,
+     "sheet": 0,
+     "pool": 0
+    },
+    "frozenLater": {
+     "dl": 17242,
+     "wet": 56,
+     "maxDl": 465,
+     "edgeMaxDl": 465,
+     "ice": 56,
+     "film": 0,
+     "sheet": 0,
+     "pool": 0
+    },
+    "keptWhileFrozen": true,
+    "volumeDelta": 0,
+    "thawAfterTicks": 500,
+    "thawed": "SHEETRECT dl=17152 wet=56 maxDl=462 edgeMaxDl=462 ice=0 film=56 sheet=0 pool=0",
+    "closes": true,
+    "verdictWithheld": "PASS",
+    "unmeasuredBecause": [
+     {
+      "scope": "SHEET_FREEZES_AND_THAWS",
+      "what": "rimworld/step_game_ticks",
+      "why": "refused: RimWorld is busy with a long event.",
+      "class": "HARNESS"
+     },
+     {
+      "scope": "SHEET_FREEZES_AND_THAWS",
+      "what": "the clock moved 500 ticks",
+      "why": "{'success': False, 'stepId': 'step_dedf84f15b6345499be46aad1d1ae4a2', 'status': 'failed', 'requestedTicks': 500, 'completedTicks': 213, 'remainingTicks': 287, 'startTicksGame': 14787, 'endTicksGame': 15000, 'advancedTicks': 213, 'initialFra",
+      "class": "HARNESS"
+     }
+    ]
+   }
+  },
+  {
+   "id": "LOWERED_CAP_KEEPS_DEEPER_WATER",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "item": "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED",
+   "detail": {
+    "field": "sheetCapCm",
+    "shipped": "50",
+    "offerAfterLower": "SPILL offered=10000 accepted=904",
+    "yardFell": 40139,
+    "losses": 7301,
+    "yard": "SHEETRECT dl=5668 wet=12 maxDl=686 edgeMaxDl=0 ice=0 film=4 sheet=8 pool=0",
+    "closes": true,
+    "verdictWithheld": "FAIL",
+    "unmeasuredBecause": [
+     {
+      "scope": "LOWERED_CAP_KEEPS_DEEPER_WATER",
+      "what": "jawa/build_batch",
+      "why": "built 17 of 18 asked (failed: [{'op': 'Wall:31,156', 'why': 'wipeExisting=false: placing this would destroy 1 existing thing(s): RM_Dewshrooms@31,156'}])",
+      "class": "SITE"
+     },
+     {
+      "scope": "LOWERED_CAP_KEEPS_DEEPER_WATER",
+      "what": "the yard filled to 40 cm",
+      "why": "SPILL offered=96000 accepted=50000",
+      "class": "SITE"
+     }
+    ]
+   }
+  },
+  {
+   "id": "LEDGER_CONSERVES_TO_THE_DL",
+   "status": "FAIL",
+   "class": "MOD",
+   "item": "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED",
+   "detail": {
+    "in": 500904,
+    "standing": 350423,
+    "exits": 150481,
+    "destroyed": 0,
+    "closes": true,
+    "balances": 4,
+    "badBalances": [
+     {
+      "row": "SHEET_RETURNS_TO_PIT",
+      "what": "sheet -> pit",
+      "sourceLoss": 24586,
+      "arrived": {
+       "pit": 114586
+      },
+      "ok": false
+     }
+    ],
+    "ledgerEnd": "SHEETLEDGER enabled=True in=500904 inPump=0 inRain=200000 inFlood=290904 inFillIn=10000 inGravity=0 standing=350423 wet=937 returned=64896 joined=0 soaked=75637 evaporated=9948 burned=0 purged=0 closes=True destroyedDl=0 pulse=76 pulseTicks=250 retention=200 minReceive=100 cap=10000 maxWet=4000 irrigated=45564"
+   }
+  }
+ ],
+ "perf": [
+  {
+   "id": "PERF_250_CONCENTRATED",
+   "status": "UNMEASURED",
+   "class": "HARNESS",
+   "item": "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED",
+   "detail": {
+    "sheetPerf": "SHEETPERF pulses=0 kernelMs=0.000 pulseMs=0.000 maxPulseMs=0.000 allocB=0 dirtySections=0 terrainWrites=0 active=942 wetMax=0",
+    "excavationMsPerTick": null,
+    "map": [
+     null,
+     null
+    ],
+    "mods": 14,
+    "ticks": 1250,
+    "provisional": true,
+    "barMs": 1.0,
+    "verdictWithheld": "PASS",
+    "unmeasuredBecause": [
+     {
+      "scope": "perf",
+      "what": "pulses ran while sampling",
+      "why": "SHEETPERF pulses=0 kernelMs=0.000 pulseMs=0.000 maxPulseMs=0.000 allocB=0 dirtySections=0 terrainWrites=0 active=942 wetMax=0",
+      "class": "HARNESS"
+     }
+    ]
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/pile_2026-10-22/belt/sheet_1.json",
+  "origin": "30,30",
+  "fresh_map": true,
+  "only": "",
+  "no_perf": false,
+  "cold_ticks": 24000,
+  "mock": false,
+  "mock_faults": ""
+ },
+ "owedProofs": [
+  "ProofSheetCell",
+  "ProofSheetFeatures",
+  "ProofSheetFillIn",
+  "ProofSheetHash",
+  "ProofSheetLedger",
+  "ProofSheetPerf",
+  "ProofSheetRect",
+  "ProofSheetSpill"
+ ],
+ "balances": [
+  {
+   "row": "PUMP_FULL_CANAL_SPILLS_SHEET",
+   "what": "tank -> canal + sheet",
+   "sourceLoss": 0,
+   "arrived": {
+    "canal": 0,
+    "sheetPump": 0
+   },
+   "ok": true
+  },
+  {
+   "row": "FILLIN_HOMELESS_SPILLS",
+   "what": "homeless -> sheet",
+   "sourceLoss": 10000,
+   "arrived": {
+    "sheetFillIn": 10000
+   },
+   "ok": true
+  },
+  {
+   "row": "SHEET_RETURNS_TO_PIT",
+   "what": "sheet -> pit",
+   "sourceLoss": 24586,
+   "arrived": {
+    "pit": 114586
+   },
+   "ok": false
+  },
+  {
+   "row": "BACKPRESSURE_REFUSES_DESTROYS_NOTHING",
+   "what": "offer -> yard",
+   "sourceLoss": 40000,
+   "arrived": {
+    "yard": 40000
+   },
+   "ok": true
+  }
+ ],
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "08d597cc1883851be8aa46e7455b472b9ed43a6790706d305bd8687580369ae8",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes"
+  ],
+  "assembly_sha256": "03db98c3c80271c66a634e737b05a24c6abc868dbc67d76c87c704ed1ec74fff"
+ },
+ "features": {
+  "crops": "True",
+  "soak": "True",
+  "capSetting": "True",
+  "capField": "sheetCapCm",
+  "cropDelayField": "cropDrownPulses",
+  "gravity": "True",
+  "floods": "True",
+  "pawns": "True",
+  "fire": "True",
+  "fuel": "False"
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [
+    "RM_Brogg36297",
+    "RM_Brullith36285",
+    "RM_Brullith36299",
+    "RM_Brullith36300",
+    "RM_Brullith36301",
+    "RM_Dustveil36286",
+    "RM_Dustveil36295",
+    "RM_Grellik36288",
+    "RM_Grellik36289",
+    "RM_MycoidColossus36287",
+    "RM_Shambles36296",
+    "RM_Skerrith36290",
+    "RM_Skerrith36291",
+    "RM_Skerrith36292",
+    "RM_Thozzik36293",
+    "RM_Thozzik36294",
+    "RM_ThozzikColonyQueen36302"
+   ],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "switchBefore": "False",
+ "ledgerStart": "SHEETLEDGER enabled=True in=0 inPump=0 inRain=0 inFlood=0 inFillIn=0 inGravity=0 standing=0 wet=0 returned=0 joined=0 soaked=0 evaporated=0 burned=0 purged=0 closes=True destroyedDl=0 pulse=0 pulseTicks=250 retention=200 minReceive=100 cap=10000 maxWet=4000 irrigated=0"
+}

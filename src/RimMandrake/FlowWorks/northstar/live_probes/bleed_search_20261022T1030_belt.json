@@ -1,0 +1,389 @@
+{
+ "open": {
+  "success": true,
+  "changed": true,
+  "requestedModId": "mod-settings:mandrake.rm.flowworks:ec74028bcbdab099",
+  "replaceExisting": true,
+  "closedExistingDialogCount": 1,
+  "message": "Opened mod settings dialog for 'mod-settings:mandrake.rm.flowworks:ec74028bcbdab099'.",
+  "mod": {
+   "modId": "mod-settings:mandrake.rm.flowworks:ec74028bcbdab099",
+   "packageId": "mandrake.rm.flowworks",
+   "packageIdPlayerFacing": "mandrake.rm.flowworks",
+   "name": "RimMandrake: FlowWorks",
+   "folderName": "FlowWorks",
+   "authors": "Mandrake",
+   "version": "1.0.0",
+   "rootDir": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\FlowWorks",
+   "handleType": "RimMandrake.FlowWorks.RimMandrakeFlowWorksMod",
+   "handleTypeName": "RimMandrakeFlowWorksMod",
+   "settingsType": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+   "settingsCategory": "FlowWorks: Excavation & Flow",
+   "hasSettingsWindow": true,
+   "hasPersistentState": true,
+   "supportsRead": true
+  },
+  "dialog": {
+   "windowType": "RimWorld.Dialog_ModSettings",
+   "windowId": 3,
+   "mod": {
+    "modId": "mod-settings:mandrake.rm.flowworks:ec74028bcbdab099",
+    "packageId": "mandrake.rm.flowworks",
+    "packageIdPlayerFacing": "mandrake.rm.flowworks",
+    "name": "RimMandrake: FlowWorks",
+    "folderName": "FlowWorks",
+    "authors": "Mandrake",
+    "version": "1.0.0",
+    "rootDir": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\FlowWorks",
+    "handleType": "RimMandrake.FlowWorks.RimMandrakeFlowWorksMod",
+    "handleTypeName": "RimMandrakeFlowWorksMod",
+    "settingsType": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+    "settingsCategory": "FlowWorks: Excavation & Flow",
+    "hasSettingsWindow": true,
+    "hasPersistentState": true,
+    "supportsRead": true
+   }
+  },
+  "before": {
+   "success": true,
+   "programState": "Playing",
+   "inEntryScene": false,
+   "hasCurrentGame": true,
+   "nonImmediateDialogWindowOpen": true,
+   "currentWindowGetsInput": false,
+   "mouseObscuredNow": true,
+   "windowsForcePause": true,
+   "windowsPreventCameraMotion": true,
+   "windowsPreventSave": false,
+   "anyWindowAbsorbingAllInput": true,
+   "anySearchWidgetFocused": false,
+   "floatMenuOpen": false,
+   "windowCount": 4,
+   "focusedWindowType": "RimWorld.Dialog_ModSettings",
+   "topWindowType": "Verse.ImmediateWindow",
+   "mainTabOpen": false,
+   "windows": [
+    {
+     "index": 0,
+     "id": -1593759361,
+     "type": "Verse.ImmediateWindow",
+     "layer": "GameUI",
+     "isOpen": true,
+     "getsInput": false,
+     "closeOnAccept": false,
+     "closeOnCancel": false,
+     "forcePause": false,
+     "preventCameraMotion": false,
+     "absorbInputAroundWindow": false,
+     "drawInScreenshotMode": true,
+     "rect": {
+      "x": 1635.0,
+      "y": 3.0,
+      "width": 196.0,
+      "height": 25.0
+     }
+    },
+    {
+     "index": 1,
+     "id": 1,
+     "type": "LudeonTK.Dialog_DevPalette",
+     "layer": "Dialog",
+     "isOpen": true,
+     "getsInput": false,
+     "closeOnAccept": false,
+     "closeOnCancel": false,
+     "forcePause": false,
+     "preventCameraMotion": false,
+     "absorbInputAroundWindow": false,
+     "drawInScreenshotMode": false,
+     "rect": {
+      "x": 0.0,
+      "y": 0.0,
+      "width": 130.0,
+      "height": 82.0
+     }
+    },
+    {
+     "index": 2,
+     "id": 2,
+     "type": "RimWorld.Dialog_ModSettings",
+     "layer": "Dialog",
+     "isOpen": true,
+     "getsInput": true,
+     "closeOnAccept": true,
+     "closeOnCancel": true,
+     "forcePause": true,
+     "preventCameraMotion": true,
+     "absorbInputAroundWindow": true,
+     "drawInScreenshotMode": true,
+     "semanticKind": "mod_settings_dialog",
+     "semanticDetails": {
+      "windowType": "RimWorld.Dialog_ModSettings",
+      "windowId": 2,
+      "mod": {
+       "modId": "mod-settings:mandrake.rm.flowworks:ec74028bcbdab099",
+       "packageId": "mandrake.rm.flowworks",
+       "packageIdPlayerFacing": "mandrake.rm.flowworks",
+       "name": "RimMandrake: FlowWorks",
+       "folderName": "FlowWorks",
+       "authors": "Mandrake",
+       "version": "1.0.0",
+       "rootDir": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\FlowWorks",
+       "handleType": "RimMandrake.FlowWorks.RimMandrakeFlowWorksMod",
+       "handleTypeName": "RimMandrakeFlowWorksMod",
+       "settingsType": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+       "settingsCategory": "FlowWorks: Excavation & Flow",
+       "hasSettingsWindow": true,
+       "hasPersistentState": true,
+       "supportsRead": true
+      }
+     },
+     "rect": {
+      "x": 1283.0,
+      "y": 563.0,
+      "width": 900.0,
+      "height": 700.0
+     }
+    },
+    {
+     "index": 3,
+     "id": -1594957055,
+     "type": "Verse.ImmediateWindow",
+     "layer": "Super",
+     "isOpen": true,
+     "getsInput": true,
+     "closeOnAccept": false,
+     "closeOnCancel": false,
+     "forcePause": false,
+     "preventCameraMotion": false,
+     "absorbInputAroundWindow": false,
+     "drawInScreenshotMode": true,
+     "rect": {
+      "x": 134.0,
+      "y": 14.0,
+      "width": 1010.0,
+      "height": 26.0
+     }
+    }
+   ]
+  },
+  "after": {
+   "success": true,
+   "programState": "Playing",
+   "inEntryScene": false,
+   "hasCurrentGame": true,
+   "nonImmediateDialogWindowOpen": true,
+   "currentWindowGetsInput": false,
+   "mouseObscuredNow": true,
+   "windowsForcePause": true,
+   "windowsPreventCameraMotion": true,
+   "windowsPreventSave": false,
+   "anyWindowAbsorbingAllInput": true,
+   "anySearchWidgetFocused": false,
+   "floatMenuOpen": false,
+   "windowCount": 4,
+   "focusedWindowType": "Verse.ImmediateWindow",
+   "topWindowType": "Verse.ImmediateWindow",
+   "mainTabOpen": false,
+   "windows": [
+    {
+     "index": 0,
+     "id": -1593759361,
+     "type": "Verse.ImmediateWindow",
+     "layer": "GameUI",
+     "isOpen": true,
+     "getsInput": false,
+     "closeOnAccept": false,
+     "closeOnCancel": false,
+     "forcePause": false,
+     "preventCameraMotion": false,
+     "absorbInputAroundWindow": false,
+     "drawInScreenshotMode": true,
+     "rect": {
+      "x": 1635.0,
+      "y": 3.0,
+      "width": 196.0,
+      "height": 25.0
+     }
+    },
+    {
+     "index": 1,
+     "id": 1,
+     "type": "LudeonTK.Dialog_DevPalette",
+     "layer": "Dialog",
+     "isOpen": true,
+     "getsInput": false,
+     "closeOnAccept": false,
+     "closeOnCancel": false,
+     "forcePause": false,
+     "preventCameraMotion": false,
+     "absorbInputAroundWindow": false,
+     "drawInScreenshotMode": false,
+     "rect": {
+      "x": 0.0,
+      "y": 0.0,
+      "width": 130.0,
+      "height": 82.0
+     }
+    },
+    {
+     "index": 2,
+     "id": 3,
+     "type": "RimWorld.Dialog_ModSettings",
+     "layer": "Dialog",
+     "isOpen": true,
+     "getsInput": true,
+     "closeOnAccept": true,
+     "closeOnCancel": true,
+     "forcePause": true,
+     "preventCameraMotion": true,
+     "absorbInputAroundWindow": true,
+     "drawInScreenshotMode": true,
+     "semanticKind": "mod_settings_dialog",
+     "semanticDetails": {
+      "windowType": "RimWorld.Dialog_ModSettings",
+      "windowId": 3,
+      "mod": {
+       "modId": "mod-settings:mandrake.rm.flowworks:ec74028bcbdab099",
+       "packageId": "mandrake.rm.flowworks",
+       "packageIdPlayerFacing": "mandrake.rm.flowworks",
+       "name": "RimMandrake: FlowWorks",
+       "folderName": "FlowWorks",
+       "authors": "Mandrake",
+       "version": "1.0.0",
+       "rootDir": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\FlowWorks",
+       "handleType": "RimMandrake.FlowWorks.RimMandrakeFlowWorksMod",
+       "handleTypeName": "RimMandrakeFlowWorksMod",
+       "settingsType": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+       "settingsCategory": "FlowWorks: Excavation & Flow",
+       "hasSettingsWindow": true,
+       "hasPersistentState": true,
+       "supportsRead": true
+      }
+     },
+     "rect": {
+      "x": 1283.0,
+      "y": 563.0,
+      "width": 900.0,
+      "height": 700.0
+     }
+    },
+    {
+     "index": 3,
+     "id": -1594957055,
+     "type": "Verse.ImmediateWindow",
+     "layer": "Super",
+     "isOpen": true,
+     "getsInput": true,
+     "closeOnAccept": false,
+     "closeOnCancel": false,
+     "forcePause": false,
+     "preventCameraMotion": false,
+     "absorbInputAroundWindow": false,
+     "drawInScreenshotMode": true,
+     "rect": {
+      "x": 134.0,
+      "y": 14.0,
+      "width": 1010.0,
+      "height": 26.0
+     }
+    }
+   ]
+  },
+  "operation": {
+   "OperationId": "op_72a79cd1b20e4e939419b9b5d369dcef",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 8
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 15253
+  }
+ },
+ "surfaces": [
+  "Verse.GizmoGridDrawer",
+  "Verse.ImmediateWindow",
+  "LudeonTK.Dialog_DevPalette",
+  "RimWorld.Dialog_ModSettings",
+  "Verse.ImmediateWindow"
+ ],
+ "fields": [
+  {
+   "targetId": "ui-element:6:4:7",
+   "kind": "text_field",
+   "screenRect": {
+    "x": 1301.0,
+    "y": 621.0,
+    "width": 840.0,
+    "height": 22.0
+   },
+   "text": null
+  },
+  {
+   "targetId": "ui-element:6:4:9",
+   "kind": "text_field",
+   "screenRect": {
+    "x": 1301.0,
+    "y": 621.0,
+    "width": 840.0,
+    "height": 22.0
+   },
+   "text": null
+  },
+  {
+   "targetId": "ui-element:6:4:11",
+   "kind": "text_field",
+   "screenRect": {
+    "x": 1721.0,
+    "y": 621.0,
+    "width": 420.0,
+    "height": 22.0
+   },
+   "text": null
+  }
+ ],
+ "type": {
+  "success": true,
+  "command": "set_text_field",
+  "targetId": "ui-element:6:4:11",
+  "mode": "instant",
+  "requestedText": "bleed",
+  "finalValue": "bleed",
+  "typedCharacters": 0,
+  "message": "Replaced the text field value through the live widget path.",
+  "operation": {
+   "OperationId": "op_236680cb4628484a9df95ad5db72a766",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 12
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 15253
+  }
+ },
+ "labelsTopDown": [
+  "FlowWorks: Excavation & Flow",
+  "Search settings",
+  "Some maps sit on a liquid you never see the surface of. A drill (powered) or a bleed well (hand-worked, smaller) pours whatever a subsurface survey found into a dug channel at its outlet, drawing down a fixed reserve that never refills. Every map is surveyed once, quietly, whether or not you ever build one.",
+  "Some maps sit on a liquid you never see the surface of. A drill (powered) or a bleed well (hand-worked, smaller) pours whatever a subsurface survey found into a dug channel at its outlet, drawing down a fixed reserve that never refills. Every map is surveyed once, quietly, whether or not you ever build one.",
+  "How often a map has anything down there: 1.00x",
+  "How often a map has anything down there: 1.00x",
+  "Scales every biome's own odds of yielding a drillable liquid at all. 1x is what the biome was authored with; raise it to make 'the right maps' common, lower it to make a real find rare. Rolled once when a map is first surveyed (new maps only); a map you already have keeps its answer.",
+  "Scales every biome's own odds of yielding a drillable liquid at all. 1x is what the biome was authored with; raise it to make 'the right maps' common, lower it to make a real find rare. Rolled once when a map is first surveyed (new maps only); a map you already have keeps its answer.",
+  "Extraction rate: 1 kL per cycle",
+  "Extraction rate: 1 kL per cycle",
+  "How much a drill (or a slower bleed well, scaled down per building) can pull from the ground every few seconds (250 ticks) once its outlet has room to take it. The reserve it draws from is finite and never comes back.",
+  "How much a drill (or a slower bleed well, scaled down per building) can pull from the ground every few seconds (250 ticks) once its outlet has room to take it. The reserve it draws from is finite and never comes back."
+ ],
+ "shot": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Screenshots\\belt_bleed_search_1792688412.png",
+ "clear": true,
+ "close": false
+}
