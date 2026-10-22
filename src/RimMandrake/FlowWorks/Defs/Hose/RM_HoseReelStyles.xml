@@ -14,8 +14,8 @@
     <graphicData>
       <texPath>RimMandrake/FlowWorks/Hose/Reel_PumpHookup</texPath>
       <graphicClass>RimMandrake.FlowWorks.Hose.Graphic_HoseReel</graphicClass>
-      <drawSize>(2.8,2.8)</drawSize>
-      <shadowData><volume>(1.6, 0.35, 1.35)</volume></shadowData>
+      <drawSize>(2.15,2.15)</drawSize>
+      <shadowData><volume>(1.23, 0.35, 1.04)</volume></shadowData>
       <damageData><rect>(0.1,0.1,0.8,0.8)</rect></damageData>
     </graphicData>
   </ThingStyleDef>
@@ -26,8 +26,8 @@
     <graphicData>
       <texPath>RimMandrake/FlowWorks/Hose/Styles/Industrial/Reel_PumpHookup</texPath>
       <graphicClass>RimMandrake.FlowWorks.Hose.Graphic_HoseReel</graphicClass>
-      <drawSize>(2.8,2.8)</drawSize>
-      <shadowData><volume>(1.6, 0.35, 1.35)</volume></shadowData>
+      <drawSize>(2.15,2.15)</drawSize>
+      <shadowData><volume>(1.23, 0.35, 1.04)</volume></shadowData>
       <damageData><rect>(0.1,0.1,0.8,0.8)</rect></damageData>
     </graphicData>
   </ThingStyleDef>
@@ -38,8 +38,8 @@
     <graphicData>
       <texPath>RimMandrake/FlowWorks/Hose/Styles/Modern/Reel_PumpHookup</texPath>
       <graphicClass>RimMandrake.FlowWorks.Hose.Graphic_HoseReel</graphicClass>
-      <drawSize>(2.8,2.8)</drawSize>
-      <shadowData><volume>(1.6, 0.35, 1.35)</volume></shadowData>
+      <drawSize>(2.15,2.15)</drawSize>
+      <shadowData><volume>(1.23, 0.35, 1.04)</volume></shadowData>
       <damageData><rect>(0.1,0.1,0.8,0.8)</rect></damageData>
     </graphicData>
   </ThingStyleDef>
@@ -50,8 +50,8 @@
     <graphicData>
       <texPath>RimMandrake/FlowWorks/Hose/Styles/Futuristic/Reel_PumpHookup</texPath>
       <graphicClass>RimMandrake.FlowWorks.Hose.Graphic_HoseReel</graphicClass>
-      <drawSize>(2.8,2.8)</drawSize>
-      <shadowData><volume>(1.6, 0.35, 1.35)</volume></shadowData>
+      <drawSize>(2.15,2.15)</drawSize>
+      <shadowData><volume>(1.23, 0.35, 1.04)</volume></shadowData>
       <damageData><rect>(0.1,0.1,0.8,0.8)</rect></damageData>
     </graphicData>
   </ThingStyleDef>
