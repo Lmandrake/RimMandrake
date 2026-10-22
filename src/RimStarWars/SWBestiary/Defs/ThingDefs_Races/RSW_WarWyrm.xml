@@ -14,10 +14,8 @@
   `RSW_SW_Calamity` (AbilityDef+TrainableDef pair, RSW_MlieWaveC_Abilities.xml)
   — ported by an earlier pass but not yet consumed by any species; wired
   here for the first time. All 4 vocal sounds already absorbed
-  (`RSW_Pawn_WarWyrm_*`). Flagged, not fixed: the PawnKindDef's own
-  `butcherBodyPart` still names the donor's own bare `WarWyrmSkull` trophy
-  item (a whole separate trophy-item subsystem, out of scope for this pass)
-  — resolves fine while Mlie stays active. `modExtensions`' PathfindingFramework
+  (`RSW_Pawn_WarWyrm_*`). The PawnKindDef's
+  `butcherBodyPart` names the ported `RSW_WarWyrmSkull` trophy item. `modExtensions`' PathfindingFramework
   entry left verbatim (gated on an inactive donor-adjacent mod).
 
   No `*ArtOverride` mod exists for WarWyrm. 4 PNGs extracted this pass:

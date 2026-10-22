@@ -33,13 +33,12 @@
     AB_PyroclasticConflagration itself already carries allowRivers false.
 
     Weather: rebuilt around SS3's closed boiling-rain cycle and ban 6 — ordinary
-    Rain/RainyThunderstorm/Snow all zeroed. AB_VolcanicAsh/AB_VolcanicAshRain (Alpha
-    Biomes WeatherDefs, MayRequire-gated) kept from the donor as the nearest existing
-    stand-in for "sudden violent boiling rain that flashes back to steam... within
-    seconds" (SS3) — a bespoke Scald-type WeatherDef for the Forge's own boiling
-    rain is still un-owed (`FORGE_MECHANICS_1`, SS Owed) and NOT invented here.
-    RSW_SW_RedFog kept MayRequire-gated per the donor's own live weather table
-    (matches the def dump's currently-active entry on this donor).
+    Rain/RainyThunderstorm/Snow all zeroed. RM_VolcanicAsh/RM_VolcanicAshRain
+    (our own WeatherDefs, which replaced the retired Alpha Biomes AB_VolcanicAsh*)
+    stand in for "sudden violent boiling rain that flashes back to steam...
+    within seconds" (SS3) — a bespoke Scald-type WeatherDef for the Forge's own
+    boiling rain is still un-owed (`FORGE_MECHANICS_1`, SS Owed) and NOT invented
+    here. RM_RedFog is kept MayRequire-gated on mandrake.rm.theforge.
 
     diseases trimmed to the vanilla-adjacent set (dropped BMT_Disease_Mutapox);
     diseaseMtbDays kept at the Pyroclastic donor's own 65 (not disputed by the

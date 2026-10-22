@@ -12,17 +12,11 @@
   RSW_Leather_Nerf/RSW_Nerf_Meat (RSW_MlieWaveC_Resources.xml, Pass 7) — no
   new leather/meat resource needed this pass.
 
-  `canCrossBreedWith` (donor: Nerf, Grazer, FeralGrazer) — `Nerf` renamed to
-  `RSW_Nerf` (ported this same pass, below) and `FeralGrazer` renamed to
-  `RSW_FeralGrazer` (already ported, Pass 7). `Grazer` stays bare — it is
-  NOT in this item's Wave C worklist (its donor ThingDef exists but has no
-  row in cast_assignment.csv, so it is out of this item's scope) and Mlie
-  stays active, so the cross-reference remains functionally correct.
+  `canCrossBreedWith` (donor: Nerf, Grazer, FeralGrazer) — all three renamed
+  to their ported RSW_ twins (RSW_Nerf, RSW_Grazer, RSW_FeralGrazer).
 
-  `specialTrainables` (Odyssey `SW_Spit`) is left bare, MayRequire-gated —
-  the ability itself (AbilityDef/HediffDef/TrainableDef trio) is not yet
-  absorbed by this item (same precedent as every other still-unported
-  Mlie ability, e.g. RSW_SW_Spur's sibling SW_Rampage before its own port).
+  `specialTrainables` (Odyssey `SW_Spit`) repoints to the ported `RSW_SW_Spit`
+  (AbilityDef/HediffDef/TrainableDef trio).
 
   Sounds repoint to the already-absorbed sound wave (RSW_Pawn_FeralNerf_*,
   2026-09-02). texPaths are unchanged text — extracted art sits at

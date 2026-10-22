@@ -8,8 +8,8 @@
   composition (Body/Spine/Stomach/Heart/Lung x2/Kidney x2/Liver/Neck/Head/
   Skull/Brain/Eye x2/Trunk/AnimalJaw/Tusk x2/Teeth, 4x Leg/Hoof) — its 2
   Tusk parts use the bare `TuskAttackTool` group left ungated exactly as
-  the donor leaves it, same "confirmed Alpha Animals, not Mlie content"
-  precedent already established (Boma/Pass 9, Jakobeast/Pass 11) — no
+  the donor leaves it (`TuskAttackTool` is vanilla Core, BodyPartGroups.xml;
+  earlier headers called it Alpha Animals, which was wrong) — no
   SW-prefixed part or group anywhere, defName rename only. Ported as
   RSW_Skalder (RSW_MlieWaveC_Bodies.xml). `leatherDef` (`Leather_Elephant`)
   is vanilla Core, left bare. `specificMeatDef` (`Pachydermoid_Meat`)
@@ -25,13 +25,9 @@
   `effecterDef`). `willNeverEat` block (DLC special-tree defNames) is
   vanilla Core/DLC content, left bare verbatim.
 
-  **Flagged, not fixed**: the adult lifeStage's `butcherBodyPart` names
-  `SkalderTusk`, a donor ivory-trophy item (Items_Resource_swanimal_Items.xml
-  + Recipes_Ivory.xml — a separate trophy/recipe subsystem, out of scope
-  for a creature-geometry pass, same pattern as ShiroTrap's
-  `RawTookeTrapRoot` this same pass). Left pointing at the donor's own bare
-  `SkalderTusk` — resolves fine while mlie.starwarsanimalcollection stays
-  active.
+  The adult lifeStage's `butcherBodyPart` names `RSW_SkalderTusk`, the ported
+  twin of the donor's ivory-trophy item `SkalderTusk` (the donor's separate
+  trophy/recipe subsystem is not ported).
 
   No `*ArtOverride` mod exists for Skalder (checked first). 7 PNGs
   extracted this pass via extract_bundle.py against the same AssetBundle

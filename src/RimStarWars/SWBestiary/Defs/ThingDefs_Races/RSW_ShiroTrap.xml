@@ -22,14 +22,9 @@
   block) were already absorbed in the 2026-09-02 sound wave, wired, not
   re-done. `canCrossBreedWith` repointed `Shiro` -> `RSW_Shiro`.
 
-  **Flagged, not fixed**: the adult lifeStage's `butcherBodyPart` names
-  `RawTookeTrapRoot`, a donor plant-harvest item (Plants_Farm_SW.xml +
-  Recipes_ShiroTrap.xml — a whole separate farmable-plant/recipe subsystem,
-  out of scope for a creature-geometry pass). Left pointing at the donor's
-  own bare `RawTookeTrapRoot` — resolves fine while mlie.starwarsanimalcollection
-  stays active (this item's own standing pattern for a dependency not yet
-  in scope to port), same as any other not-yet-ported cross-reference this
-  item tolerates pre-donor-retirement.
+  The adult lifeStage's `butcherBodyPart` names `RSW_RawTookeTrapRoot`, the
+  ported twin of the donor's plant-harvest item `RawTookeTrapRoot` (the donor's
+  separate farmable-plant/recipe subsystem is not ported).
 
   No `*ArtOverride` mod exists for ShiroTrap (checked first — the only
   Shiro-family override, the since-retired ShiroArtOverride folded into

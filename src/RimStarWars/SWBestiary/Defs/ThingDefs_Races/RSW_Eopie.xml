@@ -11,16 +11,11 @@
   ported as RSW_Eopie (RSW_MlieWaveC_Bodies.xml), defName rename only, no new
   body part needed.
 
-  `leatherDef`/`specificMeatDef` stay vanilla Core `Leather_Plain`/
-  `Cameloid_Meat` — no new resource needed. `CompProperties_Milkable`'s
+  `leatherDef` stays vanilla Core `Leather_Plain`; `specificMeatDef` is the
+  ported `RSW_Cameloid_Meat`. `CompProperties_Milkable`'s
   `milkDef` stays vanilla Core `Milk`. Its Odyssey `SW_Spit` specialTrainable
-  is donor content (SW_Abilities.xml, NOT vanilla Odyssey content despite an
-  earlier wave's Dalgo/Corinathoth header comments calling the equivalent
-  SW_Spur "vanilla Core" — verified by reading SW_Abilities.xml directly this
-  pass) — left unprefixed, matching that same established precedent (Dalgo's
-  bare SW_Spur, Corinathoth's), safe only because Mlie stays active and
-  supplies it; a future gen_cast_patch.py-style cleanup pass should port
-  SW_Spit/SW_Spur properly once Mlie's retirement is scoped. Its 5
+  is donor content (SW_Abilities.xml, NOT vanilla Odyssey content) — ported
+  as `RSW_SW_Spit` and used below. Its 5
   `alternateGraphics` color variants (EopieA-E) are all newly extracted this
   pass. Sounds repoint to the already-absorbed sound wave (RSW_Pawn_Eopie_*,
   2026-09-02). texPaths are unchanged text — extracted art (22 of 28 PNGs in

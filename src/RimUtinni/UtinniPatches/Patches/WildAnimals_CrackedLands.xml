@@ -13,11 +13,11 @@
   running the Utinni campaign patches, per §5 step 4.
 
   🔴 MLIE_ABSORPTION_BIOME_WIRING_1 (2026-09-25): the 5 mlie.starwarsanimalcollection
-  rows in Op 1 below (Gornt/Eopie/CanCell/Convor/Woolamander) all already have our own
-  RSW_ ports (RSW_Gornt/RSW_Eopie/RSW_CanCell/RSW_Convor/RSW_Woolamander, each with both
-  a ThingDef and a PawnKindDef) — retargeted to Op 2 (mandrake.rsw.swbestiary) below,
-  keeping their weights and comments. Only the two sarg.alphaanimals rows
-  (AA_Murkling/AA_SandSquid) remain in Op 1, which is otherwise unchanged.
+  rows (Gornt/Eopie/CanCell/Convor/Woolamander) all have our own RSW_ ports
+  (RSW_Gornt/RSW_Eopie/RSW_CanCell/RSW_Convor/RSW_Woolamander, each with both a
+  ThingDef and a PawnKindDef) and ride Op 2 (mandrake.rsw.swbestiary) below. The two
+  former sarg.alphaanimals rows (AA_Murkling/AA_SandSquid) are now our RM_Lirrith /
+  RM_Ommok twins in Op 1 (Alpha Animals is retired).
 
   🔑 THE SPLIT, and why it is a REPLACE, not an ADD, unlike WildAnimals_Pyrelands.xml:
   `the_cracked_lands.md` (FROZEN) §0 and §6 ban 3 are explicit — "the vanilla
@@ -39,17 +39,13 @@
   MayRequire the way the item's own step 2 asks ("Every RSW_/SW_/RUT_ entry
   ... goes to ... WildAnimals_<Biome>.xml as a PatchOperationAdd ... with
   MayRequire=mandrake.rsw.swbestiary"):
-    - Op 1 (unconditional on any donor mod, still PatchOperationConditional-
-      guarded on the target node): PatchOperationReplace with the 7 entries
-      that are third-party donor content, NOT ours (mlie.starwarsanimal-
-      collection's Gornt/Eopie/CanCell/Convor/Woolamander, sarg.alphaanimals'
-      AA_Murkling/AA_SandSquid) — each keeps its own inline MayRequire
-      exactly as RUT_CrackedLands.xml already carries it (architecture doc
-      §7 Q9: "donor fauna inline in RimMandrake defs: ACCEPTABLE, leave them
-      inline").
+    - Op 1 (still PatchOperationConditional-guarded on the target node):
+      PatchOperationReplace with the 2 entries that are RM_-tier content gated
+      per-entry by MayRequire (RM_Lirrith, RM_Ommok — the former AA_Murkling /
+      AA_SandSquid donor rows, now our own twins).
     - Op 2 (FindMod on the Bestiary): PatchOperationAdd for the
-      4 RSW_-prefixed entries (RSW_SandPillar, RSW_MutagenicNorphea,
-      RSW_SandLeaper, RSW_Creature_Mantrap) — our own bestiary, so gated on
+      RSW_-prefixed entries (RSW_Gornt ... RSW_Creature_Mantrap) and the other
+      campaign natives listed in Op 2 — our own bestiary, so gated on
       that mod rather than left to ride the unconditional block.
       RSW_SandPillar was added 2026-09-23 (ROSTER_DEAD_BMT_NAMES_SWEEP_1
       step 4); it had an owner placement ruling from the round2 move mapping
