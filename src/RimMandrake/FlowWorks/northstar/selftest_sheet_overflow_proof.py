@@ -117,6 +117,12 @@ def main():
     unowed = sorted(m for m in called if m.startswith("ProofSheet") and m not in SP.OWED_PROOFS)
     if unowed:
         fails.append("RM_SheetProofs methods called but not in OWED_PROOFS: %s" % unowed)
+    # the features line the C# reports must not deny a built feature: fuel spills burn (RM_SheetFire.cs) and every liquid spills
+    cs = open(os.path.join(HERE, "..", "Source", "Sheet", "RM_SheetProofs.cs"), encoding="utf-8").read()
+    if "fuel=False" in cs or "fuel=True" not in cs:
+        fails.append("ProofSheetFeatures must report fuel=True (fuel spills are built); it says otherwise")
+    if not os.path.isfile(os.path.join(HERE, "..", "Source", "Sheet", "RM_SheetFire.cs")):
+        fails.append("RM_SheetFire.cs missing: fuel=True would be a false claim")
     if fails:
         for f in fails:
             print("FAIL", f)

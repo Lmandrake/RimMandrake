@@ -115,7 +115,7 @@ SCENARIO = scenario(
             staged("gravity hose from the tower, end Capped", "hose", None, (10, 36), "poked"),
             staged("four thirsty colonists (drafted)", "pawn_ops", "RM_Thirst=0.2", (14, 12), "poked"),
             staged("prisoner in his own cell", "pawns", "Pirate", (33, 6), "demonstrated"),
-            deferred("the overflowing bath (D2/D4: leaking under the door)", "overflow Stage 1+ is unbuilt",
+            deferred("the overflowing bath (D2/D4: leaking under the door)", "overflow is built (Stages 1-3) but its master switch ships OFF and this scenario does not turn it on",
                      OVERFLOW_ITEM, (37, 26))],
     exercises={"carry_tanks": "poked", "tank_sizes": "look", "tank_styles": "look", "tank_modes": "poked",
                "carry_drills": "poked", "industry_stages_more": "look", "containers_all": "look", "carry_kits": "look",

@@ -193,7 +193,7 @@ namespace RimMandrake.FlowWorks.Sheet
 		public static string ProofSheetFeatures(string arg)
 		{
 			return "FEATURES crops=True soak=" + B(RM_MapComponent_Sheet.SoakApi != null) + " capSetting=True capField=sheetCapCm"
-				+ " cropDelayField=cropDrownPulses gravity=True floods=True pawns=True fire=True fuel=False";
+				+ " cropDelayField=cropDrownPulses gravity=True floods=True pawns=True fire=True fuel=True";
 		}
 
 		/// <summary>'reset' | '-' → SHEETPERF since the last reset (averages per pulse; §6 item 12 records each separately).</summary>

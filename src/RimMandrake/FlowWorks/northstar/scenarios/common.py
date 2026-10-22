@@ -68,7 +68,7 @@ RULINGS = {
     "bleed": "RM_LiquidTap is a BLEED WELL (groundwater seeping up), never a tap or faucet",
     "drawbridge": "drawbridge leaves, winches and gates draw their MATERIAL picture (timber/steel) first, a look only as "
                   "fallback (443912e4df)",
-    "overflow": "canal overflow ships in 1.0 but only Stage 0 (offline kernel) exists: DEFERRED",
+    "overflow": "canal overflow is built (Stages 1-3) but its master switch ships OFF until the Stage 4 live sign-off; scenarios do not turn it on: DEFERRED",
     "reach": "reachability option 3 is being built separately (REACH_MAP_BUILD_WALLS_AND_DEPTH_AGREE)",
     "cord": "a fallen cord lands walkable (fix built)",
 }

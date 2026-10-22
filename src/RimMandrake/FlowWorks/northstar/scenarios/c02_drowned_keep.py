@@ -97,8 +97,8 @@ SCENARIO = scenario(
             staged("two defenders, drafted", "pawns", "Colonist", (15, 15)),
             staged("raiders in a pen behind a shut grate (raid branch)", "pens", "Pirate", (16, 41), "poked"),
             staged("a raid plank in the pen", "items", "RM_RaidPlank", (24, 41), "poked"),
-            deferred("doors leaking slowly under water (D4): the postern", "overflow Stage 1+ unbuilt; the postern sits "
-                     "by the moat so it shows once it lands", "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED", (10, 31)),
+            deferred("doors leaking slowly under water (D4): the postern", "overflow is built (Stages 1-3) but its master switch ships OFF and this scenario does not turn it on; the postern sits "
+                     "by the moat so it shows once the switch is on", "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED", (10, 31)),
             deferred("the winch's GSS power cord (cut it)", "ProofWinchPower forces power; no script lays an "
                      "RM_PowerCord", "POWER_CORD_BUILD_BENDS_WHERE_CONDUIT_BREAKS", (12, 31)),
             deferred("machine digging the 4 m gatehouse pit", "past the 2 m colonist cap", DEEP_DIG_ITEM, (14, 31)),
