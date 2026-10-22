@@ -234,6 +234,29 @@ namespace RimMandrake.FlowWorks.SelfTest
 				Assert(diverged > 0, "can-fail: dropping the refused squares on load must change some walk (else this proves nothing)");
 			});
 
+			Case("Overflow_settings_ship_owner_defaults_master_off_every_field_saved", () =>
+			{
+				// owner card 2026-10-22: the placeholder loss rates are the Mod Settings defaults; D7: the master switch ships OFF
+				// until stage 4 signs it off; the proof script (sheet_overflow_proof.py) sets sheetCapCm / cropDrownPulses by name
+				string f = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Sheet", "RM_SheetSettings.cs"));
+				foreach (string d in new[] { "public static bool sheetOverflowEnabled = false;", "public static float soakCmPerDaySand = 4f, soakCmPerDaySoil = 2f, soakCmPerDayGravel = 1f;",
+					"public static float dryCmPerDayAt20C = 0.5f;", "public static float roofedDryPercent = 30f;", "public static int sheetCapCm = 50;",
+					"public static int cropDrownPulses = 1680;", "public static int maxWetSquares = 4000;", "public static float retentionCm = 1f;" })
+					Assert(f.Contains(d), "shipped default: " + d);
+				Assert(new RM_SheetMath.Params().CropKillPulses == 1680 && new RM_SheetMath.Params().SheetCapDl == 50 * RM_SheetMath.DlPerCm,
+					"the settings' defaults equal the kernel's own (1 week, 50 cm)");
+				foreach (Match m in Regex.Matches(f, @"public static (bool|int|float) (\w+) = ([^;,]+)[;,]"))
+				{
+					string name = m.Groups[2].Value;
+					Assert(Regex.IsMatch(f, @"Scribe_Values\.Look\(ref " + name + @", ""\w+"", " + Regex.Escape(m.Groups[3].Value.Trim()) + @"\);"),
+						"setting " + name + " is saved with its shipped default");
+				}
+				string sheet = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Sheet", "RM_MapComponent_Sheet.cs"));
+				Assert(sheet.Contains("prm.SheetCapDl = Math.Max(DlPerCm, RM_SheetSettings.sheetCapCm * DlPerCm);")
+					&& sheet.Contains("prm.CropKillPulses = Math.Max(1, RM_SheetSettings.cropDrownPulses);"), "the kernel reads the settings");
+				Assert(sheet.Contains("RM_SheetSettings.SpillsFrom(from)"), "every spill asks the per-inflow switch");
+			});
+
 			Case("FloodRelease_production_text_one_end_saved_refusals_no_global_Rand", () =>
 			{
 				string f = RiverSwitchFlipChecks.Src("Flood_FlowWorks.cs");

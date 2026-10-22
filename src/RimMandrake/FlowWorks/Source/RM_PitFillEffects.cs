@@ -48,6 +48,22 @@ namespace RimMandrake.FlowWorks
 				IntVec3 c = p.Position;
 				if (!ex.IsExcavated(c))
 				{
+					// CANAL_OVERFLOW stage 2: spilled water standing on undug ground is read the same way (water only today, so
+					// drowning only: a pawn lying in a deep walled-in pool; ice is not water to drown in)
+					if (drown && drowning != null && Sheet.RM_SheetSettings.pawnEffectsEnabled)
+					{
+						int sdl = Sheet.RM_MapComponent_Sheet.StandingDlAt(map, c);
+						float sm = sdl / (float)RM_LevelSolve.U * RM_Volume.MetresPerNotch;
+						float sadd = sdl > 0 ? RM_Drowning.PerCheck(map, ex, p, c, sm) : 0f;
+						if (sadd > 0f)
+						{
+							HealthUtility.AdjustSeverity(p, drowning, sadd);
+							if (!Swimming.RM_SwimWater.On)
+							{
+								Swimming.RM_Swim.DrownMessage(p);
+							}
+						}
+					}
 					continue;
 				}
 				// LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD: the liquid in notches from the cell's DECILITRES (a part-notch counts: a
