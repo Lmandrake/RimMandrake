@@ -494,10 +494,18 @@ class TestContext(object):
 
     # ---------------------------------------------------------- asserts
     def _pawn_pos(self, pawn_id):
-        rows = self.session.call("jawa/list_pawns", limit=500).get("pawns") or []
+        r = self.session.call("jawa/list_pawns", limit=500) or {}
+        rows = r.get("pawns")
+        if r.get("success") is False or rows is None:
+            # an unreadable roster must not read as "the pawn is not there" (expect_pawn_despawned would PASS on it)
+            raise ExpectationFailed("jawa/list_pawns unreadable (%s): cannot place pawn %s"
+                                    % (str(r.get("message") or r)[:120], pawn_id))
         for p in rows:
             if p.get("id") == pawn_id:
                 return p.get("x"), p.get("z")
+        if r.get("truncated"):
+            raise ExpectationFailed("jawa/list_pawns truncated (%s beyond the limit): pawn %s may be past it"
+                                    % (r.get("truncated"), pawn_id))
         return None, None
 
     def expect_pawn_despawned(self, pawn_id):
