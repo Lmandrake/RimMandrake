@@ -1,0 +1,165 @@
+{
+ "script": "suspension_settings_live.py",
+ "started": "2026-10-22T11:49:48",
+ "rows": [
+  {
+   "id": "SB_settings_off_no_button",
+   "status": "FAIL",
+   "class": "MOD",
+   "item": "SUSPENSION_BRIDGE_BUILD_POSTS_AT_BOTH_ENDS",
+   "detail": {
+    "visibleOn": [
+     [
+      "architect-category:structure",
+      "rope suspension bridge"
+     ],
+     [
+      "architect-category:structure",
+      "timber suspension bridge..."
+     ],
+     [
+      "architect-category:structure",
+      "steel suspension bridge..."
+     ],
+     [
+      "architect-category:structure",
+      "heavy suspension bridge"
+     ],
+     [
+      "architect-category:structure",
+      "grated steel suspension bridge..."
+     ],
+     [
+      "architect-category:structure",
+      "grated heavy suspension bridge"
+     ],
+     [
+      "architect-category:structure",
+      "steel jetty..."
+     ],
+     [
+      "architect-category:structure",
+      "heavy jetty"
+     ],
+     [
+      "architect-category:structure",
+      "timber suspension bridge..."
+     ],
+     [
+      "architect-category:structure",
+      "steel suspension bridge..."
+     ],
+     [
+      "architect-category:structure",
+      "suspension bridge tower..."
+     ]
+    ],
+    "visibleOff": [
+     [
+      "architect-category:structure",
+      "rope suspension bridge"
+     ],
+     [
+      "architect-category:structure",
+      "timber suspension bridge..."
+     ],
+     [
+      "architect-category:structure",
+      "steel suspension bridge..."
+     ],
+     [
+      "architect-category:structure",
+      "heavy suspension bridge"
+     ],
+     [
+      "architect-category:structure",
+      "grated steel suspension bridge..."
+     ],
+     [
+      "architect-category:structure",
+      "grated heavy suspension bridge"
+     ],
+     [
+      "architect-category:structure",
+      "steel jetty..."
+     ],
+     [
+      "architect-category:structure",
+      "heavy jetty"
+     ],
+     [
+      "architect-category:structure",
+      "timber suspension bridge..."
+     ],
+     [
+      "architect-category:structure",
+      "steel suspension bridge..."
+     ],
+     [
+      "architect-category:structure",
+      "suspension bridge tower..."
+     ]
+    ]
+   }
+  },
+  {
+   "id": "SB_settings_off_never_breaks",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "SUSPENSION_BRIDGE_BUILD_POSTS_AT_BOTH_ENDS",
+   "detail": {
+    "overRead": "SPAN tier=timber load=644.8 rating=600 state=Over decks=6 railings=False deckNotches=0 span=1/1 line=Load 645 / 600 kg",
+    "after120": "SPAN tier=timber load=352.9 rating=600 state=Ok decks=6 railings=False deckNotches=0 span=1/1 line=Load 353 / 600 kg",
+    "riders": [
+     "Human11865",
+     "Human11868",
+     "Human11871",
+     "Human11874",
+     "Human11877",
+     "Human11885",
+     "Human11888",
+     "Human11891",
+     "Human11894",
+     "Human11897",
+     "Human11900"
+    ],
+    "ridersStillOnTheDeckRow": 6
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/pile_2026-10-22/belt/sbset_2.json",
+  "origin": "100,40",
+  "fresh_map": false
+ },
+ "settingsBefore": {
+  "buildable": "True",
+  "weight": "True"
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "settingsAfter": {
+  "buildable": "True",
+  "weight": "True"
+ },
+ "finished": "2026-10-22T11:49:57"
+}
