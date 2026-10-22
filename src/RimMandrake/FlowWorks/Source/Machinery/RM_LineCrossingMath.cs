@@ -135,12 +135,12 @@ namespace RimMandrake.FlowWorks.Machinery
 			string who = KindLabel(k);
 			if (k == LineKind.PipePole)
 			{
-				return "A pipe pole stands on solid ground only: never on a bridge deck, a pit cover or a dug square.";
+				return "A pipe pole stands on solid ground only: never on a bridge deck, a concealed pit or a dug square.";
 			}
 			switch (s)
 			{
 				case LineSurface.Cover:
-					return "A pit cover carries no lines.";
+					return "A concealed pit carries no lines.";
 				case LineSurface.Excavated:
 					return v == CrossingVerdict.RampOrLadderOnly
 						? "A hose goes down into a dug square only by a ramp or a ladder."

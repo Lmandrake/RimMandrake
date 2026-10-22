@@ -3502,6 +3502,8 @@ def phase_X(L, args):
 
         # X8/X9 pit_covered_invisible + seam: a 2x2 woven-scrap deck over a D=4 pit.
         cov = SCENES["X_cover"]["cells"]
+        # X8b PIT_COVER_FIX_OCCUPANT_STAYS_BELOW: a colonist already down in the pit at cov[0] when the lid is laid
+        occ = B.call("jawa/spawn_pawn", kindDef="Colonist", faction="player", x=cov[0][0], z=cov[0][1], count=1)
         sb = B.call("jawa/spawn_batch", ops=";".join("RM_PitCover_WovenScrap:%d,%d" % c for c in cov))
         reads = [_proof(B, "ProofCover", "%d,%d" % c) for c in cov]
         if not sb.get("success") or not all(r[0] for r in reads):
@@ -3519,6 +3521,7 @@ def phase_X(L, args):
         L.row("X9_cover_deck_uniform", len(printed) == 1 and None not in printed and printed == around, "MOD",
               "deck prints %s; ring terrain %s (one surface: no seam between deck cells or at the lip; the frame is "
               "still the judge's)" % (sorted(printed), sorted(around)))
+        _x8b_cover_occupant(L, cov[0], occ)
         B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
         _x10_canal_fire(L)
 
@@ -3539,6 +3542,31 @@ def _things_at(B, def_name, cells):
     pos = [t.get("position") or t for t in (r.get("things") or [])]    # top-level x/z, or nested under "position"
     cells_ = {(p.get("x"), p.get("z")) for p in pos}
     return None if any(None in c for c in cells_) else cells_          # a thing with no readable cell is no reading
+
+
+def _x8b_cover_occupant(L, c, occ):
+    """PIT_COVER_FIX_OCCUPANT_STAYS_BELOW (owner card 2026-10-21 "Stays below, hidden"): the colonist spawned in the pit at c
+    before the lid was laid stays below it 300 ticks later: still on c, beneath, held, sealed (the 2x2 deck covers the whole
+    pit), off the lid's load, not drawn, and the lid's inspect line names her."""
+    B = L.B
+    if not occ.get("success"):
+        L.row("X8b_cover_occupant_stays_below", False, "HARNESS", "spawn colonist in the pit: %r" % (str(occ)[:200],),
+              status="UNMEASURED")
+        return
+    B.call("rimworld/step_game_ticks", ticks=300, pauseFirst=True, timeoutMs=60000)
+    ok, kv, txt = _proof(B, "ProofBeneath", "%d,%d" % c)
+    okc, kc, _ = _proof(B, "ProofCover", "%d,%d" % c)
+    if not ok or "beneath" not in kv:
+        L.row("X8b_cover_occupant_stays_below", False, "HARNESS", "ProofBeneath unreadable: %s" % txt[:200],
+              status="UNMEASURED")
+        return
+    inspect = kc.get("inspect", "") if okc else ""
+    good = (kv.get("pawn") not in (None, "none") and kv.get("covered") == "True" and kv.get("beneath") == "True"
+            and kv.get("held") == "True" and kv.get("trapped") == "True" and kv.get("onLoad") == "False"
+            and kv.get("hidden") == "True" and "Below,_hidden:" in inspect)
+    L.row("X8b_cover_occupant_stays_below", good, "MOD",
+          "%s | lid inspect %s (want: still on %d,%d, beneath/held/trapped True, onLoad False, hidden, named under the lid; "
+          "a pawn popped up reads pawn=none here or beneath=False)" % (txt, inspect[:160], c[0], c[1]))
 
 
 def _x10_canal_fire(L):
@@ -3733,6 +3761,7 @@ class MockBridge(object):
         "viscosity_toggle_ignored": ["X7n_viscosity_off"],             # OFF still slows tar
         "fluids_look_same": ["X6_two_fluids_distinct"],                # one fill terrain for every fluid
         "cover_shows_hole": ["X8_cover_hides_pit", "X9_cover_deck_uniform"],   # cover prints the pit
+        "cover_lifts_occupant": ["X8b_cover_occupant_stays_below"],    # a lid laid over a pit occupant lifts her onto it
         "fire_never_spreads": ["X10_canal_fire"],                     # the front never leaves the lit cell
         "fire_never_burns": ["X10_canal_fire"],                       # a burning cell never spends its liquid
         "fire_no_ash": ["X10_canal_fire"],                            # a spent cell is not left scorched
@@ -3806,6 +3835,7 @@ class MockBridge(object):
         self.ladders = set()
         self.raised = set()       # ladders whose RM_CompLadder.raised is set (ProofLadder)
         self.covers = set()       # cells holding a pit cover (spawn_batch RM_PitCover_*)
+        self.beneath = set()      # pawn ids a lid was laid over (PIT_COVER_FIX_OCCUPANT_STAYS_BELOW)
         self.descents = []
         self.landed_free = set()  # fault forced_lands_free: forced pawns the trap does not hold
         self.spawned_at = {}
@@ -3892,6 +3922,8 @@ class MockBridge(object):
                 self.ladders.add((x, z))
             elif d.startswith("RM_PitCover_"):
                 self.covers.add((x, z))
+                if "cover_lifts_occupant" not in self.faults:      # PIT_COVER_FIX_OCCUPANT_STAYS_BELOW
+                    self.beneath.update(self.spawned_at.get((x, z), []))
         return dict(success=True, thingsPlaced=1)
 
     def t_jawa_order_pawn(self, pawnId, x=-1, z=-1, waitTicks=300, draft=True, **kw):
@@ -4453,10 +4485,19 @@ class MockBridge(object):
                     if (dx or dz) and not o.exc((x + dx, z + dz))]
             around = max(sorted(set(ring)), key=ring.count) if ring else "none"
             printed = self.terrain_of(c) if "cover_shows_hole" in self.faults else around
-            res = "COVER cell=%d,%d present=%s covered=%s sprung=False depth=%d cellTerrain=%s printed=%s matOk=True around=%s inspect=Gives_way_under_40_kg" % (
-                x, z, c in self.covers, c in self.covers, o.D.get(c, 0), self.terrain_of(c), printed, around)
+            under = [pid for pid in self.spawned_at.get(c, []) if pid in self.beneath]
+            res = "COVER cell=%d,%d present=%s covered=%s sprung=False depth=%d cellTerrain=%s printed=%s matOk=True around=%s inspect=Gives_way_under_40_kg%s" % (
+                x, z, c in self.covers, c in self.covers, o.D.get(c, 0), self.terrain_of(c), printed, around,
+                ("/Below,_hidden:_" + ",_".join(under) + ".") if under else "")
             if "cover_no_printed" in self.faults:          # an older/changed ProofCover format: no printed=/around=
                 res = re.sub(r" (printed|around)=\S+", "", res)
+        elif method == "ProofBeneath":
+            x, z = map(int, args.split(","))
+            c = (x, z)
+            here = self.spawned_at.get(c, [])
+            b = bool(here) and here[0] in self.beneath
+            res = "BENEATH cell=%d,%d pawn=%s beneath=%s held=%s trapped=%s onLoad=%s hidden=%s covered=%s" % (
+                x, z, here[0] if here else "none", b, b, b, not b, b, c in self.covers)
         elif method == "ProofIgnite" and "ignite_type_missing" in self.faults:
             return dict(success=False, message="Type not found: %s" % type)
         elif method == "ProofIgnite":

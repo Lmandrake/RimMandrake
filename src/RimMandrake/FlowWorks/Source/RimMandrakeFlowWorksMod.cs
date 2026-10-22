@@ -795,7 +795,7 @@ namespace RimMandrake.FlowWorks
             .Name("pitLipOccupantCutEnabled", "Keep whoever is in the cut visible")
             .Name("excavationWallFacesEnabled", "Dug cells show their walls").Name("pitScorchEnabled", "A cut that burned dry looks scorched")
             .Name("liquidBubblesEnabled", "Acid, slime and boiling liquid bubble")
-            .Name("trapTriggerEnabled", "Pit covers give way under enough weight")
+            .Name("trapTriggerEnabled", "Concealed pits give way under enough weight")
             .Name("superdeepRoomsEnabled", "An enclosed pit is its own room")
             .Name("digFindsEnabled", "Digging a canal can turn up minerals")
             .Name("digRockGroundEnabled", "Canals can be dug through rock ground").Name("digRockChunksEnabled", "Digging can turn up rock chunks").Name("liquidDrillingEnabled", "Drilling and tapping")
@@ -1318,9 +1318,9 @@ namespace RimMandrake.FlowWorks
               + "Which pits hold whom is decided by relative height (the next switch). Off: no pit ever traps anyone; "
               + "a deep hole is only a very slow way across.");
 
-            list.CheckboxLabeled("Blasts break pit covers", ref blastsBreakPitCovers,
-                "A bomb, grenade, mortar or fire blast that reaches a pit cover breaks the whole cover, and anyone on it "
-              + "falls in. EMP, smoke and stun blasts do not. Off: only weight springs a cover.");
+            list.CheckboxLabeled("Blasts break concealed pits", ref blastsBreakPitCovers,
+                "A bomb, grenade, mortar or fire blast that reaches a concealed pit breaks its whole lid, and anyone on it "
+              + "falls in. EMP, smoke and stun blasts do not. Off: only weight springs a concealed pit.");
 
             list.CheckboxLabeled("Your own pit takes your own people", ref superdeepCapturesOwnFaction,
                 "Off (the default), a superdeep cell ignores your own colonists unless they jump in, "
@@ -1550,7 +1550,7 @@ namespace RimMandrake.FlowWorks
             list.CheckboxLabeled("Guardrails and fences stop falls off a lip", ref pitGuardrailEnabled,
                 "A guardrail (Structure tab, built on the lip of a sheer drop) or any fence standing on a lip stops falls over "
               + "its edges: nobody walks off it, and a blast throwing someone over it stops them at the rail. People still walk "
-              + "along the lip and climb up past it; jumping in on purpose still works; a pit cover giving way is not stopped. "
+              + "along the lip and climb up past it; jumping in on purpose still works; a concealed pit giving way is not stopped. "
               + "Off: rails and fences stop nothing (the guardrail still stands).");
 
             list.CheckboxLabeled("Pawns sink into dug channels and rise out of them", ref pitDepthDrawOffsetEnabled,
@@ -1694,9 +1694,9 @@ namespace RimMandrake.FlowWorks
                   + "at a time between neighbours, which can leave a wide field striped wet, dry, wet.");
             }
 
-            list.CheckboxLabeled("Pit covers give way under enough weight", ref trapTriggerEnabled,
-                "An armed cover over a pit drops whoever stands on it once their combined mass passes "
-              + "the cover's rating. Off: covers never give way on their own.");
+            list.CheckboxLabeled("Concealed pits give way under enough weight", ref trapTriggerEnabled,
+                "A concealed pit drops whoever stands on it once their combined mass passes "
+              + "its lid's rating. Off: concealed pits never give way on their own.");
             using (Dependent(list, "trapSensitivityMultiplier"))
             {
                 list.Label("Cover sensitivity multiplier: " + trapSensitivityMultiplier.ToString("F2"));

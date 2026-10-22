@@ -233,6 +233,39 @@ namespace RimMandrake.FlowWorks
 			return sb.ToString();
 		}
 
+		/// <summary>PIT_COVER_FIX_OCCUPANT_STAYS_BELOW live row X8b (northstar/validation_v2.py). arg = "x,z": the first pawn on that
+		/// square and what the concealed pit's lid makes of it: "BENEATH cell=x,z pawn=id|none beneath=b held=b trapped=b
+		/// onLoad=b hidden=b covered=b". onLoad: the lid's LoadOn counts it (own faction included); hidden: the draw patch skips
+		/// it (the same read). Read-only.</summary>
+		public static string ProofBeneath(string arg)
+		{
+			RM_MapComponent_Excavation ex = Engine(out Map map);
+			if (ex == null || !TryCell(arg, 0, out IntVec3 c) || !c.InBounds(map))
+			{
+				return "REFUSED: arg must be x,z on a current map with FlowWorks";
+			}
+			Pawn p = null;
+			foreach (Thing t in c.GetThingList(map))
+			{
+				if (t is Pawn q && !q.Dead)
+				{
+					p = q;
+					break;
+				}
+			}
+			bool covered = RM_PitCoverUtility.CoverAt(map, c) != null;
+			if (p == null)
+			{
+				return "BENEATH cell=" + c.x + "," + c.z + " pawn=none beneath=False held=False trapped=False onLoad=False hidden=False covered=" + covered;
+			}
+			var standing = new List<Pawn>();
+			RM_SpanUtility.LoadOn(map, new List<IntVec3> { c }, null, true, standing);
+			bool beneath = RM_PitCoverBeneath.IsBeneath(p);
+			return "BENEATH cell=" + c.x + "," + c.z + " pawn=" + p.ThingID + " beneath=" + beneath
+				+ " held=" + RM_SuperdeepTrap.IsHeld(p) + " trapped=" + RM_SuperdeepTrap.IsTrapped(p)
+				+ " onLoad=" + standing.Contains(p) + " hidden=" + beneath + " covered=" + covered;
+		}
+
 		/// <summary>POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD live row L8 (northstar/liquid_checks.py): the pond indexed at "x,z" —
 		/// its drawdown s, part-level r, picture wet count, stock, and a terrain census over its footprint (deep, chest, shallow,
 		/// thin, own = still its original water, mud, lakebed, other). Read-only; never forms a body.</summary>

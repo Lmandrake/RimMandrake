@@ -369,7 +369,7 @@ CAPS = [
     dict(id="H04", g="H", label="Spike damage: massive Sharp, scaled by body size, survivable", item="SPIKE_DAMAGE_NUMBERS_RULING_1",
          effect="Regular Stab damage (3 hits ~40 x BodySize PROPOSED), never instant death; armour applies.",
          probes=["set:spikeDamageMultiplier", "cs:BodySize"], src="Collapse [G]"),
-    dict(id="H05", g="H", label="Pit cover hides the hole (looks like the ground)", item="PIT_COVER_FALL_REWIRE_1",
+    dict(id="H05", g="H", label="A concealed pit hides the hole (looks like the ground)", item="PIT_COVER_FALL_REWIRE_1",
          effect="A multi-cell terrain-mimic deck over D=4 prints the surrounding surface; slight seam at max zoom.",
          probes=["cs:class TerrainMimicPrinter", "cs:class Building_PitCover"], rows=["X8_cover_hides_pit", "X9_cover_deck_uniform"],
          bars=["pit_covered_invisible", "pit_covered_seam_at_max_zoom"], shots=["X_promoted"], src="Collapse ruling 6"),

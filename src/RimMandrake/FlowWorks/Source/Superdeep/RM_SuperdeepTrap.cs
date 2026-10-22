@@ -116,6 +116,11 @@ namespace RimMandrake.FlowWorks
 			{
 				return false;
 			}
+			// PIT_COVER_FIX_OCCUPANT_STAYS_BELOW: down in the pit under a lid is held, whatever the lid reads to walkers above
+			if (c == p.Position && Pits.RM_PitCoverBeneath.IsBeneath(p))
+			{
+				return true;
+			}
 			RM_MapComponent_Excavation eng = EngineOf(p.Map);
 			if (RM_PocketGrid.Relative)
 			{
@@ -187,6 +192,10 @@ namespace RimMandrake.FlowWorks
 		/// pocket and the pocket wide enough for it on every cell (RM_PocketGrid.TrappedIn). The absolute rule keeps its BFS.</summary>
 		public static bool IsTrapped(Pawn p)
 		{
+			if (Pits.RM_PitCoverBeneath.IsBeneath(p))
+			{
+				return Pits.RM_PitCoverBeneath.Trapped(p);
+			}
 			if (!RM_PocketGrid.Relative)
 			{
 				return TryGetTrapRegion(p, out _);
@@ -520,6 +529,63 @@ namespace RimMandrake.FlowWorks
 	public class RM_SuperdeepTrapState : IExposable
 	{
 		private HashSet<Pawn> jumpers = new HashSet<Pawn>();
+		/// <summary>PIT_COVER_FIX_OCCUPANT_STAYS_BELOW (owner card 2026-10-21 "Stays below, hidden"): pawns that were down in the
+		/// pit when a concealed pit's lid was laid over them. Saved. Read through Pits.RM_PitCoverBeneath.IsBeneath (the flag
+		/// counts only while an intact cover stands on the pawn's square); pruned at the end of each Tick.</summary>
+		private HashSet<Pawn> beneath = new HashSet<Pawn>();
+
+		/// <summary>Early-out for the per-frame readers (draw, LoadOn): beneath pawns on every map, never below 0. Only ever an
+		/// over-count (a load adds its set), so a 0 is a true "nobody anywhere".</summary>
+		public static int BeneathTotal;
+
+		public bool InBeneathSet(Pawn p)
+		{
+			return p != null && beneath.Count > 0 && beneath.Contains(p);
+		}
+
+		public void SetBeneath(Pawn p, bool on)
+		{
+			if (p == null)
+			{
+				return;
+			}
+			if (on)
+			{
+				if (beneath.Add(p))
+				{
+					BeneathTotal++;
+				}
+			}
+			else if (beneath.Remove(p))
+			{
+				BeneathTotal = Math.Max(0, BeneathTotal - 1);
+			}
+		}
+
+		public IEnumerable<Pawn> BeneathPawns => beneath;
+
+		private void PruneBeneath(Map map)
+		{
+			if (beneath.Count == 0)
+			{
+				return;
+			}
+			List<Pawn> gone = null;
+			foreach (Pawn p in beneath)
+			{
+				if (p == null || !p.Spawned || p.Dead || p.Map != map || Pits.RM_PitCoverUtility.CoverAt(map, p.Position) == null)
+				{
+					(gone ?? (gone = new List<Pawn>())).Add(p);
+				}
+			}
+			if (gone != null)
+			{
+				foreach (Pawn p in gone)
+				{
+					SetBeneath(p, false);
+				}
+			}
+		}
 		private Dictionary<Pawn, IntVec3> lastCell = new Dictionary<Pawn, IntVec3>();
 		private Dictionary<Pawn, IntVec3> nextCell = new Dictionary<Pawn, IntVec3>();
 		/// <summary>Superdeep cells a pawn's own path follower stepped it into since the last
@@ -596,6 +662,7 @@ namespace RimMandrake.FlowWorks
 					&& RimMandrakeFlowWorksSettings.superdeepCaptureEnabled
 					&& IsFallingArrival(map, eng, p, prev, pos)
 					&& !Pits.RM_PitCoverUtility.IsCovered(map, pos)
+					&& !InBeneathSet(p)   // PIT_COVER_FIX_OCCUPANT_STAYS_BELOW: out from under a lid along the floor, no fall
 					&& !p.Flying && !(RimMandrakeFlowWorksSettings.pitFreeTravelEnabled && RM_PocketGrid.FreePitTraveller(p)))
 				{
 					// FLOWWORKS_PIT_FALL_ONLY_FORCED_1: who falls is decided by HOW the pawn arrived.
@@ -621,6 +688,7 @@ namespace RimMandrake.FlowWorks
 				nextCell[p] = pos;
 			}
 			walkedInto.Clear();
+			PruneBeneath(map);
 			// After the loop: moving a pawn while AllPawnsSpawned is being walked is not safe.
 			for (int i = 0; i < railStops.Count; i++)
 			{
@@ -678,7 +746,7 @@ namespace RimMandrake.FlowWorks
 			}
 			IntVec3 pos = p.Position;
 			if (prev != pos && RimMandrakeFlowWorksSettings.superdeepCaptureEnabled && IsFallingArrival(map, eng, p, prev, pos)
-				&& !Pits.RM_PitCoverUtility.IsCovered(map, pos) && !p.Flying
+				&& !Pits.RM_PitCoverUtility.IsCovered(map, pos) && !InBeneathSet(p) && !p.Flying
 				&& !(RimMandrakeFlowWorksSettings.pitFreeTravelEnabled && RM_PocketGrid.FreePitTraveller(p))
 				&& RM_PitTrapMath.DescentFalls(false, RM_LadderRules.LadderLetsOut(map, pos, p), p.Faction == Faction.OfPlayer,
 					RM_SuperdeepTrap.Captures(p)))
@@ -749,6 +817,11 @@ namespace RimMandrake.FlowWorks
 				jumpers.RemoveWhere(p => p == null || p.Destroyed);
 			}
 			Scribe_Collections.Look(ref jumpers, "jumpers", LookMode.Reference);
+			if (Scribe.mode == LoadSaveMode.Saving && beneath != null)
+			{
+				beneath.RemoveWhere(p => p == null || p.Destroyed);
+			}
+			Scribe_Collections.Look(ref beneath, "rmBeneathCover", LookMode.Reference);
 			if (Scribe.mode == LoadSaveMode.Saving)
 			{
 				lastCell?.Keys.Where(p => p == null || p.Destroyed).ToList().ForEach(p => lastCell.Remove(p));
@@ -763,6 +836,12 @@ namespace RimMandrake.FlowWorks
 					jumpers = new HashSet<Pawn>();
 				}
 				jumpers.RemoveWhere(p => p == null);
+				if (beneath == null)
+				{
+					beneath = new HashSet<Pawn>();
+				}
+				beneath.RemoveWhere(p => p == null);
+				BeneathTotal += beneath.Count;
 				if (lastCell == null) lastCell = new Dictionary<Pawn, IntVec3>();
 				if (walkedInto == null) walkedInto = new Dictionary<Pawn, IntVec3>();
 				lastCell.Keys.Where(p => p == null).ToList().ForEach(p => lastCell.Remove(p));
@@ -797,8 +876,16 @@ namespace RimMandrake.FlowWorks
 			{
 				return true;
 			}
+			// PIT_COVER_FIX_OCCUPANT_STAYS_BELOW: under a lid, the only step is along the floor into an open pit square
+			if (Pits.RM_PitCoverBeneath.IsBeneath(pawn))
+			{
+				if (Pits.RM_PitCoverBeneath.StepAllowed(pawn, eng, __instance.nextCell))
+				{
+					return true;
+				}
+			}
 			// FALL_GUARDRAILS_BUILD_REAL_OBJECT: a walked step off a railed lip down a sheer drop is refused (that edge only).
-			if (RM_FallRails.RefusesWalkedStep(pawn, eng, __instance.nextCell))
+			else if (RM_FallRails.RefusesWalkedStep(pawn, eng, __instance.nextCell))
 			{
 				// falls through to the re-plan below
 			}
@@ -905,6 +992,17 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			Pawn p = traverseParams.pawn;
+			// PIT_COVER_FIX_OCCUPANT_STAYS_BELOW: sealed under a lid with no open pit square beside it, nothing but here
+			Pawn under = p ?? RM_Patch_PathFollower_ReachWalker.WalkerAt(___map, start);
+			if (under != null && under.Spawned && start == under.Position && Pits.RM_PitCoverBeneath.IsBeneath(under)
+				&& Pits.RM_PitCoverBeneath.Trapped(under))
+			{
+				if (!RM_SuperdeepTrap.AllowedDestination(new HashSet<IntVec3> { start }, dest, peMode))
+				{
+					__result = false;
+				}
+				return;
+			}
 			if (RM_PocketGrid.Relative)
 			{
 				// Design §8.5 step 6: same band component, from ANY start, pawnless included (GPT #9).
@@ -990,6 +1088,11 @@ namespace RimMandrake.FlowWorks
 			Pawn p = traverseParms.pawn;
 			if (p == null || !p.Spawned)
 			{
+				return;
+			}
+			if (c == p.Position && Pits.RM_PitCoverBeneath.IsBeneath(p) && Pits.RM_PitCoverBeneath.Trapped(p))
+			{
+				__result = false;   // PIT_COVER_FIX_OCCUPANT_STAYS_BELOW: sealed under a lid
 				return;
 			}
 			if (RM_CliffMask.On)

@@ -208,8 +208,8 @@ namespace RimMandrake.FlowWorks.Machinery
 				Find.WindowStack.Add(new FloatMenu(opts));
 			}
 			list.CheckboxLabeled("Rigid pipe and conduit need solid ground; cords lie on any bridge deck", ref lineCrossingRulesEnabled,
-				"On: pipe and power conduit cannot be built on a dug square (pit, trench, canal, moat), a pit cover or any bridge deck: "
-			  + "they are rigid. A flexible power cord may lie on any bridge deck, rope included. A pit cover carries no lines. "
+				"On: pipe and power conduit cannot be built on a dug square (pit, trench, canal, moat), a concealed pit or any bridge deck: "
+			  + "they are rigid. A flexible power cord may lie on any bridge deck, rope included. A concealed pit carries no lines. "
 			  + "A hose goes into a dug square only down a ramp or a ladder (a raised ladder still holds it), never over a sheer wall, "
 			  + "and its end couples only to a pump, tank or water on its own level; a hose already laid across a newly dug square "
 			  + "re-routes or reels in. A frame that ends up on such a square is cancelled and refunded. Digging a square breaks the pipe, conduit or cord "
@@ -220,7 +220,7 @@ namespace RimMandrake.FlowWorks.Machinery
 			bool polesWere = pipePolesEnabled;
 			list.CheckboxLabeled("Pipe poles carry pipe overhead across pits, trenches and canals (needs Gimme Some Slack loaded)", ref pipePolesEnabled,
 				"On: a pipe pole (Pipe networks menu) hangs a stiff overhead pipe to another pipe pole, using Gimme Some Slack's overhead "
-			  + "lines. Poles stand on solid ground only, never on a bridge deck, a pit cover or a dug square; a span is not walkable. "
+			  + "lines. Poles stand on solid ground only, never on a bridge deck, a concealed pit or a dug square; a span is not walkable. "
 			  + "Digging out a pole's square knocks it down and its spans fall. This is the pipe poles' own switch: Gimme Some Slack's "
 			  + "power-lines switch does not touch them. Off: the pole leaves the build menu, new poles do not link, built spans are not "
 			  + "drawn and carry no liquid; they stay strung and come back when switched on. The art is a stand-in until the pipe widths "

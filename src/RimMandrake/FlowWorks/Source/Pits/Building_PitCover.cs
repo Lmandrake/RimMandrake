@@ -158,7 +158,8 @@ namespace RimMandrake.FlowWorks.Pits
             {
                 foreach (Thing t in pos.GetThingList(map))
                 {
-                    if (t is Pawn p && !p.Dead && !p.Flying)
+                    // PIT_COVER_FIX_OCCUPANT_STAYS_BELOW: whoever is beneath the lid is already on the floor
+                    if (t is Pawn p && !p.Dead && !p.Flying && !RM_PitCoverBeneath.IsBeneath(p))
                     {
                         (riders ?? (riders = new List<Pawn>())).Add(p);
                     }
@@ -181,10 +182,17 @@ namespace RimMandrake.FlowWorks.Pits
             }
             if (first != null)
             {
-                string what = mode == DestroyMode.Deconstruct ? "A pit cover was taken apart under " : "A pit cover broke under ";
+                string what = mode == DestroyMode.Deconstruct ? "A concealed pit was taken apart under " : "A concealed pit broke under ";
                 Messages.Message(what + first.LabelShort + (riders.Count > 1 ? " and others." : "."),
                     new LookTargets(riders), MessageTypeDefOf.NegativeEvent);
             }
+        }
+
+        /// <summary>PIT_COVER_FIX_OCCUPANT_STAYS_BELOW: a lid laid over someone down in the pit keeps them below it.</summary>
+        public override void SpawnSetup(Map map, bool respawningAfterLoad)
+        {
+            base.SpawnSetup(map, respawningAfterLoad);
+            RM_PitCoverBeneath.TakeUnder(this, respawningAfterLoad);
         }
 
         public override List<Building_SpanDeck> SpanCells()
@@ -235,14 +243,25 @@ namespace RimMandrake.FlowWorks.Pits
 
         protected override void CollapseMessage(Pawn first, List<Pawn> fallers)
         {
-            Messages.Message("A pit cover gave way under " + first.LabelShort + (fallers.Count > 1 ? " and others." : "."),
+            Messages.Message("A concealed pit gave way under " + first.LabelShort + (fallers.Count > 1 ? " and others." : "."),
                 new LookTargets(fallers), MessageTypeDefOf.NeutralEvent);
         }
 
         public override string GetInspectString()
         {
             string s = base.GetInspectString();
-            string line = "Gives way under " + CoverTier.TriggerMassKg().ToString("0") + " kg on the whole cover.";
+            string line = "Gives way under " + CoverTier.TriggerMassKg().ToString("0") + " kg on the whole concealed pit.";
+            // PIT_COVER_FIX_OCCUPANT_STAYS_BELOW (owner card): inspecting the lid shows who is under it
+            List<Pawn> below = RM_PitCoverBeneath.BeneathOn(Map, RM_PitCoverUtility.Deck(this));
+            if (below.Count > 0)
+            {
+                List<string> names = new List<string>();
+                foreach (Pawn p in below)
+                {
+                    names.Add(p.LabelShort);
+                }
+                line += "\nBelow, hidden: " + string.Join(", ", names) + ".";
+            }
             return s.NullOrEmpty() ? line : s + "\n" + line;
         }
 
@@ -252,7 +271,7 @@ namespace RimMandrake.FlowWorks.Pits
     /// grenades, mortars) AND fire/incendiary; EMP, smoke, stun, firefoam and tox gas do not (harmsHealth false). The
     /// whole deck springs and everyone standing on it falls. FlowWorks' own rule, so it holds without Explosive Knockback.</summary>
     [HarmonyPatch(typeof(DamageWorker), nameof(DamageWorker.ExplosionAffectCell))]
-    [RimMandrake.Shared.PatchFeature("Blasts break pit covers", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "blastsBreakPitCovers")]
+    [RimMandrake.Shared.PatchFeature("Blasts break concealed pits", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "blastsBreakPitCovers")]
     public static class RM_Patch_ExplosionBreaksPitCover
     {
         public static void Postfix(Explosion explosion, IntVec3 c)
@@ -272,7 +291,7 @@ namespace RimMandrake.FlowWorks.Pits
             {
                 foreach (Thing t in d.Position.GetThingList(map))
                 {
-                    if (t is Pawn p)
+                    if (t is Pawn p && !RM_PitCoverBeneath.IsBeneath(p))
                     {
                         fallers.Add(p);
                     }
@@ -293,7 +312,7 @@ namespace RimMandrake.FlowWorks.Pits
             RM_MapComponent_Excavation engine = map?.GetComponent<RM_MapComponent_Excavation>();
             if (engine == null || !engine.IsExcavated(loc) || RM_SpikeUtility.TallestWallOver(engine, loc) < RM_PitTrapMath.Superdeep)
             {
-                return "A pit cover must be laid over a pit: a dug square with a sheer drop of 2 m or more to a neighbour.";
+                return "A concealed pit must be laid over a pit: a dug square with a sheer drop of 2 m or more to a neighbour.";
             }
             return true;
         }
@@ -305,7 +324,7 @@ namespace RimMandrake.FlowWorks.Pits
     /// the cell (snow/sand, door-to-door, fire on or beside it). An override someone else already set (water,
     /// RM_Patch_PitStepCost's walked step) is left alone; the cover's thing cost is still max'd in by vanilla.</summary>
     [HarmonyPatch(typeof(PathGrid), nameof(PathGrid.CalculatedCostAt))]
-    [RimMandrake.Shared.PatchFeature("Pit covers are walkable at their own cost")]
+    [RimMandrake.Shared.PatchFeature("Concealed pits are walkable at their own cost")]
     public static class RM_Patch_PathGrid_PitCoverCost
     {
         [HarmonyPrefix]

@@ -71,6 +71,8 @@
     <Compile Include="SuspensionBridgeChecks.cs" />
     <Compile Include="UnderpassReachChecks.cs" />
     <Compile Include="SpanBaseChecks.cs" />
+    <Compile Include="..\Pits\RM_PitCoverBeneathMath.cs" />
+    <Compile Include="PitCoverBeneathChecks.cs" />
     <Compile Include="..\RM_DrawbridgeMath.cs" />
     <Compile Include="DrawbridgeChecks.cs" />
     <Compile Include="..\Machinery\RM_LineCrossingMath.cs" />
