@@ -3,7 +3,7 @@
   RSW_TrophyCraft_Items                    mandrake.rsw.trophycraft
 
   WYYYSCHOKK_FANG_PENDANT_1. Two ThingDefs: the raw fang (a butcher/hunt
-  product, attached to the donor Wyyyschokk by
+  product, attached to RM_Ollathrix, the wyyyschokk, by
   Patches/RSW_TrophyCraft_WyyyschokkFangDrop.xml) and the crafted pendant
   (see Defs/RecipeDefs/RSW_TrophyCraft_Recipes.xml for how fangs become one).
 
