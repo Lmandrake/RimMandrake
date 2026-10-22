@@ -1,0 +1,112 @@
+{
+ "script": "raid_ladder_live.py",
+ "started": "2026-10-22T11:31:59",
+ "rows": [
+  {
+   "id": "RAID_LADDER_COLONIST_CLIMBS_OUT",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "RAIDERS_TRENCH_BUILD_BREACH_AND_JUMP",
+   "detail": {
+    "start": [
+     157,
+     196
+    ],
+    "dest": [
+     151,
+     196
+    ],
+    "end": [
+     151,
+     196
+    ],
+    "ladderFaction": "PirateYttakin",
+    "order": {
+     "arrived": true,
+     "canReach": true,
+     "ticksElapsed": null
+    }
+   }
+  },
+  {
+   "id": "RAID_LADDER_OTHER_HOSTILE_HELD",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "RAIDERS_TRENCH_BUILD_BREACH_AND_JUMP",
+   "detail": {
+    "read": "CLIMB k=2 held=True trapped=True cell=157,198 | POCKET k=2 comp=2 pocket=True size=36 depth=4 gen=9945 built=9945 rebuilds=358",
+    "faction": "TribeRoughNeanderthal"
+   }
+  },
+  {
+   "id": "RAID_LADDER_OWNERS_NOT_HELD",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "RAIDERS_TRENCH_BUILD_BREACH_AND_JUMP",
+   "detail": {
+    "read": "CLIMB k=2 held=True trapped=False cell=157,194 | POCKET k=2 comp=2 pocket=True size=36 depth=4 gen=9945 built=9945 rebuilds=358",
+    "faction": "PirateYttakin"
+   }
+  },
+  {
+   "id": "RAID_LADDER_LOST_STRANDS",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "RAIDERS_TRENCH_BUILD_BREACH_AND_JUMP",
+   "detail": {
+    "before": "CLIMB k=2 held=True trapped=False cell=157,194 | POCKET k=2 comp=2 pocket=True size=36 depth=4 gen=9945 built=9945 rebuilds=358",
+    "after": "CLIMB k=2 held=True trapped=True cell=156,195 | POCKET k=2 comp=2 pocket=True size=36 depth=4 gen=9946 built=9946 rebuilds=359"
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/pile_2026-10-22/belt/rladder_2.json",
+  "origin": "150,190",
+  "fresh_map": false
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "factions": {
+  "owner": "PirateYttakin",
+  "other": "TribeRoughNeanderthal"
+ },
+ "ladder": {
+  "build": "{'success': True, 'placed': 1, 'survived': 1, 'lostToLaterOps': 0, 'failedCount': 0, 'failed': [], 'displacedCount': 0, 'displaced': [], 'placeWorkerWarningsCount': 0, 'placeWorkerWarnings': [], 'qualityIgnoredForDefs': [], 'message': '1 placed.', 'note': 'Walls create NO roof - roof separately. Run",
+  "things": [
+   {
+    "id": "RM_LadderPortable87671",
+    "def": "RM_LadderPortable",
+    "label": "Portable ladder",
+    "x": 155,
+    "z": 196,
+    "spawned": true,
+    "rot": 3,
+    "stackCount": 1,
+    "hitPoints": 40,
+    "maxHitPoints": 40,
+    "faction": "PirateYttakin",
+    "factionName": "Fur of Wowanesh"
+   }
+  ]
+ },
+ "finished": "2026-10-22T11:32:33"
+}
