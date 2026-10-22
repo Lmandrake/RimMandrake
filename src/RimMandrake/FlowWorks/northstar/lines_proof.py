@@ -519,16 +519,15 @@ def collapse_cord(ctx):
     c0 = ctx["counters"]()
     ctx["sproof"]("ProofFell", xz(P(2, 72)))
     ctx["ticks"](5)
-    # HARNESS fix 2026-10-21 (FALLEN_CORD_DIAGNOSE_LIVE_BUT_HARMLESS): the collapse leaves an IMPASSABLE RM_SuspensionWreck on
-    # every fallen square, and the live contacts are exactly those squares (live read: shockCells (31,102),(32,102); wrecks
-    # x=31..34). A colonist spawned there read (32,102) at once, then the game pushed him off within 10 ticks, before GSS's
-    # first 20-tick check: shocks 0. With the wreck cleared (what a player does to reach the hole) and the colonist drafted
-    # so he holds the square, GSS shocked him once, threw him 2 cells and downed him (live 2026-10-21). So: clear the wreck,
-    # read it gone, draft the victim.
-    for x in range(1, 5):
-        B.call("jawa/destroy_batch", rects="%d,%d,1,1" % P(x, 72), categories="Building")
-    V.require(all(ctx["things"]("RM_SuspensionWreck", P(x, 72)) == 0 for x in range(1, 5)), "the wreck is cleared off the fallen squares",
-              cls="SITE")
+    # FALLEN_CORD_BUILD_RUBBLE_IS_NO_SHIELD (owner card 2026-10-21: "A collapsed pole is not a solid barrier by any means."):
+    # a square whose cord fell with the deck gets walkable rubble, never the impassable RM_SuspensionWreck, so the live cord
+    # lies on top. The wreck is NOT cleared here: a wreck on a cord square is the MOD defect this row exists to catch. The
+    # victim is still drafted so he holds the square through GSS's 20-tick checks (an undrafted spawn wanders).
+    wrecks = [ctx["things"]("RM_SuspensionWreck", P(x, 72)) for x in range(1, 5)]
+    if any(wrecks):
+        row("COLLAPSE_CORD_SHOCKS_ONCE", "FAIL", {"wrecksOnCordSquares": wrecks,
+                                                  "why": "an impassable wreck shields the fallen cord (MOD)"})
+        return
     victim = ctx["spawn"](P(2, 72))
     B.call("jawa/set_draft", pawnId=victim, drafted=True)
     ps = ctx["pawns"]()
@@ -652,6 +651,7 @@ class FakeBridge(object):
       no_shock           MOD: a live fallen cord shocks nobody                   -> COLLAPSE_CORD_SHOCKS_ONCE FAIL
       shock_off          GSS's fallenWireShock is off (SITE)                     -> COLLAPSE_CORD_SHOCKS_ONCE UNMEASURED/SITE
       wreck_blocks       the spawn lands off the fallen squares (SITE)           -> COLLAPSE_CORD_SHOCKS_ONCE UNMEASURED/SITE
+      wreck_shields      MOD: an impassable wreck lands on a fallen cord square  -> COLLAPSE_CORD_SHOCKS_ONCE FAIL
       no_drain           MOD: the Intake end moves nothing                       -> LADDER_HOSE_DRAINS_RAISED_STAYS FAIL
       raise_cuts         MOD: raising the ladder reels the hose in               -> LADDER_HOSE_DRAINS_RAISED_STAYS FAIL
       no_power           the pump never powers (SITE)                            -> LADDER_HOSE_DRAINS_RAISED_STAYS UNMEASURED/SITE
@@ -659,7 +659,7 @@ class FakeBridge(object):
       reroute_retracts   MOD: the hose is reeled in though a way round exists    -> DIG_REROUTES_LAID_HOSE FAIL"""
     FAULTS = ("no_proofs", "noclock", "rope_is_timber", "pipe_on_rope", "hose_avoids_deck", "no_cover", "cover_open",
               "span_no_join", "dig_no_break", "dig_breaks_twice", "deck_cord_dead", "leaf_no_cut", "leaf_stays_dark",
-              "double_split", "no_shock", "shock_off", "wreck_blocks", "no_drain", "raise_cuts", "no_power", "no_reroute",
+              "double_split", "no_shock", "shock_off", "wreck_blocks", "wreck_shields", "no_drain", "raise_cuts", "no_power", "no_reroute",
               "reroute_retracts")
 
     def __init__(self, faults=()):
@@ -910,6 +910,8 @@ class FakeBridge(object):
                     self.things[c].remove("RM_PowerCord")
                     cords += 1
                     self.fallen.add(c)
+                    if "wreck_shields" in self.f:
+                        self.things[c].append("RM_SuspensionWreck")
             self.cnt["cordsDropped"] += cords
             self.cnt["tore"] += len(sq)
             if cords:

@@ -178,6 +178,10 @@ namespace RimMandrake.FlowWorks.Machinery
 			rebind = true;
 		}
 
+		/// <summary>Did a cord fall on c (pending bind or held by a half)? Read by LandWreck: the fallen cord lies on top of the
+		/// rubble, so that square is left walkable (FALLEN_CORD_BUILD_RUBBLE_IS_NO_SHIELD).</summary>
+		public bool CordFellAt(IntVec3 c) => pending.Contains(c) || Holds(c);
+
 		private bool Holds(IntVec3 c)
 		{
 			foreach (RM_FallenCordHalf h in halves)
