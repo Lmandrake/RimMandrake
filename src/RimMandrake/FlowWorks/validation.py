@@ -1163,7 +1163,9 @@ DRAWBRIDGE_CASES = [
     "Drawbridge_P6_real_build_buttons", "Drawbridge_P6_art_contract_paths_with_stand_ins",
     "Drawbridge_Looks_paths_look_first_then_material", "Drawbridge_Looks_raid_plank_pieces",
     "Drawbridge_Looks_wired_at_the_draw_sites",
-    "Drawbridge_raised_leaf_draws_without_its_winch"]
+    "Drawbridge_raised_leaf_draws_without_its_winch",
+    "Drawbridge_Cables_lowered_reach_deck_raised_slack_vs_art", "Drawbridge_Cables_canfail_old_stop_short_and_moved_attach",
+    "Drawbridge_Cables_raised_leaf_edge_crops_the_stiff_rope", "Drawbridge_Cables_call_sites"]
 DRAWBRIDGE_LIVE = [
     ("RAISE_PATH", None, "a colonist holding a path over a lowered steel leaf; raised: the production path no longer crosses "
      "it, ToggleCount and RepathCount rise within 10 ticks"),
