@@ -1,0 +1,1 @@
+Setting weather Clear does not stop rain: WeatherManager.RainRate lerps out over the transition, and FlowWorks ApplyRain reads RainRate, so a row that switches rainFillsExcavationsEnabled back on at the Clear set gets its canals refilled (live_session 20261022T235239 B6: +1 level on 8 squares). Restore rain fill only once weather_get reads rainRate 0.
