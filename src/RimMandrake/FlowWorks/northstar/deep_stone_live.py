@@ -32,6 +32,25 @@ RUN_SETTINGS = {"digDeepStoneEnabled": True, "digRockChunksEnabled": True, "digR
                 "digFindsEnabled": False, "digFindLetterEnabled": True, "digCostRisesWithDepth": False}
 
 
+def job_gate(probe, order):
+    """DEEP_STONE_FIX_NOBODY_PICKS_UP_SHOVEL: run 1 waited 6000 ticks for the AI scan to hand a colonist the dig and nobody did
+    (depth stayed 3). Same idiom as validation_v2 J_workgiver_selection: ask WorkGiver_DigCanal first (flowworks_job_probe), then
+    ORDER the exact JobDef on the cell. Returns (ok, why); not ok = UNMEASURED(SITE/HARNESS) with the reason named, never a wait."""
+    wg, pw = (probe or {}).get("workGiver") or {}, (probe or {}).get("pawn") or {}
+    if not (probe or {}).get("success"):
+        return False, "flowworks_job_probe unavailable or refused: %s" % str((probe or {}).get("message") or probe)[:160]
+    if (probe or {}).get("designationPresent") is not True:
+        return False, "no RM_DigCanal designation at the cell"
+    if pw.get("workTypeDisabled") is True:
+        return False, "the colonist has Mining disabled"
+    if wg.get("hasJobOnCell") is not True or wg.get("jobDef") != "RM_DigCanalJob":
+        return False, "WorkGiver_DigCanal hands this pawn no job (shouldSkip=%s hasJobOnCell=%s deleted=%s)" % (
+            wg.get("shouldSkip"), wg.get("hasJobOnCell"), wg.get("designationDeletedByWorkGiver"))
+    if not (order or {}).get("accepted"):
+        return False, "ordered_job refused: %s" % str((order or {}).get("note") or (order or {}).get("error") or order)[:160]
+    return True, "ordered"
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("out", nargs="?", default=None)
@@ -127,6 +146,14 @@ def main():
                 {"why": "the square is not at D3 before the colonist cut", "depth": d0, "drive": str(drive)[:200]})
             return 2
         des = B.call("jawa/designate_batch", action="add", designation="RM_DigCanal", rect="%d,%d,1,1" % c) or {}
+        probe = B.call("jawa/flowworks_job_probe", x=c[0], z=c[1], kind="dig", pawn=cids[0]) or {}
+        order = B.call("jawa/ordered_job", pawnId=cids[0], jobDef="RM_DigCanalJob", targetAX=c[0], targetAZ=c[1], waitTicks=0) or {}
+        job_ok, job_why = job_gate(probe, order)
+        res["job_probe"], res["job_order"] = probe, order
+        if not job_ok:
+            row("DS_superdeep_cut_turns_up_deep_stone", "UNMEASURED", "SITE",
+                {"why": "the dig job was not taken: " + job_why, "designate": str(des)[:200], "probe": str(probe)[:300]})
+            return 2
         t, cut_at = 0, None
         while t < 6000:
             step(250)

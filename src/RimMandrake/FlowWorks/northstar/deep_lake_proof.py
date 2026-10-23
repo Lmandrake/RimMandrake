@@ -59,6 +59,9 @@ def parse(txt):
     return kv
 
 
+ALT_ORIGINS = [(150, 60), (60, 150), (150, 150)]
+
+
 def _int(kv, k, default=None):
     try:
         return int(kv[k])
@@ -73,6 +76,19 @@ def body_verdict(kv, size):
         return "UNMEASURED", {"why": "no BODY line", "kv": kv}
     ok = cells == size * size and cells > OLD_CAP and kv.get("limitless") == "False" and kv.get("truncated") == "False" and deepest > 4
     return ("PASS" if ok else "FAIL"), {"kv": kv, "want": {"cells": size * size, "limitless": "False", "deepest>": 4}}
+
+
+def isolated_verdict(kv, size):
+    """SITE read-back BEFORE scoring (DEEP_LAKE_FIX_PAINTED_LAKE_JOINS_WILD): the painted square must read back as ONE body of
+    exactly size*size squares. RM_LiquidStock keeps a body that meets natural water / a stale body index limitless, so any other
+    count (1,894 or 4,000 on a fresh wet map, deepest=0 = the wild lake's floor) is the site's water, not the mod's lake rule."""
+    cells = _int(kv, "cells")
+    if cells is None:
+        return "UNMEASURED", {"why": "no BODY line", "kv": kv}
+    if cells != size * size:
+        return "UNMEASURED", {"why": "painted lake did not read back as one body of size^2 squares (joined or overlaid natural water)",
+                              "cells": cells, "want": size * size, "kv": kv}
+    return "PASS", {"cells": cells}
 
 
 def hollow_verdict(kv):
@@ -183,8 +199,11 @@ def main():
 
     ox, oz = (int(v) for v in a.origin.split(","))
     n = a.size
-    rect = (ox, oz, n, n)
-    mid = "%d,%d" % (ox + n // 2, oz + n // 2)
+    origins = [(ox, oz)] + [o for o in ALT_ORIGINS if o != (ox, oz)]
+
+    def site_at(o):
+        return (o[0], o[1], n, n), "%d,%d" % (o[0] + n // 2, o[1] + n // 2)
+    rect, mid = site_at(origins[0])
     if a.fresh_map:
         B.call("rimworld/go_to_main_menu")
         B.call("rimworld/start_debug_game_ready", readiness="mapData", pauseIfNeeded=True, timeoutMs=280000)
@@ -205,7 +224,7 @@ def main():
     before = {f: sget(f) for f in FIELDS}
     res["settings_before"] = before
     try:
-        if not ok or not V.prepare_site(B, (ox - 4, oz - 4, n + 8, n + 8), rows, "DL_site_ready"):
+        if not ok:
             row("DL_site", "UNMEASURED", "SITE", {"why": "site not ready / not playing"})
             return 2
         for f, v in (("deepBedsEnabled", True), ("lakeDepthScale", 2.0), ("deepBedMaxDepth", 20),
@@ -214,8 +233,23 @@ def main():
             if sset(f, v).get("success") is False:   # an unset knob = the owner's value, not the proof's: every row below is suspect
                 row("DL_site", "UNMEASURED", "HARNESS", {"why": "mod_settings_field set refused", "field": f})
                 return 2
-        _, painted = lake("paint;%d;%d;%d;%d;%d" % (ox, oz, n, n, RIM))
-        kv, txt = lake("form;" + mid)
+        tried = []
+        for o in origins:
+            rect, mid = site_at(o)
+            ox, oz = o
+            if not V.prepare_site(B, (ox - 4, oz - 4, n + 8, n + 8), rows, "DL_site_ready"):
+                tried.append({"origin": o, "why": "site not ready"})
+                continue
+            _, painted = lake("paint;%d;%d;%d;%d;%d" % (ox, oz, n, n, RIM))
+            kv, txt = lake("form;" + mid)
+            st, det = isolated_verdict(kv, n)
+            if st == "PASS":
+                break
+            tried.append({"origin": o, "painted": painted, "txt": txt, "why": det.get("why")})
+        else:
+            row("DL_site", "UNMEASURED", "SITE", {"why": "no origin gave an isolated painted lake", "tried": tried})
+            return 2
+        res["site_attempts"] = tried
         st, det = body_verdict(kv, n)
         row("DL_lake_over_4000_is_limited", st, "MOD", dict(det, painted=painted, txt=txt))
         full_before, t0 = lake("shape;" + mid)
