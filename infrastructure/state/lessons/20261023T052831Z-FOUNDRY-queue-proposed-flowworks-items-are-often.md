@@ -1,0 +1,1 @@
+Queue 'proposed' FlowWorks items are often already fixed by BENCH fixers (fixer G/H notes 'ready for a live check') without an implemented event; before claiming run git log -F --grep=<ID> and rimflow show <ID>, then record implemented with the DLL commit sha instead of rebuilding (8 of 10 candidates 2026-10-23).
