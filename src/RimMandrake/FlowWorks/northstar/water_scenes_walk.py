@@ -1486,7 +1486,7 @@ def prep(w):
         w.call("rimworld/start_debug_game_ready", readiness="mapData", pauseIfNeeded=True, timeoutMs=280000)
         ok, waited = w.V._wait_playing(w.B, leave_s=0)
         w.say("quicktest map up: %s (%s s)" % (ok, waited))
-    w.call("rimworld/pause_game", paused=True)
+    w.call("rimworld/pause_game", pause=True)
     w.call("jawa/weather_set", weather="Clear", lockWeather=True)
     w.call("jawa/incident_queue_clear")
     # PROOF_SWEEPS_FIX_OTHER_ZOOS_STILL_OPEN: on a map we did not make keep its own non-colonists (staged animals, prisoners)
