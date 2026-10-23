@@ -564,5 +564,8 @@ pc._PROBE_VERIFIED["http://127.0.0.1:1/?t=a"] = NOW - 3600
 pc.sheet_alive("http://127.0.0.1:1/?t=a", NOW, full=fake)
 check("after 30 min the token is re-verified with a full probe", len(calls) == 2, calls)
 
+g_nob = pc.classify_game({"rimworld_running": True, "at": NOW - 20}, None, NOW)
+check("an unreadable bridge file reads 'bridge unknown', never 'held by ?'", "bridge unknown" in g_nob[0]["text"], g_nob)
+
 print(f"\n{'FAIL' if FAILS else 'OK'}: {len(FAILS)} failing")
 sys.exit(1 if FAILS else 0)
