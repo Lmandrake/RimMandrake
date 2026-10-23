@@ -1,0 +1,1 @@
+scenarios_map.py --river --build writes its notes (e.g. 'R1 Muffalo not turned to face west') only into review/scenarios/map_r_placed.json; restoring that file from a backup after an in-memory rebuild throws the notes away - read or copy them out first.

@@ -51,3 +51,12 @@ The repo FlowWorks DLL (4cff1a0718, hose C#) is newer than the deployed one (97d
 | RIVER_MUFFALO_FIX_SHOWS_ITS_REAR | not reached this round (deploy round first) | owed |
 
 Two killed runs left mod_settings_field calls of unknown outcome; reconciled as partial (settings writes are idempotent; the deploy restart resets the session).
+
+## Deploy + post-deploy round (r3b/)
+- FlowWorks HEAD ab0204307d deployed whole (DLL 906246ee + Joins Under* art + tank/station textures, 15 files, VERIFIED in sync) with the game killed; relaunched via Steam; save d loaded; running FlowWorks assembly sha 906246ee (16 mods). Pre-deploy Player.log kept at D:\ClaudeWork\logs\Player_bench_r3a_predeploy.log.
+- HOSE_BEND_FIX_SHAVES_WALL_CORNERS: wall x110 z206-210, lay 104,208->115,208: poseCells hold no wall cell, hose clear of the SW corner (r3b/hose_bend_wall_corner*.png, r3b/wall_census.txt). Note, not closed.
+- HOSE_LEADIN_FIX_STUB_IN_THE_CANAL: Kludged 150,190 + reel 149,180, lay to 150,189 (fellBack, arrives from the east): no stub below the join; straight tank port unchanged (r3b/kludged_leadin_*.png, r3b/tank_port_met_straight_zoom.png). Note.
+- Under-couplers + moved ports: 4 tall tanks (one per look) x 4 sides all coupled, Scrapper cargo W/E upper + a side arrival, Repaired station south port, Kludged south port from the side (r3b/under_*.png, r3b/cargo_Scrapper_E_coupler_zoom.png; staging tools/stage_ports.py, stage_cargo.py). Notes on the three TANK_* items. Seat judges.
+- RIVER_MUFFALO_FIX_SHOWS_ITS_REAR: after the --river rebuild the R1 Muffalo still faced North (dome, r3b/river_R1_muffalo.png); turned West by hand it reads as an animal and the lock holds (r3b/river_R1_muffalo_turned_west.png). Note, open; the build's notes were lost to the map_r_placed.json restore (lesson filed).
+- A VEF Dialog_NewFactionSpawning ('Giant ant colony', Baroque Biomes) opens on every load of save d and covers the screen centre; closed via jawa/window_list_close (no choice made).
+- End: save d reloaded (tick 130096, map C, paused); bridge held by BENCH.

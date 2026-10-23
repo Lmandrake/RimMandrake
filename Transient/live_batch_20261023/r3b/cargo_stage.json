@@ -1,0 +1,113 @@
+{
+ "tanks": [
+  {
+   "d": "RM_UniversalCargoTank",
+   "style": "RM_UniversalCargoTank_Scrapper",
+   "min": [
+    197,
+    44
+   ],
+   "cells": [
+    [
+     197,
+     44
+    ],
+    [
+     197,
+     45
+    ],
+    [
+     198,
+     44
+    ],
+    [
+     198,
+     45
+    ]
+   ],
+   "styled": true
+  }
+ ],
+ "hoses": [
+  {
+   "label": "Scrapper cargo W upper",
+   "reel": [
+    189,
+    45
+   ],
+   "target": [
+    196,
+    45
+   ],
+   "lay": {
+    "success": true,
+    "cmd": "lay:189,45,196,45",
+    "reason": null,
+    "layOk": true
+   },
+   "coupled": "coupled to universal cargo tank"
+  },
+  {
+   "label": "Scrapper cargo E upper",
+   "reel": [
+    206,
+    45
+   ],
+   "target": [
+    199,
+    45
+   ],
+   "lay": {
+    "success": true,
+    "cmd": "lay:206,45,199,45",
+    "reason": null,
+    "layOk": true
+   },
+   "coupled": "coupled to universal cargo tank"
+  },
+  {
+   "label": "Scrapper cargo W lower from the SIDE (south)",
+   "reel": [
+    193,
+    37
+   ],
+   "target": [
+    196,
+    44
+   ],
+   "lay": {
+    "success": false,
+    "cmd": "lay:193,37,196,44",
+    "reason": "no room for the straight lead-out from the nozzle",
+    "layOk": false
+   },
+   "coupled": "none"
+  }
+ ],
+ "station": [
+  [
+   204,
+   88
+  ],
+  [
+   204,
+   89
+  ],
+  [
+   205,
+   88
+  ],
+  [
+   205,
+   89
+  ],
+  [
+   206,
+   88
+  ],
+  [
+   206,
+   89
+  ]
+ ]
+}
