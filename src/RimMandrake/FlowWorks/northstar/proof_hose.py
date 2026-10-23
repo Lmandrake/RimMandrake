@@ -13,7 +13,8 @@ Run python.exe from the repo root (bridge calls only work under python.exe; pipe
 
 ORDER: offline gate (WSL) -> preflight (HP1 tier + startup log, HP2 probes + site pinned) -> matrix_hose (the nine H0* scenes,
 CROSS-MOD: they draw cords too, so they run only when Gimme Some Slack is active and its matrix modules are on disk; else
-UNMEASURED) -> hose -> maze -> relay -> carry -> style_hose -> realflow (NS_* bars) -> the ONE save + load (SL1-SL4) ->
+UNMEASURED) -> hose -> maze -> relay -> carry -> style_hose -> realflow (NS_* bars) -> walls (HW1: no laid hose on the map
+crosses a wall; `--no-fresh-map --only walls` on a loaded save) -> the ONE save + load (SL1-SL4) ->
 preport (PP1/PP2, only with --preport-save: saves made BEFORE the port, one with a colonist mid-carry and one mid-retract; they
 fail on "Cleaning up invalid job state" or a could-not-find-class line, G5.9) -> Z one log budget (errors naming any hose
 namespace, old or new, are ours: G5.7).
@@ -49,7 +50,7 @@ import validation_style_hose as VSH  # noqa: E402
 
 PKG = "mandrake.rm.flowworks"
 TIER = "flowworks"
-BLOCKS = ["matrix_hose", "hose", "maze", "relay", "carry", "style_hose", "realflow", "save_load", "preport"]
+BLOCKS = ["matrix_hose", "hose", "maze", "relay", "carry", "style_hose", "realflow", "walls", "save_load", "preport"]
 LIQUID_WATER = "RM_Liquid_FreshWater"
 OURS = ("RimMandrake.FlowWorks.Hose", "RimMandrake.GimmeSomeSlack.Hose", "RimMandrake.MessyConduit.Hose", "FlowWorks")
 
@@ -72,6 +73,7 @@ DECLARED_ROWS = {
                  "NS_hose_dropped_carries_nothing", "NS_hose_port_removed_discovered", "NS_hose_port_removed_moves",
                  "NS_hose_far_end_pump", "NS_relay_chain_carries", "NS_pipe_and_hose_one_net",
                  "NS_tank_does_not_bridge_pipe_runs", "NS_external_pipe_is_visual_only", "NS_tank_feeds_hose"],
+    "walls": ["HW1_no_laid_hose_crosses_a_wall"],
     "save_load": ["SL1_save_landed_new_file_only", "SL2_save_names_no_class_of_ours", "SL3_hoses_and_reel_styles_survive",
                   "SL4_carry_states_survive"],
     "preport": ["PP1_preport_midcarry_save_loads", "PP2_preport_midretract_save_loads"],
@@ -635,7 +637,7 @@ class Proof(object):
             return None
         t, n0, err = time.time(), len(self.rows), None
         print("== %s" % name, flush=True)
-        if name not in ("preflight", "session"):
+        if name not in ("preflight", "session", "walls"):     # walls reads the map as it stands (a loaded save): no calming
             try:
                 self.B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
                 self.res.setdefault("site_calm_blocks", {})[name] = V.site_calm(self.B).get("ok")   # statics reset by any load
@@ -737,6 +739,11 @@ class Proof(object):
                 self.row("matrix_hose", "MX_" + sid, "UNMEASURED", "HARNESS", {"H0_probe_channel": dead[0].get("detail")})
                 continue
             self.row("matrix_hose", "MX_" + sid, sc.get("status", "UNMEASURED"), "MOD", sc.get("detail") or sc.get("census"))
+
+    # ---------------------------------------------------------------- HW1: no laid hose crosses a wall
+    def walls(self):
+        st, cls, detail = walls_verdict(self.B.hp("census"))
+        self.row("walls", "HW1_no_laid_hose_crosses_a_wall", st, cls, detail)
 
     # ---------------------------------------------------------------- the one save (hose half of GSS's old SL1-SL4)
     @staticmethod
@@ -977,9 +984,28 @@ class Proof(object):
         self.block("carry", lambda: self.take("carry", VH.run_carry(self.ns())))
         self.block("style_hose", lambda: self.take("style_hose", VSH.run_live(self.ns())))
         self.block("realflow", lambda: self.take("realflow", _rf(self.B)))
+        self.block("walls", self.walls)
         self.block("save_load", self.save_load)
         self.block("preport", self.preport)
         self.block("session", self.log_budget)
+
+
+def walls_verdict(census):
+    """HW1 (HOSE_ROUTE_FIX_TUNNELS_UNDER_WALLS / HOSE_CLEAR_FIX_WALL_SEAM_LOOPHOLE, owner 2026-10-22: "We MUST fix the "goes
+    under walls" problem"): every laid hose on the map, read off HoseProbe's census field wallCross (fine samples of the flat and
+    plump poses deeper than HoseMath.WallCrossDepth inside blocked ground, the first 0.5 cell at each end skipped). PASS only
+    when every laid hose reads 0; FAIL names each hose that crosses; UNMEASURED when no hose is laid (SITE) or the deployed DLL
+    predates the field (HARNESS). Reads the map as it stands: `--no-fresh-map --only walls` checks a loaded save (e.g. the
+    walkthrough save b) without touching it. Returns (status, class, detail)."""
+    hoses = [h for h in (census or {}).get("hoses") or [] if h.get("laid") and h.get("layOk")]
+    if not (census or {}).get("success", True) or not hoses:
+        return "UNMEASURED", "SITE", {"why": "no laid hose on this map", "hoses": len((census or {}).get("hoses") or [])}
+    if any("wallCross" not in h for h in hoses):
+        return "UNMEASURED", "HARNESS", {"why": "census has no wallCross: the deployed FlowWorks DLL predates HW1"}
+    bad = [{"id": h.get("id"), "reel": h.get("reel"), "far": h.get("far"), "wallCross": h["wallCross"], "at": h.get("wallCrossAt")}
+           for h in hoses if h["wallCross"]]
+    return ("FAIL" if bad else "PASS"), "MOD", {"laid": len(hoses), "crossing": bad[:12],
+                                                "checked": [h.get("id") for h in hoses][:40]}
 
 
 def sl4_verdict(carry, r1a, r1b, r2a, r2b, carry_a, carry_b):

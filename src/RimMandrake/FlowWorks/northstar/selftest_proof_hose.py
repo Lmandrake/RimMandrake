@@ -181,6 +181,19 @@ def main():
     check("SL4 with only a Dropped hose and no colonist to stage: UNMEASURED, staging recorded (reel1/reel2)",
           sl4["status"] == "UNMEASURED" and (sl4["detail"].get("staging") or {}).get("error") == "no colonist"
           and "dropped(CR4a)" in sl4["detail"] and "carrying(CR4b)" in sl4["detail"], (sl4["status"], str(sl4["detail"])[:200]))
+    # HW1 (HOSE_ROUTE_FIX_TUNNELS_UNDER_WALLS): every laid hose's census wallCross must read 0
+    wv = PH.walls_verdict
+    laid = lambda i, **kw: dict({"id": i, "reel": [i, 1], "laid": True, "layOk": True, "wallCross": 0, "wallCrossAt": None}, **kw)
+    check("walls_verdict: every laid hose wallCross 0 -> PASS", wv({"hoses": [laid(1), laid(2)]})[0] == "PASS")
+    w_bad = wv({"hoses": [laid(1), laid(2, wallCross=7, wallCrossAt=[22, 40])]})
+    check("walls_verdict: one hose crossing -> FAIL MOD naming it", w_bad[0] == "FAIL" and w_bad[1] == "MOD"
+          and w_bad[2]["crossing"][0]["id"] == 2 and w_bad[2]["crossing"][0]["at"] == [22, 40], w_bad)
+    check("walls_verdict: no laid hose -> UNMEASURED SITE (stored reels ignored)",
+          wv({"hoses": [laid(1, laid=False, wallCross=5)]})[:2] == ("UNMEASURED", "SITE"))
+    check("walls_verdict: census without wallCross (old DLL) -> UNMEASURED HARNESS, never PASS",
+          wv({"hoses": [{"id": 1, "laid": True, "layOk": True}]})[:2] == ("UNMEASURED", "HARNESS"))
+    hw1 = next((r for r in res["rows"] if r["id"] == "HW1_no_laid_hose_crosses_a_wall"), None)
+    check("a full fake run emits HW1 (the fake census has no wallCross: UNMEASURED)", hw1 is not None and hw1["status"] == "UNMEASURED", hw1)
     v = PH.sl4_verdict
     ok_carry = {"reel1_staged": {"carry": "Dropped"}, "reel2_staged": {"carry": "Carrying"}, "p1": 1, "p2": 2}
     d1 = {"carry": "Dropped", "far": [1, 1], "trailCount": 3, "trailLast": [2, 2], "pending": "Deploy", "pendingAt": [9, 9]}
