@@ -232,6 +232,63 @@ def guard(B):
     return B if isinstance(B, Guarded) else Guarded(B)
 
 
+class WatchdogAbort(Exception):
+    """A proof's own watchdog gave up: its wall-clock budget is spent, or the probe channel stopped answering. The caller
+    writes every unwritten row UNMEASURED/HARNESS and exits; it never waits on."""
+
+
+class Watchdog(object):
+    """Wraps a bridge (normally a Guarded one) so a proof cannot hang silently (LEVEL_REHEARSAL_UNSTICK_WAITS_FOR_GODOT,
+    2026-10-23: pipe_levelling --rehearsal sat 9 min after a mech raid landed, every probe timing out at 20 s while 400 hose
+    lays queued behind it). Every call first checks the budget; every hp/probe/probe_of reply whose channel is dead
+    (_channel_dead) counts, `dead_max` in a row raises WatchdogAbort; any live reply resets the count. Everything else passes
+    through to the wrapped bridge."""
+
+    def __init__(self, B, budget_s, dead_max=3, clock=time.time):
+        self.__dict__.update(_B=B, _clock=clock, _deadline=clock() + float(budget_s), _dead=0, _dead_max=int(dead_max),
+                             budget_s=float(budget_s))
+
+    def __getattr__(self, k):
+        return getattr(self._B, k)
+
+    def __setattr__(self, k, v):
+        setattr(self._B, k, v)
+
+    def _check(self, what):
+        if self._clock() > self._deadline:
+            raise WatchdogAbort("wall-clock budget of %.0f s spent (at %s)" % (self.budget_s, str(what)[:80]))
+
+    def _count(self, what, r):
+        if _channel_dead(r):
+            self.__dict__["_dead"] += 1
+            if self._dead >= self._dead_max:
+                raise WatchdogAbort("probe channel dead: %d replies in a row never came back (last: %s -> %s)"
+                                    % (self._dead, str(what)[:60], str((r or {}).get("error") if isinstance(r, dict) else r)[:80]))
+        else:
+            self.__dict__["_dead"] = 0
+        return r
+
+    def call(self, tool, *a, **kw):
+        self._check(tool)
+        return self._B.call(tool, *a, **kw)
+
+    def hp(self, cmd, *a, **kw):
+        self._check(cmd)
+        return self._count(cmd, self._B.hp(cmd, *a, **kw))
+
+    def probe(self, cmd, *a, **kw):
+        self._check(cmd)
+        return self._count(cmd, self._B.probe(cmd, *a, **kw))
+
+    def probe_of(self, probe_type, cmd, *a, **kw):
+        self._check(cmd)
+        return self._count(cmd, self._B.probe_of(probe_type, cmd, *a, **kw))
+
+    def ticks(self, n):
+        self._check("ticks %s" % n)
+        return self._B.ticks(n)
+
+
 # ------------------------------------------------------------------ site disturbances (not the mod's doing)
 SITE_PHASE = ["measure"]          # "prepare" inside prepare_site; recorded on every event so a reader can weigh it
 SITE_RECOVER_MAX = 12             # recoveries per session: a site that keeps raising them is a site problem, so it stops
