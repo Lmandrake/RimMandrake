@@ -1,0 +1,1 @@
+The ledger-writer hook refuses ANY Bash call that names infrastructure/state/ledger/events/<SEAT>.jsonl and contains a redirect, even '2>&1 | tail' on ./publish (measured 2026-10-23, twice). Publish the ledger shard in a bare call: ./publish -m '...' infrastructure/state/ledger/events/BENCH.jsonl, no redirects, no pipes.
