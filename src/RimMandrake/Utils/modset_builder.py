@@ -814,12 +814,12 @@ TIERS["watchers_live"] = {
 
 TIERS["acc_green_min"] = {
     "why": "FOUNDRY acceptance 2026-10-07 GREEN-MIN batch: one cold load for Abyss, Scarlands, ShipVermin, HugeThings (Titanic Creatures merged in), "
-           "Warcasket, GizkaStowaway, OasisMaker, ScarlandsLadder, ShokkweaveEconomy, LeaningScrub, "
+           "Warcasket, GizkaStowaway, OasisMaker, ScarlandsLadder, LeaningScrub, "
            "GelatinousSlime, GravshipLanding, Stillsand, Pyrinth (composed biomes mod carries several).",
     "want": [BRIDGE, "mandrake.rm.gimmesomeslack", "mandrake.rm.biomes", "mandrake.rsw.swbestiary", "mandrake.rut.patches",
              "mandrake.rm.shipvermin", "mandrake.rm.hugethings", "mandrake.rm.warcasket", "mandrake.rsw.gizkastowaway",
              "mandrake.rm.oasismaker", "mandrake.rut.scarlandsladder",
-             "mandrake.rut.shokkweaveeconomy", "mandrake.rm.gravshiplanding", "mandrake.rm.pyrinth"],
+             "mandrake.rm.gravshiplanding", "mandrake.rm.pyrinth"],
     "dlc": True,
 }
 

@@ -76,6 +76,8 @@
     <!-- LANTERNDEEPS_MINDSTONE_GALLERY_BUILD_1 -->
     <Compile Include="RUT_GenStep_MindstoneGallery.cs" />
     <Compile Include="RUT_GenStep_ZersiumForgeLumps.cs" />
+    <!-- Biome card 5 (2026-10-22): the rare-thrixweave stock generator, ported from the cut mandrake.rut.shokkweaveeconomy. -->
+    <Compile Include="RUT_StockGenerator_RareThrixweave.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -772,9 +772,6 @@ MODS = {
         "Memory-Core reveal": "Now",
         "Bioferrite stockpile trigger": "Now",
     }, ()),
-    "ShokkweaveEconomy": ("ShokkweaveEconomySettings.cs", "RimMandrake.Utinni.ShokkweaveEconomy.csproj", {
-        "Webwork silk nodes (WORLDGEN-AFFECTING)": "NewMapsOnly",
-    }, ()),
     "TrophyCraft": ("RSW_TrophyCraftSettings.cs", "RSW_TrophyCraft.csproj", {
         "Fang pendant social consequence": "Now",
         "Opinion magnitude": "Now",

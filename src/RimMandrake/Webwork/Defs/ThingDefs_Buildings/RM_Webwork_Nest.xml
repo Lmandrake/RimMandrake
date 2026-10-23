@@ -14,7 +14,7 @@
 
   RM_Webwork_NestWall: the mother's guardian spawner. Same
   CompProperties_CanBeDormant/WakeUpDormant/SpawnerPawn combination
-  RUT_Webwork_Nest (src/RimUtinni/ShokkweaveEconomy) already ships, re-tokened
+  RUT_Webwork_Nest (cut with mandrake.rut.shokkweaveeconomy, 2026-10-22) shipped, re-tokened
   to spawn RM_Ollathrix directly and with NO MayRequire — this mod owns the
   race outright (OLLATHRIX_OWNER_SPECIES_1), unlike the Utinni def which
   gated on the donor mod for its Wyyyschokk guardian. Also carries
@@ -30,18 +30,18 @@
   hit before this comment existed).
 
   RM_Webwork_EggClutch: the harvestable resource. ParentName="RockBase", the
-  exact same mineable-vein shape RUT_Webwork_SilkKnot already uses (RimSage-
-  verified raw def, ShokkweaveEconomy's own comment) — mineableThing
+  exact same mineable-vein shape the cut RUT_Webwork_SilkKnot used (RimSage-
+  verified raw def) — mineableThing
   RM_OllathrixEgg, mineableYield 4 (INVENTED midpoint of §3a's "×3-6 per
   clutch" range, expects the same live-balance pass every other number in
   this family carries). Mined out (or destroyed) it is simply gone; the wall's
   relay comp is what brings a fresh one back, never this def itself — no
   timer lives here.
 
-  Both defs are placeholder-art (Hive/RockFlecked_Atlas texture paths,
-  bone-white/dead-silk-cream tinted, same reuse-and-flag posture
-  ShokkweaveHarvestNodes.xml already used for its own two nodes). Real bespoke
-  nest art is owed, infrastructure/artpipe/art_lists/webwork_nest.csv.
+  The wall draws its own texture (Things/Building/Natural/RM_Webwork_NestWall).
+  The clutch is still placeholder art (vanilla RockFlecked_Atlas, tinted
+  bone-white); its bespoke art is listed in
+  infrastructure/artpipe/art_lists/webwork_nest.csv.
   ============================================================================
 -->
 <Defs>

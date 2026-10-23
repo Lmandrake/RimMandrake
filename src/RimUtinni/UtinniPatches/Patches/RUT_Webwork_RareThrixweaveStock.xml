@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ShokkweaveRareTraderStock.xml    ShokkweaveEconomy · SHOKKWEAVE_SOLE_SOURCE_1
-  Owner ruling 2026-10-06 23:34: very small shokkweave stock for the Wildsteam, rarer for the Hutts.
-  Wildsteam: new kind RUT_Caravan_Wildsteam_Weavers (Defs/TraderKindDefs), appended to the faction here.
-  Hutt: the cartel's own two kinds get one extra generator, 1-2 units in ~1 visit of 8. No other
-  trader is touched; the strip stays on every Outlander/Czerka/Galleon kind.
+  RUT_Webwork_RareThrixweaveStock.xml    UtinniPatches · SHOKKWEAVE_SOLE_SOURCE_1
+  Moved here unchanged in behaviour from the cut mandrake.rut.shokkweaveeconomy (ShokkweaveRareTraderStock.xml),
+  owner Biome card 5 by card, 2026-10-22. The material is vanilla Hyperweave, labelled "thrixweave" by the free
+  Webwork mod (the campaign's former "shokkweave" relabel was dropped with the cut mod).
+  Owner ruling 2026-10-06 23:34: very small stock for the Wildsteam, rarer for the Hutts.
+  Wildsteam: new kind RUT_Caravan_Wildsteam_Weavers (Defs/TraderKindDefs/RUT_Wildsteam_Caravan.xml), appended to
+  the faction here. Hutt: the cartel's own two kinds get one extra generator, 1-2 units in ~1 visit of 8. No other
+  trader is touched; the Webwork strip stays on every other kind.
 -->
 <Patch>
 
@@ -25,7 +28,7 @@
     <match Class="PatchOperationAdd">
       <xpath>Defs/TraderKindDef[defName="RUT_Caravan_HuttCartel_EggMarket"]/stockGenerators</xpath>
       <value>
-      <li Class="RimMandrake.Utinni.ShokkweaveEconomy.StockGenerator_RareShokkweave">
+      <li Class="RimMandrake.Utinni.UtinniPatches.RUT_StockGenerator_RareThrixweave">
         <chance>0.125</chance>
         <countRange>1~2</countRange>
       </li>
@@ -38,7 +41,7 @@
     <match Class="PatchOperationAdd">
       <xpath>Defs/TraderKindDef[defName="RUT_Caravan_HuttCartel_Captives"]/stockGenerators</xpath>
       <value>
-      <li Class="RimMandrake.Utinni.ShokkweaveEconomy.StockGenerator_RareShokkweave">
+      <li Class="RimMandrake.Utinni.UtinniPatches.RUT_StockGenerator_RareThrixweave">
         <chance>0.125</chance>
         <countRange>1~2</countRange>
       </li>

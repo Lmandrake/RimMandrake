@@ -9,11 +9,9 @@ namespace RimMandrake.Webwork
 	/// Webwork colony is without the egg economy." This is a plain GenStep
 	/// that unconditionally places exactly one nest cluster, rather than a
 	/// probabilistic scatter density that could come up empty — the shape
-	/// the old campaign-tier placeholder used (RUT_WebworkNestScatter,
-	/// ShokkweaveEconomy's own ShokkweaveHarvestScatter.xml, "a map either
-	/// has one nest or none"). That campaign GenStepDef is untouched by this
-	/// item; its own retarget to RM_Ollathrix/this mod's defs is
-	/// WEBWORK_RM_MOD_BUILD_1 §5 table scope.
+	/// the old campaign-tier placeholder used (RUT_WebworkNestScatter, "a map
+	/// either has one nest or none"). That placeholder was cut with
+	/// mandrake.rut.shokkweaveeconomy (owner, Biome card 5, 2026-10-22).
 	///
 	/// Places one RM_Webwork_NestWall (the mother's guardian spawner) plus
 	/// 2-3 RM_Webwork_EggClutch (the harvestable resource) in the immediate
