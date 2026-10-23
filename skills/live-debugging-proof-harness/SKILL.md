@@ -267,3 +267,13 @@ see `skills/rimworld-modding/references/validation-plan.md`.
 | `references/perf.md` | any perf row or budget |
 | `references/classifying-and-learning.md` | after a run: MOD/SITE/HARNESS, fragility audits, recording into the script, modcheck/walk traps |
 | `references/validation-plan-and-thresholds.md` | writing the plan and the closing bar for a check |
+
+## Helper budget for live proofs — owner, 2026-10-23 (token burn)
+
+A live proof helper is ONE bridge driver with a hard budget: `max_turns` in the brief (default 60), a fresh helper
+per run or site (never one helper across many runs: each turn re-reads its whole context), one Opus helper at a time.
+Run the proof as a single script and read its result; never spend a turn per row, per tick window or per watchdog check
+(`belt_watchdog.py --watch 300` goes into `Monitor`, not a polling loop of turns). Stop at budget or on any
+429/session limit, write the exact resume command, push, report in ≤12 lines; a limit error is never a PASS/FAIL row.
+Measure each helper afterwards with `skills/rimworld-art-evaluation/scripts/helper_cost.py`. Full rules and the
+measured incident: `skills/rimworld-art-evaluation/references/subagent_budget.md`.
