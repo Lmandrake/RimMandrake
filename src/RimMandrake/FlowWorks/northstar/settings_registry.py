@@ -36,7 +36,7 @@ def build():
         for f, v in fields.items():
             rows.append({"key": f, "cls": cls, "field": f, "scribe": keys.get(f), "default": v,
                          "flip": (not v) if isinstance(v, bool) else None,
-                         "internal": f in S.INTERNAL_FLAGS})
+                         "internal": f in S.INTERNAL_FLAGS, "unsaved": f in S.UNSAVED_FLAGS})
     return rows
 
 

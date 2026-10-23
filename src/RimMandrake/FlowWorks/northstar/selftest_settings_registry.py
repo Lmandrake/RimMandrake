@@ -46,7 +46,11 @@ def main():
     import collections
     c = collections.Counter(r["key"] for r in R.ROWS)
     check("registry keys unique across sections", all(v == 1 for v in c.values()), [k for k, v in c.items() if v > 1])
-    check("every row has its section's Scribe key", all(r["scribe"] for r in R.ROWS), [r["key"] for r in R.ROWS if not r["scribe"]])
+    check("every row has its section's Scribe key", all(r["scribe"] for r in R.ROWS if not r["unsaved"]),
+          [r["key"] for r in R.ROWS if not r["scribe"] and not r["unsaved"]])
+    check("an unsaved internal flag really has no Scribe key (and is internal)",
+          all(not r["scribe"] and r["internal"] for r in R.ROWS if r["unsaved"]),
+          [(r["key"], r["scribe"]) for r in R.ROWS if r["unsaved"]])
     hose = [r for r in R.ROWS if r["cls"].endswith(".RM_HoseSettings")]
     check("hose section Scribes under hose_ (25 fields: L4 tankModesEnabled + tankLitresPerCycle, L5 freeEndRolesEnabled, L7 dumpLitresPerCycle, L8 hoseHoldsLiquid + hoseLitresPerCell, PIPE_LEVELLING gravityLevellingEnabled + levellingLitresPerCycle)", len(hose) == 25 and all(r["scribe"] == "hose_" + r["field"] for r in hose if not r["internal"]),
           [(r["field"], r["scribe"]) for r in hose][:6])

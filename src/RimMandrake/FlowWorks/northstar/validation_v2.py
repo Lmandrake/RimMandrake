@@ -1229,6 +1229,8 @@ def o2_settings_defaults(spec=None):
     for typ, fields in sorted(census.items()):
         for f, (init, scribe) in sorted(fields.items()):
             if scribe is None:
+                if f in getattr(spec, "UNSAVED_FLAGS", ()):     # harness-only switch, never Scribed by design
+                    continue
                 probs.append("%s: no Scribe_Values.Look with a bool default" % f)
             elif init != scribe:
                 probs.append("%s: initialiser %s != Scribe default %s" % (f, init, scribe))
