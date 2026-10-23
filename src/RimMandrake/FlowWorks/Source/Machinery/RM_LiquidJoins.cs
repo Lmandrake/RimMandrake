@@ -75,6 +75,17 @@ namespace RimMandrake.FlowWorks.Machinery
             return true;
         }
 
+        /// <summary>TANK_FLANGE_FIX_HOVERS_MID_PIPE: cells from the shared footprint edge inward to where the pipe on
+        /// <paramref name="c"/> meets the DRAWN outline of the tank <paramref name="b"/> on c + d (TankArtEdges, measured per look,
+        /// side and lane); 0 for anything unmeasured (machines, other tanks: the footprint edge, as before).</summary>
+        public static double DrawnInset(IntVec3 c, IntVec3 d, Thing b)
+        {
+            if (!(b is LiquidTypes.Building_LiquidTank)) return 0;
+            CellRect r = b.OccupiedRect();
+            int lane = d.z != 0 ? c.x - r.minX : c.z - r.minZ;
+            return TankArtEdges.TryInset(b.def.defName, PipeLook.LookOfThing(b), d.x, d.z, lane, out double inset) ? inset : 0;
+        }
+
         /// <summary>D5 (joints study 2026-10-22): a built pipe pole (never its blueprint or frame) on cell c. The net already joins
         /// a pipe beside it (RM_PipePoles.JoinCells); without this the ground pipe ended in a cap half a cell short of the pole.</summary>
         public static bool PipePoleAt(IntVec3 c, Map map)
@@ -192,9 +203,15 @@ namespace RimMandrake.FlowWorks.Machinery
                             if (RM_LiquidJoins.PartnerAt(c + d, map) == null) continue;
                             Material m = RM_LiquidJoins.Mat("Flange", RM_LiquidJoins.LookOf(t));
                             if (m == null) continue;
-                            LiquidJoinRule.Flange(d.x, d.z, out double ox, out double oz, out double ang);
+                            Thing b = RM_LiquidJoins.PartnerAt(c + d, map);
+                            double pz = 0;
+                            bool riser = RM_MachinerySettings.pipeLinksIntoMachines && RM_LiquidJoins.RiserInto(c, d, b, out pz);
+                            // TANK_FLANGE_FIX_HOVERS_MID_PIPE: the face on the tank's DRAWN outline, not the footprint edge (a riser
+                            // ends on the universal tank's port flange, which the art draws on the edge itself)
+                            if (!LiquidJoinRule.FlangeOnArt(d.x, d.z, riser ? 0 : RM_LiquidJoins.DrawnInset(c, d, b), out double ox, out double oz, out double ang))
+                                continue;   // the sprite covers the whole pipe cell: no visible join
                             Vector3 p = c.ToVector3Shifted() + new Vector3((float)ox, 0f, (float)oz);
-                            if (RM_MachinerySettings.pipeLinksIntoMachines && RM_LiquidJoins.RiserInto(c, d, RM_LiquidJoins.PartnerAt(c + d, map), out double pz))
+                            if (riser)
                                 p.z = (float)pz;   // PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID: on the riser's end, the drawn flange
                             p.y = yPipe;
                             Printer_Plane.PrintPlane(this, p, new Vector2(s, s), m, -(float)ang);
@@ -255,6 +272,8 @@ namespace RimMandrake.FlowWorks.Machinery
 
         private static readonly Vector2[] uvs = new Vector2[4];
 
+        private static bool PipeOn(IntVec3 q, Map map) => q.InBounds(map) && RM_LiquidNet.HasPipe(q, map);
+
         /// <summary>The pipe's straight tile (east-west or north-south) from its own linked atlas, in its own look; null when the
         /// pipe's graphic is not an atlas.</summary>
         public static Material StraightMat(Thing pipe, bool eastWest)
@@ -299,7 +318,16 @@ namespace RimMandrake.FlowWorks.Machinery
                             poly = LiquidJoinRule.RiserStub(c.x, c.z, d.x, d.z, r.minX, r.minZ, r.Width, r.Height, portZ, under);
                             nr++;
                         }
-                        else if (!under) continue;
+                        else if (!under)
+                        {
+                            // TANK_FLANGE_FIX_HOVERS_MID_PIPE: no under-run, so carry the arm on from the edge to the drawn outline
+                            // the flange now sits on (a tank whose art leaves a margin on this side)
+                            if (di >= 4 || !risers) continue;
+                            poly = LiquidJoinRule.ReachStub(c.x, c.z, d.x, d.z, RM_LiquidJoins.DrawnInset(c, d, b));
+                        }
+                        else if (di >= 4 && !LiquidJoinRule.CornerStubWanted(PipeOn(new IntVec3(c.x + d.x, 0, c.z), map),
+                                     PipeOn(new IntVec3(c.x, 0, c.z + d.z), map)))
+                            continue;   // C1_TANK_STUB_PRUNE_PIPE_TO_NOWHERE: a neighbour on the edge already draws this join
                         else poly = di < 4 ? LiquidJoinRule.CentreStub(c.x, c.z, d.x, d.z, r.minX, r.minZ, r.Width, r.Height)
                             : LiquidJoinRule.CornerStub(c.x, c.z, d.x, d.z, r.minX, r.minZ, r.Width, r.Height);
                         foreach (LiquidJoinRule.StubPiece p in LiquidJoinRule.StubPieces(poly))

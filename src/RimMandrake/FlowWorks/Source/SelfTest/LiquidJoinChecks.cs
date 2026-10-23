@@ -154,6 +154,71 @@ namespace RimMandrake.FlowWorks.SelfTest
                 double[] t = LiquidJoinRule.CornerStub(8, 8, -1, -1, 6, 6, 2, 2);
                 Assert(t != null && Near(t[t.Length - 2], 7) && Near(t[t.Length - 1], 7), "a tank's corner pipe runs under to its centre");
             });
+            // TANK_FLANGE_FIX_HOVERS_MID_PIPE (live 2026-10-22, C3 north: the flange of a pipe entering the universal tank from the
+            // south hung ~0.46 cell below the drawn skid, mid-pipe): every tank, look, side and lane puts the flange's face on the
+            // DRAWN outline (TankArtEdges, pinned to the art by FlowWorks/selftest_tank_art_edges.py), or draws none when the
+            // sprite covers the whole pipe cell
+            Case("TankFlange_sits_on_the_drawn_edge_every_tank_look_side_lane", () =>
+            {
+                int checkedN = 0, hidden = 0;
+                foreach (string tank in TankArtEdges.Tanks)
+                    foreach (string look in TankArtEdges.Looks)
+                        foreach (var (dx, dz) in new[] { (0, 1), (0, -1), (1, 0), (-1, 0) })
+                            for (int lane = 0; lane < 2; lane++)
+                            {
+                                // a 2x2 tank at (10,10)-(11,11); the pipe cell on the side the step (dx,dz) enters, on this lane
+                                int cx = dz != 0 ? 10 + lane : dx == 1 ? 9 : 12, cz = dx != 0 ? 10 + lane : dz == 1 ? 9 : 12;
+                                Assert(TankArtEdges.TryInset(tank, look, dx, dz, lane, out double inset), $"{tank} {look}: measured");
+                                // the drawn outline on the pipe's centre line, world cells
+                                double edgeX = dx == 1 ? 10 : dx == -1 ? 12 : 0, edgeZ = dz == 1 ? 10 : dz == -1 ? 12 : 0;
+                                double artX = edgeX + dx * inset, artZ = edgeZ + dz * inset;
+                                bool drawn = LiquidJoinRule.FlangeOnArt(dx, dz, inset, out double ox, out double oz, out double ang);
+                                if (!drawn)
+                                {
+                                    // hidden only when the outline lies at or beyond the pipe cell's far side
+                                    Assert(inset <= -1 + 1e-6, $"{tank} {look} ({dx},{dz}) lane {lane}: no flange though the outline is in the pipe cell (inset {inset:0.000})");
+                                    hidden++;
+                                    continue;
+                                }
+                                double fx = cx + 0.5 + ox + dx * LiquidJoinRule.FlangeSize / 2, fz = cz + 0.5 + oz + dz * LiquidJoinRule.FlangeSize / 2;
+                                Assert(dx != 0 ? Near(fx, artX) && Near(fz, cz + 0.5) : Near(fz, artZ) && Near(fx, cx + 0.5),
+                                    $"{tank} {look} ({dx},{dz}) lane {lane}: face ({fx:0.000},{fz:0.000}) on the drawn edge ({(dx != 0 ? artX : cx + 0.5):0.000},{(dz != 0 ? artZ : cz + 0.5):0.000})");
+                                Assert(Near(ang, dx == 1 ? 0 : dz == 1 ? 90 : dx == -1 ? 180 : 270), "faces the tank");
+                                checkedN++;
+                            }
+                Assert(checkedN + hidden == 4 * 4 * 4 * 2, "every tank x look x side x lane");
+                // can-fail, pinned to the live capture: the Scrapper universal tank's skid is ~0.46 above its footprint, so the
+                // south flange's centre sits 0.5 + 0.46 - 0.25 from the pipe's centre -- the old footprint-edge rule put it at 0.25
+                Assert(TankArtEdges.TryInset("RM_LiquidTank", "Scrapper", 0, 1, 0, out double sc) && sc > 0.40 && sc < 0.50, "Scrapper south inset ~0.46");
+                LiquidJoinRule.FlangeOnArt(0, 1, sc, out _, out double soz, out _);
+                LiquidJoinRule.Flange(0, 1, out _, out double oldOz, out _);
+                Assert(soz > oldOz + 0.4, $"can-fail: the south flange moved up onto the skid ({soz:0.000} vs the footprint edge's {oldOz:0.000})");
+                // the extra-tall tank overhangs its north pipe cell entirely: no flange there
+                Assert(TankArtEdges.TryInset("RM_UniversalCargoTankXTall", "Scrapper", 0, -1, 0, out double xn) && !LiquidJoinRule.FlangeOnArt(0, -1, xn, out _, out _, out _),
+                    "XTall north: the sprite covers the pipe cell, no flange");
+                Assert(!TankArtEdges.TryInset("RM_LiquidPump", "Scrapper", 0, 1, 0, out _), "can-fail: an unmeasured building keeps the footprint edge");
+                // an unstyled tank reads the def's own (Scrapper) art
+                Assert(TankArtEdges.TryInset("RM_LiquidTank", null, 0, 1, 0, out double un) && Near(un, sc), "unstyled = Scrapper");
+                // without the under-run, the arm reaches on to the outline; nothing when the outline is on/outside the edge
+                double[] reach = LiquidJoinRule.ReachStub(10, 9, 0, 1, sc);
+                Assert(reach != null && Near(reach[1], 10) && Near(reach[3], 10 + sc) && Near(reach[0], 10.5) && Near(reach[2], 10.5), "reach: edge to outline");
+                Assert(LiquidJoinRule.ReachStub(10, 12, 0, -1, -0.6) == null, "no reach into an overhang");
+                string joins = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Machinery", "RM_LiquidJoins.cs"));
+                Assert(joins.Contains("LiquidJoinRule.FlangeOnArt(d.x, d.z, riser ? 0 : RM_LiquidJoins.DrawnInset(c, d, b)"),
+                    "can-fail: the section layer prints the flange on the drawn outline");
+                Assert(joins.Contains("poly = LiquidJoinRule.ReachStub(c.x, c.z, d.x, d.z, RM_LiquidJoins.DrawnInset(c, d, b));"), "the stub layer carries the arm to it");
+            });
+            // C1_TANK_STUB_PRUNE_PIPE_TO_NOWHERE (map R C1, 2026-10-22): a pipe past a tank's corner whose own run already meets
+            // the tank along an edge drew a second, dead-end elbow under the tall tank's see-through margin
+            Case("PipeStub_corner_elbow_only_when_not_joined_beside", () =>
+            {
+                Assert(LiquidJoinRule.CornerStubWanted(false, false), "a pipe touching only the corner draws its elbow (owner 2026-10-20)");
+                Assert(!LiquidJoinRule.CornerStubWanted(false, true) && !LiquidJoinRule.CornerStubWanted(true, false),
+                    "can-fail: a pipe beside it on the tank's edge already draws the join");
+                string joins = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Machinery", "RM_LiquidJoins.cs"));
+                Assert(joins.Contains("di >= 4 && !LiquidJoinRule.CornerStubWanted(PipeOn(new IntVec3(c.x + d.x, 0, c.z), map),"),
+                    "the stub layer asks before printing an elbow");
+            });
             Case("PipeStub_wiring_shipped", () =>
             {
                 string joins = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Machinery", "RM_LiquidJoins.cs"));

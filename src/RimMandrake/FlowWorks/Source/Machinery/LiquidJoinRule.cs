@@ -30,6 +30,43 @@ namespace RimMandrake.FlowWorks.Machinery
         }
 
         /// <summary>
+        /// TANK_FLANGE_FIX_HOVERS_MID_PIPE (live 2026-10-22, map C C3 north: a pipe entering the universal tank from the south drew
+        /// its flange on the footprint edge, ~0.46 cell below the drawn skid, mid-pipe): the flange of a pipe cell joining a tank
+        /// on side (dx, dz) sits with its face where the pipe's centre line meets the tank's DRAWN outline, <paramref name="inset"/>
+        /// cells inward from the shared footprint edge (TankArtEdges; negative = the art overhangs the pipe cell). Offset from the
+        /// pipe cell's centre, and the angle (as <see cref="Flange"/>). False = the face lies at or beyond the pipe cell's far side:
+        /// the sprite covers the whole pipe cell there, so there is no visible join to fit.
+        /// </summary>
+        public static bool FlangeOnArt(int dx, int dz, double inset, out double ox, out double oz, out double angleDeg)
+        {
+            Flange(dx, dz, out ox, out oz, out angleDeg);
+            double face = 0.5 + inset;   // from the pipe cell's centre, along (dx, dz)
+            if (face <= -0.5 + 1e-9) return false;
+            double c = face - FlangeSize / 2;
+            ox = dx * c;
+            oz = dz * c;
+            return true;
+        }
+
+        /// <summary>TANK_FLANGE_FIX_HOVERS_MID_PIPE: with the under-run to the centre switched off, the pipe's arm ends on the shared
+        /// edge, short of a drawn outline set <paramref name="inset"/> cells in: the straight piece from the edge on to that outline
+        /// (null when the outline is on or outside the edge).</summary>
+        public static double[] ReachStub(int cx, int cz, int dx, int dz, double inset)
+        {
+            if (Math.Abs(dx) + Math.Abs(dz) != 1) throw new ArgumentException("a reach enters from a cardinal side");
+            if (inset <= 1e-9) return null;
+            double ex = cx + 0.5 + dx * 0.5, ez = cz + 0.5 + dz * 0.5;
+            return new[] { ex, ez, ex + dx * inset, ez + dz * inset };
+        }
+
+        /// <summary>C1_TANK_STUB_PRUNE_PIPE_TO_NOWHERE (map R C1, 2026-10-22: a dead-end L under the tall tank beside the trunk): a
+        /// pipe touching a footprint across a corner draws its <see cref="CornerStub"/> elbow only when it is not already joined
+        /// through a pipe on either cell between it and that corner (<paramref name="pipeBesideX"/> = a pipe on (cx + dx, cz),
+        /// <paramref name="pipeBesideZ"/> = on (cx, cz + dz)): that neighbour shares an edge with the footprint and draws the join,
+        /// so the elbow would be a second, dead-end run under see-through art.</summary>
+        public static bool CornerStubWanted(bool pipeBesideX, bool pipeBesideZ) => !pipeBesideX && !pipeBesideZ;
+
+        /// <summary>
         /// Two footprints (min corner and size, cells) that share an edge (touch cardinally along at least one cell): the
         /// midpoint of the shared segment (world cell units) and the side (unit, from a toward b). False when they overlap,
         /// are apart, or touch only at a corner (a diagonal touch attaches a machine to a tank but has no edge to draw on).
