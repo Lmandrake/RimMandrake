@@ -695,6 +695,9 @@ def main(argv=None):
     ap.add_argument("--no-shots", action="store_true")
     a = ap.parse_args(argv)
     only = [x for x in a.only.split(",") if x] or list(ALL_ROWS)
+    for row in only:        # before any bridge call: an unknown row must not clear a site first
+        if row not in ALL_ROWS + OPT_ROWS:
+            ap.error("unknown row %r (rows: %s)" % (row, ", ".join(ALL_ROWS + OPT_ROWS)))
     ox, oz = map(int, a.origin.split(","))
     L = layout(ox, oz)
     name = a.save_name or "FLOWWORKS_OWNER_REVIEW_%s" % time.strftime("%Y%m%d_%H%M")
