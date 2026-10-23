@@ -39,6 +39,11 @@ check("can-fail: a deep square dry above a shallower wet one is FAIL",
 check("fully dry is UNMEASURED for the order row", D.drawdown_verdict(D.parse(SHAPE.replace("wet=900", "wet=0")))[0] == "UNMEASURED")
 check("shelf cell parses", D.cell_of(s, "shelfCell") == (66, 70) and D.cell_of({}, "shelfCell") is None)
 
+check("isolated: one body of size^2 is PASS", D.isolated_verdict(kv, 72)[0] == "PASS")
+check("can-fail: 1894 cells (joined/stale wild body) is UNMEASURED not a mod FAIL", D.isolated_verdict(D.parse(BODY.replace("cells=5184", "cells=1894")), 72)[0] == "UNMEASURED")
+check("can-fail: 4000 truncated is UNMEASURED", D.isolated_verdict(D.parse(BODY.replace("cells=5184", "cells=4000")), 72)[0] == "UNMEASURED")
+check("REFUSED is UNMEASURED for isolation", D.isolated_verdict(D.parse("REFUSED: x"), 72)[0] == "UNMEASURED")
+
 FULL = "SHAPE wet=5184 dry=0 receded=0 hash=777 hollows=True"
 check("refill to the same hash: PASS", D.refill_verdict(D.parse(FULL), D.parse(FULL))[0] == "PASS")
 check("can-fail: a different hash is FAIL", D.refill_verdict(D.parse(FULL), D.parse(FULL.replace("hash=777", "hash=778")))[0] == "FAIL")
