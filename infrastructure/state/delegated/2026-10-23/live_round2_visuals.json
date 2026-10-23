@@ -1,0 +1,15 @@
+{"judge_model": "claude-opus-5-5", "brief": "design/RimMandrake/art_judge_brief.md@1798323af6", "subject": "live_round2_visuals (Transient/live_batch_20261023/r2)",
+ "verdicts": [
+  {"item": "POLE_CABLE_FIX_FORGOT_TO_SAG", "picture": "Transient/live_batch_20261023/r2/pole_span_after_fix.png", "verdict": "PASS",
+   "notes": "Span is copper/banded Scrapper material matching the ground pipe (B4), no red. It hangs between the two crossarms with a small but visible droop at mid-span and reads as a hung line, not a rigid bar. Flatness is the owner's 2% sag on 5 cells, not judged. Minor, not a fail: each ground pipe stops ~0.2 cell short of its mast base; the join to the mast's grey riser is not drawn."},
+  {"item": "MODERN_TANK_PORT_REDRAW_COUPLER_FLOATS", "picture": "Transient/live_batch_20261023/r2/tank_modern_{208,214,220}_W_E_bothlanes.png", "verdict": "PASS",
+   "notes": "All 12 hose ends (3 tanks x W/E x upper/lower) end in a camlock coupler seated on a drawn dark adapter stub on the tank wall. No hose end is floating or stubbed into a plain wall. The census agrees: every end is 'coupled to <tank>'. The XTall frame crops the tank top (framing only)."}
+ ],
+ "other_pngs": [
+  {"picture": "r2/kludged_repro.png, r2/kludged_repro_zoom.png", "seen": "port-normal end fitting with a straight lead-in stub pointing south toward the canal below where the side-arriving hose joins", "status": "broken, already diagnosed (KLUDGED_HOSE_PRUNE_TAIL_TO_NOWHERE)"},
+  {"picture": "r2/wall_route_r2.png, r2/wall_route_r2_zoom.png", "seen": "hose bend passes over the wall's SW corner", "status": "broken, already filed (HOSE_BEND_FIX_SHAVES_WALL_CORNERS)"},
+  {"picture": "r2/C1_rebuilt_no_tail_61_44.png", "seen": "cyan sprinkler pipe turns into a copper pipe exactly at the elbow; no tail. Material switch at the bend: check whether it is two pipe kinds by design", "status": "possible, unconfirmed"},
+  {"picture": "r2/maxzoom_reel_rs2.png, r2/vanillazoom_reel_rs11.png", "seen": "open hose ends lying loose on the ground at the lower left of the land strip (end Open, plausibly by design); 'Colonist stuck in a pit' alert on the test tier", "status": "not judged broken"},
+  {"picture": "r2/C5_rebuilt_no_tail_131_41.png, r2/dome_area.png, r2/dome_muffalo_repro.png, r2/dome_muffalo_compare.png, r2/art_resolution_sim.png", "seen": "nothing broken; the dome is the vanilla Muffalo's rear, as diagnosed", "status": "ok"}
+ ],
+ "proposals": []}
