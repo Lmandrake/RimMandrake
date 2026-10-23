@@ -147,6 +147,7 @@
     <Compile Include="..\Hose\HoseStyles.cs" />
     <Compile Include="..\Machinery\PipeStyles.cs" />
     <Compile Include="..\Machinery\LiquidJoinRule.cs" />
+    <Compile Include="..\Machinery\TankArtEdges.cs" />
     <Compile Include="..\Machinery\RM_PumpPortMath.cs" />
     <Compile Include="..\Hose\HoseCarry.cs" />
     <Compile Include="..\Hose\HoseLive.cs" />
