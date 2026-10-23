@@ -395,11 +395,17 @@
 !/live_batch_20261023/r2/kludged_census.txt
 !/live_batch_20261023/r2/kludged_repro.png
 !/live_batch_20261023/r2/kludged_repro_zoom.png
+!/live_batch_20261023/r2/level_after_walkgaps.json
+!/live_batch_20261023/r2/level_after_walkgaps_watch.log
+!/live_batch_20261023/r2/level_rehearsal_pitfall.json
+!/live_batch_20261023/r2/level_watch_pitfall.log
 !/live_batch_20261023/r2/mapC_terrain.txt
 !/live_batch_20261023/r2/modern_upper_census.txt
 !/live_batch_20261023/r2/tank_modern_208_W_E_bothlanes.png
 !/live_batch_20261023/r2/tank_modern_214_W_E_bothlanes.png
 !/live_batch_20261023/r2/tank_modern_220_W_E_bothlanes.png
+!/live_batch_20261023/r2/walk_gaps_pitfall_rerun.json
+!/live_batch_20261023/r2/walkgaps_pitfall_watch.log
 !/live_batch_20261023/relay_C_west_inlet_fresh.png
 !/live_batch_20261023/snapshot_wall_route.png
 !/live_batch_20261023/tank_modern_ibc_W_E.png
