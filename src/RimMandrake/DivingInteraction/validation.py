@@ -1,11 +1,11 @@
 """validation.py -- modcheck suite for DivingInteraction (mandrake.rm.divinginteraction).
 
-First script for this mod; covers SEABED_PER_SEA_FLOORS_1 only: each terminal sea's surface
-biome must carry RM_SeabedAccessExtension.floorBiome naming its own RM_SeabedFloor_<Sea>
-biome (Patches/RM_SeabedFloorBiomeWiring.xml). Pure def-state check; no live run recorded yet.
+Chains: per-sea floor wiring (SEABED_PER_SEA_FLOORS_1: each terminal sea's surface biome names its own
+RM_SeabedFloor_<Sea> through RM_SeabedAccessExtension.floorBiome), the Scald and Chill floor mechanics, the
+layer generators, floor life and catch carryover, toggle gates, shipped defs, and the Grey floor as a place.
 """
-# DIVINGINTERACTION_COVERAGE_GAPS_1: the `toggle_gates` chain below asserts that each of the eleven
-# Mod Settings toggles gates its behaviour in source and flips live. UNCOVERED on purpose:
+# DIVINGINTERACTION_COVERAGE_GAPS_1: the `toggle_gates` chain below asserts that each Mod Settings toggle in
+# TOGGLE_GATES gates its behaviour in source and flips live. UNCOVERED on purpose:
 # RM_SeaDiveHatch enter/descent (retired, SEA_DIVE_HATCH_RETIRE_1). UNMEASURED: live floor content and
 # floor animal count off the Grey: chain grey_floor_is_a_place generates a floor map directly (layer=, 2026-10-06).
 from modcheck import Suite, ExpectationFailed
@@ -328,7 +328,7 @@ def seabed_floor_ambient_carryover(t):
         if len(pocket) != 4 or None in pocket.values():  # sanity probe: the instrument sees four hatch temperatures
             raise ExpectationFailed("expected 4 hatch temperatures, read %r" % pocket)
         bad = {s: (pocket.get(s), const.get(f)) for s, f in SEAS.items()
-               if const.get(f) is None or float(const[f]) != float(pocket.get(s))}
+               if const.get(f) is None or pocket.get(s) is None or float(const[f]) != float(pocket[s])}
         if bad:
             raise ExpectationFailed("floor temperature differs from the hatch's: %r" % bad)
         t.screenshot()

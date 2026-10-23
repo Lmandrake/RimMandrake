@@ -25,7 +25,6 @@ import sys
 import xml.etree.ElementTree as ET
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 
 
 SETTINGS = ["homeFilterEnabled", "deepOreFactorsEnabled", "richDeepOreFactor", "mineralDevoidEnabled", "spacerDepositsEnabled",
