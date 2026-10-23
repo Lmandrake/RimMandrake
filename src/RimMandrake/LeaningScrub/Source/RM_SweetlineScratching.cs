@@ -145,10 +145,6 @@ namespace RimMandrake.LeaningScrub
                 {
                     continue;
                 }
-                if (Awake(tree))
-                {
-                    continue;
-                }
                 if (pawn.Faction == Faction.OfPlayer && !tree.Position.InAllowedArea(pawn))
                 {
                     continue;
@@ -160,14 +156,7 @@ namespace RimMandrake.LeaningScrub
                 best = d;
                 found = tree;
             }
-            return found == null ? "no reachable, calm sweetline tree within " + range.ToString("F0") + " cells" : null;
-        }
-
-        /// <summary>An animal walking into a warden fight looks wrong: an awake roost is skipped.</summary>
-        public static bool Awake(Thing tree)
-        {
-            RM_CompGuardianRoost roost = tree.TryGetComp<RM_CompGuardianRoost>();
-            return roost != null && RM_SweetlineGuardianRules.StageOf(roost.Disturbance) >= 3;
+            return found == null ? "no reachable sweetline tree within " + range.ToString("F0") + " cells" : null;
         }
 
         /// <summary>The rub's end: drop most of the coat at the trunk, felt the rest, zero the coat.</summary>
@@ -255,7 +244,7 @@ namespace RimMandrake.LeaningScrub
         protected override IEnumerable<Toil> MakeNewToils()
         {
             this.FailOnDespawnedOrNull(TargetIndex.A);
-            this.FailOn(() => !RM_SweetlineScratching.On || RM_SweetlineScratching.Awake(job.targetA.Thing));
+            this.FailOn(() => !RM_SweetlineScratching.On);
             yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch);
             Toil rub = Toils_General.Wait(RubTicks, TargetIndex.A);
             rub.WithProgressBarToilDelay(TargetIndex.A);

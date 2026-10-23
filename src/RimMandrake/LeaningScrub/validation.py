@@ -71,8 +71,6 @@ DEFAULTS = {
     "drippingRegrowEnabled": True, "crownMobEnabled": True, "runwayBloomEnabled": True,
     "sweetlineStationsEnabled": True, "sweetlineVisitorsEnabled": True, "sweetlineVisitIntervalDays": 8.0,
     "visslerArmFoodEnabled": True,
-    "sweetlineGuardiansEnabled": True, "sweetlineGuardianMaxPerTree": 3, "sweetlineHarvestDisturbance": 1.0,
-    "sweetlineForgivenessDays": 5.0, "sweetlineProximityCharge": False,
     "sweetlineScratchingEnabled": True, "sweetlineCoatReady": 0.8, "sweetlineFeltShare": 0.2,
     "sweetlineTreeMapChance": 0.25, "sweetlineFeltComfortEnabled": True, "sweetlineFeltApparelEnabled": True,
     "fireStampEnabled": True,
@@ -1881,26 +1879,6 @@ def sweetline_chain(t):
                 if not tree:
                     _unmeasured(t, "the sweetline tree did not stand after set_plants")
                 ids["tree"] = tree[0]["id"]
-        # SHRUBLAND_TREE_GUARDIAN_1: a newly spawned tree roosts 2-3 sleeping bark-wardens (owner card
-        # 2026-10-03: visible, asleep against the trunk, "Roosting in the crown of <tree>" when selected).
-        # Not yet proven here (first pokes, in order): a colonist harvesting the tree -> "stirring" then
-        # "restless" messages then RM_RoostDefence on the wardens at ~60% of the work; the colonist walking
-        # 19 cells off -> recovery and re-roost once the bar drains under 30%; Hunt on a sleeper (UNMEASURED).
-        with _comp(t, "guardians_roost_on_spawn", toggle="sweetlineGuardiansEnabled"):
-            if _live(t):
-                # a warden is a PAWN: jawa/list_things does not list pawns (list_pawns carries kindDef), so the first live
-                # run read 0 wardens whether or not any roosted (2026-10-03)
-                wardens = [w for w in _rows(t, "%d,%d,9,9" % (x - 4, z - 4)).values() if w.get("kindDef") == "RM_Barkwarden"]
-                _note(t, "bark-wardens within 4 of a fresh sweetline tree", [w.get("id") for w in wardens])
-                if not 2 <= len(wardens) <= 3:
-                    _fail("a freshly spawned sweetline tree roosts %d bark-wardens (expect 2-3)" % len(wardens))
-                for w in wardens:
-                    _, wl = _inspect(t, w["id"])
-                    if not re.search(r"Roosting in the crown of ", " ".join(wl)):
-                        _fail("bark-warden %s is not roosting: inspect %s" % (w.get("id"), wl))
-                _, tl = _inspect(t, ids["tree"])
-                if not re.search(r"Bark-wardens roost here \((2|3)\)\. Calm\.", " ".join(tl)):
-                    _fail("tree inspect carries no calm roost line: %s" % tl)
         with _comp(t, "station_named_and_timed", toggle="sweetlineStationsEnabled"):
             if _live(t):
                 label, lines = _inspect(t, ids["tree"])
@@ -2044,58 +2022,6 @@ def sweetline_chain(t):
                 m = re.match(r"PLANTED (\d+)$", text)
                 if not m or not 1 <= int(m.group(1)) <= 2:
                     _fail("the sweetline map step at chance 1 planted %s (expect 1-2 trees)" % text)
-        # SCRUB_WARDEN_FIX_TAMED_BOSS_STILL_REIGNS A1. Pre-fix, IsLead ignored faction: a tamed first warden stayed the
-        # lead until the tree's next Long-tick prune (up to 2000 ticks), and the lead is the only warden that watches the
-        # trunk, so a colonist could cut the tree unwatched. The C# hook tames the first warden with NO prune and reads
-        # the lead; the cut arm then reads the meter rising inside one prune window.
-        def warden(mode):
-            r = t.bridge_call("jawa/static_call", type="RimMandrake.LeaningScrub.RM_CompGuardianRoost",
-                              method="ProofWarden", args="%s@%d,%d" % (mode, x, z))
-            return str((r or {}).get("result", "")) or "no result: %r" % (r,)
-        try:
-            with _comp(t, "warden_tamed_lead_hands_over", toggle="sweetlineGuardiansEnabled"):
-                if _live(t):
-                    text = warden("tame")
-                    _note(t, "tame the first warden, read the lead", text)
-                    if text.startswith("FAIL"):
-                        _fail(text)
-                    if not text.startswith("PASS"):
-                        _unmeasured(t, text[:300])
-                    ids["tamed"] = True
-            with _comp(t, "warden_tamed_tree_still_watched", toggle="sweetlineGuardiansEnabled"):
-                if _live(t):
-                    if not ids.get("tamed"):
-                        _unmeasured(t, "warden_tamed_lead_hands_over tamed no warden")
-                    d0 = re.search(r"disturbance=([0-9.]+)", warden("read"))
-                    col = _spawn(t, "Colonist", x - 1, z, faction="player")
-                    _full(t, col)
-                    t.bridge_call("jawa/designate_batch", action="add", designation="CutPlant", rect="%d,%d,1,1" % (x, z))
-                    t.bridge_call("jawa/ordered_job", pawnId=col, jobDef="CutPlant", targetAId=ids["tree"], queue=True,
-                                  waitTicks=60)
-                    # LIES: a Long-tick prune inside the window also hands the lead over on the pre-fix code, so a rise
-                    # alone is not the fix: the lead read above is the decisive half. Stop at the first rise so the
-                    # wardens never reach the rage stage and the tree is never felled.
-                    trail, d = [], 0.0
-                    for _step in range(8):
-                        t.wait_ticks(120)
-                        m = re.search(r"disturbance=([0-9.]+)", warden("read"))
-                        d = float(m.group(1)) if m else 0.0
-                        trail.append((d, (_jobs(t).get(col) or "?")))
-                        if d > (float(d0.group(1)) if d0 else 0.0):
-                            break
-                    t.bridge_call("jawa/stop_job", pawnId=col)
-                    t.bridge_call("jawa/designate_batch", action="remove", designation="CutPlant", rect="%d,%d,1,1" % (x, z))
-                    _note(t, "disturbance while a colonist cuts the tree, tamed first warden (meter, colonist job)", trail)
-                    if not _things(t, TREE, "%d,%d,1,1" % (x, z)):
-                        _unmeasured(t, "the tree fell inside the window: no meter left to read")
-                    if not any(str(j).startswith("CutPlant") for _d, j in trail):
-                        _unmeasured(t, "the colonist never took the CutPlant job: %r" % trail)
-                    if d <= (float(d0.group(1)) if d0 else 0.0):
-                        _fail("a colonist cut the tree for %d ticks and the meter never rose (tamed first warden): %r"
-                              % (120 * len(trail), trail))
-        finally:
-            if _live(t):
-                warden("calm")
     _stable(t, body)
 
 

@@ -83,12 +83,6 @@ namespace RimMandrake.LeaningScrub
         public static bool sweetlineStationsEnabled = true;
         public static bool sweetlineVisitorsEnabled = true;
         public static float sweetlineVisitIntervalDays = 8f;
-        // SHRUBLAND_TREE_GUARDIAN_1 (RM_SweetlineGuardians.cs)
-        public static bool sweetlineGuardiansEnabled = true;
-        public static int sweetlineGuardianMaxPerTree = 3;
-        public static float sweetlineHarvestDisturbance = 1f;
-        public static float sweetlineForgivenessDays = 5f;
-        public static bool sweetlineProximityCharge = false;
         // SWEETLINE_SCRATCHING_TREE_BUILD_1 (RM_SweetlineScratching.cs)
         public static bool sweetlineScratchingEnabled = true;
         public static float sweetlineCoatReady = 0.8f;
@@ -191,11 +185,6 @@ namespace RimMandrake.LeaningScrub
             Scribe_Values.Look(ref sweetlineStationsEnabled, "sweetlineStationsEnabled", true, true);
             Scribe_Values.Look(ref sweetlineVisitorsEnabled, "sweetlineVisitorsEnabled", true, true);
             Scribe_Values.Look(ref sweetlineVisitIntervalDays, "sweetlineVisitIntervalDays", 8f, true);
-            Scribe_Values.Look(ref sweetlineGuardiansEnabled, "sweetlineGuardiansEnabled", true, true);
-            Scribe_Values.Look(ref sweetlineGuardianMaxPerTree, "sweetlineGuardianMaxPerTree", 3, true);
-            Scribe_Values.Look(ref sweetlineHarvestDisturbance, "sweetlineHarvestDisturbance", 1f, true);
-            Scribe_Values.Look(ref sweetlineForgivenessDays, "sweetlineForgivenessDays", 5f, true);
-            Scribe_Values.Look(ref sweetlineProximityCharge, "sweetlineProximityCharge", false, true);
             Scribe_Values.Look(ref sweetlineScratchingEnabled, "sweetlineScratchingEnabled", true, true);
             Scribe_Values.Look(ref sweetlineCoatReady, "sweetlineCoatReady", 0.8f, true);
             Scribe_Values.Look(ref sweetlineFeltShare, "sweetlineFeltShare", 0.2f, true);
@@ -251,8 +240,8 @@ namespace RimMandrake.LeaningScrub
         /// <summary>SETTINGS_KIT_BUILD_GREY_SWITCHES_AT_LAST: the master switch and each per-feature toggle with what it governs.
         /// "Mod enabled" gates every other setting (all read sites test modEnabled first), so turning it off greys the rest and keeps their values.</summary>
         internal static readonly RimMandrake.Shared.SettingDependencies Masters = new RimMandrake.Shared.SettingDependencies()
-            .Declare("modEnabled", "venomvinePassabilityEnabled", "stallFreezeEnabled", "stallFreezeMaxBodySize", "galeDeafenEnabled", "galeTurbineSurgeEnabled", "galeTurbineSurgeFactor", "galeTurbineBreakdownMtbDays", "galeRaidWeightingEnabled", "galeRaidWeightFactor", "twitcherLashEnabled", "twitcherLashDamageFactor", "twitcherLashRecoveryFactor", "smotherCraftEnabled", "smotherDays", "smotherYieldFactor", "leanEnabled", "leanScentEnabled", "leanScentRange", "leanFireEnabled", "leanFireBias", "leanWakesEnabled", "leanPlantsEnabled", "galeDustOverlayEnabled", "drippingRegrowEnabled", "crownMobEnabled", "runwayBloomEnabled", "sweetlineStationsEnabled", "sweetlineVisitorsEnabled", "sweetlineVisitIntervalDays", "sweetlineGuardiansEnabled", "sweetlineGuardianMaxPerTree", "sweetlineHarvestDisturbance", "sweetlineForgivenessDays", "sweetlineProximityCharge", "sweetlineScratchingEnabled", "sweetlineCoatReady", "sweetlineFeltShare", "sweetlineTreeMapChance", "sweetlineFeltComfortEnabled", "sweetlineFeltApparelEnabled", "visslerArmFoodEnabled", "fireStampEnabled", "rippleEnabled", "rippleMaxBodySize", "stallHuntEnabled", "callingPyreEnabled", "callingPyreRadius", "callingPyreHerdFactor", "scrubInjectionsEnabled", "scrubRuinsPerMap", "scrubCampsEnabled", "rearingEnabled", "rearingHours", "walkingEnabled", "walkingMaxCellsPerMap", "hoardEnabled", "hoardGrowInHours", "hoardKeepsDeadGear", "quenchEnabled", "quenchRecoveryDays", "swornSparesMarkedEnabled", "sheddingEnabled", "stranglerEnabled", "stranglerDamageFactor", "stranglerAutoTrim", "weeperEnabled", "weeperPollutes", "sleeperEnabled", "lureEnabled", "sheddingLength", "venomvineIslandsEnabled", "venomvineIslandShare", "venomvineIslandsMin", "venomvineIslandsMax", "venomvineIslandMaxCells", "venomvineIslandRoomsEnabled", "venomvineStartClearance", "venomvineCreepEnabled", "venomvineCreepDays", "venomvineCreepDownwindShare", "venomvineCreepCap")
-            .Declare("sweetlineStationsEnabled", "sweetlineVisitorsEnabled", "sweetlineVisitIntervalDays", "sweetlineGuardiansEnabled", "sweetlineGuardianMaxPerTree", "sweetlineHarvestDisturbance", "sweetlineForgivenessDays", "sweetlineProximityCharge", "sweetlineScratchingEnabled", "sweetlineCoatReady", "sweetlineFeltShare", "sweetlineTreeMapChance")
+            .Declare("modEnabled", "venomvinePassabilityEnabled", "stallFreezeEnabled", "stallFreezeMaxBodySize", "galeDeafenEnabled", "galeTurbineSurgeEnabled", "galeTurbineSurgeFactor", "galeTurbineBreakdownMtbDays", "galeRaidWeightingEnabled", "galeRaidWeightFactor", "twitcherLashEnabled", "twitcherLashDamageFactor", "twitcherLashRecoveryFactor", "smotherCraftEnabled", "smotherDays", "smotherYieldFactor", "leanEnabled", "leanScentEnabled", "leanScentRange", "leanFireEnabled", "leanFireBias", "leanWakesEnabled", "leanPlantsEnabled", "galeDustOverlayEnabled", "drippingRegrowEnabled", "crownMobEnabled", "runwayBloomEnabled", "sweetlineStationsEnabled", "sweetlineVisitorsEnabled", "sweetlineVisitIntervalDays", "sweetlineScratchingEnabled", "sweetlineCoatReady", "sweetlineFeltShare", "sweetlineTreeMapChance", "sweetlineFeltComfortEnabled", "sweetlineFeltApparelEnabled", "visslerArmFoodEnabled", "fireStampEnabled", "rippleEnabled", "rippleMaxBodySize", "stallHuntEnabled", "callingPyreEnabled", "callingPyreRadius", "callingPyreHerdFactor", "scrubInjectionsEnabled", "scrubRuinsPerMap", "scrubCampsEnabled", "rearingEnabled", "rearingHours", "walkingEnabled", "walkingMaxCellsPerMap", "hoardEnabled", "hoardGrowInHours", "hoardKeepsDeadGear", "quenchEnabled", "quenchRecoveryDays", "swornSparesMarkedEnabled", "sheddingEnabled", "stranglerEnabled", "stranglerDamageFactor", "stranglerAutoTrim", "weeperEnabled", "weeperPollutes", "sleeperEnabled", "lureEnabled", "sheddingLength", "venomvineIslandsEnabled", "venomvineIslandShare", "venomvineIslandsMin", "venomvineIslandsMax", "venomvineIslandMaxCells", "venomvineIslandRoomsEnabled", "venomvineStartClearance", "venomvineCreepEnabled", "venomvineCreepDays", "venomvineCreepDownwindShare", "venomvineCreepCap")
+            .Declare("sweetlineStationsEnabled", "sweetlineVisitorsEnabled", "sweetlineVisitIntervalDays", "sweetlineScratchingEnabled", "sweetlineCoatReady", "sweetlineFeltShare", "sweetlineTreeMapChance")
             .Declare("leanEnabled", "leanScentEnabled", "leanScentRange", "leanFireEnabled", "leanFireBias", "leanPlantsEnabled")
             .Declare("stallFreezeEnabled", "stallFreezeMaxBodySize")
             .Declare("galeTurbineSurgeEnabled", "galeTurbineSurgeFactor", "galeTurbineBreakdownMtbDays")
@@ -262,7 +251,6 @@ namespace RimMandrake.LeaningScrub
             .Declare("leanScentEnabled", "leanScentRange")
             .Declare("leanFireEnabled", "leanFireBias")
             .Declare("sweetlineVisitorsEnabled", "sweetlineVisitIntervalDays")
-            .Declare("sweetlineGuardiansEnabled", "sweetlineGuardianMaxPerTree", "sweetlineHarvestDisturbance", "sweetlineForgivenessDays", "sweetlineProximityCharge")
             .Declare("sweetlineScratchingEnabled", "sweetlineCoatReady", "sweetlineFeltShare")
             .Declare("rippleEnabled", "rippleMaxBodySize")
             .Declare("callingPyreEnabled", "callingPyreRadius", "callingPyreHerdFactor")
@@ -483,9 +471,9 @@ namespace RimMandrake.LeaningScrub
                 }
             }
 
-            if (Group(list, "Sweetline trees", RimMandrake.Shared.SettingScope.Now, new[] { "sweetlineStationsEnabled", "sweetlineVisitorsEnabled", "sweetlineGuardiansEnabled", "sweetlineProximityCharge", "sweetlineFeltComfortEnabled", "sweetlineFeltApparelEnabled", "sweetlineScratchingEnabled", "sweetlineVisitIntervalDays", "sweetlineGuardianMaxPerTree", "sweetlineHarvestDisturbance", "sweetlineForgivenessDays", "sweetlineCoatReady", "sweetlineFeltShare" }))
+            if (Group(list, "Sweetline trees", RimMandrake.Shared.SettingScope.Now, new[] { "sweetlineStationsEnabled", "sweetlineVisitorsEnabled", "sweetlineFeltComfortEnabled", "sweetlineFeltApparelEnabled", "sweetlineScratchingEnabled", "sweetlineVisitIntervalDays", "sweetlineCoatReady", "sweetlineFeltShare" }))
             {
-                using (Dependent(list, "sweetlineStationsEnabled", "sweetlineVisitorsEnabled", "sweetlineGuardiansEnabled", "sweetlineProximityCharge", "sweetlineFeltComfortEnabled", "sweetlineFeltApparelEnabled", "sweetlineScratchingEnabled", "sweetlineVisitIntervalDays", "sweetlineGuardianMaxPerTree", "sweetlineHarvestDisturbance", "sweetlineForgivenessDays", "sweetlineCoatReady", "sweetlineFeltShare"))
+                using (Dependent(list, "sweetlineStationsEnabled", "sweetlineVisitorsEnabled", "sweetlineFeltComfortEnabled", "sweetlineFeltApparelEnabled", "sweetlineScratchingEnabled", "sweetlineVisitIntervalDays", "sweetlineCoatReady", "sweetlineFeltShare"))
                 {
                     list.CheckboxLabeled("Named sweetline trees", ref sweetlineStationsEnabled,
                         "Every sweetline tree carries a name and a short remembered history, and lets go "
@@ -499,32 +487,13 @@ namespace RimMandrake.LeaningScrub
                         list.Label("Days between visits (average): " + sweetlineVisitIntervalDays.ToString("F0"));
                         sweetlineVisitIntervalDays = Mathf.Round(list.Slider(sweetlineVisitIntervalDays, 2f, 30f));
                     }
-                    list.CheckboxLabeled("Bark-wardens guard sweetline trees", ref sweetlineGuardiansEnabled,
-                        "Two or three bark-wardens roost asleep on every newly spawned sweetline tree. Working the tree "
-                        + "(harvest or cut) or wounding it disturbs them: they stir, turn restless, then drop on whoever "
-                        + "did it. Walking past only makes them watch. Off: no new wardens spawn and existing ones wake "
-                        + "as ordinary wild animals (none are removed). Affects newly spawned sweetline trees; not worldgen. "
-                        + "Needs named sweetline trees on.");
-                    if (sweetlineGuardiansEnabled)
-                    {
-                        list.Label("Most bark-wardens per tree: " + sweetlineGuardianMaxPerTree + " (each tree rolls 2-3)");
-                        sweetlineGuardianMaxPerTree = Mathf.RoundToInt(list.Slider(sweetlineGuardianMaxPerTree, 0f, 4f));
-                        list.Label("How fast harvesting disturbs them: x" + sweetlineHarvestDisturbance.ToString("0.0")
-                            + (sweetlineHarvestDisturbance <= 0f ? " (harvest is never harm)" : ""));
-                        sweetlineHarvestDisturbance = list.Slider(sweetlineHarvestDisturbance, 0f, 3f);
-                        list.Label("Days for a disturbed tree to calm: " + sweetlineForgivenessDays.ToString("0"));
-                        sweetlineForgivenessDays = Mathf.Round(list.Slider(sweetlineForgivenessDays, 1f, 30f));
-                        list.CheckboxLabeled("Bark-wardens also rouse at anyone who lingers under the tree", ref sweetlineProximityCharge,
-                            "Off (default, the owner's ruling): walking up only makes them watch. On: a person within 9 cells "
-                            + "slowly disturbs them too (about five hours of loitering fills the bar), with the same warnings.");
-                    }
                     list.CheckboxLabeled("Sweetline felt furniture is more comfortable", ref sweetlineFeltComfortEnabled,
                         "Chairs, beds and other furniture made of sweetline felt get +0.10 comfort.");
                     list.CheckboxLabeled("Sweetline felt clothing lifts the mood", ref sweetlineFeltApparelEnabled,
                         "Anyone wearing at least one piece made of sweetline felt is a little happier (+2), however many "
                         + "pieces they wear.");
                     list.CheckboxLabeled("Animals scratch their coats off on sweetline trees", ref sweetlineScratchingEnabled,
-                        "Any animal with a shearable coat (wild or tame, any wool) now and then walks to a calm sweetline tree "
+                        "Any animal with a shearable coat (wild or tame, any wool) now and then walks to a sweetline tree "
                         + "within 60 cells and rubs its coat off: most of it drops beside the trunk, the rest felts into the "
                         + "bark and comes out with the next harvest. Wild animals grow their coats while this is on and a "
                         + "sweetline tree stands anywhere. Penned animals only reach a tree inside their pen. "

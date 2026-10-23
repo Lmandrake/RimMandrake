@@ -421,17 +421,6 @@ class Fake(object):
             if args != "off":
                 return {"success": True, "result": "PASS hunting=True" if hunts else "FAIL: a stall hunter did not hunt"}
             return {"success": True, "result": "FAIL: stallHuntEnabled off but the hawk hunted" if hunts else "PASS off hunting=False"}
-        if method == "ProofWarden":
-            mode = args.split("@")[0]
-            if mode == "tame":
-                return {"success": True, "result": "FAIL: the tamed warden is still the lead leadBefore=True tamedIsLead=True"
-                        if "tamed_still_leads" in self.broken else
-                        "PASS leadBefore=True tamedIsLead=False nextIsLead=True listed=True"}
-            if mode == "read":
-                cut = getattr(self, "cut_from", None)
-                d = 0.1 if (cut is not None and self.ticks >= cut + 120 and "tamed_tree_unwatched" not in self.broken) else 0.0
-                return {"success": True, "result": "disturbance=%.3f live=2" % d}
-            return {"success": True, "result": "CALM removed=1"}
         if method == "ProofManhunter":
             return {"success": True, "result": "FAIL: the manhunter was ordered to flee calmJob=Flee rageState=Manhunter rageJob=Flee"
                     if "bloom_scares_manhunter" in self.broken else
@@ -558,11 +547,6 @@ class Fake(object):
                     tid = self.new(d, cx, cz, growth=growth, stackCount=1)
                     if d == V.TREE:
                         self.things[tid]["wool"] = self.ticks + 3 * 60000     # staggered first shed
-                        if self.on("sweetlineGuardiansEnabled") and "no_roost" not in self.broken:
-                            for dx in (1, -1):                                # two roosting bark-wardens
-                                wid = self.new("RM_Barkwarden", cx + dx, cz, stackCount=1)   # inspectable thing ...
-                                self.pawns[wid] = dict(id=wid, kind="RM_Barkwarden", x=cx + dx, z=cz, faction="none",
-                                                       dead=False, hediffs=[], flee_until=0)   # ... and a pawn row (the suite lists pawns)
         return {"success": True}
 
     def t_pawn_force_incapacitate(self, pawn=None, action=None, **k):
@@ -613,10 +597,6 @@ class Fake(object):
         kind = {"RM_SmotherVenomvine": "smother", "Refuel": "refuel", "Harvest": "harvest"}.get(jobDef)
         if kind == "refuel" and 20 - self.fuel(targetAId) < 1:   # JobDriver_Refuel ends on CompRefuelable.IsFull
             return {"success": False, "accepted": True, "afterJobDef": "Wait_MaintainPosture"}
-        if jobDef == "CutPlant":       # SCRUB_WARDEN_FIX_TAMED_BOSS_STILL_REIGNS: the cut arm (ProofWarden read)
-            self.cut_from = self.ticks
-            self.pawns[pawnId]["job"] = "CutPlant"
-            return {"success": True, "accepted": True, "nowRunningRequested": True}
         self.jobs[pawnId] = {"kind": kind, "a": targetAId, "b": targetBId, "left": 800}
         return {"success": True, "accepted": True, "nowRunningRequested": True}
 
@@ -656,14 +636,10 @@ class Fake(object):
             lines = ["Loose sweetline felt falls in 4 days."]
             if t.get("felt", 0) >= 1:
                 lines.append("Felted into the bark: %d (harvestable)." % int(t["felt"]))
-            if self.on("sweetlineGuardiansEnabled") and "no_roost" not in self.broken:
-                lines.append("Bark-wardens roost here (2). Calm.")
             if t.get("visits") and (self.on("sweetlineVisitorsEnabled") or "visitors_ignore_toggle" in self.broken):
                 lines.insert(0, "Visitors remembered: %d camps, 0 pilgrims." % t["visits"])
         elif d == V.TREE:
             label = "sweetline tree"
-        elif d == "RM_Barkwarden":
-            label, lines = "bark-warden", ["Roosting in the crown of Ashveil."]
         return {"success": True, "things": [{"id": t["id"], "label": label, "inspect": lines}]}
 
 
@@ -694,9 +670,6 @@ def run(broken=()):
 # break -> the component that must go FAIL
 BREAKS = {
     "missing_def": "defs.defs_resolve",
-    "no_roost": "sweetline.guardians_roost_on_spawn",
-    "tamed_still_leads": "sweetline.warden_tamed_lead_hands_over",
-    "tamed_tree_unwatched": "sweetline.warden_tamed_tree_still_watched",
     "pyre_counts_fires": "edge_fixes.pyre_thin_line_follows_blaze",
     "bloom_scares_manhunter": "edge_fixes.bloom_spares_manhunter",
     "genstep_tidies": "edge_fixes.map_step_refuses_pawn_cell",

@@ -2,7 +2,6 @@
 //   lean      heading lock, alignment, scent threat, downwind fire pick, step rounding, the Shed V (RM_LeanKernel)
 //   smother   the claim clock / maturation gate / yield and stacks (RM_SmotherKernel), as action sequences
 //   blaze     the open-fire cluster, stamper dispatch and the one-message-per-blaze rule (RM_BlazeKernel)
-//   guardian  the bark-warden disturbance meter, stages, forgiveness and the double-roost rule (RM_GuardianKernel)
 //   forms     scratch clocks, lash, rearing, quench, the hoard grow-in clock (RM_FormsKernel), as action sequences
 //   walk      the walking stands' march: stands, leading edge, runners, cap, tail dying (RM_FormsKernel.Walk)
 //   coat      the coat rub, the felt store and the runway bloom cooldown / delayed answers (RM_CoatKernel)

@@ -66,30 +66,6 @@
   "new": "ClusterRadius"
  },
  {
-  "name": "guardian: stage never falls",
-  "file": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_GuardianKernel.cs",
-  "old": "newStage = Math.Min(stage, StageOf(newMeter));",
-  "new": "newStage = stage;"
- },
- {
-  "name": "guardian: roost without wardens is disturbed",
-  "file": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_GuardianKernel.cs",
-  "old": "if (amount <= 0f || !spawned || !on || liveWardens == 0) return false;",
-  "new": "if (amount <= 0f || !spawned || !on) return false;"
- },
- {
-  "name": "guardian: two roosts yield to each other",
-  "file": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_GuardianKernel.cs",
-  "old": "&& otherId < myId;",
-  "new": "&& otherId != myId;"
- },
- {
-  "name": "guardian: forgiveness runs while raging",
-  "file": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_GuardianKernel.cs",
-  "old": "if (anyRaging || meter <= 0f) return;",
-  "new": "if (meter <= 0f) return;"
- },
- {
   "name": "forms: thorns hurt at exactly the minimum growth",
   "file": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_FormsKernel.cs",
   "old": "return growth >= minGrowth && !spared && due;",

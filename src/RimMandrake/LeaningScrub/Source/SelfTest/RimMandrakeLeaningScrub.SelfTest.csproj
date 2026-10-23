@@ -25,7 +25,6 @@
     <Compile Include="..\Kernel\RM_LeanKernel.cs" />
     <Compile Include="..\Kernel\RM_SmotherKernel.cs" />
     <Compile Include="..\Kernel\RM_BlazeKernel.cs" />
-    <Compile Include="..\Kernel\RM_GuardianKernel.cs" />
     <Compile Include="..\Kernel\RM_FormsKernel.cs" />
     <Compile Include="..\Kernel\RM_CoatKernel.cs" />
     <Compile Include="..\Kernel\RM_FourFormsKernel.cs" />

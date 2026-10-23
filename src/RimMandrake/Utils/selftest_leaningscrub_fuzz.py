@@ -2,11 +2,10 @@
 """Approach B fuzz of the LeaningScrub kernels (LeaningScrub/Source/Kernel/*.cs), no game.
 
 Seeded fuzz over the production kernels with explicit invariants: the Lean's heading / alignment / scent / fire pick / Shed V
-(lean), the smother claim clock and yield (smother), the blaze cluster and stamper dispatch (blaze), the bark-warden disturbance
-meter (guardian), scratch / lash / rear / quench clocks and the hoard (forms), the walking stands' march (walk) and the coat rub,
+(lean), the smother claim clock and yield (smother), the blaze cluster and stamper dispatch (blaze), scratch / lash / rear / quench clocks and the hoard (forms), the walking stands' march (walk) and the coat rub,
 felt store and runway bloom (coat). The project is built through winbuild.stage_build (dotnet.exe is Windows-native), then run.
 
-    python3 src/RimMandrake/Utils/selftest_leaningscrub_fuzz.py [--fuzz-scale F] [--fuzz-seed N] [--fuzz-only lean|smother|blaze|guardian|forms|walk|coat]
+    python3 src/RimMandrake/Utils/selftest_leaningscrub_fuzz.py [--fuzz-scale F] [--fuzz-seed N] [--fuzz-only lean|smother|blaze|forms|walk|coat]
 
 A failing case is shrunk and printed as `family seed N: message | actions`; --fuzz-seed N replays it.
 """
