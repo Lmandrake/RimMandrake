@@ -31,6 +31,9 @@ else
     south) FD="The reel's axle runs toward the viewer. We look at the near flange as a round disc (an ellipse slightly flatter than a circle); the far flange's top rim and the top of the drum show above it. The outlet pipe comes from the near hub, bends down to the ground and runs straight TOWARD the viewer to a coupling at the very bottom: that coupling points at the camera, so its round opening shows as a slightly flattened ellipse - the only pipe opening visible. Things on the far side only peek over the top.";;
   esac
   PR="Image 1 is a grey blockout that fixes the exact camera (orthographic, looking down from the front at 35 degrees), the shapes, proportions and position of every part on the canvas. Image 2 is the same hose reel in its $L look, drawn from the side: copy its materials, colours, wear and level of detail ($D), never its camera. Paint image 1 as that $L hose reel: $SD. $FD Every part stays exactly where image 1 puts it, with the size image 1 gives it; image 1's grey tones are only shading hints. $COMMON"
+  if [ "$L" = Modern ]; then
+    PR="$PR The reel stands on the owner's chosen Modern stand: ONE round red post rising from a square red foot plate to a red yoke under the drum (exactly as image 1 places them; the post stays clearly visible below the drum), never a box base. On the hub opposite the outlet sits the same chrome valve image 2 shows on its right: a chrome valve body, a short stem, and a red spoked handwheel lying flat on top (seen from above as an ellipse with its spokes), never a plain cap."
+  fi
 fi
 mkdir -p "$O/raw"
 export CODEX_MODEL=gpt-6.1-sol
