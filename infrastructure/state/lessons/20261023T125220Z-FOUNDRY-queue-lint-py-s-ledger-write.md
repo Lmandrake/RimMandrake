@@ -1,0 +1,1 @@
+queue_lint.py's ledger write-guard false-denies 'git commit -F <file under the seat tmp dir> -- <ledger shard>': its ARG_WRITER_RE matches the word 'rm' inside '-home-mandrake-rm-foundry' within 80 chars before the shard path. Commit the shard with -m instead, or keep the -F path short.
