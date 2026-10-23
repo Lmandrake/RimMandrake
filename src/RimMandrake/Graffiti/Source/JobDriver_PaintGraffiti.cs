@@ -84,6 +84,13 @@ namespace RimMandrake.Graffiti
                         // has a designation at its cell, so this is a no-op
                         // for the ordinary path.
                         bool designated = Map.designationManager.DesignationAt(cell, RMGraffitiDefOf.RM_PaintGraffitiHere) != null;
+                        // GPT deep review 2026-10-22 #8: a job handed out by the work giver (workGiverDef is saved with the
+                        // job) whose order was cancelled meanwhile paints nothing, instead of a spree mark
+                        if (!designated && job.workGiverDef != null)
+                        {
+                            EndJobWith(JobCondition.Incompletable);
+                            return;
+                        }
                         // GRAFFITI_DESIGNATOR_MARK_CHOICE_1: a mark the
                         // player chose for this cell wins, if this painter's
                         // hand is allowed it (the pool's own gates).
@@ -91,7 +98,13 @@ namespace RimMandrake.Graffiti
                         ThingDef ordered = orders?.OrderAt(cell);
                         ThingDef markDef = !designated ? GraffitiPool.PickForSpree(pawn)
                             : (ordered != null && GraffitiPool.PainterMayPaint(ordered, pawn) ? ordered : GraffitiPool.PickForDesignator(pawn));
-                        Filth_Mark.MakeMark(cell, Map, markDef, pawn);
+                        Filth_Mark made = Filth_Mark.MakeMark(cell, Map, markDef, pawn);
+                        if (designated && made == null)
+                        {
+                            // GPT deep review 2026-10-22 #6: nothing was painted; keep the order for another try
+                            EndJobWith(JobCondition.Incompletable);
+                            return;
+                        }
                         if (designated)
                         {
                             Map.designationManager.TryRemoveDesignation(cell, RMGraffitiDefOf.RM_PaintGraffitiHere);

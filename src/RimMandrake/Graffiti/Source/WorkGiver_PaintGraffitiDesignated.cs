@@ -32,7 +32,10 @@ namespace RimMandrake.Graffiti
         public override Job JobOnCell(Pawn pawn, IntVec3 c, bool forced = false)
         {
             if (!HasJobOnCell(pawn, c, forced)) return null;
-            return JobMaker.MakeJob(RMGraffitiDefOf.RM_PaintGraffitiJob, c);
+            Job job = JobMaker.MakeJob(RMGraffitiDefOf.RM_PaintGraffitiJob, c);
+            // GPT deep review 2026-10-22 #3: an ordered mark is WORK; without this JoyTickCheckEnd ends it in work hours
+            job.ignoreJoyTimeAssignment = true;
+            return job;
         }
     }
 }

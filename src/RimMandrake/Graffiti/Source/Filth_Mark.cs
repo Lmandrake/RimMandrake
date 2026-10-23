@@ -73,19 +73,26 @@ namespace RimMandrake.Graffiti
         // def (the vanilla FilthMaker behaviour) is left alone.
         public static Filth_Mark MakeMark(IntVec3 cell, Map map, ThingDef markDef, Pawn maker, Pawn subject = null)
         {
+            // GPT deep review 2026-10-22 #6: rivals are collected first and destroyed only once the new mark exists, so a
+            // refused placement no longer erases the old mark and leaves the wall bare
+            var rivals = new System.Collections.Generic.List<Filth_Mark>();
             if (cell.IsValid && map != null)
             {
-                foreach (Thing t in cell.GetThingList(map).ToArray())
+                foreach (Thing t in cell.GetThingList(map))
                 {
                     if (t is Filth_Mark rival && RM_GraffitiKernel.IsRival(true, rival.def == markDef))
                     {
-                        rival.Destroy();
+                        rivals.Add(rival);
                     }
                 }
             }
             if (!FilthMaker.TryMakeFilth(cell, map, markDef, out Filth outFilth))
             {
                 return null;
+            }
+            foreach (Filth_Mark rival in rivals)
+            {
+                if (!rival.Destroyed) rival.Destroy();
             }
             if (!(outFilth is Filth_Mark mark))
             {
