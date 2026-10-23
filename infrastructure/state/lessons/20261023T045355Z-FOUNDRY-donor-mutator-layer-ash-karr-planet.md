@@ -1,0 +1,1 @@
+A donor mutator layer on the Ash'karr planet may be OUR authoring, not donor worldgen: the 8,262 VEE solar entries were painted by world/audit_2026-08-26/plan.py on a geometric rule (arc<=55 / >=125, minus a biome blacklist). Before designing a port or calling a layer donor-random, grep world/ authoring scripts for the defName.
