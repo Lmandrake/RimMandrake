@@ -1,0 +1,1 @@
+codex_image.py edit (gpt image) can return 256x256 when the attached reference is 256x256 (sprinkler drafts 2026-10-23): attach a larger reference or accept the native size for small-canvas art; check the raw size before conforming.

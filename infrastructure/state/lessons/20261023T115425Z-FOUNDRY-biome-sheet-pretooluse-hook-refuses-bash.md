@@ -1,0 +1,1 @@
+The biome-sheet PreToolUse hook refuses a Bash call whose inline script names a Transient/biome_ffar/*_sheet_*.html path and writes ANY file (even filling <stem>.prereview.json): put the writer in a script file and pass the json path as an argument (FOUNDRY 2026-10-23).
