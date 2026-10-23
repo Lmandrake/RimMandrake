@@ -82,9 +82,18 @@ def save_json(name: str, obj) -> None:
     os.replace(tmp, p)
 
 
+ROTATE_BYTES = 32 << 20   # an append-only log past this is renamed <stem>.<YYYYmmdd-HHMMSS>.jsonl and restarted
+
+
 def append(name: str, rec: dict) -> None:
     rec.setdefault("ts", time.time())
-    with open(_p(name), "a") as fh:
+    p = _p(name)
+    try:
+        if p.stat().st_size > ROTATE_BYTES:   # metrics.jsonl reached 253 MB unrotated (MEASURED 2026-10-22)
+            os.replace(p, p.with_name(f"{p.stem}.{datetime.now().strftime('%Y%m%d-%H%M%S-%f')}{p.suffix}"))
+    except OSError:
+        pass
+    with open(p, "a") as fh:
         fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
 
 
@@ -224,7 +233,7 @@ class Collector:
             if k not in live and now - noticed[k] > 3 * 86400:
                 noticed.pop(k)
 
-    def ack(self, inc: str, label: str = "actionable") -> bool:
+    def ack(self, inc: str, label: str = "actionable", actor: str = "unknown") -> bool:
         with _lock:
             row = next((r for r in self.snapshot.get("rows", []) if r.get("incident") == inc), None)
             acks = self.state.setdefault("acks", {})
@@ -233,7 +242,7 @@ class Collector:
             for k in [k for k, v in acks.items() if time.time() - v.get("at", 0) > 3 * 86400]:
                 acks.pop(k)
             save_json("state.json", self.state)
-        append("metrics.jsonl", {"m": "alarm_ack", "id": inc, "label": label,
+        append("metrics.jsonl", {"m": "alarm_ack", "id": inc, "label": label, "actor": actor,
                                  "kind": (row or {}).get("kind"),
                                  "latency_s": round(time.time() - (row or {}).get("since", time.time()))})
         threading.Thread(target=self.tick, daemon=True).start()
@@ -455,7 +464,10 @@ def make_handler(col: Collector):
             except ValueError:
                 body = {}
             if self.path == "/api/ack" and body.get("id"):
-                col.ack(str(body["id"]), "noise" if body.get("noise") else "actionable")
+                # who acked decides whether it counts as an owner precision label: the widget is his hand;
+                # `pulse.py ack` is an agent's (17 agent bulk-acks once read as his judgement, 2026-10-11)
+                actor = str(body.get("actor") or "unknown")[:16]
+                col.ack(str(body["id"]), "noise" if body.get("noise") else "actionable", actor)
                 self._hdr()
                 self.wfile.write(b'{"ok":true}')
             elif self.path == "/api/seen" and body.get("id"):
@@ -491,19 +503,98 @@ def daemon() -> None:
             print(f"pulse: tick failed: {type(e).__name__}: {e}", flush=True)
 
 
+def metric_files() -> list[Path]:
+    """The live metrics log and every rotated one, oldest first."""
+    live = _p("metrics.jsonl")
+    return sorted(live.parent.glob("metrics.2*.jsonl")) + [live]
+
+
+def iter_metrics(files: list[Path]):
+    """Every record of every file, streamed (never a byte tail: the old 8 MB tail reported 'no acks yet'
+    over 17 acks and n=60246 notices for 25 incidents, MEASURED 2026-10-22)."""
+    for f in files:
+        try:
+            fh = open(f, "rb")
+        except OSError:
+            continue
+        with fh:
+            for raw in fh:
+                try:
+                    yield json.loads(raw)
+                except ValueError:
+                    continue
+
+
+def metrics_summary(recs) -> dict:
+    """Pure: the numbers `pulse.py metrics` prints. Repeated red_noticed for one incident count once (the
+    first); acks split by actor - only the widget's (his hand) are precision labels."""
+    first_notice: dict[str, float] = {}
+    qage, owner_acks, other_acks, t0, t1, n = [], [], [], None, None, 0
+    for r in recs:
+        n += 1
+        ts = r.get("ts")
+        if isinstance(ts, (int, float)):
+            t0 = ts if t0 is None else min(t0, ts)
+            t1 = ts if t1 is None else max(t1, ts)
+        m = r.get("m")
+        if m == "red_noticed" and r.get("id") not in first_notice:
+            first_notice[r.get("id")] = r.get("latency_s")
+        elif m == "alarm_close" and r.get("kind") == "amber":
+            qage.append(r.get("age_s"))
+        elif m == "alarm_ack":
+            (owner_acks if r.get("actor") == "widget" else other_acks).append(r)
+    return {"records": n, "from": t0, "to": t1, "notice": [v for v in first_notice.values() if v is not None],
+            "qage": [q for q in qage if q is not None], "owner_acks": owner_acks, "other_acks": other_acks}
+
+
 def metrics() -> None:
-    recs = pc.read_jsonl_tail(_p("metrics.jsonl"), 8 << 20)
     def med(xs):
         xs = sorted(xs)
         return xs[len(xs) // 2] if xs else None
-    notice = [r["latency_s"] for r in recs if r.get("m") == "red_noticed"]
-    qage = [r["age_s"] for r in recs if r.get("m") == "alarm_close" and r.get("kind") == "amber"]
-    acks = [r for r in recs if r.get("m") == "alarm_ack"]
-    good = sum(1 for r in acks if r.get("label") == "actionable")
-    print(f"red time-to-notice : n={len(notice)} median={med(notice)} s")
+    files = metric_files()
+    m = metrics_summary(iter_metrics(files))
+    span = (f"{datetime.fromtimestamp(m['from']):%Y-%m-%d %H:%M} .. {datetime.fromtimestamp(m['to']):%Y-%m-%d %H:%M}"
+            if m["from"] else "empty")
+    qage, oa = m["qage"], m["owner_acks"]
+    good = sum(1 for r in oa if r.get("label") == "actionable")
+    print(f"coverage           : {m['records']} records, {span}, {len(files)} file(s)")
+    print(f"time-to-next-prompt: n={len(m['notice'])} incidents  median={med(m['notice'])} s  "
+          f"(first owner prompt after a red opened - NOT proof he saw it)")
     print(f"question age       : n={len(qage)} median={med(qage)} s  p90={sorted(qage)[int(len(qage)*.9)] if qage else None} s")
-    print(f"alert precision    : {good}/{len(acks)} acks labelled actionable" if acks else "alert precision    : no acks yet")
+    print(f"alert precision    : {good}/{len(oa)} widget acks labelled actionable" if oa
+          else "alert precision    : UNMEASURED - no ack from the widget (his hand) yet")
+    if m["other_acks"]:
+        print(f"                     ({len(m['other_acks'])} acks by an agent/CLI or unknown actor - not counted)")
     print(f"log                : {_p('metrics.jsonl')}")
+
+
+def compact_metrics(path: Path) -> tuple[int, int]:
+    """Rewrite a metrics log keeping only the FIRST red_noticed per incident (the 5 s tick once re-noticed
+    every red still on screen: 1.82M of 1.83M lines). Lines the daemon appends meanwhile are carried over
+    before the atomic replace. Returns (lines before, lines after)."""
+    seen, before, after = set(), 0, 0
+    tmp = path.with_suffix(".compact.tmp")
+    with open(path, "rb") as src, open(tmp, "wb") as out:
+        for raw in src:
+            before += 1
+            try:
+                r = json.loads(raw)
+            except ValueError:
+                continue
+            if r.get("m") == "red_noticed":
+                if r.get("id") in seen:
+                    continue
+                seen.add(r.get("id"))
+            out.write(raw if raw.endswith(b"\n") else raw + b"\n")
+            after += 1
+        end = src.tell()
+    with open(path, "rb") as src, open(tmp, "ab") as out:   # appended while we read
+        src.seek(end)
+        tail = src.read()
+        out.write(tail)
+        after += tail.count(b"\n")
+    os.replace(tmp, path)
+    return before, after
 
 
 def health(restart: bool) -> int:
@@ -542,7 +633,8 @@ def main(argv=None) -> int:
     hd.add_argument("--seat")
     sn = sub.add_parser("seen")
     sn.add_argument("id")
-    sub.add_parser("metrics")
+    mt = sub.add_parser("metrics")
+    mt.add_argument("--compact", action="store_true", help="drop repeated red_noticed lines from the live log first")
     h = sub.add_parser("health")
     h.add_argument("--restart", action="store_true")
     args = ap.parse_args(argv)
@@ -563,7 +655,7 @@ def main(argv=None) -> int:
     elif args.cmd == "ack":
         import urllib.request
         req = urllib.request.Request(f"http://127.0.0.1:{PORT}/api/ack", method="POST",
-                                     data=json.dumps({"id": args.incident, "noise": args.noise}).encode(),
+                                     data=json.dumps({"id": args.incident, "noise": args.noise, "actor": "cli"}).encode(),
                                      headers={"Content-Type": "application/json"})
         print(urllib.request.urlopen(req, timeout=5).read().decode())
     elif args.cmd == "hand":
@@ -576,6 +668,9 @@ def main(argv=None) -> int:
                                      headers={"Content-Type": "application/json"})
         print(urllib.request.urlopen(req, timeout=5).read().decode())
     elif args.cmd == "metrics":
+        if args.compact:
+            b, a = compact_metrics(_p("metrics.jsonl"))
+            print(f"compacted metrics.jsonl: {b} -> {a} lines")
         metrics()
     elif args.cmd == "health":
         return health(args.restart)
