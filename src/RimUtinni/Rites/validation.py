@@ -55,9 +55,10 @@ WHAT THIS SUITE CANNOT PROVE, and why:
     the STATE (`canStartNow` false while the project still resolves and
     reports normally, i.e. it has not become `isHidden`), but nothing on
     the bridge can screenshot the research tree's own tab UI meaningfully,
-    and there is no map/pawn/thing state to photograph either -- this whole
-    mod is a research tree, not a placed object. No component below takes
-    a screenshot (Ishko's landmarks have no map state to photograph either).
+    and there is no map/pawn/thing state to photograph either -- the research
+    tree is not a placed object. The research-tree and Ishko chains take no
+    screenshot (Ishko's landmarks have no map state to photograph either);
+    the Ninefold chains at the end of this file do.
   - `[D]` def read-back items (walk steps 2-5: baseCost/techLevel/tab/
     prerequisites/hiddenPrerequisites exact values) are covered by the
     offline def dump / RimSage, not this bridge-driven runtime suite --

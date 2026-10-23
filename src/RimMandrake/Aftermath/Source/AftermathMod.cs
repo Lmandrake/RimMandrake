@@ -5,8 +5,8 @@ using Verse;
 
 namespace RimMandrake.Aftermath
 {
-    // Harmony bootstrap for the battle recorder's four postfixes. Same
-    // recipe as RimMandrake.Utinni.Rites's NinefoldMod / RimMandrake.RaidRedesigner's
+    // Harmony bootstrap for every [HarmonyPatch] class in this assembly. Same
+    // recipe as Salvation Rites' NinefoldMod (RimMandrake.Utinni.Rites) / RimMandrake.RaidRedesigner's
     // RaidRedesignerMod.
     [StaticConstructorOnStartup]
     public static class AftermathMod

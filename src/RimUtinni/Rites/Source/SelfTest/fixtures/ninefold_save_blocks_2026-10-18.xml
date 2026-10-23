@@ -6,7 +6,7 @@
   maps (NinefoldLegacyTypesKernel, the production file) to a class Salvation Rites declares, and that every saved
   field is a label that class's ExposeData still reads, so the nine gods' favour survives the fold.
   Measured the same day: all 18 CANONICAL_ASHKARR_START_*.rws saves hold the GameComponent block, 6 the MapComponent
-  block, and no other RimMandrake.Ninefold.* class appears in any of them (`selftest_ninefold_fuzz.py --saves`).
+  block, and no other RimMandrake.Ninefold.* class appears in any of them (selftest_ninefold_fuzz.py, its saves flag).
 -->
 <fixture>
 <li Class="RimMandrake.Ninefold.GameComponent_Ninefold">

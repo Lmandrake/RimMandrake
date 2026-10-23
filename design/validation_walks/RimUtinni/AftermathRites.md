@@ -1,6 +1,6 @@
 # AftermathRites — validation walk
 subject: src/RimUtinni/AftermathRites  (packageId `mandrake.rut.aftermath`)
-deps: mandrake.rm.aftermath (hard modDependency — the RM_AftermathRuleDef/RM_AlliancePairDef defTypes and the AftermathRuleRunner engine live there); loadAfter also names mandrake.rm.ninefold (soft, godTie is a plain string field, no hard dep)
+deps: mandrake.rm.aftermath (hard modDependency — the RM_AftermathRuleDef/RM_AlliancePairDef defTypes and the AftermathRuleRunner engine live there); loadAfter also names mandrake.rut.rites, home of Ninefold (soft, godTie is a plain string field, no hard dep)
 list: minimal+mandrake.rm.aftermath
 status-hint: defs-only companion supplying 8 RM_AftermathRuleDefs (campaign-specific aftermath-raid rules, each naming a real Ash'karr faction, a vanilla IncidentDef payload and a Ninefold god tie) and 5 RM_AlliancePairDefs, as DATA for mandrake.rm.aftermath's engine — carries no C#.
 

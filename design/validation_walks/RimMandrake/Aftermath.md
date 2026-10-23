@@ -1,7 +1,7 @@
 # RimMandrake: Aftermath — validation walk
 subject: src/RimMandrake/Aftermath  (packageId `mandrake.rm.aftermath`)
-deps: `mandrake.rm.ninefold` (RimMandrake Ninefold, this tier's own mod); `brrainz.harmony`
-list: minimal+ninefold
+deps: `brrainz.harmony`; Ninefold (inside Salvation Rites, `mandrake.rut.rites`, since 2026-10-22) is a soft reflection hook, no load order
+list: minimal (add `mandrake.rut.rites` for the Ninefold-tied rules)
 status-hint: aftermath-hostilities engine — records whole-battle outcomes (REPELLED/ROUTED/STALEMATE/LOST) via a MapComponent, then a rule runner queues a delayed, telegraphed vanilla IncidentDef payload on a match, capped at one per faction / two total. This mod ships NO defs of its own (`RM_AftermathRuleDef` instances ship in `mandrake.rut.aftermath`, not built yet) — walk is built entirely from its own Harmony/C# log strings, per the anti-guessing rule for def-less mods.
 
 ## must be true

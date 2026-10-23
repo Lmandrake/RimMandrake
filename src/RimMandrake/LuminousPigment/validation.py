@@ -1753,7 +1753,7 @@ def no_new_errors(t):
             now = _log_baseline(t)
             first = _GLOBAL.get("log0")
             if first is None:
-                _unmeasured(t, "no start-of-run log baseline was recorded (the defs_load chain records it)")
+                _unmeasured(t, "no start-of-run log baseline was recorded (the 00_log_baseline chain records it)")
             new = [k[:240] for k, n in now.items() if n > first.get(k, 0)]
             _chk(t, not new, "%d new Error-type line(s) naming this mod during the run: %s" % (len(new), new[:3]))
 

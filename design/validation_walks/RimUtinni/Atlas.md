@@ -1,6 +1,6 @@
 # Atlas — validation walk
 subject: src/RimUtinni/Atlas  (packageId `mandrake.rut.atlas`)
-deps: none hard; reads mandrake.rm.lorestages and mandrake.rm.ninefold by reflection when present; entries name subjects in ~15 of our mods, each resolved at runtime
+deps: none hard; reads mandrake.rm.lorestages and Ninefold (mandrake.rut.rites) by reflection when present; entries name subjects in ~15 of our mods, each resolved at runtime
 list: full Utinni list (entries need their subjects' mods); a minimal list proves only the framework and reports the rest "absent from this world"
 status-hint: UTINNI_DISCOVERY_ACHIEVEMENTS_1 — the Scavenger's Atlas: an `RUT_Atlas` main tab drawing the Utinni as a ship, every `AtlasEntryDef` a running light; riddle cards flip to hints, lit cards offer lore by click-through; script = `src/RimUtinni/Atlas/validation.py`, plan = `northstar_plan.py`, selftest = `selftest_atlas.py`
 
