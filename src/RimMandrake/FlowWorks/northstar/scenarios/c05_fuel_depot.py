@@ -23,7 +23,7 @@ SETUP = dict(
     terrain=[("Concrete", 2, 4, 12, 4)],                                   # the spill pad
     build=[("RM_UniversalCargoTank", 2, 30, None, None), ("RM_UniversalCargoTank", 7, 30, None, None),
            ("RM_UniversalCargoTankXTall", 12, 30, None, None)]
-    + [("RM_UniversalPipe", x, 29, None, None) for x in range(2, 20)]
+    + [("RM_UniversalPipe", x, 29, None, None) for x in range(2, 14)]       # ends beside the XTall tank (WALK_PIPES_PRUNE_TWO_TAILS_TO_NOWHERE)
     + [("RM_LiquidTank", x, 14, None, None) for x in (2, 6, 10)] + [("RM_LiquidTank", 14, 21, None, None)]
     + [("RM_UniversalPipe", x, 22, None, None) for x in range(16, 21)]
     + [("RM_LiquidPump", 21, 22, None, None), ("PowerConduit", 21, 23, None, None), ("Battery", 20, 24, 0, None),
@@ -33,7 +33,7 @@ SETUP = dict(
     hostile=[("RM_LiquidTank", 30, 8, None, None)],
     style=[(d, x, 30, d + "_Futuristic") for d, x in (("RM_UniversalCargoTank", 2), ("RM_UniversalCargoTank", 7),
                                                        ("RM_UniversalCargoTankXTall", 12))]
-    + [("RM_UniversalPipe", x, 29, "RM_UniversalPipe_Industrial") for x in range(2, 20)]
+    + [("RM_UniversalPipe", x, 29, "RM_UniversalPipe_Industrial") for x in range(2, 14)]   # x 14-19 are optional_build (adapter only), default look
     + [("RM_HoseReel", 20, 8, "RM_HoseReel_Industrial")],
     tank=[(2, 30, "Store", "RM_Liquid_Chemfuel", 8000), (7, 30, "Store", "RM_Liquid_Propane", 8000),
           (12, 30, "Store", "RM_Liquid_Chemfuel", 16000),
@@ -48,7 +48,9 @@ SETUP = dict(
     + [("RM_BottleEmpty", 6 + i, 11, 5, "Steel") for i in range(3)]
     + [("RM_Filth_LiquidSpill", x, z, 1, None) for x in (3, 4, 5) for z in (5, 6)]
     + [("RM_Filth_Tar", x, z, 1, None) for x in (9, 10, 11) for z in (5, 6)],
-    optional_build=[("RM_PipeAdapter_Chemfuel", 20, 29, None, None, "RM_PipeAdapter_Chemfuel")],
+    # the run's tail to the adapter exists only with the adapter: without it x 14-19 was a capped pipe into nothing (joint_check pipe_stub)
+    optional_build=[("RM_UniversalPipe", x, 29, None, None, "RM_PipeAdapter_Chemfuel") for x in range(14, 20)]
+    + [("RM_PipeAdapter_Chemfuel", 20, 29, None, None, "RM_PipeAdapter_Chemfuel")],
 )
 
 SCENARIO = scenario(
