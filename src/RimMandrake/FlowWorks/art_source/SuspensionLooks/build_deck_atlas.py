@@ -11,7 +11,7 @@ lane seam is the source centre mirrored about the cell centre, so the two edges 
 neighbouring lanes meet pixel-identically. The tile runs N-S; Building_SuspensionDeck.Print turns it 90 degrees on an E-W
 bridge and remaps the mask (RM_SuspensionDeckLink.TileMask). Vertically the source repeats at its own period.
 
-Usage: build_deck_atlas.py [--install] [--preview OUT.png]     (--install goes through the art ledger, install_image)
+Usage: build_deck_atlas.py [--install] [--only SUBSTRING]     (--install goes through the art ledger, install_image; previews: preview_decks.py)
 """
 from __future__ import annotations
 
