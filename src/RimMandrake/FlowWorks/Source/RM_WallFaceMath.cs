@@ -132,6 +132,50 @@ namespace RimMandrake.FlowWorks
 			return n;
 		}
 
+		/// <summary>PIT_PAWN_FIX_CARRIES_A_SUNNY_SQUARE: which of a cell's eight neighbours cast vanilla's edge shadow (an edifice
+		/// with castEdgeShadows). Bits: N E S W, then the corners NE SE SW NW.</summary>
+		public const int ShadeN = 1, ShadeE = 2, ShadeS = 4, ShadeW = 8, ShadeNE = 16, ShadeSE = 32, ShadeSW = 64, ShadeNW = 128;
+
+		/// <summary>The caster bits of a cell, from <paramref name="castsAt"/> asked with each neighbour's (dx, dz) offset.</summary>
+		public static int ShadeCasters(Func<(int, int), bool> castsAt)
+		{
+			int b = 0;
+			if (castsAt((0, 1))) b |= ShadeN;
+			if (castsAt((1, 0))) b |= ShadeE;
+			if (castsAt((0, -1))) b |= ShadeS;
+			if (castsAt((-1, 0))) b |= ShadeW;
+			if (castsAt((1, 1))) b |= ShadeNE;
+			if (castsAt((1, -1))) b |= ShadeSE;
+			if (castsAt((-1, -1))) b |= ShadeSW;
+			if (castsAt((-1, 1))) b |= ShadeNW;
+			return b;
+		}
+
+		/// <summary>Vanilla's edge-shadow brightness (Verse.SectionLayer_EdgeShadows, decompiled 1.6: vertex grey 195 at a
+		/// casting neighbour's edge, white 0.45 cell in, linear between; a corner caster with neither adjacent side casting
+		/// shades the corner triangle) at (fx, fz) inside a cell, 0..1 from its south-west corner. 1 = lit. The near-lip cover is
+		/// drawn above everything on the ground, so it must carry this shade itself or it shows as a bright box against a wall
+		/// (owner walk 2026-10-23, the boar pit).</summary>
+		public static float EdgeShadeAt(float fx, float fz, int casters)
+		{
+			const float shadowed = 195f / 255f, inDist = 0.45f;
+			float b = 1f;
+			void Edge(float d)
+			{
+				if (d < inDist) b = Math.Min(b, shadowed + (1f - shadowed) * Math.Max(0f, d) / inDist);
+			}
+			bool n = (casters & ShadeN) != 0, e = (casters & ShadeE) != 0, so = (casters & ShadeS) != 0, w = (casters & ShadeW) != 0;
+			if (n) Edge(1f - fz);
+			if (so) Edge(fz);
+			if (e) Edge(1f - fx);
+			if (w) Edge(fx);
+			if ((casters & ShadeNE) != 0 && !n && !e) Edge((1f - fx) + (1f - fz));
+			if ((casters & ShadeSE) != 0 && !so && !e) Edge((1f - fx) + fz);
+			if ((casters & ShadeSW) != 0 && !so && !w) Edge(fx + fz);
+			if ((casters & ShadeNW) != 0 && !n && !w) Edge(fx + (1f - fz));
+			return b;
+		}
+
 		/// <summary>PIT_LIP_FIX_BOAR_HANGS_OUT (owner 2026-10-16: <i>"A boar sleeping in a pit seems to hang out of the pit
 		/// rather than be obscured by the southern lip."</i>). The occupant window exists so an occupant is never lost behind
 		/// the near bank; it opens only when the bank would hide MORE than half of the sprite. With the sink clamp on, the

@@ -29,6 +29,66 @@ namespace RimMandrake.FlowWorks
 		{
 		}
 
+		// PIT_PAWN_FIX_CARRIES_A_SUNNY_SQUARE (owner walk 2026-10-23, the boar pit: "a strange square of bright terrain around it
+		// as it moves"). The cover re-draws the bare ground above the pawn, so everything vanilla lays ON the ground under it is
+		// lost; against a wall that is SectionLayer_EdgeShadows' darkening, and the cover read as a lit box sliding with the boar.
+		// Each cover piece next to a shadow-casting edifice now carries the same shade (RM_WallFaceMath.EdgeShadeAt), drawn with
+		// vanilla's own EdgeShadow material just after the cover. Meshes are pooled per frame (Graphics.DrawMesh renders later).
+		private static Material edgeShadeMat;
+		private readonly System.Collections.Generic.List<Mesh> shadeMeshes = new System.Collections.Generic.List<Mesh>();
+		private int shadeUsed;
+		private const float ShadeStep = 0.1f;
+
+		private int EdgeCasters(IntVec3 g) => RM_WallFaceMath.ShadeCasters(o =>
+		{
+			IntVec3 c = new IntVec3(g.x + o.Item1, 0, g.z + o.Item2);
+			if (!c.InBounds(map)) return false;
+			Building ed = c.GetEdifice(map);
+			return ed != null && ed.def.castEdgeShadows;
+		});
+
+		private void DrawEdgeShade(IntVec3 g, float l, float r, float a, float b, int casters, float y)
+		{
+			if (edgeShadeMat == null)
+			{
+				if (MatBases.EdgeShadow == null) return;
+				edgeShadeMat = new Material(MatBases.EdgeShadow) { renderQueue = RM_FaceMaterial.OccluderQueue + 1 };
+			}
+			int nx = Mathf.Max(1, Mathf.CeilToInt((r - l) / ShadeStep)), nz = Mathf.Max(1, Mathf.CeilToInt((b - a) / ShadeStep));
+			int nv = (nx + 1) * (nz + 1);
+			var verts = new Vector3[nv];
+			var cols = new Color32[nv];
+			bool any = false;
+			for (int iz = 0; iz <= nz; iz++)
+				for (int ix = 0; ix <= nx; ix++)
+				{
+					float x = l + (r - l) * ix / nx, z = a + (b - a) * iz / nz;
+					float v = RM_WallFaceMath.EdgeShadeAt(x - g.x, z - g.z, casters);
+					if (v < 0.999f) any = true;
+					byte c = (byte)Mathf.RoundToInt(Mathf.Clamp01(v) * 255f);
+					int k = iz * (nx + 1) + ix;
+					verts[k] = new Vector3(x, 0f, z);
+					cols[k] = new Color32(c, c, c, 255);
+				}
+			if (!any) return;
+			var tris = new int[nx * nz * 6];
+			int t = 0;
+			for (int iz = 0; iz < nz; iz++)
+				for (int ix = 0; ix < nx; ix++)
+				{
+					int v0 = iz * (nx + 1) + ix, v1 = v0 + nx + 1;
+					tris[t++] = v0; tris[t++] = v1; tris[t++] = v1 + 1;
+					tris[t++] = v0; tris[t++] = v1 + 1; tris[t++] = v0 + 1;
+				}
+			if (shadeUsed >= shadeMeshes.Count) shadeMeshes.Add(new Mesh { name = "RM_PitLipEdgeShade" });
+			Mesh m = shadeMeshes[shadeUsed++];
+			m.Clear();
+			m.vertices = verts;
+			m.colors32 = cols;
+			m.triangles = tris;
+			Graphics.DrawMesh(m, Matrix4x4.TRS(new Vector3(0f, y, 0f), Quaternion.identity, Vector3.one), edgeShadeMat, 0);
+		}
+
 		private static Mesh Quad(float alpha)
 		{
 			if (quad == null)
@@ -137,6 +197,8 @@ namespace RimMandrake.FlowWorks
 			}
 			CellRect view = Find.CameraDriver.CurrentViewRect.ExpandedBy(2);
 			Mesh mesh = Quad(Mathf.Clamp01(RimMandrakeFlowWorksSettings.pitLipOcclusion));
+			shadeUsed = 0;
+			bool edgeShadows = DebugViewSettings.drawShadows && map.Biome?.disableShadows != true;
 			float y = AltitudeLayer.Pawn.AltitudeFor() + Altitudes.AltInc * 0.9f;
 			bool rectsBuilt = false;
 			foreach (Pawn p in map.mapPawns.AllPawnsSpawned)
@@ -248,11 +310,17 @@ namespace RimMandrake.FlowWorks
 							float cw = 0.5f * Mathf.Max(0.1f, RimMandrakeFlowWorksSettings.pitLipOccupantCutWidth);
 							pieces = RM_WallFaceMath.CutCoverSpan(left, right, dp.x - cw, dp.x + cw, out l1, out r1, out l2, out r2);
 						}
+						// PIT_PAWN_FIX_CARRIES_A_SUNNY_SQUARE: the ground's own edge shadow, which the cover (drawn above it) hid
+						int casters = edgeShadows ? EdgeCasters(g) : 0;
 						for (int pc = 0; pc < pieces; pc++)
 						{
 							float pl = pc == 0 ? l1 : l2, pr = pc == 0 ? r1 : r2;
 							Matrix4x4 m = Matrix4x4.TRS(new Vector3(pl, y, a), Quaternion.identity, new Vector3(pr - pl, 1f, b - a));
 							Graphics.DrawMesh(mesh, m, mat, 0);
+							if (casters != 0)
+							{
+								DrawEdgeShade(g, pl, pr, a, b, casters, y + Altitudes.AltInc * 0.05f);
+							}
 						}
 					}
 				}
