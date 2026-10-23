@@ -431,40 +431,89 @@ def parse_since(v: str) -> float:
     return pc.iso_to_epoch(v)
 
 
+DIGEST_CAP_SECS = 16 * 3600   # a scheduled digest never reaches back further than this
+
+
+def _hm(t: float) -> str:
+    return time.strftime("%H:%M", time.localtime(t))
+
+
+def build_digest(snap: dict, since: float, now: float) -> list[dict]:
+    """Pure: the return brief as sections answering his three questions (GPT rec 3,
+    RIMPULSE_DIGEST_REBUILD_THREE_QUESTIONS) - what broke (incl. recovered, and older faults still broken
+    now), what needs his verdict or a fact, what to look at - each split NEW (since >= the interval start)
+    from BACKLOG (waiting from before), then what got done. Every row appears exactly once.
+    -> [{"id", "title", "lines": [{g, kind, t, text, link, new}], "backlog": [{...}]}]"""
+    rows, used = snap.get("rows") or [], set()
+
+    def take(r) -> bool:
+        if r["key"] in used:
+            return False
+        used.add(r["key"])
+        return True
+
+    def line(g, r, text=None):
+        return {"g": g, "kind": r["kind"], "t": r.get("since") or 0, "text": text or r["text"],
+                "link": r.get("link"), "new": (r.get("since") or 0) >= since}
+
+    issues = []
+    for r in rows:
+        if r["kind"] == "red" and take(r):
+            old = (r.get("since") or 0) < since
+            issues.append(line("✖", r, r["text"] + (" · still broken, from before the interval" if old else "")))
+    for r in rows:   # broke and recovered inside the interval: history he should still hear about
+        if r["kind"] == "recovered" and (r.get("since") or 0) >= since and take(r):
+            issues.append(line("↺", r))
+    for r in rows:
+        if r["kind"] == "warn" and not r.get("acked") and take(r):
+            issues.append(line("◆", r))
+    asks, ask_old = [], []
+    for r in rows:
+        if r["kind"] == "amber" and r.get("seat") and take(r):   # a card up right now is always news
+            asks.append({**line("◐", r, f"{r['who']} asks: {r.get('full') or r.get('question') or r['text']}"), "new": True})
+    for kind, g in (("review", "◇"), ("provide", "✎")):
+        for r in rows:
+            if r["kind"] == kind and take(r):
+                (asks if (r.get("since") or 0) >= since else ask_old).append(
+                    line(g, r, f"{r['text']}" + (" (a fact only you have)" if kind == "provide" else "")))
+    looks, look_old = [], []
+    for r in rows:
+        if r["kind"] == "look" and not r.get("opened") and take(r):
+            (looks if (r.get("since") or 0) >= since else look_old).append(line("▣", r, r.get("title") or r["text"]))
+    done = [line("✓", r, f"{r['who']:<8} {r['text']}") for r in sorted(rows, key=lambda r: r.get("since") or 0)
+            if r["kind"] == "done" and (r.get("since") or 0) >= since and take(r)]
+    answered = [r for r in rows if r["kind"] == "answered"]
+    out = [{"id": "issues", "title": "What broke", "lines": issues, "backlog": []},
+           {"id": "rule", "title": "Needs your verdict or a fact", "lines": asks, "backlog": ask_old,
+            "note": (f"{len(answered)} you already answered, an agent still owes the follow-through"
+                     if answered else "")},
+           {"id": "look", "title": "To look at", "lines": looks, "backlog": look_old},
+           {"id": "done", "title": "Done", "lines": done, "backlog": []}]
+    return out
+
+
 def make_digest(mode: str, since: float | None = None) -> dict:
     now = time.time()
     state = load_state()
-    if since is None:
-        if mode == "back":
-            since = back_since(now)
-        else:
-            last = (state.get("last_digest") or {}).get("at") or 0
-            since = max(last, now - 16 * 3600)
+    if since is not None:
+        basis = "the interval you asked for"
+    elif mode == "back":
+        since = back_since(now)
+        basis = "INFERRED: your last prompt before a 30-min gap"
+    else:
+        last = (state.get("last_digest") or {}).get("at") or 0
+        since = max(last, now - DIGEST_CAP_SECS)
+        basis = (f"since the last digest ({time.strftime('%a %H:%M', time.localtime(last))})" if last >= now - DIGEST_CAP_SECS
+                 else f"the last {DIGEST_CAP_SECS // 3600} h (no digest since)")
     col = Collector()
     raw = col.gather(now)
     snap, _, _ = pc.collect_snapshot(raw, {**state, "done_since": since}, now)
-    lines = []
-    for r in snap["rows"]:
-        if r["kind"] == "red" and r["since"] >= since - 3600:
-            lines.append({"g": "✖", "kind": "red", "t": r["since"], "text": r["text"], "link": r.get("link")})
-    for r in snap["rows"]:   # broke while he was away and recovered since: still an issue to report, not red
-        if r["kind"] == "recovered" and r["since"] >= since - 3600:
-            lines.append({"g": "↺", "kind": "recovered", "t": r["since"], "text": r["text"], "link": r.get("link")})
-    for r in snap["rows"]:
-        if r["kind"] in ("amber", "amber_soft", "review", "provide", "warn"):
-            lines.append({"g": "◐" if r["kind"] not in ("review", "provide") else "◇", "kind": r["kind"], "t": r["since"],
-                          "text": r["text"], "link": r.get("link")})
-    for r in sorted((r for r in snap["rows"] if r["kind"] == "done"), key=lambda r: r["since"]):
-        lines.append({"g": "✓", "kind": "done", "t": r["since"], "text": f"{r['who']:<8} {r['text']}",
-                      "link": r.get("link")})
-    for r in snap["rows"]:
-        if r["kind"] in ("run", "stuck"):
-            lines.append({"g": "▶", "kind": r["kind"], "t": r["since"], "text": r["text"], "link": None})
+    secs = build_digest(snap, since, now)
     c = snap["counts"]
     tail = f"{c['filed']} filed · {c['implemented']} implemented · {c['closed']} closed · {c['verifies']} verifies · {c['drops']} drops"
     span = now - since
-    head = (f"rimflow since {time.strftime('%a %H:%M', time.localtime(since))}  "
-            f"({int(span // 3600)}h {int(span % 3600 // 60)}m · {mode} · ledger · sessions · memwatch · artpipe)")
+    head = (f"rimflow since {time.strftime('%a %H:%M', time.localtime(since))} → {time.strftime('%a %H:%M', time.localtime(now))}"
+            f"  ({int(span // 3600)}h {int(span % 3600 // 60)}m · {mode} · interval: {basis})")
     stamp = datetime.fromtimestamp(now).strftime("%Y-%m-%d_%H%M")
     DIGEST_DIR.mkdir(parents=True, exist_ok=True)
     path = DIGEST_DIR / f"digest_{stamp}_{mode}.md"
@@ -472,26 +521,50 @@ def make_digest(mode: str, since: float | None = None) -> dict:
     def fmt(ln, md=False):
         if not ln["t"]:
             when = "     "
-        elif ln["kind"] in ("amber", "amber_soft", "review", "provide"):
-            a = time.time() - ln["t"]
+        elif ln["kind"] in ("amber", "review", "provide", "look") or not ln["new"]:
+            a = now - ln["t"]
             when = (f"{int(a // 60)}m" if a < 3600 else f"{int(a // 3600)}h" if a < 86400 else f"{int(a // 86400)}d").rjust(5)
         else:
-            when = time.strftime("%H:%M", time.localtime(ln["t"]))
+            when = _hm(ln["t"]).rjust(5)
         link = ln.get("link") or {}
         lv = f"   {link['value']}" if link else ""
         return f"{ln['g']} {when}  {ln['text']}{('  `' + link['value'] + '`') if (md and link) else lv}"
-    text = "\n".join([head] + ["  " + fmt(ln) for ln in lines] + ["  · " + tail])
-    md = "\n".join([f"# {head}", ""] + [f"- {fmt(ln, True)}" for ln in lines] + ["", f"_{tail}_", ""])
-    path.write_text(md)
-    rec = {"at": now, "mode": mode, "since": since, "path": pc.win_path(str(path)), "head": head,
+    text, md, lines = [head], [f"# {head}", ""], []
+    for sc in secs:
+        n_new, n_old = len(sc["lines"]), len(sc["backlog"])
+        label = f"{sc['title']}: {n_new} new" + (f" · {n_old} waiting from before" if n_old else "")
+        if sc["id"] in ("issues", "done"):
+            label = f"{sc['title']}: {n_new}"
+        text.append(label)
+        md += [f"## {label}", ""]
+        for ln in sc["lines"]:
+            text.append("  " + fmt(ln))
+            md.append(f"- {fmt(ln, True)}")
+        if sc["backlog"]:   # the backlog is one line of names, never a second copy of yesterday's digest
+            names = ", ".join(ln["text"].split(" — ")[0] for ln in sorted(sc["backlog"], key=lambda x: x["t"]))
+            text.append(f"  … from before: {names}")
+            md.append(f"- _from before:_ {names}")
+        if sc.get("note"):
+            text.append(f"  ({sc['note']})")
+            md.append(f"- _{sc['note']}_")
+        if not sc["lines"] and not sc["backlog"]:
+            text.append("  nothing")
+            md.append("- nothing")
+        md.append("")
+        lines += [{**ln, "section": sc["id"]} for ln in sc["lines"] + sc["backlog"]]
+    text.append("  · " + tail)
+    md += [f"_{tail}_", ""]
+    path.write_text("\n".join(md))
+    rec = {"at": now, "mode": mode, "since": since, "basis": basis, "path": pc.win_path(str(path)), "head": head,
            "tail": tail, "lines": lines}
     with _lock:
         st = load_state()
         st["last_digest"] = rec
         st["done_since"] = since
         save_json("state.json", st)
-    append("metrics.jsonl", {"m": "digest", "mode": mode, "since": since, "lines": len(lines)})
-    return {"text": text, "path": rec["path"], "rec": rec}
+    append("metrics.jsonl", {"m": "digest", "mode": mode, "since": since, "lines": len(lines),
+                             "new": sum(1 for ln in lines if ln["new"])})
+    return {"text": "\n".join(text), "path": rec["path"], "rec": rec}
 
 # ---------------------------------------------------------------- http
 
