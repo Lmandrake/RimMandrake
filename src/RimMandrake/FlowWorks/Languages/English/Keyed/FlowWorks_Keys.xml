@@ -30,7 +30,7 @@
   <RMFlow_LadderLowerOnlyFromAbove>Can only be lowered from above, and nobody can stand at its top.</RMFlow_LadderLowerOnlyFromAbove>
   <RMFlow_LadderLowerTopUnreachable>Can only be lowered from above: cannot reach its top.</RMFlow_LadderLowerTopUnreachable>
   <RMFlow_LadderRaisedInspect>Slid up onto the rim: nobody can climb down or out.</RMFlow_LadderRaisedInspect>
-  <RMFlow_LadderLoweredPrisonInspect>Ladder down: anyone climbs it but wild animals; prisoners only in a prison break.</RMFlow_LadderLoweredPrisonInspect>
+  <RMFlow_LadderLoweredPrisonInspect>Ladder down, like a door left open: every creature that can climb a ladder climbs it, prisoners and wild animals too.</RMFlow_LadderLoweredPrisonInspect>
   <RMFlow_LadderLoweredKeysInspect>Ladder down: your people climb; prisoners only in a prison break.</RMFlow_LadderLoweredKeysInspect>
   <RMFlow_LadderOverWallInspect>Against a wall: whoever stands here climbs over it (one way, wall and both sides open to the sky).</RMFlow_LadderOverWallInspect>
   <RMFlow_LadderLoweredInspect>Ladder down: anyone can climb.</RMFlow_LadderLoweredInspect>
