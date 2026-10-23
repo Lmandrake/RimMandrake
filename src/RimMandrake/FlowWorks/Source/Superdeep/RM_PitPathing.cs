@@ -340,7 +340,8 @@ namespace RimMandrake.FlowWorks
 		/// by customizer), retired like the planner's.</summary>
 		private static PathRequest.IPathGridCustomizer ClosedLaddersFor(Pawn pawn, Map map)
 		{
-			if ((!RimMandrakeFlowWorksSettings.ladderPrisonDoorEnabled || RM_LadderRules.MayClimb(pawn)) && RM_LadderParity.ClimbEligible(pawn))
+			bool eligible = RM_LadderParity.ClimbEligible(pawn);
+			if ((!RimMandrakeFlowWorksSettings.ladderPrisonDoorEnabled || RM_LadderRules.MayClimb(pawn)) && eligible)
 			{
 				return null;
 			}
@@ -353,7 +354,7 @@ namespace RimMandrake.FlowWorks
 			List<Thing> all = RM_LadderUtility.AllLadders(map, ladderScratch);
 			for (int i = 0; i < all.Count; i++)
 			{
-				if (RM_LadderParity.ClimbEligible(pawn) && RM_LadderRules.ClimbsOwnLadder(all[i], pawn))
+				if (eligible && RM_LadderRules.ClimbsOwnLadder(all[i], pawn))
 				{
 					own = pawn.Faction;
 					break;

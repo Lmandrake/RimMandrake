@@ -52,7 +52,7 @@ namespace RimMandrake.FlowWorks
 			{
 				return true;
 			}
-			return noKeys || !hostile;
+			return !hostile;
 		}
 
 		private static uint Hash(int x, uint salt)
