@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WET_FOXHOLE_BUILD_COLD_FEET_SHAKY_AIM (owner Q4, 2026-10-18): standing in water raises the comfortable minimum
+     temperature (PROVISIONAL +6 C, Mod Setting "Wet pawns feel the cold sooner"), so vanilla hypothermia arrives sooner.
+     Core's ComfyTemperatureMin already has a <parts> list (StatPart_GearStatOffset), so a plain Add matches. -->
+<Patch>
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/StatDef[defName="ComfyTemperatureMin"]/parts</xpath>
+    <value>
+      <li Class="RimMandrake.FlowWorks.Swimming.StatPart_RM_WetCold" />
+    </value>
+  </Operation>
+</Patch>

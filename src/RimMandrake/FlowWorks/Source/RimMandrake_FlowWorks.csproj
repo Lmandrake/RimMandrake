@@ -134,6 +134,8 @@
     <Compile Include="RM_FallRailMath.cs" />
     <Compile Include="RM_SwimMath.cs" />
     <Compile Include="Swimming\RM_Swim.cs" />
+    <Compile Include="Swimming\RM_WetCosts.cs" />
+    <Compile Include="RM_WetCostMath.cs" />
     <Compile Include="RM_PitFillEffects.cs" />
     <Compile Include="RM_SlimeMath.cs" />
     <Compile Include="RM_SheetMath.cs" />

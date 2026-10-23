@@ -115,6 +115,8 @@
     <Compile Include="FallRailChecks.cs" />
     <Compile Include="..\RM_SwimMath.cs" />
     <Compile Include="SwimChecks.cs" />
+    <Compile Include="..\RM_WetCostMath.cs" />
+    <Compile Include="WetCostChecks.cs" />
     <Compile Include="..\RM_WaterBodyMath.cs" />
     <Compile Include="WaterBodyMendChecks.cs" />
     <Compile Include="..\RM_SlimeMath.cs" />
