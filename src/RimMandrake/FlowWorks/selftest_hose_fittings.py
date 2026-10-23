@@ -502,6 +502,13 @@ def main():
     check(face is not None and geo[1] <= face + 1e-9,
           "UNDERCOUPLER_GIRTH_TUNE_PEEKS_PAST_NECK: under-coupler collar (%.4f cell) no wider than a plain hose coupling face (%s cell)"
           % (geo[1], "%.4f" % face if face else None))
+    mw = re.search(r"const float PortCouplingWiden = ([0-9.]+)f", open(os.path.join(HERE, "Source", "Hose", "RM_MapComponent_Hoses.cs")).read())
+    widen = float(mw.group(1)) if mw else None
+    # PUMP_COUPLING_SHRINK_STILL_SIZED_FOR_GIANTS: every hose port's drawn connector is now <= 0.23 cell (pumps 0.205 redrawn,
+    # tank ports 0.10-0.23: items/PUMP_PORTS_REDRAW_SIZED_FOR_FAT_PIPES.md inventory), so the coupling at a port is not widened
+    check(widen is not None and face is not None and widen * face <= 0.25,
+          "PUMP_COUPLING_SHRINK_STILL_SIZED_FOR_GIANTS: hose coupling at a tank/machine port (x%s -> %s cell) no wider than 0.25 cell"
+          % (widen, "%.3f" % (widen * face) if widen and face else None))
     sanity(half_w)
     defs = load_defs()
     names = sorted(b["def"] for b in defs)

@@ -1028,10 +1028,11 @@ namespace RimMandrake.FlowWorks.Hose
         public const float CouplingMax = (float)HoseMath.CouplingMax, NozzleMax = 0.375f, EndCapMax = 0.344f;
         /// <summary>Binding.png (make_hose_binding.py, 82x40, wrap along +X): the wrap's widest band, 38 px of 40.</summary>
         public const float BindBand = 0.95f;
-        /// <summary>The coupling at a tank/machine port is drawn this much larger than a mid-hose one, a reducer collar so the hose
-        /// meets the building's port flange (about the hose's own width again) instead of a ribbon half its size. Hose width itself
-        /// is unchanged map-wide.</summary>
-        public const float PortCouplingWiden = 1.5f;
+        /// <summary>The coupling at a tank/machine port is drawn this much larger than a mid-hose one. Was 1.5 (a reducer collar to
+        /// meet the old ~0.3-cell port flanges); PUMP_COUPLING_SHRINK_STILL_SIZED_FOR_GIANTS (owner 2026-10-23: "connectors that
+        /// match the more modern pipe and hose sizes"): every port flange is now <= 0.23 cell, so a plain 0.22 coupling meets it
+        /// (selftest_hose_fittings.py caps the port coupling at 0.25).</summary>
+        public const float PortCouplingWiden = 1f;
 
         private int RankOf(CompHoseReel r)
         {
