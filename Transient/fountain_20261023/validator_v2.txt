@@ -1,0 +1,39 @@
+== A v2 vs v1
+REJECT subject origin y=41 against the reference's 58 - the subject sits in a different place on the canvas.
+WARN   0.48% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.
+1 blocking problem(s) - do not deploy this.
+RM_Fountain_A.png
+  canvas    256x384   aspect 0.667
+  alpha     yes
+  coverage  44.9%   solid px 44,099
+  subject   238x318 at (9,58)  aspect 0.748
+  centroid  (128,255)
+  alpha mix clear 54.94% | fringe 0.20% | mid 0.97% | solid 0.00%
+  corners   [0, 0, 0, 0]
+  sha256    0bbc61b530735752
+== B v2 vs v1
+REJECT subject origin y=40 against the reference's 20 - the subject sits in a different place on the canvas.
+WARN   0.30% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.
+1 blocking problem(s) - do not deploy this.
+RM_Fountain_B.png
+  canvas    256x384   aspect 0.667
+  alpha     yes
+  coverage  45.2%   solid px 44,433
+  subject   240x355 at (8,20)  aspect 0.676
+  centroid  (128,254)
+  alpha mix clear 54.50% | fringe 0.30% | mid 1.25% | solid 0.00%
+  corners   [0, 0, 0, 0]
+  sha256    3cc58417c29ca054
+== C v2 vs v1
+REJECT subject height is 296px against the reference's 261px (+13%). A damaged variant may lose area but must still span its footprint.
+REJECT subject height exceeds the reference by 9.1% of canvas - art outside the footprint overlaps neighbouring buildings in game.
+REJECT subject aspect 0.807 against the reference's 0.912 - the art was squashed, not redrawn.
+REJECT subject origin y=60 against the reference's 104 - the subject sits in a different place on the canvas.
+WARN   0.28% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.
+4 blocking problem(s) - do not deploy this.
+RM_Fountain_C.png
+  canvas    256x384   aspect 0.667
+  alpha     yes
+  coverage  40.4%   solid px 39,708
+  subject   238x261 at (9,104)  aspect 0.912
+  centroid  (128,258)

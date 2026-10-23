@@ -1,0 +1,24 @@
+{
+ "sheet": "fountain_v1_candidates_sheet_2026-10-23.html",
+ "looked_by": "seat:BENCH",
+ "when": "2026-10-23T06:11:44-0700",
+ "caught": "GPT pre-review (gpt_consult, round 1) found all three ended their water inside a closed basin (nothing reached the ground) plus glassy water and busy stone; one edit round fixed all three (front spillway, calmer stone). The scale panel centred the 1x1.5 sprite until the builder learned drawOffset.",
+ "rows": {
+  "RM_Fountain_A": {
+   "fp": "cef7bc7c9182a712",
+   "verdict": "FIXED",
+   "note": "Looked at full-res and both scale panels: tiered bowl reads as a fountain at 32 px/cell; basin ellipse 0.54 (instrument reads the 0.56 guide as 0.55); water planes horizontal, curtains/jet vertical (C6). GPT round 1 FIX (curtains end inside a closed basin; glassy rods; busy stone) -> v2: front spillway pouring out, softer curtains, cooler calmer stone; mist haze alpha<32 cleared."
+  },
+  "RM_Fountain_B": {
+   "fp": "dc7bbbcfc898bbbd",
+   "verdict": "FIXED",
+   "note": "Looked at: spout pillar, strongest simple silhouette at 32 px/cell; basin 0.52; spouts point sideways and show no bore (C6 ok). GPT round 1 FIX (no route out, jet too tall, prominent cracks) -> v2: front spillway, jet halved, fainter cracks."
+  },
+  "RM_Fountain_C": {
+   "fp": "1272bd4f2f462bc0",
+   "verdict": "FLAG",
+   "note": "Looked at: cairn spring; basin 0.56. GPT round 1 FIX (weakest fountain recognition, fragmented trickles) -> v2: one front cascade + spillway gap. The edit also enlarged the cairn (+13% height vs v1, still inside 1x1.5): accepted as a redesign. Reads more as a rock feature than a fountain at 32 px/cell \u2014 FLAG for that taste call."
+  }
+ },
+ "dropped": []
+}
