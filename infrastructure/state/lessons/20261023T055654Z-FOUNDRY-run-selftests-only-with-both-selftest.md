@@ -1,0 +1,1 @@
+run_selftests --only with both selftest_flowworks_kernel_oracle.py and selftest_flowworks_stock.py in one parallel sweep can FAIL the oracle on CS2012 (SelfTest obj DLL locked by the other build of the same csproj); a harness collision, not a code red: rerun the oracle alone before believing it (2026-10-23).
