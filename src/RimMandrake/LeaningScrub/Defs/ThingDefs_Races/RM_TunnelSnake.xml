@@ -2,7 +2,7 @@
 <!-- RM_TunnelSnake: the yanker, the Leaning Scrub's corridor predator. Ported to the RimMandrake tier from
      RSW_TunnelSnake (owner note on the Leaning Scrub art sheet, 2026-10-06: "RimMandrake tier"; the name is invented,
      Wookieepedia has no tunnel snake). Stats, tools and race fields are the original's; the Star Wars-tier
-     dependencies are swapped for vanilla: the Snake body (was RSW_Klorslug), the Teeth/Mouth/HeadAttackTool groups
+     dependencies are swapped for vanilla: the Snake body (was RSW_Klorslug), the Mouth/HeadAttackTool groups
      (were the RSW_SW* appendage groups), vanilla AnimalBaby/Juvenile/Adult stages, the Megascarab voice (was the
      RSW_Pawn_Klorslug set), Megaspider meat and no leather (was RSW_Insectile_Meat / RSW_Leather_Insectile).
      Size-ladder numbers from TUNNELSNAKE_VIOLATES_SIZE_LADDER_1 are kept (MEDIUM band, bodySize 1.2).

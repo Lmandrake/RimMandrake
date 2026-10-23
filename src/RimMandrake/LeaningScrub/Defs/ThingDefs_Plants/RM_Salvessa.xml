@@ -17,7 +17,7 @@
       <Nutrition>0.2</Nutrition>
     </statBases>
     <graphicData>
-      <!-- own texPath; folder empty until the owner rules the base-art sheet (pink until then) -->
+      <!-- own folder: Textures/Things/RM_Salvessa/RM_Salvessa.png -->
       <texPath>Things/RM_Salvessa</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
@@ -27,7 +27,6 @@
     <plant>
       <wildClusterRadius>5</wildClusterRadius>
       <wildClusterWeight>250</wildClusterWeight>
-      <sowTags Inherit="False" />
       <fertilityMin>0.8</fertilityMin>
       <fertilitySensitivity>0.8</fertilitySensitivity>
       <maxMeshCount>9</maxMeshCount>
@@ -39,7 +38,9 @@
       <harvestedThingDef>RM_RawSalvessa</harvestedThingDef>
       <harvestYield>10</harvestYield>
       <sowMinSkill>6</sowMinSkill>
-      <sowTags>
+      <!-- one node, Inherit="False": PlantBase's sowTags are replaced by Ground alone (it was two sibling sowTags
+           nodes; the engine's duplicate-node check misses non-adjacent twins, so it loaded, but it read as a bug) -->
+      <sowTags Inherit="False">
         <li>Ground</li>
       </sowTags>
       <topWindExposure>0.1</topWindExposure>

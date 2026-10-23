@@ -163,7 +163,8 @@
       <li>Ambient_Wind_Storm</li>
     </ambientSounds>
     <!-- SCRUB_WIND_BUILD_LEAN_ON_PURPOSE part 2 (owner card 2026-10-20): driven dust and fuzz on screen, streaming
-         downwind (Source/RM_WeatherOverlay_GaleDust.cs). PLACEHOLDER art until the queued textures are reviewed. -->
+         downwind (Source/RM_WeatherOverlay_GaleDust.cs). Art: the owner's pick A, Textures/Weather/RM_GaleDust_A.png
+         (installed 2026-10-20). -->
     <overlayClasses>
       <li>RimMandrake.LeaningScrub.RM_WeatherOverlay_GaleDust</li>
     </overlayClasses>
