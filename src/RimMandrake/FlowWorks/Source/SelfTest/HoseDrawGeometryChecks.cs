@@ -252,6 +252,44 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(legacyStubs == cases / 2, "can-fail: the old fitting (full lead-in at the cell edge) stuck out on only " + legacyStubs + " of " + cases / 2 + " side arrivals");
                 Assert(fails.Count == 0, fails.Count + " of " + cases + " port fittings wrong: " + string.Join(" | ", fails.Take(4)));
             });
+
+            Case("HoseDraw_D3_a_side_arrival_at_a_moved_port_slides_onto_it", () =>
+            {
+                // HOSE_SIDEPORT_FIX_AIMS_AT_OLD_MIDPOINT: a side-arriving hose is not re-aimed (EndOnPort would loop it back), so its
+                // end stayed at the end cell's centre and the coupling + under-coupler sat at the OLD edge midpoint, a quarter cell
+                // off a port moved along its edge (TankPortGeometry.MovedAlong). SlideEndOnto bends the last stretch sideways.
+                int cases = 0, legacyOff = 0;
+                var fails = new List<string>();
+                for (int rot = 0; rot < 4; rot++)
+                    foreach (int from in new[] { 1, -1 })
+                        foreach (double off in new[] { -0.25, 0.25, 0.0 })
+                        {
+                            var axis = new[] { new V2(0, 1), new V2(1, 0), new V2(0, -1), new V2(-1, 0) }[rot];
+                            var perp = new V2(-axis.Z, axis.X);
+                            V2 end = new V2(150.5, 189.5), dir = perp * from;
+                            var pts = new List<V2>();
+                            for (int i = 24; i >= 0; i--) pts.Add(end - dir * (0.25 * i));
+                            V2 port = end + axis * 0.5 + perp * off;
+                            string tag = "axis " + axis + " from " + from + " off " + off;
+                            double lat0 = Along(pts[pts.Count - 1] + axis * 0.5, port, perp);
+                            if (Math.Abs(lat0) > 0.2) legacyOff++;
+                            var slid = HoseMath.SlideEndOnto(pts, port, axis);
+                            cases++;
+                            if (slid.Count != pts.Count) { fails.Add(tag + ": point count changed"); continue; }
+                            V2 e = slid[slid.Count - 1];
+                            if (V2.Dist(e + axis * 0.5, port) > 1e-6) fails.Add(tag + ": end + half a cell is " + (e + axis * 0.5) + ", port " + port);
+                            if (!HoseMath.SideArrival(slid, axis)) fails.Add(tag + ": no longer a side arrival");
+                            for (int i = 0; i < slid.Count - 4; i++)
+                                if (V2.Dist(slid[i], pts[i]) > 1e-9) { fails.Add(tag + ": point " + i + " moved (only the last stretch may)"); break; }
+                            for (int i = 1; i < slid.Count; i++)
+                            {
+                                V2 a = slid[i] - slid[i - 1];
+                                if (a.X * dir.X + a.Z * dir.Z < 0.05) { fails.Add(tag + ": the tail folds back at " + i); break; }
+                            }
+                        }
+                Assert(legacyOff == 16, "can-fail: the unslid end missed only " + legacyOff + " of 16 moved ports");
+                Assert(fails.Count == 0, fails.Count + " of " + cases + " slides wrong: " + string.Join(" | ", fails.Take(4)));
+            });
         }
     }
 }

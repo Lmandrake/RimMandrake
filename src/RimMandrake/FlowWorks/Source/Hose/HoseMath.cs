@@ -190,6 +190,31 @@ namespace RimMandrake.FlowWorks.Hose
         public static double ShadowAlpha(double eased) => ShadowAlphaEmpty + (ShadowAlphaFull - ShadowAlphaEmpty) * Geo.Clamp(eased, 0, 1);
         public static double ShadowWidth(double eased) => ShadowWidthEmpty + (ShadowWidthFull - ShadowWidthEmpty) * Geo.Clamp(eased, 0, 1);
 
+        /// <summary>HOSE_SIDEPORT_FIX_AIMS_AT_OLD_MIDPOINT: a hose that meets its port from the side is not re-aimed
+        /// (<see cref="EndOnPort"/> would loop it back behind the end), so its end stays on the end cell's centre and the coupling
+        /// (port point = end + axis x 0.5) sat at the old edge midpoint, beside a port moved along its edge
+        /// (<see cref="TankPortGeometry.MovedAlong"/>, RM_LiquidTank's measured flange). This slides the last <paramref name="span"/>
+        /// cells of arc sideways by a smoothstep ramp (0 at L - span, 1 at the end) so the end lands exactly half a cell short of
+        /// <paramref name="port"/> along <paramref name="axis"/>; the shift's slope stays under 1, so the tail never folds back.
+        /// A new list; the input is untouched.</summary>
+        internal static List<V2> SlideEndOnto(List<V2> pts, V2 port, V2 axis, double span = 0.75)
+        {
+            if (pts == null || pts.Count < 2) return pts;
+            int n = pts.Count;
+            V2 delta = port - axis * 0.5 - pts[n - 1];
+            var res = new List<V2>(pts);
+            if (delta.Len < 1e-9) return res;
+            double[] s = Geo.CumLen(pts);
+            double L = s[n - 1];
+            for (int i = 0; i < n; i++)
+            {
+                double t = span <= 0 ? (i == n - 1 ? 1 : 0) : Geo.Clamp((s[i] - (L - span)) / span, 0, 1);
+                if (t <= 0) continue;
+                res[i] = pts[i] + delta * Ease(t);
+            }
+            return res;
+        }
+
         /// <summary>HOSE_ENDS_FIX_MISSES_THE_PORTS: re-aim a drawn hose's last <paramref name="run"/> cells so it ends at
         /// <paramref name="end"/> arriving along <paramref name="axis"/> (unit, pointing into the port): the polyline is cut at arc
         /// length L - run and finished with a cubic Hermite from there (the hose's own tangent) to the end (tangent = axis), so the

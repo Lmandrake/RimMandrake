@@ -789,6 +789,8 @@ namespace RimMandrake.FlowWorks.Hose
                     // HOSE_LEADIN_FIX_STUB_IN_THE_CANAL: a hose that meets the port from the side is not re-aimed (the Hermite would loop
                     // back behind the end); DrawEnds gives it an elbow fitting instead (HoseMath.PortFitting)
                     if (onPort && !HoseMath.SideArrival(pts, portAxis)) pts = HoseMath.EndOnPort(pts, portAt - portAxis * 0.5, portAxis, 1.2);
+                    // HOSE_SIDEPORT_FIX_AIMS_AT_OLD_MIDPOINT: a side arrival keeps its heading but slides onto a moved port
+                    else if (onPort) pts = HoseMath.SlideEndOnto(pts, portAt, portAxis);
                     if (mi != null) pts = Mated(r, mi, pts);
                 }
                 // rule 3: a joiner that would sit over a hose drawn beneath is left out (HoseMath.Layer)
