@@ -69,12 +69,12 @@ Common setup for every bar: a **quicktest map** (~90 s, `rimworld-debug-testing`
 **Live check.**
 1. `RM_TheRot` map, or any map where the weather def can be forced with `weather_set RM_SheenFall` (forcing the weather is reliable; the biome-scoped rotation is the unreliable part and is not what is barred). Spawn 3 colonists: A unroofed bare, B unroofed with the chitin spider helmet, C unroofed with `RM_SheenSymbiosis`; plus D roofed. Check `RM_SheenExposureLock` carrier hediff bootstraps `RM_SheenCoating` on each.
 2. Read `RM_SheenCoating` severity on all four at t0.
-3. Advance 36,000 ticks (1.5 days) under forced Sheen-fall; read severity and stage again.
+3. Advance 90,000 ticks (1.5 days; a day is 60,000 ticks) under forced Sheen-fall; read severity and stage again.
 4. Stop the weather; advance 15,000 ticks; read A's severity again.
 
 **Pass.** A at or above 1.0 (stage `saturated`, within +/-20% of the 1.5-day anchor, 0.667 per day); B at or about a quarter of A's rate (0.75 protection, floor 0.05); C and D at 0 growth; A decays after the weather stops (-0.3 per day). **Fail.** Any other pattern, A does not climb, or no bootstrapped hediff on any pawn (instrument blind).
 
-**Cost/time.** About 36,000 + 15,000 ticks; a long advance on a quicktest map, 4 to 8 minutes depending on tick rate. L2. Must run the proof harness's log-budget and tick-advance guards (`live-debugging-proof-harness`); shorten with a hurried-severity tool if one exists.
+**Cost/time.** About 90,000 + 15,000 ticks; a long advance on a quicktest map, roughly 10 to 25 minutes depending on tick rate. L2. Must run the proof harness's log-budget and tick-advance guards (`live-debugging-proof-harness`); shorten with a hurried-severity tool if one exists.
 
 **Existing rows.** `sheen_exposure_ladder` (`map_mechanics`), toggle `sheenExposure`: UNMEASURED today ("needs an RM_TheRot map with a colonist under the Sheen weather and game hours of ticks"). Static: hediff and weather defs resolve (`defs_resolve`). A top-stage `RM_SporeFlesh` giver (mtbDays 0.25) is a further read, not part of this bar.
 
