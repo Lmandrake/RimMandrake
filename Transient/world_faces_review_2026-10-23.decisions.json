@@ -1,0 +1,123 @@
+{
+  "criterion": "Rows are in the order today \u2192 A \u2192 B \u2192 C; the prefill is the agent's lean (C, then A), judged by fit to the September look and the biome sheets, not by cost.",
+  "decisions": {
+    "Cauldron_decals": {
+      "decision": "",
+      "note": "",
+      "prefill": "pick"
+    },
+    "Cauldron_painted": {
+      "decision": "",
+      "note": "",
+      "prefill": "maybe"
+    },
+    "Cauldron_relief": {
+      "decision": "",
+      "note": "",
+      "prefill": "no"
+    },
+    "Cauldron_today": {
+      "decision": "",
+      "note": "",
+      "prefill": "no"
+    },
+    "Contagion_decals": {
+      "decision": "",
+      "note": "",
+      "prefill": "pick"
+    },
+    "Contagion_painted": {
+      "decision": "",
+      "note": "",
+      "prefill": "maybe"
+    },
+    "Contagion_relief": {
+      "decision": "",
+      "note": "",
+      "prefill": "no"
+    },
+    "Contagion_today": {
+      "decision": "",
+      "note": "",
+      "prefill": "no"
+    },
+    "LeaningScrub_decals": {
+      "decision": "",
+      "note": "",
+      "prefill": "pick"
+    },
+    "LeaningScrub_painted": {
+      "decision": "",
+      "note": "",
+      "prefill": "maybe"
+    },
+    "LeaningScrub_relief": {
+      "decision": "",
+      "note": "",
+      "prefill": "no"
+    },
+    "LeaningScrub_today": {
+      "decision": "",
+      "note": "",
+      "prefill": "no"
+    },
+    "Pyrelands_decals": {
+      "decision": "",
+      "note": "",
+      "prefill": "pick"
+    },
+    "Pyrelands_painted": {
+      "decision": "",
+      "note": "",
+      "prefill": "maybe"
+    },
+    "Pyrelands_relief": {
+      "decision": "",
+      "note": "",
+      "prefill": "no"
+    },
+    "Pyrelands_today": {
+      "decision": "",
+      "note": "",
+      "prefill": "no"
+    },
+    "hills_drawn": {
+      "decision": "",
+      "note": "",
+      "prefill": "maybe"
+    },
+    "hills_soft": {
+      "decision": "",
+      "note": "",
+      "prefill": "pick"
+    },
+    "look_decals": {
+      "decision": "",
+      "note": "",
+      "prefill": "pick"
+    },
+    "look_painted": {
+      "decision": "",
+      "note": "",
+      "prefill": "maybe"
+    },
+    "look_relief": {
+      "decision": "",
+      "note": "",
+      "prefill": "no"
+    },
+    "look_today": {
+      "decision": "",
+      "note": "",
+      "prefill": "no"
+    }
+  },
+  "posture": "whitelist",
+  "reviewStatus": {
+    "at": null,
+    "by": null,
+    "evidence": "agent variations; no human has ruled",
+    "state": "prefill"
+  },
+  "sheetId": "world_faces_review_2026-10-23"
+}
