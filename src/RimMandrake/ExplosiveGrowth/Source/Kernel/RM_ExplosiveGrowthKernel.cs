@@ -490,8 +490,9 @@ namespace RimMandrake.ExplosiveGrowth
 
                     bool dirty = false;
                     RM_TellStage want = RM_ExplosiveGrowthKernel.StageFor(rec.charge);
-                    if (want > rec.stage)
+                    if (want != rec.stage)
                     {
+                        // EGROWTH_TELL_FIX_STAGE_RATCHET_STUCK: the stage follows the charge down as well as up.
                         if (want >= RM_TellStage.Creak && rec.stage < RM_TellStage.Creak && tellSounds) sink.OnCreak(c);
                         rec.stage = want;
                         dirty = true;
