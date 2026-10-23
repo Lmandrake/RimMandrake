@@ -127,8 +127,9 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("Pump_pond_round_trip_production", () =>
             {
                 // POND_RETURN_LEG_BUILD_WATER_GOES_HOME (G2): the old case poured back through a hand-written pond++ the game did
-                // not have. Now both legs use PRODUCTION arithmetic (TryDebit's CanDebit, the return leg's CreditableLevels) and
-                // the production call sites are pinned below. A 20-square deep pond = 80 levels, volumePerTile 1.
+                // not have. Now both legs use PRODUCTION arithmetic (CanDebit, the return leg's CreditableLevels) and the
+                // production call sites are pinned below. A 20-square deep pond = 80 levels, volumePerTile 1. The pump's own draw
+                // debits in decilitres since POND_PUMP_FIX_LAST_DROP_COUNTS (TransferChecks pins it); whole levels here equal that.
                 float cap = 20 * RM_Volume.LevelsPerSquare, stock = cap; int tank = 0;
                 const int U = RM_PumpMath.TankUnitsPerLevel;
                 for (int i = 0; i < 4; i++)
@@ -187,7 +188,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "TryDraw chooses through PumpNext: outflows that can take the source's liquid, then the tanks");
                 RiverSwitchFlipChecks.Has(pump, @"foreach \(IntVec3 c in ReachCells\(\)\) \{ if \(Drawable\(ex, c, out Source s\)\) \{ list\.Add\(s\); \} \} foreach \(RM_NetPort p in RM_LiquidNet\.PortsOf\(this, RM_FreeEndRole\.Intake\)\)",
                     "sources: the pump's own reach first, then its Intake ends");
-                RiverSwitchFlipChecks.Has(pump, @"if \(ex\.IsExcavated\(c\) && ex\.WaterDlAt\(c\) > 0\) // a thin sheet \(no whole notch\) is drawable too \{[^}]*\} if \(ex\.IsSourceCell\(c\) && ex\.Stock\.CanSupply\(Map, c, ex\)\)",
+                RiverSwitchFlipChecks.Has(pump, @"if \(ex\.IsExcavated\(c\) && ex\.WaterDlAt\(c\) > 0\) // a thin sheet \(no whole notch\) is drawable too \{[^}]*\} if \(ex\.IsSourceCell\(c\) && SourceTake\(ex, c\) > 0\)",
                     "a source is a channel cell with fill or a body's source cell (never a dry nozzle cell, A13)");
                 RiverSwitchFlipChecks.Has(pump, @"return p\?\.Cell is IntVec3 end \? RM_LiquidSpill\.Outlet\(Map, ex, end, liquid \?\? LiquidFor\(fluid\), fluid, out cell\) : RM_OutletKind\.Blocked;",
                     "an outflow's cell comes from RM_LiquidSpill.Outlet (CanPourLevel + PickPour within 1.5; OutflowChecks pins it)");

@@ -35,6 +35,10 @@ STATIC (also): dustveil_checks -- DUSTVEIL_FLIGHT_BUILD_A_MOTH_THAT_WALKED: RM_D
                      FlightCooldown, flightSpeedFactor, a takeoff chance), no Spastic node, a flip-book prefix only with
                      every frame on disk, fungus-grown text with no laboratory/donor origin, shearing still yields
                      RM_MothSilk (a Fabric); --planted also turns it red on four planted defects.
+STATIC (also): core_reclaim_checks -- ROTCORE_RECLAIM_FIX_FINDERS_KEEPERS (owner by card 2026-10-22, Q11): the swallowed-core comp re-checks
+                     a non-carrier hourly (ClaimCheckDue), releases a carrier that left the world (ReleaseStale), keeps the
+                     campaign-tile rule and the core's integrity on a re-claim, drops no second core; the fuzz no longer pins
+                     "the carrier never changes"; --planted turns it red on six planted defects.
 
 STATIC: `python3 validation.py` -> `STATIC: PASS (0 findings)`; needs no game. Nothing here has been run live.
 MOCK:   `python3 validation.py --mock` -> runs wound_link, dustveil and living_mat_root against a fake game, clean and
@@ -257,6 +261,7 @@ def static_checks():
     bad += cast_checks()
     bad += ambrosyx_checks()
     bad += dustveil_checks()
+    bad += core_reclaim_checks()
     # Phase 0: RM_SwarmlingImplantation's donor comps (AlphaBehavioursAndEvents TurnWhenDead + RemoveFromMechsAndGhouls)
     # are ours now. A donor Class here fails def load with the donor off and takes the hediff (and the Chittik bite) with it.
     ck = open(os.path.join(HERE, "Defs", "Fauna", "RM_Chittik.xml"), encoding="utf-8").read()
@@ -450,6 +455,63 @@ def planted_dustveil():
     out.append(("dv pink flip", bool(dustveil_checks(txt.replace(
         "<alternateGraphicChance>", "<flyingAnimationFramePathPrefix>RotSpecies/AngelMoth/Flying/NoSuch_Flying_"
         "</flyingAnimationFramePathPrefix><flyingAnimationFrameCount>5</flyingAnimationFrameCount><alternateGraphicChance>", 1)))))
+    return out
+
+
+CORE_FILE = os.path.join(HERE, "Source", "RM_SwallowedCore.cs")
+FUZZ_FILE = os.path.join(HERE, "Source", "TheRotFuzz", "TheRotFuzz.cs")
+# ROTCORE_RECLAIM_FIX_FINDERS_KEEPERS (owner by card 2026-10-22, GPT review Q11 -> "next hwelgrue may claim core"): what the production comp must
+# route through the fuzzed kernel so a carrier that leaves the world never takes the one core with it. (pattern, what it proves)
+_CORE_WIRING = (
+    (r"if \(RM_TheRotKernel\.ClaimCheckDue\(claimChecked, carrier, parent\.IsHashIntervalTick\(RM_TheRotKernel\.ClaimRecheckTicks\)\)\)\s*\{\s*claimChecked = true;\s*TryClaim\(p\);",
+     "CompTick re-checks a non-carrier hourly through ClaimCheckDue (not once per life)"),
+    (r"w\.carrierId = RM_TheRotKernel\.ReleaseStale\(w\.spent, w\.carrierId, p\.ThingID, CarrierStillExists\(w\.carrierId\)\);",
+     "TryClaim releases a carrier that left the world through ReleaseStale + CarrierStillExists"),
+    (r"firstClaim \? \(p\.def\.GetModExtension<RM_SwallowedCoreExtension>\(\)\?\.campaignTile \?\? -1\) : -1,\s*firstClaim \? p\.Map\.Tile\.tileId : -1\);",
+     "the campaign-tile restriction still applies to every claim with no carrier (a re-claim too)"),
+    (r"integrity = RM_TheRotKernel\.ClaimIntegrity\(w\.coreIntegrity\);", "a claimed core starts at the world's recorded integrity"),
+    (r"if \(w != null && RM_TheRotKernel\.StillCarrier\(w\.carrierId, parent\.ThingID\)\) w\.coreIntegrity = integrity;",
+     "a ship-gun hit on the world's carrier records the integrity on the world"),
+    (r"Scribe_Values\.Look\(ref coreIntegrity, \"coreIntegrity\", 100f\);", "the recorded integrity is saved"),
+    (r"if \(w != null && !RM_TheRotKernel\.StillCarrier\(w\.carrierId, parent\.ThingID\)\)\s*\{\s*carrier = false;\s*return;\s*\}\s*if \(w != null\) w\.spent = true;",
+     "a released carrier that dies drops no second core"),
+    (r"if \(wc != null && !RM_TheRotKernel\.StillCarrier\(wc\.carrierId, p\.ThingID\)\)", "a released carrier that reappears stops pinging"),
+)
+
+
+def core_reclaim_checks(cs=None, fuzz=None):
+    """ROTCORE_RECLAIM_FIX_FINDERS_KEEPERS, offline: the comp is wired to the kernel rules the fuzz proves, and the fuzz no longer pins the old
+    'the carrier never changes' invariant. Texts may be passed in to plant a defect."""
+    cs = cs if cs is not None else open(CORE_FILE, encoding="utf-8").read()
+    fuzz = fuzz if fuzz is not None else open(FUZZ_FILE, encoding="utf-8").read()
+    bad = ["RM_SwallowedCore.cs: " + what for pat, what in _CORE_WIRING if not re.search(pat, cs)]
+    if re.search(r"if \(!claimChecked\)\s*\{\s*claimChecked = true;", cs):
+        bad.append("RM_SwallowedCore.cs: the claim is still checked once per life (a released core waits for a newborn hwelgrue)")
+    for gone in ("the carrier id changed after it was set", "one per world, ever"):
+        if gone in fuzz:
+            bad.append("TheRotFuzz.cs still asserts '%s' (owner ruled the next hwelgrue may claim)" % gone)
+    for need in ('"Leave"', '"DieOffMap"', '"core.released"', '"core.reclaimed"'):
+        if need not in fuzz:
+            bad.append("TheRotFuzz.cs core family lacks %s (a carrier leaving the world is not exercised)" % need)
+    return bad
+
+
+def planted_core_reclaim():
+    """[(name, red?)]: each planted defect must turn core_reclaim_checks red; 'core clean' must be green."""
+    cs = open(CORE_FILE, encoding="utf-8").read()
+    fz = open(FUZZ_FILE, encoding="utf-8").read()
+    once = re.sub(r"if \(RM_TheRotKernel\.ClaimCheckDue\([^\n]*\)\)", "if (!claimChecked)", cs, count=1)
+    out = [("core clean", not core_reclaim_checks(cs, fz))]
+    out.append(("core checked once", bool(core_reclaim_checks(once, fz))))
+    out.append(("core never freed", bool(core_reclaim_checks(cs.replace(
+        "w.carrierId = RM_TheRotKernel.ReleaseStale(", "w.carrierId = w.carrierId ?? RM_TheRotKernel.ReleaseStale(", 1), fz))))
+    out.append(("core tile dropped", bool(core_reclaim_checks(cs.replace(
+        "firstClaim ? (p.def.GetModExtension<RM_SwallowedCoreExtension>()?.campaignTile ?? -1) : -1,", "-1,", 1), fz))))
+    out.append(("core mended", bool(core_reclaim_checks(cs.replace(
+        "integrity = RM_TheRotKernel.ClaimIntegrity(w.coreIntegrity);", "integrity = 100f;", 1), fz))))
+    out.append(("core 2nd drop", bool(core_reclaim_checks(re.sub(
+        r"if \(w != null && !RM_TheRotKernel\.StillCarrier\(w\.carrierId, parent\.ThingID\)\)\s*\{\s*carrier = false;\s*return;\s*\}\s*", "", cs, count=1), fz))))
+    out.append(("core old invariant", bool(core_reclaim_checks(cs, fz + "\n// Check(false, \"the carrier id changed after it was set\");"))))
     return out
 
 
@@ -779,6 +841,12 @@ def _build_suite():
             text = str((r or {}).get("result", "")) if isinstance(r, dict) else ""
             if _live(t) and not (text.startswith("CORE carriers 1 ") or "spent True" in text):
                 raise ExpectationFailed("spawning hwelgrue did not leave exactly one core carrier: %s" % text)
+        with t.component("core_reclaimed_after_carrier_leaves", toggle="navigatorCore"):
+            # ROTCORE_RECLAIM_FIX_FINDERS_KEEPERS: offline proof is core_reclaim_checks + the fuzz; this is the live read owed.
+            if _live(t):
+                _unmeasured(t, "needs the world's carrier to leave the world (vanish it, or send it off in a caravan), then a "
+                               "second wild hwelgrue on the map for an hour: ProofClaim must read 'CORE carriers 1' with a NEW "
+                               "world carrier id, spent False")
         with t.component("ruined_below_threshold", toggle="navigatorRuinThreshold"):
             outs = []
             for integ in ("80", "10"):
@@ -1237,9 +1305,9 @@ if __name__ == "__main__":
         sys.path.insert(0, os.path.join(HERE, "..", "Utils", "modcheck"))
         sys.exit(mock_run())
     if "--planted" in sys.argv:
-        res = planted_ambrosyx() + planted_dustveil()
+        res = planted_ambrosyx() + planted_dustveil() + planted_core_reclaim()
         for name, ok in res:
-            print("PLANTED %-16s %s" % (name, "RED as expected" if ok and name not in ("clean", "dv clean") else ("GREEN" if ok else "MISSED")))
+            print("PLANTED %-16s %s" % (name, "RED as expected" if ok and name not in ("clean", "dv clean", "core clean") else ("GREEN" if ok else "MISSED")))
         sys.exit(0 if all(ok for _n, ok in res) else 1)
     problems = static_checks()
     print("STATIC: %s" % ("PASS (0 findings)" if not problems else "FAIL"))

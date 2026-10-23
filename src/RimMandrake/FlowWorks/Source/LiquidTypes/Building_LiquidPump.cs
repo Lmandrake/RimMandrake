@@ -168,12 +168,21 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 				s.fluid = ex.FluidAt(c) ?? ex.ActiveFluid;
 				return s.fluid != null;
 			}
-			if (ex.IsSourceCell(c) && ex.Stock.CanSupply(Map, c, ex))
+			if (ex.IsSourceCell(c) && SourceTake(ex, c) > 0)   // POND_PUMP_FIX_LAST_DROP_COUNTS: any decilitre (exact-level on), a whole notch (off)
 			{
 				s.fluid = ex.Stock.BodyAt(Map, c, ex)?.fluid ?? ex.ActiveFluid;
 				return s.fluid != null;
 			}
 			return false;
+		}
+
+		/// <summary>POND_PUMP_FIX_LAST_DROP_COUNTS: the decilitres this cycle's draw takes from the natural body behind <paramref name="c"/>
+		/// (RM_PumpMath.SourceTakeUnits, selftested). volumePerTile is pinned to 1 (FluidDef.ConfigErrors), so a fill-unit is
+		/// a notch and the body's decilitres are the tank's.</summary>
+		private int SourceTake(RM_MapComponent_Excavation ex, IntVec3 c)
+		{
+			int units = RM_PumpMath.TankUnitsPerLevel;
+			return RM_PumpMath.SourceTakeUnits(units, ex.Stock.SupplyDl(Map, c, units, ex), RM_MapComponent_Excavation.LevelExact);
 		}
 
 		/// <summary>Sources in order (rev 2 §3.3): the pump's own reach, then the source cell under or beside every Intake end on its
@@ -371,14 +380,26 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 				}
 				else
 				{
-					// L1 (§4): the tank leg is reserved first; the body's debit (TryDebit, never undone) is checked by CanSupply first
-					RM_TransferLeg world = RM_TransferLeg.World(k => ex.Stock.CanSupply(Map, cell, ex), k => ex.Stock.TryDebit(Map, cell, f.volumePerTile, ex));
-					if (RM_LiquidTransfer.Move(units, world, RM_TransferLeg.Split(plan.Count, i => plan[i].units, (i, k) => plan[i].tank.CanAccept(l, k), (i, k) => plan[i].tank.TryAddLiquid(l, k), (i, k) => plan[i].tank.TryRemoveLiquid(k)), out _) == units)
+					// POND_PUMP_FIX_LAST_DROP_COUNTS (owner by card 2026-10-22, GPT review Q6): up to one notch in DECILITRES, the same rule as a
+					// dug channel, so a pond's last <1,000 L is pumped too (the old whole-notch CanSupply/TryDebit stranded it).
+					int take = SourceTake(ex, cell);
+					if (take != units)
+					{
+						plan = take > 0 ? Machinery.RM_LiquidNet.FillPlan(this, l, take) : null;
+						if (plan == null)
+						{
+							deadSources.Add(Map.cellIndices.CellToIndex(s.cell));
+							continue;
+						}
+					}
+					// L1 (§4): the tank leg is reserved first; the body's exact debit (TryDebitDl, never undone) runs last
+					RM_TransferLeg world = RM_TransferLeg.World(k => ex.Stock.SupplyDl(Map, cell, k, ex) >= k, k => ex.Stock.TryDebitDl(Map, cell, k, ex));
+					if (RM_LiquidTransfer.Move(take, world, RM_TransferLeg.Split(plan.Count, i => plan[i].units, (i, k) => plan[i].tank.CanAccept(l, k), (i, k) => plan[i].tank.TryAddLiquid(l, k), (i, k) => plan[i].tank.TryRemoveLiquid(k)), out _) == take)
 					{
 						foreach ((Building_LiquidTank tank, int units) p in plan) Machinery.RM_LiquidNet.Credit(this, p.tank, l, p.units, RM_PumpMath.CycleTicks);   // credit site: pump draw (source)
-						Machinery.RM_LiquidNet.CreditTo(this, s.port, l, units, RM_PumpMath.CycleTicks, Machinery.RM_LiquidNet.FillFrom(plan[0].tank, l));   // credit site: pump intake (source)
+						Machinery.RM_LiquidNet.CreditTo(this, s.port, l, take, RM_PumpMath.CycleTicks, Machinery.RM_LiquidNet.FillFrom(plan[0].tank, l));   // credit site: pump intake (source)
 						filledPastOutflow |= outflows.Count > 0;
-						Stamp(units);
+						Stamp(take);
 						Moved++;
 						return "RMFlow_PumpDrew".Translate(l.label);
 					}

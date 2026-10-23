@@ -14,7 +14,9 @@ namespace RimMandrake.TheRot
     //             exists once per world whatever reloads or deaths follow. Free tier: the first wild hwelgrue to
     //             finish its first sweep (and survive the map cap) claims it. Campaign: RM_SwallowedCoreExtension
     //             .campaignTile on RM_Hwelgrue (a patch sets it; -1 = free-tier rule) restricts the claim to a
-    //             hwelgrue on that tile.
+    //             hwelgrue on that tile. ROTCORE_RECLAIM_FIX_FINDERS_KEEPERS (owner by card 2026-10-22, GPT review Q11): a carrier
+    //             that leaves the world (shipped off, killed off-map, a stale id) releases the core, and the next
+    //             hwelgrue that checks (non-carriers re-check hourly) may claim it, at the integrity it had.
     //   ping      every N hours (setting) while a grav engine stands on the carrier's map: RM_CorePing from the
     //             giant (pitch falls with integrity), RM_CoreChirp from each pilot console, a glow on the giant;
     //             the first ping on a world sends the Narrator's letter. The landing-hook ping and the dead ship's
@@ -45,6 +47,8 @@ namespace RimMandrake.TheRot
         public int entriesRead;
         public int sitesRevealed;
         public bool logCut;
+        // ROTCORE_RECLAIM_FIX_FINDERS_KEEPERS: the core's integrity as last recorded on a carrier (a re-claimed core keeps its cracks)
+        public float coreIntegrity = 100f;
 
         public RM_WorldComponent_SwallowedCore(World world) : base(world)
         {
@@ -62,6 +66,7 @@ namespace RimMandrake.TheRot
             Scribe_Values.Look(ref entriesRead, "entriesRead", 0);
             Scribe_Values.Look(ref sitesRevealed, "sitesRevealed", 0);
             Scribe_Values.Look(ref logCut, "logCut", false);
+            Scribe_Values.Look(ref coreIntegrity, "coreIntegrity", 100f);
         }
     }
 
@@ -92,7 +97,8 @@ namespace RimMandrake.TheRot
             Pawn p = Self;
             if (p == null || !p.Spawned || p.Dead || !parent.IsHashIntervalTick(250)) return;
             if (!RM_TheRotSettings.theRotEnabled || !RM_TheRotSettings.navigatorCore) return;
-            if (!claimChecked)
+            // ROTCORE_RECLAIM_FIX_FINDERS_KEEPERS: the first tick, then hourly for a non-carrier (RM_TheRotKernel.ClaimCheckDue, offline-fuzzed)
+            if (RM_TheRotKernel.ClaimCheckDue(claimChecked, carrier, parent.IsHashIntervalTick(RM_TheRotKernel.ClaimRecheckTicks)))
             {
                 claimChecked = true;
                 TryClaim(p);
@@ -100,11 +106,12 @@ namespace RimMandrake.TheRot
             if (!carrier) return;
             // A carrier whose claim was released (see TryClaim) and that later reappears must not ping as a second core.
             RM_WorldComponent_SwallowedCore wc = RM_WorldComponent_SwallowedCore.Get;
-            if (wc != null && wc.carrierId != p.ThingID)
+            if (wc != null && !RM_TheRotKernel.StillCarrier(wc.carrierId, p.ThingID))
             {
                 carrier = false;
                 return;
             }
+            if (wc != null) wc.coreIntegrity = integrity;   // ROTCORE_RECLAIM_FIX_FINDERS_KEEPERS: a save from before the field records it too
             // the ping clock (an engine appearing pings at once, else every interval) is RM_TheRotKernel.PingDue, offline-fuzzed
             if (RM_TheRotKernel.PingDue(ref nextPingTick, ref engineSeen, Find.TickManager.TicksGame, EngineOn(p.Map) != null, PingIntervalTicks))
             {
@@ -116,12 +123,13 @@ namespace RimMandrake.TheRot
         {
             // who carries the world's one core is RM_TheRotKernel.Claim (offline-fuzzed); the cap and tile reads stay here
             RM_WorldComponent_SwallowedCore w = RM_WorldComponent_SwallowedCore.Get;
-            // A carrier that left the game without dying (its map closed after a caravan visit, it walked off the edge, it was
-            // vanished) never runs Notify_Killed, so the world's one core would stay claimed by nobody forever. If no living
-            // pawn on any map, caravan or transporter holds the recorded id, the core goes back into the world.
-            if (w != null && !w.spent && !w.carrierId.NullOrEmpty() && w.carrierId != p.ThingID && !CarrierStillExists(w.carrierId))
+            // A carrier that left the world without dying here (shipped off, its map closed after a caravan visit, killed
+            // off-map, vanished) never runs Notify_Killed on a map, so the world's one core would stay claimed by nobody
+            // forever. If no living pawn on any map, caravan or transporter holds the recorded id, the core is released
+            // (RM_TheRotKernel.ReleaseStale) and this hwelgrue may claim it below (ROTCORE_RECLAIM_FIX_FINDERS_KEEPERS).
+            if (w != null && !w.spent && !w.carrierId.NullOrEmpty() && w.carrierId != p.ThingID)
             {
-                w.carrierId = null;
+                w.carrierId = RM_TheRotKernel.ReleaseStale(w.spent, w.carrierId, p.ThingID, CarrierStillExists(w.carrierId));
             }
             bool worldOk = w != null && !w.spent && p.Faction == null;
             bool firstClaim = worldOk && w.carrierId.NullOrEmpty();
@@ -136,7 +144,7 @@ namespace RimMandrake.TheRot
                 case RM_TheRotKernel.ClaimResult.New:
                     w.carrierId = p.ThingID;
                     carrier = true;
-                    integrity = 100f;
+                    integrity = RM_TheRotKernel.ClaimIntegrity(w.coreIntegrity);
                     return true;
                 default: return false;
             }
@@ -200,6 +208,8 @@ namespace RimMandrake.TheRot
             if (!carrier || !RM_TheRotSettings.navigatorCore) return;
             if (!FromShipWeapon(dinfo, parent.MapHeld)) return;
             integrity = RM_TheRotKernel.IntegrityAfterHit(integrity, totalDamageDealt, RM_TheRotSettings.navigatorShipDamageFactor);
+            RM_WorldComponent_SwallowedCore w = RM_WorldComponent_SwallowedCore.Get;
+            if (w != null && RM_TheRotKernel.StillCarrier(w.carrierId, parent.ThingID)) w.coreIntegrity = integrity;
         }
 
         public override void Notify_Killed(Map prevMap, DamageInfo? dinfo = null)
@@ -207,6 +217,12 @@ namespace RimMandrake.TheRot
             base.Notify_Killed(prevMap, dinfo);
             if (!carrier || prevMap == null) return;
             RM_WorldComponent_SwallowedCore w = RM_WorldComponent_SwallowedCore.Get;
+            // ROTCORE_RECLAIM_FIX_FINDERS_KEEPERS: a released carrier back in the world dies before its next tick demotes it: no second core
+            if (w != null && !RM_TheRotKernel.StillCarrier(w.carrierId, parent.ThingID))
+            {
+                carrier = false;
+                return;
+            }
             if (w != null) w.spent = true;
             RM_NavigatorLog.Notify_CarrierDied(w);
             carrier = false;
