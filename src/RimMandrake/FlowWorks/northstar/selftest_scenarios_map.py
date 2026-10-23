@@ -89,6 +89,11 @@ def main():
     for x in range(M.MAP_SIZE):
         for z in range(140, 150):
             swamp[(x, z)] = "Marsh"
+    o0 = M.river_bank_anchor(river, size)
+    gey = (o0[0] + 20, o0[1] + 20, 3, 3)
+    c1g = M.placed_r(river, size, avoid=[gey])[0]
+    check("map R: C1 is placed clear of a geyser (scenery_rects avoid)", c1g is not None and not M.C_overlap(c1g["rect"], gey),
+          (o0, c1g and c1g["rect"]))
     check("map R: a bank with more than RECLAIM_MAX wet cells in every plot refuses", M.river_bank_anchor(swamp, size) is None)
     every = placed + [c1]
     # ---------------------------------------------------------------- signs
