@@ -346,5 +346,31 @@ check("snapshot v2 carries chips and look rows",
       {"chips"} <= set(pc.collect_snapshot({**raw, "hands": [{**H[0], "ts": NOW - 5}]}, {}, NOW)[0]) and
       any(r["kind"] == "look" for r in pc.collect_snapshot({**raw, "hands": [{**H[0], "ts": NOW - 5}]}, {}, NOW)[0]["rows"]))
 
+# --- RIMPULSE_RED_PILLS_FIX_NAME_THE_CAUSE: the collapsed strip names what broke and why (owner 2026-10-22) --
+BK = [f"{NOW-400:.6f} Archmagi kernel: memory: usage 6291456kB, limit 6291456kB, failcnt 21",
+      f"{NOW-400:.6f} Archmagi kernel: oom-kill:constraint=CONSTRAINT_MEMCG,oom_memcg=/claude.slice/claude-seats.slice/claude-seat-BENCH-951.scope/claude-code-bash,task_memcg=/claude.slice/claude-seats.slice/claude-seat-BENCH-951.scope/claude-code-bash,task=python,pid=18417,uid=1000",
+      f"{NOW-400:.6f} Archmagi kernel: Memory cgroup out of memory: Killed process 18417 (python) total-vm:7618500kB, anon-rss:4163856kB, file-rss:17356kB, shmem-rss:0kB"]
+pr = pc.classify_kernel_oom(pc.parse_kernel_oom(BK) + ks, {}, NOW)
+strip = pc.build_strip(pc.order_rows(pr))
+reds_txt = [p["text"] for p in strip if p["kind"] == "red"]
+check("a seat tool OOM pill names seat, tool, OOM and cap - not just '✖ BENCH HH:MM'",
+      any("BENCH tool OOM" in t and "6 GB cap" in t for t in reds_txt), reds_txt)
+check("a service OOM pill names the service and its cap", any("RimPulse daemon OOM" in t and "256 MB cap" in t for t in reds_txt), reds_txt)
+check("every red pill says more than a name and a time",
+      all(len(t.split("·")[0].split()) >= 3 for t in reds_txt) and len(reds_txt) == 2, reds_txt)
+check("the seat OOM row names the killed task and its size (5 kills were one 4 GB python, not page cache)",
+      any("killed python 4.0 GB" in r["text"] for r in pr), [r["text"] for r in pr])
+lost, _, _ = pc.classify_sessions([sess("g", "LOST", "busy", 60, alive=False)], {}, seen_before, {}, {}, NOW)
+check("a lost-window pill says the window died", "LOST window died" in pc.build_strip(lost)[0]["text"], pc.build_strip(lost))
+tel = pc.classify_telemetry({"at": NOW, "alerts": [{"id": "colony_dead", "level": "red", "text": "colony dead: no pawns", "since": NOW - 9}]}, {}, NOW)
+check("a telemetry red pill carries the alert text", "colony dead" in pc.build_strip(tel)[0]["text"], pc.build_strip(tel))
+ask = pc.build_strip(pc.classify_sessions(sessions, extras, {}, {}, {}, NOW)[0])
+check("an amber pill keeps the seat and the question", any(p["kind"] == "amber" and "BENCH" in p["text"] and "herd size" in p["text"]
+                                                        for p in ask), ask)
+cnt = pc.build_strip(pc.classify_ledger(ledger, NOW - 12 * 3600, NOW)[0] + pc.classify_looks(H, SH, {"sheet:a": NOW}, NOW))
+check("the strip counts what is to rule and what is unopened to look at",
+      {"◇ 1 to rule", "▣ 4 to look at"} <= {p["text"] for p in cnt}, cnt)
+check("no rule/look pill when there is nothing waiting", not any(p["kind"] in ("rule", "look") for p in pc.build_strip(pr)))
+
 print(f"\n{'FAIL' if FAILS else 'OK'}: {len(FAILS)} failing")
 sys.exit(1 if FAILS else 0)
