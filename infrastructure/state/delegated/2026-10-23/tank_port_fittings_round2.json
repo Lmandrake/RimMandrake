@@ -1,0 +1,12 @@
+{
+  "_meta": {"judge_model": "claude-opus-5-5", "brief": "design/RimMandrake/art_judge_brief.md@f30947df00 + task constraints (a)-(e)", "round": 2,
+            "note": "All four are owner-KEPT base pictures (E3): verdicts judge only the added fittings; install still needs the owner."},
+  "Transient/port_fittings_20261023/cmp_Scrapper_RM_UniversalCargoTank.png": {"verdict": "PASS",
+    "note": "Upper W/E: brass coupler on a short rusty riser landing in a collar on the end-cap shoulder reads as a plausible standpipe; brass nozzle untouched; N collars sit on the lifting-lug tops (touching, not floating); all 8 couplers visible at 64px/cell."},
+  "Transient/port_fittings_20261023/cmp_Industrial_RM_UniversalCargoTank.png": {"verdict": "PASS",
+    "note": "Same routing as Scrapper in gunmetal pipe with brass couplers matching the kept nozzle; upper W/E risers reach the end cap with no gap; no covered fixtures, halos or drift seen."},
+  "Transient/port_fittings_20261023/cmp_Futuristic_RM_UniversalCargoTank.png": {"verdict": "PASS",
+    "note": "Chrome risers with cyan-ringed couplers and dark collars fit the look; upper W/E bypass clears the cyan nozzle and lands on the end cap; legible at game scale."},
+  "Transient/port_fittings_20261023/cmp_Futuristic_RM_LiquidTank.png": {"verdict": "FIX",
+    "note": "NE bypass (elbow, run right past the valve, drop to a collar on the right shoulder) now reads attached and plausible - PASS on that; but the NW standpipe's dark collar sits squarely over the black cable strap's top loop, hiding a kept fixture (d) - narrow/shift the collar to land beside the strap or let the strap loop draw over it."}
+}
