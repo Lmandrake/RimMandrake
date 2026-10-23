@@ -154,6 +154,27 @@ namespace RimMandrake.Pyrelands
                 c.burnCenter.IsValid ? c.burnCenter.x + "," + c.burnCenter.z : "invalid");
         }
 
+        /// <summary>Test probe (jawa/static_call; PYRE_OPENING_FRONT): the current map's opening front.
+        /// -> "done=;lit=;litTick=;origin=x,z|invalid;mapAge=;now=" (lit/litTick/origin are this session's only).</summary>
+        public static string ProbeOpeningFront()
+        {
+            MapComponent_BurnLine c = For(Find.CurrentMap);
+            return c == null ? "error=no burn-line component on the current map" : c.fireFront.ProbeOpening();
+        }
+
+        /// <summary>Test drive only (jawa/static_call; PYRE_OPENING_FRONT): treat the current map as fresh for the opening
+        /// front, its window starting now, so a long-lived fixture can prove the arrival path. Returns 1, -1 with no component.</summary>
+        public static int RearmOpeningFront()
+        {
+            MapComponent_BurnLine c = For(Find.CurrentMap);
+            if (c == null)
+            {
+                return -1;
+            }
+            c.fireFront.RearmOpening();
+            return 1;
+        }
+
         /// <summary>Test drive only (jawa/static_call): make every burn-history sample on the current map `byTicks` older, so a burn
         /// recorded a minute ago reads as two days old without stepping two days (the compressed lag of
         /// PYRE_HERD_DRIVE_BUILD_TWO_DAYS_LATER). Returns the samples shifted, -1 with no component.</summary>

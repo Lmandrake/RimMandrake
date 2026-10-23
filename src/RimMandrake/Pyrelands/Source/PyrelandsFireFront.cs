@@ -48,8 +48,23 @@ namespace RimMandrake.Pyrelands
 
         /// <summary>Absolute game tick the next front is due. -1 means "not
         /// scheduled yet" — set on the first tick after a load or a map gen, so
-        /// a fresh map does not burn on tick one.</summary>
+        /// the scheduled front never fires on tick one. (A fresh map's first fire
+        /// is the opening front below, a separate smaller line.)</summary>
         private int nextFrontTick = -1;
+
+        /// <summary>PYRE_OPENING_FRONT (owner, by card, 2026-10-22: "GPT review Q7 → Pyrelands fresh map starts with a
+        /// smouldering front"). False on a map built by this code (the constructor runs at generation), so the fresh map
+        /// lights one small front on its first watch interval. Saved with default TRUE: a save from before this field has
+        /// no key and loads as done, so an old map never bursts into an "opening" fire on load.</summary>
+        private bool openingDone;
+
+        /// <summary>Test drive only (RearmOpeningFront): the tick the opening window restarts from. Unsaved.</summary>
+        private int openingRearmTick = int.MinValue;
+
+        /// <summary>Cells the opening front lit, and when (-1 = not lit on this session). Unsaved: probe output only.</summary>
+        private int openingLit;
+        private int openingLitTick = -1;
+        private IntVec3 openingOrigin = IntVec3.Invalid;
 
         public PyrelandsFireFront(Map map)
         {
@@ -59,6 +74,52 @@ namespace RimMandrake.Pyrelands
         public void ExposeData()
         {
             Scribe_Values.Look(ref nextFrontTick, "fireFrontNextTick", -1);
+            Scribe_Values.Look(ref openingDone, "fireFrontOpeningDone", true);
+        }
+
+        /// <summary>The fresh map's opening front, once. No letter: a burn somewhere is this biome's normal state, and a
+        /// letter at arrival would read as an attack. Null instigator, like every front the biome lights.</summary>
+        private void TickOpeningFront(bool enabled)
+        {
+            int now = Find.TickManager.TicksGame;
+            int from = Mathf.Max(map.generationTick, openingRearmTick);
+            RM_OpeningAction act = RM_BurnKernel.OpeningFront(openingDone, enabled, now - from, PyrelandsTuning.OpeningFrontWindowTicks);
+            if (act == RM_OpeningAction.Skip)
+            {
+                openingDone = true;
+                return;
+            }
+            if (act != RM_OpeningAction.Light || !TryFindOrigin(out IntVec3 origin))
+            {
+                return;
+            }
+            int lit = IgniteLine(origin, null, PyrelandsTuning.OpeningFrontWidthCells, PyrelandsTuning.OpeningFrontFireSize);
+            if (lit > 0)
+            {
+                openingDone = true;
+                openingLit = lit;
+                openingLitTick = now;
+                openingOrigin = origin;
+            }
+        }
+
+        /// <summary>Probe text for MapComponent_BurnLine.ProbeOpeningFront.</summary>
+        internal string ProbeOpening()
+        {
+            return string.Format(System.Globalization.CultureInfo.InvariantCulture,
+                "done={0};lit={1};litTick={2};origin={3};mapAge={4};now={5}", openingDone, openingLit, openingLitTick,
+                openingOrigin.IsValid ? openingOrigin.x + "," + openingOrigin.z : "invalid",
+                Find.TickManager.TicksGame - map.generationTick, Find.TickManager.TicksGame);
+        }
+
+        /// <summary>Test drive only: make this map "fresh" for the opening front again, its window starting now.</summary>
+        internal void RearmOpening()
+        {
+            openingDone = false;
+            openingRearmTick = Find.TickManager.TicksGame;
+            openingLit = 0;
+            openingLitTick = -1;
+            openingOrigin = IntVec3.Invalid;
         }
 
         /// <summary>Called from MapComponent_BurnLine's already-gated tick: this
@@ -69,6 +130,7 @@ namespace RimMandrake.Pyrelands
             // switching the mechanism back on does not fire instantly with a
             // months-overdue timer (RM_BurnKernel.FrontTick does both).
             bool enabled = PyrelandsMechanicsGate.On && RM_PyrelandsSettings.fireClockEnabled;
+            TickOpeningFront(enabled);
             if (RM_BurnKernel.FrontTick(ref nextFrontTick, Find.TickManager.TicksGame, enabled, ScheduleTicks) != RM_FrontAction.Fire)
             {
                 return;
@@ -169,6 +231,13 @@ namespace RimMandrake.Pyrelands
         /// </summary>
         internal int IgniteAt(IntVec3 origin, Thing instigator)
         {
+            return IgniteLine(origin, instigator, PyrelandsTuning.FireFrontWidthCells, PyrelandsTuning.FireFrontFireSize);
+        }
+
+        /// <summary>IgniteAt's body with the line's width and fire size given: the scheduled front and the rite pass the
+        /// front's own, the opening front its smaller line (PYRE_OPENING_FRONT).</summary>
+        private int IgniteLine(IntVec3 origin, Thing instigator, int width, float fireSize)
+        {
             if (!origin.IsValid)
             {
                 return 0;
@@ -178,7 +247,6 @@ namespace RimMandrake.Pyrelands
             // whichever direction vanilla's own spread maths prefers.
             float angle = Rand.Range(0f, 360f);
 
-            int width = PyrelandsTuning.FireFrontWidthCells;
             RM_BurnKernel.FrontLine(angle, width, out int[] offX, out int[] offZ);
             int lit = 0;
 
@@ -192,7 +260,7 @@ namespace RimMandrake.Pyrelands
                 {
                     continue;
                 }
-                if (FireUtility.TryStartFireIn(cell, map, PyrelandsTuning.FireFrontFireSize, instigator))
+                if (FireUtility.TryStartFireIn(cell, map, fireSize, instigator))
                 {
                     lit++;
                 }

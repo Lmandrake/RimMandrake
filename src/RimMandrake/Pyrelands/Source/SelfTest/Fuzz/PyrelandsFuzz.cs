@@ -155,7 +155,8 @@ namespace RimMandrake.Pyrelands.Fuzz
                 if (!RM_BurnKernel.MeasureDue(now, mapId, tickInterval)) return;
                 if ((now + mapId) % tickInterval != 0) Fail("MeasureDue true off the cadence");
                 if (!master) { Front(); return; } // the mod still tells the clock it is off
-                if (burnLine) { Measure(); Accrue(); Keep(); }
+                Measure();   // the mod measures under the master gate alone (GPT deep review 2026-10-22 #3)
+                if (burnLine) { Accrue(); Keep(); }
                 Front();
             }
 
@@ -1000,6 +1001,28 @@ namespace RimMandrake.Pyrelands.Fuzz
                 Check(RM_BurnKernel.MeasureDue(60, 0, 60) && !RM_BurnKernel.MeasureDue(60, 1, 60) && RM_BurnKernel.MeasureDue(59, 1, 60), "MeasureDue offset by map id");
                 int nf = 5;
                 Check(RM_BurnKernel.FrontTick(ref nf, 10, false, () => 99) == RM_FrontAction.Disabled && nf == -1 && RM_BurnKernel.FrontTick(ref nf, 10, true, () => 99) == RM_FrontAction.Armed && nf == 109 && RM_BurnKernel.FrontTick(ref nf, 108, true, () => 99) == RM_FrontAction.Wait && RM_BurnKernel.FrontTick(ref nf, 109, true, () => 50) == RM_FrontAction.Fire && nf == 159, "FrontTick table");
+                // PYRE_OPENING_FRONT: every (done, enabled, age) corner of the opening front, and the shipped window is a fresh-map one
+                Check(RM_BurnKernel.OpeningFront(true, true, 0, 2500) == RM_OpeningAction.Done && RM_BurnKernel.OpeningFront(true, false, 99999, 2500) == RM_OpeningAction.Done, "OpeningFront: done stays done");
+                Check(RM_BurnKernel.OpeningFront(false, true, 0, 2500) == RM_OpeningAction.Light && RM_BurnKernel.OpeningFront(false, true, 2500, 2500) == RM_OpeningAction.Light, "OpeningFront: a fresh map (age 0 .. the window) lights");
+                Check(RM_BurnKernel.OpeningFront(false, true, 2501, 2500) == RM_OpeningAction.Skip, "OpeningFront: a map past the window is not fresh (an old map that gains the component must not burst into flame)");
+                Check(RM_BurnKernel.OpeningFront(false, false, 0, 2500) == RM_OpeningAction.Skip, "OpeningFront: the fire clock off drops it (all-off degrades to no fire)");
+                Check(T.I("OpeningFrontWidthCells") >= 1 && T.I("OpeningFrontWidthCells") < T.I("FireFrontWidthCells") && T.F("OpeningFrontFireSize") > T.F("SmoulderFireSize") && T.I("OpeningFrontWindowTicks") > 0 && T.I("OpeningFrontWindowTicks") <= 60000, "OpeningFront tuning: a small line (under a scheduled front), a fire that can walk (over the dying reseed smoulder), a window inside the first day");
+                {
+                    // the opening front lights at most once: replay a map's watch intervals with random enabled / took outcomes
+                    var orng = new Random(7);
+                    for (int map = 0; map < 200; map++)
+                    {
+                        bool done = false; int took = 0;
+                        for (int age = 0; age <= 6000; age += 60)
+                        {
+                            var a = RM_BurnKernel.OpeningFront(done, orng.Next(8) != 0, age, 2500);
+                            if (a == RM_OpeningAction.Skip) done = true;
+                            else if (a == RM_OpeningAction.Light && orng.Next(3) == 0) { done = true; took++; }
+                            Check(a != RM_OpeningAction.Light || age <= 2500, "OpeningFront lit past the window at age " + age);
+                        }
+                        Check(done && took <= 1, "OpeningFront did not settle, or took more than once, on map " + map);
+                    }
+                }
                 Check(RM_BurnKernel.ScheduleTicks(2f, 4f, 0f, 60000) == 120000 && RM_BurnKernel.ScheduleTicks(2f, 4f, 1f, 60000) == 240000, "ScheduleTicks ends");
             }
             catch (Exception e) { fails.Add("units: " + e.Message); }

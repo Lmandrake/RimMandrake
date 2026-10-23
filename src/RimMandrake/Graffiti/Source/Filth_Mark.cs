@@ -28,6 +28,12 @@ namespace RimMandrake.Graffiti
         public Pawn subject;
         public int placedTick = -1;
 
+        // GRAFFITI_WALLFACE (owner, by card 2026-10-22: "Q9 → Graffiti floor cell drawn offset facing wall"): the side of the
+        // floor cell the wall it was painted on stands (RM_GraffitiKernel.WallSide; Rot4 int, NoWall = none). Read at the
+        // first spawn (a mark from an older save has none and reads it then), kept if that wall later goes: the paint
+        // was put there. Print draws the mark offset onto that wall and turned to face it.
+        public int wallSide = RM_GraffitiKernel.NoWall;
+
         // Tier-A rendering cache (design §3.1): built lazily from
         // ModExtension_Graffiti.sigilTierA + sigilFrameTexPath + makerIdeo.
         // Never Scribed - rebuilt from the (Scribed) fields above every
@@ -38,6 +44,11 @@ namespace RimMandrake.Graffiti
 
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
+            // Before base.SpawnSetup, which registers the mark for the map mesh that Print then builds.
+            if (wallSide == RM_GraffitiKernel.NoWall)
+            {
+                wallSide = ReadWallSide(Position, map);
+            }
             base.SpawnSetup(map, respawningAfterLoad);
             if (placedTick < 0 && !respawningAfterLoad)
             {
@@ -54,6 +65,7 @@ namespace RimMandrake.Graffiti
             Scribe_References.Look(ref makerIdeo, "rmMarkMakerIdeo");
             Scribe_References.Look(ref subject, "rmMarkSubject");
             Scribe_Values.Look(ref placedTick, "rmMarkPlacedTick", -1);
+            Scribe_Values.Look(ref wallSide, "rmMarkWallSide", RM_GraffitiKernel.NoWall);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 sigilMatsBuilt = false;
@@ -140,27 +152,107 @@ namespace RimMandrake.Graffiti
         // def's own <graphicData>) whenever there is nothing to composite -
         // every non-sigil mark, and a sigil mark whose ideo/icon didn't
         // resolve.
+        //
+        // GRAFFITI_WALLFACE: both paths draw at WallFacePos / WallFaceAngle, i.e. pushed onto the recorded wall and turned to
+        // face it; a mark with no recorded wall draws exactly as before (the plain path then stays vanilla's own print).
         public override void Print(SectionLayer layer)
         {
             if (!sigilMatsBuilt)
             {
                 RebuildSigilMats();
             }
+            float angle = RM_GraffitiKernel.WallFaceAngle(wallSide);
             if (cachedFrameMat == null && cachedIconMat == null)
             {
-                base.Print(layer);
+                if (wallSide == RM_GraffitiKernel.NoWall)
+                {
+                    base.Print(layer);
+                    return;
+                }
+                PrintPlainOnWall(layer, angle);
                 return;
             }
-            Vector3 basePos = DrawPos;
+            Vector3 basePos = WallFacePos();
             if (cachedFrameMat != null)
             {
-                Printer_Plane.PrintPlane(layer, basePos, Vector2.one, cachedFrameMat);
+                Printer_Plane.PrintPlane(layer, basePos, Vector2.one, cachedFrameMat, angle);
             }
             if (cachedIconMat != null)
             {
                 Vector3 iconPos = basePos + new Vector3(0f, 0.01f, 0f);
-                Printer_Plane.PrintPlane(layer, iconPos, new Vector2(0.62f, 0.62f), cachedIconMat);
+                Printer_Plane.PrintPlane(layer, iconPos, new Vector2(0.62f, 0.62f), cachedIconMat, angle);
             }
+        }
+
+        /// <summary>DrawPos pushed RM_GraffitiKernel.WallFaceOffsetCells toward the recorded wall (DrawPos itself for none).</summary>
+        private Vector3 WallFacePos()
+        {
+            RM_GraffitiKernel.WallFaceOffset(wallSide, RM_GraffitiKernel.WallFaceOffsetCells, out float dx, out float dz);
+            return DrawPos + new Vector3(dx, 0f, dz);
+        }
+
+        /// <summary>The plain (non-sigil) mark on its wall: vanilla Graphic.Print's plane (Graphic_Random's sub-graphic for this
+        /// thing, its drawSize, its material at North, the def's drawOffset) at the wall-face position and angle. The atlas
+        /// replacement Graphic.Print also does is skipped: it only re-points the same texture into a shared atlas.</summary>
+        private void PrintPlainOnWall(SectionLayer layer, float angle)
+        {
+            Graphic g = Graphic;
+            if (g is Graphic_Random random)
+            {
+                g = random.SubGraphicFor(this);
+            }
+            if (g == null)
+            {
+                return;
+            }
+            Vector3 center = WallFacePos() + g.DrawOffset(Rot4.North);
+            Printer_Plane.PrintPlane(layer, center, g.drawSize, g.MatAt(Rot4.North, this), angle);
+        }
+
+        /// <summary>The side of `cell` the wall stands on (RM_GraffitiKernel.WallSide), NoWall with none.</summary>
+        internal static int ReadWallSide(IntVec3 cell, Map map)
+        {
+            if (map == null || !cell.IsValid)
+            {
+                return RM_GraffitiKernel.NoWall;
+            }
+            return RM_GraffitiKernel.WallSide(
+                GraffitiJobUtility.IsFullWallAt(cell + IntVec3.North, map),
+                GraffitiJobUtility.IsFullWallAt(cell + IntVec3.East, map),
+                GraffitiJobUtility.IsFullWallAt(cell + IntVec3.South, map),
+                GraffitiJobUtility.IsFullWallAt(cell + IntVec3.West, map));
+        }
+
+        /// <summary>Test probe (jawa/static_call; GRAFFITI_WALLFACE): every Filth_Mark on the current map ->
+        /// "marks=N;onWall=N;sides=n,e,s,w;mismatch=N" where mismatch counts marks whose recorded side no longer has a wall.</summary>
+        public static string ProbeWallFaces()
+        {
+            Map map = Find.CurrentMap;
+            if (map == null)
+            {
+                return "error=no current map";
+            }
+            int marks = 0, onWall = 0, mismatch = 0;
+            int[] sides = new int[4];
+            foreach (Thing t in map.listerThings.ThingsInGroup(ThingRequestGroup.Filth))
+            {
+                if (!(t is Filth_Mark m))
+                {
+                    continue;
+                }
+                marks++;
+                if (m.wallSide >= 0 && m.wallSide <= 3)
+                {
+                    onWall++;
+                    sides[m.wallSide]++;
+                    if (!GraffitiJobUtility.IsFullWallAt(m.Position + new Rot4(m.wallSide).FacingCell, map))
+                    {
+                        mismatch++;
+                    }
+                }
+            }
+            return "marks=" + marks + ";onWall=" + onWall + ";sides=" + sides[0] + "," + sides[1] + "," + sides[2] + "," + sides[3]
+                + ";mismatch=" + mismatch;
         }
     }
 }

@@ -356,6 +356,8 @@ def _wait_raw(t, n, fast=None):
     finally:
         s.call("rimworld/set_time_speed", speed="Paused")
     now = s._ticks()
+    if now is None:
+        raise ExpectationFailed("clock unreadable after a %d-tick wait" % n)
     if now < target:
         t.wait_ticks(target - now)
         now = s._ticks()
@@ -1093,6 +1095,44 @@ def burn_line(t):
         if _live(t) and not fires:
             _fail("burnLineEnabled ON, map extinguished, %d ticks (> StandingBurnQuietTicks %d) and no free-standing "
                   "Fire: the standing burn did not reseed" % (BURN_LINE_WAIT_TICKS, BURN_QUIET_TICKS))
+        t.screenshot()
+        _extinguish(t)
+
+
+OPENING_WAIT_TICKS = 6 * BURN_WATCH_TICKS   # PYRE_OPENING_FRONT: lit on the first watch interval; a few for slack
+
+
+@suite.chain("opening_front")
+@_teardown(fire=True)
+def opening_front(t):
+    """PYRE_OPENING_FRONT (owner, by card, 2026-10-22: "GPT review Q7 → Pyrelands fresh map starts with a smouldering front").
+    The arrival half of pyre_burn_line_present, read without a fresh worldgen: fireClockEnabled ON, the map extinguished,
+    MapComponent_BurnLine.RearmOpeningFront (the map counts as fresh, its window starting now), a few watch intervals, then
+    ProbeOpeningFront must say done with lit > 0 and the map must hold free-standing Fire again. Evidence only (shows=[]):
+    burn_line_present stays the one component of that bar. The arrival on a TRULY fresh map is the walk's own look.
+    Lessons from runs go here."""
+    _pad(t, PAD_PROBE)
+    with _comp(t, "opening_front", shows=[]):
+        _set(t, {"fireClockEnabled": True})
+        _extinguish(t)
+        r = t.bridge_call("jawa/static_call", type=BURN_LINE, method="RearmOpeningFront")
+        if _live(t) and str((_ok(r, "RearmOpeningFront") or {}).get("result")).strip() != "1":
+            _unmeasured(t, "RearmOpeningFront refused (is this Pyrelands DLL deployed, is the current map Pyrelands?): %r" % r)
+        _wait(t, OPENING_WAIT_TICKS)
+        r = t.bridge_call("jawa/static_call", type=BURN_LINE, method="ProbeOpeningFront")
+        kv = parse_kv((_ok(r, "ProbeOpeningFront") or {}).get("result")) if _live(t) else {}
+        fires = [f for f in _things(t, "Fire", limit=2000) if not f.get("parent")]
+        _note(t, "opening front after a re-arm", {"probe": kv, "waitTicks": OPENING_WAIT_TICKS,
+                                                  "freeStandingFires": len(fires)})
+        if _live(t):
+            if "done" not in kv:
+                _fail("ProbeOpeningFront unreadable: %r" % r)
+            if not str(kv.get("lit") or "").isdigit():
+                _fail("ProbeOpeningFront lit is not a count: %r" % r)
+            if kv.get("done") != "True" or int(kv["lit"]) <= 0:
+                _fail("re-armed, fire clock ON, %d ticks and the opening front did not light: %r" % (OPENING_WAIT_TICKS, kv))
+            if not fires:
+                _fail("the opening front reports %s cells lit but no free-standing Fire is on the map" % kv.get("lit"))
         t.screenshot()
         _extinguish(t)
 
@@ -1983,6 +2023,7 @@ def heat_dome(t):
     _pad(t, PAD_DOME)
     t.clear_area(size=12)
     x, z = t.anchor
+    g = None   # bound before the first component: a failed spawn must not crash the toggle-off component below
     with _comp(t, "ashwallow_domes_on_heat_hit", toggle="burrowDomeOnHeatHit"):
         _set(t, {"burrowOnFireEnabled": True, "burrowDomeOnHeatHit": True})
         g = _spawn_wild(t, "RM_Ashwallow", x, z)
