@@ -19,7 +19,7 @@ LAYOUT (absolute map coords on a 325 map): basin A x10..134, basin B x190..314, 
 4 notches deep (2 m), A filled F=4 and B F=1 with RM_Fluid_Water (unequal, so links have work). The 55-wide gap holds rigs in
 four columns (x 139 / 150 / 161 / 172), one rig per 5 rows from z 4 (the fifth row and the 7-square lanes between columns are
 free, so a hose from an inner column can route out): the pond rig's shape (walk_gaps_proof _pond_rig) -- two 2x2
-reels built West at (cx, z) and (cx, z+2) joined by an RM_UniversalPipe run at x cx+2, z..z+3 (rig_ops; NOT a tank: a tank does not conduct); reel 1 laid to A's lip (135, z) and set
+reels on footprints (cx, z) and (cx, z+2), each facing its lip (reel 1 West, reel 2 East: rig_ops), joined by an RM_UniversalPipe run at x cx+2, z..z+3 (rig_ops; NOT a tank: a tank does not conduct); reel 1 laid to A's lip (135, z) and set
 Intake, reel 2 laid to B's lip (189, z+2) and set Outflow. A hose holds 40 squares as shipped (HoseMath.DefaultMaxLength) and
 the far lip is up to 50 away, so RM_HoseSettings.maxLength is held at 80 (its clamp) for the run and put back after. The pipe-run layout is the one walk_gaps PONDS_* uses after the tank layout read
 linked=false (2026-10-22). ProofLevelLink's links counter is
