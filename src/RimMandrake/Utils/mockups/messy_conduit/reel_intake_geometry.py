@@ -22,7 +22,7 @@ south rot90 cw: its outlet on the left), so every table row is in the frame Hose
 the C# keeps one set of rules. Frames: 0 = west (east is it mirrored), 1 = north, 2 = south; 8 rows per frame.
 
 Run: python3 src/RimMandrake/Utils/mockups/messy_conduit/reel_intake_geometry.py   (rewrites the .cs; deterministic)
-     ... --check   exit 1 when the committed .cs no longer matches the installed art / drawSize (selftest_reel_ports.py)
+     ... --check   exit 1 when the committed .cs no longer matches the installed art / drawSize (FlowWorks/selftest_hose_ports.py)
      ... --out P   write the generated .cs to P instead
 """
 import os
