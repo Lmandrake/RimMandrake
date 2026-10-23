@@ -132,9 +132,8 @@
   <!-- open, so this build does not guess either: it ships no wall,    -->
   <!-- building or boughway damage at all. Its only wood damage is     -->
   <!-- vanilla tree-eating (foodType Tree, the megathrips-like "wood   -->
-  <!-- pulp" diet the item allows "at most"), and the Mod Settings     -->
-  <!-- toggle "Brathek bores into living wood" strips that flag at     -->
-  <!-- startup (RM_BrathekBoring.cs). Every number is INVENTED.        -->
+  <!-- pulp" diet the item allows "at most"). Its on/off Mod Settings  -->
+  <!-- toggle was cut 2026-10-23. Every number is INVENTED.            -->
   <!-- ============================================================ -->
 
   <ThingDef ParentName="AnimalThingBase">

@@ -17,8 +17,8 @@ namespace RimMandrake.FeverWood
     // tethered to its room, and falls back to spawned-Manhunter only for a
     // race without the comp.
     //
-    // Chambers: the farm (chamber 1 of 3) is farmKind, the parasite (2 of 3)
-    // is parasiteKind below. The guard chamber needs a creature not yet
+    // Chambers: the farm (chamber 1 of 3) is farmKind. The parasite chamber
+    // (2 of 3) was cut 2026-10-23 (design/RimMandrake/fluff_cuts_2026-10-23.md). The guard chamber needs a creature not yet
     // invented (FEVERWOOD_HIVE_GUARD_CHAMBER_1); RM_MapComponent_AntHive
     // records every room center for it.
     public class RM_AntHiveBiomeExtension : DefModExtension
@@ -74,12 +74,6 @@ namespace RimMandrake.FeverWood
         public IntRange farmStockRange = new IntRange(3, 5);
 
         public float farmHerdRadius = 5f;
-
-        // Chamber 2 of 3, the PARASITE (FEVERWOOD_HIVE_PARASITE_CHAMBER_1):
-        // one of these in a mid-depth room, feeding on the hive unseen.
-        // Optional: null = no parasite chamber. Needs a hive of 4+ rooms
-        // (entrance, farm, the parasite's room, queen).
-        public PawnKindDef parasiteKind;
 
         // FEVERWOOD_HIVE_SEALED_PASSAGES_1: the reaction tag the defenders'
         // RM_CompReactionSource rings with; an alarm carrying it seals the

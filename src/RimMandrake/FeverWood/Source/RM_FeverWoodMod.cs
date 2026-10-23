@@ -148,11 +148,6 @@ namespace RimMandrake.FeverWood
         /// plugs the corridor behind the intruder. Default ON.</summary>
         public static bool antHiveSealingEnabled = true;
 
-        /// <summary>FEVERWOOD_HIVE_PARASITE_CHAMBER_1. Off: a new hive carries
-        /// no glomvar (WORLDGEN-AFFECTING), and an existing glomvar stops
-        /// hunting the hive (it lives on as an ordinary animal). Default ON.</summary>
-        public static bool antHiveParasiteChamberEnabled = true;
-
         /// <summary>Multiplies RM_AntHiveBiomeExtension.hiveChance. INVENTED
         /// default 1.0 (matches shipped behavior); exposed because the base
         /// chance itself is an invented placeholder a play-test should be
@@ -213,23 +208,9 @@ namespace RimMandrake.FeverWood
         /// "Release lure" once this specific stake has drawn a raid.</summary>
         public static bool twoFrontLureLockOnceTriggered = false;
 
-        /// <summary>FEVERWOOD_ANT_THEFT_RAIDBACK_1: a kurreth raid stuns thornbugs and tamed sap-suckers and
-        /// carries them off alive (letter + slime trail). Off: the lure's kurreth wave is a plain assault.</summary>
-        public static bool antTheftEnabled = true;
-
-        /// <summary>FEVERWOOD_KURRETH_COLUMN_RAIDBACK_1: the raid-back quest after a theft (camp site, then the hive).</summary>
-        public static bool kurrethColumnEnabled = true;
-        /// <summary>KURRETH_THEFT_PER_COLUMN_1: thefts are grouped by the column (lord) that made them, one letter and
-        /// one raid-back quest per column, once that column has left. Off: the old single 10-second window.</summary>
-        public static bool kurrethTheftPerColumn = true;
-        /// <summary>KURRETH_LOSS_FINALIZE_1: a lost raid-back takes every unrecovered animal for good in every phase,
-        /// and "recovered" needs the animal actually back on a map and out of the kidnappers' hands.</summary>
-        public static bool kurrethLossFinalize = true;
         /// <summary>ANT_HIVE_REAL_GEOMETRY_1 (worldgen): hive rooms keep real water clearance, never overlap, and are
         /// dug out of natural rock. Off: the old centre-cell water test, overlapping hops, painted-only rooms.</summary>
         public static bool antHiveRealGeometry = true;
-        public static float kurrethColumnDays = 4f;
-        public static float kurrethHiveHoldDays = 15f;
 
         /// <summary>FEVERWOOD_OIL_BOIL_WEATHER_1: hot still days boil the seep oil into a flammable haze.</summary>
         public static bool oilBoilEnabled = true;
@@ -250,12 +231,6 @@ namespace RimMandrake.FeverWood
         /// (RM_CompSillochAmbush). Off: it is an ordinary wandering animal that
         /// never strikes unprovoked. Default ON.</summary>
         public static bool sillochAmbushEnabled = true;
-
-        /// <summary>FEVERWOOD_RM_CAST_COMPLETION_1: the brathek eats living trees
-        /// (its wood-pulp diet; RM_BrathekBoring). It never damages walls,
-        /// buildings or boughways in this build. Off: it grazes like any other
-        /// animal. Default ON.</summary>
-        public static bool brathekBoresWood = true;
 
         /// <summary>FEVERWOOD_BROOD_RANSOM_1 master toggle. Off: the world's
         /// tally still counts but changes nothing (boldness x1, no letters),
@@ -306,7 +281,6 @@ namespace RimMandrake.FeverWood
             Scribe_Values.Look(ref antHiveChanceMultiplier, "antHiveChanceMultiplier", 1f);
             Scribe_Values.Look(ref antHiveFarmChamberEnabled, "antHiveFarmChamberEnabled", true);
             Scribe_Values.Look(ref antHiveSealingEnabled, "antHiveSealingEnabled", true);
-            Scribe_Values.Look(ref antHiveParasiteChamberEnabled, "antHiveParasiteChamberEnabled", true);
             Scribe_Values.Look(ref twoFrontLureEnabled, "twoFrontLureEnabled", true);
             Scribe_Values.Look(ref twoFrontLureRaidMtbHours, "twoFrontLureRaidMtbHours", 6f);
             Scribe_Values.Look(ref twoFrontLureSecondWaveChance, "twoFrontLureSecondWaveChance", 0.5f);
@@ -318,14 +292,7 @@ namespace RimMandrake.FeverWood
             Scribe_Values.Look(ref twoFrontLureLockOnceTriggered, "twoFrontLureLockOnceTriggered", false);
             Scribe_Values.Look(ref sapSuckerMishandleRefusalEnabled, "sapSuckerMishandleRefusalEnabled", true);
             Scribe_Values.Look(ref sillochAmbushEnabled, "sillochAmbushEnabled", true);
-            Scribe_Values.Look(ref brathekBoresWood, "brathekBoresWood", true);
-            Scribe_Values.Look(ref antTheftEnabled, "antTheftEnabled", true);
-            Scribe_Values.Look(ref kurrethColumnEnabled, "kurrethColumnEnabled", true);
-            Scribe_Values.Look(ref kurrethTheftPerColumn, "kurrethTheftPerColumn", true);
-            Scribe_Values.Look(ref kurrethLossFinalize, "kurrethLossFinalize", true);
             Scribe_Values.Look(ref antHiveRealGeometry, "antHiveRealGeometry", true);
-            Scribe_Values.Look(ref kurrethColumnDays, "kurrethColumnDays", 4f);
-            Scribe_Values.Look(ref kurrethHiveHoldDays, "kurrethHiveHoldDays", 15f);
             Scribe_Values.Look(ref oilBoilEnabled, "oilBoilEnabled", true);
             Scribe_Values.Look(ref oilBoilMinTempC, "oilBoilMinTempC", 35f);
             Scribe_Values.Look(ref oilBoilCommonalityMultiplier, "oilBoilCommonalityMultiplier", 1f);
@@ -431,7 +398,7 @@ namespace RimMandrake.FeverWood
                 list.GapLine();
             }
 
-            if (Group(list, "Ant hive dungeons (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "antHiveDungeonEnabled", "antHiveChanceMultiplier", "antHiveRealGeometry", "antHiveFarmChamberEnabled", "antHiveParasiteChamberEnabled" }))
+            if (Group(list, "Ant hive dungeons (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "antHiveDungeonEnabled", "antHiveChanceMultiplier", "antHiveRealGeometry", "antHiveFarmChamberEnabled" }))
             {
                 list.CheckboxLabeled("Ant hive dungeons", ref antHiveDungeonEnabled,
                     "A rare, procedurally-laid-out chain of dug tunnels and rooms, populated with kurreth "
@@ -448,10 +415,6 @@ namespace RimMandrake.FeverWood
                     "The shallowest hive room keeps a herd of thornbugs the kurreth tend and herd back when "
                   + "they stray: the hive is a farm. Off: new hives carry no herd and an existing herd is no "
                   + "longer herded.");
-                list.CheckboxLabeled("Ant hive parasite chamber (worldgen)", ref antHiveParasiteChamberEnabled,
-                    "A mid-depth hive room hides a glomvar, a pale thing the kurreth cannot perceive that "
-                  + "eats them one a day, and falls on them in a frenzy while they are busy fighting you. "
-                  + "Off: new hives carry none and an existing one stops hunting the hive.");
                 list.GapLine();
             }
 
@@ -500,7 +463,7 @@ namespace RimMandrake.FeverWood
                 list.GapLine();
             }
 
-            if (Group(list, "Sap-suckers, silloch and brathek", RimMandrake.Shared.SettingScope.Now, new[] { "sapSuckerMishandleRefusalEnabled", "sillochAmbushEnabled", "brathekBoresWood" }))
+            if (Group(list, "Sap-suckers and silloch", RimMandrake.Shared.SettingScope.Now, new[] { "sapSuckerMishandleRefusalEnabled", "sillochAmbushEnabled" }))
             {
                 list.CheckboxLabeled("Sap-suckers refuse a failed taming attempt", ref sapSuckerMishandleRefusalEnabled,
                     "On: a failed attempt to tame a vaulm, drommath or ollareth sets off its refusal — the vaulm "
@@ -510,41 +473,6 @@ namespace RimMandrake.FeverWood
                     "On: a silloch presses itself against a tree trunk and waits, and strikes any small creature (or "
                   + "person) that steps right beside it. It never chases: once the victim gets a few steps clear, it lets "
                   + "go. Off: it wanders like an ordinary animal and never strikes unprovoked.");
-                list.CheckboxLabeled("Brathek bores into living wood", ref brathekBoresWood,
-                    "On: a brathek eats living trees as well as ground cover, so a grove with brathek in it slowly thins. "
-                  + "It never digs through walls, buildings or boughways. Off: it grazes like any other animal.");
-                list.GapLine();
-            }
-
-            if (Group(list, "Kurreth theft letters", RimMandrake.Shared.SettingScope.Now, new[] { "kurrethTheftPerColumn" }))
-            {
-                list.CheckboxLabeled("One theft letter per kurreth column", ref kurrethTheftPerColumn,
-                    "On: each column that carries animals off gets its own letter and raid-back quest, sent once that column "
-                  + "has left the map, naming the edge IT left by. Off: every theft within about ten seconds of the first is "
-                  + "lumped into one letter.");
-                list.GapLine();
-            }
-
-            if (Group(list, "Kurreth raids and raid-back", RimMandrake.Shared.SettingScope.NextPulse, new[] { "antTheftEnabled", "kurrethColumnEnabled", "kurrethLossFinalize", "kurrethColumnDays", "kurrethHiveHoldDays" }))
-            {
-                list.CheckboxLabeled("Kurreth carry animals off alive", ref antTheftEnabled,
-                    "On: a kurreth raid fights as before, but up to a third of the column pins a thornbug (then any "
-                  + "tamed vaulm, ollareth or drommath) down without killing it and carries it off the map alive; once "
-                  + "nothing is left to take, the rest leave. A letter names every animal taken and the way the column "
-                  + "went, and a slime trail leads off the edge there. Off: the kurreth wave is a plain assault.");
-                list.CheckboxLabeled("Stolen animals can be taken back", ref kurrethColumnEnabled,
-                    "On: after a theft the column makes camp a few tiles away with the animals bound alive; a colonist who "
-                  + "reaches one while no kurreth stands guard close by cuts it free. Not reached in time, the column goes "
-                  + "on to its hive: if a hive lies under the map they were taken from, they are carried bound into its "
-                  + "deepest chamber for a while, then lost. Off: a stolen animal is simply gone with the column.");
-                list.CheckboxLabeled("A lost raid-back is lost for good", ref kurrethLossFinalize,
-                    "On: when the raid-back fails, every animal not actually brought back is gone for good in every phase (as in "
-                  + "the hive), and an animal only counts as rescued once it is unbound on a map and out of the kurreth's hands. "
-                  + "Off: the old checks, where an animal still held off-map could count as rescued.");
-                list.Label("Days before the column reaches its hive: " + kurrethColumnDays.ToString("0.0"));
-                kurrethColumnDays = list.Slider(kurrethColumnDays, 1f, 15f);
-                list.Label("Days the animals last bound in the hive: " + kurrethHiveHoldDays.ToString("0.0"));
-                kurrethHiveHoldDays = list.Slider(kurrethHiveHoldDays, 2f, 60f);
                 list.GapLine();
             }
 
@@ -648,9 +576,9 @@ namespace RimMandrake.FeverWood
         /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
         /// should draw. Scope AUDITED per setting against its read site (2026-10-10): ambient limb rolls, tank, stake rolls, sap-sucker
         /// and silloch comps and the yield/flash hooks are read by a tick, comp, job or patch, so [now]; the Great Emergence, the lure
-        /// waves, the kurreth raids and the brood gifts and trader stock are read when the roll, raid or quest fires, so [next pulse];
+        /// waves and the brood gifts and trader stock are read when the roll, raid or quest fires, so [next pulse];
         /// the oil boil weather table is rebuilt when the window closes and bites at the next weather change, so [next pulse]; the
-        /// hive settings are read by the map generation step (the farm and parasite switches also by later ticks), so new maps only.</summary>
+        /// hive settings are read by the map generation step (the farm switch also by later ticks), so new maps only.</summary>
         private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
         {
             bool searching = !string.IsNullOrWhiteSpace(searchQuery);
@@ -690,15 +618,12 @@ namespace RimMandrake.FeverWood
             RimMandrake.Shared.PatchApplier.Apply(new HarmonyLib.Harmony("mandrake.rm.feverwood"), typeof(RM_FeverWoodMod).Assembly, "RimMandrake.FeverWood");
             // FEVERWOOD_HIVE_SEALED_PASSAGES_1: the hive answers its own alarms.
             RimMandrake.CreatureBehaviors.RM_ReactionEvents.AlarmAnnounced += RM_HiveSealing.OnAlarm;
-            // FEVERWOOD_HIVE_PARASITE_CHAMBER_1: an alarm sends the glomvar into a feeding frenzy.
-            RimMandrake.CreatureBehaviors.RM_ReactionEvents.AlarmAnnounced += RM_CompHiveParasite.OnAlarm;
         }
 
         public override void WriteSettings()
         {
             base.WriteSettings();
             RM_OilBoil.ApplySettings();
-            RM_BrathekBoring.ApplySettings();
         }
 
         public override string SettingsCategory()

@@ -96,7 +96,6 @@ namespace RimMandrake.FeverWood
 
             Populate(map, ext, rooms);
             PlaceFarm(map, ext, rooms);
-            PlaceParasite(map, ext, rooms);
 
             Log.Message("[RM FeverWood] RM_GenStep_AntHiveDungeon: placed a " + rooms.Count
                 + "-room ant hive on " + map.Biome.defName + " at " + start + ".");
@@ -335,32 +334,6 @@ namespace RimMandrake.FeverWood
                 GenSpawn.Spawn(stock, cell, map);
                 hive.farmStock.Add(stock);
             }
-        }
-
-        // Chamber 2 of 3, the parasite: one in the middle room of the chain
-        // (never the entrance, the farm room or the queen's room), so the
-        // descent meets the farm first and the horror second.
-        private static void PlaceParasite(Map map, RM_AntHiveBiomeExtension ext, List<IntVec3> rooms)
-        {
-            if (ext.parasiteKind == null || !RM_FeverWoodSettings.antHiveParasiteChamberEnabled || rooms.Count < 4)
-            {
-                return;
-            }
-
-            int idx = Mathf.Clamp(rooms.Count / 2, 2, rooms.Count - 2);
-            if (!CellFinder.TryFindRandomCellNear(rooms[idx], map, 3, c => c.Standable(map), out IntVec3 cell))
-            {
-                return;
-            }
-
-            Pawn parasite = PawnGenerator.GeneratePawn(ext.parasiteKind, null);
-            if (parasite == null)
-            {
-                return;
-            }
-
-            GenSpawn.Spawn(parasite, cell, map);
-            parasite.TryGetComp<RimMandrake.CreatureBehaviors.RM_CompHomeTether>()?.SetHome(rooms[idx]);
         }
 
         // REACTION_MECHANISM_GENERALISE_1 step 3. A defender whose race

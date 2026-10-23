@@ -219,11 +219,8 @@ namespace RimMandrake.FeverWood
                 GenSpawn.Spawn(p, cell, map, spawnRot);
             }
 
-            // FEVERWOOD_ANT_THEFT_RAIDBACK_1: the kurreth steal (stun, carry off alive); the brood still kills --
-            // the sheet's contrast. antTheftEnabled off = the old plain assault.
-            LordJob lordJob = factionDef.defName == AntFactionDefName && RM_FeverWoodSettings.antTheftEnabled
-                ? new RM_LordJob_KurrethTheft()
-                : (LordJob)new LordJob_AssaultColony(faction, canKidnap: false, canTimeoutOrFlee: false, canSteal: false);
+            // The kurreth carry-off theft was cut 2026-10-23 (design/RimMandrake/fluff_cuts_2026-10-23.md): every wave is a plain assault.
+            LordJob lordJob = new LordJob_AssaultColony(faction, canKidnap: false, canTimeoutOrFlee: false, canSteal: false);
             LordMaker.MakeNewLord(faction, lordJob, map, pawns);
             if (!isSecondWave)
             {
@@ -231,7 +228,7 @@ namespace RimMandrake.FeverWood
             }
 
             // TWO_FRONT_BAIT_TARGETING_1 PROVISIONAL (auto-decided 2026-10-09): the message says they converge on the
-            // lure, so each raider's first order is to run at it; the lord's own assault/theft duty takes over once
+            // lure, so each raider's first order is to run at it; the lord's own assault duty takes over once
             // that walk ends or something overrides it (a fight on the way).
             if (RM_FeverWoodSettings.twoFrontLureTrueFronts && origin.IsValid && origin.InBounds(map))
             {

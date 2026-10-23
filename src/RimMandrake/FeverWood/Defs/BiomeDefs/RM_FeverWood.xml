@@ -26,9 +26,8 @@
 
   generatesNaturally stays false, unchanged from the twin: the Fever Wood is
   a campaign-placed biome, not one meant to win natural worldgen scoring —
-  RM_BiomeWorker_FeverWood exists (and is real, not a stub) so the def still
-  loads cleanly and so a future generatesNaturally=true flip on someone
-  else's world is not starting from a null workerClass.
+  RM_BiomeWorker_FeverWood exists so the def still loads cleanly; it scores
+  every tile below zero (its scoring body was cut 2026-10-23: worldgen is out).
 
   World map texture: the twin's `World/Biomes/GreaterTropicalSwamp` is DONOR
   ART (Steam Workshop item 3620545124), a hard dependency the RM tier may
@@ -171,13 +170,12 @@
       </li>
       <!-- FEVERWOOD_ANT_HIVE_DUNGEON_1: procedural layout, kurreth workers +
            queen that react (the race's own reaction source), and chamber 1 of
-           3, the thornbug farm, and chamber 2, the glomvar parasite. The guard
+           3, the thornbug farm (the glomvar parasite chamber was cut 2026-10-23). The guard
            chamber is FEVERWOOD_HIVE_GUARD_CHAMBER_1. -->
       <li Class="RimMandrake.FeverWood.RM_AntHiveBiomeExtension">
         <workerKind>RM_Kurreth</workerKind>
         <queenKind>RM_KurrethQueen</queenKind>
         <farmKind>RM_Thornbug</farmKind>
-        <parasiteKind>RM_Glomvar</parasiteKind>
       </li>
       <!-- FEVERWOOD_CROWN_SOUND_HEAT_1 / SOLAR_HEAT_EXPOSURE_1: sun heat kind "ambient" - still, shadeless
            heat under the crown: shade does nothing, only insulation or leaving helps. Vanilla temperature
