@@ -33,8 +33,8 @@ namespace RimMandrake.FlowWorks.Hose
             { 0.008, -0.160, -0.483, -0.303, 0.500, -0.303, -0.273, -0.597, 0.500, -0.588, -0.290, -0.605, 0.500, -0.597 },   // Scrapper Reel_Deployed_north
             { 0.013, -0.135, -0.492, -0.278, 0.500, -0.278, -0.441, -0.614, 0.550, -0.597, -0.433, -0.614, 0.559, -0.597 },   // Industrial Reel_PumpHookup_north
             { 0.004, -0.202, -0.500, -0.370, 0.500, -0.370, -0.399, -0.555, 0.500, -0.546, -0.399, -0.563, 0.500, -0.555 },   // Industrial Reel_Deployed_north
-            { -0.269, -0.345, -0.156, -0.227, 0.172, -0.227, -0.282, -0.580, 0.357, -0.580, -0.273, -0.588, 0.357, -0.588 },   // Modern Reel_PumpHookup_north
-            { -0.269, -0.345, -0.156, -0.227, 0.172, -0.227, -0.273, -0.572, 0.357, -0.580, -0.273, -0.588, 0.357, -0.580 },   // Modern Reel_Deployed_north
+            { 0.000, -0.227, -0.156, -0.227, 0.164, -0.227, -0.240, -0.572, 0.391, -0.580, -0.240, -0.588, 0.391, -0.588 },   // Modern Reel_PumpHookup_north
+            { 0.008, -0.269, -0.156, -0.227, 0.172, -0.227, -0.223, -0.588, 0.374, -0.597, -0.214, -0.597, 0.374, -0.605 },   // Modern Reel_Deployed_north
             { 0.008, -0.152, -0.500, -0.295, 0.500, -0.295, -0.466, -0.546, 0.508, -0.521, -0.450, -0.546, 0.534, -0.521 },   // Futuristic Reel_PumpHookup_north
             { 0.004, -0.085, -0.391, -0.345, 0.416, -0.345, -0.349, -0.639, 0.500, -0.630, -0.349, -0.647, 0.500, -0.639 },   // Futuristic Reel_Deployed_north
             { 0.000, -0.269, -0.080, -0.328, 0.105, -0.185, -0.475, -0.563, 0.450, -0.563, -0.433, -0.555, 0.450, -0.555 },   // Scrapper Reel_PumpHookup_south
@@ -96,8 +96,8 @@ namespace RimMandrake.FlowWorks.Hose
             { -0.857, 0.008 },   // Scrapper Reel_Deployed_north
             { -0.873, 0.013 },   // Industrial Reel_PumpHookup_north
             { -0.806, 0.004 },   // Industrial Reel_Deployed_north
-            { -0.680, -0.269 },   // Modern Reel_PumpHookup_north
-            { -0.680, -0.269 },   // Modern Reel_Deployed_north
+            { -0.773, 0.000 },   // Modern Reel_PumpHookup_north
+            { -0.731, 0.008 },   // Modern Reel_Deployed_north
             { -0.857, 0.008 },   // Futuristic Reel_PumpHookup_north
             { -0.924, 0.004 },   // Futuristic Reel_Deployed_north
             { -0.739, 0.000 },   // Scrapper Reel_PumpHookup_south
