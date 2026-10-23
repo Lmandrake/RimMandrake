@@ -585,7 +585,7 @@ AQ = [fi("CARD_ANSWERED", 900), le("needs", "CARD_ANSWERED", 800, to="owner", re
       fi("PLAIN_RULE", 900), le("needs", "PLAIN_RULE", 800, to="owner", reason="decide the cap"),
       fi("A_LOOK", 900), le("needs", "A_LOOK", 800, to="owner", reason="only the L4 in-situ look remains (LOOK, not a ruling)"),
       fi("L4_ONLY", 900), le("implemented", "L4_ONLY", 800, sha="abc1234", needs="owner",
-                             criteria=[{"id": "A1", "level": "L4", "text": "owner glances at it in game"}]),
+                             criteria=[{"id": "A1", "level": "L4", "text": "owner opens the rendered sheet and glances at it"}]),
       fi("A_FACT", 900, title="Second test PC: needs its name/address"),
       le("needs", "A_FACT", 800, to="owner", reason="waiting on him"),
       le("file", "A_DECISION", 900, kind="decision", title="walk the sheet and decide", **{"for": "FOUNDRY"}),
@@ -607,6 +607,13 @@ check("'LOOK, not a ruling' on the needs event is a look, not a ruling", aq["A_L
 check("an item owing only an L4 criterion is a look", aq["L4_ONLY"]["kind"] == "look" and aq["L4_ONLY"]["ltype"] == "item look",
       aq.get("L4_ONLY"))
 check("an ask for a fact (a PC's name/address) is 'to provide'", aq["A_FACT"]["kind"] == "provide", aq.get("A_FACT"))
+_W = lambda **kw: type("I", (), {"title": kw.get("t", ""), "kind": kw.get("k", "art"), "owed_levels": lambda self: [],
+                               "criteria": kw.get("c", []), "outstanding": {c["id"] for c in kw.get("c", [])}})()
+check("a live in-game walkthrough is class 'walk', never a look (owner 2026-10-23)",
+      pc.ask_class(_W(t="Walk the ponds in game with him"), {"reason": "joint walkthrough"})[0] == "walk"
+      and pc.ask_class(_W(c=[{"id": "A4", "level": "L4", "text": "owner looks at both in game"}]), {"reason": ""})[0] == "walk",
+      pc.ask_class(_W(t="Walk the ponds in game"), {"reason": ""}))
+check("a sheet or picture to open stays a look", pc.ask_class(_W(t="Water art sheet"), {"reason": "look: sheet"})[0] == "look")
 check("a verb is not a fact: 'address the drift' / 'provide feedback' stay rulings",
       [pc.ask_class(type("I", (), {"title": t, "kind": "task", "owed_levels": lambda self: []})(), {"reason": ""})[0]
        for t in ("address the drift", "provide feedback on X")] == ["rule", "rule"])
