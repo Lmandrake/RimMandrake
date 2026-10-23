@@ -1,0 +1,78 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 72.1,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.47370159999999994
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 46.2
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 13.9,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1243587
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_SuspensionAnchor_Timber_Industrial",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said good); blocking ['PORT_MISFIT']; polish ['LEGIB_32']; unreadable ['BORE (n/a on an unconditional item)']",
+  "gpt regen: unsettled ['K1'], own blocking ['PORT_MISFIT']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v1",
+   "sha": "a4850279ccbf"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v1",
+   "sha": "14056552e355"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "machine@v2",
+   "sha": "e06ee7316a0a"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "south.png": "24ae226cec1610e3bc008fe672abec26816ef8fbe354c1dcf52c763665797d5b",
+  "east.png": "064df8c8f09e3babf8c8ab7a2d8b63906f98d774f26c5522756d95f07bf712f0",
+  "north.png": "35fd74efc5602bb3e80fdaac58ff2514de34573a3f765a6544b341f3d2ef2e26",
+  "scale.png": "127a8b93dbcc83c7820d1ebaa340c43df3d9f3d741dc66282be92dbeb6863938",
+  "assembled_1.png": "37eb085491dee20fbd7805dc3f60f050ed6ab7e7724de61d7ce3f00757392cf7",
+  "assembled_2.png": "dd94bf3dafad763b628d574ef552a6f1ae505321b4b13aeb797e7d928df0bc0e",
+  "assembled_3.png": "d5c5468addf9cc923521432961d087abf73d00c002302800fe9765415fd17ab9",
+  "assembled_4.png": "2b74ac45bd4b8c33e501a14cf27bf0e25c8fa32275c4ed7bceab0e1974f6eb8e",
+  "assembled_5.png": "c2b0af588258cdac2b402d3de149c4dae4226f6cd660cfb828b793a55cbe7a1b",
+  "assembled_6.png": "e3c8a4d8b2e5e74777f86529ad1c9bbc17d23a20e62d60db801fab46ef4803f7",
+  "facings.png": "f28d1ae0f997eeb95d096511571ae817ecc0c33ebfaa27067f6b8021104a980b"
+ }
+}

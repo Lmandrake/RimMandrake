@@ -1,0 +1,78 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 68.7,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.471159
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 50.9
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 12.0,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1218727
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_SuspensionAnchor_Timber_Futuristic",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said good); blocking ['DESC_MISS', 'PORT_MISFIT']; polish ['LEGIB_32']; unreadable ['BORE (n/a on an unconditional item)']",
+  "gpt regen: unsettled ['K2'], own blocking ['PORT_MISFIT']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v1",
+   "sha": "a4850279ccbf"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v1",
+   "sha": "14056552e355"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "machine@v2",
+   "sha": "e06ee7316a0a"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "south.png": "67521646c3e568a32ed4ea031b2377656563a20e547812abe459460f7d733c0e",
+  "east.png": "270ed100448767ed9401b1ad21799e594ab04e124499d19a64efd7b1d24a07d7",
+  "north.png": "8bf6e3a73f0623fc0c6ef11995558cce6d81dbddf212bf73b0c9e782c78d37b7",
+  "scale.png": "0ab477da00b086914705c130d99655810e2a8617b6826eb9262229e25d9fcef0",
+  "assembled_1.png": "2909357263aabd87c60d3285bc4d5d2d4e999c121608e66f09fcbe6dace4fe12",
+  "assembled_2.png": "ffa382764216f9f799d67f280844ad5f8478039e67f8ddc958cfec3f66556379",
+  "assembled_3.png": "854d07f6bba4579c148692e7687c50e2b5f88bdf04689d2a673bc05fe452213e",
+  "assembled_4.png": "dc35a7e91b3c89304d1fe0c941e81e5e9dd69e777a2079c21b7f37f64ec562fd",
+  "assembled_5.png": "2bc774d8b75a9ac59bbd871e0413f857735eda9ae212200b08139556c77b6c66",
+  "assembled_6.png": "5e27bbb818ee296f39fd1f1bd84dc21a2dbf637d7caa64d3b7ea8d21b0adfe39",
+  "facings.png": "0877acfbff3c7aef4f6f40d832a529b8cdeee76517b1a808733096e940b13156"
+ }
+}

@@ -677,7 +677,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             {
                 string[] parts = kv.Key.Split('/');
                 bool styled = parts[0] != "base";
-                string key = parts[0] + "/" + parts[1];
+                string key = table.ContainsKey(kv.Key) ? kv.Key : parts[0] + "/" + parts[1];   // per-facing entry first (upright bollards)
                 if (!table.TryGetValue(key, out RM_DrawbridgeCableMath.RopeArt[] ropes) || ropes.Length != kv.Value.Count)
                 {
                     bad.Add(kv.Key + ": no rope table");

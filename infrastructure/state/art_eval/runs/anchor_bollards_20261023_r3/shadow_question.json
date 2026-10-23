@@ -1,0 +1,69 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RM_SuspensionAnchor_Timber_Scrapper": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: DESC_MISS, F_INCONSISTENT \u00b7 GPT unsure, unsettled K1, K2, K4",
+   "context": "judged candidate A (image sha 5c8b738bae); DESC_MISS: In the N/S raised views the slack ropes rise as stiff upright arches/hooks above or below the bollards, like rope standing in the air. In E/; F_INCONSISTENT: The slack-rope shape differs by rotation: vertical U/arch hooks in N/S, flat ground loops in E/W."
+  },
+  "RM_SuspensionAnchor_Steel_Scrapper": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: PORT_MISFIT \u00b7 GPT unsure, unsettled K1",
+   "context": "judged candidate A (image sha faa5c3a844); PORT_MISFIT: The slack rope first appears above the cap and arcs up and over as a narrow hook. It reads as rigid wire standing up from the cap more than "
+  },
+  "RM_SuspensionAnchor_Timber_Industrial": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: PORT_MISFIT \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate A (image sha 24ae226cec); PORT_MISFIT: On the south bank in raised rot N and S, each slack loop rises from behind the post top and curls back down into a hook, standing almost lik"
+  },
+  "RM_SuspensionAnchor_Steel_Industrial": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: ALPHA_HALO, DESC_MISS \u00b7 GPT regen, unsettled K1, K2, K4",
+   "context": "judged candidate A (image sha 7c958435d5); DESC_MISS: The raised ropes on the N/S banks form upright J-hooks and arches that rise above or hang off the bollard caps. They look like stiff wire st; ALPHA_HALO: The code measured real alpha False on every facing. All the panels I was given are composited on ground, so I cannot confirm whether the spr"
+  },
+  "RM_SuspensionAnchor_Timber_Modern": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK \u00b7 GPT unsure",
+   "context": "judged candidate A (image sha f301dd6676); "
+  },
+  "RM_SuspensionAnchor_Steel_Modern": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: PORT_MISFIT, STYLE_CARTOON \u00b7 GPT regen, unsettled K2",
+   "context": "judged candidate A (image sha 2df7170ced); PORT_MISFIT: In the east and west facings the rope leaves the wrap at mid-post height and runs dead level, at that height, all the way to the deck end. I; STYLE_CARTOON: The bollard body is a uniform candy-bright red with large white specular highlights and flat clean shading. It reads closer to a glossy toy "
+  },
+  "RM_SuspensionAnchor_Timber_Futuristic": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: DESC_MISS, PORT_MISFIT \u00b7 GPT regen, unsettled K2",
+   "context": "judged candidate A (image sha 67521646c3); DESC_MISS: The post is a straight drum about as wide at the cap as at the body. Without a head lip it reads a little like a barrel or cable spool rathe; PORT_MISFIT: The east-file rope leaves the wrap about at the top of the flange, a few pixels above the ground line, rather than at the flange's foot."
+  },
+  "RM_SuspensionAnchor_Steel_Futuristic": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: DESC_MISS \u00b7 GPT unsure, unsettled K1, K2, K4",
+   "context": "judged candidate A (image sha e4e2d481b1); DESC_MISS: The slack ropes rise from the posts in tall arches that end in mid-air above the caps, like upside-down hooks, instead of lying as loops on ; DESC_MISS: The slack loops hang as narrow U shapes from the posts toward the pit edge. They read more like rope dangling in the air than lying on the g"
+  }
+ }
+}

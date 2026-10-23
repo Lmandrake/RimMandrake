@@ -1,0 +1,34 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_anchor_bollards_20261023_r3",
+ "html": "Transient/biome_ffar/art_eval_shadow_anchor_bollards_20261023_r3_sheet_2026-10-23.html",
+ "decisions": "Transient/biome_ffar/art_eval_shadow_anchor_bollards_20261023_r3_sheet_2026-10-23.decisions.json",
+ "wrote_decisions": true,
+ "gate": "PASS v1",
+ "snapshot": "infrastructure/state/art/sheets/art_eval_shadow_anchor_bollards_20261023_r3_sheet_2026-10-23.snapshot.json",
+ "snapshotId": "e14b11762798c53b",
+ "census_rows": 8,
+ "rows": 8,
+ "ruled_rows_gone_kept_in_snapshot": [],
+ "collapsed_ruled_elsewhere": 0,
+ "dropped_all_ruled": [],
+ "canon_rows": 0,
+ "canon_rows_with_images": 0,
+ "canon_rows_with_must_show": 0,
+ "linked_rows": 0,
+ "prefilled_sit1": 0,
+ "no_art": [],
+ "sets": 16,
+ "images": 9253
+}
+
+--- stderr ---
+art_sheet: RM_SuspensionAnchor_Timber_Scrapper: dump texPath [] is STALE; using src ['RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionAnchor_Timber']
+art_sheet: RM_SuspensionAnchor_Steel_Scrapper: dump texPath [] is STALE; using src ['RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionAnchor_Steel']
+art_sheet: RM_SuspensionAnchor_Timber_Industrial: dump texPath [] is STALE; using src ['RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionAnchor_Timber']
+art_sheet: RM_SuspensionAnchor_Steel_Industrial: dump texPath [] is STALE; using src ['RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionAnchor_Steel']
+art_sheet: RM_SuspensionAnchor_Timber_Modern: dump texPath [] is STALE; using src ['RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionAnchor_Timber']
+art_sheet: RM_SuspensionAnchor_Steel_Modern: dump texPath [] is STALE; using src ['RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionAnchor_Steel']
+art_sheet: RM_SuspensionAnchor_Timber_Futuristic: dump texPath [] is STALE; using src ['RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionAnchor_Timber']
+art_sheet: RM_SuspensionAnchor_Steel_Futuristic: dump texPath [] is STALE; using src ['RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionAnchor_Steel']
+/home/mandrake/rm/bench/src/RimMandrake/Utils/art/art_sheet.py:2395: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  px = [q for q in Image.open(f).convert("RGBA").getdata() if q[3] > 8]

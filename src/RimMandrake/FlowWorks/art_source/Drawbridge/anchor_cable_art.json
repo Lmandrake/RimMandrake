@@ -58,13 +58,13 @@
   ],
   "Futuristic/Steel/north": [
    {
-    "attach": 0.41406,
+    "attach": 0.5625,
     "end": 0.94922,
     "lateral": 0.20312,
     "thick": 0.03906
    },
    {
-    "attach": 0.41406,
+    "attach": 0.5625,
     "end": 0.94922,
     "lateral": -0.20312,
     "thick": 0.03906
@@ -72,13 +72,13 @@
   ],
   "Futuristic/Steel/south": [
    {
-    "attach": 0.41406,
+    "attach": 0.375,
     "end": 0.94922,
     "lateral": 0.20312,
     "thick": 0.03906
    },
    {
-    "attach": 0.41406,
+    "attach": 0.375,
     "end": 0.94922,
     "lateral": -0.20312,
     "thick": 0.03906
@@ -86,13 +86,13 @@
   ],
   "Futuristic/Timber/east": [
    {
-    "attach": 0.46875,
+    "attach": 0.41797,
     "end": 0.94922,
     "lateral": 0.21484,
     "thick": 0.03906
    },
    {
-    "attach": 0.46875,
+    "attach": 0.41797,
     "end": 0.94922,
     "lateral": -0.21875,
     "thick": 0.03906
@@ -100,13 +100,13 @@
   ],
   "Futuristic/Timber/north": [
    {
-    "attach": 0.46875,
+    "attach": 0.57812,
     "end": 0.94922,
     "lateral": 0.21484,
     "thick": 0.03906
    },
    {
-    "attach": 0.46875,
+    "attach": 0.57812,
     "end": 0.94922,
     "lateral": -0.21875,
     "thick": 0.03906
@@ -114,13 +114,13 @@
   ],
   "Futuristic/Timber/south": [
    {
-    "attach": 0.46875,
+    "attach": 0.375,
     "end": 0.94922,
     "lateral": 0.21484,
     "thick": 0.03906
    },
    {
-    "attach": 0.46875,
+    "attach": 0.375,
     "end": 0.94922,
     "lateral": -0.21875,
     "thick": 0.03906
@@ -170,13 +170,13 @@
   ],
   "Industrial/Steel/east": [
    {
-    "attach": 0.50391,
+    "attach": 0.41406,
     "end": 0.94922,
     "lateral": 0.22852,
     "thick": 0.03516
    },
    {
-    "attach": 0.50391,
+    "attach": 0.41797,
     "end": 0.94922,
     "lateral": -0.23438,
     "thick": 0.03125
@@ -184,13 +184,13 @@
   ],
   "Industrial/Steel/north": [
    {
-    "attach": 0.50391,
+    "attach": 0.5625,
     "end": 0.94922,
     "lateral": 0.22852,
     "thick": 0.03516
    },
    {
-    "attach": 0.50391,
+    "attach": 0.5625,
     "end": 0.94922,
     "lateral": -0.23438,
     "thick": 0.03125
@@ -198,13 +198,13 @@
   ],
   "Industrial/Steel/south": [
    {
-    "attach": 0.50391,
+    "attach": 0.375,
     "end": 0.94922,
     "lateral": 0.22852,
     "thick": 0.03516
    },
    {
-    "attach": 0.50391,
+    "attach": 0.375,
     "end": 0.94922,
     "lateral": -0.23438,
     "thick": 0.03125
@@ -212,13 +212,13 @@
   ],
   "Industrial/Timber/east": [
    {
-    "attach": 0.50391,
+    "attach": 0.41406,
     "end": 0.94922,
     "lateral": 0.23047,
     "thick": 0.04688
    },
    {
-    "attach": 0.50391,
+    "attach": 0.41406,
     "end": 0.94922,
     "lateral": -0.23242,
     "thick": 0.04297
@@ -226,13 +226,13 @@
   ],
   "Industrial/Timber/north": [
    {
-    "attach": 0.50391,
+    "attach": 0.57422,
     "end": 0.94922,
     "lateral": 0.23047,
     "thick": 0.04688
    },
    {
-    "attach": 0.50391,
+    "attach": 0.57422,
     "end": 0.94922,
     "lateral": -0.23242,
     "thick": 0.04297
@@ -240,13 +240,13 @@
   ],
   "Industrial/Timber/south": [
    {
-    "attach": 0.50391,
+    "attach": 0.37109,
     "end": 0.94922,
     "lateral": 0.23047,
     "thick": 0.04688
    },
    {
-    "attach": 0.50391,
+    "attach": 0.375,
     "end": 0.94922,
     "lateral": -0.23242,
     "thick": 0.04297
@@ -296,13 +296,13 @@
   ],
   "Modern/Steel/east": [
    {
-    "attach": 0.44531,
+    "attach": 0.42578,
     "end": 0.94922,
     "lateral": 0.21484,
     "thick": 0.03125
    },
    {
-    "attach": 0.44531,
+    "attach": 0.42188,
     "end": 0.94922,
     "lateral": -0.21875,
     "thick": 0.03125
@@ -310,13 +310,13 @@
   ],
   "Modern/Steel/north": [
    {
-    "attach": 0.44531,
+    "attach": 0.5625,
     "end": 0.94922,
     "lateral": 0.21484,
     "thick": 0.03125
    },
    {
-    "attach": 0.44531,
+    "attach": 0.5625,
     "end": 0.94922,
     "lateral": -0.21875,
     "thick": 0.03125
@@ -324,13 +324,13 @@
   ],
   "Modern/Steel/south": [
    {
-    "attach": 0.44531,
+    "attach": 0.375,
     "end": 0.94922,
     "lateral": 0.21484,
     "thick": 0.03125
    },
    {
-    "attach": 0.44531,
+    "attach": 0.375,
     "end": 0.94922,
     "lateral": -0.21875,
     "thick": 0.03125
@@ -338,13 +338,13 @@
   ],
   "Modern/Timber/east": [
    {
-    "attach": 0.60547,
+    "attach": 0.41406,
     "end": 0.94922,
     "lateral": 0.20117,
     "thick": 0.04297
    },
    {
-    "attach": 0.60547,
+    "attach": 0.41406,
     "end": 0.94922,
     "lateral": -0.20508,
     "thick": 0.04297
@@ -352,13 +352,13 @@
   ],
   "Modern/Timber/north": [
    {
-    "attach": 0.60547,
+    "attach": 0.57812,
     "end": 0.94922,
     "lateral": 0.20117,
     "thick": 0.04297
    },
    {
-    "attach": 0.60547,
+    "attach": 0.57812,
     "end": 0.94922,
     "lateral": -0.20508,
     "thick": 0.04297
@@ -366,13 +366,13 @@
   ],
   "Modern/Timber/south": [
    {
-    "attach": 0.60547,
+    "attach": 0.375,
     "end": 0.94922,
     "lateral": 0.20117,
     "thick": 0.04297
    },
    {
-    "attach": 0.60547,
+    "attach": 0.375,
     "end": 0.94922,
     "lateral": -0.20508,
     "thick": 0.04297
@@ -422,13 +422,13 @@
   ],
   "Scrapper/Steel/east": [
    {
-    "attach": 0.40625,
+    "attach": 0.42188,
     "end": 0.94922,
     "lateral": 0.21484,
     "thick": 0.03125
    },
    {
-    "attach": 0.40625,
+    "attach": 0.42188,
     "end": 0.94922,
     "lateral": -0.21875,
     "thick": 0.03125
@@ -436,13 +436,13 @@
   ],
   "Scrapper/Steel/north": [
    {
-    "attach": 0.40625,
+    "attach": 0.57031,
     "end": 0.94922,
     "lateral": 0.21484,
     "thick": 0.03125
    },
    {
-    "attach": 0.40625,
+    "attach": 0.57031,
     "end": 0.94922,
     "lateral": -0.21875,
     "thick": 0.03125
@@ -450,13 +450,13 @@
   ],
   "Scrapper/Steel/south": [
    {
-    "attach": 0.40625,
+    "attach": 0.375,
     "end": 0.94922,
     "lateral": 0.21484,
     "thick": 0.03125
    },
    {
-    "attach": 0.40625,
+    "attach": 0.375,
     "end": 0.94922,
     "lateral": -0.21875,
     "thick": 0.03125
@@ -464,13 +464,13 @@
   ],
   "Scrapper/Timber/east": [
    {
-    "attach": 0.48047,
+    "attach": 0.41016,
     "end": 0.94922,
     "lateral": 0.21289,
     "thick": 0.05078
    },
    {
-    "attach": 0.48047,
+    "attach": 0.41016,
     "end": 0.94922,
     "lateral": -0.21289,
     "thick": 0.05078
@@ -478,13 +478,13 @@
   ],
   "Scrapper/Timber/north": [
    {
-    "attach": 0.48047,
+    "attach": 0.57422,
     "end": 0.94922,
     "lateral": 0.21289,
     "thick": 0.05078
    },
    {
-    "attach": 0.48047,
+    "attach": 0.57422,
     "end": 0.94922,
     "lateral": -0.21289,
     "thick": 0.05078
@@ -492,13 +492,13 @@
   ],
   "Scrapper/Timber/south": [
    {
-    "attach": 0.48047,
+    "attach": 0.37109,
     "end": 0.94922,
     "lateral": 0.21289,
     "thick": 0.05078
    },
    {
-    "attach": 0.48047,
+    "attach": 0.37109,
     "end": 0.94922,
     "lateral": -0.21289,
     "thick": 0.05078

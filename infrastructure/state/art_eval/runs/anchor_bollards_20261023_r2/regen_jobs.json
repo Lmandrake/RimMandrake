@@ -1,0 +1,36 @@
+[
+ {
+  "id": "arteval_RM_SuspensionAnchor_Timber_Scrapper_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_SuspensionAnchor_Timber_Scrapper",
+  "prompt": "RimWorld sprite, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. Drawbridge rope anchor for a one-lane timber drawbridge over a pit, Scrapper look: weathered timber and scrap-metal fittings. Two upright mooring bollards stand side by side in one anchor square, each a short round post with vertical sides, a flange at the base and a round cap drawn as an ellipse 0.56 tall for its width, seen from an orthographic camera tilted about 35 degrees. The post looks identical from every side. Each bollard has its rope wound twice round the post just above the flange; the rope leaves the wrap at ground level toward the bridge deck. LOWERED state: a continuous rope runs from each bollard along the ground to the deck end. Both ropes of the pair are identical copies: same width of about 3 px at sprite scale, same mid-brown hemp colour, same light top edge and dark underside, same dark outline, lit from the same side. When the rope runs away from the camera (rear view, seen from behind), the post stands in front of the rope. RAISED state (the leaf stands upright at the hinge bank): the slack rope lies flat on the ground beside and behind each bollard as a broad, low, lazy coil foreshortened into the ground plane to about 0.56 of its width in height, its highest point below the bollard cap, one end attached to the wrap just above the flange. The coil is drawn the same way in front, rear and side views. Both bollards and both ropes match each other exactly.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: DESC_MISS, F_INCONSISTENT, DESC_MISS, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "anchor_bollards_20261023_r2"
+ },
+ {
+  "id": "arteval_RM_SuspensionAnchor_Steel_Scrapper_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_SuspensionAnchor_Steel_Scrapper",
+  "prompt": "Painterly vanilla RimWorld sprite, realistic, clean dark outline, transparent background. Steel drawbridge anchor bollards in the Scrapper look: worn, scavenged, welded steel. Orthographic building camera at about 35 degrees. Two upright mooring bollards stand side by side on one anchor square. Each bollard is a short, thick, vertical steel post on a round flange base. The round top cap reads as an ellipse 0.56 as tall as it is wide, and the sides of the post are vertical. The post looks the same from every side. Each bollard holds one steel rope. The rope is wound twice round the lower shaft, the two turns sitting close together directly above the flange, at the foot of the post. The wrapped turns show as two dark rope bands low on the post, with the upper shaft and cap bare steel above them. The free end of the rope leaves the lowest turn of the wrap and runs along the ground toward the deck. One continuous strand is visible from the wound turns down to the ground, then on across the ground as a single unbroken rope. Where the rope runs away from the camera, the post stands in front of it. Lowered view: the rope runs continuously from each bollard along the ground to the deck end. Raised view: the rope lies in slack loops on the bank beside each bollard. Dark flat rectangle of the pit and a plain deck tile beside the anchor give context. Sprite files shown: south, east, north, on ground colour.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: DESC_MISS, DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "anchor_bollards_20261023_r2"
+ }
+]
