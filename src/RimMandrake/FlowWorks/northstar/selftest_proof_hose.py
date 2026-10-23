@@ -216,6 +216,13 @@ def vh_reel_facing_checks(VH):
           "brass = inward == [1, 0] and V.reel_facing(dst, RELAY_TARGET[dst]) == 3" in src)
 
 
+def vh_west_inlet_checks(VH):
+    """VALIDATION_HOSE_REELS_FIX_STILL_WEST: the live relay C end (76.353, 100.924) on a reel at (76, 100) is the inlet."""
+    check("VH inlet: the live end 0.353 inside the edge, 0.076 low, meets the inlet", VH.west_inlet_ok([76.353, 100.924], (76, 100), 0.75))
+    check("VH inlet: an end 1 cell off the edge or 1 cell high does not",
+          not VH.west_inlet_ok([74.9, 100.924], (76, 100), 0.75) and not VH.west_inlet_ok([76.353, 102.0], (76, 100), 0.75))
+
+
 def vh_review_site_checks(VH):
     """RELAY_PROOF_FIX_SITE_WIPES_THE_REVIEW: a scene that clears and repaints its rect refuses on a --no-fresh-map run."""
     import argparse
@@ -539,6 +546,7 @@ def main():
           PH._nozzle_side(10, 20, 1) == (11, 12, 20, 22) and PH._nozzle_side(10, 20, 3) == (10, 11, 20, 22))
     vh_reel_facing_checks(VH)
     vh_review_site_checks(VH)
+    vh_west_inlet_checks(VH)
     print("selftest_proof_hose: %s (%d failing)" % ("PASS" if not FAILS else "FAIL", len(FAILS)))
     return 0 if not FAILS else 1
 
