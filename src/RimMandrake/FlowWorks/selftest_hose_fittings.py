@@ -60,6 +60,15 @@ PRE_FIX_REV = "fb34c9bc2d"   # Modern tank art before the 2026-10-22 west/east l
 # Drained 2026-10-23 by the under-couplers (TANK_LANE_FITTINGS_REDRAW_MODERN_ONLY, TANK_SOUTH_PORT_REDRAW_STUB_PEEKS_OUT,
 # TANK_NS_PORTS_REDRAW_COUPLE_THIN_AIR): every non-pipe port now has a coupler drawn beneath the fixture.
 KNOWN = {}
+# UnderCouplerReach finds no opaque body across the pipe's width on the upper W/E lane (z 1.5) of the cargo tank in three looks:
+# the port sits above the drawn body's side silhouette, so no under-coupler is drawn there (the hose's old stub path).
+for _l in ("Scrapper", "Industrial", "Futuristic"):
+    KNOWN[("RM_UniversalCargoTank", _l, "west")] = KNOWN[("RM_UniversalCargoTank", _l, "east")] = "CARGO_UPPER_PORT_DECIDE_NOTHING_UNDER"
+# A body narrower than its footprint with open bottom corners (Modern tall / XTall, no base plate): the south lane-0 and west
+# lane-0 pipes must both cross the same open corner to reach the body, so with both hoses coupled they meet outside the art
+# even clipped to the body (judge FIX 2026-10-23). Keyed (def, look, "crossing").
+for _d in ("RM_LiquidTankTall", "RM_UniversalCargoTankXTall"):
+    KNOWN[(_d, "Modern", "crossing")] = "UNDER_COUPLER_DECIDE_CORNER_CROWDING"
 
 fails = []
 unmeasured = []
@@ -256,6 +265,25 @@ def under_sprites(look):
     return _SPRITES[look]
 
 
+REACH_CS = os.path.join(HERE, "Source", "Machinery", "UnderCouplerReach.cs")
+SIDE_INDEX = {"south": 0, "north": 1, "west": 2, "east": 3}
+
+
+def reach_table():
+    """UnderCouplerReach.cs parsed: "def|look|side|lane" -> reach (cell; -1 = no body, no under-coupler)."""
+    if not os.path.exists(REACH_CS):
+        return None
+    return {k: float(v) for k, v in re.findall(r'\{ "([^"]+)", (-?[0-9.]+) \}', open(REACH_CS).read())}
+
+
+def table_reach(table, b, look, side, pt):
+    """The C# table's reach for this port (the lane rule RM_UnderCouplers.Draw uses), or None when it is not listed."""
+    along = pt[0] if side in ("north", "south") else pt[1]
+    n = b["size"][0] if side in ("north", "south") else b["size"][1]
+    lane = max(0, min(n - 1, int(np.floor(along))))
+    return table.get("%s|%s|%d|%d" % (b["def"], look if look in LOOKS else "", SIDE_INDEX[side], lane))
+
+
 def reach_of(pt, side, size, geo):
     """UnderCouplerGeometry.Reach, re-derived: port -> footprint centre line along the inward axis, >= the collar."""
     sx, sz = -SIDES[side][0], -SIDES[side][1]
@@ -305,28 +333,53 @@ def beneath_margin(fix, step, pt, side, half_w, reach):
     return worst
 
 
-def measure(b, look, g, dz_table, half_w, rev=None, geo=None, reach_override=None):
-    """[(side, lane, pt, raw gap, composed gap, beneath margin)] -- composed/margin None without geo."""
+def measure(b, look, g, dz_table, half_w, rev=None, geo=None, reach_override=None, table=None):
+    """[(side, lane, pt, raw gap, composed gap, beneath margin, reach, coupler-opaque fn)] -- composed/margin None without
+    geo; reach -1 (no under-coupler: the table found no body on the axis) gives composed = raw, margin None."""
     if g["graphicClass"] not in (None, "Graphic_Single"):
-        return None, "graphicClass %s is not measured (Graphic_Single only)" % g["graphicClass"]
+        return None, "graphicClass %s is not measured (Graphic_Single only)" % g["graphicClass"], None
     alpha, src = load_alpha(g["texPath"], rev)
     if alpha is None:
-        return None, src
+        return None, src, None
     fix, step = fixture_opaque(alpha, g, b["size"])
     out = []
     for side, lane, pt in ports(b, look, dz_table):
         raw = gap_fn(fix, step, pt, side, half_w)
-        comp = margin = None
+        comp = margin = reach = cop = None
         if geo is not None:
             sprites = under_sprites(look)
             if sprites[0] is None or sprites[1] is None:
-                return None, "no under-coupler sprites for look %s under %s" % (look, os.path.relpath(JOINS, REPO))
-            reach = reach_override if reach_override is not None else reach_of(pt, side, b["size"], geo)
-            cop = coupler_opaque(geo, sprites, pt, side, reach)
-            comp = gap_fn(lambda x, z: fix(x, z) or cop(x, z), step, pt, side, half_w)
-            margin = beneath_margin(fix, step, pt, side, half_w, reach)
-        out.append((side, lane, pt, raw, comp, margin))
-    return out, src
+                return None, "no under-coupler sprites for look %s under %s" % (look, os.path.relpath(JOINS, REPO)), None
+            reach = reach_override
+            if reach is None and table is not None:
+                reach = table_reach(table, b, look, side, pt)
+            if reach is None:
+                reach = reach_of(pt, side, b["size"], geo)
+            if reach < 0:
+                comp = raw
+            else:
+                cop = coupler_opaque(geo, sprites, pt, side, reach)
+                comp = gap_fn(lambda x, z, c=cop: fix(x, z) or c(x, z), step, pt, side, half_w)
+                margin = beneath_margin(fix, step, pt, side, half_w, reach)
+        out.append((side, lane, pt, raw, comp, margin, reach, cop))
+    return out, src, fix
+
+
+def crossings(fix, size, coupled):
+    """Grid points (0.02 cell) where two couplers' VISIBLE parts (coupler opaque, fixture art not) overlap, i.e. two pipes
+    meeting on open ground outside the art. coupled: [(label, coupler-opaque fn)]."""
+    if len(coupled) < 2:
+        return []
+    w, h = size
+    hits = []
+    for x in np.arange(-0.6, w + 0.6, 0.02):
+        for z in np.arange(-0.6, h + 0.6, 0.02):
+            if fix(x, z):
+                continue
+            on = [lab for lab, c in coupled if c(x, z)]
+            if len(on) > 1:
+                hits.append((round(x, 2), round(z, 2), tuple(on)))
+    return hits
 
 
 def sanity(half_w):
@@ -351,7 +404,7 @@ def can_fail(defs, dz_table, half_w, geo):
     if tall is None or "Modern" not in tall["looks"]:
         unmeasured.append("can-fail: no RM_LiquidTankTall Modern look")
         return
-    res, src = measure(tall, "Modern", tall["looks"]["Modern"], dz_table, half_w, rev=PRE_FIX_REV)
+    res, src, _ = measure(tall, "Modern", tall["looks"]["Modern"], dz_table, half_w, rev=PRE_FIX_REV)
     if res is None:
         unmeasured.append("can-fail: " + src)
         return
@@ -363,7 +416,7 @@ def can_fail(defs, dz_table, half_w, geo):
     if lt is None or "Scrapper" not in lt["looks"]:
         unmeasured.append("can-fail: no RM_LiquidTank Scrapper look")
         return
-    res, src = measure(lt, "Scrapper", lt["looks"]["Scrapper"], dz_table, half_w, geo=geo, reach_override=geo[0])
+    res, src, _ = measure(lt, "Scrapper", lt["looks"]["Scrapper"], dz_table, half_w, geo=geo, reach_override=geo[0])
     if res is None:
         unmeasured.append("can-fail: " + src)
         return
@@ -383,6 +436,21 @@ def can_fail(defs, dz_table, half_w, geo):
           "sanity: the coupler alone covers the port of an empty fixture, and the beneath check reads it as daylight")
 
 
+def can_fail_crossing(defs, dz_table, half_w, geo):
+    """The judge's FIX can fail: run to the footprint centre line (the first build), the Modern tall tank's south and west
+    pipes meet in a bare T on open ground."""
+    tall = next((b for b in defs if b["def"] == "RM_LiquidTankTall"), None)
+    if tall is None or "Modern" not in tall["looks"]:
+        unmeasured.append("can-fail crossing: no RM_LiquidTankTall Modern look")
+        return
+    res, src, fix = measure(tall, "Modern", tall["looks"]["Modern"], dz_table, half_w, geo=geo, table={})
+    if res is None:
+        unmeasured.append("can-fail crossing: " + src)
+        return
+    cross = crossings(fix, tall["size"], [("%s%d" % (r[0], r[1]), r[7]) for r in res if r[7] is not None])
+    check(len(cross) > 0, "can-fail: with the pipes run to the centre line, the Modern tall tank's couplers meet on open ground (%d points)" % len(cross))
+
+
 def main():
     table = "--table" in sys.argv
     dz_table, half_w, geo = port_dz_table(), hose_half_width(), under_geom()
@@ -400,26 +468,38 @@ def main():
     for b in defs:
         check(not b["rotatable"], "%s is not rotatable (one facing to measure; a rotatable port building needs this gate extended)" % b["def"])
     can_fail(defs, dz_table, half_w, geo)
+    rt = reach_table()
+    check(rt is not None and len(rt) > 0, "UnderCouplerReach.cs parsed (%d ports)" % len(rt or {}))
+    gen = subprocess.run([sys.executable, os.path.join(HERE, "art_source", "UnderCouplers", "under_coupler_reach.py")],
+                         capture_output=True, text=True, timeout=600)
+    check(gen.returncode == 0, "UnderCouplerReach.cs is what under_coupler_reach.py measures from the installed art (%s)" % gen.stdout.strip()[-120:])
+    can_fail_crossing(defs, dz_table, half_w, geo)
     red, known_seen = {}, set()
     n = raw_red = 0
     for b in sorted(defs, key=lambda x: x["def"]):
         for look, g in b["looks"].items():
-            res, src = measure(b, look, g, dz_table, half_w, geo=geo)
+            res, src, fix = measure(b, look, g, dz_table, half_w, geo=geo, table=rt or {})
             if res is None:
                 check(False, "%s %s: %s" % (b["def"], look, src))
                 continue
-            for side, lane, pt, raw, comp, margin in res:
+            for side, lane, pt, raw, comp, margin, reach, cop in res:
                 n += 1
                 raw_red += raw > GAP_TOL
                 ok = comp <= GAP_TOL and margin is not None and margin >= REACH_TOL
                 if table:
-                    print("      %-28s %-11s %-5s lane %d at (%.2f, %.2f): raw gap %.3f, with coupler %.3f, beneath by %s %s"
-                          % (b["def"], look, side, lane, pt[0], pt[1], raw, comp, "none" if margin is None else "%.2f" % margin, "" if ok else "RED"))
+                    print("      %-28s %-11s %-5s lane %d at (%.2f, %.2f): raw gap %.3f, reach %.3f, with coupler %.3f, beneath by %s %s"
+                          % (b["def"], look, side, lane, pt[0], pt[1], raw, reach, comp, "none" if margin is None else "%.2f" % margin, "" if ok else "RED"))
                 if not ok:
                     red.setdefault((b["def"], look, side), []).append((comp, margin))
+            # every port coupled at once: no two couplers' visible parts may meet outside the art (the judge's bare T)
+            cross = crossings(fix, b["size"], [("%s%d" % (r[0], r[1]), r[7]) for r in res if r[7] is not None])
+            if cross:
+                red[(b["def"], look, "crossing")] = [(len(cross), None)]
+            else:
+                check(True, "%s %s: no two under-couplers meet on open ground outside the art" % (b["def"], look))
     for key, v in sorted(red.items()):
         label = "%s %s %s: the under-coupler leaves the port uncovered or stops short of the fixture (gap/beneath %s; tol %.2f/%.2f)" % (
-            key[0], key[1], key[2], ", ".join("%.2f/%s" % (c, "none" if m is None else "%.2f" % m) for c, m in v), GAP_TOL, REACH_TOL)
+            key[0], key[1], key[2], ", ".join("%.2f/%s" % (c, "none" if m is None else "%.2f" % m) for c, m in v) if key[2] != "crossing" else "%d grid points where two couplers meet outside the art" % v[0][0], GAP_TOL, REACH_TOL)
         if key in KNOWN:
             known_seen.add(key)
             print("KNOWN " + label + " -- " + KNOWN[key])
