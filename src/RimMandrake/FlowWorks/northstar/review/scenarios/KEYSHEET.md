@@ -1,10 +1,10 @@
 # FlowWorks composite review scenarios - key sheet
 
-Load **RM_fw_walkthrough_20261022b** (map C) and **RM_fw_scenarios_rivers_20261021 (not saved yet)** (map R: C1, C11). Paused at 10:00, god mode on, clear weather, Peaceful, Mod Settings at shipped defaults. **Every plot is still until your first poke: its START.** Reload the save to reset. Raids live in **RM_fw_composite_raid**, rain in **RM_fw_composite_rain** (load the branch, never the main save, for those pokes).
+Load **RM_fw_walkthrough_20261022c** (map C) and **RM_fw_scenarios_rivers_20261021 (not saved yet)** (map R: C1, C11). Paused at 10:00, god mode on, clear weather, Peaceful, Mod Settings at shipped defaults. **Every plot is still until your first poke: its START.** Reload the save to reset. Raids live in **RM_fw_composite_raid**, rain in **RM_fw_composite_rain** (load the branch, never the main save, for those pokes).
 
 Each scenario has a gold title label (number, name, START, what to look for), its try lines under the plot, small rust labels on every part a poke touches, violet **DEFERRED** labels on every piece not built yet, and in-save sign books (a Novel; mouse over it, press i) at its north-west corner and at each DEFERRED piece - the books survive a plain load with no agent.
 
-Tonight's rulings carried: colonists dig to 2 m; deeper holes are machine-dug (mechanoids and droids dig to 20 m, built 2026-10-21; the ridable digging rig is not built: DEFERRED); pipes half as thick and hoses twice the 10-21 girth (owner 2026-10-22 00:00), both built; a flowing hose plumps wider than an empty one, and an EMPTY hose casts a darker, wider shadow (built 2026-10-22); a hose reel turns four ways (rotate it like any building); its hose leaves the way it faces. North/south art is the west art turned until he picks the drawn views (REEL_FACINGS_REDRAW_NORTH_SOUTH_OWED); a pipe into a tank rises onto the tank's flange (a riser), never slipping under its skid (built 2026-10-22); planked squares of a part-covered pit walk like floor; only the open squares are the pit; a cover gives way only when destroyed, blasted or deconstructed (41fb948b5e); a drill or a bleed well is refused on ground the survey found empty (41fb948b5e); RM_LiquidTap is a BLEED WELL (groundwater seeping up), never a tap or faucet; drawbridge leaves, winches and gates draw their MATERIAL picture (timber/steel) first, a look only as fallback (443912e4df); canal overflow is built (Stages 1-3) but its master switch ships OFF until the Stage 4 live sign-off; scenarios do not turn it on: DEFERRED; reachability option 3 is being built separately (REACH_MAP_BUILD_WALLS_AND_DEPTH_AGREE); a fallen cord lands walkable (fix built).
+Tonight's rulings carried: colonists dig to 2 m; deeper holes are machine-dug (mechanoids and droids dig to 20 m, built 2026-10-21; the ridable digging rig is not built: DEFERRED); pipes half as thick and hoses twice the 10-21 girth (owner 2026-10-22 00:00), both built; a flowing hose plumps wider than an empty one, and an EMPTY hose casts a darker, wider shadow (built 2026-10-22); a hose reel turns four ways (rotate it like any building); its hose leaves the way it faces. North/south art is the west art turned until he picks the drawn views (REEL_FACINGS_REDRAW_NORTH_SOUTH_OWED); a pipe into a tank rises onto the tank's flange (a riser), never slipping under its skid (built 2026-10-22); planked squares of a part-covered pit walk like floor; only the open squares are the pit; a cover gives way only when destroyed, blasted or deconstructed (41fb948b5e); a drill or a bleed well is refused on ground the survey found empty (41fb948b5e); RM_LiquidTap is a BLEED WELL (groundwater seeping up), never a tap or faucet; drawbridge leaves, winches and gates draw their MATERIAL picture (timber/steel) first, a look only as fallback (443912e4df); canal overflow is built (Stages 1-3) but its master switch ships OFF until the Stage 4 live sign-off; C1-C12 do not turn it on (DEFERRED there); C13 The Spill Yard does; reachability option 3 is being built separately (REACH_MAP_BUILD_WALLS_AND_DEPTH_AGREE); a fallen cord lands walkable (fix built).
 
 | # | scenario | map | plot (x,z,w,h) | look | staged / DEFERRED | goto |
 |---|---|---|---|---|---|---|
@@ -20,6 +20,7 @@ Tonight's rulings carried: colonists dig to 2 m; deeper holes are machine-dug (m
 | C10 | The Rain Basin | C | (196, 112, 44, 40) | land and water bodies | 11 / 3 | `--goto C10` |
 | C11 | Prospector's Creek | R | river-anchored (live) | Scrapper | 9 / 2 | `--goto C11` (map R: framed by `--river --build`; goto on map R owed) |
 | C12 | The Oubliette and the Kennel | C | (62, 12, 40, 36) | Modern | 15 / 2 | `--goto C12` |
+| C13 | The Spill Yard | C | (112, 162, 44, 32) | land and water bodies | 8 / 1 | `--goto C13` |
 
 Specials: **S0** status board (12, 170, 40, 20), **F** free area (110, 112, 40, 24), **Z0** Stage 0 swim site (62, 140, 8, 12).
 
@@ -64,7 +65,7 @@ Grow a crop on dry ground three steps above a river: caught, lifted, carried ove
 | sand + swale strip on terrace 3 | staged | poked |  |
 | remote field hose (Industrial), Plump | staged | look |  |
 | a second hose crossing it at right angles | staged | look |  |
-| overflow onto the field (D2/D3) | DEFERRED | DEFERRED | overflow is built (Stages 1-3) but its master switch ships OFF and this scenario does not turn it on; terrace 1's brim is one notch from spilling, so leaving S1 shut with the pump on will spill once the switch is on - builds under `CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED` |
+| overflow onto the field (D2/D3) | DEFERRED | DEFERRED | overflow is built (Stages 1-3) but its master switch ships OFF and this scenario does not turn it on (C13 The Spill Yard does); terrace 1's brim is one notch from spilling, so leaving S1 shut with the pump on will spill once the switch is on - builds under `CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED` |
 | joint fittings art (coupler, flange, saddle) | DEFERRED | DEFERRED | pipes are half-girth and hoses twice the 10-21 girth (both built 2026-10-22); a flowing hose plumps wider than an empty one; a pipe rises onto a tank's flange (built). The joint FITTINGS art (coupler, flange, saddle) is drawn and waits on his pick; nothing is installed (PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID) - builds under `PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID` |
 | terrace 2's front frozen half way | DEFERRED | DEFERRED | a canal levels itself: no frozen half front survives the soak; staged dry, opening S1 shows the front - builds under `design §3 C1 (deviation)` |
 
@@ -116,7 +117,7 @@ A walled keep inside a water moat: the classic defence, built only from FlowWork
 | two defenders, drafted | staged | demonstrated |  |
 | raiders in a pen behind a shut grate (raid branch) | staged | poked |  |
 | a raid plank in the pen | staged | poked |  |
-| doors leaking slowly under water (D4): the postern | DEFERRED | DEFERRED | overflow is built (Stages 1-3) but its master switch ships OFF and this scenario does not turn it on; the postern sits by the moat so it shows once the switch is on - builds under `CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED` |
+| doors leaking slowly under water (D4): the postern | DEFERRED | DEFERRED | overflow is built (Stages 1-3) but its master switch ships OFF and this scenario does not turn it on (C13 The Spill Yard does); the postern sits by the moat so it shows once the switch is on - builds under `CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED` |
 | the winch's GSS power cord (cut it) | DEFERRED | DEFERRED | ProofWinchPower forces power; no script lays an RM_PowerCord - builds under `POWER_CORD_BUILD_BENDS_WHERE_CONDUIT_BREAKS` |
 | machine digging the 4 m gatehouse pit | DEFERRED | DEFERRED | past the 2 m colonist cap - builds under `DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL` |
 | guardrail art | DEFERRED | DEFERRED | a borrowed fence look; a cosmetic change needs his permission - builds under `GUARDRAIL_ART_RESKIN_BORROWED_FENCE` |
@@ -173,7 +174,7 @@ Hobb is in a 4 m sheer pit in the middle of a maze. Float him out: pond water, b
 | reel park: deploy order + walker | staged | poked |  |
 | reel park: dropped carry | staged | look |  |
 | pump power as a GSS power cord | DEFERRED | DEFERRED | a vanilla conduit stands in: no staging surface lays an RM_PowerCord from a script yet - builds under `POWER_CORD_BUILD_BENDS_WHERE_CONDUIT_BREAKS` |
-| swim-out of a flooded sheer pit (Stage 0 live: out only at the brim) | staged | poked | Transient/scenarios_stage0_20261021T220318.json: 2 m FAIL, brim PASS |
+| swim-out of a flooded sheer pit (Stage 0 live: out only at the brim) | staged | poked | Stage 0 live 2026-10-21: 2 m FAIL, brim PASS (PASS_AT_BRIM) |
 | machine digging Hobb's pit | DEFERRED | DEFERRED | 4 m is past the 2 m colonist cap (owner 2026-10-21); the pit is staged, a machine dig order is not built - builds under `DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL` |
 
 Exercises (32 ids): 16 poked, 16 look.
@@ -262,7 +263,7 @@ A caravan fuel stop: cargo tanks, a filling bay, a tapped neighbour's tank, a bu
 | firefoam popper by the canal | staged | poked |  |
 | water canal one wall from the chemfuel | staged | poked |  |
 | spill pad: liquid spill + tracked tar | staged | look |  |
-| fuel overflow spreads and burns (D5) | DEFERRED | DEFERRED | overflow is built (Stages 1-3) but its master switch ships OFF and this scenario does not turn it on; the canal stands below its brim so a second Dump will spill once the switch is on - builds under `CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED` |
+| fuel overflow spreads and burns (D5) | DEFERRED | DEFERRED | overflow is built (Stages 1-3) but its master switch ships OFF and this scenario does not turn it on (C13 The Spill Yard does); the canal stands below its brim so a second Dump will spill once the switch is on - builds under `CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED` |
 | an acid canal beside the chemfuel | DEFERRED | DEFERRED | moved to C6 (where corrosion lives); the no-mix poke needs only water against chemfuel - builds under `design §3 C5 layout` |
 | joint fittings art at the tanks | DEFERRED | DEFERRED | pipes are half-girth and hoses twice the 10-21 girth (both built 2026-10-22); a flowing hose plumps wider than an empty one; a pipe rises onto a tank's flange (built). The joint FITTINGS art (coupler, flange, saddle) is drawn and waits on his pick; nothing is installed (PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID) - builds under `PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID` |
 
@@ -348,7 +349,7 @@ A desert colony's water: a tower tank, a bathhouse, stills for bad water, thirst
 | gravity hose from the tower, end Capped | staged | poked |  |
 | four thirsty colonists (drafted) | staged | poked |  |
 | prisoner in his own cell | staged | demonstrated |  |
-| the overflowing bath (D2/D4: leaking under the door) | DEFERRED | DEFERRED | overflow is built (Stages 1-3) but its master switch ships OFF and this scenario does not turn it on - builds under `CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED` |
+| the overflowing bath (D2/D4: leaking under the door) | DEFERRED | DEFERRED | overflow is built (Stages 1-3) but its master switch ships OFF and this scenario does not turn it on (C13 The Spill Yard does) - builds under `CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED` |
 
 Exercises (15 ids): 6 poked, 8 look, 1 demonstrated.
 
@@ -458,7 +459,7 @@ A dry wash that floods: a limited pond, a limitless spring, a canyon-flood chann
 
 **Look for:** the pond's edge recedes, the spring's never; no water on open ground beside a full canal; the ledger sum constant
 
-**Broken looks like:** the pond full after heavy draw; the spring's readout not saying it is a source; water on open ground beside a full canal (with the overflow switch off, its shipped default); water poured onto the muffalo; the flood wiping the canal flat; a sealed edge still draining; any litre unaccounted
+**Broken looks like:** the pond full after heavy draw; the spring's readout not saying it is a source; water on open ground beside a full canal (with the overflow switch off, its shipped default; overflow is walked in C13); water poured onto the muffalo; the flood wiping the canal flat; a sealed edge still draining; any litre unaccounted
 
 **Still until poked:** sluices A and B shut; the pump Pours from an empty tank; the ledger hose is Capped; canal D and the trenches dry; the edge setter automatic
 
@@ -477,7 +478,7 @@ A dry wash that floods: a limited pond, a limitless spring, a canyon-flood chann
 | pump (Pour) + empty tank + hose Intake end in the pond | staged | poked |  |
 | map-edge setter | staged | poked |  |
 | closed ledger: two tanks, one hose, fenced | staged | poked |  |
-| overflow Stage 1+ (D1, D2, D6) | DEFERRED | DEFERRED | overflow is built (Stages 1-3) but its master switch ships OFF and this scenario does not turn it on; canal B is sized so sealing the edge with the pump pouring overfills it once the switch is on - builds under `CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED` |
+| overflow Stage 1+ (D1, D2, D6) | DEFERRED | DEFERRED | overflow is built (Stages 1-3) but its master switch ships OFF and this scenario does not turn it on (C13 The Spill Yard does); canal B is sized so sealing the edge with the pump pouring overfills it once the switch is on - builds under `CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED` |
 | a limitless BODY marker on a natural pond | DEFERRED | DEFERRED | the spring is a flow source; a body flagged limitless (and its readout) has no staging surface here - builds under `FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS` |
 | rain (global weather) | DEFERRED | DEFERRED | lives in the branch save RM_fw_composite_rain, never the main save - builds under `design §2 GPT #11` |
 
@@ -569,6 +570,43 @@ What a pit holds, what climbs out, how wardens work from the lip, and every way 
 Exercises (26 ids): 4 demonstrated, 10 poked, 12 look.
 
 Goal read: live: ProofLadder read on the oubliette ladder says raised; the prisoner's room reads as a prison
+
+## C13 - The Spill Yard (map C, look land and water bodies)
+
+Canal overflow switched ON: a brim-full canal and six staged spills (a film, a sheet, a pool, chemfuel, one on a crop row, one at a door) to watch spill, spread, soak and return.
+
+**START:** read the sign (the overflow switch is ON for this plot), then unpause and watch the rows
+
+**Try:**
+
+1. START: unpause and watch R1-R3: the film thins and soaks or evaporates, the sheet spreads, the pool stands and drains back toward the canal
+2. R4 chemfuel: it spreads as fuel, does not soak like water, and burns if lit (light it only if you want the fire)
+3. crop row: the standing spill irrigates the rice first; it is killed only after about a week of standing water
+4. door room: the spill beside the door leaks slowly under it into the room
+5. fill the canal further (a pump or the fill tool) and see it overfill onto the soil
+6. then open Mod Settings, turn 'Overfilled channels spill water onto the ground' OFF and spill again: nothing spills
+
+**Look for:** spills that end somewhere readable (returned, soaked, evaporated, or standing); no water vanishing without a sign; the ledger of every litre closing
+
+**Broken looks like:** a spill that disappears with no sign; a canal that never overfills; the switch ON yet nothing spills; the switch OFF yet water spills; a door that leaks fast or not at all; chemfuel soaking like water
+
+**Still until poked:** the canal sits brim-full and the sheet water is offered AFTER the two-hour soak, so the rows are fresh at the walk; time is paused until he unpauses. The switch stays ON in Mod Settings until he turns it off.
+
+| piece | status | tag | note |
+|---|---|---|---|
+| overflow master switch turned ON | staged | poked | the build sets RM_SheetSettings.sheetOverflowEnabled; it is a mod setting, so it outlives the save |
+| brim-full canal | staged | poked |  |
+| R1 film spill | staged | demonstrated |  |
+| R2 sheet spill | staged | demonstrated |  |
+| R3 pool spill | staged | demonstrated |  |
+| R4 chemfuel spill | staged | demonstrated |  |
+| rice row with a standing spill (D3) | staged | look |  |
+| door room with a spill at the door (D4) | staged | poked |  |
+| a pump overfilling the canal as a staged source | DEFERRED | DEFERRED | a pump and tank here would move water on their own before his first poke - builds under `CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED` |
+
+Exercises (0 ids): .
+
+Goal read: live: the build's note shows each spill accepted > 0 and the switch read back True
 
 ## Stage 0 - swim out of a flooded sheer pit (C3's bet)
 
