@@ -18,7 +18,8 @@ namespace RimMandrake.Stillsand
     //   dunes march   XML only: a MovingDunes DuneWeatherExtension on the gale WeatherDef.
     //   sun off       XML only: a CreatureBehaviors RM_WeatherSenseExtension on the WeatherDef
     //                 (sunExposureFactor); swimmers blind and the rumble drowned ride it too.
-    //   abrasion, carry, static        the gale tick below.
+    //   carry                          the gale tick below. (Abrasion and static were CUT 2026-10-23,
+    //                                  fluff review: "keep gale and carry-off".)
     //   emergence, seeding, wiping     the aftermath below.
     //   carried off the edge           RM_GameComponent_GaleCarried: always a letter, always back.
     //
@@ -66,17 +67,6 @@ namespace RimMandrake.Stillsand
         public float crestDepth = 0.45f;
         public int crestDustPerInterval = 6;
 
-        // abrasion
-        public float abrasionMtbHours = 3f;
-        public IntRange abrasionDamage = new IntRange(1, 2);
-        /// <summary>Walls carry no Mass stat in vanilla (Wall's statBases: MaxHitPoints only), so
-        /// "light" is read as max hit points: a wood wall (~195) is light, stone is not.</summary>
-        public float lightBuildingMaxHitPoints = 220f;
-        public float structureMtbHours = 8f;
-        public IntRange structureDamage = new IntRange(4, 12);
-        public int structureSamplesPerInterval = 30;
-        public float roofStripChancePerSample = 0.01f;
-
         // carry
         public float carryMaxBodySize = 1.0f;
         public float carryMtbHours = 8f;
@@ -85,11 +75,6 @@ namespace RimMandrake.Stillsand
         public ThingDef dragFilth;
         public float returnAliveChance = 0.75f;
         public FloatRange returnDays = new FloatRange(2f, 6f);
-
-        // static
-        public float staticMtbHours = 3f;
-        public IntRange staticStunTicks = new IntRange(60, 240);
-        public int sparkSamplesPerInterval = 6;
 
         // aftermath
         public List<RM_GaleEmergence> emergences = new List<RM_GaleEmergence>();
@@ -161,8 +146,6 @@ namespace RimMandrake.Stillsand
         private float massBefore = -1f;
         private int fallbackWindDir = -1;
         private int carried;
-        private int abraded;
-        private int stunned;
 
         public RM_DuneGaleExtension Ext => def.GetModExtension<RM_DuneGaleExtension>();
 
@@ -205,8 +188,6 @@ namespace RimMandrake.Stillsand
             Scribe_Values.Look(ref massBefore, "rmMassBefore", -1f);
             Scribe_Values.Look(ref fallbackWindDir, "rmFallbackWindDir", -1);
             Scribe_Values.Look(ref carried, "rmCarried", 0);
-            Scribe_Values.Look(ref abraded, "rmAbraded", 0);
-            Scribe_Values.Look(ref stunned, "rmStunned", 0);
         }
 
         public override void GameConditionTick()
@@ -234,27 +215,10 @@ namespace RimMandrake.Stillsand
                     {
                         continue;
                     }
-                    if (RM_DuneGaleSettings.abrasionEnabled)
-                    {
-                        Abrade(p, ext, interval);
-                    }
                     if (RM_DuneGaleSettings.carryEnabled && p.Spawned)
                     {
                         TryCarry(p, map, ext, interval);
                     }
-                    if (RM_DuneGaleSettings.staticEnabled && p.Spawned && p.RaceProps.IsMechanoid
-                        && Rand.MTBEventOccurs(ext.staticMtbHours, GenDate.TicksPerHour, interval))
-                    {
-                        Stun(p.stances?.stunner, p, ext);
-                    }
-                }
-                if (RM_DuneGaleSettings.abrasionEnabled)
-                {
-                    WearStructures(map, ext, interval);
-                }
-                if (RM_DuneGaleSettings.staticEnabled)
-                {
-                    StaticOnBuildings(map, ext, interval);
                 }
             }
             catch (Exception e)
@@ -362,114 +326,6 @@ namespace RimMandrake.Stillsand
             }
         }
 
-        private void Abrade(Pawn p, RM_DuneGaleExtension ext, int interval)
-        {
-            if (p.Dead || p.Position.Roofed(p.Map)
-                || !Rand.MTBEventOccurs(ext.abrasionMtbHours, GenDate.TicksPerHour, interval))
-            {
-                return;
-            }
-            p.TakeDamage(new DamageInfo(DamageDefOf.Scratch, ext.abrasionDamage.RandomInRange));
-            abraded++;
-        }
-
-        private void WearStructures(Map map, RM_DuneGaleExtension ext, int interval)
-        {
-            // Roofs are sampled (a few random cells per interval); light buildings are rolled one by one at
-            // the stated MTB, so the wear rate does not depend on how big the map is (sampling the building
-            // by cell capped each cell at samples/N per interval, ~25x slower than the stated MTB).
-            int samples = Math.Max(1, ext.structureSamplesPerInterval);
-            List<IntVec3> stripped = null;
-            for (int i = 0; i < samples; i++)
-            {
-                IntVec3 c = CellFinder.RandomCell(map);
-                RoofDef roof = c.GetRoof(map);
-                if (roof != null && !roof.isNatural && !roof.isThickRoof && RoofEdge(c, map)
-                    && Rand.Chance(ext.roofStripChancePerSample))
-                {
-                    RoofCollapserImmediate.DropRoofInCells(c, map);
-                    (stripped ??= new List<IntVec3>()).Add(c);
-                }
-            }
-            List<Thing> buildings = map.listerThings.ThingsInGroup(ThingRequestGroup.BuildingArtificial).ToList();
-            for (int i = 0; i < buildings.Count; i++)
-            {
-                Building b = buildings[i] as Building;
-                if (b == null || !b.Spawned || b.Map != map || b.def.building == null || b.def.building.isNaturalRock
-                    || !b.def.useHitPoints || b.MaxHitPoints > ext.lightBuildingMaxHitPoints)
-                {
-                    continue;
-                }
-                RoofDef roof = b.Position.GetRoof(map);
-                if (roof != null && roof.isThickRoof)
-                {
-                    continue;
-                }
-                if (Rand.MTBEventOccurs(ext.structureMtbHours, GenDate.TicksPerHour, interval))
-                {
-                    b.TakeDamage(new DamageInfo(DamageDefOf.Scratch, ext.structureDamage.RandomInRange));
-                }
-            }
-            if (stripped != null)
-            {
-                RoofCollapseCellsFinder.CheckCollapseFlyingRoofs(stripped, map, removalMode: true);
-                Messages.Message("The gale tore a section of roof away.", new TargetInfo(stripped[0], map),
-                    MessageTypeDefOf.NegativeEvent);
-            }
-        }
-
-        /// <summary>A roof cell the wind can get under: one cardinal neighbour is open sky.</summary>
-        private static bool RoofEdge(IntVec3 c, Map map)
-        {
-            for (int i = 0; i < 4; i++)
-            {
-                IntVec3 n = c + GenAdj.CardinalDirections[i];
-                if (n.InBounds(map) && !n.Roofed(map))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private void Stun(StunHandler stunner, Thing thing, RM_DuneGaleExtension ext)
-        {
-            if (stunner == null)
-            {
-                return;
-            }
-            stunner.StunFor(ext.staticStunTicks.RandomInRange, null, addBattleLog: false);
-            FleckMaker.ThrowMicroSparks(thing.DrawPos, thing.Map);
-            stunned++;
-        }
-
-        private void StaticOnBuildings(Map map, RM_DuneGaleExtension ext, int interval)
-        {
-            List<Thing> built = map.listerThings.ThingsInGroup(ThingRequestGroup.BuildingArtificial);
-            for (int i = 0; i < built.Count; i++)
-            {
-                if (built[i] is Building_Turret turret && !turret.Position.Roofed(map)
-                    && Rand.MTBEventOccurs(ext.staticMtbHours, GenDate.TicksPerHour, interval))
-                {
-                    Stun(turret.GetComp<CompStunnable>()?.StunHandler, turret, ext);
-                }
-            }
-            // Sparks on metal: a few unroofed metal-stuffed buildings crackle each interval.
-            if (built.Count == 0)
-            {
-                return;
-            }
-            for (int i = 0; i < ext.sparkSamplesPerInterval; i++)
-            {
-                Thing t = built.RandomElement();
-                if (t.Stuff?.stuffProps?.categories != null && t.Stuff.stuffProps.categories.Contains(StuffCategoryDefOf.Metallic)
-                    && !t.Position.Roofed(map) && !t.Position.Fogged(map))
-                {
-                    FleckMaker.ThrowMicroSparks(t.TrueCenter(), map);
-                }
-            }
-        }
-
         // ------------------------------------------------------------ carry, never vanish
 
         private void TryCarry(Pawn p, Map map, RM_DuneGaleExtension ext, int interval)
@@ -550,7 +406,7 @@ namespace RimMandrake.Stillsand
                             + (massBefore < 0f ? "UNMEASURED" : massBefore.ToString("F1")) + " -> " + massAfter.ToString("F1")
                             + (massBefore < 0f ? "" : " (delta " + (massAfter - massBefore).ToString("+0.0;-0.0") + ")")
                             + "; cells moved past " + ext.wipeDepthDelta.ToString("0.00") + ": " + wiped.Count
-                            + "; carried " + carried + ", abraded " + abraded + ", stunned " + stunned);
+                            + "; carried " + carried);
                 WipeTracks(map, wiped);
             }
             if (!face.IsValid && !RCellFinder.TryFindRandomCellNearTheCenterOfTheMapWith(c => c.Standable(map) && !c.Fogged(map), map, out face))

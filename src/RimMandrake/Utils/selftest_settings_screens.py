@@ -358,11 +358,11 @@ MODS = {
         "Under the sand: thumper, fishing and swimmers": "Now",
         "The Listening": "Now",
         "Footprints in moving sand": "Now",
-    }, ("genStepEnabled", "yardangShapingEnabled", "torEnabled", "torChance", "dripEnabled", "wallRingEnabled", "tribalMarkEnabled", "rowEnabled", "rowWeight", "preservationEnabled", "bloomOnPour", "ledgerEnabled", "ledgerIncidentWeighting", "thumperEnabled", "thumperRadius", "sandFishingWakeEnabled", "sandFishingWakeChance", "driftSwimEnabled", "driftSwimDepth", "listeningHissEnabled", "listeningSingingEnabled", "listeningWarningEnabled", "singingWarningCells", "listeningRumbleEnabled", "duneErasesTracks")),
+    }, ("genStepEnabled", "yardangShapingEnabled", "torEnabled", "torChance", "wallRingEnabled", "rowEnabled", "rowWeight", "preservationEnabled", "bloomOnPour", "ledgerEnabled", "ledgerIncidentWeighting", "thumperEnabled", "thumperRadius", "sandFishingWakeEnabled", "sandFishingWakeChance", "driftSwimEnabled", "driftSwimDepth", "listeningHissEnabled", "listeningSingingEnabled", "listeningWarningEnabled", "singingWarningCells", "listeningRumbleEnabled", "duneErasesTracks")),
     "Stillsand#Skeletons": ("RM_SkeletonSettings.cs", "RM_Stillsand.csproj", {
         "Giant skeletons on new maps (fixed at map generation)": "NewMapsOnly",
         "Giant corpses become skeletons": "Now",
-        "Bone harps and dune burial": "Now",
+        "Bone harps": "Now",
         "Dust on the horizon": "NextPulse",
         "Dust-settled letter": "Now",
     }, ()),
@@ -384,7 +384,6 @@ MODS = {
         "The dune gale": "NextPulse",
         "Gale effects": "Now",
         "What the wind uncovers at gale end": "Now",
-        "Dust devils": "NextPulse",
     }, ("emergenceOff",)),
     "Droidworks": ("Droidworks/RSW_DroidworksSettings.cs", "Droidworks/Droidworks.csproj", {
         "Restraining bolts: breaks and resentment": "Now",

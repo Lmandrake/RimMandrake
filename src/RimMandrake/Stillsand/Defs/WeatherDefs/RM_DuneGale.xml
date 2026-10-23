@@ -2,14 +2,13 @@
 <!--
   RM_DuneGale.xml                    RimMandrake — STILLSAND_DUNE_GALE_1
 
-  The Stillsand's own storm (owner, typed: "Call it a dune gale."), and its fair-weather
-  opposite, the dust devil. Code: Source/RM_DuneGale.cs, Source/RM_DustDevil.cs.
+  The Stillsand's own storm (owner, typed: "Call it a dune gale."). Code: Source/RM_DuneGale.cs.
 
   One file holds the whole feature so it reads top to bottom:
     RM_DuneGaleHerald / RM_DuneGale   WeatherDefs the condition forces, in that order
     RM_DuneGale (GameConditionDef)    the storm's duration, its tick and its aftermath table
     RM_DuneGale (IncidentDef)         rare: a few a year, one to two days
-    RM_DustDevil (ThingDef, IncidentDef)
+    (RM_DustDevil, the fair-weather dust devil, was CUT 2026-10-23 by the fluff review.)
 
   Neither weather sits in the biome's weather table: the gale only ever comes as the
   condition. Both are XML-only consumers of two engines:
@@ -146,7 +145,7 @@
     <canBePermanent>false</canBePermanent>
     <allowUnderground>false</allowUnderground>
     <letterDef>NegativeEvent</letterDef>
-    <letterText>The windward horizon has gone ochre and every crest is smoking. A dune gale is coming.\n\nFor a day or two the dunes will march, the sky will go brown-gold and dim, and the sun will be off you: the one natural relief from the heat out here. The swimmers cannot hear through it either.\n\nBut the sand scours anyone left out in it, light walls and roof edges wear, and anything small standing on a crest can be carried away downwind. Keep the light ones off the crests. When it ends, the wind will have uncovered something.</letterText>
+    <letterText>The windward horizon has gone ochre and every crest is smoking. A dune gale is coming.\n\nFor a day or two the dunes will march, the sky will go brown-gold and dim, and the sun will be off you: the one natural relief from the heat out here. The swimmers cannot hear through it either.\n\nBut anything small standing on a crest can be carried away downwind. Keep the light ones off the crests. When it ends, the wind will have uncovered something.</letterText>
     <endMessage>The dune gale has blown itself out.</endMessage>
     <modExtensions>
       <li Class="RimMandrake.Stillsand.RM_DuneGaleExtension">
@@ -154,19 +153,12 @@
         <galeWeather>RM_DuneGale</galeWeather>
         <heraldFraction>0.15</heraldFraction>
         <crestDepth>0.45</crestDepth>
-        <abrasionMtbHours>3</abrasionMtbHours>
-        <abrasionDamage>1~2</abrasionDamage>
-        <lightBuildingMaxHitPoints>220</lightBuildingMaxHitPoints>
-        <structureMtbHours>8</structureMtbHours>
-        <roofStripChancePerSample>0.01</roofStripChancePerSample>
         <carryMaxBodySize>1.0</carryMaxBodySize>
         <carryMtbHours>8</carryMtbHours>
         <carryCells>3~10</carryCells>
         <dragFilth>RM_Filth_DragMark</dragFilth>
         <returnAliveChance>0.75</returnAliveChance>
         <returnDays>2~6</returnDays>
-        <staticMtbHours>3</staticMtbHours>
-        <staticStunTicks>60~240</staticStunTicks>
         <wipeDepthDelta>0.2</wipeDepthDelta>
         <wakeRaces>
           <li>RM_Siidda</li>
@@ -254,61 +246,6 @@
         <biomes>
           <li>RM_Stillsand</li>
         </biomes>
-      </li>
-    </modExtensions>
-  </IncidentDef>
-
-  <!-- ===================== the dust devil ===================== -->
-  <ThingDef ParentName="EtherealThingBase">
-    <defName>RM_DustDevil</defName>
-    <label>dust devil</label>
-    <description>A single spinning column of lifted sand, wandering the flat in fair weather. It lifts anything light, scatters a stockpile and spooks animals, and is gone in minutes.</description>
-    <thingClass>RimMandrake.Stillsand.RM_DustDevil</thingClass>
-    <category>Ethereal</category>
-    <tickerType>Normal</tickerType>
-    <drawerType>RealtimeOnly</drawerType>
-    <drawOffscreen>true</drawOffscreen>
-    <seeThroughFog>true</seeThroughFog>
-    <useHitPoints>false</useHitPoints>
-    <alwaysFlee>true</alwaysFlee>
-    <altitudeLayer>MoteOverhead</altitudeLayer>
-    <graphicData>
-      <texPath>Things/Ethereal/RM_DustDevil</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
-      <shaderType>Transparent</shaderType>
-      <drawSize>(2,4)</drawSize>
-    </graphicData>
-    <modExtensions>
-      <li Class="RimMandrake.Stillsand.RM_DustDevilExtension">
-        <durationTicks>900~2400</durationTicks>
-        <scourRadius>2.4</scourRadius>
-        <liftChance>0.35</liftChance>
-        <liftMaxMass>2</liftMaxMass>
-        <scourDepthPerPass>0.08</scourDepthPerPass>
-        <spookRadius>6</spookRadius>
-      </li>
-    </modExtensions>
-  </ThingDef>
-
-  <IncidentDef>
-    <defName>RM_DustDevil</defName>
-    <label>dust devil</label>
-    <workerClass>RimMandrake.Stillsand.RM_IncidentWorker_DustDevil</workerClass>
-    <category>Misc</category>
-    <baseChance>1.5</baseChance>
-    <minRefireDays>4</minRefireDays>
-    <targetTags>
-      <li>Map_PlayerHome</li>
-      <li>Map_TempIncident</li>
-    </targetTags>
-    <modExtensions>
-      <li Class="RimMandrake.Stillsand.RM_DuneGaleIncidentExtension">
-        <biomes>
-          <li>RM_Stillsand</li>
-        </biomes>
-      </li>
-      <li Class="RimMandrake.Stillsand.RM_DustDevilIncidentExtension">
-        <dustDevil>RM_DustDevil</dustDevil>
       </li>
     </modExtensions>
   </IncidentDef>

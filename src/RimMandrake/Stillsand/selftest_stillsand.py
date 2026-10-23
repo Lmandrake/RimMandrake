@@ -33,7 +33,7 @@ from suite import TestContext                     # noqa: E402
 SKELETON_DEFS = V.GIANT_SKELETONS
 STILLSAND = "RM_Stillsand"
 ROUNDTRIP_FIELDS = ("yardangShapingEnabled", "torEnabled", "boneHarpEnabled", "ledgerEnabled",
-                    "ledgerIncidentWeighting", "abrasionEnabled", "carryEnabled", "staticEnabled",
+                    "ledgerIncidentWeighting", "carryEnabled",
                     "seedingEnabled")
 
 
@@ -207,13 +207,6 @@ class Fake(object):
         # zuurrik poll
         if self.ticks // 600 != (self.ticks - d) // 600:
             self.zuurrik_poll()
-        # dust devils
-        for t in self.of("RM_DustDevil"):
-            if "devil_still" not in b:
-                t["x"] += 1
-                t["z"] += 1
-            if "devil_immortal" not in b and self.ticks - t["born"] >= 1500:
-                del self.things[t["id"]]
 
     def end_gale(self):
         b = self.b
@@ -221,7 +214,7 @@ class Fake(object):
         delta = "+0.0" if "dunes_still" in b else "+4.4"
         moved = 0 if "dunes_still" in b else 11
         self.log_info("[Stillsand] dune gale ended on Map-1-PlayerHome: dune field mass 3.2 -> 7.6 "
-                      "(delta %s); cells moved past 0.20: %d; carried 0, abraded 10, stunned 0" % (delta, moved))
+                      "(delta %s); cells moved past 0.20: %d; carried 0" % (delta, moved))
         if "no_emergence" in b:
             return
         if self.on("emergenceEnabled") or "emergence_ignores_toggle" in b:
@@ -430,8 +423,6 @@ class Fake(object):
             return False
         if name == "RM_DuneGale":
             return self.on("galeEnabled") or "gale_ignores_toggle" in self.b
-        if name == "RM_DustDevil":
-            return self.on("dustDevilsEnabled") or "devil_ignores_toggle" in self.b
         return True
 
     def t_fire_incident(self, incidentDef=None, dryRun=False, points=None, **k):
@@ -738,9 +729,6 @@ BREAKS = {
     "no_herald": ["gale.gale_phases_and_aftermath"],
     "dunes_still": ["gale.gale_phases_and_aftermath"],
     "emergence_ignores_toggle": ["gale.gale_emergence_off_quiet"],
-    "devil_still": ["devil.devil_moves_and_expires"],
-    "devil_immortal": ["devil.devil_moves_and_expires"],
-    "devil_ignores_toggle": ["devil.devil_toggle_off_refuses"],
     "no_muurrok": ["muurrok.muurrok_emergence_fires"],
     "beam_no_damage": ["muurrok.beam_burns_target"],
     "beam_ignores_toggle": ["muurrok.beam_toggle_off_blocked"],

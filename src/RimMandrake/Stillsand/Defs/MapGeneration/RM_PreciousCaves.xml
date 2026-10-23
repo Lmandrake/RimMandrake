@@ -121,8 +121,8 @@
     </elements>
   </RimMandrake.Stillsand.RM_PreciousCaveDef>
 
-  <!-- nothing, taken: emptied. A mark and a cold hearth say by whom. The mark is
-       the mod's own tribal glyph, RM_StillsandTribalMark, on the back wall. -->
+  <!-- nothing, taken: emptied. A cold hearth says someone was here. (Its tribal glyph on the
+       back wall was cut 2026-10-23, fluff review.) -->
   <RimMandrake.Stillsand.RM_PreciousCaveDef>
     <defName>RM_PreciousCave_Taken</defName>
     <label>nothing, taken</label>
@@ -139,10 +139,6 @@
         <stackCount>2</stackCount>
         <stacks>4~6</stacks>
         <place>centre</place>
-      </li>
-      <li Class="RimMandrake.Stillsand.RM_CaveElement_WallMark">
-        <mark>RM_StillsandTribalMark</mark>
-        <place>back</place>
       </li>
     </elements>
   </RimMandrake.Stillsand.RM_PreciousCaveDef>

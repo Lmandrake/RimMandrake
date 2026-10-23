@@ -26,7 +26,6 @@ namespace RimMandrake.Stillsand
         public static float horizonWarningHours = 3f;
         public static bool horizonPassersEnabled = true;
         public static bool dustSettledLetterEnabled = true;
-        public static bool duneBurialEnabled = true;
 
         public override void ExposeData()
         {
@@ -40,7 +39,6 @@ namespace RimMandrake.Stillsand
             Scribe_Values.Look(ref horizonWarningHours, "horizonWarningHours", 3f);
             Scribe_Values.Look(ref horizonPassersEnabled, "horizonPassersEnabled", true);
             Scribe_Values.Look(ref dustSettledLetterEnabled, "dustSettledLetterEnabled", true);
-            Scribe_Values.Look(ref duneBurialEnabled, "duneBurialEnabled", true);
         }
 
         // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field initialisers.
@@ -71,7 +69,7 @@ namespace RimMandrake.Stillsand
         private static readonly HashSet<string> collapsedSections = new HashSet<string>();
 
         /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
-        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): skeleton placement is a GenStep (NewMapsOnly); the horizon warning and passer gates and the warning hours are read as each incident is fired (NextPulse); corpse scan, harp, dune burial and the settled letter are read per tick (Now).</summary>
+        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): skeleton placement is a GenStep (NewMapsOnly); the horizon warning and passer gates and the warning hours are read as each incident is fired (NextPulse); corpse scan, harp and the settled letter are read per tick (Now).</summary>
         private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
         {
             bool searching = !string.IsNullOrWhiteSpace(searchQuery);
@@ -134,15 +132,11 @@ namespace RimMandrake.Stillsand
                 list.GapLine();
             }
 
-            if (Group(list, "Bone harps and dune burial", RimMandrake.Shared.SettingScope.Now, new[] { "boneHarpEnabled", "duneBurialEnabled" }))
+            if (Group(list, "Bone harps", RimMandrake.Shared.SettingScope.Now, new[] { "boneHarpEnabled" }))
             {
                 list.CheckboxLabeled("Bone harps", ref boneHarpEnabled,
                     "Wind across a skeleton's ribs makes a low moan that rises with the wind, so you can find "
                     + "one by ear. Off: skeletons are silent.");
-                list.CheckboxLabeled("Dunes bury and strip skeletons", ref duneBurialEnabled,
-                    "Where the moving dunes pile drift over a skeleton it is buried to its top arcs: drawn sand-coloured, "
-                    + "its harp silent. When the sand moves on it is stripped clean again, with a message each time. "
-                    + "Off: skeletons stay clean whatever the sand does. Safe mid-game.");
                 list.GapLine();
             }
 

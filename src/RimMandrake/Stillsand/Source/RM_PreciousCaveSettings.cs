@@ -21,9 +21,7 @@ namespace RimMandrake.Stillsand
 
         // STILLSAND_CAVE_AS_PLACE_1. Preservation acts live on every cave; the others on NEW maps.
         public static bool preservationEnabled = true;
-        public static bool dripEnabled = true;
         public static bool wallRingEnabled = true;
-        public static bool tribalMarkEnabled = true;
 
         // Per-row overrides keyed by RM_PreciousCaveDef.defName. A row absent
         // from either dictionary uses its def's own default (enabled, def.weight).
@@ -51,9 +49,7 @@ namespace RimMandrake.Stillsand
             Scribe_Values.Look(ref torEnabled, "preciousCaves_torEnabled", true);
             Scribe_Values.Look(ref torChance, "preciousCaves_torChance", 0.25f);
             Scribe_Values.Look(ref preservationEnabled, "preciousCaves_preservationEnabled", true);
-            Scribe_Values.Look(ref dripEnabled, "preciousCaves_dripEnabled", true);
             Scribe_Values.Look(ref wallRingEnabled, "preciousCaves_wallRingEnabled", true);
-            Scribe_Values.Look(ref tribalMarkEnabled, "preciousCaves_tribalMarkEnabled", true);
             Scribe_Collections.Look(ref rowEnabled, "preciousCaves_rowEnabled", LookMode.Value, LookMode.Value);
             Scribe_Collections.Look(ref rowWeight, "preciousCaves_rowWeight", LookMode.Value, LookMode.Value);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)

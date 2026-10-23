@@ -34,7 +34,7 @@ PLANTS = [
     ("still feed that yields nothing", S, "<litres>3</litres>", "<litres>0</litres>", "stillsand-sun"),
     ("sun factor floor above 1", G, "<minSunFactor>0.15</minSunFactor>", "<minSunFactor>1.5</minSunFactor>", "stillsand-sun"),
     ("unknown sun table kind", G, "<kind>lensBench</kind>", "<kind>lensBenc</kind>", "stillsand-sun"),
-    ("settings key used twice", "Source/RM_DuneGaleSettings.cs", 'Scribe_Values.Look(ref galeEnabled, "galeEnabled", true);', 'Scribe_Values.Look(ref galeEnabled, "abrasionEnabled", true);', "stillsand-settings"),
+    ("settings key used twice", "Source/RM_DuneGaleSettings.cs", 'Scribe_Values.Look(ref galeEnabled, "galeEnabled", true);', 'Scribe_Values.Look(ref galeEnabled, "carryEnabled", true);', "stillsand-settings"),
     ("settings default differs from initialiser", "Source/RM_Thumper.cs", '"sw_thumperRadius", 40f)', '"sw_thumperRadius", 4f)', "stillsand-settings"),
     ("slider range excludes the default", "Source/RM_StillsandMod.cs", "list.Slider(thumperRadius, 10f, 80f)", "list.Slider(thumperRadius, 50f, 80f)", "stillsand-settings"),
     ("Scribe of a field the class does not declare", "Source/RM_Thumper.cs", 'Scribe_Values.Look(ref thumperRadius, "sw_thumperRadius", 40f);', 'Scribe_Values.Look(ref thumperRadiusX, "sw_thumperRadius", 40f);', "stillsand-settings"),

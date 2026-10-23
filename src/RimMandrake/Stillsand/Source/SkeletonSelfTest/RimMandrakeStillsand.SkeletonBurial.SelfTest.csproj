@@ -2,7 +2,6 @@
 
   <!--
     Offline, no-game selftest for STILLSAND_SKELETONS_REMAINDER_1. Compiles the REAL
-    production file ..\RM_SkeletonBurialLogic.cs (System.Math only) and drives it
     with synthetic sand-depth series. NOT the mod build: RM_Stillsand.csproj one directory
     up lists its files explicitly and never mentions this folder.
 
@@ -28,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\RM_SkeletonBurialLogic.cs" />
     <Compile Include="..\Kernel\RM_HorizonMath.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>

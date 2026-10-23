@@ -89,7 +89,7 @@ namespace RimMandrake.Stillsand
 
         /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
         /// should draw. Scope AUDITED per setting against its read site (2026-10-10): map-generation steps (cave carving, yardang,
-        /// tor, wall ring, tribal mark, drip, cave-row rolls) are NewMapsOnly; the debt-weighted incident roll is NextPulse; the rest
+        /// tor, wall ring, cave-row rolls) are NewMapsOnly; the debt-weighted incident roll is NextPulse; the rest
         /// (zuurrik, cave preservation, water bloom and ledger, thumper, swimmers, listening, track eraser) are read per tick or call.</summary>
         private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
         {
@@ -147,7 +147,7 @@ namespace RimMandrake.Stillsand
                 list.GapLine();
             }
 
-            if (Group(list, "Precious cave: carving and set pieces (fixed at map generation)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "genStepEnabled", "yardangShapingEnabled", "torEnabled", "torChance", "dripEnabled", "wallRingEnabled", "tribalMarkEnabled" }))
+            if (Group(list, "Precious cave: carving and set pieces (fixed at map generation)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "genStepEnabled", "yardangShapingEnabled", "torEnabled", "torChance", "wallRingEnabled" }))
             {
                 list.CheckboxLabeled("Carve a cave into the map's largest outcrop", ref genStepEnabled,
                     "Off: the Stillsand generates its rock as before, with no cave, no table roll and no landing letter.");
@@ -160,12 +160,8 @@ namespace RimMandrake.Stillsand
                     list.Label("Rockless-map tor chance: " + torChance.ToStringPercent());
                     torChance = list.Slider(torChance, 0f, 1f);
                 }
-                list.CheckboxLabeled("The cave drips", ref dripEnabled,
-                    "Each new cave carries one ambient water-drip sound, the only water sound in the biome. New maps only.");
                 list.CheckboxLabeled("Lens grotto: grown-biosilica walls", ref wallRingEnabled,
                     "The lens grotto rings its chamber with mineable biosilica wall. Off: the grotto is bare rock. New maps only.");
-                list.CheckboxLabeled("Taken cave: tribal mark on the wall", ref tribalMarkEnabled,
-                    "The emptied cave carries its own tribal glyph. New maps only.");
                 list.GapLine();
             }
 

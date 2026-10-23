@@ -42,7 +42,7 @@ KNOWN PAST BUGS GUARDED (each is a component that would have gone red):
 
 NOT DRIVEN HERE (walk lines say UNCOVERED, with the reason): the leviathan incident toggles and odds
 (private dictionaries, no tool reads them), carry-and-return of gale-borne pawns (a rare, random event
-on a crest), gale abrasion/static (statistical), the mirage and chasing-water states (CreatureBehaviors'
+on a crest), the mirage and chasing-water states (CreatureBehaviors'
 own script), the acoustic payload (needs mandrake.rm.acousticscanner), the Return ledger (an RM tier
 ships no ledger def), the horizon plume mote and the bone harp sound (visual/audio), flight in the air
 (never live-tested unattended, CLAUDE.md), and appearance of any kind.
@@ -74,14 +74,13 @@ SETTINGS = {
     NS + "RM_StillsandSettings": {"zuurrikEnabled": True, "zuurrikBloodThreshold": 8},
     NS + "RM_PreciousCaveSettings": {"genStepEnabled": True, "yardangShapingEnabled": True,
                                      "torEnabled": True, "torChance": 0.25,
-                                     "preservationEnabled": True, "dripEnabled": True,
-                                     "wallRingEnabled": True, "tribalMarkEnabled": True},
+                                     "preservationEnabled": True,
+                                     "wallRingEnabled": True},
     NS + "RM_SkeletonSettings": {"skeletonPlacementEnabled": True, "maxSkeletonsPerMap": 2,
                                  "corpseToSkeletonEnabled": True, "corpseToSkeletonDays": 15.0,
                                  "boneHarpEnabled": True, "horizonWarningsEnabled": True,
                                  "horizonWarningHours": 3.0, "horizonPassersEnabled": True,
-                                 "dustSettledLetterEnabled": True,
-                                 "duneBurialEnabled": True},
+                                 "dustSettledLetterEnabled": True},
     NS + "RM_StillsandEventsSettings": {"mirrorBeamEnabled": True, "hornEnabled": True,
                                         "hornAnswerChance": 0.15, "denQuestEnabled": True},
     NS + "RM_StillsandWaterSettings": {"bloomOnPour": True, "ledgerEnabled": True,
@@ -99,10 +98,9 @@ SETTINGS = {
                                     "listeningHissEnabled": True, "listeningSingingEnabled": True,
                                     "listeningWarningEnabled": True, "listeningRumbleEnabled": True,
                                     "singingWarningCells": 12.0},
-    NS + "RM_DuneGaleSettings": {"galeEnabled": True, "galeFrequency": 1.0, "abrasionEnabled": True,
-                                 "carryEnabled": True, "staticEnabled": True, "emergenceEnabled": True,
-                                 "seedingEnabled": True, "dustDevilsEnabled": True,
-                                 "dustDevilFrequency": 1.0},
+    NS + "RM_DuneGaleSettings": {"galeEnabled": True, "galeFrequency": 1.0,
+                                 "carryEnabled": True, "emergenceEnabled": True,
+                                 "seedingEnabled": True},
 }
 FIELD_TYPE = dict((f, tn) for tn, d in SETTINGS.items() for f in d)
 DEFAULTS = dict((f, v) for d in SETTINGS.values() for f, v in d.items())
@@ -113,7 +111,7 @@ PADS = {
     "fauna": (-90, -90), "flora": (-45, -90), "sandswim": (0, -90), "zuurrik": (45, -90),
     "loomma": (90, -90), "soorrak": (-90, -45), "glass": (-45, -45), "water": (0, -45),
     "skeleton": (45, -45), "glare": (90, -45), "cooling": (-90, 0), "gale": (-45, 0),
-    "muurrok": (45, 0), "eruption": (90, 0), "horizon": (-90, 45), "devil": (-45, 45),
+    "muurrok": (45, 0), "eruption": (90, 0), "horizon": (-90, 45),
     "sun": (0, 45), "caves": (45, 45), "defs": (90, 45), "settings": (0, 90), "zctl": (-45, 90),
     "log": (45, 90),
 }
@@ -837,18 +835,14 @@ def defs_chain(t):
             _fail("RM_CaveTierElements.cs is not in the csproj Compile list")
 
     with _comp(t, "cave_place_defs"):
-        # STILLSAND_CAVE_AS_PLACE_1: wall, drip source, tribal mark, drip sound must resolve; the drip
-        # clip must exist on disk; the grotto must use the wall ring (no floor biosilica stacks) and
-        # the taken row must carry its own mark, not the Graffiti soft reference.
-        need = ["ThingDef/RM_GrownBiosilicaWall", "ThingDef/RM_CaveDripSource",
-                "ThingDef/RM_StillsandTribalMark", "SoundDef/RM_CaveDrip"]
+        # STILLSAND_CAVE_AS_PLACE_1: the wall must resolve; the grotto must use the wall ring (no floor
+        # biosilica stacks) and the taken row must carry no Graffiti soft reference. (The drip and the tribal
+        # mark were cut 2026-10-23, fluff review.)
+        need = ["ThingDef/RM_GrownBiosilicaWall"]
         for d in need:
             if d not in SHIPPED:
                 _fail("%s is not parsed from this mod's Defs/ (parser or def missing)" % d)
-        if not os.path.isfile(os.path.join(HERE, "Sounds", "RM", "CaveDrip.wav")):
-            _fail("Sounds/RM/CaveDrip.wav (the drip clip) is missing")
-        for tex in ("Textures/Things/Building/Natural/RM_GrownBiosilicaWall.png",
-                    "Textures/Things/Filth/RM_StillsandTribalMark.png"):
+        for tex in ("Textures/Things/Building/Natural/RM_GrownBiosilicaWall.png",):
             if not os.path.isfile(os.path.join(HERE, *tex.split("/"))):
                 _fail("%s is missing" % tex)
         import re as _re2
@@ -857,8 +851,8 @@ def defs_chain(t):
         if "RM_CaveElement_WallRing" not in grotto or "<thing>RM_Biosilica</thing>" in grotto:
             _fail("lens grotto must be a wall ring with no loose biosilica floor stacks")
         taken = cx.split("RM_PreciousCave_Taken</defName>")[1].split("</RimMandrake.Stillsand.RM_PreciousCaveDef>")[0]
-        if "RM_StillsandTribalMark" not in taken or "RM_Graffiti_Vandal" in taken:
-            _fail("taken cave must carry RM_StillsandTribalMark and no Graffiti soft reference")
+        if "RM_Graffiti_Vandal" in taken:
+            _fail("taken cave must carry no Graffiti soft reference")
         wall = open(os.path.join(HERE, "Defs", "ThingDefs_Buildings", "RM_CavePlace.xml"), encoding="utf-8").read()
         if "<mineableThing>RM_Biosilica</mineableThing>" not in wall:
             _fail("RM_GrownBiosilicaWall does not yield RM_Biosilica")
@@ -867,7 +861,7 @@ def defs_chain(t):
             _ok(r, "get_defs(cave place)")
             if r.get("notFound"):
                 _fail("cave place def(s) did not resolve live: %s" % r.get("notFound"))
-            for f in ("preservationEnabled", "dripEnabled", "wallRingEnabled", "tribalMarkEnabled"):
+            for f in ("preservationEnabled", "wallRingEnabled"):
                 if not _same(_get_setting(t, f), True):
                     _fail("%s is not at its shipped default True" % f)
             # Offline-proven only: a corpse on a roofed cave cell not rotting needs a generated cave
@@ -982,7 +976,7 @@ def settings_chain(t):
     # read its shipped default and be writable, restored afterwards.
     for field in ("yardangShapingEnabled", "torEnabled", "boneHarpEnabled", "ledgerEnabled",
                   "ledgerIncidentWeighting", "sieveEnabled", "solarStillEnabled", "wringingStillEnabled", "brineDippingEnabled", "sunLanceEnabled", "geophoneEnabled", "thumperEnabled", "sandFishingWakeEnabled", "driftSwimEnabled",
-                  "listeningHissEnabled", "listeningSingingEnabled", "listeningWarningEnabled", "listeningRumbleEnabled", "abrasionEnabled", "carryEnabled", "staticEnabled",
+                  "listeningHissEnabled", "listeningSingingEnabled", "listeningWarningEnabled", "listeningRumbleEnabled", "carryEnabled",
                   "seedingEnabled", "hornEnabled", "denQuestEnabled"):
         with _comp(t, "%s_roundtrip" % field, toggle=field):
             if _live(t):
@@ -1927,48 +1921,6 @@ def gale_chain(t):
             if emerged:
                 _fail("emergenceEnabled is off and the gale still uncovered something: %s"
                       % [l[0] for l in emerged])
-
-
-@_chain("devil")
-def devil_chain(t):
-    _prep(t, "devil")
-    x, z = t.anchor
-    with _comp(t, "devil_moves_and_expires"):
-        if _live(t):
-            t.bridge_call("rimworld/spawn_thing", defName="RM_DustDevil", x=x, z=z)
-            pos = []
-            for _ in range(12):
-                t.wait_ticks(250)
-                rows = _things(t, "RM_DustDevil")
-                pos.append([(w.get("x"), w.get("z")) for w in rows][:1])
-                if not rows:
-                    break
-            flat = [p[0] for p in pos if p]
-            _note(t, "dust devil track", pos)
-            if len(flat) < 2:
-                _unmeasured(t, "the dust devil was gone before it could be tracked")
-            if _dist(flat[0], flat[-1]) < 3:
-                _fail("a dust devil lived %d samples and moved %.1f cells" % (len(flat),
-                                                                              _dist(flat[0], flat[-1])))
-            for _ in range(12):
-                if not _things(t, "RM_DustDevil"):
-                    break
-                t.wait_ticks(250)
-            if _things(t, "RM_DustDevil"):
-                _fail("a dust devil outlived its 900-2400 tick life by 3000 ticks")
-
-    with _comp(t, "devil_toggle_off_refuses", toggle="dustDevilsEnabled"):
-        if _live(t):
-            def can():
-                return _dry_fire(t, "RM_DustDevil").get("canFireNow")
-            if can() is not True:
-                _unmeasured(t, "the dust devil incident cannot fire with its toggle on (weather, or no "
-                               "free cell): the off arm proves nothing")
-            with _setting(t, "dustDevilsEnabled", False):
-                t.wait_ticks(1)   # CanFireNow is cached per game tick (see the gale arm)
-                off = can()
-            if off is not False:
-                _fail("dustDevilsEnabled is off and RM_DustDevil still reports canFireNow=%r" % off)
 
 
 # ----------------------------------------------------------------------------- chain: the muurrok
