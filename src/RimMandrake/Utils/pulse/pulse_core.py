@@ -281,7 +281,9 @@ def owner_rulings(ledger: list[dict]) -> dict:
         it = world.items.get(iid) if iid else None
         if it is None:
             return
-        if it.open and it.needs == "owner":
+        # a BLOCKED item is parked on something else (another item, or his own "later"): he cannot act on it
+        # now, so it is not an ask; unblocking re-asks it fresh (owner 2026-10-23: answered rows lingered)
+        if it.open and it.needs == "owner" and not it.blocked:
             if iid not in became or (ok and ev.get("event") == "needs"):
                 became[iid] = ev            # (re-)asked: any earlier answer was to an earlier question
                 answered.pop(iid, None)

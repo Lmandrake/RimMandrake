@@ -584,7 +584,11 @@ AQ = [fi("CARD_ANSWERED", 900), le("needs", "CARD_ANSWERED", 800, to="owner", re
       fi("A_FACT", 900, title="Second test PC: needs its name/address"),
       le("needs", "A_FACT", 800, to="owner", reason="waiting on him"),
       le("file", "A_DECISION", 900, kind="decision", title="walk the sheet and decide", **{"for": "FOUNDRY"}),
-      le("needs", "A_DECISION", 800, to="owner", reason="sheet is up")]
+      le("needs", "A_DECISION", 800, to="owner", reason="sheet is up"),
+      fi("PARKED", 900), le("needs", "PARKED", 800, to="owner", reason="review the list"),
+      le("block", "PARKED", 700, reason="later, in the normalization pass", ownerSaid="(1) later"),
+      fi("UNPARKED", 900), le("needs", "UNPARKED", 850, to="owner", reason="review it"),
+      le("block", "UNPARKED", 800, reason="later"), le("unblock", "UNPARKED", 500)]
 aq = {r["key"][6:]: r for r in pc.classify_ledger(AQ, NOW - 3600, NOW)[0] if r["key"].startswith("needs:")}
 check("a card answered AFTER the ask leaves 'to rule' (rows for answered cards persisted, 2026-10-23)",
       aq["CARD_ANSWERED"]["kind"] == "answered" and aq["CARD_ANSWERED"]["answered"]["by"] == "card", aq.get("CARD_ANSWERED"))
@@ -601,10 +605,13 @@ check("an ask for a fact (a PC's name/address) is 'to provide'", aq["A_FACT"]["k
 check("a verb is not a fact: 'address the drift' / 'provide feedback' stay rulings",
       [pc.ask_class(type("I", (), {"title": t, "kind": "task", "owed_levels": lambda self: []})(), {"reason": ""})[0]
        for t in ("address the drift", "provide feedback on X")] == ["rule", "rule"])
+check("a BLOCKED needs=owner item is parked, not an ask: it leaves every owner fold (answered rows lingered, 2026-10-23)",
+      "PARKED" not in aq, aq.get("PARKED"))
+check("unblocking re-asks it fresh, as a plain ask", aq.get("UNPARKED", {}).get("kind") == "review", aq.get("UNPARKED"))
 check("kind decision is a ruling even when its words mention a sheet", aq["A_DECISION"]["kind"] == "review", aq.get("A_DECISION"))
 st_aq = {p["text"] for p in pc.build_strip(pc.classify_ledger(AQ, NOW - 3600, NOW)[0])}
 check("the strip counts rule / provide / look separately and never counts answered asks",
-      {"◇ 4 to rule", "✎ 1 to provide", "▣ 2 to look at"} <= st_aq, st_aq)
+      {"◇ 5 to rule", "✎ 1 to provide", "▣ 2 to look at"} <= st_aq, st_aq)   # 5 = 4 + UNPARKED; PARKED never
 check("every to-rule row carries its full reason and its source", all(r.get("full") and r["src"] == "ledger" for r in aq.values()))
 
 # the amber ask: full card text, expires on its tool_result
