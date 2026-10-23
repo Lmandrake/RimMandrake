@@ -29,13 +29,15 @@ size of.
 Every model call re-sends the helper's whole conversation, so a helper costs about
 calls x average context: roughly quadratic in run length. Helpers run on a 1M window, so
 nothing compacts unless the definition sets it. A fresh subagent does not inherit the
-parent's conversation but does load both CLAUDE.md files and the skill list (~56k base,
-re-read on every call); a fork inherits everything. Measured 2026-10-23: 2.18B tokens, 89%
+parent's conversation but does load both CLAUDE.md files, the git status and every tool
+schema (~45-56k base, re-read on every call); a fork inherits everything. The `rm-*`
+definitions set `omitClaudeMd: true` (CLAUDE.md + git status alone were ~23k) and a `tools`
+allowlist (~5k), carrying a short rules digest instead: base 18.5k (MEASURED, rm-fixer). Measured 2026-10-23: 2.18B tokens, 89%
 by helpers, top helper 452 calls / 229M; compaction at 150k would have saved ~48%.
 Growth is mostly Bash output and the model's own text, not Read or images.
 
 Rules (the hook `.claude/hooks/block_unbounded_agent.py` enforces the first):
-1. **Spawn only the `rm-*` definitions** (`.claude/agents/`); they carry `autoCompactWindow`, `maxTurns` and no `Agent` tool.
+1. **Spawn only the `rm-*` definitions** (`.claude/agents/`); they carry `autoCompactWindow`, `maxTurns`, `omitClaudeMd` with a rules digest, and a tools allowlist without `Agent`. A rule a helper must not miss goes in that digest, not only in CLAUDE.md.
 
    | type | use | model |
    |---|---|---|
