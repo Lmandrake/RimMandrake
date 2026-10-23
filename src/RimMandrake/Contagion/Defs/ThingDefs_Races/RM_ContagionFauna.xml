@@ -26,8 +26,9 @@
   health-part attachment, no anatomical claim beyond that). Several
   donor "special" behaviours named in the cast bible (Doublemaw's
   infection bite, Fleshsop's needs-affection,
-  Sparkleech's grub-to-adult metamorphosis, Gawpsack's sink-before-Burn tell)
-  are flavour text only this wave — the cast bible itself repeatedly says
+  Sparkleech's grub-to-adult metamorphosis) are flavour text only this wave
+  (Gawpsack's sink-before-Burn tell, once in this list, is built: its renderTree
+  RM_GawpsackSink, owner Q6 2026-10-15) — the cast bible itself repeatedly says
   Burn/Bloom and tell behaviours "ride the Owed engine pass," and no
   metamorphosis comp exists in this mod's live C# to reuse for the grub
   transform. Each is noted at its own def below rather than silently dropped.
@@ -160,7 +161,7 @@
   </PawnKindDef>
 
   <!-- ======================================================================
-       GAWPSACK (RM_Gawpsack) — the eyes — GROUNDED FLOATER by owner ruling (2026-09-27 card): no flight stats. The sink-before-Burn tell is a behavioural/cosmetic beat owed to the engine feasibility pass, not this def's XML.
+       GAWPSACK (RM_Gawpsack) — the eyes — GROUNDED FLOATER by owner ruling (2026-09-27 card): no flight stats. The sink-before-Burn tell is built: renderTree RM_GawpsackSink below, driven by RM_ContagionSkyExtension.tellSinkers.
        ====================================================================== -->
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Gawpsack</defName>
@@ -893,7 +894,7 @@
   </PawnKindDef>
 
   <!-- ======================================================================
-       SCALDHIDE (RM_Scaldhide) — the basker — UV-armored carve-out of ban 2 (donor acid-immunity MEASURED); comes out in the Burn to eat scorched Unfinished. Reuses the Tortoise placeholder texture family (distinct tint from Scorchpod) — precedent: BlueDesertFauna reuses Warg/Thrumbo/Squirrel across multiple defs.
+       SCALDHIDE (RM_Scaldhide) — the basker — UV-armored carve-out of ban 2 (donor acid-immunity MEASURED); comes out in the Burn to eat scorched Unfinished. Own art (Textures/Things/Pawn/Animal/RM_Scaldhide/); only the dessicated graphic is vanilla's tortoise.
        ====================================================================== -->
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Scaldhide</defName>
