@@ -81,33 +81,39 @@ and should not be retired.
 
 ## Enabling it
 
-1. Copy the mod into the game (not done automatically — see *Staging* below):
-   ```
-   robocopy "D:\Luke\dev\RimMandrake\src\RimMandrake\RimDefDump" ^
-            "C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\RimDefDump" /E
-   ```
+1. Deploy the mod: `python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod RimDefDump --apply`
+   (plan first without `--apply`). The game reads `Mods\RimDefDump`, never the repo.
 2. Enable `mandrake.rm.rimdefdump` in the mod list. It has no dependencies and no
    load-order requirements — it only reads, so anywhere late is fine.
-3. Create the marker file to arm it:
-   ```
-   %USERPROFILE%\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\DefDump\dump_request.txt
-   ```
-   Contents select the scope:
+3. Arm it, either way:
+   - **At startup:** create the marker file
+     ```
+     %USERPROFILE%\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\DefDump\dump_request.txt
+     ```
+     Contents select the scope (anything else runs the `animals` pass and logs a warning):
 
-   | Contents | Output | Cost |
-   |---|---|---|
-   | *(empty)* or `animals` | `animals.json` + `manifest.json` | seconds |
-   | `all` | the above plus `defs/<DefType>.json` for every def type | slow, large |
+     | Contents | Output | Cost |
+     |---|---|---|
+     | *(empty)* or `animals` | `animals.json` + `manifest.json` | seconds |
+     | `all` | the above plus `defs/<DefType>.json` for every def type | slow, large |
 
-4. Load the game. Watch for `[RimDefDump]` lines in `Player.log`.
+   - **On demand, no marker:** the bridge tool `jawa/rimdefdump_run` (it calls
+     `DefDumper.RunOnDemand`, the same code the debug-menu entries reach).
+4. Load the game. Watch for `[RimMandrake.RimDefDump]` lines in `Player.log`.
 
 The marker is **not** consumed — it dumps on every load until you delete it.
 
 ## Outputs
 
-Written to `…\RimWorld by Ludeon Studios\DefDump\`.
+Each run writes a dated capture under `…\RimWorld by Ludeon Studios\DefDump\captures\<capturedUtc>\`
+(id = the manifest's `capturedUtc` with `:` as `-`). A capture is built under
+`captures\.writing` and renamed into place, so a half-written one never looks finished.
+The **newest three** captures survive; a capture holding a `.keep` file is frozen and
+never counts against that. `defs.sqlite` is DERIVED and lives at the `DefDump\` root,
+outside every capture. There is no `current` symlink (a link made from WSL is
+unreadable from Windows): the current capture is the lexicographically greatest id.
 
-| File | Contents |
+| File (inside a capture) | Contents |
 |---|---|
 | `manifest.json` | game version, the full mod list **in load order** with packageIds, per-type def counts, timings |
 | `animals.json` | every `ThingDef` with a `<race>` — resolved stats, full reflected `RaceProperties`, its `PawnKindDef`s, plus the merged `biomeAnimals` pairs |
@@ -221,14 +227,17 @@ risky components are tested standalone against the real source files:
   accurate, absent for non-ThingDefs, pawn flags only when `race` is present,
   and a throwing computed property contained rather than fatal).
 
-Both suites live in the session scratchpad and compile the mod's real source
-files directly, so they cannot drift from what ships.
+Both are now built into the repo: `Source/SelfTest/` (with the kernel in
+`Source/Kernel/RM_DumpKernel.cs`) is run by `python3 src/RimMandrake/Utils/selftest_rimdefdump_fuzz.py`
+(seeded fuzz of the JSON writer, the def-type file stems and the capture
+vocabulary and retention), and `selftest_rimdefdump_lint.py` lints the defs. Both
+compile the mod's real source files directly, so they cannot drift from what ships.
 
-**Not yet verified in-game.** Everything above is verified by compilation and
-standalone tests; the first real load is still pending.
+The mod has dumped on the full list in game (the `captures\` folder and the
+collision measurements above come from real runs).
 
 ## Staging
 
-The mod is deliberately **not** installed into the RimWorld `Mods` folder. The
-mod list is being stabilised in a parallel effort, and adding an entry to it —
-even an inactive one — is that effort's call to make, not this tool's.
+The repo is the source; the game copy is made by `deploy_custom_mods.py`. Whether
+`mandrake.rm.rimdefdump` is in the live `ModsConfig.xml` is a per-session call (it
+is not on the list by default); parse `ModsConfig.xml` to see, never assume.

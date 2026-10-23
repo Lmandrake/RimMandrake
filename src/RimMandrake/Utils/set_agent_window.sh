@@ -75,7 +75,7 @@
 set -euo pipefail
 
 # --- the seat table: the single source of truth --------------------------
-# Colour is the seat's identity in the one place the owner sees all four at
+# Colour is the seat's identity in the one place the owner sees both seats at
 # once. Chosen to stay legible on a dark background and to be distinguishable
 # from each other by hue, not just by lightness.
 # Kept identical to the table in install_wt_seat_profiles.py — the terminal tint
@@ -111,7 +111,7 @@ apply_colour() {
 
 case "${1:-}" in
     --preview)
-        echo "Seat colours — if these four lines are not tinted, this terminal"
+        echo "Seat colours — if these two lines are not tinted, this terminal"
         echo "ignores OSC 10 and per-seat colour is unavailable here."
         for s in $SEATS; do
             c="$(seat_colour "$s")"
