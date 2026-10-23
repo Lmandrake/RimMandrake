@@ -221,7 +221,7 @@ copy only if that step is wanted (each adds load time and was not on the measure
    never removed (register line 47).
 7. **The world bakes things in.** Once generated: planet size and coverage, planet type, the faction roster (a faction
    absent at Configure Factions is absent unless `jawa/faction_create` adds it — measured working for
-   `RUT_GreentideAntFaction`, 06 G15), ideoligions (classic vs. fixed, 06 S5), seed. A mod that only shapes generation
+   `RUT_GreentideAntFaction`, now `RM_GreentideAntFaction`, 06 G15), ideoligions (classic vs. fixed, 06 S5), seed. A mod that only shapes generation
    (My Little Planet) can leave afterwards; a mod whose classes or defs the save names cannot (Alien Worlds, VFE Tribals,
    More Vanilla Biomes: register lines 33-36).
 8. **The world-map CSVs are a RECORD.** `world/ASHKARR_WORLDMAP_*.csv` tells you the planet on its export date

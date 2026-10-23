@@ -131,5 +131,13 @@ GREENTIDE_FREE_ROSTER_OWNED_1 (2026-10-03) gave the biome its own animal list, n
 sulleth (grazer), dhollollo (river ambusher), yammeth (flier), ookala (canopy climber) and the yearning
 fruit.
 
+GREENTIDE_ANTS_MIGRATE_NO_ANT_LEFT_BEHIND (Biome card 8, owner by question card 2026-10-22) moved the giant ants here
+from the campaign tier (mandrake.rut.greentideraidant, now retired): RM_GreentideAntRace, its two kinds, the
+hidden raid-only RM_GreentideAntFaction, RM_GreentideAntCarapace leather and the carapace wall, driven by
+mandrake.rm.creaturebehaviors' directed assault (Defs/ThingDefs_Races/RM_GreentideAnts.xml). Raids only, never
+a wildlife row. Mod Settings: raids on/off and raid strength. Old RUT_ names in a save load as the RM_ defs
+(Defs/Misc/RM_GreentideTierMove_Aliases.xml). Owed: a coined name (the label is the plain "giant ant"), new
+art, and two raid-call sounds.
+
 Live proof is OWED at publish time — see the item's own verify record.</description>
 </ModMetaData>

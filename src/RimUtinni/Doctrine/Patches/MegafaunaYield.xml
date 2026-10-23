@@ -5489,7 +5489,7 @@
 
   <!-- THEY_MOD_REPLICATION_1, 2026-09-25: They! (Giant Ants)'s MeatAmount/
        BoneAmount block removed — GiantAnt_Race is retired, and its
-       replacement RUT_GreentideAntRace (src/RimUtinni/GreentideRaidAnt)
+       replacement RM_GreentideAntRace (src/RimMandrake/Greentide)
        states the same computed values (280/100) directly in its own
        statBases, so no patch is needed for it. -->
 

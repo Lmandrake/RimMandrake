@@ -306,9 +306,9 @@
     </match>
   </Operation>
   <!-- THEY_MOD_REPLICATION_1, 2026-09-25: GiantAnt_Faction zeroing removed —
-       the def is retired. Its replacement, RUT_GreentideAntFaction
-       (src/RimUtinni/GreentideRaidAnt), declares
-       startingCountAtWorldCreation 0 directly, so no patch is needed for it. -->
+       the def is retired. Its replacement, RM_GreentideAntFaction
+       (src/RimMandrake/Greentide, since Biome card 8 2026-10-22), states its own
+       hidden world-creation shape (configurable 1, start 1), so no patch is needed for it. -->
   <!-- JDSCIS_CIS_Faction -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/FactionDef[defName="JDSCIS_CIS_Faction"]</xpath>

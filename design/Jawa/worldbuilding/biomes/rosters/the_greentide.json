@@ -261,8 +261,8 @@
     {
       "action": "port",
       "commonality": 0.5,
-      "def": "RUT_GreentideAntRace",
-      "law": "owner review 2026-09 (round2 move mapping): Only the raiding events in the greentide jungles and surrounding area. THEY_MOD_REPLICATION_1, 2026-09-25: replicated from They! (Giant Ants) into our own tier; donor dependency retired from this def."
+      "def": "RM_GreentideAntRace",
+      "law": "owner review 2026-09 (round2 move mapping): Only the raiding events in the greentide jungles and surrounding area. THEY_MOD_REPLICATION_1, 2026-09-25: replicated from They! (Giant Ants) into our own tier; donor dependency retired from this def. Biome card 8, 2026-10-22: moved into the free Greentide mod as RM_GreentideAntRace (was RUT_GreentideAntRace)."
     },
     {
       "action": "import",
