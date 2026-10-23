@@ -227,7 +227,8 @@ def cmd_install(a):
         cmd = [sys.executable, str(ROOT / "src/RimMandrake/Utils/art/art.py"), "install", fl["mod"], fl["rel"],
                "--file", str(local.relative_to(ROOT))]
         cmd += (["--by-card", P_KEPT_CARD] if fl["kept"] else
-                ["--why", f"delegated: art {verdict} (pipeline ACCEPT + head-to-head B)"])
+                ["--reason", "script:src/RimMandrake/Utils/art_eval/fauna_drive.py",
+                 "--why", f"delegated: art {verdict} (pipeline ACCEPT + head-to-head B)"])
         if a.dry_run:
             cmd.append("--dry-run")
         r = subprocess.run(cmd, capture_output=True, text=True, cwd=ROOT)
@@ -242,7 +243,7 @@ def cmd_install(a):
                "replaced_kept": anykept, "files": done,
                "revert": [["python3", "src/RimMandrake/Utils/art/art.py", "install", x["mod"], x["rel"], x["old_sha"], "--by-card", P_KEPT_CARD]
                           for x in done if x["kept"]] +
-                         [["python3", "src/RimMandrake/Utils/art/art.py", "install", x["mod"], x["rel"], x["old_sha"], "--why", "revert fauna regen"]
+                         [["python3", "src/RimMandrake/Utils/art/art.py", "install", x["mod"], x["rel"], x["old_sha"], "--reason", "script:src/RimMandrake/Utils/art_eval/fauna_drive.py"]
                           for x in done if not x["kept"]]}
         with (ROOT / "infrastructure/state/art_eval/fauna_installs.jsonl").open("a") as fh:
             fh.write(json.dumps(rec) + "\n")
