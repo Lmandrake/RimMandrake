@@ -72,7 +72,7 @@ work waits on it. It never times out into a decision.
   (or the same `--why` on `close`/`drop`/`supersede`/`file`). ⛔ Never `--owner-said`, `--by-card` or
   `--per-ruling` — those name his authority; this ruling authorises the *class*, the call itself is ours.
 - **Commit:** a body line `Delegated: <class> — <one-line decision>` so `git log --grep '^Delegated:'` finds it.
-- **Art install:** `art.py install … --reason "delegated: art <verdict file>"`.
+- **Art install:** `art.py install … --why "delegated: art <verdict file>"` (`--why` grants no owner authority: the mechanical guards apply, so it never displaces a kept, purged or rejected picture; `--reason` takes only mechanical tags and refuses this text).
 - **Verdicts:** the judge's output (§4) is committed as
   `infrastructure/state/delegated/<YYYY-MM-DD>/<subject-or-item>.json` and cited by path.
 - **Numbers and rosters in `canon.yml`:** a delegated value carries `src: delegated:<class> (<item>)`, never a
