@@ -1,0 +1,509 @@
+{
+ "tanks": [
+  {
+   "d": "RM_LiquidTankTall",
+   "style": "RM_LiquidTankTall_Scrapper",
+   "min": [
+    160,
+    60
+   ],
+   "cells": [
+    [
+     160,
+     60
+    ],
+    [
+     160,
+     61
+    ],
+    [
+     161,
+     60
+    ],
+    [
+     161,
+     61
+    ]
+   ],
+   "styled": true
+  },
+  {
+   "d": "RM_LiquidTankTall",
+   "style": "RM_LiquidTankTall_Industrial",
+   "min": [
+    184,
+    60
+   ],
+   "cells": [
+    [
+     184,
+     60
+    ],
+    [
+     184,
+     61
+    ],
+    [
+     185,
+     60
+    ],
+    [
+     185,
+     61
+    ]
+   ],
+   "styled": true
+  },
+  {
+   "d": "RM_LiquidTankTall",
+   "style": "RM_LiquidTankTall_Futuristic",
+   "min": [
+    208,
+    60
+   ],
+   "cells": [
+    [
+     208,
+     60
+    ],
+    [
+     208,
+     61
+    ],
+    [
+     209,
+     60
+    ],
+    [
+     209,
+     61
+    ]
+   ],
+   "styled": true
+  },
+  {
+   "d": "RM_LiquidTankTall",
+   "style": "RM_LiquidTankTall_Modern",
+   "min": [
+    232,
+    60
+   ],
+   "cells": [
+    [
+     232,
+     60
+    ],
+    [
+     232,
+     61
+    ],
+    [
+     233,
+     60
+    ],
+    [
+     233,
+     61
+    ]
+   ],
+   "styled": true
+  },
+  {
+   "d": "RM_UniversalCargoTank",
+   "style": "RM_UniversalCargoTank_Scrapper",
+   "min": [
+    175,
+    85
+   ],
+   "cells": [
+    [
+     175,
+     85
+    ],
+    [
+     175,
+     86
+    ],
+    [
+     176,
+     85
+    ],
+    [
+     176,
+     86
+    ]
+   ],
+   "styled": true
+  }
+ ],
+ "hoses": [
+  {
+   "label": "Scrapper tall W lower",
+   "reel": [
+    152,
+    60
+   ],
+   "target": [
+    159,
+    60
+   ],
+   "lay": {
+    "success": true,
+    "cmd": "lay:152,60,159,60",
+    "reason": null,
+    "layOk": true
+   },
+   "coupled": "coupled to tall liquid tank"
+  },
+  {
+   "label": "Scrapper tall E upper",
+   "reel": [
+    169,
+    61
+   ],
+   "target": [
+    162,
+    61
+   ],
+   "lay": {
+    "success": true,
+    "cmd": "lay:169,61,162,61",
+    "reason": null,
+    "layOk": true
+   },
+   "coupled": "coupled to tall liquid tank"
+  },
+  {
+   "label": "Scrapper tall S",
+   "reel": [
+    160,
+    51
+   ],
+   "target": [
+    160,
+    59
+   ],
+   "lay": {
+    "success": true,
+    "cmd": "lay:160,51,160,59",
+    "reason": null,
+    "layOk": true
+   },
+   "coupled": "coupled to tall liquid tank"
+  },
+  {
+   "label": "Scrapper tall N",
+   "reel": [
+    161,
+    70
+   ],
+   "target": [
+    161,
+    62
+   ],
+   "lay": {
+    "success": true,
+    "cmd": "lay:161,70,161,62",
+    "reason": null,
+    "layOk": true
+   },
+   "coupled": "coupled to tall liquid tank"
+  },
+  {
+   "label": "Industrial tall W lower",
+   "reel": [
+    176,
+    60
+   ],
+   "target": [
+    183,
+    60
+   ],
+   "lay": {
+    "success": true,
+    "cmd": "lay:176,60,183,60",
+    "reason": null,
+    "layOk": true
+   },
+   "coupled": "coupled to tall liquid tank"
+  },
+  {
+   "label": "Industrial tall E upper",
+   "reel": [
+    193,
+    61
+   ],
+   "target": [
+    186,
+    61
+   ],
+   "lay": {
+    "success": true,
+    "cmd": "lay:193,61,186,61",
+    "reason": null,
+    "layOk": true
+   },
+   "coupled": "coupled to tall liquid tank"
+  },
+  {
+   "label": "Industrial tall S",
+   "reel": [
+    184,
+    51
+   ],
+   "target": [
+    184,
+    59
+   ],
+   "lay": {
+    "success": true,
+    "cmd": "lay:184,51,184,59",
+    "reason": null,
+    "layOk": true
+   },
+   "coupled": "coupled to tall liquid tank"
+  },
+  {
+   "label": "Industrial tall N",
+   "reel": [
+    185,
+    70
+   ],
+   "target": [
+    185,
+    62
+   ],
+   "lay": {
+    "success": true,
+    "cmd": "lay:185,70,185,62",
+    "reason": null,
+    "layOk": true
+   },
+   "coupled": "coupled to tall liquid tank"
+  },
+  {
+   "label": "Futuristic tall W lower",
+   "reel": [
+    200,
+    60
+   ],
+   "target": [
+    207,
+    60
+   ],
+   "lay": {
+    "success": true,
+    "cmd": "lay:200,60,207,60",
+    "reason": null,
+    "layOk": true
+   },
+   "coupled": "coupled to tall liquid tank"
+  },
+  {
+   "label": "Futuristic tall E upper",
+   "reel": [
+    217,
+    61
+   ],
+   "target": [
+    210,
+    61
+   ],
+   "lay": {
+    "success": true,
+    "cmd": "lay:217,61,210,61",
+    "reason": null,
+    "layOk": true
+   },
+   "coupled": "coupled to tall liquid tank"
+  },
+  {
+   "label": "Futuristic tall S",
+   "reel": [
+    208,
+    51
+   ],
+   "target": [
+    208,
+    59
+   ],
+   "lay": {
+    "success": true,
+    "cmd": "lay:208,51,208,59",
+    "reason": null,
+    "layOk": true
+   },
+   "coupled": "coupled to tall liquid tank"
+  },
+  {
+   "label": "Futuristic tall N",
+   "reel": [
+    209,
+    70
+   ],
+   "target": [
+    209,
+    62
+   ],
+   "lay": {
+    "success": true,
+    "cmd": "lay:209,70,209,62",
+    "reason": null,
+    "layOk": true
+   },
+   "coupled": "coupled to tall liquid tank"
+  },
+  {
+   "label": "Modern tall W lower",
+   "reel": [
+    224,
+    60
+   ],
+   "target": [
+    231,
+    60
+   ],
+   "lay": {
+    "success": true,
+    "cmd": "lay:224,60,231,60",
+    "reason": null,
+    "layOk": true
+   },
+   "coupled": "coupled to tall liquid tank"
+  },
+  {
+   "label": "Modern tall E upper",
+   "reel": [
+    241,
+    61
+   ],
+   "target": [
+    234,
+    61
+   ],
+   "lay": {
+    "success": true,
+    "cmd": "lay:241,61,234,61",
+    "reason": null,
+    "layOk": true
+   },
+   "coupled": "coupled to tall liquid tank"
+  },
+  {
+   "label": "Modern tall S",
+   "reel": [
+    232,
+    51
+   ],
+   "target": [
+    232,
+    59
+   ],
+   "lay": {
+    "success": true,
+    "cmd": "lay:232,51,232,59",
+    "reason": null,
+    "layOk": true
+   },
+   "coupled": "coupled to tall liquid tank"
+  },
+  {
+   "label": "Modern tall N",
+   "reel": [
+    233,
+    70
+   ],
+   "target": [
+    233,
+    62
+   ],
+   "lay": {
+    "success": true,
+    "cmd": "lay:233,70,233,62",
+    "reason": null,
+    "layOk": true
+   },
+   "coupled": "coupled to tall liquid tank"
+  },
+  {
+   "label": "Scrapper cargo W upper",
+   "reel": [
+    167,
+    86
+   ],
+   "target": [
+    174,
+    86
+   ],
+   "lay": {
+    "success": true,
+    "cmd": "lay:167,86,174,86",
+    "reason": null,
+    "layOk": true
+   },
+   "coupled": "lying free"
+  },
+  {
+   "label": "Scrapper cargo E upper",
+   "reel": [
+    184,
+    86
+   ],
+   "target": [
+    177,
+    86
+   ],
+   "lay": {
+    "success": false,
+    "cmd": "lay:184,86,177,86",
+    "reason": "no route",
+    "layOk": false
+   },
+   "coupled": "none"
+  },
+  {
+   "label": "Scrapper cargo W lower from the SIDE (south)",
+   "reel": [
+    171,
+    76
+   ],
+   "target": [
+    174,
+    85
+   ],
+   "lay": {
+    "success": false,
+    "cmd": "lay:171,76,174,85",
+    "reason": "no room for the straight lead-out from the nozzle",
+    "layOk": false
+   },
+   "coupled": "none"
+  }
+ ],
+ "station": [
+  [
+   204,
+   88
+  ],
+  [
+   204,
+   89
+  ],
+  [
+   205,
+   88
+  ],
+  [
+   205,
+   89
+  ],
+  [
+   206,
+   88
+  ],
+  [
+   206,
+   89
+  ]
+ ]
+}
