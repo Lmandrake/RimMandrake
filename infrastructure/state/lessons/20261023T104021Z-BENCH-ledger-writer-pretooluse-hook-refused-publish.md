@@ -1,0 +1,1 @@
+The ledger-writer PreToolUse hook refused './publish -F <msgfile>' naming the BENCH ledger shard (it read -F as a write); the same publish with -m passed. Commit ledger shards with -m, and keep the shard path out of any lesson/note text you pass on a command line (the hook matches it there too). (2026-10-23)
