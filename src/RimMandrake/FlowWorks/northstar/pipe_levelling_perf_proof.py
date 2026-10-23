@@ -90,11 +90,14 @@ def layout(size, rigs, rehearsal):
     return ([(ax, z0, bw, bh, FILL_A), (bx, z0, bw, bh, FILL_B)], spots[:rigs], ax + bw, bx - 1)
 
 
-def rig_ops(cx, z):
-    """Build ops of one rig: two 2x2 reels built West at (cx, z) and (cx, z+2) whose East edges both touch ONE RM_UniversalPipe
+def rig_ops(cx, z, lip_a=None, lip_b=None):
+    """Build ops of one rig: two 2x2 reels on footprints (cx, z) and (cx, z+2), each facing its hose's lip (reel 1 West to A's lip
+    lip_a, reel 2 East to B's lip lip_b; West when a lip is None -- PROOF_REELS_FIX_STILL_STAGED_WEST), whose East edges both touch ONE RM_UniversalPipe
     run x cx+2, z..z+3. A pipe conducts; an RM_LiquidTank does NOT (RM_NetComponents.Build attaches it as a member and never walks
     through it), so two reels on one tank were two components with one port each and levelled nothing (walk_gaps_proof, 2026-10-22)."""
-    return [V.reel_west((cx, z)), V.reel_west((cx, z + 2))] + ["RM_UniversalPipe:%d,%d" % (cx + 2, z + j) for j in range(4)]
+    ta = None if lip_a is None else (lip_a, z)
+    tb = None if lip_b is None else (lip_b, z + 2)
+    return [V.reel_toward((cx, z), ta), V.reel_toward((cx, z + 2), tb)] + ["RM_UniversalPipe:%d,%d" % (cx + 2, z + j) for j in range(4)]
 
 
 def tick_verdict(kv, links, want_links, staged_ok):
@@ -242,7 +245,7 @@ def _rigs_and_time(a, B, static, row, res, spots, lip_a, lip_b, staged_ok, size,
     for i in range(0, len(spots), 40):
         ops = []
         for cx, z in spots[i:i + 40]:
-            ops += rig_ops(cx, z)
+            ops += rig_ops(cx, z, lip_a, lip_b)
         B.call("jawa/build_batch", ops=";".join(ops), faction="player", wipeExisting=False)
     B.call("rimworld/step_game_ticks", ticks=2, pauseFirst=True, timeoutMs=60000)
     lay_fail = 0

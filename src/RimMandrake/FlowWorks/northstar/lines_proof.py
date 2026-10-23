@@ -370,7 +370,7 @@ def rope_deck(ctx):
     kg, tg = lproof("ProofCanPlace", "RM_UniversalPipe;%s" % xz(P(-2, 4)))
     V.require(kg.get("ok") == "True", "control: a pipe is accepted on solid ground", tg)
     reel = P(-8, -1)
-    ctx["build"](V.reel_west(reel))
+    ctx["build"](V.reel_toward(reel, P(10, 0)))
     ctx["ticks"](2)
     ly = ctx["lay"](reel, P(10, 0))
     kh, th = ctx["hose"](reel)
@@ -393,7 +393,7 @@ def cover_no_hose(ctx):
     ks, ts = lproof("ProofSurface", xz(P(2, 12)))
     V.require(ks.get("s") == "Cover", "the square reads as an intact pit cover", ts)
     reel = P(-8, 11)
-    ctx["build"](V.reel_west(reel))
+    ctx["build"](V.reel_toward(reel, P(10, 12)))
     ctx["ticks"](2)
     ly = ctx["lay"](reel, P(10, 12))
     kh, th = ctx["hose"](reel)
@@ -575,9 +575,9 @@ def ladder_drain(ctx):
         for z in range(84, 87):
             ctx["dig"](P(x, z))
             ctx["dig"](P(x, z), 0, 4)
-    # the reel turns since a98046cbe9 (REEL_OUTLET_DECIDE_ALWAYS_GOES_WEST) and a bare op builds it NORTH: built West, one square
-    # east, so the 2x2 keeps the footprint and the west outlet this row was proven with
-    ctx["build"]("RM_LiquidPump:%d,%d" % pump, "Battery:%d,%d" % bat, V.reel_west(reel),
+    # the reel turns since a98046cbe9 and a bare op builds it NORTH: staged facing its hose's target (East, footprint kept,
+    # PROOF_REELS_FIX_STILL_STAGED_WEST; it was West, leaving the west nozzle and U-turning past itself)
+    ctx["build"]("RM_LiquidPump:%d,%d" % pump, "Battery:%d,%d" % bat, V.reel_toward(reel, P(9, 85)),
                  "RM_LiquidTank:%d,%d" % tank,
                  "RM_Ladder:%d,%d,3" % P(8, 85))
     ctx["ticks"](2)
@@ -589,7 +589,7 @@ def ladder_drain(ctx):
     V.require(ladder.get("success") is True and "present=True" in str(ladder.get("result")), "the ladder is on the pit floor", ladder)
     ly = ctx["lay"](reel, P(9, 85))
     kh0, th0 = ctx["hose"](reel)
-    rl = B.call("jawa/list_things", defName="RM_HoseReel", rect="%d,%d,2,1" % reel, limit=1) or {}
+    rl = B.call("jawa/list_things", defName="RM_HoseReel", rect="%d,%d,2,2" % reel, limit=1) or {}
     rid = ((rl.get("things") or [{}])[0]).get("id")
     ins = (B.call("jawa/inspect_string", thingIds=str(rid)) or {}) if rid else {}
     lines = [ln for t in (ins.get("things") or []) for ln in (t.get("inspect") or [])]
@@ -623,7 +623,7 @@ def dig_reroute(ctx):
     changes nothing (the first lay must cross the pit's squares: SITE); a hose reeled in is not 're-routed' (laid is the bar)."""
     P, xz, row = _c(ctx, "P", "xz", "row")
     reel = P(0, 100)
-    ctx["build"](V.reel_west(reel))
+    ctx["build"](V.reel_toward(reel, P(16, 100)))
     ctx["ticks"](2)
     ly = ctx["lay"](reel, P(16, 100))
     kh0, th0 = ctx["hose"](reel)
@@ -934,8 +934,9 @@ class FakeBridge(object):
                 if d == "RM_Ladder":
                     self.ladders[c] = False
                 if d == "RM_HoseReel":
-                    # built West (rot 3) one square east of its staged cell: the probe names the footprint's west square
-                    rc = (c[0] - 1, c[1]) if len(p) > 2 and int(p[2]) % 4 == 3 else c
+                    # built Position = footprint corner + V.REEL_POS_SHIFT[rot] (any facing): the probe names the corner
+                    sx, sz = V.REEL_POS_SHIFT[int(p[2]) % 4 if len(p) > 2 else 0]
+                    rc = (c[0] - sx, c[1] - sz)
                     self.reels.setdefault(rc, dict(laid=False, cells=[], geom=0, role="Capped", target=None, retract=None, ladders=0))
                 self.things.setdefault(c, []).append(d)
                 survived += 1
@@ -944,7 +945,8 @@ class FakeBridge(object):
             x, z = (int(v) for v in str(kw.get("rect")).split(",")[:2])
             d = kw.get("defName")
             w = int(str(kw.get("rect")).split(",")[2]) if len(str(kw.get("rect")).split(",")) > 2 else 1
-            cells = [(x, z), (x, z + 1)] if d == "Battery" else [(x + i, z) for i in range(max(1, w))]   # a battery is 1x2
+            h = int(str(kw.get("rect")).split(",")[3]) if len(str(kw.get("rect")).split(",")) > 3 else 1
+            cells = [(x, z), (x, z + 1)] if d == "Battery" else [(x + i, z + j) for j in range(max(1, h)) for i in range(max(1, w))]   # a battery is 1x2
             got = [{"id": "%s%d%d" % (d, x, z)} for c in cells if self._has(c, d)]
             return {"success": True, "things": got[:1]}
         if tool == "jawa/battery_set":
