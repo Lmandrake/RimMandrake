@@ -707,8 +707,8 @@ def settings_defaults(t):
     with _comp(t, "settings_source_parse_floor", independent=True):
         if _live(t):
             _need_parse(t)
-            if len(TOGGLES) < 23 or len(NUMBERS) < 10:
-                _fail("settings parse found %d toggles and %d numbers, floors 23 and 10" % (len(TOGGLES), len(NUMBERS)))
+            if len(TOGGLES) < 22 or len(NUMBERS) < 10:
+                _fail("settings parse found %d toggles and %d numbers, floors 22 and 10" % (len(TOGGLES), len(NUMBERS)))
     for field in sorted(DEFAULTS):
         with _comp(t, "default_%s" % field, independent=True,
                    toggle=(field if isinstance(DEFAULTS[field], bool) else None)):
@@ -1483,7 +1483,7 @@ def brine_deposits(t):
                     _fail("the brine patch did not take RM_WastesBrineShallow terrain: %s" % str(got)[:200])
 
         for i, (gen, building, item) in enumerate(deposits):
-            with _comp(t, "scatter_places_%s" % building, independent=True, toggle="brineDepositsEnabled"):
+            with _comp(t, "scatter_places_%s" % building, independent=True):
                 x, z = t.anchor
                 cell = "%d,%d" % (x - 2 + 3 * i, z - 2)
                 r = t.bridge_call("jawa/scatter_at", genStepDef=gen, at=cell)
