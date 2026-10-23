@@ -95,6 +95,14 @@ MUTATIONS = [
     ("impassable tile scores", "if (impassable) return 0f;", ""),
     ("rainfall divisor zero divides", "float divisor = (r.rainfallDivisor > 0.0001f) ? r.rainfallDivisor : 1f;", "float divisor = r.rainfallDivisor;"),
     ("warmer scores higher", "(r.tempMax - temperature) * r.degreeWeight", "(temperature - r.tempMin) * r.degreeWeight"),
+    # ROT_WARM_MAT_BUILD_WORKS_FOR_FOOD budding (owner by card 2026-10-22): the cap, the well-fed bar, the roll, the clock, the price
+    ("bud ignores the map cap", "            if (rootsOnMap >= cap) return false;\n", ""),
+    ("bud cap off by one", "if (rootsOnMap >= cap) return false;", "if (rootsOnMap > cap) return false;"),
+    ("bud while merely fed", "bool wellFed = inRot || (fuelMax > 0f && fuel / fuelMax >= wellFedPercent);", "bool wellFed = inRot || fuel > 0f;"),
+    ("bud ignores the roll", "if (!hurry && roll >= chance) return false;", ""),
+    ("bud clock never restarts", "            wellFedTicks = 0;\n            if (!hurry && roll >= chance) return false;", "            if (!hurry && roll >= chance) return false;"),
+    ("bud clock survives hunger", "            {\n                wellFedTicks = 0;\n                return false;\n            }\n            wellFedTicks += sweep;", "            {\n                return false;\n            }\n            wellFedTicks += sweep;"),
+    ("bud is free off the Rot", "if (!inRot && fuel < budCost) return false;", ""),
 ]
 
 if __name__ == "__main__":

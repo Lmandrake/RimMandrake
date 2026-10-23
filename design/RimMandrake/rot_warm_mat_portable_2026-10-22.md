@@ -24,10 +24,18 @@ biomes only (owner, 2026-10-15). The portable mat is an explicit exception the o
 on every map a gravship can carry it to, because that is the point of the reward. No other Rot mechanic becomes
 cross-biome because of this.
 
-Reading of *"but it not naturally occurs in the rot"*: the most likely meaning is *"but it only naturally occurs
-in the Rot"* (the mat grows wild only there; anywhere else it is grown by hand). The literal reading, *"the
-portable form never occurs naturally in the Rot"*, is also possible. The build below works under both readings.
-Only the way you get it depends on which one is right (open question 1).
+### The second card (owner, 2026-10-22: "Rot mat cards 2026-10-22 → quest reward, raw food, buds, keep floor-tile art")
+
+1. **How it is won: a quest reward.** The root is never found wild; it is earned (the literal reading of *"it not
+   naturally occurs in the rot"*). Built as the dead ship's log's last camp, below.
+2. **Diet: raw food only**, as built.
+3. **Budding: "A well-fed root buds a second one now and then."** This changes the build. **The cost he accepted:
+   free heat multiplies.** It stays bounded: a hard cap of roots per map, and every root heats only through the
+   same mat-room rule at the same 21 °C cap, with one heat push per room per sweep. More roots grow more mat, on
+   more rooms; no room gets hotter than one root makes it. The 2026-09-17 *"helps a lot, not trivialises"* number
+   is unchanged.
+4. **Art: "It is a floor tile. A living floor tile."** The mat-texture square is the art. No sprite is queued
+   (the art ledger has no job for it: `artpipe_state.py find RM_LivingMatRoot`, 2026-10-22).
 
 ## What exists already (measured from source, 2026-10-22)
 
@@ -58,16 +66,34 @@ Only the way you get it depends on which one is right (open question 1).
   heading toward `min(outdoor + offset, 21 °C)` with the same ramp). A room fully covered in mat around a fed
   root is exactly a Rot mat room: the same heat, the same cap. That is the 2026-09-17 "helps a lot, not
   trivialises" number, carried over unchanged.
-- **Art**: it reuses the existing `RotSporeKit/Terrains/MycelialMatting` texture, drawn at 1×1, so it reads as a
-  patch of the mat. No new art is queued, because the art status is not NONE. A dedicated sprite is a cosmetic
-  change, a delegated art call (`delegation_policy.md`; open question 4).
+- **Art**: the existing `RotSporeKit/Terrains/MycelialMatting` texture, drawn at 1×1: a living floor tile (owner,
+  2026-10-22). `validation.py`'s `mat_root_checks` goes red if the def ever names another texPath.
+
+### How it is won: the crew's last camp (quest reward)
+
+- The dead ship's log (`RM_NavigatorLog`, ROT_NAVIGATOR_LOG_SITES_1) reveals a salvage site at entries 2, 4, 6 and 8.
+  Its **last** site entry (`lastCampEntry` 8) now reveals **`RM_NavigatorLastCamp`** instead: the camp past the third
+  ridge where the crew stopped walking. The warm mat took them in, gently and completely, and where they lay a root
+  of it knotted itself. *Generous and hungry; the Rot shares everything, including you.*
+- The quest is the salvage site's own shape (an item stash, defended whenever violent quests are allowed, no
+  timeout), plus one node, `RM_QuestNode_AddMinifiedToStash`, which puts a minified `RM_LivingMatRoot` in the stash.
+  The player walks or flies there, carries the root home and installs it. Quest text is a DRAFT (FOUNDRY, free tier).
+- **Firing route**: C# only. `RM_NavigatorLog.ReadEntry` → `SiteScriptFor` → `TryRevealSite`, when the swallowed
+  core's pings reach entry 8 (8 × `navigatorPingsPerEntry` pings; at the defaults, 32 pings × 12 h with a grav
+  engine on the giant's map). `validate_quest.py` reports `never-fires` for it, as it does for the salvage site,
+  because it cannot see a C# route. With the root switched off in Mod Settings, entry 8 reveals a plain salvage site.
+- **Site tiles**: free tier, the vanilla tile finder near the colony. The campaign's tiles for the log are
+  `campaignSiteTiles`, which wait for the world remake. This build picks no tile.
+- **The cost of this route**: the root goes only to a player who keeps the giant alive long enough to hear the
+  whole log. Cutting the drive core out early ends the log, and the root with it. That is the trade the log's last
+  line already asks for (*"Cut the beast open gently. It never meant us harm."*).
 
 ### Food: what it eats, who feeds it, what starving does (outside the Rot)
 
 - It **eats raw food**: the `FoodRaw` category (raw meat, raw plant food, animal products such as eggs and milk).
   Food is loaded through vanilla `CompRefuelable`. The gauge reads "Food". Colonists keep it topped up with the
-  ordinary refuel work (haulers), with an auto-refuel toggle, exactly like a campfire. No new job. *What* it eats
-  is open question 2.
+  ordinary refuel work (haulers), with an auto-refuel toggle, exactly like a campfire. No new job. Raw food only is the
+  owner's ruling (2026-10-22 card).
 - **Appetite** (PROVISIONAL): 3 units a day to stay alive, plus 1 unit for each cell of mat it grows. It holds
   30 units (10 days of upkeep). The Mod Settings appetite slider scales both numbers.
 - **Starving**: when the gauge reaches 0, the mat stops warming at once, and the inspect pane says so. After a
@@ -84,6 +110,23 @@ Only the way you get it depends on which one is right (open question 1).
 - It spreads only onto bare ground or substructure. It never lays mat over a floor the player built, over water or
   under a wall. The mat is a floor layer, so dying back (or deconstructing it) uncovers the original ground.
 - An unfed root never spreads, so outside the Rot the mat grows **only when tended**, as ruled.
+
+### Budding: a well-fed root buds a second one now and then
+
+- **Well fed** (measurable): the gauge is at least 80% full (`budWellFedPercent`) after the sweep's meal. In the Rot
+  the network feeds it, so it is always well fed. The bud clock runs only while the root is well fed and restarts
+  the moment it is not.
+- After `portableWarmMatBudDays` (15, PROVISIONAL) well fed, the root rolls `portableWarmMatBudChance` (50%,
+  PROVISIONAL). On a hit, a new root sprouts on a cell of mat in its own room and radius, at least 2 cells from every
+  root, farthest first. A message names it. Hit or miss, the clock restarts.
+- Off the Rot a bud costs 10 food × appetite (`budCost`), and the new root starts with that food.
+- **Hard cap**: a map never holds more than `portableWarmMatBudCap` roots (3; slider 1–6). Installed and minified
+  roots both count, so uninstalling roots and letting the rest bud again cannot get past it. A root carried to
+  another map counts on that map; the cap is per map, as ruled.
+- The clock and roll are `RM_TheRotKernel.MatBudStep`, fuzzed offline (`selftest_therot_fuzz.py --fuzz-only mat`,
+  coverage `mat.bud`, `mat.budCapped`); `mutate_therot_fuzz.py bud` plants seven defects (cap gone, cap off by one,
+  merely fed counts as well fed, roll ignored, clock never restarts, clock survives hunger, free off the Rot) and
+  the fuzz catches all seven.
 
 ### The Rot exemption: the shared lore
 
@@ -114,21 +157,26 @@ what its mat gives. Calibration, from the existing component's arithmetic: a 10�
 | `portableWarmMatAppetite` | 1.0× | Scales both upkeep and spread cost (0.25–3×). |
 | `portableWarmMatSpread` | on | Off: the root keeps the mat it has, but never grows more. |
 | `portableWarmMatDieBack` | on | Off: a starving root stops heating, but its mat never dies back. |
+| `portableWarmMatBudding` | on | Off: roots never bud. |
+| `portableWarmMatBudDays` | 15 | Days well fed between bud rolls (3–60). PROVISIONAL. |
+| `portableWarmMatBudChance` | 50% | Chance a roll buds (5–100%). PROVISIONAL. |
+| `portableWarmMatBudCap` | 3 | Most roots on one map, installed and minified (1–6). |
 
 Every setting is off-safe: all of them off means an inert building. None of them affects worldgen.
 
 ## Built offline (this item)
 
 - `src/RimMandrake/TheRot/Source/RM_LivingMatRoot.cs`: `CompProperties_RM_LivingMatRoot` and `RM_CompLivingMatRoot`
-  (heat, appetite, spread, die-back, Rot exemption, inspect string, saved state), plus `RM_LivingMatRootProof` for
-  `jawa/static_call`.
+  (heat, appetite, spread, die-back, budding, Rot exemption, inspect string, saved state), plus `RM_LivingMatRootProof`
+  (`ProofStage`, `ProofSweeps`, `ProofBud`) for `jawa/static_call`.
+- `src/RimMandrake/TheRot/Source/RM_NavigatorLog.cs`: `lastCampEntry`/`lastCampQuest`, `SiteScriptFor`,
+  `RM_QuestNode_AddMinifiedToStash`, `RM_NavigatorLogProof.ProofLastCamp`; the quest `RM_NavigatorLastCamp` in
+  `Defs/Misc/RM_NavigatorLog.xml`.
 - `src/RimMandrake/TheRot/Defs/ThingDefs_Buildings/RM_LivingMatRoot.xml`: the building and its `CompRefuelable`.
 - Settings fields, UI and Scribe lines in `RM_TheRotMod.cs`. Functional-script rows in `TheRot/validation.py`
-  (a `living_mat_root` chain plus static checks), and must-be-true lines in
+  (a `living_mat_root` chain plus static checks; `mat_root_checks` with six planted defects under `--planted`; the
+  mock plants `nobudcap`, `nobud`, `noreward`), and must-be-true lines in
   `design/validation_walks/RimMandrake/TheRot.md`.
-
-**Not built: any way to obtain it.** Open question 1 decides that. Until then it exists only through dev spawn,
-which is enough for the live criteria.
 
 ## Live criteria owed
 
@@ -140,36 +188,9 @@ which is enough for the live criteria.
   (UNMEASURED: whether Odyssey carries a top-layer floor laid over substructure. The engine stores foundation
   and top terrain separately, `TerrainGrid.foundationGrid` and `topGrid`, but whether launch copies the top
   layer has not been observed.)
-- L4: the owner plays a cold-biome stop with it: does it "help a lot"?
-
-## Open questions for the owner
-
-1. **How is it won?**
-   1. **Found growing in the Rot**: a few roots stand wild on every Rot map, and you dig one up and fly it home.
-      Buys: the simplest route; it fits "naturally occurs in the Rot". Costs: wrong if your "not" was literal.
-   2. **A quest reward**: a faction (or the navigator-log salvage site) gives a root once a quest is done.
-      Buys: it is a real reward, and it fits the literal "not naturally". Costs: a quest has to be written.
-   3. **Cut from the hwelgrue's gut**, like the drive core. Buys: it reuses a reward route that already exists.
-      Costs: it piles a second prize on the one giant.
-
-   **Recommended: 1**, if your sentence meant "only naturally occurs in the Rot". **Otherwise 2.**
-2. **What does it eat?**
-   1. **Raw food only** (meat, vegetables, eggs, milk). Buys: a simple rule, and a real food cost. Costs: it
-      competes with the kitchen.
-   2. **Raw food and corpses**. Buys: it fits a fungus, and it gives corpses a use. Costs: the refuel work hauls
-      corpses into a bedroom.
-   3. **Rot produce only** (glimmerslime, dulcis). Buys: it ties the root to the Rot. Costs: off the Rot it
-      starves once the hold runs dry.
-
-   **Recommended: 1**, which is built.
-3. **Can players cultivate more roots?**
-   1. **No: one root per prize.** Buys: it stays a reward. Costs: none.
-   2. **A well-fed root buds a second one now and then.** Buys: a long-term goal. Costs: free heat multiplies.
-
-   **Recommended: 1**, which is built.
-4. **Dedicated art?** The root is currently drawn as a square of the mat texture.
-   1. **Keep the mat square.** Buys: no cost. Costs: it reads as a floor tile, not as an object.
-   2. **Queue a sprite** (a knotted, pulsing root in the mat). Buys: it reads as a prize. Costs: an art run.
-      This is a cosmetic change, so it needs your permission.
-
-   **Recommended: 2.**
+- L2: on a non-Rot quicktest map, `ProofBud 8` fills the map to the cap and never past it.
+- L2: `RM_NavigatorLogProof.ProofLastCamp` generates `RM_NavigatorLastCamp`, and its site's stash holds a minified
+  root. Visiting the site puts the root in the cache's stockpile (UNMEASURED: a minified building through
+  `GenStep_ItemStash`'s stockpile has not been observed).
+- L4: the owner plays a cold-biome stop with it: does it "help a lot"? With two or three budded roots, does it still
+  not trivialise?

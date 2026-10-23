@@ -2,10 +2,11 @@
 <!--
   ROT_WARM_MAT_BUILD_WORKS_FOR_FOOD. The Rot's warm mat, portable: a root of living mat that works anywhere, gravship
   included (owner ruling 2026-10-22, card write-in). Spec: design/RimMandrake/rot_warm_mat_portable_2026-10-22.md.
-  Mechanism: Source/RM_LivingMatRoot.cs. No designator and no cost: it is a reward, never built. How it is won is
-  owner open question 1 (spec); until then dev spawn only.
-  Art: REUSES the mat's own terrain texture (RotSporeKit/Terrains/MycelialMatting) drawn 1x1 - a square of the mat.
-  A dedicated sprite is a cosmetic change and waits on the owner (spec open question 4).
+  Mechanism: Source/RM_LivingMatRoot.cs. No designator and no cost: it is a reward, never built. Owner by card
+  2026-10-22: won as a QUEST REWARD (RM_NavigatorLastCamp, Defs/Misc/RM_NavigatorLog.xml), eats raw food, and a
+  well-fed root buds a second one now and then (capped per map, Mod Settings).
+  Art: owner 2026-10-22, "It is a floor tile. A living floor tile." The mat's own terrain texture
+  (RotSporeKit/Terrains/MycelialMatting) drawn 1x1 IS the art; no sprite is queued.
   Numbers marked PROVISIONAL are first-guess tuning (FOUNDRY provisional-numbers rule, 2026-10-03).
 -->
 <Defs>
@@ -13,7 +14,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RM_LivingMatRoot</defName>
     <label>living mat root</label>
-    <description>A knot of the Rot's living mat, cut with its root-heart still beating. Set down anywhere - on a gravship's deck as well as on the ground - and fed raw food, it creeps out across the bare floor around it, and a room mostly floored in its mat stays warmer than the cold outside, though never above 21 °C. It will not grow past a few strides from the root, and it never climbs onto a floor someone built. Starved, it goes cold at once, and after a couple of days the mat it grew dies back to bare ground. In the Rot it needs nothing: it joins the living ground's network and the ground feeds it.</description>
+    <description>A knot of the Rot's living mat, cut with its root-heart still beating. Set down anywhere - on a gravship's deck as well as on the ground - and fed raw food, it creeps out across the bare floor around it, and a room mostly floored in its mat stays warmer than the cold outside, though never above 21 °C. It will not grow past a few strides from the root, and it never climbs onto a floor someone built. Starved, it goes cold at once, and after a couple of days the mat it grew dies back to bare ground. In the Rot it needs nothing: it joins the living ground's network and the ground feeds it. Kept well fed for long enough, it now and then buds a second root in its own mat.</description>
     <graphicData>
       <texPath>RotSporeKit/Terrains/MycelialMatting</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -78,6 +79,9 @@
         <spreadMinFuelPercent>0.5</spreadMinFuelPercent>  <!-- PROVISIONAL -->
         <starveGraceTicks>120000</starveGraceTicks>  <!-- PROVISIONAL: two days -->
         <dieBackIntervalTicks>5000</dieBackIntervalTicks>  <!-- PROVISIONAL: one cell per two hours -->
+        <budWellFedPercent>0.8</budWellFedPercent>  <!-- PROVISIONAL: "well fed" = at least 80% of the gauge, every sweep of the interval -->
+        <budCost>10</budCost>  <!-- PROVISIONAL: food the parent pays and the bud starts with -->
+        <budMinSpacing>2</budMinSpacing>  <!-- PROVISIONAL: a bud sprouts at least 2 cells from every root (3 would fit no bud in a 5x5 room) -->
       </li>
     </comps>
     <tradeability>None</tradeability>

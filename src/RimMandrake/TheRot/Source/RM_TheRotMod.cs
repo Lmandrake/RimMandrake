@@ -87,6 +87,11 @@ namespace RimMandrake.TheRot
         public static float portableWarmMatAppetite = 1f;
         public static bool portableWarmMatSpread = true;
         public static bool portableWarmMatDieBack = true;
+        // Budding (owner by card 2026-10-22: "A well-fed root buds a second one now and then"). PROVISIONAL tuning.
+        public static bool portableWarmMatBudding = true;
+        public static float portableWarmMatBudDays = 15f;
+        public static float portableWarmMatBudChance = 0.5f;
+        public static int portableWarmMatBudCap = 3;
 
         public static bool crossBiomeEnabled = false;
         public static bool crossBiomeEverywhere = false;
@@ -144,6 +149,10 @@ namespace RimMandrake.TheRot
             Scribe_Values.Look(ref portableWarmMatAppetite, "portableWarmMatAppetite", 1f);
             Scribe_Values.Look(ref portableWarmMatSpread, "portableWarmMatSpread", true);
             Scribe_Values.Look(ref portableWarmMatDieBack, "portableWarmMatDieBack", true);
+            Scribe_Values.Look(ref portableWarmMatBudding, "portableWarmMatBudding", true);
+            Scribe_Values.Look(ref portableWarmMatBudDays, "portableWarmMatBudDays", 15f);
+            Scribe_Values.Look(ref portableWarmMatBudChance, "portableWarmMatBudChance", 0.5f);
+            Scribe_Values.Look(ref portableWarmMatBudCap, "portableWarmMatBudCap", 3);
             Scribe_Values.Look(ref crossBiomeEnabled, "crossBiomeEnabled", false);
             Scribe_Values.Look(ref crossBiomeEverywhere, "crossBiomeEverywhere", false);
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
@@ -348,7 +357,7 @@ namespace RimMandrake.TheRot
                 list.GapLine();
             }
 
-            if (Group(list, "Ship: the portable warm mat", RimMandrake.Shared.SettingScope.Now, new[] { "portableWarmMat", "portableWarmMatWarmth", "portableWarmMatAppetite", "portableWarmMatSpread", "portableWarmMatDieBack" }))
+            if (Group(list, "Ship: the portable warm mat", RimMandrake.Shared.SettingScope.Now, new[] { "portableWarmMat", "portableWarmMatWarmth", "portableWarmMatAppetite", "portableWarmMatSpread", "portableWarmMatDieBack", "portableWarmMatBudding", "portableWarmMatBudDays", "portableWarmMatBudChance", "portableWarmMatBudCap" }))
             {
                 list.CheckboxLabeled("Living mat root works anywhere", ref portableWarmMat,
                     "A root of the Rot's living mat, installable anywhere (gravship included). Fed raw food, it grows mat "
@@ -362,6 +371,16 @@ namespace RimMandrake.TheRot
                     "Off: the root keeps the mat it has and never grows more.");
                 list.CheckboxLabeled("  Starved root's mat dies back", ref portableWarmMatDieBack,
                     "Off: a starving root still stops heating, but the mat it grew never dies back.");
+                list.CheckboxLabeled("  Well-fed root buds a new root", ref portableWarmMatBudding,
+                    "A root kept at least 80% fed (or set down in the Rot) for the interval below rolls the chance below; on a hit "
+                  + "a second root sprouts on its mat. Budding costs food off the Rot. A map never holds more roots than the cap "
+                  + "(installed and uninstalled both count). Off: roots never bud.");
+                list.Label("  Days well fed between bud rolls: " + portableWarmMatBudDays.ToString("0") + "  [PROVISIONAL tuning]");
+                portableWarmMatBudDays = Mathf.Round(list.Slider(portableWarmMatBudDays, 3f, 60f));
+                list.Label("  Chance a roll buds: " + portableWarmMatBudChance.ToStringPercent() + "  [PROVISIONAL tuning]");
+                portableWarmMatBudChance = list.Slider(portableWarmMatBudChance, 0.05f, 1f);
+                list.Label("  Most roots on one map: " + portableWarmMatBudCap);
+                portableWarmMatBudCap = Mathf.RoundToInt(list.Slider(portableWarmMatBudCap, 1f, 6f));
                 list.GapLine();
             }
 

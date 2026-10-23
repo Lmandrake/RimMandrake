@@ -671,7 +671,15 @@ namespace RimMandrake.TheRot.Fuzz
             public int sinceDieBack = -1;         // ticks since the last die-back (-1: none since the last feeding)
             public const int Sweep = 250, Interval = 2500, Grace = 120000, DieBack = 5000;
             public const float Upkeep = 3f, MinPct = 0.5f;
+            // budding (owner by card 2026-10-22): the reference clock, the roots on the map and the map's cap
+            public bool budOn = true;
+            public int sinceWellFed, roots = 1, cap = 3;
+            public float budChance = 0.5f;
+            public const int BudInterval = 15000;
+            public const float WellFedPct = 0.8f, BudCost = 10f;
         }
+
+        private static float BudCostFor(MatWorld w) { return MatWorld.BudCost * Math.Max(0f, w.appetite); }
 
         private static void MatStep(MatWorld w, Act a)
         {
@@ -712,8 +720,37 @@ namespace RimMandrake.TheRot.Fuzz
                     }
                     else if (w.sinceDieBack >= 0) w.sinceDieBack += MatWorld.Sweep;
                     if (w.fuel <= 0f && !w.inRot) Check(!d.fed, "fed with an empty gauge off the Rot");
+                    // the bud clock, after this sweep's meal (as RM_CompLivingMatRoot.DoSweep calls it)
+                    bool budHurry = a.c % 20 == 1;
+                    float roll = ((a.a * 100 + a.b) % 1000) / 1000f, cost = BudCostFor(w);
+                    bool wellFed = w.inRot || w.fuel / w.fuelMax >= MatWorld.WellFedPct;
+                    int rootsBefore = w.roots;
+                    bool bud = RM_TheRotKernel.MatBudStep(ref w.s.wellFedTicks, MatWorld.Sweep, budHurry, w.budOn, w.inRot, w.fuel, w.fuelMax,
+                        MatWorld.WellFedPct, MatWorld.BudInterval, w.budChance, roll, w.roots, w.cap, cost);
+                    if (!w.budOn || !wellFed) { w.sinceWellFed = 0; Check(w.s.wellFedTicks == 0, "a root under the well-fed bar (or budding off) kept a bud clock"); }
+                    else
+                    {
+                        w.sinceWellFed += MatWorld.Sweep;
+                        bool due = budHurry || w.sinceWellFed >= MatWorld.BudInterval;
+                        if (due) { Check(w.s.wellFedTicks == 0, "the bud clock did not restart after a roll"); w.sinceWellFed = 0; }
+                        else Check(w.s.wellFedTicks == w.sinceWellFed, "bud clock " + w.s.wellFedTicks + " != " + w.sinceWellFed);
+                        bool want = due && (budHurry || roll < w.budChance) && w.roots < w.cap && (w.inRot || w.fuel >= cost);
+                        Check(bud == want, "bud=" + bud + " want " + want + " (roll " + F(roll) + " chance " + F(w.budChance) + " roots " + w.roots + "/" + w.cap + ")");
+                        if (due && rootsBefore >= w.cap) Hit("mat.budCapped");
+                    }
+                    if (bud)
+                    {
+                        Check(w.budOn && wellFed, "budded while budding was off or the root was not well fed");
+                        Check(rootsBefore < w.cap, "budded past the map's cap: " + rootsBefore + "/" + w.cap);
+                        Check(budHurry || roll < w.budChance, "budded on a missed roll");
+                        if (!w.inRot) { Check(w.fuel >= cost, "budded without the food to pay"); w.fuel -= cost; }
+                        w.roots++; Hit("mat.bud");
+                    }
+                    Check(w.roots <= Math.Max(w.cap, rootsBefore), "roots " + w.roots + " over the cap " + w.cap);
                     break;
                 }
+                case 6: w.roots = Math.Max(1, w.roots - 1); break;                              // a root carried off the map
+                case 7: w.budOn = a.a % 4 != 0; w.budChance = new[] { 0f, 0.05f, 0.5f, 1f }[a.b % 4]; w.cap = 1 + a.c % 6; break;
                 case 1: w.fuel = Math.Min(w.fuelMax, w.fuel + a.a % 31); break;                 // a hauler tops it up
                 case 2: w.inRot = !w.inRot; break;                                               // flown into / out of the Rot
                 case 3: w.spreadOn = a.a % 3 != 0; w.dieBackOn = a.b % 3 != 0; break;            // settings
@@ -750,7 +787,7 @@ namespace RimMandrake.TheRot.Fuzz
                 ("core", () => RunFamily("core", N(3000), S(1), 30011, new[] { "Spawn", "Claim", "Die", "Tame", "Engine", "Pings", "ShipHit", "CampaignTile", "Drop", "SpendNoCarrier", "Leave", "DieOffMap", "Return", "FreshClaim" }, new[] { 6, 8, 2, 1, 2, 6, 3, 1, 2, 1, 2, 1, 1, 2 }, 100, seed => new CoreWorld(), CoreStep, 200, 100, 100)),
                 ("log", () => RunFamily("log", N(3000), S(1), 15485863, new[] { "Ping", "CarrierDies", "PerEntry" }, new[] { 20, 1, 1 }, 80, seed => new LogWorld(), LogStep, 10, 10, 10)),
                 ("unjoin", () => RunFamily("unjoin", N(2000), S(1), 32452843, new[] { "Sort" }, new[] { 1 }, 20, seed => (object)null, UnjoinStep, 16, 10, 10)),
-                ("mat", () => RunFamily("mat", N(3000), S(1), 49979687, new[] { "Sweep", "Feed", "Rot", "Settings", "Appetite", "Heat" }, new[] { 40, 3, 1, 1, 1, 4 }, 900, seed => new MatWorld(), MatStep, 100, 100, 100)),
+                ("mat", () => RunFamily("mat", N(3000), S(1), 49979687, new[] { "Sweep", "Feed", "Rot", "Settings", "Appetite", "Heat", "Uproot", "BudSettings" }, new[] { 40, 3, 1, 1, 1, 4, 1, 1 }, 900, seed => new MatWorld(), MatStep, 100, 100, 100)),
                 ("units", () => Units(N(1000), S(1))),
             };
             foreach (var f in fam)
@@ -767,7 +804,7 @@ namespace RimMandrake.TheRot.Fuzz
             if (only == null && !oneSeed.HasValue && scale >= 1)
             {
                 string[] mustSee = { "gut.casting", "gut.overCap", "swallow.begin", "swallow.finish", "swallow.knock", "swallow.release", "swallow.stranger", "vat.accepted", "vat.finished", "vat.dormant", "vat.split",
-                    "core.claimed", "core.carrierDied", "core.ping", "core.engineAppeared", "core.released", "core.reclaimed", "core.carrierLeft", "core.carrierDiedOffMap", "core.staleDemoted", "log.entry", "log.site", "log.cutLetter", "unjoin.removed", "unjoin.husk", "mat.spread", "mat.starving", "mat.dieBack", "mat.rotFree", "mat.heat" };
+                    "core.claimed", "core.carrierDied", "core.ping", "core.engineAppeared", "core.released", "core.reclaimed", "core.carrierLeft", "core.carrierDiedOffMap", "core.staleDemoted", "log.entry", "log.site", "log.cutLetter", "unjoin.removed", "unjoin.husk", "mat.spread", "mat.starving", "mat.dieBack", "mat.rotFree", "mat.heat", "mat.bud", "mat.budCapped" };
                 var missing = mustSee.Where(k => !Stats.ContainsKey(k)).ToList();
                 Console.WriteLine("coverage: " + string.Join(" ", mustSee.Select(k => k + "=" + (Stats.TryGetValue(k, out long v) ? v : 0))));
                 if (missing.Count > 0) { Console.WriteLine("FAIL the fuzz never reached: " + string.Join(", ", missing)); ok = false; }

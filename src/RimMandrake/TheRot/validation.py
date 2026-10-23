@@ -21,7 +21,9 @@ CHAINS
                      destroyed before any tick, against a non-flier control; the flip-book cycle is UNMEASURED (flight is
                      seen only with the owner present).
   living_mat_root    ROT_WARM_MAT_BUILD_WORKS_FOR_FOOD: a fed root spreads and eats, its room warms toward
-                     min(outdoor+18, 21 C) and never past 21, a starved root dies back (RM_LivingMatRootProof).
+                     min(outdoor+18, 21 C) and never past 21, a starved root dies back, a well-fed root buds up to the
+                     map's cap and never past it (RM_LivingMatRootProof), and the last-camp quest's stash holds a minified
+                     root (RM_NavigatorLogProof.ProofLastCamp).
   wound_link         ROT_WOUNDLINK_FIX_DROPPED_AT_THE_DOOR A2/A3: RM_Chittik (and RM_Durrok/RM_Mullgoth, when
                      mandrake.rsw.swbestiary loads) carry CompProperties_WoundLink live, a control reads notFound; a Cut
                      on one chittik's carapace mirrors to kin 2 cells away with woundLinkEnabled ON and not with it OFF.
@@ -40,9 +42,14 @@ STATIC (also): core_reclaim_checks -- ROTCORE_RECLAIM_FIX_FINDERS_KEEPERS (owner
                      campaign-tile rule and the core's integrity on a re-claim, drops no second core; the fuzz no longer pins
                      "the carrier never changes"; --planted turns it red on six planted defects.
 
+STATIC (also): mat_root_checks -- ROT_WARM_MAT_BUILD_WORKS_FOR_FOOD (owner by card 2026-10-22): budding is wired to the
+                     kernel's MatBudStep with the cap counting minified roots, the 21 C cap stays a def constant, the root
+                     keeps the mat-square art (no new texPath), and the log's last site entry reveals RM_NavigatorLastCamp,
+                     whose stash node adds RM_LivingMatRoot; --planted turns it red on six planted defects.
+
 STATIC: `python3 validation.py` -> `STATIC: PASS (0 findings)`; needs no game. Nothing here has been run live.
 MOCK:   `python3 validation.py --mock` -> runs wound_link, dustveil and living_mat_root against a fake game, clean and
-        with 12 planted defects (MOCK_EXPECT); each defect must turn ITS row FAIL, or UNMEASURED when it blinds the
+        with 15 planted defects (MOCK_EXPECT); each defect must turn ITS row FAIL, or UNMEASURED when it blinds the
         instrument (control reads present, clock running, wrong map).
 """
 import fnmatch
@@ -262,6 +269,7 @@ def static_checks():
     bad += ambrosyx_checks()
     bad += dustveil_checks()
     bad += core_reclaim_checks()
+    bad += mat_root_checks()
     # Phase 0: RM_SwarmlingImplantation's donor comps (AlphaBehavioursAndEvents TurnWhenDead + RemoveFromMechsAndGhouls)
     # are ours now. A donor Class here fails def load with the donor off and takes the hediff (and the Chittik bite) with it.
     ck = open(os.path.join(HERE, "Defs", "Fauna", "RM_Chittik.xml"), encoding="utf-8").read()
@@ -494,6 +502,68 @@ def core_reclaim_checks(cs=None, fuzz=None):
         if need not in fuzz:
             bad.append("TheRotFuzz.cs core family lacks %s (a carrier leaving the world is not exercised)" % need)
     return bad
+
+
+MATROOT_FILE = os.path.join(HERE, "Source", "RM_LivingMatRoot.cs")
+MATROOT_XML = os.path.join(HERE, "Defs", "ThingDefs_Buildings", "RM_LivingMatRoot.xml")
+NAVLOG_FILE = os.path.join(HERE, "Source", "RM_NavigatorLog.cs")
+NAVLOG_XML = os.path.join(HERE, "Defs", "Misc", "RM_NavigatorLog.xml")
+KERNEL_FILE = os.path.join(HERE, "Source", "RM_TheRotKernel.cs")
+
+
+def mat_root_checks(cs=None, xml=None, navcs=None, navxml=None, kernel=None):
+    """ROT_WARM_MAT_BUILD_WORKS_FOR_FOOD, owner by card 2026-10-22 ("quest reward, raw food, buds, keep floor-tile art"), offline.
+    Texts may be passed in to plant a defect."""
+    rd = lambda p: open(p, encoding="utf-8").read()
+    cs = cs if cs is not None else rd(MATROOT_FILE)
+    xml = re.sub(r"<!--.*?-->", "", xml if xml is not None else rd(MATROOT_XML), flags=re.S)
+    navcs = navcs if navcs is not None else rd(NAVLOG_FILE)
+    navxml = re.sub(r"<!--.*?-->", "", navxml if navxml is not None else rd(NAVLOG_XML), flags=re.S)
+    kernel = kernel if kernel is not None else rd(KERNEL_FILE)
+    bad = []
+    # budding: the kernel decides, the comp counts installed AND minified roots against the settings cap
+    if "RM_TheRotKernel.MatBudStep(" not in cs or "RM_TheRotSettings.portableWarmMatBudCap" not in cs:
+        bad.append("RM_LivingMatRoot.cs: budding is not wired to RM_TheRotKernel.MatBudStep and the portableWarmMatBudCap setting")
+    if not re.search(r"ThingRequestGroup\.MinifiedThing[\s\S]{0,200}InnerThing\?\.def == def", cs):
+        bad.append("RM_LivingMatRoot.cs: the bud cap does not count minified roots (uninstall-and-bud would multiply without bound)")
+    if "if (rootsOnMap >= cap) return false;" not in kernel:
+        bad.append("RM_TheRotKernel.MatBudStep lost its hard cap")
+    # the heat ruling stays: a def constant, never a setting
+    if "<maxRoomTemperature>21</maxRoomTemperature>" not in xml or "maxRoomTemperature" in rd(os.path.join(HERE, "Source", "RM_TheRotMod.cs")):
+        bad.append("the 21 C cap must stay RM_LivingMatRoot.xml's constant and never become a Mod Setting")
+    # art: "It is a floor tile. A living floor tile." -- the mat texture, nothing new
+    tex = re.findall(r"<texPath>([^<]+)</texPath>", xml)
+    if tex != ["RotSporeKit/Terrains/MycelialMatting"]:
+        bad.append("RM_LivingMatRoot's art must stay the mat-square texture RotSporeKit/Terrains/MycelialMatting (owner 2026-10-22), found %s" % tex)
+    # obtained as a quest reward: the log's last site entry reveals the last camp, whose stash node adds the root
+    m = re.search(r"<lastCampEntry>(\d+)</lastCampEntry>", navxml)
+    sites = re.search(r"<siteEntries>([\s\S]*?)</siteEntries>", navxml)
+    site_n = [int(x) for x in re.findall(r"<li>(\d+)</li>", sites.group(1))] if sites else []
+    if not m or not site_n or int(m.group(1)) != max(site_n) or "<lastCampQuest>RM_NavigatorLastCamp</lastCampQuest>" not in navxml:
+        bad.append("RM_NavigatorLog must name lastCampEntry = its last siteEntry and lastCampQuest RM_NavigatorLastCamp")
+    camp = re.search(r"<defName>RM_NavigatorLastCamp</defName>([\s\S]*?)</QuestScriptDef>", navxml)
+    body = camp.group(1) if camp else ""
+    if not re.search(r'Class="RimMandrake\.TheRot\.RM_QuestNode_AddMinifiedToStash">\s*<thingDef>RM_LivingMatRoot</thingDef>', body):
+        bad.append("RM_NavigatorLastCamp does not add RM_LivingMatRoot to its stash")
+    elif body.find("RM_QuestNode_AddMinifiedToStash") > body.find("QuestNode_AddItemsReward") or body.find("RM_QuestNode_AddMinifiedToStash") < body.find("Util_GenerateSite"):
+        bad.append("RM_NavigatorLastCamp: the root must be added after Util_GenerateSite and before QuestNode_AddItemsReward")
+    if "TryRevealSite(w, def, map, SiteScriptFor(def, n))" not in navcs or "entry == def.lastCampEntry" not in navcs:
+        bad.append("RM_NavigatorLog.cs: ReadEntry does not reveal the last camp for lastCampEntry (the quest would never fire)")
+    return bad
+
+
+def planted_mat_root():
+    """[(name, red?)]: each planted defect must turn mat_root_checks red; 'mat clean' must be green."""
+    rd = lambda p: open(p, encoding="utf-8").read()
+    cs, xml, navcs, navxml, k = rd(MATROOT_FILE), rd(MATROOT_XML), rd(NAVLOG_FILE), rd(NAVLOG_XML), rd(KERNEL_FILE)
+    out = [("mat clean", not mat_root_checks(cs, xml, navcs, navxml, k))]
+    out.append(("mat cap gone", bool(mat_root_checks(cs, xml, navcs, navxml, k.replace("if (rootsOnMap >= cap) return false;", "", 1)))))
+    out.append(("mat minified free", bool(mat_root_checks(cs.replace("ThingRequestGroup.MinifiedThing", "ThingRequestGroup.Nothing", 1), xml, navcs, navxml, k))))
+    out.append(("mat new sprite", bool(mat_root_checks(cs, xml.replace("<texPath>RotSporeKit/Terrains/MycelialMatting</texPath>", "<texPath>TheRot/Things/LivingMatRoot</texPath>", 1), navcs, navxml, k))))
+    out.append(("mat no reward", bool(mat_root_checks(cs, xml, navcs, navxml.replace("<thingDef>RM_LivingMatRoot</thingDef>", "<thingDef>RM_SwallowedDriveCore</thingDef>", 1), k))))
+    out.append(("mat camp unfired", bool(mat_root_checks(cs, xml, navcs.replace("SiteScriptFor(def, n)", "null", 1), navxml, k))))
+    out.append(("mat camp not last", bool(mat_root_checks(cs, xml, navcs, navxml.replace("<lastCampEntry>8</lastCampEntry>", "<lastCampEntry>2</lastCampEntry>", 1), k))))
+    return out
 
 
 def planted_core_reclaim():
@@ -1002,6 +1072,27 @@ def _build_suite():
                     raise ExpectationFailed("unreadable ProofSweeps: %s" % text)
                 if not (grown[0] - grown[1] == 3 and "starving" in text):
                     raise ExpectationFailed("3 starved sweeps did not uncover 3 grown cells: %s" % text)
+        with t.component("well_fed_root_buds_to_cap", toggle="portableWarmMatBudding"):
+            text = _mr("ProofBud", "8")
+            if _live(t):
+                roots = _num(text, r"roots (\d+)->(\d+)")
+                cap = _num(text, r"cap (\d+)")
+                if not roots or not cap:
+                    raise ExpectationFailed("unreadable ProofBud: %s" % text)
+                if roots[1] > max(cap[0], roots[0]):
+                    raise ExpectationFailed("budding took the map past its cap: %s" % text)
+                if roots[0] < cap[0] and roots[1] != cap[0]:
+                    raise ExpectationFailed("8 well-fed, hurried bud sweeps did not fill the map to its cap: %s" % text)
+                if roots[0] >= cap[0]:
+                    _unmeasured(t, "the map already held its cap of roots before budding: %s" % text)
+        with t.component("quest_reward_holds_the_root", toggle="portableWarmMat"):
+            r = t.bridge_call("jawa/static_call", type="RimMandrake.TheRot.RM_NavigatorLogProof", method="ProofLastCamp")
+            text = str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+            if _live(t):
+                if text.startswith("REFUSED"):
+                    _unmeasured(t, "ProofLastCamp could not generate the quest here: %s" % text)
+                elif not ("quest RM_NavigatorLastCamp" in text and "site True" in text and "root True" in text):
+                    raise ExpectationFailed("the last-camp quest's stash does not hold a living mat root: %s" % text)
         with t.component("rot_root_eats_nothing", toggle="portableWarmMat"):
             if _live(t):
                 _unmeasured(t, "needs an RM_TheRot map; first poke: ProofStage then ProofSweeps 5|fed there, food must not move")
@@ -1155,7 +1246,8 @@ class _MockRotSession(object):
     (get_defs control reads present), nobestiary (Durrok/Mullgoth absent), grounded (moth canEverFly false),
     ctrlflies (the non-flier control reads true), ticking (the clock runs while the moth is spawned), nospread
     (5 fed sweeps lay 4 cells), hot (the mat room passes 21 C), nodieback (a starved root keeps its cells),
-    rotmap (staged on an RM_TheRot map)."""
+    rotmap (staged on an RM_TheRot map), nobudcap (budding passes the cap), nobud (a well-fed root never buds),
+    noreward (the last-camp stash lacks the root)."""
 
     def __init__(self, broken=None):
         self.broken, self.calls, self.ticks, self.n = broken, [], 1000, 0
@@ -1225,10 +1317,16 @@ class _MockRotSession(object):
             fly = p is not None and ((p["kind"] == "RM_Dustveil" and b != "grounded") or b == "ctrlflies")
             return {"success": True, "pawns": [{"id": kw.get("pawn"), "hasTracker": True, "canEverFly": fly,
                                                 "flying": False, "flightState": "Grounded", "maxFlightTimeStat": 6 if fly else 0}]}
+        if tool == "jawa/static_call" and kw.get("type") == "RimMandrake.TheRot.RM_NavigatorLogProof" and kw.get("method") == "ProofLastCamp":
+            return {"success": True, "result": "CAMP quest RM_NavigatorLastCamp | site True | stash 4 | root %s" % (b != "noreward")}
         if tool == "jawa/static_call" and kw.get("type") == "RimMandrake.TheRot.RM_LivingMatRootProof":
             m, a = kw.get("method"), (kw.get("args") or "").split("|")
             if m == "ProofStage":
                 return {"success": True, "result": "STAGED at 50,50 | rot %s | food 10.0" % (b == "rotmap")}
+            if m == "ProofBud":
+                after = 1 if b == "nobud" else (5 if b == "nobudcap" else 3)
+                return {"success": True, "result": "BUD roots 1->%d | cap 3 | budded %d | food 20.00 | well fed: next bud roll in 15 days"
+                        % (after, after - 1)}
             n, fed = int(a[0]), a[1] == "fed"
             g0, r0 = self.grown, self.room
             if fed:
@@ -1251,7 +1349,8 @@ MOCK_EXPECT = {
            "dustveil/flight_stat_live": "PASS", "dustveil/silk_defs_live": "PASS",
            "dustveil/flight_tracker_state_read": "PASS", "dustveil/flip_book_frames_cycle": "UNMEASURED",
            "living_mat_root/fed_root_spreads_and_eats": "PASS", "living_mat_root/mat_room_warms_to_cap": "PASS",
-           "living_mat_root/starved_root_dies_back": "PASS", "living_mat_root/rot_root_eats_nothing": "UNMEASURED"},
+           "living_mat_root/starved_root_dies_back": "PASS", "living_mat_root/well_fed_root_buds_to_cap": "PASS",
+           "living_mat_root/quest_reward_holds_the_root": "PASS", "living_mat_root/rot_root_eats_nothing": "UNMEASURED"},
     "nocomp": {"wound_link/chittik_carries_wound_link": "FAIL"},
     "noshare": {"wound_link/chittik_carries_wound_link": "PASS", "wound_link/wound_shared_with_kin_when_on": "FAIL"},
     "offleaks": {"wound_link/wound_shared_with_kin_when_on": "PASS", "wound_link/no_share_when_off": "FAIL"},
@@ -1264,6 +1363,9 @@ MOCK_EXPECT = {
     "hot": {"living_mat_root/fed_root_spreads_and_eats": "PASS", "living_mat_root/mat_room_warms_to_cap": "FAIL"},
     "nodieback": {"living_mat_root/mat_room_warms_to_cap": "PASS", "living_mat_root/starved_root_dies_back": "FAIL"},
     "rotmap": {"living_mat_root/fed_root_spreads_and_eats": "UNMEASURED"},
+    "nobudcap": {"living_mat_root/starved_root_dies_back": "PASS", "living_mat_root/well_fed_root_buds_to_cap": "FAIL"},
+    "nobud": {"living_mat_root/starved_root_dies_back": "PASS", "living_mat_root/well_fed_root_buds_to_cap": "FAIL"},
+    "noreward": {"living_mat_root/well_fed_root_buds_to_cap": "PASS", "living_mat_root/quest_reward_holds_the_root": "FAIL"},
 }
 MOCK_CHAINS = ("wound_link", "dustveil", "living_mat_root")
 
@@ -1305,9 +1407,9 @@ if __name__ == "__main__":
         sys.path.insert(0, os.path.join(HERE, "..", "Utils", "modcheck"))
         sys.exit(mock_run())
     if "--planted" in sys.argv:
-        res = planted_ambrosyx() + planted_dustveil() + planted_core_reclaim()
+        res = planted_ambrosyx() + planted_dustveil() + planted_core_reclaim() + planted_mat_root()
         for name, ok in res:
-            print("PLANTED %-16s %s" % (name, "RED as expected" if ok and name not in ("clean", "dv clean", "core clean") else ("GREEN" if ok else "MISSED")))
+            print("PLANTED %-16s %s" % (name, "RED as expected" if ok and name not in ("clean", "dv clean", "core clean", "mat clean") else ("GREEN" if ok else "MISSED")))
         sys.exit(0 if all(ok for _n, ok in res) else 1)
     problems = static_checks()
     print("STATIC: %s" % ("PASS (0 findings)" if not problems else "FAIL"))
