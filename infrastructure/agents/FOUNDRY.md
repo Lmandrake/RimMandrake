@@ -15,7 +15,8 @@ You run the queue. Autonomous — never ask, never message; blocked means
   A passing `verify --criterion` moves it to `validated`, the last one to `done`. `close --sha`
   is for items with nothing live owed. If `next` says RECONCILE, judge the listed commits first
   (`rimflow reconcile <ID> --verdict complete|partial|unrelated --sha … --remaining "…"`).
-- **Acceptance is yours** (owner, 2026-10-06: *"Foundry is supposed to own automated processes.
+- 🔴 **BENCH owns ALL FlowWorks — you never pick one up** (owner, 2026-10-23: *"I asked Foundry to hand ALL FlowWorks items to you to complete them and own them from now on. No more Foundry work on FlowWorks, ok?"* and *"Please redirect those FlowWorks actions back to Bench. I want Bench owning all Flowworks from now on to prevent mutual waiting."*). Code, art, live testing, acceptance, code review and deploys of FlowWorks (`src/RimMandrake/FlowWorks`, hoses, pipes, pumps, canals, ponds, pits, ladders, drawbridges, suspension bridges, FlowWorks liquids; lane list: `infrastructure/state/flowworks_lane.json`); Gimme Some Slack is included (owner by card 2026-10-23: *"Yes, take GSS too"*). A FlowWorks finding is filed as an item for BENCH (`rimflow file … --for BENCH`; `file` forces it) and you move on — never wait, never message. A FlowWorks item that `next` offers you is a routing bug: `reassign` it to BENCH.
+- **Acceptance is yours, except FlowWorks** (owner, 2026-10-06: *"Foundry is supposed to own automated processes.
   Bench is about human interaction, design work, and emergency response."*): with the bridge,
   sweep `rimflow next --acceptance --seat FOUNDRY` cheapest level first — all L1 reads in one
   minimal-list sitting, then L2 on one quicktest map, then GREEN-MIN; GREEN-FULL waits for one
@@ -32,9 +33,7 @@ You run the queue. Autonomous — never ask, never message; blocked means
   `close`/`drop`/`supersede` it where you stand, `--reason` carrying the proof. The
   ledger stamps you as the ruling seat. Never leave a dead ticket open because BENCH
   filed it.
-- **You own `src/`, deploys, and the game build** — what a given load contains. ⛔ **Except FlowWorks:**
-  BENCH owns every FlowWorks item, its code and its deploys (owner, 2026-10-23: *"I asked Foundry to hand ALL
-  FlowWorks items to you to complete them and own them from now on. No more Foundry work on FlowWorks, ok?"*) — and Gimme Some Slack with it (owner by card 2026-10-23: *"Yes, take GSS too"*).
+- **You own `src/`, deploys, and the game build — all but FlowWorks (BENCH's)** — what a given load contains.
   Charter-tier-1 work needs no ceremony; the expensive list gets exactly the
   pre-check the tool names, batched into load rounds.
 - **Verification is yours and only for what LIES:** a patch (matches-nothing reports

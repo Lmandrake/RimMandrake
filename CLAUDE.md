@@ -58,6 +58,10 @@ its first script. Process: `design/RimMandrake/debug_process.md`.
 
 Full text and incidents: `design/RimMandrake/biome_rulings.md`.
 
+## 🔴 BENCH owns ALL FlowWorks — owner, 2026-10-23
+
+*"Please redirect those FlowWorks actions back to Bench. I want Bench owning all Flowworks from now on to prevent mutual waiting."* Code, art, live testing, acceptance, code review and deploys of FlowWorks (hoses, pipes, pumps, canals, ponds, pits, ladders, drawbridges, FlowWorks liquids; Gimme Some Slack goes with it, owner by card 2026-10-23: *"Yes, take GSS too"*). FOUNDRY does not pick FlowWorks items up: it files a finding `--for BENCH` and moves on, never waits. Lane list (data, enforced by `rimflow file` and `--acceptance`): `infrastructure/state/flowworks_lane.json`.
+
 ## Biomes, rosters and seas — owner rulings (full text: `design/RimMandrake/biome_rulings.md`)
 
 - 🔑 **Search `src/` and the roster before FILING or designing — this project keeps having
@@ -264,7 +268,7 @@ Check a file is still reachable before spending a review on it. Procedure:
 ## What is where
 
 ```
-src/                    mods, defs, C#, art            FOUNDRY owns
+src/                    mods, defs, C#, art            FOUNDRY owns (not FlowWorks: BENCH owns ALL of it)
 design/                 campaign specs (Utinni)        the owner's, via BENCH
 skills/                 tooling + how-to               curated in fresh-context passes
 infrastructure/state/   ledger, items, facts/, V1.md   written only through rimflow
