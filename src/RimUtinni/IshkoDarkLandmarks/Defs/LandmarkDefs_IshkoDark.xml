@@ -19,12 +19,17 @@
        RulePackDefs for this pass.
 
        Placement is deliberately NOT done here - the owner's hand, per the
-       item's own title. -->
+       item's own title.
+
+       The names are PRINCIPLES, not physical promises (owner, 2026-10-22: "I
+       believe it's referring to principles that guide what he is drawn toward
+       or away from."). Descriptions say what Ishko is drawn toward or away
+       from; none claims shade, roof, darkness or cold the map does not have. -->
 
   <LandmarkDef MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RUT_LightlessSink</defName>
     <label>lightless sink</label>
-    <description>The ground gives way here and does not give it back - a hollow the light never finds the bottom of. Ishko does not hide in it. Ishko is simply already there, and always was.</description>
+    <description>The clan names this hollow for a principle, not a depth: Ishko is drawn toward the lightless, toward whatever the light has not yet found, and away from whatever it already has. Sit at its rim and the elders will tell you he does not hide in it. He is simply already there, and always was.</description>
     <iconTexturePath>World/Landmarks/Ashkarr/Hollow</iconTexturePath>
     <atlasSize>(2, 2)</atlasSize>
     <commonality>0.08</commonality>
@@ -42,7 +47,7 @@
   <LandmarkDef MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RUT_ShadowedOverhang</defName>
     <label>shadowed overhang</label>
-    <description>Rock leaning far enough over itself that noon never reaches the ground beneath it. A patient watcher can stand under this stone for a whole day and be seen by no one who was not already looking - which is the whole of Ishko's doctrine, cut into the world.</description>
+    <description>The clan names this broken ground for a principle: Ishko is drawn toward whatever leans between a watcher and the sun, and away from open ground. The elders tell it as a lesson - keep something over your head, stay patient, and be seen by no one who was not already looking - which is the whole of Ishko's doctrine, given a place on the map.</description>
     <iconTexturePath>World/Landmarks/Ashkarr/Chasm</iconTexturePath>
     <atlasSize>(2, 2)</atlasSize>
     <commonality>0.08</commonality>
@@ -60,7 +65,7 @@
   <LandmarkDef MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RUT_ColdLavaTube</defName>
     <label>cold lava tube</label>
-    <description>A vein the world's fire used to run through, long since gone out. Sh'kaar's heat left it whole tile-lengths ago; what is left is a tunnel of his old work, claimed cold, claimed dark, claimed - like everything eventually is - by Ishko.</description>
+    <description>The clan names this tunnel for a principle: Ishko is drawn toward what the fire has given up, and away from what still burns. They call it one of Sh'kaar's old works, abandoned and claimed - claimed cold, claimed dark, claimed, like everything eventually is, by Ishko.</description>
     <iconTexturePath>World/Landmarks/Ashkarr/Cavern</iconTexturePath>
     <atlasSize>(2, 2)</atlasSize>
     <commonality>0.06</commonality>
@@ -68,7 +73,7 @@
     <category>mountain</category>
     <mutatorChances>
       <Cavern Required="True"/>
-      <!-- no LavaCaves: "long since gone out ... claimed cold" (GPT review 2026-10-22, #2) -->
+      <!-- no LavaCaves: the fire here is "given up" (GPT review 2026-10-22, #2) -->
       <IceCaves>0.15</IceCaves>
       <FoggyMutator>0.1</FoggyMutator>
       <AnimalLife_Decreased>0.2</AnimalLife_Decreased>
