@@ -122,6 +122,7 @@
     <Compile Include="RM_PitRoomMath.cs" />
     <Compile Include="RM_DigDiscovery.cs" />
     <Compile Include="RM_DigDiscoveryMath.cs" />
+    <Compile Include="RM_LegacyFillProof.cs" />
     <Compile Include="Superdeep\RM_PitRooms.cs" />
     <Compile Include="Superdeep\RM_PitStuckAlert.cs" />
     <Compile Include="RM_FireMath.cs" />
