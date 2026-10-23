@@ -1,0 +1,5 @@
+map current: FAIL
+55 joints on 27 reels, tolerance 0.05 cell: 2 gap(s), 0 unmeasured
+  FAIL reel None at [25, 130] rot None pipe_stub          gap 0.000 at - -- known FAIL: C7 pipe west end staged for the future faucet (PIPE_FAUCET_BUILD_TAP_NAME_NOW_FREE)
+  FAIL reel None at [131, 41] rot None pipe_stub          gap 0.000 at - -- pipe end at no port: a stub drawn into nothing
+JOINT CHECK: FAIL

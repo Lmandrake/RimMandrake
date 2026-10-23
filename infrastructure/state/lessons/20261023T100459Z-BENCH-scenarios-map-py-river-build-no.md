@@ -1,0 +1,1 @@
+scenarios_map.py --river --build (no --fresh-map) builds on the CURRENT map, whatever it is: run with map C current it 'placed' C1 FAIL and 0 of 8 stations on map C and rewrote review/scenarios/map_r_placed.json. jawa/set_current_map to map R's id first, then restore the tracked map_r_placed.json/KEYSHEET with git show HEAD:<path> > <path> (2026-10-23 round 2).
