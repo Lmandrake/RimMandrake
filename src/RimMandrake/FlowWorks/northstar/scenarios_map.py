@@ -103,6 +103,20 @@ def placed_c(only=None):
     return out
 
 
+def keep_rects_of(placed):
+    """The rects whose non-colonists a sweep keeps: plots that hold a creature or prisoner on purpose (keep / pens)."""
+    return [p["rect"] for p in placed if p["sc"]["setup"].get("keep") or p["sc"]["setup"].get("pens")]
+
+
+def hold_rects(only):
+    """SCENARIO_ONLY_FIX_SWEEPS_THE_WHOLE_ZOO (2026-10-23): with --only, every OTHER map-C plot's keep rect, so neither the
+    calm() sweep nor the post-build sweep touches their held animals and prisoners (--only C5 removed all 9 map-C
+    non-colonists). The --only plots themselves are not held: they are cleared and restaged. No --only: nothing held."""
+    if not only:
+        return []
+    return keep_rects_of([p for p in placed_c(None) if p["sc"]["id"] not in only])
+
+
 def synthetic_river(size=MAP_SIZE, z0=150, width=10):
     """A straight E-W river for OFFLINE runs only (dry-run, mock, selftest): moving water z0..z0+width-1, soil
     elsewhere. Map R's real river is read live (review_map_rivers.read_terrain)."""
@@ -646,8 +660,13 @@ def review_class():
                 self.pawns(p)
             return ok_opt
 
+        hold = ()                                       # hold_rects(--only): other plots' keep rects, kept by EVERY sweep
+
         def keep_rects(self, placed):
-            return [p["rect"] for p in placed if p["sc"]["setup"].get("keep") or p["sc"]["setup"].get("pens")]
+            return keep_rects_of(placed)
+
+        def sweep(self, keep=()):
+            return super().sweep(list(keep) + list(self.hold))
 
         def snapshot(self, p):
             """Dug cells (depth, fill), the STAGED defs' counts and the staged pawn kinds' counts. Wild plants that
@@ -763,6 +782,7 @@ def run_build(B, placed, log=None, fresh=False, soak=True, only=None):
     """The whole map-C build on bridge B (live or mock). -> result dict."""
     from modcheck import reviewmap as RM
     R = review_class()(B, log)
+    R.hold = hold_rects(only)
     t0 = time.time()
     if fresh:
         R.fresh_map()
@@ -1375,6 +1395,7 @@ def main(argv=None):
         if not a.save:
             return 0 if not (bad or moved) else 1
     R = review_class()(B, None)
+    R.hold = hold_rects(only)
     if a.soak and not a.build:
         print(json.dumps(R.soak(placed), default=str)[:3000])
     if a.branch:

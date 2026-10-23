@@ -211,6 +211,26 @@ def main():
           (rc, os.listdir(committed), os.listdir(offline)))
     check("OFFLINE_OUT is under Transient, not the committed review/scenarios",
           "Transient" in M.OFFLINE_OUT and os.path.normpath(M.OFFLINE_OUT) != os.path.normpath(M.OUT))
+    # SCENARIO_ONLY_FIX_SWEEPS_THE_WHOLE_ZOO: with --only every sweep keeps the OTHER plots' keep rects; without, none
+    from modcheck import reviewmap as RMv
+    seen, real = [], RMv.sweep_pawns
+    RMv.sweep_pawns = lambda B, keep_rects=(): seen.append(list(keep_rects)) or dict(matched=0, removed=0, kept=0)
+    try:
+        M.run_build(MockBridge(), M.placed_c({"C5"}), soak=False, only={"C5"})
+        only_seen = list(seen)
+        del seen[:]
+        M.run_build(MockBridge(), M.placed_c(), soak=False)
+        full_seen = list(seen)
+    finally:
+        RMv.sweep_pawns = real
+    others = [p["rect"] for p in M.placed_c() if p["sc"]["id"] != "C5" and (p["sc"]["setup"].get("keep") or p["sc"]["setup"].get("pens"))]
+    check("--only C5: every sweep (calm and post-build) keeps all %d other keep plots" % len(others),
+          len(others) >= 6 and only_seen and all(all(r in k for r in others) for k in only_seen), only_seen)
+    check("can-fail: the pre-fix rule (keep only the --only plots) would have swept them",
+          not all(r in M.keep_rects_of(M.placed_c({"C5"})) for r in others))
+    check("full build: the calm sweep holds nothing (every plot is restaged)", full_seen and full_seen[0] == [], full_seen[:1])
+    check("hold_rects: none without --only, never the --only plot's own rect",
+          M.hold_rects(None) == [] and not any(r == p["rect"] for r in M.hold_rects({"C3"}) for p in M.placed_c({"C3"})))
     print("\n%d FAIL" % len(FAILS) if FAILS else "\nALL PASS")
     return 1 if FAILS else 0
 
