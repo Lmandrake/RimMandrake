@@ -140,6 +140,8 @@ FEATURES = [
     ("set", r"^pitFreeTravelEnabled$", "Flyers, jumpers and floaters cross pits freely, no fall", M + "no frozen station stages a flyer or jumper over a pit; proved by the functional script"),
     ("set", r"^reachSeesWallsAndCliffs$", "Reach map sees built walls and cliffs, agreeing with the depth engine", M + "no frozen station stages a walled-off reach; proved by the functional script reach_map_proof.py (REACH_MAP_BUILD_WALLS_AND_DEPTH_AGREE)"),
     ("def", r"^ThingDef/RM_PitGuardrail$", "Pit guardrail", "pit_fall"),
+    # GUARDRAIL_ART_RESKIN_BORROWED_FENCE: our own linked atlas (was vanilla fence art), blueprint and menu icon
+    ("tex", r"^RimMandrake/FlowWorks/Guardrail(Blueprint)?/", "Pit guardrail art", "pit_fall"),
     ("tex", r"RM_Spikes(/RM_Spikes_[a-z])?\.png$", "Spike art (three random variants)", "pit_spikes"),
     ("set", r"^(pitDrowningEnabled|pitDrowningRateMultiplier|pitDrowningHeadFraction|pitDrowningLyingFraction|poisonFillEnabled)$", "Flooding a pit drowns or poisons",
      "pit_flood"),

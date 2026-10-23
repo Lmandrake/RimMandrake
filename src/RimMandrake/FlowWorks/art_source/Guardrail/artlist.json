@@ -1,0 +1,38 @@
+[
+ {
+  "id": "RM_PitGuardrail_gr_side",
+  "canvas_w": 1024,
+  "canvas_h": 256,
+  "prompt": "A long low safety guardrail section running straight east-west across the WHOLE canvas from the left edge to the right edge, seen with the RimWorld building camera so the rails show their south side: a flat top rail 14-16 px tall and a thinner mid rail 8-10 px tall about 30 px below it, both perfectly straight and horizontal, spanning edge to edge with no posts, no gaps and no end caps (posts are drawn separately). The pair is centred vertically on the canvas (top rail at about y=104, mid rail at about y=140). 1024x256 canvas. RimWorld building camera: seen from almost straight above with a slight tilt, so tops are lit and only a short south face shows. Transparent background, no ground, no cast shadow.",
+  "rimflow_item_id": "GUARDRAIL_ART_RESKIN_BORROWED_FENCE",
+  "style_notes": "Near-white pale grey neutral material (RGB about 215-235) with soft painted shading and a faint grain, NO hue at all: the game multiplies it by the building material's colour (wood, steel, stone), so it must read as an untinted, uncoloured mask. Realistic painted RimWorld building style, matte, soft painted edges, a thin darker grey edge so it reads against the ground; never cartoonish, no outlines in black, no text.",
+  "priority": 15,
+  "background": "transparent",
+  "owner_note": "Owner card 2026-10-21: 'May we make our own guardrail art? -> Yes, make our own' (pieces composed into a linked fence atlas by art_source/Guardrail/build_guardrail_atlas.py)",
+  "biome_neutral": true
+ },
+ {
+  "id": "RM_PitGuardrail_gr_top",
+  "canvas_w": 256,
+  "canvas_h": 1024,
+  "prompt": "A single straight guardrail top rail seen from directly above, running north-south down the WHOLE canvas from the top edge to the bottom edge: one flat bar 14-16 px wide, centred on x=128, perfectly straight and vertical, uniform along its length, with no posts, no gaps and no end caps. 256x1024 canvas. RimWorld building camera: seen from almost straight above with a slight tilt, so tops are lit and only a short south face shows. Transparent background, no ground, no cast shadow.",
+  "rimflow_item_id": "GUARDRAIL_ART_RESKIN_BORROWED_FENCE",
+  "style_notes": "Near-white pale grey neutral material (RGB about 215-235) with soft painted shading and a faint grain, NO hue at all: the game multiplies it by the building material's colour (wood, steel, stone), so it must read as an untinted, uncoloured mask. Realistic painted RimWorld building style, matte, soft painted edges, a thin darker grey edge so it reads against the ground; never cartoonish, no outlines in black, no text.",
+  "priority": 15,
+  "background": "transparent",
+  "owner_note": "Owner card 2026-10-21: 'May we make our own guardrail art? -> Yes, make our own' (pieces composed into a linked fence atlas by art_source/Guardrail/build_guardrail_atlas.py)",
+  "biome_neutral": true
+ },
+ {
+  "id": "RM_PitGuardrail_gr_post",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "prompt": "One short square guardrail post seen from above with the RimWorld building camera: a square top 34-40 px across with a slightly bevelled cap, centred at (128,124), and a short south face about 18 px tall below it. Nothing else on the canvas. 256x256 canvas. RimWorld building camera: seen from almost straight above with a slight tilt, so tops are lit and only a short south face shows. Transparent background, no ground, no cast shadow.",
+  "rimflow_item_id": "GUARDRAIL_ART_RESKIN_BORROWED_FENCE",
+  "style_notes": "Near-white pale grey neutral material (RGB about 215-235) with soft painted shading and a faint grain, NO hue at all: the game multiplies it by the building material's colour (wood, steel, stone), so it must read as an untinted, uncoloured mask. Realistic painted RimWorld building style, matte, soft painted edges, a thin darker grey edge so it reads against the ground; never cartoonish, no outlines in black, no text.",
+  "priority": 15,
+  "background": "transparent",
+  "owner_note": "Owner card 2026-10-21: 'May we make our own guardrail art? -> Yes, make our own' (pieces composed into a linked fence atlas by art_source/Guardrail/build_guardrail_atlas.py)",
+  "biome_neutral": true
+ }
+]
