@@ -716,11 +716,18 @@ namespace RimMandrake.FlowWorks.SelfTest
             int expU = HoseMath.LastRouteExpanded;
             List<Cell> old20k = CordPlanner.AStar(w, reel.StartCellToward(far), far, 20000);
             string why = HoseMath.CheckReplan(w, reel, far, 30, false, null);
+            // HOSE_CLEAR_FIX_WALL_SEAM_LOOPHOLE (2026-10-22): the game's 34 (and this check's old 33..35 band) was the taut line
+            // measured with the per-cell wall depth, which let the pulled string cross the maze's one-thick wall columns on a
+            // seam between two wall cells; measured from the nearest walkable cell the taut route is 35.0, needing a 37-cell hose
+            List<V2> taut = HoseMath.RoutePulled(w, reel, far);
+            int tautHits = taut == null ? -1 : HoseWallSeamChecks.DeepSamples(w, taut, HoseMath.ClipTolerance, true, out V2 tautAt);
+            C(tautHits == 0, "r5 st34: the taut route stays out of the maze's walls (" + tautHits + " samples inside a wall)");
             C(bounded > 0 && Math.Abs(bounded - unb) < 1e-9 && old20k != null && why == "route too long" && unb * HoseMath.RouteMargin > 30
-                && Math.Ceiling(unb * HoseMath.RouteMargin) >= 33 && Math.Ceiling(unb * HoseMath.RouteMargin) <= 35,
+                && Math.Ceiling(unb * HoseMath.RouteMargin) >= 36 && Math.Ceiling(unb * HoseMath.RouteMargin) <= 38,
                 "r5 st34: the owner's maze is FOUND (taut " + unb.ToString("0.0") + " cells, x" + HoseMath.RouteMargin + " = " + (unb * HoseMath.RouteMargin).ToString("0.0")
-                + "; the game said 34) and is longer than the 30-cell hose -> 'route too long', the length rule, not the search");
-            C(HoseMath.CheckInstall(w, reel, far, 36) == null, "r5 st34: a 36-cell hose (Mod Settings) takes the owner's maze");
+                + "; 37 since the seam fix) and is longer than the 30-cell hose -> 'route too long', the length rule, not the search");
+            C(HoseMath.CheckInstall(w, reel, far, 36) == "route too long" && HoseMath.CheckInstall(w, reel, far, 38) == null,
+                "r5 st34: the owner's maze needs a 37-cell hose: 36 refused 'route too long', 38 (Mod Settings) takes it");
 
             // the spiral: every route within the hose's length is found, however winding; the search stays inside the
             // (2 x bound + 1)^2 square round the reel

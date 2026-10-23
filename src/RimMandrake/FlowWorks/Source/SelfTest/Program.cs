@@ -2046,6 +2046,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             PipePoleChecks.Run(Case);          // PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 4: pipe pole support rule, span cap, sag extremes, not pawn topology (PipePoleChecks.cs)
             PipeSpanNetChecks.Run(Case);       // PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 5: the liquid net's pole-to-pole edge, cap after join, ring cut, one rebuild per cut (PipeSpanNetChecks.cs)
             LineReadoutChecks.Run(Case);       // PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 7: P9 readout lines for the four crossing cases, P8 gravship re-key (LineReadoutChecks.cs)
+            HoseWallSeamChecks.Run(Case);      // HOSE_CLEAR_FIX_WALL_SEAM_LOOPHOLE: wall test vs an independent ruler, seam lines refused, re-plans never cross a wall (HoseWallSeamChecks.cs)
             HoseBandChecks.Run(Case);          // PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 6: hoses into pits only by ramp or ladder, band-aware end reach, raised ladder hangs, dig re-plans once (HoseBandChecks.cs)
             SuspensionBridgeChecks.Run(Case);  // SUSPENSION_BRIDGE_BUILD_POSTS_AT_BOTH_ENDS: drag validator, spans, load, falls, wiring (SuspensionBridgeChecks.cs)
             ThirstChecks.Run(Case);            // THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY: thirst math, shipped defs, DBH bridge patch (ThirstChecks.cs)

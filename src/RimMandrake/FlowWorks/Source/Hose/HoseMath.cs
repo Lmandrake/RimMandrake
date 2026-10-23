@@ -744,13 +744,15 @@ namespace RimMandrake.FlowWorks.Hose
         /// corner exactly is not a clip; a hose centre 0.06 inside a wall is (the hose itself is ~0.4 wide).</summary>
         public const double ClipTolerance = 0.06;
 
-        /// <summary>Depth of q inside a blocked cell (0 when its cell is walkable): distance to the cell's nearest edge.</summary>
+        /// <summary>Depth of q inside the blocked ground (0 when its cell is walkable): the distance to the nearest WALKABLE cell
+        /// box, i.e. -CordWorld.Clearance, the measure the Gimme Some Slack cords have always used. HOSE_CLEAR_FIX_WALL_SEAM_LOOPHOLE
+        /// (2026-10-22): from round 4 (9e9f153d4e) this was the distance to the edge of q's OWN cell, whatever lay across that
+        /// edge, so a hose on the seam between two wall cells read ~0 and passed (the walkthrough's reel o1 drawn through walls
+        /// (22,39)/(22,40) at z = 40.0). A corner or face graze of a walkable cell still reads ~0.</summary>
         internal static double WallDepth(CordWorld w, V2 q)
         {
-            Cell c = q.Floor;
-            if (w.IsWalkable(c)) return 0;
-            double fx = q.X - c.X, fz = q.Z - c.Z;
-            return Math.Min(Math.Min(fx, 1 - fx), Math.Min(fz, 1 - fz));
+            if (w.IsWalkable(q.Floor)) return 0;
+            return -w.Clearance(q);
         }
 
         /// <summary>True when no part of the hose centreline lies over a blocked cell. Round 4 (owner, station 23): testing
@@ -758,6 +760,34 @@ namespace RimMandrake.FlowWorks.Hose
         /// zig-zag maze measured 28 fine samples inside walls); every segment is now walked at 0.05 cell. The first and
         /// last 0.5 cell (endSkip in the overload below) are exempt (the reel and the free end may sit on a building's cell).</summary>
         internal static bool Clear(CordWorld w, IList<V2> pts) => Clear(w, pts, 0.5);
+
+        /// <summary>HOSE_ROUTE_FIX_TUNNELS_UNDER_WALLS live instrument (HoseProbe census "wallCross", proof_hose.py HW1): a
+        /// sample this deep inside blocked ground is the hose's own half-width through a wall, a crossing, not a graze.</summary>
+        public const double WallCrossDepth = 0.12;
+
+        /// <summary>Samples (every 0.05 cell, the first and last 0.5 cell skipped as in Clear) deeper than WallCrossDepth inside
+        /// blocked ground; <paramref name="first"/> is the first one's cell.</summary>
+        internal static int WallCrossings(CordWorld w, IList<V2> pts, out Cell first)
+        {
+            first = default;
+            int hits = 0;
+            if (pts == null || pts.Count < 2) return 0;
+            double[] s = Geo.CumLen(pts);
+            double L = s[s.Length - 1];
+            for (int i = 1; i < pts.Count; i++)
+            {
+                double d = s[i] - s[i - 1];
+                int k = Math.Max(1, (int)Math.Ceiling(d / 0.05));
+                for (int j = 0; j < k; j++)
+                {
+                    double at = s[i - 1] + d * j / k;
+                    if (at < 0.5 || L - at < 0.5) continue;
+                    V2 q = pts[i - 1] + (pts[i] - pts[i - 1]) * (j / (double)k);
+                    if (WallDepth(w, q) > WallCrossDepth) { if (hits == 0) first = q.Floor; hits++; }
+                }
+            }
+            return hits;
+        }
 
         internal static bool Clear(CordWorld w, IList<V2> pts, double endSkip)
         {

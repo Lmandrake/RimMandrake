@@ -92,6 +92,7 @@
     <Compile Include="..\Machinery\RM_PipeSpanNetMath.cs" />
     <Compile Include="PipeSpanNetChecks.cs" />
     <Compile Include="HoseBandChecks.cs" />
+    <Compile Include="HoseWallSeamChecks.cs" />
     <Compile Include="PipePoleChecks.cs" />
     <Compile Include="LineReadoutChecks.cs" />
     <Compile Include="DeckCollapseLinesChecks.cs" />

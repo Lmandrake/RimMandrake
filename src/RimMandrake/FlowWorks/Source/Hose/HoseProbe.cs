@@ -311,6 +311,9 @@ namespace RimMandrake.FlowWorks.Hose
                       .Append(",\"geometryHash\":").Append(S(RM_MapComponent_Hoses.GeometryHash(lay).ToString("x16")))
                       .Append(",\"relayEnd\":").Append(RelayEnd(comp, r, lay))
                       .Append(",\"unwalkablePoints\":").Append(lay.Flat.Count(p => !comp.World().IsWalkable(p.Floor)))
+                      // HOSE_ROUTE_FIX_TUNNELS_UNDER_WALLS (proof_hose.py HW1): fine samples of the flat and plump poses deeper
+                      // than HoseMath.WallCrossDepth inside blocked ground (a crossing, not a corner graze), and the first cell
+                      .Append(WallCrossJson(comp.World(), lay))
                       // 2026-10-10: WHERE and WHAT, for a full-list matrix red that read 1 and did not reproduce
                       .Append(",\"unwalkableAt\":[").Append(string.Join(",", lay.Flat.Select((p, i) => (p, i)).Where(t => !comp.World().IsWalkable(t.p.Floor)).Take(4)
                           .Select(t => "[" + t.i + "," + t.p.Floor.X + "," + t.p.Floor.Z + "," + S(comp.World().BlockAt(t.p.Floor).ToString()) + "," +
@@ -392,6 +395,15 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>Round 7 (station 42): what is DRAWN at a relay end -- the lay's last point, the coupling's axis, the
         /// signed distance from the relay's edge on the intake side (+ = outside) and whether it lies within that edge,
         /// and the angle (deg) between the last 0.5 cell of the drawn hose and the axis.</summary>
+        /// <summary>",wallCross":n,"wallCrossAt":[x,z]|null over the flat and plump poses (HoseMath.WallCrossings).</summary>
+        private static string WallCrossJson(CordWorld w, HoseLay lay)
+        {
+            int n = HoseMath.WallCrossings(w, lay.Flat, out Cell f1);
+            int m = HoseMath.WallCrossings(w, lay.Plump, out Cell f2);
+            string at = n > 0 ? "[" + f1.X + "," + f1.Z + "]" : m > 0 ? "[" + f2.X + "," + f2.Z + "]" : "null";
+            return ",\"wallCross\":" + (n + m) + ",\"wallCrossAt\":" + at;
+        }
+
         private static string RelayEnd(RM_MapComponent_Hoses comp, CompHoseReel r, HoseLay lay)
         {
             V2 e = comp.EndPoint(r, out CompHoseReel relay, out V2? inward);
