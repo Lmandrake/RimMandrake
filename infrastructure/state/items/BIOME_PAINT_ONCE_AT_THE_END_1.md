@@ -72,6 +72,7 @@ queue is blocked on a tile count before then.
 
 ## Paint list addition 2026-10-20 (from `WORLD_PHYSICS_AUDIT_LOCKED_SUN_TEMPS_RINGS`)
 
-The Scald (`RM_TheScald`): its sheet (`design/Jawa/worldbuilding/biomes/the_scald.md` §0) puts it at arc 0–30, air
-+58..+70 °C; the dev save has its 312 tiles at arc 23–51, 36..53 °C, 7.8 °C under the ruled curve on every tile
-(`design/RimMandrake/world_physics_audit_2026-10-20.md` §3). Place it on its arc and temperature at the final painting.
+The Scald (`RM_TheScald`): its 312 tiles are at arc 23–51 (median 36), where the owner placed it, and stay there
+(owner, by card 2026-10-22). They are 7.8 °C under the ruled curve on every tile (perched-1,411 m values never
+re-derived after the −30 m ruling; `design/RimMandrake/world_physics_audit_2026-10-20.md` §3). Stamp
+`world/repaint_2026-10-21/scald_temperature.csv` (`tile,temp_c`) at the final painting.

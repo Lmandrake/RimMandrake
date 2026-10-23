@@ -157,7 +157,8 @@ Worldbuilder preset name.
 6. **Who farms the Scrub's vaporators** (default `OutlanderCivil`).
 7. **The big "Dune Sea" label sits over Anvil and Rust Cathedral** after the label restore: canonical centre or canon error? He should look.
 8. **The Ancient Asphalt Highway is 46 pieces of 1-9 tiles in the record itself;** re-route the record or accept dashes.
-9. **The Scald sits at arc 23-51 and 7.8 C under the curve, not arc 0-30:** on `BIOME_PAINT_ONCE_AT_THE_END_1`.
+9. **The Scald sits at arc 23-51, where it was placed (~35°), and 7.8 C under the curve:** owner, by card 2026-10-22: tiles stay, the
+   sheet and the temperature are fixed (stamp `world/repaint_2026-10-21/scald_temperature.csv` at the repaint).
 10. **Look-and-feel judgements only he can make:** the Dune Sea tract, the hills, the mid-zoom face stipple, the soft borders and sea films (their
     committed values have not been confirmed by eye on a final-DLL load).
 11. **Drawbridge and pipes:** the two pending question cards were answered the same evening; remaining is the pipe/hose width spec to judge in

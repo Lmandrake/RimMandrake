@@ -130,7 +130,7 @@ for v1.
 
 **Sky colours** — native `WeatherDef.skyColors*` (MEASURED fields). Retune the shipped values
 toward the sheet: day `sky (0.90,0.97,0.97)`, `overlay (0.80,0.92,0.92)`, saturation 0.8 so the
-cyan water reads *through* the haze; night-side entries can stay (the Scald is substellar and never
+cyan water reads *through* the haze; night-side entries can stay (the Scald is at arc ~35 on the day side and never
 sees night, but a valid set is required). `maxGlow` stays 1.
 
 **Steam off the water — zero C#, the biggest visual win.** `TerrainDef.fleckData` +

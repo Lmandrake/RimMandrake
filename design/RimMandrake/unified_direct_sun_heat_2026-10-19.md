@@ -56,7 +56,7 @@ Elevation is the sun's height above the horizon, 90 − (arc to the substellar p
 | Webwork `RM_Webwork` | +51° / 38.6·49.2·58.2 °C | overhead base | 10 × sin, floor 4 | yes | 55° | default 60° | no | `src/RimMandrake/Webwork/Defs/BiomeDefs/RM_Webwork_Biome.xml` (no `MayRequire`) |
 | Rust Cathedral `RM_RustCathedral` | **+79°** / 62.5 °C | overhead | **30 (field unset; class default)** | no | none | **default 60°, so 79° reads as 60°** | no | `src/RimMandrake/RustCathedral/Defs/BiomeDefs/RM_RustCathedral_Biome.xml` (no `MayRequire`) |
 | The Forge `RM_TheForge` | +51…+64° / 42–56 °C | **ambient** | 15 | n/a | n/a | n/a | no | `src/RimMandrake/TheForge/Defs/BiomeDefs/RM_TheForge_Biome.xml` |
-| The Scald `RM_TheScald` | substellar band, "the substellar sun" / boiling sea | **ambient** | 15 | n/a | n/a | n/a | no | `src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_TheScald.xml` |
+| The Scald `RM_TheScald` | arc 23–51, sun +39…+67° (median 54°) / +44..+61 °C at sea level | **ambient** | 15 | n/a | n/a | n/a | no | `src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_TheScald.xml` |
 | Fever Wood `RM_FeverWood` | +43° / 45.5 °C | **ambient** | 8 | n/a | n/a | n/a | no | `src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml` |
 | Greentide `RM_Greentide` | +45° / 45.5 °C | **ambient** | 12 (wet-bulb folded in, card 2026-10-08) | n/a | n/a | n/a | no | `src/RimMandrake/Greentide/Defs/BiomeDefs/RM_Greentide_Biome.xml` |
 | **Scarlands `RM_Warscar`** | **+72° / 59.4 °C** | **none** | 0 | | | | no | `src/RimMandrake/Scarlands/Defs/BiomeDefs/RM_Warscar.xml` |
@@ -88,7 +88,7 @@ parasol shade (`ShadeGrid.ExposureAt`, ignored under ambient), sand glare (off u
    raise it to 85°. So the Rust Cathedral's +79° sun and the Pyrelands' sun up to +84° are both
    computed as 60°.
 4. **Four biomes under a high sun get no direct sun at all.** The Forge (+51…+64°), the Scald
-   (substellar), the Fever Wood (+43°) and the Greentide (+45°) are `ambient`. Shade, parasols and
+   (+39…+67°), the Fever Wood (+43°) and the Greentide (+45°) are `ambient`. Shade, parasols and
    shields do nothing there against the sun overhead. Their "ambient" heat also runs through the
    **sun** pipeline, which has four side effects:
    - Weather `sunExposureFactor` multiplies it, so a sun-dimming weather would cool a volcano.

@@ -62,8 +62,9 @@ it is not one of "the three seas."
 
 The Scald (crater lake, `ASHKARR_WORLD_DEFINITION.md`'s Sea table: centre (35,185),
 radius 10.5, ruled −30 m / live-measured −350 m, "a terminal pan" with eight rivers
-ending in it and none leaving) sits in the Anvil substellar band (arc 0-30, +70→+58 °C)
-— "the hottest lake in the hottest place." `terminator_sea.md` §2 uses it only as a
+ending in it and none leaving) sits in the Dune Sea band, its 312 tiles at arc 23-51
+(median 36; the owner's 2026-08-16 "dayside ocean at ~35° arc"), not in the Anvil (arc < 20).
+`terminator_sea.md` §2 uses it only as a
 comparison foil for the terminator seas' own definition ("Why the terminator's coast is
 salt and the Scald's coast is jungle") — it does not define the Scald's own roster,
 weather or hard bans.
