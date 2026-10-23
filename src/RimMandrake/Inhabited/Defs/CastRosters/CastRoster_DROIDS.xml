@@ -199,7 +199,7 @@
     <genderText>none</genderText>
     <childhood>assigned to a household. The household is a scorch mark under eleven metres of sand.</childhood>
     <adult>works the yard for wages it has never once spent.</adult>
-    <hook>It trundles badly on a wheel rebuilt nine times and still not round, and every evening at the same hour it stops whatever it is doing and lays a place setting on an empty crate. Cup, plate, folded cloth. Four thousand years of this. Argue and it will fight you, and lose, because a firm shove puts it on its side for an hour.</hook>
+    <hook>It trundles badly on a wheel rebuilt nine times and still not round, and every evening at the same hour it stops whatever it is doing and lays a place setting on an empty crate. Cup, plate, folded cloth. Ages of this. Argue and it will fight you, and lose, because a firm shove puts it on its side for an hour.</hook>
     <traits>
       <li>
         <def>GreatMemory</def>
@@ -459,6 +459,7 @@
         <degreeName>Pessimist</degreeName>
       </li>
     </traits>
+    <weapon>Gun_SniperRifle</weapon>
     <skills>
       <Shooting>17</Shooting>
     </skills>
