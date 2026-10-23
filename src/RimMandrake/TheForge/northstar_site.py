@@ -22,7 +22,7 @@ HAZ_SETTINGS = "RimMandrake.EnvironmentalHazards.RM_EnvironmentalHazardsSettings
 DEFAULTS = {"modEnabled": True, "weatherPulseEnabled": True, "grandCycleEnabled": True, "gasWashEnabled": True,
             "cycleFloodingEnabled": True, "lavaFreezeEnabled": True, "meltBackDestroys": True,
             "floatstoneBloomEnabled": True, "cycleDormancyEnabled": True, "cycleTelegraphLetters": True,
-            "keelworkEnabled": True, "spunstoneStudyEnabled": True, "forgeVoicesEnabled": True,
+            "spunstoneStudyEnabled": True, "forgeVoicesEnabled": True,
             "forgeVoicesVisualCues": False, "dhuvvoxClockEnabled": True}
 HAZ_DEFAULTS = {"environmentalDamageEnabled": True, "weatherPulseEnabled": True}
 MIN_MAP = 160               # the pad sits 30 cells off the map centre and spans ~50 cells east of it

@@ -7,8 +7,7 @@ namespace RimMandrake.TheForge
     [DefOf]
     public static class RM_TheForgeDefOf
     {
-        // §1 floatstone keelwork / §2 spunstone bonding
-        public static ThingDef RM_FloatstoneKeelBrace;
+        // §2 spunstone bonding (§1 floatstone keelwork was cut 2026-10-23, fluff review)
         public static ThingDef RM_FloatstoneGarden;
         public static ResearchProjectDef RM_SpunstoneBonding;
 
@@ -20,7 +19,6 @@ namespace RimMandrake.TheForge
         public static SoundDef RM_ForgeVoice_GlassSing;
         public static SoundDef RM_ForgeVoice_CrackPulse;
         public static SoundDef RM_ForgeVoice_PhaseStinger;
-        public static SoundDef RM_ForgeVoice_KeelRing;
 
         // §7 the dhuvvox clock
         public static SoundDef RM_DhuvvoxNoduleClick;
