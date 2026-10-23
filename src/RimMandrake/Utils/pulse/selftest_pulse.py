@@ -659,9 +659,13 @@ class _Slow(_Col):
     def gather(self, now, force=False):
         time.sleep(2)
         return super().gather(now, force)
-r2 = _Slow().refresh(timeout=0.3)
+slow = _Slow()
+r2 = slow.refresh(timeout=0.3)
 check("a refresh that outruns its timeout fails and says why (never silently keeps old data)",
       not r2["ok"] and "still running" in r2["error"], r2)
+time.sleep(2.5)
+check("a timed-out refresh that finishes later replaces the failure with a late success",
+      (slow.last_refresh or {}).get("ok") is True and slow.last_refresh.get("late"), slow.last_refresh)
 class _Boom(_Col):
     def gather(self, now, force=False):
         raise OSError("ledger unreadable")
