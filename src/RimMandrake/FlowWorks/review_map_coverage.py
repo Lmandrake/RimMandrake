@@ -154,7 +154,8 @@ FEATURES = [
     ("def", r"^ThingDef/RM_Ladder$", "Ladder", "hold_ladder"),
     ("def", r"^(DesignationDef/RM_OperateLadder|JobDef/RM_OperateLadderJob|WorkGiverDef/RM_OperateLadderWorkGiver)$", "Operate-ladder order (raise from above or below, lower from above)", "hold_ladder_raised"),
     # REVIEW_MAP_COVERAGE_FILL_ABOUT_NINETY_ROWS: raider/climb behaviour is read from state, not a staged scene
-    ("def", r"^JobDef/(RM_RaiderSetLadder|RM_RaiderFillTrench|RM_RaiderTakeLadder)$", "Raiders cross a trench with a ladder, fill it, or take a standing ladder down", M + "raider AI jobs; proved by the functional script (RaiderTrenchChecks), no frozen station stages a raid"),
+    ("def", r"^JobDef/(RM_RaiderSetLadder|RM_RaiderFillTrench|RM_RaiderTakeLadder|RM_RaiderChopForLadder)$", "Raiders cross a trench with a ladder, fill it, take a standing ladder down, or fell a tree to make one", M + "raider AI jobs; proved by the functional script (RaiderTrenchChecks), no frozen station stages a raid"),
+    ("gizmo", r'^"Dev: (fill|empty)"$', "Tank debug: fill to max / empty (TANK_DEBUG_BUILD_FILL_AT_WILL)", M + "god-mode debug gizmos on universal containers; no frozen station shows dev gizmos"),
     ("gizmo", r'^"Repair breach"', "Orders > Repair breach (dig a raider-filled square back out)", M + "an order designator on squares raiders filled; proved by raid_trench_proof.py and LadderParityChecks, no frozen station stages a breach"),
     ("def", r"^JobDef/RM_ClimbOverWall$", "Climbing over a wall", M + "pawn job; proved by WallClimbChecks, no frozen station stages a wall climb"),
     ("def", r"^ThingDef/RM_LadderPortable$", "Portable ladder (carried, set down by hand)", M + "an inventory item with no frozen station; proved by PitAccessChecks"),
