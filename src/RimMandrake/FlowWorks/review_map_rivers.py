@@ -168,7 +168,9 @@ def station_ops(st, cr):
     i = st["id"]
     if i == "r_current":
         o["items"] = [("WoodLog", 25, mid)]
-        o["pawns"] = [("Muffalo", (bx + d[0] + p[0] * 2, bz + d[1] + p[1] * 2), "none", None)]
+        o["pawns"] = [("Muffalo", (bx + d[0] + p[0] * 2, bz + d[1] + p[1] * 2), "none", "face:" + ("west" if p[0] < 0 else "east"))]
+        # RIVER_MUFFALO_FIX_SHOWS_ITS_REAR: spawned unrotated a Muffalo faces north and its rear texture is a plain pale dome in
+        # the water; side-on (always E/W, along the current when the river runs E/W) it reads as an animal. Rotation is locked.
     elif i == "r_ford":
         o["terrain"] = [("RM_FordStones", (bx + d[0] * k, bz + d[1] * k)) for k in range(1, n + 1)]
         o["pawns"] = [("Colonist", (bx - d[0], bz - d[1]), "player", "drafted")]
@@ -255,6 +257,10 @@ def build(R, label_line):
             pid = (r.get("pawns") or [{}])[0].get("id") if r.get("pawns") else r.get("id")
             if pid is not None and role == "drafted":
                 R.call("jawa/set_draft", pawnId=str(pid), drafted=True)
+            elif pid is not None and str(role).startswith("face:"):
+                rot = R.call("jawa/set_pawn_rotation", pawnId=str(pid), dir=role[5:], lockRotation=True)
+                if rot.get("applied") is not True:
+                    R.notes.append("R%d %s: %s not turned to face %s: %s" % (k + 1, st["id"], kind, role[5:], str(rot)[:160]))
     R.call("rimworld/pause_game", pause=True)
     verify = {}
     for k, (st, cr, o) in enumerate(placed):
