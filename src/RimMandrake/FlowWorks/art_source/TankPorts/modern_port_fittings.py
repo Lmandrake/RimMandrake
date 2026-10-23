@@ -10,6 +10,10 @@ the footprint edge ~0.3 cell off the wall and a bare hose stub ran on into a pla
 side gets, from the wall outward: a black PP bulkhead nut on the wall, a grey PVC nipple, and an aluminium camlock
 male adapter whose face is the canvas edge (= the footprint edge at drawSize width 2). Everything else is unchanged.
 
+NOT INSTALLED since 2026-10-23 (owner ruling, by card: "Make your couplers as needed, but have their art go UNDER the tank or
+pump or other fixture"): the three pictures are back to the base below; hose ports get an under-coupler drawn beneath the
+tank (Source/Machinery/UnderCouplerGeometry.cs). selftest_tank_art_edges.py still imports base_image() from here.
+
 Base = the owner's card picks as installed in fb34c9bc2d (read from git), so re-running is reproducible.
   python3 modern_port_fittings.py <outdir>     writes the three PNGs into <outdir>
 """
