@@ -3576,12 +3576,26 @@ def _x8b_cover_occupant(L, c, occ):
           "a pawn popped up reads pawn=none here or beneath=False)" % (txt, inspect[:160], c[0], c[1]))
 
 
+X8C_LID = "RM_PitCover_PlankLattice"
+
+
 def _x8c_lid_walker(L, c):
     """PIT_LID_FIX_VICKY_PEEKS_THROUGH (owner 2026-10-22: Vicky on a covered pit "just gets a funny dark square around her but
     otherwise is still "over" the cover"; card 2026-10-22 "covered cells are floor"): a colonist put on the laid lid at c is a
     walker ON it, not beneath: not hidden, and drawn at ground (sink 0, real DrawPos at the cell centre), not sunk to the
     D=4 floor. X8b's colonist is the other half: beneath, hidden (the draw patch really applied)."""
     B = L.B
+    # X8C_WALKER_FIX_FELL_THROUGH_THE_FLOOR (2026-10-22): the woven-scrap deck gives way under 40 kg, so a colonist stood on it
+    # fell through and the row measured the collapse, not the draw. c's lid is swapped for a plank lattice (holds a colonist;
+    # C12 planks met the bar live 2026-10-22), read back, and the lid must still be covered under the walker before judging.
+    B.call("jawa/destroy_batch", rects="%d,%d,1,1" % c, categories="Building")
+    B.call("jawa/spawn_batch", ops="%s:%d,%d" % ((X8C_LID,) + tuple(c)))
+    lt = B.call("jawa/list_things", defName=X8C_LID, rect="%d,%d,1,1" % c, limit=1) or {}
+    okc, kc, tc = _proof(B, "ProofCover", "%d,%d" % c)
+    if not (lt.get("things") and okc and kc.get("covered") == "True"):
+        L.row("X8c_lid_walker_drawn_at_ground", False, "SITE", "the %s lid was not laid on %d,%d: %s | %s" % (
+            X8C_LID, c[0], c[1], str(lt)[:120], tc[:160]), status="UNMEASURED")
+        return
     r = B.call("jawa/spawn_pawn", kindDef="Colonist", faction="player", x=c[0], z=c[1], count=1)
     if not r.get("success"):
         L.row("X8c_lid_walker_drawn_at_ground", False, "HARNESS", "spawn colonist on the lid: %r" % (str(r)[:200],),
@@ -3589,6 +3603,10 @@ def _x8c_lid_walker(L, c):
         return
     B.call("rimworld/step_game_ticks", ticks=60, pauseFirst=True, timeoutMs=60000)
     ok, kv, txt = _proof(B, "ProofBeneath", "%d,%d" % c)
+    if ok and kv.get("covered") != "True":
+        L.row("X8c_lid_walker_drawn_at_ground", False, "SITE", "the %s lid gave way under the walker (the row needs a lid "
+              "that holds): %s" % (X8C_LID, txt[:200]), status="UNMEASURED")
+        return
     if not ok or "sink" not in kv or "drawDz" not in kv:
         L.row("X8c_lid_walker_drawn_at_ground", False, "HARNESS", "ProofBeneath has no sink/drawDz (stale DLL?): %s" % txt[:200],
               status="UNMEASURED")
@@ -3800,6 +3818,7 @@ class MockBridge(object):
         "cover_lifts_occupant": ["X8b_cover_occupant_stays_below"],    # a lid laid over a pit occupant lifts her onto it
         "beneath_drawn": ["X8b_cover_occupant_stays_below"],           # the hide prefix never ran: she draws over the lid
         "lid_walker_sunk": ["X8c_lid_walker_drawn_at_ground"],         # a walker on a lid draws sunk to the pit floor
+        "plank_lid_refused": ["X8c_lid_walker_drawn_at_ground"],       # X8c's plank lid never laid: UNMEASURED/SITE, never MOD
         "fire_never_spreads": ["X10_canal_fire"],                     # the front never leaves the lit cell
         "fire_never_burns": ["X10_canal_fire"],                       # a burning cell never spends its liquid
         "fire_no_ash": ["X10_canal_fire"],                            # a spent cell is not left scorched
@@ -3827,6 +3846,7 @@ class MockBridge(object):
         "save_pulse_count": [],     # no row may go red: the map's own PulseCount (a loaded save) only shifts the tar stride
     }
     FAULT_STATUS = {"forced_control_unmeasured": {"P3f_forced_entry_falls": "UNMEASURED"},
+                    "plank_lid_refused": {"X8c_lid_walker_drawn_at_ground": "UNMEASURED"},
                     "forced_lands_free": {"P3f_forced_entry_falls": "FAIL", "P4f_ladder_frees_forced": "UNMEASURED"},
                     "prefill_refused": {"E7a_fillin_displaces": "UNMEASURED", "E7b_overflow_sanctioned": "UNMEASURED"},
                     "ticks_frozen": {r: "UNMEASURED" for r in (
@@ -3873,6 +3893,7 @@ class MockBridge(object):
         self.ladders = set()
         self.raised = set()       # ladders whose RM_CompLadder.raised is set (ProofLadder)
         self.covers = set()       # cells holding a pit cover (spawn_batch RM_PitCover_*)
+        self.cover_def = {}       # cell -> the cover's defName (a woven-scrap lid gives way under a walker: X8c)
         self.beneath = set()      # pawn ids a lid was laid over (PIT_COVER_FIX_OCCUPANT_STAYS_BELOW)
         self.descents = []
         self.landed_free = set()  # fault forced_lands_free: forced pawns the trap does not hold
@@ -3959,7 +3980,10 @@ class MockBridge(object):
             if d == "RM_Ladder":
                 self.ladders.add((x, z))
             elif d.startswith("RM_PitCover_"):
+                if d == "RM_PitCover_PlankLattice" and "plank_lid_refused" in self.faults:
+                    continue
                 self.covers.add((x, z))
+                self.cover_def[(x, z)] = d
                 if "cover_lifts_occupant" not in self.faults:      # PIT_COVER_FIX_OCCUPANT_STAYS_BELOW
                     self.beneath.update(self.spawned_at.get((x, z), []))
         return dict(success=True, thingsPlaced=1)
@@ -4329,6 +4353,19 @@ class MockBridge(object):
         return dict(success=True, cells=[dict(x=c[0], z=c[1]) for c in cells], pulses=pulses, pulsesRun=count,
                     ticksBefore=self.tick, ticksGame=self.tick, nextPulseTickUntouched=True, gamePaused=True)
 
+    def t_jawa_destroy_batch(self, rects, categories="Plant", category=None, **kw):
+        cats = (category or categories or "").split(",")
+        n = 0
+        for r in rects.split(";"):
+            v = [int(t) for t in r.split(":")[-1].split(",")]
+            x, z, w, h = (v + [1, 1])[:4]
+            for c in [(x + i, z + j) for i in range(w) for j in range(h)]:
+                if ("Building" in cats or "All" in cats) and c in self.covers:
+                    self.covers.discard(c)
+                    self.cover_def.pop(c, None)
+                    n += 1
+        return dict(success=True, destroyed=n)
+
     def t_jawa_spawn_pawn(self, kindDef, faction, x, z, count=1):
         pid = "M%d" % len(self.pawns)
         self.pawns.append(dict(id=pid, position=dict(x=x, z=z)))
@@ -4445,6 +4482,8 @@ class MockBridge(object):
             if "flame_list_late_blind" in self.faults and self.flame_lists >= 3:
                 return dict(success=False, error="mock: list_things failed")
         src = {"RM_LiquidFlame": set(self.fire), "Filth_Ash": self.ash}.get(defName, set())
+        if (defName or "").startswith("RM_PitCover_"):
+            src = {c for c, d in self.cover_def.items() if d == defName}
         hit = sorted(c for c in src if x <= c[0] < x + w and z <= c[1] < z + h)
         return dict(success=True, countMatched=len(hit), things=[dict(id="T%d_%d" % c, position=dict(x=c[0], z=c[1]))
                                                                  for c in hit[:limit]])
@@ -4536,8 +4575,10 @@ class MockBridge(object):
             b = bool(here) and here[0] in self.beneath
             hid = b and "beneath_drawn" not in self.faults
             sunk = bool(here) and c in self.covers and (b or "lid_walker_sunk" in self.faults)
+            # a walker (not beneath) on a woven-scrap lid springs it: the lid gives way under 40 kg
+            sprung = bool(here) and not b and self.cover_def.get(c) == "RM_PitCover_WovenScrap"
             res = "BENEATH cell=%d,%d pawn=%s beneath=%s held=%s trapped=%s onLoad=%s hidden=%s covered=%s" % (
-                x, z, here[0] if here else "none", b, b, b, not b, hid, c in self.covers)
+                x, z, here[0] if here else "none", b, b, b, not b, hid, c in self.covers and not sprung)
             if here:
                 res += " drawPatch=%s sink=%s drawDz=%s" % (hid or not b, "1.200" if sunk else "0.000",
                                                            "-1.200" if sunk else "0.000")
