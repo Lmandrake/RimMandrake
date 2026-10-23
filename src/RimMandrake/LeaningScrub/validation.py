@@ -340,7 +340,11 @@ def _settle_bystanders(t):
     if not _live(t):
         return
     try:
-        res = H.settle_bystanders(t.session)
+        # Plant AND Filth: LIVE round 2 (2026-10-16) a bystander took a venomvine Scratch ~tick 380k inside
+        # scratch_drops_coat, after the 5.5-day jump, with the plants round it already cleared. Leading theory,
+        # UNPROVEN (the attacker def was not read): RM_ThornLitter, the filth a shedding stand throws downwind in a
+        # Gale, which scratches on contact and which a Plant-only clear leaves in place.
+        res = H.settle_bystanders(t.session, ground_categories="Plant,Filth")
         _note(t, "bystanders settled (mended / drafted / residue)",
               [res.evidence.get("removed"), res.evidence.get("drafted"), res.residue])
     except Exception as ex:    # upkeep: a failure is evidence, never a verdict (the vitals latch still guards the row)

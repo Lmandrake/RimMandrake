@@ -462,14 +462,15 @@ def restore_colonists(session, baseline, resurrect=False):
                         residue=residue)
 
 
-def clear_bystander_ground(session, rows, radius=2):
+def clear_bystander_ground(session, rows, radius=2, categories="Plant"):
     """Remove every PLANT within `radius` (Chebyshev) of each bystander row, so a bystander drafted in place is not
     drafted INTO a stand that hurts it. LIVE 2026-10-16 (SPRINT_SITES_DIAGNOSE_VENOMVINE_SCRATCHES): LeaningScrub site
     colonist Yume stood on an RM_DrippingVenomvine cell in the saved site; MapComponent_ContactVenom scratches on first
     contact (the first 15-tick sample after every load: 'Scratch/Leg age ~51' at tick ~65 on 6 of 6 reruns) and again
     every contactIntervalTicks (2500) while the pawn lingers, and settle_bystanders' draft pinned Yume there, so every
     chain's safe_advance stopped on a bystander hurt. Radius 2 covers the weeper venomvine's radius-2 pool. -> the
-    rects cleared (upkeep: destroy_batch never touches pawns)."""
+    rects cleared (upkeep: destroy_batch never touches pawns). `categories` is destroy_batch's filter: "Plant,Filth"
+    also lifts hurting filth (LeaningScrub's RM_ThornLitter scratches; a Gale after a clock jump throws it)."""
     rects = []
     for row in rows:
         x, z = row.get("x"), row.get("z")
@@ -477,11 +478,11 @@ def clear_bystander_ground(session, rows, radius=2):
             continue
         rects.append("%d,%d,%d,%d" % (x - radius, z - radius, 2 * radius + 1, 2 * radius + 1))
     if rects and radius >= 0:
-        session.call("jawa/destroy_batch", rects=";".join(rects), categories="Plant")
+        session.call("jawa/destroy_batch", rects=";".join(rects), categories=categories)
     return rects
 
 
-def settle_bystanders(session, fixture_ids=(), draft=True, clear_ground=2):
+def settle_bystanders(session, fixture_ids=(), draft=True, clear_ground=2, ground_categories="Plant"):
     """Bring the site's OWN colonists (every living, spawned colonist NOT in `fixture_ids`) to a sound state BEFORE a
     chain starts: remove every INJURY_DEFS hediff they carry (harm left by earlier suites on the same saved site),
     refill Food/Rest/Joy, end mental states and draft them in place so they stay off the test pads and out of the
@@ -497,7 +498,8 @@ def settle_bystanders(session, fixture_ids=(), draft=True, clear_ground=2):
     fix = set(str(i) for i in fixture_ids or ())
     rows = [r for r in read_pawns(session) if is_colonist(r) and not r.get("dead") and r.get("spawned", True)
             and str(r["id"]) not in fix]
-    ground = clear_bystander_ground(session, rows, clear_ground) if clear_ground is not None else []
+    ground = (clear_bystander_ground(session, rows, clear_ground, ground_categories)
+              if clear_ground is not None else [])
     acted, removed = 0, []
     for row in rows:
         for h in (row.get("health") or {}).get("hediffs") or []:
