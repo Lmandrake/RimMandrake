@@ -1,0 +1,12 @@
+# DRAWBRIDGE_CABLES_FIX_STOP_SHORT progress
+- [ ] locate code
+- [ ] root cause
+- [ ] fix
+- [ ] selftest
+- [ ] renders before/after
+- [ ] art-eval opus
+- [ ] build/commit/publish/ledger
+- [x] locate, root cause (anchor art ropes end 13px short of the deck edge; raised: taut ropes + leaf-edge stub painted)
+- [x] math + art + selftest written; next: run selftest
+- [x] renders + art-eval (rope fix judged correct by Opus both mats; pre-existing CAM_WRONG/occlusion filed); next: selftest, build, commit
+- [x] built d5a6104e9df1, published, implemented (live A1/A2 owed)
