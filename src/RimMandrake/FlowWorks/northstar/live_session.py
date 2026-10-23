@@ -16,8 +16,8 @@ material in a tighter timeline?"*
 
 ORDER (cheapest first; every map-global side effect is placed AFTER the rows it would spoil):
   B0  preflight         tier truth (jawa/running_mods count + FlowWorks assembly sha), log_revive + tap, calm, clock rate
-  B1  validation_v2     subprocess, --live --current-map: it destroy_bulks every non-colonist and paints its plots over
-                        the whole map, so it runs FIRST, before any pawn of ours exists
+  B1  validation_v2     subprocess, --live --current-map: it keeps the map's own non-colonists (snapshot at start), sweeps
+                        every later arrival and paints its plots over the whole map, so it runs FIRST, before any pawn of ours exists
   B2  zero-tick reads   settings dialog labels (5 items' A1 "dialog not rendered"), tall-tank capacity, readout strings
   B3  serial scripts    trench_cover_proof, climb_proof, sprinkler_live, liquid_checks, proof_hose (each clears its own
                         site, reads it, and is done before the next starts, so they may reuse ground)

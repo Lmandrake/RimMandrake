@@ -296,6 +296,7 @@ def _helpers():
 # not be read, so nothing is known to be safe and sweep_non_colonists refuses to remove anything.
 KEEP_PAWNS = set()
 KEEP_UNREAD = [False]
+KEEP_TAKEN = [False]     # a snapshot of THIS map was taken (sweep_at_start does not re-take it: strays would be kept)
 
 
 def _sweepable(H, x):
@@ -310,7 +311,9 @@ def keep_pawns_on_map(B):
         ids = set(x["id"] for x in H.read_pawns(B, health=False) if _sweepable(H, x))
     except Exception as ex:  # noqa: BLE001
         KEEP_UNREAD[0] = True
+        KEEP_TAKEN[0] = True
         return {"error": repr(ex)[:200]}
+    KEEP_TAKEN[0] = True
     KEEP_PAWNS.update(ids)
     return {"kept": sorted(ids)}
 
@@ -318,6 +321,7 @@ def keep_pawns_on_map(B):
 def keep_pawns_reset():
     KEEP_PAWNS.clear()
     KEEP_UNREAD[0] = False
+    KEEP_TAKEN[0] = False
 
 
 def sweep_non_colonists(B):
@@ -339,6 +343,23 @@ def sweep_non_colonists(B):
     res = H._kill_ids(B, ids, "sweep_non_colonists", pick, action="vanish")
     return {"route": "vanish-per-id", "removed": sorted(res.evidence.get("targeted") or []), "left": list(res.residue),
             "kept": len(KEEP_PAWNS)}
+
+
+def sweep_at_start(B, made_map):
+    """PROOF_SWEEPS_FIX_OTHER_ZOOS_STILL_OPEN: the opening sweep every proof shares. made_map = this run generated the map
+    (a fresh quicktest map, or a clean site save it loaded): the old bulk route, nothing to keep. Otherwise (the current
+    map, a review save) the map's own non-colonists are snapshotted first (keep_pawns_on_map) and this and every later
+    sweep_non_colonists / remove_intruders removes only what arrived after; an unreadable snapshot removes nothing.
+    A made map resets the keep set; on a kept map a second call (the next scene of the same run) keeps the first
+    snapshot rather than re-taking it with the strays that arrived since. -> sweep_non_colonists' dict + "snapshot"."""
+    snap = None
+    if made_map:
+        keep_pawns_reset()
+    elif not KEEP_TAKEN[0]:
+        snap = keep_pawns_on_map(B)
+    sw = sweep_non_colonists(B)
+    sw["snapshot"] = snap
+    return sw
 
 
 def remove_intruders(B, rect=None, margin=SITE_SWEEP_MARGIN):

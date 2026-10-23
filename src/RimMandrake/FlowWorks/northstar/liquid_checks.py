@@ -540,7 +540,8 @@ def main(argv=None):
     B.hp("defaults")
     B.call("jawa/weather_set", weather="Clear", lockWeather=True)
     B.call("jawa/incident_queue_clear")
-    B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
+    # PROOF_SWEEPS_FIX_OTHER_ZOOS_STILL_OPEN: on a map we did not make (the review map) keep its own non-colonists
+    res["sweep_start"] = V.sweep_at_start(B, made_map=a.fresh_map)
     # TESTENV_MEGAPEDE_HARDEN_GATECRASHER: a Megapede + 3 Spelopede reached the golden site mid liquid_heat from a dormant
     # hive; the shared quiet isolated profile clears hostile threat structures and turns the storyteller off (read back)
     res["quiet_site"] = _QS().site_profile_receipt(B, "flowworks_liquid_checks")
