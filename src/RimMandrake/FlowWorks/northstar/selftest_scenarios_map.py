@@ -211,6 +211,19 @@ def main():
           (rc, os.listdir(committed), os.listdir(offline)))
     check("OFFLINE_OUT is under Transient, not the committed review/scenarios",
           "Transient" in M.OFFLINE_OUT and os.path.normpath(M.OFFLINE_OUT) != os.path.normpath(M.OUT))
+    # RIVER_MUFFALO_FIX_SHOWS_ITS_REAR (offline half): the map R build turns every station pawn that carries face:<dir>
+    # (R1's Muffalo) with jawa/set_pawn_rotation on the id the spawn returned, locked, and records no "not turned" note
+    river, BR = M.offline_river(None)
+    ids, rots, last = {}, [], None
+    for t, kw in BR.calls:
+        if t == "jawa/spawn_pawn":
+            last = kw.get("kindDef")
+        if t == "jawa/set_pawn_rotation":
+            rots.append((last, kw.get("dir"), kw.get("lockRotation"), kw.get("pawnId")))
+    muff = [r for r in rots if r[0] == "Muffalo"]
+    check("map R build: the R1 Muffalo is turned side-on (west/east) and locked, once (%s)" % muff,
+          len(muff) == 1 and muff[0][1] in ("west", "east") and muff[0][2] is True and str(muff[0][3]).isdigit()
+          and not [n for n in river["notes"] if "not turned" in n], (rots, river["notes"]))
     # SCENARIO_ONLY_FIX_SWEEPS_THE_WHOLE_ZOO: with --only every sweep keeps the OTHER plots' keep rects; without, none
     from modcheck import reviewmap as RMv
     seen, real = [], RMv.sweep_pawns
