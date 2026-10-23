@@ -1359,7 +1359,9 @@ def dripping_chain(t):
                     _fail("the harvest destroyed the dripping stand (drippingRegrowEnabled is ON "
                           "and the def should regrow it from growth 0.3)")
                 pct = re.search(r"(\d+)\s*%\s*grown", " ".join(lines), re.I)   # NOT "Growth rate: 100%" (live 2026-10-23: that line matched and failed a correct 30% stand)
-                if pct and int(pct.group(1)) > 60:
+                if not pct:
+                    _unmeasured(t, "the surviving stand's inspect carries no 'N% grown' line: %r" % (lines,))
+                if int(pct.group(1)) > 60:
                     _fail("harvested stand reads %s%% grown; it should drop back to ~30%%" % pct.group(1))
     _stable(t, body)
 
