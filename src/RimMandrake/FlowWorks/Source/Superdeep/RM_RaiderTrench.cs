@@ -471,15 +471,17 @@ namespace RimMandrake.FlowWorks
 					waiting = true;
 					return null;   // another raider is setting it, or the slot is past a ladder not yet set: think again later
 				}
-				// LADDER_PARITY_BUILD_NO_KEYS_REQUIRED: "Can pick up each other's ladders": a raider carrying none first takes a
-				// standing portable ladder near it (anyone's, never one on this crossing); none to take: it builds one on the spot
-				if (RM_LadderParity.CarriedLadder(p) == null)
+				// LADDER_PARITY_BUILD_NO_KEYS_REQUIRED: the ladder comes from (owner's order) the raider's own carried one, a
+				// standing one it takes (anyone's, never one on this crossing), wood it has, or a tree it fells for wood (owner Q2:
+				// "they look for something to chop down, get the wood, then build it"); none in reach: ladders cannot do it (fill)
+				Job supply = RM_LadderParity.LadderSupplyJob(p, plan.cells, out bool canBuild);
+				if (supply != null)
 				{
-					Job take = RM_LadderParity.TakeLadderJob(p, plan.cells);
-					if (take != null)
-					{
-						return take;
-					}
+					return supply;
+				}
+				if (!canBuild)
+				{
+					return null;
 				}
 				Warn(p, "RMFlow_RaidersSetLadders");
 				Job job = JobMaker.MakeJob(RM_RaiderTrenchDefOf.RM_RaiderSetLadder, cell, toward);
@@ -819,7 +821,11 @@ namespace RimMandrake.FlowWorks
 					return;
 				}
 				// LADDER_PARITY_BUILD_NO_KEYS_REQUIRED: a carried (or taken) ladder is set; else one is built on the spot
-				Thing ladder = RM_LadderParity.TakeCarried(pawn) ?? ThingMaker.MakeThing(def);
+				Thing ladder = RM_LadderParity.TakeCarried(pawn) ?? (RM_LadderParity.SpendLadderWood(pawn) ? ThingMaker.MakeThing(def) : null);
+				if (ladder == null)
+				{
+					return;   // no ladder carried and no wood: the next think fetches one
+				}
 				ladder.SetFaction(pawn.Faction);
 				GenSpawn.Spawn(ladder, c, map, Rot4.FromIntVec3(wall - c));
 			};

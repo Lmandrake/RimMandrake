@@ -26,9 +26,15 @@ namespace RimMandrake.FlowWorks.SelfTest
         private static string Src(params string[] rel) => RiverSwitchFlipChecks.Src(Path.Combine(rel));
 
         private static bool May(bool noKeys = true, bool faction = true, bool player = false, bool hostile = true,
-            bool prisoner = false, bool breaking = false)
+            bool prisoner = false, bool breaking = false, bool eligible = true)
         {
-            return RM_LadderParityMath.MayClimbLowered(noKeys, faction, player, hostile, prisoner, breaking);
+            return RM_LadderParityMath.MayClimbLowered(noKeys, faction, player, hostile, prisoner, breaking, eligible);
+        }
+
+        private static bool Fits(float size = 1f, bool wheeled = false, bool arms = true, bool jumps = false, bool slithers = false,
+            int over = -1, float max = RM_LadderParityMath.DefaultMaxClimberBodySize)
+        {
+            return RM_LadderParityMath.ClimbEligible(size, max, wheeled, arms, jumps, slithers, over);
         }
 
         public static void Run(Action<string, Action> Case)
@@ -40,11 +46,55 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(May(hostile: false), "a friendly visitor climbs it");
                 Assert(!May(noKeys: false), "can-fail: no-keys off restores the prison-door bar on hostiles");
                 Assert(May(noKeys: false, hostile: false), "no-keys off: friendlies still climb");
-                Assert(!May(faction: false, hostile: false), "can-fail: a wild animal never climbs a ladder");
-                Assert(!May(prisoner: true, player: false, hostile: false), "can-fail: a prisoner stays down");
+                // owner Q4 2026-10-23: "A prison ladder left down is equivalent to a prison door left open... same game rules
+                // apply." Vanilla: a held-open door is FreePassage, which Building_Door.CanPhysicallyPass lets EVERY pawn through
+                Assert(May(prisoner: true, player: false, hostile: false), "a lowered ladder is an open prison door: a prisoner climbs it");
                 Assert(May(prisoner: true, breaking: true), "a prisoner in a prison break climbs");
+                Assert(!May(noKeys: false, prisoner: true, hostile: false), "can-fail: no-keys off: the old prison-door rule holds the prisoner");
+                Assert(May(noKeys: false, prisoner: true, breaking: true), "no-keys off: a prison break still climbs");
+                // owner Q1 2026-10-23: a per-creature evaluation, for everyone (wild things through an open door too)
+                Assert(May(faction: false, hostile: false), "a wild creature that can climb climbs (an open door)");
+                Assert(!May(eligible: false), "can-fail: a creature that cannot climb a ladder never does, no keys or not");
+                Assert(!May(player: true, hostile: false, eligible: false), "can-fail: nor the colony's own (a colony muffalo)");
+                Assert(!May(noKeys: false, faction: false, hostile: false), "can-fail: no-keys off: wild animals stay down as before");
                 // a RAISED wall ladder is still nobody's (his 2026-10-18 jail ruling): LadderUsable is unchanged
                 Assert(!RM_PitTrapMath.LadderUsable(true, true, true, May()), "can-fail: a raised ladder stays shut to everyone");
+            });
+            Case("LadderParity_climbers_per_creature", () =>
+            {
+                // owner Q1 2026-10-23: "Many mechs, droids, humans, animals should be able to climb, jump up alone, or slither
+                // along a ladder as long as they fit in a 1x1 cell area. Bigger things no, wheeled things no, and many creatures
+                // without arms no."
+                Assert(Fits(), "a person (arms, size 1) climbs");
+                Assert(Fits(size: 0.25f, arms: false, slithers: true), "a cobra slithers up");
+                Assert(Fits(size: 0.6f, arms: false, jumps: true), "a jumper jumps up alone");
+                Assert(!Fits(size: 0.5f, arms: false), "can-fail: a dog (no arms, no jump, legs) does not");
+                Assert(!Fits(size: 2.4f), "can-fail: too big for a 1x1 ladder");
+                Assert(!Fits(wheeled: true), "can-fail: wheeled things never");
+                Assert(!Fits(size: 0.5f, arms: false, wheeled: true, slithers: true), "can-fail: a wheeled thing is no slitherer");
+                Assert(Fits(size: RM_LadderParityMath.DefaultMaxClimberBodySize), "the size limit itself fits");
+                Assert(Fits(size: 0.5f, arms: false, over: 1), "a per-def override says yes");
+                Assert(!Fits(over: 0), "can-fail: a per-def override says no");
+                Assert(Fits(size: 3f, over: 1), "the override beats the size rule (a judge's call)");
+            });
+            Case("LadderParity_chop_wood_then_build", () =>
+            {
+                // owner Q2 2026-10-23: "They don't carry wood, they look for something to chop down, get the wood, then build
+                // it. Destructive."
+                var S = RM_LadderParityMath.LadderSource.SetCarried;
+                Assert(RM_LadderParityMath.ChooseLadderSource(true, true, true, true) == S, "a carried ladder first");
+                Assert(RM_LadderParityMath.ChooseLadderSource(false, true, true, true) == RM_LadderParityMath.LadderSource.Take, "then one to take");
+                Assert(RM_LadderParityMath.ChooseLadderSource(false, false, true, true) == RM_LadderParityMath.LadderSource.Build, "wood in hand: build");
+                Assert(RM_LadderParityMath.ChooseLadderSource(false, false, false, true) == RM_LadderParityMath.LadderSource.Chop, "no wood: chop a tree");
+                Assert(RM_LadderParityMath.ChooseLadderSource(false, false, false, false) == RM_LadderParityMath.LadderSource.None,
+                    "can-fail: no tree in reach: no ladder (fill or jump instead)");
+                Assert(RM_LadderParityMath.ChopTicks(800f, 1f) == 800 && RM_LadderParityMath.ChopTicks(800f, 2f) == 400, "vanilla's cut: harvestWork / PlantWorkSpeed");
+                Assert(RM_LadderParityMath.ChopTicks(800f, 0f) == 8000, "can-fail: a pawn who cannot cut is slow, not instant");
+                string r = Src("Superdeep", "RM_RaiderTrench.cs");
+                RiverSwitchFlipChecks.Has(r, @"RM_LadderParity\.SpendLadderWood\(pawn\)", "building a ladder spends the wood");
+                string p = Src("Superdeep", "RM_LadderParity.cs");
+                RiverSwitchFlipChecks.Has(p, @"PlantCollected\(pawn, PlantDestructionMode\.Chop\)", "the tree is felled (destructive)");
+                RiverSwitchFlipChecks.Has(p, @"RM_LadderParityMath\.ChooseLadderSource\(", "the source is chosen by the rule");
             });
             Case("LadderParity_raids_bring_some_ladders_never_all", () =>
             {
@@ -138,7 +188,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(p, @"\[HarmonyPatch\(typeof\(IncidentWorker_Raid\), ""PostProcessSpawnedPawns""\)\]", "carriers handed ladders at arrival");
                 RiverSwitchFlipChecks.Has(p, @"RaidStrategyWorker_Siege", "never to a siege");
                 RiverSwitchFlipChecks.Has(p, @"RM_LadderParityMath\.PickCarriers\(", "the carriers are picked by the rule");
-                foreach (string f in new[] { "ladderNoKeys", "raidLadderChance", "raidLadderCarrierShare", "raiderTakeLadders",
+                foreach (string f in new[] { "ladderNoKeys", "ladderMaxClimberBodySize", "raiderChopRadius", "raidLadderChance", "raidLadderCarrierShare", "raiderTakeLadders",
                     "raiderTakeLadderRadius", "breachRepairEnabled", "ladderOverWalls", "wallLadderSlowFactor" })
                 {
                     Assert(p.Contains("ref " + f + ", \"" + f + "\""), "scribed setting " + f);
@@ -150,6 +200,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(csproj.Contains("Superdeep\\RM_LadderParity.cs") && csproj.Contains("Superdeep\\RM_LadderParityMath.cs"), "compiled");
                 string r = Src("Superdeep", "RM_RaiderTrench.cs");
                 RiverSwitchFlipChecks.Has(r, @"RM_LadderParity\.TakeCarried\(pawn\)", "a carried ladder is set from the inventory");
+                RiverSwitchFlipChecks.Has(u, @"RM_LadderParity\.ClimbEligible\(p\)", "the per-creature rule gates every ladder read");
+                string d = Src("..", "Defs", "Canals", "JobDefs", "FlowWorks_RaiderTrench.xml");
+                Assert(d.Contains("<defName>RM_RaiderChopForLadder</defName>"), "the chop job def");
             });
         }
     }

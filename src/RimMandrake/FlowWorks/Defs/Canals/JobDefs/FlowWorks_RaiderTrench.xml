@@ -23,4 +23,12 @@
     <casualInterruptible>false</casualInterruptible>
     <allowOpportunisticPrefix>false</allowOpportunisticPrefix>
   </JobDef>
+  <!-- LADDER_PARITY_BUILD_NO_KEYS_REQUIRED (owner Q2 2026-10-23): fell a tree for ladder wood. -->
+  <JobDef>
+    <defName>RM_RaiderChopForLadder</defName>
+    <driverClass>RimMandrake.FlowWorks.JobDriver_RM_RaiderChopForLadder</driverClass>
+    <reportString>chopping down TargetA for a ladder.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+    <allowOpportunisticPrefix>false</allowOpportunisticPrefix>
+  </JobDef>
 </Defs>

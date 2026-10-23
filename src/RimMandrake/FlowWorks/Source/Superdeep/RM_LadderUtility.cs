@@ -577,6 +577,11 @@ namespace RimMandrake.FlowWorks
 			{
 				return false;   // PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS: a portable ladder too short for its wall frees nobody
 			}
+			// owner Q1 2026-10-23: a creature that cannot climb a ladder never does, whatever the prison-door setting
+			if (!RM_LadderParity.ClimbEligible(p))
+			{
+				return false;
+			}
 			RM_CompLadder comp = ladder.TryGetComp<RM_CompLadder>();
 			return RM_PitTrapMath.LadderUsable(RimMandrakeFlowWorksSettings.ladderRaiseLowerEnabled,
 				comp != null && comp.raised && !comp.Props.portable, RimMandrakeFlowWorksSettings.ladderPrisonDoorEnabled,
@@ -605,17 +610,13 @@ namespace RimMandrake.FlowWorks
 			{
 				return false;
 			}
-			if (p.IsPrisoner)
-			{
-				return PrisonBreakUtility.IsPrisonBreaking(p);
-			}
-			if (p.Faction == null)
-			{
-				return false; // wild animals and factionless pawns stay down
-			}
-			// LADDER_PARITY_BUILD_NO_KEYS_REQUIRED (owner 2026-10-23: "what are they locked with a key?"): hostiles climb too
-			return RM_LadderParityMath.MayClimbLowered(RM_LadderParitySettings.ladderNoKeys, true, p.Faction == Faction.OfPlayer,
-				Faction.OfPlayer == null || p.Faction.HostileTo(Faction.OfPlayer), false, false);
+			// LADDER_PARITY_BUILD_NO_KEYS_REQUIRED (owner 2026-10-23: "what are they locked with a key?"; Q4: a lowered ladder is a
+			// held-open prison door; Q1: only creatures that can climb one): see RM_LadderParityMath.MayClimbLowered
+			bool prisoner = p.IsPrisoner;
+			return RM_LadderParityMath.MayClimbLowered(RM_LadderParitySettings.ladderNoKeys, p.Faction != null,
+				p.Faction != null && p.Faction == Faction.OfPlayer,
+				p.Faction != null && (Faction.OfPlayer == null || p.Faction.HostileTo(Faction.OfPlayer)), prisoner,
+				prisoner && PrisonBreakUtility.IsPrisonBreaking(p), RM_LadderParity.ClimbEligible(p));
 		}
 	}
 

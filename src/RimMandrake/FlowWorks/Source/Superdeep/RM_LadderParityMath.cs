@@ -22,13 +22,24 @@ namespace RimMandrake.FlowWorks
 		/// <summary>A ladder over a wall: this many of the pawn's own steps (climbing gear is 20). PROVISIONAL.</summary>
 		public const float DefaultWallLadderSlowFactor = 4f;
 
-		/// <summary>May this pawn climb a LOWERED ladder (any standing portable ladder, or a lowered wall ladder)? No keys: every
-		/// pawn of a faction, hostile or not. Prisoners only in a prison break; wild things never. With
-		/// <paramref name="noKeys"/> off, the 2026-10-02 prison-door rule: hostiles barred. (A RAISED wall ladder is nobody's:
+		/// <summary>May this pawn climb a LOWERED ladder (any standing portable ladder, or a lowered wall ladder)? First the
+		/// creature must be able to climb one at all (<paramref name="climbEligible"/>: ClimbEligible, owner Q1). No keys: a
+		/// lowered ladder is a HELD-OPEN door (owner Q4: "A prison ladder left down is equivalent to a prison door left open...
+		/// same game rules apply"): vanilla Building_Door.FreePassage makes CanPhysicallyPass true for every pawn, prisoners and
+		/// wild animals included, so every climber climbs it. With <paramref name="noKeys"/> off, the 2026-10-02 prison-door
+		/// rule: hostiles and wild things barred, prisoners only in a prison break. (A RAISED wall ladder is nobody's:
 		/// RM_PitTrapMath.LadderUsable, unchanged.)</summary>
 		public static bool MayClimbLowered(bool noKeys, bool hasFaction, bool isPlayer, bool hostile, bool prisoner,
-			bool prisonBreaking)
+			bool prisonBreaking, bool climbEligible)
 		{
+			if (!climbEligible)
+			{
+				return false;
+			}
+			if (noKeys)
+			{
+				return true;
+			}
 			if (prisoner)
 			{
 				return prisonBreaking;
@@ -56,6 +67,59 @@ namespace RimMandrake.FlowWorks
 				h ^= h >> 16;
 				return h;
 			}
+		}
+
+		/// <summary>Owner Q1 2026-10-23: the biggest body that fits a 1x1 ladder (a person is 1.0). PROVISIONAL.</summary>
+		public const float DefaultMaxClimberBodySize = 1.2f;
+
+		/// <summary>Owner Q1 2026-10-23, verbatim: <i>"Needs a per-creature evaluation, unfortunately. Many mechs, droids, humans,
+		/// animals should be able to climb, jump up alone, or slither along a ladder as long as they fit in a 1x1 cell area.
+		/// Bigger things no, wheeled things no, and many creatures without arms no."</i> A per-def override (RM_LadderClimber:
+		/// 1 yes, 0 no; -1 none) beats the rule; else: fits (body size at most <paramref name="maxSize"/>), not wheeled, and a
+		/// way up: arms (a manipulation limb), a jump, or a body that slithers (no legs).</summary>
+		public static bool ClimbEligible(float bodySize, float maxSize, bool wheeled, bool hasArms, bool jumps, bool slithers,
+			int overrideClimbs)
+		{
+			if (overrideClimbs >= 0)
+			{
+				return overrideClimbs > 0;
+			}
+			return bodySize <= maxSize && !wheeled && (hasArms || jumps || slithers);
+		}
+
+		public enum LadderSource
+		{
+			None,
+			SetCarried,
+			Take,
+			Build,
+			Chop,
+		}
+
+		/// <summary>Owner Q2 2026-10-23: <i>"They don't carry wood, they look for something to chop down, get the wood, then
+		/// build it. Destructive."</i> A raider's ladder: the one it carries, else one standing to take, else build one from the
+		/// wood it has, else go and chop a tree for wood; None: no ladder (breach by fill, or jump).</summary>
+		public static LadderSource ChooseLadderSource(bool carries, bool takeable, bool hasWood, bool treeInReach)
+		{
+			if (carries)
+			{
+				return LadderSource.SetCarried;
+			}
+			if (takeable)
+			{
+				return LadderSource.Take;
+			}
+			if (hasWood)
+			{
+				return LadderSource.Build;
+			}
+			return treeInReach ? LadderSource.Chop : LadderSource.None;
+		}
+
+		/// <summary>Ticks to fell a tree as vanilla's JobDriver_PlantWork does: harvestWork spent at PlantWorkSpeed a tick.</summary>
+		public static int ChopTicks(float harvestWork, float plantWorkSpeed)
+		{
+			return (int)Math.Ceiling(Math.Max(1f, harvestWork) / Math.Max(0.1f, plantWorkSpeed));
 		}
 
 		/// <summary>"Sometimes but not always": does this raid bring ladders? A stable roll on the raid's seed.</summary>

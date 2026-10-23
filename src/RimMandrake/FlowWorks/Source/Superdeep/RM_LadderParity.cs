@@ -21,6 +21,189 @@ namespace RimMandrake.FlowWorks
 	/// </summary>
 	public static class RM_LadderParity
 	{
+		// ── owner Q1 2026-10-23: who can climb a ladder at all ─────────────
+		internal struct ClimberTraits
+		{
+			public bool wheeled, arms, jumps, slithers;
+			public int over;
+		}
+
+		private static readonly Dictionary<ThingDef, ClimberTraits> traitCache = new Dictionary<ThingDef, ClimberTraits>();
+
+		/// <summary>A race's ladder traits, read once from its body (part tags and names), never from a name list: arms = a
+		/// ManipulationLimbCore part that is not a mouth (EatingSource), or a humanlike; legs = a MovingLimbCore part other than
+		/// the core part (a snake's body is its own moving limb); wheeled = a part whose def name or label
+		/// says wheel/tread/track; slithers = no legs, not wheeled, and it moves; jumps = RM_PitTravelExtension.jumps;
+		/// over = an RM_LadderClimber extension (1 climbs, 0 never, -1 none).</summary>
+		internal static ClimberTraits TraitsOf(ThingDef race)
+		{
+			if (race == null)
+			{
+				return new ClimberTraits { over = 0 };
+			}
+			if (traitCache.TryGetValue(race, out ClimberTraits t))
+			{
+				return t;
+			}
+			t = new ClimberTraits { over = -1 };
+			RM_LadderClimber ext = race.GetModExtension<RM_LadderClimber>();
+			if (ext != null)
+			{
+				t.over = ext.climbs ? 1 : 0;
+			}
+			t.jumps = race.GetModExtension<RM_PitTravelExtension>()?.jumps ?? false;
+			bool legs = false;
+			List<BodyPartRecord> parts = race.race?.body?.AllParts;
+			if (parts != null)
+			{
+				for (int i = 0; i < parts.Count; i++)
+				{
+					BodyPartDef d = parts[i].def;
+					if (d?.tags == null)
+					{
+						continue;
+					}
+					// a mouth or beak is tagged ManipulationLimbCore too (vanilla SnakeMouth: EatingSource + ManipulationLimbCore):
+					// jaws are not arms
+					t.arms |= d.tags.Contains(BodyPartTagDefOf.ManipulationLimbCore) && !d.tags.Contains(BodyPartTagDefOf.EatingSource);
+					// a body that IS its moving limb (vanilla SnakeBody: the core part, MovingLimbCore) slithers; legs hang off it
+					legs |= d.tags.Contains(BodyPartTagDefOf.MovingLimbCore) && parts[i] != race.race.body.corePart;
+					string n = (d.defName + " " + d.label + " " + parts[i].customLabel).ToLowerInvariant();
+					t.wheeled |= n.Contains("wheel") || n.Contains("tread") || n.Contains("track");
+				}
+			}
+			t.arms |= race.race != null && race.race.Humanlike;
+			t.slithers = !legs && !t.wheeled && race.race != null && !race.race.doesntMove && parts != null && parts.Count > 0;
+			traitCache[race] = t;
+			return t;
+		}
+
+		/// <summary>Can this creature climb a ladder at all (owner Q1)? Flyers never need one (FreePitTraveller).</summary>
+		public static bool ClimbEligible(Pawn p)
+		{
+			if (p == null)
+			{
+				return false;
+			}
+			ClimberTraits t = TraitsOf(p.def);
+			return RM_LadderParityMath.ClimbEligible(p.BodySize, RM_LadderParitySettings.ladderMaxClimberBodySize, t.wheeled, t.arms,
+				t.jumps, t.slithers, t.over);
+		}
+
+		// ── owner Q2 2026-10-23: chop a tree for the wood, then build ───────
+		/// <summary>The wood one portable ladder costs (its def's WoodLog cost; 12 if none is listed).</summary>
+		public static int LadderWoodNeeded()
+		{
+			List<ThingDefCountClass> cost = RimMandrakeFlowWorks_DefOf.RM_LadderPortable?.CostList;
+			if (cost != null)
+			{
+				for (int i = 0; i < cost.Count; i++)
+				{
+					if (cost[i].thingDef == ThingDefOf.WoodLog)
+					{
+						return cost[i].count;
+					}
+				}
+			}
+			return 12;
+		}
+
+		public static int WoodCarried(Pawn p)
+		{
+			ThingOwner<Thing> inv = p?.inventory?.innerContainer;
+			return inv == null ? 0 : inv.TotalStackCountOfDef(ThingDefOf.WoodLog);
+		}
+
+		public static bool HasLadderWood(Pawn p)
+		{
+			return WoodCarried(p) >= LadderWoodNeeded();
+		}
+
+		/// <summary>Takes one ladder's wood out of the inventory; false (nothing taken) when there is not enough.</summary>
+		public static bool SpendLadderWood(Pawn p)
+		{
+			int need = LadderWoodNeeded();
+			if (WoodCarried(p) < need)
+			{
+				return false;
+			}
+			ThingOwner<Thing> inv = p.inventory.innerContainer;
+			for (int i = inv.Count - 1; i >= 0 && need > 0; i--)
+			{
+				Thing t = inv[i];
+				if (t.def != ThingDefOf.WoodLog)
+				{
+					continue;
+				}
+				int take = Mathf.Min(need, t.stackCount);
+				Thing part = t.SplitOff(take);
+				part.Destroy();
+				need -= take;
+			}
+			return true;
+		}
+
+		/// <summary>The nearest standing tree this raider can fell for ladder wood (grown enough to yield wood), within the
+		/// chop radius, reachable and unreserved; null when none.</summary>
+		public static Job ChopForLadderJob(Pawn p)
+		{
+			if (RM_LadderParityDefOf.RM_RaiderChopForLadder == null || RM_LadderParitySettings.raiderChopRadius <= 0)
+			{
+				return null;
+			}
+			Map map = p.Map;
+			int r = RM_LadderParitySettings.raiderChopRadius;
+			Plant best = null;
+			int bestD = int.MaxValue;
+			foreach (IntVec3 c in GenRadial.RadialCellsAround(p.Position, r, true))
+			{
+				if (!c.InBounds(map))
+				{
+					continue;
+				}
+				Plant pl = c.GetPlant(map);
+				if (pl == null || pl.def.plant == null || !pl.def.plant.IsTree || pl.def.plant.isStump || pl.def.plant.harvestedThingDef != ThingDefOf.WoodLog
+					|| !pl.HarvestableNow || pl.YieldNow() <= 0)
+				{
+					continue;
+				}
+				int d = c.DistanceToSquared(p.Position);
+				if (d >= bestD || !p.CanReserve(pl) || !p.CanReach(pl, PathEndMode.Touch, Danger.Deadly))
+				{
+					continue;
+				}
+				best = pl;
+				bestD = d;
+				break;   // RadialCellsAround runs nearest-first: the first good tree is the nearest
+			}
+			return best == null ? null : JobMaker.MakeJob(RM_LadderParityDefOf.RM_RaiderChopForLadder, best);
+		}
+
+		/// <summary>The job that gets this raider a ladder it does not yet have (owner Q2's order), or null with
+		/// <paramref name="canBuild"/> true when it may build one now (it carries a ladder or the wood), false when nothing is
+		/// in reach (no ladder: fill or jump).</summary>
+		public static Job LadderSupplyJob(Pawn p, ICollection<IntVec3> keep, out bool canBuild)
+		{
+			bool carries = CarriedLadder(p) != null;
+			Job take = carries ? null : TakeLadderJob(p, keep);
+			bool wood = !carries && take == null && HasLadderWood(p);
+			Job chop = carries || take != null || wood ? null : ChopForLadderJob(p);
+			canBuild = false;
+			switch (RM_LadderParityMath.ChooseLadderSource(carries, take != null, wood, chop != null))
+			{
+				case RM_LadderParityMath.LadderSource.SetCarried:
+				case RM_LadderParityMath.LadderSource.Build:
+					canBuild = true;
+					return null;
+				case RM_LadderParityMath.LadderSource.Take:
+					return take;
+				case RM_LadderParityMath.LadderSource.Chop:
+					return chop;
+				default:
+					return null;
+			}
+		}
+
 		/// <summary>A minified portable ladder in this pawn's inventory, or null.</summary>
 		public static MinifiedThing CarriedLadder(Pawn p)
 		{
@@ -303,6 +486,7 @@ namespace RimMandrake.FlowWorks
 	public static class RM_LadderParityDefOf
 	{
 		public static JobDef RM_RaiderTakeLadder;
+		public static JobDef RM_RaiderChopForLadder;
 
 		static RM_LadderParityDefOf()
 		{
@@ -350,6 +534,71 @@ namespace RimMandrake.FlowWorks
 			take.defaultCompleteMode = ToilCompleteMode.Instant;
 			yield return take;
 		}
+	}
+
+	/// <summary>Owner Q2 2026-10-23 ("they look for something to chop down, get the wood, then build it. Destructive."): fell
+	/// a tree as vanilla's cut does (harvestWork at PlantWorkSpeed), PlantCollected as a chop (the stump stays), and keep
+	/// the logs it yields in the inventory for the ladder.</summary>
+	public class JobDriver_RM_RaiderChopForLadder : JobDriver
+	{
+		public override bool TryMakePreToilReservations(bool errorOnFailed)
+		{
+			return pawn.Reserve(job.targetA, job, 1, -1, null, errorOnFailed);
+		}
+
+		protected override IEnumerable<Toil> MakeNewToils()
+		{
+			this.FailOnDespawnedOrNull(TargetIndex.A);
+			yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch);
+			Toil cut = ToilMaker.MakeToil("RM_RaiderChopForLadder");
+			cut.initAction = delegate
+			{
+				pawn.pather.StopDead();
+			};
+			cut.tickAction = delegate
+			{
+				pawn.rotationTracker.FaceTarget(job.targetA);
+			};
+			cut.defaultCompleteMode = ToilCompleteMode.Delay;
+			Plant tree = job.targetA.Thing as Plant;
+			float speed = StatDefOf.PlantWorkSpeed.Worker.IsDisabledFor(pawn) ? 0.1f : pawn.GetStatValue(StatDefOf.PlantWorkSpeed);
+			cut.defaultDuration = RM_LadderParityMath.ChopTicks(tree?.def.plant?.harvestWork ?? 800f, speed);
+			cut.handlingFacing = true;
+			cut.FailOnCannotTouch(TargetIndex.A, PathEndMode.Touch);
+			cut.WithProgressBarToilDelay(TargetIndex.A);
+			yield return cut;
+			Toil fell = ToilMaker.MakeToil("RM_RaiderChopForLadder_Fell");
+			fell.initAction = delegate
+			{
+				if (!(job.targetA.Thing is Plant pl) || !pl.Spawned)
+				{
+					return;
+				}
+				int yield = pl.YieldNow();
+				ThingDef wood = pl.def.plant.harvestedThingDef;
+				pl.PlantCollected(pawn, PlantDestructionMode.Chop);
+				while (yield > 0 && wood != null)
+				{
+					Thing logs = ThingMaker.MakeThing(wood);
+					logs.stackCount = Mathf.Min(yield, wood.stackLimit);
+					yield -= logs.stackCount;
+					if (!pawn.inventory.innerContainer.TryAdd(logs))
+					{
+						GenPlace.TryPlaceThing(logs, pawn.Position, Map, ThingPlaceMode.Near);
+					}
+				}
+			};
+			fell.defaultCompleteMode = ToilCompleteMode.Instant;
+			yield return fell;
+		}
+	}
+
+	/// <summary>Owner Q1 2026-10-23: a per-def judgment on who climbs ladders, beating the body rule
+	/// (RM_LadderParityMath.ClimbEligible). On a race ThingDef: &lt;li Class="RimMandrake.FlowWorks.RM_LadderClimber"&gt;
+	/// &lt;climbs&gt;false&lt;/climbs&gt;&lt;/li&gt;. Table and borderline cases: design/RimMandrake/ladder_climbers_2026-10-23.md.</summary>
+	public class RM_LadderClimber : DefModExtension
+	{
+		public bool climbs = true;
 	}
 
 	/// <summary>"Raiders should show up with ladders sometimes but not always, and certainly not on every raider": a stable
@@ -544,6 +793,10 @@ namespace RimMandrake.FlowWorks
 	public static class RM_LadderParitySettings
 	{
 		public static bool ladderNoKeys = true;
+		/// <summary>Owner Q1: "as long as they fit in a 1x1 cell area" (PROVISIONAL size).</summary>
+		public static float ladderMaxClimberBodySize = RM_LadderParityMath.DefaultMaxClimberBodySize;
+		/// <summary>Owner Q2: how far a ladderless raider looks for a tree to chop.</summary>
+		public static int raiderChopRadius = 30;
 		/// <summary>PROVISIONAL: "sometimes but not always".</summary>
 		public static float raidLadderChance = 0.35f;
 		/// <summary>PROVISIONAL: "certainly not on every raider".</summary>
@@ -565,6 +818,8 @@ namespace RimMandrake.FlowWorks
 		public static void ExposeData()
 		{
 			Scribe_Values.Look(ref ladderNoKeys, "ladderNoKeys", true);
+			Scribe_Values.Look(ref ladderMaxClimberBodySize, "ladderMaxClimberBodySize", RM_LadderParityMath.DefaultMaxClimberBodySize);
+			Scribe_Values.Look(ref raiderChopRadius, "raiderChopRadius", 30);
 			Scribe_Values.Look(ref raidLadderChance, "raidLadderChance", 0.35f);
 			Scribe_Values.Look(ref raidLadderCarrierShare, "raidLadderCarrierShare", 0.25f);
 			Scribe_Values.Look(ref raiderTakeLadders, "raiderTakeLadders", true);
@@ -580,9 +835,14 @@ namespace RimMandrake.FlowWorks
 			list.Label("Ladders: no keys");
 			RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, ResetAll);
 			list.CheckboxLabeled("Ladders have no keys", ref ladderNoKeys,
-				"On, anyone climbs any lowered ladder or portable ladder, yours or the raiders': a trapped enemy walks out up "
-			  + "your lowered ladder, your people up theirs. Raise a wall ladder to shut it (raised, nobody climbs it). Wild "
-			  + "animals never climb; prisoners only in a prison break. Off: hostiles climb only their own raid's ladders.");
+				"On, a lowered ladder is an open door: every creature that can climb one climbs it, yours or the raiders', "
+			  + "prisoners and wild animals too (a prison ladder left down is a prison door left open). Raise a wall ladder to "
+			  + "shut it (raised, nobody climbs it). Off: hostiles climb only their own raid's ladders, wild animals never, "
+			  + "prisoners only in a prison break.");
+			list.Label("  Biggest creature that climbs a ladder: body size " + ladderMaxClimberBodySize.ToString("0.0"), tooltip:
+				"A ladder is one square wide. A creature climbs one if it is no bigger than this, has no wheels, and has arms, "
+			  + "jumps, or slithers (no legs). A person is 1.0. Some creatures carry their own yes/no.");
+			ladderMaxClimberBodySize = Mathf.Round(list.Slider(ladderMaxClimberBodySize, 0.5f, 3f) * 10f) / 10f;
 			list.Label("  Raids that bring ladders: " + Mathf.RoundToInt(raidLadderChance * 100f) + "%", tooltip:
 				"This share of raids (never a siege) arrive with portable ladders. 0% = raiders build every ladder on the spot.");
 			raidLadderChance = Mathf.Round(list.Slider(raidLadderChance, 0f, 1f) * 20f) / 20f;
@@ -594,6 +854,10 @@ namespace RimMandrake.FlowWorks
 			  + "it needs one. Your colonists can uninstall raiders' portable ladders like their own.");
 			list.Label("  How far a raider goes for one: " + raiderTakeLadderRadius + " squares");
 			raiderTakeLadderRadius = Mathf.RoundToInt(list.Slider(raiderTakeLadderRadius, 5f, 60f));
+			list.Label("  How far a raider goes to chop a tree for ladder wood: " + raiderChopRadius + " squares", tooltip:
+				"Raiders carry no wood: one with no ladder to carry or take fells the nearest grown tree, keeps the logs and "
+			  + "builds the ladder (12 wood). 0 = never; with no tree in reach they breach by filling instead.");
+			raiderChopRadius = Mathf.RoundToInt(list.Slider(raiderChopRadius, 0f, 60f));
 			list.CheckboxLabeled("Repair breach order", ref breachRepairEnabled,
 				"Orders → Repair breach: dig a causeway raiders shovelled into a trench back to the depth it had.");
 			list.CheckboxLabeled("Ladders go over walls", ref ladderOverWalls,
