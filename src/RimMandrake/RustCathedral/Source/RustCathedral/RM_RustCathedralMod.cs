@@ -100,7 +100,7 @@ namespace RimMandrake.RustCathedral
             // the absorbed kits' static fields are scribed here directly.
             Scribe_Values.Look(ref RustCathedralHumSettings.humMechanicEnabled, "hum_humMechanicEnabled", true);
             Scribe_Values.Look(ref RustCathedralHumSettings.commentaryEnabled, "hum_commentaryEnabled", true);
-            Scribe_Values.Look(ref RustCathedralHumSettings.stageKeyedCommentaryEnabled, "hum_stageKeyedCommentaryEnabled", true);
+            Scribe_Values.Look(ref RustCathedralHumSettings.stageKeyedCommentaryEnabled, "hum_stageKeyedCommentaryEnabled", false);
             Scribe_Values.Look(ref RustCathedralHumSettings.goodwillDrainEnabled, "hum_goodwillDrainEnabled", true);
             Scribe_Values.Look(ref RustCathedralHumSettings.irritationDecayRateMultiplier, "hum_irritationDecayRateMultiplier", 1f);
             Scribe_Values.Look(ref RustCathedralHumSettings.boltDanceEnabled, "hum_boltDanceEnabled", true);
@@ -160,7 +160,7 @@ namespace RimMandrake.RustCathedral
         private static readonly HashSet<string> collapsedSections = new HashSet<string> { "Not wired yet (these change nothing)" };
 
         /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
-        /// should draw. Scope the biome worker (GetScore) and three GenSteps (borehulk placement, canal eels, strays) run at world or map generation ([new maps only]); the roach think node, the borehulk drill comp's tick and its grind roll read live ([now]). The four cross-biome fields are read by nothing, so they sit in the collapsed change-nothing group (crossBiomeBiomeList is a string with no control and is kept only as a saved key).ED per setting against its read site (2026-10-10): the biome worker (GetScore) and three GenSteps (borehulk placement, canal eels, strays) run at world or map generation ([new maps only]); the roach think node, the borehulk drill comp's tick and its grind roll read live ([now]). The four cross-biome fields are read by nothing, so they sit in the collapsed change-nothing group (crossBiomeBiomeList is a string with no control and is kept only as a saved key).</summary>
+        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): the biome worker (GetScore) and three GenSteps (borehulk placement, canal eels, strays) run at world or map generation ([new maps only]); the roach think node, the borehulk drill comp's tick and its grind roll read live ([now]). The four cross-biome fields are read by nothing, so they sit in the collapsed change-nothing group (crossBiomeBiomeList is a string with no control and is kept only as a saved key).</summary>
         private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
         {
             bool searching = !string.IsNullOrWhiteSpace(searchQuery);

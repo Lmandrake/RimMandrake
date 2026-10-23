@@ -18,7 +18,7 @@ namespace RimMandrake.RustCathedral.Hum
 		public static bool humMechanicEnabled = true;
 		public static bool commentaryEnabled = true;
 		// Stage-keyed commentary pools (band x conduct-stage). Off: only each band's any-stage pool speaks.
-		public static bool stageKeyedCommentaryEnabled = true;
+		public static bool stageKeyedCommentaryEnabled = false;   // held OFF 2026-10-23 (fluff review): the 20 stage pools wait on the arc
 		public static bool goodwillDrainEnabled = true;
 		public static float irritationDecayRateMultiplier = 1f;
 
@@ -102,7 +102,7 @@ namespace RimMandrake.RustCathedral.Hum
 			base.ExposeData();
 			Scribe_Values.Look(ref humMechanicEnabled, "humMechanicEnabled", true);
 			Scribe_Values.Look(ref commentaryEnabled, "commentaryEnabled", true);
-			Scribe_Values.Look(ref stageKeyedCommentaryEnabled, "stageKeyedCommentaryEnabled", true);
+			Scribe_Values.Look(ref stageKeyedCommentaryEnabled, "stageKeyedCommentaryEnabled", false);
 			Scribe_Values.Look(ref goodwillDrainEnabled, "goodwillDrainEnabled", true);
 			Scribe_Values.Look(ref irritationDecayRateMultiplier, "irritationDecayRateMultiplier", 1f);
 			Scribe_Values.Look(ref boltDanceEnabled, "boltDanceEnabled", true);
@@ -158,7 +158,7 @@ namespace RimMandrake.RustCathedral.Hum
         private static readonly HashSet<string> collapsedSections = new HashSet<string> { "unused" };
 
         /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
-        /// should draw. Scope the biome worker (GetScore) and three GenSteps (borehulk placement, canal eels, strays) run at world or map generation ([new maps only]); the roach think node, the borehulk drill comp's tick and its grind roll read live ([now]). The four cross-biome fields are read by nothing, so they sit in the collapsed change-nothing group (crossBiomeBiomeList is a string with no control and is kept only as a saved key).ED per setting against its read site (2026-10-10): the biome worker (GetScore) and three GenSteps (borehulk placement, canal eels, strays) run at world or map generation ([new maps only]); the roach think node, the borehulk drill comp's tick and its grind roll read live ([now]). The four cross-biome fields are read by nothing, so they sit in the collapsed change-nothing group (crossBiomeBiomeList is a string with no control and is kept only as a saved key).</summary>
+        /// should draw. Scope AUDITED per section (2026-10-10, the scope tags below): every hum setting is read live on a tick, an event or a job ([now]), except the drill response (read when the storyteller rolls the incident) and the roll's duration (read at the next roll), which are [next pulse]. Nothing here is read at map generation.</summary>
         private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
         {
             bool searching = !string.IsNullOrWhiteSpace(searchQuery);
