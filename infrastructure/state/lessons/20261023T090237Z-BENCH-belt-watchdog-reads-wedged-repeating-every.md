@@ -1,0 +1,1 @@
+belt_watchdog reads WEDGED ('repeating every frame') off a FINISHED burst still in Player.log's tail, e.g. 100 FlowWorks conservation exceptions from a proof map that was already unloaded; before killing the game, count the line twice ~20 s apart while ticking, and check which 'Loading game'/'Initializing new game' block the burst sits in (BENCH live batch 2026-10-23)
