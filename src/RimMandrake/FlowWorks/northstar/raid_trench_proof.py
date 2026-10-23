@@ -30,6 +30,16 @@ Rows:
   RAID_FILL_CAUSEWAY        PASS/FAIL  (--depth 8, past the portable ladder reach) RAIDERS_TRENCH A3: a ring square filled
                                        shallower than dug and a raider used it. First live run 2026-10-22: FAIL, raiders
                                        Wait at the lip (CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP).
+  LADDER_PARITY_* rows (LADDER_PARITY_BUILD_NO_KEYS_REQUIRED, owner by card 2026-10-23; design
+  design/RimMandrake/ladder_parity_2026-10-23.md; reads/acts through RM_LadderParity.ProofLadderParity):
+  LADDER_PARITY_BREACH_SCAR_REPAIR      (--depth 8) every square the raid filled carries a breach scar at its dug depth,
+                                       and the real Orders > Repair breach designator puts a dig-to order back to it.
+  LADDER_PARITY_RAIDERS_USE_COLONY_LADDERS (--direct --colony-ladders) the PLAYER's portable ladders stand on both walls of the
+                                       east row; a raider reaches the island over them ("no keys") and the raid sets no
+                                       ladder of its own (raider-faction ways stay 0).
+  LADDER_PARITY_RAID_BRINGS_SOME_LADDERS (--carriers, a storyteller raid) with the raid-ladder chance forced to 100 % for the
+                                       run (restored after), at least one raider and never every raider arrives carrying a
+                                       minified portable ladder.
 """
 import argparse
 import json
@@ -148,6 +158,15 @@ def job_trace(B, pid):
     return str(r.get("result") or "no answer")[:600]
 
 
+def parity(B, arg):
+    """RM_LadderParity.ProofLadderParity, as text; a refused or raising call is its own text, never a crash."""
+    try:
+        r = B.call("jawa/static_call", type="RimMandrake.FlowWorks.RM_LadderParity", method="ProofLadderParity", args=arg) or {}
+        return str(r.get("result") or r.get("message") or r)[:600]
+    except Exception as ex:  # noqa: BLE001
+        return "ERROR %s: %s" % (type(ex).__name__, ex)
+
+
 def main(argv=None):
     """Runs the proof; the storyteller setting is restored in a finally whatever the body does (raise, Ctrl-C, early return)."""
     hold = {}
@@ -177,6 +196,10 @@ def _run(argv, hold):
                     "(RAIDERS_TRENCH A4: a jump-pack raider jumps the trench and lands on its feet)")
     ap.add_argument("--preladder", action="store_true", help="--direct only: the raid's own scaling ladders already stand on "
                     "both walls on the east row (TRENCH_CROSSING A3: it walks straight across); colonists boxed")
+    ap.add_argument("--colony-ladders", action="store_true", help="--direct only: the PLAYER's portable ladders stand on both "
+                    "walls of the east row (LADDER_PARITY: raiders climb them, no keys); colonists boxed")
+    ap.add_argument("--carriers", action="store_true", help="storyteller raid with the raid-ladder chance forced to 100%% for "
+                    "the run: LADDER_PARITY_RAID_BRINGS_SOME_LADDERS")
     ap.add_argument("--depth", type=int, default=4, help="ring depth in notches (4 = 2 m; 8 = 4 m, past the 3 m portable "
                     "ladder reach: RAIDERS_TRENCH A3 expects a fill causeway)")
     ap.add_argument("--direct", action="store_true", help="spawn 6 pirates 30 squares east into LordJob_AssaultColony "
@@ -254,7 +277,7 @@ def _run(argv, hold):
     cols = B.probe_of(HPROBE, "colonists").get("pawns") or []
     for i, p in enumerate(cols):
         B.probe_of(HPROBE, "pawn:%d=tp:%d,%d" % (p["id"], c[0] - 2 + (i % 4), c[1] + (i // 4)))
-    if a.jump_packs or a.preladder:
+    if a.jump_packs or a.preladder or a.colony_ladders:
         # SITE (belt live 2026-10-22, first --jump-packs run): the gunners shot every island colonist down across the moat by
         # t+4000, after which RM_RaiderTrench.TargetFor has no free colonist and nobody crosses. The colonists stand inside a
         # closed granite box (Chebyshev 3), out of sight, as drawbridge_proof's RAID_UP does.
@@ -299,9 +322,11 @@ def _run(argv, hold):
         for kind, n in (("Mercenary_Gunner", 4), ("Mercenary_Slasher", 2)):
             sp = B.call("jawa/spawn_pawn", kindDef=kind, x=c[0] + 30, z=c[1], faction=fac, count=n) or {}
             ids += [str(p_.get("id")) for p_ in sp.get("pawns") or []]
-        if a.preladder:
+        if a.preladder or a.colony_ladders:
             pre = "RM_LadderPortable:%d,%d,1;RM_LadderPortable:%d,%d,3" % (c[0] + 6, c[1], c[0] + 5, c[1])   # outer wall faces the east bank, inner the island
-            res["preladder"] = str(B.call("jawa/build_batch", ops=pre, faction=fac, wipeExisting=False) or {})[:300]
+            # LADDER_PARITY: --colony-ladders builds the same two ladders as the PLAYER's (build_batch's default faction)
+            kw = {} if a.colony_ladders else {"faction": fac}
+            res["preladder"] = str(B.call("jawa/build_batch", ops=pre, wipeExisting=False, **kw) or {})[:300]
             adv(70)
         if a.jump_packs:
             for i_ in ids:
@@ -309,8 +334,23 @@ def _run(argv, hold):
         fr = B.call("jawa/lord_assault_spawn", pawns=",".join(ids)) or {}
         say("direct assault: %d pawns %s; lord %s" % (len(ids), ids, json.dumps(fr, default=str)[:300]))
     else:
+        if a.carriers:
+            res["ladderChance"] = parity(B, "chance:100")
         fr = B.call("jawa/fire_raid", dryRun=False, points=a.points) or {}
         say("raid fired: success=%s %s" % (fr.get("success"), json.dumps(fr, default=str)[:300]))
+        if a.carriers:
+            # PostProcessSpawnedPawns hands the ladders out as the raid spawns: read them now, then restore the chance
+            txt_c = parity(B, "carriers")
+            was = next((t_[4:] for t_ in str(res["ladderChance"]).split() if t_.startswith("was=")), None)
+            res["ladderChanceRestore"] = parity(B, "chance:%s" % was) if was is not None else "NOT RESTORED (no prior read)"
+            kv = dict(t_.split("=", 1) for t_ in txt_c.split() if "=" in t_)
+            try:
+                nr, nc = int(kv.get("raiders")), int(kv.get("carriers"))
+                st_c = "PASS" if nr >= 2 and 1 <= nc < nr else "FAIL"
+            except (TypeError, ValueError):
+                st_c = "UNMEASURED"
+            row("LADDER_PARITY_RAID_BRINGS_SOME_LADDERS", st_c, {"read": txt_c, "chance": res["ladderChance"],
+                "restore": res["ladderChanceRestore"], "bar": "raiders >= 2; 1 <= carriers < raiders"})
     res["raid"] = fr
     t, k = 0, 0
     while t < a.ticks:
@@ -429,7 +469,24 @@ def _run(argv, hold):
                 "PASS" if det["onIsland"] and len(ways) <= 2 else "FAIL")
         row("RAID_PRELADDERED_CROSSES", st_p, {"onIsland": det["onIsland"], "inTrench": det["inTrench"], "raiderWays": ways,
                                                "preladder": res.get("preladder"), "ticksWatched": det.get("ticksWatched")})
-    if a.jump_packs or a.preladder:
+    if a.colony_ladders:
+        # LADDER_PARITY: the player's ladders carry the raid across; the raid needs none of its own
+        st_k = ("UNMEASURED" if cameNear < 2 or sealed != "PASS" else
+                "PASS" if det["onIsland"] and not ways else "FAIL")
+        row("LADDER_PARITY_RAIDERS_USE_COLONY_LADDERS", st_k, {"onIsland": det["onIsland"], "inTrench": det["inTrench"],
+            "raiderWays": ways, "preladder": res.get("preladder"),
+            "bar": "a raider on the island over the PLAYER's two ladders; no raider-faction way set"})
+    if a.depth > 6 and filled:
+        # LADDER_PARITY: each filled square carries its scar at the dug depth; the real designator orders it dug back
+        reps = {"%d,%d" % (x, z): parity(B, "repair:%d,%d" % (x, z)) for x, z, _d in filled}
+        good = [k_ for k_, v_ in reps.items()
+                if "accepted=True" in v_ and "digTarget=%s" % dug.get(tuple(int(q) for q in k_.split(","))) in v_]
+        row("LADDER_PARITY_BREACH_SCAR_REPAIR", "PASS" if len(good) == len(reps) else "FAIL",
+            {"repairs": reps, "dug": {"%d,%d" % k_: v_ for k_, v_ in dug.items() if "%d,%d" % k_ in reps},
+             "bar": "every filled square: Repair breach accepted, dig-to target = the depth it was dug to"})
+    elif a.depth > 6:
+        row("LADDER_PARITY_BREACH_SCAR_REPAIR", "UNMEASURED", {"why": "the raid filled no square", "filled": filled})
+    if a.jump_packs or a.preladder or a.colony_ladders:
         a2 = "UNMEASURED"       # jump packs come first in the owner's order: ladders/fill are not asked of this run
     row("RAID_LADDER_BREACH" if a.depth <= 6 else "RAID_FILL_CAUSEWAY", a2,
         {"onIsland": det["onIsland"], "inTrench": det["inTrench"], "raiderWays": ways, "filledSquares": filled,
