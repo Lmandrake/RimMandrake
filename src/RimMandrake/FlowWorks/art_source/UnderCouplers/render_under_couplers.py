@@ -11,6 +11,8 @@ An approximation of the live draw (straight hose, flat pose, no shadows/tint), f
 
   python3 render_under_couplers.py <outdir>     one PNG per fixture x look: top = game scale (64 px/cell), bottom = 4x
   python3 render_under_couplers.py <outdir> --lane 1   each side's hose on lane 1 where the side has one (default: lane 0)
+  python3 render_under_couplers.py <outdir> --joins DIR   AFTER uses DIR/<Look>/UnderCollar.png + UnderPipe.png (candidate
+                                                          art, not installed); BEFORE then shows the INSTALLED couplers
 """
 import math
 import os
@@ -64,7 +66,8 @@ def render(b, look, g, dz_table, geo, ppc, after):
     can = Image.new("RGBA", (W, H), GROUND)
     w2p = lambda p: ((p[0] - x0) * ppc, (z1 - p[1]) * ppc)
     hlook = look if look in gate.LOOKS else "Scrapper"
-    collar, pipe = (Image.open(os.path.join(gate.JOINS, hlook, n + ".png")).convert("RGBA") for n in ("UnderCollar", "UnderPipe"))
+    jdir = JOINS_ALT if (after and JOINS_ALT) else gate.JOINS
+    collar, pipe = (Image.open(os.path.join(jdir, hlook, n + ".png")).convert("RGBA") for n in ("UnderCollar", "UnderPipe"))
     strand, coupling, binding = hose_tex(hlook, "Strand_Flat"), hose_tex(hlook, "Coupling_Bare"), hose_tex(hlook, "Binding")
     seen = set()
     pl = gate.ports(b, look, dz_table)
@@ -77,10 +80,10 @@ def render(b, look, g, dz_table, geo, ppc, after):
         nx, nz = gate.SIDES[side]
         d = (-nx, -nz)                    # inward: end cell -> fixture
         reach = gate.reach_of(pt, side, b["size"], geo)
-        clipped = gate.table_reach(TABLE, b, look, side, pt) if after else None
+        clipped = gate.table_reach(TABLE, b, look, side, pt) if (after or JOINS_ALT) else None
         if clipped is not None and clipped >= 0:
             reach = clipped
-        if after and (clipped is None or clipped >= 0):
+        if (after or JOINS_ALT) and (clipped is None or clipped >= 0):
             cl, cw, pw = geo
             pl = reach - cl / 2
             quad(can, pipe, (pt[0] + d[0] * (cl / 2 + pl / 2), pt[1] + d[1] * (cl / 2 + pl / 2)), d, pl, pw, w2p, ppc)
@@ -106,8 +109,10 @@ def sheet(b, look, g, dz_table, geo):
     W = max(sum(t.width for t in row) + gap for row in tiles)
     H = sum(row[0].height for row in tiles) + gap + head
     out = Image.new("RGBA", (W, H), (36, 36, 36, 255))
-    ImageDraw.Draw(out).text((6, 5), "%s %s | left BEFORE (hose stub only), right AFTER (under-coupler beneath the fixture) | "
-                             "top game scale 64 px/cell, bottom 4x | offline approximation" % (b["def"], look), fill=(235, 235, 235))
+    what = ("left INSTALLED couplers, right CANDIDATE couplers (%s)" % os.path.basename(JOINS_ALT.rstrip("/"))) if JOINS_ALT else \
+        "left BEFORE (hose stub only), right AFTER (under-coupler beneath the fixture)"
+    ImageDraw.Draw(out).text((6, 5), "%s %s | %s | top game scale 64 px/cell, bottom 4x | offline approximation"
+                             % (b["def"], look, what), fill=(235, 235, 235))
     y = head
     for row in tiles:
         x = 0
@@ -119,10 +124,15 @@ def sheet(b, look, g, dz_table, geo):
 
 
 LANE = None
+JOINS_ALT = None
 
 
 def main(argv):
-    global LANE
+    global LANE, JOINS_ALT
+    if "--joins" in argv:
+        i = argv.index("--joins")
+        JOINS_ALT = os.path.abspath(argv[i + 1])
+        argv = argv[:i] + argv[i + 2:]
     if "--lane" in argv:
         i = argv.index("--lane")
         LANE = int(argv[i + 1])

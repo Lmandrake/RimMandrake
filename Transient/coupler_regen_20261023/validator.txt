@@ -1,0 +1,13 @@
+# validate_sprite.py vs the INSTALLED sprite of the same slot. NOTE: the installed procedural UnderPipe/UnderCollar themselves REJECT on 'corners opaque' (alpha 127 at all 4 corners): a strip texture stretched edge to edge must touch its edges, so the corner family is the wrong check for this art class (like Graphic_Random siblings). All other families listed below.
+profile Scrapper UnderCollar: clean (other than corners)
+profile Scrapper UnderPipe: clean (other than corners)
+profile Industrial UnderCollar: clean (other than corners)
+profile Industrial UnderPipe: clean (other than corners)
+profile Modern UnderCollar: clean (other than corners)
+profile Modern UnderPipe: clean (other than corners)
+profile Futuristic UnderCollar: clean (other than corners)
+profile Futuristic UnderPipe: clean (other than corners)
+textured Scrapper UnderPipe: clean (other than corners)
+textured Industrial UnderPipe: clean (other than corners)
+textured Modern UnderPipe: clean (other than corners)
+textured Futuristic UnderPipe: clean (other than corners)
