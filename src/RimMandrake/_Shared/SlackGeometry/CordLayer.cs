@@ -427,8 +427,33 @@ namespace RimMandrake.Shared.Slack
             return false;
         }
 
-        private static List<V2> AddLoops(CordWorld w, List<V2> Q, double[] ramp, LayParams prm, CordRng rr, double target, SettleStats st)
+        /// <summary>CORD_LOOP_UNTANGLE_LASSOED_A_PIPE: the cells the strand already runs through before any loop is spliced
+        /// (null in a world with no busy cells: nothing to check).</summary>
+        private static HashSet<Cell> OwnCells(CordWorld w, List<V2> Q)
         {
+            if (!w.HasBusy) return null;
+            var own = new HashSet<Cell>();
+            foreach (V2 q in Q) own.Add(q.Floor);
+            return own;
+        }
+
+        /// <summary>CORD_LOOP_UNTANGLE_LASSOED_A_PIPE (live 2026-10-23, map R C1: a battery-to-pump cord looped round the water
+        /// pipe beside it): a canned shape may not reach onto a busy cell (another pipe or conduit) the strand does not
+        /// already run through.</summary>
+        internal static bool Lassoes(CordWorld w, List<V2> shape, HashSet<Cell> own)
+        {
+            if (own == null) return false;
+            foreach (V2 q in shape)
+            {
+                Cell c = q.Floor;
+                if (w.IsBusy(c) && !own.Contains(c)) return true;
+            }
+            return false;
+        }
+
+        internal static List<V2> AddLoops(CordWorld w, List<V2> Q, double[] ramp, LayParams prm, CordRng rr, double target, SettleStats st)
+        {
+            HashSet<Cell> own = OwnCells(w, Q);
             double[] s = Geo.CumLen(Q);
             double L = s[s.Length - 1];
             if (L > LongRun && prm.HeapP > 0)
@@ -452,7 +477,7 @@ namespace RimMandrake.Shared.Slack
                     for (int tries = 0; tries < 5 && r >= 0.18; tries++, r *= 0.7)
                     {
                         List<V2> c = Heap(Q[j], t, nrm, r, side, re);
-                        if (AllClear(w, c, LayParams.RC + 0.02) && !c.Any(q => w.IsDoor(q.Floor))) { shape = c; break; }
+                        if (AllClear(w, c, LayParams.RC + 0.02) && !c.Any(q => w.IsDoor(q.Floor)) && !Lassoes(w, c, own)) { shape = c; break; }
                     }
                     if (shape == null) continue;
                     double fromStart = s[j], fromEnd = s[s.Length - 1] - s[j];
@@ -501,7 +526,7 @@ namespace RimMandrake.Shared.Slack
                 {
                     List<V2> c = cand.Key ? Heap(Q[j], t, nrm, r, side, rr) : fig8 ? Figure8(Q[j], t, nrm, r, side) : Loop(Q[j], t, nrm, r, side);
                     bool over = s[s.Length - 1] + Geo.Length(c) > target * 1.25;
-                    if (AllClear(w, c, LayParams.RC + 0.02) && !over) { shape = c; break; }
+                    if (AllClear(w, c, LayParams.RC + 0.02) && !over && !Lassoes(w, c, own)) { shape = c; break; }
                     r *= 0.7;
                     if (r < 0.18) break;
                 }

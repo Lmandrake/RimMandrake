@@ -46,6 +46,7 @@ namespace RimMandrake.GimmeSomeSlack
             }
             foreach (Plant p in map.listerThings.ThingsInGroup(ThingRequestGroup.Plant))
                 if (p.def.plant != null && p.def.plant.IsTree) world.SetExtraCost(C(p.Position), 1.5f);
+            MarkBusy(map, world);
 
             var transmitterBuildings = new List<CompPower>();
             var transmitterMachines = new Dictionary<Thing, MachineInfo>();
@@ -123,6 +124,25 @@ namespace RimMandrake.GimmeSomeSlack
             AddTapNodes(map, world);
             return world;
         }
+
+        /// <summary>CORD_LOOP_UNTANGLE_LASSOED_A_PIPE: every walkable, unfogged cell holding a drawn linear building (any linked
+        /// graphic: pipes of any mod, power conduits of any net) is busy, so a cord's canned slack loop never lassoes it
+        /// (CordLayer.Lassoes). Walls are linked too but already unwalkable; a hidden conduit draws nothing and is skipped.</summary>
+        internal static void MarkBusy(Map map, CordWorld world)
+        {
+            foreach (Thing t in map.listerThings.ThingsInGroup(ThingRequestGroup.BuildingArtificial))
+            {
+                if (!IsLinear(t.def) || !t.Spawned) continue;
+                foreach (IntVec3 c in t.OccupiedRect())
+                {
+                    Cell cell = C(c);
+                    if (world.IsWalkable(cell)) world.SetBusy(cell);
+                }
+            }
+        }
+
+        /// <summary>A drawn linear building: its graphic links to its neighbours (pipes, conduits, fences).</summary>
+        internal static bool IsLinear(ThingDef d) => d?.graphicData != null && d.graphicData.Linked && !ConduitVisuals.IsOtherConduit(d);
 
         /// <summary>Round 3 (owner 2026-10-04): "the power tap should be considered a Node that both power systems now must
         /// connect with their cables". The clamp is a connector of OUR net (its machine already hooks our conduit when it has a

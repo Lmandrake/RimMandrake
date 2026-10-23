@@ -145,6 +145,21 @@ namespace RimMandrake.Shared.Slack
             return BandAt(a) == BandAt(b);
         }
 
+        // ---------------------------------------------------------------- busy cells (CORD_LOOP_UNTANGLE_LASSOED_A_PIPE)
+        // A walkable cell holding a drawn linear building (a pipe, a conduit, any linked graphic): a canned slack loop or heap
+        // never spreads onto one the strand does not already run through, or the cord reads as lassoing it. Nothing set (the
+        // hose world, every SelfTest scene before this) = no cell busy and every lay unchanged.
+        private bool[] busy;
+
+        public bool HasBusy => busy != null;
+        public void SetBusy(Cell c)
+        {
+            if (!InBounds(c)) return;
+            if (busy == null) busy = new bool[Width * Height];
+            busy[Idx(c)] = true;
+        }
+        public bool IsBusy(Cell c) => busy != null && InBounds(c) && busy[Idx(c)];
+
         /// <summary>A walkable conduit cell that must still count as buried (an untagged or Hidden
         /// conduit def): it carries connectivity but is never drawn (design §8.7.6 last rows).</summary>
         public void SetForcedBuried(Cell c) { if (InBounds(c)) forcedBuried[Idx(c)] = true; }
