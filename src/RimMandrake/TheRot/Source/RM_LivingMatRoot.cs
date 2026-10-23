@@ -227,7 +227,9 @@ namespace RimMandrake.TheRot
             }
             int now = Find.TickManager.TicksGame;
             // A proof sweep runs many sweeps inside one tick; the one-root-per-room-per-tick guard would stop all but the first.
-            if (!hurry && heatedAt.TryGetValue(room, out int at) && at == now)
+            // GPT deep review 2026-10-22 #8: roots tick on their own rare-tick phases, so "same tick" let two roots in one room
+            // both push (twice the warming rate); one push per room per sweep interval
+            if (!hurry && heatedAt.TryGetValue(room, out int at) && now - at < Sweep)
             {
                 return "fed; another root already warms this room";
             }
@@ -235,7 +237,7 @@ namespace RimMandrake.TheRot
             if (heatedAt.Count > 64)
             {
                 // Only this tick's entries mean anything; dropping the rest also releases rooms of an unloaded game.
-                foreach (Room stale in heatedAt.Where(kv => kv.Value != now).Select(kv => kv.Key).ToList())
+                foreach (Room stale in heatedAt.Where(kv => now - kv.Value >= Sweep).Select(kv => kv.Key).ToList())
                 {
                     heatedAt.Remove(stale);
                 }

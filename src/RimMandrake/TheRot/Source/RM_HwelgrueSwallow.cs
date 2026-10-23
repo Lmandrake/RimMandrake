@@ -88,6 +88,9 @@ namespace RimMandrake.TheRot
             if (victim == null || victim == eater || !victim.Spawned || victim.Dead || !victim.Downed) return false;
             if (victim.def == RM_HwelgrueDefOf.RM_Hwelgrue || victim.InBed() || victim.CarriedBy != null) return false;
             if (victim.Position.Roofed(victim.Map)) return false;
+            // GPT deep review 2026-10-22 #11: draft bar 2 promises a downed pawn in a stockpile is not swallowed (Edible already
+            // refused stockpiles; Swallowable did not)
+            if (victim.Map.zoneManager.ZoneAt(victim.Position) is Zone_Stockpile) return false;
             return eater == null || eater.CanReserve(victim);
         }
 
@@ -220,13 +223,14 @@ namespace RimMandrake.TheRot
         }
 
         /// <summary>Lets the swallowed pawn out alive (if it is). Returns it, or null.</summary>
-        public Pawn Release(Map map, string why)
+        public Pawn Release(Map map, string why, IntVec3? atOverride = null)
         {
             if (!Holding) return null;
             if (map == null) map = parent.MapHeld;
             if (map == null) return null;
             Thing thing = held[0];
-            IntVec3 at = parent.PositionHeld;
+            IntVec3 at = atOverride ?? parent.PositionHeld;
+            if (!at.IsValid || !at.InBounds(map)) at = map.Center;
             if (!held.TryDrop(thing, at, map, ThingPlaceMode.Near, out Thing dropped))
             {
                 if (!RCellFinder.TryFindRandomCellNearWith(at, c => c.Standable(map), map, out IntVec3 cell, 1)) return null;
@@ -260,6 +264,15 @@ namespace RimMandrake.TheRot
         {
             base.Notify_Downed();
             Release(Self?.MapHeld, "crawled out of the downed hwelgrue");
+        }
+
+        /// <summary>GPT deep review 2026-10-22 #1: the holder is built with removeContentsIfDestroyed:false, and a hwelgrue
+        /// destroyed outright (the population cap's Vanish, another mod) never reaches Notify_Downed/Killed, so the held pawn
+        /// was orphaned with it. Destruction now lets the passenger out where the hwelgrue last stood.</summary>
+        public override void PostDestroy(DestroyMode mode, Map previousMap)
+        {
+            if (Holding && previousMap != null) Release(previousMap, "crawled free as the hwelgrue was lost", parent.Position);
+            base.PostDestroy(mode, previousMap);
         }
 
         public override void Notify_Killed(Map prevMap, DamageInfo? dinfo = null)

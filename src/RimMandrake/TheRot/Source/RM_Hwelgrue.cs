@@ -236,6 +236,7 @@ namespace RimMandrake.TheRot
         public override void PostPostApplyDamage(DamageInfo dinfo, float totalDamageDealt)
         {
             base.PostPostApplyDamage(dinfo, totalDamageDealt);
+            if (!RM_TheRotSettings.theRotEnabled) return;   // GPT deep review 2026-10-22 #2: the master switch governs retaliation
             Pawn p = Pawn;
             if (p == null || p.Dead || p.Downed || !p.Spawned) return;
             if (!(dinfo.Instigator is Thing attacker) || attacker == p || attacker.Destroyed || !attacker.Spawned || attacker.Map != p.Map) return;
