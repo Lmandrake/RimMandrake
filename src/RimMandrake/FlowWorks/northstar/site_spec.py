@@ -244,6 +244,9 @@ SETTINGS_SOURCES = {     # type -> C# file (relative to the mod's source folder)
 # Scribed migration flags the MOD sets itself (hoseSettingsImported goes True on the first load after the hose port): no
 # control, never a player setting, never on the toggle floor, never compared to a shipped default.
 INTERNAL_FLAGS = ("hoseSettingsImported", "depthEngineLiveForTests")
+# Internal flags that are deliberately NEVER Scribed: depthEngineLiveForTests is the proof harness's live switch
+# (RimMandrakeFlowWorksMod.cs: "never saved, never shown"), so it has no Scribe key by design.
+UNSAVED_FLAGS = ("depthEngineLiveForTests",)
 # Mod subclasses whose ModSettings files the run must restore byte-for-byte (plan 3.3).
 MOD_CLASSES = ("RimMandrakeFlowWorksMod", "RiverSteamMod")   # PitsMod retired 2026-10-02
 

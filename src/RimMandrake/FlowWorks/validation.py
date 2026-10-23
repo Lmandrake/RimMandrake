@@ -55,7 +55,7 @@ CORE_LIVE_IDS = [
     "P5n_own_faction_carveout",
     "X1_pawn_height_ladder", "X2_pawn_lowers_walking_in", "X3_pawn_rises_walking_out", "X4_pit_wall_over_head",
     "X5_slime_occupant_below_surface", "X7_tar_front_lags_water", "X6_two_fluids_distinct", "X7n_viscosity_off",
-    "X8_cover_hides_pit", "X9_cover_deck_uniform", "X8b_cover_occupant_stays_below", "X10_canal_fire", "T0n_fluid_switch_refused", "E9_log_budget", "Z_settings_restored",
+    "X8_cover_hides_pit", "X9_cover_deck_uniform", "X8b_cover_occupant_stays_below", "X8c_lid_walker_drawn_at_ground", "X10_canal_fire", "T0n_fluid_switch_refused", "E9_log_budget", "Z_settings_restored",
 ]
 
 # core row -> the north-star bars (design/validation_walks/RimMandrake/FlowWorks.md `## north star`) whose
