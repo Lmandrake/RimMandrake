@@ -1674,14 +1674,14 @@
        true whichever copy of a co-declared def the load ends up holding. -->
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RUT_MushroomLeather"]</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_MushroomLeather"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
-        <!-- RUT_MushroomLeather : baseline hide -->
+        <!-- RM_MushroomLeather : baseline hide -->
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RUT_MushroomLeather"]/stuffProps/statFactors</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_MushroomLeather"]/stuffProps/statFactors</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RUT_MushroomLeather"]/stuffProps/statFactors</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_MushroomLeather"]/stuffProps/statFactors</xpath>
             <value>
             <statFactors>
               <ArmorRating_Sharp>1.20</ArmorRating_Sharp>
@@ -1693,7 +1693,7 @@
             </value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RUT_MushroomLeather"]/stuffProps</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_MushroomLeather"]/stuffProps</xpath>
             <value>
             <statFactors>
               <ArmorRating_Sharp>1.20</ArmorRating_Sharp>
@@ -1710,14 +1710,14 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RUT_MoonlessSilk"]</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_MoonlessSilk"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
-        <!-- RUT_MoonlessSilk : baseline hide -->
+        <!-- RM_MoonlessSilk : baseline hide -->
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RUT_MoonlessSilk"]/stuffProps/statFactors</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_MoonlessSilk"]/stuffProps/statFactors</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RUT_MoonlessSilk"]/stuffProps/statFactors</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_MoonlessSilk"]/stuffProps/statFactors</xpath>
             <value>
             <statFactors>
               <ArmorRating_Sharp>1.20</ArmorRating_Sharp>
@@ -1729,7 +1729,7 @@
             </value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RUT_MoonlessSilk"]/stuffProps</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_MoonlessSilk"]/stuffProps</xpath>
             <value>
             <statFactors>
               <ArmorRating_Sharp>1.20</ArmorRating_Sharp>
