@@ -16,6 +16,14 @@ hose is DRAWN with, the distance from each drawn end / fitting face to the point
   feed_nozzle_shared  a LAID reel whose port stands in front of its nozzle (two hoses from one nozzle) -- a FAIL: turn it
   feed_under_reel     a link that runs in under the reel to its centre (PIPE_ENDS_BUILD_MEET_IN_THE_MIDDLE): passes
   pose                a laid hose never drawn (off screen): UNMEASURED, never a pass
+JOINT_CHECK_WIDEN_PIPE_STUBS_UNSEEN (2026-10-22) adds two kinds measured here in Python from the bridge (no new C#):
+  pipe_stub           every rigid pipe END (a pipe cell with at most one pipe beside it, N/E/S/W) must meet a port: a pipe
+                      pole or a hose reel beside it, a hose's free end on or beside it, or a tank / liquid machine on or
+                      8-way around it (the net's attach rule; HoseProbe "net:x,z" reads the live role, so modded machines
+                      count). An end at none of these is a stub drawn into nothing: FAIL. A role read that never answered:
+                      UNMEASURED.
+  hose_crossing       two laid hoses whose centre lines (census centreCells) share a cell: a flat hose-over-hose crossing
+                      (audit D11, no lift or shadow yet): FAIL. A relay pair is exempt within one cell of the relay reel.
 Tolerance: HoseJoints.Tolerance (0.05 cell, ~6 px at the closest zoom), reported by the probe itself.
 
     python.exe src/RimMandrake/FlowWorks/northstar/joint_check.py                 # current map
@@ -39,7 +47,8 @@ def judge(answer):
     """Pure: a probe answer (dict) -> (verdict, lines). verdict PASS | FAIL | UNMEASURED."""
     if not isinstance(answer, dict) or not answer.get("success"):
         return "UNMEASURED", ["probe did not answer: %s" % str(answer)[:200]]
-    joints = answer.get("joints") or []
+    own = answer.get("joints") or []
+    joints = own + list(answer.get("extra") or [])      # extra: pipe_stub / hose_crossing (extra_joints)
     tol = answer.get("tolerance")
     bad = [j for j in joints if j.get("ok") is False]
     unm = [j for j in joints if j.get("ok") is None]
@@ -49,13 +58,138 @@ def judge(answer):
         lines.append("  %-4s reel %s at %s rot %s %-18s gap %.3f at %s -- %s"
                      % ("FAIL" if j.get("ok") is False else "UNM", j.get("reel"), j.get("at"), j.get("rot"), j.get("kind"),
                         float(j.get("gap") or 0), j.get("where"), j.get("note")))
-    if answer.get("reels", 0) and not joints:
+    if answer.get("reels", 0) and not own:
         return "UNMEASURED", lines + ["reels but no joints measured: the probe saw nothing"]
     if bad:
         return "FAIL", lines
     if unm:
         return "UNMEASURED", lines
     return "PASS", lines
+
+
+PIPE_DEF_PREFIX, POLE_DEF_PREFIX = "RM_UniversalPipe", "RM_PipePole"
+ORTHO = ((1, 0), (-1, 0), (0, 1), (0, -1))
+RING8 = ORTHO + ((1, 1), (1, -1), (-1, 1), (-1, -1))
+
+
+def _joint(kind, at, ok, where, note, reel=None):
+    return {"reel": reel, "at": list(at), "rot": None, "look": None, "kind": kind, "ok": ok, "gap": 0.0, "where": where,
+            "note": note}
+
+
+def pipe_ends(pipes):
+    """Pure: pipe cells with at most one pipe on an edge-neighbour (a lone pipe is one end)."""
+    ps = set(map(tuple, pipes))
+    return sorted(c for c in ps if sum((c[0] + dx, c[1] + dz) in ps for dx, dz in ORTHO) <= 1)
+
+
+def _fp_cells(fp):
+    x, z, w, h = fp
+    return {(x + i, z + j) for i in range(w) for j in range(h)}
+
+
+def stub_joints(pipes, poles, reel_fps, hose_ends, is_partner):
+    """Pure (is_partner injected): one pipe_stub joint per pipe end. is_partner(cell) -> True (a tank / liquid machine is
+    there), False (nothing with a net role), None (the read did not answer)."""
+    ps, pl = set(map(tuple, pipes)), set(map(tuple, poles))
+    reel_cells = set()
+    for fp in reel_fps:
+        reel_cells |= _fp_cells(fp)
+    ends_h = set(map(tuple, hose_ends))
+    out = []
+    for e in pipe_ends(ps):
+        edge = [(e[0] + dx, e[1] + dz) for dx, dz in ORTHO]
+        if any(n in pl for n in edge):
+            out.append(_joint("pipe_stub", e, True, "pipe pole", "pipe end meets a pipe pole"))
+            continue
+        if any(n in reel_cells for n in edge):
+            out.append(_joint("pipe_stub", e, True, "hose reel", "pipe end meets a hose reel"))
+            continue
+        if e in ends_h or any(n in ends_h for n in edge):
+            out.append(_joint("pipe_stub", e, True, "hose end", "pipe end meets a hose's free end"))
+            continue
+        seen = None
+        for c in [e] + [(e[0] + dx, e[1] + dz) for dx, dz in RING8]:
+            if c != e and c in ps:
+                continue
+            r = is_partner(c)
+            if r:
+                seen = c
+                break
+            if r is None:
+                seen = seen or "unread"
+        if isinstance(seen, tuple):
+            out.append(_joint("pipe_stub", e, True, "%d,%d" % seen, "pipe end meets a tank / liquid machine"))
+        elif seen == "unread":
+            out.append(_joint("pipe_stub", e, None, "-", "the role read of a neighbour never answered"))
+        else:
+            out.append(_joint("pipe_stub", e, False, "-", "pipe end at no port: a stub drawn into nothing"))
+    return out
+
+
+def crossing_joints(hoses):
+    """Pure: one hose_crossing joint per pair of laid hoses whose centre lines share a cell (relay pairs exempt within one
+    cell of the relay reel's footprint)."""
+    laid = [h for h in hoses or [] if h.get("laid") and h.get("centreCells")]
+    owner = {}
+    for h in laid:
+        for c in set(tuple(c) for c in h["centreCells"]):
+            owner.setdefault(c, []).append(h)
+    pairs = {}
+    for c, hs in sorted(owner.items()):
+        for i in range(len(hs)):
+            for k in range(i + 1, len(hs)):
+                a, b = hs[i], hs[k]
+                relay = None
+                if a.get("relayTo") and list(a["relayTo"]) == list(b.get("reel") or []):
+                    relay = b
+                elif b.get("relayTo") and list(b["relayTo"]) == list(a.get("reel") or []):
+                    relay = a
+                if relay is not None and relay.get("footprint"):
+                    x, z, w, hh = relay["footprint"]
+                    if x - 1 <= c[0] <= x + w and z - 1 <= c[1] <= z + hh:
+                        continue
+                pairs.setdefault((a.get("id"), b.get("id")), []).append(c)
+    return [_joint("hose_crossing", cells[0], False, "%d cell(s)" % len(cells),
+                   "laid hoses %s and %s cross flat (D11: no lift or shadow)" % ids, reel=list(ids))
+            for ids, cells in sorted(pairs.items(), key=lambda kv: str(kv[0]))]
+
+
+def _pipe_defs():
+    import glob
+    import re
+    names = set()
+    for path in glob.glob(os.path.join(HERE, "..", "Defs", "**", "*.xml"), recursive=True):
+        with open(path, encoding="utf-8", errors="replace") as f:
+            names.update(re.findall(r"<defName>((?:%s|%s)\w*)</defName>" % (PIPE_DEF_PREFIX, POLE_DEF_PREFIX), f.read()))
+    return sorted(names)
+
+
+def extra_joints(B, probe):
+    """Live: the pipe_stub and hose_crossing joints of the current map (probe = lambda cmd: answer dict)."""
+    census = probe("census")
+    if not isinstance(census, dict) or not census.get("success"):
+        return [_joint("pipe_stub", (0, 0), None, "-", "census unreadable: %s" % str(census)[:120])]
+    hoses = census.get("hoses") or []
+    defs = _pipe_defs()
+    lt = B.call("jawa/list_things", {"defName": ",".join(defs), "limit": 20000}) or {}
+    if not defs or not lt.get("success") or lt.get("countMatched", 0) > len(lt.get("things") or []):
+        return [_joint("pipe_stub", (0, 0), None, "-", "pipe list unreadable or truncated: %s" % str(lt)[:120])] \
+            + crossing_joints(hoses)
+    pipes = [(t["x"], t["z"]) for t in lt.get("things") or [] if t.get("def", "").startswith(PIPE_DEF_PREFIX)]
+    poles = [(t["x"], t["z"]) for t in lt.get("things") or [] if t.get("def", "").startswith(POLE_DEF_PREFIX)]
+    fps = [h["footprint"] for h in hoses if h.get("footprint")]
+    ends = [tuple(h["far"]) for h in hoses if h.get("laid") and h.get("far")]
+    pipe_names = set(defs)
+
+    def is_partner(c):
+        a = probe("net:%d,%d" % c)
+        if not isinstance(a, dict) or ("success" not in a):
+            return None
+        if not a.get("success"):
+            return None if "timeout" in str(a.get("error", "")) or "unparsable" in str(a.get("error", "")) else False
+        return a.get("origin") not in pipe_names
+    return stub_joints(pipes, poles, fps, ends, is_partner) + crossing_joints(hoses)
 
 
 def _bridge():
@@ -111,6 +245,8 @@ def main(argv):
                 B.call("jawa/set_current_map", {"mapId": int(mid)})
                 time.sleep(1.0)
             ans = _probe(B, "joints")
+            if isinstance(ans, dict) and ans.get("success"):
+                ans = dict(ans, extra=extra_joints(B, lambda cmd: _probe(B, cmd)))
             verdict, lines = judge(ans)
             print("map %s: %s" % ("current" if mid is None else mid, verdict))
             for ln in lines:
