@@ -175,7 +175,7 @@ namespace RimMandrake.Graffiti
 
         // ---------------------------------------------------------------- wall face (GRAFFITI_WALLFACE)
         // Owner, by card 2026-10-22 ("Q9 → Graffiti floor cell drawn offset facing wall"): a mark stays on the floor cell beside
-        // the wall but records which side the wall is on, and is DRAWN offset onto that wall and turned to face it, so it reads as
+        // the wall but records which side the wall is on, and is DRAWN offset onto that wall (turned to face it, except a south wall: upright), so it reads as
         // wall art with no new thing class. Sides are Rot4 integers: 0 north (+z), 1 east (+x), 2 south (-z), 3 west (-x).
 
         /// <summary>How far toward the wall a mark is drawn, in cells: onto the shared edge, half over the wall. [INVENTED; the
@@ -203,10 +203,11 @@ namespace RimMandrake.Graffiti
         }
 
         /// <summary>Draw rotation in degrees (RimWorld's clockwise-from-north, as Rot4.AsAngle): the mark's top points into the wall
-        /// it is painted on. 0 for NoWall or an out-of-range side, which is the old upright floor draw.</summary>
+        /// it is painted on. 0 for NoWall or an out-of-range side, which is the old upright floor draw, and 0 for a wall on the
+        /// SOUTH (owner, by card 2026-10-22: a mark on a south wall stays upright, never upside down; it is still offset onto the wall).</summary>
         public static float WallFaceAngle(int side)
         {
-            return side >= 0 && side <= 3 ? side * 90f : 0f;
+            return side >= 0 && side <= 3 && side != 2 ? side * 90f : 0f;
         }
 
         /// <summary>

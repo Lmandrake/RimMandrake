@@ -249,7 +249,7 @@ namespace RimMandrake.Graffiti.SelfTest
 
         // ════════════════════════ wall (GRAFFITI_WALLFACE) ════════════════════════
         // All 16 neighbour masks against an independent spec: north beats east beats west beats south; the offset is exactly one
-        // unit step of the given length onto that wall; the angle turns the mark's top into the wall (Rot4.AsAngle); no wall draws
+        // unit step of the given length onto that wall; the angle turns the mark's top into the wall (Rot4.AsAngle) except on a south wall, where the mark stays upright (0); no wall draws
         // as the old upright floor mark.
         private static List<string> Wall()
         {
@@ -274,6 +274,11 @@ namespace RimMandrake.Graffiti.SelfTest
                         continue;
                     }
                     Check(dx == 0.5f * stepX[side] && dz == 0.5f * stepZ[side], $"mask {mask}: offset ({dx},{dz}) is not toward side {side}");
+                    if (side == 2)
+                    {
+                        Check(angle == 0f, $"mask {mask}: south wall rotated the mark to {angle}; it must stay upright");
+                        continue;
+                    }
                     Check(angle == side * 90f, $"mask {mask}: angle {angle} does not face side {side}");
                     // the mark's top (0, 1) turned clockwise by the angle points at the wall
                     double rad = angle * Math.PI / 180.0;

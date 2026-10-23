@@ -63,8 +63,9 @@ MUTATIONS = [
     ("wall side ignores north", "            if (north) return 0;\n", ""),
     ("wall offset east goes west", "dx = side == 1 ? cells : side == 3 ? -cells : 0f;", "dx = side == 1 ? -cells : side == 3 ? cells : 0f;"),
     ("wall offset z sign flipped", "dz = side == 0 ? cells : side == 2 ? -cells : 0f;", "dz = side == 0 ? -cells : side == 2 ? cells : 0f;"),
-    ("wall angle counter-clockwise", "return side >= 0 && side <= 3 ? side * 90f : 0f;", "return side >= 0 && side <= 3 ? -side * 90f : 0f;"),
-    ("wall angle for no wall", "return side >= 0 && side <= 3 ? side * 90f : 0f;", "return side * 90f;"),
+    ("wall angle counter-clockwise", "return side >= 0 && side <= 3 && side != 2 ? side * 90f : 0f;", "return side >= 0 && side <= 3 && side != 2 ? -side * 90f : 0f;"),
+    ("wall angle for no wall", "return side >= 0 && side <= 3 && side != 2 ? side * 90f : 0f;", "return side * 90f;"),
+    ("south wall rotates the mark", "side <= 3 && side != 2 ? side", "side <= 3 ? side"),
 ]
 
 if __name__ == "__main__":
