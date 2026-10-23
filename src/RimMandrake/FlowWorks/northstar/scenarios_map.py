@@ -528,7 +528,10 @@ def review_class():
                     B.call("jawa/set_roof_batch", ops="None:" + rr)
                     for area in ("BuildRoof", "Home"):
                         B.call("jawa/paint_area", area=area, ops=rr, value=False)
-            B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
+            # SCENARIO_ONLY_FIX_SWEEPS_THE_WHOLE_ZOO (bridge run 1, 2026-10-23): this was an unconditional
+            # destroy_bulk nonColonists, so --only C5 still removed all 9 held animals/prisoners of the OTHER plots
+            # (hold_rects was right; this call ignored it). sweep() honours self.hold (empty without --only).
+            self.sweep()
 
         def extras(self, p, optional_ok):
             """The composite-only keys that need no pawns: optional builds, plants, batteries, markers, proof calls."""
