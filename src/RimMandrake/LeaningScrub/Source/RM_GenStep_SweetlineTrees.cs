@@ -83,6 +83,54 @@ namespace RimMandrake.LeaningScrub
             return "PLANTED " + (map.listerThings.ThingsOfDef(step.treeDef).Count - before);
         }
 
+        /// <summary>SCRUB_GENSTEP_FIX_TIDIES_THEN_QUITS A1 (jawa/static_call "cell@x,z", an empty standable cell of a played
+        /// map): a steel stack, a grass plant and a wild animal on one cell; the step's own Plant must refuse the cell and
+        /// leave the steel and the grass standing (pre-fix it destroyed them, then aborted on the pawn). Everything placed
+        /// is removed after.</summary>
+        public static string ProofRefusesPawnCell(string arg)
+        {
+            RM_FireStampProof.ParseMode(arg, out IntVec3 c);
+            Map map = Find.CurrentMap;
+            GenStepDef def = DefDatabase<GenStepDef>.GetNamedSilentFail("RM_SweetlineTrees");
+            if (map == null || !(def?.genStep is RM_GenStep_SweetlineTrees step) || step.treeDef == null) return "UNMEASURED: no map or no RM_SweetlineTrees step";
+            if (!c.IsValid || !c.InBounds(map) || !c.Standable(map) || c.GetThingList(map).Count > 0) return "UNMEASURED: " + c + " is not an empty standable cell";
+            ThingDef grassDef = DefDatabase<ThingDef>.GetNamedSilentFail("Plant_Grass");
+            PawnKindDef kind = DefDatabase<PawnKindDef>.GetNamedSilentFail("Muffalo");
+            if (grassDef == null || kind == null) return "UNMEASURED: Plant_Grass or Muffalo is not loaded";
+            var made = new List<Thing>();
+            try
+            {
+                Thing grass = null;
+                if (grassDef.CanEverPlantAt(c, map))
+                {
+                    Plant g = (Plant)ThingMaker.MakeThing(grassDef);
+                    g.Growth = 0.5f;
+                    grass = GenSpawn.Spawn(g, c, map);
+                    made.Add(grass);
+                }
+                Thing steel = ThingMaker.MakeThing(ThingDefOf.Steel);
+                steel.stackCount = 10;
+                steel = GenSpawn.Spawn(steel, c, map);
+                made.Add(steel);
+                made.Add(GenSpawn.Spawn(PawnGenerator.GeneratePawn(kind), c, map));
+                int before = c.GetThingList(map).Count;
+                bool planted = step.Plant(c, map);
+                Plant tree = c.GetPlant(map);
+                if (tree != null && tree.def == step.treeDef) made.Add(tree);   // a FAIL leaves no tree behind
+                bool steelKept = !steel.Destroyed && steel.Spawned && steel.Position == c;
+                bool grassKept = grass == null || (!grass.Destroyed && grass.Spawned);
+                string st = string.Format("planted={0} steelKept={1} grassKept={2} grassStaged={3} thingsBefore={4} after={5}",
+                    planted, steelKept, grassKept, grass != null, before, c.GetThingList(map).Count);
+                if (planted) return "FAIL: a sweetline tree was planted on a pawn's cell " + st;
+                if (!steelKept || !grassKept) return "FAIL: the refused cell lost its steel or grass " + st;
+                return "PASS " + st;
+            }
+            finally
+            {
+                foreach (Thing t in made) if (!t.Destroyed) t.Destroy();
+            }
+        }
+
         private bool Fits(IntVec3 c, Map map, List<CellRect> used, List<IntVec3> placed)
         {
             if (c.CloseToEdge(map, edgeMargin) || !c.Standable(map) || c.Roofed(map))

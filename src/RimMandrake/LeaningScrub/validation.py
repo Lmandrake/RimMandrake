@@ -2042,7 +2042,88 @@ def sweetline_chain(t):
                 m = re.match(r"PLANTED (\d+)$", text)
                 if not m or not 1 <= int(m.group(1)) <= 2:
                     _fail("the sweetline map step at chance 1 planted %s (expect 1-2 trees)" % text)
+        # SCRUB_WARDEN_FIX_TAMED_BOSS_STILL_REIGNS A1. Pre-fix, IsLead ignored faction: a tamed first warden stayed the
+        # lead until the tree's next Long-tick prune (up to 2000 ticks), and the lead is the only warden that watches the
+        # trunk, so a colonist could cut the tree unwatched. The C# hook tames the first warden with NO prune and reads
+        # the lead; the cut arm then reads the meter rising inside one prune window.
+        def warden(mode):
+            r = t.bridge_call("jawa/static_call", type="RimMandrake.LeaningScrub.RM_CompGuardianRoost",
+                              method="ProofWarden", args="%s@%d,%d" % (mode, x, z))
+            return str((r or {}).get("result", "")) or "no result: %r" % (r,)
+        try:
+            with _comp(t, "warden_tamed_lead_hands_over", toggle="sweetlineGuardiansEnabled"):
+                if _live(t):
+                    text = warden("tame")
+                    _note(t, "tame the first warden, read the lead", text)
+                    if text.startswith("FAIL"):
+                        _fail(text)
+                    if not text.startswith("PASS"):
+                        _unmeasured(t, text[:300])
+                    ids["tamed"] = True
+            with _comp(t, "warden_tamed_tree_still_watched", toggle="sweetlineGuardiansEnabled"):
+                if _live(t):
+                    if not ids.get("tamed"):
+                        _unmeasured(t, "warden_tamed_lead_hands_over tamed no warden")
+                    d0 = re.search(r"disturbance=([0-9.]+)", warden("read"))
+                    col = _spawn(t, "Colonist", x - 1, z, faction="player")
+                    _full(t, col)
+                    t.bridge_call("jawa/designate_batch", action="add", designation="CutPlant", rect="%d,%d,1,1" % (x, z))
+                    t.bridge_call("jawa/ordered_job", pawnId=col, jobDef="CutPlant", targetAId=ids["tree"], queue=True,
+                                  waitTicks=60)
+                    # LIES: a Long-tick prune inside the window also hands the lead over on the pre-fix code, so a rise
+                    # alone is not the fix: the lead read above is the decisive half. Stop at the first rise so the
+                    # wardens never reach the rage stage and the tree is never felled.
+                    trail, d = [], 0.0
+                    for _step in range(8):
+                        t.wait_ticks(120)
+                        m = re.search(r"disturbance=([0-9.]+)", warden("read"))
+                        d = float(m.group(1)) if m else 0.0
+                        trail.append((d, (_jobs(t).get(col) or "?")))
+                        if d > (float(d0.group(1)) if d0 else 0.0):
+                            break
+                    t.bridge_call("jawa/stop_job", pawnId=col)
+                    t.bridge_call("jawa/designate_batch", action="remove", designation="CutPlant", rect="%d,%d,1,1" % (x, z))
+                    _note(t, "disturbance while a colonist cuts the tree, tamed first warden (meter, colonist job)", trail)
+                    if not _things(t, TREE, "%d,%d,1,1" % (x, z)):
+                        _unmeasured(t, "the tree fell inside the window: no meter left to read")
+                    if not any(str(j).startswith("CutPlant") for _d, j in trail):
+                        _unmeasured(t, "the colonist never took the CutPlant job: %r" % trail)
+                    if d <= (float(d0.group(1)) if d0 else 0.0):
+                        _fail("a colonist cut the tree for %d ticks and the meter never rose (tamed first warden): %r"
+                              % (120 * len(trail), trail))
+        finally:
+            if _live(t):
+                warden("calm")
     _stable(t, body)
+
+
+# --------------------------------------------------------------------------- chain: GPT edge-case fixes, read live
+# The 2026-10-16 GPT edge-case consult (design/RimMandrake/gpt_consults/LeaningScrub_edge_cases_2026-10-16.md) found five
+# bugs, fixed offline at 2bb6c1d00 and pinned by selftest_leaningscrub_gpt_fixes.py. Each row here is the live A1 of its
+# item, read through a C# proof hook that stages its own fixture on this pad and removes it. NOT here:
+# SCRUB_BLOOM_FIX_ERUPTOR_FLEES_GROUNDED (its A1 is the eruptor taking off: a flight test, owner present only).
+
+@suite.chain("edge_fixes")
+def edge_fixes_chain(t):
+    _prep(t, "spawn", size=40)                       # the thin row's islands span 33 cells
+    x, z = t.anchor
+    try:
+        # SCRUB_PYRE_FIX_FIVE_FIRES_FIVE_ISLANDS A1: no stamper creature needed (the clause asks only for a blaze)
+        _proof(t, "pyre_thin_line_follows_blaze", "RM_CallingPyreProof", "ProofPyre", "thin@%d,%d" % (x, z - 6),
+               "pyre thin line", "callingPyreEnabled")
+        # SCRUB_BLOOM_FIX_MANHUNTER_GETS_SHY A1: a walker (RM_Crustweevil, Scatter), never the eruptor
+        _proof(t, "bloom_spares_manhunter", "RM_MapComponent_RunwayBloom", "ProofManhunter", "manhunter@%d,%d" % (x, z + 10),
+               "bloom vs a manhunter", "runwayBloomEnabled")
+        # SCRUB_GENSTEP_FIX_TIDIES_THEN_QUITS A1
+        _proof(t, "map_step_refuses_pawn_cell", "RM_GenStep_SweetlineTrees", "ProofRefusesPawnCell",
+               "cell@%d,%d" % (x + 10, z + 4), "map step on a pawn's cell", "sweetlineStationsEnabled")
+        # LEANINGSCRUB_VISSLER_ARM_SCAVENGERS_1 A2: every meat-eating walker on the roster, very hungry beside an arm
+        _proof(t, "vissler_arm_draws_meat_eaters", "RM_VisslerArmPatches", "ProofArmScavengers",
+               "on@%d,%d" % (x - 10, z + 4), "vissler arm scavengers", "visslerArmFoodEnabled")
+        _proof(t, "vissler_arm_off_draws_none", "RM_VisslerArmPatches", "ProofArmScavengers",
+               "off@%d,%d" % (x - 10, z + 4), "vissler arm scavengers, toggle off", "visslerArmFoodEnabled")
+    finally:
+        _unlock_weather(t)
 
 
 # --------------------------------------------------------------------------- chain: the log (last)

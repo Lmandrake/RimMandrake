@@ -98,9 +98,12 @@ def main():
           "trees.Remove(map);" in d, d)
 
     # SCRUB_PYRE_FIX_FIVE_FIRES_FIVE_ISLANDS
-    p = method_body(read("RM_CallingPyre.cs"), "protected override void ApplyExtraOutcome(")
-    check("SCRUB_PYRE_FIX_FIVE_FIRES_FIVE_ISLANDS: 'too little caught' asks FindBlaze, not the fire count",
-          "FindBlaze().IsValid" in p and "lit < RM_MapComponent_FireStamp.MinOpenFires" not in p)
+    cp = read("RM_CallingPyre.cs")
+    p = method_body(cp, "protected override void ApplyExtraOutcome(")
+    tl = method_body(cp, "public static string ThinLine(Map map)")
+    check("SCRUB_PYRE_FIX_FIVE_FIRES_FIVE_ISLANDS: 'too little caught' asks FindBlaze (via ThinLine), not the fire count",
+          "RM_CallingPyre.ThinLine(map)" in p and "FindBlaze().IsValid" in tl
+          and "lit < RM_MapComponent_FireStamp.MinOpenFires" not in p, (p, tl))
 
     # SCRUB_GENSTEP_FIX_TIDIES_THEN_QUITS
     pl = method_body(read("RM_GenStep_SweetlineTrees.cs"), "private bool Plant(IntVec3 c, Map map)")

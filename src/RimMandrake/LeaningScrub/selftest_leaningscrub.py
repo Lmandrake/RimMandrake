@@ -421,6 +421,35 @@ class Fake(object):
             if args != "off":
                 return {"success": True, "result": "PASS hunting=True" if hunts else "FAIL: a stall hunter did not hunt"}
             return {"success": True, "result": "FAIL: stallHuntEnabled off but the hawk hunted" if hunts else "PASS off hunting=False"}
+        if method == "ProofWarden":
+            mode = args.split("@")[0]
+            if mode == "tame":
+                return {"success": True, "result": "FAIL: the tamed warden is still the lead leadBefore=True tamedIsLead=True"
+                        if "tamed_still_leads" in self.broken else
+                        "PASS leadBefore=True tamedIsLead=False nextIsLead=True listed=True"}
+            if mode == "read":
+                cut = getattr(self, "cut_from", None)
+                d = 0.1 if (cut is not None and self.ticks >= cut + 120 and "tamed_tree_unwatched" not in self.broken) else 0.0
+                return {"success": True, "result": "disturbance=%.3f live=2" % d}
+            return {"success": True, "result": "CALM removed=1"}
+        if method == "ProofManhunter":
+            return {"success": True, "result": "FAIL: the manhunter was ordered to flee calmJob=Flee rageState=Manhunter rageJob=Flee"
+                    if "bloom_scares_manhunter" in self.broken else
+                    "PASS calmJob=Flee rageState=Manhunter rageJob=none"}
+        if method == "ProofRefusesPawnCell":
+            return {"success": True, "result": "FAIL: the refused cell lost its steel or grass planted=False steelKept=False"
+                    if "genstep_tidies" in self.broken else "PASS planted=False steelKept=True grassKept=True"}
+        if method == "ProofArmScavengers":
+            on = args.startswith("on") or "arm_ignores_toggle" in self.broken
+            drawn = on and "arm_draws_none" not in self.broken
+            if args.startswith("on"):
+                return {"success": True, "result": "PASS drawn=[RM_Surrik,RM_Ribbonwhip] notDrawn=[]" if drawn else
+                        "FAIL: a hungry meat eater beside the arm chose something else drawn=[] notDrawn=[RM_Surrik]"}
+            return {"success": True, "result": "FAIL: visslerArmFoodEnabled off but the arm drew drawn=[RM_Surrik]" if drawn
+                    else "PASS off drawn=[] notDrawn=[RM_Surrik,RM_Ribbonwhip]"}
+        if method == "ProofPyre" and args.startswith("thin@"):
+            return {"success": True, "result": "FAIL: five fires as five islands read as a catch islandsThin=False clusterThin=False"
+                    if "pyre_counts_fires" in self.broken else "PASS fires=5 gap=8 islandsThin=True clusterThin=False"}
         if method == "ProofPyre":
             if args == "defs":
                 return {"success": True, "result": "FAIL: RM_CallingPyre_Venerated not gated on Ritualist"
@@ -584,6 +613,10 @@ class Fake(object):
         kind = {"RM_SmotherVenomvine": "smother", "Refuel": "refuel", "Harvest": "harvest"}.get(jobDef)
         if kind == "refuel" and 20 - self.fuel(targetAId) < 1:   # JobDriver_Refuel ends on CompRefuelable.IsFull
             return {"success": False, "accepted": True, "afterJobDef": "Wait_MaintainPosture"}
+        if jobDef == "CutPlant":       # SCRUB_WARDEN_FIX_TAMED_BOSS_STILL_REIGNS: the cut arm (ProofWarden read)
+            self.cut_from = self.ticks
+            self.pawns[pawnId]["job"] = "CutPlant"
+            return {"success": True, "accepted": True, "nowRunningRequested": True}
         self.jobs[pawnId] = {"kind": kind, "a": targetAId, "b": targetBId, "left": 800}
         return {"success": True, "accepted": True, "nowRunningRequested": True}
 
@@ -660,6 +693,13 @@ def run(broken=()):
 BREAKS = {
     "missing_def": "defs.defs_resolve",
     "no_roost": "sweetline.guardians_roost_on_spawn",
+    "tamed_still_leads": "sweetline.warden_tamed_lead_hands_over",
+    "tamed_tree_unwatched": "sweetline.warden_tamed_tree_still_watched",
+    "pyre_counts_fires": "edge_fixes.pyre_thin_line_follows_blaze",
+    "bloom_scares_manhunter": "edge_fixes.bloom_spares_manhunter",
+    "genstep_tidies": "edge_fixes.map_step_refuses_pawn_cell",
+    "arm_draws_none": "edge_fixes.vissler_arm_draws_meat_eaters",
+    "arm_ignores_toggle": "edge_fixes.vissler_arm_off_draws_none",
     "no_weather_entry": "defs.biome_weather_table",
     "no_lean_ext": "defs.biome_lean_extension",
     "rule_unarmed": "patches.rules_armed",

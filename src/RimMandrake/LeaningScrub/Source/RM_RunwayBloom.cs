@@ -295,6 +295,45 @@ namespace RimMandrake.LeaningScrub
             return "SWAYING " + comp.swaying.Count + " HOLES +" + (holesAfter - holesBefore) + " ANSWERED " + answered;
         }
 
+        /// <summary>SCRUB_BLOOM_FIX_MANHUNTER_GETS_SHY A1 (jawa/static_call "manhunter@x,z", a cleared pad): two wild
+        /// RM_Crustweevil (Scatter, a walker: no flight is involved) 2 cells either side of the pad centre, one forced
+        /// Manhunter; a bloom fires at the centre and its answers run at once. The calm control must take a Flee job (else
+        /// UNMEASURED: no flee cell, the bloom proves nothing); the manhunter must keep its rage and no Flee. Both removed.</summary>
+        public static string ProofManhunter(string arg)
+        {
+            RM_FireStampProof.ParseMode(arg, out IntVec3 at);
+            Map map = Find.CurrentMap;
+            var comp = map?.GetComponent<RM_MapComponent_RunwayBloom>();
+            if (comp == null) return "UNMEASURED: no current map or no runway bloom component";
+            if (!at.IsValid || !at.InBounds(map)) return "UNMEASURED: manhunter needs the cleared pad's centre (manhunter@x,z)";
+            PawnKindDef kind = DefDatabase<PawnKindDef>.GetNamedSilentFail("RM_Crustweevil");
+            if (kind == null) return "UNMEASURED: RM_Crustweevil is not loaded";
+            IntVec3 a = at + new IntVec3(-2, 0, 0), b = at + new IntVec3(2, 0, 0);
+            if (!a.InBounds(map) || !b.InBounds(map) || !a.Standable(map) || !b.Standable(map)) return "UNMEASURED: the pad cells beside " + at + " are not standable";
+            Pawn calm = null, rage = null;
+            try
+            {
+                calm = (Pawn)GenSpawn.Spawn(PawnGenerator.GeneratePawn(kind), a, map);
+                rage = (Pawn)GenSpawn.Spawn(PawnGenerator.GeneratePawn(kind), b, map);
+                if (!rage.mindState.mentalStateHandler.TryStartMentalState(MentalStateDefOf.Manhunter, "bloom proof", forced: true))
+                    return "UNMEASURED: the manhunter state did not start on the test animal";
+                int now = Find.TickManager.TicksGame;
+                comp.Bloom(at, now);
+                comp.RunPending(now + 1000);
+                string st = string.Format("calmJob={0} rageState={1} rageJob={2}", calm.CurJobDef?.defName ?? "none",
+                    rage.MentalStateDef?.defName ?? "none", rage.CurJobDef?.defName ?? "none");
+                if (calm.CurJobDef != JobDefOf.Flee) return "UNMEASURED: the calm control did not flee (no flee cell?), the bloom proves nothing " + st;
+                if (rage.MentalStateDef != MentalStateDefOf.Manhunter) return "FAIL: the bloom cancelled the manhunter's rage " + st;
+                if (rage.CurJobDef == JobDefOf.Flee) return "FAIL: the manhunter was ordered to flee " + st;
+                return "PASS " + st;
+            }
+            finally
+            {
+                if (calm != null && !calm.Destroyed) calm.Destroy();
+                if (rage != null && !rage.Destroyed) rage.Destroy();
+            }
+        }
+
         private static bool IsWildBloomAnimal(Pawn p, RM_RunwayBloomResponse response)
         {
             RM_RunwayBloomExtension ext = p?.def.GetModExtension<RM_RunwayBloomExtension>();
