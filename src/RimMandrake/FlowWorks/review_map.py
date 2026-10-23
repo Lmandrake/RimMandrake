@@ -62,6 +62,7 @@ from modcheck import reviewmap as RM  # noqa: E402
 import review_map_visuals as VIS  # noqa: E402
 import review_map_rivers as RV  # noqa: E402
 import review_map_coverage as COV  # noqa: E402
+import validation_core as V  # noqa: E402  (reel_facing / reel_pos: staged reels face their target)
 
 OUT = os.path.join(HERE, "northstar", "review", "map")       # under northstar/: not in the mod hash, DEPLOY_HOLD'd
 TAG = "fw_review"
@@ -1495,9 +1496,11 @@ class Review(object):
                           args="%d,%d,%d,%d" % (g(x, z) + g(x + w - 1, z + h - 1)))
             for d, x, z, rot, stuff in u.get("build", []):
                 if d == "RM_HoseReel" and rot is None:
-                    # the reel turns since a98046cbe9 and a bare op builds it NORTH; every station was laid out for the west
-                    # outlet: West, one square east, so the 2x2 keeps its footprint (GenAdj shifts an even rect west for West)
-                    x, rot = x + 1, 3
+                    # the reel turns since a98046cbe9 and a bare op builds it NORTH. SCENARIO_REELS_FIX_STILL_FACING_WEST (audit
+                    # D10): it faces the target of its own hose / order / carry trail (else West, the old layout), built at the
+                    # Position that keeps the 2x2 on [x, x+1] x [z, z+1] for that facing (validation_core.reel_facing/reel_pos)
+                    rot = V.reel_facing((x, z), reel_target(u, (x, z)))
+                    x, z = V.reel_pos((x, z), rot)
                 kw = dict(ops="%s:%d,%d" % ((d,) + g(x, z)) + ("" if rot is None else ",%d" % rot), faction="player",
                           wipeExisting=False)
                 if stuff:
@@ -1690,8 +1693,8 @@ class Review(object):
         for rx, rz, cells in u.get("hose_trail", []):
             self.hose_cmd(n, "settrail:%d,%d=dropped;%s" % (g(rx, rz) + (";".join("%d,%d" % g(*c) for c in cells),)))
         for d, x, z, style in u.get("style", []):
-            # a reel stands one square east of its staged cell (built West, footprint kept): the rect covers both squares
-            th = self.B.call("jawa/list_things", defName=d, rect=("%d,%d,2,1" if d == "RM_HoseReel" else "%d,%d,1,1") % g(x, z),
+            # a reel's Position is one of its footprint's four squares, by facing (validation_core.reel_pos): the rect covers all four
+            th = self.B.call("jawa/list_things", defName=d, rect=("%d,%d,2,2" if d == "RM_HoseReel" else "%d,%d,1,1") % g(x, z),
                              limit=3).get("things") or []
             if not th:
                 self.notes.append("station %d style: no %s at %s" % (n, d, g(x, z)))
@@ -1799,6 +1802,23 @@ def fill_tier(fill, depth):
     if fill <= 0 or depth <= 0:
         return 0
     return min(5, 1 + int(fill))
+
+
+def reel_target(u, c):
+    """SCENARIO_REELS_FIX_STILL_FACING_WEST: the cell a staged reel's hose goes to -- its laid hose's end, its deploy order's
+    target, or the last cell of its carry trail -- keyed by the reel's footprint corner c (the station's own cells); None when
+    the reel has none (a wound relay, a reel only coupled to a port)."""
+    c = tuple(c)
+    for r in u.get("hose", []):
+        if (r[0], r[1]) == c:
+            return (r[2], r[3])
+    for r in u.get("hose_order", []):
+        if (r[0], r[1]) == c:
+            return (r[2], r[3])
+    for r in u.get("hose_trail", []):
+        if (r[0], r[1]) == c and r[2]:
+            return tuple(r[2][-1])
+    return None
 
 
 def build_exit(vis_ok, n_vis, gal_ok, n_gal):

@@ -33,6 +33,8 @@ namespace RimMandrake.FlowWorks.Hose
 
         public static string TryRun(Map map, string cmd)
         {
+            string joints = HoseJointProbe.TryRun(map, cmd);   // the joint check's live half (HOSE_JOINTS_REPAIR_ENDS_MISS_THE_NOZZLES)
+            if (joints != null) return joints;
             int colon = cmd.IndexOf(':');
             if (colon < 0) return null;
             string verb = cmd.Substring(0, colon), arg = cmd.Substring(colon + 1), val = null;

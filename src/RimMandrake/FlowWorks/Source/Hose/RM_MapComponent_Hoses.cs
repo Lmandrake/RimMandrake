@@ -601,6 +601,10 @@ namespace RimMandrake.FlowWorks.Hose
             }
         }
 
+        /// <summary>HOSE_JOINTS_REPAIR_ENDS_MISS_THE_NOZZLES (HoseJointProbe "joints"): the pose a laid hose's meshes were last
+        /// built from -- what is on screen, ports and all (EndOnPort) -- or null when it has not been drawn.</summary>
+        internal List<V2> DrawnPose(CompHoseReel r) => meshes.TryGetValue(r, out Cached c) ? c.pts : null;
+
         public struct PoseInfo
         {
             public double Blend, Eased, Visible;
@@ -822,7 +826,7 @@ namespace RimMandrake.FlowWorks.Hose
             // the 2x2 reel: the coupling's face meets the brass outlet nozzle, pointing into it (against Outward: the reel turns)
             // 2026-10-05: only when the hose really leaves through the outlet; a hose that could not (a reel boxed in, a relay
             // reel whose nozzle takes the feeding hose, a carried hose) gets no coupling floating on an empty nozzle
-            if (r.Rect.HasNozzle) { if (lying && r.lay != null && r.lay.Outlet) { V2 inw = -r.Rect.Outward.Value; Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, r.Rect.NozzleTip + inw * HoseReelRect.NozzleSeat, inw, vis, y, wrapTint); } }
+            if (r.Rect.HasNozzle) { if (lying && r.lay != null && r.lay.Outlet) { V2 seat = HoseJoints.NozzleCoupling(r.Rect, out V2 inw); Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, seat, inw, vis, y, wrapTint); } }
             else Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, pts[0], d0, vis, y, wrapTint);
             // joiners: only at real bends (B17), each two couplings face to face, screwed together (B9). Pose samples share
             // the lay's sample indices (equal-arc resamples of the same count).
@@ -1103,6 +1107,7 @@ namespace RimMandrake.FlowWorks.Hose
         private sealed class FeedCache
         {
             public V2 from, to;
+            public int n;
             public float width, y;
             public Mesh mesh;
         }
@@ -1128,29 +1133,47 @@ namespace RimMandrake.FlowWorks.Hose
         private void DrawFeed(CompHoseReel r, float y)
         {
             if (r.Port() == null) { DropFeed(r); return; }
-            // the reel cell touching the port (2x2 reel: one of its edge cells), so the feed crosses the shared edge
-            var touch = new Cell(r.portContact.X - r.portSide.X, r.portContact.Z - r.portSide.Z);
-            HosePortRule.Feed(touch, r.portSide, out V2 from, out V2 to, out V2 coupling);
+            // HOSE_JOINTS_REPAIR_ENDS_MISS_THE_NOZZLES: the link's geometry is HoseJoints.ReelFeed (one source of truth, the joint
+            // check reads the same): into the nozzle's coupling when the port faces a stored reel's nozzle, else from the port's
+            // centre line in under the reel to its centre. Never a coupling floating on the shared edge (audit D3/D5/D6/D7).
+            bool deployedArt = !(r.carry == HoseCarryState.Stored && !r.laid);
+            List<V2> path = HoseJoints.ReelFeed(r.Rect, r.portSide, r.portContact, deployedArt, out bool onNozzle, out V2 face, out V2 axis);
             float vis = (float)HoseMath.VisibleWidth(0, RM_HoseSettings.plumpAmount);
             HoseLookMats hm = HoseMaterials.For(r);
             Material m = hm.Flat(1f);
-            if (m == null) return;
-            V2 d = (to - from).Norm();
+            if (m == null || path.Count < 2) return;
+            V2 from = path[0], to = path[path.Count - 1];
             float width = (float)HoseMath.MeshWidthFlat(vis), fy = y - 0.0008f;
             feeds.TryGetValue(r, out FeedCache fc);
             if (fc == null || fc.mesh == null || fc.width != width || fc.y != fy || fc.from.X != from.X || fc.from.Z != from.Z
-                || fc.to.X != to.X || fc.to.Z != to.Z)
+                || fc.to.X != to.X || fc.to.Z != to.Z || fc.n != path.Count)
             {
                 DropFeed(r);
-                fc = new FeedCache { from = from, to = to, width = width, y = fy, mesh = Ribbon(new List<V2> { from, (from + to) * 0.5, to }, width, fy, 0.37) };
+                fc = new FeedCache { from = from, to = to, n = path.Count, width = width, y = fy, mesh = Ribbon(Densify(path), width, fy, 0.37) };
                 feeds[r] = fc;
                 FeedBuilds++;
             }
             Mesh feed = fc.mesh;
             Solid(feed, Matrix4x4.identity, m);
-            if (hm.CouplingBare != null)
-                Piece(hm.CouplingBare, coupling, d, (float)HoseMath.FittingSize(vis, PieceBand, CouplingMax), y - 0.0006f);
+            if (onNozzle && hm.CouplingBare != null)
+            {
+                Color wrapTint = Color.Lerp(Color.white, Tint(r), 0.5f);
+                Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, face, axis, vis, y - 0.0006f, wrapTint);
+            }
             lastFeedDraws++;
+        }
+
+        /// <summary>A square feed path as the ribbon wants it: a few samples per leg so its corners stay sharp.</summary>
+        private static List<V2> Densify(List<V2> path)
+        {
+            var o = new List<V2> { path[0] };
+            for (int i = 1; i < path.Count; i++)
+            {
+                V2 a = path[i - 1], b = path[i];
+                int n = Math.Max(1, (int)Math.Ceiling(V2.Dist(a, b) / 0.25));
+                for (int k = 1; k <= n; k++) o.Add(a + (b - a) * (k / (double)n));
+            }
+            return o;
         }
 
         /// <summary>Which reel art prints (B26, round 2): Graphic_HoseReel swaps stored/deployed on the map mesh (state read).</summary>
@@ -1168,7 +1191,7 @@ namespace RimMandrake.FlowWorks.Hose
         private void Fitting(HoseLookMats hm, Material m, float maxBand, double centreOff, double brassFrom, V2 end, V2 d, float vis, float y, Color wrapTint, float widen = 1f)
         {
             float size = (float)HoseMath.FittingSize(vis, PieceBand, maxBand) * widen;
-            V2 c = end + d * (centreOff * size);
+            V2 c = HoseJoints.FittingCentre(end, d, centreOff, size);
             Piece(m, c, d, size, y);
             V2 brass = c + d * (brassFrom * size);
             Wrap(hm, brass + d * (0.05 - HoseMath.WrapLength / 2), d, vis, y + 0.0002f, wrapTint);

@@ -430,9 +430,39 @@ def reel_west_ops(cells):
     return ";".join(reel_west(c) for c in cells)
 
 
+# SCENARIO_REELS_FIX_STILL_FACING_WEST (2026-10-22 audit D10): a reel staged West whose free end lies behind it leaves the
+# west nozzle and U-turns 180 degrees past itself (the straight lead-out rule). Stage a reel facing its target instead:
+# reel_facing picks the facing from the footprint centre toward the target (the larger axis; ties go east/west) and the
+# Position that keeps the 2x2 on [c, c+(1,1)] for that facing (GenAdj.AdjustForRotation: N +0, E z+1, S x+1 z+1, W x+1).
+REEL_POS_SHIFT = {0: (0, 0), 1: (0, 1), 2: (1, 1), 3: (1, 0)}
+
+
+def reel_facing(c, target):
+    """Rot4 int (0 N, 1 E, 2 S, 3 W) for a 2x2 reel on footprint corner c whose hose goes to `target` (a cell); West when
+    target is None (the proofs' old layout)."""
+    if target is None:
+        return 3
+    dx, dz = target[0] + 0.5 - (c[0] + 1), target[1] + 0.5 - (c[1] + 1)
+    if abs(dx) >= abs(dz):
+        return 1 if dx > 0 else 3
+    return 0 if dz > 0 else 2
+
+
+def reel_pos(c, rot):
+    """The build Position of a 2x2 reel on footprint corner c built facing rot."""
+    sx, sz = REEL_POS_SHIFT[rot % 4]
+    return (c[0] + sx, c[1] + sz)
+
+
+def reel_toward(c, target):
+    """Build op for a reel on footprint corner c facing its hose's target (reel_west when target is None)."""
+    rot = reel_facing(c, target)
+    return "RM_HoseReel:%d,%d,%d" % (reel_pos(c, rot) + (rot,))
+
+
 def reel_at(pos, c):
-    """True when a reel whose Position is `pos` is the one staged at footprint corner `c` (built North or West)."""
-    return tuple(pos or ()) in (tuple(c), (c[0] + 1, c[1]))
+    """True when a reel whose Position is `pos` is the one staged at footprint corner `c` (any facing)."""
+    return tuple(pos or ()) in tuple(reel_pos(c, r) for r in range(4))
 
 
 # Verse.Log stops ALL managed logging after 10,000 messages ("Reached max messages limit"; skills/rimbridge traps.md), and on

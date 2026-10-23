@@ -173,7 +173,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(pw.Contains("public override void DrawGhost(") && pw.Contains("Rot = rot.AsInt") && pw.Contains("r.Outward"),
                     "the preview reads the ghost's rotation and the outlet");
                 string hoses = Src("Hose", "RM_MapComponent_Hoses.cs");
-                Assert(hoses.Contains("V2 inw = -r.Rect.Outward.Value;") && !hoses.Contains("new V2(HoseReelRect.NozzleSeat, 0), new V2(1, 0)"),
+                // HOSE_JOINTS_REPAIR_ENDS_MISS_THE_NOZZLES: the seat and axis moved into HoseJoints.NozzleCoupling (HoseRelay.cs), -Outward
+                Assert(hoses.Contains("HoseJoints.NozzleCoupling(r.Rect, out V2 inw)") && Src("Hose", "HoseRelay.cs").Contains("inward = -(r.Outward")
+                       && !hoses.Contains("new V2(HoseReelRect.NozzleSeat, 0), new V2(1, 0)"),
                     "the reel-end coupling points into the turned nozzle, not always east");
                 Assert(Src("RimMandrake_FlowWorks.csproj").Contains(@"Hose\PlaceWorker_HoseReelOutlet.cs"), "the preview is in the mod build");
             });
