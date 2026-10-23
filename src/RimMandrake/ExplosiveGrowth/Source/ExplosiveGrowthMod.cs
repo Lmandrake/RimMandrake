@@ -17,7 +17,8 @@ namespace RimMandrake.ExplosiveGrowth
     // ════════════════════════════════════════════════════════════════════
     public class ExplosiveGrowthSettings : ModSettings
     {
-        // Master switch. Off: every patch no-ops, nothing charges: vanilla growth everywhere (all-off degrades to vanilla).
+        // Master switch. Off: every patch no-ops, nothing charges, no suppression is laid or kept: vanilla growth everywhere
+        // (all-off degrades to vanilla). Owner by card 2026-10-23: "Master stops everything"; selftest_explosivegrowth_master.py holds it.
         // Every runtime read goes through On, which ANDs it with the Baroque Biomes roster toggle "ExplosiveGrowth".
         public static bool enabled = true;
 
@@ -188,7 +189,8 @@ namespace RimMandrake.ExplosiveGrowth
             if (Group(list, "Mod switch", RimMandrake.Shared.SettingScope.Now, new[] { "enabled" }))
             {
                 list.CheckboxLabeled("Plant growth rules enabled", ref enabled,
-                    "Off: every plant grows at vanilla speed, nothing swells or reaches a top.\n\n"
+                    "Off stops everything on this page, whatever its own switch says: every plant grows and ages at vanilla speed, "
+                    + "nothing swells, tints or reaches a top, no water source counts, and grazing or blower suppression is dropped.\n\n"
                     + "The Baroque Biomes settings page has its own toggle for this engine (under Engines); both must be on.");
                 if (shellOff) list.Label("  The Baroque Biomes page has this engine switched OFF, so nothing here runs until it is back on.");
                 list.GapLine();
