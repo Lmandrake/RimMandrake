@@ -10,7 +10,7 @@
 //     wall's face;
 //  S3 the metric itself: WallDepth > ClipTolerance exactly when the independent depth is, over random points in random worlds;
 //  S4 re-plans: the walkthrough's C3-north scene (reel o1 at (19,42), wall x=22 with its gap at z=42-43, free end (35,27)) and
-//     a sweep of one-thick walls with one gap, each laid from a west-facing 2x2 reel with the straight lead-out: no laid pose
+//     a sweep of one-thick walls with one gap, each laid from a 2x2 reel of random facing with its lead-out: no laid pose
 //     (flat or plump) has a sample deeper than CrossDepth (0.12, the hose's half-width) inside a wall by the independent ruler.
 using System;
 using System.Collections.Generic;

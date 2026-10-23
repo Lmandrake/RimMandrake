@@ -392,9 +392,6 @@ namespace RimMandrake.FlowWorks.Hose
             return "[" + D(e.X) + "," + D(e.Z) + "]";
         }
 
-        /// <summary>Round 7 (station 42): what is DRAWN at a relay end -- the lay's last point, the coupling's axis, the
-        /// signed distance from the relay's edge on the intake side (+ = outside) and whether it lies within that edge,
-        /// and the angle (deg) between the last 0.5 cell of the drawn hose and the axis.</summary>
         /// <summary>",wallCross":n,"wallCrossAt":[x,z]|null over the flat and plump poses (HoseMath.WallCrossings).</summary>
         private static string WallCrossJson(CordWorld w, HoseLay lay)
         {
@@ -404,6 +401,9 @@ namespace RimMandrake.FlowWorks.Hose
             return ",\"wallCross\":" + (n + m) + ",\"wallCrossAt\":" + at;
         }
 
+        /// <summary>Round 7 (station 42): what is DRAWN at a relay end -- the lay's last point, the coupling's axis, the
+        /// signed distance from the relay's edge on the intake side (+ = outside) and whether it lies within that edge,
+        /// and the angle (deg) between the last 0.5 cell of the drawn hose and the axis.</summary>
         private static string RelayEnd(RM_MapComponent_Hoses comp, CompHoseReel r, HoseLay lay)
         {
             V2 e = comp.EndPoint(r, out CompHoseReel relay, out V2? inward);
