@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The bank stake's and silt-trap's four looks (RIVER_WEIR_ART_JUDGE_CODEX_SQUINTS fixes 8 and 10; owner card 2026-10-17:
+     "Commission REVIEW.md items 3,4,6,7,8,9,10 in four styles; judged in game"): one ThingStyleDef per look, <def>_<Look>, picked
+     through the shared style picker (Machinery/PipeLook.cs) like the weir. The stake's ridge spans (RM_BankStakeRidge_h/_v) sit
+     beside its post texture. Sources: art_source/RiverWorks/. No StyleCategoryDef lists these. -->
+<Defs>
+
+  <ThingStyleDef>
+    <defName>RM_BankStake_Scrapper</defName>
+    <label>scrapper</label>
+    <uiIconPath>RimMandrake/FlowWorks/Rivers/Scrapper/RM_BankStake</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/Rivers/Scrapper/RM_BankStake</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(0.8, 0.8)</drawSize>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_BankStake_Industrial</defName>
+    <label>industrial</label>
+    <uiIconPath>RimMandrake/FlowWorks/Rivers/Industrial/RM_BankStake</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/Rivers/Industrial/RM_BankStake</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(0.8, 0.8)</drawSize>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_BankStake_Modern</defName>
+    <label>modern</label>
+    <uiIconPath>RimMandrake/FlowWorks/Rivers/Modern/RM_BankStake</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/Rivers/Modern/RM_BankStake</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(0.8, 0.8)</drawSize>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_BankStake_Futuristic</defName>
+    <label>futuristic</label>
+    <uiIconPath>RimMandrake/FlowWorks/Rivers/Futuristic/RM_BankStake</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/Rivers/Futuristic/RM_BankStake</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(0.8, 0.8)</drawSize>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SiltTrap_Scrapper</defName>
+    <label>scrapper</label>
+    <uiIconPath>RimMandrake/FlowWorks/Rivers/Scrapper/RM_SiltTrap</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/Rivers/Scrapper/RM_SiltTrap</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1.2, 1.2)</drawSize>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SiltTrap_Industrial</defName>
+    <label>industrial</label>
+    <uiIconPath>RimMandrake/FlowWorks/Rivers/Industrial/RM_SiltTrap</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/Rivers/Industrial/RM_SiltTrap</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1.2, 1.2)</drawSize>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SiltTrap_Modern</defName>
+    <label>modern</label>
+    <uiIconPath>RimMandrake/FlowWorks/Rivers/Modern/RM_SiltTrap</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/Rivers/Modern/RM_SiltTrap</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1.2, 1.2)</drawSize>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SiltTrap_Futuristic</defName>
+    <label>futuristic</label>
+    <uiIconPath>RimMandrake/FlowWorks/Rivers/Futuristic/RM_SiltTrap</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/Rivers/Futuristic/RM_SiltTrap</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1.2, 1.2)</drawSize>
+    </graphicData>
+  </ThingStyleDef>
+
+</Defs>

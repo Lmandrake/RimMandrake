@@ -725,5 +725,49 @@ namespace RimMandrake.FlowWorks.Rivers
 			r.Add((placedRot + 3) % 4);
 			return r;
 		}
+
+		// ── bank-works art (RIVER_WEIR_ART_JUDGE_CODEX_SQUINTS fixes 8 and 10; owner card 2026-10-17: "Commission REVIEW.md
+		//    items 3,4,6,7,8,9,10 in four styles; judged in game"). Sizes in cells; art_source/RiverWorks/compose.py mirrors them.
+
+		/// <summary>The stake post's draw size (square) and how far it sits north of its cell centre, so its footing lands on
+		/// the ridge line rather than below it.</summary>
+		public const float StakePostSize = 0.8f;
+
+		public const float StakePostLift = 0.18f;
+
+		/// <summary>Levee span art: east-west 128x48 px, north-south 64x128 px, at 128 px a cell.</summary>
+		public static readonly float[] StakeRidgeHSize = { 1f, 48f / 128f };
+
+		public static readonly float[] StakeRidgeVSize = { 64f / 128f, 1f };
+
+		/// <summary>Does the stake at (x, z) draw the levee span toward (x+dx, z+dz)? Only east (1,0) and north (0,1) spans,
+		/// and only when that neighbour is a stake: each touching pair is drawn once, by its west/south member.</summary>
+		public static bool StakeOwnsRidge(int x, int z, int dx, int dz, Func<int, int, bool> isStake)
+		{
+			bool east = dx == 1 && dz == 0, north = dx == 0 && dz == 1;
+			return (east || north) && isStake(x + dx, z + dz);
+		}
+
+		/// <summary>The silt-trap's sediment wedge: none without a current (flowDir -1). Otherwise its centre offset from the
+		/// trap's centre (cells), the clockwise turn of the art (tip drawn up/north) so the tip points UPSTREAM, and its
+		/// scale: 0.55 new, growing with every cell richened, full (1) at five or once clogged.</summary>
+		public static bool SiltWedge(int flowDir, int richenedCells, bool clogged, out float offX, out float offZ, out float angleCw, out float scale)
+		{
+			offX = offZ = angleCw = 0f;
+			scale = 0f;
+			if (flowDir < 0 || flowDir > 7)
+			{
+				return false;
+			}
+			int up = (flowDir + 4) % 8;
+			float t = clogged ? 1f : Math.Min(1f, Math.Max(0, richenedCells) / 5f);
+			scale = 0.55f + 0.45f * t;
+			double rad = up * 45.0 * Math.PI / 180.0;
+			double ux = Math.Cos(rad), uz = Math.Sin(rad);
+			offX = (float)(Math.Abs(ux) < 1e-9 ? 0.0 : ux * 0.55 * scale);
+			offZ = (float)(Math.Abs(uz) < 1e-9 ? 0.0 : uz * 0.55 * scale);
+			angleCw = (float)(((90 - up * 45) % 360 + 360) % 360);
+			return true;
+		}
 }
 }

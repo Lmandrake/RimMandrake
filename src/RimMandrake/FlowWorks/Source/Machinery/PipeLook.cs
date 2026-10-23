@@ -34,6 +34,13 @@ namespace RimMandrake.FlowWorks.Machinery
             // picker once its style defs (Defs/Rivers/RM_BankWeirStyles.xml, RM_BankWeir_<Look>) are loaded
             if (DefDatabase<ThingStyleDef>.GetNamedSilentFail(PipeStyles.StyleDefName(PipeStyles.WeirDef, PipeStyles.Scrapper)) != null)
                 Core.Register(new[] { PipeStyles.WeirDef }, PipeStyles.StyleDefName);
+            // fixes 8 and 10 of the same item (owner card 2026-10-17: "Commission REVIEW.md items 3,4,6,7,8,9,10 in four
+            // styles; judged in game"): the bank stake and the silt-trap, once Defs/Rivers/RM_BankWorksStyles.xml is loaded
+            foreach (string bank in new[] { "RM_BankStake", "RM_SiltTrap" })
+            {
+                if (DefDatabase<ThingStyleDef>.GetNamedSilentFail(PipeStyles.StyleDefName(bank, PipeStyles.Scrapper)) != null)
+                    Core.Register(new[] { bank }, PipeStyles.StyleDefName);
+            }
             // owner card 2026-10-22 (pumps E/F/G): the liquid pump joins once RM_LiquidPumpStyles.xml is loaded
             if (DefDatabase<ThingStyleDef>.GetNamedSilentFail(PipeStyles.StyleDefName(PipeStyles.PumpDef, PipeStyles.Scrapper)) != null)
                 Core.Register(new[] { PipeStyles.PumpDef }, PipeStyles.StyleDefName);

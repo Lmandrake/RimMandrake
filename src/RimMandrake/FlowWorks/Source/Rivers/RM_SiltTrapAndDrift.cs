@@ -65,6 +65,10 @@ namespace RimMandrake.FlowWorks.Rivers
 					wearDebt -= n;
 					HitPoints = System.Math.Max(1, HitPoints - n);
 				}
+				if (Clogged != printedClogged)
+				{
+					Map.mapDrawer.MapMeshDirty(Position, MapMeshFlagDefOf.Things);   // wear or a repair crossed the clog line
+				}
 			}
 			if (!RM_RiversSettings.siltRichening)
 			{
@@ -109,6 +113,7 @@ namespace RimMandrake.FlowWorks.Rivers
 				Map.terrainGrid.SetTerrain(c, rich);
 				richened.Add(c);
 				originals.Add(here);
+				Map.mapDrawer.MapMeshDirty(Position, MapMeshFlagDefOf.Things);   // the silt wedge grows (Print)
 				return c;
 			}
 			return IntVec3.Invalid;
@@ -139,7 +144,48 @@ namespace RimMandrake.FlowWorks.Rivers
 			}
 			richened.Clear();
 			originals.Clear();
+			Map.mapDrawer.MapMeshDirty(Position, MapMeshFlagDefOf.Things);
 		}
+
+		private bool Clogged => HitPoints < MaxHitPoints * WorkingHpFraction;
+
+		private bool printedClogged;
+
+		/// <summary>RIVER_WEIR_ART_JUDGE_CODEX_SQUINTS fix 10 (owner card 2026-10-17: "Commission REVIEW.md items
+		/// 3,4,6,7,8,9,10 in four styles; judged in game"): under the baffle (its look; the waterline is in the art), a
+		/// sediment wedge against the upstream face, tip pointing up the current found nearest the trap, growing with every
+		/// cell it has richened and full once clogged (RM_RiverMath.SiltWedge). No current within reach: no wedge.</summary>
+		public override void Print(SectionLayer layer)
+		{
+			printedClogged = Clogged;
+			int flow = -1;
+			RM_MapComponent_RiverCurrent cur = Map?.GetComponent<RM_MapComponent_RiverCurrent>();
+			if (cur != null)
+			{
+				foreach (IntVec3 c in GenRadial.RadialCellsAround(Position, WedgeSearchRadius, useCenter: true))
+				{
+					if (c.InBounds(Map) && (flow = cur.FlowDirAt(c)) >= 0)
+					{
+						break;
+					}
+				}
+			}
+			if (RM_RiverMath.SiltWedge(flow, richened.Count, printedClogged, out float ox, out float oz, out float ang, out float s))
+			{
+				Material wedge = RM_WeirArt.Mat(WedgeTex, ShaderDatabase.Transparent);
+				if (wedge != null)
+				{
+					Vector3 at = this.TrueCenter() + new Vector3(ox, 0f, oz);
+					at.y -= Altitudes.AltInc * 0.3f;   // on the ground, under the baffle
+					Printer_Plane.PrintPlane(layer, at, new Vector2(1.1f * s, 1.1f * s), wedge, ang);
+				}
+			}
+			base.Print(layer);
+		}
+
+		private const float WedgeSearchRadius = 2.9f;
+
+		private const string WedgeTex = "RimMandrake/FlowWorks/Rivers/RM_SiltWedge";
 
 		public int RichenedCount => richened.Count;
 
