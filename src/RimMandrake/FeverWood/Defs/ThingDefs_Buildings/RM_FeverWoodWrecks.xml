@@ -5,8 +5,7 @@
   Source: the_fever_wood.md:168 (chitin and salvage, the two-front war's leavings). The first Carapace-family child. Registered by patch (RM_FeverWood_WreckField_Register.xml), not in RM_FeverWood.xml.
   Family parents, weathering and loot: src/RimMandrake/Wreckage (composed into mandrake.rm.biomes).
   Names and families are design §4's proposals; the biome's own sitting may move them.
-  Art: own artpipe renders (wreck_*) installed via art install, texPath + measured shadow per child;
-  still on vanilla ShipChunk placeholder until its render lands: RM_FeverWoodWreckCarapace.
+  Art: own artpipe renders (wreck_*) installed via art install, texPath + measured shadow per child.
   ALL NUMBERS PROVISIONAL (family + weathering rows).
 -->
 <Defs>
@@ -33,6 +32,13 @@
     <defName>RM_FeverWoodWreckCarapace</defName>
     <label>overgrown droid shell</label>
     <description>The shell of a war droid, root-bound and green with moss, its optics long dark. Deconstruct it for valuable resources.</description>
+    <graphicData>
+      <texPath>Things/Building/Wrecks/RM_FeverWoodWreckCarapace</texPath>
+      <!-- MEASURED 2 variant(s) (alpha > 16): mean alpha bbox 94.0% x 91.8% -> 0.70*0.940*1, 0.63*0.918*1 (Scald ratio) -->
+      <shadowData>
+        <volume>(0.66,0.4,0.58)</volume>
+      </shadowData>
+    </graphicData>
     <modExtensions>
       <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
         <weathering>RM_WreckWeathering_Overgrown</weathering>
