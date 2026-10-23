@@ -1,0 +1,90 @@
+{
+ "RM_LiquidTank_Industrial.png": {
+  "verdict": "PASS",
+  "note": "Pass. N/S show about 0.35 cell of bare pipe plus the collar, the same length as the old hose stub it replaces. It reads as a rigid spigot entering the tank, not an odd extra. W/E collars are tight to the body. Material ok (Industrial)."
+ },
+ "RM_LiquidTank_Scrapper.png": {
+  "verdict": "PASS",
+  "note": "Pass. N/S show about 0.35 cell of bare pipe plus the collar, the same length as the old hose stub it replaces. It reads as a rigid spigot entering the tank, not an odd extra. W/E collars are tight to the body. Material ok (Scrapper)."
+ },
+ "RM_LiquidTank_Modern.png": {
+  "verdict": "PASS",
+  "note": "Pass. N/S show about 0.35 cell of bare pipe plus the collar, the same length as the old hose stub it replaces. It reads as a rigid spigot entering the tank, not an odd extra. W/E collars are tight to the body. Material ok (Modern)."
+ },
+ "RM_LiquidTank_Futuristic.png": {
+  "verdict": "PASS",
+  "note": "Pass. N/S show about 0.35 cell of bare pipe plus the collar, the same length as the old hose stub it replaces. It reads as a rigid spigot entering the tank, not an odd extra. W/E collars are tight to the body. Material ok (Futuristic)."
+ },
+ "RM_LiquidTankTall_Industrial.png": {
+  "verdict": "PASS",
+  "note": "Pass. The W/E/S pipes meet under the base plate and feet, so they read as going beneath. Collars are flush with the couplings."
+ },
+ "RM_UniversalCargoTankXTall_Industrial.png": {
+  "verdict": "PASS",
+  "note": "Pass. The W/E/S pipes meet under the base plate and feet, so they read as going beneath. Collars are flush with the couplings."
+ },
+ "RM_LiquidTankTall_Scrapper.png": {
+  "verdict": "PASS",
+  "note": "Pass. The W/E/S pipes meet under the base plate and feet, so they read as going beneath. Collars are flush with the couplings."
+ },
+ "RM_UniversalCargoTankXTall_Scrapper.png": {
+  "verdict": "PASS",
+  "note": "Pass. The W/E/S pipes meet under the base plate and feet, so they read as going beneath. Collars are flush with the couplings."
+ },
+ "RM_LiquidTankTall_Futuristic.png": {
+  "verdict": "PASS",
+  "note": "Pass. The W/E/S pipes meet under the base plate and feet, so they read as going beneath. Collars are flush with the couplings."
+ },
+ "RM_UniversalCargoTankXTall_Futuristic.png": {
+  "verdict": "PASS",
+  "note": "Pass. The W/E/S pipes meet under the base plate and feet, so they read as going beneath. Collars are flush with the couplings."
+ },
+ "RM_LiquidTankTall_Modern.png": {
+  "verdict": "FIX",
+  "note": "FIX: this tank has no base plate, so the S coupler's pipe ends on the W coupler's pipe in open ground below-left of the body. That leaves a bare, unfitted T outside the fixture. Stop the S pipe beneath the body, e.g. shift the S port or pipe right under the opaque tank, or clip the S pipe so it never crosses the W pipe outside the body art."
+ },
+ "RM_UniversalCargoTankXTall_Modern.png": {
+  "verdict": "FIX",
+  "note": "FIX: this tank has no base plate, so the S coupler's pipe ends on the W coupler's pipe in open ground below-left of the body. That leaves a bare, unfitted T outside the fixture. Stop the S pipe beneath the body, e.g. shift the S port or pipe right under the opaque tank, or clip the S pipe so it never crosses the W pipe outside the body art."
+ },
+ "RM_UniversalCargoTank_Industrial.png": {
+  "verdict": "PASS",
+  "note": "Pass. N shows about 0.3 cell of pipe into the body, and S tucks under the base or pallet. Collars are flush."
+ },
+ "RM_UniversalCargoTank_Scrapper.png": {
+  "verdict": "PASS",
+  "note": "Pass. N shows about 0.3 cell of pipe into the body, and S tucks under the base or pallet. Collars are flush."
+ },
+ "RM_UniversalCargoTank_Modern.png": {
+  "verdict": "PASS",
+  "note": "Pass. N shows about 0.3 cell of pipe into the body, and S tucks under the base or pallet. Collars are flush. The Modern N coupling sits right at the cage, with the collar hidden under it."
+ },
+ "RM_UniversalCargoTank_Futuristic.png": {
+  "verdict": "PASS",
+  "note": "Pass. N shows about 0.3 cell of pipe into the body, and S tucks under the base or pallet. Collars are flush."
+ },
+ "RM_LiquidPump_Industrial.png": {
+  "verdict": "PASS",
+  "note": "Pass. The collar sits between the pump's own flange and the hose coupling, with no gap (scan continuous) and nothing over the pump. It reads as a ring under the flange."
+ },
+ "RM_LiquidPump_Scrapper.png": {
+  "verdict": "PASS",
+  "note": "Pass. The collar sits between the pump's own flange and the hose coupling, with no gap (scan continuous) and nothing over the pump. It reads as a ring under the flange."
+ },
+ "RM_LiquidPump_Modern.png": {
+  "verdict": "PASS",
+  "note": "Pass. The collar sits between the pump's own flange and the hose coupling, with no gap (scan continuous) and nothing over the pump. It reads as a ring under the flange."
+ },
+ "RM_LiquidPump_Futuristic.png": {
+  "verdict": "PASS",
+  "note": "Pass. The collar sits between the pump's own flange and the hose coupling, with no gap (scan continuous) and nothing over the pump. It reads as a ring under the flange."
+ },
+ "RM_PumpingStation_Kludged_def.png": {
+  "verdict": "PASS",
+  "note": "Pass. The S collar plus a short pipe runs under the base beam and vanishes. It is flush with the brass coupling (scan continuous)."
+ },
+ "RM_PumpingStation_Repaired_def.png": {
+  "verdict": "PASS",
+  "note": "Pass. The S collar plus a short pipe runs under the base beam and vanishes. It is flush with the brass coupling (scan continuous)."
+ }
+}
