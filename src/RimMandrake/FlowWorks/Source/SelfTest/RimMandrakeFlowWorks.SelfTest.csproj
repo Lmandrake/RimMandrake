@@ -79,6 +79,7 @@
     <Compile Include="..\Pits\RM_PitCoverBeneathMath.cs" />
     <Compile Include="..\Drilling\RM_DrillSurveyMath.cs" />
     <Compile Include="PitCoverBeneathChecks.cs" />
+    <Compile Include="PitDrawHoldChecks.cs" />
     <Compile Include="CoverFloorSurveyChecks.cs" />
     <Compile Include="..\RM_DrawbridgeMath.cs" />
     <Compile Include="DrawbridgeChecks.cs" />

@@ -67,6 +67,43 @@ namespace RimMandrake.FlowWorks
 			return sink < room ? sink : room;
 		}
 
+		/// <summary>The near lip below a point: the north edge (z + 1) of the first square in column <paramref name="x"/>,
+		/// scanning south from row <paramref name="zStart"/> - 1 for at most <paramref name="maxRows"/> rows, whose seen depth
+		/// is shallower than <paramref name="d"/>. <paramref name="seenDepth"/> returns -1 off the map (the scan stops).
+		/// NaN when no lip is found. Never the start row itself: the lip is SOUTH of it.</summary>
+		public static float LipZBelow(int x, int zStart, int d, Func<int, int, int> seenDepth, int maxRows)
+		{
+			for (int k = 1; k <= maxRows; k++)
+			{
+				int s = seenDepth(x, zStart - k);
+				if (s < 0)
+				{
+					break;
+				}
+				if (s < d)
+				{
+					return zStart - k + 1f;
+				}
+			}
+			return float.NaN;
+		}
+
+		/// <summary>PIT_BOAR_FIX_SUNBATHES_ON_THE_WALL — hold the DRAWN centre above the near lip of the column it is drawn in.
+		/// The per-cell clamp measures room from the logical cell's centre, but the sink comes off the TWEENED draw position,
+		/// and vanilla's PawnTweener lags the logical cell (spring 0.09 a frame: about 0.85 cell behind a walking boar at any
+		/// game speed) and freezes outright while paused. A boar that stepped 38,22 -> 39,23 was sunk 1.5 (39,23's room) from
+		/// a tween still on 38,22 and drawn a cell south of the pit, on the wall. <paramref name="d"/> &lt;= 0: unchanged.</summary>
+		public static float HoldToDrawnLip(float sink, float drawX, float drawZ, int d, Func<int, int, int> seenDepth)
+		{
+			if (!(sink > 0f) || d <= 0)
+			{
+				return sink > 0f ? sink : 0f;
+			}
+			int x = (int)Math.Floor(drawX);
+			int z = (int)Math.Floor(drawZ);
+			return ClampSinkToLip(sink, drawZ, LipZBelow(x, z, d, seenDepth, SinkCapLevels * 2));
+		}
+
 		/// <summary>Tween progress from the centre of the cell a pawn is leaving
 		/// (<paramref name="ax"/>,<paramref name="az"/>) toward the next cell's centre, given the
 		/// drawn position (<paramref name="px"/>,<paramref name="pz"/>). Projected onto the
