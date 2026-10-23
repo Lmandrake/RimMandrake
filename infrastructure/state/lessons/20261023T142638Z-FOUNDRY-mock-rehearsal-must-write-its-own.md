@@ -1,0 +1,1 @@
+A --mock rehearsal must write to its own folder: owner_review_stage --mock and live_session --mock (B9) wrote synthetic pictures over the live captures in Transient/owner_review_stage and fw_hoses_walk that an open item cited (2026-10-23; restored from the game's Screenshots folder, fixed a7f64a773).

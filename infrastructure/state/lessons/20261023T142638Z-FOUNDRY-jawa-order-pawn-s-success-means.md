@@ -1,0 +1,1 @@
+jawa/order_pawn's success means the pawn ARRIVED on the cell; with waitTicks=1 it is false for every pawn. Read the per-pawn orderAccepted (live_session.order_taken), and never walk bystanders across a map: on a river map the walk swims the river and the current bruises them (live_session 20261023T044826). Teleport instead (HoseProbe pawn:<id>=tp:x,z).
