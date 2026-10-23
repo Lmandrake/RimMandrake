@@ -72,8 +72,8 @@ Ships:
      ThinkNode_EatWastepack in two ways: no player-faction gate (fires for
      any pawn via the shared Animal_PreMain insertTag, wild included) and
      filth is a first-class target alongside named items. First consumer:
-     mandrake.rut.rustcathedralroaches (RUT_ScarRoach, RUT_CathedralRoach) —
-     see that mod's own About for the full roach build.
+     mandrake.rut.rustcathedralroaches (RUT_ScarRoach, RUT_CathedralRoach; CUT
+     2026-10-22, owner Biome card 4 — successors RM_ScarRoach / RM_CathedralRoach).
 
   8. DEEPS_FAUNA_MECHANICS_1 (owner filing, 2026-09-19, off the Lantern
      Deeps fauna verdicts) — three more generic, content-blind mechanisms

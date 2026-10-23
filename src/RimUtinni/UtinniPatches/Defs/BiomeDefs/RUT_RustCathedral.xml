@@ -103,7 +103,7 @@
            2026-09-10 owner card and stays cut. Mynock is deliberately NOT added here:
            the same roster's own confidence note rules it "homeless-reserve... R17 lets
            it visit without a roster row." -->
-      <RUT_CathedralRoach MayRequire="mandrake.rut.rustcathedralroaches">0.12</RUT_CathedralRoach>  <!-- cathedral roach - synthetic cleaner, small, ruled -->
+      <!-- RUT_CathedralRoach entry REMOVED 2026-10-22 (owner, Biome card 4): mandrake.rut.rustcathedralroaches is cut; the roach lives on as RM_CathedralRoach in mandrake.rm.rustcathedral. -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>

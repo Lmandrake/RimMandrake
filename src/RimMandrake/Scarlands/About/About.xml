@@ -108,7 +108,7 @@ notice, never deleted or repointed).
 WARSCAR_FREE_TIER_BODY_1: the free tier owns its cast inline -- `RM_Chatrak`
 (plated grazer, leather `RM_ChatrakPlate`, undyeable), `RM_Totchak` art, `RM_Tetchik`
 (inedible, spawns only near glower), `RM_Pallbearer` (was RUT_MortuaryCrawler, retired)
-and `RM_ScarRoach` (RUT_ScarRoach stays a hidden alias for one release) -- plus
+and `RM_ScarRoach` (RUT_ScarRoach, the old alias, was cut 2026-10-22) -- plus
 `RM_WreckLichen`, seeded only beside ruins and wreck. Mod Settings toggle each species,
 the lichen seeder and the interim donor rows.</description>
 </ModMetaData>

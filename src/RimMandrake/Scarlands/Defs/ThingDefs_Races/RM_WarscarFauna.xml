@@ -12,8 +12,8 @@
   RM_Pallbearer  was RUT_MortuaryCrawler (retired, 0 occurrences in the canonical save).
                  Corpse-eating is vanilla CarnivoreAnimal behaviour; no extra filth def
                  is shipped (spec allowed "the vanilla dessicated state").
-  RM_ScarRoach   was RUT_ScarRoach; RUT_ScarRoach stays as a hidden alias in
-                 mandrake.rut.rustcathedralroaches for one release.
+  RM_ScarRoach   was RUT_ScarRoach; the hidden RUT_ScarRoach alias was cut
+                 with mandrake.rut.rustcathedralroaches 2026-10-22 (owner Biome card 4).
 
   Art: all real (artpipe _artsrc, wired WARSCAR_FREE_TIER_BODY_1).
 -->
