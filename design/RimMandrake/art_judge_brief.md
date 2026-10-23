@@ -60,6 +60,7 @@ past art, and his notes on the subject verbatim. Missing any of these → `UNSUR
 - D3. The silhouette sits inside the def's footprint; a picture that overflows or floats inside it is REDO. —
   `generating-rimworld-sprites`
 - D4. Real alpha: no backdrop, halo, ground shadow or scenery. — `generating-rimworld-sprites`; B1's prompt
+  - D4 exception: `RM_LadderPortable` west/east facings may carry a small soft floor shadow attached to the foot. — Owner card 2026-10-22 ("How should we resolve the side walls? → Keep side walls, add a shadow")
 
 ### E. Provenance
 - E1. Donor art (other mods, and vanilla Core/DLC) is never a final KEEP; a copied donor stand-in is temporary and
