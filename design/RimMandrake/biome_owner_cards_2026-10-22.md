@@ -201,6 +201,8 @@ south) and have been waiting since for you to say if they are right; nothing is 
 
 ## Card 7. Wrecked Machines mod (the dead factory the crew restores): cut it?
 
+**ANSWERED 2026-10-22 by question card: option 1, keep Wrecked Machines; the sheet's cut is NOT enacted.**
+
 **What was learned.** You cut this mod; it was marked "needs a call". It is the mod that lets wrecked machines in
 the Kolyska factory move from wrecked to kludged to restored (alloy forge, automated smelter and others), and it
 hard-depends on Vanilla Factions Expanded - Factory. Facts, checked: it is in the ship list, and in the dev, test and
@@ -227,6 +229,8 @@ nothing forces it out.
 
 ## Card 8. Greentide Raid Ant mod: keep the giant ant raiders?
 
+**ANSWERED 2026-10-22 by question card: option 3, move the ants into the free Greentide mod under our own name (no Star Wars).**
+
 **What was learned.** This mod replicates the donor "They!" giant ants as our own: the ant race and its two pawn
 kinds, a hidden faction that only raids, carapace leather and a carapace wall. Your sheet note says it is needed only if
 the faction exists at the faction pass. Facts: the faction is already in every dev save (3-4 mentions each) and is created
@@ -252,6 +256,8 @@ this is your design call (coin flip between 1 and 3 if you want the lowest effor
 ---
 
 ## Card 9. Vanilla Factions Tribals mod: cut it now, or wait for the remake?
+
+**ANSWERED 2026-10-22 by question card: option 1, keep Tribals until the world is remade.**
 
 **What was learned.** You cut it on the sheet, with the note "demote dev to test". It is the largest of the five
 because the **saves name it heavily**: every ideoligion's tech-advancement rituals use Tribals classes (85 obligation
