@@ -148,7 +148,7 @@ class Collector:
         else:
             status["kernel"] = self.snapshot.get("sources", {}).get("kernel", {"ok": True, "at": now})
         raw["kernel_oom"] = self.kernel.get("kills")
-        raw["memwatch"] = src("memwatch", lambda: pc.read_jsonl_tail(pc.MEMWATCH_EVENTS, 2 << 20)) or []
+        raw["memwatch"] = src("memwatch", lambda: pc.read_jsonl_tail(pc.MEMWATCH_EVENTS, 2 << 20, strict=True)) or []
         raw["ledger"] = src("ledger", self._ledger) or []
         raw["rulings"] = self.ledger_cache.get("rulings") if raw["ledger"] else None
         if raw["ledger"]:

@@ -76,6 +76,11 @@ def proc_start(pid: int) -> str | None:
 
 
 def read_sessions(sessions_dir: Path = SESSIONS_DIR) -> list[dict]:
+    """A missing sessions dir RAISES (the collector then shows the source down and the seat chips
+    'unknown'): an empty list would read as 'no windows open' (RIMPULSE_SOURCES_FIX_SILENCE_READS_HEALTHY).
+    One unparseable file is skipped - a session file is rewritten in place and can be read mid-write."""
+    if not sessions_dir.is_dir():
+        raise FileNotFoundError(f"no sessions dir {sessions_dir}")
     out = []
     for f in sessions_dir.glob("*.json"):
         try:
@@ -147,21 +152,35 @@ def session_extras(sid: str, now: float, projects_dir: Path = PROJECTS_DIR) -> d
     return ex
 
 
-def read_jsonl_tail(path: Path, tail_bytes: int = 1 << 20) -> list[dict]:
+def read_jsonl_tail(path: Path, tail_bytes: int = 1 << 20, strict: bool = False,
+                    allow_missing: bool = True) -> list[dict]:
+    """The last `tail_bytes` of a JSONL file as records; torn lines are skipped.
+
+    strict=True is for a collector SOURCE (RIMPULSE_SOURCES_FIX_SILENCE_READS_HEALTHY): an unreadable file
+    raises instead of reading as "nothing happened", a missing one raises unless `allow_missing` (a log
+    nobody has written yet is a valid empty), and a non-empty tail with no parseable line raises."""
     try:
         with open(path, "rb") as fh:
             fh.seek(0, 2)
             size = fh.tell()
             fh.seek(max(0, size - tail_bytes))
             chunk = fh.read().decode("utf-8", "replace")
-    except OSError:
+    except FileNotFoundError:
+        if strict and not allow_missing:
+            raise
         return []
-    out = []
+    except OSError:
+        if strict:
+            raise
+        return []
+    out, bad = [], 0
     for line in chunk.splitlines():
         try:
             out.append(json.loads(line))
         except ValueError:
-            pass
+            bad += bool(line.strip())
+    if strict and bad and not out:
+        raise ValueError(f"{path.name}: {bad} line(s), none parseable")
     return out
 
 
@@ -183,7 +202,7 @@ def read_ledger(clones: list[Path] = CLONES) -> list[dict]:
     window mid-append must not blank the widget."""
     model, out = _model(), []
     for f in ledger_files(clones):
-        out.extend(read_jsonl_tail(f, 1 << 40))
+        out.extend(read_jsonl_tail(f, 1 << 40, strict=True, allow_missing=False))
     return model.canonical_order(out)
 
 
@@ -228,6 +247,8 @@ def read_artpipe(d: Path = ARTPIPE_DIR, prev: dict | None = None, now: float = 0
         except OSError:
             return -1
     out = {"pending": n("pending"), "active": n("active"), "failed": n("failed")}
+    if out["pending"] < 0:   # unreadable state dir: a source failure, never an idle chip
+        raise FileNotFoundError(f"artpipe state unreadable: {d / 'pending'}")
     if prev and now - prev.get("done_at", 0) < 300:   # done/ holds 10k entries on drvfs
         out["done"], out["done_at"] = prev.get("done"), prev.get("done_at")
     else:
@@ -237,19 +258,17 @@ def read_artpipe(d: Path = ARTPIPE_DIR, prev: dict | None = None, now: float = 0
 
 
 def read_bridge(clone: Path = CLONES[0]) -> str | None:
-    try:
-        for line in (clone / "infrastructure/state/BRIDGE").read_text().splitlines():
-            if line and not line.startswith("#"):
-                return line.strip()
-    except OSError:
-        return None
+    """The BRIDGE holder line. An unreadable file RAISES (source down); a file with no holder line is None."""
+    for line in (clone / "infrastructure/state/BRIDGE").read_text().splitlines():
+        if line and not line.startswith("#"):
+            return line.strip()
     return None
 
 
 def read_hands(state_dir: Path | None = None) -> list[dict]:
     """Things agents deliberately handed the owner (`pulse.py hand`). Newest record per id wins."""
     out: dict[str, dict] = {}
-    for h in read_jsonl_tail((state_dir or STATE_DIR) / "hands.jsonl", 2 << 20):
+    for h in read_jsonl_tail((state_dir or STATE_DIR) / "hands.jsonl", 2 << 20, strict=True):
         if h.get("id") and h.get("target"):
             out[h["id"]] = h
     return list(out.values())
@@ -889,8 +908,10 @@ def classify_artpipe(a: dict, now: float, at: float) -> list[dict]:
 
 
 def read_telemetry(path: Path = TELEMETRY_STATE) -> dict | None:
-    """None = telemetry not installed (no row). A stale file is reported by classify_telemetry."""
-    if not path.exists():
+    """None = telemetry not installed (its state dir is absent: no row). Installed but the alerts file is
+    missing or unreadable RAISES - silence is not health. A stale payload is reported by classify_telemetry
+    and by `source_freshness`."""
+    if not path.parent.is_dir():
         return None
     return json.loads(path.read_text(encoding="utf-8"))
 
@@ -925,9 +946,15 @@ def classify_telemetry(t: dict | None, acks: dict, now: float) -> list[dict]:
     return rows
 
 
+PROBE_STALE_SECS = 120   # the widget posts a RimWorld probe every few seconds while it runs
+
+
 def classify_game(probe: dict | None, bridge: str | None, now: float) -> list[dict]:
+    """An old probe answers nothing: past PROBE_STALE_SECS the game reads 'unprobed', never 'UP'."""
     if probe is None and bridge is None:
         return []
+    if probe and now - (probe.get("at") or 0) > PROBE_STALE_SECS:
+        probe = None
     running = (probe or {}).get("rimworld_running")
     # BRIDGE reads "HELD    <SEAT>    since ..." or "FREE ..."; the holder is the seat, not the verb
     tok = (bridge or "").split()
@@ -984,6 +1011,22 @@ def build_strip(rows: list[dict]) -> list[dict]:
     return pills
 
 
+def source_freshness(status: dict, raw: dict, now: float) -> dict:
+    """Mark a source whose READ succeeded but whose DATA is old as `stale` (a fresh read of a dead producer
+    is not health): the telemetry payload's own `at`, the game probe's age. Pure; returns a new dict."""
+    out = {k: dict(v) for k, v in (status or {}).items()}
+    tel = raw.get("telemetry")
+    if tel and out.get("telemetry", {}).get("ok") and now - (tel.get("at") or 0) > TELEMETRY_STALE_SECS:
+        out["telemetry"]["stale"] = f"payload from {time.strftime('%H:%M', time.localtime(tel.get('at') or 0))}"
+    pr = raw.get("probe")
+    if "probe" in out:
+        if not pr:
+            out["probe"].update(ok=False, error="no game probe yet (widget not posting)")
+        elif now - (pr.get("at") or 0) > PROBE_STALE_SECS:
+            out["probe"]["stale"] = f"last probe {int((now - pr['at']) // 60)} min ago"
+    return out
+
+
 def collect_snapshot(raw: dict, state: dict, now: float) -> tuple[dict, dict, list[dict]]:
     """Pure: raw sources + persisted state -> (snapshot, new state, metric events)."""
     acks = state.get("acks", {})
@@ -1015,7 +1058,7 @@ def collect_snapshot(raw: dict, state: dict, now: float) -> tuple[dict, dict, li
     new_state.update({"seen": seen, "open": open_now})
     snap = {
         "v": 2, "collected_at": now, "rows": rows, "strip": build_strip(rows), "chips": build_chips(rows, now, (raw.get("source_status") or {}).get("sessions", {}).get("ok", True)), "counts": counts,
-        "done_since": since, "sources": raw.get("source_status", {}),
+        "done_since": since, "sources": source_freshness(raw.get("source_status", {}), raw, now),
         "sparks": (raw.get("telemetry") or {}).get("sparks"),
         "telemetry": ({k: raw["telemetry"].get(k) for k in ("at", "grafana", "tier_armed", "game_running")}
                       if raw.get("telemetry") else None),

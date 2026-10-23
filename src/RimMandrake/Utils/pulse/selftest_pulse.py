@@ -393,5 +393,50 @@ sn = pc.collect_snapshot({"sessions": [], "source_status": {"sessions": {"ok": F
 check("collect_snapshot passes a failed sessions source through to the chips",
       {c["state"] for c in sn["chips"] if c.get("seat") in pc.SEATS} == {"unknown"}, sn["chips"])
 
+# --- RIMPULSE_SOURCES_FIX_SILENCE_READS_HEALTHY: "cannot tell" never reads as "nothing to report" --------
+def raises(fn):
+    try:
+        fn()
+        return False
+    except Exception:
+        return True
+
+
+with tempfile.TemporaryDirectory() as d:
+    d = Path(d)
+    check("a missing sessions dir raises (seats 'unknown'), never reads as no windows",
+          raises(lambda: pc.read_sessions(d / "nope")))
+    check("an empty sessions dir is a valid empty", pc.read_sessions(d) == [])
+    check("strict jsonl: a missing log nobody wrote yet is a valid empty",
+          pc.read_jsonl_tail(d / "none.jsonl", strict=True) == [])
+    check("strict jsonl: a missing REQUIRED file raises", raises(lambda: pc.read_jsonl_tail(d / "none.jsonl", strict=True,
+                                                                                          allow_missing=False)))
+    (d / "junk.jsonl").write_text("not json\nnor this\n")
+    check("strict jsonl: a file with lines but none parseable raises", raises(lambda: pc.read_jsonl_tail(d / "junk.jsonl", strict=True)))
+    check("lenient jsonl (non-source reads) still answers empty", pc.read_jsonl_tail(d / "junk.jsonl") == [])
+    (d / "torn.jsonl").write_text('{"a": 1}\n{"b": ')
+    check("strict jsonl: one torn line beside good ones is skipped, not raised",
+          pc.read_jsonl_tail(d / "torn.jsonl", strict=True) == [{"a": 1}])
+    check("an unreadable BRIDGE file raises (source down), not 'no holder'", raises(lambda: pc.read_bridge(d)))
+    (d / "infrastructure/state").mkdir(parents=True)
+    (d / "infrastructure/state/BRIDGE").write_text("# who\nFREE since x\n")
+    check("a readable BRIDGE file answers its holder line", pc.read_bridge(d) == "FREE since x")
+    check("an unreadable artpipe state dir raises, never an idle chip", raises(lambda: pc.read_artpipe(d / "noart")))
+    check("telemetry not installed (no state dir) is None, no row", pc.read_telemetry(d / "notel" / "alerts.json") is None)
+    (d / "tel").mkdir()
+    check("telemetry installed but its alerts file missing raises", raises(lambda: pc.read_telemetry(d / "tel" / "alerts.json")))
+g_old = pc.classify_game({"rimworld_running": True, "at": NOW - 600}, "FREE", NOW)
+g_new = pc.classify_game({"rimworld_running": True, "at": NOW - 20}, "FREE", NOW)
+check("a 10-minute-old 'running' probe no longer says RimWorld UP", g_old[0]["kind"] == "idle" and "unprobed" in g_old[0]["text"], g_old)
+check("a fresh 'running' probe says UP", g_new[0]["kind"] == "run" and "UP" in g_new[0]["text"], g_new)
+fr = pc.source_freshness({"telemetry": {"ok": True, "at": NOW}, "probe": {"ok": False, "at": None}},
+                         {"telemetry": {"at": NOW - 3600}, "probe": None}, NOW)
+check("a fresh read of an hour-old telemetry payload marks the source stale", fr["telemetry"].get("stale"), fr)
+check("no game probe yet is reported with a reason, not as healthy", not fr["probe"]["ok"] and fr["probe"].get("error"), fr)
+fr2 = pc.source_freshness({"telemetry": {"ok": True, "at": NOW}, "probe": {"ok": True, "at": NOW - 10}},
+                          {"telemetry": {"at": NOW - 5}, "probe": {"rimworld_running": False, "at": NOW - 10}}, NOW)
+check("fresh telemetry and a fresh probe stay healthy", not fr2["telemetry"].get("stale") and fr2["probe"]["ok"]
+      and not fr2["probe"].get("stale"), fr2)
+
 print(f"\n{'FAIL' if FAILS else 'OK'}: {len(FAILS)} failing")
 sys.exit(1 if FAILS else 0)

@@ -106,6 +106,7 @@ body.collapsed .sparks{display:none}
 .p-warn{color:var(--red);box-shadow:inset 0 0 0 1px #ff554777}
 .p-down{background:#3a2a20;color:var(--red);box-shadow:inset 0 0 0 1px #d2462e88}
 .p-rule{color:var(--cream);box-shadow:inset 0 0 0 1px var(--line)} .p-look{color:var(--lk);box-shadow:inset 0 0 0 1px var(--line)}
+.p-blind{color:var(--mustard);box-shadow:inset 0 0 0 1px #e0aa3e77}
 .p-more{color:var(--muted);box-shadow:inset 0 0 0 1px var(--line);cursor:pointer}
 body.collapsed .body,body.collapsed .tb{display:none}
 body.collapsed .strip{border-top:0;cursor:grab}
@@ -160,14 +161,26 @@ function esc(s){ return String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<
 const OLD = 3*86400, OLD_AGE_TAG = 72*3600;
 const LIMIT = {rule:5, look:4};
 // one light per collector; the snapshot's source names mapped to short labels
-const LIGHTS = [['sessions','sessions'],['ledger','ledger'],['sheets','sheets'],['probe','game'],['artpipe','art'],['kernel','kernel'],['memwatch','mem'],['telemetry','tel']];
+const LIGHTS = [['sessions','sessions'],['subagents','agents'],['ledger','ledger'],['hands','hands'],['sheets','sheets'],['probe','game'],['bridge','bridge'],['artpipe','art'],['kernel','kernel'],['memwatch','mem'],['telemetry','tel']];
 const STALE_AFTER = {kernel:90, sessions:30, subagents:30, memwatch:180, ledger:120, artpipe:120, bridge:120, probe:120, sheets:150, hands:30, telemetry:60};
+// Silence is never health (RIMPULSE_SOURCES_FIX_SILENCE_READS_HEALTHY): a source that is absent or failed
+// is down; one whose read works but whose data is old (s.stale, set by the daemon) is stale. The game
+// probe has no failure mode of its own, so a missing probe is 'stale' (game state unknown), not 'ok'.
 function srcState(name){
   const s = snap && snap.sources && snap.sources[name];
-  if (!s) return name === 'probe' ? 'ok' : 'down';
-  if (!s.ok && !s.at) return name === 'probe' ? 'ok' : 'down';
-  if (!s.ok) return 'down';
+  if (!s) return name === 'probe' ? 'stale' : 'down';
+  if (!s.ok) return name === 'probe' ? 'stale' : 'down';
+  if (s.stale) return 'stale';
   return (Date.now()/1000 - (s.at||0)) > (STALE_AFTER[name] || 60) ? 'stale' : 'ok';
+}
+function srcWhy(name){ const s = snap && snap.sources && snap.sources[name];
+  return !s ? 'not reporting' : (s.error || s.stale || ''); }
+function blindPill(){
+  const bad = LIGHTS.filter(([n]) => srcState(n) !== 'ok');
+  if (!bad.length) return '';
+  const down = bad.filter(([n]) => srcState(n) === 'down');
+  const tip = bad.map(([n,l]) => `${l}: ${srcState(n)} ${srcWhy(n)}`).join('\n');
+  return `<span class="pill ${down.length ? 'p-down' : 'p-blind'}" title="${esc(tip)}">◌ ${down.length ? 'blind' : 'stale'}: ${esc(bad.map(([,l]) => l).join(', '))}</span>`;
 }
 const THUMB_TY = {image:'▣', page:'▤', sheets:'☰', web:'☰', folder:'▦', save:'◈', doc:'▤', data:'▤', file:'▤'};
 
@@ -294,6 +307,7 @@ function renderStrip(){
     `<span class="pill p-${p.kind}${p.seat ? ' s-' + esc(p.seat) : ''}" title="${esc(p.title || p.text)}">${esc(p.text)}</span>`);
   if (!online()) pills.unshift(`<span class="pill p-down">✖ monitor down ${lastMsg ? ago(lastMsg/1000) : ''}</span>`);
   else if (snap && Date.now()/1000 - snap.collected_at > 20) pills.unshift(`<span class="pill p-down" title="the daemon answers but its last collection is old">◌ stale ${ago(snap.collected_at)}</span>`);
+  else if (snap) { const b = blindPill(); if (b) pills.push(b); }
   const chips = snap ? snap.chips || [] : [];
   const live = chips.filter(c => c.state !== 'dim'), dim = chips.filter(c => c.state === 'dim');
   const done = snap ? (snap.strip.find(p => p.kind === 'done') || null) : null;
@@ -322,7 +336,7 @@ function foldOverflow(){
 
 function online(){ return lastMsg && (Date.now() - lastMsg) < 40000 }
 function tickFresh(){
-  $('lights').innerHTML = snap ? LIGHTS.map(([n,l]) => `<span class="light ${srcState(n)}" title="${n} collector: ${srcState(n)}"><i></i>${l}</span>`).join('') : '';
+  $('lights').innerHTML = snap ? LIGHTS.map(([n,l]) => `<span class="light ${srcState(n)}" title="${n} collector: ${srcState(n)} ${esc(srcWhy(n))}"><i></i>${l}</span>`).join('') : '';
   const f = $('fresh'), ft = $('freshtxt');
   f.className = 'fresh';
   if (!online()) { f.classList.add('down'); ft.textContent = lastMsg ? 'monitor down · retrying' : 'connecting'; $('stripes').classList.add('down'); }
