@@ -1,0 +1,95 @@
+{
+ "rows": [
+  {
+   "key": "RM_Fountain_A",
+   "label": "Fountain design A \u2014 tiered bowl",
+   "part": "fountain",
+   "look": "stone (stuff-tinted)",
+   "variant": "A",
+   "section": "FlowWorks fountain v1",
+   "resources": [
+    "RimMandrake/FlowWorks/Fountain/RM_Fountain_A"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "proposed RM_Fountain def (FOUNTAIN_LOOP_BUILD_PUMPS_ITS_OWN_RAIN ## spec): size 1x1, drawSize (1,1.5), drawOffset (0,0,0.25)",
+    "offset": [
+     0,
+     0.25
+    ]
+   },
+   "jobs": [
+    "fountaincand_a_v2"
+   ],
+   "render_match": "fountaincand_a"
+  },
+  {
+   "key": "RM_Fountain_B",
+   "label": "Fountain design B \u2014 spout pillar",
+   "part": "fountain",
+   "look": "stone (stuff-tinted)",
+   "variant": "B",
+   "section": "FlowWorks fountain v1",
+   "resources": [
+    "RimMandrake/FlowWorks/Fountain/RM_Fountain_B"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "proposed RM_Fountain def (FOUNTAIN_LOOP_BUILD_PUMPS_ITS_OWN_RAIN ## spec): size 1x1, drawSize (1,1.5), drawOffset (0,0,0.25)",
+    "offset": [
+     0,
+     0.25
+    ]
+   },
+   "jobs": [
+    "fountaincand_b_v2"
+   ],
+   "render_match": "fountaincand_b"
+  },
+  {
+   "key": "RM_Fountain_C",
+   "label": "Fountain design C \u2014 cairn spring",
+   "part": "fountain",
+   "look": "stone (stuff-tinted)",
+   "variant": "C",
+   "section": "FlowWorks fountain v1",
+   "resources": [
+    "RimMandrake/FlowWorks/Fountain/RM_Fountain_C"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "proposed RM_Fountain def (FOUNTAIN_LOOP_BUILD_PUMPS_ITS_OWN_RAIN ## spec): size 1x1, drawSize (1,1.5), drawOffset (0,0,0.25)",
+    "offset": [
+     0,
+     0.25
+    ]
+   },
+   "jobs": [
+    "fountaincand_c_v2"
+   ],
+   "render_match": "fountaincand_c"
+  }
+ ],
+ "lead_html": "<p>Three CANDIDATE designs for the v1 FlowWorks fountain (item FOUNTAIN_LOOP_BUILD_PUMPS_ITS_OWN_RAIN), drawn playing, at true scale beside a vanilla human on 1x1 footprints. Pale stone: the game tints it by the stuff it is built from. Water leaves the basin through the front spillway; the ground water and ditch are drawn by the overflow layer in game. Pick one design (row note); nothing is installed.</p>"
+}
