@@ -1782,3 +1782,15 @@
 {"seat":"OWNER","event":"implemented","id":"SHELL_RENAME_CEPHALOID_ONLY_RETURNS_VANILLA","sha":"c0060fb3304b","ref":"origin/main","criteria":[],"byCard":"Biome card 1 → rename Cephaloid Shell to RUT_CephaloidShell","ts":"2026-10-23T00:25:42Z","tsn":1792715142065277094}
 {"seat":"OWNER","event":"file","id":"ROACHES_MOD_RETIRE_SAVE_STILL_NAMES_ONE","title":"Cut rut.rustcathedralroaches; one test save still names RUT_ScarRoach","kind":"task","target":"v1","for":"FOUNDRY","byCard":"Biome card 4 → cut roaches mod now","ts":"2026-10-23T00:35:24Z","tsn":1792715724253135158}
 {"seat":"OWNER","event":"implemented","id":"ROACHES_MOD_RETIRE_SAVE_STILL_NAMES_ONE","sha":"e4e911ff5dfe","ref":"origin/main","criteria":[],"byCard":"Biome card 4 → cut roaches mod now","ts":"2026-10-23T00:35:28Z","tsn":1792715728687437055}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"deploy FlowWorks DLL 195c2fe9bc for save b","ts":"2026-10-22T23:25:36Z","tsn":1792711536442776323}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"relaunch: deploy FlowWorks DLL 195c2fe9bc for save b","ts":"2026-10-22T23:25:49Z","tsn":1792711549868734563}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"main menu: deploy FlowWorks DLL 195c2fe9bc for save b","ts":"2026-10-22T23:26:40Z","tsn":1792711600746318847}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"deploy FlowWorks DLL 4d833ad1bd for save b","ts":"2026-10-22T23:28:41Z","tsn":1792711721187199215}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"relaunch: deploy FlowWorks DLL 4d833ad1bd for save b","ts":"2026-10-22T23:28:54Z","tsn":1792711734474929990}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"main menu: deploy FlowWorks DLL 4d833ad1bd for save b","ts":"2026-10-22T23:29:51Z","tsn":1792711791252480472}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"deploy FlowWorks DLL 37f064ef7d for save b","ts":"2026-10-22T23:37:49Z","tsn":1792712269774931358}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"relaunch: deploy FlowWorks DLL 37f064ef7d for save b","ts":"2026-10-22T23:38:55Z","tsn":1792712335796166762}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"main menu: deploy FlowWorks DLL 37f064ef7d for save b","ts":"2026-10-22T23:39:48Z","tsn":1792712388276595990}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"deploy FlowWorks DLL c963216c28 for save b","ts":"2026-10-22T23:48:53Z","tsn":1792712933348277267}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"relaunch: deploy FlowWorks DLL c963216c28 for save b","ts":"2026-10-22T23:49:07Z","tsn":1792712947049853827}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"main menu: deploy FlowWorks DLL c963216c28 for save b","ts":"2026-10-22T23:50:03Z","tsn":1792713003890513304}
