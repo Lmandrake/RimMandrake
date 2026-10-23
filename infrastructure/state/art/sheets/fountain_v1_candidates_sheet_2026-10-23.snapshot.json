@@ -1,0 +1,71 @@
+{
+ "biome": "SUBJECTS_fountain_v1_candidates",
+ "built": "2026-10-23T06:11:19-0700",
+ "census": "Transient/biome_ffar/fountain_v1_candidates.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 14 mods \u2014 a test list): 320 active",
+ "rows": {
+  "RM_Fountain_A": {
+   "columns": {
+    "A": {
+     "south": "993aceaca39ea5f5686902ee3d198fdf22d752068059fbeb1c3ffddb0a2b2d62"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Fountain/RM_Fountain_A"
+   },
+   "labels": {
+    "A": "render fountaincand_a_v2"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Fountain/RM_Fountain_A",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "fountain_a"
+  },
+  "RM_Fountain_B": {
+   "columns": {
+    "A": {
+     "south": "9e3df32ea35176aaab3c67cf22afd58601e94c5200853924ab3e87416d26915a"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Fountain/RM_Fountain_B"
+   },
+   "labels": {
+    "A": "render fountaincand_b_v2"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Fountain/RM_Fountain_B",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "fountain_b"
+  },
+  "RM_Fountain_C": {
+   "columns": {
+    "A": {
+     "south": "8e116067ce6274b10eb1ad7cc8735e1c721a639836b3911330c868394d180d71"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Fountain/RM_Fountain_C"
+   },
+   "labels": {
+    "A": "render fountaincand_c_v2"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Fountain/RM_Fountain_C",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "fountain_c"
+  }
+ },
+ "sheetId": "fountain_v1_candidates_sheet_2026-10-23",
+ "snapshotId": "644be50cced999a4"
+}
