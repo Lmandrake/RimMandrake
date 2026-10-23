@@ -133,5 +133,9 @@ try:
     check((131, 41) not in st and st.get((125, 41)) is True, "replay map C: C5 without the adapter mod no longer lays the 131,41 tail; the run ends on its tank")
 except Exception as e:  # noqa: BLE001
     check(False, "replay c05 failed: %r" % e)
+cx = J.crossing_joints([h(1, [[5, 0], [5, 1], [5, 2]], [0, 0], poseCells=[[8, 0], [8, 1]]), h(2, [[4, 1], [5, 1], [6, 1]], [9, 9], poseCells=[[3, 3]])])
+check(cx == [], "hose_crossing reads the drawn poseCells, not the plan's centreCells, when the probe has them")
+cx = J.crossing_joints([h(1, [[5, 0], [5, 1]], [0, 0], poseCells=[[7, 7], [7, 8]]), h(2, [[0, 0]], [9, 9], poseCells=[[7, 8], [8, 8]])])
+check(len(cx) == 1 and cx[0]["at"] == [7, 8], "a crossing in the drawn pose is found even where the plans never meet")
 print("joint_check selftest: %d failure(s)" % len(fails))
 sys.exit(1 if fails else 0)

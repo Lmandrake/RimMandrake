@@ -308,6 +308,10 @@ namespace RimMandrake.FlowWorks.Hose
                       .Append(",\"bbox\":[").Append(D(lay.Flat.Min(q => q.X))).Append(',').Append(D(lay.Flat.Min(q => q.Z))).Append(',')
                       .Append(D(lay.Flat.Max(q => q.X))).Append(',').Append(D(lay.Flat.Max(q => q.Z))).Append(']')
                       .Append(",\"centreCells\":[").Append(string.Join(",", lay.Centre.Select(q => "[" + q.Floor.X + "," + q.Floor.Z + "]").Distinct())).Append(']')
+                      // CENTRE_CELLS_FIX_WALK_THROUGH_WALLS: centreCells is the PLAN's rounded centre line (lay.Centre), not the drawn hose --
+                      // live it listed z=207 through a wall the drawn pose went round. poseCells is the cells the DRAWN pose (the
+                      // strand as eased on screen) passes through; joint_check hose_crossing reads this one.
+                      .Append(",\"poseCells\":[").Append(string.Join(",", pose.Select(q => "[" + q.Floor.X + "," + q.Floor.Z + "]").Distinct())).Append(']')
                       .Append(",\"geometryHash\":").Append(S(RM_MapComponent_Hoses.GeometryHash(lay).ToString("x16")))
                       .Append(",\"relayEnd\":").Append(RelayEnd(comp, r, lay))
                       .Append(",\"unwalkablePoints\":").Append(lay.Flat.Count(p => !comp.World().IsWalkable(p.Floor)))
