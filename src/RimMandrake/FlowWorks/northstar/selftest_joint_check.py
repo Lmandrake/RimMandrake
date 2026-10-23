@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
-"""selftest for joint_check.judge (offline, no game): a clean answer passes; a gap, a non-port end, a shared nozzle, an
-undrawn pose, a silent probe and reels-with-no-joints never read as PASS."""
+"""selftest for joint_check (offline, no game): a clean answer passes; a gap, a non-port end, a shared nozzle, an undrawn
+pose, a silent probe and reels-with-no-joints never read as PASS. JOINT_GATE_HARDEN_TRUST_THE_DRAWN_BOX: the drawn-collar
+box rows, crossings judged by the probe's lift, wall rows, the crop geometry and files (fake bridge), gate() and the
+scenarios_map save refusal."""
+import json
 import os
 import sys
+import tempfile
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import joint_check as J  # noqa: E402
@@ -139,5 +143,119 @@ cx = J.crossing_joints([h(1, [[5, 0], [5, 1], [5, 2]], [0, 0], poseCells=[[8, 0]
 check(cx == [], "hose_crossing reads the drawn poseCells, not the plan's centreCells, when the probe has them")
 cx = J.crossing_joints([h(1, [[5, 0], [5, 1]], [0, 0], poseCells=[[7, 7], [7, 8]]), h(2, [[0, 0]], [9, 9], poseCells=[[7, 8], [8, 8]])])
 check(len(cx) == 1 and cx[0]["at"] == [7, 8], "a crossing in the drawn pose is found even where the plans never meet")
+# JOINT_GATE_HARDEN_TRUST_THE_DRAWN_BOX / HOSE_CROSSING_FIX_FLAT_AS_A_PANCAKE
+pair = [h(1, [[5, 0], [5, 1], [5, 2]], [0, 0]), h(2, [[4, 1], [5, 1], [6, 1]], [9, 9])]
+cx = J.crossing_joints(pair, [{"upper": 2, "lower": 1, "at": [5.5, 1.5], "lifted": True}])
+check(len(cx) == 1 and cx[0]["ok"] is True and "lifts over" in cx[0]["note"], "a crossing the probe reports lifted (crossing shadow drawn) passes")
+cx = J.crossing_joints(pair, [{"upper": 2, "lower": 1, "at": [5.5, 1.5], "lifted": False}])
+check(len(cx) == 1 and cx[0]["ok"] is False, "can-fail: a crossing the probe reports flat FAILs")
+cx = J.crossing_joints(pair, [])
+check(len(cx) == 1 and cx[0]["ok"] is True and "never overlap" in cx[0]["note"], "a shared cell whose drawn ribbons never overlap passes")
+cx = J.crossing_joints(pair, None)
+check(len(cx) == 1 and cx[0]["ok"] is False, "an older probe with no crossings list: every shared cell still FAILs")
+cx = J.crossing_joints([h(1, [[0, 0]], [0, 0]), h(2, [[9, 9]], [9, 9])], [{"upper": 2, "lower": 1, "at": [3.2, 4.7], "lifted": False}])
+check(len(cx) == 1 and cx[0]["ok"] is False and cx[0]["at"] == [3, 4], "an overlap the probe reports where no cell is shared is still judged")
+wj = J.wall_joints([dict(id=1, laid=True, wallCross=0), dict(id=2, laid=True, wallCross=3, wallCrossAt=[22, 40]),
+                    dict(id=3, laid=True), dict(id=4, laid=False, wallCross=9)])
+check([(x["reel"], x["ok"]) for x in wj] == [(2, False), (3, None)], "through_wall: a wall crossing FAILs, a missing read is UNMEASURED, clean and stored hoses add nothing (%s)" % wj)
+check(J.joint_point({"where": "[12.250,40.500]", "at": [1, 1]}) == (12.25, 40.5) and J.joint_point({"where": "-", "at": [3, 4]}) == (3.5, 4.5),
+      "joint_point: the probe's point, else the cell centre")
+box, (px, pz) = J.crop_box(1600, 912, 10, 20, 8.0, 10.5, 20.5)
+check(abs(px - 800) < 1e-9 and abs(pz - 456) < 1e-9 and box == (714, 370, 886, 542), "crop_box: the camera cell's centre is the screen centre; +-1.5 cells = +-85.5 px at rootSize 8 (57 px/cell on a 912 px screen) (%s)" % (box,))
+box, _ = J.crop_box(1600, 912, 10, 20, 8.0, 11.5, 19.5)
+check(box[0] > 714 and box[1] > 370, "crop_box: a point east/south of the camera cell crops right/down (screen y runs against map z)")
+a4 = ans(j("collar_box", False, 0.21), j("reel_end", True))
+check(J.judge(a4)[0] == "FAIL", "a collar whose drawn box misses the nozzle FAILs even when the geometry row passes")
+a5 = ans(j("over_building", None), j("reel_end", True))
+check(J.judge(a5)[0] == "UNMEASURED", "a strand never drawn is UNMEASURED for the building rows")
+
+
+class GateB(object):
+    """One map; the probe answers through mod_settings_field: serial bumps on each request."""
+    def __init__(self, joints, crossings):
+        self.serial, self.req = 0, ""
+        self.joints, self.crossings = joints, crossings
+
+    def call(self, tool, kw):
+        if tool == "jawa/mod_settings_field":
+            if kw.get("action") == "set":
+                self.req = kw.get("value")
+                self.serial += 1
+                return {"success": True}
+            if kw.get("field") == "serial":
+                return {"value": self.serial}
+            if self.req == "joints":
+                return {"value": json.dumps({"success": True, "tolerance": 0.05, "reels": 1, "joints": self.joints, "crossings": self.crossings})}
+            if self.req == "census":
+                return {"value": json.dumps({"success": True, "hoses": [{"id": 1, "laid": True, "wallCross": 0, "reel": [0, 0], "footprint": [0, 0, 2, 2], "centreCells": [[3, 3]]}]})}
+            return {"value": json.dumps({"success": False, "error": "no liquid machine"})}
+        if tool == "jawa/list_things":
+            return {"success": True, "countMatched": 0, "things": []}
+        return {"success": False}
+
+
+v, res = J.gate(GateB([j("reel_end", True), j("collar_box", True)], []), say=lambda s: None)
+check(v == "PASS" and len(res) == 1, "gate(): a clean live answer (fake bridge) is PASS (%s)" % v)
+v, _ = J.gate(GateB([j("reel_end", True), j("collar_box", False, 0.3)], []), say=lambda s: None)
+check(v == "FAIL", "gate(): a missed collar box is FAIL")
+
+
+class ShootB(object):
+    """The camera/screenshot calls crop_all makes: each screenshot is a real 1600x912 PNG written to a temp folder."""
+    def __init__(self, folder):
+        self.folder, self.calls = folder, []
+
+    def call(self, tool, kw):
+        self.calls.append(tool)
+        if tool == "rimworld/get_camera_state":
+            return {"rootSize": 8.0}
+        if tool == "jawa/take_screenshot":
+            from PIL import Image
+            p = os.path.join(self.folder, kw["fileName"] + ".png")
+            Image.new("RGB", (1600, 912), (90, 80, 60)).save(p)
+            return {"success": True, "filePath": p}
+        return {"success": True}
+
+
+try:
+    with tempfile.TemporaryDirectory() as td:
+        shots, out = os.path.join(td, "shots"), os.path.join(td, "crops")
+        os.makedirs(shots)
+        sb = ShootB(shots)
+        rows = J.crop_all(sb, 3, [j("reel_end", True), j("collar_box", False, 0.2)], out, "T")
+        ok = all(r.get("crop") and os.path.exists(r["crop"]) for r in rows) and len(rows) == 2
+        from PIL import Image
+        sizes = [Image.open(r["crop"]).size for r in rows] if ok else []
+        check(ok and all(170 <= w <= 172 and 170 <= h <= 172 for w, h in sizes),
+              "crop_all: one ~3x3-cell crop per joint (%s)" % sizes)
+        check(os.listdir(shots) == [], "crop_all: the full frames it wrote to the screenshot folder are removed (the crop is the record)")
+        check("rimworld/jump_camera_to_cell" in sb.calls and "rimworld/set_camera_zoom" in sb.calls, "crop_all puts the camera on each joint at the closest zoom")
+except ImportError as e:
+    check(False, "PIL missing for the crop test: %r" % e)
+
+class CamB(object):
+    def __init__(self):
+        self.framed = None
+
+    def call(self, tool, kw):
+        if tool == "rimworld/frame_cell_rect":
+            self.framed = kw
+        return {"success": True}
+
+
+cb = CamB()
+check(J.restore_camera(cb, {"viewRect": {"x": 40, "z": 60, "width": 30, "height": 17}}) is True and cb.framed["x"] == 40
+      and cb.framed["height"] == 17, "restore_camera frames the view rect read before the crops")
+check(J.restore_camera(CamB(), {"rootSize": 8}) is False, "restore_camera with no view rect says so (False), never pretends")
+import scenarios_map as SM  # noqa: E402
+_real = J.gate
+try:
+    J.gate = lambda B, all_maps=False, crops_dir=None, say=print: ("FAIL", [])
+    check(SM.joint_gate_ok(object()) is False, "scenarios_map --save is refused while the joint gate is red")
+    check(SM.joint_gate_ok(object(), "proof save, not for the owner") is True, "--allow-red-joints WHY writes it anyway")
+    J.gate = lambda B, all_maps=False, crops_dir=None, say=print: ("PASS", [])
+    check(SM.joint_gate_ok(object()) is True, "a green gate lets the save through")
+finally:
+    J.gate = _real
 print("joint_check selftest: %d failure(s)" % len(fails))
 sys.exit(1 if fails else 0)

@@ -22,15 +22,30 @@ JOINT_CHECK_WIDEN_PIPE_STUBS_UNSEEN (2026-10-22) adds two kinds measured here in
                       8-way around it (the net's attach rule; HoseProbe "net:x,z" reads the live role, so modded machines
                       count). An end at none of these is a stub drawn into nothing: FAIL. A role read that never answered:
                       UNMEASURED.
-  hose_crossing       two laid hoses whose centre lines (census centreCells) share a cell: a flat hose-over-hose crossing
-                      (audit D11, no lift or shadow yet): FAIL. A relay pair is exempt within one cell of the relay reel.
+  hose_crossing       two laid hoses whose drawn lines (census poseCells, else centreCells) share a cell: judged as below
+                      (audit D11). A relay pair is exempt within one cell of the relay reel.
+JOINT_GATE_HARDEN_TRUST_THE_DRAWN_BOX (audit F9, owner card 2026-10-23 "Keep over-ground, add a joint check") adds:
+  collar_box          (probe) each coupling AS DRAWN last frame must cover its nozzle tip / port point with its opaque box
+  over_building       (probe) a laid hose on a walk-over building must be drawn above it, every sample
+  under_rig           (probe) a laid hose drawn under another reel or a pump: FAIL
+  hose_crossing       now PASSES when the probe reports the upper hose LIFTED over the lower (crossing shadow drawn,
+                      HOSE_CROSSING_FIX_FLAT_AS_A_PANCAKE) or the two drawn ribbons never overlap; an older probe
+                      without "crossings" still FAILs every shared cell
+  through_wall        (census wallCross) a laid hose's pose crossing a wall: FAIL
+  --crops DIR         a zoomed crop of EVERY joint (camera on the joint at the closest zoom), marked green/red/amber,
+                      plus DIR/index.json; a crop that cannot be taken makes the verdict UNMEASURED
+gate(B, ...) is the same check as a library call: scenarios_map.py --save refuses to write the walkthrough save while it
+is not PASS (nothing reaches the owner unread). If the gate cannot go green on both walkthrough maps in one sitting, the
+under-pipe option is to be put back to the owner (the card's fallback; HOSE_LOOK_DECIDE_OVERGROUND_OR_UNDERPIPE).
 Tolerance: HoseJoints.Tolerance (0.05 cell, ~6 px at the closest zoom), reported by the probe itself.
 
     python.exe src/RimMandrake/FlowWorks/northstar/joint_check.py                 # current map
     python.exe src/RimMandrake/FlowWorks/northstar/joint_check.py --all-maps      # every map (walkthrough: C and R)
     python.exe src/RimMandrake/FlowWorks/northstar/joint_check.py --out FILE.json
+    python.exe src/RimMandrake/FlowWorks/northstar/joint_check.py --all-maps --crops Transient/joint_gate/<stamp>
 Exit 0 = every joint within tolerance and nothing unmeasured; 1 = a gap, a non-port end or a shared nozzle; 2 = UNMEASURED
-(probe missing, bridge down, or a laid hose with no drawn pose: pan the camera over it and run again). Read-only.
+(probe missing, bridge down, or a laid hose with no drawn pose: pan the camera over it and run again). Changes nothing on the
+map (--crops moves the camera and clears the UI).
 The offline halves: HoseJointChecks (C# SelfTest, port geometry) and validation_hose_offline.py HO9 (art vs the constants).
 """
 import json
@@ -148,9 +163,11 @@ def _line_cells(h):
     return h.get("poseCells") or h.get("centreCells")
 
 
-def crossing_joints(hoses):
+def crossing_joints(hoses, crossings=None):
     """Pure: one hose_crossing joint per pair of laid hoses whose centre lines share a cell (relay pairs exempt within one
-    cell of the relay reel's footprint)."""
+    cell of the relay reel's footprint). crossings: the probe's "crossings" list ({upper, lower, at, lifted}: drawn ribbons
+    that overlap) -- a pair it reports lifted passes, a pair it does not report never overlaps (passes), a pair it reports
+    unlifted FAILs, and an overlap it reports that shares no cell is added. None (an older probe): every shared cell FAILs."""
     laid = [dict(h, centreCells=_line_cells(h)) for h in hoses or [] if h.get("laid") and _line_cells(h)]
     owner = {}
     for h in laid:
@@ -171,9 +188,60 @@ def crossing_joints(hoses):
                     if x - 1 <= c[0] <= x + w and z - 1 <= c[1] <= z + hh:
                         continue
                 pairs.setdefault((a.get("id"), b.get("id")), []).append(c)
-    return [_joint("hose_crossing", cells[0], False, "%d cell(s)" % len(cells),
-                   "laid hoses %s and %s cross flat (D11: no lift or shadow)" % ids, reel=list(ids))
-            for ids, cells in sorted(pairs.items(), key=lambda kv: str(kv[0]))]
+    if crossings is None:
+        return [_joint("hose_crossing", cells[0], False, "%d cell(s)" % len(cells),
+                       "laid hoses %s and %s cross flat (D11: no lift or shadow)" % ids, reel=list(ids))
+                for ids, cells in sorted(pairs.items(), key=lambda kv: str(kv[0]))]
+    seen = {}
+    for c in crossings:
+        seen[frozenset((c.get("upper"), c.get("lower")))] = c
+    out, done = [], set()
+    for ids, cells in sorted(pairs.items(), key=lambda kv: str(kv[0])):
+        key = frozenset(ids)
+        done.add(key)
+        c = seen.get(key)
+        if c is None:
+            out.append(_joint("hose_crossing", cells[0], True, "%d cell(s)" % len(cells),
+                              "laid hoses %s and %s share a cell but their drawn ribbons never overlap" % ids, reel=list(ids)))
+        else:
+            out.append(_joint("hose_crossing", cells[0], bool(c.get("lifted")), _where(c.get("at")),
+                              ("hose %s lifts over %s (crossing shadow drawn)" if c.get("lifted")
+                               else "hose %s lies on %s with no crossing shadow (D11: flat)") % (c.get("upper"), c.get("lower")),
+                              reel=list(ids)))
+    for key, c in sorted(seen.items(), key=lambda kv: str(sorted(kv[0], key=str))):
+        if key in done:
+            continue
+        at = c.get("at") or [0, 0]
+        out.append(_joint("hose_crossing", (int(at[0]), int(at[1])), bool(c.get("lifted")), _where(at),
+                          ("hose %s lifts over %s (crossing shadow drawn)" if c.get("lifted")
+                           else "hose %s lies on %s with no crossing shadow (D11: flat)") % (c.get("upper"), c.get("lower")),
+                          reel=[c.get("upper"), c.get("lower")]))
+    return out
+
+
+def _where(p):
+    try:
+        return "[%.3f,%.3f]" % (float(p[0]), float(p[1]))
+    except (TypeError, ValueError, IndexError):
+        return "-"
+
+
+def wall_joints(hoses):
+    """Pure: one through_wall joint per laid hose whose drawn pose crosses a wall (census wallCross > 0: FAIL); a laid hose
+    the census gives no wallCross for is UNMEASURED."""
+    out = []
+    for h in hoses or []:
+        if not h.get("laid"):
+            continue
+        n = h.get("wallCross")
+        at = h.get("wallCrossAt") or h.get("reel") or [0, 0]
+        if n is None:
+            out.append(_joint("through_wall", tuple(h.get("reel") or (0, 0)), None, "-", "census has no wallCross for this hose",
+                              reel=h.get("id")))
+        elif n > 0:
+            out.append(_joint("through_wall", (int(at[0]), int(at[1])), False, "%d sample(s)" % n,
+                              "laid hose drawn through a wall", reel=h.get("id")))
+    return out
 
 
 def _defs_with(prefixes):
@@ -190,17 +258,19 @@ def _pipe_defs():
     return _defs_with((PIPE_DEF_PREFIX, POLE_DEF_PREFIX))
 
 
-def extra_joints(B, probe):
-    """Live: the pipe_stub and hose_crossing joints of the current map (probe = lambda cmd: answer dict)."""
+def extra_joints(B, probe, crossings=None):
+    """Live: the pipe_stub, hose_crossing and through_wall joints of the current map (probe = lambda cmd: answer dict;
+    crossings = the "joints" answer's crossings list, None from an older probe)."""
     census = probe("census")
     if not isinstance(census, dict) or not census.get("success"):
         return [_joint("pipe_stub", (0, 0), None, "-", "census unreadable: %s" % str(census)[:120])]
     hoses = census.get("hoses") or []
+    walls = wall_joints(hoses)
     defs = _pipe_defs()
     lt = B.call("jawa/list_things", {"defName": ",".join(defs), "limit": 20000}) or {}
     if not defs or not lt.get("success") or lt.get("countMatched", 0) > len(lt.get("things") or []):
         return [_joint("pipe_stub", (0, 0), None, "-", "pipe list unreadable or truncated: %s" % str(lt)[:120])] \
-            + crossing_joints(hoses)
+            + crossing_joints(hoses, crossings) + walls
     pipes = [(t["x"], t["z"]) for t in lt.get("things") or [] if t.get("def", "").startswith(PIPE_DEF_PREFIX)]
     poles = [(t["x"], t["z"]) for t in lt.get("things") or [] if t.get("def", "").startswith(POLE_DEF_PREFIX)]
     fps = [h["footprint"] for h in hoses if h.get("footprint")]
@@ -210,7 +280,7 @@ def extra_joints(B, probe):
     pl2 = B.call("jawa/list_things", {"defName": ",".join(pdefs), "limit": 20000}) or {}
     if not pl2.get("success") or pl2.get("countMatched", 0) > len(pl2.get("things") or []):
         return [_joint("pipe_stub", (0, 0), None, "-", "tap / sprinkler list unreadable or truncated: %s" % str(pl2)[:120])] \
-            + crossing_joints(hoses)
+            + crossing_joints(hoses, crossings) + walls
     ports = [(t["x"], t["z"]) for t in pl2.get("things") or []]
 
     def is_partner(c):
@@ -220,7 +290,7 @@ def extra_joints(B, probe):
         if not a.get("success"):
             return None if "timeout" in str(a.get("error", "")) or "unparsable" in str(a.get("error", "")) else False
         return a.get("origin") not in pipe_names
-    return stub_joints(pipes, poles, fps, ends, is_partner, ports) + crossing_joints(hoses)
+    return stub_joints(pipes, poles, fps, ends, is_partner, ports) + crossing_joints(hoses, crossings) + walls
 
 
 def _bridge():
@@ -250,46 +320,186 @@ def _probe(B, cmd, wait=30.0):
     return {"success": False, "error": "probe timeout (is the game unpaused enough to tick, and FlowWorks deployed?)"}
 
 
+# ---- crops (JOINT_GATE_HARDEN_TRUST_THE_DRAWN_BOX): a zoomed picture of every joint, for the eye and the judge agent
+CROP_HALF = 1.5          # cells either side of the joint point
+CROP_ROOT = 8.0          # the camera's closest zoom (rootSize clamps at 8: ~114 px/cell on the owner's screen)
+MARK = {True: (40, 220, 60), False: (235, 40, 40), None: (240, 170, 20)}
+
+
+def joint_point(j):
+    """Pure: the map point (x, z) a joint row is about: its "where" point when it is one, else its cell's centre."""
+    w = j.get("where")
+    if isinstance(w, str) and w.startswith("[") and "," in w:
+        try:
+            x, z = (float(v) for v in w.strip("[]").split(",")[:2])
+            return x, z
+        except ValueError:
+            pass
+    at = j.get("at") or [0, 0]
+    return float(at[0]) + 0.5, float(at[1]) + 0.5
+
+
+def crop_box(W, H, cx, cz, rs, x, z, half=CROP_HALF):
+    """Pure: the pixel box (l, t, r, b) of map rect [x-half, x+half] x [z-half, z+half] in a W x H screenshot whose camera
+    sat on cell (cx, cz)'s centre at rootSize rs (H spans 2 x rs cells; screen y runs against map z), clipped to the image;
+    and the joint point's pixel."""
+    pxc = H / (2.0 * rs)
+
+    def px(mx, mz):
+        return W / 2.0 + (mx - cx - 0.5) * pxc, H / 2.0 - (mz - cz - 0.5) * pxc
+    l, t = px(x - half, z + half)
+    r, b = px(x + half, z - half)
+    box = (max(0, int(round(l))), max(0, int(round(t))), min(W, int(round(r))), min(H, int(round(b))))
+    return box, px(x, z)
+
+
+def _local(path):
+    """A Windows screenshot path as this interpreter can open it (WSL python3 reads C:\\ as /mnt/c/)."""
+    if os.name != "nt" and len(path) > 2 and path[1] == ":":
+        return "/mnt/%s/%s" % (path[0].lower(), path[3:].replace("\\", "/"))
+    return path
+
+
+def shoot_joint(B, x, z, name):
+    """Live: camera on the joint at the closest zoom, UI cleared, one screenshot; returns (local path, rootSize) or (None, why)."""
+    cx, cz = int(x // 1), int(z // 1)
+    B.call("rimworld/jump_camera_to_cell", {"x": cx, "z": cz})
+    B.call("rimworld/set_camera_zoom", {"rootSize": CROP_ROOT})
+    B.call("jawa/clear_ui", {})
+    time.sleep(1.5)
+    cam = B.call("rimworld/get_camera_state", {}) or {}
+    s = B.call("jawa/take_screenshot", {"fileName": name}) or {}
+    fp = _local(str(s.get("filePath") or ""))
+    for _ in range(40):
+        if fp and os.path.exists(fp) and os.path.getsize(fp) > 0:
+            break
+        time.sleep(0.25)
+    if not fp or not os.path.exists(fp):
+        return None, "screenshot not written: %s" % str(s)[:160]
+    rs = cam.get("rootSize")
+    return fp, float(rs) if isinstance(rs, (int, float)) and rs > 0 else CROP_ROOT
+
+
+def write_crop(shot, rs, x, z, ok, label, out):
+    """Crop the joint from the shot, mark its point (green PASS / red FAIL / amber UNMEASURED) and caption it."""
+    from PIL import Image, ImageDraw
+    im = Image.open(shot).convert("RGB")
+    W, H = im.size
+    cx, cz = int(x // 1), int(z // 1)
+    box, (px, pz) = crop_box(W, H, cx, cz, rs, x, z)
+    c = im.crop(box)
+    d = ImageDraw.Draw(c)
+    mx, mz = px - box[0], pz - box[1]
+    col = MARK.get(ok, MARK[None])
+    rr = max(6, int(0.06 * H / (2.0 * rs)))
+    d.ellipse([mx - rr, mz - rr, mx + rr, mz + rr], outline=col, width=3)
+    d.rectangle([0, 0, c.size[0] - 1, 18], fill=(0, 0, 0))
+    d.text((4, 3), label[:110], fill=col)
+    c.save(out)
+    return c.size
+
+
+def restore_camera(B, cam):
+    """Live: frame the view rect read before the crops (a save keeps each map's camera, and the walkthrough save must not
+    open zoomed onto the last joint). False when the read gave no usable rect."""
+    vr = (cam or {}).get("viewRect") or {}
+    x, z = vr.get("x", vr.get("minX")), vr.get("z", vr.get("minZ"))
+    w, h = vr.get("width"), vr.get("height")
+    if not all(isinstance(v, (int, float)) for v in (x, z, w, h)):
+        return False
+    r = B.call("rimworld/frame_cell_rect", {"x": int(x), "z": int(z), "width": int(w), "height": int(h), "paddingCells": 0}) or {}
+    return r.get("success") is not False
+
+
+def crop_all(B, mid, joints, crops_dir, stamp):
+    """Live: one crop per joint on the current map (map id mid); returns index rows; a crop not taken is ok None."""
+    os.makedirs(crops_dir, exist_ok=True)
+    rows = []
+    for k, j in enumerate(joints):
+        x, z = joint_point(j)
+        label = "%s %s reel %s: %s" % ({True: "PASS", False: "FAIL", None: "UNM"}.get(j.get("ok")), j.get("kind"),
+                                       j.get("reel"), j.get("note") or "")
+        name = "jointgate_%s_m%s_%03d" % (stamp, mid if mid is not None else "cur", k)
+        out = os.path.join(crops_dir, "%s_%03d_%s.png" % ("m%s" % mid if mid is not None else "cur", k, j.get("kind")))
+        try:
+            shot, rs = shoot_joint(B, x, z, name)
+            if shot is None:
+                rows.append(dict(joint=j, crop=None, error=rs))
+                continue
+            size = write_crop(shot, rs, x, z, j.get("ok"), label, out)
+            rows.append(dict(joint=j, crop=out, point=[x, z], size=list(size)))
+            # the full frame landed in the game's Screenshots folder, beside the owner's own: the crop is the record
+            if os.path.basename(shot).startswith("jointgate_"):
+                os.remove(shot)
+        except Exception as e:  # noqa: BLE001
+            rows.append(dict(joint=j, crop=None, error=str(e)[:200]))
+    return rows
+
+
+def gate(B, all_maps=False, crops_dir=None, say=print):
+    """The joint gate as a library call (scenarios_map.py --save runs it): (verdict, results). Verdict PASS only when every
+    joint on every map checked is within tolerance, nothing is unmeasured and, with crops_dir, every joint's crop exists."""
+    results, worst = [], "PASS"
+    rank = {"PASS": 0, "UNMEASURED": 1, "FAIL": 2}
+    stamp = time.strftime("%Y%m%dT%H%M%S")
+    maps, cur = [None], None
+    if all_maps:
+        # rimworld/get_game_info carries no map list (only mapCount) and the camera's mapId is "Map_0", not an int
+        # (2026-10-22 live: --all-maps silently read the current map only). jawa/set_current_map refuses an unknown
+        # id WITHOUT switching and lists loadedMaps in the refusal (river_site.loaded_maps); jawa/map_info gives cur.
+        r = B.call("jawa/set_current_map", {"mapId": -1}) or {}
+        det = r.get("details") if isinstance(r.get("details"), dict) else {}
+        lm = det.get("loadedMaps", r.get("loadedMaps"))
+        ids = [m.get("mapId") for m in lm if isinstance(m, dict)] if isinstance(lm, list) and not r.get("success") else []
+        maps = [i for i in ids if isinstance(i, int)]
+        cur = (B.call("jawa/map_info", {}) or {}).get("mapId")
+        if not maps:
+            say("map list unreadable: %s" % str(r)[:200])
+            return "UNMEASURED", results
+    for mid in maps:
+        if mid is not None:
+            B.call("jawa/set_current_map", {"mapId": int(mid)})
+            time.sleep(1.0)
+        ans = _probe(B, "joints")
+        if isinstance(ans, dict) and ans.get("success"):
+            ans = dict(ans, extra=extra_joints(B, lambda cmd: _probe(B, cmd), ans.get("crossings")))
+        verdict, lines = judge(ans)
+        crops = None
+        if crops_dir and isinstance(ans, dict) and ans.get("success"):
+            cam = B.call("rimworld/get_camera_state", {}) or {}
+            crops = crop_all(B, mid, list(ans.get("joints") or []) + list(ans.get("extra") or []), crops_dir, stamp)
+            if not restore_camera(B, cam):
+                lines.append("  camera not restored (no view rect read: %s): frame the map before saving" % str(cam)[:120])
+            missing = [c for c in crops if not c.get("crop")]
+            lines.append("%d crop(s) in %s, %d not taken" % (len(crops) - len(missing), crops_dir, len(missing)))
+            if missing and verdict == "PASS":
+                verdict = "UNMEASURED"
+                lines.append("  a crop could not be taken (first: %s): the gate needs every joint's picture" % missing[0].get("error"))
+        say("map %s: %s" % ("current" if mid is None else mid, verdict))
+        for ln in lines:
+            say(ln)
+        results.append({"map": mid, "verdict": verdict, "answer": ans, "crops": crops})
+        worst = max(worst, verdict, key=lambda v: rank[v])
+    if all_maps and isinstance(cur, int):
+        B.call("jawa/set_current_map", {"mapId": int(cur)})
+    if crops_dir:
+        os.makedirs(crops_dir, exist_ok=True)
+        with open(os.path.join(crops_dir, "index.json"), "w", encoding="utf-8") as f:
+            json.dump({"verdict": worst, "maps": [{"map": r["map"], "verdict": r["verdict"], "crops": r["crops"]} for r in results]},
+                      f, indent=1, default=str)
+    return worst, results
+
+
 def main(argv):
     all_maps = "--all-maps" in argv
     out = argv[argv.index("--out") + 1] if "--out" in argv else None
-    results, worst = [], "PASS"
-    rank = {"PASS": 0, "UNMEASURED": 1, "FAIL": 2}
+    crops = argv[argv.index("--crops") + 1] if "--crops" in argv else None
     with _bridge() as B:
-        maps, cur = [None], None
-        if all_maps:
-            # rimworld/get_game_info carries no map list (only mapCount) and the camera's mapId is "Map_0", not an int
-            # (2026-10-22 live: --all-maps silently read the current map only). jawa/set_current_map refuses an unknown
-            # id WITHOUT switching and lists loadedMaps in the refusal (river_site.loaded_maps); jawa/map_info gives cur.
-            r = B.call("jawa/set_current_map", {"mapId": -1}) or {}
-            det = r.get("details") if isinstance(r.get("details"), dict) else {}
-            lm = det.get("loadedMaps", r.get("loadedMaps"))
-            ids = [m.get("mapId") for m in lm if isinstance(m, dict)] if isinstance(lm, list) and not r.get("success") else []
-            maps = [i for i in ids if isinstance(i, int)]
-            cur = (B.call("jawa/map_info", {}) or {}).get("mapId")
-            if not maps:
-                print("map list unreadable: %s" % str(r)[:200])
-                print("JOINT CHECK: UNMEASURED")
-                return 2
-        for mid in maps:
-            if mid is not None:
-                B.call("jawa/set_current_map", {"mapId": int(mid)})
-                time.sleep(1.0)
-            ans = _probe(B, "joints")
-            if isinstance(ans, dict) and ans.get("success"):
-                ans = dict(ans, extra=extra_joints(B, lambda cmd: _probe(B, cmd)))
-            verdict, lines = judge(ans)
-            print("map %s: %s" % ("current" if mid is None else mid, verdict))
-            for ln in lines:
-                print(ln)
-            results.append({"map": mid, "verdict": verdict, "answer": ans})
-            worst = max(worst, verdict, key=lambda v: rank[v])
-        if all_maps and isinstance(cur, int):
-            B.call("jawa/set_current_map", {"mapId": int(cur)})
+        worst, results = gate(B, all_maps=all_maps, crops_dir=crops)
     print("JOINT CHECK: %s" % worst)
     if out:
         with open(out, "w", encoding="utf-8") as f:
-            json.dump({"verdict": worst, "maps": results}, f, indent=1)
+            json.dump({"verdict": worst, "maps": results}, f, indent=1, default=str)
     return {"PASS": 0, "FAIL": 1, "UNMEASURED": 2}[worst]
 
 

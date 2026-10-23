@@ -12,8 +12,9 @@ Cause and history: `Transient/pile_2026-10-22/hose_audit.md` §4.
   PASS on map C and map R (every laid hose's census wallCross = 0), plus a capture of reel o1 (19,42) through the gap (22,42)-(22,43).
 - A3 L2: a wall built across a laid hose's corridor re-plans it or reels it in (live state read).
 
-Under-buildings (D2, the battery/power connector): owner card 2026-10-22 *"let's not do that yet"* — hoses keep pricing
-walk-over buildings as ground until HOSE_LOOK_DECIDE_OVERGROUND_OR_UNDERPIPE is ruled; not a criterion here.
+Under-buildings (D2, the battery/power connector): not a criterion here. Owner card 2026-10-22 *"let's not do that yet"*
+deferred it to HOSE_LOOK_DECIDE_OVERGROUND_OR_UNDERPIPE, ruled 2026-10-23 (keep over-ground); the work is
+HOSE_BUILDINGS_FIX_BATTERY_HIDE_AND_SEEK.
 
 ## built 2026-10-22 (BENCH helper)
 Walls: fixed by the wall-depth measure (HOSE_CLEAR_FIX_WALL_SEAM_LOOPHOLE, 849b1674ea, DLL cf6d33f7b6). The route planner itself

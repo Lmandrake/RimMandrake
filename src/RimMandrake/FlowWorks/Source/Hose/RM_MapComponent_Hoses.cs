@@ -35,7 +35,35 @@ namespace RimMandrake.FlowWorks.Hose
             public Mesh flat, plump, shadow;
             /// <summary>The pose these meshes were built from (review 2026-10-22: a cache hit reuses it, no Pose per frame).</summary>
             public List<V2> pts;
+            /// <summary>The drawn strand (pts trimmed at the outlet), what the over-draws below are cut from.</summary>
+            public List<V2> rp;
+            /// <summary>HOSE_BUILDINGS_FIX_BATTERY_HIDE_AND_SEEK: the stretches over walk-over buildings (arc spans on rp), redrawn
+            /// above the building layer; rebuilt when the pose or the map's buildings change (overKey).</summary>
+            public string overKey;
+            public List<double[]> overSpans;
+            public List<Mesh> overMeshes = new List<Mesh>();
+            /// <summary>HOSE_CROSSING_FIX_FLAT_AS_A_PANCAKE: the stretches over hoses drawn beneath, and their crossing shadow.</summary>
+            public string crossKey;
+            public List<double[]> crossSpans;
+            public Mesh crossShadow;
         }
+
+        /// <summary>JOINT_GATE_HARDEN_TRUST_THE_DRAWN_BOX: a coupling as the draw placed it (centre, axis, size, opaque band), by
+        /// role: reel_end (laid hose on the nozzle), port_end (free end on a tank/pipe/pump port), relay_end, feed_nozzle (a port
+        /// link into a stored reel's nozzle). The joint probe measures these, not the geometry that meant to place them.</summary>
+        internal struct DrawnFitting
+        {
+            public V2 centre, dir;
+            public double size, band;
+        }
+
+        internal readonly Dictionary<CompHoseReel, Dictionary<string, DrawnFitting>> drawnFittings = new Dictionary<CompHoseReel, Dictionary<string, DrawnFitting>>();
+
+        /// <summary>State reads for the joint probe: the drawn strand and its over-building / crossing spans, as last drawn.</summary>
+        internal List<V2> DrawnStrand(CompHoseReel r) => meshes.TryGetValue(r, out Cached c) ? c.rp : null;
+        internal List<double[]> OverSpansOf(CompHoseReel r) => meshes.TryGetValue(r, out Cached c) ? c.overSpans : null;
+        internal List<double[]> CrossSpansOf(CompHoseReel r) => meshes.TryGetValue(r, out Cached c) ? c.crossSpans : null;
+        internal int RankOfReel(CompHoseReel r) => RankOf(r);
 
         /// <summary>PIPE_ENDS_BUILD_MEET_IN_THE_MIDDLE: a port-coupled hose's run on beneath the tank or machine to its centre,
         /// one cached mesh per reel, rebuilt only when the end, port footprint, width or band changes (compared field by
@@ -99,13 +127,15 @@ namespace RimMandrake.FlowWorks.Hose
             totals.Remove(r);
             ends.Remove(r);
             placedKind.Remove(r);
+            drawnFittings.Remove(r);
             ghosts.RemoveAll(g => g.reel == r);
         }
 
         // ------------------------------------------------------------------ world snapshot for hoses
         /// <summary>A hose's CordWorld: walls, rock, impassable buildings and fog block it; WATER does not (a hose
         /// floats, design 3.5: walkable at extra cost 3); trees cost a little; a reel or pump (walk-over) costs
-        /// HoseMath.BuildingCrossCost so the hose goes round it (HOSE_PATHING_REPAIR_SCENIC_ROUTE_PLEASE). Cached for the tick it was taken.</summary>
+        /// HoseMath.BuildingCrossCost so the hose goes round it (HOSE_PATHING_REPAIR_SCENIC_ROUTE_PLEASE), and so does any other
+        /// walk-over building drawn above the hose (CostsAsBuilding, HOSE_BUILDINGS_FIX_BATTERY_HIDE_AND_SEEK). Cached for the tick it was taken.</summary>
         internal CordWorld World(int maxAge = 0)
         {
             HookMapEvents();
@@ -186,7 +216,8 @@ namespace RimMandrake.FlowWorks.Hose
 
         /// <summary>
         /// CordSig.CellSig(World(), c) read off the LIVE map for one cell, without building the whole-map snapshot: the same
-        /// per-cell rule as World() above (fog -> blocked; door; walkable, a reel or pump costing BuildingCrossCost; free water costs 3; a reel's own edifice costs the same;
+        /// per-cell rule as World() above (fog -> blocked; door; walkable, a reel, a pump or another walk-over building drawn above
+        /// the hose costing BuildingCrossCost (CostsAsBuilding); free water costs 3; a reel's own edifice costs the same;
         /// else blocked) and its tree pass (a tree costs 1.5, over anything). 2026-10-11 live perf reading (full list, 23
         /// reels, 11 laid): the every-250-tick corridor check of each laid reel called World() at its OWN staggered tick, so
         /// the per-tick cache never hit and every laid reel paid a full 250x250 scan (~4 ms) per cycle: 0.152 ms/tick mean
@@ -247,11 +278,44 @@ namespace RimMandrake.FlowWorks.Hose
         }
 
         /// <summary>HOSE_PATHING_REPAIR_SCENIC_ROUTE_PLEASE: the hose rig's own walk-over machinery (a reel, a pump) costs
-        /// <see cref="HoseMath.BuildingCrossCost"/>, so a hose goes round it on bare ground. Deliberately not every walk-over
-        /// building: a hose that must run the length of a bridge or a bank-works row would pay the cost per cell and could be
-        /// planned past its own length.</summary>
+        /// <see cref="HoseMath.BuildingCrossCost"/>, so a hose goes round it on bare ground. HOSE_BUILDINGS_FIX_BATTERY_HIDE_AND_SEEK
+        /// (audit F2, owner card 2026-10-23 "Keep over-ground"): so does every other walk-over building drawn above the hose
+        /// (<see cref="DrawsOverHose"/>: a battery, a power connector, sandbags, furniture), which the hose used to price as bare
+        /// ground and vanish beneath. Still a cost, never a block: the route search is bounded by LENGTH, not cost
+        /// (RouteCells), and install judges the shortest route (costs off), so a hose with no other way still crosses -- and is
+        /// then drawn over the building (DrawOverBuildings). Floor-level walk-over buildings (altitude at or below the hose's
+        /// layer) draw beneath the hose anyway and stay free.</summary>
         private static bool CostsAsBuilding(Building ed) =>
+            ed != null && (IsRig(ed) || DrawsOverHose(ed));
+
+        /// <summary>A reel or a pump: the hose rig's own machinery, whose joints are drawn by their own rules.</summary>
+        internal static bool IsRig(Building ed) =>
             ed != null && (CompHoseReelOf(ed) != null || ed is RimMandrake.FlowWorks.LiquidTypes.Building_LiquidPump);
+
+        /// <summary>A walk-over (path-walkable) building, not a door and not the rig's own machinery, whose sprite draws above
+        /// the hose's altitude layer (DrawOrder.LayerHose = Shadows): a hose lying across its cell would be painted under it.
+        /// The caller has already checked walkability (World/LiveCellSig), or does so (OverBuildingCell).</summary>
+        internal static bool DrawsOverHose(Building ed) =>
+            ed != null && !(ed is Building_Door) && !IsRig(ed) && (int)ed.def.altitudeLayer > RimMandrake.Shared.Slack.DrawOrder.LayerHose;
+
+        /// <summary>The cell holds a walk-over building drawn above the hose (<see cref="DrawsOverHose"/>).</summary>
+        internal bool OverBuildingCell(Cell c)
+        {
+            var ic = new IntVec3(c.X, 0, c.Z);
+            if (!ic.InBounds(map)) return false;
+            int idx = map.cellIndices.CellToIndex(ic);
+            Building ed = map.edificeGrid[idx];
+            return ed != null && map.pathing.Normal.pathGrid.WalkableFast(idx) && DrawsOverHose(ed);
+        }
+
+        /// <summary>The cell holds a reel or pump (<see cref="IsRig"/>).</summary>
+        internal Building RigAt(Cell c)
+        {
+            var ic = new IntVec3(c.X, 0, c.Z);
+            if (!ic.InBounds(map)) return null;
+            Building ed = map.edificeGrid[map.cellIndices.CellToIndex(ic)];
+            return IsRig(ed) ? ed : null;
+        }
 
         private static CompHoseReel CompHoseReelOf(Thing t) => (t as ThingWithComps)?.GetComp<CompHoseReel>();
 
@@ -683,6 +747,7 @@ namespace RimMandrake.FlowWorks.Hose
             lastCarryDraws = lastClipDraws = lastGhostDraws = lastPortCouplings = 0;
             lastDepthDraws = 0;
             lastPortStubs = 0;
+            lastOverDraws = lastCrossShadowDraws = 0;
             RimMandrake.FlowWorks.Machinery.RM_UnderCouplers.ResetFrame();
             lastFar = Find.CameraDriver.CurrentZoom >= CameraZoomRange.Far;
             for (int i = 0; i < reels.Count; i++)
@@ -690,7 +755,9 @@ namespace RimMandrake.FlowWorks.Hose
                 CompHoseReel r = reels[i];
                 // B18: where hoses cross, one passes cleanly over the other, the same way every frame: each hose (and its
                 // fittings) sits in its own altitude band, ordered by when the reel was built
-                float y = y0 + HoseMath.CrossLift(RankOf(r));
+                int rank = RankOf(r);
+                float y = y0 + HoseMath.CrossLift(rank);
+                if (drawnFittings.TryGetValue(r, out Dictionary<string, DrawnFitting> df)) df.Clear();   // this frame's record only
                 DrawFeed(r, y0);
                 // S4 (design section 6): a carried hose is drawn live along the walked trail to the carrier's hand
                 if (r.carry == HoseCarryState.Carrying && r.trail.Count > 0) { DrawCarrying(r, y, lastFar); continue; }
@@ -750,7 +817,7 @@ namespace RimMandrake.FlowWorks.Hose
                     if (key != null)
                     {
                         if (c != null) { DestroyMeshes(c); }
-                        meshes[r] = new Cached { key = key, flat = fm, plump = pm, shadow = sm, pts = pts };
+                        meshes[r] = new Cached { key = key, flat = fm, plump = pm, shadow = sm, pts = pts, rp = rp };
                     }
                     else { frameMeshes.Add(fm); frameMeshes.Add(pm); frameMeshes.Add(sm); }
                 }
@@ -762,6 +829,13 @@ namespace RimMandrake.FlowWorks.Hose
                 else if (fm != null) DepthPass(fm, Matrix4x4.identity, hm.Flat(1f));
                 if (fm != null) Graphics.DrawMesh(fm, Matrix4x4.identity, hm.Flat(1f - e), 0);
                 if (pm != null) Graphics.DrawMesh(pm, Matrix4x4.identity, hm.Plump(e, tint), 0);
+                // a settled or per-tick cached pose (not one winding in, rebuilt per frame): its stretches over walk-over
+                // buildings are redrawn above them, and where it passes over a hose drawn beneath it casts a crossing shadow
+                if (key != null && meshes.TryGetValue(r, out Cached cur) && cur.key == key)
+                {
+                    DrawOverBuildings(cur, hm, tint, vis, e, rank);
+                    DrawCrossShadow(r, cur, vis, e, y, rank);
+                }
                 DrawEnds(r, hm, joints, pts, vis, y + 0.001f, true);
             }
             DrawGhosts(y0);
@@ -794,7 +868,131 @@ namespace RimMandrake.FlowWorks.Hose
             if (c.flat != null) UnityEngine.Object.Destroy(c.flat);
             if (c.plump != null) UnityEngine.Object.Destroy(c.plump);
             if (c.shadow != null) UnityEngine.Object.Destroy(c.shadow);
+            DestroyOver(c);
+            if (c.crossShadow != null) UnityEngine.Object.Destroy(c.crossShadow);
+            c.crossShadow = null;
         }
+
+        private static void DestroyOver(Cached c)
+        {
+            foreach (Mesh m in c.overMeshes) if (m != null) UnityEngine.Object.Destroy(m);
+            c.overMeshes.Clear();
+        }
+
+        /// <summary>
+        /// HOSE_BUILDINGS_FIX_BATTERY_HIDE_AND_SEEK (audit F2/D2, owner 2026-10-22: "the hose is going under the battery and
+        /// wall"). The hose band sits just above the Shadows layer, so a hose across a battery, a power connector or sandbags
+        /// was painted under the building's sprite. Its route now avoids such buildings (CostsAsBuilding); where it still must
+        /// cross one, the stretch over that building's cells (HoseOverDraw.Spans, widened by BuildingMargin for the sprite's
+        /// overhang) is drawn again -- shadow, flat and plump strands, same materials and texture phase -- in the hose's own
+        /// crossing band on <see cref="HoseOverDraw.OverBuildingLayer"/> (BuildingOnTop): over the building, under items and pawns.
+        /// Rebuilt only when the pose or the map's buildings change. The spans are recorded for the joint probe.
+        /// </summary>
+        private void DrawOverBuildings(Cached c, HoseLookMats hm, Color tint, float vis, float e, int rank)
+        {
+            if (c.rp == null || c.rp.Count < 2) return;
+            string ok = c.key + "#" + mapVersion;
+            if (c.overKey != ok)
+            {
+                DestroyOver(c);
+                c.overKey = ok;
+                c.overSpans = HoseOverDraw.Spans(c.rp, OverBuildingCell, HoseOverDraw.BuildingMargin);
+                float yo = (float)(RimMandrake.Shared.Slack.DrawOrder.Alt(HoseOverDraw.OverBuildingLayer) + RimMandrake.Shared.Slack.DrawOrder.HoseBaseLift) + HoseMath.CrossLift(rank);
+                float wf = (float)HoseMath.MeshWidthFlat(vis), wp = (float)HoseMath.MeshWidthPlump(vis), ws = vis * (float)HoseMath.ShadowWidth(e);
+                var off = new V2(0.03 + 0.05 * e, -(0.03 + 0.06 * e));
+                foreach (double[] sp in c.overSpans)
+                {
+                    List<V2> part = HoseOverDraw.Slice(c.rp, sp[0], sp[1]);
+                    if (part.Count < 2) continue;
+                    var sh = new List<V2>(part.Count);
+                    foreach (V2 p in part) sh.Add(p + off);
+                    // the texture phase carries on from the main strand (Ribbon: u = 4 s0 + arc / (4 width))
+                    c.overMeshes.Add(Ribbon(sh, ws, yo - 0.0004f, 0.11 + sp[0] / (16.0 * ws)));
+                    c.overMeshes.Add(e < 0.999f ? Ribbon(part, wf, yo, 0.37 + sp[0] / (16.0 * wf)) : null);
+                    c.overMeshes.Add(e > 0.001f ? Ribbon(part, wp, yo + 0.0004f, 0.37 + sp[0] / (16.0 * wp)) : null);
+                }
+                OverBuilds++;
+            }
+            for (int i = 0; i + 2 < c.overMeshes.Count; i += 3)
+            {
+                if (c.overMeshes[i] != null) Graphics.DrawMesh(c.overMeshes[i], Matrix4x4.identity, HoseMaterials.Shadow((float)HoseMath.ShadowAlpha(e)), 0);
+                if (c.overMeshes[i + 1] != null) Graphics.DrawMesh(c.overMeshes[i + 1], Matrix4x4.identity, hm.Flat(1f - e), 0);
+                if (c.overMeshes[i + 2] != null) Graphics.DrawMesh(c.overMeshes[i + 2], Matrix4x4.identity, hm.Plump(e, tint), 0);
+                lastOverDraws++;
+            }
+        }
+
+        /// <summary>
+        /// HOSE_CROSSING_FIX_FLAT_AS_A_PANCAKE (audit F8/D11: two laid hoses "cross flat, one painted over the other with no lift
+        /// or shadow"). The upper hose of a crossing (B18 bands: it already draws over) casts a deeper shadow onto the hose
+        /// beneath, offset further than its ground shadow, over the stretch where the two ribbons overlap (HoseOverDraw.CrossSpans
+        /// against every lower-ranked hose's drawn strand) -- it reads as lifted over the other. Drawn at the upper hose's
+        /// shadow step, which is above every band beneath it. Rebuilt when this pose or a lower hose's pose changes; the spans
+        /// are recorded for the joint probe.
+        /// </summary>
+        private void DrawCrossShadow(CompHoseReel r, Cached c, float vis, float e, float y, int rank)
+        {
+            if (c.rp == null || c.rp.Count < 2) return;
+            int h = c.key.GetHashCode();
+            List<IList<V2>> lowers = null;
+            for (int i = 0; i < reels.Count; i++)
+            {
+                CompHoseReel o = reels[i];
+                if (o == r || !meshes.TryGetValue(o, out Cached oc) || oc.rp == null || RankOf(o) >= rank) continue;
+                h = h * 31 + oc.key.GetHashCode();
+                (lowers ?? (lowers = new List<IList<V2>>())).Add(oc.rp);
+            }
+            string ck = h.ToString();
+            if (c.crossKey != ck)
+            {
+                c.crossKey = ck;
+                if (c.crossShadow != null) UnityEngine.Object.Destroy(c.crossShadow);
+                c.crossShadow = null;
+                c.crossSpans = lowers == null ? new List<double[]>() : HoseOverDraw.CrossSpans(c.rp, lowers, vis, CrossShadowMargin);
+                if (c.crossSpans.Count > 0)
+                {
+                    var off = new V2(CrossShadowOffset + 0.04 * e, -(CrossShadowOffset + 0.04 * e));
+                    var all = new List<Vector3>();
+                    var tris = new List<int>();
+                    var uvs = new List<Vector2>();
+                    foreach (double[] sp in c.crossSpans)
+                    {
+                        List<V2> part = HoseOverDraw.Slice(c.rp, sp[0], sp[1]);
+                        if (part.Count < 2) continue;
+                        var sh = new List<V2>(part.Count);
+                        foreach (V2 p in part) sh.Add(p + off);
+                        Mesh m = Ribbon(sh, vis * (float)HoseMath.ShadowWidth(e) * CrossShadowWiden, y - 0.0004f, 0.11);
+                        if (m == null) continue;
+                        int b = all.Count;
+                        all.AddRange(m.vertices);
+                        uvs.AddRange(m.uv);
+                        foreach (int t in m.triangles) tris.Add(b + t);
+                        UnityEngine.Object.Destroy(m);
+                    }
+                    if (tris.Count > 0)
+                    {
+                        c.crossShadow = new Mesh { name = "RM_HoseCrossShadow" };
+                        c.crossShadow.SetVertices(all);
+                        c.crossShadow.SetUVs(0, uvs);
+                        c.crossShadow.SetTriangles(tris, 0);
+                        c.crossShadow.RecalculateBounds();
+                    }
+                }
+                CrossBuilds++;
+            }
+            if (c.crossShadow == null) return;
+            Graphics.DrawMesh(c.crossShadow, Matrix4x4.identity, HoseMaterials.Shadow((float)HoseMath.ShadowAlpha(1)), 0);
+            lastCrossShadowDraws++;
+        }
+
+        /// <summary>The crossing shadow: offset (cells, +x / -z, plus 0.04 when plump), widening over the ground shadow, and how
+        /// far it runs past the overlap at each end.</summary>
+        public const double CrossShadowOffset = 0.10, CrossShadowMargin = 0.25;
+        public const float CrossShadowWiden = 1.15f;
+
+        /// <summary>State reads: over-building / crossing-shadow draws last frame, and rebuilds since load.</summary>
+        public int lastOverDraws, lastCrossShadowDraws;
+        public static int OverBuilds, CrossBuilds;
 
         public static Color Tint(CompHoseReel r)
         {
@@ -883,7 +1081,7 @@ namespace RimMandrake.FlowWorks.Hose
             // the 2x2 reel: the coupling's face meets the brass outlet nozzle, pointing into it (against Outward: the reel turns)
             // 2026-10-05: only when the hose really leaves through the outlet; a hose that could not (a reel boxed in, a relay
             // reel whose nozzle takes the feeding hose, a carried hose) gets no coupling floating on an empty nozzle
-            if (r.Rect.HasNozzle) { if (lying && r.lay != null && r.lay.Outlet) { V2 seat = HoseJoints.NozzleCoupling(r.Rect, out V2 inw); Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, seat, inw, vis, y, wrapTint); } }
+            if (r.Rect.HasNozzle) { if (lying && r.lay != null && r.lay.Outlet) { V2 seat = HoseJoints.NozzleCoupling(r.Rect, out V2 inw); Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, seat, inw, vis, y, wrapTint, rec: r, role: "reel_end"); } }
             else Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, pts[0], d0, vis, y, wrapTint);
             // joiners: only at real bends (B17), each two couplings face to face, screwed together (B9). Pose samples share
             // the lay's sample indices (equal-arc resamples of the same count).
@@ -915,7 +1113,7 @@ namespace RimMandrake.FlowWorks.Hose
                 // HOSE_LEADIN_FIX_STUB_IN_THE_CANAL: met from the side, the coupling is an elbow with no lead-in past the hose
                 double size0 = HoseMath.FittingSize(vis, PieceBand, CouplingMax), portSize = size0 * widen;
                 HoseMath.PortFitting(pts, pts[n - 1] + dp * 0.5, dp, ref portSize, vis, out V2 portFace, out double portWrap);
-                Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, portFace, dp, vis, y, wrapTint, (float)(portSize / size0), portWrap);
+                Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, portFace, dp, vis, y, wrapTint, (float)(portSize / size0), portWrap, r, "port_end");
                 // HOSE_JOINTS_REDESIGN_PUMP_TOO_PUNY: the pipe's own fitting under the coupling (saddle on it, flange beside it)
                 RimMandrake.FlowWorks.Machinery.RM_LiquidJoins.DrawHosePortFitting(fe.Port, fe.PortSide.X, fe.PortSide.Z, y - 0.0006f);
                 // HOSE UNDER-COUPLERS (owner ruling 2026-10-23: "have their art go UNDER the tank or pump or other fixture"): a
@@ -935,7 +1133,7 @@ namespace RimMandrake.FlowWorks.Hose
                 // own inlet overlaps the joint, never the other way round.
                 EndPoint(r, out _, out V2? inward);
                 V2 dIn = inward ?? d1;
-                Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, pts[n - 1], dIn, vis, y, wrapTint);
+                Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, pts[n - 1], dIn, vis, y, wrapTint, rec: r, role: "relay_end");
                 lastRelayCouplings++;
             }
             else if (r.end == HoseEnd.Nozzle) Fitting(hm, hm.NozzleBare, NozzleMax, 0.05, -0.16, pts[n - 1], d1, vis, y, wrapTint);
@@ -1225,7 +1423,7 @@ namespace RimMandrake.FlowWorks.Hose
             if (onNozzle && hm.CouplingBare != null)
             {
                 Color wrapTint = Color.Lerp(Color.white, Tint(r), 0.5f);
-                Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, face, axis, vis, y - 0.0006f, wrapTint);
+                Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, face, axis, vis, y - 0.0006f, wrapTint, rec: r, role: "feed_nozzle");
             }
             lastFeedDraws++;
         }
@@ -1256,11 +1454,17 @@ namespace RimMandrake.FlowWorks.Hose
         /// sits <paramref name="centreOff"/> sizes from the end, its brass starts <paramref name="brassFrom"/> sizes from the
         /// centre; the wrap ends 0.05 cell over the brass start and runs back along the hose.</summary>
         private void Fitting(HoseLookMats hm, Material m, float maxBand, double centreOff, double brassFrom, V2 end, V2 d, float vis, float y, Color wrapTint, float widen = 1f,
-            double wrapLen = HoseMath.WrapLength)
+            double wrapLen = HoseMath.WrapLength, CompHoseReel rec = null, string role = null)
         {
             float size = (float)HoseMath.FittingSize(vis, PieceBand, maxBand) * widen;
             V2 c = HoseJoints.FittingCentre(end, d, centreOff, size);
             Piece(m, c, d, size, y);
+            // JOINT_GATE_HARDEN_TRUST_THE_DRAWN_BOX: the piece just drawn, as drawn (only when the material exists: Piece drew it)
+            if (rec != null && role != null && m != null)
+            {
+                if (!drawnFittings.TryGetValue(rec, out Dictionary<string, DrawnFitting> df)) drawnFittings[rec] = df = new Dictionary<string, DrawnFitting>();
+                df[role] = new DrawnFitting { centre = c, dir = d, size = size, band = maxBand };
+            }
             V2 brass = c + d * (brassFrom * size);
             if (wrapLen > 1e-3) Wrap(hm, brass + d * (0.05 - wrapLen / 2), d, vis, y + 0.0002f, wrapTint, wrapLen);
         }

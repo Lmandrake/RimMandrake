@@ -20,6 +20,18 @@ namespace RimMandrake.FlowWorks.Hose
     ///          meets the STORED art's nozzle and the reel really prints the stored art; a laid reel whose port stands in front
     ///          of its nozzle is reported (two hoses from one nozzle, audit D3).
     /// A joint passes when its gap is within HoseJoints.Tolerance (the reel-end strand: within the coupling + wrap span).
+    /// JOINT_GATE_HARDEN_TRUST_THE_DRAWN_BOX (audit F9) adds rows read off what the draw RECORDED, not the geometry meant to
+    /// place it:
+    ///   collar_box     each coupling as drawn last frame (RM_MapComponent_Hoses.drawnFittings: reel_end, port_end,
+    ///                  relay_end, feed_nozzle): its opaque box (HoseJoints.CollarBoxGap) must cover the nozzle tip / port point;
+    ///                  a joint that should carry a coupling and has none recorded is a FAIL ("no collar drawn");
+    ///   over_building  a laid hose's strand samples on a walk-over building drawn above the hose must all lie in the stretches
+    ///                  the draw redrew above it (HOSE_BUILDINGS_FIX_BATTERY_HIDE_AND_SEEK); a strand never drawn: UNMEASURED;
+    ///   under_rig      a strand sample on ANOTHER reel or a pump (not its own reel, its relay reel or its end's port) is a hose
+    ///                  drawn under the rig's machinery: FAIL;
+    /// and "crossings": every pair of laid hoses whose drawn strands overlap, upper over lower, lifted = every overlapping
+    /// sample of the upper strand lies in its recorded crossing-shadow spans (HOSE_CROSSING_FIX_FLAT_AS_A_PANCAKE); the Python
+    /// gate (joint_check.py crossing_joints) passes a crossing only on lifted = true.
     /// Read-only: nothing on the map changes.
     /// </summary>
     public static class HoseJointProbe
@@ -44,6 +56,67 @@ namespace RimMandrake.FlowWorks.Hose
                          + ",\"look\":" + S(r.Rect.Look) + ",\"kind\":" + S(kind) + ",\"ok\":" + (measured ? (ok ? "true" : "false") : "null")
                          + ",\"gap\":" + F(gap) + ",\"where\":" + where + ",\"note\":" + S(note) + "}");
             }
+            // JOINT_GATE_HARDEN_TRUST_THE_DRAWN_BOX: the coupling the draw recorded for this role vs the point it must cover
+            void Collar(CompHoseReel r, string role, V2 target, string what)
+            {
+                if (!comp.drawnFittings.TryGetValue(r, out var df) || !df.TryGetValue(role, out RM_MapComponent_Hoses.DrawnFitting f))
+                {
+                    Row(r, "collar_box", false, 0, P(target), role + ": no collar drawn last frame at " + what);
+                    return;
+                }
+                double g = HoseJoints.CollarBoxGap(f.centre, f.dir, f.size, f.band, target);
+                Row(r, "collar_box", g <= HoseJoints.Tolerance, g, P(f.centre), role + ": drawn collar box (size " + F(f.size) + ") vs " + what + " " + P(target));
+            }
+            // HOSE_BUILDINGS_FIX_BATTERY_HIDE_AND_SEEK: the drawn strand over walk-over buildings and over other rig machinery
+            void BuildingRows(CompHoseReel r)
+            {
+                List<V2> rp = comp.DrawnStrand(r);
+                if (rp == null || rp.Count < 2)
+                {
+                    Row(r, "over_building", false, 0, "null", "no drawn strand cached (off screen or never drawn): pan the camera over it", false);
+                    return;
+                }
+                List<double[]> spans = comp.OverSpansOf(r);
+                CellRect own = r.parent.OccupiedRect();
+                CompHoseReel relayR = comp.RelayOf(r);
+                HoseFreeEnd fe0 = comp.FreeEndOf(r);
+                Thing endPort = fe0.Kind == HoseEndKind.Port ? fe0.Port : null;
+                double[] s = Geo.CumLen(rp);
+                double L = s[s.Length - 1];
+                int nS = Math.Max(1, (int)Math.Ceiling(L / HoseOverDraw.Step)), over = 0, uncovered = 0;
+                V2 firstBad = default(V2), firstRig = default(V2);
+                var rigs = new HashSet<Building>();
+                int k = 0;
+                for (int i = 0; i <= nS; i++)
+                {
+                    double t = L * i / nS;
+                    while (k < s.Length - 2 && s[k + 1] < t) k++;
+                    double seg = s[k + 1] - s[k];
+                    V2 p = rp[k] + (rp[k + 1] - rp[k]) * (seg < 1e-12 ? 0 : Geo.Clamp((t - s[k]) / seg, 0, 1));
+                    Cell c = p.Floor;
+                    if (comp.OverBuildingCell(c))
+                    {
+                        over++;
+                        if (!HoseOverDraw.Covers(spans, t)) { if (uncovered++ == 0) firstBad = p; }
+                    }
+                    Building rig = comp.RigAt(c);
+                    if (rig != null && !own.Contains(new IntVec3(c.X, 0, c.Z)) && (relayR == null || rig != relayR.parent) && rig != endPort)
+                    {
+                        if (rigs.Count == 0) firstRig = p;
+                        rigs.Add(rig);
+                    }
+                }
+                if (over > 0)
+                    Row(r, "over_building", uncovered == 0, uncovered * HoseOverDraw.Step, P(uncovered > 0 ? firstBad : rp[0]),
+                        uncovered == 0 ? over + " strand samples on walk-over buildings, all redrawn above them"
+                                       : uncovered + " of " + over + " strand samples on a walk-over building are drawn UNDER it");
+                if (rigs.Count > 0)
+                {
+                    var names = new List<string>();
+                    foreach (Building b in rigs) names.Add(b.def.defName + "@" + b.Position.x + "," + b.Position.z);
+                    Row(r, "under_rig", false, 0, P(firstRig), "laid hose drawn under " + string.Join(", ", names));
+                }
+            }
             float vis = (float)HoseMath.VisibleWidth(0, RM_HoseSettings.plumpAmount);
             foreach (CompHoseReel r in comp.Reels)
             {
@@ -67,6 +140,7 @@ namespace RimMandrake.FlowWorks.Hose
                         bool stored = art == "stored";
                         Row(r, "feed_nozzle", stored && gf <= HoseReelRect.NozzleSeat + HoseJoints.Tolerance, Math.Max(0, gf - HoseReelRect.NozzleSeat), P(face),
                             stored ? "link couples to the stored nozzle" : "link couples to the stored nozzle but the reel prints " + art);
+                        Collar(r, "feed_nozzle", HoseJoints.StoredNozzleTip(rect), "the stored nozzle tip");
                     }
                     else
                     {
@@ -100,7 +174,9 @@ namespace RimMandrake.FlowWorks.Hose
                     double gap = Math.Max(0, Math.Max(perp - 0.5 * vis, Math.Max(-along, along - cover)));
                     Row(r, "reel_end", gs <= HoseReelRect.NozzleSeat + HoseJoints.Tolerance && gap <= HoseJoints.Tolerance, Math.Max(gap, gs - HoseReelRect.NozzleSeat), P(s0),
                         "coupling face " + F(gs) + " from the tip (seat " + HoseReelRect.NozzleSeat + "); strand starts " + F(along) + " back, " + F(perp) + " off the axis");
+                    Collar(r, "reel_end", rect.NozzleTip, "the laid nozzle tip");
                 }
+                BuildingRows(r);
                 // ---- far end
                 if (r.carry == HoseCarryState.Retracting) continue;
                 CompHoseReel relay = comp.RelayOf(r);
@@ -109,6 +185,7 @@ namespace RimMandrake.FlowWorks.Hose
                     V2 want = comp.EndPoint(r, out _, out _);
                     HoseJoints.Meets(pts[n - 1], want, out double gr);
                     Row(r, "relay_end", gr <= HoseJoints.Tolerance, gr, P(pts[n - 1]), "relay " + relay.parent.thingIDNumber);
+                    Collar(r, "relay_end", want, "the relay's drawn inlet");
                     continue;
                 }
                 HoseFreeEnd fe = comp.FreeEndOf(r);
@@ -131,12 +208,45 @@ namespace RimMandrake.FlowWorks.Hose
                 V2 portAt = comp.PortEnd(r, out V2 pa, out _) ? pa : new V2(fe.Cell.x + 0.5, fe.Cell.z + 0.5) + dp * 0.5;
                 HoseJoints.Meets(faceAt, portAt, out double gp);
                 Row(r, "free_port_end", gp <= HoseJoints.Tolerance, gp, P(faceAt), fe.Port.def.defName + " port at " + P(portAt));
+                Collar(r, "port_end", portAt, fe.Port.def.defName + " port");
             }
             var sb = new StringBuilder();
             sb.Append("{\"success\":true,\"cmd\":\"joints\",\"tolerance\":").Append(F(HoseJoints.Tolerance))
               .Append(",\"total\":").Append(total).Append(",\"bad\":").Append(bad).Append(",\"unmeasured\":").Append(unmeasured)
-              .Append(",\"reels\":").Append(comp.Reels.Count).Append(",\"joints\":[").Append(string.Join(",", rows)).Append("]}");
+              .Append(",\"reels\":").Append(comp.Reels.Count).Append(",\"joints\":[").Append(string.Join(",", rows)).Append(']')
+              .Append(",\"crossings\":[").Append(string.Join(",", Crossings(comp))).Append("]}");
             return sb.ToString();
+        }
+
+        /// <summary>HOSE_CROSSING_FIX_FLAT_AS_A_PANCAKE: every pair of laid hoses whose drawn strands overlap (within the visible
+        /// width), the upper one (higher B18 rank) over the lower, and whether every overlapping sample of the upper strand lies
+        /// in the crossing-shadow spans the draw recorded for it.</summary>
+        private static List<string> Crossings(RM_MapComponent_Hoses comp)
+        {
+            var o = new List<string>();
+            double reach = HoseMath.VisibleWidth(0, RM_HoseSettings.plumpAmount);
+            var laid = new List<CompHoseReel>();
+            foreach (CompHoseReel r in comp.Reels)
+                if (r?.parent != null && r.parent.Spawned && r.laid && comp.DrawnStrand(r) != null) laid.Add(r);
+            for (int i = 0; i < laid.Count; i++)
+                for (int j = i + 1; j < laid.Count; j++)
+                {
+                    CompHoseReel a = laid[i], b = laid[j];
+                    bool aUp = comp.RankOfReel(a) > comp.RankOfReel(b);
+                    CompHoseReel up = aUp ? a : b, lo = aUp ? b : a;
+                    List<V2> pu = comp.DrawnStrand(up), pl = comp.DrawnStrand(lo);
+                    List<double[]> touch = HoseOverDraw.CrossSpans(pu, new List<IList<V2>> { pl }, reach, 0);
+                    if (touch.Count == 0) continue;
+                    List<double[]> drawn = comp.CrossSpansOf(up);
+                    bool lifted = drawn != null;
+                    foreach (double[] sp in touch)
+                        for (double t = sp[0]; t <= sp[1] + 1e-9 && lifted; t += HoseOverDraw.Step)
+                            if (!HoseOverDraw.Covers(drawn, t)) lifted = false;
+                    V2 mid = HoseOverDraw.PointAtArc(pu, 0.5 * (touch[0][0] + touch[0][1]));
+                    o.Add("{\"upper\":" + up.parent.thingIDNumber + ",\"lower\":" + lo.parent.thingIDNumber + ",\"at\":" + P(mid)
+                          + ",\"spans\":" + touch.Count + ",\"lifted\":" + (lifted ? "true" : "false") + "}");
+                }
+            return o;
         }
     }
 }
