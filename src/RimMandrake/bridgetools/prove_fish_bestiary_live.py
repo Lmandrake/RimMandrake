@@ -27,6 +27,7 @@ tested and removes both afterward -- nothing kept.
 """
 _RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[3]  # repo root, derived (not hardcoded)
 import json
+import os
 import sys
 
 sys.path.insert(0, str(_RM_ROOT / 'src' / 'RimMandrake' / 'Utils'))
@@ -42,8 +43,13 @@ WATERS = [
     ("Cracked Lands", "RUT_CrackedLands",  [9225, 14, 20, 107, 110],   "fish"),
     ("Weeping Stones","RUT_WeepingStones", [7344, 10, 83, 142, 144],   "fish"),
     ("Wasteland",     "RUT_Wastes",     [224, 0, 23, 36, 47],       "brine"),
-    ("Twilight",      "RUT_TwilightSea",   [16, 82, 150, 176, 178],    "fish"),
+    # The sea tile itself is impassable and canBuildBase false (its generated map is 100% deep brine, where vanilla
+    # refuses a fishing zone: Designator_ZoneAdd_Fishing needs a passable cell). Its catch is fished FROM THE SHORE: a land
+    # tile beside the sea, whose salt water SeaShores' SetFishTypes postfix stocks from the sea's own table. So Twilight
+    # is a "shore" row: tiles are found from the live grid, not listed.
+    ("Twilight",      "RUT_TwilightSea",   [],                          "shore"),
 ]
+SHORE_SEAS = {"Twilight": ("RUT_TwilightSea", "RM_TwilightSea")}
 
 
 def connect():
@@ -170,6 +176,87 @@ def try_tile(call, label, biome, tile, mode):
         cleanup(call, tile)
 
 
+def sea_catches(label):
+    """The sea's catch defNames, read from the shipped RM_ BiomeDef (RUT_TwilightSea's patch names the same species)."""
+    import xml.etree.ElementTree as ET
+    f = _RM_ROOT / "src" / "RimMandrake" / "TerminalBiomes" / "Defs" / "BiomeDefs" / ("RM_%sSea.xml" % label)
+    ft = ET.parse(str(f)).getroot().find("BiomeDef/fishTypes")
+    names = set()
+    for band in (ft if ft is not None else []):
+        names.update(c.tag for c in band)
+    names.discard("rareCatchesSetMaker")
+    return names
+
+
+def shore_tiles(call, seas, limit=5):
+    """Land tiles with a sea neighbour, from the live grid (world_tile_export + world_neighbors, written under the
+    agent data root -- this runs under python.exe, so one path serves the bridge and this reader)."""
+    import csv
+    from rmpaths import rm_path
+    d = rm_path("scratch", "fish_shore")
+    os.makedirs(str(d), exist_ok=True)
+    tcsv, ncsv = str(d / "tiles.csv"), str(d / "neighbors.csv")
+    e = call("jawa/world_tile_export", path=tcsv, format="csv", extended=True)
+    n = call("jawa/world_neighbors", path=ncsv)
+    if not (e.get("success") and n.get("success")):
+        print("    world export FAILED:", json.dumps(e)[:200], json.dumps(n)[:200])
+        return []
+    biome, water = {}, {}
+    with open(e.get("path") or tcsv, newline="", encoding="utf-8") as f:
+        for r in csv.DictReader(f):
+            biome[int(r["tile"])] = r["biome"]
+            water[int(r["tile"])] = str(r.get("waterCovered")).strip().lower() == "true"
+    out = []
+    with open(n.get("path") or ncsv, newline="", encoding="utf-8") as f:
+        rd = csv.reader(f)
+        next(rd)
+        for r in rd:
+            if not r or not r[0].strip().isdigit():
+                continue
+            t = int(r[0])
+            if biome.get(t) in seas or water.get(t, True):
+                continue
+            nb = [int(v) for c in r[1:] for v in c.replace(";", " ").split() if v.lstrip("-").isdigit() and int(v) >= 0]
+            if any(biome.get(x) in seas for x in nb):
+                out.append(t)
+                if len(out) >= limit:
+                    break
+    print(f"  shore tiles beside {sorted(seas)}: {out}")
+    return out
+
+
+def try_shore(call, label, tile):
+    """Generate the shore tile's map, read the salt-water body's fish, and judge it against the sea's own table."""
+    want = sea_catches(label)
+    gen = call("jawa/world_tile_map_generate", tile=tile, suggestedMapParent="Settlement")
+    if not gen.get("success"):
+        print("    generate FAILED:", json.dumps(gen)[:300])
+        return None
+    map_id = gen["mapId"]
+    try:
+        call("jawa/set_current_map", mapId=map_id)
+        runs = scan_map(call, map_id, gen["mapSize"]["x"], gen["mapSize"]["z"])
+        if runs is None:
+            return None
+        sea = [(k, sp) for k, v in runs.items() for sp in v
+               if any(t in k.lower() for t in ("ocean", "brine")) and "deep" not in k.lower()]
+        sea = sea or [(k, sp) for k, v in runs.items() for sp in v if any(t in k.lower() for t in ("ocean", "brine"))]
+        if not sea:
+            print("    VERDICT: no sea water on this shore map (SITE)")
+            return {"tile": tile, "water": False}
+        name, (x, z, w, h) = sea[0]
+        fr = call("jawa/fishing", action="read", x=x, z=z)
+        body = fr.get("body") if isinstance(fr.get("body"), dict) else {}
+        got = set(str(f) for f in (body.get("commonFish") or []) + (body.get("uncommonFish") or []))
+        hit = sorted(got & want)
+        verdict = "PASS" if hit else ("UNMEASURED" if not body.get("hasBody") or not body.get("hasFish") else "FAIL")
+        print(f"    {name} @({x},{z}) body={json.dumps(body)[:300]}")
+        print(f"    VERDICT: {verdict} (sea catches on the shore: {hit or 'none'}; want any of {sorted(want)})")
+        return {"tile": tile, "water": True, "verdict": verdict, "catches": hit, "body": body}
+    finally:
+        cleanup(call, tile)
+
+
 def check_biome_defs(call):
     """Cheap live-def check: does each BiomeDef actually carry maxFishPopulation
     and fishTypes right now, independent of any map generation?"""
@@ -194,8 +281,10 @@ def main():
             continue
         print(f"\n=== {label} ({biome}, mode={mode}) ===")
         result = None
+        if mode == "shore":
+            tiles = shore_tiles(call, set(SHORE_SEAS[label]))
         for tile in tiles:
-            result = try_tile(call, label, biome, tile, mode)
+            result = try_shore(call, label, tile) if mode == "shore" else try_tile(call, label, biome, tile, mode)
             if result and result.get("water"):
                 break
         results[label] = result
