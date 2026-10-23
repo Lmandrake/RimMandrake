@@ -1,30 +1,35 @@
-"""northstar_driver plan for IshkoDarkLandmarks (the suite in validation.py). Offline:
-  python3 src/RimMandrake/Utils/northstar_driver/cli.py run --mock --mod IshkoDarkLandmarks \\
-      --plan src/RimUtinni/IshkoDarkLandmarks/northstar_plan.py
-Live (bridge held, game up on the `ishko` tier with a quicktest world):
-  python3 src/RimMandrake/Utils/northstar_driver/live_session.py --mod IshkoDarkLandmarks --tier ishko \\
-      --plan src/RimUtinni/IshkoDarkLandmarks/northstar_plan.py \\
-      --deploy-mod IshkoDarkLandmarks --deploy-mod AshkarrLandmarkArt
+"""northstar_driver plan for Salvation Rites (the whole suite in validation.py: the research
+gate, every shipped def, and Ishko's three landmarks). Offline:
+  python3 src/RimMandrake/Utils/northstar_driver/cli.py run --mock --mod Rites \\
+      --plan src/RimUtinni/Rites/northstar_plan.py
+Live (bridge held, game up on the `rites` tier with a quicktest world):
+  python3 src/RimMandrake/Utils/northstar_driver/live_session.py --mod Rites --tier rites \\
+      --plan src/RimUtinni/Rites/northstar_plan.py \\
+      --deploy-mod Rites --deploy-mod AshkarrLandmarkArt
 
-The mock below is an in-memory model of exactly what the suite asserts (get_defs readback, the
-planet's tiles, AddLandmark's forced Required-anchor roll). It proves the SCRIPT, never the game.
-ISHKO_MOCK_BREAK=<comma list> re-introduces one defect each, so every check can be seen red:
+The mock below is an in-memory model of exactly what the suite asserts (get_defs readback of every
+def in Defs/, the research gate, the planet's tiles, AddLandmark's forced Required-anchor roll). It
+proves the SCRIPT, never the game. ISHKO_MOCK_BREAK=<comma list> re-introduces one defect each, so
+every Ishko check can be seen red:
   wrong_pkg      a defName collision: RUT_LightlessSink resolves from another package
   no_anchor      AddLandmark leaves the tile without its Required anchor mutator
   shallow        mutatorChances comes back as bare type names (get_defs without deep=true)
   no_restore     world_mutators_set does nothing, so the post-run restore cannot verify
 The live tier MUST carry mandrake.rm.gimmesomeslack (JawaBench TypeLoad-fails without it and preflight REFUSES at game_loaded).
-First live run 2026-10-07: 8 PASS in 3 s, recorded GREEN by the driver (see validation.py "LEARNED").
+Ishko's landmarks were their own mod (mandrake.rut.ishkolandmarks) until 2026-10-22; its 2026-10-07 live GREEN
+(8 PASS) is at that retired package and an old hash. This mod has no live run of the merged suite yet.
 Dev tooling, never deployed."""
 import os
 
+from modcheck import shipped_defs
 from northstar_driver import site
 
-MOD = "IshkoDarkLandmarks"
+MOD = "Rites"
 USE_SUITE = True
-EXPECT_MODS = ("mandrake.rut.ishkolandmarks", "mandrake.rut.ashkarrlandmarkart")
+PACKAGE_ID = "mandrake.rut.rites"
+EXPECT_MODS = (PACKAGE_ID, "mandrake.rut.antiquities", "mandrake.rut.ashkarrlandmarkart")
 NEED_GOD = False
-RECT = None                 # world-level mod: the suite touches no map cells
+RECT = None                 # research and world-level only: the suite touches no map cells
 
 def _xml_defs():
     """The mock reads the SAME XML the suite checks, so its chances can never drift from the
@@ -32,7 +37,7 @@ def _xml_defs():
     import xml.etree.ElementTree as ET
     here = os.path.dirname(os.path.abspath(__file__))
     out = {}
-    for el in ET.parse(os.path.join(here, "Defs", "LandmarkDefs_IshkoDark.xml")).getroot().findall("LandmarkDef"):
+    for el in ET.parse(os.path.join(here, "Defs", "RUT_IshkoLandmarks.xml")).getroot().findall("LandmarkDef"):
         chances = []
         for m in el.find("mutatorChances"):
             req = (m.get("Required") or "").lower() == "true"
@@ -43,10 +48,14 @@ def _xml_defs():
 
 _DEFS = _xml_defs()
 _ICON = {"RUT_LightlessSink": "Hollow", "RUT_ShadowedOverhang": "Chasm", "RUT_ColdLavaTube": "Cavern"}
+# every def the mod ships: (type, name) -> {leafTag: text}, read from the same Defs/ the suite parses
+_SHIPPED = dict(((ty, n), leaf) for ty, n, leaf in shipped_defs.parse(os.path.dirname(os.path.abspath(__file__))))
+# the research gate: ordinary and hidden prerequisites of the one tier the suite exercises
+_RESEARCH = {"RUT_Rites_ConduitChoir": (("RUT_Rites_ScrapShrine",), ("RUT_Antiq_Language",))}
 
 
 def preflight(s):
-    """Landmarks are Odyssey-only: without it every placement no-ops and every def is absent."""
+    """Ishko's landmarks are Odyssey-only: without it every placement no-ops and those defs are absent."""
     bad = []
     try:
         site.dlc_status(s)
@@ -86,24 +95,39 @@ def mock_extension(game, tool, p):
     w = getattr(game, "_ishko", None)
     if w is None:
         w = game._ishko = _World()
+    if tool == "jawa/research_finish_project":
+        done = game.__dict__.setdefault("_rites_done", set())
+        was = p.get("project") in done
+        done.add(p.get("project"))
+        return {"success": True, "project": p.get("project"), "wasAlreadyFinished": was}
+    if tool == "jawa/research_availability":
+        done = game.__dict__.setdefault("_rites_done", set())
+        pre, hidden = _RESEARCH.get(p.get("project"), ((), ()))
+        pre_ok = all(x in done for x in pre)
+        return {"success": True, "project": p.get("project"), "prerequisitesCompleted": pre_ok,
+                "canStartNow": pre_ok and all(x in done for x in hidden),
+                "unfinishedPrerequisites": [x for x in pre if x not in done]}   # ordinary ones only, like the tool
     if tool == "jawa/get_defs":
+        want = [f for f in str(p.get("fields") or "").split(",") if f]
         rows, nf = [], []
         for spec in str(p["defs"]).split(";"):
             ty, dn = spec.split("/")
-            if ty != "LandmarkDef" or dn not in _DEFS:
+            if (ty, dn) not in _SHIPPED:
                 rows.append({"requested": spec, "found": False, "defName": dn})
                 nf.append(spec)
                 continue
-            cat, comm, chances = _DEFS[dn]
-            chances = [dict(c) for c in chances]
-            if "shallow" in brk or not p.get("deep"):
-                chances = ["MutatorChance"] * len(chances)
-            pkg = "someone.else.landmarks" if ("wrong_pkg" in brk and dn == "RUT_LightlessSink") \
-                else "mandrake.rut.ishkolandmarks"
-            rows.append({"requested": spec, "found": True, "defName": dn, "defType": "LandmarkDef",
-                         "packageId": pkg, "fields": {
-                             "category": cat, "commonality": comm, "mutatorChances": chances,
-                             "iconTexturePath": "World/Landmarks/Ashkarr/" + _ICON[dn]}})
+            pkg = "someone.else.landmarks" if ("wrong_pkg" in brk and dn == "RUT_LightlessSink") else PACKAGE_ID
+            fields = dict((f, _SHIPPED[(ty, dn)].get(f)) for f in want)
+            if ty == "LandmarkDef" and dn in _DEFS:
+                cat, comm, chances = _DEFS[dn]
+                chances = [dict(c) for c in chances]
+                if "shallow" in brk or not p.get("deep"):
+                    chances = ["MutatorChance"] * len(chances)
+                fields.update({"category": cat, "commonality": comm, "mutatorChances": chances,
+                               "iconTexturePath": "World/Landmarks/Ashkarr/" + _ICON[dn]})
+                fields = dict((f, fields.get(f)) for f in want)
+            rows.append({"requested": spec, "found": True, "defName": dn, "defType": ty,
+                         "packageId": pkg, "fields": fields})
         return {"success": True, "foundCount": len(rows) - len(nf), "notFound": nf, "defs": rows}
     if tool == "jawa/world_mutators_get":
         ids = _ids(p)

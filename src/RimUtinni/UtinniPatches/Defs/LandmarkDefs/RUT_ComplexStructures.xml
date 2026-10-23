@@ -53,7 +53,7 @@
     <!-- `structure` is what Ruins and AncientGarrison use; read off the live defs
          rather than guessed. The only categories in use are structure / mountain /
          lake. NamerLandmark_Ruins likewise reused rather than authoring a RulePackDef
-         for one landmark — same call IshkoDarkLandmarks made. -->
+         for one landmark — same call Ishko's landmarks (in Rites) made. -->
     <category>structure</category>
     <nameMaker>NamerLandmark_Ruins</nameMaker>
     <!-- Inert: satisfies LandmarkDef.ConfigErrors' chance>=1 rule and is

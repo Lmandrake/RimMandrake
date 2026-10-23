@@ -1686,7 +1686,6 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `Doctrine.md` | Doctrine — validation walk | — |
 | `EmpirePursuit.md` | EmpirePursuit — validation walk | — |
 | `FactionSlate.md` | FactionSlate — validation walk | — |
-| `IshkoDarkLandmarks.md` | IshkoDarkLandmarks — validation walk | — |
 | `LanternDeeps.md` | LanternDeeps — validation walk | — |
 | `LongHunger.md` | LongHunger — validation walk | — |
 | `MenuShell.md` | MenuShell — validation walk | — |

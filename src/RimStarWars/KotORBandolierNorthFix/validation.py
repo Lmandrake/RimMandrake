@@ -45,7 +45,7 @@ Still not proven / structurally offline-only:
      precedent anywhere in this suite family -- every other suite's
      `fields=` argument names a TOP-LEVEL field (skills/rimbridge/
      SKILL.md's own "scalar fields only" caveat), and the closest analog
-     (JawaVoice/Droidworks/IshkoDarkLandmarks) only ever went one level
+     (JawaVoice/Droidworks/Rites' Ishko chains) only ever went one level
      deep. Whether `get_defs` walks a dotted path into a nested
      `ApparelProperties`/`GraphicDataNorth` object at all is UNCONFIRMED --
      flagged here rather than assumed to work.

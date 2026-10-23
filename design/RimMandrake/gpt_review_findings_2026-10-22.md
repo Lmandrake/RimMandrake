@@ -55,7 +55,7 @@ Offline gate after the fixes: validation 9/9, matrix 58/58, selftest_proof_all A
 
 | # | GPT sev → ours | verdict | where | outcome |
 |---|---|---|---|---|
-| 1 | BLOCKER | CONFIRMED | `validation.py:57` (`suite.toggles = []`); no Source/ | **Answered (Q1):** a concept of the religion of the Nine, not a mod of its own. The fold itself is open: see "Ishko: folding into the Nine's mod" below. |
+| 1 | BLOCKER | CONFIRMED | `validation.py:57` (`suite.toggles = []`); no Source/ | **Answered (Q1), and done:** a concept of the religion of the Nine, not a mod of its own. The three landmarks now live in Salvation Rites; see "Ishko: folded into Salvation Rites" below. |
 | 2 | HIGH → MED | CONFIRMED | `Defs/LandmarkDefs_IshkoDark.xml` (Cold Lava Tube had `<LavaCaves>0.4</LavaCaves>`; Odyssey: "Small lava-filled cave networks") | **Fixed `bf28588c1`.** Removed, because the description says "long since gone out… claimed cold". |
 | 3 | HIGH → LOW | CONFIRMED | `validation.py` placement cleanup | **Fixed `bf28588c1`.** `_restore()` removes the landmark and every mutator the add introduced, re-adds any it displaced, then reads the tile back. An unverified restore FAILs. The add is now inside the protected block. (Severity is LOW: the quicktest world is disposable.) |
 | 4 | HIGH → MED | CONFIRMED | `About/About.xml` (the art mod was only `loadAfter`) | **Fixed `bf28588c1`.** `mandrake.rut.ashkarrlandmarkart` is now a `modDependency`. |
@@ -67,7 +67,7 @@ Offline gate after the fixes: validation 9/9, matrix 58/58, selftest_proof_all A
 | 10 | MED → LOW | CONFIRMED | stored run JSON | **Partly fixed.** The new restore and placement records keep before/after state. The running-package identity in the record is still open. |
 | 11 | LOW | CONFIRMED | `validation.py` source chain (`return` inside the first `with`) | **Fixed `bf28588c1`.** Both components are now declared under declaration probing. |
 
-Mock after the fixes: GREEN 8/8. Each break is red: `wrong_pkg` 1 FAIL, `no_anchor` 3 FAIL, `shallow` 3 UNMEASURED, `no_restore` 3 FAIL. 🔴 **The 2026-10-07 GREEN is now at an old hash.** Re-running it costs one 22 s minimal-list `ishko` sitting.
+Mock after the fixes: GREEN 8/8. Each break is red: `wrong_pkg` 1 FAIL, `no_anchor` 3 FAIL, `shallow` 3 UNMEASURED, `no_restore` 3 FAIL. 🔴 **The 2026-10-07 GREEN was at an old hash, and its package is now retired.** The checks now run inside Salvation Rites' suite, which needs one fresh minimal-list `rites` sitting (about 22 s).
 
 ## FlowWorks: 16 findings, 14 CONFIRMED, 1 STALE, 1 CONFIRMED-premise/UNVERIFIABLE
 
@@ -248,7 +248,7 @@ These are ranked by the wall-clock time they save per acceptance cycle. The esti
 
 ## Owner questions
 
-**Q1. Ishko's landmarks have no Mod Settings, and the rule is "every mod, no exceptions."** ANSWERED 2026-10-22: *"Likely fold this mod into the religion mod of the 9. It's a concept, not a mod."* How to fold is the open question below.
+**Q1. Ishko's landmarks have no Mod Settings, and the rule is "every mod, no exceptions."** ANSWERED 2026-10-22: *"Likely fold this mod into the religion mod of the 9. It's a concept, not a mod."* Then: *"I think the Nine Gods belong in Salvation Rites. They are NOT a general reuse mod."* Done: see "Ishko: folded into Salvation Rites" below.
 
 - (a) Add a small C# settings screen with a switch per landmark. *Buys:* rule compliance. *Costs:* a DLL for a pure-XML pack, and the switches would do almost nothing: players get a frozen world, so a landmark already in the save stays, and turning it "off" cannot remove it safely.
 - (b) **Recommended:** rule that a content-only pack whose content lives in the shipped save is exempt. *Buys:* no fake switches. *Costs:* one written exception to a standing rule.
@@ -318,46 +318,85 @@ GPT's other FlowWorks questions are left as they are in the reply and not presse
 
 Each is a design call to make when that feature is next touched.
 
-## Ishko: folding into the Nine's mod (owner question, open)
+## Ishko: folded into Salvation Rites (done 2026-10-22)
 
-The owner said on 2026-10-22: *"Likely fold this mod into the religion mod of the 9. It's a concept, not a mod."*
-The descriptions are already fixed (Q2). The move itself has NOT been made. "Likely" is not a final word, and the
-move crosses a naming tier, so it is his call.
+The owner said: *"Likely fold this mod into the religion mod of the 9. It's a concept, not a mod."* Then, by
+question card: *"I think the Nine Gods belong in Salvation Rites. They are NOT a general reuse mod."*
+
+What was done:
+
+- The three LandmarkDefs now live in Salvation Rites (`mandrake.rut.rites`), in
+  `src/RimUtinni/Rites/Defs/RUT_IshkoLandmarks.xml`. Both mods are RimUtinni, so the `RUT_` defNames stay as
+  they are. No canonical Ash'karr save names any of the three; the 13, 14 and 19 old test saves that do still find
+  them. (Measured 2026-10-22 with an exact `<def>NAME</def>` search of the Saves folder; the canonical saves do
+  show `<def>Hollow</def>` and `<def>RUT_` entries, so the search can see them.) No save was edited.
+- Salvation Rites now needs Odyssey and `mandrake.rut.ashkarrlandmarkart` (`modDependencies` and `loadAfter`).
+- `mandrake.rut.ishkolandmarks` is retired. It is gone from the six maintained mod lists (the five
+  `RULED_2026-10-20` lists and `FULL.LATEST`), and it is recorded as `RETIRED-MERGED` in the mod archive. The PAINT
+  list did not carry Salvation Rites, so it now does, which keeps the landmarks available while painting.
+- Its 8 checks are now the `ishko_source`, `ishko_defs` and `ishko_placement` chains in
+  `src/RimUtinni/Rites/validation.py`, and the walk is a section of `design/validation_walks/RimUtinni/Rites.md`. The
+  north-star plan is now `src/RimUtinni/Rites/northstar_plan.py`, and its mock covers the whole Rites suite: GREEN
+  12/12, and each Ishko break still reads red. The `ishko` test tier is replaced by `rites`. The registry entry for
+  the retired mod was removed (`forget_key`), so no GREEN is claimed for it.
+- 🔴 **Not live-proven.** The 2026-10-07 GREEN was at the retired package and an old hash. The merged suite needs
+  one fresh minimal-list `rites` sitting.
+- **Mod Settings:** Salvation Rites has no settings screen (`suite.toggles = []`). Folding the landmarks in did not
+  add one. Q1's gap is now a Rites question, and it closes if Ninefold moves in (option (a) below).
+- The game's copy of `Mods\IshkoDarkLandmarks` still has to be removed at the next deploy. Only a dry run was made.
+
+## Ninefold home (owner question, open)
+
+His words also say *"the Nine Gods belong in Salvation Rites. They are NOT a general reuse mod."* The Nine Gods'
+engine is Ninefold. Nothing about Ninefold has been moved: moving it is a bigger change and crosses a naming tier.
 
 Facts, measured 2026-10-22:
 
-- **The religion mod of the Nine is Ninefold** (`mandrake.rm.ninefold`, `src/RimMandrake/Ninefold`). It is the
-  nine-god satiation engine, and its `God.cs` names Ishko. It has a C# settings screen. The other candidate is
-  Salvation Rites (`mandrake.rut.rites`), the liturgy tree. It is pure XML with no settings screen.
-- **Ishko's mod is three LandmarkDefs and nothing else:** `RUT_LightlessSink`, `RUT_ShadowedOverhang` and
-  `RUT_ColdLavaTube`. It has no memes, precepts or C#. It needs Odyssey and borrows its icons from
-  `mandrake.rut.ashkarrlandmarkart`.
-- **Saves:** no `CANONICAL_ASHKARR_START_*` save names any of the three (an exact `<def>NAME</def>` search). Old
-  test saves do: 13, 14 and 19 of them respectively. Those are throwaway quicktest worlds that rolled the landmark
-  by chance.
-- **The tier rule:** `design/NAMING_SCHEME_PLAN.md` says one mod may not straddle tiers. Ninefold is RimMandrake.
-  Content that names the Nine is RimUtinni. Ninefold's own tier is still a named decision there (engine RimMandrake
-  plus a RimUtinni content pack, or all RimUtinni). Ninefold already carries Ishko rows, such as `RM_Tilt_Ishko_*`.
-- **Mod Settings:** a landmark already in the shipped save cannot be switched off safely. Folded into Ninefold, it
-  would need no new switch: Ninefold's own screen covers the mod.
+- **What Ninefold is:** `mandrake.rm.ninefold` (`src/RimMandrake/Ninefold`), a RimMandrake (free tier) mod.
+  It is the nine-god favour engine: 32 C# files in namespace `RimMandrake.Ninefold`, Harmony patches on colony
+  events, a settings screen, and a self-test. `God.cs` hard-codes the Nine by name (Ishko … Ozzik).
+  `Defs/RM_GodFavourTilts.xml` holds 20 `RM_Tilt_<God>_*` defs. Its only dependency is Harmony.
+- **Who leans on it:**
+  - **Salvation Rites already does.** `RUT_NineFaults.xml` guards its defs with
+    `MayRequire="mandrake.rm.ninefold,…"`, and its worker classes are in Ninefold's DLL.
+  - **Aftermath** (RimMandrake) reads it softly, by type name (`RimMandrake.Ninefold.GameComponent_Ninefold`),
+    and lists it in `loadAfter` only.
+  - **LuminousPigment** (RimMandrake) and **AftermathRites** (RimUtinni) list it in `loadAfter` only.
+  - **Graffiti** (RimMandrake) carries a hook string that a RimUtinni pack reads.
+  - It is in the DEV, TEST, AUTHORING and SHIP lists, but not PAINT.
+- **Saves:** 18 of the 34 `CANONICAL_ASHKARR_START_*` saves contain
+  `<li Class="RimMandrake.Ninefold.GameComponent_Ninefold">`, and 88 of the 420 saves name "Ninefold". No canonical
+  save names an `RM_Tilt_` def. If the class's namespace or name changes, those saves need a type alias (C#
+  back-compatibility). Otherwise they lose the Nine's favour state when loaded. No save may be edited.
+- **The tier rule:** `design/NAMING_SCHEME_PLAN.md` asks of a RimUtinni mod: *"Does it name … the Nine?"* Ninefold
+  does, in C# and in XML, so a RimMandrake packageId on it is a straddle. The 2026-09-08 card ruled "RM engine + RUT
+  Salvation pack" (§7 item 1), but that split was never built. His new words, "NOT a general reuse mod", point the
+  other way: one RimUtinni home. The consolidation plan (`design/MOD_CONSOLIDATION_PLAN.md`, R2 and R8) also keeps
+  Ninefold as a RimMandrake engine, beside a planned RimUtinni `mandrake.rut.salvation` that would hold the nine mark
+  styles, Ishko's landmarks and Rites.
 
 Options:
 
-- (a) **Recommended: fold the three defs into Ninefold.** Rename them to `RM_` (no canonical save names them). Ninefold
-  gains a load-after on Odyssey and on the landmark-art mod. `mandrake.rut.ishkolandmarks` leaves every mod list and
-  the `ishko` test tier. Its 8 checks move into Ninefold's `validation.py`. *Buys:* exactly what he said, and one
-  less mod. *Costs:* about an hour of work plus one 22-second sitting to re-prove it. A RimMandrake mod carries more
-  Nine content and leans on a RimUtinni art mod. The 13 to 19 old test saves lose that landmark when loaded.
-- (b) Fold them into Salvation Rites instead. *Buys:* the same tier, so no straddle. *Costs:* Rites is the liturgy,
-  not the Nine's engine, and it has no settings screen either.
-- (c) Treat it as a concept only. The files stay put and are recorded as part of the Nine's religion, exempt from a
-  settings screen of their own. *Buys:* nothing moves and nothing breaks. *Costs:* an extra packageId stays in the
-  list.
-
+- (a) **Recommended: fold Ninefold into Salvation Rites.** The Nine's engine and its content become one RimUtinni
+  mod, `mandrake.rut.rites`. *Buys:* exactly his words. It ends the straddle, and Rites' `MayRequire` guards on
+  Ninefold go away. Rites also gets Ninefold's settings screen, which closes Q1 for the landmarks too. One fewer
+  packageId. *Costs:* the biggest move, about half a day plus one minimal-list sitting. Rites gains a DLL and a
+  Harmony dependency. The namespace becomes `RimMandrake.Utinni.Rites`, with a type alias so the 18 canonical saves
+  keep their favour state. The 20 `RM_Tilt_` defs become `RUT_` (no canonical save names them). Aftermath's
+  type-name strings change. Three free-tier mods then point softly at a campaign mod, which is allowed through
+  `loadAfter` only.
+- (b) Make Ninefold its own RimUtinni mod (`mandrake.rut.ninefold`) beside Salvation Rites. *Buys:* an honest tier
+  with the code kept apart. *Costs:* the same namespace, type-alias and save work as (a), but the Nine still live in
+  two mods. That is not what "belong in Salvation Rites" says.
+- (c) Build the 2026-09-08 split: keep a RimMandrake engine with no god names in it (gods read from data), and move
+  the Nine into Rites as data. *Buys:* an engine another scenario could reuse. *Costs:* it contradicts "NOT a
+  general reuse mod", and it is the largest C# rewrite, because the `God` enum runs through every patch.
+- (d) Leave Ninefold where it is. *Buys:* nothing moves and nothing breaks. *Costs:* a free-tier mod keeps naming
+  the Nine, against the tier rule and his words.
 
 ## Owner answers, 2026-10-22 evening (by question card; owner's words verbatim where quoted)
 
-- Q1 Ishko settings: *"Likely fold this mod into the religion mod of the 9. It's a concept, not a mod."* Later: *"I think the Nine Gods belong in Salvation Rites. They are NOT a general reuse mod."* -> Ishko landmarks move into Salvation Rites (helper running); Ninefold's own home is an OPEN owner question (written up by that helper).
+- Q1 Ishko settings: *"Likely fold this mod into the religion mod of the 9. It's a concept, not a mod."* Later: *"I think the Nine Gods belong in Salvation Rites. They are NOT a general reuse mod."* -> Ishko landmarks moved into Salvation Rites (done; live proof owed). Ninefold's own home is an OPEN owner question: see "Ninefold home".
 - Q2 landmark names: *"I believe it's referring to principles that guide what he is drawn toward or away from."* -> lore only (descriptions already rewritten, 08fd00768).
 - Q3 GSS M4: *"I don't value that the polylines are identical after load. Strike that."* -> done d8b98ae78.
 - Q5 depth engine off: *"...have the depth engine change apply only upon reload ... We shouldn't be supporting live changes to the physics."* -> done d8b98ae78.

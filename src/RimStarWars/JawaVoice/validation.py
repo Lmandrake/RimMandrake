@@ -43,7 +43,7 @@ The walk doc is NOT stale here -- every quoted string was found verbatim.
 
 BRIDGE READ-BACK SHAPE: `jawa/get_defs` is documented (skills/rimbridge/
 SKILL.md: "batch-read resolved defs... scalar fields only") as scalar-only,
-but IshkoDarkLandmarks/PawnFlavor/Droidworks' own validation.py suites
+but Rites (Ishko's landmarks)/PawnFlavor/Droidworks' own validation.py suites
 already establish the working pattern for a list-shaped field with no
 dedicated "does this list contain this string" bridge verb: pass
 `deep=True` and check the needle as a substring of the stringified result,
@@ -57,7 +57,7 @@ Still not proven / structurally offline-only:
   1. `deep=True` reaching `logRulesInitiator.rulesStrings` (list two levels
      under the def) has never been confirmed against a real bridge
      response -- same unconfirmed reflection path Droidworks/PawnFlavor/
-     IshkoDarkLandmarks already carry, not new to this suite.
+     Rites (Ishko's landmarks) already carry, not new to this suite.
   2. add-not-replace is checked for one file only (`chitchat_weather.xml`'s
      `StuckIndoors`, per walk step 2) by also requiring a SpeakUp-authored
      substring survive in the same read-back -- proving the OTHER 10 files

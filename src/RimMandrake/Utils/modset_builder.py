@@ -710,15 +710,17 @@ TIERS["weepingstones_solo"] = {
     "dlc": True,
 }
 
-TIERS["ishko"] = {
-    "why": "NORTHSTAR_ISHKO_PILOT_1: the north-star script for IshkoDarkLandmarks "
-           "(mandrake.rut.ishkolandmarks): three Odyssey LandmarkDefs plus "
-           "mandrake.rut.ashkarrlandmarkart, which supplies their icon textures. Nothing "
-           "else, so a GREEN is this mod's. All five DLCs (Odyssey is its dependency) "
-           "and Harmony resolve automatically.",
+TIERS["rites"] = {
+    "why": "The north-star script for Salvation Rites (mandrake.rut.rites): the liturgy research "
+           "tree on mandrake.rut.antiquities, its rituals and precepts, and Ishko's three Odyssey "
+           "LandmarkDefs, whose icon textures come from mandrake.rut.ashkarrlandmarkart. Ishko's "
+           "landmarks were their own mod (mandrake.rut.ishkolandmarks, the old `ishko` tier) until "
+           "2026-10-22. Nothing else, so a GREEN is this mod's. All five DLCs (Odyssey is a "
+           "dependency) and Harmony resolve automatically.",
     # gimmesomeslack: JawaBench's companion tools TypeLoad-fail (map_info, get_defs ...) without it -- MEASURED 2026-10-07,
-    # the first live_session run was REFUSED at game_loaded for exactly this.
-    "want": [BRIDGE, "mandrake.rm.gimmesomeslack", "mandrake.rut.ashkarrlandmarkart", "mandrake.rut.ishkolandmarks"],
+    # the first live_session run of the Ishko chains was REFUSED at game_loaded for exactly this.
+    "want": [BRIDGE, "mandrake.rm.gimmesomeslack", "mandrake.rut.antiquities", "mandrake.rut.ashkarrlandmarkart",
+             "mandrake.rut.rites"],
     "dlc": True,
 }
 

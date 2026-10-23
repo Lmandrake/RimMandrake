@@ -710,38 +710,6 @@
     "status": "RED",
     "ts": 1789295350.987889
   },
-  "IshkoDarkLandmarks": {
-    "bars": {
-      "defs.RUT_ColdLavaTube_resolves": "PASS",
-      "defs.RUT_LightlessSink_resolves": "PASS",
-      "defs.RUT_ShadowedOverhang_resolves": "PASS",
-      "placement.RUT_ColdLavaTube_places_with_anchor": "PASS",
-      "placement.RUT_LightlessSink_places_with_anchor": "PASS",
-      "placement.RUT_ShadowedOverhang_places_with_anchor": "PASS",
-      "source.defs_gated_on_odyssey": "PASS",
-      "source.icons_supplied_by_art_mod": "PASS"
-    },
-    "components": {
-      "counts": {
-        "PASS": 8
-      },
-      "not_ok": []
-    },
-    "hash": "73f927b79dfb137fc3cfd5c8b92a63500865ba53bacfdfcdf927988695d6510b",
-    "minor": null,
-    "owner_review": null,
-    "refused": null,
-    "run_id": "IshkoDarkLandmarks/northstar_driver@IshkoDarkLandmarks_20261007T205850Z.json",
-    "source": {
-      "expected_source": "walk is DRAFT (no `## north star` section in \\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimUtinni\\IshkoDarkLandmarks.md)",
-      "mode": "live",
-      "result": "Transient/northstar/IshkoDarkLandmarks_20261007T205850Z.json",
-      "started": "2026-10-07T20:58:47Z",
-      "verb": "northstar_driver run"
-    },
-    "status": "GREEN",
-    "ts": 1791406730.222543
-  },
   "JawaIonWeapons": {
     "hash": "bbb79956caf38b668a3eee9cda522c543113aa489f173f1bb724222bc1138fa3",
     "minor": null,
@@ -937,15 +905,6 @@
     },
     "status": "RED",
     "ts": 1791234245.6975172
-  },
-  "SleepingIce": {
-    "hash": "df15a1207e87912c3f56b076e3a4b65cd60b5db2439642dad591e577cbcff482",
-    "minor": null,
-    "owner_review": null,
-    "refused": null,
-    "run_id": "SleepingIce@1791366819",
-    "status": "RED",
-    "ts": 1791366819.8296146
   },
   "Ninefold": {
     "hash": "a259fa805551aaff10924d6897e95fedd138d698854ce58f086cbd053533fce3",
@@ -1151,6 +1110,15 @@
     "run_id": "ShokkweaveEconomy@1791400650",
     "status": "RED",
     "ts": 1791400650.9045937
+  },
+  "SleepingIce": {
+    "hash": "df15a1207e87912c3f56b076e3a4b65cd60b5db2439642dad591e577cbcff482",
+    "minor": null,
+    "owner_review": null,
+    "refused": null,
+    "run_id": "SleepingIce@1791366819",
+    "status": "RED",
+    "ts": 1791366819.8296146
   },
   "StarWarsRaces": {
     "hash": "ed871ace83dddcf825848fb6f62f93f4702d53f172902b2a55cd1e4bfc2988ab",
