@@ -176,6 +176,127 @@ namespace RimMandrake.FlowWorks
 			}
 			return best == null ? null : JobMaker.MakeJob(RM_LadderParityDefOf.RM_RaiderTakeLadder, best);
 		}
+
+		/// <summary>Bridge read/act for the live rows (jawa/static_call, type RimMandrake.FlowWorks.RM_LadderParity):
+		/// "chance:P" sets the raid-ladder chance to P % (a proof's own setting, restore it after); "carriers" counts the
+		/// spawned hostile people and those carrying a ladder; "scar:x,z" reads a breach scar; "repair:x,z" runs the real
+		/// Repair breach designator on a square; "climb:pawnId,wallX,wallZ" orders the pawn over that wall (the float menu's
+		/// crossing); "may:pawnId,x,z" asks LadderLetsOut for the ladder on (x,z).</summary>
+		public static string ProofLadderParity(string arg)
+		{
+			Map map = Find.CurrentMap;
+			if (map == null)
+			{
+				return "REFUSED: no current map";
+			}
+			string[] parts = (arg ?? "").Split(':');
+			var n = new List<int>();
+			if (parts.Length > 1)
+			{
+				foreach (string s in parts[1].Split(','))
+				{
+					if (!int.TryParse(s.Trim(), out int v))
+					{
+						return "REFUSED: bad number '" + s + "'";
+					}
+					n.Add(v);
+				}
+			}
+			Pawn PawnById(int id)
+			{
+				foreach (Pawn q in map.mapPawns.AllPawnsSpawned)
+				{
+					if (q.thingIDNumber == id)
+					{
+						return q;
+					}
+				}
+				return null;
+			}
+			switch (parts[0])
+			{
+				case "chance":
+					if (n.Count != 1)
+					{
+						return "REFUSED: chance:P";
+					}
+					float was = RM_LadderParitySettings.raidLadderChance;
+					RM_LadderParitySettings.raidLadderChance = Mathf.Clamp01(n[0] / 100f);
+					return "chance was=" + Mathf.RoundToInt(was * 100f) + " now=" + Mathf.RoundToInt(RM_LadderParitySettings.raidLadderChance * 100f);
+				case "carriers":
+				{
+					int people = 0;
+					var carriers = new List<int>();
+					foreach (Pawn q in map.mapPawns.AllPawnsSpawned)
+					{
+						if (q.Faction == null || Faction.OfPlayer == null || !q.Faction.HostileTo(Faction.OfPlayer) || !RM_RaiderTrench.ToolUser(q))
+						{
+							continue;
+						}
+						people++;
+						if (CarriedLadder(q) != null)
+						{
+							carriers.Add(q.thingIDNumber);
+						}
+					}
+					return "raiders=" + people + " carriers=" + carriers.Count + " ids=" + string.Join(",", carriers);
+				}
+				case "scar":
+				case "repair":
+				{
+					if (n.Count != 2)
+					{
+						return "REFUSED: " + parts[0] + ":x,z";
+					}
+					var c = new IntVec3(n[0], 0, n[1]);
+					RM_BreachScars s = map.GetComponent<RM_BreachScars>();
+					RM_MapComponent_Excavation eng = map.GetComponent<RM_MapComponent_Excavation>();
+					string head = "scar=" + (s?.ScarAt(c) ?? -1) + " depth=" + (eng?.ExcavatedDepthAt(c) ?? -1);
+					if (parts[0] == "scar")
+					{
+						return head;
+					}
+					var d = new Designator_RM_RepairBreach();
+					AcceptanceReport ok = d.CanDesignateCell(c);
+					if (ok.Accepted)
+					{
+						d.DesignateSingleCell(c);
+					}
+					return head + " accepted=" + ok.Accepted + " reason=" + (ok.Reason ?? "") + " designated="
+						+ (map.designationManager.DesignationAt(c, RimMandrakeFlowWorks_DefOf.RM_DigCanal) != null)
+						+ " digTarget=" + (eng?.DigTargetAt(c) ?? -1);
+				}
+				case "climb":
+				{
+					Pawn p = n.Count == 3 ? PawnById(n[0]) : null;
+					if (p == null)
+					{
+						return "REFUSED: climb:pawnId,wallX,wallZ (pawn spawned)";
+					}
+					var wall = new IntVec3(n[1], 0, n[2]);
+					if (!RM_WallClimb.TryBestCrossing(p, wall, false, out IntVec3 from, out IntVec3 landing, out bool roofed))
+					{
+						return "NO_CROSSING roofed=" + roofed + " mightClimb=" + MightClimb(p);
+					}
+					bool taken = p.jobs.TryTakeOrderedJob(RM_WallClimb.MakeClimbJob(from, wall, landing), JobTag.Misc);
+					return "ORDERED taken=" + taken + " from=" + from + " landing=" + landing + " byLadder=" + ByLadder(p);
+				}
+				case "may":
+				{
+					Pawn p = n.Count == 3 ? PawnById(n[0]) : null;
+					if (p == null)
+					{
+						return "REFUSED: may:pawnId,x,z (pawn spawned)";
+					}
+					var c = new IntVec3(n[1], 0, n[2]);
+					Thing l = RM_LadderUtility.LadderAt(map, c);
+					return "ladder=" + (l?.def.defName ?? "none") + " faction=" + (l?.Faction?.Name ?? "none") + " mayClimb="
+						+ RM_LadderRules.MayClimb(p) + " letsOut=" + RM_LadderRules.LadderLetsOut(map, c, p);
+				}
+				default:
+					return "REFUSED: chance:P | carriers | scar:x,z | repair:x,z | climb:pawnId,wallX,wallZ | may:pawnId,x,z";
+			}
+		}
 	}
 
 	[DefOf]
