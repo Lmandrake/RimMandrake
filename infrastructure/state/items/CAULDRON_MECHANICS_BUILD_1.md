@@ -21,8 +21,8 @@ Five organs, one machine:
    SoundDefs: low sustainer floor + randomized one-shot groans/gurgles clustering
    near vent cells; per-weather mixes. **The falter tell**: ahead of a vent bloom
    the ambient drops out and native fauna hush (one MapComponent) — silence is the
-   alarm because the biome is otherwise never silent. Research-gated seismograph
-   building raises a real alert for muted players.
+   alarm because the biome is otherwise never silent. (The seismograph is CUT, see
+   above; the falter message, `ventFalterMessage`, is the non-audio warning.)
 2. **Four ratified weathers** (owner card 2026-09-12, names/behaviors ratified):
    scatter-dusk · vent bloom · vapour bank · dewfall — WeatherDefs at last; retire
    the donor Fog 90 block. Vent bloom carries the stacking metal-load hediff on
