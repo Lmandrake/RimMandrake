@@ -12,8 +12,8 @@ package snapshot (built about 15:47). The verdicts are:
 
 "Fixed" names the commit on `origin/main`.
 
-**Status: GimmeSomeSlack, IshkoDarkLandmarks, FlowWorks, Pyrelands and Graffiti are processed.**
-Webwork, TheRot and BiomesComposite had not replied by the end of this pass. The driver is still
+**Status: GimmeSomeSlack, IshkoDarkLandmarks, FlowWorks, Pyrelands, Graffiti and Webwork are processed.**
+TheRot and BiomesComposite had not replied by the end of this pass. The driver is still
 running, and each later reply needs the same pass.
 
 ## GimmeSomeSlack: 14 findings, 14 CONFIRMED, 0 FALSE, 0 STALE
@@ -162,6 +162,32 @@ No Graffiti finding was fixed by the two commits since noon. Those commits touch
 
 GPT's efficiency estimate: one minimal sitting (about 11 subtests, one save and reload, the gallery as the keeper save) plus one shared full-list load: 55–75 min in total. It would drop the Core-only launch and the stale expected failures.
 
+## Webwork: 16 findings, 14 CONFIRMED, 2 UNVERIFIABLE-OFFLINE, 0 STALE
+
+The three commits since the snapshot touched only `northstar_plan.py` and `validation.py`.
+
+| # | GPT sev → ours | verdict | where (current) | outcome |
+|---|---|---|---|---|
+| 1 | HIGH → MED | CONFIRMED (def level) | `Defs/ThingDefs_Races/RM_Ollathrix.xml` (`AnimalFighter` trade tag; Core orbital and caravan traders stock it) | **Fixed `32d1d8caf`.** It is now `tradeability None`, like the other biome giants. |
+| 2 | HIGH | CONFIRMED | `RM_Webwork_Gutter` is placed by no Source code, yet the junction and lance research depend on it | **Owner question Q10.** |
+| 3 | MED | CONFIRMED (a known gap, `WEBWORK_MECHANICS_1`) | web-sense convergence unbuilt | Tracked; no new item. |
+| 4 | — | CONFIRMED, owed | `Defs/BiomeDefs/RM_Webwork_Biome.xml:39-43` heat fields; `validation.py:314` asserts them | Part of the Direct Sun migration. Delete the assertion in the same change. |
+| 5 | MED | CONFIRMED | `Source/RM_WebworkSiege.cs:188,414` (the fallbacks drop the `!ExposedAt` filter) | **Open.** It hangs on GPT's G1: is the light-moat a hard boundary? That is a design call to make at the siege's next sitting. |
+| 6 | MED | CONFIRMED | `Source/RM_UrravethRemains.cs:147` (destroyed bones complete the site with chapters unread) | **Open (design).** GPT G2: what should happen when an unread bone is destroyed? |
+| 7 | MED | CONFIRMED | Cable `killedLeavings` Hyperweave vs kit spec "beetle-destroyed web drops nothing" | **Open.** Two rulings disagree (force-break yields vs the kit spec). Confirm which one wins before deleting. |
+| 8 | HIGH | CONFIRMED (GPT's line numbers off) | `validation.py` ProofSlick/ProofDoor/ProofBreak passed `""` = zero params (lesson 20261021T213508Z) | **Fixed `32d1d8caf`.** They now pass `"-"`. These three rows could never have reached their C# before. |
+| 9 | LOW-MED | CONFIRMED | spin, cocoon and wrap `Wait` toils | **Fixed `32d1d8caf`.** Each wait now carries `FailOnCannotTouch(A, Touch)`. |
+| 10 | MED | CONFIRMED (def) | Kollavane, Tavrosk and Brimlock lack `forceIsTree`; the siege tests `IsTree` | **Open.** Which species are canopy is a design call; the precedent is FeverWood and LeaningScrub. |
+| 11 | LOW | CONFIRMED | `allowRivers` true vs "no surface water" | **Open.** It touches the world paint, so it waits for the paint-once pass. |
+| 12 | LOW | CONFIRMED (negligible odds) | nest GenStep 160 random tries | Left as is. |
+| 13 | MED | CONFIRMED | no `nestEnabled` switch for the egg-clutch relay | **Open.** The settings rule requires one; it is about 6 lines plus the screen. |
+| 14 | LOW | CONFIRMED | `TakeYield` spends the cap before placement | **Comment corrected `32d1d8caf`.** The loss only happens on a failed Near-placement. |
+| 15, 16 | LOW | UNVERIFIABLE-OFFLINE | map-local siege ledger; `CanPhysicallyPass` | Live only. |
+
+- **Art (CONFIRMED):** there are three different `AB_Gomphoeria.png` copies (UtinniPatches, Webwork and Webwork StandIn). The egg clutch is `RockFlecked_Atlas` (placeholder), and the cocoon reuses limb-pile art. No action without the owner.
+- **Mock run:** `--mock --mock-skip-site` gives 1 PASS / 11 FAIL / 75 UNMEASURED, identical to the 23:00Z run before these edits. The mock is red on its own and needs a pass; that is not caused here.
+- **GPT's budget:** 65–100 min. It has two minimal starts (shipped defaults, then all-off at 4–7 min) and one shared full-list load batched with Sump, CreatureBehaviors and GravshipLanding.
+
 ## Loose ends from other helpers
 
 - **`selftest_hose_port.py` P9, 24 vs 22 credit sites: REAL drift, not stale.** `Source/SelfTest/TransferChecks.cs` `CreditTags` gained "credit site: pump overflow spill" and "credit site: gravity overflow" in `1da459a0d` (09:54, overflow stages 2-3). The python mirror `CREDIT_SITES` stayed at 22. Another helper re-synced the mirror in `37f064ef7` (16:36). `selftest_hose_port.py` now passes (0 failing).
@@ -236,6 +262,11 @@ These are ranked by the wall-clock time they save per acceptance cycle. The esti
 
 - (a) **Recommended:** keep the mark on the floor cell, but record which side the wall is on and draw it offset and facing onto the wall face. *Buys:* it reads as wall art, with no new thing class. *Costs:* a render change plus your look in game.
 - (b) Make marks a wall-attached thing. *Buys:* truly on the wall. *Costs:* a rewrite of placement, cleaning and going-over.
+
+**Q10. Webwork: nothing places the Gutter any more,** but the gutter junction and the lance research both need one (the header says "Nothing places these three any more").
+
+- (a) **Recommended:** have the web GenStep place one or two gutters on every Webwork map. *Buys:* the research and the junction become reachable again. *Costs:* small GenStep code plus one map read.
+- (b) Retire the gutter and re-point the junction and the research at something that is placed. *Buys:* less content. *Costs:* a research-tree edit and losing the gutter's role.
 
 GPT's Graffiti questions on content, left in the reply for the design sitting:
 
