@@ -448,10 +448,6 @@ namespace RimMandrake.GelatinousSlime
                     {
                         FilthMaker.TryMakeFilth(pos, map, SlimeDefs.SlimeSmear, 2);
                     }
-                    if (SlimeSettings.flavorEntryRecorded)
-                    {
-                        MoteMaker.ThrowText(pos.ToVector3Shifted(), map, "Entry retrieved", 3.5f);
-                    }
                 }
             }
             catch (Exception e)

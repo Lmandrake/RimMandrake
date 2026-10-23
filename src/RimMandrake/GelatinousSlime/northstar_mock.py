@@ -16,7 +16,7 @@ import xml.etree.ElementTree as ET
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SLIME_TERRAINS = {"RM_Slime_Hardened", "RM_Slime_Rich", "RM_Slime_Grass", "RM_Slime_Mud", "RM_Slime_Liquid"}
-DEFAULTS = {"rarityFactor": "1", "flavorEntryRecorded": "True", "flavorReadMarks": "True",
+DEFAULTS = {"rarityFactor": "1",
             "titanoslimeSpawnFactor": "1", "titanoslimeEngulfs": "True", "titanoslimeGrows": "True",
             "preferHigherPriorityArchive": "True", "titanoslimeReversible": "False",
             "titanoslimeMaxStage": "5", "titanoslimeSheds": "True", "titanoslimePreySizeFactor": "1",
@@ -386,9 +386,6 @@ class SlimeSim(object):
                     or "RM_Gene_SlimeResistance" in pw["genes"]:
                 continue
             pw["hed"].setdefault("RM_Slimification", 0.01)
-            if self.settings["flavorReadMarks"] == "True" or "nosmearsetting" in self.f:
-                if pw["hed"]["RM_Slimification"] >= 0.2 and self.rng.random() < 0.06:
-                    self._put("RM_Filth_SlimeSmear", pw["x"], pw["z"])
 
     def _jobs(self):
         for j in self.pending:

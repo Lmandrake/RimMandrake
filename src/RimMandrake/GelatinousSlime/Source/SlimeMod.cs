@@ -7,7 +7,7 @@ using Verse;
 namespace RimMandrake.GelatinousSlime
 {
     // ════════════════════════════════════════════════════════════════════
-    // MOD SETTINGS — the ruled rarity slider and the two ruled flavor hooks.
+    // MOD SETTINGS — the ruled rarity slider and the per-feature switches.
     //
     // Spec §2, round 2: "worldgen 1-3 rare patches + rarity slider ... Engine:
     // the standard Mod + ModSettings classes — precedent already verified
@@ -15,7 +15,9 @@ namespace RimMandrake.GelatinousSlime
     // GenepacksInjectionMod.Settings.UseEndogenes toggle."
     // Spec §10, ruled round 2: "BOTH flavor hooks SHIP as mod-settings
     // toggles — the 'Entry recorded' registry flavor and the read-mark scars
-    // are options, ON BY DEFAULT [default state INVENTED]."
+    // are options, ON BY DEFAULT [default state INVENTED]." Both were CUT
+    // 2026-10-23 (owner card "I cut, you veto" on the fluff review,
+    // design/RimMandrake/fluff_cuts_2026-10-23.md): cosmetic.
     //
     // 🔑 STATIC FIELDS, READ FROM EVERYWHERE, WRITTEN ONLY HERE. The biome
     // worker runs during worldgen when no Mod instance may be handy, so the
@@ -27,13 +29,6 @@ namespace RimMandrake.GelatinousSlime
         // 1.0 = the ruled default (1-3 rare patches on a default planet).
         // 0 = the biome never generates at all. 8 = common.
         public static float rarityFactor = 1f;
-
-        // "Entry recorded" — the body acknowledges what it just read.
-        public static bool flavorEntryRecorded = true;
-
-        // Read-marks: the smear a slimified creature leaves where it walked.
-        public static bool flavorReadMarks = true;
-
 
         // ── TITANOSLIME (TITANOSLIME_SLIME_BIOME_1, spec §5) ────────────
         // Project rule: every mod ships a real settings screen — on/off per
@@ -148,8 +143,6 @@ namespace RimMandrake.GelatinousSlime
             Scribe_Values.Look(ref dwommoFlies, "dwommoFlies", true, true);
             Scribe_Values.Look(ref preferHigherPriorityArchive, "preferHigherPriorityArchive", true, true);
             Scribe_Values.Look(ref rarityFactor, "rarityFactor", 1f, true);
-            Scribe_Values.Look(ref flavorEntryRecorded, "flavorEntryRecorded", true, true);
-            Scribe_Values.Look(ref flavorReadMarks, "flavorReadMarks", true, true);
             Scribe_Values.Look(ref titanoslimeSpawnFactor, "titanoslimeSpawnFactor", 1f, true);
             Scribe_Values.Look(ref titanoslimeEngulfs, "titanoslimeEngulfs", true, true);
             Scribe_Values.Look(ref titanoslimeGrows, "titanoslimeGrows", true, true);
@@ -197,15 +190,6 @@ namespace RimMandrake.GelatinousSlime
                            + "Changing this affects planets generated afterwards, never "
                            + "one that already exists.");
                 rarityFactor = list.Slider(rarityFactor, 0f, 8f);
-                list.GapLine();
-            }
-
-            if (Group(list, "Flavour", RimMandrake.Shared.SettingScope.Now, new[] { "flavorEntryRecorded", "flavorReadMarks" }))
-            {
-                list.CheckboxLabeled("\"Entry recorded\" messages", ref flavorEntryRecorded,
-                    "The body acknowledges each genome it finishes filing.");
-                list.CheckboxLabeled("Read-marks", ref flavorReadMarks,
-                    "Slimified creatures leave a smear where they have walked.");
                 list.GapLine();
             }
 

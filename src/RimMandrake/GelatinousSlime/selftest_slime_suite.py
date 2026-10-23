@@ -39,7 +39,6 @@ CASES = {
     "antidote_nocost": ["antidote_clears_film_and_poisons"],
     "eat_nocure": ["raw_slime_cures_poison_and_charges_fee"],
     "eat_nofee": ["raw_slime_cures_poison_and_charges_fee"],
-    "nosmearsetting": ["read_marks_follow_setting"],
     "nomarkedcost": ["marked_colonist_is_liked_less"],
     "noseeker": ["blank_seeker_reports_unprimed"],
     "noweather": ["slime_rain_can_fall"],

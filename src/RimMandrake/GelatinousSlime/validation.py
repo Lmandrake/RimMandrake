@@ -21,8 +21,8 @@ WHAT IT PROVES (intended function, each line sourced from About.xml / the C# / d
            poison AND charges the fee in the same bite; Slime-marked costs opinion.
   titano   spawn roll spreads over stages; titanoslimeMaxStage clamps; a cut stage>=2 titanoslime sheds a
            gelatid when titanoslimeSheds is on and does not when off.
-  settings all 16 SlimeSettings fields: shipped defaults, write+read-back, and the effect where a bridge can
-           see it (flavorReadMarks, titanoslimeMaxStage, titanoslimeSheds).
+  settings all 24 SlimeSettings fields: shipped defaults, write+read-back, and the effect where a bridge can
+           see it (titanoslimeMaxStage, titanoslimeSheds).
 
 SITE. Components that need no map (defs) run anywhere. Pawn chains build their own 40x40 site (left half
 RM_Slime_Rich, right half Concrete) at the map centre. They run on ANY biome: the predicted rate mirrors
@@ -95,7 +95,7 @@ def pit_solvent_findings(px, cs_text):
 
 suite = Suite("GelatinousSlime")
 SETTINGS = "RimMandrake.GelatinousSlime.SlimeSettings"
-FIELDS = {"rarityFactor": 1, "flavorEntryRecorded": True, "flavorReadMarks": True,
+FIELDS = {"rarityFactor": 1,
           "titanoslimeSpawnFactor": 1, "titanoslimeEngulfs": True, "titanoslimeGrows": True,
           "preferHigherPriorityArchive": True, "titanoslimeReversible": False,
           "titanoslimeMaxStage": 5, "titanoslimeSheds": True, "titanoslimePreySizeFactor": 1,
@@ -965,45 +965,6 @@ def raw_slime_bargain(t):
                 _fail("dose fee %.3f outside 0.05..0.99 (0.06 per ingested count + 0.01)" % h[HEDIFF])
 
 
-# --------------------------------------------------------------------------- chain 6: read-marks flavour
-
-@suite.chain("read_marks_flavour")
-def read_marks_flavour(t):
-    P = []
-    with t.component("site_ready_marks"):
-        if t._guard():
-            _prep_site(t)
-            _check_site(t)
-            for i in range(8):
-                xz = (_slime_xz(t, 0)[0] - 4 * (i % 2), _slime_xz(t, i)[1])
-                pid = _spawn(t, "Colonist", *xz)
-                _add_hediff(t, pid, HEDIFF, 0.30)
-                P.append(pid)
-    with _comp(t, "read_marks_follow_setting", toggle="flavorReadMarks"):
-        if t._guard():
-            x, z = t.anchor
-            rect = "%d,%d,%d,%d" % (x - SITE // 2, z - SITE // 2, SITE // 2, SITE)
-            try:
-                t.set_setting(SETTINGS, {"flavorReadMarks": True})
-                t.wait_ticks(5000)
-                on = len(_things(t, SMEAR, rect))
-                t.bridge_call("jawa/destroy_batch", rects=rect, categories="Filth")
-                if _things(t, SMEAR, rect):
-                    _unmeasured(t, "could not clear smears between arms")
-                t.set_setting(SETTINGS, {"flavorReadMarks": False})
-                t.wait_ticks(5000)
-                off = len(_things(t, SMEAR, rect))
-            finally:
-                t.set_setting(SETTINGS, {"flavorReadMarks": True})
-            if on == 0:
-                _fail("setting ON: 8 stage-2 colonists x ~25 checks left no smear (expected ~12; "
-                      "P(0 by chance) < 0.01%)")
-            if off != 0:
-                _fail("setting OFF still produced %d smear(s)" % off)
-
-
-# --------------------------------------------------------------------------- chain 7: Slime-marked
-
 @suite.chain("slime_marked_opinion")
 def slime_marked_opinion(t):
     P = {}
@@ -1227,7 +1188,7 @@ def _flip(t, comp, field, off):
 @suite.chain("settings_flip")
 def settings_flip(t):
     # every field has a write+read-back component or an effect component above; these close the rest
-    for field, off in (("rarityFactor", 0), ("titanoslimeSpawnFactor", 0), ("flavorEntryRecorded", False),
+    for field, off in (("rarityFactor", 0), ("titanoslimeSpawnFactor", 0),
                        ("titanoslimeEngulfs", False), ("titanoslimeGrows", False),
                        ("titanoslimeReversible", True), ("titanoslimePreySizeFactor", 2), ("preferHigherPriorityArchive", False),
                        ("slimificationEnabled", False), ("slimificationClockDays", 2),

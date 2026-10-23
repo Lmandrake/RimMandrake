@@ -206,7 +206,6 @@ MODS = {
     "GelatinousSlime": ("SlimeMod.cs", "RM_GelatinousSlime.csproj", {
         "The gene archive": "Now",
         "Biome rarity (WORLDGEN-AFFECTING)": "NewMapsOnly",
-        "Flavour": "Now",
         "Slimification and fields": "Now",
         "Ruined farms (WORLDGEN-AFFECTING)": "NewMapsOnly",
         "Visitors": "Now",
