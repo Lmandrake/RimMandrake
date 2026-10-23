@@ -1214,6 +1214,21 @@ def probe_jackpot_on(t):
                 _fail("jackpot ratio %.2f, expected about 2 at full charge: %s" % (ratio, raw))
 
 
+@suite.chain("probe_jackpot_cut_forfeits")
+def probe_jackpot_cut_forfeits(t):
+    """X4 (ruled S0-4, 2026-10-16): CUTTING a swollen wild plant forfeits the jackpot; harvesting keeps it.
+    ProofJackpot forces the cut context (cutRatio about 1) and checks an unreserved plant reads as a harvest.
+    Owed live, beyond this probe: a real pawn's CutPlant job on a charged plant drops the plain yield."""
+    with _comp(t, "cut_forfeits_jackpot", toggle="harvestJackpotEnabled"):
+        v, raw = _probe(t, "ProofJackpot")
+        if _live(t):
+            if "cutRatio" not in v:
+                _unmeasured(t, "deployed DLL predates the X4 cut row (no cutRatio): %s" % raw[:160])
+            elif not 0.85 <= float(v["cutRatio"]) <= 1.15 or v.get("unreservedIsHarvest") != "True":
+                _fail("a cut still pays the jackpot (cutRatio %s, unreservedIsHarvest %s): %s"
+                      % (v.get("cutRatio"), v.get("unreservedIsHarvest"), raw))
+
+
 @suite.chain("probe_jackpot_off")
 def probe_jackpot_off(t):
     with _comp(t, "jackpot_off_pays_plain", toggle="harvestJackpotEnabled"):

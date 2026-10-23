@@ -1,149 +1,53 @@
 # EXPLOSIVE_PLANT_GROWTH_1 — visible plant growth as a world mechanic
 
-Born in the Cracked Lands enrichment (`biomes/the_cracked_lands.md` §10b), ruled
-**world-wide** by the owner (verbatim on the filing event): water-soaked plants grow
-VISIBLY — the player watches them get bigger, not animal-motion but growth — and it
-should feel intimidating anywhere water soaks a plant. The jungles should visibly
-grow.
+Born in the Cracked Lands enrichment (`biomes/the_cracked_lands.md` §10b): water-soaked
+plants grow VISIBLY — the player watches them get bigger, not animal-motion but growth —
+and it should feel intimidating. The jungles should visibly grow. **Scope is Baroque
+Biomes' own biomes** (owner 2026-10-16: *"It should only natively apply to plants within
+the Baroque Biomes, though option settings could allow it to apply to other plants from
+other mods or vanilla basegame (irrelevant in Utinni)."*); an unsupported option extends it.
 
-**The design is ruled and lives in one place:**
-`design/Jawa/worldbuilding/explosive_plant_growth_design.md` (owner sittings
-2026-09-10, 2026-09-20, 2026-09-21; §9 indexes the rulings). The per-plant roster is
-`design/RimUtinni/explosive_plant_growth_roster.md` (regenerated 2026-09-21 against
-ruling 4). `FLOOD_WITNESS_EVENT_1` is the plot's guaranteed showcase.
+**Where the design lives now:** the rules are
+`design/RimMandrake/explosive_growth_ruled_spec_2026-10-16.md` (every OQ ruled on
+`EXPLOSIVE_GROWTH_RETHINK_SERIOUS_CONCERNS`) and `design/RimMandrake/tree_burst_design_2026-10-17.md`;
+the background, numbers history and owner quotes are
+`design/RimMandrake/explosive_growth_consensus_2026-10-16.md` and
+`design/Jawa/worldbuilding/explosive_plant_growth_design.md`. This sprint's acceptance lines are
+X1-X5 in `design/RimMandrake/biome_sprint_kickoff_2026-10-15.md` §1.4 (approved by card, S0-4).
+`FLOOD_WITNESS_EVENT_1` is the plot's guaranteed showcase.
 
-## Build state — 2026-09-26 (FOUNDRY pass, static only)
+## State (2026-10-22)
 
-Built and `dotnet build` clean (0 errors). **Not deployed, not loaded, nothing
-live-verified.**
+- Code: `src/RimMandrake/ExplosiveGrowth/`, a composed ENGINE member of Baroque Biomes
+  (`mandrake.rm.biomes`, `src/RimMandrake/Biomes.compose.json`); the standalone
+  `mandrake.rm.explosivegrowth` and `mandrake.rut.plantgrowth` are retired
+  (`EXPLOSIVE_GROWTH_MERGE_COMES_HOME`, `PLANT_GROWTH_MERGE_NEVER_MEANT_APART`). Campaign roster:
+  `src/RimUtinni/UtinniPatches/Defs/ExplosiveGrowth/`.
+- Script: `src/RimMandrake/ExplosiveGrowth/validation.py`, walk
+  `design/validation_walks/RimMandrake/ExplosiveGrowth.md`, preflight `preflight_explosivegrowth.py`.
+- Live so far: the charge clock climbs and fires a real Churn (2026-09-27, solo tier);
+  `scope_native_only` PASS on the solo list (2026-10-17).
+- **X4 built offline 2026-10-22:** cutting a charged wild plant forfeits the jackpot, harvesting
+  keeps it. `RM_Patch_Plant_YieldNow_Jackpot.CuttingNow` reads the plant's reserver: a pawn whose
+  driver is `JobDriver_PlantCut` (vanilla reads `YieldNow` inside the work toil, before
+  `PlantCollected`, after reserving the target). Row `probe_jackpot_cut_forfeits`.
+- **S0-7 (agreed by card 2026-10-16) enacted 2026-10-22:** `RM_Cauldron` and `RUT_Cauldron` are
+  stalled (terminator) biomes — `src/RimMandrake/Cauldron/Defs/ExplosiveGrowth/RM_Cauldron_ExplosiveGrowthStalled.xml`
+  and the RUT roster; `RUT_ExtremeDesert` stays held by `noSoakBiomes`. Salted-ground refusal is
+  CUT; the dynamic-draw close-up layer and Fever Wood's inside-the-giant view are DEFERRED (not
+  sprint biomes); the invented roster defaults are KEPT.
 
-| piece | where | commit |
-|---|---|---|
-| ×10 wet-ambient band (Greentide/Miasma/Fever Wood, ruling 6) — a fourth band on the existing PlantGrowth postfix, replacing ×4 there, trees ×6.25 (🄸 keeps the ruled 2.5:4 ratio) | `src/RimUtinni/PlantGrowth/` | `19b2f9496` |
-| The engine, new mod `mandrake.rm.explosivegrowth` (RM tier, no campaign names in code): sparse per-cell SOAKED + suppression grid (`RM_MapComponent_ExplosiveGrowth`), ×10 soak postfix on `Plant.GrowthRate` stacking on the ambient band, staged re-print of soaked wild plants (vanilla re-prints only cultivated plants per growth step — verified `Plant.TickLong`), overgrowth past natural size via `Plant.Print` prefix/finalizer scaling `visualSizeRange`, hue shift via `Plant.Graphic` postfix (Graphic_Single/Random only), the §2 tell ladder, the six tops, harvest jackpot (`YieldNow`), last-swing gamble (`PlantCollected`), soak routes, reflection API, BloomBurst worker, debug actions, full Mod Settings | `src/RimMandrake/ExplosiveGrowth/` | `5a91b3d46`, `5d246f7e5` |
-| FloodedCanyon's soak stub RETIRED (its x6 `RM_Patch_Plant_GrowthRate` + `soakUntilTick` deleted); the flood hands its cells to the engine by reflection (`RM_ExplosiveGrowthBridge`) | `src/RimMandrake/FloodedCanyon/` | `09ce6fb4e` |
-| Roster wired: RM-tier rows (AB_/RG_/vanilla/RM_) in the engine; campaign rows (RUT_/RSW_/SW donors), `noSoakBiomes` carve-outs and `RUT_BloomBurst` IncidentDef, now in `src/RimUtinni/UtinniPatches/Defs/ExplosiveGrowth/` (moved from the retired PlantGrowth mod 2026-10-16) | both | `a3f1308ae` |
-| Greentide M10 grazing hook AND M2 dry-air blower wired to the suppression grid (reflection, no hard dep) | `src/RimMandrake/EnvironmentalHazards/` | `555df9b7b` |
+## Owed (all live; nothing offline remains on this item)
 
-**The plant-variant shape** (for anyone wiring a plant): enum
-`RimMandrake.ExplosiveGrowth.RM_GrowthTop` = `Churn` (default) / `Burst` / `Slime` /
-`Tinder` / `Rupture` / `Flush` / `None`. Carried either as
-`RM_ExplosiveGrowthExtension` on a def you own (`top`, `produceFactor`, `ringPlant`,
-`slimeTerrain`) or as a row in any `RM_ExplosiveGrowthRosterDef` (`plants/li`:
-`plant` string, `top`, `produceFactor`, `ringPlant`, `slimeTerrain`; plus
-`exemptPlants`, `noSoakBiomes`, `rupturePawnKinds`, `ruptureMutationHediffs`,
-`irrigationFluids`, `soakWeathers`). Rows are strings, so an absent donor is skipped,
-never a def-eating cross-reference. The biome is never an input to the top; its only
-input is the soak carve-out list.
-
-**Soak routes (design doc §1):**
-- `crack_flood` — BUILT (FloodedCanyon pushes every flooded cell).
-- player irrigation — BUILT: a DUG FlowWorks cell holding `RM_Fluid_Water` soaks
-  itself + 8 neighbours (natural rivers/lakes deliberately do not — `river_steam` is
-  not a soak since 2026-09-21).
-- `miasma_axis` fresh side — BUILT: while the gradient-axis surge shift runs, cells at
-  salinity 0.25–0.48 (🄸 band) soak.
-- `slime_flood` — PARTIAL, 🄸: slime-fluid FlowWorks channels irrigate; the Slime
-  biome has no flood event of its own.
-- `red_water` (Contagion rain), `scald_melt` — OWED: no weather/runoff system exists.
-  The engine soaks on any `soakWeathers` WeatherDef a roster names; list is empty.
-- Greentide extract — OWED: the item does not exist. Engine side is ready
-  (`ExplosiveGrowthAPI.Soak`).
-
-**Tops as built** (all counts/radii 🄸 INVENTED, Mod Settings tunable):
-CHURN splits, drops produce (×produceFactor; former-GLUT rows 2.5), stump, 2–4 sprouts
-r1.9 respecting floors/buildings/interiors. BURST pops, ×1.5 produce scattered, hay
-chaff as husk-fuel, 2–5 blunt + short stun on pawns in r2.9 (skipped on pawns at ≤50%
-health — injury+knockdown ceiling), 3–6 sprouts r2.9 ignoring zones/floors/doorways.
-TINDER = Burst with more hay and a ring of `ringPlant` (quickgrass). SLIME: Churn-shaped,
-ring terrain → `RM_Slime_Rich` (roster hard call 10's reading). RUPTURE: ToxGas cloud
-(vanilla has no red gas; red is blood filth), spawns `AA_RedGoo`/`AA_OcularJelly` by
-name, sprouts, and a one-hour cloud zone where pawns without VacuumResistance ≥ 1 roll
-the Contagion's `RM_Unfinished*` limbs onto outside leaf parts. FLUSH: produce at the
-foot, plant survives, no spectacle.
-
-## Live verify 2026-09-26 (coordinator, 629-mod cold load) and the fix
-
-- ✅ MEASURED live: startup line `569 plant defs soak … roster rows resolved 111,
-  absent 24`; no crossref/configerror/patchfail naming the four touched mods;
-  `RUT_ExtremeDesert` refused soak (0 cells), an ice-biome map accepted it.
-- ❌ Found live: six soaked, Mature plants (one per top) sat at `charging=0` for
-  >6,000 ticks, so no top, tell, `Plant.Print` scale or hue patch was exercised.
-- **Cause (static trace, `537bc7d26`):** in the charge loop, `wet && GrowthRate > 0`
-  advanced and EVERYTHING else decayed. A dormant plant (vanilla `GrowthRate == 0`:
-  cold, zero fertility, out of season, blight) is wet but not growing, so it fell into
-  the decay branch: `StartCharge` set 0.0001, the same pass subtracted
-  250 / (15000 × 0.5) = 0.033, the charge hit ≤ 0 and was removed — every pass, so
-  `charging` always read 0 (and the ground tell re-fired each pass). An ice-biome map
-  makes every plant dormant. **Fix:** the clock is now a pure
-  `RM_MapComponent_ExplosiveGrowth.StepCharge` — wet+growing advances, wet+dormant
-  HOLDS, dry decays — and a plant only arms when `GrowthRate > 0`.
-  `RM_ChargeSelfTest` runs the three regimes at every startup and logs
-  `charge clock self-test PASS|FAIL`. The debug report now splits soaked plants into
-  immature / matureDormant / charging / topNone, so a zero can be explained live.
-- ⚠️ Consequence for the re-verify: on a cold map a frozen plant correctly does NOT
-  charge. Re-run on a map where plants grow (temperate/wet biome, daytime temp in
-  range, fertile soil) — Soak 5x5 here → wait > 250 ticks → Report should show
-  `charging > 0` and climb; ~60 passes (6 h) to the top at defaults, or use
-  "Charge all charging plants to 0.9".
-
-## Live re-verify — 2026-09-27 (FOUNDRY, solo `explosivegrowth` tier, 10 mods)
-
-**PASSED, end to end.** First launch attempt hit a real deploy gap, not a code
-defect: `deploy_custom_mods.py --mod ExplosiveGrowth` showed the game copy's
-`.dll` DRIFTED from the repo build — the charge-clock fix and its self-test had
-never been deployed, so the first load's own startup self-test line was silently
-absent (not FAIL — *missing entirely*, because the deployed assembly predated
-`RM_ChargeSelfTest`). Deployed (`--apply`), relaunched: self-test now prints
-**`charge clock self-test PASS (dormant holds, growing tops in ~60 passes, dry
-relaxes)`** at startup, every time.
-
-Live sequence on a fresh quicktest map (Clear weather, Soil terrain, real
-growing conditions — confirmed by pre-existing wild `Plant_Grass` already
-grown): planted a mature `Plant_TreeOak` at (100,100,growth=1.0), `Actions\T:
-Soak 5x5 here` at that cell (soaked 25 cells), stepped 500 ticks →
-`Report state`: **`charging=9`** (was reliably 0 before the fix, the exact bug
-this pass re-verifies), `matureDormant(GrowthRate 0)=0`. Forced to 0.9 via
-`Charge all charging plants to 0.9`, stepped 2100 more ticks → `charging` count
-dropped **9→3** as tops fired, and the test oak's own cell now holds a
-`SmashedStump` + `Filth_Water`/`Filth_LooseGround` — CHURN's real output, not a
-log line taken on faith. **The charge clock does not just hold and not zero
-itself (the original bug) — it climbs, reaches the top, and fires a real Churn
-event on a real plant.**
-
-Mod list restored to the verified 630-mod full set (confirmed by XML parse
-before and after), bridge released.
-
-**Not re-verified this pass, still owed**: the ×10 wet-ambient band (needs a
-wet-biome map specifically, this quicktest's biome wasn't checked for it); the
-perf gate; cut-vs-harvest; salted ground; Fever Wood's inside-the-giant
-presentation; roster micro-questions. See `## Owed` below —
-**this item stays `doing`**, the live-verify gate on the charge-clock fix itself
-is the only thing this pass closes.
-
-## Owed
-
-1. **The perf gate** (design doc §5) — TPS/frame-time on a jungle-density quicktest,
-   {soaked plants} × {re-print cadence} × {dynamic-draw cap}. Needs a live load. No
-   density is promised until it exists.
-2. **Live proof of every mechanism** — nothing here has run in game. A load needs:
-   `mandrake.rm.biomes` (which composes the engine, everyday bands included since
-   PLANT_GROWTH_MERGE_NEVER_MEANT_APART; `mandrake.rut.plantgrowth` is retired); the startup
-   log line `[RM ExplosiveGrowth] N plant defs soak (churn…)` with roster rows resolved/absent; then the debug actions
-   (`RMExplosiveGrowth` → Soak 5x5 here / Charge all to 0.9 / Fire top here) to watch
-   swell, hue, tremble, creak and each top.
-3. The **dynamic-draw close-up layer** (§5 option 2, smooth swelling + real tremble) —
-   not built; the staged re-print ships alone, with the tremble as a ±3.5% alternating
-   re-print plus dust puffs.
-4. Cut-vs-harvest distinction: §4 says cutting forfeits the jackpot; the `YieldNow`
-   bonus currently applies to any yield from a charged plant.
-5. Salted ground refusing the soak (§4 🄸) — no salt verb exists.
-6. FLUSH's inside-the-giant presentation (bark swell, boughway re-route, thornbug
-   nectar glut) — the Fever Wood kit's to draw.
-7. Roster micro-questions, INVENTED defaults used (roster "UNMEASURED"): hoarders are
-   `NONE`; the extract overriding CHURN→BURST is unbuilt (no extract); irrigation in a
-   ×10 biome soaks and stacks (§0/ruling 8 reading).
-9. Pre-existing, not this item's: the campaign roster's `terminatorBiomes` (the former
-   PlantGrowth list) names only `PoisonForest`, not `RUT_`/`RM_Cauldron`, and nothing exempts
-   `RUT_ExtremeDesert` from ×4 (deep_desert HARD BAN 4). The engine's soak carve-out
-   covers them; the everyday band does not. Open for the sprint's S0.
+1. Deploy (`deploy_custom_mods.py --compose biomes --apply` + UtinniPatches) and refresh
+   `src/RimMandrake/Utils/modcheck/required_checks.json` (`required_checks.py`) at the same landing.
+2. **X2** perf gate: TPS at speed 3 with soaked plants ≥ 90% of soak-off (S0-6, by card).
+3. **X3** every soak route live (crack flood, dug FlowWorks water cell, Miasma axis fresh side,
+   wet-native rate in Greentide/Miasma/Fever Wood).
+4. **X4** live: a real pawn's CutPlant job on a charged wild plant drops the plain yield; a
+   HarvestPlant job pays about ×(1 + charge).
+5. **X5** Greentide grazing hook and dry-air blower writing the suppression grid, seen in the
+   Greentide review (`suppression_on` row).
+6. The stalled Cauldron: on a Cauldron map our plants run `stuntedMultiplier` and never cycle.
+7. Open soak routes with no system yet: `red_water` (Contagion rain), `scald_melt`, Greentide
+   extract (engine side ready: `ExplosiveGrowthAPI.Soak`, roster `soakWeathers`).

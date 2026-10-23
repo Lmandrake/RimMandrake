@@ -55,11 +55,24 @@ namespace RimMandrake.ExplosiveGrowth
             }
             float baseYield = MeanYield(p);
             comp.DebugSetCharge(p, 1f);
-            float charged = MeanYield(p);
+            float charged, cut;
+            try
+            {
+                RM_Patch_Plant_YieldNow_Jackpot.ForceCutting = false;
+                charged = MeanYield(p);
+                RM_Patch_Plant_YieldNow_Jackpot.ForceCutting = true;   // X4: a cut forfeits the jackpot
+                cut = MeanYield(p);
+            }
+            finally
+            {
+                RM_Patch_Plant_YieldNow_Jackpot.ForceCutting = null;
+            }
+            bool liveReadNoCut = !RM_Patch_Plant_YieldNow_Jackpot.CuttingNow(p);   // nobody reserves the staged plant
             comp.DebugSetCharge(p, 0f);
             p.Destroy();
-            return string.Format("jackpotEnabled={0} base={1:0.00} charged={2:0.00} ratio={3:0.00}",
-                ExplosiveGrowthSettings.harvestJackpotEnabled, baseYield, charged, baseYield > 0f ? charged / baseYield : 0f);
+            return string.Format("jackpotEnabled={0} base={1:0.00} charged={2:0.00} ratio={3:0.00} cutRatio={4:0.00} unreservedIsHarvest={5}",
+                ExplosiveGrowthSettings.harvestJackpotEnabled, baseYield, charged, baseYield > 0f ? charged / baseYield : 0f,
+                baseYield > 0f ? cut / baseYield : 0f, liveReadNoCut);
         }
 
         /// <summary>The gamble's chance curve, and one real cut below the tremble (always defuses, never fires).</summary>

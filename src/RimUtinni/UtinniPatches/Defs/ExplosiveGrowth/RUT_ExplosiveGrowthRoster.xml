@@ -78,13 +78,15 @@
       <li>RUT_ExtremeDesert</li>
     </noSoakBiomes>
 
-    <!-- EVERYDAY BANDS, campaign half (shipped values of the former
-         JawaPlantGrowthSettings.xml, unchanged). The stalled (terminator) band:
-         PoisonForest (Advanced Biomes) is the only confirmed member; whether the
-         RUT_/RM_ Cauldron and RUT_ExtremeDesert belong here is open for the
-         sprint's S0 (kickoff §1.4 X1). -->
+    <!-- EVERYDAY BANDS, campaign half. The stalled (terminator) band: PoisonForest
+         (Advanced Biomes) and the Cauldron, both tiers (sprint S0-7, agreed by card
+         2026-10-16 on BIOME_SPRINT_PROVE_SCRUB_SETS_PACE: "add RUT_/RM_Cauldron to the
+         stalled band and keep the RUT_ExtremeDesert x4 exemption"). RUT_ExtremeDesert
+         stays OUT of this list: it is held still by noSoakBiomes above (HARD BAN 4). -->
     <terminatorBiomes>
       <li>PoisonForest</li>
+      <li>RM_Cauldron</li>
+      <li>RUT_Cauldron</li>
     </terminatorBiomes>
     <!-- Archetype seeds, campaign half (spec §4.3): the RUT_ twins of the wet biomes (C1, WP3). -->
     <wetNativeBiomes>
