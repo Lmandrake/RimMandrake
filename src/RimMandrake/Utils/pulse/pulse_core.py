@@ -290,12 +290,54 @@ def http_ok(url: str, timeout: float = 0.8) -> bool:
         return False
 
 
+_PROBE_VERIFIED: dict[str, float] = {}
+PROBE_REVERIFY_SECS = 30 * 60
+
+
+def sheet_alive(url: str, now: float | None = None, full=http_ok) -> bool:
+    """Is this sheet server still up, WITHOUT writing its log every 45 s? A full `/status?t=` request (which
+    proves the token, i.e. the same server) at most once per PROBE_REVERIFY_SECS; between those a bare TCP
+    connect, which http.server never logs. Every /status probe was a log line: the logs were nothing but
+    probes and the sheet's time - then its log mtime - moved every 45 s (MEASURED 2026-10-22)."""
+    import socket
+    from urllib.parse import urlsplit
+    now = time.time() if now is None else now
+    if now - _PROBE_VERIFIED.get(url, -1e18) < PROBE_REVERIFY_SECS:
+        p = urlsplit(url)
+        try:
+            with socket.create_connection((p.hostname, p.port or 80), timeout=0.8):
+                return True
+        except OSError:
+            _PROBE_VERIFIED.pop(url, None)
+            return False
+    ok = full(url)
+    if ok:
+        _PROBE_VERIFIED[url] = now
+    else:
+        _PROBE_VERIFIED.pop(url, None)
+    return ok
+
+
+def wsl_from_win(p: str) -> str:
+    """\\\\wsl.localhost\\Ubuntu\\home\\x -> /home/x ; D:\\a\\b -> /mnt/d/a/b ; anything else unchanged."""
+    import re
+    p = p.strip()
+    m = re.match(r"^\\\\wsl(?:\.localhost|\$)\\[^\\]+(\\.*)$", p)
+    if m:
+        return m.group(1).replace("\\", "/")
+    m = re.match(r"^([A-Za-z]):\\(.*)$", p)
+    if m:
+        return f"/mnt/{m.group(1).lower()}/" + m.group(2).replace("\\", "/")
+    return p
+
+
 def parse_sheet_log(text: str) -> dict:
     import re
     urls = re.findall(r"https?://[^\s]+", text)
     m = re.search(r"(\d+) rows\s*·\s*(\d+) decided", text)
+    sh = re.search(r"^\s*sheet\s+(\S.*?)\s*$", text, re.M)
     return {"urls": urls, "never_reviewed": "NEVER reviewed" in text,
-            "rows": int(m.group(1)) if m else None}
+            "rows": int(m.group(1)) if m else None, "sheet": wsl_from_win(sh.group(1)) if sh else None}
 
 
 _SHEET_LOG_CACHE: dict[str, tuple] = {}
@@ -308,7 +350,7 @@ def scan_sheet_log(f: Path) -> dict:
     st = f.stat()
     c = _SHEET_LOG_CACHE.get(str(f))
     if not c or c[0] != st.st_ino or st.st_size < c[1]:
-        c = (st.st_ino, 0, {"urls": [], "never_reviewed": False, "rows": None})
+        c = (st.st_ino, 0, {"urls": [], "never_reviewed": False, "rows": None, "sheet": None})
     ino, off, info = c[0], c[1], dict(c[2], urls=list(c[2]["urls"]))
     if st.st_size > off:
         with open(f, "rb") as fh:
@@ -317,20 +359,38 @@ def scan_sheet_log(f: Path) -> dict:
                 if not raw.endswith(b"\n"):
                     break                      # a line still being written: read it next time
                 off += len(raw)
-                if b"://" not in raw and b"rows" not in raw and b"NEVER" not in raw:
+                if b"://" not in raw and b"rows" not in raw and b"NEVER" not in raw and b"sheet" not in raw:
                     continue
                 part = parse_sheet_log(raw.decode("utf-8", "replace"))
                 info["urls"] = [u for u in info["urls"] if u not in part["urls"]] + part["urls"]
                 info["never_reviewed"] = info["never_reviewed"] or part["never_reviewed"]
                 if info["rows"] is None:
                     info["rows"] = part["rows"]
+                if part["sheet"] and not part["sheet"].startswith("GET") and info.get("sheet") is None:
+                    info["sheet"] = part["sheet"]
     _SHEET_LOG_CACHE[str(f)] = (ino, off, info)
     return info
 
 
-def read_sheets(dirs: list[Path] | None = None, probe=http_ok) -> list[dict]:
-    """Every review-sheet server that answers: the LAST url in its serve.log that returns HTTP 200
-    (SHEETS_INDEX/TONIGHT docs carry stale ports - never read those)."""
+def sheet_revision(log: Path, info: dict) -> float:
+    """The sheet's own time = its HTML file's mtime (named on the serve.log's `sheet` line, else the html
+    beside the log). NEVER the log's mtime: every request - pulse's probe included - appends to the log, so
+    the sheet looked brand new and re-opened every 45 s (RIMPULSE_SHEETS_FIX_OWN_PROBE_REOPENS_THEM).
+    0 when no html is found: the row then has no age, but opening it still sticks."""
+    stem = log.name[: -len(".serve.log")]
+    for c in ([info.get("sheet")] if info.get("sheet") else []) + [str(log.parent / stem),
+                                                                     str(log.parent / (stem + ".html"))]:
+        if c.endswith(".html"):
+            try:
+                return Path(c).stat().st_mtime
+            except OSError:
+                continue
+    return 0.0
+
+
+def read_sheets(dirs: list[Path] | None = None, probe=sheet_alive) -> list[dict]:
+    """Every review-sheet server that answers: the LAST url in its serve.log that is alive
+    (SHEETS_INDEX/TONIGHT docs carry stale ports - never read those). `mtime` is the sheet's revision."""
     import re
     from concurrent.futures import ThreadPoolExecutor
     logs: dict[str, Path] = {}
@@ -343,9 +403,9 @@ def read_sheets(dirs: list[Path] | None = None, probe=http_ok) -> list[dict]:
     def one(f: Path):
         try:
             info = scan_sheet_log(f)
-            mt = f.stat().st_mtime
         except OSError:
             return None
+        mt = sheet_revision(f, info)
         live = next((u for u in reversed(info["urls"]) if probe(u)), None)
         if not live:
             return None
