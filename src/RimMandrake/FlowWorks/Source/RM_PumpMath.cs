@@ -36,6 +36,24 @@ namespace RimMandrake.FlowWorks
 			return cellDl < units ? (int)cellDl : units;
 		}
 
+		/// <summary>POND_PUMP_FIX_LAST_DROP_COUNTS (owner by card 2026-10-22, GPT review Q6: "ponds pump to the last decilitre"): the decilitres
+		/// a pump lifts from a natural body this cycle, given <paramref name="supplyDl"/> = what the body can hand out (up to
+		/// <paramref name="units"/>). Exact-level on: a notch, or what is left, so a pond is pumped dry exactly as a dug channel
+		/// is (the old whole-notch rule stranded its last &lt;1,000 L). Exact-level off: whole notches only, as before. 0 = not
+		/// drawable.</summary>
+		public static int SourceTakeUnits(int units, long supplyDl, bool levelExact)
+		{
+			if (units <= 0 || supplyDl <= 0)
+			{
+				return 0;
+			}
+			if (supplyDl >= units)
+			{
+				return units;
+			}
+			return levelExact ? (int)supplyDl : 0;
+		}
+
 		/// <summary>
 		/// P11 (GPT review G1.22): squared distance from cell (x,z) to the NEAREST cell of the footprint
 		/// [minX..maxX]×[minZ..maxZ]; 0 inside it. A station's reach is measured from its footprint, so a

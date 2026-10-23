@@ -66,6 +66,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("Transfer_Adapter_boundary_conserves_with_carry", Boundary);
             Case("Transfer_site_pump_draw_channel", () => PumpDraw(true));
             Case("Transfer_site_pump_draw_source", () => PumpDraw(false));
+            Case("Transfer_site_pump_draw_pond_to_the_last_decilitre", PondPumpsDry);
             Case("Transfer_site_pump_pour", PumpPour);
             Case("Transfer_site_converter", Converter);
             Case("Transfer_site_reactor", Reactor);
@@ -207,10 +208,57 @@ namespace RimMandrake.FlowWorks.SelfTest
             string pump = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "Building_LiquidPump.cs"));
             string world = channel
                 ? @"RM_TransferLeg\.World\(k => ex\.IsExcavated\(cell\) && ex\.WaterDlAt\(cell\) >= k, k => ex\.TryTakeDl\(cell, k, out _\) == k\)"
-                : @"RM_TransferLeg\.World\(k => ex\.Stock\.CanSupply\(Map, cell, ex\), k => ex\.Stock\.TryDebit\(Map, cell, f\.volumePerTile, ex\)\)";
-            string amount = channel ? "take" : "units";   // LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD: a channel gives up to a notch, in dL
+                : @"RM_TransferLeg\.World\(k => ex\.Stock\.SupplyDl\(Map, cell, k, ex\) >= k, k => ex\.Stock\.TryDebitDl\(Map, cell, k, ex\)\)";
+            // LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD (channel) and POND_PUMP_FIX_LAST_DROP_COUNTS (source): both give up to a notch, in dL
+            const string amount = "take";
             RiverSwitchFlipChecks.Has(pump, @"RM_TransferLeg world = " + world + @"; if \(RM_LiquidTransfer\.Move\(" + amount + @", world, " + PlanInto("l") + @", out \w+\) == " + amount + @"\) \{ foreach \(\(Building_LiquidTank tank, int units\) p in plan\) Machinery\.RM_LiquidNet\.Credit\(this, p\.tank, l, p\.units, RM_PumpMath\.CycleTicks\); // credit site: pump draw \(" + (channel ? "channel" : "source") + @"\)",
                 "pump draw " + (channel ? "(channel)" : "(source)") + ": world leg checked first, the tank leg in Move, credit inside the committed block");
+        }
+
+        /// <summary>POND_PUMP_FIX_LAST_DROP_COUNTS (owner by card 2026-10-22, GPT review Q6 → "ponds pump to the last dL"): a natural pond is
+        /// pumped to the last decilitre, as a dug channel is. A fake pond (decilitre stock) is drained through Move with the
+        /// PRODUCTION take rule (RM_PumpMath.SourceTakeUnits) until the pump finds nothing; exact-level on it ends at 0 dL with
+        /// every dL in the tank, off it keeps the sub-notch remainder (the old rule, kept for that setting). Can-fail: the old
+        /// whole-notch rule planted in exact mode strands the remainder and the check sees it. Then the production pump must
+        /// gate drawability and the take on that rule.</summary>
+        private static void PondPumpsDry()
+        {
+            const int U = RM_PumpMath.TankUnitsPerLevel;
+            Func<int, long, bool, int> wholeNotch = (u, s, e) => s >= u ? u : 0;   // the defect: CanSupply + TryDebit(one notch)
+            (long left, int moved) Drain(long stockDl, bool exact, Func<int, long, bool, int> rule)
+            {
+                long pond = stockDl;
+                var tank = new Tank(null, 0, int.MaxValue);
+                for (int cycle = 0; cycle < 1000; cycle++)
+                {
+                    int take = rule(U, Math.Min(pond, U), exact);
+                    if (take <= 0) break;
+                    RM_TransferLeg world = RM_TransferLeg.World(k => pond >= k, k => { if (pond < k) return false; pond -= k; return true; });
+                    if (RM_LiquidTransfer.Move(take, world, tank.In("water"), out _) != take) break;
+                }
+                return (pond, tank.Units);
+            }
+            foreach (long start in new long[] { 1, 9_999, 10_000, 10_001, 23_456, 4 * 10_000L + 7 })
+            {
+                var on = Drain(start, true, RM_PumpMath.SourceTakeUnits);
+                Assert(on.left == 0 && on.moved == start, "exact-level on: a " + start + " dL pond pumps dry (left " + on.left + ", moved " + on.moved + ")");
+                var off = Drain(start, false, RM_PumpMath.SourceTakeUnits);
+                Assert(off.left == start % U && off.moved == start - start % U, "exact-level off: whole notches only (left " + off.left + ")");
+                if (start % U != 0)
+                {
+                    var bad = Drain(start, true, wholeNotch);
+                    Assert(bad.left != 0, "can-fail: the old whole-notch rule strands " + bad.left + " dL and this check sees it");
+                }
+            }
+            Assert(RM_PumpMath.SourceTakeUnits(U, 0, true) == 0 && RM_PumpMath.SourceTakeUnits(U, -5, true) == 0 && RM_PumpMath.SourceTakeUnits(0, 500, true) == 0,
+                "a dry pond, a negative reading or no budget: nothing to take");
+            string pump = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "Building_LiquidPump.cs"));
+            RiverSwitchFlipChecks.Has(pump, @"return RM_PumpMath\.SourceTakeUnits\(units, ex\.Stock\.SupplyDl\(Map, c, units, ex\), RM_MapComponent_Excavation\.LevelExact\);",
+                "the pump's take on a natural body is the selftested rule, on the body's decilitres");
+            RiverSwitchFlipChecks.Has(pump, @"if \(ex\.IsSourceCell\(c\) && SourceTake\(ex, c\) > 0\)", "a natural body is drawable while that rule takes anything");
+            RiverSwitchFlipChecks.Has(pump, @"int take = SourceTake\(ex, cell\); if \(take != units\) \{ plan = take > 0 \? Machinery\.RM_LiquidNet\.FillPlan\(this, l, take\) : null;",
+                "the tank plan is for what the pond gives (a part notch at the end)");
+            Assert(!Regex.IsMatch(pump, @"TryDebit\(Map, cell, f\.volumePerTile, ex\)"), "the whole-notch pond debit is gone from the pump");
         }
 
         /// <summary>The production destination leg of a pump draw (L3: the fill plan, split across tanks).</summary>

@@ -2,7 +2,8 @@
 //   gut     - the hwelgrue's digest clock, map cap and rot boost
 //   swallow - a hwelgrue holding someone: digest length, knocks, belly cut, release, strangers
 //   vat     - the gut-mother vat's clock: fuel, dormancy, splits, accepting bodies
-//   core    - the world's one swallowed drive core: who carries it, the ping clock, integrity
+//   core    - the world's one swallowed drive core: who carries it (a carrier that leaves the world releases it to the next hwelgrue
+//             that checks, ROTCORE_RECLAIM_FIX_FINDERS_KEEPERS), the ping clock, integrity
 //   log     - the navigator's log cadence and its cut
 //   unjoin  - the unjoining draught's sorting
 //   mat     - the living mat root: food, spread and die-back clocks, the Rot exemption, the heat step and its 21 C cap
@@ -339,8 +340,9 @@ namespace RimMandrake.TheRot.Fuzz
 
         private sealed class CoreHwelgrue
         {
-            public string id; public bool hasFaction, claimChecked, carrier, engineSeen, dead;
+            public string id; public bool hasFaction, claimChecked, carrier, engineSeen, dead, gone;
             public int nextPing = -1; public float integrity = 100f; public bool overCap; public int mapTile;
+            public bool InWorld => !dead && !gone;   // alive on a map, caravan or transporter (production: CarrierStillExists)
         }
 
         private sealed class CoreWorld
@@ -349,20 +351,38 @@ namespace RimMandrake.TheRot.Fuzz
             public List<CoreHwelgrue> pack = new List<CoreHwelgrue>();
             public int nextId = 1, now = 1000, campaignTile = -1, interval = 30000, pings;
             public bool engine;
+            public float coreIntegrity = 100f;   // RM_WorldComponent_SwallowedCore.coreIntegrity
             public HashSet<string> everCarriers = new HashSet<string>();
-            public string firstCarrier;
+            public bool released;                // the carrier id has been released at least once
         }
 
+        private static CoreHwelgrue Recorded(CoreWorld w) { return w.carrierId == null ? null : w.pack.FirstOrDefault(h => h.id == w.carrierId); }
+
+        // ROTCORE_RECLAIM_FIX_FINDERS_KEEPERS (owner by card 2026-10-22, GPT review Q11 -> "next hwelgrue may claim core"): the carrier may CHANGE, but
+        // only after the recorded one has left the world; the core is never held by two, never lost while an eligible hwelgrue checks.
         private static void CoreStep(CoreWorld w, Act a)
         {
             CoreHwelgrue pick = w.pack.Count == 0 ? null : w.pack[a.a % w.pack.Count];
             switch (a.kind)
             {
                 case 0: w.pack.Add(new CoreHwelgrue { id = "H" + w.nextId++, overCap = a.b % 4 == 0, mapTile = a.c % 3 == 0 ? 5 : 7, hasFaction = a.c % 11 == 0 }); break;
-                case 1: // its first CompTick: claim check
+                case 1: // a CompTick claim check: the first tick, or a non-carrier's hourly re-check (RM_CompSwallowedCore.CompTick / TryClaim)
                 {
-                    if (pick == null || pick.dead || pick.claimChecked) break;
+                    if (pick == null || !pick.InWorld) break;
+                    bool recheckTick = a.b % 2 == 0;
+                    bool due = RM_TheRotKernel.ClaimCheckDue(pick.claimChecked, pick.carrier, recheckTick);
+                    Check(due == (!pick.claimChecked || (!pick.carrier && recheckTick)), "claim-check cadence: first tick always, a non-carrier hourly, a carrier never");
+                    if (!due) break;
                     pick.claimChecked = true;
+                    if (!w.spent && w.carrierId != null && w.carrierId != pick.id)
+                    {
+                        CoreHwelgrue rec = Recorded(w);
+                        bool exists = rec != null && rec.InWorld;
+                        string after = RM_TheRotKernel.ReleaseStale(w.spent, w.carrierId, pick.id, exists);
+                        Check(exists ? after == w.carrierId : after == null, exists ? "a carrier still in the world was released" : "a carrier that left the world kept the core (lost forever)");
+                        if (after == null) { w.released = true; Hit("core.released"); }
+                        w.carrierId = after;
+                    }
                     string carrierBefore = w.carrierId; bool spentBefore = w.spent;
                     var r = RM_TheRotKernel.Claim(w.haveWorld, w.spent, pick.hasFaction, w.carrierId, pick.id, pick.overCap, w.campaignTile, pick.mapTile);
                     switch (r)
@@ -372,25 +392,31 @@ namespace RimMandrake.TheRot.Fuzz
                         case RM_TheRotKernel.ClaimResult.New:
                             Check(carrierBefore == null && !spentBefore && !pick.hasFaction && !pick.overCap, "a core was claimed with a carrier already, spent, by a factioned or over-cap hwelgrue");
                             Check(w.campaignTile < 0 || pick.mapTile == w.campaignTile, "a core was claimed off its campaign tile");
-                            w.carrierId = pick.id; pick.carrier = true; pick.integrity = 100f; w.everCarriers.Add(pick.id); if (w.firstCarrier == null) w.firstCarrier = pick.id;
+                            Check(w.everCarriers.Count == 0 || w.released, "a second carrier claimed with no release");
+                            w.carrierId = pick.id; pick.carrier = true;
+                            pick.integrity = RM_TheRotKernel.ClaimIntegrity(w.coreIntegrity);
+                            Check(Math.Abs(pick.integrity - Math.Max(0f, Math.Min(100f, w.coreIntegrity))) < Eps, "a claimed core did not keep the world's integrity");
+                            if (w.everCarriers.Count > 0) Hit("core.reclaimed");
+                            w.everCarriers.Add(pick.id);
                             Hit("core.claimed");
                             break;
                         default:
-                            Check(!(w.haveWorld && !w.spent && !pick.hasFaction && string.IsNullOrEmpty(w.carrierId) && !pick.overCap && (w.campaignTile < 0 || pick.mapTile == w.campaignTile)), "an eligible first claimant was refused");
+                            Check(!(w.haveWorld && !w.spent && !pick.hasFaction && string.IsNullOrEmpty(w.carrierId) && !pick.overCap && (w.campaignTile < 0 || pick.mapTile == w.campaignTile)), "an eligible claimant was refused");
                             break;
                     }
                     break;
                 }
-                case 2: // the carrier dies
+                case 2: // dies on a map (Notify_Killed with a map): a stale carrier flag spends nothing
                 {
-                    if (pick == null || pick.dead) break;
+                    if (pick == null || !pick.InWorld) break;
                     pick.dead = true;
-                    if (pick.carrier) { w.spent = true; pick.carrier = false; Hit("core.carrierDied"); }
+                    if (pick.carrier && RM_TheRotKernel.StillCarrier(w.carrierId, pick.id)) { w.spent = true; Hit("core.carrierDied"); }
+                    pick.carrier = false;
                     break;
                 }
                 case 3: if (pick != null) pick.hasFaction = true; break;       // tamed
                 case 4: w.engine = !w.engine; break;
-                case 5: // 250 tick pings for every living carrier
+                case 5: // 250 tick pings for every living carrier in the world
                 {
                     int n = 1 + a.a % 200;
                     for (int i = 0; i < n; i++)
@@ -398,7 +424,8 @@ namespace RimMandrake.TheRot.Fuzz
                         w.now += 250;
                         foreach (CoreHwelgrue h in w.pack)
                         {
-                            if (h.dead || !h.carrier) continue;
+                            if (!h.InWorld || !h.carrier) continue;
+                            if (!RM_TheRotKernel.StillCarrier(w.carrierId, h.id)) { h.carrier = false; Hit("core.staleDemoted"); continue; }
                             int nextBefore = h.nextPing; bool seenBefore = h.engineSeen;
                             bool due = RM_TheRotKernel.PingDue(ref h.nextPing, ref h.engineSeen, w.now, w.engine, w.interval);
                             Check(h.engineSeen == w.engine, "engine-seen not tracked");
@@ -416,14 +443,15 @@ namespace RimMandrake.TheRot.Fuzz
                     }
                     break;
                 }
-                case 6: // the ship's guns hit the carrier
+                case 6: // the ship's guns hit the carrier (RM_CompSwallowedCore.PostPostApplyDamage)
                 {
-                    if (pick == null || !pick.carrier) break;
+                    if (pick == null || !pick.InWorld || !pick.carrier) break;
                     float dmg = new[] { 1f, 10f, 40f, 400f }[a.b % 4], factor = new[] { 0f, 0.5f, 1f, 2f }[a.c % 4];
                     float before = pick.integrity;
                     pick.integrity = RM_TheRotKernel.IntegrityAfterHit(pick.integrity, dmg, factor);
                     Check(pick.integrity >= 0f && pick.integrity <= before + Eps, "integrity " + before + " -> " + pick.integrity);
                     Check(Math.Abs(pick.integrity - Math.Max(0f, before - dmg * factor)) < 1e-3f, "integrity arithmetic");
+                    if (RM_TheRotKernel.StillCarrier(w.carrierId, pick.id)) w.coreIntegrity = pick.integrity;
                     break;
                 }
                 case 7: w.campaignTile = a.a % 2 == 0 ? -1 : 5; break;
@@ -438,13 +466,32 @@ namespace RimMandrake.TheRot.Fuzz
                     Check(RM_TheRotKernel.RangeFactor(false, 0.25f, integrity) == 1f, "range factor with the option off");
                     break;
                 }
+                case 10: // leaves the world alive (shipped off, map closed): no Notify_Killed, the world still names it
+                    if (pick != null && pick.InWorld) { pick.gone = true; if (pick.carrier) Hit("core.carrierLeft"); }
+                    break;
+                case 11: // killed off-map (Notify_Killed with no map: nothing spent, nothing dropped)
+                    if (pick != null && !pick.dead) { pick.dead = true; if (pick.carrier) Hit("core.carrierDiedOffMap"); }
+                    break;
+                case 12: // a hwelgrue that left comes back (its comp still says carrier until its next tick)
+                    if (pick != null && pick.gone && !pick.dead) pick.gone = false;
+                    break;
+                case 13: // a claim check by a fresh hwelgrue spawned for the purpose, eligible unless the tile forbids it
+                {
+                    var h = new CoreHwelgrue { id = "H" + w.nextId++, mapTile = a.c % 2 == 0 ? 5 : 7 };
+                    w.pack.Add(h);
+                    CoreStep(w, new Act { kind = 1, a = w.pack.Count - 1, b = 0, c = 0, Name = "Claim" });
+                    break;
+                }
             }
             // ---- invariants
-            Check(w.pack.Count(h => h.carrier && !h.dead) <= 1, "more than one living carrier");
-            Check(w.everCarriers.Count <= 1, "the core had " + w.everCarriers.Count + " different carriers (one per world, ever)");
-            if (w.carrierId != null) Check(w.carrierId == w.firstCarrier, "the carrier id changed after it was set");
-            foreach (CoreHwelgrue h in w.pack) if (h.carrier) Check(h.id == w.carrierId, "a carrier that is not the world's carrier");
-            if (w.spent) Check(!w.pack.Any(h => h.carrier), "a spent core still has a carrier");
+            var effective = w.pack.Where(h => h.carrier && h.InWorld && RM_TheRotKernel.StillCarrier(w.carrierId, h.id)).ToList();
+            Check(effective.Count <= 1, "more than one living carrier");
+            if (w.carrierId != null) Check(w.everCarriers.Contains(w.carrierId), "the world names a carrier that never claimed");
+            if (w.spent) Check(effective.Count == 0, "a spent core still has a carrier");
+            // never lost forever: a recorded carrier that has left the world is released by the next check of any other hwelgrue
+            CoreHwelgrue recd = Recorded(w);
+            if (!w.spent && w.carrierId != null && (recd == null || !recd.InWorld))
+                Check(RM_TheRotKernel.ReleaseStale(false, w.carrierId, "Hother", false) == null, "a carrier that left the world is never released");
         }
 
         // ===================================================================== log: the navigator's log
@@ -700,7 +747,7 @@ namespace RimMandrake.TheRot.Fuzz
                 ("gut", () => RunFamily("gut", N(3000), S(1), 7919, new[] { "Sweep", "Fill", "Empty", "Days", "Cap", "Rot" }, new[] { 12, 3, 1, 1, 4, 3 }, 120, seed => new GutWorld(), GutStep, 100, 100, 100)),
                 ("swallow", () => RunFamily("swallow", N(1500), S(1), 104729, new[] { "Swallow", "Ticks", "Hurt", "Dies", "Stranger", "Setting" }, new[] { 4, 8, 4, 1, 2, 2 }, 40, seed => new SwallowWorld { rng = new Random(seed) }, SwallowStepFn, 2000, 100, 10)),
                 ("vat", () => RunFamily("vat", N(3000), S(1), 6007, new[] { "Offer", "Ticks", "Refuel", "Split", "Toggle", "Hours" }, new[] { 4, 10, 3, 2, 1, 2 }, 100, seed => new VatWorld(), VatStep, 200, 10, 10)),
-                ("core", () => RunFamily("core", N(3000), S(1), 30011, new[] { "Spawn", "Claim", "Die", "Tame", "Engine", "Pings", "ShipHit", "CampaignTile", "Drop", "SpendNoCarrier" }, new[] { 6, 8, 2, 1, 2, 6, 3, 1, 2, 1 }, 100, seed => new CoreWorld(), CoreStep, 200, 100, 100)),
+                ("core", () => RunFamily("core", N(3000), S(1), 30011, new[] { "Spawn", "Claim", "Die", "Tame", "Engine", "Pings", "ShipHit", "CampaignTile", "Drop", "SpendNoCarrier", "Leave", "DieOffMap", "Return", "FreshClaim" }, new[] { 6, 8, 2, 1, 2, 6, 3, 1, 2, 1, 2, 1, 1, 2 }, 100, seed => new CoreWorld(), CoreStep, 200, 100, 100)),
                 ("log", () => RunFamily("log", N(3000), S(1), 15485863, new[] { "Ping", "CarrierDies", "PerEntry" }, new[] { 20, 1, 1 }, 80, seed => new LogWorld(), LogStep, 10, 10, 10)),
                 ("unjoin", () => RunFamily("unjoin", N(2000), S(1), 32452843, new[] { "Sort" }, new[] { 1 }, 20, seed => (object)null, UnjoinStep, 16, 10, 10)),
                 ("mat", () => RunFamily("mat", N(3000), S(1), 49979687, new[] { "Sweep", "Feed", "Rot", "Settings", "Appetite", "Heat" }, new[] { 40, 3, 1, 1, 1, 4 }, 900, seed => new MatWorld(), MatStep, 100, 100, 100)),
@@ -720,7 +767,7 @@ namespace RimMandrake.TheRot.Fuzz
             if (only == null && !oneSeed.HasValue && scale >= 1)
             {
                 string[] mustSee = { "gut.casting", "gut.overCap", "swallow.begin", "swallow.finish", "swallow.knock", "swallow.release", "swallow.stranger", "vat.accepted", "vat.finished", "vat.dormant", "vat.split",
-                    "core.claimed", "core.carrierDied", "core.ping", "core.engineAppeared", "log.entry", "log.site", "log.cutLetter", "unjoin.removed", "unjoin.husk", "mat.spread", "mat.starving", "mat.dieBack", "mat.rotFree", "mat.heat" };
+                    "core.claimed", "core.carrierDied", "core.ping", "core.engineAppeared", "core.released", "core.reclaimed", "core.carrierLeft", "core.carrierDiedOffMap", "core.staleDemoted", "log.entry", "log.site", "log.cutLetter", "unjoin.removed", "unjoin.husk", "mat.spread", "mat.starving", "mat.dieBack", "mat.rotFree", "mat.heat" };
                 var missing = mustSee.Where(k => !Stats.ContainsKey(k)).ToList();
                 Console.WriteLine("coverage: " + string.Join(" ", mustSee.Select(k => k + "=" + (Stats.TryGetValue(k, out long v) ? v : 0))));
                 if (missing.Count > 0) { Console.WriteLine("FAIL the fuzz never reached: " + string.Join(", ", missing)); ok = false; }

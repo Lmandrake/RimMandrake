@@ -180,8 +180,9 @@ namespace RimMandrake.TheRot
         public enum ClaimResult { No, NotMine, Mine, New }
 
         /// <summary>
-        /// Who carries the world's one drive core. Needs a world, an unspent core, and a wild hwelgrue; once someone carries it only that one is
-        /// ever the carrier. A first claimant must not be over the map cap and must be on the campaign tile when one is set (tile &gt;= 0).
+        /// Who carries the world's one drive core. Needs a world, an unspent core, and a wild hwelgrue; while someone carries it only that one is
+        /// the carrier. A claimant (the first, or one after a release: <see cref="ReleaseStale"/>) must not be over the map cap and must be on the
+        /// campaign tile when one is set (tile &gt;= 0).
         /// </summary>
         public static ClaimResult Claim(bool haveWorld, bool spent, bool hasFaction, string carrierId, string myId, bool overCap, int campaignTile, int mapTile)
         {
@@ -190,6 +191,48 @@ namespace RimMandrake.TheRot
             if (overCap) return ClaimResult.No;
             if (campaignTile >= 0 && mapTile != campaignTile) return ClaimResult.No;
             return ClaimResult.New;
+        }
+
+        /// <summary>
+        /// ROTCORE_RECLAIM_FIX_FINDERS_KEEPERS (owner by card 2026-10-22, GPT review Q11: "the next hwelgrue may claim the core"): the
+        /// world's carrier id after a claim check by <paramref name="myId"/>. A recorded carrier that has left the world (shipped off, killed off-map, a stale id: no living
+        /// pawn on any map, caravan or transporter holds it, <paramref name="carrierExists"/> false) is released (null), so the next hwelgrue
+        /// that checks may claim the core and the one item is never lost without a sign. A spent core, no carrier, or a carrier still in the
+        /// world: unchanged.
+        /// </summary>
+        public static string ReleaseStale(bool spent, string carrierId, string myId, bool carrierExists)
+        {
+            if (spent || string.IsNullOrEmpty(carrierId) || carrierId == myId || carrierExists) return carrierId;
+            return null;
+        }
+
+        /// <summary>
+        /// ROTCORE_RECLAIM_FIX_FINDERS_KEEPERS: does this hwelgrue run a claim check now (its CompTick, every 250 ticks)? Its first tick
+        /// always; after that a non-carrier checks again every <see cref="ClaimRecheckTicks"/> (<paramref name="recheckTick"/>), so an animal already on the map
+        /// can take a released core. A carrier never re-checks (it keeps the core until it dies or leaves).
+        /// </summary>
+        public static bool ClaimCheckDue(bool claimChecked, bool carrier, bool recheckTick)
+        {
+            return !claimChecked || (!carrier && recheckTick);
+        }
+
+        /// <summary>ROTCORE_RECLAIM_FIX_FINDERS_KEEPERS: how often a non-carrier re-checks (one in-game hour; the stale test walks every
+        /// living pawn).</summary>
+        public const int ClaimRecheckTicks = 2500;
+
+        /// <summary>ROTCORE_RECLAIM_FIX_FINDERS_KEEPERS: still the world's carrier? A carrier whose claim was released and that later
+        /// reappears is not.</summary>
+        public static bool StillCarrier(string worldCarrierId, string myId)
+        {
+            return worldCarrierId == myId;
+        }
+
+        /// <summary>ROTCORE_RECLAIM_FIX_FINDERS_KEEPERS: the integrity a claimant's core starts at: the world's last recorded integrity
+        /// (100 for a first claim), clamped to 0..100, so a core the ship's guns cracked is still cracked inside the next hwelgrue.</summary>
+        public static float ClaimIntegrity(float worldIntegrity)
+        {
+            if (float.IsNaN(worldIntegrity)) return 100f;
+            return worldIntegrity < 0f ? 0f : worldIntegrity > 100f ? 100f : worldIntegrity;
         }
 
         public static int PingIntervalTicks(float hours) { return Math.Max(2500, (int)Math.Round(hours * TicksPerHour)); }
