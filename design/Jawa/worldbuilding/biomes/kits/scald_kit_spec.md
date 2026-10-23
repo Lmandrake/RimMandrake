@@ -172,8 +172,13 @@ in-index this session:
   map-authoring constraint, not fixable in code** (documented in
   `RUT_ScaldMargin.xml`'s own header): the ring must be sited as a
   geometrically isolated cove/inlet cut off from open boil water by land,
-  never a plain strip along an open shore. Placement of the ring on THE map
-  is map-authoring (bridge), not worldgen. Sacredness/pilgrimage/two-faith
+  never a plain strip along an open shore. **Where it lands (2026-10-22):** the
+  ship-reached Scald floor lays it at map generation as the cool band ringing
+  each boiling core (`RM_SeaFloorBandsExtension`, share 0.12,
+  `RM_SeabedGenerator_TheScald`), and since `d5634e4ad` the floor biome carries
+  the Scald's catch (`RM_SeabedFloorLife` copies `fishTypes` +
+  `maxFishPopulation`), so the margin is the floor's fishable water — the
+  boil is Saltwater with no salt list and yields nothing. Sacredness/pilgrimage/two-faith
   shore: story + sacred pass (sheet Owed "canon sitting"), zero code here.
 
 **Effort**: **S** (one TerrainDef + one fishTypes block; everything else is
@@ -219,9 +224,8 @@ and drift back down — the biome's signature silhouette, readable traffic.
 And rarely, at the deep center, an enormous back breaks the surface and is
 gone: the herds are down there, mowing.
 
-**Engine route.** Reuses the miasma kit's two generics fully — both are
-built and shipped: `RM_CompTerritorialAnchor` (`MIASMA_MECHANICS_1` spike)
-and `RM_GenStep_PlacedSetPieces` (`MIASMA_MECHANICS_1` M6 build pass,
+**Engine route.** Reuses the miasma kit's scatterer generic,
+`RM_GenStep_PlacedSetPieces` (`MIASMA_MECHANICS_1` M6 build pass,
 `src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_PlacedSetPieces.cs`
 — a generic `GenStep_Scatterer` subclass with an abstract `RM_SetPieceElement`
 hook). **RESOLVED, SCALD_MECHANICS_1 S5 build pass**: the correction this
@@ -230,7 +234,7 @@ today... blocked on that scatterer landing") is stale — `SUMP_MECHANICS_1`'s
 own S3 pass already reused the scatterer as a second customer before this
 kit did, confirming it as a real, shared, multi-consumer class, not a
 one-off. S5 is its third consumer: `RUT_GenStep_ScaldSailScatterer`
-(`src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_ScaldSailScatterer.xml`)
+(`src/RimMandrake/TerminalBiomes/Defs/MapGeneration/RUT_ScaldSailScatterer.xml`)
 reuses `RM_SetPieceElement_AnchoredPawn` verbatim (also shipped, M6) behind a
 new site validator, `RM_ScattererValidator_NearThingDef` (S5's own only new
 class — no stock `ScattererValidator` does proximity-TO a `ThingDef`, only
@@ -239,20 +243,14 @@ the mirror-image avoid case).
 - **Bubble-sailors**: placed at gen by `RM_GenStep_PlacedSetPieces` keyed to
   `RUT_ScaldVent` sites via the new proximity validator — each vent gets a
   sail cluster (kinds are roster content; `wildAnimals` stays the roster
-  pass's). Tethering: `RM_CompTerritorialAnchor` anchored to the vent —
-  sails never leave their bubble line (**INVENTED**: radius 8), ignore
-  everything, flee nothing (they're the kindest resident; combat stats
-  near-nil in XML). **Confirmed structural, no new C# needed**: the comp
-  itself never calls a JobGiver, only sets `pawn.mindState.duty` — which
-  behavior runs is entirely the pawn's own `ThinkTreeDef`'s choice between
-  the independent `RM_JobGiver_AnchorDefense`/`RM_JobGiver_AnchorWander`
-  pair. A future sail `ThinkTreeDef` that includes only the wander half gets
-  "never fights" for free; no props flag or third JobGiver class is needed.
-  That `ThinkTreeDef`/`DutyDef` pairing is real content tied to the real
-  sail `PawnKindDef` — roster-pass work, not buildable against a borrowed
-  placeholder kind (S5's own build pass used vanilla `Penguin` as the
-  wiring placeholder, distinct from every other kit's own `RM_
-  SetPieceElement_AnchoredPawn` placeholder choice). Vertical tack/drift is
+  pass's). Sails ignore everything and flee nothing (the kindest resident;
+  combat stats near-nil in XML).
+  **Built 2026-10 (SCALD_FLOOR_VENT_FIELDS_1):** the real sail is `RM_Noohm`
+  (labelled saal, `RM_ScaldFauna.xml`); the scatterer names it, and on the floor
+  map — the only Scald map a colony reaches — `GenStep_ScaldVentField` seats 2-3
+  per vent and `RM_MapComponent_ScaldVentForecast` tethers them (a sail drifted
+  past radius 10 is sent back to the nearest vent; they gather before every
+  discharge). No anchor comp, ThinkTree or DutyDef is needed. Vertical tack/drift is
   presentation: ❓ whether a float/hover render (fleck or `Graphic` bob)
   beats a swimming pawn — decide at build; ban 4's carve-out allows them ON
   the surface either way.
@@ -343,8 +341,7 @@ built and compiling — the drafted 3 stands, but S6 needed none while S5
 needed one the original draft didn't foresee (the proximity validator).
 
 Reused: `RM_GameCondition_EnvironmentalWeather` (ruled, `ALPHA_MECHANICS_KIT_1`) ·
-`RM_WeatherOverlay_GroundFog` (greentide) · `RM_CompTerritorialAnchor`
-(miasma kit, built and available) · `RM_GenStep_PlacedSetPieces` (miasma
+`RM_WeatherOverlay_GroundFog` (greentide) · `RM_GenStep_PlacedSetPieces` (miasma
 kit, **built and shipped — SCALD_MECHANICS_1 is its third consumer after
 MIASMA_MECHANICS_1 and SUMP_MECHANICS_1**) ·
 `RM_SetPieceElement_AnchoredPawn` (miasma kit, built and shipped) · vanilla

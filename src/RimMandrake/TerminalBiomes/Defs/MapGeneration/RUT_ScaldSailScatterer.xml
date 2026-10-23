@@ -77,21 +77,10 @@
   (SCALD_FLOOR_VENT_FIELDS_1). RM_Noohm carries no RM_CompTerritorialAnchor,
   so the AnchoredPawn element's own no-op path fires here: expected.
 
-  "Never flees, never fights" — confirmed structural, no new C# needed.
-  RM_CompTerritorialAnchor itself never calls a JobGiver; it only sets
-  pawn.mindState.duty (read in full this pass). Which behavior actually
-  runs is entirely the pawn's own ThinkTreeDef's choice: RM_JobGiver_
-  AnchorDefense (fight) and RM_JobGiver_AnchorWander (wander) are two
-  INDEPENDENT ThinkTreeDef-gated JobGivers, not a package the comp forces
-  together. A future sail ThinkTreeDef that includes RM_JobGiver_
-  AnchorWander (gated on its own dutyDef) and OMITS RM_JobGiver_
-  AnchorDefense entirely gets "wander in the radius, never fight" for free
-  — no props flag or third JobGiver class is needed on the comp side. That
-  ThinkTreeDef (and the DutyDef it reads, and suppressing vanilla's own
-  flee-from-danger branches) is real content authoring tied to the real
-  sail ThingDef/PawnKindDef — roster-pass work, not buildable against a
-  borrowed placeholder kind, same "compiles now, first XML consumer later"
-  posture SUMP_MECHANICS_1's own S3 pass already used for RM_CompStationEater.
+  "Never flees, never fights" needs no anchor AI: RM_Noohm is a plain animal
+  with near-nil combat stats, and its tether on the floor is the vent
+  forecast map component (a sail past radius 10 is sent back to the nearest
+  vent), not RM_CompTerritorialAnchor.
 
   order 975 — after S6's own wreck scatter (965-967) and every terrain-
   generation genStep in this kit; ahead of nothing later in this kit
