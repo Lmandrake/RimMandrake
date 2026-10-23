@@ -688,5 +688,36 @@ check("update refuses a seat clone (never pull another agent's working tree)",
 cr = pl.code_rev()
 check("the running revision is reported (sha, checkout kind)", cr["sha"] and cr["checkout"] in ("deploy", "seat clone", "unknown"), cr)
 
+# --- RIMPULSE_DIGEST_REBUILD_THREE_QUESTIONS: what broke / what needs him / what to look at, new vs backlog --
+T0 = NOW - 8 * 3600   # he left 8 h ago
+DG = {"rows": [
+    pc._row("hand:new", "look", "", "new contact sheet", NOW - 3600, src="hands", title="new contact sheet", opened=False),
+    pc._row("hand:old", "look", "", "last week's sheet", NOW - 5 * 86400, src="hands", title="last week's sheet", opened=False),
+    pc._row("hand:seen", "look", "", "opened one", NOW - 1800, src="hands", title="opened one", opened=True),
+    pc._row("needs:BLOCKED_1", "review", "FOUNDRY", "BLOCKED_1 — pick the cap", NOW - 7200, src="ledger"),
+    pc._row("needs:STALE_1", "review", "FOUNDRY", "STALE_1 — an old question", NOW - 3 * 86400, src="ledger"),
+    pc._row("needs:FACT_1", "provide", "OWNER", "FACT_1 — the PC's address", NOW - 600, src="ledger"),
+    pc._row("needs:DONE_ASK", "answered", "OWNER", "DONE_ASK — answered", NOW - 600, src="ledger"),
+    pc._row("oom:seat:BENCH", "red", "BENCH", "OOM kill · BENCH tool cgroup", T0 - 3600, src="kernel", incident="oom:seat:BENCH"),
+    pc._row("oom:svc:x", "recovered", "RIMPULSE", "OOM kill · daemon · recovered: running", NOW - 4 * 3600, src="kernel"),
+    pc._row("oom:svc:ancient", "recovered", "RIMPULSE", "an old recovered one", T0 - 7200, src="kernel"),
+    pc._row("item:X", "done", "FOUNDRY", "X implemented", NOW - 100, src="ledger"),
+    pc._row("item:Y", "done", "FOUNDRY", "Y implemented (before he left)", T0 - 100, src="ledger")]}
+dsec = {sc["id"]: sc for sc in pl.build_digest(DG, T0, NOW)}
+alltxt = [ln["text"] for sc in dsec.values() for ln in sc["lines"] + sc["backlog"]]
+check("digest: a new artifact, a blocked decision, an old ongoing fault and a recovered fault each appear exactly once",
+      sum("new contact sheet" in t for t in alltxt) == 1 and sum("BLOCKED_1" in t for t in alltxt) == 1
+      and sum("BENCH tool cgroup" in t for t in alltxt) == 1 and sum("daemon · recovered" in t for t in alltxt) == 1, alltxt)
+check("digest: an old fault still broken now is reported, marked as from before the interval",
+      any("still broken, from before" in ln["text"] for ln in dsec["issues"]["lines"]), dsec["issues"])
+check("digest: new asks and new looks are split from the backlog",
+      [ln["text"].split(" — ")[0] for ln in dsec["rule"]["lines"]] == ["BLOCKED_1", "FACT_1 — the PC's address (a fact only you have)".split(" — ")[0]]
+      and [ln["text"] for ln in dsec["rule"]["backlog"]][0].startswith("STALE_1")
+      and [ln["text"] for ln in dsec["look"]["lines"]] == ["new contact sheet"]
+      and [ln["text"] for ln in dsec["look"]["backlog"]] == ["last week's sheet"], dsec)
+check("digest: opened looks, answered asks and recoveries/done from before the interval are left out",
+      not any(t in " ".join(alltxt) for t in ("opened one", "DONE_ASK", "an old recovered one", "before he left")), alltxt)
+check("digest: answered asks are one counted note, not rows", "1 you already answered" in dsec["rule"]["note"], dsec["rule"])
+
 print(f"\n{'FAIL' if FAILS else 'OK'}: {len(FAILS)} failing")
 sys.exit(1 if FAILS else 0)
