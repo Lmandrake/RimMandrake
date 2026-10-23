@@ -76,3 +76,13 @@ from the art), rebuild, deploy.
 
 ## Shas
 f1c25b3a03 (item) · 2ef76419c3 (brief) · 50733d22fb (drafts, phone collections, pump item, 2 lessons). DONE.
+
+## 8. Seat pre-review + naive judge fixes (2026-10-22, later)
+- Defect the seat caught: the four tank `_0_options.png` sheets showed only the current red art. Cause: the reel-only
+  re-run of `build_phone.py` (keep = reels) still walked the tank loop with zero options and overwrote the tank option
+  sheets AFTER I had looked at them. Fixed (loop skips buildings with no kept options); all four rebuilt and re-read.
+- Naive judge: best picks reel A, LiquidTankTall B, UniversalCargoTank B, XTall A. Dropped short C (pressure tank reads as
+  plumbing gear), Cargo C (≈ short A) and XTall C (≈ Tall A) from drafts and phone.
+- Short A and B redrawn twice with a raised camera (v3, axis-aligned): A now shows a lit top with the lid as an
+  ellipse; B is axis-aligned but its top face is still weak (the generator resists a high angle on horizontal drums) —
+  flagged, not hidden. v1/v2 raws kept in D:\ClaudeWork\rimmandrake\modern_art\raw.
