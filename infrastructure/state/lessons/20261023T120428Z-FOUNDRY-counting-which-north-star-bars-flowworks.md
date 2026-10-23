@@ -1,0 +1,1 @@
+Counting which north-star bars a FlowWorks check claims: a regex over shows=[...] undercounts (it said 35 unclaimed; runner.load_validation(mod_dir).components_declared() + floor.uncovered_shows said 0). Use the modcheck functions, never a grep.
