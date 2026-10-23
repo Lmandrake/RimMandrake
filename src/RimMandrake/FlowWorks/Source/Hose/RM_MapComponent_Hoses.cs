@@ -683,6 +683,7 @@ namespace RimMandrake.FlowWorks.Hose
             lastCarryDraws = lastClipDraws = lastGhostDraws = lastPortCouplings = 0;
             lastDepthDraws = 0;
             lastPortStubs = 0;
+            RimMandrake.FlowWorks.Machinery.RM_UnderCouplers.ResetFrame();
             lastFar = Find.CameraDriver.CurrentZoom >= CameraZoomRange.Far;
             for (int i = 0; i < reels.Count; i++)
             {
@@ -714,7 +715,9 @@ namespace RimMandrake.FlowWorks.Hose
                 else
                 {
                     pts = HoseMath.Pose(lay, pi.Eased, pi.Wobbling ? pi.SinceChange : int.MaxValue / 2, T, amt);
-                    if (onPort) pts = HoseMath.EndOnPort(pts, portAt - portAxis * 0.5, portAxis, 1.2);
+                    // HOSE_LEADIN_FIX_STUB_IN_THE_CANAL: a hose that meets the port from the side is not re-aimed (the Hermite would loop
+                    // back behind the end); DrawEnds gives it an elbow fitting instead (HoseMath.PortFitting)
+                    if (onPort && !HoseMath.SideArrival(pts, portAxis)) pts = HoseMath.EndOnPort(pts, portAt - portAxis * 0.5, portAxis, 1.2);
                 }
                 // rule 3: a joiner that would sit over a hose drawn beneath is left out (HoseMath.Layer)
                 List<int> joints = Layered().Joints.TryGetValue(r.parent.thingIDNumber, out List<int> kept) ? kept : lay.Joints;
@@ -908,11 +911,19 @@ namespace RimMandrake.FlowWorks.Hose
             if (fe.Kind == HoseEndKind.Port)
             {
                 V2 dp = fe.PortSide.X == 0 && fe.PortSide.Z == 0 ? d1 : new V2(fe.PortSide.X, fe.PortSide.Z);
-                Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, pts[n - 1] + dp * 0.5, dp, vis, y, wrapTint,
-                    fe.PortKind == HosePortKind.Tank || fe.PortKind == HosePortKind.Machine ? PortCouplingWiden : 1f);
+                float widen = fe.PortKind == HosePortKind.Tank || fe.PortKind == HosePortKind.Machine ? PortCouplingWiden : 1f;
+                // HOSE_LEADIN_FIX_STUB_IN_THE_CANAL: met from the side, the coupling is an elbow with no lead-in past the hose
+                double size0 = HoseMath.FittingSize(vis, PieceBand, CouplingMax), portSize = size0 * widen;
+                HoseMath.PortFitting(pts, pts[n - 1] + dp * 0.5, dp, ref portSize, vis, out V2 portFace, out double portWrap);
+                Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, portFace, dp, vis, y, wrapTint, (float)(portSize / size0), portWrap);
                 // HOSE_JOINTS_REDESIGN_PUMP_TOO_PUNY: the pipe's own fitting under the coupling (saddle on it, flange beside it)
                 RimMandrake.FlowWorks.Machinery.RM_LiquidJoins.DrawHosePortFitting(fe.Port, fe.PortSide.X, fe.PortSide.Z, y - 0.0006f);
-                DrawPortStub(r, fe, hm, vis, y - 0.001f);
+                // HOSE UNDER-COUPLERS (owner ruling 2026-10-23: "have their art go UNDER the tank or pump or other fixture"): a
+                // collar on the port point and a pipe on beneath the fixture to its centre line, in the hose band (under the
+                // building layer); it replaces the hose's own stub ribbon there. A pipe port keeps the stub path.
+                V2 portAtEdge = pts[n - 1] + dp * 0.5;
+                if (!RimMandrake.FlowWorks.Machinery.RM_UnderCouplers.Draw(fe.Port, portAtEdge.X, portAtEdge.Z, fe.PortSide.X, fe.PortSide.Z, y - 0.001f))
+                    DrawPortStub(r, fe, hm, vis, y - 0.001f);
                 lastPortCouplings++;
             }
             else if (lying && r.carry != HoseCarryState.Retracting && RelayOf(r) != null)
@@ -1242,18 +1253,19 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>A fitting whose working end is at <paramref name="end"/> pointing along <paramref name="d"/>: its centre
         /// sits <paramref name="centreOff"/> sizes from the end, its brass starts <paramref name="brassFrom"/> sizes from the
         /// centre; the wrap ends 0.05 cell over the brass start and runs back along the hose.</summary>
-        private void Fitting(HoseLookMats hm, Material m, float maxBand, double centreOff, double brassFrom, V2 end, V2 d, float vis, float y, Color wrapTint, float widen = 1f)
+        private void Fitting(HoseLookMats hm, Material m, float maxBand, double centreOff, double brassFrom, V2 end, V2 d, float vis, float y, Color wrapTint, float widen = 1f,
+            double wrapLen = HoseMath.WrapLength)
         {
             float size = (float)HoseMath.FittingSize(vis, PieceBand, maxBand) * widen;
             V2 c = HoseJoints.FittingCentre(end, d, centreOff, size);
             Piece(m, c, d, size, y);
             V2 brass = c + d * (brassFrom * size);
-            Wrap(hm, brass + d * (0.05 - HoseMath.WrapLength / 2), d, vis, y + 0.0002f, wrapTint);
+            if (wrapLen > 1e-3) Wrap(hm, brass + d * (0.05 - wrapLen / 2), d, vis, y + 0.0002f, wrapTint, wrapLen);
         }
 
-        private void Wrap(HoseLookMats hm, V2 centre, V2 d, float vis, float y, Color tint)
+        private void Wrap(HoseLookMats hm, V2 centre, V2 d, float vis, float y, Color tint, double len = HoseMath.WrapLength)
         {
-            PieceXZ(hm.Binding, centre, d, (float)HoseMath.WrapLength, (float)HoseMath.WrapWidth(vis) / BindBand, y, tint);
+            PieceXZ(hm.Binding, centre, d, (float)len, (float)HoseMath.WrapWidth(vis) / BindBand, y, tint);
             lastWrapDraws++;
         }
 

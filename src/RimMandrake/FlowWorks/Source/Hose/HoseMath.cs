@@ -229,6 +229,57 @@ namespace RimMandrake.FlowWorks.Hose
             return outp;
         }
 
+        /// <summary>HOSE_LEADIN_FIX_STUB_IN_THE_CANAL: a hose whose last stretch turns more than this off the port's axis met the
+        /// port from the SIDE (its straight lead-out cell was water, a wall, a building: the route came round).</summary>
+        public const double SideEntryCos = 0.82;   // ~35 degrees
+
+        /// <summary>Where the brass coupling at a port end sits and how long its cloth wrap runs (DrawEnds draws exactly this).
+        /// <paramref name="face0"/> = the port point the coupling's face meets, <paramref name="axis"/> = unit, into the port,
+        /// <paramref name="size"/> = the drawn coupling size (FittingSize x widen), <paramref name="vis"/> = the hose's visible width.
+        /// Straight arrival (the usual): the coupling's face at face0, the full <see cref="WrapLength"/> wrap back along the hose.
+        /// Side arrival (BENCH live round 2, save d map C: Kludged station south port 150,189, canal at 150,188, the hose came in
+        /// from the east): the hose lies ACROSS the axis there, so a full straight lead-in -- the coupling's back half and a 0.6-cell
+        /// wrap -- stuck out past the hose towards the canal. The fitting becomes an elbow: nothing of it reaches farther back along
+        /// the axis than the hose's own far edge (the coupling slides into the building by the excess, where the building's body
+        /// covers it, and the wrap is cut to cover only the join). Returns true for a side arrival.</summary>
+        internal static bool PortFitting(IList<V2> pts, V2 face0, V2 axis, double size, double vis, out V2 face, out double wrapLen) =>
+            PortFitting(pts, face0, axis, ref size, vis, out face, out wrapLen);
+
+        /// <summary>Most a side-arrival coupling slides into the building (cells); past that the reducer collar is drawn smaller
+        /// instead (<paramref name="size"/> comes back reduced), so its face never sits deep inside the footprint.</summary>
+        public const double PortSlideMax = 0.1;
+
+        internal static bool PortFitting(IList<V2> pts, V2 face0, V2 axis, ref double size, double vis, out V2 face, out double wrapLen)
+        {
+            face = face0;
+            wrapLen = WrapLength;
+            if (!SideArrival(pts, axis)) return false;
+            int n = pts.Count;
+            // along the axis, measured from face0 (negative = away from the port): the hose's far edge and the fitting's parts
+            double hoseBack = Dot(pts[n - 1] - face0, axis) - vis / 2;
+            if ((JoinerFace + 0.5) * size > PortSlideMax - hoseBack) size = Math.Max(0.05, (PortSlideMax - hoseBack) / (JoinerFace + 0.5));
+            double pieceBack = -(JoinerFace + 0.5) * size;               // the coupling art's back edge (FittingCentre, Piece)
+            double shift = Math.Max(0, hoseBack - pieceBack);
+            face = face0 + axis * shift;
+            double wrapFront = shift - (JoinerFace + 0.03) * size + 0.05; // DrawEnds' Fitting: brass at -0.03 x size off the centre
+            wrapLen = Geo.Clamp(wrapFront - hoseBack, 0, WrapLength);
+            return true;
+        }
+
+        /// <summary>True when the hose's last ~0.5 cell runs more than ~35 degrees off <paramref name="axis"/> (it meets the port
+        /// from the side).</summary>
+        internal static bool SideArrival(IList<V2> pts, V2 axis)
+        {
+            int n = pts == null ? 0 : pts.Count;
+            if (n < 2) return false;
+            double[] s = Geo.CumLen(pts);
+            V2 d1 = pts[n - 1] - At(pts, s, Math.Max(0, s[n - 1] - 0.5));
+            if (d1.Len < 1e-9) return false;
+            return Dot(d1.Norm(), axis) < SideEntryCos;
+        }
+
+        private static double Dot(V2 a, V2 b) => a.X * b.X + a.Z * b.Z;
+
         /// <summary>Smoothstep: the blend eases in and out.</summary>
         public static double Ease(double b)
         {
