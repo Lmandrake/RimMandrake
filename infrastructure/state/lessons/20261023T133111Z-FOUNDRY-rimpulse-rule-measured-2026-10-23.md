@@ -1,0 +1,1 @@
+RimPulse 'to rule' measured 2026-10-23: 8 of 13 rows were already answered by --by-card/--owner-said AFTER the needs event, and nobody moved needs off the owner. When you record his answer on an item that needs=owner, move needs in the same sitting (rimflow needs ... --to offline|bridge); pulse now folds such rows to 'answered, agent to follow up' so the backlog is visible.
