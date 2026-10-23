@@ -7,7 +7,7 @@
      🔑 startingCountAtWorldCreation is the field that decides which factions a world
      generates. WorldGenerationData.ResetFactionCounts() repeats each ConfigurableFaction's
      defName that many times, so zeroing it removes the faction from the DEFAULT list.
-     That is this file's whole job and it zeroes that field on 48 FactionDefs.
+     That is this file's whole job and it zeroes that field on every FactionDef listed below.
 
      🔴 IT NO LONGER TOUCHES maxConfigurableAtWorldCreation, and must not again. The
      header used to say that field "is only a cap and changes nothing on its own." THAT
