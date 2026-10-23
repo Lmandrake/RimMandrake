@@ -133,7 +133,7 @@ def needed_dirs(csproj, seen=None):
             if tag == "ProjectReference" and full.endswith(".csproj") and os.path.exists(full):
                 dirs |= needed_dirs(full, seen)
             elif os.path.isfile(full):
-                dirs.add(os.path.dirname(full) if tag == "Compile" else os.path.dirname(full))
+                dirs.add(os.path.dirname(full))
             else:
                 dirs.add(d)
     return dirs
