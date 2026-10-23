@@ -1,0 +1,60 @@
+{
+ "anchors": {
+  "base/Heavy/single": [
+   {
+    "attach": 0.71094,
+    "end": 1.0,
+    "lateral": 0.19336,
+    "thick": 0.05078
+   },
+   {
+    "attach": 0.71094,
+    "end": 1.0,
+    "lateral": -0.19531,
+    "thick": 0.04688
+   }
+  ],
+  "base/Rope/single": [
+   {
+    "attach": 0.37109,
+    "end": 1.0,
+    "lateral": 0.12109,
+    "thick": 0.03906
+   },
+   {
+    "attach": 0.36719,
+    "end": 1.0,
+    "lateral": -0.12109,
+    "thick": 0.03906
+   }
+  ],
+  "base/Steel/single": [
+   {
+    "attach": 0.45703,
+    "end": 1.0,
+    "lateral": 0.22461,
+    "thick": 0.02734
+   },
+   {
+    "attach": 0.45703,
+    "end": 1.0,
+    "lateral": -0.22852,
+    "thick": 0.02734
+   }
+  ],
+  "base/Timber/single": [
+   {
+    "attach": 0.38672,
+    "end": 1.0,
+    "lateral": 0.18945,
+    "thick": 0.04297
+   },
+   {
+    "attach": 0.38672,
+    "end": 1.0,
+    "lateral": -0.18945,
+    "thick": 0.04297
+   }
+  ]
+ }
+}
