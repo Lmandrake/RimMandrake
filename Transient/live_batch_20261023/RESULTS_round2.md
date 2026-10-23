@@ -81,3 +81,10 @@ Offline sampling of a 512 px texture (Armoury gonk_south.png as 1 cell) to the s
 <= 0.3/255 incl. transparent); at 456 the 128 version is visibly blurred and 256 slightly soft against 512.
 Answer: resolution above 128 px/cell is invisible at vanilla or SimpleCameraSetting zoom, visible at Camera+'s default
 closest zoom (256 clearly, 512 marginally). Owed: a live root-2 capture on a list with Camera+ to confirm the 456.
+
+## Re-checks (coordinator queue)
+
+| item | run | verdict | evidence |
+|---|---|---|---|
+| (g) VALIDATION_HOSE_REELS_FIX_STILL_WEST | fresh map, proof_hose --live --only relay | PASS: RL2-RL9 all PASS incl. RL4 (11/11 rows; the relay block emits no RL1 row). verified A1 L1, done | r2/proof_hose_relay_fresh.json/.log |
+| (f) PROOF_REELS_FIX_STILL_STAGED_WEST | fresh map, walk_gaps --fresh-map ports; fresh map, pipe_levelling --rehearsal | FAIL (note): PORTS_PIPE_AND_REEL_ON_SIDES PASS, PORTS_ONE_HOSE_PER_SIDE PASS (was UNMEASURED); PORTS_CORNER_REFUSED UNMEASURED/SITE: reel D now builds at 99,49 and lays, but its end at the SE corner 93,43 sits under reel A's footprint (93..94,44..45) and couples to A as a RELAY ('coupled to a relay reel'), so ProofPumpPorts sees corner=0. Rehearsal layFailures 338/384: NO rig reel was built - the fresh map's natural Sandstone fills the rig columns and the rig build_batch uses wipeExisting=False ('would destroy 4 existing thing(s): Sandstone@100,4...'); only pipes landed. Both SITE/HARNESS. | r2/walk_gaps_ports_fresh.json, r2/level_rehearsal_fresh.json, r2/level_fresh_watch.log (0 levels destroyed) |

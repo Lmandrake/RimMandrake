@@ -1,0 +1,5 @@
+== scene ports (PORTS_PIPE_AND_REEL_ON_SIDES,PORTS_ONE_HOSE_PER_SIDE,PORTS_CORNER_REFUSED)
+PORTS_PIPE_AND_REEL_ON_SIDES   PASS       MOD      {"ports": "PUMPPORTS N=none E=reel:38202:c S=free:38203:c+free:38204:r W=pipe coupled=2 corner=0 cornerCoupled=0", "lays": {"92,39": true, "95,39": true, "98,49": true}}
+PORTS_ONE_HOSE_PER_SIDE        PASS       MOD      {"ports": "PUMPPORTS N=none E=reel:38202:c S=free:38203:c+free:38204:r W=pipe coupled=2 corner=0 cornerCoupled=0", "lays": {"92,39": true, "95,39": true, "98,49": true}}
+PORTS_CORNER_REFUSED           UNMEASURED SITE     {"ports": "PUMPPORTS N=none E=reel:38202:c S=free:38203:c+free:38204:r W=pipe coupled=2 corner=0 cornerCoupled=0", "lays": {"92,39": true, "95,39": true, "98,49": true}}
+walk gaps: 3 rows, 0 FAIL, 1 not PASS -> Transient\live_batch_20261023\r2\walk_gaps_ports_fresh.json

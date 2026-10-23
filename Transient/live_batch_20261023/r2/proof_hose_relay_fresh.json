@@ -1,0 +1,321 @@
+{
+ "mod": "FlowWorks",
+ "script": "proof_hose.py",
+ "tier": "flowworks",
+ "mode": "partial",
+ "started": "2026-10-23T02:47:11",
+ "rows": [
+  {
+   "id": "HP1_tier_running_startup_log_clean",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "playing": true,
+    "flowworks": true,
+    "gimmesomeslack": true,
+    "startupLogRead": true,
+    "startupErrorsNamingHose": []
+   },
+   "block": "preflight"
+  },
+  {
+   "id": "HP2_probes_site_pinned",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "hoseProbe": true,
+    "colonistsDrafted": [
+     578,
+     581,
+     584
+    ]
+   },
+   "block": "preflight"
+  },
+  {
+   "id": "RL2_one_hose_cannot_reach",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "reason": "too far",
+    "maxLength": 40
+   },
+   "block": "relay"
+  },
+  {
+   "id": "RL3_hose_onto_relay_B",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "relayTo": [
+     44,
+     101
+    ],
+    "far": [
+     43,
+     100
+    ],
+    "endPoint": [
+     44.387,
+     100.853
+    ],
+    "pathLen": 22.6237,
+    "flatLen": 22.6799,
+    "maxLength": 40,
+    "layOk": true,
+    "reason": null,
+    "intake": true,
+    "onEdge": true,
+    "brassSide": false,
+    "westInlet": true,
+    "relayEnd": {
+     "drawnEnd": [
+      44.387,
+      100.853
+     ],
+     "endPoint": [
+      44.387,
+      100.853
+     ],
+     "inward": [
+      1,
+      0
+     ],
+     "edgeOffset": -0.387,
+     "withinEdge": true,
+     "tailAngleDeg": 0.0034,
+     "tolerance": 0.75,
+     "relayLook": "Scrapper",
+     "relayArt": "stored"
+    }
+   },
+   "block": "relay"
+  },
+  {
+   "id": "RL4_relay_B_onward_to_C",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "relayTo": [
+     77,
+     100
+    ],
+    "far": [
+     75,
+     100
+    ],
+    "endPoint": [
+     76.353,
+     100.924
+    ],
+    "pathLen": 30.5899,
+    "flatLen": 31.2184,
+    "maxLength": 40,
+    "layOk": true,
+    "reason": null,
+    "intake": true,
+    "onEdge": true,
+    "brassSide": true,
+    "westInlet": true,
+    "relayEnd": {
+     "drawnEnd": [
+      76.353,
+      100.924
+     ],
+     "endPoint": [
+      76.353,
+      100.924
+     ],
+     "inward": [
+      1,
+      0
+     ],
+     "edgeOffset": -0.353,
+     "withinEdge": true,
+     "tailAngleDeg": 0.011,
+     "tolerance": 0.75,
+     "relayLook": "Scrapper",
+     "relayArt": "stored"
+    }
+   },
+   "block": "relay"
+  },
+  {
+   "id": "RL5_ring_refused",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "lay": "that reel already feeds this one (a chain may not loop back)",
+    "check": "too far"
+   },
+   "block": "relay"
+  },
+  {
+   "id": "RL6_debug_flow_propagates",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "A": {
+     "state": "Plump",
+     "provider": "debug",
+     "signal": true
+    },
+    "B": {
+     "state": "Plump",
+     "provider": "debug",
+     "signal": true,
+     "fedBy": [
+      [
+       20,
+       101
+      ]
+     ]
+    },
+    "relayCouplings": 2
+   },
+   "block": "relay"
+  },
+  {
+   "id": "RL7_no_latch",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "A": {
+     "state": "Flat",
+     "provider": "none"
+    },
+    "B": {
+     "state": "Flat",
+     "provider": "none"
+    }
+   },
+   "block": "relay"
+  },
+  {
+   "id": "RL8_chain_beyond_one_hose",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "span": 56,
+    "maxLength": 40,
+    "pathA": 22.6237,
+    "pathB": 30.5899
+   },
+   "block": "relay"
+  },
+  {
+   "id": "RL9_overhead_drawn_over_hose",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "hose": 2903,
+    "overhead": 3005,
+    "spanMat": 3005
+   },
+   "block": "relay"
+  },
+  {
+   "id": "Z_log_budget",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "errorsNamingHoseOrFlowWorks": [],
+    "otherErrors": 0,
+    "tap": {
+     "polls": 9,
+     "lost": 0,
+     "kept": 0
+    },
+    "siteClearErrors": 0,
+    "newWarnings": 0
+   },
+   "block": "session"
+  }
+ ],
+ "blocks": {
+  "preflight": {
+   "wall_s": 23.5,
+   "rows": 2,
+   "raised": null
+  },
+  "relay": {
+   "wall_s": 7.0,
+   "rows": 8,
+   "raised": null
+  },
+  "session": {
+   "wall_s": 0.0,
+   "rows": 1,
+   "raised": null
+  }
+ },
+ "doc": "design/RimMandrake/hose_port_to_flowworks_design_FINAL_2026-10-10.md",
+ "offline": {
+  "skipped": "--skip-offline"
+ },
+ "log_revive": {
+  "alive": true,
+  "sentinel": "[proof log sentinel] revive 1792748844748",
+  "emitted": true,
+  "why": null,
+  "cleared": true
+ },
+ "mod_hash": "7ea73741ab2ceaeec055813a7ec9bd6ad9749b73a6bd69fe71841115df2a704a",
+ "sweeps": {
+  "preflight": {
+   "route": "destroy_bulk",
+   "removed": 67,
+   "left": [],
+   "kept": 0
+  },
+  "relay": {
+   "route": "destroy_bulk",
+   "removed": 0,
+   "left": [],
+   "kept": 0
+  }
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "wall_s": 31.3,
+ "site_notes": [
+  {
+   "id": "RL1_reels_built",
+   "detail": {
+    "build": true,
+    "maxLength": 40
+   }
+  }
+ ],
+ "certifiable": false,
+ "site_calm_blocks": {
+  "relay": true
+ },
+ "huge_plants_cleared": {
+  "relay": {
+   "blockers": 0,
+   "tiles": 0,
+   "blockersLeft": 0
+  }
+ },
+ "site_calm_restore": false
+}
