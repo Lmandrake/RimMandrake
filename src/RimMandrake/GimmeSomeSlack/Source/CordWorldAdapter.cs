@@ -149,6 +149,16 @@ namespace RimMandrake.GimmeSomeSlack
         /// connectParent); here it also hooks the conduit cell it bites, or links the foreign transmitter building it bites,
         /// so THEIR cable runs into the clamp instead of ending beside it as a free sparking end. Draw-only: the power nets
         /// are untouched (the two grids never merge; CompPowerTap moves the energy).</summary>
+        /// <summary>CORD_PLUG_FIX_FINDS_THE_PIPE_SLOT: the machine ids (AddTapNodes' "c" + thingIDNumber) of every tap clamp. The
+        /// clamp IS a drawn connector, so both cords keep the straight plug into its jaws (BuildOptions.StraightPlugIds).</summary>
+        internal static HashSet<string> TapIds(Map map)
+        {
+            var ids = new HashSet<string>();
+            if (Aerial.AerialDefOf.RM_PowerTapClamp == null) return ids;
+            foreach (Thing th in map.listerThings.ThingsOfDef(Aerial.AerialDefOf.RM_PowerTapClamp)) ids.Add("c" + th.thingIDNumber);
+            return ids;
+        }
+
         private static void AddTapNodes(Map map, CordWorld world)
         {
             if (Aerial.AerialDefOf.RM_PowerTapClamp == null) return;

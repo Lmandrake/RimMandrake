@@ -113,7 +113,7 @@ SETTINGS = "RimMandrake.GimmeSomeSlack.GimmeSomeSlackSettings"
 TRANSPARENT = "RimMandrake/GimmeSomeSlack/ConduitTransparent"
 
 SHIPPED = {"enabled": "true", "style": "CordStyle.StarWarsJawa", "slack": "1f", "loopBudget": "16f",
-           "cordsPerConnection": "3", "tangles": "true", "needlessLoops": "true", "diveThrough": "true", "breakReadout": "true",
+           "cordsPerConnection": "3", "tangles": "true", "needlessLoops": "true", "diveThrough": "true", "slideUnder": "true", "breakReadout": "true",
            "sparkIntensity": "1f", "hideHookupWires": "true", "debugDraw": "false",
            # phase 1b lane A
            "tangleMin": "9", "whip": "true", "downedWire": "true", "sparksOnlyOverlay": "false",

@@ -1003,6 +1003,7 @@ SETTINGS = [
     ("gss", "tangleMin", "9", "cells before a dense field becomes a tangle", "1-4, 16"),
     ("gss", "needlessLoops", "True", "needless stubs (2 cells or less) become pointless loops", "25 (the stub)"),
     ("gss", "diveThrough", "True", "cords dive under walls and water (a plate marks the wall)", "12, 19, 24"),
+    ("gss", "slideUnder", "True", "cords come into a building at a diagonal and slide under it, never onto a port", "every station with a powered building"),
     ("gss", "breakReadout", "True", "live ends spark, dead ends lie limp", "1-4, 13"),
     ("gss", "sparkIntensity", "1.0", "spark intensity (also clamp sparks)", "1, 13, 27, 29"),
     ("gss", "whip", "True", "live broken floor ends whip (also paused)", "1-4"),
