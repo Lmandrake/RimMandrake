@@ -6,8 +6,11 @@ What a machine can check without the game:
          plants; every west-leaning name is a real variant PNG of a listed plant; and the art agrees with the list:
          re-measured from the PNGs, a variant leaning clearly west (top drawn left of the base by >= 4.5% of the canvas)
          must be listed, one leaning clearly east must not be. RM_PlantLean.cs names no defName (selection is data).
-  gale   RM_Gale carries RM_WeatherOverlay_GaleDust; the owner-picked RM_GaleDust art (pick A, installed 2026-10-20) is
-         present, so the overlay does not run on a missing texture.
+  gale   RM_Gale carries RM_WeatherOverlay_GaleDust, and BOTH its sheets are installed (Weather/RM_GaleDust_A -> _MainTex,
+         _B -> _MainTex2; with either missing that layer stays vanilla fog, i.e. ArtState is no longer the PLACEHOLDER but
+         the look is half placeholder). Owner card 2026-10-23 "Install dust art, then look". Each sheet is RGBA whose
+         ALPHA carries the dust (brightness became alpha at install): mostly clear air, some streaks, never an opaque
+         sheet (the 2026-10-20 install of A was the raw opaque black render, caught 2026-10-23).
   calm   the biome table carries no stock weather above 0 (incl. Overcast, GrayPall, DryThunderstorm); every windy twin
          exists, blows (windSpeedOffset > 0, factor not under 1) and replaced its stock row at the same commonality; and
          against the vanilla 1.6 Data, when present, each twin copies its stock def's fields except the wind and words.
@@ -76,10 +79,21 @@ def measure_leans():
     return out
 
 
+GALE_SHEETS = ("RM_GaleDust_A", "RM_GaleDust_B")   # the overlay's _MainTex and _MainTex2 (RM_WeatherOverlay_GaleDust.cs)
+
+
 def gale_textures():
-    if not os.path.isdir(GALE_TEX):
-        return []
-    return [f for f in os.listdir(GALE_TEX) if f.startswith("RM_GaleDust")]
+    """{sheet: (mode, fraction of pixels with alpha < 8, fraction with alpha > 40)} for each installed Gale sheet."""
+    from PIL import Image
+    import numpy as np
+    out = {}
+    for n in GALE_SHEETS:
+        p = os.path.join(GALE_TEX, n + ".png")
+        if os.path.isfile(p):
+            im = Image.open(p)
+            a = np.asarray(im.convert("RGBA"))[:, :, 3]
+            out[n] = (im.mode, float((a < 8).mean()), float((a > 40).mean()))
+    return out
 
 
 def lean_ext(biome):
@@ -122,8 +136,14 @@ def findings(d):
     if gale is None or not any((li.text or "").strip().endswith("RM_WeatherOverlay_GaleDust")
                                for li in gale.findall("overlayClasses/li")):
         bad.append("gale: RM_Gale carries no RM_WeatherOverlay_GaleDust overlay")
-    if not d["gale_tex"]:
-        bad.append("gale: no RM_GaleDust texture is installed (the owner's pick A, 2026-10-20) - the overlay has nothing to draw")
+    for n in GALE_SHEETS:
+        if n not in d["gale_tex"]:
+            bad.append("gale: %s.png is not installed - that overlay layer falls back to vanilla fog (placeholder)" % n)
+            continue
+        mode, clear, streak = d["gale_tex"][n]
+        if mode != "RGBA" or clear < 0.30 or streak < 0.005:
+            bad.append("gale: %s is not dust-in-alpha (mode %s, %.0f%% clear air, %.1f%% streak): brightness must become"
+                       " alpha at install, black = clear" % (n, mode, 100 * clear, 100 * streak))
     # ---- calm days
     table = {}
     for c in d["biome"].iter("baseWeatherCommonalities"):
@@ -193,7 +213,9 @@ BREAKS = {
     "non-plant listed": lambda d: ET.SubElement(lean_ext(d["biome"]).find("leanPlants"), "li").__setattr__("text", "RM_NoSuchPlant"),
     "hardcoded defName": lambda d: d.__setitem__("cs", d["cs"] + '\nstatic string x = "RM_Fuzz";'),
     "gale overlay gone": lambda d: d["weathers"]["RM_Gale"].remove(d["weathers"]["RM_Gale"].find("overlayClasses")),
-    "owner-picked gale art removed": lambda d: d.__setitem__("gale_tex", []),
+    "gale art removed": lambda d: d.__setitem__("gale_tex", {}),
+    "gale sheet B missing": lambda d: d.__setitem__("gale_tex", {k: v for k, v in d["gale_tex"].items() if k != "RM_GaleDust_B"}),
+    "gale sheet opaque": lambda d: d.__setitem__("gale_tex", dict(d["gale_tex"], RM_GaleDust_A=("RGB", 0.0, 1.0))),
     "stock Overcast back": lambda d: _set_row(d, "Overcast", "5"),
     "twin calm": lambda d: d["weathers"]["RM_ScrubOvercast"].find("windSpeedOffset").__setattr__("text", "0"),
     "twin unlisted": lambda d: _set_row(d, "RM_ScrubGrayPall", "0"),
