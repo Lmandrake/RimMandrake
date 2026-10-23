@@ -39,7 +39,9 @@
       <texPath>RimMandrake/FlowWorks/Hose/Styles/Modern/Reel_PumpHookup</texPath>
       <graphicClass>RimMandrake.FlowWorks.Hose.Graphic_HoseReel</graphicClass>
       <drawSize>(2.15,2.15)</drawSize>
-      <shadowData><volume>(1.23, 0.35, 1.04)</volume></shadowData>
+      <!-- MODERN_REEL_SHADOW_FIX_BOX_TOO_BIG (live look 2026-10-22): the FA reel is a slim pedestal reel whose drum is ~0.85 x 1.0;
+           the shared 1.23 x 1.04 box drew a hard square well past it. Square so the engine's per-rotation swap fits every facing. -->
+      <shadowData><volume>(0.65, 0.35, 0.65)</volume></shadowData>
       <damageData><rect>(0.1,0.1,0.8,0.8)</rect></damageData>
     </graphicData>
   </ThingStyleDef>
