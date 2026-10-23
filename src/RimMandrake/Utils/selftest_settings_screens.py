@@ -496,7 +496,7 @@ MODS = {
         "Ant hive alarm sealing": "NextPulse",
         "Two-front lure: stake and rolls": "Now",
         "Two-front lure: the waves": "NextPulse",
-        "Sap-suckers and silloch": "Now",
+        "Sap-suckers, silloch and brathek": "Now",
         "Oil boil weather": "NextPulse",
         "Oil boil: yield and flash": "Now",
         "Brood ransom": "Now",
