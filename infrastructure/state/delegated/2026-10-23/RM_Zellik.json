@@ -3,43 +3,34 @@
   "opus": [
    {
     "model_requested": "opus",
-    "seconds": 39.9,
-    "models_reported": [
-     "claude-opus-5-5"
-    ],
-    "cost_usd": 0.3612206
-   }
-  ],
-  "gpt": [
+    "seconds": 5.8,
+    "models_reported": [],
+    "cost_usd": 0,
+    "error": "You've hit your session limit \u00b7 resets 1:10pm (America/Los_Angeles)"
+   },
    {
-    "model_reported": "gpt-6.1-sol",
-    "seconds": 30.0
+    "model_requested": "opus",
+    "seconds": 7.0,
+    "models_reported": [],
+    "cost_usd": 0,
+    "error": "You've hit your session limit \u00b7 resets 1:10pm (America/Los_Angeles)"
    }
-  ],
-  "regen": {
-   "model_requested": "sonnet",
-   "seconds": 15.5,
-   "models_reported": [
-    "claude-sonnet-5-5"
-   ],
-   "cost_usd": 0.12499270000000001
-  }
+  ]
  },
  "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
  "subject": "RM_Zellik",
- "decision": "REGEN",
+ "decision": "HOLD_ERROR",
  "reasons": [
-  "opus band WEAK (model said weak); blocking ['DEPARTURE_MISSING', 'DEPARTURE_MISSING']; polish ['LEGIB_32']",
-  "gpt regen: unsettled ['K1', 'K2'], own blocking ['DEPARTURE_MISSING', 'DEPARTURE_MISSING']"
+  "opus: You've hit your session limit \u00b7 resets 1:10pm (America/Los_Angeles)"
  ],
  "prompt_versions": {
   "preamble": {
-   "tag": "preamble@v1",
-   "sha": "a4850279ccbf"
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
   },
   "opus_first_pass": {
-   "tag": "opus_first_pass@v1",
-   "sha": "14056552e355"
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
   },
   "gpt_targeted_second_look": {
    "tag": "gpt_targeted_second_look@v1",
@@ -54,8 +45,8 @@
    "sha": "9cda888a5233"
   },
   "template": {
-   "tag": "creature@v2",
-   "sha": "16a3854542c6"
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
   },
   "severity": {
    "tag": "severity@v3",
@@ -63,10 +54,10 @@
   }
  },
  "image_sha256": {
-  "south.png": "fc7c97402072b204fc98482c546f51c8c9b30e03e6f365adc349a33dda683866",
-  "east.png": "26815a4093fa264881d0078f2218bf8e47d14751dd2efba74355df88070c2423",
-  "north.png": "7353a05e924967e7495085ffcd58eec6750b436239d6e88bef88fbb29ad5f4eb",
-  "scale.png": "efef6aa672ca8594fe28fe0dfc868e8c5937911982647c43cb65370263bd3956",
-  "facings.png": "cb0b0cd8c1f43a89202164d1c23efc703122eac5ab79eb958ccc0ade3d150960"
+  "south.png": "6e90a9460fa9094d30ea14b14d07e1ecdfe491c0587c054fac0983082ba421bc",
+  "east.png": "680cdbab17938c670b897bcc29ae7a5e569d895303493e2fa4ba5b6a00494898",
+  "north.png": "a1312ffc073ba13d862f6ca90b620b664650afb9a78659c5a6b3060be02177ac",
+  "scale.png": "691a0d7c9041e04d7c0e6bce8fc8dbdefd9eaf1f6e45e7a0bc308e1daf94a567",
+  "facings.png": "069da92920f8d35b08426a1e4fa73f372e11efb6819f72c02aea22a44ca737f1"
  }
 }

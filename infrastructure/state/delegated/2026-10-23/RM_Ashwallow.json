@@ -3,27 +3,27 @@
   "opus": [
    {
     "model_requested": "opus",
-    "seconds": 41.8,
+    "seconds": 47.1,
     "models_reported": [
      "claude-opus-5-5"
     ],
-    "cost_usd": 0.3692976
+    "cost_usd": 0.3755664
    }
   ],
   "regen": {
    "model_requested": "sonnet",
-   "seconds": 13.7,
+   "seconds": 14.2,
    "models_reported": [
     "claude-sonnet-5-5"
    ],
-   "cost_usd": 0.1252307
+   "cost_usd": 0.1246887
   }
  },
  "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
  "subject": "RM_Ashwallow",
  "decision": "REGEN",
  "reasons": [
-  "opus band REALLY_BAD (model said weak); blocking ['F_SIZE_JUMP', 'F_INCONSISTENT', 'DEPARTURE_MISSING', 'DESC_MISS', 'STYLE_EARTHLY']; polish []"
+  "opus band REALLY_BAD (model said weak); blocking ['DEPARTURE_MISSING', 'STYLE_EARTHLY', 'DESC_MISS', 'DEPARTURE_MISSING']; polish ['LEGIB_32']"
  ],
  "prompt_versions": {
   "preamble": {
@@ -56,10 +56,10 @@
   }
  },
  "image_sha256": {
-  "south.png": "ca1f157de12741babdd37245af57d877ad6afcf053d36a4149f83c6b467b7fa3",
-  "east.png": "895d0628291c3b90a8a7f3c86cda875a48772932923b2963fd9b6dd0f8da736f",
-  "north.png": "798f875bf76fa3d6bfee6440617c4647e6dbfb774bf47a2b1160455801426713",
-  "scale.png": "a2165b5b08dd0367c261992f206cd4217a41a361ca6a7a8d3bfb5eeb4435c24a",
-  "facings.png": "f516d5580cd8305691a6064c1908b9f4bd4bcc816d3b2fdce2706e05a6ba1cf6"
+  "south.png": "44a85264f41c3494528f396f6ed616ce6efbc2bb7466cbe01f68bbe1c2c38249",
+  "east.png": "8e1b544929cb9a80426764ac65b064758d1712aa4902ecd7ba97d4da3c5192b8",
+  "north.png": "f519063d1052b91b1aa38d1cf4b93a79a8b697637ffb10ad043b93f11b9d4738",
+  "scale.png": "ff4b9c4d1658f8c5be848392e8d08b476931678feecb073c5a15ccfc9a9dd966",
+  "facings.png": "43cec656a5db34c5c0a5b23f253d6b94c2e02497b772ca0aa4ddd13b353a07fd"
  }
 }

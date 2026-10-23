@@ -344,7 +344,13 @@ def run(specs: list, run_id: str, rev: Reviewers | None = None, test: bool = Fal
         print(f"[art_eval] {s['subject']}: {rec['decision']} ({rec['seconds']}s) — {'; '.join(rec['reasons'])[:300]}",
               file=sys.stderr)
     if not test:
-        rounds_file.write_text(json.dumps(rounds, indent=1, sort_keys=True))
+        import fcntl   # parallel runs share this file: merge (max per subject) under a lock, never overwrite
+        with open(str(rounds_file) + ".lock", "w") as lk:
+            fcntl.flock(lk, fcntl.LOCK_EX)
+            cur = json.loads(rounds_file.read_text()) if rounds_file.is_file() else {}
+            for k, v in rounds.items():
+                cur[k] = max(cur.get(k, 0), v)
+            rounds_file.write_text(json.dumps(cur, indent=1, sort_keys=True))
     jobs = regen_jobs(recs, run_id)
     if jobs:
         (out / "regen_jobs.json").write_text(json.dumps(jobs, indent=1))
@@ -430,10 +436,15 @@ def regress(rev: Reviewers | None = None) -> dict:
     res = []
     for row, s in zip(rows, specs):
         d = recs[s["subject"]]["decision"]
-        ok = (d == "ACCEPT") == (row["expect"] == "ACCEPT")
-        res.append({"subject": s["subject"], "expect": row["expect"], "got": d, "pass": ok, "why": row.get("why")})
+        # A HOLD_* (transport error, missing panel, kept art) decided nothing: it is UNMEASURED, never a pass.
+        # (2026-10-23: a session-limit outage made every row HOLD_ERROR and the NOT_ACCEPT rows "passed".)
+        measured = d == "ACCEPT" or d in ("REGEN", "ESCALATE", "REGEN_AFTER_SOURCE")
+        ok = measured and (d == "ACCEPT") == (row["expect"] == "ACCEPT")
+        res.append({"subject": s["subject"], "expect": row["expect"], "got": d, "pass": ok,
+                    "unmeasured": not measured, "why": row.get("why")})
     out = {"versions_key": versions_key(prompt_versions("creature")), "run": rid, "at": now(),
-           "passed": sum(r["pass"] for r in res), "total": len(res), "rows": res}
+           "passed": sum(r["pass"] for r in res), "total": len(res),
+           "unmeasured": sum(r["unmeasured"] for r in res), "rows": res}
     (STATE / "regression_runs").mkdir(exist_ok=True)
     (STATE / "regression_runs" / f"{rid}.json").write_text(json.dumps(out, indent=1))
     return out
@@ -502,7 +513,8 @@ def main(argv=None):
         return 0
     if a.cmd == "regress":
         o = regress()
-        print(f"regression {o['passed']}/{o['total']} on {o['versions_key']}")
+        print(f"regression {o['passed']}/{o['total']} on {o['versions_key']}"
+              + (f" — UNMEASURED {o['unmeasured']}/{o['total']} (HOLD_*: nothing decided; not a pass)" if o["unmeasured"] else ""))
         return 0 if o["passed"] == o["total"] else 1
     specs = [C.pilot_spec(x) for x in a.pilot] + [json.loads(Path(x).read_text()) for x in a.spec]
     recs = run(specs, a.run_id, test=a.test, record=a.record, file_regens=a.file_regens)

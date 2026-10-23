@@ -1,0 +1,19 @@
+[
+ {
+  "id": "arteval_RM_Flamefang_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Flamefang",
+  "prompt": "A single large venomous serpent lying in a low, tight, flat coil, painterly vanilla RimWorld sprite style with broad hand-painted scale masses, a clean thin dark outline around the whole silhouette, and muted naturalistic shading. Its body is covered in ash-grey and charcoal-black scaling split by an irregular network of cracks, like scorched earth, rendered as simple painted shapes rather than fine beveled scales. A restrained, dim ember-orange glow shows only in a few cracks between the charred scales, strongest along the spine, as if fire still smoulders under the skin. The head rests low near the top of the coil, at the same height as the body, a smooth, spikeless wedge with a low brow ridge, a lidless predatory eye with a narrow slit pupil, and a hard, unsmiling jaw line. The neck is a slim, smooth continuation of the body, the same in the front view with the eyes toward the viewer, in the side view, and in the rear view seen from behind showing the back of the skull and neck. The mouth is slightly open, and a pair of long curved fangs extends past the lip line, their tips glowing ember-orange. Heaps of grey ash and smouldering charred root fibres are threaded through the coils and cover much of the lower body, so the serpent reads as half-buried and waiting. All ash and roots cling directly to the scales as part of one continuous, clean-edged silhouette, with clear transparent space all around it. The creature reads at a glance as a smouldering, half-buried fire ambusher with charred cracked hide, ember light in the cracks and glowing fang tips. The sprite fills a square frame, centered, on a transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, STYLE_OFF, DEPARTURE_MISSING, ALPHA_HALO, F_INCONSISTENT, STYLE_OFF, DEPARTURE_MISSING, ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_pyrelands_r1_02"
+ }
+]

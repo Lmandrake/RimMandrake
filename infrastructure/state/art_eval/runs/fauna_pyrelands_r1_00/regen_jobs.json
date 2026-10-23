@@ -1,0 +1,19 @@
+[
+ {
+  "id": "arteval_RM_FurnaceBeast_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_FurnaceBeast",
+  "prompt": "A realistic, painterly vanilla RimWorld-style sprite of the furnace-beast, a heavy migratory megafauna that reads as a mineral mass on legs, like a walking stove, on a transparent background with a clean dark outline. Its hide is made of separate, weighty stone-like mineral plates, not continuous skin, banded in visible horizontal strata of differing mineral colours across the whole body: cool grey, tan and ochre stone on the plate faces. The surfaces are painted in the soft, hand-painted manner of vanilla RimWorld sprites: broad shaded plate forms with flat tonal blocks, texture used sparingly on a few plates only, and softly rounded plate edges. The cracks and seams between the plates glow a warm ember orange-yellow like coals showing through gaps in a stove: narrow lines with a gentle inner light, bright yellow-orange at a few joints (shoulder, flank, haunch) and dimmer deep red elsewhere, so the beast reads as hot inside at a glance while the stone plates carry the image. The only strong orange on the body is this heat in the plate joints; the plates themselves stay cool stone. The underbelly is covered in smaller interlocking stone plates with glowing seams and visible strata, so every part of the body shows stone plate. The legs are thick, straight, pillar-like and plated, with heated joints matching the body. The body plan, proportions and palette stay consistent throughout, with the tail and haunches built from the same heavy plates and the eyes small, dark and deep-set beneath a plated brow. All three facings show one and the same animal at one and the same size: the shoulder stands at the same height, the dorsal ridge peaks at the same height and the legs are the same length in the front view, the side view and the rear view; the side view is the full-height animal in profile, its body length laid across the frame, standing tall on straight pillar legs with its back as high as in the front and rear views. The crown plate and every outer plate edge end in clean, crisp stone edges against fully transparent background, with opaque pixels right up to the dark outline and nothing floating outside it.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, ALPHA_HALO, F_SIZE_JUMP, STYLE_OFF",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_pyrelands_r1_00"
+ }
+]

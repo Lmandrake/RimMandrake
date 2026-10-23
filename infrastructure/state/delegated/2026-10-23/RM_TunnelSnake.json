@@ -3,36 +3,34 @@
   "opus": [
    {
     "model_requested": "opus",
-    "seconds": 36.5,
-    "models_reported": [
-     "claude-opus-5-5"
-    ],
-    "cost_usd": 0.35743840000000004
+    "seconds": 5.6,
+    "models_reported": [],
+    "cost_usd": 0,
+    "error": "You've hit your session limit \u00b7 resets 1:10pm (America/Los_Angeles)"
+   },
+   {
+    "model_requested": "opus",
+    "seconds": 5.6,
+    "models_reported": [],
+    "cost_usd": 0,
+    "error": "You've hit your session limit \u00b7 resets 1:10pm (America/Los_Angeles)"
    }
-  ],
-  "regen": {
-   "model_requested": "sonnet",
-   "seconds": 13.2,
-   "models_reported": [
-    "claude-sonnet-5-5"
-   ],
-   "cost_usd": 0.1270027
-  }
+  ]
  },
  "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
  "subject": "RM_TunnelSnake",
- "decision": "REGEN",
+ "decision": "HOLD_ERROR",
  "reasons": [
-  "opus band REALLY_BAD (model said really_bad); blocking ['DEPARTURE_MISSING', 'DEPARTURE_MISSING', 'DEPARTURE_MISSING', 'DEPARTURE_MISSING', 'STYLE_EARTHLY', 'DESC_MISS', 'F_INCONSISTENT']; polish []"
+  "opus: You've hit your session limit \u00b7 resets 1:10pm (America/Los_Angeles)"
  ],
  "prompt_versions": {
   "preamble": {
-   "tag": "preamble@v1",
-   "sha": "a4850279ccbf"
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
   },
   "opus_first_pass": {
-   "tag": "opus_first_pass@v1",
-   "sha": "14056552e355"
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
   },
   "gpt_targeted_second_look": {
    "tag": "gpt_targeted_second_look@v1",
@@ -47,8 +45,8 @@
    "sha": "9cda888a5233"
   },
   "template": {
-   "tag": "creature@v2",
-   "sha": "16a3854542c6"
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
   },
   "severity": {
    "tag": "severity@v3",
@@ -56,10 +54,10 @@
   }
  },
  "image_sha256": {
-  "south.png": "afbfb85518e098553bdef8c81b624dec0fc9ff0d4c3ca6b6691d51b23eedd7be",
-  "east.png": "6b2274dc71d7e1bc77be726ead6d1ab0c0fc15283c103ecc303146edc1dff2e9",
-  "north.png": "854aadcb1c79dc6e824f91dbca5ccedc21776801291fbf7019915cc7f8ef422e",
-  "scale.png": "a251691d3f73f7bb60cfbcd9baa84fd89a0e0c3c4e715714b61a1ec91fe616bd",
-  "facings.png": "5ac6082531ae81f3aa9b8c93ea56c132560956f8b0a2ac4530c13f820ed9118f"
+  "south.png": "a51fca4d2119bdbd28d85a984709812c3a441d941258adedae86c04b62ab0ad5",
+  "east.png": "ae9beff5740fffb239feb935eb3f45c08074270637eb0c3961b324742d8702d5",
+  "north.png": "83b5b17874450bfae30b2d6a0aa75c84479d163a8e0bc7bfc6d332b728238161",
+  "scale.png": "66c402c8fea39ec78c1f79938b51143076b7c3805402302bb6787055ec9acc11",
+  "facings.png": "de355ea60e80d10e06ef71767e56c989883d03db46df9ca900d084f40c47239f"
  }
 }

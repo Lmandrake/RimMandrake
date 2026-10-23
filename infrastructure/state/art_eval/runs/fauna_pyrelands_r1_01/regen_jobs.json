@@ -1,0 +1,19 @@
+[
+ {
+  "id": "arteval_RM_Sytheclaw_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Sytheclaw",
+  "prompt": "Three RimWorld creature sprite views of the same animal on a transparent background (south front view, east side view, north rear view), painterly vanilla RimWorld style, realistic, thin dark outline on the silhouette only. All three views use the same angled game camera, the same body scale and nearly the same height, and show the same standing low crouch with the feet on the ground and the legs under the body. The sytheclaw is a low-slung pack predator of the burning plains. Its body is flat, wide and pressed close to the ground, lower than any big cat's stance, with the head carried low and the plated back barely higher than the shoulders. Its back is covered in overlapping dry yellow-gold armour plates, the same dry gold as standing quickgrass, with no fur or mane; the plates are separated by painted shading and subtle colour shifts, not black lines. Its underside, belly edge and inner limbs are a raw furnace red that contrasts sharply with the gold plated upper body. Each forelimb ends in one long, curved, serrated bone blade like a scythe, pale bone in colour with a toothed darker inner edge, held forward and clearly longer than the hind feet. These blades are the most prominent feature of the silhouette and are clearly legible on every view. The hind legs are strong crouched haunches ending in ordinary feet. A tail trails behind. The south view is the front view, eyes toward the viewer, the two scythe blades held forward on either side of the low head. The east view is the side profile, with the blade, the long low back and the tail in one horizontal line. The north view is the rear view, seen from behind: the haunches and hind legs stand on the ground, the plated back rises away from the viewer, the tail trails toward the camera, the eyes are hidden, and the tips of the forward blades show at the sides of the body.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_TOPDOWN, F_SIZE_JUMP, DEPARTURE_MISSING, DESC_MISS, F_INCONSISTENT, DEPARTURE_MISSING, F_NORTH_FACE",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_pyrelands_r1_01"
+ }
+]
