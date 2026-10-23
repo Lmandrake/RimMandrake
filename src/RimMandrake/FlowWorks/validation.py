@@ -1389,6 +1389,8 @@ TOGGLES_NOT_ON_FLOOR = ["blastsBreakPitCovers", "pitStuckAlertEnabled", "fallDea
                         "tiredSwimmersHeadForShore", "deepSwimJoyEnabled", "shallowWaterDrowningEnabled",
                         "waterBodyMendsEnabled", "fishRollOnGrowth", "fishReturnOnRefill", "fishingZoneReturnOnRefill",
                         "waterBodySplitEnabled", "waterPlantGraceEnabled", "freezeCountMendEnabled",
+                        # WET_FOXHOLE_BUILD_COLD_FEET_SHAKY_AIM (c414cbc02): its live rows are northstar/wet_costs_live.py, not a toggle chain
+                        "deepWaterAimPenalty", "wetFeelsColder", "swimmersCannotShoot",
                         # RM_SuspensionSettings registered 2026-10-19 (SETTINGS_REGISTRY_FILL_FOUR_SECTIONS_UNSEEN): the suspension
                         # items' live rows are owed on them (B4); not yet a toggle chain
                         "suspensionBridgesBuildable", "suspensionWeightCollapse", "suspensionAnchorLossFalls",

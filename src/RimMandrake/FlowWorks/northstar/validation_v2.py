@@ -931,6 +931,7 @@ def _run(x, z, n, dx, dz):
 SCENES = {
     # S-tier, zero ticks (phase S)
     "S1_ladder": dict(cells=[(130, 60), (132, 60), (134, 60), (136, 60)], phase="S"),
+    "S1_deep": dict(cells=[(138, 60), (140, 60)], phase="S"),          # D 8 and 16 (4 m, 8 m): the bar's ladder past 2 m
     "S2_clamp": dict(cells=[(130, 64), (132, 64)], phase="S"),
     "S4_band": dict(cells=[(130, 9), (130, 11)], sink=True, phase="S"),
     # E2: channel fill vs oracle, every compass direction (phase A)
@@ -984,6 +985,8 @@ SCENES = {
     # X: the promoted bars (2026-10-05), after P, before the tail. Dug D=1 here; phase_X deepens the strip
     # to 1..4 and the race staircases likewise. No body: nothing here is fed, every move is gravity.
     "X_strip": dict(cells=_run(131, 70, 4, 1, 0), D=1, phase="X"),               # D 1,2,3,4; (130,70) is D=0
+    "X_deep8": dict(cells=[(131, 67)], D=8, oracle=False, phase="X"),    # X1: a colonist at 4 m (the oracle models 2 m at most)
+    "X_deep16": dict(cells=[(133, 67)], D=16, oracle=False, phase="X"),  # X1: and at 8 m, to read "no lower past 4 m"
     "X_two": dict(cells=_run(131, 74, 4, 1, 0) + [(134, 75)] + _run(131, 76, 4, 1, 0), D=1, phase="X"),
     "X_race_tar": dict(cells=_run(131, 79, 4, 1, 0), D=1, phase="X"),
     "X_race_water": dict(cells=_run(131, 82, 4, 1, 0), D=1, phase="X"),
@@ -991,6 +994,7 @@ SCENES = {
     "X_cover": dict(cells=[(140, 70), (141, 70), (140, 71), (141, 71)], D=4, phase="X"),
     "X_fire": dict(cells=_run(131, 88, 6, 1, 0), D=1, phase="X"),                 # X10: tar run, lit at (136,88)
 }
+S1_DEEP_NOTCHES = (8, 16)         # 4 m and 8 m, the bar's last two rungs (a notch is 0.5 m)
 X_WALK = (130, 70)                 # the strip's D=0 end: colonist spawn, hare 0
 X_JUNCTION = (134, 75)             # X_two: one dry D=2 cell between the tar row (z74) and the water row (z76)
 PAWN_SPOTS = {"E7a_fillin": (191, 62), "E7b_overflow": (196, 62), "E8_dig": (200, 62)}
@@ -1866,9 +1870,24 @@ def run_offline():
 # Every reading is a STATE read (excavation_rect / flowworks_pulse / body_report / pit_report /
 # engine_state / mod_settings_field); nothing is inferred from a screenshot or an absence.
 STATUS_OK = ("PASS", "SKIP", "UNCOVERED", "UNBUILT")
-# Rows that are RED on the shipped engine because of a filed MOD defect. The mock reproduces the
-# shipped semantics, so they are red there too; a fix makes them green and this list shrinks.
-KNOWN_MOD_RED = {}   # FLOWWORKS_SHARED_SOURCE_STALL_1 fixed 2026-10-02 (O9 + E2s_shared_source_both_fill)
+
+
+def _shipped_sink_cap_levels():
+    """RM_PitDrawMath.SinkCapLevels, read from the C# so the mock models what ships (a fixed cap turns X1 green and the
+    KNOWN_MOD_RED entry below then goes red on the O-LIVE-NEG guard, forcing its removal)."""
+    src = open(os.path.join(HERE, "..", "Source", "RM_PitDrawMath.cs"), encoding="utf-8").read()
+    m = re.search(r"const\s+int\s+SinkCapLevels\s*=\s*(\d+)\s*;", src)
+    if not m:
+        raise RuntimeError("SinkCapLevels not found in RM_PitDrawMath.cs")
+    return int(m.group(1))
+
+
+SHIPPED_SINK_CAP_LEVELS = _shipped_sink_cap_levels()
+# Rows that are RED on the shipped engine because of a filed MOD defect. The mock reproduces the shipped semantics, so they
+# are red there too (and run_live's `green` forgives them in the mock only); a fix makes them green and this dict shrinks.
+# pawn_height_ladder_legible says a colonist keeps sinking to 4 m (card 2026-10-20); the shipped sink stops at SinkCapLevels = 2 m.
+KNOWN_MOD_RED = {"X1_pawn_height_ladder": "PIT_SINK_CAP_WIDEN_TWO_METRES_TO_FOUR"} if SHIPPED_SINK_CAP_LEVELS < 8 else {}
+# (FLOWWORKS_SHARED_SOURCE_STALL_1 fixed 2026-10-02: O9 + E2s_shared_source_both_fill)
 
 
 class Abort(Exception):
@@ -2356,9 +2375,9 @@ def _in_any(c, rects):
 # ---------------------------------------------------------------------------- phase S (0 ticks)
 def phase_S(L, args):
     # The colonist dig cap is a Mod Setting, 2 m shipped (DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL; machines dig deeper).
-    # Phase S's ladder rows (S1n, S6) prove the cap at 2 m, the four-depth ladder they were written for, with machine
-    # digging OFF so the bridge dig (the designation cap) stops at 2 m too; restored after (restore_settings also
-    # covers it). The 8 m rows (the 4/7/7/4 square) are P10's.
+    # Phase S's cap rows (S1n, S6) prove the cap at 2 m with machine digging OFF so the bridge dig (the designation cap)
+    # stops at 2 m too; restored after (restore_settings also covers it). S1_dig_ladder alone raises the colonist cap for
+    # the two deep rungs of the depth bars (4 m and 8 m). The 8 m rows (the 4/7/7/4 square) are P10's.
     L.sset(S_FW, "maxDigDepth", 4.0)
     L.sset(S_FW, "machineDigEnabled", False)
     try:
@@ -2375,13 +2394,24 @@ def _phase_S_body(L, args):
         cells = SCENES["S1_ladder"]["cells"]
         for d, c in enumerate(cells, 1):
             L.dig(c, d)
-        got = L.cells_read(cells)
+        # the bar's ladder runs past 2 m (pit_depth_ladder_legible: 0.5, 1, 1.5, 2, 4, 8 m = D 1,2,3,4,8,16): the deep two are cut
+        # under a raised colonist cap, mirrored into the oracle by hand (its own dig stops at 2 m)
+        deep = SCENES["S1_deep"]["cells"]
+        L.sset(S_FW, "maxDigDepth", float(S1_DEEP_NOTCHES[-1]))
+        try:
+            for d, c in zip(S1_DEEP_NOTCHES, deep):
+                L.dig(c, d, oracle=False)
+                L.o.set_cell(c, d, 0)             # mirrored, not driven: the oracle's own dig stops at 2 m
+        finally:
+            L.sset(S_FW, "maxDigDepth", 4.0)
+        allc = cells + deep
+        got = L.cells_read(allc)
         e1 = L.eng()
         ter = [q.get("terrain") for q in got]
-        want_t = ["RM_Channel_Empty", "RM_Channel_Mid", "RM_Channel_Deep", "RM_Channel_Superdeep"]
-        L.row("S1_dig_ladder", [q["d"] for q in got] == [1, 2, 3, 4] and ter == want_t
-              and e1.get("excavatedCellCount") - e0.get("excavatedCellCount") == 4
-              and e1.get("superdeepCellCount") - e0.get("superdeepCellCount") == 1, "MOD",
+        want_t = ["RM_Channel_Empty", "RM_Channel_Mid", "RM_Channel_Deep"] + ["RM_Channel_Superdeep"] * 3   # every cell from 2 m down
+        L.row("S1_dig_ladder", [q["d"] for q in got] == [1, 2, 3, 4] + list(S1_DEEP_NOTCHES) and ter == want_t
+              and e1.get("excavatedCellCount") - e0.get("excavatedCellCount") == 6
+              and e1.get("superdeepCellCount") - e0.get("superdeepCellCount") == 3, "MOD",
               "D %s terrain %s excavated +%s superdeep +%s" % ([q["d"] for q in got], ter,
                                                              e1.get("excavatedCellCount") - e0.get("excavatedCellCount"),
                                                              e1.get("superdeepCellCount") - e0.get("superdeepCellCount")))
@@ -3332,12 +3362,15 @@ def _x_two_oracle(exact, tar_row, water_row, pulse0=0):
     return o
 
 
-def _sink_ok(kv, depth):
+SINK_BAR_CAP_LEVELS = 8      # pawn_height_ladder_legible: sinks down to 4 m (8 notches), no lower past it (card 2026-10-20)
+
+
+def _sink_ok(kv, depth, cap=SINK_BAR_CAP_LEVELS):
     try:
         sink, dz = float(kv["sink"]), float(kv["drawDz"])
     except (KeyError, ValueError):
         return False
-    return (kv.get("depth") == str(depth) and abs(sink - SINK_PER_LEVEL * depth) < 1e-3 and abs(dz + sink) < 0.05)
+    return (kv.get("depth") == str(depth) and abs(sink - SINK_PER_LEVEL * min(depth, cap)) < 1e-3 and abs(dz + sink) < 0.05)
 
 
 def _xpulse(L, n):
@@ -3372,12 +3405,16 @@ def phase_X(L, args):
         # south-row pit cell at 0.5; the X strip is one row, so X1-X5 read 0.5 at D2..D4 (L1 2026-10-15: 5 FAIL, HARNESS).
         # These rows measure the sink by depth, so they run with the clamp OFF; restore_settings puts the default back.
         L.sset(S_FW, "pitSinkClampEnabled", False)
-        # X1 pawn_height_ladder_legible: a hare on D=0..4, read at 0 ticks through the REAL DrawPos.
+        # X1 pawn_height_ladder_legible: a COLONIST (the bar's pawn, not a hare: the sink scales with the body) on undug ground
+        # and D=1,2,3,4,8,16 (0.5 .. 4 m, then 8 m to prove "no lower past 4 m"), read at 0 ticks through the REAL DrawPos.
+        # Own faction: the superdeep carve-out, no capture on the deep cells.
         hares, got = [], []
-        for d, c in enumerate([X_WALK] + strip):
-            r = B.call("jawa/spawn_pawn", kindDef="Hare", faction="none", x=c[0], z=c[1], count=1)
+        ladder = [(0, X_WALK)] + list(zip((1, 2, 3, 4), strip)) + [(8, SCENES["X_deep8"]["cells"][0]),
+                                                                   (16, SCENES["X_deep16"]["cells"][0])]
+        for d, c in ladder:
+            r = B.call("jawa/spawn_pawn", kindDef="Colonist", faction="player", x=c[0], z=c[1], count=1)
             if not r.get("success"):
-                raise Abort("spawn hare on %s: %r" % (c, r))
+                raise Abort("spawn colonist on %s: %r" % (c, r))
             hares.append((d, r["pawns"][0]["id"]))
         bad, ok_all = [], True
         for d, pid in hares:
@@ -3390,7 +3427,9 @@ def phase_X(L, args):
             L.row("X1_pawn_height_ladder", False, "HARNESS", "ProofPawnSink unreadable: %s" % got, status="UNMEASURED")
         else:
             L.row("X1_pawn_height_ladder", not bad, "MOD", bad[:3] or "sink/drawDz by depth (0.3/level PROVISIONAL, "
-                  "strictly deeper each step): %s" % "; ".join(got))
+                  "strictly deeper each step to 4 m, flat past it): %s" % "; ".join(got))
+        for _d, pid in hares:                      # off the player's books so the sweep below clears them
+            B.call("jawa/set_pawn_faction", pawn=pid, faction="none")
         _vc().sweep_non_colonists(B)
 
         # X2/X3/X4: a colonist WALKS the strip D0 -> D4 (own faction: the carve-out, no capture) and back.
@@ -3832,6 +3871,8 @@ class MockBridge(object):
         "ladder_raise_ignored": ["P4b_ladder_raised_strands"],         # RM_CompLadder.raised not read by the trap
         "sink_flat": ["X1_pawn_height_ladder", "X2_pawn_lowers_walking_in", "X3_pawn_rises_walking_out",
                       "X4_pit_wall_over_head", "X5_slime_occupant_below_surface"],   # draw-offset patch not applied
+        "dig_capped_at_2m": ["S1_dig_ladder"],                         # the dig stops at 4 notches: the bar's 4 m / 8 m holes never exist
+        "sink_grows_forever": ["X1_pawn_height_ladder"],               # the sink never stops at 4 m (bar: no lower past 4 m)
         "slime_lifts": ["X5_slime_occupant_below_surface"],            # fill raises the occupant
         "viscosity_ignored": ["X7_tar_front_lags_water"],              # tar flows at water's pace
         "viscosity_toggle_ignored": ["X7n_viscosity_off"],             # OFF still slows tar
@@ -4126,7 +4167,7 @@ class MockBridge(object):
     def terrain_of(self, c):
         d = self.o.D.get(c, 0)
         if d:
-            return ["RM_Channel_Empty", "RM_Channel_Mid", "RM_Channel_Deep", "RM_Channel_Superdeep"][d - 1]
+            return ["RM_Channel_Empty", "RM_Channel_Mid", "RM_Channel_Deep"][d - 1] if d < 4 else "RM_Channel_Superdeep"   # past 2 m all one terrain
         if c in self.o.receded:
             return "Soil"
         return self.terrain.get(c, "Sand")
@@ -4234,7 +4275,7 @@ class MockBridge(object):
         return dict(success=True, ticksGame=self.tick, nextPulseTick=self.next_pulse, pulseIntervalTicks=self.interval(),
                     ticksUntilNextPulse=self.next_pulse - self.tick, depthEngineEnabled=self.S("depthEngineEnabled"),
                     excavatedCellCount=sum(1 for c in self.o.D if self.o.exc(c)),
-                    superdeepCellCount=sum(1 for c in self.o.D if self.o.D[c] == 4),
+                    superdeepCellCount=sum(1 for c in self.o.D if self.o.D[c] >= 4),
                     bodyCount=len(self.o.bodies), activeFluidRaw=self.fluid if self.classified or self.fill_written else None,
                     sinkTransferredTotal=self.sink_total, overflowDestroyedTotal=self.overflow,
                     rainAccumulator=self.o.rain_acc)
@@ -4315,6 +4356,10 @@ class MockBridge(object):
             return dict(success=True, depth=self.o.D.get(c, 0), fill=self.o.F.get(c, 0), fillSet=False)
         if deepenLevels:
             self.o.dig(c, deepenLevels)
+            if "dig_capped_at_2m" in self.faults:
+                pass                                  # the oracle clamps D at 4: the old 2 m ladder
+            elif c in self.deep_cells():
+                self.o.D[c] = deepenLevels            # the oracle models 2 m at most; the game digs these to the bar's 4 m / 8 m
         fill_set = False
         if "prefill_refused" in self.faults and c in set(SCENES["E7a_fillin"]["cells"] + SCENES["E7b_overflow"]["cells"]):
             setFill = -1                            # the write never takes (fillSet false), as a refusing engine would
@@ -4323,6 +4368,9 @@ class MockBridge(object):
             fill_set = True
             self.fill_written = True
         return dict(success=True, depth=self.o.D.get(c, 0), fill=self.o.F.get(c, 0), fillSet=fill_set)
+
+    def deep_cells(self):
+        return set(SCENES["S1_deep"]["cells"] + SCENES["X_deep8"]["cells"] + SCENES["X_deep16"]["cells"])
 
     def t_jawa_flowworks_body_report(self, x, z, classify=True):
         name = self.classify((x, z)) if classify else self.classified.get((x, z))
@@ -4559,12 +4607,13 @@ class MockBridge(object):
             else:
                 c = p["pos"]
                 d, f = o.D.get(c, 0), o.F.get(c, 0)
-                sink = 0.0 if "sink_flat" in self.faults else SINK_PER_LEVEL * d
+                cap = 10 ** 6 if "sink_grows_forever" in self.faults else SHIPPED_SINK_CAP_LEVELS
+                sink = 0.0 if "sink_flat" in self.faults else SINK_PER_LEVEL * min(d, cap)
                 if "slime_lifts" in self.faults:
                     sink = max(0.0, sink - SINK_PER_LEVEL * f)
                 res = "SINK id=%s cell=%d,%d depth=%d fill=%d fluid=%s sink=%.3f drawDz=%.3f moving=False wallOverHead=%.3f" % (
                     args, c[0], c[1], d, f, (o.fluid.get(c, "RM_Fluid_Water") if f else "none"), sink, -sink,
-                    SINK_PER_LEVEL * d / FEET_TO_HEAD)
+                    SINK_PER_LEVEL * min(d, cap) / FEET_TO_HEAD)
         elif method == "ProofLadder":
             x, z, op = args.split(",")
             c = (int(x), int(z))
@@ -4812,7 +4861,8 @@ def run_live(args, B=None):
                                 v2_without_pulse_tool="3,000-7,300", old_suite=112921),
                summary={st: sum(1 for r in L.rows if r["status"] == st) for st in
                         ("PASS", "FAIL", "UNMEASURED", "UNCOVERED", "UNBUILT", "SKIP")})
-    res["green"] = all(r["status"] in STATUS_OK for r in L.rows) and not aborted
+    # the mock reproduces the shipped engine, so a filed MOD defect (KNOWN_MOD_RED) is red there by design; live it stays red
+    res["green"] = all(r["status"] in STATUS_OK or (args.mock and r["id"] in KNOWN_MOD_RED) for r in L.rows) and not aborted
     return res
 
 
