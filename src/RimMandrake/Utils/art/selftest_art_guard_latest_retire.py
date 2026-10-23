@@ -33,6 +33,12 @@ def main():
              ev("4", "2026-10-22T19:00:00", None, SX, "retire", said="his card words")]
     check(art_guard.check([(PATH, SX, None)], chain) == [], "a later retire on his words explains the deletion")
     check(art_guard.check([(PATH, SX, None)], chain[:3]) != [], "no event carrying his words: the deletion is refused")
+    # the reverse must hold too: an OLD retire on his words never covers a LATER unauthorised retire of the same bytes
+    rev = [ev("1", "2026-10-22T18:00:00", SX, None, "backfill-observed"),
+           ev("2", "2026-10-22T18:10:00", None, SX, "retire", said="his card words"),
+           ev("3", "2026-10-22T18:20:00", SX, None, "backfill-observed"),
+           ev("4", "2026-10-22T19:00:00", None, SX, "no-such-authority")]
+    check(art_guard.check([(PATH, SX, None)], rev) != [], "an older authorised retire does not shadow a later unauthorised one")
     print("ALL PASS" if not FAILS else f"{len(FAILS)} FAIL")
     return 1 if FAILS else 0
 
