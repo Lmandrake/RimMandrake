@@ -1,0 +1,1 @@
+A periodic pass that eats/acts on a pawn 'once it has arrived' misses it: a vanilla Goto ends ON the cell and the think tree hands the pawn a new job that same tick (on sun-heat biomes CreatureBehaviors' RM_JobGiver_SunEscape dashes it away). Put the arrival action in the job's own last toil (COALESCENCE_STAGE_DIAGNOSE_STUCK_AT_ONE, RM_WalkIntoCoalescence).
