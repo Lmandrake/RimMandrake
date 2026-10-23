@@ -213,6 +213,28 @@ def main(argv=None):
     basins, spots, lip_a, lip_b = layout(size, a.rigs, a.rehearsal or not big)
     res["layout"] = {"basins": basins, "rigs": len(spots), "lipA": lip_a, "lipB": lip_b}
 
+    # ------------------------------------------------------------------ the site: drained, filled in, cleared, read back
+    # LEVEL_REHEARSAL_FIX_POURS_ON_FULL_PONDS + PROOF_REELS_FIX_STILL_STAGED_WEST (b): the rehearsal's basins sat over
+    # walk_gaps_proof's filled ponds (ProofStageBasin destroyed 200 levels) and natural rock filled the rig columns so no
+    # reel was built (layFailures 338). ProofResetRect drains and fills back every earlier dig in the rect, prepare_site clears
+    # rock/plants and reads it back; a site that stays blocked is UNMEASURED/SITE, never a verdict.
+    # Rehearsal: the whole layout box. Full run: only the rig gap (the basins are dug by ProofStageBasin on the fresh 325 map).
+    if a.rehearsal or not big:
+        x0, x1 = basins[0][0], basins[1][0] + basins[1][2]
+        z0, z1 = basins[0][1], basins[0][1] + basins[0][3]
+    else:
+        x0, x1 = lip_a, lip_b + 1
+        z0, z1 = basins[0][1], basins[0][1] + basins[0][3]
+    site = (x0, z0, x1 - x0, z1 - z0)
+    rr, rtxt = static("ProofResetRect", "%d;%d;%d;%d" % site)
+    site_rows = []
+    left = int(rr["left"]) if rr.get("left", "").isdigit() else None
+    res["site"] = {"rect": site, "reset": rtxt[:160]}
+    if left != 0 or not (a.mock or V.prepare_site(B, site, site_rows, "LEVEL_site_ready")):   # mock: no reveal walk
+        all_rows("UNMEASURED", "site not ready: reset %s; %s" % (rtxt[:120], str([r.get("detail") for r in site_rows])[:200]),
+                 "SITE")
+        return finish(2)
+
     # ------------------------------------------------------------------ stage the basins (strips of <= 12,500 squares)
     staged = []
     for (x, z, w, h, fill) in basins:
@@ -300,6 +322,8 @@ class FakeBridge(object):
             alloc = "NaN" if "gc_every" in self.f else "210.5"
             return "LEVELPERF calls=%s msAvg=%.3f msMax=%.3f msPerTick=%.5f allocKBAvg=%s allocCalls=%d gcs=0 links=%d moves=3 " \
                    "cycleTicks=250" % (arg, ms, ms * 1.5, ms / 250, alloc, 0 if alloc == "NaN" else int(arg), self.links())
+        if m == "ProofResetRect":
+            return "RESET cells=0 levels=0 rolled=0 left=0"
         if m == "ProofStageBasin":
             x, z, w, h, lv, fill, fl = arg.split(";")
             n = int(w) * int(h)
