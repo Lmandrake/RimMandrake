@@ -1495,6 +1495,11 @@ def cmd_file(args, seat):
     ev = {"seat": seat, "event": "file", "id": args.id, "title": args.title,
           "kind": args.kind, "row": args.row, "target": args.target_field,
           "needs": args.needs, "spec": args.spec, "caused_by": args.caused_by}
+    fw = priority.flowworks_seat(args.id)
+    if fw and args.for_ != fw:
+        print("FlowWorks is %s's lane (owner, 2026-10-23): filing %s for %s, not %s. File it and move on."
+              % (fw, args.id, fw, args.for_))
+        args.for_ = fw
     ev["for"] = args.for_
     _emit(ev, w, quiet=True)
     print("%s filed for %s, state proposed." % (args.id, args.for_))

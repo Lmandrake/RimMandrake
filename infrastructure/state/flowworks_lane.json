@@ -1,0 +1,11 @@
+{
+  "_why": "Owner 2026-10-23: \"Please redirect those FlowWorks actions back to Bench. I want Bench owning all Flowworks from now on to prevent mutual waiting.\" Every FlowWorks item is BENCH's: build, art, live testing, acceptance, code review, deploys. rimflow reads this file in `file` (a FlowWorks id filed for FOUNDRY is filed for BENCH) and in `acceptance` (a FlowWorks item is swept by BENCH at every level). Match is on the item ID; add a pattern when a FlowWorks item slips through. Gimme Some Slack (GSS) goes to BENCH too (owner by card 2026-10-23: \"Yes, take GSS too\").",
+  "seat": "BENCH",
+  "id_patterns": [
+    "FLOWWORKS", "^FW_", "_FW_",
+    "^(HOSE|PIPE|POND|CANAL|PUMP|REEL|TAP|FAUCET|TANK|LIQUID_(BOTTLE|THIRST|LOOK|CONTAINERS|TANK)|LAVA|FLUID|EXCAVATION|QUARRY|DRAWBRIDGE|SUSPENSION|RAILING|GUARDRAIL|FALL_GUARDRAILS|DIG_RIG)_",
+    "^(WATER_(LEVEL|DEPTH|LOOK|ART)|LAKE_FLOORS|DRAWDOWN|SPILL|CAUSEWAY|SINK_CAP|PIT_(SUPERDEEP|CLIMB|DEEPSTONE|TEMPERATURE)|RIVER_(TOGGLE|SCENES)|SURFACE_RIVER|SWALE_CANAL|GLOW_TANK_LIQUID|GLOWTANK|JOINT_GATE|UNDER_COUPLER|CARGO_UPPER_PORT|TAR_COOLING|HEAT_BUDGET|NATURAL_HEAT|MISSION_TANK|MODERN_REEL|FAUCET_REDRAW|PUMP_PORTS|CORD_PLUG|BLEED_WELL|UNDERCOUPLER)",
+    "^(SETTINGS_SEARCH_FIX|SESSION_HURT_DIAGNOSE|WET_FOXHOLE|HAZARD_TAR_TERRAIN)",
+    "^(WORLDMAP_LIQUID_TAGS|WORLD_PATHS_VERIFY_WATER|TESTENV_TRIALSITE|TESTENV_MEGAPEDE|SELFTEST_SOURCE_POLISH)"
+  ]
+}

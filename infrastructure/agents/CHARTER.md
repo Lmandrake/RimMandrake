@@ -61,6 +61,8 @@ gitignored rendered views you never edit — read one with `rimflow queue <SEAT>
 renders first (`queue/HUMAN.md` is the owner's hand-written inbox and stays tracked). Close: `rimflow close <ID> --sha <commit>`, commit
 carrying `Closes: <ID>`, push.
 
+🔴 **BENCH OWNS ALL FLOWWORKS — owner, 2026-10-23:** *"I want Bench owning all Flowworks from now on to prevent mutual waiting."* Code, art, live testing, acceptance, code review and deploys; FOUNDRY files a FlowWorks finding as an item `--for BENCH` and moves on, never waits. Lane list (data): `infrastructure/state/flowworks_lane.json`, enforced by `rimflow file` and `--acceptance`.
+
 🔴 **ANY SEAT ENDS AN ITEM IT FINDS DEAD — owner's ruling, 2026-09-19.** The moment
 any seat finds a queue item **completed, totally invalidated, superseded, or otherwise
 no longer worth considering for activity**, that seat ends it itself — no routing to

@@ -29,6 +29,10 @@ WINDOW IS CLOSED and will open on its own. Writing both into one prose field is 
 the old board could report neither, and why "waiting for the game" looked identical
 to "broken" for months.
 """
+import json
+import os
+import re
+
 from . import model
 
 # Which `needs` are satisfiable in which game state. ⚠️ `harvest` and `owner` are NOT
@@ -297,6 +301,29 @@ def acceptance_seat(level):
     return ACCEPTANCE_SEAT.get(level, ACCEPTANCE_DEFAULT_SEAT)
 
 
+# 🔑 BENCH OWNS ALL FLOWWORKS — owner, 2026-10-23: *"I want Bench owning all Flowworks from now
+# on to prevent mutual waiting."* The lane is DATA: `infrastructure/state/flowworks_lane.json`
+# (id patterns + the seat). A FlowWorks item is swept by that seat at EVERY level, and `file`
+# files it for that seat; FOUNDRY never accepts or picks one up.
+FLOWWORKS_LANE_FILE = os.path.join(model.ROOT, "infrastructure", "state", "flowworks_lane.json")
+
+
+def flowworks_lane(path=None):
+    """-> (seat, [compiled id patterns]); ("BENCH", []) when the file is missing."""
+    try:
+        with open(path or FLOWWORKS_LANE_FILE, encoding="utf-8") as fh:
+            d = json.load(fh)
+    except (OSError, ValueError):
+        return "BENCH", []
+    return d.get("seat") or "BENCH", [re.compile(p) for p in d.get("id_patterns", [])]
+
+
+def flowworks_seat(iid, lane=None):
+    """-> the seat that owns FlowWorks if `iid` is a FlowWorks item, else None."""
+    seat, pats = lane or flowworks_lane()
+    return seat if any(p.search(iid) for p in pats) else None
+
+
 def acceptance(world, seat=None, target="v1"):
     """-> [(level, [Item])], cheapest level first: every `built`/`validated` item, of
     ANY owner, grouped by the CHEAPEST level it still owes — one bridge sitting sweeps a
@@ -304,6 +331,7 @@ def acceptance(world, seat=None, target="v1"):
     ACCEPTANCE_SEAT); any other seat (OWNER, None) keeps all. Blocked items are listed too: a sitting
     should see them, and `blocked` is shown beside each. Pure; oldest build first."""
     groups = {}
+    lane = flowworks_lane()
     for it in world.items.values():
         if it.state not in ("built", "validated"):
             continue
@@ -312,7 +340,7 @@ def acceptance(world, seat=None, target="v1"):
         lv = it.next_level()
         if lv is None:
             continue
-        if seat in ("BENCH", "FOUNDRY") and acceptance_seat(lv) != seat:
+        if seat in ("BENCH", "FOUNDRY") and (flowworks_seat(it.id, lane) or acceptance_seat(lv)) != seat:
             continue
         groups.setdefault(lv, []).append(it)
     out = []
