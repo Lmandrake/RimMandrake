@@ -5,7 +5,7 @@ Review: Transient/pile_2026-10-21/bridge_art_gpt_review.md. Nothing here install
 
     bridge_redraw.py list [--wave N]                  the job table
     bridge_redraw.py guides                           grey geometry guides (raised leaf: one span for all three views)
-    bridge_redraw.py gen --wave N [--only ID..] [--workers 12] [--timeout 520]
+    bridge_redraw.py gen --wave N [--only ID..] [--workers 9] [--timeout 420]
                                                       codex $imagegen, one worker home per job, raw -> RAW (outside git)
     bridge_redraw.py finalize [--wave N]              conform to canvas, reference-free checks, register artpipe done jobs
     bridge_redraw.py manifest                         texture manifest for art_sheet.py --textures (finalized jobs only)
@@ -449,7 +449,7 @@ def facing_jobs():
         letters = "ABCDEFG"
         cols = [x["id"] for x in JOBS if x["row"] == rk and x["wave"] < 7]        # no in-game column on these rows
         pick = dec[rk].get("decision")
-        if pick not in letters or letters.index(pick) >= len(cols) or cols[letters.index(pick)] != j["id"]:
+        if not pick or len(pick) != 1 or pick not in letters or letters.index(pick) >= len(cols) or cols[letters.index(pick)] != j["id"]:
             continue
         tp = j["target_texpath"]
         master = TEX / f"{tp}_south.png"
@@ -477,7 +477,8 @@ def rotate_facings(apply):
     for j in [x for x in JOBS if x["facing"] == "south" and x["row"].startswith(("RD_Anchor", "RD_Jetty"))]:
         cols = ["ingame"] + [x["id"] for x in JOBS if x["row"] == j["row"]]
         pick = (dec.get(j["row"]) or {}).get("decision")
-        if not pick or "ABCDEFG".index(pick) >= len(cols) or cols["ABCDEFG".index(pick)] != j["id"]:
+        # a decision that is not one column letter (a note, "cut") picks no render: skip it, never crash on .index
+        if not pick or len(pick) != 1 or pick not in "ABCDEFG" or "ABCDEFG".index(pick) >= len(cols) or cols["ABCDEFG".index(pick)] != j["id"]:
             continue
         src = TEX / f"{j['target_texpath']}_south.png"
         a = np.asarray(Image.open(src).convert("RGBA"))
@@ -518,6 +519,7 @@ def gen(wave, only, workers, timeout, budget=120):
     RAW.mkdir(parents=True, exist_ok=True)
     js = [j for j in JOBS if (wave is None or j["wave"] == wave) and (not only or j["id"] in only)]
     js = [j for j in js if not (RAW / f"{j['id']}.png").is_file()]
+    workers = max(1, min(workers, len(WORKER_HOMES)))   # a thread beyond the seeded homes would block on homes.get() forever
     homes = queue.Queue()
     for h in WORKER_HOMES[:workers]:
         homes.put(h)
@@ -681,6 +683,7 @@ def finalize(wave):
                 "prompt": j["prompt"], "images": [rel(i) for i in j["images"]], "rimflow_item_id": ITEM,
                 "target_def": j["target_def"], "target_texpath": j["target_texpath"], "source_file": rel(op),
                 "note": "BENCH bridge redraw candidate (bridge_redraw.py); NOT installed — awaiting his pick"}
+        (AP / "done").mkdir(parents=True, exist_ok=True)
         (AP / "done" / f"{j['id']}.json").write_text(json.dumps(spec, indent=2))
         print("PASS", j["id"], cov, [x for x in fs if x[0] == "WARN"])
     RESULTS.write_text(json.dumps(res, indent=1, sort_keys=True))
