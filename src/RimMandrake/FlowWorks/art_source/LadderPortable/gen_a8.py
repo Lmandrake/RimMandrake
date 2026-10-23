@@ -7,7 +7,7 @@ North is rebuilt here exactly as gen_a7.py draws it (it used to be read back fro
 unless gen_a7 had run into the same folder first)."""
 import sys
 from pathlib import Path
-from PIL import Image
+from PIL import Image, ImageChops
 import gen as G
 import gen_a2 as A2
 import gen_a4 as A4
@@ -17,6 +17,7 @@ import gen_a7 as A7
 W = [(64, 50), (168, 96), (176, 344), (70, 296)]
 S = [(124, 150), (260, 150), (266, 280), (118, 280)]   # drawn to y=280, cut at 270: no keyline across the hidden foot
 
+EW_SHIFT = 174   # px on the 384 canvas, east file; see the translate in main
 TARGET = (122, 88, 58)   # RM_Ladder's wood mean; ours is greyer
 
 
@@ -42,5 +43,8 @@ if __name__ == "__main__":
     A2.THICK = 6
     west = A2.facing(L, W)
     north, south, west = warm(north), warm(south), warm(west)
+    # LADDER_EW_FIX_LEANS_THE_WRONG_WAY (841d127ac3): the lean is right, but the ladder must sit against its wall;
+    # the committed EAST art is this image translated +EW_SHIFT px (WEST is its mirror, so -EW_SHIFT). Wrap is harmless: the columns are clear.
+    west = ImageChops.offset(west, EW_SHIFT, 0)
     for f, im in {"north": north, "south": south, "east": west, "west": G.mirror(west)}.items():
         im.save(out / f"optA8_{f}.png")
