@@ -26,7 +26,9 @@ panels a card must carry, and the checklist every reviewer answers item by item.
    same size."* The card prints the measured height spread; trust that number for what it measures.
 3. **Alien, not a recoloured Earth animal** (invented creatures). First name the Earth animal it most resembles,
    in one word, in `nearest_earth_animal`. Then check each line of the card's `departures` (the per-subject
-   features that make it NOT that animal): each one present or absent. — owner 2026-10-11: *"it looks like a
+   features that make it NOT that animal): each one present or absent. `ALIEN` fails only when a stranger would
+   name the Earth animal at first glance AND most departures are absent; naming the nearest animal is not itself
+   a failure. — owner 2026-10-11: *"it looks like a
    terran hippo with ash on its back. Much more alien please."* A canon (RSW_) or vanilla subject is not
    invented; a def whose own text names its Earth body (a frog, an octopus) may look like it.
 4. **The defining feature** the description names (the fan, the comb, the sail) is visible and legible.
@@ -55,7 +57,7 @@ the catch waits for it whatever you say here.
 ```json template
 {
   "template": "creature",
-  "version": "creature@v2",
+  "version": "creature@v3",
   "modules": ["walker", "pack", "swimmer", "amphibious", "flyer", "catch"],
   "required_panels": {
     "*":     ["south", "east", "north", "facings", "scale"],

@@ -1,0 +1,10 @@
+{
+ "run_id": "race_r1dg_incumbent_gpt_s1",
+ "test": true,
+ "started": "2026-10-23T10:15:14-07:00",
+ "subjects": [
+  "RM_Ghemmel__B",
+  "RM_Zhorrel__B"
+ ],
+ "versions_key": "departures_brief@v2#9cda88+gpt_targeted_second_look@v1#cb6e32+opus_first_pass@v1#140565+preamble@v1#a48502+regen_prompt_edit@v1#861700+severity@v3#950903+creature@v2#16a385"
+}

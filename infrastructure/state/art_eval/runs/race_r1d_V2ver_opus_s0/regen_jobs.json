@@ -1,0 +1,45 @@
+[
+ {
+  "id": "arteval_RM_Fuzzviper__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Fuzzviper__B",
+  "prompt": "fuzzviper: The runs are safety, and the fuzzviper is the price of believing that. It lies along a tunnel wall being a root until the run's own traffic comes to it. It is NOT an Earth animal: body reads as a plant root: knobbly, irregular, unevenly thick, tapering like a root rather than a smooth snake body; surface covered in fine fuzz like root hairs, with no visible scales; head end hard to tell from a root tip: no distinct wedge-shaped viper head; lies pressed flat along a vertical tunnel wall, following it the way a root would, not coiled on the ground. The head end tapers like a root tip into a blunt knobbly point that blends into the body, with the mouth a hidden seam and no visible fangs or eyes at rest. The body lies low and flat, stretched along one line with irregular root-like kinks and short side rootlets, as if pressed against a wall. The whole creature reads first as a gnarled root, with irregular thickness, knots and rootlets, and only a subtle hint at the tip that it is alive. The body plan is a knobbly, unevenly thick root with branching rootlets and no snake head, so the silhouette reads as plant before animal. The surface is a short, fine, even fuzz of pale root hairs over a knobbly bark-like skin, with only a few longer rootlets. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING, DESC_MISS, STYLE_EARTHLY, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1d_V2ver_opus_s0"
+ },
+ {
+  "id": "arteval_RM_Mourvel__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Mourvel__B",
+  "prompt": "mourvel: The brief's \"willow-like canopy\" taken literally, and then further: a low wide dome whose entire outer surface is hanging cord-like leaf strands that reach the mud, so the tree is a room with walls. Bark violet-black, strands blue-green. Nothing is visible through it \u2014 the Greentide's one true concealment tree. It is NOT an Earth animal: Low, wide dome silhouette, much broader than it is tall, not a tall trunk carrying a raised crown; Hanging strands cover the whole outer surface and reach the mud all the way round, forming closed walls with no gaps or open skirt; Completely opaque: no trunk, branches or interior show through the strands; Strands are thick round cords, not thin trailing twigs with narrow leaves; Violet-black bark with blue-green strands, not brown bark with yellow-green foliage. Draw a low, wide, closed dome whose whole outer surface is a dense continuous curtain of blue-green cord strands falling all the way to the ground line, hiding the trunk completely, with only a hint of violet-black bark at the crown. Make the silhouette a broad, even dome wider than it is tall, with the strand curtain forming its walls. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, OWNER_NOTE_IGNORED",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1d_V2ver_opus_s0"
+ },
+ {
+  "id": "arteval_RM_Zhorrel__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Zhorrel__B",
+  "prompt": "zhorrel: No crown at all: a low crossbeam of branches with a hanging curtain of slack finger-thick tentacle-leaves, red-barked above. The tentacles are visibly not still \u2014 the tell is that they move against the wind rather than with it. The strangler: no truce, ever. Kill one and the tentacles are excellent cordage. It is NOT an Earth animal: no rounded or domed crown: the top is a low, flat horizontal crossbeam of branches; a hanging curtain of finger-thick, rope-like tentacles in place of leaves or fine willow fronds; red bark on the upper branches and crossbeam; tentacles that look boneless and fleshy, each with a visible curl or flex rather than hanging as straight, uniform strands; some tentacles angled or swaying in a different direction from nearby plants and grass, so the curtain is visibly not moving with the wind. Most tentacles hang slack and straight under their own weight, with only a few tips lifting or curling in a direction that runs against the drape, so the stillness reads as uncanny. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1d_V2ver_opus_s0"
+ }
+]

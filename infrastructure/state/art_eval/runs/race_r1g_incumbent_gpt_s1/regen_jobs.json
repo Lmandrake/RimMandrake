@@ -1,0 +1,152 @@
+[
+ {
+  "id": "arteval_RM_Gorrask__C_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Gorrask__C",
+  "prompt": "Gorrask: Legend on this rock says a stone-crab grew so vast and so old that it no longer fits inside any canyon it did not carve itself. Whatever the truth of that, a gorrask this big has never needed to hurry: it moves once, settles for a season, and the pool truce holds around it exactly as it holds around everything smaller. Its shell is old enough that whole weep-mat colonies have taken root along the seams. It is NOT an Earth animal: shell shows deep seams between its plates, with weep-mat colonies rooted and growing along those seams; the carapace looks like weathered stone, not glossy crab chitin; the shell is so worn and old that it reads as an ancient rock formation, not a living crab's smooth shell; colossal, landform-scale bulk that dwarfs everything around it, more like a hill or canyon boulder than an animal; sits low and fully settled in place, like a fixed part of the terrain, not raised up on its legs. The east view preserves the same massive shell height, body volume and limb scale as the south and north views under the shared oblique camera. Every facing shows the same number and construction of walking limbs, with matching joint proportions and rounded stone toes visible in profile. The heavy body rests close to ground level with compressed supporting limbs and a low underside, creating the settled silhouette of an ancient terrain boulder. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, F_INCONSISTENT, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_incumbent_gpt_s1"
+ },
+ {
+  "id": "arteval_RM_Ssurr__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Ssurr__B",
+  "prompt": "Ssurr: A hound-sized reptile with one enormous half-circle crest-fan folded flat or blazing open \u2014 closed it is a blade, open it is a wheel. Its breeding displays happen at the pools, harmless and spectacular; the fan doubles as its dew-comb on the weeping faces, so courtship and drinking are the same gesture. The tamable charmer of the biome. It is NOT an Earth animal: a single enormous half-circle crest-fan as the dominant structure, not a neck collar or ruff around the throat; when open the fan reads as a wheel: a rigid half-circle disc with radiating spokes, far larger than the head; when folded the fan lies flat into one straight blade-like edge along the body; the fan's rim or spokes carry fine comb-like tines (its dew-comb), so the fan has a toothed edge, not a smooth membrane; hound-sized and hound-proportioned reptile body, not a small slender lizard. All facings depict the same body dimensions and fan radius, with silhouette differences arising from perspective and articulated pose. The single rigid fan has one consistent attachment and plane, and its visible surface foreshortens correctly as the body turns between front, side and rear views. The rear view carries the same teal dorsal skin and corresponding markings visible on the head, back, limbs and tail in the side view. The fan rim or exposed spokes carry a clearly visible row of fine, closely spaced comb-like tines. The front face has natural reptilian eye proportions, anatomically integrated brow ridges and a neutral mouth within painterly shading. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, F_INCONSISTENT, F_INCONSISTENT, DEPARTURE_MISSING, STYLE_CARTOON",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_incumbent_gpt_s1"
+ },
+ {
+  "id": "arteval_RM_Kirruk__C_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Kirruk__C",
+  "prompt": "Kirruk: A hawk-sized soarer that rides the wind forced up the tall stone, long stiff wings that are themselves combs \u2014 slotted trailing edges like comb-teeth \u2014 hanging motionless on the updraft off a rock face, wings combing the wet air as it hangs. It drinks the way the biome does, on the wing, and lands only to nest on the rims. The RM_ tier's own sky presence. It is NOT an Earth animal: wings that are themselves combs: the trailing edge is split into a row of separate comb-teeth with open gaps between them, not a smooth feathered edge; light or sky visible through the slots in the wing, so it reads as a comb and not as a solid membrane or a feathered surface; long, stiff, rigid wings held straight out and flat, without a hawk's flexible, fingered primary feathers; hangs motionless in an updraft beside a tall stone rock face, wings fully spread and still rather than flapping or banking. The east view shows a true side profile from the game's elevated oblique camera, with wing overlap and foreshortening consistent with that viewpoint. The Kirruk has an unmistakable alien silhouette built around rigid slotted comb wings whose structure dominates its appearance. The wings extend straight and flat as long rigid combs with regular stiff teeth and clearly open slots. The complete east-facing wing silhouette fits inside the canvas with a small transparent margin around both wing tips. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_TOPDOWN, STYLE_EARTHLY, DEPARTURE_MISSING, X_CROP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_incumbent_gpt_s1"
+ },
+ {
+  "id": "arteval_RM_Shadefern__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Shadefern__B",
+  "prompt": "Shadefern: A deep-green fern growing only on the shaded face of standing stone, every frond swept to the cold side as if combed, its pale rachis catching what light bounces in. Marks which side of a rock is the cold side at a glance -- the stone-shade fern niche, now donor-free under its own name. It is NOT an Earth animal: grows from a vertical face of standing stone, not from soil or ground; every frond swept to one side in parallel, as if combed, not a radiating rosette; pale, light-catching rachis (frond midribs) standing out against the deep-green leaflets; deep-green fronds lying on the shaded side of the rock. Every frond, including the short outer growth, follows a clearly shared rightward sweep, with pale rachises making that direction readable. The stems converge at the bottom centre of the canvas while the fronds extend into their directional fan. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, ANCHOR",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_incumbent_gpt_s1"
+ },
+ {
+  "id": "arteval_RM_Rockfinger__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Rockfinger__B",
+  "prompt": "Rockfinger: A gnarled, wind-stripped hardwood rooted in the rim cracks of the tall stone, branches clawing out over the drop, bark pale as the stone it grips. At this biome's low sun its shadow runs down the rock face and across the ground for many times its height -- you meet the shadow before the tree. Scarce, and hardy the way it has to be. Slow, scattered, precious timber in high stone country; a felled rockfinger is a caravan event. It is NOT an Earth animal: rooted directly in a crack in a vertical stone cliff rim, not standing in soil on flat ground; branches reaching out sideways over the drop like grasping, claw-like fingers instead of a rounded or conical crown; bark as pale as the surrounding stone, nearly the same colour as the rock it grips; a very long shadow cast down the rock face and across the ground, many times the tree's own height. The tree retains its pale wind-stripped hardwood form while displaying a coherent alien feature, such as flattened stone-gripping root fingers repeated in its branch tips. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_incumbent_gpt_s1"
+ },
+ {
+  "id": "arteval_Plant_Ambrosia__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "Plant_Ambrosia__B",
+  "prompt": "Ambrosia: A rare wild bush which yields the ambrosia fruit. Ambrosia fruit is delicious and produces a drug-like mood boost. Ambrosia cannot be farmed, which makes wild ambrosia groves very valuable.\n\nIts rarity, beauty, and desirability are why ambrosia was named after the food of the ancient Greek gods. The mature bush bears conspicuous ambrosia fruit among its foliage, with fruit shapes that remain identifiable at normal play size. The bush ends in natural stems and lower foliage on transparent alpha, with its botanical base fully visible. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_incumbent_gpt_s1"
+ },
+ {
+  "id": "arteval_RSW_Mudhorn__C_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Mudhorn__C",
+  "prompt": "mudhorn: Mudhorns were large horned creatures that originated from the planet Arvala-7. The eggs of mudhorns were considered a delicacy by Jawas. It was this reason that populations of these creatures were established on other worlds as a result of unscrupulous bartering deals. All three standing facings depict the same physical body scale, with the east body's bulk and horn height matching the frontal and rear views. The horn silhouettes have clean transparent edges with antialiasing colored to match the adjacent bone surface. The complete east horn fits inside the transparent canvas with a clear margin around its outer contour. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, ALPHA_HALO, X_CROP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_incumbent_gpt_s1"
+ },
+ {
+  "id": "arteval_RM_Ghemmel__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Ghemmel__B",
+  "prompt": "ghemmel: The ordinary one, and the roster needs one: gnarled wind-bent trunk, dense rounded crown of medium dark leaves. Its distinguishing feature is not shape but blood \u2014 the bark bleeds thick red wherever it is cut or split, and in this biome it is split everywhere. The commonest mid-storey tree and the source of the biome's red dye. Numerous visible splits across the trunk and branches ooze thick, unmistakably blood-red sap in broad streaks and hanging drops. The trunk and root contact point sit at the bottom centre while the wind-bent trunk and spreading crown retain their natural asymmetry. The ordinary broadleaf tree visibly expresses its alien identity through pervasive bark wounds carrying conspicuous thick blood-red sap that remains apparent at normal play scale. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, ANCHOR, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_incumbent_gpt_s1"
+ },
+ {
+  "id": "arteval_RSW_JungleRancor__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_JungleRancor__A",
+  "prompt": "Jungle Rancor: Jungle rancors were a colossal subspecies of the more common rancor that had evolved on the planet Felucia, but existed on other worlds through suspected \"exotic egg sales\" and poaching. This subspecies had extreme sexual dimorphism, with the males (referred to as \"rancor bulls\") being pale whitish grey, having 4 short facial-tusks used for display and an elongated tail for balance. The females were a regal shade of navy blue with webbed hands and had additional layers of thick almost testudine-like growths on their backs (presumably to help avoid predation as juveniles). It's believed this subspecies of rancor was able to grow too such colossal sizes due to it's consumption of the local \"fungal trees\" on their native Felucia, supplementing it's otherwise carnivorous diet in times of prey sparsity. The east view has shell, limb and overall body dimensions consistent with the south and north views at one shared scale. The hands show clearly visible skin membranes connecting the bases and lower lengths of the spread fingers. All facings have dark brown-to-charcoal armour and arms, pale tan-to-ochre wrinkled undersides and rust-red spike tips. The cut-out has clean naturally coloured silhouette pixels with fully transparent space immediately outside the body. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, DESC_MISS, CANON_MISS, ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_incumbent_gpt_s1"
+ },
+ {
+  "id": "arteval_RM_VizhikCatch__C_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_VizhikCatch__C",
+  "prompt": "Vizhik: Picked off wet stone after an escape, gloved \u2014 not caught in the pool, caught traveling. The catch has the living Vizhik's slender blue elongated body, fringed head region, small paired fins and tapering tail. The specimen lies on its side with a relaxed body, settled fins and a shut or visibly dull eye. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: CATCH_WRONG, CATCH_POSE",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_incumbent_gpt_s1"
+ }
+]

@@ -1,0 +1,37 @@
+{
+ "versions_key": "departures_brief@v2#9cda88+gpt_targeted_second_look@v1#cb6e32+opus_first_pass@v2#85b8f1+preamble@v2#7130aa+regen_prompt_edit@v1#861700+severity@v3#950903+creature@v3#fdc520",
+ "run": "regress_20261023T101840",
+ "at": "2026-10-23T10:20:54-07:00",
+ "passed": 4,
+ "total": 4,
+ "rows": [
+  {
+   "subject": "RM_Shadefern",
+   "expect": "ACCEPT",
+   "got": "ACCEPT",
+   "pass": true,
+   "why": "owner kept Shadefern B on 2026-10-10"
+  },
+  {
+   "subject": "RM_Huldu",
+   "expect": "NOT_ACCEPT",
+   "got": "REGEN",
+   "pass": true,
+   "why": "owner REDO, weepingstones sheet sitting 2026-10-10"
+  },
+  {
+   "subject": "RM_Ssurr",
+   "expect": "NOT_ACCEPT",
+   "got": "REGEN",
+   "pass": true,
+   "why": "owner REDO, weepingstones sheet sitting 2026-10-10"
+  },
+  {
+   "subject": "RM_Vellak",
+   "expect": "NOT_ACCEPT",
+   "got": "HOLD_ERROR",
+   "pass": true,
+   "why": "owner REDO, weepingstones sheet sitting 2026-10-10"
+  }
+ ]
+}

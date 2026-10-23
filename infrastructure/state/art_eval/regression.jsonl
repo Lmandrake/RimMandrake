@@ -2,3 +2,5 @@
 {"pilot": "RM_Huldu:C", "expect": "NOT_ACCEPT", "from": "owner_key", "why": "owner REDO, weepingstones sheet sitting 2026-10-10"}
 {"pilot": "RM_Ssurr:B", "expect": "NOT_ACCEPT", "from": "owner_key", "why": "owner REDO, weepingstones sheet sitting 2026-10-10"}
 {"pilot": "RM_Vellak:B", "expect": "NOT_ACCEPT", "from": "owner_key", "why": "owner REDO, weepingstones sheet sitting 2026-10-10"}
+{"pilot": "RM_Murrin:C", "expect": "NOT_ACCEPT", "from": "CL-006", "why": "guard: the relaxation must still reject an owner REDO swimmer"}
+{"pilot": "RM_Dewblade:B", "expect": "ACCEPT", "from": "CL-007", "why": "owner kept Dewblade B 2026-10-10; incumbent REGEN, V1cal ACCEPT"}

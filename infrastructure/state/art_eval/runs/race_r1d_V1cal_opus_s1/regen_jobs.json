@@ -1,0 +1,28 @@
+[
+ {
+  "id": "arteval_RM_Ghemmel__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Ghemmel__B",
+  "prompt": "ghemmel: The ordinary one, and the roster needs one: gnarled wind-bent trunk, dense rounded crown of medium dark leaves. Its distinguishing feature is not shape but blood \u2014 the bark bleeds thick red wherever it is cut or split, and in this biome it is split everywhere. The commonest mid-storey tree and the source of the biome's red dye. It is NOT an Earth animal: thick red sap bleeding from cuts and splits in the bark, running down the trunk; bark visibly split and cracked in many places, with red showing through the splits; gnarled trunk bent and leaning to one side as if shaped by wind, not upright; dense, rounded crown of medium-dark leaves. Draw the bark cracked and split along the whole trunk and the major limbs, with thick, glossy blood-red sap welling from every split and running down in heavy streaks, enough red to read at normal zoom. The trunk and major branches show numerous irregular bark splits exposing thick dark crimson blood, with substantial red beads and hanging drips. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1d_V1cal_opus_s1"
+ },
+ {
+  "id": "arteval_RM_Tumbel__C_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Tumbel__C",
+  "prompt": "tumbel: A thick runner arching up on woody props well above pawn height, carrying heavy hollow vessels slung along its length, each the size of a crate, dull and leathery-skinned. You walk under it and cannot see out through the vessels. Its hollow shells are cut into containers once harvested \u2014 the roster's own waypoint marker, visible from further away than a flat plant would be. It is NOT an Earth animal: a single thick runner arched up off the ground on woody prop-like supports, standing clearly taller than a pawn, not a vine trailing along the ground or climbing a trellis; crate-sized hollow vessels hung along the underside of the runner, far bigger than any gourd or pumpkin compared with a pawn; dull, matte, leathery vessel skin, with no glossy rind, ribbing or bright gourd colours; vessels hung close enough together along the arch that they form a solid wall, so nothing behind them shows through; a heavy, woody, trunk-thick runner with no thin curling tendrils or broad vine leaves. The vessels are closed or narrow-slit, gourd-like hollow shells with dull, leathery, matte skin, slung along the runner like heavy sacks, with no carnivorous-pitcher lip or lid. The hanging vessels have distinctive alien shell shapes and attachment anatomy that establish a recognizable tumbel silhouette. A long thick runner arches above pawn height on separated woody prop stems, leaving a visible walk-through opening beneath its hanging vessels. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_EARTHLY, STYLE_EARTHLY, DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1d_V1cal_opus_s1"
+ }
+]

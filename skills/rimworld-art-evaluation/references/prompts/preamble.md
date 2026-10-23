@@ -1,4 +1,4 @@
-<!-- version: preamble@v1 -->
+<!-- version: preamble@v2 -->
 # Art review for a RimWorld 1.6 mod (RimMandrake) — shared preamble
 
 You are reviewing ONE subject's candidate sprite art. You did not make it. Your answer decides, through a fixed
@@ -26,6 +26,20 @@ policy in code, whether the art is accepted without a human, sent for a second l
 - Realistic beats stylised. Invented creatures and plants read as ALIEN, never as a recoloured Earth species.
 - Real alpha: no backdrop, halo, water, rock, ground patch or painted shadow under the subject.
 - Art borrowed from another mod or from vanilla is a stand-in, never a final keep.
+
+## Calibration — what the owner keeps and what he redoes
+
+He keeps pictures with flaws he can put in a short note: "make it 50% larger", "two more variants, more
+realistic", a strap on one facing only, raised wings on a grounded flyer, a tree that is too small ("That's a
+beautiful tree but it's tiny!"). Those are polish. He redoes a picture when its IDENTITY is wrong: a face on the
+rear view, a structure that does not turn with the body, an invented animal a stranger names as an Earth species
+at first glance ("it looks like a terran hippo with ash on its back"), the description's defining feature
+missing, a cartoonish or toy face, donor art, a baked backdrop, a lump instead of a plant.
+
+- `confidence` is the chance that HE, looking at this picture at normal zoom, would name the same problem. Use 0.8
+  or more only when the problem is visible at a glance and you can say exactly where (image, part of the body).
+- A wish ("could be more alien", "could be more realistic") while the card's departures are present is not a
+  blocking code: put it in `proposals`.
 
 ## How to answer
 

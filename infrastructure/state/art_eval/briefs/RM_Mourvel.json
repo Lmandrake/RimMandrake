@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Mourvel",
+ "nearest_earth_animal": "weeping willow",
+ "earth_body_named": true,
+ "departures": [
+  "Low, wide dome silhouette, much broader than it is tall, not a tall trunk carrying a raised crown",
+  "Hanging strands cover the whole outer surface and reach the mud all the way round, forming closed walls with no gaps or open skirt",
+  "Completely opaque: no trunk, branches or interior show through the strands",
+  "Strands are thick round cords, not thin trailing twigs with narrow leaves",
+  "Violet-black bark with blue-green strands, not brown bark with yellow-green foliage"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T10:11:16-07:00",
+ "source": "description only (no image)"
+}
