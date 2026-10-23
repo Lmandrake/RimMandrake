@@ -156,6 +156,17 @@
             "timeout": 10
           }
         ]
+      },
+      {
+        "matcher": "Agent",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/block_unbounded_agent.py\" 2>/dev/null || true",
+            "timeout": 10,
+            "statusMessage": "Checking the subagent runs on a bounded context"
+          }
+        ]
       }
     ],
     "SessionStart": [
