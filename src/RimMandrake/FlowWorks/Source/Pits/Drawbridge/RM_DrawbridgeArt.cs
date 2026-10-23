@@ -110,9 +110,26 @@ namespace RimMandrake.FlowWorks.Pits
 
 		public static Material LeafUp(SuspensionTier t, string look, LeafView v)
 		{
+			return LeafUp(t, look, v, out _);
+		}
+
+		/// <summary>The raised leaf's picture and the path it came from (DRAWBRIDGE_CABLES_FIX_STOP_SHORT: the edge pictures'
+		/// painted rope stub is cropped by name).</summary>
+		public static Material LeafUp(SuspensionTier t, string look, LeafView v, out string path)
+		{
 			List<string> c = new List<string>(DrawbridgeArtPaths.LeafUp(t, look, v.ToString()));
 			c.Add("Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_" + Material(t));
-			return MatOrNull(c.ToArray());
+			foreach (string p in c)
+			{
+				Material m = MatOrNull(p);
+				if (m != null)
+				{
+					path = p;
+					return m;
+				}
+			}
+			path = null;
+			return null;
 		}
 
 		public static Material Planks(SuspensionTier t, string look)
@@ -210,12 +227,12 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 			IntVec3 step = l.hingeAtFirst ? r.dir.FacingCell : r.dir.Opposite.FacingCell;   // hinge toward the leaf
 			Rot4 spanFromHinge = Rot4.FromIntVec3(step);
-			Material mat = LeafUp(r.tier, LookOf(r), ViewFor(spanFromHinge));
+			Material mat = LeafUp(r.tier, LookOf(r), ViewFor(spanFromHinge), out string path);
 			if (mat == null)
 			{
 				return;
 			}
-			Mesh mesh = spanFromHinge == Rot4.West ? MeshPool.plane10Flip : MeshPool.plane10;
+			Mesh mesh = LeafMesh(path, spanFromHinge == Rot4.West);
 			float rise = Mathf.Clamp01((float)l.progress / full);
 			float h = l.Span.Length * rise;
 			int hinge = RM_Drawbridges.HingeIndex(l);
@@ -227,6 +244,213 @@ namespace RimMandrake.FlowWorks.Pits
 				Matrix4x4 m = Matrix4x4.TRS(at, Quaternion.identity, new Vector3(1f, 1f, h));
 				Graphics.DrawMesh(mesh, m, mat, 0);
 			}
+		}
+
+		private static readonly Dictionary<long, Mesh> leafMeshes = new Dictionary<long, Mesh>();
+
+		/// <summary>DRAWBRIDGE_CABLES_FIX_STOP_SHORT (owner 2026-10-23: "a stiff rope sticking straight up from the drawbridge
+		/// ... Ropes should now be slack and disconnected"): an edge picture draws only its leaf body's columns below the top of
+		/// its hook's eye, so the rope stub painted off the hook is not drawn; every other picture draws whole.</summary>
+		public static Mesh LeafMesh(string path, bool flip)
+		{
+			string name = path == null ? null : path.Substring(path.LastIndexOf('/') + 1);
+			const string pre = "RM_DrawbridgeLeafUp_";
+			if (name == null || !name.StartsWith(pre) || !RM_DrawbridgeCableMath.LeafEdgeBody.TryGetValue(name.Substring(pre.Length), out double[] body))
+			{
+				return flip ? MeshPool.plane10Flip : MeshPool.plane10;
+			}
+			float u0 = Mathf.Max(0f, (float)body[0] - 0.008f), u1 = Mathf.Min(1f, (float)body[1] + 0.008f);
+			float vTop = 1f - Mathf.Clamp01((float)body[2] - 0.002f);   // the eye's top: the stub above it is not drawn
+			long key = ((long)Mathf.RoundToInt(u0 * 10000f) << 40) ^ ((long)Mathf.RoundToInt(u1 * 10000f) << 21)
+				^ ((long)Mathf.RoundToInt(vTop * 10000f) << 1) ^ (flip ? 1L : 0L);
+			if (leafMeshes.TryGetValue(key, out Mesh m))
+			{
+				return m;
+			}
+			// x ascending, as MeshMakerPlanes lays a plane: unflipped x = u - 0.5, flipped x = 0.5 - u
+			float x0 = flip ? 0.5f - u1 : u0 - 0.5f, x1 = flip ? 0.5f - u0 : u1 - 0.5f;
+			float ua = flip ? u1 : u0, ub = flip ? u0 : u1;
+			m = new Mesh
+			{
+				name = "RM_LeafUpCrop",
+				vertices = new[] { new Vector3(x0, 0f, -0.5f), new Vector3(x0, 0f, vTop - 0.5f), new Vector3(x1, 0f, vTop - 0.5f), new Vector3(x1, 0f, -0.5f) },
+				uv = new[] { new Vector2(ua, 0f), new Vector2(ua, vTop), new Vector2(ub, vTop), new Vector2(ub, 0f) },
+				triangles = new[] { 0, 1, 2, 0, 2, 3 },
+			};
+			m.RecalculateNormals();
+			m.RecalculateBounds();
+			leafMeshes[key] = m;
+			return m;
+		}
+
+		/// <summary>How one anchor's picture is printed (as Graphic.Print prints it) and which ropes it paints.</summary>
+		public sealed class AnchorPrint
+		{
+			public Material mat;
+			public string facing;
+			public bool flip;
+			public float angle;
+			public Vector3 center;
+			public RM_DrawbridgeCableMath.RopeArt[] ropes;
+			/// <summary>The deck square the ropes face is a raised leaf: the ropes lie slack on the bank, disconnected.</summary>
+			public bool slack;
+			/// <summary>+1 when the rope frame's +lateral is the print's local +x (a mirrored print), else -1.</summary>
+			public float hand;
+
+			public Vector3 World(double a, double l)
+			{
+				(double x, double z) = RM_DrawbridgeCableMath.ToWorld(facing, flip, angle, a, l);
+				return new Vector3(center.x + (float)x, center.y, center.z + (float)z);
+			}
+		}
+
+		/// <summary>DRAWBRIDGE_CABLES_FIX_STOP_SHORT: the rope print of an anchor whose ropes face a deck square, or null (no deck
+		/// ahead, a picture without a measured rope table, an unexpected print): then the anchor prints as before.</summary>
+		public static AnchorPrint AnchorPrintFor(Thing a)
+		{
+			Map map = a?.Map;
+			Graphic g = a?.Graphic;
+			if (map == null || g == null || g.drawSize != Vector2.one)
+			{
+				return null;
+			}
+			Building_SuspensionDeck deck = RM_MapComponent_SuspensionBridges.StructuralDeckAt(map, a.Position + a.Rotation.FacingCell);
+			if (deck == null)
+			{
+				return null;
+			}
+			Rot4 rot = a.Rotation;
+			bool rotated = g.ShouldDrawRotated;
+			string key = RM_DrawbridgeCableMath.KeyOf(g.path, g is Graphic_Multi && !rotated);
+			if (key == null || (g is Graphic_Multi) == rotated)
+			{
+				return null;   // a styled picture prints unrotated per facing; the unstyled single prints rotated
+			}
+			var p = new AnchorPrint { ropes = RM_DrawbridgeCableMath.Art[key], slack = deck.leafRaised, mat = g.MatAt(rot, a) };
+			if (rotated)
+			{
+				p.facing = "single";
+				p.flip = false;
+				p.angle = rot.AsAngle + g.DrawRotatedExtraAngleOffset;
+			}
+			else
+			{
+				if ((rot == Rot4.West && !g.WestFlipped) || (rot == Rot4.East && g.EastFlipped))
+				{
+					return null;   // a _west picture of its own: not measured
+				}
+				p.facing = rot == Rot4.North ? "north" : rot == Rot4.South ? "south" : "east";
+				p.flip = rot == Rot4.West;
+				p.angle = 0f;
+			}
+			p.center = a.TrueCenter() + g.DrawOffset(rot);
+			Vector3 dir = p.World(1, 0) - p.World(0, 0);
+			IntVec3 f = rot.FacingCell;
+			if (Mathf.Abs(dir.x - f.x) > 0.01f || Mathf.Abs(dir.z - f.z) > 0.01f)
+			{
+				return null;   // the picture's ropes do not point at the deck
+			}
+			Vector3 lat = p.World(0, 1) - p.World(0, 0);
+			p.hand = Vector3.Dot(lat, new Vector3(dir.z, 0f, -dir.x)) > 0f ? 1f : -1f;   // right of the rope direction
+			return p;
+		}
+
+		/// <summary>A raised leaf's anchor: its picture up to the ropes' attachment points only (the bollards), the painted
+		/// taut ropes cut away.</summary>
+		public static void PrintBollards(SectionLayer layer, AnchorPrint p)
+		{
+			double cut = 1.0;
+			foreach (RM_DrawbridgeCableMath.RopeArt r in p.ropes)
+			{
+				cut = System.Math.Min(cut, r.Attach);
+			}
+			PrintFrameRect(layer, p, 0.0, cut, 0.0, 1.0);
+		}
+
+		/// <summary>The rope-frame rectangle along [a0,a1] × lateral (lmid ± lspan/2) of the anchor picture, printed in place.</summary>
+		private static void PrintFrameRect(SectionLayer layer, AnchorPrint p, double a0, double a1, double lmid, double lspan)
+		{
+			Vector3 c = p.World((a0 + a1) / 2, lmid);
+			Vector3 along = p.World(a1, lmid) - p.World(a0, lmid);
+			float rot = (float)RM_DrawbridgeCableMath.AngleOf(along.x, along.z);
+			var uvs = new Vector2[4];
+			int i = 0;
+			foreach ((float sx, float sz) in Corners)
+			{
+				double a = (a0 + a1) / 2 + sz * (a1 - a0);
+				double l = lmid + p.hand * sx * lspan;
+				(double u, double v) = RM_DrawbridgeCableMath.ToUV(p.facing, a, l);
+				uvs[i++] = new Vector2((float)u, (float)v);
+			}
+			Printer_Plane.PrintPlane(layer, c, new Vector2((float)lspan, (float)(a1 - a0)), p.mat, rot, false, uvs);
+		}
+
+		/// <summary>PrintPlane's corner order, as (local x, local z) in half units.</summary>
+		private static readonly (float, float)[] Corners = { (-0.5f, -0.5f), (-0.5f, 0.5f), (0.5f, 0.5f), (0.5f, -0.5f) };
+
+		/// <summary>The drawn ropes: lowered, each taut rope's run from its painted end to past the deck-facing edge under the
+		/// deck; raised, each rope's slack loop on the bank. Every piece is cut from the picture's own painted rope.</summary>
+		public static void PrintRopes(SectionLayer layer, AnchorPrint p)
+		{
+			foreach (RM_DrawbridgeCableMath.RopeArt r in p.ropes)
+			{
+				if (p.slack)
+				{
+					List<(double A, double L)> pts = RM_DrawbridgeCableMath.Slack(r);
+					double src = r.Attach + 0.01;
+					for (int i = 0; i + 1 < pts.Count; i++)
+					{
+						src = PrintRopeRun(layer, p, r, p.World(pts[i].A, pts[i].L), p.World(pts[i + 1].A, pts[i + 1].L), src);
+					}
+					continue;
+				}
+				foreach (RM_DrawbridgeCableMath.Piece pc in RM_DrawbridgeCableMath.Taut(r))
+				{
+					if (!pc.Painted)
+					{
+						PrintRopeRun(layer, p, r, p.World(pc.A0, pc.L0), p.World(pc.A1, pc.L1), r.End - (pc.A1 - pc.A0) - 0.01);
+					}
+				}
+			}
+		}
+
+		/// <summary>One straight run of rope from world point s to e, tiled from the painted rope (along [Attach, End] of the
+		/// picture) starting at src; returns where the next run's source starts, so a curve's pattern runs on.</summary>
+		private static double PrintRopeRun(SectionLayer layer, AnchorPrint p, RM_DrawbridgeCableMath.RopeArt r, Vector3 s, Vector3 e, double src)
+		{
+			double lo = r.Attach + 0.01, hi = r.End - 0.005;
+			Vector3 d = e - s;
+			float len = new Vector2(d.x, d.z).magnitude;
+			if (len < 1e-4f || hi - lo < 0.02)
+			{
+				return src;
+			}
+			float rot = (float)RM_DrawbridgeCableMath.AngleOf(d.x, d.z);
+			float pad = (float)r.Thick * 0.5f;   // overlap at the joints of a bent rope
+			double done = 0;
+			while (done < len - 1e-4)
+			{
+				if (src < lo || src > hi - 0.02)
+				{
+					src = lo;
+				}
+				double piece = System.Math.Min(len - done, hi - src);
+				Vector3 mid = s + d * (float)((done + piece / 2) / len);
+				double geo = piece + (p.slack ? pad : 0f);
+				var uvs = new Vector2[4];
+				int i = 0;
+				foreach ((float sx, float sz) in Corners)
+				{
+					double a = src + (sz + 0.5) * System.Math.Min(geo, hi - src);
+					double l = r.Lateral + p.hand * sx * r.Thick;
+					(double u, double v) = RM_DrawbridgeCableMath.ToUV(p.facing, a, l);
+					uvs[i++] = new Vector2((float)u, (float)v);
+				}
+				Printer_Plane.PrintPlane(layer, mid, new Vector2((float)r.Thick, (float)geo), p.mat, rot, false, uvs, null, 0f);
+				done += piece;
+				src += piece;
+			}
+			return src;
 		}
 
 		/// <summary>The art planks, stacked beside the hinge anchor (outside lane 0): art only, never an item (answer 1).</summary>

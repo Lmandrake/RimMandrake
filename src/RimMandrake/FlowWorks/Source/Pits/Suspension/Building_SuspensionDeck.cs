@@ -313,6 +313,32 @@ namespace RimMandrake.FlowWorks.Pits
 	{
 		public SuspensionTier Tier => def.GetModExtension<RM_SuspensionExtension>()?.tier ?? SuspensionTier.Timber;
 
+		/// <summary>DRAWBRIDGE_CABLES_FIX_STOP_SHORT: facing a deck square, the ropes run on from where the picture stops to
+		/// under the deck's end (they stopped short); facing a raised leaf, they lie slack on the bank, disconnected (owner
+		/// 2026-10-23). The deck toggling a leaf re-prints its neighbours (RM_Drawbridges.NotifyToggled → DirtyAround).</summary>
+		public override void Print(SectionLayer layer)
+		{
+			RM_DrawbridgeArt.AnchorPrint p = RM_DrawbridgeArt.AnchorPrintFor(this);
+			if (p == null)
+			{
+				base.Print(layer);
+				return;
+			}
+			if (p.slack)
+			{
+				RM_DrawbridgeArt.PrintBollards(layer, p);
+				foreach (ThingComp c in AllComps)
+				{
+					c.PostPrintOnto(layer);
+				}
+			}
+			else
+			{
+				base.Print(layer);
+			}
+			RM_DrawbridgeArt.PrintRopes(layer, p);
+		}
+
 		public override void SpawnSetup(Map map, bool respawningAfterLoad)
 		{
 			base.SpawnSetup(map, respawningAfterLoad);

@@ -446,7 +446,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("Drawbridge_Looks_wired_at_the_draw_sites", () =>
             {
                 string a = Src("Pits", "Drawbridge", "RM_DrawbridgeArt.cs");
-                Assert(Body(a, "public static void DrawLeafUp(").Contains("LeafUp(r.tier, LookOf(r), ViewFor(spanFromHinge))"), "can-fail: the raised leaf reads its bridge's look");
+                Assert(Body(a, "public static void DrawLeafUp(").Contains("LeafUp(r.tier, LookOf(r), ViewFor(spanFromHinge), out string path)"), "can-fail: the raised leaf reads its bridge's look");
                 Assert(Body(a, "public static void DrawPlanks(").Contains("Planks(r.tier, LookOf(r))"), "the planks read the look");
                 Assert(Body(a, "public static string LookOf(").Contains("r.look"), "the look is the bridge's own");
                 string c = Src("Pits", "Drawbridge", "RM_DrawbridgeControl.cs");
@@ -554,6 +554,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string can = Body(db, "public static bool CanBeDrawbridge(SuspensionBridgeRecord r, out string why)");
                 Assert(can.Contains("IsDrawbridgeTier(r.tier)") && can.Contains("r.jetty") && can.Contains("r.towers"), "timber/steel, no jetty, no towers");
             });
+
+            DrawbridgeCableChecks.Run(Case);   // DRAWBRIDGE_CABLES_FIX_STOP_SHORT
         }
 
         private static IEnumerable<int> Nbrs(int i, int w, int h)
@@ -576,6 +578,225 @@ namespace RimMandrake.FlowWorks.SelfTest
                 sb.Append(l).Append('\n');
             }
             return sb.ToString();
+        }
+    }
+
+    /// <summary>
+    /// DRAWBRIDGE_CABLES_FIX_STOP_SHORT (owner 2026-10-23: "bridges have gaps in their support cables"; raised: "Ropes should
+    /// now be slack and disconnected"). The anchors' rope geometry (RM_DrawbridgeCableMath) graded against the art's own
+    /// attachment points, measured from the PNGs' alpha by art_source/Drawbridge/measure_cable_art.py into
+    /// anchor_cable_art.json (selftest_flowworks_drawbridge_art.py proves that fixture is current). The expected world
+    /// positions below are derived here from the fixture's picture frame, not from the math under test.
+    /// </summary>
+    internal static class DrawbridgeCableChecks
+    {
+        private const double Px = 1.0 / 256.0;
+
+        private static void Assert(bool ok, string msg)
+        {
+            if (!ok) throw new Exception(msg);
+        }
+
+        internal sealed class Measured
+        {
+            public double Lateral, Thick, Attach, End;
+        }
+
+        internal static Dictionary<string, List<Measured>> Anchors(out Dictionary<string, double[]> leafBody)
+        {
+            string src = RiverSwitchFlipChecks.SrcPath("RM_DrawbridgeMath.cs");
+            string path = Path.Combine(Path.GetDirectoryName(src), "..", "art_source", "Drawbridge", "anchor_cable_art.json");
+            Assert(File.Exists(path), "fixture missing: " + path + " (run art_source/Drawbridge/measure_cable_art.py)");
+            using var doc = System.Text.Json.JsonDocument.Parse(File.ReadAllText(path));
+            var res = new Dictionary<string, List<Measured>>();
+            foreach (var kv in doc.RootElement.GetProperty("anchors").EnumerateObject())
+            {
+                var l = new List<Measured>();
+                foreach (var r in kv.Value.EnumerateArray())
+                {
+                    l.Add(new Measured
+                    {
+                        Lateral = r.GetProperty("lateral").GetDouble(),
+                        Thick = r.GetProperty("thick").GetDouble(),
+                        Attach = r.GetProperty("attach").GetDouble(),
+                        End = r.GetProperty("end").GetDouble(),
+                    });
+                }
+                res[kv.Name] = l;
+            }
+            leafBody = new Dictionary<string, double[]>();
+            foreach (var kv in doc.RootElement.GetProperty("leafEdges").EnumerateObject())
+            {
+                var b = kv.Value.GetProperty("body");
+                leafBody[kv.Name] = new[] { b[0].GetDouble(), b[1].GetDouble(), kv.Value.GetProperty("eyeTop").GetDouble() };
+            }
+            return res;
+        }
+
+        /// <summary>A print setup per rotation, as Graphic.Print prints the anchor: a styled (Graphic_Multi) picture is printed
+        /// unturned from its facing file, west = the east file mirrored; the unstyled single is turned to the rotation.</summary>
+        internal static IEnumerable<(string rotName, string facing, bool flip, double angle, int fx, int fz)> Setups(bool styled)
+        {
+            if (styled)
+            {
+                yield return ("N", "north", false, 0, 0, 1);
+                yield return ("E", "east", false, 0, 1, 0);
+                yield return ("S", "south", false, 0, 0, -1);
+                yield return ("W", "east", true, 0, -1, 0);
+            }
+            else
+            {
+                yield return ("N", "single", false, 0, 0, 1);
+                yield return ("E", "single", false, 90, 1, 0);
+                yield return ("S", "single", false, 180, 0, -1);
+                yield return ("W", "single", false, 270, -1, 0);
+            }
+        }
+
+        /// <summary>Where the picture's own frame puts (along, lateral) in the world, derived from the fixture's frame: along
+        /// runs toward the deck (f), +lateral is left of f, mirrored when the print mirrors.</summary>
+        internal static (double X, double Z) Expected(int fx, int fz, bool flip, double a, double l)
+        {
+            double lx = -fz, lz = fx;   // left of f
+            if (flip)
+            {
+                lx = -lx;
+                lz = -lz;
+            }
+            return ((a - 0.5) * fx + l * lx, (a - 0.5) * fz + l * lz);
+        }
+
+        private static double Dist((double X, double Z) p, (double X, double Z) q) => Math.Sqrt((p.X - q.X) * (p.X - q.X) + (p.Z - q.Z) * (p.Z - q.Z));
+
+        /// <summary>The whole grade for one table against the measured art; returns the failures (empty = pass). The can-fail
+        /// cases feed it a perturbed table.</summary>
+        internal static List<string> Grade(Dictionary<string, RM_DrawbridgeCableMath.RopeArt[]> table, Dictionary<string, List<Measured>> measured)
+        {
+            var bad = new List<string>();
+            foreach (var kv in measured)
+            {
+                string[] parts = kv.Key.Split('/');
+                bool styled = parts[0] != "base";
+                string key = parts[0] + "/" + parts[1];
+                if (!table.TryGetValue(key, out RM_DrawbridgeCableMath.RopeArt[] ropes) || ropes.Length != kv.Value.Count)
+                {
+                    bad.Add(kv.Key + ": no rope table");
+                    continue;
+                }
+                foreach (Measured m in kv.Value)
+                {
+                    RM_DrawbridgeCableMath.RopeArt r = ropes[0];
+                    foreach (var c in ropes) if (Math.Abs(c.Lateral - m.Lateral) < Math.Abs(r.Lateral - m.Lateral)) r = c;
+                    if (Math.Abs(r.Lateral - m.Lateral) > 1.5 * Px || Math.Abs(r.Attach - m.Attach) > 1.5 * Px || Math.Abs(r.End - m.End) > 1.0 * Px)
+                    {
+                        bad.Add($"{kv.Key}: table rope (lat {r.Lateral:F4}, attach {r.Attach:F4}, end {r.End:F4}) != art (lat {m.Lateral:F4}, attach {m.Attach:F4}, end {m.End:F4})");
+                        continue;
+                    }
+                    foreach (var su in Setups(styled))
+                    {
+                        if (styled && su.facing != parts[2]) continue;   // each facing file grades the rotations printed from it
+                        string where = kv.Key + " rot " + su.rotName;
+                        // LOWERED: painted run + drawn run cover the art's attachment point to past the deck edge, gapless, on the rope's line
+                        List<RM_DrawbridgeCableMath.Piece> taut = RM_DrawbridgeCableMath.Taut(r);
+                        taut.Sort((x, y) => Math.Min(x.A0, x.A1).CompareTo(Math.Min(y.A0, y.A1)));
+                        (double X, double Z) startW = RM_DrawbridgeCableMath.ToWorld(su.facing, su.flip, su.angle, taut[0].A0, taut[0].L0);
+                        (double X, double Z) startE = Expected(su.fx, su.fz, su.flip, m.Attach, m.Lateral);
+                        if (Dist(startW, startE) > 1.5 * Px) bad.Add(where + $": lowered rope starts {Dist(startW, startE) / Px:F1}px from the bollard's attachment point");
+                        double reach = Math.Min(taut[0].A0, taut[0].A1);
+                        bool painted = false, drawn = false;
+                        foreach (var pc in taut)
+                        {
+                            double a0 = Math.Min(pc.A0, pc.A1), a1 = Math.Max(pc.A0, pc.A1);
+                            if (a0 > reach + 0.25 * Px) bad.Add(where + $": gap in the lowered rope at along {reach:F3}..{a0:F3}");
+                            reach = Math.Max(reach, a1);
+                            if (Math.Abs(pc.L0 - m.Lateral) > 1.5 * Px || Math.Abs(pc.L1 - m.Lateral) > 1.5 * Px) bad.Add(where + ": a lowered rope piece leaves the rope's line");
+                            if (pc.Painted)
+                            {
+                                painted = true;
+                                if (Math.Abs(a1 - m.End) > 1.0 * Px) bad.Add(where + ": the painted run is not the art's painted run");
+                            }
+                            else drawn = true;
+                        }
+                        (double X, double Z) endW = RM_DrawbridgeCableMath.ToWorld(su.facing, su.flip, su.angle, reach, m.Lateral);
+                        double endAlong = endW.X * su.fx + endW.Z * su.fz;
+                        if (endAlong < 0.5 - 1e-6) bad.Add(where + $": the lowered rope stops {(0.5 - endAlong) / Px:F1}px short of the deck edge");
+                        if (endAlong > 0.5 + 0.08) bad.Add(where + ": the lowered rope runs too far onto the deck");
+                        if (!painted || (m.End < 1.0 - 0.5 * Px && !drawn)) bad.Add(where + ": the art stops short and nothing is drawn on");
+                        // RAISED: slack, from the attachment point, never over the pit, sagging, the two loops apart
+                        List<(double A, double L)> sl = RM_DrawbridgeCableMath.Slack(r);
+                        (double X, double Z) s0 = RM_DrawbridgeCableMath.ToWorld(su.facing, su.flip, su.angle, sl[0].A, sl[0].L);
+                        if (Dist(s0, startE) > 1.5 * Px) bad.Add(where + ": the slack rope does not start at the bollard's attachment point");
+                        double sag = 0, maxAlong = -1;
+                        foreach (var pt in sl)
+                        {
+                            (double X, double Z) w = RM_DrawbridgeCableMath.ToWorld(su.facing, su.flip, su.angle, pt.A, pt.L);
+                            double along = w.X * su.fx + w.Z * su.fz;
+                            maxAlong = Math.Max(maxAlong, along);
+                            (double X, double Z) onLine = Expected(su.fx, su.fz, su.flip, pt.A, m.Lateral);
+                            sag = Math.Max(sag, Dist(w, onLine));
+                            if (Math.Abs(w.X) > 0.5 || Math.Abs(w.Z) > 0.5) bad.Add(where + ": the slack rope leaves its own square");
+                        }
+                        if (maxAlong > 0.5 - 0.05) bad.Add(where + $": the slack rope reaches {maxAlong:F3} toward the pit (must stay on the bank)");
+                        if (sag < 0.08) bad.Add(where + $": the raised rope is not slack (sag {sag:F3})");
+                    }
+                }
+                // the two slack loops never touch
+                List<(double A, double L)> p0 = RM_DrawbridgeCableMath.Slack(ropes[0]), p1 = RM_DrawbridgeCableMath.Slack(ropes[1]);
+                double gap = 9;
+                foreach (var a in p0) foreach (var b in p1) gap = Math.Min(gap, Math.Sqrt((a.A - b.A) * (a.A - b.A) + (a.L - b.L) * (a.L - b.L)));
+                if (gap < Math.Max(ropes[0].Thick, ropes[1].Thick) * 1.2) bad.Add(kv.Key + $": the two slack loops touch (gap {gap:F3})");
+            }
+            return bad;
+        }
+
+        public static void Run(Action<string, Action> Case)
+        {
+            Case("Drawbridge_Cables_lowered_reach_deck_raised_slack_vs_art", () =>
+            {
+                var measured = Anchors(out _);
+                Assert(measured.Count >= 40, "the fixture measured " + measured.Count + " anchor pictures (expected 40: 4 looks x 3 materials x 3 facings + 4 unstyled)");
+                List<string> bad = RM_DrawbridgeCableMath.Art.Count > 0 ? Grade(RM_DrawbridgeCableMath.Art, measured) : new List<string> { "empty table" };
+                Assert(bad.Count == 0, bad.Count + " cable failures, first: " + string.Join(" | ", bad.GetRange(0, Math.Min(4, bad.Count))));
+            });
+
+            Case("Drawbridge_Cables_canfail_old_stop_short_and_moved_attach", () =>
+            {
+                var measured = Anchors(out _);
+                // the shipped bug: the rope only as painted (no drawn run), reproduced by a table claiming the art reaches the edge
+                var shortTable = new Dictionary<string, RM_DrawbridgeCableMath.RopeArt[]>();
+                var movedTable = new Dictionary<string, RM_DrawbridgeCableMath.RopeArt[]>();
+                foreach (var kv in RM_DrawbridgeCableMath.Art)
+                {
+                    shortTable[kv.Key] = Array.ConvertAll(kv.Value, r => new RM_DrawbridgeCableMath.RopeArt(r.Lateral, r.Thick, r.Attach, 1.0 + RM_DrawbridgeCableMath.DeckOverlap));
+                    movedTable[kv.Key] = Array.ConvertAll(kv.Value, r => new RM_DrawbridgeCableMath.RopeArt(r.Lateral, r.Thick, r.Attach + 3 * Px, r.End));
+                }
+                Assert(Grade(shortTable, measured).Count > 0, "can-fail: a table that ignores the art's painted end must fail");
+                Assert(Grade(movedTable, measured).Count > 0, "can-fail: an attachment point 3px off the art must fail");
+            });
+
+            Case("Drawbridge_Cables_raised_leaf_edge_crops_the_stiff_rope", () =>
+            {
+                Anchors(out Dictionary<string, double[]> body);
+                Assert(body.Count == 6, "six edge pictures measured, got " + body.Count);
+                foreach (var kv in body)
+                {
+                    Assert(RM_DrawbridgeCableMath.LeafEdgeBody.TryGetValue(kv.Key, out double[] crop), kv.Key + ": no crop, the painted rope stub draws");
+                    Assert(crop.Length == 3 && Math.Abs(crop[0] - kv.Value[0]) <= 1.5 * Px && Math.Abs(crop[1] - kv.Value[1]) <= 1.5 * Px,
+                        kv.Key + ": crop " + crop[0] + ".." + crop[1] + " is not the leaf body " + kv.Value[0] + ".." + kv.Value[1]);
+                    Assert(Math.Abs(crop[2] - kv.Value[2]) <= 2.0 / 1024.0, kv.Key + ": the top cut " + crop[2] + " is not the hook eye's top " + kv.Value[2]
+                        + " (above it the stiff rope stub draws)");
+                }
+            });
+
+            Case("Drawbridge_Cables_call_sites", () =>
+            {
+                string deck = RiverSwitchFlipChecks.Src(Path.Combine("Pits", "Suspension", "Building_SuspensionDeck.cs"));
+                string art = RiverSwitchFlipChecks.Src(Path.Combine("Pits", "Drawbridge", "RM_DrawbridgeArt.cs"));
+                Assert(deck.Contains("RM_DrawbridgeArt.AnchorPrintFor(this)") && deck.Contains("RM_DrawbridgeArt.PrintBollards(layer, p)")
+                    && deck.Contains("RM_DrawbridgeArt.PrintRopes(layer, p)"), "the anchor prints its ropes through the cable math");
+                Assert(art.Contains("Mesh mesh = LeafMesh(path, spanFromHinge == Rot4.West);"), "the raised leaf draws through the stub crop");
+                Assert(art.Contains("slack = deck.leafRaised"), "raised = the deck square the ropes face is a raised leaf");
+            });
         }
     }
 }

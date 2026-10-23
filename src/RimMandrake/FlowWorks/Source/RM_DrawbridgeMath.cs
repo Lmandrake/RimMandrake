@@ -528,4 +528,172 @@ namespace RimMandrake.FlowWorks
 			return p == RaidPlankPiece.EndNear;
 		}
 	}
+
+	/// <summary>
+	/// DRAWBRIDGE_CABLES_FIX_STOP_SHORT: where a suspension / drawbridge anchor's two ropes run, read from the art (measured from
+	/// the PNGs' alpha by art_source/Drawbridge/measure_cable_art.py into anchor_cable_art.json; the SelfTest grades this table
+	/// against that fixture). Owner 2026-10-23: lowered, the ropes stopped short of the deck ("bridges have gaps in their support
+	/// cables"); raised: "Ropes should now be slack and disconnected" (no rope across the pit, no stiff rope at the raised leaf's top).
+	/// Rope frame: along 0 = the anchor square's back edge, 1 = the edge facing the deck; lateral 0 = the square's centre line,
+	/// + = left of the rope's direction; both in cells. Pure: no Verse, no UnityEngine.
+	/// </summary>
+	public static class RM_DrawbridgeCableMath
+	{
+		public struct RopeArt
+		{
+			public double Lateral, Thick, Attach, End;
+
+			public RopeArt(double lateral, double thick, double attach, double end)
+			{
+				Lateral = lateral;
+				Thick = thick;
+				Attach = attach;
+				End = end;
+			}
+		}
+
+		/// <summary>A straight rope piece in the rope frame. Painted: already in the anchor picture; else drawn by code.</summary>
+		public struct Piece
+		{
+			public double A0, L0, A1, L1;
+			public bool Painted;
+		}
+
+		/// <summary>How far a taut rope runs past the deck-facing edge, under the deck's end (no hairline seam).</summary>
+		public const double DeckOverlap = 0.04;
+
+		/// <summary>A slack rope never reaches past this along the anchor square: it lies on the bank, never over the pit.</summary>
+		public const double SlackReach = 0.9;
+
+		/// <summary>Key "look/material" for the styled pictures (all three facings are the same picture turned), "base/material"
+		/// for the unstyled single picture.</summary>
+		public static readonly Dictionary<string, RopeArt[]> Art = new Dictionary<string, RopeArt[]>
+		{
+			{ "Futuristic/Heavy", new[] { new RopeArt(0.21289, 0.05078, 0.62500, 0.94922), new RopeArt(-0.21289, 0.05078, 0.62500, 0.94922) } },
+			{ "Futuristic/Steel", new[] { new RopeArt(0.20312, 0.03906, 0.41406, 0.94922), new RopeArt(-0.20312, 0.03906, 0.41406, 0.94922) } },
+			{ "Futuristic/Timber", new[] { new RopeArt(0.21484, 0.03906, 0.46875, 0.94922), new RopeArt(-0.21875, 0.03906, 0.46875, 0.94922) } },
+			{ "Industrial/Heavy", new[] { new RopeArt(0.21680, 0.05078, 0.52344, 0.94922), new RopeArt(-0.21875, 0.04688, 0.52344, 0.94922) } },
+			{ "Industrial/Steel", new[] { new RopeArt(0.22852, 0.03516, 0.50391, 0.94922), new RopeArt(-0.23438, 0.03125, 0.50391, 0.94922) } },
+			{ "Industrial/Timber", new[] { new RopeArt(0.23047, 0.04688, 0.50391, 0.94922), new RopeArt(-0.23242, 0.04297, 0.50391, 0.94922) } },
+			{ "Modern/Heavy", new[] { new RopeArt(0.20508, 0.04297, 0.72656, 0.94922), new RopeArt(-0.20898, 0.04297, 0.72656, 0.94922) } },
+			{ "Modern/Steel", new[] { new RopeArt(0.21484, 0.03125, 0.44531, 0.94922), new RopeArt(-0.21875, 0.03125, 0.44531, 0.94922) } },
+			{ "Modern/Timber", new[] { new RopeArt(0.20117, 0.04297, 0.60547, 0.94922), new RopeArt(-0.20508, 0.04297, 0.60547, 0.94922) } },
+			{ "Scrapper/Heavy", new[] { new RopeArt(0.21094, 0.04688, 0.48438, 0.94922), new RopeArt(-0.21484, 0.04688, 0.48438, 0.94922) } },
+			{ "Scrapper/Steel", new[] { new RopeArt(0.21484, 0.03125, 0.40625, 0.94922), new RopeArt(-0.21875, 0.03125, 0.40625, 0.94922) } },
+			{ "Scrapper/Timber", new[] { new RopeArt(0.21289, 0.05078, 0.48047, 0.94922), new RopeArt(-0.21289, 0.05078, 0.48047, 0.94922) } },
+			{ "base/Heavy", new[] { new RopeArt(0.19336, 0.05078, 0.71094, 1.00000), new RopeArt(-0.19531, 0.04688, 0.71094, 1.00000) } },
+			{ "base/Rope", new[] { new RopeArt(0.12109, 0.03906, 0.37109, 1.00000), new RopeArt(-0.12109, 0.03906, 0.36719, 1.00000) } },
+			{ "base/Steel", new[] { new RopeArt(0.22461, 0.02734, 0.45703, 1.00000), new RopeArt(-0.22852, 0.02734, 0.45703, 1.00000) } },
+			{ "base/Timber", new[] { new RopeArt(0.18945, 0.04297, 0.38672, 1.00000), new RopeArt(-0.18945, 0.04297, 0.38672, 1.00000) } },
+		};
+
+		/// <summary>The raised leaf's edge pictures paint a stiff rope stub off the top of the hook; only the leaf body's columns
+		/// (u0, u1) below the top of the hook's eye (a fraction of the picture's height from its top) are drawn. Key: the
+		/// picture's name after "RM_DrawbridgeLeafUp_".</summary>
+		public static readonly Dictionary<string, double[]> LeafEdgeBody = new Dictionary<string, double[]>
+		{
+			{ "Edge_Futuristic", new[] { 0.44922, 0.60547, 0.01562 } },
+			{ "Edge_Industrial", new[] { 0.40625, 0.50781, 0.06348 } },
+			{ "Edge_Modern", new[] { 0.46484, 0.58203, 0.05371 } },
+			{ "Edge_Scrapper", new[] { 0.60156, 0.76562, 0.01465 } },
+			{ "Steel_Edge", new[] { 0.42578, 0.54297, 0.04102 } },
+			{ "Timber_Edge", new[] { 0.42578, 0.53125, 0.06250 } },
+		};
+
+		/// <summary>The art key of an anchor texture path: "&lt;look&gt;/&lt;material&gt;" for a styled picture
+		/// (…/SuspensionBridge/&lt;Look&gt;/RM_SuspensionAnchor_&lt;Material&gt;), "base/&lt;material&gt;" for the unstyled one; null otherwise.</summary>
+		public static string KeyOf(string texPath, bool styled)
+		{
+			if (string.IsNullOrEmpty(texPath))
+			{
+				return null;
+			}
+			string[] parts = texPath.Replace('\\', '/').Split('/');
+			string file = parts[parts.Length - 1];
+			const string pre = "RM_SuspensionAnchor_";
+			if (!file.StartsWith(pre, System.StringComparison.Ordinal))
+			{
+				return null;
+			}
+			string mat = file.Substring(pre.Length);
+			string key = styled ? (parts.Length >= 2 ? parts[parts.Length - 2] : "") + "/" + mat : "base/" + mat;
+			return Art.ContainsKey(key) ? key : null;
+		}
+
+		/// <summary>Lowered: each rope is the painted run (attach → painted end) plus, where the picture stops short of the
+		/// deck-facing edge, a drawn run from just inside the painted end to past the edge under the deck.</summary>
+		public static List<Piece> Taut(RopeArt r)
+		{
+			var list = new List<Piece> { new Piece { A0 = r.Attach, L0 = r.Lateral, A1 = r.End, L1 = r.Lateral, Painted = true } };
+			if (r.End < 1.0 + DeckOverlap)
+			{
+				double from = System.Math.Max(r.Attach, r.End - r.Thick);
+				list.Add(new Piece { A0 = from, L0 = r.Lateral, A1 = 1.0 + DeckOverlap, L1 = r.Lateral, Painted = false });
+			}
+			return list;
+		}
+
+		/// <summary>Raised (slack, disconnected): a loose loop lying on the bank from the attachment point, curling toward the
+		/// square's centre line (the two ropes never cross) and never past <see cref="SlackReach"/>. A cubic through four
+		/// control points, all inside along ≤ SlackReach, so the curve is too (convex hull).</summary>
+		public static List<(double A, double L)> Slack(RopeArt r, int n = 14)
+		{
+			double s = r.Lateral >= 0 ? 1.0 : -1.0;   // toward the centre line is -s
+			double reach = SlackReach;
+			double f = System.Math.Min(1.0, 0.8 * System.Math.Abs(r.Lateral) / 0.17);   // ropes set close together curl less, so the loops stay apart
+			double a0 = r.Attach, l0 = r.Lateral;
+			double a1 = reach, l1 = r.Lateral + 0.05 * s * f;
+			double a2 = reach, l2 = r.Lateral - 0.13 * s * f;
+			double a3 = r.Attach + 0.3 * (reach - r.Attach), l3 = r.Lateral - 0.17 * s * f;
+			var pts = new List<(double, double)>();
+			for (int i = 0; i <= n; i++)
+			{
+				double t = (double)i / n, u = 1 - t;
+				double b0 = u * u * u, b1 = 3 * u * u * t, b2 = 3 * u * t * t, b3 = t * t * t;
+				pts.Add((b0 * a0 + b1 * a1 + b2 * a2 + b3 * a3, b0 * l0 + b1 * l1 + b2 * l2 + b3 * l3));
+			}
+			return pts;
+		}
+
+		/// <summary>The rope's direction in the picture's UV space (v up): a styled north picture and the unstyled single
+		/// picture point up, south down, east right.</summary>
+		public static (double U, double V) TexDir(string facing)
+		{
+			switch (facing)
+			{
+				case "east": return (1, 0);
+				case "south": return (0, -1);
+				default: return (0, 1);   // north, single
+			}
+		}
+
+		/// <summary>Rope frame → the picture's UV.</summary>
+		public static (double U, double V) ToUV(string facing, double a, double l)
+		{
+			(double du, double dv) = TexDir(facing);
+			double lu = -dv, lv = du;   // left of the rope direction
+			return (0.5 + du * (a - 0.5) + lu * l, 0.5 + dv * (a - 0.5) + lv * l);
+		}
+
+		/// <summary>UV → world offset from the printed quad's centre (a 1×1 quad, as Graphic.Print prints it): mirrored when the
+		/// print flips the UVs, then turned clockwise by the print angle (Printer_Plane.PrintPlane's own turn).</summary>
+		public static (double X, double Z) UVToWorld(double u, double v, bool flip, double angleDeg)
+		{
+			double qx = flip ? 0.5 - u : u - 0.5, qz = v - 0.5;
+			double r = angleDeg * System.Math.PI / 180.0, c = System.Math.Cos(r), s = System.Math.Sin(r);
+			return (qx * c + qz * s, -qx * s + qz * c);
+		}
+
+		public static (double X, double Z) ToWorld(string facing, bool flip, double angleDeg, double a, double l)
+		{
+			(double u, double v) = ToUV(facing, a, l);
+			return UVToWorld(u, v, flip, angleDeg);
+		}
+
+		/// <summary>The rotation angle (degrees, 0 = north, 90 = east) of a world direction.</summary>
+		public static double AngleOf(double dx, double dz)
+		{
+			return System.Math.Atan2(dx, dz) * 180.0 / System.Math.PI;
+		}
+	}
 }
