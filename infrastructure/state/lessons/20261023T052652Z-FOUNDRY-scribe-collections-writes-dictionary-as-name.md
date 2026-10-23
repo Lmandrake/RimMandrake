@@ -1,0 +1,1 @@
+Scribe_Collections writes a Dictionary as <name><keys><li>K</li></keys><values><li>V</li></values></name> (parallel lists), never <key>/<value> pairs; a regex for <key>K</key><value>V</value> never matches and reads every toggle as absent. Parse with ElementTree. (preflight_pyrelands.py 3.3, fixed dc2632618)
