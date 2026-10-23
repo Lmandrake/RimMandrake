@@ -1,0 +1,1 @@
+DEPLOY_HOLD.txt 'no art yet' holds outlive the art: RUT_VentSmelter/Forge/Kiln all gained their 3 facings on 2026-10-02 but stayed held (with the two *_RecipeWiring patches) until a 2026-10-22 review; when a hold's reason is 'art not yet', check the texPath files exist before trusting it. Lift = a deploy round, not a comment edit.

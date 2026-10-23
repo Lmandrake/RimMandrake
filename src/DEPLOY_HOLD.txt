@@ -335,9 +335,9 @@ Pyrelands/diag/*   # dev harness script, not game content
 # => LIFT each when its own sprite lands under UtinniPatches/Textures/ — def
 #    and art deploy together in one --apply, same pattern as the Scald/Sump
 #    holds above. Independent: none of the six references another's art.
-UtinniPatches/Defs/ThingDefs_Buildings/RUT_VentSmelter.xml      # BENCH: no art yet, 2026-09-13
-UtinniPatches/Defs/ThingDefs_Buildings/RUT_VentForge.xml        # BENCH: no art yet, 2026-09-13
-UtinniPatches/Defs/ThingDefs_Buildings/RUT_VentKiln.xml         # BENCH: no art yet, 2026-09-13
+UtinniPatches/Defs/ThingDefs_Buildings/RUT_VentSmelter.xml      # BENCH: was 'no art yet' (2026-09-13); all 3 facings landed 2026-10-02 (63b5f360f), so this reason is spent: LIFT with its RecipeWiring patch in a deploy round
+UtinniPatches/Defs/ThingDefs_Buildings/RUT_VentForge.xml        # BENCH: was 'no art yet' (2026-09-13); all 3 facings landed 2026-10-02 (63b5f360f), so this reason is spent: LIFT with its RecipeWiring patch in a deploy round
+UtinniPatches/Defs/ThingDefs_Buildings/RUT_VentKiln.xml         # BENCH: was 'no art yet' (2026-09-13); all 3 facings landed 2026-10-02 (63b5f360f), so this reason is spent: LIFT with its RecipeWiring patch in a deploy round
 
 # FOUNDRY_LIVE_RESIDUE_TRIAGE, 2026-09-19: RUT_VentForge_RecipeWiring.xml and
 # RUT_VentKiln_RecipeWiring.xml were missed from the sibling-hold pattern above
