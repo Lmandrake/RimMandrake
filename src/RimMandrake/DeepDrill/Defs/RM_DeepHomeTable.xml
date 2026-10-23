@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+<!-- DEEP_DRILL_HOME_BIOME_1. GENERATED from design/RimMandrake/mineral_abundance_registry_2026-10-03.csv (deep_weight and the biome columns); edit the CSV row and regenerate by hand-checking, never by guess. A deposit with an empty home list is never found by a drill (steel instead): the registry rules those materials not mined. Defs not listed here pass through untouched. Steel is the planet-wide deep resource and is never filtered. RSW_ResourceBlueCrystal and Gravitonium are UNMEASURED-purpose rows at weight 0, so they are steel everywhere until the registry says otherwise. -->
+<RimMandrake.DeepDrill.RM_DeepHomeDef>
+<defName>RM_DeepHomeTable</defName>
+<rows>
+<li><thing>Gold</thing><homes><li>RM_BlueDesert</li><li>RM_SeabedFloor_TheScald</li></homes></li><!-- gold -->
+<li><thing>Silver</thing><homes><li>RM_BlueDesert</li><li>RM_SeabedFloor_TheScald</li></homes></li><!-- silver -->
+<li><thing>Uranium</thing><homes><li>RM_BlueDesert</li><li>RM_Wastes</li><li>RM_SeabedFloor_TheScald</li></homes></li><!-- uranium -->
+<li><thing>Jade</thing><homes><li>RM_FloodedCanyon</li></homes></li><!-- jade -->
+<li><thing>Diamond</thing><homes><li>RM_LanternDeeps</li></homes></li><!-- diamond -->
+<li><thing>Ruby</thing><homes><li>RM_LanternDeeps</li><li>RM_TheForge</li></homes></li><!-- ruby -->
+<li><thing>Sapphire</thing><homes><li>RM_LanternDeeps</li><li>RM_SleepingIce</li></homes></li><!-- sapphire -->
+<li><thing>DV_Pyrinth</thing><homes><li>RM_LanternDeeps</li><li>RM_SeabedFloor_TheScald</li></homes></li><!-- pyrinth -->
+<li><thing>RM_Lanternstone</thing><homes><li>RM_LanternDeeps</li></homes></li><!-- lanternstone -->
+<li><thing>RM_LivePatternMetal</thing><homes><li>RM_RustCathedral</li></homes></li><!-- live pattern metal -->
+<li><thing>BMT_AmberResource</thing><homes><li>RM_FloodedCanyon</li></homes></li><!-- amber -->
+<li><thing>BMT_FossilResource</thing><homes><li>RM_FloodedCanyon</li></homes></li><!-- fossils -->
+<li><thing>VCE_Salt</thing><homes><li>RM_Stillsand</li><li>RM_Wastes</li></homes></li><!-- cooking salt (VCE) -->
+<li><thing>VCHE_Deepchem</thing><homes><li>RM_TheSump</li></homes></li><!-- deepchem -->
+<li><thing>VHGE_Helixien</thing><homes><li>RM_ChillCrater</li><li>RM_TheChill</li></homes></li><!-- helixien -->
+<li><thing>Plasteel</thing><homes></homes></li><!-- plasteel -->
+<li><thing>GLO_GlowstoneCluster</thing><homes></homes></li><!-- glowstone -->
+<li><thing>OuterRim_Tibanna</thing><homes></homes></li><!-- tibanna -->
+<li><thing>KOTOR_Tibanna</thing><homes></homes></li><!-- tibanna -->
+<li><thing>KOTOR_IngotCortosis</thing><homes></homes></li><!-- cortosis -->
+<li><thing>KOTOR_RawRhydonium</thing><homes></homes></li><!-- rhydonium -->
+<li><thing>OuterRim_Beskar</thing><homes></homes></li><!-- beskar -->
+<li><thing>OuterRim_PureBeskar</thing><homes></homes></li><!-- beskar -->
+<li><thing>KOTOR_RawBeskar</thing><homes></homes></li><!-- beskar -->
+<li><thing>OuterRim_Durasteel</thing><homes></homes></li><!-- durasteel -->
+<li><thing>RSW_ResourceBlueCrystal</thing><homes></homes></li><!-- SW blue crystal -->
+<li><thing>Gravitonium</thing><homes></homes></li><!-- gravitonium -->
+</rows>
+</RimMandrake.DeepDrill.RM_DeepHomeDef>
+</Defs>
