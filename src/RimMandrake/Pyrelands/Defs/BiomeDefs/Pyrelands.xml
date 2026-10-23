@@ -81,11 +81,11 @@
              regardless of rainfall, a materially narrower niche than
              documented. baseScore≈32.65 would reproduce the originally
              -intended 46.9-at-T=30/R=700 figure and a ~25-26 degC
-             crossover, but that is a tuning call left for the item's own
-             owed worldgen-tile-count quicktest, not changed here.
-             Raise baseScore to make the biome commoner, lower it to make
-             it rarer — re-verify this arithmetic after any change, it
-             does not move intuitively. -->
+             crossover. The score only matters to a world generator, and
+             the shipped world is one hand-painted planet (no worldgen,
+             owner 2026-08-15), so it is left as is. Raise baseScore to
+             make the biome win more tiles, lower it to win fewer — re-verify
+             this arithmetic after any change, it does not move intuitively. -->
         <baseScore>30</baseScore>
         <degreeWeight>2.6</degreeWeight>
         <rainfallDivisor>120</rainfallDivisor>
@@ -140,8 +140,9 @@
     <diseaseMtbDays>65</diseaseMtbDays>
 
     <!-- Our own scorchable clones, so the unburned ground mapgen lays burns
-         to deep ash. Left null: waterShallow/waterDeep/mud/
-         riverbank fall back to vanilla (MapGenUtility.cs:187/226/651). -->
+         to deep ash. Left null: waterShallow/waterDeep/mud fall back to
+         vanilla (MapGenUtility.cs:187/226/651); the riverbank is vanilla's
+         Riverbank, named. -->
     <lakeBeachTerrain>RM_FE_Ground_Sand</lakeBeachTerrain>
     <gravelTerrain>RM_FE_Ash_Deep</gravelTerrain>
     <riverbankTerrain>Riverbank</riverbankTerrain>
