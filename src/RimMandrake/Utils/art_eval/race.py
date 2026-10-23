@@ -44,6 +44,23 @@ STATE = ROOT / "infrastructure/state/art_eval"
 NOT_ACCEPT = {"REGEN", "ESCALATE", "REGEN_AFTER_SOURCE"}
 
 
+def stop_group(p) -> bool:
+    """SIGTERM a still-running shard's process group; False if it exited in the meantime."""
+    try:
+        os.killpg(p.pid, signal.SIGTERM)
+        return True
+    except ProcessLookupError:
+        return False
+
+
+def check_tag(*tags: str):
+    """Race tags carry no underscore: decisions() globs race_<tag>_* and splits variant/family on `_`, so tag
+    `r1` would otherwise swallow the runs of tag `r1_b`."""
+    for t in tags:
+        if "_" in t or not t:
+            raise SystemExit(f"race tag {t!r}: no underscores (run ids split on them)")
+
+
 def load_rows(paths: list) -> list:
     rows = []
     for p in paths:
@@ -129,6 +146,7 @@ def merged_refs(race: str, name: str, overlay: Path) -> Path:
 
 
 def cmd_run(a):
+    check_tag(a.race)
     variants = []
     for v in a.variant:
         name, _, d = v.partition("=")
@@ -149,8 +167,7 @@ def cmd_run(a):
         time.sleep(5)
     killed = []
     for tag, p in procs:
-        if p.poll() is None:
-            os.killpg(p.pid, signal.SIGTERM)
+        if p.poll() is None and stop_group(p):
             killed.append(tag)
     print(f"race {a.race}: {len(procs) - len(killed)}/{len(procs)} shards finished in {round(time.time() - t0)}s"
           + (f"; killed at budget (resume by re-running): {killed}" if killed else ""))
@@ -166,7 +183,9 @@ def replay_worker(src_races: str, src_variant: str, out_race: str, name: str, k:
     for r in load_rows(rows_paths):
         s = spec_of(r)
         want.add(f"{s['subject']}:{s.get('candidate')}" if s.get("candidate") else s["subject"])
-    src = decisions(src_races)[(src_variant, "opus")]
+    src = decisions(src_races).get((src_variant, "opus"))
+    if src is None:
+        raise SystemExit(f"replay: no recorded opus decisions for variant {src_variant!r} in {src_races}")
     keys = sorted(x for x in src if x in want)
     out = STATE / "runs" / run_id(out_race, name, "opus", k)
     out.mkdir(parents=True, exist_ok=True)
@@ -215,6 +234,7 @@ def replay_worker(src_races: str, src_variant: str, out_race: str, name: str, k:
 
 
 def cmd_replay(a):
+    check_tag(a.race, *a.src_races.split(","))
     procs = []
     for v in a.variant:
         name, _, d = v.partition("=")
@@ -227,7 +247,7 @@ def cmd_replay(a):
     t0 = time.time()
     while time.time() - t0 < a.budget and any(p.poll() is None for _, p in procs):
         time.sleep(5)
-    killed = [tag for tag, p in procs if p.poll() is None and not os.killpg(p.pid, signal.SIGTERM)]
+    killed = [tag for tag, p in procs if p.poll() is None and stop_group(p)]
     print(f"replay {a.race}: {len(procs) - len(killed)}/{len(procs)} shards finished in {round(time.time() - t0)}s"
           + (f"; killed at budget (resume by re-running): {killed}" if killed else ""))
 
@@ -314,6 +334,7 @@ def score(race: str, rows: list) -> tuple[str, dict]:
 
 
 def cmd_score(a):
+    check_tag(*a.race.split(","))
     rows = load_rows(a.rows)
     md, stats = score(a.race, rows)
     print(md)
