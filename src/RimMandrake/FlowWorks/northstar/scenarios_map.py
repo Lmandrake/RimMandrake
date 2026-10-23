@@ -793,6 +793,23 @@ def run_build(B, placed, log=None, fresh=False, soak=True, only=None):
 MAP_R_PLACED = os.path.join(OUT, "map_r_placed.json")   # map ids + C1 + the C11 stations of the LAST map-R build
 
 
+def r_sign_ops(placed, plan):
+    """Map R's WHOLE sign-book set (C1's books, the R1-R8 books, the C11 book). RM.place_signs replaces every book on
+    the map, so a partial list deletes the rest (2026-10-22: one moved book wiped map R's other 13)."""
+    import review_map_rivers as RV
+    from modcheck import reviewmap as RM
+    ops = sign_ops(placed, extra_board=False) + (RV.sign_ops(plan) if plan else [])
+    if plan:
+        c11 = SC.BY_ID["C11"]
+        x, z = plan[0][2]["label"]
+        defs = [pc for pc in c11["pieces"] if pc["status"] == "DEFERRED"]
+        ops.append(RM.sign_book(x, z + 2, "C11", c11["name"], c11["purpose"] + " START: " + c11["start"],
+                                c11["look_for"], c11["try_"][0], "broken if: " + c11["broken"],
+                                more="TRY: " + " | ".join(c11["try_"]) + " || DEFERRED: "
+                                + "; ".join("%s (%s)" % (pc["name"], pc["item"]) for pc in defs)))
+    return ops
+
+
 def r_labels(c1, plan):
     """Map R's label ops: C1's plot labels, the C11 headline and the R1-R8 station labels."""
     import review_map_rivers as RV
@@ -867,18 +884,11 @@ def run_river(B, terrain, size, log=None, soak=False):
     ver = R.verify_plots(placed) if placed else {}
     lab = r_labels(c1, plan)
     B.call("jawa/review_label", action="clear", tag=TAG)
+    B.call("jawa/review_label", action="clear", tag=RV.TAG)   # the R1-R8 lines carry their own tag: re-adds piled up 8 a time
     lr = B.call("jawa/review_label", action="add", ops=lab, tag=TAG) or {}
     if lr.get("success") is False:
         R.notes.append("map R labels: %s" % json.dumps(lr)[:200])
-    ops = sign_ops(placed, extra_board=False) + (RV.sign_ops(plan) if plan else [])
-    if plan:
-        c11 = SC.BY_ID["C11"]
-        x, z = plan[0][2]["label"]
-        defs = [pc for pc in c11["pieces"] if pc["status"] == "DEFERRED"]
-        ops.append(RM.sign_book(x, z + 2, "C11", c11["name"], c11["purpose"] + " START: " + c11["start"],
-                                c11["look_for"], c11["try_"][0], "broken if: " + c11["broken"],
-                                more="TRY: " + " | ".join(c11["try_"]) + " || DEFERRED: "
-                                + "; ".join("%s (%s)" % (pc["name"], pc["item"]) for pc in defs)))
+    ops = r_sign_ops(placed, plan)
     sg = RM.place_signs(B, ops)
     soaked = R.soak(placed) if (soak and placed) else None
     B.call("jawa/clear_ui", all=True)
@@ -1073,6 +1083,7 @@ def river_main(B, a):
         return 1
     if a.labels:
         B.call("jawa/review_label", action="clear", tag=TAG)
+        B.call("jawa/review_label", action="clear", tag=RV.TAG)   # the R1-R8 lines carry their own tag: re-adds piled up 8 a time
         r = B.call("jawa/review_label", action="add", ops=r_labels(c1, plan), tag=TAG) or {}
         print("map R labels: %s" % {k: r.get(k) for k in ("success", "added", "count")})
     if a.goto:
@@ -1095,6 +1106,18 @@ def pieces_summary(sc):
     return Counter(pc["status"] for pc in sc["pieces"])
 
 
+def river_save_text(save):
+    """Where map R lives: the SECOND map of the main save when map_r_placed.json records a two-map build (map_c set),
+    else the separate river save."""
+    try:
+        two = isinstance(json.load(open(MAP_R_PLACED, encoding="utf-8")).get("map_c"), int)
+    except (OSError, ValueError):
+        two = False
+    if two and save:
+        return "%s, its second map (switch with `--river --goto C1`)" % save
+    return SAVE_RIVER + " (not saved yet)"
+
+
 def keysheet(placed, live=None, save=None, mock=None):
     os.makedirs(OUT, exist_ok=True)
     E = html.escape
@@ -1102,7 +1125,7 @@ def keysheet(placed, live=None, save=None, mock=None):
           "Load **%s** (map C) and **%s** (map R: C1, C11). Paused at 10:00, god mode on, clear weather, Peaceful, Mod "
           "Settings at shipped defaults. **Every plot is still until your first poke: its START.** Reload the save to "
           "reset. Raids live in **%s**, rain in **%s** (load the branch, never the main save, for those pokes)."
-          % (save or SAVE_MAIN + " (not saved yet)", SAVE_RIVER + " (not saved yet)", BRANCH_SAVE["raid"],
+          % (save or SAVE_MAIN + " (not saved yet)", river_save_text(save), BRANCH_SAVE["raid"],
              BRANCH_SAVE["rain"]), "",
           "Each scenario has a gold title label (number, name, START, what to look for), its try lines under the plot, "
           "small rust labels on every part a poke touches, violet **DEFERRED** labels on every piece not built yet, "
@@ -1115,7 +1138,7 @@ def keysheet(placed, live=None, save=None, mock=None):
         n = pieces_summary(sc)
         md.append("| %s | %s | %s | %s | %s | %d / %d | `--goto %s`%s |" % (
             sc["id"], sc["name"], sc["map"], rect.get(sc["id"], "river-anchored (live)"), sc["look_style"],
-            n["staged"], n["DEFERRED"], sc["id"], " (map R: framed by `--river --build`; goto on map R owed)" if sc["map"] == "R" else ""))
+            n["staged"], n["DEFERRED"], sc["id"], " (map R: `--river --goto %s`)" % sc["id"] if sc["map"] == "R" else ""))
     md += ["", "Specials: **S0** status board %s, **F** free area %s, **Z0** Stage 0 swim site %s." % (
         BOARD["rect"], FREE["rect"], STAGE0["rect"]), ""]
     if mock:
