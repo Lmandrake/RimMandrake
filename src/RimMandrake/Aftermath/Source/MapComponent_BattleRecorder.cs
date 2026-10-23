@@ -18,7 +18,7 @@ namespace RimMandrake.Aftermath
     // spine (ChronicleEvents.Raise, kind "battle.closed") and nothing here
     // knows who listens. It used to call GameComponent_Ninefold.ApplyDelta
     // directly, which cost this mod a hard modDependency and a compile-time
-    // reference on mandrake.rm.ninefold; the per-battle Sh'kaar delta now
+    // reference on mandrake.rut.rites; the per-battle Sh'kaar delta now
     // lives in Ninefold's own ChronicleSubscriber, where it still reconciles
     // with (rather than duplicates) Ninefold's PER-DEATH Patch_BattleResolved
     // hook on Pawn.Kill.

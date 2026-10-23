@@ -8,7 +8,7 @@
   </supportedVersions>
   <description>PLOT_MECHANISM_MODS_WAVE_1 — the aftermath-hostilities engine from design/Jawa/proposals/plot_mechanisms_wave.md Part 2, ruled in scope 2026-09-05. Two pieces:
 
-(1) The battle recorder — a MapComponent that opens a BattleRecord when `IncidentWorker_Raid.TryGenerateRaidInfo` returns true and closes it when the raid's Lord is removed, classifying the fight REPELLED / ROUTED / STALEMATE / LOST. Each closed battle is PUBLISHED on this mod's `ChronicleEvents` spine (design/CHRONICLE_EVENT_SPINE.md) as a `battle.closed` event; nothing here knows who listens, and this mod loads and runs standalone with no other RimMandrake engine present. `mandrake.rm.ninefold` subscribes from its own side and applies the whole-BATTLE Sh'kaar delta its own per-death `Patch_BattleResolved.cs` hook cannot see — reconciling with, rather than duplicating, that hook.
+(1) The battle recorder — a MapComponent that opens a BattleRecord when `IncidentWorker_Raid.TryGenerateRaidInfo` returns true and closes it when the raid's Lord is removed, classifying the fight REPELLED / ROUTED / STALEMATE / LOST. Each closed battle is PUBLISHED on this mod's `ChronicleEvents` spine (design/CHRONICLE_EVENT_SPINE.md) as a `battle.closed` event; nothing here knows who listens, and this mod loads and runs standalone with no other RimMandrake engine present. `mandrake.rut.rites` subscribes from its own side and applies the whole-BATTLE Sh'kaar delta its own per-death `Patch_BattleResolved.cs` hook cannot see — reconciling with, rather than duplicating, that hook.
 
 (2) The rule runner — `RM_AftermathRuleDef` (defs ship separately in `mandrake.rut.aftermath`) reads each closed BattleRecord, and on a match queues a delayed, telegraphed, vanilla-`IncidentDef` payload via `Find.Storyteller.incidentQueue.Add(def, fireTick, parms)` with `parms.forced = true`. Discipline per doc §2.2: max one queued aftermath per faction and two total; payload points never exceed the storyteller's own.
 
@@ -27,11 +27,13 @@ Ships a deterministic templated-letter baseline per rule — literal English, fa
   <!-- 🔴 No mandrake.* engine belongs in modDependencies above
        (CHRONICLE_NINEFOLD_DECOUPLE_1, soft-hook law 1 in
        design/CHRONICLE_EVENT_SPINE.md). This mod is the event spine and
-       loads standalone; mandrake.rm.ninefold stays in loadAfter only, as a
-       load-ORDER preference, and subscribes from its own side. -->
+       loads standalone. The Nine's engine (Ninefold, inside Salvation Rites,
+       mandrake.rut.rites since 2026-10-22) subscribes from its own side by
+       reflection at startup, after every mod has loaded, so no load order is
+       needed either way; it is deliberately NOT in loadAfter, which would ask
+       this free-tier engine to load after a campaign mod. -->
   <loadAfter>
     <li>brrainz.harmony</li>
     <li>Ludeon.RimWorld</li>
-    <li>mandrake.rm.ninefold</li>
   </loadAfter>
 </ModMetaData>

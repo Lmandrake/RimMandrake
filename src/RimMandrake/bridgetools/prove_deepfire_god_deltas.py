@@ -3,7 +3,7 @@
 Run under WINDOWS python.exe from the repo root (the bridge binds Windows loopback):
     python.exe src\\RimMandrake\\bridgetools\\prove_deepfire_god_deltas.py [--start] [--x 60 --z 60]
 
-Needs a mod list with LuminousPigment (this build) and Ninefold (mandrake.rm.ninefold). Without
+Needs a mod list with LuminousPigment (this build) and Ninefold (inside Salvation Rites, mandrake.rut.rites). Without
 Ninefold the god checks are UNMEASURED and the script exits 2 and does not report a pass.
 
 --start   start a fresh dev quicktest first (rimworld/start_debug_game_ready).

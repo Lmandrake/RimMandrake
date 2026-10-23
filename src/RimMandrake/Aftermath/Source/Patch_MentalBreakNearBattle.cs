@@ -14,7 +14,7 @@ namespace RimMandrake.Aftermath
     // mods share a seam; this file never touches Ninefold's own patch.
     //
     // Filtered exactly the way Ninefold's own hook is (see
-    // Ninefold/Source/Patch_MentalBreakStarted.cs's MentalBreakUtility.
+    // src/RimUtinni/Rites/Source/Patch_MentalBreakStarted.cs's MentalBreakUtility.
     // ApplyBreakDelta): player humanlike colonists only -- a raider's
     // berserk or a wild animal's manhunter state is not "our" mental break,
     // and this rule only cares whether OUR crew is fraying near a battle.

@@ -14,7 +14,7 @@ import northstar_site                                    # noqa: E402
 
 MOD = "LuminousPigment"
 USE_SUITE = True
-EXPECT_MODS = ("mandrake.rm.luminouspigment", "mandrake.rm.ninefold")
+EXPECT_MODS = ("mandrake.rm.luminouspigment", "mandrake.rut.rites")   # Ninefold is inside Salvation Rites since 2026-10-22
 NEED_GOD = False
 RECT = None                 # every chain builds and clears its own pad; pre-flight checks the map, not a rect
 preflight = northstar_site.preflight

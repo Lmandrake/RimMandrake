@@ -112,9 +112,10 @@ TIERS = {
     "luminouspigment_ns": {
         "why": "LUMINOUS_PIGMENT_FIRST_SCRIPT_1: the north-star script for LuminousPigment "
                "(src/RimMandrake/LuminousPigment/validation.py). The `luminouspigment` tier plus "
-               "Ninefold, so the god-delta chain (godsReact, DeepfireGodDeltas) is MEASURED "
-               "instead of UNMEASURED.",
-        "want": [BRIDGE, "mandrake.rm.luminouspigment", "mandrake.rm.ninefold"],
+               "Ninefold (inside Salvation Rites, mandrake.rut.rites, since 2026-10-22), so the god-delta "
+               "chain (godsReact, DeepfireGodDeltas) is MEASURED instead of UNMEASURED.",
+        "want": [BRIDGE, "mandrake.rm.luminouspigment", "mandrake.rut.antiquities", "mandrake.rut.ashkarrlandmarkart",
+                 "mandrake.rut.rites"],
         "dlc": True,
     },
     "weepingstones": {
@@ -773,7 +774,7 @@ TIERS["live_20261008b"] = {
 
 TIERS["acc_20261009"] = {
     "why": "FOUNDRY acceptance 2026-10-09: sitting 1/2 union of acc_l1x, acc_harness, acc_biomes, live_20261008b, kineticarms, explosiveknockback, flowworks and every converted mod with its own packageId.",
-    "want": ["brrainz.rimbridgeserver", "mandrake.rm.acousticscanner", "mandrake.rm.aftermath", "mandrake.rm.biomes", "mandrake.rm.explosiveknockback", "mandrake.rm.flowworks", "mandrake.rm.gimmesomeslack", "mandrake.rm.gravshiplanding", "mandrake.rm.hugethings", "mandrake.rm.inhabited", "mandrake.rm.keelhoist", "mandrake.rm.kineticarms", "mandrake.rm.luminouspigment", "mandrake.rm.ninefold", "mandrake.rm.planetpresetprime", "mandrake.rm.proximityhatch", "mandrake.rm.raidredesigner", "mandrake.rm.shipvermin", "mandrake.rm.solarmirrors", "mandrake.rm.visibility", "mandrake.rm.watchers", "mandrake.rm.wreckedmachines", "mandrake.rsw.droidworks", "mandrake.rsw.trophycraft", "mandrake.rut.eggreckoning", "mandrake.rut.falllinearrivals", "mandrake.rut.patches", "mandrake.rut.shipshields", "mandrake.rut.unfinishedline"],
+    "want": ["brrainz.rimbridgeserver", "mandrake.rm.acousticscanner", "mandrake.rm.aftermath", "mandrake.rm.biomes", "mandrake.rm.explosiveknockback", "mandrake.rm.flowworks", "mandrake.rm.gimmesomeslack", "mandrake.rm.gravshiplanding", "mandrake.rm.hugethings", "mandrake.rm.inhabited", "mandrake.rm.keelhoist", "mandrake.rm.kineticarms", "mandrake.rm.luminouspigment", "mandrake.rut.rites", "mandrake.rm.planetpresetprime", "mandrake.rm.proximityhatch", "mandrake.rm.raidredesigner", "mandrake.rm.shipvermin", "mandrake.rm.solarmirrors", "mandrake.rm.visibility", "mandrake.rm.watchers", "mandrake.rm.wreckedmachines", "mandrake.rsw.droidworks", "mandrake.rsw.trophycraft", "mandrake.rut.eggreckoning", "mandrake.rut.falllinearrivals", "mandrake.rut.patches", "mandrake.rut.shipshields", "mandrake.rut.unfinishedline"],
     "dlc": True,
 }
 
@@ -823,9 +824,11 @@ TIERS["acc_green_min"] = {
 
 TIERS["acc_green_min2"] = {
     "why": "FOUNDRY acceptance 2026-10-07 GREEN-MIN batch 2: Stillsand retry, CreatureBehaviors, Greentide, PyrelandsMechanics, "
-           "LuminousPigment (with Ninefold, which its gods chain needs) on the composed biomes mod.",
+           "LuminousPigment (with Ninefold, which its gods chain needs; Ninefold is inside Salvation Rites since "
+           "2026-10-22) on the composed biomes mod.",
     "want": [BRIDGE, "mandrake.rm.gimmesomeslack", "mandrake.rm.biomes", "mandrake.rsw.swbestiary", "mandrake.rut.patches",
-             "mandrake.rm.luminouspigment", "mandrake.rm.ninefold", "mandrake.rut.pyrelandsmechanics"],
+             "mandrake.rm.luminouspigment", "mandrake.rut.antiquities", "mandrake.rut.ashkarrlandmarkart",
+             "mandrake.rut.rites", "mandrake.rut.pyrelandsmechanics"],
     "dlc": True,
 }
 

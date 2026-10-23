@@ -3,7 +3,7 @@ stay,RimMandrake/Aftermath,,RimMandrake,mandrake.rm.chronicle,,HIGH,R5: renamed 
 stay,RimMandrake/FluidCanals,,RimMandrake,,,HIGH,mechanic; species/biome-agnostic
 stay,RimMandrake/Graffiti,,RimMandrake,,,HIGH,R7 RULED: keeps engine + absorbs SacredGraffiti C#; NEW authoring task — generic vanilla-style default marks (R6 pattern)
 stay,RimMandrake/Inhabited,,RimMandrake,,,HIGH,ruling 8: keeps its name; AshkarrInhabited stays the campaign layer
-stay,RimMandrake/Ninefold,,RimMandrake,,,HIGH,R2 RULED: stays separate; RM engine (also a consumer of RimChronicle events); RUT Salvation is the NEW data pack
+merge-into,RimMandrake/Ninefold,RimUtinni/Rites,RimUtinni,mandrake.rut.rites,,HIGH,"R2 REVERSED 2026-10-22 by owner card (Ninefold home → fold Ninefold into Salvation Rites): engine + content are one RUT mod, mandrake.rut.rites; mandrake.rm.ninefold retired"
 stay,RimMandrake/Oracle,,RimMandrake,,,HIGH,mechanic; claude -p transport rewrite is its own item
 stay,RimMandrake/Pits,,RimMandrake,,,HIGH,the naming exemplar; mechanic
 stay,RimMandrake/Property,,RimMandrake,,,HIGH,R1 RULED: folder renames RimProperty; packageId stays mandrake.rm.property (grammar-closest — avoids the mandrake.rm.rimproperty stutter; zero MayRequire churn)

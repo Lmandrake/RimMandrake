@@ -57,7 +57,7 @@ tooling and stay as-is (§1b).
 | **droids** | — | Droidworks `mandrake.rsw.droidworks` (stays; campaign layer already externalized by design) | campaign droid roster rows ride UtinniPatches (from Jawa_Patches' JawaFactionRoster.xml) |
 | **food** | — | Cuisine `mandrake.rsw.cuisine` | — |
 | **plants** | — | — | AshkarrFlora `mandrake.rut.ashkarrflora` |
-| **faith / pantheon** | Ninefold `mandrake.rm.ninefold` (engine, R2) + Graffiti `mandrake.rm.graffiti` ← SacredGraffiti's worker C# + NEW generic default marks (R7) | — | **Salvation `mandrake.rut.salvation` (NEW, R8)** ← SacredGraffiti's nine mark-styles, IshkoDarkLandmarks, Rites (AftermathRites NOT in it) |
+| **faith / pantheon** | ~~Ninefold `mandrake.rm.ninefold` (engine, R2)~~ folded into Salvation Rites `mandrake.rut.rites` 2026-10-22 (owner by card; see R2) + Graffiti `mandrake.rm.graffiti` ← SacredGraffiti's worker C# + NEW generic default marks (R7) | — | **Salvation `mandrake.rut.salvation` (NEW, R8)** ← SacredGraffiti's nine mark-styles, IshkoDarkLandmarks, Rites (AftermathRites NOT in it) |
 | **crime / property** | **RimProperty `mandrake.rm.property` (R1)** = Property ← SalvageClaim, TheftHauler (droid-loader wiring stays a MayRequire patch; RIMPROPERTY_ANIMAL_THEFT_1 filed) | — | — |
 | **pursuit / visibility** | **RimPursuit `mandrake.rm.pursuit` (R3, NEW)** = Visibility ← EmpirePursuit's pursuit engine (promoted RUT→RM) | — | EmpirePursuit `mandrake.rut.empirepursuit` stays as the Empire-triggers data pack |
 | **chronicle / events** | **RimChronicle `mandrake.rm.chronicle` (R5)** = Aftermath, reframed: hookable game-event evidence engine (battle-scoped v1; Ninefold consumes the same events) | — | ChronicleRites `mandrake.rut.chroniclerites` = AftermathRites renamed (proposed grammar name) |
@@ -98,8 +98,12 @@ loadAfter at most; the safe-core merely originated inside Doctrine). Doctrine
 = the campaign's surgical patch layer. Merging them would weld a faith
 engine to a crime engine to a stat dial for no shared consumer.
 
-Ruled outcomes: **R2** — Ninefold and Doctrine stay separate, the RM-engine
-+ RUT-content split stands. **R1** — Property + SalvageClaim + TheftHauler
+Ruled outcomes: **R2** — Ninefold and Doctrine stay separate. The RM-engine
++ RUT-content split for Ninefold is REVERSED (owner 2026-10-22, by card:
+"Ninefold home → fold Ninefold into Salvation Rites"; his words: *"the Nine
+Gods belong in Salvation Rites. They are NOT a general reuse mod."*):
+Ninefold's engine and content are one RimUtinni mod, `mandrake.rut.rites`,
+and `mandrake.rm.ninefold` is retired. **R1** — Property + SalvageClaim + TheftHauler
 merge as **RimProperty**; the droid-loader wiring stays a MayRequire patch,
 which resolves the RM→RSW tier-inversion worry; RaidRedesigner stays out;
 new scope filed as RIMPROPERTY_ANIMAL_THEFT_1. **R3** — Visibility does NOT
@@ -267,9 +271,9 @@ weapons                                      Armoury ◄── JawaIonWeapons
                                               │ ─extract→ Droidworks (droid namers, VERIFY)
 races                                        StarWarsRaces
 droids                                       Droidworks ─(roster rows stay out)→ UtinniPatches
-faith             Ninefold (engine, R2) ..consumes.. RimChronicle events      Salvation (NEW, R8) ◄── SacredGraffiti defs
+faith             (Ninefold: folded into Rites 2026-10-22, R2)                   Salvation (NEW, R8) ◄── SacredGraffiti defs
                   Graffiti ◄── SacredGraffiti C#                               ▲ ◄── IshkoDarkLandmarks ..> AshkarrLandmarkArt
-                   + NEW generic marks (R7)                                    └─◄── Rites ..> Antiquities
+                   + NEW generic marks (R7)                                    └─◄── Rites (+ Ninefold engine) ..> Antiquities
 crime             RimProperty (R1) ◄── SalvageClaim
                    ▲              ◄── TheftHauler (droid wiring = MayRequire patch)
                    └..RaidRedesigner (stays separate)
@@ -299,12 +303,15 @@ dies-with-donor                              KotORBandolierNorthFix · MSEDroidF
 1. **Crime suite** — RULED (R1): merged as **RimProperty**; droid-loader
    wiring stays a MayRequire patch; RIMPROPERTY_ANIMAL_THEFT_1 filed.
 2. **Ninefold/Property/Visibility/Doctrine cluster** — RULED (R2/R3):
-   Ninefold and Doctrine stay separate; Visibility merges into the NEW
+   Ninefold and Doctrine stay separate (Ninefold itself folded into Salvation
+   Rites 2026-10-22, see R2); Visibility merges into the NEW
    **RimPursuit** with EmpirePursuit's promoted engine (R3).
 3. **defName re-prefix on tier moves** — RULED (R4): YES, now; pre-freeze
    is the only exit.
 4. **Salvation pack contents** — RULED (R8): nine campaign mark-styles +
    IshkoDarkLandmarks + Rites; AftermathRites (now ChronicleRites) NOT in it.
+   Ishko's landmarks AND the Ninefold engine are already inside Rites
+   (`mandrake.rut.rites`, 2026-10-22).
 5. **Engine promotions** — RULED (R9), and further than proposed:
    **Pyrelands** ships as a self-contained generic RM biome (FireEcology
    engine + biome content together); WeatherSuite likewise promotes whole

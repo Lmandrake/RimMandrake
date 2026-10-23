@@ -21,6 +21,6 @@
   <loadAfter>
     <li>Ludeon.RimWorld</li>
     <li>mandrake.rm.aftermath</li>
-    <li>mandrake.rm.ninefold</li>
+    <li>mandrake.rut.rites</li>
   </loadAfter>
 </ModMetaData>

@@ -117,7 +117,7 @@ def main():
             if cls not in trig_classes:
                 fails.append("%s: trigger Class %r is not a C# trigger type" % (where, t.get("Class")))
             if cls == "AtlasTrigger_GodUnveiled" and t.findtext("god") not in GODS:
-                fails.append("%s: god %r is not a RimMandrake.Ninefold.God name" % (where, t.findtext("god")))
+                fails.append("%s: god %r is not a RimMandrake.Utinni.Rites.God name" % (where, t.findtext("god")))
             for field, types in SUBJECT_FIELDS.items():
                 node = t.find(field)
                 if node is None:

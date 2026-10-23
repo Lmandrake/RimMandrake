@@ -1,5 +1,5 @@
 # project: RimMandrake/RaidRedesigner/Source/RM_RaidRedesigner.csproj
-# dll: 34ec5f0b51e5f8baf8b976623521a0428dacba2fb6be6ab504dcf94a655abee8
+# dll: eecc6fc8073c6687bede189cad5c91298c146c4b6f539a89af4d535b8b7c7cb4
 1477cbba0ae8d933ac91f75340163aeac9ddac9befb6c03fc8142f793e93dec2 ../../_Shared/HarmonyResilience/PatchApplier.cs
 20f7d24d66f180b05f65d2a49c9fcf6c38a4c69df587dcd051b026838529d6d2 RaidRedesignerMod.cs
 28477b7ceeeb7e1b65406a88160919447409e41d26891b1278de9f9e3dd5f37e ../../_Shared/SettingsKit/SettingsKitCore.cs

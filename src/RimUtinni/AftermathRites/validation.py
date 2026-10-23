@@ -37,7 +37,7 @@ guessed:
     Helix/Pirate) are shipped ahead of rule 8's real trigger and are not
     reachable by anything in this build -- same file header.
   - `RM_AftermathRuleDef.godTie` is a plain `string` field (CHRONICLE_
-    NINEFOLD_DECOUPLE_1), not `mandrake.rm.ninefold`'s own God enum -- this
+    NINEFOLD_DECOUPLE_1), not `mandrake.rut.rites`'s own God enum -- this
     mod's `loadAfter` names that mod SOFT, and an unresolvable god name is
     Ninefold's own subscriber's warning to log, never a ConfigError this def
     type can raise. Nothing here needs Ninefold active to resolve.
@@ -71,7 +71,7 @@ Still not proven / real gaps:
      failure inside the engine mod's own alliance-lookup code, invisible to
      a get_defs read of this mod's own def.
   3. `godTie` values (`Shkaar`, `Rekko`, `Oomo`, `TaBaa`, `MobUnloo`) are
-     asserted as literal strings only -- whether `mandrake.rm.ninefold`
+     asserted as literal strings only -- whether `mandrake.rut.rites`
      actually has a live God matching each name is out of scope for a
      Defs-only companion with no hard dependency on that mod.
 """
@@ -279,7 +279,7 @@ def pair_defs_field_values(t):
 # The engine resolves three things by string at RUNTIME, silently: payloadIncidentDefName
 # (AftermathRuleRunner: GetNamedSilentFail -> "not found - skipping"), godTie (Ninefold's subscriber parses it to its
 # God enum; an unknown name is a warning nobody reads) and each alliance pair's a/b FactionDef names. A typo loads
-# clean and simply never fires. This checks them offline against the God enum in Ninefold/Source/God.cs and a def
+# clean and simply never fires. This checks them offline against the God enum in Rites/Source/God.cs (Ninefold, inside Salvation Rites) and a def
 # index over src/ plus the installed game's Data (Core + DLC); a vanilla name with no reachable Data is UNMEASURED.
 import os as _os
 import re as _re
@@ -287,7 +287,7 @@ import xml.etree.ElementTree as _ET
 
 _HERE = _os.path.dirname(_os.path.abspath(__file__))
 _SRC = _os.path.abspath(_os.path.join(_HERE, "..", ".."))
-_GOD_CS = _os.path.join(_SRC, "RimMandrake", "Ninefold", "Source", "God.cs")
+_GOD_CS = _os.path.join(_SRC, "RimUtinni", "Rites", "Source", "God.cs")
 _GAME_DATA = "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data"
 
 

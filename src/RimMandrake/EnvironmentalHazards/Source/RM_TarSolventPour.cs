@@ -363,8 +363,8 @@ namespace RimMandrake.EnvironmentalHazards
                 return;
             }
             resolved = true;
-            Type ninefold = AccessTools.TypeByName("RimMandrake.Ninefold.GameComponent_Ninefold");
-            godType = AccessTools.TypeByName("RimMandrake.Ninefold.God");
+            Type ninefold = AccessTools.TypeByName("RimMandrake.Utinni.Rites.GameComponent_Ninefold");
+            godType = AccessTools.TypeByName("RimMandrake.Utinni.Rites.God");
             if (ninefold == null || godType == null || !godType.IsEnum)
             {
                 return;

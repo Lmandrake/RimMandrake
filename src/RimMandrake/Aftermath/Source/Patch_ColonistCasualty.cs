@@ -4,7 +4,7 @@ using HarmonyLib;
 
 namespace RimMandrake.Aftermath
 {
-    // Same choke point RimMandrake.Ninefold's own Patch_BattleResolved.cs
+    // Same choke point RimMandrake.Utinni.Rites's own Patch_BattleResolved.cs
     // already cites (Pawn.Kill -- verified there, re-verified here since this
     // is a separate assembly): every pawn death passes through
     // `Pawn.Kill(DamageInfo? dinfo, Hediff exactCulprit)`. Unlike Ninefold's
