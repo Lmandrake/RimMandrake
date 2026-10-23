@@ -256,9 +256,17 @@ def read_hands(state_dir: Path | None = None) -> list[dict]:
 
 
 def http_ok(url: str, timeout: float = 0.8) -> bool:
+    """Probe a sheet server on its small `/status` endpoint (same ?t= token) and READ the reply.
+    Opening the page itself and dropping it unread made every probe a BrokenPipe traceback in the
+    server's serve.log (MEASURED 2026-10-22: logs of 17-27 MB, which pulse then read whole)."""
     import urllib.request
+    from urllib.parse import urlsplit, urlunsplit
+    p = urlsplit(url)
     try:
-        return urllib.request.urlopen(url, timeout=timeout).status == 200
+        with urllib.request.urlopen(urlunsplit((p.scheme, p.netloc, "/status", p.query, "")),
+                                    timeout=timeout) as r:
+            r.read()
+            return r.status == 200
     except Exception:
         return False
 
@@ -269,6 +277,36 @@ def parse_sheet_log(text: str) -> dict:
     m = re.search(r"(\d+) rows\s*·\s*(\d+) decided", text)
     return {"urls": urls, "never_reviewed": "NEVER reviewed" in text,
             "rows": int(m.group(1)) if m else None}
+
+
+_SHEET_LOG_CACHE: dict[str, tuple] = {}
+
+
+def scan_sheet_log(f: Path) -> dict:
+    """parse_sheet_log over a serve.log, streamed and incremental: only bytes appended since the last
+    scan are read, line by line. Reading every log whole each 45 s held ~250 MB and OOM-killed the
+    daemon at its 256 MB MemoryMax (MEASURED 2026-10-22, ×5 in a night)."""
+    st = f.stat()
+    c = _SHEET_LOG_CACHE.get(str(f))
+    if not c or c[0] != st.st_ino or st.st_size < c[1]:
+        c = (st.st_ino, 0, {"urls": [], "never_reviewed": False, "rows": None})
+    ino, off, info = c[0], c[1], dict(c[2], urls=list(c[2]["urls"]))
+    if st.st_size > off:
+        with open(f, "rb") as fh:
+            fh.seek(off)
+            for raw in fh:
+                if not raw.endswith(b"\n"):
+                    break                      # a line still being written: read it next time
+                off += len(raw)
+                if b"://" not in raw and b"rows" not in raw and b"NEVER" not in raw:
+                    continue
+                part = parse_sheet_log(raw.decode("utf-8", "replace"))
+                info["urls"] = [u for u in info["urls"] if u not in part["urls"]] + part["urls"]
+                info["never_reviewed"] = info["never_reviewed"] or part["never_reviewed"]
+                if info["rows"] is None:
+                    info["rows"] = part["rows"]
+    _SHEET_LOG_CACHE[str(f)] = (ino, off, info)
+    return info
 
 
 def read_sheets(dirs: list[Path] | None = None, probe=http_ok) -> list[dict]:
@@ -285,7 +323,7 @@ def read_sheets(dirs: list[Path] | None = None, probe=http_ok) -> list[dict]:
 
     def one(f: Path):
         try:
-            info = parse_sheet_log(f.read_text(errors="replace"))
+            info = scan_sheet_log(f)
             mt = f.stat().st_mtime
         except OSError:
             return None
@@ -383,12 +421,29 @@ def short(s: str, n: int = 72) -> str:
 # ---------------------------------------------------------------- classification (pure)
 
 
+def boot_time() -> float:
+    """Kernel boot (WSL VM start) epoch from /proc/stat btime; 0 when unreadable."""
+    try:
+        for ln in Path("/proc/stat").read_text().splitlines():
+            if ln.startswith("btime "):
+                return float(ln.split()[1])
+    except (OSError, ValueError):
+        pass
+    return 0.0
+
+
 def classify_sessions(sessions: list[dict], extras: dict, seen: dict, items: dict,
-                      acks: dict, now: float) -> tuple[list[dict], dict, list[dict]]:
-    """rows, new `seen` map, metric events. `seen` is {sid: {name, last_alive, file}}."""
+                      acks: dict, now: float, boot: float = 0.0) -> tuple[list[dict], dict, list[dict]]:
+    """rows, new `seen` map, metric events. `seen` is {sid: {name, last_alive, file}}.
+
+    A dead window is red only when it died on its own, inside the red window (24 h). Windows last
+    seen alive BEFORE the current boot died with the machine (WSL restart / reboot leaves every
+    session file behind): one `warn` line names them, never one red each. A dead file older than the
+    red window is forgotten (MEASURED 2026-10-22: 17 reds from 2026-10-11 were still on screen)."""
     rows, events = [], []
     new_seen = dict(seen)
     present = set()
+    restarted: list[tuple[str, float]] = []
     for s in sessions:
         sid = s.get("sessionId") or str(s.get("pid"))
         present.add(sid)
@@ -398,10 +453,16 @@ def classify_sessions(sessions: list[dict], extras: dict, seen: dict, items: dic
         upd = (s.get("statusUpdatedAt") or s.get("updatedAt") or 0) / 1000
         if not s.get("alive"):
             if sid in seen:   # we watched it live; process gone, file left behind
-                inc = f"lost:{sid}"
-                rows.append(_red(inc, who, f"{who} window lost — process gone, session file left",
-                                 seen[sid].get("last_alive", upd), acks, src="sessions",
-                                 link={"type": "path", "value": win_path(s.get('_file', '')), "label": "session"}))
+                last = seen[sid].get("last_alive", upd)
+                if now - last > RED_WINDOW_SECS:
+                    new_seen.pop(sid, None)     # old residue: stop tracking it
+                elif boot and last < boot:
+                    restarted.append((who, last))
+                else:
+                    inc = f"lost:{sid}"
+                    rows.append(_red(inc, who, f"{who} window lost — process gone, session file left",
+                                     last, acks, src="sessions",
+                                     link={"type": "path", "value": win_path(s.get('_file', '')), "label": "session"}))
             continue
         new_seen[sid] = {"name": who, "last_alive": now, "file": s.get("_file")}
         item = items.get(who.upper())
@@ -438,6 +499,14 @@ def classify_sessions(sessions: list[dict], extras: dict, seen: dict, items: dic
             else:
                 extra = f" · {sub} agent{'s' * (sub > 1)}" if sub else ""
                 add(_row(key, "run", who, f"{who} working{doing}{extra}", upd), "run")
+    if restarted:
+        names = sorted({w for w, _ in restarted})
+        at = time.strftime("%m-%d %H:%M", time.localtime(boot))
+        inc = f"restart:{int(boot)}"
+        rows.append(_row(inc, "warn", "WSL", f"WSL restarted {at} · {len(restarted)} window"
+                         f"{'s' * (len(restarted) > 1)} ended with it: {', '.join(names)} · reopen them "
+                         f"(claude --resume)", max(t for _, t in restarted), src="sessions", incident=inc,
+                         acked=inc in acks, count=len(restarted), pill=f"◆ restart {at[6:]}"))
     for sid, info in seen.items():
         if sid not in present:      # session file removed: a clean exit, neutral
             new_seen.pop(sid, None)
@@ -549,12 +618,25 @@ def parse_kernel_oom(lines: list[str]) -> list[dict]:
     return out
 
 
+SERVICE_NAMES = {"rm-pulse.service": "RimPulse daemon"}
+
+
 def kill_class(k: dict) -> str:
-    """planted | harness_test | seat"""
+    """planted | harness_test | service | seat. A systemd user service (app.slice/<x>.service, e.g.
+    rm-pulse.service at its MemoryMax) is NOT a seat window (MEASURED 2026-10-22: five
+    rm-pulse.service kills showed as "SEAT window")."""
     mc = k.get("memcg") or ""
     if "rm-harness" in mc:
         return "planted" if k.get("limit_kb") == PLANTED_CAP_KB else "harness_test"
+    if mc.rstrip("/").rsplit("/", 1)[-1].endswith(".service"):
+        return "service"
     return "seat"
+
+
+def _cap(limit_kb) -> str:
+    if not limit_kb:
+        return "its cap"
+    return f"{limit_kb / 1048576:.1f} GB cap" if limit_kb >= 1048576 else f"{limit_kb // 1024} MB cap"
 
 
 def today_window(now: float) -> float:
@@ -576,6 +658,8 @@ def classify_kernel_oom(kills: list[dict], acks: dict, now: float) -> list[dict]
             m = re.search(r"claude-seat-([A-Za-z0-9_]+)-\d+\.scope", k["memcg"])
             who = m.group(1).upper() if m else "SEAT"
             groups.setdefault(f"seat:{who}", []).append(k)
+        elif c == "service":
+            groups.setdefault(f"svc:{k['memcg'].rstrip('/').rsplit('/', 1)[-1]}", []).append(k)
         else:
             groups.setdefault(c, []).append(k)
     rows = []
@@ -583,7 +667,7 @@ def classify_kernel_oom(kills: list[dict], acks: dict, now: float) -> list[dict]
         ks.sort(key=lambda k: k["t"])
         last = ks[-1]
         n = len(ks)
-        cap = f"{(last.get('limit_kb') or 0) / 1048576:.1f} GB cap" if last.get("limit_kb") else "its cap"
+        cap = _cap(last.get("limit_kb"))
         if g == "planted":
             rows.append(_row("oom:planted", "idle", "HARNESS",
                              f"memory pen proven · planted 128 MiB test killed as designed ×{n} today", last["t"],
@@ -595,6 +679,12 @@ def classify_kernel_oom(kills: list[dict], acks: dict, now: float) -> list[dict]
         if g == "harness_test":
             text = f"a selftest hit {cap} and was killed (contained)" + (f" · ×{n} today" if n > 1 else "")
             r = _row(inc, "warn", "HARNESS", text, last["t"], src="kernel", incident=inc, count=n)
+        elif g.startswith("svc:"):
+            svc = g[4:]
+            who = SERVICE_NAMES.get(svc, svc)
+            text = (f"OOM kill · {who} ({svc}) at {cap}" + (f" · ×{n} today" if n > 1 else "")
+                    + f" · see journalctl --user -u {svc}")
+            r = _row(inc, "red", who.split()[0].upper(), text, last["t"], src="kernel", incident=inc, count=n)
         else:
             who = g.split(":", 1)[1]
             where = "tool cgroup" if last["memcg"].endswith("claude-code-bash") else "window"
@@ -603,7 +693,8 @@ def classify_kernel_oom(kills: list[dict], acks: dict, now: float) -> list[dict]
                      toasted_elsewhere=True)   # memwatch toasts seat kills itself
         r["acked"] = not fresh
         r["toast_key"] = f"{inc}@{int(last['t'])}"
-        r["link"] = {"type": "path", "value": win_path(str(MEMWATCH_EVENTS)), "label": "events"}
+        if not g.startswith("svc:"):   # memwatch never records a service kill
+            r["link"] = {"type": "path", "value": win_path(str(MEMWATCH_EVENTS)), "label": "events"}
         rows.append(r)
     return rows
 
@@ -838,7 +929,7 @@ def collect_snapshot(raw: dict, state: dict, now: float) -> tuple[dict, dict, li
     acks = state.get("acks", {})
     items = current_items(raw.get("ledger", []), now)
     srows, seen, events = classify_sessions(raw.get("sessions", []), raw.get("extras", {}),
-                                            state.get("seen", {}), items, acks, now)
+                                            state.get("seen", {}), items, acks, now, raw.get("boot", 0.0))
     since = state.get("done_since") or (now - DONE_WINDOW_SECS)
     lrows, counts = classify_ledger(raw.get("ledger", []), since, now, raw.get("rulings"))
     oom = (classify_kernel_oom(raw["kernel_oom"], acks, now) if raw.get("kernel_oom") is not None
