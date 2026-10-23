@@ -1,0 +1,1 @@
+Sea-floor LAYER maps use the floor BiomeDef (RM_SeabedFloor_<Sea>), not the sea's; anything a sea owns reaches its floor only if RM_SeabedFloorLife.CopyLife copies it. Fish were missed until 2026-10-22 (d5634e4ad): floors had maxFishPopulation 0, so no ship-reached floor could fish while the old hatch pocket maps (sea biome) could. Add every new sea-owned BiomeDef field there.
