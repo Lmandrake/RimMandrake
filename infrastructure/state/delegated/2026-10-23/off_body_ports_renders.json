@@ -1,0 +1,107 @@
+{
+ "judge_model": "claude-opus-5-5",
+ "brief": "design/RimMandrake/art_judge_brief.md@3af8e3b3ce",
+ "subject": "FlowWorks off-body hose ports (under-coupler) 2026-10-23",
+ "question": "owner ruling 2026-10-23: couplers drawn UNDER the fixture; criteria a-e from the seat's brief",
+ "verdicts": {
+  "Transient/off_body_ports_20261023/RM_LiquidTankTall_Modern.png": {
+   "verdict": "PASS",
+   "note": "(a) couplers' rigid stubs pass beneath the body, no end drawn on it; (b) no bare T or pipe-to-pipe junction; (c) collar meets coupling flush; (e) all ports readable at 64 px/cell. E/W ports low on the body/base, S port under base left of centre; old below-left T is gone."
+  },
+  "Transient/off_body_ports_20261023/RM_LiquidTankTall_Modern_lane1.png": {
+   "verdict": "PASS",
+   "note": "(a) couplers' rigid stubs pass beneath the body, no end drawn on it; (b) no bare T or pipe-to-pipe junction; (c) collar meets coupling flush; (e) all ports readable at 64 px/cell. E/W ports mid-body; S port right of centre under the base; N hose stub passes under the top-right valve, which stays whole on top."
+  },
+  "Transient/off_body_ports_20261023/RM_UniversalCargoTank_Modern.png": {
+   "verdict": "PASS",
+   "note": "(a) couplers' rigid stubs pass beneath the body, no end drawn on it; (b) no bare T or pipe-to-pipe junction; (c) collar meets coupling flush; (e) all ports readable at 64 px/cell. N port collar tucks behind the cage top rail, no stub showing. E/W ports at the pallet/skid line."
+  },
+  "Transient/off_body_ports_20261023/RM_UniversalCargoTank_Modern_lane1.png": {
+   "verdict": "PASS",
+   "note": "(a) couplers' rigid stubs pass beneath the body, no end drawn on it; (b) no bare T or pipe-to-pipe junction; (c) collar meets coupling flush; (e) all ports readable at 64 px/cell. N port collar tucks behind the cage top rail, no stub showing. E port is on the upper lane and clear of the fixtures."
+  },
+  "Transient/off_body_ports_20261023/RM_UniversalCargoTankXTall_Modern.png": {
+   "verdict": "PASS",
+   "note": "(a) couplers' rigid stubs pass beneath the body, no end drawn on it; (b) no bare T or pipe-to-pipe junction; (c) collar meets coupling flush; (e) all ports readable at 64 px/cell. E/W ports at the lowest band; S port under the stand left of centre; no T below-left (previous FIX resolved)."
+  },
+  "Transient/off_body_ports_20261023/RM_UniversalCargoTankXTall_Modern_lane1.png": {
+   "verdict": "PASS",
+   "note": "(a) couplers' rigid stubs pass beneath the body, no end drawn on it; (b) no bare T or pipe-to-pipe junction; (c) collar meets coupling flush; (e) all ports readable at 64 px/cell. E/W ports mid-body, well clear of the top elbow nozzle; S port under the stand right of centre."
+  },
+  "Transient/off_body_ports_20261023/RM_LiquidTankTall_Futuristic.png": {
+   "verdict": "PASS",
+   "note": "(a) couplers' rigid stubs pass beneath the body, no end drawn on it; (b) no bare T or pipe-to-pipe junction; (c) collar meets coupling flush; (e) all ports readable at 64 px/cell. E/W ports at base band, S under the plinth."
+  },
+  "Transient/off_body_ports_20261023/RM_LiquidTankTall_Futuristic_lane1.png": {
+   "verdict": "PASS",
+   "note": "(a) couplers' rigid stubs pass beneath the body, no end drawn on it; (b) no bare T or pipe-to-pipe junction; (c) collar meets coupling flush; (e) all ports readable at 64 px/cell. E/W ports mid-body; S port right of centre under the base; N hose stub passes under the top-right valve, which stays whole on top."
+  },
+  "Transient/off_body_ports_20261023/RM_UniversalCargoTank_Futuristic.png": {
+   "verdict": "PASS",
+   "note": "(a) couplers' rigid stubs pass beneath the body, no end drawn on it; (b) no bare T or pipe-to-pipe junction; (c) collar meets coupling flush; (e) all ports readable at 64 px/cell. N port: a ~0.35-cell straight rigid stub runs from beneath the body to the collar on open ground. It is the port's own pipe, not a junction; advisory only. E/W ports at the pallet/skid line."
+  },
+  "Transient/off_body_ports_20261023/RM_UniversalCargoTank_Futuristic_lane1.png": {
+   "verdict": "PASS",
+   "note": "(a) couplers' rigid stubs pass beneath the body, no end drawn on it; (b) no bare T or pipe-to-pipe junction; (c) collar meets coupling flush; (e) all ports readable at 64 px/cell. N port: a ~0.35-cell straight rigid stub runs from beneath the body to the collar on open ground. It is the port's own pipe, not a junction; advisory only. E port is on the upper lane, coaxial with the kept east outlet nozzle: the nozzle stays whole and is drawn on top, and its tip butts the collar, so it reads as nozzle-into-port. Nothing is covered."
+  },
+  "Transient/off_body_ports_20261023/RM_UniversalCargoTankXTall_Futuristic.png": {
+   "verdict": "PASS",
+   "note": "(a) couplers' rigid stubs pass beneath the body, no end drawn on it; (b) no bare T or pipe-to-pipe junction; (c) collar meets coupling flush; (e) all ports readable at 64 px/cell. E/W ports at the lowest band; S port under the stand left of centre; no T below-left (previous FIX resolved)."
+  },
+  "Transient/off_body_ports_20261023/RM_UniversalCargoTankXTall_Futuristic_lane1.png": {
+   "verdict": "PASS",
+   "note": "(a) couplers' rigid stubs pass beneath the body, no end drawn on it; (b) no bare T or pipe-to-pipe junction; (c) collar meets coupling flush; (e) all ports readable at 64 px/cell. E/W ports mid-body, well clear of the top elbow nozzle; S port under the stand right of centre."
+  },
+  "Transient/off_body_ports_20261023/RM_LiquidTankTall_Industrial.png": {
+   "verdict": "PASS",
+   "note": "(a) couplers' rigid stubs pass beneath the body, no end drawn on it; (b) no bare T or pipe-to-pipe junction; (c) collar meets coupling flush; (e) all ports readable at 64 px/cell. E/W ports at base band, S under the plinth."
+  },
+  "Transient/off_body_ports_20261023/RM_LiquidTankTall_Industrial_lane1.png": {
+   "verdict": "PASS",
+   "note": "(a) couplers' rigid stubs pass beneath the body, no end drawn on it; (b) no bare T or pipe-to-pipe junction; (c) collar meets coupling flush; (e) all ports readable at 64 px/cell. E/W ports mid-body; S port right of centre under the base; N hose stub passes under the top-right valve, which stays whole on top."
+  },
+  "Transient/off_body_ports_20261023/RM_UniversalCargoTank_Industrial.png": {
+   "verdict": "PASS",
+   "note": "(a) couplers' rigid stubs pass beneath the body, no end drawn on it; (b) no bare T or pipe-to-pipe junction; (c) collar meets coupling flush; (e) all ports readable at 64 px/cell. N port: a ~0.35-cell straight rigid stub runs from beneath the body to the collar on open ground. It is the port's own pipe, not a junction; advisory only. E/W ports at the pallet/skid line."
+  },
+  "Transient/off_body_ports_20261023/RM_UniversalCargoTank_Industrial_lane1.png": {
+   "verdict": "PASS",
+   "note": "(a) couplers' rigid stubs pass beneath the body, no end drawn on it; (b) no bare T or pipe-to-pipe junction; (c) collar meets coupling flush; (e) all ports readable at 64 px/cell. N port: a ~0.35-cell straight rigid stub runs from beneath the body to the collar on open ground. It is the port's own pipe, not a junction; advisory only. E port is on the upper lane, coaxial with the kept east outlet nozzle: the nozzle stays whole and is drawn on top, and its tip butts the collar, so it reads as nozzle-into-port. Nothing is covered."
+  },
+  "Transient/off_body_ports_20261023/RM_UniversalCargoTankXTall_Industrial.png": {
+   "verdict": "PASS",
+   "note": "(a) couplers' rigid stubs pass beneath the body, no end drawn on it; (b) no bare T or pipe-to-pipe junction; (c) collar meets coupling flush; (e) all ports readable at 64 px/cell. E/W ports at the lowest band; S port under the stand left of centre; no T below-left (previous FIX resolved)."
+  },
+  "Transient/off_body_ports_20261023/RM_UniversalCargoTankXTall_Industrial_lane1.png": {
+   "verdict": "PASS",
+   "note": "(a) couplers' rigid stubs pass beneath the body, no end drawn on it; (b) no bare T or pipe-to-pipe junction; (c) collar meets coupling flush; (e) all ports readable at 64 px/cell. E/W ports mid-body, well clear of the top elbow nozzle; S port under the stand right of centre."
+  },
+  "Transient/off_body_ports_20261023/RM_LiquidTankTall_Scrapper.png": {
+   "verdict": "PASS",
+   "note": "(a) couplers' rigid stubs pass beneath the body, no end drawn on it; (b) no bare T or pipe-to-pipe junction; (c) collar meets coupling flush; (e) all ports readable at 64 px/cell. E/W ports at base band, S under the plinth."
+  },
+  "Transient/off_body_ports_20261023/RM_LiquidTankTall_Scrapper_lane1.png": {
+   "verdict": "PASS",
+   "note": "(a) couplers' rigid stubs pass beneath the body, no end drawn on it; (b) no bare T or pipe-to-pipe junction; (c) collar meets coupling flush; (e) all ports readable at 64 px/cell. E/W ports mid-body; S port right of centre under the base; N hose stub passes under the top-right valve, which stays whole on top."
+  },
+  "Transient/off_body_ports_20261023/RM_UniversalCargoTank_Scrapper.png": {
+   "verdict": "PASS",
+   "note": "(a) couplers' rigid stubs pass beneath the body, no end drawn on it; (b) no bare T or pipe-to-pipe junction; (c) collar meets coupling flush; (e) all ports readable at 64 px/cell. N port: a ~0.35-cell straight rigid stub runs from beneath the body to the collar on open ground. It is the port's own pipe, not a junction; advisory only. E/W ports at the pallet/skid line."
+  },
+  "Transient/off_body_ports_20261023/RM_UniversalCargoTank_Scrapper_lane1.png": {
+   "verdict": "PASS",
+   "note": "(a) couplers' rigid stubs pass beneath the body, no end drawn on it; (b) no bare T or pipe-to-pipe junction; (c) collar meets coupling flush; (e) all ports readable at 64 px/cell. N port: a ~0.35-cell straight rigid stub runs from beneath the body to the collar on open ground. It is the port's own pipe, not a junction; advisory only. E port is on the upper lane, coaxial with the kept east outlet nozzle: the nozzle stays whole and is drawn on top, and its tip butts the collar, so it reads as nozzle-into-port. Nothing is covered."
+  },
+  "Transient/off_body_ports_20261023/RM_UniversalCargoTankXTall_Scrapper.png": {
+   "verdict": "PASS",
+   "note": "(a) couplers' rigid stubs pass beneath the body, no end drawn on it; (b) no bare T or pipe-to-pipe junction; (c) collar meets coupling flush; (e) all ports readable at 64 px/cell. E/W ports at the lowest band; S port under the stand left of centre; no T below-left (previous FIX resolved)."
+  },
+  "Transient/off_body_ports_20261023/RM_UniversalCargoTankXTall_Scrapper_lane1.png": {
+   "verdict": "PASS",
+   "note": "(a) couplers' rigid stubs pass beneath the body, no end drawn on it; (b) no bare T or pipe-to-pipe junction; (c) collar meets coupling flush; (e) all ports readable at 64 px/cell. E/W ports mid-body, well clear of the top elbow nozzle; S port under the stand right of centre."
+  }
+ },
+ "proposals": [
+  "Horizontal cargo tanks (Futuristic/Industrial/Scrapper): if the owner dislikes the long bare N stub, shorten it by pulling the N collar down to the body's top silhouette, as Modern does."
+ ]
+}
