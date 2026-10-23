@@ -20,6 +20,10 @@ namespace RimMandrake.FlowWorks.Hose
         private readonly Dictionary<CompHoseReel, Cached> meshes = new Dictionary<CompHoseReel, Cached>();
         private CordWorld world;
         private int worldTick = -1;
+        /// <summary>HOSE_WORLD_SNAPSHOT_FIX_STALE_WHILE_PAUSED: bumped by every map change the snapshot reads (MapChanged), and
+        /// the value the snapshot was built from; World() rebuilds when they differ, paused or not.</summary>
+        private int mapVersion, worldVersion = -1;
+        private bool mapEventsHooked;
         private bool drawErrorLogged;
         public static int Relays, LastLayMs, Retracts;
         /// <summary>Whole-map CordWorld snapshots built (World()), and corridor checks answered from the live map instead.</summary>
@@ -67,6 +71,7 @@ namespace RimMandrake.FlowWorks.Hose
         public override void MapRemoved()
         {
             base.MapRemoved();
+            UnhookMapEvents();
             foreach (Cached c in meshes.Values) DestroyMeshes(c);
             meshes.Clear();
             foreach (StubCache sc in stubMeshes.Values) if (sc.mesh != null) UnityEngine.Object.Destroy(sc.mesh);
@@ -103,8 +108,10 @@ namespace RimMandrake.FlowWorks.Hose
         /// HoseMath.BuildingCrossCost so the hose goes round it (HOSE_PATHING_REPAIR_SCENIC_ROUTE_PLEASE). Cached for the tick it was taken.</summary>
         internal CordWorld World(int maxAge = 0)
         {
+            HookMapEvents();
             int now = Find.TickManager.TicksGame;
-            if (world != null && now - worldTick <= maxAge) return world;
+            if (world != null && HoseLive.SnapshotFresh(now, worldTick, maxAge, worldVersion, mapVersion)) return world;
+            int version = mapVersion;
             int w = map.Size.x, h = map.Size.z;
             WorldBuilds++;
             var cw = new CordWorld(w, h);
@@ -127,8 +134,55 @@ namespace RimMandrake.FlowWorks.Hose
             RM_HoseBands.Apply(map, cw);   // PIPE_POLES phase 6: depth bands, ramp/ladder links (design §P5)
             world = cw;
             worldTick = now;
+            worldVersion = version;
             return cw;
         }
+
+        /// <summary>HOSE_WORLD_SNAPSHOT_FIX_STALE_WHILE_PAUSED: subscribe once to the map events that change what World() reads
+        /// (edifices, reels and pumps via Building*, trees via Thing*, water via TerrainChanged, walkability and pit bands via
+        /// PathCostRecalculate, fog via CellFog/MapFogged). A handler only bumps a counter; the rebuild waits for the next read.</summary>
+        private void HookMapEvents()
+        {
+            if (mapEventsHooked || map?.events == null) return;
+            mapEventsHooked = true;
+            map.events.BuildingSpawned += OnBuilding;
+            map.events.BuildingDespawned += OnBuilding;
+            map.events.ThingSpawned += OnThing;
+            map.events.ThingDespawned += OnThing;
+            map.events.TerrainChanged += OnCell;
+            map.events.PathCostRecalculate += OnCell;
+            map.events.CellFogChanged += OnFog;
+            map.events.MapFogged += MapChanged;
+        }
+
+        private void UnhookMapEvents()
+        {
+            if (!mapEventsHooked || map?.events == null) return;
+            mapEventsHooked = false;
+            map.events.BuildingSpawned -= OnBuilding;
+            map.events.BuildingDespawned -= OnBuilding;
+            map.events.ThingSpawned -= OnThing;
+            map.events.ThingDespawned -= OnThing;
+            map.events.TerrainChanged -= OnCell;
+            map.events.PathCostRecalculate -= OnCell;
+            map.events.CellFogChanged -= OnFog;
+            map.events.MapFogged -= MapChanged;
+        }
+
+        private void OnBuilding(Building b) => MapChanged();
+        private void OnThing(Thing t) { if (t is Plant p && p.def.plant != null && p.def.plant.IsTree) MapChanged(); }
+        private void OnCell(IntVec3 c) => CellChanged(c);
+        private void OnFog(IntVec3 c, bool fogged) => CellChanged(c);
+        /// <summary>A per-cell event (path cost, terrain, fog) bumps the version only when the cell now reads differently from the
+        /// snapshot (LiveCellSig, World()'s rule for one cell): snow and filth recalculate path costs all the time, and a bump per
+        /// tick would rebuild the whole-map snapshot per tick for every World(60) reader.</summary>
+        private void CellChanged(IntVec3 c)
+        {
+            if (world == null || worldVersion != mapVersion) return;   // already rebuilding on the next read
+            var cell = new Cell(c.x, c.z);
+            if (CordSig.CellSig(world, cell) != LiveCellSig(cell)) MapChanged();
+        }
+        private void MapChanged() => mapVersion++;
 
         /// <summary>
         /// CordSig.CellSig(World(), c) read off the LIVE map for one cell, without building the whole-map snapshot: the same
@@ -589,7 +643,7 @@ namespace RimMandrake.FlowWorks.Hose
         {
             // Kept deliberately (re-review 2026-10-11): staying inert would let Map.ExposeComponents name this class in the save,
             // which is what the save-skip fallback exists to prevent; the cost is one skipped update for the next component, once.
-            if (!RM_HoseEssentials.SaveSkipPatched) map.components.Remove(this);
+            if (!RM_HoseEssentials.SaveSkipPatched) { UnhookMapEvents(); map.components.Remove(this); }
             if (!RM_HoseEssentials.SaveSkipPatched) return;
             HoseProbe.Service(map, this);
             if (!RM_HoseSettings.enabled || Find.CurrentMap != map || reels.Count == 0) { FlushFrameMeshes(); return; }
