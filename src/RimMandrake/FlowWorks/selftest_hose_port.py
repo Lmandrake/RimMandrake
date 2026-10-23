@@ -211,7 +211,7 @@ def main():
     check("P3 (source shape) save-skip + type alias applied by RM_HoseEssentials (GetPatchedMethods census), not by attribute",
           'AccessTools.Method(typeof(Map), "ExposeComponents")' in ess and "nameof(GenTypes.GetTypeInAnyAssembly)" in ess
           and "GetPatchedMethods()" in ess and "HarmonyPatch" not in attr.split("</summary>")[-1]
-          and "if (!RM_HoseEssentials.SaveSkipPatched) map.components.Remove(this);" in mc)
+          and "if (!RM_HoseEssentials.SaveSkipPatched) { UnhookMapEvents(); map.components.Remove(this); }" in mc)
     mod = open(os.path.join(HERE, "Source", "RimMandrakeFlowWorksMod.cs"), encoding="utf-8").read()
     check("P3 the FlowWorks Mod constructor applies the essentials and the one-time import", "Hose.RM_HoseEssentials.Apply();" in mod and "Hose.RM_HoseLegacy.ImportOnce()" in mod)
     # P4
