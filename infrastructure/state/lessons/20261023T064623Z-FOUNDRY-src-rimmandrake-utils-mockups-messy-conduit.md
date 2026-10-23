@@ -1,0 +1,1 @@
+src/RimMandrake/Utils/mockups/messy_conduit/reel_intake_geometry.py has no argparse: '--help' RUNS the generator and rewrites Source/Hose/ReelIntakeGeometry.cs (byte-identical when the art is current, a silent C# change when it is not). Read the file header instead of asking it for help. (FOUNDRY 2026-10-23)

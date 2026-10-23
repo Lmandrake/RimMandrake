@@ -1,0 +1,1 @@
+Delegated art from the artpipe: install with art.py install ... --reason artpipe-collect --why 'delegated: art <verdict>' (true provenance, passes art_guard). If an install already went in with --why alone, delete the PNG from the worktree and re-run install with --reason: an identical sha otherwise answers already-live and writes no new event. (FOUNDRY 2026-10-23, 799e2490e)
