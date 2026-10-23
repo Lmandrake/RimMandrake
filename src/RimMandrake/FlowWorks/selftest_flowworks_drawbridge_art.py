@@ -114,6 +114,13 @@ def main():
         print(l)
     for k in sorted(OWED, key=str):
         print("  owed (stand-in draws): %s %s %s" % k)
+    # DRAWBRIDGE_CABLES_FIX_STOP_SHORT: the rope fixture the SelfTest grades the cable math against is a fresh measurement
+    import subprocess
+    mc = subprocess.run([sys.executable, os.path.join(HERE, "art_source", "Drawbridge", "measure_cable_art.py"), "--check"],
+                        capture_output=True, text=True)
+    print(mc.stdout.strip())
+    if mc.returncode != 0:
+        fails.append("anchor_cable_art.json is stale: re-run art_source/Drawbridge/measure_cable_art.py, then the SelfTest " + mc.stderr.strip()[-200:])
     if fails:
         for f in fails:
             print("FAIL", f)
