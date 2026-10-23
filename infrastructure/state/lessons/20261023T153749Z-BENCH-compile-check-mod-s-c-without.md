@@ -1,0 +1,1 @@
+Compile-check a mod's C# without touching the tree's DLL: import winbuild, set winbuild.built_outputs=lambda s,t: [], call winbuild.stage_build(csproj, stage_name='<unique>') - rc 0 means it compiles, nothing is copied back (takeover E, 2026-10-23).
