@@ -139,6 +139,7 @@
     <Compile Include="TakenIdentityChecks.cs" />
     <Compile Include="..\LiquidTypes\RM_ContainerMaterialMath.cs" />
     <Compile Include="..\LiquidTypes\RM_ContainerStyleMath.cs" />
+    <Compile Include="..\LiquidTypes\RM_TankDebugMath.cs" />
     <!-- hose port (step 2): the cord geometry (_Shared/SlackGeometry, internal types), the Verse-free hose files, and the hose
          suites moved from Gimme Some Slack's SelfTest, run through HoseChecks.cs's Program.Check shim -->
     <Compile Include="..\..\..\_Shared\SlackGeometry\CordMath.cs" Link="Shared\SlackGeometry\CordMath.cs" />
@@ -197,6 +198,7 @@
     <Compile Include="LiquidJoinChecks.cs" />
     <Compile Include="ReelRiserShadowChecks.cs" />
     <Compile Include="ContainerStyleChecks.cs" />
+    <Compile Include="TankDebugChecks.cs" />
     <Compile Include="..\Thirst\RM_ThirstMath.cs" />
     <Compile Include="ThirstChecks.cs" />
     <Compile Include="HoseRulingTextChecks.cs" />
