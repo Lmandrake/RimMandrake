@@ -4,16 +4,14 @@
      Wave 2 remainder, 2026-09-11): the mod's entire content (13 defs: 1
      BodyPartDef, 2 BodyPartGroupDefs, 2 egg ThingDefs, 2 BodyDefs, 3 creature
      ThingDefs + 3 PawnKindDefs) ported so joe.cephaloids can retire. defNames
-     preserved verbatim, including the custom "Shell" BodyPartDef, which
-     already overrides vanilla Core's own "Shell" whenever this content is
-     active; that override is pre-existing donor behaviour, not introduced
-     by this port, and is not fixed here, per this repo's no-silent-fixes
-     discipline. RM_Qorrax and its eggs moved out to mandrake.rm.stillsand (STILLSAND_BEDAZZLE_CONTENT_1);
-     the Cephaloid body and Shell part stay for the landopus. Textures copied to this mod's own Textures/Things/Pawn/Animal/
+     preserved verbatim except the custom "Shell" BodyPartDef, renamed
+     RUT_CephaloidShell (owner, Biome card 1, 2026-10-22) so it no longer overrides
+     vanilla Core's own "Shell"; only the Cephaloid and Nautiloid bodies use it. RM_Qorrax and its eggs moved out to mandrake.rm.stillsand (STILLSAND_BEDAZZLE_CONTENT_1);
+     the Cephaloid body and RUT_CephaloidShell part stay for the landopus. Textures copied to this mod's own Textures/Things/Pawn/Animal/
      {cephalope,landopus,nautilant}/. -->
 <Defs>
 	<BodyPartDef>
-	<defName>Shell</defName>
+	<defName>RUT_CephaloidShell</defName>
 	<label>shell</label>
 	<hitPoints>2500</hitPoints>
 	<permanentInjuryChanceFactor>0</permanentInjuryChanceFactor>
@@ -45,7 +43,7 @@
         <depth>Outside</depth>
         <parts>
             <li>
-                <def>Shell</def>
+                <def>RUT_CephaloidShell</def>
                 <coverage>.81</coverage>
                 <parts>
                     <li>
@@ -188,7 +186,7 @@
                 <coverage>0.59</coverage>
                 <parts>
 					<li>
-						<def>Shell</def>
+						<def>RUT_CephaloidShell</def>
 						<coverage>0.69</coverage>
 						<depth>Inside</depth>
 						<parts>

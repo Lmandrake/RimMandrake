@@ -1,5 +1,7 @@
 # BodyPartDef `Shell` blast radius (2026-10-22, run S)
 
+**DONE 2026-10-22 (owner, Biome card 1 → rename Cephaloid Shell to RUT_CephaloidShell):** our 2500-HP part is now `RUT_CephaloidShell`, used only by the Cephaloid and Nautiloid bodies; vanilla `Shell` is no longer overridden for the other bodies below. Ship save holds 0 Cephaloid/Nautiloid/`<def>Shell</def>` (grep-counted; `measure` not installed here). The analysis below is the pre-fix state.
+
 Override lives in src/RimUtinni/UtinniPatches/Defs/Absorbed_Cephaloids/Absorbed_Cephaloids_Defs.xml (2500 HP, indestructible). Same defName `Shell` as vanilla/DLC body part, so it replaces it for EVERY body part row using def Shell, including vanilla bodies (e.g. insect/tortoise-class vanilla animals). Not renamed: needs owner OK.
 
 BodyDefs in src with a part `<def>Shell</def>` (count of rows) and ThingDefs naming them:
