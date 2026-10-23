@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Fuzzviper",
+ "nearest_earth_animal": "snake",
+ "earth_body_named": false,
+ "departures": [
+  "body reads as a plant root: knobbly, irregular, unevenly thick, tapering like a root rather than a smooth snake body",
+  "surface covered in fine fuzz like root hairs, with no visible scales",
+  "head end hard to tell from a root tip: no distinct wedge-shaped viper head",
+  "lies pressed flat along a vertical tunnel wall, following it the way a root would, not coiled on the ground"
+ ],
+ "body_plan": "serpentine",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:49:25-07:00",
+ "source": "description only (no image)"
+}

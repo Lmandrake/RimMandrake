@@ -1,0 +1,65 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 47.8,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4076742
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 13.0,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1242847
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Mullgoth",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band REALLY_BAD (model said weak); blocking ['F_SIZE_JUMP', 'DEPARTURE_MISSING', 'F_INCONSISTENT', 'ALPHA_HALO', 'STYLE_EARTHLY']; polish []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v1",
+   "sha": "a4850279ccbf"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v1",
+   "sha": "14056552e355"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v2",
+   "sha": "16a3854542c6"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "south.png": "821653376ec3c3a440aaadde935eb0c739ab4334fbafe08fb5d6d5d29a34769c",
+  "east.png": "503c4d07633c496464f8ba1e8395ae1540eac7f62142f5debefb91909fcc90e7",
+  "north.png": "b9b8371b78698e470f8e66d6d198e668213c96a3b152e139a63867877df46c25",
+  "scale.png": "1103ec7306d4130a01783827371bac6eca10f66122f8859f38035c0b0b0b280d",
+  "facings.png": "c893341bde8c1a010d1a08f2c9b6b913c63487d65568567fb03bd62b52ae5741"
+ }
+}

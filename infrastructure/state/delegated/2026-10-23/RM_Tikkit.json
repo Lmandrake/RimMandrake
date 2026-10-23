@@ -1,0 +1,65 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 42.0,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.3727322
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 16.6,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1241967
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Tikkit",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band REALLY_BAD (model said really_bad); blocking ['STYLE_EARTHLY', 'DEPARTURE_MISSING', 'DEPARTURE_MISSING', 'DEPARTURE_MISSING', 'DESC_MISS']; polish ['LEGIB_32', 'SCALE_WRONG']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v1",
+   "sha": "a4850279ccbf"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v1",
+   "sha": "14056552e355"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v2",
+   "sha": "16a3854542c6"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "south.png": "d00f39a089d4dcce6439bf27d72fd853dd5604ca05faa4de5e566112d9cfc8c2",
+  "east.png": "67da37360c2a35ac7eb33f7fe8f6ec4a8081b8a632a7c6fc612382493c7e5844",
+  "north.png": "3191fbfcf151a7ac2bc5467a1b4315964fbb7609a27a4bfc3df1a98850f6fbf6",
+  "scale.png": "5ad91f1a0f7171cbf978e170bcca411fe28f598a75a3530db281fb16603ea37a",
+  "facings.png": "acc9c8a9d1f017ecd4ecdcee0fc85aaa43d65d27c90884af6a95e80e20918971"
+ }
+}

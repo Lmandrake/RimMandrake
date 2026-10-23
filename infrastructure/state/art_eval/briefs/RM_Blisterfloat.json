@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Blisterfloat",
+ "nearest_earth_animal": "jellyfish",
+ "earth_body_named": false,
+ "departures": [
+  "body is a hanging cluster of separate taut, swollen skin blisters, not a single smooth bell or dome",
+  "a distinct gas bladder sits above the blister cluster, which hangs beneath it",
+  "tendrils visibly weep fluid and trail down from the cluster",
+  "airborne, floating free in open air with nothing below it, not drifting in water"
+ ],
+ "body_plan": "flyer",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:51:09-07:00",
+ "source": "description only (no image)"
+}

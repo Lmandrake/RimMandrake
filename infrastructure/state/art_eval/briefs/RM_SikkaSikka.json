@@ -1,0 +1,21 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_SikkaSikka",
+ "nearest_earth_animal": "ostrich",
+ "earth_body_named": true,
+ "departures": [
+  "body covered in long, fine, lustrous silk-like fibres instead of ordinary ostrich feathers",
+  "the silky fibres hang as a thick fleece over the back and flanks, clearly something that could be harvested",
+  "a heavy, stocky, docile farm-animal build rather than the lean frame of a wild ratite"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:50:28-07:00",
+ "source": "description only (no image)"
+}

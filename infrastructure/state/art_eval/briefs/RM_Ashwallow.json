@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Ashwallow",
+ "nearest_earth_animal": "hippo",
+ "earth_body_named": false,
+ "departures": [
+  "legs fold inward flat along the sides of the body, not upright pillar legs under a barrel torso",
+  "body is low and broad enough to close into a smooth, unbroken ash-grey dome when the legs are tucked",
+  "face is wide and flat as a spade, with no rounded muzzle, nostril bulb or hippo snout",
+  "jaw edge lined with a visible row of blunt raking digging teeth, not tusks",
+  "shoulders carry cracked grey plates of hide, a plate pattern rather than smooth skin"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:41:43-07:00",
+ "source": "description only (no image)"
+}

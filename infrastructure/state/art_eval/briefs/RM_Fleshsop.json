@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Fleshsop",
+ "nearest_earth_animal": "slug",
+ "earth_body_named": false,
+ "departures": [
+  "body hangs like a sodden rag of flesh, sagging and drooping with no firm outline",
+  "stands upright only by leaning its slumped weight against a wall or object beside it",
+  "wet, glistening raw-flesh surface with goo dripping or pooling where it touches",
+  "faintly humanoid remnant of an Unfinished's form still visible in the collapsing mass, not a smooth slug body"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:51:05-07:00",
+ "source": "description only (no image)"
+}

@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Peeper",
+ "nearest_earth_animal": "dog",
+ "earth_body_named": false,
+ "departures": [
+  "many extra eyes open across the hide: back, flanks and limbs, not only on the head",
+  "eyes on the back face upward, looking at the sky",
+  "predator build gone soft: a slack, rounded body instead of a lean hunting body",
+  "blunted, dull fangs and claws left over from its predator past"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:51:02-07:00",
+ "source": "description only (no image)"
+}

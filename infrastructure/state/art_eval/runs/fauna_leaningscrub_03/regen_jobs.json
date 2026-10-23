@@ -1,0 +1,70 @@
+[
+ {
+  "id": "arteval_RM_TunnelSnake_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_TunnelSnake",
+  "prompt": "RimWorld creature sprite, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. A long, low ambush predator called the yanker, resting as a tight, compact coil wedged into a narrow gap between two walls of venomvine stems. Body: a broad, flat, ribbon-like band, much wider than it is tall, with a flat top and sharp lateral edges, dark mottled olive-brown skin, wound into several stacked turns with flattened sides pressed between the walls, the coil footprint about 2.3 cells wide, with one trailing loop extending to the creature's left side. The head rests on top of the coil: a blunt wedge-shaped head with a toothed mouth, and projecting forward from beneath the jaw a pair of large, jointed, hooked grasping arms like barbed mandible-claws, held open and reaching, oversized (about a third of the head-to-coil length) so the seize-and-yank signature reads at standard zoom. Rows of long, fine, pale sensory filaments sprout at regular intervals along both flanks, each clearly separate from the body outline against the dark body, visible on every facing. The silhouette is alien, its own species: flat ribbon body, big forward grasping arms and a fringe of flank filaments. Four facings with identical body, coil footprint and trailing-loop side: south = front view, head and eyes toward the viewer, grasping arms reaching toward the viewer, flat ribbon edges visible; east = side view, head and grasping arms pointing right, filaments along the near flank; north = rear view seen from behind, the tail end in front, the same wide coil and the trailing loop on the matching side, head and grasping arms hidden behind the coil; west = mirror of east. Sized to read about 2.7 cells.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, STYLE_EARTHLY, DESC_MISS, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_03"
+ },
+ {
+  "id": "arteval_RM_Vissler_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Vissler",
+  "prompt": "A single RimWorld creature sprite on a transparent background, painterly vanilla RimWorld style, realistic, clean dark outline. The vissler: a small, low, slippery, smooth-skinned, soft-bodied walker with a rounded head, two small eyes and four short legs, seen by RimWorld's angled game camera from slightly above. Its body is compact and small. It has exactly one dominant arm: a big muscular arm about as long as the whole body and three times as thick as a leg, ending in a clear grippable hand, the obvious thing a hand would close on. Where this arm meets the shoulder, a distinct pale seam or collar ring marks the clean break-line where it comes off. On the opposite shoulder, a small pale bud shows an arm regrowing in place of a full limb. The other limbs are plain short legs. The silhouette reads as a small creature attached to one oversized, sheddable arm. Muted earthy body palette, with a warm orange accent on the break-line collar. Facings: south is a front view, eyes toward the viewer, face and head looking at the camera, the big arm held to one side of the body. East is a true side profile showing the body's length, the short legs below it, the head at the front and the large arm in silhouette. North is a rear view, seen from behind, showing the back, rump and haunches with the eyes hidden and the big arm's base visible at the shoulder. reference: none.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_TOPDOWN, F_SOUTH_NOT_FRONT, F_INCONSISTENT, STYLE_EARTHLY, DEPARTURE_MISSING, DEPARTURE_MISSING, DESC_MISS, F_NORTH_FACE",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_03"
+ },
+ {
+  "id": "arteval_RM_Vurra_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Vurra",
+  "prompt": "A single RimWorld creature sprite: the vurra, a massive alien worm of uncertain origin, painted fresh in the painterly vanilla RimWorld style, realistic, with a clean dark outline, on a transparent background. The body is thick and long, many times the girth of a human arm and long enough to loom over a lone traveler, nowhere near earthworm scale. The skin is plainly alien: overlapping hard plates in slate-violet and bone-grey with a mottled, pitted, faintly glossy texture and darker ridges between the plates. The front end is a predator's head: a broad armored crest, small dark eyes set to the sides of the crest, and a radial maw ringed with curved fanged teeth that opens in layered rings. Along the underside runs a row of small, pale, spiked legs, short and sharp like bone thorns, evenly spaced, all the same size and shape. The creature is neither fast nor frenzied: it is heavy, deliberate and menacing, body resting low with the head slightly raised. Facings are one consistent animal: the front view shows the head and fanged maw toward the viewer with the small pale spiked legs visible as short thorns at the lower sides; the rear view, seen from behind, shows the tail end and plated back with the same small pale spiked legs foreshortened at the lower sides, eyes hidden; the side view shows the full length of the body in profile with the head at one end and the row of small pale spiked legs along the belly. Reference: none; build the body from this description.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DONOR, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_03"
+ },
+ {
+  "id": "arteval_RM_Zellik_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Zellik",
+  "prompt": "A single RimWorld creature sprite, the zellik, at rest, in painterly vanilla RimWorld style, realistic, with a clean dark outline on a transparent background. The zellik looks like a furled, closed umbrella that nobody wants, perched hunched and upright on top of a bough. The whole body is one tightly furled canopy: a narrow, tapering cone shape. One central shaft runs up through the peak. Eight to ten distinct, darker, bony ribs radiate from that shaft and run in straight lines down to the lower rim, like the spokes of a closed umbrella. Thin, drab, dull grey-brown membrane is stretched flat and taut between neighboring ribs, so every rib reads clearly as a separate structural line. The canopy wraps down around the entire body to just above the perch, enclosing legs, tendrils and underbody. Only two short gripping feet and a small beak tip show beneath the lower rim, clamped on the bough. The silhouette is compact, upright and closed, about one third as wide as it is tall. The surface is matte and weathered, with no fur and no ears. Eyes are hidden, and the creature reads as a drab object, not a mammal. Front view: the ribs converge on the central shaft at the peak, with the beak tip and feet visible at the bottom center, eyes toward the viewer. Rear view, seen from behind: the same ribbed cone, back of the canopy only, beak and eyes hidden. Side view: the same slim cone in profile, ribs curving down from the peak, the feet gripping the bough. The rib arrangement is identical in all views. Reference: none, build the body from this description.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_03"
+ }
+]

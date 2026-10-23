@@ -1,0 +1,68 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 54.3,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.424917
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 22.0,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1324827
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_FireWasp",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band REALLY_BAD (model said really_bad); blocking ['STYLE_EARTHLY', 'DEPARTURE_MISSING', 'DEPARTURE_MISSING', 'DEPARTURE_MISSING', 'DESC_MISS', 'F_TOPDOWN', 'F_INCONSISTENT', 'FLYER_BODY_MOVES', 'DEPARTURE_MISSING']; polish ['SCALE_WRONG']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v1",
+   "sha": "a4850279ccbf"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v1",
+   "sha": "14056552e355"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v2",
+   "sha": "16a3854542c6"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "south.png": "af326d21048bfd45f7bfc0ac08dc0b55c5e87c1a34440bffe165c616c047c91c",
+  "east.png": "029f7aa9e27ce8b8472ce745f4e34bf9b451eb2ba1a2566ca740039d870c733a",
+  "north.png": "69b43fa0517e24d9ffda53e0d7fba6fa9e3236a2d156ccfa50b46ed5fe20701f",
+  "scale.png": "03b8bb8b0b032ed1b1775a1be6cb2a1779b7771fcdae258f84fb52155ae4fbc6",
+  "flight_1.png": "c1fd8497c3fc99390cfb4519bf6ccf95123bbc80a33fd1e534a3dbee1470e760",
+  "flight_2.png": "f4325c5d07350895d7320b1dd2448079cf4b2d52e3d09210aba49d6e05c5a150",
+  "flight_3.png": "adedaa9e9f2e1b1b0d71828a6646f3013b575f2a6c1f55d8a3eb891e250268f3",
+  "facings.png": "74aa89b2aaaa2b29be49d0a7175e475ab087ddabe08c13e3c349df86acdafa8a"
+ }
+}

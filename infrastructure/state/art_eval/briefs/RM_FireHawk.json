@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_FireHawk",
+ "nearest_earth_animal": "hawk",
+ "earth_body_named": true,
+ "departures": [
+  "overall ash-grey body that reads as ash or soot, not the brown barred plumage of a hawk",
+  "ember-orange markings that look like glowing embers rather than a hawk's flat russet or tan",
+  "a burning twig held in its talons or beak, with visible flame or glowing tip",
+  "a lean, gaunt raptor silhouette, narrower and thinner than a stocky Earth hawk"
+ ],
+ "body_plan": "flyer",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:41:25-07:00",
+ "source": "description only (no image)"
+}

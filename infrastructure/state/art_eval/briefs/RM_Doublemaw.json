@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Doublemaw",
+ "nearest_earth_animal": "hyena",
+ "earth_body_named": false,
+ "departures": [
+  "two complete sets of jaws on one skull, the second set opening where the throat should be",
+  "second mouth on the underside of the head and neck, below the first mouth and facing forward or down, with its own visible teeth",
+  "no ordinary throat or neck line under the first jaw; the lower head is taken up entirely by the second maw",
+  "both mouths shown as separate working jaws (for example one open and one shut), not one large split mouth"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:51:12-07:00",
+ "source": "description only (no image)"
+}

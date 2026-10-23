@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Garsulix",
+ "nearest_earth_animal": "tick",
+ "earth_body_named": false,
+ "departures": [
+  "Floats in mid-air with no wings: the body hangs clear of the ground and the legs touch nothing",
+  "The main body is one swollen, translucent, veined gas sac, much larger than any head or thorax, with no segmented insect body",
+  "Chitin plates cover only the top of the sac like a cap, and the veined sac shows below and around them",
+  "Hooked legs hang down from the underside of the sac, curled and dangling as if to grab, not planted or walking",
+  "A working mouth sits on the underside among the hanging legs, not on a separate head at the front"
+ ],
+ "body_plan": "flyer",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:50:14-07:00",
+ "source": "description only (no image)"
+}

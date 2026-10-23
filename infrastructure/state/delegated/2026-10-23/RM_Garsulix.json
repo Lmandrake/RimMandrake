@@ -1,0 +1,45 @@
+{
+ "judge_model": {},
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Garsulix",
+ "decision": "HOLD_INPUT",
+ "reasons": [
+  "missing panels ['north']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v1",
+   "sha": "a4850279ccbf"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v1",
+   "sha": "14056552e355"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v2",
+   "sha": "16a3854542c6"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "south.png": "c13bb95a2b7d9fd789980247269dbff8feb56a61cb73c1a7fe15e3c503a4800d",
+  "east.png": "a92475060900209a7c842b0af795699aa0f5b4bf8e5fc17901679f4b27a499f2",
+  "scale.png": "a566553cc710c10e2cc9e4a3d8d5ca8248bb1df3776eb0ccad4a8c6451038cc9",
+  "facings.png": "3eaa604946148c907a02e4a3f776ff1e4f5020ac94d644fea4abf957877b437f"
+ }
+}

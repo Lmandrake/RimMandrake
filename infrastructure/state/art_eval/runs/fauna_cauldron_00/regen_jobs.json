@@ -1,0 +1,70 @@
+[
+ {
+  "id": "arteval_RM_BedBug_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_BedBug",
+  "prompt": "A single oversized bedbug, a pest insect grown large enough to bring down prey bigger than itself, drawn as a top-down-leaning game sprite for RimWorld. Painterly vanilla RimWorld style, realistic, with a thin clean dark outline and a transparent background. Body: flat oval, reddish-brown segmented abdomen under a domed armoured back, with fine chitin texture, matte-to-satin sheen and small natural highlights (a textured painterly finish, never a smooth glossy toy). Head: broad, heavy and wide, with muscled jaw plates and small dark eyes; it carries a pair of large, curved, dark venom fangs that curve forward and inward, clearly framing the face in the front view and jutting forward past the head in the side view. Legs: six thick, armoured, segmented legs with darker joints, each ending in a strong hooked claw, all the same thickness and claw size on every view, set in a natural, slightly irregular stance built to grip and hold large prey. One animal shown from the requested side, with identical proportions, colour, leg thickness, claws, fang size and rendering on every facing. Front view: seen from the front, eyes and fangs toward the viewer. Rear view: seen from behind, showing the back, abdomen and rear legs, head and eyes hidden. Side view: profile with the fangs and head toward the facing side, the near-side legs visible. Single centred subject, transparent background, no ground, no text.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING, F_INCONSISTENT, STYLE_CARTOON",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_cauldron_00"
+ },
+ {
+  "id": "arteval_RM_Bileworm_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Bileworm",
+  "prompt": "RimWorld creature sprite, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. A vast, slow slug, a low wide dome of body, dwarfing a person. Mottled grey-green skin on the back and flanks. A row of dark pitted breathing holes runs down each flank. The foot and underside are a pale cream-to-ivory colour with prominent transverse ribs, clearly lighter than the mottled grey-green back, visible as a pale ribbed fringe along the lower edge of the body. Two eye-stalks nod over a cluster of yellow, finger-like mouthparts. Front view: eyes and yellow mouthparts toward the viewer. Side view: full length of the body in profile, eye-stalks and mouthparts at the leading end. Rear view, seen from behind: the back, tapering tail and haunches, eyes hidden. All three views share the same body size: the rear view occupies the same height and width as the front view and the side view, a low wide dome of identical mass sitting on the same ground line, filling the same fraction of the canvas.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_cauldron_00"
+ },
+ {
+  "id": "arteval_RM_CrystalMit_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_CrystalMit",
+  "prompt": "A single Crystalmit, a mite-like creature, in painterly vanilla RimWorld animal-texture style, realistic, with a clean dark outline, on a transparent background. Anatomy: a rounded stone carapace raised on eight short, jointed stone legs, with a distinct head, small dark eyes and one pair of heavy, blunt rock-crushing mandibles at the front. The carapace and legs are grey, granite-like stone plates in muted slate, ash and warm-grey tones, with mottled, weathered, speckled surface. A few clusters of glassy, partly translucent quartz crystals jut from the back and shoulders, pale and uneven, letting light through; between them the hide is mottled stone with small translucent crystalline patches. The crystals ride on the mite's body; the mite's silhouette stays clearly an animal. Brushwork is visible, shading is soft, tones are muted and natural, highlights on the crystals are small and uneven, and the stone is matte. Views: front view, eyes and mandibles toward the viewer, legs splayed to either side. Side view, legs in a row along the flank, head and mandibles at the front end. Rear view, seen from behind: the crystal-covered back and rear legs, eyes and mandibles hidden. The same body, palette and crystal placement in every view. reference: none",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING, F_INCONSISTENT, LUMP, STYLE_CARTOON",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_cauldron_00"
+ },
+ {
+  "id": "arteval_RM_DecayDrake_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_DecayDrake",
+  "prompt": "A single RimWorld creature sprite, the fermatalis, a heavy, flightless, squat drake. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background, the creature alone with no ground or backdrop, game-angled camera. The body is short, deep and barrel-shaped on thick, stout legs, with a blunt, heavy dragon-shaped head, a short thick tail and olive-green scaly hide with amber-orange undertones. A huge round sagging belly hangs low between the legs, wider than the chest and nearly touching the ground; it is the heaviest mass of the body and looks swollen with sour-sweet ferment. The wings are small, stubby vestigial flaps folded tight and flat against the back and upper flanks, much shorter than the body, too small for flight. A faint, semi-transparent yellowish yeast-mist curls from the nostrils and mouth, drawn as part of the sprite near the head. Patches of bubbling, sour fermenting mash are crusted on the belly and feet, as part of the creature itself. The bloated belly and the yeast-mist breath are the two most prominent features in every facing. The silhouette is an unfamiliar bloated, squat drake. Front view: eyes toward the viewer, the belly bulging wide below the chest, the stub wings folded on the shoulders, mist curling from the nostrils. Side view: the profile shows the deep barrel body, the sagging belly line, the blunt head with mist at the muzzle, the stub wing flat on the flank and the short thick tail. Rear view, seen from behind: the haunches, the backs of the thick legs and the tail base are nearest the camera, with the back and folded stub wings foreshortened behind them, the head and eyes hidden, and the body, wings and legs at the same size as in the front view.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, STYLE_EARTHLY, DESC_MISS, F_SIZE_JUMP, F_TOPDOWN",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_cauldron_00"
+ }
+]

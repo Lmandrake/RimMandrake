@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Eskith",
+ "nearest_earth_animal": "hare",
+ "earth_body_named": false,
+ "departures": [
+  "feet that fan out into very wide, flat, soft pads, frayed or feathered at the edges like splayed fronds rather than paws, claws or hooves",
+  "foot pads oversized relative to the body, so they are the dominant silhouette feature and read as the creature's main sense organ",
+  "legs that end directly in the spread pads with no visible toes or digits, so the lower limb does not look like a mammal's foot",
+  "small, light, knee-high body on quick slender legs, with the pads, not the head, as the visual focus (no oversized hare-like ears drawing the eye)"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:50:39-07:00",
+ "source": "description only (no image)"
+}

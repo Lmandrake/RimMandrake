@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Fuzzrunner",
+ "nearest_earth_animal": "vole",
+ "earth_body_named": false,
+ "departures": [
+  "near-spherical body swollen round with stored fog-fat, with almost no neck or waist, so it reads as a ball rather than an elongated rodent",
+  "whole body under a dense, even fuzz coat, so the head, body and limbs merge into one soft round mass",
+  "oversized whisker array as the dominant facial feature, larger than the eyes, which are small or reduced (the animal never stands in open light)",
+  "pebble-like silhouette that could pass for a stone when it is still: smooth rounded outline with nothing poking out",
+  "broad, rounded shoulders worn smooth from pushing along narrow stem runs"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:49:13-07:00",
+ "source": "description only (no image)"
+}

@@ -1,0 +1,21 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_TruffleMole",
+ "nearest_earth_animal": "mole",
+ "earth_body_named": true,
+ "departures": [
+  "a flat, pig-like rooting snout disc in place of a mole's pointed nose",
+  "oversized, elaborate nostrils that dominate the front of the face, marking the specialized smell organ",
+  "a visible mix of pig and mole traits in one body, for example a stocky, pig-like trunk on digging forelimbs, so it does not read as a plain Earth mole"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:49:42-07:00",
+ "source": "description only (no image)"
+}

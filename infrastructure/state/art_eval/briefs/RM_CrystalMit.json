@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_CrystalMit",
+ "nearest_earth_animal": "mite",
+ "earth_body_named": false,
+ "departures": [
+  "crystal facets or mineral growths jutting from the body surface, not smooth chitin or fur",
+  "a partly translucent, stone-and-crystal hide that looks mineral rather than organic",
+  "heavy rock-crushing mouthparts sized for chewing stone rubble",
+  "body coloring that matches rocks and crystals (grey stone with glassy crystal highlights), not the earthy browns or reds of a real mite"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:50:23-07:00",
+ "source": "description only (no image)"
+}

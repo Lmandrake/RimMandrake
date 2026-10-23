@@ -1,0 +1,87 @@
+[
+ {
+  "id": "arteval_RM_Scorchpod_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Scorchpod",
+  "prompt": "RimWorld creature sprite, painterly vanilla RimWorld style, realistic, clean smooth dark outline, fully transparent background. A scorchpod: a single blistered walking seed-case. The whole body is one heavy, domed, blistered pod shell with a rough, pocked, blister-bumped surface in dark charred bronze and gunmetal tones. The shell surface is beaded with liquid-metal sweat, silvery and mirror-like droplets that catch the light, rather than matte chitin. Faint thin wisps of smoke rise from the shell where light strikes it. The pod is the entire body: its surface is unbroken shell, with eyes, antennae, mandibles and any head absent, as a seed case has none. The pod stands on three or four short, stubby, root-like legs, thick at the shell and tapering to blunt tips, each much shorter than the shell is tall, tucked in beneath the heavy shell so that it looks top-heavy and under-legged, a seed pod tottering along on a few small roots. The wide domed shell dominates the silhouette. Front view: the pod seen from the front with the shell facing the viewer and the short legs beneath it. Side view: the pod in profile, three or four short stumpy legs visible under the belly. Rear view, seen from behind: the unbroken back of the shell with the same short stubby legs beneath it. In every facing the cut-out edge is a clean, smooth, anti-aliased line against a fully transparent background, with clear empty space beneath the belly and between the legs, and the shell outline is one smooth continuous dark line. Small creature scale, readable at a tiny size.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, ALPHA_HALO, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_03"
+ },
+ {
+  "id": "arteval_RM_Skinflap_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Skinflap",
+  "prompt": "A single RimWorld flying creature sprite, the skinflap: one sheet of loose, wet, pale pinkish skin and nothing else, soaked cloth-like tissue with no head, eyes, mouth or face, no limbs, fins or tail, and no central body mass. Seen at the game's angled three-quarter camera, the sheet is foreshortened and sags in a curved fold, near edge lower in the frame and far edge receding up the canvas. It is caught mid-slap: one edge flung upward while the rest hangs limp. The outline is lopsided, torn and ragged like a wet cloth, with uneven broad lobes and hanging folds of different lengths, rounded slack edges and no mirror symmetry. The surface is continuous wrinkled skin that sags into soft overlapping folds, with bright specular wet highlights tracing the creases and only tiny scattered irregular wet pores of varying size. Clear, faintly spore-green-tinted translucent water beads gather beneath the folds and fall as separate droplets with bright highlights. South view: the sheet's leading edge comes toward the viewer, its underside drooping and dripping, the rest of the sheet curving away behind it. North view: the same sheet seen from behind, its upper surface and trailing folds toward the viewer. East view: the same sheet in profile, curling and sagging. All three facings show the same individual, with the same outline, tears, holes and surface marks, turned to each view. Transparent background, painterly vanilla RimWorld style, realistic, clean dark outline.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_TOPDOWN, F_SOUTH_NOT_FRONT, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, F_INCONSISTENT, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_03"
+ },
+ {
+  "id": "arteval_RM_Sloshbelly_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Sloshbelly",
+  "prompt": "A dog-sized tick, far larger than any real tick, shown at scale against its surroundings, swollen drum-tight with red water. Its glossy skin is stretched so thin it is translucent, and the red water is visible inside the body. The abdomen is a fluid-filled sac: the red liquid sits low with a visible tilted waterline, so the upper part of the sac is paler, emptier, thin skin with a little lighter air space, while deeper red water pools and sags toward the belly, with a glossy meniscus line crossing the body. This same fluid level reads on every facing. The overfilled body makes the small head and eight thin legs look tiny. Three facings, all drawn at the same sprite height, with the sac a tall round dome from every side, and all sharing the same clean, thin, dark outline around the whole silhouette. South view, front view, eyes toward the viewer: a clearly larger head with visible mouthparts and the front legs reaching forward. East view, side profile: the sac at the same height and bulk as the front and rear views. North view, rear view, seen from behind: a broad, smooth rear dome with only a small rear nub and the hind legs, head hidden. Transparent background, painterly vanilla RimWorld style, realistic, clean dark outline.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, F_INCONSISTENT, F_INCONSISTENT, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_03"
+ },
+ {
+  "id": "arteval_RM_Sparkleech_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Sparkleech",
+  "prompt": "A small flying creature for RimWorld, painterly vanilla RimWorld style, realistic, clean thin dark outline, transparent background. The creature is a single flat, ragged flap of wet membrane: the body and the wings are the same sheet of tissue, its irregular scalloped edges spread out as the wings, one continuous surface from edge to edge. A round socket-mouth, a fleshy ring with a dark central opening, is set into the centre of the underside of the sheet and is the main head feature; the tissue around it puckers toward the ring. The membrane is smooth, slick and wet, a pale fleshy grey-pink with a continuous unbroken glistening surface and bright specular highlights along its soft folds and ripples. Scattered, discrete glowing points like stolen ocular lights sit embedded in the membrane, each a small bright spot of pale cyan-white with a soft glow, spaced apart across the wing tissue. Facings: front view shows the socket-mouth toward the viewer at the centre of the sheet; side view shows the sheet in profile with the socket-mouth at the leading edge; rear view, seen from behind, shows the smooth upper surface of the sheet with its lights and the mouth hidden. All three facings share the same thin dark outline of identical weight and value, and the same palette, membrane texture and light placement style. Reference: none; build the body from this description.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_03"
+ },
+ {
+  "id": "arteval_RM_SparkleechGrub_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_SparkleechGrub",
+  "prompt": "A single wingless sparkleech grub, a pale, soft-bodied, segmented larva, drawn as a RimWorld creature sprite in the painterly vanilla RimWorld style: realistic, clean dark outline, transparent background, nothing else in the frame. The body is long and low, belly flat to the ground, with a shallow, gently rounded back no taller than about a third of its width, and short legs splayed sideways close to the ground. It lies stretched along the ground, not curled into a C. The head ends in a large, round, socket-like mouth opening that dominates the face, a ringed sucking socket with a flared rim, and not a beetle larva's chewing jaws. The head is lowered to ground level with the socket rim pressed forward and slightly flattened, as if latched onto a surface just ahead of it, in the act of feeding. Along the back, the dark segment patches each hold a few small, bright, stolen eye-like glints, an echo of the ocular tree it feeds from. Side view: a long, low, nearly horizontal body with the head down at the front. Front view: a low, wide, flat-topped mound with the socket mouth at ground level, eyes-like glints on the back. Rear view, seen from behind: the low flat tail end and the splayed legs, the mouth hidden. Reference: none; build the body from this description.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_03"
+ }
+]

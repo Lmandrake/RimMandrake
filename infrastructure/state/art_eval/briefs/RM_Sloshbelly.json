@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Sloshbelly",
+ "nearest_earth_animal": "tick",
+ "earth_body_named": true,
+ "departures": [
+  "dog-sized body, far larger than any real tick, shown at scale against its surroundings",
+  "skin stretched so thin it is translucent, with red water visible inside the body",
+  "a visible waterline or uneven pooling of the red liquid inside the swollen abdomen, so the body reads as a fluid-filled sac rather than a solid one",
+  "a drum-tight, glossy, overfilled body that makes the head and legs look tiny"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:51:31-07:00",
+ "source": "description only (no image)"
+}

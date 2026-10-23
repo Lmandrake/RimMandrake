@@ -1,0 +1,65 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 53.9,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.39672820000000003
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 14.1,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1292427
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Emberscythe",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band REALLY_BAD (model said really_bad); blocking ['F_TOPDOWN', 'F_TOPDOWN', 'DUPLICATE', 'DEPARTURE_MISSING', 'DEPARTURE_MISSING', 'DEPARTURE_MISSING', 'STYLE_OFF', 'F_SOUTH_NOT_FRONT', 'F_NORTH_FACE']; polish ['STYLE_EARTHLY']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v1",
+   "sha": "a4850279ccbf"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v1",
+   "sha": "14056552e355"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v2",
+   "sha": "16a3854542c6"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "south.png": "c6dbd050ed5d36e925b071dbfebdc9488bf0e5549e6b614800ac289359ea2852",
+  "east.png": "ea64c65774f82aab6311e571c7f910057b2cf1e9723dcd85e8c475fc412ccd2f",
+  "north.png": "499db40cb6db673b5bb78534ea3fde867c73bc6d5f32c22779d702562a3bf8d5",
+  "scale.png": "a6c4556bfe6a89a6ef7ba599510ddf77144674a5496cc08f3da9e4b76b096eed",
+  "facings.png": "fd0010fa456861e2b2f1ba8534a965f738016f1c53bafd776f3cf1c3c47682c7"
+ }
+}

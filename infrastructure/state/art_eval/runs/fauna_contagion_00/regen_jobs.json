@@ -1,0 +1,87 @@
+[
+ {
+  "id": "arteval_RM_Bloodlurk_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Bloodlurk",
+  "prompt": "A single RimWorld creature sprite, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. The bloodlurk is a jointed shadow, all forelimb and siphon, standing still and low on thin jointed walking legs. Its colour is near-black, a deep shadow tone with only a faint dark-red cast, matte with low highlights, so it reads as a shadow on the ground. Its build is a dark, thin, mantis-like jointed frame made of rigid segmented sections, bare and plain. The body is a small, compact, segmented core, low to the ground with a smooth, lightly plated back. Two huge, long, jointed forelimbs dominate the silhouette, reaching well beyond the body on every view, folded and poised like a patient ambusher. The front of the body ends in one thick, clearly tubular, segmented siphon with a smooth open tip, in place of a head: it points forward on the side view and toward the camera on the front view. The siphon is the only feature at the front, with no jaws, mandibles, eyes or insect face. The lower legs and claw tips look wet, with a thin red-tinged wet stain and sheen on the lowest segments, while the background stays fully transparent. Side view (profile): the long forelimbs reach forward past the siphon, the small body and hind legs trail behind. Front view (seen from the front, siphon toward the viewer): the forelimbs and siphon come forward and cover the front of the body. Rear view (seen from behind): the small rear body segments and hind legs show, with the forelimbs barely visible past the sides. Keep the same near-black palette, jointed segmented construction and proportions in every view. reference: none.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, DESC_MISS, DEPARTURE_MISSING, F_INCONSISTENT, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_00"
+ },
+ {
+  "id": "arteval_RM_BloodyMess_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_BloodyMess",
+  "prompt": "A RimWorld sprite of a 'bloody mess': a low, wide, flat spill of raw tissue lying barely raised above the ground, like spilled viscera creeping across the soil. It has no head, snout, limbs or bounded body shape; it is an extension of the ground it sits on. The surface is opaque raw muscle and organ tissue, fibrous and marbled in red and dark maroon, wet but not glassy, with visible tissue grain and thin membranes. A few small half-formed organs bud up out of the surface, some partly sunk back under the tissue. At least one bud is an eye half-closed under a fleshy eyelid, and another is a puckered, clenched ring-shaped orifice, rising out of the pool. The pool's margins thin into ragged, semi-transparent smears and stains that fade out into the soil, with no hard edge between creature and ground. Front view, eyes toward the viewer, rear view seen from behind, and side view all show the same low formless pool with the same flat profile, bud arrangement and edge treatment; the side view is the pool seen from its side, barely raised. All facings use the same thin, soft dark edge that dissolves at the margins. Transparent background, painterly vanilla RimWorld style, realistic, top-down three-quarter game sprite lighting. reference: none.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING, F_INCONSISTENT, DEPARTURE_MISSING, DEPARTURE_MISSING, STYLE_OFF",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_00"
+ },
+ {
+  "id": "arteval_RM_ContagionIkee_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_ContagionIkee",
+  "prompt": "A single small RimWorld creature sprite, a shivering eye-cluster on legs. The whole body is a tight bunch of many wet, glistening eyeballs of different sizes, large and small, packed together into one rounded clump, with only thin wet membrane between them. There is no separate head, torso, flesh sac or mouth: the eyes are the only features on the body, and no fur or carapace surrounds them. Each eyeball has pale off-white sclera, fine red veins and a dark glossy pupil. Several thin, jointed legs come straight out from under the eye-cluster, with no thorax or abdomen between them, held in a low watchful stance. Front view, eyes toward the viewer, pupils looking out. Side view, a profile of the clump with eyes bulging on the near side and the legs below. Rear view, seen from behind: the rounded back of the bunch of eyeballs, white sclera backs with veins and a few optic stalks, the outer eyes bulging at the edges, no pupils facing the viewer, with the same palette, wet texture and eye sizes as the front. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background, small creature sized for a 0.45 draw size.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, DEPARTURE_MISSING, DEPARTURE_MISSING, F_INCONSISTENT, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_00"
+ },
+ {
+  "id": "arteval_RM_Crispling_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Crispling",
+  "prompt": "A single RimWorld creature sprite, the crispling: a hunched picker crusted in its own char. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background, centred with a small margin, no ground or scenery.\n\nBody: a deeply hunched, low-slung body with the crusted back domed high above it. The back is one continuous, irregular slab of fused, baked-on char, broken by random uneven fissures and blistered lumps of different sizes; it is a single crust that cracked as it cooled, with no repeated rows, matching tips or discrete borders. The black char crust carries distinct glassy facets with sharp, crisp obsidian-like highlights along its ridges and blisters, so it reads as vitrified, reflective char that turns heat and light; the glossy highlights stay clearly visible beside a faint warm glow in the cracks.\n\nUnderside: a broad area of soft, pale cream-coloured flesh is clearly visible beneath the dark crust edge across the chest and belly, smooth and unarmoured, contrasting with the black crust above.\n\nForelimbs: slender and jointed, held forward and angled down toward the ground, ending in fine articulated pincer-like picking digits made to delicately pluck small food from the ground. The hind limbs are short and sturdy, carrying the low body.\n\nFacings: front view, eyes toward the viewer, pale chest and belly visible below the crust edge, picking limbs forward; side view in profile, the domed crust arching over the low body, picking limbs reaching forward; rear view, seen from behind, showing the cracked crust slab, hind limbs and haunches, eyes hidden. Same body, palette and proportions in every view.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_00"
+ },
+ {
+  "id": "arteval_RM_Danglemaw_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Danglemaw",
+  "prompt": "A single hanging creature sprite for RimWorld, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. A mouth on a tendon: one bare muscular cord, pale reddish-pink with fine parallel fibrous muscle striations, hangs plumb and perfectly straight down under its own weight from the top edge of the canvas. The cord is one smooth, uniform-width, taut tendon from the top edge down to the jaw, with no scales, no torso, no limbs and no swellings, bulbs, knots or braided strands anywhere along its length. The top of the cord fans out into a small spray of root-like fibres at the upper edge of the canvas, showing it grows straight out of the Eyebark canopy above, rooted directly into it. The free lower end is only a jaw: a heavy, wide-open, toothed jaw dangling at the bottom of the cord, with no head behind it, no eyes, no skull shape and no neck; the cord runs from the anchor point to the jaw and nothing else, and ends at the jaw with no tail tip. Front view: seen from the viewer, the jaw hangs below the cord with its opening pointing down toward the viewer. Rear view: seen from behind, the same cord and jaw, the jaw's back of hinge toward the viewer. East and west profiles: the cord hangs plumb and straight down, the jaw dangles at the bottom in side profile with its opening pointing down and slightly toward the facing side. Slack, still, centered on a vertical axis. Subject fills the tall canvas, drawn at 1.7 x 1.7 tile size, reference: none.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_00"
+ }
+]

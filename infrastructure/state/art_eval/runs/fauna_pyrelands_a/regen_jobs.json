@@ -1,0 +1,53 @@
+[
+ {
+  "id": "arteval_RM_FireHawk_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_FireHawk",
+  "prompt": "A single sprite of the fire-hawk, a lean, gaunt raptor of the Pyrelands, in painterly vanilla RimWorld style, realistic, soft shading, fine clean dark outline, transparent background. Body: ash-grey plumage that reads as ash or soot, narrow shoulders, long legs, a slim crest and a long trailing plumed tail tipped with ember-orange; thinner than a stocky Earth hawk. Ember markings along the wing edges, crest and tail glow like live embers: bright yellow-orange cores fading to deep red at the edges, with a faint inner light against the ash-grey. In one foot (or in its beak) the bird grips a short charred twig carrying a small live flame and a glowing ember tip, large enough to stay visible at 32 px; the twig is carried on every facing. All facings share one build, one height and one body width. Front view: eyes toward the viewer, hooked beak visible. Side view: profile, lean body, long tail trailing behind. Rear view, seen from behind: narrow back, folded wings, back of the head and crest, beak hidden or only a sliver of tip, eyes hidden, long orange-tipped tail trailing down, same fine-outline painterly finish as the front and side views. Flight frames: the same lean body, head and long plumed tail as the grounded side view, held in one identical position in every frame; only the wings change between frames, with wing artwork kept clear of the body outline; the burning twig stays gripped in the talons.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DESC_MISS, F_INCONSISTENT, F_SIZE_JUMP, F_NORTH_FACE, DEPARTURE_MISSING, STYLE_CARTOON, FLYER_BODY_MOVES, SIBLING_MISMATCH",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_pyrelands_a"
+ },
+ {
+  "id": "arteval_RM_FurnaceBeast_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_FurnaceBeast",
+  "prompt": "A realistic, painterly vanilla RimWorld-style sprite of the furnace-beast, a heavy migratory megafauna that reads as a mineral mass on legs, like a walking stove, on a transparent background with a clean dark outline. Its hide is made of separate, weighty stone-like mineral plates, not continuous skin, banded in visible horizontal strata of differing mineral colours across the whole body: cool grey, tan and ochre stone on the plate faces. The cracks and seams between the plates glow a bright, saturated ember orange-yellow with a soft inner light, like coals showing through gaps in a stove. Each seam is lit from within: bright yellow-orange at the crack centre, fading to deep red at its edges, with a subtle warm transition into the darker mineral plates, so the beast reads as hot inside at a glance. The only strong orange on the body is this luminous heat in the plate joints; the plates themselves stay cool stone. The underbelly between the legs is covered in smaller interlocking stone plates with glowing seams and visible strata, so every part of the body shows stone plate and no area of continuous skin appears. The legs are thick, pillar-like and plated, with heated joints matching the flank. Keep the same body plan, proportions and palette in all facings; the front view faces the viewer with eyes toward the viewer, the rear view shows the back, tail and haunches with eyes hidden, and the side view shows the full plated flank and underside.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DESC_MISS, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_pyrelands_a"
+ },
+ {
+  "id": "arteval_RM_Ullai_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Ullai",
+  "prompt": "A single RimWorld creature sprite on a transparent background: the ullai, a tall, light-boned grazer of the burning savanna, painted in the painterly vanilla RimWorld style, realistic, with a clean dark outline. It stands on four very long, spindly legs with a small, short, slight torso slung between them, and a very long neck carried high and upright, nearly vertical, so the silhouette is mostly legs and neck and the head sits well above a human's head height. The head is a narrow, elongated wedge-shaped skull with a long tapering muzzle and small swept-back ridged head-crests in place of rounded ears, shaped unlike any deer, antelope or giraffe, so it reads as a creature of the Pyrelands. The coat is a plain two-tone: an even cool ash-grey along the neck, back and upper flanks with no coloured dorsal stripe, and a cool soot-cream underside with a grey cast, with no spots, patches, stripes, tan, orange or rust anywhere. Each lower leg is solid black from the hoof up to a crisp, clearly drawn stocking line just above the knee or hock, where the ash-grey coat starts sharply with a hard edge, as if it had waded through burnt ground. The palette is ash, soot and black. The frame is very light-boned with almost no body mass between the long legs and long neck, with delicate narrow hooves. Standing pose, full body in frame, reference: none, built from this description alone.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_EARTHLY, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_pyrelands_a"
+ }
+]

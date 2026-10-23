@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_SparkleechGrub",
+ "nearest_earth_animal": "beetle grub",
+ "earth_body_named": true,
+ "departures": [
+  "head ends in a round, socket-like mouth opening as its dominant feature, not a beetle larva's chewing jaws",
+  "mouth socket latched onto a root, shown in the act of feeding rather than burrowing in soil",
+  "set at the roots of an ocular tree whose root mass visibly bears eye-like structures",
+  "wingless and ground-hugging, its body pressed low along the root rather than curled into a C"
+ ],
+ "body_plan": "serpentine",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:51:42-07:00",
+ "source": "description only (no image)"
+}

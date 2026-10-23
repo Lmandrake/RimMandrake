@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Emberscythe",
+ "nearest_earth_animal": "praying mantis",
+ "earth_body_named": true,
+ "departures": [
+  "ember-dark chitin, charcoal-black with smouldering ember-red tones, never the green or brown of an Earth mantis",
+  "large, heavy body far beyond insect scale, clearly a big predator against the ash ground",
+  "thick, armoured shell plating instead of a thin, leaf-like or twig-like mantis body",
+  "forelimbs that end in long single scythe blades with a cutting edge, not the spined grasping forelegs of an Earth mantis",
+  "crouched low in grey ash, its body partly dusted or half-buried in it"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:41:25-07:00",
+ "source": "description only (no image)"
+}

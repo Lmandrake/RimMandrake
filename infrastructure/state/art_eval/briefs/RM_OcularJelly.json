@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_OcularJelly",
+ "nearest_earth_animal": "jellyfish",
+ "earth_body_named": false,
+ "departures": [
+  "floats in open air at tree-canopy height, not in water",
+  "a swollen, gas-filled float body rather than a thin translucent bell",
+  "one or more prominent eyes, angled downward as if watching what lies below",
+  "a faint reddish haze breathed out of the body and drifting beneath it"
+ ],
+ "body_plan": "flyer",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:51:42-07:00",
+ "source": "description only (no image)"
+}

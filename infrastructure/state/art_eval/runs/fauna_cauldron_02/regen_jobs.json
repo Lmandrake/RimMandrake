@@ -1,0 +1,53 @@
+[
+ {
+  "id": "arteval_RM_Radyak_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Radyak",
+  "prompt": "A single RimWorld creature sprite, the ossrith: a placid, lean, very long-legged grazer whose hide is overlapping bone-white armour plates, not fur or hair. Its face is a bare bone mask with deep black sockets where the eyes sit, and no flesh, fur or visible eyes. A jagged ridge of hard green crystal rises along the spine, thickest over the shoulders and back. Along the spine, the bone-white plates show clear jagged fractures and broken, lifted edges where each cluster of green crystal bursts up through them. The armour around several crystal bases shows conspicuous branching cracks, jagged split edges and small displaced bone-white fragments where the green crystal forces through, so the plates read as split open by the crystal beneath. Away from the spine the plates are smooth, whole and overlapping, so the damage is concentrated where the crystal emerges. The body is a lean, long-legged armoured frame, not a soft-bodied deer or antelope. Head carried low in a grazing posture. Views: south is a front view with the bone mask and black sockets toward the viewer; north is a rear view seen from behind, showing the back, haunches and crystal ridge with the face hidden; east is a clean side profile showing the full spine ridge. Keep the existing palette: bone-white plates, hard green crystal, black sockets. Transparent background, painterly vanilla RimWorld style, realistic, clean dark outline, centered with margin for a 3x3 tile.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_cauldron_02"
+ },
+ {
+  "id": "arteval_RM_Rhossak_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Rhossak",
+  "prompt": "A single RimWorld creature sprite on a transparent background, painterly vanilla RimWorld style, realistic, clean dark outline. The rhossak is a stag-shaped quadruped grown rather than born. Its entire body is living root: the legs, shoulders, flanks, belly, chest, neck and hindquarters are all made of bundles of tightly wound, twisting roots, with bark-like rind and dark gaps between the bundles, and the root strands of the legs run on continuously into the torso. Every body surface is visible twisted root; the neck and chest show wound root cords. Its branching antler-like crown is a spreading mass of root. Along its back runs a row of swollen seed-husks; several of the husks have split open to show wet red seeds packed like teeth. Small living sprouts and seedlings grow out of the root-feet and lower legs themselves, as part of the body, each shoot distinct with transparent space between them. The sprite is a clean cut-out of the creature alone. Palette: earthy brown and dark bark roots, pale green shoots, vivid wet red seeds. Show the requested facing: front view with the eyes toward the viewer, side view in profile, or rear view seen from behind showing back, haunches and the root crown, with the eyes hidden.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_cauldron_02"
+ },
+ {
+  "id": "arteval_RM_Suush_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Suush",
+  "prompt": "A single RimWorld creature sprite, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. A suush: a translucent, perfectly round, taut gas-filled globe floating in open air a few feet above the ground, with a clear gap of air between its underside and the ground. The globe is a closed bladder with a smooth continuous skin; it closes smoothly underneath into a rounded base, and the skin runs unbroken to the roots of the tentacles. A faint warm glow lights it from within, and the dim silhouettes of recently digested matter hang suspended in the vapor inside, visible through the thin wall. From the rounded base, a dense curtain of many long, very fine gathering tentacles hangs vertically straight down toward the ground, like a fine drifting curtain, all of them pointing at the ground and swaying only slightly. The body has a smooth surface with no features: no head, eyes, mouth or limbs. The creature hovers upright and at rest in still air on every facing, the globe and tentacle curtain keeping the same size, proportions and palette. Front view (south): seen from the front, the globe shows its internal glow and one arrangement of digested shapes. Side view (east): the same upright globe in side profile, rounded and unchanged in shape, the tentacle curtain hanging straight down beneath it exactly as in the front view. Rear view (north): seen from behind, the far side of the globe with a visibly different arrangement of internal digested shapes (different sizes, positions and glow tints from the front view), the same round silhouette, the tentacle curtain hanging straight down beneath. Drawn at 2x2 tile scale, readable at small size.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, DEPARTURE_MISSING, STYLE_EARTHLY, DEPARTURE_MISSING, DUPLICATE",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_cauldron_02"
+ }
+]

@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Thornhold",
+ "nearest_earth_animal": "porcupine",
+ "earth_body_named": false,
+ "departures": [
+  "Quills massed on the head, face and forequarters, pointing forward at the viewer, not swept back over the rump",
+  "A whip-like quilled lash (a tail or limb set with quills) held ready to strike",
+  "Quill tips visibly venomed: wet, stained or discoloured at the points",
+  "A low, narrow, elongated body built to thread tight tunnels, not a rounded, waddling porcupine bulk"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:49:12-07:00",
+ "source": "description only (no image)"
+}

@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Sparkleech",
+ "nearest_earth_animal": "leech",
+ "earth_body_named": false,
+ "departures": [
+  "the whole body is one flat flap of tissue that is also the wings, with no separate segmented worm body or distinct torso",
+  "wet, glistening membrane wings, not feathered, furred or insect-veined",
+  "points of light embedded in the wing tissue",
+  "a round socket-mouth as the main head feature, which clamps onto a tree"
+ ],
+ "body_plan": "flyer",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:51:12-07:00",
+ "source": "description only (no image)"
+}

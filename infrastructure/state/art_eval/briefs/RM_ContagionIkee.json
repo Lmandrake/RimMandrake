@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_ContagionIkee",
+ "nearest_earth_animal": "spider",
+ "earth_body_named": false,
+ "departures": [
+  "The body is a cluster of many eyes, with no separate head or torso",
+  "No mouth, jaws or face: the eyes are the only features on the body",
+  "Several thin legs come straight out from under the eye-cluster, with no thorax or abdomen between them",
+  "The eyes are wet and glistening, of different sizes, and bunched close together with no fur or carapace around them"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:50:52-07:00",
+ "source": "description only (no image)"
+}

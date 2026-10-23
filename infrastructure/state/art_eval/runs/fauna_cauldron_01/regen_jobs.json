@@ -1,0 +1,36 @@
+[
+ {
+  "id": "arteval_RM_Eskith_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Eskith",
+  "prompt": "A single knee-high alien forest creature for RimWorld, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background, one creature per view. The body is small, light and compact on quick, thin legs, with a short neck and a low, subdued head. The snout is a blunt, eyeless sensory surface, with the alien eyes set as in the confirmed design. The coat is frond-like and filamentous, soft thread-like strands rather than true contour feathers, kept short on the body and forming only a small soft tuft at the rear. The legs are thin and lightly feathered, visibly narrow all the way down. Each leg ends directly in one continuous, undivided flat pad with a smooth unsegmented sole, spreading wide like a fan and fraying at its rim into soft frond-like filaments, with a few shallow surface folds, no lobes, no toes, no digits. The pads are oversized relative to the body, larger than the head, and are the dominant, unmistakable feature of the silhouette, reading as the creature's main sense organ pressed to the ground. The slender legs lead the eye down to the pads. Front view: eyes toward the viewer, the snout and chest facing the viewer, both pads splayed on the ground. Side view: a compact profile with the low head forward, thin legs and wide flat pads. Rear view, seen from behind: the back, the small filament tuft and the haunches, eyes hidden, the pads splayed beneath. Muted forest palette as in the approved render, even soft lighting.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, STYLE_EARTHLY, DEPARTURE_MISSING, DEPARTURE_MISSING, STYLE_EARTHLY, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_cauldron_01"
+ },
+ {
+  "id": "arteval_RM_Mullgoth_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Mullgoth",
+  "prompt": "RimWorld creature sprite, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. The Mullgoth: a low, domed mound that looks like a decomposing hillock that decided to walk. The body is one single rounded dome with no distinct head, neck or snout. Long pale hair drapes over the whole dome and hangs all the way to the ground on every facing, its hem resting on the soil, hiding four short, thick legs so that only the dark feet and short glimpses of the thick legs show beneath it. The hair is patched with grey-green moss and lilac lichen growing on it like ground cover. The feet are rooty, moss-clad pads half buried in the ground and hidden under the hair, so the creature reads as walking ground cover; the legs are knobby and root-like and wrapped in moss. Black, glistening slime drips from the underside onto the ground beneath. Every facing shows the mound at the same height and width, filling the same share of the frame, from the same camera distance. Front view, seen from the front: the leading end of the mound is a heavier, slime-drenched lip with a denser moss brow above it, the hair parted around it, and the front feet are the same size as the hind feet. Side view, seen from the side: the dome in profile, hair hem on the ground, the front lip at one end and the rear curtain at the other. Rear view, seen from behind: an unbroken curtain of pale hair with a single central parted hank, the haunches rounded and the hind feet at the hem. Silhouette edges are clean: hair tips fade to transparent in pale grey-white with no coloured fringe pixels.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, DEPARTURE_MISSING, F_INCONSISTENT, ALPHA_HALO, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_cauldron_01"
+ }
+]

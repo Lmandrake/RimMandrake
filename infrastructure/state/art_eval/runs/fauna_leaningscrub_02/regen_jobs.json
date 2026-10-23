@@ -1,0 +1,87 @@
+[
+ {
+  "id": "arteval_RM_Shokka_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Shokka",
+  "prompt": "A single RimWorld creature sprite, the shokka, a flat ambush predator of the dry barrens, in painterly vanilla RimWorld style, realistic, with a clean dark outline on a transparent background. The shokka lies perfectly still with its belly on the ground, body splayed flat and much wider than tall, a broad disc-like body with the shoulders level with the back and a smooth low silhouette. Its limbs are folded flat and sprawl out to the sides with elbows out, and its head rests forward with the chin low on the ground. The head is a flattened wedge-shaped skull with a short blunt muzzle and small side-set watchful eyes, looking toward open ground. A short tapering tail lies along the ground. The pelt is a soft irregular dapple of pale ash, sand and dusty grey patches with smooth blended edges, in dry barrens tones that merge with bare ground, and it has a clear satiny sheen with bright specular highlights along the back and flanks where the light catches it. It rests motionless at the edge of sparse low cover, a few dry low tufts beside it, in a resting ambush posture. The same animal appears in every facing with identical head shape, body mass, pelt and tail length: the east view is a side profile, the south view is the front view with eyes toward the viewer, the same body seen head-on, and the north view is the rear view seen from behind showing the back, haunches and tail with the eyes hidden. All three views have the same width, height and bulk, a low wide shape.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, DESC_MISS, STYLE_EARTHLY, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_02"
+ },
+ {
+  "id": "arteval_RM_Surrik_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Surrik",
+  "prompt": "A single creature sprite for RimWorld, the surrik, a large alien root-crust swimmer. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.\n\nBody plan: the surrik lies low and horizontal, half-sunk in an intact, root-bound ground crust of tan-brown root-mat slabs, dark twisting roots and sparse dry vegetation. It is mid-glide, swimming through the crust as through water. Its back breaks the surface like a swimmer's, and the mat ridges up and peels aside ahead of it in a bow wave. The mat flows around the massive shoulders and a trailing wake furrow closes behind the body. The ground crust is whole and unbroken, with no crater, no hole and no dirt mound.\n\nAnatomy: an alien, seal-like streamlined bulk. Massive, broad shoulders form the leading edge that pushes through the mat. The head is blunt and low, set beneath and behind the shoulder line, with no neck held out in front. The hide is smooth, a matte slate-brown with a paler underside. The body tapers into a heavy haunch and tail that stay sunk in the mat. The limbs are smooth, short flippered stubs, mostly hidden below the crust line.\n\nFace: the head is blunt and unexpressive, with small, deep-set, dark eyes set wide apart. The mouth is a short slit angled upward on the top or front of the low head, made to strike up from beneath the crust.\n\nViews: front view, eyes toward the viewer, with the broad shoulders filling the frame and the crust parted in a bow wave toward the viewer. Side view, in profile, with the shoulder hump leading, the low head beneath it, and the back running level into the wake furrow. Rear view, seen from behind, showing the back, the tapering haunches and the wake furrow, with the eyes hidden.\n\nThe crust uses the same slabs, roots and vegetation on every view.\n\nreference: none",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, STYLE_EARTHLY, DESC_MISS, STYLE_CARTOON, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_02"
+ },
+ {
+  "id": "arteval_RM_Thornhold_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Thornhold",
+  "prompt": "A single RimWorld creature sprite, the thornhold, a stubborn alien den-guardian that lives in venomvine thickets. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background, one creature centered.\n\nBody: long, low and narrow like a ferret or weasel, slung close to the ground on short legs, about three times as long as it is tall in the east profile, with a slim torso and a flat, level back built to thread tight tunnels. The flanks and rump are comparatively sleek, with short flat fur and only a few small quills. A bony beak-like snout and a few bony plates add alien character.\n\nQuills: the densest quills are massed on the head, face and shoulders as a bristling crest, all pointing forward past the snout toward the viewer. The quill tips are wet and stained a sickly green-yellow, visibly venomed.\n\nLash: a long, whip-like tail set with rows of venom-tipped quills, raised and curled forward over the back, poised to strike. It is the defining feature and is clearly legible in every facing. In east view it rises from the hips and arcs forward above the body; in south view, front facing with eyes toward the viewer, it rises behind the body and shows above the shoulders; in north view, rear view seen from behind with the eyes hidden, the thick quilled base of the tail fills the center of the rump, with the sleek haunches and rear legs below it.\n\nStance: head lowered and facing the threat, legs planted, holding its ground.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, DESC_MISS, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_02"
+ },
+ {
+  "id": "arteval_RM_Tikkit_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Tikkit",
+  "prompt": "Painterly vanilla RimWorld sprite, realistic, clean dark outline, transparent background. A small loose cluster of five to seven identical tikkits, tiny alien plains creatures of the clicking nation, seen at ground level. Each tikkit is squat, compact and low-slung, its belly close to the ground. Its body is built of overlapping dry, hard, ridged plates, like a seed pod or pinecone, in pale straw and bone-brown tones with darker ridge lines. The back and flanks are a rasp of interlocking scutes with visible serrated edges that could rub together and click; this ridged plating is the dominant feature of each body. The upper body is bare plate, with no wings. The head is small and blunt and carries only short, stiff sensory stubs. All legs are short, similar in length and tucked close under the body. The creatures sit beneath a few low blades of dry plain grass, with the grass leaves overlapping and sheltering them, so they are hidden under the canopy and not perched on the stems. The cluster reads as one patch of the swarm, every individual the same creature. Front view shows the blunt faces with eyes toward the viewer; rear view, seen from behind, shows the plated backs and rear edges with eyes hidden; side view shows the ridged plate profile. Small scale, readable at tiny size, muted dry-plains palette.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_EARTHLY, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_02"
+ },
+ {
+  "id": "arteval_RM_TruffleMole_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_TruffleMole",
+  "prompt": "RimWorld creature sprite, a truffle mole, painted from scratch in the painterly vanilla RimWorld style, realistic, clean thin dark outline of identical weight on every view, transparent background. Body plan: a stocky, low, heavy burrowing animal with a barrel-shaped pig-like trunk, sparse bristly pinkish-grey skin showing between short coarse brown-grey hairs, small upright pig ears, and a thin short pig-like tail, carried on broad, powerful mole digging forelimbs with large spade-like clawed paws, and small hind legs. Face: the snout ends in one broad, flat, round, pig-like rooting disc, pale pink and leathery, facing forward; the disc carries two large, elaborate, ridged nostrils with raised flared rims that dominate the front of the face; small dark eyes sit above and back from the disc. Palette: earthy brown-grey fur, pale pink snout disc and paws, dark claws. Views, all at the same body size and bulk, filling the same share of the canvas: front view with the rooting disc and both ridged nostrils head-on and eyes toward the viewer; side view in profile with the flat disc blunt at the tip of the muzzle, forelimb digging paw forward, trunk barrel visible; rear view seen from behind, showing the back, bristled skin, short tail and haunches, with the face hidden. The animal reads at a glance as a pig and a mole combined in one body.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DONOR, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, F_SIZE_JUMP, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_02"
+ }
+]

@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Radyak",
+ "nearest_earth_animal": "antelope",
+ "earth_body_named": false,
+ "departures": [
+  "hide is overlapping bone-white armour plates, not fur or hair",
+  "face is a bare bone mask with no flesh, fur or visible eyes, only deep black sockets",
+  "a jagged ridge of hard green crystal breaks up through the plates along the spine",
+  "the plates are cracked and split where the crystal pushes outward",
+  "lean, very long-legged frame carrying the armour plates, not a soft-bodied deer or antelope build"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:50:38-07:00",
+ "source": "description only (no image)"
+}

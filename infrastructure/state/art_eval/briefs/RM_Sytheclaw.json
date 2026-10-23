@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Sytheclaw",
+ "nearest_earth_animal": "lion",
+ "earth_body_named": false,
+ "departures": [
+  "back covered in overlapping dry yellow-gold armour plates, no fur or mane",
+  "forelimbs end in long serrated blades instead of paws with claws",
+  "underside a raw furnace red that contrasts sharply with the gold plated upper body",
+  "very low-slung body held close to the ground, lower than any big cat's stance"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:41:33-07:00",
+ "source": "description only (no image)"
+}
