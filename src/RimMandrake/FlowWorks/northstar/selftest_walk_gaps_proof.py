@@ -36,9 +36,10 @@ check("setting off: UNMEASURED", W.travel_free_verdict(T("PITTRAVEL pawn=x free=
 check("thrown: duck clean, person hurt: PASS", W.thrown_verdict([], ["Bruise"], True)[0] == "PASS")
 check("can-fail thrown: duck hurt: FAIL", W.thrown_verdict(["Bruise"], ["Bruise"], True)[0] == "FAIL")
 check("thrown control unhurt = blind read: UNMEASURED", W.thrown_verdict([], [], True)[0] == "UNMEASURED")
-check("tanks: moved toward one level, conserved: PASS", W.tanks_verdict([10, 40, 80], [40, 40, 50], [100, 100, 100])[0] == "PASS")
-check("can-fail tanks: nothing moved: FAIL", W.tanks_verdict([10, 40, 80], [10, 40, 80], [100, 100, 100])[0] == "FAIL")
+check("tanks: held, nothing moved: PASS", W.tanks_verdict([10, 40, 80], [10, 40, 80], [100, 100, 100])[0] == "PASS")
+check("can-fail tanks: leveled: FAIL", W.tanks_verdict([10, 40, 80], [40, 40, 50], [100, 100, 100])[0] == "FAIL")
 check("can-fail tanks: units lost: FAIL", W.tanks_verdict([10, 40, 80], [40, 40, 40], [100, 100, 100])[0] == "FAIL")
+check("tanks empty: UNMEASURED", W.tanks_verdict([0, 0, 0], [0, 0, 0], [100, 100, 100])[0] == "UNMEASURED")
 check("tanks unread: UNMEASURED", W.tanks_verdict([None, 40, 80], [10, 40, 80], [100, 100, 100])[0] == "UNMEASURED")
 check("ponds level within 1 cm: PASS", W.ponds_level_verdict(5, (900, 0), (450, 450), 9, True, True)[0] == "PASS")
 check("can-fail ponds: no move: FAIL", W.ponds_level_verdict(0, (900, 0), (900, 0), 9, True, False)[0] == "FAIL")
@@ -74,7 +75,7 @@ EXPECT = {"": {}, "no_worker": {"COVER_DECON_DROPS_RIDER": ("UNMEASURED", "SITE"
           "no_marked": {"TRAVEL_MARKED_FREE": ("UNMEASURED", "SITE")},
           "thrown_hurt": {"TRAVEL_THROWN_FLYER_UNHURT": ("FAIL", "MOD")},
           "blind_health": {"TRAVEL_THROWN_FLYER_UNHURT": ("UNMEASURED", "HARNESS")},
-          "store_only": {"TANKS_JOINED_ONE_LEVEL": ("FAIL", "MOD")},
+          "levels": {"TANKS_JOINED_STORE_HOLD": ("FAIL", "MOD")},
           "no_link": {"PONDS_DIFFERENT_LIQUIDS_NO_MIX": ("UNMEASURED", "SITE"), "PONDS_HOSE_LEVEL": ("UNMEASURED", "SITE")},
           "pipe_gap": {"PONDS_DIFFERENT_LIQUIDS_NO_MIX": ("UNMEASURED", "SITE"), "PONDS_HOSE_LEVEL": ("UNMEASURED", "SITE")},
           "mixes": {"PONDS_DIFFERENT_LIQUIDS_NO_MIX": ("FAIL", "MOD")},

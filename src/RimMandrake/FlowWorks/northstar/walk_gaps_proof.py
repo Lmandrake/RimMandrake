@@ -43,15 +43,16 @@ Rows (plot coords from --origin, default 40,40; site rect origin-(2,6) .. +64 x 
      tier = UNMEASURED/SITE. Thrown: a second Duck on the rim (16,3) and a colonist on the rim (23,3) each thrown
      (ProofForcedFlyer, PawnFlyer_Stun) into the pits; EXPECT the duck gains no hediff while the thrown colonist DOES (the
      can-fail control: a person still falls). Control unhurt -> the duck row is UNMEASURED/HARNESS (the read is blind).
-  TANKS_APART_HOLD / TANKS_JOINED_ONE_LEVEL
+  TANKS_APART_HOLD / TANKS_JOINED_STORE_HOLD
                               walk stop 6 premise (card closes PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL and
                               WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES); no ledger criterion names it: the row id is the claim.
      scene D: scenario C7's three ground tanks (RM_LiquidTank, RM_LiquidTankTall, RM_UniversalCargoTank) on a pipe at z+2 with
      the same two-cell gap, filled to 10% / 40% / 80% of capacity (fresh water, Store mode as staged). (D1) 300 ticks apart:
-     nothing moves. (D2) the gap piped (jawa/build_batch, what the walk's seat does), net:x,z reaches all three, 2500 ticks
-     (the walk's one hour): EXPECT units move toward one fill fraction, total conserved to the unit. READ OF THE CODE 2026-10-22:
-     RM_LiquidNetKernel.SettlePlan says "Store tanks only buffer" and RM_Levelling links only open HOSE ends, so this row is
-     expected to go RED; the walk card must not be asked over a mechanism that does not exist.
+     nothing moves. (D2) the gap piped (jawa/build_batch, what the walk's seat does), net:x,z reaches all three, 2500 ticks:
+     EXPECT every tank's units unchanged (GSS ruling 3 "Storage fill stays pump-only"; RM_LiquidNetKernel "Store tanks only
+     buffer"): joined Store tanks HOLD, and any move is a MOD FAIL. Control: the net read must reach the other tanks and the
+     units must read (a dead net read cannot pass). OWED: a Dump-mode tank or pump on the same net as a positive mover control
+     (no hose-probe verb sets a tank mode yet).
   PONDS_DIFFERENT_LIQUIDS_NO_MIX
                               PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL A5. Runs BEFORE A4 (RM_Levelling.Moves is a process
                               static: read as a delta, with no other link alive).
@@ -123,7 +124,7 @@ DL_PER_CM_SQUARE = 100                    # 1 cm over 1 m^2 = 10 L = 100 dL
 ROW_IDS = ["COVER_DECON_DROPS_RIDER",
            "LADDER_RAISED_FROM_BELOW", "LADDER_NO_LOWER_FROM_BELOW", "LADDER_LOWERED_FROM_RIM", "LADDER_RAISED_FROM_RIM",
            "TRAVEL_FLYER_FREE_ON_FLOOR", "TRAVEL_PERSON_HELD_CONTROL", "TRAVEL_MARKED_FREE", "TRAVEL_THROWN_FLYER_UNHURT",
-           "TANKS_APART_HOLD", "TANKS_JOINED_ONE_LEVEL",
+           "TANKS_APART_HOLD", "TANKS_JOINED_STORE_HOLD",
            "PONDS_DIFFERENT_LIQUIDS_NO_MIX", "PONDS_HOSE_LEVEL",
            "PORTS_PIPE_AND_REEL_ON_SIDES", "PORTS_ONE_HOSE_PER_SIDE", "PORTS_CORNER_REFUSED"]
 ROW_ITEM = {
@@ -137,7 +138,7 @@ ROW_ITEM = {
     "TRAVEL_MARKED_FREE": ("FLOWWORKS_PIT_TRAVEL_BUILD_FLY_JUMP_FLOAT", "A4"),
     "TRAVEL_THROWN_FLYER_UNHURT": ("FLOWWORKS_PIT_TRAVEL_BUILD_FLY_JUMP_FLOAT", "A4"),
     "TANKS_APART_HOLD": ("PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL", "walk-stop-6 premise (no ledger criterion)"),
-    "TANKS_JOINED_ONE_LEVEL": ("PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL", "walk-stop-6 premise (no ledger criterion)"),
+    "TANKS_JOINED_STORE_HOLD": ("PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL", "GSS ruling 3: storage fill stays pump-only"),
     "PONDS_DIFFERENT_LIQUIDS_NO_MIX": ("PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL", "A5"),
     "PONDS_HOSE_LEVEL": ("PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL", "A4"),
     "PORTS_PIPE_AND_REEL_ON_SIDES": ("FLOWWORKS_PUMP_PORTS_REBUILD_ONE_PER_SIDE", "A4"),
@@ -211,19 +212,18 @@ def spread(fracs):
 
 
 def tanks_verdict(u0, u1, caps):
-    """u0/u1 units per tank before and after the joined window. PASS: moved toward one fraction, total conserved."""
+    """u0/u1 units per tank before and after the joined window. PASS: every tank holds its units (Store tanks never level)."""
     if not u0 or not u1 or None in u0 or None in u1 or not caps or None in caps:
         return "UNMEASURED", "HARNESS", {}
     f0 = [u / float(c) for u, c in zip(u0, caps)]
     f1 = [u / float(c) for u, c in zip(u1, caps)]
     d = {"fractionsBefore": [round(x, 4) for x in f0], "fractionsAfter": [round(x, 4) for x in f1],
-         "spreadBefore": round(spread(f0), 4), "spreadAfter": round(spread(f1), 4), "totalBefore": sum(u0), "totalAfter": sum(u1),
-         "level": spread(f1) <= 0.02}
-    if sum(u0) != sum(u1):
-        return "FAIL", "MOD", dict(d, why="units not conserved")
-    if u0 == u1:
-        return "FAIL", "MOD", dict(d, why="nothing moved between joined Store tanks")
-    return ("PASS" if spread(f1) < spread(f0) else "FAIL"), "MOD", d
+         "totalBefore": sum(u0), "totalAfter": sum(u1)}
+    if sum(u0) <= 0:
+        return "UNMEASURED", "HARNESS", dict(d, why="tanks read empty: the fill did not land")
+    if u0 != u1:
+        return "FAIL", "MOD", dict(d, why="units moved between joined Store tanks (storage fill is pump-only)")
+    return "PASS", "MOD", d
 
 
 def ponds_level_verdict(moves, dl0, dl1, cells, linked, flowing_seen):
@@ -729,7 +729,7 @@ def scene_tanks(ctx, mine):
     ctx["ticks"](2500)
     u1 = units()
     st, cls, d = tanks_verdict(u0, u1, caps)
-    row("TANKS_JOINED_ONE_LEVEL", st, dict(d, units=[u0, u1], capacity=caps, netReach=reach,
+    row("TANKS_JOINED_STORE_HOLD", st, dict(d, units=[u0, u1], capacity=caps, netReach=reach,
                                            settles=[net.get("settles"), B.hp("net:%d,%d" % roots[0]).get("settles")]), cls=cls)
 
 
@@ -869,7 +869,7 @@ SCENES = [("cover", scene_cover), ("ladder", scene_ladder), ("travel", scene_tra
 SCENE_ROWS = {"cover": ["COVER_DECON_DROPS_RIDER"],
               "ladder": ["LADDER_RAISED_FROM_BELOW", "LADDER_NO_LOWER_FROM_BELOW", "LADDER_LOWERED_FROM_RIM", "LADDER_RAISED_FROM_RIM"],
               "travel": ["TRAVEL_FLYER_FREE_ON_FLOOR", "TRAVEL_PERSON_HELD_CONTROL", "TRAVEL_MARKED_FREE", "TRAVEL_THROWN_FLYER_UNHURT"],
-              "tanks": ["TANKS_APART_HOLD", "TANKS_JOINED_ONE_LEVEL"],
+              "tanks": ["TANKS_APART_HOLD", "TANKS_JOINED_STORE_HOLD"],
               "ponds": ["PONDS_DIFFERENT_LIQUIDS_NO_MIX", "PONDS_HOSE_LEVEL"],
               "ports": ["PORTS_PIPE_AND_REEL_ON_SIDES", "PORTS_ONE_HOSE_PER_SIDE", "PORTS_CORNER_REFUSED"]}
 
@@ -888,7 +888,7 @@ class FakeBridge(object):
       no_marked        no marked race on this tier                       -> TRAVEL_MARKED_FREE UNMEASURED/SITE
       thrown_hurt      MOD: a thrown duck takes the fall                 -> TRAVEL_THROWN_FLYER_UNHURT FAIL
       blind_health     a thrown person reads unhurt (blind read)          -> TRAVEL_THROWN_FLYER_UNHURT UNMEASURED/HARNESS
-      store_only       MOD (the code read 2026-10-22): joined Store tanks never level -> TANKS_JOINED_ONE_LEVEL FAIL
+      levels           MOD: joined Store tanks level -> TANKS_JOINED_STORE_HOLD FAIL
       no_link          coupled, yet the mod makes no levelling link      -> PONDS_* UNMEASURED/SITE
       pipe_gap         a rig pipe never built: two components, one end each -> PONDS_* UNMEASURED/SITE (the coupling read)
       mixes            MOD: water and chemfuel exchange                  -> PONDS_DIFFERENT_LIQUIDS_NO_MIX FAIL
@@ -898,7 +898,7 @@ class FakeBridge(object):
       corner_couples   MOD: a hose end on a corner couples               -> PORTS_CORNER_REFUSED FAIL
       no_lay           the hose lays are refused                         -> PORTS_ONE_HOSE_PER_SIDE, PORTS_CORNER_REFUSED UNMEASURED/SITE"""
     FAULTS = ("no_proofs", "no_worker", "decon_no_fall", "ladder_idle", "lower_below", "flyer_held", "person_free", "no_marked",
-              "thrown_hurt", "blind_health", "store_only", "no_link", "pipe_gap", "mixes", "no_level", "no_levellink", "port_shared",
+              "thrown_hurt", "blind_health", "levels", "no_link", "pipe_gap", "mixes", "no_level", "no_levellink", "port_shared",
               "corner_couples", "no_lay")
 
     def __init__(self, faults=()):
@@ -954,7 +954,7 @@ class FakeBridge(object):
                 L.update(raised=False, ordered=False)
         # tanks: joined when the gap is piped (a pipe count model)
         roots = sorted(self.tanks)
-        if len(roots) >= 3 and len(self.pipes) >= 11 and "store_only" not in self.f:
+        if len(roots) >= 3 and len(self.pipes) >= 11 and "levels" in self.f:
             tot = sum(u for u, _ in self.tanks.values())
             capt = sum(c for _, c in self.tanks.values())
             for r in roots:
