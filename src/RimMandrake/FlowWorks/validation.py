@@ -1359,7 +1359,7 @@ TOGGLES_NOT_ON_FLOOR = ["blastsBreakPitCovers", "pitStuckAlertEnabled", "fallDea
                         # toggle chain yet (the rows are owed on the item)
                         "digRockGroundEnabled", "digRockChunksEnabled",
                         # PIT_DEEPSTONE_BUILD_DIGGING_FINALLY_PAYS (2026-10-23): superdeep chunk roll draws the deep stone; offline in
-                        # SelfTest DeepStone_superdeep_strikes_and_stable_pick, live row deep_stone_superdeep_cut owed on the item
+                        # SelfTest DeepStone_superdeep_strikes_and_stable_pick; live rows northstar/deep_stone_live.py (owed, A2)
                         "digDeepStoneEnabled",
                         # LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS (2026-10-16; absorbed into LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD): the cell readout's depth/litres line is UI text
                         # read by eye (review map station pond_bed); no live toggle chain yet
