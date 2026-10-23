@@ -167,7 +167,7 @@ namespace RimMandrake.ExplosiveGrowth.SelfTest
                     RM_TellStage want = ch >= 0.95f ? RM_TellStage.Silence : ch >= 0.85f ? RM_TellStage.Creak : ch >= 0.70f ? RM_TellStage.Tremble
                         : ch >= 0.45f ? RM_TellStage.Hue : ch >= 0.15f ? RM_TellStage.Swell : RM_TellStage.Ground;
                     bool dirty = false;
-                    if (want > rec[c].stage)
+                    if (want != rec[c].stage)
                     {
                         if (sounds && want >= RM_TellStage.Creak && rec[c].stage < RM_TellStage.Creak) w.ev.creak.Add(c);
                         rec[c].stage = want; dirty = true;

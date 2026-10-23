@@ -394,6 +394,8 @@ namespace RimMandrake.ExplosiveGrowth
             int now = Find.TickManager.TicksGame;
             if (now < nextPassTick) return;
             nextPassTick = now + PassInterval;
+            // EGROWTH_SUPPRESS_FIX_OFF_STILL_SUPPRESSES: switching suppression off drops grids already laid.
+            if (!ExplosiveGrowthSettings.suppressionEnabled && ledger.suppressedUntil.Count != 0) ledger.suppressedUntil.Clear();
             if (!ExplosiveGrowthSettings.On || !RM_ExplosiveGrowthRegistry.Ready)
             {
                 lastPassTick = now;
@@ -409,6 +411,8 @@ namespace RimMandrake.ExplosiveGrowth
             ledger.PruneExpired(now);
             if (!RM_ExplosiveGrowthRegistry.MapMayRun(map.Biome))
             {
+                // EGROWTH_SCOPE_FIX_FROZEN_CHARGES_GAMBLE: out of scope the ledger is not stepped, so drop charges instead of freezing them (a frozen charge still paid the jackpot).
+                if (ledger.charges.Count != 0) ledger.charges.Clear();
                 if (ruptures.Count > 0) TickRuptures(now);
                 return;
             }
