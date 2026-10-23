@@ -241,7 +241,8 @@ function render(){
   h += section('to rule', asks.map(r => ({...r, pin: r.kind === 'amber' ? 2 : 1})).concat(rulings), 'rule', ruleHTML, isNew);
   h += section('to look at', looks, 'look', lookHTML, isNew);
   // telemetry alerts (E:\telemetry via telemetryd): amber 'warn' rows; reds already render above
-  const tel = rows.filter(r => r.src === 'telemetry' && r.kind === 'warn' && !r.acked);
+  // plus the one-line "WSL restarted, these windows ended" notice (src sessions)
+  const tel = rows.filter(r => (r.src === 'telemetry' || r.src === 'sessions') && r.kind === 'warn' && !r.acked);
   if (tel.length) h += tel.map(r => redHTML(r, isNew(r)).replace('class="row red', 'class="row red tel').replace('✖ ', '◆ ')).join('');
   if (acked.length) h += `<div class="more" data-ex="acked">acknowledged (${acked.length}) ${ex.acked ? '▴' : '▾'}</div>` + (ex.acked ? acked.map(r => redHTML(r, false)).join('') : '');
   const body = $('body'), st = body.scrollTop;

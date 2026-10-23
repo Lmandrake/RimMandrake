@@ -75,6 +75,17 @@ inc = next(r["incident"] for r in rows if r["who"] == "LOST")
 rows, _, _ = pc.classify_sessions([sess("g", "LOST", "busy", 60, alive=False)], {}, seen_before, {},
                                   {inc: {"at": NOW}}, NOW)
 check("an acked lost window stays visible but stops alarming", rows and rows[0]["acked"], rows)
+old = {"o": {"name": "OLD", "last_alive": NOW - 11 * 86400}}
+rows, seen3, _ = pc.classify_sessions([sess("o", "OLD", "busy", 11 * 86400, alive=False)], {}, old, {}, {}, NOW)
+check("a window lost 11 days ago is no longer red, and is forgotten", not rows and "o" not in seen3, (rows, seen3))
+rb = {"p": {"name": "BENCH", "last_alive": NOW - 3000}, "q": {"name": "FOUNDRY", "last_alive": NOW - 3000},
+      "r": {"name": "SOLO", "last_alive": NOW - 60}}
+rows, _, _ = pc.classify_sessions([sess("p", "BENCH", "busy", 3000, alive=False), sess("q", "FOUNDRY", "busy", 3000, alive=False),
+                                   sess("r", "SOLO", "busy", 60, alive=False)], {}, rb, {}, {}, NOW, boot=NOW - 1000)
+k = kinds(rows)
+check("windows that died before the current boot are ONE warn line naming them, not reds",
+      k.get("WSL") == "warn" and "BENCH" not in k and "FOUNDRY" not in k and "BENCH, FOUNDRY" in rows[-1]["text"], rows)
+check("a window that died after the boot is still red", k.get("SOLO") == "red", k)
 
 # --- OOM kills -----------------------------------------------------------------------
 def ts(ago):
@@ -120,6 +131,13 @@ kr = {r["key"]: r for r in pc.classify_kernel_oom(kk, {}, NOW)}
 check("the planted containment test is NEVER red or amber", kr["oom:planted"]["kind"] == "idle", kr.get("oom:planted"))
 check("a real harness test kill is a contained warning, not red", kr["oom:harness_test"]["kind"] == "warn", kr.get("oom:harness_test"))
 check("a seat tool-cgroup kill is red", kr["oom:seat:BENCH"]["kind"] == "red", kr.get("oom:seat:BENCH"))
+SVC = [f"{NOW-200:.6f} Archmagi kernel: memory: usage 262144kB, limit 262144kB, failcnt 3107004",
+       f"{NOW-200:.6f} Archmagi kernel: oom-kill:constraint=CONSTRAINT_MEMCG,nodemask=(null),cpuset=/,mems_allowed=0,oom_memcg=/user.slice/user-1000.slice/user@1000.service/app.slice/rm-pulse.service,task_memcg=/user.slice/user-1000.slice/user@1000.service/app.slice/rm-pulse.service,task=python3,pid=3653,uid=1000"]
+ks = pc.parse_kernel_oom(SVC)
+sr = pc.classify_kernel_oom(ks, {}, NOW)
+check("a systemd service kill is named as that service, never 'SEAT window'",
+      pc.kill_class(ks[0]) == "service" and sr[0]["kind"] == "red" and "rm-pulse.service" in sr[0]["text"]
+      and "256 MB cap" in sr[0]["text"] and "SEAT" not in sr[0]["text"], sr)
 check("planted kills only -> no alarm at all",
       all(r["kind"] == "idle" for r in pc.classify_kernel_oom(kk[:1] * 30, {}, NOW)))
 
@@ -304,6 +322,19 @@ with tempfile.TemporaryDirectory() as d:
     check("read_sheets takes the LAST url that answers and drops dead servers", len(got) == 1 and got[0]["url"].endswith(":2/?t=b") and got[0]["name"] == "p", got)
     sanity = pc.read_sheets([Path(d)], probe=lambda u: True)
     check("sanity probe: with everything answering both servers are found", len(sanity) == 2, sanity)
+    lg = Path(d, "inc_sheet_2026-10-22.serve.log")
+    lg.write_text("  3 rows · 1 decided\n  serving http://localhost:5/?t=a\n" + '  "GET / HTTP/1.1" 200 -\n' * 50)
+    a1 = pc.scan_sheet_log(lg)
+    with open(lg, "a") as fh:
+        fh.write("BrokenPipeError\n  serving http://localhost:6/?t=b\n  serving http://localhost:7/?t=c")   # last line unfinished
+    a2 = pc.scan_sheet_log(lg)
+    with open(lg, "a") as fh:
+        fh.write("\n")
+    a3 = pc.scan_sheet_log(lg)
+    check("serve.log scan is incremental, keeps header facts, waits for a finished line",
+          a1["urls"] == ["http://localhost:5/?t=a"] and a2["urls"][-1].endswith(":6/?t=b") and a3["urls"][-1].endswith(":7/?t=c")
+          and a3["rows"] == 3 and pc._SHEET_LOG_CACHE[str(lg)][1] == lg.stat().st_size, (a1, a2, a3))
+    check("scan agrees with a whole-file parse", a3["urls"] == pc.parse_sheet_log(lg.read_text())["urls"], a3)
 
 # hand verb writes a record the reader sees
 sys.path.insert(0, str(Path(__file__).resolve().parent))

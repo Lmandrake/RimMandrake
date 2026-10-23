@@ -139,6 +139,7 @@ class Collector:
 
         sessions = src("sessions", pc.read_sessions) or []
         raw["sessions"] = sessions
+        raw["boot"] = pc.boot_time()
         raw["extras"] = src("subagents", lambda: {s.get("sessionId"): pc.session_extras(s.get("sessionId"), now)
                                                   for s in sessions if s.get("alive")}) or {}
         if now - self.kernel.get("at", 0) > 20:
@@ -215,8 +216,11 @@ class Collector:
                 noticed[r["incident"]] = after[0]
                 append("metrics.jsonl", {"m": "red_noticed", "id": r["incident"], "via": "next_prompt",
                                          "latency_s": round(after[0] - r["since"])})
+        # forget a noticed incident only once it has left the screen: pruning one still showing made
+        # it "noticed" again every 5 s tick (MEASURED 2026-10-22: metrics.jsonl at 253 MB of re-notices)
+        live = {r.get("incident") for r in snap["rows"]}
         for k in list(noticed):
-            if now - noticed[k] > 3 * 86400:
+            if k not in live and now - noticed[k] > 3 * 86400:
                 noticed.pop(k)
 
     def ack(self, inc: str, label: str = "actionable") -> bool:
