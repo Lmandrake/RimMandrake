@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Selftest: BENCH owns all FlowWorks (owner, 2026-10-23). The lane is data
 (infrastructure/state/flowworks_lane.json): `acceptance` routes a FlowWorks item to BENCH at every
-level and never to FOUNDRY; the shipped pattern file matches the names it must and not GSS.
+level and never to FOUNDRY; the shipped pattern file matches the names it must (FlowWorks and GSS, both BENCH's) and not other biomes' work.
 
     python3 src/RimMandrake/rimflow/selftest_flowworks_lane.py
 """
@@ -29,13 +29,14 @@ def t_flowworks_acceptance_is_bench_at_every_level():
     assert f == {OTHER} and b == {FW}, (f, b)
 
 
-def t_shipped_lane_file_matches_flowworks_not_gss():
+def t_shipped_lane_file_matches_flowworks_and_gss_not_others():
     lane = priority.flowworks_lane()
     assert lane[0] == "BENCH" and lane[1], lane
     for n in (FW, "FLOWWORKS_NORTHSTAR_SHIP_1", "PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH", "CANAL_LAKE_COLOUR_UNIFY_TWO_BLUES",
-              "DRAWBRIDGE_CABLES_FIX_STOP_SHORT", "SUSPENSION_BUTTONS_DIAGNOSE_STILL_SHOWING", "POND_PUMP_FIX_LAST_DROP_COUNTS"):
+              "DRAWBRIDGE_CABLES_FIX_STOP_SHORT", "SUSPENSION_BUTTONS_DIAGNOSE_STILL_SHOWING", "POND_PUMP_FIX_LAST_DROP_COUNTS",
+              "GSS_CORD_SILENCE_PHANTOM_SPARK", "CORD_GRAPH_TOPOLOGY_REVISION_1", "ANCHOR_BOLLARD_REDRAW_LIES_DOWN_ON_DUTY"):
         assert priority.flowworks_seat(n, lane) == "BENCH", n
-    for n in (OTHER, "CORD_GRAPH_TOPOLOGY_REVISION_1", "GRAFFITI_V1_LIVE_PROOF_1", "SUMP_MECHANICS_1"):
+    for n in (OTHER, "GRAFFITI_V1_LIVE_PROOF_1", "SUMP_MECHANICS_1"):
         assert priority.flowworks_seat(n, lane) is None, n
 
 
