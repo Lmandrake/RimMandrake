@@ -199,6 +199,8 @@
     <Compile Include="Superdeep\RM_LadderUtility.cs" />
     <!-- PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS: portable ladder, climbing gear, safe jumps/skips, rescue ladder job -->
     <Compile Include="Superdeep\RM_PitAccessMath.cs" />
+    <Compile Include="Superdeep\RM_LadderParity.cs" />
+    <Compile Include="Superdeep\RM_LadderParityMath.cs" />
     <Compile Include="Superdeep\RM_PitAccess.cs" />
     <Compile Include="Superdeep\RM_WallClimbMath.cs" />
     <Compile Include="Superdeep\RM_WallClimbSettings.cs" />

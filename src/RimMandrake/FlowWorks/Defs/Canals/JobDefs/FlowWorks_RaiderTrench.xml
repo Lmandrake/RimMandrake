@@ -15,4 +15,12 @@
     <casualInterruptible>false</casualInterruptible>
     <allowOpportunisticPrefix>false</allowOpportunisticPrefix>
   </JobDef>
+  <!-- LADDER_PARITY_BUILD_NO_KEYS_REQUIRED: a ladderless raider takes a standing portable ladder (Superdeep/RM_LadderParity.cs). -->
+  <JobDef>
+    <defName>RM_RaiderTakeLadder</defName>
+    <driverClass>RimMandrake.FlowWorks.JobDriver_RM_RaiderTakeLadder</driverClass>
+    <reportString>taking down a ladder.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+    <allowOpportunisticPrefix>false</allowOpportunisticPrefix>
+  </JobDef>
 </Defs>

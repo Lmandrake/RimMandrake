@@ -735,6 +735,7 @@ namespace RimMandrake.FlowWorks
             Pits.RM_SuspensionSettings.ExposeData();        // SUSPENSION_BRIDGE_BUILD_POSTS_AT_BOTH_ENDS (bridges design §9)
             RM_WallClimbSettings.ExposeData();              // WALL_SCALING_BUILD_ROPE_OVER_RAMPARTS
             RM_RaiderTrenchSettings.ExposeData();           // RAIDERS_TRENCH_BUILD_BREACH_AND_JUMP
+            RM_LadderParitySettings.ExposeData();           // LADDER_PARITY_BUILD_NO_KEYS_REQUIRED
             Pits.RM_DrawbridgeSettings.ExposeData();        // DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS (design R11)
             Swimming.RM_SwimSettings.ExposeData();   // DEEP_WATER_BUILD_SWIM_OR_SINK (owner R12)
             RM_WaterMendSettings.ExposeData();       // FISH_ROLL_MEND_PONDS_BORN_BARREN (engine doc §2.3; Q5a/Q6a defaults)
@@ -1468,9 +1469,9 @@ namespace RimMandrake.FlowWorks
               + "stranded. Off: a pit still costs the fall, but anyone can walk back out.");
 
             list.CheckboxLabeled("A ladder works like a prison door", ref ladderPrisonDoorEnabled,
-                "On, a lowered ladder lets your people and friendly visitors climb out but not trapped "
-              + "enemies or wild animals, and prisoners only during a prison break. Off: any lowered ladder "
-              + "lets anyone climb out.");
+                "On, wild animals never climb a lowered ladder, and prisoners only during a prison break. Hostile people "
+              + "climb it too while \"Ladders have no keys\" is on (the default); with that off, trapped enemies stay down. "
+              + "Off: any lowered ladder lets anyone climb out.");
 
             list.CheckboxLabeled("Ladders can be raised and lowered", ref ladderRaiseLowerEnabled,
                 "On, each ladder has a Ladder up / Ladder down button. Lowered, people can climb down into the pit "
@@ -1990,6 +1991,7 @@ namespace RimMandrake.FlowWorks
             Block(list, "Suspension bridges", Pits.RM_SuspensionSettings.DoSettingsSection);
             Block(list, "Climbing over walls", RM_WallClimbSettings.DoSettingsSection);
             Block(list, "Raiders against trenches", RM_RaiderTrenchSettings.DoSettingsSection);
+            Block(list, "Ladders: no keys", RM_LadderParitySettings.DoSettingsSection);
             Block(list, "Drawbridges", Pits.RM_DrawbridgeSettings.DoSettingsSection);
             Block(list, "Swimming in deep water", Swimming.RM_SwimSettings.DoSettingsSection);
             Block(list, "Fish, fishing zones and water plants in ponds that rise and fall", RM_WaterMendSettings.DoSettingsSection);
