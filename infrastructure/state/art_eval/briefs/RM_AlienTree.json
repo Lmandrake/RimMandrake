@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_AlienTree",
+ "nearest_earth_animal": "fruit tree",
+ "earth_body_named": true,
+ "departures": [
+  "fruits are eyeball-like spheres with a visible iris and pupil, not ordinary round fruit",
+  "the fruits hang down from the branches like dangling eyes",
+  "the tree looks stunted and struggling: sparse, sickly, unevenly grown rather than a healthy full crown",
+  "bark and wood look visibly non-carbon or mineral-like, not ordinary brown bark"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:40:40-07:00",
+ "source": "description only (no image)"
+}

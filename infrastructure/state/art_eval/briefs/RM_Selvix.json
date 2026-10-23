@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Selvix",
+ "nearest_earth_animal": "starfish",
+ "earth_body_named": false,
+ "departures": [
+  "flat star-shaped rosette lying flush on the ground, rooted like a plant, not a raised animal body with tube feet or a textured spiny back",
+  "thick, wet, glossy fuchsia arms with a smooth, succulent-like surface",
+  "a rim of frost-white crystal growing along the edges of each arm where it meets the air",
+  "a distinct wine-red heart at the centre of the rosette, darker than the arms"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:40:29-07:00",
+ "source": "description only (no image)"
+}

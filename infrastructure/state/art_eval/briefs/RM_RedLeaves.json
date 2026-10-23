@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_RedLeaves",
+ "nearest_earth_animal": "grass",
+ "earth_body_named": true,
+ "departures": [
+  "blades are red, not green",
+  "eye-like structures (round, iris-like spots or orbs) visible on or among the blades",
+  "surface reads as not plant-like (glassy, mineral or metallic sheen) rather than ordinary plant tissue",
+  "overall form looks bizarre and unfamiliar, unlike any lawn or meadow grass tuft"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:41:21-07:00",
+ "source": "description only (no image)"
+}

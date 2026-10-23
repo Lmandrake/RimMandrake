@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Fexxil",
+ "nearest_earth_animal": "thorn bush",
+ "earth_body_named": true,
+ "departures": [
+  "entire plant is translucent cobalt-blue glass, with no wood, bark or green tissue anywhere",
+  "no leaves, flowers or berries: only branching glass spines",
+  "every spine ends in a tiny hooked crystal, not a plant thorn",
+  "colour runs from deep blue at the core to pale ice-blue at the tips",
+  "a bead of liquid hangs on each crystal hook, and the edges are sharp like broken bottle-glass"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:40:11-07:00",
+ "source": "description only (no image)"
+}

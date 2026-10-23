@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_HollowVenomvine",
+ "nearest_earth_animal": "bamboo",
+ "earth_body_named": false,
+ "departures": [
+  "tubes so wide that their hollow interiors open into galleries a small person could crawl through, not narrow culms",
+  "open gallery mouths and passages visibly cut through the cane walls, like a network of streets running through the stand",
+  "dead, uniformly grey cane with no green culms or leaves, yet still standing upright",
+  "a dense stand of fused tubes forming one tunnelled mass rather than separate jointed stalks"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:41:50-07:00",
+ "source": "description only (no image)"
+}

@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Tanglefuzz",
+ "nearest_earth_animal": "bramble bush",
+ "earth_body_named": true,
+ "departures": [
+  "a raised root-ball at the base with a dark hollow opening visible beneath the bush",
+  "dense woody stems twisted and knotted together, not straight canes or leafy branches",
+  "several worn runways or trails converging on the bush from different directions",
+  "burrow entrances dug into the ground under and around the root-ball"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:42:18-07:00",
+ "source": "description only (no image)"
+}

@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_RedPlantsTall",
+ "nearest_earth_animal": "tall grass",
+ "earth_body_named": true,
+ "departures": [
+  "eye-like ocular structures (glossy orbs with an iris or pupil) growing on the blades or at the stalk tips",
+  "red colouring across the whole plant, with no green chlorophyll tones",
+  "tall stalks standing clearly above ordinary grass height",
+  "a surface that does not look like plant tissue: glassy, crystalline or metallic sheen instead of matte fibrous leaf texture"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:41:22-07:00",
+ "source": "description only (no image)"
+}

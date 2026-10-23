@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Fuzz",
+ "nearest_earth_animal": "grass",
+ "earth_body_named": false,
+ "departures": [
+  "silver-green colouring across the whole mat, not ordinary grass green",
+  "fine, feathery frond-like leaves instead of flat grass blades",
+  "every frond lies combed in one single direction, as if swept flat by a constant wind",
+  "a dense, continuous low mat no taller than knee height, without separate tufts or clumps",
+  "no visible crown, stem base or seed heads above ground: the fronds come straight out of the soil"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:41:40-07:00",
+ "source": "description only (no image)"
+}

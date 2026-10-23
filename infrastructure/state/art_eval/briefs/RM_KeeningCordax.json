@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_KeeningCordax",
+ "nearest_earth_animal": "reed",
+ "earth_body_named": true,
+ "departures": [
+  "hollow stalk with prominent ribs running its full length",
+  "drooping, throat-like seed pod hanging from the top instead of a cattail head or feathery plume",
+  "seed pod shaped like an open, gullet-like throat that hangs downward",
+  "single tall upright stalk with the bowed pod at its tip rather than a dense clump of plain grassy stems"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:40:19-07:00",
+ "source": "description only (no image)"
+}

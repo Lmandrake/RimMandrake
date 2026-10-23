@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_HalfAlienTree",
+ "nearest_earth_animal": "oak tree",
+ "earth_body_named": true,
+ "departures": [
+  "some leaves replaced by pulsating red structures among the remaining green oak leaves",
+  "the red structures are fleshy organic masses, not foliage, standing out against the leaf canopy",
+  "the canopy is visibly half-and-half: part ordinary oak leaves, part red alien growth",
+  "the ordinary bark-covered oak trunk is kept, so the alien change shows mostly in the crown"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:40:57-07:00",
+ "source": "description only (no image)"
+}

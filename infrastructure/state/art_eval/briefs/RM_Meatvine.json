@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Meatvine",
+ "nearest_earth_animal": "vine",
+ "earth_body_named": true,
+ "departures": [
+  "made of raw, wet red-pink muscle tissue with visible fibre striations, not green stem or brown bark",
+  "anchored at both ends so it spans an arc between two fixed points, with no free growing tip",
+  "no leaves, flowers or curling tendrils anywhere along its length",
+  "visibly flexed or bunched like a contracting limb, with a half-formed, unfinished look along its length",
+  "glistening goo-like slick where it meets its anchors and across its surface"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:41:11-07:00",
+ "source": "description only (no image)"
+}

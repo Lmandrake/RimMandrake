@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_DarkCrust",
+ "nearest_earth_animal": "moss",
+ "earth_body_named": false,
+ "departures": [
+  "coloured only in black, deep purple and blood-red, with no green anywhere",
+  "a thin flat film lying tight against the surface like a skin, with no raised fronds, stems or cushion-like tufts",
+  "irregular patchwork blotches where the three colours meet unevenly, rather than one even colour",
+  "spread across one face of a tree trunk or stone (the side facing the light), not covering it all round"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:40:10-07:00",
+ "source": "description only (no image)"
+}

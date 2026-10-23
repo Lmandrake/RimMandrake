@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Salvessa",
+ "nearest_earth_animal": "pea plant",
+ "earth_body_named": false,
+ "departures": [
+  "stems are wiry and silver-blue, not soft green vines or leafy shoots",
+  "pods are fat and visibly segmented into bead-like sections, not smooth slender pea or bean pods",
+  "ripe pods split open to show a milky white pith inside, not rows of round seeds",
+  "the plant grows as a low, wiry scrubland herb, not a climbing or trellised vine"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:42:05-07:00",
+ "source": "description only (no image)"
+}

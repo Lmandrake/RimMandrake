@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_SwornVenomvine",
+ "nearest_earth_animal": "bramble hedge",
+ "earth_body_named": true,
+ "departures": [
+  "canes trained and bound in straight parallel lines, not a tangled wild thicket",
+  "top cut flat and level like a wall, not a rounded or ragged crown",
+  "small knots of pale undyed fibre tied at intervals along the canes as planters' marks",
+  "thorns set prominently along the bound canes, the hedge reading as a barrier"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:42:19-07:00",
+ "source": "description only (no image)"
+}

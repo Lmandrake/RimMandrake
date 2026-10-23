@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_SleeperVenomvine",
+ "nearest_earth_animal": "bramble",
+ "earth_body_named": false,
+ "departures": [
+  "canes bleached bone-grey and pale, not the brown or green of a living or dead bramble",
+  "a tangled snarl of bare canes with no leaves, berries or flowers",
+  "dry, cracked canes that look brittle, like burnt or smothered remains",
+  "awake form: the same snarl turned glossy black, not grey"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:42:08-07:00",
+ "source": "description only (no image)"
+}

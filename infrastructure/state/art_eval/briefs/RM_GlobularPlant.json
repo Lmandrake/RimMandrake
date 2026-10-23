@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_GlobularPlant",
+ "nearest_earth_animal": "baobab",
+ "earth_body_named": false,
+ "departures": [
+  "a large sickly-pink orb as the main body, not a leafy crown or fruit cluster",
+  "the orb is held up by a network of gnarled branches, not a single trunk",
+  "no leaves anywhere: bare twisted wood plus the orb",
+  "reddish sap visibly dripping down the wood"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:40:54-07:00",
+ "source": "description only (no image)"
+}

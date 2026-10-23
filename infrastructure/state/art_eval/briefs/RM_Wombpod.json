@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Wombpod",
+ "nearest_earth_animal": "frogspawn",
+ "earth_body_named": false,
+ "departures": [
+  "a single large translucent pod, not a cluster of small round eggs",
+  "a half-formed body visibly floating inside the pod, not a dark dot embryo",
+  "a distinct inner sac held inside the outer pod wall",
+  "the pod grows out of a mass of goo rather than sitting in water or on a leaf"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:41:30-07:00",
+ "source": "description only (no image)"
+}

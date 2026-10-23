@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Eyebark",
+ "nearest_earth_animal": "weeping willow",
+ "earth_body_named": false,
+ "departures": [
+  "dozens of open, working eyes set in raised welted sockets up the trunk and along the boughs",
+  "red-brown bark instead of grey or brown willow bark",
+  "canopy of long limp curtains of wet dark-red foliage, not green leaves",
+  "gnarled trunk with boughs bowed low under the weight of the foliage"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:40:48-07:00",
+ "source": "description only (no image)"
+}

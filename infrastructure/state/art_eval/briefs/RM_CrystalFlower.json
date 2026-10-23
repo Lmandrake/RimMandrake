@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_CrystalFlower",
+ "nearest_earth_animal": "lily",
+ "earth_body_named": true,
+ "departures": [
+  "petals are sharp, angular, faceted crystal shards rather than soft curved organic petals",
+  "petals are translucent glass-like, with light passing through and refracting at the facet edges",
+  "stem carries a visible metallic sheen or mineral streaks where the metal-laden sap wicks upward",
+  "bloom opening into a hard geometric crystal cluster with no soft petal tissue, pollen fuzz or leafy sepals"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:40:09-07:00",
+ "source": "description only (no image)"
+}

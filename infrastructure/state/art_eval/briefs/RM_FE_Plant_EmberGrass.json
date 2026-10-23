@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_FE_Plant_EmberGrass",
+ "nearest_earth_animal": "bunchgrass",
+ "earth_body_named": true,
+ "departures": [
+  "stems dried to a dull orange rather than green or straw-gold",
+  "very tall, upright clumps out of proportion to their thin, brittle stems",
+  "coarse, sparse, dry-looking blades with no lush or leafy growth",
+  "growing as a dense carpet straight out of blackened, burned ground"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:42:52-07:00",
+ "source": "description only (no image)"
+}

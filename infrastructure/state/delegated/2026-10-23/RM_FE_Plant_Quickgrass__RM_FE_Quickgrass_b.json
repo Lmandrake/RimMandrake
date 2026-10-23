@@ -1,0 +1,76 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 28.1,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.33714420000000006
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 2.9,
+    "error": "t>\",\n  \"concerns\": [{\"id\": \"K1\", \"answer\": \"confirmed|refuted|unclear\", \"evidence\": \"<what in the picture>\"}],\n  \"findings\": [{\"code\": \"<code>\", \"where\": \"<image/facing>\", \"seen\": \"<what>\", \"quote\": \"<rule>\",\n                \"confidence\": 0.0, \"model_severity\": \"blocking|polish\", \"fix\": \"<one positive sentence>\"}],\n  \"verdict\": \"strong_accept|regen|unsure\"\n}\n\n\nERROR: Selected model is at capacity. Please try a different model.\nERROR: Selected model is at capacity. Please try a different model.\n\n"
+   },
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 22.4
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 10.6,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1209827
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_FE_Plant_Quickgrass__RM_FE_Quickgrass_b",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said weak); blocking ['DUPLICATE']; polish ['STYLE_EARTHLY', 'SCALE_WRONG', 'LEGIB_32']",
+  "gpt regen: unsettled ['K1'], own blocking ['DUPLICATE']",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v1",
+   "sha": "a4850279ccbf"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v1",
+   "sha": "14056552e355"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "plant@v2",
+   "sha": "0469e8fe99c6"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "single.png": "9823af71d796dc31d7c7a92f728c429c6209dbdc08ff398bdaeed33456aa6772",
+  "scale.png": "dd5924259efe0ba2a48663d0653c31d97bfaa36162636249f0c933e2dfc28f4a",
+  "siblings.png": "fbeddbeef6cb1011298ba4d971fe65a07efc3287fb0bc4449caaa59da2e5b275"
+ }
+}

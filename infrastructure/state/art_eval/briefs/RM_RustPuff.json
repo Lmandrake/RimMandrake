@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_RustPuff",
+ "nearest_earth_animal": "puffball mushroom",
+ "earth_body_named": true,
+ "departures": [
+  "unusually large puffball body, oversized compared with an Earth puffball",
+  "spores shown as a cloud of coarse, visible rust-coloured flakes, not a fine brown or grey dust",
+  "rust-red to red-brown colouring on and around the puffball where spores have settled, not a plain white or tan cap",
+  "forest floor around the puffball stained red-brown by fallen spores"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:41:21-07:00",
+ "source": "description only (no image)"
+}

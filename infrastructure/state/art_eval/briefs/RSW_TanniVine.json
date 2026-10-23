@@ -1,0 +1,21 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RSW_TanniVine",
+ "nearest_earth_animal": "ivy",
+ "earth_body_named": true,
+ "departures": [
+  "leaves are star-shaped with several narrow pointed rays, not ivy's three-to-five-lobed leaf",
+  "star-shaped leaves repeat along the whole vine so the star silhouette is unmistakable at sprite size",
+  "growth reads as a slow, compact climbing or trailing vine rather than a dense ivy mat"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:42:48-07:00",
+ "source": "description only (no image)"
+}

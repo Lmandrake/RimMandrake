@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Bleedleaf",
+ "nearest_earth_animal": "leafy shrub",
+ "earth_body_named": true,
+ "departures": [
+  "leaf veins run visibly wet and red, the red soaking outward from the veins into the leaf rather than a flat red leaf colour",
+  "red liquid beads and hangs as drops from leaf tips and edges",
+  "red drips or wet red spots on the ground directly beneath the shrub",
+  "leaf surfaces look wet and glossy, like a material that is not ordinary matte plant tissue",
+  "low, ground-hugging height, wider than it is tall"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:40:49-07:00",
+ "source": "description only (no image)"
+}

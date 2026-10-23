@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Grellbush",
+ "nearest_earth_animal": "sagebrush",
+ "earth_body_named": true,
+ "departures": [
+  "low, squat profile hugging the ground, shorter and wider than a sagebrush clump",
+  "tough, hard-looking stems and foliage, not soft grey-green leaves",
+  "exposed roots spreading over and gripping the thin soil around the base",
+  "sparse growth on bare, thin desert ground, with nothing else growing in the patch it holds"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:41:43-07:00",
+ "source": "description only (no image)"
+}

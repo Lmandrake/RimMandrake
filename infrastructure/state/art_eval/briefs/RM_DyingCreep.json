@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_DyingCreep",
+ "nearest_earth_animal": "red moss",
+ "earth_body_named": false,
+ "departures": [
+  "a continuous wet, glossy red skin-like sheet, not separate moss fronds, stems or leaves",
+  "lies flat and shallow on bare ground with no roots, stalks or upright growth",
+  "patches of surface darkening from red toward black",
+  "dry cracks splitting the skin into plates",
+  "dead areas shown as a flat black mat clinging to the soil"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:40:50-07:00",
+ "source": "description only (no image)"
+}

@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_BloodBouquet",
+ "nearest_earth_animal": "rose",
+ "earth_body_named": false,
+ "departures": [
+  "many dark crimson flower heads bunched tightly together at the top of one single stalk, not a single bloom or a branching rose bush",
+  "flower heads with a glossy, wet-looking sheen, as if dripping, not dry velvety petals",
+  "iron-red, rust-tinged blood colouring, not a clean bright rose red",
+  "heavy clustered head that makes the lone stalk sag or bow under its weight"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:40:09-07:00",
+ "source": "description only (no image)"
+}

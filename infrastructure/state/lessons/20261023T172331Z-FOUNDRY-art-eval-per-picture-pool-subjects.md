@@ -1,0 +1,2 @@
+A plant card for a random-pool plant judged as ONE composite (single + variants panel) lets one cartoon variant fail the whole subject and REGEN the kept good one (EmberGrass 2026-10-23: Opus called variant B/C cartoon, REGEN replaced kept A). Judge each pool picture as its own subject (DEF__stem), with kept pool members as siblings and a POOL FACT line in the description (count, names, 'do not mark WANTS_VARIANTS/DUPLICATE from unseen members'); otherwise Opus returns VARIANTS unreadable.
+home: skills/rimworld-art-evaluation/references/templates/plant.md

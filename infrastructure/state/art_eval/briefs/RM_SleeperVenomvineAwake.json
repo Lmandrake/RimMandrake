@@ -1,0 +1,21 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_SleeperVenomvineAwake",
+ "nearest_earth_animal": "bramble",
+ "earth_body_named": false,
+ "departures": [
+  "vines reared up and lashing outward in an agitated, striking posture, not draped or climbing passively like a bramble or ivy",
+  "venom visibly present: glistening, wet-tipped barbs or stems beading with venom",
+  "an upright free-standing stand of vines, a dense clump with no supporting wall, tree or trellis"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:42:10-07:00",
+ "source": "description only (no image)"
+}

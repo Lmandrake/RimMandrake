@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Toothmoss",
+ "nearest_earth_animal": "moss",
+ "earth_body_named": false,
+ "departures": [
+  "the carpet is made of many small individual teeth, not leaves, fronds or stems",
+  "the tooth surfaces are hard, enamel-like and bone-coloured instead of soft green plant tissue",
+  "the teeth have worn, flattened grinding crowns like molars, not pointed shoots or spore stalks",
+  "the teeth grow straight out of bare, scorched, sterile ground at a burn edge, with no humus or other plants around them",
+  "it forms a low, flat, close-set mat of crowns with no fuzzy or feathery texture"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:41:31-07:00",
+ "source": "description only (no image)"
+}

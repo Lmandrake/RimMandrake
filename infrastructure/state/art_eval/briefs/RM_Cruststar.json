@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Cruststar",
+ "nearest_earth_animal": "lichen",
+ "earth_body_named": true,
+ "departures": [
+  "a crisp star-shaped outline with distinct radiating points, not the irregular blotchy patch of an Earth lichen",
+  "a gold rim along the outer edges of the points, where it fruits, against a pale body",
+  "lies completely flat against a crust of tangled, root-bound ground rather than growing on rock or bark",
+  "a single discrete star about a hand-span across, plate-sized, not a spreading mat"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:41:38-07:00",
+ "source": "description only (no image)"
+}
