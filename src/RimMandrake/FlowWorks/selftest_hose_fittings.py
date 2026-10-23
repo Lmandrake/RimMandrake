@@ -16,6 +16,16 @@ wall (MODERN_TANK_PORT_REDRAW_COUPLER_FLOATS, live art look 2026-10-22). This ga
   filing's bar): the inward gap from the edge to the first opaque pixel is <= GAP_TOL cell at every sample within
   +-a quarter of the visible flat hose width (HoseMath.FlatVisible) of the port point.
 
+UNDER-COUPLERS (owner ruling 2026-10-23, by card: "Make your couplers as needed, but have their art go UNDER the tank or pump
+or other fixture"): wherever a hose couples to a non-pipe port the C# draws a collar + pipe BENEATH the fixture
+(Machinery/UnderCouplerGeometry.cs, RM_UnderCouplers.cs). The gate composes that draw itself -- the constants parsed from
+UnderCouplerGeometry.cs, the sprites read from Textures/RimMandrake/FlowWorks/Joins/<Look>/UnderCollar.png + UnderPipe.png,
+placed by this file's own transform, never by the C# under test -- under the fixture's alpha, and a port passes when
+  (a) the composite is opaque at the port within the hose's half-width (gap <= GAP_TOL), and
+  (b) the coupler really goes beneath: along the port axis (centre and +-half-width) the fixture's own art turns opaque
+      at least REACH_TOL before the coupler's inner end (no daylight between the coupler and the fixture).
+The fixture-alone gap is still printed (--table, "raw").
+
 Known reds are listed in KNOWN with the item that owns them: they print KNOWN and keep the suite green; a NEW red, or a
 KNOWN entry that now passes (prune it), is a FAIL. Can-fail: the Modern tall tank art of fb34c9bc2d (before the
 2026-10-22 lane fittings) must measure red on west/east.
@@ -41,22 +51,15 @@ LOOKS = ["Scrapper", "Industrial", "Modern", "Futuristic"]
 GAP_TOL = 0.10          # cell; a coupler face may sit this far off the drawn edge (pump art 0.06-0.08 passes; the Modern float was ~0.3)
 ALPHA = 128
 SIDES = {"north": (0, 1), "east": (1, 0), "south": (0, -1), "west": (-1, 0)}
+REACH_TOL = 0.05       # cell the coupler must run on beneath opaque fixture art
+UNDER_GEOM = os.path.join(HERE, "Source", "Machinery", "UnderCouplerGeometry.cs")
+JOINS = os.path.join(HERE, "Textures", "RimMandrake", "FlowWorks", "Joins")
 PRE_FIX_REV = "fb34c9bc2d"   # Modern tank art before the 2026-10-22 west/east lane fittings
 
-# (def, look, side) -> the filed item that owns the red (measured 2026-10-22). A fixed entry goes red until pruned here.
-_TALL = ("RM_LiquidTankTall", "RM_UniversalCargoTank", "RM_UniversalCargoTankXTall")
+# (def, look, side) -> the filed item that owns the red. A fixed entry goes red until pruned here.
+# Drained 2026-10-23 by the under-couplers (TANK_LANE_FITTINGS_REDRAW_MODERN_ONLY, TANK_SOUTH_PORT_REDRAW_STUB_PEEKS_OUT,
+# TANK_NS_PORTS_REDRAW_COUPLE_THIN_AIR): every non-pipe port now has a coupler drawn beneath the fixture.
 KNOWN = {}
-for _d in _TALL:
-    for _l in LOOKS:
-        KNOWN[(_d, _l, "south")] = "TANK_SOUTH_PORT_REDRAW_STUB_PEEKS_OUT"
-        if _l != "Modern":
-            KNOWN[(_d, _l, "west")] = KNOWN[(_d, _l, "east")] = "TANK_LANE_FITTINGS_REDRAW_MODERN_ONLY"
-for _l in LOOKS:
-    KNOWN[("RM_LiquidTank", _l, "north")] = KNOWN[("RM_LiquidTank", _l, "south")] = "TANK_NS_PORTS_REDRAW_COUPLE_THIN_AIR"
-    if _l != "Modern":
-        KNOWN[("RM_UniversalCargoTank", _l, "north")] = "TANK_NS_PORTS_REDRAW_COUPLE_THIN_AIR"
-# Pumping stations: south fittings drawn by art_source/TankPorts/port_fittings.py (PUMPSTATION_SOUTH_PORT_REDRAW_ALMOST_THERE).
-# The tank fittings are drawn by the same script but not installed: every tank picture is owner-KEPT (art.py refuses).
 
 fails = []
 unmeasured = []
@@ -193,26 +196,31 @@ def ports(b, look, dz_table):
 
 
 # ------------------------------------------------------------------ measurement
-def gap_at(alpha, g, size, pt, side, half_w):
-    """Largest inward distance (cell) from the footprint edge at pt to the first opaque pixel, over the hose's width."""
+def fixture_opaque(alpha, g, size):
+    """(x, z) -> the fixture's art is opaque there (Graphic_Single quad: drawSize centred on the footprint + drawOffset)."""
     H, W = alpha.shape
     w, h = size
     dw, dh = g["drawSize"]
     ox, oz = g["drawOffset"][0], g["drawOffset"][2]
     cx, cz = w / 2.0 + ox, h / 2.0 + oz
+
+    def f(x, z):
+        u = int((x - (cx - dw / 2.0)) / dw * W)
+        v = int(((cz + dh / 2.0) - z) / dh * H)
+        return 0 <= u < W and 0 <= v < H and alpha[v, u] > ALPHA
+    return f, min(dw / W, dh / H) / 2.0
+
+
+def gap_fn(opaque, step, pt, side, half_w):
+    """Largest inward distance (cell) from the port point to the first opaque pixel, over the hose's width (0.6 = none)."""
     nx, nz = SIDES[side]
     tx, tz = -nz, nx
-    step = min(dw / W, dh / H) / 2.0
     worst = 0.0
     for t in np.linspace(-half_w, half_w, 9):
         gap = None
         d = step / 2.0
         while d <= 0.6:
-            x = pt[0] + tx * t - nx * d
-            z = pt[1] + tz * t - nz * d
-            u = int((x - (cx - dw / 2.0)) / dw * W)
-            v = int(((cz + dh / 2.0) - z) / dh * H)
-            if 0 <= u < W and 0 <= v < H and alpha[v, u] > ALPHA:
+            if opaque(pt[0] + tx * t - nx * d, pt[1] + tz * t - nz * d):
                 gap = d - step / 2.0
                 break
             d += step
@@ -220,13 +228,105 @@ def gap_at(alpha, g, size, pt, side, half_w):
     return worst
 
 
-def measure(b, look, g, dz_table, half_w, rev=None):
+def gap_at(alpha, g, size, pt, side, half_w):
+    """The fixture's art alone: largest inward gap from the port to its first opaque pixel over the hose's width."""
+    f, step = fixture_opaque(alpha, g, size)
+    return gap_fn(f, step, pt, side, half_w)
+
+
+# ------------------------------------------------------------------ the under-coupler, composed here (never by the C#)
+def under_geom():
+    """CollarLength, CollarWidth, PipeWidth parsed from UnderCouplerGeometry.cs (None when the shape changed)."""
+    m = re.search(r"const double CollarLength = ([0-9.]+), CollarWidth = ([0-9.]+), PipeWidth = ([0-9.]+);", open(UNDER_GEOM).read())
+    return tuple(float(x) for x in m.groups()) if m else None
+
+
+_SPRITES = {}
+
+
+def under_sprites(look):
+    """(collar alpha, pipe alpha) for the look a port draws in (an unstyled def: the pipes' default look, Scrapper)."""
+    look = look if look in LOOKS else "Scrapper"
+    if look not in _SPRITES:
+        out = []
+        for piece in ("UnderCollar", "UnderPipe"):
+            f = os.path.join(JOINS, look, piece + ".png")
+            out.append(np.array(Image.open(f).convert("RGBA"))[..., 3] if os.path.exists(f) else None)
+        _SPRITES[look] = tuple(out)
+    return _SPRITES[look]
+
+
+def reach_of(pt, side, size, geo):
+    """UnderCouplerGeometry.Reach, re-derived: port -> footprint centre line along the inward axis, >= the collar."""
+    sx, sz = -SIDES[side][0], -SIDES[side][1]
+    d = (size[0] / 2.0 - pt[0]) * sx if sx else (size[1] / 2.0 - pt[1]) * sz
+    return max(geo[0], d)
+
+
+def coupler_opaque(geo, sprites, pt, side, reach):
+    """(x, z) -> the under-coupler is opaque there: collar quad [0, CL) x CW, pipe quad [CL/2, reach) x PW along the
+    inward axis from the port point, each sprite's +u inward, +v (row 0) on the axis's left."""
+    cl, cw, pw = geo
+    ca, pa = sprites
+    sx, sz = -SIDES[side][0], -SIDES[side][1]
+
+    def f(x, z):
+        a = (x - pt[0]) * sx + (z - pt[1]) * sz
+        c = (x - pt[0]) * -sz + (z - pt[1]) * sx
+        if 0 <= a < cl and abs(c) < cw / 2:
+            H, W = ca.shape
+            if ca[min(H - 1, int((cw / 2 - c) / cw * H)), min(W - 1, int(a / cl * W))] > ALPHA:
+                return True
+        if cl / 2 <= a < reach and abs(c) < pw / 2:
+            H, W = pa.shape
+            if pa[min(H - 1, int((pw / 2 - c) / pw * H)), min(W - 1, int((a - cl / 2) / (reach - cl / 2) * W))] > ALPHA:
+                return True
+        return False
+    return f
+
+
+def beneath_margin(fix, step, pt, side, half_w, reach):
+    """How far the coupler runs on past the first opaque fixture pixel (cell; worst of centre and +-half-width lines);
+    negative / None = daylight between the coupler's inner end and the fixture."""
+    nx, nz = SIDES[side]
+    tx, tz = -nz, nx
+    worst = None
+    for t in (-half_w, 0.0, half_w):
+        d, hit = step / 2.0, None
+        while d < reach:
+            if fix(pt[0] + tx * t - nx * d, pt[1] + tz * t - nz * d):
+                hit = d
+                break
+            d += step
+        m = None if hit is None else reach - hit
+        if m is None:
+            return None
+        worst = m if worst is None else min(worst, m)
+    return worst
+
+
+def measure(b, look, g, dz_table, half_w, rev=None, geo=None, reach_override=None):
+    """[(side, lane, pt, raw gap, composed gap, beneath margin)] -- composed/margin None without geo."""
     if g["graphicClass"] not in (None, "Graphic_Single"):
         return None, "graphicClass %s is not measured (Graphic_Single only)" % g["graphicClass"]
     alpha, src = load_alpha(g["texPath"], rev)
     if alpha is None:
         return None, src
-    return [(side, lane, pt, gap_at(alpha, g, b["size"], pt, side, half_w)) for side, lane, pt in ports(b, look, dz_table)], src
+    fix, step = fixture_opaque(alpha, g, b["size"])
+    out = []
+    for side, lane, pt in ports(b, look, dz_table):
+        raw = gap_fn(fix, step, pt, side, half_w)
+        comp = margin = None
+        if geo is not None:
+            sprites = under_sprites(look)
+            if sprites[0] is None or sprites[1] is None:
+                return None, "no under-coupler sprites for look %s under %s" % (look, os.path.relpath(JOINS, REPO))
+            reach = reach_override if reach_override is not None else reach_of(pt, side, b["size"], geo)
+            cop = coupler_opaque(geo, sprites, pt, side, reach)
+            comp = gap_fn(lambda x, z: fix(x, z) or cop(x, z), step, pt, side, half_w)
+            margin = beneath_margin(fix, step, pt, side, half_w, reach)
+        out.append((side, lane, pt, raw, comp, margin))
+    return out, src
 
 
 def sanity(half_w):
@@ -246,7 +346,7 @@ def sanity(half_w):
     check([s for s, _, _ in pp] == ["south"], "sanity: a 3x2 pump takes a hose only on its south side (Position + FacingCell rule)")
 
 
-def can_fail(defs, dz_table, half_w):
+def can_fail(defs, dz_table, half_w, geo):
     tall = next((b for b in defs if b["def"] == "RM_LiquidTankTall"), None)
     if tall is None or "Modern" not in tall["looks"]:
         unmeasured.append("can-fail: no RM_LiquidTankTall Modern look")
@@ -255,18 +355,43 @@ def can_fail(defs, dz_table, half_w):
     if res is None:
         unmeasured.append("can-fail: " + src)
         return
-    we = [gap for side, _, _, gap in res if side in ("west", "east")]
+    we = [r[3] for r in res if r[0] in ("west", "east")]
     check(we and all(gap > GAP_TOL for gap in we),
-          "can-fail: Modern tall tank art at %s (pre lane fittings) reads red west/east (gaps %s)" % (PRE_FIX_REV, ", ".join("%.2f" % x for x in we)))
+          "can-fail: Modern tall tank art at %s (pre lane fittings), fixture alone, reads red west/east (gaps %s)" % (PRE_FIX_REV, ", ".join("%.2f" % x for x in we)))
+    # the beneath check can fail: a coupler cut back to its collar never reaches RM_LiquidTank's body north/south
+    lt = next((b for b in defs if b["def"] == "RM_LiquidTank"), None)
+    if lt is None or "Scrapper" not in lt["looks"]:
+        unmeasured.append("can-fail: no RM_LiquidTank Scrapper look")
+        return
+    res, src = measure(lt, "Scrapper", lt["looks"]["Scrapper"], dz_table, half_w, geo=geo, reach_override=geo[0])
+    if res is None:
+        unmeasured.append("can-fail: " + src)
+        return
+    ns = [r for r in res if r[0] in ("north", "south")]
+    check(ns and all(r[4] <= GAP_TOL for r in ns) and all(r[5] is None or r[5] < REACH_TOL for r in ns),
+          "can-fail: RM_LiquidTank Scrapper north/south with the coupler cut to its collar: port covered, but daylight before the body (margins %s)"
+          % ", ".join("none" if r[5] is None else "%.2f" % r[5] for r in ns))
+    # and on an empty fixture the coupler alone covers the port but goes beneath nothing
+    b = {"def": "X", "kind": "tank", "size": [2, 2]}
+    g = {"drawSize": [2, 2], "drawOffset": [0, 0, 0]}
+    fix, step = fixture_opaque(np.zeros((128, 128), np.uint8), g, b["size"])
+    sp = under_sprites("Scrapper")
+    pt, side = (1.0, 2.0), "north"
+    cop = coupler_opaque(geo, sp, pt, side, reach_of(pt, side, b["size"], geo))
+    check(gap_fn(lambda x, z: fix(x, z) or cop(x, z), step, pt, side, half_w) <= GAP_TOL
+          and beneath_margin(fix, step, pt, side, half_w, reach_of(pt, side, b["size"], geo)) is None,
+          "sanity: the coupler alone covers the port of an empty fixture, and the beneath check reads it as daylight")
 
 
 def main():
     table = "--table" in sys.argv
-    dz_table, half_w = port_dz_table(), hose_half_width()
+    dz_table, half_w, geo = port_dz_table(), hose_half_width(), under_geom()
     check(dz_table is not None and len(dz_table) == len(LOOKS), "TankPortGeometry.PortDz parsed from HoseMath.cs (%s)" % dz_table)
     check(half_w is not None, "fitting span +-%s cell (half the hose width, from HoseMath.FlatVisible)" % half_w)
-    if dz_table is None or half_w is None:
+    check(geo is not None, "under-coupler collar/pipe sizes parsed from UnderCouplerGeometry.cs (%s)" % (geo,))
+    if dz_table is None or half_w is None or geo is None:
         return 1
+    check(geo[2] / 2 >= half_w and geo[1] >= geo[2], "under-coupler pipe spans the hose's half-width and the collar is the wider part")
     sanity(half_w)
     defs = load_defs()
     names = sorted(b["def"] for b in defs)
@@ -274,24 +399,27 @@ def main():
           "every hose-coupling building found in Defs (%s)" % ", ".join(names))
     for b in defs:
         check(not b["rotatable"], "%s is not rotatable (one facing to measure; a rotatable port building needs this gate extended)" % b["def"])
-    can_fail(defs, dz_table, half_w)
+    can_fail(defs, dz_table, half_w, geo)
     red, known_seen = {}, set()
-    n = 0
+    n = raw_red = 0
     for b in sorted(defs, key=lambda x: x["def"]):
         for look, g in b["looks"].items():
-            res, src = measure(b, look, g, dz_table, half_w)
+            res, src = measure(b, look, g, dz_table, half_w, geo=geo)
             if res is None:
                 check(False, "%s %s: %s" % (b["def"], look, src))
                 continue
-            for side, lane, pt, gap in res:
+            for side, lane, pt, raw, comp, margin in res:
                 n += 1
-                ok = gap <= GAP_TOL
+                raw_red += raw > GAP_TOL
+                ok = comp <= GAP_TOL and margin is not None and margin >= REACH_TOL
                 if table:
-                    print("      %-28s %-11s %-5s lane %d at (%.2f, %.2f): gap %.3f %s" % (b["def"], look, side, lane, pt[0], pt[1], gap, "" if ok else "RED"))
+                    print("      %-28s %-11s %-5s lane %d at (%.2f, %.2f): raw gap %.3f, with coupler %.3f, beneath by %s %s"
+                          % (b["def"], look, side, lane, pt[0], pt[1], raw, comp, "none" if margin is None else "%.2f" % margin, "" if ok else "RED"))
                 if not ok:
-                    red.setdefault((b["def"], look, side), []).append(gap)
-    for key, gaps in sorted(red.items()):
-        label = "%s %s %s: no drawn fitting at the hose port (gap %s cell > %.2f)" % (key[0], key[1], key[2], "/".join("%.2f" % x for x in gaps), GAP_TOL)
+                    red.setdefault((b["def"], look, side), []).append((comp, margin))
+    for key, v in sorted(red.items()):
+        label = "%s %s %s: the under-coupler leaves the port uncovered or stops short of the fixture (gap/beneath %s; tol %.2f/%.2f)" % (
+            key[0], key[1], key[2], ", ".join("%.2f/%s" % (c, "none" if m is None else "%.2f" % m) for c, m in v), GAP_TOL, REACH_TOL)
         if key in KNOWN:
             known_seen.add(key)
             print("KNOWN " + label + " -- " + KNOWN[key])
@@ -299,7 +427,8 @@ def main():
             check(False, label)
     for key in sorted(set(KNOWN) - known_seen):
         check(False, "KNOWN entry %s now passes: prune it from KNOWN (and close %s if it was the last)" % (" ".join(key), KNOWN[key]))
-    print("hose fittings: %d ports measured, %d sides red (%d known)" % (n, len(red), len(known_seen)))
+    print("hose fittings: %d ports measured, %d with no fixture art at the port (covered by under-couplers), %d sides red (%d known)"
+          % (n, raw_red, len(red), len(known_seen)))
     if unmeasured:
         for u in unmeasured:
             print("UNMEASURED, not a pass or a fail: " + u)
