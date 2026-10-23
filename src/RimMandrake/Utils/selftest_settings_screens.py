@@ -266,6 +266,7 @@ MODS = {
         "Uses": "Now",
         "Ancient mirror fields (WORLDGEN-AFFECTING)": "NewMapsOnly",
         "Upkeep": "Now",
+        "Solar panels": "Now",
         "Work and timing": "Now",
     }, ()),
     "WreckedMachines": ("WreckedMachinesMod.cs", "RM_WreckedMachines.csproj", {
