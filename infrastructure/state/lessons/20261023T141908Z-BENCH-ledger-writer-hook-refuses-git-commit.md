@@ -1,0 +1,1 @@
+The ledger-writer hook refuses 'git commit -F <msgfile> -- infrastructure/state/ledger/events/BENCH.jsonl ...' (reads -F's file as a write to the ledger); the same commit with -m passes (2026-10-23, weir review).
