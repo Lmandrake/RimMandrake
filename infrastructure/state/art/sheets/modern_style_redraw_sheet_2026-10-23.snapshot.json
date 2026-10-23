@@ -1,0 +1,529 @@
+{
+ "biome": "SUBJECTS_modern_style_redraw",
+ "built": "2026-10-23T08:09:08-0700",
+ "census": "Transient/biome_ffar/modern_style_redraw.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 14 mods \u2014 a test list): 320 active",
+ "rows": {
+  "MS_Coupler": {
+   "columns": {
+    "A": {
+     "single": "71d5abcb85cbbca2dfcb6af3a604c99eb687d58beba146543c7c18ba6ca66935"
+    },
+    "B": {
+     "single": "9813385848cd0fc1361ffb23b7bb2176071799b46b64a627a82f5869b478a40f"
+    },
+    "C": {
+     "single": "996696b278f248dad0bb8c5e5c539ad6f6618feac86c0b12ca8eae01fb9c20f8"
+    },
+    "D": {
+     "single": "064d3f3f2f3c12829911464109b820e48d131dbbafbd6914e1c3b647c27e297a"
+    },
+    "E": {
+     "single": "4aacc81572f62b2d3a74497e85dccd535804d4b07b59b9013e1295c8651a617c"
+    },
+    "F": {
+     "single": "ce18963bf5d7d3bdc3b3daf94321c9cab91204de676c6dc7b52011e56c3f06d4"
+    },
+    "G": {
+     "single": "42318ffe74de43d518b6b4d83cd0db0ab686f06b01babeaa00e810c367688c63"
+    },
+    "H": {
+     "single": "360b2ca6acf85c9eac77193576d7623ad5a67ecd9caad00c6c4a775f7644d0bd"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Joins/Modern/Coupler",
+    "B": "RimMandrake/FlowWorks/Joins/Modern/Coupler",
+    "C": "RimMandrake/FlowWorks/Joins/Modern/Coupler",
+    "D": "RimMandrake/FlowWorks/Joins/Modern/Coupler",
+    "E": "RimMandrake/FlowWorks/Joins/Modern/Coupler",
+    "F": "RimMandrake/FlowWorks/Joins/Modern/Coupler",
+    "G": "RimMandrake/FlowWorks/Joins/Modern/Coupler",
+    "H": "RimMandrake/FlowWorks/Joins/Modern/Coupler"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render joinfit_coupler_scrapper_v1",
+    "C": "render joinfit_coupler_industrial_v1",
+    "D": "render joinfit_coupler_futuristic_v1",
+    "E": "render joinfitraw_coupler_futuristic_v1",
+    "F": "render joinfitraw_coupler_industrial_v1",
+    "G": "render joinfitraw_coupler_modern_v1",
+    "H": "render joinfitraw_coupler_scrapper_v1"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Joins/Modern/Coupler",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H"
+   ],
+   "shownBase": [],
+   "subject_key": "ms_coupler"
+  },
+  "MS_Faucet": {
+   "columns": {
+    "A": {
+     "single": "790eec8b907888ac6efcbdfb75854920b752269b0ee8680c5da7ab223b94bb4e"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Faucet/Modern/RM_PipeFaucet"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Faucet/Modern/RM_PipeFaucet",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "ms_faucet"
+  },
+  "MS_Flange": {
+   "columns": {
+    "A": {
+     "single": "b4fb7aebf13a8f7071fc6bbc0cdff1a82c9248a069218f968b4ce94a2a311c9e"
+    },
+    "B": {
+     "single": "6b4249b65b1be810813b6d5447c71e819f93f11eed0701c3fa4a3c00e417288d"
+    },
+    "C": {
+     "single": "d971429419bf1339e73708b1422d88a8258ca01da242fdf69ceb268d23db7198"
+    },
+    "D": {
+     "single": "57b6ab9de2c4b9bd7b25f58d038df95beaf304efcf0f9bd8d2c6eb3a3e84b4ce"
+    },
+    "E": {
+     "single": "e31a26dfe87a0b89b86901979cd6b6c533e40c3878830bed3bed0ed3980beecb"
+    },
+    "F": {
+     "single": "c4eefe5ac951352ab90b0c69ba7cf6c068eeb94c75c7f593de745be180e6e9da"
+    },
+    "G": {
+     "single": "ea1e25fc1e87960336a37d7c3787c19ec0a891754f59e4bf8ef006166f749b87"
+    },
+    "H": {
+     "single": "f354097102b8f04cfa576751fcbd2cf15f7f954dc8cc1ea081b5b9ce546567d0"
+    },
+    "I": {
+     "single": "2ad87a2a49e85207a9a6cd3ce8d97280c3bc97c43d5489e2dba6618e42f77f4d"
+    },
+    "J": {
+     "single": "5601b8af342ce2f97d44db41b107905bb60a295b5440305745888afc21591191"
+    },
+    "K": {
+     "single": "0ac2b94022c8e5cea9e8bf1b16741e6bfb363b40512bf805df8ef21cc3c23c6f"
+    },
+    "L": {
+     "single": "952a54f11cfa341bf6c135bfcda6e36cb286d3f4ff8c11347f04b0d8e7b04189"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Joins/Modern/Flange",
+    "B": "RimMandrake/FlowWorks/Joins/Modern/Flange",
+    "C": "RimMandrake/FlowWorks/Joins/Modern/Flange",
+    "D": "RimMandrake/FlowWorks/Joins/Modern/Flange",
+    "E": "RimMandrake/FlowWorks/Joins/Modern/Flange",
+    "F": "RimMandrake/FlowWorks/Joins/Modern/Flange",
+    "G": "RimMandrake/FlowWorks/Joins/Modern/Flange",
+    "H": "RimMandrake/FlowWorks/Joins/Modern/Flange",
+    "I": "RimMandrake/FlowWorks/Joins/Modern/Flange",
+    "J": "RimMandrake/FlowWorks/Joins/Modern/Flange",
+    "K": "RimMandrake/FlowWorks/Joins/Modern/Flange",
+    "L": "RimMandrake/FlowWorks/Joins/Modern/Flange"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render joinfit_flange_scrapper_v1",
+    "C": "render joinfit_flange_industrial_v1",
+    "D": "render joinfit_flange_futuristic_v1",
+    "E": "render joinfitraw_flange_futuristic_v1",
+    "F": "render joinfitraw_flange_industrial_v1",
+    "G": "render joinfitraw_flange_modern_v1",
+    "H": "render joinfitraw_flange_scrapper_v1",
+    "I": "render liqjoin_flange_scrapper_a",
+    "J": "render liqjoin_flange_industrial_a",
+    "K": "render liqjoin_flange_modern_a",
+    "L": "render liqjoin_flange_futuristic_a"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Joins/Modern/Flange",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L"
+   ],
+   "shownBase": [],
+   "subject_key": "ms_flange"
+  },
+  "MS_HoseCoupling": {
+   "columns": {
+    "A": {
+     "single": "523e7374ea0d3a021b257118ff78c4711d9fc71ea5c0dda4d10d2f26d2b4c3ef"
+    },
+    "B": {
+     "single": "b821b66144e6ec6526127f5e9dedca824adb6bf47caa1a2b45ae81c2c763019b"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Hose/Styles/Modern/Coupling_Bare",
+    "B": "RimMandrake/FlowWorks/Hose/Styles/Modern/Coupling_Bare"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render RM_Hose_Coupling_Bare_gauge_Modern"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Hose/Styles/Modern/Coupling_Bare",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "ms_hosecoupling"
+  },
+  "MS_HoseMouth": {
+   "columns": {
+    "A": {
+     "single": "acbe04f18b81f5e787eb5cc4fd9624be1d6814f2c0f1fdf0e514d2944100a3b8"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Hose/Styles/Modern/Mouth"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Hose/Styles/Modern/Mouth",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "ms_hosemouth"
+  },
+  "MS_Pipe": {
+   "columns": {
+    "A": {
+     "single": "385fb2285b7cfe2cb5b0757feb60620610296b0999af7d13dc7f12dee12fb0d2"
+    },
+    "B": {
+     "single": "108a075bcff456dcb64b7e40247ad02babe84282a571d7ac9e51d17d78ca8205"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Pipe/Modern/UniversalPipe_Atlas",
+    "B": "RimMandrake/FlowWorks/Pipe/Modern/UniversalPipe_Atlas"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render pipefit_atlas_modern_v1"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Pipe/Modern/UniversalPipe_Atlas",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "ms_pipe"
+  },
+  "MS_PipeIcon": {
+   "columns": {
+    "A": {
+     "single": "f0b798a40c142c03759170f097f7257c54fc835fa312593351ce060635bbf3a7"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Pipe/Modern/UniversalPipe_MenuIcon"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Pipe/Modern/UniversalPipe_MenuIcon",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "ms_pipeicon"
+  },
+  "MS_PipeSpan": {
+   "columns": {
+    "A": {
+     "single": "be7267ada6828ebe402f2a24a497f8de6a0ad5a6c14e8cc79bf12e58b2c444b3"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/PipePole/Modern/PipeSpan"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/PipePole/Modern/PipeSpan",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "ms_pipespan"
+  },
+  "MS_Pump": {
+   "columns": {
+    "A": {
+     "single": "d7067d4dd9fe9256334a4bce3d061c911c382e1c9adf697fb49459e42d5cebc3"
+    },
+    "B": {
+     "single": "6681e712eb188c679574102a9a6dfa01997a1ce3e609e15a5286b8f0eed54d5d"
+    },
+    "C": {
+     "single": "eb26dfa77f15e7b674729ac50239cdb2c975ad79f099458503efa21448b66cd5"
+    },
+    "D": {
+     "single": "ef2881d177df5516ad19557e361e7227dd0dfd014d7b3f781514edc143711af7"
+    },
+    "E": {
+     "single": "20d88ac70b2c26002189cd1dffc4e095a887cfbdf426f552962cf1946f7de660"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Pump/Modern/RM_LiquidPump",
+    "B": "RimMandrake/FlowWorks/Pump/Modern/RM_LiquidPump",
+    "C": "RimMandrake/FlowWorks/Pump/Modern/RM_LiquidPump",
+    "D": "RimMandrake/FlowWorks/Pump/Modern/RM_LiquidPump",
+    "E": "RimMandrake/FlowWorks/Pump/Modern/RM_LiquidPump"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render modernpump_a_v1",
+    "C": "render modernpump_b_v1",
+    "D": "render modernpump_c_v1",
+    "E": "render liqjoin_pump_modern_a"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Pump/Modern/RM_LiquidPump",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "ms_pump"
+  },
+  "MS_Saddle": {
+   "columns": {
+    "A": {
+     "single": "4b378512957e617b4654ea35e98c07ba3348b64dbd28d83c82884af37aa2961f"
+    },
+    "B": {
+     "single": "10fba582cb2d4bdb0377f7858e26d1b406b14360f1d7251f529031c3fb00ef06"
+    },
+    "C": {
+     "single": "2e4cdc0ce7dfe9914ab77903c30e460d9009f94ad634afe4d8f26369f73e533b"
+    },
+    "D": {
+     "single": "0b2152e89a1c99e89a1706cf46ae72f7582b23c0b9a0f3bbb77826281e7596b0"
+    },
+    "E": {
+     "single": "c4b04f1fdf27f19a21cd4b8be9962dbaedd34aa88aa90bd7251408dd5f7a645d"
+    },
+    "F": {
+     "single": "4cb6625064735522e592e8ceb3692e1fc5d7a4f1c634ff1df55085e1d983c713"
+    },
+    "G": {
+     "single": "a0e80fb0f985a414abb6bfd87fcdf90a69bb420342019a3fa04f3bf438e323e6"
+    },
+    "H": {
+     "single": "4bbd25f4b2e86a11289c286ccb58817a06febbce3f3adc01fcb13a93b9a33506"
+    },
+    "I": {
+     "single": "a9ef82dcce74ee5d582ca3943c9d25685cdb6d40c3ce606cdfe5af8112af04a7"
+    },
+    "J": {
+     "single": "32b9cb0cec3f2f874b8f03607424bf4335ee3f647b4f58a83b2949cd1d752eee"
+    },
+    "K": {
+     "single": "483e8c37c50ee15c01eb5baa9b4766c13c3513356ec58cef2664ac0742e81088"
+    },
+    "L": {
+     "single": "e62a38ed13978c90e18c33e1ba7c4e2627420d6555d606fb5a421a5480bf3c34"
+    },
+    "M": {
+     "single": "2c90e862333d192a6c45ac247119944c5f14c59b5fba25599e9dd019dc38714b"
+    },
+    "N": {
+     "single": "2bdc2fd6f63474fec72201e6868ec751dcf223daea68fb0562e8ab2b19b9894c"
+    },
+    "O": {
+     "single": "c92f626be87fdaed94247d38c1aab6c87eba1f2dd47815d0b07437939b2d3d99"
+    },
+    "P": {
+     "single": "7b4b6ee80b7d1d36ea4952bc36598999ae197662d62a4dc3b02286db5b2cb92b"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Joins/Modern/Saddle",
+    "B": "RimMandrake/FlowWorks/Joins/Modern/Saddle",
+    "C": "RimMandrake/FlowWorks/Joins/Modern/Saddle",
+    "D": "RimMandrake/FlowWorks/Joins/Modern/Saddle",
+    "E": "RimMandrake/FlowWorks/Joins/Modern/Saddle",
+    "F": "RimMandrake/FlowWorks/Joins/Modern/Saddle",
+    "G": "RimMandrake/FlowWorks/Joins/Modern/Saddle",
+    "H": "RimMandrake/FlowWorks/Joins/Modern/Saddle",
+    "I": "RimMandrake/FlowWorks/Joins/Modern/Saddle",
+    "J": "RimMandrake/FlowWorks/Joins/Modern/Saddle",
+    "K": "RimMandrake/FlowWorks/Joins/Modern/Saddle",
+    "L": "RimMandrake/FlowWorks/Joins/Modern/Saddle",
+    "M": "RimMandrake/FlowWorks/Joins/Modern/Saddle",
+    "N": "RimMandrake/FlowWorks/Joins/Modern/Saddle",
+    "O": "RimMandrake/FlowWorks/Joins/Modern/Saddle",
+    "P": "RimMandrake/FlowWorks/Joins/Modern/Saddle"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render joinfit_saddle_scrapper_v1",
+    "C": "render joinfit_saddle_scrapper_v2",
+    "D": "render joinfit_saddle_industrial_v1",
+    "E": "render joinfit_saddle_industrial_v2",
+    "F": "render joinfit_saddle_futuristic_v1",
+    "G": "render joinfitraw_saddle_futuristic_v1",
+    "H": "render joinfitraw_saddle_industrial_v1",
+    "I": "render joinfitraw_saddle_industrial_v2",
+    "J": "render joinfitraw_saddle_modern_v1",
+    "K": "render joinfitraw_saddle_scrapper_v1",
+    "L": "render joinfitraw_saddle_scrapper_v2",
+    "M": "render liqjoin_saddle_scrapper_a",
+    "N": "render liqjoin_saddle_industrial_a",
+    "O": "render liqjoin_saddle_modern_a",
+    "P": "render liqjoin_saddle_futuristic_a"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Joins/Modern/Saddle",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "O",
+    "P"
+   ],
+   "shownBase": [],
+   "subject_key": "ms_saddle"
+  },
+  "MS_Sprinkler": {
+   "columns": {
+    "A": {
+     "single": "6b63f2ceaad01087cf9f6077308aefc3dfb45b78421bd59d428049ad7b575c2d"
+    },
+    "B": {
+     "single": "26bab38490eed9e70e57419ab6f9edef543f7932a0e9f09ba7ec5e9e62109b39"
+    },
+    "C": {
+     "single": "ad610d596da82a0375f42cf96c9eec9c14f66d11999b2be083e6f7274850b788"
+    },
+    "D": {
+     "single": "c234b730bf924ec0b70ab4f5ae4afba7a02d8a5717db914ffd7f8737c40c3372"
+    },
+    "E": {
+     "single": "38b066dfad920986302082b9b15a8825cdf88d176fcc0dde7c9328d9eef3cba5"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead",
+    "B": "RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead",
+    "C": "RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead",
+    "D": "RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead",
+    "E": "RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render modernsprinkler_a_v1",
+    "C": "render modernsprinkler_b_v1",
+    "D": "render modernsprinkler_c_v1",
+    "E": "render RM_SprinklerHead_lj_Modern"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "ms_sprinkler"
+  },
+  "MS_UnderCollar": {
+   "columns": {
+    "A": {
+     "single": "dec2fe0d2aa95e2dbd2d45fd01a4f0423f8d584ae6fd09d420b05378de5c6e1e"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Joins/Modern/UnderCollar"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Joins/Modern/UnderCollar",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "ms_undercollar"
+  },
+  "MS_UnderPipe": {
+   "columns": {
+    "A": {
+     "single": "3255583e164b615ccc121bcb70dc1dfbdedab9577a7fe82c78fc1188272a3245"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Joins/Modern/UnderPipe"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Joins/Modern/UnderPipe",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "ms_underpipe"
+  }
+ },
+ "sheetId": "modern_style_redraw_sheet_2026-10-23",
+ "snapshotId": "deb9d5fd2789de08"
+}

@@ -1,0 +1,64 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RM_UniversalPipe_Modern": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 2) \u00b7 Opus WEAK: DESC_MISS, PORT_MISFIT, PORT_UNDRAWN \u00b7 GPT regen, unsettled K1, K2, K3, K4, K5",
+   "context": "judged candidate r1 (image sha 74d4c8dacd); PORT_MISFIT: The pipe's west flange ends about one cell east of the tank spigot and about 40 px higher. The east end cap stops with a visible gap before ; DESC_MISS: The elbows are long smooth sweeps with only a thin ring at each end. They read as bent tubing, not a Schedule 40 socket 90\u00b0 elbow with thick; PORT_UNDRAWN: The tee fittings appear to carry a socket hub stub on the unconnected side, as if a cross body was reused. A drawn connector with no pipe re"
+  },
+  "RM_LiquidPump_Modern": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 2) \u00b7 Opus WEAK: OWNER_NOTE_IGNORED, PORT_MISFIT, SIBLING_MISMATCH \u00b7 GPT unsure, unsettled K2, K3",
+   "context": "judged candidate r1 (image sha fd9fd039b0); OWNER_NOTE_IGNORED: The PVC stubs are about 85\u201390 px wide (about 0.17 cell) and the union collars about 105\u2013110 px (about 0.21 cell). The modern pipe they conne; PORT_MISFIT: The west stub is fatter than the pipe run it faces and stops short of its end cap. The south stub is about as wide as the hose, but its coll; SIBLING_MISMATCH: The pump has a slightly crisper, heavier dark outline and higher-contrast metallic shading than the soft poly-tank siblings. It is still the"
+  },
+  "RM_PipeFaucet_Modern": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 2) \u00b7 Opus WEAK: PORT_MISFIT \u00b7 GPT unsure, unsettled K1, K2",
+   "context": "judged candidate r1 (image sha 187a4cecbb); PORT_MISFIT: The assembled view is an offline mock with approximate joins. The riser base appears to sit on the pipe end, but its true port height and of"
+  },
+  "RM_HoseEnd_Modern": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: DESC_MISS, PORT_MISFIT, SIBLING_MISMATCH \u00b7 GPT regen, unsettled K1, K2, K3, K4, K5, K6",
+   "context": "judged candidate r1 (image sha 0261dc8787); DESC_MISS: The Mouth is a large plain aluminium sleeve with two lugs: a metal fitting, not the outer face of a bare canvas hose end. In the assembled m; SIBLING_MISMATCH: The sleeve has no dark outline, soft airbrushed shading and stair-stepped lug edges. The coupling beside it is crisply keylined and detailed; PORT_MISFIT: The metal end fitting sits inset from the hose's end, and a short canvas stub with a pale cap extends past it, so the mouth is not on the en"
+  },
+  "RM_PipeSpan_Modern": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: PORT_MISFIT \u00b7 GPT unsure, unsettled K1, K2, K3, K4",
+   "context": "judged candidate r1 (image sha ee7ae88c88); PORT_MISFIT: The span is drawn on its own at the top right with no pipe poles and no connection to the network. Its meeting with pole tops cannot be chec"
+  },
+  "RM_SprinklerHead_Modern": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 2) \u00b7 Opus WEAK: CAM_WRONG, PORT_MISFIT \u00b7 GPT unsure, unsettled K2, K3",
+   "context": "judged candidate r1 (image sha 83f48c0f82); CAM_WRONG: The PVC socket rim and brass collars show very thin top ellipses (well under 0.56 of their width), and the sprinkler body is drawn almost as; PORT_MISFIT: The PVC socket is a little wider than the 0.136-cell pipe it receives (about 0.18 cell). The join is from an offline mock, so the exact fit "
+  },
+  "RM_LiquidJoins_Modern": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 2) \u00b7 Opus WEAK: OWNER_NOTE_IGNORED, PORT_MISFIT, SIBLING_MISMATCH \u00b7 GPT unsure, unsettled K1, K2, K3, K5",
+   "context": "judged candidate r1 (image sha e08d87c149); PORT_MISFIT: The saddle is about 30 px tall on a pipe about 14 px wide, and its downward outlet is narrower than the beige hose it feeds. The hose's top ; PORT_MISFIT: The left flange stops short of the green tank and is not at the tank's tap at bottom-right. The main pipe ends in a cap short of the pump's ; OWNER_NOTE_IGNORED: The connectors are still oversized relative to the thin modern pipe (0.136 cell) and hose (0.18 cell): the large saddle, and the chunky whit"
+  }
+ }
+}

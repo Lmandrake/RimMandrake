@@ -1,0 +1,87 @@
+[
+ {
+  "id": "arteval_RM_UniversalPipe_Modern_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_UniversalPipe_Modern",
+  "prompt": "Top-down sprite atlas of a white Schedule 40 PVC pressure pipe network with socket fittings, in painterly vanilla RimWorld style, realistic, with a clean dark outline, on a transparent background. Drawn strictly from directly above, as a network lying on the ground. 4x4 linked atlas of tiles. Straight pipe tiles show smooth white PVC pipe of constant width (about 0.136 of a cell thick), centered in the tile, with soft cylindrical shading across its width. Every junction tile is a molded white PVC socket fitting from one family: the fitting body is clearly wider than the pipe, and a slightly raised bell collar ring sits where each pipe enters, with a subtle shadowed step between collar and pipe. Elbow tiles show a short-radius molded 90-degree socket elbow, slightly wider than the pipe, with a socket collar at each of its two legs. Tee tiles show a socket tee with a collar at each of its three openings. The cross tile shows a four-way socket cross with a collar at each of its four openings. End-cap tiles show a white PVC socket cap: a short flat-ended cup slightly wider than the pipe, sleeved over the pipe end, with a flat end face and a collar ring at its open side. The isolated fitting tile is a single socket cap-style fitting in the same family. All fittings share the same white PVC color, body width, collar ring width and height, and proportions as a large PVC socket tee. Consistent lighting from the upper left across all tiles.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, DESC_MISS, DESC_MISS, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "modern_style_20261023"
+ },
+ {
+  "id": "arteval_RM_LiquidPump_Modern_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_LiquidPump_Modern",
+  "prompt": "A compact commercial electric booster pump, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background, fitting exactly one 1x1 cell. Seen from about 35 degrees above the horizontal, front view with the pressure switch and gauge facing the viewer. A ribbed charcoal electric motor cylinder shows a clearly lit elliptical top band. Beside it sits a grey thermoplastic pump housing (volute), also with a lit top band. A small pressure switch and a round pressure gauge are mounted on the front of the housing. A small terminal box shows its top face. All of it stands on a flat black base whose top face is visible. A white PVC manifold runs from the housing to four ports at the north, east, south and west edge midpoints of the cell. Each of the four stubs is a white PVC pipe exactly 0.136 cell wide (about 17 px at 128 px per cell), straight, on the centreline of its edge, ending flush and square at the cell edge. Where the housing outlet is wider than the stub, a visible tapered reducer fitting steps the diameter down to 0.136 cell. Each stub carries one slim union collar no wider than 0.18 cell, so the stub joins the neighbouring pipe or hose as one continuous run of the same width and centreline. All four stubs are identical in diameter and fittings. Keep the palette and components identical in every rotation.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: OWNER_NOTE_IGNORED, PORT_MISFIT, CAM_WRONG, OWNER_NOTE_IGNORED, F_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "modern_style_20261023"
+ },
+ {
+  "id": "arteval_RM_LiquidJoins_Modern_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_LiquidJoins_Modern",
+  "prompt": "Top-down view of modern white PVC plumbing join pieces for a RimWorld colony sim, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background, each piece centred in its own square tile. Piece 1: a white PVC socket coupling, a short smooth barrel with a raised ring at each end, shown as the shared edge between a machine and a tank. Piece 2: a white PVC flange. A short socket hub on the pipe side joins a wider, flat flange plate flush to the port edge, and stainless steel hex bolt heads are spaced along the plate face. Piece 3: a white PVC tee saddle. A continuous white PVC pipe runs across the tile unbroken, and a curved half-band saddle body is seated over it with two stainless bolt lugs at its sides. A single short threaded outlet boss rises from the saddle for a hose, ending in a branch socket. Piece 4: a grey moulded wall sleeve (under-collar) ringing a short length of plain white PVC pipe (under-pipe). Assembled panel: these pieces connected to white PVC pipe, with each branch pipe aligned to its fitting's branch socket in position and direction, the pipe end seated inside the socket opening. Every piece is upright in the same orientation, with overlapping parts layered pipe-under-fitting and bolts-on-top. Label the panel as an offline mock composite. Reference: none; build each piece from this description.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, DESC_MISS, DESC_MISS, PORT_MISFIT, F_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "modern_style_20261023"
+ },
+ {
+  "id": "arteval_RM_PipeFaucet_Modern_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_PipeFaucet_Modern",
+  "prompt": "RimWorld item sprite, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background, front view, centred in a square 1x1 cell. A modern brass quarter-turn hose bib faucet with a blue lever handle, mounted on a white PVC riser. The riser is a thick vertical tube about 0.136 of the cell width (about 17 px in a 128 px cell), the same diameter as the modern network pipe, so the faucet reads as fitted onto that pipe. The brass bib body with its spout sits at the top and middle of the cell, the blue lever clearly visible on its side. Below it the white PVC riser runs straight down, centred horizontally, and ends in a clearly sized white PVC socket collar, full pipe diameter and slightly flared, that reaches the bottom edge of the cell so its open end lines up with the pipe run in the neighbouring cell with no gap. The whole faucet is one continuous object from brass bib at the top to the coupling at the bottom edge, with soft painterly shading and a clean dark outline.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: OWNER_NOTE_IGNORED, PORT_MISFIT, OWNER_NOTE_IGNORED, PORT_MISFIT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "modern_style_20261023"
+ },
+ {
+  "id": "arteval_RM_SprinklerHead_Modern_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_SprinklerHead_Modern",
+  "prompt": "A single-cell RimWorld machine sprite, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. A modern brass impact sprinkler head with a visible nozzle arm and spring, mounted on a short black riser, which rises from a white PVC socket. The white PVC socket sits directly on the pipe cell, and a white PVC pipe runs into the open end of the socket along the cell's centerline, entering from the cell edge at the same height and in the same plane as the pipe network, so the pipe and the socket form one continuous run. The base socket opening is centered on the cell edge where the supplying pipe arrives, so the socket meets the pipe end with no gap. The sprinkler is the terminal fitting at the end of the pipe, filling the single cell with the pipe stub visible entering the socket. Palette: warm brass yellow on the head, matte black on the riser, bright white PVC with soft grey shading on the socket and pipe stub. Soft top-down lighting consistent with vanilla RimWorld buildings.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: PORT_MISFIT, PORT_MISFIT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "modern_style_20261023"
+ }
+]

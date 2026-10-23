@@ -1,0 +1,98 @@
+RimMandrake/FlowWorks/Faucet/Modern/RM_PipeFaucet | == RimMandrake/FlowWorks/Faucet/Modern/RM_PipeFaucet slots: RM_PipeFaucet_Modern/body  LIVE FlowWorks RM_PipeFaucet.png 790eec8b9078 
+RimMandrake/FlowWorks/Hose/Styles/Modern/Binding | == RimMandrake/FlowWorks/Hose/Styles/Modern/Binding slots: (none in our defs)  LIVE FlowWorks Binding.png 8d60e21ca157 
+RimMandrake/FlowWorks/Hose/Styles/Modern/Coupling_Bare | == RimMandrake/FlowWorks/Hose/Styles/Modern/Coupling_Bare slots: (none in our defs)  LIVE FlowWorks Coupling_Bare.png 523e7374ea0d PROTECTED 
+RimMandrake/FlowWorks/Hose/Styles/Modern/EndCap_Bare | == RimMandrake/FlowWorks/Hose/Styles/Modern/EndCap_Bare slots: (none in our defs)  LIVE FlowWorks EndCap_Bare.png 16c25c564878 
+RimMandrake/FlowWorks/Hose/Styles/Modern/Mouth | == RimMandrake/FlowWorks/Hose/Styles/Modern/Mouth slots: (none in our defs)  LIVE FlowWorks Mouth.png acbe04f18b81 
+RimMandrake/FlowWorks/Hose/Styles/Modern/Nozzle_Bare | == RimMandrake/FlowWorks/Hose/Styles/Modern/Nozzle_Bare slots: (none in our defs)  LIVE FlowWorks Nozzle_Bare.png b16e4f661608 
+RimMandrake/FlowWorks/Hose/Styles/Modern/Reel_Deployed | == RimMandrake/FlowWorks/Hose/Styles/Modern/Reel_Deployed slots: (none in our defs)  LIVE FlowWorks Reel_Deployed.png 93d231d6a210 PROTECTED  LIVE FlowWorks Reel_Deployed_north.png 201a54ddf302 PROTECTED 
+RimMandrake/FlowWorks/Hose/Styles/Modern/Reel_Deployed_north | 
+RimMandrake/FlowWorks/Hose/Styles/Modern/Reel_Deployed_south | 
+RimMandrake/FlowWorks/Hose/Styles/Modern/Reel_PumpHookup | == RimMandrake/FlowWorks/Hose/Styles/Modern/Reel_PumpHookup slots: RM_HoseReel_Modern/body  LIVE FlowWorks Reel_PumpHookup.png 26cbe532b819 PROTECTED  LIVE FlowWorks Reel_PumpHookup_north.png 44b73a35e61d PROTECTED 
+RimMandrake/FlowWorks/Hose/Styles/Modern/Reel_PumpHookup_north | 
+RimMandrake/FlowWorks/Hose/Styles/Modern/Reel_PumpHookup_south | 
+RimMandrake/FlowWorks/Hose/Styles/Modern/Strand_Flat | == RimMandrake/FlowWorks/Hose/Styles/Modern/Strand_Flat slots: (none in our defs)  LIVE FlowWorks Strand_Flat.png 23893178c272 
+RimMandrake/FlowWorks/Hose/Styles/Modern/Strand_Plump | == RimMandrake/FlowWorks/Hose/Styles/Modern/Strand_Plump slots: (none in our defs)  LIVE FlowWorks Strand_Plump.png 6f377a8caaac 
+RimMandrake/FlowWorks/Joins/Modern/Coupler | == RimMandrake/FlowWorks/Joins/Modern/Coupler slots: (none in our defs)  LIVE FlowWorks Coupler.png 71d5abcb85cb PROTECTED 
+RimMandrake/FlowWorks/Joins/Modern/Flange | == RimMandrake/FlowWorks/Joins/Modern/Flange slots: (none in our defs)  LIVE FlowWorks Flange.png b4fb7aebf13a PROTECTED 
+RimMandrake/FlowWorks/Joins/Modern/Saddle | == RimMandrake/FlowWorks/Joins/Modern/Saddle slots: (none in our defs)  LIVE FlowWorks Saddle.png 4b378512957e PROTECTED 
+RimMandrake/FlowWorks/Joins/Modern/UnderCollar | == RimMandrake/FlowWorks/Joins/Modern/UnderCollar slots: (none in our defs)  LIVE FlowWorks UnderCollar.png dec2fe0d2aa9 
+RimMandrake/FlowWorks/Joins/Modern/UnderPipe | == RimMandrake/FlowWorks/Joins/Modern/UnderPipe slots: (none in our defs)  LIVE FlowWorks UnderPipe.png 3255583e164b 
+RimMandrake/FlowWorks/Pipe/Modern/UniversalPipe_Atlas | == RimMandrake/FlowWorks/Pipe/Modern/UniversalPipe_Atlas slots: RM_UniversalPipe_Modern/body  LIVE FlowWorks UniversalPipe_Atlas.png 385fb2285b7c PROTECTED 
+RimMandrake/FlowWorks/Pipe/Modern/UniversalPipe_MenuIcon | == RimMandrake/FlowWorks/Pipe/Modern/UniversalPipe_MenuIcon slots: (none in our defs)  LIVE FlowWorks UniversalPipe_MenuIcon.png f0b798a40c14 
+RimMandrake/FlowWorks/PipePole/Modern/PipeSpan | == RimMandrake/FlowWorks/PipePole/Modern/PipeSpan slots: (none in our defs)  LIVE FlowWorks PipeSpan.png be7267ada682 
+RimMandrake/FlowWorks/Pump/Modern/RM_LiquidPump | == RimMandrake/FlowWorks/Pump/Modern/RM_LiquidPump slots: RM_LiquidPump_Modern/body  LIVE FlowWorks RM_LiquidPump.png d7067d4dd9fe PROTECTED 
+RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead | == RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead slots: RM_SprinklerHead_Modern/body  LIVE FlowWorks RM_SprinklerHead.png 6b63f2ceaad0 PROTECTED 
+RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionAnchor_Heavy_east | 
+RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionAnchor_Heavy_north | 
+RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionAnchor_Heavy_south | 
+RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionAnchor_Steel_east | 
+RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionAnchor_Steel_north | 
+RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionAnchor_Steel_south | 
+RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionAnchor_Timber_east | 
+RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionAnchor_Timber_north | 
+RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionAnchor_Timber_south | 
+RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionAnchor_east | 
+RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionAnchor_north | 
+RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionAnchor_south | 
+RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeck | == RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeck slots: (none in our defs)  LIVE FlowWorks RM_SuspensionDeck.png 9b626080b474 PROTECTED 
+RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeckGrated | == RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeckGrated slots: (none in our defs)  LIVE FlowWorks RM_SuspensionDeckGrated.png 997f0265308d PROTECTED 
+RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeckGrated_Atlas | == RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeckGrated_Atlas slots: (none in our defs)  LIVE FlowWorks RM_SuspensionDeckGrated_Atlas.png f6fc5586959f 
+RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeckGrated_Heavy | 
+RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeckGrated_Heavy_Atlas | == RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeckGrated_Heavy_Atlas slots: RM_SuspensionDeck_HeavyGrated_Modern/body  LIVE FlowWorks RM_SuspensionDeckGrated_Heavy_Atlas.png 785ac37e02ee 
+RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeckGrated_Steel | 
+RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeckGrated_Steel_Atlas | == RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeckGrated_Steel_Atlas slots: RM_SuspensionDeck_SteelGrated_Modern/body  LIVE FlowWorks RM_SuspensionDeckGrated_Steel_Atlas.png 9aea676c06e3 
+RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeck_Atlas | == RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeck_Atlas slots: RM_SuspensionDeck_Heavy_Modern/body  LIVE FlowWorks RM_SuspensionDeck_Atlas.png 63fe3c3a7776 
+RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeck_Steel | 
+RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeck_Steel_Atlas | == RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeck_Steel_Atlas slots: RM_SuspensionDeck_Steel_Modern/body  LIVE FlowWorks RM_SuspensionDeck_Steel_Atlas.png 90571a8935ac 
+RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeck_Timber | 
+RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeck_Timber_Atlas | == RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeck_Timber_Atlas slots: RM_SuspensionDeck_Timber_Modern/body  LIVE FlowWorks RM_SuspensionDeck_Timber_Atlas.png 7d580ce6b19f 
+RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionJetty_Steel_east | 
+RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionJetty_Steel_north | 
+RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionJetty_Steel_south | 
+RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionJetty_east | 
+RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionJetty_north | 
+RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionJetty_south | 
+RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionRailing_Edge | == RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionRailing_Edge slots: RM_SuspensionRailing_Modern/body  LIVE FlowWorks RM_SuspensionRailing_Edge.png dc44873a3fc4 PROTECTED 
+RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionTower | == RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionTower slots: RM_SuspensionTower_Modern/body  LIVE FlowWorks RM_SuspensionTower.png c8185e059d43 PROTECTED 
+RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionWreck | == RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionWreck slots: RM_SuspensionWreck_Modern/body  LIVE FlowWorks RM_SuspensionWreck.png b2e52189a5bf PROTECTED 
+RimMandrake/FlowWorks/Tank/Modern/RM_LiquidTank | == RimMandrake/FlowWorks/Tank/Modern/RM_LiquidTank slots: RM_LiquidTank_Modern/body  LIVE FlowWorks RM_LiquidTank.png a7dd4a39e686 PROTECTED 
+RimMandrake/FlowWorks/Tank/Modern/RM_LiquidTankTall | == RimMandrake/FlowWorks/Tank/Modern/RM_LiquidTankTall slots: RM_LiquidTankTall_Modern/body  LIVE FlowWorks RM_LiquidTankTall.png 6d08b2e31966 PROTECTED 
+RimMandrake/FlowWorks/Tank/Modern/RM_UniversalCargoTank | == RimMandrake/FlowWorks/Tank/Modern/RM_UniversalCargoTank slots: RM_UniversalCargoTank_Modern/body  LIVE FlowWorks RM_UniversalCargoTank.png 8437fa30523e PROTECTED 
+RimMandrake/FlowWorks/Tank/Modern/RM_UniversalCargoTankXTall | == RimMandrake/FlowWorks/Tank/Modern/RM_UniversalCargoTankXTall slots: RM_UniversalCargoTankXTall_Modern/body  LIVE FlowWorks RM_UniversalCargoTankXTall.png 0ae806a75e65 PROTECTED 
+RimMandrake/FlowWorks/Weir/Modern/RM_BankWeirCap | == RimMandrake/FlowWorks/Weir/Modern/RM_BankWeirCap slots: (none in our defs)  LIVE FlowWorks RM_BankWeirCap.png 29efe0aef63b PROTECTED 
+RimMandrake/FlowWorks/Weir/Modern/RM_BankWeirSpill_east | 
+RimMandrake/FlowWorks/Weir/Modern/RM_BankWeirSpill_north | 
+RimMandrake/FlowWorks/Weir/Modern/RM_BankWeirSpill_south | 
+RimMandrake/FlowWorks/Weir/Modern/RM_BankWeirSpill_west | 
+RimMandrake/FlowWorks/Weir/Modern/RM_BankWeir_east | 
+RimMandrake/FlowWorks/Weir/Modern/RM_BankWeir_north | 
+RimMandrake/FlowWorks/Weir/Modern/RM_BankWeir_south | 
+RimMandrake/FlowWorks/Weir/Modern/RM_BankWeir_west | 
+Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Closed_Modern_east | 
+Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Closed_Modern_south | 
+Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Open_Modern_east | 
+Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Open_Modern_south | 
+Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Edge_Modern | 
+Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Face_Modern | 
+Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Underside_Modern | 
+Things/Building/FlowWorks/Drawbridge/RM_DrawbridgePlanks_Modern | 
+Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Steel_Modern_east | 
+Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Steel_Modern_north | 
+Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Steel_Modern_south | 
+Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Timber_Modern_east | 
+Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Timber_Modern_north | 
+Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Timber_Modern_south | 
+Things/Item/Resource/FlowWorks/Modern/RM_Barrel | == Things/Item/Resource/FlowWorks/Modern/RM_Barrel slots: RM_Barrel_Modern/body  LIVE FlowWorks RM_Barrel.png 4d8096513094 PROTECTED  LIVE FlowWorks RM_Barrel_m.png d1b41f7fffa4 PROTECTED 
+Things/Item/Resource/FlowWorks/Modern/RM_Bottle | == Things/Item/Resource/FlowWorks/Modern/RM_Bottle slots: RM_Bottle_Modern/body  LIVE FlowWorks RM_Bottle.png 8a3e1aec3fa9 PROTECTED  LIVE FlowWorks RM_Bottle_m.png 4d28e5cfd5d0 PROTECTED 
+Things/Item/Resource/FlowWorks/Modern/RM_Bucket | == Things/Item/Resource/FlowWorks/Modern/RM_Bucket slots: RM_Bucket_Modern/body  LIVE FlowWorks RM_Bucket.png 08ddf6cd745c PROTECTED  LIVE FlowWorks RM_Bucket_m.png bec77b9e29d0 PROTECTED 
+RimMandrake/GimmeSomeSlack/Aerial/Styles/Modern/AerialLampMast | == RimMandrake/GimmeSomeSlack/Aerial/Styles/Modern/AerialLampMast slots: RM_AerialLampMast_Modern/body  LIVE GimmeSomeSlack AerialLampMast.png 9af72245be8b 
+RimMandrake/GimmeSomeSlack/Aerial/Styles/Modern/AerialLampMastTop | == RimMandrake/GimmeSomeSlack/Aerial/Styles/Modern/AerialLampMastTop slots: (none in our defs)  LIVE GimmeSomeSlack AerialLampMastTop.png 137447d8488f 
+RimMandrake/GimmeSomeSlack/Aerial/Styles/Modern/AerialMast | == RimMandrake/GimmeSomeSlack/Aerial/Styles/Modern/AerialMast slots: RM_AerialMast_Modern/body, RM_PipePole_Modern/body  LIVE GimmeSomeSlack AerialMast.png 01ac0ae3e417 
+RimMandrake/GimmeSomeSlack/Aerial/Styles/Modern/AerialMastTop | == RimMandrake/GimmeSomeSlack/Aerial/Styles/Modern/AerialMastTop slots: (none in our defs)  LIVE GimmeSomeSlack AerialMastTop.png c5832e2e6b7f 
+RimMandrake/GimmeSomeSlack/Aerial/Styles/Modern/TapClamp | == RimMandrake/GimmeSomeSlack/Aerial/Styles/Modern/TapClamp slots: (none in our defs)  LIVE GimmeSomeSlack TapClamp.png 256bd43ce67b PROTECTED 
+RimMandrake/GimmeSomeSlack/Aerial/Styles/Modern/WallBracket_east | 
+RimMandrake/GimmeSomeSlack/Aerial/Styles/Modern/WallBracket_north | 
+RimMandrake/GimmeSomeSlack/Aerial/Styles/Modern/WallBracket_south | 
+RimMandrake/GimmeSomeSlack/Styles/Modern/PowerSwitch | == RimMandrake/GimmeSomeSlack/Styles/Modern/PowerSwitch slots: PowerSwitch_Modern/body  LIVE GimmeSomeSlack PowerSwitch.png 49d8c9417650 
+RimMandrake/GimmeSomeSlack/Styles/Modern/PowerSwitch_Off | == RimMandrake/GimmeSomeSlack/Styles/Modern/PowerSwitch_Off slots: (none in our defs)  LIVE GimmeSomeSlack PowerSwitch_Off.png a81808e10b6b 
+RimMandrake/GimmeSomeSlack/Styles/Modern/StandingLamp | == RimMandrake/GimmeSomeSlack/Styles/Modern/StandingLamp slots: StandingLamp_Modern/body  LIVE GimmeSomeSlack StandingLamp.png 8a9fae89ede6 

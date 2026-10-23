@@ -1,0 +1,1049 @@
+{
+ "schema": 1,
+ "generated": "2026-10-23T08:08:21-0700",
+ "git_head": null,
+ "biome_order": [
+  "SUBJECTS_modern_style_redraw"
+ ],
+ "biomes": {
+  "SUBJECTS_modern_style_redraw": {
+   "label": "Modern look redraw (r3 candidates)",
+   "slug": "modern_style_redraw",
+   "subjects": true,
+   "ground_terrain": "Soil",
+   "title": "Modern look redraw (r3 candidates) \u2014 game art",
+   "lead_html": "<p>Modern look redraw (MODERN_LOOK_REDESIGN_BEYOND_RED_ENAMEL): each row shows the LIVE Modern texture and, as a reference beside it, the r3 candidate. Pipeline (Opus first pass, GPT second look, 3 rounds) did not ACCEPT any: GPT will not strong-accept from an offline mock \u2014 every machine needs an in-game assembled capture. In-context mock: Transient/modern_style_20261023/composites/before_after_128.png. Style guide: design/RimMandrake/flowworks_modern_style_2026-10-23.md.</p>",
+   "rows": [
+    {
+     "key": "MS_Pipe",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "Solid pipe atlas \u2014 white Sch40 PVC (was red enamel; owner-kept, redrawn under the 06:42 ruling)",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "MS_PipeIcon",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [],
+     "render_match": null,
+     "standin": null,
+     "reference_textures": [
+      {
+       "path": "Transient/modern_style_20261023/cand_r3/UniversalPipe_Atlas.png",
+       "size": {
+        "drawSize": [
+         1,
+         1
+        ],
+        "footprint": [
+         1,
+         1
+        ],
+        "source": "candidate r3, drawn at the row size"
+       }
+      }
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "C# / def draw size (see style guide)"
+     },
+     "runtimeDesc": {
+      "def": "MS_Pipe",
+      "label": "Solid pipe atlas \u2014 white Sch40 PVC (was red enamel; owner-kept, redrawn under the 06:42 ruling)",
+      "description": "Pipe \u00b7 look Modern \u00b7 texture RimMandrake/FlowWorks/Pipe/Modern/UniversalPipe_Atlas \u00b7 drawn at 1\u00d71 cells",
+      "source": "texture manifest sheet_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Pipe/Modern/UniversalPipe_Atlas",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "MS_Pipe"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Pipe/Modern/UniversalPipe_Atlas"
+     }
+    },
+    {
+     "key": "MS_PipeIcon",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "Pipe menu icon",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "MS_Pipe",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [],
+     "render_match": null,
+     "standin": null,
+     "reference_textures": [
+      {
+       "path": "Transient/modern_style_20261023/cand_r3/UniversalPipe_MenuIcon.png",
+       "size": {
+        "drawSize": [
+         1,
+         1
+        ],
+        "footprint": [
+         1,
+         1
+        ],
+        "source": "candidate r3, drawn at the row size"
+       }
+      }
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "C# / def draw size (see style guide)"
+     },
+     "runtimeDesc": {
+      "def": "MS_PipeIcon",
+      "label": "Pipe menu icon",
+      "description": "Pipe \u00b7 look Modern \u00b7 texture RimMandrake/FlowWorks/Pipe/Modern/UniversalPipe_MenuIcon \u00b7 drawn at 1\u00d71 cells",
+      "source": "texture manifest sheet_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Pipe/Modern/UniversalPipe_MenuIcon",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "MS_PipeIcon"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Pipe/Modern/UniversalPipe_MenuIcon"
+     }
+    },
+    {
+     "key": "MS_Coupler",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "Coupler (machine-tank edge) \u2014 PVC socket coupling",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "MS_Flange",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "MS_Saddle",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "MS_UnderCollar",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "MS_UnderPipe",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [],
+     "render_match": null,
+     "standin": null,
+     "reference_textures": [
+      {
+       "path": "Transient/modern_style_20261023/cand_r3/Coupler.png",
+       "size": {
+        "drawSize": [
+         0.5,
+         0.5
+        ],
+        "footprint": [
+         1,
+         1
+        ],
+        "source": "candidate r3, drawn at the row size"
+       }
+      }
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       0.5,
+       0.5
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "C# / def draw size (see style guide)"
+     },
+     "runtimeDesc": {
+      "def": "MS_Coupler",
+      "label": "Coupler (machine-tank edge) \u2014 PVC socket coupling",
+      "description": "Joins \u00b7 look Modern \u00b7 texture RimMandrake/FlowWorks/Joins/Modern/Coupler \u00b7 drawn at 0.5\u00d70.5 cells",
+      "source": "texture manifest sheet_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Joins/Modern/Coupler",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "MS_Coupler"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Joins/Modern/Coupler"
+     }
+    },
+    {
+     "key": "MS_Flange",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "Flange (pipe meets tank/machine) \u2014 PVC flange",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "MS_Coupler",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "MS_Saddle",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "MS_UnderCollar",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "MS_UnderPipe",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [],
+     "render_match": null,
+     "standin": null,
+     "reference_textures": [
+      {
+       "path": "Transient/modern_style_20261023/cand_r3/Flange.png",
+       "size": {
+        "drawSize": [
+         0.5,
+         0.5
+        ],
+        "footprint": [
+         1,
+         1
+        ],
+        "source": "candidate r3, drawn at the row size"
+       }
+      }
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       0.5,
+       0.5
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "C# / def draw size (see style guide)"
+     },
+     "runtimeDesc": {
+      "def": "MS_Flange",
+      "label": "Flange (pipe meets tank/machine) \u2014 PVC flange",
+      "description": "Joins \u00b7 look Modern \u00b7 texture RimMandrake/FlowWorks/Joins/Modern/Flange \u00b7 drawn at 0.5\u00d70.5 cells",
+      "source": "texture manifest sheet_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Joins/Modern/Flange",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "MS_Flange"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Joins/Modern/Flange"
+     }
+    },
+    {
+     "key": "MS_Saddle",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "Saddle (hose on a pipe) \u2014 PVC tapping saddle",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "MS_Coupler",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "MS_Flange",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "MS_UnderCollar",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "MS_UnderPipe",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [],
+     "render_match": null,
+     "standin": null,
+     "reference_textures": [
+      {
+       "path": "Transient/modern_style_20261023/cand_r3/Saddle.png",
+       "size": {
+        "drawSize": [
+         1,
+         1
+        ],
+        "footprint": [
+         1,
+         1
+        ],
+        "source": "candidate r3, drawn at the row size"
+       }
+      }
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "C# / def draw size (see style guide)"
+     },
+     "runtimeDesc": {
+      "def": "MS_Saddle",
+      "label": "Saddle (hose on a pipe) \u2014 PVC tapping saddle",
+      "description": "Joins \u00b7 look Modern \u00b7 texture RimMandrake/FlowWorks/Joins/Modern/Saddle \u00b7 drawn at 1\u00d71 cells",
+      "source": "texture manifest sheet_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Joins/Modern/Saddle",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "MS_Saddle"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Joins/Modern/Saddle"
+     }
+    },
+    {
+     "key": "MS_UnderCollar",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "Under-coupler collar \u2014 grey moulded wall sleeve",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "MS_Coupler",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "MS_Flange",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "MS_Saddle",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "MS_UnderPipe",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [],
+     "render_match": null,
+     "standin": null,
+     "reference_textures": [
+      {
+       "path": "Transient/modern_style_20261023/cand_r3/UnderCollar.png",
+       "size": {
+        "drawSize": [
+         0.28,
+         0.62
+        ],
+        "footprint": [
+         1,
+         1
+        ],
+        "source": "candidate r3, drawn at the row size"
+       }
+      }
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       0.28,
+       0.62
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "C# / def draw size (see style guide)"
+     },
+     "runtimeDesc": {
+      "def": "MS_UnderCollar",
+      "label": "Under-coupler collar \u2014 grey moulded wall sleeve",
+      "description": "Joins \u00b7 look Modern \u00b7 texture RimMandrake/FlowWorks/Joins/Modern/UnderCollar \u00b7 drawn at 0.28\u00d70.62 cells",
+      "source": "texture manifest sheet_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Joins/Modern/UnderCollar",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "MS_UnderCollar"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Joins/Modern/UnderCollar"
+     }
+    },
+    {
+     "key": "MS_UnderPipe",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "Under-coupler pipe \u2014 white PVC",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "MS_Coupler",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "MS_Flange",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "MS_Saddle",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "MS_UnderCollar",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [],
+     "render_match": null,
+     "standin": null,
+     "reference_textures": [
+      {
+       "path": "Transient/modern_style_20261023/cand_r3/UnderPipe.png",
+       "size": {
+        "drawSize": [
+         0.25,
+         0.44
+        ],
+        "footprint": [
+         1,
+         1
+        ],
+        "source": "candidate r3, drawn at the row size"
+       }
+      }
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       0.25,
+       0.44
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "C# / def draw size (see style guide)"
+     },
+     "runtimeDesc": {
+      "def": "MS_UnderPipe",
+      "label": "Under-coupler pipe \u2014 white PVC",
+      "description": "Joins \u00b7 look Modern \u00b7 texture RimMandrake/FlowWorks/Joins/Modern/UnderPipe \u00b7 drawn at 0.25\u00d70.44 cells",
+      "source": "texture manifest sheet_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Joins/Modern/UnderPipe",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "MS_UnderPipe"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Joins/Modern/UnderPipe"
+     }
+    },
+    {
+     "key": "MS_PipeSpan",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "Aerial pipe span \u2014 white PVC",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "render_match": null,
+     "standin": null,
+     "reference_textures": [
+      {
+       "path": "Transient/modern_style_20261023/cand_r3/PipeSpan.png",
+       "size": {
+        "drawSize": [
+         3,
+         0.25
+        ],
+        "footprint": [
+         1,
+         1
+        ],
+        "source": "candidate r3, drawn at the row size"
+       }
+      }
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       3,
+       0.25
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "C# / def draw size (see style guide)"
+     },
+     "runtimeDesc": {
+      "def": "MS_PipeSpan",
+      "label": "Aerial pipe span \u2014 white PVC",
+      "description": "PipeSpan \u00b7 look Modern \u00b7 texture RimMandrake/FlowWorks/PipePole/Modern/PipeSpan \u00b7 drawn at 3\u00d70.25 cells",
+      "source": "texture manifest sheet_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/PipePole/Modern/PipeSpan",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "MS_PipeSpan"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/PipePole/Modern/PipeSpan"
+     }
+    },
+    {
+     "key": "MS_Faucet",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "Faucet \u2014 brass hose bib on a PVC riser",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "render_match": null,
+     "standin": null,
+     "reference_textures": [
+      {
+       "path": "Transient/modern_style_20261023/cand_r3/RM_PipeFaucet.png",
+       "size": {
+        "drawSize": [
+         1,
+         1
+        ],
+        "footprint": [
+         1,
+         1
+        ],
+        "source": "candidate r3, drawn at the row size"
+       }
+      }
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "C# / def draw size (see style guide)"
+     },
+     "runtimeDesc": {
+      "def": "MS_Faucet",
+      "label": "Faucet \u2014 brass hose bib on a PVC riser",
+      "description": "Faucet \u00b7 look Modern \u00b7 texture RimMandrake/FlowWorks/Faucet/Modern/RM_PipeFaucet \u00b7 drawn at 1\u00d71 cells",
+      "source": "texture manifest sheet_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Faucet/Modern/RM_PipeFaucet",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "MS_Faucet"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Faucet/Modern/RM_PipeFaucet"
+     }
+    },
+    {
+     "key": "MS_Sprinkler",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "Sprinkler \u2014 brass impact sprinkler on a riser",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "render_match": null,
+     "standin": null,
+     "reference_textures": [
+      {
+       "path": "Transient/modern_style_20261023/cand_r3/RM_SprinklerHead.png",
+       "size": {
+        "drawSize": [
+         1,
+         1
+        ],
+        "footprint": [
+         1,
+         1
+        ],
+        "source": "candidate r3, drawn at the row size"
+       }
+      }
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "C# / def draw size (see style guide)"
+     },
+     "runtimeDesc": {
+      "def": "MS_Sprinkler",
+      "label": "Sprinkler \u2014 brass impact sprinkler on a riser",
+      "description": "Sprinkler \u00b7 look Modern \u00b7 texture RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead \u00b7 drawn at 1\u00d71 cells",
+      "source": "texture manifest sheet_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "MS_Sprinkler"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead"
+     }
+    },
+    {
+     "key": "MS_Pump",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "Pump \u2014 electric booster pump, PVC port stubs at the drawn pipe width (0.136 cell)",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "render_match": null,
+     "standin": null,
+     "reference_textures": [
+      {
+       "path": "Transient/modern_style_20261023/cand_r3/RM_LiquidPump.png",
+       "size": {
+        "drawSize": [
+         1,
+         1
+        ],
+        "footprint": [
+         1,
+         1
+        ],
+        "source": "candidate r3, drawn at the row size"
+       }
+      }
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "C# / def draw size (see style guide)"
+     },
+     "runtimeDesc": {
+      "def": "MS_Pump",
+      "label": "Pump \u2014 electric booster pump, PVC port stubs at the drawn pipe width (0.136 cell)",
+      "description": "Pump \u00b7 look Modern \u00b7 texture RimMandrake/FlowWorks/Pump/Modern/RM_LiquidPump \u00b7 drawn at 1\u00d71 cells",
+      "source": "texture manifest sheet_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Pump/Modern/RM_LiquidPump",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "MS_Pump"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Pump/Modern/RM_LiquidPump"
+     }
+    },
+    {
+     "key": "MS_HoseCoupling",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "Hose coupling \u2014 satin aluminium Storz, flat side-on end",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "MS_HoseMouth",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [],
+     "render_match": null,
+     "standin": null,
+     "reference_textures": [
+      {
+       "path": "Transient/modern_style_20261023/cand_r3/Coupling_Bare.png",
+       "size": {
+        "drawSize": [
+         0.72,
+         0.72
+        ],
+        "footprint": [
+         1,
+         1
+        ],
+        "source": "candidate r3, drawn at the row size"
+       }
+      }
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       0.72,
+       0.72
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "C# / def draw size (see style guide)"
+     },
+     "runtimeDesc": {
+      "def": "MS_HoseCoupling",
+      "label": "Hose coupling \u2014 satin aluminium Storz, flat side-on end",
+      "description": "Hose \u00b7 look Modern \u00b7 texture RimMandrake/FlowWorks/Hose/Styles/Modern/Coupling_Bare \u00b7 drawn at 0.72\u00d70.72 cells",
+      "source": "texture manifest sheet_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Hose/Styles/Modern/Coupling_Bare",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "MS_HoseCoupling"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Hose/Styles/Modern/Coupling_Bare"
+     }
+    },
+    {
+     "key": "MS_HoseMouth",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "Hose free end \u2014 canvas lip, no bore (was a black bore staring at the camera)",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "MS_HoseCoupling",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [],
+     "render_match": null,
+     "standin": null,
+     "reference_textures": [
+      {
+       "path": "Transient/modern_style_20261023/cand_r3/Mouth.png",
+       "size": {
+        "drawSize": [
+         0.054,
+         0.155
+        ],
+        "footprint": [
+         1,
+         1
+        ],
+        "source": "candidate r3, drawn at the row size"
+       }
+      }
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       0.054,
+       0.155
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "C# / def draw size (see style guide)"
+     },
+     "runtimeDesc": {
+      "def": "MS_HoseMouth",
+      "label": "Hose free end \u2014 canvas lip, no bore (was a black bore staring at the camera)",
+      "description": "Hose \u00b7 look Modern \u00b7 texture RimMandrake/FlowWorks/Hose/Styles/Modern/Mouth \u00b7 drawn at 0.054\u00d70.155 cells",
+      "source": "texture manifest sheet_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Hose/Styles/Modern/Mouth",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "MS_HoseMouth"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Hose/Styles/Modern/Mouth"
+     }
+    }
+   ],
+   "textures_manifest": "/home/mandrake/rm/bench/Transient/modern_style_20261023/sheet_manifest.json"
+  }
+ }
+}

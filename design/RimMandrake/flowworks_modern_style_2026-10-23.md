@@ -68,19 +68,23 @@ printed spec line, a yellow gas-line stripe). The red-enamel repaint of the Indu
 Procedural: `src/RimMandrake/FlowWorks/art_source/pipe/build_pipe_atlas.py` cuts `raw/modern_strip.png` (a
 straight top-down pipe) and `raw/modern_fittings.png` (LEFT a four-way junction, RIGHT an end cap) into the 4×4
 linked atlas; geometry (18 px pipe = 0.136 cell, 36 px hub, palindromic period) is fixed by the script — only the
-raw pieces change. **Primary: white Sch40 PVC** — satin white tube, cool grey underside shade, a thin printed
-spec dash line along the top third, no bands; junction = a white PVC **cross fitting** (four socket bells around a
-moulded body); end cap = a white PVC **socket cap** (a slightly fatter domed bell). **Alt: dark-grey Sch80 PVC**
-(same shapes, grey) and **black HDPE with a blue stripe** (junction = black electrofusion/compression cross with
-grey nuts). Real refs: P1–P4.
+raw pieces change. **Chosen: white Sch40 PVC** (GPT round: strongest value separation on the desert ground at
+32 px/cell, ties to the white tank/IBC anchors; black HDPE second, mid-grey third) — satin warm-white tube, cool
+grey underside shade, **no printed line** (at 18 px the dash read as perforation, pipeline r1/r2); junction = a
+white PVC **socket cross**, cut to a flat-sided tee where only three pipes meet; elbows carry a **white socket ring**
+at each leg; end cap = a short **socket cap**; a lone pipe is a short length capped at both ends. Candidate builder:
+`src/RimMandrake/FlowWorks/art_source/ModernStyle/pipe_candidate.py` (wraps the atlas script; geometry unchanged).
+Real refs: P1–P4.
 
 ### Joins — `RimMandrake/FlowWorks/Joins/Modern/{Coupler,Flange,Saddle,UnderCollar,UnderPipe}`
-- Coupler: a PVC **socket coupling** — a sleeve slightly fatter than the pipe, same white, two faint bell edges.
-- Flange: a PVC **flange** (white or grey Van-Stone flange) with four small stainless bolt heads.
-- Saddle: a black poly **clamp saddle** (two half-shells, two stainless bolts) with a white branch outlet; or a
-  white PVC tee stub.
-- UnderCollar: a grey PVC/ABS **wall sleeve / escutcheon** ring; UnderPipe: the pipe material (white PVC) seen
-  short. Canvases and anchor positions stay identical (they are placed by C#).
+Sizes come from the C#: Flange and Coupler are drawn at `LiquidJoinRule.FlangeSize` 0.5 cell on a 128 px canvas
+(256 px/cell, so the 0.136-cell pipe is 35 px there); Saddle at `SaddleLength/Width` 1.0 cell on 256 px (35 px pipe).
+- Coupler: a PVC **socket coupling** — a sleeve about 1.3× the pipe, same white, faint bell edges.
+- Flange: a PVC **flange plate** (about 2× the pipe) with a socket hub and small stainless bolt heads, flush to the port edge.
+- Saddle: a white PVC **clamp-on tapping saddle** (two straps, stainless bolts) on the continuous pipe, outlet sized
+  to the hose (0.18 cell flat).
+- UnderCollar: a light-grey moulded **wall sleeve** (matte plastic, not gunmetal); UnderPipe: the network's white PVC.
+  Canvases and anchor positions stay identical (they are placed by C#).
 
 ### Pipe span — `RimMandrake/FlowWorks/PipePole/Modern/PipeSpan`
 The same pipe material as the run (white PVC or grey) with one **galvanised pipe hanger strap**; seamless ends.
@@ -91,22 +95,29 @@ round handwheel in die-cast silver; threaded hose outlet pointing down-front; si
 a socket. Ref P5 (frost-free sillcock / hose bibb listings).
 
 ### Sprinkler — `RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead`
-Either a **black pop-up rotor** (black cylinder body, popped-up nozzle stem, green/black rubber cover) or a
-**brass impact sprinkler** on a black riser (the iconic arm and deflector). Both read at 32 px as "irrigation".
-Ref S1–S2 (Rain Bird 12SA/22SA/5000, 8005).
+A **brass impact sprinkler** on a short black riser in a white PVC socket (the iconic arm and deflector — the
+clearest small-scale silhouette, GPT round). Ref S1–S2 (Rain Bird 25BPJ impact; 12SA/22SA/5000, 8005 rotors).
 
 ### Pump — `RimMandrake/FlowWorks/Pump/Modern/RM_LiquidPump` (1×1 cell, 512 px, four ports N/E/S/W)
-A **compact electric centrifugal / jet pump**: grey or black thermoplastic housing with a ribbed motor can, a
-small pressure switch box and a round gauge, on a black composite base; four short **white PVC union** stubs
-carry the four ports exactly where the current art has them. Alternative: a **gas transfer pump** (blue or grey
-volute, black engine shroud, tubular galvanised roll frame) — reads very "rental yard", but the 4-port layout fits
-the electric manifold better. Refs: brief ref 18; Honda WX/WB transfer pumps (P6).
+A **compact electric booster pump** (ribbed charcoal motor, thermoplastic pump housing, small pressure switch and
+gauge, black base) **plus a separate PVC manifold**: an ordinary pump with four equal casing ports is not credible
+(GPT round). The four port stubs are the network's own pipe, **exactly the drawn pipe width** (0.136 cell = 70 px on
+512), with slim union rings (1.25×), ending at the four edge midpoints — owner 2026-10-23: *"We should
+unfortunately regen the pumps and such to have connectors that match the more modern pipe and hose sizes. looks a
+bit silly."* Builder: `ModernStyle/pump_stubs.py`. Refs: brief ref 18; Pentair/Flotec thermoplastic jet pump.
 
 ### Hose parts — `RimMandrake/FlowWorks/Hose/Styles/Modern/*`
 The FA fire-hose reel is kept, so hose parts stay **fire/commercial**: Strand = red-or-black commercial rubber
 hose or white lay-flat fire hose (current cream canvas is acceptable); Coupling/EndCap = brass or anodised
 aluminium Storz / NST couplings (less chrome mirror, more cast-metal satin); Nozzle = lever shutoff or fog nozzle
-(already fine); Binding = stainless hose clamp band. Any change here is minor.
+(already fine); Binding = stainless hose clamp band. **A hose lies flat on the ground, so its end is seen from
+above with no bore** (C6) — owner 2026-10-23 on the free end: *"the end of this hose looks horrible."* The bare free
+end (`Mouth`, drawn 0.30 × 0.86 of the hose width on the wrap's outer face, `RM_MapComponent_Hoses.DrawEnds`) is a
+canvas lip, never a dark ring; couplings end in a flat side-on edge. The same bore-at-the-camera `Mouth.png` ships
+in **every** look: `Hose/Mouth.png` (Scrapper/default), `Hose/Styles/Industrial/Mouth.png` (black ring),
+`Hose/Styles/Futuristic/Mouth.png` (cyan ring) — listed on item `HOSE_END_REDRAW_STARES_AT_CAMERA`.
+**Connector sizing (all fixtures):** pipe 0.136 cell (`build_pipe_atlas.W_PIPE`), hose 0.18 cell flat
+(`HoseMath.FlatVisible`); a fixture's pipe connector is the pipe width, a hose outlet the hose width.
 
 ### Containers — `Things/Item/Resource/FlowWorks/Modern/RM_{Barrel,Bottle,Bucket}` (+ `_m`)
 Barrel: a **plain blue HDPE 55-gal drum** (two bung caps on top, moulded rings, no stripes). Bucket: a **5-gal
@@ -114,8 +125,9 @@ HDPE bucket** — orange (the Home Depot "Homer") or white, wire bail handle wit
 with a plain one-colour label band. The `_m` masks must be re-derived with the picture.
 
 ### Weir — `RimMandrake/FlowWorks/Weir/Modern/RM_BankWeir_*`, `RM_BankWeirCap`
-A **vinyl sheet-pile seawall** (grey or tan corrugated vinyl panels) with a **galvanised C-channel cap**; the cap
-post is a composite/galvanised round post with a black poly cap. Spill overlays are water and stay.
+A removable weir board is an irrigation **stoplog**: extruded aluminium boards stacked in a **galvanised guide
+channel**; the cap is the channel's galvanised head fitting (GPT round: sheet piling is a retaining wall, the wrong
+mechanism). Spill overlays are water and stay. Not redrawn this pass.
 
 ### Bridges — `Drawbridge/*_Modern*`, `SuspensionBridge/Modern/*`
 **Hot-dip galvanised** steel frames and anchors (matte spangle grey), **composite decking** (grey/brown boards)
@@ -168,3 +180,22 @@ most suspension parts, barrel), **25 partly**, **27 yes** (the four owner-picked
 aerial/switch/lamp/clamp, bucket, nozzle), 4 look-neutral water overlays. 23 are ledger-PROTECTED (owner keeps),
 including the pipe atlas, pump, sprinkler, joins Coupler/Flange/Saddle and the containers — the owner ruled
 2026-10-23 06:42 that the pipeline may redraw kept art it judges really bad, shown on the next shadow sheet.
+
+## Redraw pass 2026-10-23 — what was made and where it stands
+
+GPT critique round (`gpt_consult.py`, composites + this guide): `Transient/modern_style_20261023/gpt_critique.md`;
+its corrections are folded in above (one product per asset, PVC first, pump + manifest, stoplog weir, impact
+sprinkler, hose colour independent of the reel, safety colours only as real markings).
+
+Candidates (round 3, not installed): pipe atlas + menu icon, Coupler, Flange, Saddle, UnderCollar, UnderPipe, PipeSpan,
+faucet, sprinkler, pump (owner-kept, redrawn under the 06:42 ruling), hose Coupling_Bare and Mouth — in
+`Transient/modern_style_20261023/cand_r3/`; before/after mock `composites/before_after_{32,128}.png` and
+`composites/before_after_hose_end_128.png`. Scripts: `src/RimMandrake/FlowWorks/art_source/ModernStyle/`.
+
+Art-eval pipeline (runs `modern_style_20261023`, `_r2`, `_r3`; three rounds): **none ACCEPTED**. By round 3 Opus called
+the pipe, pump, faucet and sprinkler *good* (the pump with no blocking finding), but every GPT second look answered
+*unsure* because the assembled panel is an offline mock: the machine template requires an in-game capture, and
+without one a machine cannot reach ACCEPT. Next step is one batched in-game capture of the candidates (no bridge was
+used in this pass). Review sheet: `Transient/biome_ffar/modern_style_redraw_sheet_2026-10-23.html` (+ prereview).
+
+Not redrawn (proposals above): containers (barrel stripes), weir, drawbridge, suspension bridge, hose binding.
