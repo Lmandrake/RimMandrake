@@ -3869,3 +3869,4 @@
 {"seat":"BENCH","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-10-22T23:50:02Z","tsn":1792713002503800424}
 {"seat":"BENCH","event":"bridge","state":"taken","purpose":"holding for the owner's walkthrough (save b)","ts":"2026-10-23T01:03:40Z","tsn":1792717420278266702}
 {"seat":"BENCH","event":"file","id":"RYCRIT_RESTORE_DEF_AND_ART_BOTH_MISSING","title":"Rycrit: RSW_Rycrit has no def and an empty texture folder (art helper saw it 2026-10-22, never filed)","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","why":"unfiled helper finding recovered from the compaction-loss check","ts":"2026-10-23T01:30:17Z","tsn":1792719017550310646}
+{"seat":"BENCH","event":"bridge","state":"taken","purpose":"hose/reel/connector audit","ts":"2026-10-23T01:50:01Z","tsn":1792720201555592595}
