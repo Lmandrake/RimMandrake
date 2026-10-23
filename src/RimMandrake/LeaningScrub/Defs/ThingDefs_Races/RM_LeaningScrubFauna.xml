@@ -8,9 +8,9 @@
   (design/Jawa/worldbuilding/biomes/leaningscrub_bedazzle_cast_2026-09-29.md),
   ecological voice, no warning-instrument framing (owner trim law).
 
-  Numbers are design proposals; FOUNDRY calibrates. No C# is added here:
-  bespoke behaviour (wind, ambush, lure, glide, denning) is
-  LEANINGSCRUB_MECHANICS_BUILD_1's and is marked STUB per def below.
+  Numbers are design proposals; FOUNDRY calibrates. Behaviour that is built rides
+  on modExtensions read by this mod's C# (runway bloom, Stall hunter); what is
+  not built yet is marked STUB per def below.
 
   Art: every animal's east/north/south renders are wired under
   Textures/Things/Pawn/Animal/RM_<Name>/ (LEANINGSCRUB_ART_WIRING_1). Zellik
@@ -1058,7 +1058,8 @@
       <baseBodySize>0.06</baseBodySize>
       <baseHealthScale>0.2</baseHealthScale>
       <baseHungerRate>0.05</baseHungerRate>
-      <foodType>Meat</foodType>
+      <!-- Carrion eater ("nothing dies in a run and stays there"): Meat alone never let it eat a corpse. PROVISIONAL. -->
+      <foodType>Meat, Corpse</foodType>
       <predator>false</predator>
       <trainability>None</trainability>
       <lifeExpectancy>3</lifeExpectancy>

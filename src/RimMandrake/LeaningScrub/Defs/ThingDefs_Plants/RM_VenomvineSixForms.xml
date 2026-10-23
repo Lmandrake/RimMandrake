@@ -18,10 +18,10 @@
 
   Art: each form has its own Graphic_Random folder, Things/Plant/RM_<Form>Venomvine/.
   Until 2026-10-08 all six pointed at Things/Plant/RM_Venomvine, whose only file was a
-  white pillar-arm render (never a venomvine). Each folder now holds the owner's kept
-  thicket render as an INTERIM picture; each form's own render (4 variants), plus a
-  reared state (Rearing) and a spent state (Quench), is queued as 0vv_* artpipe jobs.
-  The reared/spent states are not wired: no C# swaps the graphic yet.
+  white pillar-arm render (never a venomvine). Each folder now holds the form's own renders
+  (a..d; Rearing has a..j). The reared/spent states are not wired as states: no C# swaps the
+  graphic, so whatever sits in a folder is drawn at random (BARKWARDEN_TINT_JUDGE_GREY_ON_GREY
+  notes the folders' extra files).
 -->
 <Defs>
 
@@ -93,8 +93,8 @@
 
   <!-- B. Walking: each Gale puts soft runners 1-2 cells downwind of the leading edge and lets
        the oldest tail cells die back to dead venomvine. Runners carry no venom until half grown
-       (RM_CompProperties_MarkedThorns minGrowth, never the shared ContactVenom comp, which has
-       no growth gate). A smothered cell stops its whole stand walking. Map-wide cell cap. -->
+       (RM_CompProperties_MarkedThorns minGrowth, this mod's own sweep). A smothered cell stops
+       its whole stand walking. Map-wide cell cap. -->
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_WalkingVenomvine</defName>
     <label>walking venomvine</label>

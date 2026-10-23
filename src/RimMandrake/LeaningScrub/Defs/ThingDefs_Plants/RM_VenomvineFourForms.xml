@@ -9,8 +9,8 @@
   in Source/RM_VenomvineFourForms.cs, one Mod Setting each. Numbers PROVISIONAL.
   The sleeper is the exception: asleep it carries no venom and no barrier (it is a dead-looking harmless snarl) and
   wakes into RM_SleeperVenomvineAwake, a plain live stand.
-  Art: each form has its own Graphic_Random folder; each holds the thicket render as an INTERIM picture
-  (the sleeper tints it grey). Bespoke renders owed: see the four items.
+  Art: each form has its own Graphic_Random folder of bespoke _a/_b/_c renders. The sleeper's <color> grey tint,
+  set when it borrowed the thicket render, still multiplies over its own art (BARKWARDEN_TINT_JUDGE_GREY_ON_GREY).
 -->
 <Defs>
 
