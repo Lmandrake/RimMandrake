@@ -1,0 +1,20 @@
+{
+ "judge": "naive art judge (fresh Opus, not the maker), 2026-10-23",
+ "brief": "design/RimMandrake/art_judge_brief.md (C6) + delegation_policy.md §4",
+ "question": "Owner 2026-10-23: 'Do make sure the couplers look like the art they're entering. They did look a little... plain and generic compared to the luxurious art they were coupling to.' Do the candidate under-couplers (picks/) match their fixtures better than the installed ones, while still reading as going under, collar meeting the hose coupling, no seams/stretch/halo, legible at game scale, C6 respected?",
+ "inputs": "Transient/coupler_regen_20261023/composites_picks/ (22 seen; 4x and 64 px rows) + zoom/profile and zoom/textured crops for every look",
+ "verdicts": [
+  {"look": "Scrapper", "verdict": "PICK",
+   "notes": "Clear win. Installed was a clean polished brass collar on smooth copper, which looked new against rust-streaked tanks. The candidate pipe is mottled rust on copper, and its thin worn flange collar matches the rust and patina of LiquidTank, CargoTank, XTall and LiquidPump. Passes under the base/skid, collar sits on the coupling, no seam or smear on the textured pipe at the runs shown, no halo, C6 ok (no bore shown on ground-plane pipe). Caveat: both PumpingStation defs take Scrapper joins, and copper under a grey-steel (Kludged) or white/red (Repaired) pump is off-palette. The installed brass was equally off, so this does not block the pick."},
+  {"look": "Industrial", "verdict": "PICK",
+   "notes": "Clear win. Installed had a bright brass collar and a smooth blue-grey pipe; both fought the dark worn steel and hazard stripes. The candidate is dark grimy steel with a hazard-striped collar band and matches the CargoTank, TankTall and LiquidPump straps. Reads as going under, collar meets coupling, no artefacts, C6 ok."},
+  {"look": "Modern", "verdict": "PICK",
+   "notes": "Modest win. The candidate is a ribbed galvanized collar, matching the IBC cage, the pallet steel and the hose's own steel coupling better than the installed plain grey sleeve. The pipe is unchanged in character (clean grey profile), which is right for Modern. The red LiquidPump still gets a grey collar, as before, so no regression. No seam/halo, C6 ok."},
+  {"look": "Futuristic", "verdict": "PICK",
+   "notes": "Smallest gain, but not worse. The candidate is a white-panel pipe and collar with thin cyan trim echoing the tank's cyan seams; installed was a generic bright chrome tube. The difference is barely visible at 64 px/cell, but at zoom it reads as the same family as the fixtures. Reads under, collar on coupling, no artefacts, C6 ok."}
+ ],
+ "proposals_not_verdicts": [
+  "PumpingStation_Kludged/Repaired join look: they map to Scrapper (copper/brass), but their plumbing is grey or white steel. Consider mapping them to Industrial joins, or a steel look. This is a scope call outside this sheet.",
+  "Textured Scrapper/Industrial pipes are noted (README) to smear at stretches other than 0.5 cell. The runs in these composites looked clean, but a longer under-run (if any fixture has one) was not shown and is not judged here."
+ ]
+}
