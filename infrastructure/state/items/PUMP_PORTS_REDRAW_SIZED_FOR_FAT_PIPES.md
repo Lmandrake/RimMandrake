@@ -29,7 +29,7 @@ modern pipe and hose sizes. looks a bit silly." Follows PIPE_GIRTH_TUNE_HALF_AS_
 | RM_SunPanStill, RM_FueledStill, RM_DripFilter, RM_ReactionVat | - | no pipe/hose connector drawn (vat stubs ~0.12) | - | OK |
 | RM_LiquidTap, RM_LiquidDrill | - | off the pipe net | - | n/a |
 | RM_PipeAdapter_Chemfuel / _Propane | - | flange 0.56, coupling 0.37 (est.) | hose 2x | TOO BIG -> PIPE_ADAPTER_REDRAW_FLANGE_FOR_A_WHALE |
-| Joins UnderCollar / UnderPipe (code-sized) | all | 0.3125 / 0.219 | new pump neck 0.15 | TOO BIG -> UNDERCOUPLER_GIRTH_TUNE_PEEKS_PAST_NECK |
+| Joins UnderCollar / UnderPipe (code-sized) | all | was 0.3125 / 0.219, now 0.219 / 0.1875 (213d9da7b2) | new pump neck 0.15 | tuned: UNDERCOUPLER_GIRTH_TUNE_PEEKS_PAST_NECK |
 
 ## Built
 
@@ -39,11 +39,9 @@ to neck 0.15 / flange 0.205 cell, flange face kept on the footprint edge, gap to
 textured run. Port points unchanged. Installed with art.py install --owner-said (replaced owner-kept art; old shas
 2c8722d1192d / af8a6593eca6 / b1d7b737a792 are the revert). Art commit c10fa6c815, landed in 36a4c4e650.
 
-UnderCouplerReach.cs NOT regenerated in the tree: publish's DLL rebuild picked up peers' uncommitted FlowWorks C#
-(drawbridge/river/weir), so the regen + rebuild was backed out (a8b3274100 reverted in 37938c2a0c, table restored in 36a4c4e650).
-Until the table is regenerated (`art_source/UnderCouplers/under_coupler_reach.py --write`, new pump reaches 0.295-0.299)
-and the DLL rebuilt clean, `selftest_hose_fittings.py` reports 1 failure (reach table vs installed art). This goes with
-UNDERCOUPLER_GIRTH_TUNE_PEEKS_PAST_NECK.
+UnderCouplerReach.cs regenerated for the redrawn pumps in ef6d9ce8a9 (pump reaches 0.295-0.299), again with the
+UNDERCOUPLER_GIRTH_TUNE_PEEKS_PAST_NECK sizes in 213d9da7b2; DLL rebuilt from committed source by publish (cb08dad39e).
+`selftest_hose_fittings.py` 0 failures.
 
 Gates (with the regenerated table in the worktree): validate_sprite PASS x3; selftest_hose_fittings /
 selftest_hose_ports / selftest_tank_art_edges 0 failures; all 12 pump ports: gap to edge 0.04-0.07 cell (tolerance 0.10).
@@ -55,7 +53,6 @@ Shadow sheet (not served): Transient/pump_ports_20261023/pump_ports_sheet_2026-1
 ## Owed
 
 - Live look (also what the pipeline's held assembled panel needs).
-- Regenerate UnderCouplerReach.cs and rebuild the FlowWorks DLL clean (see above).
 
 ## Criteria
 
