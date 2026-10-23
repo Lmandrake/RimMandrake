@@ -585,6 +585,9 @@ def test_manifests_match_suite():
     check("burn_line arm constants == PyrelandsTuning (quiet/watch)",
           bool(q and w) and int(q.group(1).replace("_", "")) == v.BURN_QUIET_TICKS
           and int(w.group(1).replace("_", "")) == v.BURN_WATCH_TICKS and v.BURN_LINE_WAIT_TICKS > v.BURN_QUIET_TICKS)
+    ow = re.search(r"OpeningFrontWindowTicks\s*=\s*([\d_]+)", cs)
+    check("opening_front old-save window == PyrelandsTuning.OpeningFrontWindowTicks",
+          bool(ow) and int(ow.group(1).replace("_", "")) == v.OPENING_WINDOW)
     check("burn_line chain is registered and skipped in the main split",
           any(c[0] == "burn_line" for c in v.suite.chains), [c[0] for c in v.suite.chains])
     check("northstar_plan main split skips burn_line",
