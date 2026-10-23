@@ -778,10 +778,44 @@ namespace RimMandrake.FlowWorks.SelfTest
                 ok + "/" + total + (fails.Length > 0 ? ":" + fails.Substring(0, Math.Min(300, fails.Length)) : "") + ")");
         }
 
+        /// <summary>REEL_NOZZLE_FIX_COUPLER_HIDES_UNDERNEATH (owner walk 2026-10-23: "hose coupler is beneath the drawn open pipe,
+        /// nonsensically"): a coupling that mates onto a 2x2 reel's drawn nozzle (the laid hose's reel end, a relay feed on the
+        /// nozzle) draws ABOVE the reel sprite wherever the nozzle is drawn (W, E, S; the south picture shows its open bore at
+        /// the camera), seated on the measured tip; facing north the nozzle is behind the drum and the coupling stays under it.</summary>
+        private static void NozzleCouplerOnTop()
+        {
+            double building = DrawOrder.Alt(15), pawn = DrawOrder.Alt(23);   // vanilla AltitudeLayer.Building / Pawn
+            double y = HoseJoints.NozzleFittingAltitude;
+            Check(y > building + 3 * DrawOrder.AltInc && y < pawn, "a nozzle coupling draws above the reel's Building layer (and its increments) and below pawns (" +
+                y.ToString("0.000") + " vs building " + building.ToString("0.000") + ", pawn " + pawn.ToString("0.000") + ")");
+            int ok = 0, total = 0;
+            string fails = "";
+            foreach (int rot in new[] { 0, 1, 2, 3 })
+                foreach (string look in ReelIntakeGeometry.Looks)
+                {
+                    total++;
+                    var r = new HoseReelRect(10, 10, 2, 2) { Rot = rot, Look = look };
+                    V2 seat = HoseJoints.NozzleCoupling(r, out V2 inw);
+                    bool top = HoseJoints.NozzleFittingOnTop(rot);
+                    bool good = top == (rot != 0) && V2.Dist(seat, r.NozzleTip) <= HoseReelRect.NozzleSeat + 1e-9;
+                    // a relay feed that ends on the nozzle side rides on top by the same rule; one on another side stays under
+                    var A = new HoseReelRect(30, 10, 2, 2);
+                    var w = new CordWorld(60, 30);
+                    if (HoseRelay.TryIntake(r, A.Mouth, c => w.InBounds(c), out Cell intake))
+                        good &= HoseJoints.RelayFittingOnTop(r, intake) == top;
+                    if (good) ok++; else fails += " r" + rot + look;
+                }
+            Check(ok == total && total == 16, "every facing x look: the nozzle coupling rides on top of the reel except facing north, seated on the measured tip (" +
+                ok + "/" + total + fails + ")");
+            var west = new HoseReelRect(10, 10, 2, 2) { Rot = 2 };   // south-facing: nozzle at the bottom
+            Check(!HoseJoints.RelayFittingOnTop(west, new Cell(12, 10)), "can-fail: a relay end on the reel's side (an old crank-side link) stays under the sprite");
+        }
+
         public static void Run()
         {
             WalkStation();
             EveryFacingEndsOnNozzle();
+            NozzleCouplerOnTop();
         }
     }
 }

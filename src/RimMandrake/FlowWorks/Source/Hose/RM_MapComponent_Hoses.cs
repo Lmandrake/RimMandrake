@@ -1088,7 +1088,8 @@ namespace RimMandrake.FlowWorks.Hose
             // the 2x2 reel: the coupling's face meets the brass outlet nozzle, pointing into it (against Outward: the reel turns)
             // 2026-10-05: only when the hose really leaves through the outlet; a hose that could not (a reel boxed in, a relay
             // reel whose nozzle takes the feeding hose, a carried hose) gets no coupling floating on an empty nozzle
-            if (r.Rect.HasNozzle) { if (lying && r.lay != null && r.lay.Outlet) { V2 seat = HoseJoints.NozzleCoupling(r.Rect, out V2 inw); Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, seat, inw, vis, y, wrapTint, rec: r, role: "reel_end"); } }
+            // REEL_NOZZLE_FIX_COUPLER_HIDES_UNDERNEATH: drawn above the reel sprite where its nozzle is in view (HoseJoints.NozzleFittingOnTop)
+            if (r.Rect.HasNozzle) { if (lying && r.lay != null && r.lay.Outlet) { V2 seat = HoseJoints.NozzleCoupling(r.Rect, out V2 inw); Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, seat, inw, vis, HoseJoints.NozzleFittingOnTop(r.Rect.Rot) ? NozzleTopY(y) : y, wrapTint, rec: r, role: "reel_end"); } }
             else Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, pts[0], d0, vis, y, wrapTint);
             // joiners: only at real bends (B17), each two couplings face to face, screwed together (B9). Pose samples share
             // the lay's sample indices (equal-arc resamples of the same count).
@@ -1148,9 +1149,11 @@ namespace RimMandrake.FlowWorks.Hose
                 // (the west brass inlet face to face, or the outline on the other sides; HoseRelay.DrawnEnd) and its axis
                 // is the intake's, not the hose's last bend. Drawn in the hose band, under the reel sprite, so the reel's
                 // own inlet overlaps the joint, never the other way round.
-                EndPoint(r, out _, out V2? inward);
+                EndPoint(r, out CompHoseReel relayR, out V2? inward);
                 V2 dIn = inward ?? d1;
-                Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, pts[n - 1], dIn, vis, y, wrapTint, rec: r, role: "relay_end");
+                // REEL_NOZZLE_FIX_COUPLER_HIDES_UNDERNEATH: on the relay's nozzle it mates over the drawn tip (HoseJoints.RelayFittingOnTop)
+                bool onTop = relayR != null && HoseJoints.RelayFittingOnTop(relayR.Rect, new Cell(r.EndCell.x, r.EndCell.z));
+                Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, pts[n - 1], dIn, vis, onTop ? NozzleTopY(y) : y, wrapTint, rec: r, role: "relay_end");
                 lastRelayCouplings++;
             }
             else if (r.end == HoseEnd.Nozzle) Fitting(hm, hm.NozzleBare, NozzleMax, 0.05, -0.16, pts[n - 1], d1, vis, y, wrapTint);
@@ -1551,7 +1554,8 @@ namespace RimMandrake.FlowWorks.Hose
             if (onNozzle && hm.CouplingBare != null)
             {
                 Color wrapTint = Color.Lerp(Color.white, Tint(r), 0.5f);
-                Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, face, axis, vis, y - 0.0006f, wrapTint, rec: r, role: "feed_nozzle");
+                // REEL_NOZZLE_FIX_COUPLER_HIDES_UNDERNEATH: on the drawn nozzle it rides over the tip, as the laid hose's coupling does
+                Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, face, axis, vis, HoseJoints.NozzleFittingOnTop(r.Rect.Rot) ? NozzleTopY(y - 0.0006f) : y - 0.0006f, wrapTint, rec: r, role: "feed_nozzle");
             }
             lastFeedDraws++;
         }
@@ -1581,6 +1585,10 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>A fitting whose working end is at <paramref name="end"/> pointing along <paramref name="d"/>: its centre
         /// sits <paramref name="centreOff"/> sizes from the end, its brass starts <paramref name="brassFrom"/> sizes from the
         /// centre; the wrap ends 0.05 cell over the brass start and runs back along the hose.</summary>
+        /// <summary>The altitude a nozzle coupling draws at when it rides on the reel (HoseJoints.NozzleFittingAltitude), keeping
+        /// the hose's own fitting lift above its band so the wrap still sits over the coupling.</summary>
+        private static float NozzleTopY(float y) => (float)HoseJoints.NozzleFittingAltitude + (y - (float)RimMandrake.Shared.Slack.DrawOrder.Alt(RimMandrake.Shared.Slack.DrawOrder.LayerHose));
+
         private void Fitting(HoseLookMats hm, Material m, float maxBand, double centreOff, double brassFrom, V2 end, V2 d, float vis, float y, Color wrapTint, float widen = 1f,
             double wrapLen = HoseMath.WrapLength, CompHoseReel rec = null, string role = null)
         {

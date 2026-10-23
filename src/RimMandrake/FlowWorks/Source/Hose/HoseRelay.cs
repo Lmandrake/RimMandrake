@@ -321,6 +321,23 @@ namespace RimMandrake.FlowWorks.Hose
             return r.NozzleTip + inward * HoseReelRect.NozzleSeat;
         }
 
+        /// <summary>REEL_NOZZLE_FIX_COUPLER_HIDES_UNDERNEATH (owner walk 2026-10-23: "hose coupler is beneath the drawn open pipe,
+        /// nonsensically"): the layer a coupling mating onto a reel's drawn nozzle is drawn on -- vanilla BuildingOnTop (17), above
+        /// the reel's own Building layer (15) and its increments, below items and pawns. The hose band (Shadows) put it under the
+        /// reel sprite, so the redrawn outlet (the south picture's open bore at the camera) covered the coupling's claws.</summary>
+        public const int NozzleFittingLayer = 17;
+        internal static double NozzleFittingAltitude => DrawOrder.Alt(NozzleFittingLayer);
+
+        /// <summary>Whether the coupling on a 2x2 reel's nozzle draws on top of the reel (rot: Rot4 int). West, east and south
+        /// pictures draw the nozzle in view, so the coupling mates over its tip; the north picture's nozzle is behind the drum,
+        /// where the hose comes out from under the reel, so its coupling stays under the sprite.</summary>
+        internal static bool NozzleFittingOnTop(int rot) => ((rot % 4) + 4) % 4 != 0;
+
+        /// <summary>A relay feed's end coupling rides on top by the same rule when it ends on the relay's nozzle side (HoseRelay.
+        /// PortCells); one on another side (a link laid before REEL_LINK_FIX_IGNORES_THE_OBVIOUS_PORT) stays under the sprite.</summary>
+        internal static bool RelayFittingOnTop(HoseReelRect relay, Cell intake) =>
+            relay.HasNozzle && NozzleFittingOnTop(relay.Rot) && HoseRelay.PortCells(relay).Contains(intake);
+
         /// <summary>The STORED art's nozzle tip (a reel that has not laid its hose shows Reel_PumpHookup).</summary>
         internal static V2 StoredNozzleTip(HoseReelRect r)
         {
