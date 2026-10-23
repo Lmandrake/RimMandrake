@@ -46,7 +46,6 @@ MODS = {
         "Muttavaq": "Now",
         "After the water recedes": "NextPulse",
         "Native plants": "NextGameStart",
-        "Zennaq and lightning": "Now",
         "Refuge ledges and carvings": "Now",
         "Cliff ledges (WORLDGEN-AFFECTING)": "NewMapsOnly",
         "Map controls (placed in development mode)": "Now",   # FLOOD_SOAK_MARKERS_BUILD_AIMED_AT_CANALS: read per tick/press

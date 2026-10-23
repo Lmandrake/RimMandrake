@@ -59,7 +59,7 @@ namespace RimMandrake.CrackedLands
         }
 
         // CRACKEDLANDS_GPT_ENRICHMENT_1 verify: the recede feast and the
-        // floodline salvage as a state read (cohort / migrants / salvage
+        // floodline salvage as a state read (cohort / salvage
         // counts and their clocks), never a screenshot hunt.
         [DebugAction(CAT, "Report recede aftermath (current map)",
             allowedGameStates = AllowedGameStates.PlayingOnMap)]

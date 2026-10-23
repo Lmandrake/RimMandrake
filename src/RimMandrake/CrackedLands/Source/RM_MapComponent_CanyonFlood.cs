@@ -559,7 +559,7 @@ namespace RimMandrake.CrackedLands
 
             List<IntVec3> wetted = ledger.Wetted().ConvertAll(Cell);
             // FLOOD_SOAK_MARKERS_BUILD_AIMED_AT_CANALS: a trigger's flood outside the canyon brings the water and its
-            // soak only; the canyon's ecology (fresh fossil seams, the feast, migrants, floodline salvage) stays canyon.
+            // soak only; the canyon's ecology (fresh fossil seams, the feast, floodline salvage) stays canyon.
             bool ecology = !aimedAt.IsValid || CanyonGate;
             aimedAt = IntVec3.Invalid;
             if (ecology && RM_CrackedLandsSettings.floodRecutSeamsEnabled)

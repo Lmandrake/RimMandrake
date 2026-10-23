@@ -9,16 +9,12 @@ namespace RimMandrake.CrackedLands
     public static class RM_CanyonRulesKernel
     {
         public const int CellsPerIrqit = 8;
-        public const int MigrantLeaveRetryTicks = 60000;
 
         // ── recede aftermath ──
         public static int DryTicks(float soakDecayDays) { return Math.Max(2500, (int)Math.Round(soakDecayDays * 60000f)); }
         public static int SalvageTicks(float salvageDecayDays) { return Math.Max(2500, (int)Math.Round(salvageDecayDays * 60000f)); }
         public static int CohortWant(int cohortMax, int wettedCount) { return Math.Min(cohortMax, wettedCount / CellsPerIrqit); }
         public static bool Due(int tick, int now) { return tick >= 0 && now >= tick; }
-        // The migrants' departure pass runs only once their time has come, on the 2500-tick beat.
-        public static bool MigrantPassRuns(int leaveTick, int now) { return leaveTick >= 0 && now >= leaveTick && now % 2500 == 0; }
-        public static bool MigrantsDone(int remaining, int now, int giveUpTick) { return remaining == 0 || now >= giveUpTick; }
         public static bool SalvageTaken(bool spawned, bool sameMap, bool atItsCell, bool stillForbidden) { return spawned && sameMap && atItsCell && stillForbidden; }
 
         // ── biome score ──
