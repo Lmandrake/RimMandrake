@@ -490,6 +490,9 @@ def review_class():
                     # map R: the margin stops at the plot's north edge (row z+h is the RIVER C1's intake, weir and pump touch),
                     # and only the plot itself is repainted Soil (the anchor proved it land; a margin may hold a river bend)
                     rects, soil = [(x - 4, z - 6, w + 8, h + 6)], "Soil:%d,%d,%d,%d" % (x, z, w, h)
+                    # the bank weir's footprint reaches into the river rows: river reeds there refused it twice
+                    # (wipeExisting=false, Plant_Reeds; tile 6758 and 1246). Plants only; the water stays.
+                    B.call("jawa/destroy_batch", rects="%d,%d,%d,3" % (x, z + h, w), categories="Plant")
                 e = p["sc"].get("edge_drain")
                 if e == "west":
                     rects.append((0, z, x, h))
