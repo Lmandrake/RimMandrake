@@ -67,5 +67,21 @@ w, d = R.classify(S, C)
 chk("BREACH" in w, "classify: a raider sampled on the island is BREACH (%r)" % w)
 chk(2 not in d["despawnedAlive"], "classify: a dead raider is not 'despawned alive' (%r)" % d)
 chk(1 in d["despawnedAlive"], "classify: can-fail, a raider gone from the last sample alive is LEFT (%r)" % d)
+# LADDER_PARITY_RAIDER_FELLS_TREE: oaks 10..15 east of the bank, disjoint from the ring; the verdict can go red
+sp = R.tree_spots((125, 125), 6)
+chk(len(set(sp)) == 6 and all(10 <= x - 132 <= 15 for x, _z in sp) and all(R.cheb(p_, (125, 125)) > 7 for p_ in sp),
+    "trees: six distinct oak squares 10..15 east of the east bank, off the trench (%r)" % sp)
+chk(R.tree_verdict(6, 5, False, 3)[0] == "PASS", "trees: a felled oak PASS")
+chk(R.tree_verdict(6, 6, True, 3)[0] == "PASS", "trees: a chop job seen PASS")
+chk(R.tree_verdict(6, 6, False, 3)[0] == "FAIL", "trees: can-fail, raiders near and every oak standing")
+chk(R.tree_verdict(0, 0, False, 3)[0] == "UNMEASURED", "trees: nothing planted UNMEASURED")
+chk(R.tree_verdict(6, 6, False, 0)[0] == "UNMEASURED", "trees: no raider near UNMEASURED")
+chk(R.tree_verdict(6, None, False, 3)[0] == "UNMEASURED", "trees: uncounted UNMEASURED")
+import ladder_wall_proof as LW  # noqa: E402
+ok_reads = {k: "ladder=RM_LadderPortable faction=x mayClimb=%s letsOut=True" % w for k, _f, w in LW.CENSUS}
+chk(LW.census_verdict(ok_reads)[0] == "PASS", "census: the table read back PASS")
+chk(LW.census_verdict(dict(ok_reads, Muffalo=ok_reads["Cobra"]))[0] == "FAIL", "census: can-fail, a muffalo that may climb")
+chk(LW.census_verdict(dict(ok_reads, Cobra=None))[0] == "UNMEASURED", "census: an unread pawn UNMEASURED")
+chk(LW.pawn_num("Thing_Husky1234") == 1234 and LW.pawn_num(77) == 77 and LW.pawn_num(None) is None, "census: spawn id parse")
 print("selftest_raid_trench: %s" % ("FAIL" if bad else "ok"))
 sys.exit(1 if bad else 0)
