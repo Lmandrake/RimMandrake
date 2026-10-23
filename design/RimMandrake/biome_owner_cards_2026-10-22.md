@@ -346,6 +346,7 @@ Source: `review_findings_2026-10-22/ruled_values_questions.md`.
 ## Card 13. Three Inhabited cast files disagree with the notes that generate them
 
 **ANSWERED 2026-10-22 by question card: option 2, the notes are right; regenerate the files.**
+**DONE 2026-10-22:** `cast_to_xml.py --write` regenerated only `CastRoster_{EMPIRE,WILDSTEAM,DROIDS}.xml` (+13/-6 lines: Echani->Hussar + multitool; 4 Wookiee/Ortolan/Sullustan/Chadra-Fan -> Yttakin; one DROIDS hook + Gun_SniperRifle). Fuzz and lint selftests green. NOTE: the generator also differs from the committed files for 8 other factions (BLACKSTAR DEEPWATER GEONOSIAN HELIX HOMESTEAD HUTT JAWA JUNKERS); left untouched, needs its own ruling.
 
 **What was learned.** Three cast files of the Inhabited mod (Empire, Wildsteam, Droids) differ from what the
 generator would write from their source notes. Empire: race Hussar vs Echani, plus an extra multitool. Wildsteam: three

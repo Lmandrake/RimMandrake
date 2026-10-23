@@ -170,7 +170,7 @@
     <label>Drill Instructor Hesk Varo</label>
     <faction>EMPIRE</faction>
     <place>ASHGARRISON</place>
-    <race>Echani</race>
+    <race>Hussar</race>
     <age>31</age>
     <ageText>31</ageText>
     <genderText>f</genderText>
@@ -649,6 +649,9 @@
         <degree>0</degree>
       </li>
     </traits>
+    <items>
+      <li>SurvivalTools_Multitool</li>
+    </items>
     <skills>
       <Construction>18</Construction>
     </skills>
