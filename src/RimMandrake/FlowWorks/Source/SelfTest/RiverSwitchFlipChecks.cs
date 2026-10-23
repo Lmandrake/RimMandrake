@@ -198,6 +198,15 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Has(w, @"if \(!" + S + @"weirCapturesFloating\)\s*\{\s*return 0;", "CaptureFloating returns at once when the switch is off");
             });
 
+            Case("RiverSwitchFlip_flotsamEnabled", () =>
+            {
+                // owner by card 2026-10-23 07:19: off, the river brings nothing onto the map
+                Assert(RM_RiverMath.FlotsamRollChance(false, 1f, 2500) < 0f && RM_RiverMath.FlotsamRollChance(true, 1f, 2500) > 0f, "off never rolls, on rolls");
+                Has(Src(Path.Combine("Rivers", "RM_MapComponent_RiverCurrent.cs")),
+                    @"RM_RiverMath\.FlotsamRollChance\(" + S + @"flotsamEnabled, " + S + @"flotsamPerDay, FlotsamIntervalTicks\)",
+                    "TrySpawnFlotsam passes flotsamEnabled and flotsamPerDay");
+            });
+
             Case("RiverSwitchFlip_weirWhiteWater", () =>
             {
                 // weir review 2026-10-23: the animated white water is drawn only while its switch is on

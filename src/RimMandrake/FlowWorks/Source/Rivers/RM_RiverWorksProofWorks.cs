@@ -319,6 +319,62 @@ namespace RimMandrake.FlowWorks.Rivers
 			}
 		}
 
+		/// <summary>river.flotsam (owner by card 2026-10-23 07:19, "Yes, occasional flotsam"): forces one flotsam spawn at
+		/// the upstream edge, then lays that piece on a downstream-edge cell and steps it once; "FLOTSAM spawn=... entries=N
+		/// onEntry=B leftEdge=B". UNMEASURED when the map has no river entry or this biome has no drift list.</summary>
+		public static string ProofRiverFlotsam(string arg)
+		{
+			Map map = Find.CurrentMap;
+			RM_MapComponent_RiverCurrent comp = map?.GetComponent<RM_MapComponent_RiverCurrent>();
+			if (comp == null)
+			{
+				return "UNMEASURED no map or no current component";
+			}
+			int before = comp.FlotsamCount;
+			string r = comp.TrySpawnFlotsam(true);
+			if (!r.StartsWith("spawned=") || comp.FlotsamCount <= before)
+			{
+				return "UNMEASURED flotsam did not spawn: " + r + " entries=" + comp.EntryCells().Count;
+			}
+			Thing t = null;
+			foreach (IntVec3 c in comp.EntryCells())
+			{
+				Thing f = c.GetFirstItem(map);
+				if (f != null && comp.IsFlotsam(f))
+				{
+					t = f;
+					break;
+				}
+			}
+			bool onEntry = t != null;
+			bool left = false;
+			if (t != null)
+			{
+				foreach (IntVec3 c in map.AllCells)
+				{
+					int d = comp.FlowDirAt(c);
+					if (d < 0 || !c.Standable(map) || c.GetFirstItem(map) != null)
+					{
+						continue;
+					}
+					IntVec3 n = new IntVec3(c.x + RM_RiverMath.StepX[d], 0, c.z + RM_RiverMath.StepZ[d]);
+					if (n.InBounds(map))
+					{
+						continue;
+					}
+					t.Position = c; // the downstream edge
+					comp.StepOne(t);
+					left = t.Destroyed;
+					break;
+				}
+				if (!t.Destroyed && arg != "keep")
+				{
+					t.Destroy();
+				}
+			}
+			return "FLOTSAM " + r + " entries=" + comp.EntryCells().Count + " onEntry=" + onEntry + " leftEdge=" + left;
+		}
+
 		/// <summary>breach.wash: spawns a weir with a stack of catch on its bank, runs it down, breaches it;
 		/// "BREACH heldBefore=N heldAfter=H breaching=B arrestOff=B at=C" (the stake cascade is ProofCascadeOrder).</summary>
 		public static string ProofBreach(string arg)

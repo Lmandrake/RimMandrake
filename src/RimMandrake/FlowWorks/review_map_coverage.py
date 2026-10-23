@@ -390,7 +390,7 @@ FEATURES = [
      "The current carries and sweeps away", "R:r_current"),
     ("set", r"^(fordsEnabled|pathfinderAvoidsCurrents)$", "Fords and route-finding round currents", "R:r_ford"),
     ("set", r"^(bankWorksEnabled|wearRateMultiplier|weirPoolLength|weirCapturesFloating|weirHeldCatchCap|"
-     r"weirWhiteWater)$", "Weir pool and catch", "R:r_weir"),
+     r"weirWhiteWater|flotsamEnabled|flotsamPerDay)$", "Weir pool and catch", "R:r_weir"),
     ("set", r"^(breachEnabled|breachHpFraction|breachWashesCatch|breachWashCells|floodSurgeEnabled|countSeasonalFloods|"
      r"countTorrentialRainFloods)$", "Floods and breaches", "R:r_breach"),
     ("set", r"^(stakeSnapTicksPerCell|stakeLineLevee)$", "Stake-line levee", "R:r_stakes"),

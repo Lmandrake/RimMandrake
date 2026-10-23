@@ -62,9 +62,16 @@ in `Defs/Rivers/RM_BankWeirStyles.xml`; art sources `art_source/Weir/`.
 
 All-off degrades gracefully: the wall still arrests the current and things pile against it.
 
-## Open questions for the owner
+## Owner answers (by card, 2026-10-23 07:19)
 
-- **Biome drift:** should rivers carry biome-relevant flotsam *onto* the map now and then (entering at the upstream
-  edge, floating down, catchable by a weir or anyone)? That would revive card 2's drift as real floating things.
-- **Placement:** refuse a weir laid along the current (it dams nothing)?
-- **Fish:** a weir as a fish *trap* would be a separate building with an explicit trap rule — not built.
+- *"Flotsam? → Yes, occasional flotsam (Recommended)"*: the river brings its biome's drift list (`RM_RiverDriftDef`) onto
+  the map as real items on an upstream entry cell (an in-current edge cell whose upstream lies off the map), about
+  `flotsamPerDay` (default 1) a map, rolled hourly; settings "Rivers bring flotsam" on/off and the rate. It drifts with
+  the current (only while items are carried), a weir catches it, and a piece still floating at the downstream edge
+  leaves the map. Flotsam is remembered only while it floats: stranded, hauled or caught, it is ordinary loot.
+  Owed: the drift lists hold forage/hides; driftwood, dead fish, debris and rare lost cargo rows are a per-biome sitting
+  (card 2 ruled out generic wood).
+- *"Weir placed along the current? → Auto-rotate to cross the current"*: while placing, the weir's rotation snaps to one
+  whose wall crosses the current (preferring one that fits there); the ghost and the blueprint take it. A diagonal
+  current or none leaves the rotation alone.
+- Still open: a weir as a fish *trap* would be a separate building with an explicit rule — not built.

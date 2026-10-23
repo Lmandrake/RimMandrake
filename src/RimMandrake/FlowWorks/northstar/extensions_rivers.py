@@ -27,7 +27,7 @@ suite = Suite("FlowWorksRivers")
 SETTINGS = "RimMandrake.FlowWorks.Rivers.RM_RiversSettings"
 suite.toggles = [
     "riverWorksEnabled", "surfaceCurrentEnabled", "scaleWithRiverSize", "floodSurgeEnabled",
-    "countSeasonalFloods", "countTorrentialRainFloods", "carryAnimals", "carryStrangers", "carryItems",
+    "countSeasonalFloods", "countTorrentialRainFloods", "carryAnimals", "carryStrangers", "carryItems", "flotsamEnabled",
     "washOffMapEdge", "takenByLandTraceEnabled", "pathfinderAvoidsCurrents", "crossingHazardsEnabled", "fordsEnabled",
     "bankWorksEnabled", "breachEnabled", "stakeLineLevee", "weirCapturesFloating", "weirWhiteWater",
     "breachWashesCatch", "siltRichening", "ferryEnabled", "ferryRopeGuidesColonists",
@@ -426,6 +426,14 @@ def works(t):
     # fish capture."). PROVE ProofWeirCapture: a stack laid in the weir's intake is lifted onto dry bank and nothing is
     # created. EXPECT intake>0, lifted=1, onDry=True, unitsAfter=unitsBefore, created=0. LIES: intake=0 (no flow onto the
     # wall at this site) proves nothing -- the probe answers UNMEASURED then.
+    # Owner by card 2026-10-23 07:19 ("Flotsam? -> Yes, occasional flotsam"). PROVE ProofRiverFlotsam: one forced piece
+    # appears on an upstream entry cell, and a piece stepped off the downstream edge leaves the map. EXPECT spawned,
+    # onEntry=True, leftEdge=True. LIES: a biome with no drift list or a map with no river answers UNMEASURED.
+    with t.component("river_flotsam_enters_and_leaves", toggle="flotsamEnabled"):
+        if t._guard():
+            kv = _kv(_works(t, "ProofRiverFlotsam"))
+            if kv.get("onEntry") != "True" or kv.get("leftEdge") != "True":
+                raise ExpectationFailed("flotsam did not enter upstream or did not leave at the downstream edge: %r" % kv)
     with t.component("weir_captures_floating", toggle="weirCapturesFloating"):
         if t._guard():
             kv = _kv(_works(t, "ProofWeirCapture"))

@@ -347,6 +347,67 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_RiverMath.WeirFoamFrame(-3f, 10f, 12, -5) >= 0, "negative inputs never index out of range");
             });
 
+            // ── owner by card 2026-10-23 07:19 (WEIR_CATCH_FIX_NO_FREE_FISH): "Flotsam? -> Yes, occasional flotsam" and
+            // "Weir placed along the current? -> Auto-rotate to cross the current" ──
+            Case("Flotsam_enters_only_where_the_river_comes_in", () =>
+            {
+                // 30x30 map, river z 10..14 flowing east: it enters on the west edge, leaves on the east edge
+                Func<int, int, int> east = (x, z) => (x >= 0 && x < 30 && z >= 10 && z <= 14) ? 0 : -1;
+                List<int[]> entry = RM_RiverMath.RiverEntryCells(30, 30, east);
+                Assert(entry.Count == 5, "five entry cells on the west edge, got " + entry.Count);
+                Assert(entry.TrueForAll(c => c[0] == 0 && c[1] >= 10 && c[1] <= 14), "all on x=0 within the river");
+                // can-fail: the downstream (east) edge is never an entry
+                Func<int, int, int> west = (x, z) => (x >= 0 && x < 30 && z >= 10 && z <= 14) ? 4 : -1;
+                Assert(RM_RiverMath.RiverEntryCells(30, 30, west).TrueForAll(c => c[0] == 29), "a west-flowing river enters on the east edge");
+                // diagonal NE river: entries lie on the west or south edge only
+                Func<int, int, int> ne = (x, z) => (x >= 0 && x < 30 && z >= 0 && z < 30 && Math.Abs(x - z) <= 2) ? 1 : -1;
+                List<int[]> d = RM_RiverMath.RiverEntryCells(30, 30, ne);
+                Assert(d.Count > 0 && d.TrueForAll(c => c[0] == 0 || c[1] == 0), "NE river enters on the W/S edges only");
+                Assert(RM_RiverMath.RiverEntryCells(30, 30, (x, z) => -1).Count == 0, "no river, no entry");
+            });
+
+            Case("Flotsam_rate_and_switch", () =>
+            {
+                Assert(RM_RiverMath.FlotsamRollChance(false, 2f, 2500) < 0f, "off never rolls");
+                float c = RM_RiverMath.FlotsamRollChance(true, 1f, 2500);
+                Assert(Math.Abs(c - 2500f / 60000f) < 1e-6f, "one a day, rolled hourly = 1/24 an hour, got " + c);
+                Assert(RM_RiverMath.FlotsamRollChance(true, 0f, 2500) == 0f, "zero a day never spawns");
+                Assert(RM_RiverMath.FlotsamRollChance(true, 1e6f, 2500) == 1f, "clamped to certain");
+                Assert(RM_RiverMath.FlotsamLeavesAtEdge(false, true) && !RM_RiverMath.FlotsamLeavesAtEdge(false, false) && !RM_RiverMath.FlotsamLeavesAtEdge(true, true),
+                    "flotsam leaves the map at the downstream edge; a colony's own stack and any pawn do not (pawns keep washOffMapEdge)");
+            });
+
+            Case("Flotsam_wired_in_source", () =>
+            {
+                string cur = RiverSwitchFlipChecks.Src(Path.Combine("Rivers", "RM_MapComponent_RiverCurrent.cs"));
+                RiverSwitchFlipChecks.Has(cur, @"RM_RiverMath\.FlotsamLeavesAtEdge\(t is Pawn, IsFlotsam\(t\)\)", "the edge rule reads the flotsam book");
+                RiverSwitchFlipChecks.Has(cur, @"RM_RiverDriftDef\.RollFor\(map\.Biome\)", "flotsam comes from the biome's drift list");
+                RiverSwitchFlipChecks.Has(cur, @"RM_RiverMath\.RiverEntryCells\(", "flotsam enters at the upstream edge");
+                string w = RiverSwitchFlipChecks.Src(Path.Combine("Rivers", "RM_Weir.cs"));
+                RiverSwitchFlipChecks.Has(w, @"ForgetFlotsam\(t\)", "a caught piece is the weir's catch, no longer flotsam");
+                string set = RiverSwitchFlipChecks.Src(Path.Combine("Rivers", "RM_RiversSettings.cs"));
+                Assert(set.Contains("\"flotsamEnabled\"") && set.Contains("\"flotsamPerDay\""), "flotsam settings are in a reset list");
+            });
+
+            Case("WeirAutoRotate_crosses_the_current", () =>
+            {
+                // flow east (0): the wall must run N-S (rot 0/2); placed E-W it is turned
+                List<int> c1 = RM_RiverMath.WeirCrossCandidates(1, 0);
+                Assert(c1.Count == 2 && c1.TrueForAll(r => (r & 1) == 0), "E-W wall in an east flow -> try the two N-S rotations");
+                Assert(RM_RiverMath.WeirCrossCandidates(0, 0).Count == 1 && RM_RiverMath.WeirCrossCandidates(0, 0)[0] == 0, "already crossing: keep it");
+                // flow north (2): the wall must run E-W
+                Assert(RM_RiverMath.WeirCrossCandidates(2, 2).TrueForAll(r => (r & 1) == 1), "N-S wall in a north flow -> E-W rotations");
+                // diagonal flow crosses either axis; no flow decides nothing
+                Assert(RM_RiverMath.WeirCrossCandidates(1, 1)[0] == 1 && RM_RiverMath.WeirCrossCandidates(3, -1)[0] == 3, "diagonal or no current keeps the placed rotation");
+                for (int r = 0; r < 4; r++)
+                    for (int d = 0; d < 8; d++)
+                        foreach (int cand in RM_RiverMath.WeirCrossCandidates(r, d))
+                            Assert(RM_RiverMath.WeirFoamStep(cand, d, out _, out _), "every candidate crosses the current (rot " + r + " dir " + d + ")");
+                string w = RiverSwitchFlipChecks.Src(Path.Combine("Rivers", "RM_Weir.cs"));
+                RiverSwitchFlipChecks.Has(w, @"\[HarmonyPatch\(typeof\(Designator_Place\), nameof\(Designator_Place\.SelectedUpdate\)\)\]", "the ghost shows the snapped rotation");
+                RiverSwitchFlipChecks.Has(w, @"\[HarmonyPatch\(typeof\(Designator_Build\), nameof\(Designator_Build\.DesignateSingleCell\)\)\]", "the placed blueprint takes the snapped rotation");
+            });
+
             Case("WeirLook_no_flat_tint_and_animated_foam_in_source", () =>
             {
                 string w = RiverSwitchFlipChecks.Src(Path.Combine("Rivers", "RM_Weir.cs"));
