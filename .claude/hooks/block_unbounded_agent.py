@@ -9,8 +9,8 @@ every call re-sends the whole conversation (contexts reached 966k). The rm-* def
 Refused: general-purpose, claude, an omitted type, and fork (inherits this seat's whole
 context). Allowed: rm-*, the read-only built-ins and any other named definition.
 Override is the harness environment only (RM_ALLOW_UNBOUNDED_AGENT=1), which an agent's
-prompt cannot set. A session that STARTED before the rm-* definitions existed cannot see them
-(definitions load at startup), so it is let through until its next restart.
+prompt cannot set. Definitions hot-load into running sessions (seen 2026-10-23), so no
+session needs an exemption.
 
     python3 .claude/hooks/selftest_block_unbounded_agent.py
 """
@@ -40,27 +40,6 @@ def refused_type(tool_input):
     return t if t in REFUSED else None
 
 
-DEFS = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "agents", "rm-fixer.md")
-
-
-def session_predates_defs(transcript_path):
-    """True when the session's transcript is older than the rm-* definitions."""
-    try:
-        return _first_stamp(transcript_path) < os.path.getmtime(DEFS)
-    except Exception:
-        return False
-
-
-def _first_stamp(path):
-    import datetime
-    with open(path, errors="ignore") as f:
-        for line in f:
-            ts = json.loads(line).get("timestamp")
-            if ts:
-                return datetime.datetime.fromisoformat(ts.replace("Z", "+00:00")).timestamp()
-    return float("inf")
-
-
 def main():
     if os.environ.get("RM_ALLOW_UNBOUNDED_AGENT") == "1":
         return 0
@@ -68,8 +47,6 @@ def main():
         data = json.load(sys.stdin)
         tool_input = data.get("tool_input", {}) or {}
     except Exception:
-        return 0
-    if session_predates_defs(str(data.get("transcript_path") or "")):
         return 0
     if not isinstance(tool_input, dict):
         return 0
