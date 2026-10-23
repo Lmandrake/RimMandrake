@@ -27,7 +27,7 @@ for _p in (UTILS, os.path.join(UTILS, "modcheck")):
     if _p not in sys.path:
         sys.path.insert(0, _p)
 
-PREP_VERSION = "1"                     # bump whenever prep_site.py's output changes
+PREP_VERSION = "2"                     # bump whenever prep_site.py's output changes
 PACKAGE_ID = "mandrake.rm.flowworks"
 TIER = "flowworks"
 GOLDEN_NAME = "NS_FlowWorks_TrialSite_v1"
@@ -205,6 +205,8 @@ SETTINGS = {
         "swimPathCost": 60, "swimEnduranceHours": 2.0, "swimRecoveryHours": 1.0, "swimWeightEndurancePenalty": 1.25,
         "swimWeightSlowdown": 1.5, "animalsAvoidDeepWater": True, "animalAvoidCost": 3000, "swimWarnAt": 0.7,
         "tiredSwimmersHeadForShore": True, "deepSwimJoyEnabled": True, "shallowWaterDrowningEnabled": True,
+        # WET_FOXHOLE_BUILD_COLD_FEET_SHAKY_AIM (PROVISIONAL aim x0.85, cold +6 C; consts in RM_WetCostMath)
+        "deepWaterAimPenalty": True, "deepWaterAimFactor": 0.85, "wetFeelsColder": True, "wetColdOffset": 6.0, "swimmersCannotShoot": True,
     },
     # SUSPENSION_BRIDGE_BUILD_POSTS_AT_BOTH_ENDS + its grate / underpass / waters items (own static class, scribed from ExposeData)
     "RimMandrake.FlowWorks.Pits.RM_SuspensionSettings": {
@@ -314,7 +316,7 @@ WET_OR_ROUGH = ("Water", "Marsh", "Mud", "Ice", "Lava")   # substrings refused n
 PLOTS = [
     {"id": "A", "w": 8, "h": 3, "bars": ["canal_reads_as_dug_channel", "canal_dry_reads_as_obstacle",
                                          "never_gravel_path"], "bodies": []},
-    {"id": "B", "w": 6, "h": 7, "bars": ["canal_partial_fill_distinct", "fill_tier_legible"], "bodies": []},
+    {"id": "B", "w": 24, "h": 15, "bars": ["canal_partial_fill_distinct", "fill_tier_legible"], "bodies": []},
     {"id": "D", "w": 18, "h": 5, "bars": ["reservoir_fill_visibly_drops", "never_full_reservoir_after_heavy_draw"],
      "bodies": [{"name": "D_pond", "terrain": "WaterShallow", "rect": (0, 0, 5, 5), "limitless": False}]},
     # E: the tar pond is painted by the bar itself as RM_TarShallow terrain (a body's fluid is its terrain's,
@@ -327,7 +329,7 @@ PLOTS = [
      "bodies": []},
     {"id": "G", "w": 13, "h": 9, "bars": ["pit_reads_as_hole", "pit_occupant_below_floor", "pit_trapped_reads_as_trapped",
                                           "pit_occupied_distinguishable", "ladder_state_legible"], "bodies": []},
-    {"id": "H", "w": 10, "h": 5, "bars": ["pit_depth_ladder_legible"], "bodies": []},
+    {"id": "H", "w": 17, "h": 8, "bars": ["pit_depth_ladder_legible"], "bodies": []},
     {"id": "R", "w": 3, "h": 1, "bars": ["toggle:rainFillsExcavationsEnabled"], "bodies": [],
      # The rain twin is NOT roofed in the golden: MEASURED 2026-10-05 a lone roofed cell collapses within ~250
      # ticks (RoofConstructed AND RoofRockThick, even with a steel wall adjacent), leaving rubble in the plot.

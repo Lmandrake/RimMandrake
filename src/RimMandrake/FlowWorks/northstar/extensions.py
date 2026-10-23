@@ -96,6 +96,9 @@ SLUICE, GRATE = "RM_Sluice", "RM_SecurityGrateDoor"
 
 # Plot grid: each plot is a PW x PH rect, PITCH apart, offset from the anchor.
 PW, PH, PITCH = 24, 14, 36
+FILL_TIERS, FILL_TIER_DEPTH = 5, 5         # fill_tier_legible: F=0..4 (dry .. 2 m of water) in holes 2.5 m deep, deeper than any fill
+JOINT_PADS = ((2, 2), (4, 2), (8, 2), (8, 1), (8, 4))   # depth_and_fill_jointly_legible: (hole notches, fill notches)
+LADDER_NOTCHES = (0, 1, 2, 3, 4, 8, 16)    # pit_depth_ladder_legible / pawn_height_ladder_legible: 0.5 m a notch, to 8 m
 PLOTS = {"A": (0, 0), "B": (1, 0), "C": (2, 0), "D": (0, 1), "E": (1, 1), "F": (2, 1),
          "G": (0, 2), "H": (1, 2), "T": (2, 2)}
 
@@ -632,32 +635,39 @@ def plot_A_dug_channel(t):
 
 @suite.chain("plot_B_fill_tiers")
 def plot_B_fill_tiers(t):
-    """Plot B: four parallel 1x6 runs at D=3 filled to F=0..3 with the engine frozen, so a pulse
-    cannot equalise them. The engine is restored in `finally` by `_setting`."""
+    """Plot B: five parallel 1x6 runs at D=5 filled to F=0..4 (dry, 0.5 .. 2 m of water; the bar's sixth look, under 25 cm,
+    is a fill of less than one notch that no bridge tool sets, so it is recorded UNMEASURED) with the engine frozen, so a
+    pulse cannot equalise them. The engine is restored in `finally` by `_setting`."""
     x0, z0 = _prep_plot(t, "B")
-    runs = [_line(x0 + 3, z0 + 2 + 3 * i, 6) for i in range(4)]
+    runs = [_line(x0 + 3, z0 + 2 + 3 * i, 6) for i in range(FILL_TIERS)]
     for r in runs:
-        _dig_run(t, r, 3)
+        _dig_run(t, r, FILL_TIER_DEPTH)
     with _setting(t, "depthEngineEnabled", False):
         for f, r in enumerate(runs):
             for x, z in r:
                 _fill(t, x, z, f)
         with t.component("partial_fill_two_look", shows=["canal_partial_fill_distinct"]):
-            _expect_state(t, runs[1], depth=3, fill=1, what="run F=1")
-            _expect_state(t, runs[3], depth=3, fill=3, what="run F=3")
-            _frame(t, x0 + 3, z0 + 2, 6, 10)
+            _expect_state(t, runs[1], depth=FILL_TIER_DEPTH, fill=1, what="run F=1")
+            _expect_state(t, runs[3], depth=FILL_TIER_DEPTH, fill=3, what="run F=3")
+            _frame(t, x0 + 3, z0 + 2, 6, 3 * FILL_TIERS - 2)
         with t.component("fill_tier_four_look", shows=["fill_tier_legible"]):
             for f, r in enumerate(runs):
                 _expect_state(t, r[:1], fill=f, what="tier F=%d" % f)
-            _frame(t, x0 + 3, z0 + 2, 6, 10)
+            _frame(t, x0 + 3, z0 + 2, 6, 3 * FILL_TIERS - 2)
+        with _unmeasured_if(t, "no bridge tool sets a fill under one notch (0.5 m): excavation_drive's setFill is whole notches, "
+                               "so the under-25 cm look of fill_tier_legible cannot be staged yet",
+                            "fill_tier_under_quarter_metre_look", shows=["fill_tier_legible"]):
+            pass
         with t.component("depth_and_fill_joint_look", shows=["depth_and_fill_jointly_legible"]):
-            # extra pads at D=1..4 each filled half-way, in one row, so both axes vary in one frame
-            for d in range(1, 5):
-                cx, cz = x0 + 12 + 2 * d, z0 + 5
+            # the bar's grid, in metres: 1 m of water in 1, 2 and 4 m holes, and 4 m holes holding 0.5, 1 and 2 m (the 4 m
+            # hole with 1 m is shared). A notch is 0.5 m: pads are (hole D, fill F) = (2,2) (4,2) (8,2) (8,1) (8,4).
+            for k, (d, f) in enumerate(JOINT_PADS):
+                cx, cz = x0 + 14 + 2 * k, z0 + 5
                 _dig(t, cx, cz, d)
-                _fill(t, cx, cz, max(0, d // 2))
-            _expect_state(t, [(x0 + 12 + 2 * 4, z0 + 5)], depth=4, fill=2, what="joint pad D=4")
-            _frame(t, x0 + 12, z0 + 3, 12, 5)
+                _fill(t, cx, cz, f)
+            _expect_state(t, [(x0 + 14 + 2 * (len(JOINT_PADS) - 1), z0 + 5)], depth=JOINT_PADS[-1][0], fill=JOINT_PADS[-1][1],
+                          what="joint pad D=%d" % JOINT_PADS[-1][0])
+            _frame(t, x0 + 14, z0 + 3, 2 * len(JOINT_PADS), 5)
 
 
 @suite.chain("plot_C_limitless_canal")
@@ -942,17 +952,19 @@ def _plot_F_body(t, x0, z0):
 
 @suite.chain("plot_H_depth_ladder")
 def plot_H_depth_ladder(t):
-    """Plot H: five adjacent 2x3 pads at D=0..4 in one row; a colonist walked across them with
-    superdeepCaptureEnabled OFF so it is not captured on D=4 before the frame."""
+    """Plot H: seven adjacent 2x3 pads at LADDER_NOTCHES = D 0,1,2,3,4,8,16 (undug, 0.5 .. 2 m, 4 m, 8 m: the bar's own ladder,
+    0.5 m a notch) in one row; a colonist walked across the first five with superdeepCaptureEnabled OFF so it is not captured
+    on D=4 before the frame, and a colonist set down on each of the 4 m and 8 m pads (no walk: a ladderless pit that deep is
+    a fall, and the bar reads the draw height, not the descent)."""
     x0, z0 = _prep_plot(t, "H")
-    # five 2x3 pads, 2 wide each => x spans 10 cells
-    pads = [[(x0 + 3 + d * 2 + i, z0 + 5 + j) for i in range(2) for j in range(3)] for d in range(5)]
-    for d, pad in enumerate(pads):
+    # seven 2x3 pads, 2 wide each => x spans 14 cells
+    pads = [[(x0 + 3 + k * 2 + i, z0 + 5 + j) for i in range(2) for j in range(3)] for k in range(len(LADDER_NOTCHES))]
+    for d, pad in zip(LADDER_NOTCHES, pads):
         if d:
             _dig_run(t, pad, d)
-    shot = (x0 + 3, z0 + 5, 10, 3)
+    shot = (x0 + 3, z0 + 5, 2 * len(LADDER_NOTCHES), 3)
     with t.component("depth_ladder_look", shows=["pit_depth_ladder_legible"]):
-        for d, pad in enumerate(pads):
+        for d, pad in zip(LADDER_NOTCHES, pads):
             _expect_state(t, pad[:1], depth=d, what="pad D=%d" % d)
         _frame(t, *shot)
     with _setting(t, "superdeepCaptureEnabled", False):
@@ -964,6 +976,14 @@ def plot_H_depth_ladder(t):
             _march(t, pid, pads[4][0][0], pads[4][0][1], 300)
             b = _frame(t, pads[4][0][0] - 3, pads[4][0][1] - 2, 7, 5, "H_d4")
             _diptych(t, a, b, "H_height_ladder")
+            # past 2 m: a colonist at 4 m (D=8) and at 8 m (D=16), "sits no lower in any hole deeper than 4 m"
+            deep = {d: _spawn_pawn_at(t, "Colonist", pads[k][0][0], pads[k][0][1])
+                    for k, d in enumerate(LADDER_NOTCHES) if d in (8, 16)}
+            c = _frame(t, pads[5][0][0] - 3, pads[5][0][1] - 2, 7, 5, "H_d8")
+            e = _frame(t, pads[6][0][0] - 3, pads[6][0][1] - 2, 7, 5, "H_d16")
+            _diptych(t, c, e, "H_height_deep")
+            if t._guard():
+                _expect(all(deep.values()), "deep-pad colonists not spawned: %r" % deep)
         with t.component("pawn_lowers_deeper", shows=["pawn_lowers_on_deeper_cell"]):
             _march(t, pid, pads[2][0][0], pads[2][0][1], 200)
             a = _frame(t, pads[2][0][0] - 3, pads[2][0][1] - 2, 7, 5, "H_d2")
