@@ -172,6 +172,21 @@ namespace RimMandrake.FlowWorks.Drilling
 			return granted;
 		}
 
+		/// <summary>Debug: make this map yield this liquid with this reserve (marks it surveyed).</summary>
+		public void DebugSetYield(LiquidDef liquid, float units)
+		{
+			rolled = true;
+			hasYield = liquid != null;
+			yieldedLiquid = liquid;
+			reserveUnits = liquid != null ? Mathf.Max(0f, units) : 0f;
+		}
+
+		/// <summary>Debug: surveyed, nothing found.</summary>
+		public void DebugClearYield()
+		{
+			DebugSetYield(null, 0f);
+		}
+
 		/// <summary>TANK_CONTENTS_SALVAGE_ON_DECONSTRUCT (C2-F5): units a drill took and never poured go back into the deposit
 		/// when the drill is destroyed.</summary>
 		public void ReturnUnits(float units)

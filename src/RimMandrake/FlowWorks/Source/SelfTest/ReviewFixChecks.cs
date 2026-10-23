@@ -67,10 +67,10 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("ReviewFix_Drill_draws_no_power_when_switched_off", () =>
             {
                 string src = Src("Drilling", "Building_LiquidDrill.cs");
-                Has(src, @"power\.PowerOutput = RimMandrakeFlowWorksSettings\.liquidDrillingEnabled \? -power\.Props\.PowerConsumption : 0f;",
-                    "power follows the setting");
+                Has(src, @"bool on = RimMandrakeFlowWorksSettings\.liquidDrillingEnabled && \(flick == null \|\| flick\.SwitchIsOn\);\s+power\.PowerOutput = on \? -power\.Props\.PowerConsumption : 0f;",
+                    "power follows the setting and the switch");
                 int set = src.IndexOf("power.PowerOutput =", StringComparison.Ordinal);
-                int gate = src.IndexOf("if (!RimMandrakeFlowWorksSettings.liquidDrillingEnabled)", StringComparison.Ordinal);
+                int gate = src.IndexOf("lastBlock = CurrentBlock();", StringComparison.Ordinal);
                 Assert(set >= 0 && gate >= 0 && set < gate, "power is set before the setting's early return");
             });
 

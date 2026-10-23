@@ -98,6 +98,20 @@
   <RM_DrillNeedsOutlet>Needs a dug channel at its outlet — the cell it faces.</RM_DrillNeedsOutlet>
   <RM_DrillLiquidHasNoCanalForm>The liquid below has no canal form and cannot be poured into a channel.</RM_DrillLiquidHasNoCanalForm>
   <RM_DrillLiquidMismatch>The outlet already holds {0}; this drill's liquid cannot mix with it.</RM_DrillLiquidMismatch>
+  <!-- BLEED_WELL_BUILD_SWITCH_AND_SAY_WHY -->
+  <RM_DrillWhy_None>Running.</RM_DrillWhy_None>
+  <RM_DrillWhy_DisabledInSettings>Not running: drilling is switched off in the Flow Works mod settings.</RM_DrillWhy_DisabledInSettings>
+  <RM_DrillWhy_SwitchedOff>Not running: switched off. Use its switch button to turn it on.</RM_DrillWhy_SwitchedOff>
+  <RM_DrillWhy_Unpowered>Not running: no power.</RM_DrillWhy_Unpowered>
+  <RM_DrillWhy_NoSubsurface>Not running: this map has no subsurface liquid to bleed.</RM_DrillWhy_NoSubsurface>
+  <RM_DrillWhy_Unsurveyed>Not running: this map has not been surveyed yet.</RM_DrillWhy_Unsurveyed>
+  <RM_DrillWhy_ReserveSpent>Not running: the subsurface reserve is used up and never refills.</RM_DrillWhy_ReserveSpent>
+  <RM_DrillWhy_NoCanalForm>Not running: the liquid below has no canal form and cannot be poured into a channel.</RM_DrillWhy_NoCanalForm>
+  <RM_DrillWhy_LiquidDisabledInSettings>Not running: {0} is switched off in the Flow Works mod settings.</RM_DrillWhy_LiquidDisabledInSettings>
+  <RM_DrillWhy_OutletNotDug>Not running: the outlet cell {0} is not dug. Dig a channel there.</RM_DrillWhy_OutletNotDug>
+  <RM_DrillWhy_OutletOtherLiquid>Not running: the outlet {0} already holds {1}, and liquids do not mix.</RM_DrillWhy_OutletOtherLiquid>
+  <RM_DrillWhy_OutletBrimming>Waiting: the outlet {0} is brimming full.</RM_DrillWhy_OutletBrimming>
+  <RM_DebugNoSurvey>This map has no subsurface survey component.</RM_DebugNoSurvey>
   <!-- RAIDERS_TRENCH_BUILD_BREACH_AND_JUMP: {0} = the raiding faction's name -->
   <RMFlow_RaidersSetLadders>Raiders of {0} are setting scaling ladders against your trench.</RMFlow_RaidersSetLadders>
   <RMFlow_RaidersFillTrench>Raiders of {0} are shovelling a causeway into your trench.</RMFlow_RaidersFillTrench>
