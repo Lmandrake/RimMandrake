@@ -48,7 +48,7 @@ variants x the same set), and are the likeliest single biggest Opus spend, unmea
 > Monitor, never polling turns. At budget (or on any 429/session limit) stop, write a resume file naming the exact
 > command to continue, push, and report in <=12 lines. Do not record limit errors as verdicts.
 
-## Known gaps (GPT review 2026-10-23; filed as ART_HELPER_BUDGET_LAUNCHER_ENFORCE)
+## Known gaps (GPT review 2026-10-23; filed as HELPER_BUDGET_GATE_ENFORCE_NOT_ASKING_NICELY)
 
 These rules are instructions, not enforcement. Owed: one launcher for helpers AND `claude -p` judges that validates
 the budget fields, reserves allowance before each call from a shared account/stream ledger (so parallel judge
