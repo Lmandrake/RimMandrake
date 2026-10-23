@@ -140,6 +140,23 @@ namespace RimMandrake.FlowWorks.SelfTest
             return (laid, bad, worstAt);
         }
 
+        private static double Along(V2 p, V2 o, V2 axis) => (p.X - o.X) * axis.X + (p.Z - o.Z) * axis.Z;
+
+        /// <summary>Independent ruler for D2, re-derived from the draw constants (DrawEnds' Fitting: the coupling square of side
+        /// size centred JoinerFace x size behind its face, the brass 0.03 x size behind that centre, the wrap ending 0.05 past the
+        /// brass and running wrapLen back): how far the fitting reaches back along the axis beyond the drawn hose's own far edge
+        /// over its last cell (0 = it does not).</summary>
+        private static double Stub(IList<V2> pts, V2 face0, V2 axis, double vis, double size, V2 face, double wrapLen)
+        {
+            double[] s = Geo.CumLen(pts);
+            double L = s[s.Length - 1], hoseBack = double.MaxValue;
+            for (int i = 0; i < pts.Count; i++) if (L - s[i] <= 1.0) hoseBack = Math.Min(hoseBack, Along(pts[i], face0, axis) - vis / 2);
+            double c = Along(face, face0, axis) - HoseMath.JoinerFace * size;
+            double back = c - 0.5 * size;
+            if (wrapLen > 1e-3) back = Math.Min(back, c - 0.03 * size + 0.05 - wrapLen);
+            return Math.Max(0, hoseBack - back);
+        }
+
         /// <summary>A drawn body this far over a wall is a visible shave (a hair under 2 px at 105 px a cell is not).</summary>
         public const double Shave = 0.02;
 
@@ -184,6 +201,56 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(sweep.bad <= 6, sweep.bad + " of " + sweep.laid + " nozzled sweep lays shave a wall corner (off: " + sweepOff.bad + "), worst " + sweep.worst);
                 var plain = Count(WallEndSweep(200, false));
                 Assert(plain.laid >= 150 && plain.bad == 0, plain.bad + " of " + plain.laid + " plain (no nozzle) sweep lays shave a wall corner, worst " + plain.worst);
+            });
+
+            Case("HoseDraw_D2_a_port_met_from_the_side_draws_no_lead_in_stub", () =>
+            {
+                // the live hose (census: fellBack true, so it is drawn on its string-pulled plan, bbox top z 189.51) came up x=152 and
+                // turned west along z=189.5 into the Kludged station's south port cell 150,189: a side arrival
+                var live = Geo.Resample(new List<V2> { new V2(152.5, 186.5), new V2(152.5, 189.5), new V2(150.5, 189.5) }, HoseMath.Sample);
+                Assert(HoseMath.SideArrival(live, new V2(0, 1)), "can-fail: the live hose's last stretch was not read as a side arrival");
+                int cases = 0, legacyStubs = 0;
+                var fails = new List<string>();
+                foreach (double widen in new[] { 1.0, 1.5 })
+                    foreach (double e in new[] { 0.0, 1.0 })
+                        for (int rot = 0; rot < 4; rot++)
+                            foreach (int from in new[] { 1, -1 })
+                                foreach (bool straight in new[] { false, true })
+                                {
+                                    // axis = into the port; the hose runs along +-perp (side) or along axis (straight) into the end cell's centre
+                                    var axis = new[] { new V2(0, 1), new V2(1, 0), new V2(0, -1), new V2(-1, 0) }[rot];
+                                    var perp = new V2(-axis.Z, axis.X) * from;
+                                    V2 end = new V2(150.5, 189.5);
+                                    V2 dir = straight ? axis : perp;                     // heading of the hose's last stretch
+                                    var pts = new List<V2>();
+                                    for (int i = 24; i >= 0; i--) pts.Add(end - dir * (0.25 * i));
+                                    double vis = HoseMath.VisibleWidth(e, 1);
+                                    double size = HoseMath.FittingSize(vis, HoseMath.PieceBand, HoseMath.CouplingMax) * widen;
+                                    V2 face0 = end + axis * 0.5;
+                                    double size1 = size;
+                                    bool side = HoseMath.PortFitting(pts, face0, axis, ref size1, vis, out V2 face, out double wrapLen);
+                                    cases++;
+                                    string tag = "widen " + widen + " e " + e + " axis " + axis + " from " + from + (straight ? " straight" : " side");
+                                    if (side == straight) { fails.Add(tag + ": side arrival read " + side); continue; }
+                                    if (straight)
+                                    {
+                                        if (V2.Dist(face, face0) > 1e-9 || Math.Abs(wrapLen - HoseMath.WrapLength) > 1e-9 || size1 != size) fails.Add(tag + ": a straight arrival's fitting changed");
+                                        continue;
+                                    }
+                                    double stub = Stub(pts, face0, axis, vis, size1, face, wrapLen), legacy = Stub(pts, face0, axis, vis, size, face0, HoseMath.WrapLength);
+                                    if (legacy > 0.1) legacyStubs++;
+                                    if (stub > 0.01) fails.Add(tag + ": the fitting reaches " + stub.ToString("0.000") + " past the hose towards the blocked cell (legacy " + legacy.ToString("0.000") + ")");
+                                    // the coupling still meets the port: its face at most a small slide into the building, never short of it
+                                    double slide = (face.X - face0.X) * axis.X + (face.Z - face0.Z) * axis.Z;
+                                    if (slide < -1e-9 || slide > 0.1 || Math.Abs((face.X - face0.X) * axis.Z - (face.Z - face0.Z) * axis.X) > 1e-9) fails.Add(tag + ": coupling face moved " + slide.ToString("0.000") + " along the axis");
+                                    // and the join is still covered: the wrap (or, cut to nothing, the coupling) reaches the hose's centreline
+                                    double front = Along(face - axis * ((HoseMath.JoinerFace + 0.03) * size1) + axis * 0.05, face0, axis);
+                                    double cover = wrapLen > 1e-3 ? front - wrapLen : Along(face, face0, axis) - (HoseMath.JoinerFace + 0.5) * size1;
+                                    if (size1 < 0.7 * size) fails.Add(tag + ": the coupling shrank to " + (size1 / size).ToString("0.00") + " of its size");
+                                    if (cover > Along(end, face0, axis) + 1e-9) fails.Add(tag + ": nothing covers the hose's end at the join (cover from " + cover.ToString("0.000") + ")");
+                                }
+                Assert(legacyStubs == cases / 2, "can-fail: the old fitting (full lead-in at the cell edge) stuck out on only " + legacyStubs + " of " + cases / 2 + " side arrivals");
+                Assert(fails.Count == 0, fails.Count + " of " + cases + " port fittings wrong: " + string.Join(" | ", fails.Take(4)));
             });
         }
     }
