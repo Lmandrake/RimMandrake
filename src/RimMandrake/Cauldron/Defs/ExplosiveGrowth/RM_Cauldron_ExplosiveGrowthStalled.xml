@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Sprint S0-7 (agreed by card 2026-10-16 on BIOME_SPRINT_PROVE_SCRUB_SETS_PACE: "add RUT_/RM_Cauldron to the stalled
+     band"): the Cauldron is a STALLED biome for Explosive Growth. Our plants there run the stunted rate
+     (stuntedMultiplier), never take water and never cycle (RM_MapComponent_ExplosiveGrowth: stalled => no wet, no cycle).
+     A roster def of our own, like LeaningScrub's venomvine exemption: the engine (RM_ExplosiveGrowthRegistry.cs) unions
+     terminatorBiomes across EVERY RM_ExplosiveGrowthRosterDef loaded. The campaign twin RUT_Cauldron is listed in
+     src/RimUtinni/UtinniPatches/Defs/ExplosiveGrowth/RUT_ExplosiveGrowthRoster.xml. Guarded by MayRequire: deploy
+     rewrites the folded id to the composed Baroque Biomes id. -->
+<Defs>
+  <RimMandrake.ExplosiveGrowth.RM_ExplosiveGrowthRosterDef MayRequire="mandrake.rm.explosivegrowth">
+    <defName>RM_Cauldron_ExplosiveGrowthStalled</defName>
+    <terminatorBiomes>
+      <li>RM_Cauldron</li>
+    </terminatorBiomes>
+  </RimMandrake.ExplosiveGrowth.RM_ExplosiveGrowthRosterDef>
+</Defs>

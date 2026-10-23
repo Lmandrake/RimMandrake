@@ -224,13 +224,43 @@ namespace RimMandrake.ExplosiveGrowth
         }
     }
 
-    /// <summary>HARVEST — "the jackpot window" (§4): a swollen WILD plant (OQ-14) harvested
-    /// before the top yields swollen produce, up to double at full charge.
+    /// <summary>HARVEST — "the jackpot window" (§4): a swollen WILD plant (OQ-14) HARVESTED
+    /// before the top yields swollen produce, up to double at full charge. CUTTING it forfeits
+    /// the jackpot (§4, sprint X4, ruled S0-4 2026-10-16): a cut pays the plain yield.
     /// 🄸 INVENTED scale.</summary>
     [HarmonyPatch(typeof(Plant), nameof(Plant.YieldNow))]
     [RimMandrake.Shared.PatchFeature("Harvest jackpot", typeof(ExplosiveGrowthSettings), "harvestJackpotEnabled")]
     public static class RM_Patch_Plant_YieldNow_Jackpot
     {
+        /// <summary>Proof hook only (RM_ExplosiveGrowthProof): null = read the live reservation, true/false = force
+        /// "a cut is in progress" so the forfeit branch can be read without a pawn.</summary>
+        public static bool? ForceCutting;
+
+        private static readonly HashSet<Pawn> reservers = new HashSet<Pawn>();
+
+        /// <summary>The jackpot multiplier for one yield read: 1 + charge on a harvest, 1 on a cut (X4), 1 uncharged.</summary>
+        public static float Multiplier(float charge, bool cutting) => charge > 0f && !cutting ? 1f + charge : 1f;
+
+        /// <summary>True while a pawn's CUT job (JobDriver_PlantCut and subclasses, PlantDestructionMode.Cut) holds
+        /// this plant. Vanilla JobDriver_PlantWork reads YieldNow inside the work toil, before PlantCollected,
+        /// and the driver reserves its target first (RimSage JobDriver_PlantWork.cs), so the reserver at that
+        /// moment is the actor. Only consulted for a charged wild plant, so the scan never runs on the hot path.</summary>
+        public static bool CuttingNow(Plant plant)
+        {
+            if (ForceCutting.HasValue) return ForceCutting.Value;
+            Map map = plant.MapHeld;
+            if (map == null) return false;
+            reservers.Clear();
+            map.reservationManager.ReserversOf(plant, reservers);
+            bool cut = false;
+            foreach (Pawn p in reservers)
+            {
+                if (p?.jobs?.curDriver is JobDriver_PlantCut) { cut = true; break; }
+            }
+            reservers.Clear();
+            return cut;
+        }
+
         [HarmonyPostfix]
         public static void Postfix(Plant __instance, ref int __result)
         {
@@ -240,7 +270,9 @@ namespace RimMandrake.ExplosiveGrowth
             if (comp == null || !comp.AnyCharging) return;
             if (__instance.IsCrop) return;   // OQ-14: a crop's harvest is exactly its full YieldNow
             float charge = comp.ChargeOf(__instance);
-            if (charge > 0f) __result = GenMath.RoundRandom(__result * (1f + charge));
+            if (charge <= 0f) return;
+            float m = Multiplier(charge, CuttingNow(__instance));
+            if (m > 1f) __result = GenMath.RoundRandom(__result * m);
         }
     }
 
