@@ -57,11 +57,8 @@ standalone Mod-derived settings wrappers are retired in favor of one screen
 here. mandrake.rut.rustcathedralroaches (the third kit, the land-cleaning
 roaches) is NOT absorbed: its cathedral roach is DUPLICATED into this mod as
 RM_CathedralRoach (own defName, own art copy, a first-ever Mod Settings
-toggle) while the original RUT_CathedralRoach stays exactly where it is,
-still serving the frozen campaign twin until Phase B; that kit's other
-creature (RUT_ScarRoach, a Scarlands sibling with no connection to this
-biome) is untouched and unaffected — left for a future Scarlands mod build
-to decide, per that item's own "do not silently absorb it" caution.
+toggle). The original kit (with its RUT_CathedralRoach) was CUT whole on 2026-10-22 (owner, Biome card 4); RM_ScarRoach
+lives in mandrake.rm.warscar.
 
 Ships the biome and its own placement worker (RM_BiomeWorker_RustCathedral,
 replacing the donor AlphaBiomes.BiomeWorker_MechanoidIntrusion — a donor

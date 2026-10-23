@@ -1,0 +1,2 @@
+# Retirement Wave 5 (2026-10-22). packageId<TAB>name<TAB>why. Removed from the *.RULED_2026-10-20 profiles (AUTHORING/DEV/TEST/SHIP) and FULL.LATEST; src folder git-rm-ed.
+mandrake.rut.rustcathedralroaches	RimMandrake: Utinni - Rust Cathedral Roaches	owner question card 2026-10-22 (Biome card 4 -> cut roaches mod now); successors RM_CathedralRoach, RM_ScarRoach

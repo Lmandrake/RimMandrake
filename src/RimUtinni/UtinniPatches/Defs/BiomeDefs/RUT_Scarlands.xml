@@ -5,8 +5,8 @@
     FROZEN — SCARLANDS_STANDALONE_MOD_1: carrying the world until the
     terminal paint; content lives in mandrake.rm.warscar; do not edit here.
     (RUT_Glower and RUT_ScorchedStars were RETIRED 2026-10-16 (PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE) - this
-    biome's wildPlants now name RM_Glower/RM_ScorchedStars; RUT_GlowerCrust folded into RM_GlowerCrust 2026-10-09. RUT_ScarRoach stays
-    as a hidden alias (its RM_ScarRoach successor lives in mandrake.rm.warscar);
+    biome's wildPlants now name RM_Glower/RM_ScorchedStars; RUT_GlowerCrust folded into RM_GlowerCrust 2026-10-09. RUT_ScarRoach was CUT
+    2026-10-22 with its mod (owner Biome card 4; successor RM_ScarRoach in mandrake.rm.warscar);
     RUT_MortuaryCrawler is retired, replaced by RM_Pallbearer. mandrake.rut.
     scarlandsladder is untouched — see mandrake.rm.warscar's own About.xml
     for why it was NOT absorbed.)

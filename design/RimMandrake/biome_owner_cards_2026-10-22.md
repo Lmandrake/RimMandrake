@@ -128,6 +128,7 @@ shows right now.
 ## Card 4. Rust Cathedral roaches mod: cut it
 
 **ANSWERED 2026-10-22 by question card: option 1, cut the roaches mod now.**
+**STATUS 2026-10-22: DONE in src and modlists** (ledger item `ROACHES_MOD_CUT_SAVE_ROACH_OWED`, see `design/RimMandrake/wave4_sheet_gap_2026-10-22.md` update). Owed: the one test save's `RUT_ScarRoach` reference (record there).
 
 **What was learned.** You cut this mod on the retirement sheet and accepted that sheet on 2026-10-21. It is still
 active because Wave 4 left it. Checked in the files: the roaches are **already ours in the free tier**: the Rust
