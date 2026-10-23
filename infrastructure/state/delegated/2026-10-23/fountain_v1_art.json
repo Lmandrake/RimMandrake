@@ -1,0 +1,32 @@
+{
+ "judge_model": "claude-opus-5-5",
+ "brief": "design/RimMandrake/art_judge_brief.md@4d978da61e",
+ "subject": "RM_Fountain",
+ "question": "Pick among fountain v1 candidates A (tiered bowl), B (spout pillar), C (cairn spring); owner ask 2026-10-23: \"simple fountains that allow their water to fall out and flow over the ground ... a neat artistic piece.\"",
+ "inputs_seen": ["Transient/fountain_20261023/cand/RM_Fountain_{A,B,C}.png (256x384, post-GPT v2)", "img/scale_RM_Fountain_*_full.png (true scale beside vanilla human, 32/cell, 18/cell)", "own 32 px/cell downsample on sand", "4x nearest crops of spillway and B spouts", "gpt/record.md", "PROGRESS.md", "infrastructure/state/items/FOUNTAIN_LOOP_BUILD_PUMPS_ITS_OWN_RAIN.md (def facts)"],
+ "inputs_missing": ["no sibling keeps (new thing; B3 not applicable)", "south facing only - a 1x1 rotationally symmetric fountain, Graphic_Single assumed; no N/E/W given"],
+ "recommended_pick": "A",
+ "pick_reason": "Reads as 'fountain' instantly at 32 px/cell and up close; shows the whole water path (top jet -> upper bowl -> three curtains -> basin -> front spill onto the ground), which is the flow-cycle-as-art the ask names. C is a strong runner-up and the more desert/Jawa-flavoured piece; B looks like a hydrant.",
+ "verdicts": [
+  {"picture": "Transient/fountain_20261023/cand/RM_Fountain_A.png", "facing": "south", "verdict": "GOOD",
+   "notes": "Water leaves: yes - front spillway sheet down the outer wall, splash at the foot on the ground. Play zoom: tiered silhouette + blue reads clearly, spill stripe visible. C3: basin and upper bowl ellipses ~0.54, consistent 35 deg camera, no convergence. C6: water in true planes (basin water flat ellipse, curtains vertical, jet vertical); no pipe bore shown. D3: basin fills the 1x1 cell, bowl/jet rise into the 0.5 north overhang as drawSize (1,1.5) intends. D4: real alpha, bbox x9-246 y41-365, corners clear, no ground shadow; semi-alpha 4.5% is the translucent curtains/spray, intended. B1: clean thin outline, soft painterly shading.",
+   "blocking": [],
+   "polish": ["Spill slot is cut the full wall height but water drawn as a vertical fall from rim level; a notch stopping ~1/3 down the wall would be physically consistent.", "Top jet is a smooth solid rod; a slight taper/break-up at the crown would read more as water.", "Splash at the foot ends abruptly - fine, since the FlowWorks ground sheet carries the flow over the ground."]},
+  {"picture": "Transient/fountain_20261023/cand/RM_Fountain_B.png", "facing": "south", "verdict": "WEAK",
+   "notes": "Water leaves: yes (same front spillway). C3/C6 pass: side spouts are drawn side-on, no bore facing camera. Alpha clean (bbox x8-247 y40-374). But as art it reads as a fire hydrant / standpipe: capped stone column with two flanged side nozzles; the tall plain grey shaft dominates and at 32 px/cell is mostly a grey post in a pool.",
+   "blocking": [],
+   "polish": ["Top jet is a stubby solid rod with two blobs - reads as glass, not water.", "Pillar silhouette is utilitarian; weakest answer to 'a neat artistic piece'."]},
+  {"picture": "Transient/fountain_20261023/cand/RM_Fountain_C.png", "facing": "south", "verdict": "GOOD",
+   "notes": "Water leaves: yes - cascade down the front of four stacked stone tiers into the pool, then out through a gap in the ring onto the ground with splash. Play zoom: stacked tiers + white/blue cascade stripe read clearly. C3: ring ellipse ~0.56, tiers consistent. C6: pool flat, cascade on the tier faces. D4: alpha clean (bbox x9-247 y60-355). Most naturalistic and desert-appropriate of the three.",
+   "blocking": [],
+   "polish": ["Exit curtain hangs ~12 px (native) below the base of the low ring wall before the splash, slightly implying a drop below grade; the spill should turn into a short foreshortened sheet on the ground instead.", "Tier stones are near-identical in shape; more irregular stacking would sell 'cairn'."]}
+ ],
+ "cross_candidate_findings": [
+  {"severity": "blocking-for-install (not for the pick)", "finding": "Spec line 26 tints the whole graphic by stuff (useIngredientsForColor) while the water is painted into the same sprite: a plain Cutout stuff tint will multiply the blue water by the stone colour (sandstone -> olive water, slate -> murky). Ship the pick with a CutoutComplex mask (_m) so only stone tints, or split water onto an untinted overlay."},
+  {"severity": "polish/spec", "finding": "Spec line 36 paints basin water and the front spill into the static sprite, so a Dry / No water fountain still shows water pouring out. Consider a dry base sprite with water as the Playing overlay."}
+ ],
+ "proposals": [
+  "Brief C6 currently names pipes/hoses/nozzles only; propose extending it to falling/spilling water: a spill drawn as a vertical curtain must end where real ground is, and water on the ground is drawn in the ground plane (foreshortened), not as a hanging sheet. Evidence: C's exit curtain here.",
+  "Brief B4 should note that a stuff-tinted building with painted non-material parts (water, glow, glass) needs a mask; evidence: RM_Fountain spec line 26."
+ ]
+}
