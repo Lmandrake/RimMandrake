@@ -31,3 +31,11 @@
 - 03:35 restored Modern trio (fb34c9bc2d = owner's card pick) + both pumping stations (42678b8eff^) via art.py --owner-said; tank_art_edges accepts installed base; 4 gates green
 - 03:36 renderer written (art_source/UnderCouplers/render_under_couplers.py); rendering
 - 03:37 22 composites rendered + pinned; looked at 2 (tall Industrial, LiquidTank Scrapper): collar+pipe vanish under body as designed
+- 03:38 hook written into RM_MapComponent_Hoses.cs (2 spots) + csproj; other helper's WIP in same file -> commit of the hook waits for their commit
+- 03:39 csproj pushed (387de3b5d1, guard rebuilt DLL from committed source); lesson filed; waiting on other helper's RM_MapComponent_Hoses.cs commit to commit hook
+- 03:39 hook landed inside the other helper's commit 3ea460a66b (shared file; my 2 hunks swept in); DLL rebuilt from committed source by the pre-push guard at 387de3b5d1. Items marked built --sha 387de3b5d1, A2 L1 live look owed. DONE.
+
+## Live look must check
+- hose laid to each side of: RM_LiquidTank (N/S esp.), tall/IBC/XTall (S + W/E), both pumping stations (S)
+- collar sits at the hose's brass coupling face; pipe runs on and vanishes under the fixture body; nothing over the fixture
+- side-arrival elbow ports (HOSE_LEADIN fix): under-coupler is at the PORT point, the elbow coupling face may sit off it -- look for a gap
