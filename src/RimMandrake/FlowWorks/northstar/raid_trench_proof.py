@@ -393,12 +393,15 @@ def _run(argv, hold):
     # RAIDERS_TRENCH A3 (--depth 8): a ring square the raid FILLED reads shallower than dug (a causeway); read back every ring
     # square's depth (the dig itself is the scene's only writer, so any shallower square is the raid's fill)
     filled = []
-    for x in range(c[0] - 6, c[0] + 7):
-        for z in range(c[1] - 6, c[1] + 7):
-            if cheb((x, z), c) in (5, 6):
-                dr = B.call("jawa/flowworks_excavation_drive", x=x, z=z, deepenLevels=0, setFill=-1) or {}
-                if isinstance(dr.get("depth"), int) and dug.get((x, z)) is not None and dr["depth"] < dug[(x, z)]:
-                    filled.append((x, z, dr["depth"]))
+    try:
+        for x in range(c[0] - 6, c[0] + 7):
+            for z in range(c[1] - 6, c[1] + 7):
+                if cheb((x, z), c) in (5, 6):
+                    dr = B.call("jawa/flowworks_excavation_drive", x=x, z=z, deepenLevels=0, setFill=-1) or {}
+                    if isinstance(dr.get("depth"), int) and dug.get((x, z)) is not None and dr["depth"] < dug[(x, z)]:
+                        filled.append((x, z, dr["depth"]))
+    except Exception as ex:  # noqa: BLE001 - the client refuses a mutating tool after an unknown-outcome call (see jobTrace)
+        filled, det["ringReadError"] = None, ("%s: %s" % (type(ex).__name__, ex))[:300]
     det["ringDepth"], det["filledSquares"], det["ringDugShort"] = a.depth, filled, res["ringShort"]
     walls = sorted({cheb((w["x"], w["z"]), c) for w in ways})
     both = 5 in walls and 6 in walls
@@ -407,14 +410,14 @@ def _run(argv, hold):
           "PASS" if (both and used) else "FAIL")
     if a.depth > 6:
         # 4 m: past the portable ladder's reach -> the fill causeway is the legal way (A3); a ladder there is a FAIL of its own
-        a2 = ("UNMEASURED" if cameNear < 2 or sealed != "PASS" else
+        a2 = ("UNMEASURED" if cameNear < 2 or sealed != "PASS" or filled is None else
               "PASS" if (filled and used) else "FAIL")
     if a.jump_packs:
         # A4: a raider who reached the island over a trench nobody laddered or filled jumped; no descent recorded for him
         pr_ = B.call("jawa/flowworks_pit_report", x=c[0] + 6, z=c[1]) or {}
         desc = [str(x) for x in pr_.get("recentDescents") or []]
         fell = [i_ for i_ in det["onIsland"] if any(d_.startswith(str(i_) + "@") for d_ in desc)]
-        st_j = ("UNMEASURED" if cameNear < 2 or sealed != "PASS" else
+        st_j = ("UNMEASURED" if cameNear < 2 or sealed != "PASS" or filled is None else
                 "PASS" if det["onIsland"] and not fell and not ways and not filled else "FAIL")
         row("RAID_JUMP_LANDS_UNHURT", st_j, {"onIsland": det["onIsland"], "fellOnTheWay": fell, "raiderWays": ways,
                                              "filledSquares": filled, "recentDescents": desc[-8:],

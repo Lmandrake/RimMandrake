@@ -2256,8 +2256,6 @@ def phase_L(L, args):
                         "settings table misses C# toggles: %s" % gap[:6] if gap else
                         "%d settings read (every C# toggle among them), all shipped defaults" % n_set)
         _fold(L, "L2_tier_live", [log_part, asm_part, set_part])
-        if asm_part[1] is False:
-            raise Abort("stale DLL: the running assembly is not the repo's -- redeploy and relaunch before any run")
         if drift and not args.reset_settings:
             raise Abort("settings drift")
         gd = B.call("jawa/get_defs", defs="TerrainDef/RM_Channel_Empty;TerrainDef/RM_Channel_Mid;"
@@ -3810,6 +3808,9 @@ class MockBridge(object):
         "fillin_leak": ["E7a_fillin_displaces"],
         "flowworks_error": ["E9_log_budget"],
         "dll_stale": ["L2_tier_live"],
+        # live_session 20261022T235239: a deployed DLL older than the repo's lacks a newer setting (pipeFaucetsEnabled);
+        # the settings sweep read it first and aborted on "No public field" with no L2 row: identity must come first
+        "dll_stale_old_fields": ["L2_tier_live"],
         "no_clamp": ["E1b_pulse_clamp"],
         "sticky_ignored": ["S5_sticky_limitless"],
         "clamp_broken": ["S2_fill_clamp"],
@@ -3878,9 +3879,10 @@ class MockBridge(object):
                     "fluid_row_blind": {"X6_two_fluids_distinct": "UNMEASURED", "X7_tar_front_lags_water": "UNMEASURED",
                                         "X7n_viscosity_off": "UNMEASURED", "X10_canal_fire": "UNMEASURED"},
                     "list_pawns_blind": {"L4_site_ready": "UNMEASURED"},
+                    "dll_stale_old_fields": {"L2_tier_live": "FAIL", "ABORT": "FAIL"},
                     "roof_read_blind": {"E6_roof_readback": "UNMEASURED"},
                     "save_pulse_count": {"X6_two_fluids_distinct": "PASS", "X7_tar_front_lags_water": "PASS"}}
-    ABORTING = ("settings_drift", "dll_stale", "engine_lost_late", "preflight_crash")   # faults whose run aborts BY DESIGN
+    ABORTING = ("settings_drift", "dll_stale", "dll_stale_old_fields", "engine_lost_late", "preflight_crash")   # faults whose run aborts BY DESIGN
 
     def __init__(self, faults=()):
         self.faults = set(faults)
@@ -4209,7 +4211,8 @@ class MockBridge(object):
         if "preflight_crash" in self.faults:
             return None                                   # a reply the preflight cannot read (tp.get -> AttributeError)
         sha = _sha256(os.path.join(MOD, "Assemblies", "RimMandrakeFlowWorks.dll"))
-        return dict(success=True, assemblyFileSha256=("0" * 64) if "dll_stale" in self.faults else sha,
+        stale = "dll_stale" in self.faults or "dll_stale_old_fields" in self.faults
+        return dict(success=True, assemblyFileSha256=("0" * 64) if stale else sha,
                     mvidMatchesFile=True, assemblyLocation="mock")
 
     def t_jawa_get_defs(self, defs, fields=None):
@@ -4218,6 +4221,8 @@ class MockBridge(object):
         return dict(success=True, foundCount=len(out), notFound=[], defs=out)
 
     def t_jawa_mod_settings_field(self, typeName, action="get", field=None, value=None):
+        if "dll_stale_old_fields" in self.faults and field == "pipeFaucetsEnabled":
+            return dict(success=False, message="No public field 'pipeFaucetsEnabled' (static or instance) on %s." % typeName)
         if action == "set":
             cur = self.settings[typeName][field]
             self.settings[typeName][field] = (str(value).lower() == "true") if isinstance(cur, bool) else float(value)
