@@ -1,0 +1,1 @@
+git commit --amend in a shared seat clone takes the WHOLE index, like a bare commit: the commit-pathspec hook lets --amend through, so amending only a message swept another helper's staged FeverWood cut (8 deletions) into 67633f878 (2026-10-23). To fix a message, amend with the pathspec of your own files (git commit --amend <paths> -F -) or leave it; never a bare --amend.
