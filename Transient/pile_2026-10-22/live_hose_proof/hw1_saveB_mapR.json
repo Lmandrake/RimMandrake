@@ -1,0 +1,123 @@
+{
+ "mod": "FlowWorks",
+ "script": "proof_hose.py",
+ "tier": "flowworks",
+ "mode": "partial",
+ "started": "2026-10-22T20:25:48",
+ "rows": [
+  {
+   "id": "HP1_tier_running_startup_log_clean",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "playing": true,
+    "flowworks": true,
+    "gimmesomeslack": true,
+    "startupLogRead": true,
+    "startupErrorsNamingHose": []
+   },
+   "block": "preflight"
+  },
+  {
+   "id": "HP2_probes_site_pinned",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "hoseProbe": true,
+    "colonistsDrafted": [
+     382547,
+     382550,
+     382562,
+     382565,
+     382568
+    ]
+   },
+   "block": "preflight"
+  },
+  {
+   "id": "HW1_no_laid_hose_crosses_a_wall",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "laid": 2,
+    "crossing": [],
+    "checked": [
+     382378,
+     382379
+    ]
+   },
+   "block": "walls"
+  },
+  {
+   "id": "Z_log_budget",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "errorsNamingHoseOrFlowWorks": [],
+    "otherErrors": 0,
+    "tap": {
+     "polls": 3,
+     "lost": 0,
+     "kept": 0
+    },
+    "siteClearErrors": 0,
+    "newWarnings": 0
+   },
+   "block": "session"
+  }
+ ],
+ "blocks": {
+  "preflight": {
+   "wall_s": 11.3,
+   "rows": 2,
+   "raised": null
+  },
+  "walls": {
+   "wall_s": 0.2,
+   "rows": 1,
+   "raised": null
+  },
+  "session": {
+   "wall_s": 0.0,
+   "rows": 1,
+   "raised": null
+  }
+ },
+ "doc": "design/RimMandrake/hose_port_to_flowworks_design_FINAL_2026-10-10.md",
+ "offline": {
+  "skipped": "--skip-offline"
+ },
+ "log_revive": {
+  "alive": true,
+  "sentinel": "[proof log sentinel] revive 1792725949046",
+  "emitted": true,
+  "why": null,
+  "cleared": true
+ },
+ "mod_hash": "addd6a78e66770973fa47e6c7a3b6ae2b51b64de301ebce724b0ae6e520f14ee",
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "wall_s": 12.3,
+ "site_notes": [],
+ "certifiable": false,
+ "site_calm_restore": false
+}

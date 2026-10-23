@@ -1,0 +1,494 @@
+{
+ "verdict": "FAIL",
+ "maps": [
+  {
+   "map": 0,
+   "verdict": "FAIL",
+   "answer": {
+    "success": true,
+    "cmd": "joints",
+    "tolerance": 0.05,
+    "total": 25,
+    "bad": 1,
+    "unmeasured": 0,
+    "reels": 18,
+    "joints": [
+     {
+      "reel": 41679,
+      "at": [
+       19,
+       42
+      ],
+      "rot": 3,
+      "look": "Scrapper",
+      "kind": "feed_port_end",
+      "ok": true,
+      "gap": 0.0,
+      "where": [
+       17.5,
+       43.5
+      ],
+      "note": "RM_UniversalPipe"
+     },
+     {
+      "reel": 41679,
+      "at": [
+       19,
+       42
+      ],
+      "rot": 3,
+      "look": "Scrapper",
+      "kind": "feed_nozzle_shared",
+      "ok": false,
+      "gap": 0.0,
+      "where": [
+       19.0,
+       43.0
+      ],
+      "note": "laid reel with its port in front of the nozzle: the link and the laid hose share one nozzle (turn the reel)"
+     },
+     {
+      "reel": 41679,
+      "at": [
+       19,
+       42
+      ],
+      "rot": 3,
+      "look": "Scrapper",
+      "kind": "reel_end",
+      "ok": true,
+      "gap": 0.0,
+      "where": [
+       17.792,
+       42.698
+      ],
+      "note": "coupling face 0.070 from the tip (seat 0.07); strand starts 0.514 back, 0.000 off the axis"
+     },
+     {
+      "reel": 41683,
+      "at": [
+       14,
+       15
+      ],
+      "rot": 3,
+      "look": "Scrapper",
+      "kind": "reel_end",
+      "ok": true,
+      "gap": 0.0,
+      "where": [
+       12.792,
+       15.698
+      ],
+      "note": "coupling face 0.070 from the tip (seat 0.07); strand starts 0.514 back, 0.000 off the axis"
+     },
+     {
+      "reel": 41684,
+      "at": [
+       14,
+       19
+      ],
+      "rot": 3,
+      "look": "Industrial",
+      "kind": "reel_end",
+      "ok": true,
+      "gap": 0.0,
+      "where": [
+       12.775,
+       19.891
+      ],
+      "note": "coupling face 0.070 from the tip (seat 0.07); strand starts 0.514 back, 0.000 off the axis"
+     },
+     {
+      "reel": 41685,
+      "at": [
+       14,
+       24
+      ],
+      "rot": 3,
+      "look": "Modern",
+      "kind": "reel_end",
+      "ok": true,
+      "gap": 0.0,
+      "where": [
+       12.834,
+       24.996
+      ],
+      "note": "coupling face 0.070 from the tip (seat 0.07); strand starts 0.514 back, 0.000 off the axis"
+     },
+     {
+      "reel": 41687,
+      "at": [
+       14,
+       34
+      ],
+      "rot": 3,
+      "look": "Scrapper",
+      "kind": "reel_end",
+      "ok": true,
+      "gap": 0.0,
+      "where": [
+       12.792,
+       34.698
+      ],
+      "note": "coupling face 0.070 from the tip (seat 0.07); strand starts 0.514 back, 0.000 off the axis"
+     },
+     {
+      "reel": 41688,
+      "at": [
+       25,
+       12
+      ],
+      "rot": 3,
+      "look": "Scrapper",
+      "kind": "reel_end",
+      "ok": true,
+      "gap": 0.0,
+      "where": [
+       23.792,
+       12.698
+      ],
+      "note": "coupling face 0.070 from the tip (seat 0.07); strand starts 0.514 back, 0.000 off the axis"
+     },
+     {
+      "reel": 42229,
+      "at": [
+       24,
+       78
+      ],
+      "rot": 3,
+      "look": "Industrial",
+      "kind": "feed_port_end",
+      "ok": true,
+      "gap": 0.0,
+      "where": [
+       25.5,
+       78.5
+      ],
+      "note": "RM_LiquidPump"
+     },
+     {
+      "reel": 42229,
+      "at": [
+       24,
+       78
+      ],
+      "rot": 3,
+      "look": "Industrial",
+      "kind": "feed_under_reel",
+      "ok": true,
+      "gap": 0.0,
+      "where": [
+       24.0,
+       79.0
+      ],
+      "note": "link runs in under the reel to its centre"
+     },
+     {
+      "reel": 42229,
+      "at": [
+       24,
+       78
+      ],
+      "rot": 3,
+      "look": "Industrial",
+      "kind": "reel_end",
+      "ok": true,
+      "gap": 0.0,
+      "where": [
+       22.775,
+       78.891
+      ],
+      "note": "coupling face 0.070 from the tip (seat 0.07); strand starts 0.514 back, 0.000 off the axis"
+     },
+     {
+      "reel": 42273,
+      "at": [
+       133,
+       20
+      ],
+      "rot": 3,
+      "look": "Industrial",
+      "kind": "reel_end",
+      "ok": true,
+      "gap": 0.0,
+      "where": [
+       131.775,
+       20.891
+      ],
+      "note": "coupling face 0.070 from the tip (seat 0.07); strand starts 0.514 back, 0.000 off the axis"
+     },
+     {
+      "reel": 42273,
+      "at": [
+       133,
+       20
+      ],
+      "rot": 3,
+      "look": "Industrial",
+      "kind": "free_port_end",
+      "ok": true,
+      "gap": 0.0,
+      "where": [
+       142.0,
+       21.021
+      ],
+      "note": "RM_LiquidTank port at [142.000,21.021]"
+     },
+     {
+      "reel": 42334,
+      "at": [
+       24,
+       134
+      ],
+      "rot": 3,
+      "look": "Modern",
+      "kind": "feed_port_end",
+      "ok": true,
+      "gap": 0.0,
+      "where": [
+       23.5,
+       133.5
+      ],
+      "note": "RM_UniversalPipe"
+     },
+     {
+      "reel": 42334,
+      "at": [
+       24,
+       134
+      ],
+      "rot": 3,
+      "look": "Modern",
+      "kind": "feed_under_reel",
+      "ok": true,
+      "gap": 0.0,
+      "where": [
+       24.0,
+       135.0
+      ],
+      "note": "link runs in under the reel to its centre"
+     },
+     {
+      "reel": 42334,
+      "at": [
+       24,
+       134
+      ],
+      "rot": 3,
+      "look": "Modern",
+      "kind": "reel_end",
+      "ok": true,
+      "gap": 0.0,
+      "where": [
+       22.834,
+       134.996
+      ],
+      "note": "coupling face 0.070 from the tip (seat 0.07); strand starts 0.514 back, 0.000 off the axis"
+     },
+     {
+      "reel": 42335,
+      "at": [
+       24,
+       127
+      ],
+      "rot": 3,
+      "look": "Modern",
+      "kind": "feed_port_end",
+      "ok": true,
+      "gap": 0.0,
+      "where": [
+       23.5,
+       129.5
+      ],
+      "note": "RM_UniversalPipe"
+     },
+     {
+      "reel": 42335,
+      "at": [
+       24,
+       127
+      ],
+      "rot": 3,
+      "look": "Modern",
+      "kind": "feed_under_reel",
+      "ok": true,
+      "gap": 0.0,
+      "where": [
+       24.0,
+       128.0
+      ],
+      "note": "link runs in under the reel to its centre"
+     },
+     {
+      "reel": 42335,
+      "at": [
+       24,
+       127
+      ],
+      "rot": 3,
+      "look": "Modern",
+      "kind": "reel_end",
+      "ok": true,
+      "gap": 0.0,
+      "where": [
+       22.834,
+       127.996
+      ],
+      "note": "coupling face 0.070 from the tip (seat 0.07); strand starts 0.514 back, 0.000 off the axis"
+     },
+     {
+      "reel": 42433,
+      "at": [
+       23,
+       148
+      ],
+      "rot": 3,
+      "look": "Modern",
+      "kind": "reel_end",
+      "ok": true,
+      "gap": 0.0,
+      "where": [
+       21.834,
+       148.996
+      ],
+      "note": "coupling face 0.070 from the tip (seat 0.07); strand starts 0.514 back, 0.000 off the axis"
+     },
+     {
+      "reel": 42484,
+      "at": [
+       211,
+       149
+      ],
+      "rot": 3,
+      "look": "Scrapper",
+      "kind": "reel_end",
+      "ok": true,
+      "gap": 0.0,
+      "where": [
+       209.792,
+       149.698
+      ],
+      "note": "coupling face 0.070 from the tip (seat 0.07); strand starts 0.514 back, 0.000 off the axis"
+     },
+     {
+      "reel": 42490,
+      "at": [
+       237,
+       117
+      ],
+      "rot": 3,
+      "look": "Scrapper",
+      "kind": "feed_port_end",
+      "ok": true,
+      "gap": 0.0,
+      "where": [
+       236.5,
+       116.5
+      ],
+      "note": "RM_LiquidTank"
+     },
+     {
+      "reel": 42490,
+      "at": [
+       237,
+       117
+      ],
+      "rot": 3,
+      "look": "Scrapper",
+      "kind": "feed_under_reel",
+      "ok": true,
+      "gap": 0.0,
+      "where": [
+       237.0,
+       118.0
+      ],
+      "note": "link runs in under the reel to its centre"
+     },
+     {
+      "reel": 42490,
+      "at": [
+       237,
+       117
+      ],
+      "rot": 3,
+      "look": "Scrapper",
+      "kind": "reel_end",
+      "ok": true,
+      "gap": 0.0,
+      "where": [
+       235.792,
+       117.698
+      ],
+      "note": "coupling face 0.070 from the tip (seat 0.07); strand starts 0.514 back, 0.000 off the axis"
+     },
+     {
+      "reel": 42490,
+      "at": [
+       237,
+       117
+      ],
+      "rot": 3,
+      "look": "Scrapper",
+      "kind": "free_port_end",
+      "ok": true,
+      "gap": 0.0,
+      "where": [
+       230.0,
+       118.021
+      ],
+      "note": "RM_LiquidTank port at [230.000,118.021]"
+     }
+    ]
+   }
+  },
+  {
+   "map": 9,
+   "verdict": "PASS",
+   "answer": {
+    "success": true,
+    "cmd": "joints",
+    "tolerance": 0.05,
+    "total": 2,
+    "bad": 0,
+    "unmeasured": 0,
+    "reels": 2,
+    "joints": [
+     {
+      "reel": 382378,
+      "at": [
+       164,
+       95
+      ],
+      "rot": 3,
+      "look": "Industrial",
+      "kind": "reel_end",
+      "ok": true,
+      "gap": 0.0,
+      "where": [
+       162.775,
+       95.891
+      ],
+      "note": "coupling face 0.070 from the tip (seat 0.07); strand starts 0.514 back, 0.000 off the axis"
+     },
+     {
+      "reel": 382379,
+      "at": [
+       182,
+       101
+      ],
+      "rot": 3,
+      "look": "Scrapper",
+      "kind": "reel_end",
+      "ok": true,
+      "gap": 0.0,
+      "where": [
+       180.792,
+       101.698
+      ],
+      "note": "coupling face 0.070 from the tip (seat 0.07); strand starts 0.514 back, 0.000 off the axis"
+     }
+    ]
+   }
+  }
+ ]
+}
