@@ -13,8 +13,9 @@
 
   Art: own renders, Textures/Things/Pawn/Animal/RM_Barkwarden/ (live) and
   .../Cougar/RM_Barkwarden/ (dessicated), installed by 3b6ac4112 over the
-  interim cougar reskin. The silver-grey <color> tint is the reskin's and still
-  multiplies over the new art: BARKWARDEN_TINT_JUDGE_GREY_ON_GREY.
+  interim cougar reskin. No <color> tint: the cougar reskin's silver-grey multiplied over
+  the new art (mean value 125 -> 82, a muddy dark grey), judged and dropped 2026-10-22
+  (BARKWARDEN_TINT_JUDGE_GREY_ON_GREY).
 
   Rage state: RM_RoostDefence below reuses the kit's
   RM_MentalState_ScopedAggression (hostile to one pawn, never a faction flip).
@@ -183,7 +184,6 @@
           <texPath>Things/Pawn/Animal/RM_Barkwarden/RM_Barkwarden</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.0</drawSize>
-          <color>(168,170,172)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Cougar/RM_Barkwarden/RM_Barkwarden</texPath>
@@ -195,7 +195,6 @@
           <texPath>Things/Pawn/Animal/RM_Barkwarden/RM_Barkwarden</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.35</drawSize>
-          <color>(168,170,172)</color>
           <shadowData>
             <volume>(0.3, 0.3, 0.3)</volume>
             <offset>(0,0,-0.3)</offset>
@@ -211,7 +210,6 @@
           <texPath>Things/Pawn/Animal/RM_Barkwarden/RM_Barkwarden</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.7</drawSize>
-          <color>(168,170,172)</color>
           <shadowData>
             <volume>(0.4, 0.4, 0.4)</volume>
             <offset>(0,0,-0.1)</offset>

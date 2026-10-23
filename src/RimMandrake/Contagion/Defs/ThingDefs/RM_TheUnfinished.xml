@@ -34,16 +34,9 @@
     Filth_Slime in its place, then leaves a small heap of RM_ContagionMulch
     (owner Q4, 2026-10-15; Source/RM_ContagionMulch.cs).
 
-    Art: PLACEHOLDER — a recolored vanilla Warg body (this mod's own
-    RM_BlueDesertFauna.xml precedent: "recolored placeholder, no new art"),
-    tinted toward the biome's own red-violet/bruise-purple palette
-    (infrastructure/artpipe/done/contagion_brossak_*.json's own prompt
-    language). infrastructure/artpipe/done/, _artsrc/ and registry.jsonl were
-    checked for existing "Unfinished"/"chimera" art before writing this —
-    none exists; every hit was unrelated already-cast Contagion creatures
-    (brossak/fezzira/ghaaz/etc., DONOR_DEFS_PORT_TO_OURS_1). Real bespoke art
-    (the "reads as a draft, asymmetry everywhere" silhouette the sheet's §9
-    calls for) is owed work, not blocking; queue via fill_queue.py separately.
+    Art: own regenerated renders, Textures/Things/Pawn/Animal/RM_TheUnfinished/ (dessicated still the vanilla Warg
+    stand-in). No <color> tint: the old placeholder red-violet multiplied over the new art turned it a flat
+    maroon (green channel 70 -> 15), dropped 2026-10-22 (BARKWARDEN_TINT_JUDGE_GREY_ON_GREY).
   -->
 
   <ThingDef ParentName="AnimalThingBase">
@@ -131,7 +124,6 @@
           <texPath>Things/Pawn/Animal/RM_TheUnfinished/RM_TheUnfinished</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.85</drawSize>
-          <color>(168,54,96)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Warg/RM_TheUnfinished/RM_TheUnfinished</texPath>
