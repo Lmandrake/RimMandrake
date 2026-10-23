@@ -7,7 +7,7 @@ status-hint: FLOOD_CANYON_BIOME_1 / CRACKEDLANDS_MECHANICS_BUILD_1 — a canyon 
 Sources: `About/About.xml`, `Source/RM_CrackedLandsMod.cs` (25 settings), `RM_MapComponent_CanyonFlood.cs`, `RM_MapComponent_RecedeAftermath.cs`, `RM_FossilStrata.cs`, `Source/Debug/RM_CrackedLandsDebugActions.cs` (the state surface), `Defs/`.
 
 ## must be true
-- Every def the mod ships (biome, game condition, weather, sounds, creatures, hediff, fossil seams and display, wax suit, plant, genstep) resolves in the running game; a nonexistent control reads absent so the probe can say no. → defs_resolve.shipped_defs_resolve, defs_resolve.control_absent_def_reads_absent
+- Every def the mod ships (biome, game condition, weather, sounds, creatures, hediff, fossil seams, wax suit, plant, genstep) resolves in the running game; a nonexistent control reads absent so the probe can say no. → defs_resolve.shipped_defs_resolve, defs_resolve.control_absent_def_reads_absent
 - Every Mod Settings field the C# declares round-trips (write alt, read back, write default, read back). → flip_biomeRarityFactor.biomeRarityFactor_round_trips (and one `flip_<field>` chain per declared field, generated from the settings class)
 - A run leaves every setting at its shipped default. → settings_restored.all_settings_at_shipped_defaults
 - Off a canyon biome and with `featureInOtherBiomes` off, the flood cycle is inert. → feature_gate_off.cycle_inert_on_plain_map
@@ -22,7 +22,6 @@ Sources: `About/About.xml`, `Source/RM_CrackedLandsMod.cs` (25 settings), `RM_Ma
 - A dug FlowWorks channel, pit or superdeep cell inside the footprint is filled by the flood, not erased, and is emptied again at recede. → UNCOVERED: needs FlowWorks excavation plus an F-level read and a seeded footprint (CANYON_FLOOD_ERASES_CANALS_1 is the engine side); chain excavated_cells_survive records UNMEASURED
 - Peakstorm Light pulls the next flood forward (0.6 roll once per cycle). → UNCOVERED: statistical single roll, needs a seeded RNG; chain peakstorm_pulls_flood_forward records UNMEASURED
 - The flood wakes the muttavaq (water reaching its pan) and at the dry it digs in. → UNCOVERED: needs a muttavaq on a flooded pan cell and a seeded footprint; chain muttavaq_wakes_and_digs_in records UNMEASURED
-- The recede brings a flier migrant group on a biome that rosters flight-capable animals (`recedeMigrantsEnabled`). → UNCOVERED: a plain biome has none, needs an RM_FloodedCanyon map; chain recede_migrants records UNMEASURED
 - The chime and herald audio and the water look. → UNCOVERED: audio and visual, judge pass or owner
 - Ledges of Mercy: at the warning a trained animal runs for the nearest refuge ledge and reaches it; the flood never takes a ledge cell; `ledgeRefugeEnabled` off sends nobody. → ledge_refuge.trained_animal_runs_for_ledge, ledge_refuge.refuge_off_sends_nobody
 - A neutral humanlike visitor runs for a ledge at the warning. → UNCOVERED: the suite's spawn_pawn makes only player or hostile pawns; chain ledge_refuge_neutral_visitor records UNMEASURED

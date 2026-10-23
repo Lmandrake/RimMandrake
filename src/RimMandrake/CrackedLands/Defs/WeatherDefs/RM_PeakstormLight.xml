@@ -22,11 +22,9 @@
   read as bruised, not as a fire or an eclipse, against Clear's own sets.
 
   Wind: "cool, wet-clay air pushes through the slots" - windSpeedFactor 1.6
-  (TUNED: noticeably gusty, short of a storm's). The dust that briefly
-  REVERSES is not expressible in a WeatherDef (no mote direction field), so
-  <overlayClasses> carries RM_WeatherOverlay_PeakstormDust, which drifts a dust
-  sheet one way and swings it back at intervals (CRACKEDLANDS_PEAKSTORM_DUST_REVERSAL_1).
-  Zero precipitation still holds: an overlay draws, it does not make rain.
+  (TUNED: noticeably gusty, short of a storm's). Its reversing-dust sky
+  overlay (CRACKEDLANDS_PEAKSTORM_DUST_REVERSAL_1) was cut 2026-10-23 (fluff
+  review).
 
   Flood coupling (RM_MapComponent_CanyonFlood): while this weather stands,
   the flood clock rolls ONCE per cycle (TUNED 0.6) to pull its next flood
@@ -44,9 +42,6 @@
     </ambientSounds>
     <durationRange>10000~30000</durationRange>
     <windSpeedFactor>1.6</windSpeedFactor>
-    <overlayClasses>
-      <li>RimMandrake.CrackedLands.RM_WeatherOverlay_PeakstormDust</li>
-    </overlayClasses>
     <eventMakers>
       <li>
         <averageInterval>900</averageInterval>

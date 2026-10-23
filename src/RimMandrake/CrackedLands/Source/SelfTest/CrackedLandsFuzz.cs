@@ -472,8 +472,6 @@ namespace RimMandrake.CrackedLands.SelfTest
             Check(RM_CanyonRulesKernel.DryTicks(0f) == 2500 && RM_CanyonRulesKernel.DryTicks(2f) == 120000 && RM_CanyonRulesKernel.SalvageTicks(-1f) == 2500, "aftermath durations and floors");
             int tick = r.Next(-1, 100000), now = r.Next(0, 100000);
             Check(RM_CanyonRulesKernel.Due(tick, now) == (tick >= 0 && now >= tick), "due");
-            Check(RM_CanyonRulesKernel.MigrantPassRuns(tick, now) == (tick >= 0 && now >= tick && now % 2500 == 0), "migrant pass");
-            Check(RM_CanyonRulesKernel.MigrantsDone(0, 0, 99) && !RM_CanyonRulesKernel.MigrantsDone(2, 5, 6) && RM_CanyonRulesKernel.MigrantsDone(2, 6, 6), "migrants done");
             for (int m = 0; m < 16; m++) { bool a = (m & 1) != 0, b = (m & 2) != 0, c = (m & 4) != 0, d = (m & 8) != 0; Check(RM_CanyonRulesKernel.SalvageTaken(a, b, c, d) == (a && b && c && d), "salvage taken truth"); if (a && b && c && d) Salvage++; }
             // biome score: formula, ordering of gates, lazy seeded roll
             float tMin = 9, tMax = 45, rMin = 0, rMax = 800, eMin = 200, eMax = 2000, bs = 34, dw = 0.3f, rd = new[] { 200f, 0f }[r.Next(2)], spawn = new[] { 0.03f, 1f, 0.5f }[r.Next(3)], rarity = new[] { 0f, 0.0005f, 1f, 5f }[r.Next(4)];

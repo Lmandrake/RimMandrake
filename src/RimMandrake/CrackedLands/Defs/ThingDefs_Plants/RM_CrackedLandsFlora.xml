@@ -110,7 +110,7 @@
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Zennaq</defName>
     <label>zennaq</label>
-    <description>A waist-high burst of stiff wire-thin filaments splayed like a frayed broom, verdigris-copper at the base and silver at the tips. It is dry as tinder, and in a storm it stands up to the sky: lightning on the mesa tops prefers it to the ground.</description>
+    <description>A waist-high burst of stiff wire-thin filaments splayed like a frayed broom, verdigris-copper at the base and silver at the tips. It is dry as tinder.</description>
     <statBases>
       <MaxHitPoints>30</MaxHitPoints>
       <Flammability>2</Flammability>

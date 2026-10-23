@@ -77,10 +77,6 @@ namespace RimMandrake.CrackedLands
         // weather commonality, not a setting.
         public static bool peakstormBiasEnabled = true;
 
-        // CRACKEDLANDS_PEAKSTORM_DUST_REVERSAL_1 — the sky overlay's dust drifts one way and briefly reverses.
-        // Off = it drifts one way only.
-        public static bool peakstormDustReversalEnabled = true;
-
         // §5 — chimes staged by distance-to-flood (three rings across the
         // lead time). Off = the single chime at the start of the lead time.
         public static bool chimeStagingEnabled = true;
@@ -94,9 +90,8 @@ namespace RimMandrake.CrackedLands
         // ~4 h and each herald beat has ~40 min to itself.
         public static float heraldLeadHours = 2f;
 
-        // §5 — the recede feast: the irqit carpet and the migrant sky.
+        // §5 — the recede feast: the irqit carpet (its migrant fliers were cut 2026-10-23, fluff review).
         public static bool recedeFeastEnabled = true;
-        public static bool recedeMigrantsEnabled = true;
         // TUNED: 40 — a carpet on a default flood, without a pawn-count spike.
         public static int irqitCohortMax = 40;
 
@@ -107,10 +102,9 @@ namespace RimMandrake.CrackedLands
         public static float salvageDecayDays = 3f;
 
         // CRACKEDLANDS_FLORA_EXPANSION_BUILD_1 — six admitted flora in the wild roster
-        // (applies at startup: off removes the rows on the next launch), and the
-        // zennaq's pull on lightning strikes.
+        // (applies at startup: off removes the rows on the next launch). The zennaq's
+        // pull on lightning strikes was cut 2026-10-23 (fluff review).
         public static bool floraExpansionEnabled = true;
-        public static bool zennaqLightningPullEnabled = true;
 
         // CRACKEDLANDS_LEDGES_OF_MERCY_1 — refuge ledges: while the warning
         // stands and the water is up, neutral visitors and the player's
@@ -154,17 +148,14 @@ namespace RimMandrake.CrackedLands
             Scribe_Values.Look(ref muttavaqWaterWakeEnabled, "muttavaqWaterWakeEnabled", true, true);
             Scribe_Values.Look(ref muttavaqDigInEnabled, "muttavaqDigInEnabled", true, true);
             Scribe_Values.Look(ref peakstormBiasEnabled, "peakstormBiasEnabled", true, true);
-            Scribe_Values.Look(ref peakstormDustReversalEnabled, "peakstormDustReversalEnabled", true, true);
             Scribe_Values.Look(ref chimeStagingEnabled, "chimeStagingEnabled", true, true);
             Scribe_Values.Look(ref fiveBeatsEnabled, "fiveBeatsEnabled", true, true);
             Scribe_Values.Look(ref heraldLeadHours, "heraldLeadHours", 2f, true);
             Scribe_Values.Look(ref recedeFeastEnabled, "recedeFeastEnabled", true, true);
-            Scribe_Values.Look(ref recedeMigrantsEnabled, "recedeMigrantsEnabled", true, true);
             Scribe_Values.Look(ref irqitCohortMax, "irqitCohortMax", 40, true);
             Scribe_Values.Look(ref floodlineSalvageEnabled, "floodlineSalvageEnabled", true, true);
             Scribe_Values.Look(ref salvageDecayDays, "salvageDecayDays", 3f, true);
             Scribe_Values.Look(ref floraExpansionEnabled, "floraExpansionEnabled", true, true);
-            Scribe_Values.Look(ref zennaqLightningPullEnabled, "zennaqLightningPullEnabled", true, true);
             Scribe_Values.Look(ref ledgeRefugeEnabled, "ledgeRefugeEnabled", true, true);
             Scribe_Values.Look(ref chimeAnchorsEnabled, "chimeAnchorsEnabled", true, true);
             Scribe_Values.Look(ref mercyLedgesEnabled, "mercyLedgesEnabled", true, true);
@@ -208,7 +199,7 @@ namespace RimMandrake.CrackedLands
                 list.GapLine();
             }
 
-            if (Group(list, "Warning: chimes and signs", RimMandrake.Shared.SettingScope.Now, new[] { "chimeStagingEnabled", "fiveBeatsEnabled", "heraldLeadHours", "chimeLeadTimeHours", "peakstormBiasEnabled", "peakstormDustReversalEnabled" }))
+            if (Group(list, "Warning: chimes and signs", RimMandrake.Shared.SettingScope.Now, new[] { "chimeStagingEnabled", "fiveBeatsEnabled", "heraldLeadHours", "chimeLeadTimeHours", "peakstormBiasEnabled" }))
             {
                 list.CheckboxLabeled("Chimes ring in stages as the water nears", ref chimeStagingEnabled,
                     "The first chime rings at the full warning lead time, then again at half "
@@ -226,9 +217,6 @@ namespace RimMandrake.CrackedLands
                     "When the far skyline flickers with a storm on the peaks, the next flood "
                     + "often comes sooner — within two days or so — but not always. The chime still rings first. "
                     + "Never within half a flood period of the last one.");
-                list.CheckboxLabeled("Peakstorm dust reverses", ref peakstormDustReversalEnabled,
-                    "During peakstorm light the dust haze drifts one way, then every so often (about five seconds "
-                    + "in every forty) swings round and flows back the other way. Off means it drifts one way only.");
                 list.GapLine();
             }
 
@@ -276,7 +264,7 @@ namespace RimMandrake.CrackedLands
                 list.GapLine();
             }
 
-            if (Group(list, "After the water recedes", RimMandrake.Shared.SettingScope.NextPulse, new[] { "soakDecayDays", "floodRecutSeamsEnabled", "floodRecutSeamCount", "recedeFeastEnabled", "recedeMigrantsEnabled", "irqitCohortMax", "floodlineSalvageEnabled", "salvageDecayDays" }))
+            if (Group(list, "After the water recedes", RimMandrake.Shared.SettingScope.NextPulse, new[] { "soakDecayDays", "floodRecutSeamsEnabled", "floodRecutSeamCount", "recedeFeastEnabled", "irqitCohortMax", "floodlineSalvageEnabled", "salvageDecayDays" }))
             {
                 list.Label("Ground stays soaked for: " + soakDecayDays.ToString("0.0") + " days after the water recedes");
                 soakDecayDays = list.Slider(soakDecayDays, 1f, 10f);
@@ -289,9 +277,6 @@ namespace RimMandrake.CrackedLands
                 list.CheckboxLabeled("The recede feast", ref recedeFeastEnabled,
                     "When the water recedes, an irqit carpet hatches on the wet ground and dies "
                     + "where it stands as the mud dries, leaving windrows of spent bodies.");
-                list.CheckboxLabeled("Migrants fly in to feed", ref recedeMigrantsEnabled,
-                    "This biome's own flying animals fly in to feed on the carpet and fly out "
-                    + "again at the dry. They always arrive and leave by visible flight.");
                 list.Label("Largest irqit carpet: " + irqitCohortMax);
                 irqitCohortMax = Mathf.RoundToInt(list.Slider(irqitCohortMax, 0f, 120f));
                 list.CheckboxLabeled("Floodline salvage", ref floodlineSalvageEnabled,
@@ -307,14 +292,6 @@ namespace RimMandrake.CrackedLands
                 list.CheckboxLabeled("Six extra native plants (restart to apply)", ref floraExpansionEnabled,
                     "Nabbuq, ruqqal, sevvuq, zennaq, luqqim and harrovaq in the wild roster. "
                     + "Off removes them from the roster on the next launch; the original plants stay.");
-                list.GapLine();
-            }
-
-            if (Group(list, "Zennaq and lightning", RimMandrake.Shared.SettingScope.Now, new[] { "zennaqLightningPullEnabled" }))
-            {
-                list.CheckboxLabeled("Lightning is drawn to zennaq", ref zennaqLightningPullEnabled,
-                    "A random lightning strike that would land near a zennaq plant lands on it instead. "
-                    + "Zennaq is dry as tinder, so a storm on the mesa tops can start a fire.");
                 list.GapLine();
             }
 

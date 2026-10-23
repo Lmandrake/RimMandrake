@@ -292,7 +292,7 @@ if Suite is not None:
             return {}
         line = " ".join(lines)
         d = dict(re.findall(r"(\w+)=(-?\d+)", line))
-        if not all(k in d for k in ("cohort", "migrants", "salvage")):
+        if not all(k in d for k in ("cohort", "salvage")):
             _unmeasured(t, "aftermath report unparseable: %r" % line[:200])
         return {k: int(v) for k, v in d.items()}
 
@@ -639,11 +639,6 @@ if Suite is not None:
         fn.__doc__ = "UNMEASURED: " + why
         suite.chain(chain)(fn)
 
-    _um("zennaq_draws_lightning", "zennaq_hit_rate_beats_control",
-        "needs a [Tool] that calls RM_ZennaqLightning.Redirect on a spawned zennaq and a control plant (the strike chooser is a "
-        "public static; no bridge tool wraps it yet). Offline the shape is checked by flora_expansion_shape",
-        "zennaqLightningPullEnabled")
-
     _um("flood_damage_light_and_nonfatal", "pawn_in_footprint_takes_light_blunt",
         "the footprint is a map-wide BFS from a random seed (not placeable), so a pawn cannot be put under the wall on demand; "
         "needs a debug seed or a bridge tool placing the seed", "floodDamageEnabled")
@@ -663,10 +658,6 @@ if Suite is not None:
     _um("chime_anchors_used", "chime_tolls_from_nearest_anchor",
         "no ThingDef carries RM_ChimeAnchorExtension yet (the chime-line's physical form waits on the ledge-form ruling), "
         "and the chime position is not in the flood report", "chimeAnchorsEnabled")
-    _um("recede_migrants", "flier_group_arrives_on_recede",
-        "needs a biome roster with a flight-capable animal (map.Biome.AllWildAnimals); a plain biome has none: run on an "
-        "RM_FloodedCanyon map", "recedeMigrantsEnabled")
-
     # FLOOD_SOAK_MARKERS_BUILD_AIMED_AT_CANALS (owner 2026-10-16, by card): the dev-placed flood trigger and soak zone
     # (Source/MapControls/). Offline: the aimed footprint kernel is fuzzed (selftest_crackedlands_fuzz.py --fuzz-only
     # cells: stays in the joined channel, enters at the trigger, takes the whole joined channel under the cap) and the
@@ -680,27 +671,6 @@ if Suite is not None:
         "needs an RM_ biome site (Plant Growth runs only in Baroque Biomes' biomes, so a bland site soaks nothing BY DESIGN); "
         "live route: %s.PlaceSoakZone(cell|2|24) on an RM_ biome map, then ExplosiveGrowth 'Report state': soaked >= 25; "
         "on a vanilla biome the zone's StateLine reads inert=not_one_of_Baroque_Biomes'..." % MC, "soakZonesEnabled")
-
-    @suite.chain("peakstorm_dust_reversal")
-    def peakstorm_dust_reversal(t):
-        """CRACKEDLANDS_PEAKSTORM_DUST_REVERSAL_1: while Peakstorm Light stands, the sky overlay's dust direction
-        factor reaches -1 (reversed) and returns to +1. A STATE read of the overlay, never a screenshot."""
-        with _comp(t, "overlay_direction_reverses", toggle="peakstormDustReversalEnabled"):
-            if _live(t):
-                seen = set()
-                for _ in range(10):
-                    r = t.bridge_call("jawa/static_call", type="RimMandrake.CrackedLands.RM_PeakstormDustProof",
-                                      method="ProofState", args="")
-                    res = str((r or {}).get("result", ""))
-                    if "weather=RM_PeakstormLight" not in res:
-                        _unmeasured(t, "needs Peakstorm Light standing on the current map; proof said %r" % res[:120])
-                        break
-                    m = dict(kv.split("=", 1) for kv in res.split(" ") if "=" in kv)
-                    seen.add(m.get("reversed"))
-                    t.wait_ticks(270)   # a 2400-tick period sampled across the 300-tick reversal window
-                else:
-                    if seen != {"True", "False"}:
-                        _fail("dust direction never both reversed and drifted forward across 10 samples: %r" % sorted(seen))
 
     @suite.chain("settings_restored")
     def settings_restored(t):
