@@ -19,15 +19,35 @@ hidden — the row still renders greyed until its stage finishes (verified
 against MainTabWindow_Research.cs: vanilla hiddenPrerequisites gates
 CanStartNow only, never the tree's own visibility filter). Subspace
 gravitic penetration's flavor folds into the God-Speaker Array per
-design/Jawa/research_review/functionless_tech_candidates.md.</description>
+design/Jawa/research_review/functionless_tech_candidates.md.
+
+Also the religion's own places: Ishko the Unmaskable's three landmarks, the
+Lightless Sink, the Shadowed Overhang and the Cold Lava Tube (Odyssey
+LandmarkDefs on plain Hollow, Chasm and Cavern ground, icons from
+mandrake.rut.ashkarrlandmarkart). Their names are principles of his
+doctrine, not promises about the terrain. They moved here 2026-10-22 from
+the retired mandrake.rut.ishkolandmarks (owner: "It's a concept, not a
+mod."; "I think the Nine Gods belong in Salvation Rites."). Placing them on
+the Ash'karr world is the owner's hand.</description>
   <modDependencies>
     <li>
       <packageId>mandrake.rut.antiquities</packageId>
       <displayName>Antiquities</displayName>
       <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
+    <li>
+      <packageId>Ludeon.RimWorld.Odyssey</packageId>
+      <displayName>Odyssey</displayName>
+    </li>
+    <li>
+      <packageId>mandrake.rut.ashkarrlandmarkart</packageId>
+      <displayName>RimUtinni: Ash'karr Landmark Art</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
+    </li>
   </modDependencies>
   <loadAfter>
     <li>mandrake.rut.antiquities</li>
+    <li>Ludeon.RimWorld.Odyssey</li>
+    <li>mandrake.rut.ashkarrlandmarkart</li>
   </loadAfter>
 </ModMetaData>

@@ -117,15 +117,16 @@ def main():
         # a mock run through cmd_run never records (the real registry must not move either)
         status.LOG_PATH = os.path.join(tmp, "must_not_exist.json")
         root = os.path.dirname(os.path.dirname(os.path.dirname(_UTILS)))
-        plan = os.path.join(root, "src", "RimUtinni", "IshkoDarkLandmarks", "northstar_plan.py")
-        rc = cli.main(["run", "--mock", "--mod", "IshkoDarkLandmarks", "--plan", plan,
-                       "--out", os.path.join(tmp, "ishko_mock.json")])
-        check("Ishko mock run is GREEN", rc == 0, "rc=%s" % rc)
+        # Salvation Rites: its suite carries Ishko's landmarks since 2026-10-22 (was IshkoDarkLandmarks)
+        plan = os.path.join(root, "src", "RimUtinni", "Rites", "northstar_plan.py")
+        rc = cli.main(["run", "--mock", "--mod", "Rites", "--plan", plan,
+                       "--out", os.path.join(tmp, "rites_mock.json")])
+        check("Rites mock run is GREEN", rc == 0, "rc=%s" % rc)
         check("mock run wrote no registry", not os.path.exists(status.LOG_PATH))
-        res = json.load(open(os.path.join(tmp, "ishko_mock.json")))
+        res = json.load(open(os.path.join(tmp, "rites_mock.json")))
         check("mock result carries mod_hash", bool(res.get("mod_hash")))
-        check("mock result has the 8 functional rows",
-              sum(1 for r in res["bars"] if r.get("functional")) == 8, str(len(res["bars"])))
+        check("mock result has the 12 functional rows (2 research, 2 shipped-defs, 8 Ishko)",
+              sum(1 for r in res["bars"] if r.get("functional")) == 12, str(len(res["bars"])))
     finally:
         status.LOG_PATH, status.LOCK_PATH = real
         shutil.rmtree(tmp, ignore_errors=True)

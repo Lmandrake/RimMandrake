@@ -18,7 +18,7 @@
        item still owes (jawa/world_landmarks_set + world_commit, LIGHTFALL_CHASM_
        AUTHORING_1, bridge work). mutatorChances carries Chasm Required="True" so
        placement adds the actual chasm mutator to the tile if it is not already
-       there — same anchor vanilla Chasm and IshkoDarkLandmarks' RUT_ShadowedOverhang
+       there — same anchor vanilla Chasm and Rites' RUT_ShadowedOverhang (Ishko's)
        use. Description is present-tense, what IS: the scar and its cause, no
        not-yet-ruled content about what has been lowered into it. -->
 

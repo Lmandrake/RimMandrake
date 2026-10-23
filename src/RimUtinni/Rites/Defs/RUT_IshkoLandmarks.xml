@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
-  <!-- ISHKO_DARK_LANDMARKS_1. Three new LandmarkDefs for Ishko the Unmaskable
+  <!-- Ishko's landmarks: part of the religion of the Nine, so they live in Salvation Rites
+       (owner, 2026-10-22: "It's a concept, not a mod." and "I think the Nine Gods belong in
+       Salvation Rites."). Moved here from the retired mandrake.rut.ishkolandmarks; the
+       defNames are unchanged, so old test saves that rolled one still resolve it.
+
+       ISHKO_DARK_LANDMARKS_1. Three new LandmarkDefs for Ishko the Unmaskable
        (dark, stillness, hiding - reconciled_lore/05_the_clan.md line 75).
        Verified first (sacred_sites_pass_1.md flagged this as real work, not
        reinterpretation): no existing legal LandmarkDef is curated as Ishko's
