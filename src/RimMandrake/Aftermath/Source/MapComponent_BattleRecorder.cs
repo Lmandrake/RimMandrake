@@ -9,7 +9,7 @@ namespace RimMandrake.Aftermath
     // design/Jawa/proposals/plot_mechanisms_wave.md Part 2's battle recorder.
     // Opens a BattleRecord when IncidentWorker_Raid.TryGenerateRaidInfo
     // returns true (Patch_RaidGenerated.cs) and closes it when the raid's
-    // Lord is removed (Patch_LordRemoved.cs) -- WITH a fallback poll
+    // Lord is removed (Patch_LordLifecycle.cs) -- WITH a fallback poll
     // (CheckFallbackClosures, below) for the case where the Lord could not
     // be correlated (see TryCorrelateLord's own comment) or its removal
     // postfix is somehow missed.
