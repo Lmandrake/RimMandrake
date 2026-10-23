@@ -175,12 +175,7 @@ def creek_plan(terrain, size, exclude=()):
     cand = [c for c in RV.crossings(terrain, size) if ok(c[0]) and ok(c[3]) and clear(c[0]) and clear(c[3])]
     cx, cz = w // 2, h // 2
     cand.sort(key=lambda c: (c[2] > 12, abs(c[0][0] - cx) + abs(c[0][1] - cz), c[0]))
-    pick = []
-    for c in cand:
-        if all(max(abs(c[0][0] - p[0][0]), abs(c[0][1] - p[0][1])) >= RV.SPACING for p in pick):
-            pick.append(c)
-        if len(pick) == len(RV.STATIONS):
-            break
+    pick = RV.pick_spaced(cand, len(RV.STATIONS))   # far banks too (CREEK_STATIONS_REDESIGN_FORDED_A_PUDDLE)
     placed = [(s, c, RV.station_ops(s, c)) for s, c in zip(RV.STATIONS, pick)]
     return placed, [s["id"] for s in RV.STATIONS[len(pick):]]
 

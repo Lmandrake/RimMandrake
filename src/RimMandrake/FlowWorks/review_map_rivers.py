@@ -75,9 +75,31 @@ def is_land(d):
     return bool(d) and not any(k in d for k in ("Water", "Marsh", "Mud", "Ice", "Lava", "Deep", "Shallow", "Ocean"))
 
 
+def land_components(terrain):
+    """{cell: id} over land cells, 4-connected: which cells share a bank without crossing water."""
+    comp, nid = {}, 0
+    for c0, t in terrain.items():
+        if c0 in comp or not is_land(t):
+            continue
+        comp[c0] = nid
+        stack = [c0]
+        while stack:
+            x, z = stack.pop()
+            for q in ((x + 1, z), (x - 1, z), (x, z + 1), (x, z - 1)):
+                if q not in comp and is_land(terrain.get(q)):
+                    comp[q] = nid
+                    stack.append(q)
+        nid += 1
+    return comp
+
+
 def crossings(terrain, size, span=SPAN_MAX):
-    """[(b, d, n, e)]: from bank cell b, walking d crosses n moving-water cells to land cell e (n <= span)."""
+    """[(b, d, n, e)]: from bank cell b, walking d crosses n moving-water cells to land cell e (n <= span).
+    CREEK_STATIONS_REDESIGN_FORDED_A_PUDDLE (map R tile 1246, 2026-10-22: R1/R2 ran ALONG a shoreline inlet, the narrow-first
+    sort's favourite): b and e must be on different land masses (land_components), so a crossing really crosses the
+    river, never a sliver of water with the same bank on both sides."""
     w, h = size
+    comp = land_components(terrain)
     out = []
     for (x, z), t in terrain.items():
         if not is_land(t):
@@ -90,9 +112,35 @@ def crossings(terrain, size, span=SPAN_MAX):
             while is_moving(terrain.get(c)) and n <= span:
                 n += 1
                 c = (c[0] + d[0], c[1] + d[1])
-            if n <= span and is_land(terrain.get(c)) and 0 <= c[0] < w and 0 <= c[1] < h:
+            if n <= span and is_land(terrain.get(c)) and 0 <= c[0] < w and 0 <= c[1] < h and comp.get(c) != comp.get((x, z)):
                 out.append(((x, z), d, n, c))
     return out
+
+
+SPANS = ("r_current", "r_ford", "r_ferry")   # stations that use the far bank too (pawn/stones/rope across)
+
+
+def apart(c, p, spacing=SPACING, c_spans=True, p_spans=True):
+    """Two crossings' USED ends are all at least `spacing` apart (Chebyshev): the near-bank anchor always, the far bank too
+    for a station that reaches across (SPANS). CREEK_STATIONS_REDESIGN_FORDED_A_PUDDLE: once crossings span the whole
+    river, comparing only the near-bank anchors let one station's far bank land on another's anchor (the ford's last
+    stone on the silt trap, a ferry post on the weir)."""
+    ce = (c[0], c[3]) if c_spans else (c[0],)
+    pe = (p[0], p[3]) if p_spans else (p[0],)
+    return all(max(abs(a[0] - b[0]), abs(a[1] - b[1])) >= spacing for a in ce for b in pe)
+
+
+def pick_spaced(cand, k, spacing=SPACING):
+    """Greedy: the i-th pick serves STATIONS[i]; each candidate kept only if apart from every earlier pick."""
+    pick = []
+    for c in cand:
+        i = len(pick)
+        spans = i < len(STATIONS) and STATIONS[i]["id"] in SPANS
+        if all(apart(c, p, spacing, spans, j < len(STATIONS) and STATIONS[j]["id"] in SPANS) for j, p in enumerate(pick)):
+            pick.append(c)
+        if len(pick) == k:
+            break
+    return pick
 
 
 def river_anchors(terrain, size, k=len(STATIONS), spacing=SPACING, margin=MARGIN, avoid=None):
@@ -107,13 +155,7 @@ def river_anchors(terrain, size, k=len(STATIONS), spacing=SPACING, margin=MARGIN
     cand = [c for c in crossings(terrain, size) if ok(c[0]) and ok(c[3])
             and max(abs(c[0][0] - avoid[0]), abs(c[0][1] - avoid[1])) >= AVOID_R]
     cand.sort(key=lambda c: (c[2] > 12, abs(c[0][0] - cx) + abs(c[0][1] - cz), c[0]))
-    pick = []
-    for c in cand:
-        if all(max(abs(c[0][0] - p[0][0]), abs(c[0][1] - p[0][1])) >= spacing for p in pick):
-            pick.append(c)
-        if len(pick) == k:
-            break
-    return pick
+    return pick_spaced(cand, k, spacing)
 
 
 def station_ops(st, cr):

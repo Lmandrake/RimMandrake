@@ -207,6 +207,24 @@ wide = {(x, z): ("WaterMovingChestDeep" if 60 <= x <= 160 else "Soil") for x in 
 check(RV.plan(wide, (250, 250))[0] == [], "a 101-wide river (over the rope span) still got anchors")
 check(RV.plan({(x, z): "Soil" for x in range(50) for z in range(50)}, (50, 50))[1] == [s["id"] for s in RV.STATIONS],
       "a riverless map should leave every river station unplaced")
+# CREEK_STATIONS_REDESIGN_FORDED_A_PUDDLE (map R tile 1246): a 1-cell inlet of moving water cut into the west bank (land on
+# both sides of it, all one land mass) is NOT a crossing; the river itself still is
+inlet = dict(terr)
+for x in range(80, 100):
+    inlet[(x, 125)] = "WaterMovingShallow"
+xs = RV.crossings(inlet, (250, 250))
+check(not any(c[1][0] == 0 and 80 <= c[0][0] < 100 and abs(c[0][1] - 125) == 1 for c in xs),
+      "a crossing runs across a shoreline inlet (same bank both sides)")
+check(any(c[2] == 11 for c in xs), "can-fail: the river's own crossings survive the land-mass rule")
+# ... and a river crossed whole (30 wide, as on map R): no station's far bank lands on another's anchor
+wide30 = {(x, z): ("WaterMovingChestDeep" if 100 <= z <= 129 else "Soil") for x in range(250) for z in range(250)}
+p30, u30 = RV.plan(wide30, (250, 250))
+used = [(c[0], c[3]) if s_["id"] in RV.SPANS else (c[0],) for s_, c, _ in p30]
+check(len(p30) == len(RV.STATIONS) and all(max(abs(a[0] - b[0]), abs(a[1] - b[1])) >= RV.SPACING
+                                           for i, ua in enumerate(used) for ub in used[i + 1:] for a in ua for b in ub),
+      "a 30-wide river: stations placed %d, or one's used bank within SPACING of another's" % len(p30))
+check(not RV.apart(((10, 99), (0, 1), 30, (10, 130)), ((10, 130), (0, -1), 30, (10, 99))),
+      "can-fail: two crossings sharing their banks are not apart")
 with tempfile.TemporaryDirectory() as d:
     pth = os.path.join(d, "p.json")
     RV.save_placed(pth, placed)
