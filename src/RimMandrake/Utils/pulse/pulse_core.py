@@ -355,6 +355,22 @@ def read_sheets(dirs: list[Path] | None = None, probe=http_ok) -> list[dict]:
         return [r for r in ex.map(one, logs.values()) if r]
 
 
+def read_services(names=("rm-pulse.service",)) -> dict:
+    """{unit: {"active": bool, "since": epoch of the current main process start}} - the recovery evidence
+    for a service OOM (systemd 259: `--timestamp=unix` prints `@<epoch>`)."""
+    import subprocess
+    out = {}
+    for n in names:
+        r = subprocess.run(["systemctl", "--user", "show", n, "-p", "ActiveState", "-p", "ExecMainStartTimestamp",
+                            "--timestamp=unix"], capture_output=True, text=True, timeout=10)
+        if r.returncode != 0:
+            raise RuntimeError(f"systemctl show {n}: rc {r.returncode}")
+        kv = dict(ln.split("=", 1) for ln in r.stdout.splitlines() if "=" in ln)
+        ts = kv.get("ExecMainStartTimestamp", "").lstrip("@")
+        out[n] = {"active": kv.get("ActiveState") == "active", "since": float(ts) if ts.isdigit() else 0.0}
+    return out
+
+
 def owner_prompts(since: float, history: Path = HISTORY) -> list[dict]:
     return [h for h in read_jsonl_tail(history, 2 << 20) if (h.get("timestamp") or 0) / 1000 >= since]
 
@@ -491,7 +507,8 @@ def classify_sessions(sessions: list[dict], extras: dict, seen: dict, items: dic
         status = s.get("status")
         key = f"win:{sid}"
         seat = seat_key(s)
-        win = {"seat": seat, "label": chip_label(s), "upd": upd, "sub": sub}
+        win = {"seat": seat, "label": chip_label(s), "upd": upd, "sub": sub, "who": who,
+               "started": (s.get("startedAt") or 0) / 1000}
         did = (not s.get("startedAt")) or (upd - s["startedAt"] / 1000 > 5)   # acted since launch
         lead = f"{who} "
 
@@ -740,7 +757,7 @@ def classify_kernel_oom(kills: list[dict], acks: dict, now: float) -> list[dict]
             where = "tool cgroup" if tool else "window"
             text = (f"OOM kill · {who} {where} at {cap}" + (f" · {victim}" if victim else "")
                     + (f" · ×{n} today" if n > 1 else ""))
-            r = _row(inc, "red", who, text, last["t"], src="kernel", incident=inc, count=n,
+            r = _row(inc, "red", who, text, last["t"], src="kernel", incident=inc, count=n, tool=tool,
                      toasted_elsewhere=True,   # memwatch toasts seat kills itself
                      pill=_red_pill(f"{who} {'tool' if tool else 'window'} OOM · {_cap_short(last.get('limit_kb'))}",
                                     n, last["t"]))
@@ -964,7 +981,82 @@ def classify_game(probe: dict | None, bridge: str | None, now: float) -> list[di
     return [_row("game", "run" if running else "idle", "GAME", txt, (probe or {}).get("at", now), src="probe")]
 
 
-KIND_ORDER = {"red": 0, "amber": 1, "amber_soft": 2, "warn": 2.5, "stuck": 3, "run": 4, "review": 5, "look": 5.5, "idle": 6, "done": 7}
+# ---------------------------------------------------------------- incidents (RIMPULSE_INCIDENTS_BUILD_RECOVERED_NOT_RED)
+# An OOM is an EVENT; whether its subject is broken NOW is a separate question, answered only by evidence.
+# A red with recovery evidence becomes a calm `recovered` row (history, not alarm); a new occurrence after
+# that re-raises red. Ack never changes recovery. Evidence per kind:
+#   service OOM     the unit is active and its main process started after the kill and has run RECOVER_SECS
+#   seat tool OOM   the seat's window is alive, active after the kill, and RECOVER_SECS passed with no new kill
+#   window OOM/lost a window of the same name started after the death is alive (it was replaced)
+# Anything else (telemetry reds, non-seat windows with no replacement) says "recovery unknown".
+RECOVER_SECS = 10 * 60
+INCIDENT_KEEP_SECS = 48 * 3600
+
+
+def recovery_evidence(r: dict, wins: list[dict], services: dict, now: float) -> tuple[str | None, str]:
+    """(evidence text or None, pending note) for one red row. Pure."""
+    inc, last = r.get("incident") or "", r.get("since") or 0
+    hm = lambda t: time.strftime("%H:%M", time.localtime(t))  # noqa: E731
+    if inc.startswith("oom:svc:"):
+        sv = (services or {}).get(inc[len("oom:svc:"):])
+        if sv is None:
+            return None, "recovery unknown"
+        if sv["active"] and sv["since"] > last and now - sv["since"] >= RECOVER_SECS:
+            return f"running since {hm(sv['since'])}, no kill since", ""
+        return None, "watching for recovery" if sv["active"] else "service not running"
+    if inc.startswith("oom:seat:") or inc.startswith("lost:"):
+        who = r.get("who") or ""
+        mine = [w for w in wins if (w.get("seat") or w.get("who") or "").upper() == who.upper()]
+        tool = bool(r.get("tool")) and inc.startswith("oom:seat:")
+        if tool:
+            act = [w for w in mine if w.get("upd", 0) > last]
+            if act and now - last >= RECOVER_SECS:
+                return f"{who} window alive, active {hm(max(w['upd'] for w in act))}, no kill since", ""
+            return None, "watching for recovery" if mine else f"no live {who} window"
+        new = [w for w in mine if w.get("started", 0) > last]
+        if new:
+            return f"replaced by a new {who} window at {hm(min(w['started'] for w in new))}", ""
+        return None, "not replaced yet"
+    return None, "recovery unknown"
+
+
+def track_incidents(rows: list[dict], prev: dict, wins: list[dict], services: dict,
+                    now: float) -> tuple[list[dict], dict, list[dict]]:
+    """Apply recovery evidence to red rows and keep the incident history. Returns (rows, incidents, events).
+    `incidents` is {incident: {who, text, first, last, count, status, recovered_at, evidence}}; an entry
+    outlives its row (the 'today' window rolling, an expiry) for INCIDENT_KEEP_SECS so a digest can still
+    say what happened. A row's occurrence is its `since` (last kill): a later one re-opens the incident."""
+    inc_out, events, out = {k: dict(v) for k, v in (prev or {}).items()}, [], []
+    for r in rows:
+        if r["kind"] != "red" or not r.get("incident"):
+            out.append(r)
+            continue
+        key, last = r["incident"], r.get("since") or 0
+        h = inc_out.get(key) or {"first": last, "count": 0}
+        if h.get("last") is not None and last > h["last"]:
+            h["recovered_at"], h["evidence"] = None, None        # a new occurrence: open again
+        h.update(who=r["who"], text=r["text"], last=last, count=max(r.get("count") or 1, h.get("count") or 0),
+                 first=min(h.get("first") or last, last))
+        ev, pending = recovery_evidence(r, wins, services, now)
+        if ev:
+            if not h.get("recovered_at"):
+                h["recovered_at"] = now
+                events.append({"m": "incident_recovered", "id": key, "who": r["who"], "evidence": ev,
+                               "age_s": round(now - last)})
+            h.update(status="recovered", evidence=ev)
+            r = {**r, "kind": "recovered", "text": f"{r['text']} · recovered: {ev}", "recovered": ev,
+                 "pill": None, "toast_key": None}
+        else:
+            h.update(status="open", evidence=None, recovered_at=None)
+            r = {**r, "text": f"{r['text']} · {pending}" if pending else r["text"], "pending": pending}
+        inc_out[key] = h
+        out.append(r)
+    for k in [k for k, v in inc_out.items() if now - (v.get("last") or 0) > INCIDENT_KEEP_SECS]:
+        inc_out.pop(k)
+    return out, inc_out, events
+
+
+KIND_ORDER = {"red": 0, "amber": 1, "amber_soft": 2, "warn": 2.5, "stuck": 3, "run": 4, "review": 5, "look": 5.5, "idle": 6, "recovered": 6.4, "done": 7}
 
 
 def order_rows(rows: list[dict]) -> list[dict]:
@@ -999,6 +1091,9 @@ def build_strip(rows: list[dict]) -> list[dict]:
         elif r["kind"] == "warn":
             pills.append({"kind": "warn", "text": r.get("pill") or "◆ " + short(r["text"], 40), "title": r["text"],
                           "since": r["since"]})
+    rec = [r for r in rows if r["kind"] == "recovered"]
+    if rec:
+        pills.append({"kind": "recovered", "text": f"↺ {len(rec)} recovered", "title": "\n".join(r["text"] for r in rec)})
     rule = sum(1 for r in rows if r["kind"] == "review")
     if rule:
         pills.append({"kind": "rule", "text": f"◇ {rule} to rule"})
@@ -1042,6 +1137,9 @@ def collect_snapshot(raw: dict, state: dict, now: float) -> tuple[dict, dict, li
             + classify_artpipe(raw.get("artpipe", {}), now, raw.get("at", {}).get("artpipe", now))
             + classify_game(raw.get("probe"), raw.get("bridge"), now)
             + classify_telemetry(raw.get("telemetry"), acks, now))
+    wins = [r["win"] for r in srows if r.get("win")]
+    rows, incidents, inc_events = track_incidents(rows, state.get("incidents", {}), wins, raw.get("services") or {}, now)
+    events.extend(inc_events)
     rows = order_rows(rows)
     # metrics: alarm transitions (question age, red open)
     open_prev = state.get("open", {})
@@ -1055,7 +1153,7 @@ def collect_snapshot(raw: dict, state: dict, now: float) -> tuple[dict, dict, li
             events.append({"m": "alarm_close", "id": inc, "kind": o["kind"], "who": o.get("who"),
                            "age_s": round(now - o["since"])})
     new_state = dict(state)
-    new_state.update({"seen": seen, "open": open_now})
+    new_state.update({"seen": seen, "open": open_now, "incidents": incidents})
     snap = {
         "v": 2, "collected_at": now, "rows": rows, "strip": build_strip(rows), "chips": build_chips(rows, now, (raw.get("source_status") or {}).get("sessions", {}).get("ok", True)), "counts": counts,
         "done_since": since, "sources": source_freshness(raw.get("source_status", {}), raw, now),
@@ -1063,6 +1161,6 @@ def collect_snapshot(raw: dict, state: dict, now: float) -> tuple[dict, dict, li
         "telemetry": ({k: raw["telemetry"].get(k) for k in ("at", "grafana", "tier_armed", "game_running")}
                       if raw.get("telemetry") else None),
         "tally": {k: sum(1 for r in rows if r["kind"] == k and not r.get("acked"))
-                  for k in ("red", "amber", "amber_soft", "warn", "run", "done", "review", "look")},
+                  for k in ("red", "amber", "amber_soft", "warn", "run", "done", "review", "look", "recovered")},
     }
     return snap, new_state, events

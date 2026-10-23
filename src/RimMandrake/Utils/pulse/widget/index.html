@@ -106,6 +106,8 @@ body.collapsed .sparks{display:none}
 .p-warn{color:var(--red);box-shadow:inset 0 0 0 1px #ff554777}
 .p-down{background:#3a2a20;color:var(--red);box-shadow:inset 0 0 0 1px #d2462e88}
 .p-rule{color:var(--cream);box-shadow:inset 0 0 0 1px var(--line)} .p-look{color:var(--lk);box-shadow:inset 0 0 0 1px var(--line)}
+.p-recovered{color:var(--avocado);box-shadow:inset 0 0 0 1px #9aab5f66;cursor:pointer}
+.row.rec .x{color:var(--avocado)} .row.rec .bar{background:var(--avocado)}
 .p-blind{color:var(--mustard);box-shadow:inset 0 0 0 1px #e0aa3e77}
 .p-more{color:var(--muted);box-shadow:inset 0 0 0 1px var(--line);cursor:pointer}
 body.collapsed .body,body.collapsed .tb{display:none}
@@ -191,6 +193,9 @@ function redHTML(r, isNew){
     right += `<button class="ack" data-id="${esc(r.incident)}" title="Seen it — stop alarming">ack</button><button class="ack noise" data-id="${esc(r.incident)}" data-noise="1" title="Not worth an alarm (counts against alert precision)">noise</button>`;
   return `<div class="row red${isNew?' enter new':''}${r.acked?' dimr':''}" title="${esc(r.text)}"><span class="bar"></span><span class="x">✖ ${esc(r.text)}</span><span class="rr">${right}</span><span class="t">${hhmm(r.since)}</span></div>`;
 }
+function recHTML(r){
+  return `<div class="row rec" title="${esc(r.text)}"><span class="bar"></span><span class="x">↺ ${esc(r.text)}</span><span class="rr"></span><span class="t">${hhmm(r.since)}</span></div>`;
+}
 function ruleHTML(r, isNew){
   const ask = r.kind === 'amber' || r.kind === 'amber_soft';
   let id, text;
@@ -261,6 +266,9 @@ function render(){
   // plus the one-line "WSL restarted, these windows ended" notice (src sessions)
   const tel = rows.filter(r => (r.src === 'telemetry' || r.src === 'sessions') && r.kind === 'warn' && !r.acked);
   if (tel.length) h += tel.map(r => redHTML(r, isNew(r)).replace('class="row red', 'class="row red tel').replace('✖ ', '◆ ')).join('');
+  // broke while he was away, and the evidence says it is fine again: history, never red (incident model)
+  const rec = rows.filter(r => r.kind === 'recovered');
+  if (rec.length) h += `<div class="more" data-ex="recovered">recovered (${rec.length}) ${ex.recovered ? '▴' : '▾'}</div>` + (ex.recovered ? rec.map(recHTML).join('') : '');
   if (acked.length) h += `<div class="more" data-ex="acked">acknowledged (${acked.length}) ${ex.acked ? '▴' : '▾'}</div>` + (ex.acked ? acked.map(r => redHTML(r, false)).join('') : '');
   const body = $('body'), st = body.scrollTop;
   body.innerHTML = h; body.scrollTop = st;
@@ -301,7 +309,7 @@ function chipHTML(c){
 }
 // Collapsed, the strip is all he sees: every pill carries its own cause (owner 2026-10-22, N1), the
 // rule/look counts ride along, and a frozen snapshot over a healthy connection still reads stale (N5).
-const PILL_KINDS = ['red', 'amber', 'amber_soft', 'warn', 'rule', 'look'];
+const PILL_KINDS = ['red', 'amber', 'amber_soft', 'warn', 'recovered', 'rule', 'look'];
 function renderStrip(){
   const pills = (snap ? snap.strip : []).filter(p => PILL_KINDS.includes(p.kind)).map(p =>
     `<span class="pill p-${p.kind}${p.seat ? ' s-' + esc(p.seat) : ''}" title="${esc(p.title || p.text)}">${esc(p.text)}</span>`);
@@ -372,6 +380,7 @@ document.addEventListener('click', e => {
     openLink(l.dataset.link, l.dataset.type);
     if (l.dataset.seen) { openedHere.add(l.dataset.seen); post('/api/seen', {id: l.dataset.seen}); render(); }   // opened = dimmed, never removed
     return; }
+  const rp = e.target.closest('.p-recovered'); if (rp) { ex.recovered = true; setCollapsed(false); render(); return; }
   const m = e.target.closest('.more, .grp'); if (m) { ex[m.dataset.ex] = !ex[m.dataset.ex]; render(); return; }
 });
 function openLink(v, type){ const p = api(); if (p) p.open(v); else if (type === 'url') window.open(v, '_blank'); else navigator.clipboard && navigator.clipboard.writeText(v); }
