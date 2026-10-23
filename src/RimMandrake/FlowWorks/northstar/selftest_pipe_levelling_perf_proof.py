@@ -62,7 +62,7 @@ for fault, want in EXPECT.items():
           bad == want and len(rows) == 2 and all(r["status"] == "SKIP" and r["criterion"] == "A3" for r in rows))
 # can-fail: the old tank rig (two reels touching a tank, no pipe run) makes no link, so the rows are UNMEASURED/SITE, never PASS
 good_ops = L.rig_ops
-L.rig_ops = lambda cx, z: [L.V.reel_west((cx, z)), L.V.reel_west((cx, z + 2)), "RM_LiquidTank:%d,%d" % (cx + 2, z + 1)]
+L.rig_ops = lambda cx, z, *_lips: [L.V.reel_west((cx, z)), L.V.reel_west((cx, z + 2)), "RM_LiquidTank:%d,%d" % (cx + 2, z + 1)]
 out = os.path.join(tmp, "lp_tank.json")
 with contextlib.redirect_stdout(io.StringIO()):
     L.main(["--mock", out])

@@ -462,6 +462,12 @@ def main():
     import validation_hose as VH
     check("SL2 helper refuses an old GSS hose class", bool(VH.save_class_hits(b'<li Class="RimMandrake.GimmeSomeSlack.Hose.CompHoseReel"/>')["offending"]))
     zoo_checks()
+    # PROOF_REELS_FIX_STILL_STAGED_WEST: scene reels face their tank (East); NS_hose_ends_on_ports reads the nozzle on that side
+    sc = PH.Scene(None, 0)
+    check("reels: scene 0's reel is built facing East toward its tank, footprint kept",
+          PH.V.reel_toward(sc.reel, sc.end) == "RM_HoseReel:%d,%d,1" % (sc.reel[0], sc.reel[1] + 1))
+    check("reels: nozzle side cells by facing (E = the footprint's east column, W = its west column)",
+          PH._nozzle_side(10, 20, 1) == (11, 12, 20, 22) and PH._nozzle_side(10, 20, 3) == (10, 11, 20, 22))
     print("selftest_proof_hose: %s (%d failing)" % ("PASS" if not FAILS else "FAIL", len(FAILS)))
     return 0 if not FAILS else 1
 

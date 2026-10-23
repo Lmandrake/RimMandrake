@@ -252,8 +252,8 @@ def ponds_nomix_verdict(moves, dl0, dl1, linked, readout):
     return ("PASS" if ok else "FAIL"), "MOD"
 
 
-# The A4/A5 rig, plot-local to the rig (the caller adds the rig's z). Reels are footprint corners of a 2x2 built West
-# (validation_core.reel_west); a pipe run joins their East edges.
+# The A4/A5 rig, plot-local to the rig (the caller adds the rig's z). Reels are footprint corners of a 2x2 built facing
+# their hose's end (validation_core.reel_toward; both ends lie west, so both face West); a pipe run joins their East edges.
 POND_RIG = {"pools": [(0, -4), (0, 8)], "reels": [(10, 2), (10, 4)], "pipes": [(12, 2), (12, 3), (12, 4), (12, 5)], "tanks": [],
             "ends": [(3, -3), (3, 9)]}
 # The layout the three 2026-10-22 belt runs used (linked=False, moves=0): kept so the selftest proves the checker refuses it.
@@ -747,7 +747,7 @@ def _pond_rig(ctx, base_dz, fluid2, fill2):
                 static(FLUIDP, "ProofFillWithFluid", "%d,%d,%d,%s" % (o(px + i, pz + j) + (f, fl)))
     r1, r2 = (o(*r) for r in lay["reels"])
     ctx["build"](*(["RM_UniversalPipe:%d,%d" % o(*c) for c in lay["pipes"]] + ["RM_LiquidTank:%d,%d" % o(*t) for t in lay["tanks"]]
-                   + [V.reel_west(r1), V.reel_west(r2)]))
+                   + [V.reel_toward(r, o(*e)) for r, e in zip((r1, r2), lay["ends"])]))
     ctx["ticks"](2)
     for r, e in zip((r1, r2), lay["ends"]):
         B.hp("lay:%d,%d,%d,%d" % (r + o(*e)), answer=True)
@@ -782,7 +782,7 @@ def _pond_reads(ctx, rig):
             coup.append(None if i is None or u is None else (i, u))
             continue
         coup.append(None)
-        lt = B.call("jawa/list_things", defName="RM_HoseReel", rect="%d,%d,2,1" % r, limit=1, _answer=True) or {}
+        lt = B.call("jawa/list_things", defName="RM_HoseReel", rect="%d,%d,2,2" % r, limit=1, _answer=True) or {}
         rid = ((lt.get("things") or [{}])[0]).get("id")
         if rid:
             ins = B.call("jawa/inspect_string", thingIds=str(rid), _answer=True) or {}
@@ -835,7 +835,7 @@ def scene_ports(ctx, mine):
     pump = P(52, 4)
     ra, rb, rc, rd = P(53, 4), P(52, -1), P(55, -1), P(58, 9)
     ctx["build"]("RM_LiquidPump:%d,%d" % pump, "RM_UniversalPipe:%d,%d" % P(51, 4), "RM_UniversalPipe:%d,%d" % P(50, 4),
-                 V.reel_west(ra), V.reel_west(rb), V.reel_west(rc), V.reel_west(rd))
+                 V.reel_toward(ra, None), V.reel_toward(rb, P(52, 3)), V.reel_toward(rc, P(52, 3)), V.reel_toward(rd, P(53, 3)))
     ctx["ticks"](2)
     lays = {}
     for r, to in ((rb, P(52, 3)), (rc, P(52, 3)), (rd, P(53, 3))):
@@ -1159,7 +1159,8 @@ class FakeBridge(object):
                         continue            # the rig's third pipe never built: the run is cut in two
                     self.pipes.add(c)
                 elif d == "RM_HoseReel":
-                    root = (c[0] - 1, c[1]) if len(p) > 2 and int(p[2]) % 4 == 3 else c
+                    sx, sz = V.REEL_POS_SHIFT[int(p[2]) % 4 if len(p) > 2 else 0]     # Position -> footprint corner, any facing
+                    root = (c[0] - sx, c[1] - sz)
                     self.nid += 1
                     self.reels[root] = dict(laid=False, role="Capped", to=None, state=None, id=self.nid)
                 elif d == "RM_LiquidPump":

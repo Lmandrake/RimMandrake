@@ -160,7 +160,8 @@ def _hose(B, reel):
 # One scene per plot, plots 26 x 14 in the north-east (clear of validation_hose's sites, x < 150). Layout in plot coords:
 # a 3-cell water channel at (2..4, 6) dug 2 and filled 2; the pump at (3, 7) on its north bank; a battery at (6, 6);
 # the reel 2x2 at (3, 8) north of the pump (it couples to it: Machine kind); the hose laid east to (16, 9); a tank 2x2 at
-# (17, 9) whose west edge the hose end touches. The reel's nozzle faces west: (0..2, 8..11) is kept clear for the lead-out.
+# (17, 9) whose west edge the hose end touches. The reel faces its target (East, V.reel_toward; it was West until
+# PROOF_REELS_FIX_STILL_STAGED_WEST, and the RF_WEST margin below is kept from then).
 RF_X0, RF_Z0, RF_PW, RF_PH = 158, 150, 26, 14
 # LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS: probe "units" are raw tank units = decilitres. One level = 1,000 L = 10,000 units
 # (was 5 drums); the old per-cycle bar 5 (and window 5..15) is x2000.
@@ -222,7 +223,7 @@ class Scene(object):
     def pump_scene(self, reel=True, tank=True):
         self.water()
         self.build("RM_LiquidPump:%d,%d" % self.pump, "Battery:%d,%d" % self.battery,
-                   V.reel_west(self.reel) if reel else None, "RM_LiquidTank:%d,%d" % self.tank if tank else None)
+                   V.reel_toward(self.reel, self.end) if reel else None, "RM_LiquidTank:%d,%d" % self.tank if tank else None)
         self.B.ticks(2)
         self.charge()
         self.powered = _powered(self.B, self.pump)
@@ -375,10 +376,16 @@ def _rf_scene0(B, rows, row):
          "tankStillAfterCut": [u_after, u_later], "cut": {k: cut.get(k) for k in ("success", "destroyed", "message")}})
 
 
+def _nozzle_side(fx, fz, rot):
+    """(x_lo, x_hi, z_lo, z_hi) of the 2x2 footprint's cells on its facing side (rot 0 N, 1 E, 2 S, 3 W)."""
+    return {0: (fx, fx + 2, fz + 1, fz + 2), 1: (fx + 1, fx + 2, fz, fz + 2),
+            2: (fx, fx + 2, fz, fz + 1), 3: (fx, fx + 1, fz, fz + 2)}[rot % 4]
+
+
 def _ends_on_ports(s, h, rows, row):
     """HOSE_ENDS_FIX_MISSES_THE_PORTS (owner, C5 Fuel Depot 2026-10-21: "Hose attached to tank and reel broken"): scene 0's
     hose ends where the art draws its ports. Reel: the coupling's face (probe nozzleTip) is the measured nozzle of the reel's
-    look -- inside the footprint's west cell, never the old constant 1.3 cells west of centre in bare ground. Tank: the laid
+    look -- inside the footprint's facing-side cells, never the old constant 1.3 cells west of centre in bare ground. Tank: the laid
     end (cell (16, 9), the tank's lower west neighbour) couples on the tank's west flange (probe portEnd) at the footprint's
     centre line, x = the tank's west edge, z = tank z0 + 1 within 0.1 -- not half a cell beside it. The pixel side of both
     (table vs texture) is selftest_hose_ports.py; this row proves the running build draws from those tables."""
@@ -389,11 +396,13 @@ def _ends_on_ports(s, h, rows, row):
         V.row(rows, "NS_hose_ends_on_ports", "UNMEASURED", "HARNESS",
               {"why": "the probe has no nozzleTip/portEnd (a build before HOSE_ENDS_FIX_MISSES_THE_PORTS)", "hose": sorted(h)})
         return
-    reel_ok = tip is not None and fx is not None and fx < tip[0] < fx + 1 and fz < tip[1] < fz + 2
+    # PROOF_REELS_FIX_STILL_STAGED_WEST: the reel is staged facing the tank (East), so the nozzle is in its facing-side cells
+    lo = _nozzle_side(fx, fz, V.reel_facing(s.reel, s.end)) if fx is not None else None
+    reel_ok = tip is not None and lo is not None and lo[0] < tip[0] < lo[1] and lo[2] < tip[1] < lo[3]
     tank_ok = pe is not None and abs(pe[0] - tx) < 1e-3 and abs(pe[1] - (tz + 1)) < 0.1
     row("NS_hose_ends_on_ports", reel_ok and tank_ok,
         {"nozzleTip": tip, "footprint": h.get("footprint"), "look": h.get("look"), "portEnd": pe, "tank": [tx, tz],
-         "want": "nozzleTip inside the reel's west cell; portEnd = [tank x0, tank z0 + 1 +- 0.1]"})
+         "want": "nozzleTip inside the reel's facing-side cells (%s); portEnd" % "NESW"[V.reel_facing(s.reel, s.end)] + " = [tank x0, tank z0 + 1 +- 0.1]"})
 
 
 def _rf_scene1(B, rows, row):
@@ -450,7 +459,7 @@ def _rf_scene3(B, rows, row):
     for x, z in far_ch:
         B.call("jawa/flowworks_excavation_drive", x=x, z=z, deepenLevels=2, setFill=-1)
         B.call("jawa/flowworks_excavation_drive", x=x, z=z, deepenLevels=0, setFill=2)
-    s3.build(V.reel_west(s3.reel), "RM_LiquidTank:%d,%d" % tank_at_reel, "RM_LiquidPump:%d,%d" % far_pump,
+    s3.build(V.reel_toward(s3.reel, (ox + 16, oz + 9)), "RM_LiquidTank:%d,%d" % tank_at_reel, "RM_LiquidPump:%d,%d" % far_pump,
              "Battery:%d,%d" % far_bat)
     B.ticks(2)
     s3.battery = far_bat
@@ -476,7 +485,7 @@ def _rf_scene4(B, rows, row):
     ox, oz = s4.o
     relay_b, tank_b = (ox + 13, oz + 8), (ox + 23, oz + 9)
     s4.pump_scene(tank=False)
-    s4.build(V.reel_west(relay_b), "RM_LiquidTank:%d,%d" % tank_b)
+    s4.build(V.reel_toward(relay_b, (tank_b[0] - 1, tank_b[1])), "RM_LiquidTank:%d,%d" % tank_b)
     B.ticks(2)
     # A is aimed ONTO B's own south-west footprint cell, the way a relay is made (validation_hose RL3: the hose ends on
     # B's intake, relayTo = B); 2026-10-11 the first live run aimed it at the cell WEST of B, which is a free end, not a relay
@@ -505,7 +514,7 @@ def _rf_scene5(B, rows, row):
     reel5 = (ox + 4, oz + 10)                               # the reel beside the pipe's last cell (west edge on (ox+3, oz+10))
     tank5 = (ox + 17, oz + 10)
     s5.build("RM_LiquidPump:%d,%d" % s5.pump, "Battery:%d,%d" % s5.battery, *["RM_UniversalPipe:%d,%d" % c for c in pipe])
-    s5.build(V.reel_west(reel5), "RM_LiquidTank:%d,%d" % tank5)
+    s5.build(V.reel_toward(reel5, (tank5[0] - 1, tank5[1])), "RM_LiquidTank:%d,%d" % tank5)
     B.ticks(2)
     s5.charge()
     s5.powered = _powered(B, s5.pump)
@@ -559,7 +568,7 @@ def _rf_scene6(B, rows, row):
         return
     ox, oz = s6.o
     src = (ox + 3, oz + 10)
-    s6.build(V.reel_west(s6.reel), "RM_LiquidTank:%d,%d" % src, "RM_LiquidTank:%d,%d" % s6.tank)
+    s6.build(V.reel_toward(s6.reel, s6.end), "RM_LiquidTank:%d,%d" % src, "RM_LiquidTank:%d,%d" % s6.tank)
     B.ticks(2)
     fill = B.hp("filltank:%d,%d=%s,%d" % (src + (LIQUID_WATER, FILL_UNITS)))
     s6.lay()
@@ -782,7 +791,7 @@ class Proof(object):
         reel1, tgt1 = VH.CREEL, VH.CTARGET
         reel2, tgt2 = self.CARRY_REEL2, self.CARRY_TARGET2
         st = {"reel1": list(reel1), "reel2": list(reel2)}
-        br = B.call("jawa/build_batch", ops=V.reel_west(reel2), faction="player", wipeExisting=False) or {}
+        br = B.call("jawa/build_batch", ops=V.reel_toward(reel2, tgt2), faction="player", wipeExisting=False) or {}
         reel2_built = br.get("success") is not False and (br.get("survived") is None or br.get("survived") >= 1)
         B.ticks(2)
         pawns = [p for p in B.hp("colonists").get("pawns") or [] if not p.get("downed")]
