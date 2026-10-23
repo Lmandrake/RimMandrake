@@ -271,7 +271,7 @@ Species, palette and surface come from image 2: olive-green pebbled scale hide w
 ## 6. The commands, once approved
 
 ```bash
-cd /mnt/d/Luke/dev/Rimworld
+cd /home/mandrake/rm/foundry   # your seat clone; /mnt/d/Luke/dev/RimMandrake is a read-only mirror
 S=src/RimMandrake/DesertVehicleReskin/Source
 G=skills/generating-images/scripts
 
