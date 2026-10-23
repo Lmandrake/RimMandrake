@@ -834,10 +834,15 @@ def run_river(B, terrain, size, log=None, soak=False):
         for t, (x, z) in o["terrain"]:
             R.call("jawa/set_terrain_batch", ops="%s:%d,%d,1,1" % (t, x, z))
         for d, (x, z), rot, stuff in o["build"]:
+            # wild trees, bushes and rock chunks on the bank refused 9 of 17 station builds (save c map R, 2026-10-22:
+            # R4 weir, 8 of 10 R5 stakes, R6 silt trap, an R7 ferry post, the R8 sluice box) and nothing said so
+            R.call("jawa/destroy_batch", rects="%d,%d,3,3" % (x - 1, z - 1), categories="Plant,Item,Filth")
             kw = dict(ops="%s:%d,%d" % (d, x, z) + ("" if rot is None else ",%d" % rot), faction="player", wipeExisting=False)
             if stuff:
                 kw["stuff"] = stuff
-            R.call("jawa/build_batch", **kw)
+            r = R.call("jawa/build_batch", **kw)
+            if r.get("failed"):
+                R.notes.append("C11 %s: %s not built %s" % (st["id"], d, str(r.get("failed"))[:200]))
         for d, n_, (x, z) in o["items"]:
             R.call("rimworld/spawn_thing", defName=d, stackCount=n_, x=x, z=z)
         for kind, (x, z), fac, role in o["pawns"]:
