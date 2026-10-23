@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- VEE_DEEP_ORES_MIGRATE_RICH_AND_POOR (design/RimMandrake/vee_port_plan_2026-10-22.md §2 group O). Our ports of
+     VEE_DeepOreRich, VEE_DeepOreDevoid, VEE_MineralDevoid and VEE_MineableComponentSpacer (Vanilla Exploration Expanded),
+     rebuilt from their descriptions; no VEE code read. Mechanisms: Source/RM_TileResources.cs + Kernel/RM_TileResourceKernel.cs.
+     Numbers are Mod Settings (rich factor, deposit amount), never def fields, so the labels stay number-free.
+     Category strings are the donor's, as in the 2026-10-19 port precedent, so the stamp's AddMutator displacement is like-for-like.
+     No worldgen (owner, 2026-08-15): chanceOnNonLandmarkTile 0 and no biome lists; these reach the planet only by the one stamp
+     (VEE_WORLD_RENAME_ONE_STAMP_AT_END). -->
+<Defs>
+
+  <TileMutatorDef>
+    <defName>RM_DeepOreRich</defName>
+    <label>deep ore rich</label>
+    <description>This area is rich in deep ores: every deposit a ground-penetrating scanner finds here holds more than usual.</description>
+    <categories>
+      <li>VEE_DeepOres</li>
+    </categories>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <modExtensions>
+      <li Class="RimMandrake.DeepDrill.RM_TileResourceExtension">
+        <deepOre>Rich</deepOre>
+      </li>
+    </modExtensions>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_DeepOreDevoid</defName>
+    <label>no deep ores</label>
+    <description>This area is so poor in deep ores that a ground-penetrating scanner finds none.</description>
+    <categories>
+      <li>VEE_DeepOres</li>
+    </categories>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <modExtensions>
+      <li Class="RimMandrake.DeepDrill.RM_TileResourceExtension">
+        <deepOre>Devoid</deepOre>
+      </li>
+    </modExtensions>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_MineralDevoid</defName>
+    <label>mineral devoid</label>
+    <description>No ore veins run through the rock here. Only plain stone can be mined.</description>
+    <workerClass>RimMandrake.DeepDrill.RM_TileMutatorWorker_MineralDevoid</workerClass>
+    <categories>
+      <li>VEE_Minerals</li>
+    </categories>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_MineableComponentSpacer</defName>
+    <label>advanced component deposits</label>
+    <description>This area has deposits of advanced ancient machinery, which can be mined for advanced components.</description>
+    <workerClass>RimMandrake.DeepDrill.RM_TileMutatorWorker_ScatterMineable</workerClass>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <modExtensions>
+      <li Class="RimMandrake.DeepDrill.RM_TileResourceExtension">
+        <scatterMineable>RM_MineableComponentsSpacer</scatterMineable>
+        <!-- PROVISIONAL: half of vanilla obsidian deposits' 0.1, since each lump is far richer. -->
+        <scatterBlotchFactor>0.05</scatterBlotchFactor>
+      </li>
+    </modExtensions>
+  </TileMutatorDef>
+
+</Defs>

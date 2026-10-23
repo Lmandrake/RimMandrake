@@ -8,7 +8,11 @@
   </supportedVersions>
   <description>DEEP_DRILL_HOME_BIOME_1, owner decision by question card (2026-10-03, again 2026-10-09; minerals design section 7 Q4 option A): deep drilling finds iron everywhere; every other deep deposit only in its home biome.
 
-A Harmony postfix on CompDeepScanner.ChooseLumpThingDef looks the lump vanilla picked up in RM_DeepHomeTable (defs, generated from design/RimMandrake/mineral_abundance_registry_2026-10-03.csv). Off the deposit's home biomes the pick becomes steel. Deposits the table does not name are untouched. One Mod Settings switch; off is vanilla.</description>
+A Harmony postfix on CompDeepScanner.ChooseLumpThingDef looks the lump vanilla picked up in RM_DeepHomeTable (defs, generated from design/RimMandrake/mineral_abundance_registry_2026-10-03.csv). Off the deposit's home biomes the pick becomes steel. Deposits the table does not name are untouched.
+
+World-tile resources (ported from Vanilla Exploration Expanded): on a "deep ore rich" tile every deposit a ground-penetrating scanner finds holds more; on a "no deep ores" tile the scanner finds nothing; a "mineral devoid" tile has no ore veins in its rock; an "advanced component deposits" tile has lumps of advanced compacted machinery to mine.
+
+Every feature has its own Mod Settings switch; all off is vanilla.</description>
   <modDependencies>
     <li>
       <packageId>brrainz.harmony</packageId>

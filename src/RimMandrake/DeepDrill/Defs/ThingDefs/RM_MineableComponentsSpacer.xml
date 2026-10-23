@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- VEE_DEEP_ORES_MIGRATE_RICH_AND_POOR: our port of VEE_MineableComponentSpacer (the thing), scattered only by the
+     RM_MineableComponentSpacer tile mutator (mineableScatterCommonality 0: the ordinary ore scatter never places it).
+     Lump size and yield are the donor's. Art: vanilla's compacted machinery atlas tinted cool (no donor art kept);
+     PROVISIONAL until our own atlas exists. -->
+<Defs>
+
+  <ThingDef ParentName="RockBase">
+    <defName>RM_MineableComponentsSpacer</defName>
+    <label>advanced compacted machinery</label>
+    <description>Advanced ancient electronics, compacted over time. Can be mined for useful advanced components.</description>
+    <graphicData>
+      <texPath>Things/Building/Linked/CompactedMachinery_Atlas</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Rock</li>
+        <li>MapEdge</li>
+      </linkFlags>
+      <shaderType>CutoutComplex</shaderType>
+      <color>(150,175,205)</color>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>2500</MaxHitPoints>
+    </statBases>
+    <building>
+      <isResourceRock>true</isResourceRock>
+      <mineableThing>ComponentSpacer</mineableThing>
+      <mineableYield>2</mineableYield>
+      <mineableScatterCommonality>0</mineableScatterCommonality>
+      <mineableScatterLumpSizeRange>20~40</mineableScatterLumpSizeRange>
+      <veinMineable>true</veinMineable>
+    </building>
+  </ThingDef>
+
+</Defs>
