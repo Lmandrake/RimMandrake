@@ -104,6 +104,7 @@ import math
 import os
 import re
 import shutil
+import subprocess
 import sys
 import time
 
@@ -1441,6 +1442,16 @@ def post(result_path):
 TEMPLATE = os.path.expanduser("~/.claude/skills/review-sheets/assets/sheet_template.html")
 
 
+def _native(path):
+    """The Windows-native spelling of a WSL path (wslpath -w), for a sheet the owner opens from Windows. The sheet used to
+    name D:\\Luke\\dev\\RimMandrake\\Transient, the read-only mirror, which the seat clone never writes to."""
+    try:
+        r = subprocess.run(["wslpath", "-w", path], capture_output=True, text=True, timeout=20)
+        return r.stdout.strip() or path
+    except (OSError, subprocess.SubprocessError):
+        return path
+
+
 def write_review(res, recs, out):
     """review-sheets template (skill review-sheets): CONFIG + ITEMS filled, one row per scene, thumbnail = the shot,
     effect line = state verdict + factors + image checks. Pre-filled: keep a PASS scene with a clean frame, flag the
@@ -1495,8 +1506,8 @@ def write_review(res, recs, out):
            "options": [{"key": "keep", "label": "Keep", "hotkey": "1", "color": "#5ac37f", "counts": "in"},
                        {"key": "flag", "label": "Flag", "hotkey": "2", "color": "#e06c6c", "counts": "out"}],
            "groupLabel": "topology / group", "media": True, "decisionsFile": "review.decisions.json",
-           "decisionsPath": "D:\\Luke\\dev\\RimMandrake\\Transient\\mc_matrix_live_20261002\\review.decisions.json",
-           "sheetPath": "D:\\Luke\\dev\\RimMandrake\\Transient\\mc_matrix_live_20261002\\review.html"}
+           "decisionsPath": _native(os.path.join(os.path.dirname(out), "review.decisions.json")),
+           "sheetPath": _native(out)}
     html = open(TEMPLATE, encoding="utf-8").read()
     html = re.sub(r'(<script id="CONFIG" type="application/json">)(.*?)(</script>)',
                   lambda m: m.group(1) + "\n" + json.dumps(cfg, indent=1) + "\n" + m.group(3), html, count=1, flags=re.S)
