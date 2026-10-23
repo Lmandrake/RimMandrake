@@ -1331,6 +1331,28 @@ namespace RimMandrake.FlowWorks.SelfTest
                 AssertClose(RM_DigDiscoveryMath.Budget(1200f, 5f), 60f, "5% of the rock's units");
                 AssertClose(RM_DigDiscoveryMath.Budget(0f, 5f), 0f, "no ore, no loose budget");
             });
+            // ── PIT_DEEPSTONE_BUILD_DIGGING_FINALLY_PAYS: superdeep cuts reach a deeper stone, picked stably per tile ──
+            Case("DeepStone_superdeep_strikes_and_stable_pick", () =>
+            {
+                Assert(!RM_DigDiscoveryMath.StrikesDeepStone(3, 4) && RM_DigDiscoveryMath.StrikesDeepStone(4, 4)
+                    && RM_DigDiscoveryMath.StrikesDeepStone(40, 4), "2 m (D4) and below is the deep stratum, 1.5 m is not");
+                Assert(!RM_DigDiscoveryMath.StrikesDeepStone(4, 0), "no superdeep level, no deep stone");
+                Assert(RM_DigDiscoveryMath.PickIndex(123, 0) == -1, "no candidates, no pick");
+                for (int seed = -500; seed < 500; seed += 7)
+                {
+                    int i = RM_DigDiscoveryMath.PickIndex(seed, 5);
+                    Assert(i >= 0 && i < 5 && i == RM_DigDiscoveryMath.PickIndex(seed, 5), "pick in range and stable for seed " + seed);
+                }
+                var seen = new HashSet<int>();
+                for (int seed = 0; seed < 64; seed++) seen.Add(RM_DigDiscoveryMath.PickIndex(seed, 4));
+                Assert(seen.Count == 4, "neighbouring tiles reach every candidate, saw " + seen.Count);
+                // the Verse wiring, read from production source
+                string src = System.IO.File.ReadAllText(RiverSwitchFlipChecks.SrcPath("RM_DigDiscovery.cs"));
+                Assert(src.Contains("StrikesDeepStone(newDepth, RM_ExcavationDepth.Superdeep)") && src.Contains("digDeepStoneEnabled"),
+                    "the chunk roll asks StrikesDeepStone at the superdeep level, behind the switch");
+                Assert(src.Contains("surface.Contains(d)") && src.Contains("biomeSpecific"), "the fallback skips surface rocks and foreign biome-specific ones");
+                Assert(src.Contains("pool.Sort("), "the fallback pool is name-sorted: load order never moves a tile's stone");
+            });
             // ── DIG_ROCK_TUNE_STONE_FIGHTS_BACK: rock ground, chunks, work ──
             Case("DigRock_chunk_chance_and_work", () =>
             {
