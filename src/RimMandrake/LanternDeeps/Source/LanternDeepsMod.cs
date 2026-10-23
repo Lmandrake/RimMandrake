@@ -91,10 +91,6 @@ namespace RimMandrake.LanternDeeps
         public static float sipperCellsPerSipper = 0.1f;        // glow radius lost per sipper sitting on a light
         public static bool tapperEnabled = true;                // live: wild tappers drain batteries; tame ones store aurora charge
         public static bool poolerSmotherEnabled = true;         // live: poolers smother fires, heaters and warm bodies
-        // LANTERNDEEPS_ANSWERING_RITE_BUILD_1 (numbers PROVISIONAL, on the outcome def's RM_AnsweringExtension)
-        public static bool answeringRiteEnabled = true;         // live: the Answering may be held at a Shard-mind / mindstone
-        public static bool answeringStallEnabled = true;        // live: a poor Answering stops the droid and it must be carried out
-        public static bool answeringNextStoneEnabled = true;    // live: an excellent Answering names (and places) the next mindstone
 
         // DEEP_ENTRANCE_BIOMES_SETTING_1 — owner, 2026-09-18: "The mod itself
         // will be (3) but for the Utinni scenario it's definitely (1)". The
@@ -238,9 +234,6 @@ namespace RimMandrake.LanternDeeps
             Scribe_Values.Look(ref sipperCellsPerSipper, "sipperCellsPerSipper", 0.1f);
             Scribe_Values.Look(ref tapperEnabled, "tapperEnabled", true);
             Scribe_Values.Look(ref poolerSmotherEnabled, "poolerSmotherEnabled", true);
-            Scribe_Values.Look(ref answeringRiteEnabled, "answeringRiteEnabled", true);
-            Scribe_Values.Look(ref answeringStallEnabled, "answeringStallEnabled", true);
-            Scribe_Values.Look(ref answeringNextStoneEnabled, "answeringNextStoneEnabled", true);
             RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
@@ -388,7 +381,7 @@ namespace RimMandrake.LanternDeeps
                 list.GapLine();
             }
 
-            if (Group(list, "Shard-minds, Orun-Ghal and the Answering", RimMandrake.Shared.SettingScope.Now, new[] { "workingDeadAnimateEnabled", "shardMindDroidPullEnabled", "orunGhalEnabled", "orunGhalStudyEnabled", "answeringRiteEnabled", "answeringStallEnabled", "answeringNextStoneEnabled" }))
+            if (Group(list, "Shard-minds and Orun-Ghal", RimMandrake.Shared.SettingScope.Now, new[] { "workingDeadAnimateEnabled", "shardMindDroidPullEnabled", "orunGhalEnabled", "orunGhalStudyEnabled" }))
             {
                 list.CheckboxLabeled("Dead chassis near a Shard-mind stand and work", ref workingDeadAnimateEnabled,
                     "On: a dead chassis near a Shard-mind stands up, works at the rock (it never digs) and turns toward light. "
@@ -404,15 +397,6 @@ namespace RimMandrake.LanternDeeps
                     "On: a colonist doing research work visits it once a day and studies it (it stands still for the visit). Study "
                   + "reveals what the crystals are and want; each visit on a new day raises its standing, and as it comes to know "
                   + "you it walks over to your people. Off: no study work. Safe mid-game.");
-                list.CheckboxLabeled("The Answering can be held (campaign rite)", ref answeringRiteEnabled,
-                    "On: the Answering may be held at a Shard-mind or mindstone with one of your droids standing in its sight, if the "
-                  + "campaign's rites mod teaches it. Off: it cannot be started, and a rite already running changes nothing. Safe mid-game.");
-                list.CheckboxLabeled("A poor Answering stops the droid", ref answeringStallEnabled,
-                    "On: after a poor Answering the droid stops and has to be carried out of the mind's sight, where it restarts. "
-                  + "Off: a poor Answering costs nothing but the attempt.");
-                list.CheckboxLabeled("An excellent Answering names the next mindstone", ref answeringNextStoneEnabled,
-                    "On: an excellent Answering leaves a line in the droid's log naming where the next mindstone lies on this Deep, "
-                  + "and a vein is there. Off: it only leaves the line it did not write.");
                 list.GapLine();
             }
 

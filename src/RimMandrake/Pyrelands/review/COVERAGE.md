@@ -92,9 +92,8 @@ python.exe src/RimMandrake/Pyrelands/human_review.py --build --load NS_Pyrelands
 | world | Cross-biome mechanics (off by default) | RM_PyrelandsMod.cs | S | off by default; turning it on changes other biomes, outside this map |
 | setting | Mod Settings: every toggle and tuning (RM_PyrelandsSettings and PyrelandsMechanicsSettings) | RM_PyrelandsMod.cs | S |  |
 | setting | Mechanics gate: 'Mod enabled' and the Baroque Biomes 'Pyrelands' toggle | PyrelandsMechanicsGate.cs | S |  |
-| rite | Struck Glass rite (PYRELANDS_STRUCK_GLASS_RITE_BUILD_1) | item only | none | NOT BUILT: no def or code exists yet (grep finds none); it gets a station when it is built |
 
-## Features with no station (15)
+## Features with no station (14)
 
 - **Retired ash rungs trace/light/heavy (hidden aliases, re-laid on load)**: they never stand on a loaded map (re-laid to deep ash at load); the matrix's ground_deep_ash checks none remain. Their three PNGs are orphaned (named on station 1's card).
 - **Thornvine made edible for the furnace-beast (RUT_Thornvine_Edible.xml)**: thornvine is another mod's plant and the beast must roam free to eat it; no review map can pen both
@@ -110,7 +109,6 @@ python.exe src/RimMandrake/Pyrelands/human_review.py --build --load NS_Pyrelands
 - **Barbslinger tail gun and spike projectile art**: a fight, not a look: draft a colonist at 29 in god mode to see it
 - **Flamefang venom bite (RM_FlamefangVenom)**: a fight, not a look: let it bite a god-mode colonist at 30
 - **Dessicated (rotted corpse) drawings, five animals**: needs a fully rotted corpse (days of sim); kill one in its pen and run 3x for a few days to check by hand
-- **Struck Glass rite (PYRELANDS_STRUCK_GLASS_RITE_BUILD_1)**: NOT BUILT: no def or code exists yet (grep finds none); it gets a station when it is built
 
 ## Stations
 

@@ -50,7 +50,6 @@
     <extraGenSteps>
       <li>RM_FE_ScorchRuins</li>
       <li>RM_FE_ScorchRuinsLate</li>
-      <li>RM_StruckGlassRing</li>
     </extraGenSteps>
 
     <modExtensions>

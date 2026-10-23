@@ -664,7 +664,7 @@ TIERS["biomes_sprint"] = {
     # VEF core (2026-10-21): Baroque Biomes' donor ports name VEF classes (VEF.Plants.DualCropExtension,
     # VEF.AnimalBehaviours.CompProperties_AnimalProduct) and About.xml does not declare it, so without this the 19-mod
     # load discarded those defs and RM_TestSite_cauldron_v1 (saved with VEF) died in Map.FinalizeLoading.
-    # mandrake.rut.rites: the Pyrelands Struck Glass rite (RUT_StruckGlass.xml) lives there.
+    # mandrake.rut.rites: the Nine's engine (Ninefold) lives there.
     "want": list(TIERS["ratchet_pilot"]["want"]) + ["mandrake.rm.hugethings",
                                                      "oskarpotocki.vanillafactionsexpanded.core", "mandrake.rut.rites"]
             + ([] if _EG_FOLDED else ["mandrake.rm.explosivegrowth"]),

@@ -135,13 +135,9 @@ namespace RimMandrake.GelatinousSlime
         // GELATINOUSSLIME_ARCHIVE_RESURRECTION_1: the body files each colonist it reads, and the archive vat can grow a dead one back from the last entry. Off: no new entries, the vat does nothing.
         public static bool archiveResurrection = true;
 
-        // GELATINOUSSLIME_JOINING_WATER_STANDALONE_1: the found hand-ring on a Slime map and the rite's spreading of permanent hurts. Worldgen-affecting (the ring is placed at generation). Off: no ring, and the rite shares nothing.
-        public static bool joiningWaterEnabled = true;
-
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_Values.Look(ref joiningWaterEnabled, "joiningWaterEnabled", true, true);
             Scribe_Values.Look(ref pitSolvent, "pitSolvent", true, true);
             Scribe_Values.Look(ref sealBreach, "sealBreach", true, true);
             Scribe_Values.Look(ref chunkBomb, "chunkBomb", true, true);
@@ -237,15 +233,6 @@ namespace RimMandrake.GelatinousSlime
                     + "sunk into slime-grass: fence stubs, a dead irrigation channel, a collapsed "
                     + "shed and a little left behind. Off: none are placed. WORLDGEN-AFFECTING: "
                     + "changes only maps generated afterwards, never one that already exists.");
-                list.GapLine();
-            }
-
-            if (Group(list, "Joining Water ring (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.Now, new[] { "joiningWaterEnabled" }))
-            {
-                list.CheckboxLabeled("Joining Water ring (affects newly generated maps)", ref joiningWaterEnabled,
-                    "On (default): a newly generated slime map holds a ring of hand-prints pressed into hardened slime, where the clan's "
-                    + "Joining Water rite can be held, and the rite shares one person's lasting hurts out among the ring as weak, passing ones. "
-                    + "Off: no ring is placed on maps generated afterwards, and the rite shares nothing on any map, rings already placed included. WORLDGEN-AFFECTING: the ring changes only maps generated afterwards, never one that already exists (the rite switch takes effect at once).");
                 list.GapLine();
             }
 

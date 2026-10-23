@@ -558,9 +558,6 @@ FEATURES = [
     ("setting", "Mod Settings: every toggle and tuning (RM_PyrelandsSettings and PyrelandsMechanicsSettings)",
      "RM_PyrelandsMod.cs", "S"),
     ("setting", "Mechanics gate: 'Mod enabled' and the Baroque Biomes 'Pyrelands' toggle", "PyrelandsMechanicsGate.cs", "S"),
-    # not built yet
-    ("rite", "Struck Glass rite (PYRELANDS_STRUCK_GLASS_RITE_BUILD_1)", "item only", None,
-     "NOT BUILT: no def or code exists yet (grep finds none); it gets a station when it is built"),
 ]
 
 BOARDS = {
