@@ -22,6 +22,9 @@ Bridge: taken by BENCH "fittings switch + pit-lid live check"
   (pipe 17,43): flange at the pipe->tank join, coupler at pump top; both vanish with joinFittings off (restored True after).
   C7 pipe and the two hose->tank ports: no difference ON/OFF (no hose port-coupled to a pipe on this save; by design).
 ## 4. Findings filed
-- pending
+- verify run-1 A2 L1 FAIL (X8c HARNESS), run-2 A3 L2 PASS -> PIT_LID_FIX_VICKY_PEEKS_THROUGH validated, still owes L1.
+- finding X8C_WALKER_FALLS_THROUGH_SCRAP_LID (HARNESS) -> spawned X8C_WALKER_FIX_FELL_THROUGH_THE_FLOOR.
+- filed TANK_FLANGE_FIX_HOVERS_MID_PIPE (MOD: south-entry tank flange drawn ~0.5 cell below the skid).
+- JOINT_FITTINGS_RESTORE_SWITCHED_OFF_AT_HOME closed at c8f8307b34 (already ON).
 ## 5. Bridge released / game state
-- pending
+- save b reloaded (tick 144387, paused), joinFittings True; bridge released. Nothing saved.
