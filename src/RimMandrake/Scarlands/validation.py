@@ -449,7 +449,7 @@ def static_checks():
         for f in ("south", "east", "north"):
             if not os.path.exists(os.path.join(HERE, "Textures", "Things", *tex.split("/")) + "_%s.png" % f):
                 bad.append("%s texture %s missing" % (n, f))
-    for tex in ("Plant/RM_Glower/RM_Glower_a", "Plant/RM_WreckLichen/RM_WreckLichen_a", "Item/Resource/RM_GlowerCrust/RM_GlowerCrust_a",
+    for tex in ("Plant/RM_Glower/RM_Glower_a", "Plant/RM_WreckLichen/RM_WreckLichen_a", "Item/Resource/RM_GlowerCrust/RM_GlowerCrust",
                 "Item/Resource/RM_WreckLichenScrapings/RM_WreckLichenScrapings", "Pawn/Animal/RM_TotchakDormant/RM_TotchakDormant"):
         if not os.path.exists(os.path.join(HERE, "Textures", "Things", *tex.split("/")) + ".png"):
             bad.append("texture %s missing" % tex)

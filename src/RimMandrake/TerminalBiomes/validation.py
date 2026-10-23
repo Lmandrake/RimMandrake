@@ -420,8 +420,8 @@ def settings_checks():
     defs = shipped_defs()
     if len(defs) < 100:
         bad.append("sanity probe: only %d shipped defs parsed (expected 150+)" % len(defs))
-    if len(terrain_defs()) != 17:
-        bad.append("sanity probe: %d terrain defs parsed, expected 17 (Scald 7, Grey Sea 5, Chill 2, Crater 1, Bank silt 2)" % len(terrain_defs()))
+    if len(terrain_defs()) != 19:
+        bad.append("sanity probe: %d terrain defs parsed, expected 19 (Scald 7, Grey Sea 5, Chill 2, Crater 1, Bank silt 2, donor ports 2)" % len(terrain_defs()))
     bf = biome_facts()
     for b in BIOMES:
         if b not in bf:
