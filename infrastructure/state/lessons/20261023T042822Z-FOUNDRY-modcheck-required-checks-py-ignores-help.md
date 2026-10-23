@@ -1,0 +1,1 @@
+modcheck/required_checks.py ignores --help and rewrites required_checks.json for EVERY mod from the working tree, so in a clone shared with other helpers it bakes their uncommitted scripts (e.g. a DeepDrill validation.py with no suite) into the manifest. Regenerate it only from a clean tree, or at a landing that owns every changed script.
