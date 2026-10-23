@@ -68,14 +68,8 @@ namespace RimMandrake.BlueDesert
         public static float ablationPaceFactor = 1f;
 
         // BLUEDESERT_GPT_ENRICHMENT_1 §4 (RM_VhaulkRoad.cs).
-        public static bool vhaulkRoadEnabled = true;
-        public static float vhaulkRoadDaysFactor = 1f;
         public static bool vhaulkDepartsEnabled = true;
         public static float vhaulkStayDaysFactor = 1f;
-
-        // BLUEDESERT_MECHANICS_BUILD_1 §5 (RM_BlueDesertSoundscape.cs).
-        public static bool ossivelChoirEnabled = true;
-        public static bool virrSongEnabled = true;
 
         public override void ExposeData()
         {
@@ -99,12 +93,8 @@ namespace RimMandrake.BlueDesert
             Scribe_Values.Look(ref coldSinkCapacityFactor, "coldSinkCapacityFactor", 1f);
             Scribe_Values.Look(ref ablationSalvageEnabled, "ablationSalvageEnabled", true);
             Scribe_Values.Look(ref ablationPaceFactor, "ablationPaceFactor", 1f);
-            Scribe_Values.Look(ref vhaulkRoadEnabled, "vhaulkRoadEnabled", true);
-            Scribe_Values.Look(ref vhaulkRoadDaysFactor, "vhaulkRoadDaysFactor", 1f);
             Scribe_Values.Look(ref vhaulkDepartsEnabled, "vhaulkDepartsEnabled", true);
             Scribe_Values.Look(ref vhaulkStayDaysFactor, "vhaulkStayDaysFactor", 1f);
-            Scribe_Values.Look(ref ossivelChoirEnabled, "ossivelChoirEnabled", true);
-            Scribe_Values.Look(ref virrSongEnabled, "virrSongEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -157,26 +147,21 @@ namespace RimMandrake.BlueDesert
                 list.GapLine();
             }
 
-            if (Group(list, "Vhaulk", RimMandrake.Shared.SettingScope.Now, new[] { "vhaulkHeatGateEnabled", "vhaulkEmpTrapEnabled", "vhaulkRoadEnabled", "vhaulkDepartsEnabled" }))
+            if (Group(list, "Vhaulk", RimMandrake.Shared.SettingScope.Now, new[] { "vhaulkHeatGateEnabled", "vhaulkEmpTrapEnabled", "vhaulkDepartsEnabled" }))
             {
                 list.CheckboxLabeled("Vhaulk: only fire detonates the cistern", ref vhaulkHeatGateEnabled,
                     "On: the vhaulk explodes only when fire, a burn, heatstroke or lightning kills it; a "
                   + "kinetic or cold kill leaves the carcass intact. Off: any death detonates it.");
                 list.CheckboxLabeled("Vhaulk: EMP detonates it alive", ref vhaulkEmpTrapEnabled,
                     "On: any EMP hit on a living vhaulk sets it off at once. Off: EMP does nothing to it.");
-                list.CheckboxLabeled("Vhaulk road", ref vhaulkRoadEnabled,
-                    "A walking vhaulk presses a pale road into the ice that lasts a few days, crops the plants "
-                  + "it passes, trails frost and booms now and then. Off: it walks like any animal.");
                 list.CheckboxLabeled("Vhaulk moves on", ref vhaulkDepartsEnabled,
                     "A wild vhaulk walks off the map after a few days, with a letter. Off: it stays, like "
                   + "any wild animal.");
                 list.GapLine();
             }
 
-            if (Group(list, "Vhaulk road and stay lengths", RimMandrake.Shared.SettingScope.NextPulse, new[] { "vhaulkRoadDaysFactor", "vhaulkStayDaysFactor" }))
+            if (Group(list, "Vhaulk stay length", RimMandrake.Shared.SettingScope.NextPulse, new[] { "vhaulkStayDaysFactor" }))
             {
-                list.Label("How long a vhaulk road lasts: x" + vhaulkRoadDaysFactor.ToString("0.00"));
-                vhaulkRoadDaysFactor = list.Slider(vhaulkRoadDaysFactor, 0.25f, 4f);
                 list.Label("How long a vhaulk stays: x" + vhaulkStayDaysFactor.ToString("0.00"));
                 vhaulkStayDaysFactor = list.Slider(vhaulkStayDaysFactor, 0.25f, 4f);
                 list.GapLine();
@@ -214,7 +199,7 @@ namespace RimMandrake.BlueDesert
             {
                 list.CheckboxLabeled("Blue-ice cold rack", ref coldSinkEnabled,
                     "A rack loaded with blue ice keeps an enclosed room at its setting by melting the ice, "
-                  + "with no power, and drips the melt into cans of clean water. Off: the rack holds its "
+                  + "with no power. Off: the rack holds its "
                   + "ice and does nothing.");
                 list.Label("Cold held per block of blue ice: x" + coldSinkCapacityFactor.ToString("0.00"));
                 coldSinkCapacityFactor = list.Slider(coldSinkCapacityFactor, 0.25f, 4f);
@@ -229,17 +214,6 @@ namespace RimMandrake.BlueDesert
                   + "comes to the surface. Off: this event never happens.");
                 list.Label("How slowly a find surfaces: x" + ablationPaceFactor.ToString("0.00"));
                 ablationPaceFactor = list.Slider(ablationPaceFactor, 0.25f, 3f);
-                list.GapLine();
-            }
-
-            if (Group(list, "Ossivel and virr song", RimMandrake.Shared.SettingScope.Now, new[] { "ossivelChoirEnabled", "virrSongEnabled" }))
-            {
-                list.CheckboxLabeled("Ossivel choir and its silence", ref ossivelChoirEnabled,
-                    "A pack of three or more ossivels sings; the song stops at once when anything bigger than a "
-                  + "person comes near them, and starts again a little after it leaves. Off: ossivels are silent "
-                  + "and give no warning.");
-                list.CheckboxLabeled("Virr fields sing in the wind", ref virrSongEnabled,
-                    "In a good wind the nearest virr field whistles, higher as its charge ripens. Off: virr are silent.");
                 list.GapLine();
             }
 
@@ -278,7 +252,7 @@ namespace RimMandrake.BlueDesert
         private static readonly HashSet<string> collapsedSections = new HashSet<string>();
 
         /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
-        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): the flora roster rows are removed at startup (its own label says restart) so [next game start]; the weather table is rebuilt when the window closes and only bites at the next weather change, the murrek burial happens when an ice-sand drift ends, the vhaulk road and stay lengths are rolled when a road tile is laid or a vhaulk arrives, and the ablation event is rolled and paced when it starts, so those are [next pulse]; every other setting is read by a tick, comp, death or job handler, none at map generation, so [now].</summary>
+        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): the flora roster rows are removed at startup (its own label says restart) so [next game start]; the weather table is rebuilt when the window closes and only bites at the next weather change, the murrek burial happens when an ice-sand drift ends, the vhaulk stay length is rolled when a vhaulk arrives, and the ablation event is rolled and paced when it starts, so those are [next pulse]; every other setting is read by a tick, comp, death or job handler, none at map generation, so [now].</summary>
         private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
         {
             bool searching = !string.IsNullOrWhiteSpace(searchQuery);

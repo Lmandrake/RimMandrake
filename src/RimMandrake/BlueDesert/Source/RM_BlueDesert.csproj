@@ -68,7 +68,6 @@
     <Compile Include="RM_VhaulkRoad.cs" />
     <Compile Include="Kernel\RM_BlueKernel.cs" />
     <Compile Include="Kernel\RM_MurrekKernel.cs" />
-    <Compile Include="RM_BlueDesertSoundscape.cs" />
   </ItemGroup>
 
   <ItemGroup>

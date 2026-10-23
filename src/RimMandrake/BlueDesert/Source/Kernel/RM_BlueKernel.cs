@@ -1,5 +1,5 @@
 // Verse-free kernel of the Blue Desert's small mechanics: the blue-ice heat sink, the thaw roll, the vhaulk's detonation gate and
-// road/departure, the plant charge, the ablation timeline, the ossivel choir, and the weighted pick several of them share.
+// departure, the plant charge, the ablation timeline, and the weighted pick several of them share.
 // SelfTest/BlueDesertFuzz.cs compiles this file alone: no Verse/RimWorld/UnityEngine.
 using System;
 using System.Collections.Generic;
@@ -57,20 +57,6 @@ namespace RimMandrake.BlueDesert
             return true;
         }
 
-        // Melted ice drips into cans: every blocksPerCan melted blocks make one drip of CansPerDrip cans. Returns the drips made.
-        public static int Drip(ref float meltedBlocks, float blocksPerCan)
-        {
-            if (blocksPerCan <= 0f) return 0;
-            int drips = 0;
-            while (meltedBlocks >= blocksPerCan)
-            {
-                meltedBlocks -= blocksPerCan;
-                drips++;
-            }
-            return drips;
-        }
-        public static int CansPerDrip(int cansPerMelt) { return Math.Max(1, cansPerMelt); }
-
         // ── thaw roll ──
         public static bool ThawCounts(ref int blocksSinceRoll, int blocksPerRoll)
         {
@@ -103,11 +89,8 @@ namespace RimMandrake.BlueDesert
         }
         public static float WeatherCommonality(bool on, float authored) { return on ? authored : 0f; }
 
-        // ── vhaulk road ──
+        // ── vhaulk walk-off ──
         public static int DepartTick(int now, float stayDaysRoll, float factor) { return now + (int)Math.Round(stayDaysRoll * Math.Max(0.1f, factor) * TicksPerDay); }
-        public static int RoadRemoveTick(int now, float roadDaysRoll, float factor) { return now + (int)Math.Round(roadDaysRoll * Math.Max(0.1f, factor) * TicksPerDay); }
-        // The temporary road goes on cells that are free of temp terrain and walls and on a listed terrain (an empty list allows all).
-        public static bool RoadCell(bool inBounds, bool hasTempTerrain, bool listNull, bool underListed, bool hasEdifice) { return inBounds && !hasTempTerrain && (listNull || underListed) && !hasEdifice; }
         // 0 = nothing, 1 = reset the departing flag then try to leave, 2 = try to leave
         public static int DepartAction(bool departOn, int departTick, int now, bool hashDue, bool departing, bool jobExitsMap)
         {
@@ -115,7 +98,6 @@ namespace RimMandrake.BlueDesert
             if (departing && !jobExitsMap) return 1;
             return departing ? 0 : 2;
         }
-        public static float CropGrowth(float growth, float cropTo, bool isTree) { return (isTree || growth <= cropTo) ? growth : cropTo; }
 
         // ── ablation emergence ──
         public static int SilhouetteTick(int now, float hoursRoll, float pace) { return now + (int)Math.Round(hoursRoll * TicksPerHour * Math.Max(0.1f, pace)); }
@@ -127,54 +109,6 @@ namespace RimMandrake.BlueDesert
             if (stage == 0 && now >= silhouetteTick) { stage = 1; callScavengers = true; }
             if (stage == 1 && now >= exposureTick) { stage = 2; expose = true; }
             return stage;
-        }
-
-        // ── ossivel choir / virr song ──
-        public sealed class ChoirResult { public int Singers; public bool Silenced, Singing; public int SilencedUntil; public int CentreX, CentreZ; }
-
-        // singers are (x,z); intruders are (x,z) of non-ossivel living pawns above the intruder body size. A singer count under the
-        // minimum is no choir; an intruder within the radius of any singer silences it for holdTicks (re-armed on each sighting).
-        public static ChoirResult Choir(bool gate, int now, int silencedUntil, int minSingers, float silenceRadius, int holdTicks,
-                                        int nSingers, int[] sx, int[] sz, int nIntruders, int[] ix, int[] iz)
-        {
-            var r = new ChoirResult { SilencedUntil = silencedUntil };
-            if (!gate) return r;
-            r.Singers = nSingers;
-            bool intruder = false;
-            for (int i = 0; i < nIntruders && !intruder; i++)
-                for (int j = 0; j < nSingers; j++)
-                {
-                    float dx = ix[i] - sx[j], dz = iz[i] - sz[j];
-                    if (dx * dx + dz * dz <= silenceRadius * silenceRadius) { intruder = true; break; }
-                }
-            if (intruder) r.SilencedUntil = now + holdTicks;
-            r.Silenced = nSingers >= minSingers && now < r.SilencedUntil;
-            r.Singing = nSingers >= minSingers && !r.Silenced;
-            if (r.Singing)
-            {
-                int sumX = 0, sumZ = 0;
-                for (int j = 0; j < nSingers; j++) { sumX += sx[j]; sumZ += sz[j]; }
-                r.CentreX = sumX / nSingers; r.CentreZ = sumZ / nSingers;
-            }
-            return r;
-        }
-
-        // The nearest virr to the listener within the listen radius (first of equals wins), or -1.
-        public static int NearestVirr(int n, int[] vx, int[] vz, int earX, int earZ, float listenRadius)
-        {
-            int best = -1; float bestDist = listenRadius * listenRadius;
-            for (int i = 0; i < n; i++)
-            {
-                float dx = vx[i] - earX, dz = vz[i] - earZ;
-                float d = dx * dx + dz * dz;
-                if (d <= bestDist) { bestDist = d; best = i; }
-            }
-            return best;
-        }
-        public static float VirrPitch(float pitchMin, float pitchMax, float growth)
-        {
-            float t = growth < 0f ? 0f : (growth > 1f ? 1f : growth);
-            return pitchMin + (pitchMax - pitchMin) * t;
         }
     }
 }

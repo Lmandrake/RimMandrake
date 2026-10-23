@@ -1,23 +1,14 @@
-// BLUEDESERT_GPT_ENRICHMENT_1 §4 — the vhaulk road.
+// BLUEDESERT_GPT_ENRICHMENT_1 §4 — the vhaulk's stay and walk-off.
 //
 // Owner-picked by question card 2026-09-30 from the GPT enrichment consult
-// (Transient/bedazzle_gpt_enrich_2026-09-30/bluedesert.md §9). Deepens the
-// ruled giant (BLUEDESERT_RULED_CONTENT_1 §2): its pillar feet press the ice
-// into a broad rime road that lasts days, the flora it passes is cropped flat,
-// its cistern seams boom at long intervals, and frost hangs in its wake. It
-// arrives with a letter and, after some days, walks off an edge with a
-// letter, leaving the road running to the edge. It never silently despawns.
+// (Transient/bedazzle_gpt_enrich_2026-09-30/bluedesert.md §9). The ruled
+// giant (BLUEDESERT_RULED_CONTENT_1 §2) arrives with a letter and, after some
+// days, walks off an edge with a letter. It never silently despawns.
+// The rime road it pressed, the flora cropping, the frost wake and the seam
+// booms were TRIMMED 2026-10-23 (fluff review, design/RimMandrake/
+// fluff_cuts_2026-10-23.md: "scenic; keep walk-off letter").
 //
-// Engine seams (RimSage, decompiled 1.6, 2026-09-30):
-//  - TerrainDef.temporary + TerrainGrid.SetTempTerrain puts the road in the
-//    temp-terrain layer ABOVE the real terrain, and
-//    Map.tempTerrain.QueueRemoveTerrain(cell, tick) removes it on schedule
-//    (vanilla floods and lava do exactly this), so the underlying ice is never
-//    overwritten and nothing of ours has to remember it.
-//  - TerrainGrid.DoTerrainChangedEffects only Destroy()s (DestroyMode.Vanish)
-//    a plant on a terrain change. CompPlantCharge detonates on KillFinalize
-//    only, so laying road can never set off the flora; and cropping here only
-//    lowers Plant.Growth, it deals no damage at all.
+// Engine seam (RimSage, decompiled 1.6, 2026-09-30):
 //  - Pawn.ExitMap -> DeSpawnOrDeselect -> ThingComp.PostDeSpawn while the
 //    pawn is still alive and standing on the edge cell; that is the exit
 //    hook. A death despawns through Kill, which RM_HediffComp_HeatGated-
@@ -27,37 +18,19 @@
 // lightning free, EMP-on-hit) are untouched: nothing here deals damage,
 // stuns, or kills. The departure is ordinary walking.
 //
-// Gates: masterEnabled && vhaulkRoadEnabled (road, cropping, frost, booms);
-// masterEnabled && vhaulkDepartsEnabled (the walk-off after stayDays).
+// Gate: masterEnabled && vhaulkDepartsEnabled (the walk-off after stayDays).
 
 using System.Collections.Generic;
 using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
-using Verse.Sound;
 
 namespace RimMandrake.BlueDesert
 {
     public class CompProperties_VhaulkRoad : CompProperties
     {
-        public TerrainDef roadTerrain;
-        /// <summary>Only these natural terrains take the road (never a
-        /// player floor).</summary>
-        public List<TerrainDef> roadOnTerrains;
-        public float roadRadius = 1.5f;
-        /// <summary>Base days the road lasts; Mod Settings scale it.</summary>
-        public FloatRange roadDays = new FloatRange(2f, 3f);
-
-        public float cropRadius = 2.9f;
-        public float cropToGrowth = 0.08f;
-
         public int stepIntervalTicks = 60;
-        public float frostChancePerStep = 0.5f;
-
-        public float boomMtbHours = 5f;
-        public SoundDef boomSound;
-
         /// <summary>Base days on a map before it walks off; Mod Settings
         /// scale it.</summary>
         public FloatRange stayDays = new FloatRange(2f, 5f);
@@ -81,9 +54,6 @@ namespace RimMandrake.BlueDesert
         public CompProperties_VhaulkRoad Props => (CompProperties_VhaulkRoad)props;
 
         private Pawn Vhaulk => parent as Pawn;
-
-        private static bool RoadOn =>
-            RM_BlueDesertSettings.masterEnabled && RM_BlueDesertSettings.vhaulkRoadEnabled;
 
         private static bool DepartOn =>
             RM_BlueDesertSettings.masterEnabled && RM_BlueDesertSettings.vhaulkDepartsEnabled;
@@ -131,25 +101,6 @@ namespace RimMandrake.BlueDesert
             {
                 return;
             }
-            Map map = pawn.Map;
-            if (RoadOn)
-            {
-                if (pawn.pather != null && pawn.pather.MovingNow)
-                {
-                    LayRoad(pawn, map);
-                    CropFlora(pawn, map);
-                    if (Rand.Chance(Props.frostChancePerStep))
-                    {
-                        FleckMaker.ThrowDustPuffThick(pawn.DrawPos, map, Rand.Range(1.8f, 2.8f),
-                            new Color(0.88f, 0.93f, 1f, 0.8f));
-                    }
-                }
-                if (Props.boomSound != null
-                    && Rand.MTBEventOccurs(Props.boomMtbHours, 2500f, Props.stepIntervalTicks))
-                {
-                    Props.boomSound.PlayOneShot(new TargetInfo(pawn.Position, map));
-                }
-            }
             // A flee, a fight or a meal can replace the walk-off job; when that happens, send it on its way again.
             int depart = RM_BlueKernel.DepartAction(DepartOn, departTick, Find.TickManager.TicksGame, parent.IsHashIntervalTick(250), departing,
                 pawn.CurJob != null && pawn.CurJob.exitMapOnArrival);
@@ -160,46 +111,6 @@ namespace RimMandrake.BlueDesert
             if (depart != 0)
             {
                 TryStartDeparture(pawn);
-            }
-        }
-
-        private void LayRoad(Pawn pawn, Map map)
-        {
-            TerrainDef road = Props.roadTerrain;
-            if (road == null || !road.temporary)
-            {
-                return;
-            }
-            int removeAt = RM_BlueKernel.RoadRemoveTick(Find.TickManager.TicksGame, Props.roadDays.RandomInRange, RM_BlueDesertSettings.vhaulkRoadDaysFactor);
-            foreach (IntVec3 c in GenRadial.RadialCellsAround(pawn.Position, Props.roadRadius, true))
-            {
-                // already road (its first expiry stands), flood, lava...
-                if (!c.InBounds(map) || !RM_BlueKernel.RoadCell(true, map.terrainGrid.TempTerrainAt(c) != null, Props.roadOnTerrains == null,
-                        Props.roadOnTerrains != null && Props.roadOnTerrains.Contains(map.terrainGrid.TerrainAt(c)), c.GetEdifice(map) != null))
-                {
-                    continue;
-                }
-                map.terrainGrid.SetTempTerrain(c, road);
-                map.tempTerrain.QueueRemoveTerrain(c, removeAt);
-            }
-        }
-
-        private void CropFlora(Pawn pawn, Map map)
-        {
-            foreach (IntVec3 c in GenRadial.RadialCellsAround(pawn.Position, Props.cropRadius, true))
-            {
-                if (!c.InBounds(map))
-                {
-                    continue;
-                }
-                Plant plant = c.GetPlant(map);
-                if (plant == null || plant.def.plant == null
-                    || RM_BlueKernel.CropGrowth(plant.Growth, Props.cropToGrowth, plant.def.plant.IsTree) == plant.Growth)
-                {
-                    continue;
-                }
-                plant.Growth = RM_BlueKernel.CropGrowth(plant.Growth, Props.cropToGrowth, plant.def.plant.IsTree);
-                map.mapDrawer.MapMeshDirty(c, MapMeshFlagDefOf.Things);
             }
         }
 

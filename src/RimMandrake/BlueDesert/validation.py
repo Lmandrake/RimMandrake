@@ -76,8 +76,8 @@ DEFAULTS = {
     "ruledWeathersEnabled": True, "hazeExposureEnabled": True, "thawRollEnabled": True,
     "crackCueEnabled": True, "murrekReseedEnabled": True, "coldSinkEnabled": True,
     "coldSinkCapacityFactor": 1.0, "ablationSalvageEnabled": True, "ablationPaceFactor": 1.0,
-    "vhaulkRoadEnabled": True, "vhaulkRoadDaysFactor": 1.0, "vhaulkDepartsEnabled": True,
-    "vhaulkStayDaysFactor": 1.0, "ossivelChoirEnabled": True, "virrSongEnabled": True,
+    "vhaulkDepartsEnabled": True,
+    "vhaulkStayDaysFactor": 1.0,
 }
 suite.toggles = sorted(DEFAULTS)
 
@@ -723,7 +723,7 @@ def settings_chain(t):
     # Settings whose EFFECT this suite cannot drive (see the module docstring): the field must exist,
     # read its shipped default and be writable, restored afterwards.
     for field in ("burnerHaloEnabled", "crackCueEnabled", "murrekReseedEnabled", "ablationSalvageEnabled",
-                  "ablationPaceFactor", "vhaulkRoadDaysFactor", "vhaulkStayDaysFactor"):
+                  "ablationPaceFactor", "vhaulkStayDaysFactor"):
         with _comp(t, "%s_roundtrip" % field, toggle=field):
             if _live(t):
                 if not _same(_get_setting(t, field), DEFAULTS[field]):
@@ -1310,8 +1310,9 @@ def _cold_held(t, rack_id):
 @suite.chain("cold_rack")
 def cold_rack(t):
     """The blue-ice rack, no power: loaded with ice it pulls a warm sealed room down while an empty rack in
-    an identical room does not; the ice is spent and melts into cans; with coldSinkEnabled off the same
-    warm room is left alone. The capacity slider is set to its minimum (x0.25) so a drip fits in the run."""
+    an identical room does not; the ice is spent; with coldSinkEnabled off the same warm room is left alone.
+    The capacity slider is set to its minimum (x0.25) so the spend shows in the run. (The meltwater drip into
+    cans was trimmed 2026-10-23, fluff review.)"""
     _prep(t, "rack")
     x, z = t.anchor
     a_rect, b_rect = (x - 11, z - 3, 7, 7), (x + 4, z - 3, 7, 7)
@@ -1356,18 +1357,14 @@ def cold_rack(t):
                 if tb - ta < 3.0:
                     _fail("the loaded room is only %.1f C cooler than the empty control (A %.1f, B %.1f): the "
                           "rack does not cool the room" % (tb - ta, ta, tb))
-        with _comp(t, "rack_spends_ice_and_drips"):
+        with _comp(t, "rack_spends_ice"):
             if _live(t):
                 t.wait_ticks(2100)
                 held = _cold_held(t, ids["a"])
-                cans = _stack_total(t, "RM_BlueIceMeltwaterCan", _rs(_rect(t)))
-                _note(t, "after 3600 ticks", {"held_h": held, "held0_h": ids["held0"], "cans": cans})
+                _note(t, "after 3600 ticks", {"held_h": held, "held0_h": ids["held0"]})
                 if held >= ids["held0"] - 0.01:
                     _fail("rack A's cold store did not run down (%.2f h -> %.2f h): no ice is spent" %
                           (ids["held0"], held))
-                if cans < 3:
-                    _fail("no meltwater cans after the rack spent its ice (cans %d): the drip never happens"
-                          % cans)
                 ids["held1"] = held
         with _comp(t, "rack_toggle_off_leaves_room_alone", toggle="coldSinkEnabled"):
             if _live(t):
@@ -1465,83 +1462,6 @@ def thaw_chain(t):
                     _fail("%d blocks mined (%d rolls at 35%%) and not one debris find: the thaw roll does not "
                           "fire (0.65^%d = %.2f%% by chance)" % (mined, mined // 3, mined // 3,
                                                                  100 * 0.65 ** (mined // 3)))
-    _stable(t, body)
-
-
-# --------------------------------------------------------------------------- chain: vhaulk road
-
-def _growth_pct(t, plant_id):
-    _, lines = _inspect(t, plant_id)
-    m = re.search(r"growth[^0-9]*([\d.]+)\s*%", " ".join(str(l) for l in lines), re.I)
-    if not m:
-        _unmeasured(t, "plant inspect text has no 'Growth N%%' line: %r" % (lines,))
-    return float(m.group(1))
-
-
-@suite.chain("vhaulk_road")
-def vhaulk_road(t):
-    """A walking vhaulk presses a temporary rime road (RM_RimeRoad, temp-terrain layer) and crops the
-    flora it passes down to growth 0.08. With vhaulkRoadEnabled off it walks like any animal."""
-    _prep(t, "road")
-    x, z = t.anchor
-
-    def walk(row_z, label):
-        """Spawn a vhaulk at the west end of row `row_z`, walk it east; plants on the path and one control."""
-        v = _spawn(t, "RM_Vhaulk", x - 10, row_z)
-        t.bridge_call("jawa/set_plants", ops="RM_Palefloss:%d,%d,1,1;RM_Palefloss:%d,%d,1,1;RM_Palefloss:%d,%d,1,1"
-                      % (x - 2, row_z, x + 3, row_z, x, row_z + 7), growth=1.0)
-        on_path = _things(t, "RM_Palefloss", "%d,%d,1,1" % (x - 2, row_z)) + \
-            _things(t, "RM_Palefloss", "%d,%d,1,1" % (x + 3, row_z))
-        control = _things(t, "RM_Palefloss", "%d,%d,1,1" % (x, row_z + 7))
-        if _live(t) and (len(on_path) != 2 or len(control) != 1):
-            _unmeasured(t, "%s: path plants %d/2, control plants %d/1 stand" % (label, len(on_path), len(control)))
-        r = t.bridge_call("jawa/ordered_job", pawnId=v, jobDef="Goto", targetAX=x + 10, targetAZ=row_z,
-                          waitTicks=60, timeoutSeconds=25)
-        if _live(t) and not (isinstance(r, dict) and r.get("accepted")):
-            _unmeasured(t, "%s: the bridge could not order the wild vhaulk to walk: %r" % (label, r))
-        t.wait_ticks(1500)
-        if not _live(t):
-            return None
-        lr = t.bridge_call("jawa/get_terrain_layers", rect="%d,%d,25,5" % (x - 12, row_z - 2), limit=400)
-        cells = _ok(lr, "get_terrain_layers").get("cells") or []
-        if not cells:
-            _unmeasured(t, "%s: get_terrain_layers returned no cells" % label)
-        road = sum(1 for c in cells if "RM_RimeRoad" in str(c.get("temp")))
-        # RULED OUT in the walk: "laying the road kills the flora under it" (TerrainGrid vanishes plants on a
-        # terrain change, the charge comp only fires on KillFinalize). Guard: the path plants must still stand.
-        standing = sum(_count(t, "RM_Palefloss", "%d,%d,1,1" % (px, row_z)) for px in (x - 2, x + 3))
-        if standing != 2:
-            _fail("%s: only %d of 2 path plants still stand after the walk: the road/crop destroyed flora "
-                  "(and a destroyed plant is a candidate detonation)" % (label, standing))
-        crop = [_growth_pct(t, p["id"]) for p in on_path]
-        ctrl = _growth_pct(t, control[0]["id"])
-        pos = (_rows(t).get(v) or {})
-        return {"road_cells": road, "path_growth": crop, "control_growth": ctrl, "vhaulk_x": pos.get("x")}
-
-    def body():
-        with _comp(t, "road_laid_and_flora_cropped", toggle="vhaulkRoadEnabled"):
-            res = walk(z - 4, "road ON")
-            if _live(t):
-                _note(t, "vhaulk walk, road ON", res)
-                if (res["vhaulk_x"] or 0) < x:
-                    _unmeasured(t, "the vhaulk barely moved (x %r): cannot judge a road" % (res["vhaulk_x"],))
-                if res["road_cells"] < 12:
-                    _fail("a vhaulk walked 20 cells and only %d cells of RM_RimeRoad lie behind it" % res["road_cells"])
-                if res["control_growth"] < 90:
-                    _unmeasured(t, "the control plant is not at full growth (%r%%)" % res["control_growth"])
-                if any(g > 20 for g in res["path_growth"]):
-                    _fail("flora on the vhaulk's path was not cropped (growth %s%%, expected <= 8%%)" % res["path_growth"])
-        with _comp(t, "road_toggle_off_walks_clean", toggle="vhaulkRoadEnabled"):
-            if _live(t):
-                with _setting(t, "vhaulkRoadEnabled", False):
-                    res = walk(z + 6, "road OFF")
-                _note(t, "vhaulk walk, road OFF", res)
-                if (res["vhaulk_x"] or 0) < x:
-                    _unmeasured(t, "the vhaulk barely moved (x %r): cannot judge" % (res["vhaulk_x"],))
-                if res["road_cells"]:
-                    _fail("vhaulkRoadEnabled OFF but %d cells of road were laid" % res["road_cells"])
-                if any(g < 90 for g in res["path_growth"]):
-                    _fail("vhaulkRoadEnabled OFF but path flora was cropped (growth %s%%)" % res["path_growth"])
     _stable(t, body)
 
 
@@ -1655,47 +1575,6 @@ def ablation_gate(t):
                       % (biome, bad))
 
 
-# --------------------------------------------------------------------------- chain: soundscape
-
-SOUND_PROOF = "RimMandrake.BlueDesert.RM_BlueDesertSoundProof"
-
-
-def _proof(t, method, mode, label):
-    """Run one C# proof hook (spawns, drives the SHIPPED Rescan on a synthetic clock, cleans up) and map
-    its PASS/FAIL/UNMEASURED answer onto the component."""
-    r = t.bridge_call("jawa/static_call", type=SOUND_PROOF, method=method, args=mode)
-    if not _live(t):
-        return
-    text = str((r or {}).get("result") or (r or {}).get("value") or r)
-    _note(t, label, {"answer": text[:300]})
-    if text.startswith("FAIL"):
-        _fail("%s: %s" % (label, text[:400]))
-    if not text.startswith("PASS"):
-        _unmeasured(t, "%s: proof did not answer PASS/FAIL: %s" % (label, text[:200]))
-
-
-@suite.chain("soundscape")
-def soundscape(t):
-    """BLUEDESERT_MECHANICS_BUILD_1 §5 (RM_BlueDesertSoundscape.cs). The sound itself has no state read;
-    what is read is the STATE that drives it: a pack of ossivels sings, a big pawn near them silences the
-    choir, the silence outlasts the intruder by the hold, and a virr in wind sings with a pitch that climbs
-    with growth. Each toggle-off arm must stay silent."""
-    _pad(t, "spawn")
-    with _comp(t, "choir_sings_and_falls_silent", toggle="ossivelChoirEnabled"):
-        _proof(t, "ProofChoir", "on", "choir on")
-    with _comp(t, "choir_toggle_off_silent", toggle="ossivelChoirEnabled"):
-        _proof(t, "ProofChoir", "off", "choir off")
-    try:
-        with _comp(t, "virr_sings_in_wind_pitch_climbs", toggle="virrSongEnabled"):
-            _lock_weather(t, "RM_IceSandDrift")
-            _wait(t, 600)
-            _proof(t, "ProofVirr", "on", "virr on")
-        with _comp(t, "virr_toggle_off_silent", toggle="virrSongEnabled"):
-            _proof(t, "ProofVirr", "off", "virr off")
-    finally:
-        _unlock_weather(t)
-
-
 # --------------------------------------------------------------------------- chain: vhaulk departs
 
 @suite.chain("vhaulk_departs")
@@ -1798,12 +1677,6 @@ def static_checks():
     for fn in sorted(os.listdir(os.path.join(HERE, "Source"))):
         if fn.endswith(".cs") and 'Include="%s"' % fn not in csproj:
             bad.append("%s is not a <Compile Include> in the csproj" % fn)
-    sc = open(os.path.join(HERE, "Source", "RM_BlueDesertSoundscape.cs"), encoding="utf-8").read()
-    for need in ("public static string ProofChoir(string mode)", "public static string ProofVirr(string mode)",
-                 "RM_BlueDesertSettings.ossivelChoirEnabled", "RM_BlueDesertSettings.virrSongEnabled",
-                 '"RitualSustainer_Christian"', '"Ambient_Wind_Desolate"', "info.pitchFactor = VirrPitch"):
-        if need not in sc:
-            bad.append("soundscape: %s missing from RM_BlueDesertSoundscape.cs" % need)
     weathers = _xml_text("WeatherDefs/RM_BlueDesertWeathers.xml")
     if "<eruptSound>FleshbeastDigging_End</eruptSound>" not in weathers:
         bad.append("murrek eruption sound (eruptSound FleshbeastDigging_End) is not wired on RM_IceSandDrift")

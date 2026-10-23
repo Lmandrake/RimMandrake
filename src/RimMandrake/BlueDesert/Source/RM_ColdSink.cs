@@ -6,8 +6,9 @@
 // no power, so it keeps working in a blackout, and it only melts ice while
 // the room sits ABOVE its target, so a room held cold by powered coolers
 // leaves the ice untouched. The blocks cloud from deep blue to white as the
-// rack's cold store runs down, the rack groans, and the melt drips into
-// sealed cans of distilled-grade meltwater.
+// rack's cold store runs down and the rack groans. (Its meltwater drip into
+// cans was trimmed 2026-10-23, fluff review; blue ice still melts to cans by
+// recipe.)
 //
 // Engine seams (RimSage, decompiled 1.6, 2026-09-30):
 //  - Building_Cooler.TickRare: energy = energyPerSecond * 4.1666665 per rare
@@ -47,15 +48,9 @@ namespace RimMandrake.BlueDesert
         /// (500 = about one game hour of full draw per block).</summary>
         public float coldPerBlock = 500f;
 
-        /// <summary>Blocks melted per can of meltwater produced.</summary>
-        public float blocksPerCan = 5f;
-        public int cansPerMelt = 3;
-        public ThingDef meltwaterDef;
-
         /// <summary>Mean ticks between groans while the rack is working.</summary>
         public float groanMtbTicks = 5000f;
         public SoundDef groanSound;
-        public SoundDef dripSound;
 
         /// <summary>Clarity tints applied to the rack's (greyscale) texture:
         /// full store, half store, nearly spent.</summary>
@@ -71,7 +66,6 @@ namespace RimMandrake.BlueDesert
 
     public class RM_CompColdSink : ThingComp
     {
-        private float meltedBlocks;
         private bool workingNow;
 
         private CompRefuelable refuelable;
@@ -106,7 +100,6 @@ namespace RimMandrake.BlueDesert
         public override void PostExposeData()
         {
             base.PostExposeData();
-            Scribe_Values.Look(ref meltedBlocks, "rmMeltedBlocks", 0f);
         }
 
         public override void CompTickRare()
@@ -144,28 +137,10 @@ namespace RimMandrake.BlueDesert
             room.Temperature += tempChange;
             refuelable.ConsumeFuel(blocks);
             workingNow = true;
-            meltedBlocks += blocks;
-            TryDripMeltwater(map);
             // Rare ticks are 250 game ticks apart, so the MTB is scaled.
             if (Props.groanSound != null && Rand.MTBEventOccurs(Props.groanMtbTicks, 1f, 250f))
             {
                 Props.groanSound.PlayOneShot(new TargetInfo(cell, map));
-            }
-        }
-
-        private void TryDripMeltwater(Map map)
-        {
-            if (Props.meltwaterDef == null || Props.blocksPerCan <= 0f)
-            {
-                return;
-            }
-            int drips = RM_BlueKernel.Drip(ref meltedBlocks, Props.blocksPerCan);
-            for (int i = 0; i < drips; i++)
-            {
-                Thing can = ThingMaker.MakeThing(Props.meltwaterDef);
-                can.stackCount = RM_BlueKernel.CansPerDrip(Props.cansPerMelt);
-                GenPlace.TryPlaceThing(can, parent.Position, map, ThingPlaceMode.Near);
-                Props.dripSound?.PlayOneShot(new TargetInfo(parent.Position, map));
             }
         }
 
