@@ -338,6 +338,8 @@
 !/biome_ffar/all_bridge_art.subjects.json
 !/biome_ffar/all_bridge_art_sheet_2026-10-21.decisions.json
 !/biome_ffar/all_bridge_art_sheet_2026-10-21.html
+!/biome_ffar/art_eval_shadow_modern_style_20261023_r4_ingame_sheet_2026-10-23.html
+!/biome_ffar/art_eval_shadow_modern_style_20261023_r4_ingame_sheet_2026-10-23.prereview.json
 !/biome_ffar/facings_regen_round2.subjects.json
 !/biome_ffar/facings_regen_round2_sheet_2026-10-22.html
 !/biome_ffar/joint_fittings.subjects.json
@@ -767,6 +769,7 @@
 !/modcheck/**
 !/modcheck_wave_bridge_20260913.log
 !/modern_style_20261023/PROGRESS.md
+!/modern_style_20261023/before_after_ingame_br1.png
 !/modern_style_20261023/cand_r3/Coupler.png
 !/modern_style_20261023/cand_r3/Coupling_Bare.png
 !/modern_style_20261023/cand_r3/Flange.png

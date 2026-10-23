@@ -1,0 +1,39 @@
+{
+ "sheet": "art_eval_shadow_modern_style_20261023_r4_ingame_sheet_2026-10-23.html",
+ "looked_by": "judge:claude-opus-5-5+gpt-6.1-sol",
+ "when": "2026-10-23T09:39:07-0700",
+ "caught": "pipeline decided 4 ESCALATE, 1 HOLD_INPUT, 1 REGEN; nothing dropped",
+ "rows": {
+  "RM_HoseEnd_Modern": {
+   "fp": "e240b64236f32dc3",
+   "verdict": "FLAG",
+   "note": "the picture the pipeline judged is NOT on this row (the sheet shows what is installed / found by name); REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: DESC_MISS, PORT_MISFIT \u00b7 GPT regen, unsettled K1, K2, K3"
+  },
+  "RM_LiquidJoins_Modern": {
+   "fp": "ca5efa16658118d6",
+   "verdict": "FLAG",
+   "note": "the picture the pipeline judged is NOT on this row (the sheet shows what is installed / found by name); PIPELINE: ESCALATE (regen round 3) \u00b7 Opus WEAK: OWNER_NOTE_IGNORED, PORT_MISFIT \u00b7 GPT regen, unsettled K1, K2, K3, K4"
+  },
+  "RM_LiquidPump_Modern": {
+   "fp": "83c737897ab13a76",
+   "verdict": "FLAG",
+   "note": "the picture the pipeline judged is NOT on this row (the sheet shows what is installed / found by name); PIPELINE: ESCALATE (regen round 3) \u00b7 Opus WEAK: DESC_MISS, LAYER_ORDER, PORT_MISFIT \u00b7 GPT regen, unsettled K1, K2, K4"
+  },
+  "RM_PipeFaucet_Modern": {
+   "fp": "e88c631de97f7b8f",
+   "verdict": "FLAG",
+   "note": "the picture the pipeline judged is NOT on this row (the sheet shows what is installed / found by name); PIPELINE: ESCALATE (regen round 3) \u00b7 Opus REALLY_BAD: OWNER_NOTE_IGNORED, PORT_MISFIT"
+  },
+  "RM_PipeSpan_Modern": {
+   "fp": "368ddc0048b4df6c",
+   "verdict": "FLAG",
+   "note": "the picture the pipeline judged is NOT on this row (the sheet shows what is installed / found by name); PIPELINE: HOLD_INPUT \u00b7 Opus -"
+  },
+  "RM_UniversalPipe_Modern": {
+   "fp": "ceade7c832a7a489",
+   "verdict": "FLAG",
+   "note": "the picture the pipeline judged is NOT on this row (the sheet shows what is installed / found by name); PIPELINE: ESCALATE (regen round 3) \u00b7 Opus WEAK: DESC_MISS, PORT_MISFIT \u00b7 GPT regen, unsettled K1, K2, K3"
+  }
+ },
+ "dropped": []
+}
