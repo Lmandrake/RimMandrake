@@ -1,0 +1,1 @@
+When redrawing hose-reel art, fit each laid-out (Reel_Deployed*) picture to the STORED (Reel_PumpHookup*) picture's bbox for the same facing: the old Modern Deployed north/south were drawn smaller, so a reel fitted to them visibly shrinks the moment its hose runs out (MODERN_TANK_REDRAW_NOT_JUST_RED_PAINT, 2026-10-22).
