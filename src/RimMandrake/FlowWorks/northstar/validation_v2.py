@@ -3530,7 +3530,7 @@ def phase_X(L, args):
               "deck prints %s; ring terrain %s (one surface: no seam between deck cells or at the lip; the frame is "
               "still the judge's)" % (sorted(printed), sorted(around)))
         _x8b_cover_occupant(L, cov[0], occ)
-        _x8c_lid_walker(L, cov[1])
+        _x8c_lid_walker(L, cov[1], cov)
         _vc().sweep_non_colonists(B)
         _x10_canal_fire(L)
 
@@ -3581,22 +3581,26 @@ def _x8b_cover_occupant(L, c, occ):
 X8C_LID = "RM_PitCover_PlankLattice"
 
 
-def _x8c_lid_walker(L, c):
+def _x8c_lid_walker(L, c, deck):
     """PIT_LID_FIX_VICKY_PEEKS_THROUGH (owner 2026-10-22: Vicky on a covered pit "just gets a funny dark square around her but
     otherwise is still "over" the cover"; card 2026-10-22 "covered cells are floor"): a colonist put on the laid lid at c is a
     walker ON it, not beneath: not hidden, and drawn at ground (sink 0, real DrawPos at the cell centre), not sunk to the
     D=4 floor. X8b's colonist is the other half: beneath, hidden (the draw patch really applied)."""
     B = L.B
-    # X8C_WALKER_FIX_FELL_THROUGH_THE_FLOOR (2026-10-22): the woven-scrap deck gives way under 40 kg, so a colonist stood on it
-    # fell through and the row measured the collapse, not the draw. c's lid is swapped for a plank lattice (holds a colonist;
-    # C12 planks met the bar live 2026-10-22), read back, and the lid must still be covered under the walker before judging.
-    B.call("jawa/destroy_batch", rects="%d,%d,1,1" % c, categories="Building")
-    B.call("jawa/spawn_batch", ops="%s:%d,%d" % ((X8C_LID,) + tuple(c)))
-    lt = B.call("jawa/list_things", defName=X8C_LID, rect="%d,%d,1,1" % c, limit=1) or {}
+    # X8C_WALKER_FIX_FELL_THROUGH_THE_FLOOR: the woven-scrap deck gives way under 40 kg, so a colonist stood on it fell
+    # through and the row measured the collapse, not the draw. A plank lid holds a person (120 kg), but a MIXED deck gives
+    # way at its WEAKEST cover (CompPitCoverTrigger.RunScan, GPT C4-F5): one plank cell in the 2x2 woven deck still rated
+    # 40 kg and sprang live 2026-10-23. So the WHOLE deck is relaid in planks (X8b's occupant is re-taken beneath by the new
+    # lid over her: RM_PitCoverBeneath.TakeUnder), read back, and c must still be covered under the walker before judging.
+    B.call("jawa/destroy_batch", rects=";".join("%d,%d,1,1" % d for d in deck), categories="Building")
+    B.call("jawa/spawn_batch", ops=";".join("%s:%d,%d" % ((X8C_LID,) + tuple(d)) for d in deck))
+    xs, zs = [d[0] for d in deck], [d[1] for d in deck]
+    lt = B.call("jawa/list_things", defName=X8C_LID, rect="%d,%d,%d,%d" % (min(xs), min(zs), max(xs) - min(xs) + 1,
+                                                                         max(zs) - min(zs) + 1), limit=50) or {}
     okc, kc, tc = _proof(B, "ProofCover", "%d,%d" % c)
-    if not (lt.get("things") and okc and kc.get("covered") == "True"):
-        L.row("X8c_lid_walker_drawn_at_ground", False, "SITE", "the %s lid was not laid on %d,%d: %s | %s" % (
-            X8C_LID, c[0], c[1], str(lt)[:120], tc[:160]), status="UNMEASURED")
+    if not (len(lt.get("things") or []) == len(deck) and okc and kc.get("covered") == "True"):
+        L.row("X8c_lid_walker_drawn_at_ground", False, "SITE", "the %s deck was not laid on %s (want %d lids): %s | %s" % (
+            X8C_LID, deck, len(deck), str(lt)[:120], tc[:160]), status="UNMEASURED")
         return
     r = B.call("jawa/spawn_pawn", kindDef="Colonist", faction="player", x=c[0], z=c[1], count=1)
     if not r.get("success"):
@@ -4355,6 +4359,17 @@ class MockBridge(object):
         return dict(success=True, cells=[dict(x=c[0], z=c[1]) for c in cells], pulses=pulses, pulsesRun=count,
                     ticksBefore=self.tick, ticksGame=self.tick, nextPulseTickUntouched=True, gamePaused=True)
 
+    def deck_of(self, c):
+        """The 4-way connected covers around c (RM_PitCoverUtility.Deck): the cells that load and spring together."""
+        seen, todo = set(), [c] if c in self.covers else []
+        while todo:
+            x, z = todo.pop()
+            if (x, z) in seen:
+                continue
+            seen.add((x, z))
+            todo += [n for n in ((x + 1, z), (x - 1, z), (x, z + 1), (x, z - 1)) if n in self.covers and n not in seen]
+        return seen
+
     def t_jawa_destroy_batch(self, rects, categories="Plant", category=None, **kw):
         cats = (category or categories or "").split(",")
         n = 0
@@ -4577,8 +4592,9 @@ class MockBridge(object):
             b = bool(here) and here[0] in self.beneath
             hid = b and "beneath_drawn" not in self.faults
             sunk = bool(here) and c in self.covers and (b or "lid_walker_sunk" in self.faults)
-            # a walker (not beneath) on a woven-scrap lid springs it: the lid gives way under 40 kg
-            sprung = bool(here) and not b and self.cover_def.get(c) == "RM_PitCover_WovenScrap"
+            # a walker (not beneath) on a deck holding ANY woven-scrap lid springs it: a mixed deck gives way at its weakest
+            # cover (CompPitCoverTrigger.RunScan, GPT C4-F5), and woven scrap gives way under 40 kg
+            sprung = bool(here) and not b and any(self.cover_def.get(d) == "RM_PitCover_WovenScrap" for d in self.deck_of(c))
             res = "BENEATH cell=%d,%d pawn=%s beneath=%s held=%s trapped=%s onLoad=%s hidden=%s covered=%s" % (
                 x, z, here[0] if here else "none", b, b, b, not b, hid, c in self.covers and not sprung)
             if here:
