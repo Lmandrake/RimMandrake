@@ -950,15 +950,17 @@ namespace RimMandrake.FlowWorks.Hose
         }
 
         /// <summary>HOSE_ENDS_FIX_MISSES_THE_PORTS: the drawn port the reel's laid free end couples to (a 2x2 universal tank's
-        /// west/east flange, TankPortGeometry) and the axis into it; false = the shared edge's midpoint, as before.</summary>
+        /// west/east flange, or a lane moved onto the drawn body: TankPortGeometry.HosePort) and the axis into it; false = the shared
+        /// edge's midpoint, as before.</summary>
         internal bool PortEnd(CompHoseReel r, out V2 port, out V2 axis)
         {
             port = axis = default(V2);
             HoseFreeEnd fe = FreeEndOf(r);
             if (fe.Kind != HoseEndKind.Port || fe.PortKind != HosePortKind.Tank || fe.Port == null || !fe.Port.Spawned) return false;
-            if (fe.Port.def.defName != TankPortGeometry.TankDef) return false;   // the one tank whose port table is measured
             CellRect rect = fe.Port.OccupiedRect();
-            if (!TankPortGeometry.PortPoint(RimMandrake.FlowWorks.Machinery.PipeLook.LookOfThing(fe.Port), rect.minX, rect.minZ, rect.Width, rect.Height, fe.PortSide.X, fe.PortSide.Z, out port)) return false;
+            // RM_LiquidTank's measured flange, or a lane moved onto the drawn body (OFF_BODY_PORTS, TankPortGeometry.MovedAlong)
+            if (!TankPortGeometry.HosePort(fe.Port.def.defName, RimMandrake.FlowWorks.Machinery.PipeLook.LookOfThing(fe.Port), rect.minX, rect.minZ, rect.Width, rect.Height,
+                    fe.Cell.x, fe.Cell.z, fe.PortSide.X, fe.PortSide.Z, out port)) return false;
             axis = new V2(fe.PortSide.X, fe.PortSide.Z);
             return true;
         }

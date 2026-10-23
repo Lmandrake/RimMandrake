@@ -10,6 +10,7 @@ visible 0.18, coupling 1.5x at a tank/machine port, face on the port point); por
 An approximation of the live draw (straight hose, flat pose, no shadows/tint), for a naive judge before the live look.
 
   python3 render_under_couplers.py <outdir>     one PNG per fixture x look: top = game scale (64 px/cell), bottom = 4x
+  python3 render_under_couplers.py <outdir> --lane 1   each side's hose on lane 1 where the side has one (default: lane 0)
 """
 import math
 import os
@@ -66,7 +67,10 @@ def render(b, look, g, dz_table, geo, ppc, after):
     collar, pipe = (Image.open(os.path.join(gate.JOINS, hlook, n + ".png")).convert("RGBA") for n in ("UnderCollar", "UnderPipe"))
     strand, coupling, binding = hose_tex(hlook, "Strand_Flat"), hose_tex(hlook, "Coupling_Bare"), hose_tex(hlook, "Binding")
     seen = set()
-    for side, lane, pt in gate.ports(b, look, dz_table):
+    pl = gate.ports(b, look, dz_table)
+    if LANE is not None:                  # --lane N: that lane's port on each side that has it, else the side's first
+        pl = sorted(pl, key=lambda p: p[1] != LANE)
+    for side, lane, pt in pl:
         if side in seen:
             continue                      # one hose per side
         seen.add(side)
@@ -114,7 +118,15 @@ def sheet(b, look, g, dz_table, geo):
     return out
 
 
+LANE = None
+
+
 def main(argv):
+    global LANE
+    if "--lane" in argv:
+        i = argv.index("--lane")
+        LANE = int(argv[i + 1])
+        argv = argv[:i] + argv[i + 2:]
     if len(argv) != 2:
         print(__doc__)
         return 2

@@ -1684,6 +1684,44 @@ namespace RimMandrake.FlowWorks.Hose
             port = new V2(sx > 0 ? bx : bx + bw, bz + bh / 2.0 + dz);
             return true;
         }
+
+        /// <summary>OFF_BODY_PORTS (delegated design ruling 2026-10-23, infrastructure/state/delegated/2026-10-23/off_body_ports.json;
+        /// owner 2026-10-23: couplers' art goes UNDER the fixture): a hose port lies where the art's body is. These lanes' edge
+        /// midpoints had no body on their inward axis (RM_UniversalCargoTank upper west/east: CARGO_UPPER_PORT_DECIDE_NOTHING_UNDER)
+        /// or two under-couplers met on open ground at a narrow body's corner (tall / XTall south lane 0 + west lane 0, east lane 0 +
+        /// south lane 1: UNDER_COUPLER_DECIDE_CORNER_CROWDING), so the port slides ALONG its edge, inside the same end cell (hose
+        /// laying and pathing unchanged), to the given offset from the footprint minimum. One geometry per def, every look passes
+        /// (measured by FlowWorks/selftest_hose_fittings.py, which parses this table). Key: def|side|lane, side 0 south 1 north
+        /// 2 west 3 east (the end cell's side), lane = the end cell's index along that side.</summary>
+        public static readonly Dictionary<string, double> MovedAlong = new Dictionary<string, double>
+        {
+            { "RM_UniversalCargoTank|2|1", 1.25 },
+            { "RM_UniversalCargoTank|3|1", 1.25 },
+            { "RM_LiquidTankTall|0|0", 0.75 },
+            { "RM_LiquidTankTall|0|1", 1.25 },
+            { "RM_LiquidTankTall|2|0", 0.75 },
+            { "RM_LiquidTankTall|3|0", 0.75 },
+            { "RM_UniversalCargoTankXTall|0|0", 0.75 },
+            { "RM_UniversalCargoTankXTall|0|1", 1.25 },
+            { "RM_UniversalCargoTankXTall|2|0", 0.75 },
+            { "RM_UniversalCargoTankXTall|3|0", 0.75 },
+        };
+
+        /// <summary>The drawn port a hose end in cell (ex, ez), on side (sx, sz) of fixture <paramref name="def"/> (footprint min
+        /// (bx, bz), size bw x bh), couples to: RM_LiquidTank's measured flange (<see cref="PortPoint"/>) or a moved lane
+        /// (<see cref="MovedAlong"/>); false = the shared edge's midpoint.</summary>
+        internal static bool HosePort(string def, string look, int bx, int bz, int bw, int bh, int ex, int ez, int sx, int sz, out V2 port)
+        {
+            if (def == TankDef) return PortPoint(look, bx, bz, bw, bh, sx, sz, out port);
+            port = default(V2);
+            if (Math.Abs(sx) + Math.Abs(sz) != 1) return false;
+            int side = sz == 1 ? 0 : sz == -1 ? 1 : sx == 1 ? 2 : 3;
+            int lane = sx != 0 ? ez - bz : ex - bx;
+            if (!MovedAlong.TryGetValue(def + "|" + side + "|" + lane, out double along)) return false;
+            double edgeX = ex + 0.5 + sx * 0.5, edgeZ = ez + 0.5 + sz * 0.5;
+            port = sx != 0 ? new V2(edgeX, bz + along) : new V2(bx + along, edgeZ);
+            return true;
+        }
     }
 
     /// <summary>The reel's footprint (round 3, owner 2026-10-04: "the reel should be 2x2, not 1x1, as the shown hose is
