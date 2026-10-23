@@ -328,13 +328,12 @@
   </ThingDef>
 
   <!-- Rattlegrope: a knot of tentacular limbs that gropes the air - and rattles
-       before a Burn (the sheet's second tell). STUB ONLY: the rattle behaviour is
-       C# owned by the mechanics item, not built here. Plant comps (if any are ever
-       added) must override CompTickLong, never CompTick - Plant only ticks Long
-       (RimSage-confirmed, see CLAUDE.md). Data-only wiring done here: RM_Rattlegrope
-       is added to RM_ContagionSkyExtension's existing <tellRattlers> list in
-       RM_Contagion.xml, which RM_MapComponent_ContagionSky.cs already consumes -
-       no new C# added by this port. -->
+       before a Burn (the sheet's second tell). The rattle is built: RM_Rattlegrope sits
+       in RM_ContagionSkyExtension's <tellRattlers> (RM_Contagion.xml), which
+       RM_MapComponent_ContagionSky.cs consumes (vanilla LeavesRustle sound), and the
+       shake is drawn by the thingClass below. Plant comps (if any are ever added)
+       must override CompTickLong, never CompTick - Plant only ticks Long
+       (RimSage-confirmed, see CLAUDE.md). -->
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Rattlegrope</defName>
     <label>rattlegrope</label>

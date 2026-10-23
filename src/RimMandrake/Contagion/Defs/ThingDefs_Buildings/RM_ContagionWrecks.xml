@@ -5,8 +5,9 @@
   Source: Owner ruling 2026-10-03: the Contagion has wrecks, but it erodes them and little remains.
   Family parents, weathering and loot: src/RimMandrake/Wreckage (composed into mandrake.rm.biomes).
   Names and families are design §4's proposals; the biome's own sitting may move them.
-  Art: own artpipe renders (wreck_*) installed via art install, texPath + measured shadow per child;
-  still on vanilla ShipChunk placeholder until its render lands: RM_ContagionWreckFragment.
+  Art: own artpipe renders (wreck_*) installed via art install, texPath + measured shadow per child.
+  RM_ContagionWreckFragment's renders were on disk (2c5e2f4c4) but no def pointed at them (art.py status: "slots:
+  none in our defs"), so it drew the family's vanilla ShipChunk placeholder; wired 2026-10-22.
   ALL NUMBERS PROVISIONAL (family + weathering rows).
 -->
 <Defs>
@@ -15,6 +16,14 @@
     <defName>RM_ContagionWreckFragment</defName>
     <label>eroded wreck fragment</label>
     <description>A fragment of something that fell here once. The land has eaten the rest. Deconstruct it for what little remains.</description>
+    <graphicData>
+      <texPath>Things/Building/Wrecks/RM_ContagionWreckFragment</texPath>
+      <!-- MEASURED 2 variant(s) (alpha > 16, the threshold that reproduces the shell's 80.3 x 83.8): mean alpha bbox
+           84.0% x 86.4% -> 0.70*0.840*2, 0.63*0.864*2 (Scald ratio, Frame family) -->
+      <shadowData>
+        <volume>(1.18,0.5,1.09)</volume>
+      </shadowData>
+    </graphicData>
     <modExtensions>
       <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
         <weathering>RM_WreckWeathering_Eroded</weathering>

@@ -13,8 +13,8 @@
     (RM_HelixDraftprintContract) buys a print carrying the combination it
     names, through the print's own "Transmit to the Helix" gizmo.
 
-    Icon: PLACEHOLDER reuse of Biotech's MechanitorComplexMap texture (a
-    readable scan-on-a-slate shape). Bespoke art is owed, not blocking.
+    Icon: our own, Textures/Things/Item/Special/RM_Draftprint/RM_Draftprint.png
+    (it replaced the placeholder reuse of Biotech's MechanitorComplexMap).
   -->
 
   <ThingDef ParentName="ResourceBase">

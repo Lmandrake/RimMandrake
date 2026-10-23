@@ -70,8 +70,8 @@
           <li>ChunkLimestone</li>
           <li>ChunkSlate</li>
           <li>ChunkMarble</li>
-          <li>GU_ChunkRoseQuartz</li>
-          <!-- four Alpha Biomes rock chunks removed 2026-10-18 (donor retired; no port) -->
+          <!-- four Alpha Biomes rock chunks removed 2026-10-18 (donor retired; no port); GU_ChunkRoseQuartz too
+               (2026-10-22: no def of it exists in any loaded mod since the retirement) -->
         </customThingToEat>
         <nutrition>1</nutrition>
         <digThingIfMapEmpty>false</digThingIfMapEmpty>
