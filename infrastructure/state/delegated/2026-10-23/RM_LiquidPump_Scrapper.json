@@ -1,0 +1,45 @@
+{
+ "judge_model": {},
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_LiquidPump_Scrapper",
+ "decision": "HOLD_INPUT",
+ "reasons": [
+  "missing panels ['assembled']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v1",
+   "sha": "a4850279ccbf"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v1",
+   "sha": "14056552e355"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "machine@v2",
+   "sha": "e06ee7316a0a"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "south.png": "960ddf23f012dded5cb39190398468106b5b4d3465235cf5889eddd55fe5b550",
+  "scale.png": "cb7933935dbef2d6b92bb3fd4f816660bcb13d0cbf7ac3be4ac686879c0c95a6",
+  "siblings.png": "db83eab94f68c0bb115666715e946f687e530359cb51d00607f3aa86fb2e5a09",
+  "facings.png": "7234e88ebe526837b89c8d38083ed4106d7d0ff4d7725308075d0034aa677ba4"
+ }
+}

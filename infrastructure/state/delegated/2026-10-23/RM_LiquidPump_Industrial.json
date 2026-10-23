@@ -1,0 +1,45 @@
+{
+ "judge_model": {},
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_LiquidPump_Industrial",
+ "decision": "HOLD_INPUT",
+ "reasons": [
+  "missing panels ['assembled']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v1",
+   "sha": "a4850279ccbf"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v1",
+   "sha": "14056552e355"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "machine@v2",
+   "sha": "e06ee7316a0a"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "south.png": "ea7ddc15b9708b7c5789a706815f617b2c3cb35e8c4a97248f828e86ffe9bf88",
+  "scale.png": "98b486279b8ad47d5c0b216edbbfa2838f149e85f15e3bfcb75451c98d46ad0c",
+  "siblings.png": "f1ddf2bec656f5f142facf5ae742f8b417b9feb81275a975f5a20d0607dff429",
+  "facings.png": "51a14ac33991f29d2315433326a5934f742da94b331a448d81fd2c21eddd3c06"
+ }
+}
