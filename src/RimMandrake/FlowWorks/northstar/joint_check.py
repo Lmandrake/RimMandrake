@@ -68,6 +68,13 @@ def judge(answer):
 
 
 PIPE_DEF_PREFIX, POLE_DEF_PREFIX = "RM_UniversalPipe", "RM_PipePole"
+# Ports the net probe cannot see (JOINT_CHECK_FIX_TAPS_LOOK_LIKE_NOTHING, 2026-10-23): HoseProbe "net:x,z" takes the FIRST thing
+# with a hydraulic role, so a sprinkler head standing ON a pipe cell answers as the pipe, and RM_LiquidTap / RM_LiquidDrill
+# (Building_LiquidDrill: RM_LiquidNet.RoleOfKind None, a bleed well that works beside a pipe) answer "no liquid machine".
+# Each family is a legitimate liquid port, found by def (variants RM_SprinklerHead_Scrapper... share the prefix):
+#   Building_LiquidDrill   RM_LiquidTap (bleed well), RM_LiquidDrill      Sprinklers.CompRM_SprinklerBase  RM_SprinklerHead*
+#   pipe-fed faucet        RM_PipeFaucet (Defs/Sprinklers/RM_PipeFaucet.xml)
+PORT_DEF_PREFIXES = ("RM_LiquidTap", "RM_LiquidDrill", "RM_SprinklerHead", "RM_PipeFaucet")
 ORTHO = ((1, 0), (-1, 0), (0, 1), (0, -1))
 RING8 = ORTHO + ((1, 1), (1, -1), (-1, 1), (-1, -1))
 
@@ -88,9 +95,11 @@ def _fp_cells(fp):
     return {(x + i, z + j) for i in range(w) for j in range(h)}
 
 
-def stub_joints(pipes, poles, reel_fps, hose_ends, is_partner):
+def stub_joints(pipes, poles, reel_fps, hose_ends, is_partner, port_cells=()):
     """Pure (is_partner injected): one pipe_stub joint per pipe end. is_partner(cell) -> True (a tank / liquid machine is
-    there), False (nothing with a net role), None (the read did not answer)."""
+    there), False (nothing with a net role), None (the read did not answer). port_cells: cells of taps / bleed wells /
+    sprinkler heads (PORT_DEF_PREFIXES), on the end or 8-way around it, pipe cells included (a head stands on its pipe)."""
+    pc = set(map(tuple, port_cells))
     ps, pl = set(map(tuple, pipes)), set(map(tuple, poles))
     reel_cells = set()
     for fp in reel_fps:
@@ -107,6 +116,10 @@ def stub_joints(pipes, poles, reel_fps, hose_ends, is_partner):
             continue
         if e in ends_h or any(n in ends_h for n in edge):
             out.append(_joint("pipe_stub", e, True, "hose end", "pipe end meets a hose's free end"))
+            continue
+        near = [c for c in [e] + [(e[0] + dx, e[1] + dz) for dx, dz in RING8] if c in pc]
+        if near:
+            out.append(_joint("pipe_stub", e, True, "%d,%d" % near[0], "pipe end meets a tap / bleed well / sprinkler head"))
             continue
         seen = None
         for c in [e] + [(e[0] + dx, e[1] + dz) for dx, dz in RING8]:
@@ -155,14 +168,18 @@ def crossing_joints(hoses):
             for ids, cells in sorted(pairs.items(), key=lambda kv: str(kv[0]))]
 
 
-def _pipe_defs():
+def _defs_with(prefixes):
     import glob
     import re
     names = set()
     for path in glob.glob(os.path.join(HERE, "..", "Defs", "**", "*.xml"), recursive=True):
         with open(path, encoding="utf-8", errors="replace") as f:
-            names.update(re.findall(r"<defName>((?:%s|%s)\w*)</defName>" % (PIPE_DEF_PREFIX, POLE_DEF_PREFIX), f.read()))
+            names.update(re.findall(r"<defName>((?:%s)\w*)</defName>" % "|".join(prefixes), f.read()))
     return sorted(names)
+
+
+def _pipe_defs():
+    return _defs_with((PIPE_DEF_PREFIX, POLE_DEF_PREFIX))
 
 
 def extra_joints(B, probe):
@@ -181,6 +198,12 @@ def extra_joints(B, probe):
     fps = [h["footprint"] for h in hoses if h.get("footprint")]
     ends = [tuple(h["far"]) for h in hoses if h.get("laid") and h.get("far")]
     pipe_names = set(defs)
+    pdefs = [d for d in _defs_with(PORT_DEF_PREFIXES) if not d.startswith("RM_Mote")]
+    pl2 = B.call("jawa/list_things", {"defName": ",".join(pdefs), "limit": 20000}) or {}
+    if not pl2.get("success") or pl2.get("countMatched", 0) > len(pl2.get("things") or []):
+        return [_joint("pipe_stub", (0, 0), None, "-", "tap / sprinkler list unreadable or truncated: %s" % str(pl2)[:120])] \
+            + crossing_joints(hoses)
+    ports = [(t["x"], t["z"]) for t in pl2.get("things") or []]
 
     def is_partner(c):
         a = probe("net:%d,%d" % c)
@@ -189,7 +212,7 @@ def extra_joints(B, probe):
         if not a.get("success"):
             return None if "timeout" in str(a.get("error", "")) or "unparsable" in str(a.get("error", "")) else False
         return a.get("origin") not in pipe_names
-    return stub_joints(pipes, poles, fps, ends, is_partner) + crossing_joints(hoses)
+    return stub_joints(pipes, poles, fps, ends, is_partner, ports) + crossing_joints(hoses)
 
 
 def _bridge():
