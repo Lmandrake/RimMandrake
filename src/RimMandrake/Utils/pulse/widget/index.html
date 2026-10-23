@@ -375,7 +375,7 @@ setInterval(tickFresh, 1000);
 async function post(path, obj){ try { await fetch(API + path, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(obj)}); } catch(e){} }
 
 document.addEventListener('click', e => {
-  const a = e.target.closest('.ack'); if (a) { post('/api/ack', {id: a.dataset.id, noise: !!a.dataset.noise}); a.closest('.row').classList.add('dimr'); return; }
+  const a = e.target.closest('.ack'); if (a) { post('/api/ack', {id: a.dataset.id, noise: !!a.dataset.noise, actor: 'widget'}); a.closest('.row').classList.add('dimr'); return; }
   const l = e.target.closest('.lk, .done, .row.clk'); if (l && l.dataset.link) {
     openLink(l.dataset.link, l.dataset.type);
     if (l.dataset.seen) { openedHere.add(l.dataset.seen); post('/api/seen', {id: l.dataset.seen}); render(); }   // opened = dimmed, never removed

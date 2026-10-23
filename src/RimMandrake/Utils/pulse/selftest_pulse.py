@@ -490,5 +490,35 @@ check("a lost window replaced by a new window of the same name is 'recovered'",
 old_hist = {"oom:gone": {"last": NOW - 3 * 86400, "status": "open"}}
 check("incident history older than 48 h is pruned", "oom:gone" not in pc.track_incidents([], old_hist, [], {}, NOW)[1])
 
+# --- RIMPULSE_METRICS_FIX_253MB_OF_ECHOES: echoes counted once, every byte read, acks split by actor ------
+recs = ([{"m": "red_noticed", "id": "oom:a", "latency_s": 30, "ts": NOW - 900}] * 5000
+        + [{"m": "red_noticed", "id": "oom:b", "latency_s": 90, "ts": NOW - 800}]
+        + [{"m": "alarm_ack", "id": f"lost:{i}", "label": "noise", "ts": NOW - 700} for i in range(17)]
+        + [{"m": "alarm_ack", "id": "oom:a", "label": "actionable", "actor": "widget", "ts": NOW - 600}])
+ms = pl.metrics_summary(iter(recs))
+check("5000 re-notices of one incident count as ONE time-to-next-prompt sample", sorted(ms["notice"]) == [30, 90], ms["notice"])
+check("acks with no actor (the 2026-10-11 agent bulk-ack) are not owner precision labels",
+      len(ms["owner_acks"]) == 1 and len(ms["other_acks"]) == 17, (len(ms["owner_acks"]), len(ms["other_acks"])))
+check("coverage reports the record count and time span", ms["records"] == 5019 and ms["from"] == NOW - 900 and ms["to"] == NOW - 600, ms)
+with tempfile.TemporaryDirectory() as d:
+    mf = Path(d, "metrics.jsonl")
+    mf.write_text("".join(json.dumps(r) + "\n" for r in recs[:3] + recs[-19:]) + "torn")
+    b, a = pl.compact_metrics(mf)
+    kept = [json.loads(x) for x in mf.read_text().splitlines()]
+    check("compaction keeps the first red_noticed per incident and every other record",
+          sum(1 for r in kept if r["m"] == "red_noticed") == 2 and sum(1 for r in kept if r["m"] == "alarm_ack") == 18
+          and (b, a) == (23, 20), (b, a, len(kept)))
+    big = pl.metrics_summary(pl.iter_metrics([Path(d, "absent.jsonl"), mf]))
+    check("metrics stream every listed file and skip a missing one", big["records"] == 20, big["records"])
+old_rot, pl.ROTATE_BYTES = pl.ROTATE_BYTES, 200
+try:
+    for i in range(10):
+        pl.append("rot.jsonl", {"m": "x", "i": i})
+    rotated = list(pc.STATE_DIR.glob("rot.2*.jsonl"))
+    check("an append-only log past ROTATE_BYTES is rotated aside, not grown forever",
+          rotated and pc.STATE_DIR.joinpath("rot.jsonl").stat().st_size <= 200 + 60, rotated)
+finally:
+    pl.ROTATE_BYTES = old_rot
+
 print(f"\n{'FAIL' if FAILS else 'OK'}: {len(FAILS)} failing")
 sys.exit(1 if FAILS else 0)
