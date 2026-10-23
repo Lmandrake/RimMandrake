@@ -1,0 +1,1637 @@
+{
+ "script": "live_session.py",
+ "started": "2026-10-23T00:17:01",
+ "rows": [
+  {
+   "id": "B0_tier_truth",
+   "item": "-",
+   "criterion": "-",
+   "status": "PASS",
+   "cls": "HARNESS",
+   "detail": {
+    "running": 16,
+    "flowworks": true,
+    "why": ""
+   },
+   "block": "B0",
+   "eyes": false
+  },
+  {
+   "id": "B0_clock_rate",
+   "item": "-",
+   "criterion": "-",
+   "status": "PASS",
+   "cls": "HARNESS",
+   "detail": {
+    "ticks": 600,
+    "wall_s": 1.87,
+    "ticks_per_s": 320.8,
+    "frameBudgetMs": 150.0
+   },
+   "block": "B0",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:L1_fresh_map",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 1,
+    "src": "Transient/fwsweep/fwlive\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:ABORT",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "FAIL",
+   "cls": "HARNESS",
+   "detail": {
+    "rc": 1,
+    "src": "Transient/fwsweep/fwlive\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:Z_settings_restored",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 1,
+    "src": "Transient/fwsweep/fwlive\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "B2_dialog_fall_damage_A1",
+   "item": "FALL_DAMAGE_BUILD_DEEP_DROPS_KILL",
+   "criterion": "A1",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "label": "A deep fall can kill",
+    "why": "found through the settings search box",
+    "shot": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Screenshots\\live_session_settings_1792738393.png",
+    "textChars": 1327
+   },
+   "block": "B2",
+   "eyes": false
+  },
+  {
+   "id": "B2_dialog_pit_room_A1",
+   "item": "PIT_ROOM_TUNE_TALL_FOLK_DIG_DEEPER",
+   "criterion": "A1",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "label": "A pit room's floor is at least",
+    "why": "found through the settings search box",
+    "shot": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Screenshots\\live_session_settings_1792738393.png",
+    "textChars": 1327
+   },
+   "block": "B2",
+   "eyes": false
+  },
+  {
+   "id": "B2_dialog_pit_alert_A1",
+   "item": "PIT_ALERT_BUILD_RED_MEANS_HELP",
+   "criterion": "A1",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "label": "Red alert: a colonist stuck in a pit",
+    "why": "found through the settings search box",
+    "shot": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Screenshots\\live_session_settings_1792738393.png",
+    "textChars": 1327
+   },
+   "block": "B2",
+   "eyes": false
+  },
+  {
+   "id": "B2_dialog_beach_ring_A1",
+   "item": "BEACH_RING_RETIRE_DRAINED_MEANS_DRY",
+   "criterion": "A1",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "label": "Shore shelf",
+    "why": "found through the settings search box",
+    "shot": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Screenshots\\live_session_settings_1792738393.png",
+    "textChars": 1327
+   },
+   "block": "B2",
+   "eyes": false
+  },
+  {
+   "id": "B2_dialog_fall_guardrails_A2",
+   "item": "FALL_GUARDRAILS_BUILD_REAL_OBJECT",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "label": "Guardrails and fences stop falls off a lip",
+    "why": "found through the settings search box",
+    "shot": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Screenshots\\live_session_settings_1792738393.png",
+    "textChars": 1327
+   },
+   "block": "B2",
+   "eyes": false
+  },
+  {
+   "id": "B2_guardrail_disk_roundtrip",
+   "item": "FALL_GUARDRAILS_BUILD_REAL_OBJECT",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "before": "True",
+    "fileHadFalse": true
+   },
+   "block": "B2",
+   "eyes": false
+  },
+  {
+   "id": "B2_tank_tall_twice",
+   "item": "TANK_TALL_BUILD_TWICE_THE_DRINK",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "short": 160000.0,
+    "tall": 320000.0,
+    "offered": 10000000,
+    "placed": [
+     true,
+     true
+    ]
+   },
+   "block": "B2",
+   "eyes": false
+  },
+  {
+   "id": "B2_readout_sea_never_dry",
+   "item": "DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "lake": "OK Endless (about 2 m deep)",
+    "lakeRect": [
+     232,
+     20,
+     18,
+     11
+    ],
+    "edgeCell": "WaterDeep:249,25,1,1",
+    "sticky": "True",
+    "why": "",
+    "lakeBody": {
+     "id": 2,
+     "limitless": true,
+     "cellCount": 198,
+     "stock": 792.0,
+     "capacity": 792.0
+    }
+   },
+   "block": "B2",
+   "eyes": false
+  },
+  {
+   "id": "B2_readout_drainable_not_endless",
+   "item": "FLOWWORKS_ENDLESS_LABEL_WIRE_READOUT_PLAINLY",
+   "criterion": "A1",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "marked": [],
+    "reads": {
+     "dug_dry": "OK Hole 1 m \u00b7 Water 0.00 m (0 L)",
+     "canal": "OK Hole 0.5 m \u00b7 Water 0.50 m (1,000 L)",
+     "pond": "OK Hole 2 m \u00b7 Water 1.33 m (2,667 L)"
+    },
+    "bar": "limitless_body_marked: a pond, canal or pit carries no Endless mark"
+   },
+   "block": "B2",
+   "eyes": false
+  },
+  {
+   "id": "B2_readout_two_numbers_and_sea",
+   "item": "DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "reads": {
+     "dug_dry": "OK Hole 1 m \u00b7 Water 0.00 m (0 L)",
+     "canal": "OK Hole 0.5 m \u00b7 Water 0.50 m (1,000 L)",
+     "pond": "OK Hole 2 m \u00b7 Water 1.33 m (2,667 L)",
+     "ground": "OK -",
+     "lake": "OK Endless (about 2 m deep)"
+    },
+    "wording": "owner looks at these strings (V8 kept by card)"
+   },
+   "block": "B2",
+   "eyes": true
+  },
+  {
+   "id": "B2_readout_metres_litres",
+   "item": "LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "canal": "OK Hole 0.5 m \u00b7 Water 0.50 m (1,000 L)",
+    "pond": "OK Hole 2 m \u00b7 Water 1.33 m (2,667 L)",
+    "eyes": "settings UI by eye: B2 dialog screenshot"
+   },
+   "block": "B2",
+   "eyes": true
+  },
+  {
+   "id": "trench_cover_proof:TRENCH_square_on_blocks_044",
+   "item": "TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/fwsweep/fwlive\\trench_cover_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "trench_cover_proof:TRENCH_square_on_hit_falls",
+   "item": "TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/fwsweep/fwlive\\trench_cover_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "trench_cover_proof:TRENCH_enfilade_zero",
+   "item": "TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/fwsweep/fwlive\\trench_cover_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "trench_cover_proof:TRENCH_lip_shooter_zero",
+   "item": "TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/fwsweep/fwlive\\trench_cover_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "trench_cover_proof:TRENCH_one_back_third",
+   "item": "TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/fwsweep/fwlive\\trench_cover_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "trench_cover_proof:TRENCH_wet_same_as_dry",
+   "item": "TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/fwsweep/fwlive\\trench_cover_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "trench_cover_proof:TRENCH_raiders_cast_from_canal",
+   "item": "-",
+   "criterion": "-",
+   "status": "UNMEASURED",
+   "cls": "OWED",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/fwsweep/fwlive\\trench_cover_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "trench_cover_proof:TRENCH_raiders_skip_sheer_cage",
+   "item": "-",
+   "criterion": "-",
+   "status": "UNMEASURED",
+   "cls": "OWED",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/fwsweep/fwlive\\trench_cover_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "trench_cover_proof:TRENCH_no_blast_cover",
+   "item": "-",
+   "criterion": "-",
+   "status": "UNMEASURED",
+   "cls": "OWED",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/fwsweep/fwlive\\trench_cover_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "trench_cover_proof:TRENCH_cast_search_cost",
+   "item": "-",
+   "criterion": "-",
+   "status": "UNMEASURED",
+   "cls": "OWED",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/fwsweep/fwlive\\trench_cover_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "climb_proof:CRASHED:A1",
+   "item": "PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP",
+   "criterion": "A1",
+   "status": "UNMEASURED",
+   "cls": "HARNESS",
+   "detail": {
+    "rc": 1,
+    "why": "traceback in the script's log: rows after the crash never ran",
+    "log": "Transient/fwsweep/fwlive\\climb_proof.log"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "climb_proof:CLIMB_pond_person_free",
+   "item": "PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP",
+   "criterion": "A1",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "Transient/fwsweep/fwlive\\climb_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "climb_proof:CLIMB_pond_person_walks_out",
+   "item": "PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP",
+   "criterion": "A1",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "Transient/fwsweep/fwlive\\climb_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "climb_proof:CLIMB_D3_person_trapped",
+   "item": "PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP",
+   "criterion": "A1",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "Transient/fwsweep/fwlive\\climb_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "climb_proof:CLIMB_D3_person_cannot_walk_out",
+   "item": "PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP",
+   "criterion": "A1",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "Transient/fwsweep/fwlive\\climb_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "climb_proof:CLIMB_D3_muffalo_free",
+   "item": "PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP",
+   "criterion": "A1",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "Transient/fwsweep/fwlive\\climb_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "climb_proof:CLIMB_D2_rat_trapped",
+   "item": "PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP",
+   "criterion": "A1",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "Transient/fwsweep/fwlive\\climb_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "climb_proof:CLIMB_ladder_prison_door",
+   "item": "PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP",
+   "criterion": "A1",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "Transient/fwsweep/fwlive\\climb_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "climb_proof:CLIMB_mask_seals_cliff_edge",
+   "item": "PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP",
+   "criterion": "A1",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "Transient/fwsweep/fwlive\\climb_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "climb_proof:CLIMB_ramp_walk_out",
+   "item": "PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP",
+   "criterion": "A1",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "Transient/fwsweep/fwlive\\climb_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "climb_proof:CLIMB_ramp_frees_and_retraps",
+   "item": "PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP",
+   "criterion": "A1",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "Transient/fwsweep/fwlive\\climb_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "climb_proof:CLIMB_step_cost_slow_at_K",
+   "item": "PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP",
+   "criterion": "A1",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "Transient/fwsweep/fwlive\\climb_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "climb_proof:CLIMB_rebuild_follows_fill",
+   "item": "PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP",
+   "criterion": "A1",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "Transient/fwsweep/fwlive\\climb_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "sprinkler_live:CRASHED:T22",
+   "item": "SALT_BOTTLE_DIAGNOSE_DRUNK_FOR_NOTHING",
+   "criterion": "T22",
+   "status": "UNMEASURED",
+   "cls": "HARNESS",
+   "detail": {
+    "rc": 1,
+    "why": "traceback in the script's log: rows after the crash never ran",
+    "log": "Transient/fwsweep/fwlive\\sprinkler_live.log"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "sprinkler_live:CRASHED:spray",
+   "item": "SPRINKLER_HEADS_BUILD_PUMP_REQUIRED",
+   "criterion": "spray",
+   "status": "UNMEASURED",
+   "cls": "HARNESS",
+   "detail": {
+    "rc": 1,
+    "why": "traceback in the script's log: rows after the crash never ran",
+    "log": "Transient/fwsweep/fwlive\\sprinkler_live.log"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "sprinkler_live:sprinkler.draws_and_wets",
+   "item": "SPRINKLER_HEADS_BUILD_PUMP_REQUIRED",
+   "criterion": "spray",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "Transient/fwsweep/fwlive\\sprinkler_live_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "sprinkler_live:sprinkler.no_pressure",
+   "item": "SPRINKLER_HEADS_BUILD_PUMP_REQUIRED",
+   "criterion": "spray",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "Transient/fwsweep/fwlive\\sprinkler_live_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "sprinkler_live:sprinkler_switch_flips.flip_sprinklersEnabled",
+   "item": "SPRINKLER_HEADS_BUILD_PUMP_REQUIRED",
+   "criterion": "spray",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "Transient/fwsweep/fwlive\\sprinkler_live_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "liquid_checks:LC_preflight",
+   "item": "-",
+   "criterion": "-",
+   "status": "PASS",
+   "cls": "HARNESS",
+   "detail": {
+    "rc": 1,
+    "src": "Transient/fwsweep/fwlive\\liquid_checks_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "liquid_checks:L2_block",
+   "item": "LIQUID_LEDGER_BUILD_NO_UNIT_LOST",
+   "criterion": "A3",
+   "status": "UNMEASURED",
+   "cls": "HARNESS",
+   "detail": {
+    "rc": 1,
+    "src": "Transient/fwsweep/fwlive\\liquid_checks_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "liquid_checks:L4_block",
+   "item": "LIQUID_LEDGER_BUILD_NO_UNIT_LOST",
+   "criterion": "A5",
+   "status": "UNMEASURED",
+   "cls": "HARNESS",
+   "detail": {
+    "rc": 1,
+    "src": "Transient/fwsweep/fwlive\\liquid_checks_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "liquid_checks:L5_switched_off_hose_spills",
+   "item": "LIQUID_LEDGER_BUILD_NO_UNIT_LOST",
+   "criterion": "A6",
+   "status": "FAIL",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "Transient/fwsweep/fwlive\\liquid_checks_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "liquid_checks:L5_colonists_clean_spill",
+   "item": "LIQUID_LEDGER_BUILD_NO_UNIT_LOST",
+   "criterion": "A6",
+   "status": "UNMEASURED",
+   "cls": "SITE",
+   "detail": {
+    "rc": 1,
+    "src": "Transient/fwsweep/fwlive\\liquid_checks_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "liquid_checks:L6_block",
+   "item": "LIQUID_LEDGER_BUILD_NO_UNIT_LOST",
+   "criterion": "A7",
+   "status": "UNMEASURED",
+   "cls": "HARNESS",
+   "detail": {
+    "rc": 1,
+    "src": "Transient/fwsweep/fwlive\\liquid_checks_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "proof_hose:HP1_tier_running_startup_log_clean",
+   "item": "-",
+   "criterion": "-",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "Transient/fwsweep/fwlive\\proof_hose_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "proof_hose:HP2_probes_site_pinned",
+   "item": "-",
+   "criterion": "-",
+   "status": "PASS",
+   "cls": "HARNESS",
+   "detail": {
+    "rc": 1,
+    "src": "Transient/fwsweep/fwlive\\proof_hose_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "proof_hose:REALFLOW_block",
+   "item": "-",
+   "criterion": "-",
+   "status": "UNMEASURED",
+   "cls": "HARNESS",
+   "detail": {
+    "rc": 1,
+    "src": "Transient/fwsweep/fwlive\\proof_hose_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "proof_hose:SL1_save_landed_new_file_only",
+   "item": "HOSE_RULINGS_BUILD_THREE_REVERSALS_ONE_CARD",
+   "criterion": "A5",
+   "status": "PASS",
+   "cls": "HARNESS",
+   "detail": {
+    "rc": 1,
+    "src": "Transient/fwsweep/fwlive\\proof_hose_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "proof_hose:SL2_save_names_no_class_of_ours",
+   "item": "HOSE_RULINGS_BUILD_THREE_REVERSALS_ONE_CARD",
+   "criterion": "A5",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "Transient/fwsweep/fwlive\\proof_hose_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "proof_hose:SL3_hoses_and_reel_styles_survive",
+   "item": "HOSE_RULINGS_BUILD_THREE_REVERSALS_ONE_CARD",
+   "criterion": "A5",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "Transient/fwsweep/fwlive\\proof_hose_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "proof_hose:SL4_carry_states_survive",
+   "item": "HOSE_RULINGS_BUILD_THREE_REVERSALS_ONE_CARD",
+   "criterion": "A5",
+   "status": "UNMEASURED",
+   "cls": "SITE",
+   "detail": {
+    "rc": 1,
+    "src": "Transient/fwsweep/fwlive\\proof_hose_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "proof_hose:Z_log_budget",
+   "item": "-",
+   "criterion": "-",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "Transient/fwsweep/fwlive\\proof_hose_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "B4_dig_8m_readout",
+   "item": "PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "readout": "OK Hole 8 m \u00b7 Water 0.00 m (0 L)",
+    "owed": "'machine labour digs it by Dig to depth' (colonists stop at 2 m: DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL) is the P10 walk: job read below"
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_dig_cost_notch16",
+   "item": "DIG_COST_TUNE_DEEP_IS_A_MEGAPROJECT",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "work": 51200.0,
+    "want": 51200,
+    "setting": "True",
+    "why": "",
+    "designator": {
+     "accepted": true
+    },
+    "how": "INFERRED: the job's per-cut work function read live, the progress bar not timed"
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_cover_40",
+   "item": "SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT",
+   "criterion": "A3",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "def_": "RM_PitCover_WovenScrap",
+    "rating": 40.0,
+    "trail": [
+     {
+      "n": 1,
+      "total": 60.9,
+      "depths": [
+       4.0
+      ],
+      "covers_left": 0
+     }
+    ]
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_grenade_no_blast_cover",
+   "item": "TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT",
+   "criterion": "A4",
+   "status": "FAIL",
+   "cls": "MOD",
+   "detail": {
+    "trench": 20.0,
+    "open": 40.0,
+    "added": {
+     "trench": {
+      "Shredded": 20.0
+     },
+     "open": {
+      "Crack": 20.0,
+      "Shredded": 20.0
+     }
+    },
+    "drafted": [
+     true,
+     true
+    ],
+    "cells": [
+     [
+      136,
+      18
+     ],
+     [
+      147,
+      18
+     ]
+    ],
+    "want": [
+     [
+      136,
+      18
+     ],
+     [
+      147,
+      18
+     ]
+    ],
+    "note": "severity ADDED by the blast (pre-blast read subtracted); a blast is random per part"
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_cover_120",
+   "item": "SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT",
+   "criterion": "A3",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "def_": "RM_PitCover_PlankLattice",
+    "rating": 120.0,
+    "trail": [
+     {
+      "n": 1,
+      "total": 60.8,
+      "depths": [
+       4.0
+      ],
+      "covers_left": 6
+     },
+     {
+      "n": 2,
+      "total": 121.6,
+      "depths": [
+       4.0,
+       4.0
+      ],
+      "covers_left": 0
+     }
+    ]
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_reservoir_fish_rolled",
+   "item": "FISH_ROLL_MEND_PONDS_BORN_BARREN",
+   "criterion": "A2",
+   "status": "FAIL",
+   "cls": "MOD",
+   "detail": {
+    "why": "a 200-square dug water body rolled no fish (certain at 200+)",
+    "waterBody": {
+     "hasBody": true,
+     "type": "Freshwater",
+     "size": 200,
+     "hasFish": false,
+     "commonFish": [],
+     "population": 20.0
+    },
+    "fwBody": {
+     "id": null,
+     "cellCount": null,
+     "stock": null,
+     "capacity": null,
+     "limitless": null
+    }
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_reservoir_catch",
+   "item": "POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD",
+   "criterion": "A7",
+   "status": "FAIL",
+   "cls": "MOD",
+   "detail": {
+    "why": "fishing zone refused on the dug reservoir",
+    "refusals": [
+     "water body has no fish (WaterBody.HasFish false: barren roll, no fish types, or population 0)"
+    ],
+    "error": "NOTHING was zoned - every cell in 113,17,10,20 was refused, so the zone was not created."
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_cover_220",
+   "item": "SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT",
+   "criterion": "A3",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "def_": "RM_PitCover_ReinforcedFrame",
+    "rating": 220.0,
+    "trail": [
+     {
+      "n": 1,
+      "total": 48.9,
+      "depths": [
+       4.0
+      ],
+      "covers_left": 6
+     },
+     {
+      "n": 2,
+      "total": 109.7,
+      "depths": [
+       4.0,
+       4.0
+      ],
+      "covers_left": 6
+     },
+     {
+      "n": 3,
+      "total": 170.8,
+      "depths": [
+       4.0,
+       4.0,
+       4.0
+      ],
+      "covers_left": 6
+     },
+     {
+      "n": 4,
+      "total": 219.6,
+      "depths": [
+       4.0,
+       4.0,
+       4.0,
+       4.0
+      ],
+      "covers_left": 6
+     },
+     {
+      "n": 5,
+      "total": 268.4,
+      "depths": [
+       4.0,
+       4.0,
+       4.0,
+       4.0,
+       4.0
+      ],
+      "covers_left": 0
+     }
+    ]
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_access_portable_ladder_out",
+   "item": "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS",
+   "criterion": "A1",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "ladder": {
+     "def_": "RM_LadderPortable",
+     "asked": [
+      49,
+      18
+     ],
+     "rot_asked": 0,
+     "rot_read": 0,
+     "survived": true,
+     "note": ""
+    },
+    "pawn": {
+     "cell": [
+      52,
+      25
+     ],
+     "depth": 0.0,
+     "held": "False",
+     "trapped": "False",
+     "raw": "CLIMB k=2 held=False trapped=False cell=52,25 | POCKET k=2 comp=0 pocket=False size=62407 depth=0 gen=1810 built=1810 rebuilds=310"
+    },
+    "orderTaken": true,
+    "owed": "build-by-colonist, uninstall/re-set and the 4 m refusal are not read by this row"
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_access_gear_climbs_sheer_4m",
+   "item": "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "gear": "{'success': True, 'action': 'wear', 'displaced': [], 'notes': [], 'pawn': {'thingId': 'Human148871', 'thingIdNumber': 148871, 'name': 'Sally Carter', 'nameShort",
+    "pawn": {
+     "cell": [
+      51,
+      25
+     ],
+     "depth": 0.0,
+     "held": "False",
+     "trapped": "False",
+     "raw": "CLIMB k=7 held=False trapped=False cell=51,25 | POCKET k=7 comp=0 pocket=False size=62500 depth=0 gen=1810 built=1810 rebuilds=310"
+    },
+    "orderTaken": true
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_access_no_gear_stays_in",
+   "item": "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "pawn": {
+     "cell": [
+      58,
+      16
+     ],
+     "depth": 8.0,
+     "held": "False",
+     "trapped": "False",
+     "raw": "CLIMB k=2 held=False trapped=False cell=58,16 | POCKET k=2 comp=2 pocket=True size=9 depth=8 gen=1810 built=1810 rebuilds=310"
+    }
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_access_jump_pack_in_no_fall",
+   "item": "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS",
+   "criterion": "A3",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "pack": "{'success': True, 'action': 'wear', 'displaced': [], 'notes': [], 'pawn': {'thingId': 'Human148879', 'thingIdNumber': 14",
+    "jump": "{'success': True, 'action': 'cast', 'accepted': True, 'ticksElapsed': 122, 'timedOut': False, 'speedChanged': True, 'speedRestored': True, 'preCast': {'pawn': {",
+    "pawn": {
+     "cell": [
+      67,
+      17
+     ],
+     "depth": 6.0,
+     "held": "False",
+     "trapped": "False",
+     "raw": "CLIMB k=2 held=False trapped=False cell=67,17 | POCKET k=2 comp=3 pocket=True size=9 depth=6 gen=1810 built=1810 rebuilds=310"
+    },
+    "hediffs": {
+     "Gunshot": 3.0
+    },
+    "owed": "jump back out, skip, knockback-still-falls: not read"
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_rail_unrailed_control",
+   "item": "FALL_GUARDRAILS_BUILD_REAL_OBJECT",
+   "criterion": "A3",
+   "status": "UNMEASURED",
+   "cls": "OWED",
+   "detail": {
+    "pawn": {
+     "cell": [
+      169,
+      12
+     ],
+     "depth": 0.0,
+     "held": "False",
+     "trapped": "False",
+     "raw": "CLIMB k=2 held=False trapped=False cell=169,12 | POCKET k=2 comp=0 pocket=False size=62407 depth=0 gen=1810 built=1810 rebuilds=310"
+    },
+    "why": "the unrailed control does not fall (AI keeps off lips): the bar needs his ruling, A4/A7 knockback rows already discriminate"
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_access_rescue_ladder_queued",
+   "item": "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS",
+   "criterion": "A4",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "ladderSeen": true,
+    "afterTicks": 1030,
+    "downed": {
+     "cell": [
+      76,
+      17
+     ],
+     "depth": 10.0,
+     "held": "False",
+     "trapped": "False",
+     "raw": "CLIMB k=2 held=False trapped=False cell=76,17 | POCKET k=2 comp=4 pocket=True size=9 depth=10 gen=1810 built=1810 rebuilds=310"
+    },
+    "incapacitate": "{'success': True, 'action': 'downed', 'allowBleedingWoundsHonoured': False, 'downedBefore': False, 'deadBefore': False, 'downedAfter': True, 'deadAfter': False,",
+    "owed": "'built and the colonist carried out' needs a longer ride: read again in B7"
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_dehydration_rate",
+   "item": "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY",
+   "criterion": "T6",
+   "status": "UNMEASURED",
+   "cls": "HARNESS",
+   "detail": {
+    "sev": [
+     0.00225,
+     0.00750000076
+    ],
+    "ticks": 1000,
+    "projected60k": null,
+    "home": [
+     183,
+     17
+    ],
+    "wandered": [],
+    "how": "INFERRED from the measured rate"
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B5_ice_freeze_thaw",
+   "item": "POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD",
+   "criterion": "A5",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "why": "",
+    "conditions": [
+     "{'success': True, 'action': 'start', 'scope': 'map', 'notes': ['registered ColdS",
+     "{'success': True, 'action': 'start', 'scope': 'map', 'notes': ['registered DeepF"
+    ],
+    "frozeAfter": 13000,
+    "thawAfter": 33500,
+    "coldest": -28.9693623,
+    "temps": [
+     -22.1339378,
+     -24.0133476,
+     -25.902153,
+     -27.799572,
+     -28.5781212,
+     -28.9693623
+    ],
+    "staleIce": 0,
+    "thawAll": null,
+    "iceSeries": [
+     10,
+     10,
+     10,
+     10,
+     10,
+     10,
+     10,
+     7
+    ],
+    "thawTemps": [
+     9.704202,
+     10.1066465,
+     10.6120272,
+     11.0170155
+    ],
+    "expectedMelts": 2.69,
+    "expectedFreezes": 2.6,
+    "before": [
+     10000,
+     10000,
+     10000
+    ],
+    "after": [
+     10000,
+     10000,
+     10000
+    ]
+   },
+   "block": "B5",
+   "eyes": false
+  },
+  {
+   "id": "B6_flood_canal_kept",
+   "item": "POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD",
+   "criterion": "A6",
+   "status": "FAIL",
+   "cls": "MOD",
+   "detail": {
+    "why": "canal squares changed across the flood",
+    "weather": "{'success': True, 'before': 'Clear', 'after': 'TorrentialRain', 'lockInForce': True, 'gamePaused': True, 'notes': ['regi",
+    "weatherBefore": {
+     "current": "Clear",
+     "last": "Clear",
+     "curWeatherAge": 302,
+     "rainRate": 0.0,
+     "snowRate": 0.0
+    },
+    "floodReachedAfter": 5000,
+    "recededAfter": 4000,
+    "changed": [
+     [
+      39,
+      51
+     ],
+     [
+      40,
+      51
+     ],
+     [
+      41,
+      51
+     ],
+     [
+      42,
+      51
+     ],
+     [
+      43,
+      51
+     ],
+     [
+      44,
+      51
+     ],
+     [
+      45,
+      51
+     ],
+     [
+      46,
+      51
+     ]
+    ],
+    "changedValues": [
+     [
+      "(2, 1, 10000)",
+      "(2, 2, 20000)"
+     ],
+     [
+      "(2, 1, 10000)",
+      "(2, 2, 20000)"
+     ],
+     [
+      "(2, 1, 10000)",
+      "(2, 2, 20000)"
+     ],
+     [
+      "(2, 1, 10000)",
+      "(2, 2, 20000)"
+     ]
+    ],
+    "rainFillWas": "True"
+   },
+   "block": "B6",
+   "eyes": false
+  },
+  {
+   "id": "B7_reload_A3",
+   "item": "PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT",
+   "criterion": "A3",
+   "status": "FAIL",
+   "cls": "MOD",
+   "detail": {
+    "save": "RM_live_session_reload_20261023_001137",
+    "differs": [
+     "pocket_covers"
+    ],
+    "unread": [],
+    "pairs": {
+     "pocket_covers": {
+      "before": "POCKET k=3 comp=0 pocket=False size=62407 depth=0",
+      "after": "POCKET k=3 comp=0 pocket=False size=62408 depth=0",
+      "settled": "POCKET k=3 comp=0 pocket=False size=62407 depth=0"
+     }
+    },
+    "settledSame": [
+     "pocket_covers"
+    ],
+    "settleTicks": 120
+   },
+   "block": "B7",
+   "eyes": false
+  },
+  {
+   "id": "B7_reload_A2",
+   "item": "PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP",
+   "criterion": "A2",
+   "status": "FAIL",
+   "cls": "MOD",
+   "detail": {
+    "save": "RM_live_session_reload_20261023_001137",
+    "differs": [
+     "pocket_covers"
+    ],
+    "unread": [],
+    "pairs": {
+     "pocket_covers": {
+      "before": "POCKET k=3 comp=0 pocket=False size=62407 depth=0",
+      "after": "POCKET k=3 comp=0 pocket=False size=62408 depth=0",
+      "settled": "POCKET k=3 comp=0 pocket=False size=62407 depth=0"
+     }
+    },
+    "settledSame": [
+     "pocket_covers"
+    ],
+    "settleTicks": 120
+   },
+   "block": "B7",
+   "eyes": false
+  },
+  {
+   "id": "B7_reload_save_reload_pockets_iden",
+   "item": "PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH",
+   "criterion": "save_reload_pockets_identical",
+   "status": "FAIL",
+   "cls": "MOD",
+   "detail": {
+    "save": "RM_live_session_reload_20261023_001137",
+    "differs": [
+     "pocket_covers"
+    ],
+    "unread": [],
+    "pairs": {
+     "pocket_covers": {
+      "before": "POCKET k=3 comp=0 pocket=False size=62407 depth=0",
+      "after": "POCKET k=3 comp=0 pocket=False size=62408 depth=0",
+      "settled": "POCKET k=3 comp=0 pocket=False size=62407 depth=0"
+     }
+    },
+    "settledSame": [
+     "pocket_covers"
+    ],
+    "settleTicks": 120
+   },
+   "block": "B7",
+   "eyes": false
+  },
+  {
+   "id": "B7_pipe_look_survives",
+   "item": "HOSE_RULINGS_BUILD_THREE_REVERSALS_ONE_CARD",
+   "criterion": "A2",
+   "status": "UNMEASURED",
+   "cls": "OWED",
+   "detail": {
+    "why": "needs a colonist-built styled pipe (blueprint->frame->building); objects_sheet.choose_look stages the look, the build half rides B4 once a builder row exists"
+   },
+   "block": "B7",
+   "eyes": false
+  },
+  {
+   "id": "B7_rescued_out_of_pit",
+   "item": "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS",
+   "criterion": "A4",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "downed": {
+     "cell": [
+      88,
+      16
+     ],
+     "depth": 0.0,
+     "held": "False",
+     "trapped": "False",
+     "raw": "CLIMB k=2 held=False trapped=False cell=88,16 | POCKET k=2 comp=0 pocket=False size=62407 depth=0 gen=9 built=9 rebuilds=2"
+    }
+   },
+   "block": "B7",
+   "eyes": false
+  },
+  {
+   "id": "raid_trench_proof:CRASHED:raid",
+   "item": "PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH",
+   "criterion": "raid",
+   "status": "UNMEASURED",
+   "cls": "HARNESS",
+   "detail": {
+    "rc": 1,
+    "why": "traceback in the script's log: rows after the crash never ran",
+    "log": "Transient/fwsweep/fwlive\\raid_trench_proof.log"
+   },
+   "block": "B8",
+   "eyes": false
+  },
+  {
+   "id": "raid_trench_proof:RAID_island_sealed",
+   "item": "PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH",
+   "criterion": "raid",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 1,
+    "src": "Transient/fwsweep/fwlive\\raid_trench_proof_result.json"
+   },
+   "block": "B8",
+   "eyes": false
+  },
+  {
+   "id": "thirst_live:T7_no_dbh_clean_log",
+   "item": "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY",
+   "criterion": "T1-T5,T7,T9,T10",
+   "status": "UNMEASURED",
+   "cls": "HARNESS",
+   "detail": {
+    "rc": 1,
+    "src": "Transient/fwsweep/fwlive\\thirst_live_result.json"
+   },
+   "block": "B10",
+   "eyes": false
+  },
+  {
+   "id": "thirst_live:T1_provider_line",
+   "item": "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY",
+   "criterion": "T1-T5,T7,T9,T10",
+   "status": "UNMEASURED",
+   "cls": "HARNESS",
+   "detail": {
+    "rc": 1,
+    "src": "Transient/fwsweep/fwlive\\thirst_live_result.json"
+   },
+   "block": "B10",
+   "eyes": false
+  },
+  {
+   "id": "thirst_live:T2_one_thirst_need",
+   "item": "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY",
+   "criterion": "T1-T5,T7,T9,T10",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "Transient/fwsweep/fwlive\\thirst_live_result.json"
+   },
+   "block": "B10",
+   "eyes": false
+  },
+  {
+   "id": "thirst_live:T3_need_falls",
+   "item": "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY",
+   "criterion": "T1-T5,T7,T9,T10",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "Transient/fwsweep/fwlive\\thirst_live_result.json"
+   },
+   "block": "B10",
+   "eyes": false
+  },
+  {
+   "id": "thirst_live:T4_bottle_satisfies",
+   "item": "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY",
+   "criterion": "T1-T5,T7,T9,T10",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "Transient/fwsweep/fwlive\\thirst_live_result.json"
+   },
+   "block": "B10",
+   "eyes": false
+  },
+  {
+   "id": "thirst_live:T5_salt_water_quality",
+   "item": "SALT_BOTTLE_DIAGNOSE_DRUNK_FOR_NOTHING",
+   "criterion": "T5",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "Transient/fwsweep/fwlive\\thirst_live_result.json"
+   },
+   "block": "B10",
+   "eyes": false
+  },
+  {
+   "id": "thirst_live:T10_terrain_drink",
+   "item": "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY",
+   "criterion": "T1-T5,T7,T9,T10",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "Transient/fwsweep/fwlive\\thirst_live_result.json"
+   },
+   "block": "B10",
+   "eyes": false
+  },
+  {
+   "id": "thirst_live:T9_animals_drink",
+   "item": "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY",
+   "criterion": "T1-T5,T7,T9,T10",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "Transient/fwsweep/fwlive\\thirst_live_result.json"
+   },
+   "block": "B10",
+   "eyes": false
+  }
+ ],
+ "args": {
+  "dry_run": false,
+  "mock": false,
+  "list": false,
+  "only": "",
+  "skip": "B9",
+  "frame_budget_ms": 150.0,
+  "player_log": "",
+  "no_owner_save": false,
+  "out_dir": "Transient/fwsweep/fwlive"
+ },
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "05d945576d945041e005610ad85d2d86d08b87889aa92d6d45dd2260ee8d7f74",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "imranfish.xmlextensions",
+   "brrainz.rimbridgeserver",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes",
+   "mandrake.rm.deepdrill"
+  ],
+  "assembly_sha256": "3a5092dd19c0a9290c7dc5ae1be6def037da539a3650244c1baf525003e456e2"
+ }
+}

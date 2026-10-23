@@ -53,6 +53,18 @@ case(LC.spill_verdict(L, 0, L, None, 3, 0, 0)[0], "UNMEASURED", "filth unreadabl
 case(LC.spill_verdict(L, 0, 10000, 1, 4, 0, 0, expected=3)[0], "PASS", "the 2026-10-16b trace: one filth thickened 1 -> 4 by 3 pieces")
 case(LC.spill_verdict(L, 0, 10000, 1, 1, 0, 0, expected=3)[0], "FAIL", "spilled but the filth did not thicken")
 case(LC.spill_verdict(L, 0, 10000, 1, 2, 0, 0, expected=3)[0], "FAIL", "fewer pieces than FilthCount")
+# live_session 20261022T235239: drained 10,000, SpilledUnits flat, no filth -- where did it go? (the exits ledger)
+_n0 = dict(spilledUnits=51345, placedInWaterUnits=0, placedNearbyUnits=0, returnedUnits=0, homedFarUnits=0, lostUnits=0)
+_wet = dict(_n0, placedInWaterUnits=10000)
+case(LC.spill_exits(_n0, _wet), dict(spilled=0, placedInWater=10000, placedNearby=0, returned=0, homedFar=0, lost=0), "exits are deltas")
+case(LC.spill_exits(dict(spilledUnits=1), dict(spilledUnits=2)), None, "an old DLL without the exit counters reads None")
+case(LC.spill_verdict(10000, 0, 10000, 0, 0, 0, 0, expected=0, exits=LC.spill_exits(_n0, _wet))[:2], ("UNMEASURED", "SITE"),
+     "the 20261022 trace: the drain went into water beside the drain square -- the plot, not the mod")
+case(LC.spill_verdict(10000, 0, 10000, 0, 0, 0, 0, expected=0, exits=LC.spill_exits(_n0, _n0))[:2], ("FAIL", "MOD"),
+     "can-fail: drained units no exit counted are a ledger hole")
+case(LC.spill_verdict(10000, 0, 10000, 0, 3, 0, 0, expected=3, exits=LC.spill_exits(_n0, dict(_n0, spilledUnits=61345)))[0], "PASS",
+     "a dry-ground spill with its filth still PASSes with the exits read")
+case(LC.spill_verdict(10000, 0, 10000, 0, 0, 0, 0, expected=0)[0], "FAIL", "without the exits read the old FAIL stands")
 case(LC.filth_pieces(10000, 4000), 3, "1000 L at 400 L per piece = 3")
 case(LC.filth_pieces(1, 4000), 1, "any spill shows")
 case(LC.filth_thickness("Spilled liquid x4"), 4, "FilthLabel thickness")

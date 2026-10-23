@@ -200,7 +200,21 @@ def filth_thickness(label):
     return int(m.group(1)) if m else None
 
 
-def spill_verdict(held0, held1, drained, filth0, filth1, unplaced0, unplaced1, precondition=None, expected=None):
+def spill_exits(net0, net1):
+    """{exit: units moved between two net probes} for the drain/spill exits, or None when the probe predates the counters
+    (an old DLL: no placedInWaterUnits field) or a reading is not an int."""
+    keys = (("spilled", "spilledUnits"), ("placedInWater", "placedInWaterUnits"), ("placedNearby", "placedNearbyUnits"),
+            ("returned", "returnedUnits"), ("homedFar", "homedFarUnits"), ("lost", "lostUnits"))
+    out = {}
+    for k, f in keys:
+        a, b = (net0 or {}).get(f), (net1 or {}).get(f)
+        if not isinstance(a, int) or not isinstance(b, int) or isinstance(a, bool) or isinstance(b, bool):
+            return None
+        out[k] = b - a
+    return out
+
+
+def spill_verdict(held0, held1, drained, filth0, filth1, unplaced0, unplaced1, precondition=None, expected=None, exits=None):
     """L5: capping an Outflow end empties the hose (held -> 0, drained >= held) AND the spill shows as filth at the end.
     filth0/filth1 are the summed THICKNESS of the spill filth in the rect: vanilla thickens the filth on the cell (up to 5)
     before it spawns another thing, so a thing count stays flat. expected = pieces the spill made (FilthCount); when known
@@ -220,6 +234,22 @@ def spill_verdict(held0, held1, drained, filth0, filth1, unplaced0, unplaced1, p
     ok = held1 == 0 and drained >= held0 and rise > 0 and (expected is None or rise == expected)
     if not ok and unplaced0 is not None and unplaced1 is not None and unplaced1 > unplaced0:
         det["why"] = "the spill found no cell that takes the filth (RM_LiquidSpill.Unplaced %s -> %s)" % (unplaced0, unplaced1)
+    if not ok and exits is not None:
+        # live_session 20261022T235239: held 10,000 -> 0, drained 10,000, SpilledUnits flat, no filth. The drain's water
+        # exit (RM_LiquidSpill.PlaceInWater: a canal or pond at or beside the drain square, incl. a pond's dry bed painted
+        # Soil by prepare_site) had no counter, so the row could not tell "went home to water" from "vanished". Each exit
+        # is now counted (net probe): units that went to water mean the plot is not dry ground (SITE); units no exit
+        # counted are a ledger hole (MOD).
+        det["exits"] = exits
+        wet = sum(exits.get(k) or 0 for k in ("placedInWater", "placedNearby", "returned", "homedFar"))
+        counted = wet + (exits.get("spilled") or 0) + (exits.get("lost") or 0)
+        if held1 == 0 and drained >= held0 and drained and counted < drained:
+            det["why"] = "%d of %d drained units left by no counted exit (spill, water, loss): a ledger hole" % (drained - counted, drained)
+            return "FAIL", "MOD", det
+        if held1 == 0 and drained >= held0 and rise <= 0 and wet >= drained - (exits.get("spilled") or 0) and wet > 0:
+            det["why"] = ("the drain went into water at or beside the drain square (%d units): the plot is not dry ground, "
+                          "so no filth is owed -- move the plot off any canal, pond or pond bed" % wet)
+            return "UNMEASURED", "SITE", det
     return ("PASS" if ok else "FAIL"), "MOD", det
 
 
@@ -778,7 +808,7 @@ def main(argv=None):
         lpf = sget(S_MACH, "litresPerFilth")
         per = int(float(lpf)) * UNITS_PER_LITRE if re.match(r"^\d+(\.\d+)?$", str(lpf)) else None   # a float setting may read back "400.0"
         want = filth_pieces(sp1 - sp0, per) if per and isinstance(sp0, int) and isinstance(sp1, int) else None
-        st, cls, det = spill_verdict(h0, h1, drained, n0, n1, u0, u1, pre, expected=want)
+        st, cls, det = spill_verdict(h0, h1, drained, n0, n1, u0, u1, pre, expected=want, exits=spill_exits(net0, net1))
         row("L5_switched_off_hose_spills", st, cls, dict(det, heldLiquid=liq, rect=frect,
                                                          spilledUnits=[net0.get("spilledUnits"), net1.get("spilledUnits")]))
         if st != "PASS":

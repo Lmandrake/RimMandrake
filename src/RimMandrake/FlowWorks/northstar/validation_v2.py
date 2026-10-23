@@ -2220,6 +2220,13 @@ def phase_L(L, args):
         asm_part = ("assembly_identity", tp.get("assemblyFileSha256") == want and tp.get("mvidMatchesFile") is True,
                     "HARNESS", "loaded %s sha %s mvidMatchesFile %s; repo sha %s" % (
                         tp.get("assemblyLocation"), (tp.get("assemblyFileSha256") or "")[:12], tp.get("mvidMatchesFile"), want[:12]))
+        # HARNESS (live_session 20261022T235239, B1 ABORT): the settings sweep ran BEFORE the identity check, so a deployed DLL
+        # older than the repo's aborted on "No public field 'pipeFaucetsEnabled'" (a field the old build never had) instead
+        # of "stale DLL". Identity first: a stale assembly aborts by name before any setting is read.
+        if asm_part[1] is False:
+            _fold(L, "L2_tier_live", [log_part, asm_part, ("settings_default", None, "HARNESS",
+                                                           "not read: the running assembly is not the repo's")])
+            raise Abort("stale DLL: the running assembly is not the repo's -- redeploy and relaunch before any run")
         drift = []
         # 2026-10-11 first full-list run: L2 read hoseSettingsImported=True (ship False) as drift on an install that had
         # imported its old hose settings -- true on every upgraded install, so L2 could never pass there

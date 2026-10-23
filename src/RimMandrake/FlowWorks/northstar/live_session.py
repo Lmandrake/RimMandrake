@@ -595,6 +595,64 @@ def hediffs(snap):
 
 
 # ============================================================================ B0 preflight
+REPO_DLL = os.path.join(HERE, "..", "Assemblies", "RimMandrakeFlowWorks.dll")
+
+
+def _file_sha256(path):
+    import hashlib
+    try:
+        with open(path, "rb") as f:
+            return hashlib.sha256(f.read()).hexdigest()
+    except OSError:
+        return None
+
+
+def assembly_identity_verdict(loaded_sha, mvid_ok, repo_sha):
+    """B0_assembly_identity -> (status, why). PASS only when the running FlowWorks assembly's file sha equals the repo DLL's
+    (and the probe does not say the loaded image differs from that file); a mismatch is FAIL (the session's MOD rows judge
+    another build); an unread side is UNMEASURED."""
+    if not repo_sha:
+        return "UNMEASURED", "the repo DLL was unreadable"
+    if not loaded_sha:
+        return "UNMEASURED", "jawa/type_probe returned no assemblyFileSha256"
+    if loaded_sha != repo_sha:
+        return "FAIL", "the running assembly is not the repo's: every MOD row below judges an older or other build -- redeploy and relaunch"
+    if mvid_ok is False:
+        return "FAIL", "the DLL file matches but the loaded image does not (mvidMatchesFile false): relaunch after the deploy"
+    return "PASS", ""
+
+
+def assembly_identity(s):
+    tp = s.call("jawa/type_probe", typeName="RimMandrake.FlowWorks.RM_MapComponent_Excavation")
+    repo = _file_sha256(REPO_DLL)
+    loaded = tp.get("assemblyFileSha256")
+    if s.mock:
+        loaded = repo if loaded else loaded     # FakeGame has no real DLL: identity is the shape of the read, not the bytes
+    st, why = assembly_identity_verdict(loaded, tp.get("mvidMatchesFile"), repo)
+    return st, dict(loaded=(loaded or "")[:12], repo=(repo or "")[:12], mvidMatchesFile=tp.get("mvidMatchesFile"),
+                    location=tp.get("assemblyLocation"), why=why)
+
+
+def biome_fish(s):
+    """True/False: the current map's biome can have fish at all (BiomeDef maxFishPopulation > 0 AND freshwater fishTypes;
+    vanilla WaterBody.SetFishTypes returns at once when fishTypes is null); None when unread. SITE (20261022T235239):
+    the session map is RM_TheRot, which has neither (river_site.biome_has_fish, 2026-10-12), so a fishless dug reservoir
+    there is the biome, not the mend."""
+    if s.mock:
+        return True
+    mi = s.call("jawa/map_info")
+    b = mi.get("mapBiome") or (mi.get("tileInfo") or {}).get("biome")
+    if not b:
+        return None
+    try:
+        import river_site as RS
+    except Exception:  # noqa: BLE001
+        return None
+    r = s.call("jawa/get_defs", defs="BiomeDef/%s" % b, fields="maxFishPopulation,fishTypes", deep=True)
+    f = ((r.get("defs") or [{}])[0] or {}).get("fields")
+    return RS.biome_has_fish(f)
+
+
 def b0_preflight(s):
     rm = s.call("jawa/running_mods", assembly="RimMandrakeFlowWorks", details=False)
     ids = [p.lower() for p in rm.get("packageIds") or []]
@@ -603,6 +661,12 @@ def b0_preflight(s):
     big = len(ids) > 40
     s.row("B0_tier_truth", "-", "-", "PASS" if ids and MOD_ID in ids and not big else "UNMEASURED", "HARNESS",
           dict(running=len(ids), flowworks=MOD_ID in ids, why="the flowworks tier is ~11-13 mods" if big else ""), "B0")
+    # HARNESS (20261022T235239): the header promised "FlowWorks assembly sha" but nothing read it, and that session ran an
+    # assembly older than the repo's (B1 aborted on a field the old build lacked). Every MOD row after a mismatch judges a
+    # build nobody can name, so the identity is a row of its own and the session's MOD verdicts carry it in env.
+    st, det = assembly_identity(s)
+    s.env["assembly_identical"] = st == "PASS"
+    s.row("B0_assembly_identity", "-", "-", st, "HARNESS", det, "B0")
     if not s.mock:
         try:
             import validation_core as V
@@ -1082,11 +1146,14 @@ def g_dig_depth(s):
 FISH_CERTAIN_SIZE = 200     # vanilla FishingUtility.ChanceForCommonFishFromWaterBodySizeCurve: 0 <75, .05@75, .5@100, 1@200
 
 
-def fish_roll_verdict(fr):
+def fish_roll_verdict(fr, biome_fishy=True):
     """B4_reservoir_fish_rolled -> (status, class, why) from a jawa/fishing read of the filled 10x20 dug reservoir.
     Fish are a ROLL on the body's size (WaterBody.SetFishTypes; the FlowWorks mend re-rolls at 75/100/200): only a body
     of 200+ squares is certain. pass 2 (2026-10-19, HARNESS): a 100-square body PASSed in pass2 and FAILed in pass2c on
-    the same build -- the 52.5% coin (1 - .95 x .5), not a bug. A fishless body under 200 is UNMEASURED/SITE."""
+    the same build -- the 52.5% coin (1 - .95 x .5), not a bug. A fishless body under 200 is UNMEASURED/SITE.
+    biome_fishy (biome_fish): SITE (20261022T235239, 'FAIL' on a 200-square body) -- SetFishTypes returns at once on a
+    biome with no fishTypes, and the session map was RM_TheRot (no fishTypes, no maxFishPopulation): no roll can give
+    fish there, so a fishless body on such a biome (or an unread biome) cannot judge the mend."""
     if not isinstance(fr, dict) or fr.get("success") is not True or not isinstance(fr.get("body"), dict):
         return "UNMEASURED", "HARNESS", "jawa/fishing read failed: %s" % str((fr or {}).get("error") or fr)[:100]
     wb = fr["body"]
@@ -1094,6 +1161,10 @@ def fish_roll_verdict(fr):
         return "UNMEASURED", "SITE", "no vanilla water body under the reservoir (filled? see its dig rows)"
     if wb.get("hasFish") is True or wb.get("commonFish"):
         return "PASS", "MOD", ""
+    if biome_fishy is not True:
+        return "UNMEASURED", "SITE" if biome_fishy is False else "HARNESS", (
+            "the map's biome has no fish to roll (BiomeDef fishTypes/maxFishPopulation): run B4 on a fish biome"
+            if biome_fishy is False else "the map biome's fish could not be read")
     size = fnum(str(wb.get("size")))
     if size is None or size < FISH_CERTAIN_SIZE:
         return "UNMEASURED", "SITE", "a %s-square body lost the game's size roll (certain only at %d+)" % (
@@ -1142,7 +1213,8 @@ def g_reservoir(s):
     # jawa/fishing (body{hasBody, hasFish, commonFish, population, ...}); the FlowWorks body stays as detail.
     b = s.call("jawa/flowworks_body_report", x=x + 6, z=z + 11, classify=True).get("body") or {}
     fr = s.call("jawa/fishing", action="read", x=x + 6, z=z + 11)
-    st, cls, why = fish_roll_verdict(fr)
+    fishy = biome_fish(s)
+    st, cls, why = fish_roll_verdict(fr, fishy)
     wb = fr.get("body") if isinstance(fr.get("body"), dict) else {}
     s.row("B4_reservoir_fish_rolled", "FISH_ROLL_MEND_PONDS_BORN_BARREN", "A2", st, cls,
           dict(why=why, waterBody={k: wb.get(k) for k in ("hasBody", "type", "size", "hasFish", "commonFish", "population")},
@@ -1158,8 +1230,13 @@ def g_reservoir(s):
         det = zr.get("details") if isinstance(zr.get("details"), dict) else {}
         whys = sorted(set(str(c.get("why")) for c in (zr.get("refusedCells") or det.get("refusedCells") or [])))
         mod = any("no fish" in w or "no water-body type" in w for w in whys)
-        a7("FAIL" if mod else "UNMEASURED", "MOD" if mod else "HARNESS",
-           why="fishing zone refused on the dug reservoir", refusals=whys[:6], error=str(zr.get("error") or zr.get("message"))[:200])
+        # SITE (20261022T235239): "no fish" on a fishless biome is the biome (see fish_roll_verdict), not dug water
+        # that cannot be fished; only a fish biome makes that refusal a MOD FAIL
+        nofish_biome = mod and fishy is not True and all("no fish" in w for w in whys)
+        a7("UNMEASURED" if nofish_biome or not mod else "FAIL",
+           ("SITE" if fishy is False else "HARNESS") if nofish_biome else "MOD" if mod else "HARNESS",
+           why="fishing zone refused on the dug reservoir" + (" (the map's biome has no fish)" if nofish_biome else ""),
+           biomeFish=fishy, refusals=whys[:6], error=str(zr.get("error") or zr.get("message"))[:200])
         return
     label = zr.get("created")
     p = s.spawn(HUMAN, (x + 1, z + 1))
@@ -1521,6 +1598,13 @@ def flood_verdict(started, reached, receded, same):
     return ("PASS", "MOD", "") if same else ("FAIL", "MOD", "canal squares changed across the flood")
 
 
+def rain_rate(s):
+    """The map's RainRate from jawa/weather_get ({weather: {current, rainRate, ...}}); None when unread (FakeGame's
+    weather is a bare string)."""
+    w = s.call("jawa/weather_get").get("weather")
+    return fnum(w.get("rainRate")) if isinstance(w, dict) else None
+
+
 def b6_flood(s):
     """POND_DEPTH A6 ("a seasonal or torrential flood over a wet canal leaves the canal's water and floor correct"):
     TorrentialRain (Odyssey WeatherDef) locked by jawa/weather_set; WeatherWorker_TorrentialRain.OnWeatherStart spawns
@@ -1543,7 +1627,8 @@ def b6_flood(s):
     # open dug squares (rainFillsExcavationsEnabled, the mod's design, proven by its own rows), which this row is not
     # about. Rain fill off for the row (restored in finally); the changed squares keep their before/after values.
     rain_fill_was = s.sget("rainFillsExcavationsEnabled")
-    rain_off = (s.sset("rainFillsExcavationsEnabled", False) or {}).get("success") is not False
+    rain_off = (s.sset("rainFillsExcavationsEnabled", False) or {}).get("success") is not False and (
+        s.mock or str(s.sget("rainFillsExcavationsEnabled")).lower() == "false")    # read back, not the set's word
     ws = s.call("jawa/weather_set", weather=FLOOD_WEATHER, lockWeather=True)
     started = bool(ws.get("success")) and ws.get("after") == FLOOD_WEATHER
 
@@ -1563,15 +1648,28 @@ def b6_flood(s):
         # back to B0's locked Clear (also after a crash: a locked torrent would flood every later block): the old lock
         # ends, TransitionTo(Clear) runs TorrentialRain.OnWeatherEnd = the flood is destroyed
         s.call("jawa/weather_set", weather="Clear", lockWeather=True)
-        s.sset("rainFillsExcavationsEnabled", rain_fill_was if rain_fill_was is not None else True)   # Clear now: no rain
-    receded, gone_at = False, None
-    if reached:
-        for k in range(0, 12000, 500):
-            s.advance(500)
-            if "Flood" not in flood_ops():
-                receded, gone_at = True, k + 500
+    # HARNESS (20261022T235239: 8 canal squares (2,1,10000) -> (2,2,20000), +1 level each = one rain-fill pulse): rain fill
+    # was switched back on the moment Clear was SET, but WeatherManager.RainRate lerps out over the transition, and
+    # ApplyRain reads RainRate, so the fading torrent filled the canal during the recession wait. Rain fill stays off until
+    # the canal's 'after' read, and comes back only once the map reads rainRate 0.
+    rain_end = None
+    try:
+        receded, gone_at = False, None
+        if reached:
+            for k in range(0, 12000, 500):
+                s.advance(500)
+                if "Flood" not in flood_ops():
+                    receded, gone_at = True, k + 500
+                    break
+        after = s.w.cells(canal)[0] if not s.mock else {}
+        rain_end = rain_rate(s)
+    finally:
+        for _ in range(12):
+            if s.mock or not fnum(rain_end):
                 break
-    after = s.w.cells(canal)[0] if not s.mock else {}
+            s.advance(500)
+            rain_end = rain_rate(s)
+        s.sset("rainFillsExcavationsEnabled", rain_fill_was if rain_fill_was is not None else True)
     st, cls, why = flood_verdict(started, reached, receded, before == after)
     if not s.mock and (not before or not after):       # {} == {} was "every canal square reads as before"
         st, cls, why = "UNMEASURED", "HARNESS", "the canal cells were unread (before %d, after %d)" % (len(before or {}), len(after or {}))
@@ -1581,7 +1679,7 @@ def b6_flood(s):
           dict(why=why, weather=str(ws)[:120], weatherBefore=(w0 or {}).get("weather"), floodReachedAfter=reached_at,
                recededAfter=gone_at, changed=[c for c in before if before.get(c) != after.get(c)][:8],
                changedValues=[[str(before.get(c))[:80], str(after.get(c))[:80]] for c in before if before.get(c) != after.get(c)][:4],
-               rainFillWas=rain_fill_was), "B6")
+               rainFillWas=rain_fill_was, rainFillOffReadBack=rain_off, rainRateAtRestore=rain_end), "B6")
     restore_after_weather(s, "B6")
 
 
@@ -1632,6 +1730,10 @@ def b7_reload(s):
             V._wait_playing(s.w.B, leave_s=0)
         except Exception as ex:  # noqa: BLE001
             s.notes.append("wait_playing: %s" % ex)
+    # RELOAD_POCKETS (20261022T235239: pocket_covers 62,407 -> 62,408 straight after the load, 62,407 settled; the third
+    # run with this red): the grid's own rebuild record right after the load -- firstMidLoad=1 says the map's first build
+    # came while it was still loading (the presumed cause; the DLL since rebuilds such a grid on the first Playing frame)
+    ok_t, pocket_timing = s.proof("RimMandrake.FlowWorks.RM_PocketGrid", "ProofPocketTiming", "")
     after = snapshot(s)
     diff = sorted(k for k in before if before.get(k) != after.get(k))
     # a key unread on EITHER side is no comparison: None == None made the pocket/setting rows PASS with nothing read
@@ -1654,7 +1756,8 @@ def b7_reload(s):
                       ("PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH", "save_reload_pockets_identical")):
         s.row("B7_reload_%s" % cid[:24], item, cid, st, "MOD" if st != "UNMEASURED" else "HARNESS",
               dict(save=name, differs=diff, unread=blind, pairs=pairs, settledSame=settled_same,
-                   settleTicks=RELOAD_SETTLE_TICKS if diff else 0), "B7")
+                   settleTicks=RELOAD_SETTLE_TICKS if diff else 0,
+                   pocketTimingAfterLoad=(pocket_timing[:400] if ok_t else "unread: %s" % pocket_timing[:120])), "B7")
     s.row("B7_pipe_look_survives", "HOSE_RULINGS_BUILD_THREE_REVERSALS_ONE_CARD", "A2", "UNMEASURED", "OWED",
           dict(why="needs a colonist-built styled pipe (blueprint->frame->building); objects_sheet.choose_look stages "
                    "the look, the build half rides B4 once a builder row exists"), "B7")
