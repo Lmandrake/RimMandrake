@@ -1,0 +1,10 @@
+== preflight
+HP1_tier_running_startup_log_clean PASS       MOD      {"playing": true, "flowworks": true, "gimmesomeslack": true, "startupLogRead": true, "startupErrorsNamingHose": []}
+HP2_probes_site_pinned             PASS       HARNESS  {"hoseProbe": true, "colonistsDrafted": [564, 567, 578, 50228, 50231, 50234, 50242, 50245, 50250, 50253, 50256, 50259, 50269, 50272, 50275, 50278, 502
+== relay
+RELAY_aborted                      UNMEASURED HARNESS  "review save (--no-fresh-map): this scene clears and repaints its site rect; run it on a fresh map (proof_hose without --no-fresh-map, or validation_h
+== session
+Z_log_budget                       PASS       MOD      {"errorsNamingHoseOrFlowWorks": [], "otherErrors": 0, "tap": {"polls": 3, "lost": 0, "kept": 0}, "siteClearErrors": 0, "newWarnings": 0}
+
+proof_hose partial  rows 4 {'PASS': 3, 'UNMEASURED': 1}  wall 16.2s
+  NOT PASS  RELAY_aborted                      UNMEASURED "review save (--no-fresh-map): this scene clears and repaints its site rect; run it on a fresh map (proof_hose without -

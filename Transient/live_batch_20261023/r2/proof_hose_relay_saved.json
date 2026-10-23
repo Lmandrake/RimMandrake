@@ -1,0 +1,169 @@
+{
+ "mod": "FlowWorks",
+ "script": "proof_hose.py",
+ "tier": "flowworks",
+ "mode": "partial",
+ "started": "2026-10-23T02:57:51",
+ "rows": [
+  {
+   "id": "HP1_tier_running_startup_log_clean",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "playing": true,
+    "flowworks": true,
+    "gimmesomeslack": true,
+    "startupLogRead": true,
+    "startupErrorsNamingHose": []
+   },
+   "block": "preflight"
+  },
+  {
+   "id": "HP2_probes_site_pinned",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "hoseProbe": true,
+    "colonistsDrafted": [
+     564,
+     567,
+     578,
+     50228,
+     50231,
+     50234,
+     50242,
+     50245,
+     50250,
+     50253,
+     50256,
+     50259,
+     50269,
+     50272,
+     50275,
+     50278,
+     50291,
+     50297,
+     50301,
+     50304,
+     50321
+    ]
+   },
+   "block": "preflight"
+  },
+  {
+   "id": "RELAY_aborted",
+   "status": "UNMEASURED",
+   "class": "HARNESS",
+   "detail": "review save (--no-fresh-map): this scene clears and repaints its site rect; run it on a fresh map (proof_hose without --no-fresh-map, or validation_hose standalone on a throwaway map)",
+   "block": "relay"
+  },
+  {
+   "id": "Z_log_budget",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "errorsNamingHoseOrFlowWorks": [],
+    "otherErrors": 0,
+    "tap": {
+     "polls": 3,
+     "lost": 0,
+     "kept": 0
+    },
+    "siteClearErrors": 0,
+    "newWarnings": 0
+   },
+   "block": "session"
+  }
+ ],
+ "blocks": {
+  "preflight": {
+   "wall_s": 14.1,
+   "rows": 2,
+   "raised": null
+  },
+  "relay": {
+   "wall_s": 1.3,
+   "rows": 1,
+   "raised": null
+  },
+  "session": {
+   "wall_s": 0.0,
+   "rows": 1,
+   "raised": null
+  }
+ },
+ "doc": "design/RimMandrake/hose_port_to_flowworks_design_FINAL_2026-10-10.md",
+ "offline": {
+  "skipped": "--skip-offline"
+ },
+ "kept_pawns": {
+  "kept": [
+   "Chicken1864622",
+   "Human1864606",
+   "Human1864615",
+   "Husky1864623",
+   "Muffalo1864605",
+   "Muffalo1864614",
+   "Muffalo1864624",
+   "Thrumbo1864625",
+   "WildBoar1864604"
+  ]
+ },
+ "log_revive": {
+  "alive": true,
+  "sentinel": "[proof log sentinel] revive 1792749471340",
+  "emitted": true,
+  "why": null,
+  "cleared": true
+ },
+ "mod_hash": "7ea73741ab2ceaeec055813a7ec9bd6ad9749b73a6bd69fe71841115df2a704a",
+ "sweeps": {
+  "preflight": {
+   "route": "none-needed",
+   "removed": [],
+   "left": [],
+   "kept": 9
+  },
+  "relay": {
+   "route": "none-needed",
+   "removed": [],
+   "left": [],
+   "kept": 9
+  }
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "wall_s": 16.2,
+ "site_notes": [],
+ "certifiable": false,
+ "site_calm_blocks": {
+  "relay": true
+ },
+ "huge_plants_cleared": {
+  "relay": {
+   "blockers": 0,
+   "tiles": 0,
+   "blockersLeft": 0
+  }
+ },
+ "site_calm_restore": false
+}
