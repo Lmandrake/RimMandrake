@@ -142,6 +142,13 @@ namespace RimMandrake.FlowWorks.SelfTest
                 return Fail.Count == 0 ? 0 : 1;
             }
             // HOSE_BEND_FIX_SHAVES_WALL_CORNERS / HOSE_LEADIN_FIX_STUB_IN_THE_CANAL: the drawn-hose geometry cases alone (fast loop)
+            // HOSE_SPLICE_BUILD_MATES_BY_SLOPE: the G2 hose joiner alone (fast loop)
+            if (args.Length > 0 && args[0] == "--hose-splice")
+            {
+                HoseSpliceChecks.Run(Case);
+                Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
+                return Fail.Count == 0 ? 0 : 1;
+            }
             if (args.Length > 0 && args[0] == "--hose-draw")
             {
                 if (args.Length > 1 && args[1] == "probe") HoseDrawGeometryChecks.Probe();
@@ -2078,6 +2085,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             PipePoleChecks.Run(Case);          // PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 4: pipe pole support rule, span cap, sag extremes, not pawn topology (PipePoleChecks.cs)
             PipeSpanNetChecks.Run(Case);       // PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 5: the liquid net's pole-to-pole edge, cap after join, ring cut, one rebuild per cut (PipeSpanNetChecks.cs)
             LineReadoutChecks.Run(Case);       // PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 7: P9 readout lines for the four crossing cases, P8 gravship re-key (LineReadoutChecks.cs)
+            HoseSpliceChecks.Run(Case);        // HOSE_SPLICE_BUILD_MATES_BY_SLOPE: G2 joiner (position, angle, curvature at both ends, |k| <= 1/MinBendRadius); two hose ends mate face to face (HoseSpliceChecks.cs)
             HoseDrawGeometryChecks.Run(Case);  // HOSE_BEND_FIX_SHAVES_WALL_CORNERS + HOSE_LEADIN_FIX_STUB_IN_THE_CANAL: the drawn hose clears wall corners and meets a side port with no stub (HoseDrawGeometryChecks.cs)
             HoseWallSeamChecks.Run(Case);      // HOSE_CLEAR_FIX_WALL_SEAM_LOOPHOLE: wall test vs an independent ruler, seam lines refused, re-plans never cross a wall (HoseWallSeamChecks.cs)
             HoseBandChecks.Run(Case);          // PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 6: hoses into pits only by ramp or ladder, band-aware end reach, raised ladder hangs, dig re-plans once (HoseBandChecks.cs)
