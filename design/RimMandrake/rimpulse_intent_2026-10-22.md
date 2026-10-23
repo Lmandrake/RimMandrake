@@ -215,8 +215,11 @@ Strip: `✖ BENCH 19:40 · ✖ RIMPULSE 19:11 · ✓ 43`.
 9. **There is no "issues while you were away" list (G3).** Issues are only the red/warn rows currently on
    screen. Not collected at all: failed builds, failed selftests (the nightly sweep log), artpipe failures
    (the chip says "1018 failed" as a plain idle chip), stopped items, hook refusals, a seat that went idle for
-   hours, digest timer failures. Resolved issues vanish when acked or expired, so "what happened" decays into
-   "what is still red".
+   hours, digest timer failures. An acked alarm moves into the "acknowledged (N)" fold (`render`) and an
+   expired one leaves the screen; there is no history of incidents and no "recovered" state, so "what
+   happened" decays into "what is still on screen". (Corrected after GPT's review: ack does not remove a row.)
+   Contained harness test kills (`warn`, src `kernel`) are not drawn in the widget body at all (`render`
+   draws only telemetry and session warns).
 10. **Telemetry warnings flap.** Over 14 days: `tel:vitals:hostiles` opened 475 times, `tel:vitals:modal_stuck`
     344, `tel:blind:tps` 123; warn alarms close at a median age of **21 s**. Each re-open gets a new incident id
     (`@since`), so an ack never sticks. Red telemetry: `tel:mem_low` 47 opens, `tel:vitals:colony_dead` 36.
