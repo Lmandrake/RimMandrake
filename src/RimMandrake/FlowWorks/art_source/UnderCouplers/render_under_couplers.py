@@ -67,7 +67,8 @@ def render(b, look, g, dz_table, geo, ppc, after):
     w2p = lambda p: ((p[0] - x0) * ppc, (z1 - p[1]) * ppc)
     hlook = look if look in gate.LOOKS else "Scrapper"
     jdir = JOINS_ALT if (after and JOINS_ALT) else gate.JOINS
-    collar, pipe = (Image.open(os.path.join(jdir, hlook, n + ".png")).convert("RGBA") for n in ("UnderCollar", "UnderPipe"))
+    ulook = ART_OVERRIDE.get(b["def"], hlook)   # RM_UnderCouplers.ArtLookOverride (the C# is the source)
+    collar, pipe = (Image.open(os.path.join(jdir, ulook, n + ".png")).convert("RGBA") for n in ("UnderCollar", "UnderPipe"))
     strand, coupling, binding = hose_tex(hlook, "Strand_Flat"), hose_tex(hlook, "Coupling_Bare"), hose_tex(hlook, "Binding")
     seen = set()
     pl = gate.ports(b, look, dz_table)
@@ -125,10 +126,20 @@ def sheet(b, look, g, dz_table, geo):
 
 LANE = None
 JOINS_ALT = None
+ART_OVERRIDE = {}
+try:
+    import re as _re
+    _src = open(os.path.join(FW, "Source", "Machinery", "RM_UnderCouplers.cs")).read()
+    ART_OVERRIDE = dict(_re.findall(r'\{\s*"(RM_\w+)",\s*"(\w+)"\s*\}', _src.split("ArtLookOverride", 1)[1].split("};", 1)[0])) if "ArtLookOverride =" in _src else {}
+except OSError:
+    pass
 
 
 def main(argv):
-    global LANE, JOINS_ALT
+    global LANE, JOINS_ALT, ART_OVERRIDE
+    if "--no-override" in argv:
+        argv = [a for a in argv if a != "--no-override"]
+        ART_OVERRIDE = {}
     if "--joins" in argv:
         i = argv.index("--joins")
         JOINS_ALT = os.path.abspath(argv[i + 1])
