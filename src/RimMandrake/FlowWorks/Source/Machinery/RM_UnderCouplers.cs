@@ -14,6 +14,8 @@ namespace RimMandrake.FlowWorks.Machinery
         /// <summary>State read: under-couplers drawn last frame (probe / live look); reset by <see cref="ResetFrame"/>.</summary>
         public static int lastDraws;
 
+        private static readonly System.Collections.Generic.Dictionary<string, Material[]> matCache = new System.Collections.Generic.Dictionary<string, Material[]>();
+
         public static void ResetFrame() => lastDraws = 0;
 
         /// <summary>True when a hose coupled to <paramref name="port"/> gets an under-coupler (any spawned non-pipe port).</summary>
@@ -26,7 +28,13 @@ namespace RimMandrake.FlowWorks.Machinery
         {
             if (!Wanted(port) || System.Math.Abs(sx) + System.Math.Abs(sz) != 1) return false;
             string look = RM_LiquidJoins.LookOf(port);
-            Material collar = RM_LiquidJoins.Mat("UnderCollar", look), pipe = RM_LiquidJoins.Mat("UnderPipe", look);
+            // per-look cache: RM_LiquidJoins.Mat builds a key string per call, and this runs every frame for every coupled hose end
+            if (!matCache.TryGetValue(look ?? "", out Material[] mp))
+            {
+                mp = new[] { RM_LiquidJoins.Mat("UnderCollar", look), RM_LiquidJoins.Mat("UnderPipe", look) };
+                matCache[look ?? ""] = mp;
+            }
+            Material collar = mp[0], pipe = mp[1];
             if (collar == null || pipe == null) return false;
             CellRect r = port.OccupiedRect();
             double reach = UnderCouplerGeometry.Reach(px, pz, sx, sz, r.minX, r.minZ, r.Width, r.Height);
