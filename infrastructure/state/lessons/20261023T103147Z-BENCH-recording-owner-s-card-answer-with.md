@@ -1,0 +1,1 @@
+Recording an owner's card answer with rimflow note leaves the item at needs=owner, so RimPulse keeps showing it under 'to rule'. When he rules, also run 'rimflow needs <ID> --to <offline|bridge…>' with the same --owner-said.
