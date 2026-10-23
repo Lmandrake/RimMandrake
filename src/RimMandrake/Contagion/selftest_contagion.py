@@ -67,6 +67,7 @@ class Fake(object):
         # harness unroofed ('None:' set_roof_batch ops) are open sky.
         self.open_sky, self.collapse_pending, self.host_gone = [], [], False
         self.next_burn, self.bills = -1, set()
+        self.burn_rec, self.pulses = {}, 0          # RM_BurnProof's per-pawn pulse counters
 
     # ------------------------------------------------------------ session surface
     def _ticks(self):
@@ -117,7 +118,15 @@ class Fake(object):
                 self.addh(p, "RM_UnfinishedUnraveling", 0.2)
         if kind == V.HOST:
             p["next_spawn"] = self.ticks + 36000
+        if kind == V.UV_NATIVE and "native_born_maimed" in self.broken:
+            # AgeInjuryUtility: a wild animal generated with an old missing part (lastInjury Cut, not Burn)
+            p["hed"].append({"def": "MissingBodyPart", "severity": 0, "part": "Tail", "partLabel": "tail",
+                             "lastInjury": "Cut"})
         return p
+
+    def brec(self, p):
+        return self.burn_rec.setdefault(p["id"], dict(sheltered=0, exposed=0, damaged=0, dealt=0.0, dosed=0, dives=0,
+                                                      last="None"))
 
     def addh(self, p, d, sev):
         for h in p["hed"]:
@@ -243,19 +252,44 @@ class Fake(object):
                 (self.on("burnEnabled") or "harm_ignores_burn_toggle" in b):
             f = self.num("burnDamageFactor")
             if f > 0 or "zero_dmg_hurts" in b:
+                self.pulses += 1
                 for p in list(self.pawns.values()):
-                    if p["dead"] or p["vanished"] or not self.exposed(p["x"], p["z"]):
+                    if p["dead"] or p["vanished"]:
                         continue
+                    if not self.exposed(p["x"], p["z"]) or ("native_sheltered" in b and p["kind"] == V.UV_NATIVE):
+                        self.brec(p)["sheltered"] += 1
+                        continue
+                    r = self.brec(p)
+                    r["exposed"] += 1
                     if self.is_native(p):
                         if p["kind"] in ARMORED and "armored_hurt" not in b:
+                            r["last"] = "None"
                             continue
-                        if "native_unhurt" not in b:
-                            self.addh(p, "Burn", 3 * max(f, 0.5))
+                        if "native_unhurt" in b:
+                            r["last"] = "None"                 # mis-classed: exposed, never damaged
+                            continue
+                        r["last"] = "DamageAndDive"
+                        r["damaged"] += 1
+                        if "burn_zero_dealt" not in b:
+                            r["dealt"] += 3 * max(f, 0.5)
+                            if "native_burned_off" in b and p["kind"] == V.UV_NATIVE:
+                                # LIVE 2026-10-23: 3 Burn on a 0.25-health-scale gnashling takes a part off whole: a
+                                # MissingBodyPart and no Burn hediff (and this instrument carries no lastInjury)
+                                p["hed"].append({"def": "MissingBodyPart", "severity": 0, "part": "Ear",
+                                                 "partLabel": "left ear"})
+                            else:
+                                self.addh(p, "Burn", 3 * max(f, 0.5))
+                            if "native_dies_burned" in b and p["kind"] == V.UV_NATIVE:
+                                p["vanished"] = True           # burned to death between samples: no living Burn read
+                                continue
                         if p["kind"] not in LEAKERS and p["kind"] not in ARMORED and "no_dive" not in b and "wander_onto_patch" not in b:
                             roof = self.roofs[0]
                             p["x"], p["z"] = roof[0] + 2, roof[1] + 2
                             p["job"], p["job_t"] = "Goto", (roof[0] + 2, roof[1] + 2)   # the dive is a Goto to a roofed cell
+                            r["dives"] += 1
                     elif "no_dose" not in b:
+                        r["last"] = "Dose"
+                        r["dosed"] += 1
                         self.addh(p, "RM_BurnDose", 0.02 * max(f, 0.5))
             if "dose_roofed" in b:
                 for p in self.pawns.values():
@@ -297,15 +331,32 @@ class Fake(object):
             # Building_RM_Coalescence.Absorb, per 250-tick pass: one inside the ring (footprint expanded by 1)
             # is eaten; one further out is ordered a step closer and eaten on a LATER pass. "slow_walkers"
             # (impaired Unfinished, live 2026-10-08) take three passes per step: the harness must still PASS.
+            tot = c.setdefault("tot", {})
+            c["passes"] = c.get("passes", 0) + 1
+
+            def cnt(k):
+                tot[k] = tot.get(k, 0) + 1
             for p in list(self.pawns.values()):
                 if p["kind"] == "RM_TheUnfinished" and not p["vanished"] and not p["mental"] \
                         and "no_absorb" not in b and abs(p["x"] - c["x"]) <= 18 and abs(p["z"] - c["z"]) <= 18:
+                    cnt("Candidate")
                     if abs(p["x"] - c["x"]) <= 2 and abs(p["z"] - c["z"]) <= 2:
+                        if "arrival_lost" in b:
+                            # the pre-fix live shape: the Goto ends ON the ring, the sun escape dashes it out before
+                            # the pass can eat it, and the next pass finds the order lost
+                            p["x"], p["lost"] = c["x"] + 10, True
+                            continue
                         p["vanished"] = True
                         c["mass"] += 1
+                        cnt("Arrived")
                     elif "slow_walkers" in b and p.setdefault("walk", 0) < 2:
                         p["walk"] += 1
+                        cnt("AlreadyWalking")
                     else:
+                        if p.pop("lost", False):
+                            cnt("OrderLost")
+                        cnt("Ordered" if not p.get("ordered") or "arrival_lost" in b else "AlreadyWalking")
+                        p["ordered"] = True
                         p["walk"] = 0
                         p["x"] += (c["x"] > p["x"]) - (c["x"] < p["x"])
                         p["z"] += (c["z"] > p["z"]) - (c["z"] < p["z"])
@@ -602,6 +653,30 @@ class Fake(object):
                 else (["Genome source: %s" % t["source"]] if t.get("source") else [])
         return {"success": True, "things": [{"id": t["id"], "label": d, "inspect": lines}]}
 
+    def t_static_call(self, type=None, method=None, args=None, **k):
+        if type == "RimMandrake.Contagion.RM_BurnProof" and method == "PressureReport":
+            if "no_burn_proof" in self.broken:
+                return {"success": False, "message": "no such method"}     # a DLL older than the hook
+            p = self.pawns.get(args)
+            if p is None:
+                return {"success": False, "message": "no thing %s" % args}
+            head = "OK pulses=%d skipped=0 " % self.pulses
+            r = self.burn_rec.get(args)
+            if r is None:
+                return {"success": True, "result": head + "pawn[unseen]"}
+            return {"success": True, "result": head + "pawn[sheltered=%(sheltered)d exposed=%(exposed)d damaged=%(damaged)d "
+                                                      "dealt=%(dealt).2f dosed=%(dosed)d dives=%(dives)d last=%(last)s]" % r}
+        if type == "RimMandrake.Contagion.RM_CoalescenceProof" and method == "AbsorbReport":
+            c = self.things.get(args)
+            if c is None:
+                return {"success": True, "result": "UNMEASURED %s is not a Building_RM_Coalescence" % args}
+            keys = ("Candidate", "OutOfRange", "Eaten", "Downed", "AlreadyWalking", "NoRingCell", "Unreachable",
+                    "Ordered", "OrderLost", "Arrived", "ArriveRefused")
+            tot = c.get("tot", {})
+            body = " ".join("%s=%d" % (k, tot.get(k, 0)) for k in keys)
+            return {"success": True, "result": "OK passes=%d mass=%d last[] total[%s]" % (c.get("passes", 0), c["mass"], body)}
+        return {"success": False, "message": "fake: no static %s.%s" % (type, method)}
+
     def t_set_pawn_skill(self, **k):
         return {"success": True}
 
@@ -770,6 +845,12 @@ BREAKS = {
     "no_dose": ["burn_forced.burn_doses_the_exposed_visitor"],
     "dose_roofed": ["burn_forced.burn_doses_the_exposed_visitor"],
     "native_unhurt": ["burn_forced.burn_hurts_native_spares_armored"],
+    "burn_zero_dealt": ["burn_forced.burn_hurts_native_spares_armored"],      # hit, but for nothing
+    "native_burned_off": [],                  # LIVE 2026-10-23 shape: a part burned off whole -> must PASS (SITE_EXPECT)
+    "native_sheltered": [],                   # SITE: no pulse found the native exposed -> UNMEASURED (SITE_EXPECT)
+    "native_born_maimed": [],                 # generated with an old missing part; the Burn still lands -> PASS
+    "no_burn_proof": [],                      # a DLL without RM_BurnProof: a real Burn hediff still PASSes
+    "arrival_lost": ["coalescence.coalescence_absorbs_and_grows_a_stage"],   # the pre-fix live shape: OrderLost names it
     "armored_hurt": ["burn_forced.burn_hurts_native_spares_armored"],
     "no_dive": ["burn_forced.native_dives_for_roof"],
     "wander_onto_patch": ["burn_forced.native_dives_for_roof"],   # stands on the patch via GotoWander, never ordered: position alone passed this
@@ -826,6 +907,15 @@ SITE_EXPECT = {
     "roof_patch_fails": {"burn_forced.burn_site_ready": "UNMEASURED",
                          "burn_forced.burn_doses_the_exposed_visitor": "UNMEASURED"},
     "xref_flood": {"log.log_clean": "UNMEASURED"},
+    # CONTAGION_BURN_DIAGNOSE_NATIVE_FEELS_NOTHING: the four causes of "only MissingBodyPart" are told apart
+    "native_burned_off": {"burn_forced.burn_hurts_native_spares_armored": "PASS"},
+    "native_born_maimed+native_burned_off": {"burn_forced.burn_hurts_native_spares_armored": "PASS"},
+    "native_born_maimed+native_unhurt": {"burn_forced.burn_hurts_native_spares_armored": "FAIL"},
+    "native_sheltered": {"burn_forced.burn_hurts_native_spares_armored": "UNMEASURED"},
+    "no_burn_proof+native_burned_off": {"burn_forced.burn_hurts_native_spares_armored": "UNMEASURED"},
+    "no_burn_proof+native_unhurt": {"burn_forced.burn_hurts_native_spares_armored": "FAIL"},
+    "native_born_maimed": {"burn_forced.burn_hurts_native_spares_armored": "PASS"},
+    "native_dies_burned": {"burn_forced.burn_hurts_native_spares_armored": "PASS"},
     # an undosed visitor whose roof cannot be read is ignorance, never a FAIL (review 2026-10-20)
     "no_dose+roof_read_fails": {"burn_forced.burn_doses_the_exposed_visitor": "UNMEASURED"},
     # a jump that did not take is the bench's: UNMEASURED, never a FAIL (review 2026-10-20)

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- COALESCENCE_STAGE_DIAGNOSE_STUCK_AT_ONE: a wild Unfinished drawn to the Coalescence walks to a ring cell
+       (TargetA) and is eaten by it (TargetB) on arrival, in the same job. Ordered by Building_RM_Coalescence.Absorb. -->
+  <JobDef>
+    <defName>RM_WalkIntoCoalescence</defName>
+    <driverClass>RimMandrake.Contagion.JobDriver_RM_WalkIntoCoalescence</driverClass>
+    <reportString>drawn into the Coalescence.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
+</Defs>

@@ -21,6 +21,9 @@ namespace RimMandrake.Contagion
         public static JobDef RM_SampleDraftprint;
         public static HediffDef RM_UnfinishedMonstrous;
 
+        // COALESCENCE_STAGE_DIAGNOSE_STUCK_AT_ONE — the walk into the Coalescence (Building_RM_Coalescence.cs)
+        public static JobDef RM_WalkIntoCoalescence;
+
         static RM_ContagionDefOf()
         {
             DefOfHelper.EnsureInitializedInCtor(typeof(RM_ContagionDefOf));

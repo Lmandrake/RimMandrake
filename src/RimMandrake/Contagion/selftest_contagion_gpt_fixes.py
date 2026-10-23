@@ -62,7 +62,7 @@ def main():
     check("CONTAGION_INJECT_FIX_IGNORES_OFF_SWITCH: job fails when genome organ growing is switched off",
           "this.FailOn(() => !RM_ContagionSettings.genomeOrganGrowingEnabled);" in inj)
 
-    burn = method_body(read(os.path.join("Source", "RM_GameCondition_ContagionBurn.cs")), "private static void TryDive(")
+    burn = method_body(read(os.path.join("Source", "RM_GameCondition_ContagionBurn.cs")), "private static bool TryDive(")
     check("sanity: TryDive found", "PickDive" in burn)
     # CONTAGION_DIVE_FIX_FOUR_WALLED_CELLS
     check("CONTAGION_DIVE_FIX_FOUR_WALLED_CELLS: TryDive collects DiveCandidates and rotates by DiveOffset",
