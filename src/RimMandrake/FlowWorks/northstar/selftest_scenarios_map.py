@@ -194,6 +194,23 @@ def main():
     vb, rb = S0.run(Blind(swim_rule=lambda f: True), M.STAGE0["rect"][:2])
     check("Stage 0: an unreadable position is UNMEASURED, never PASS or FAIL", vb == "UNMEASURED", (vb, rb[-1:]))
     check("Stage 0 site does not overlap any plot", not any(C_ov(M.STAGE0["rect"], p["rect"]) for p in placed))
+    # SCENARIO_MOCK_HARDEN_INKS_THE_REAL_KEYSHEET: an offline run (--plan, --mock) never writes the committed key sheet
+    import contextlib
+    import io
+    import tempfile
+    committed, offline = tempfile.mkdtemp(prefix="ks_committed_"), tempfile.mkdtemp(prefix="ks_offline_")
+    keep = (M.OUT, M.OFFLINE_OUT)
+    M.OUT, M.OFFLINE_OUT = committed, offline
+    try:
+        with contextlib.redirect_stdout(io.StringIO()):
+            rc = M.main(["--plan"])
+    finally:
+        M.OUT, M.OFFLINE_OUT = keep
+    check("--plan writes its key sheet to OFFLINE_OUT, never the committed OUT",
+          rc == 0 and not os.listdir(committed) and sorted(os.listdir(offline)) == ["KEYSHEET.md", "keysheet.html"],
+          (rc, os.listdir(committed), os.listdir(offline)))
+    check("OFFLINE_OUT is under Transient, not the committed review/scenarios",
+          "Transient" in M.OFFLINE_OUT and os.path.normpath(M.OFFLINE_OUT) != os.path.normpath(M.OUT))
     print("\n%d FAIL" % len(FAILS) if FAILS else "\nALL PASS")
     return 1 if FAILS else 0
 
