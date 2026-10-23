@@ -632,10 +632,20 @@ namespace RimMandrake.FlowWorks.Hose
                 // scenic route: first only joins that cross no stray reel/pump cell; only if one was turned away for that alone
                 // does a second pass take the old first-that-fits (a cost, never a refusal)
                 bool rigTurnedAway = false;
+                // HOSE_BEND_FIX_SHAVES_WALL_CORNERS: first only joins whose drawn body clears every wall (BodyGap); the old
+                // centreline rule only when every join was turned away for that alone
+                double bodyHalf = BodyHalf(p.PlumpAmount);
+                bool bodyTurnedAway = false;
+                (List<V2> f, List<V2> q, List<V2> cc, int m, double lead)? shave = null;
+                double shaveGap = double.NegativeInfinity;
                 // HOSE_ENDS_FIX_MISSES_THE_PORTS (fuzz seeds 144 & co. once the nozzle moved to the measured art): the cheapest
                 // pair can join the plump pose by a long detour the flat pose does not take, so the hose visibly grows when it
                 // fills. Such a pair is only kept as the last resort, after every other join was tried.
                 (List<V2> f, List<V2> q, List<V2> cc, int m, double lead)? longPlump = null;
+                foreach (bool body in new[] { true, false })
+                {
+                if (done || (!body && BodyRuleOn && !bodyTurnedAway) || (body && !BodyRuleOn)) continue;
+                rigTurnedAway = false;
                 foreach (bool scenic in new[] { true, false })
                 {
                 if (done || (!scenic && !rigTurnedAway)) break;
@@ -656,18 +666,32 @@ namespace RimMandrake.FlowWorks.Hose
                     double lead = Math.Max(pair.x.leadLen, pair.y.leadLen);
                     if (Math.Min(MinBendRadiusUpTo(f, EndSkip, lead + 2 * R + 1), MinBendRadiusUpTo(q, EndSkip, lead + 2 * R + 1)) < R * 0.97) continue;
                     if (scenic && Rig(f) + Rig(q) > 0) { rigTurnedAway = true; continue; }
+                    double gap = Math.Min(BodyGap(w, f, S, EndSkip), BodyGap(w, q, S, EndSkip));
+                    if (body && gap < bodyHalf) { bodyTurnedAway = true; continue; }
                     var cc = LeadOutCandidates(null, lay.Centre, a, u, S, R, 1);
                     if (Geo.Length(q) > Geo.Length(f) * PlumpGrowthMax + 0.5)
                     {
                         if (longPlump == null) longPlump = (f, q, cc.Count > 0 ? cc[0].pts : null, m, pair.x.leadLen);
                         continue;
                     }
+                    // no join clears the body: of the joins that fit, the one standing farthest off the walls
+                    if (!body && BodyRuleOn) { if (gap > shaveGap) { shave = (f, q, cc.Count > 0 ? cc[0].pts : null, m, pair.x.leadLen); shaveGap = gap; } continue; }
                     lay.Flat = f;
                     lay.Plump = q;
                     lay.Centre = cc.Count > 0 ? ResampleN(cc[0].pts, m) : ResampleN(StraightenStart(lay.Centre, a, u, S), m);
                     lay.LeadOutLen = pair.x.leadLen;
                     done = true;
                     break;
+                }
+                if (!done && shave.HasValue)
+                {
+                    var sv = shave.Value;
+                    lay.Flat = sv.f;
+                    lay.Plump = sv.q;
+                    lay.Centre = sv.cc != null ? ResampleN(sv.cc, sv.m) : ResampleN(StraightenStart(lay.Centre, a, u, S), sv.m);
+                    lay.LeadOutLen = sv.lead;
+                    done = true;
+                }
                 }
                 }
                 }
@@ -696,6 +720,13 @@ namespace RimMandrake.FlowWorks.Hose
                 // whose straightened run would touch a wall is dropped rather than drawn bent or clipped
                 List<V2> f = StraightenAt(lay.Flat, j, half), q = StraightenAt(lay.Plump, j, half);
                 if (!Clear(w, f) || !Clear(w, q)) continue;
+                // HOSE_BEND_FIX_SHAVES_WALL_CORNERS: a joiner's straightened run never pulls the drawn body onto a wall it cleared
+                if (BodyRuleOn)
+                {
+                    double bh = BodyHalf(p.PlumpAmount), sk = lay.LeadOutLen > 0 ? LeadOutStraight(p) : EndSkip;
+                    if (BodyGap(w, f, sk, EndSkip) < Math.Min(bh, BodyGap(w, lay.Flat, sk, EndSkip)) - 1e-9
+                        || BodyGap(w, q, sk, EndSkip) < Math.Min(bh, BodyGap(w, lay.Plump, sk, EndSkip)) - 1e-9) continue;
+                }
                 if (Rig(f) > Rig(lay.Flat) || Rig(q) > Rig(lay.Plump)) continue;
                 lay.Flat = f;
                 lay.Plump = q;
@@ -787,6 +818,39 @@ namespace RimMandrake.FlowWorks.Hose
                 }
             }
             return hits;
+        }
+
+        /// <summary>HOSE_BEND_FIX_SHAVES_WALL_CORNERS (BENCH live round 2, save d map C: a hose bent round a one-cell wall's end
+        /// shaved its corner). <see cref="Clear"/> judges the CENTRELINE and lets it graze a wall corner by ClipTolerance, so a bend
+        /// wrapped tight round a corner drew half the hose's width over the wall. The drawn body is the centreline +- this much
+        /// (half the widest drawn hose, plump at full blend, plus a hair); a shaping stage prefers a pose whose
+        /// <see cref="BodyGap"/> is at least this, and keeps the old centreline rule only when no such pose exists.</summary>
+        public static double BodyHalf(double plumpAmount) => 0.5 * VisibleWidth(1, plumpAmount) + BodyMargin;
+        public const double BodyMargin = 0.01;
+        /// <summary>The body rule on (shipped) / off (the selftest's can-fail run only: off lays exactly as before the fix).</summary>
+        internal static bool BodyRuleOn = true;
+
+        /// <summary>Least clearance (<see cref="CordWorld.Clearance"/>: distance to the nearest unwalkable cell) of the polyline,
+        /// sampled every 0.05 cell, ignoring the first <paramref name="startSkip"/> and the last <paramref name="endSkip"/> cells
+        /// (the nozzle's straight run and the end fitting sit against their own buildings).</summary>
+        internal static double BodyGap(CordWorld w, IList<V2> pts, double startSkip, double endSkip)
+        {
+            double best = 99;
+            if (w == null || pts == null || pts.Count < 2) return best;
+            double[] s = Geo.CumLen(pts);
+            double L = s[s.Length - 1];
+            for (int i = 1; i < pts.Count; i++)
+            {
+                double d = s[i] - s[i - 1];
+                int k = Math.Max(1, (int)Math.Ceiling(d / 0.05));
+                for (int j = 0; j <= k; j++)
+                {
+                    double at = s[i - 1] + d * j / k;
+                    if (at < startSkip || L - at < endSkip) continue;
+                    best = Math.Min(best, w.Clearance(pts[i - 1] + (pts[i] - pts[i - 1]) * (j / (double)k)));
+                }
+            }
+            return best;
         }
 
         internal static bool Clear(CordWorld w, IList<V2> pts, double endSkip)
