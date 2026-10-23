@@ -1,0 +1,11 @@
+{
+ "run_id": "slack_coil_20261023",
+ "test": false,
+ "started": "2026-10-23T09:18:40-07:00",
+ "subjects": [
+  "RM_SuspensionAnchor_Timber_Scrapper_slack",
+  "RM_SuspensionAnchor_Steel_Industrial_slack",
+  "RM_SuspensionAnchor_Timber_Modern_slack"
+ ],
+ "versions_key": "departures_brief@v2#9cda88+gpt_targeted_second_look@v1#cb6e32+opus_first_pass@v1#140565+preamble@v1#a48502+regen_prompt_edit@v1#861700+severity@v3#950903+creature@v2#16a385"
+}

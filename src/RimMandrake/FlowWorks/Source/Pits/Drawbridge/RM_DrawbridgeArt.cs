@@ -294,6 +294,8 @@ namespace RimMandrake.FlowWorks.Pits
 			public RM_DrawbridgeCableMath.RopeArt[] ropes;
 			/// <summary>The deck square the ropes face is a raised leaf: the ropes lie slack on the bank, disconnected.</summary>
 			public bool slack;
+			/// <summary>Where a slack coil lies: the upright post's foot (a styled _north print), else -1 (ahead of the attachment).</summary>
+			public double foot = -1;
 			/// <summary>+1 when the rope frame's +lateral is the print's local +x (a mirrored print), else -1.</summary>
 			public float hand;
 
@@ -344,6 +346,7 @@ namespace RimMandrake.FlowWorks.Pits
 				p.angle = 0f;
 			}
 			p.ropes = RM_DrawbridgeCableMath.RopesFor(key, p.facing);   // upright bollards: per-facing attachment
+			p.foot = RM_DrawbridgeCableMath.SlackFoot(key, p.facing);
 			p.center = a.TrueCenter() + g.DrawOffset(rot);
 			Vector3 dir = p.World(1, 0) - p.World(0, 0);
 			IntVec3 f = rot.FacingCell;
@@ -393,11 +396,13 @@ namespace RimMandrake.FlowWorks.Pits
 		/// deck; raised, each rope's slack loop on the bank. Every piece is cut from the picture's own painted rope.</summary>
 		public static void PrintRopes(SectionLayer layer, AnchorPrint p)
 		{
+			Vector3 along = p.World(1, 0) - p.World(0, 0);
+			bool vertical = Mathf.Abs(along.z) > Mathf.Abs(along.x);   // the rope runs up/down the screen (rotations N/S)
 			foreach (RM_DrawbridgeCableMath.RopeArt r in p.ropes)
 			{
 				if (p.slack)
 				{
-					List<(double A, double L)> pts = RM_DrawbridgeCableMath.Slack(r);
+					List<(double A, double L)> pts = RM_DrawbridgeCableMath.Slack(r, vertical, p.foot);   // a coil flat on the ground in every rotation; round an upright post's foot
 					double src = r.Attach + 0.01;
 					for (int i = 0; i + 1 < pts.Count; i++)
 					{

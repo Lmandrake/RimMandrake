@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using RimMandrake.FlowWorks;
 
 namespace RimMandrake.FlowWorks.SelfTest
@@ -723,7 +724,14 @@ namespace RimMandrake.FlowWorks.SelfTest
                         if (endAlong > 0.5 + 0.08) bad.Add(where + ": the lowered rope runs too far onto the deck");
                         if (!painted || (m.End < 1.0 - 0.5 * Px && !drawn)) bad.Add(where + ": the art stops short and nothing is drawn on");
                         // RAISED: slack, from the attachment point, never over the pit, sagging, the two loops apart
-                        List<(double A, double L)> sl = RM_DrawbridgeCableMath.Slack(r);
+                        double foot = RM_DrawbridgeCableMath.SlackFoot(parts[0] + "/" + parts[1], su.facing);
+                        List<(double A, double L)> sl = RM_DrawbridgeCableMath.Slack(r, su.fz != 0, foot);
+                        string flat = FlatOnGround(sl, su.facing, su.flip, su.angle);
+                        if (flat != null) bad.Add(where + ": " + flat);
+                        string grounded = AtFoot(sl, foot);
+                        if (grounded != null) bad.Add(where + ": " + grounded);
+                        double toDeck = sl[sl.Count - 1].A - sl[sl.Count - 3].A;   // the loose end: from the coil's last turn out
+                        if (toDeck > 0.01) bad.Add(where + $": the coil's loose end points toward the deck (+{toDeck:F3} along): reads as still tied on");
                         (double X, double Z) s0 = RM_DrawbridgeCableMath.ToWorld(su.facing, su.flip, su.angle, sl[0].A, sl[0].L);
                         if (Dist(s0, startE) > 1.5 * Px) bad.Add(where + ": the slack rope does not start at the bollard's attachment point");
                         double sag = 0, maxAlong = -1;
@@ -740,17 +748,119 @@ namespace RimMandrake.FlowWorks.SelfTest
                         if (sag < 0.08) bad.Add(where + $": the raised rope is not slack (sag {sag:F3})");
                     }
                 }
-                // the two slack loops never touch
-                List<(double A, double L)> p0 = RM_DrawbridgeCableMath.Slack(ropes[0]), p1 = RM_DrawbridgeCableMath.Slack(ropes[1]);
-                double gap = 9;
-                foreach (var a in p0) foreach (var b in p1) gap = Math.Min(gap, Math.Sqrt((a.A - b.A) * (a.A - b.A) + (a.L - b.L) * (a.L - b.L)));
-                if (gap < Math.Max(ropes[0].Thick, ropes[1].Thick) * 1.2) bad.Add(kv.Key + $": the two slack loops touch (gap {gap:F3})");
+                // the two slack loops never touch, in either screen orientation
+                foreach (bool vertical in new[] { true, false })
+                {
+                    double foot = vertical && parts.Length == 3 ? RM_DrawbridgeCableMath.SlackFoot(parts[0] + "/" + parts[1], parts[2]) : -1;
+                    List<(double A, double L)> p0 = RM_DrawbridgeCableMath.Slack(ropes[0], vertical, foot), p1 = RM_DrawbridgeCableMath.Slack(ropes[1], vertical, foot);
+                    double gap = 9;
+                    foreach (var a in p0) foreach (var b in p1) gap = Math.Min(gap, Math.Sqrt((a.A - b.A) * (a.A - b.A) + (a.L - b.L) * (a.L - b.L)));
+                    if (gap < Math.Max(ropes[0].Thick, ropes[1].Thick) * 1.2) bad.Add(kv.Key + $": the two slack loops touch (gap {gap:F3}, vertical {vertical})");
+                }
             }
             return bad;
         }
 
+        /// <summary>SLACK_LOOP_REDRAW_STANDS_UP_IN_PROFILE (art brief C6, the true perspective plane): a rope lying on the ground
+        /// is seen as a squashed ring, wider across the screen than up it. A loop whose screen-vertical extent passes 0.7 of its
+        /// horizontal one reads as a hook standing up off the bollard. Null = flat.</summary>
+        internal static string FlatOnGround(List<(double A, double L)> rope, string facing, bool flip, double angle)
+        {
+            double x0 = 9, x1 = -9, z0 = 9, z1 = -9;
+            foreach (var pt in rope.Skip(1))   // the coil itself: point 0 is the attachment the rope drops from
+            {
+                (double X, double Z) w = RM_DrawbridgeCableMath.ToWorld(facing, flip, angle, pt.A, pt.L);
+                x0 = Math.Min(x0, w.X); x1 = Math.Max(x1, w.X); z0 = Math.Min(z0, w.Z); z1 = Math.Max(z1, w.Z);
+            }
+            double wide = x1 - x0, tall = z1 - z0;
+            if (wide < 0.15) return $"the slack coil is only {wide:F3} wide on screen (a dangling strand, not a coil)";
+            return tall > 0.7 * wide ? $"the slack coil stands up: {tall:F3} tall on screen vs {wide:F3} wide (a ground coil is squashed, <= 0.7)" : null;
+        }
+
+        /// <summary>An upright post with the deck up the screen (foot >= 0): its head is drawn above its foot, so a coil that
+        /// does not reach down to the foot floats at head height like a halo (art-eval run slack_coil_20261023, GPT K1/K2), and
+        /// one reaching behind the foot draws its far arc over the post (run _r2, LAYER_ORDER). The coil's far edge must sit at
+        /// the foot (±0.03). Null = on the ground in front of the post (or no foot rule for this print).</summary>
+        internal static string AtFoot(List<(double A, double L)> rope, double foot)
+        {
+            if (foot < 0) return null;
+            double a0 = 9, a1 = -9;
+            foreach (var pt in rope.Skip(1)) { a0 = Math.Min(a0, pt.A); a1 = Math.Max(a1, pt.A); }
+            if (a0 > foot) return $"the slack coil (along {a0:F3}..{a1:F3}) floats off the post's foot ({foot:F3}): a halo at head height, not rope on the ground";
+            if (a1 > foot + 0.03) return $"the slack coil (along {a0:F3}..{a1:F3}) reaches behind the post's foot ({foot:F3}): its far arc would be drawn over the post";
+            if (a1 < foot - 0.03) return $"the slack coil (along {a0:F3}..{a1:F3}) stops short of the post's foot ({foot:F3}): the rope never reaches the ground";
+            return null;
+        }
+
+        /// <summary>The shipped raised loop before SLACK_LOOP_REDRAW_STANDS_UP_IN_PROFILE: a narrow U along the rope, the same in
+        /// every rotation (copied, so the can-fail case keeps it after the code moved on).</summary>
+        internal static List<(double A, double L)> OldSlack(RM_DrawbridgeCableMath.RopeArt r, int n = 14)
+        {
+            double s = r.Lateral >= 0 ? 1.0 : -1.0, reach = 0.9;
+            double f = Math.Min(1.0, 0.8 * Math.Abs(r.Lateral) / 0.17);
+            double[] A = { r.Attach, reach, reach, r.Attach + 0.3 * (reach - r.Attach) };
+            double[] L = { r.Lateral, r.Lateral + 0.05 * s * f, r.Lateral - 0.13 * s * f, r.Lateral - 0.17 * s * f };
+            var pts = new List<(double A, double L)>();
+            for (int i = 0; i <= n; i++)
+            {
+                double t = (double)i / n, u = 1 - t;
+                double b0 = u * u * u, b1 = 3 * u * u * t, b2 = 3 * u * t * t, b3 = t * t * t;
+                pts.Add((b0 * A[0] + b1 * A[1] + b2 * A[2] + b3 * A[3], b0 * L[0] + b1 * L[1] + b2 * L[2] + b3 * L[3]));
+            }
+            return pts;
+        }
+
         public static void Run(Action<string, Action> Case)
         {
+            Case("Drawbridge_Cables_slack_coil_lies_flat_canfail_old_hook", () =>
+            {
+                int oldStood = 0, wrongStood = 0, setups = 0;
+                foreach (var kv in RM_DrawbridgeCableMath.Art)
+                {
+                    bool styled = !kv.Key.StartsWith("base/");
+                    string facingFile = kv.Key.Split('/').Length == 3 ? kv.Key.Split('/')[2] : null;
+                    foreach (var su in Setups(styled))
+                    {
+                        if (facingFile != null && su.facing != facingFile) continue;
+                        if (styled && facingFile == null && su.facing != "east") continue;   // shared Heavy table: graded once per print
+                        bool vertical = su.fz != 0;
+                        foreach (var r in kv.Value)
+                        {
+                            setups++;
+                            string baseKey = kv.Key.Split('/').Length == 3 ? kv.Key.Substring(0, kv.Key.LastIndexOf('/')) : kv.Key;
+                            string now = FlatOnGround(RM_DrawbridgeCableMath.Slack(r, vertical, RM_DrawbridgeCableMath.SlackFoot(baseKey, su.facing)), su.facing, su.flip, su.angle);
+                            Assert(now == null, kv.Key + " rot " + su.rotName + ": " + now);
+                            if (vertical && FlatOnGround(OldSlack(r), su.facing, su.flip, su.angle) != null) oldStood++;
+                            if (vertical && FlatOnGround(RM_DrawbridgeCableMath.Slack(r, false), su.facing, su.flip, su.angle) != null) wrongStood++;
+                        }
+                    }
+                }
+                Assert(setups >= 80, "graded only " + setups + " rope prints");
+                Assert(oldStood > 0, "can-fail: the shipped N/S hook loop must read as standing up");
+                // the halo: a coil ahead of the head (no foot rule) on an upright _north print floats off the foot
+                int halo = 0, ring = 0, north = 0;
+                foreach (var kv in RM_DrawbridgeCableMath.Art)
+                {
+                    if (!kv.Key.EndsWith("/north")) continue;
+                    double foot = RM_DrawbridgeCableMath.SlackFoot(kv.Key.Substring(0, kv.Key.Length - 6), "north");
+                    Assert(foot >= 0, kv.Key + ": an upright _north print has no foot rule");
+                    foreach (var r in kv.Value)
+                    {
+                        north++;
+                        Assert(AtFoot(RM_DrawbridgeCableMath.Slack(r, true, foot), foot) == null, kv.Key + ": " + AtFoot(RM_DrawbridgeCableMath.Slack(r, true, foot), foot));
+                        if (AtFoot(RM_DrawbridgeCableMath.Slack(r, true), foot) != null) halo++;
+                        // the r2 ring centred ON the foot (its far arc over the post base): centre = (foot + ra) - ra
+                        if (AtFoot(RM_DrawbridgeCableMath.Slack(r, true, foot + RM_DrawbridgeCableMath.CoilAspect * RM_DrawbridgeCableMath.CoilWide), foot) != null) ring++;
+                    }
+                }
+                Assert(north >= 16, "graded only " + north + " upright _north ropes");
+                Assert(halo == north, $"can-fail: every coil placed ahead of a _north head must float off the foot ({halo}/{north})");
+                Assert(ring == north, $"can-fail: every coil ringed round a _north foot must reach behind the post ({ring}/{north})");
+                Assert(RM_DrawbridgeCableMath.SlackFoot("Scrapper/Heavy", "north") < 0 && RM_DrawbridgeCableMath.SlackFoot("base/Rope", "single") < 0
+                    && RM_DrawbridgeCableMath.SlackFoot("Scrapper/Timber", "east") < 0, "the foot rule is for upright _north prints only");
+                Assert(wrongStood > 0, "can-fail: an E/W-shaped coil printed in N/S must read as standing up");
+            });
+
             Case("Drawbridge_Cables_lowered_reach_deck_raised_slack_vs_art", () =>
             {
                 var measured = Anchors(out _);

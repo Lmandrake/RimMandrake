@@ -1,0 +1,65 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 3.4,
+    "models_reported": [],
+    "cost_usd": 0,
+    "error": "You've hit your session limit \u00b7 resets 1:10pm (America/Los_Angeles)"
+   },
+   {
+    "model_requested": "opus",
+    "seconds": 3.1,
+    "models_reported": [],
+    "cost_usd": 0,
+    "error": "You've hit your session limit \u00b7 resets 1:10pm (America/Los_Angeles)"
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_SuspensionAnchor_Timber_Modern_slack",
+ "decision": "HOLD_ERROR",
+ "reasons": [
+  "opus: You've hit your session limit \u00b7 resets 1:10pm (America/Los_Angeles)"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v1",
+   "sha": "a4850279ccbf"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v1",
+   "sha": "14056552e355"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "machine@v2",
+   "sha": "e06ee7316a0a"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "south.png": "4d2b9f217bbd356e5a4522d77b4f99a1ffe6ca840651e33fc730d62cac0a6de0",
+  "east.png": "96db8dd1dfd3dac807df30300337370b5f13db5552b21a3d4dedf72b5262ad10",
+  "north.png": "f2f319b15e2d879ec9eaffbf6c5b529b63698753cd35284db837837f078f4f26",
+  "scale.png": "e98b82fdc9fdf8e640f3cf2b2ef4aa7d13b236edba571c6c32789d912c7da957",
+  "assembled_1.png": "a56dd3457f3507398243ffd0b673cd5048fa916a3cb38bd95499d3436850918b",
+  "assembled_2.png": "bc4baa05e255541881f4f2ba4d8cd959057600d2767471429d6889ee8063bad4",
+  "facings.png": "579ab919966455dbef8922a20f7a19987e09e11b722da80dd762c7bb4ec18991"
+ }
+}

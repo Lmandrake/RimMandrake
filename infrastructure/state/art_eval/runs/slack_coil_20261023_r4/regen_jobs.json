@@ -1,0 +1,19 @@
+[
+ {
+  "id": "arteval_RM_SuspensionAnchor_Steel_Industrial_slack_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_SuspensionAnchor_Steel_Industrial_slack",
+  "prompt": "Top-down three-quarter painterly RimWorld sprite, vanilla RimWorld art style, realistic, clean dark outline, transparent background. Subject: the slack steel rope anchors of a one-lane drawbridge over a pit, shown in the RAISED state. The leaf stands upright at the hinge bank, and the ropes are disconnected from it and lie slack on the ground. Two upright steel industrial mooring bollards stand at each anchor square, unchanged from the approved bollard picture. Where the deck is up the screen, the thin steel cable drops from the bollard head down the post's front and ends in a loose coil lying on the ground just in front of the post, with the coil's far edge touching the post's foot. Nothing crosses behind the post. Elsewhere the coil lies on the ground ahead of the bollard foot. Each coil winds about one and a half turns, spiralling inward, so a second inner turn shows. The turns have a hand-thrown wobble, uneven in radius and spacing, like rope dropped by hand. The loose rope end runs out from the inner turn, crosses over the outer turn, and finishes lying on the ground. That end stops about one full coil-width short of the raised leaf's hinge drum, with bare bank ground visible between the rope tip and the drum. The whole coil, loose end included, sits in open ground in front of the bollard foot, inboard of the hinge drum, so it reads as a free cable lying slack and unattached to the leaf. Each coil is squashed in the screen vertical to match ground-plane perspective. In the N and S views the coils sit slightly inboard, so a coil behind the raised leaf stays hidden behind it. No rope lies over the pit. The cable stays as thin as the lowered steel cable, in dull steel grey with dark outline. The pit is a flat dark rectangle, the deck is a plain deck tile, and the raised leaf is drawn for context. reference: keep the previous render for the bollards, coil body and palette.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: LAYER_ORDER",
+  "reference": "",
+  "priority": 40,
+  "source_run": "slack_coil_20261023_r4"
+ }
+]

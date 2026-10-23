@@ -1,0 +1,36 @@
+[
+ {
+  "id": "arteval_RM_SuspensionAnchor_Timber_Modern_slack_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_SuspensionAnchor_Timber_Modern_slack",
+  "prompt": "RimWorld sprite, top-down three-quarter view, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. Timber and Modern look suspension anchor for a one-lane drawbridge over a pit, with the leaf raised upright at the hinge bank so the ropes are disconnected and lie slack on the ground. Two upright mooring bollards per anchor square, unchanged from the installed bollard picture (same timber, same size, same position). Where the deck is up the screen, the rope drops from the bollard head down the front of the post and ends in a loose coil lying flat on the ground just in front of the post, with the coil's far edge at the post's foot; elsewhere the coil lies on the ground ahead of the bollard foot. Each coil is a loose, hand-dropped rope spiral of two visible turns: a larger, slightly lopsided outer turn and a clearly smaller inner turn sitting off-centre inside it, separated by a thin dark gap of ground so the rope is seen travelling inward. The spacing between the turns is uneven, wide on one side of the coil and tight, nearly touching, on the other, and the outer turn is an irregular loop rather than a regular oval. The rope's inner end is tucked at the middle of the inner turn, and the outer end leaves the outer turn as a distinct loose end lying clear of the coil, several rope-widths long, with a blunt frayed tip resting flat on the ground, pointing away from the deck and away from the centre line. The whole coil reads as one continuous rope that can be followed from the loose end, around the outer turn, and inward to the centre. The rope is as thin as the painted rope on the bollard picture, with constant thickness along its length. The coil is squashed in the screen vertical for ground-plane perspective and is the same size in every rotation; north and south coils sit slightly inboard so a coil behind the raised leaf stays hidden, and no coil lies over the pit.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: DESC_MISS, DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "slack_coil_20261023_r6"
+ },
+ {
+  "id": "arteval_RM_SuspensionAnchor_Steel_Futuristic_slack_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_SuspensionAnchor_Steel_Futuristic_slack",
+  "prompt": "Raised drawbridge slack ropes (Steel, Futuristic look): The rope anchors at each end of a one-lane drawbridge over a pit: two UPRIGHT mooring bollards per anchor square (already judged and installed; not under review here). UNDER REVIEW: the RAISED state's ropes. When the leaf is raised (stands upright at the hinge bank) the ropes are disconnected and must lie SLACK on the ground on the bank, in every rotation. Owner: ropes should be \"slack and disconnected\". The previous shape read as upright hooks/arches standing above the bollards in rotations N/S. Round 1 (coil ahead of the bollard head) was judged REGEN: on the bank where the deck lies up the screen (rotation N picture's lower bank, every S picture), the ring sat just above the bollard head and read as a halo floating at head height. Round 2 (coil ringed round the post foot) was judged REGEN: the ring's far arc was drawn over the post base, each coil read as a clean single hoop, and coils behind the raised leaf poked out at its edges. New shape (r3): where the deck is up the screen, the rope drops from the bollard head down the post's FRONT into a loose coil lying on the ground just in front of the post, its far edge at the post's foot (nothing crosses behind the post); elsewhere the coil lies on the ground ahead of the bollard foot. Each coil is a loose, slightly uneven coil of one to two turns spiralling inward, ending in a loose end that points away from the deck and the centre line; ring squashed in the screen vertical (ground-plane perspective, art brief C6); N/S coils sit slightly inboard so a coil behind the raised leaf stays hidden; never over the pit. The rope is cut from the bollard picture's own painted rope, so a steel cable stays as thin as the lowered cable. Rounds 3-5 tuned the coil: an uneven inward spiral with a loose end, the same coil size in every rotation, and the loose end turned away from the leaf so the rope never looks still tied on. The judged rotations are south/east/north plus assembled_1 = W; assembled_2 = lowered N (context only). Images are OFFLINE renders of the game's print path (pit = flat dark rectangle, deck = plain deck tile, the raised leaf for context). In the east and west rotations each coil shows a visible inner second turn and a short loose tail lying away from the deck, like the south and north coils. Each east and west ground coil shows an uneven inward turn and a distinct free end pointing away from the deck and centre line, while retaining the thin cable and flattened ground perspective. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: DESC_MISS, DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "slack_coil_20261023_r6"
+ }
+]
