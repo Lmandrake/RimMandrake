@@ -585,6 +585,12 @@ RA, RB, RC = (RX0, RZ0), (RX0 + 24, RZ0), (RX0 + 56, RZ0)
 RELAY_TARGET = {RA: RB, RB: RC, RC: RA}
 
 
+def west_inlet_ok(de, dst, tol):
+    """The drawn hose end `de` meets the west brass inlet of the relay whose footprint corner is `dst`: within `tol` of the west
+    edge (either side) and within 0.35 of the relay's centre height (see run_relay's evidence)."""
+    return abs(de[1] - (dst[1] + 1)) < 0.35 and dst[0] - tol < de[0] < dst[0] + tol
+
+
 def run_relay(args):
     B = H()
     rows = []
@@ -640,7 +646,12 @@ def run_relay(args):
         # only when the hose comes in on that side (C, facing A); a hose into a relay's back (B, facing C) meets the drawn
         # outline (on_edge). VALIDATION_HOSE_REELS_FIX_STILL_WEST: before, every relay faced West and this was always checked.
         brass = inward == [1, 0] and V.reel_facing(dst, RELAY_TARGET[dst]) == 3
-        west_inlet = not brass or (abs(de[1] - (dst[1] + 1)) < 0.15 and dst[0] - tol < de[0] < dst[0])
+        # VALIDATION_HOSE_REELS_FIX_STILL_WEST (2026-10-23): the window was written for art that overhung the footprint (inlet
+        # face OUTSIDE the edge, 0.15 high). The 2026-10-21 art (drawSize 2.15) falls short of it: the Scrapper stored inlet is
+        # 0.353 INSIDE the edge, 0.076 below centre (ReelIntakeGeometry table row 0 -> drawnEnd 76.353, 100.924 live, and RL3's
+        # back entry is -0.387 inside), which the mod's own on_edge test already allows up to relayEnd.tolerance (0.75). The
+        # largest west-inlet dz in the table is 0.302, hence 0.35.
+        west_inlet = not brass or west_inlet_ok(de, dst, tol)
         # HARNESS (BENCH belt 2026-10-22): a reel's Position moves with its facing while the footprint stays dst..dst+1
         # (V.reel_pos): the relay is matched by V.reel_at, not equality
         ok = lay.get("success") and h.get("layOk") and V.reel_at(rel, dst) and intake and on_edge and west_inlet and \
