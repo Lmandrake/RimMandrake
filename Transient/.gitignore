@@ -1131,6 +1131,12 @@
 !/pump_pipes/pump_pipes_truescale_v2.png
 !/pump_pipes/pump_pipes_zoom2x.png
 !/pump_pipes/pump_pipes_zoom2x_v2.png
+!/pump_ports_20261023/img/**
+!/pump_ports_20261023/panels/**
+!/pump_ports_20261023/pump_ports.manifest.json
+!/pump_ports_20261023/pump_ports_sheet_2026-10-23.decisions.json
+!/pump_ports_20261023/pump_ports_sheet_2026-10-23.html
+!/pump_ports_20261023/pump_ports_sheet_2026-10-23.prereview.json
 !/reel_tap_redraw_20261023/PROGRESS.md
 !/reel_tap_redraw_20261023/ReelIntakeGeometry.candidate.cs
 !/reel_tap_redraw_20261023/before/**

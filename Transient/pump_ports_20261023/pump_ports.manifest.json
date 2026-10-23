@@ -1,0 +1,158 @@
+{
+ "rows": [
+  {
+   "key": "RM_LiquidPump_Scrapper",
+   "label": "Liquid pump \u2014 Scrapper",
+   "part": "pump",
+   "look": "Scrapper",
+   "section": "pumps",
+   "resources": [
+    "Things/Building/FlowWorks/Machinery/RM_LiquidPump"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "RM_LiquidPump(Styles).xml drawSize (1,1)"
+   },
+   "reference_textures": [
+    {
+     "path": "Transient/pump_ports_20261023/panels/Scrapper_before_ctx4x.png",
+     "size": {
+      "drawSize": [
+       4,
+       2
+      ],
+      "footprint": [
+       4,
+       2
+      ],
+      "source": "OFFLINE composite (BEFORE): pump + ground pipe (0.136) from W under to centre + flat hose (0.18) with coupling and its under-coupler (collar 0.3125, pipe 0.219, reach 0.299) at the E port; not a game capture"
+     }
+    },
+    {
+     "path": "Transient/pump_ports_20261023/panels/Scrapper_after_ctx4x.png",
+     "size": {
+      "drawSize": [
+       4,
+       2
+      ],
+      "footprint": [
+       4,
+       2
+      ],
+      "source": "OFFLINE composite (AFTER): pump + ground pipe (0.136) from W under to centre + flat hose (0.18) with coupling and its under-coupler (collar 0.3125, pipe 0.219, reach 0.299) at the E port; not a game capture"
+     }
+    }
+   ]
+  },
+  {
+   "key": "RM_LiquidPump_Industrial",
+   "label": "Liquid pump \u2014 Industrial",
+   "part": "pump",
+   "look": "Industrial",
+   "section": "pumps",
+   "resources": [
+    "RimMandrake/FlowWorks/Pump/Industrial/RM_LiquidPump"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "RM_LiquidPump(Styles).xml drawSize (1,1)"
+   },
+   "reference_textures": [
+    {
+     "path": "Transient/pump_ports_20261023/panels/Industrial_before_ctx4x.png",
+     "size": {
+      "drawSize": [
+       4,
+       2
+      ],
+      "footprint": [
+       4,
+       2
+      ],
+      "source": "OFFLINE composite (BEFORE): pump + ground pipe (0.136) from W under to centre + flat hose (0.18) with coupling and its under-coupler (collar 0.3125, pipe 0.219, reach 0.299) at the E port; not a game capture"
+     }
+    },
+    {
+     "path": "Transient/pump_ports_20261023/panels/Industrial_after_ctx4x.png",
+     "size": {
+      "drawSize": [
+       4,
+       2
+      ],
+      "footprint": [
+       4,
+       2
+      ],
+      "source": "OFFLINE composite (AFTER): pump + ground pipe (0.136) from W under to centre + flat hose (0.18) with coupling and its under-coupler (collar 0.3125, pipe 0.219, reach 0.299) at the E port; not a game capture"
+     }
+    }
+   ]
+  },
+  {
+   "key": "RM_LiquidPump_Futuristic",
+   "label": "Liquid pump \u2014 Futuristic",
+   "part": "pump",
+   "look": "Futuristic",
+   "section": "pumps",
+   "resources": [
+    "RimMandrake/FlowWorks/Pump/Futuristic/RM_LiquidPump"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "RM_LiquidPump(Styles).xml drawSize (1,1)"
+   },
+   "reference_textures": [
+    {
+     "path": "Transient/pump_ports_20261023/panels/Futuristic_before_ctx4x.png",
+     "size": {
+      "drawSize": [
+       4,
+       2
+      ],
+      "footprint": [
+       4,
+       2
+      ],
+      "source": "OFFLINE composite (BEFORE): pump + ground pipe (0.136) from W under to centre + flat hose (0.18) with coupling and its under-coupler (collar 0.3125, pipe 0.219, reach 0.299) at the E port; not a game capture"
+     }
+    },
+    {
+     "path": "Transient/pump_ports_20261023/panels/Futuristic_after_ctx4x.png",
+     "size": {
+      "drawSize": [
+       4,
+       2
+      ],
+      "footprint": [
+       4,
+       2
+      ],
+      "source": "OFFLINE composite (AFTER): pump + ground pipe (0.136) from W under to centre + flat hose (0.18) with coupling and its under-coupler (collar 0.3125, pipe 0.219, reach 0.299) at the E port; not a game capture"
+     }
+    }
+   ]
+  }
+ ],
+ "lead_html": "<p><b>PUMP_PORTS_REDRAW_SIZED_FOR_FAT_PIPES</b> \u2014 owner 2026-10-23: <i>\"We should unfortunately regen the pumps and such to have connectors that match the more modern pipe and hose sizes. looks a bit silly.\"</i></p><p>Each pump's four side ports were shrunk in place (deterministic edit, same pixels): flange 0.29\u20130.31 \u2192 0.205 cell, neck 0.21\u20130.23 \u2192 0.15 cell (pipe 0.136, hose 0.18, hose coupling \u22480.22). Flange faces stay on the footprint edge; hose joint gates green. Your kept art is replaced; the previous picture is the REVERT column.</p><p>\u26a0 The reference pictures are OFFLINE composites, not game captures. The art-eval pipeline HELD these (machine template needs an in-game assembled capture; no game this session) \u2014 live look owed. Note the hose under-coupler drawn beneath a connected port (collar 0.3125, pipe 0.219 cell, C# constants) is now wider than the slim neck; filed separately.</p><p>Modern pump untouched here (the Modern redraw helper owns it).</p>"
+}

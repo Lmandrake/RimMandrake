@@ -1,0 +1,24 @@
+{
+ "sheet": "pump_ports_sheet_2026-10-23.html",
+ "looked_by": "seat:BENCH",
+ "when": "2026-10-23T07:23:44-0700",
+ "caught": "Offline composite first placed the hose coupling wrong (GPT read its lugs as flange scraps) - fixed; N/S necks first tiled one column (streaky) - now tiled from the neck's own textured run. Every row FLAG: pipeline HELD (needs in-game capture), and the C# under-coupler (0.31/0.22 cell) is wider than the new 0.15 neck at a connected port.",
+ "rows": {
+  "RM_LiquidPump_Futuristic": {
+   "fp": "00658c3702c1bf04",
+   "verdict": "FLAG",
+   "note": "Looked (seat + GPT gpt-6.1-sol second look: connectors now read matched to pipe/hose, accept_with_polish). FLAG: machine art held by the pipeline for an in-game capture; under-coupler girth wider than the neck at a hose-connected port (separate item)."
+  },
+  "RM_LiquidPump_Industrial": {
+   "fp": "d122651bb8a8ca96",
+   "verdict": "FLAG",
+   "note": "Looked (seat + GPT gpt-6.1-sol second look: connectors now read matched to pipe/hose, accept_with_polish). FLAG: machine art held by the pipeline for an in-game capture; under-coupler girth wider than the neck at a hose-connected port (separate item)."
+  },
+  "RM_LiquidPump_Scrapper": {
+   "fp": "b24f7e29ac20aee1",
+   "verdict": "FLAG",
+   "note": "Looked (seat + GPT gpt-6.1-sol second look: connectors now read matched to pipe/hose, accept_with_polish). FLAG: machine art held by the pipeline for an in-game capture; under-coupler girth wider than the neck at a hose-connected port (separate item)."
+  }
+ },
+ "dropped": []
+}

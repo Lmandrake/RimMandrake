@@ -1,0 +1,44 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RM_LiquidPump_Scrapper": {
+   "prefill": "keep",
+   "why": "PIPELINE: HOLD_INPUT \u00b7 Opus -",
+   "context": "judged candidate P1 (image sha 960ddf23f0); "
+  },
+  "RM_LiquidPump_Industrial": {
+   "prefill": "keep",
+   "why": "PIPELINE: HOLD_INPUT \u00b7 Opus -",
+   "context": "judged candidate P1 (image sha ea7ddc15b9); "
+  },
+  "RM_LiquidPump_Futuristic": {
+   "prefill": "keep",
+   "why": "PIPELINE: HOLD_INPUT \u00b7 Opus -",
+   "context": "judged candidate P1 (image sha afffd14b1d); "
+  }
+ }
+}
