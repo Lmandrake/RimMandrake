@@ -1,5 +1,9 @@
 # The Margin Bath: a found rite for the Scald (SCALD_BATHING_RITE_1, 2026-10-03)
 
+> **v2 (owner, 2026-10-23):** every rite of the Nine that a Baroque biome teaches, and the machinery that finds and
+> learns them, is deferred to v2 and is NOT part of the current Baroque Biomes. The record, with what was built and
+> removed, is `design/RimMandrake/v2_nine_rituals.md`. Read this file as v2 design; do not build from it in v1.
+
 _Status: FOUNDRY design, nothing built, nothing deployable yet. Source ruling: sitting agenda
 `the_scald_floor_sitting_agenda_2026-10-02.md` Q4 (b), "a bathing rite for the water pilgrims at the cool
 margins; waits on the margin cove". Sheet image: `the_scald.md` §7 "The baths", §8 "The two-faith shore"._

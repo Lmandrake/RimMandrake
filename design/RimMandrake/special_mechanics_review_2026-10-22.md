@@ -7,7 +7,13 @@ The owner, 2026-10-22, verbatim (two write-ins on question cards):
 - *"We need to re-examine the rites and special items within each map. Many of them are somewhat fluff"*
 - *"We need to review all of these special mechanics."*
 
-**Nothing here is decided.** Every disposition (keep / simplify / cut / merge / ask) is **FOUNDRY's opinion**, one
+**Rites ruled, 2026-10-23 (owner):** every found rite of the Nine listed below (the Struck Glass, the Answering, the
+Joining Water, the Ceded Room, the Open Boast, the Cold Ledger, the Stillsand, Blue Desert, Leaning Scrub, Long Shade and
+Miasma rites) is v2; the three that were built are removed from the game. Record: `design/RimMandrake/v2_nine_rituals.md`.
+The Deep Tribes' fire rite, the calling-pyre and Oomo's shrine are not rites of the Nine found in a biome and stay as
+rows here. The rows below are the 2026-10-22 snapshot.
+
+**Nothing else here is decided.** Every disposition (keep / simplify / cut / merge / ask) is **FOUNDRY's opinion**, one
 line of why, for him to rule on. No roster is touched (evictions are stopped); tile counts are never cited (the planet
 is painted once at the end); every DLC is assumed.
 

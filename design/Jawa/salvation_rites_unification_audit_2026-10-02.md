@@ -1,5 +1,9 @@
 # Salvation rites — unification audit and build plan (2026-10-02)
 
+> **v2 (owner, 2026-10-23):** every rite of the Nine that a Baroque biome teaches, and the machinery that finds and
+> learns them, is deferred to v2 and is NOT part of the current Baroque Biomes. The record, with what was built and
+> removed, is `design/RimMandrake/v2_nine_rituals.md`. Read this file as v2 design; do not build from it in v1.
+
 _BENCH audit for `SALVATION_RITES_UNIFICATION_1`. Audit and plan only: nothing filed, nothing built.
 Register audited: `design/Jawa/salvation_rites_2026-10-01.md` §(b) as of `48de81477`. The owner accepted
 every pitched rite on 2026-10-02 (typed: *"Accept all rites for now."*) and asked, 2026-10-01 (typed):

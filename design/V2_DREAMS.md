@@ -2315,3 +2315,9 @@ grid can support this without a real simulation layer (a cellular-automaton wate
 model, a proper flow-network solve, or leaning on some existing framework mod's fluid
 system if one exists) — that's the first real work whenever this gets opened, not
 assumed here.
+
+## The rituals of the Nine found in the Baroque Biomes (owner, 2026-10-23)
+
+Every biome-taught rite of the Nine (the found-rite programme: register B2, B7 to B18) and its discovery machinery is v2;
+the built ones (the Struck Glass, the Answering, the Joining Water) were removed at `9476b52d1`. The one record, item by
+item, is `design/RimMandrake/v2_nine_rituals.md`.

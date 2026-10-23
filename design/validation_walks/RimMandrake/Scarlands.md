@@ -50,7 +50,7 @@ Sources: `About/About.xml`, `Source/RM_WarscarMod.cs` (settings class RM_Warscar
 - `biomeRarityFactor` (0 = never generates on a new planet; worldgen-affecting) scales the biome's worldgen insertion. → UNCOVERED: worldgen-time only, needs a freshly generated planet (§4 boundary)
 - `crossBiomeEnabled`, `crossBiomeEverywhere`, `crossBiomeBiomeList`, `crossBiomeCoverage` are reserved fields, persisted and exposed but wired to no mechanic yet. → UNCOVERED: a no-op by design (RM_WarscarMod.cs header comment), nothing to read
 - The projector hum and pool boil sounds, the Warscar look, wind and ambience. → UNCOVERED: visual and audio, judge pass or owner
-- The aerosol screen, deserter-hospice follow-ups and open-boast rite are not built. → UNCOVERED: items WARSCAR_AEROSOL_SCREEN_1, WARSCAR_HOSPICE_DESERTERS_1 follow-ups, WARSCAR_OPEN_BOAST_RITE_1 are unbuilt, nothing to test yet
+- The aerosol screen and deserter-hospice follow-ups are not built. → UNCOVERED: items WARSCAR_AEROSOL_SCREEN_1, WARSCAR_HOSPICE_DESERTERS_1 follow-ups are unbuilt, nothing to test yet (the Open Boast rite is v2: design/RimMandrake/v2_nine_rituals.md)
 
 ## anti-guessing notes
 RULED OUT: "tracking fails when no tracking line shows" — the pawn was never confirmed walking (live run 2026-10-03: curJob '(none)', the wait was a paused read), so no tracking line is expected; the component reports UNMEASURED, not FAIL (validation.py comment).
