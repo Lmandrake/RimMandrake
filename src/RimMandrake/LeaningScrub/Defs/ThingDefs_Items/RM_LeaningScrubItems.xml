@@ -4,14 +4,15 @@
 
   Two raw items the ruled cast owes:
     RM_VisslerArm  the shed arm of RM_Vissler (butcher product of the animal).
-                   STUB: the "hunter's lure" use is LEANINGSCRUB_MECHANICS_BUILD_1;
-                   here it is an ordinary trade good.
+                   Raw meat to the hunger AI, so scavengers come for it
+                   (LEANINGSCRUB_VISSLER_ARM_SCAVENGERS_1; gate visslerArmFoodEnabled,
+                   Source/RM_VisslerArm.cs); also a trade good.
     RM_RawVenom    the harvest of RM_DrippingVenomvine. Named RM_RawVenom, NOT
                    RM_VenomVenom-anything: RM_VenomvineVenom is already a HEDIFF
                    in mandrake.rm.environmentalhazards.
 
-  Art: RM_VisslerArm is wired. RM_RawVenom is in no artpipe list and has no
-  render - it shows a placeholder until art exists.
+  Art: both wired (Textures/Things/Item/Resource/RM_VisslerArm.png and the
+  RM_RawVenom/ stack-count folder).
 -->
 <Defs>
 

@@ -11,9 +11,10 @@
   ⛔ NOT a wildAnimals entry, and must never become one: every bark-warden
   comes from a sweetline tree's RM_CompGuardianRoost (RM_SweetlineTree.xml).
 
-  Art: none exists (artpipe searched 2026-10-03, 0 hits). Interim reskin of
-  vanilla Core's cougar body, silver-grey, per spec §10 ("reskin, then the
-  owner decides on new art after a review save"). No art queued.
+  Art: own renders, Textures/Things/Pawn/Animal/RM_Barkwarden/ (live) and
+  .../Cougar/RM_Barkwarden/ (dessicated), installed by 3b6ac4112 over the
+  interim cougar reskin. The silver-grey <color> tint is the reskin's and still
+  multiplies over the new art: BARKWARDEN_TINT_JUDGE_GREY_ON_GREY.
 
   Rage state: RM_RoostDefence below reuses the kit's
   RM_MentalState_ScopedAggression (hostile to one pawn, never a faction flip).
