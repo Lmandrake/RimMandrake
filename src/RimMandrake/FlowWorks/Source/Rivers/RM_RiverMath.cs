@@ -700,6 +700,17 @@ namespace RimMandrake.FlowWorks.Rivers
 			return !isPawn && isFlotsam;
 		}
 
+		/// <summary>The ferry rope strip between two post centres (a, b) in map x/z: its centre, length and the PrintPlane
+		/// rot (degrees) that turns the plane's long +x axis from a to b (PrintPlane maps +x to (cos(-rot), sin(-rot))).</summary>
+		public static void RopePlane(float ax, float az, float bx, float bz, out float cx, out float cz, out float length, out float rotDeg)
+		{
+			float dx = bx - ax, dz = bz - az;
+			cx = (ax + bx) * 0.5f;
+			cz = (az + bz) * 0.5f;
+			length = (float)Math.Sqrt(dx * dx + dz * dz);
+			rotDeg = (float)(-Math.Atan2(dz, dx) * 180.0 / Math.PI);
+		}
+
 		/// <summary>Rotations to try for a weir so its wall crosses the current: the placed one when it already crosses (or
 		/// the flow is diagonal, or there is none); otherwise the two rotations of the other axis, nearest first.</summary>
 		public static List<int> WeirCrossCandidates(int placedRot, int flowDir)

@@ -37,6 +37,7 @@ namespace RimMandrake.FlowWorks.Rivers
 			if (partner != null && partner.partner == this)
 			{
 				partner.partner = null;
+				RepaintRope(partner);
 			}
 			partner = null;
 			base.DeSpawn(mode);
@@ -73,6 +74,8 @@ namespace RimMandrake.FlowWorks.Rivers
 			partner = best;
 			best.partner = this;
 			Map.GetComponent<RM_MapComponent_RiverCurrent>()?.MarkWorksDirty();
+			RepaintRope(this);
+			RepaintRope(best);
 			return true;
 		}
 
@@ -102,6 +105,38 @@ namespace RimMandrake.FlowWorks.Rivers
 					into.Add(Map.cellIndices.CellToIndex(c));
 				}
 			}
+		}
+
+		// RIVER_WEIR_ART_JUDGE_CODEX_SQUINTS fix 9 (owner commission 2026-10-17): the rope is drawn, post to post, as the
+		// RM_FerryRope strip printed under the posts (at item altitude, so pawns crossing on it draw over it). Printed once,
+		// by the post with the lower thing id; pairing and unpairing re-print both sections.
+		private const float RopeWidth = 0.3f;
+		private static Material ropeMat;
+
+		private static void RepaintRope(RM_Building_FerryPost p)
+		{
+			if (p != null && p.Spawned)
+			{
+				p.Map.mapDrawer.MapMeshDirty(p.Position, MapMeshFlagDefOf.Things);
+			}
+		}
+
+		public override void Print(SectionLayer layer)
+		{
+			base.Print(layer);
+			RM_Building_FerryPost p = Partner;
+			if (p == null || !RM_RiversSettings.ferryEnabled || thingIDNumber > p.thingIDNumber)
+			{
+				return;
+			}
+			if (ropeMat == null)
+			{
+				ropeMat = MaterialPool.MatFrom("Things/Building/FlowWorks/Rivers/RM_FerryRope", ShaderDatabase.Transparent);
+			}
+			Vector3 a = this.TrueCenter(), b = p.TrueCenter();
+			RM_RiverMath.RopePlane(a.x, a.z, b.x, b.z, out float cx, out float cz, out float len, out float rot);
+			Vector3 center = new Vector3(cx, AltitudeLayer.Item.AltitudeFor(), cz);
+			Printer_Plane.PrintPlane(layer, center, new Vector2(len, RopeWidth), ropeMat, rot);
 		}
 
 		public override void DrawExtraSelectionOverlays()
