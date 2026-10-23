@@ -49,19 +49,6 @@ def main():
     check("SCRUB_CROWNMOB_FIX_CAP_THIRTY_IS_SIXTY: in-flight mobbers counted into held before dispatch",
           0 < count_at < held_at < send_at, (count_at, held_at, send_at))
 
-    g = read("RM_SweetlineGuardians.cs")
-    # SCRUB_WARDEN_FIX_RELEASE_PRUNED_FIRST: PostDestroy prunes against the map the tree stood on
-    check("SCRUB_WARDEN_FIX_RELEASE_PRUNED_FIRST: PostDestroy passes previousMap to ReleaseAll",
-          re.search(r'ReleaseAll\("The bark-wardens of " \+ TreeName \+ " have lost their tree\.", previousMap\);', g)
-          is not None)
-    rel = method_body(g, "public void ReleaseAll(")
-    check("SCRUB_WARDEN_FIX_RELEASE_PRUNED_FIRST: ReleaseAll prunes against its home map",
-          "Prune(home);" in rel and "p.MapHeld != home" in method_body(g, "private void Prune("))
-    # SCRUB_WARDEN_FIX_TAMED_BOSS_STILL_REIGNS
-    lead = method_body(g, "public bool IsLead(Pawn pawn)")
-    check("SCRUB_WARDEN_FIX_TAMED_BOSS_STILL_REIGNS: a tamed warden is never the lead",
-          "p.Faction == null" in lead, lead)
-
     f = read("RM_VenomvineForms.cs")
     # SCRUB_GALE_FIX_LATCH_SLEEPS_THROUGH_STORM
     ftick = method_body(f, "public override void MapComponentTick()")

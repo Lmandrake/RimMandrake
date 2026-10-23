@@ -7,135 +7,6 @@ namespace RimMandrake.LeaningScrub.SelfTest
 {
     internal static partial class LeaningScrubFuzz
     {
-        // ════════════════════════ guardian ════════════════════════
-        private static readonly string[] GdNames = { "Harvest", "Work", "Damage", "Linger", "LongTick", "Rage", "On", "Spawned", "Live", "Watch", "Refill" };
-        public static long GdDrops, GdAnnounces, GdForgives, GdReroosts, GdRefills;
-
-        private static string RunGuardian(int seed, List<Act> acts)
-        {
-            var r = new Random(seed ^ 0x6d);
-            float setting = new[] { 0.5f, 1f, 2f }[r.Next(3)], forgive = new[] { 0.1f, 0.5f, 1f, 5f, 30f }[r.Next(5)];
-            float km = 0f; int stage = 0; double m = 0;
-            bool on = true, spawned = true, raging = false, watchful = false; int live = 2;
-            int step = 0;
-            foreach (var a in acts)
-            {
-                step++; Steps++;
-                string where = " at step " + step + " " + a;
-                float amount = 0f;
-                switch (a.kind)
-                {
-                    case 0: amount = 0.25f * setting; break;
-                    case 1: amount = 0.10f * setting; break;
-                    case 2: amount = (a.a % 40) * 0.05f; break;
-                    case 3: amount = 0.02f; break;
-                    case 5: raging = !raging; break;
-                    case 6: on = !on; break;
-                    case 7: spawned = !spawned; break;
-                    case 8: live = a.a % 4; break;
-                    case 9: watchful = !watchful; break;
-                    case 10:
-                        {
-                            int comp = RM_GuardianKernel.Complement(a.a % 6, a.b % 5 - 1);
-                            Check(comp >= 0 && comp <= Math.Max(0, a.b % 5 - 1) && comp <= a.a % 6, "complement outside [0, min(target, max)]" + where);
-                            Check(RM_GuardianKernel.RefillSpawns(a.a % 4, comp, false) == (a.a % 4 < comp) && !RM_GuardianKernel.RefillSpawns(0, 5, true), "refill truth table" + where);
-                            GdRefills++;
-                            break;
-                        }
-                }
-                if (a.kind <= 3)
-                {
-                    float nm; int ns, announce; bool drop;
-                    bool applied = RM_GuardianKernel.Add(km, stage, amount, spawned, on, live, out nm, out ns, out announce, out drop);
-                    bool spec = amount > 0f && spawned && on && live != 0;
-                    Check(applied == spec, $"Add applied={applied}, spec {spec}" + where);
-                    if (!applied) Check(nm == km && ns == stage && announce == 0 && !drop, "a refused add changed state" + where);
-                    else
-                    {
-                        Check(nm >= km, "an add lowered the meter" + where);
-                        Check(nm <= 1f, "meter above 1" + where);
-                        Check(ns >= stage, "an add lowered the stage" + where);
-                        Check((announce > 0) == (ns > stage), "announce iff stage rose" + where);
-                        if (announce > 0) { Check(announce == ns, "announced stage is not the new stage" + where); GdAnnounces++; }
-                        Check(drop == (nm >= 1f), "drop iff the meter is full" + where);
-                        if (drop) GdDrops++;
-                        m = Math.Min(1.0, m + amount);
-                    }
-                    km = nm; stage = ns;
-                }
-                if (a.kind == 4)
-                {
-                    int ticks = 1 + a.a % 40;
-                    for (int t = 0; t < ticks; t++)
-                    {
-                        float before = km; int sBefore = stage;
-                        RM_GuardianKernel.Forgive(km, stage, forgive, raging, out km, out stage);
-                        if (raging) { Check(km == before && stage == sBefore, "forgiveness ran while a warden was raging" + where); }
-                        else
-                        {
-                            Check(km <= before && km >= 0f, "forgiveness raised or underflowed the meter" + where);
-                            Check(stage <= sBefore, "forgiveness raised the stage" + where);
-                            m = Math.Max(0.0, m - (1.0 / Math.Max(0.5, forgive)) * (2000.0 / 60000.0));
-                            GdForgives++;
-                        }
-                    }
-                }
-                Check(km >= 0f && km <= 1f, "meter left [0,1]: " + km + where);
-                Check(stage == RM_GuardianKernel.StageOf(km), $"stage {stage} != StageOf({km}) = {RM_GuardianKernel.StageOf(km)}" + where);
-                Check(Near(km, m, 2e-3), $"meter {km} drifted from the double ledger {m}" + where);
-                bool rer = RM_GuardianKernel.ShouldReroost(watchful, raging, km);
-                Check(rer == (watchful && !raging && km < 0.3f), "reroost truth" + where);
-                if (rer) GdReroosts++;
-            }
-            return null;
-        }
-
-        private static string GuardianUnits(int seed)
-        {
-            var r = new Random(seed ^ 0x3c);
-            // stage boundaries
-            Check(RM_GuardianKernel.StageOf(0f) == 0 && RM_GuardianKernel.StageOf(0.2999f) == 0 && RM_GuardianKernel.StageOf(0.3f) == 1 && RM_GuardianKernel.StageOf(0.5999f) == 1 && RM_GuardianKernel.StageOf(0.6f) == 2 && RM_GuardianKernel.StageOf(0.9999f) == 2 && RM_GuardianKernel.StageOf(1f) == 3, "stage boundaries");
-            // draining a full meter takes max(0.5, days) * 30 long ticks
-            foreach (float days in new[] { 0.1f, 0.5f, 1f, 5f, 30f })
-            {
-                float km = 1f; int st = 3, n = 0;
-                while (km > 0f && n < 5000) { RM_GuardianKernel.Forgive(km, st, days, false, out km, out st); n++; }
-                double expect = Math.Max(0.5, days) * 30.0;
-                Check(Math.Abs(n - expect) <= 2, $"a full meter drained in {n} long ticks, spec {expect} (days {days})");
-                Check(st == 0, "stage did not reach 0 with the meter");
-            }
-            // refill tick
-            for (int t = 0; t < 20; t++)
-            {
-                int now = r.Next(0, 5000000); float d = (float)(r.NextDouble() * 60);
-                Check(RM_GuardianKernel.RefillTick(now, d) == now + (int)(d * 60000f), "refill tick formula");
-                Check(RM_GuardianKernel.RefillTick(now, d + 1f) > RM_GuardianKernel.RefillTick(now, d), "refill tick not increasing in days");
-            }
-            // double-roost rule: antisymmetric, and in any group of mutually near roosts only the lowest id is free
-            for (int t = 0; t < 10; t++)
-            {
-                int n = r.Next(2, 9); float rad = new[] { 3f, 9f, 20f }[r.Next(3)];
-                var x = new int[n]; var z = new int[n]; var id = new int[n];
-                var used = new HashSet<int>();
-                for (int i = 0; i < n; i++) { x[i] = r.Next(-15, 16); z[i] = r.Next(-15, 16); do { id[i] = r.Next(1, 500); } while (!used.Add(id[i])); }
-                var blocked = new bool[n];
-                for (int i = 0; i < n; i++)
-                    for (int j = 0; j < n; j++)
-                        if (i != j && RM_GuardianKernel.YieldsToOther(x[j] - x[i], z[j] - z[i], rad, id[j], id[i])) blocked[i] = true;
-                for (int i = 0; i < n; i++)
-                    for (int j = i + 1; j < n; j++)
-                    {
-                        bool near = (double)(x[i] - x[j]) * (x[i] - x[j]) + (double)(z[i] - z[j]) * (z[i] - z[j]) <= (double)rad * rad;
-                        bool ij = RM_GuardianKernel.YieldsToOther(x[j] - x[i], z[j] - z[i], rad, id[j], id[i]), ji = RM_GuardianKernel.YieldsToOther(x[i] - x[j], z[i] - z[j], rad, id[i], id[j]);
-                        Check(!(ij && ji), "two roosts each yield to the other");
-                        Check(ij || ji ? near : !near, "yield without proximity, or proximity without a yield");
-                    }
-                int lowest = Enumerable.Range(0, n).OrderBy(i => id[i]).First();
-                Check(!blocked[lowest], "the lowest-id roost was blocked");
-            }
-            return null;
-        }
-
         // ════════════════════════ forms ════════════════════════
         private static readonly string[] FmNames = { "Advance", "Enter", "Leave", "Grow", "Spare", "Interval", "Strike", "Rear", "Fire", "Items", "Sweep", "Growth", "Gone" };
         public static long Scratches, Lashes, Quenches, HoardTakes, RearSets;
@@ -584,7 +455,6 @@ namespace RimMandrake.LeaningScrub.SelfTest
                 ("lean", () => Family("lean", N(3000), S(1), Lean)),
                 ("smother", () => Family("smother", N(3000), S(1), s => Drive(s, rr => GenActs(rr, 10, 70, new[] { 14, 40, 8, 6, 6, 5, 25 }, SmNames), RunSmother) ?? SmotherUnits(s))),
                 ("blaze", () => Family("blaze", N(3000), S(1), s => Drive(s, rr => GenActs(rr, 10, 60, new[] { 12, 12, 6, 40, 12 }, BlNames), RunBlazeSeq) ?? BlazeCase(s))),
-                ("guardian", () => Family("guardian", N(3000), S(1), s => Drive(s, rr => GenActs(rr, 10, 90, new[] { 10, 12, 10, 8, 20, 6, 4, 4, 5, 4, 4 }, GdNames), RunGuardian) ?? GuardianUnits(s))),
                 ("forms", () => Family("forms", N(3000), S(1), s => Drive(s, rr => GenActs(rr, 15, 120, new[] { 25, 5, 4, 6, 6, 4, 10, 8, 10, 8, 14, 4, 2 }, FmNames), RunForms) ?? FormsUnits(s))),
                 ("walk", () => Family("walk", N(4000), S(1), WalkCase)),
                 ("coat", () => Family("coat", N(3000), S(1), s => Drive(s, rr => GenActs(rr, 10, 60, new[] { 40, 30, 20 }, BlmNames), RunBloom) ?? CoatUnits(s))),
@@ -601,12 +471,12 @@ namespace RimMandrake.LeaningScrub.SelfTest
             if (only != null && !fam.Any(f => f.name == only)) { Console.WriteLine("FAIL unknown --fuzz-only family: " + only); return false; }
             if (Cases == 0) { Console.WriteLine("FAIL no cases ran (--fuzz-scale too small?); a fuzz that checked nothing is not a pass"); return false; }
             Console.WriteLine($"reached: lean scent threats {ScentThreats}, fire picks {FirePicks}, shed cells {ShedCellsMade}; smother matured {Matured}, second starts {SecondStarts}, passes {SmPasses}; blaze found {Blazes}, none {NoBlazes}, messages {Messages}");
-            Console.WriteLine($"reached: guardian drops {GdDrops}, announces {GdAnnounces}, forgives {GdForgives}, reroosts {GdReroosts}; forms scratches {Scratches}, lashes {Lashes}, quenches {Quenches}, rears {RearSets}, hoard takes {HoardTakes}");
+            Console.WriteLine($"reached: forms scratches {Scratches}, lashes {Lashes}, quenches {Quenches}, rears {RearSets}, hoard takes {HoardTakes}");
             Console.WriteLine($"reached: walk spawns {WalkSpawns}, kills {WalkKills}, stands {WalkStands}, smothered {WalkSmothered}, capped {WalkCapped}; coat rubs {Rubs}, felt paid {FeltPaid}, blooms {BloomsMade}, answers {BloomAnswers}");
             if (!oneSeed.HasValue && scale >= 1 && only == null)
             {
-                if (ScentThreats == 0 || FirePicks == 0 || ShedCellsMade == 0 || Matured == 0 || SecondStarts == 0 || Blazes == 0 || NoBlazes == 0 || Messages == 0 || GdDrops == 0 || GdAnnounces == 0
-                    || GdForgives == 0 || GdReroosts == 0 || Scratches == 0 || Lashes == 0 || Quenches == 0 || HoardTakes == 0 || WalkSpawns == 0 || WalkKills == 0 || WalkSmothered == 0
+                if (ScentThreats == 0 || FirePicks == 0 || ShedCellsMade == 0 || Matured == 0 || SecondStarts == 0 || Blazes == 0 || NoBlazes == 0 || Messages == 0
+                    || Scratches == 0 || Lashes == 0 || Quenches == 0 || HoardTakes == 0 || WalkSpawns == 0 || WalkKills == 0 || WalkSmothered == 0
                     || WalkCapped == 0 || Rubs == 0 || FeltPaid == 0 || BloomsMade == 0 || BloomAnswers == 0)
                 { Console.WriteLine("FAIL a fuzz family never reached one of its key transitions (blind)"); ok = false; }
             }

@@ -49,9 +49,9 @@
     <EnvironmentalHazardsDll>$(MSBuildThisFileDirectory)..\..\EnvironmentalHazards\Assemblies\RimMandrake.EnvironmentalHazards.dll</EnvironmentalHazardsDll>
   </PropertyGroup>
 
-  <!-- SHRUBLAND_TREE_GUARDIAN_1: the bark-warden rage is the kit's
-       RM_MentalState_ScopedAggression, so this compiles against CreatureBehaviors
-       and declares mandrake.rm.creaturebehaviors in About.xml. -->
+  <!-- Compiles against CreatureBehaviors (the kit's shared mechanisms) and declares
+       mandrake.rm.creaturebehaviors in About.xml. (Its first user, the bark-warden rage of
+       SHRUBLAND_TREE_GUARDIAN_1, was cut 2026-10-23.) -->
   <PropertyGroup Condition="'$(CreatureBehaviorsDll)' == ''">
     <CreatureBehaviorsDll>$(MSBuildThisFileDirectory)..\..\CreatureBehaviors\Assemblies\RimMandrake.CreatureBehaviors.dll</CreatureBehaviorsDll>
   </PropertyGroup>
@@ -73,7 +73,6 @@
     <Compile Include="RM_RunwayBloom.cs" />
     <Compile Include="RM_SweetlineStation.cs" />
     <Compile Include="RM_VisslerArm.cs" />
-    <Compile Include="RM_SweetlineGuardians.cs" />
     <Compile Include="RM_SweetlineScratching.cs" />
     <Compile Include="RM_GenStep_SweetlineTrees.cs" />
     <Compile Include="RM_SweetlineFelt.cs" />
@@ -83,7 +82,6 @@
     <Compile Include="Kernel\RM_LeanKernel.cs" />
     <Compile Include="Kernel\RM_SmotherKernel.cs" />
     <Compile Include="Kernel\RM_BlazeKernel.cs" />
-    <Compile Include="Kernel\RM_GuardianKernel.cs" />
     <Compile Include="Kernel\RM_FormsKernel.cs" />
     <Compile Include="Kernel\RM_IslandKernel.cs" />
     <Compile Include="Kernel\RM_FourFormsKernel.cs" />
