@@ -377,6 +377,26 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "flotsam leaves the map at the downstream edge; a colony's own stack and any pawn do not (pawns keep washOffMapEdge)");
             });
 
+            Case("FerryRope_strip_spans_post_to_post", () =>
+            {
+                // RIVER_WEIR_ART_JUDGE_CODEX_SQUINTS fix 9: the 256x64 RM_FerryRope strip was never drawn; it now runs
+                // centre to centre. PrintPlane turns the plane's +x axis to (cos(-rot), sin(-rot)) in (x, z).
+                foreach (var ab in new[] { new[] { 0f, 0f, 6f, 0f }, new[] { 2f, 1f, 2f, 9f }, new[] { 0f, 0f, -3f, -4f }, new[] { 5f, 5f, 1f, 8f } })
+                {
+                    RM_RiverMath.RopePlane(ab[0], ab[1], ab[2], ab[3], out float cx, out float cz, out float len, out float rot);
+                    float dx = ab[2] - ab[0], dz = ab[3] - ab[1];
+                    Assert(Math.Abs(cx - (ab[0] + ab[2]) / 2f) < 1e-4f && Math.Abs(cz - (ab[1] + ab[3]) / 2f) < 1e-4f, "centred between the posts");
+                    Assert(Math.Abs(len - (float)Math.Sqrt(dx * dx + dz * dz)) < 1e-4f, "as long as the span");
+                    double r = -rot * Math.PI / 180.0;
+                    Assert(Math.Abs(Math.Cos(r) * len - dx) < 1e-3 && Math.Abs(Math.Sin(r) * len - dz) < 1e-3,
+                        "the strip's long axis points post to post, rot=" + rot);
+                }
+                string fp = RiverSwitchFlipChecks.Src(Path.Combine("Rivers", "RM_FerryAndLevee.cs"));
+                RiverSwitchFlipChecks.Has(fp, @"RM_RiverMath\.RopePlane\(", "the post prints the rope from the shared math");
+                RiverSwitchFlipChecks.Has(fp, @"RM_FerryRope", "the rope strip texture is the one drawn");
+                RiverSwitchFlipChecks.Has(fp, @"MapMeshDirty\(", "pairing and unpairing re-print the rope");
+            });
+
             Case("Flotsam_wired_in_source", () =>
             {
                 string cur = RiverSwitchFlipChecks.Src(Path.Combine("Rivers", "RM_MapComponent_RiverCurrent.cs"));
