@@ -315,11 +315,16 @@ def keep_pawns_on_map(B):
         return {"error": repr(ex)[:200]}
     KEEP_TAKEN[0] = True
     KEEP_PAWNS.update(ids)
+    H.KEEP_PAWNS.update(ids)   # the modcheck helpers' bulk removers (quiet_site hostiles_removed) spare them too
     return {"kept": sorted(ids)}
 
 
 def keep_pawns_reset():
     KEEP_PAWNS.clear()
+    try:
+        _helpers().KEEP_PAWNS.clear()
+    except Exception:  # noqa: BLE001
+        pass
     KEEP_UNREAD[0] = False
     KEEP_TAKEN[0] = False
 

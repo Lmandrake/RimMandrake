@@ -230,10 +230,21 @@ def zoo_start_checks(Zoo):
     V.sweep_at_start(z, made_map=False)             # the next scene of the same run: the first snapshot stands
     check("start: a second call does not re-snapshot (a stray from scene 1 is still swept)", 61 in z.vanished
           and sorted(V.KEEP_PAWNS) == [50, 51, 52], (z.vanished, sorted(V.KEEP_PAWNS)))
+    # QUIET_SITE_FIX_JAILBREAK_BY_VANISHING: quiet_site's hostiles_removed (helpers.kill_hostiles) spares the kept prisoner
+    import helpers as MH
+    z.roster.append({"id": 62, "isPlayer": False, "intelligence": "Humanlike", "faction": "Pirate", "hostile": True})
+    z.roster[2]["hostile"] = True
+    z.vanished = []
+    MH.kill_hostiles(z)
+    MH.kill_wildlife(z)
+    MH.clear_strangers(z)
+    check("start: kill_hostiles / kill_wildlife / clear_strangers never vanish a kept prisoner or animal",
+          not set(z.vanished) & {50, 51, 52} and 62 in z.vanished and 51 in [r["id"] for r in z.roster], (z.vanished, sorted(MH.KEEP_PAWNS)))
+    check("start: the helpers' keep set is the snapshot (shared with validation_core)", sorted(MH.KEEP_PAWNS) == [50, 51, 52])
     fresh = Zoo(tempfile.mkdtemp(), b"")
     s3 = V.sweep_at_start(fresh, made_map=True)
     check("start: a map the run made resets the keep set and takes the bulk route", s3["route"] == "destroy_bulk"
-          and fresh.bulk == 1 and not V.KEEP_PAWNS, (s3, sorted(V.KEEP_PAWNS)))
+          and fresh.bulk == 1 and not V.KEEP_PAWNS and not MH.KEEP_PAWNS, (s3, sorted(V.KEEP_PAWNS)))
     V.keep_pawns_reset()
     # can-fail: no proof script on the item's list sweeps non-colonists around the keep set any more
     for f in ("validation_v2.py", "liquid_checks.py", "raid_trench_proof.py", "water_scenes_walk.py"):

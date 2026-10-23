@@ -296,6 +296,11 @@ def random_events_off(session, tx):
     return HelperResult("random_events_off", acted=2, verified=True)
 
 
+# QUIET_SITE_FIX_JAILBREAK_BY_VANISHING: validation_core.keep_pawns_on_map fills this SHARED set with the staged pawns of a
+# map the run did not make (review-save animals, hostile-faction prisoners); the bulk removers below never touch them.
+KEEP_PAWNS = set()
+
+
 def _kill_ids(session, ids, name, pick, passes=2, action="kill"):
     """Kill exact ids with pawn_force_incapacitate; re-read; retry once; leftovers are residue.
     action="vanish" removes them with no death at all (see kill_hostiles)."""
@@ -319,7 +324,7 @@ def kill_hostiles(session, expected_ids=()):
     "hostile_pawns: Fingerspike x3"): killing an Anomaly Toughspike/Trispike runs DeathActionWorker_Divide,
     which launches smaller fleshbeasts as flyers that LAND after the bland check, inside the next chain --
     the harness bred the surprise it then reported. Same family as the boomalope (kill_wildlife)."""
-    exp = set(expected_ids)
+    exp = set(expected_ids) | KEEP_PAWNS
     ids = set(r["id"] for r in read_pawns(session, health=False) if is_hostile(r) and r["id"] not in exp)
     return _kill_ids(session, ids, "kill_hostiles", is_hostile, action="vanish")
 
@@ -332,7 +337,7 @@ def kill_wildlife(session, expected_ids=()):
     corpse and no detonation (fires stayed 0). It has no exclusion list, so it is used only when no expected
     animal is on the map; otherwise animals are killed per exact id and the caller MUST extinguish afterwards
     (prepare_bland_map orders it so)."""
-    exp = set(expected_ids)
+    exp = set(expected_ids) | KEEP_PAWNS
     rows = [r for r in read_pawns(session, health=False) if is_wildlife(r)]
     ids = set(r["id"] for r in rows if r["id"] not in exp)
     if not ids:
@@ -348,7 +353,7 @@ def kill_wildlife(session, expected_ids=()):
 
 
 def clear_strangers(session, expected_ids=()):
-    exp = set(expected_ids)
+    exp = set(expected_ids) | KEEP_PAWNS
     ids = set(r["id"] for r in read_pawns(session, health=False) if is_stranger(r) and r["id"] not in exp)
     return _kill_ids(session, ids, "clear_strangers", is_stranger)
 
