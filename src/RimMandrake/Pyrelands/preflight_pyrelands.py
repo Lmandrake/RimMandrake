@@ -111,8 +111,8 @@ LOG_ALLOWED = "burnedDef is flammable"
 # The allowlist is RETIRED (PYRE_ASH_BUILD_EVERY_SCAR_A_SEEDBED): every burnedDef is now the non-flammable
 # RM_FE_Ash_Deep, so vanilla's "burnedDef is flammable" config error has nothing to flag. Any such line is a regression.
 LOG_ALLOWED_MAX = 0
-BENIGN_WINDOWS = ("EditWindow_Log", "LudeonTK.EditWindow_Log")
-IGNORED_WINDOWS = ("Verse.ImmediateWindow", "LudeonTK.Dialog_DevPalette")   # the dev overlay: cannot be closed, blocks nothing        # auto-closed; anything else refuses (plan §3.8)
+BENIGN_WINDOWS = ("EditWindow_Log", "LudeonTK.EditWindow_Log")   # auto-closed; anything else refuses (plan §3.8)
+IGNORED_WINDOWS = ("Verse.ImmediateWindow", "LudeonTK.Dialog_DevPalette")   # the dev overlay: cannot be closed, blocks nothing
 QUIET_STORYTELLER = "Tutor"                 # UNMEASURED that it fires nothing; gate B also
                                             # requires the incident queue to be empty.
 LAT_MAX = 25.0                              # plan §3.5
@@ -466,6 +466,19 @@ def _settings_xml(env, mod_class):
     return hits[0] if hits else None
 
 
+def biome_toggle_value(xml_bytes, key=BIOME_KEY):
+    """RM_BiomesSettings.enabled[key] as written, or None when absent. Scribe_Collections writes a Dictionary as
+    <enabled><keys><li>K</li>...</keys><values><li>V</li>...</values></enabled> (parallel lists); the old regex looked
+    for <key>K</key><value>V</value>, a shape Scribe never writes, so a toggle set OFF read "absent (ON)" and passed."""
+    root = ET.fromstring(xml_bytes)
+    for en in root.iter("enabled"):
+        keys = [(li.text or "").strip() for li in en.findall("keys/li")]
+        vals = [(li.text or "").strip() for li in en.findall("values/li")]
+        if key in keys and keys.index(key) < len(vals):
+            return vals[keys.index(key)]
+    return None
+
+
 def a6_settings(s, env):
     def f():
         bad = {}
@@ -480,11 +493,10 @@ def a6_settings(s, env):
         p = _settings_xml(env, "RM_BiomesMod")
         biome = "no settings file (defaults: ON)"
         if p:
-            txt = open(p, encoding="utf-8", errors="replace").read()
-            m = re.search(r"<key>%s</key>\s*<value>(\w+)</value>" % BIOME_KEY, txt)
-            if m and m.group(1).lower() == "false":
+            val = biome_toggle_value(open(p, "rb").read())
+            if val is not None and val.lower() == "false":
                 bad["RM_BiomesSettings.enabled[%s]" % BIOME_KEY] = "False"
-            biome = "file %s: %s" % (os.path.basename(p), m.group(1) if m else "key absent (ON)")
+            biome = "file %s: %s" % (os.path.basename(p), val if val is not None else "key absent (ON)")
         obs = ("off-default: %s; " % bad if bad else "all %d at shipped defaults; " % len(DEFAULTS)) + biome
         return (FAIL if bad else PASS), obs, "shipped defaults (plan 3.3)"
     return _row("3.3", "Mod Settings at shipped defaults", f)
