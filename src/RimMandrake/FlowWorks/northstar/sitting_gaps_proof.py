@@ -3,7 +3,7 @@ coverage helper; the sitting order is Transient/flowworks_live_sitting_plan.md).
 names both, so `rimflow verify <item> --criterion <C>` reads straight off it.
 
   python.exe src/RimMandrake/FlowWorks/northstar/sitting_gaps_proof.py [out.json] [--origin X,Z] [--fresh-map] [--only a,b]
-             [--player-log PATH] [--drink-ticks N] [--no-shots]
+             [--player-log PATH] [--drink-ticks N] [--still-ticks N] [--no-shots]
   python3    src/RimMandrake/FlowWorks/northstar/sitting_gaps_proof.py --mock [--mock-faults a,b] [--only a,b]
              every path offline against FakeBridge (a small world model, NOT the mod); every row is written SKIP with the
              verdict it would have reached kept under detail.mock (proves the script, never the game). Each fault of
@@ -22,7 +22,16 @@ ROWS (PROVE / EXPECT / LIES), in run order:
      reports one, 0 = UNMEASURED/SITE); a journal that lost entries or a dead sentinel reads clean (UNMEASURED/HARNESS).
      The path-compression code the item fixed was replaced on 2026-10-20 (RIVER_WATER_BY_BIOME): this row is the
      regression read of the CURRENT draw path, which is what the criterion's words ask.
-  CONVERTER_BIG_RECIPE_RUNS   FLOWWORKS_CONVERTER_FIX_BLOCKED_STARVES_REST A1.
+  CONVERTER_BIG_RECIPE_RUNS   FLOWWORKS_CONVERTER_FIX_BLOCKED_STARVES_REST A1, RE-SCOPED 2026-10-23 (BENCH, delegated: test
+     scope): one RM_FueledStill (STILL, 2x2) refuelled, three RM_LiquidTanks touching it: icy water (ICY_TANK, west) held at
+     EXACTLY the drinking reserve (drinkingReserveLitres forced to 200 L for the scene, restored after; RM_Liquid_IcyWater is
+     Potable with a Crude cool step, so RM_DrinkReserve.Spendable = 0 blocks it while its batch would otherwise run), salt
+     water (SALT_TANK, east) and an empty product tank (OUT_TANK, north). The icy tank is built FIRST so it is listed first
+     (the old bug: the first blocked recipe truncated the shared budget). --still-ticks (default 3000) later EXPECT the salt
+     tank down, the product tank up by exactly salt-drop x out/in of the salt distil step (read from the LiquidDef registry),
+     and the icy tank untouched. LIES: a still with no fuel / switched off / off in settings (inspect line) idles for a reason
+     that is not the mod (UNMEASURED/SITE); an icy tank above the reserve is not the scene (UNMEASURED/SITE). An icy tank that
+     moved is FAIL/MOD (the reserve broke), a salt tank that never moved is FAIL/MOD (the starvation the item fixed).
   REACTOR_NEXT_REACTION_RUNS  FLOWWORKS_REACTOR_FIX_STUCK_ENDS_SHIFT A1.
      A def CENSUS first (pure, over this mod's Defs = the deployed set when B0's assembly identity holds): the converter
      scene needs ONE converter def whose processes reach two input liquids with DIFFERENT products (so one product tank can
@@ -129,6 +138,11 @@ REEL_REACH = 11                                                  # cells from th
 S3 = dict(pond=[(1 + i, 31 + j) for i in range(4) for j in range(3)], canal=[(15 + i, 32) for i in range(6)], pump=(9, 32),
           reelA=(9, 33), reelB=(9, 30), intake=(4, 32), intake_alt=[(4, 31), (4, 33)], outflow=(15, 32), battery=(12, 36))
 LAKE = (40, 40, 6, 6)
+STILL = (60, 46)                  # RM_FueledStill 2x2 footprint (60..61, 46..47), clear of the reel lanes and the lake
+ICY_TANK, SALT_TANK, OUT_TANK = (58, 46), (62, 46), (60, 48)    # 2x2 RM_LiquidTanks touching it W / E / N
+ICY, SALT = "RM_Liquid_IcyWater", "RM_Liquid_SaltWater"
+STILL_RESERVE_L = 200             # the scene's drinking reserve (the shipped default; forced, then restored)
+SALT_FILL = 20000                 # dL: five 400 L distil batches
 CANAL = [(46 + i, 42) for i in range(6)]
 
 ROW_IDS = ["RIVER_LAYER_REDRAWS_CLEAN", "CONVERTER_BIG_RECIPE_RUNS", "REACTOR_NEXT_REACTION_RUNS", "RAILING_HAS_STUFF",
@@ -264,6 +278,45 @@ def census_verdict(kind, conv, rows, reac):
         return "UNMEASURED", "SITE", dict(why="the reactor scene needs two reaction defs (A+B blocked, C+D runs); shipped: %s" % reac,
                                           owed="re-scope A1 or ship a test-only second RM_LiquidReactionDef")
     return "UNMEASURED", "HARNESS", dict(why="two reactions exist; the live stager is owed", reactions=reac)
+
+
+def step_litres(liquid, process, defs_dir=DEFS):
+    """(inputLitres, outputLitres) of <liquid>'s <process> conversion, read from the LiquidDef XML; None if absent."""
+    for f in glob.glob(os.path.join(defs_dir, "**", "*.xml"), recursive=True):
+        try:
+            root = ET.parse(f).getroot()
+        except (ET.ParseError, OSError):
+            continue
+        for d in root:
+            if d.findtext("defName") != liquid:
+                continue
+            for li in d.findall("conversions/li"):
+                if li.findtext("process") == process:
+                    return float(li.findtext("inputLitres")), float(li.findtext("outputLitres"))
+    return None
+
+
+def still_verdict(r, ratio):
+    """r: dict(stood, icy0, icy1, salt0, salt1, out0, out1, reserve, inspect=[lines]); ratio = out/in of the salt distil."""
+    if not r.get("stood"):
+        return "UNMEASURED", "SITE", "the still or a tank did not stand"
+    vals = [r.get(k) for k in ("icy0", "icy1", "salt0", "salt1", "out0", "out1")]
+    if any(v is None for v in vals) or ratio is None:
+        return "UNMEASURED", "HARNESS", "a tank read or the salt distil ratio did not answer"
+    icy0, icy1, salt0, salt1, out0, out1 = vals
+    if r.get("reserve") is None or icy0 > r["reserve"]:
+        return "UNMEASURED", "SITE", "the icy tank (%s dL) is not held at or under the reserve (%s dL)" % (icy0, r.get("reserve"))
+    idle = [ln for ln in r.get("inspect") or [] if any(k in ln for k in ("Out of fuel", "Switched off", "No power"))]
+    if idle:
+        return "UNMEASURED", "SITE", "the still idles for a staging reason: %s" % idle[0]
+    if icy1 != icy0:
+        return "FAIL", "MOD", "the still drew potable icy water under the drinking reserve (%d -> %d dL)" % (icy0, icy1)
+    if salt1 >= salt0:
+        return "FAIL", "MOD", "the salt water never distilled while the icy recipe was blocked (salt %d -> %d)" % (salt0, salt1)
+    want = int(round((salt0 - salt1) * ratio))
+    if out1 - out0 != want:
+        return "FAIL", "MOD", "product %d dL for %d dL of salt; the step says %d" % (out1 - out0, salt0 - salt1, want)
+    return "PASS", "MOD", ""
 
 
 def railing_verdict(alive, lost, railed, stuffs, bad):
@@ -474,6 +527,7 @@ def main(argv=None):
     ap.add_argument("--only", default="", help="comma list of rows: " + ",".join(ROW_IDS))
     ap.add_argument("--player-log", default=None, help="this load's Player.log (default: game_paths.PLAYER_LOG)")
     ap.add_argument("--drink-ticks", type=int, default=3000)
+    ap.add_argument("--still-ticks", type=int, default=3000, help="CONVERTER_BIG_RECIPE_RUNS: ticks the still runs")
     ap.add_argument("--no-shots", action="store_true")
     ap.add_argument("--mock", action="store_true")
     ap.add_argument("--mock-faults", default="", help="comma list: " + ",".join(FakeBridge.FAULTS))
@@ -655,11 +709,46 @@ def scene_river(ctx, mine):
                                                    commit=r.get("success")))
 
 
+def scene_still(ctx, mine):
+    B, P, xz = ctx["B"], ctx["P"], ctx["xz"]
+    S_RES = "drinkingReserveLitres"
+    was = ctx["sget"](S_TH, S_RES)
+    ctx["sset"](S_TH, S_RES, STILL_RESERVE_L)
+    reserve = int(round(STILL_RESERVE_L * UNITS_PER_LITRE))
+    r = dict(reserve=reserve, settingWas=was)
+    try:
+        # the icy tank FIRST, so the blocked recipe is the first candidate (the order the old bug needed)
+        for d, c in (("RM_LiquidTank", ICY_TANK), ("RM_FueledStill", STILL), ("RM_LiquidTank", SALT_TANK), ("RM_LiquidTank", OUT_TANK)):
+            b = ctx["build"]("%s:%s" % (d, xz(P(*c))))
+            r.setdefault("build", []).append(b.get("success"))
+        lt = B.call("jawa/list_things", defName="RM_FueledStill", rect="%d,%d,2,2" % P(*STILL), limit=2, _answer=True) or {}
+        sid = ((lt.get("things") or [{}])[0]).get("id")
+        r["refuel"] = str(B.call("jawa/thing_refuel", thingId=sid, amount=40, _answer=True) or {})[:160] if sid else None
+        f1 = B.hp("filltank:%s=%s,%d" % (xz(P(*ICY_TANK)), ICY, reserve))
+        f2 = B.hp("filltank:%s=%s,%d" % (xz(P(*SALT_TANK)), SALT, SALT_FILL))
+        r["stood"] = bool(sid) and f1.get("success") is True and f2.get("success") is True
+
+        def units(c):
+            t = B.hp("tank:%s" % xz(P(*c)), answer=True)
+            return t.get("units") if t.get("success") else None
+
+        r.update(icy0=units(ICY_TANK), salt0=units(SALT_TANK), out0=units(OUT_TANK))
+        if r["stood"]:
+            ctx["ticks"](ctx["a"].still_ticks)
+        r.update(icy1=units(ICY_TANK), salt1=units(SALT_TANK), out1=units(OUT_TANK))
+        ins = (B.call("jawa/inspect_string", thingIds=str(sid), _answer=True) or {}) if sid else {}
+        r["inspect"] = [ln for t in ins.get("things") or [] for ln in t.get("inspect") or []]
+        lit = step_litres(SALT, "distill")
+        ratio = (lit[1] / lit[0]) if lit else None
+        st, cls, why = still_verdict(r, ratio)
+        ctx["row"]("CONVERTER_BIG_RECIPE_RUNS", st, cls, dict(r, why=why, ratio=ratio))
+    finally:
+        if was is not None:
+            ctx["sset"](S_TH, S_RES, was)
+
+
 def scene_census(ctx, mine):
     conv, rows_, reac = def_census()
-    if "CONVERTER_BIG_RECIPE_RUNS" in mine:
-        st, cls, det = census_verdict("converter", conv, rows_, reac)
-        ctx["row"]("CONVERTER_BIG_RECIPE_RUNS", st, cls, det)
     if "REACTOR_NEXT_REACTION_RUNS" in mine:
         st, cls, det = census_verdict("reactor", conv, rows_, reac)
         ctx["row"]("REACTOR_NEXT_REACTION_RUNS", st, cls, det)
@@ -974,10 +1063,10 @@ def scene_canal_lake(ctx, mine):
                                                    shot=ctx["shot"]("canal_lake", P(38, 38) + (16, 10))))
 
 
-SCENES = [("river", scene_river), ("census", scene_census), ("railing", scene_railing), ("faucet", scene_faucet),
+SCENES = [("river", scene_river), ("still", scene_still), ("census", scene_census), ("railing", scene_railing), ("faucet", scene_faucet),
           ("guardrail", scene_guardrail), ("reels", scene_reels), ("s3", scene_s3), ("search", scene_search),
           ("canal_lake", scene_canal_lake)]
-SCENE_ROWS = {"river": ["RIVER_LAYER_REDRAWS_CLEAN"], "census": ["CONVERTER_BIG_RECIPE_RUNS", "REACTOR_NEXT_REACTION_RUNS"],
+SCENE_ROWS = {"river": ["RIVER_LAYER_REDRAWS_CLEAN"], "still": ["CONVERTER_BIG_RECIPE_RUNS"], "census": ["REACTOR_NEXT_REACTION_RUNS"],
               "railing": ["RAILING_HAS_STUFF"],
               "faucet": ["FAUCET_TAB_PIPE_ONLY", "T30_pipe_faucet", "FAUCET_LOOKS_RESOLVE", "FAUCET_TAKES_MODERN"],
               "guardrail": ["GUARDRAIL_ATLAS_RESOLVES"], "reels": ["REEL_FACINGS_LAY_ALONG_AXIS"], "s3": ["S3_HOSES_ON_BARE_GROUND"],
@@ -1010,11 +1099,14 @@ class FakeBridge(object):
       search_unfiltered the search never filters (control shows the row)                -> UNMEASURED/HARNESS
       no_dialog         the settings dialog does not open                               -> UNMEASURED/HARNESS
       canal_two_defs    MOD: canal and lake draw different defs at equal depth
-      canal_dry         the canal fill never takes                                      -> UNMEASURED/SITE"""
+      canal_dry         the canal fill never takes                                      -> UNMEASURED/SITE
+      still_starves     MOD: the blocked icy recipe starves the salt distil (the old bug)
+      still_no_reserve  MOD: the still draws the icy water under the drinking reserve
+      still_no_fuel     the refuel does not take ("Out of fuel")                         -> UNMEASURED/SITE"""
     FAULTS = ("river_throws", "river_off", "log_dead", "rail_nostuff", "rail_none", "no_pipenet_tab", "faucet_anywhere",
               "faucet_untabbed", "faucet_log_error", "faucet_dry", "faucet_rough", "other_water", "faucet_nomatch",
               "pipe_style_refused", "rail_fence_art", "reel_fixed_west", "reel_lay_refused", "hose_over_pump", "search_misses",
-              "search_unfiltered", "no_dialog", "canal_two_defs", "canal_dry")
+              "search_unfiltered", "no_dialog", "canal_two_defs", "canal_dry", "still_starves", "still_no_reserve", "still_no_fuel")
 
     def __init__(self, faults=()):
         self.f = set(faults)
@@ -1031,6 +1123,8 @@ class FakeBridge(object):
         self.query = ""
         self.dialog = False
         self.pump = None
+        self.liq = {}           # tank cell -> liquid defName
+        self.still = None       # dict(id, fuel)
         fd, self.player_log = tempfile.mkstemp(suffix="_Player.log")
         with os.fdopen(fd, "w") as f:
             f.write("Mono path[0] = ...\nRimWorld 1.6.4630 rev123\n")
@@ -1095,6 +1189,7 @@ class FakeBridge(object):
             if c not in self.tanks:
                 return {"success": False, "error": "no tank there"}
             self.tanks[c] = int(arg.split("=")[1].split(",")[1])
+            self.liq[c] = arg.split("=")[1].split(",")[0]
             return {"success": True}
         if verb == "tank":
             c = tuple(int(v) for v in arg.split(","))
@@ -1102,6 +1197,16 @@ class FakeBridge(object):
         return {"success": False, "error": "unknown verb"}
 
     def _tick(self, n):
+        st = self.still
+        if st and st["fuel"] > 0 and n >= 250:
+            icy = [c for c, l in self.liq.items() if l == ICY and self.tanks.get(c)]
+            salt = [c for c, l in self.liq.items() if l == SALT and self.tanks.get(c, 0) >= 4000]
+            out = [c for c in st["tanks"] if c not in self.liq and c in self.tanks]
+            if icy and "still_no_reserve" in self.f:
+                self.tanks[icy[0]] -= min(2000, self.tanks[icy[0]])
+            elif salt and out and not (icy and "still_starves" in self.f):
+                self.tanks[salt[0]] -= 4000
+                self.tanks[out[0]] += 2000
         # the thirsty colonist and the faucet
         for pid, p in self.pawns.items():
             if p.get("thirst", 1.0) < 0.3 and self.tanks:
@@ -1199,6 +1304,11 @@ class FakeBridge(object):
                     self.tanks[c] = 0
                 if d == "RM_LiquidPump":
                     self.pump = c
+                if d == "RM_FueledStill":
+                    self.still = dict(id="RM_FueledStill%d" % (self.nid + 1), fuel=0,
+                                      tanks=[t for t in self.tanks if abs(t[0] - c[0]) <= 2 and abs(t[1] - c[1]) <= 2])
+                if d == "RM_LiquidTank" and self.still:
+                    self.still["tanks"].append(c)
                 style = None
                 if d == "RM_PipeFaucet":
                     under = [self.things[t]["style"] for t in self._at("RM_UniversalPipe", c)]
@@ -1217,6 +1327,14 @@ class FakeBridge(object):
             x, z, w, h = (int(v) for v in str(kw.get("rect")).split(","))
             return {"success": True, "things": [dict(id=t, defName=self.things[t]["defName"], stuff=self.things[t]["stuff"])
                                                 for t in self._in(kw.get("defName"), (x, z, w, h))]}
+        if tool == "jawa/thing_refuel":
+            if self.still and kw.get("thingId") == self.still["id"] and "still_no_fuel" not in self.f:
+                self.still["fuel"] = float(kw.get("amount") or 0)
+            return {"success": True}
+        if tool == "jawa/inspect_string":
+            st = self.still
+            line = "Out of fuel" if st and st["fuel"] <= 0 else "Turning salt water into fresh water"
+            return {"success": True, "things": [{"id": kw.get("thingIds"), "inspect": [line]}]}
         if tool == "jawa/set_thing_props":
             t = self.things.get(kw.get("thing"))
             if t is None or "pipe_style_refused" in self.f:

@@ -41,6 +41,25 @@ check("census: a planted second reaction is stageable", G.census_verdict("reacto
 check("census never PASSes", all(G.census_verdict(k, conv, r, x)[0] != "PASS" for k in ("converter", "reactor")
                                   for r in (rows, planted) for x in (reac, reac + ["X"])))
 
+lit = G.step_litres(G.SALT, "distill")
+check("salt distil step read from the registry (400 L -> 200 L)", lit == (400.0, 200.0))
+check("icy water has the Crude cool step the re-scope relies on", ("cool", "Crude", "RM_Liquid_FreshWater") in rows.get(G.ICY, []))
+sv = dict(stood=True, reserve=2000, icy0=2000, icy1=2000, salt0=20000, salt1=8000, out0=0, out1=6000, inspect=["Turning x"])
+check("still PASS", G.still_verdict(sv, 0.5)[0] == "PASS")
+check("can-fail still: salt starved", G.still_verdict(dict(sv, salt1=20000, out1=0), 0.5)[:2] == ("FAIL", "MOD"))
+check("can-fail still: reserve broken", G.still_verdict(dict(sv, icy1=0), 0.5)[:2] == ("FAIL", "MOD"))
+check("can-fail still: product not salt x ratio", G.still_verdict(dict(sv, out1=5000), 0.5)[:2] == ("FAIL", "MOD"))
+check("still: out of fuel UNMEASURED/SITE", G.still_verdict(dict(sv, salt1=20000, out1=0, inspect=["Out of fuel"]), 0.5)[:2] == ("UNMEASURED", "SITE"))
+check("still: icy above the reserve UNMEASURED/SITE", G.still_verdict(dict(sv, icy0=2500, icy1=2500), 0.5)[:2] == ("UNMEASURED", "SITE"))
+check("still: not stood UNMEASURED/SITE", G.still_verdict(dict(sv, stood=False), 0.5)[:2] == ("UNMEASURED", "SITE"))
+check("still: a tank read missing UNMEASURED/HARNESS", G.still_verdict(dict(sv, out1=None), 0.5)[:2] == ("UNMEASURED", "HARNESS"))
+check("still geometry: three tanks touch the still footprint, none overlaps it",
+      all(max(abs(t[0] + dx - (G.STILL[0] + sx)) for dx in (0, 1) for sx in (0, 1)) >= 1 for t in (G.ICY_TANK, G.SALT_TANK, G.OUT_TANK))
+      and all(any(abs(t[0] + dx - G.STILL[0] - sx) <= 1 and abs(t[1] + dz - G.STILL[1] - sz) <= 1
+                  for dx in (0, 1) for dz in (0, 1) for sx in (0, 1) for sz in (0, 1)) for t in (G.ICY_TANK, G.SALT_TANK, G.OUT_TANK))
+      and not any({(t[0] + dx, t[1] + dz) for dx in (0, 1) for dz in (0, 1)} & {(G.STILL[0] + sx, G.STILL[1] + sz) for sx in (0, 1) for sz in (0, 1)}
+                  for t in (G.ICY_TANK, G.SALT_TANK, G.OUT_TANK)))
+
 check("railing PASS", G.railing_verdict(True, 0, 6, ["WoodLog"] * 6, [])[0] == "PASS")
 check("can-fail railing: stuff null", G.railing_verdict(True, 0, 6, [None] * 6, [])[0] == "FAIL")
 check("can-fail railing: error line", G.railing_verdict(True, 0, 6, ["WoodLog"], ["x is madeFromStuff but stuff=null"])[0] == "FAIL")
@@ -112,7 +131,7 @@ check("every row names an item and a criterion", all(G.ROW_ITEM.get(r) and G.ROW
 check("every row belongs to one scene", sorted(sum(G.SCENE_ROWS.values(), [])) == sorted(G.ROW_IDS))
 
 # ---- the mutation harness: each fault turns exactly its rows (the census rows are UNMEASURED/SITE on shipped content)
-BASE = {"CONVERTER_BIG_RECIPE_RUNS": ("UNMEASURED", "SITE"), "REACTOR_NEXT_REACTION_RUNS": ("UNMEASURED", "SITE")}
+BASE = {"REACTOR_NEXT_REACTION_RUNS": ("UNMEASURED", "SITE")}
 U, S, H, F, M = "UNMEASURED", "SITE", "HARNESS", "FAIL", "MOD"
 EXPECT = {"": {},
           "river_throws": {"RIVER_LAYER_REDRAWS_CLEAN": (F, M)},
@@ -137,7 +156,10 @@ EXPECT = {"": {},
           "search_unfiltered": {"SETTINGS_SEARCH_FINDS_ROW": (U, H)},
           "no_dialog": {"SETTINGS_SEARCH_FINDS_ROW": (U, H)},
           "canal_two_defs": {"CANAL_LAKE_ONE_DEF": (F, M)},
-          "canal_dry": {"CANAL_LAKE_ONE_DEF": (U, S)}}
+          "canal_dry": {"CANAL_LAKE_ONE_DEF": (U, S)},
+          "still_starves": {"CONVERTER_BIG_RECIPE_RUNS": (F, M)},
+          "still_no_reserve": {"CONVERTER_BIG_RECIPE_RUNS": (F, M)},
+          "still_no_fuel": {"CONVERTER_BIG_RECIPE_RUNS": (U, S)}}
 check("every FakeBridge fault has an expectation", sorted(k for k in EXPECT if k) == sorted(G.FakeBridge.FAULTS))
 tmp = tempfile.mkdtemp()
 for fault, want in EXPECT.items():
