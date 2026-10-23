@@ -364,7 +364,7 @@ def main(argv=None):
         if st != "Playing":
             w.say("No Playing game (state %s): start a quicktest map (river_site.py for the river groups) and rerun." % st)
             return 2
-        w.call("rimworld/pause_game", paused=True)
+        w.call("rimworld/pause_game", pause=True)
         w.call("rimworld/set_god_mode", enabled=True)
     groups = build_groups(w, only, out_dir)
     idx = C.write_index(os.path.join(out_dir, "index.html"), "FlowWorks canal objects: poses and styles",

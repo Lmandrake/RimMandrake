@@ -46,7 +46,7 @@ FEATURES = [
     ("set", r"^(digToDepthEnabled|maxDigDepth|machineDigEnabled|maxMachineDigDepth|digCostRisesWithDepth)$", "Dig deeper: colonists to 2 m, machines to 20 m (shipped), each half-metre dearer", "dig_canal"),   # DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL
     ("set", r"^fillIn", "Fill-in and its push-back", "dig_fill_in"),
     ("set", r"^digFind", "Digging turns up minerals", "dig_finds"),
-    ("set", r"^(digRock|digSoilChunk)", "Digging rock takes longer and drops chunks (soil less)", "dig_canal"),   # DIG_ROCK_TUNE_STONE_FIGHTS_BACK: no rock-dig station, so the canal-dig one
+    ("set", r"^(digRock|digSoilChunk|digDeepStone)", "Digging rock takes longer and drops chunks (soil less); a superdeep cut can strike deep stone", "dig_canal"),   # DIG_ROCK_TUNE_STONE_FIGHTS_BACK / PIT_DEEPSTONE_BUILD_DIGGING_FINALLY_PAYS: no rock-dig station, so the canal-dig one
     # ---- flow
     # FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS: dev-placed flow source / sink (no station yet; review-map station
     # 11-type staging is to move onto them later)
@@ -154,7 +154,8 @@ FEATURES = [
     ("def", r"^ThingDef/RM_Ladder$", "Ladder", "hold_ladder"),
     ("def", r"^(DesignationDef/RM_OperateLadder|JobDef/RM_OperateLadderJob|WorkGiverDef/RM_OperateLadderWorkGiver)$", "Operate-ladder order (raise from above or below, lower from above)", "hold_ladder_raised"),
     # REVIEW_MAP_COVERAGE_FILL_ABOUT_NINETY_ROWS: raider/climb behaviour is read from state, not a staged scene
-    ("def", r"^JobDef/(RM_RaiderSetLadder|RM_RaiderFillTrench)$", "Raiders cross a trench with a ladder or fill it", M + "raider AI jobs; proved by the functional script (RaiderTrenchChecks), no frozen station stages a raid"),
+    ("def", r"^JobDef/(RM_RaiderSetLadder|RM_RaiderFillTrench|RM_RaiderTakeLadder)$", "Raiders cross a trench with a ladder, fill it, or take a standing ladder down", M + "raider AI jobs; proved by the functional script (RaiderTrenchChecks), no frozen station stages a raid"),
+    ("gizmo", r'^"Repair breach"', "Orders > Repair breach (dig a raider-filled square back out)", M + "an order designator on squares raiders filled; proved by raid_trench_proof.py and LadderParityChecks, no frozen station stages a breach"),
     ("def", r"^JobDef/RM_ClimbOverWall$", "Climbing over a wall", M + "pawn job; proved by WallClimbChecks, no frozen station stages a wall climb"),
     ("def", r"^ThingDef/RM_LadderPortable$", "Portable ladder (carried, set down by hand)", M + "an inventory item with no frozen station; proved by PitAccessChecks"),
     ("def", r"^ThingDef/RM_ClimbingGear$", "Climbing gear (apparel that speeds a climb)", M + "apparel with no frozen station; proved by PitAccessChecks"),
