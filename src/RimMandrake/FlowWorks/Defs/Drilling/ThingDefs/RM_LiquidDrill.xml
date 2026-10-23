@@ -119,6 +119,7 @@
     </costList>
     <comps>
       <li Class="CompProperties_Forbiddable" />
+      <li Class="CompProperties_Flickable" />
     </comps>
     <modExtensions>
       <li Class="RimMandrake.FlowWorks.Drilling.RM_LiquidDrillExtension">

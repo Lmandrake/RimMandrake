@@ -1,3 +1,4 @@
+using LudeonTK;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -76,62 +77,99 @@ namespace RimMandrake.FlowWorks.Drilling
 			}
 		}
 
+		private RM_DrillSurveyMath.Block lastBlock;
+
+		/// <summary>BLEED_WELL_BUILD_SWITCH_AND_SAY_WHY: the first condition that keeps this drill from pouring, read fresh
+		/// from the map. The tick, the inspect line and the overhead icon all use this one answer.</summary>
+		public RM_DrillSurveyMath.Block CurrentBlock()
+		{
+			RM_DrillSurveyMath.State st = new RM_DrillSurveyMath.State();
+			st.settingOn = RimMandrakeFlowWorksSettings.liquidDrillingEnabled;
+			CompFlickable flick = GetComp<CompFlickable>();
+			st.switchedOn = flick == null || flick.SwitchIsOn;
+			CompPowerTrader power = GetComp<CompPowerTrader>();
+			st.needsPower = Ext.requiresPower && power != null;
+			st.powered = power == null || power.PowerOn;
+			RM_MapComponent_SubsurfaceLiquid survey = Map != null ? Map.GetComponent<RM_MapComponent_SubsurfaceLiquid>() : null;
+			RM_MapComponent_Excavation excavation = Map != null ? Map.GetComponent<RM_MapComponent_Excavation>() : null;
+			st.surveyed = survey != null && survey.Surveyed && excavation != null;
+			st.hasYield = survey != null && survey.HasYield;
+			st.reserve = survey != null ? survey.ReserveRemaining : 0f;
+			FluidDef canalFluid = st.hasYield && survey.YieldedLiquid != null ? survey.YieldedLiquid.canalFluid : null;
+			st.hasCanalForm = canalFluid != null;
+			st.fluidAllowed = canalFluid == null || RimMandrakeFlowWorksSettings.FluidAllowed(canalFluid);
+			if (excavation != null && canalFluid != null)
+			{
+				IntVec3 outlet = OutletCell;
+				st.outletDug = excavation.IsExcavated(outlet);
+				if (st.outletDug)
+				{
+					FluidDef outletFluid = excavation.FluidAt(outlet);
+					st.outletOtherLiquid = excavation.FillAt(outlet) > 0 && outletFluid != null && outletFluid != canalFluid;
+					st.outletBrimming = excavation.DepthAt(outlet) - excavation.FillAt(outlet) <= 0;
+				}
+			}
+			return RM_DrillSurveyMath.WhyNot(st);
+		}
+
+		/// <summary>The sentence for a block (empty for None).</summary>
+		public string BlockText(RM_DrillSurveyMath.Block block)
+		{
+			if (block == RM_DrillSurveyMath.Block.None)
+			{
+				return "RM_DrillWhy_None".Translate();
+			}
+			string key = "RM_DrillWhy_" + block;
+			RM_MapComponent_SubsurfaceLiquid survey = Map != null ? Map.GetComponent<RM_MapComponent_SubsurfaceLiquid>() : null;
+			RM_MapComponent_Excavation excavation = Map != null ? Map.GetComponent<RM_MapComponent_Excavation>() : null;
+			string cell = OutletCell.x + "," + OutletCell.z;
+			switch (block)
+			{
+				case RM_DrillSurveyMath.Block.LiquidDisabledInSettings:
+					return key.Translate(survey?.YieldedLiquid != null ? survey.YieldedLiquid.LabelCap.ToString() : "?");
+				case RM_DrillSurveyMath.Block.OutletNotDug:
+				case RM_DrillSurveyMath.Block.OutletBrimming:
+					return key.Translate(cell);
+				case RM_DrillSurveyMath.Block.OutletOtherLiquid:
+					return key.Translate(cell, excavation?.FluidAt(OutletCell) != null ? excavation.FluidAt(OutletCell).LabelCap.ToString() : "?");
+				default:
+					return key.Translate();
+			}
+		}
+
+		public override void DynamicDrawPhaseAt(DrawPhase phase, Vector3 drawLoc, bool flip = false)
+		{
+			base.DynamicDrawPhaseAt(phase, drawLoc, flip);
+			// Vanilla draws the power-off and no-power icons itself; any other reason gets the question mark.
+			if (phase == DrawPhase.Draw && Spawned && lastBlock != RM_DrillSurveyMath.Block.None
+				&& lastBlock != RM_DrillSurveyMath.Block.SwitchedOff && lastBlock != RM_DrillSurveyMath.Block.Unpowered
+				&& lastBlock != RM_DrillSurveyMath.Block.OutletBrimming)
+			{
+				Map.overlayDrawer.DrawOverlay(this, OverlayTypes.QuestionMark);
+			}
+		}
+
 		public override void TickRare()
 		{
 			base.TickRare();
 			CompPowerTrader power = GetComp<CompPowerTrader>();
+			CompFlickable flick = GetComp<CompFlickable>();
 			if (power != null)
 			{
-				// Switched off in Mod Settings, the drill draws nothing (the setting's promise), as the pump does.
-				power.PowerOutput = RimMandrakeFlowWorksSettings.liquidDrillingEnabled ? -power.Props.PowerConsumption : 0f;
+				// Switched off (here or in Mod Settings), the drill draws nothing (the setting's promise), as the pump does.
+				bool on = RimMandrakeFlowWorksSettings.liquidDrillingEnabled && (flick == null || flick.SwitchIsOn);
+				power.PowerOutput = on ? -power.Props.PowerConsumption : 0f;
 			}
-			if (!RimMandrakeFlowWorksSettings.liquidDrillingEnabled)
+			lastBlock = CurrentBlock();
+			if (lastBlock != RM_DrillSurveyMath.Block.None && lastBlock != RM_DrillSurveyMath.Block.OutletBrimming)
 			{
 				return;
-			}
-			if (Ext.requiresPower)
-			{
-				if (power != null && !power.PowerOn)
-				{
-					return;
-				}
 			}
 
 			RM_MapComponent_SubsurfaceLiquid survey = Map.GetComponent<RM_MapComponent_SubsurfaceLiquid>();
 			RM_MapComponent_Excavation excavation = Map.GetComponent<RM_MapComponent_Excavation>();
-			if (survey == null || excavation == null || !survey.HasYield)
-			{
-				return;
-			}
-
-			LiquidDef liquid = survey.YieldedLiquid;
-			FluidDef canalFluid = liquid != null ? liquid.canalFluid : null;
-			if (canalFluid == null)
-			{
-				// This liquid has no canal form to feed at all: the reserve is NOT spent.
-				return;
-			}
-
+			FluidDef canalFluid = survey.YieldedLiquid.canalFluid;
 			IntVec3 outlet = OutletCell;
-			if (!excavation.IsExcavated(outlet))
-			{
-				return;
-			}
-			FluidDef outletFluid = excavation.FluidAt(outlet);
-			if (excavation.FillAt(outlet) > 0 && outletFluid != null && outletFluid != canalFluid)
-			{
-				// Fluids never mix (LIQUID_BODY_FLUID_IDENTITY_1): the outlet already holds another liquid, so the
-				// reserve is not spent. A dry outlet is claimed by this drill's fluid. A filled outlet with no stamped
-				// fluid (an old save) is left to TrySetDriverFill, which accepts it as the engine's FluidsCompatible
-				// does; refusing it here stalled the drill with no reason shown (the inspect string skips null too).
-				return;
-			}
-
-			if (!RimMandrakeFlowWorksSettings.FluidAllowed(canalFluid))
-			{
-				// A liquid switched off in Mod Settings never pours into a cut, so the reserve is not spent.
-				return;
-			}
 
 			byte depth = excavation.DepthAt(outlet);
 			byte fill = excavation.FillAt(outlet);
@@ -178,31 +216,10 @@ namespace RimMandrake.FlowWorks.Drilling
 			string baseString = base.GetInspectString();
 			string status;
 			RM_MapComponent_SubsurfaceLiquid survey = Map != null ? Map.GetComponent<RM_MapComponent_SubsurfaceLiquid>() : null;
-			if (survey == null)
+			status = survey == null ? "RM_SubsurfaceUnsurveyed".Translate().ToString() : survey.StatusReport();
+			if (Spawned)
 			{
-				status = "RM_SubsurfaceUnsurveyed".Translate();
-			}
-			else
-			{
-				status = survey.StatusReport();
-				if (survey.HasYield)
-				{
-					RM_MapComponent_Excavation excavation = Map.GetComponent<RM_MapComponent_Excavation>();
-					if (excavation != null && !excavation.IsExcavated(OutletCell))
-					{
-						status += "\n" + "RM_DrillNeedsOutlet".Translate();
-					}
-					FluidDef canalFluid = survey.YieldedLiquid != null ? survey.YieldedLiquid.canalFluid : null;
-					if (canalFluid == null)
-					{
-						status += "\n" + "RM_DrillLiquidHasNoCanalForm".Translate();
-					}
-					else if (excavation != null && excavation.FillAt(OutletCell) > 0
-						&& excavation.FluidAt(OutletCell) != null && excavation.FluidAt(OutletCell) != canalFluid)
-					{
-						status += "\n" + "RM_DrillLiquidMismatch".Translate(excavation.FluidAt(OutletCell).LabelCap);
-					}
-				}
+				status += "\n" + BlockText(CurrentBlock());
 			}
 			return string.IsNullOrEmpty(baseString) ? status : baseString + "\n" + status;
 		}
@@ -269,6 +286,59 @@ namespace RimMandrake.FlowWorks.Drilling
 				DrawTextLine(curX, ref curY, "RM_DrillPlaceOff".Translate());
 			}
 			GUI.color = was;
+		}
+	}
+
+	/// <summary>BLEED_WELL_BUILD_SWITCH_AND_SAY_WHY: god-mode actions to give a map a subsurface yield to test with.</summary>
+	public static class RM_DrillDebug
+	{
+		private const string CAT = "RMFlowWorks";
+		public const float DebugReserveUnits = 5000f;
+
+		[DebugAction(CAT, "Give this map a subsurface yield...", allowedGameStates = AllowedGameStates.PlayingOnMap)]
+		private static void GiveYield()
+		{
+			RM_MapComponent_SubsurfaceLiquid survey = Find.CurrentMap?.GetComponent<RM_MapComponent_SubsurfaceLiquid>();
+			if (survey == null)
+			{
+				Messages.Message("RM_DebugNoSurvey".Translate(), MessageTypeDefOf.RejectInput, false);
+				return;
+			}
+			System.Collections.Generic.List<LiquidDef> liquids = new System.Collections.Generic.List<LiquidDef>();
+			foreach (LiquidDef l in DefDatabase<LiquidDef>.AllDefsListForReading)
+			{
+				if (l.canalFluid != null) liquids.Add(l);
+			}
+			System.Collections.Generic.List<DebugMenuOption> list = new System.Collections.Generic.List<DebugMenuOption>();
+			foreach (LiquidDef l in RM_DrillDebugOrder(liquids))
+			{
+				LiquidDef pick = l;
+				list.Add(new DebugMenuOption(pick.defName, DebugMenuOptionMode.Action, delegate
+				{
+					survey.DebugSetYield(pick, DebugReserveUnits);
+					Log.Message("[RMFlowWorksDebug] subsurface yield set: " + pick.defName + ", " + DebugReserveUnits + " fill-units");
+				}));
+			}
+			Find.WindowStack.Add(new Dialog_DebugOptionListLister(list));
+		}
+
+		/// <summary>Water first (the default pick), then the rest by name.</summary>
+		private static System.Collections.Generic.IEnumerable<LiquidDef> RM_DrillDebugOrder(System.Collections.Generic.List<LiquidDef> liquids)
+		{
+			liquids.Sort((a, b) =>
+			{
+				int ra = a.defName == "RM_Liquid_FreshWater" ? 0 : 1;
+				int rb = b.defName == "RM_Liquid_FreshWater" ? 0 : 1;
+				return ra != rb ? ra.CompareTo(rb) : string.CompareOrdinal(a.defName, b.defName);
+			});
+			return liquids;
+		}
+
+		[DebugAction(CAT, "Clear subsurface yield", allowedGameStates = AllowedGameStates.PlayingOnMap)]
+		private static void ClearYield()
+		{
+			Find.CurrentMap?.GetComponent<RM_MapComponent_SubsurfaceLiquid>()?.DebugClearYield();
+			Log.Message("[RMFlowWorksDebug] subsurface yield cleared");
 		}
 	}
 }

@@ -30,5 +30,56 @@ namespace RimMandrake.FlowWorks.Drilling
 			}
 			return reserve <= 0f ? Verdict.Spent : Verdict.Allowed;
 		}
+		/// <summary>BLEED_WELL_BUILD_SWITCH_AND_SAY_WHY: why a drill or bleed well is not pouring. One answer, the first
+		/// failing condition, in the order Building_LiquidDrill.TickRare tests them, so the inspect line, the overhead icon
+		/// and the tick can never disagree.</summary>
+		public enum Block
+		{
+			None,
+			DisabledInSettings,
+			SwitchedOff,
+			Unpowered,
+			NoSubsurface,
+			Unsurveyed,
+			ReserveSpent,
+			NoCanalForm,
+			LiquidDisabledInSettings,
+			OutletNotDug,
+			OutletOtherLiquid,
+			OutletBrimming
+		}
+
+		/// <summary>Plain facts about one drill at one moment (no Verse types).</summary>
+		public struct State
+		{
+			public bool settingOn;
+			public bool switchedOn;
+			public bool needsPower;
+			public bool powered;
+			public bool surveyed;
+			public bool hasYield;
+			public float reserve;
+			public bool hasCanalForm;
+			public bool fluidAllowed;
+			public bool outletDug;
+			public bool outletOtherLiquid;
+			public bool outletBrimming;
+		}
+
+		public static Block WhyNot(State s)
+		{
+			if (!s.settingOn) return Block.DisabledInSettings;
+			if (!s.switchedOn) return Block.SwitchedOff;
+			if (s.needsPower && !s.powered) return Block.Unpowered;
+			if (!s.surveyed) return Block.Unsurveyed;
+			if (!s.hasYield) return Block.NoSubsurface;
+			if (!s.hasCanalForm) return Block.NoCanalForm;
+			if (!s.outletDug) return Block.OutletNotDug;
+			if (s.outletOtherLiquid) return Block.OutletOtherLiquid;
+			if (!s.fluidAllowed) return Block.LiquidDisabledInSettings;
+			if (s.outletBrimming) return Block.OutletBrimming;
+			if (s.reserve <= 0f) return Block.ReserveSpent;
+			return Block.None;
+		}
 	}
 }

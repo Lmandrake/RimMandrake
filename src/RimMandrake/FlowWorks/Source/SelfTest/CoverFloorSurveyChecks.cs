@@ -53,6 +53,33 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(span.Contains("Notify_DeckPathChanged(map, pos, false);"), "can-fail: lifting (or breaking) a lid notifies");
             });
 
+            Case("DrillWhyNot_each_condition_names_its_reason", () =>
+            {
+                RM_DrillSurveyMath.State ok = new RM_DrillSurveyMath.State { settingOn = true, switchedOn = true, needsPower = true, powered = true,
+                    surveyed = true, hasYield = true, reserve = 100f, hasCanalForm = true, fluidAllowed = true, outletDug = true };
+                Assert(RM_DrillSurveyMath.WhyNot(ok) == RM_DrillSurveyMath.Block.None, "all good: runs");
+                var s = ok; s.settingOn = false; Assert(RM_DrillSurveyMath.WhyNot(s) == RM_DrillSurveyMath.Block.DisabledInSettings, "settings off");
+                s = ok; s.switchedOn = false; Assert(RM_DrillSurveyMath.WhyNot(s) == RM_DrillSurveyMath.Block.SwitchedOff, "switched off");
+                s = ok; s.powered = false; Assert(RM_DrillSurveyMath.WhyNot(s) == RM_DrillSurveyMath.Block.Unpowered, "unpowered");
+                s = ok; s.needsPower = false; s.powered = false; Assert(RM_DrillSurveyMath.WhyNot(s) == RM_DrillSurveyMath.Block.None, "can-fail: a bleed well needs no power");
+                s = ok; s.surveyed = false; Assert(RM_DrillSurveyMath.WhyNot(s) == RM_DrillSurveyMath.Block.Unsurveyed, "unsurveyed");
+                s = ok; s.hasYield = false; Assert(RM_DrillSurveyMath.WhyNot(s) == RM_DrillSurveyMath.Block.NoSubsurface, "no subsurface liquid");
+                s = ok; s.hasCanalForm = false; Assert(RM_DrillSurveyMath.WhyNot(s) == RM_DrillSurveyMath.Block.NoCanalForm, "no canal form");
+                s = ok; s.outletDug = false; Assert(RM_DrillSurveyMath.WhyNot(s) == RM_DrillSurveyMath.Block.OutletNotDug, "outlet not dug");
+                s = ok; s.outletOtherLiquid = true; Assert(RM_DrillSurveyMath.WhyNot(s) == RM_DrillSurveyMath.Block.OutletOtherLiquid, "outlet other liquid");
+                s = ok; s.fluidAllowed = false; Assert(RM_DrillSurveyMath.WhyNot(s) == RM_DrillSurveyMath.Block.LiquidDisabledInSettings, "liquid off in settings");
+                s = ok; s.outletBrimming = true; Assert(RM_DrillSurveyMath.WhyNot(s) == RM_DrillSurveyMath.Block.OutletBrimming, "brimming");
+                s = ok; s.reserve = 0f; Assert(RM_DrillSurveyMath.WhyNot(s) == RM_DrillSurveyMath.Block.ReserveSpent, "reserve spent");
+                s = ok; s.switchedOn = false; s.settingOn = false; Assert(RM_DrillSurveyMath.WhyNot(s) == RM_DrillSurveyMath.Block.DisabledInSettings, "settings outranks the switch");
+                string drill = Src("Drilling", "Building_LiquidDrill.cs");
+                Assert(drill.Contains("flick == null || flick.SwitchIsOn"), "the tick honours the switch (no bleed, no power)");
+                foreach (RM_DrillSurveyMath.Block b in Enum.GetValues(typeof(RM_DrillSurveyMath.Block)))
+                {
+                    string key = "<RM_DrillWhy_" + b + ">";
+                    Assert(RiverSwitchFlipChecks.Src(Path.Combine("..", "Languages", "English", "Keyed", "FlowWorks_Keys.xml")).Contains(key), "key for " + b);
+                }
+            });
+
             Case("DrillSurvey_empty_survey_refuses_unsurveyed_allows", () =>
             {
                 Assert(RM_DrillSurveyMath.Placement(true, true, 50f) == RM_DrillSurveyMath.Verdict.Allowed, "a find with reserve: allowed");
