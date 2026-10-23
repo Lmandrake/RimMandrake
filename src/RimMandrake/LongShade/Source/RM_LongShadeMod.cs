@@ -81,12 +81,6 @@ namespace RimMandrake.LongShade
         /// <summary>LONGSHADE_BEDAZZLE_MECHANICS_1 smoke calendar, haze act: smoke-haze fronts may arrive (shadows lengthen, sun dims).</summary>
         public static bool smokeHazeFrontEnabled = true;
 
-        /// <summary>LONGSHADE_BEDAZZLE_MECHANICS_1 smoke calendar, ash act: an ash-pulse growth surge follows each haze.</summary>
-        public static bool ashPulseEnabled = true;
-
-        /// <summary>LONGSHADE_BEDAZZLE_MECHANICS_1 smoke calendar, ash act: a sand-lock follows each haze.</summary>
-        public static bool sandLockEnabled = true;
-
         /// <summary>LONGSHADE_HARROK_STILT_1): the harrok's ambush from its own shadow.</summary>
         public static bool harrokEnabled = true;
 
@@ -102,8 +96,6 @@ namespace RimMandrake.LongShade
             Scribe_Values.Look(ref lureAwningEnabled, "lureAwningEnabled", true);
             Scribe_Values.Look(ref stampedeEnabled, "stampedeEnabled", true);
             Scribe_Values.Look(ref smokeHazeFrontEnabled, "smokeHazeFrontEnabled", true);
-            Scribe_Values.Look(ref ashPulseEnabled, "ashPulseEnabled", true);
-            Scribe_Values.Look(ref sandLockEnabled, "sandLockEnabled", true);
             Scribe_Values.Look(ref modEnabled, "modEnabled", true);
             Scribe_Values.Look(ref dewfringeShadeLineGateEnabled, "dewfringeShadeLineGateEnabled", true);
             Scribe_Values.Look(ref crawlerRoadEnabled, "crawlerRoadEnabled", true);
@@ -184,7 +176,7 @@ namespace RimMandrake.LongShade
                   + "The biome def, its native creatures and its native flora are plain "
                   + "content either way. Off: also switches off every scripted mechanic below "
                   + "(the dewfringe rim gate, map-generation extras, middens, tollok ticks, the lure awning, "
-                  + "the harrok ambush, the incidents and the smoke calendar).");
+                  + "the harrok ambush and the incidents, the smoke haze among them).");
                 list.CheckboxLabeled("Dewfringe confined to the shade line", ref dewfringeShadeLineGateEnabled,
                     "The dewfringe (a new native plant, LONGSHADE_RULED_CONTENT_1 Q6) only ever "
                   + "grows on shade-boundary cells — the rim, not the area — enforced by a small "
@@ -271,17 +263,6 @@ namespace RimMandrake.LongShade
                     "Once the dead sandcrawler at the end of the Crawler Road has been cleared and looted, a clan of scavengers "
                   + "may walk in and tow the whole hull away, taking the biggest shadow on the map with it. Needs the campaign "
                   + "layer's incident. Off: the hull stays for good.");
-                list.GapLine();
-            }
-
-            if (Group(list, "After the haze: ash pulse and sand-lock", RimMandrake.Shared.SettingScope.NextPulse, new[] { "ashPulseEnabled", "sandLockEnabled" }))
-            {
-                list.CheckboxLabeled("Ash pulse after the haze", ref ashPulseEnabled,
-                    "When a smoke front clears, its ash settles and feeds the ground: for a few days plants grow "
-                  + "faster and wild growth thickens. Off: no ash pulse follows the haze.");
-                list.CheckboxLabeled("Sand-lock after the haze", ref sandLockEnabled,
-                    "When a smoke front clears, its ash packs the sand hard until the wind unpacks it: sand swimmers "
-                  + "are forced to the surface and nothing can burrow or lie buried in sand. Off: no sand-lock follows.");
                 list.GapLine();
             }
 

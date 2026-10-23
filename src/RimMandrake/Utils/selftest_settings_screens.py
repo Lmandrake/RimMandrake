@@ -629,7 +629,6 @@ MODS = {
         "Lee-side middens": "Now",
         "Shade extras": "Now",
         "Incidents: stampede, haze fronts and the clan's return": "NextPulse",
-        "After the haze: ash pulse and sand-lock": "NextPulse",
     }, ()),
     "SleepingIce": ("RM_SleepingIceMod.cs", "RM_SleepingIce.csproj", {
         "Nightside Ice enabled": "Now",
