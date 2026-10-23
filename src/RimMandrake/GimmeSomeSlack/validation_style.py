@@ -333,7 +333,7 @@ def run_live(args):
     else:
         V.row(rows, "S12d_D4_pending_queue_save", "UNMEASURED", "HARNESS",
               "SHARED: proof_all's one save is a plain rimworld/save_game after a zero-tick BEFORE census; a member staged pending "
-              "in it would change M4/S7/S9e's sets. Measured by validation_style.py --live --save NAME (csavenow)")
+              "in it would change S7/S9e's sets. Measured by validation_style.py --live --save NAME (csavenow)")
     return res
 
 
@@ -400,7 +400,7 @@ def s12_style_run_suspects(B, rows):
            "meaning": "PASS = doubling a styled line about doubles RunOf visits (linear); ~4x = the suspected O(N^2) flood per placement (D7 confirmed)"})
     s12c_d5_multilink(B, rows)
     # D4 needs a save + reload; it rides the script's own save (run_live, --save NAME). proof_all's one save is a plain
-    # rimworld/save_game after a zero-tick BEFORE census (M4/S7/S9e compare it with the load), so a member staged in that
+    # rimworld/save_game after a zero-tick BEFORE census (S7/S9e compare it with the load), so a member staged in that
     # save would change those sets: SHARED leaves D4 to the standalone run.
 
 

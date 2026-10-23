@@ -406,7 +406,7 @@ namespace RimMandrake.FlowWorks.Sheet
 		/// <summary>The master switch, the per-inflow switch (stage 3), the depth engine, and the fluid: water, or any other
 		/// FlowWorks liquid while "other liquids spill" is on (owner 2026-10-22: <i>"Build for all flowworks liquids."</i>).</summary>
 		private bool Accepts(FluidDef fluid, Source from) =>
-			RM_SheetSettings.SpillsFrom(from) && RimMandrakeFlowWorksSettings.depthEngineEnabled && fluid != null
+			RM_SheetSettings.SpillsFrom(from) && RimMandrakeFlowWorksSettings.DepthEngineActive && fluid != null
 			&& (fluid == Water || RM_SheetSettings.otherLiquidsSpillEnabled);
 
 		private SpillOffer MakeOffer(IntVec3 origin, long dl, FluidDef fluid, Source from)
@@ -527,7 +527,7 @@ namespace RimMandrake.FlowWorks.Sheet
 		// ── the pulse ──
 
 		/// <summary>Called from RM_MapComponent_Excavation.DoPulse, before the channel solve (so water that runs back is
-		/// levelled the same pulse). Runs whether or not the switch is on: water already standing keeps draining (D7).</summary>
+		/// levelled the same pulse). Runs only while the depth engine is on (it applies on reload; a game loaded off dries standing water once, D7).</summary>
 		public void EnginePulse()
 		{
 			if (state == null)
@@ -934,8 +934,9 @@ namespace RimMandrake.FlowWorks.Sheet
 				+ "; released floods with nowhere to go lost " + L(releaseLost);
 		}
 
-		/// <summary>"Dry all spilled water now": a DISCLOSED purge (D7), never silent.</summary>
-		public void DryAll()
+		/// <summary>"Dry all spilled water now": a DISCLOSED purge (D7), never silent. <paramref name="why"/> replaces the message's lead
+		/// (the engine-off-at-load path).</summary>
+		public void DryAll(string why = null)
 		{
 			if (state == null || state.WetCount == 0)
 			{
@@ -947,7 +948,7 @@ namespace RimMandrake.FlowWorks.Sheet
 			{
 				map.mapDrawer.MapMeshDirty(map.cellIndices.IndexToCell(k), MapMeshFlagDefOf.Terrain);
 			}
-			Messages.Message("Dried all spilled water on this map by hand: " + RM_Volume.FormatLitres(dl / (double)RM_Volume.UnitsPerLitre)
+			Messages.Message((why ?? "Dried all spilled water on this map by hand") + ": " + RM_Volume.FormatLitres(dl / (double)RM_Volume.UnitsPerLitre)
 				+ " removed (counted as dried by hand).", MessageTypeDefOf.NeutralEvent, false);
 		}
 

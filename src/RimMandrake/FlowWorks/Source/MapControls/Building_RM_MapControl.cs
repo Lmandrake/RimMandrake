@@ -165,9 +165,9 @@ namespace RimMandrake.FlowWorks.MapControls
 			{
 				sb.AppendLine("Switched off in Mod Settings (map controls): moves nothing.");
 			}
-			else if (NeedsDepthEngine && !RimMandrakeFlowWorksSettings.depthEngineEnabled)
+			else if (NeedsDepthEngine && !RimMandrakeFlowWorksSettings.DepthEngineActive)
 			{
-				sb.AppendLine("The FlowWorks depth engine is off in Mod Settings: moves nothing.");
+				sb.AppendLine("The FlowWorks depth engine is off in Mod Settings (applies after reload): moves nothing.");
 			}
 			else if (!active)
 			{

@@ -410,7 +410,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
     }
     /// <summary>Keeps RM_MapComponent_ConduitRuns out of the save, as the cord, aerial and hose components are kept out
-    /// (walk M4/E1: a save names no class of ours). Map.ExposeComponents writes EVERY MapComponent as
+    /// (walk E1: a save names no class of ours). Map.ExposeComponents writes EVERY MapComponent as
     /// &lt;li Class="..."/&gt; whether or not it has ExposeData, so a mod-less load logs "Could not find class". Found
     /// live 2026-10-05 by proof_all.py SL2 (the class was in the save); nothing here is saved state.</summary>
     [HarmonyLib.HarmonyPatch(typeof(Map), "ExposeComponents")]
