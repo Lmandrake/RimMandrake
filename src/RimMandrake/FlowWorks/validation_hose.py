@@ -58,8 +58,9 @@ PKG = "mandrake.rm.flowworks"
 TIER = "flowworks"
 HPROBE = "RimMandrake.FlowWorks.Hose.HoseProbe"
 HX0, HZ0 = 40, 60
-# 2026-10-10: 10 cells west of the reels, not 4: their hoses leave the west nozzle straight and U-turn east (owner card
-# 2026-10-06); H9 sets the minimum bend to 2 (lead-out 5.6 + a 4-cell-wide turn), which ran onto unprepared ground
+# 2026-10-10: 10 cells west of the reels, not 4: staged West, their hoses left the west nozzle straight and U-turned east
+# (owner card 2026-10-06); H9 sets the minimum bend to 2 (lead-out 5.6 + a 4-cell-wide turn), which ran onto unprepared
+# ground. The reels face East (their ends) since VALIDATION_HOSE_REELS_FIX_STILL_WEST; the margin is kept.
 SITE = (HX0 - 10, HZ0 - 2, 44, 20)
 R1, F1 = (HX0 + 2, HZ0 + 6), (HX0 + 26, HZ0 + 6)        # main hose, 24 cells, across a wall
 WALL = [(HX0 + 13, z) for z in range(HZ0 + 2, HZ0 + 9)]  # the hose must go round its north end
@@ -154,7 +155,8 @@ def run_live(args):
     B.call("jawa/set_fog", action="unfog", rect="%d,%d,%d,%d" % SITE)
     B.call("jawa/set_roof_batch", ops="None:%d,%d,%d,%d" % SITE)
     bw = B.call("jawa/build_batch", ops=V.ops("Wall", WALL), stuff="Steel", faction="player")
-    br = B.call("jawa/build_batch", ops=V.reel_west_ops([R1, R2]), faction="player", wipeExisting=False)
+    # VALIDATION_HOSE_REELS_FIX_STILL_WEST: each reel faces its hose's free end (East), as the proofs do since 3fa1dc487d
+    br = B.call("jawa/build_batch", ops=";".join([V.reel_toward(R1, F1), V.reel_toward(R2, F2)]), faction="player", wipeExisting=False)
     B.call("jawa/map_commit")
     B.ticks(2)
     h1, c = B.hose(R1)
@@ -330,7 +332,10 @@ def run_maze(args):
     B.call("jawa/set_fog", action="unfog", rect="%d,%d,%d,%d" % MSITE)
     B.call("jawa/set_roof_batch", ops="None:%d,%d,%d,%d" % MSITE)
     bw = B.call("jawa/build_batch", ops=V.ops("Wall", walls), stuff="Steel", faction="player")
-    br = B.call("jawa/build_batch", ops=V.reel_west_ops([R, PREEL, PLONE]), faction="player", wipeExisting=False)
+    # VALIDATION_HOSE_REELS_FIX_STILL_WEST: R faces its free end T (West, as before); PREEL and PLONE lay no hose (port rows only)
+    # and keep West, PREEL's back (East) edge on the tank
+    br = B.call("jawa/build_batch", ops=";".join([V.reel_toward(R, T), V.reel_toward(PREEL, None), V.reel_toward(PLONE, None)]),
+                faction="player", wipeExisting=False)
     bt = B.call("jawa/build_batch", ops=V.ops("RM_LiquidTank", [PTANK]), faction="player", wipeExisting=False)
     B.call("jawa/map_commit")
     B.ticks(2)
@@ -550,7 +555,7 @@ def run_removal_check(args):
 #   * RL9: the draw-order fix is live: span material queue == overhead queue > hose queue.
 # Here "working" = connection accepted, both hoses laid and plump, chain shown connected (the liquid half is NS_relay_chain_carries).
 RX0, RZ0 = 20, 100
-# 2026-10-10: 8 cells west of RA, not 2. RA is the one relay reel with no feeder, so its hose leaves the west nozzle straight
+# 2026-10-10 (West staging): 8 cells west of RA, not 2. RA is the one relay reel with no feeder, so its hose left the west nozzle straight
 # and U-turns back east (owner card 2026-10-06, straight lead-out: OutletLead 4.0 + a 1.2-radius turn); a 2-cell margin put
 # that lead-out on unprepared map ground, which refused the lay (RL3/RL6/RL8 red 2026-10-10). Same cure as the hose
 # matrix's 6-cell soil margin (8b0c5b0e3).
@@ -559,6 +564,9 @@ SITE_R = (RX0 - 8, RZ0 - 3, 88, 10)
 # adds ~12 cells; at 32 the laid hose was ~44 > 40 and was refused "route too long (the laid hose, lead-out included...)".
 # B is fed, so its hose keeps the plain start and B-C stays 32. A-C = 56 is still past one 40-cell hose (RL2, RL8).
 RA, RB, RC = (RX0, RZ0), (RX0 + 24, RZ0), (RX0 + 56, RZ0)
+# VALIDATION_HOSE_REELS_FIX_STILL_WEST: each relay reel faces the reel its hose goes to (A and B East; C West, toward A, the
+# ring RL5 refuses). The margins above date from the West staging and are kept.
+RELAY_TARGET = {RA: RB, RB: RC, RC: RA}
 
 
 def run_relay(args):
@@ -575,7 +583,8 @@ def run_relay(args):
     B.call("jawa/set_terrain_batch", ops="Soil:%d,%d,%d,%d" % SITE_R)
     B.call("jawa/set_fog", action="unfog", rect="%d,%d,%d,%d" % SITE_R)
     B.call("jawa/set_roof_batch", ops="None:%d,%d,%d,%d" % SITE_R)
-    br = B.call("jawa/build_batch", ops=V.reel_west_ops([RA, RB, RC]), faction="player", wipeExisting=False)
+    br = B.call("jawa/build_batch", ops=";".join(V.reel_toward(r, RELAY_TARGET[r]) for r in (RA, RB, RC)), faction="player",
+                wipeExisting=False)
     B.call("jawa/map_commit")
     B.ticks(2)
     a, c = B.hose(RA)
@@ -609,14 +618,18 @@ def run_relay(args):
         on_edge = bool(re_) and abs(de[0] - ep[0]) < 1e-3 and abs(de[1] - ep[1]) < 1e-3 and \
             abs(re_.get("edgeOffset") if re_.get("edgeOffset") is not None else 99) <= tol and re_.get("withinEdge") is True and \
             (re_.get("tailAngleDeg") if re_.get("tailAngleDeg") is not None else 99) < 3
-        west_inlet = inward != [1, 0] or (abs(de[1] - (dst[1] + 1)) < 0.15 and dst[0] - tol < de[0] < dst[0])
-        # HARNESS (BENCH belt 2026-10-22): since b765116aca the relay reels are built West one square east (reel_west_ops), so
-        # their Position is dst + (1, 0) while the footprint stays dst..dst+1: the relay is matched by V.reel_at, not equality
+        # the brass inlet is on the PICTURE's west, i.e. the relay's facing side (HoseRelay.DrawnEnd, art frame): it is checked
+        # only when the hose comes in on that side (C, facing A); a hose into a relay's back (B, facing C) meets the drawn
+        # outline (on_edge). VALIDATION_HOSE_REELS_FIX_STILL_WEST: before, every relay faced West and this was always checked.
+        brass = inward == [1, 0] and V.reel_facing(dst, RELAY_TARGET[dst]) == 3
+        west_inlet = not brass or (abs(de[1] - (dst[1] + 1)) < 0.15 and dst[0] - tol < de[0] < dst[0])
+        # HARNESS (BENCH belt 2026-10-22): a reel's Position moves with its facing while the footprint stays dst..dst+1
+        # (V.reel_pos): the relay is matched by V.reel_at, not equality
         ok = lay.get("success") and h.get("layOk") and V.reel_at(rel, dst) and intake and on_edge and west_inlet and \
             (h.get("pathLen") or 99) <= (h.get("maxLength") or 0)
         V.row(rows, name, "PASS" if ok else "FAIL", "MOD",
               dict(_pick(h, "relayTo", "far", "endPoint", "pathLen", "flatLen", "maxLength", "layOk"), reason=lay.get("reason"), intake=intake,
-                   onEdge=on_edge, westInlet=west_inlet, relayEnd=re_))
+                   onEdge=on_edge, brassSide=brass, westInlet=west_inlet, relayEnd=re_))
         return h
 
     ha = laid_into(RA, RB, "RL3_hose_onto_relay_B")
@@ -667,7 +680,7 @@ def run_relay(args):
 #     Plump with the DEV flow on. endKind (Water etc.) is S4's: that row is SKIP until the census carries it.
 #   * CR6: a Retract order: walk back to the reel, Retracting, Stored within length/3 s + 300 ticks of winding.
 CX0, CZ0 = 80, 60
-CSITE = (CX0 - 8, CZ0 - 2, 42, 20)   # 2026-10-10: 10 cells west of the reels for the straight lead-out + U-turn (owner card 2026-10-06)
+CSITE = (CX0 - 8, CZ0 - 2, 42, 20)   # 2026-10-10: room west of the reel for the West-staged lead-out + U-turn; kept (it faces East now)
 CREEL = (CX0 + 2, CZ0 + 8)
 CTARGET = (CX0 + 26, CZ0 + 8)        # 24 cells out, open floor
 CSTAND = (CX0 + 5, CZ0 + 8)          # where the colonist is staged, beside the reel
@@ -749,7 +762,7 @@ def run_carry(args):
     B.call("jawa/set_terrain_batch", ops="Soil:%d,%d,%d,%d" % CSITE)
     B.call("jawa/set_fog", action="unfog", rect="%d,%d,%d,%d" % CSITE)
     B.call("jawa/set_roof_batch", ops="None:%d,%d,%d,%d" % CSITE)
-    br = B.call("jawa/build_batch", ops=V.reel_west_ops([CREEL]), faction="player", wipeExisting=False)
+    br = B.call("jawa/build_batch", ops=V.reel_toward(CREEL, CTARGET), faction="player", wipeExisting=False)   # East, at its target
     B.call("jawa/map_commit")
     B.call("rimworld/frame_cell_rect", x=CSITE[0], z=CSITE[1], width=CSITE[2], height=CSITE[3], paddingCells=1)
     B.ticks(2)

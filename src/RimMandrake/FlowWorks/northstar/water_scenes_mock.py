@@ -26,6 +26,10 @@ class MockV(object):
     def _wait_playing(self, B, budget_s=240, leave_s=30):
         return True, 0
 
+    def sweep_at_start(self, B, made_map):
+        r = B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False) or {}
+        return {"route": "destroy_bulk", "removed": r.get("matchedCount"), "left": [], "kept": 0, "snapshot": None}
+
 
 class MockFailure(RuntimeError):
     pass

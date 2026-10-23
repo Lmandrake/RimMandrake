@@ -51,7 +51,7 @@ LEARNED, 2026-10-02 (five live runs; each is a check or guard below, not prose o
   * HARNESS: the J window ended when the jobs did; fast colonists (run 5: 7 chunks) left Rain at 0.18
     and E6n UNMEASURED -> J now keeps pulsing after the jobs until the rain-OFF negative is measurable.
   * HARNESS/SITE lessons: start_debug_game_ready from a running colony times out (go to the main
-    menu first); wildlife wanders into plots (destroy_bulk nonColonists); a mining-incapable
+    menu first); wildlife wanders into plots (swept: validation_core.sweep_non_colonists); a mining-incapable
     colonist makes pawn_stats log a red error and returns 0.1 (re-roll); pawns left to the
     WorkGivers wandered 60 cells away on a Tundra map (order the job; WorkGiver selection is
     UNCOVERED); the E4 OFF window must straddle the scheduled tick or it proves nothing.
@@ -2280,8 +2280,8 @@ def phase_site(L, args):
         rects = site_rects()
         # wildlife wanders into plots (run 4: a hare at (201,5) refused the site) -- the plan's recipe
         # removes every non-colonist first; colonists that stand in a plot still refuse.
-        db = B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
-        L._log("    destroy_bulk nonColonists: %s" % db.get("matchedCount"))
+        db = _vc().sweep_non_colonists(B)
+        L._log("    sweep non-colonists: %s removed %s, left %s" % (db.get("route"), db.get("removed"), db.get("left")))
         pw = B.call("jawa/list_pawns", limit=500)
         inside = [(p.get("id") or p.get("thingId"), p.get("position") or (p.get("x"), p.get("z"))) for p in pw.get("pawns") or []
                   if _in_any(_pos(p), rects)]
@@ -3002,7 +3002,7 @@ def phase_P(L, args):
         L.o.rain_on = False
         B.call("jawa/weather_set", weather="Clear")
         B.call("jawa/incident_queue_clear")
-        B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
+        _vc().sweep_non_colonists(B)
         for k in sorted(k for k, sc in SCENES.items() if sc.get("phase") == "P"):
             L.dig_scene(k)
         ids = {}
@@ -3248,7 +3248,7 @@ def phase_P(L, args):
                       o_out.get("arrived"), alive(r_c, b)))
         for pid in col.values():
             B.call("jawa/set_pawn_faction", pawn=pid, faction="none")
-        B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
+        _vc().sweep_non_colonists(B)
 
 
 
@@ -3349,7 +3349,7 @@ def _level_at(rows, cells):
 def phase_X(L, args):
     B = L.B
     with L.step("X_promoted", None):
-        B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
+        _vc().sweep_non_colonists(B)
         for k in sorted(k for k, sc in SCENES.items() if sc.get("phase") == "X"):
             L.dig_scene(k)
         strip = SCENES["X_strip"]["cells"]
@@ -3384,7 +3384,7 @@ def phase_X(L, args):
         else:
             L.row("X1_pawn_height_ladder", not bad, "MOD", bad[:3] or "sink/drawDz by depth (0.3/level PROVISIONAL, "
                   "strictly deeper each step): %s" % "; ".join(got))
-        B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
+        _vc().sweep_non_colonists(B)
 
         # X2/X3/X4: a colonist WALKS the strip D0 -> D4 (own faction: the carve-out, no capture) and back.
         r = B.call("jawa/spawn_pawn", kindDef="Colonist", faction="player", x=X_WALK[0], z=X_WALK[1], count=1)
@@ -3423,7 +3423,7 @@ def phase_X(L, args):
                   "colonist on D=4 drawn %s cells down; wall over crown %s x a person's height (owner: walls 20%% above "
                   "the head, >= 1.2)" % (k4.get("sink"), k4.get("wallOverHead")))
         B.call("jawa/set_pawn_faction", pawn=col, faction="none")
-        B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
+        _vc().sweep_non_colonists(B)
 
         # X5 slime_occupant_below_surface: slime in the D=4 cell does not lift its occupant.
         okf, tf = _fill_fluid(L, strip[-1], 2, SLIME)
@@ -3435,7 +3435,7 @@ def phase_X(L, args):
             L.row("X5_slime_occupant_below_surface", _sink_ok(k5, 4) and k5.get("fluid") == SLIME and k5.get("fill") == "2",
                   "MOD", "D=4 cell holding %s F=%s: occupant drawn %s down (dry D=4: %.2f), drawDz %s" % (
                       k5.get("fluid"), k5.get("fill"), k5.get("sink"), 4 * SINK_PER_LEVEL, k5.get("drawDz")))
-        B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
+        _vc().sweep_non_colonists(B)
 
         # X6 fill_fluid_distinct + X7 tar_fill_front_lags_water (+ X7n the toggle): named fluids, gravity only.
         two = SCENES["X_two"]["cells"]
@@ -3529,7 +3529,7 @@ def phase_X(L, args):
               "still the judge's)" % (sorted(printed), sorted(around)))
         _x8b_cover_occupant(L, cov[0], occ)
         _x8c_lid_walker(L, cov[1])
-        B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
+        _vc().sweep_non_colonists(B)
         _x10_canal_fire(L)
 
 
@@ -4713,6 +4713,15 @@ def run_live(args, B=None):
             import validation_core as _VC   # noqa: E402
             load["site_calm"] = _VC.site_calm(B)
             L._log("- site_calm: %s" % load["site_calm"])
+    # PROOF_SWEEPS_FIX_OTHER_ZOOS_STILL_OPEN: --current-map runs on a map this run did not make (a review save): its own
+    # non-colonists (staged animals, prisoners) are snapshotted now and every phase's sweep (_vc().sweep_non_colonists)
+    # removes only later arrivals; an unreadable snapshot removes nothing. A fresh or loaded clean site keeps the bulk route.
+    kept_pawns = None
+    _vc().keep_pawns_reset()
+    if not args.mock:
+        if getattr(args, "current_map", False) and not args.fresh_map:
+            kept_pawns = _vc().keep_pawns_on_map(B)
+            L._log("- kept the current map's own non-colonists: %s" % kept_pawns)
     # The recording contract (`modcheck record`, Utils/modcheck/record.py): the mod hash the run
     # was made AT and the mod list it ran ON, both read now, so a later record can refuse a stale
     # or off-tier result instead of trusting it.
@@ -4756,7 +4765,7 @@ def run_live(args, B=None):
     except Abort as ex:                # the engine/map is gone (often why the run aborted): keep every collected row
         ticks1 = None
         L._log("- final engine_state unreadable: %s" % ex)
-    res = dict(script="validation_v2", mod="FlowWorks", mod_hash=mod_hash, env=env,
+    res = dict(script="validation_v2", mod="FlowWorks", mod_hash=mod_hash, env=env, kept_pawns=kept_pawns,
                mode="mock" if args.mock else "live", faults=list(args.fault or []),
                started=time.strftime("%Y-%m-%dT%H:%M:%S", time.localtime(t0)), wall_s=round(time.time() - t0, 1),
                ticks_spent=(ticks1 - ticks0) if (ticks0 is not None and ticks1 is not None) else None,

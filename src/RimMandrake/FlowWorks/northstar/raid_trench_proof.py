@@ -225,7 +225,8 @@ def _run(argv, hold):
     if not (off.get("success") is True and off.get("valueAfter") is False):
         say("WARNING: storyteller NOT confirmed off (%s): a stray incident may land on the island" % json.dumps(off, default=str)[:200])
         res["storytellerOff"] = "UNCONFIRMED"
-    B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
+    # PROOF_SWEEPS_FIX_OTHER_ZOOS_STILL_OPEN: on a map we did not make keep its own non-colonists (staged animals, prisoners)
+    res["sweep_start"] = V.sweep_at_start(B, made_map=a.fresh_map)
     B.call("rimworld/set_god_mode", enabled=True)
     mi = B.call("jawa/map_info") or {}
     c = (int(mi.get("sizeX", 250)) // 2, int(mi.get("sizeZ", 250)) // 2)

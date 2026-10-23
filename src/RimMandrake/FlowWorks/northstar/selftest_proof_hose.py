@@ -199,6 +199,47 @@ def zoo_checks():
     sw = V.sweep_non_colonists(bl)
     check("zoo: an unreadable snapshot refuses every sweep (removes nothing)", "error" in kp and sw["route"].startswith("refused"), sw)
     V.keep_pawns_reset()
+    zoo_start_checks(Zoo)
+
+
+def vh_reel_facing_checks(VH):
+    """VALIDATION_HOSE_REELS_FIX_STILL_WEST: validation_hose stages each reel facing its hose's end (3fa1dc487d's pattern)."""
+    import validation_core as V
+    src = open(VH.__file__, encoding="utf-8").read()
+    check("VH: no reel is staged with reel_west / reel_west_ops", "reel_west" not in src)
+    face = {k: "NESW"[V.reel_facing(k, t)] for k, t in VH.RELAY_TARGET.items()}
+    check("VH: relays A and B face East (their next reel), C faces West (A, the refused ring)",
+          [face[VH.RA], face[VH.RB], face[VH.RC]] == ["E", "E", "W"], face)
+    check("VH: the hose and carry reels face East, at their ends", V.reel_facing(VH.R1, VH.F1) == 1 and V.reel_facing(VH.R2, VH.F2) == 1
+          and V.reel_facing(VH.CREEL, VH.CTARGET) == 1)
+    check("VH: the relay row checks the brass inlet only on the relay's facing side",
+          "brass = inward == [1, 0] and V.reel_facing(dst, RELAY_TARGET[dst]) == 3" in src)
+
+
+def zoo_start_checks(Zoo):
+    """PROOF_SWEEPS_FIX_OTHER_ZOOS_STILL_OPEN: validation_core.sweep_at_start, the opening sweep validation_v2
+    (--current-map), liquid_checks, raid_trench_proof and water_scenes_walk share."""
+    import validation_core as V
+    V.keep_pawns_reset()
+    z = Zoo(tempfile.mkdtemp(), b"")
+    s1 = V.sweep_at_start(z, made_map=False)        # read 1: snapshot {50,51,52}; read 2 (the sweep): the boar 60 walks in
+    ids = sorted(r["id"] for r in z.roster)
+    check("start: a map we did not make keeps its zoo and bulk is never called", z.bulk == 0 and ids == [1, 50, 51, 52], (z.bulk, ids))
+    check("start: the stray that arrived after the snapshot is vanished", z.vanished == [60], (z.vanished, s1))
+    z.roster.append({"id": 61, "isPlayer": False, "intelligence": "Animal", "faction": None})
+    V.sweep_at_start(z, made_map=False)             # the next scene of the same run: the first snapshot stands
+    check("start: a second call does not re-snapshot (a stray from scene 1 is still swept)", 61 in z.vanished
+          and sorted(V.KEEP_PAWNS) == [50, 51, 52], (z.vanished, sorted(V.KEEP_PAWNS)))
+    fresh = Zoo(tempfile.mkdtemp(), b"")
+    s3 = V.sweep_at_start(fresh, made_map=True)
+    check("start: a map the run made resets the keep set and takes the bulk route", s3["route"] == "destroy_bulk"
+          and fresh.bulk == 1 and not V.KEEP_PAWNS, (s3, sorted(V.KEEP_PAWNS)))
+    V.keep_pawns_reset()
+    # can-fail: no proof script on the item's list sweeps non-colonists around the keep set any more
+    for f in ("validation_v2.py", "liquid_checks.py", "raid_trench_proof.py", "water_scenes_walk.py"):
+        src = open(os.path.join(HERE, f), encoding="utf-8").read()
+        check("start: %s has no direct destroy_bulk nonColonists" % f,
+              'call("jawa/destroy_bulk", filter="nonColonists"' not in src)
 
 
 def main():
@@ -260,6 +301,8 @@ def main():
           wv({"hoses": [laid(1, laid=False, wallCross=5)]})[:2] == ("UNMEASURED", "SITE"))
     check("walls_verdict: census without wallCross (old DLL) -> UNMEASURED HARNESS, never PASS",
           wv({"hoses": [{"id": 1, "laid": True, "layOk": True}]})[:2] == ("UNMEASURED", "HARNESS"))
+    check("walls_verdict: a census that did not answer -> UNMEASURED HARNESS, not SITE",
+          wv({"success": False, "error": "timeout"})[:2] == ("UNMEASURED", "HARNESS") and wv(None)[:2] == ("UNMEASURED", "HARNESS"))
     hw1 = next((r for r in res["rows"] if r["id"] == "HW1_no_laid_hose_crosses_a_wall"), None)
     check("a full fake run emits HW1 (the fake census has no wallCross: UNMEASURED)", hw1 is not None and hw1["status"] == "UNMEASURED", hw1)
     v = PH.sl4_verdict
@@ -287,8 +330,6 @@ def main():
     with contextlib.redirect_stdout(io.StringIO()):
         _, resnh = run_fake(bridge_cls=NoHoseBridge)
     stnh = {r["id"]: r["status"] for r in resnh["rows"]}
-    check("walls_verdict: a census that did not answer -> UNMEASURED HARNESS, not SITE",
-          wv({"success": False, "error": "timeout"})[:2] == ("UNMEASURED", "HARNESS") and wv(None)[:2] == ("UNMEASURED", "HARNESS"))
     check("SL2/SL3 with no hose on the map at the save are UNMEASURED (site), not a MOD FAIL",
           stnh.get("SL2_save_names_no_class_of_ours") == "UNMEASURED" and stnh.get("SL3_hoses_and_reel_styles_survive") == "UNMEASURED", stnh)
     # H0_probe_channel (review S7): a failing matrix probe channel turns every hose scene row FAIL (ids stay declared)
@@ -470,6 +511,7 @@ def main():
           PH.V.reel_toward(sc.reel, sc.end) == "RM_HoseReel:%d,%d,1" % (sc.reel[0], sc.reel[1] + 1))
     check("reels: nozzle side cells by facing (E = the footprint's east column, W = its west column)",
           PH._nozzle_side(10, 20, 1) == (11, 12, 20, 22) and PH._nozzle_side(10, 20, 3) == (10, 11, 20, 22))
+    vh_reel_facing_checks(VH)
     print("selftest_proof_hose: %s (%d failing)" % ("PASS" if not FAILS else "FAIL", len(FAILS)))
     return 0 if not FAILS else 1
 

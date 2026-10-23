@@ -1478,7 +1478,8 @@ def run_S6(w):
 # ---------------------------------------------------------------- prep / settings
 def prep(w):
     st = w.call("rimworld/get_ui_state").get("programState")
-    if st != "Playing" or w.args.fresh_map:
+    made = st != "Playing" or bool(w.args.fresh_map)
+    if made:
         if st == "Playing":
             w.call("rimworld/go_to_main_menu")     # start_debug_game_ready on a Playing game keeps the old map
             time.sleep(5)
@@ -1488,7 +1489,8 @@ def prep(w):
     w.call("rimworld/pause_game", paused=True)
     w.call("jawa/weather_set", weather="Clear", lockWeather=True)
     w.call("jawa/incident_queue_clear")
-    w.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
+    # PROOF_SWEEPS_FIX_OTHER_ZOOS_STILL_OPEN: on a map we did not make keep its own non-colonists (staged animals, prisoners)
+    w.say("  opening sweep: %s" % (w.V.sweep_at_start(w.B, made_map=made),))
     w.call("rimworld/set_god_mode", enabled=True)
     for c in w.hp("colonists").get("pawns") or []:
         w.hp("pawn:%d=draft" % c["id"])
