@@ -1009,11 +1009,13 @@ def walls_verdict(census):
     """HW1 (HOSE_ROUTE_FIX_TUNNELS_UNDER_WALLS / HOSE_CLEAR_FIX_WALL_SEAM_LOOPHOLE, owner 2026-10-22: "We MUST fix the "goes
     under walls" problem"): every laid hose on the map, read off HoseProbe's census field wallCross (fine samples of the flat and
     plump poses deeper than HoseMath.WallCrossDepth inside blocked ground, the first 0.5 cell at each end skipped). PASS only
-    when every laid hose reads 0; FAIL names each hose that crosses; UNMEASURED when no hose is laid (SITE) or the deployed DLL
-    predates the field (HARNESS). Reads the map as it stands: `--no-fresh-map --only walls` checks a loaded save (e.g. the
+    when every laid hose reads 0; FAIL names each hose that crosses; UNMEASURED when no hose is laid (SITE), or the census did
+    not answer or the deployed DLL predates the field (HARNESS). Reads the map as it stands: `--no-fresh-map --only walls` checks a loaded save (e.g. the
     walkthrough save b) without touching it. Returns (status, class, detail)."""
     hoses = [h for h in (census or {}).get("hoses") or [] if h.get("laid") and h.get("layOk")]
-    if not (census or {}).get("success", True) or not hoses:
+    if not isinstance(census, dict) or census.get("success") is False:
+        return "UNMEASURED", "HARNESS", {"why": "the census did not answer: %s" % str(census)[:160]}
+    if not hoses:
         return "UNMEASURED", "SITE", {"why": "no laid hose on this map", "hoses": len((census or {}).get("hoses") or [])}
     if any("wallCross" not in h for h in hoses):
         return "UNMEASURED", "HARNESS", {"why": "census has no wallCross: the deployed FlowWorks DLL predates HW1"}
