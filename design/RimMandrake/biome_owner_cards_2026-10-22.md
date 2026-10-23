@@ -29,6 +29,8 @@ Order, with what each unblocks:
 
 ## Card 1. The shell body part that quietly overrides vanilla's (also: what to rename it)
 
+**DONE 2026-10-22: option 1 chosen by the owner (card) and carried out; the part is `RUT_CephaloidShell`, vanilla `Shell` restored for every other body.**
+
 **What was learned.** One of our Star Wars mods (Utinni patches, the absorbed Cephaloids content) defines a body part
 named `Shell` with 2500 hit points that cannot be destroyed and never bleeds. Vanilla RimWorld already has a body part
 named `Shell` (30 hit points, a normal part). Two parts with the same name cannot coexist: ours silently replaces the
