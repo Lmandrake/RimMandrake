@@ -29,8 +29,8 @@
   naming tier question, not decided here.
 
   ART: interim textures are VANILLA paths (no magenta, no donor art): the
-  vanilla moisture pump for the vaporator and its wreck, vanilla beer bottles
-  for the water. The vaporator look is a sheet round in the sprint (kickoff
+  vanilla moisture pump for the vaporator, vanilla beer bottles for the water.
+  The wreck has its own art (RM_WindVaporatorWreck). The vaporator look is a sheet round in the sprint (kickoff
   §1.3 "Art set"); repoint texPath when that art is installed.
 
   PROVISIONAL (owner ruling 2026-10-03): 120 W, 4 fog water a day, research
