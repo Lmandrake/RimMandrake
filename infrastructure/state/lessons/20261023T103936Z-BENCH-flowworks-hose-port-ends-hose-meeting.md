@@ -1,0 +1,1 @@
+FlowWorks hose port ends: a hose meeting a port from the SIDE (lead-out cell blocked) cannot be re-aimed onto the port axis by a Hermite (HoseMath.EndOnPort loops back behind the end); draw an elbow instead (HoseMath.PortFitting: coupling face slides <=0.1 into the building, wrap cut to the join). SideArrival = last 0.5 cell >35 deg off the axis.
