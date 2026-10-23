@@ -270,6 +270,13 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string grid = Src("Superdeep", "RM_PocketGrid.cs");
                 Assert(grid.Contains("RM_PocketGridMath.Label("), "the runtime grid is the selftested labeller");
                 Assert(grid.Contains("RebuildMinTicks = 60"), "rebuilt at most once per 60 ticks");
+                // RELOAD_POCKETS (live_session 20261022T235239 B7): a build made while the map loads is rebuilt on the first
+                // tick or frame in Playing, ahead of the generation test and the 60-tick throttle (can-fail: either check
+                // moved after the throttle, or the stamp taken anywhere but Build, lets a half-loaded grid stand)
+                RiverSwitchFlipChecks.Has(grid, @"builtMidLoad = Current\.ProgramState != ProgramState\.Playing;",
+                    "Build stamps whether it ran mid-load");
+                RiverSwitchFlipChecks.Has(grid, @"if \(builtMidLoad && Current\.ProgramState == ProgramState\.Playing\)\s*\{\s*Build\(notifyFlips\);\s*return;\s*\}\s*if \(builtGeneration == eng\.ClimbGeneration",
+                    "a mid-load build is rebuilt before the generation and throttle tests");
                 string eng = Src("RM_MapComponent_Excavation.cs");
                 Assert(eng.Split(new[] { "BumpClimbGeneration()" }, StringSplitOptions.None).Length >= 4,
                     "the generation moves on Deepen and FillIn (and is declared)");

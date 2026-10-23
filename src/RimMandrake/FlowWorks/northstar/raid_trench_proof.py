@@ -138,6 +138,16 @@ def restore_storyteller(B, prior):
     return False, "restore of enableStoryteller to %s NOT confirmed: %s" % (prior, json.dumps(r, default=str)[:200])
 
 
+def job_trace(B, pid):
+    """RM_RaiderTrench.ProofJobTrace for one raider, as text; a refused or raising call is its own text, never a crash."""
+    try:
+        r = B.call("jawa/static_call", type="RimMandrake.FlowWorks.RM_RaiderTrench", method="ProofJobTrace", args=pid,
+                   _answer=True) or {}
+    except Exception as ex:  # noqa: BLE001 - diagnostics only (IndeterminateError after an unknown-outcome call)
+        return ("unread: %s: %s" % (type(ex).__name__, ex))[:600]
+    return str(r.get("result") or "no answer")[:600]
+
+
 def main(argv=None):
     """Runs the proof; the storyteller setting is restored in a finally whatever the body does (raise, Ctrl-C, early return)."""
     hold = {}
@@ -346,10 +356,11 @@ def _run(argv, hold):
     # per live raider at the end, its duty, lord toil, job and the giver that made it (none = vanilla's error-recover Wait),
     # how its trench-work jobs ended (sameTick = ended the tick they started: the 10-jobs-a-tick loop), and the reach checks
     # the next job's first toil meets. Read-only; an old DLL without the method reads its refusal, which is data.
+    # HARNESS (live_session 20261022T235239 B8): an earlier tps_report timed out with an UNKNOWN outcome, so the client
+    # refused this static_call (IndeterminateError) and the crash lost every row after it. The trace is diagnostics: a
+    # refused read is recorded as text and the verdict rows below still run.
     if samples:
-        det["jobTrace"] = {r_["id"]: str((B.call("jawa/static_call", type="RimMandrake.FlowWorks.RM_RaiderTrench",
-                                                  method="ProofJobTrace", args=r_["id"], _answer=True) or {}).get("result")
-                                         or "no answer")[:600]
+        det["jobTrace"] = {r_["id"]: job_trace(B, r_["id"])
                            for r_ in (samples[-1]["raiders"] if samples else []) if r_.get("spawned") and not r_.get("dead")}
     row("RAID_outcome", "MEASURED", dict(outcome=words, **det))
     cameNear = len(det["cameNear"])

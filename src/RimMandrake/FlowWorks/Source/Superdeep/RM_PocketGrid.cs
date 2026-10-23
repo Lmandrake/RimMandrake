@@ -67,6 +67,8 @@ namespace RimMandrake.FlowWorks
 		private readonly double[] lastBandMs = new double[RM_PitTrapMath.ClimbBands];
 		private double lastBuildMs, maxBuildMs, totalBuildMs;
 		private int firstBuiltTick = int.MinValue;
+		/// <summary>RELOAD_POCKETS: the last build ran while the map was still loading (ProgramState not Playing).</summary>
+		private bool builtMidLoad, firstBuildMidLoad;
 
 		private RM_PocketGrid(Map map, int stride = 0, bool floorView = false)
 		{
@@ -237,6 +239,18 @@ namespace RimMandrake.FlowWorks
 			{
 				return; // built on first query; nothing reads it yet
 			}
+			// RELOAD_POCKETS (live_session 20261022T235239 B7, the third run with the same red): straight after a load the
+			// surface pocket read 62,408 squares, 62,407 before the save and again 120 ticks later. PRESUMED, not traced (the
+			// square that differed was never read): the first query of a loaded map can build the grid mid-load (region and
+			// room building ask IsPersonPocketCell while things are still spawning), and the throttle then kept that build for
+			// RebuildMinTicks, so a read in the first second after a load saw half-loaded ground. The firstMidLoad flag in
+			// ProofPocketTiming says whether this map's first build came mid-load. A mid-load build is never trusted past the load: the first
+			// tick or frame in Playing rebuilds it, whatever the generation says.
+			if (builtMidLoad && Current.ProgramState == ProgramState.Playing)
+			{
+				Build(notifyFlips);
+				return;
+			}
 			if (builtGeneration == eng.ClimbGeneration && builtSalt == settingsSalt)
 			{
 				return;
@@ -300,6 +314,7 @@ namespace RimMandrake.FlowWorks
 			builtGeneration = eng?.ClimbGeneration ?? 0;
 			builtSalt = settingsSalt;
 			builtTick = Find.TickManager?.TicksGame ?? 0;
+			builtMidLoad = Current.ProgramState != ProgramState.Playing;
 			cellsCache.Clear();
 			wideCache.Clear();
 			edgeCache.Clear();
@@ -307,6 +322,7 @@ namespace RimMandrake.FlowWorks
 			if (firstBuiltTick == int.MinValue)
 			{
 				firstBuiltTick = builtTick;
+				firstBuildMidLoad = builtMidLoad;
 			}
 			if (notifyFlips && stride == 0 && old != null && old[PersonBand] != null && RM_PitRooms.RoomsOn)
 			{
@@ -333,7 +349,7 @@ namespace RimMandrake.FlowWorks
 			int now = Find.TickManager?.TicksGame ?? 0;
 			int span = firstBuiltTick == int.MinValue ? 0 : now - firstBuiltTick;
 			var sb = new System.Text.StringBuilder();
-			sb.Append(name).Append(" rebuilds=").Append(Rebuilds).Append(" overTicks=").Append(span)
+			sb.Append(name).Append(" rebuilds=").Append(Rebuilds).Append(" firstMidLoad=").Append(firstBuildMidLoad ? 1 : 0).Append(" overTicks=").Append(span)
 				.Append(" per1000=").Append(span > 0 ? (Rebuilds * 1000.0 / span).ToString("0.00") : "-")
 				.Append(" lastMs=").Append(lastBuildMs.ToString("0.000")).Append(" maxMs=").Append(maxBuildMs.ToString("0.000"))
 				.Append(" meanMs=").Append(Rebuilds > 0 ? (totalBuildMs / Rebuilds).ToString("0.000") : "-").Append(" bandMs=");

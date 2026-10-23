@@ -531,6 +531,18 @@ check(L.fish_roll_verdict(dict(success=True, body=dict(hasBody=True, hasFish=Fal
 check(L.FOOT["reservoir"][1] >= 2 + 20, "fish: the reservoir footprint holds the 10x20 (200-square) dig")
 check(L.fish_roll_verdict(dict(success=True, body=dict(hasBody=False)))[:2] == ("UNMEASURED", "SITE"), "fish: no body is SITE")
 check(L.fish_roll_verdict(dict(success=False))[:2] == ("UNMEASURED", "HARNESS"), "fish: a failed read is HARNESS")
+# 20261022T235239: a 200-square fishless body on RM_TheRot (no fishTypes) read FAIL/MOD; the biome cannot roll fish
+check(L.fish_roll_verdict(dict(success=True, body=dict(hasBody=True, hasFish=False, size=200)), False)[:2] == ("UNMEASURED", "SITE"),
+      "fish: a fishless biome (no fishTypes) is SITE, never a mend FAIL")
+check(L.fish_roll_verdict(dict(success=True, body=dict(hasBody=True, hasFish=False, size=200)), None)[:2] == ("UNMEASURED", "HARNESS"),
+      "fish: an unread biome is HARNESS")
+check(L.fish_roll_verdict(dict(success=True, body=dict(hasBody=True, hasFish=True, size=200)), False)[0] == "PASS",
+      "fish: fish seen PASS whatever the biome read")
+# B0 identity (20261022T235239 ran an assembly older than the repo's and nothing said so)
+check(L.assembly_identity_verdict("a" * 64, True, "a" * 64)[0] == "PASS", "identity: same sha PASS")
+check(L.assembly_identity_verdict("b" * 64, True, "a" * 64)[0] == "FAIL", "can-fail identity: another build FAILs")
+check(L.assembly_identity_verdict(None, None, "a" * 64)[0] == "UNMEASURED", "identity: no sha read is UNMEASURED")
+check(L.assembly_identity_verdict("a" * 64, False, "a" * 64)[0] == "FAIL", "identity: a loaded image that differs from the file FAILs")
 check(L.reload_verdict(True, [], []) == "PASS" and L.reload_verdict(True, [], ["pocket_covers"]) == "FAIL",
       "reload: equal is PASS, a differing key is FAIL")
 check(L.reload_verdict(True, ["pocket_covers"], []) == "UNMEASURED",

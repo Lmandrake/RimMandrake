@@ -234,8 +234,17 @@ namespace RimMandrake.FlowWorks.Machinery
 				}
 				placed += (int)room;
 			}
+			PlacedInWaterUnits += placed;
 			return placed;
 		}
+
+		/// <summary>State read (L5, LIQUID_LEDGER_BUILD_NO_UNIT_LOST): units a drain or a spill put into the canal or pond at or
+		/// beside its square (<see cref="PlaceInWater"/>). Before this counter that exit had none: live_session 20261022T235239
+		/// read a hose drain 10,000 units with SpilledUnits flat and no filth, and nothing could say where they went.</summary>
+		public static int PlacedInWaterUnits;
+
+		/// <summary>State read: units <see cref="PlaceNearby"/> put into a canal or pond within <see cref="HomeRadius"/>.</summary>
+		public static int PlacedNearbyUnits;
 
 		/// <summary>The squares searched for water to take liquid that would otherwise be lost (a spill over water or a wall,
 		/// a filth that will not lie): the nearest canal or pond of the liquid within this radius.</summary>
@@ -272,6 +281,7 @@ namespace RimMandrake.FlowWorks.Machinery
 					placed += (int)room;
 				}
 			}
+			PlacedNearbyUnits += placed;
 			return placed;
 		}
 
