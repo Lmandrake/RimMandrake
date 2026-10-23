@@ -16,7 +16,7 @@ GameCondition, `RM_ForgePulse` = `RM_GameCondition_ForgeCycle`, the six-phase fi
 temp-terrain layer) -> growth (floatstone gardens bloom on the crust) -> glowing cracks -> melt-back that burns what
 stands on the crust). Around it: four dormancy natives that keep the mountain's clock (dhokkur, julmox, dhuvvox
 seal and wake with the cycle; the dhuvvox also run a visible countdown), the floatstone economy (harvest, spunstone
-bonding research hidden until studied, gravship keel braces, the floatstone door and spunstone hull it also unlocks),
+bonding research hidden until studied, the floatstone door and spunstone hull it unlocks),
 the four phase voices, and the Mod Settings (count derived from the C# source, never written here).
 
 HOW THE CYCLE IS DRIVEN AND READ. A real cycle is ~5 in-game days, so this suite steps it with the mod's OWN
@@ -28,9 +28,8 @@ counter that lies cannot green a phase. No tagged log line is UNMEASURED, never 
 10,000 messages: Transient/bridge_debugaction_noop_report.md).
 
 SETTINGS. `RM_TheForgeSettings` fields are `public static`. `jawa/mod_settings_field` writes the static (read live
-by every feature, so a flip takes effect at once) but never calls WriteSettings. Only the keelwork toggle needs
-WriteSettings (RM_KeelworkUtility.ApplySetting rewrites the brace's fuelSavingsPercent); that arm opens and
-closes the Mod Settings dialog and records UNMEASURED, never PASS, if the dialog does not reach it. Every arm
+by every feature, so a flip takes effect at once) but never calls WriteSettings (the keelwork toggle that needed it
+was cut 2026-10-23 with the keel brace). Every arm
 restores its fields in a `finally` through the raw session (`t.set_setting` is a no-op after a failed chain).
 The shared EnvironmentalHazards `environmentalDamageEnabled` is switched OFF for the long Rain windows so the start
 colonists are not scalded to death on a quicktest map, and restored after.
@@ -161,7 +160,7 @@ GROUPS = [
     ("conditions", "GameConditionDef", _names("GameConditionDefs", "GameConditionDef"), 1),
     ("hediffs", "HediffDef", _names("HediffDefs", "HediffDef"), 1),
     ("research", "ResearchProjectDef", _names("ResearchProjectDefs", "ResearchProjectDef"), 1),
-    ("sounds", "SoundDef", _names("SoundDefs", "SoundDef"), 10),
+    ("sounds", "SoundDef", _names("SoundDefs", "SoundDef"), 9),
     ("render_trees", "PawnRenderTreeDef", _names("PawnRenderTreeDefs", "PawnRenderTreeDef"), 1),
     ("biome", "BiomeDef", _names("BiomeDefs", "BiomeDef"), 1),
 ]
@@ -232,7 +231,7 @@ SETTINGS_DEFAULTS = _settings_defaults()
 # the toggles that CHANGE something today (RM_TheForgeMod.cs header: the other five are scaffolding)
 WIRED = ["modEnabled", "weatherPulseEnabled", "grandCycleEnabled", "gasWashEnabled", "cycleFloodingEnabled",
          "lavaFreezeEnabled", "meltBackDestroys", "floatstoneBloomEnabled", "cycleDormancyEnabled",
-         "cycleTelegraphLetters", "keelworkEnabled", "keelRingEnabled", "spunstoneStudyEnabled", "forgeVoicesEnabled",
+         "cycleTelegraphLetters", "spunstoneStudyEnabled", "forgeVoicesEnabled",
          "forgeVoicesVisualCues", "dhuvvoxClockEnabled", "dhuvvoxRunSoundEnabled", "dhuvvoxSwarmEnabled",
          "plumeFrontsEnabled", "plumeObscureEnabled", "plumeSoakEnabled", "plumeHeatEnabled", "plumeAdaptedExempt",
          "plumeStrength",
@@ -248,7 +247,7 @@ UNCOVERED = ["dhokkurWakeEffectsEnabled", "dhokkurPathMemoryEnabled", "dhokkurPa
              # FORGE_SNAILHOLE_FILL_EMPTY_SHELL_LEFT_BEHIND (RM_ForgeUmmisk.cs): the ummisk's lava-edge wander and
              # steam puffs; no component drives them yet (owed live criteria on that item).
              "ummiskLavaEdgeEnabled", "ummiskSteamEnabled"]
-# FORGE_SPUNSTONE_SOURCES_1: the floatstone-only builds spunstone bonding unlocks besides the keel brace.
+# FORGE_SPUNSTONE_SOURCES_1: the floatstone-only builds spunstone bonding unlocks.
 SPUNSTONE_PARTS = ("RM_FloatstoneDoor", "RM_SpunstoneHull")
 SCAFFOLDING = sorted(k for k in SETTINGS_DEFAULTS if k not in WIRED and k not in UNCOVERED)
 suite.toggles = list(WIRED)
@@ -563,26 +562,6 @@ def _settings(t, type_name=SETTINGS, **kv):
                     _raw_set(t, f, v, type_name)
                 except Exception:
                     pass
-
-
-def _apply(t):
-    """Make RM_TheForgeMod.WriteSettings run, the way a player does: open the Mod Settings dialog and close it."""
-    if not _live(t):
-        return
-    r = t.bridge_call("rimworld/open_mod_settings", modId=DIALOG_QUERY, replaceExisting=True) or {}
-    if not r.get("success", False):
-        _unmeasured(t, "cannot open the Mod Settings dialog for %s: %s" % (MOD_ID, json.dumps(r, default=str)[:200]))
-    t.bridge_call("jawa/window_list_close", action="close", typeName="ModSettings", closeAll=True)
-
-
-def _apply_safely(t):
-    if t.session is None:
-        return
-    try:
-        t.session.call("rimworld/open_mod_settings", modId=DIALOG_QUERY, replaceExisting=True)
-        t.session.call("jawa/window_list_close", action="close", typeName="ModSettings", closeAll=True)
-    except Exception:
-        pass
 
 
 # ------------------------------------------------------------------------------ the mod's debug actions
@@ -997,15 +976,6 @@ def def_wiring(t):
             if gc != 0.0:
                 _fail("RM_Floatstone.generateCommonality is %r; it must be 0 so only gardens make it" % gc)
 
-    with _comp(t, "keel_brace_needs_spunstone_research", independent=True):
-        f = _one_def(t, "ThingDef/RM_FloatstoneKeelBrace", "researchPrerequisites")
-        if _live(t):
-            pre = f.get("researchPrerequisites")
-            if not isinstance(pre, list):
-                _unmeasured(t, "researchPrerequisites unreadable: %r" % (pre,))
-            if "RM_SpunstoneBonding" not in pre:
-                _fail("the keel brace is not gated by RM_SpunstoneBonding: %r" % pre)
-
     with _comp(t, "spunstone_parts_need_spunstone_research", independent=True):
         # FORGE_SPUNSTONE_SOURCES_1 (owner ruling 2026-10-03): the door and hull are unlocked by spunstone bonding.
         for name in SPUNSTONE_PARTS:
@@ -1016,22 +986,6 @@ def def_wiring(t):
                     _unmeasured(t, "%s.researchPrerequisites unreadable: %r" % (name, pre))
                 if "RM_SpunstoneBonding" not in pre:
                     _fail("%s is not gated by RM_SpunstoneBonding: %r" % (name, pre))
-
-    with _comp(t, "engine_links_keel_brace", independent=True):
-        # RM_TheForge_KeelBraceLink.xml is a PatchOperationConditional: a patch that matches nothing logs nothing,
-        # so the brace would build and never link.
-        f = _one_def(t, "ThingDef/GravEngine", "comps", deep=True)
-        if _live(t):
-            comps = f.get("comps")
-            if not isinstance(comps, (dict, list)):
-                _unmeasured(t, "get_defs cannot serialise GravEngine.comps (got %r)" % (comps,))
-            lf = list(_find_key(comps, "linkableFacilities"))
-            if not lf:
-                _unmeasured(t, "no linkableFacilities readable on GravEngine (Odyssey absent, or shape): %s" % str(comps)[:200])
-            if "RM_FloatstoneKeelBrace" not in set(_flat(lf)):
-                _fail("GravEngine's linkableFacilities lacks RM_FloatstoneKeelBrace: the patch matched nothing: %s"
-                      % sorted(set(_flat(lf)))[:10])
-
 
 @suite.chain("biome_wiring")
 def biome_wiring(t):
@@ -1828,57 +1782,8 @@ def floatstone_harvest(t):
 
 @suite.chain("keelwork")
 def keelwork(t):
-    """Keel braces cut a gravship's fuel: the brace is a gravship facility whose fuelSavingsPercent the keelwork toggle
-    rewrites (RM_KeelworkUtility.ApplySetting, run on WriteSettings). The real fuel-per-tile number needs a built
-    gravship (not measurable here, see the walk). Reads the def through get_defs."""
-    def savings(t):
-        f = _one_def(t, "ThingDef/RM_FloatstoneKeelBrace", "comps", deep=True)
-        if not _live(t):
-            return None
-        comps = f.get("comps")
-        if not isinstance(comps, (dict, list)):
-            _unmeasured(t, "get_defs cannot serialise the brace's comps (got %r)" % (comps,))
-        vals = [_num(v) for v in _find_key(comps, "fuelSavingsPercent")]
-        vals = [v for v in vals if v is not None]
-        if not vals:
-            _unmeasured(t, "no fuelSavingsPercent readable on the brace's comps: %s" % str(comps)[:240])
-        return vals[0]
-
-    with _comp(t, "keel_default_saving", independent=True, toggle="keelworkEnabled"):
-        v = savings(t)
-        if _live(t) and abs(v - 0.05) > 1e-6:
-            _fail("brace fuelSavingsPercent is %r, shipped 0.05 (5%% per brace)" % v)
-
-    with _comp(t, "keel_off_zeroes_saving", toggle="keelworkEnabled"):
-        try:
-            with _settings(t, keelworkEnabled=False):
-                _apply(t)                  # WriteSettings -> ApplySetting
-                v = savings(t)
-                if _live(t) and abs(v) > 1e-9:
-                    if abs(v - 0.05) > 1e-6:
-                        _fail("keelworkEnabled=false and a dialog close left the brace saving at %r: neither the "
-                              "shipped 0.05 nor 0" % v)
-                    _unmeasured(t, "after keelworkEnabled=false and a dialog close the brace still saves 0.05: either "
-                                   "ApplySetting is broken (mod) or the dialog did not reach RM_TheForgeMod.WriteSettings "
-                                   "(harness; the composed mod hosts many Mod classes): inspect before classifying")
-        finally:
-            _apply_safely(t)
-        v = savings(t)
-        if _live(t) and abs(v - 0.05) > 1e-6:
-            _fail("after restoring keelworkEnabled and a dialog close the brace saving is %r, not 0.05" % v)
-
-
-    with _comp(t, "keel_ring_wired", independent=True, toggle="keelRingEnabled"):
-        # the launch ring: a Harmony prefix on GravshipUtility.GenerateGravship (RM_Patch_KeelRing). Source-level proof
-        # only; a real launch needs a built gravship (UNCOVERED in the walk: FORGE_KEEL_GRAVSHIP_SITE_1).
-        src = _read_cs("RM_ForgeKeelwork.cs")
-        need = ('typeof(GravshipUtility), nameof(GravshipUtility.GenerateGravship)', "keelRingEnabled", "RM_ForgeVoice_KeelRing")
-        for n in need:
-            if n not in src:
-                _fail("RM_ForgeKeelwork.cs lacks %r: the launch ring is not wired" % n)
-        if "RM_ForgeVoice_KeelRing" not in ALL_DEFNAMES:
-            _fail("the RM_ForgeVoice_KeelRing SoundDef is not shipped in Defs/SoundDefs")
-
+    """Source-level wiring of the dhuvvox scuttle and the floatstone-only spunstone parts. (The chain kept its name: the
+    floatstone keelwork it was built for -- keel braces cutting gravship fuel -- was CUT 2026-10-23, fluff review.)"""
     with _comp(t, "dhuvvox_scuttle_wired", independent=True, toggle="dhuvvoxRunSoundEnabled"):
         # FORGE_DHUVVOX_SWARM_REMAINDER_1: source-level proof; the audio itself is UNMEASURED (no bridge tool hears).
         src = _read_cs("RM_CompForgeCycleDormancy.cs")

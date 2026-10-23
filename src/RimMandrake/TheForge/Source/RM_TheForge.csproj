@@ -55,7 +55,6 @@
     <!-- FORGE_GPT_ENRICHMENT_1 -->
     <Compile Include="RM_TheForgeDefOf.cs" />
     <Compile Include="RM_ForgeVoices.cs" />
-    <Compile Include="RM_ForgeKeelwork.cs" />
     <Compile Include="RM_ForgeSpunstone.cs" />
     <Compile Include="RM_ForgeSpunstoneParts.cs" />
     <!-- FORGE_WHITE_PLUME_FRONTS_1 -->

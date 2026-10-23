@@ -4,7 +4,7 @@
 `FGame` below is a small in-memory Forge: the mod's own parsed Defs answer jawa/get_defs and jawa/biome_probe, a
 cycle state machine written from RM_GameCondition_ForgeCycle.cs (phase clock, gas wash, boiling rain and floods, the
 freeze onto a temp-terrain layer, gardens, cracks, melt, the pulse/cycle/master gates), a creature model written from
-RM_CompForgeCycleDormancy.cs (seal, wake, the dhuvvox clock), the spunstone Harmony postfix, the keelwork apply path and
+RM_CompForgeCycleDormancy.cs (seal, wake, the dhuvvox clock), the spunstone Harmony postfix and
 the voices' visual cue, plus the mod's `RMTheForge` debug actions. It proves two things the first live run cannot prove
 on its own:
 
@@ -80,7 +80,6 @@ class FGame(MockGame):
         self.cyc = None
         self.letters = []
         self.messages = []
-        self.keel = 0.1 if "keel_wrong" in self.brk else 0.05
         self.spun_revealed = False
         self.spun_letters = 0
         self.n_id = 100
@@ -704,12 +703,6 @@ class FGame(MockGame):
         return {"success": True}
 
     def t_jawa_window_list_close(self, p):
-        # RM_TheForgeMod.WriteSettings -> RM_KeelworkUtility.ApplySetting
-        on = self.S("keelworkEnabled") and self.S("modEnabled")
-        if "keel_apply_garbled" in self.brk:
-            self.keel = 0.2 if not on else 0.05
-        else:
-            self.keel = 0.05 if on else 0.0
         return {"success": True}
 
     # ---------------------------------------------------------------------------- defs
@@ -746,16 +739,9 @@ class FGame(MockGame):
             f = {"statBases": sb}
         elif name == "RM_Floatstone":
             f = {"generateCommonality": 1.0 if "floatstone_generated" in self.brk else 0.0, "tradeability": "All"}
-        elif name == "RM_FloatstoneKeelBrace":
-            f = {"researchPrerequisites": [] if "brace_no_research" in self.brk else ["RM_SpunstoneBonding"],
-                 "comps": [{"Class": "CompProperties_GravshipFacility", "fuelSavingsPercent": self.keel,
-                            "maxSimultaneous": 4}]}
         elif name in V.SPUNSTONE_PARTS:
             f = {"researchPrerequisites": [] if ("parts_no_research" in self.brk and name == "RM_SpunstoneHull")
                  else ["RM_SpunstoneBonding"]}
-        elif name == "GravEngine":
-            links = ["Foo"] + ([] if "engine_unlinked" in self.brk else ["RM_FloatstoneKeelBrace"])
-            f = {"comps": [{"Class": "CompProperties_AffectedByFacilities", "linkableFacilities": links}]}
         elif typ == "BiomeDef":
             f = {"biomeMapConditions": [] if "no_map_condition" in self.brk else [V.COND],
                  "modExtensions": [{"Class": "RM_TheForgeBiomeRanges"}] + ([] if "no_heat_ext" in self.brk else
@@ -839,7 +825,7 @@ def main():
         check("floor met: %s (%d >= %d)" % (group, len(names), floor), len(names) >= floor)
     check("seven phases derived from the enum", V.PHASES == ["StillHeat", "GasWash", "Rain", "Freeze", "Growth",
                                                              "Cracks", "Melt"], V.PHASES)
-    check("52 settings fields derived from the C# (ummisk +2, 2026-10-20)", len(V.SETTINGS_DEFAULTS) == 52, sorted(V.SETTINGS_DEFAULTS))
+    check("50 settings fields derived from the C# (ummisk +2, 2026-10-20; keelwork -2, 2026-10-23)", len(V.SETTINGS_DEFAULTS) == 50, sorted(V.SETTINGS_DEFAULTS))
     check("every wired toggle is a real settings field", set(V.WIRED) <= set(V.SETTINGS_DEFAULTS),
           sorted(set(V.WIRED) - set(V.SETTINGS_DEFAULTS)))
     check("the five scaffolding fields are exactly the unwired remainder", len(V.SCAFFOLDING) == 5, V.SCAFFOLDING)
@@ -882,9 +868,7 @@ def main():
         ("no_forge_comp", {"def_wiring.native_dormancy_comps_wired"}),
         ("flyer_no_stat", {"def_wiring.flyers_carry_flight_stat"}),
         ("floatstone_generated", {"def_wiring.floatstone_only_from_gardens"}),
-        ("brace_no_research", {"def_wiring.keel_brace_needs_spunstone_research"}),
         ("parts_no_research", {"def_wiring.spunstone_parts_need_spunstone_research"}),
-        ("engine_unlinked", {"def_wiring.engine_links_keel_brace"}),
         ("zero_density", {"biome_wiring.biome_densities_live"}),
         ("roster_zero", {"biome_wiring.wild_animals_wired"}),
         ("plant_row_missing", {"biome_wiring.wild_plants_wired"}),
@@ -933,8 +917,6 @@ def main():
         ("plume_off_ignored", {"plume_fronts.fronts_off_clears_fronts"}),
         ("soak_off_ignored", {"plume_fronts.soak_off_adds_no_puddles"}),
         ("no_soak", {"plume_fronts.plume_soaks_ground"}),
-        ("keel_wrong", {"keelwork.keel_default_saving"}),
-        ("keel_apply_garbled", {"keelwork.keel_off_zeroes_saving"}),
         ("dhoggur_no_swell", {"dhoggur_swell.provoked_dhoggur_swells_x3"}),
         ("dhoggur_not_x3", {"dhoggur_swell.provoked_dhoggur_swells_x3"}),
         ("dhoggur_no_fire", {"dhoggur_swell.swollen_dhoggur_spits_fire"}),
@@ -966,14 +948,6 @@ def main():
           set(bad) == {"plume_fronts.plume_source_launches_from_new_crust",
                        "plume_fronts.plume_source_obscures_with_blind_smoke",
                        "plume_fronts.plume_source_exempts_vapour_adapted"}, bad)
-
-    real = V._read_cs
-    try:
-        V._read_cs = lambda n: real(n).replace("keelRingEnabled", "X") if n == "RM_ForgeKeelwork.cs" else real(n)
-        bad = reds(run())
-    finally:
-        V._read_cs = real
-    check("stripped keel ring source reddens keel_ring_wired", set(bad) == {"keelwork.keel_ring_wired"}, bad)
 
     real = V._read_cs
     try:

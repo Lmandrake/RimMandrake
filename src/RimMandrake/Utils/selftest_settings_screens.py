@@ -227,7 +227,7 @@ MODS = {
     "TheForge": ("RM_TheForgeMod.cs", "RM_TheForge.csproj", {
         "The Forge enabled": "Now",
         "Weather pulse and grand cycle": "Now",
-        "Keelwork and spunstone study": "Now",
+        "Spunstone study": "Now",
         "Spunstone door and hull (restart)": "NextGameStart",
         "Voices and the dhuvvox": "Now",
         "White plume fronts": "Now",
