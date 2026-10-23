@@ -175,7 +175,7 @@ def fi(iid, ago, title=None, **kw):   # a `file` rimflow's replay accepts (the t
 ledger = [fi("X_ONE_1", 5000, title="Do the thing"), le("start", "X_ONE_1", 4000),
           le("verify", "X_ONE_1", 3000, result="pass", criterion="A1", evidence="Transient/modcheck/x.json", sha="abc123def"),
           le("implemented", "X_ONE_1", 2000, sha="ff172269a0"),
-          fi("R_TWO_1", 1500), le("needs", "R_TWO_1", 1000, to="owner", reason="sheet ready"),
+          fi("R_TWO_1", 1500), le("needs", "R_TWO_1", 1000, to="owner", reason="pick the herd size"),
           fi("R_THREE_1", 1500), le("needs", "R_THREE_1", 1000, to="owner", reason="sheet ready"),
           le("close", "R_THREE_1", 500, sha="1"),
           fi("OLD_1", 90000, title="old")]
@@ -566,6 +566,123 @@ check("after 30 min the token is re-verified with a full probe", len(calls) == 2
 
 g_nob = pc.classify_game({"rimworld_running": True, "at": NOW - 20}, None, NOW)
 check("an unreadable bridge file reads 'bridge unknown', never 'held by ?'", "bridge unknown" in g_nob[0]["text"], g_nob)
+
+# --- RIMPULSE accuracy (owner 2026-10-23: "It's annoying how inaccurate it often is") ----------------------
+# answered asks leave 'to rule'; a look or a fact never masquerades as a ruling
+AQ = [fi("CARD_ANSWERED", 900), le("needs", "CARD_ANSWERED", 800, to="owner", reason="which look, A or B?"),
+      le("note", "CARD_ANSWERED", 700, text="he picked B", byCard="Which look? → B"),
+      fi("WORDS_ANSWERED", 900), le("needs", "WORDS_ANSWERED", 800, to="owner", reason="keep or cut?"),
+      le("note", "WORDS_ANSWERED", 600, text="relay", ownerSaid="Cut it."),
+      fi("REASKED", 900), le("needs", "REASKED", 800, to="owner", reason="first question"),
+      le("note", "REASKED", 700, text="r", ownerSaid="yes"),
+      le("needs", "REASKED", 600, to="owner", reason="a second question"),
+      fi("OLD_WORDS", 900, ownerSaid="file this and ask me", needs="owner"),
+      fi("PLAIN_RULE", 900), le("needs", "PLAIN_RULE", 800, to="owner", reason="decide the cap"),
+      fi("A_LOOK", 900), le("needs", "A_LOOK", 800, to="owner", reason="only the L4 in-situ look remains (LOOK, not a ruling)"),
+      fi("L4_ONLY", 900), le("implemented", "L4_ONLY", 800, sha="abc1234", needs="owner",
+                             criteria=[{"id": "A1", "level": "L4", "text": "owner glances at it in game"}]),
+      fi("A_FACT", 900, title="Second test PC: needs its name/address"),
+      le("needs", "A_FACT", 800, to="owner", reason="waiting on him"),
+      le("file", "A_DECISION", 900, kind="decision", title="walk the sheet and decide", **{"for": "FOUNDRY"}),
+      le("needs", "A_DECISION", 800, to="owner", reason="sheet is up")]
+aq = {r["key"][6:]: r for r in pc.classify_ledger(AQ, NOW - 3600, NOW)[0] if r["key"].startswith("needs:")}
+check("a card answered AFTER the ask leaves 'to rule' (rows for answered cards persisted, 2026-10-23)",
+      aq["CARD_ANSWERED"]["kind"] == "answered" and aq["CARD_ANSWERED"]["answered"]["by"] == "card", aq.get("CARD_ANSWERED"))
+check("his words recorded after the ask also answer it", aq["WORDS_ANSWERED"]["kind"] == "answered"
+      and aq["WORDS_ANSWERED"]["answered"]["text"] == "Cut it.", aq.get("WORDS_ANSWERED"))
+check("a re-ask after his answer is a new question: back on 'to rule'", aq["REASKED"]["kind"] == "review", aq.get("REASKED"))
+check("his words ON the ask (file --owner-said ... --needs owner) do not count as its answer",
+      aq["OLD_WORDS"]["kind"] == "review", aq.get("OLD_WORDS"))
+check("a plain needs=owner ask stays 'to rule'", aq["PLAIN_RULE"]["kind"] == "review", aq.get("PLAIN_RULE"))
+check("'LOOK, not a ruling' on the needs event is a look, not a ruling", aq["A_LOOK"]["kind"] == "look", aq.get("A_LOOK"))
+check("an item owing only an L4 criterion is a look", aq["L4_ONLY"]["kind"] == "look" and aq["L4_ONLY"]["ltype"] == "item look",
+      aq.get("L4_ONLY"))
+check("an ask for a fact (a PC's name/address) is 'to provide'", aq["A_FACT"]["kind"] == "provide", aq.get("A_FACT"))
+check("a verb is not a fact: 'address the drift' / 'provide feedback' stay rulings",
+      [pc.ask_class(type("I", (), {"title": t, "kind": "task", "owed_levels": lambda self: []})(), {"reason": ""})[0]
+       for t in ("address the drift", "provide feedback on X")] == ["rule", "rule"])
+check("kind decision is a ruling even when its words mention a sheet", aq["A_DECISION"]["kind"] == "review", aq.get("A_DECISION"))
+st_aq = {p["text"] for p in pc.build_strip(pc.classify_ledger(AQ, NOW - 3600, NOW)[0])}
+check("the strip counts rule / provide / look separately and never counts answered asks",
+      {"◇ 4 to rule", "✎ 1 to provide", "▣ 2 to look at"} <= st_aq, st_aq)
+check("every to-rule row carries its full reason and its source", all(r.get("full") and r["src"] == "ledger" for r in aq.values()))
+
+# the amber ask: full card text, expires on its tool_result
+def rec(kind, ts_ago, content):
+    return {"type": kind, "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(NOW - ts_ago)),
+            "message": {"content": content}}
+LONGQ = "Hose fittings on the 16 liquid-tank pictures you kept: " + "x" * 200 + " — keep the couplers?"
+ask_rec = rec("assistant", 120, [{"type": "tool_use", "id": "tu1", "name": "AskUserQuestion", "input": {"questions": [
+    {"question": LONGQ, "options": [{"label": "Keep"}, {"label": "Move the points"}]},
+    {"question": "And the north facing?", "options": [{"label": "Redraw"}]}]}}])
+pcard = pc.pending_card([ask_rec])
+check("a card with no tool_result after it is pending, with every question and option in full",
+      pcard and pcard["question"] == LONGQ and "And the north facing?" in pcard["full"] and "Move the points" in pcard["full"],
+      pcard)
+check("the card's own time is the ask time", pcard and abs(pcard["at"] - (NOW - 120)) < 1, pcard)
+check("a tool_result for the card closes it (answered, or refused by a hook he never saw)",
+      pc.pending_card([ask_rec, rec("user", 60, [{"type": "tool_result", "tool_use_id": "tu1", "content": "B"}])]) is None)
+check("a later unrelated tool_result does not close the card",
+      pc.pending_card([ask_rec, rec("user", 60, [{"type": "tool_result", "tool_use_id": "other", "content": "x"}])]) is not None)
+with tempfile.TemporaryDirectory() as td:
+    proj = Path(td) / "proj"
+    proj.mkdir()
+    (proj / "s9.jsonl").write_text(json.dumps(rec("user", 300, "hi")) + "\n" + json.dumps(ask_rec) + "\n")
+    ex9 = pc.session_extras("s9", NOW, Path(td))
+    check("session_extras reads the pending card in full", ex9["question"] == LONGQ and "Keep" in ex9["question_full"], ex9)
+    with open(proj / "s9.jsonl", "a") as fh:
+        fh.write(json.dumps(rec("user", 30, [{"type": "tool_result", "tool_use_id": "tu1", "content": "Keep"}])) + "\n")
+    check("once answered, session_extras reports no question (the amber text expires)",
+          pc.session_extras("s9", NOW, Path(td))["question"] is None)
+amb = pc.classify_sessions([sess("q1", "BENCH", "waiting", 100)],
+                           {"q1": {"subagents": 0, "question": LONGQ, "question_full": LONGQ + "\nmore", "question_at": NOW - 120}},
+                           {}, {}, {}, NOW)[0][0]
+check("the amber row stays one line but carries the full card for the widget's expand",
+      len(amb["text"]) < 120 and amb["full"].endswith("more") and amb["asked_at"] == NOW - 120, amb)
+
+# refresh: a forced collect re-reads the ledger even when no file moved; a failure says why
+import pulse as pl  # noqa: E402
+class _Col(pl.Collector):
+    def __init__(self):
+        super().__init__()
+        self.reads = 0
+    def gather(self, now, force=False):
+        if force:
+            self.ledger_cache["force"] = True
+        self.reads += 1
+        return {"at": {}, "sessions": [], "extras": {}, "ledger": [], "source_status": {"ledger": {"ok": True, "at": now}}}
+c = _Col()
+r1 = c.refresh(timeout=5)
+check("refresh returns ok with a new collected_at", r1["ok"] and r1["collected_at"] and c.reads == 1, r1)
+check("the snapshot carries the refresh result for the widget", (c.snapshot.get("refresh") or {}).get("ok") is True, c.snapshot.get("refresh"))
+class _Slow(_Col):
+    def gather(self, now, force=False):
+        time.sleep(2)
+        return super().gather(now, force)
+r2 = _Slow().refresh(timeout=0.3)
+check("a refresh that outruns its timeout fails and says why (never silently keeps old data)",
+      not r2["ok"] and "still running" in r2["error"], r2)
+class _Boom(_Col):
+    def gather(self, now, force=False):
+        raise OSError("ledger unreadable")
+r3 = _Boom().refresh(timeout=5)
+check("a refresh whose collection raises reports the error", not r3["ok"] and "ledger unreadable" in r3["error"], r3)
+real = pl.Collector()
+real.ledger_cache = {"sig": [], "events": [], "rulings": {}}
+orig_files, orig_read = pc.ledger_files, pc.read_ledger
+pc.ledger_files, pc.read_ledger = (lambda clones=None: []), (lambda clones=None: [{"x": 1}])
+try:
+    unforced = real._ledger()
+    real.ledger_cache["force"] = True
+    forced = real._ledger()
+finally:
+    pc.ledger_files, pc.read_ledger = orig_files, orig_read
+check("the ledger cache is reused when nothing moved, re-folded when a refresh forces it",
+      unforced == [] and forced == [{"x": 1}] and "force" not in real.ledger_cache, (unforced, forced))
+check("update refuses a seat clone (never pull another agent's working tree)",
+      raises(lambda: pl.update_code(pc.CLONES[0])))
+cr = pl.code_rev()
+check("the running revision is reported (sha, checkout kind)", cr["sha"] and cr["checkout"] in ("deploy", "seat clone", "unknown"), cr)
 
 print(f"\n{'FAIL' if FAILS else 'OK'}: {len(FAILS)} failing")
 sys.exit(1 if FAILS else 0)

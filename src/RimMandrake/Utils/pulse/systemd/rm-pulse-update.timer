@@ -1,0 +1,9 @@
+[Unit]
+Description=RimFlow pulse deploy checkout update, every 10 minutes
+
+[Timer]
+OnActiveSec=1min
+OnUnitActiveSec=10min
+
+[Install]
+WantedBy=timers.target
