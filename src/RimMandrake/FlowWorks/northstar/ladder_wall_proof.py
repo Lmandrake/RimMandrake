@@ -13,6 +13,11 @@ Rows:
   LADDER_PARITY_OVER_WALL            PASS/FAIL  "climb:" orders the colonist over; after 900 ticks it stands east of the wall.
   LADDER_PARITY_ONE_WAY              PASS/FAIL  from the far side (no ladder there, no gear) "climb:" finds NO_CROSSING.
   LADDER_PARITY_DOUBLE_WALL_REFUSED  PASS/FAIL  a second wall line at x = c+4 makes the crossing two squares thick: NO_CROSSING.
+  LADDER_PARITY_CLIMBER_CENSUS       PASS/FAIL  (A7) a colony dog (Husky), a wild Cobra, a wild Muffalo and a spawned colonist
+                                                 on the ladder's square: "may:" reads mayClimb = CENSUS (dog no, cobra yes:
+                                                 slithers, muffalo no: too big, colonist yes; design/RimMandrake/
+                                                 ladder_climbers_2026-10-23.md). A refused spawn or read is UNMEASURED for
+                                                 that pawn, never a pass. Written offline 2026-10-23 (area P); OWED live.
 """
 import argparse
 import json
@@ -30,6 +35,34 @@ for _p in (UTILS, HERE):
 PROOF_TYPE = "RimMandrake.FlowWorks.RM_NorthstarProofs"
 HPROBE = "RimMandrake.FlowWorks.Hose.HoseProbe"
 OUT = os.path.join(REPO, "Transient", "fw_scenes", "live")
+
+
+CENSUS = (("Husky", "player", False), ("Cobra", None, True), ("Muffalo", None, False), ("Colonist", "player", True))
+
+
+def pawn_num(pid):
+    """A spawn reply's id ('Thing_Husky1234' or 1234) -> 1234, or None. Pure."""
+    import re
+    m = re.search(r"(\d+)$", str(pid or ""))
+    return int(m.group(1)) if m else None
+
+
+def census_verdict(reads):
+    """reads: {kind: may-text or None}. -> (status, wrong). Pure."""
+    wrong, unread = [], []
+    for kind, _fac, want in CENSUS:
+        txt = reads.get(kind)
+        got = None
+        for tok in str(txt or "").split():
+            if tok.startswith("mayClimb="):
+                got = {"True": True, "False": False}.get(tok[9:])
+        if got is None:
+            unread.append(kind)
+        elif got != want:
+            wrong.append("%s mayClimb=%s, census says %s" % (kind, got, want))
+    if wrong:
+        return "FAIL", wrong
+    return ("UNMEASURED", unread) if unread else ("PASS", [])
 
 
 def parity(B, arg):
@@ -127,6 +160,18 @@ def main(argv=None):
     adv(30)
     dbl = parity(B, "climb:%d,%d,%d" % (pid, wx, c[1]))
     row("LADDER_PARITY_DOUBLE_WALL_REFUSED", "PASS" if dbl.startswith("NO_CROSSING") else "FAIL", {"read": dbl})
+    # A7: who may climb, beside the same lowered ladder
+    reads = {}
+    for kind, fac, _want in CENSUS:
+        kw = dict(kindDef=kind, x=foot[0], z=foot[1], count=1)
+        if fac:
+            kw["faction"] = fac
+        sp = B.call("jawa/spawn_pawn", **kw) or {}
+        n = pawn_num(((sp.get("pawns") or [{}])[0] or {}).get("id"))
+        reads[kind] = parity(B, "may:%d,%d,%d" % (n, foot[0], foot[1])) if n is not None else None
+    st, wrong = census_verdict(reads)
+    row("LADDER_PARITY_CLIMBER_CENSUS", st, {"reads": reads, "wrongOrUnread": wrong,
+        "census": [(k_, w_) for k_, _f, w_ in CENSUS]})
     save()
     say("result: %s" % os.path.relpath(a.out, REPO))
     return 0

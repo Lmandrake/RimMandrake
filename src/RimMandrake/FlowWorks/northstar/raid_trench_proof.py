@@ -40,6 +40,14 @@ Rows:
   LADDER_PARITY_RAID_BRINGS_SOME_LADDERS (--carriers, a storyteller raid) with the raid-ladder chance forced to 100 % for the
                                        run (restored after), at least one raider and never every raider arrives carrying a
                                        minified portable ladder.
+  LADDER_PARITY_RAIDER_FELLS_TREE (--direct --depth 4 --trees) TREES (default 6) mature Plant_TreeOak stand 10..15 squares
+                                       east of the east bank (inside the 30 the criterion names); the direct raiders carry no
+                                       ladder, so one should fell a tree to make one (RM_RaiderChopForLadder). EXPECT fewer
+                                       oaks standing at the end than were planted (a stump, if the game leaves one, is
+                                       recorded), or an RM_RaiderChopForLadder job seen in a raider's job trace. LIES: no oak
+                                       planted (terrain refused) or no raider within 15 squares = UNMEASURED; a raider that
+                                       crossed some other way first may never need a tree (recorded as `crossedOtherwise`).
+                                       Written offline 2026-10-23 (area P); OWED to its first live run.
 """
 import argparse
 import json
@@ -167,6 +175,27 @@ def parity(B, arg):
         return "ERROR %s: %s" % (type(ex).__name__, ex)
 
 
+TREE_DEF = "Plant_TreeOak"
+
+
+def tree_spots(c, n=6):
+    """n oak squares 10..15 east of the east bank (bank at c.x+7), 3 apart on z, clear of the --direct spawn (c.x+30). Pure."""
+    return [(c[0] + 17 + 2 * (i % 3), c[1] - 6 + 4 * (i // 3) + (i % 3)) for i in range(n)]
+
+
+def tree_verdict(planted, standing_after, chop_seen, came_near):
+    """-> (status, why). planted / standing_after: oak counts on the tree squares. Pure."""
+    if not planted:
+        return "UNMEASURED", "no oak stood after planting (terrain refused)"
+    if standing_after is None:
+        return "UNMEASURED", "the oaks could not be counted at the end"
+    if standing_after < planted or chop_seen:
+        return "PASS", ""
+    if came_near < 1:
+        return "UNMEASURED", "no raider came within 15 squares"
+    return "FAIL", "raiders came near, every oak still stands and no RM_RaiderChopForLadder job was seen"
+
+
 def main(argv=None):
     """Runs the proof; the storyteller setting is restored in a finally whatever the body does (raise, Ctrl-C, early return)."""
     hold = {}
@@ -198,6 +227,8 @@ def _run(argv, hold):
                     "both walls on the east row (TRENCH_CROSSING A3: it walks straight across); colonists boxed")
     ap.add_argument("--colony-ladders", action="store_true", help="--direct only: the PLAYER's portable ladders stand on both "
                     "walls of the east row (LADDER_PARITY: raiders climb them, no keys); colonists boxed")
+    ap.add_argument("--trees", type=int, default=0, help="--direct only: plant N mature oaks east of the bank "
+                    "(LADDER_PARITY_RAIDER_FELLS_TREE; 6 is the written scene)")
     ap.add_argument("--carriers", action="store_true", help="storyteller raid with the raid-ladder chance forced to 100%% for "
                     "the run: LADDER_PARITY_RAID_BRINGS_SOME_LADDERS")
     ap.add_argument("--depth", type=int, default=4, help="ring depth in notches (4 = 2 m; 8 = 4 m, past the 3 m portable "
@@ -342,6 +373,15 @@ def _run(argv, hold):
         if a.jump_packs:
             for i_ in ids:
                 B.call("jawa/pawn_gear", pawn=i_, action="wear", **{"def": "Apparel_PackJump"})
+        if a.trees:
+            spots = tree_spots(c, a.trees)
+            for x_, z_ in spots:
+                B.call("jawa/destroy_batch", rects="%d,%d,1,1" % (x_, z_), categories="All")
+                B.call("jawa/set_terrain_batch", ops="Soil:%d,%d,1,1" % (x_, z_))
+                B.call("jawa/set_plants", ops="%s:%d,%d,1,1" % (TREE_DEF, x_, z_), growth=1.0)
+            res["treeSpots"] = spots
+            res["treesPlanted"] = sum(1 for x_, z_ in spots if (B.call("jawa/list_things", defName=TREE_DEF,
+                                      rect="%d,%d,1,1" % (x_, z_), limit=2) or {}).get("things"))
         fr = B.call("jawa/lord_assault_spawn", pawns=",".join(ids)) or {}
         say("direct assault: %d pawns %s; lord %s" % (len(ids), ids, json.dumps(fr, default=str)[:300]))
     else:
@@ -381,6 +421,10 @@ def _run(argv, hold):
         colon = [dict(id=p["id"], x=p.get("x"), z=p.get("z"), dead=p.get("dead"), downed=p.get("downed"))
                  for p in lp.get("pawns") or [] if p.get("isPlayer") and p.get("intelligence") == "Humanlike"]
         samples.append(dict(tick=t, advance=ar.get("state"), raiders=raiders, colonists=colon))
+        if a.trees and k % 4 == 0:
+            for r_ in raiders:
+                if r_.get("spawned") and not r_.get("dead") and "RM_RaiderChopForLadder" in job_trace(B, r_["id"]):
+                    res.setdefault("chopSeen", []).append((t, r_["id"]))
         if k % 8 == 0 or k == 1:
             near = [r_ for r_ in raiders if r_["x"] is not None and cheb((r_["x"], r_["z"]), c) <= NEAR]
             say("  t+%5d  raiders %d (near %d, dead %d, downed %d)  closest %s  colonists down/dead %d" % (
@@ -497,6 +541,19 @@ def _run(argv, hold):
              "bar": "every filled square: Repair breach accepted, dig-to target = the depth it was dug to"})
     elif a.depth > 6:
         row("LADDER_PARITY_BREACH_SCAR_REPAIR", "UNMEASURED", {"why": "the raid filled no square", "filled": filled})
+    if a.trees:
+        spots = res.get("treeSpots") or []
+        try:
+            left = sum(1 for x_, z_ in spots if (B.call("jawa/list_things", defName=TREE_DEF, rect="%d,%d,1,1" % (x_, z_),
+                                                       limit=2) or {}).get("things"))
+            stumps = [t_.get("def") for x_, z_ in spots for t_ in (B.call("jawa/list_things", rect="%d,%d,1,1" % (x_, z_),
+                      limit=5) or {}).get("things") or [] if "stump" in str(t_.get("def") or t_.get("defName")).lower()]
+        except Exception as ex:  # noqa: BLE001 - an unknown-outcome client refuses later calls (see jobTrace)
+            left, stumps = None, ["unread: %s" % ex]
+        st_t, why_t = tree_verdict(res.get("treesPlanted") or 0, left, bool(res.get("chopSeen")), cameNear)
+        row("LADDER_PARITY_RAIDER_FELLS_TREE", st_t, {"why": why_t, "planted": res.get("treesPlanted"), "standingAfter": left,
+            "stumps": stumps, "chopSeen": res.get("chopSeen"), "raidersWithin15": cameNear, "crossedOtherwise": ways,
+            "bar": "a ladderless raider fells an oak within 30 squares of the east bank"})
     if a.jump_packs or a.preladder or a.colony_ladders:
         a2 = "UNMEASURED"       # jump packs come first in the owner's order: ladders/fill are not asked of this run
     row("RAID_LADDER_BREACH" if a.depth <= 6 else "RAID_FILL_CAUSEWAY", a2,
