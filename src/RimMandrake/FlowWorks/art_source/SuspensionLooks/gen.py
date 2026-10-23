@@ -29,7 +29,6 @@ def tex(w, h, base, var=0.12, grain=None, seed=0, fine=0.05):
     n = noise(h, w, 24, seed) - 0.5
     f = 1 + n*var*2
     if grain == 'v':
-        g = noise(h, w, 4, seed+7)  # placeholder, replaced below
         g = np.tile(noise(1, w, 2, seed+3), (h, 1)) - 0.5
         f = f + g*0.22
     elif grain == 'h':
@@ -422,10 +421,8 @@ def jetty_north(look):
     X0, X1, Y0 = 36, 220, 26    # outer extent; root bleeds off the bottom
     R = 12                       # rail thickness
     # platform plates
-    dk = deck(look).crop((X0+R-BAND+8, 0, X0+R-BAND+8+(X1-X0-2*R), S))  # reuse deck texture (runs N-S)
     pw = X1-X0-2*R
     pt = deck(look)
-    mid = pt.crop((BAND, 0, S-BAND, S)).resize((pw, S-Y0-R+0), Image.LANCZOS) if False else None
     # platform surface: crop of deck centre
     surf = pt.crop((BAND+2, 0, BAND+2+pw, S-(Y0+R)))
     img.paste(surf, (X0+R, Y0+R))
