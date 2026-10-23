@@ -13,11 +13,11 @@ tell it to (and this should be very cool, because it's expensive materially and 
 free earns major favor elsewhere as stated, but it will not mine the Rust Cathedral where you point of
 course."*
 
-**Reconciled with the droid-repair rite** (`RUSTCATHEDRAL_STRANGERS_OVERHAUL_RITE_1`): the final stage
-(stage 4) **is** the Stranger's Overhaul performed on the borehulk, and the rite's own fork is the arc's
-fork: the rite's **capture** branch is *keep it*, the rite's **complete and release** branch is *free it*.
-The arc adds the three stages before it, the giant's payoffs, and multiplies the rite's political and
-divine effects (the "major" in his words). Where the pitch differs it is superseded: the pitch had Rekko
+**Stage 4 is a restoration job, not a rite** (2026-10-23): the Stranger's Overhaul, the droid-repair rite this arc
+was once reconciled with, is deferred to v2 with every biome rite of the Nine (owner, 2026-10-23, verbatim in
+`design/RimMandrake/v2_nine_rituals.md`). The arc keeps its own fork, *keep it* or *free it*, chosen at half progress of
+the restoration job, and its own political and divine effects (the "major" in his words; his ruling for the arc names
+no rite). Where the pitch differs it is superseded: the pitch had Rekko
 and Ta'Baa reacting and a released borehulk digging where you mark; the owner's version has neither.
 
 **The Junkers** exist: `FactionDef RUT_Jawa_Junkers` (`src/RimUtinni/UtinniPatches/Defs/FactionDefs/JawaJunkers.xml`;
@@ -56,16 +56,15 @@ Owner-level shape: four stages, each a real cost, each readable; nothing of the 
    map where the borehulk lives. The borehulk is still on its Rust Cathedral map (a map with a quest-kept
    borehulk is kept alive: a world-object or quest lock the builder measures; it never despawns unseen; if
    the map is abandoned the quest says so and the borehulk waits in the world record for the next landing).
-4. **Stage 4: restore it (the Stranger's Overhaul on the giant).** With the refurbished head on the map and
-   the components in a stockpile, the Overhaul rite (built by `RUSTCATHEDRAL_STRANGERS_OVERHAUL_RITE_1`)
-   accepts the borehulk as a target only now. Its repair consumes **the refurbished head plus a set of
+4. **Stage 4: restore it.** With the refurbished head on the map and the components in a stockpile, a
+   restoration job `RM_Job_RestoreBorehulk` (a float-menu order on the borehulk) becomes available, only now. Its repair consumes **the refurbished head plus a set of
    unusual components** (a list in a def, `RM_BorehulkRestorationDef`, tunable): 1 `RM_RefurbishedDrillHead`,
    12 `RM_DeadSmartsteel`, 6 `ComponentSpacer`, 3 `RM_BoltShedCuriosity` (the bolts' shed parts: an
    unusual, watched component), 2 `RM_CoolantEelCatch` (rendered to coolant grease; a desecration the
    Cathedral already prices), 1 vanilla `PowerfocusChip` or another rare chip that exists in the def dump
-   (measure; never guess a defName). The work is long (two sessions minimum), Crafting 10+. The rite's
-   mid-repair choice is the arc's choice:
-   - **Keep it (the rite's capture branch).** The borehulk joins the colony. Payoffs and costs:
+   (measure; never guess a defName). The work is long (two sessions minimum), Crafting 10+. At half
+   progress the job pauses for the arc's choice:
+   - **Keep it.** The borehulk joins the colony. Payoffs and costs:
      - **It mines wherever you tell it.** A player area `RM_Area_BorehulkDig`; the borehulk mines every
        mineable cell inside it, any rock, at a very high speed (about ten times a colonist), dropping the
        normal yield. That includes the Rust Cathedral's plate **and** its sacred tiers if the player draws the
@@ -75,7 +74,7 @@ Owner-level shape: four stages, each a real cost, each readable; nothing of the 
      - **Expensive materially:** a maintenance need on the comp; every 5 days a colonist must service it
        (a job consuming 2 `ComponentIndustrial` + 30 `Chemfuel`), or it stops digging and stands idle (never
        hostile). Its armour and strength stay.
-     - **Expensive politically:** the rite's capture deltas multiplied (default ×3): Free Droid Enclaves
+     - **Expensive politically** (each delta a Mod Settings default, scaled by the political multiplier, ×3): Free Droid Enclaves
        goodwill (the neutral droids) falls hard; the Cathedral's irritation jumps and, in the campaign, its
        Regard falls (`CATHEDRAL_REGARD_BLACKBOARD_1` reads the event); Ozzik's displeasure; Mob'Unloo and Ohm
        pleased. While it serves the colony, each landing on Rust Cathedral ground starts the hum a band
@@ -85,15 +84,15 @@ Owner-level shape: four stages, each a real cost, each readable; nothing of the 
        `DefModExtension` checked in one patch, or ride the Droidworks player-droid path if it already solves
        owned machines without a mechanitor. Never make it require a mechanitor (it is not a Biotech mech in
        the fiction).
-   - **Free it (the rite's complete-and-release branch).** The borehulk stays wild on its map, drill
+   - **Free it (finish the job and release it).** The borehulk stays wild on its map, drill
      restored (comp `Restored`): it now really bores plain deck plate on its own now and then (cells mined,
      plain tier only, yield left where it falls). It **answers favours, not orders** (question card 2026-10-02 10:44
      PDT): no dig area and no command, but when the colony asks (a comms/letter request, a few times a
      year, cooldown in Mod Settings) it comes to help on a dig job as a friend would, on any map except the
-     Rust Cathedral, where it never mines for you. Each favour shows as a letter and an inspect line. The payoff is **major favour elsewhere**: the
-     rite's release deltas multiplied (default ×3): Free Droid Enclaves goodwill rises a lot; the Cathedral
+     Rust Cathedral, where it never mines for you. Each favour shows as a letter and an inspect line. The payoff is **major favour elsewhere**
+     (scaled by the political multiplier, ×3): Free Droid Enclaves goodwill rises a lot; the Cathedral
      calms (irritation falls) and, in the campaign, Regard rises; Ohm pleased; Mob'Unloo annoyed. Each
-     shows as the rite already shows it (goodwill numbers on the faction screen, the hum's band, the
+     shows as goodwill and the hum already show (goodwill numbers on the faction screen, the hum's band, the
      Narrator for the gods; never a buff).
    - **Leave it unfinished:** the components consumed so far are lost; the head stays fitted or not, as the
      work reached; the offer stays open.
@@ -105,15 +104,14 @@ Owner-level shape: four stages, each a real cost, each readable; nothing of the 
    approached by the same truce-yard work order); the campaign patch
    (`src/RimUtinni/UtinniPatches/Patches/RUT_WornBit_Junkers.xml`) removes it from `Pirate` and puts it on
    `RUT_Jawa_Junkers`, and relabels the yard's dialog in the Junkers' voice (the Scraplord). God deltas and
-   Regard exist only in the campaign (the rite is campaign); the free tier keeps the goodwill and hum
+   Regard exist only in the campaign; the free tier keeps the goodwill and hum
    effects (the free tier's "neutral droids" is no faction: the goodwill line applies only where a faction
    carries `RM_NeutralDroidsExtension`, which the campaign patch puts on `RUT_Jawa_FreeDroidEnclaves`).
 7. **Mod Settings:** on/off; fee; refurbishment days; second-demand chance; maintenance interval and cost;
    political multiplier; dig speed.
 
-Depends on: `RUSTCATHEDRAL_BOREHULK_GIANT_BUILD_1`, `RUSTCATHEDRAL_STRANGERS_OVERHAUL_RITE_1` (stage 4 and
-the fork), `RUSTCATHEDRAL_FREE_NAMES_TIDY_1`. Campaign wiring: `SALVATION_RITES_UNIFICATION_1` (rite
-machinery), `CATHEDRAL_REGARD_BLACKBOARD_1` (Regard reads the keep/free event; without it, the campaign
+Depends on: `RUSTCATHEDRAL_BOREHULK_GIANT_BUILD_1`, `RUSTCATHEDRAL_FREE_NAMES_TIDY_1`. Campaign wiring:
+`CATHEDRAL_REGARD_BLACKBOARD_1` (Regard reads the keep/free event; without it, the campaign
 Regard line is a logged would-be, never silent). Art: `RM_WornDrillHead`, `RM_RefurbishedDrillHead` in
 `infrastructure/artpipe/art_lists/rustcathedral_turn1_2026-10-02.csv`.
 
@@ -122,7 +120,7 @@ Regard line is a logged would-be, never silent). Art: `RM_WornDrillHead`, `RM_Re
 Deterministic state reads through `jawa/get_defs` and debug `[Tool]`s, recorded as cases in
 `RUST_CATHEDRAL_FIRST_SCRIPT_1`'s `validation.py` (campaign cases in `src/RimUtinni/Rites/validation.py`):
 - Defs resolve: `ThingDef/RM_WornDrillHead`, `ThingDef/RM_RefurbishedDrillHead`,
-  `JobDef/RM_Job_UnbitBorehulk`, `QuestScriptDef/RM_WornBitRefurbishment`, `WorldObjectDef/RM_RefurbishYard`,
+  `JobDef/RM_Job_UnbitBorehulk`, `JobDef/RM_Job_RestoreBorehulk`, `QuestScriptDef/RM_WornBitRefurbishment`, `WorldObjectDef/RM_RefurbishYard`,
   `RM_BorehulkRestorationDef` (one def), both drill heads with mass ≥ 200.
 - Stage 1: with one colonist assigned, comp progress after 2,500 ticks is unchanged; with two, it rises;
   setting the band to 2 stops progress; at completion comp state = `Unbitted` and one `RM_WornDrillHead`
@@ -131,15 +129,15 @@ Deterministic state reads through `jawa/get_defs` and debug `[Tool]`s, recorded 
   whose faction carries `RM_DrillRefurbisherExtension`: `Pirate` on the free tier, `RUT_Jawa_Junkers` with
   the campaign loaded (and `Pirate` then carries none). Delivering the head and fee starts a timer equal to
   the setting; attacking the yard ends the quest with the head lost.
-- Stage 3/4: with the restoration def's items present, the Overhaul's target filter accepts the borehulk;
+- Stage 3/4: with the restoration def's items present, the restoration order is offered on the borehulk;
   with any one item missing it refuses with a reason naming the item.
 - Keep: borehulk faction = player; comp state `Restored`; cells inside `RM_Area_BorehulkDig` count down to 0
   mineable over simulated time; after 5 days unserviced its dig job stops and it is not hostile; Free Droid
-  Enclaves goodwill (campaign) and the hum irritation moved by the setting's multiple of the rite's capture
+  Enclaves goodwill (campaign) and the hum irritation moved by the setting's multiple of the keep
   deltas (read before/after); a sacred cell in the area records a sacrilege event.
 - Free: borehulk faction null; comp `Restored`; no dig area or draft order is offered (float-menu and gizmo
   lists read empty of them); over 60,000 ticks it mines ≥ 1 plain-plate cell and 0 sacred cells; goodwill and
-  irritation moved by the multiple of the release deltas.
+  irritation moved by the multiple of the free deltas.
 - Campaign: Ninefold logs deltas tagged "The Worn Bit" for exactly the gods the branch names, with the
   branch's signs (Mob'Unloo +, Ohm +, Ozzik displeased on keep; Mob'Unloo annoyed, Ohm + on free).
 - No hediff or stat buff is added to any colonist by any stage.

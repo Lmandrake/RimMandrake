@@ -1,5 +1,9 @@
 # Biome rites pass: what each finished biome teaches the Salvation (2026-10-01)
 
+> **v2 (owner, 2026-10-23):** every rite of the Nine that a Baroque biome teaches, and the machinery that finds and
+> learns them, is deferred to v2 and is NOT part of the current Baroque Biomes. The record, with what was built and
+> removed, is `design/RimMandrake/v2_nine_rituals.md`. Read this file as v2 design; do not build from it in v1.
+
 _Status: BENCH design, PITCHED, owner to rule. Nothing here is built. Applies the program principle
 of `design/Jawa/salvation_rites_2026-10-01.md` §(e) to the ten finished bedazzle biomes other than
 the Abyss. Machinery (inscription → rubbing techprint → "found rites" row → `Ideo.AddPrecept`) is

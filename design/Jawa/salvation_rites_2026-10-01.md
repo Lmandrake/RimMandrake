@@ -1,5 +1,9 @@
 # Salvation rites: where they live, every rite, and how a biome teaches one (2026-10-01)
 
+> **v2 (owner, 2026-10-23):** every rite of the Nine that a Baroque biome teaches, and the machinery that finds and
+> learns them, is deferred to v2 and is NOT part of the current Baroque Biomes. The record, with what was built and
+> removed, is `design/RimMandrake/v2_nine_rituals.md`. Read this file as v2 design; do not build from it in v1.
+
 _Status: BENCH design. Nothing below is built unless a row says so. Item:
 `SALVATION_RITES_UNIFICATION_1` (supersedes `CONDITION_GATED_RITUALS_MOD_1`). Gods are canon of
 record in `design/Jawa/divine_satiation_engine.md` §2.0b; rites-as-invitation is §5 to §5c there._

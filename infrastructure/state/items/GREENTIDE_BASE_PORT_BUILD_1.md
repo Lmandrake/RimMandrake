@@ -68,8 +68,7 @@ save check; `tileBiome`-style shortHash encoding means a text grep of the `.rws`
 new code, stop and re-read `src/RimMandrake/EnvironmentalHazards/Source/` first.
 
 Depends on: nothing open. Blocks: `GREENTIDE_THURROCK_HERD_BUILD_1` (its felled trunks land on root
-causeways; it can be built before, but its criteria read causeways), `GREENTIDE_CEDED_ROOM_RITE_1` (the
-blower is the room's cooling). `GREENTIDE_FIRST_SCRIPT_1` must be written against this item's state, not
+causeways; it can be built before, but its criteria read causeways). `GREENTIDE_FIRST_SCRIPT_1` must be written against this item's state, not
 today's.
 
 ## criteria
