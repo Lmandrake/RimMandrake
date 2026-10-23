@@ -287,6 +287,8 @@ def main():
     with contextlib.redirect_stdout(io.StringIO()):
         _, resnh = run_fake(bridge_cls=NoHoseBridge)
     stnh = {r["id"]: r["status"] for r in resnh["rows"]}
+    check("walls_verdict: a census that did not answer -> UNMEASURED HARNESS, not SITE",
+          wv({"success": False, "error": "timeout"})[:2] == ("UNMEASURED", "HARNESS") and wv(None)[:2] == ("UNMEASURED", "HARNESS"))
     check("SL2/SL3 with no hose on the map at the save are UNMEASURED (site), not a MOD FAIL",
           stnh.get("SL2_save_names_no_class_of_ours") == "UNMEASURED" and stnh.get("SL3_hoses_and_reel_styles_survive") == "UNMEASURED", stnh)
     # H0_probe_channel (review S7): a failing matrix probe channel turns every hose scene row FAIL (ids stay declared)

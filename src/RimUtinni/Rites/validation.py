@@ -519,16 +519,12 @@ def _restore(t, tile, before):
 #
 # MOD SETTINGS ARE STATIC FIELDS -- RM_NinefoldSettings's four original fields
 # (engineEnabled, firstContactLettersEnabled, eventMagnitudeMultiplier,
-# moodWalkMultiplier) are all `public static`. Per the Pits pilot's own
-# documented finding (src/RimMandrake/FlowWorks/validation.py's trailing comment),
-# `t.set_setting` / `rimworld/update_mod_settings` walks INSTANCE fields via
-# reflection and refuses a static field outright ("Could not resolve field").
-# No component here attempts a live toggle flip for that reason. Each of the
-# four toggles instead gets a component that exercises the pathway it gates AT
-# ITS SHIPPED DEFAULT (engine on, letters on, 1.0x multipliers) -- proving the
-# gated code path runs at all, not that flipping the setting changes the
-# outcome. Flipping these live needs a bridge fix or a settings-pattern change
-# on this mod's own side; neither is attempted here.
+# moodWalkMultiplier) are all `public static`. `t.set_setting` reaches static
+# fields (jawa/mod_settings_field, BRIDGE_STATIC_SETTINGS_FIELDS_1), but no
+# component here flips one yet: each of the four toggles gets a component that
+# exercises the pathway it gates AT ITS SHIPPED DEFAULT (engine on, letters on,
+# 1.0x multipliers) -- proving the gated code path runs at all, not that
+# flipping the setting changes the outcome. A live off-arm per toggle is owed.
 #
 # Still not proven / likely first-live-run corrections:
 #   - RESEARCH_PROJECT ("Smithing", an early vanilla tier-1 project) may
