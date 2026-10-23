@@ -15,8 +15,8 @@ Everything above the JSON block is sent to the reviewer as the class module; the
 ## How to look (owner's past notes)
 
 1. **The defining feature** the description names is visible: the fruit it yields, the quills, the glow, the
-   frond shape. A plant harvested for an item shows that item on the mature plant (Ambrosia without its golden
-   fruit is `DESC_MISS`).
+   frond shape. A plant harvested for an item shows that item on the mature plant (a fruiting plant drawn
+   without its fruit is `DESC_MISS`).
 2. **Reads as its kind**, not a lump — owner 2026-10-18 (Mourvel): *"Reads like a green lump or hill. It was
    supposed to be a willow-like dome the player could step beneath."* Ground cover sits low and reads as a
    texture of the land; a tree shows trunk and canopy.
@@ -36,7 +36,7 @@ Everything above the JSON block is sent to the reviewer as the class module; the
 ```json template
 {
   "template": "plant",
-  "version": "plant@v1",
+  "version": "plant@v2",
   "modules": ["ground_cover", "bush", "tree", "special"],
   "required_panels": {"*": ["single", "scale"]},
   "checklist": [

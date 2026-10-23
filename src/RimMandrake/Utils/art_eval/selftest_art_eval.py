@@ -153,6 +153,23 @@ def main():
     rows.append({"template": "creature", "at": "99", "override": True, "blocking": False})
     check("polish override does not reset", P.shadow_status("creature", rows, s)["consecutive_clean"] == 1)
 
+    # --- criteria ledger: add -> fix -> regression row; overrides need his words
+    import ledger as LG
+    with tempfile.TemporaryDirectory() as td:
+        lp, rp = Path(td) / "l.jsonl", Path(td) / "r.jsonl"
+        cid = LG.add("RM_T", "plant", "owner_key", "missed x", "REGEN", path=lp)
+        check("ledger ids start CL-001", cid == "CL-001", cid)
+        check("second id increments", LG.add("RM_U", "plant", "agent_review", "y", "ACCEPT", path=lp) == "CL-002")
+        LG.fix(cid, "moved code", ["a.md"], regression="RM_T:B", expect="ACCEPT", path=lp, reg_path=rp)
+        e = LG.entries(lp)
+        check("fix folds to fixed with versions", e[cid]["status"] == "fixed" and e[cid]["fixes"][0]["versions_after"].get("severity"), e[cid])
+        check("regression row written", json.loads(rp.read_text().splitlines()[0])["expect"] == "ACCEPT")
+        try:
+            LG.add("RM_V", "plant", "owner_override", "z", "ACCEPT", path=lp)
+            check("override without his words refused", False)
+        except SystemExit:
+            pass
+
     # --- runner dry run end to end on a synthetic card (mock reviewers, no model)
     try:
         import runner

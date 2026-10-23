@@ -1,0 +1,21 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Vellak",
+ "nearest_earth_animal": "camel",
+ "earth_body_named": false,
+ "departures": [
+  "a tall dorsal sail-comb (a fanned crest of spines with membrane between them) running along the back, standing where a camel's hump would be",
+  "the sail-comb shown fanned open and spread wide, not folded flat against the body",
+  "a long-legged strider build: very tall, thin stilt legs carrying a body high off the ground, with no hump"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v1",
+  "sha": "946be1a006c9"
+ },
+ "at": "2026-10-23T06:20:09-07:00",
+ "source": "description only (no image)"
+}

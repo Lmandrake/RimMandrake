@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Burrak",
+ "nearest_earth_animal": "hippo",
+ "earth_body_named": false,
+ "departures": [
+  "forelimbs end in broad comb-like rakes of many parallel claws (claw-combs), not hippo stumps or bear paws",
+  "heavy digging forelimbs built to excavate basins, visibly more powerful and longer than the hind limbs",
+  "claw-comb tines visibly worn, chipped or uneven from digging",
+  "body caked or slick with basin mud from wallowing, set in or beside a dug catch-basin"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v1",
+  "sha": "946be1a006c9"
+ },
+ "at": "2026-10-23T06:20:20-07:00",
+ "source": "description only (no image)"
+}

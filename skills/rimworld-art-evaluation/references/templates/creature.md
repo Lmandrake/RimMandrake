@@ -20,8 +20,8 @@ panels a card must carry, and the checklist every reviewer answers item by item.
    East = a true side profile. None of them is an overhead view. — owner 2026-09-15: *"North facing is 'looking
    away from the player camera' (their butt). South facing is 'looking at the player camera'… We should NOT have
    'top down view rotated north or south.'"* Every structure (horns, fans, sails, tails) is present and turns
-   with the body in every view — the Ssurr fan that stays a wheel on south AND north and becomes a sail on east
-   is `F_INCONSISTENT`.
+   with the body in every view — a crest or fan that is a front-facing wheel on south AND north but a lengthwise
+   sail on east has not turned with the body: `F_INCONSISTENT`.
 2. **Same size on every facing** — owner 2026-10-22: *"it needs the treatment that makes the different facings the
    same size."* The card prints the measured height spread; trust that number for what it measures.
 3. **Alien, not a recoloured Earth animal** (invented creatures). First name the Earth animal it most resembles,
@@ -55,7 +55,7 @@ the catch waits for it whatever you say here.
 ```json template
 {
   "template": "creature",
-  "version": "creature@v1",
+  "version": "creature@v2",
   "modules": ["walker", "pack", "swimmer", "amphibious", "flyer", "catch"],
   "required_panels": {
     "*":     ["south", "east", "north", "facings", "scale"],
