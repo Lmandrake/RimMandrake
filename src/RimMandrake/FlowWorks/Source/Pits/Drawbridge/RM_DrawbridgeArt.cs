@@ -175,6 +175,29 @@ namespace RimMandrake.FlowWorks.Pits
 			return true;
 		}
 
+		/// <summary>TIMBER_LEAF_DIAGNOSE_UP_AND_INVISIBLE: every drawbridge leaf on the viewed map, each frame, from the bridges'
+		/// map component: the raised leaf whether or not a winch house stands beside it (a staged or winchless raised leaf drew
+		/// nothing when the winch's DrawAt drew it), and the art planks of a leaf that has its winch, as before.</summary>
+		public static void DrawLeaves(Map map, IReadOnlyList<SuspensionBridgeRecord> bridges)
+		{
+			for (int i = 0; i < bridges.Count; i++)
+			{
+				SuspensionBridgeRecord r = bridges[i];
+				if (r == null || !r.IsDrawbridge)
+				{
+					continue;
+				}
+				foreach (DrawbridgeLeaf l in r.leaves)
+				{
+					DrawLeafUp(map, r, l);
+					if (l.winch != null && l.winch.Spawned)
+					{
+						DrawPlanks(map, r, l);
+					}
+				}
+			}
+		}
+
 		/// <summary>Draw a raised leaf upright at its hinge: one copy per lane, standing on the hinge edge of the anchor square,
 		/// its height the leaf length scaled by how far it has risen (the art is 1 lane × 4 cells; a longer steel leaf stretches).
 		/// The edge view is drawn for a span running east and mirrored for west (contract).</summary>
