@@ -12,7 +12,7 @@ package snapshot (built about 15:47). The verdicts are:
 
 "Fixed" names the commit on `origin/main`.
 
-**Status: GimmeSomeSlack, IshkoDarkLandmarks, FlowWorks and Pyrelands are processed.** Graffiti,
+**Status: GimmeSomeSlack, IshkoDarkLandmarks, FlowWorks, Pyrelands and Graffiti are processed.**
 Webwork, TheRot and BiomesComposite had not replied by the end of this pass. The driver is still
 running, and each later reply needs the same pass.
 
@@ -136,6 +136,32 @@ Checkable claims from C, D and F:
 
 Selftests after the fixes: 5/5 (site, fruit_clear, review_map, fuzz, lint).
 
+## Graffiti: 17 findings, 15 CONFIRMED, 1 partly FALSE, 1 partly STALE
+
+No Graffiti finding was fixed by the two commits since noon. Those commits touched only comments and the csproj.
+
+| # | GPT sev → ours | verdict | where (current) | outcome |
+|---|---|---|---|---|
+| 1 | BLOCKER | CONFIRMED | `Source/GraffitiJobUtility.cs:32`; `Source/Filth_Mark.cs:147` | **Owner question Q9.** Marks are filth on the floor cell beside the wall, and sigils print at `DrawPos`. Nothing puts them ON the wall. |
+| 2 | HIGH | CONFIRMED (by engine read) | `Source/RaidExitTagger.cs:34` | **Open (design).** The prefix is on `ExitMapAndJoinOrCreateCaravan`, which a fleeing hostile raider does not reach. Fix: hook `Pawn.ExitMap` with a hostile check. The fuzz covers only the policy boolean. |
+| 3 | HIGH | CONFIRMED | `Source/WorkGiver_PaintGraffitiDesignated.cs` | **Fixed `407de35f8`.** `ignoreJoyTimeAssignment = true`. Before this, `JoyTickCheckEnd` interrupted ordered marks during work hours. |
+| 4 | MED | CONFIRMED, by design | Graffiti ships no ThoughtDefs ("mechanism only") | The content is in SacredGraffiti. GPT's G5 asks how broad Graffiti's own reactions must be (see Q9 notes). |
+| 5 | MED | CONFIRMED | `Source/Designator_PaintGraffitiMark.cs` | **Fixed `407de35f8`.** The clicked cell itself must be standable against a cardinal wall; a wall merely "within radius" no longer counts. |
+| 6 | MED | CONFIRMED | `Source/Filth_Mark.cs` `MakeMark`; driver | **Fixed `407de35f8`.** Rivals are destroyed only after the new mark exists. A null mark keeps the order and ends the job Incompletable. |
+| 7 | MED | CONFIRMED | `validation.py:285,314` | **Open.** Variant coverage is random (`_REPEAT=3`). Pin variants with `Thing.overrideGraphicIndex` (GPT: `Graphic_Random.SubGraphicFor` honours it). |
+| 8 | MED | CONFIRMED | `Source/JobDriver_PaintGraffiti.cs` | **Fixed `407de35f8`.** A work-giver job (`workGiverDef`, which is saved) whose order was cancelled paints nothing. |
+| 9 | LOW-MED | CONFIRMED | `Defs/MentalStateDefs_Graffiti.xml:6` | **Open.** The spree break fires with painting off; it needs a settings-aware worker. |
+| 10 | LOW-MED | CONFIRMED | `Source/BreachBiasHook.cs:104` | **Open.** The breach lure ignores the BreachGrid domain, and the "same gates" comment overstates. |
+| 11 | LOW | CONFIRMED | `Source/GraffitiPool.cs:90`; SacredGraffiti Ishko mark has no `form` | **Open.** Small, in SacredGraffiti: `<form>Sigil</form>` or `poolWeight` 0, so a sacred mark is not a spree pick. |
+| 12 | LOW | CONFIRMED, design | same-cell repaint every interval | Left as is. |
+| 13 | LOW | CONFIRMED | `validation.py:95` (`.get("success", True)`) | **Open**, small. |
+| 14 | LOW | CONFIRMED, but GPT's "demonstrably false docstring" is **FALSE** (no shipped def carries `breachLure`) | `validation.py:388` `_flip` has no `finally` | **Open**, small. |
+| 15 | LOW | CONFIRMED | only the sigil is tinted by faction | **Open (design).** |
+| 16 | LOW | CONFIRMED | `sigil_coverage.py` | **Fixed `407de35f8`.** Our own Defs failing to parse now fails the run. The game Data scan still skips unparseable vanilla files. |
+| 17 | LOW | CONFIRMED (About has no Harmony dependency; the description is stale); 45-def count not re-checked | `About/About.xml` | **Open**, metadata. |
+
+GPT's efficiency estimate: one minimal sitting (about 11 subtests, one save and reload, the gallery as the keeper save) plus one shared full-list load: 55–75 min in total. It would drop the Core-only launch and the stale expected failures.
+
 ## Loose ends from other helpers
 
 - **`selftest_hose_port.py` P9, 24 vs 22 credit sites: REAL drift, not stale.** `Source/SelfTest/TransferChecks.cs` `CreditTags` gained "credit site: pump overflow spill" and "credit site: gravity overflow" in `1da459a0d` (09:54, overflow stages 2-3). The python mirror `CREDIT_SITES` stayed at 22. Another helper re-synced the mirror in `37f064ef7` (16:36). `selftest_hose_port.py` now passes (0 failing).
@@ -205,6 +231,18 @@ These are ranked by the wall-clock time they save per acceptance cycle. The esti
 
 - (a) **Recommended:** build rite discovery once, for every found rite. *Buys:* every found rite becomes reachable. *Costs:* a shared design item, not a Pyrelands fix.
 - (b) Give the ring its own study comp now. *Buys:* this rite works sooner. *Costs:* one-off code that the shared system would replace.
+
+**Q9. Graffiti: marks are painted on the floor cell beside a wall, not on the wall.** The north-star bar says "on walls".
+
+- (a) **Recommended:** keep the mark on the floor cell, but record which side the wall is on and draw it offset and facing onto the wall face. *Buys:* it reads as wall art, with no new thing class. *Costs:* a render change plus your look in game.
+- (b) Make marks a wall-attached thing. *Buys:* truly on the wall. *Costs:* a rewrite of placement, cleaning and going-over.
+
+GPT's Graffiti questions on content, left in the reply for the design sitting:
+
+- whether F6 needs a literal bill window;
+- whether the punk register is met;
+- which provisional subjects are kept;
+- how broad the base reactions must be.
 
 GPT's other FlowWorks questions are left as they are in the reply and not pressed here:
 
