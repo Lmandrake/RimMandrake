@@ -600,10 +600,18 @@ namespace RimMandrake.FlowWorks
 			{ "Scrapper/Timber/east", new[] { new RopeArt(0.21289, 0.05078, 0.41016, 0.94922), new RopeArt(-0.21289, 0.05078, 0.41016, 0.94922) } },
 			{ "Scrapper/Timber/north", new[] { new RopeArt(0.21289, 0.05078, 0.57422, 0.94922), new RopeArt(-0.21289, 0.05078, 0.57422, 0.94922) } },
 			{ "Scrapper/Timber/south", new[] { new RopeArt(0.21289, 0.05078, 0.37109, 0.94922), new RopeArt(-0.21289, 0.05078, 0.37109, 0.94922) } },
-			{ "base/Heavy", new[] { new RopeArt(0.19336, 0.05078, 0.71094, 1.00000), new RopeArt(-0.19531, 0.04688, 0.71094, 1.00000) } },
-			{ "base/Rope", new[] { new RopeArt(0.12109, 0.03906, 0.37109, 1.00000), new RopeArt(-0.12109, 0.03906, 0.36719, 1.00000) } },
-			{ "base/Steel", new[] { new RopeArt(0.22461, 0.02734, 0.45703, 1.00000), new RopeArt(-0.22852, 0.02734, 0.45703, 1.00000) } },
-			{ "base/Timber", new[] { new RopeArt(0.18945, 0.04297, 0.38672, 1.00000), new RopeArt(-0.18945, 0.04297, 0.38672, 1.00000) } },
+			{ "base/Heavy/east", new[] { new RopeArt(0.19336, 0.05078, 0.44141, 1.00000), new RopeArt(-0.19531, 0.04688, 0.44141, 1.00000) } },
+			{ "base/Heavy/north", new[] { new RopeArt(0.19336, 0.05078, 0.51953, 1.00000), new RopeArt(-0.19531, 0.04688, 0.51953, 1.00000) } },
+			{ "base/Heavy/south", new[] { new RopeArt(0.19336, 0.05078, 0.36328, 1.00000), new RopeArt(-0.19531, 0.04688, 0.36719, 1.00000) } },
+			{ "base/Rope/east", new[] { new RopeArt(0.12109, 0.03906, 0.40625, 1.00000), new RopeArt(-0.12109, 0.03906, 0.40625, 1.00000) } },
+			{ "base/Rope/north", new[] { new RopeArt(0.12109, 0.03906, 0.51953, 1.00000), new RopeArt(-0.12109, 0.03906, 0.51953, 1.00000) } },
+			{ "base/Rope/south", new[] { new RopeArt(0.12109, 0.03906, 0.36719, 1.00000), new RopeArt(-0.12109, 0.03906, 0.36719, 1.00000) } },
+			{ "base/Steel/east", new[] { new RopeArt(0.22461, 0.02734, 0.42578, 1.00000), new RopeArt(-0.22852, 0.02734, 0.42578, 1.00000) } },
+			{ "base/Steel/north", new[] { new RopeArt(0.22461, 0.02734, 0.55859, 1.00000), new RopeArt(-0.22852, 0.02734, 0.55859, 1.00000) } },
+			{ "base/Steel/south", new[] { new RopeArt(0.22461, 0.02734, 0.37500, 1.00000), new RopeArt(-0.22852, 0.02734, 0.37500, 1.00000) } },
+			{ "base/Timber/east", new[] { new RopeArt(0.18945, 0.04297, 0.41797, 1.00000), new RopeArt(-0.18945, 0.04297, 0.42188, 1.00000) } },
+			{ "base/Timber/north", new[] { new RopeArt(0.18945, 0.04297, 0.55469, 1.00000), new RopeArt(-0.18945, 0.04297, 0.55469, 1.00000) } },
+			{ "base/Timber/south", new[] { new RopeArt(0.18945, 0.04297, 0.37500, 1.00000), new RopeArt(-0.18945, 0.04297, 0.37500, 1.00000) } },
 		};
 
 		/// <summary>The raised leaf's edge pictures paint a stiff rope stub off the top of the hook; only the leaf body's columns
@@ -635,7 +643,10 @@ namespace RimMandrake.FlowWorks
 				return null;
 			}
 			string mat = file.Substring(pre.Length);
-			string key = styled ? (parts.Length >= 2 ? parts[parts.Length - 2] : "") + "/" + mat : "base/" + mat;
+			// the unstyled pictures live straight in SuspensionBridge/: upright per-facing bollards (Graphic_Multi) since
+			// ANCHOR_BASE_REDRAW_STILL_LYING_FLAT, no longer the one rotated single
+			string look = parts.Length >= 2 ? parts[parts.Length - 2] : "";
+			string key = styled && look != "SuspensionBridge" ? look + "/" + mat : "base/" + mat;
 			return Art.ContainsKey(key) || Art.ContainsKey(key + "/east") ? key : null;
 		}
 

@@ -677,7 +677,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             foreach (var kv in measured)
             {
                 string[] parts = kv.Key.Split('/');
-                bool styled = parts[0] != "base";
+                bool styled = parts[parts.Length - 1] != "single";   // base anchors are upright per-facing bollards too
                 string key = table.ContainsKey(kv.Key) ? kv.Key : parts[0] + "/" + parts[1];   // per-facing entry first (upright bollards)
                 if (!table.TryGetValue(key, out RM_DrawbridgeCableMath.RopeArt[] ropes) || ropes.Length != kv.Value.Count)
                 {
@@ -817,7 +817,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 int oldStood = 0, wrongStood = 0, setups = 0;
                 foreach (var kv in RM_DrawbridgeCableMath.Art)
                 {
-                    bool styled = !kv.Key.StartsWith("base/");
+                    bool styled = !kv.Key.EndsWith("/single");
                     string facingFile = kv.Key.Split('/').Length == 3 ? kv.Key.Split('/')[2] : null;
                     foreach (var su in Setups(styled))
                     {
@@ -861,10 +861,29 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(wrongStood > 0, "can-fail: an E/W-shaped coil printed in N/S must read as standing up");
             });
 
+            Case("Drawbridge_BaseAnchors_upright_multi_per_facing", () =>
+            {
+                // ANCHOR_BASE_REDRAW_STILL_LYING_FLAT: the unstyled anchors are upright bollards (per-facing files, per-facing rope table)
+                string root = Path.Combine(Path.GetDirectoryName(RiverSwitchFlipChecks.SrcPath("RM_DrawbridgeMath.cs")), "..");
+                string xml = File.ReadAllText(Path.Combine(root, "Defs", "Pits", "ThingDefs", "RM_SuspensionBridges.xml"));
+                var measured = Anchors(out _);
+                foreach (string m in new[] { "Rope", "Timber", "Steel", "Heavy" })
+                {
+                    var d = System.Text.RegularExpressions.Regex.Match(xml, "<defName>RM_SuspensionAnchor_" + m + "</defName>.*?<graphicClass>(\\w+)</graphicClass>", System.Text.RegularExpressions.RegexOptions.Singleline);
+                    Assert(d.Success && d.Groups[1].Value == "Graphic_Multi", "RM_SuspensionAnchor_" + m + " is " + (d.Success ? d.Groups[1].Value : "missing") + ", an upright bollard needs Graphic_Multi");
+                    foreach (string f in new[] { "south", "east", "north" })
+                    {
+                        Assert(measured.ContainsKey("base/" + m + "/" + f), m + " " + f + " picture not in the measured fixture (anchor_cable_art.json)");
+                        Assert(RM_DrawbridgeCableMath.Art.ContainsKey("base/" + m + "/" + f), "no rope table base/" + m + "/" + f);
+                    }
+                    Assert(RM_DrawbridgeCableMath.KeyOf("Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_" + m, true) == "base/" + m, "KeyOf must key the upright base " + m + " as base/" + m);
+                }
+            });
+
             Case("Drawbridge_Cables_lowered_reach_deck_raised_slack_vs_art", () =>
             {
                 var measured = Anchors(out _);
-                Assert(measured.Count >= 40, "the fixture measured " + measured.Count + " anchor pictures (expected 40: 4 looks x 3 materials x 3 facings + 4 unstyled)");
+                Assert(measured.Count >= 48, "the fixture measured " + measured.Count + " anchor pictures (expected 48: 4 looks x 3 materials x 3 facings + 4 base x 3 facings)");
                 List<string> bad = RM_DrawbridgeCableMath.Art.Count > 0 ? Grade(RM_DrawbridgeCableMath.Art, measured) : new List<string> { "empty table" };
                 Assert(bad.Count == 0, bad.Count + " cable failures, first: " + string.Join(" | ", bad.GetRange(0, Math.Min(4, bad.Count))));
             });

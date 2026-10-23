@@ -69,7 +69,7 @@
     <thingClass>RimMandrake.FlowWorks.Pits.Building_SuspensionAnchor</thingClass>
     <graphicData>
       <texPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Rope</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_Multi</graphicClass>
     </graphicData>
     <altitudeLayer>Building</altitudeLayer>
     <passability>Standable</passability>
@@ -157,7 +157,7 @@
     <thingClass>RimMandrake.FlowWorks.Pits.Building_SuspensionAnchor</thingClass>
     <graphicData>
       <texPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Timber</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_Multi</graphicClass>
     </graphicData>
     <altitudeLayer>Building</altitudeLayer>
     <passability>Standable</passability>
@@ -299,7 +299,7 @@
     <thingClass>RimMandrake.FlowWorks.Pits.Building_SuspensionAnchor</thingClass>
     <graphicData>
       <texPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Steel</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_Multi</graphicClass>
     </graphicData>
     <altitudeLayer>Building</altitudeLayer>
     <passability>Standable</passability>
@@ -447,7 +447,7 @@
     <thingClass>RimMandrake.FlowWorks.Pits.Building_SuspensionAnchor</thingClass>
     <graphicData>
       <texPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Heavy</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_Multi</graphicClass>
     </graphicData>
     <altitudeLayer>Building</altitudeLayer>
     <passability>Standable</passability>

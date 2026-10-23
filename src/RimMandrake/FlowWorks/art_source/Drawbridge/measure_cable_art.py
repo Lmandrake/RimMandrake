@@ -96,10 +96,11 @@ def measure(tex):
                 p = os.path.join(sb, look, "RM_SuspensionAnchor_%s_%s.png" % (m, f))
                 if os.path.exists(p):
                     res["anchors"]["%s/%s/%s" % (look, m, f)] = measure_axis(turned(mask(p), f))
-    for m in BASE_MATS:
-        p = os.path.join(tex, "Things", "Building", "FlowWorks", "SuspensionBridge", "RM_SuspensionAnchor_%s.png" % m)
-        if os.path.exists(p):
-            res["anchors"]["base/%s/single" % m] = measure_axis(turned(mask(p), "single"))
+    for m in BASE_MATS:   # upright bollards since ANCHOR_BASE_REDRAW_STILL_LYING_FLAT: per-facing files like the styled ones
+        for f in ("east", "north", "south"):
+            p = os.path.join(tex, "Things", "Building", "FlowWorks", "SuspensionBridge", "RM_SuspensionAnchor_%s_%s.png" % (m, f))
+            if os.path.exists(p):
+                res["anchors"]["base/%s/%s" % (m, f)] = measure_axis(turned(mask(p), f))
     for e in LEAF_EDGES:
         p = os.path.join(tex, "Things", "Building", "FlowWorks", "Drawbridge", "RM_DrawbridgeLeafUp_%s.png" % e)
         if not os.path.exists(p):
