@@ -84,15 +84,6 @@ namespace RimMandrake.Pyrelands
         public static float furnaceWarmthStrength = 1f;
         public static bool fireClockEnabled = true;
 
-        // FURNACEBEAST_WORLD_MIGRATION_1 — the world leg
-        // (WorldObject_RM_FurnaceHerd). Nested under furnaceThermalEnabled:
-        // this only matters while the thermal circuit itself is on. Off:
-        // no herd is ever seeded and any herd already on the world simply
-        // stops ticking and delivering/recalling (it is not destroyed —
-        // turning this back on lets an existing save's herds resume).
-        public static bool furnaceWorldMigrationEnabled = true;
-        public static int furnaceHerdCount = PyrelandsTuning.WorldHerdDefaultCount;
-
         // PYRELANDS_DEDICATED_GRAZER_1 — generic, opt-in via
         // RM_BurrowOnFireExtension; RM_Ashwallow is the first consumer. Off:
         // an extension-carrying race stands its ground like any other animal
@@ -167,8 +158,6 @@ namespace RimMandrake.Pyrelands
             Scribe_Values.Look(ref furnaceThermalEnabled, "furnaceThermalEnabled", true);
             Scribe_Values.Look(ref furnaceWarmthStrength, "furnaceWarmthStrength", 1f);
             Scribe_Values.Look(ref fireClockEnabled, "fireClockEnabled", true);
-            Scribe_Values.Look(ref furnaceWorldMigrationEnabled, "furnaceWorldMigrationEnabled", true);
-            Scribe_Values.Look(ref furnaceHerdCount, "furnaceHerdCount", PyrelandsTuning.WorldHerdDefaultCount);
             Scribe_Values.Look(ref crossBiomeEnabled, "crossBiomeEnabled", false);
             Scribe_Values.Look(ref crossBiomeEverywhere, "crossBiomeEverywhere", false);
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
@@ -213,7 +202,7 @@ namespace RimMandrake.Pyrelands
         /// <summary>SETTINGS_KIT_BUILD_GREY_SWITCHES_AT_LAST: master switches, from each setting's READ SITE (2026-10-14).
         /// "Mod enabled" reaches its mechanics through PyrelandsMechanicsGate.On: ash dusting and scorch-fruit (FireTickMayRoll),
         /// ashfall, the fresh-burn stamp (BurnStampMay), ambient ash, plant growth stages, the wild-plant allowlist, scorched
-        /// ruins, the burn line, fire-hawks, the furnace-beast thermal circuit, the fire clock, migration and the herd seeder,
+        /// ruins, the burn line, fire-hawks, the furnace-beast thermal circuit, the fire clock,
         /// burrowers, and ash-field watering (its only read sites, FertilityPostfix and the ash-field tick, check the gate).
         /// Independent, as the master's own tooltip says or because the read site does not consult the gate:
         /// dry deep-ash fertility (written into the terrain def at startup), regrowth pace, biome placement, the restart-time
@@ -222,7 +211,7 @@ namespace RimMandrake.Pyrelands
         internal static readonly RimMandrake.Shared.SettingDependencies Masters = new RimMandrake.Shared.SettingDependencies()
             .Declare("pyrelandsEnabled", "ashDustingEnabled", "scorchFruitEnabled", "ashfallAccumulationEnabled", "freshBurnBonusEnabled",
                      "ambientAshEnabled", "plantGrowthStagesEnabled", "wildPlantAllowlistEnabled", "scorchedRuinsEnabled", "burnLineEnabled",
-                     "fireHawkSpreadEnabled", "furnaceThermalEnabled", "fireClockEnabled", "furnaceWorldMigrationEnabled", "furnaceHerdCount",
+                     "fireHawkSpreadEnabled", "furnaceThermalEnabled", "fireClockEnabled",
                      "burrowOnFireEnabled", "ashWaterFertilityEnabled")
             .Declare("ashDustingEnabled", "ashDustingChance")
             .Declare("scorchFruitEnabled", "scorchFruitChance", "scorchFruitMapCap")
@@ -231,8 +220,7 @@ namespace RimMandrake.Pyrelands
             .Declare("freshBurnBonusEnabled", "freshBurnBonus", "freshBurnDays", "rainFadesBurnBonus")
             .Declare("rainFadesBurnBonus", "rainFadeBudgetHours")
             .Declare("ambientAshEnabled", "ambientAshShare", "ambientAshHeavy")
-            .Declare("furnaceThermalEnabled", "furnaceWarmthStrength", "furnaceWorldMigrationEnabled")
-            .Declare("furnaceWorldMigrationEnabled", "furnaceHerdCount")
+            .Declare("furnaceThermalEnabled", "furnaceWarmthStrength")
             .Declare("burrowOnFireEnabled", "burrowDomeOnHeatHit")
             .Declare("ullaiEnabled", "ullaiHerdSizeMultiplier")
             .Declare("sandShovelEnabled", "sandShovelYieldMultiplier")
@@ -243,7 +231,7 @@ namespace RimMandrake.Pyrelands
             .Name("ashfallAccumulationEnabled", "Weather deposits ash drifts").Name("ashWaterFertilityEnabled", "Water makes deep ash fertile")
             .Name("freshBurnBonusEnabled", "A fresh burn feeds the ground").Name("rainFadesBurnBonus", "Rain washes the bonus away early")
             .Name("ambientAshEnabled", "Ash drifts in the air in clear weather").Name("furnaceThermalEnabled", "Furnace-beast thermal circuit")
-            .Name("furnaceWorldMigrationEnabled", "Furnace-beast world migration").Name("ullaiEnabled", "Ullai herds")
+            .Name("ullaiEnabled", "Ullai herds")
             .Name("sandShovelEnabled", "Shovel sand")
             .Name("crossBiomeEnabled", "Enable outside the Pyrelands biome");
 
@@ -287,7 +275,7 @@ namespace RimMandrake.Pyrelands
 
         /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
         /// should draw. Scope AUDITED per setting against its read site (2026-10-10): scorched ruins and biome placement are read
-        /// while a map or planet is generated, and the furnace-beast herd count only when a new world seeds ([new maps only]);
+        /// while a map or planet is generated ([new maps only]);
         /// the giants, ullai and recipe-cost switches are applied at startup ([next game start], a label local to this screen);
         /// every other setting, including the cross-biome ash opt-in (read each weather tick), is read live ([now]).</summary>
         private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
@@ -491,9 +479,9 @@ namespace RimMandrake.Pyrelands
                 list.GapLine();
             }
 
-            if (Group(list, "Absorbed mechanics (mandrake.rut.pyrelandsmechanics)", RimMandrake.Shared.SettingScope.Now, new[] { "burnLineEnabled", "fireHawkSpreadEnabled", "furnaceThermalEnabled", "furnaceWarmthStrength", "fireClockEnabled", "furnaceWorldMigrationEnabled" }))
+            if (Group(list, "Absorbed mechanics (mandrake.rut.pyrelandsmechanics)", RimMandrake.Shared.SettingScope.Now, new[] { "burnLineEnabled", "fireHawkSpreadEnabled", "furnaceThermalEnabled", "furnaceWarmthStrength", "fireClockEnabled" }))
             {
-            using (Dependent(list, "burnLineEnabled", "fireHawkSpreadEnabled", "furnaceThermalEnabled", "furnaceWarmthStrength", "fireClockEnabled", "furnaceWorldMigrationEnabled"))
+            using (Dependent(list, "burnLineEnabled", "fireHawkSpreadEnabled", "furnaceThermalEnabled", "furnaceWarmthStrength", "fireClockEnabled"))
             {
     list.CheckboxLabeled("Standing burn line", ref burnLineEnabled,
                     "The grass fire that walks the map with its own burn intelligence, rather than "
@@ -513,26 +501,6 @@ namespace RimMandrake.Pyrelands
                 list.CheckboxLabeled("Fire clock (flame harvest / fire raid / fire rite)", ref fireClockEnabled,
                     "The Deep Desert Tribes' incidents that answer the burn. Off: those incidents never "
                   + "fire.");
-                using (Dependent(list, "furnaceWorldMigrationEnabled"))
-                {
-                list.CheckboxLabeled("Furnace-beast world migration", ref furnaceWorldMigrationEnabled,
-                    "Off-map furnace-beast herds cycling the planet (Deep Desert -> Pyrelands -> near "
-                  + "terminator -> back), delivering onto a player's map when their route reaches its "
-                  + "tile and rejoining the world if that map is later abandoned. Off: no herd is ever "
-                  + "seeded and an existing herd simply stops moving until this is back on — it is "
-                  + "never destroyed.");
-                }
-            }
-                list.GapLine();
-            }
-
-            if (Group(list, "Furnace-beast herds at world start (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "furnaceHerdCount" }))
-            {
-            using (Dependent(list, "furnaceHerdCount"))
-            {
-                list.Label("Seeded once, when a new world begins; a world already running keeps the herds it has. Ignored while world migration is off.");
-                list.Label("Herds seeded at world start: " + furnaceHerdCount);
-                furnaceHerdCount = (int)list.Slider(furnaceHerdCount, 0f, 8f);
             }
                 list.GapLine();
             }

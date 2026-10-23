@@ -66,7 +66,7 @@ DLCS = ("ludeon.rimworld.royalty", "ludeon.rimworld.ideology", "ludeon.rimworld.
         "ludeon.rimworld.anomaly", "ludeon.rimworld.odyssey")
 
 # Shipped defaults, read off RM_PyrelandsSettings (RM_PyrelandsMod.cs) and
-# PyrelandsTuning.WorldHerdDefaultCount = 2. Plan §3.3: all features ON, crossBiome* false,
+# Plan §3.3: all features ON, crossBiome* false,
 # ashfallRateMultiplier 1, scorchFruitMapCap 40.
 DEFAULTS = {
     "pyrelandsEnabled": True,
@@ -76,7 +76,7 @@ DEFAULTS = {
     "biomeGenerationEnabled": True, "wildPlantAllowlistEnabled": True,
     "plantGrowthStagesEnabled": True, "scorchedRuinsEnabled": True,
     "burnLineEnabled": True, "fireHawkSpreadEnabled": True, "furnaceThermalEnabled": True, "furnaceWarmthStrength": 1.0,
-    "fireClockEnabled": True, "furnaceWorldMigrationEnabled": True, "furnaceHerdCount": 2,
+    "fireClockEnabled": True,
     "burrowOnFireEnabled": True, "burrowDomeOnHeatHit": True,
     "ullaiEnabled": True, "ullaiHerdSizeMultiplier": 1.0, "furnaceBeastGiant": True,
     "crossBiomeEnabled": False, "crossBiomeEverywhere": False, "crossBiomeBiomeList": "",

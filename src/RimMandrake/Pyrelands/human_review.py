@@ -518,7 +518,6 @@ FEATURES = [
      "needs a free beast and a live fire for hours; penned here (fire row is 36+ cells away); matrix row"),
     ("animal", "Furnace-beast heat immunity (Patch_FurnaceBeastHeatImmunity.cs)", "Source", None,
      "visible only as it surviving its own fire (a bed it smoulders); not staged: nothing on the ash floor burns"),
-    ("animal", "Furnace-beast herd world migration (WorldObject RM_FurnaceHerd)", "WorldObject_RM_FurnaceHerd.cs", "W"),
     ("animal", "Ullai herd: four, one per facing, herd size", "RM_Ullai.xml", "25"),
     ("animal", "Ullai follow a two-day-old burn (RM_JobGiver_FollowBurn)", "RM_Ullai.xml", None,
      "needs days of free roaming after a burn; UNMEASURED in the matrix too (no drive yet)"),
@@ -578,12 +577,11 @@ BOARDS = {
           "Every toggle at its shipped default. Station by setting: fire dusts ash 5, 8; scorch-fruit "
           "seeding 8, 16; ash-fall drifts 5, G; watered ash 18; fresh-burn bonus 8, 10; rain fades bonus 10; ambient "
           "drift G; growth stages 14; wild allowlist N0; scorched ruins R; standing burn line L; fire-hawk carrying "
-          "21 (flight, owner-present); furnace thermal 23-24; fire clock E; world migration W; giant furnace-beast 23 "
+          "21 (flight, owner-present); furnace thermal 23-24; fire clock E; giant furnace-beast 23 "
           "(restart); ullai herds 25 (restart); burrowing 11; shovel sand 19; cross-biome (off). "
           "PyrelandsMechanics: arson-justice raids, flame-harvest visits, the tribes' fire rite: E."),
     "W": ("WORLD MAP", "press the World tab",
-          "The site sits in a 2-ring Pyrelands patch: the biome's world drawing. A furnace-beast herd marker "
-          "(RM_FurnaceHerd) may be on the world; it migrates over days. Pyrelands has 0 tiles on Ash'karr by design "
+          "The site sits in a 2-ring Pyrelands patch: the biome's world drawing. Pyrelands has 0 tiles on Ash'karr by design "
           "(painted once at the end)."),
     "E": ("FIRE-CLOCK EVENTS", "Dev > Incidents: RUT_FlameHarvest, RUT_FireRaid",
           "Storyteller events from RimUtinni PyrelandsMechanics: a flame-harvest visit, an arson-justice fire raid, "

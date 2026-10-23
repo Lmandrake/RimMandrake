@@ -63,7 +63,6 @@ python.exe src/RimMandrake/Pyrelands/human_review.py --build --load NS_Pyrelands
 | animal | Furnace-beast bed-down ignition | CompFurnaceBedIgnition.cs | 23 |  |
 | animal | Furnace-beast thermal cycle: walks into fire to charge | JobGiver_RUT_FurnaceThermalCycle.cs | none | needs a free beast and a live fire for hours; penned here (fire row is 36+ cells away); matrix row |
 | animal | Furnace-beast heat immunity (Patch_FurnaceBeastHeatImmunity.cs) | Source | none | visible only as it surviving its own fire (a bed it smoulders); not staged: nothing on the ash floor burns |
-| animal | Furnace-beast herd world migration (WorldObject RM_FurnaceHerd) | WorldObject_RM_FurnaceHerd.cs | W |  |
 | animal | Ullai herd: four, one per facing, herd size | RM_Ullai.xml | 25 |  |
 | animal | Ullai follow a two-day-old burn (RM_JobGiver_FollowBurn) | RM_Ullai.xml | none | needs days of free roaming after a burn; UNMEASURED in the matrix too (no drive yet) |
 | animal | Ashwallow: four, one per facing | RM_Ashwallow.xml | 26 |  |

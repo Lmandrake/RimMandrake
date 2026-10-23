@@ -19,7 +19,6 @@ PLANTS = [
     ("charge hysteresis crossed", U, "FurnaceChargeSeekBelow = 0.75f", "FurnaceChargeSeekBelow = 0.99f", "pyrelands-tuning"),
     ("no dead band between bleed and charge", U, "FurnaceBleedAmbientC = 5f", "FurnaceBleedAmbientC = 50f", "pyrelands-tuning"),
     ("reseed retry longer than the quiet time", U, "StandingBurnRetryTicks = 2500", "StandingBurnRetryTicks = 999999", "pyrelands-tuning"),
-    ("a biome on two herd legs", U, '"Desert", "RUT_Desert"', '"Desert", "ZBiome_Grasslands", "RUT_Desert"', "pyrelands-tuning"),
     ("class typo in a think tree", "Defs/ThinkTreeDefs/RM_BurrowOnFireThinkTree.xml", 'Class="RimMandrake.Pyrelands.RM_JobGiver_BurrowOnFire"', 'Class="RimMandrake.Pyrelands.RM_JobGiver_BurrowOnFir"', "class-resolves"),
     ("biome worker class typo", B, "RimMandrake.Pyrelands.BiomeWorker_Pyrelands</workerClass>", "RimMandrake.Pyrelands.BiomeWorker_Pyrelandz</workerClass>", "pyrelands-biome"),
     ("rock-margin gravel back on", B, "<gravelTerrain>RM_FE_Ash_Deep</gravelTerrain>", "<gravelTerrain>RM_FE_Ground_Gravel</gravelTerrain>", "pyrelands-ground"),

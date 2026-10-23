@@ -452,7 +452,7 @@ namespace RimMandrake.Pyrelands.Fuzz
         public static double ArsonNetPerFire;
 
         // ════════════════════════ furnace ════════════════════════
-        public static long ChargeUps, ChargeDowns, ChargeHolds, HerdAdvances, HerdLegsSeen, BfsFound, BfsMissed, RestsRolled, RestsShort, BedZeroCells;
+        public static long ChargeUps, ChargeDowns, ChargeHolds, RestsRolled, RestsShort, BedZeroCells;
         public static double ChargeDaysAt40, ChargeDaysAt60;
 
         private static float StepOf(float ambient, bool nearFire)
@@ -493,75 +493,6 @@ namespace RimMandrake.Pyrelands.Fuzz
                 Check(StepOf((float)(bA + cA) / 2f, false) == 0f, "the dead band moved the charge");
                 // time to fill from empty, at 40 and 60 C (days), as a metric
                 ChargeDaysAt40 = TimeToFull(40f, avoid); ChargeDaysAt60 = TimeToFull(60f, avoid);
-            }));
-            fails.AddRange(RunSeeded("furnace-herd", n, seed, 5000, r =>
-            {
-                string[] pyr = T.A("PyrelandsBiomeDefNames"), term = T.A("NearTerminatorBiomeDefNames"), desert = T.A("DeepDesertBiomeDefNames");
-                int delta = T.I("WorldHerdUpdateIntervalTicks");
-                int deepDwell = T.I("WorldHerdDeepDesertDwellTicks"), maxDwell = T.I("WorldHerdMaxLegDwellTicks");
-                float seekBelow = T.F("FurnaceChargeSeekBelow"), avoid = T.F("FurnaceChargeAvoidAbove");
-                // ambient per leg: a hot desert, a warm grassland, a cold terminator; some seeds put the herd in the dead band
-                float[] amb = { r.Next(4) == 0 ? 20f : 30f + r.Next(40), r.Next(4) == 0 ? 20f : 36f + r.Next(30), r.Next(4) == 0 ? 20f : -r.Next(40) };
-                int members = 1 + r.Next(6);
-                float[] ch = new float[members];
-                for (int m = 0; m < members; m++) ch[m] = (float)r.NextDouble() * 0.5f;
-                FurnaceHerdLeg leg = FurnaceHerdLeg.DeepDesert;
-                int ticksAtLeg = 0, lastAdvanceAt = 0, t = 0, advances = 0;
-                var order = new List<FurnaceHerdLeg>();
-                int budget = 6 * maxDwell + 6 * deepDwell;
-                while (advances < 6 && t < budget)
-                {
-                    t += delta; ticksAtLeg += delta; Steps++;
-                    for (int m = 0; m < members; m++) ch[m] = RM_FurnaceKernel.ClampCharge(ch[m] + StepOf(amb[(int)leg], false));
-                    float avg = ch.Average();
-                    bool adv = RM_FurnaceKernel.ShouldAdvance(leg, ticksAtLeg, avg, deepDwell, maxDwell, seekBelow, avoid);
-                    bool spec = leg == FurnaceHerdLeg.DeepDesert ? ticksAtLeg >= deepDwell : leg == FurnaceHerdLeg.Pyrelands ? avg >= avoid || ticksAtLeg >= maxDwell : avg <= seekBelow || ticksAtLeg >= maxDwell;
-                    Check(adv == spec, $"ShouldAdvance {adv}, spec {spec} ({leg}, {ticksAtLeg} ticks, avg {avg:F3})");
-                    Check(ticksAtLeg <= Math.Max(deepDwell, maxDwell) + delta, $"herd stayed {ticksAtLeg} ticks on the {leg} leg, past every dwell bound");
-                    if (adv)
-                    {
-                        var next = RM_FurnaceKernel.NextLeg(leg);
-                        Check(next != leg, "NextLeg did not move");
-                        order.Add(leg); leg = next; ticksAtLeg = 0; lastAdvanceAt = t; advances++; HerdAdvances++;
-                    }
-                }
-                Check(advances == 6, $"the herd advanced only {advances} legs in {budget} ticks");
-                for (int i = 0; i < order.Count; i++) Check(order[i] == (FurnaceHerdLeg)(i % 3), "legs are not DeepDesert -> Pyrelands -> Terminator -> DeepDesert");
-                HerdLegsSeen += order.Count;
-                // biome routing against the real name lists
-                foreach (string nme in pyr) Check(RM_FurnaceKernel.LegForBiome(nme, pyr, term) == FurnaceHerdLeg.Pyrelands, "pyrelands name routed elsewhere: " + nme);
-                foreach (string nme in term) if (!pyr.Contains(nme)) Check(RM_FurnaceKernel.LegForBiome(nme, pyr, term) == FurnaceHerdLeg.Terminator, "terminator name routed elsewhere: " + nme);
-                foreach (string nme in desert) if (!pyr.Contains(nme) && !term.Contains(nme)) Check(RM_FurnaceKernel.LegForBiome(nme, pyr, term) == FurnaceHerdLeg.DeepDesert, "desert name routed elsewhere: " + nme);
-                Check(RM_FurnaceKernel.LegForBiome(null, pyr, term) == FurnaceHerdLeg.DeepDesert && RM_FurnaceKernel.LegForBiome("NotABiome", pyr, term) == FurnaceHerdLeg.DeepDesert && !RM_FurnaceKernel.MatchesAny("rm_pyrelands", pyr), "LegForBiome fallbacks / case sensitivity");
-            }));
-            fails.AddRange(RunSeeded("furnace-bfs", n, seed, 9000, r =>
-            {
-                int nodes = 1 + r.Next(60);
-                var adj = new List<int>[nodes];
-                for (int i = 0; i < nodes; i++) adj[i] = new List<int>();
-                int edges = r.Next(nodes * 3);
-                for (int e = 0; e < edges; e++) { int a = r.Next(nodes), b = r.Next(nodes); if (a == b) continue; adj[a].Add(b); adj[b].Add(a); }
-                var match = new bool[nodes];
-                int matches = r.Next(4);
-                for (int k = 0; k < matches; k++) match[r.Next(nodes)] = true;
-                int start = r.Next(nodes), cap = 1 + r.Next(nodes + 5);
-                bool got = RM_FurnaceKernel.NearestMatching(start, x => x, (c, into) => { foreach (int q in adj[c]) into.Add(q); }, x => match[x], cap, out int found);
-                // spec: hop distance by BFS layers (independent), then the cap counts DEQUEUES so the answer must be among the first `cap` nodes in BFS order
-                var dist = Enumerable.Repeat(-1, nodes).ToArray(); var order = new List<int>(); var q2 = new Queue<int>();
-                dist[start] = 0; q2.Enqueue(start);
-                while (q2.Count > 0) { int c = q2.Dequeue(); order.Add(c); foreach (int nb in adj[c]) if (dist[nb] < 0) { dist[nb] = dist[c] + 1; q2.Enqueue(nb); } }
-                int specIdx = -1;
-                for (int i = 0; i < Math.Min(cap, order.Count); i++) if (match[order[i]]) { specIdx = i; break; }
-                Check(got == (specIdx >= 0), $"nearest search found={got}, spec {specIdx >= 0} (cap {cap})");
-                if (got)
-                {
-                    Check(match[found], "returned a tile that does not match");
-                    Check(found == order[specIdx], $"returned {found}, the nearest in BFS order is {order[specIdx]}");
-                    Check(order.Where(x => match[x]).Min(x => dist[x]) == dist[found] || cap < order.Count, "a nearer matching tile exists");
-                    BfsFound++;
-                }
-                else BfsMissed++;
-                Steps += nodes;
             }));
             fails.AddRange(RunSeeded("furnace-bed", n, seed, 14000, r =>
             {
@@ -947,13 +878,8 @@ namespace RimMandrake.Pyrelands.Fuzz
                 Check(T.F("FurnaceChargeSeekBelow") < T.F("FurnaceChargeAvoidAbove") && T.F("FurnaceChargeAvoidAbove") <= 1f && T.F("FurnaceChargeSeekBelow") > 0f, "charge hysteresis is not ordered inside (0,1]");
                 Check(T.F("FurnaceBleedAmbientC") < T.F("FurnaceChargeAmbientC"), "the bleed and charge ambients overlap (no dead band)");
                 Check(T.F("FurnaceChargeAmbientSpanC") > 0f && T.F("FurnaceBleedAmbientSpanC") > 0f, "a zero span would divide by zero");
-                Check(T.I("WorldHerdDeepDesertDwellTicks") <= T.I("WorldHerdMaxLegDwellTicks"), "the desert dwell is longer than the max dwell");
                 Check(T.I("StandingBurnRetryTicks") <= T.I("StandingBurnQuietTicks") && T.I("BurnWatchIntervalTicks") > 0, "standing-burn clock");
                 Check(T.F("FireFrontFireSize") > 0f && T.F("SmoulderFireSize") > 0f, "fire sizes");
-                Check(T.I("WorldHerdMinSize") <= T.I("WorldHerdMaxSize"), "herd size range");
-                Check(T.A("PyrelandsBiomeDefNames").Length > 0 && T.A("NearTerminatorBiomeDefNames").Length > 0 && T.A("DeepDesertBiomeDefNames").Length > 0, "a herd leg has no biomes");
-                var all = T.A("PyrelandsBiomeDefNames").Concat(T.A("NearTerminatorBiomeDefNames")).Concat(T.A("DeepDesertBiomeDefNames")).ToList();
-                Check(all.Count == all.Distinct().Count(), "a biome is listed on two herd legs: " + string.Join(",", all.GroupBy(x => x).Where(g => g.Count() > 1).Select(g => g.Key)));
                 // fire raid gate table
                 for (int m = 0; m < 256; m++)
                 {
@@ -1061,13 +987,13 @@ namespace RimMandrake.Pyrelands.Fuzz
             if (Cases == 0) { Console.WriteLine("FAIL no cases ran (--fuzz-scale too small?); a fuzz that checked nothing is not a pass"); return false; }
             Console.WriteLine($"burn: measures {Measures}, debt rises {DebtRises} / decays {DebtDecays}, reseed attempts {ReseedAttempts} (landed {ReseedSuccess}), fronts armed {FrontsArmed} / fired {FrontsFired}, history samples {HistorySamples} (longest ring {HistoryMaxLen}), raids fired {RaidsFired} / insults {RaidInsults} / refused {RaidRefused} / gated off {RaidGated}, arson-liveness probes {LivenessChecks}, harvests allowed {HarvestsAllowed} / refused {HarvestsRefused}");
             Console.WriteLine($"burn front line: the old truncated construction lit {LegacyWidths - LegacyCellsLost} of {LegacyWidths} requested cells ({100.0 * (LegacyWidths - LegacyCellsLost) / Math.Max(1, LegacyWidths):F1}%); the kernel line is exact");
-            Console.WriteLine($"furnace: charge ups {ChargeUps} / downs {ChargeDowns} / holds {ChargeHolds}, herd advances {HerdAdvances}, searches found {BfsFound} / missed {BfsMissed}, rests rolled {RestsRolled} / too short {RestsShort}, small beasts with zero bed cells {BedZeroCells}; empty-to-full at 40 C = {ChargeDaysAt40:F1} days, at 60 C = {ChargeDaysAt60:F1} days");
+            Console.WriteLine($"furnace: charge ups {ChargeUps} / downs {ChargeDowns} / holds {ChargeHolds}, rests rolled {RestsRolled} / too short {RestsShort}, small beasts with zero bed cells {BedZeroCells}; empty-to-full at 40 C = {ChargeDaysAt40:F1} days, at 60 C = {ChargeDaysAt60:F1} days");
             Console.WriteLine($"eco: scores in band {ScoresInBand} / outside {ScoresOutside} / off {ScoresOff}, zero-rate skips {AshSkips}, ash attempts {AshAttemptsTotal}, once-hits {OnceHits}, set clears {OnceClears}, list parses {ParseCases}");
             if (!oneSeed.HasValue && scale >= 1 && only == null)
             {
                 var blind = new List<string>();
                 if (Measures == 0 || DebtRises == 0 || DebtDecays == 0 || ReseedAttempts == 0 || ReseedSuccess == 0 || FrontsFired == 0 || FrontsArmed == 0 || HistorySamples == 0 || RaidsFired == 0 || RaidInsults == 0 || RaidGated == 0 || LivenessChecks == 0 || HarvestsAllowed == 0 || HarvestsRefused == 0) blind.Add("burn never measured/accrued/decayed/reseeded/fired a front/recorded history/raided/insulted/gated/proved liveness/allowed or refused a harvest");
-                if (ChargeUps == 0 || ChargeDowns == 0 || ChargeHolds == 0 || HerdAdvances == 0 || BfsFound == 0 || BfsMissed == 0 || RestsRolled == 0 || RestsShort == 0) blind.Add("furnace never charged/bled/held/advanced a herd/found/missed a tile/rolled a rest/skipped a short rest");
+                if (ChargeUps == 0 || ChargeDowns == 0 || ChargeHolds == 0 || RestsRolled == 0 || RestsShort == 0) blind.Add("furnace never charged/bled/held/rolled a rest/skipped a short rest");
                 if (ScoresInBand == 0 || ScoresOutside == 0 || ScoresOff == 0 || AshSkips == 0 || AshAttemptsTotal == 0 || OnceClears == 0) blind.Add("eco never scored in/out of band/off, skipped a zero rate, deposited ash, or cleared its roll set");
                 foreach (var b in blind) { Console.WriteLine("FAIL fuzz is blind: " + b); ok = false; }
             }

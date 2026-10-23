@@ -85,7 +85,7 @@ STOCK_GROUND = ("Sand", "Soil", "Gravel", "SoilRich")
 ORDINARY_RAIN = ("Rain", "RainyThunderstorm", "FoggyRain")
 # Mechanics that must be OFF during the controlled bars (plan 2.3a isolation).
 ISOLATION_OFF = ["burnLineEnabled", "fireHawkSpreadEnabled", "fireClockEnabled",
-                 "furnaceWorldMigrationEnabled", "burrowOnFireEnabled",
+                 "burrowOnFireEnabled",
                  "furnaceThermalEnabled"]
 FIRE_HAWK_JOB = "RM_FireHawkCarryEmber"   # JobDefs/RM_PyrelandsJobs.xml (renamed from RUT_)
 EMBER_DRIVER = "RimMandrake.Pyrelands.JobDriver_RUT_FireHawkCarryEmber"   # ProbeFlight: the flight-tracker state read
@@ -2417,11 +2417,11 @@ def gpt_hunt_plausible(t):
     """The PLAUSIBLE rows of the 2026-10-15 GPT hunt (GPT_TRIAGE). Each row's name says what a PASS means; a FAIL confirms
     the finding. FURNACE_CARAVAN_DIAGNOSE_HEARTH_GOES_COLD has NO row: the owner ruled caravan warmth out of scope
     ("Bah. Reverse decision. Drop the caravan warmth portion.", 2026-10-15)."""
-    # FURNACE_SEED_DIAGNOSE_SHIPPED_SAVE_HERDLESS + TRIBES_LOOKUP_DIAGNOSE_FIRST_ONE_FALLS: an OFFLINE read of the start save's
-    # world (diag/save_world_check.py). 2026-10-15 on CANONICAL_ASHKARR_START_2026-09-12.rws: no seeder component (the save
-    # predates Pyrelands in its list), 0 herds, 1 TribeCivil faction. Re-run on the freeze candidate after the final paint.
+    # Leftover furnace herds (the world migration was cut 2026-10-23) + TRIBES_LOOKUP_DIAGNOSE_FIRST_ONE_FALLS: an OFFLINE read
+    # of the start save's world (diag/save_world_check.py). 2026-10-15 on CANONICAL_ASHKARR_START_2026-09-12.rws: no seeder
+    # component, 0 herds, 1 TribeCivil faction. Re-run on the freeze candidate after the final paint.
     w = None
-    with _comp(t, "save_furnace_herds_seeded", beyond_toggle=True):
+    with _comp(t, "save_holds_no_furnace_herds", beyond_toggle=True):
         herd = ("UNMEASURED", "not read (offline declaration probe)")
         try:
             if _live(t):
@@ -2509,10 +2509,6 @@ def gpt_hunt_plausible(t):
     _independent(t)
 
     for name, why in (
-        ("world_herd_rejoins_circuit",
-         "FURNACE_HERD_DIAGNOSE_ARRIVES_NEVER_LEAVES: needs a long world-tick run with a home map on a herd's route; count "
-         "RM_FurnaceHerd world objects before and after N herd deliveries (save_world_check.py on saves taken before/after). "
-         "A design call first: whether delivered herds should leave a persistent map"),
         ("big_burn_tick_cost",
          "FIRE_SCAN_DIAGNOSE_BIG_BURN_COST: CALIBRATING evidence, never a gate. Burn a 250x250 standing grass burn with 20+ "
          "RM_Ashwallow burrowed, and read ticks per second with src/RimMandrake/Pyrelands/tick_rate_probe.py against the same "

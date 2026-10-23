@@ -584,7 +584,7 @@ Weather is global, so it is one switch, not stations. RM_FE_Weather_AshDrift: fr
 
 **Sign:** LOOK: every setting at its default. DO: Options > Mod Settings > Pyrelands. DECIDE: are the toggles clear? anything missing?
 
-Every toggle at its shipped default. Station by setting: fire dusts ash 5, 8; scorch-fruit seeding 8, 16; ash-fall drifts 5, G; watered ash 18; fresh-burn bonus 8, 10; rain fades bonus 10; ambient drift G; growth stages 14; wild allowlist N0; scorched ruins R; standing burn line L; fire-hawk carrying 21 (flight, owner-present); furnace thermal 23-24; fire clock E; world migration W; giant furnace-beast 23 (restart); ullai herds 25 (restart); burrowing 11; shovel sand 19; cross-biome (off). PyrelandsMechanics: arson-justice raids, flame-harvest visits, the tribes' fire rite: E.
+Every toggle at its shipped default. Station by setting: fire dusts ash 5, 8; scorch-fruit seeding 8, 16; ash-fall drifts 5, G; watered ash 18; fresh-burn bonus 8, 10; rain fades bonus 10; ambient drift G; growth stages 14; wild allowlist N0; scorched ruins R; standing burn line L; fire-hawk carrying 21 (flight, owner-present); furnace thermal 23-24; fire clock E; giant furnace-beast 23 (restart); ullai herds 25 (restart); burrowing 11; shovel sand 19; cross-biome (off). PyrelandsMechanics: arson-justice raids, flame-harvest visits, the tribes' fire rite: E.
 
 ### W. World map
 
@@ -592,7 +592,7 @@ Every toggle at its shipped default. Station by setting: fire dusts ash 5, 8; sc
 
 **Sign:** LOOK: the biome on the world map. DO: press the World tab. DECIDE: does the Pyrelands patch look right?
 
-The site sits in a 2-ring Pyrelands patch: the biome's world drawing. A furnace-beast herd marker (RM_FurnaceHerd) may be on the world; it migrates over days. Pyrelands has 0 tiles on Ash'karr by design (painted once at the end).
+The site sits in a 2-ring Pyrelands patch: the biome's world drawing. Pyrelands has 0 tiles on Ash'karr by design (painted once at the end).
 
 ### E. Fire-clock events
 

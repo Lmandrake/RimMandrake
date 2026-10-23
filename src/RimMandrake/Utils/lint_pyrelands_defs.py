@@ -4,7 +4,7 @@ XML defs/patches against C# source (see lint_modpack_defs.py for the generic che
 Pyrelands-specific data checks:
 
   pyrelands-tuning   PyrelandsTuning.cs relationships: raid threshold <= arson-debt cap, fire-front days ordered, charge/seek/avoid
-                     ordered, bleed ambient below charge ambient, retry <= quiet, desert dwell <= max dwell, no biome on two herd legs
+                     ordered, bleed ambient below charge ambient, retry <= quiet
   pyrelands-slider   every Mod Settings slider of the companion whose value is compared with a capped quantity must not offer values past the
                      cap (the arson-debt threshold slider once went to 2000 against a 1500 cap, so the top quarter of it never raided)
   pyrelands-ground   deep ash stays the ground: gravelTerrain and the gravel/pocket noise bands cannot starve bar pyre_ground_deep_ash
@@ -78,12 +78,8 @@ def extra(mod, E, W, defs_xml, patch_xml, defnames, ctx):
     chk(lambda: 0.0 < g("FurnaceChargeSeekBelow") < g("FurnaceChargeAvoidAbove") <= 1.0, "furnace charge hysteresis not ordered inside (0,1]")
     chk(lambda: g("FurnaceBleedAmbientC") < g("FurnaceChargeAmbientC"), "furnace bleed ambient is not below the charge ambient (no dead band)")
     chk(lambda: g("StandingBurnRetryTicks") <= g("StandingBurnQuietTicks"), "StandingBurnRetryTicks > StandingBurnQuietTicks")
-    chk(lambda: g("WorldHerdDeepDesertDwellTicks") <= g("WorldHerdMaxLegDwellTicks"), "desert dwell longer than the max leg dwell")
-    chk(lambda: g("WorldHerdMinSize") <= g("WorldHerdMaxSize"), "herd size range reversed")
     chk(lambda: g("FlameHarvestMinFires") >= 1 and g("FireFrontWidthCells") >= 1, "harvest minimum fires / front width < 1")
-    allnames = arrays.get("PyrelandsBiomeDefNames", []) + arrays.get("NearTerminatorBiomeDefNames", []) + arrays.get("DeepDesertBiomeDefNames", [])
-    dup = sorted({x for x in allnames if allnames.count(x) > 1})
-    chk(lambda: not dup, f"biome(s) listed on two herd legs: {', '.join(dup)}")
+    allnames = arrays.get("PyrelandsBiomeDefNames", [])
     biomes = set()
     for xp in glob.glob(os.path.join(L.REPO, "src", "**", "Defs", "**", "*.xml"), recursive=True):
         if os.sep + "obj" + os.sep in xp:
@@ -96,7 +92,7 @@ def extra(mod, E, W, defs_xml, patch_xml, defnames, ctx):
             pass
     for nm in allnames:
         if nm.startswith(L.OUR_PREFIX) and nm not in biomes:
-            W("pyrelands-tuning", f"herd-leg biome {nm} is not a BiomeDef anywhere in src (a leg that can never be found)")
+            W("pyrelands-tuning", f"Pyrelands biome name {nm} is not a BiomeDef anywhere in src")
 
     # ---- the companion's sliders vs the caps they are compared with
     mp = os.path.join(UTINNI, "Source", "PyrelandsMechanicsMod.cs")
