@@ -82,7 +82,7 @@ def save_json(name: str, obj) -> None:
     os.replace(tmp, p)
 
 
-ROTATE_BYTES = 32 << 20   # an append-only log past this is renamed <stem>.<YYYYmmdd-HHMMSS>.jsonl and restarted
+ROTATE_BYTES = 32 << 20   # an append-only log past this is renamed <stem>.<YYYYmmdd-HHMMSS-micro>.jsonl and restarted
 
 
 def append(name: str, rec: dict) -> None:
@@ -351,6 +351,9 @@ def make_digest(mode: str, since: float | None = None) -> dict:
     for r in snap["rows"]:
         if r["kind"] == "red" and r["since"] >= since - 3600:
             lines.append({"g": "✖", "kind": "red", "t": r["since"], "text": r["text"], "link": r.get("link")})
+    for r in snap["rows"]:   # broke while he was away and recovered since: still an issue to report, not red
+        if r["kind"] == "recovered" and r["since"] >= since - 3600:
+            lines.append({"g": "↺", "kind": "recovered", "t": r["since"], "text": r["text"], "link": r.get("link")})
     for r in snap["rows"]:
         if r["kind"] in ("amber", "amber_soft", "review", "warn"):
             lines.append({"g": "◐" if r["kind"] != "review" else "◇", "kind": r["kind"], "t": r["since"],

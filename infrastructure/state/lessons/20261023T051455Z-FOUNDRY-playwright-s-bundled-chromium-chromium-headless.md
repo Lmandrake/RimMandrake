@@ -1,0 +1,1 @@
+Playwright's bundled chromium (chromium_headless_shell-1234) cannot start in this WSL: libasound.so.2 is missing, so headless screenshots of RimPulse's widget fail; prove widget behaviour via the private daemon's /api/now JSON (RM_PULSE_PORT=8799, RM_PULSE_STATE=scratch) and node syntax-check the script instead

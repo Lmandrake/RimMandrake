@@ -54,8 +54,8 @@ OOM_CLUSTER_GAP = 30 * 60        # harness kills come in bursts; one incident pe
 DONE_WINDOW_SECS = 12 * 3600
 SEAT_WAIT_FADE_SECS = 2 * 3600   # "finished, waiting for you" fades to a plain chip after this
 SEATS = ("BENCH", "FOUNDRY")     # the only windows that can ask for the owner
-OLD_ASK_SECS = 3 * 86400
-RULE_WINDOW_SECS = 14 * 86400   # a ruling older than this (since needs became owner) leaves the widget, not rimflow         # older asks fold into one "older (N)" line (nothing dropped)
+OLD_ASK_SECS = 3 * 86400        # older asks fold into one "older (N)" line (nothing dropped)
+RULE_WINDOW_SECS = 14 * 86400   # a ruling older than this (since needs became owner) leaves the widget, not rimflow
 SHEETS_DIRS = [c / "Transient" / "biome_ffar" for c in CLONES]
 # Telemetry (TELEMETRY_BUILD_EVERY_TICK_ACCOUNTED): the Windows-side telemetryd writes its alert
 # verdicts + sparklines here; pulse only displays them (design 08 §5.6: pulse is the attention surface).
@@ -1098,6 +1098,8 @@ def track_incidents(rows: list[dict], prev: dict, wins: list[dict], services: di
         h.update(who=r["who"], text=r["text"], last=last, count=max(r.get("count") or 1, h.get("count") or 0),
                  first=min(h.get("first") or last, last))
         ev, pending = recovery_evidence(r, wins, services, now)
+        if not ev and h.get("recovered_at"):
+            ev = h.get("evidence")   # this occurrence already recovered: a window closed later must not re-raise it
         if ev:
             if not h.get("recovered_at"):
                 h["recovered_at"] = now
