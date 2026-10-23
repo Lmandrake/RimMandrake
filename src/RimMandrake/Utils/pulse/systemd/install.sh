@@ -12,7 +12,8 @@ DEPLOY="$ROOT/pulse-deploy"
 ORIGIN=$(git -C "$HERE" remote get-url origin)
 if [ ! -d "$DEPLOY/.git" ]; then
   git clone -q --filter=blob:none --no-checkout --sparse "$ORIGIN" "$DEPLOY"
-  git -C "$DEPLOY" sparse-checkout set src/RimMandrake/Utils/pulse src/RimMandrake/rimflow
+  # the same list as pulse.py SPARSE_DIRS (update_code re-applies it when it grows)
+  git -C "$DEPLOY" sparse-checkout set src/RimMandrake/Utils/pulse src/RimMandrake/rimflow src/RimMandrake/Utils/art
   git -C "$DEPLOY" checkout -q main
 else
   git -C "$DEPLOY" pull -q --ff-only origin main

@@ -375,11 +375,20 @@ def read_bridge(clone: Path = CLONES[0]) -> str | None:
 
 
 def read_hands(state_dir: Path | None = None) -> list[dict]:
-    """Things agents deliberately handed the owner (`pulse.py hand`). Newest record per id wins."""
+    """Things agents deliberately handed the owner (`pulse.py hand`). Newest hand record per id wins; a later
+    `withdraw` record (no target) marks it withdrawn or superseded. `missing` = a path target that no longer
+    exists (a delivery problem, RIMPULSE_LOOKS_BUILD_UNREAD_NEVER_LISTED)."""
     out: dict[str, dict] = {}
     for h in read_jsonl_tail((state_dir or STATE_DIR) / "hands.jsonl", 2 << 20, strict=True):
-        if h.get("id") and h.get("target"):
-            out[h["id"]] = h
+        hid = h.get("id")
+        if not hid:
+            continue
+        if h.get("target"):
+            out[hid] = h                    # a (re-)hand replaces the record, an earlier withdrawal included
+        elif h.get("withdrawn") and hid in out:
+            out[hid] = {**out[hid], "withdrawn": h["withdrawn"], "superseded_by": h.get("superseded_by")}
+    for h in out.values():
+        h["missing"] = not str(h["target"]).startswith("http") and not os.path.exists(h["target"])
     return list(out.values())
 
 
@@ -481,25 +490,50 @@ def scan_sheet_log(f: Path) -> dict:
     return info
 
 
-def sheet_revision(log: Path, info: dict) -> float:
-    """The sheet's own time = its HTML file's mtime (named on the serve.log's `sheet` line, else the html
-    beside the log). NEVER the log's mtime: every request - pulse's probe included - appends to the log, so
-    the sheet looked brand new and re-opened every 45 s (RIMPULSE_SHEETS_FIX_OWN_PROBE_REOPENS_THEM).
-    0 when no html is found: the row then has no age, but opening it still sticks."""
+def sheet_html(log: Path, info: dict) -> Path | None:
+    """The sheet's html: named on the serve.log's `sheet` line, else the html beside the log. Its mtime is the
+    sheet's own time - NEVER the log's mtime: every request, pulse's probe included, appends to the log, so the
+    sheet looked brand new and re-opened every 45 s (RIMPULSE_SHEETS_FIX_OWN_PROBE_REOPENS_THEM). No html: the
+    row has no age (0), but opening it still sticks."""
     stem = log.name[: -len(".serve.log")]
     for c in ([info.get("sheet")] if info.get("sheet") else []) + [str(log.parent / stem),
                                                                      str(log.parent / (stem + ".html"))]:
-        if c.endswith(".html"):
-            try:
-                return Path(c).stat().st_mtime
-            except OSError:
-                continue
-    return 0.0
+        if c.endswith(".html") and Path(c).is_file():
+            return Path(c)
+    return None
 
 
-def read_sheets(dirs: list[Path] | None = None, probe=sheet_alive) -> list[dict]:
+_PREREVIEW_CACHE: dict[str, tuple] = {}
+
+
+def sheet_prereviewed(html: Path | None) -> tuple[bool, str]:
+    """(ok, why) from prereview.py's own verify() - Nothing reaches the owner unread (owner 2026-10-22). Cached
+    per (html mtime, record mtime): verify reads the whole html, and the sheets source runs every 45 s."""
+    if html is None:
+        return False, "no sheet html found beside its serve.log"
+    rp = html.with_name(html.stem + ".prereview.json")
+    try:
+        key = (html.stat().st_mtime_ns, rp.stat().st_mtime_ns if rp.exists() else 0)
+    except OSError as e:
+        return False, f"unreadable: {e}"
+    c = _PREREVIEW_CACHE.get(str(html))
+    if c and c[0] == key:
+        return c[1]
+    import sys
+    art = str(Path(__file__).resolve().parents[1] / "art")
+    if art not in sys.path:
+        sys.path.insert(0, art)
+    import prereview
+    ok, msg = prereview.verify(html)
+    res = (ok, msg.split(" Look at every row yourself")[0][:200])   # the HOW tail is for agents, not the widget
+    _PREREVIEW_CACHE[str(html)] = (key, res)
+    return res
+
+
+def read_sheets(dirs: list[Path] | None = None, probe=sheet_alive, review=sheet_prereviewed) -> list[dict]:
     """Every review-sheet server that answers: the LAST url in its serve.log that is alive
-    (SHEETS_INDEX/TONIGHT docs carry stale ports - never read those). `mtime` is the sheet's revision."""
+    (SHEETS_INDEX/TONIGHT docs carry stale ports - never read those). `mtime` is the sheet's revision;
+    `prereviewed`/`prereview` say whether a valid pre-review record covers it (unread sheets are held back)."""
     import re
     from concurrent.futures import ThreadPoolExecutor
     logs: dict[str, Path] = {}
@@ -514,12 +548,21 @@ def read_sheets(dirs: list[Path] | None = None, probe=sheet_alive) -> list[dict]
             info = scan_sheet_log(f)
         except OSError:
             return None
-        mt = sheet_revision(f, info)
+        html = sheet_html(f, info)
+        try:
+            mt = html.stat().st_mtime if html else 0.0
+        except OSError:   # rebuilt (replaced) between the two calls: no age this round, never a source crash
+            mt = 0.0
         live = next((u for u in reversed(info["urls"]) if probe(u)), None)
         if not live:
             return None
         name = re.sub(r"_sheet_.*$", "", f.name.replace(".serve.log", ""))
-        return {"name": name, "url": live, "unreviewed": info["never_reviewed"], "rows": info["rows"], "mtime": mt}
+        try:
+            ok, why = review(html)
+        except Exception as e:   # a broken checker holds the sheet back and says so; it never waves it through
+            ok, why = False, f"pre-review check failed: {type(e).__name__}: {e}"[:200]
+        return {"name": name, "url": live, "unreviewed": info["never_reviewed"], "rows": info["rows"], "mtime": mt,
+                "prereviewed": ok, "prereview": why}
     with ThreadPoolExecutor(8) as ex:
         return [r for r in ex.map(one, logs.values()) if r]
 
@@ -1017,31 +1060,62 @@ def hand_type(target: str) -> str:
     return HAND_TYPES.get(ext, "folder" if not ext else "file")
 
 
-def classify_looks(hands: list[dict], sheets: list[dict], seen_look: dict, now: float) -> list[dict]:
+def classify_looks(hands: list[dict], sheets: list[dict], seen_look: dict, now: float,
+                   seen_rev: dict | None = None) -> list[dict]:
     """The "to look at" feed: deliberate hand-offs + live review sheets. Nothing ever drops off when
     clicked (owner 2026-10-10): opening only sets `opened`, which the widget draws dimmed. Similar items
-    share a `group` and fold under one expandable line ("Biome sheets: 27"). A re-handed target or a
-    sheet rebuilt after it was opened reads as unopened again."""
-    rows = []
+    share a `group` and fold under one expandable line ("Biome sheets: 27"). A sheet rebuilt after it was
+    opened, or a hand of a NEW revision of a target, reads as unopened again; re-handing the revision he
+    already opened does not (RIMPULSE_LOOKS_BUILD_UNREAD_NEVER_LISTED).
+
+    Nothing reaches the owner unread (owner 2026-10-22): a hand with no `read_by` (who looked first) and a
+    sheet with no valid pre-review record are never listed - each is one `held` row (the widget folds them
+    under "held back"). A withdrawn or superseded hand stays, dimmed, and is not counted; a hand whose path
+    target vanished shows as a delivery problem."""
+    rows, seen_rev = [], seen_rev or {}
     for h in hands:
         tgt = h["target"]
+        seat = (h.get("seat") or "").upper() or None
+        title = h.get("title") or Path(tgt).name
+        if not h.get("read_by"):
+            rows.append(_row("held:" + h["id"], "held", seat or "", title, h.get("ts") or 0, src="hands",
+                             seat=seat, why="handed with no pre-read (pulse.py hand --read-by)"))
+            continue
         link = ({"type": "url", "value": tgt, "label": "open"} if tgt.startswith("http")
                 else {"type": "path", "value": h.get("win") or win_path(tgt), "label": "open"})
         ty = hand_type(tgt)
-        seat = (h.get("seat") or "").upper() or None
-        r = _row(h["id"], "look", seat or "", h.get("title") or Path(tgt).name, h.get("ts") or 0, link=link, src="hands")
-        r.update({"seat": seat, "title": r["text"], "ltype": ty, "seen_id": h["id"], "group": None,
-                  "opened": (seen_look.get(h["id"]) or 0) >= (h.get("ts") or 0),
-                  "thumb": ty == "image" and not tgt.startswith("http")})
+        opened = ((seen_look.get(h["id"]) or 0) >= (h.get("ts") or 0)
+                  or bool(h.get("rev")) and seen_rev.get(h["id"]) == h.get("rev"))
+        r = _row(h["id"], "look", seat or "", title, h.get("ts") or 0, link=link, src="hands")
+        r.update({"seat": seat, "title": title, "ltype": ty, "seen_id": h["id"], "group": None, "opened": opened,
+                  "thumb": ty == "image" and not tgt.startswith("http") and not h.get("missing"),
+                  "read_by": h.get("read_by"), "caught": h.get("caught"), "rev": h.get("rev")})
+        if h.get("withdrawn"):
+            sup = h.get("superseded_by")
+            r.update(ltype=f"superseded by {sup}" if sup else "withdrawn", withdrawn=True, was_opened=opened,
+                     opened=True)   # drawn dimmed like an opened one; `was_opened` keeps the real history
+        elif h.get("missing"):
+            r.update(ltype="target missing - delivery problem", missing=True)
         rows.append(r)
     for x in sorted(sheets, key=lambda x: x["name"]):
+        if not x.get("prereviewed", True):
+            rows.append(_row("held:sheet:" + x["name"], "held", "", x["name"], x["mtime"], src="sheets",
+                             why=x.get("prereview") or "no pre-review record",
+                             link={"type": "url", "value": x["url"], "label": "open"}))
+            continue
         r = _row("sheet:" + x["name"], "look", "", x["name"], x["mtime"],
                  link={"type": "url", "value": x["url"], "label": "open"}, src="sheets")
         r.update({"seat": None, "title": r["text"], "ltype": "never reviewed" if x["unreviewed"] else "sheet",
                   "seen_id": "sheet:" + x["name"], "group": "Biome sheets", "thumb": False,
-                  "opened": (seen_look.get("sheet:" + x["name"]) or 0) >= x["mtime"]})
+                  "opened": (seen_look.get("sheet:" + x["name"]) or 0) >= x["mtime"],
+                  "prereview": x.get("prereview")})
         rows.append(r)
     return rows
+
+
+def look_pending(r: dict) -> bool:
+    """A look row he still owes a glance: unopened, not withdrawn, and its target reachable."""
+    return r["kind"] == "look" and not r.get("opened") and not r.get("missing")
 
 
 def build_chips(rows: list[dict], now: float, sessions_ok: bool = True) -> list[dict]:
@@ -1106,7 +1180,12 @@ def classify_artpipe(a: dict, now: float, at: float) -> list[dict]:
         txt += f" · {a['done']} done"
     if a.get("failed", 0) > 0:
         txt += f" · {a['failed']} failed"
-    return [_row("artpipe", kind, "ART", txt, at, src="artpipe")]
+    rows = [_row("artpipe", kind, "ART", txt, at, src="artpipe")]
+    if a.get("failed", 0) > 0:   # failed jobs are history (the daemon retries or a seat re-queues), never red
+        rows.append(_row("fail:artpipe", "failed", "ART", f"artpipe · {a['failed']} job{'s' * (a['failed'] > 1)} in failed/"
+                         " · not blocking", at, src="artpipe",
+                         link={"type": "path", "value": win_path(str(ARTPIPE_DIR / "failed")), "label": "failed/"}))
+    return rows
 
 
 def read_telemetry(path: Path = TELEMETRY_STATE) -> dict | None:
@@ -1118,7 +1197,64 @@ def read_telemetry(path: Path = TELEMETRY_STATE) -> dict | None:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+# Telemetry episodes (RIMPULSE_ALERTS_FIX_TELEMETRY_CRIES_WOLF, GPT rec 7). MEASURED 2026-10-22 over 14 days:
+# `hostiles` re-opened 475 times and `modal_stuck` 344, warn median life 21 s - each re-open was a new incident
+# (new `since`) and so a new row, toast and ack. Now an alert id has ONE episode until it has been quiet for
+# TEL_EPISODE_GAP; inside it every re-open only counts. Declared detection targets: an alert is shown once it
+# has been present continuously for TEL_PERSIST[level] seconds, or at once when its episode has re-opened
+# TEL_FLAP_SHOW times (a flapping fault is still a fault, shown ONCE as "flapping ×N"). A shown alert that goes
+# quiet stays, marked clearing, for TEL_CLEAR_SECS, so a short dip does not drop and re-raise it.
+TEL_PERSIST = {"red": 30, "warn": 60}
+TEL_EPISODE_GAP = 10 * 60
+TEL_CLEAR_SECS = 2 * 60
+TEL_FLAP_SHOW = 4
+
+
+def telemetry_episodes(t: dict | None, prev: dict | None, now: float) -> tuple[dict | None, dict]:
+    """Pure: telemetryd's payload + the episode table -> (payload whose `alerts` are only those to SHOW, each
+    carrying its episode `since`/`flaps`/`clearing`, new table). Table: {id: {first, on_since, last_seen,
+    flaps, shown, level, text}}; `on_since` None = quiet now. A stale or absent payload leaves the table alone."""
+    eps = {k: dict(v) for k, v in (prev or {}).items()}
+    if not t or now - (t.get("at") or 0) > TELEMETRY_STALE_SECS:
+        return t, eps
+    present = set()
+    for al in t.get("alerts") or []:
+        aid = al.get("id")
+        if not aid:
+            continue
+        present.add(aid)
+        start = min(al.get("since") or now, now)
+        e = eps.get(aid)
+        if e is None or now - e["last_seen"] > TEL_EPISODE_GAP:
+            e = {"first": start, "on_since": start, "flaps": 1, "shown": False}
+        elif e.get("on_since") is None:
+            e.update(on_since=start, flaps=e["flaps"] + 1)   # re-opened inside the episode: count it, nothing new
+        e.update(last_seen=now, level=al.get("level") or "warn", text=al.get("text") or aid)
+        if not e["shown"] and (now - e["on_since"] >= TEL_PERSIST.get(e["level"], 60) or e["flaps"] >= TEL_FLAP_SHOW):
+            e["shown"] = True
+        eps[aid] = e
+    for aid, e in list(eps.items()):
+        if aid in present:
+            continue
+        if now - e["last_seen"] > TEL_EPISODE_GAP:
+            eps.pop(aid)            # quiet long enough: the episode is over
+        else:
+            e["on_since"] = None
+    show = []
+    for aid, e in eps.items():
+        if not e["shown"]:
+            continue
+        clearing = aid not in present
+        if clearing and now - e["last_seen"] > TEL_CLEAR_SECS:
+            continue
+        show.append({"id": aid, "level": e["level"], "text": e["text"], "since": e["first"], "flaps": e["flaps"],
+                     "clearing": clearing})
+    return {**t, "alerts": show}, eps
+
+
 def classify_telemetry(t: dict | None, acks: dict, now: float) -> list[dict]:
+    """Rows for telemetryd's alerts. Pass the payload through `telemetry_episodes` first: then an alert's
+    `since` is its episode start, so its incident (and toast, and ack) stays the same across re-opens."""
     if not t:
         return []
     link = {"label": "Grafana", "type": "url", "value": t.get("grafana") or "http://localhost:3000"}
@@ -1134,17 +1270,95 @@ def classify_telemetry(t: dict | None, acks: dict, now: float) -> list[dict]:
     for al in t.get("alerts") or []:
         since = al.get("since") or at
         inc = f"tel:{al['id']}@{int(since)}"
+        n = al.get("flaps") or 1
+        text = al["text"] + (f" · flapping ×{n}" if n > 1 else "") + (" · clearing" if al.get("clearing") else "")
         if al.get("level") == "red":
-            r = _red(inc, "TELEMETRY", al["text"], since, acks, "telemetry", link=link)
-            r["pill"] = _red_pill(short(al["text"], 40), 1, since)
+            r = _red(inc, "TELEMETRY", text, since, acks, "telemetry", link=link)
+            r["pill"] = _red_pill(short(al["text"], 40), n, since)
+            r["toast_title"] = "telemetry alarm"
             rows.append(r)
         else:
             a = acks.get(inc)
-            rows.append(_row(inc, "warn", "TELEMETRY", al["text"], since, link=link, src="telemetry", incident=inc,
+            rows.append(_row(inc, "warn", "TELEMETRY", text, since, link=link, src="telemetry", incident=inc,
                              acked=a is not None and a.get("at", 0) >= since, pill="◆ " + al["text"][:22]))
     if t.get("tier_armed"):
         rows.append(_row("tel:tier", "run", "TELEMETRY", "in-game test tier ARMED (1 s windows, flight recorder)",
                          at, link=link, src="telemetry"))
+    return rows
+
+
+# ---------------------------------------------------------------- job failures (RIMPULSE_FAILURES_BUILD_ONLY_THE_STUCK)
+# Build, selftest, artpipe and digest jobs report each attempt to failures.jsonl (`pulse.py report`, or
+# failreport.report() from Python). Normal agent iteration - a build that fails and then passes - is HISTORY,
+# never an alarm (GPT rec 12). Red only when the owner-relevant consequence holds:
+#   lost    the job's output is gone (a scheduled digest that was never written)   -> red at once
+#   blocks  required work cannot go on without it                                  -> red once it has stayed
+#           failed for FAIL_STUCK_SECS with no success since
+# A failure that is neither is a calm `failed` row (folded, no pill, no toast); a success after failures is a
+# `recovered` row. Record: {ts, task, status: failed|ok, cause?, seat?, blocks?, lost?, link?}.
+FAILURES = STATE_DIR / "failures.jsonl"
+FAIL_STUCK_SECS = 15 * 60
+FAIL_HISTORY_SECS = 24 * 3600     # a recovered or non-blocking failure stays in the history this long
+FAIL_STALE_SECS = 7 * 86400       # an unrecovered failure older than this is forgotten (the job is gone)
+
+
+def read_failures(path: Path | None = None) -> list[dict]:
+    return read_jsonl_tail(path or FAILURES, 4 << 20, strict=True)
+
+
+def classify_failures(recs: list[dict], acks: dict, now: float) -> list[dict]:
+    """Pure: one row per task from its attempt records (see the block comment above)."""
+    by: dict[str, list] = {}
+    for r in recs:
+        if r.get("task") and r.get("status") in ("failed", "ok") and isinstance(r.get("ts"), (int, float)):
+            by.setdefault(str(r["task"]), []).append(r)
+    rows = []
+    hm = lambda t: time.strftime("%H:%M", time.localtime(t))  # noqa: E731
+    for task, rs in by.items():
+        rs.sort(key=lambda r: r["ts"])
+        last = rs[-1]
+        streak = []
+        for r in reversed(rs):              # the current run of failures (if the last attempt failed)
+            if r["status"] != "failed":
+                break
+            streak.insert(0, r)
+        who = (last.get("seat") or "JOB").upper()
+        link = ({"type": "path", "value": win_path(last["link"]), "label": Path(last["link"]).name[:28]}
+                if last.get("link") else None)
+        if not streak:                       # last attempt passed: recovered, if it failed recently
+            fails = [i for i, r in enumerate(rs) if r["status"] == "failed"]
+            if not fails or now - rs[fails[-1]]["ts"] > FAIL_HISTORY_SECS:
+                continue
+            j = fails[-1]                    # the last failure, the run of failures it ends, the pass after it
+            i = j
+            while i > 0 and rs[i - 1]["status"] == "failed":
+                i -= 1
+            f, n, ok = rs[j], j - i + 1, rs[j + 1]
+            rows.append(_row(f"fail:{task}", "recovered", (f.get("seat") or who).upper(),
+                             f"{task} failed{f' ×{n}' if n > 1 else ''}" + (f" ({short(f['cause'], 60)})" if f.get("cause") else "")
+                             + f" · recovered: passed {hm(ok['ts'])}", f["ts"], link=link, src="failures",
+                             recovered=f"passed {hm(ok['ts'])}"))
+            continue
+        first, f = streak[0]["ts"], streak[-1]
+        if now - f["ts"] > FAIL_STALE_SECS:
+            continue
+        n, cause = len(streak), (f" ({short(f['cause'], 60)})" if f.get("cause") else "")
+        inc = f"fail:{task}@{int(first)}"
+        base = f"{task} failed{f' ×{n}' if n > 1 else ''}{cause}"
+        blocked_for = now - first
+        if any(r.get("lost") for r in streak):
+            r = _red(inc, who, f"{base} · output lost", first, acks, "failures", link=link, count=n)
+            r.update(pill=_red_pill(f"{task} output lost", n, f["ts"]), toast_title="output lost")
+        elif any(r.get("blocks") for r in streak) and blocked_for >= FAIL_STUCK_SECS:
+            r = _red(inc, who, f"{base} · blocking work for {int(blocked_for // 60)} min, no success since", first,
+                     acks, "failures", link=link, count=n)
+            r.update(pill=_red_pill(f"{task} stuck", n, f["ts"]), toast_title="job stuck")
+        else:
+            if now - f["ts"] > FAIL_HISTORY_SECS:
+                continue
+            tail = " · blocking, retrying" if any(r.get("blocks") for r in streak) else " · not blocking"
+            r = _row(f"fail:{task}", "failed", who, base + tail, f["ts"], link=link, src="failures")
+        rows.append(r)
     return rows
 
 
@@ -1173,7 +1387,8 @@ def classify_game(probe: dict | None, bridge: str | None, now: float) -> list[di
 #   service OOM     the unit is active and its main process started after the kill and has run RECOVER_SECS
 #   seat tool OOM   the seat's window is alive, active after the kill, and RECOVER_SECS passed with no new kill
 #   window OOM/lost a window of the same name started after the death is alive (it was replaced)
-# Anything else (telemetry reds, non-seat windows with no replacement) says "recovery unknown".
+# Anything else (telemetry reds, non-seat windows with no replacement) says "recovery unknown". A job failure
+# (fail:...) recovers only by its own next passing attempt, which classify_failures already turns into history.
 RECOVER_SECS = 10 * 60
 INCIDENT_KEEP_SECS = 48 * 3600
 
@@ -1181,6 +1396,8 @@ INCIDENT_KEEP_SECS = 48 * 3600
 def recovery_evidence(r: dict, wins: list[dict], services: dict, now: float) -> tuple[str | None, str]:
     """(evidence text or None, pending note) for one red row. Pure."""
     inc, last = r.get("incident") or "", r.get("since") or 0
+    if inc.startswith("fail:"):
+        return None, ""          # a job failure recovers by its next passing attempt (classify_failures)
     hm = lambda t: time.strftime("%H:%M", time.localtime(t))  # noqa: E731
     if inc.startswith("oom:svc:"):
         sv = (services or {}).get(inc[len("oom:svc:"):])
@@ -1244,7 +1461,7 @@ def track_incidents(rows: list[dict], prev: dict, wins: list[dict], services: di
 
 
 KIND_ORDER = {"red": 0, "amber": 1, "amber_soft": 2, "warn": 2.5, "stuck": 3, "run": 4, "review": 5, "provide": 5.2, "look": 5.5, "idle": 6, "recovered": 6.4,
-              "answered": 6.45, "done": 7}
+              "failed": 6.42, "answered": 6.45, "held": 6.46, "done": 7}
 
 
 def order_rows(rows: list[dict]) -> list[dict]:
@@ -1253,7 +1470,7 @@ def order_rows(rows: list[dict]) -> list[dict]:
         base = KIND_ORDER.get(r["kind"], 9)
         if r["kind"] in ("red", "amber", "amber_soft", "warn") and acked:
             base = 6.5               # acked alarms drop below the live roster, still visible
-        return (base, -(r.get("since") or 0) if r["kind"] in ("done", "red", "review", "look", "provide", "answered") else (r.get("since") or 0))
+        return (base, -(r.get("since") or 0) if r["kind"] in ("done", "red", "review", "look", "provide", "answered", "failed", "held") else (r.get("since") or 0))
     return sorted(rows, key=k)
 
 
@@ -1279,8 +1496,8 @@ def build_strip(rows: list[dict]) -> list[dict]:
         elif r["kind"] == "warn":
             pills.append({"kind": "warn", "text": r.get("pill") or "◆ " + short(r["text"], 40), "title": r["text"],
                           "since": r["since"]})
-    rec = [r for r in rows if r["kind"] == "recovered"]
-    if rec:
+    rec = [r for r in rows if r["kind"] == "recovered" and r.get("src") != "failures"]   # a job that failed then
+    if rec:                                                                            # passed is iteration: fold only
         pills.append({"kind": "recovered", "text": f"↺ {len(rec)} recovered", "title": "\n".join(r["text"] for r in rec)})
     rule = sum(1 for r in rows if r["kind"] == "review")
     if rule:
@@ -1288,7 +1505,7 @@ def build_strip(rows: list[dict]) -> list[dict]:
     give = sum(1 for r in rows if r["kind"] == "provide")
     if give:
         pills.append({"kind": "provide", "text": f"✎ {give} to provide"})
-    look = sum(1 for r in rows if r["kind"] == "look" and not r.get("opened"))
+    look = sum(1 for r in rows if look_pending(r))
     if look:
         pills.append({"kind": "look", "text": f"▣ {look} to look at"})
     done = sum(1 for r in rows if r["kind"] == "done")
@@ -1323,11 +1540,14 @@ def collect_snapshot(raw: dict, state: dict, now: float) -> tuple[dict, dict, li
     lrows, counts = classify_ledger(raw.get("ledger", []), since, now, raw.get("rulings"))
     oom = (classify_kernel_oom(raw["kernel_oom"], acks, now) if raw.get("kernel_oom") is not None
            else classify_oom(raw.get("memwatch", []), acks, now))   # memwatch only when the kernel log is unreadable
-    looks = classify_looks(raw.get("hands", []), raw.get("sheets", []), state.get("seen_look", {}), now)
+    looks = classify_looks(raw.get("hands", []), raw.get("sheets", []), state.get("seen_look", {}), now,
+                           state.get("seen_rev", {}))
+    tel, tel_eps = telemetry_episodes(raw.get("telemetry"), state.get("tel_episodes"), now)
     rows = (oom + srows + lrows + looks
             + classify_artpipe(raw.get("artpipe", {}), now, raw.get("at", {}).get("artpipe", now))
             + classify_game(raw.get("probe"), raw.get("bridge"), now)
-            + classify_telemetry(raw.get("telemetry"), acks, now))
+            + classify_telemetry(tel, acks, now)
+            + classify_failures(raw.get("failures") or [], acks, now))
     wins = [r["win"] for r in srows if r.get("win")]
     rows, incidents, inc_events = track_incidents(rows, state.get("incidents", {}), wins, raw.get("services") or {}, now)
     events.extend(inc_events)
@@ -1344,7 +1564,7 @@ def collect_snapshot(raw: dict, state: dict, now: float) -> tuple[dict, dict, li
             events.append({"m": "alarm_close", "id": inc, "kind": o["kind"], "who": o.get("who"),
                            "age_s": round(now - o["since"])})
     new_state = dict(state)
-    new_state.update({"seen": seen, "open": open_now, "incidents": incidents})
+    new_state.update({"seen": seen, "open": open_now, "incidents": incidents, "tel_episodes": tel_eps})
     snap = {
         "v": 2, "collected_at": now, "rows": rows, "strip": build_strip(rows), "chips": build_chips(rows, now, (raw.get("source_status") or {}).get("sessions", {}).get("ok", True)), "counts": counts,
         "done_since": since, "sources": source_freshness(raw.get("source_status", {}), raw, now),
@@ -1353,6 +1573,6 @@ def collect_snapshot(raw: dict, state: dict, now: float) -> tuple[dict, dict, li
                       if raw.get("telemetry") else None),
         "tally": {k: sum(1 for r in rows if r["kind"] == k and not r.get("acked"))
                   for k in ("red", "amber", "amber_soft", "warn", "run", "done", "review", "provide", "look", "answered",
-                            "recovered")},
+                            "recovered", "failed", "held")},
     }
     return snap, new_state, events

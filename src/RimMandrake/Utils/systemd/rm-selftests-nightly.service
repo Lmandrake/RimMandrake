@@ -1,6 +1,8 @@
 # Full selftest sweep, once a night (owner by card 2026-10-14: "Targeted per commit, full once nightly").
 # Commits run only their own tests (run_selftests.py --only ...); this is the one full sweep.
 # Runs on BENCH's working tree as it stands; no git operations. Summary lands in Transient/.
+# The exit line is run_selftests' own code (it used to be tail's, so a RED sweep logged "exit 0"); each sweep is
+# reported to RimPulse's job history (pulse.py report selftests:nightly): history, never red - nothing waits on it.
 # Install:  cp src/RimMandrake/Utils/systemd/rm-selftests-nightly.{service,timer} ~/.config/systemd/user/
 #           systemctl --user daemon-reload && systemctl --user enable --now rm-selftests-nightly.timer
 [Unit]
@@ -10,4 +12,4 @@ Description=RimMandrake nightly full selftest sweep (BENCH clone)
 Type=oneshot
 WorkingDirectory=/home/mandrake/rm/bench
 Nice=15
-ExecStart=/bin/sh -c 'mkdir -p Transient && LOG=Transient/selftests_nightly.log; printf "\n=== %%s nightly\n" "$(date -u +%%Y-%%m-%%dT%%H:%%M:%%SZ)" >>"$LOG"; python3 src/RimMandrake/Utils/run_selftests.py 2>&1 | tail -40 >>"$LOG"; printf "exit %%s\n" "$?" >>"$LOG"'
+ExecStart=/bin/sh -c 'mkdir -p Transient && LOG=Transient/selftests_nightly.log; printf "\n=== %%s nightly\n" "$(date -u +%%Y-%%m-%%dT%%H:%%M:%%SZ)" >>"$LOG"; python3 src/RimMandrake/Utils/run_selftests.py >Transient/selftests_nightly.last 2>&1; rc=$?; tail -40 Transient/selftests_nightly.last >>"$LOG"; printf "exit %%s\n" "$rc" >>"$LOG"; st=failed; [ "$rc" = 0 ] && st=ok; python3 src/RimMandrake/Utils/pulse/pulse.py report selftests:nightly "$st" --cause "run_selftests exit $rc: $(grep -m1 ^RESULT Transient/selftests_nightly.last)" --link "$LOG" || true'

@@ -288,8 +288,10 @@ check("a clone holding the same event twice (merge=union) still folds to one ite
       pc.owner_rulings(pc._model().canonical_order(TR + TR)).keys() == pc.owner_rulings(TR).keys())
 
 # look feed: hands, seen, re-hand, sheets
-H = [{"id": "hand:aa", "target": "/home/mandrake/rm/bench/Transient/x.png", "title": "contact sheet", "seat": "BENCH", "ts": NOW - 50},
-     {"id": "hand:bb", "target": "https://example.org/p", "title": "a page", "seat": "foundry", "ts": NOW - 100}]
+H = [{"id": "hand:aa", "target": "/home/mandrake/rm/bench/Transient/x.png", "title": "contact sheet", "seat": "BENCH", "ts": NOW - 50,
+      "read_by": "seat:BENCH", "caught": "nothing"},
+     {"id": "hand:bb", "target": "https://example.org/p", "title": "a page", "seat": "foundry", "ts": NOW - 100,
+      "read_by": "judge:opus", "caught": "nothing"}]
 lr = {r["key"]: r for r in pc.classify_looks(H, [], {}, NOW)}
 check("a handed image is a look row with a thumbnail and a native-path link",
       lr["hand:aa"]["thumb"] and lr["hand:aa"]["link"]["value"].startswith("\\\\wsl.localhost\\Ubuntu\\home"), lr["hand:aa"])
@@ -339,7 +341,9 @@ with tempfile.TemporaryDirectory() as d:
 # hand verb writes a record the reader sees
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import pulse as pl  # noqa: E402
-rec = pl.hand("Transient/some.png", "a title", "bench")
+_tgt = Path(os.environ["RM_PULSE_STATE"]) / "some.png"
+_tgt.write_bytes(b"png")
+rec = pl.hand(str(_tgt), "a title", "bench", "seat:BENCH", "nothing")
 check("hand verb records seat upper-cased and a native path", rec["seat"] == "BENCH" and rec["win"] and rec["title"] == "a title", rec)
 check("the daemon reader sees a handed record", any(h["id"] == rec["id"] for h in pc.read_hands()))
 check("snapshot v2 carries chips and look rows",
@@ -524,6 +528,7 @@ finally:
     pl.ROTATE_BYTES = old_rot
 
 # --- RIMPULSE_SHEETS_FIX_OWN_PROBE_REOPENS_THEM: the sheet's time is its html, not its log -----------------
+OKREV = lambda html: (True, "pre-reviewed (fixture)")   # noqa: E731  (the prereview gate is tested below)
 with tempfile.TemporaryDirectory() as d:
     d = Path(d)
     html = d / "rev_sheet_2026-10-21.html"
@@ -532,25 +537,25 @@ with tempfile.TemporaryDirectory() as d:
     winp = "\\\\wsl.localhost\\Ubuntu" + str(html).replace("/", "\\")
     log = d / "rev_sheet_2026-10-21.serve.log"
     log.write_text(f"  sheet      {winp}\n  9 rows · 0 decided\n  serving    http://localhost:7/?t=q\n")
-    got = pc.read_sheets([d], probe=lambda u: True)
+    got = pc.read_sheets([d], probe=lambda u: True, review=OKREV)
     check("a sheet's time is its HTML file's mtime (named on the serve.log 'sheet' line)",
           got and abs(got[0]["mtime"] - (NOW - 86400)) < 1, got)
     seen_at = NOW - 3600   # he opened it an hour ago
     with open(log, "a") as fh:
         fh.write('  "GET /status?t=q HTTP/1.1" 200 -\n' * 200)   # an hour of probes later
-    got2 = pc.read_sheets([d], probe=lambda u: True)
+    got2 = pc.read_sheets([d], probe=lambda u: True, review=OKREV)
     row = pc.classify_looks([], got2, {"sheet:rev": seen_at}, NOW)[0]
     check("probes appending to the serve.log no longer re-open a sheet he opened", row["opened"] and got2[0]["mtime"] == got[0]["mtime"],
           (row, got2))
     os.utime(html, (NOW - 60, NOW - 60))   # the sheet itself was rebuilt after he opened it
-    row2 = pc.classify_looks([], pc.read_sheets([d], probe=lambda u: True), {"sheet:rev": seen_at}, NOW)[0]
+    row2 = pc.classify_looks([], pc.read_sheets([d], probe=lambda u: True, review=OKREV), {"sheet:rev": seen_at}, NOW)[0]
     check("a sheet whose html is rebuilt after he opened it reads unopened again", not row2["opened"], row2)
     bare = d / "bare_sheet_2026-10-21.html.serve.log"
     bare.write_text("  serving    http://localhost:8/?t=r\n")
     (d / "bare_sheet_2026-10-21.html").write_text("x")
     nohtml = d / "nohtml_sheet_x.serve.log"
     nohtml.write_text("  serving    http://localhost:9/?t=s\n")
-    gb = {x["name"]: x for x in pc.read_sheets([d], probe=lambda u: True)}
+    gb = {x["name"]: x for x in pc.read_sheets([d], probe=lambda u: True, review=OKREV)}
     check("with no 'sheet' line the html beside the log is the revision; with none it is 0, never the log mtime",
           gb["bare"]["mtime"] == (d / "bare_sheet_2026-10-21.html").stat().st_mtime and gb["nohtml"]["mtime"] == 0, gb)
 calls = []
@@ -725,6 +730,220 @@ check("digest: new asks and new looks are split from the backlog",
 check("digest: opened looks, answered asks and recoveries/done from before the interval are left out",
       not any(t in " ".join(alltxt) for t in ("opened one", "DONE_ASK", "an old recovered one", "before he left")), alltxt)
 check("digest: answered asks are one counted note, not rows", "1 you already answered" in dsec["rule"]["note"], dsec["rule"])
+
+# --- RIMPULSE_LOOKS_BUILD_UNREAD_NEVER_LISTED: nothing reaches him unread; revisions; withdrawn; missing -------
+UNREAD = [{"id": "hand:un", "target": "https://example.org/u", "title": "nobody read me", "ts": NOW - 30}]
+lu = pc.classify_looks(UNREAD, [], {}, NOW)
+check("a hand with no pre-read is never a look row: one 'held' row instead",
+      [r["kind"] for r in lu] == ["held"] and "--read-by" in lu[0]["why"], lu)
+check("a held hand is not counted in the strip's 'to look at'", not any(p["kind"] == "look" for p in pc.build_strip(lu)))
+with tempfile.TemporaryDirectory() as d:
+    d = Path(d)
+    f = d / "pic.png"
+    f.write_bytes(b"one")
+    check("hand REFUSES a target that does not exist", raises(lambda: pl.hand(str(d / "nope.png"), None, "BENCH", "seat:BENCH", "nothing")))
+    check("hand REFUSES with no --read-by, or a read-by outside seat:/judge:",
+          raises(lambda: pl.hand(str(f), None, "BENCH", None, "nothing")) and raises(lambda: pl.hand(str(f), None, "BENCH", "me", "nothing")))
+    check("hand REFUSES an empty --caught", raises(lambda: pl.hand(str(f), None, "BENCH", "seat:BENCH", " ")))
+    h1 = pl.hand(str(f), "pic", "BENCH", "judge:opus", "nothing")
+    h2 = pl.hand(str(f), "pic", "BENCH", "judge:opus", "nothing")   # the same revision handed again
+    f.write_bytes(b"two")
+    h3 = pl.hand(str(f), "pic", "BENCH", "judge:opus", "nothing")   # a NEW revision
+    check("a hand records a content revision; the same bytes give the same rev, new bytes a new one",
+          h1["rev"] and h1["rev"] == h2["rev"] and h3["rev"] != h1["rev"], (h1["rev"], h2["rev"], h3["rev"]))
+    opened_at = h1["ts"] + 0.001
+    same = pc.classify_looks([{**h2, "ts": h2["ts"] + 5}], [], {h1["id"]: opened_at}, NOW, {h1["id"]: h1["rev"]})[0]
+    new = pc.classify_looks([{**h3, "ts": h1["ts"] + 10}], [], {h1["id"]: opened_at}, NOW, {h1["id"]: h1["rev"]})[0]
+    check("re-handing the revision he already opened does not re-open it; a new revision does",
+          same["opened"] and not new["opened"], (same["opened"], new["opened"]))
+    pl.withdraw(h1["id"], "pic v2")
+    got = {h["id"]: h for h in pc.read_hands()}
+    check("withdraw marks the newest hand superseded; read_hands keeps it", got[h1["id"]].get("superseded_by") == "pic v2", got.get(h1["id"]))
+    wr = pc.classify_looks([got[h1["id"]]], [], {}, NOW)[0]
+    check("a superseded hand stays listed, dimmed and uncounted, its real opened state kept",
+          wr["kind"] == "look" and wr["withdrawn"] and wr["opened"] and wr["was_opened"] is False
+          and "superseded by pic v2" in wr["ltype"] and not pc.look_pending(wr), wr)
+    check("withdraw REFUSES an unknown id", raises(lambda: pl.withdraw("hand:nope")))
+    f.unlink()
+    miss = {h["id"]: h for h in pc.read_hands()}[h1["id"]]
+    pl.hand(str(d), "folder", "BENCH", "seat:BENCH", "nothing")   # a folder is a valid target
+    check("a handed path that vanished reads missing", miss["missing"] is True, miss)
+    mr = pc.classify_looks([{**miss, "withdrawn": None}], [], {}, NOW)[0]
+    check("a missing target shows as a delivery problem and is not counted", mr.get("missing") and "delivery problem" in mr["ltype"]
+          and not pc.look_pending(mr), mr)
+    # sheets: the REAL prereview.py verify() gates them
+    html = d / "gate_sheet_2026-10-23.html"
+    html.write_text('<script id="ITEMS" type="application/json">[{"id": "r1", "label": "a"}]</script>')
+    (d / "gate_sheet_2026-10-23.serve.log").write_text("  serving    http://localhost:7/?t=q\n")
+    g0 = pc.read_sheets([d], probe=lambda u: True)
+    lg0 = pc.classify_looks([], g0, {}, NOW)
+    check("a served sheet with no pre-review record is held back, with prereview.py's reason",
+          [r["kind"] for r in lg0] == ["held"] and "no pre-review record" in lg0[0]["why"], lg0)
+    import prereview
+    rp = prereview.init(html, "seat:FOUNDRY")
+    recd = json.loads(rp.read_text())
+    recd["caught"] = "nothing"
+    recd["rows"]["r1"]["verdict"] = "OK"
+    rp.write_text(json.dumps(recd))
+    lg1 = pc.classify_looks([], pc.read_sheets([d], probe=lambda u: True), {}, NOW)
+    check("with a valid pre-review record the sheet is a look row again",
+          [r["kind"] for r in lg1] == ["look"] and "pre-reviewed by seat:FOUNDRY" in lg1[0]["prereview"], lg1)
+    html.write_text('<script id="ITEMS" type="application/json">[{"id": "r1", "label": "changed"}]</script>')
+    lg2 = pc.classify_looks([], pc.read_sheets([d], probe=lambda u: True), {}, NOW)
+    check("a sheet whose row changed after it was looked at is held back again", [r["kind"] for r in lg2] == ["held"], lg2)
+    check("a checker that raises holds the sheet back and says so (never waves it through)",
+          pc.read_sheets([d], probe=lambda u: True, review=lambda h: 1 / 0)[0]["prereviewed"] is False)
+
+# --- RIMPULSE_ALERTS_FIX_TELEMETRY_CRIES_WOLF: episodes, persistence, hysteresis ---------------------------
+def tel_run(timeline, step=5, start=NOW):
+    """timeline: list of (t_offset, present?) for one warn alert 'modal_stuck'; returns per-tick shown rows."""
+    eps, out, since = {}, [], None
+    for off, on in timeline:
+        t = start + off
+        if on and since is None:
+            since = t
+        if not on:
+            since = None
+        payload = {"at": t, "alerts": [{"id": "modal_stuck", "level": "warn", "text": "modal stuck", "since": since}] if on else []}
+        shown, eps = pc.telemetry_episodes(payload, eps, t)
+        out.append((t, pc.classify_telemetry(shown, {}, t)))
+    return out, eps
+
+
+flap = []
+for cyc in range(3):                      # 21 s on / 30 s off - the measured warn median life
+    base = cyc * 51
+    flap += [(base + s, True) for s in range(0, 21, 5)] + [(base + 21 + s, False) for s in range(0, 30, 5)]
+fr3, _ = tel_run(flap)
+check("three short flaps (21 s on / 30 s off) raise NOTHING (the 475-re-open storm)", not any(rows for _, rows in fr3), fr3[-1])
+flap8 = []
+for cyc in range(8):
+    base = cyc * 51
+    flap8 += [(base + s, True) for s in range(0, 21, 5)] + [(base + 21 + s, False) for s in range(0, 30, 5)]
+fr8, eps8 = tel_run(flap8)
+keys8 = {r["incident"] for _, rows in fr8 for r in rows}
+check("a fault that keeps flapping is shown ONCE, as one episode with one incident key (one toast, one ack)",
+      len(keys8) == 1 and any("flapping ×" in r["text"] for _, rows in fr8 for r in rows), (keys8, fr8[-1]))
+check("the episode table counts every re-open", eps8["modal_stuck"]["flaps"] == 8, eps8)
+steady, _ = tel_run([(s, True) for s in range(0, 120, 5)])
+first_shown = next(t for t, rows in steady if rows) - NOW
+check("a sustained warn is shown within its declared target (60 s), not before", 55 <= first_shown <= 65, first_shown)
+rsh, _ = pc.telemetry_episodes({"at": NOW + 35, "alerts": [{"id": "colony_dead", "level": "red", "text": "dead", "since": NOW}]},
+                               {}, NOW + 35)
+check("a red is shown once it has held 30 s", [a["id"] for a in rsh["alerts"]] == ["colony_dead"], rsh)
+clr, eps_c = tel_run([(s, True) for s in range(0, 90, 5)] + [(90 + s, False) for s in range(0, 200, 5)])
+check("a shown alert that goes quiet stays, marked clearing, for 2 min - then leaves",
+      any("clearing" in r["text"] for _, rows in clr[18:30] for r in rows) and not clr[-1][1], [len(r) for _, r in clr])
+_, eps_gap = tel_run([(0, True), (5, False)])
+again, _ = pc.telemetry_episodes({"at": NOW + 700, "alerts": [{"id": "modal_stuck", "level": "warn", "text": "x", "since": NOW + 700}]},
+                                 eps_gap, NOW + 700)
+_, eps_again = pc.telemetry_episodes({"at": NOW + 700, "alerts": [{"id": "modal_stuck", "level": "warn", "text": "x", "since": NOW + 700}]},
+                                     eps_gap, NOW + 700)
+check("after 10 quiet minutes a new occurrence is a NEW episode", eps_again["modal_stuck"]["first"] == NOW + 700
+      and eps_again["modal_stuck"]["flaps"] == 1, eps_again)
+stale_t, stale_eps = pc.telemetry_episodes({"at": NOW - 3600, "alerts": []}, eps8, NOW)
+check("a stale payload leaves the episode table alone (it is not 'all clear')", stale_eps == eps8)
+snap_t, st_t, _ = pc.collect_snapshot({"telemetry": {"at": NOW, "alerts": [{"id": "hostiles", "level": "warn", "text": "hostiles",
+                                                                             "since": NOW - 300}]}}, {}, NOW)
+check("collect_snapshot persists the episode table and shows a 5-min-old warn",
+      "hostiles" in st_t["tel_episodes"] and any(r["src"] == "telemetry" for r in snap_t["rows"]), st_t.get("tel_episodes"))
+tred = pc.classify_telemetry({"at": NOW, "alerts": [{"id": "x", "level": "red", "text": "colony dead", "since": NOW - 60}]}, {}, NOW)
+check("a telemetry red names itself for the toast (never 'window lost')", tred[0]["toast_title"] == "telemetry alarm", tred)
+
+# --- RIMPULSE_STATE_FIX_TWO_WRITERS_ONE_FILE: one writer per file, one loop, monotonic snapshots -----------
+import threading  # noqa: E402
+errs = []
+
+
+def hammer(i):
+    for j in range(150):
+        try:
+            pl.save_json("race.json", {"w": i, "j": j})
+        except Exception as e:  # noqa: BLE001
+            errs.append(repr(e))
+
+
+ths = [threading.Thread(target=hammer, args=(i,)) for i in range(4)]
+[t.start() for t in ths]
+[t.join() for t in ths]
+check("four writers saving one file at once never trip over a shared tmp name", not errs and json.loads(
+      pc.STATE_DIR.joinpath("race.json").read_text()).get("j") == 149, errs[:2])
+c2 = _Col()
+calls2 = []
+c2.tick = lambda force=False: calls2.append(force)
+c2.ack("x:1")
+c2.seen("hand:zz")
+time.sleep(0.3)
+check("ack and seen start no collection of their own: they wake the one loop", calls2 == [] and c2.wake.is_set(), calls2)
+c3 = _Col()
+c3.snapshot = {"collected_at": time.time() + 120, "rows": [{"seen_id": "hand:r", "rev": "abc"}]}
+c3.seen("hand:r")
+check("seen keeps the revision he opened", c3.state.get("seen_rev", {}).get("hand:r") == "abc", c3.state.get("seen_rev"))
+s3 = c3.tick()
+check("a snapshot's collected_at never moves backwards", s3["collected_at"] >= c3.snapshot["collected_at"] - 0.001
+      and s3["collected_at"] >= time.time() + 100, s3["collected_at"])
+pl.save_json(pl.LAST_DIGEST, {"rec": {"at": time.time() + 5, "mode": "t", "lines": []}, "done_since": NOW - 7})
+c4 = _Col()
+c4.tick()
+check("the daemon takes the digest from last_digest.json (the digest process's only file)",
+      (c4.state.get("last_digest") or {}).get("mode") == "t" and c4.state.get("done_since") == NOW - 7, c4.state.get("last_digest"))
+pl.save_json("state.json", {"acks": {"keep:me": {"at": 1}}})
+before = pc.STATE_DIR.joinpath("state.json").read_text()
+og, odir = pl.Collector.gather, pl.DIGEST_DIR
+pl.Collector.gather = lambda self, now, force=False: {"at": {}, "sessions": [], "extras": {}, "ledger": []}
+pl.DIGEST_DIR = pc.STATE_DIR / "digests"
+try:
+    dg = pl.make_digest("manual", NOW - 3600)
+finally:
+    pl.Collector.gather, pl.DIGEST_DIR = og, odir
+check("make_digest never writes state.json (the daemon's acks survive a digest)",
+      pc.STATE_DIR.joinpath("state.json").read_text() == before, pc.STATE_DIR.joinpath("state.json").read_text()[:200])
+check("make_digest writes its record to last_digest.json", pl.load_last_digest()["rec"]["at"] == dg["rec"]["at"])
+
+# --- RIMPULSE_FAILURES_BUILD_ONLY_THE_STUCK: job failures are history; red only when stuck or lost ---------
+def fr(task, ago, status, **kw):
+    return {"ts": NOW - ago, "task": task, "status": status, **kw}
+
+
+FR = [fr("build:FlowWorks", 900, "failed", cause="CS0103"), fr("build:FlowWorks", 600, "failed"), fr("build:FlowWorks", 300, "ok"),
+      fr("build:GSS", 120, "failed", cause="CS1002"),
+      fr("build:Core", 20 * 60, "failed", blocks=True), fr("build:Core", 60, "failed", blocks=True),
+      fr("build:Fresh", 5 * 60, "failed", blocks=True),
+      fr("digest:scheduled", 30, "failed", cause="OSError", lost=True),
+      fr("build:Twice", 400, "failed"), fr("build:Twice", 300, "ok"), fr("build:Twice", 100, "ok"),
+      fr("build:Ancient", 3 * 86400, "failed"), fr("build:OldRecovered", 2 * 86400, "failed"), fr("build:OldRecovered", 2 * 86400 - 60, "ok")]
+fk = {r["key"].split("@")[0]: r for r in pc.classify_failures(FR, {}, NOW)}
+check("a build that failed twice then passed is ONE recovered history row, never red",
+      fk["fail:build:FlowWorks"]["kind"] == "recovered" and "×2" in fk["fail:build:FlowWorks"]["text"], fk.get("fail:build:FlowWorks"))
+check("a recovery names the FIRST pass after the failure, not the latest pass",
+      time.strftime("%H:%M", time.localtime(NOW - 300)) in fk["fail:build:Twice"]["text"]
+      and fk["fail:build:Twice"]["kind"] == "recovered", fk.get("fail:build:Twice"))
+check("a non-blocking failure is a calm 'failed' row (agent iteration)", fk["fail:build:GSS"]["kind"] == "failed"
+      and "not blocking" in fk["fail:build:GSS"]["text"], fk.get("fail:build:GSS"))
+check("a blocking failure with no success for 15+ min is red and says how long",
+      fk["fail:build:Core"]["kind"] == "red" and "blocking work for 20 min" in fk["fail:build:Core"]["text"], fk.get("fail:build:Core"))
+check("a blocking failure 5 min old is still only 'failed', retrying", fk["fail:build:Fresh"]["kind"] == "failed"
+      and "retrying" in fk["fail:build:Fresh"]["text"], fk.get("fail:build:Fresh"))
+check("lost output is red at once and names itself for the toast",
+      fk["fail:digest:scheduled"]["kind"] == "red" and fk["fail:digest:scheduled"]["toast_title"] == "output lost", fk.get("fail:digest:scheduled"))
+check("old history ages out (a 3-day non-blocking failure, a 2-day-old recovery)",
+      "fail:build:Ancient" not in fk and "fail:build:OldRecovered" not in fk, list(fk))
+fsnap, _, _ = pc.collect_snapshot({"failures": FR}, {}, NOW)
+fpills = [p["text"] for p in fsnap["strip"] if p["kind"] == "red"]
+check("only the stuck and the lost reach the strip as red pills", len(fpills) == 2 and any("output lost" in p for p in fpills), fpills)
+check("a job-failure red does not get 'recovery unknown' tacked on (its recovery is its next pass)",
+      not any("recovery unknown" in r["text"] for r in fsnap["rows"] if r["key"].startswith("fail:")), [r["text"] for r in fsnap["rows"]])
+check("a recovered job is not a strip pill (iteration, folded only)", not any(p["kind"] == "recovered" for p in fsnap["strip"]),
+      fsnap["strip"])
+check("failed rows carry no pill", not any("GSS" in p["text"] for p in fsnap["strip"]), fsnap["strip"])
+dsf = {sc["id"]: sc for sc in pl.build_digest(fsnap, NOW - 3600, NOW)}
+check("the digest's 'what broke' carries the non-blocking failure once, as history",
+      sum("build:GSS" in ln["text"] for ln in dsf["issues"]["lines"]) == 1, dsf["issues"])
+import failreport  # noqa: E402
+check("failreport.report appends one record the reader sees", failreport.report("selftests:nightly", False, cause="RED", blocks=False)
+      and any(r["task"] == "selftests:nightly" and r["status"] == "failed" for r in pc.read_failures(failreport.failures_path())))
+check("artpipe failed jobs are a calm history row, never red",
+      [r["kind"] for r in pc.classify_artpipe({"ok": True, "pending": 0, "active": 0, "failed": 3, "done": 1}, NOW, NOW)] == ["idle", "failed"])
 
 print(f"\n{'FAIL' if FAILS else 'OK'}: {len(FAILS)} failing")
 sys.exit(1 if FAILS else 0)
