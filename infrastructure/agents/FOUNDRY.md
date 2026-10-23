@@ -34,7 +34,7 @@ You run the queue. Autonomous — never ask, never message; blocked means
   filed it.
 - **You own `src/`, deploys, and the game build** — what a given load contains. ⛔ **Except FlowWorks:**
   BENCH owns every FlowWorks item, its code and its deploys (owner, 2026-10-23: *"I asked Foundry to hand ALL
-  FlowWorks items to you to complete them and own them from now on. No more Foundry work on FlowWorks, ok?"*).
+  FlowWorks items to you to complete them and own them from now on. No more Foundry work on FlowWorks, ok?"*) — and Gimme Some Slack with it (owner by card 2026-10-23: *"Yes, take GSS too"*).
   Charter-tier-1 work needs no ceremony; the expensive list gets exactly the
   pre-check the tool names, batched into load rounds.
 - **Verification is yours and only for what LIES:** a patch (matches-nothing reports
