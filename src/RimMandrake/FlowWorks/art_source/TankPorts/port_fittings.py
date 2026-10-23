@@ -190,6 +190,11 @@ _LT_JOG = (("a", 26, 48, 384, 10, "nip"), ("a", 26, 32, 384, 14, "nut"),
 ROUTES = {("RimMandrake/FlowWorks/Tank/%s/RM_UniversalCargoTank" % lk, sd, 1.5): _UCT_DROP
           for lk in ("Scrapper", "Industrial", "Futuristic") for sd in ("west", "east")}
 ROUTES[("RimMandrake/FlowWorks/Tank/Futuristic/RM_LiquidTank", "north", 1.5)] = _LT_JOG
+# Kept art that draws OVER a fitting (it wraps in front of it): picture -> [(row0, row1, col0, col1, split_row)]; every
+# opaque base pixel in the box above split_row, and every dark one (mean RGB < 70, the cable) below it, is restored.
+# The box is the loop's own columns (133-158) so the body's dark top outline is not pulled across the collar.
+# Round-2 judge 2026-10-23: the Futuristic RM_LiquidTank NW standpipe collar hid the black cable strap's top loop.
+OCCLUDE = {"RimMandrake/FlowWorks/Tank/Futuristic/RM_LiquidTank": [(145, 186, 131, 161, 160)]}
 
 
 def _landing(alpha, run, along_fixed, hh, start, slack=3):
@@ -264,6 +269,11 @@ def build(rel):
         sub = _fitting(view.shape[0], view.shape[1], cross, e0, wall, MATERIALS[look], seed)
         _over(view, sub)
         done.append((side, round(cross, 1), round(e0, 1), wall))
+    for r0, r1, c0, c1, split in OCCLUDE.get(rel, ()):
+        base = np.array(base_image(rel)).astype(float)[r0:r1, c0:c1]
+        rows = np.arange(r0, r1)[:, None]
+        keep = (base[..., 3] > 128) & ((rows < split) | (base[..., :3].mean(2) < 70))
+        a[r0:r1, c0:c1][keep] = base[keep]
     return Image.fromarray(np.clip(a + 0.5, 0, 255).astype(np.uint8), "RGBA"), done
 
 
