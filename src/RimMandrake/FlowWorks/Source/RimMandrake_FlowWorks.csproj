@@ -183,6 +183,7 @@
     <Compile Include="JobDriver_FillInCanal.cs" />
     <Compile Include="Flood_FlowWorks.cs" />
     <Compile Include="Debug\FlowWorksDebugActions.cs" />
+    <Compile Include="Debug\FlowWorksTankDebug.cs" />
     <Compile Include="MapControls\RM_MapControlMath.cs" />
     <Compile Include="MapControls\RM_MapControlSettings.cs" />
     <Compile Include="MapControls\Building_RM_MapControl.cs" />
@@ -337,6 +338,7 @@
     <Compile Include="LiquidTypes\RM_ContainerMaterialMath.cs" />
     <Compile Include="LiquidTypes\RM_ContainerMaterials.cs" />
     <Compile Include="LiquidTypes\RM_ContainerStyleMath.cs" />
+    <Compile Include="LiquidTypes\RM_TankDebugMath.cs" />
     <Compile Include="LiquidTypes\RM_ContainerStyles.cs" />
     <Compile Include="LiquidTypes\WorkGiver_FillBottle.cs" />
     <Compile Include="LiquidTypes\JobDriver_FillBottle.cs" />
