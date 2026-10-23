@@ -160,5 +160,39 @@ sw = V.remove_intruders(B, (5, 5, 20, 10))
 ok(sw["removed"] == [80] and 81 in B.pawns and 80 not in B.pawns and 1 in B.pawns,
    "sweep: near hare vanished, far hare and colonists kept (%s)" % sw)
 
+# ---- Watchdog (LEVEL_REHEARSAL_UNSTICK_WAITS_FOR_GODOT): a dead probe channel or a spent budget aborts, a live reply resets
+class _Probe(object):
+    def __init__(self, replies):
+        self.replies = list(replies)
+        self.calls = 0
+
+    def hp(self, cmd, wait_s=20.0, answer=False):
+        return self.replies.pop(0)
+
+    def call(self, tool, **kw):
+        self.calls += 1
+        return {"success": True}
+
+
+DEAD = {"success": False, "error": "probe timed out (no frame serviced it)"}
+LIVE = {"success": True, "units": 3}
+now = [0.0]
+w = V.Watchdog(_Probe([DEAD, DEAD, LIVE, DEAD, DEAD, DEAD]), budget_s=100, dead_max=3, clock=lambda: now[0])
+got = [w.hp("x"), w.hp("x"), w.hp("x"), w.hp("x"), w.hp("x")]
+try:
+    w.hp("x")
+    ok(False, "watchdog: third dead reply in a row aborts")
+except V.WatchdogAbort as ex:
+    ok("probe channel dead" in str(ex) and got[2] is LIVE, "watchdog: third dead reply in a row aborts; a live one reset the count")
+w2 = V.Watchdog(_Probe([]), budget_s=10, clock=lambda: now[0])
+ok(w2.call("jawa/x").get("success") is True, "watchdog: a call inside the budget passes through")
+now[0] = 11.0
+try:
+    w2.call("jawa/x")
+    ok(False, "watchdog: a spent budget aborts the next call")
+except V.WatchdogAbort as ex:
+    ok("budget" in str(ex) and w2._B.calls == 1, "watchdog: a spent budget aborts the next call before it is sent")
+ok(V.Watchdog(_Probe([]), 5).calls == 0, "watchdog: other attributes pass through")
+
 print("selftest_validation_core_site: %d/%d" % (sum(RES), len(RES)))
 sys.exit(0 if all(RES) else 1)

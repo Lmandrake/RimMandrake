@@ -9,6 +9,9 @@ Run from the repo root with python.exe on a 325x325 map (no bridge tool makes on
 hand or from a save); the bridge must be held. On a smaller map every row is UNMEASURED/SITE, unless --rehearsal, which
 stages scaled basins and fewer rigs to prove the harness and caps every row at UNMEASURED (rehearsal=True): a rehearsal is
 never the A3 measurement. Exit 0 = every row PASS; 1 = a FAIL; 2 = a row could not be measured.
+Never hangs (LEVEL_REHEARSAL_UNSTICK_WAITS_FOR_GODOT, 2026-10-23): site_calm + kill_hostiles + queue clear in preflight, game
+time only through the governed B.ticks (an intruder is recovered; a stop it cannot clear -> every unwritten row UNMEASURED/SITE),
+and validation_core.Watchdog: --budget-s spent or 3 dead probe replies in a row -> unwritten rows UNMEASURED/HARNESS, exit 2.
 
 Calls (built 2026-10-22, fixer I): RM_NorthstarProofs.ProofStageBasin (dig + fill a rect through the engine's own Deepen /
 TrySetDriverFill, in strips), ProofLevelLink (per-reel levelling state + process counters + intakes/outflows), ProofLevelPerf
@@ -125,6 +128,8 @@ def main(argv=None):
     ap.add_argument("--rigs", type=int, default=200)
     ap.add_argument("--calls", type=int, default=20, help="levelling cycles timed (1..200)")
     ap.add_argument("--rehearsal", action="store_true", help="scaled layout on a smaller map; rows capped at UNMEASURED")
+    ap.add_argument("--budget-s", type=float, default=480.0,
+                    help="wall-clock budget; spent, or 3 dead probe replies in a row, writes the unwritten rows UNMEASURED/HARNESS")
     ap.add_argument("--mock", action="store_true")
     ap.add_argument("--mock-faults", default="", help="comma list: " + ",".join(FakeBridge.FAULTS))
     a = ap.parse_args(argv)
@@ -136,7 +141,8 @@ def main(argv=None):
     else:
         import proof_hose as PH          # noqa: E402  (bridge-side imports only on a live run)
         raw = PH.PB()
-    B = V.guard(raw)
+    # LEVEL_REHEARSAL_UNSTICK_WAITS_FOR_GODOT: the watchdog turns a dead probe channel / a spent budget into a clean exit
+    B = V.Watchdog(V.guard(raw), a.budget_s)
     out = a.out or (os.path.join(tempfile.gettempdir(), "level_perf_mock_result_%s.json" % time.strftime("%Y%m%dT%H%M%S"))
                     if a.mock else os.path.join(HERE, "level_perf_result_%s.json" % time.strftime("%Y%m%dT%H%M%S")))
     rows = []
@@ -190,79 +196,107 @@ def main(argv=None):
         ok = r.get("success") is True and not txt.startswith("REFUSED")
         return (parse(txt) if ok else {}), txt
 
-    # ------------------------------------------------------------------ preflight
-    ok = True if a.mock else V._wait_playing(B, leave_s=0)[0]
-    if not ok:
-        all_rows("UNMEASURED", "no game in Playing", "HARNESS")
-        return finish(2)
-    probe = static("ProofLevelPerf", "0")[1]
-    if "arg must be" not in probe:
-        all_rows("UNMEASURED", "ProofLevelPerf not in the loaded FlowWorks (old deploy?): " + probe[:160], "HARNESS")
-        return finish(2)
-    mi = B.call("jawa/map_info", _answer=True) or {}
-    size = (mi.get("sizeX"), mi.get("sizeZ") or mi.get("sizeY"))
-    res["mapSize"] = size
-    if not size[0] or not size[1]:
-        all_rows("UNMEASURED", "jawa/map_info gave no size: %s" % str(mi)[:160], "HARNESS")
-        return finish(2)
-    big = size[0] >= MAP_NEED and size[1] >= MAP_NEED
-    if not big and not a.rehearsal:
-        all_rows("UNMEASURED", "A3 needs a 325x325 map; this one is %sx%s (no tool makes one: load or start one by hand)" % size,
-                 "SITE")
-        return finish(2)
-    basins, spots, lip_a, lip_b = layout(size, a.rigs, a.rehearsal or not big)
-    res["layout"] = {"basins": basins, "rigs": len(spots), "lipA": lip_a, "lipB": lip_b}
+    def go():
+        # ------------------------------------------------------------------ preflight
+        ok = True if a.mock else V._wait_playing(B, leave_s=0)[0]
+        if not ok:
+            all_rows("UNMEASURED", "no game in Playing", "HARNESS")
+            return finish(2)
+        if not a.mock:
+            # LEVEL_REHEARSAL_UNSTICK_WAITS_FOR_GODOT: a fresh quicktest map rolled a mech raid mid-rehearsal (RM_HullBolt,
+            # 2026-10-23). Static boring world first: storyteller off, threats and intruders gone, the queue cleared.
+            res["calm"] = V.site_calm(B)
+            res["killHostiles"] = str(B.call("jawa/kill_hostiles", _answer=True))[:160]
+            B.call("jawa/incident_queue_clear", _answer=True)
+        probe = static("ProofLevelPerf", "0")[1]
+        if "arg must be" not in probe:
+            all_rows("UNMEASURED", "ProofLevelPerf not in the loaded FlowWorks (old deploy?): " + probe[:160], "HARNESS")
+            return finish(2)
+        mi = B.call("jawa/map_info", _answer=True) or {}
+        size = (mi.get("sizeX"), mi.get("sizeZ") or mi.get("sizeY"))
+        res["mapSize"] = size
+        if not size[0] or not size[1]:
+            all_rows("UNMEASURED", "jawa/map_info gave no size: %s" % str(mi)[:160], "HARNESS")
+            return finish(2)
+        big = size[0] >= MAP_NEED and size[1] >= MAP_NEED
+        if not big and not a.rehearsal:
+            all_rows("UNMEASURED", "A3 needs a 325x325 map; this one is %sx%s (no tool makes one: load or start one by hand)" % size,
+                     "SITE")
+            return finish(2)
+        basins, spots, lip_a, lip_b = layout(size, a.rigs, a.rehearsal or not big)
+        res["layout"] = {"basins": basins, "rigs": len(spots), "lipA": lip_a, "lipB": lip_b}
 
-    # ------------------------------------------------------------------ the site: drained, filled in, cleared, read back
-    # LEVEL_REHEARSAL_FIX_POURS_ON_FULL_PONDS + PROOF_REELS_FIX_STILL_STAGED_WEST (b): the rehearsal's basins sat over
-    # walk_gaps_proof's filled ponds (ProofStageBasin destroyed 200 levels) and natural rock filled the rig columns so no
-    # reel was built (layFailures 338). ProofResetRect drains and fills back every earlier dig in the rect, prepare_site clears
-    # rock/plants and reads it back; a site that stays blocked is UNMEASURED/SITE, never a verdict.
-    # Rehearsal: the whole layout box. Full run: only the rig gap (the basins are dug by ProofStageBasin on the fresh 325 map).
-    if a.rehearsal or not big:
-        x0, x1 = basins[0][0], basins[1][0] + basins[1][2]
-        z0, z1 = basins[0][1], basins[0][1] + basins[0][3]
-    else:
-        x0, x1 = lip_a, lip_b + 1
-        z0, z1 = basins[0][1], basins[0][1] + basins[0][3]
-    site = (x0, z0, x1 - x0, z1 - z0)
-    rr, rtxt = static("ProofResetRect", "%d;%d;%d;%d" % site)
-    site_rows = []
-    left = int(rr["left"]) if rr.get("left", "").isdigit() else None
-    res["site"] = {"rect": site, "reset": rtxt[:160]}
-    if left != 0 or not (a.mock or V.prepare_site(B, site, site_rows, "LEVEL_site_ready")):   # mock: no reveal walk
-        all_rows("UNMEASURED", "site not ready: reset %s; %s" % (rtxt[:120], str([r.get("detail") for r in site_rows])[:200]),
-                 "SITE")
-        return finish(2)
-
-    # ------------------------------------------------------------------ stage the basins (strips of <= 12,500 squares)
-    staged = []
-    for (x, z, w, h, fill) in basins:
-        cells = dug = 0
-        step = max(1, 12500 // w)
-        for zz in range(z, z + h, step):
-            kv, txt = static("ProofStageBasin", "%d;%d;%d;%d;%d;%d;%s" % (x, zz, w, min(step, z + h - zz), LEVELS, fill, WATER_FLUID))
-            if not kv:
-                staged.append({"basin": (x, z, w, h), "refused": txt[:200]})
-                break
-            cells += int(kv.get("cells", 0))
-            dug += int(kv.get("dug", 0))
+        # ------------------------------------------------------------------ the site: drained, filled in, cleared, read back
+        # LEVEL_REHEARSAL_FIX_POURS_ON_FULL_PONDS + PROOF_REELS_FIX_STILL_STAGED_WEST (b): the rehearsal's basins sat over
+        # walk_gaps_proof's filled ponds (ProofStageBasin destroyed 200 levels) and natural rock filled the rig columns so no
+        # reel was built (layFailures 338). ProofResetRect drains and fills back every earlier dig in the rect, prepare_site clears
+        # rock/plants and reads it back; a site that stays blocked is UNMEASURED/SITE, never a verdict.
+        # Rehearsal: the whole layout box. Full run: only the rig gap (the basins are dug by ProofStageBasin on the fresh 325 map).
+        if a.rehearsal or not big:
+            x0, x1 = basins[0][0], basins[1][0] + basins[1][2]
+            z0, z1 = basins[0][1], basins[0][1] + basins[0][3]
         else:
-            staged.append({"basin": (x, z, w, h), "cells": cells, "dug": dug})
-    res["staged"] = staged
-    staged_ok = all(s.get("cells") and s["cells"] == s["dug"] == s["basin"][2] * s["basin"][3] for s in staged)
+            x0, x1 = lip_a, lip_b + 1
+            z0, z1 = basins[0][1], basins[0][1] + basins[0][3]
+        site = (x0, z0, x1 - x0, z1 - z0)
+        rr, rtxt = static("ProofResetRect", "%d;%d;%d;%d" % site)
+        site_rows = []
+        left = int(rr["left"]) if rr.get("left", "").isdigit() else None
+        res["site"] = {"rect": site, "reset": rtxt[:160]}
+        if left != 0 or not (a.mock or V.prepare_site(B, site, site_rows, "LEVEL_site_ready")):   # mock: no reveal walk
+            all_rows("UNMEASURED", "site not ready: reset %s; %s" % (rtxt[:120], str([r.get("detail") for r in site_rows])[:200]),
+                     "SITE")
+            return finish(2)
 
-    # ------------------------------------------------------------------ the rigs (hose length held at 80 for the run)
-    HS = "RimMandrake.FlowWorks.Hose.RM_HoseSettings"
-    len0 = (B.call("jawa/mod_settings_field", typeName=HS, action="get", field="maxLength", _answer=True) or {}).get("value")
-    lr80 = B.call("jawa/mod_settings_field", typeName=HS, action="set", field="maxLength", value="80", _answer=True) or {}
-    res["hoseMaxLength"] = {"before": len0, "set80": lr80.get("success")}
+        # ------------------------------------------------------------------ stage the basins (strips of <= 12,500 squares)
+        staged = []
+        for (x, z, w, h, fill) in basins:
+            cells = dug = 0
+            step = max(1, 12500 // w)
+            for zz in range(z, z + h, step):
+                kv, txt = static("ProofStageBasin", "%d;%d;%d;%d;%d;%d;%s" % (x, zz, w, min(step, z + h - zz), LEVELS, fill, WATER_FLUID))
+                if not kv:
+                    staged.append({"basin": (x, z, w, h), "refused": txt[:200]})
+                    break
+                cells += int(kv.get("cells", 0))
+                dug += int(kv.get("dug", 0))
+            else:
+                staged.append({"basin": (x, z, w, h), "cells": cells, "dug": dug})
+        res["staged"] = staged
+        staged_ok = all(s.get("cells") and s["cells"] == s["dug"] == s["basin"][2] * s["basin"][3] for s in staged)
+
+        # ------------------------------------------------------------------ the rigs (hose length held at 80 for the run)
+        HS = "RimMandrake.FlowWorks.Hose.RM_HoseSettings"
+        len0 = (B.call("jawa/mod_settings_field", typeName=HS, action="get", field="maxLength", _answer=True) or {}).get("value")
+        lr80 = B.call("jawa/mod_settings_field", typeName=HS, action="set", field="maxLength", value="80", _answer=True) or {}
+        res["hoseMaxLength"] = {"before": len0, "set80": lr80.get("success")}
+        try:
+            return _rigs_and_time(a, B, static, row, res, spots, lip_a, lip_b, staged_ok, size, finish, rows)
+        finally:
+            if len0 is not None:
+                B.call("jawa/mod_settings_field", typeName=HS, action="set", field="maxLength", value=str(len0), _answer=True)
+
+    def unwritten(st, why, cls):
+        done = {r["id"] for r in rows}
+        for rid in ROW_IDS:
+            if rid not in done:
+                row(rid, st, {"why": why}, cls=cls)
+
+    GStop = V._clockgate().GovernorStop
     try:
-        return _rigs_and_time(a, B, static, row, res, spots, lip_a, lip_b, staged_ok, size, finish, rows)
+        return go()
+    except V.WatchdogAbort as ex:
+        res["watchdog"] = str(ex)
+        unwritten("UNMEASURED", "watchdog: %s" % ex, "HARNESS")
+        return finish(2)
+    except GStop as ex:
+        res["governorStop"] = str(getattr(ex, "result", ex))[:400]
+        unwritten("UNMEASURED", "governor stop the site recovery could not clear: %s" % str(getattr(ex, "result", ex))[:200], "SITE")
+        return finish(2)
     finally:
-        if len0 is not None:
-            B.call("jawa/mod_settings_field", typeName=HS, action="set", field="maxLength", value=str(len0), _answer=True)
-
+        if not a.mock:
+            res["calmRestore"] = str(V.site_calm_restore(B))[:160]
+            save()
 
 def _rigs_and_time(a, B, static, row, res, spots, lip_a, lip_b, staged_ok, size, finish, rows):
     for i in range(0, len(spots), 40):
@@ -270,7 +304,7 @@ def _rigs_and_time(a, B, static, row, res, spots, lip_a, lip_b, staged_ok, size,
         for cx, z in spots[i:i + 40]:
             ops += rig_ops(cx, z, lip_a, lip_b)
         B.call("jawa/build_batch", ops=";".join(ops), faction="player", wipeExisting=False)
-    B.call("rimworld/step_game_ticks", ticks=2, pauseFirst=True, timeoutMs=60000)
+    B.ticks(2)                                   # governed: an intruder is recovered (site_recover), a real stop raises
     lay_fail = 0
     for cx, z in spots:
         for r, to, role in (((cx, z), (lip_a, z), "Intake"), ((cx, z + 2), (lip_b, z + 2), "Outflow")):
@@ -280,7 +314,7 @@ def _rigs_and_time(a, B, static, row, res, spots, lip_a, lip_b, staged_ok, size,
                 continue
             static("ProofHoseRole", "%d,%d;%s" % (r + (role,)), ty=LPROOF)
     res["layFailures"] = lay_fail
-    B.call("rimworld/step_game_ticks", ticks=260, pauseFirst=True, timeoutMs=120000)
+    B.ticks(260)
     kl, tl = static("ProofLevelLink", "%d,%d" % spots[0]) if spots else ({}, "no rigs")
     links = int(kl["links"]) if kl.get("links", "").isdigit() else None
     want = len(spots)
@@ -302,8 +336,10 @@ class FakeBridge(object):
       no_link      the rigs make no levelling link          -> both rows UNMEASURED/SITE
       slow         MOD: a cycle costs 40 ms                  -> LEVEL_PERF_TICK_TIME FAIL
       gc_every     every timed call saw a collection         -> LEVEL_PERF_ALLOC UNMEASURED/HARNESS
-      small_map    the map is 250x250 (no --rehearsal)       -> both rows UNMEASURED/SITE"""
-    FAULTS = ("old_deploy", "no_link", "slow", "gc_every", "small_map")
+      small_map    the map is 250x250 (no --rehearsal)       -> both rows UNMEASURED/SITE
+      probe_dead   every hose-probe reply times out          -> both rows UNMEASURED/HARNESS (watchdog), no hang
+      mech_raid    a governed advance stops on a hostile the recovery cannot clear -> both rows UNMEASURED/SITE"""
+    FAULTS = ("old_deploy", "no_link", "slow", "gc_every", "small_map", "probe_dead", "mech_raid")
 
     def __init__(self, faults=(), size=MAP_NEED):
         self.f = set(faults)
@@ -363,7 +399,16 @@ class FakeBridge(object):
         return sum(1 for rs in roles.values() if {"Intake", "Outflow"} <= rs)
 
     def hp(self, cmd, wait_s=20.0, answer=False):
+        self.hps = getattr(self, "hps", 0) + 1
+        if "probe_dead" in self.f:
+            return {"success": False, "error": "probe timed out (no frame serviced it)"}
         return {"success": True, "layOk": True}
+
+    def ticks(self, n):
+        if "mech_raid" in self.f:
+            raise V._clockgate().GovernorStop({"state": "stopped", "executed": 0, "requested": n, "stopBy": {
+                "kind": "hostile_arrival", "severity": "threat", "critical": True, "detail": "arrived: RM_HullBolt (mech)"}})
+        return {"success": True, "advanced": n}
 
     def call(self, tool, **kw):
         if tool == "jawa/static_call":

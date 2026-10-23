@@ -49,7 +49,9 @@ EXPECT = {"": {}, "old_deploy": {"LEVEL_PERF_TICK_TIME": ("UNMEASURED", "HARNESS
           "no_link": {"LEVEL_PERF_TICK_TIME": ("UNMEASURED", "SITE"), "LEVEL_PERF_ALLOC": ("UNMEASURED", "SITE")},
           "slow": {"LEVEL_PERF_TICK_TIME": ("FAIL", "MOD")},
           "gc_every": {"LEVEL_PERF_ALLOC": ("UNMEASURED", "HARNESS")},
-          "small_map": {"LEVEL_PERF_TICK_TIME": ("UNMEASURED", "SITE"), "LEVEL_PERF_ALLOC": ("UNMEASURED", "SITE")}}
+          "small_map": {"LEVEL_PERF_TICK_TIME": ("UNMEASURED", "SITE"), "LEVEL_PERF_ALLOC": ("UNMEASURED", "SITE")},
+          "probe_dead": {"LEVEL_PERF_TICK_TIME": ("UNMEASURED", "HARNESS"), "LEVEL_PERF_ALLOC": ("UNMEASURED", "HARNESS")},
+          "mech_raid": {"LEVEL_PERF_TICK_TIME": ("UNMEASURED", "SITE"), "LEVEL_PERF_ALLOC": ("UNMEASURED", "SITE")}}
 tmp = tempfile.mkdtemp()
 for fault, want in EXPECT.items():
     out = os.path.join(tmp, "lp_%s.json" % (fault or "clean"))
@@ -77,5 +79,28 @@ rows = json.load(open(out))["rows"]
 check("rehearsal: rows capped at UNMEASURED/SITE, would-be verdict kept",
       all(r["detail"].get("mock") == "UNMEASURED" and r["class"] == "SITE" and r["detail"].get("rehearsalVerdict") == "PASS"
           for r in rows))
+# LEVEL_REHEARSAL_UNSTICK_WAITS_FOR_GODOT: a dead probe channel ends the run after 3 replies, not 400 lays x 20 s
+fb = L.FakeBridge(["probe_dead"], 120)
+orig = L.FakeBridge
+
+
+class _One(orig):
+    def __new__(cls, *a, **k):
+        return fb
+
+
+L.FakeBridge = _One
+out = os.path.join(tmp, "lp_dead.json")
+with contextlib.redirect_stdout(io.StringIO()):
+    L.main(["--mock", out, "--rehearsal", "--mock-faults", "probe_dead"])
+L.FakeBridge = orig
+res = json.load(open(out))
+check("watchdog: dead probe channel stops after 3 replies and is named", fb.hps == 3 and "probe channel dead" in res.get("watchdog", ""))
+out = os.path.join(tmp, "lp_budget.json")
+with contextlib.redirect_stdout(io.StringIO()):
+    L.main(["--mock", out, "--budget-s", "-1"])
+res = json.load(open(out))
+check("watchdog: a spent budget writes both rows UNMEASURED/HARNESS",
+      [(r["detail"].get("mock"), r["class"]) for r in res["rows"]] == [("UNMEASURED", "HARNESS")] * 2 and "budget" in res["watchdog"])
 print("%d FAIL" % len(fails))
 sys.exit(1 if fails else 0)
