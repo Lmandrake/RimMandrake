@@ -24,10 +24,10 @@ fails on a changed number), `python3 src/RimMandrake/Utils/lint_webwork_defs.py`
 `webwork_egg_market` on a list carrying mandrake.rut.patches and mandrake.rm.biomes.
 
 ## criteria
-- L0: selftest_webwork_egg_market PASS; lint_webwork_defs 0 ERROR; validate_patch 0 errors on both patch files.
-- L1: deploy: `deploy_custom_mods.py --mod UtinniPatches --apply`, the composed biomes mod redeployed with the Webwork DLL,
+- A1 L0: selftest_webwork_egg_market PASS; lint_webwork_defs 0 ERROR; validate_patch 0 errors on both patch files.
+- A2 L1: deploy: `deploy_custom_mods.py --mod UtinniPatches --apply`, the composed biomes mod redeployed with the Webwork DLL,
   and the game copy `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\ShokkweaveEconomy` removed. Otherwise
   the old copy ships duplicate TraderKindDefs if anything re-lists it.
-- L2: live: `webwork_egg_market/egg_market_defs_live_as_patched` PASS. The egg's tradeability reads All, both factions
+- A3 L2: live: `webwork_egg_market/egg_market_defs_live_as_patched` PASS. The egg's tradeability reads All, both factions
   list their new caravan kinds, and both kinds carry RUT_StockGenerator_RareThrixweave.
-- L2: live: a forced Hutt egg-broker caravan arrives and stocks 1-3 RM_OllathrixEgg; Hyperweave reads "thrixweave".
+- A4 L2: live: a forced Hutt egg-broker caravan arrives and stocks 1-3 RM_OllathrixEgg; Hyperweave reads "thrixweave".
