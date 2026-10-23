@@ -7,8 +7,8 @@ Game: UP, save RM_fw_walkthrough_20261022d. Bridge: BENCH ("BENCH live diagnose 
 | 1 | RIVER_DOME_DIAGNOSE_WHITE_BLOB_AFLOAT | NOT A DEFECT: vanilla Muffalo seen from behind (north facing), half in water | r2/dome_muffalo_repro.png, r2/dome_muffalo_compare.png | legibility fix filed (see detail) |
 | 2 | KLUDGED_HOSE_PRUNE_TAIL_TO_NOWHERE | MOD (hose end draw), reproduced on save d | r2/kludged_repro.png, r2/kludged_repro_zoom.png, r2/kludged_census.txt | (see detail) |
 | 3 | TERRAIN_CROSSES_DIAGNOSE_DARK_BLOTCHES | NOT A DEFECT: base terrain SoilRich (vanilla rich soil) in small map-gen patches | r2/crosses_cells.txt, r2/mapC_terrain.txt | closed |
-| 4 | POLE_CABLE_FIX_FORGOT_TO_SAG | PENDING | | |
-| 5 | MODERN_TANK_PORT_REDRAW_COUPLER_FLOATS | PENDING | | |
+| 4 | POLE_CABLE_FIX_FORGOT_TO_SAG | MOD: red = Modern PipeSpan on Scrapper poles (look fallback bug), FIXED 2ae04e1509 (GSS), live look after deploy; sag = owner's 2% setting | AerialProbe styles (detail) | note on item; stays open for the judge |
+| 5 | MODERN_TANK_PORT_REDRAW_COUPLER_FLOATS | CAPTURED both lanes W+E on all 3 tanks; all 12 ends 'coupled to <tank>' | r2/tank_modern_{208,214,220}_W_E_bothlanes.png, r2/modern_upper_census.txt | note; for the judge |
 | 6 | LEVELLING_FILLS_DIAGNOSE_WATER_GOES_MISSING | PENDING | | |
 | 7 | ART_RESOLUTION_MEASURE_AT_MAX_ZOOM | PENDING | | |
 
@@ -37,3 +37,23 @@ pipe in those cells (r2/crosses_cells.txt). Whole-map terrain read (jawa/get_ter
 842 SoilRich cells, mostly large natural blobs (e.g. x 155-180, z 131-157); the crosses are small patches of the same map-gen
 noise at cell resolution. No terrain writer is on the map: RM_Swale and RM_SiltTrap 0 of 24661 things. Vanilla rich soil, not a
 render layer and not a FlowWorks artefact. Nothing to fix.
+
+### 4. Pole cable red and straight (map R C1) + hose/pipe/hose at map C 25,130
+Map R (save d) has the C1 pipe poles at 128,73 / 133,73. GSS AerialProbe `styles`: both poles rawStyle null, engine StyleDef
+RM_PipePole_Scrapper (they DRAW the Scrapper mast), but the anchor's look reads "Modern" (GSS defaultLook) and the span draws
+spanTex PipeSpan in look Modern. Deployed FlowWorks/Textures/.../PipePole/Modern/PipeSpan.png mean colour (207,38,39) = the
+bright red; Scrapper's is (118,97,83), the copper of the C1 ground pipe. Cause: AerialLineProfiles.LookOfThing for a Pipe-kind
+anchor fell from RawStyle straight to StylePicker.DefaultLook. Fix 2ae04e1509: fall back to the drawn StyleDef's look first
+(GSS DLL rebuilt, not yet deployed; live look owed after the end-of-round deploy).
+Sag: the span is 5 cells and pipePoleSag is 2% (owner's line-widths card 2026-10-20, per RM_PipePoles.xml), i.e. ~0.1 cell -
+"nearly straight" is that setting, not a bug; the C1 sign's "sags over the ditch" over-promises for a 5-cell span (judge's call).
+Map C 25,130 run: RM_UniversalPipe 23,128-133 with RM_HoseReels (rot W) at 24,134 and 24,127 - C7's staged "one hose net"
+(two reels on one pipe, c07_bathhouse_tower.py). The beige pieces above and below the pipe are each reel's pipe link, drawn in
+hose material, then the pipe between: by design of the scene, not a draw fault.
+
+### 5. Modern tank ports, upper lane
+Map C save d, tanks RM_LiquidTankTall 116,208 / RM_UniversalCargoTank 116,214 / RM_UniversalCargoTankXTall 116,220. West lower
+lane = the save's reels 104,z. Added Modern reels (HoseProbe place:...:god): west upper 108,z+3 -> 115,z+1; east upper 124,z+3 ->
+118,z+1; east lower 121,z-3 -> 118,z. Every lay layOk, every free end 'coupled to <tank>' at (115|118).5, (z|z+1).5. Captures use
+the round-1 framing (rect 115,z 4x2 pad 1). First look: on all three tanks each of the four couplers meets a drawn grey fitting
+face, no bare stub into plain wall (XTall frame crops the tank top, as round 1 did).
