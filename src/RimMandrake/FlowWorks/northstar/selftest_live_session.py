@@ -636,6 +636,21 @@ check(r["status"] == "PASS", "ride: a drafted colonist held at thirst 0 reads th
 r = run_ride(RideGame(draft_works=False))
 check(r["status"] == "UNMEASURED", "can-fail ride: a colonist that was never drafted is UNMEASURED, never a rate")
 
+# 8e. SESSION_HURT_DIAGNOSE_BRUISED_AT_THE_BELL: bystanders are quenched and parked off every zone
+check("RM_Thirst" in L.FEED_NEEDS and "Food" in L.FEED_NEEDS, "feed_colonists tops FlowWorks thirst too (a thirsty bystander drank channel tar)")
+for size in ((250, 250), (325, 325)):      # plan_zones refuses 200-300 except 250: b0_preflight then keeps the 250 plan (row B0_zone_plan)
+    zs = L.plan_zones(size)
+    pc = L.park_cell(zs, size)
+    check(pc is not None and 12 <= pc[0] < size[0] - 12 and 12 <= pc[1] < size[1] - 12
+          and not any(L.overlaps((pc[0], pc[1], 1, 1), r, gap=6) for r in zs.values()),
+          "park cell %s on a %s map is >= 6 cells from every zone" % (pc, size))
+check(L.park_cell({"all": (0, 0, 250, 250)}, (250, 250)) is None, "can-fail park: a map full of zones has no park cell (None, never a zone cell)")
+dl = L.census_delta({"a": {"hediffs": ["Scar"]}}, {"a": {"hediffs": ["Bruise", "Scar"], "cell": [3, 4]}, "b": {"hediffs": ["ToxicBuildup"]}})
+check(dl.get("a", {}).get("new") == ["Bruise"] and dl.get("b", {}).get("spawnedDuring") is True and len(dl) == 2,
+      "census_delta names each colonist's NEW hediffs and marks one spawned during the script")
+check(L.census_delta({"a": {"hediffs": ["Bruise"]}}, {"a": {"hediffs": ["Bruise"]}}) == {}, "census_delta: nothing new reads empty")
+check("proof_hose.py" in L.PARK_EXEMPT, "proof_hose realflow keeps the map's colonists where they stand (it drives them)")
+
 # 9. --dry-run and --mock exit 0 offline
 for flag in ("--dry-run", "--mock"):
     d = tempfile.mkdtemp(prefix="ls_selftest_")
