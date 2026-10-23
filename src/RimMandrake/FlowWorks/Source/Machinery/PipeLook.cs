@@ -104,7 +104,7 @@ namespace RimMandrake.FlowWorks.Machinery
         internal static StylePickerCore core;
     }
 
-    /// <summary>The pipe's "Choose style" gizmo: this pipe, or its whole connected run.</summary>
+    /// <summary>The pipe's "Choose style" gizmo: always the whole connected run (never one piece).</summary>
     public class CompProperties_PipeLook : CompProperties
     {
         public CompProperties_PipeLook()
@@ -122,7 +122,7 @@ namespace RimMandrake.FlowWorks.Machinery
             yield return new Command_Action
             {
                 defaultLabel = "Choose style",
-                defaultDesc = "Change how this pipe looks (scrapper, industrial, modern, futuristic): this piece, or the whole connected run. " +
+                defaultDesc = "Change how this pipe run looks (scrapper, industrial, modern, futuristic): the whole connected run at once. " +
                               "Free and instant; it changes art only, never cost or function.",
                 icon = parent.StyleDef?.UIIcon ?? (Texture2D)parent.def.uiIcon,
                 action = () =>
@@ -134,8 +134,9 @@ namespace RimMandrake.FlowWorks.Machinery
                         ThingStyleDef sd = PipeLook.StyleFor(parent.def, look);
                         if (sd == null) continue;
                         string l = look;
-                        opts.Add(new FloatMenuOption(look + (look == cur ? " (current)" : "") + ": this pipe", () => PipeLook.SetLook(parent, l), sd.UIIcon, Color.white));
-                        opts.Add(new FloatMenuOption(look + ": whole connected run", () =>
+                        // PIPE_STYLE_PRUNE_WHOLE_RUN_ONLY (owner 2026-10-23: "Pipes should ONLY have the \"choose style for the
+                        // entire run\" option, not per pipe. That's too fidgetty."): one option per look, always the whole run.
+                        opts.Add(new FloatMenuOption(look + (look == cur ? " (current)" : ""), () =>
                         {
                             foreach (Thing t in PipeLook.RunOf(parent)) PipeLook.SetLook(t, l);
                         }, sd.UIIcon, Color.white));
