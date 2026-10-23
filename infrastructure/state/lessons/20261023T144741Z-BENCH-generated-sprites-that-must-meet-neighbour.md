@@ -1,0 +1,1 @@
+Generated sprites that must meet a neighbour at the cell edge (ropes, cables, rails) are painted with a ~5% canvas margin (styled suspension anchors: rope ends at 243/256), so a seam shows in game; measure the painted end from alpha and draw the remainder in code, never assume art reaches the edge (DRAWBRIDGE_CABLES_FIX_STOP_SHORT).
