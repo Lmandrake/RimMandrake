@@ -520,5 +520,46 @@ try:
 finally:
     pl.ROTATE_BYTES = old_rot
 
+# --- RIMPULSE_SHEETS_FIX_OWN_PROBE_REOPENS_THEM: the sheet's time is its html, not its log -----------------
+with tempfile.TemporaryDirectory() as d:
+    d = Path(d)
+    html = d / "rev_sheet_2026-10-21.html"
+    html.write_text("<html>")
+    os.utime(html, (NOW - 86400, NOW - 86400))
+    winp = "\\\\wsl.localhost\\Ubuntu" + str(html).replace("/", "\\")
+    log = d / "rev_sheet_2026-10-21.serve.log"
+    log.write_text(f"  sheet      {winp}\n  9 rows · 0 decided\n  serving    http://localhost:7/?t=q\n")
+    got = pc.read_sheets([d], probe=lambda u: True)
+    check("a sheet's time is its HTML file's mtime (named on the serve.log 'sheet' line)",
+          got and abs(got[0]["mtime"] - (NOW - 86400)) < 1, got)
+    seen_at = NOW - 3600   # he opened it an hour ago
+    with open(log, "a") as fh:
+        fh.write('  "GET /status?t=q HTTP/1.1" 200 -\n' * 200)   # an hour of probes later
+    got2 = pc.read_sheets([d], probe=lambda u: True)
+    row = pc.classify_looks([], got2, {"sheet:rev": seen_at}, NOW)[0]
+    check("probes appending to the serve.log no longer re-open a sheet he opened", row["opened"] and got2[0]["mtime"] == got[0]["mtime"],
+          (row, got2))
+    os.utime(html, (NOW - 60, NOW - 60))   # the sheet itself was rebuilt after he opened it
+    row2 = pc.classify_looks([], pc.read_sheets([d], probe=lambda u: True), {"sheet:rev": seen_at}, NOW)[0]
+    check("a sheet whose html is rebuilt after he opened it reads unopened again", not row2["opened"], row2)
+    bare = d / "bare_sheet_2026-10-21.html.serve.log"
+    bare.write_text("  serving    http://localhost:8/?t=r\n")
+    (d / "bare_sheet_2026-10-21.html").write_text("x")
+    nohtml = d / "nohtml_sheet_x.serve.log"
+    nohtml.write_text("  serving    http://localhost:9/?t=s\n")
+    gb = {x["name"]: x for x in pc.read_sheets([d], probe=lambda u: True)}
+    check("with no 'sheet' line the html beside the log is the revision; with none it is 0, never the log mtime",
+          gb["bare"]["mtime"] == (d / "bare_sheet_2026-10-21.html").stat().st_mtime and gb["nohtml"]["mtime"] == 0, gb)
+calls = []
+fake = lambda u: calls.append(u) or True   # noqa: E731
+pc._PROBE_VERIFIED.clear()
+check("first sight of a sheet url is a full token probe", pc.sheet_alive("http://127.0.0.1:1/?t=a", NOW, full=fake) and calls == ["http://127.0.0.1:1/?t=a"])
+alive2 = pc.sheet_alive("http://127.0.0.1:1/?t=a", NOW + 45, full=fake)
+check("within 30 min the re-check is a bare TCP connect (no logged request); a closed port reads dead",
+      calls == ["http://127.0.0.1:1/?t=a"] and alive2 is False, (calls, alive2))
+pc._PROBE_VERIFIED["http://127.0.0.1:1/?t=a"] = NOW - 3600
+pc.sheet_alive("http://127.0.0.1:1/?t=a", NOW, full=fake)
+check("after 30 min the token is re-verified with a full probe", len(calls) == 2, calls)
+
 print(f"\n{'FAIL' if FAILS else 'OK'}: {len(FAILS)} failing")
 sys.exit(1 if FAILS else 0)
