@@ -1001,7 +1001,7 @@ def _build_suite():
                 if _field(text, "exposed") != "False":
                     raise ExpectationFailed("the spider chose a cell the sun-scald predicate reads exposed: %s" % text)
         with t.component("siege_web_slicks_others_not_ollathrix", beyond_toggle=True):
-            text = _sp(t, "ProofSlick", "")
+            text = _sp(t, "ProofSlick", "-")   # "" = ZERO params to static_call: never reached (GPT deep review 2026-10-22 #8)
             if _live(t):
                 if not text.startswith("SLICK") or _field(text, "after") is None:
                     _unmeasured(t, "ProofSlick gave no answer: %r" % text[:160]); return
@@ -1021,7 +1021,7 @@ def _build_suite():
                 if _field(text, "forceBroken") != "0":
                     raise ExpectationFailed("siege silk broken by force yielded thrixweave: %s" % text)
         with t.component("wrapped_door_shut_until_cut", toggle="siegeWrapDoors"):
-            text = _sp(t, "ProofDoor", "")
+            text = _sp(t, "ProofDoor", "-")   # "" = ZERO params to static_call: never reached (GPT deep review 2026-10-22 #8)
             if _live(t):
                 if not text.startswith("DOOR wrapSpawned"):
                     _unmeasured(t, "ProofDoor gave no answer: %r" % text[:160]); return
@@ -1046,7 +1046,7 @@ def _build_suite():
                 if _field(text, "DEADLINE deadBefore") != "False" or _field(text, "deadAfter") != "True" or _field(text, "cause") != "True":
                     raise ExpectationFailed("the cocoon did not kill exactly at its deadline with silk suffocation: %s" % text)
         with t.component("half_lost_breaks_the_siege", toggle="siegeMaxDays", beyond_toggle=True):
-            text = _sp(t, "ProofBreak", "")
+            text = _sp(t, "ProofBreak", "-")   # "" = ZERO params to static_call: never reached (GPT deep review 2026-10-22 #8)
             if _live(t):
                 if not text.startswith("BREAK killed"):
                     _unmeasured(t, "ProofBreak gave no answer: %r" % text[:160]); return
