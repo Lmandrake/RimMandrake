@@ -289,6 +289,58 @@ def _helpers():
     return helpers
 
 
+# PROOF_HOSE_SWEEP_FIX_ATE_THE_ZOO (2026-10-22): proof_hose --no-fresh-map ran `destroy_bulk nonColonists` on walkthrough
+# save c and wiped every staged animal and prisoner (map C lost 9, map R lost R1's muffalo, twice). A proof that runs on a
+# map it did not make snapshots that map's non-colonists first (keep_pawns_on_map); every later sweep (sweep_non_colonists,
+# remove_intruders) leaves those ids alone and removes only what arrived after the snapshot. KEEP_UNREAD: the snapshot could
+# not be read, so nothing is known to be safe and sweep_non_colonists refuses to remove anything.
+KEEP_PAWNS = set()
+KEEP_UNREAD = [False]
+
+
+def _sweepable(H, x):
+    return not x.get("dead") and x.get("spawned", True) and not H.is_colonist(x)
+
+
+def keep_pawns_on_map(B):
+    """Snapshot every live non-colonist pawn on the current map into KEEP_PAWNS (a loaded review save's staged animals,
+    prisoners, visitors). -> {"kept": [ids]} or {"error": ...} (then KEEP_UNREAD is set and sweeps refuse)."""
+    try:
+        H = _helpers()
+        ids = set(x["id"] for x in H.read_pawns(B, health=False) if _sweepable(H, x))
+    except Exception as ex:  # noqa: BLE001
+        KEEP_UNREAD[0] = True
+        return {"error": repr(ex)[:200]}
+    KEEP_PAWNS.update(ids)
+    return {"kept": sorted(ids)}
+
+
+def keep_pawns_reset():
+    KEEP_PAWNS.clear()
+    KEEP_UNREAD[0] = False
+
+
+def sweep_non_colonists(B):
+    """Remove the map's non-colonist pawns EXCEPT the kept ones. Nothing kept: jawa/destroy_bulk nonColonists (the old
+    route, a fresh map). Something kept: vanish per exact id only the pawns not in KEEP_PAWNS (no death, no corpse), read
+    back. Snapshot unreadable: remove nothing. -> {"route", "removed", "left", "kept"}."""
+    if KEEP_UNREAD[0]:
+        return {"route": "refused: the keep snapshot was unreadable", "removed": [], "left": [], "kept": None}
+    if not KEEP_PAWNS:
+        r = B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False) or {}
+        return {"route": "destroy_bulk", "removed": r.get("matchedCount"), "left": [], "kept": 0}
+    H = _helpers()
+
+    def pick(x):
+        return _sweepable(H, x) and x.get("id") not in KEEP_PAWNS
+    ids = set(x["id"] for x in H.read_pawns(B, health=False) if pick(x))
+    if not ids:
+        return {"route": "none-needed", "removed": [], "left": [], "kept": len(KEEP_PAWNS)}
+    res = H._kill_ids(B, ids, "sweep_non_colonists", pick, action="vanish")
+    return {"route": "vanish-per-id", "removed": sorted(res.evidence.get("targeted") or []), "left": list(res.residue),
+            "kept": len(KEEP_PAWNS)}
+
+
 def remove_intruders(B, rect=None, margin=SITE_SWEEP_MARGIN):
     """Vanish (no death action: a killed Toughspike/Fingerspike runs DeathActionWorker_Divide) every hostile pawn and every
     factionless stranger / wild animal -- on the whole map, or inside rect +- margin. Colonists and the colony's own are never
@@ -296,7 +348,7 @@ def remove_intruders(B, rect=None, margin=SITE_SWEEP_MARGIN):
     H = _helpers()
 
     def pick(x):
-        if x.get("dead") or not x.get("spawned", True) or H.is_colonist(x):
+        if x.get("dead") or not x.get("spawned", True) or H.is_colonist(x) or x.get("id") in KEEP_PAWNS:
             return False
         if not (H.is_hostile(x) or H.is_stranger(x) or H.is_wildlife(x)):
             return False
