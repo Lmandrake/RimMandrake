@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Tikkit",
+ "nearest_earth_animal": "cricket",
+ "earth_body_named": false,
+ "departures": [
+  "small enough to be hidden under low plain grass, shown at ground level beneath the grass leaves, not perched on top of the stems",
+  "dry, hard plates or ridges on the body that could make a click, not a smooth cricket shell with folded wings",
+  "no cricket parts: no long thread-like feelers and no big folded jumping hind legs",
+  "shown as many of the same creature spread through the grass, not one lone insect"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:49:54-07:00",
+ "source": "description only (no image)"
+}

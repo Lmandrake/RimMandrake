@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Gawpsack",
+ "nearest_earth_animal": "jellyfish",
+ "earth_body_named": false,
+ "departures": [
+  "a sagging, stuffed bag shape, not a jellyfish's domed bell",
+  "dozens of mismatched eyes of different sizes, shapes and colours crammed inside the body",
+  "eyes visible through translucent skin, packed tight enough to bulge the bag",
+  "every eye wide open and turned upward toward the sky",
+  "floats in open air at treetop height, not in water"
+ ],
+ "body_plan": "flyer",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:50:55-07:00",
+ "source": "description only (no image)"
+}

@@ -1,0 +1,87 @@
+[
+ {
+  "id": "arteval_RM_Fuzzviper_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Fuzzviper",
+  "prompt": "A single fuzzviper, an ambush predator that passes for a plant root, in painterly vanilla RimWorld style: realistic, clean dark outline, transparent background. The whole creature reads first as a knobbly, fuzzy plant root lying along an earthen tunnel wall, and only close inspection shows it is an animal. The long body is straight and slightly flattened, with a gentle root-like meander, pressed flat along the surface the way a root follows a wall. Its thickness varies irregularly, with knobs, swellings and pinched narrow stretches along the length. The surface is covered in a fine velvety haze of short pale root hairs, with a few longer rootlets trailing off, and no visible scales. The colors are weathered tan, umber and dull grey-brown, with soft pale fuzz along the edges. The head end tapers like a root tip into a few fibrous rootlets. It is a blunt, rounded, restrained form with two tiny dark eyes half-buried in the fuzz, so it is hard to tell from the growing tip of a root. The tail end tapers to a fine rootlet point, straight and uncurled. Views: the side view shows the whole body lying straight and flat along its length. The front view, with the head end toward the viewer, shows the rounded root-tip end foreshortened, with tiny eyes in the fuzz. The rear view, seen from behind, shows the tapering tail end and the knobbly body receding. The creature is compact, and its silhouette stays readable at small size.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING, DESC_MISS, DEPARTURE_MISSING, STYLE_OFF",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_01"
+ },
+ {
+  "id": "arteval_RM_Mullgoth_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Mullgoth",
+  "prompt": "RimWorld creature sprite of a mullgoth, painterly vanilla RimWorld style, realistic, clean dark outline, fully transparent background. Three views of the same creature: front view (eyes-less mound face toward the viewer), side view, and rear view seen from behind, all drawn at one shared scale. The body is a single low, domed mound with no distinct head, neck or snout, so it reads as a decomposing hillock that decided to walk. Long pale cream hair hangs from the mound's rim straight down to the ground on every view, in overlapping strands and curtains; only the dark, thick feet and brief glimpses of four short, thick, hairy legs show between the strands at the bottom, and the hair's lower fringe rests on the ground. The hair is patched with grey-green moss and lilac lichen growing on it like ground cover; the lilac lichen appears as several clearly visible clusters at the same density, size and saturation on the back and flanks in the front, side and rear views. Black, glistening slime drips from the underside onto the ground beneath the hair. In all three views the mound has the same height, the same four-foot span, the same ground line, and the same margin to the canvas edge: the mound is centred with about 10% empty transparent margin on every side. The silhouette edge is a crisp outline of dark hair and cream-to-olive hair tones against the transparent background, and every edge pixel is one of the creature's own hair or moss colours.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, DEPARTURE_MISSING, F_INCONSISTENT, ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_01"
+ },
+ {
+  "id": "arteval_RM_Ribbonwhip_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Ribbonwhip",
+  "prompt": "A RimWorld creature sprite, the ribbonwhip: a flat, blade-like ribbon predator, no wider than a plant stem along its whole length, riding the top of a plant canopy. The body is a thin flat band that twists along its length, so its broad glossy face and its thin pale edge alternate visibly, like a blade of grass, with shading that follows the flat face and a light edge highlight. It lies in long, one-directional swept arcs, all leaning the same way like wind-bent grass blades, draped across the tips of canopy stems. The surrounding plant stems bend in the same direction, so the ribbon blends into the canopy line. No part touches the ground; empty space lies below the canopy line. The head is an alien sensory tip: a split filament end, or a blade edge with a few tiny light-sensing pits, with no skull, jaw or round eye. The palette is muted dried-grass olive and straw green with a pale edge, matching the canopy. Three facings of the same ribbon, turned to their directions: south is a front view with the head tip toward the viewer, east is a side view with the ribbon running left to right, north is a rear view seen from behind, with the tail end nearest the viewer, the body receding away across the canopy and the head tip hidden at the far end. Transparent background, painterly vanilla RimWorld style, realistic, clean dark outline. reference: none.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_NORTH_FACE, F_INCONSISTENT, DEPARTURE_MISSING, DEPARTURE_MISSING, DESC_MISS, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_01"
+ },
+ {
+  "id": "arteval_RM_Rollbug_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Rollbug",
+  "prompt": "A single RimWorld creature sprite, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. The rollbug is a low, broad, squat alien crawler that hugs the floor: a flattened, segmented, plated shell like an overlapping armored saddle, a small low head with small dark eyes, eight short stubby legs tucked under the body so the belly nearly touches the ground, and two broad forelimbs shaped as clasping pads wrapped around a ball. It is pushing and rolling a packed ball that is clearly bigger than its own body and dominates the silhouette. The ball is a lumpy, compacted mass of whatever it has gathered: bone fragments, ribs and teeth, scraps of hide and cloth, bits of metal and grit pressed together, with remains visible across its whole surface. Muted earthy body palette in dark umber and slate, with the ball in bone-white, grey and brown scrap tones. Front view, eyes toward the viewer: the bug sits low behind and below the ball's upper curve, the ball filling the foreground in front of it. Side profile: the bug and ball side by side in a row, the ball beside and ahead of the bug, the bug's shell top level with the lower third of the ball. Rear view, seen from behind: the bug's flat segmented back and tucked legs in the foreground, the ball ahead of it, rising partly past the body. On all views the legs are tucked to one shared ground line and the sprite occupies the same overall height, with the body the same size on every facing.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, DEPARTURE_MISSING, STYLE_EARTHLY, DEPARTURE_MISSING, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_01"
+ },
+ {
+  "id": "arteval_RM_Shirrel_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Shirrel",
+  "prompt": "A RimWorld creature sprite of the shirrel, an alien plains glider that waits all year for a gale, climbs a sweetline tree, opens like a kite and crosses country in an afternoon. Transparent background, painterly vanilla RimWorld style, realistic, clean dark outline, one creature at game scale (about 1.2 tiles).\n\nBody: a lean, angular, four-limbed frame with dusty sand-brown leathery, plated skin over visible stiff struts. Along the back and flanks lies the folded kite sail: a compact bundle of rigid bark-grey spars with tight leathery membrane laid flat against the body, visible on every facing, so the creature plainly has a kite to open. Folded, the creature is a compact form; when opened, the sail would become one flat diamond (kite-shaped) sheet held taut by spar-like struts, the way a kite's frame holds its cloth. The tail is a thin, stiff, spar-like rod that is part of the kite frame. The head is narrow, smooth and angular, with small bare eyes and bare skin around the ears. The limbs are long and hooked, built for gripping tree trunks, with strong curved claws.\n\nFacings, one creature with identical body mass on all of them: front view with eyes toward the viewer; rear view seen from behind, showing the back, folded spar bundle, tail rod and haunches with the eyes hidden, matching the front view in height and breadth, the tail rod rising straight behind and adding no width; side views in profile showing the spar bundle along the back and the tail rod extending behind.\n\nSingle consistent palette: dusty sand-brown skin, darker bark-grey spars, pale leathery membrane.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, DEPARTURE_MISSING, STYLE_EARTHLY, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_01"
+ }
+]

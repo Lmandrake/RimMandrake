@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Surrik",
+ "nearest_earth_animal": "mole",
+ "earth_body_named": false,
+ "departures": [
+  "body drawn half-sunk in a root-bound ground crust, the root mat parting and bulging around it like a bow wave on water, not a burrow hole or dirt mound",
+  "massive broad shoulders form the leading edge that pushes through the mat, with the head low behind or below the shoulder line, not a pointed snout out in front",
+  "smooth, streamlined swimming body that moves through the crust as through water, with no spade-like digging forepaws or claws",
+  "mouth placed to strike upward from below, suiting a creature that takes prey from underneath"
+ ],
+ "body_plan": "swimmer",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:49:30-07:00",
+ "source": "description only (no image)"
+}

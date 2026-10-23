@@ -1,0 +1,21 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Vurra",
+ "nearest_earth_animal": "earthworm",
+ "earth_body_named": true,
+ "departures": [
+  "Body is massive: thick and long enough to look dangerous next to a lone human, nowhere near earthworm scale",
+  "Front end looks like a predator's head that can threaten someone, not the blunt, featureless tip of an earthworm",
+  "Skin is plainly alien in colour and texture, not pink-brown moist flesh in even ring segments with a pale clitellum band"
+ ],
+ "body_plan": "serpentine",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:48:59-07:00",
+ "source": "description only (no image)"
+}

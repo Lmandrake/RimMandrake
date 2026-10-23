@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Rhossak",
+ "nearest_earth_animal": "stag",
+ "earth_body_named": true,
+ "departures": [
+  "legs, flanks and body are made of bundles of tightly wound, twisting living roots, with no fur or hide",
+  "the antler-like crown is a branching mass of root, not bone antler",
+  "a row of swollen seed-husks along its back",
+  "some husks split open to show wet red seeds packed like teeth",
+  "the ground beneath and around it is sprouting with new growth"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:50:06-07:00",
+ "source": "description only (no image)"
+}

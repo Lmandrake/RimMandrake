@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Visceral",
+ "nearest_earth_animal": "praying mantis",
+ "earth_body_named": false,
+ "departures": [
+  "a large gaping maw lined with tearing teeth or hooks, in place of an insect's small side-to-side mandibles",
+  "heavy raptorial forelimbs built for rending, with hooked or serrated edges made for ripping flesh, not a slim insect's folded grasping arms",
+  "a dense, heavy body sized for a human-scale creature, not a thin stick-insect frame with delicate legs",
+  "a head made mostly of the maw rather than a small triangular head with big compound eyes on a narrow neck"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:50:19-07:00",
+ "source": "description only (no image)"
+}

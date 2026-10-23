@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_FurnaceBeast",
+ "nearest_earth_animal": "hippopotamus",
+ "earth_body_named": false,
+ "departures": [
+  "hide made of separate stone-like mineral plates, not continuous skin",
+  "plates banded in visible horizontal strata of differing mineral colours across the whole body",
+  "seams between the plates glow bright ember-orange from stored heat",
+  "body reads as a heavy mineral mass on legs, like a stove, with no smooth, wet, grey, fleshy hide anywhere"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:41:26-07:00",
+ "source": "description only (no image)"
+}

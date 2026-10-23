@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Ullai",
+ "nearest_earth_animal": "giraffe",
+ "earth_body_named": false,
+ "departures": [
+  "coat is plain two-tone, ash-grey on the back and upper flanks and soot-cream on the belly, with no giraffe patches, spots or stripes",
+  "lower legs are solid black like stockings, with a clear line between the black and the grey above",
+  "frame is very light-boned and spindly, with almost no body mass between long legs and a long neck, unlike a giraffe's heavy, sloping shoulders",
+  "legs and neck dominate the silhouette, so the body reads as a small torso slung between them",
+  "colours are ash, soot and black, with no giraffe tan, orange or brown"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:41:24-07:00",
+ "source": "description only (no image)"
+}

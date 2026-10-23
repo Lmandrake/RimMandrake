@@ -1,0 +1,21 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_BedBug",
+ "nearest_earth_animal": "bedbug",
+ "earth_body_named": true,
+ "departures": [
+  "oversized insect body, large enough to bring down animals bigger than itself rather than a tiny speck",
+  "prominent biting mouthparts or fangs at the head for its venom bite, not a thin piercing straw folded under the head",
+  "heavier, sturdier legs and head than a flat parasite has, built to bite and hold larger prey"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:50:22-07:00",
+ "source": "description only (no image)"
+}

@@ -1,0 +1,53 @@
+[
+ {
+  "id": "arteval_RM_Emberscythe_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Emberscythe",
+  "prompt": "A single large armoured predator mantis, the emberscythe, drawn as a RimWorld creature sprite on a transparent background, in the painterly vanilla RimWorld style, realistic, with a thin soft dark outline and painted shading that defines the plates. Its chitin is ember-dark: charcoal-black with smouldering ember-red tones in the seams and plate edges. The body is large and heavy, far beyond insect scale, a big predator. A thick armoured shell of heavy overlapping plates covers the body, and every limb and the neck are just as thick, built from broad overlapping armour plates, with a bulky prothorax. The mantis is crouched low to the ground, legs folded under the body, with pale grey ash dusted over its back, legs and plate edges and banked partly against its lower body. Each forelimb ends in one long, smooth, curved scythe blade with a single sharp ember-red glowing cutting edge, the inner edge clean and unbroken. The sprite is seen from the game's low camera angle, not from above. View: <FACING>. FRONT VIEW (south): seen from the front, the head and eyes face the viewer at the centre, the two raised scythe blades frame the head on either side, and the thorax, wings and abdomen are foreshortened behind the head, mostly hidden. REAR VIEW (north): seen from behind, the folded wing-cases and abdomen tip are nearest the viewer and fill the centre, the thorax rises behind them, only the tips of the scythes and antennae show past the body, and the head is hidden behind the shoulders. SIDE VIEWS (east, west): a profile of the crouched body, head toward the facing side, one scythe raised forward, the low crouched silhouette and ash dusting clearly visible. Build the body from this description alone, with no reference image.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_TOPDOWN, F_TOPDOWN, DUPLICATE, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, STYLE_OFF, F_SOUTH_NOT_FRONT, F_NORTH_FACE",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_pyrelands_b"
+ },
+ {
+  "id": "arteval_RM_Sytheclaw_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Sytheclaw",
+  "prompt": "A single RimWorld creature sprite on a transparent background, painterly vanilla RimWorld style, realistic, thin dark outline on the silhouette only. The sytheclaw is a low-slung pack predator of the burning plains, its body held very close to the ground, lower than any big cat's stance, crouched on four limbs. Its back is covered in overlapping dry yellow-gold armour plates, the same dry gold as standing quickgrass, with no fur or mane; the plates inside the body are separated by painted shading and subtle colour shifts, not black lines. Its underside, belly edge and inner limbs are a raw furnace red that contrasts sharply with the gold plated upper body. Each foreleg ends in a long, curved, scythe-like bone blade with a serrated inner edge, held forward and clearly visible; the animal stands on the blade elbows or blade tips, and the front limbs have no paws or toes. The hind legs are strong crouched haunches ending in ordinary feet. A tail trails behind. Drawn at the game's angled camera, seen from slightly above, with the body upright on its legs and the same body height and bulk in every facing. Front view: head and eyes toward the viewer, both serrated forelimb blades forward. Side view: profile with the head to one side, the near blade scythe curving forward and the plated gold back above the red underside edge. Rear view, seen from behind and slightly above: haunches, hind feet, tail and the backs of the gold plates, head hidden behind the shoulders with eyes not visible, the red underside edge low at the bottom, and the forelimb blades showing at the sides of the body.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_TOPDOWN, F_NORTH_FACE, F_SIZE_JUMP, DESC_MISS, DEPARTURE_MISSING, STYLE_OFF",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_pyrelands_b"
+ },
+ {
+  "id": "arteval_RM_Barbslinger_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Barbslinger",
+  "prompt": "RimWorld creature sprite, a barbslinger: a calf-sized, heavy, low-slung armoured scorpion, painted realistically in vanilla RimWorld's painterly style with a thin dark outline, varied chitin texture, subtle specular highlights, transparent background. Body: one broad, flat shield plate overhangs the body and legs on every side like a tortoise shell, wider than the segmented body beneath it. The chitin is dark charcoal and smoky bronze, heat-cured and fire-hardened, with a burnished, heat-tempered sheen on the ridges, scorch-blackened edges and grey ash caught in the seams. Small dull eyes are set into the armour at the front of the head. Two broad, shovel-like pincers are held low at the front, built for turning over ash and ground, their tips dusted pale grey with ash. Sturdy jointed legs bend under the shield rim. A single heavy segmented tail rises from the rear end of the body and arches over the back, ending in a knotted cluster of five to seven backward-hooked barbs fanned around the end segment, clearly a bundle of points rather than one stinger. Facings, all showing the same creature turned with its body: south is a front view at a low angle, with the head and pincers large in the foreground, the shield rising behind them foreshortened, and the tail arching up over the top. North is a rear view, seen from behind, showing the shield, rear legs and the tail base foreshortened toward the camera, with the pincers peeking out past the body and the eyes hidden. East is a side profile at ground level, showing the flat shield rim, the pincers forward of the head, the legs bent under the shield, and the tail rising from the rear end and arching over the back. Reference: none; build the body from this description.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, F_INCONSISTENT, F_TOPDOWN, STYLE_CARTOON",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_pyrelands_b"
+ }
+]

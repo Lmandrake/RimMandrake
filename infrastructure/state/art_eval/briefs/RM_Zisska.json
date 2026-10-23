@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Zisska",
+ "nearest_earth_animal": "tortoise",
+ "earth_body_named": false,
+ "departures": [
+  "body pressed very low and wide, a flat shield outline hugging the ground, not a raised domed shell",
+  "plating that reads as stone: rough rock-like plates showing concentric mineral rings, not keratin scutes with growth lines",
+  "head carried nose-down against the surface, ending in a broad rasping mouth or snout plate built for scraping rock",
+  "sulphur-yellow mineral colouring built up in the plates and around the mouth, from the minerals it has rasped off and kept"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:50:38-07:00",
+ "source": "description only (no image)"
+}

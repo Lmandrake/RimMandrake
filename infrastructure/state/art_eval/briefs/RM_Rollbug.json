@@ -1,0 +1,21 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Rollbug",
+ "nearest_earth_animal": "dung beetle",
+ "earth_body_named": false,
+ "departures": [
+  "the ball is a packed mass of whatever it found, with remains and debris such as bone and scraps showing in it, not a smooth brown dung sphere",
+  "the ball is clearly bigger than the rollbug's own body and dominates the silhouette",
+  "a low, squat body that sits close to the floor, not a tall beetle doing a head-down handstand to push with its back legs"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:49:57-07:00",
+ "source": "description only (no image)"
+}

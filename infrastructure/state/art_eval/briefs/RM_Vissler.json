@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Vissler",
+ "nearest_earth_animal": "lizard",
+ "earth_body_named": false,
+ "departures": [
+  "the part it sheds is an arm, not a tail: no lizard tail serves as the throw-away organ",
+  "one conspicuous arm, large compared with the body: the obvious thing a hand would close on",
+  "a visible break-line or joint ring at the base of that arm where it comes off clean",
+  "a small, compact body compared with the arm, built to slip away once the arm is held",
+  "a small bud where an arm is regrowing, in place of a full limb"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:49:30-07:00",
+ "source": "description only (no image)"
+}

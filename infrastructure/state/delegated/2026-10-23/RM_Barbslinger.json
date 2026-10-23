@@ -1,0 +1,65 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 54.8,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.3959178
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 14.8,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1295167
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Barbslinger",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band REALLY_BAD (model said really_bad); blocking ['DESC_MISS', 'DEPARTURE_MISSING', 'DEPARTURE_MISSING', 'DEPARTURE_MISSING', 'DEPARTURE_MISSING', 'F_INCONSISTENT', 'F_TOPDOWN', 'STYLE_CARTOON']; polish ['STYLE_EARTHLY']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v1",
+   "sha": "a4850279ccbf"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v1",
+   "sha": "14056552e355"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v2",
+   "sha": "16a3854542c6"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "south.png": "1c3c8fcdfd643a7a495f0ddea73e065db37095178e71ef5b88b66f00550fffc8",
+  "east.png": "1fc8a0019921797449e3c2c5f5687a5b594aa39afbbcd01996367f7388476c4a",
+  "north.png": "9185ca2e981fc40b3ea28d1a128395e132f027a13bcb8726816af57a06b6b143",
+  "scale.png": "054ccbf6cc67729babf1abab4982d48cf46ae6e8d9901a58761d96c9bb9b8160",
+  "facings.png": "a2afd0cbce0b9280e1e27d5570a533479730046ee9e209924d8671304f82f757"
+ }
+}

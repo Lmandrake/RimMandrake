@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Crispling",
+ "nearest_earth_animal": "armadillo",
+ "earth_body_named": false,
+ "departures": [
+  "back shell is a cracked, blackened crust of baked-on char, not banded or scaled armour plates",
+  "the char crust has a glassy, reflective sheen where it turns heat and light, not matte keratin",
+  "a deeply hunched posture with the crusted back domed high over a low-slung body",
+  "picking forelimbs held forward for plucking food from the ground, not digging claws",
+  "a soft, pale, unarmoured underside clearly visible below the crust edge"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:51:29-07:00",
+ "source": "description only (no image)"
+}

@@ -1,0 +1,65 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 40.8,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.36209339999999995
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 13.2,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.12313669999999999
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Chikka",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band REALLY_BAD (model said really_bad); blocking ['DONOR', 'DEPARTURE_MISSING', 'F_INCONSISTENT', 'STYLE_CARTOON']; polish ['SCALE_WRONG', 'STYLE_EARTHLY']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v1",
+   "sha": "a4850279ccbf"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v1",
+   "sha": "14056552e355"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v2",
+   "sha": "16a3854542c6"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "south.png": "d6aa711a16b5add5b3a48cdae3035d37647780f4205da0a7784b1546c163e791",
+  "east.png": "fa90086d7e9ef7faca0cfaa2e8d9903f37d719ddd4b7e3d56d21d32fce19c8aa",
+  "north.png": "47385213d8d08b5c66e43b808669620bb3440becf7bec1b1ffb0deba2cb112cd",
+  "scale.png": "730040dfcdd78350a9e28bdfeebe63e22aff4cf4040f7a1b9c39cd03ae182a8b",
+  "facings.png": "053b848d0dd84a7a509a67218de2c52f170b031fa0e84a37c5e5005c085365c4"
+ }
+}

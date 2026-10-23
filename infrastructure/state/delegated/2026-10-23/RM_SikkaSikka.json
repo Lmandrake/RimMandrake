@@ -1,0 +1,64 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 35.3,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.3599156
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 28.6
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_SikkaSikka",
+ "decision": "ACCEPT",
+ "reasons": [
+  "opus band WEAK (model said weak); blocking ['DEPARTURE_MISSING']; polish ['STYLE_EARTHLY']",
+  "gpt strong_accept: unsettled [], own blocking []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v1",
+   "sha": "a4850279ccbf"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v1",
+   "sha": "14056552e355"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v2",
+   "sha": "16a3854542c6"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "south.png": "daa7dbeab0033b16665efe2ce8ab9c623da5b9b6155ab79395fa2206371fe240",
+  "east.png": "ba91f2f5bfa06e4d129e53504f5b832126371497044d17514d9e846706d784db",
+  "north.png": "7303b14e744fe41ee64f1f81f79258b3cb4ce77627a2dfafa137762a3ce7c932",
+  "scale.png": "b933368ea661f7a6fc4ea95629148c674dcaf40f3451397fd244b90614075362",
+  "facings.png": "9fa832420ffd60377a85de6494b695e591177ca24972861c41230bac37dae5a3"
+ }
+}

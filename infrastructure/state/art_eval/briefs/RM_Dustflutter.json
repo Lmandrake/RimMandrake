@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Dustflutter",
+ "nearest_earth_animal": "moth",
+ "earth_body_named": false,
+ "departures": [
+  "no true flight wings: no broad, veined moth or butterfly wings, since they cannot really fly",
+  "dull ash-grey body the same colour as the dusty ground, with no wing patterns, eyespots or bright markings",
+  "a small, low ground-hugging body built to lie flat in the dirt rather than perch on plants",
+  "shown as a dense grey burst of many identical small bodies rising from the ground, not a single insect at rest",
+  "no feathery antennae or furry moth thorax"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:49:38-07:00",
+ "source": "description only (no image)"
+}

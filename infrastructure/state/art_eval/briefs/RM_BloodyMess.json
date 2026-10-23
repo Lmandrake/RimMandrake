@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_BloodyMess",
+ "nearest_earth_animal": "slime mold",
+ "earth_body_named": false,
+ "departures": [
+  "flat, ground-hugging pool with no head, limbs or bounded body outline",
+  "surface of raw, wet red tissue like exposed viscera rather than skin, slime or film",
+  "half-formed organs budding up out of the pool's surface, partly sunk back under it",
+  "at least one bud is a recognisable eye with an eyelid or a clenched, sphincter-like organ",
+  "edges that blend into the ground with no clear border between creature and soil"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:50:53-07:00",
+ "source": "description only (no image)"
+}

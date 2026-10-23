@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Vexxiss",
+ "nearest_earth_animal": "tortoise",
+ "earth_body_named": false,
+ "departures": [
+  "no eyes anywhere on the head or body",
+  "hide made of grown-together plates of slag-like smelter-scab and old bark, not a shell or scales",
+  "a row of crystal fans standing upright down the spine like the vents on a boiler",
+  "a lumpy hill-of-slag silhouette, with no clean domed shell outline"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:50:34-07:00",
+ "source": "description only (no image)"
+}

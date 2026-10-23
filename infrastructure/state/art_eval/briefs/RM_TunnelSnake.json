@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_TunnelSnake",
+ "nearest_earth_animal": "snake",
+ "earth_body_named": false,
+ "departures": [
+  "body flattened and low in cross-section, shaped to fill a narrow corridor or tunnel gap rather than a round snake tube",
+  "a forward grasping structure for seizing and yanking prey (the 'yanker'), absent on any snake",
+  "tactile sensing structures (feelers or filaments) along the coiled body that detect prey at touching distance",
+  "resting pose drawn as a tight coil wedged into a single gap between venomvine stems or tunnel walls, its body conforming to that gap"
+ ],
+ "body_plan": "serpentine",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:49:57-07:00",
+ "source": "description only (no image)"
+}

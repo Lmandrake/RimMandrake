@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Gorekite",
+ "nearest_earth_animal": "manta ray",
+ "earth_body_named": false,
+ "departures": [
+  "body is a single flat stretched membrane of hide, tent-sized, with no distinct head, eyes or face",
+  "no wings, fins or feathered limbs; the hide itself is the whole airfoil, pulled taut like a sail",
+  "exactly one long trailing grasper hangs from beneath the hide, with no paired limbs or tail fins",
+  "the grasper is visibly wet and glistening, unlike the dry surface of the hide",
+  "body is sized and shaped to drape over and smother prey from above, so the hide reads as a blanket or canopy rather than a streamlined animal"
+ ],
+ "body_plan": "flyer",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:51:36-07:00",
+ "source": "description only (no image)"
+}

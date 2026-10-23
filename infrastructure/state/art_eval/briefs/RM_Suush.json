@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Suush",
+ "nearest_earth_animal": "jellyfish",
+ "earth_body_named": false,
+ "departures": [
+  "floats in open air a few feet above the ground with a visible gap of air beneath, not in water",
+  "body is a closed, round, gas-filled globe, not a flattened bell or umbrella with a frilled rim",
+  "faint glow from inside the translucent globe, with the dim shapes of recently digested matter showing through it",
+  "dense curtain of many long, very fine gathering tentacles hanging straight down from beneath the globe, with no thick frilly oral arms",
+  "no visible head, eyes, mouth or limbs anywhere on the body"
+ ],
+ "body_plan": "flyer",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:50:10-07:00",
+ "source": "description only (no image)"
+}

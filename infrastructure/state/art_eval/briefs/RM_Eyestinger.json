@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Eyestinger",
+ "nearest_earth_animal": "scorpion",
+ "earth_body_named": false,
+ "departures": [
+  "raised tail ends in one large eye where a scorpion's stinger would be",
+  "no stinger bulb or barb anywhere on the tail tip; the eye itself is the tip",
+  "big, heavy, bulky segmented body, much more massive than a scorpion's",
+  "the segmented tail is held up so the eye at its end is clearly visible"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:51:02-07:00",
+ "source": "description only (no image)"
+}

@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Ogleknot",
+ "nearest_earth_animal": "harvestman spider",
+ "earth_body_named": false,
+ "departures": [
+  "body is a clumped knot of separate eyeballs, not a single round or segmented abdomen",
+  "the eyeballs are visibly mismatched, with no two the same size",
+  "no head, face, mouth or mandibles; the eye-knot is the whole body",
+  "legs are smooth, stilt-thin tendrils with no jointed, segmented arthropod leg sections, splayed out so the knot rides high",
+  "the eyes point in different directions at once, not forward together"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:51:03-07:00",
+ "source": "description only (no image)"
+}

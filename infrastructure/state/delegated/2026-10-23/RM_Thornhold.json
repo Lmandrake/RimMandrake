@@ -1,0 +1,65 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 41.8,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.37425440000000004
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 12.5,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1244387
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Thornhold",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band REALLY_BAD (model said weak); blocking ['DEPARTURE_MISSING', 'DEPARTURE_MISSING', 'DEPARTURE_MISSING', 'DESC_MISS', 'STYLE_EARTHLY']; polish []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v1",
+   "sha": "a4850279ccbf"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v1",
+   "sha": "14056552e355"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v2",
+   "sha": "16a3854542c6"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "south.png": "4c29d2b4853fdad7738109fb36bfaeb995634e93e96c1bb855acfe4fa2a6f9f2",
+  "east.png": "ce2c9123cfb2e479a0e27ebe17ce5005d863431d14d961b187965274c1e9a57e",
+  "north.png": "167ff6015d83a8fa5f369fbf56f010d2086811210e3a5929cb625f41fe092a88",
+  "scale.png": "c8eab411132c31fe7aa0efb6843d8efbb635fbad9d3a02c974e9d76dd4fdf303",
+  "facings.png": "35d1f68e918ee23a1555c1a9b64c06c280022e66c89b85973323f2ce716ba502"
+ }
+}

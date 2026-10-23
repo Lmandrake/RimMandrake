@@ -1,0 +1,72 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 39.5,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.3630778
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 49.9
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 10.5,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.11741470000000001
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Visceral",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said weak); blocking ['F_INCONSISTENT', 'F_SIZE_JUMP', 'DEPARTURE_MISSING']; polish ['SCALE_WRONG']",
+  "gpt regen: unsettled [], own blocking ['DONOR']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v1",
+   "sha": "a4850279ccbf"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v1",
+   "sha": "14056552e355"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v2",
+   "sha": "16a3854542c6"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "south.png": "f62385723765e6ff584abbc0a9475443bae8139e478c3d686b4c7cd22bdb10e5",
+  "east.png": "924f16f31ecdc3ad2a798329fe2e30cc93b23c2734d713a39f6dd6cc76679e0b",
+  "north.png": "38702c3ce40c544ef784724dae2bb4b3a634729ae9bdc77e4384adbfb35ee897",
+  "scale.png": "8bc23410af9ab59cf8b162472ca153de9a30f2f09636ee20c1dc90c2b86c6ca6",
+  "facings.png": "081fff4400107c1d7aa0229c0a70b7bebae4cdc219694f74e20c31e2bcc94396"
+ }
+}

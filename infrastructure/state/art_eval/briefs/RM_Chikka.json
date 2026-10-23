@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Chikka",
+ "nearest_earth_animal": "porcupine",
+ "earth_body_named": true,
+ "departures": [
+  "pale green quills, not brown, black or white-banded ones",
+  "quills cover every inch of it, the face included, with no bare snout, belly or legs showing",
+  "a teardrop body, broad as a ball behind and narrowing to a blunt face, with no neck, tail or separate head",
+  "a few tiny feet barely showing under the quills, not four ordinary legs",
+  "a small pair of glaring eyes set at the very front of the blunt face"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:48:58-07:00",
+ "source": "description only (no image)"
+}

@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Bileworm",
+ "nearest_earth_animal": "slug",
+ "earth_body_named": true,
+ "departures": [
+  "vast size, far beyond any Earth slug, dwarfing a person",
+  "a row of dark pitted breathing holes running down each flank",
+  "a cluster of yellow, finger-like mouthparts beneath the eye-stalks instead of a plain slug mouth",
+  "pale underside with prominent transverse ribbing",
+  "mottled grey-green skin"
+ ],
+ "body_plan": "serpentine",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:50:29-07:00",
+ "source": "description only (no image)"
+}

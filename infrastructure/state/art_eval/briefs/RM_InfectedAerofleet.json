@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_InfectedAerofleet",
+ "nearest_earth_animal": "jellyfish",
+ "earth_body_named": false,
+ "departures": [
+  "a floating, swollen gas-sac body with no feet, legs or limbs, held aloft with no wings or fins",
+  "a fringe of trailing feelers hanging beneath the sac in place of any legs",
+  "no head, face, eyes or mouth: the body is a single round sac",
+  "the sac's skin is a blistered, red-veined mass, in place of a translucent jelly bell",
+  "the sac looks dense and opaque, swollen with spore rather than clear gas"
+ ],
+ "body_plan": "flyer",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:51:40-07:00",
+ "source": "description only (no image)"
+}

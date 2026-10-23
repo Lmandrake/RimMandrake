@@ -1,0 +1,87 @@
+[
+ {
+  "id": "arteval_RM_Chikka_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Chikka",
+  "prompt": "A single RimWorld creature sprite on a transparent background: the chikka, a rat-sized, rounded desert creature shaped like a teardrop, broad as a ball behind and narrowing to a blunt face. Pale green quills cover every inch of it down to the ground, the blunt face included, forming a quill skirt over the body; the belly, flanks and snout are hidden under quills, and only a few tiny toes peek out beneath the skirt as it shoves nose-first through loose sand. The quills are fine, ridged, varied spines of uneven length, longest and most ridged along the back like a porcupine's, with slight differences in angle and shade, painted with matte, hand-painted texture, soft natural lighting and subtle shadow. The body has no neck, tail or separate head. At the very front of the blunt quilled face sits a small pair of glaring, furious eyes. Facings share one identical body: the front view shows the blunt face with both small glaring eyes toward the viewer over the round quilled mass; the rear view, seen from behind, shows the same broad round ball as a wide low dome of long ridged back quills with tiny toes beneath and the eyes hidden; the side view shows the low teardrop profile, broad and round behind, narrowing to the blunt face at the front with one glaring eye visible. Realistic painterly vanilla RimWorld animal style, clean dark outline, transparent background. Entirely original RimMandrake artwork. reference: none.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DONOR, DEPARTURE_MISSING, F_INCONSISTENT, STYLE_CARTOON",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_00"
+ },
+ {
+  "id": "arteval_RM_Crustweevil_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Crustweevil",
+  "prompt": "A single tiny crustweevil, a lichen-grazing weevil seen at centimetre scale, in painterly vanilla RimWorld sprite style, realistic, with a clean dark outline, on a transparent background. Its body is a low, very wide, flattened oval hugging the ground, about a quarter as tall as it is wide, with the shell edges skirting the surface. The shell is earthy brown-grey, and its back carries small patches of soil crust and pale grey-green lichen, so it reads as part of the crust surface it grazes. The head ends in a broad, flat, wide grazing mouth, a scraper plate pressed down to ground level, with a short blunt muzzle flush against the lichen surface. Pale scraped lichen crumbs sit at its lip, and a small lichen-grazed patch of bare crust lies beside and behind it, showing it as a surface grazer. Six short legs hold the body close to the ground in a walking pose, with short antennae at the head. Front view (south): eyes toward the viewer, the wide mouth plate low at the bottom of the sprite. Side views (east, west): the long flat profile, mouth plate at ground level at the front end. Rear view (north), seen from behind: the back, rear plates and haunches, eyes hidden, at the same shell width and height as the front view. All facings share one shell and one scale.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, DESC_MISS, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_00"
+ },
+ {
+  "id": "arteval_RM_Durrok_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Durrok",
+  "prompt": "A RimWorld creature sprite of the durrok, a low barrel-bodied quadruped so buried under long pale glossy hair that it reads as a drowned haystack on the move. Long, heavy, wet-looking ropes of pale white hair hang continuously all the way to the ground on every side, draping over the four short thick legs so the legs have no outline of their own and only small dark feet tips peep out beneath the hanging cords. The front end is a blunt, featureless mound of hair, with no head, neck, horns, eyes, ears, muzzle or face visible; behind it there is only a tail-like fall of white cords. Clear mats of muted grey-green lichen (olive-tinged grey-green, the same colour in every facing) are draped in drifts across the top, shoulders, back and legs, with loose green strands trailing down over the hair ropes; in the front view the lichen mats sit visibly over the top and shoulders with strands trailing down the front hair. The rear view shows the fall of white cords and lichen across the haunches. The side view shows the long barrel profile of hanging hair ropes with lichen drifts along the back. Painted in the painterly vanilla RimWorld style, realistic: broad simplified masses of wet corded hair and lichen, restrained highlights, a clean dark outline and a strong silhouette that stays legible at normal play scale. Transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, F_INCONSISTENT, STYLE_OFF",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_00"
+ },
+ {
+  "id": "arteval_RM_Dustflutter_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Dustflutter",
+  "prompt": "RimWorld creature sprite, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. A dustflutter swarm: a dense cluster of many identical small bodies lifting off the dirt together in one shivering grey burst, a few still resting on the ground below. Each body is a low, flattened, hard-shelled oval pressed to the ground, with short legs splayed beneath it, and only tiny, stubby, vestigial dust-coloured flaps folded against its back, small against the body, smooth, with no veins and no bands. The whole creature is one flat, dull ash-grey, the same colour as the dusty ground, with no bands, patterns, eyespots or bright markings. The bodies have a smooth, dusty, matte surface, with a plain bare head and thorax and thread-thin short antennae. The head is small and insect-like, with dull eyes set into a dusty, matte face. The body plan is an alien dust-dweller, native to dry dirt, reading as a ground-dwelling swarm rather than a single insect. Front view: eyes toward the viewer. Rear view, seen from behind: back and flaps, eyes hidden. Side view: flat oval profile with splayed legs. Reference: none.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, STYLE_EARTHLY, DESC_MISS, STYLE_CARTOON",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_00"
+ },
+ {
+  "id": "arteval_RM_Fuzzrunner_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Fuzzrunner",
+  "prompt": "A single RimWorld creature sprite, a fuzzrunner, in painterly vanilla RimWorld style, realistic, with a thin clean dark painterly outline and a transparent background. The fuzzrunner is a near-spherical, fat, ball-shaped animal whose body fills the silhouette like a rounded river stone, swollen round with stored fog-fat. The body is a swollen sphere with no visible neck or waist; the head sinks straight into the round torso. A dense, even, short fuzz in muted dusty grey-brown covers the whole animal, so the head, body and stubby limbs blend into one soft round mass. The silhouette is a smooth, rounded pebble outline; the tail and the short feet tuck in against the body, and only the oversized whisker array breaks the outline. The whiskers are the dominant facial feature, larger than the eyes, which are small and reduced, set deep in the fuzz. The shoulders are broad, rounded and worn smooth, so the fur on them looks polished and flattened from pushing along narrow stem runs. Front view: eyes and whiskers toward the viewer. Side view: the same compact round body in profile at the same width, whiskers forward. Rear view, seen from behind: the rounded haunches and tucked tail, eyes hidden. All three facings share identical body proportions, the same compact round mass, and the same thin painterly outline weight. Still and stone-like, as if it had just stopped mid-stride.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, F_INCONSISTENT, STYLE_OFF",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_00"
+ }
+]

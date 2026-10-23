@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Bloodlurk",
+ "nearest_earth_animal": "praying mantis",
+ "earth_body_named": false,
+ "departures": [
+  "forelimbs so large and long they make up most of the body; the rest is small beside them",
+  "a tubular siphon where the head or mouth would be, with no jaws, mandibles or insect face",
+  "jointed, segmented limbs and body built from rigid sections, not soft flesh",
+  "a dark, shadow-coloured silhouette with no bright or patterned markings",
+  "shown at a red-tinged waterline, partly at the water's edge"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:51:12-07:00",
+ "source": "description only (no image)"
+}

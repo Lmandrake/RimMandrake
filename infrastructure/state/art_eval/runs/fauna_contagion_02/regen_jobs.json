@@ -1,0 +1,104 @@
+[
+ {
+  "id": "arteval_RM_InfectedAerofleet_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_InfectedAerofleet",
+  "prompt": "A blistered bulloo, a diseased floating gas-sac creature, painterly vanilla RimWorld sprite style, realistic, clean dark outline, transparent background. The body is a single round, swollen sac that floats with no feet, legs, limbs, wings or fins, and has no head, face, eyes or mouth. A fringe of long trailing feelers hangs beneath the sac. The sac looks dense and opaque, swollen with spore rather than clear gas. Its skin is a sickly red mass covered in clustered, visibly raised blisters and swollen pustules of varying size and irregular shape, each blister with a small bright highlight on its crest and a darker shaded base, set among a dense network of bright red branching veins, so the surface reads as a diseased, lumpy mass; blisters rise slightly from the sac's outline, giving it a bumpy silhouette. Every view carries the identical skin treatment: the same bright red vein network at the same density, thickness and definition, and the same blister size range and saturation. Front view: the sac faces the viewer with veins and blisters spread across the full round surface, feelers hanging below. Side view: the same veins and blisters wrap around the curved side of the sac and foreshorten toward its far edge, feelers trailing below. Rear view, seen from behind: the same blistered, red-veined surface across the back of the sac, feelers hanging below. Keep the palette, sac proportions and feeler fringe the same in all three views.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, F_INCONSISTENT, DEPARTURE_MISSING, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_02"
+ },
+ {
+  "id": "arteval_RM_Meltgut_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Meltgut",
+  "prompt": "A RimWorld creature sprite, side view, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. The meltgut is a house-sized slug: a long, heavy, soft-bodied mollusc with a smooth wet pale-olive back, a blunt head with two short eye stalks at the front, and a broad muscular foot along the ground, its bulk filling the whole frame so it reads as larger than a cottage. The lower side of the body is a large, pale, glassy translucent belly wall, clearly the focal point of the image, through which the gut is visible as a bright, clear, pale-green fluid chamber. Inside this chamber exactly three separate swallowed objects sit in a clear front-to-back row, evenly spaced with clear fluid between them, each with its own readable silhouette. The foremost object, nearest the head, is nearly intact: crisp dark outline, full color, solid form. The middle object is half-melted: frayed, translucent edges, washed-out color, parts eaten away. The rearmost object is almost gone: a faint ghostly remnant, barely more than a pale outline fading into the fluid. The three stages of dissolution read at a glance, readable at max zoom. Corrosive acidic sheen on the slug's skin with a few faint steaming drips beneath it. Build the body from this description only, with no reference image.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING, DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_02"
+ },
+ {
+  "id": "arteval_RM_OcularJelly_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_OcularJelly",
+  "prompt": "RimWorld creature sprite of a zhool (Ocular Jelly): a drifting, swollen, gas-filled float body, like a plump pale balloon-dome, hanging in open air at tree-canopy height with a cluster of short tentacles trailing from its underside. One large, prominent eye sits low on the front of the dome, its pupil angled downward as if watching the ground below; it is the dominant feature of the front view. A small vent beneath the eye breathes out a faint reddish haze that falls downward and drifts in a soft veil beneath the body, centred under the tentacles. The front view shows the eye facing the viewer, with the vent beneath it and the haze below. The side view shows the same large eye in profile on the front of the dome, with the haze falling straight down from the underside. The rear view shows the back of the dome and the tentacles, the eye hidden, with only a faint reddish wisp visible below the tentacles at the centre. The body is the same on every facing: same dome shape, same pale flesh palette, same proportions. Transparent background, painterly vanilla RimWorld style, realistic, clean dark outline, centred in a square frame.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DESC_MISS, DEPARTURE_MISSING, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_02"
+ },
+ {
+  "id": "arteval_RM_Ogleknot_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Ogleknot",
+  "prompt": "RimWorld creature sprite, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. The ogleknot: a clumped knot of separate, mismatched eyeballs, no two the same size, large and small wet eyes with varied irises and pupils packed together into one cluster that is the whole body, with eyes turned in different directions at once. The eye-knot is carried high on a splay of long, stilt-thin tendril legs. Every facing shows smooth, continuously tapering tendril legs: each leg is one flowing, rubbery strand of even surface, thickest where it meets the eye-knot and thinning steadily to a slender, softly rounded tip, curving in long gentle S-bends like wet cord or a plant tendril, splayed outward and downward so the eye-knot rides high above the ground. Each leg reads as a single unbroken curve from root to tip with a uniform glossy surface. Front view: eyes of the cluster face the viewer. Side view: the knot in profile with legs splayed to both sides. Rear view, seen from behind: the back of the eye-knot with eyes around its rim and tendril legs splaying outward beneath it. Pallid fleshy palette with bloodshot veining, unsettling and organic, centered with all legs fully inside the frame.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_02"
+ },
+ {
+  "id": "arteval_RM_Peeper_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Peeper",
+  "prompt": "A RimWorld creature sprite sheet of the peeper, a once-predator gone soft and eye-studded, a docile browser of the goo margins. Three facings (front view with eyes toward the viewer, side view, rear view seen from behind) of the same quadruped, transparent background, painterly vanilla RimWorld style, realistic, clean dark outline. Body: soft and slack, a rounded sagging belly and heavy loose hide over a once-predatory frame, with a thick blunt trunk and no tucked waist; the legs are sturdy and relaxed. Head: a distinct head with a blunt muzzle and slack jaw, its surface studded with eyes, set clearly in front of the chest; the slack mouth shows worn, stubby, blunt fangs; the toes end in short, rounded, dull claws. Eyes: many extra eyes open across the hide on the back, flanks and limbs, not only the head; a field of eyes along the spine and shoulders points upward at the sky, pupils aimed skyward, reading as upturned domes in the side view and as a dense cluster across the back in the rear view. Rear view: haunches, tail and the back of the skull straight ahead and centred, the head facing away from the camera, no facial eyes visible, the back eye cluster dominant. Pose and scale: every facing holds the same neutral head pose, level and straight ahead of the body, with the same eye density across the back; front and rear views are scaled so their shoulder height matches the side view's shoulder height, all three at the same overall size. Palette: muted, earthy hide tones with pale eyes, consistent across facings. reference: none.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, F_NORTH_FACE, F_INCONSISTENT, F_SIZE_JUMP, SIGNATURE_NOTE_FACE",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_02"
+ },
+ {
+  "id": "arteval_RM_Scaldhide_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Scaldhide",
+  "prompt": "A single RimWorld creature sprite, the scaldhide, on a transparent background, in painterly vanilla RimWorld style, realistic, with a clean dark outline. The scaldhide is a low armoured slab of scar tissue carried on four legs: it walks out into the killing light and eats what it finds already cooked. The body is a low, broad, flat-topped slab only a little taller than the legs beneath it, wide and thick like a heavy flagstone, with a flat top line on the front, side and rear views. The slab is one distinct mass resting on top of four bare, sinewy, unarmoured legs, with a clear gap and exposed dark underside between slab and legs. The armour is a few large, irregular, asymmetric plates fused together at wrong angles, with gaps, ridged weld seams and overlaps that differ left to right on every view, including the rear. The plate surfaces themselves are thick seared scar tissue: glossy keloid ridges, puckered and stretched pink-white skin, cracked char and blistered edges across the whole slab, with raw red tissue in the seams. The head is a small bare-skinned lump at the front, not encased by the slab; in the front view its eyes face the viewer, and in the rear view, seen from behind, the head is hidden and the back edge of the slab and the haunches show, with a short stubby slab edge and no tapering banded tail. The silhouette is alien, a flat uneven scar-slab on separate thin legs, so no Earth animal comes to mind. Palette: scorched red-pink, pale scar-white, char brown and near-black seams. Reference: none; build the body from this description. The same slab width, slab height, leg length and large irregular plate layout appear on every view, with the plates seen from the side foreshortened in the front and rear views, and the front and rear views match the side view in body height and width.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, STYLE_EARTHLY, DESC_MISS, F_SIZE_JUMP, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_02"
+ }
+]

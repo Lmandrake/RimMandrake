@@ -1,0 +1,87 @@
+[
+ {
+  "id": "arteval_RM_Eyestinger_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Eyestinger",
+  "prompt": "A single RimWorld creature sprite, the eyestinger: a big, heavy, segmented ambusher of the ocular groves, drawn in painterly vanilla RimWorld style, realistic, with a clean dark outline, on a transparent background, top-down three-quarter game-sprite view. The body is a broad, deep, heavy segmented trunk made of thick overlapping armour plates, wide and tall and squat, carried low to the ground on four pairs of thick, stout, short legs with heavy knuckled joints, visibly much more massive and bulky than a scorpion. A thick segmented tail rises from the rear of the trunk and arches up and over the back, held high so its end is clearly visible. The tail ends in one large eye: the eye itself is the very tip of the tail, seated in an armoured eye socket with smooth, rounded plating wrapping around it, and the underside of the tail tip is a smooth, continuous curve of plating. The eye is large, wet and luminous, the single bright focal point against muted dark chitin plates in earthy browns and olive-greys. Front view: eyes toward the viewer, heavy claws forward. Rear view, seen from behind: the haunches, the tail base and the tail rising with its eye visible above the trunk. Side view: the long profile of the broad trunk on stout legs with the tail arched up and the eye at its tip. Consistent design, colours and proportions across every facing.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_01"
+ },
+ {
+  "id": "arteval_RM_Fleshsop_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Fleshsop",
+  "prompt": "A single RimWorld colony-game creature sprite, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. The Fleshsop is a wet rag of a creature, barely holding a shape: the collapsed remnant of an Unfinished that the goo forgot to take back. Its body hangs like a sodden rag of flesh, a sagging, half-melted mass of raw pink-red flesh that barely holds itself up. The body slumps heavily to one side, its weight sagging sideways as if propped against an unseen wall, one shoulder drooping lower and the limbs buckling unevenly. The silhouette sags and runs, with flesh sliding off the frame in heavy drooping lobes so the outline looks soft and unstable. A faintly humanoid remnant of an Unfinished's form is still visible inside the collapsing mass: a slumped head, drooping shoulders and limp arm-like limbs, not a smooth slug body. The face is slack, sorrowful and half-formed, with dull eyes and a mouth hanging open. The flesh carries bright wet specular highlights, and translucent goo strands run off it, dripping from the mouth and belly, into small glossy pools that belong to the feet (part of the sprite, not a ground shadow). Front view, eyes toward the viewer, for the south facing; the side view shows the sideways slump in profile; the rear view, seen from behind, shows the sagging back and drooping lobes with the face hidden. Pitiful and exhausted in mood.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DESC_MISS, DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_01"
+ },
+ {
+  "id": "arteval_RM_Gawpsack_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Gawpsack",
+  "prompt": "A single RimWorld creature sprite, painterly vanilla RimWorld style, realistic, thin soft dark outline of even weight all the way around the body, transparent background. The gawpsack is a drifting, soft, sagging sack floating in open air at treetop height. The body is a thin, semi-translucent, pale membrane, narrower and slumped at the top, heavy and bulging lower down where the packed eyeballs press outward against the skin, lumpy and uneven like an overstuffed bag. Dozens of mismatched eyes are crammed tightly inside and show through the membrane as rounded shapes pressing outward. The eyes differ in shape, size and colour: round eyes, slit-pupilled goat-like eyes, a few elongated eyes and a few with several pupils, in varied iris colours. Every eye is wide open with its iris and pupil rolled to the top of the eyeball, gazing up toward the sky, and the pale lower sclera shows beneath each iris. Front view: eyes toward the viewer, irises turned up. Side view: the same sagging sack in profile with eyes turned up. Rear view, seen from behind: the eyes are dim, blurred shapes seen through the membrane from the back, with no iris facing the viewer. The sack hangs in the air with no water, no dome and no limbs. The outline weight is identical on every facing. reference: none.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, STYLE_OFF",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_01"
+ },
+ {
+  "id": "arteval_RM_Gnashling_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Gnashling",
+  "prompt": "A single RimWorld creature sprite sheet entry, painterly vanilla RimWorld style, realistic, clean medium-weight dark outline, transparent background. The gnashling is a fist of teeth with legs: a compact, rounded, clenched lump, fist-sized, made almost entirely of one oversized mouth packed with rows of sharp teeth. There is no separate head, neck or torso; the teeth and jaw make up nearly the whole outline. Four small stubby legs sprout directly from beneath the mouth-mass, so it stands on land on four legs. The body ends right behind the mouth-mass in a rounded, tailless rump, the outline closing in one smooth curve, with no fins or gills. Front view: eyes and the open toothy mouth toward the viewer, the mass as wide as it is tall, two legs showing beneath. Side view: a compact rounded mouth-mass about as long as it is tall, jaw forming nearly the whole body, four short legs tucked beneath, two near and two far. Rear view, seen from behind: the rounded back of the mouth-mass with the tailless rump, eyes hidden, filling the same height and width as the front view, standing on the same four legs. All three views share the same scale, the same outline weight, the same leg count, and the same muted flesh and bone-white tooth palette. Built from the description and departures alone, with no previous render as reference.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING, F_SIZE_JUMP, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_01"
+ },
+ {
+  "id": "arteval_RM_Gorekite_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Gorekite",
+  "prompt": "A single flying creature for RimWorld, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. The creature is one enormous, tent-sized stretched hide, a continuous taut sheet of thick, dry, leathery dark-red hide pulled tight like a sail or kite. It is a broad, roughly rounded canopy with a smooth overall outline and heavy sagging, ragged, irregular edges, like a wet tarp billowing in the storm wind, wide enough to cover a person. The surface is matte and uniform, with only faint ridges under the skin hinting at internal support, and it has no head, eyes or face. The hide itself is the whole airfoil, and it reads as a blanket or canopy made to drape over and smother prey from above. Exactly one long grasper hangs from the underside of the hide: it is slick and glistening, with bright wet specular highlights and a few falling drips, clearly contrasting with the dry matte hide above it. Views: the front view, eyes toward the viewer, shows the underside of the canopy with the grasper hanging down its center. The rear view, seen from behind, shows the upper surface of the canopy with the grasper trailing below the edge. The side view shows the hide in profile as a curved, billowing sheet seen edge-on, its thickness and sag visible, with the wet grasper hanging from the underside of the sheet. Build the body from this description alone, with no reference image.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_01"
+ }
+]

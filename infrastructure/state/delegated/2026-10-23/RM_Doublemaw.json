@@ -1,0 +1,64 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 44.6,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.36247539999999995
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 27.6
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Doublemaw",
+ "decision": "ACCEPT",
+ "reasons": [
+  "opus band WEAK (model said weak); blocking ['DEPARTURE_MISSING', 'F_SIZE_JUMP']; polish ['LEGIB_32']",
+  "gpt strong_accept: unsettled [], own blocking []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v1",
+   "sha": "a4850279ccbf"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v1",
+   "sha": "14056552e355"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v2",
+   "sha": "16a3854542c6"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "south.png": "655b615fee048f2e771f3bc561da9bbf7f53f91790f048c56120c069a23cf532",
+  "east.png": "17c0f675520f74931be5e21993ec3f856ddd4271b0a7bc31fa63ed53d88f524f",
+  "north.png": "403231e297fdbec85aedab513d2e869e62867ce8fca852ac89744acb504fe4b6",
+  "scale.png": "2ebae19b4cf401825c2d839fb67e5cb6856e6b0a426fa58e103289ed69a07c18",
+  "facings.png": "31c83d5a3f421eb9a250091ba34c1a70deb3ad41ab2d7d9274b19a9a54a60900"
+ }
+}

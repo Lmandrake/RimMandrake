@@ -1,0 +1,22 @@
+{
+ "subject": "RM_Shokka",
+ "schema": "rm-art-eval/departures@v1",
+ "nearest_earth_animal": "leopard",
+ "earth_body_named": false,
+ "departures": [
+  "body pressed completely flat to the ground, much wider than it is tall, not a crouched cat with its shoulders raised",
+  "dappled pelt in pale, dry barrens tones that blend into bare ground, not gold fur with black rosettes or spots",
+  "pelt with a visible sheen that catches the light, unlike the matte fur of a big cat",
+  "shown lying motionless at the edge of sparse low cover facing open ground, not mid-stalk or mid-pounce"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:49:12-07:00",
+ "source": "description only (no image)"
+}

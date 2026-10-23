@@ -1,0 +1,53 @@
+[
+ {
+  "id": "arteval_RM_FireWasp_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_FireWasp",
+  "prompt": "A single alien flying insect, the fire wasp, painted in the vanilla RimWorld sprite style: painterly, realistic, with a clean dark outline, on a fully transparent background. It is a slow, drifting glider that lives in the heat. Its body plan: a blunt shielded head with dark compound eyes, a broad heavy rounded thorax, and a stout tapering abdomen joined to the thorax without a narrow waist, six jointed legs tucked under the body, and short antennae. The head, thorax, abdomen and legs are covered in overlapping heavy scales, like shingled armour plates, matte and ash-toned, each scale edged with a clean dark outline. The scale plating sets the whole colour and pattern: soot-grey and ember-bronze scales in a mottled, scalloped pattern, one uniform palette on every view. Along the scale edges and in the seams between plates there is a faint ember-orange glow, while the scales themselves look clean and untouched by fire. Two pairs of broad, wide-chord membranous wings with dark veining: folded neatly along the back when the insect rests on the ground, and held spread wide in slow, shallow gliding strokes when it flies. Views from the same angled game camera: the east view shows the right side in profile, head toward the right; the north view is a rear view, seen from behind, showing the back, the abdomen tip and the folded or spread wings with the eyes hidden; the south view is a front view, with the face and eyes toward the viewer. Flight frames show exactly the same body, scale pattern, palette, proportions and rendering as the grounded views; the head, thorax and abdomen keep the same shape, size and position in every flight frame, and only the wings change pose. The silhouette reads as an armoured drifting glider, clearly unlike a hornet. Only the insect itself is drawn, centred in the square canvas for a 2.0 by 2.0 draw size, with a transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_EARTHLY, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, DESC_MISS, F_TOPDOWN, F_INCONSISTENT, FLYER_BODY_MOVES, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_pyrelands_c"
+ },
+ {
+  "id": "arteval_RM_Flamefang_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Flamefang",
+  "prompt": "A single large venomous serpent shown tightly coiled, painterly realistic vanilla RimWorld sprite style, transparent background, clean thin dark outline, muted naturalistic shading. The whole dorsal surface is ash-grey and charcoal-black scaling split by an irregular network of cracks, like scorched earth. Thin ember-orange light glows out of the cracks between the charred scales along the whole body, brightest along the spine and the tops of the coils, as if fire still burns under the skin. The head is a smooth, spikeless wedge with a low brow ridge, a lidless predatory eye with a narrow slit pupil, and a hard, unsmiling jaw line. On the front view, eyes toward the viewer, the mouth is slightly open and a pair of long curved fangs extends past the lip line, their tips glowing ember-orange; the same fangs show in profile on the side view, and the rear view shows the back of the same smooth skull with the coils and spine, eyes hidden. Drifts of grey ash and a few charred root fibres lie across the tops of the coils, half-burying the body as part of its silhouette, with no ground patch beneath. The creature reads at a glance as a smouldering, half-burnt fire ambusher with charred cracked hide, ember light in the cracks and glowing fang tips. Every facing shows the same head and the same coiled body. Sprite fills a square frame, centered, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, DESC_MISS, DEPARTURE_MISSING, STYLE_CARTOON, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_pyrelands_c"
+ },
+ {
+  "id": "arteval_RM_Ashwallow_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Ashwallow",
+  "prompt": "A single RimWorld creature sprite on a transparent background, painterly vanilla RimWorld style, realistic, clean dark outline. The ashwallow is a low, broad grazer of a burning savanna with a body close to the ground, wide enough that, with its legs tucked, it closes into a smooth, unbroken dome. Its legs fold inward and lie flat along the sides of the body, like folded flaps along the flanks, instead of standing as pillars under the torso. Hide colour is a cool, pale, spent-ash grey. Cracked plates of hide are heaviest across the shoulders, forming a plate pattern there; toward the hindquarters the plates thin out and darker grey skin shows between them. The head is a wide, flat spade, as wide as the shoulders, with a flat spade-edged front and no rounded muzzle or nostril bulb. A visible row of blunt, short raking digging teeth lines the lower jaw edge. Small eyes sit at the sides of the face. Body scale is the same in every facing: the dome has one width and one height, filling the same share of the frame. Front view, eyes toward the viewer: the spade face projects toward the camera below the shoulder plates, its full width visible with the tooth row along the lower edge and the eyes at its sides, the folded legs lying along both flanks. Side view: the long flat spade head projects forward with the toothed jaw, the folded legs lie along the flank, and the shoulder plates sit behind the head. Rear view, seen from behind: the tapering hindquarters with darker grey skin between thin plates, the folded legs along both flanks, the head and eyes hidden behind the dome. Build the body from this description alone.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, F_INCONSISTENT, DEPARTURE_MISSING, DESC_MISS, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_pyrelands_c"
+ }
+]
