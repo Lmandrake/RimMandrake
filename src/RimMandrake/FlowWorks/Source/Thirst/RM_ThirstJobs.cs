@@ -78,8 +78,9 @@ namespace RimMandrake.FlowWorks.Thirst
 			}
 			Thing container = RM_ThirstContainerUtility.BestContainer(pawn, level, out RM_DrinkUse ku, out RM_WaterQuality kq, out float kd, only);
 			Thing item = RM_WaterItemUtility.BestItem(pawn, level, out RM_DrinkUse iu, out RM_WaterQuality iq, out float id, only);
+			Building_RM_PipeFaucet faucet = Building_RM_PipeFaucet.BestFaucet(pawn, level, out RM_DrinkUse fu, out RM_WaterQuality fq, out float fd, only);
 			bool home = pawn.Map.IsPlayerHome;
-			int pick = -1;   // 0 bottle, 1 tank, 2 terrain, 3 bucket/barrel, 4 water item
+			int pick = -1;   // 0 bottle, 1 tank, 2 terrain, 3 bucket/barrel, 4 water item, 5 pipe faucet
 			RM_DrinkUse pu = RM_DrinkUse.Never;
 			bool pa = false;
 			RM_WaterQuality pq = RM_WaterQuality.Slime;
@@ -97,6 +98,7 @@ namespace RimMandrake.FlowWorks.Thirst
 			if (cell.IsValid) Offer(2, cu, RM_DrinkSource.Terrain, cq, cd);
 			if (container != null) Offer(3, ku, RM_DrinkSource.Container, kq, kd);
 			if (item != null) Offer(4, iu, RM_DrinkSource.Bottle, iq, id);
+			if (faucet != null) Offer(5, fu, RM_DrinkSource.Tank, fq, fd);   // a piped tap: the tank rule (free at home)
 			switch (pick)
 			{
 				case 0:
@@ -111,6 +113,8 @@ namespace RimMandrake.FlowWorks.Thirst
 					return JobMaker.MakeJob(RM_ThirstDefOf.RM_DrinkFromContainer, container);
 				case 4:
 					return JobMaker.MakeJob(RM_ThirstDefOf.RM_DrinkWaterItem, item);
+				case 5:
+					return JobMaker.MakeJob(RM_ThirstDefOf.RM_DrinkFromFaucet, faucet);
 			}
 			return null;
 		}

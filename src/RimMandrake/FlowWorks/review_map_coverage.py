@@ -343,7 +343,10 @@ FEATURES = [
      M + "behaviour with no look of its own; proven by validation.py's thirst rows"),
     ("set", r"^(thirstEnabled|thirstRateMultiplier|thirstHeatScaling|animalsGetThirst|drinkFromTerrain|waterQualityEffects"
             r"|dbhBottleBridge|lastResortDrinking|saltBreakEnabled|roughDrinkPenalty|drinkingReserveLitres|bucketFirefighting"
-            r"|snowGathering|sanguophageBloodQuenches|filledBottlesPerColonist)$", "Thirst", M + "as thirst"),
+            r"|snowGathering|sanguophageBloodQuenches|filledBottlesPerColonist|pipeFaucetsEnabled)$", "Thirst", M + "as thirst"),
+    # PIPE_FAUCET_BUILD_TAP_NAME_NOW_FREE: no frozen station yet (a faucet needs a tank-fed pipe net); placeholder art
+    ("def", r"^(ThingDef/RM_PipeFaucet|JobDef/RM_(DrinkFromFaucet|FillAtFaucet)|WorkGiverDef/RM_FillAtFaucetWorkGiver)$",
+     "Pipe faucet", M + "no station yet; a faucet on a tank-fed pipe (drink + fill rows owed live)"),
     # SPRINKLER_HEADS_BUILD_PUMP_REQUIRED: no frozen station yet (a head needs a pump net and an hour of game time to show
     # anything); proven by validation.py's sprinkler rows (owed live), art on its own review sheet
     ("def", r"^(ThingDef/RM_SprinklerHead|ThingStyleDef/RM_SprinklerHead_\w+|ThingDef/RM_Mote_SprinklerSpray)$",

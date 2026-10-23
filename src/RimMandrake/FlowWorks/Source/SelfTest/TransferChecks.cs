@@ -402,6 +402,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             "LiquidTypes/Building_LiquidPump.cs", "Machinery/CompLiquidConverter.cs", "Machinery/CompLiquidPipeAdapter.cs",
             "Machinery/Kits/RM_LiquidReaction.cs", "Machinery/Kits/RM_LiquidBath.cs", "Machinery/RM_LiquidNet.cs",
             "Sprinklers/RM_Sprinkle.cs",   // SPRINKLER_HEADS_BUILD_PUMP_REQUIRED: the sprinkler draw
+            "Thirst/Building_RM_PipeFaucet.cs",   // PIPE_FAUCET_BUILD_TAP_NAME_NOW_FREE: a faucet's draw (drink or container)
         };
 
         /// <summary>Files that may mutate a tank outside the transfer service, each with its reason (anything new fails).</summary>
@@ -437,6 +438,8 @@ namespace RimMandrake.FlowWorks.SelfTest
             "credit site: pump overflow spill",
             // CANAL_OVERFLOW stage 2 (D2 gravity feed): a Dump tank against a full channel spills its surplus over the lip
             "credit site: gravity overflow",
+            // PIPE_FAUCET_BUILD_TAP_NAME_NOW_FREE: a pipe faucet's draw for a drink or a container (a Sink)
+            "credit site: faucet draw",
         };
 
         // review day 3: the decilitre movers (TryPourDl, TryDebitDl, CreditDl, TryReturnDl) joined the list; a site calling one

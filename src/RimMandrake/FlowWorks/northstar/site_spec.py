@@ -181,6 +181,7 @@ SETTINGS = {
         "lastResortDrinking": True, "saltBreakEnabled": True, "roughDrinkPenalty": True,
         "drinkingReserveLitres": 200.0, "bucketFirefighting": True, "snowGathering": True,
         "sanguophageBloodQuenches": True, "filledBottlesPerColonist": 3,
+        "pipeFaucetsEnabled": True,   # PIPE_FAUCET_BUILD_TAP_NAME_NOW_FREE
     },
     # SPRINKLER_HEADS_BUILD_PUMP_REQUIRED (2026-10-16, design §5): defaults = the ruled behaviour (OQ-S1..S7)
     "RimMandrake.FlowWorks.Sprinklers.RM_SprinklerSettings": {

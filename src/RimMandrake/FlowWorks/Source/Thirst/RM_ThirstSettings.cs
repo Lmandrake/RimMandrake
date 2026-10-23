@@ -31,6 +31,8 @@ namespace RimMandrake.FlowWorks.Thirst
 		public static int filledBottlesPerColonist = 3;
 		/// <summary>Read once, while patches apply (RM_PatchOperation_ThirstBridge): needs a restart.</summary>
 		public static bool dbhBottleBridge = true;
+		// PIPE_FAUCET_BUILD_TAP_NAME_NOW_FREE: pipe faucets pour (drink + fill containers) from their pipe network's tanks
+		public static bool pipeFaucetsEnabled = true;
 
 		public static float RateMultiplier => thirstRateMultiplier < 0.25f ? 0.25f : (thirstRateMultiplier > 3f ? 3f : thirstRateMultiplier);
 
@@ -61,6 +63,7 @@ namespace RimMandrake.FlowWorks.Thirst
 			Scribe_Values.Look(ref sanguophageBloodQuenches, "sanguophageBloodQuenches", true);
 			Scribe_Values.Look(ref filledBottlesPerColonist, "filledBottlesPerColonist", 3);
 			Scribe_Values.Look(ref dbhBottleBridge, "dbhBottleBridge", true);
+			Scribe_Values.Look(ref pipeFaucetsEnabled, "pipeFaucetsEnabled", true);
 		}
 
 		public static void DoSettingsSection(Listing_Standard list)
@@ -121,6 +124,9 @@ namespace RimMandrake.FlowWorks.Thirst
 				+ "per colonist (packed ones count), up to ten per trip. Bottles are for the road; at home pawns drink at taps "
 				+ "and ponds. Buckets and barrels are not limited. 0 = fill every empty bottle.");
 			filledBottlesPerColonist = (int)list.Slider(filledBottlesPerColonist, 0f, 10f);
+			list.CheckboxLabeled("Pipe faucets pour", ref pipeFaucetsEnabled,
+				"A faucet built on a universal pipe pours what the tanks on its pipe network hold: colonists drink at it (free at "
+				+ "home, like any tap) and fill empty bottles, buckets and barrels at it. Off: faucets stand dry.");
 			list.CheckboxLabeled("Sanguophages quench thirst with blood", ref sanguophageBloodQuenches,
 				"For a pawn with a hemogen gene, a hemogen pack is also a full drink of water. Off: packs only give hemogen.");
 			list.CheckboxLabeled("Our bottles count for Dubs Bad Hygiene's thirst (needs restart)", ref dbhBottleBridge,
