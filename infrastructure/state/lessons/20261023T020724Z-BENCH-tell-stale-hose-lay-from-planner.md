@@ -1,0 +1,1 @@
+To tell a stale hose lay from a planner bug live: nudge a shape setting through HoseProbe (set:minBendRadius=1.21) to force every reel to re-lay, capture, then restore it (set:minBendRadius=1.2); same pose = the planner chose it. (hose audit 2026-10-22, reel o1 through a wall)
