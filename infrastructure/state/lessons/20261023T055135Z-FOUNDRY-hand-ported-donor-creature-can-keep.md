@@ -1,0 +1,1 @@
+A hand-ported donor creature can keep VEF class comps (VEF.AnimalBehaviours.*) with no MayRequire while the aa_port.py ports guard them: the biome mods do not declare VEF, so an unguarded VEF Class errors at load without it. Scan for Class="VEF.* without MayRequire after any port (RM_Garsulix fixed 1b0b5d354).
