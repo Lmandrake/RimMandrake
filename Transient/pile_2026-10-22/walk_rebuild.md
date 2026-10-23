@@ -64,4 +64,10 @@
   overflow set back OFF (read back False), b reloaded and re-saved 16:31.
 
 ## Final state
-- (see the last lines of this file)
+- 16:50 c963216c28 (GPT deep-review sheet fixes + About text): redeployed (DLL + About.xml), 0 log errors, ponds unpoked,
+  overflow OFF, stop 11 spill re-rehearsed (same 29 wet squares), b re-saved 16:50 then reloaded clean.
+- 16:52-18:03: polled origin every ~9 min: no further FlowWorks DLL/Defs/Textures commit. Deployed DLL md5 9dd9ea1a3c2d =
+  origin/main's.
+- 18:04: RimWorld UP on RM_fw_walkthrough_20261022b (tick 144387), map C, paused, camera on stop 1 (C3), overflow OFF,
+  tier fw_gss_sitting (marker kept). Bridge HELD by BENCH "holding for the owner's walkthrough (save b)".
+  Original RM_fw_walkthrough_20261022.rws untouched (md5 ea795bfb21c2).
