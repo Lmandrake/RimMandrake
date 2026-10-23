@@ -1,0 +1,1 @@
+jawa/spawn_pawn of an animal with no faction arg spawned it into faction Mechanoid (hostile) on save d 2026-10-23; pass faction="none" for a wild animal. And a bridge print truncated at N chars then grepped reads a pawn as ABSENT - list pawns through a full-list reader (live_batch tools/ids.py), never a truncated dump.
