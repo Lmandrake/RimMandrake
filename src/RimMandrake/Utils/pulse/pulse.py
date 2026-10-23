@@ -167,6 +167,7 @@ class Collector:
         raw["sheets"] = self.sheets["rows"]
         raw["bridge"] = src("bridge", pc.read_bridge)
         raw["telemetry"] = src("telemetry", pc.read_telemetry)
+        raw["services"] = src("services", pc.read_services) or {}
         raw["probe"] = self.probe
         status["probe"] = {"ok": self.probe is not None, "at": (self.probe or {}).get("at")}
         raw["source_status"] = status

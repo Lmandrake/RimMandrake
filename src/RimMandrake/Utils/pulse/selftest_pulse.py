@@ -438,5 +438,57 @@ fr2 = pc.source_freshness({"telemetry": {"ok": True, "at": NOW}, "probe": {"ok":
 check("fresh telemetry and a fresh probe stay healthy", not fr2["telemetry"].get("stale") and fr2["probe"]["ok"]
       and not fr2["probe"].get("stale"), fr2)
 
+# --- RIMPULSE_INCIDENTS_BUILD_RECOVERED_NOT_RED: recovered is history, not red; a new kill re-raises ----
+KILL = NOW - 3 * 3600
+SVK = [f"{KILL:.6f} A kernel: memory: usage 262144kB, limit 262144kB, failcnt 3",
+       f"{KILL:.6f} A kernel: oom-kill:constraint=CONSTRAINT_MEMCG,oom_memcg=/user.slice/user-1000.slice/user@1000.service/app.slice/rm-pulse.service,task_memcg=/x/rm-pulse.service,task=python3,pid=3653,uid=1000",
+       f"{KILL:.6f} A kernel: memory: usage 6291456kB, limit 6291456kB, failcnt 21",
+       f"{KILL:.6f} A kernel: oom-kill:constraint=CONSTRAINT_MEMCG,oom_memcg=/claude.slice/claude-seats.slice/claude-seat-BENCH-9.scope/claude-code-bash,task_memcg=/x,task=python,pid=11,uid=1000"]
+kills = pc.parse_kernel_oom(SVK)
+up = {"rm-pulse.service": {"active": True, "since": KILL + 48}}
+bench_alive = [win("b1", "AGENT BENCH", "busy", 30, 20000)]
+raw4 = {"kernel_oom": kills, "sessions": bench_alive, "extras": {"b1": {"transcript_mtime": NOW}}, "services": up}
+s4, st4, ev4 = pc.collect_snapshot(raw4, {}, NOW)
+k4 = {r["key"]: r for r in s4["rows"]}
+check("a service OOM whose unit has run cleanly since is 'recovered', not red",
+      k4["oom:svc:rm-pulse.service"]["kind"] == "recovered" and "running since" in k4["oom:svc:rm-pulse.service"]["text"],
+      k4["oom:svc:rm-pulse.service"])
+check("a seat tool OOM with the seat window alive and active since is 'recovered'",
+      k4["oom:seat:BENCH"]["kind"] == "recovered", k4["oom:seat:BENCH"])
+check("recovered incidents leave the red pills and show as one calm '↺ N recovered' pill",
+      not any(p["kind"] == "red" for p in s4["strip"]) and any(p["text"] == "↺ 2 recovered" for p in s4["strip"]), s4["strip"])
+check("recovery is logged once as a metric event", sum(1 for e in ev4 if e["m"] == "incident_recovered") == 2, ev4)
+check("the incident history keeps first/last/status", st4["incidents"]["oom:svc:rm-pulse.service"]["status"] == "recovered"
+      and st4["incidents"]["oom:svc:rm-pulse.service"]["last"] == KILL, st4["incidents"])
+s4b, _, ev4b = pc.collect_snapshot(raw4, st4, NOW + 5)
+check("a recovered incident is not re-announced on the next tick", not any(e["m"] == "incident_recovered" for e in ev4b), ev4b)
+kills2 = kills + pc.parse_kernel_oom([f"{NOW-60:.6f} A kernel: memory: usage 262144kB, limit 262144kB, failcnt 3",
+                                      f"{NOW-60:.6f} A kernel: oom-kill:constraint=CONSTRAINT_MEMCG,oom_memcg=/u/app.slice/rm-pulse.service,task_memcg=/x,task=python3,pid=99,uid=1000"])
+s5, st5, _ = pc.collect_snapshot({**raw4, "kernel_oom": kills2, "services": {"rm-pulse.service": {"active": True, "since": NOW - 50}}},
+                                 st4, NOW)
+k5 = {r["key"]: r for r in s5["rows"]}
+check("a NEW kill after recovery re-raises red, watching for recovery",
+      k5["oom:svc:rm-pulse.service"]["kind"] == "red" and "watching for recovery" in k5["oom:svc:rm-pulse.service"]["text"]
+      and st5["incidents"]["oom:svc:rm-pulse.service"]["status"] == "open", k5["oom:svc:rm-pulse.service"])
+s6, _, _ = pc.collect_snapshot({**raw4, "services": {"rm-pulse.service": {"active": False, "since": 0}}, "sessions": []}, {}, NOW)
+k6 = {r["key"]: r for r in s6["rows"]}
+check("no evidence -> still red, and the row says why (service not running / no live window)",
+      k6["oom:svc:rm-pulse.service"]["kind"] == "red" and "service not running" in k6["oom:svc:rm-pulse.service"]["text"]
+      and k6["oom:seat:BENCH"]["kind"] == "red" and "no live BENCH window" in k6["oom:seat:BENCH"]["text"], k6)
+fresh_kill = pc.parse_kernel_oom([SVK[2].replace(f"{KILL:.6f}", f"{NOW-120:.6f}"), SVK[3].replace(f"{KILL:.6f}", f"{NOW-120:.6f}")])
+s7, _, _ = pc.collect_snapshot({**raw4, "kernel_oom": fresh_kill}, {}, NOW)
+check("a seat tool kill 2 min ago is not yet recovered (needs 10 clean minutes)",
+      next(r for r in s7["rows"] if r["key"] == "oom:seat:BENCH")["kind"] == "red")
+acked_only = pc.collect_snapshot({**raw4, "services": {}}, {"acks": {"oom:svc:rm-pulse.service": {"at": NOW}}}, NOW)[0]
+check("an ack does not make an incident 'recovered' (ack is not resolve)",
+      next(r for r in acked_only["rows"] if r["key"] == "oom:svc:rm-pulse.service")["kind"] == "red")
+lostr, _, _ = pc.classify_sessions([sess("g", "LOST", "busy", 60, alive=False)], {}, seen_before, {}, {}, NOW)
+repl = [{"seat": None, "who": "LOST", "started": NOW - 30, "upd": NOW - 5}]
+rr, _, _ = pc.track_incidents(lostr, {}, repl, {}, NOW)
+check("a lost window replaced by a new window of the same name is 'recovered'",
+      rr[0]["kind"] == "recovered" and "replaced" in rr[0]["text"], rr)
+old_hist = {"oom:gone": {"last": NOW - 3 * 86400, "status": "open"}}
+check("incident history older than 48 h is pruned", "oom:gone" not in pc.track_incidents([], old_hist, [], {}, NOW)[1])
+
 print(f"\n{'FAIL' if FAILS else 'OK'}: {len(FAILS)} failing")
 sys.exit(1 if FAILS else 0)
