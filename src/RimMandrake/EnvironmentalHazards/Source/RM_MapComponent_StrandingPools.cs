@@ -379,7 +379,7 @@ namespace RimMandrake.EnvironmentalHazards
                     + " despawned at stranding pool " + pool.id + "'s death (MIASMA_MECHANICS_1 M3's "
                     + "documented despawn-at-pool-death fallback — the return-to-water job did not get "
                     + "it to a reachable channel before the pool fully dried).");
-                occ.DeSpawn(DestroyMode.Vanish);
+                occ.Destroy(DestroyMode.Vanish); // Destroy, not a bare DeSpawn: a despawned wild pawn nobody holds is a leaked, never-discarded pawn
             }
         }
 
