@@ -37,10 +37,16 @@ Pumps (Scrapper, Industrial, Futuristic): deterministic edit, same pixels
 (`src/RimMandrake/FlowWorks/art_source/PumpPorts/shrink_ports.py`): each side port's neck+flange scaled about its axis
 to neck 0.15 / flange 0.205 cell, flange face kept on the footprint edge, gap to the body bridged with the neck's own
 textured run. Port points unchanged. Installed with art.py install --owner-said (replaced owner-kept art; old shas
-2c8722d1192d / af8a6593eca6 / b1d7b737a792 are the revert). UnderCouplerReach.cs regenerated for the new art
-(under_coupler_reach.py --write); the FlowWorks DLL rebuild that carries it is owed.
+2c8722d1192d / af8a6593eca6 / b1d7b737a792 are the revert). Art commit c10fa6c815, landed in 36a4c4e650.
 
-Gates: validate_sprite PASS x3; selftest_hose_fittings / selftest_hose_ports / selftest_tank_art_edges 0 failures.
+UnderCouplerReach.cs NOT regenerated in the tree: publish's DLL rebuild picked up peers' uncommitted FlowWorks C#
+(drawbridge/river/weir), so the regen + rebuild was backed out (a8b3274100 reverted in 37938c2a0c, table restored in 36a4c4e650).
+Until the table is regenerated (`art_source/UnderCouplers/under_coupler_reach.py --write`, new pump reaches 0.295-0.299)
+and the DLL rebuilt clean, `selftest_hose_fittings.py` reports 1 failure (reach table vs installed art). This goes with
+UNDERCOUPLER_GIRTH_TUNE_PEEKS_PAST_NECK.
+
+Gates (with the regenerated table in the worktree): validate_sprite PASS x3; selftest_hose_fittings /
+selftest_hose_ports / selftest_tank_art_edges 0 failures; all 12 pump ports: gap to edge 0.04-0.07 cell (tolerance 0.10).
 Art-eval pipeline run pump_ports_20261023_r2: HOLD_INPUT x3 (machine template needs an in-game assembled capture; no
 game this session). GPT (gpt-6.1-sol) before/after look: connectors read matched, accept_with_polish.
 
@@ -49,4 +55,8 @@ Shadow sheet (not served): Transient/pump_ports_20261023/pump_ports_sheet_2026-1
 ## Owed
 
 - Live look (also what the pipeline's held assembled panel needs).
-- FlowWorks DLL rebuild carrying the regenerated UnderCouplerReach.cs.
+- Regenerate UnderCouplerReach.cs and rebuild the FlowWorks DLL clean (see above).
+
+## Criteria
+
+- A1 L1: in game, the Scrapper/Industrial/Futuristic pump ports read matched to the pipe and hose girth, every hose coupling meeting its port (live look)
