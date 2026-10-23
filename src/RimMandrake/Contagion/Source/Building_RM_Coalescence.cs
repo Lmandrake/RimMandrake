@@ -162,13 +162,19 @@ namespace RimMandrake.Contagion
         // Absorb diagnostics, per pass, never scribed (CONTAGION_MECHANICS_BUILD_1 A6: live 2026-10-19e read 0 of 6
         // Unfinished absorbed in ten passes, every survivor on a Wait job, and the old Absorb skipped them in silence).
         // Read live through RM_CoalescenceProof.AbsorbReport. Index = AbsorbWhy.
-        public enum AbsorbWhy { Candidate, OutOfRange, Eaten, Downed, AlreadyWalking, NoRingCell, Unreachable, Ordered, OrderLost, Count }
+        // Arrived = eaten by its own walk-in job on reaching the ring; ArriveRefused = reached the ring end of that job
+        // but TryEatOnArrival refused it (outside the ring, no longer absorbable, toggle off, a Burn on).
+        public enum AbsorbWhy { Candidate, OutOfRange, Eaten, Downed, AlreadyWalking, NoRingCell, Unreachable, Ordered, OrderLost, Arrived, ArriveRefused, Count }
         private readonly int[] lastPassCounts = new int[(int)AbsorbWhy.Count];
         private readonly int[] totalCounts = new int[(int)AbsorbWhy.Count];
         private int absorbPasses;
-        // Pawns ordered last pass: one still absorbable, in range, outside the ring and NOT on our Goto this pass lost
-        // the order between passes (a pather error ends a Goto into vanilla's Wait 250, then the main think tree, where
-        // CreatureBehaviors' sun escape can send it to shade instead).
+        // Pawns ordered last pass: one still absorbable, in range, outside the ring and NOT on our walk-in job this pass
+        // lost the order between passes. COALESCENCE_STAGE_DIAGNOSE_STUCK_AT_ONE (live 2026-10-23): with a plain Goto the
+        // walker DID reach the ring cell, the Goto ended there, and in the same tick the main think tree ran
+        // CreatureBehaviors' RM_JobGiver_SunEscape (Animal_PreMain), which dashed it back to shade before the next
+        // 250-tick pass could eat it (a survivor read RM_ShadeDash with targetA = the ring cell it had reached; 27 of 33
+        // orders lost). The walk is now RM_WalkIntoCoalescence, whose last toil eats the walker on arrival, so no
+        // think-tree gap exists between reaching the ring and being absorbed.
         private readonly HashSet<int> orderedLastPass = new HashSet<int>();
         private readonly HashSet<int> orderedThisPass = new HashSet<int>();
         private static readonly List<IntVec3> tmpRing = new List<IntVec3>();
@@ -200,16 +206,15 @@ namespace RimMandrake.Contagion
 
                 if (ringRect.Contains(p.Position))
                 {
-                    FleckMaker.ThrowDustPuffThick(p.DrawPos, Map, 1.5f, new Color(0.45f, 0.05f, 0.08f));
-                    p.Destroy(DestroyMode.Vanish);
-                    Grow(1);
+                    Eat(p);
                     Count(AbsorbWhy.Eaten);
                     continue;
                 }
 
                 if (p.Downed || p.jobs == null) { Count(AbsorbWhy.Downed); continue; }
                 Job cur = p.CurJob;
-                if (cur != null && cur.def == JobDefOf.Goto && cur.targetA.IsValid && ringRect.Contains(cur.targetA.Cell))
+                if (cur != null && cur.def == RM_ContagionDefOf.RM_WalkIntoCoalescence && cur.targetB.Thing == this
+                    && cur.targetA.IsValid && ringRect.Contains(cur.targetA.Cell))
                 {
                     Count(AbsorbWhy.AlreadyWalking);
                     orderedThisPass.Add(p.thingIDNumber);
@@ -234,7 +239,7 @@ namespace RimMandrake.Contagion
                 }
                 tmpRing.Clear();
                 if (!dest.IsValid) { Count(AbsorbWhy.Unreachable); continue; }
-                Job job = JobMaker.MakeJob(JobDefOf.Goto, dest);
+                Job job = JobMaker.MakeJob(RM_ContagionDefOf.RM_WalkIntoCoalescence, dest, this);
                 job.locomotionUrgency = LocomotionUrgency.Walk;
                 job.expiryInterval = 2500;
                 p.jobs.StartJob(job, JobCondition.InterruptForced);
@@ -244,6 +249,34 @@ namespace RimMandrake.Contagion
             tmpPawns.Clear();
             orderedLastPass.Clear();
             orderedLastPass.UnionWith(orderedThisPass);
+        }
+
+        private void Eat(Pawn p)
+        {
+            FleckMaker.ThrowDustPuffThick(p.DrawPos, Map, 1.5f, new Color(0.45f, 0.05f, 0.08f));
+            p.Destroy(DestroyMode.Vanish);
+            Grow(1);
+        }
+
+        // The last toil of JobDriver_RM_WalkIntoCoalescence: the walker has reached its ring cell. Eaten here and now,
+        // under the same gates the pass applies (toggle on, no Burn, still absorbable, standing in the ring). A refusal
+        // is counted, and the walker's job then simply ends.
+        public bool TryEatOnArrival(Pawn p)
+        {
+            RM_CoalescenceExtension ext = Ext;
+            RM_MapComponent_ContagionSky sky = Spawned ? Map.GetComponent<RM_MapComponent_ContagionSky>() : null;
+            bool ok = ext != null && Spawned && p != null && p.Map == Map
+                && RM_CoalescenceKernel.Acts(sky != null && sky.BurnActive, RM_ContagionSettings.coalescenceEnabled)
+                && IsAbsorbable(p, ext) && !p.Downed
+                && this.OccupiedRect().ExpandedBy(1).Contains(p.Position);
+            if (!ok)
+            {
+                Count(AbsorbWhy.ArriveRefused);
+                return false;
+            }
+            Eat(p);
+            Count(AbsorbWhy.Arrived);
+            return true;
         }
 
         // One line for the proof hook: "passes=N last[...] total[...]".
@@ -346,6 +379,32 @@ namespace RimMandrake.Contagion
             string s = base.GetInspectString();
             string line = "Stage " + (Stage + 1) + ", absorbed mass " + mass + ".";
             return s.NullOrEmpty() ? line : s + "\n" + line;
+        }
+    }
+
+    // RM_WalkIntoCoalescence: TargetA = the ring cell to walk to, TargetB = the Coalescence. The walk and the absorption
+    // are one job, so nothing (CreatureBehaviors' sun escape, a wander) can be handed the walker between arriving and
+    // being eaten. The final toil's Destroy ends the job; JobDriver.TryActuallyStartNextToil checks `ended` after an
+    // initAction, the same shape as JobDriver_Goto's exit-on-arrival.
+    public class JobDriver_RM_WalkIntoCoalescence : JobDriver
+    {
+        public override bool TryMakePreToilReservations(bool errorOnFailed)
+        {
+            return true;
+        }
+
+        protected override IEnumerable<Toil> MakeNewToils()
+        {
+            this.FailOnDespawnedOrNull(TargetIndex.B);
+            this.FailOn(() => !RM_ContagionSettings.coalescenceEnabled || pawn.Downed || pawn.InMentalState);
+            yield return Toils_Goto.GotoCell(TargetIndex.A, PathEndMode.OnCell);
+            Toil eat = ToilMaker.MakeToil("RM_WalkIntoCoalescence_Eat");
+            eat.initAction = () =>
+            {
+                (job.targetB.Thing as Building_RM_Coalescence)?.TryEatOnArrival(pawn);
+            };
+            eat.defaultCompleteMode = ToilCompleteMode.Instant;
+            yield return eat;
         }
     }
 

@@ -331,6 +331,59 @@ def _burned_off(row):
     return set()
 
 
+def _missing_parts(row):
+    """The parts a row lists as MissingBodyPart, as (part defName, part label) pairs. A wild animal can be GENERATED with
+    one (AgeInjuryUtility old injuries), so a missing part only says "burned off" when it is new since the spawn read."""
+    out = set()
+    for h in (((row or {}).get("health") or {}).get("hediffs") or []):
+        if isinstance(h, dict) and h.get("def") == "MissingBodyPart":
+            out.add((h.get("part"), h.get("partLabel")))
+    return out
+
+
+_BURN_REP = re.compile(r"^OK pulses=(\d+) skipped=(\d+) pawn\[(.*)\]")
+
+
+def _burn_report(t, pid):
+    """RM_BurnProof.PressureReport for one pawn (RM_GameCondition_ContagionBurn.cs): the mod's own count of what each
+    Burn pressure pulse did to it. unseen=True (all counts 0) = no pulse ever reached it; None = unreadable (a DLL older than the hook,
+    a dead pawn the call cannot bind, a dropped call). Best-effort read: `_answer`."""
+    if not pid:
+        return None
+    r = t.bridge_call("jawa/static_call", type="RimMandrake.Contagion.RM_BurnProof", method="PressureReport",
+                      args=str(pid), _answer=True)
+    m = _BURN_REP.match(str((r or {}).get("result") or ""))
+    if not m:
+        return None
+    out = {"pulses": int(m.group(1)), "skipped": int(m.group(2))}
+    if m.group(3) == "unseen":
+        return dict(out, unseen=True, sheltered=0, exposed=0, damaged=0, dealt=0.0, dosed=0, dives=0, last=None)
+    for kv in m.group(3).split():
+        k, _, v = kv.partition("=")
+        try:
+            out[k] = float(v) if k == "dealt" else (v if k == "last" else int(v))
+        except ValueError:
+            return None
+    return out
+
+
+_ABSORB_TOT = re.compile(r"total\[([^\]]*)\]")
+
+
+def _absorb_totals(text):
+    """{reason: count} from RM_CoalescenceProof.AbsorbReport's total[...] block, or None when the reply is not an OK report."""
+    s = str(text or "")
+    m = _ABSORB_TOT.search(s)
+    if not s.startswith("OK ") or not m:
+        return None
+    out = {}
+    for kv in m.group(1).split():
+        k, _, v = kv.partition("=")
+        if v.isdigit():
+            out[k] = int(v)
+    return out
+
+
 def _sev_sum(row, defname):
     """Total severity of every hediff of `defname` on a list_pawns row (an injury def lands as one hediff per hit)."""
     tot = 0.0
@@ -1275,6 +1328,9 @@ def burn_forced(t):
                 x, z = t.anchor
                 b["native_fixture"] = b["native"]
                 b["native"] = _spawn(t, UV_NATIVE, x, z + 4)
+                # LIVE 2026-10-23 (CONTAGION_BURN_DIAGNOSE_NATIVE_FEELS_NOTHING): the native's living rows read only
+                # 'MissingBodyPart'. A wild animal can be generated with one, so what it was BORN missing is read here.
+                b["native_born_missing"] = _missing_parts(_rows(t).get(b["native"]))
                 # Same for the armored control: the fixture one wandered too, and off the unroofed pad (a mountain
                 # tile keeps its roof there) "spared" would mean sheltered, not armored. Spawned on the open pad here.
                 b["armored_fixture"] = b["armored"]
@@ -1294,6 +1350,8 @@ def burn_forced(t):
                     if (nrow is None or not _alive(nrow)) and "Burn" not in nhd and respawns < 2:
                         respawns += 1
                         b["native"] = _spawn(t, UV_NATIVE, x, z + 4)
+                        b["native_born_missing"] = _missing_parts(_rows(t).get(b["native"]))
+                        b["native_missing_alive"] = set()
                         track, jobs, dive_orders = [], [], []
                         continue
                     arow = srows.get(b["armored"]) or {}
@@ -1306,6 +1364,7 @@ def burn_forced(t):
                             if _goto_to_patch(t, crow):
                                 dive_orders.append(_job_sample(crow))
                         nhd |= _hdefs(nrow) | _burned_off(nrow)
+                        b["native_missing_alive"] = _missing_parts(nrow)
                     atrack.append((arow.get("x"), arow.get("z")))
                 # LIVE modcheck5 2026-10-16: the UV-shy native died inside the 800 ticks and list_pawns lists no corpses,
                 # so the end-of-window row was absent and both native rows went UNMEASURED. What it carried and where it
@@ -1313,6 +1372,10 @@ def burn_forced(t):
                 b["native_track"], b["armored_track"], b["native_hd_alive"] = track, atrack, nhd
                 b["native_jobs"], b["dive_orders"] = jobs, dive_orders
                 _note(t, "burn native respawns (lost before a Burn was read)", respawns)
+                # the mod's own account of the window (RM_BurnProof): read now, while the native may still be alive
+                b["native_report"] = _burn_report(t, b["native"])
+                b["armored_report"] = _burn_report(t, b["armored"])
+                _note(t, "RM_BurnProof native / armored", [b["native_report"], b["armored_report"]])
                 rows = _rows(t)
                 if not _alive(rows.get(b["open"])):
                     _unmeasured(t, "the open visitor is not readable alive after the Burn: 'undosed' would mean nothing")
@@ -1376,15 +1439,45 @@ def burn_forced(t):
                 alive_hd = set(b.get("native_hd_alive") or ())
                 if not _alive(arm):
                     _unmeasured(t, "armored alive %s: nothing to judge" % _alive(arm))
+                rep = b.get("native_report")
                 if _alive(nat):
                     alive_hd |= _hdefs(nat) | _burned_off(nat)
-                elif "Burn" not in alive_hd:
+                elif "Burn" not in alive_hd and rep is None:
                     _unmeasured(t, "the UV-shy native's row is %s and no living sample carried Burn: its damage cannot "
                                    "be read (living hediffs %s)" % ("absent" if nat is None else "dead", sorted(alive_hd)))
                 _note(t, "native alive at the end / Burn seen while alive", [_alive(nat), "Burn" in alive_hd])
                 if "Burn" not in alive_hd:
-                    _fail("the UV-shy native took no Burn damage under open sky (hediffs: %s)"
-                          % sorted(alive_hd))
+                    # LIVE 2026-10-23 (CONTAGION_BURN_DIAGNOSE_NATIVE_FEELS_NOTHING): FAILED on hediffs ['MissingBodyPart']
+                    # alone, which cannot tell four things apart. RM_BurnProof (the mod's per-pawn pulse counters) and the
+                    # parts missing since the spawn read now decide which one it was.
+                    missing = (_missing_parts(nat) if _alive(nat) else set(b.get("native_missing_alive") or ()))
+                    new_missing = sorted(map(str, missing - set(b.get("native_born_missing") or ())))
+                    _note(t, "native: RM_BurnProof / parts missing since spawn", [rep, new_missing])
+                    if rep is None:
+                        if new_missing:
+                            _unmeasured(t, "part(s) %s went missing since spawn with no Burn hediff, and RM_BurnProof is "
+                                           "unreadable (a DLL older than the hook?): burned off whole, likely, not proven"
+                                        % new_missing)
+                        _fail("the UV-shy native took no Burn damage under open sky (hediffs: %s); RM_BurnProof unreadable "
+                              "(a DLL older than the hook?), so the cause is not named" % sorted(alive_hd))
+                    if rep.get("exposed", 0) == 0:
+                        _unmeasured(t, "SITE: no Burn pressure pulse found the native under open sky (pulses %d, skipped %d, "
+                                       "sheltered %d): roof, canopy or water covered it, so 'hurts the native' was not "
+                                       "tested" % (rep["pulses"], rep["skipped"], rep.get("sheltered", 0)))
+                    if rep.get("damaged", 0) == 0:
+                        _fail("MOD: the native stood exposed for %d pulse(s) and was never damaged: classed %s (natives "
+                              "set / armoredNatives wrong for %s)" % (rep["exposed"], rep.get("last"), UV_NATIVE))
+                    if rep.get("dealt", 0) <= 0:
+                        _fail("MOD: %d Burn hit(s) on the native dealt 0 damage (amount 0 or fully absorbed): %s"
+                              % (rep["damaged"], rep))
+                    if not new_missing and not _alive(nat):
+                        _note(t, "native burned (RM_BurnProof: %d hit(s), %.2f dealt), then died or was lost before a "
+                                 "living sample read the Burn" % (rep["damaged"], rep["dealt"]), "absent" if nat is None else "dead")
+                    elif not new_missing:
+                        _unmeasured(t, "INSTRUMENT: the mod dealt %.2f Burn damage in %d hit(s) yet the native's rows show no "
+                                       "Burn and no part missing since spawn: the health read cannot see it (%s)"
+                                       % (rep["dealt"], rep["damaged"], rep))
+                    _note(t, "native burned: part(s) burned off whole (no Burn hediff left)", new_missing)
                 apos = list(b.get("armored_track") or []) + [(arm.get("x"), arm.get("z"))]
                 if not all(_on_open_pad(t, px, pz) for px, pz in apos):
                     _unmeasured(t, "the armored control left the open pad (positions %s): 'spared' could be shelter"
@@ -1417,6 +1510,18 @@ def burn_forced(t):
                 if not orders:
                     if not jobs:
                         _unmeasured(t, "the native died before any job of it could be read (living positions %s)" % track)
+                    rep = b.get("native_report")
+                    if rep is not None:
+                        # the mod's own count (RM_BurnProof) names why no dive was sampled
+                        if rep.get("exposed", 0) == 0:
+                            _unmeasured(t, "SITE: no pressure pulse found the native exposed (%s): no dive was owed" % rep)
+                        if rep.get("dives", 0) > 0:
+                            _unmeasured(t, "the mod ordered %d dive(s) but none was sampled as a Goto under the patch: "
+                                           "it may have dived to nearer shelter (a tree, water) inside 14 cells (%s)"
+                                        % (rep["dives"], rep))
+                        if rep.get("damaged", 0) > 0:
+                            _fail("MOD: the native was burned %d time(s) and never ordered a dive (TryDive found no "
+                                  "reachable sheltered cell, or MayDive refused): %s" % (rep["damaged"], rep))
                     _fail("the UV-shy native was never ordered to the roof patch (no Goto targeting %s; jobs seen %s); "
                           "standing on the patch %s is a wander, not a dive; positions %s"
                           % ((x + 6, z - 4, 8, 8), sorted(set(map(str, jobs)))[:6], onpatch, track))
@@ -1874,7 +1979,7 @@ def coalescence(t):
                     # ten passes -- the old message said "absorbed 6", which was the harness's assumption, not a read.
                     # The same code PASSED on the 22-mod list 2026-10-17. Building_RM_Coalescence.Absorb skips an
                     # Unfinished that is Downed, has a Faction, or is InMentalState, eats only one standing in the
-                    # 1-cell ring round the 3x3 body, and otherwise orders a Walk Goto to the nearest ring cell. So
+                    # 1-cell ring round the 3x3 body, and otherwise orders a walk-in job to the nearest reachable ring cell. So
                     # the survivors' own state decides MOD vs FIXTURE: each is read (cell, downed, faction, mental,
                     # Moving, job) and a survivor Absorb is DESIGNED to skip is a fixture fault, not the mod's.
                     cx, cz = _STATE["coal_xz"]
@@ -1891,13 +1996,9 @@ def coalescence(t):
                     _note(t, "unabsorbed Unfinished", who)
                     # LIVE 2026-10-19e: 0 of 6 absorbed, every survivor on Wait 10-25 cells off, and Absorb skipped them in
                     # silence. Building_RM_Coalescence now counts what each pass did (OutOfRange / Unreachable /
-                    # NoRingCell / Ordered / OrderLost ...); the report names the cause. Ordered and OrderLost climbing
-                    # together = the walk is ordered and then lost between passes (a pather error ends a Goto into
-                    # vanilla's Wait 250, then the main tree runs). Leading theory, UNPROVEN: the shade-hop IS live here
-                    # (RM_Contagion carries RM_SunHeatExtension, kind overhead, and the arm runs with the Burn off under
-                    # an open sky), and three survivors resting on Wait on ONE cell (188,131) is the shape of
-                    # RM_JobGiver_SunEscape dashing neighbours to the same nearestShade cell and MakeRest's Wait. So once
-                    # a Goto ends early, sun escape wins. The 22-mod list (PASS 2026-10-17) may lack that behaviour.
+                    # NoRingCell / Ordered / OrderLost / Arrived / ArriveRefused); the report names the cause. Ordered and
+                    # OrderLost climbing together = the walk is ordered and then lost between passes; the 2026-10-23 run
+                    # showed how (RM_JobGiver_SunEscape took the walker the moment its Goto ended on the ring; see below).
                     # (Best-effort read: `_answer`.)
                     rep = t.bridge_call("jawa/static_call", type="RimMandrake.Contagion.RM_CoalescenceProof",
                                         method="AbsorbReport", args=str(_STATE["coal"]), _answer=True)
@@ -1907,6 +2008,36 @@ def coalescence(t):
                     if who and len(skipped) == len(who):
                         _unmeasured(t, "FIXTURE: every surviving Unfinished is one Absorb skips by design (downed, "
                                        "factioned or in a mental state): %s" % who)
+                    # LIVE 2026-10-23 (COALESCENCE_STAGE_DIAGNOSE_STUCK_AT_ONE): Ordered 33 / OrderLost 27 / AlreadyWalking
+                    # 27 / Eaten 0, one survivor on RM_ShadeDash whose targetA was the ring cell it had reached: the plain
+                    # Goto ended ON the ring and the sun escape dashed it out before the next pass. Fixed by the walk-in job
+                    # (RM_WalkIntoCoalescence eats on arrival). The report's totals now name the cause by themselves.
+                    tot = _absorb_totals(rep_text)
+                    if tot is not None:
+                        g = lambda k: tot.get(k, 0)     # noqa: E731
+                        eaten = g("Eaten") + g("Arrived")
+                        if eaten >= len(kids) and mass < STAGE_MASS[1]:
+                            _fail("MOD: the report counts %d eaten but the mass reads %s: eating does not grow it" % (eaten, mass))
+                        if not left:
+                            _unmeasured(t, "all %d Unfinished are gone but only %d were eaten (mass %s): they died or "
+                                           "vanished, which absorbs nothing (report %s)" % (len(kids), eaten, mass, rep_text[:300]))
+                        if g("Candidate") == 0:
+                            # the survivors above are walkable, factionless and sane (the skipped ones returned already)
+                            _fail("MOD: %s absorb pass(es) never counted one of the %d walkable Unfinished as a candidate "
+                                  "(IsAbsorbable rejects them: kindDef / faction / mental gate): report %s"
+                                  % (re.search(r"passes=(\d+)", rep_text).group(1), len(left), rep_text[:300]))
+                        if g("OutOfRange") >= g("Candidate"):
+                            _unmeasured(t, "FIXTURE: every candidate was outside absorbRadius (report %s)" % rep_text[:300])
+                        if g("Ordered") == 0 and g("NoRingCell") + g("Unreachable") > 0:
+                            _unmeasured(t, "SITE: no walk could be ordered: the ring had no standable cell (%d) or none was "
+                                           "reachable (%d) (report %s)" % (g("NoRingCell"), g("Unreachable"), rep_text[:300]))
+                        if g("ArriveRefused") > 0:
+                            _fail("MOD: %d walker(s) reached the ring and TryEatOnArrival refused them (report %s)"
+                                  % (g("ArriveRefused"), rep_text[:300]))
+                        if g("OrderLost") > 0:
+                            _fail("MOD: %d of %d walk orders were lost between passes (the walker left its walk-in job "
+                                  "before reaching the ring: a think-tree or damage interrupt), %d eaten; survivors %s; report %s"
+                                  % (g("OrderLost"), g("Ordered"), eaten, [w for w in who if w not in skipped], rep_text[:300]))
                     _fail("after %d passes the Coalescence reads Stage %s, mass %s (want Stage >= 2 at mass >= %d); "
                           "%d of 6 Unfinished still alive and walkable: %s; absorb report: %s"
                           % (10, stage, mass, STAGE_MASS[1], len(left), [w for w in who if w not in skipped],

@@ -48,7 +48,12 @@ namespace RimMandrake.Contagion
             RM_ContagionSkyExtension ext = RM_ContagionSky.ExtFor(map);
             // The tear needs the weather to have actually arrived: during the forced transition the sky is still closing over.
             float dmgFactor = RM_ContagionSettings.burnDamageFactor;
-            if (!RM_SkyKernel.PressureActive(ext != null, RM_ContagionSettings.burnEnabled, map.weatherManager.curWeather == def.weatherDef, dmgFactor)) return;
+            if (!RM_SkyKernel.PressureActive(ext != null, RM_ContagionSettings.burnEnabled, map.weatherManager.curWeather == def.weatherDef, dmgFactor))
+            {
+                RM_BurnProof.NoteSkipped();
+                return;
+            }
+            RM_BurnProof.NotePulse();
 
             HashSet<ThingDef> natives = RM_ContagionSky.NativesOf(map.Biome, ext);
 
@@ -58,19 +63,29 @@ namespace RimMandrake.Contagion
             {
                 Pawn p = tmpPawns[i];
                 if (p == null || p.Dead || !p.Spawned) continue;
-                if (!RM_ContagionSky.Exposed(p.Position, map)) continue;
+                if (!RM_ContagionSky.Exposed(p.Position, map))
+                {
+                    RM_BurnProof.For(p).sheltered++;
+                    continue;
+                }
 
                 BurnEffect effect = RM_SkyKernel.Classify(natives.Contains(p.def), ext.armoredNatives.Contains(p.def),
                     ext.leakerNatives.Contains(p.def), p.RaceProps != null && !p.RaceProps.IsMechanoid && p.health != null);
+                RM_BurnProof.Rec rec = RM_BurnProof.For(p);
+                rec.exposed++;
+                rec.lastEffect = effect;
                 if (effect == BurnEffect.Damage || effect == BurnEffect.DamageAndDive)
                 {
-                    p.TakeDamage(new DamageInfo(DamageDefOf.Burn, ext.nativeBurnDamagePerInterval * dmgFactor));
+                    DamageWorker.DamageResult res = p.TakeDamage(new DamageInfo(DamageDefOf.Burn, ext.nativeBurnDamagePerInterval * dmgFactor));
+                    rec.damaged++;
+                    rec.dealt += res?.totalDamageDealt ?? 0f;
                     if (p.Dead || !p.Spawned) continue;
-                    if (effect == BurnEffect.DamageAndDive) TryDive(p, map);
+                    if (effect == BurnEffect.DamageAndDive && TryDive(p, map)) rec.dives++;
                 }
                 else if (effect == BurnEffect.Dose)
                 {
                     HealthUtility.AdjustSeverity(p, RM_ContagionSkyDefOf.RM_BurnDose, ext.visitorDosePerInterval * dmgFactor);
+                    rec.dosed++;
                 }
             }
             tmpPawns.Clear();
@@ -79,11 +94,11 @@ namespace RimMandrake.Contagion
         // The dive: nearest sheltered, standable, reachable cell, at a sprint.
         // Skipped for a drafted pawn, one in a mental state (a manhunter keeps
         // its fury), a downed one, and one already running for shelter.
-        private static void TryDive(Pawn p, Map map)
+        private static bool TryDive(Pawn p, Map map)
         {
             Job cur = p.CurJob;
             bool running = cur != null && cur.def == JobDefOf.Goto && cur.targetA.IsValid && !RM_ContagionSky.Exposed(cur.targetA.Cell, map);
-            if (!RM_SkyKernel.MayDive(p.Downed, p.Drafted, p.InMentalState, p.jobs != null, running)) return;
+            if (!RM_SkyKernel.MayDive(p.Downed, p.Drafted, p.InMentalState, p.jobs != null, running)) return false;
 
             List<IntVec3> sheltered = new List<IntVec3>();
             foreach (IntVec3 c in GenRadial.RadialCellsAround(p.Position, DiveSearchRadius, false))
@@ -103,7 +118,53 @@ namespace RimMandrake.Contagion
                 job.locomotionUrgency = LocomotionUrgency.Sprint;
                 job.expiryInterval = 2000;
                 p.jobs.StartJob(job, JobCondition.InterruptForced);
+                return true;
             }
+            return false;
+        }
+    }
+
+    // jawa/static_call proof hook (validation.py, burn_forced chain). CONTAGION_BURN_DIAGNOSE_NATIVE_FEELS_NOTHING (live
+    // 2026-10-23): the UV-shy native's living rows carried only 'MissingBodyPart' and no Burn, so the harness could not
+    // tell "never exposed during a pulse", "exposed but classed as something else", "hit for zero" and "hit, and the
+    // 3-point burn took a whole part off a 0.25-health-scale gnashling" (a destroyed part leaves no Burn hediff) apart.
+    // These counters, per pawn and never scribed, are the mod's own account of what each pressure pulse did to it.
+    public static class RM_BurnProof
+    {
+        public class Rec
+        {
+            public int sheltered, exposed, damaged, dosed, dives;
+            public float dealt;
+            public BurnEffect lastEffect = BurnEffect.None;
+        }
+
+        private static readonly Dictionary<int, Rec> recs = new Dictionary<int, Rec>();
+        private static int pulses, skipped;
+
+        public static void NotePulse() { pulses++; }
+        public static void NoteSkipped() { skipped++; }
+
+        public static Rec For(Pawn p)
+        {
+            if (!recs.TryGetValue(p.thingIDNumber, out Rec r))
+            {
+                if (recs.Count > 2048) recs.Clear();      // diagnostics only: a long game must not grow this forever
+                r = new Rec();
+                recs[p.thingIDNumber] = r;
+            }
+            return r;
+        }
+
+        // "OK pulses=N skipped=N pawn[sheltered=a exposed=b damaged=c dealt=d dosed=e dives=f last=Effect]",
+        // or pawn[unseen] when no pressure pulse ever reached it.
+        public static string PressureReport(Thing pawn)
+        {
+            if (!(pawn is Pawn p)) return "UNMEASURED " + (pawn?.ThingID ?? "null") + " is not a pawn";
+            string head = "OK pulses=" + pulses + " skipped=" + skipped + " ";
+            if (!recs.TryGetValue(p.thingIDNumber, out Rec r)) return head + "pawn[unseen]";
+            return head + "pawn[sheltered=" + r.sheltered + " exposed=" + r.exposed + " damaged=" + r.damaged
+                + " dealt=" + r.dealt.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)
+                + " dosed=" + r.dosed + " dives=" + r.dives + " last=" + r.lastEffect + "]";
         }
     }
 }
