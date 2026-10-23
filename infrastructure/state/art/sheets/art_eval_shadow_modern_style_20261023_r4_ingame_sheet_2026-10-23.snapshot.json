@@ -1,0 +1,131 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_modern_style_20261023_r4_ingame",
+ "built": "2026-10-23T09:39:01-0700",
+ "census": "Transient/biome_ffar/art_eval_shadow_modern_style_20261023_r4_ingame.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 14 mods \u2014 a test list): 320 active",
+ "rows": {
+  "RM_HoseEnd_Modern": {
+   "columns": {},
+   "graphic_of": {},
+   "labels": {},
+   "pools": [],
+   "res": null,
+   "reserved": [],
+   "shownBase": [],
+   "subject_key": "hoseend_modern"
+  },
+  "RM_LiquidJoins_Modern": {
+   "columns": {},
+   "graphic_of": {},
+   "labels": {},
+   "pools": [],
+   "res": null,
+   "reserved": [],
+   "shownBase": [],
+   "subject_key": "liquidjoins_modern"
+  },
+  "RM_LiquidPump_Modern": {
+   "columns": {
+    "A": {
+     "single": "d7067d4dd9fe9256334a4bce3d061c911c382e1c9adf697fb49459e42d5cebc3"
+    },
+    "B": {
+     "single": "6681e712eb188c679574102a9a6dfa01997a1ce3e609e15a5286b8f0eed54d5d"
+    },
+    "C": {
+     "single": "eb26dfa77f15e7b674729ac50239cdb2c975ad79f099458503efa21448b66cd5"
+    },
+    "D": {
+     "single": "ef2881d177df5516ad19557e361e7227dd0dfd014d7b3f781514edc143711af7"
+    },
+    "E": {
+     "single": "20d88ac70b2c26002189cd1dffc4e095a887cfbdf426f552962cf1946f7de660"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Pump/Modern/RM_LiquidPump",
+    "B": "RimMandrake/FlowWorks/Pump/Modern/RM_LiquidPump",
+    "C": "RimMandrake/FlowWorks/Pump/Modern/RM_LiquidPump",
+    "D": "RimMandrake/FlowWorks/Pump/Modern/RM_LiquidPump",
+    "E": "RimMandrake/FlowWorks/Pump/Modern/RM_LiquidPump"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render modernpump_a_v1",
+    "C": "render modernpump_b_v1",
+    "D": "render modernpump_c_v1",
+    "E": "render liqjoin_pump_modern_a"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Pump/Modern/RM_LiquidPump",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "liquidpump_modern"
+  },
+  "RM_PipeFaucet_Modern": {
+   "columns": {
+    "A": {
+     "single": "790eec8b907888ac6efcbdfb75854920b752269b0ee8680c5da7ab223b94bb4e"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Faucet/Modern/RM_PipeFaucet"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Faucet/Modern/RM_PipeFaucet",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "pipefaucet_modern"
+  },
+  "RM_PipeSpan_Modern": {
+   "columns": {},
+   "graphic_of": {},
+   "labels": {},
+   "pools": [],
+   "res": null,
+   "reserved": [],
+   "shownBase": [],
+   "subject_key": "pipespan_modern"
+  },
+  "RM_UniversalPipe_Modern": {
+   "columns": {
+    "A": {
+     "single": "385fb2285b7cfe2cb5b0757feb60620610296b0999af7d13dc7f12dee12fb0d2"
+    },
+    "B": {
+     "single": "108a075bcff456dcb64b7e40247ad02babe84282a571d7ac9e51d17d78ca8205"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Pipe/Modern/UniversalPipe_Atlas",
+    "B": "RimMandrake/FlowWorks/Pipe/Modern/UniversalPipe_Atlas"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render pipefit_atlas_modern_v1"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Pipe/Modern/UniversalPipe_Atlas",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "universalpipe_modern"
+  }
+ },
+ "sheetId": "art_eval_shadow_modern_style_20261023_r4_ingame_sheet_2026-10-23",
+ "snapshotId": "f0116ad32943fdae"
+}

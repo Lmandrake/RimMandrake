@@ -1,0 +1,67 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 53.4,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4036518
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 88.9
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_LiquidPump_Modern",
+ "decision": "ESCALATE",
+ "reasons": [
+  "opus band WEAK (model said weak); blocking ['LAYER_ORDER', 'PORT_MISFIT', 'DESC_MISS']; polish ['LEGIB_32']; unreadable ['ROTATIONS (n/a on an unconditional item)']",
+  "gpt regen: unsettled ['K1', 'K2', 'K4'], own blocking ['LAYER_ORDER', 'PORT_MISFIT']",
+  "still failing after 3 regen rounds \u2014 one line to the owner"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v1",
+   "sha": "a4850279ccbf"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v1",
+   "sha": "14056552e355"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "machine@v2",
+   "sha": "e06ee7316a0a"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "south.png": "1004a4de914e35fd3ebc02328b28522426b9edfe3ad30fc18905adfcddf8cf7d",
+  "scale.png": "bb5e70420e88ab3be517464225135ed87a6939c39fba12c88d7933c4a882b991",
+  "assembled_1.png": "e6b874e30284923c5e9e0cbc0ccd6a871862459af94ff376ead6975d845a9391",
+  "assembled_2.png": "1a8dcec5e8d772f7660c349450ea4dab6498e62c606a99cff817665f11dd68de",
+  "assembled_3.png": "96aea97a9da7f895a641b60e7ba27b4275023aa667478820a1fe5c2563c80032",
+  "siblings.png": "b2bb210e09aefdf32b28e6f4fca1a6ec5bee5a5be8de0434b2326dca665b1ac7",
+  "facings.png": "b5a79e063ea2d57018a990e348e563a2c8524cc6f6af54b3867338be8edeef49"
+ }
+}

@@ -1,0 +1,69 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 61.7,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.434519
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 51.7
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_LiquidJoins_Modern",
+ "decision": "ESCALATE",
+ "reasons": [
+  "opus band WEAK (model said weak); blocking ['PORT_MISFIT', 'OWNER_NOTE_IGNORED', 'PORT_MISFIT', 'PORT_MISFIT']; polish []",
+  "gpt regen: unsettled ['K1', 'K2', 'K3', 'K4'], own blocking ['PORT_MISFIT', 'OWNER_NOTE_IGNORED', 'PORT_MISFIT', 'PORT_MISFIT']",
+  "still failing after 3 regen rounds \u2014 one line to the owner"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v1",
+   "sha": "a4850279ccbf"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v1",
+   "sha": "14056552e355"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "machine@v2",
+   "sha": "e06ee7316a0a"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "south.png": "3208ad627f1e5b4d93ae09f9621fffb740952818fa9313bc953cabe48c6b5ebc",
+  "scale.png": "c8344cb64338f42ce23473bc9bac48b0ee3707231dee7ef85bf051ce7b1fed8d",
+  "assembled_1.png": "96aea97a9da7f895a641b60e7ba27b4275023aa667478820a1fe5c2563c80032",
+  "assembled_2.png": "65626d7c2cb7ab6b7579cee33281b042f0c9fce320c4b34368ecf8e0b9d6dfeb",
+  "assembled_3.png": "009cca2ee488da4bf7e0f01d7a2bdbbc793aea7e04a839d834ea766ce61d9b09",
+  "assembled_4.png": "bfa44862d8a37ebf81fd42d313e8e14fcf83d8d59aa1fcb09041c5ace30232cd",
+  "assembled_5.png": "e2144c19d198047e8cef3935190c27c4c6f980757ee5099680e35f50a0f2f036",
+  "siblings.png": "b2bb210e09aefdf32b28e6f4fca1a6ec5bee5a5be8de0434b2326dca665b1ac7",
+  "facings.png": "ab016c09a9cf7c2a8c7122d9fbef894cab28d2d11b6229885439525867ea6c8e"
+ }
+}

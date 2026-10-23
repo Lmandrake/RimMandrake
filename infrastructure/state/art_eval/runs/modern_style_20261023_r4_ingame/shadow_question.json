@@ -1,0 +1,59 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RM_LiquidPump_Modern": {
+   "prefill": "keep",
+   "why": "PIPELINE: ESCALATE (regen round 3) \u00b7 Opus WEAK: DESC_MISS, LAYER_ORDER, PORT_MISFIT \u00b7 GPT regen, unsettled K1, K2, K4",
+   "context": "judged candidate r3-ingame (image sha 1004a4de91); LAYER_ORDER: The pump's baked-in north PVC stub is painted over the silver camlock coupler and tan hose collar that run just north of the pump.; PORT_MISFIT: The north stub ends in mid-air on top of an unrelated coupler instead of meeting a connected part. The west neighbour pipe is wider than the; DESC_MISS: The pump housing is the same charcoal as the motor and base, so the 'thermoplastic pump housing' doesn't read as a separate material. The 'u"
+  },
+  "RM_PipeSpan_Modern": {
+   "prefill": "keep",
+   "why": "PIPELINE: HOLD_INPUT \u00b7 Opus -",
+   "context": "judged candidate r3-ingame (image sha c841dd01e5); "
+  },
+  "RM_PipeFaucet_Modern": {
+   "prefill": "keep",
+   "why": "PIPELINE: ESCALATE (regen round 3) \u00b7 Opus REALLY_BAD: OWNER_NOTE_IGNORED, PORT_MISFIT",
+   "context": "judged candidate r3-ingame (image sha 187a4cecbb); PORT_MISFIT: The in-game capture shows a rusty copper handwheel globe valve on the pipe, not the candidate brass bib on a PVC riser. The candidate was no; OWNER_NOTE_IGNORED: The riser is about 0.11 cell wide against a pipe of 0.136 cell, with no visible tee or saddle joining it to the horizontal pipe. Whether the"
+  },
+  "RM_UniversalPipe_Modern": {
+   "prefill": "keep",
+   "why": "PIPELINE: ESCALATE (regen round 3) \u00b7 Opus WEAK: DESC_MISS, PORT_MISFIT \u00b7 GPT regen, unsettled K1, K2, K3",
+   "context": "judged candidate r3-ingame (image sha 8ebbf49e5d); DESC_MISS: The tee hub shows a rounded lobe and '+' seam on the side with no branch: below the run in assembled_1 and the left tee of assembled_2, abov; DESC_MISS: Faint lighter bands show where strip segments join, so the pipe colour steps along a straight run.; PORT_MISFIT: The hose coupler sits partway along the vertical pipe, and the pipe carries on north past it to a cap rather than ending in the coupler."
+  },
+  "RM_LiquidJoins_Modern": {
+   "prefill": "keep",
+   "why": "PIPELINE: ESCALATE (regen round 3) \u00b7 Opus WEAK: OWNER_NOTE_IGNORED, PORT_MISFIT \u00b7 GPT regen, unsettled K1, K2, K3, K4",
+   "context": "judged candidate r3-ingame (image sha 3208ad627f); PORT_MISFIT: The flange hub's height (about y 95\u2013133) is smaller than the pipe it joins (about y 88\u2013142), so it looks like a thinner stub stuck inside th; OWNER_NOTE_IGNORED: The connector is visibly undersized against the modern pipe, which is the 'looks a bit silly' sizing problem the owner named.; PORT_MISFIT: The flange plate stands off the tank wall, with the tank's dark nipple filling the gap, instead of sitting flush to the port edge as the des"
+  },
+  "RM_HoseEnd_Modern": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: DESC_MISS, PORT_MISFIT \u00b7 GPT regen, unsettled K1, K2, K3",
+   "context": "judged candidate r3-ingame (image sha faf74a399e); PORT_MISFIT: A visible gap of several pixels between the face of the tank's dark port nipple and the left flange of the Storz coupling. The coupling floa; DESC_MISS: The unattached lower-left end of the diagonal hose ends in a Storz coupling. The canvas Mouth part, which the description says is drawn at t"
+  }
+ }
+}

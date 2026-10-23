@@ -1,0 +1,1 @@
+Before judging bridge captures of a style redraw, check each staged part is actually in that style: bridge run 1's Modern scene held rusty Scrapper faucets/sprinklers, so the art-eval judged the wrong picture (faucet ESCALATE) until held as HOLD_INPUT. 2026-10-23.

@@ -1,0 +1,45 @@
+{
+ "judge_model": {},
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_PipeSpan_Modern",
+ "decision": "HOLD_INPUT",
+ "reasons": [
+  "missing panels ['assembled']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v1",
+   "sha": "a4850279ccbf"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v1",
+   "sha": "14056552e355"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "machine@v2",
+   "sha": "e06ee7316a0a"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "south.png": "c841dd01e5d8db2aa72d53fff382b7552439cb087b4af069f3013d315a52f3d6",
+  "scale.png": "f76f6b69e5f50fbe38403f287bfe601bfc75f97d73eca831c64524d01f24c269",
+  "siblings.png": "b2bb210e09aefdf32b28e6f4fca1a6ec5bee5a5be8de0434b2326dca665b1ac7",
+  "facings.png": "4c7881f8c3b07b964ccd1ab9e1b28767a0d17e6c776309111daf1839cf8a8074"
+ }
+}
