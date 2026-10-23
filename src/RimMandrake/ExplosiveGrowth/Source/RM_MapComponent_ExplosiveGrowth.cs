@@ -332,7 +332,8 @@ namespace RimMandrake.ExplosiveGrowth
 
         public void Suppress(IntVec3 center, int radius, int ticks)
         {
-            if (!ExplosiveGrowthSettings.suppressionEnabled) return;
+            // EGROWTH_MASTER_FIX_SPARES_THE_BANDS (owner by card: "Master stops everything"): the master switch off lays nothing.
+            if (!ExplosiveGrowthSettings.On || !ExplosiveGrowthSettings.suppressionEnabled) return;
             var cells = new List<IntVec3>();
             foreach (IntVec3 c in GenRadial.RadialCellsAround(center, Mathf.Max(0, radius) + 0.5f, true))
             {
@@ -395,7 +396,9 @@ namespace RimMandrake.ExplosiveGrowth
             if (now < nextPassTick) return;
             nextPassTick = now + PassInterval;
             // EGROWTH_SUPPRESS_FIX_OFF_STILL_SUPPRESSES: switching suppression off drops grids already laid.
-            if (!ExplosiveGrowthSettings.suppressionEnabled && ledger.suppressedUntil.Count != 0) ledger.suppressedUntil.Clear();
+            // EGROWTH_MASTER_FIX_SPARES_THE_BANDS: the master switch off drops them too, so nothing laid survives a master-off spell.
+            if ((!ExplosiveGrowthSettings.suppressionEnabled || !ExplosiveGrowthSettings.On) && ledger.suppressedUntil.Count != 0)
+                ledger.suppressedUntil.Clear();
             if (!ExplosiveGrowthSettings.On || !RM_ExplosiveGrowthRegistry.Ready)
             {
                 lastPassTick = now;
