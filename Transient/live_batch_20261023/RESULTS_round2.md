@@ -10,7 +10,7 @@ Game: UP, save RM_fw_walkthrough_20261022d. Bridge: BENCH ("BENCH live diagnose 
 | 4 | POLE_CABLE_FIX_FORGOT_TO_SAG | MOD: red = Modern PipeSpan on Scrapper poles (look fallback bug), FIXED 2ae04e1509 (GSS), live look after deploy; sag = owner's 2% setting | AerialProbe styles (detail) | note on item; stays open for the judge |
 | 5 | MODERN_TANK_PORT_REDRAW_COUPLER_FLOATS | CAPTURED both lanes W+E on all 3 tanks; all 12 ends 'coupled to <tank>' | r2/tank_modern_{208,214,220}_W_E_bothlanes.png, r2/modern_upper_census.txt | note; for the judge |
 | 6 | LEVELLING_FILLS_DIAGNOSE_WATER_GOES_MISSING | HARNESS: rehearsal's ProofStageBasin staged over walk_gaps' filled ponds; reproduced exactly (200 levels at the first basin strip) | r2/level_after_walkgaps_watch.log, r2/walkgaps_pitfall_watch.log, r2/level_watch_pitfall.log | LEVEL_REHEARSAL_FIX_POURS_ON_FULL_PONDS; closed |
-| 7 | ART_RESOLUTION_MEASURE_AT_MAX_ZOOM | PENDING | | |
+| 7 | ART_RESOLUTION_MEASURE_AT_MAX_ZOOM | PARTIAL: test tier max zoom = 114 px/cell (128 px/cell art is enough); owner's Camera+ default max zoom = 456 px/cell by source (128 visibly blurs, 256 slightly soft) - live root-2 shot owed on a Camera+ list | r2/maxzoom_reel_rs2.png, r2/vanillazoom_reel_rs11.png, r2/art_resolution_sim.png | note; stays open |
 
 ## Detail
 
@@ -69,3 +69,15 @@ bridge call, tools/watch.py) on that save:
 Verdict HARNESS: the rehearsal's basin A (x5..95) lands on walk_gaps' filled ponds (origin 40,40) and the staging call's
 TrySetDriverFill rewrites cells another scene already filled; the engine discloses the loss as designed. Levelling itself
 conserved liquid in every run. Fix filed: LEVEL_REHEARSAL_FIX_POURS_ON_FULL_PONDS.
+
+### 7. Art resolution at max zoom-in
+Game renders 3467x1826. Live (fw_gss_sitting tier, ray1203.SimpleCameraSetting): set_camera_zoom / zoom_camera below rootSize 8
+clamp to 8 even with the bridge's zoom extension on, so this tier's max zoom-in is root 8 = 1826/16 = 114 px per cell
+(viewRect 33x19 cells, r2/maxzoom_reel_rs2.png); vanilla closest root 11 = 83 px/cell (r2/vanillazoom_reel_rs11.png).
+The owner's full lists all carry brrainz.cameraplus with NO settings file in Config (defaults): Camera+ Source/Settings.cs
+(pardeike/CameraPlus) zoomedInPercent = 1, minRootResult = zoomedInPercent * 2 = root 2 -> 1826/4 = 456 px per cell.
+Offline sampling of a 512 px texture (Armoury gonk_south.png as 1 cell) to the screen size from 512 vs 256 vs 128 px/cell
+(r2/art_resolution_sim.png, rows = 83 / 114 / 456 px/cell): at 83 and 114 the three are indistinguishable (mean abs diff
+<= 0.3/255 incl. transparent); at 456 the 128 version is visibly blurred and 256 slightly soft against 512.
+Answer: resolution above 128 px/cell is invisible at vanilla or SimpleCameraSetting zoom, visible at Camera+'s default
+closest zoom (256 clearly, 512 marginally). Owed: a live root-2 capture on a list with Camera+ to confirm the 456.
