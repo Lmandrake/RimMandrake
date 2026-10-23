@@ -1,0 +1,1 @@
+A stale ~/.codex_sandbox_seed (Windows C:\Users\Mandrake\.codex_sandbox_seed) makes every isolated codex_image.py --codex-home worker fail in 2 s with a sandbox-build mismatch; copy the shared home's .sandbox, .sandbox-bin and .sandbox-secrets into the seed (the tool's own message) and delete the half-made worker homes before retrying (modern art, 2026-10-22).
