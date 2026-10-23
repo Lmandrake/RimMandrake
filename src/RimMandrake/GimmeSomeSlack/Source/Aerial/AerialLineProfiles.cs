@@ -125,7 +125,10 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// read from its name, else the default look.</summary>
         public static string LookOfThing(Thing t)
         {
-            if (t != null && KindOf(t.def) == AerialLineKind.Pipe) return LookFromStyleName(StylePicker.RawStyle(t)) ?? StylePicker.DefaultLook;
+            // POLE_CABLE_FIX_FORGOT_TO_SAG (live 2026-10-23): an unstyled pipe pole DRAWS its engine StyleDef (RM_PipePole_Scrapper)
+            // while the span fell through to GSS's DefaultLook (Modern) and drew the red Modern PipeSpan; the span follows the drawn pole.
+            if (t != null && KindOf(t.def) == AerialLineKind.Pipe)
+                return LookFromStyleName(StylePicker.RawStyle(t)) ?? LookFromStyleName(t.StyleDef) ?? StylePicker.DefaultLook;
             return StylePicker.LookOfThing(t);
         }
 
