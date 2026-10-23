@@ -179,12 +179,11 @@ namespace RimMandrake.TerminalBiomes
 
         // ── TWILIGHT_LIGHT_ECONOMY_1: the Twilight Sea's light layer ─────
         // (well-ledger drift, mobile constellation, sun-sphere, tenancy).
-        // Mod Settings owed list per that item's §7. twilightChainAvailability:
-        // 0 = scarce, 1 = standard, 2 = plentiful. twilightDriftCadence:
+        // Mod Settings owed list per that item's §7. (twilightChainAvailability, inert since the Compact's
+        // tether-chain stock was retired, was deleted 2026-10-23, fluff review.) twilightDriftCadence:
         // 0 = frozen (sandbox), 1 = week (shipped), 2 = slow.
         public static bool twilightWellDriftEnabled = true;
         public static int twilightDriftCadence = 1;
-        public static int twilightChainAvailability = 1;
         public static bool twilightSuulkPressureScalingEnabled = true;
         public static bool twilightCagesPassableBeneath = true;
         public static float twilightSunSphereGraceDays = 3f;
@@ -280,7 +279,6 @@ namespace RimMandrake.TerminalBiomes
             Scribe_Values.Look(ref crossBiomeCoverage, "crossBiomeCoverage", 1f);
             Scribe_Values.Look(ref twilightWellDriftEnabled, "twilightWellDriftEnabled", true);
             Scribe_Values.Look(ref twilightDriftCadence, "twilightDriftCadence", 1);
-            Scribe_Values.Look(ref twilightChainAvailability, "twilightChainAvailability", 1);
             Scribe_Values.Look(ref twilightSuulkPressureScalingEnabled, "twilightSuulkPressureScalingEnabled", true);
             Scribe_Values.Look(ref twilightCagesPassableBeneath, "twilightCagesPassableBeneath", true);
             Scribe_Values.Look(ref twilightSunSphereGraceDays, "twilightSunSphereGraceDays", 3f);
@@ -678,14 +676,8 @@ namespace RimMandrake.TerminalBiomes
                 list.GapLine();
             }
 
-            if (Group(list, "Not wired yet (these change nothing)", RimMandrake.Shared.SettingScope.Now, new[] { "twilightChainAvailability", "crossBiomeEnabled", "crossBiomeEverywhere", "crossBiomeBiomeList", "crossBiomeCoverage" }))
+            if (Group(list, "Not wired yet (these change nothing)", RimMandrake.Shared.SettingScope.Now, new[] { "crossBiomeEnabled", "crossBiomeEverywhere", "crossBiomeBiomeList", "crossBiomeCoverage" }))
             {
-                list.Label("Tether-chain availability — NO EFFECT YET: no trader stocks tether chains "
-                  + "(the Compact's stock was retired); the choice is kept for when one does:");
-                if (list.RadioButton("  Scarce", twilightChainAvailability == 0)) twilightChainAvailability = 0;
-                if (list.RadioButton("  Standard", twilightChainAvailability == 1)) twilightChainAvailability = 1;
-                if (list.RadioButton("  Plentiful", twilightChainAvailability == 2)) twilightChainAvailability = 2;
-                list.GapLine();
                 list.Label("Cross-biome opt-in: reserved for a future pass that lets a Scald mechanic generate on "
                   + "a non-Scald biome's map. NOT YET WIRED — nothing reads these; the fields persist "
                   + "so a save carries a chosen value forward.");
