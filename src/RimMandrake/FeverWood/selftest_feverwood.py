@@ -623,7 +623,7 @@ def main():
     for group, _, names, floor in V.GROUPS:
         check("floor met: %s (%d >= %d)" % (group, len(names), floor), len(names) >= floor)
     check("settings parsed (%d fields, %d toggles)" % (len(V.SETTING_FIELDS), len(V.BOOL_TOGGLES)),
-          len(V.SETTING_FIELDS) >= 24 and len(V.BOOL_TOGGLES) == 19, V.BOOL_TOGGLES)  # 2026-10-23 fluff cuts: -antHiveParasiteChamberEnabled, -antTheftEnabled, -kurrethColumnEnabled, -kurrethTheftPerColumn, -kurrethLossFinalize, -brathekBoresWood; +sillochAmbushEnabled, brathekBoresWood (cast pass 2), +broodRansomEnabled, +tentacleLimbLingerEnabled (FV-1); 2026-10-09: -naturalPlacementEnabled, +foulingWithdrawsLimbs, +kurrethTheftPerColumn, +twoFrontLureTrueFronts, +tentaclePoolsAreClusters, +kurrethLossFinalize, +antHiveRealGeometry
+          len(V.SETTING_FIELDS) >= 24 and len(V.BOOL_TOGGLES) == 20, V.BOOL_TOGGLES)  # 2026-10-23 fluff cuts: -antHiveParasiteChamberEnabled, -antTheftEnabled, -kurrethColumnEnabled, -kurrethTheftPerColumn, -kurrethLossFinalize; +sillochAmbushEnabled, brathekBoresWood (cast pass 2), +broodRansomEnabled, +tentacleLimbLingerEnabled (FV-1); 2026-10-09: -naturalPlacementEnabled, +foulingWithdrawsLimbs, +kurrethTheftPerColumn, +twoFrontLureTrueFronts, +tentaclePoolsAreClusters, +kurrethLossFinalize, +antHiveRealGeometry
     check("sap-sucker kinds derived", [k for k, _, _, _ in V.SAP_KINDS] == ["RM_Vaulm", "RM_Drommath"], V.SAP_KINDS)
     check("harvest flora derived", len(V.FLORA_PRODUCTS) == 6, V.FLORA_PRODUCTS)  # +RM_Crimmelroot, +RM_LumbrelTree (PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE 2026-10-16)
     check("crown plants derived", len(V.CROWN_PLANTS) >= 5, V.CROWN_PLANTS)

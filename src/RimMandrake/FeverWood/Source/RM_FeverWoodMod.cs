@@ -232,6 +232,12 @@ namespace RimMandrake.FeverWood
         /// never strikes unprovoked. Default ON.</summary>
         public static bool sillochAmbushEnabled = true;
 
+        /// <summary>FEVERWOOD_RM_CAST_COMPLETION_1: the brathek eats living trees
+        /// (its wood-pulp diet; RM_BrathekBoring). It never damages walls,
+        /// buildings or boughways in this build. Off: it grazes like any other
+        /// animal. Default ON.</summary>
+        public static bool brathekBoresWood = true;
+
         /// <summary>FEVERWOOD_BROOD_RANSOM_1 master toggle. Off: the world's
         /// tally still counts but changes nothing (boldness x1, no letters),
         /// the tank has no "Return to the deep" gizmo, a young-cask cannot be
@@ -292,6 +298,7 @@ namespace RimMandrake.FeverWood
             Scribe_Values.Look(ref twoFrontLureLockOnceTriggered, "twoFrontLureLockOnceTriggered", false);
             Scribe_Values.Look(ref sapSuckerMishandleRefusalEnabled, "sapSuckerMishandleRefusalEnabled", true);
             Scribe_Values.Look(ref sillochAmbushEnabled, "sillochAmbushEnabled", true);
+            Scribe_Values.Look(ref brathekBoresWood, "brathekBoresWood", true);
             Scribe_Values.Look(ref antHiveRealGeometry, "antHiveRealGeometry", true);
             Scribe_Values.Look(ref oilBoilEnabled, "oilBoilEnabled", true);
             Scribe_Values.Look(ref oilBoilMinTempC, "oilBoilMinTempC", 35f);
@@ -463,7 +470,7 @@ namespace RimMandrake.FeverWood
                 list.GapLine();
             }
 
-            if (Group(list, "Sap-suckers and silloch", RimMandrake.Shared.SettingScope.Now, new[] { "sapSuckerMishandleRefusalEnabled", "sillochAmbushEnabled" }))
+            if (Group(list, "Sap-suckers, silloch and brathek", RimMandrake.Shared.SettingScope.Now, new[] { "sapSuckerMishandleRefusalEnabled", "sillochAmbushEnabled", "brathekBoresWood" }))
             {
                 list.CheckboxLabeled("Sap-suckers refuse a failed taming attempt", ref sapSuckerMishandleRefusalEnabled,
                     "On: a failed attempt to tame a vaulm, drommath or ollareth sets off its refusal — the vaulm "
@@ -473,6 +480,9 @@ namespace RimMandrake.FeverWood
                     "On: a silloch presses itself against a tree trunk and waits, and strikes any small creature (or "
                   + "person) that steps right beside it. It never chases: once the victim gets a few steps clear, it lets "
                   + "go. Off: it wanders like an ordinary animal and never strikes unprovoked.");
+                list.CheckboxLabeled("Brathek bores into living wood", ref brathekBoresWood,
+                    "On: a brathek eats living trees as well as ground cover, so a grove with brathek in it slowly thins. "
+                  + "It never digs through walls, buildings or boughways. Off: it grazes like any other animal.");
                 list.GapLine();
             }
 
@@ -624,6 +634,7 @@ namespace RimMandrake.FeverWood
         {
             base.WriteSettings();
             RM_OilBoil.ApplySettings();
+            RM_BrathekBoring.ApplySettings();
         }
 
         public override string SettingsCategory()
