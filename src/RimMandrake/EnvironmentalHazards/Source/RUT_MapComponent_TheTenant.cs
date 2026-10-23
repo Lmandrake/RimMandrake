@@ -303,7 +303,7 @@ namespace RimMandrake.EnvironmentalHazards
             // F2 content, not this class's concern.
             if (pawn.Spawned)
             {
-                pawn.DeSpawn(DestroyMode.Vanish);
+                pawn.Destroy(DestroyMode.Vanish); // a bare DeSpawn would leave a never-discarded wild pawn behind
             }
         }
 
@@ -334,7 +334,9 @@ namespace RimMandrake.EnvironmentalHazards
                     // Not rescued in time — the Tenant finishes it.
                     if (pawn.Spawned)
                     {
+                        // a colonist/tamed pawn: despawn AND hand to the world so the save keeps a lost (not dangling) pawn
                         pawn.DeSpawn(DestroyMode.Vanish);
+                        Find.WorldPawns.PassToWorld(pawn);
                     }
                     (toRemove ?? (toRemove = new List<Pawn>())).Add(pawn);
                 }
