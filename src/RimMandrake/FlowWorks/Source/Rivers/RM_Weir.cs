@@ -108,10 +108,11 @@ namespace RimMandrake.FlowWorks.Rivers
 
 	/// <summary>
 	/// The weir (TWILIGHT_CHANNEL_CURRENT_1 §4, moved here and reworked for SURFACE_RIVER_WEIRS_1).
-	/// Owner rulings applied: calms ~8 cells upstream (card 2); catches fish from the river's own stock
-	/// plus BIOME-RELEVANT drift (card 2, RM_RiverDriftDef); a breach washes the held catch a few cells
-	/// downstream (ruling 4); the stake-line below it snaps in downstream order. Maintenance rides
-	/// vanilla Repair (wear) and Haul (catch) - no new jobs. All numbers PROVISIONAL (settings).
+	/// Owner rulings applied: calms ~8 cells upstream (card 2); catches ONLY what the current carries into it (owner
+	/// 2026-10-23, WEIR_CATCH_FIX_NO_FREE_FISH: "they should just capture anything floating downstream. No auto fish
+	/// capture." - the fish and biome-drift rolls are gone); a breach washes the held catch a few cells downstream
+	/// (ruling 4); the stake-line below it snaps in downstream order. Maintenance rides vanilla Repair (wear) and Haul
+	/// (catch) - no new jobs. All numbers PROVISIONAL (settings). Design: design/RimMandrake/weir_review_2026-10-23.md.
 	/// </summary>
 	public class RM_Building_BankWeir : Building
 	{
@@ -119,9 +120,9 @@ namespace RimMandrake.FlowWorks.Rivers
 		private const int BreachDurationTicks = 2500;
 		private const float StakeCascadeRadius = 15f;
 		private const float HeldCatchRadius = 2.5f;
-		// PROVISIONAL: chance of a fish per catch interval at full stock; scales with stock fraction.
-		private const float CatchChanceAtFullStock = 0.8f;
-		private const float UncommonFishChance = 0.1f;
+		// how often a holding section checks its intake for things the current brought (cheap: a handful of cells)
+		private const int CaptureIntervalTicks = 250;
+		private const int FoamFrames = 12;
 
 		/// <summary>The sea Compact's own pre-placed weir never breaches (set by TerminalBiomes' genstep).</summary>
 		public bool neverBreaches;
@@ -134,7 +135,6 @@ namespace RimMandrake.FlowWorks.Rivers
 
 		private bool breaching;
 		private int breachEndTick;
-		private int nextCatchTick = -1;
 		private float wearDebt;
 		private List<Thing> cascadeStakes;
 		private List<int> cascadeFireTicks;
@@ -292,92 +292,106 @@ namespace RimMandrake.FlowWorks.Rivers
 					return;
 				}
 			}
-			int now = Find.TickManager.TicksGame;
-			if (nextCatchTick < 0)
+			if (this.IsHashIntervalTick(CaptureIntervalTicks) && ArrestActive)
 			{
-				nextCatchTick = now + CatchIntervalTicks();
+				CaptureFloating();
 			}
-			else if (now >= nextCatchTick)
+		}
+
+		// ── catch: only what the river brings (weir review 2026-10-23) ─────────
+
+		/// <summary>This section's intake cells: in-current cells whose flow step lands on its wall cells, i.e. where the
+		/// surface carry stops a drifting thing (RM_RiverMath.WeirIntakeCells).</summary>
+		public List<IntVec3> IntakeCells()
+		{
+			List<IntVec3> cells = new List<IntVec3>();
+			RM_MapComponent_RiverCurrent comp = Spawned ? Map.GetComponent<RM_MapComponent_RiverCurrent>() : null;
+			if (comp == null)
 			{
-				nextCatchTick = now + CatchIntervalTicks();
-				// a joined run catches once, through its head (its bank end holds the catch); PROVISIONAL: one roll per run
-				if (ArrestActive && RunHead() == this)
+				return cells;
+			}
+			List<int[]> wall = new List<int[]>();
+			foreach (IntVec3 c in this.OccupiedRect())
+			{
+				wall.Add(new[] { c.x, c.z });
+			}
+			foreach (int[] k in RM_RiverMath.WeirIntakeCells(wall, (x, z) => comp.FlowDirAt(new IntVec3(x, 0, z))))
+			{
+				cells.Add(new IntVec3(k[0], 0, k[1]));
+			}
+			return cells;
+		}
+
+		/// <summary>Lifts every loose item or corpse lying in this section's intake onto the bank end of the run's head, up
+		/// to the held-catch cap; past the cap things stay jammed against the wall. Creates nothing and never moves a living
+		/// pawn. Placed only on ground with no current, so the catch never drifts off again; a failed placement puts the
+		/// thing back where it lay. Public so the first script can force it. Returns how many stacks were lifted.</summary>
+		public int CaptureFloating()
+		{
+			if (!RM_RiversSettings.weirCapturesFloating)
+			{
+				return 0;
+			}
+			if (!Spawned || breaching || !RM_RiversSettings.WorksActive)
+			{
+				return 0;
+			}
+			Map map = Map;
+			List<Thing> offered = new List<Thing>();
+			foreach (IntVec3 c in IntakeCells())
+			{
+				if (!c.InBounds(map))
 				{
-					TryCatch();
+					continue;
+				}
+				List<Thing> here = c.GetThingList(map);
+				for (int i = 0; i < here.Count; i++)
+				{
+					Thing t = here[i];
+					if (t.def.category == ThingCategory.Item && t.def.EverHaulable && !(t is Pawn) && !offered.Contains(t))
+					{
+						offered.Add(t);
+					}
 				}
 			}
-		}
-
-		private static int CatchIntervalTicks()
-		{
-			return Mathf.Max(250, Mathf.RoundToInt(RM_RiversSettings.weirCatchIntervalHours * 2500f));
-		}
-
-		// ── catch ────────────────────────────────────────────────────────────
-
-		/// <summary>One catch roll. Public so the first script can force it. Returns what happened.</summary>
-		public string TryCatch()
-		{
-			string fishResult = "fish=off";
-			if (RM_RiversSettings.weirCatchesFish)
+			if (offered.Count == 0)
 			{
-				fishResult = TryCatchFish();
+				return 0;
 			}
-			string driftResult = "drift=off";
-			float driftChance = RM_RiverMath.DriftRollChance(RM_RiversSettings.weirCatchesDrift, RM_RiversSettings.weirDriftChance);
-			if (driftChance >= 0f)
+			RM_Building_BankWeir head = RunHead() ?? this;
+			int held = 0;
+			List<Thing> h = head.HeldCatch();
+			for (int i = 0; i < h.Count; i++)
 			{
-				driftResult = Rand.Chance(driftChance) ? TryCatchDrift() : "drift=missed";
+				if (!offered.Contains(h[i]))
+				{
+					held += h[i].stackCount;
+				}
 			}
-			return fishResult + " " + driftResult;
-		}
-
-		private string TryCatchFish()
-		{
-			WaterBodyTracker tracker = Map.waterBodyTracker;
-			WaterBody body = tracker?.WaterBodyAt(WaterCell);
-			if (body == null || !body.HasFish)
+			RM_MapComponent_RiverCurrent comp = map.GetComponent<RM_MapComponent_RiverCurrent>();
+			Predicate<IntVec3> dry = c => comp == null || !comp.HasCurrent(c);
+			int lifted = 0;
+			for (int i = 0; i < offered.Count; i++)
 			{
-				return "fish=nostock";
+				Thing t = offered[i];
+				if (RM_RiverMath.WeirCaptureBudget(held, RM_RiversSettings.weirHeldCatchCap, t.stackCount) < t.stackCount)
+				{
+					break; // full: the rest stays jammed against the wall until the catch is hauled
+				}
+				IntVec3 from = t.Position;
+				int n = t.stackCount;
+				t.DeSpawn();
+				if (GenPlace.TryPlaceThing(t, head.BankCell, map, ThingPlaceMode.Near, null, dry))
+				{
+					held += n;
+					lifted++;
+				}
+				else if (!t.Destroyed && !t.Spawned)
+				{
+					GenSpawn.Spawn(t, from, map); // no dry room: back where it lay, nothing lost
+				}
 			}
-			float pct = Mathf.Clamp01(tracker.PopulationPercentAt(WaterCell));
-			if (!Rand.Chance(CatchChanceAtFullStock * pct))
-			{
-				return "fish=missed";
-			}
-			ThingDef fish = null;
-			if (Rand.Chance(UncommonFishChance))
-			{
-				body.UncommonFish.TryRandomElement(out fish);
-			}
-			if (fish == null)
-			{
-				body.CommonFish.TryRandomElement(out fish);
-			}
-			if (fish == null)
-			{
-				return "fish=nofishtype";
-			}
-			int count = Rand.RangeInclusive(2, 5); // PROVISIONAL
-			int placed = Deposit(fish, count);
-			if (placed <= 0)
-			{
-				return "fish=full";
-			}
-			// One stock, two drains: the fishing zone on this river now finds less.
-			tracker.Notify_Fished(WaterCell, placed);
-			return "fish=" + fish.defName + "x" + placed;
-		}
-
-		private string TryCatchDrift()
-		{
-			RM_RiverDriftEntry e = RM_RiverDriftDef.RollFor(Map.Biome);
-			if (e == null || e.thing == null)
-			{
-				return "drift=nonefor:" + Map.Biome?.defName;
-			}
-			int placed = Deposit(e.thing, e.count.RandomInRange);
-			return placed > 0 ? "drift=" + e.thing.defName + "x" + placed : "drift=full";
+			return lifted;
 		}
 
 		/// <summary>Everything loose within reach of the weir counts as its held catch.</summary>
@@ -396,36 +410,6 @@ namespace RimMandrake.FlowWorks.Rivers
 				}
 			}
 			return held;
-		}
-
-		private int Deposit(ThingDef def, int count)
-		{
-			int held = 0;
-			List<Thing> h = HeldCatch();
-			for (int i = 0; i < h.Count; i++)
-			{
-				held += h[i].stackCount;
-			}
-			int room = RM_RiversSettings.weirHeldCatchCap - held;
-			if (room <= 0 || count <= 0)
-			{
-				return 0;
-			}
-			Thing t = ThingMaker.MakeThing(def);
-			t.stackCount = Mathf.Min(count, room, def.stackLimit);
-			int n = t.stackCount;
-			if (GenPlace.TryPlaceThing(t, BankCell, Map, ThingPlaceMode.Near))
-			{
-				return n;
-			}
-			// C6-F9: a failed Near placement may already have merged part into a stack; that part was caught and is
-			// charged to the stock. The unplaced rest was never caught: it is discarded, not left orphaned.
-			int left = t.Destroyed ? 0 : t.stackCount;
-			if (!t.Destroyed)
-			{
-				t.Destroy();
-			}
-			return n - left;
 		}
 
 		// ── breach ───────────────────────────────────────────────────────────
@@ -628,9 +612,11 @@ namespace RimMandrake.FlowWorks.Rivers
 		// ── art (RIVER_WEIR_ART_JUDGE_CODEX_SQUINTS, owner 2026-10-16: "(1) but in the four art styles") ──
 		// A low timber wall per heading (Graphic_Multi _north/_east/_south/_west in the section's look), its facing taken
 		// from the current so the spill face is always downstream. Body textures are seamless along the wall, so joined
-		// sections read as one wall; a stout post is drawn only at a free end. Water is a separate overlay layer:
-		// RM_BankWeirWater_<facing> (calm pool tint upstream, white foam toe downstream; under the wall, look-free) and
-		// <look>/RM_BankWeirSpill_<facing> (the sheet over the crest; above it), drawn on water cells while the weir holds.
+		// sections read as one wall; a stout post is drawn only at a free end. <look>/RM_BankWeirSpill_<facing> (the sheet
+		// over the crest) is printed on water cells while the weir holds. Weir review 2026-10-23 (owner: "Static white water
+		// that doesn't match anything. (needs to be an animated effect). A single blue tint above it."): the flat 1x3
+		// RM_BankWeirWater strip (pool tint + frozen foam) is gone - the current model has no raised level to tint - and
+		// the white water is a real-time flip-book (DrawAt), only where the current crosses the wall, scaled to the flow.
 
 		/// <summary>The facing the art is drawn in (RM_RiverMath.WeirArtRot): the placed axis, its downstream side from the
 		/// current at the wet end.</summary>
@@ -661,9 +647,7 @@ namespace RimMandrake.FlowWorks.Rivers
 			bool holding = ArrestActive && !breaching && RM_RiversSettings.WorksActive;
 			if (holding)
 			{
-				Material water = RM_WeirArt.Mat(RM_WeirArt.WaterRoot + "_" + RM_WeirArt.FacingName(rot), ShaderDatabase.Transparent);
 				Material spill = basePath == null ? null : RM_WeirArt.Mat(basePath + "Spill_" + RM_WeirArt.FacingName(rot), ShaderDatabase.Transparent);
-				float underY = AltitudeLayer.FloorEmplacement.AltitudeFor();
 				foreach (IntVec3 c in this.OccupiedRect())
 				{
 					if (!RM_RiverWorks.IsWaterCell(Map, c))
@@ -671,11 +655,6 @@ namespace RimMandrake.FlowWorks.Rivers
 						continue;
 					}
 					Vector3 cc = c.ToVector3Shifted();
-					if (water != null)
-					{
-						// 1 cell along the wall, 3 across it: pool cell upstream, the wall's own cell, foam cell downstream
-						Printer_Plane.PrintPlane(layer, new Vector3(cc.x, underY, cc.z), rot.IsHorizontal ? new Vector2(1f, 3f) : new Vector2(3f, 1f), water);
-					}
 					if (spill != null)
 					{
 						Vector3 sc = rot.IsHorizontal ? new Vector3(cc.x, center.y + Altitudes.AltInc * 0.25f, center.z)
@@ -703,6 +682,88 @@ namespace RimMandrake.FlowWorks.Rivers
 					if (!highJoined) Printer_Plane.PrintPlane(layer, new Vector3(center.x, capY + Altitudes.AltInc * 0.1f, r.maxZ + 1f + RM_WeirArt.CapLift), capSize, cap);
 				}
 			}
+		}
+
+		/// <summary>The animated white water (drawerType MapMeshAndRealTime: the wall, posts and crest sheet are in the map
+		/// mesh; only the foam is drawn per frame, so base.DrawAt is NOT called - it would draw the wall twice). One plane per
+		/// wet section cell whose downstream neighbour is water, rotated so the crest edge sits on the wall and the foam runs
+		/// downstream; strength, speed and reach from the lane under it (RM_RiverMath.WeirFoam), frame from real time so it
+		/// moves like vanilla river water, also while paused.</summary>
+		protected override void DrawAt(Vector3 drawLoc, bool flip = false)
+		{
+			if (RM_RiversSettings.weirWhiteWater && RM_RiversSettings.WorksActive && Spawned && ArrestActive && !breaching)
+			{
+				DrawWhiteWater();
+			}
+		}
+
+		private void DrawWhiteWater()
+		{
+			Map map = Map;
+			RM_MapComponent_RiverCurrent comp = map.GetComponent<RM_MapComponent_RiverCurrent>();
+			if (comp == null || !RM_RiverMath.WeirFoamStep(Rotation.AsInt, comp.FlowDirAt(WaterCell), out int dx, out int dz))
+			{
+				return; // the current runs along the wall, or there is none: nothing falls over it
+			}
+			bool surge = comp.SurgeActive; // read, not recomputed: the component refreshes it every scan
+			float y = AltitudeLayer.FloorEmplacement.AltitudeFor();
+			// the frames are drawn crest-at-top, falling south (-z); turn them to fall along (dx, dz)
+			Quaternion turn = Quaternion.Euler(0f, dz < 0 ? 0f : dz > 0 ? 180f : dx > 0 ? 270f : 90f, 0f);
+			RM_RiverMath.WeirFoamLeft(dx, dz, out int lx, out int lz);
+			float pace = RM_RiverMath.WeirFoam(RM_RiverMath.LaneCentre, surge).fps;
+			foreach (IntVec3 c in this.OccupiedRect())
+			{
+				if (!FallsAt(map, c, dx, dz))
+				{
+					continue;
+				}
+				RM_RiverMath.WeirFoamLook look = RM_RiverMath.WeirFoam(comp.LaneAt(new IntVec3(c.x + dx, 0, c.z + dz)), surge);
+				if (look.alpha <= 0f)
+				{
+					continue;
+				}
+				// one clock for every section (phase 0, the centre lane's pace): joined sections show the same frame, so the
+				// tileable sheet has no seam; the lane changes only how strong the foam reads
+				int frame = RM_RiverMath.WeirFoamFrame(Time.realtimeSinceStartup, pace, FoamFrames, 0);
+				// an end of the white water (no foam beside it along the wall) is drawn broken, not cut straight
+				string end = RM_RiverMath.WeirFoamSuffix(FoamBeside(map, c, lx, lz, dx, dz), FoamBeside(map, c, -lx, -lz, dx, dz));
+				Material mat = RM_WeirArt.Foam(frame, end, look.alpha);
+				if (mat == null)
+				{
+					return;
+				}
+				// the plane starts at the wall's downstream edge and reaches look.length cells downstream
+				Vector3 at = c.ToVector3Shifted() + new Vector3(dx, 0f, dz) * (0.5f + look.length * 0.5f);
+				at.y = y;
+				Vector3 scale = new Vector3(1f, 1f, look.length);
+				Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(at, turn, scale), mat, 0);
+			}
+		}
+
+		/// <summary>Water falls over the wall at cell c: c is wet and so is the cell below it.</summary>
+		private static bool FallsAt(Map map, IntVec3 c, int dx, int dz)
+		{
+			IntVec3 below = new IntVec3(c.x + dx, 0, c.z + dz);
+			return c.InBounds(map) && below.InBounds(map) && RM_RiverWorks.IsWaterCell(map, c) && RM_RiverWorks.IsWaterCell(map, below);
+		}
+
+		/// <summary>Does white water continue in the cell beside c along the wall (a holding weir section there, water falling)?</summary>
+		private static bool FoamBeside(Map map, IntVec3 c, int sx, int sz, int dx, int dz)
+		{
+			IntVec3 n = new IntVec3(c.x + sx, 0, c.z + sz);
+			if (!n.InBounds(map) || !FallsAt(map, n, dx, dz))
+			{
+				return false;
+			}
+			List<Thing> things = n.GetThingList(map);
+			for (int i = 0; i < things.Count; i++)
+			{
+				if (things[i] is RM_Building_BankWeir w && w.ArrestActive && !w.Breaching)
+				{
+					return true;
+				}
+			}
+			return false;
 		}
 
 		public override IEnumerable<Gizmo> GetGizmos()
@@ -770,7 +831,6 @@ namespace RimMandrake.FlowWorks.Rivers
 			Scribe_Values.Look(ref neverBreaches, "neverBreaches", false);
 			Scribe_Values.Look(ref breaching, "breaching", false);
 			Scribe_Values.Look(ref breachEndTick, "breachEndTick", 0);
-			Scribe_Values.Look(ref nextCatchTick, "nextCatchTick", -1);
 			Scribe_Values.Look(ref wearDebt, "wearDebt", 0f);
 			Scribe_Collections.Look(ref cascadeStakes, "cascadeStakes", LookMode.Reference);
 			Scribe_Collections.Look(ref cascadeFireTicks, "cascadeFireTicks", LookMode.Value);
@@ -888,12 +948,35 @@ namespace RimMandrake.FlowWorks.Rivers
 	[StaticConstructorOnStartup]
 	public static class RM_WeirArt
 	{
-		public const string WaterRoot = "RimMandrake/FlowWorks/Weir/RM_BankWeirWater";
+		/// <summary>The white-water flip-book, look-free: RM_WeirWhiteWater_00..11 (+ _a/_b/_ab end variants), crest at the
+		/// top, falling south.
+		/// Source: art_source/Weir/whitewater_frames.py (procedural, seamless in time).</summary>
+		public const string FoamRoot = "RimMandrake/FlowWorks/Weir/WhiteWater/RM_WeirWhiteWater_";
 		public const float CapSize = 0.7f;
 		public const float CapLift = 0.08f;
 		private static readonly Dictionary<string, Material> mats = new Dictionary<string, Material>();
 
 		public static string FacingName(Rot4 r) => r == Rot4.North ? "north" : r == Rot4.East ? "east" : r == Rot4.South ? "south" : "west";
+
+		private static readonly Dictionary<int, Material> foam = new Dictionary<int, Material>();
+
+		/// <summary>One foam frame, end variant ("", _a, _b, _ab) and strength (alpha quantised to tenths so the cache stays
+		/// tiny); null when the texture is absent (draws nothing rather than magenta).</summary>
+		public static Material Foam(int frame, string end, float alpha)
+		{
+			int a = Mathf.Clamp(Mathf.RoundToInt(alpha * 10f), 1, 10);
+			int v = end == "_a" ? 1 : end == "_b" ? 2 : end == "_ab" ? 3 : 0;
+			int key = (frame * 4 + v) * 16 + a;
+			if (foam.TryGetValue(key, out Material m))
+			{
+				return m;
+			}
+			string path = FoamRoot + frame.ToString("00") + end;
+			Texture2D tex = ContentFinder<Texture2D>.Get(path, false);
+			m = tex == null ? null : MaterialPool.MatFrom(path, ShaderDatabase.Transparent, new Color(1f, 1f, 1f, a / 10f));
+			foam[key] = m;
+			return m;
+		}
 
 		public static Material Mat(string path, Shader shader)
 		{

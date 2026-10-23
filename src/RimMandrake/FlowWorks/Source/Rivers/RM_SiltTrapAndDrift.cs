@@ -169,7 +169,9 @@ namespace RimMandrake.FlowWorks.Rivers
 	/// <summary>
 	/// Owner card 2 (2026-10-03): a weir catches fish "plus drift, but the drift must be BIOME-RELEVANT
 	/// items per biome, not generic wood". One def per biome group; any mod adds a def for its own
-	/// biomes. A biome with no def gives no drift (fish only). Shipped tables are PROVISIONAL.
+	/// biomes. Shipped tables are PROVISIONAL. Weir review 2026-10-23 (owner: "No auto fish capture"): the weir no longer
+	/// rolls these out of nothing and nothing reads them now; kept as data for the open question of rivers carrying
+	/// biome flotsam ONTO the map as real floating things (design/RimMandrake/weir_review_2026-10-23.md).
 	/// </summary>
 	public class RM_RiverDriftDef : Def
 	{

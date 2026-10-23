@@ -191,13 +191,18 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "the cost moves by the difference from what was applied, so a settings write can take it back");
             });
 
-            Case("RiverSwitchFlip_weirCatchesDrift", () =>
+            Case("RiverSwitchFlip_weirCapturesFloating", () =>
             {
-                Assert(RM_RiverMath.DriftRollChance(true, 0.25f) == 0.25f && RM_RiverMath.DriftRollChance(false, 0.25f) < 0f, "on rolls at the drift chance, off never rolls");
-                Assert(RM_RiverMath.DriftRollChance(true, 0f) == 0f && RM_RiverMath.DriftRollChance(true, 2f) == 1f, "the chance is clamped, not switched");
+                // weir review 2026-10-23: the weir only lifts what floated into it; the fish/drift rolls are gone
                 string w = Src(Path.Combine("Rivers", "RM_Weir.cs"));
-                Has(w, @"float driftChance = RM_RiverMath\.DriftRollChance\(" + S + @"weirCatchesDrift, " + S + @"weirDriftChance\); if \(driftChance >= 0f\) \{ driftResult = Rand\.Chance\(driftChance\) \? TryCatchDrift\(\)",
-                    "TryCatch passes weirCatchesDrift and rolls only when on");
+                Has(w, @"if \(!" + S + @"weirCapturesFloating\)\s*\{\s*return 0;", "CaptureFloating returns at once when the switch is off");
+            });
+
+            Case("RiverSwitchFlip_weirWhiteWater", () =>
+            {
+                // weir review 2026-10-23: the animated white water is drawn only while its switch is on
+                string w = Src(Path.Combine("Rivers", "RM_Weir.cs"));
+                Has(w, @"if \(" + S + @"weirWhiteWater && ", "DrawAt draws the white water only when its switch is on");
             });
 
             // ── walk lines' offline halves ─────────────────────────────────────

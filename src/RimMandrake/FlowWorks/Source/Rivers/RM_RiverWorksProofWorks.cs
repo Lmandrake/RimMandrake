@@ -264,46 +264,59 @@ namespace RimMandrake.FlowWorks.Rivers
 			}
 		}
 
-		/// <summary>weir.fish_draws_stock: spawns a weir and forces N catch rolls; reports the stock.</summary>
-		public static string ProofWeirCatch(string arg)
+		/// <summary>weir.captures_floating (WEIR_CATCH_FIX_NO_FREE_FISH, owner 2026-10-23: "they should just capture anything
+		/// floating downstream. No auto fish capture."): spawns a weir, lays a 10-stack in its first intake cell (where the
+		/// carry stops a drifting thing), forces CaptureFloating; "CAPTURE intake=N lifted=L onDry=B unitsBefore=U
+		/// unitsAfter=V created=C at=P". created counts item stacks within 4 cells that were not there before, beyond the
+		/// probe's own: the weir must make nothing.</summary>
+		public static string ProofWeirCapture(string arg)
 		{
 			Map map = Find.CurrentMap;
-			if (map == null)
+			RM_MapComponent_RiverCurrent comp = map?.GetComponent<RM_MapComponent_RiverCurrent>();
+			if (comp == null)
 			{
-				return "UNMEASURED no map";
+				return "UNMEASURED no map or no current component";
 			}
-			int n = int.TryParse(arg, out int k) && k > 0 ? k : 10;
 			RM_Building_BankWeir w = SpawnWeir(map, out string why);
 			if (w == null)
 			{
 				return why;
 			}
-			WaterBody body = map.waterBodyTracker?.WaterBodyAt(w.WaterCell);
-			if (body == null || !body.HasFish)
+			Thing stack = null;
+			try
 			{
-				w.Destroy();
-				return "UNMEASURED the weir's water body has no fish stock";
+				List<IntVec3> intake = w.IntakeCells().FindAll(c => c.InBounds(map) && c.Standable(map) && c.GetFirstItem(map) == null);
+				if (intake.Count == 0)
+				{
+					return "UNMEASURED intake=0: no free cell whose current runs onto this weir at=" + w.Position;
+				}
+				HashSet<Thing> before = new HashSet<Thing>();
+				foreach (Thing t in GenRadial.RadialDistinctThingsAround(w.Position, map, 4f, true))
+				{
+					if (t.def.category == ThingCategory.Item) before.Add(t);
+				}
+				stack = ThingMaker.MakeThing(ThingDefOf.WoodLog); // the probe's own floating stack, not the weir's
+				stack.stackCount = 10;
+				GenSpawn.Spawn(stack, intake[0], map);
+				int lifted = w.CaptureFloating();
+				bool onDry = stack.Spawned && !comp.HasCurrent(stack.Position);
+				int unitsAfter = stack.Spawned ? stack.stackCount : 0;
+				int created = 0;
+				foreach (Thing t in GenRadial.RadialDistinctThingsAround(w.Position, map, 4f, true))
+				{
+					if (t.def.category == ThingCategory.Item && t != stack && !before.Contains(t)) created++;
+				}
+				return "CAPTURE intake=" + intake.Count + " lifted=" + lifted + " onDry=" + onDry + " unitsBefore=10 unitsAfter="
+					+ unitsAfter + " created=" + created + " at=" + w.Position;
 			}
-			float before = body.Population;
-			int fish = 0;
-			int drift = 0;
-			for (int i = 0; i < n; i++)
+			finally
 			{
-				string r = w.TryCatch();
-				if (r.Contains("fish=") && !r.Contains("fish=missed") && !r.Contains("fish=no") && !r.Contains("fish=full") && !r.Contains("fish=off"))
+				if (arg != "keep")
 				{
-					fish++;
-				}
-				if (r.Contains("drift=") && !r.Contains("drift=missed") && !r.Contains("drift=none") && !r.Contains("drift=full") && !r.Contains("drift=off"))
-				{
-					drift++;
+					DestroyIfSpawned(stack);
+					if (!w.Destroyed) w.Destroy();
 				}
 			}
-			float after = body.Population;
-			int held = w.HeldCatch().Count;
-			w.Destroy();
-			return "CATCH fishRolls=" + fish + " driftRolls=" + drift + " held=" + held
-				+ " before=" + before.ToString("F1") + " after=" + after.ToString("F1") + " biome=" + map.Biome.defName;
 		}
 
 		/// <summary>breach.wash: spawns a weir with a stack of catch on its bank, runs it down, breaches it;
