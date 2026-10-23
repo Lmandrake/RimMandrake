@@ -1,6 +1,8 @@
 # Automated RimWorld art evaluation — design (2026-10-23)
 
-Status: DESIGN, decision-ready; §6 waits on the pilot. Author: BENCH design helper (Opus 5.5), read-only on code.
+Status: §1–§4 DESIGN; §6 pilot SCORED; **§8 BUILT** — the owner's pipeline as adopted 2026-10-23, skill
+`skills/rimworld-art-evaluation/`, code `src/RimMandrake/Utils/art_eval/` (item `ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST`).
+Authors: BENCH design helper (Opus 5.5); §8 by the BENCH build helper.
 Tags: **MEASURED** = counted this sitting (command named) · **ESTIMATED** = reasoned, not run · **UNMEASURED** = nobody knows yet.
 
 ## 0. The request and what this is
@@ -373,59 +375,10 @@ The owner's past verdicts are the key. The harness follows `blind-evaluation`, `
 
 ## 5. Pipeline and skill
 
-### 5.1 Where it sits
+### 5.1–5.2 Where it sits, file layout — moved
 
-```
-render / regen lands ──► numeric gates (validate_sprite, facing_scale_lint, placeholder_detect)
-                              │ fail → regen, never reaches a model
-                              ▼
-                     card builder (offline; capture panels pulled from a keeper save when the template needs them)
-                              ▼
-                     reviewer(s): GPT ∥ Opus, blind ──► verdict JSONs
-                              ▼
-                     reconcile: agree KEEP → judge-KEEP · agree REDO → regen with redo_brief (≤ 3 rounds)
-                                disagree / needs_human / owner-kept → flagged for him
-                              ▼
-          writes infrastructure/state/delegated/<date>/<subject>.json  (the brief's existing verdict file)
-          writes <sheet stem>.prereview.json (looked_by "judge:<ids>", OK/FIXED/FLAG per row, caught)
-                              ▼
-                     art_sheet.py builds the owner's sheet from judge-KEEP + flagged rows only,
-                     verdict lines beside each picture (delegation_policy §6) → serve_gated.py
-```
-
-It **extends the `prereview.py` gate, it does not replace it**: the evaluator is the "naive judge" that gate
-already names; its output fills the record the gate checks. The owner-facing sheet and its 14 requirements are
-unchanged — the card is the *model's* page, the sheet stays *his*.
-
-### 5.2 File layout
-
-```
-skills/rimworld-art-evaluation/
-  SKILL.md                         triggers, the pipeline, the ship bars, where verdicts go
-  references/
-    card_spec.md                   §1 of this doc, maintained
-    templates/T01_creature.md …    one per template: panels, checks → questions, brief IDs, offline/capture
-    prompt_versioning.md           how prompts change (§5.4)
-    scoring.md                     the harness (§4.3), bars, how to read a score
-  prompts/
-    preamble@v1.md
-    modules/T01@v1.md …
-    calibration/T01/<subject>.json (+ composite png path)
-  scripts/
-    build_card.py <defName|job>... --template auto    → Transient/art_eval/<date>/<subject>/{card.png,card.json,tiles/}
-    evaluate.py <card dir>... --reviewer gpt|opus|both  → verdict JSONs (validates schema; re-asks once)
-    reconcile.py <date>                                  → delegated/*.json + prereview.json + flagged list
-    score.py --split scoring --template T01              → precision/recall/κ table vs the owner key
-    key_extract.py                                        → the owner-verdict key from decisions.json + art ledger
-    feedback.py add <subject> --owner-said "…"           → an override into the ledger below
-    selftest.py                                           → mutation fixtures (§4.3.6) and schema checks
-src/RimMandrake/Utils/art/eval/   (if the scripts must import art_sheet/scale_panel, they live here and the skill points at them)
-infrastructure/state/art_eval/
-  key.jsonl                        owner verdict key (append-only)
-  split.json                       calibration / scoring / regression by subject (frozen)
-  feedback.jsonl                   every owner override of a model verdict
-  scores/<prompt_version>.json     every scoring run, kept
-```
+The ensemble-and-reconcile flow first proposed here was replaced by the owner's pipeline (2026-10-23). The built
+flow and file layout are §8 and `skills/rimworld-art-evaluation/references/pipeline.md`.
 
 ### 5.3 The skill
 
@@ -503,11 +456,11 @@ different biome before quoting any improved rate.
 
 ### 7.2 Open questions (each becomes a question card)
 
-1. **Ensemble or one reviewer?** Run GPT and Opus on every subject and send him only the splits (2× quota,
+1. **ANSWERED 2026-10-23 (§8): Opus first, GPT only on weak.** ~~Ensemble or one reviewer?~~ Run GPT and Opus on every subject and send him only the splits (2× quota,
    fewest wrong KEEPs), or the pilot's winner per template alone (half the quota, more wrong KEEPs reach him)?
-2. **What may an agreed KEEP do?** Install without his look (delegation policy allows it), or always appear on
+2. **ANSWERED 2026-10-23 (§8): auto-accept, then a shadow sheet after the run until a template earns trust.** ~~What may an agreed KEEP do?~~ Install without his look (delegation policy allows it), or always appear on
    his next sheet as "pre-approved, glance only"?
-3. **Audit rate of agreed verdicts.** Should he see a random sample (say 10 %) of agreed KEEPs and REDOs every
+3. **ANSWERED 2026-10-23 (§8): every decision on the shadow sheet while shadow mode is on; the turn-off threshold is §8.4 Q2.** ~~Audit rate of agreed verdicts.~~ Should he see a random sample (say 10 %) of agreed KEEPs and REDOs every
    sitting so drift is caught — or only flagged rows?
 4. **Is his past verdict history the right key?** Some rulings were "good enough for now". Use all of them, or
    only rulings he marks as standing (a short sitting to mark them)?
@@ -515,5 +468,69 @@ different biome before quoting any improved rate.
    session, or must every such render be captured before it reaches him?
 6. **Bars to ship a template.** REDO recall ≥ 0.7 and precision ≥ 0.6 — right, or does he want a stricter
    recall (fewer bad pictures reaching him at the cost of more regenerations)?
-7. **Does GPT's own art get GPT's review?** Codex imagegen makes most renders; should a GPT-made render always
+7. **ANSWERED 2026-10-23 (§8): Opus always looks first; GPT is never the sole judge of a GPT-image render.** ~~Does GPT's own art get GPT's review?~~ Codex imagegen makes most renders; should a GPT-made render always
    be judged by Opus (independence), with GPT only as the second opinion?
+
+## 8. The adopted pipeline (BUILT 2026-10-23)
+
+### 8.1 His words
+
+Owner, 2026-10-23, by card (his words), on reviewers: *"None of those. Opus scores first. If it says good, auto-accept.
+If it says really bad, regen. If it says weak/need a call, send to GPT. If GPT says strong accept, accept, otherwise
+regen. If Human live walk notices a problem, look back and improve evaluation criteria or process that generated the
+issue. Please evaluate this proposal for issues and improve."* On the experiment: *"Use the system right now, but
+while we're evaluating it, build human review sheets AFTER the process works for quick human feedback. Then we turn
+the human review off when it looks good."* Scope: *"Creatures + plants + machines (Recommended)"*.
+
+### 8.2 His pipeline, with the seat's guards (each: owner's rule + guard)
+
+Full text, evidence and code pointers: `skills/rimworld-art-evaluation/references/pipeline.md`.
+
+| # | owner's rule | guard added | why (evidence) |
+|---|---|---|---|
+| 1 | Opus good → accept | good = 0 policy-blocking findings + every checklist item answered ok + model did not doubt; severity from `severity_policy.md`, never the model | pilot: Opus saw 15/16 of his defects but called 7 minor (§6) |
+| 2 | weak → GPT | a TARGETED second look: GPT answers each Opus concern confirmed/refuted/unclear | GPT perceives less than Opus (§6); it settles named questions |
+| 3 | GPT strong accept → accept | strong = every concern refuted WITH evidence + no blocking finding of its own | a bare "looks fine" is not a refutation |
+| 4 | otherwise regen | the unrefuted blocking findings become explicit prompt edits; ≤ 3 rounds, then ESCALATE (one line) | a reroll repeats the defect; delegation_policy §4.5 |
+| 5 | — | owner-KEPT art is judged but never auto-replaced (HOLD_KEPT, kept-but-flagged line) | delegation_policy §2.3 — **open question** |
+| 6 | — | Opus always first: the GPT-image generator is never the sole judge of its own output | independence |
+| 7 | shadow sheets after, turned off when good | `shadow.py`: gated art_sheet sheet, decision + verdicts per row, KEEP/OVERRIDE; prereview.json from the run; per-template streak, threshold a setting (30) | his experiment answer |
+| 8 | live walk → improve criteria | criteria ledger (`ledger.py`) → a named check/prompt/policy change + regression example; `runner.py regress` on every prompt version | his rule |
+| 9 | — | catch items follow their living animal (REGEN_AFTER_SOURCE); invented subjects get description-derived required departures instead of a blunt Earth-animal rule | pilot §5–§6: catch REDOs = species redone; blunt rule flips Burrak/Vobbal |
+| 10 | — | every decision logs prompt versions (tag + sha), model ids read back from the CLIs, card + source image sha256s | reproducibility; nothing names an account |
+
+Machines (T9) are built as a template but every machine card without the in-game **assembled** capture is
+`HOLD_INPUT` — never judged on part textures alone.
+
+### 8.3 End-to-end run (MEASURED, test mode)
+
+Run `infrastructure/state/art_eval/runs/e2e_weepingstones_20261023/` (+ `_r2`): 6 pilot subjects, one candidate each
+(the render he ruled on 2026-10-10), Opus = `claude-opus-5-5`, GPT = `gpt-6.1-sol`, regen prompts =
+`claude-sonnet-5-5` (all read back from the CLIs).
+
+| subject | his verdict | pipeline | path |
+|---|---|---|---|
+| RM_Huldu C | REDO | REGEN | Opus REALLY_BAD (Earth otter, departures missing, facings) |
+| RM_Ssurr B | REDO | REGEN | Opus REALLY_BAD (fan does not turn with the body — his defect) |
+| RM_Vellak B | REDO | REGEN | Opus WEAK → GPT confirmed facing inconsistency (GPT refuted "camel") |
+| RM_HulduCatch C | REDO | REGEN_AFTER_SOURCE | living Huldu REGEN — no model call |
+| RM_Burrak B | KEEP | REGEN | Opus REALLY_BAD (Earth body + facing size) — a false regen; ledger CL-003 OPEN |
+| RM_Shadefern B | KEEP | REGEN | Opus WEAK → GPT: Earth fern. Fixed (CL-001: plants get `earth_body_named`); re-run r2 still REGEN on ANCHOR (both models) — CL-002 OPEN |
+
+All 4 of his REDOs were kept from shipping; 2 of his 2 KEEPs were sent to regeneration (wasted renders, not bad art
+shipped). Timing: Opus 21–47 s per call, GPT 25–41 s, regen prompt 10–15 s; ~55–100 s per subject end to end.
+Claude cost as reported by the CLI: ~$0.31–0.38 per Opus call, ~$0.12 per regen prompt (subscription quota, not
+billed). **Caveats:** N = 6 is a function check, not a score; the severity tolerances were taken from this same
+sitting's verdicts (pilot §6), so this run cannot validate them — the shadow sheets on NEW renders are the test.
+The shadow sheet built for this run passes the 14-requirement gate and its prereview check, and correctly FLAGs 5
+rows: the judged (historical) pictures are no longer what the sheet shows — production specs carry their
+`artpipe_job` so the judged render is a column.
+
+### 8.4 Open questions for the owner
+
+1. **Kept art:** may the pipeline regenerate owner-kept art it judges really bad (the old picture stays until you
+   rule), or is replacing kept art always yours (today: always yours)?
+2. **Shadow turn-off threshold:** provisional 30 consecutive subjects per template with no blocking override
+   (bounds the miss rate at ≤ 10 % with 95 % confidence); 59 bounds it at ≤ 5 %. Which?
+3. **Blocking override definition:** today an accept↔regen flip or "other" resets the streak; a polish note does not.
+
