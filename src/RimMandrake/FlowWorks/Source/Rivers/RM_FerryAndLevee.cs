@@ -9,6 +9,86 @@ using Verse;
 namespace RimMandrake.FlowWorks.Rivers
 {
 	/// <summary>
+	/// RIVER_WEIR_ART_JUDGE_CODEX_SQUINTS fix 8 (owner card 2026-10-17: "Commission REVIEW.md items 3,4,6,7,8,9,10 in four
+	/// styles; judged in game"): a line of stakes reads as one levee. Each stake prints its lamp post (in its look) and the
+	/// earth-and-crib ridge span to an east or north neighbour stake (RM_RiverMath.StakeOwnsRidge: every touching pair once).
+	/// Spans are RM_BankStakeRidge_h / _v beside the look's post texture; a neighbour appearing or leaving re-prints the
+	/// stakes west and south of it, which own the spans toward it.
+	/// </summary>
+	public class RM_Building_BankStake : Building
+	{
+		public override void SpawnSetup(Map map, bool respawningAfterLoad)
+		{
+			base.SpawnSetup(map, respawningAfterLoad);
+			DirtyOwners(map);
+		}
+
+		public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
+		{
+			Map map = Map;
+			base.DeSpawn(mode);
+			if (map != null)
+			{
+				DirtyOwners(map);
+			}
+		}
+
+		private void DirtyOwners(Map map)
+		{
+			foreach (IntVec3 c in new[] { Position + IntVec3.West, Position + IntVec3.South })
+			{
+				if (c.InBounds(map))
+				{
+					map.mapDrawer.MapMeshDirty(c, MapMeshFlagDefOf.Things);
+				}
+			}
+		}
+
+		private bool IsStakeAt(int x, int z)
+		{
+			IntVec3 c = new IntVec3(x, 0, z);
+			return Map != null && c.InBounds(Map) && c.GetFirstThing(Map, def) != null;
+		}
+
+		public override void Print(SectionLayer layer)
+		{
+			Graphic g = Graphic;
+			if (g == null || def.dontPrint)
+			{
+				base.Print(layer);
+				return;
+			}
+			Vector3 center = this.TrueCenter();
+			string basePath = StyleDef?.graphicData?.texPath ?? def.graphicData?.texPath;
+			Vector3 ridgeAt = center;
+			ridgeAt.y -= Altitudes.AltInc * 0.2f;   // spans under every post
+			if (basePath != null)
+			{
+				if (RM_RiverMath.StakeOwnsRidge(Position.x, Position.z, 1, 0, IsStakeAt))
+				{
+					Material h = RM_WeirArt.Mat(basePath + "Ridge_h", ShaderDatabase.Cutout);
+					if (h != null)
+					{
+						Printer_Plane.PrintPlane(layer, ridgeAt + new Vector3(0.5f, 0f, 0f),
+							new Vector2(RM_RiverMath.StakeRidgeHSize[0], RM_RiverMath.StakeRidgeHSize[1]), h);
+					}
+				}
+				if (RM_RiverMath.StakeOwnsRidge(Position.x, Position.z, 0, 1, IsStakeAt))
+				{
+					Material v = RM_WeirArt.Mat(basePath + "Ridge_v", ShaderDatabase.Cutout);
+					if (v != null)
+					{
+						Printer_Plane.PrintPlane(layer, ridgeAt + new Vector3(0f, 0f, 0.5f),
+							new Vector2(RM_RiverMath.StakeRidgeVSize[0], RM_RiverMath.StakeRidgeVSize[1]), v);
+					}
+				}
+			}
+			Printer_Plane.PrintPlane(layer, center + new Vector3(0f, 0f, RM_RiverMath.StakePostLift),
+				new Vector2(RM_RiverMath.StakePostSize, RM_RiverMath.StakePostSize), g.MatAt(Rot4.North, this));
+		}
+	}
+
+	/// <summary>
 	/// Rope ferry (owner card 3, 2026-10-03: ferry included). Two posts on opposite banks string a
 	/// rope between them when the straight line crosses moving water; every cell on the line is exempt
 	/// from the carry (and stops drift there - the rope catches it). Drafted colonists cross along

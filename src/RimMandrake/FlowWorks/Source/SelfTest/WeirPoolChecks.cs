@@ -440,6 +440,68 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "RM_BankWeir is drawn MapMeshAndRealTime (the wall in the mesh, the foam per frame)");
                 Assert(!Regex.IsMatch(xml, @"<defName>RM_BankWeir</defName>[\s\S]*?catches fish[\s\S]*?</ThingDef>"), "the description no longer promises fish");
             });
+
+            // RIVER_WEIR_ART_JUDGE_CODEX_SQUINTS fix 8 (owner card 2026-10-17: "Commission REVIEW.md items 3,4,6,7,8,9,10 in
+            // four styles; judged in game"): a stake line draws a continuous levee ridge. Each stake owns its east and north
+            // spans, so every touching pair is drawn exactly once and a lone or diagonal stake draws none.
+            Case("RiverArt_stake_ridges_one_span_per_touching_pair", () =>
+            {
+                var line = new HashSet<(int, int)> { (0, 0), (1, 0), (2, 0), (3, 0), (4, 0), (4, 1), (4, 2), (9, 9), (10, 10) };
+                int h = 0, v = 0;
+                foreach (var c in line)
+                {
+                    bool e = RM_RiverMath.StakeOwnsRidge(c.Item1, c.Item2, 1, 0, (x, z) => line.Contains((x, z)));
+                    bool n = RM_RiverMath.StakeOwnsRidge(c.Item1, c.Item2, 0, 1, (x, z) => line.Contains((x, z)));
+                    if (e) h++;
+                    if (n) v++;
+                }
+                Assert(h == 4, "five in a row then a turn: 4 east-west spans, got " + h);
+                Assert(v == 2, "the turn north: 2 north-south spans, got " + v);
+                Assert(!RM_RiverMath.StakeOwnsRidge(9, 9, 1, 1, (x, z) => line.Contains((x, z))), "a diagonal pair never draws a span");
+                Assert(!RM_RiverMath.StakeOwnsRidge(1, 0, -1, 0, (x, z) => line.Contains((x, z))), "west/south spans belong to the neighbour");
+                Assert(Math.Abs(RM_RiverMath.StakeRidgeHSize[1] - 48f / 128f) < 1e-4 && Math.Abs(RM_RiverMath.StakeRidgeVSize[0] - 64f / 128f) < 1e-4,
+                    "ridge draw sizes match the art canvases (128x48, 64x128)");
+            });
+
+            // fix 10: the silt-trap's sediment wedge lies against its UPSTREAM face, tip pointing upstream, and grows with
+            // the cells the trap has richened (full once clogged).
+            Case("RiverArt_silt_wedge_upstream_and_grows", () =>
+            {
+                // flow south (6): upstream north, the wedge sits north of the trap and is not turned (art tip is up)
+                Assert(RM_RiverMath.SiltWedge(6, 0, false, out float ox, out float oz, out float ang, out float s), "a current gives a wedge");
+                Assert(Math.Abs(ox) < 1e-4 && oz > 0.3f && Math.Abs(ang) < 1e-3, "flow S: wedge north, unturned, got " + ox + "," + oz + " ang " + ang);
+                // flow east (0): upstream west, turned 270 clockwise
+                RM_RiverMath.SiltWedge(0, 0, false, out ox, out oz, out ang, out _);
+                Assert(ox < -0.3f && Math.Abs(oz) < 1e-4 && Math.Abs(ang - 270f) < 1e-3, "flow E: wedge west, 270, got " + ox + "," + oz + " ang " + ang);
+                // flow north-east (1): upstream south-west, 225
+                RM_RiverMath.SiltWedge(1, 0, false, out ox, out oz, out ang, out _);
+                Assert(ox < 0f && oz < 0f && Math.Abs(ang - 225f) < 1e-3, "flow NE: wedge SW, 225, got " + ang);
+                RM_RiverMath.SiltWedge(6, 10, false, out _, out _, out _, out float big);
+                RM_RiverMath.SiltWedge(6, 2, false, out _, out _, out _, out float mid);
+                RM_RiverMath.SiltWedge(6, 0, true, out _, out _, out _, out float clog);
+                Assert(s < mid && mid < big && Math.Abs(big - 1f) < 1e-4 && Math.Abs(clog - 1f) < 1e-4, "grows with richened cells, full when clogged: " + s + " " + mid + " " + big + " " + clog);
+                Assert(!RM_RiverMath.SiltWedge(-1, 3, false, out _, out _, out _, out _), "no current: no wedge");
+            });
+
+            Case("RiverArt_stake_and_silt_trap_wired_in_four_looks", () =>
+            {
+                string defs = Path.Combine(Path.GetDirectoryName(RiverSwitchFlipChecks.SrcPath("RM_Volume.cs")), "..", "Defs", "Rivers");
+                // textures are not staged with the selftest build (winbuild RSYNC_EXCLUDES): art_source/RiverWorks/check_install.py checks them
+                string styles = File.ReadAllText(Path.Combine(defs, "RM_BankWorksStyles.xml"));
+                string works = File.ReadAllText(Path.Combine(defs, "RM_BankWorks.xml"));
+                foreach (string look in new[] { "Scrapper", "Industrial", "Modern", "Futuristic" })
+                {
+                    foreach (string d in new[] { "RM_BankStake", "RM_SiltTrap" })
+                    {
+                        Assert(styles.Contains("<defName>" + d + "_" + look + "</defName>"), "style def " + d + "_" + look);
+                        Assert(styles.Contains("<texPath>RimMandrake/FlowWorks/Rivers/" + look + "/" + d + "</texPath>"), "style texPath " + d + "_" + look);
+                    }
+                }
+                Assert(Regex.IsMatch(works, @"<defName>RM_BankStake</defName>[\s\S]*?RM_Building_BankStake[\s\S]*?CompProperties_Styleable[\s\S]*?</ThingDef>"), "stake: ridge-drawing class + look picker");
+                Assert(Regex.IsMatch(works, @"<defName>RM_SiltTrap</defName>[\s\S]*?CompProperties_Styleable[\s\S]*?</ThingDef>"), "silt trap: look picker");
+                string look2 = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "PipeLook.cs"));
+                Assert(look2.Contains("\"RM_BankStake\"") && look2.Contains("\"RM_SiltTrap\""), "PipeLook registers both with the shared picker");
+            });
         }
     }
 }
