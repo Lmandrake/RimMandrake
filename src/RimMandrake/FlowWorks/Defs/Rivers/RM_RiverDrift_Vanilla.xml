@@ -5,8 +5,12 @@
   Our own biomes add their own defs in their own mods (owed, per-biome sitting - never a sweep).
   ALL TABLES PROVISIONAL: picked as "what this country's banks would shed into a river" - fruit and
   forage off the banks, hides of what drowns upstream. Every defName checked against RimSage 2026-10-05.
-  UNUSED since the weir review 2026-10-23 (owner: "No auto fish capture" - a weir catches only what floats into it).
-  Kept as data for the open question: should rivers carry this flotsam ONTO the map as real floating things?
+  Since the weir review 2026-10-23 a weir creates nothing; owner card 2026-10-23 07:19 ("Yes, occasional flotsam"):
+  the river itself brings these rows onto the map as real floating items at its upstream entry
+  (RM_MapComponent_RiverCurrent.TrySpawnFlotsam, setting flotsamPerDay). Rows added 2026-10-23 (delegated:
+  data tuning): dead fish = each biome's own Odyssey freshwater fish (fishTypes freshwater_*), and rare lost
+  cargo (weight <= 0.25) = what a raft upstream would lose. Driftwood stays out (card 2: no generic wood);
+  no vanilla "debris" item floats that is not wood or already listed.
 -->
 <Defs>
 
@@ -21,6 +25,8 @@
       <li><thing>RawBerries</thing><weight>3</weight><count>3~8</count></li>
       <li><thing>Hay</thing><weight>2</weight><count>5~15</count></li>
       <li><thing>Leather_Light</thing><weight>0.5</weight><count>3~8</count></li>
+      <li><thing>Beer</thing><weight>0.15</weight><count>2~6</count></li> <!-- lost cargo -->
+      <li><thing>Cloth</thing><weight>0.15</weight><count>8~20</count></li> <!-- lost cargo -->
     </drift>
   </RimMandrake.FlowWorks.Rivers.RM_RiverDriftDef>
 
@@ -35,6 +41,8 @@
       <li><thing>RawRice</thing><weight>2</weight><count>3~8</count></li>
       <li><thing>RawFungus</thing><weight>1</weight><count>2~6</count></li>
       <li><thing>Leather_Plain</thing><weight>0.5</weight><count>3~8</count></li>
+      <li><thing>Cloth</thing><weight>0.15</weight><count>8~20</count></li> <!-- lost cargo -->
+      <li><thing>MedicineHerbal</thing><weight>0.1</weight><count>1~3</count></li> <!-- lost cargo -->
     </drift>
   </RimMandrake.FlowWorks.Rivers.RM_RiverDriftDef>
 
@@ -50,6 +58,8 @@
       <li><thing>RawBerries</thing><weight>2</weight><count>2~5</count></li>
       <li><thing>Leather_Fox</thing><weight>1</weight><count>3~8</count></li>
       <li><thing>Leather_Wolf</thing><weight>0.5</weight><count>3~8</count></li>
+      <li><thing>Pemmican</thing><weight>0.15</weight><count>8~20</count></li> <!-- lost cargo -->
+      <li><thing>Beer</thing><weight>0.1</weight><count>2~5</count></li> <!-- lost cargo -->
     </drift>
   </RimMandrake.FlowWorks.Rivers.RM_RiverDriftDef>
 
@@ -65,6 +75,8 @@
       <li><thing>RawAgave</thing><weight>3</weight><count>2~6</count></li>
       <li><thing>Leather_Lizard</thing><weight>1</weight><count>3~8</count></li>
       <li><thing>Leather_Camel</thing><weight>0.5</weight><count>3~8</count></li>
+      <li><thing>Pemmican</thing><weight>0.15</weight><count>8~20</count></li> <!-- lost cargo -->
+      <li><thing>Cloth</thing><weight>0.1</weight><count>6~15</count></li> <!-- lost cargo -->
     </drift>
   </RimMandrake.FlowWorks.Rivers.RM_RiverDriftDef>
 
@@ -80,6 +92,101 @@
       <li><thing>RawFungus</thing><weight>1</weight><count>2~6</count></li>
       <li><thing>Leather_Lizard</thing><weight>1</weight><count>3~8</count></li>
       <li><thing>Leather_Panthera</thing><weight>0.3</weight><count>3~6</count></li>
+      <li><thing>SmokeleafLeaves</thing><weight>0.15</weight><count>5~12</count></li> <!-- lost cargo -->
+      <li><thing>PsychoidLeaves</thing><weight>0.1</weight><count>4~10</count></li> <!-- lost cargo -->
+    </drift>
+  </RimMandrake.FlowWorks.Rivers.RM_RiverDriftDef>
+
+
+  <!-- Dead fish: one def per fish set; RollFor pools every def naming the map biome. -->
+  <RimMandrake.FlowWorks.Rivers.RM_RiverDriftDef>
+    <defName>RM_RiverDriftFish_Northern</defName>
+    <label>northern dead fish</label>
+    <biomes>
+      <li>BorealForest</li>
+      <li>Tundra</li>
+      <li>GlacialPlain</li>
+      <li>ColdBog</li>
+    </biomes>
+    <drift>
+      <li><thing>Fish_Salmon</thing><weight>0.8</weight><count>1~3</count></li>
+      <li><thing>Fish_Frostfish</thing><weight>0.3</weight><count>1~2</count></li>
+    </drift>
+  </RimMandrake.FlowWorks.Rivers.RM_RiverDriftDef>
+
+  <RimMandrake.FlowWorks.Rivers.RM_RiverDriftDef>
+    <defName>RM_RiverDriftFish_Temperate</defName>
+    <label>temperate dead fish</label>
+    <biomes>
+      <li>TemperateForest</li>
+    </biomes>
+    <drift>
+      <li><thing>Fish_Salmon</thing><weight>0.4</weight><count>1~3</count></li>
+      <li><thing>Fish_Bass</thing><weight>0.4</weight><count>1~3</count></li>
+      <li><thing>Fish_Catfish</thing><weight>0.3</weight><count>1~2</count></li>
+    </drift>
+  </RimMandrake.FlowWorks.Rivers.RM_RiverDriftDef>
+
+  <RimMandrake.FlowWorks.Rivers.RM_RiverDriftDef>
+    <defName>RM_RiverDriftFish_Lowland</defName>
+    <label>lowland dead fish</label>
+    <biomes>
+      <li>Grasslands</li>
+      <li>TemperateSwamp</li>
+    </biomes>
+    <drift>
+      <li><thing>Fish_Bass</thing><weight>0.8</weight><count>1~3</count></li>
+      <li><thing>Fish_Catfish</thing><weight>0.3</weight><count>1~2</count></li>
+    </drift>
+  </RimMandrake.FlowWorks.Rivers.RM_RiverDriftDef>
+
+  <RimMandrake.FlowWorks.Rivers.RM_RiverDriftDef>
+    <defName>RM_RiverDriftFish_Shrubland</defName>
+    <label>shrubland dead fish</label>
+    <biomes>
+      <li>AridShrubland</li>
+    </biomes>
+    <drift>
+      <li><thing>Fish_Tilapia</thing><weight>0.8</weight><count>1~3</count></li>
+      <li><thing>Fish_Catfish</thing><weight>0.3</weight><count>1~2</count></li>
+    </drift>
+  </RimMandrake.FlowWorks.Rivers.RM_RiverDriftDef>
+
+  <RimMandrake.FlowWorks.Rivers.RM_RiverDriftDef>
+    <defName>RM_RiverDriftFish_Desert</defName>
+    <label>desert dead fish</label>
+    <biomes>
+      <li>Desert</li>
+      <li>ExtremeDesert</li>
+    </biomes>
+    <drift>
+      <li><thing>Fish_Guppy</thing><weight>0.8</weight><count>2~5</count></li>
+      <li><thing>Fish_Tilapia</thing><weight>0.3</weight><count>1~2</count></li>
+    </drift>
+  </RimMandrake.FlowWorks.Rivers.RM_RiverDriftDef>
+
+  <RimMandrake.FlowWorks.Rivers.RM_RiverDriftDef>
+    <defName>RM_RiverDriftFish_Rainforest</defName>
+    <label>rainforest dead fish</label>
+    <biomes>
+      <li>TropicalRainforest</li>
+    </biomes>
+    <drift>
+      <li><thing>Fish_Tilapia</thing><weight>0.8</weight><count>1~3</count></li>
+      <li><thing>Fish_Piranha</thing><weight>0.3</weight><count>1~2</count></li>
+    </drift>
+  </RimMandrake.FlowWorks.Rivers.RM_RiverDriftDef>
+
+  <RimMandrake.FlowWorks.Rivers.RM_RiverDriftDef>
+    <defName>RM_RiverDriftFish_TropicalSwamp</defName>
+    <label>tropical swamp dead fish</label>
+    <biomes>
+      <li>TropicalSwamp</li>
+    </biomes>
+    <drift>
+      <li><thing>Fish_Tilapia</thing><weight>0.6</weight><count>1~3</count></li>
+      <li><thing>Fish_Catfish</thing><weight>0.2</weight><count>1~2</count></li>
+      <li><thing>Fish_Piranha</thing><weight>0.2</weight><count>1~2</count></li>
     </drift>
   </RimMandrake.FlowWorks.Rivers.RM_RiverDriftDef>
 

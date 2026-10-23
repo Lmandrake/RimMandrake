@@ -94,6 +94,28 @@ def main():
     check("silt-trap carries a swap table", "RimMandrake.FlowWorks.Rivers.RM_SiltSwapExtension" in defs_text)
     check("drift defs exist (owner: biome-relevant drift)", defs_text.count("<RimMandrake.FlowWorks.Rivers.RM_RiverDriftDef>") >= 3)
     check("no generic wood in drift (owner card 2)", "<thing>WoodLog</thing>" not in defs_text)
+    # Owner card 2026-10-23 07:19 "Yes, occasional flotsam": every vanilla drift group also carries dead fish of ITS
+    # biomes' freshwater fish (Odyssey BiomeDef fishTypes freshwater_*, read 2026-10-23) and rare lost cargo.
+    fresh = {"TemperateForest": {"Fish_Salmon", "Fish_Bass", "Fish_Catfish"}, "Grasslands": {"Fish_Bass", "Fish_Catfish"},
+             "TemperateSwamp": {"Fish_Bass", "Fish_Catfish"}, "ColdBog": {"Fish_Salmon", "Fish_Frostfish"},
+             "BorealForest": {"Fish_Salmon", "Fish_Frostfish"}, "Tundra": {"Fish_Salmon", "Fish_Frostfish"},
+             "GlacialPlain": {"Fish_Salmon", "Fish_Frostfish"}, "AridShrubland": {"Fish_Tilapia", "Fish_Catfish"},
+             "Desert": {"Fish_Guppy", "Fish_Tilapia"}, "ExtremeDesert": {"Fish_Guppy", "Fish_Tilapia"},
+             "TropicalRainforest": {"Fish_Tilapia", "Fish_Piranha"},
+             "TropicalSwamp": {"Fish_Tilapia", "Fish_Catfish", "Fish_Piranha"}}
+    cargo = {"Beer", "Cloth", "MedicineHerbal", "Pemmican", "SmokeleafLeaves", "PsychoidLeaves"}
+    pools = {}
+    for p in glob.glob(os.path.join(HERE, "Defs", "Rivers", "RM_RiverDrift*.xml")):
+        for d in ET.parse(p).getroot().iter("RimMandrake.FlowWorks.Rivers.RM_RiverDriftDef"):
+            rows = [(li.findtext("thing"), float(li.findtext("weight") or 0)) for li in d.find("drift")]
+            for b in d.find("biomes"):
+                pools.setdefault(b.text, []).extend(rows)
+    check("sanity: drift pools for every vanilla river biome", set(fresh) <= set(pools), sorted(set(fresh) - set(pools)))
+    for b, fish in sorted(fresh.items()):
+        rows = pools.get(b, [])
+        got = {t for t, w in rows if t and t.startswith("Fish_")}
+        check("%s drifts dead fish, only its own" % b, got and got <= fish, sorted(got))
+        check("%s drifts rare lost cargo" % b, any(t in cargo and w <= 0.25 for t, w in rows))
     tb = os.path.join(os.path.dirname(HERE), "TerminalBiomes")
     tb_text = ""
     for p in glob.glob(os.path.join(tb, "Defs", "**", "*.xml"), recursive=True):
