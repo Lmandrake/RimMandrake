@@ -1,0 +1,1 @@
+spawn_pawn kindDef=Colonist can roll a Biotech teenager (bodySize 0.8): any live bar that depends on body size (trench cover, pit width, fall damage) must read the pawn's own BodySize, not assume an adult (trench_cover_proof read 0.493 vs an adult bar 0.441, 2026-10-23).
