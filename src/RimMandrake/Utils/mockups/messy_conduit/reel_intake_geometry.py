@@ -6,7 +6,7 @@ Owner, station 42 (2026-10-04): "pipe does NOT hook up properly to the next reel
 midpoint of the intake cell's shared edge, which on the west side is 0.45 cell below the art's one brass inlet and 0.29
 cell inside its face, and on the north/south sides leaves bare ground between the edge and the drawn reel.
 
-Rule measured here (alpha > 128, the reel drawn at the defs' drawSize centred on the footprint, canvas 256):
+Rule measured here (alpha > 128, the reel drawn at the defs' drawSize centred on the footprint, any square canvas):
   * WEST: the art's one outlet/inlet nozzle (rows whose leftmost opaque pixel is within NOZZLE_PX of the leftmost opaque
     column): the hose's coupling face meets the nozzle face, both west intake cells go to it, and a laid hose leaves the
     deployed art's nozzle there (outlet table: tip dx, tip dz). HOSE_ENDS_FIX_MISSES_THE_PORTS (2026-10-21): the old rule
@@ -89,7 +89,7 @@ def measure(path, k=0):
     tip = ((umin / n - 0.5) * DRAW, inlet[0])   # the nozzle tip (dx, dz) from the footprint centre
     out = {}
     for side in "ENS":
-        for k, centre in enumerate((-0.5, 0.5)):   # edge cell 0 = lower x / z, 1 = higher
+        for ci, centre in enumerate((-0.5, 0.5)):   # edge cell 0 = lower x / z, 1 = higher
             best = None
             steps = int(round(0.45 / DRAW * n))
             for s in range(-steps, steps + 1):
@@ -103,26 +103,26 @@ def measure(path, k=0):
                 score = abs(d) + 0.05 * abs(perp - centre)
                 if best is None or score < best[0] - 1e-9:
                     best = (score, perp, d)
-            out[(side, k)] = (best[1], best[2])
+            out[(side, ci)] = (best[1], best[2])
     return inlet, out, tip
 
 
 def generate():
     lines, tips = [], []
-    for suffix, k, fname in FRAMES:
-      for li, (look, folder) in enumerate(LOOKS):
-        for ai, art in enumerate(ARTS):
-            art = art + suffix
-            p = os.path.join(TEX, folder + art + ".png")
-            if not os.path.exists(p):
-                raise SystemExit("missing reel art %s (every look needs west, north and south pictures)" % p)
-            inlet, out, tip = measure(p, k)
-            row = [inlet[0], inlet[1]]
-            for side in "ENS":
-                for cell in range(2):
-                    row += list(out[(side, cell)])
-            lines.append("            { " + ", ".join("%.3f" % x for x in row) + " },   // " + look + " " + art)
-            tips.append("            { %.3f, %.3f },   // %s %s" % (tip[0], tip[1], look, art))
+    for suffix, k, _fname in FRAMES:
+        for look, folder in LOOKS:
+            for art in ARTS:
+                art = art + suffix
+                p = os.path.join(TEX, folder + art + ".png")
+                if not os.path.exists(p):
+                    raise SystemExit("missing reel art %s (every look needs west, north and south pictures)" % p)
+                inlet, out, tip = measure(p, k)
+                row = [inlet[0], inlet[1]]
+                for side in "ENS":
+                    for cell in range(2):
+                        row += list(out[(side, cell)])
+                lines.append("            { " + ", ".join("%.3f" % x for x in row) + " },   // " + look + " " + art)
+                tips.append("            { %.3f, %.3f },   // %s %s" % (tip[0], tip[1], look, art))
     cs = '''using System;
 using RimMandrake.Shared.Slack;
 
