@@ -83,7 +83,7 @@ def card_facts(card: dict) -> set:
     """The facts the policy's `when` / `polish_when` clauses test, derived from the card."""
     f = set()
     f.add("invented" if card.get("invented") else "not_invented")
-    for key in ("departures", "canon", "siblings", "owner_notes", "flight", "swim_lane"):
+    for key in ("departures", "canon", "siblings", "owner_notes", "flight", "swim_lane", "ports"):
         if card.get(key):
             f.add(key)
     if card.get("earth_body_named"):

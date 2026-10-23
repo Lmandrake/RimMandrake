@@ -120,7 +120,7 @@ def codes_table(policy: dict, items: list) -> str:
 
 
 def image_list(card: dict) -> list:
-    order = ["facings", "south", "east", "north", "west", "single", "scale", "living_reference", "siblings"]
+    order = ["facings", "south", "east", "north", "west", "single", "scale", "wall_context", "living_reference", "siblings"]
     out = [card["panels"][k] for k in order if isinstance(card["panels"].get(k), str)]
     for many in ("flight", "variants", "assembled"):
         out += [card["panels"][k] for k in card["panels"].get(many, [])]

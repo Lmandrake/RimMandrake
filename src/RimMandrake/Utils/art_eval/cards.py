@@ -147,6 +147,8 @@ def build_card(spec: dict, out: Path) -> dict:
             put(f"{many}_{n}", p)
         if imgs.get(many):
             panels[many] = [k for k in panels if k.startswith(many + "_")]
+    if imgs.get("wall_context"):
+        put("wall_context", imgs["wall_context"])
     for comp in ("living_reference", "siblings"):
         v = imgs.get(comp)
         if v:
@@ -191,6 +193,9 @@ def card_md(card: dict) -> str:
     if card.get("owner_notes"):
         L += ["", "## Owner notes on this subject (verbatim, each is a requirement)", ""]
         L += [f"- {n}" for n in card["owner_notes"]]
+    if card.get("ports"):
+        L += ["", "## Code-defined ports (each must have a drawn connector there; no other drawn connectors)", ""]
+        L += [f"- {p}" for p in card["ports"]]
     if card.get("depends_on"):
         L += ["", f"This is a catch item of `{card['depends_on']}`; `living_reference.png` shows that living animal."]
     g = card.get("gates", {})
