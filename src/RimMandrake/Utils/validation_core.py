@@ -526,15 +526,36 @@ def reel_facing(c, target):
     return 0 if dz > 0 else 2
 
 
+# PROOF_REELS_FIX_STILL_STAGED_WEST (live batch 2026-10-23): a reel facing its target with the target closer than the straight
+# lead-out (OutletStraight + half the bend radius, ~4.5 cells) is refused "no room for the straight lead-out from the nozzle",
+# and a reel facing a pipe/pump built against its nozzle side can never lay. A stager that knows its geometry passes
+# min_run (cells of straight run the facing needs from the reel edge to the target) and/or blocked (facings that touch
+# something); the reel then falls back to West, the old layout whose lead-out U-turns on open ground and always laid.
+REEL_LEAD_ROOM = 6
+
+
+def reel_facing_roomy(c, target, min_run=REEL_LEAD_ROOM, blocked=()):
+    """reel_facing, but West when the facing toward target has less than min_run cells of straight run (edge to target) or is in
+    `blocked`; then the first unblocked of W, E, N, S."""
+    rot = reel_facing(c, target)
+    if target is None:
+        return rot if rot not in blocked else next((r for r in (3, 1, 0, 2) if r not in blocked), 3)
+    run = {1: target[0] - (c[0] + 2), 3: c[0] - (target[0] + 1), 0: target[1] - (c[1] + 2), 2: c[1] - (target[1] + 1)}[rot]
+    if rot in blocked or run < min_run:
+        return next((r for r in (3, 1, 0, 2) if r not in blocked), 3)
+    return rot
+
+
 def reel_pos(c, rot):
     """The build Position of a 2x2 reel on footprint corner c built facing rot."""
     sx, sz = REEL_POS_SHIFT[rot % 4]
     return (c[0] + sx, c[1] + sz)
 
 
-def reel_toward(c, target):
-    """Build op for a reel on footprint corner c facing its hose's target (reel_west when target is None)."""
-    rot = reel_facing(c, target)
+def reel_toward(c, target, roomy=False, blocked=(), min_run=REEL_LEAD_ROOM):
+    """Build op for a reel on footprint corner c facing its hose's target (reel_west when target is None). roomy=True (or any
+    `blocked` facings): see reel_facing_roomy -- West where the facing toward the target has no lead-out room."""
+    rot = reel_facing_roomy(c, target, min_run, blocked) if (roomy or blocked) else reel_facing(c, target)
     return "RM_HoseReel:%d,%d,%d" % (reel_pos(c, rot) + (rot,))
 
 

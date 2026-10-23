@@ -835,7 +835,8 @@ def scene_ports(ctx, mine):
     pump = P(52, 4)
     ra, rb, rc, rd = P(53, 4), P(52, -1), P(55, -1), P(58, 9)
     ctx["build"]("RM_LiquidPump:%d,%d" % pump, "RM_UniversalPipe:%d,%d" % P(51, 4), "RM_UniversalPipe:%d,%d" % P(50, 4),
-                 V.reel_toward(ra, None), V.reel_toward(rb, P(52, 3)), V.reel_toward(rc, P(52, 3)), V.reel_toward(rd, P(53, 3)))
+                 V.reel_toward(ra, None), V.reel_toward(rb, P(52, 3), roomy=True), V.reel_toward(rc, P(52, 3), roomy=True),
+                 V.reel_toward(rd, P(53, 3), roomy=True))
     ctx["ticks"](2)
     lays = {}
     for r, to in ((rb, P(52, 3)), (rc, P(52, 3)), (rd, P(53, 3))):

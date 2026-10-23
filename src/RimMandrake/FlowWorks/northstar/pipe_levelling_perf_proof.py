@@ -97,7 +97,8 @@ def rig_ops(cx, z, lip_a=None, lip_b=None):
     through it), so two reels on one tank were two components with one port each and levelled nothing (walk_gaps_proof, 2026-10-22)."""
     ta = None if lip_a is None else (lip_a, z)
     tb = None if lip_b is None else (lip_b, z + 2)
-    return [V.reel_toward((cx, z), ta), V.reel_toward((cx, z + 2), tb)] + ["RM_UniversalPipe:%d,%d" % (cx + 2, z + j) for j in range(4)]
+    # reel 2 East would face the pipe run built against its east edge: blocked, West (PROOF_REELS_FIX_STILL_STAGED_WEST)
+    return [V.reel_toward((cx, z), ta, roomy=True), V.reel_toward((cx, z + 2), tb, blocked=(1,))] + ["RM_UniversalPipe:%d,%d" % (cx + 2, z + j) for j in range(4)]
 
 
 def tick_verdict(kv, links, want_links, staged_ok):
