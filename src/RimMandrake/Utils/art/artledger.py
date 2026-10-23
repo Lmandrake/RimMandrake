@@ -630,6 +630,7 @@ class Index:
         self.snapshots = []
         self.bindings = defaultdict(list)      # sha -> [binding events: a job's target_def tied a render to a subject]
         self.bindings_by_subject = defaultdict(list)
+        self.provenance_fixes = {}             # ruling id -> the latest provenance_fix correcting its authority fields
         for ev in self.events:
             self._take(ev)
 
@@ -660,6 +661,20 @@ class Index:
         elif t == "binding":
             self.bindings[ev["sha"]].append(ev)
             self.bindings_by_subject[ev["subject"]].append(ev)
+        elif t == "provenance_fix":
+            cur = self.provenance_fixes.get(ev.get("corrects"))
+            if cur is None or ev.get("ts", "") >= cur.get("ts", ""):
+                self.provenance_fixes[ev.get("corrects")] = ev
+
+    def authority(self, ruling: dict) -> dict:
+        """A ruling's owner-authority fields (said / by_card / per_ruling) as corrected by the latest
+        provenance_fix naming it. Past events are never edited; the correction is an appended event. It changes
+        WHICH field records his authority, never whether the keep protects (verdict, by, trust stay)."""
+        out = {k: ruling.get(k) for k in AUTHORITY_FIELDS if ruling.get(k)}
+        fx = self.provenance_fixes.get(ruling.get("id"))
+        if fx:
+            out = {k: fx.get(k) for k in AUTHORITY_FIELDS if fx.get(k)}
+        return out
 
     def _fold_live(self, ev):
         key = (mod_key(ev["mod"]), rel_key(ev["rel"]))      # history keeps its spelling; the fold does not
@@ -921,15 +936,79 @@ def case_twin_refusal(target: Path, stop: Path) -> str | None:
     return None
 
 
+AUTHORITY_FIELDS = ("said", "by_card", "per_ruling")
+
+
+def correct_provenance(ruling_id: str, *, why: str, owner_said: str | None = None, by_card: str | None = None,
+                       per_ruling: str | None = None, dry_run: bool = False) -> dict:
+    """ART_INSTALL_WIRE_BY_CARD_FLAG_MISSING: append a `provenance_fix` re-stating which field carries the owner's
+    authority on an existing owner ruling (a card pick recorded under `said`, before install had --by-card). The
+    fix states the WHOLE corrected set (a field it omits is no longer claimed); the original event is untouched."""
+    idx = cached_index()
+    r = next((x for x in idx.rulings if x.get("id") == ruling_id), None)
+    if r is None:
+        raise Refused(f"no ruling {ruling_id} in the ledger")
+    if r.get("by") != "owner":
+        raise Refused(f"ruling {ruling_id} is by {r.get('by')!r}, not the owner — nothing to re-attribute")
+    if not (owner_said or by_card or per_ruling):
+        raise Refused("a provenance fix must name the corrected authority (--owner-said / --by-card / --per-ruling)")
+    if not why or not why.strip():
+        raise Refused("a provenance fix needs --why: what was wrong")
+    ev = {"type": "provenance_fix", "corrects": ruling_id, "was": {k: r.get(k) for k in AUTHORITY_FIELDS if r.get(k)},
+          "why": why}
+    for k, v in (("said", owner_said), ("by_card", by_card), ("per_ruling", per_ruling)):
+        if v:
+            ev[k] = v
+    ev["id"] = det_id("provenance_fix", ruling_id, {k: ev.get(k) for k in AUTHORITY_FIELDS})
+    if dry_run or ev["id"] in {e.get("id") for e in idx.events}:
+        return {"status": "planned" if dry_run else "already-recorded", "event": ev}
+    w = Writer({e["id"] for e in idx.events})
+    w.add(ev)
+    added = list(w.buf)
+    w.flush()
+    _absorb(added)
+    return {"status": "recorded", "event": ev}
+
+
+def owner_keep_ruling(sha: str, *, owner_said: str | None = None, by_card: str | None = None,
+                      per_ruling: str | None = None) -> dict:
+    """The owner keep an install records, one field per kind of his authority (CLAUDE.md "Owner authority on the
+    ledger"): `said` = his words only, `by_card` = a card decision (our option label), `per_ruling` = a standing
+    ruling cited by reference. The id is unchanged for a words-only keep (`ruling-cli`, sha, words) so a re-run
+    stays idempotent against every keep recorded before these fields existed."""
+    if owner_said and not by_card and not per_ruling:
+        rid, via = det_id("ruling-cli", sha, owner_said), "art install (owner words)"
+    else:
+        rid = det_id("ruling-cli", sha, owner_said or "", "card", by_card or "", "per", per_ruling or "")
+        via = "art install (by card)" if by_card else "art install (per ruling)"
+    r = {"id": rid, "type": "ruling", "target": {"sha": sha}, "verdict": "keep", "by": "owner", "via": via,
+         "trust": "ruled", "subject_key": ""}
+    if owner_said:
+        r["said"] = owner_said
+    if by_card:
+        r["by_card"] = by_card
+    if per_ruling:
+        r["per_ruling"] = per_ruling
+    return r
+
+
 def install(mod: str, rel: str, sha: str, *, ruling_id: str | None = None,
             owner_said: str | None = None, reason: str | None = None,
-            provenance: dict | None = None, dry_run: bool = False) -> dict:
+            provenance: dict | None = None, dry_run: bool = False,
+            by_card: str | None = None, per_ruling: str | None = None, why: str | None = None) -> dict:
     """The only sanctioned writer into src/**/Textures. Ledger-checked; saves the old
     picture into the store FIRST; atomic write; appends a `live` event.
 
     Authorization, one of:
       * ruling_id: an owner keep (trust=ruled) naming the incoming sha;
       * owner_said: his typed words, recorded as an owner keep ruling;
+      * by_card: a decision he took by question card ("question → picked option"; the label is OUR text, so
+        it never goes in owner_said), recorded as an owner keep ruling carrying `by_card`;
+      * per_ruling: a standing ruling of his cited by item id or ledger event, recorded as an owner keep ruling
+        carrying `per_ruling` (ART_INSTALL_WIRE_BY_CARD_FLAG_MISSING; rimflow's four provenance fields);
+      * why: the acting agent's own reason (a delegated call: "delegated: art <verdict file>"). It grants NO
+        owner authority: alone it installs under the mechanical guards (never over a kept, purged or
+        rejected picture); beside an owner field it is recorded on the live event;
       * reason: a mechanical tag (`artpipe-collect`, `script:<repo path>`) for a writer
         installing without an owner decision. REFUSED when the displaced picture is
         protected by an owner keep — only his selection may replace a kept picture.
@@ -964,29 +1043,37 @@ def install(mod: str, rel: str, sha: str, *, ruling_id: str | None = None,
                 or normalise_verdict(ruling.get("verdict")) != "keep":
             raise Refused(f"ruling {ruling_id} is {ruling.get('by')}/{ruling.get('trust')}/"
                           f"{ruling.get('verdict')} — only an owner keep with real provenance authorises")
-    elif owner_said:
-        pass
-    elif reason:
-        why = mechanical_refusal(reason)
-        if why:
-            raise Refused(why)
+    elif owner_said or by_card or per_ruling:
+        if by_card is not None and not by_card.strip():
+            raise Refused("--by-card needs the card's text: \"question → picked option\"")
+        if per_ruling is not None and not per_ruling.strip():
+            raise Refused("--per-ruling needs the ruling's item id or ledger event")
+    elif reason or why:
+        if reason:
+            bad = mechanical_refusal(reason)
+            if bad:
+                raise Refused(bad + " (or --by-card / --per-ruling; an agent's own reason goes in --why)")
+        elif not why.strip():
+            raise Refused("--why needs the agent's reason in its own words")
+        tag = reason or "agent --why"
         if idx.was_purged(sha):
             raise Refused(f"{sha[:12]} was purged by the owner (since unpurged by his words) — a mechanical install "
-                          f"({reason}) may not bring it back; it needs his ruling (--ruling <keep id> or --owner-said)")
-        why = rejection_refusal(idx, rel, sha)
-        if why:
-            raise Refused(why + " — only his ruling can bring it back (--ruling <keep id> or --owner-said)")
+                          f"({tag}) may not bring it back; it needs his ruling (--ruling <keep id> or --owner-said)")
+        bad = rejection_refusal(idx, rel, sha)
+        if bad:
+            raise Refused(bad + " — only his ruling can bring it back (--ruling <keep id> or --owner-said)")
     else:
-        raise Refused("install needs an owner keep ruling id, the owner's typed words, "
-                      "or a mechanical reason (artpipe-collect | script:<path>)")
+        raise Refused("install needs an owner keep ruling id, the owner's typed words (--owner-said), his card pick "
+                      "(--by-card), a standing ruling of his (--per-ruling), a mechanical reason "
+                      "(artpipe-collect | script:<path>) or the agent's own reason (--why)")
+    owner_kw = dict(owner_said=owner_said, by_card=by_card, per_ruling=per_ruling)
+    owner_auth = bool(owner_said or by_card or per_ruling)
     old_sha = sha256_file(target) if target.is_file() else None
     if old_sha == sha:
-        if owner_said and not ruling_id and not dry_run and not idx.protected(sha):
-            # his words about the picture already in place (an alternate he approved by card): record the ruling, write nothing
+        if owner_auth and not ruling_id and not dry_run and not idx.protected(sha):
+            # his words / card / standing ruling about the picture already in place: record the ruling, write nothing
             w = Writer({e["id"] for e in idx.events})
-            rl = {"id": det_id("ruling-cli", sha, owner_said), "type": "ruling", "target": {"sha": sha},
-                  "verdict": "keep", "by": "owner", "said": owner_said, "via": "art install (owner words)",
-                  "trust": "ruled", "subject_key": ""}
+            rl = owner_keep_ruling(sha, **owner_kw)
             w.add(rl)
             added = list(w.buf)
             w.flush()
@@ -994,9 +1081,9 @@ def install(mod: str, rel: str, sha: str, *, ruling_id: str | None = None,
             return {"status": "already-live-ruled", "path": str(target), "new": sha, "ruling": rl["id"]}
         return {"status": "already-live", "path": str(target), "new": sha}
     old_protected = bool(old_sha and idx.protected(old_sha))
-    if old_protected and not (ruling or owner_said):
+    if old_protected and not (ruling or owner_auth):
         raise Refused(f"{target} holds {old_sha[:12]}, an owner-KEPT picture — a mechanical "
-                      f"install ({reason}) may not displace it; it needs his ruling "
+                      f"install ({reason or 'agent --why'}) may not displace it; it needs his ruling "
                       f"(art.py install {mod} {rel} <sha> --ruling <keep id>)")
     plan = {"status": "planned", "path": str(target), "old": old_sha, "new": sha,
             "old_protected": old_protected}
@@ -1014,10 +1101,8 @@ def install(mod: str, rel: str, sha: str, *, ruling_id: str | None = None,
                "loc": f"{mod}/Textures/{rel}", "date": time.strftime("%Y-%m-%d"), "mod": str(mod),
                "res": pt["res"], "facing": pt["facing"], "mask": pt["mask"],
                "provenance": provenance or {}, "subjects": []})
-    if owner_said:
-        ruling = {"id": det_id("ruling-cli", sha, owner_said), "type": "ruling",
-                  "target": {"sha": sha}, "verdict": "keep", "by": "owner", "said": owner_said,
-                  "via": "art install (owner words)", "trust": "ruled", "subject_key": ""}
+    if owner_auth:
+        ruling = owner_keep_ruling(sha, **owner_kw)
         w.add(ruling)
     if old_sha:
         store_put_file(target)                       # archive BEFORE writing
@@ -1032,7 +1117,9 @@ def install(mod: str, rel: str, sha: str, *, ruling_id: str | None = None,
     if ruling:
         live.update(ruling_id=ruling["id"], reason="install")
     else:
-        live.update(reason=reason)
+        live.update(reason=reason or "agent-why")
+    if why:
+        live["why"] = why
     w.add(live)
     added = list(w.buf)
     w.flush()

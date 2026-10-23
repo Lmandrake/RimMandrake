@@ -9,11 +9,19 @@
     art.py variants  <subject|texPath>      every known picture of it, with provenance
     art.py put       <png>...                put files into the art store (regular files inside this clone,
                                             no symlinks); prints each sha
-    art.py install   <mod> <rel> (<sha> | --file PNG) (--ruling ID | --owner-said "..." | --reason TAG) [--dry-run]
+    art.py install   <mod> <rel> (<sha> | --file PNG) (--ruling ID | --owner-said "..." | --by-card "q → option"
+                                            | --per-ruling <item|event> | --reason TAG | --why "...") [--dry-run]
                                             mod: SWBestiary | RimStarWars/SWBestiary | src/RimStarWars/SWBestiary;
                                             rel: with or without a leading Textures/.
                                             TAG: artpipe-collect | script:<writer path>; a mechanical
-                                            install is refused over an owner-kept picture
+                                            install is refused over an owner-kept picture.
+                                            Owner authority, one field per kind (CLAUDE.md, as rimflow): --owner-said
+                                            his words only; --by-card a card decision (our label); --per-ruling a
+                                            standing ruling cited. --why = the agent's own reason: grants nothing
+                                            (alone: mechanical guards apply; e.g. "delegated: art <verdict file>")
+    art.py correct-provenance <ruling-id>... (--by-card "..." | --per-ruling REF | --owner-said "...") --why "..."
+                                            append a provenance_fix re-stating which field carries his authority
+                                            on an owner keep (never edits the past event) [--dry-run]
     art.py guard     range A..B | worktree [paths]   texture changes the ledger did not make; a push range is
                                             also checked event -> PNG (the committed tree holds what the ledger says)
     art.py doctor    [--rev REV] [--out FILE]   every slot where the folded ledger and REV's committed tree
@@ -208,7 +216,7 @@ def cmd_install(a):
             if a.dry_run:
                 print(f"put {a.file} -> {sha}")
         r = L.install(a.mod, a.rel, sha, ruling_id=a.ruling, owner_said=a.owner_said, reason=a.reason,
-                      dry_run=a.dry_run)
+                      by_card=a.by_card, per_ruling=a.per_ruling, why=a.why, dry_run=a.dry_run)
     except L.Refused as e:
         print(f"REFUSED: {e}")
         return 2
@@ -218,6 +226,19 @@ def cmd_install(a):
         res = L.parse_texfile(L.rel_key(a.rel))["res"]
         FR.after_install([res, res.rpartition("/")[0]])
     return 0
+
+
+def cmd_correct_provenance(a):
+    rc = 0
+    for rid in a.ruling_ids:
+        try:
+            r = L.correct_provenance(rid, why=a.why, owner_said=a.owner_said, by_card=a.by_card,
+                                     per_ruling=a.per_ruling, dry_run=a.dry_run)
+            print(json.dumps(r, ensure_ascii=False))
+        except L.Refused as e:
+            print(f"REFUSED {rid}: {e}")
+            rc = 2
+    return rc
 
 
 def cmd_doctor(a):
@@ -388,7 +409,13 @@ def main(argv=None):
     p = sp.add_parser("install"); p.add_argument("mod"); p.add_argument("rel"); p.add_argument("sha", nargs="?")
     p.add_argument("--file", help="a PNG inside this clone: put it in the store, then install its sha")
     p.add_argument("--ruling"); p.add_argument("--owner-said"); p.add_argument("--reason")
+    p.add_argument("--by-card", help='a decision he took by question card: "question → picked option" (our label)')
+    p.add_argument("--per-ruling", help="a standing ruling of his, cited by item id or ledger event")
+    p.add_argument("--why", help="the acting agent's own reason; grants no owner authority")
     p.add_argument("--dry-run", action="store_true")
+    p = sp.add_parser("correct-provenance"); p.add_argument("ruling_ids", nargs="+")
+    p.add_argument("--by-card"); p.add_argument("--per-ruling"); p.add_argument("--owner-said")
+    p.add_argument("--why", required=True); p.add_argument("--dry-run", action="store_true")
     p = sp.add_parser("purge"); p.add_argument("sha"); p.add_argument("--owner-said", required=True)
     p.add_argument("--release-keep", action="store_true")
     p = sp.add_parser("unpurge"); p.add_argument("sha"); p.add_argument("--owner-said", default="")
@@ -419,7 +446,7 @@ def main(argv=None):
     if a.cmd == "variants":
         return cmd_status(a, verbose=True)
     return {"snapshot": cmd_snapshot, "backfill": cmd_backfill, "status": cmd_status,
-            "install": cmd_install, "put": cmd_put, "doctor": cmd_doctor, "kept-purged": cmd_kept_purged, "purge": cmd_purge, "unpurge": cmd_unpurge, "ingest": cmd_ingest, "index": cmd_index,
+            "install": cmd_install, "correct-provenance": cmd_correct_provenance, "put": cmd_put, "doctor": cmd_doctor, "kept-purged": cmd_kept_purged, "purge": cmd_purge, "unpurge": cmd_unpurge, "ingest": cmd_ingest, "index": cmd_index,
             "backfill-rejections": cmd_backfill_rejections, "rotate": cmd_rotate}[a.cmd](a)
 
 
