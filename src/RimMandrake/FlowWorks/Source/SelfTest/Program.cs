@@ -1669,6 +1669,24 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_WallFaceMath.CutCoverSpan(5.5f, 7f, 5f, 6f, out float c, out float d, out _, out _) == 1 && c == 6f && d == 7f, "a piece half in the window keeps its far side");
             });
 
+            Case("LipCover_keeps_the_wall_edge_shadow", () =>
+            {
+                // PIT_PAWN_FIX_CARRIES_A_SUNNY_SQUARE (owner walk 2026-10-23: "a strange square of bright terrain around it as it
+                // moves"): the near-lip cover re-draws the bare ground ABOVE the pawn, so it dropped vanilla's edge shadow
+                // (SectionLayer_EdgeShadows: 195/255 at a wall's edge, lit 0.45 cell in) -- a bright box against the wall. The
+                // cover now carries the same shade (RM_WallFaceMath.EdgeShadeAt), read from the cell's shadow casters.
+                const float Sh = 195f / 255f;
+                AssertClose(RM_WallFaceMath.EdgeShadeAt(0.3f, 0.02f, 0), 1f, "no caster: lit");
+                AssertClose(RM_WallFaceMath.EdgeShadeAt(0.5f, 0f, RM_WallFaceMath.ShadeS), Sh, "wall to the south: shadowed at the edge");
+                AssertClose(RM_WallFaceMath.EdgeShadeAt(0.5f, 0.225f, RM_WallFaceMath.ShadeS), (Sh + 1f) / 2f, "half way in: half the shade");
+                AssertClose(RM_WallFaceMath.EdgeShadeAt(0.5f, 0.6f, RM_WallFaceMath.ShadeS), 1f, "0.45 in and beyond: lit");
+                AssertClose(RM_WallFaceMath.EdgeShadeAt(0.97f, 0.5f, RM_WallFaceMath.ShadeE), Sh + (1f - Sh) * (0.03f / 0.45f), "wall to the east");
+                AssertClose(RM_WallFaceMath.EdgeShadeAt(0.1f, 0.1f, RM_WallFaceMath.ShadeSW), Sh + (1f - Sh) * (0.2f / 0.45f), "corner caster: the corner triangle");
+                AssertClose(RM_WallFaceMath.EdgeShadeAt(0.3f, 0.3f, RM_WallFaceMath.ShadeSW), 1f, "corner caster: lit past the triangle");
+                AssertClose(RM_WallFaceMath.EdgeShadeAt(0.1f, 0.1f, RM_WallFaceMath.ShadeSW | RM_WallFaceMath.ShadeS), Sh + (1f - Sh) * (0.1f / 0.45f), "a cardinal wall beside the corner wins (vanilla skips the corner)");
+                Assert(RM_WallFaceMath.ShadeCasters(c => c == (0, -1)) == RM_WallFaceMath.ShadeS, "caster bits read from the neighbours (south)");
+                Assert(RM_WallFaceMath.ShadeCasters(c => c == (1, 1)) == RM_WallFaceMath.ShadeNE, "caster bits (north-east)");
+            });
             Case("LipOcclusion_boar_hangs_out", () =>
             {
                 // PIT_LIP_FIX_BOAR_HANGS_OUT: south-row cell z=10 (lip at 10), clamp on: centre held at the lip, so a
@@ -2058,6 +2076,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             LiquidJoinChecks.Run(Case);        // liquid-join draw hooks + hose thickness (HOSE_JOINTS_REDESIGN_PUMP_TOO_PUNY)
             ReelRiserShadowChecks.Run(Case);   // owner cards 2026-10-22: reel turns, pipe riser onto the tank flange, empty-hose shadow
             ContainerStyleChecks.Run(Case);    // LIQUID_CONTAINERS_REDRAW_NO_MANA_POTIONS: bottle/bucket/barrel in the four looks
+            TankDebugChecks.Run(Case);         // TANK_DEBUG_BUILD_FILL_AT_WILL: picker order, fill = capacity, debug ledger
             SettingsResetChecks.Run(Case);     // FLOWWORKS_RESET_BUILD_TWELVE_SCREENS_MISSING: the shared reset helper and its twelve screens
             ReviewFixChecks.Run(Case);         // code-review batches 2-4 behaviour fixes (2026-10-11)
             ReviewBatch56Checks.Run(Case);     // code-review batches 5+6 behaviour fixes (2026-10-11); also the d1898bef91 re-review fixes
