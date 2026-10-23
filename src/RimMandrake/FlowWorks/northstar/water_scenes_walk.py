@@ -1627,6 +1627,11 @@ def main(argv=None):
         a.no_shots = True
     w = Walk(a)
     rc = 0
+    if a.verb in ("stage", "run", "go", "all") and not a.fresh_map:
+        # LIVE 2026-10-23 (BENCH round 3a, save d map C): the keep snapshot lives in THIS process; only `prep` took it, so a
+        # separate `stage/go S1` had none and prepare_site's remove_intruders vanished a review save's wild boar 18 cells
+        # off the site. A map this run did not make keeps its own non-colonists from the start of every verb.
+        w.say("  keep snapshot (current map): %s" % (w.V.sweep_at_start(w.B, made_map=False),))
     if a.verb == "prep":
         prep(w)
     elif a.verb == "restore":
