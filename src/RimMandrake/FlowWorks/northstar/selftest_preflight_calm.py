@@ -12,8 +12,8 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 CALM = re.compile(r"site_calm\(|clear_threat_structures\(|jawa/quiet_site")
-# proofs owed the calm but not editable now (another helper owns the file); remove the entry when it is fixed
-OWED = {"reach_map_proof.py": "being edited by the live-driving helper 2026-10-22"}
+# proofs owed the calm but not editable now (another helper owns the file); remove the entry when it is fixed (empty: reach_map_proof.py calls site_calm since 2026-10-22)
+OWED = {}
 
 
 def needs_calm(src):

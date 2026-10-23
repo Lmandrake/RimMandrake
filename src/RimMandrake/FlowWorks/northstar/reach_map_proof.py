@@ -269,6 +269,8 @@ def main(argv=None):
         B.call("rimworld/go_to_main_menu")
         B.call("rimworld/start_debug_game_ready", readiness="mapData", pauseIfNeeded=True, timeoutMs=280000)
     ok, _ = V._wait_playing(B, leave_s=0)
+    if ok:
+        res["site_calm"] = V.site_calm(B)   # TESTENV_PREFLIGHT_HARDEN_TRISPIKE_AT_ARM: map-gen hostiles/hives stop safe_advance at arm
     before = {"reachSeesWallsAndCliffs": sget("reachSeesWallsAndCliffs")}
     res["settings_before"] = before
     try:
@@ -388,6 +390,11 @@ def main(argv=None):
         for f, v in before.items():
             if v is not None:
                 sset(f, v)
+        if "site_calm" in res:
+            try:
+                res["site_calm_restore"] = V.site_calm_restore(B)
+            except Exception as ex:   # a restore that fails is recorded, never hides the rows
+                res["site_calm_restore"] = "RAISED %r" % ex
         save()
     measured = [r for r in rows if r["class"] in ("MOD",)]
     if any(r["status"] == "FAIL" for r in measured):
