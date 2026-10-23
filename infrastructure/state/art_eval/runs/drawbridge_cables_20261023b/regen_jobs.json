@@ -1,0 +1,36 @@
+[
+ {
+  "id": "arteval_RM_SuspensionAnchor_Timber_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_SuspensionAnchor_Timber",
+  "prompt": "A single RimWorld map sprite of a drawbridge anchor bollard in the Scrapper timber look, on a fully transparent background. Painterly vanilla RimWorld style, realistic, clean dark outline, crisp cut-out edges. Camera: the standard RimWorld building view, tilted about 35 degrees from above. The bollard is an upright, stout weathered-timber post standing on the ground in a 1x1 tile: its lit flat top face is visible at the upper end, a darker front face band runs below it, and its height rises toward the top of the image. The post is drawn the same way up in every rotation, standing, never lying flat and never upside-down. A rough iron clamp band is bolted to the side of the post that faces the bridge deck, and a thick braided rope is fastened at that clamp. LOWERED state: the rope runs unbroken and taut from the clamp to the end of the deck with no gap, on both banks. RAISED state: the deck stands upright at the hinge bank as a tall leaf whose top ends in plain timber and iron hardware (flat timber cap, bolted iron band) with no rope, stub, hook or curl attached; each bollard's rope is slack and disconnected, lying as a loose coiled loop on the ground beside its bollard, with nothing crossing or pointing over the dark pit; the bollards and slack loops on both banks sit beside or clear of the upright leaf so they stay fully visible. Deck squares are the plain deck tile for context and the pit is a flat dark rectangle. Muted browns and weathered grey wood, dark iron, tan rope. reference: none.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: CAM_WRONG, DESC_MISS, DESC_MISS, ALPHA_HALO, CAM_WRONG",
+  "reference": "",
+  "priority": 40,
+  "source_run": "drawbridge_cables_20261023b"
+ },
+ {
+  "id": "arteval_RM_SuspensionAnchor_Steel_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_SuspensionAnchor_Steel",
+  "prompt": "A pair of steel drawbridge anchor bollards for a one-lane bridge over a pit, in painterly vanilla RimWorld style: realistic, clean dark outline, transparent background, readable at 64 px. Seen from RimWorld's shared 35-degree building camera, each bollard stands upright. Its flat lit cap faces the top of the screen, its tapered riveted grey-steel body rises up-screen from a base on the ground, and a bolted clamp ring sits at mid-height. This is the same in every rotation and on every bank. Each bank has its own drawn facing: the clamp jaw and rope exit point toward the deck (down-screen for the top bank, up-screen for the bottom bank, sideways for left and right banks), while the post itself stays upright. Every rope is the same steel cable: mid cool grey, about 2 px wide, with a thin lighter highlight on top and a darker underside, identical in colour and width on every bank and in every rotation. LOWERED: each rope runs unbroken from the bollard's clamp to the end of the deck, with no gap. RAISED: the deck stands upright at the hinge bank as a tall plank leaf. All four bollards remain visible, with the hinge-bank bollards standing on open bank ground beside and in front of the leaf's footprint. No rope crosses over the pit. Each bollard's rope lies as a loose slack coiled loop on the ground beside it, and no rope rises from the top of the leaf. The deck tiles are plain wooden deck and the pit is a flat dark rectangle for context. Build the bollard from this description alone, with no earlier render as reference.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: CAM_WRONG, DESC_MISS, LAYER_ORDER, F_INCONSISTENT, CAM_WRONG, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "drawbridge_cables_20261023b"
+ }
+]
