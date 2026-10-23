@@ -1,6 +1,6 @@
 """Option A8: follows the GPT v4 reading (gpt/v4_all_four_thinkfaces.png, gpt_experiment.md). Height is drawn UP the screen on every wall,
 so west/east are the north ladder UPRIGHT and turned three-quarter (near rail lower, rungs as short diagonals), ~0.93 cell long, top at the
-rim line leaning a touch toward its wall; east mirrors. South is an upright stub (top ~0.4 of the ladder) whose foot is hidden by the near
+rim line leaning a touch toward its wall; (Owner 2026-10-23: E/W leaned the wrong way, so the drawn image is the EAST file and WEST is its mirror.) South is an upright stub (top ~0.4 of the ladder) whose foot is hidden by the near
 lip. North = A7 north (A4 length, faint foot shadow). A2's thickness/keyline/4x-supersample crispness; no baked shadow on west/east/south
 (a small attached one is the owner-allowed option; not needed here).   python3 gen_a8.py OUTDIR
 North is rebuilt here exactly as gen_a7.py draws it (it used to be read back from OUTDIR/optA7_north.png, so gen_a8 failed
@@ -42,5 +42,5 @@ if __name__ == "__main__":
     A2.THICK = 6
     west = A2.facing(L, W)
     north, south, west = warm(north), warm(south), warm(west)
-    for f, im in {"north": north, "south": south, "west": west, "east": G.mirror(west)}.items():
+    for f, im in {"north": north, "south": south, "east": west, "west": G.mirror(west)}.items():
         im.save(out / f"optA8_{f}.png")
