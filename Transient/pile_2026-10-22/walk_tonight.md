@@ -3,6 +3,9 @@
 Save **RM_fw_walkthrough_20261022b** (map C: 10 scenarios + DB drawbridge row; map R: C1 + C11). Clock: map C 16:00,
 map R 09:42 (the two tiles are ~6.3 h apart in longitude: at the usual 10:00 on map C, map R is in the dark at 03:42). Old save RM_fw_walkthrough_20261022 is kept. Stops JSON (camera driver): `Transient/pile_2026-10-22/walk_tonight.json`. **11 stops, 27 decisions, ~44 min.** Every stop is one of HIS judgments; everything an agent proved is in the skip list.
 
+⚠️ **Before any pipe stop: his saved Mod Settings have `joinFittings=false`** (default is ON), so the joint fittings he
+picked will not draw. Ask whether he turned it off on purpose; if not, switch it on live before the stop.
+
 ## REBUILD (~16:30, after the belt frees the game) — commands in order, BENCH seat clone `/home/mandrake/rm/bench`
 
 1. **Bridge**: `rimflow bridge take --for "walkthrough rebuild 20261022b"` (bare `rimflow bridge who` first; the belt releases).
@@ -33,6 +36,17 @@ map R 09:42 (the two tiles are ~6.3 h apart in longitude: at the usual 10:00 on 
    `... --labels` (switches back to map C) and `... --goto DB`, screenshot `rebuild_DB.bmp`, `... --goto C3`, screenshot
    `rebuild_C3.bmp` (turned reels at x 39-47, z 13). Sign counts: each build line prints `N of N sign books` — N must equal.
    Spot-read one sign: `jawa/review_sign action=list prefix="SIGN C12"` must say the colonist WALKS the planks.
+8b. **JOINT CHECK — HARD STEP, nothing is shown to the owner until it passes** (HOSE_JOINTS_REPAIR_ENDS_MISS_THE_NOZZLES;
+   owner 2026-10-22: *"I can't even tell what's going on here with the connnectors. Just look at them! Obviously not even
+   checked before showing us."*). Offline first (before the deploy, step 3): `python3 src/RimMandrake/FlowWorks/selftest_hose_offline.py`
+   (HO9: every drawn fitting's face/bands match the draw constants) and `python3 src/RimMandrake/Utils/selftest_flowworks_stock.py`
+   (`joints:` rows: port geometry). Live, after both maps are built and every laid hose has been on screen once (each
+   `--goto` draws it): `python.exe src/RimMandrake/FlowWorks/northstar/joint_check.py --all-maps --out Transient/pile_2026-10-22/joint_check_rebuild.json | tr -d '\r'`
+   -> must print `JOINT CHECK: PASS`. FAIL = a drawn end/fitting > 0.05 cell from its nozzle/flange/port, an end at no port,
+   or a laid reel whose port stands in front of its nozzle: fix it, rebuild that scenario, run again. UNMEASURED = a laid
+   hose never drawn: `--goto` its scenario and run again. Then the zoomed look (standing_rulings "Nothing reaches the owner
+   unread"): capture every reel and every joint the check listed and stare at them; the check proves geometry, the look
+   proves the picture.
 9. **Save** (map C current, clock pinned to 10:00, paused; old save untouched — `free_save_name` refuses an existing name):
    `python3 src/RimMandrake/Utils/save_guard.py run --current-slot none -- python.exe src/RimMandrake/FlowWorks/northstar/scenarios_map.py --save --name RM_fw_walkthrough_20261022b`
    -> expect `save RM_fw_walkthrough_20261022b: ok=True`. Keysheet regenerates (review/scenarios/KEYSHEET.md, keysheet.html).
