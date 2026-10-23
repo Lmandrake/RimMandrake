@@ -29,6 +29,8 @@ Order, with what each unblocks:
 
 ## Card 1. The shell body part that quietly overrides vanilla's (also: what to rename it)
 
+**ANSWERED 2026-10-22 by question card: option 1, rename to RUT_CephaloidShell.** Helper running.
+
 **DONE 2026-10-22: option 1 chosen by the owner (card) and carried out; the part is `RUT_CephaloidShell`, vanilla `Shell` restored for every other body.**
 
 **What was learned.** One of our Star Wars mods (Utinni patches, the absorbed Cephaloids content) defines a body part
@@ -64,6 +66,8 @@ untouched for everything else.
 ---
 
 ## Card 2. Delete the patches that can no longer do anything?
+
+**ANSWERED 2026-10-22 by question card: option 1, delete all listed.** Helper running.
 
 **What was learned.** Reviewers found patches that target mods or creatures we have already retired, so they match
 nothing. These carry no owner-ruled value (the file or the review says what each would have done, and the same value
@@ -121,6 +125,8 @@ shows right now.
 
 ## Card 4. Rust Cathedral roaches mod: cut it
 
+**ANSWERED 2026-10-22 by question card: option 1, cut the roaches mod now.**
+
 **What was learned.** You cut this mod on the retirement sheet and accepted that sheet on 2026-10-21. It is still
 active because Wave 4 left it. Checked in the files: the roaches are **already ours in the free tier**: the Rust
 Cathedral biome lists `RM_CathedralRoach` (3 mentions) and the Warscar biome lists `RM_ScarRoach`. What the old mod still holds
@@ -144,6 +150,8 @@ roaches belong?" question is already answered by the RM copies), plus the files 
 ---
 
 ## Card 5. Shokkweave Economy mod: what it still does that the Webwork mod does not
+
+**ANSWERED 2026-10-22 by question card: option 3, port the egg market and caravan into the Webwork campaign patch, then cut the mod.**
 
 **What was learned.** The wave-4 note said the Webwork biome's files depend on this mod. **That was wrong**: the
 Webwork's files only mention it in comments, with no real reference. The mod's own About says the trader and rename
