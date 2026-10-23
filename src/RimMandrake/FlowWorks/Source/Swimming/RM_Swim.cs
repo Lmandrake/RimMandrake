@@ -53,6 +53,16 @@ namespace RimMandrake.FlowWorks.Swimming
 		/// 0.5 m shallows and a small animal tires and drowns in them. Off: those squares are footing. Owner question open
 		/// (review day 1 2026-10-17); this switch turns that behaviour off alone, deep water and pits unchanged.</summary>
 		public static bool shallowWaterDrowningEnabled = true;
+		/// <summary>WET_FOXHOLE_BUILD_COLD_FEET_SHAKY_AIM (Q4): a shooter in chest-deep water aims worse (RM_WetCosts).</summary>
+		public static bool deepWaterAimPenalty = true;
+		/// <summary>PROVISIONAL x0.85 (Q4 "about 15% worse").</summary>
+		public static float deepWaterAimFactor = RM_WetCostMath.DefaultAimFactor;
+		/// <summary>Q4: standing in water raises the comfortable minimum temperature (vanilla stat; ordinary hypothermia).</summary>
+		public static bool wetFeelsColder = true;
+		/// <summary>PROVISIONAL +6 C.</summary>
+		public static float wetColdOffset = RM_WetCostMath.DefaultColdOffset;
+		/// <summary>Q6: swimmers have no ranged attack.</summary>
+		public static bool swimmersCannotShoot = true;
 
 		// FLOWWORKS_RESET_BUILD_TWELVE_SCREENS_MISSING: shipped value of every public static bool/float/int setting above. MUST stay
 		// below the LAST public setting field (C# runs static initialisers in textual order).
@@ -81,6 +91,11 @@ namespace RimMandrake.FlowWorks.Swimming
 			Scribe_Values.Look(ref tiredSwimmersHeadForShore, "tiredSwimmersHeadForShore", true);
 			Scribe_Values.Look(ref deepSwimJoyEnabled, "deepSwimJoyEnabled", true);
 			Scribe_Values.Look(ref shallowWaterDrowningEnabled, "shallowWaterDrowningEnabled", true);
+			Scribe_Values.Look(ref deepWaterAimPenalty, "deepWaterAimPenalty", true);
+			Scribe_Values.Look(ref deepWaterAimFactor, "deepWaterAimFactor", RM_WetCostMath.DefaultAimFactor);
+			Scribe_Values.Look(ref wetFeelsColder, "wetFeelsColder", true);
+			Scribe_Values.Look(ref wetColdOffset, "wetColdOffset", RM_WetCostMath.DefaultColdOffset);
+			Scribe_Values.Look(ref swimmersCannotShoot, "swimmersCannotShoot", true);
 		}
 
 		public static void DoSettingsSection(Listing_Standard list)
@@ -133,6 +148,27 @@ namespace RimMandrake.FlowWorks.Swimming
 				+ "half a metre of water can drown, and small animals can tire and drown there. Off: wadeable natural water is "
 				+ "footing; deep water and dug pits keep the drowning rule.");
 			GUI.enabled = true;
+			// WET_FOXHOLE_BUILD_COLD_FEET_SHAKY_AIM: independent of the swim master (dug pits hold chest-deep water either way)
+			list.Label("Standing in water");
+			list.CheckboxLabeled("  Shooting from chest-deep water is harder", ref deepWaterAimPenalty,
+				"On: a shooter standing in water up to its chest or deeper (1.5 m for a person, less for smaller creatures) has its "
+				+ "own hit chance multiplied by the factor below. Off: water never changes aim.");
+			if (deepWaterAimPenalty)
+			{
+				list.Label("  Chest-deep aim factor: x" + deepWaterAimFactor.ToString("0.00") + "  (shipped 0.85)");
+				deepWaterAimFactor = Mathf.Round(list.Slider(deepWaterAimFactor, 0.3f, 1f) * 20f) / 20f;
+			}
+			list.CheckboxLabeled("  Wet pawns feel the cold sooner", ref wetFeelsColder,
+				"On: anyone standing in water (fresh, salt or icy) has a higher minimum comfortable temperature, so ordinary "
+				+ "hypothermia comes sooner. No new illness, no new kind of cold. Rain does not count. Off: water never changes it.");
+			if (wetFeelsColder)
+			{
+				list.Label("  Comfortable minimum raised by: " + wetColdOffset.ToString("0.#") + " C  (shipped 6)");
+				wetColdOffset = Mathf.Round(list.Slider(wetColdOffset, 1f, 20f) * 2f) / 2f;
+			}
+			list.CheckboxLabeled("  Swimmers can't use guns", ref swimmersCannotShoot,
+				"On: a creature swimming (water over its head) cannot use ranged weapons or ranged attacks; melee still works, and "
+				+ "creatures that live in water keep theirs. Raiders do not pick swim squares to shoot from. Off: swimmers shoot.");
 		}
 	}
 
