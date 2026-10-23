@@ -383,7 +383,7 @@ namespace RimMandrake.FlowWorks.Hose
             {
                 CordWorld w = comp.World();
                 if (!HoseRelay.TryIntake(relay.Rect, Rect.Mouth, c => w.InBounds(c) && w.IsWalkable(c) && !Rect.Contains(c), out Cell intake))
-                    return "the other reel has no free side to couple to";
+                    return "the other reel's hose connector is blocked (clear the square in front of its brass nozzle, or turn it)";
                 target = new IntVec3(intake.X, 0, intake.Z);
             }
             else
@@ -396,6 +396,9 @@ namespace RimMandrake.FlowWorks.Hose
                 }
             }
             if (relay != null && comp.Loops(this, relay, true)) return "that reel already feeds this one (a chain may not loop back)";
+            // REEL_LINK_FIX_IGNORES_THE_OBVIOUS_PORT: a reel has one drawn hose connector, so a second feeding hose would couple on
+            // top of the first one's coupling
+            if (relay != null && comp.FeedersOf(relay).Any(f => f != this)) return "that reel's hose connector already has a hose on it";
             return comp.CheckInstall(this, target);
         }
 

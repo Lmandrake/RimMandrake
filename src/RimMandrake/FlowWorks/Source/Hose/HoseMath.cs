@@ -340,10 +340,49 @@ namespace RimMandrake.FlowWorks.Hose
                 else return new HoseLay { Reason = LeadOutBlocked };   // owner card 2026-10-06: refused, never laid without the lead-out
             }
             CordPlan plan = CordPlanner.Plan(w, aPlan, bPlan, new List<KeyValuePair<V2, WaypointKind>>());
-            if (!plan.Ok) return new HoseLay { Reason = "no route" };
+            if (!plan.Ok) return DirectJoin(w, a, b, p, seed, endInward, startOutward) ?? new HoseLay { Reason = "no route" };
             if (startOutward.HasValue) plan.Points.Insert(0, a);
             if (endInward.HasValue) plan.Points.Add(b);
-            return LayOn(w, a, b, plan.Points, p, seed, endInward, startOutward);
+            HoseLay lay = LayOn(w, a, b, plan.Points, p, seed, endInward, startOutward);
+            return lay.Ok ? lay : DirectJoin(w, a, b, p, seed, endInward, startOutward) ?? lay;
+        }
+
+        /// <summary>REEL_LINK_FIX_IGNORES_THE_OBVIOUS_PORT (owner walk 2026-10-23: "it said there was no room to attach it, even
+        /// though it clearly has an open hose port"): a nozzle-to-nozzle link between two close reels whose outlet points AWAY
+        /// from the target. The planned route starts OutletLead past the nozzle and heads straight back, a hairpin no join of
+        /// the minimum bend radius can follow, so the lay was refused with <see cref="LeadOutBlocked"/>. When the ordinary lay
+        /// fails and both ends have a direction, the hose is planned as the lead-out's straight run, then the shortest
+        /// curves of at least the bend radius (every Dubins word, wall-clear, no loop, fewest stray reel/pump cells first)
+        /// onto the end coupling's straight -- the way a stiff hose actually swings round -- and laid taut along that plan.
+        /// Null when no such plan lays (the caller keeps its own refusal).</summary>
+        internal static HoseLay DirectJoin(CordWorld w, V2 a, V2 b, HoseShapeParams p, ulong seed, V2? endInward, V2? startOutward)
+        {
+            if (!endInward.HasValue || !startOutward.HasValue) return null;
+            V2 u = startOutward.Value, v = endInward.Value;
+            double S = LeadOutStraight(p), R = Math.Max(0.45, p.MinBendRadius) * 1.05;
+            if (!OutletClear(w, a, u, S)) return null;
+            V2 s0 = a + u * S, e0 = b - v * HoseRelay.EndStraight;
+            var taut = new HoseShapeParams { MinBendRadius = p.MinBendRadius, Slack = 0, PlumpAmount = p.PlumpAmount, CouplingSpacing = p.CouplingSpacing, MaxLength = p.MaxLength };
+            var cands = new List<(int hits, double len, List<V2> pts)>();
+            var none = new HashSet<Cell>();
+            foreach (List<V2> arc in DubinsAll(s0, u, e0, v, R, Sample / 4, true))
+            {
+                var pts = new List<V2> { a };
+                int ns = Math.Max(1, (int)Math.Ceiling(S / Sample));
+                for (int i = 1; i <= ns; i++) pts.Add(a + u * (S * i / ns));
+                pts.AddRange(arc);
+                int ne = Math.Max(1, (int)Math.Ceiling(HoseRelay.EndStraight / Sample));
+                for (int i = 1; i <= ne; i++) pts.Add(e0 + v * (HoseRelay.EndStraight * i / ne));
+                if (!Clear(w, pts) || SelfIntersects(ResampleN(pts, Math.Max(8, (int)(Geo.Length(pts) / Sample) + 1)))) continue;
+                cands.Add((RigHits(w, pts, none), Geo.Length(pts), pts));
+            }
+            foreach (var c in cands.OrderBy(c => c.hits).ThenBy(c => c.len))
+            {
+                if (c.len > p.MaxLength) continue;
+                HoseLay lay = LayOn(w, a, b, c.pts, taut, seed, endInward, startOutward, true);
+                if (lay.Ok) return lay;
+            }
+            return null;
         }
 
         /// <summary>A lead-out join whose plump pose is longer than this x the flat one (+0.5 cell) is a last resort (the fuzz
@@ -571,9 +610,10 @@ namespace RimMandrake.FlowWorks.Hose
                 else if (SegmentClear(w, o, pts[1]) && SegmentAvoidsBuildings(w, o, pts[1])) pts.Insert(1, o);
                 else if ((hop = CordPlanner.Plan(w, o, pts[1], new List<KeyValuePair<V2, WaypointKind>>())).Ok && hop.Points.Count >= 2)
                     pts.InsertRange(1, hop.Points.Take(hop.Points.Count - 1));     // round the reel to where the walk went
-                else return new HoseLay { Reason = LeadOutBlocked };
+                else return DirectJoin(w, a, b, p, seed, endInward, startOutward) ?? new HoseLay { Reason = LeadOutBlocked };
             }
-            return LayOn(w, a, b, pts, p, seed, endInward, startOutward);
+            HoseLay lay = LayOn(w, a, b, pts, p, seed, endInward, startOutward);
+            return lay.Ok ? lay : DirectJoin(w, a, b, p, seed, endInward, startOutward) ?? lay;
         }
 
         /// <summary>Why a nozzled reel's hose was refused: no room for the straight lead-out (owner card 2026-10-06).</summary>
@@ -584,14 +624,14 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>Lay's shared tail. GPT source read 2026-10-06 B3: the laid hose is never longer than the hose. CheckInstall
         /// judges the taut route, which does not count the outlet lead-out, and the slack cap only bounds the EXTRA; so a lay
         /// over the hose's length is retried with no slack, and refused (reel retracts with the reason) if still too long.</summary>
-        private static HoseLay LayOn(CordWorld w, V2 a, V2 b, List<V2> planPoints, HoseShapeParams p, ulong seed, V2? endInward, V2? startOutward = null)
+        private static HoseLay LayOn(CordWorld w, V2 a, V2 b, List<V2> planPoints, HoseShapeParams p, ulong seed, V2? endInward, V2? startOutward = null, bool shaped = false)
         {
-            HoseLay lay = LayOnce(w, a, b, planPoints, p, seed, endInward, startOutward);
+            HoseLay lay = LayOnce(w, a, b, planPoints, p, seed, endInward, startOutward, shaped);
             if (!lay.Ok || !Overlong(lay, p.MaxLength)) return lay;
             if (p.Slack > 0)
             {
                 var taut = new HoseShapeParams { MinBendRadius = p.MinBendRadius, Slack = 0, PlumpAmount = p.PlumpAmount, CouplingSpacing = p.CouplingSpacing, MaxLength = p.MaxLength };
-                HoseLay t = LayOnce(w, a, b, planPoints, taut, seed, endInward, startOutward);
+                HoseLay t = LayOnce(w, a, b, planPoints, taut, seed, endInward, startOutward, shaped);
                 if (t.Ok && !Overlong(t, p.MaxLength)) return t;
             }
             return new HoseLay { Reason = LaidTooLong, PathLen = lay.PathLen };
@@ -599,8 +639,13 @@ namespace RimMandrake.FlowWorks.Hose
 
         public static bool Overlong(HoseLay lay, double maxLength) => Math.Max(lay.FlatLen, lay.PlumpLen) > maxLength + 1e-6;
 
-        private static HoseLay LayOnce(CordWorld w, V2 a, V2 b, List<V2> planPoints, HoseShapeParams p, ulong seed, V2? endInward, V2? startOutward = null)
+        /// <param name="shaped">REEL_LINK_FIX_IGNORES_THE_OBVIOUS_PORT: the plan is already a hose-shaped curve (DirectJoin's Dubins
+        /// path, every bend at the minimum radius), laid as it is: rounding, S-curves and stiffening are skipped. Stiffening pulls
+        /// a curve with fixed ends toward their chord, so a swing round behind the reel collapsed to the 2-cell straight line
+        /// between the two nozzles and no lead-out could join it.</param>
+        private static HoseLay LayOnce(CordWorld w, V2 a, V2 b, List<V2> planPoints, HoseShapeParams p, ulong seed, V2? endInward, V2? startOutward = null, bool shaped = false)
         {
+            if (shaped) return LayShaped(w, a, b, planPoints, p, endInward, startOutward);
             var lay = new HoseLay();
             // HOSE_PATHING_REPAIR_SCENIC_ROUTE_PLEASE: the reel/pump cells the PLAN crosses (it chose to, at their cost); every
             // shaping stage below prefers a pose that enters no other one (RigHits), so a bend or S-curve never swings the
@@ -757,6 +802,13 @@ namespace RimMandrake.FlowWorks.Hose
                 }
                 if (!done) return new HoseLay { Reason = LeadOutBlocked, PathLen = L };
             }
+            return Finish(w, lay, p, Rig);
+        }
+
+        /// <summary>LayOnce's shared tail: joiners (rigid, straightened, dropped where they would touch a wall or a reel),
+        /// lengths, bend radii and couplings. <paramref name="Rig"/> counts stray reel/pump cells as the caller judges them.</summary>
+        private static HoseLay Finish(CordWorld w, HoseLay lay, HoseShapeParams p, Func<List<V2>, int> Rig)
+        {
             lay.FlatLen = Geo.Length(lay.Flat);
             lay.PlumpLen = Geo.Length(lay.Plump);
             double half = JoinerHalf(VisibleWidth(1, p.PlumpAmount));
@@ -792,6 +844,22 @@ namespace RimMandrake.FlowWorks.Hose
             lay.Couplings.Add(lay.Flat[lay.Flat.Count - 1]);
             lay.Ok = true;
             return lay;
+        }
+
+        /// <summary>REEL_LINK_FIX_IGNORES_THE_OBVIOUS_PORT: a DirectJoin plan laid as drawn (see LayOnce's <c>shaped</c>). The plan
+        /// already runs straight out of the nozzle for LeadOutStraight cells, round at the minimum radius and straight into the
+        /// end coupling, so flat, plump and centre are that one curve and the lead-out is its straight run.</summary>
+        private static HoseLay LayShaped(CordWorld w, V2 a, V2 b, List<V2> planPoints, HoseShapeParams p, V2? endInward, V2? startOutward)
+        {
+            HashSet<Cell> planCells = CellsAlong(planPoints);
+            int Rig(List<V2> pts) => RigHits(w, pts, planCells);
+            List<V2> C = Geo.Resample(planPoints, Sample);
+            C[0] = a;
+            C[C.Count - 1] = b;
+            if (!Clear(w, C)) return new HoseLay { Reason = "no clear route (corners too tight for the hose)" };
+            var lay = new HoseLay { PathLen = Geo.Length(C), Flat = C, Plump = new List<V2>(C), Centre = new List<V2>(C) };
+            if (startOutward.HasValue) { lay.Outlet = true; lay.LeadOutLen = LeadOutStraight(p); }
+            return Finish(w, lay, p, Rig);
         }
 
         /// <summary>The slack pose: a seeded sinusoid across the planned centreline, ramped to zero over 1.5 cells at

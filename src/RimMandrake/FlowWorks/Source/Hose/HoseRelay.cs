@@ -35,13 +35,30 @@ namespace RimMandrake.FlowWorks.Hose
 
         internal static bool IsIntakeOf(HoseReelRect relay, Cell c) => IntakeCells(relay).Contains(c);
 
-        /// <summary>The intake a hose from <paramref name="fromMouth"/> ends on, or false when every intake is blocked.</summary>
+        /// <summary>REEL_LINK_FIX_IGNORES_THE_OBVIOUS_PORT (owner walk 2026-10-23: the hose went "to the western on the right,
+        /// overlapping its handle and ignoring where it has an obvious hose connector"): the cells a NEW link may end on. A 2x2
+        /// reel's art draws ONE hose connector, its brass nozzle, on the side it faces (HoseReelRect.Outward); the other three
+        /// sides are its crank, drum and frame. So a nozzled relay offers only the two cells in front of its nozzle (both couple
+        /// to the drawn nozzle, DrawnEnd); any other footprint offers every intake cell. Recognition of an existing link
+        /// (IsIntakeOf / RelayOf) still reads all sides, so a hose laid before this rule keeps feeding.</summary>
+        internal static List<Cell> PortCells(HoseReelRect relay)
+        {
+            if (!relay.HasNozzle) return IntakeCells(relay);
+            V2 o = relay.Outward.Value;
+            var s = new Cell((int)Math.Round(o.X), (int)Math.Round(o.Z));
+            var l = new List<Cell>();
+            foreach (Cell e in relay.EdgeCells(s)) l.Add(e + s);
+            return l;
+        }
+
+        /// <summary>The intake a hose from <paramref name="fromMouth"/> ends on (one of <see cref="PortCells"/>, the nearest),
+        /// or false when every one is blocked.</summary>
         internal static bool TryIntake(HoseReelRect relay, V2 fromMouth, Func<Cell, bool> walkable, out Cell intake)
         {
             intake = new Cell(0, 0);
             double best = double.MaxValue;
             bool found = false;
-            foreach (Cell c in IntakeCells(relay))
+            foreach (Cell c in PortCells(relay))
             {
                 if (walkable != null && !walkable(c)) continue;
                 double d = V2.Dist(c.Centre, fromMouth);
