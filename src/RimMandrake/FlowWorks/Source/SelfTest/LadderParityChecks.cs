@@ -137,8 +137,10 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(!RM_LadderParityMath.MayTakeLadder(false, false, 4, 25, false, false), "can-fail: the setting off");
                 string d = Src("..", "Defs", "Canals", "ThingDefs", "FlowWorks_PitAccess.xml");
                 int at = d.IndexOf("<defName>RM_LadderPortable</defName>", StringComparison.Ordinal);
+                Assert(at > 0, "RM_LadderPortable is defined in FlowWorks_PitAccess.xml");
                 int end = d.IndexOf("</ThingDef>", at, StringComparison.Ordinal);
-                Assert(at > 0 && d.Substring(at, end - at).Contains("<alwaysUninstallable>true</alwaysUninstallable>"),
+                Assert(end > at, "RM_LadderPortable's ThingDef closes");
+                Assert(d.Substring(at, end - at).Contains("<alwaysUninstallable>true</alwaysUninstallable>"),
                     "colonists uninstall anyone's portable ladder (vanilla Designator_Uninstall's alwaysUninstallable)");
                 Assert(!d.Substring(at, end - at).Contains("trapped enemies"), "can-fail: the description no longer promises the key");
             });
