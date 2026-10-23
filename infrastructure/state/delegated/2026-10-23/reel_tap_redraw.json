@@ -1,0 +1,26 @@
+{
+  "item": "REEL_TAP_CAMERA_REDRAW_STILL_SIDE_ON",
+  "class": "delegated: art judgement",
+  "judge": "naive Opus judge (not the maker), 2026-10-23",
+  "brief": "design/RimMandrake/art_judge_brief.md (B3, C2, C3, C6, D3, D4); delegation_policy.md s4",
+  "owner_order": "Redraw ... Keep the pipe in the proper perspective plane please. All 9 candidates. (card 2026-10-23)",
+  "evidence": "Transient/reel_tap_redraw_20261023/composites/*.png (W/N/S, before/after, 32 and 128 px/cell) + full-res candidates",
+  "common_findings": {
+    "C3": "All reels now read from the ~35deg building camera: W shows drum side + base top; N/S show the near flange as a disk with the far flange and drum top foreshortened above it. Correct.",
+    "C6": "No bore shown on any ground-lying pipe. Only S facings show a coupling bore, and that coupling points at the camera (gooseneck down to a ground-level outlet). W coupling side-on, N outlet hidden behind the reel. The owner's Reel_Deployed_north defect is gone in all 4 looks.",
+    "hose_meets_tip": "W and S: hose bar meets the outlet coupling at the red tip in every look/state. N: outlet hidden, hose starts at the far flange's top rim - reads as emerging from behind the reel; acceptable.",
+    "D3_D4": "No floating parts, halos or smears seen; all inside the footprint."
+  },
+  "verdicts": [
+    {"candidate": "Scrapper stored", "verdict": "PASS", "notes": "Rust + brass kept; W/N/S agree in size and palette."},
+    {"candidate": "Scrapper laid", "verdict": "PASS", "notes": "Maker-flagged 'hose loop over the drum' on S is the remaining wraps seen between the flanges, identical on N; reads correctly, not a defect."},
+    {"candidate": "Industrial stored", "verdict": "PASS", "notes": "Black hose, hazard-stripe flanges, gunmetal kept; facings agree."},
+    {"candidate": "Industrial laid", "verdict": "PASS", "notes": "Facings agree; few wraps left, consistent W/N/S."},
+    {"candidate": "Futuristic stored", "verdict": "PASS", "notes": "White/cyan-lit style kept; facings agree."},
+    {"candidate": "Futuristic laid", "verdict": "PASS", "notes": "Remaining wraps are now white/cyan (old laid art had dark wraps); matches the stored hose, so state-to-state consistency improved. Note only."},
+    {"candidate": "Modern stored", "verdict": "FIX", "fix": "B3/C2: restore the Modern look's single-post pedestal (owner picked that art 2026-10-15, hosereel_coupling_sheet) under the reel in all facings, and draw the N facing's near-hub valve as the handwheel valve the W facing shows, not a mushroom cap.", "notes": "Camera and C6 are correct; it currently reads as the shared box-base template painted red."},
+    {"candidate": "Modern laid", "verdict": "FIX", "fix": "Same as Modern stored: restore the pedestal, and draw the N near-hub valve as a handwheel valve (S hides it correctly).", "notes": "Size now matches siblings (old Modern was oversized); that part is fine."},
+    {"candidate": "RM_LiquidTap", "verdict": "PASS", "notes": "Upright pedestal, handwheel a flat ellipse on top, side spout turns down with no bore showing; rust palette kept. The old leaning/angled draw is fixed."}
+  ],
+  "summary": {"PASS": 7, "FIX": 2, "REJECT": 0}
+}
