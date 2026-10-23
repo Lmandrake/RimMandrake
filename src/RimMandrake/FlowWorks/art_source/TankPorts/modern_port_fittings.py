@@ -93,11 +93,15 @@ def fitting(canvas, cy, wall, west):
     canvas[..., 3:4] = out_a * 255
 
 
-def build(name):
+def base_image(name):
+    """The picture the fittings are drawn on (the owner's card pick as installed in BASE_COMMIT), RGBA."""
     blob = subprocess.run(["git", "show", "%s:%s" % (BASE_COMMIT, REL % name)], capture_output=True, check=True,
                           cwd=os.path.dirname(os.path.abspath(__file__)), timeout=60).stdout
-    im = Image.open(io.BytesIO(blob)).convert("RGBA")
-    a = np.array(im).astype(float)
+    return Image.open(io.BytesIO(blob)).convert("RGBA")
+
+
+def build(name):
+    a = np.array(base_image(name)).astype(float)
     h, w = a.shape[:2]
     dsz, off = TANKS[name]
     top = dsz / 2.0 + off                                  # cells from the footprint centre up to the canvas top
