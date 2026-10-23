@@ -367,9 +367,12 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(pg, @"public static int BandCount => RM_PitTrapMath\.ClimbBands;", "the pocket grid is sized by who climbs");
                 string cm = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_CliffMask.cs"));
                 RiverSwitchFlipChecks.Has(cm, @"band = new NativeArray<CellConnection>\[RM_PitTrapMath\.ClimbBands\]", "and so are the cliff masks");
-                // the picture rules stay as they were (his look first, P9): sink and wall faces saturate at 2 m, never index out
-                Assert(RM_PitDrawMath.SinkFor(14, 0.3f) == RM_PitDrawMath.SinkFor(4, 0.3f) && RM_WallFaceMath.NorthFaceHeight(14) == RM_WallFaceMath.NorthMax,
-                    "a 7 m drop draws as a 2 m drop until P9");
+                // SINK_CAP_WIDEN_PAWNS_SINK_TO_FOUR: the pawn keeps sinking to 4 m (D 8, the owner's pawn_height_ladder_legible
+                // card) and saturates there; wall faces still saturate at 2 m (his look first, P9); never index out
+                Assert(RM_PitDrawMath.SinkFor(8, 0.3f) > RM_PitDrawMath.SinkFor(4, 0.3f) && RM_PitDrawMath.SinkFor(6, 0.3f) > RM_PitDrawMath.SinkFor(4, 0.3f),
+                    "a pawn on 3 m and 4 m floors sinks deeper than on a 2 m floor");
+                Assert(RM_PitDrawMath.SinkFor(14, 0.3f) == RM_PitDrawMath.SinkFor(8, 0.3f) && RM_WallFaceMath.NorthFaceHeight(14) == RM_WallFaceMath.NorthMax,
+                    "a 7 m drop draws as a 4 m drop (the sink cap); wall faces saturate");
             });
         }
     }

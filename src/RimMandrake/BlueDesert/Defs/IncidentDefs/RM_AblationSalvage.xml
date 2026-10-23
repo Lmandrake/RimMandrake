@@ -72,8 +72,6 @@
         </items>
         <pickerKind>RM_Vekkit</pickerKind>
         <flierKind>RM_Vrisk</flierKind>
-        <crackSound>RM_AblationDistantCrack</crackSound>
-        <exposeSound>RM_AblationIceGives</exposeSound>
         <crackMessage>A deep crack rolls across the plateau from somewhere near its edge.</crackMessage>
         <silhouetteMessage>The ice has thinned over something dark. The Pickers have noticed.</silhouetteMessage>
         <letterLabel>The line gave up wreckage</letterLabel>
@@ -95,8 +93,6 @@
         </items>
         <pickerKind>RM_Vekkit</pickerKind>
         <flierKind>RM_Vrisk</flierKind>
-        <crackSound>RM_AblationDistantCrack</crackSound>
-        <exposeSound>RM_AblationIceGives</exposeSound>
         <crackMessage>A deep crack rolls across the plateau from somewhere near its edge.</crackMessage>
         <silhouetteMessage>The ice has thinned over something dark. The Pickers have noticed.</silhouetteMessage>
         <letterLabel>The line gave up sky-metal</letterLabel>
@@ -122,8 +118,6 @@
         <corpseYearsAgo>40~1200</corpseYearsAgo>
         <pickerKind>RM_Vekkit</pickerKind>
         <flierKind>RM_Vrisk</flierKind>
-        <crackSound>RM_AblationDistantCrack</crackSound>
-        <exposeSound>RM_AblationIceGives</exposeSound>
         <crackMessage>A deep crack rolls across the plateau from somewhere near its edge.</crackMessage>
         <silhouetteMessage>The ice has thinned over something dark and person-shaped. The Pickers have noticed.</silhouetteMessage>
         <letterLabel>The line gave up the fallen</letterLabel>

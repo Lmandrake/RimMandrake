@@ -18,7 +18,8 @@ Scene (plot coords from --origin, default 120,120; 30 x 16, cleared + read back 
   Shooters (player faction, a ranged pawnkind, so nobody fights): square-on 10 off (7, 15); along the axis (22, 5);
   on the lip (7, 6); one back from the lip (7, 7).
 Every read is jawa/static_call RM_TrenchCover.ProofTrenchCover "targetId;shooterId":
-  "TRENCH trench=t vanilla=v combined=c hit=h hitNoTrench=h0 cage=b target=x,z shooter=x,z".
+  "TRENCH trench=t vanilla=v combined=c hit=h hitNoTrench=h0 cage=b target=x,z shooter=x,z size=s" (size = the target's
+  BodySize; the bars follow it: trench_bar).
 hitNoTrench is the same report with trenchCoverEnabled off for that read: the open-ground control without moving anyone.
 
 Rows (MEASURED): TRENCH_square_on_blocks_044, TRENCH_square_on_hit_falls, TRENCH_enfilade_zero, TRENCH_lip_shooter_zero,
@@ -75,6 +76,24 @@ def near_verdict(kv, key, want, tol):
     if v is None:
         return "UNMEASURED"
     return "PASS" if abs(v - want) <= tol else "FAIL"
+
+
+# The cover bar for a target of body size `size` standing 1 m (2 notches) deep, square-on, wall 9+ squares from the shooter:
+# 0.75 x clamp(1 m / H, 0, 1) with H = 1.7 m x sqrt(size) (design section 4; RM_TrenchCoverMath.WallBlock, HeightMetres).
+# HARNESS (live 20261023T044826): the spawned "Colonist" was a TEENAGER (Biotech HumanlikeTeenager bodySizeFactor 0.8 ->
+# H 1.52 m -> 0.493) and the fixed adult bar 0.441 read the mod's correct number as a FAIL; one_back read 0.164 = 0.493/3.
+BAR_WALL_M = 1.0
+
+
+def trench_bar(size):
+    """Square-on bar for this target's body size (adult human 1.0 -> 0.441); None for an unread size."""
+    try:
+        size = float(size)
+    except (TypeError, ValueError):
+        return None
+    if not size > 0:
+        return None
+    return 0.75 * min(1.0, BAR_WALL_M / (1.7 * size ** 0.5))
 
 
 def hit_falls_verdict(kv, block, tol=0.03):
@@ -170,22 +189,27 @@ def main():
         res["pawns"] = {"target": target, "shooters": shooters}
 
         kv, txt = read(target, shooters["on"])
-        row("TRENCH_square_on_blocks_044", near_verdict(kv, "trench", 0.441, 0.02) if kv else "UNMEASURED", "MOD",
-            {"kv": kv, "txt": txt})
-        row("TRENCH_square_on_hit_falls", hit_falls_verdict(kv, num(kv, "trench") or 0.441) if kv else "UNMEASURED", "MOD",
+        # the bar follows the target's own body size (the proof's size= field); a DLL without it is judged as an adult and says so
+        bar = trench_bar(kv.get("size")) if kv else None
+        bar_note = "bar from size=%s" % kv.get("size") if bar is not None else "size unread (older DLL): adult bar 0.441"
+        bar = bar if bar is not None else 0.441
+        row("TRENCH_square_on_blocks_044", near_verdict(kv, "trench", bar, 0.02) if kv else "UNMEASURED", "MOD",
+            {"kv": kv, "txt": txt, "bar": round(bar, 3), "barFrom": bar_note})
+        row("TRENCH_square_on_hit_falls", hit_falls_verdict(kv, num(kv, "trench") or bar) if kv else "UNMEASURED", "MOD",
             {"kv": kv})
         kv, txt = read(target, shooters["axis"])
         row("TRENCH_enfilade_zero", near_verdict(kv, "trench", 0.0, 1e-3) if kv else "UNMEASURED", "MOD", {"kv": kv, "txt": txt})
         kv, txt = read(target, shooters["lip"])
         row("TRENCH_lip_shooter_zero", near_verdict(kv, "trench", 0.0, 1e-3) if kv else "UNMEASURED", "MOD", {"kv": kv, "txt": txt})
         kv, txt = read(target, shooters["back"])
-        row("TRENCH_one_back_third", near_verdict(kv, "trench", 0.147, 0.01) if kv else "UNMEASURED", "MOD", {"kv": kv, "txt": txt})
+        row("TRENCH_one_back_third", near_verdict(kv, "trench", bar * 0.3333, 0.01) if kv else "UNMEASURED", "MOD",
+            {"kv": kv, "txt": txt, "bar": round(bar * 0.3333, 3)})
 
         # a refused TrySetDriverFill still answers success=true (fillSet=false): no water poured makes "wet == dry" vacuous
         badw = [x for x in range(2, 13) if not filled_to(dig(P(x, 5), 0, fill=1), 1)]
         B.ticks(SETTLE)
         kv, txt = read(target, shooters["on"])
-        row("TRENCH_wet_same_as_dry", near_verdict(kv, "trench", 0.441, 0.02) if kv and not badw else "UNMEASURED",
+        row("TRENCH_wet_same_as_dry", near_verdict(kv, "trench", bar, 0.02) if kv and not badw else "UNMEASURED",
             "MOD" if not badw else "SITE", {"kv": kv, "txt": txt, "fillRefusedAt": badw})
         for rid, why in OWED.items():
             row(rid, "UNMEASURED", "OWED", {"why": why})

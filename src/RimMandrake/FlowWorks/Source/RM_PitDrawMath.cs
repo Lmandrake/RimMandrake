@@ -18,17 +18,18 @@ namespace RimMandrake.FlowWorks
 	/// travelled, so the pawn rises and lowers smoothly rather than stepping.
 	///
 	/// PROVISIONAL (owner has not set a number beyond the 20 %): 0.3 cells per level, so a
-	/// SUPERDEEP floor sits 1.2 cells below the lip. A humanlike reads about
+	/// 2 m (D 4) floor sits 1.2 cells below the lip and the 4 m cap (D 8) 2.4. A humanlike reads about
 	/// <see cref="HumanlikeFeetToHeadTop"/> = 1.0 cell feet-to-crown (PROVISIONAL, measure
 	/// from a live frame), so at D = 4 the wall stands 1.2 × head height — his 20 %.
 	/// Larger bodies poke further up; the 20 % bar is stated for a person.
 	/// </summary>
 	public static class RM_PitDrawMath
 	{
-		/// <summary>The sink stops growing at 2 m (the "walls 20% over the head" picture rule, a visual rule only).
-		/// PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT: NOT the dig cap; a pawn on a 7 m floor sinks as one on a 2 m floor until P9's
-		/// deeper pictures (his look first).</summary>
-		public const int SinkCapLevels = 4;
+		/// <summary>The sink stops growing at 4 m (8 levels of 0.5 m): a visual rule only, NOT the dig cap.
+		/// SINK_CAP_WIDEN_PAWNS_SINK_TO_FOUR: the owner's pawn_height_ladder_legible card (2026-10-20) says a colonist keeps
+		/// sinking to 4 m; the old cap of 4 levels stopped it at 2 m (validation_v2 X1 read red on it). Deeper than 4 m draws as
+		/// 4 m; <see cref="ClampSinkToLip"/> still keeps the sprite inside the pit opening.</summary>
+		public const int SinkCapLevels = 8;
 
 		/// <summary>PROVISIONAL: cells of southward draw offset per level of depth.</summary>
 		public const float DefaultSinkPerLevel = 0.3f;

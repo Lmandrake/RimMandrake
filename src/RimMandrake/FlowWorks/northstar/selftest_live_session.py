@@ -645,6 +645,24 @@ for size in ((250, 250), (325, 325)):      # plan_zones refuses 200-300 except 2
           and not any(L.overlaps((pc[0], pc[1], 1, 1), r, gap=6) for r in zs.values()),
           "park cell %s on a %s map is >= 6 cells from every zone" % (pc, size))
 check(L.park_cell({"all": (0, 0, 250, 250)}, (250, 250)) is None, "can-fail park: a map full of zones has no park cell (None, never a zone cell)")
+zs = L.plan_zones((250, 250))
+check(all(not any(L.overlaps((c[0] - 2, c[1] - 2, 5, 5), r, gap=6) for r in zs.values()) for c in L.park_cells(zs, (250, 250))),
+      "every park candidate's 5x5 pen sits >= 6 cells off every zone")
+check(L.dry_pen("Soil:10,10,5,5") is True and L.dry_pen("Soil:10,10,4,5;WaterMovingShallow:14,10,1,5") is False
+      and L.dry_pen("") is None and L.dry_pen("RM_Channel_Deep:1,1") is False,
+      "dry_pen: soil is dry, any river/channel cell is wet, an empty read is no verdict (live 20261023T044826: bystanders swam the river)")
+check(L.pen_cells((50, 50), 3) == [(48, 48), (49, 48), (50, 48)] and len(L.pen_cells((50, 50), 30)) == 30
+      and all(abs(x - 50) <= 2 and abs(z - 50) <= 2 for x, z in L.pen_cells((50, 50), 30)), "pen_cells stay inside the 5x5 pen")
+av = dict(zs, **L.v2_plot_rects())
+check(len(av) > len(zs) and L.park_cell(av, (250, 250)) is not None,
+      "the park avoids validation_v2's plot rects too and still finds a cell (B1 ABORT: colonists stood in a v2 plot)")
+check(L.rescue_verdict({"depth": 0}, None) == ("PASS", "MOD"), "B7: out of the pit is PASS whoever carried him")
+check(L.rescue_verdict({"depth": 10}, None) == ("UNMEASURED", "HARNESS")
+      and L.rescue_verdict({"depth": 10}, {"id": "Thing_Human1", "undrafted": False}) == ("UNMEASURED", "HARNESS"),
+      "can-fail B7: still in with no undrafted rescuer is HARNESS (live 20261023T044826: every colonist drafted), never MOD")
+check(L.rescue_verdict({"depth": 10}, {"id": "Thing_Human1", "undrafted": True}) == ("FAIL", "MOD")
+      and L.rescue_verdict({}, {"id": "x", "undrafted": True}) == ("UNMEASURED", "HARNESS"),
+      "B7: still in beside a free rescuer is a MOD FAIL; an unread depth is UNMEASURED")
 dl = L.census_delta({"a": {"hediffs": ["Scar"]}}, {"a": {"hediffs": ["Bruise", "Scar"], "cell": [3, 4]}, "b": {"hediffs": ["ToxicBuildup"]}})
 check(dl.get("a", {}).get("new") == ["Bruise"] and dl.get("b", {}).get("spawnedDuring") is True and len(dl) == 2,
       "census_delta names each colonist's NEW hediffs and marks one spawned during the script")
