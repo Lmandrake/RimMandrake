@@ -1,0 +1,17 @@
+  keep snapshot (current map): {'route': 'none-needed', 'removed': [], 'left': [], 'kept': 11, 'snapshot': {'kept': ['Chicken1864622', 'Human1864606', 'Human1864615', 'Husky1864623', 'Muffalo1864605', 'Muffalo1864614', 'Muffalo1864624', 'Thrumbo1864625', 'Vulture1885690', 'WildBoar1886287', 'WildBoar1886288']}}
+  site pin: deepBedsEnabled True -> False (read back False); P11_FLOOR_ON_PAINTED_PONDS stays the owner's
+====================================================================================================
+S1. A source-fed 1-deep canal fills end to end
+    |~~~~~~~~..........
+    |~~~~~~~~11111111..
+    |~~~~~~~~..........
+    readings: canal / pond squares are LITRES (to the litre, from ProofReadout) and ponds / hoses decilitres; 1 notch = 0.5 m in one square = 1,000 L = 10,000 dL; tolerance 10 dL per square read
+TRACE jawa/static_call {"type": "RimMandrake.FlowWorks.RM_NorthstarProofs", "method": "ProofResetRect", "args": "0;28;28;15"} -> {"success": true, "method": "System.String ProofResetRect(System.String)", "result": "RESET cells=8 levels=8 rolled=0 left=0", "thingArgs": [], "ticksGame": 138684, "operation": {"OperationId": "op_9c
+TRACE jawa/destroy_batch {"rects": "0,28,28,15", "categories": "All"} -> {"success": true, "message": "Destroyed 0 thing(s) across 420 cell(s).", "cellsExamined": 420, "outOfBounds": 0, "destroyed": 0, "pawnsSkipped": 0, "undestroyableSkipped": 0, "perCategory": {}, "sampl
+TRACE jawa/safe_advance {"action": "status"} -> {"success": true, "advance": {"state": "done", "requested": 2, "executed": 2, "tickFrom": 138682, "tickTo": 138684, "timeException": false, "frames": 1, "wallS": 0.02}, "ticksGame": 138684, "operation
+TRACE jawa/safe_advance {"ticks": 2, "stopOn": "default", "timeException": false, "timeoutMs": 60000} -> {"success": true, "state": "done", "requested": 2, "executed": 2, "tickFrom": 138684, "tickTo": 138686, "triggers": [], "triggersTotal": 0, "wallS": 0.05, "frames": 1, "ticksGame": 138686, "operation"
+TRACE jawa/destroy_batch {"rects": "0,28,28,15", "categories": "Plant"} -> {"success": true, "message": "Destroyed 0 thing(s) across 420 cell(s).", "cellsExamined": 420, "outOfBounds": 0, "destroyed": 0, "pawnsSkipped": 0, "undestroyableSkipped": 0, "perCategory": {}, "sampl
+TRACE jawa/safe_advance {"ticks": 2, "stopOn": "default", "timeException": false, "timeoutMs": 60000} -> {"success": true, "state": "done", "requested": 2, "executed": 2, "tickFrom": 138686, "tickTo": 138688, "triggers": [], "triggersTotal": 0, "wallS": 0.06, "frames": 1, "ticksGame": 138688, "operation"
+S1 staged: lake None (limitless=None, None cells); canal of 8 depth-1 cells (14, 35)..(21, 35), dug dry
+         screenshot: None
+  site pin released: deepBedsEnabled back to True (read back True)
