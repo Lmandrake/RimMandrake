@@ -1,0 +1,213 @@
+{
+ "defName": "RSW_Fanback",
+ "label": "Fanback",
+ "class": "fauna/amphibious",
+ "tier": "canon Star Wars creature (has a canon-library entry)",
+ "description": "The fanback was a cold-blooded predatory amphibian from the swamps of Naboo. Each fanback had a big dorsal spine along with a sensitive snout which allowed them to hunt for fish and other small free swimming prey with ease. They lay a high number of eggs and were known to protect these nest sites by hunting any creature bold enough to attempt to eat or threaten their clutch. It's for this reason that these eggs having been sold (or collected as trophies) has resulted in populations of these animals on other worlds.",
+ "biome": "RM_WeepingStones",
+ "canon": {
+  "entry": "design/RimStarWars/canon_references/fanback/description.md",
+  "must_show": "- [ ] BODY PLAN: a Dimetrodon-shaped quadruped: squat, low-slung body on four short stubby legs, a thick tail, and a head carried low and forward\n- [ ] Sail: a tall, rounded dorsal sail running most of the length of the spine, the tallest element of the silhouette\n- [ ] COLOUR LAYOUT: olive-green base coat over the body with darker brown mottled spots (owner ruling 2026-09-14: \"it's supposed to be olive green, not just brown. That's a sepia picture for some reason. Make it Olive colored.\"); the sail darker brown to near-black at its trailing/upper edge, lighter at its base where it meets the body\n- [ ] Wide, toothy predator jaw with visible lower fangs\n- [ ] NEGATIVE: not a plain brown/sepia lizard (the body must read olive green), not a dinosaur standing tall on long legs, not a sail-less monitor lizard or crocodile",
+  "engine_limits": "none known"
+ },
+ "size": {
+  "kind": "animal",
+  "cells": 3.5,
+  "bodySize": 2,
+  "drawSize": [
+   3.5,
+   3.5
+  ],
+  "mesh": 1,
+  "visualMax": null,
+  "source": "live def dump 2026-10-04 17:39Z \u00b7 PawnKindDef RSW_Fanback, last lifeStage bodyGraphicData \u00b7 drawSize: XML agrees, RSW_Fanback.xml (declared)"
+ },
+ "candidates": [
+  {
+   "letter": "A",
+   "provenance_label_shown_to_owner": "IN GAME \u00b7 SWBestiary",
+   "lane": "body",
+   "facings": [
+    "south",
+    "east",
+    "north"
+   ],
+   "files": {
+    "south": {
+     "file": "A_south.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "east": {
+     "file": "A_east.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "north": {
+     "file": "A_north.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    }
+   },
+   "true_scale_panel": "A_scale_full.png"
+  },
+  {
+   "letter": "B",
+   "provenance_label_shown_to_owner": "render landed after the committed build (from art ledger)",
+   "lane": "body",
+   "facings": [
+    "south",
+    "east",
+    "north"
+   ],
+   "files": {
+    "south": {
+     "file": "B_south.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "east": {
+     "file": "B_east.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "north": {
+     "file": "B_north.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    }
+   },
+   "true_scale_panel": "B_scale_full.png"
+  },
+  {
+   "letter": "C",
+   "provenance_label_shown_to_owner": "render 2026-09-18 \u00b7 canon_fanback_v1",
+   "lane": "body",
+   "facings": [
+    "south",
+    "east",
+    "north"
+   ],
+   "files": {
+    "south": {
+     "file": "C_south.png",
+     "px": [
+      512,
+      512
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "east": {
+     "file": "C_east.png",
+     "px": [
+      512,
+      512
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "north": {
+     "file": "C_north.png",
+     "px": [
+      512,
+      512
+     ],
+     "how": "artstore (full resolution)"
+    }
+   },
+   "true_scale_panel": "C_scale_full.png"
+  },
+  {
+   "letter": "D",
+   "provenance_label_shown_to_owner": "render 2026-09-13 \u00b7 fanback_toyfig_a",
+   "lane": "body",
+   "facings": [
+    "east"
+   ],
+   "files": {
+    "east": {
+     "file": "D_east.png",
+     "px": [
+      160,
+      160
+     ],
+     "how": "sheet THUMBNAIL from git (full-res purged \u2014 reduced resolution)"
+    }
+   },
+   "true_scale_panel": "D_scale_full.png"
+  },
+  {
+   "letter": "E",
+   "provenance_label_shown_to_owner": "render 2026-09-13 \u00b7 fanback_toyfig_b",
+   "lane": "body",
+   "facings": [
+    "east"
+   ],
+   "files": {
+    "east": {
+     "file": "E_east.png",
+     "px": [
+      160,
+      160
+     ],
+     "how": "sheet THUMBNAIL from git (full-res purged \u2014 reduced resolution)"
+    }
+   },
+   "true_scale_panel": "E_scale_full.png"
+  },
+  {
+   "letter": "F",
+   "provenance_label_shown_to_owner": "IN GAME \u00b7 SWBestiary",
+   "lane": "swimming graphic",
+   "facings": [
+    "swim_south",
+    "swim_east",
+    "swim_north"
+   ],
+   "files": {
+    "swim_south": {
+     "file": "F_swim_south.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "swim_east": {
+     "file": "F_swim_east.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "swim_north": {
+     "file": "F_swim_north.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    }
+   },
+   "true_scale_panel": null
+  }
+ ]
+}

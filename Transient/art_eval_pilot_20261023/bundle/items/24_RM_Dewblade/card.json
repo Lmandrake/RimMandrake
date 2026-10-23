@@ -1,0 +1,61 @@
+{
+ "defName": "RM_Dewblade",
+ "label": "Dewblade",
+ "class": "flora/ground_cover",
+ "tier": "our own design (franchise-free RM_/RUT_)",
+ "description": "Shin-high tufts of flat grey-green blades standing edge-on to the sun and face-on to the wind, each blade tipped with a drip-point that feeds its own root. Whole hillsides of them align like iron filings -- the wind made visible. The grass-analog and graze base of the biome, densest toward true water.",
+ "biome": "RM_WeepingStones",
+ "canon": null,
+ "size": {
+  "kind": "plant",
+  "cells": 0.8,
+  "bodySize": null,
+  "drawSize": [
+   1,
+   1
+  ],
+  "mesh": 1,
+  "visualMax": 0.8,
+  "source": "live def dump 2026-10-04 17:39Z \u00b7 ThingDef RM_Dewblade \u00b7 drawSize: XML RM_WeepingStonesNativeFlora.xml: declared nowhere in the chain PlantBase \u2192 PlantBaseNonEdible \u2192 engine default \u00b7 visualSizeRange.max: XML agrees, RM_WeepingStonesNativeFlora.xml (declared) \u00b7 maxMeshCount: XML RM_WeepingStonesNativeFlora.xml: declared nowhere in the chain PlantBase \u2192 PlantBaseNonEdible \u2192 engine default"
+ },
+ "candidates": [
+  {
+   "letter": "A",
+   "provenance_label_shown_to_owner": "IN GAME \u00b7 our deployed art (render weepingstones2_dewblade)",
+   "lane": "body",
+   "facings": [
+    "single"
+   ],
+   "files": {
+    "single": {
+     "file": "A_single.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    }
+   },
+   "true_scale_panel": "A_scale_full.png"
+  },
+  {
+   "letter": "B",
+   "provenance_label_shown_to_owner": "render 2026-10-05 \u00b7 gapfin_RM_Dewblade_v1",
+   "lane": "body",
+   "facings": [
+    "single"
+   ],
+   "files": {
+    "single": {
+     "file": "B_single.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    }
+   },
+   "true_scale_panel": "B_scale_full.png"
+  }
+ ]
+}

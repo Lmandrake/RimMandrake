@@ -1,0 +1,1204 @@
+{
+ "_about": "HIDDEN ground truth for the blind race. Owner verdicts from his 2026-10-10 sitting on weepingstones_sheet_2026-10-05; never give this file to a reviewer.",
+ "_candidate_status": {
+  "pick": "the letter he chose",
+  "keep_variant": "kept as a random-pool variant of the pick",
+  "keep_other_slot": "kept in another slot of the same row",
+  "purged": "he deleted it (\u2715)",
+  "rejected": "row REDO and this picture dropped",
+  "retained_as_reference": "row REDO; this picture left as the base to redo from",
+  "not_chosen": "shown, neither picked nor deleted",
+  "partly_purged": "some facings deleted"
+ },
+ "items": {
+  "RSW_Boma": {
+   "defName": "RSW_Boma",
+   "verdict": "KEEP",
+   "pick": "B",
+   "caveats": [
+    "renders landed between the committed sheet build and his sitting: candidate letters for this row are RECONSTRUCTED from the art ledger's shas \u2014 the row verdict is certain, per-candidate status less so"
+   ],
+   "candidates": {
+    "A": "keep_variant",
+    "B": "pick",
+    "C": "purged",
+    "D": "purged",
+    "E": "purged",
+    "F": "purged"
+   },
+   "notes_verbatim": [],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:06:50.985Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "3de5897ae0ddec0ee09c",
+     "e7bf70d624075f766f0a"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "fauna/walker"
+  },
+  "RM_Burrak": {
+   "defName": "RM_Burrak",
+   "verdict": "KEEP",
+   "pick": "B",
+   "caveats": [],
+   "candidates": {
+    "A": "purged",
+    "B": "pick"
+   },
+   "notes_verbatim": [
+    "Rename to Burra Burra"
+   ],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:08:28.825Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "09de544c1cd324ca8a0a"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "fauna/walker"
+  },
+  "ColossusToad": {
+   "defName": "ColossusToad",
+   "verdict": "KEEP",
+   "pick": "B",
+   "caveats": [],
+   "candidates": {
+    "A": "not_chosen",
+    "B": "pick"
+   },
+   "notes_verbatim": [
+    "Redo more alien, rename Colossia, regenerate description, based on the current (b) but extended."
+   ],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:09:40.805Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "3c73d07a3aa2b86592df"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "fauna/walker"
+  },
+  "RSW_Dactillion": {
+   "defName": "RSW_Dactillion",
+   "verdict": "KEEP",
+   "pick": "B",
+   "caveats": [
+    "renders landed between the committed sheet build and his sitting: candidate letters for this row are RECONSTRUCTED from the art ledger's shas \u2014 the row verdict is certain, per-candidate status less so",
+    "his note says 'Old Flyer art must be removed (remove F)' and four shas were purged under it (candidates C/D here), yet the ledger also records a keep on the flight-frame column F \u2014 treat the flight-frame candidate's status as uncertain"
+   ],
+   "candidates": {
+    "A": "not_chosen",
+    "B": "pick",
+    "C": "purged",
+    "D": "purged",
+    "E": "not_chosen",
+    "F": "keep_variant"
+   },
+   "notes_verbatim": [
+    "Old Flyer art must be removed (remove F)"
+   ],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:11:02.038Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "1ba157874416600b211d",
+     "bacf0e81793e55c315ee",
+     "c6a182cd91167f3b30c9"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "fauna/flyer"
+  },
+  "RSW_Fanback": {
+   "defName": "RSW_Fanback",
+   "verdict": "KEEP",
+   "pick": "B",
+   "caveats": [
+    "renders landed between the committed sheet build and his sitting: candidate letters for this row are RECONSTRUCTED from the art ledger's shas \u2014 the row verdict is certain, per-candidate status less so"
+   ],
+   "candidates": {
+    "A": "not_chosen",
+    "B": "pick",
+    "C": "keep_variant",
+    "D": "purged",
+    "E": "purged",
+    "F": "keep_other_slot"
+   },
+   "notes_verbatim": [],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:11:59.893Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "16defb89b665a7cca491",
+     "97fe1f10e177276eb6e3",
+     "b0ba7f141bf2b2c44db7"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "fauna/amphibious"
+  },
+  "RM_Gorrask": {
+   "defName": "RM_Gorrask",
+   "verdict": "KEEP",
+   "pick": "C",
+   "caveats": [],
+   "candidates": {
+    "A": "not_chosen",
+    "B": "purged",
+    "C": "pick"
+   },
+   "notes_verbatim": [],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:15:01.089Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "aaa220f5aef0fd2bfba2"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "fauna/walker"
+  },
+  "RM_Huldu": {
+   "defName": "RM_Huldu",
+   "verdict": "REDO",
+   "pick": null,
+   "caveats": [],
+   "candidates": {
+    "A": "rejected",
+    "B": "purged",
+    "C": "retained_as_reference"
+   },
+   "notes_verbatim": [
+    "Redo based on (c) but make more alien: an alien otter-equivalent with gripping arms and a whale-like tail, covering in luxurious fur. Hunts in the water but can drag itself onto land as needed and jump around to get where it's going. Very beautiful fur that is a trading commodity. Good name, bad description: regenerate and expand. Full art regen."
+   ],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:17:51.438Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "86a27a7d51fa22982b2c",
+     "adcaaa22029a9e0e36a9",
+     "b0de95721f1f0f513f93",
+     "be2fa8eba0170b9e2016",
+     "c02db3af5f9f143a1d36"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "fauna/swimmer"
+  },
+  "RM_Ivvol": {
+   "defName": "RM_Ivvol",
+   "verdict": "KEEP",
+   "pick": "C",
+   "caveats": [],
+   "candidates": {
+    "A": "not_chosen",
+    "B": "purged",
+    "C": "pick"
+   },
+   "notes_verbatim": [],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:18:20.161Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "2739d63eca6b0bbb9621"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "fauna/swimmer"
+  },
+  "RM_Karrek": {
+   "defName": "RM_Karrek",
+   "verdict": "KEEP",
+   "pick": "C",
+   "caveats": [],
+   "candidates": {
+    "A": "not_chosen",
+    "B": "purged",
+    "C": "pick"
+   },
+   "notes_verbatim": [
+    "Rename the Iaala"
+   ],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:19:11.371Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "6db5120c1d25baccf001"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "fauna/swimmer"
+  },
+  "RM_Kirruk": {
+   "defName": "RM_Kirruk",
+   "verdict": "REDO",
+   "pick": null,
+   "caveats": [],
+   "candidates": {
+    "A": "not_chosen",
+    "B": "not_chosen",
+    "C": "retained_as_reference"
+   },
+   "notes_verbatim": [
+    "Total regen. Take it's current description. Should be an alien comb-flier, slotted trailing teeth-like combs that flow from its \"wings\" as it glides on the moist updraft to drink. Quasi-avian bird thing. Rename to \"Dewglider\""
+   ],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:21:42.582Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "848b848d9f4f2616d36b",
+     "d3f19cca422889d6b2f6"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "fauna/flyer"
+  },
+  "RM_Loomu": {
+   "defName": "RM_Loomu",
+   "verdict": "REDO",
+   "pick": null,
+   "caveats": [],
+   "candidates": {
+    "A": "rejected",
+    "B": "not_chosen",
+    "C": "retained_as_reference"
+   },
+   "notes_verbatim": [
+    "I like the description (Though it needs beefing up). Image is too cute, make it more realistic looking and wet: it sits in the water and sings out what it hears. Should have very strange sound work. Remove the turtle art."
+   ],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:23:36.571Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "0c4d30933887132eb8e5",
+     "1c9a1f45c4f8daddb5a0",
+     "8d160d6f510ca7c7c868",
+     "9659322d91ac4745b5a2",
+     "a2c54b5ea2ab501e5ab2"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "fauna/swimmer"
+  },
+  "RM_Mirrik": {
+   "defName": "RM_Mirrik",
+   "verdict": "CUT",
+   "pick": null,
+   "caveats": [
+    "CUT for a design reason (roster no longer needs it), not for the art \u2014 exclude from art scoring"
+   ],
+   "candidates": {
+    "A": "not_chosen",
+    "B": "not_chosen",
+    "C": "not_chosen",
+    "D": "retained_as_reference"
+   },
+   "notes_verbatim": [
+    "cut this, no longer needed."
+   ],
+   "art_judgeable": false,
+   "ruled_at": "2026-10-10T14:24:16.090Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "0c6c555c69c400bc8f6a",
+     "3328fb8d7eb44b9e9f05"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "fauna/flyer"
+  },
+  "RM_Murrin": {
+   "defName": "RM_Murrin",
+   "verdict": "REDO",
+   "pick": null,
+   "caveats": [],
+   "candidates": {
+    "A": "rejected",
+    "B": "not_chosen",
+    "C": "retained_as_reference"
+   },
+   "notes_verbatim": [
+    "Redo completely. A fast alien fish with twin dorsal comb-fins and small hand-like fins near its head. Colorful and odd."
+   ],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:25:38.663Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "0af2cf60f8d9ce77371a",
+     "3333924b1ebdc7fae958",
+     "66ed5594ca8f6302c466",
+     "78b3288b3b43e63e09ae",
+     "c47d4c7c99a825525b46"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "fauna/swimmer"
+  },
+  "RSW_Ollopom": {
+   "defName": "RSW_Ollopom",
+   "verdict": "KEEP",
+   "pick": "B",
+   "caveats": [
+    "renders landed between the committed sheet build and his sitting: candidate letters for this row are RECONSTRUCTED from the art ledger's shas \u2014 the row verdict is certain, per-candidate status less so"
+   ],
+   "candidates": {
+    "A": "not_chosen",
+    "B": "pick",
+    "C": "purged",
+    "D": "not_chosen",
+    "E": "keep_other_slot"
+   },
+   "notes_verbatim": [
+    "Nice. Give them a small beauty bonus then call them done."
+   ],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:27:34.097Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "5a3ce5b05cd010d66d33",
+     "df3b115c3c60d9367138"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "fauna/amphibious"
+  },
+  "RM_Sillik": {
+   "defName": "RM_Sillik",
+   "verdict": "KEEP",
+   "pick": "B",
+   "caveats": [],
+   "candidates": {
+    "A": "purged",
+    "B": "pick"
+   },
+   "notes_verbatim": [],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:28:01.505Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "035988d4fe714cbe6f51"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "fauna/walker"
+  },
+  "RM_Skarrin": {
+   "defName": "RM_Skarrin",
+   "verdict": "REDO",
+   "pick": null,
+   "caveats": [],
+   "candidates": {
+    "A": "rejected",
+    "B": "not_chosen",
+    "C": "retained_as_reference"
+   },
+   "notes_verbatim": [
+    "Enhance the description, keep the name, redo the art to focus on a slender knife-like silver eel-thing with a cruel suction-like mouth for sucking water, blood, and flesh away. Sharp fins emit regularly from its body that can be flexed into painfully cutting lines. Extremely delicious."
+   ],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:29:54.909Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "5e8567a1e5e548128bb6",
+     "69ecc72180b1ad250238",
+     "8a8ae6247eb3801e8318",
+     "ad46fc05188392eec52e",
+     "c410bb7d4591f7af75d2"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "fauna/swimmer"
+  },
+  "RM_Ssurr": {
+   "defName": "RM_Ssurr",
+   "verdict": "REDO",
+   "pick": null,
+   "caveats": [],
+   "candidates": {
+    "A": "purged",
+    "B": "retained_as_reference"
+   },
+   "notes_verbatim": [
+    "Expand the description, but otherwise good. Must redo the art because the crest-fan isn't rotating with the creature properly. "
+   ],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:31:08.213Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "40267884d8ac348893fb",
+     "a432992cd5467321541a"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "fauna/walker"
+  },
+  "RM_Tirbak": {
+   "defName": "RM_Tirbak",
+   "verdict": "KEEP",
+   "pick": "A",
+   "caveats": [
+    "pick letter A has no surviving picture in the reconstruction (ledger ruling for A carries no shas, or its pictures were purged) \u2014 score the row verdict, not the pick"
+   ],
+   "candidates": {
+    "A": "purged",
+    "B": "keep_other_slot"
+   },
+   "notes_verbatim": [
+    "Redo the description to be more in world. Flexible wind intakes constantly drain moisture from any dampness in the breeze and make a low howling sound in a strong gust. Pack animal."
+   ],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:32:51.005Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "31e80e8964bca4457b9c",
+     "efec94abaa4e170455bb"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "fauna/walker_pack"
+  },
+  "RM_Vellak": {
+   "defName": "RM_Vellak",
+   "verdict": "REDO",
+   "pick": null,
+   "caveats": [],
+   "candidates": {
+    "A": "purged",
+    "B": "retained_as_reference"
+   },
+   "notes_verbatim": [
+    "Make more alien based on (b), less recognizably camel, more like a furred snake for a neck/head. Sometimes used for pack animals. Redo description after art to conform."
+   ],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:34:52.672Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "b189fe3d19a6fb68a4f5",
+     "dbe2eae09e1105b24415"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "fauna/walker_pack"
+  },
+  "RM_Vhakk": {
+   "defName": "RM_Vhakk",
+   "verdict": "REDO",
+   "pick": null,
+   "caveats": [],
+   "candidates": {
+    "A": "not_chosen",
+    "B": "retained_as_reference"
+   },
+   "notes_verbatim": [
+    "Drop all of this art, it's all bad. Try again. Make something low and lurking that lays in the water and watches, same niche as an alligator but looking more like a cross between a flounder and a badger. Eyes on short stalks. New description, same name."
+   ],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:36:35.345Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "7d37faa9163314785af0",
+     "b913a7f08ca9482b9b98"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "fauna/walker"
+  },
+  "RM_Vizhik": {
+   "defName": "RM_Vizhik",
+   "verdict": "REDO",
+   "pick": null,
+   "caveats": [],
+   "candidates": {
+    "A": "rejected",
+    "B": "not_chosen",
+    "C": "retained_as_reference"
+   },
+   "notes_verbatim": [
+    "Close. Beef up description, rename to the Fan Eel, then generate highly realistic images to consider. Drop all this art."
+   ],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:37:35.816Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "188aa340cd8511db9549",
+     "26d58d69852cc2d2fcfa",
+     "782035a5ba0d165223c2",
+     "8979d326cae3dce506ce",
+     "a446a49252b90ef9e5c9"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "fauna/swimmer"
+  },
+  "Plant_Ambrosia": {
+   "defName": "Plant_Ambrosia",
+   "verdict": "REDO",
+   "pick": null,
+   "caveats": [],
+   "candidates": {
+    "A": "rejected",
+    "B": "retained_as_reference"
+   },
+   "notes_verbatim": [
+    "Beef up the description, keep the name, make the art very special. Softly glowing golden fruit, just one or two, nestled in distinctive two-armed growth like a T-shape made into a small bush. Loving homage to the original game. Drop the art currently here."
+   ],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:39:37.896Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "54808de7fb3551bf2a8e",
+     "92ef697dbfea89f03ac9",
+     "fad8fa435bf829e090ee"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "flora/bush"
+  },
+  "RM_Bladderquill": {
+   "defName": "RM_Bladderquill",
+   "verdict": "KEEP",
+   "pick": "B",
+   "caveats": [],
+   "candidates": {
+    "A": "keep_variant",
+    "B": "pick"
+   },
+   "notes_verbatim": [],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:39:48.954Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "1460eef8c95f6f2b6564",
+     "9b27c8c987b73e7c01f1"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "flora/bush"
+  },
+  "RM_Dewblade": {
+   "defName": "RM_Dewblade",
+   "verdict": "KEEP",
+   "pick": "B",
+   "caveats": [],
+   "candidates": {
+    "A": "not_chosen",
+    "B": "pick"
+   },
+   "notes_verbatim": [
+    "Two more variants, more realistic."
+   ],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:40:20.050Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "bd067be247740cf862d3"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "flora/ground_cover"
+  },
+  "RM_Dewgourd": {
+   "defName": "RM_Dewgourd",
+   "verdict": "KEEP",
+   "pick": "B",
+   "caveats": [],
+   "candidates": {
+    "A": "not_chosen",
+    "B": "pick"
+   },
+   "notes_verbatim": [
+    "Two more variants, more realistic."
+   ],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:40:34.487Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "12f286a89fdd0f00a661"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "flora/bush"
+  },
+  "RM_Dripfringe": {
+   "defName": "RM_Dripfringe",
+   "verdict": "KEEP",
+   "pick": "B",
+   "caveats": [],
+   "candidates": {
+    "A": "not_chosen",
+    "B": "pick"
+   },
+   "notes_verbatim": [
+    "Two more variants, more realistic."
+   ],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:40:56.080Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "b914a158e54f981a240a"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "flora/special"
+  },
+  "Plant_Reeds": {
+   "defName": "Plant_Reeds",
+   "verdict": "KEEP",
+   "pick": "B",
+   "caveats": [],
+   "candidates": {
+    "A": "not_chosen",
+    "B": "pick"
+   },
+   "notes_verbatim": [
+    "Two more variants, more realistic."
+   ],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:41:03.665Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "d98869f369d5d50d941c"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "flora/bush"
+  },
+  "RM_Rockfinger": {
+   "defName": "RM_Rockfinger",
+   "verdict": "KEEP",
+   "pick": "B",
+   "caveats": [],
+   "candidates": {
+    "A": "not_chosen",
+    "B": "pick"
+   },
+   "notes_verbatim": [
+    "Two more variants, more realistic. Make this 50% larger."
+   ],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:41:21.839Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "fa49e7095db3555d65de"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "flora/tree"
+  },
+  "RM_Salvecomb": {
+   "defName": "RM_Salvecomb",
+   "verdict": "KEEP",
+   "pick": "B",
+   "caveats": [],
+   "candidates": {
+    "A": "not_chosen",
+    "B": "pick"
+   },
+   "notes_verbatim": [
+    "Two more variants, more realistic."
+   ],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:41:29.442Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "78dbc7f421890ee8c4b4"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "flora/bush"
+  },
+  "RM_Shadefern": {
+   "defName": "RM_Shadefern",
+   "verdict": "KEEP",
+   "pick": "B",
+   "caveats": [],
+   "candidates": {
+    "A": "keep_variant",
+    "B": "pick"
+   },
+   "notes_verbatim": [
+    "Two more variants, more realistic."
+   ],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:41:37.524Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "2b309b69b83f98b5174d",
+     "e5c6ac6bcc44fd4cbc50"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "flora/bush"
+  },
+  "RM_Dewshrooms": {
+   "defName": "RM_Dewshrooms",
+   "verdict": "KEEP",
+   "pick": "B",
+   "caveats": [
+    "renders landed between the committed sheet build and his sitting: candidate letters for this row are RECONSTRUCTED from the art ledger's shas \u2014 the row verdict is certain, per-candidate status less so"
+   ],
+   "candidates": {
+    "A": "not_chosen",
+    "B": "pick",
+    "C": "keep_variant",
+    "E": "keep_variant"
+   },
+   "notes_verbatim": [
+    "Improve description"
+   ],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:42:51.164Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "0bcfa906e63595832fe9",
+     "74cbd77f74389d70eda6",
+     "d5948324542a572ce4b0"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "flora/bush"
+  },
+  "RM_Steamfrond": {
+   "defName": "RM_Steamfrond",
+   "verdict": "KEEP",
+   "pick": "A",
+   "caveats": [],
+   "candidates": {
+    "A": "pick",
+    "B": "keep_variant"
+   },
+   "notes_verbatim": [
+    "Creates a unique Star Wars cuisine spice.  Improve the description."
+   ],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:44:50.944Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "6eaed9b41f47d24753a0",
+     "fa34c0fce7b3dffb67cd"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "flora/bush"
+  },
+  "RM_Verdimoss": {
+   "defName": "RM_Verdimoss",
+   "verdict": "KEEP",
+   "pick": "A",
+   "caveats": [],
+   "candidates": {
+    "A": "pick",
+    "B": "keep_variant"
+   },
+   "notes_verbatim": [
+    "Two more variants, more realistic. Improve the description."
+   ],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:44:43.088Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "6bce1d9027037044d083",
+     "d52928fb81bb35c90a63"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "flora/ground_cover"
+  },
+  "RM_Weepmat": {
+   "defName": "RM_Weepmat",
+   "verdict": "KEEP",
+   "pick": "A",
+   "caveats": [],
+   "candidates": {
+    "A": "pick",
+    "B": "keep_variant"
+   },
+   "notes_verbatim": [
+    "Two more variants, more realistic. Improve the description"
+   ],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:44:32.911Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "d02c81eff76bd8ba867c",
+     "e33469ac958313786106"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "flora/ground_cover"
+  },
+  "RM_Duul": {
+   "defName": "RM_Duul",
+   "verdict": "KEEP",
+   "pick": "C",
+   "caveats": [],
+   "candidates": {
+    "A": "not_chosen",
+    "B": "not_chosen",
+    "C": "pick"
+   },
+   "notes_verbatim": [
+    "Improve description."
+   ],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:45:51.904Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "43eb99a36c90cb71bbcc"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "item/catch"
+  },
+  "RM_HulduCatch": {
+   "defName": "RM_HulduCatch",
+   "verdict": "REDO",
+   "pick": null,
+   "caveats": [],
+   "candidates": {
+    "A": "not_chosen",
+    "B": "not_chosen",
+    "C": "retained_as_reference",
+    "D": "retained_as_reference"
+   },
+   "notes_verbatim": [
+    "Make it look like a dead one of these. Of course generate AFTER the source is settled, blocking until"
+   ],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:49:03.893Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "05932943c7288c29053e",
+     "4d91a67a1733494c4e2a",
+     "ae10798f735601a597db"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "item/catch"
+  },
+  "RM_Ikkal": {
+   "defName": "RM_Ikkal",
+   "verdict": "KEEP",
+   "pick": "A",
+   "caveats": [],
+   "candidates": {
+    "A": "pick",
+    "B": "not_chosen",
+    "C": "keep_other_slot"
+   },
+   "notes_verbatim": [
+    "Improve description and call it a Softstone."
+   ],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:47:05.202Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "43f6ddd3a6cafe55bda6",
+     "c2940ebead3d4f01b4c5"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "item/catch"
+  },
+  "RM_IvvolCatch": {
+   "defName": "RM_IvvolCatch",
+   "verdict": "REDO",
+   "pick": null,
+   "caveats": [],
+   "candidates": {
+    "A": "not_chosen",
+    "B": "not_chosen",
+    "C": "retained_as_reference",
+    "D": "retained_as_reference"
+   },
+   "notes_verbatim": [
+    "Make it look like a dead one of these. Of course generate AFTER the source is settled, blocking until"
+   ],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:49:10.907Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "295fd1f470fe290327cd",
+     "5c61a9a581d39d4d7cf2",
+     "b58f137c2ae6d36134f9"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "item/catch"
+  },
+  "RM_KarrekCatch": {
+   "defName": "RM_KarrekCatch",
+   "verdict": "REDO",
+   "pick": null,
+   "caveats": [],
+   "candidates": {
+    "A": "not_chosen",
+    "B": "not_chosen",
+    "C": "retained_as_reference",
+    "D": "retained_as_reference"
+   },
+   "notes_verbatim": [
+    "Make it look like a dead one of these. Of course generate AFTER the source is settled, blocking until"
+   ],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:49:14.100Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "41ad435922ea27c03f34",
+     "ab1bfe26c6da59d7c895",
+     "eb478626e5793033737b"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "item/catch"
+  },
+  "RM_LoomuCatch": {
+   "defName": "RM_LoomuCatch",
+   "verdict": "REDO",
+   "pick": null,
+   "caveats": [],
+   "candidates": {
+    "A": "not_chosen",
+    "B": "not_chosen",
+    "C": "retained_as_reference",
+    "D": "retained_as_reference"
+   },
+   "notes_verbatim": [
+    "Make it look like a dead one of these. Of course generate AFTER the source is settled, blocking until"
+   ],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:49:16.697Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "301a8cf533fa4dc6b41b",
+     "4bbc18cac6b96465bcf6",
+     "d5272e51c85d0844407f"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "item/catch"
+  },
+  "RM_MurrinCatch": {
+   "defName": "RM_MurrinCatch",
+   "verdict": "REDO",
+   "pick": null,
+   "caveats": [
+    "renders landed between the committed sheet build and his sitting: candidate letters for this row are RECONSTRUCTED from the art ledger's shas \u2014 the row verdict is certain, per-candidate status less so"
+   ],
+   "candidates": {
+    "A": "rejected",
+    "B": "retained_as_reference",
+    "C": "retained_as_reference"
+   },
+   "notes_verbatim": [
+    "Make it look like a dead one of these. Of course generate AFTER the source is settled, blocking until"
+   ],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:49:21.919Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "0d77963801b37913dfa4",
+     "24e4aea2000a5a1a5d63",
+     "544bde028b9ce98651fb",
+     "8e5f4691f3d9de03ffba",
+     "f4145b4aa26e60e6c6a2"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "item/catch"
+  },
+  "RM_Ozhu": {
+   "defName": "RM_Ozhu",
+   "verdict": "REDO",
+   "pick": null,
+   "caveats": [],
+   "candidates": {
+    "A": "not_chosen",
+    "B": "not_chosen",
+    "C": "retained_as_reference"
+   },
+   "notes_verbatim": [
+    "Make it look like a dead one of these. Of course generate AFTER the source is settled, blocking until"
+   ],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:49:51.539Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "a39a56250fb7f6bd1a27",
+     "d40c00117a61a175af45"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "item/catch"
+  },
+  "RM_SkarrinCatch": {
+   "defName": "RM_SkarrinCatch",
+   "verdict": "REDO",
+   "pick": null,
+   "caveats": [],
+   "candidates": {
+    "A": "not_chosen",
+    "B": "not_chosen",
+    "C": "retained_as_reference",
+    "D": "retained_as_reference"
+   },
+   "notes_verbatim": [
+    "Make it look like a dead one of these. Of course generate AFTER the source is settled, blocking until"
+   ],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:49:57.482Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "0a48e6c52993ac899f95",
+     "2bb7394cce2ca0e55ec1",
+     "e5ee504afc11eea28a5a"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "item/catch"
+  },
+  "RM_Tarrik": {
+   "defName": "RM_Tarrik",
+   "verdict": "KEEP",
+   "pick": "A",
+   "caveats": [],
+   "candidates": {
+    "A": "pick",
+    "B": "not_chosen",
+    "C": "keep_other_slot"
+   },
+   "notes_verbatim": [],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:50:07.868Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "3d69670275bf7e45a3df",
+     "8251ef2e2aa170cccaff"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "item/catch"
+  },
+  "RM_Ullo": {
+   "defName": "RM_Ullo",
+   "verdict": "KEEP",
+   "pick": "A",
+   "caveats": [],
+   "candidates": {
+    "A": "pick",
+    "B": "not_chosen",
+    "C": "keep_other_slot"
+   },
+   "notes_verbatim": [],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:50:18.319Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "e1ad2f0b47cdcb700f88",
+     "f5fccdc3dffa09984d73"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "item/catch"
+  },
+  "RM_VizhikCatch": {
+   "defName": "RM_VizhikCatch",
+   "verdict": "REDO",
+   "pick": null,
+   "caveats": [],
+   "candidates": {
+    "A": "not_chosen",
+    "B": "not_chosen",
+    "C": "retained_as_reference",
+    "D": "retained_as_reference"
+   },
+   "notes_verbatim": [
+    "Make it look like a dead one of these. Of course generate AFTER the source is settled, blocking until"
+   ],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:50:30.094Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "0c166b7019c1c1119a5f",
+     "8eeda2dbb5f48fc93254",
+     "97d8dc9dc979ac1d2d30"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "item/catch"
+  },
+  "RM_Vobbal": {
+   "defName": "RM_Vobbal",
+   "verdict": "KEEP",
+   "pick": "A",
+   "caveats": [],
+   "candidates": {
+    "A": "pick",
+    "B": "not_chosen",
+    "C": "keep_other_slot"
+   },
+   "notes_verbatim": [],
+   "art_judgeable": true,
+   "ruled_at": "2026-10-10T14:50:34.648Z",
+   "provenance": {
+    "decisions_file": "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+    "art_ledger_event_ids": [
+     "01ad30f12932aa956f44",
+     "b65aa1cc9d6131b1e56d"
+    ],
+    "by": "owner (sidecar savedBy/writeCount; per-row `at` stamp)"
+   },
+   "class": "item/catch"
+  }
+ }
+}

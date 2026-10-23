@@ -1,0 +1,97 @@
+{
+ "defName": "RM_Vellak",
+ "label": "Vellak",
+ "class": "fauna/walker_pack",
+ "tier": "our own design (franchise-free RM_/RUT_)",
+ "description": "Camel-tall striders that walk the dry country between pools in single file down the caravan roads, dorsal sail-combs fanned to drink the wind as they come. From the rim, moving lines converging on water: pilgrimage made visible. The RM_ tier's own pilgrim ring \u2014 the free mod keeps the pilgrimage identity without a canon herd, which only stacks on top in the campaign.",
+ "biome": "RM_WeepingStones",
+ "canon": null,
+ "size": {
+  "kind": "animal",
+  "cells": 2,
+  "bodySize": 1.6,
+  "drawSize": [
+   2,
+   2
+  ],
+  "mesh": 1,
+  "visualMax": null,
+  "source": "live def dump 2026-10-04 17:39Z \u00b7 PawnKindDef RM_Vellak, last lifeStage bodyGraphicData \u00b7 drawSize: XML agrees, RM_WeepingStonesNatives.xml (declared)"
+ },
+ "candidates": [
+  {
+   "letter": "A",
+   "provenance_label_shown_to_owner": "donor original \u00b7 Vanilla Textures Expanded",
+   "lane": "body",
+   "facings": [
+    "south",
+    "east",
+    "north"
+   ],
+   "files": {
+    "south": {
+     "file": "A_south.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "east": {
+     "file": "A_east.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "north": {
+     "file": "A_north.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    }
+   },
+   "true_scale_panel": "A_scale_full.png"
+  },
+  {
+   "letter": "B",
+   "provenance_label_shown_to_owner": "render 2026-09-24 \u00b7 weepingstones2_vellak",
+   "lane": "renders found by NAME",
+   "facings": [
+    "south",
+    "east",
+    "north"
+   ],
+   "files": {
+    "south": {
+     "file": "B_south.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "east": {
+     "file": "B_east.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "north": {
+     "file": "B_north.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    }
+   },
+   "true_scale_panel": "B_scale_full.png"
+  }
+ ]
+}

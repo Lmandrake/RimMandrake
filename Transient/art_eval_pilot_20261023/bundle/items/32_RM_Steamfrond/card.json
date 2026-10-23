@@ -1,0 +1,61 @@
+{
+ "defName": "RM_Steamfrond",
+ "label": "Steamfrond",
+ "class": "flora/bush",
+ "tier": "our own design (franchise-free RM_/RUT_)",
+ "description": "A rosette of mineral-pale fronds spiralled around a breathing vent, rims crusted with white salt bloom. Grows only at the seep oases -- the green eye in open nothing is a steamfrond ring before it is anything else. Its harvest scrapes seep-salt, a preservative and spice with the underworld's taste, and the only source of it.",
+ "biome": "RM_WeepingStones",
+ "canon": null,
+ "size": {
+  "kind": "plant",
+  "cells": 0.8,
+  "bodySize": null,
+  "drawSize": [
+   1,
+   1
+  ],
+  "mesh": 1,
+  "visualMax": 0.8,
+  "source": "live def dump 2026-10-04 17:39Z \u00b7 ThingDef RM_Steamfrond \u00b7 drawSize: XML RM_WeepingStonesNativeFlora.xml: declared nowhere in the chain PlantBase \u2192 PlantBaseNonEdible \u2192 engine default \u00b7 visualSizeRange.max: XML agrees, RM_WeepingStonesNativeFlora.xml (declared) \u00b7 maxMeshCount: XML RM_WeepingStonesNativeFlora.xml: declared nowhere in the chain PlantBase \u2192 PlantBaseNonEdible \u2192 engine default"
+ },
+ "candidates": [
+  {
+   "letter": "A",
+   "provenance_label_shown_to_owner": "IN GAME \u00b7 our deployed art (render weepingstones2_steamfrond)",
+   "lane": "body",
+   "facings": [
+    "single"
+   ],
+   "files": {
+    "single": {
+     "file": "A_single.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    }
+   },
+   "true_scale_panel": "A_scale_full.png"
+  },
+  {
+   "letter": "B",
+   "provenance_label_shown_to_owner": "render 2026-10-05 \u00b7 gapfin_RM_Steamfrond_v1",
+   "lane": "body",
+   "facings": [
+    "single"
+   ],
+   "files": {
+    "single": {
+     "file": "B_single.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    }
+   },
+   "true_scale_panel": "B_scale_full.png"
+  }
+ ]
+}
