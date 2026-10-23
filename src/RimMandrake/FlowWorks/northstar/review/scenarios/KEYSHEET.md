@@ -1,6 +1,6 @@
 # FlowWorks composite review scenarios - key sheet
 
-Load **RM_fw_walkthrough_20261022c** (map C) and **RM_fw_scenarios_rivers_20261021 (not saved yet)** (map R: C1, C11). Paused at 10:00, god mode on, clear weather, Peaceful, Mod Settings at shipped defaults. **Every plot is still until your first poke: its START.** Reload the save to reset. Raids live in **RM_fw_composite_raid**, rain in **RM_fw_composite_rain** (load the branch, never the main save, for those pokes).
+Load **RM_fw_walkthrough_20261022c** (map C) and **RM_fw_walkthrough_20261022c, its second map (switch with `--river --goto C1`)** (map R: C1, C11). Paused at 10:00, god mode on, clear weather, Peaceful, Mod Settings at shipped defaults. **Every plot is still until your first poke: its START.** Reload the save to reset. Raids live in **RM_fw_composite_raid**, rain in **RM_fw_composite_rain** (load the branch, never the main save, for those pokes).
 
 Each scenario has a gold title label (number, name, START, what to look for), its try lines under the plot, small rust labels on every part a poke touches, violet **DEFERRED** labels on every piece not built yet, and in-save sign books (a Novel; mouse over it, press i) at its north-west corner and at each DEFERRED piece - the books survive a plain load with no agent.
 
@@ -8,7 +8,7 @@ Tonight's rulings carried: colonists dig to 2 m; deeper holes are machine-dug (m
 
 | # | scenario | map | plot (x,z,w,h) | look | staged / DEFERRED | goto |
 |---|---|---|---|---|---|---|
-| C1 | The Thirsty Terraces | R | river-anchored (live) | all four | 15 / 3 | `--goto C1` (map R: framed by `--river --build`; goto on map R owed) |
+| C1 | The Thirsty Terraces | R | river-anchored (live) | all four | 15 / 3 | `--goto C1` (map R: `--river --goto C1`) |
 | C2 | The Drowned Keep | C | (62, 62, 44, 44) | Industrial | 19 / 5 | `--goto C2` |
 | C3 | The Labyrinth Rescue | C | (12, 12, 40, 40) | Scrapper | 21 / 2 | `--goto C3` |
 | C4 | The Wet Quarry | C | (12, 62, 40, 40) | Industrial | 15 / 2 | `--goto C4` |
@@ -18,7 +18,7 @@ Tonight's rulings carried: colonists dig to 2 m; deeper holes are machine-dug (m
 | C8 | The Canal Lock | C | (112, 62, 44, 24) | Futuristic | 11 / 3 | `--goto C8` |
 | C9 | The Trench Line | C | (162, 62, 44, 32) | earthworks | 9 / 3 | `--goto C9` |
 | C10 | The Rain Basin | C | (196, 112, 44, 40) | land and water bodies | 11 / 3 | `--goto C10` |
-| C11 | Prospector's Creek | R | river-anchored (live) | Scrapper | 9 / 2 | `--goto C11` (map R: framed by `--river --build`; goto on map R owed) |
+| C11 | Prospector's Creek | R | river-anchored (live) | Scrapper | 9 / 2 | `--goto C11` (map R: `--river --goto C11`) |
 | C12 | The Oubliette and the Kennel | C | (62, 12, 40, 36) | Modern | 15 / 2 | `--goto C12` |
 | C13 | The Spill Yard | C | (112, 162, 44, 32) | land and water bodies | 8 / 1 | `--goto C13` |
 
