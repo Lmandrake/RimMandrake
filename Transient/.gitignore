@@ -138,6 +138,7 @@
 !/art_eval_pilot_20261023/prompts/class_flora_tree.md
 !/art_eval_pilot_20261023/prompts/class_item_catch.md
 !/art_gen/droidworks_g2/**
+!/art_judgments_2026-10-23.md
 !/artpipe_manual_retries/**
 !/artpipe_quota_failures/**
 !/bacta_l2_20261010.txt
@@ -452,6 +453,7 @@
 !/fw_scenes/mock/mock_fail_S4_stdout.txt
 !/fw_scenes/p5_build_log.md
 !/fw_water_live_20261016/MEASUREMENTS.md
+!/gale_dust_2026-10-23/compare_bare_vs_AB.png
 !/gap_art_contact_20261010.png
 !/glasswalk_l2_20261010.txt
 !/gpt_review_art_automation_2026-10-19.txt
