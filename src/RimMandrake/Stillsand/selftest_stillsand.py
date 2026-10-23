@@ -471,6 +471,25 @@ class Fake(object):
     def t_static_call(self, type=None, method=None, args=None, **k):
         if type.endswith("RM_GaleTakenProof") and method == "Registered":
             return {"success": True, "result": "GALETAKEN registered=%s" % ("gale_not_taker" not in self.b)}
+        if type.endswith("RM_WaterLedgerProof"):     # WATER_LEDGER_DOUBLE_CHARGE_1's row
+            self.debt = getattr(self, "debt", 0.0)
+            if method == "ProofLedger":
+                return {"success": True, "result": "LEDGER live=True debt=%.3f def=RUT_SunDebt enabled=True countsHere=True"
+                        % self.debt}
+            x, z = [int(v) for v in str(args).split(",")]
+            if method == "ProofStillCycle":
+                brine = [i for i, t in self.things.items() if t["def"] == "RM_Brine" and (t["x"], t["z"]) == (x, z)]
+                if not brine:
+                    return {"success": True, "result": "CYCLE ran=False feed=none still=T0"}
+                del self.things[brine[0]]
+                self.debt += 2.0 if "still_books_wrong" in self.b else 3.0
+                self.new("RM_StilledWater", x + 1, z, stackCount=3)
+                return {"success": True, "result": "CYCLE ran=True feed=RM_Brine units=1 litres=3 water=RM_StilledWater still=T0"}
+            if method == "ProofDrinkHook":
+                twice = "drink_double_charge" in self.b
+                if twice:
+                    self.debt += 1.0
+                return {"success": True, "result": "DRINK item=RM_StilledWater bookedAtSource=%s by=P1" % (not twice)}
         return {"success": False, "message": "fake: unknown static %s.%s" % (type, method)}
 
     def t_window_list_close(self, **k):
@@ -664,6 +683,8 @@ def run(broken=()):
 
 # break -> the components that must go FAIL (and nothing else may)
 BREAKS = {
+    "still_books_wrong": ["water.still_water_charged_once"],
+    "drink_double_charge": ["water.still_water_charged_once"],
     "regen_keeps_biome": ["site.site_stillsand_map"],
     "no_cave_log": ["site.site_cave_logged", "caves.gen_toggles_off_no_cave_no_skeleton"][:1],
     "skeleton_overcap": ["site.skeleton_gen_within_cap"],

@@ -1611,6 +1611,61 @@ def water_chain(t):
             if bloom:
                 _fail("water poured on gravel sowed %d hourbloom: only remembering sand may bloom" % bloom)
 
+    with _comp(t, "still_water_charged_once"):
+        # WATER_LEDGER_DOUBLE_CHARGE_1 A1: one still cycle raises the water ledger by exactly the litres it made, and the
+        # flask's own drink hook (RM_CompWaterVolume.PostIngested) raises it by nothing more (bookedAtSource). Proof calls
+        # are RM_WaterLedgerProof (the cycle runs outright; no 6,000 sunlit ticks). The ledger exists only where a tier
+        # ships a RM_WaterLedgerDef (Utinni's RUT_SunDebt, needs Ideology): elsewhere this reads UNMEASURED.
+        if _live(t):
+            P = NS + "RM_WaterLedgerProof"
+
+            def sc(method, arg="-"):
+                r = t.bridge_call("jawa/static_call", type=P, method=method, args=arg)
+                res = str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+                if not isinstance(r, dict) or r.get("success") is False or not res:
+                    _unmeasured(t, "static_call %s.%s did not answer: %s" % (P, method, str(r)[:200]))
+                return res
+
+            def debt():
+                res = sc("ProofLedger")
+                kv = dict(tok.split("=", 1) for tok in res.split() if "=" in tok)
+                if kv.get("live") != "True" or kv.get("countsHere") != "True":
+                    _unmeasured(t, "the water ledger is not live on this map (%s): this tier ships no RM_WaterLedgerDef "
+                                   "or the map's biome is not one it counts" % res)
+                return float(kv["debt"]), res
+
+            sx, sz = x + 6, z + 6
+            t.bridge_call("jawa/destroy_batch", rects="%d,%d,6,6" % (sx - 2, sz - 2), categories="Plant,Item,Filth,Building")
+            t.bridge_call("jawa/spawn_batch", ops="RM_SolarStill:%d,%d" % (sx, sz))
+            still = _things(t, "RM_SolarStill", "%d,%d,4,4" % (sx - 1, sz - 1))
+            if not still:
+                _unmeasured(t, "the solar still did not stand after spawn_batch")
+            t.bridge_call("jawa/spawn_batch", ops="RM_Brine:%d,%d" % (still[0]["x"], still[0]["z"]))
+            d0, l0 = debt()
+            cyc = sc("ProofStillCycle", "%d,%d" % (still[0]["x"], still[0]["z"]))
+            kv = dict(tok.split("=", 1) for tok in cyc.split() if "=" in tok)
+            if kv.get("ran") != "True":
+                _unmeasured(t, "the still found no feed (the brine is not on its cells?): %s" % cyc)
+            d1, l1 = debt()
+            litres = float(kv.get("litres", "nan"))
+            _note(t, "still cycle: ledger before / cycle / after", [l0, cyc, l1])
+            if abs((d1 - d0) - litres) > 1e-3:
+                _fail("one still cycle made %s litres but moved the ledger by %.3f (want exactly the litres made)"
+                      % (kv.get("litres"), d1 - d0))
+            if kv.get("water") != "RM_StilledWater":
+                _unmeasured(t, "the still made %s (Dubs Bad Hygiene's bottle): the flask's drink hook is not ours to "
+                               "measure here" % kv.get("water"))
+            flask = _things(t, "RM_StilledWater", "%d,%d,8,8" % (sx - 3, sz - 3))
+            if not flask:
+                _unmeasured(t, "the still's flask is not on the map near the still")
+            dr = sc("ProofDrinkHook", "%d,%d" % (flask[0]["x"], flask[0]["z"]))
+            d2, l2 = debt()
+            _note(t, "flask drink hook: hook / ledger after", [dr, l2])
+            if "bookedAtSource=True" not in dr:
+                _fail("RM_StilledWater does not carry bookedAtSource=True: %s" % dr)
+            if abs(d2 - d1) > 1e-3:
+                _fail("drinking the still's flask moved the ledger by %.3f litres: the water is charged twice" % (d2 - d1))
+
 
 # ----------------------------------------------------------------------------- chain: skeletons
 
