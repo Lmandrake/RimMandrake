@@ -1,0 +1,1 @@
+A review/decision sheet generator must derive its decisionsPath/sheetPath from the directory it wrote into (wslpath -w), never a literal D:\Luke\dev\RimMandrake\... : that is the read-only mirror, which the seat clones never write to, so the sheet would save decisions to a folder that does not exist (northstar_matrix/run_live.py --post, fixed 20d2b488b).
