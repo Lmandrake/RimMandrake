@@ -84,7 +84,7 @@ def main(argv=None):
         ok, waited = V._wait_playing(B, leave_s=0)
         say("quicktest map up: %s (%s s)" % (ok, waited))
     say("threat structures: %s" % V.clear_threat_structures(B))
-    B.call("rimworld/pause_game", paused=True)
+    B.call("rimworld/pause_game", pause=True)
     B.call("jawa/incident_queue_clear")
     res["sweep_start"] = V.sweep_at_start(B, made_map=a.fresh_map)
     B.call("rimworld/set_god_mode", enabled=True)

@@ -438,7 +438,7 @@ def prep_site(w, a):
     if a.mock:
         w.say("river_site.py skipped (--mock)")
         return True
-    w.call("rimworld/pause_game", paused=True)
+    w.call("rimworld/pause_game", pause=True)
     w.say("founding a river site (river_site.py; a few minutes) ...")
     exe = "python.exe" if os.name == "posix" and os.path.exists("/mnt/c") else sys.executable
     rc = subprocess.call([exe, os.path.join(NORTHSTAR, "river_site.py")], timeout=1500)
@@ -508,7 +508,7 @@ def main(argv=None):
             if st != "Playing":
                 w.say("No Playing game (state %s): start a quicktest map, then rerun with --prep." % st)
                 return 2
-            w.call("rimworld/pause_game", paused=True)
+            w.call("rimworld/pause_game", pause=True)
             w.call("rimworld/set_god_mode", enabled=True)
         if a.verb == "prep" or a.prep:
             if not prep_site(w, a):
