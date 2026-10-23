@@ -246,7 +246,7 @@ def _run(argv, hold):
         say("quicktest map up: %s (%s s)" % (ok, waited))
     res_calm = V.clear_threat_structures(B)   # TESTENV_PREFLIGHT_HARDEN_TRISPIKE_AT_ARM (storyteller is handled below)
     say("threat structures: %s" % res_calm)
-    B.call("rimworld/pause_game", paused=True)
+    B.call("rimworld/pause_game", pause=True)
     B.call("jawa/weather_set", weather="Clear", lockWeather=True)
     B.call("jawa/incident_queue_clear")
     # LIVE 2026-10-17: with the storyteller on, a fleshbeast assault (Entities) landed on the island mid-run and downed
