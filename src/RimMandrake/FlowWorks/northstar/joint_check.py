@@ -69,12 +69,15 @@ def judge(answer):
 
 PIPE_DEF_PREFIX, POLE_DEF_PREFIX = "RM_UniversalPipe", "RM_PipePole"
 # Ports the net probe cannot see (JOINT_CHECK_FIX_TAPS_LOOK_LIKE_NOTHING, 2026-10-23): HoseProbe "net:x,z" takes the FIRST thing
-# with a hydraulic role, so a sprinkler head standing ON a pipe cell answers as the pipe, and RM_LiquidTap / RM_LiquidDrill
-# (Building_LiquidDrill: RM_LiquidNet.RoleOfKind None, a bleed well that works beside a pipe) answer "no liquid machine".
-# Each family is a legitimate liquid port, found by def (variants RM_SprinklerHead_Scrapper... share the prefix):
-#   Building_LiquidDrill   RM_LiquidTap (bleed well), RM_LiquidDrill      Sprinklers.CompRM_SprinklerBase  RM_SprinklerHead*
-#   pipe-fed faucet        RM_PipeFaucet (Defs/Sprinklers/RM_PipeFaucet.xml)
-PORT_DEF_PREFIXES = ("RM_LiquidTap", "RM_LiquidDrill", "RM_SprinklerHead", "RM_PipeFaucet")
+# with a hydraulic role, so a sprinkler head standing ON a pipe cell answers as the pipe. Found by def (variants
+# RM_SprinklerHead_Scrapper... share the prefix):
+#   Sprinklers.CompRM_SprinklerBase  RM_SprinklerHead*      pipe-fed faucet  RM_PipeFaucet (Defs/Sprinklers/RM_PipeFaucet.xml)
+# NOT ports: RM_LiquidTap (bleed well) and RM_LiquidDrill (Building_LiquidDrill) are OFF the pipe net -- they join no pipe at any
+# adjacency, their only output is the dug-channel cell they face (delegated design ruling 2026-10-23, bleed_well_port.json).
+# A pipe end beside one is a real stub.
+PORT_DEF_PREFIXES = ("RM_SprinklerHead", "RM_PipeFaucet")
+# Stubs known and kept on purpose: absolute cell -> why. They stay FAIL (ok False); the note says so.
+KNOWN_STUBS = {(25, 130): "known FAIL: C7 pipe west end staged for the future faucet (PIPE_FAUCET_BUILD_TAP_NAME_NOW_FREE)"}
 ORTHO = ((1, 0), (-1, 0), (0, 1), (0, -1))
 RING8 = ORTHO + ((1, 1), (1, -1), (-1, 1), (-1, -1))
 
@@ -97,8 +100,7 @@ def _fp_cells(fp):
 
 def stub_joints(pipes, poles, reel_fps, hose_ends, is_partner, port_cells=()):
     """Pure (is_partner injected): one pipe_stub joint per pipe end. is_partner(cell) -> True (a tank / liquid machine is
-    there), False (nothing with a net role), None (the read did not answer). port_cells: cells of taps / bleed wells /
-    sprinkler heads (PORT_DEF_PREFIXES), on the end or 8-way around it, pipe cells included (a head stands on its pipe)."""
+    there), False (nothing with a net role), None (the read did not answer). port_cells: cells of sprinkler heads / faucets (PORT_DEF_PREFIXES), on the end or 8-way around it, pipe cells included (a head stands on its pipe)."""
     pc = set(map(tuple, port_cells))
     ps, pl = set(map(tuple, pipes)), set(map(tuple, poles))
     reel_cells = set()
@@ -119,7 +121,7 @@ def stub_joints(pipes, poles, reel_fps, hose_ends, is_partner, port_cells=()):
             continue
         near = [c for c in [e] + [(e[0] + dx, e[1] + dz) for dx, dz in RING8] if c in pc]
         if near:
-            out.append(_joint("pipe_stub", e, True, "%d,%d" % near[0], "pipe end meets a tap / bleed well / sprinkler head"))
+            out.append(_joint("pipe_stub", e, True, "%d,%d" % near[0], "pipe end meets a sprinkler head / faucet"))
             continue
         seen = None
         for c in [e] + [(e[0] + dx, e[1] + dz) for dx, dz in RING8]:
@@ -136,7 +138,7 @@ def stub_joints(pipes, poles, reel_fps, hose_ends, is_partner, port_cells=()):
         elif seen == "unread":
             out.append(_joint("pipe_stub", e, None, "-", "the role read of a neighbour never answered"))
         else:
-            out.append(_joint("pipe_stub", e, False, "-", "pipe end at no port: a stub drawn into nothing"))
+            out.append(_joint("pipe_stub", e, False, "-", KNOWN_STUBS.get(e, "pipe end at no port: a stub drawn into nothing")))
     return out
 
 

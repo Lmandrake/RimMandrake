@@ -73,8 +73,8 @@ class FakeB(object):
     """list_things answers a 3-pipe run (one end beside a tank at (3,0)) and a pole; the census holds one stored reel."""
     def call(self, tool, kw):
         if tool == "jawa/list_things":
-            if "RM_LiquidTap" in kw.get("defName", ""):
-                return {"success": True, "countMatched": 1, "things": [{"def": "RM_LiquidTap", "x": 50, "z": 50}]}
+            if "RM_SprinklerHead" in kw.get("defName", ""):
+                return {"success": True, "countMatched": 1, "things": [{"def": "RM_SprinklerHead", "x": 50, "z": 50}]}
             things = [{"def": "RM_UniversalPipe", "x": x, "z": 0} for x in range(3)] + [{"def": "RM_PipePole", "x": 9, "z": 9}]
             return {"success": True, "countMatched": len(things), "things": things}
         return {"success": False}
@@ -94,10 +94,10 @@ ex = J.extra_joints(FakeB(), lambda cmd: {"success": False, "error": "probe time
 check(len(ex) == 1 and ex[0]["ok"] is None, "an unreadable census is UNMEASURED, never a pass")
 # JOINT_CHECK_FIX_TAPS_LOOK_LIKE_NOTHING: bleed wells and sprinkler heads (a head stands ON its pipe cell) are ports
 st = {tuple(x["at"]): x for x in J.stub_joints(run, [], [], [], lambda c: False, [(-1, 1)])}
-check(st[(0, 0)]["ok"] is True and st[(0, 0)]["where"] == "-1,1" and st[(2, 0)]["ok"] is False, "a bleed well on the end's diagonal is a port")
+check(st[(0, 0)]["ok"] is True and st[(0, 0)]["where"] == "-1,1" and st[(2, 0)]["ok"] is False, "a port (sprinkler head / faucet) on the end's diagonal is a port")
 st = {tuple(x["at"]): x for x in J.stub_joints(run, [], [], [], lambda c: False, [(1, 0)])}
 check(st[(0, 0)]["ok"] is True and st[(2, 0)]["ok"] is True, "a head standing on a pipe cell is a port for the ends beside it")
-check(set(J.PORT_DEF_PREFIXES) >= {"RM_LiquidTap", "RM_SprinklerHead", "RM_LiquidDrill"} and "RM_SprinklerHead_Scrapper" in J._defs_with(J.PORT_DEF_PREFIXES),
+check(set(J.PORT_DEF_PREFIXES) == {"RM_SprinklerHead", "RM_PipeFaucet"} and "RM_SprinklerHead_Scrapper" in J._defs_with(J.PORT_DEF_PREFIXES),
       "port defs are read from Defs (variants included)")
 # replay of the 2026-10-23 live failures from the scenarios that laid them (map R = c01 at origin (96,35), map C = c07 at (12,112))
 sc = os.path.join(os.path.dirname(os.path.abspath(__file__)), "scenarios")
@@ -121,7 +121,9 @@ except Exception as e:  # noqa: BLE001
     check(False, "replay c01 failed: %r" % e)
 try:
     r = replay("c07_bathhouse_tower", 12, 112)
-    check(r.get((25, 130)) is True, "replay map C: the pipe end by the bleed wells (25,130) PASSes")
+    check(r.get((25, 130)) is False, "replay map C: the pipe end by the bleed wells (25,130) is a real stub (wells are off the net)")
+    note = [x["note"] for x in J.stub_joints([(25, 130), (26, 130)], [], [], [], lambda c: False) if tuple(x["at"]) == (25, 130)]
+    check(note and "PIPE_FAUCET_BUILD_TAP_NAME_NOW_FREE" in note[0], "(25,130) carries the known-FAIL note")
 except Exception as e:  # noqa: BLE001
     check(False, "replay c07 failed: %r" % e)
 try:
