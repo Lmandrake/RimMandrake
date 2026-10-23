@@ -3607,14 +3607,22 @@ def _x8c_lid_walker(L, c, deck):
         L.row("X8c_lid_walker_drawn_at_ground", False, "HARNESS", "spawn colonist on the lid: %r" % (str(r)[:200],),
               status="UNMEASURED")
         return
-    B.call("rimworld/step_game_ticks", ticks=60, pauseFirst=True, timeoutMs=60000)
+    # X8C_WALKER_FIX_FELL_THROUGH_THE_FLOOR (live round 2 2026-10-23: 'BENENATH cell=141,70 pawn=none'): an UNDRAFTED
+    # colonist wanders off the lid during a plain 60-tick step. DRAFT it and hold it on c (order_pawn to its own cell,
+    # draft=True, waits the 60 ticks), then read the cell at once; the pawn is still there, drafted.
+    wid = ((r.get("pawns") or [{}])[0]).get("id")
+    o = _order_row(B.call("jawa/order_pawn", pawnId=wid, x=c[0], z=c[1], waitTicks=60, draft=True), wid) if wid else {}
+    if not (o.get("orderAccepted") is True and (o.get("ticksElapsed") or 0) > 0):
+        L.row("X8c_lid_walker_drawn_at_ground", False, "HARNESS", "could not draft/hold the walker on %d,%d: %s" % (
+            c[0], c[1], str(o)[:200]), status="UNMEASURED")
+        return
     ok, kv, txt = _proof(B, "ProofBeneath", "%d,%d" % c)
     if ok and kv.get("covered") != "True":
         L.row("X8c_lid_walker_drawn_at_ground", False, "SITE", "the %s lid gave way under the walker (the row needs a lid "
               "that holds): %s" % (X8C_LID, txt[:200]), status="UNMEASURED")
         return
     if not ok or "sink" not in kv or "drawDz" not in kv:
-        L.row("X8c_lid_walker_drawn_at_ground", False, "HARNESS", "ProofBeneath has no sink/drawDz (stale DLL?): %s" % txt[:200],
+        L.row("X8c_lid_walker_drawn_at_ground", False, "HARNESS", "ProofBeneath has no sink/drawDz (stale DLL, or the walker left the cell: pawn=%s): %s" % (kv.get("pawn"), txt[:200]),
               status="UNMEASURED")
         return
     try:
