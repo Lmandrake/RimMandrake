@@ -130,7 +130,10 @@ def check_change(idx: L.Index, lives: dict, path: str, old: str | None, new: str
                     if depth == 0 else
                     f"ledger chain breaks at {str(cur)[:12]} — a transition was skipped")
         # prefer the link that lands on `old` directly
-        cands.sort(key=lambda e: (e.get("prev") != old, e.get("ts", "")))
+        # Among links that land on `old`, the LATEST one explains the transition: an earlier unauthorised retire of the same
+        # bytes (restored since) must not shadow a later retire made on the owner's words (2026-10-22, GREENTIDE ants).
+        cands.sort(key=lambda e: e.get("ts", ""), reverse=True)
+        cands.sort(key=lambda e: e.get("prev") != old)
         e = cands[0]
         tried.add(e["id"])
         why = _authorized(e, idx)
