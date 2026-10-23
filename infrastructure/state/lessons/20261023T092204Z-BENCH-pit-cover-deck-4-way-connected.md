@@ -1,0 +1,1 @@
+A pit-cover deck (4-way connected RM_PitCover_* lids) springs at its WEAKEST lid's rating (CompPitCoverTrigger.RunScan, GPT C4-F5): swapping ONE cell of a woven-scrap deck to planks still rates 40 kg, so a test that needs a lid to hold must relay the whole deck. A per-cell mock hid this; mocks must model the deck rule. (X8C_WALKER_FIX_FELL_THROUGH_THE_FLOOR, 2026-10-23)
