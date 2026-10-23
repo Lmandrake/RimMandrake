@@ -55,8 +55,8 @@ for _l in LOOKS:
     KNOWN[("RM_LiquidTank", _l, "north")] = KNOWN[("RM_LiquidTank", _l, "south")] = "TANK_NS_PORTS_REDRAW_COUPLE_THIN_AIR"
     if _l != "Modern":
         KNOWN[("RM_UniversalCargoTank", _l, "north")] = "TANK_NS_PORTS_REDRAW_COUPLE_THIN_AIR"
-for _d in ("RM_PumpingStation_Kludged", "RM_PumpingStation_Repaired"):
-    KNOWN[(_d, "(def)", "south")] = "PUMPSTATION_SOUTH_PORT_REDRAW_ALMOST_THERE"
+# Pumping stations: south fittings drawn by art_source/TankPorts/port_fittings.py (PUMPSTATION_SOUTH_PORT_REDRAW_ALMOST_THERE).
+# The tank fittings are drawn by the same script but not installed: every tank picture is owner-KEPT (art.py refuses).
 
 fails = []
 unmeasured = []
