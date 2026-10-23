@@ -187,26 +187,6 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Devourers"]/tools/li[3]/power</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="Devourers"]/tools/li[3]/power</xpath>
-          <value>
-            <power>37.5</power>
-          </value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="Devourers"]/tools/li[3]/cooldownTime</xpath>
-          <value>
-            <cooldownTime>2.37</cooldownTime>
-          </value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RSW_Dianoga"]/tools/li[3]/power</xpath>
     <match Class="PatchOperationSequence">
       <operations>
