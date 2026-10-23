@@ -4,9 +4,11 @@
 
   The four new forms of the venomvine showpiece (the fifth, RM_VenomvineThicket,
   already ships in mandrake.rm.environmentalhazards). Each is a sibling of the
-  thicket: same near-black register, its own accent, its own texPath. Reuses
-  the shared kit's existing comps (CompProperties_ContactVenom,
-  RM_CompProperties_BodySizeBarrier, RM_MechanicGateExtension) - NO new C#.
+  thicket: same near-black register, its own accent, its own texPath. The shared
+  kit's comps (CompProperties_ContactVenom, RM_CompProperties_BodySizeBarrier,
+  RM_MechanicGateExtension) plus this mod's own: the twitcher's lash
+  (RM_CompProperties_Lash), the dripping stand's regrowing harvest
+  (RM_RegrowingHarvestExtension) and the crown's Stall mob (RM_StallMobExtension).
   Descriptions are the bible's (section 6).
 
   Every form (and, by patch, the thicket) carries RM_CompProperties_Smotherable:
@@ -260,8 +262,9 @@
       </li>
       <!-- LEANINGSCRUB_GPT_ENRICHMENT_1: the Stall cloud (Source/RM_VenomvineRooms.cs).
            TUNED: draw from 40 cells (a cloud that reads across a screen, not the whole
-           map), settle within 3, at most 30 per stand (the top of one wild group's 8~20,
-           plus stragglers). -->
+           map), settle within 3, at most 30 per stand. PROVISIONAL: 30 was one wild group's
+           top (8~20) plus stragglers; the owner raised the group to 40~100 ("great numbers",
+           2026-10-08), so a cap of 30 now draws part of one group. -->
       <li Class="RimMandrake.LeaningScrub.RM_StallMobExtension">
         <mobber>RM_Dustflutter</mobber>
         <drawRadius>40</drawRadius>
