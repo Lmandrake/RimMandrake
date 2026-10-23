@@ -128,6 +128,18 @@ def _pick(h, *keys):
     return {k: h.get(k) for k in keys}
 
 
+def refuse_review_site(args, res):
+    """RELAY_PROOF_FIX_SITE_WIPES_THE_REVIEW: every scene below destroy_batch-clears its site rect (All) and paints Soil, which
+    wipes whatever stands there on a loaded review save and leaves FlowWorks deep channels (set_terrain does not clear them),
+    so routes then read 'no route' as SITE. proof_hose passes fresh_map=False for --no-fresh-map; run standalone
+    (no attribute) the operator chose the map. -> True (and res['aborted'] set) when the scene must not be built here."""
+    if getattr(args, "fresh_map", True) is False:
+        res["aborted"] = ("review save (--no-fresh-map): this scene clears and repaints its site rect; run it on a fresh map "
+                          "(proof_hose without --no-fresh-map, or validation_hose standalone on a throwaway map)")
+        return True
+    return False
+
+
 def run_live(args):
     B = H()
     rows, log = [], []
@@ -149,6 +161,8 @@ def run_live(args):
         return res
     V.hrow(rows, "H0_probe_channel", "PASS", "HARNESS", "defaults applied")
 
+    if refuse_review_site(args, res):
+        return res
     # ---------------------------------------------------------------- scene
     B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % SITE, categories="All")
     B.call("jawa/set_terrain_batch", ops="Soil:%d,%d,%d,%d" % SITE)
@@ -327,6 +341,8 @@ def run_maze(args):
     B.hp("set:maxLength=%d" % MAZE_LEN)
     walls, m = maze_cells()
     R, T, g, b = m["R"], m["T"], m["g"], m["b"]
+    if refuse_review_site(args, res):
+        return res
     B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % MSITE, categories="All")
     B.call("jawa/set_terrain_batch", ops="Soil:%d,%d,%d,%d" % MSITE)
     B.call("jawa/set_fog", action="unfog", rect="%d,%d,%d,%d" % MSITE)
@@ -579,6 +595,8 @@ def run_relay(args):
         V.row(rows, "RL0_probe_channel", "FAIL", "HARNESS", d)
         res["aborted"] = "hose probe dead"
         return res
+    if refuse_review_site(args, res):
+        return res
     B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % SITE_R, categories="All")
     B.call("jawa/set_terrain_batch", ops="Soil:%d,%d,%d,%d" % SITE_R)
     B.call("jawa/set_fog", action="unfog", rect="%d,%d,%d,%d" % SITE_R)
@@ -756,6 +774,8 @@ def run_carry(args):
     if not d.get("success"):
         V.row(rows, "CR0_probe_channel", "FAIL", "HARNESS", d)
         res["aborted"] = "hose probe dead"
+        return res
+    if refuse_review_site(args, res):
         return res
     # ---------------------------------------------------------------- scene: a reel and one real colonist beside it
     B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % CSITE, categories="All")
