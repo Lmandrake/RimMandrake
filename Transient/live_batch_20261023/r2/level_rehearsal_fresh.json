@@ -1,0 +1,131 @@
+{
+ "script": "pipe_levelling_perf_proof.py",
+ "started": "2026-10-23T02:49:42",
+ "rows": [
+  {
+   "id": "LEVEL_PERF_TICK_TIME",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "item": "PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL",
+   "criterion": "A3",
+   "detail": {
+    "perf": "LEVELPERF calls=20 msAvg=4.941 msMax=7.578 msPerTick=0.01976 allocKBAvg=3406 allocCalls=20 gcs=0 links=5 moves=20 cycleTicks=250",
+    "levelLink": "REFUSED: no hose reel at (100, 0, 4)",
+    "links": null,
+    "wantLinks": 192,
+    "stagedOk": true,
+    "layFailures": 338,
+    "mapSize": [
+     250,
+     250
+    ],
+    "rehearsal": true
+   }
+  },
+  {
+   "id": "LEVEL_PERF_ALLOC",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "item": "PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL",
+   "criterion": "A3",
+   "detail": {
+    "perf": "LEVELPERF calls=20 msAvg=4.941 msMax=7.578 msPerTick=0.01976 allocKBAvg=3406 allocCalls=20 gcs=0 links=5 moves=20 cycleTicks=250",
+    "levelLink": "REFUSED: no hose reel at (100, 0, 4)",
+    "links": null,
+    "wantLinks": 192,
+    "stagedOk": true,
+    "layFailures": 338,
+    "mapSize": [
+     250,
+     250
+    ],
+    "rehearsal": true
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient\\live_batch_20261023\\r2\\level_rehearsal_fresh.json",
+  "rigs": 200,
+  "calls": 20,
+  "rehearsal": true,
+  "mock": false,
+  "mock_faults": ""
+ },
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "7ea73741ab2ceaeec055813a7ec9bd6ad9749b73a6bd69fe71841115df2a704a",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "imranfish.xmlextensions",
+   "brrainz.rimbridgeserver",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes",
+   "mandrake.rm.deepdrill"
+  ],
+  "assembly_sha256": "eeb98d908bac61fee1dae82f6de283c49bf933827080b363495489712242b243"
+ },
+ "mapSize": [
+  250,
+  250
+ ],
+ "layout": {
+  "basins": [
+   [
+    5,
+    2,
+    90,
+    244,
+    4
+   ],
+   [
+    150,
+    2,
+    90,
+    244,
+    1
+   ]
+  ],
+  "rigs": 192,
+  "lipA": 95,
+  "lipB": 149
+ },
+ "staged": [
+  {
+   "basin": [
+    5,
+    2,
+    90,
+    244
+   ],
+   "cells": 21960,
+   "dug": 21960
+  },
+  {
+   "basin": [
+    150,
+    2,
+    90,
+    244
+   ],
+   "cells": 21960,
+   "dug": 21960
+  }
+ ],
+ "hoseMaxLength": {
+  "before": "40",
+  "set80": true
+ },
+ "layFailures": 338,
+ "finished": "2026-10-23T02:51:59"
+}

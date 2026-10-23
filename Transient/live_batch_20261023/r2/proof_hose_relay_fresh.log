@@ -1,0 +1,16 @@
+== preflight
+HP1_tier_running_startup_log_clean PASS       MOD      {"playing": true, "flowworks": true, "gimmesomeslack": true, "startupLogRead": true, "startupErrorsNamingHose": []}
+HP2_probes_site_pinned             PASS       HARNESS  {"hoseProbe": true, "colonistsDrafted": [578, 581, 584]}
+== relay
+RL2_one_hose_cannot_reach    PASS      {'reason': 'too far', 'maxLength': 40}
+RL3_hose_onto_relay_B        PASS      {'relayTo': [44, 101], 'far': [43, 100], 'endPoint': [44.387, 100.853], 'pathLen': 22.6237, 'flatLen': 22.6799, 'maxLength': 40, 'layOk': True, 'reaso
+RL4_relay_B_onward_to_C      PASS      {'relayTo': [77, 100], 'far': [75, 100], 'endPoint': [76.353, 100.924], 'pathLen': 30.5899, 'flatLen': 31.2184, 'maxLength': 40, 'layOk': True, 'reaso
+RL5_ring_refused             PASS      {'lay': 'that reel already feeds this one (a chain may not loop back)', 'check': 'too far'}
+RL6_debug_flow_propagates    PASS      {'A': {'state': 'Plump', 'provider': 'debug', 'signal': True}, 'B': {'state': 'Plump', 'provider': 'debug', 'signal': True, 'fedBy': [[20, 101]]}, 're
+RL7_no_latch                 PASS      {'A': {'state': 'Flat', 'provider': 'none'}, 'B': {'state': 'Flat', 'provider': 'none'}}
+RL8_chain_beyond_one_hose    PASS      {'span': 56, 'maxLength': 40, 'pathA': 22.6237, 'pathB': 30.5899}
+RL9_overhead_drawn_over_hose PASS      {'hose': 2903, 'overhead': 3005, 'spanMat': 3005}
+== session
+Z_log_budget                       PASS       MOD      {"errorsNamingHoseOrFlowWorks": [], "otherErrors": 0, "tap": {"polls": 9, "lost": 0, "kept": 0}, "siteClearErrors": 0, "newWarnings": 0}
+
+proof_hose partial  rows 11 {'PASS': 11}  wall 31.3s

@@ -1,0 +1,139 @@
+{
+ "script": "walk_gaps_proof.py",
+ "started": "2026-10-23T02:48:10",
+ "rows": [
+  {
+   "id": "PORTS_PIPE_AND_REEL_ON_SIDES",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "FLOWWORKS_PUMP_PORTS_REBUILD_ONE_PER_SIDE",
+   "criterion": "A4",
+   "detail": {
+    "ports": "PUMPPORTS N=none E=reel:38202:c S=free:38203:c+free:38204:r W=pipe coupled=2 corner=0 cornerCoupled=0",
+    "lays": {
+     "92,39": true,
+     "95,39": true,
+     "98,49": true
+    }
+   }
+  },
+  {
+   "id": "PORTS_ONE_HOSE_PER_SIDE",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "FLOWWORKS_PUMP_PORTS_REBUILD_ONE_PER_SIDE",
+   "criterion": "A4",
+   "detail": {
+    "ports": "PUMPPORTS N=none E=reel:38202:c S=free:38203:c+free:38204:r W=pipe coupled=2 corner=0 cornerCoupled=0",
+    "lays": {
+     "92,39": true,
+     "95,39": true,
+     "98,49": true
+    }
+   }
+  },
+  {
+   "id": "PORTS_CORNER_REFUSED",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "item": "FLOWWORKS_PUMP_PORTS_REBUILD_ONE_PER_SIDE",
+   "criterion": "A4",
+   "detail": {
+    "ports": "PUMPPORTS N=none E=reel:38202:c S=free:38203:c+free:38204:r W=pipe coupled=2 corner=0 cornerCoupled=0",
+    "lays": {
+     "92,39": true,
+     "95,39": true,
+     "98,49": true
+    }
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient\\live_batch_20261023\\r2\\walk_gaps_ports_fresh.json",
+  "origin": "40,40",
+  "fresh_map": true,
+  "only": "PORTS_PIPE_AND_REEL_ON_SIDES,PORTS_ONE_HOSE_PER_SIDE,PORTS_CORNER_REFUSED",
+  "job_ticks": 3000,
+  "level_ticks": 6000,
+  "mock": false,
+  "mock_faults": ""
+ },
+ "missingHooks": {},
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "7ea73741ab2ceaeec055813a7ec9bd6ad9749b73a6bd69fe71841115df2a704a",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "imranfish.xmlextensions",
+   "brrainz.rimbridgeserver",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes",
+   "mandrake.rm.deepdrill"
+  ],
+  "assembly_sha256": "eeb98d908bac61fee1dae82f6de283c49bf933827080b363495489712242b243"
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [
+    "RM_Brullith36950",
+    "RM_Brullith36953",
+    "RM_Dustveil36962",
+    "RM_Illoth36948",
+    "RM_Illoth36952",
+    "RM_MycoidColossus36955",
+    "RM_Shambles36949",
+    "RM_Shambles36958",
+    "RM_Skerrith36959",
+    "RM_Skerrith36960",
+    "RM_Skerrith36961",
+    "RM_Thozzik36963",
+    "RM_ThozzikColony36956",
+    "RM_ThozzikColony36957",
+    "RM_ThozzikQueen36951",
+    "RM_ThozzikQueen36954"
+   ],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "startColonistsDrafted": [
+  [
+   "Human98",
+   true
+  ],
+  [
+   "Human101",
+   true
+  ],
+  [
+   "Human104",
+   true
+  ]
+ ],
+ "finished": "2026-10-23T02:48:48"
+}
