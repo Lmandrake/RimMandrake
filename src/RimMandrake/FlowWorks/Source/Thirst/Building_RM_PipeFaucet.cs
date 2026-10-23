@@ -16,6 +16,13 @@ namespace RimMandrake.FlowWorks.Thirst
 	/// faucet stands, dry).</summary>
 	public class Building_RM_PipeFaucet : Building
 	{
+		/// <summary>A new faucet takes the look of the pipe it is set on (FAUCET_REDRAW_BORROWED_BLEED_WELL; art only).</summary>
+		public override void SpawnSetup(Map map, bool respawningAfterLoad)
+		{
+			base.SpawnSetup(map, respawningAfterLoad);
+			if (!respawningAfterLoad) Sprinklers.RM_SprinklerLook.MatchPipeUnder(this);
+		}
+
 		/// <summary>Distinct liquids the tanks on this faucet's net hold and would give to a machine, most held first.</summary>
 		public static List<LiquidDef> NetLiquids(Thing faucet)
 		{

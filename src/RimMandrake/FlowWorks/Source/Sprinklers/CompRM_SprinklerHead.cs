@@ -145,17 +145,7 @@ namespace RimMandrake.FlowWorks.Sprinklers
 		}
 
 		/// <summary>Take the look of the pipe under the head (art only).</summary>
-		private void MatchPipeLook()
-		{
-			if (!PipeLook.IsStyled(parent.def)) return;
-			foreach (Thing t in parent.Position.GetThingList(parent.Map))
-			{
-				if (!RM_LiquidNet.IsPipe(t)) continue;
-				string look = PipeLook.LookOfThing(t);
-				if (look != null && look != PipeLook.LookOfThing(parent)) PipeLook.SetLook(parent, look);
-				return;
-			}
-		}
+		private void MatchPipeLook() => RM_SprinklerLook.MatchPipeUnder(parent);
 
 		protected override List<IntVec3> CellsForPulse()
 		{
@@ -167,17 +157,36 @@ namespace RimMandrake.FlowWorks.Sprinklers
 		}
 	}
 
-	/// <summary>The head joins the pipe's style picker (the same four looks, the build button's menu) once its style defs load.</summary>
+	/// <summary>The things set ON a pipe (the sprinkler head, the pipe faucet) join the pipe's style picker (the same four
+	/// looks, the build button's menu) once their style defs load, and a new one takes the look of the pipe under it.</summary>
 	[StaticConstructorOnStartup]
 	public static class RM_SprinklerLook
 	{
 		public const string HeadDef = "RM_SprinklerHead";
+		/// <summary>FAUCET_REDRAW_BORROWED_BLEED_WELL: the faucet's four looks (Defs/Thirst/RM_PipeFaucet.xml).</summary>
+		public const string FaucetDef = "RM_PipeFaucet";
 
 		static RM_SprinklerLook()
 		{
-			if (DefDatabase<ThingStyleDef>.GetNamedSilentFail(PipeStyles.StyleDefName(HeadDef, PipeStyles.Scrapper)) != null)
+			foreach (string d in new[] { HeadDef, FaucetDef })
 			{
-				PipeLook.Core.Register(new[] { HeadDef }, PipeStyles.StyleDefName);
+				if (DefDatabase<ThingStyleDef>.GetNamedSilentFail(PipeStyles.StyleDefName(d, PipeStyles.Scrapper)) != null)
+				{
+					PipeLook.Core.Register(new[] { d }, PipeStyles.StyleDefName);
+				}
+			}
+		}
+
+		/// <summary>Give <paramref name="onPipe"/> the look of the pipe in its cell (art only); no-op for an unstyled def.</summary>
+		public static void MatchPipeUnder(Thing onPipe)
+		{
+			if (onPipe?.Map == null || !PipeLook.IsStyled(onPipe.def)) return;
+			foreach (Thing t in onPipe.Position.GetThingList(onPipe.Map))
+			{
+				if (!RM_LiquidNet.IsPipe(t)) continue;
+				string look = PipeLook.LookOfThing(t);
+				if (look != null && look != PipeLook.LookOfThing(onPipe)) PipeLook.SetLook(onPipe, look);
+				return;
 			}
 		}
 	}

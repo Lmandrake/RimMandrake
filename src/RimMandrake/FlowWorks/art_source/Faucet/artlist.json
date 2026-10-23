@@ -1,0 +1,66 @@
+[
+ {
+  "id": "RM_PipeFaucet_fa_Scrapper",
+  "rimflow_item_id": "FAUCET_REDRAW_BORROWED_BLEED_WELL",
+  "prompt": "A small drinking-water faucet (a tap) that clamps ONTO a thin east-west pipe, seen from above. 256x256 canvas. LAYOUT IS EXACT: the saddle clamp is centred on the canvas centre (128,128), 38-40 px wide and 30 px tall, so its jaws reach from y=113 to y=143. From the clamp a short upright valve body 18-22 px wide rises to about y=96; on top of it sits a round hand-wheel or a lever handle 30-36 px across, centred at about (128,92). A curved spout leaves the front of the valve body and bends DOWN toward the viewer (south), its open nozzle pointing at the ground, ending at about (128,150) with a single small drip. The whole drawing spans roughly x 100-156 and y 72-155; everything else is empty and transparent. Do not draw the pipe itself, no basin, no bucket. RimWorld building camera: seen from almost straight above with a slight tilt, so tops are lit and only a short south face shows. Transparent background, no ground, no cast shadow.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "canon_reference": [
+   "/home/mandrake/rm/foundry/src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Sprinkler/Scrapper/RM_SprinklerHead.png"
+  ],
+  "style_notes": "Scrapper look: salvaged rusty iron and weathered copper, brass couplings, mismatched patch plates, a few rivets. The attached image is the sprinkler head in the SAME look on the same pipe: match its palette, material and scale exactly, but draw a faucet, not a sprinkler. Realistic painted natural-history illustration: grounded, believable form, matte surface texture, soft painted edges, the silhouette carried by value and colour contrast against a mid-tone ground rather than by a drawn line; never cartoonish, never cute, no outlines.",
+  "priority": 15,
+  "background": "transparent",
+  "target_def": "RM_PipeFaucet",
+  "target_texpath": "RimMandrake/FlowWorks/Faucet/Scrapper/RM_PipeFaucet",
+  "biome_neutral": true
+ },
+ {
+  "id": "RM_PipeFaucet_fa_Industrial",
+  "rimflow_item_id": "FAUCET_REDRAW_BORROWED_BLEED_WELL",
+  "prompt": "A small drinking-water faucet (a tap) that clamps ONTO a thin east-west pipe, seen from above. 256x256 canvas. LAYOUT IS EXACT: the saddle clamp is centred on the canvas centre (128,128), 38-40 px wide and 30 px tall, so its jaws reach from y=113 to y=143. From the clamp a short upright valve body 18-22 px wide rises to about y=96; on top of it sits a round hand-wheel or a lever handle 30-36 px across, centred at about (128,92). A curved spout leaves the front of the valve body and bends DOWN toward the viewer (south), its open nozzle pointing at the ground, ending at about (128,150) with a single small drip. The whole drawing spans roughly x 100-156 and y 72-155; everything else is empty and transparent. Do not draw the pipe itself, no basin, no bucket. RimWorld building camera: seen from almost straight above with a slight tilt, so tops are lit and only a short south face shows. Transparent background, no ground, no cast shadow.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "canon_reference": [
+   "/home/mandrake/rm/foundry/src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Sprinkler/Industrial/RM_SprinklerHead.png"
+  ],
+  "style_notes": "Industrial look: dark gunmetal grey steel, black bolts, small yellow-and-black hazard bands. The attached image is the sprinkler head in the SAME look on the same pipe: match its palette, material and scale exactly, but draw a faucet, not a sprinkler. Realistic painted natural-history illustration: grounded, believable form, matte surface texture, soft painted edges, the silhouette carried by value and colour contrast against a mid-tone ground rather than by a drawn line; never cartoonish, never cute, no outlines.",
+  "priority": 15,
+  "background": "transparent",
+  "target_def": "RM_PipeFaucet",
+  "target_texpath": "RimMandrake/FlowWorks/Faucet/Industrial/RM_PipeFaucet",
+  "biome_neutral": true
+ },
+ {
+  "id": "RM_PipeFaucet_fa_Modern",
+  "rimflow_item_id": "FAUCET_REDRAW_BORROWED_BLEED_WELL",
+  "prompt": "A small drinking-water faucet (a tap) that clamps ONTO a thin east-west pipe, seen from above. 256x256 canvas. LAYOUT IS EXACT: the saddle clamp is centred on the canvas centre (128,128), 38-40 px wide and 30 px tall, so its jaws reach from y=113 to y=143. From the clamp a short upright valve body 18-22 px wide rises to about y=96; on top of it sits a round hand-wheel or a lever handle 30-36 px across, centred at about (128,92). A curved spout leaves the front of the valve body and bends DOWN toward the viewer (south), its open nozzle pointing at the ground, ending at about (128,150) with a single small drip. The whole drawing spans roughly x 100-156 and y 72-155; everything else is empty and transparent. Do not draw the pipe itself, no basin, no bucket. RimWorld building camera: seen from almost straight above with a slight tilt, so tops are lit and only a short south face shows. Transparent background, no ground, no cast shadow.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "canon_reference": [
+   "/home/mandrake/rm/foundry/src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead.png"
+  ],
+  "style_notes": "Modern look: glossy red enamel with white collars and polished chrome fittings. The attached image is the sprinkler head in the SAME look on the same pipe: match its palette, material and scale exactly, but draw a faucet, not a sprinkler. Realistic painted natural-history illustration: grounded, believable form, matte surface texture, soft painted edges, the silhouette carried by value and colour contrast against a mid-tone ground rather than by a drawn line; never cartoonish, never cute, no outlines.",
+  "priority": 15,
+  "background": "transparent",
+  "target_def": "RM_PipeFaucet",
+  "target_texpath": "RimMandrake/FlowWorks/Faucet/Modern/RM_PipeFaucet",
+  "biome_neutral": true
+ },
+ {
+  "id": "RM_PipeFaucet_fa_Futuristic",
+  "rimflow_item_id": "FAUCET_REDRAW_BORROWED_BLEED_WELL",
+  "prompt": "A small drinking-water faucet (a tap) that clamps ONTO a thin east-west pipe, seen from above. 256x256 canvas. LAYOUT IS EXACT: the saddle clamp is centred on the canvas centre (128,128), 38-40 px wide and 30 px tall, so its jaws reach from y=113 to y=143. From the clamp a short upright valve body 18-22 px wide rises to about y=96; on top of it sits a round hand-wheel or a lever handle 30-36 px across, centred at about (128,92). A curved spout leaves the front of the valve body and bends DOWN toward the viewer (south), its open nozzle pointing at the ground, ending at about (128,150) with a single small drip. The whole drawing spans roughly x 100-156 and y 72-155; everything else is empty and transparent. Do not draw the pipe itself, no basin, no bucket. RimWorld building camera: seen from almost straight above with a slight tilt, so tops are lit and only a short south face shows. Transparent background, no ground, no cast shadow.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "canon_reference": [
+   "/home/mandrake/rm/foundry/src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Sprinkler/Futuristic/RM_SprinklerHead.png"
+  ],
+  "style_notes": "Futuristic look: white composite shell, pale grey seams, a thin glowing cyan strip. The attached image is the sprinkler head in the SAME look on the same pipe: match its palette, material and scale exactly, but draw a faucet, not a sprinkler. Realistic painted natural-history illustration: grounded, believable form, matte surface texture, soft painted edges, the silhouette carried by value and colour contrast against a mid-tone ground rather than by a drawn line; never cartoonish, never cute, no outlines.",
+  "priority": 15,
+  "background": "transparent",
+  "target_def": "RM_PipeFaucet",
+  "target_texpath": "RimMandrake/FlowWorks/Faucet/Futuristic/RM_PipeFaucet",
+  "biome_neutral": true
+ }
+]

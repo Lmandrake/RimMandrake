@@ -4,8 +4,8 @@
   drink at it and fill empty containers at it, every litre drawn from the tanks on its pipe network (the store a machine on
   that pipe draws from; Dump tanks never give). Thirst treats it as a tap: free at home, awkward away (owner Q1 2026-10-17).
   Code: Source/Thirst/Building_RM_PipeFaucet.cs. Setting: RM_ThirstSettings.pipeFaucetsEnabled.
-  ART: PLACEHOLDER - borrows the bleed well's side-on picture until a top-view faucet is drawn
-  (FAUCET_REDRAW_BORROWED_BLEED_WELL). Cost, work and HP PROVISIONAL.
+  ART (FAUCET_REDRAW_BORROWED_BLEED_WELL): four top-view looks on the pipe, one ThingStyleDef per pipe look (like the sprinkler
+  head); a new faucet takes the look of the pipe it is set on (RM_SprinklerLook.MatchPipeUnder). Cost, work and HP PROVISIONAL.
 -->
 <Defs>
 
@@ -16,13 +16,15 @@
     <thingClass>RimMandrake.FlowWorks.Thirst.Building_RM_PipeFaucet</thingClass>
     <category>Building</category>
     <graphicData>
-      <texPath>Things/Building/FlowWorks/Machinery/RM_LiquidTap</texPath>
+      <texPath>RimMandrake/FlowWorks/Faucet/Scrapper/RM_PipeFaucet</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(0.8,0.8)</drawSize>
+      <drawSize>(1,1)</drawSize>
+      <drawOffset>(0,0,0.016)</drawOffset>
       <damageData>
         <rect>(0.3,0.3,0.4,0.4)</rect>
       </damageData>
     </graphicData>
+    <uiIconPath>RimMandrake/FlowWorks/Faucet/Scrapper/RM_PipeFaucet</uiIconPath>
     <altitudeLayer>Building</altitudeLayer>
     <passability>PassThroughOnly</passability>
     <pathCost>20</pathCost>
@@ -52,9 +54,62 @@
       <expandHomeArea>false</expandHomeArea>
     </building>
     <comps>
+      <li Class="CompProperties_Styleable" />
       <li Class="CompProperties_Forbiddable" />
     </comps>
   </ThingDef>
+
+  <ThingStyleDef>
+    <defName>RM_PipeFaucet_Scrapper</defName>
+    <label>scrapper</label>
+    <uiIconPath>RimMandrake/FlowWorks/Faucet/Scrapper/RM_PipeFaucet</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/Faucet/Scrapper/RM_PipeFaucet</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+      <!-- drawOffset z = (clamp_y - 128)/256: the saddle clamp's centre on the pipe axis, measured on this look's 2026-10-23 art (Scrapper 132, Industrial 139, Modern 140, Futuristic 124 px of 256) -->
+      <drawOffset>(0,0,0.016)</drawOffset>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_PipeFaucet_Industrial</defName>
+    <label>industrial</label>
+    <uiIconPath>RimMandrake/FlowWorks/Faucet/Industrial/RM_PipeFaucet</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/Faucet/Industrial/RM_PipeFaucet</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+      <!-- drawOffset z = (clamp_y - 128)/256: the saddle clamp's centre on the pipe axis, measured on this look's 2026-10-23 art (Scrapper 132, Industrial 139, Modern 140, Futuristic 124 px of 256) -->
+      <drawOffset>(0,0,0.043)</drawOffset>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_PipeFaucet_Modern</defName>
+    <label>modern</label>
+    <uiIconPath>RimMandrake/FlowWorks/Faucet/Modern/RM_PipeFaucet</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/Faucet/Modern/RM_PipeFaucet</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+      <!-- drawOffset z = (clamp_y - 128)/256: the saddle clamp's centre on the pipe axis, measured on this look's 2026-10-23 art (Scrapper 132, Industrial 139, Modern 140, Futuristic 124 px of 256) -->
+      <drawOffset>(0,0,0.047)</drawOffset>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_PipeFaucet_Futuristic</defName>
+    <label>futuristic</label>
+    <uiIconPath>RimMandrake/FlowWorks/Faucet/Futuristic/RM_PipeFaucet</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/Faucet/Futuristic/RM_PipeFaucet</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+      <!-- drawOffset z = (clamp_y - 128)/256: the saddle clamp's centre on the pipe axis, measured on this look's 2026-10-23 art (Scrapper 132, Industrial 139, Modern 140, Futuristic 124 px of 256) -->
+      <drawOffset>(0,0,-0.016)</drawOffset>
+    </graphicData>
+  </ThingStyleDef>
 
   <JobDef>
     <defName>RM_DrinkFromFaucet</defName>

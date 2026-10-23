@@ -1,0 +1,34 @@
+{
+ "judge_model": "gpt-6",
+ "brief": "design/RimMandrake/art_judge_brief.md@3af8e3b3c",
+ "subject": "RM_PipeFaucet",
+ "verdicts": [
+  {
+   "picture": "RM_PipeFaucet_fa_Scrapper.png",
+   "facing": "south",
+   "verdict": "KEEP",
+   "notes": "Weathered copper palette and shading match the pipe and sprinkler. Compact scale and pipe attachment read correctly; wheel and spout remain distinguishable at play zoom."
+  },
+  {
+   "picture": "RM_PipeFaucet_fa_Industrial.png",
+   "facing": "south",
+   "verdict": "KEEP",
+   "notes": "Dark metal, brass details and hazard accents match the sibling sprinkler and pipe. Scale is coherent, with a readable wheel-and-spout silhouette at play zoom."
+  },
+  {
+   "picture": "RM_PipeFaucet_fa_Modern.png",
+   "facing": "south",
+   "verdict": "KEEP",
+   "notes": "Red and chrome palette, highlights and outlines match the pipe and sprinkler. The cross handle and curved spout read at play zoom, and the faucet sits convincingly on the pipe."
+  },
+  {
+   "picture": "RM_PipeFaucet_fa_Futuristic.png",
+   "facing": "south",
+   "verdict": "KEEP",
+   "notes": "Pale metal, dark recesses and cyan accents match the sibling set. Elliptical wheel, compact body and pipe attachment read consistently at both supplied scales."
+  }
+ ],
+ "proposals": [],
+ "judge_via": "src/RimMandrake/Utils/gpt_consult.py (naive judge, not the maker)",
+ "inputs": "candidates /mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/RM_PipeFaucet_fa_<Look>/; composites at 128 and 32 px/cell on each look pipe beside the live sprinkler head"
+}

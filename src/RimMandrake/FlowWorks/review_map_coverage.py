@@ -344,9 +344,11 @@ FEATURES = [
     ("set", r"^(thirstEnabled|thirstRateMultiplier|thirstHeatScaling|animalsGetThirst|drinkFromTerrain|waterQualityEffects"
             r"|dbhBottleBridge|lastResortDrinking|saltBreakEnabled|roughDrinkPenalty|drinkingReserveLitres|bucketFirefighting"
             r"|snowGathering|sanguophageBloodQuenches|filledBottlesPerColonist|pipeFaucetsEnabled)$", "Thirst", M + "as thirst"),
-    # PIPE_FAUCET_BUILD_TAP_NAME_NOW_FREE: no frozen station yet (a faucet needs a tank-fed pipe net); placeholder art
-    ("def", r"^(ThingDef/RM_PipeFaucet|JobDef/RM_(DrinkFromFaucet|FillAtFaucet)|WorkGiverDef/RM_FillAtFaucetWorkGiver)$",
+    # PIPE_FAUCET_BUILD_TAP_NAME_NOW_FREE: no frozen station yet (a faucet needs a tank-fed pipe net); four looks
+    # (FAUCET_REDRAW_BORROWED_BLEED_WELL, judge verdict infrastructure/state/delegated/2026-10-23/pipe_faucet.json)
+    ("def", r"^(ThingDef/RM_PipeFaucet|ThingStyleDef/RM_PipeFaucet_\w+|JobDef/RM_(DrinkFromFaucet|FillAtFaucet)|WorkGiverDef/RM_FillAtFaucetWorkGiver)$",
      "Pipe faucet", M + "no station yet; a faucet on a tank-fed pipe (drink + fill rows owed live)"),
+    ("tex", r"FlowWorks/Faucet/", "Pipe faucet", M + "art judged on-pipe at true scale (delegated verdict file)"),
     # SPRINKLER_HEADS_BUILD_PUMP_REQUIRED: no frozen station yet (a head needs a pump net and an hour of game time to show
     # anything); proven by validation.py's sprinkler rows (owed live), art on its own review sheet
     ("def", r"^(ThingDef/RM_SprinklerHead|ThingStyleDef/RM_SprinklerHead_\w+|ThingDef/RM_Mote_SprinklerSpray)$",
