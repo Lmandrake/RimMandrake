@@ -6868,3 +6868,5 @@
 {"seat":"FOUNDRY","event":"lease","id":"VEE_FLORA_VENTS_BUILD_XML_FIRST","action":"take","token":"FOUNDRY.pid20639.85f5ddf6","expires":"2026-10-23T06:00:22Z","ts":"2026-10-23T05:15:22Z","tsn":1792732522522356628}
 {"seat":"FOUNDRY","event":"claim","id":"VEE_FLORA_VENTS_BUILD_XML_FIRST","ts":"2026-10-23T05:15:22Z","tsn":1792732522861659605}
 {"seat":"FOUNDRY","event":"start","id":"VEE_FLORA_VENTS_BUILD_XML_FIRST","ts":"2026-10-23T05:15:23Z","tsn":1792732523234234853}
+{"seat":"FOUNDRY","event":"start","id":"VEE_FLORA_VENTS_BUILD_XML_FIRST","ts":"2026-10-23T05:15:24Z","tsn":1792732524743181544}
+{"seat":"FOUNDRY","event":"note","id":"RIMPULSE_DEPLOY_FIX_RUNS_THE_BENCH_CLONE","text":"Six built RimPulse items (RED_PILLS, SEATS, SOURCES, INCIDENTS, METRICS, SHEETS; shas 678f71aad..490c8ccee) owe L1 checks that need only the daemon running origin/main code, not the game bridge - rimflow tags them needs=bridge because L1 maps there. Verify them right after this deploy via curl 127.0.0.1:8765/api/now (criteria on each item).","why":"helper handoff","ts":"2026-10-23T05:15:41Z","tsn":1792732541247834387}
