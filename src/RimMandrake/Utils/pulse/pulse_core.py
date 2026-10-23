@@ -319,7 +319,25 @@ _PROVIDE_RE = (r"(\bname/address\b|\b(ip|e-?mail|network|home) address\b|\baddre
                r"\bneeds (its|his|the) (name|address|number|path|url|key)\b)")
 
 
+# a LIVE walkthrough (game running, a joint session) is not an artifact he opens: never in "to look at"
+# (owner 2026-10-23). "in-game" alone stays a look when the thing is a saved picture, so only walk wording counts.
+_WALK_RE = r"(\bwalk-?through\b|\bwalk\b|\bin[- ]game\b|\bjoint\b|\bkeeper save|\bbridge run\b)"
+
+
 def ask_class(it, ev: dict) -> tuple[str, str]:
+    """ask_class_raw, but a look that is a live interactive walkthrough is class 'walk' (not listed anywhere)."""
+    klass, why = ask_class_raw(it, ev)
+    if klass == "look":
+        crit = " ".join(str(c.get("text") or c.get("desc") or "") for c in getattr(it, "criteria", [])
+                        if c.get("id") in getattr(it, "outstanding", ()) and c.get("level") == "L4")
+        import re
+        text = f"{it.title or ''} {ev.get('reason') or ev.get('why') or ''} {crit}"
+        if re.search(_WALK_RE, text, re.I):
+            return "walk", f"live walkthrough, not an artifact ({why})"
+    return klass, why
+
+
+def ask_class_raw(it, ev: dict) -> tuple[str, str]:
     """('rule' | 'look' | 'provide', why) for an open item waiting on the owner. Pure over the item fold.
 
     Order: an explicit word on the needs event wins ('look:', 'provide:', 'rule:', or '(LOOK, not a ruling)');
@@ -1027,6 +1045,8 @@ def classify_ledger(ledger: list[dict], since: float, now: float,
                              f"{iid} {verb}" + (f" — {what}" if what else ""), t, link=link_for(e), src="ledger"))
     for iid, ru in rulings.items():
         t, e = ru["t"], ru["ev"]
+        if ru.get("class") == "walk":
+            continue                      # a live walkthrough is a joint session, never a row to open
         if now - t < RULE_WINDOW_SECS:
             full = " ".join(str(ru.get("reason") or titles.get(iid) or "(no reason recorded on the needs event)").split())
             reason = short(full, 90)
