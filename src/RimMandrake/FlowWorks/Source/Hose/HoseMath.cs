@@ -1547,7 +1547,7 @@ namespace RimMandrake.FlowWorks.Hose
     /// HOSE_ENDS_FIX_MISSES_THE_PORTS: where a hose end coupled to a building meets its DRAWN port. The universal tank
     /// (RM_LiquidTank and its looks: 2x2, drawSize 2, Graphic_Single) draws one port flange on its west and on its east edge,
     /// on the footprint's centre line (measured per look from Textures/RimMandrake/FlowWorks/Tank/&lt;Look&gt;/RM_LiquidTank.png;
-    /// selftest_reel_ports.py pins the table to the art). A 2x2 footprint's centre line is a cell corner, so the hose's end
+    /// FlowWorks/selftest_hose_ports.py pins the table to the art). A 2x2 footprint's centre line is a cell corner, so the hose's end
     /// cell is always half a cell off it: the hose bends over its last stretch onto the port (HoseMath.EndOnPort). Every other
     /// approach (a tank's north or south side, the tall tank, machines, pipes) keeps the shared edge's midpoint.
     /// </summary>
@@ -1582,7 +1582,7 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>Where the hose leaves the reel. Owner 2026-10-05 (reversing round 5's hide-under-the-drum): the 2x2 reel's hose
         /// starts at its brass OUTLET nozzle, and a coupling sits on that nozzle. HOSE_ENDS_FIX_MISSES_THE_PORTS (owner 2026-10-21:
         /// "Hose attached to tank and reel broken"): the nozzle tip is MEASURED per look from the installed laid art
-        /// (ReelIntakeGeometry.OutletTip, generated, --check in selftest_reel_ports.py), never a constant (one went stale when the
+        /// (ReelIntakeGeometry.OutletTip, generated, --check in FlowWorks/selftest_hose_ports.py), never a constant (one went stale when the
         /// art was replaced). The routing start is that tip, clamped inside the outlet-side cells so a lay still starts in a reel
         /// cell; <see cref="NozzleTip"/> is where the coupling's face meets the nozzle. REEL_OUTLET_DECIDE_ALWAYS_GOES_WEST (owner
         /// card 2026-10-22, "Player turns the reel"): the tip, the clamp and <see cref="Outward"/> turn with <see cref="Rot"/>.

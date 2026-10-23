@@ -632,7 +632,7 @@ namespace RimMandrake.FlowWorks.SelfTest
         /// <summary>Owner, live walk on C5 Fuel Depot: "Hose attached to tank and reel broken. No longer following old logic of
         /// attaching at attachment points (or graphics no longer support that)". The reel's coupling sat at a constant nozzle
         /// (u 9/256 at drawSize 2.8) after two art installs moved the drawn nozzle ~0.5 cell; the tank end coupled half a cell
-        /// beside the drawn flange. The pixel side (table vs texture) is selftest_reel_ports.py; these pin the geometry.</summary>
+        /// beside the drawn flange. The pixel side (table vs texture) is FlowWorks/selftest_hose_ports.py; these pin the geometry.</summary>
         private static void PortEnds()
         {
             // reel: per look, the laid hose's coupling meets that look's measured nozzle, inside the west cell, and the looks differ
