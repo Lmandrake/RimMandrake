@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  STATION_SIGNS_FIX_LOOK_LIKE_BOOKS (owner 2026-10-23: "Your signs on this map appear just as books on the ground").
+  The review/walkthrough station signs are Verse.Book things (jawa/review_sign writes title+description into the Book's
+  own fields, so the text survives a plain load). This def is a Book-class thing drawn as a signboard instead of a
+  novel. jawa/review_sign places RM_StationSign when it is loaded and falls back to Novel when it is not.
+  Dev prop: forbidden, never crafted, traded or generated.
+-->
+<Defs>
+  <ThingDef ParentName="BookBase">
+    <defName>RM_StationSign</defName>
+    <label>station sign</label>
+    <description>A review-station signboard. Its title is the station; the info card holds what to look at and what to try.</description>
+    <altitudeLayer>Item</altitudeLayer>
+    <alwaysHaulable>false</alwaysHaulable>
+    <category>Item</category>
+    <comps>
+      <li Class="CompProperties_Forbiddable" />
+      <li>
+        <compClass>CompQuality</compClass>
+      </li>
+      <li Class="CompProperties_Book">
+        <nameMaker>Namer_Novel</nameMaker>
+        <descriptionMaker>Description_Novel</descriptionMaker>
+        <ageYearsRange>100~200</ageYearsRange>
+        <openGraphic>
+          <texPath>Things/Item/DevProps/RM_StationSign</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>1.0</drawSize>
+        </openGraphic>
+        <verticalGraphic>
+          <texPath>Things/Item/DevProps/RM_StationSign</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>1.0</drawSize>
+        </verticalGraphic>
+        <doers>
+          <li Class="BookOutcomeProperties_JoyFactorModifier" />
+        </doers>
+      </li>
+    </comps>
+    <drawGUIOverlay>true</drawGUIOverlay>
+    <graphicData>
+      <texPath>Things/Item/DevProps/RM_StationSign</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>1.0</drawSize>
+    </graphicData>
+    <inspectorTabs>
+      <li>ITab_Book</li>
+    </inspectorTabs>
+    <neverMultiSelect>true</neverMultiSelect>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <stackLimit>1</stackLimit>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <DeteriorationRate>0</DeteriorationRate>
+      <Mass>0.5</Mass>
+      <Flammability>0</Flammability>
+      <Beauty>0</Beauty>
+      <MarketValue>0</MarketValue>
+    </statBases>
+    <thingClass>Book</thingClass>
+    <tickerType>Never</tickerType>
+    <tradeability>None</tradeability>
+    <uiIconPath>Things/Item/DevProps/RM_StationSign</uiIconPath>
+    <useHitPoints>true</useHitPoints>
+  </ThingDef>
+</Defs>

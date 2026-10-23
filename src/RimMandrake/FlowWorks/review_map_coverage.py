@@ -219,6 +219,8 @@ FEATURES = [
      "Liquid surfaces: motion, wakes, bubbles", "look_liquids"),
     ("def", r"^FleckDef/RM_Fleck_LiquidBubble$", "Liquid bubbles", "look_liquids"),
     ("def", r"^TerrainDef/RM_Slime(Green|White|Yellow)Deep$", "Slime pools", "look_liquids"),
+    ("def", r"^ThingDef/RM_StationSign$", "Station signboard (the review map's own signs)", M + "the signs themselves: jawa/review_sign places one at every station"),
+    ("tex", r"Item/DevProps/RM_StationSign", "Station signboard art", M + "the signs themselves: jawa/review_sign places one at every station"),
     # ---- bottles, tanks, pumps, hoses
     ("set", r"^(bottleLoopEnabled|bottleDirtyStageEnabled|bottleRevertEnabled)$", "The bottle loop", "carry_bottles"),
     ("def", r"^(ThingDef/RM_(Bottle_FreshWater|Bottle_Tar|BottleEmpty|BottleDirty|BucketEmpty|BarrelEmpty)|"

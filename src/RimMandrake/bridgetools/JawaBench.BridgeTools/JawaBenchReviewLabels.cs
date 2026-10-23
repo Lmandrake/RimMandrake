@@ -365,6 +365,8 @@ namespace JawaBench.BridgeTools
         // title (its label: shown when the mouse is over it and on the inspect pane) and descriptionFlavor + description
         // (its info card, the i button). Forbidden, so no colonist reads or hauls it. Nothing of ours is in the save.
         private const string SignDef = "Novel";
+        // STATION_SIGNS_FIX_LOOK_LIKE_BOOKS: FlowWorks' Book-class signboard; Novel is the fallback when it is not loaded.
+        private const string SignBoardDef = "RM_StationSign";
 
         [Tool(
             "jawa/review_sign",
@@ -385,7 +387,8 @@ namespace JawaBench.BridgeTools
             {
                 Map map = Find.CurrentMap;
                 if (map == null) return Fail("No current map.");
-                ThingDef def = DefDatabase<ThingDef>.GetNamedSilentFail(SignDef);
+                ThingDef novel = DefDatabase<ThingDef>.GetNamedSilentFail(SignDef);
+                ThingDef def = DefDatabase<ThingDef>.GetNamedSilentFail(SignBoardDef) ?? novel;
                 if (def == null) return Fail("ThingDef " + SignDef + " not found (Core 1.5+).");
                 var fTitle = AccessTools.Field(typeof(Book), "title");
                 var fFlavor = AccessTools.Field(typeof(Book), "descriptionFlavor");
@@ -398,7 +401,8 @@ namespace JawaBench.BridgeTools
                 var placed = new List<object>();
                 var refused = new List<string>();
                 int removed = 0;
-                Func<List<Book>> mine = () => map.listerThings.ThingsOfDef(def).OfType<Book>()
+                Func<List<Book>> mine = () => map.listerThings.ThingsOfDef(def).Concat(
+                        novel != null && novel != def ? map.listerThings.ThingsOfDef(novel) : new List<Thing>()).OfType<Book>()
                     .Where(b => (b.Title ?? "").StartsWith(pre, StringComparison.Ordinal)).ToList();
                 if (act == "place")
                 {
