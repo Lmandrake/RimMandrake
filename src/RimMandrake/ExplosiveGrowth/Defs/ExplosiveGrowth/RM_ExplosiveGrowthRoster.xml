@@ -56,7 +56,6 @@
       <li><plant>RM_Meatvine</plant><top>Rupture</top></li>
       <li><plant>RM_Toothmoss</plant><top>Rupture</top></li>
       <li><plant>RM_Wombpod</plant><top>Rupture</top></li>
-      <li><plant>RUT_RustPuff</plant><top>Rupture</top></li>
 
       <!-- BURST — dry-adapted (roster §BURST; ruling 4). -->
       <li><plant>RSW_JekkaGrass</plant><top>Burst</top></li>
