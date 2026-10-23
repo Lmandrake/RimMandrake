@@ -78,12 +78,15 @@ def body_alpha(tank, look):
     installed = Image.open(os.path.join(TEX, look, tank + ".png")).convert("RGBA")
     if look != "Modern" or tank not in modern_port_fittings.TANKS:
         return np.array(installed)[..., 3] > 128
+    base = modern_port_fittings.base_image(tank)
+    if np.array_equal(np.array(base.convert("RGBA")), np.array(installed)):
+        # 2026-10-23 owner ruling (couplers drawn UNDER the fixture): the painted fittings came off, the base is installed
+        return np.array(installed)[..., 3] > 128
     rebuilt, _ = modern_port_fittings.build(tank)
     if not np.array_equal(np.array(rebuilt), np.array(installed)):
         fails.append("%s Modern: the installed art is not modern_port_fittings.py's base + fittings, so the body outline under "
                      "the hose fittings is UNMEASURED (re-derive the base for the new art)" % tank)
         return np.array(installed)[..., 3] > 128
-    base = modern_port_fittings.base_image(tank)
     return np.array(base)[..., 3] > 128
 
 

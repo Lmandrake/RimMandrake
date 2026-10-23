@@ -12,9 +12,10 @@ Each fitting runs from the drawn body out to that edge -- a nut on the body, a n
 footprint edge -- in the look's own materials (Modern as modern_port_fittings.py: PP nut, PVC nipple, aluminium camlock).
 Nothing else in the picture changes.
 
-INSTALLED (2026-10-23): the two pumping stations only. Every tank picture here is owner-KEPT, so art.py install refuses a
-delegated install over it (delegation_policy.md 2.3); the tank outputs are candidates awaiting his ruling. When they are
-installed, selftest_tank_art_edges.py must measure their body on body_image() (it does so for the Modern trio today).
+NOT INSTALLED ANYWHERE (owner ruling 2026-10-23, by card: "Make your couplers as needed, but have their art go UNDER the tank
+or pump or other fixture"): painted fittings are retired. The pumping stations were restored to their pre-paint pictures and
+hose ports get an under-coupler drawn beneath the fixture instead (Source/Machinery/UnderCouplerGeometry.cs,
+art_source/UnderCouplers/under_couplers.py). Kept only as the record of the rejected approach.
 
 Base art is read from git so a re-run is reproducible: the Modern tall/IBC/XTall pictures start from
 modern_port_fittings.build() (fb34c9bc2d + their west/east camlocks), everything else from BASE_COMMIT.
