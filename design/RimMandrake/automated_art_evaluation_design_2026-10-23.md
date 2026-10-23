@@ -464,26 +464,28 @@ infrastructure/state/art_eval/
 | 5 | T7/T9 cards (camera checks; T9's assembled panel from a capture) | `validate_sprite.py --upright-cylinder` |
 | 6 | the skill; T4, T6, T13 | |
 
-## 6. Pilot results (to fill)
+## 6. Pilot results
 
-The blind GPT-vs-Opus race on one biome's flora+fauna, scored against the owner's past verdicts:
-`Transient/art_eval_pilot_20261023/` (README there). Fill each line from its output, with its tag:
+Scored 2026-10-23: `Transient/art_eval_pilot_20261023/SCORE.md` (pinned). RM_WeepingStones, 47 subjects, owner
+18 REDO / 28 KEEP / 1 CUT; always-KEEP baseline 28/47. Small N: accuracy 95 % intervals are ~±0.13.
 
-| measure | GPT | Opus 5.5 | both (agree subset) | gates-alone baseline |
+| measure (all 47; clean 39 in brackets) | GPT gpt-6.1-sol high | Opus 5.5 | both agree → auto | always KEEP |
 |---|---|---|---|---|
-| biome / n subjects / n owner REDOs | | | | |
-| REDO recall | | | | |
-| REDO precision | | | | |
-| Cohen's κ (KEEP/REDO) | | | | |
-| abstention (UNSURE) rate | | | | |
-| reason-code agreement on true REDOs | | | | |
-| agreement rate GPT↔Opus | — | — | | — |
-| fraction that would still reach him | | | | — |
-| latency per subject (MEASURED) | | | | — |
-| image resize actually applied (MEASURED) | | | — | — |
+| accuracy · Cohen's κ (MEASURED) | 33/47 · 0.39 (29/39 · 0.47) | 35/47 · 0.44 (28/39 · 0.40) | 27/32 auto correct | 28/47 · 0 |
+| REDO recall · precision | 11/18 · 11/18 | 9/18 · 9/11 | 6 auto-REDO, 8 to him, **4 silently kept** | 0/18 |
+| his defect named, 16 judgeable REDO notes (one rater) | 8 HIT, 8 MISS | 8 HIT, 7 PARTIAL, 1 MISS | either HIT 11 | — |
+| abstention / needs_human | 0 / — | 0 / 8 | — | — |
+| GPT↔Opus agreement · fraction to him | — | — | 32/47 (κ 0.27) · 15/47 | — |
+| latency (MEASURED) · tokens (no resize: PNGs ≤ 2000 px) | 24 s/call, 1131 s summed · UNMEASURED | 629 s wall, ~13 s/subject · UNMEASURED | | |
 
-What the pilot decides: (a) which reviewer per template, or both; (b) whether §4.2's estimates stand;
-(c) whether the card panels the pilot used were enough (any UNSURE "not given <what>" is a card defect).
+Decisions: (a) **no reviewer alone**; GPT vs Opus is a tie on accuracy (McNemar 6 vs 8 discordant). GPT
+perceives less (misses "too camel", catch/species mismatch) but rules hard; Opus sees the defect almost every
+time but files it as polish. Run both; disagreement → him. (b) §4.2's estimates are not yet testable on this N;
+the ensemble's 4 silent misses (swimmers/catches) mean an agreed KEEP is not yet safe to auto-ship. (c) Card
+defects found: the living reference on catch rows is unlabelled, two-slot catch rows look like donor picks.
+Top prompt fixes (SCORE.md §6): catch verdict depends on the living row's verdict; "reads as Earth X" is
+blocking for invented creatures; every reason tagged blocking/polish, REDO iff blocking. Re-race on a
+different biome before quoting any improved rate.
 
 ## 7. Risks and open questions for the owner
 
