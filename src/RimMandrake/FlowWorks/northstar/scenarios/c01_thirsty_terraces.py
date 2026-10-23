@@ -29,8 +29,10 @@ SETUP = dict(
     fluid=[(5, 34, 1, 5, 2, W), (2, 33, 25, 1, 2, W)],                        # intake and terrace 1 full; T2/T3 dry
     spawn=[("RM_Sluice", 5, 39, "WoodLog"), ("RM_Sluice", 27, 33, "WoodLog"), ("RM_Sluice", 28, 27, "WoodLog")],
     build=[("RM_BankWeir", 10, 39, 0, None),
-           ("RM_LiquidPump", 20, 39, None, None), ("PowerConduit", 19, 39, None, None), ("PowerConduit", 18, 39, None, None),
-           ("Battery", 17, 38, 0, None)]
+           # C1_CORD_REWIRE_BATTERY_GOES_SKINNY_DIPPING: the battery sits inland and its conduit runs SOUTH from the bank pump,
+           # so the GSS cord's slack bulges sideways over land, not north over the river (a run along the bank row did)
+           ("RM_LiquidPump", 20, 39, None, None), ("PowerConduit", 19, 39, None, None), ("PowerConduit", 19, 38, None, None),
+           ("PowerConduit", 19, 37, None, None), ("Battery", 19, 35, 0, None)]
     + [("RM_UniversalPipe", x, 38, None, None) for x in range(20, 32)]
     + [("RM_PipePole", 32, 38, None, None), ("RM_PipePole", 37, 38, None, None)]
     + [("RM_UniversalPipe", x, 38, None, None) for x in range(38, 44)]
@@ -44,7 +46,7 @@ SETUP = dict(
     + [("RM_UniversalPipe", x, z, "RM_UniversalPipe_" + lk) for z, lk in ROWS for x in range(38, 46)]
     + [("RM_SprinklerHead", x, z, "RM_SprinklerHead_" + lk) for z, lk in ROWS for x in (39, 41, 43)],
     spawn_plants=[("Plant_Rice", x, z) for x in range(2, 27) for z in (29, 30, 31)],
-    batteries=[(17, 38)],
+    batteries=[(19, 35)],
     pump=[(20, 39, "draw")],
     tank=[(44, 37, "Fill", "RM_Liquid_FreshWater", 12800)],
     hose=[(2, 8, 31, 8, None), (20, 14, 20, 1, None)],
