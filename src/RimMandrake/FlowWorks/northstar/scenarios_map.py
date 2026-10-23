@@ -185,10 +185,27 @@ def creek_plan(terrain, size, exclude=()):
     return placed, [s["id"] for s in RV.STATIONS[len(pick):]]
 
 
-def placed_r(terrain, size):
-    """-> (c1 placement or None, c11 river plan, c11 unplaced ids, notes)."""
+def scenery_rects(B):
+    """3x3 rects round each indestructible natural feature (bland_world.NATURAL_SCENERY: steam/gas geysers) on the current
+    map: clear_plots' destroy_batch cannot remove them, so C1 and C11 are placed clear of them. 2026-10-22 save c map R
+    (tile 1246): a SteamGeyser stood among C1's sprinkler rows (MAP_R_BUILDER_FIX_FORTY_BANKS_REFUSED)."""
+    import bland_world as BW
+    out = []
+    for d in BW.NATURAL_SCENERY:
+        for t in (B.call("jawa/list_things", defName=d, limit=200) or {}).get("things") or []:
+            x, z = t.get("x"), t.get("z")
+            if x is None and isinstance(t.get("position"), (list, tuple)):
+                x, z = t["position"][0], t["position"][-1]
+            if isinstance(x, int) and isinstance(z, int):
+                out.append((x - 1, z - 1, 3, 3))
+    return out
+
+
+def placed_r(terrain, size, avoid=()):
+    """-> (c1 placement or None, c11 river plan, c11 unplaced ids, notes). `avoid`: rects neither may touch
+    (scenery_rects)."""
     notes = []
-    o = river_bank_anchor(terrain, size)
+    o = river_bank_anchor(terrain, size, avoid=avoid)
     c1 = None
     if o is None:
         notes.append("C1: no straight south bank with the river to its north on this map (rotated anchoring owed)")
@@ -198,7 +215,7 @@ def placed_r(terrain, size):
         n = reclaimed_cells(terrain, c1["rect"])
         if n:
             notes.append("C1: %d river/marsh cells inside the plot reclaimed as Soil (ragged bank)" % n)
-    plan, unplaced = creek_plan(terrain, size, exclude=[c1["rect"]] if c1 else [])
+    plan, unplaced = creek_plan(terrain, size, exclude=([c1["rect"]] if c1 else []) + list(avoid))
     for sid in unplaced:
         notes.append("C11: station %s found no free crossing" % sid)
     return c1, plan, unplaced, notes
@@ -804,7 +821,7 @@ def run_river(B, terrain, size, log=None, soak=False):
     import review_map_rivers as RV
     from modcheck import reviewmap as RM
     R = review_class()(B, log)
-    c1, plan, unplaced, notes = placed_r(terrain, size)
+    c1, plan, unplaced, notes = placed_r(terrain, size, avoid=scenery_rects(B))
     R.notes += notes
     placed = [c1] if c1 else []
     if c1:
@@ -974,7 +991,7 @@ def found_map_r(B, max_tries=25):
         why = RS.river_reject(kv, edges, False, tile=t, map_tile=mi.get("tile"))
         if not why:
             terrain = RV.read_terrain(B, size)
-            c1, plan, unplaced, _ = placed_r(terrain, size)
+            c1, plan, unplaced, _ = placed_r(terrain, size, avoid=scenery_rects(B))
             if c1 is None:
                 why = "no straight south bank for C1"
             elif len(plan) < 6:
