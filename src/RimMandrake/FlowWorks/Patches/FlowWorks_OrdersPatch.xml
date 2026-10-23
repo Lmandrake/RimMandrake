@@ -11,6 +11,7 @@
         <li>RimMandrake.FlowWorks.Designator_DigCanal</li>
         <li>RimMandrake.FlowWorks.Designator_DigCanalTo</li>
         <li>RimMandrake.FlowWorks.Designator_FillInCanal</li>
+        <li>RimMandrake.FlowWorks.Designator_RM_RepairBreach</li>
       </value>
     </match>
   </Operation>

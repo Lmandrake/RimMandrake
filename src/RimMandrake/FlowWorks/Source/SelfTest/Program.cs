@@ -2066,6 +2066,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             WallClimbChecks.Run(Case);         // WALL_SCALING_BUILD_ROPE_OVER_RAMPARTS: gear climbs unroofed built walls, slowly (WallClimbChecks.cs)
             TrenchStrideChecks.Run(Case);      // TITAN_TRENCHES_WIRE_MIND_THE_GAP: titans step over trenches narrower than B/4 (TrenchStrideChecks.cs)
             RaiderTrenchChecks.Run(Case);      // RAIDERS_TRENCH_BUILD_BREACH_AND_JUMP: go around, jump, ladders, fill; sieges unchanged (RaiderTrenchChecks.cs)
+            LadderParityChecks.Run(Case);      // LADDER_PARITY_BUILD_NO_KEYS_REQUIRED: no keys, carried/taken ladders, slow fill + repair, ladder over a wall (LadderParityChecks.cs)
             SpanBaseChecks.Run(Case);          // SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT: the span base under pit covers, DeckedAt (SpanBaseChecks.cs)
             PitCoverBeneathChecks.Run(Case);   // PIT_COVER_FIX_OCCUPANT_STAYS_BELOW: a lid laid over a pit occupant keeps her below (PitCoverBeneathChecks.cs)
             CoverFloorSurveyChecks.Run(Case);   // PIT_COVER_WIDEN_PLANKS_BEAR_BOOTS + DRILL_PLACEMENT_ENFORCE_NO_DRY_HOLES (owner cards 2026-10-22)

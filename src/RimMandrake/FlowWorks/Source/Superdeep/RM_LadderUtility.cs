@@ -461,12 +461,16 @@ namespace RimMandrake.FlowWorks
 				int max = RM_LadderUtility.MaxLevelsOf(parent.def);
 				string reach = max <= 0 ? "RMFlow_LadderPortableOff".Translate().ToString()
 					: "RMFlow_LadderPortableReach".Translate(RM_Volume.FormatMetres(max)).ToString();
+				if (parent.Spawned && RM_LadderParity.LeansOnWall(parent))
+				{
+					return reach + "\n" + "RMFlow_LadderOverWallInspect".Translate();
+				}
 				if (parent.Spawned && !RM_LadderUtility.Reaches(parent))
 				{
 					return reach + "\n" + "RMFlow_LadderPortableShort".Translate();
 				}
 				return reach + "\n" + (RimMandrakeFlowWorksSettings.ladderPrisonDoorEnabled
-					? "RMFlow_LadderLoweredPrisonInspect".Translate() : "RMFlow_LadderLoweredInspect".Translate());
+					? (RM_LadderParitySettings.ladderNoKeys ? "RMFlow_LadderLoweredPrisonInspect" : "RMFlow_LadderLoweredKeysInspect").Translate() : "RMFlow_LadderLoweredInspect".Translate());
 			}
 			if (!RimMandrakeFlowWorksSettings.ladderRaiseLowerEnabled && !RimMandrakeFlowWorksSettings.ladderPrisonDoorEnabled)
 			{
@@ -477,7 +481,7 @@ namespace RimMandrake.FlowWorks
 				return "RMFlow_LadderRaisedInspect".Translate();
 			}
 			return RimMandrakeFlowWorksSettings.ladderPrisonDoorEnabled
-				? "RMFlow_LadderLoweredPrisonInspect".Translate()
+				? (RM_LadderParitySettings.ladderNoKeys ? "RMFlow_LadderLoweredPrisonInspect" : "RMFlow_LadderLoweredKeysInspect").Translate()
 				: "RMFlow_LadderLoweredInspect".Translate();
 		}
 
@@ -553,7 +557,8 @@ namespace RimMandrake.FlowWorks
 			{
 				RM_CompLadder comp = GetComp<RM_CompLadder>();
 				Graphic g = comp != null && comp.EffectivelyRaised ? comp.RaisedGraphic : null;
-				if (g == null && comp != null && comp.Props.portable && Spawned && !RM_LadderUtility.Reaches(this))
+				if (g == null && comp != null && comp.Props.portable && Spawned && !RM_LadderUtility.Reaches(this)
+					&& !RM_LadderParity.LeansOnWall(this))   // LADDER_PARITY_BUILD_NO_KEYS_REQUIRED: upright against a wall
 				{
 					g = comp.ShortGraphic;   // PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS: too short for its wall: lying flat
 				}
@@ -608,11 +613,9 @@ namespace RimMandrake.FlowWorks
 			{
 				return false; // wild animals and factionless pawns stay down
 			}
-			if (p.Faction == Faction.OfPlayer)
-			{
-				return true;
-			}
-			return Faction.OfPlayer != null && !p.Faction.HostileTo(Faction.OfPlayer);
+			// LADDER_PARITY_BUILD_NO_KEYS_REQUIRED (owner 2026-10-23: "what are they locked with a key?"): hostiles climb too
+			return RM_LadderParityMath.MayClimbLowered(RM_LadderParitySettings.ladderNoKeys, true, p.Faction == Faction.OfPlayer,
+				Faction.OfPlayer == null || p.Faction.HostileTo(Faction.OfPlayer), false, false);
 		}
 	}
 
@@ -632,6 +635,17 @@ namespace RimMandrake.FlowWorks
 			RM_MapComponent_Excavation engine = map.GetComponent<RM_MapComponent_Excavation>();
 			if (engine == null || engine.ClimbDepthAt(loc) == 0)
 			{
+				// LADDER_PARITY_BUILD_NO_KEYS_REQUIRED: a portable ladder may lean on a single built wall it faces
+				if (RM_LadderUtility.MaxLevelsOf(checkingDef) > 0)
+				{
+					IntVec3 front = loc + rot.FacingCell;
+					bool facesWall = RM_WallClimb.ClimbableWallAt(map, front) != null;
+					int squares = facesWall ? (RM_WallClimb.ClimbableWallAt(map, front + rot.FacingCell) != null ? 2 : 1) : 0;
+					if (RM_LadderParityMath.PlaceOnWall(RM_LadderParitySettings.ladderOverWalls, false, facesWall, squares))
+					{
+						return true;
+					}
+				}
 				return "RMFlow_LadderNeedsExcavation".Translate();
 			}
 			// PIT_RAMP_BUILD_STAIRS_BEAT_LADDERS (design §8.4): a square holds a ramp or a ladder, never both.

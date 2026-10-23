@@ -14,7 +14,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RM_LadderPortable</defName>
     <label>portable ladder</label>
-    <description>A light ladder one person can carry and set against a pit wall that is not too deep (3 m by default; see the mod settings). It is always down and works like a prison door: your people and friendly visitors climb it, trapped enemies and wild animals cannot, prisoners only during a prison break. Uninstall it to carry it to another pit. Against a wall too high for it, it lies on the floor and nobody can climb it.</description>
+    <description>A light ladder one person can carry and set against a pit wall that is not too deep (3 m by default; see the mod settings). It is always down and has no lock: anyone climbs it, yours or a raider's (wild animals never; prisoners only during a prison break). Anyone can uninstall it and carry it off, raiders included. Set against a single built wall open to the sky, it carries whoever stands on it over the wall, one way. Against a wall too high for it, it lies on the floor and nobody can climb it.</description>
     <thingClass>RimMandrake.FlowWorks.RM_Building_Ladder</thingClass>
     <graphicData>
       <texPath>Things/Building/FlowWorks/Canals/RM_LadderPortable</texPath>
@@ -54,6 +54,8 @@
       <isEdifice>false</isEdifice>
       <expandHomeArea>false</expandHomeArea>
       <uninstallWork>60</uninstallWork>
+      <!-- LADDER_PARITY_BUILD_NO_KEYS_REQUIRED: colonists uninstall anyone's portable ladder (vanilla Designator_Uninstall) -->
+      <alwaysUninstallable>true</alwaysUninstallable>
     </building>
     <comps>
       <li Class="RimMandrake.FlowWorks.RM_CompProperties_Ladder">

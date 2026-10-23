@@ -471,6 +471,16 @@ namespace RimMandrake.FlowWorks
 					waiting = true;
 					return null;   // another raider is setting it, or the slot is past a ladder not yet set: think again later
 				}
+				// LADDER_PARITY_BUILD_NO_KEYS_REQUIRED: "Can pick up each other's ladders": a raider carrying none first takes a
+				// standing portable ladder near it (anyone's, never one on this crossing); none to take: it builds one on the spot
+				if (RM_LadderParity.CarriedLadder(p) == null)
+				{
+					Job take = RM_LadderParity.TakeLadderJob(p, plan.cells);
+					if (take != null)
+					{
+						return take;
+					}
+				}
 				Warn(p, "RMFlow_RaidersSetLadders");
 				Job job = JobMaker.MakeJob(RM_RaiderTrenchDefOf.RM_RaiderSetLadder, cell, toward);
 				job.count = slots[s].drop;
@@ -738,7 +748,8 @@ namespace RimMandrake.FlowWorks
 		{
 			if (IsLadder)
 			{
-				return RM_RaiderTrenchMath.LadderTicks(Mathf.Max(1, job.count) * RM_Volume.MetresPerLevel, RM_RaiderTrenchSettings.raiderLadderSpeed);
+				return RM_LadderParityMath.RaiderLadderTicks(Mathf.Max(1, job.count) * RM_Volume.MetresPerLevel,
+					RM_RaiderTrenchSettings.raiderLadderSpeed, RM_LadderParity.CarriedLadder(pawn) != null);
 			}
 			// CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP: one level of fill costs the same at every depth (not the deep-dig curve)
 			int work = RM_RaiderTrenchMath.FillWorkPerLevel;
@@ -794,6 +805,8 @@ namespace RimMandrake.FlowWorks
 				{
 					if (eng.CanFillIn(c) && (job.count < 0 || RM_SuperdeepTrap.StepDepthAt(map, eng, c) > job.count))
 					{
+						// LADDER_PARITY_BUILD_NO_KEYS_REQUIRED: remember the depth for the Repair breach order
+						RM_BreachScars.NoteFill(map, c);
 						eng.FillIn(c);
 					}
 					return;
@@ -805,7 +818,8 @@ namespace RimMandrake.FlowWorks
 				{
 					return;
 				}
-				Thing ladder = ThingMaker.MakeThing(def);
+				// LADDER_PARITY_BUILD_NO_KEYS_REQUIRED: a carried (or taken) ladder is set; else one is built on the spot
+				Thing ladder = RM_LadderParity.TakeCarried(pawn) ?? ThingMaker.MakeThing(def);
 				ladder.SetFaction(pawn.Faction);
 				GenSpawn.Spawn(ladder, c, map, Rot4.FromIntVec3(wall - c));
 			};
@@ -871,7 +885,8 @@ namespace RimMandrake.FlowWorks
 		public static bool raiderLaddersEnabled = true;
 		public static bool raiderFillEnabled = true;
 		public static float raiderLadderSpeed = 1f;
-		public static float raiderFillSpeed = 1f;
+		/// <summary>LADDER_PARITY_BUILD_NO_KEYS_REQUIRED, owner 2026-10-23: "Digging should be slow." (x0.5, PROVISIONAL)</summary>
+		public static float raiderFillSpeed = RM_LadderParityMath.DefaultRaiderFillSpeed;
 		/// <summary>PROVISIONAL: "some may have jump packs".</summary>
 		public static float raiderJumpPackShare = 0.1f;
 
@@ -892,7 +907,7 @@ namespace RimMandrake.FlowWorks
 			Scribe_Values.Look(ref raiderLaddersEnabled, "raiderLaddersEnabled", true);
 			Scribe_Values.Look(ref raiderFillEnabled, "raiderFillEnabled", true);
 			Scribe_Values.Look(ref raiderLadderSpeed, "raiderLadderSpeed", 1f);
-			Scribe_Values.Look(ref raiderFillSpeed, "raiderFillSpeed", 1f);
+			Scribe_Values.Look(ref raiderFillSpeed, "raiderFillSpeed", RM_LadderParityMath.DefaultRaiderFillSpeed);
 			Scribe_Values.Look(ref raiderJumpPackShare, "raiderJumpPackShare", 0.1f);
 		}
 
@@ -925,7 +940,7 @@ namespace RimMandrake.FlowWorks
 				"When ladders cannot do it (too deep, too narrow, ladders off), raiders shovel earth into the trench until every "
 			  + "step of a one-square causeway is climbable, then walk across it.");
 			list.Label("  Breach filling speed: x" + raiderFillSpeed.ToString("0.00"), tooltip:
-				"How fast raiders shovel a breach causeway. At x1 one level of fill is half a first-notch dig at ANY depth (a gunner: about 2,800 ticks a level), up to three raiders to a square.");
+				"How fast raiders shovel a breach causeway (shipped x0.5: digging in is slow; Orders > Repair breach digs it back out). At x1 one level of fill is half a first-notch dig at ANY depth (a gunner: about 2,800 ticks a level), up to three raiders to a square.");
 			raiderFillSpeed = Mathf.Round(list.Slider(raiderFillSpeed, 0.25f, 4f) * 20f) / 20f;
 		}
 	}

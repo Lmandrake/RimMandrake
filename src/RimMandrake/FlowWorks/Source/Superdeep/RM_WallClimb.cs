@@ -116,9 +116,14 @@ namespace RimMandrake.FlowWorks
 				{
 					continue;
 				}
-				if (!TryCrossing(map, foot, wallCell, out IntVec3 land, out int _, out bool roofed))
+				if (!TryCrossing(map, foot, wallCell, out IntVec3 land, out int squares, out bool roofed))
 				{
 					anyRoofed |= roofed;
+					continue;
+				}
+				// LADDER_PARITY_BUILD_NO_KEYS_REQUIRED: gear climbs from any side; a ladder only from its own (one way)
+				if (!RM_LadderParity.CanClimbAt(p, foot, wallCell, squares))
+				{
 					continue;
 				}
 				float dist = p.Position.DistanceToSquared(foot);
@@ -164,12 +169,13 @@ namespace RimMandrake.FlowWorks
 		/// pawn cannot or the crossing is closed.</summary>
 		public static Job ClimbJobForBlocker(Pawn p, Thing blocker, IntVec3 cellBefore)
 		{
-			if (!(blocker is Building b) || !IsClimbableWall(b) || !cellBefore.IsValid || !CanClimb(p))
+			if (!(blocker is Building b) || !IsClimbableWall(b) || !cellBefore.IsValid || !RM_LadderParity.MightClimb(p))
 			{
 				return null;
 			}
 			if (!WallCellNextTo(p.Map, cellBefore, blocker, out IntVec3 wallCell)
-				|| !TryCrossing(p.Map, cellBefore, wallCell, out IntVec3 landing, out int _, out bool _))
+				|| !TryCrossing(p.Map, cellBefore, wallCell, out IntVec3 landing, out int squares, out bool _)
+				|| !RM_LadderParity.CanClimbAt(p, cellBefore, wallCell, squares))
 			{
 				return null;
 			}
@@ -208,9 +214,8 @@ namespace RimMandrake.FlowWorks
 
 		private bool StillOpen()
 		{
-			return RM_WallClimb.CanClimb(pawn)
-				&& RM_WallClimb.TryCrossing(pawn.Map, Foot, WallCell, out IntVec3 land, out int _, out bool _)
-				&& land == Landing;
+			return RM_WallClimb.TryCrossing(pawn.Map, Foot, WallCell, out IntVec3 land, out int squares, out bool _)
+				&& land == Landing && RM_LadderParity.CanClimbAt(pawn, Foot, WallCell, squares);
 		}
 
 		protected override IEnumerable<Toil> MakeNewToils()
@@ -221,6 +226,35 @@ namespace RimMandrake.FlowWorks
 				squares = sq;
 			}
 			yield return Toils_Goto.GotoCell(TargetIndex.C, PathEndMode.OnCell);
+			// LADDER_PARITY_BUILD_NO_KEYS_REQUIRED: no gear and no ladder leaning here: set the carried one first
+			bool byLadder = RM_LadderParity.ByLadder(pawn);
+			Toil set = ToilMaker.MakeToil("RM_ClimbOverWall_SetLadder");
+			set.initAction = delegate
+			{
+				if (!byLadder || RM_LadderParity.LadderLeaningAt(Map, Foot, WallCell) != null)
+				{
+					ReadyForNextToil();
+				}
+			};
+			set.tickAction = delegate
+			{
+				pawn.rotationTracker.FaceCell(WallCell);
+			};
+			set.defaultCompleteMode = ToilCompleteMode.Delay;
+			set.defaultDuration = RM_LadderParityMath.RaiderLadderTicks(0.0, RM_RaiderTrenchSettings.raiderLadderSpeed, true);
+			set.handlingFacing = true;
+			yield return set;
+			Toil placed = ToilMaker.MakeToil("RM_ClimbOverWall_LadderSet");
+			placed.initAction = delegate
+			{
+				if (byLadder && pawn.Position == Foot && RM_LadderParity.LadderLeaningAt(Map, Foot, WallCell) == null
+					&& !RM_LadderParity.SetCarriedAt(pawn, Foot, WallCell))
+				{
+					EndJobWith(JobCondition.Incompletable);
+				}
+			};
+			placed.defaultCompleteMode = ToilCompleteMode.Instant;
+			yield return placed;
 			Toil climb = ToilMaker.MakeToil("RM_ClimbOverWall");
 			climb.initAction = delegate
 			{
@@ -241,8 +275,9 @@ namespace RimMandrake.FlowWorks
 				}
 			};
 			climb.defaultCompleteMode = ToilCompleteMode.Delay;
-			climb.defaultDuration = RM_WallClimbMath.ClimbTicks(squares, RM_WallClimbSettings.wallClimbSlowFactor,
-				pawn.TicksPerMoveCardinal);
+			climb.defaultDuration = byLadder
+				? RM_LadderParityMath.WallClimbTicks(RM_LadderParitySettings.wallLadderSlowFactor, pawn.TicksPerMoveCardinal)
+				: RM_WallClimbMath.ClimbTicks(squares, RM_WallClimbSettings.wallClimbSlowFactor, pawn.TicksPerMoveCardinal);
 			climb.handlingFacing = true;
 			climb.WithProgressBarToilDelay(TargetIndex.C);
 			yield return climb;
@@ -297,7 +332,7 @@ namespace RimMandrake.FlowWorks
 		public static void Postfix(Pawn pawn, ref Job __result)
 		{
 			if (__result == null || !(pawn?.mindState?.breachingTarget?.target is Building b) || !RM_WallClimb.IsClimbableWall(b)
-				|| !RM_WallClimb.CanClimb(pawn))
+				|| !RM_LadderParity.MightClimb(pawn))
 			{
 				return;
 			}
@@ -317,7 +352,7 @@ namespace RimMandrake.FlowWorks
 		[HarmonyPrefix]
 		public static bool Prefix(Pawn_PathFollower __instance, Pawn ___pawn)
 		{
-			if (!RM_WallClimbSettings.wallClimbEnabled || ___pawn?.Map == null)
+			if (!(RM_WallClimbSettings.wallClimbEnabled || RM_LadderParitySettings.ladderOverWalls) || ___pawn?.Map == null)
 			{
 				return true;
 			}
@@ -329,8 +364,9 @@ namespace RimMandrake.FlowWorks
 				return true;
 			}
 			bool wouldBash = (___pawn.CurJob != null && ___pawn.CurJob.canBashDoors) || ___pawn.HostileTo(b);
-			if (!wouldBash || ___pawn.CurJob?.def == RM_WallClimbDefOf.RM_ClimbOverWall || !RM_WallClimb.CanClimb(___pawn)
-				|| !RM_WallClimb.TryCrossing(map, ___pawn.Position, next, out IntVec3 landing, out int _, out bool _))
+			if (!wouldBash || ___pawn.CurJob?.def == RM_WallClimbDefOf.RM_ClimbOverWall || !RM_LadderParity.MightClimb(___pawn)
+				|| !RM_WallClimb.TryCrossing(map, ___pawn.Position, next, out IntVec3 landing, out int squares, out bool _)
+				|| !RM_LadderParity.CanClimbAt(___pawn, ___pawn.Position, next, squares))
 			{
 				return true;
 			}
@@ -362,7 +398,7 @@ namespace RimMandrake.FlowWorks
 		[HarmonyPostfix]
 		public static void Postfix(Pawn pawn, ref Job __result)
 		{
-			if (__result != null || pawn?.Map == null || pawn.Faction == Faction.OfPlayer || !RM_WallClimb.CanClimb(pawn))
+			if (__result != null || pawn?.Map == null || pawn.Faction == Faction.OfPlayer || !RM_LadderParity.MightClimb(pawn))
 			{
 				return;
 			}
@@ -430,15 +466,15 @@ namespace RimMandrake.FlowWorks
 
 		protected override bool AppliesInt(FloatMenuContext context)
 		{
-			return RM_WallClimbSettings.wallClimbEnabled && RimMandrakeFlowWorksSettings.climbingGearEnabled
-				&& RM_WallClimb.ClimbableWallAt(context.map, context.ClickedCell) != null;
+			return ((RM_WallClimbSettings.wallClimbEnabled && RimMandrakeFlowWorksSettings.climbingGearEnabled)
+				|| RM_LadderParitySettings.ladderOverWalls) && RM_WallClimb.ClimbableWallAt(context.map, context.ClickedCell) != null;
 		}
 
 		protected override FloatMenuOption GetSingleOption(FloatMenuContext context)
 		{
 			Pawn p = context.FirstSelectedPawn;
 			Building wall = RM_WallClimb.ClimbableWallAt(context.map, context.ClickedCell);
-			if (p == null || wall == null || !RM_WallClimb.CanClimb(p))
+			if (p == null || wall == null || !RM_LadderParity.MightClimb(p))
 			{
 				return null;
 			}
