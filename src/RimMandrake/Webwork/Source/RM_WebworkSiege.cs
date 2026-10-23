@@ -660,6 +660,7 @@ namespace RimMandrake.Webwork
             yield return Toils_Goto.GotoCell(TargetIndex.A, PathEndMode.Touch);
             Toil work = Toils_General.Wait(RM_WebworkSiegeKernel.SpinTicks(RM_WebworkSettings.siegeSpinSpeed), TargetIndex.A)
                 .WithProgressBarToilDelay(TargetIndex.A);
+            work.FailOnCannotTouch(TargetIndex.A, PathEndMode.Touch);   // GPT deep review 2026-10-22 #9
             SoundDef sound = DefDatabase<SoundDef>.GetNamedSilentFail("Recipe_Tailor");
             if (sound != null)
             {
@@ -690,7 +691,8 @@ namespace RimMandrake.Webwork
             this.FailOnDespawnedOrNull(TargetIndex.A);
             this.FailOn(() => !RM_WebworkSettings.siegeCocoonDowned || !RM_WebworkSiegeUtility.IsCocoonTarget(Victim, pawn));
             yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch);
-            yield return Toils_General.Wait(WrapTicks, TargetIndex.A).WithProgressBarToilDelay(TargetIndex.A);
+            yield return Toils_General.Wait(WrapTicks, TargetIndex.A).WithProgressBarToilDelay(TargetIndex.A)
+                .FailOnCannotTouch(TargetIndex.A, PathEndMode.Touch);   // GPT deep review 2026-10-22 #9: a dragged-off victim ends the wrap
             yield return new Toil
             {
                 initAction = () => RM_WebworkSiegeUtility.Cocoon(Victim),
@@ -715,7 +717,8 @@ namespace RimMandrake.Webwork
             this.FailOnDespawnedOrNull(TargetIndex.A);
             this.FailOn(() => !RM_WebworkSettings.siegeWrapDoors || RM_Building_SiegeDoorWrap.IsWrapped(Door));
             yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch);
-            yield return Toils_General.Wait(WrapTicks, TargetIndex.A).WithProgressBarToilDelay(TargetIndex.A);
+            yield return Toils_General.Wait(WrapTicks, TargetIndex.A).WithProgressBarToilDelay(TargetIndex.A)
+                .FailOnCannotTouch(TargetIndex.A, PathEndMode.Touch);   // GPT deep review 2026-10-22 #9: a dragged-off victim ends the wrap
             yield return new Toil
             {
                 initAction = () => RM_WebworkSiegeUtility.WrapDoor(Door),
@@ -839,7 +842,9 @@ namespace RimMandrake.Webwork
             {
                 return;
             }
-            int n = mc.TakeYield(siegeId, Props.perCut); // the cap is spent only when the silk can actually drop
+            // The cap is spent BEFORE placement; a failed Near-placement (practically never) loses that share (GPT deep
+            // review 2026-10-22 #14: the old comment claimed otherwise)
+            int n = mc.TakeYield(siegeId, Props.perCut);
             if (n <= 0)
             {
                 return;

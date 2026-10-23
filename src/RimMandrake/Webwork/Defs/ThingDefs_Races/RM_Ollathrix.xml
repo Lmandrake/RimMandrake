@@ -217,9 +217,9 @@
       <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
       <soundEating>Insectoid_Eat</soundEating>
     </race>
-    <tradeTags>
-      <li>AnimalFighter</li>
-    </tradeTags>
+    <!-- GPT deep review 2026-10-22 #1: AnimalFighter put a wildness-1 web giant on orbital and caravan stock; not for sale,
+         like the other biome giants (Watcher, Titanoslime) -->
+    <tradeability>None</tradeability>
   </ThingDef>
 
   <PawnKindDef ParentName="AnimalKindBase">
