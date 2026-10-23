@@ -284,11 +284,17 @@ class Collector:
                 box["snap"] = self.tick(force=True)
             except Exception as e:  # reported to the widget, never swallowed
                 box["error"] = f"{type(e).__name__}: {e}"[:200]
+                return
+            if box.get("timed_out"):   # it finished after the answer said it had not: say so, once
+                self.last_refresh = {"ok": True, "late": True, "at": time.time(),
+                                     "ms": round((time.time() - t0) * 1000),
+                                     "collected_at": box["snap"]["collected_at"], "sources_down": {}}
         th = threading.Thread(target=run, daemon=True)
         th.start()
         th.join(timeout)
         ms = round((time.time() - t0) * 1000)
         if th.is_alive():
+            box["timed_out"] = True
             res = {"ok": False, "at": time.time(), "ms": ms,
                    "error": f"collection still running after {int(timeout)} s (data shown is from "
                             f"{time.strftime('%H:%M:%S', time.localtime(self.snapshot.get('collected_at') or 0))})"}
@@ -300,7 +306,8 @@ class Collector:
                     if not v.get("ok") or v.get("stale")}
             res = {"ok": True, "at": time.time(), "ms": ms, "collected_at": snap["collected_at"],
                    "sources_down": down}
-        self.last_refresh = res
+        if not (box.get("timed_out") and "snap" in box):   # a late finish already wrote the truer answer
+            self.last_refresh = res
         with self.cond:   # the next snapshot carries it; push it now too so the widget sees a failure at once
             if self.snapshot:
                 self.snapshot = {**self.snapshot, "refresh": res}
