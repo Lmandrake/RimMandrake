@@ -2216,7 +2216,7 @@ def phase_L(L, args):
             if not bridge_line else ("log_clean", not fw_err, "MOD", fw_err or "no FlowWorks error in %d warn+ entries "
                                      "(base seq %d)" % (len(logs), L.log_base))
         tp = B.call("jawa/type_probe", typeName="RimMandrake.FlowWorks.RM_MapComponent_Excavation")
-        want = _sha256(os.path.join(MOD, "Assemblies", "RimMandrakeFlowWorks.dll"))
+        want = _sha256(os.environ.get("FW_REPO_DLL") or os.path.join(MOD, "Assemblies", "RimMandrakeFlowWorks.dll"))  # see live_session REPO_DLL
         asm_part = ("assembly_identity", tp.get("assemblyFileSha256") == want and tp.get("mvidMatchesFile") is True,
                     "HARNESS", "loaded %s sha %s mvidMatchesFile %s; repo sha %s" % (
                         tp.get("assemblyLocation"), (tp.get("assemblyFileSha256") or "")[:12], tp.get("mvidMatchesFile"), want[:12]))
