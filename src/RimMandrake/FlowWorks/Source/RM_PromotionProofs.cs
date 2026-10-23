@@ -236,7 +236,10 @@ namespace RimMandrake.FlowWorks
 		/// <summary>PIT_COVER_FIX_OCCUPANT_STAYS_BELOW live row X8b (northstar/validation_v2.py). arg = "x,z": the first pawn on that
 		/// square and what the concealed pit's lid makes of it: "BENEATH cell=x,z pawn=id|none beneath=b held=b trapped=b
 		/// onLoad=b hidden=b covered=b". onLoad: the lid's LoadOn counts it (own faction included); hidden: the draw patch skips
-		/// it (the same read). Read-only.</summary>
+		/// it (the same read). Read-only.
+		/// PIT_LID_FIX_VICKY_PEEKS_THROUGH adds the draw itself: drawPatch = the hide prefix is really on Pawn.DynamicDrawPhaseAt
+		/// (Harmony's own patch table); hidden = drawPatch and that prefix skips the pawn; sink = the sink the draw reads on its
+		/// square; drawDz = the REAL patched DrawPos z minus the cell centre (a walker on a lid: 0, at ground; sunk: negative).</summary>
 		public static string ProofBeneath(string arg)
 		{
 			RM_MapComponent_Excavation ex = Engine(out Map map);
@@ -261,9 +264,23 @@ namespace RimMandrake.FlowWorks
 			var standing = new List<Pawn>();
 			RM_SpanUtility.LoadOn(map, new List<IntVec3> { c }, null, true, standing);
 			bool beneath = RM_PitCoverBeneath.IsBeneath(p);
+			bool drawPatch = false;
+			HarmonyLib.Patches info = HarmonyLib.Harmony.GetPatchInfo(HarmonyLib.AccessTools.Method(typeof(Pawn), nameof(Pawn.DynamicDrawPhaseAt)));
+			if (info != null)
+			{
+				foreach (HarmonyLib.Patch pt in info.Prefixes)
+				{
+					drawPatch |= pt.PatchMethod?.DeclaringType == typeof(RM_Patch_PawnBeneathCoverHidden);
+				}
+			}
+			bool hidden = drawPatch && !RM_Patch_PawnBeneathCoverHidden.Prefix(p);
+			Vector3 centre = p.Position.ToVector3Shifted();
+			float sink = RM_Patch_PitDepthDrawOffset.SinkOf(p, centre);
+			float drawDz = p.DrawPos.z - centre.z;
 			return "BENEATH cell=" + c.x + "," + c.z + " pawn=" + p.ThingID + " beneath=" + beneath
 				+ " held=" + RM_SuperdeepTrap.IsHeld(p) + " trapped=" + RM_SuperdeepTrap.IsTrapped(p)
-				+ " onLoad=" + standing.Contains(p) + " hidden=" + beneath + " covered=" + covered;
+				+ " onLoad=" + standing.Contains(p) + " hidden=" + hidden + " covered=" + covered
+				+ " drawPatch=" + drawPatch + " sink=" + sink.ToString("0.000", System.Globalization.CultureInfo.InvariantCulture) + " drawDz=" + drawDz.ToString("0.000", System.Globalization.CultureInfo.InvariantCulture);
 		}
 
 		/// <summary>POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD live row L8 (northstar/liquid_checks.py): the pond indexed at "x,z" —

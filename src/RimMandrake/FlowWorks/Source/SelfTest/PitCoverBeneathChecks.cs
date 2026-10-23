@@ -18,6 +18,14 @@ namespace RimMandrake.FlowWorks.SelfTest
 
         private static string Src(params string[] rel) => RiverSwitchFlipChecks.Src(Path.Combine(rel));
 
+        private static string Between(string src, string start, string end)
+        {
+            int i = src.IndexOf(start, StringComparison.Ordinal);
+            Assert(i >= 0, "marker present: " + start);
+            int j = src.IndexOf(end, i + start.Length, StringComparison.Ordinal);
+            return j < 0 ? src.Substring(i) : src.Substring(i, j - i);
+        }
+
         public static void Run(Action<string, Action> Case)
         {
             Case("Beneath_who_goes_under_a_new_lid", () =>
@@ -66,6 +74,32 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(util.Contains("nameof(Pawn.DynamicDrawPhaseAt)") && util.Contains("nameof(Pawn.DrawGUIOverlay)"), "hidden: not drawn, no label");
                 // can-fail: the beneath read must require an intact lid on the pawn's own square
                 Assert(util.Contains("st.InBeneathSet(p) && RM_PitCoverUtility.CoverAt(p.Map, p.Position) != null"), "beneath needs the lid there");
+            });
+
+            // PIT_LID_FIX_VICKY_PEEKS_THROUGH (owner 2026-10-22: a colonist on a covered pit "just gets a funny dark square around
+            // her but otherwise is still "over" the cover"): a walker on a lid draws at ground; only a beneath pawn keeps the hole's
+            // depth (and is not drawn). The lid is the near lip of an open part of its pit. Live: validation_v2 X8c / X8b.
+            Case("LidWalker_drawn_at_ground_not_sunk", () =>
+            {
+                string susp = Src("Pits", "Suspension", "RM_SuspensionPatches.cs");
+                string sink = Src("Superdeep", "RM_PitDepthDraw.cs");
+                string lip = Src("Superdeep", "RM_PitLipOcclusion.cs");
+                string draw = Between(susp, "public static int DrawDepth(", "public static bool OnDeck(");
+                int coverAt = draw.IndexOf("RM_PitCoverUtility.CoverAt(p.Map, c) != null");
+                int suspDeck = draw.IndexOf("is Building_SuspensionDeck d");
+                Assert(coverAt > 0 && suspDeck > coverAt, "DrawDepth reads a lid before the suspension-deck branch");
+                Assert(draw.Contains("c == p.Position && RM_PitCoverBeneath.IsBeneath(p) ? hollow : RM_SpanUtility.WalkingDepth(p.Map, c, hollow)"),
+                    "on a lid: the hole's depth only for a pawn beneath it, else the lid's walking height");
+                Assert(!susp.Contains("Covers keep their old read"), "can-fail: the old 'covers sink' doc line is gone");
+                Assert(sink.Contains("Pits.RM_SuspensionUnderpass.SeenDepthAt(map, ex, cand) < d"), "the sink clamp sees a lid as the lip");
+                Assert(lip.Contains("int d = Pits.RM_SuspensionUnderpass.DrawDepth(p, p.Position, eng.HollowDepthAt(p.Position));"),
+                    "the lip occluder covers a pawn at its DRAWN depth (a lid walker: none)");
+                Assert(lip.Contains("|| Pits.RM_PitCoverBeneath.IsBeneath(p)"), "no lip cover round a hidden beneath pawn");
+                Assert(lip.Contains("SeenDepthAt(map, eng, cand) < d") && lip.Contains("SeenDepthAt(map, eng, g) >= d"),
+                    "a lid square is ground to the lip search");
+                Assert(lip.Contains("lid != null ? lid.PrintedSurface"), "a lid square is drawn in the ground it prints");
+                // can-fail: no remaining raw hollow read of the pawn's own depth in the occluder
+                Assert(!lip.Contains("int d = eng.HollowDepthAt(p.Position);"), "can-fail: the occluder no longer reads the raw hole depth");
             });
         }
     }
