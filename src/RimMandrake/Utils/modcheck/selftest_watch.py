@@ -257,6 +257,18 @@ def main():
         check("an out-of-component failure is recorded as a FAIL component, not a crash",
               c0["verdict"] == "FAIL" and "outside any component" in c0["name"] and out["findings"], str(c0))
         check("the next chain still runs and passes", out["chains"][1]["components"][0]["verdict"] == "PASS")
+        # ---- an 'UNMEASURED:' ExpectationFailed in chain setup is a harness could-not-ask: UNMEASURED, no finding
+        # (MODCHECK_SETUP_UNMEASURED_FIX_READS_AS_FAIL: FlowWorks extensions.py's _spawn_pawn_at raised it and read as FAIL)
+        w = bland_world(tmp)
+        st5 = Suite("Probe5")
+        @st5.chain("setup_cannot_ask")
+        def s5(t):
+            from suite import ExpectationFailed
+            raise ExpectationFailed("UNMEASURED: spawn_pawn at 10,10 returned no id")
+        out = runner.run_suite(st5, w, anchor=(100, 100), situational=True)
+        c5 = out["chains"][0]["components"][0]
+        check("an UNMEASURED-prefixed setup failure reads UNMEASURED with no finding",
+              c5["verdict"] == "UNMEASURED" and "outside any component" in c5["name"] and not out["findings"], str(c5))
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     n = sum(_results)
