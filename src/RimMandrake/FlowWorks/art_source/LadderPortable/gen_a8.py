@@ -11,17 +11,33 @@ import gen_a2 as A2
 import gen_a7 as A7
 
 # src TL,TR,BR,BL on the 384 canvas; west = wall at the left (cell edge x=64); right rail starts ~0.16 cell lower
-W = [(70, 56), (150, 98), (156, 340), (76, 296)]
-S = [(138, 176), (246, 176), (250, 280), (134, 280)]   # drawn to y=280, cut at 270: no keyline across the hidden foot
+W = [(64, 50), (168, 96), (176, 344), (70, 296)]
+S = [(124, 150), (260, 150), (266, 280), (118, 280)]   # drawn to y=280, cut at 270: no keyline across the hidden foot
+
+TARGET = (122, 88, 58)   # RM_Ladder's wood mean; ours is greyer
+
+
+def warm(im):
+    import numpy as np
+    a = np.array(im, float); m = (a[..., 3] > 200) & (a[..., :3].sum(-1) > 150)
+    mean = a[m][:, :3].mean(0)
+    g = np.clip(np.array(TARGET) / mean, 0.8, 1.6)
+    rgb = a[..., :3] * g
+    lum = rgb.mean(-1, keepdims=True); rgb = lum + (rgb - lum) * 1.25      # a little more saturation
+    a[..., :3] = np.clip(rgb, 0, 255)
+    return Image.fromarray(a.astype("uint8"), "RGBA")
+
 
 if __name__ == "__main__":
     out = Path(sys.argv[1]); out.mkdir(parents=True, exist_ok=True)
     L = G.upright()
-    A2.THICK = 2
+    A2.THICK = 5
     north = Image.open(out / "optA7_north.png").convert("RGBA")
-    south = A2.facing(L, S, (0.0, 0.40))
+    A2.THICK = 4
+    south = A2.facing(L, S, (0.0, 0.46))
     a = south.getchannel("A"); a.paste(0, (0, 270, 384, 384)); south.putalpha(a)
-    A2.THICK = 3
+    A2.THICK = 6
     west = A2.facing(L, W)
+    north, south, west = warm(north), warm(south), warm(west)
     for f, im in {"north": north, "south": south, "west": west, "east": G.mirror(west)}.items():
         im.save(out / f"optA8_{f}.png")
