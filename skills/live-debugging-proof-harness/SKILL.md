@@ -270,7 +270,7 @@ see `skills/rimworld-modding/references/validation-plan.md`.
 
 ## Helper budget for live proofs — owner, 2026-10-23 (token burn)
 
-A live proof helper is ONE bridge driver with a hard budget: `max_turns` in the brief (default 60), a fresh helper
+A live proof helper is ONE bridge driver with a hard budget: `max_turns` in the brief (default 30), a fresh helper
 per run or site (never one helper across many runs: each turn re-reads its whole context), one Opus helper at a time.
 Run the proof as a single script and read its result; never spend a turn per row, per tick window or per watchdog check
 (`belt_watchdog.py --watch 300` goes into `Monitor`, not a polling loop of turns). Stop at budget or on any

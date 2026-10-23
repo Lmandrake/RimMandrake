@@ -114,7 +114,7 @@ cite), `rimworld-sprite-facings` and `generating-rimworld-sprites` (the facts th
 
 Helpers on this stream burned the account's Opus session limit in one morning. Hard rules, full text and the
 measured incident in `references/subagent_budget.md`: **every brief carries `max_turns` and `max_judge_calls`
-(default 60 turns); fresh helper per batch, never one long-lived one; one Opus helper at a time, three total;
+(default 30 turns; judge-call count stated, no default); fresh helper per batch, never one long-lived one; one Opus helper at a time, three total;
 loops are one driver script, not a turn per picture; wait with Monitor, never polling turns; judge each picture once
 per (image hash, prompt version); prompt comparison = incumbent + 2 variants, ≤12 known verdicts, one round per
 order; probe quota before judge-heavy work and never record a 429 as a verdict; measure every helper afterwards with
