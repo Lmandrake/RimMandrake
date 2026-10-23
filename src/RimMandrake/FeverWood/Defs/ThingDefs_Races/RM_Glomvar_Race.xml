@@ -6,13 +6,12 @@
      ants is not your enemy."
 
      glomvar: INVENTED name (RM_ tier per Q11a, franchise-free). Never a
-     wildAnimals row: it exists only inside a generated hive
-     (RM_GenStep_AntHiveDungeon.PlaceParasite).
+     wildAnimals row.
 
-     Behaviour is RM_CompHiveParasite (this mod): race predator=false, so
-     vanilla never hunts a colonist with it; its only hunt is the host hive's
-     residents, one a day when hungry, and a feeding frenzy whenever the hive
-     raises an alarm nearby. RM_ReactionUnseenExtension makes it invisible to
+     🔴 2026-10-23: the parasite CHAMBER and its hunting comp (RM_CompHiveParasite) were CUT by the fluff review
+     (design/RimMandrake/fluff_cuts_2026-10-23.md), so nothing spawns a glomvar now. The race is KEPT because two of its
+     facings are owner-kept art (retiring them needs his words); it waits for his call: a new home, or retire it.
+     race predator=false, so vanilla never hunts a colonist with it. RM_ReactionUnseenExtension makes it invisible to
      the hive's reaction network (a bite rings no alarm). manhunterOnDamageChance
      0: it does not turn on a colonist who hurts it — it flees like any wild
      animal.
@@ -85,9 +84,6 @@
       <li>AnimalInsect</li>
     </tradeTags>
     <comps>
-      <li Class="RimMandrake.FeverWood.RM_CompProperties_HiveParasite">
-        <hostTag>KurrethHive</hostTag>
-      </li>
       <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_HomeTether">
         <tetherRadius>5</tetherRadius>
       </li>

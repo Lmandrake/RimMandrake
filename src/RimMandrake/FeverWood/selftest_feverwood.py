@@ -127,8 +127,7 @@ class FWGame(MockGame):
         return MockGame.handle(self, tool, p)
 
     def t_jawa_static_call(self, p):
-        """RM_KurrethTheftProof (FEVERWOOD_ANT_THEFT_RAIDBACK_1): ProofRaid stages the column; ProofState reads
-        the outcome the C# would leave -- a healthy theft takes one thornbug alive and sends the letter."""
+        """RM_OilBoilProof: the oil boil gate, the doubled yield and the haze spark."""
         if p.get("type") == "RimMandrake.FeverWood.RM_OilBoilProof":
             m = p.get("method")
             if m == "ProofGate":
@@ -143,25 +142,7 @@ class FWGame(MockGame):
                 lit = 0 if cold else sum(1 for _ in range(23) if flash_chance_on_bare_ground(OILBOIL_CS) > 0)
                 return {"success": True, "result": "flashed=%s firesBefore=0 firesAfter=%d conditionEnded=%s" % (
                     not cold, lit, not cold)}
-        if p.get("type") == "RimMandrake.FeverWood.RM_KurrethColumnProof":
-            if not getattr(self, "theft_raid", False) or not self.sb("kurrethColumnEnabled") or "column_never" in self.brk:
-                return {"success": True, "result": "quest=0"}
-            phase = "Column"
-            if p.get("method") == "ProofHive":
-                phase = "Column" if "column_stuck" in self.brk else "Done"
-            return {"success": True, "result": "quest=1 phase=%s site=1 siteTile=101 held=1 bound=1 victimIds=4242" % phase}
-        if p.get("type") != "RimMandrake.FeverWood.RM_KurrethTheftProof":
-            raise RuntimeError("mock: unknown static_call type %s" % p.get("type"))
-        if p.get("method") == "ProofRaid":
-            self.theft_raid = True
-            return {"success": True, "result": "RAID ants=6 thornbugs=3 edge=(0,0,5) faction=Faction_9"}
-        if not getattr(self, "theft_raid", False) or not self.sb("antTheftEnabled"):
-            return {"success": True, "result": "thefts=0 heldByKurreth=0 thornbugsOnMap=3 thornbugCorpses=0 stolenIds= letters=0"}
-        if "theft_kills" in self.brk:
-            return {"success": True, "result": "thefts=0 heldByKurreth=0 thornbugsOnMap=1 thornbugCorpses=2 stolenIds= letters=0"}
-        letters = 0 if "theft_silent" in self.brk else 1
-        return {"success": True, "result": "thefts=1 heldByKurreth=1 thornbugsOnMap=2 thornbugCorpses=0 "
-                                           "stolenIds=4242 letters=%d" % letters}
+        raise RuntimeError("mock: unknown static_call type %s" % p.get("type"))
 
     def _obj(self, tid):
         return next((o for o in self.objs if o["id"] == tid), None)
@@ -497,7 +478,6 @@ class FWGame(MockGame):
 
     def _sim(self):
         self._sim_hive()
-        self._sim_parasite()
         for o in list(self.objs):
             d = o["def"]
             if d.startswith("RM_Sekkulaath_") and o["first_hit"] is not None and d != "RM_Sekkulaath_Porter":
@@ -553,26 +533,6 @@ class FWGame(MockGame):
                 self.msgs.append({"text": "The kurreth hive has noticed you. The alarm is spreading.", "reads": 0})
 
 
-    def _sim_parasite(self):
-        """RM_CompHiveParasite: a hungry glomvar kills the nearest calm wild kurreth within 12; never a colonist."""
-        if not (self.sb("antHiveParasiteChamberEnabled") or "parasite_ignores_toggle" in self.brk):
-            return
-        for g in [q for q in self.pawns if q["kindDef"] == "RM_Glomvar" and not q.get("dead")]:
-            if g.get("food", 1.0) > 0.4:
-                continue
-            if "parasite_bites_colonist" in self.brk:
-                for c in self.pawns:
-                    if c["faction"] is not None:
-                        c["downed"] = True
-            if "parasite_never" in self.brk:
-                continue
-            prey = [q for q in self.pawns if q["kindDef"] == "RM_Kurreth" and q["faction"] is None and not q.get("dead")
-                    and math.hypot(q["x"] - g["x"], q["z"] - g["z"]) <= 12]
-            if prey:
-                prey[0]["dead"] = True
-                g["food"] = 1.0
-                if "parasite_rings_alarm" in self.brk:
-                    self.msgs.append({"text": "The kurreth hive has noticed you.", "reads": 0})
 
 
 def run(brk=(), log_lines=()):
@@ -663,7 +623,7 @@ def main():
     for group, _, names, floor in V.GROUPS:
         check("floor met: %s (%d >= %d)" % (group, len(names), floor), len(names) >= floor)
     check("settings parsed (%d fields, %d toggles)" % (len(V.SETTING_FIELDS), len(V.BOOL_TOGGLES)),
-          len(V.SETTING_FIELDS) >= 24 and len(V.BOOL_TOGGLES) == 25, V.BOOL_TOGGLES)  # +sillochAmbushEnabled, brathekBoresWood (cast pass 2), +broodRansomEnabled, +tentacleLimbLingerEnabled (FV-1); 2026-10-09: -naturalPlacementEnabled, +foulingWithdrawsLimbs, +kurrethTheftPerColumn, +twoFrontLureTrueFronts, +tentaclePoolsAreClusters, +kurrethLossFinalize, +antHiveRealGeometry
+          len(V.SETTING_FIELDS) >= 24 and len(V.BOOL_TOGGLES) == 19, V.BOOL_TOGGLES)  # 2026-10-23 fluff cuts: -antHiveParasiteChamberEnabled, -antTheftEnabled, -kurrethColumnEnabled, -kurrethTheftPerColumn, -kurrethLossFinalize, -brathekBoresWood; +sillochAmbushEnabled, brathekBoresWood (cast pass 2), +broodRansomEnabled, +tentacleLimbLingerEnabled (FV-1); 2026-10-09: -naturalPlacementEnabled, +foulingWithdrawsLimbs, +kurrethTheftPerColumn, +twoFrontLureTrueFronts, +tentaclePoolsAreClusters, +kurrethLossFinalize, +antHiveRealGeometry
     check("sap-sucker kinds derived", [k for k, _, _, _ in V.SAP_KINDS] == ["RM_Vaulm", "RM_Drommath"], V.SAP_KINDS)
     check("harvest flora derived", len(V.FLORA_PRODUCTS) == 6, V.FLORA_PRODUCTS)  # +RM_Crimmelroot, +RM_LumbrelTree (PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE 2026-10-16)
     check("crown plants derived", len(V.CROWN_PLANTS) >= 5, V.CROWN_PLANTS)
@@ -732,14 +692,6 @@ def main():
         ("hive_no_hop", {"hive_rally.a_seen_intruder_rallies_the_whole_line"}),
         ("hive_silent", {"hive_rally.a_seen_intruder_rallies_the_whole_line"}),
         ("hive_ignores_toggle", {"hive_rally.with_detection_off_the_same_layout_rallies_nobody"}),
-        ("parasite_never", {"hive_parasite.a_hungry_glomvar_eats_a_kurreth_unseen_and_ignores_the_colonist"}),
-        ("parasite_bites_colonist", {"hive_parasite.a_hungry_glomvar_eats_a_kurreth_unseen_and_ignores_the_colonist"}),
-        ("parasite_rings_alarm", {"hive_parasite.a_hungry_glomvar_eats_a_kurreth_unseen_and_ignores_the_colonist"}),
-        ("parasite_ignores_toggle", {"hive_parasite.with_the_parasite_toggle_off_the_kurreth_lives"}),
-        ("theft_kills", {"ant_theft.a_kurreth_column_carries_thornbugs_off_alive"}),
-        ("theft_silent", {"ant_theft.a_kurreth_column_carries_thornbugs_off_alive"}),
-        ("column_never", {"kurreth_column.a_theft_opens_a_column_camp_holding_the_animals"}),
-        ("column_stuck", {"kurreth_column.an_unreached_column_moves_on_and_says_so"}),
         ("gate_stuck", {"oil_boil.gate_follows_the_temperature_setting"}),
         ("yield_flat", {"oil_boil.seepril_yield_doubles_while_boiling"}),
         ("haze_inert", {"oil_boil.a_spark_in_the_haze_flashes_and_burns_it_off"}),
