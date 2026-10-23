@@ -650,5 +650,69 @@ namespace RimMandrake.FlowWorks.Rivers
 			long n = (long)(seconds * fps + 1e-4f) + (phase & 0x7fffffff);
 			return (int)(n % frames);
 		}
+
+		// ── owner by card 2026-10-23 07:19: occasional flotsam; weirs auto-rotate across the current ──
+
+		/// <summary>Where a river comes onto the map: in-current edge cells whose upstream neighbour (one step against their
+		/// flow) lies off the map. Flotsam enters only here.</summary>
+		public static List<int[]> RiverEntryCells(int width, int height, Func<int, int, int> dirAt)
+		{
+			List<int[]> cells = new List<int[]>();
+			for (int x = 0; x < width; x++)
+			{
+				for (int z = 0; z < height; z++)
+				{
+					if (x != 0 && z != 0 && x != width - 1 && z != height - 1)
+					{
+						continue;
+					}
+					int d = dirAt(x, z);
+					if (d < 0 || d > 7)
+					{
+						continue;
+					}
+					int ux = x - StepX[d], uz = z - StepZ[d];
+					if (ux < 0 || uz < 0 || ux >= width || uz >= height)
+					{
+						cells.Add(new[] { x, z });
+					}
+				}
+			}
+			return cells;
+		}
+
+		/// <summary>Chance a flotsam roll spawns one piece, per roll every <paramref name="intervalTicks"/>, for a rate of
+		/// <paramref name="perDay"/> pieces a day (60000 ticks); -1 when flotsam is off (no roll at all).</summary>
+		public static float FlotsamRollChance(bool enabled, float perDay, int intervalTicks)
+		{
+			if (!enabled)
+			{
+				return -1f;
+			}
+			float c = perDay * intervalTicks / 60000f;
+			return c < 0f ? 0f : (c > 1f ? 1f : c);
+		}
+
+		/// <summary>A carried thing that reaches the map edge: river flotsam floats on off the map (no clutter); anything
+		/// else stops there as before (pawns keep their own washOffMapEdge rule).</summary>
+		public static bool FlotsamLeavesAtEdge(bool isPawn, bool isFlotsam)
+		{
+			return !isPawn && isFlotsam;
+		}
+
+		/// <summary>Rotations to try for a weir so its wall crosses the current: the placed one when it already crosses (or
+		/// the flow is diagonal, or there is none); otherwise the two rotations of the other axis, nearest first.</summary>
+		public static List<int> WeirCrossCandidates(int placedRot, int flowDir)
+		{
+			List<int> r = new List<int>(2);
+			if (flowDir < 0 || flowDir > 7 || WeirFoamStep(placedRot, flowDir, out _, out _))
+			{
+				r.Add(placedRot);
+				return r;
+			}
+			r.Add((placedRot + 1) % 4);
+			r.Add((placedRot + 3) % 4);
+			return r;
+		}
 }
 }

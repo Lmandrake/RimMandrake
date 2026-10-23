@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -383,6 +384,7 @@ namespace RimMandrake.FlowWorks.Rivers
 				t.DeSpawn();
 				if (GenPlace.TryPlaceThing(t, head.BankCell, map, ThingPlaceMode.Near, null, dry))
 				{
+					comp?.ForgetFlotsam(t); // caught: the weir's catch now, never washed off the map edge
 					held += n;
 					lifted++;
 				}
@@ -989,6 +991,75 @@ namespace RimMandrake.FlowWorks.Rivers
 			mats[path] = m;
 			return m;
 		}
+	}
+
+	/// <summary>Owner by card 2026-10-23 07:19 ("Weir placed along the current? -> Auto-rotate to cross the current"): while a
+	/// weir is being placed, its rotation snaps to one whose wall crosses the current at the cell (RM_RiverMath.
+	/// WeirCrossCandidates), preferring one that can actually be placed there; the ghost shows the snapped rotation and the
+	/// blueprint takes it. A diagonal current or none leaves the player's rotation alone.</summary>
+	public static class RM_WeirAutoRotate
+	{
+		private static readonly AccessTools.FieldRef<Designator_Place, Rot4> placingRot =
+			AccessTools.FieldRefAccess<Designator_Place, Rot4>("placingRot");
+
+		public static void Snap(Designator_Place d, IntVec3 c)
+		{
+			ThingDef weir = RM_RiverWorksDefOf.RM_BankWeir;
+			Map map = Find.CurrentMap;
+			if (d == null || weir == null || d.PlacingDef != weir || map == null || !c.InBounds(map))
+			{
+				return;
+			}
+			RM_MapComponent_RiverCurrent comp = map.GetComponent<RM_MapComponent_RiverCurrent>();
+			if (comp == null)
+			{
+				return;
+			}
+			Rot4 cur = placingRot(d);
+			int flow = -1;
+			foreach (IntVec3 o in GenAdj.OccupiedRect(c, cur, weir.Size))
+			{
+				if (o.InBounds(map) && (flow = comp.FlowDirAt(o)) >= 0)
+				{
+					break;
+				}
+			}
+			List<int> cands = RM_RiverMath.WeirCrossCandidates(cur.AsInt, flow);
+			if (cands[0] == cur.AsInt)
+			{
+				return;
+			}
+			for (int i = 0; i < cands.Count; i++)
+			{
+				if (GenConstruct.CanPlaceBlueprintAt(weir, c, new Rot4(cands[i]), map).Accepted)
+				{
+					placingRot(d) = new Rot4(cands[i]);
+					return;
+				}
+			}
+			placingRot(d) = new Rot4(cands[0]); // neither fits here: still show it crossing (red), never along the current
+		}
+	}
+
+	[RimMandrake.Shared.PatchFeature("Weirs auto-rotate across the current")]
+	[HarmonyPatch(typeof(Designator_Place), nameof(Designator_Place.SelectedUpdate))]
+	internal static class RM_Patch_WeirGhostRotation
+	{
+		private static void Prefix(Designator_Place __instance) => RM_WeirAutoRotate.Snap(__instance, UI.MouseCell());
+	}
+
+	[RimMandrake.Shared.PatchFeature("Weirs auto-rotate across the current")]
+	[HarmonyPatch(typeof(Designator_Build), nameof(Designator_Build.CanDesignateCell))]
+	internal static class RM_Patch_WeirCanDesignateRotation
+	{
+		private static void Prefix(Designator_Build __instance, IntVec3 c) => RM_WeirAutoRotate.Snap(__instance, c);
+	}
+
+	[RimMandrake.Shared.PatchFeature("Weirs auto-rotate across the current")]
+	[HarmonyPatch(typeof(Designator_Build), nameof(Designator_Build.DesignateSingleCell))]
+	internal static class RM_Patch_WeirPlaceRotation
+	{
+		private static void Prefix(Designator_Build __instance, IntVec3 c) => RM_WeirAutoRotate.Snap(__instance, c);
 	}
 
 	[DefOf]

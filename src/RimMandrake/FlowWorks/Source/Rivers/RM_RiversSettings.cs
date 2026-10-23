@@ -30,6 +30,10 @@ namespace RimMandrake.FlowWorks.Rivers
 		public static bool carryAnimals = true;
 		public static bool carryStrangers = true;
 		public static bool carryItems = true;
+		// Owner by card 2026-10-23 07:19 ("Flotsam? -> Yes, occasional flotsam"): the river brings its biome's drift onto the
+		// map at the upstream edge as real floating things; what reaches the downstream edge floats on off the map.
+		public static bool flotsamEnabled = true;
+		public static float flotsamPerDay = 1f;               // PROVISIONAL, "default modest"
 		// Owner card 1: swept to the map edge = washed away, walks home later, with a letter.
 		public static bool washOffMapEdge = true;
 		public static float washedAwayMinDays = 1f;   // PROVISIONAL
@@ -79,7 +83,7 @@ namespace RimMandrake.FlowWorks.Rivers
 		// FLOWWORKS_RESET_BUILD_TWELVE_SCREENS_MISSING: shipped values (MUST stay below the LAST public setting field) and the two
 		// section lists the window's Reset buttons use (THE CURRENT with the master switch; WORKS with fords).
 		private static readonly System.Collections.Generic.Dictionary<string, object> shippedDefaults = RM_SettingsReset.Snapshot(typeof(RM_RiversSettings));
-		public static readonly string[] CurrentFields = { "riverWorksEnabled", "surfaceCurrentEnabled", "currentStrength", "centreTicksPerCell", "marginTicksPerCell", "itemDriftFactor", "scaleWithRiverSize", "floodSurgeEnabled", "countSeasonalFloods", "countTorrentialRainFloods", "carryAnimals", "carryStrangers", "carryItems", "washOffMapEdge", "washedAwayMinDays", "washedAwayMaxDays", "takenByLandTraceEnabled", "pathfinderAvoidsCurrents", "crossingHazardsEnabled", "bruiseChancePerStep", "dropChancePerStep" };
+		public static readonly string[] CurrentFields = { "riverWorksEnabled", "surfaceCurrentEnabled", "currentStrength", "centreTicksPerCell", "marginTicksPerCell", "itemDriftFactor", "scaleWithRiverSize", "floodSurgeEnabled", "countSeasonalFloods", "countTorrentialRainFloods", "carryAnimals", "carryStrangers", "carryItems", "flotsamEnabled", "flotsamPerDay", "washOffMapEdge", "washedAwayMinDays", "washedAwayMaxDays", "takenByLandTraceEnabled", "pathfinderAvoidsCurrents", "crossingHazardsEnabled", "bruiseChancePerStep", "dropChancePerStep" };
 		public static readonly string[] WorksFields = { "fordsEnabled", "bankWorksEnabled", "wearRateMultiplier", "breachEnabled", "breachHpFraction", "stakeSnapTicksPerCell", "stakeLineLevee", "weirPoolLength", "weirCapturesFloating", "weirHeldCatchCap", "weirWhiteWater", "breachWashesCatch", "breachWashCells", "siltRichening", "siltIntervalDays", "ferryEnabled", "ferryMaxSpan", "ferryRopeGuidesColonists" };
 
 		public static void ResetFields(string[] names) => RM_SettingsReset.Reset(typeof(RM_RiversSettings), shippedDefaults, names);
@@ -99,6 +103,8 @@ namespace RimMandrake.FlowWorks.Rivers
 			Scribe_Values.Look(ref carryAnimals, "carryAnimals", true);
 			Scribe_Values.Look(ref carryStrangers, "carryStrangers", true);
 			Scribe_Values.Look(ref carryItems, "carryItems", true);
+			Scribe_Values.Look(ref flotsamEnabled, "flotsamEnabled", true);
+			Scribe_Values.Look(ref flotsamPerDay, "flotsamPerDay", 1f);
 			Scribe_Values.Look(ref washOffMapEdge, "washOffMapEdge", true);
 			Scribe_Values.Look(ref washedAwayMinDays, "washedAwayMinDays", 1f);
 			Scribe_Values.Look(ref washedAwayMaxDays, "washedAwayMaxDays", 3f);
@@ -173,6 +179,15 @@ namespace RimMandrake.FlowWorks.Rivers
 				"On, a strong current can carry visitors and raiders downstream. Off: they are never swept away.");
 			l.CheckboxLabeled("Carry loose items and corpses", ref RM_RiversSettings.carryItems,
 				"On, loose items and corpses lying in strong water drift downstream. Off: they stay where they lie.");
+			l.CheckboxLabeled("Rivers bring flotsam", ref RM_RiversSettings.flotsamEnabled,
+				"Now and then the river carries something of this country onto the map at its upstream edge - fruit, forage, "
+			  + "hides - which drifts down with the current. A weir catches it; what reaches the downstream edge floats on off "
+			  + "the map. It drifts only while items are carried (above).");
+			if (RM_RiversSettings.flotsamEnabled)
+			{
+				l.Label("  About " + RM_RiversSettings.flotsamPerDay.ToString("0.0") + " pieces a day per map");
+				RM_RiversSettings.flotsamPerDay = l.Slider(RM_RiversSettings.flotsamPerDay, 0.1f, 10f);
+			}
 			l.CheckboxLabeled("Washed off the map at the edge", ref RM_RiversSettings.washOffMapEdge,
 				"A pawn carried to the edge of the map is washed away. Your own people walk home a few days "
 			  + "later; a letter says so when it happens. Off: the current stops at the map edge.");

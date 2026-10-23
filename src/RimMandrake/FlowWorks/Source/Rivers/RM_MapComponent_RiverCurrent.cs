@@ -55,6 +55,14 @@ namespace RimMandrake.FlowWorks.Rivers
 
 		private bool worksDirty = true;
 
+		// Owner by card 2026-10-23 07:19: river flotsam - spawned at the upstream edge, saved by reference, and remembered only
+		// while it floats (a piece that strands, is hauled or is caught by a weir is ordinary loot from then on).
+		private const int FlotsamIntervalTicks = 2500;
+
+		private List<Thing> flotsam = new List<Thing>();
+
+		private List<IntVec3> entryCells;
+
 		public RM_MapComponent_RiverCurrent(Map map) : base(map)
 		{
 		}
@@ -245,6 +253,15 @@ namespace RimMandrake.FlowWorks.Rivers
 		{
 			base.ExposeData();
 			Scribe_Values.Look(ref warnedThisMap, "rmRiverWarned", false);
+			Scribe_Collections.Look(ref flotsam, "rmRiverFlotsam", LookMode.Reference);
+			if (Scribe.mode == LoadSaveMode.PostLoadInit)
+			{
+				if (flotsam == null)
+				{
+					flotsam = new List<Thing>();
+				}
+				flotsam.RemoveAll(t => t == null);
+			}
 		}
 
 		// ── the grid ──────────────────────────────────────────────────────────
@@ -374,6 +391,64 @@ namespace RimMandrake.FlowWorks.Rivers
 				processCooldown = ProcessIntervalTicks;
 				Process();
 			}
+			if (Find.TickManager.TicksGame % FlotsamIntervalTicks == 0)
+			{
+				TrySpawnFlotsam(false);
+			}
+		}
+
+		// ── flotsam (owner by card 2026-10-23 07:19) ──────────────────────────
+
+		public bool IsFlotsam(Thing t) => t != null && flotsam.Contains(t);
+
+		/// <summary>The piece is no longer floating flotsam (a weir caught it).</summary>
+		public void ForgetFlotsam(Thing t) => flotsam.Remove(t);
+
+		public int FlotsamCount => flotsam.Count;
+
+		public List<IntVec3> EntryCells()
+		{
+			if (entryCells == null)
+			{
+				entryCells = new List<IntVec3>();
+				foreach (int[] k in RM_RiverMath.RiverEntryCells(map.Size.x, map.Size.z, (x, z) => FlowDirAt(new IntVec3(x, 0, z))))
+				{
+					entryCells.Add(new IntVec3(k[0], 0, k[1]));
+				}
+			}
+			return entryCells;
+		}
+
+		/// <summary>One flotsam roll: prune what no longer floats, then (on the roll, or always when forced by the first
+		/// script) spawn one stack from this biome's drift list on a free entry cell. Returns what happened.</summary>
+		public string TrySpawnFlotsam(bool force)
+		{
+			flotsam.RemoveAll(t => t == null || t.Destroyed || !t.Spawned || t.Map != map || !HasCurrent(t.Position));
+			float chance = RM_RiverMath.FlotsamRollChance(RM_RiversSettings.flotsamEnabled, RM_RiversSettings.flotsamPerDay, FlotsamIntervalTicks);
+			if (chance < 0f && !force)
+			{
+				return "off";
+			}
+			if (!force && !Rand.Chance(chance))
+			{
+				return "missed";
+			}
+			RM_RiverDriftEntry e = RM_RiverDriftDef.RollFor(map.Biome);
+			if (e == null || e.thing == null)
+			{
+				return "nonefor:" + map.Biome?.defName;
+			}
+			List<IntVec3> free = EntryCells().FindAll(c => c.InBounds(map) && c.Standable(map) && c.GetFirstItem(map) == null);
+			if (free.Count == 0)
+			{
+				return "noentry:" + EntryCells().Count;
+			}
+			IntVec3 at = free.RandomElement();
+			Thing t = ThingMaker.MakeThing(e.thing, GenStuff.DefaultStuffFor(e.thing));
+			t.stackCount = Mathf.Clamp(e.count.RandomInRange, 1, e.thing.stackLimit);
+			GenSpawn.Spawn(t, at, map);
+			flotsam.Add(t);
+			return "spawned=" + e.thing.defName + "x" + t.stackCount + " at=" + at;
 		}
 
 		private void Scan()
@@ -457,6 +532,12 @@ namespace RimMandrake.FlowWorks.Rivers
 			if (!next.InBounds(map))
 			{
 				nextMoveTick.Remove(t);
+				if (RM_RiverMath.FlotsamLeavesAtEdge(t is Pawn, IsFlotsam(t)))
+				{
+					flotsam.Remove(t);
+					t.Destroy(); // river flotsam floats on off the map: no clutter at the downstream edge
+					return;
+				}
 				if (t is Pawn ep && RM_RiversSettings.washOffMapEdge)
 				{
 					RM_WorldComponent_SweptAway.WashAway(ep);

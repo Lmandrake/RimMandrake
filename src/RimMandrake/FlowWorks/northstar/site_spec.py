@@ -126,7 +126,7 @@ SETTINGS = {
         "riverWorksEnabled": True, "surfaceCurrentEnabled": True, "currentStrength": 1.0, "centreTicksPerCell": 45.0,
         "marginTicksPerCell": 90.0, "itemDriftFactor": 2.0, "scaleWithRiverSize": True, "floodSurgeEnabled": True,
         "countSeasonalFloods": True, "countTorrentialRainFloods": True, "carryAnimals": True, "carryStrangers": True,
-        "carryItems": True, "washOffMapEdge": True, "washedAwayMinDays": 1.0, "washedAwayMaxDays": 3.0, "takenByLandTraceEnabled": True,
+        "carryItems": True, "flotsamEnabled": True, "flotsamPerDay": 1.0, "washOffMapEdge": True, "washedAwayMinDays": 1.0, "washedAwayMaxDays": 3.0, "takenByLandTraceEnabled": True,
         "pathfinderAvoidsCurrents": True, "crossingHazardsEnabled": True, "bruiseChancePerStep": 0.15,
         "dropChancePerStep": 0.25, "fordsEnabled": True, "bankWorksEnabled": True, "wearRateMultiplier": 1.0,
         "breachEnabled": True, "breachHpFraction": 0.5, "stakeSnapTicksPerCell": 150.0, "stakeLineLevee": True,
