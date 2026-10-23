@@ -730,6 +730,19 @@ namespace RimMandrake.FlowWorks.SelfTest
             }
             C(!TankPortGeometry.PortPoint("Scrapper", 20, 20, 2, 2, 0, 1, out _) && !TankPortGeometry.PortPoint("Scrapper", 20, 20, 2, 3, 1, 0, out _),
                 "ports: north/south sides and other footprints keep the shared edge's midpoint");
+            // OFF_BODY_PORTS: a moved lane slides along its edge inside the same end cell; an unlisted lane keeps the midpoint
+            C(TankPortGeometry.HosePort("RM_UniversalCargoTank", "Scrapper", 20, 20, 2, 2, 19, 21, 1, 0, out V2 cw) && Math.Abs(cw.X - 20) < 1e-9 && Math.Abs(cw.Z - 21.25) < 1e-9
+              && TankPortGeometry.HosePort("RM_UniversalCargoTank", "Modern", 20, 20, 2, 2, 22, 21, -1, 0, out V2 ce) && Math.Abs(ce.X - 22) < 1e-9 && Math.Abs(ce.Z - 21.25) < 1e-9,
+                "ports: the cargo tank's upper west/east lane couples at z 1.25 (onto the drawn body), same in every look");
+            C(TankPortGeometry.HosePort("RM_LiquidTankTall", "Modern", 20, 20, 2, 2, 20, 19, 0, 1, out V2 ts) && Math.Abs(ts.X - 20.75) < 1e-9 && Math.Abs(ts.Z - 20) < 1e-9
+              && TankPortGeometry.HosePort("RM_LiquidTankTall", "Modern", 20, 20, 2, 2, 19, 20, 1, 0, out V2 tw) && Math.Abs(tw.X - 20) < 1e-9 && Math.Abs(tw.Z - 20.75) < 1e-9,
+                "ports: the tall tank's south lane 0 and west lane 0 slide apart, off the open corner");
+            C(!TankPortGeometry.HosePort("RM_UniversalCargoTank", "Scrapper", 20, 20, 2, 2, 19, 20, 1, 0, out _)
+              && !TankPortGeometry.HosePort("RM_LiquidTankTall", "Modern", 20, 20, 2, 2, 20, 22, 0, -1, out _),
+                "ports: an unlisted lane keeps the shared edge's midpoint");
+            C(TankPortGeometry.HosePort(TankPortGeometry.TankDef, "Scrapper", 20, 20, 2, 2, 19, 20, 1, 0, out V2 lt)
+              && TankPortGeometry.PortPoint("Scrapper", 20, 20, 2, 2, 1, 0, out V2 lt2) && Math.Abs(lt.Z - lt2.Z) < 1e-9,
+                "ports: RM_LiquidTank keeps its measured flange through HosePort");
 
             // the drawn hose ends on the port, arriving along its axis (no loop, no sideways meet), the rest untouched
             TankPortGeometry.PortPoint("Scrapper", 20, 20, 2, 2, 1, 0, out V2 port);

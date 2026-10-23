@@ -1,0 +1,26 @@
+{
+ "class": "design-ruling",
+ "items": ["UNDER_COUPLER_DECIDE_CORNER_CROWDING", "CARGO_UPPER_PORT_DECIDE_NOTHING_UNDER"],
+ "decided_by": "BENCH helper (delegated design-ruling), 2026-10-23",
+ "owner_ruling_applied": "2026-10-23: \"Make your couplers as needed, but have their art go UNDER the tank or pump or other fixture ... So have them seem to go beneath, and all is well.\"",
+ "verdict": "PORTS LIE WHERE THE ART'S BODY IS. A hose port whose inward axis does not run into the drawn body, or whose under-coupler meets a neighbour's on open ground, slides ALONG its footprint edge, inside the same end cell (hose laying, pathing and lane indices unchanged), until it does. One geometry per def, valid for every look.",
+ "rejected": [
+  "runtime: draw only one of two meeting pipes (hides a symptom; second hose gets a collar on open ground)",
+  "restrict those lane ports (removes player capability for an art reason)",
+  "base plate under the art (repaints owner-KEPT pictures)",
+  "keep port_fittings.py bypass art (painted fittings are retired by the 2026-10-23 ruling)"
+ ],
+ "moves": {
+  "RM_UniversalCargoTank west/east lane 1 (all looks)": "z 1.5 -> 1.25 (reach 0.22-0.32, was -1 = no body in Scrapper/Industrial/Futuristic)",
+  "RM_LiquidTankTall + RM_UniversalCargoTankXTall south lane 0": "x 0.5 -> 0.75",
+  "RM_LiquidTankTall + RM_UniversalCargoTankXTall south lane 1": "x 1.5 -> 1.25",
+  "RM_LiquidTankTall + RM_UniversalCargoTankXTall west lane 0 and east lane 0": "z 0.5 -> 0.75"
+ },
+ "why_def_wide": "the minimal per-look moves (Modern tall 0.047, XTall 0.016) clear the crossing by grid-points only; 0.25 cells gives a clear gap, all 8 tall/XTall looks and all 4 cargo looks pass coverage, beneath and no-crossing, and a restyle never re-bends a coupled hose.",
+ "where": "src/RimMandrake/FlowWorks/Source/Hose/HoseMath.cs TankPortGeometry.MovedAlong / HosePort; RM_MapComponent_Hoses.PortEnd",
+ "evidence": {
+  "gate": "selftest_hose_fittings.py: 8 known red (6 cargo upper sides, 2 Modern corner crossings) -> 0 red, 0 known; new can-fails prove the unmoved geometry still reads red",
+  "renders": "Transient/off_body_ports_20261023/ (lane 0 and _lane1 composites, render_under_couplers.py)"
+ },
+ "residual": "a hose meeting a moved port from the SIDE (HoseMath.SideArrival) is not re-aimed: its elbow coupling and under-coupler stay at the edge midpoint, as for RM_LiquidTank's flange today; live look owed"
+}

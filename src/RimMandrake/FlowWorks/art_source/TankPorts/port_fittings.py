@@ -8,6 +8,8 @@ TANK_SOUTH_PORT_REDRAW_STUB_PEEKS_OUT (south lanes, tall/IBC/XTall, all looks), 
 
 The port points are the gate's (and the C#'s): a tank couples a hose at the midpoint of the footprint edge its end cell
 shares, i.e. the edge at the end cell's centre; a pumping station only at Position + FacingCell (south, centre column).
+That was true when this ran; OFF_BODY_PORTS (2026-10-23) has since moved some tank lanes along their edge onto the body
+(TankPortGeometry.MovedAlong in Source/Hose/HoseMath.cs), and this retired script was not updated for it.
 Each fitting runs from the drawn body out to that edge -- a nut on the body, a nipple, and a coupler whose face is the
 footprint edge -- in the look's own materials (Modern as modern_port_fittings.py: PP nut, PVC nipple, aluminium camlock).
 Nothing else in the picture changes.

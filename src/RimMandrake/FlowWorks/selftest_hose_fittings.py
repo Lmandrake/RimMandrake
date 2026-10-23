@@ -8,7 +8,8 @@ wall (MODERN_TANK_PORT_REDRAW_COUPLER_FLOATS, live art look 2026-10-22). This ga
   for every hose-coupling building (Building_LiquidTank / Building_LiquidPump defs) x look (ThingStyleDef <def>_<Look>)
   x side x lane, take the port point the C# couples a hose end to --
     * a tank: the midpoint of the footprint edge the end cell shares with it (HoseJointProbe: cell centre + half a step),
-      except RM_LiquidTank west/east, which couples at TankPortGeometry.PortPoint (HoseMath.cs PortDz table);
+      except RM_LiquidTank west/east, which couples at TankPortGeometry.PortPoint (HoseMath.cs PortDz table), and the lanes
+      in TankPortGeometry.MovedAlong (OFF_BODY_PORTS), which slide along their edge onto the drawn body;
     * a pump: only a side whose Position + FacingCell lies outside the footprint (RM_PumpPortMath.SideOf), at that
       cell's shared edge midpoint --
   map it into the texture (Graphic_Single, not rotatable: drawSize quad centred on the footprint centre + drawOffset)
@@ -60,15 +61,8 @@ PRE_FIX_REV = "fb34c9bc2d"   # Modern tank art before the 2026-10-22 west/east l
 # Drained 2026-10-23 by the under-couplers (TANK_LANE_FITTINGS_REDRAW_MODERN_ONLY, TANK_SOUTH_PORT_REDRAW_STUB_PEEKS_OUT,
 # TANK_NS_PORTS_REDRAW_COUPLE_THIN_AIR): every non-pipe port now has a coupler drawn beneath the fixture.
 KNOWN = {}
-# UnderCouplerReach finds no opaque body across the pipe's width on the upper W/E lane (z 1.5) of the cargo tank in three looks:
-# the port sits above the drawn body's side silhouette, so no under-coupler is drawn there (the hose's old stub path).
-for _l in ("Scrapper", "Industrial", "Futuristic"):
-    KNOWN[("RM_UniversalCargoTank", _l, "west")] = KNOWN[("RM_UniversalCargoTank", _l, "east")] = "CARGO_UPPER_PORT_DECIDE_NOTHING_UNDER"
-# A body narrower than its footprint with open bottom corners (Modern tall / XTall, no base plate): the south lane-0 and west
-# lane-0 pipes must both cross the same open corner to reach the body, so with both hoses coupled they meet outside the art
-# even clipped to the body (judge FIX 2026-10-23). Keyed (def, look, "crossing").
-for _d in ("RM_LiquidTankTall", "RM_UniversalCargoTankXTall"):
-    KNOWN[(_d, "Modern", "crossing")] = "UNDER_COUPLER_DECIDE_CORNER_CROWDING"
+# OFF_BODY_PORTS (delegated design ruling 2026-10-23) moved the ports that had no body on their axis (cargo tank upper W/E)
+# or met a neighbour on open ground (tall/XTall corner lanes): TankPortGeometry.MovedAlong. Nothing is known red.
 
 fails = []
 unmeasured = []
@@ -167,6 +161,12 @@ def port_dz_table():
     return [float(x) for x in m.group(1).split(",")] if m else None
 
 
+def moved_along():
+    """TankPortGeometry.MovedAlong parsed from HoseMath.cs: "def|side|lane" -> the port's offset along its edge (cell)."""
+    m = re.search(r"MovedAlong = new Dictionary<string, double>\s*\{(.*?)\};", open(HOSE_MATH).read(), re.S)
+    return {k: float(v) for k, v in re.findall(r'\{ "([^"]+)", ([0-9.]+) \}', m.group(1))} if m else {}
+
+
 def hose_half_width():
     """The fitting must span the hose's half-width: +-a quarter of HoseMath.FlatVisible about the port (returned: that quarter)."""
     src = open(HOSE_MATH).read()
@@ -174,8 +174,10 @@ def hose_half_width():
     return float(m.group(1)) / 4.0 if m else None
 
 
-def ports(b, look, dz_table):
-    """[(side, lane, (x, z))] in footprint coordinates (footprint minimum at 0,0), deduplicated per point."""
+def ports(b, look, dz_table, moves=None):
+    """[(side, lane, (x, z))] in footprint coordinates (footprint minimum at 0,0), deduplicated per point. moves: the
+    MovedAlong table to apply (None = the C#'s, {} = every lane at its edge midpoint, as before OFF_BODY_PORTS)."""
+    moves = moved_along() if moves is None else moves
     w, h = b["size"]
     out, seen = [], set()
     if b["kind"] == "pump":
@@ -194,6 +196,9 @@ def ports(b, look, dz_table):
             else:
                 ex, ez = (w if dx > 0 else -1), lane
             pt = (ex + 0.5 - dx * 0.5, ez + 0.5 - dz * 0.5)
+            mv = moves.get("%s|%d|%d" % (b["def"], {"south": 0, "north": 1, "west": 2, "east": 3}[side], lane))
+            if mv is not None:   # TankPortGeometry.HosePort: the lane slides along its edge onto the drawn body (OFF_BODY_PORTS)
+                pt = (mv, pt[1]) if dz else (pt[0], mv)
             if b["def"] == "RM_LiquidTank" and dx and dz_table and w == 2 and h == 2:
                 i = LOOKS.index(look) if look in LOOKS else 0   # TankPortGeometry.PortPoint: unknown look -> index 0
                 pt = (0.0 if dx < 0 else float(w), h / 2.0 + dz_table[i])
@@ -333,7 +338,7 @@ def beneath_margin(fix, step, pt, side, half_w, reach):
     return worst
 
 
-def measure(b, look, g, dz_table, half_w, rev=None, geo=None, reach_override=None, table=None):
+def measure(b, look, g, dz_table, half_w, rev=None, geo=None, reach_override=None, table=None, moves=None, clip=False):
     """[(side, lane, pt, raw gap, composed gap, beneath margin, reach, coupler-opaque fn)] -- composed/margin None without
     geo; reach -1 (no under-coupler: the table found no body on the axis) gives composed = raw, margin None."""
     if g["graphicClass"] not in (None, "Graphic_Single"):
@@ -343,7 +348,7 @@ def measure(b, look, g, dz_table, half_w, rev=None, geo=None, reach_override=Non
         return None, src, None
     fix, step = fixture_opaque(alpha, g, b["size"])
     out = []
-    for side, lane, pt in ports(b, look, dz_table):
+    for side, lane, pt in ports(b, look, dz_table, moves):
         raw = gap_fn(fix, step, pt, side, half_w)
         comp = margin = reach = cop = None
         if geo is not None:
@@ -353,6 +358,10 @@ def measure(b, look, g, dz_table, half_w, rev=None, geo=None, reach_override=Non
             reach = reach_override
             if reach is None and table is not None:
                 reach = table_reach(table, b, look, side, pt)
+            if reach is None and clip:   # the clipped reach measured afresh (under_coupler_reach.reach), not the C# table
+                sys.path.insert(0, os.path.join(HERE, "art_source", "UnderCouplers"))
+                import under_coupler_reach as ucr
+                reach = ucr.reach(fix, step, pt, side, b["size"], geo)
             if reach is None:
                 reach = reach_of(pt, side, b["size"], geo)
             if reach < 0:
@@ -443,12 +452,25 @@ def can_fail_crossing(defs, dz_table, half_w, geo):
     if tall is None or "Modern" not in tall["looks"]:
         unmeasured.append("can-fail crossing: no RM_LiquidTankTall Modern look")
         return
-    res, src, fix = measure(tall, "Modern", tall["looks"]["Modern"], dz_table, half_w, geo=geo, table={})
+    res, src, fix = measure(tall, "Modern", tall["looks"]["Modern"], dz_table, half_w, geo=geo, table={}, moves={})
     if res is None:
         unmeasured.append("can-fail crossing: " + src)
         return
     cross = crossings(fix, tall["size"], [("%s%d" % (r[0], r[1]), r[7]) for r in res if r[7] is not None])
     check(len(cross) > 0, "can-fail: with the pipes run to the centre line, the Modern tall tank's couplers meet on open ground (%d points)" % len(cross))
+    # OFF_BODY_PORTS can fail: at the old edge midpoints (no MovedAlong), even clipped to the body, the corner pipes still meet
+    res, src, fix = measure(tall, "Modern", tall["looks"]["Modern"], dz_table, half_w, geo=geo, table={}, moves={}, clip=True)
+    cross = crossings(fix, tall["size"], [("%s%d" % (r[0], r[1]), r[7]) for r in res if r[7] is not None])
+    check(len(cross) > 0, "can-fail: at the unmoved edge midpoints, clipped to the body, the Modern tall tank's corner couplers still meet on open ground (%d points)" % len(cross))
+    uct = next((b for b in defs if b["def"] == "RM_UniversalCargoTank"), None)
+    if uct is None or "Scrapper" not in uct["looks"]:
+        unmeasured.append("can-fail upper port: no RM_UniversalCargoTank Scrapper look")
+        return
+    res, src, fix = measure(uct, "Scrapper", uct["looks"]["Scrapper"], dz_table, half_w, geo=geo, table={}, moves={}, clip=True)
+    up = [r for r in res if r[0] in ("west", "east") and r[1] == 1]
+    check(up and all(r[6] is not None and r[6] < 0 for r in up),
+          "can-fail: at the unmoved z 1.5, the Scrapper cargo tank's upper west/east ports have no body on their axis (reach %s)"
+          % ", ".join("%.2f" % r[6] for r in up))
 
 
 def main():
