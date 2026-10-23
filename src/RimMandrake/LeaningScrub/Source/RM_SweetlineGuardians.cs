@@ -557,6 +557,44 @@ namespace RimMandrake.LeaningScrub
                 guardians.RemoveAll(p => p == null);
             }
         }
+
+        /// <summary>SCRUB_WARDEN_FIX_TAMED_BOSS_STILL_REIGNS (jawa/static_call, the tree's cell):
+        ///   "tame@x,z"  tame the first roosting warden WITHOUT a prune (as a tame lands between two Long ticks); the lead
+        ///               must pass to the next wild warden at once (pre-fix the tamed one stayed lead and nobody watched);
+        ///   "read@x,z"  "disturbance=D live=N";
+        ///   "calm@x,z"  zero the meter and destroy the player-faction bark-wardens within 8 cells (the tamed fixture).</summary>
+        public static string ProofWarden(string arg)
+        {
+            string mode = RM_FireStampProof.ParseMode(arg, out IntVec3 at);
+            Map map = Find.CurrentMap;
+            if (map == null || !at.IsValid || !at.InBounds(map)) return "UNMEASURED: no map or no tree cell (mode@x,z)";
+            RM_CompGuardianRoost roost = at.GetPlant(map)?.TryGetComp<RM_CompGuardianRoost>();
+            if (roost == null) return "UNMEASURED: no sweetline roost at " + at;
+            if (mode == "read")
+                return string.Format(System.Globalization.CultureInfo.InvariantCulture, "disturbance={0:0.000} live={1}", roost.disturbance, roost.guardians.Count);
+            if (mode == "calm")
+            {
+                roost.disturbance = 0f;
+                roost.stage = 0;
+                int removed = 0;
+                foreach (Pawn p in new List<Pawn>(map.mapPawns.AllPawnsSpawned))
+                {
+                    if (p.Faction == Faction.OfPlayer && p.def.defName == "RM_Barkwarden" && p.Position.InHorDistOf(at, 8f)) { p.Destroy(); removed++; }
+                }
+                return "CALM removed=" + removed;
+            }
+            if (mode != "tame") return "UNMEASURED: unknown mode " + mode;
+            if (roost.LiveCount() < 2) return "UNMEASURED: the roost holds " + roost.guardians.Count + " warden(s); the hand-over needs 2";
+            Pawn first = roost.guardians[0], second = roost.guardians[1];
+            bool leadBefore = roost.IsLead(first);
+            first.SetFaction(Faction.OfPlayer);
+            string st = string.Format("leadBefore={0} tamedIsLead={1} nextIsLead={2} listed={3}", leadBefore, roost.IsLead(first),
+                roost.IsLead(second), roost.guardians.Contains(first));
+            if (!leadBefore) return "UNMEASURED: the first listed warden was not the lead before taming " + st;
+            if (roost.IsLead(first)) return "FAIL: the tamed warden is still the lead (nobody watches the trunk until the prune) " + st;
+            if (!roost.IsLead(second)) return "FAIL: no wild warden took the lead " + st;
+            return "PASS " + st;
+        }
     }
 
     // ── the disturbance bar on the tree ─────────────────────────────────

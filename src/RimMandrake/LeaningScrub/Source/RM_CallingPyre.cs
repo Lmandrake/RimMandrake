@@ -71,6 +71,16 @@ namespace RimMandrake.LeaningScrub
             return RM_PyreKernel.Gate(RM_WindCalendar.On(RM_LeaningScrubSettings.callingPyreEnabled), Belief(ideo), hostiles);
         }
 
+        /// <summary>The outcome letter's "too little caught" clause (SCRUB_PYRE_FIX_FIVE_FIRES_FIVE_ISLANDS): it asks the
+        /// stampers' own question, is there a blaze (MinOpenFires within ClusterRadius) anywhere on the map, never how many
+        /// fires were set. Empty when there is one. Shared by the outcome worker and ProofPyre "thin".</summary>
+        public static string ThinLine(Map map)
+        {
+            RM_MapComponent_FireStamp stamp = map?.GetComponent<RM_MapComponent_FireStamp>();
+            bool blaze = stamp != null && stamp.FindBlaze().IsValid;
+            return blaze ? "" : " Too little caught to draw the giants already on the map.";
+        }
+
         public static PawnKindDef StamperKind()
         {
             var found = new List<PawnKindDef>();
@@ -202,14 +212,13 @@ namespace RimMandrake.LeaningScrub
             int raging = RM_PyreKernel.RagingCount(tier, herd);
             List<Pawn> came = RM_CallingPyre.CallHerd(map, kind, herd, raging);
             RM_MapComponent_FireStamp stamp = map.GetComponent<RM_MapComponent_FireStamp>();
-            // "Too little caught" asks the stampers' own question: is there a blaze (MinOpenFires within ClusterRadius)?
-            bool blaze = stamp != null && stamp.FindBlaze().IsValid;
+            // "Too little caught" asks the stampers' own question (ThinLine), read before the stampers move.
+            string thin = RM_CallingPyre.ThinLine(map);
             stamp?.ConvergePass(sendMessage: false);
             if (organizer != null)
             {
                 Find.HistoryEventsManager.RecordEvent(new HistoryEvent(RM_CallingPyreDefOf.RM_CalledTheHerds, organizer.Named(HistoryEventArgsNames.Doer)));
             }
-            string thin = !blaze ? " Too little caught to draw the giants already on the map." : "";
             if (came.Count > 0)
             {
                 letterLookTargets = new LookTargets(came[0]);
@@ -258,6 +267,7 @@ namespace RimMandrake.LeaningScrub
                     return r == RM_PyreKernel.ReasonOff ? "PASS off: gate refuses" : "FAIL: callingPyreEnabled off but the gate said " + (r ?? "ok");
                 }
                 RM_LeaningScrubSettings.callingPyreEnabled = true;
+                if (mode == "thin") return ProofThin(map, hint);
                 // The fixture is a FLAMMABLE field: the rite torches the colony's fields, and the Leaning Scrub's own
                 // living flora is fireproof by design (arid_shrubland.md ban 9; RM_Fuzz Flammability 0), so a fuzz patch
                 // can never catch (LIVE 2026-10-16: lit=0 on a 225-cell fuzz patch). validation.py lays a crop patch and
@@ -300,6 +310,55 @@ namespace RimMandrake.LeaningScrub
                 RM_LeaningScrubSettings.modEnabled = savedMod;
                 RM_LeaningScrubSettings.callingPyreEnabled = savedPyre;
             }
+        }
+
+        // "thin@x,z" (SCRUB_PYRE_FIX_FIVE_FIRES_FIVE_ISLANDS A1): five fires set as five islands (each farther than
+        // ClusterRadius from every other) must read "too little caught"; the same five set as one cluster must not. The
+        // pre-fix clause counted fires (>= MinOpenFires) and called the islands a catch. No tick passes, so nothing spreads.
+        private static string ProofThin(Map map, IntVec3 hint)
+        {
+            if (!hint.IsValid || !hint.InBounds(map)) return "UNMEASURED: thin needs the cleared pad's centre (thin@x,z)";
+            if (RM_CallingPyre.ThinLine(map) == "") return "UNMEASURED: the map already holds a blaze somewhere, so no set of new fires can read thin";
+            int n = RM_MapComponent_FireStamp.MinOpenFires;
+            int gap = (int)RM_MapComponent_FireStamp.ClusterRadius + 2;
+            var made = new List<Thing>();
+            try
+            {
+                var islands = new List<IntVec3>();
+                for (int i = 0; i < n; i++) islands.Add(hint + new IntVec3((i - n / 2) * gap, 0, 0));
+                if (!SetFires(map, islands, made)) return "UNMEASURED: an island cell is out of bounds, roofed or holds a building";
+                string islandsLine = RM_CallingPyre.ThinLine(map);
+                foreach (Thing f in made) if (!f.Destroyed) f.Destroy();
+                made.Clear();
+                var cluster = new List<IntVec3>();
+                for (int i = 0; i < n; i++) cluster.Add(hint + new IntVec3(i % 3, 0, 4 + i / 3));
+                if (!SetFires(map, cluster, made)) return "UNMEASURED: a cluster cell is out of bounds, roofed or holds a building";
+                string clusterLine = RM_CallingPyre.ThinLine(map);
+                string st = string.Format("fires={0} gap={1} islandsThin={2} clusterThin={3}", n, gap, islandsLine != "", clusterLine != "");
+                if (islandsLine == "") return "FAIL: five fires as five islands read as a catch (no 'too little caught') " + st;
+                if (clusterLine != "") return "FAIL: a real blaze read 'too little caught' " + st;
+                return "PASS " + st;
+            }
+            finally
+            {
+                foreach (Thing f in made) if (!f.Destroyed) f.Destroy();
+            }
+        }
+
+        private static bool SetFires(Map map, List<IntVec3> cells, List<Thing> made)
+        {
+            foreach (IntVec3 c in cells)
+            {
+                if (!c.InBounds(map) || c.Roofed(map) || c.GetEdifice(map) != null || map.thingGrid.ThingAt(c, ThingDefOf.Fire) != null) return false;
+            }
+            foreach (IntVec3 c in cells)
+            {
+                Fire f = (Fire)ThingMaker.MakeThing(ThingDefOf.Fire);
+                f.fireSize = 0.6f;
+                GenSpawn.Spawn(f, c, map);
+                made.Add(f);
+            }
+            return true;
         }
     }
 }
