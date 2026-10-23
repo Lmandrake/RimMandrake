@@ -127,6 +127,13 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// <summary>Dive-through (owner 2026-10-06: cords dive through walls and water; setting, default on): a lead with no
         /// walkable route dives at the barrier it meets and resurfaces beyond it, instead of being drawn unroutable.</summary>
         public bool DiveThrough = true;
+        /// <summary>CORD_PLUG_FIX_FINDS_THE_PIPE_SLOT (owner 2026-10-23: "It should favor diagonal approaches sliding underneath,
+        /// to avoid confusion."; setting, default on): a cord into a building comes in at a diagonal, off every cell-edge
+        /// midpoint (where pipe and hose ports sit), and slides under the art to the centroid.</summary>
+        public bool SlideUnder = true;
+        /// <summary>Machines whose art draws a real power connector where the cord meets it (the tap clamp's jaws): they keep the
+        /// straight, square plug under SlideUnder.</summary>
+        public HashSet<string> StraightPlugIds = new HashSet<string>();
     }
 
     /// <summary>
@@ -143,7 +150,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         internal List<LaidPiece> Build(CordWorld w, BuildOptions opt, Func<Cell, bool> isLive)
         {
             CordGraph g = CordGraph.Reduce(w, opt.Seed, opt.Tangles ? opt.TangleMin : int.MaxValue,
-                                           opt.NeedlessLoops ? CordGraph.SpurMax : 0);
+                                           opt.NeedlessLoops ? CordGraph.SpurMax : 0, opt.SlideUnder, opt.StraightPlugIds);
             Graph = g;
             var next = new Dictionary<string, LaidPiece>();
             var outp = new List<LaidPiece>();
@@ -198,7 +205,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                         full.Append("T").Append(g.Nodes[v].Cells.Count);   // round 5: the entry port follows the pile's connectors
                         foreach (Cell c in g.Nodes[v].Cells) full.Append(';').Append(c.X).Append(',').Append(c.Z);
                     }
-                full.Append('#').Append(opt.Lay.Fingerprint()).Append('#').Append(opt.PileFor(g.Nodes[e.A].Cell)).Append(opt.PileFor(g.Nodes[e.B].Cell)).Append(opt.DiveThrough ? "V" : "");
+                full.Append('#').Append(opt.Lay.Fingerprint()).Append('#').Append(opt.PileFor(g.Nodes[e.A].Cell)).Append(opt.PileFor(g.Nodes[e.B].Cell)).Append(opt.DiveThrough ? "V" : "").Append(opt.SlideUnder ? "U" : "");
                 string fk = full.ToString();
                 string sig = LaySignature(e, parallel);
                 if (cache.TryGetValue(fk, out LaidPiece old) && old.LaySig == sig && Corridor(old) == old.CorridorHash)
@@ -370,8 +377,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 // a machine whose art stops short of its footprint edge (solar panel legs): run the cord on under the
                 // art so it visibly goes INTO the graphic (owner review 2026-10-04 B10). Appended after the floor rule:
                 // these points lie inside the machine's own footprint by design.
-                if (na.IsMachine && na.Machine != null) P = IntoArt(P, true, na.Machine);
-                if (nb.IsMachine && nb.Machine != null) P = IntoArt(P, false, nb.Machine);
+                if (na.IsMachine && na.Machine != null) P = IntoArt(P, true, na.Machine, g.Slides(na.Machine));
+                if (nb.IsMachine && nb.Machine != null) P = IntoArt(P, false, nb.Machine, g.Slides(nb.Machine));
                 // round 4: a cord into a wall/rock face runs on under the wall to just past the face line, so it meets the
                 // plate (drawn inside the wall from the face, WallMount) with no strip of bare floor between; the wall hides
                 // the overrun. Appended after the floor rule like IntoArt: these points lie in the wall cell by design.
@@ -461,8 +468,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
                         P = new List<V2>(C);
                         fell = true;
                     }
-                    if (!diveA && na.IsMachine && na.Machine != null) P = IntoArt(P, true, na.Machine);
-                    if (!diveB && nb.IsMachine && nb.Machine != null) P = IntoArt(P, false, nb.Machine);
+                    if (!diveA && na.IsMachine && na.Machine != null) P = IntoArt(P, true, na.Machine, g.Slides(na.Machine));
+                    if (!diveB && nb.IsMachine && nb.Machine != null) P = IntoArt(P, false, nb.Machine, g.Slides(nb.Machine));
                     if (!diveA) P = PastFace(P, true, na);
                     if (!diveB) P = PastFace(P, false, nb);
                     if (diveA) { DiveSpan d = pl.Dives[si - 1]; P = Overrun(P, true, d.OutFace, d.OutInto, DiveOverrun(d.OutKind)); }
@@ -607,6 +614,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             {
                 target = atA ? e.PA : e.PB;
                 arrive = IntoMachine(nd.Machine, target);
+                if (g.Slides(nd.Machine)) arrive = CordGraph.SlideArrive(nd.Machine, target, arrive);
             }
             else if (nd.IsStub && nd.Into.Len > 0.5)
             {
@@ -664,13 +672,25 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// <summary>Where a machine's cord ends: its wall cell's centre for a wall-mounted device (round 4), else the centroid.</summary>
         internal static V2 Home(MachineInfo m) => m.HasHome ? new V2(m.HomeX + 0.5, m.HomeZ + 0.5) : Centroid(m);
 
-        private static List<V2> IntoArt(List<V2> P, bool atStart, MachineInfo m)
+        /// <summary>How far a sliding cord (BuildOptions.SlideUnder) keeps its diagonal past the plug point before it turns for
+        /// the centroid: far enough that it crosses the footprint edge on the diagonal, clear of the side's port midpoints.</summary>
+        public const double SlideCarry = 0.3;
+
+        private static List<V2> IntoArt(List<V2> P, bool atStart, MachineInfo m, bool slide = false)
         {
             if (P.Count < 2) return P;
             V2 tip = atStart ? P[0] : P[P.Count - 1];
             V2 into = IntoMachine(m, tip);
             V2 c = Centroid(m), pre = c - into * CentroidApproach;
             var ext = new List<V2>();
+            if (slide)
+            {
+                // carry the diagonal arrival on under the edge, then turn for the centroid
+                V2 dia = CordGraph.SlideArrive(m, tip, into), mid = tip + dia * SlideCarry;
+                int k0 = Math.Max(1, (int)Math.Ceiling(SlideCarry / 0.05));
+                for (int i = 1; i <= k0; i++) ext.Add(tip + (mid - tip) * (i / (double)k0));
+                tip = mid;
+            }
             double d1 = V2.Dist(tip, pre);
             int k1 = Math.Max(1, (int)Math.Ceiling(d1 / 0.05));
             for (int i = 1; i <= k1; i++) ext.Add(tip + (pre - tip) * (i / (double)k1));

@@ -102,9 +102,9 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             List<LaidPiece> psol = bsol.Build(ws, new BuildOptions(), c => true);
             ArtFitResult rsol = CordAudit.ArtFit(bsol.Graph, psol, c => true);
             List<V2> ends = psol.SelectMany(p => p.Strands).SelectMany(st => new[] { st.Pts[0], st.Pts[st.Pts.Count - 1] })
-                                .Where(e => e.X > 10 && e.X < 14 && e.Z > 4.9 && e.Z < 9).ToList();
+                                .Where(e => e.X > 10 && e.X < 14 && e.Z > sol.Z0 && e.Z < 9).ToList();   // inside the footprint: the junction arm tip on the hookup (4.9-4.96) is not a panel end
             double depth = ends.Count == 0 ? -1 : ends.Min(e => e.Z - sol.Z0);
-            Check(ends.Count > 0 && depth >= 0.38, $"B10: cords into the solar panel end {depth:0.00} cell inside its bottom edge (want >= 0.38: under the panel art, not at its legs)");
+            Check(ends.Count > 0 && depth >= 0.38, $"B10: cords into the solar panel end {depth:0.00} cell inside its bottom edge (want >= 0.38: under the panel art, not at its legs)" + (ends.Count > 0 ? $"; shallowest {ends.OrderBy(e => e.Z).First()}" : ""));
             Check(rsol.PlugFaults == 0, $"B10: {rsol.PlugFaults} plug faults at the inset machine");
             if (rsol.PlugFaults > 0) Console.WriteLine("  " + string.Join("; ", rsol.Messages));
             Console.WriteLine($"  review1: rock holes {holes} (on-face rule WallMount); solar cord depth {depth:0.00}");

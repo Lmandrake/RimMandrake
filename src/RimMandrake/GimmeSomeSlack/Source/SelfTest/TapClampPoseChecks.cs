@@ -85,7 +85,8 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                         M(w, "theirbat", MachineKind.Battery, tx + 3 * d.X, tz + 3 * d.Z, v2);
                         M(w, "lamp", MachineKind.Consumer, tx + 4 * o.X, tz + 4 * o.Z, o2);
                         M(w, "tap", MachineKind.Consumer, tx, tz, o1, v1);   // CordWorldAdapter.AddTapNodes: ours + bitten
-                        List<LaidPiece> laid = new CordBuilder().Build(w, new BuildOptions { Seed = seed }, c => true);
+                        // CordWorldAdapter.TapIds: the clamp keeps the straight plug (CORD_PLUG_FIX_FINDS_THE_PIPE_SLOT)
+                        List<LaidPiece> laid = new CordBuilder().Build(w, new BuildOptions { Seed = seed, StraightPlugIds = new HashSet<string> { "tap" } }, c => true);
                         // THEIR cord into the tap: every strand that passes through the bitten conduit cell
                         List<List<V2>> theirs = laid.SelectMany(p => p.Strands).Select(s => s.Pts)
                             .Where(pts => pts.Any(q => q.X >= v1.X && q.X <= v1.X + 1 && q.Z >= v1.Z && q.Z <= v1.Z + 1)).ToList();

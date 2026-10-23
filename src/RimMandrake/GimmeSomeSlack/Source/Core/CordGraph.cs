@@ -145,13 +145,22 @@ namespace RimMandrake.GimmeSomeSlack.Core
         private readonly ulong seed;
 
         public readonly int tangleMin, spurMax;
+        /// <summary>BuildOptions.SlideUnder: machine plug points sit off every cell-edge midpoint (see <see cref="PlugPoint"/>).</summary>
+        public readonly bool slideUnder;
+        private readonly ICollection<string> straightPlug;
 
-        internal static CordGraph Reduce(CordWorld world, ulong seed = 1, int tangleMin = TangleMin, int spurMax = SpurMax) =>
-            new CordGraph(world, seed, tangleMin, spurMax);
+        /// <summary>Does a cord into this machine slide under it (not a lamp, not a drawn connector such as the tap clamp)?</summary>
+        internal bool Slides(MachineInfo m) => slideUnder && m != null && m.Kind != MachineKind.Lamp && !straightPlug.Contains(m.Id ?? "");
 
-        private CordGraph(CordWorld world, ulong seed, int tangleMin, int spurMax)
+        internal static CordGraph Reduce(CordWorld world, ulong seed = 1, int tangleMin = TangleMin, int spurMax = SpurMax, bool slideUnder = true,
+                                         ICollection<string> straightPlug = null) =>
+            new CordGraph(world, seed, tangleMin, spurMax, slideUnder, straightPlug);
+
+        private CordGraph(CordWorld world, ulong seed, int tangleMin, int spurMax, bool slideUnder, ICollection<string> straightPlug)
         {
             World = world;
+            this.slideUnder = slideUnder;
+            this.straightPlug = straightPlug ?? (ICollection<string>)new HashSet<string>();
             this.seed = seed;
             this.tangleMin = tangleMin;
             this.spurMax = spurMax;
@@ -574,7 +583,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                              m.Kind == MachineKind.Lamp ? NodeType.Lamp :
                              m.Kind == MachineKind.Transmitter ? NodeType.Transmitter : NodeType.Consumer;
                 Cell hook = m.Hookups.Count > 0 ? m.Hookups[0] : new Cell(m.X0, m.Z0);
-                return new CordNode { Type = t, Pos = PlugPoint(m, hook), Cell = hook, Machine = m };
+                return new CordNode { Type = t, Pos = PlugPoint(m, hook, Slides(m)), Cell = hook, Machine = m };
             }
             if (v.T == 's')
             {
@@ -633,18 +642,50 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return (v.A.Centre - p).Norm();
         }
 
-        /// <summary>Where a cord enters a machine: the footprint point nearest the hookup, just outside.</summary>
-        internal static V2 PlugPoint(MachineInfo m, Cell hookup)
+        /// <summary>Where a cord enters a machine: the footprint point nearest the hookup, just outside. With
+        /// <paramref name="slide"/> (CORD_PLUG_FIX_FINDS_THE_PIPE_SLOT, owner 2026-10-23: "the electrical plug is shown going
+        /// into a pipe slot. Weird. It should favor diagonal approaches sliding underneath"): the point moves along that side
+        /// to <see cref="SlideFrac"/> of the hookup's cell, never a cell-edge midpoint, where pipe and hose ports sit; the
+        /// cord then arrives at a diagonal (<see cref="SlideArrive"/>) and runs on under the art to the centroid.</summary>
+        internal static V2 PlugPoint(MachineInfo m, Cell hookup, bool slide = false)
         {
             if (m.Kind == MachineKind.Lamp) return new V2(m.X0 + 0.5, m.Z0 + 1.02);
             double hx = hookup.X + 0.5, hz = hookup.Z + 0.5;
             double x0 = m.X0, z0 = m.Z0, x1 = m.X0 + m.W, z1 = m.Z0 + m.H;
             double qx = Geo.Clamp(hx, x0 + 0.25, x1 - 0.25), qz = Geo.Clamp(hz, z0 + 0.25, z1 - 0.25);
-            if (hx >= x1) qx = x1 + 0.08;
-            else if (hx <= x0) qx = x0 - 0.08;
-            else if (hz >= z1) qz = z1 + 0.08;
-            else if (hz <= z0) qz = z0 - 0.08;
+            bool sideX = false, sideZ = false;
+            if (hx >= x1) { qx = x1 + 0.08; sideX = true; }
+            else if (hx <= x0) { qx = x0 - 0.08; sideX = true; }
+            else if (hz >= z1) { qz = z1 + 0.08; sideZ = true; }
+            else if (hz <= z0) { qz = z0 - 0.08; sideZ = true; }
+            if (slide && sideZ) qx = SlideAlong(hx, x0, x1, m);
+            else if (slide && sideX) qz = SlideAlong(hz, z0, z1, m);
             return new V2(qx, qz);
+        }
+
+        /// <summary>How far into its cell (along the side) a sliding plug point sits: well clear of the 0.5 midpoint.</summary>
+        public const double SlideFrac = 0.18;
+
+        /// <summary>The along-side coordinate of a sliding plug point: in the footprint cell facing the hookup, SlideFrac in from
+        /// the cell's OUTER corner side (away from the centroid), so the diagonal arrival heads in toward the middle; a cell
+        /// centred on the centroid picks its side by the footprint's position (deterministic).</summary>
+        private static double SlideAlong(double h, double lo, double hi, MachineInfo m)
+        {
+            double k = Math.Floor(Geo.Clamp(h, lo + 0.01, hi - 0.01));
+            double mid = (lo + hi) / 2, cc = k + 0.5;
+            bool low = cc < mid - 1e-6 || (Math.Abs(cc - mid) <= 1e-6 && ((m.X0 + m.Z0) & 1) == 0);
+            return low ? k + SlideFrac : k + 1 - SlideFrac;
+        }
+
+        /// <summary>The diagonal a cord arrives at a sliding plug point along: in through the side, and along it toward the
+        /// cell's midpoint (so it slides under the art between two ports, never along one).</summary>
+        internal static V2 SlideArrive(MachineInfo m, V2 tip, V2 into)
+        {
+            double along = into.X != 0 ? tip.Z : tip.X;
+            double f = along - Math.Floor(along);
+            double s = f < 0.5 ? 1 : -1;
+            V2 tan = into.X != 0 ? new V2(0, s) : new V2(s, 0);
+            return (into + tan).Norm();
         }
 
         private void WallTerminals()
@@ -692,7 +733,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             if (v.T == 'm' && nd.Machine.Hookups.Count > 1)
             {
                 VId nxt = e.Via.Count > 0 ? (atA ? e.Via[0] : e.Via[e.Via.Count - 1]) : (atA ? e.B : e.A);
-                if (linkCell.TryGetValue((nxt, v), out Cell hc)) p = PlugPoint(nd.Machine, hc);
+                if (linkCell.TryGetValue((nxt, v), out Cell hc)) p = PlugPoint(nd.Machine, hc, Slides(nd.Machine));
             }
             return p;
         }

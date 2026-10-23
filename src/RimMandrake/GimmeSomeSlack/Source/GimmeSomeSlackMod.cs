@@ -53,6 +53,9 @@ namespace RimMandrake.GimmeSomeSlack
         /// <summary>Dive-through (owner 2026-10-06): a cord with no open-floor route dives under the wall, rock, water or
         /// building in its way and comes back up on the far side. Off = such a cord is drawn straight across, flagged unroutable.</summary>
         public static bool diveThrough = true;
+        /// <summary>CORD_PLUG_FIX_FINDS_THE_PIPE_SLOT (owner 2026-10-23): a cord into a building comes in at a diagonal and slides
+        /// under it, never onto a side's midpoint where pipe and hose ports sit. Off = the straight, square plug of round 2.</summary>
+        public static bool slideUnder = true;
         /// <summary>Break readout (§8.5): live ends spark, dead ends lie limp.</summary>
         public static bool breakReadout = true;
         /// <summary>Spark rate multiplier for live ends (0 = never).</summary>
@@ -111,6 +114,7 @@ namespace RimMandrake.GimmeSomeSlack
             Scribe_Values.Look(ref tangles, "tangles", true);
             Scribe_Values.Look(ref needlessLoops, "needlessLoops", true);
             Scribe_Values.Look(ref diveThrough, "diveThrough", true);
+            Scribe_Values.Look(ref slideUnder, "slideUnder", true);
             Scribe_Values.Look(ref breakReadout, "breakReadout", true);
             Scribe_Values.Look(ref sparkIntensity, "sparkIntensity", 1f);
             Scribe_Values.Look(ref hideHookupWires, "hideHookupWires", true);
@@ -144,6 +148,7 @@ namespace RimMandrake.GimmeSomeSlack
             tangles = true;
             needlessLoops = true;
             diveThrough = true;
+            slideUnder = true;
             breakReadout = true;
             sparkIntensity = 1f;
             hideHookupWires = true;
@@ -169,6 +174,7 @@ namespace RimMandrake.GimmeSomeSlack
                                      // power strips are the modern extension-cord look only (owner review 2026-10-04 B1/B15)
                                      Pile = style == CordStyle.ExtensionCord ? PileArt.Strips : PileArt.Junctions };
             o.DiveThrough = diveThrough;
+            o.SlideUnder = slideUnder;
             o.Lay.SlackScale = Mathf.Clamp(slack, 0f, 2f);
             o.Lay.MaxExtra = Mathf.Clamp(loopBudget, 2f, 40f);
             o.Lay.MinExtra = Math.Min(o.Lay.MinExtra, o.Lay.MaxExtra);
@@ -253,9 +259,9 @@ namespace RimMandrake.GimmeSomeSlack
                 list.GapLine();
             }
 
-            if (Group(list, "Slack, loops and tangles", RimMandrake.Shared.SettingScope.Now, new[] { "slack", "loopBudget", "cordsPerConnection", "tangles", "needlessLoops", "diveThrough", "tangleMin" }))
+            if (Group(list, "Slack, loops and tangles", RimMandrake.Shared.SettingScope.Now, new[] { "slack", "loopBudget", "cordsPerConnection", "tangles", "needlessLoops", "diveThrough", "slideUnder", "tangleMin" }))
             {
-            using (Dependent(list, "slack", "loopBudget", "cordsPerConnection", "tangles", "needlessLoops", "diveThrough"))
+            using (Dependent(list, "slack", "loopBudget", "cordsPerConnection", "tangles", "needlessLoops", "diveThrough", "slideUnder"))
             {
             list.Label("Slack: " + (slack <= 0.01f ? "off (path-tight)" : slack.ToString("0.00") + "x the owner level"),
                     tooltip: "How much spare cord each cord carries. 1.00 = loops, figure-eights and heaps like a too-long extension cord.");
@@ -268,6 +274,8 @@ namespace RimMandrake.GimmeSomeSlack
             list.CheckboxLabeled("Dense conduit fields become one tangle", ref tangles);
             list.CheckboxLabeled("Needless conduit stubs become pointless loops", ref needlessLoops);
             list.CheckboxLabeled("Cords dive under walls and water where they must (a plate marks each wall crossing)", ref diveThrough);
+            list.CheckboxLabeled("Cords slide under buildings at a diagonal (never onto a pipe or hose port)", ref slideUnder,
+                    "On: a cord comes in at a slant, off the middle of the building's side where pipe and hose ports sit, and runs on under it. Off: the straight plug into the middle of the side.");
             }
             using (Dependent(list, "tangleMin"))
             {
@@ -366,7 +374,7 @@ namespace RimMandrake.GimmeSomeSlack
         /// look of masts and wires too) and the four spark settings (RM_MapComponent_Aerial: fallen wires and tap clamps).</summary>
         internal static readonly RimMandrake.Shared.SettingDependencies Masters = new RimMandrake.Shared.SettingDependencies()
             .Declare("enabled", "extCordColorMode", "extCordColor", "hideHookupWires", "slack", "loopBudget", "cordsPerConnection",
-                     "tangles", "needlessLoops", "diveThrough", "tangleMin", "whip", "downedWire", "highlight", "sway", "swayAmplitude",
+                     "tangles", "needlessLoops", "diveThrough", "slideUnder", "tangleMin", "whip", "downedWire", "highlight", "sway", "swayAmplitude",
                      "swayMode", "floorRipple", "excludedConduits", "lod", "debugDraw")
             .Declare("tangles", "tangleMin")          // BuildOptions: TangleMin is used only while Tangles (CordBuilder)
             .Declare("breakReadout", "whip")           // whip = whip && breakReadout (CordGraph, MessyCords layer)

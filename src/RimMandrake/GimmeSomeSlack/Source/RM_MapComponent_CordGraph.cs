@@ -217,6 +217,7 @@ namespace RimMandrake.GimmeSomeSlack
                 CordWorld world = CordWorldAdapter.Snapshot(map);
                 LastWorld = world;
                 BuildOptions opt = GimmeSomeSlackSettings.BuildOptions();
+                opt.StraightPlugIds = CordWorldAdapter.TapIds(map);
                 styled = Aerial.ConduitStylePicker.CellStyles(map);
                 Dictionary<Cell, Aerial.CellStyle> st = styled;
                 // stage 2: each run's pile art follows ITS look (strips in Modern, junction boxes otherwise); unstyled = default
