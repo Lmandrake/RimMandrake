@@ -51,7 +51,7 @@ Open threads held ONLY by the summary (not filed, not in any pinned file) — lo
   tonight unless switched on — not on `walk_tonight.md`.
 - Propane 30% flash + gasoline cold/roof evaporation — listed in pinned `fuel_spill_research.md`, not queued.
 - Scrapper shut gates C/D are never drawn (material path wins) — in a ledger note, not an item.
-- Promise *"I'll report the walk rebuild as soon as it finishes"* — in the summary; the helper is still running.
+- Promise *"I'll report the walk rebuild as soon as it finishes"* — in the summary; the helper has since finished (76ea7a6f1f, game UP paused at stop 1), report still owed.
 All seven go into the handoff as pointers.
 
 ## 4. Errors or distortions in the summary
