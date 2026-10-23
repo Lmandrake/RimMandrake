@@ -4067,3 +4067,5 @@
 {"seat":"BENCH","event":"file","id":"SELFTEST_HOSE_P3_SHAPE_FIX_UNHOOK_ADDED","title":"selftest_hose_port P3 pinned to stale SaveSkip line; C# is right","kind":"task","target":"v1","needs":"offline","for":"BENCH","why":"3e3c44d9fc added UnhookMapEvents() before map.components.Remove; test asserted old text","ts":"2026-10-23T05:28:36Z","tsn":1792733316562065185}
 {"seat":"BENCH","event":"close","id":"SELFTEST_EXT_LID_ROW_FIX_UNREGISTERED","sha":"465f61350b","why":"fixed; selftest green","ts":"2026-10-23T05:28:43Z","tsn":1792733323452915021}
 {"seat":"BENCH","event":"close","id":"SELFTEST_HOSE_P3_SHAPE_FIX_UNHOOK_ADDED","sha":"465f61350b","why":"fixed; selftest green","ts":"2026-10-23T05:28:45Z","tsn":1792733325016427267}
+{"seat":"BENCH","event":"lease","id":"ARTPIPE_FACING_COHERENCE_1","action":"take","token":"BENCH.pid23698.8f8a1f94","expires":"2026-10-23T06:14:08Z","ts":"2026-10-23T05:29:08Z","tsn":1792733349158888066}
+{"seat":"BENCH","event":"close","id":"LADDER_DRAFTS_RETIRE_SEVEN_FOR_ONE","sha":"34e6494ba613","why":"ten drafts git rm'd; A8 chain byte-identical to installed PNGs before and after","ts":"2026-10-23T05:31:39Z","tsn":1792733499148979669}
