@@ -9,3 +9,4 @@
 - 08:50 r3 Scrapper: only raised N/S slack-loop shape findings left (cables math, not art) -> install + file follow-up; evaluating other looks in r3
 - 09:03 r3 all looks: no bollard-art blocker beyond slack-loop shape (cables math) + polish (legibility, Modern gloss). Installing 24 via art.py
 - 09:08 installed 24 (art.py, by-card); measure --check OK; selftest_flowworks_stock 897/897 incl Drawbridge_Cables x4; shadow sheet built for run anchor_bollards_20261023_r3; next: commit/publish/ledger
+- 09:10 published 8a7d4b78b7c2; implemented (A1/A2 live owed); filed SLACK_LOOP_REDRAW_STANDS_UP_IN_PROFILE, ANCHOR_BASE_REDRAW_STILL_LYING_FLAT; committing ledger
