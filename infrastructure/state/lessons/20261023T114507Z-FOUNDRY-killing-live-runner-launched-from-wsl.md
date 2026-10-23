@@ -1,0 +1,1 @@
+Killing a live runner launched from WSL as python.exe: kill the WSL /init proxy pid (ps aux | grep <script>) — a PowerShell Get-CimInstance Name='python.exe' filter matches nothing (the Windows image is python3.13.exe), so the 'killed' run kept driving and three live_session runs shared one map (2026-10-23).
