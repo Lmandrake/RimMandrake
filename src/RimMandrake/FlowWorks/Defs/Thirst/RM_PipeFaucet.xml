@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  PIPE_FAUCET_BUILD_TAP_NAME_NOW_FREE (owner-filed 2026-10-22): a faucet set ON a universal pipe. It holds nothing: colonists
+  drink at it and fill empty containers at it, every litre drawn from the tanks on its pipe network (the store a machine on
+  that pipe draws from; Dump tanks never give). Thirst treats it as a tap: free at home, awkward away (owner Q1 2026-10-17).
+  Code: Source/Thirst/Building_RM_PipeFaucet.cs. Setting: RM_ThirstSettings.pipeFaucetsEnabled.
+  ART: PLACEHOLDER - borrows the bleed well's side-on picture until a top-view faucet is drawn
+  (FAUCET_REDRAW_BORROWED_BLEED_WELL). Cost, work and HP PROVISIONAL.
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_PipeFaucet</defName>
+    <label>pipe faucet</label>
+    <description>A tap set on a universal pipe. Colonists drink at it and fill empty bottles, buckets and barrels at it; every drop comes from the tanks on its pipe network, so it pours whatever those tanks hold and give (a tank set to dump gives nothing). At home, drinking at a tap is as civilized as it gets.</description>
+    <thingClass>RimMandrake.FlowWorks.Thirst.Building_RM_PipeFaucet</thingClass>
+    <category>Building</category>
+    <graphicData>
+      <texPath>Things/Building/FlowWorks/Machinery/RM_LiquidTap</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(0.8,0.8)</drawSize>
+      <damageData>
+        <rect>(0.3,0.3,0.4,0.4)</rect>
+      </damageData>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>20</pathCost>
+    <fillPercent>0.2</fillPercent>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <tickerType>Never</tickerType>
+    <useHitPoints>true</useHitPoints>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <clearBuildingArea>false</clearBuildingArea>
+    <designationCategory>VCHE_PipeNetworks</designationCategory>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>      <!-- PROVISIONAL -->
+      <WorkToBuild>300</WorkToBuild>       <!-- PROVISIONAL -->
+      <Flammability>0.2</Flammability>
+      <Beauty>0</Beauty>
+      <Mass>3</Mass>
+    </statBases>
+    <costList>
+      <Steel>10</Steel>                    <!-- PROVISIONAL -->
+    </costList>
+    <placeWorkers>
+      <li>RimMandrake.FlowWorks.Sprinklers.PlaceWorker_RM_OnPipe</li>
+    </placeWorkers>
+    <building>
+      <ai_chillDestination>false</ai_chillDestination>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+    <comps>
+      <li Class="CompProperties_Forbiddable" />
+    </comps>
+  </ThingDef>
+
+  <JobDef>
+    <defName>RM_DrinkFromFaucet</defName>
+    <driverClass>RimMandrake.FlowWorks.Thirst.JobDriver_RM_DrinkFromFaucet</driverClass>
+    <reportString>drinking at TargetA.</reportString>
+    <suspendable>false</suspendable>
+  </JobDef>
+
+  <JobDef>
+    <defName>RM_FillAtFaucet</defName>
+    <driverClass>RimMandrake.FlowWorks.Thirst.JobDriver_RM_FillAtFaucet</driverClass>
+    <reportString>filling a container at a faucet.</reportString>
+    <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+  </JobDef>
+
+  <WorkGiverDef>
+    <defName>RM_FillAtFaucetWorkGiver</defName>
+    <label>fill containers at a faucet</label>
+    <giverClass>RimMandrake.FlowWorks.Thirst.WorkGiver_RM_FillAtFaucet</giverClass>
+    <workType>Hauling</workType>
+    <verb>fill</verb>
+    <gerund>filling a container at a faucet</gerund>
+    <priorityInType>47</priorityInType>
+    <scanCells>false</scanCells>
+    <scanThings>true</scanThings>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
+</Defs>

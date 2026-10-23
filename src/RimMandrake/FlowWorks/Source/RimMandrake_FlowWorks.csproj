@@ -67,6 +67,7 @@
     <Compile Include="RM_SettingsSearchIndex.cs" />
     <Compile Include="FluidDef.cs" />
     <Compile Include="RM_WaterLadder.cs" />
+    <Compile Include="Thirst\Building_RM_PipeFaucet.cs" />
     <Compile Include="RM_WaterLookMath.cs" />
     <Compile Include="RM_WaterLooks.cs" />
     <Compile Include="RM_WaterLadderDefs.cs" />

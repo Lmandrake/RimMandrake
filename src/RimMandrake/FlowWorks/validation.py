@@ -1063,6 +1063,10 @@ THIRST_LIVE = [
      "hemogen up; a baseliner given the same pack: no thirst change"),
     ("T29_bottle_stock_and_batches", None, "2 colonists, target 3, 20 empty bottles beside a pond: one hauler fills them in "
      "trips of up to 10 and stops at 6 filled (packed ones counted); 15 dirty bottles washed in two trips"),
+    ("T30_pipe_faucet", "pipeFaucetsEnabled", "PIPE_FAUCET_BUILD_TAP_NAME_NOW_FREE: an RM_PipeFaucet on a universal pipe "
+     "joined to a Store tank of fresh water, a thirsty colonist and nothing else drinkable: RM_DrinkFromFaucet, the tank "
+     "drops 1.5 L, no RM_Thought_DrankRough at home; an empty bottle nearby: RM_FillAtFaucet makes a filled bottle and the "
+     "tank drops by its litres; a Dump tank only: the faucet reads Dry; setting off: no faucet job"),
     ("T14_native_animal_terrible_water", "animalsGetThirst", "on a salt/brine biome map, a roster-native animal at 0.2 "
      "drinks the brine (no FoodPoisoning); a non-native animal beside the same brine does not"),
 ]
@@ -1305,7 +1309,7 @@ HOSE_TOGGLES_OWED = ["autoResumeDroppedHose", "enabled", "fillWobble", "tintByCo
 suite.toggles += [t for t in HOSE_TOGGLES_OWED if t not in suite.toggles]
 suite.toggles += [t for t in ["thirstEnabled", "thirstHeatScaling", "waterQualityEffects", "animalsGetThirst",
                                  "drinkFromTerrain", "lastResortDrinking", "saltBreakEnabled", "roughDrinkPenalty", "bucketFirefighting",
-                                 "snowGathering", "sanguophageBloodQuenches"] if t not in suite.toggles]
+                                 "snowGathering", "sanguophageBloodQuenches", "pipeFaucetsEnabled"] if t not in suite.toggles]
 suite.toggles += [t for t in ["sprinklersEnabled", "sprinklerNonWaterEffects", "vfeSprinklerAdapterEnabled", "vfeThirstValve"]
                   if t not in suite.toggles]
 # extension toggles whose every component is an `_owed` placeholder (northstar/extensions.py; it waited and recorded PASS
