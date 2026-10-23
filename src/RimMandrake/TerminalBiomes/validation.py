@@ -797,8 +797,8 @@ if Suite is not None:
         fn.__doc__ = "UNMEASURED: " + why
         suite.chain(chain)(fn)
 
-    _um("scald_steam_sky", "steam_lock_pulses_weather_and_flash", "RUT_ScaldSteamLock/RM_GameCondition_WeatherPulse and the vent flash need a Scald map "
-        "(an environmental-hazards weather pulse over a steam biome) and a way to read the running condition", "scaldS1SteamSkyEnabled")
+    _um("scald_steam_sky", "steam_lock_pulses_weather_and_flash", "RUT_ScaldSteamLock/RM_GameCondition_WeatherPulse and the vent flash need the SURFACE "
+        "RM_TheScald map (owner by card 2026-10-23: the sea-floor map stays calm) and a way to read the running condition", "scaldS1SteamSkyEnabled")
     _um("scald_steam_catch", "condenser_collects_steam", "RUT_SteamCatch condensing needs a Scald map with a vent and ticks of steam; no reader for the "
         "condenser's stored resource", "scaldS2SteamCatchEnabled")
     _um("scald_vent_fields", "vents_scatter_and_erupt", "RUT_ScaldVent geysers are placed by a GenStep on a NEW Scald map; the gate acts at generation "
@@ -807,8 +807,8 @@ if Suite is not None:
         "scaldS5SailWalkerEnabled")
     # S6 wreck salvage moved to Wreckage (RM_WreckField_Scald, field key "Scald"): its chain is Wreckage's
     # mapgen.scald_field_on_shallows_only, toggled by that mod's wreckFields/disabledFields.
-    _um("scald_steam_exposure", "steam_carrier_inflicts_scald_exposure", "RUT_ScaldSteamCarrier and the RUT_ScaldExposure hediff need a Scald map under "
-        "steam and an unprotected pawn; no way to start the condition on a bland map", "scaldS7SteamExposureEnabled")
+    _um("scald_steam_exposure", "steam_carrier_inflicts_scald_exposure", "RUT_ScaldSteamCarrier and the RUT_ScaldExposure hediff need the SURFACE "
+        "RM_TheScald map under steam and an unprotected pawn; no way to start the condition on a bland map", "scaldS7SteamExposureEnabled")
     _um("twilight_suulk", "suulk_arrival_and_vaulisk_lure", "RM_SuulkArrival and the Vaulisk lure are Twilight-sea incidents and a GenStep; need the "
         "sea-floor map", "suulkEnabled")
     _um("twilight_channel_current", "current_carries_pawns_and_sink_outcome_applies", "RM_MapComponent_ChannelCurrent exists only on a generated "

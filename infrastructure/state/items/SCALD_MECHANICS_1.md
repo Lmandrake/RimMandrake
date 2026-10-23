@@ -50,8 +50,10 @@ Scald**.
       below). **Not done this pass** — this item ran the spikes only, per
       `LIQUID_TYPES_SPIKES_1`'s/`MIASMA_MECHANICS_1`'s own precedent; the
       full 6-mechanic build is later, separate FOUNDRY work.
-- [ ] **Read on a Scald FLOOR map (ship landing on `RM_SeabedLayer`), the only Scald map a
-      colony reaches** — the surface `RM_TheScald` is impassable (BENCH note 2026-09-26). Original
+- [ ] **Steam lock and Scald weather are read on the SURFACE `RM_TheScald` map; the sea-floor map
+      (`RM_SeabedFloor_TheScald`, ship landing on `RM_SeabedLayer`) stays calm** — owner by card
+      2026-10-23 ("Surface map only"). The vent, catch, wreck and sail reads stay on the floor map,
+      where their content is generated (`GenStep_ScaldVentField`, `RM_SeabedFloorLife`). Original
       text: A quicktest map in the biome shows: forced steam weather with clear
       spells; a condenser producing on a vent and refusing placement off
       one; a pawn swimming the margin ring and never pathing through boil
@@ -738,7 +740,8 @@ was red for that reason, then green. The margin ring lands on the floor through
 `RM_SeaFloorBandsExtension` (share 0.12, ringing each boiling core), so no bridge cove painting is owed.
 S5's "sail PawnKind/ThinkTree/Duty owed" is stale: `RM_Noohm` is the sail, tethered by
 `RM_MapComponent_ScaldVentForecast`; spec and scatterer header corrected.
-**Still owed, all live (L2, Scald floor map):** forced steam with clear spells; condenser producing
+**Still owed, all live (L2):** on the SURFACE `RM_TheScald` map (owner by card 2026-10-23, "Surface map
+only"), forced steam with clear spells, and the floor map staying calm; on the floor map, condenser producing
 `RM_DistilledWater` on a vent and refusing off one; a fishing zone on `RUT_ScaldMargin` yielding Scald
 catches and none on boil; wrecks salvageable at burn cost; sails gathering at and tethered to vents.
 Off-item: FlowWorks pipe-water form; `RM_DistilledWater` art (artpipe).

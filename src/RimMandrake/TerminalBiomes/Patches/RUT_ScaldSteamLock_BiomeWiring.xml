@@ -31,6 +31,10 @@
   RUT_ScaldSteamCarrier.xml's own header for why neither was extended. The
   two cannot fight: the carrier sets no forcedWeather.
 
+  Surface map only (owner by card 2026-10-23): both conditions ride the
+  surface RM_TheScald biome; the sea-floor RM_SeabedFloor_TheScald stays
+  calm, so neither is ever added to the floor biome.
+
   TERMINALBIOMES_RM_MOD_BUILD_1 step 2, 2026-09-25: moved into this mod from
   UtinniPatches (frozen twin, same folder there). xpath retargeted
   RUT_TheScald -> RM_TheScald per the item's own §7(a) instruction — this
