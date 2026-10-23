@@ -13,7 +13,7 @@ ExecStart=/usr/bin/python3 /home/mandrake/rm/bench/src/RimMandrake/Utils/pulse/p
 Restart=always
 RestartSec=5
 Nice=10
-MemoryMax=256M
+MemoryMax=768M
 
 [Install]
 WantedBy=default.target
