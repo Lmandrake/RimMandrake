@@ -6,8 +6,15 @@ BENCH belt 2026-10-22).
 
 Scene (plot from --origin, default 30,30; 16 x 12 cleared + read back): a sheer pit x = 6..8, z = 4..6 dug D 4 (2 m: nobody
 without gear climbs it, climb_proof); a colonist DOWNED on its floor (7, 5) (pawn_force_incapacitate, no bleeding); every
-other colonist on the map vanished, then two fresh rescuers on the rim (2, 5), (2, 6), undrafted; a wooden bed at (12, 9)
-(a rescue needs a bed); 100 steel + 100 wood at (3, 9) for the ladder.
+other colonist on the map vanished, then two fresh rescuers on the rim (2, 5), (2, 6), undrafted; MEDICAL wooden beds at
+(12, 9) and (14, 9) (a rescue needs a bed: one for the control, one for the victim); 100 steel + 100 wood at (3, 9) for the ladder.
+PIT_RESCUE_FIX_LADDER_UP_NOBODY_COMES (HARNESS, bridge run 1 2026-10-23): with plain beds a rescuer who got tired slept in the
+victim's bed and so OWNED it (vanilla claims a non-medical bed on lying down); RestUtility.FindBedFor then had no bed for the
+victim and WorkGiver_RescueDowned never offered the rescue (2/2 runs FAIL, both with a rescuer LayDown at (14, 9)). Medical
+beds are never claimed for sleep and are the ones a patient is carried to; each is set with jawa/set_bed_owner_type
+medical=true and READ BACK (not medical: every row UNMEASURED SITE). The final bed census rides in the result ("beds"), and a
+colonist not out while fewer than two beds were left for a patient (owned, or a rescuer lying in it) is SITE, not MOD;
+with no census to read, it is UNMEASURED HARNESS.
 Rows:
   RESCUE_LADDER_QUEUED   EXPECT within 500 ticks (RM_MapComponent_PitRescueLadder checks every 250) a ladder blueprint,
                          frame or ladder stands on a pit square.
@@ -30,16 +37,40 @@ ITEM = "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS"
 LADDERS = ("RM_LadderPortable", "RM_Ladder")
 
 
-def main():
+def free_patient_beds(census, taken=()):
+    """Beds a downed colonist can still be carried to: one with an unowned sleeping slot (a medical bed has no owners; a
+    plain one a sleeper lay down in is his) whose cell is not in <taken> (a rescuer lying in it: an injured one may rest in a
+    medical bed). Census rows are jawa/set_bed_owner_type's (owners, sleepingSlots, pos); a row that does not say is not
+    counted. The control's bed is not marked in the census and still counts, hence the caller's < 2."""
+    n = 0
+    for b in (census or {}).get("beds") or []:
+        pos = b.get("pos") or {}
+        if (b.get("owners") is not None and b.get("sleepingSlots") is not None and b["owners"] < b["sleepingSlots"]
+                and (pos.get("x"), pos.get("z")) not in set(taken)):
+            n += 1
+    return n
+
+
+def lying_cells(last):
+    """Cells where a rescuer of the last trail entry is lying down (job LayDown*)."""
+    cells = []
+    for _id, at, job in (last or {}).get("rescuers") or []:
+        if str(job or "").startswith("LayDown") and at:
+            cells.append((at.get("x"), at.get("z")))
+    return cells
+
+
+def main(argv=None, bridge=None, validation=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("out", nargs="?", default=None)
     ap.add_argument("--origin", default="30,30")
     ap.add_argument("--fresh-map", action="store_true")
     ap.add_argument("--ticks", type=int, default=8000)
-    a = ap.parse_args()
-    import proof_hose as PH  # noqa: E402
-    V = PH.V
-    B = PH.PB()
+    a = ap.parse_args(argv)
+    if bridge is None or validation is None:
+        import proof_hose as PH  # noqa: E402
+    V = validation or PH.V
+    B = bridge or PH.PB()
     out = a.out or os.path.join(HERE, "pit_rescue_result_%s.json" % time.strftime("%Y%m%dT%H%M%S"))
     rows = []
     res = {"script": "pit_rescue_live.py", "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "rows": rows, "args": vars(a)}
@@ -87,7 +118,15 @@ def main():
     for p in (B.call("jawa/list_pawns", limit=400) or {}).get("pawns") or []:
         if not p.get("dead") and p.get("isPlayer"):
             B.call("jawa/pawn_force_incapacitate", pawn=p.get("id"), action="vanish")
-    B.call("jawa/build_batch", ops="Bed:%d,%d" % P(12, 9), faction="player", wipeExisting=False, stuff="WoodLog")
+    beds = []
+
+    def medical_bed(c):
+        B.call("jawa/build_batch", ops="Bed:%d,%d" % c, faction="player", wipeExisting=False, stuff="WoodLog")
+        th = (B.call("jawa/list_things", defName="Bed", rect="%d,%d,1,1" % c, limit=1) or {}).get("things") or [{}]
+        bid = th[0].get("id")
+        r = (B.call("jawa/set_bed_owner_type", thing=bid, medical="true") or {}) if bid else {}
+        beds.append({"cell": c, "id": bid, "medicalAfter": r.get("medicalAfter")})
+    medical_bed(P(12, 9))
     for d, c in (("Steel", P(3, 9)), ("WoodLog", P(4, 9))):
         B.call("rimworld/spawn_thing", defName=d, stackCount=100, x=c[0], z=c[1])
 
@@ -99,17 +138,25 @@ def main():
     # SITE (belt live 2026-10-22): bridge-spawned colonists can come with work types at priority 0 (the quarry check's job
     # probe read Mining priority 0, workActive False) -- the first rescue runs' "nobody finishes the frame" may be exactly
     # that. Construction, Hauling and Doctor (rescue) are set on.
+    res["work"] = {}
     for r_ in rescuers:
         for wt in ("Construction", "Hauling", "Doctor"):
-            B.call("jawa/set_work_priority", pawnId=r_, workType=wt, priority=1)
+            w = B.call("jawa/set_work_priority", pawnId=r_, workType=wt, priority=1) or {}
+            res["work"]["%s/%s" % (r_, wt)] = str(w)[:160]
     inc = B.call("jawa/pawn_force_incapacitate", pawn=victim, action="downed", allowBleedingWounds=False) or {}
     # can-fail control (belt run 3: nobody rescued even after the ladder stood): a colonist downed on OPEN ground; if he is
     # not rescued either, the scene cannot rescue at all (SITE), whatever the pit does
     control = spawn(P(13, 3))
     B.call("jawa/pawn_force_incapacitate", pawn=control, action="downed", allowBleedingWounds=False)
     res["control"] = control
-    B.call("jawa/build_batch", ops="Bed:%d,%d" % P(14, 9), faction="player", wipeExisting=False, stuff="WoodLog")
-    res["scene"] = {"victim": victim, "rescuers": rescuers, "incap": str(inc)[:200]}
+    medical_bed(P(14, 9))
+    res["scene"] = {"victim": victim, "rescuers": rescuers, "incap": str(inc)[:200], "beds": beds}
+    if any(b.get("medicalAfter") is not True for b in beds):
+        all_rows("UNMEASURED", "SITE", {"why": "a rescue bed is not medical (read back)", "beds": beds})
+        for pid in [victim, control] + rescuers:
+            if pid:
+                B.call("jawa/pawn_force_incapacitate", pawn=pid, action="vanish", _answer=True)
+        return 2
 
     def ladder_in_pit():
         hits = []
@@ -169,9 +216,15 @@ def main():
     row("RESCUE_LADDER_BUILT", "PASS" if built_at is not None and not res.get("assist") else "FAIL", "MOD", det)
     dead = trail and trail[-1]["victim"][2]
     det["controlRescuedAt"] = control_moved
+    res["beds"] = B.call("jawa/set_bed_owner_type") or {}
+    det["freePatientBeds"] = free_patient_beds(res["beds"], lying_cells(trail[-1] if trail else None))
+    no_census = out_at is None and not (res["beds"].get("beds") or [])
     no_rescue_here = control_moved is None
-    row("RESCUE_COLONIST_OUT", "UNMEASURED" if (dead or (no_rescue_here and out_at is None)) else ("PASS" if out_at is not None else "FAIL"),
-        "SITE" if (dead or (no_rescue_here and out_at is None)) else "MOD", det)
+    # a FAIL with no bed left for the victim (the control holds one) is the scene's, not the mod's
+    no_bed = out_at is None and not no_census and det["freePatientBeds"] < 2
+    site = dead or (no_rescue_here and out_at is None) or no_bed
+    row("RESCUE_COLONIST_OUT", "UNMEASURED" if site or no_census else ("PASS" if out_at is not None else "FAIL"),
+        "HARNESS" if no_census and not site else ("SITE" if site else "MOD"), det)
     for pid in [victim, control] + rescuers:
         if pid:
             B.call("jawa/pawn_force_incapacitate", pawn=pid, action="vanish", _answer=True)
