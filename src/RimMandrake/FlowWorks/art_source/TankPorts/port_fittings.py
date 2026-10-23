@@ -173,11 +173,74 @@ def _unorient(view, side):
     return np.swapaxes(view, 0, 1)[::-1]
 
 
+# Ports whose straight run would not meet the body, or would cover kept art: (picture, side, lane) -> bypass route.
+# Judge 2026-10-23 (infrastructure/state/delegated/2026-10-23/tank_port_fittings.json, 4 FIX):
+#  * RM_UniversalCargoTank upper west/east (lane 1.5 = row 128): that row lies ABOVE the body's side silhouette (body top
+#    ~row 133; the side is reachable only from row ~180), so a straight stub met only the strap tops and, on the east,
+#    covered the kept outlet nozzle (rows ~148-195, out to 35 px from the edge). Bypass: a thin pipe drops from under
+#    the coupler 23 px in from the edge (clear of the nozzle) to a collar on the end cap's side.
+#  * Futuristic RM_LiquidTank north lane 1.5 (column 384) lies over the kept elbow-pipe fixture (cols ~351-411) and the
+#    valve (to col ~467): bypass jogs east above the valve wheel, then drops 3 px clear of it to the right shoulder.
+# Route pieces are in the port's edge-first view (_orient): ("a", a0, a1, c, hh) runs inward (along) at cross c;
+# ("c", c0, c1, a, hh) runs across at depth a; a None end is the landing (first depth / cross where the body is under it).
+_UCT_DROP = (("c", 128, None, 23, 10, "nip"), ("c", 160, 170, 23, 11, "nut"), ("land", 23, 10))
+_LT_JOG = (("a", 26, 48, 384, 10, "nip"), ("a", 26, 32, 384, 14, "nut"),
+           ("c", 384, 480, 48, 10, "nip"), ("c", 372, 396, 48, 13, "elbow"),
+           ("a", 48, None, 480, 10, "nip"), ("c", 468, 492, 48, 13, "elbow"), ("land", 480, 10))
+ROUTES = {("RimMandrake/FlowWorks/Tank/%s/RM_UniversalCargoTank" % lk, sd, 1.5): _UCT_DROP
+          for lk in ("Scrapper", "Industrial", "Futuristic") for sd in ("west", "east")}
+ROUTES[("RimMandrake/FlowWorks/Tank/Futuristic/RM_LiquidTank", "north", 1.5)] = _LT_JOG
+
+
+def _landing(alpha, run, along_fixed, hh, start, slack=3):
+    """First index >= start along a run where the body (alpha > 128) is under the pipe's whole width less `slack` px.
+    run "c": a cross-running pipe at depth along_fixed (pixels alpha[cross, along_fixed-hh+slack : along_fixed+hh]);
+    run "a": an inward pipe at cross along_fixed (pixels alpha[along_fixed-hh+slack : along_fixed+hh, a])."""
+    lo, hi = int(along_fixed - hh + slack), int(along_fixed + hh)
+    n = alpha.shape[0] if run == "c" else alpha.shape[1]
+    for k in range(int(start), n):
+        px = alpha[k, lo:hi] if run == "c" else alpha[lo:hi, k]
+        if px.size and (px > 128).all():
+            return k
+    raise ValueError("bypass never lands on the body")
+
+
+def _bypass(view, body_alpha, cross, e0, mat, route, seed):
+    """Coupler at the port (as _fitting) plus a thin bypass pipe around kept fixtures to a collar on the body."""
+    nut, nip, cpl = (np.array(c, float) for c in mat[:3])
+    cols = {"nip": nip, "nut": nut, "elbow": cpl * 0.9}
+    accent = mat[3]
+    sub = np.zeros(view.shape[:2] + (4,), float)
+    land = None
+    pipes = [p for p in route if p[0] != "land"]
+    lnd = next(p for p in route if p[0] == "land")
+    for kind, s0, s1, fixed, hh, col in pipes:          # route first: the coupler sits over the pipe's top end
+        if s1 is None:
+            land = _landing(body_alpha, kind, fixed, hh, s0 + 60 if kind == "c" else s0 + 20)
+            s1 = land + 8
+        tgt = sub if kind == "a" else np.swapaxes(sub, 0, 1)
+        mpf.part(tgt, s0, s1, fixed, hh, cols[col], True)
+    # the collar where the bypass enters the body
+    kind_last = next(p[0] for p in pipes if p[2] is None)
+    tgt = sub if kind_last == "a" else np.swapaxes(sub, 0, 1)
+    mpf.part(tgt, land - 4, land + 10, lnd[1], lnd[2] + 4, nut, True)
+    for a, b, hh, col, rim in [
+        (e0, e0 + 7.0, 35.0, cpl, True),
+        (e0 + 7.0, e0 + 9.0, 31.0, (np.array(accent, float) if accent else cpl * 0.75), False),
+        (e0 + 9.0, e0 + 20.0, 33.0, cpl, True),
+        (e0 + 20.0, e0 + 26.0, 31.0, cpl * 0.9, True),
+    ]:
+        mpf.part(sub, a, b, cross, hh, col, rim)
+    sub[..., :3] = np.clip(sub[..., :3] * _grain(sub.shape[:2], seed, 0.10)[..., None], 0, 255)
+    return sub, land
+
+
 def build(rel):
     """(fitted RGBA image, [(side, cross px)]) for one picture in PICTURES."""
     spec = next(p for p in PICTURES if p[0] == rel)
     _, look, fw, fh, dsx, dsz, oz = spec[:7]
     a = np.array(base_image(rel)).astype(float)
+    body = np.array(body_image(rel))[..., 3] if any(k[0] == rel for k in ROUTES) else None
     H, W = a.shape[:2]
     left = fw / 2.0 - dsx / 2.0
     top = fh / 2.0 + oz + dsz / 2.0
@@ -190,8 +253,15 @@ def build(rel):
             cross = (top - c) / dsz * H                        # row of the port
             e0 = -left / dsx * W if side == "west" else W - (fw - left) / dsx * W
         view = _orient(a, side)
+        seed = zlib.crc32(("%s|%s|%d" % (rel, side, i)).encode())
+        route = ROUTES.get((rel, side, c))
+        if route:
+            sub, land = _bypass(view, _orient(body, side), cross, e0, MATERIALS[look], route, seed)
+            _over(view, sub)
+            done.append((side, round(cross, 1), round(e0, 1), "bypass->%d" % land))
+            continue
         wall = _wall(view[..., 3], cross, e0)
-        sub = _fitting(view.shape[0], view.shape[1], cross, e0, wall, MATERIALS[look], zlib.crc32(("%s|%s|%d" % (rel, side, i)).encode()))
+        sub = _fitting(view.shape[0], view.shape[1], cross, e0, wall, MATERIALS[look], seed)
         _over(view, sub)
         done.append((side, round(cross, 1), round(e0, 1), wall))
     return Image.fromarray(np.clip(a + 0.5, 0, 255).astype(np.uint8), "RGBA"), done
