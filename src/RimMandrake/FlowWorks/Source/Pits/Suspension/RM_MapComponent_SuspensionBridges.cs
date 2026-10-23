@@ -879,7 +879,12 @@ namespace RimMandrake.FlowWorks.Pits
 		/// live look at 1.6's draw batching.)</summary>
 		public override void MapComponentUpdate()
 		{
-			if (floorBand.Count == 0 || Find.CurrentMap != map)
+			if (Find.CurrentMap != map)
+			{
+				return;
+			}
+			RM_DrawbridgeArt.DrawLeaves(map, bridges);
+			if (floorBand.Count == 0)
 			{
 				return;
 			}

@@ -476,6 +476,22 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "a raised square draws empty (R12)");
             });
 
+            Case("Drawbridge_raised_leaf_draws_without_its_winch", () =>
+            {
+                // TIMBER_LEAF_DIAGNOSE_UP_AND_INVISIBLE: a raised leaf with no winch house drew nothing (drawn from the winch's DrawAt)
+                string c = Src("Pits", "Suspension", "RM_MapComponent_SuspensionBridges.cs");
+                string upd = Body(c, "public override void MapComponentUpdate()");
+                Assert(upd.Contains("RM_DrawbridgeArt.DrawLeaves(map, bridges);"), "can-fail: the bridges' map component draws every leaf");
+                Assert(upd.IndexOf("RM_DrawbridgeArt.DrawLeaves(map, bridges);") < upd.IndexOf("if (floorBand.Count == 0)"),
+                    "can-fail: leaves draw even with nobody under a deck");
+                string a = Src("Pits", "Drawbridge", "RM_DrawbridgeArt.cs");
+                string leaves = Body(a, "public static void DrawLeaves(Map map, IReadOnlyList<SuspensionBridgeRecord> bridges)");
+                Assert(leaves.IndexOf("DrawLeafUp(map, r, l);") >= 0 && leaves.IndexOf("DrawLeafUp(map, r, l);") < leaves.IndexOf("if (l.winch != null"),
+                    "can-fail: the raised leaf is not gated on a winch");
+                string w = Body(Src("Pits", "Drawbridge", "RM_DrawbridgeControl.cs"), "protected override void DrawAt(Vector3 drawLoc, bool flip = false)");
+                Assert(!w.Contains("DrawLeafUp") && !w.Contains("DrawPlanks"), "can-fail: the winch must not draw the leaf a second time");
+            });
+
             Case("Drawbridge_P1_structure_reads_see_a_raised_leaf", () =>
             {
                 string c = Src("Pits", "Suspension", "RM_MapComponent_SuspensionBridges.cs");

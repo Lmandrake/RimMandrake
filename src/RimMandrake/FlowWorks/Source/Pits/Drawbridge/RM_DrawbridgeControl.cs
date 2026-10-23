@@ -120,15 +120,12 @@ namespace RimMandrake.FlowWorks.Pits
 			lookGraphic = null;
 		}
 
-		/// <summary>Phase 6 (R12): the winch house draws its leaf upright while it is raised, and the art planks beside it.
-		/// Its own picture is printed with the map mesh (drawerType MapMeshAndRealTime), so the base draw is not repeated.</summary>
+		/// <summary>Its own picture is printed with the map mesh (drawerType MapMeshAndRealTime), so the base draw is not repeated
+		/// here. TIMBER_LEAF_DIAGNOSE_UP_AND_INVISIBLE: the raised leaf and the planks are NOT drawn from here any more (a leaf
+		/// with no winch drew nothing, and a winch culled off screen hid its on-screen leaf); the bridges' map component draws
+		/// them every frame (RM_DrawbridgeArt.DrawLeaves).</summary>
 		protected override void DrawAt(Vector3 drawLoc, bool flip = false)
 		{
-			if (RM_Drawbridges.LeafOfWinch(this, out SuspensionBridgeRecord r, out DrawbridgeLeaf l))
-			{
-				RM_DrawbridgeArt.DrawLeafUp(Map, r, l);
-				RM_DrawbridgeArt.DrawPlanks(Map, r, l);
-			}
 		}
 
 		public override string GetInspectString()
