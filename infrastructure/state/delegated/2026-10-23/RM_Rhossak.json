@@ -3,17 +3,17 @@
   "opus": [
    {
     "model_requested": "opus",
-    "seconds": 42.6,
+    "seconds": 35.6,
     "models_reported": [
      "claude-opus-5-5"
     ],
-    "cost_usd": 0.36106119999999997
+    "cost_usd": 0.34873640000000006
    }
   ],
   "gpt": [
    {
     "model_reported": "gpt-6.1-sol",
-    "seconds": 34.3
+    "seconds": 20.3
    }
   ],
   "regen": {
@@ -22,24 +22,24 @@
    "models_reported": [
     "claude-sonnet-5-5"
    ],
-   "cost_usd": 0.1221047
+   "cost_usd": 0.1251267
   }
  },
  "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
  "subject": "RM_Rhossak",
  "decision": "REGEN",
  "reasons": [
-  "opus band WEAK (model said weak); blocking ['DEPARTURE_MISSING', 'DEPARTURE_MISSING']; polish ['STYLE_EARTHLY', 'LEGIB_32']",
-  "gpt regen: unsettled ['K1', 'K2'], own blocking ['DEPARTURE_MISSING', 'DEPARTURE_MISSING']"
+  "opus band WEAK (model said good); blocking ['DEPARTURE_MISSING']; polish ['STYLE_EARTHLY']",
+  "gpt regen: unsettled ['K1'], own blocking ['DEPARTURE_MISSING']"
  ],
  "prompt_versions": {
   "preamble": {
-   "tag": "preamble@v1",
-   "sha": "a4850279ccbf"
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
   },
   "opus_first_pass": {
-   "tag": "opus_first_pass@v1",
-   "sha": "14056552e355"
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
   },
   "gpt_targeted_second_look": {
    "tag": "gpt_targeted_second_look@v1",
@@ -54,8 +54,8 @@
    "sha": "9cda888a5233"
   },
   "template": {
-   "tag": "creature@v2",
-   "sha": "16a3854542c6"
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
   },
   "severity": {
    "tag": "severity@v3",
@@ -63,10 +63,10 @@
   }
  },
  "image_sha256": {
-  "south.png": "04ac816a743c5fa5000fa1544b35e706c16d275bd4fc3f5f9d5d4d30983c926e",
-  "east.png": "35a450b37c73b2d2330f0a1802cf665a29bda0ced86fef41e1a17b4a93db2e54",
-  "north.png": "ec78b4a980ec25af3f7c239291a1d6434451fda117484bc3350c8f638fd68127",
-  "scale.png": "47beb69f3649f8bcafa4643fa7ea9da69b0518969fe6af0774c5ad7e448cb795",
-  "facings.png": "d4acc44e6f783f0f7e51f7bf4d1598de4857ba2fd80a50d3b9f01817d83ca7a1"
+  "south.png": "235597f46775c9d908734ff8323a259158c19f56f963b0c0b2e59bf964f0620b",
+  "east.png": "e9167e71fe9d6b935bdf0aa339ce926ff53b89be506bac1fc23d8e53b3d0e120",
+  "north.png": "4c7a1372fe4c9d589e305c2696d2423ab6de98a9d6b33e77977c9880e47274e6",
+  "scale.png": "66a10f89251ef1c475143436189b7a216f295c2a576581d9689cda6209a07548",
+  "facings.png": "fc23b41efbda7a755fd0b5034440915ffc0b548d45130bf076b7f159aa286cb6"
  }
 }

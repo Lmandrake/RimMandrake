@@ -1,0 +1,53 @@
+[
+ {
+  "id": "arteval_RM_BedBug_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_BedBug",
+  "prompt": "A single oversized bedbug, a pest insect grown large enough to bring down prey bigger than itself, drawn as a game sprite for RimWorld in a painterly, realistic vanilla RimWorld style with a thin clean dark outline and a transparent background. The camera is a low, oblique three-quarter game angle slightly above the animal, the same for every facing, so the bedbug reads as a standing creature with its belly toward the ground and its legs bearing its weight. This view is the rear view, seen from behind: the rounded rear of the domed abdomen is nearest the viewer and foreshortened, the plated back rises away from the viewer toward the far head, the head and fangs are mostly hidden behind the raised shell with only the tips of the curved fangs and the top of the head peeking past, and the six legs are seen from behind, angling down to the ground on both sides and supporting the body above them. Its body is a flat oval with a reddish-brown segmented abdomen beneath a domed, armoured back, finished with fine chitin texture, a matte-to-satin sheen and small natural highlights, a textured painterly surface and never a smooth glossy toy. The head is broad, heavy and wide, with muscled jaw plates and small dark eyes, and it carries a pair of large, curved, dark venom fangs that sweep forward and inward, framing the face and jutting out past the head. It has six thick, armoured, segmented legs with darker joints, each ending in a strong hooked claw, all of the same thickness and claw size, set in a natural, slightly irregular stance built to grip and hold large prey. It is one animal with consistent proportions, colour, leg thickness, claws, fang size and rendering throughout. A single centred subject on a transparent background, with no ground and no text.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_TOPDOWN, F_TOPDOWN",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_cauldron_r1_00"
+ },
+ {
+  "id": "arteval_RM_DecayDrake_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_DecayDrake",
+  "prompt": "A single RimWorld creature sprite, the fermatalis, a heavy, flightless, squat drake, in a painterly vanilla RimWorld style, realistic, with a clean dark outline, on a transparent background, with no ground plane or backdrop. The body is short, deep and barrel-shaped on thick, stout legs, with a blunt, heavy dragon-shaped head, a short thick tail and olive-green scaly hide with amber-orange undertones. A huge round sagging belly hangs low between the legs, wider than the chest and nearly touching the ground; it is the heaviest mass of the body and looks swollen with sour-sweet ferment. The wings are small, stubby vestigial flaps folded tight and flat against the back and upper flanks, much shorter than the body, too small for flight. A faint, semi-transparent yellowish yeast-mist curls from the nostrils and mouth, drawn as part of the sprite near the head. Bubbling, sour fermenting mash is crusted on the jaw, the belly and the feet, and drips from the underside of the belly. Two or three compact, soft, bubbling mounds of fermenting mash, pale-green and amber pulp with glossy bubbles, rest on the ground beside the planted feet, each mound a separate rounded silhouette with transparent space around it. The bloated belly, the yeast-mist breath and the bubbling mash mounds at the feet are the most prominent features, and the silhouette is an unfamiliar bloated, squat drake. The animal keeps the same scale in every facing: the belly volume, the barrel depth and the leg thickness and length are identical in the front, rear and side views. The side view shows the full round belly in profile, hanging as low and as round as in the front view, on thick stout legs of equal girth, with the lowered head reaching forward so any height difference comes only from posture. The eyes are alert and watchful, the stub wings are folded on the shoulders, the blunt head carries mist at the muzzle and curling from the nostrils, and the deep barrel body, the sagging belly line and the short thick tail give it a heavy, grounded stance on its thick legs with broad haunches.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, DEPARTURE_MISSING, F_SIZE_JUMP, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_cauldron_r1_00"
+ },
+ {
+  "id": "arteval_RM_Vexxiss_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Vexxiss",
+  "prompt": "A single RimWorld creature sprite, the vexxiss, on a transparent background, in painterly vanilla RimWorld style, realistic, with a clean dark outline. The vexxiss is a squat, heavy, four-legged walker whose body is a lumpy hill of slag. Its hide is made of grown-together plates of slag-like smelter-scab and old bark, in dark charcoal, rust and bark brown, with rough ridged seams between the plates. The head is a blunt, smooth, featureless wedge of plate that carries no eyes, and the body is equally smooth of eyes. The silhouette is irregular and lumpy, with stacked plates breaking the outline, and the body has no clean domed shell. Down the midline of the back stands a single row of upright crystal fans, each rooted at a fixed point on the spine. Each fan is a flat, flared plate of four to six translucent pale blades, splayed outward from a shared base like a vent grille, with its flat face aligned lengthwise along the back. In the side view each fan shows its full flared face. In the rear view, seen from behind, and the front view, eyes-side toward the viewer, the same fans turn with the body and appear edge-on as one narrow vertical column of thin crystal blades overlapping one behind another on the centre line of the back, no wider than the neck and never spreading across the shoulders. Every facing shows the same fans at the same attachment points and in the same order, tallest near the shoulders and smaller near the haunches. The crystal fan edges are cleanly cut out against the transparent background, with crisp antialiased edges tinted the same pale translucent colour as the adjacent crystal blade, and no coloured fringe. The legs are thick, planted columns of plate ending in broad, heavy feet, with the same foot size, the same limb thickness and the same standing height on every leg, all resting on one ground line. All facings are drawn at one shared body scale: the same overall body height, the same body width allowing for viewing direction, and the same foot size, with the rear view's feet and legs matching the front view's in size. The plated body and legs fill about 80% of the canvas height. The palette, the plate texture, the lumpy slag silhouette and the eyeless head match the previous render exactly.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_INCONSISTENT, F_SIZE_JUMP, ALPHA_HALO, F_INCONSISTENT, F_SIZE_JUMP, ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_cauldron_r1_00"
+ }
+]

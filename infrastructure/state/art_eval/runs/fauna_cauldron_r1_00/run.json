@@ -1,0 +1,12 @@
+{
+ "run_id": "fauna_cauldron_r1_00",
+ "test": false,
+ "started": "2026-10-23T16:36:51-07:00",
+ "subjects": [
+  "RM_BedBug",
+  "RM_DecayDrake",
+  "RM_Radyak",
+  "RM_Vexxiss"
+ ],
+ "versions_key": "departures_brief@v2#9cda88+gpt_targeted_second_look@v1#cb6e32+opus_first_pass@v2#85b8f1+preamble@v2#7130aa+regen_prompt_edit@v1#861700+severity@v3#950903+creature@v3#fdc520"
+}

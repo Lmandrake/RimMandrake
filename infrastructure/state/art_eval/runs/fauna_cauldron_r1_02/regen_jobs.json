@@ -1,0 +1,70 @@
+[
+ {
+  "id": "arteval_RM_CrystalMit_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_CrystalMit",
+  "prompt": "A single Crystalmit, a mite-like creature, painted in the vanilla RimWorld animal-texture style: realistic, with a clean dark outline, on a transparent background. Its body is a rounded stone carapace raised on eight short, jointed stone legs, with a distinct head, small dark eyes and one pair of heavy, blunt rock-crushing mandibles. The creature is drawn at one fixed scale for every view: the carapace keeps the same width and length, and the eight legs keep the same overall span, whether the view is front or rear. The rear view, seen from behind, shows the back, the rounded rear of the carapace and the haunches at that same full body width and leg spread, with the eyes and mandibles hidden; only the crystal silhouette differs, because the clusters sit on the back. The carapace and legs are grey, granite-like stone plates in muted slate, ash and warm-grey tones, with a mottled, weathered, speckled surface. A few clusters of glassy, partly translucent quartz crystals jut from the back and shoulders, pale and uneven, letting light through; between them the hide is mottled stone with small translucent crystalline patches. The crystals rise from the carapace without enlarging or shrinking it, and its silhouette stays clearly that of an animal. Brushwork is visible, shading is soft, tones are muted and natural, highlights on the crystals are small and uneven, and the stone is matte.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_cauldron_r1_02"
+ },
+ {
+  "id": "arteval_RM_Mullgoth_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Mullgoth",
+  "prompt": "RimWorld creature sprite of a mullgoth, painterly vanilla RimWorld style, realistic, clean dark outline, fully transparent background. The body is a single low, domed mound with no distinct head, neck or snout, so it reads as a decomposing hillock that decided to walk. Long pale cream hair falls in a full curtain from the crown of the mound to the ground on every side, so only glimpses of four short, thick, hairy legs show through it, with subtle foot separations at the hem. The hair is patched with cool, bluish grey-green moss and scattered crusty patches of pale lilac-violet lichen growing on it like ground cover, with several lilac patches clearly visible in every view. Black, glistening slime drips from the underside onto the ground beneath the hair. All facings share one scale: the side profile shows the mound at the same height as the front and rear views, a long, tall dome whose crown reaches the same top line, with body depth and standing leg height matching the other views. The silhouette edge is a crisp dark outline around cream hair, grey-green moss and lilac lichen, and every edge pixel is one of the creature's own hair, moss or lichen colours.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_SIZE_JUMP, DEPARTURE_MISSING, DEPARTURE_MISSING, F_SIZE_JUMP, DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_cauldron_r1_02"
+ },
+ {
+  "id": "arteval_RM_Suush_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Suush",
+  "prompt": "A single RimWorld creature sprite in a painterly, hand-painted vanilla RimWorld style, realistic, with matte brushwork and soft painted shading, on a transparent background. A suush: a translucent, perfectly round, taut gas-filled globe floating in open air a few feet above the ground. The globe is a closed bladder with a smooth, continuous skin that closes into a rounded base, the skin running unbroken to the roots of the tentacles. The globe rim carries a thin, darker painted contour in a deep muted teal-brown with slightly varied line weight, the pale highlight sitting just inside the line, so the silhouette is crisp and readable at normal play zoom while the translucent membrane stays visible. A faint warm glow lights it from within, and the dim silhouettes of recently digested matter hang suspended in the vapor inside, visible through the thin wall, in an irregular arrangement of varied sizes and positions with differing glow tints. From the rounded base hangs a dense curtain of many long, very fine gathering tentacles, falling vertically straight down like a fine drifting curtain, swaying only slightly. The curtain is moderately long and ends in fine tips well above the bottom of the canvas, with a wide band of empty transparent space beneath the tips, about one globe-radius tall, so the whole creature visibly hovers in open air with a clear gap of air beneath it. The tentacle bundle is outlined with the same thin dark painted edge, outer tentacles clearly defined and inner strands shaded in a darker value, so globe and curtain read as one clear silhouette. The body has a smooth, featureless surface with no head, eyes, mouth or limbs. The creature hovers upright and at rest in still air, the globe and tentacle curtain keeping a consistent size, proportions and palette. Drawn at 2x2 tile scale, readable at small size.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: DEPARTURE_MISSING, STYLE_OFF, STYLE_OFF",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_cauldron_r1_02"
+ },
+ {
+  "id": "arteval_RM_Zisska_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Zisska",
+  "prompt": "A single RimWorld creature sprite, the zisska, a low plated stone-eating grazer, on a transparent background. Painterly vanilla RimWorld style, realistic, clean dark outline. The body is one low, very wide, flat shield, about three times as wide as it is tall, and it keeps this same shallow shield shape in every view, front, side and rear: the top of the shell is nearly flat with only a slight low central crown, and the shell stands at the same low height in every view. A broad scalloped apron of plates spreads outward from the crown and sits close to the ground, its rim nearly touching the surface; the short legs are mostly hidden beneath the plated edge. Each plate is rough, matte, grey-brown stone with a granular, pitted surface and several concentric mineral rings like a cut agate or geode. Bright sulphur-yellow mineral crust builds up in the plate seams and rings and coats the snout plate and the mouth. In the front view, eyes toward the viewer, the head is carried low and nose-down against the ground and ends in a broad, flat rasping snout plate with its mouth rimmed in yellow mineral, and the plate apron is seen head-on. In the side view the long flat profile shows the low shield with the snout plate at the front. In the rear view, seen from behind, the back edge of the shell, the short tail and the haunches show, with the head and eyes hidden. The overall form is a flat, wide stone disc pressed to the ground with a broad scraper snout. Even soft lighting, the creature centred and filling the frame, nothing else in the image.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: DESC_MISS, F_INCONSISTENT, F_SIZE_JUMP, DEPARTURE_MISSING, F_INCONSISTENT, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_cauldron_r1_02"
+ }
+]

@@ -3,36 +3,36 @@
   "opus": [
    {
     "model_requested": "opus",
-    "seconds": 41.4,
+    "seconds": 44.7,
     "models_reported": [
      "claude-opus-5-5"
     ],
-    "cost_usd": 0.3640884
+    "cost_usd": 0.40548320000000004
    }
   ],
   "regen": {
    "model_requested": "sonnet",
-   "seconds": 11.3,
+   "seconds": 9.2,
    "models_reported": [
     "claude-sonnet-5-5"
    ],
-   "cost_usd": 0.1182287
+   "cost_usd": 0.1224787
   }
  },
  "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
  "subject": "RM_Bileworm",
  "decision": "REGEN",
  "reasons": [
-  "opus band REALLY_BAD (model said weak); blocking ['F_SIZE_JUMP', 'DEPARTURE_MISSING']; polish ['F_TOPDOWN', 'STYLE_EARTHLY']"
+  "opus band REALLY_BAD (model said really_bad); blocking ['F_INCONSISTENT', 'F_SIZE_JUMP', 'DEPARTURE_MISSING']; polish ['F_TOPDOWN']"
  ],
  "prompt_versions": {
   "preamble": {
-   "tag": "preamble@v1",
-   "sha": "a4850279ccbf"
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
   },
   "opus_first_pass": {
-   "tag": "opus_first_pass@v1",
-   "sha": "14056552e355"
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
   },
   "gpt_targeted_second_look": {
    "tag": "gpt_targeted_second_look@v1",
@@ -47,8 +47,8 @@
    "sha": "9cda888a5233"
   },
   "template": {
-   "tag": "creature@v2",
-   "sha": "16a3854542c6"
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
   },
   "severity": {
    "tag": "severity@v3",
@@ -56,10 +56,10 @@
   }
  },
  "image_sha256": {
-  "south.png": "7f8f8d0c13500d9c3ee6cb5ba10afd7c414552897dd2c3aebacebd0f8f672b6a",
-  "east.png": "745642a826333a60adbcc0183434b933826641a845548371777634b580a59e7b",
-  "north.png": "859bdd5cba4d469964246dba43a63fe0d8d580e216835957898b424f29d79779",
-  "scale.png": "457879205016c72c1bc5a1638135bb93c038c8088d71abeed7d14d86e0837bc2",
-  "facings.png": "b603d5f7afe71792514e6bc8c260f91e42993e90db0d2c0c59b81a1ac32acbce"
+  "south.png": "201f64abe491c853096209ed371b159e1a6bed7d359937c7d4df279f2be066b9",
+  "east.png": "08eede0799f9c485988bede39ceb5bc9f34ed12d1dbcb1dfcd2578cc586fea49",
+  "north.png": "98f2bf3fa95e5e78756f3a140ae16b05644658c08ac66ed73e5f09476dc0219b",
+  "scale.png": "51dbb3ca1b4e922b2a7c670fdf3c970814750ac877ab8e3c901284bd47200cc3",
+  "facings.png": "600bb7f1dd64732a09c65ba995ea7b3e1f1371541a03a92d6f0234805172d95f"
  }
 }

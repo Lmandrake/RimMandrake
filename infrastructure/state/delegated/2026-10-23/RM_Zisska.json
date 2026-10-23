@@ -3,36 +3,43 @@
   "opus": [
    {
     "model_requested": "opus",
-    "seconds": 36.2,
+    "seconds": 39.9,
     "models_reported": [
      "claude-opus-5-5"
     ],
-    "cost_usd": 0.361364
+    "cost_usd": 0.36830260000000004
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 53.6
    }
   ],
   "regen": {
    "model_requested": "sonnet",
-   "seconds": 11.6,
+   "seconds": 10.7,
    "models_reported": [
     "claude-sonnet-5-5"
    ],
-   "cost_usd": 0.12144669999999999
+   "cost_usd": 0.1252907
   }
  },
  "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
  "subject": "RM_Zisska",
  "decision": "REGEN",
  "reasons": [
-  "opus band REALLY_BAD (model said weak); blocking ['DEPARTURE_MISSING', 'DEPARTURE_MISSING', 'DEPARTURE_MISSING', 'STYLE_EARTHLY']; polish ['LEGIB_32']"
+  "opus band WEAK (model said really_bad); blocking ['STYLE_EARTHLY', 'DEPARTURE_MISSING', 'DESC_MISS', 'F_INCONSISTENT', 'F_SIZE_JUMP', 'DEPARTURE_MISSING']; polish []",
+  "gpt regen: unsettled ['K2', 'K3', 'K4', 'K5'], own blocking ['DEPARTURE_MISSING', 'F_INCONSISTENT', 'F_SIZE_JUMP']"
  ],
  "prompt_versions": {
   "preamble": {
-   "tag": "preamble@v1",
-   "sha": "a4850279ccbf"
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
   },
   "opus_first_pass": {
-   "tag": "opus_first_pass@v1",
-   "sha": "14056552e355"
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
   },
   "gpt_targeted_second_look": {
    "tag": "gpt_targeted_second_look@v1",
@@ -47,8 +54,8 @@
    "sha": "9cda888a5233"
   },
   "template": {
-   "tag": "creature@v2",
-   "sha": "16a3854542c6"
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
   },
   "severity": {
    "tag": "severity@v3",
@@ -56,10 +63,10 @@
   }
  },
  "image_sha256": {
-  "south.png": "f83f96e71c1903c81fbf82b842fea90853e0e324dd949ccddee88fd7b6968630",
-  "east.png": "99eb13669063402d8c89da73cd1d72b840f950402738577ae68f10c420d7bb49",
-  "north.png": "1762d0c78dfc16a42b264fe2e7316ffa47502f10222e9bd8f477e12b3ffc33c1",
-  "scale.png": "7ce513f787a668035b6e19706f1049e651a4acb120369200b7c5b1977fdeceb9",
-  "facings.png": "b1cc825adbefecde193c3ea9cd5d571a07e37997f2c37f2cd161f59268de752e"
+  "south.png": "655f66631a47cdbb573e23b1f8a626c1158437bd795ff6bbf22928b12cbbb93d",
+  "east.png": "1c48ecdc2d472ad984dd4ab675b7ade6aa4e4b7e84b20a33ea73bee75157e185",
+  "north.png": "26c96b9e044593dfe13bc068842365b7d341d2fe89dc86bbab71dae9fe216d24",
+  "scale.png": "1efa84de1044c760cf5af9f7ea39202d96b33624ef26c5a0773bb59a457cb364",
+  "facings.png": "c62a92bc636902c2427c93963235969ef1622eb17d3bcd61791b8dccbf40344a"
  }
 }
