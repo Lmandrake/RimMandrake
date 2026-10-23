@@ -24,7 +24,7 @@ are not used: they are not evidence, because the planet is painted once at the e
 | **Functional script exists** (`<Mod>/validation.py`) | PASS | PASS | PASS | PASS |
 | **North-star bars**: `modcheck floor --all` | PASS: VALIDATED, 20/20 bars, *bar met* | FAIL: DRAFT, 0 bars (the owner validates the bars) | FAIL: DRAFT, 0 bars | FAIL: DRAFT, 0 bars |
 | **DLL matches its source**: `dll_source_stamp.py check` | PASS: MATCH (FireEcologyHook, and PyrelandsMechanics in RimUtinni) | PASS: MATCH | PASS: MATCH | PASS: MATCH |
-| **Code review**: `code_review_status.py check` on every `.cs`/`.py` in the mod | FAIL: 9 DIRTY / 37 CLEAN | FAIL: 36 DIRTY / 14 CLEAN | FAIL: 21 DIRTY / 8 CLEAN | FAIL: 22 DIRTY / 29 CLEAN |
+| **Code review**: `code_review_status.py check` on every tracked `.cs`/`.py`/`.xml` in the mod (re-measured 2026-10-22) | 85 CLEAN / 1 DIRTY (`selftest_pyrelands_site.py`, edited in review) | 95 CLEAN / 0 DIRTY | 66 CLEAN / 0 DIRTY | 96 CLEAN / 1 DIRTY (`validation.py`, edited in review) |
 | **Deployed = repo**: `deploy_custom_mods.py --compose biomes` dry run | FAIL: drift (world texture) | FAIL: drift (BiomeDef, plants, races, 2 patches, textures) | FAIL: drift (BiomeDef, races, textures) | FAIL: drift (defs, textures) |
 | **Direct Sun**: no per-biome heat kind is owed (owner, 2026-10-19: *"no biome-specific heat, no biome-specific sun"*) | n/a | n/a | n/a | n/a: `CONTAGION_HEAT_JUDGE_SUN_KIND_UNSAID` superseded by `DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES` |
 | **No vanishing without a sign**: read every `Destroy`/`DeSpawn` on a pawn in the mod's C# | PASS: none on pawns | PASS: only inside proof cleanup | PASS: none | PASS: the Coalescence absorbs only wild members of its own unfinished kind, with a dust puff and a growth message |
@@ -48,8 +48,8 @@ are not used: they are not evidence, because the planet is painted once at the e
 
 - **Northstar bars** for Leaning Scrub, Cauldron and Contagion. Agents write and approve the
   scripts, but the hash-bound bars are the owner's. The scripts exist (`validation.py`).
-- **Code review**: 88 DIRTY files across the four mods. They belong to the standing review loop.
-  They were not reviewed in one night pass.
+- **Code review**: done 2026-10-22 (FOUNDRY helper, full-file reviews of every DIRTY `.cs`/`.py`/`.xml`): two
+  files stay DIRTY because the review itself edited them (see the table).
 - **Art**: accepted as-is by the 2026-10-18 ruling. The non-REGEN rows above are a record, not a
   blocker. RSW twin re-art is `CANON_CREATURE_REGEN_1`.
 
