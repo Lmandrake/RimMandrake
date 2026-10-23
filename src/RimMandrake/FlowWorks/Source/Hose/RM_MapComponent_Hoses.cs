@@ -747,6 +747,7 @@ namespace RimMandrake.FlowWorks.Hose
             lastCarryDraws = lastClipDraws = lastGhostDraws = lastPortCouplings = 0;
             lastDepthDraws = 0;
             lastPortStubs = 0;
+            lastMateJoins = 0;
             lastOverDraws = lastCrossShadowDraws = 0;
             RimMandrake.FlowWorks.Machinery.RM_UnderCouplers.ResetFrame();
             lastFar = Find.CameraDriver.CurrentZoom >= CameraZoomRange.Far;
@@ -775,6 +776,9 @@ namespace RimMandrake.FlowWorks.Hose
                 V2 portAt = default(V2), portAxis = default(V2);
                 bool onPort = r.laid && r.carry != HoseCarryState.Retracting && PortEnd(r, out portAt, out portAxis);
                 if (onPort) key += "|p" + portAt.X.ToString("0.000") + "," + portAt.Z.ToString("0.000");
+                // HOSE_SPLICE_BUILD_MATES_BY_SLOPE: an open end lying on another hose's open end couples to it face to face
+                MateInfo mi = onPort ? null : MateFor(r);
+                if (mi != null) key += "|m" + mi.key;
                 // review 2026-10-22: the key is built first, so a cache hit reuses the pose its meshes were built from
                 meshes.TryGetValue(r, out Cached c);
                 List<V2> pts;
@@ -785,9 +789,12 @@ namespace RimMandrake.FlowWorks.Hose
                     // HOSE_LEADIN_FIX_STUB_IN_THE_CANAL: a hose that meets the port from the side is not re-aimed (the Hermite would loop
                     // back behind the end); DrawEnds gives it an elbow fitting instead (HoseMath.PortFitting)
                     if (onPort && !HoseMath.SideArrival(pts, portAxis)) pts = HoseMath.EndOnPort(pts, portAt - portAxis * 0.5, portAxis, 1.2);
+                    if (mi != null) pts = Mated(r, mi, pts);
                 }
                 // rule 3: a joiner that would sit over a hose drawn beneath is left out (HoseMath.Layer)
                 List<int> joints = Layered().Joints.TryGetValue(r.parent.thingIDNumber, out List<int> kept) ? kept : lay.Joints;
+                // a mated end's re-shaped run carries no mid-hose joiner (its samples are new)
+                if (mi != null && mateKept.TryGetValue(r, out int keptN)) joints = joints.FindAll(j => j < keptN - 2);
                 // S4: winding in, the laid pose is cut at the wound fraction (rebuilt per frame only while winding)
                 if (r.carry == HoseCarryState.Retracting)
                 {
@@ -1106,7 +1113,17 @@ namespace RimMandrake.FlowWorks.Hose
             V2 d1 = (pts[n - 1] - pts[Math.Max(0, n - 4)]).Norm();
             // S4 (section 7): a lying end beside a pipe or tank (any faction) couples to it, a brass coupling facing the port
             HoseFreeEnd fe = lying && r.laid && r.carry != HoseCarryState.Retracting ? FreeEndOf(r) : default(HoseFreeEnd);
-            if (fe.Kind == HoseEndKind.Port)
+            if (lying && r.carry != HoseCarryState.Retracting && mateKept.ContainsKey(r) && MateFor(r) != null)
+            {
+                // HOSE_SPLICE_BUILD_MATES_BY_SLOPE: two open ends coupled face to face draw ONE joiner, each hose its half (as a
+                // mid-hose joiner, HoseMath.JoinerMesh), on the straight run HoseSpliceMath laid along the coupling axis
+                float js = (float)HoseMath.FittingSize(vis, PieceBand, CouplingMax);
+                V2 e = pts[n - 1];
+                Piece(hm.CouplingBare, e - d1 * (JoinerMesh * js), d1, js, y);
+                Wrap(hm, e - d1 * (HoseMath.JoinerWrapIn * js + HoseMath.WrapLength / 2), d1, vis, y + 0.0002f, wrapTint);
+                lastMateJoins++;
+            }
+            else if (fe.Kind == HoseEndKind.Port)
             {
                 V2 dp = fe.PortSide.X == 0 && fe.PortSide.Z == 0 ? d1 : new V2(fe.PortSide.X, fe.PortSide.Z);
                 float widen = fe.PortKind == HosePortKind.Tank || fe.PortKind == HosePortKind.Machine ? PortCouplingWiden : 1f;
@@ -1213,6 +1230,117 @@ namespace RimMandrake.FlowWorks.Hose
         public readonly Dictionary<CompHoseReel, double> lastDrawnLen = new Dictionary<CompHoseReel, double>();
         internal readonly Dictionary<CompHoseReel, V2> lastHand = new Dictionary<CompHoseReel, V2>();
         public int lastCarryDraws, lastClipDraws, lastGhostDraws, lastPortCouplings, carryPrefixBuilds;
+
+        // ------------------------------------------------------------------ HOSE_SPLICE_BUILD_MATES_BY_SLOPE
+        /// <summary>A coupled pair: A = the lower thing id; the solve (axis, coupling point, each end's cached seed) and its key
+        /// (both lays' keys, the stiffness and the girth), so a pair is solved once per layout.</summary>
+        private sealed class MateInfo
+        {
+            public string key;
+            public CompHoseReel A, B;
+            public HoseSpliceMath.Mate mate;
+        }
+        private readonly Dictionary<CompHoseReel, MateInfo> mateOf = new Dictionary<CompHoseReel, MateInfo>();
+        private readonly Dictionary<string, MateInfo> mateSolved = new Dictionary<string, MateInfo>();
+        /// <summary>Per mated hose: how many leading samples of its drawn pose are the laid hose's own (joiners past it are dropped).</summary>
+        private readonly Dictionary<CompHoseReel, int> mateKept = new Dictionary<CompHoseReel, int>();
+        private int mateFrame = -1;
+        /// <summary>Probe counters: joiner halves drawn last frame, pair solves (layout changes) this session.</summary>
+        public int lastMateJoins, mateSolves;
+
+        /// <summary>An end that can couple to another hose's end: laid and lying (not carried or winding in), an OPEN end (a
+        /// nozzle or cap has no coupling), not already coupled to a relay reel or a port.</summary>
+        private bool MateCandidate(CompHoseReel r)
+        {
+            if (r == null || !r.laid || r.lay == null || r.end != HoseEnd.Open) return false;
+            if (r.carry == HoseCarryState.Carrying || r.carry == HoseCarryState.Retracting) return false;
+            HoseEndKind k = FreeEndOf(r).Kind;
+            return k == HoseEndKind.Free || k == HoseEndKind.Water;
+        }
+
+        /// <summary>The pairs, re-read once per frame: two candidate ends on the same or 8-adjacent cells couple; each hose
+        /// couples once, to the lowest-id partner in reach (A = the lower id).</summary>
+        private void RefreshMates()
+        {
+            if (mateFrame == Time.frameCount) return;
+            mateFrame = Time.frameCount;
+            mateOf.Clear();
+            var cands = new List<CompHoseReel>();
+            foreach (CompHoseReel r in reels) if (MateCandidate(r)) cands.Add(r);
+            if (cands.Count < 2) { mateKept.Clear(); return; }
+            cands.Sort((a, b) => a.parent.thingIDNumber.CompareTo(b.parent.thingIDNumber));
+            float vis = (float)HoseMath.VisibleWidth(1, RM_HoseSettings.plumpAmount);
+            double kmax = 1 / Math.Max(0.45, RM_HoseSettings.Shape().MinBendRadius);
+            for (int i = 0; i < cands.Count; i++)
+            {
+                CompHoseReel a = cands[i];
+                if (mateOf.ContainsKey(a)) continue;
+                for (int j = i + 1; j < cands.Count; j++)
+                {
+                    CompHoseReel b = cands[j];
+                    if (mateOf.ContainsKey(b)) continue;
+                    IntVec3 ea = a.EndCell, eb = b.EndCell;
+                    if (Math.Max(Math.Abs(ea.x - eb.x), Math.Abs(ea.z - eb.z)) > 1) continue;
+                    string key = a.layKey + "#" + b.layKey + "#" + kmax.ToString("0.###") + "#" + vis.ToString("0.###");
+                    if (!mateSolved.TryGetValue(key, out MateInfo mi))
+                    {
+                        mateSolves++;
+                        List<V2> A = a.lay.Flat, B = b.lay.Flat;
+                        HoseSpliceMath.Mate m = A != null && B != null && A.Count > 2 && B.Count > 2
+                            ? HoseSpliceMath.MatePair(A, B, A[A.Count - 1], kmax, vis, out _, out _) : null;
+                        if (mateSolved.Count > 64) mateSolved.Clear();
+                        mateSolved[key] = mi = new MateInfo { key = key.GetHashCode().ToString("x8"), A = a, B = b, mate = m };
+                    }
+                    if (mi.mate == null) continue;   // no gentle route: both drawn as laid
+                    mateOf[a] = mateOf[b] = mi;
+                    break;
+                }
+            }
+            if (mateKept.Count > 0)
+            {
+                var gone = new List<CompHoseReel>();
+                foreach (CompHoseReel r in mateKept.Keys) if (!mateOf.ContainsKey(r)) gone.Add(r);
+                foreach (CompHoseReel r in gone) mateKept.Remove(r);
+            }
+        }
+
+        private MateInfo MateFor(CompHoseReel r)
+        {
+            RefreshMates();
+            return mateOf.TryGetValue(r, out MateInfo mi) ? mi : null;
+        }
+
+        /// <summary>r's drawn pose re-shaped onto the pair's coupling (HoseSpliceMath.MateTail with the pair's cached seed, so a
+        /// fill transition re-lands one curve per tick); the pose as laid when the re-shape fails.</summary>
+        private List<V2> Mated(CompHoseReel r, MateInfo mi, List<V2> pts)
+        {
+            bool isA = r == mi.A;
+            HoseSpliceMath.Mate m = mi.mate;
+            CompHoseReel other = isA ? mi.B : mi.A;
+            double kmax = 1 / Math.Max(0.45, RM_HoseSettings.Shape().MinBendRadius);
+            double vis = HoseMath.VisibleWidth(1, RM_HoseSettings.plumpAmount);
+            List<V2> o = HoseSpliceMath.MateTail(pts, m.C, isA ? m.Axis : -m.Axis, HoseSpliceMath.CouplingStraight(vis), kmax,
+                null, isA ? m.SeedA : m.SeedB, out _, vis);
+            if (o == null) { mateKept.Remove(r); return pts; }
+            int same = 0;
+            while (same < o.Count && same < pts.Count && V2.Dist(o[same], pts[same]) < 1e-9) same++;
+            mateKept[r] = same;
+            return o;
+        }
+
+        /// <summary>Probe read: every coupled pair now (reel ids, coupling point, axis, cost) and the session's pair solves.</summary>
+        public string MateReport()
+        {
+            RefreshMates();
+            var seen = new HashSet<MateInfo>();
+            var sb = new System.Text.StringBuilder();
+            foreach (MateInfo mi in mateOf.Values)
+            {
+                if (!seen.Add(mi)) continue;
+                sb.Append($"{mi.A.parent.thingIDNumber}+{mi.B.parent.thingIDNumber} at {mi.mate.C} axis {mi.mate.Axis} cost {mi.mate.Cost:0.00}; ");
+            }
+            return $"mates {seen.Count}: {sb}solves {mateSolves}, joiner halves drawn {lastMateJoins}";
+        }
         public bool lastFar;
 
         private sealed class CarryCache

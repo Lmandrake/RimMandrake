@@ -93,6 +93,7 @@
     <Compile Include="..\..\_Shared\SlackGeometry\DrawOrder.cs" Link="Shared\SlackGeometry\DrawOrder.cs" />
     <Compile Include="..\..\_Shared\StylePicker\StylePickerCore.cs" Link="Shared\StylePicker\StylePickerCore.cs" />
     <Compile Include="Hose\HoseMath.cs" />
+    <Compile Include="Hose\HoseSpliceMath.cs" />
     <Compile Include="Hose\HoseBandMath.cs" />
     <Compile Include="Hose\RM_HoseBands.cs" />
     <Compile Include="Hose\HoseRelay.cs" />
