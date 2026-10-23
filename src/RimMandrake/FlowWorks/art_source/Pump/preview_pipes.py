@@ -99,7 +99,7 @@ def hose_seg(canvas, a, b, width=0.48):
     paste_centered(canvas, strip, (ax + bx) / 2 * P, (az + bz) / 2 * P)
 
 
-def coupling(canvas, edge, d, size=1.2 * 1.5):  # x1.5 = RM_MapComponent_Hoses.PortCouplingWiden (reducer collar at a building port)
+def coupling(canvas, edge, d, size=1.2):  # x1 = RM_MapComponent_Hoses.PortCouplingWiden (was 1.5 until PUMP_COUPLING_SHRINK_STILL_SIZED_FOR_GIANTS)
     """Coupling_Bare at a port: face (+X of the art, 0.46 canvas) on the shared edge, pointing along d."""
     c = COUPLING.resize((round(size * P), round(size * P)), Image.LANCZOS)
     ang = {(1, 0): 0, (0, -1): 90, (-1, 0): 180, (0, 1): 270}[d]
