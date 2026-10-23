@@ -251,7 +251,6 @@ MODS = {
         "The Middenshell": "Now",
         "Waste casks and the sealed cask bay": "Now",
         "Rite of Tipping": "Now",
-        "Not wired yet (these change nothing)": "Now",
     }, ()),
     "SolarMirrors": ("RM_SolarMirrorsMod.cs", "RM_SolarMirrors.csproj", {
         "Mirror light": "Now",

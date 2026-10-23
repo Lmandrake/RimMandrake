@@ -852,7 +852,7 @@ def main():
     check("source parse is clean", not V._ERRORS, V._ERRORS)
     for t, floor in V.FLOORS.items():
         check("floor met: %s (%d >= %d)" % (t, len(V._BY_TYPE.get(t, [])), floor), len(V._BY_TYPE.get(t, [])) >= floor)
-    check("settings parsed from the C# source: 33 fields, 23 toggles", len(V.DEFAULTS) == 33 and len(V.TOGGLES) == 23,
+    check("settings parsed from the C# source: 32 fields, 22 toggles", len(V.DEFAULTS) == 32 and len(V.TOGGLES) == 22,
           (len(V.DEFAULTS), len(V.TOGGLES)))
     check("storm warning texts parsed", all(V.WARN.values()) and all(V.UNLEASH.values()), (V.WARN, V.UNLEASH))
     check("flora products derived", len(V.FLORA_PRODUCTS) == 4, V.FLORA_PRODUCTS)

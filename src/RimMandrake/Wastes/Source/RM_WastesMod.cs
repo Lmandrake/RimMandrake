@@ -25,7 +25,6 @@ namespace RimMandrake.Wastes
     public class RM_WastesSettings : ModSettings
     {
         public static bool wastesEnabled = true;
-        public static bool brineDepositsEnabled = true;
 
         // WASTELAND_MECHANICS_BUILD_1 (tranche 1). Every one defaults ON = shipped
         // behaviour; off degrades to "the weather/creature still exists, the
@@ -78,7 +77,6 @@ namespace RimMandrake.Wastes
         {
             base.ExposeData();
             Scribe_Values.Look(ref wastesEnabled, "wastesEnabled", true);
-            Scribe_Values.Look(ref brineDepositsEnabled, "brineDepositsEnabled", true);
             Scribe_Values.Look(ref stormDoseEnabled, "stormDoseEnabled", true);
             Scribe_Values.Look(ref stormDoseMultiplier, "stormDoseMultiplier", 1f);
             Scribe_Values.Look(ref ashFallPollutionEnabled, "ashFallPollutionEnabled", true);
@@ -310,16 +308,6 @@ namespace RimMandrake.Wastes
                     "On Wasteland maps a supervised waste convoy may offer silver and goodwill to tip waste "
                   + "casks on a licensed tipping pad; another faction may ask for evidence, and a third may "
                   + "finance proper containment. Off: the offer never comes.");
-                list.GapLine();
-            }
-
-            if (Group(list, "Not wired yet (these change nothing)", RimMandrake.Shared.SettingScope.Now, new[] { "brineDepositsEnabled" }))
-            {
-                list.CheckboxLabeled("Brine deposit mining", ref brineDepositsEnabled,
-                    "Tekk/drazz/spent-electrode-plate deposits scatter into any generated map's "
-                  + "hypersaline brine water (RM_WastesBrineShallow terrain). NOT YET WIRED — "
-                  + "the scatter is plain XML with no runtime gate, so this toggle is scaffolding "
-                  + "until a GenStep_ScatterThings subclass reads it.");
                 list.GapLine();
             }
 

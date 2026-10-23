@@ -42,7 +42,6 @@ Every line is sourced from the mod's About.xml description, its defs, its C# or 
 - A gravship will not launch while a sealed bay aboard is unpowered, damaged or hot, or a waste cask sits loose on the deck. → UNCOVERED: needs a real gravship with an engine and substructure; only the Harmony patch being installed is read (above). `caskLaunchCheckEnabled` is covered by its default pin only.
 - A tipping delivery lands its casks every four game days; the evidence ask, the containment grant and the illegal-reburial discovery follow. → UNCOVERED: the first delivery is days of game time away and the choices are letter dialogs; the contract and pad state are covered above.
 - Processor animals occasionally un-pollute the cell they stand on, and the sootgrazer counts drifted ash as feed ground. → UNCOVERED: the un-pollute roll is 0.1% per 250-tick check (statistical) and ash depth needs the MovingDunes sand grid, which that mod's own script owns; `processorUnpolluteEnabled` is covered by its default pin only.
-- `brineDepositsEnabled` switches the brine deposits off. → UNCOVERED: the toggle gates nothing (RM_WastesMod.cs: "NOT YET WIRED ... scaffolding"), so there is no effect to read; the default pin is all there is. A mod defect named in the worker note.
 - `RM_BiomeWorker_Wastes.GetScore` and `RM_WastesBiomeRanges` score the biome for natural worldgen. → UNCOVERED: inert by `generatesNaturally=false`; no map can exercise it (CLAUDE.md "no worldgen feature").
 - Gristleswarm, Sloghog, Slagmole, Boilhide, Scabspinner and the other cast read and behave as the art and descriptions say. → UNCOVERED: `visual` (art is the judge pass's) and the cast carry no mechanic beyond the comps above.
 - The Wasteland's skies, overlays, sounds and the Middenshell's art read as intended. → UNCOVERED: `visual`; the judge pass, never a script.
@@ -56,7 +55,6 @@ Run the script, not the prose: `python.exe src/RimMandrake/Utils/northstar_drive
 - RULED OUT: "`caskBayPerCell` re-applies through the bridge" — `RM_WasteCaskBayUtility.ApplyCapacity` runs in the static constructor and from `DoWindowContents` only, so a `jawa/mod_settings_field` write does not change capacity; the bay readout check pins the shipped capacity (size x default 2) and no arm flips it.
 - RULED OUT: "`jawa/scatter_at` proves the deposit's terrain gate" — `jawa/scatter_at` is documented to bypass the scatterer's own positioning logic (which includes the terrain validator), so `brine_deposits.scatter_places_*` proves the GenStep, the def and a legal spawn on brine terrain, not that the gate refuses dry ground (the gate is plain XML).
 - RULED OUT: "the message list is a record" — live messages expire in seconds; every message read happens within a short window after the event, and the cask leak's message is a note, never an assertion (its persistent alert is).
-- RULED OUT: "`brineDepositsEnabled` is a working toggle" — the C# header says it is scaffolding with no runtime gate.
 
 ## north star
 state: DRAFT
