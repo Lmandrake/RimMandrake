@@ -5,8 +5,7 @@
   Source: dune_sea.md:217,234,253 (buried finds, sealed and uncorroded). The first Tread-family child. The storm-reveal variant is later.
   Family parents, weathering and loot: src/RimMandrake/Wreckage (composed into mandrake.rm.biomes).
   Names and families are design §4's proposals; the biome's own sitting may move them.
-  Art: own artpipe renders (wreck_*) installed via art install, texPath + measured shadow per child;
-  still on vanilla ShipChunk placeholder until its render lands: RM_StillsandWreckTread.
+  Art: own artpipe renders (wreck_*) installed via art install, texPath + measured shadow per child.
   ALL NUMBERS PROVISIONAL (family + weathering rows).
 -->
 <Defs>
@@ -51,6 +50,13 @@
     <defName>RM_StillsandWreckTread</defName>
     <label>sand-sealed tread</label>
     <description>A crawler's tread section, huge and uncorroded, laid bare by a storm. Deconstruct it for valuable resources.</description>
+    <graphicData>
+      <texPath>Things/Building/Wrecks/RM_StillsandWreckTread</texPath>
+      <!-- MEASURED 2 variant(s) (alpha > 16): mean alpha bbox 96.0% x 92.9% -> 0.70*0.960*3, 0.63*0.929*3 (Scald ratio) -->
+      <shadowData>
+        <volume>(2.02,0.6,1.75)</volume>
+      </shadowData>
+    </graphicData>
     <modExtensions>
       <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
         <weathering>RM_WreckWeathering_Sealed</weathering>
