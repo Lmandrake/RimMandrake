@@ -92,7 +92,10 @@ SPEC_POSIX = rm_str("scratch", "fw_hose_proof", "scenes_design.json")
 def _posix(p):
     import re
     m = re.match(r"^\\\\wsl(?:\.localhost|\$)\\[^\\]+\\(.*)$", p)
-    return "/" + m.group(1).replace("\\", "/") if m else p
+    if m:
+        return "/" + m.group(1).replace("\\", "/")
+    d = re.match(r"^([A-Za-z]):[\\/](.*)$", p)      # D:\x\y -> /mnt/d/x/y (a git-archive export on D: run from python.exe)
+    return "/mnt/%s/%s" % (d.group(1).lower(), d.group(2).replace("\\", "/")) if d else p
 
 
 def hose_catalog():

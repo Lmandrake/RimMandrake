@@ -568,6 +568,8 @@ def main():
     vh_review_site_checks(VH)
     vh_west_inlet_checks(VH)
     reel_room_checks()
+    check("_posix: a D: export path becomes /mnt/d (offline gate from python.exe), WSL paths unchanged",
+          PH._posix("D:\\ClaudeWork\\x\\y.py") == "/mnt/d/ClaudeWork/x/y.py" and PH._posix("/a/b") == "/a/b")
     print("selftest_proof_hose: %s (%d failing)" % ("PASS" if not FAILS else "FAIL", len(FAILS)))
     return 0 if not FAILS else 1
 

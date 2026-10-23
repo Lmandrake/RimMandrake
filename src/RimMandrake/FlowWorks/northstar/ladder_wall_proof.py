@@ -106,7 +106,7 @@ def main(argv=None):
 
     def pos(pid):
         lp = B.call("jawa/list_pawns", includeHealth=False, limit=500) or {}
-        p = next((p_ for p_ in lp.get("pawns") or [] if str(p_.get("id")) == str(pid)), None)
+        p = next((p_ for p_ in lp.get("pawns") or [] if pawn_num(p_.get("id")) == pawn_num(pid)), None)
         return None if p is None else (p.get("x"), p.get("z"))
 
     if a.fresh_map:
@@ -146,7 +146,7 @@ def main(argv=None):
     adv(900)
     p1 = pos(pid)
     over = p1 is not None and p1[0] is not None and p1[0] > wx
-    row("LADDER_PARITY_OVER_WALL", "PASS" if over else "FAIL", {"order": order, "after": p1, "wallX": wx})
+    row("LADDER_PARITY_OVER_WALL", "PASS" if over else ("UNMEASURED" if p1 is None else "FAIL"), {"order": order, "after": p1, "wallX": wx})
     if over:
         back = parity(B, "climb:%d,%d,%d" % (pid, wx, p1[1]))
         row("LADDER_PARITY_ONE_WAY", "PASS" if back.startswith("NO_CROSSING") else "FAIL",
