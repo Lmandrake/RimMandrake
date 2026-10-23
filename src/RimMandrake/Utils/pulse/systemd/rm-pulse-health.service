@@ -4,5 +4,5 @@ Description=RimFlow pulse spine health check
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/python3 /home/mandrake/rm/bench/src/RimMandrake/Utils/pulse/pulse.py health --restart
+ExecStart=/usr/bin/python3 ${RM_PULSE_DEPLOY}/src/RimMandrake/Utils/pulse/pulse.py health --restart
 TimeoutStartSec=30s

@@ -1,0 +1,9 @@
+# Fast-forwards the RimPulse deploy checkout (${RM_PULSE_DEPLOY}) to origin/main and restarts
+# rm-pulse.service when the code changed. `pulse.py update` refuses a seat clone.
+[Unit]
+Description=RimFlow pulse: fast-forward the deploy checkout to origin/main
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 ${RM_PULSE_DEPLOY}/src/RimMandrake/Utils/pulse/pulse.py update --restart
+TimeoutStartSec=120s

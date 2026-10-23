@@ -21,6 +21,9 @@
                                pulse lists every live one with its unseen count by itself.
   pulse.py seen <id>           mark a look item seen without opening it (ids print from `hand`)
   pulse.py metrics             time-to-notice red, question age, alert precision
+  pulse.py refresh             ask the running daemon for a full re-collect now (the widget's ⟳ button)
+  pulse.py update [--restart]  fast-forward THIS checkout to origin/main (the dedicated deploy checkout
+                               under the agent storage root; refuses a seat clone), restart on new code
 
 State: ~/.local/state/rm-dashboard/ (state.json, pulse_now.json, pulse.jsonl, metrics.jsonl).
 The widget is src/RimMandrake/Utils/pulse/widget/ (Windows, pywebview).
@@ -50,6 +53,7 @@ WIDGET_HTML = HERE / "widget" / "index.html"
 PORT = int(os.environ.get("RM_PULSE_PORT", "8765"))
 DIGEST_DIR = Path(os.environ.get("RM_PULSE_DIGESTS", rm_str("dashboard", "digests")))
 INTERVAL = 5.0
+REFRESH_TIMEOUT = 40.0   # a refresh that has not finished collecting by then answers with why
 
 # Phone push: NOT decided by the owner yet (2026-10-08). Hook point only; stays off until
 # he rules. Wire ntfy (or anything) here, never in the widget.
@@ -114,6 +118,8 @@ class Collector:
         self.prev_kinds: dict = {}
         self.kernel: dict = {}
         self.sheets: dict = {"at": 0, "rows": []}
+        self.tick_lock = threading.Lock()   # one collection at a time: the 5 s loop and a refresh never interleave
+        self.last_refresh: dict | None = None
 
     def _ledger(self) -> list[dict]:
         """Re-read (and re-fold through rimflow's replay) only when a ledger file in either clone moved.
@@ -126,14 +132,20 @@ class Collector:
                 sig.append((str(f), st.st_mtime_ns, st.st_size))
             except OSError:
                 pass
-        if self.ledger_cache.get("sig") != sig:
+        if self.ledger_cache.get("sig") != sig or self.ledger_cache.get("force"):
             events = pc.read_ledger()
             self.ledger_cache = {"sig": sig, "events": events, "rulings": pc.owner_rulings(events),
                                  "changed_at": time.time()}
         return self.ledger_cache["events"]
 
-    def gather(self, now: float) -> dict:
+    def gather(self, now: float, force: bool = False) -> dict:
+        """force=True (a refresh) re-reads every source now: the ledger is re-folded even if no file moved,
+        and the kernel log and sheet servers skip their 20 s / 45 s caches."""
         status, raw = {}, {"at": {}}
+        if force:
+            self.ledger_cache["force"] = True
+            self.kernel["at"] = 0
+            self.sheets["at"] = 0
 
         def src(name, fn):
             t0 = time.time()
@@ -182,9 +194,13 @@ class Collector:
         raw["source_status"] = status
         return raw
 
-    def tick(self) -> dict:
+    def tick(self, force: bool = False) -> dict:
+        with self.tick_lock:
+            return self._tick(force)
+
+    def _tick(self, force: bool) -> dict:
         now = time.time()
-        raw = self.gather(now)
+        raw = self.gather(now, force)
         with _lock:
             disk = load_state()   # `pulse.py since` writes the digest fields from another process
             if ((disk.get("last_digest") or {}).get("at") or 0) > ((self.state.get("last_digest") or {}).get("at") or 0):
@@ -194,6 +210,8 @@ class Collector:
             self._notice_metrics(snap, new_state, now)
             snap["digest"] = new_state.get("last_digest")
             snap["widget_version"] = widget_version()
+            snap["code"] = code_rev()
+            snap["refresh"] = self.last_refresh
             self.state = new_state
             save_json("state.json", self.state)
             save_json("pulse_now.json", snap)
@@ -256,6 +274,41 @@ class Collector:
         threading.Thread(target=self.tick, daemon=True).start()
         return True
 
+    def refresh(self, timeout: float = REFRESH_TIMEOUT) -> dict:
+        """A full re-collect, synchronously, bounded by `timeout`. The answer always says what happened: the
+        new collected_at, or why there is none - a refresh never silently keeps the old data."""
+        t0, box = time.time(), {}
+
+        def run():
+            try:
+                box["snap"] = self.tick(force=True)
+            except Exception as e:  # reported to the widget, never swallowed
+                box["error"] = f"{type(e).__name__}: {e}"[:200]
+        th = threading.Thread(target=run, daemon=True)
+        th.start()
+        th.join(timeout)
+        ms = round((time.time() - t0) * 1000)
+        if th.is_alive():
+            res = {"ok": False, "at": time.time(), "ms": ms,
+                   "error": f"collection still running after {int(timeout)} s (data shown is from "
+                            f"{time.strftime('%H:%M:%S', time.localtime(self.snapshot.get('collected_at') or 0))})"}
+        elif "error" in box:
+            res = {"ok": False, "at": time.time(), "ms": ms, "error": "collection failed: " + box["error"]}
+        else:
+            snap = box["snap"]
+            down = {k: v.get("error") or v.get("stale") for k, v in (snap.get("sources") or {}).items()
+                    if not v.get("ok") or v.get("stale")}
+            res = {"ok": True, "at": time.time(), "ms": ms, "collected_at": snap["collected_at"],
+                   "sources_down": down}
+        self.last_refresh = res
+        with self.cond:   # the next snapshot carries it; push it now too so the widget sees a failure at once
+            if self.snapshot:
+                self.snapshot = {**self.snapshot, "refresh": res}
+                self.version += 1
+                self.cond.notify_all()
+        append("metrics.jsonl", {"m": "refresh", "ok": res["ok"], "ms": ms})
+        return res
+
     def hand_row(self, sid: str) -> dict | None:
         return next((h for h in pc.read_hands() if h["id"] == sid), None)
 
@@ -296,6 +349,42 @@ def hand(target: str, title: str | None, seat: str | None) -> dict:
            "title": title or Path(tgt).name or tgt, "seat": (seat or "").upper() or None, "ts": time.time()}
     append("hands.jsonl", rec)
     return rec
+
+
+ROOT = Path(__file__).resolve().parents[4]   # the checkout this code runs from
+_CODE: dict = {}
+
+
+def code_rev(root: Path = ROOT) -> dict:
+    """Which revision is running, read once per process (the code cannot change under a running daemon;
+    `update` restarts it). `deploy` = the dedicated origin/main checkout; `seat clone` = a working tree."""
+    if _CODE.get("root") != str(root):
+        import subprocess
+        r = subprocess.run(["git", "-C", str(root), "log", "-1", "--format=%H%x00%cI%x00%s"],
+                           capture_output=True, text=True, timeout=15)
+        sha, at, subj = (r.stdout.strip().split("\x00") + ["", "", ""])[:3] if r.returncode == 0 else ("", "", "")
+        _CODE.clear()
+        _CODE.update(root=str(root), sha=sha[:12] or "unknown", committed_at=at, subject=subj[:100],
+                     checkout="seat clone" if root in pc.CLONES else "deploy" if sha else "unknown",
+                     started_at=time.time())
+    return dict(_CODE)
+
+
+def update_code(root: Path = ROOT, timeout: float = 60) -> dict:
+    """Fast-forward the deploy checkout to origin/main. Refuses a seat clone: pulling there would move
+    another agent's working tree under it (RIMPULSE_DEPLOY_FIX_RUNS_THE_BENCH_CLONE)."""
+    import subprocess
+    if root in pc.CLONES:
+        raise RuntimeError(f"{root} is a seat clone, not the deploy checkout; never pulled from here")
+
+    def git(*a):
+        return subprocess.run(["git", "-C", str(root), *a], capture_output=True, text=True, timeout=timeout)
+    old = git("rev-parse", "HEAD").stdout.strip()
+    p = git("pull", "--ff-only", "-q", "origin", "main")
+    if p.returncode != 0:
+        raise RuntimeError(f"git pull --ff-only: rc {p.returncode}: {(p.stderr or p.stdout).strip()[:200]}")
+    new = git("rev-parse", "HEAD").stdout.strip()
+    return {"old": old[:12], "new": new[:12], "changed": old != new}
 
 
 def widget_version() -> str:
@@ -355,8 +444,8 @@ def make_digest(mode: str, since: float | None = None) -> dict:
         if r["kind"] == "recovered" and r["since"] >= since - 3600:
             lines.append({"g": "↺", "kind": "recovered", "t": r["since"], "text": r["text"], "link": r.get("link")})
     for r in snap["rows"]:
-        if r["kind"] in ("amber", "amber_soft", "review", "warn"):
-            lines.append({"g": "◐" if r["kind"] != "review" else "◇", "kind": r["kind"], "t": r["since"],
+        if r["kind"] in ("amber", "amber_soft", "review", "provide", "warn"):
+            lines.append({"g": "◐" if r["kind"] not in ("review", "provide") else "◇", "kind": r["kind"], "t": r["since"],
                           "text": r["text"], "link": r.get("link")})
     for r in sorted((r for r in snap["rows"] if r["kind"] == "done"), key=lambda r: r["since"]):
         lines.append({"g": "✓", "kind": "done", "t": r["since"], "text": f"{r['who']:<8} {r['text']}",
@@ -376,7 +465,7 @@ def make_digest(mode: str, since: float | None = None) -> dict:
     def fmt(ln, md=False):
         if not ln["t"]:
             when = "     "
-        elif ln["kind"] in ("amber", "amber_soft", "review"):
+        elif ln["kind"] in ("amber", "amber_soft", "review", "provide"):
             a = time.time() - ln["t"]
             when = (f"{int(a // 60)}m" if a < 3600 else f"{int(a // 3600)}h" if a < 86400 else f"{int(a // 86400)}d").rjust(5)
         else:
@@ -416,8 +505,18 @@ def make_handler(col: Collector):
         def do_OPTIONS(self):
             self._hdr(204)
 
+        def _json(self, obj, code=200):
+            self._hdr(code)
+            self.wfile.write(json.dumps(obj).encode())
+
+        def _refresh(self):
+            res = col.refresh()
+            self._json({**res, "snap": col.snapshot if res["ok"] else None}, 200 if res["ok"] else 503)
+
         def do_GET(self):
-            if self.path in ("/", "/index.html"):
+            if self.path.startswith("/api/refresh"):   # GET too, so `curl` can drive it
+                self._refresh()
+            elif self.path in ("/", "/index.html"):
                 self._hdr(200, "text/html; charset=utf-8")
                 self.wfile.write(WIDGET_HTML.read_bytes())
             elif self.path.startswith("/api/now"):
@@ -466,7 +565,9 @@ def make_handler(col: Collector):
                 body = json.loads(self.rfile.read(n) or b"{}")
             except ValueError:
                 body = {}
-            if self.path == "/api/ack" and body.get("id"):
+            if self.path == "/api/refresh":
+                self._refresh()
+            elif self.path == "/api/ack" and body.get("id"):
                 # who acked decides whether it counts as an owner precision label: the widget is his hand;
                 # `pulse.py ack` is an agent's (17 agent bulk-acks once read as his judgement, 2026-10-11)
                 actor = str(body.get("actor") or "unknown")[:16]
@@ -640,6 +741,9 @@ def main(argv=None) -> int:
     mt.add_argument("--compact", action="store_true", help="drop repeated red_noticed lines from the live log first")
     h = sub.add_parser("health")
     h.add_argument("--restart", action="store_true")
+    sub.add_parser("refresh")
+    up = sub.add_parser("update")
+    up.add_argument("--restart", action="store_true", help="restart rm-pulse.service when new code arrived")
     args = ap.parse_args(argv)
     if args.cmd == "daemon":
         daemon()
@@ -677,6 +781,26 @@ def main(argv=None) -> int:
         metrics()
     elif args.cmd == "health":
         return health(args.restart)
+    elif args.cmd == "refresh":
+        import urllib.error
+        import urllib.request
+        try:
+            body = urllib.request.urlopen(f"http://127.0.0.1:{PORT}/api/refresh", timeout=REFRESH_TIMEOUT + 10).read()
+        except urllib.error.HTTPError as e:
+            body = e.read()
+        res = json.loads(body)
+        print(f"refresh: {'ok' if res['ok'] else 'FAILED'} in {res['ms']} ms"
+              + (f", collected_at {time.strftime('%H:%M:%S', time.localtime(res['collected_at']))}" if res["ok"] else "")
+              + (f" - {res['error']}" if res.get("error") else "")
+              + (f"; sources not ok: {res['sources_down']}" if res.get("sources_down") else ""))
+        return 0 if res["ok"] else 1
+    elif args.cmd == "update":
+        u = update_code()
+        print(f"pulse update: {ROOT} {u['old']} -> {u['new']}" + ("" if u["changed"] else " (already current)"))
+        if u["changed"] and args.restart:
+            import subprocess
+            subprocess.run(["systemctl", "--user", "restart", "rm-pulse.service"], timeout=30)
+            print("pulse update: rm-pulse.service restarted")
     return 0
 
 

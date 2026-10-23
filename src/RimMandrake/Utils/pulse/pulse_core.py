@@ -124,21 +124,75 @@ def subagent_running(last: dict | None, mtime: float, now: float) -> bool:
     return not (last.get("type") == "assistant" and m.get("stop_reason") == "end_turn")
 
 
+def card_text(questions: list) -> tuple[str, str]:
+    """(first question, the whole card as plain text: every question with its option labels). Pure."""
+    first, parts = None, []
+    for q in questions or []:
+        if not isinstance(q, dict):
+            continue
+        qt = " ".join(str(q.get("question") or q.get("header") or "").split())
+        first = first or qt
+        opts = [str(o.get("label") or "") for o in (q.get("options") or []) if isinstance(o, dict) and o.get("label")]
+        parts.append(qt + (" — options: " + " / ".join(opts) if opts else ""))
+    return first or "", "\n".join(parts)
+
+
+def pending_card(records: list[dict]) -> dict | None:
+    """The question card that is up RIGHT NOW in a transcript tail, or None. Pure.
+
+    A card is pending only while its AskUserQuestion tool_use has no tool_result after it: an answer (or a
+    hook refusing the card, which the owner never saw) closes it. Reading only the LAST record made an
+    answered card's text linger whenever the session file still said `waiting` (owner, 2026-10-23: the amber
+    'asks' text was truncated and stale)."""
+    card, answered = None, set()
+    for r in records:
+        m = r.get("message") or {}
+        cs = m.get("content") if isinstance(m.get("content"), list) else []
+        for c in cs:
+            if not isinstance(c, dict):
+                continue
+            if c.get("type") == "tool_use" and c.get("name") == "AskUserQuestion":
+                first, full = card_text((c.get("input") or {}).get("questions") or [])
+                card = {"id": c.get("id"), "question": first, "full": full,
+                        "at": iso_to_epoch(r.get("timestamp") or "")}
+            elif c.get("type") == "tool_result" and c.get("tool_use_id"):
+                answered.add(c["tool_use_id"])
+    if card and card["id"] not in answered and card["question"]:
+        return card
+    return None
+
+
+def _tail_records(path: Path, tail_bytes: int = 512 << 10) -> list[dict]:
+    try:
+        with open(path, "rb") as fh:
+            fh.seek(0, 2)
+            size = fh.tell()
+            fh.seek(max(0, size - tail_bytes))
+            chunk = fh.read().decode("utf-8", "replace")
+    except OSError:
+        return []
+    out = []
+    for line in chunk.splitlines():
+        if '"AskUserQuestion"' not in line and '"tool_result"' not in line:
+            continue
+        try:
+            out.append(json.loads(line))
+        except ValueError:
+            continue
+    return out
+
+
 def session_extras(sid: str, now: float, projects_dir: Path = PROJECTS_DIR) -> dict:
-    """active subagent count, transcript mtime, and the pending question text if any."""
-    ex = {"subagents": 0, "transcript_mtime": None, "question": None}
+    """active subagent count, transcript mtime, and the question card that is up (if any)."""
+    ex = {"subagents": 0, "transcript_mtime": None, "question": None, "question_full": None, "question_at": None}
     for t in projects_dir.glob(f"*/{sid}.jsonl"):
         try:
             ex["transcript_mtime"] = t.stat().st_mtime
         except OSError:
             pass
-        last = _last_record(t)
-        m = (last or {}).get("message") or {}
-        for c in m.get("content") or []:
-            if isinstance(c, dict) and c.get("type") == "tool_use" and c.get("name") == "AskUserQuestion":
-                qs = (c.get("input") or {}).get("questions") or []
-                if qs:
-                    ex["question"] = qs[0].get("question") or qs[0].get("header")
+        card = pending_card(_tail_records(t))
+        if card:
+            ex.update(question=card["question"], question_full=card["full"], question_at=card["at"] or None)
         for a in (t.parent / sid / "subagents").glob("agent-*.jsonl"):
             try:
                 mt = a.stat().st_mtime
@@ -220,6 +274,7 @@ def owner_rulings(ledger: list[dict]) -> dict:
     state, and pulse once only knew about `needs` (SCRAPNEST stayed "to rule" after `implemented`
     made it needs=bridge, 2026-10-10). A repeated `needs --to owner` re-asks and moves the time."""
     became: dict[str, dict] = {}
+    answered: dict[str, dict] = {}
 
     def obs(ev, world, ok):
         iid = ev.get("id")
@@ -228,16 +283,68 @@ def owner_rulings(ledger: list[dict]) -> dict:
             return
         if it.open and it.needs == "owner":
             if iid not in became or (ok and ev.get("event") == "needs"):
-                became[iid] = ev
+                became[iid] = ev            # (re-)asked: any earlier answer was to an earlier question
+                answered.pop(iid, None)
+            elif ok and (ev.get("ownerSaid") or ev.get("byCard")):
+                # his words or his card AFTER the ask, on this item: the question is answered even though
+                # nobody has moved `needs` yet (owner 2026-10-23: rows for answered cards persisted)
+                answered[iid] = ev
         else:
             became.pop(iid, None)
+            answered.pop(iid, None)
     world = _model().replay(list(ledger), observe=obs)
     out = {}
     for iid, ev in became.items():
         it = world.items[iid]
+        an = answered.get(iid)
+        klass, why = ask_class(it, ev)
         out[iid] = {"ev": ev, "t": iso_to_epoch(ev.get("ts", "")), "seat": (ev.get("seat") or "").upper(),
-                    "reason": ev.get("reason") or it.title, "state": it.state}
+                    "reason": ev.get("reason") or it.title, "state": it.state, "class": klass, "class_why": why,
+                    "answered": ({"t": iso_to_epoch(an.get("ts", "")), "event": an.get("event"),
+                                  "seat": (an.get("seat") or "").upper(),
+                                  "by": "card" if an.get("byCard") else "his words",
+                                  "text": an.get("byCard") or an.get("ownerSaid")} if an else None)}
     return out
+
+
+# What the owner is being asked for, from the item itself (owner 2026-10-23: a look masqueraded as a ruling).
+RULE_KINDS = {"decision", "ruling", "question", "card", "decide", "design"}
+LOOK_KINDS = {"art", "review", "check", "verify", "trial"}
+_LOOK_RE = r"(\(?\blook\b[,:)]|\bL4\b|\blooks? at\b|\bglances?\b|\bin[- ]game\b|\bin[- ]situ\b|\bwalk\b|\bsheet\b|\bscreenshot|\bkeeper save|\bjoint\b)"
+# a FACT only he has (an address, a host, a key); verbs like "address the issue" or "provide feedback" are not
+_PROVIDE_RE = (r"(\bname/address\b|\b(ip|e-?mail|network|home) address\b|\baddress (of|for)\b|\bhostname\b|"
+               r"\bpassword\b|\bcredentials?\b|\bwhich (pc|machine|account)\b|"
+               r"\bneeds (its|his|the) (name|address|number|path|url|key)\b)")
+
+
+def ask_class(it, ev: dict) -> tuple[str, str]:
+    """('rule' | 'look' | 'provide', why) for an open item waiting on the owner. Pure over the item fold.
+
+    Order: an explicit word on the needs event wins ('look:', 'provide:', 'rule:', or '(LOOK, not a ruling)');
+    an item whose only owed criteria are L4 is a look; then the item's kind; then its words. Anything else is
+    a ruling - the only class that asks him for a verdict."""
+    import re
+    reason = str(ev.get("reason") or ev.get("why") or "")
+    text = f"{it.title or ''} {reason}"
+    head = reason.strip().lower()
+    for k in ("look", "provide", "rule"):
+        if head.startswith(k + ":"):
+            return k, f"needs event says '{k}:'"
+    if re.search(r"\bLOOK, not a ruling\b", reason, re.I):
+        return "look", "needs event says it is a look"
+    owed = it.owed_levels() if hasattr(it, "owed_levels") else []
+    if owed and set(owed) == {"L4"}:
+        return "look", "only an L4 (owner look) criterion is owed"
+    kind = (it.kind or "").lower()
+    if kind in RULE_KINDS:
+        return "rule", f"kind {kind}"
+    if re.search(_PROVIDE_RE, text, re.I):
+        return "provide", "asks for a fact"
+    if kind in LOOK_KINDS:
+        return "look", f"kind {kind}"
+    if re.search(_LOOK_RE, text, re.I):
+        return "look", "asks him to look"
+    return "rule", "default: waiting on his verdict"
 
 
 def read_artpipe(d: Path = ARTPIPE_DIR, prev: dict | None = None, now: float = 0) -> dict:
@@ -579,7 +686,12 @@ def classify_sessions(sessions: list[dict], extras: dict, seen: dict, items: dic
         if status == "waiting" and seat:
             q = ex.get("question") or s.get("waitingFor") or "waiting"
             label = "asks" if ex.get("question") else "waiting"
-            add(_amber(key, who, f"{who} {label}: {short(q, 90)}", upd, acks, explicit=True, sub=sub), "wait")
+            r = _amber(key, who, f"{who} {label}: {short(q, 90)}", upd, acks, explicit=True, sub=sub)
+            # the full card, for the widget's expand: the row text stays one line (owner 2026-10-23: truncated)
+            r.update(question=ex.get("question"), full=ex.get("question_full") or q,
+                     asked_at=ex.get("question_at"), src_detail="transcript card" if ex.get("question")
+                     else f"session file: waitingFor={s.get('waitingFor')!r}")
+            add(r, "wait")
         elif (status == "idle" and sub == 0 and seat and did and now - upd >= IDLE_AMBER_SECS
               and now - upd < SEAT_WAIT_FADE_SECS):
             add(_amber(key, who, f"{who} finished — idle, waiting for you{doing}", upd, acks,
@@ -842,6 +954,9 @@ def current_items(ledger: list[dict], now: float) -> dict:
     return {s: i for s, (i, t) in cur.items() if now - t < 12 * 3600}
 
 
+ASK_KINDS = {"rule": "review", "look": "look", "provide": "provide"}   # ask class -> row kind
+
+
 def classify_ledger(ledger: list[dict], since: float, now: float,
                     rulings: dict | None = None) -> tuple[list[dict], dict]:
     """Done rows in the window + "to rule" rows. `rulings` is `owner_rulings(ledger)` (the daemon caches
@@ -868,11 +983,19 @@ def classify_ledger(ledger: list[dict], since: float, now: float,
     for iid, ru in rulings.items():
         t, e = ru["t"], ru["ev"]
         if now - t < RULE_WINDOW_SECS:
-            reason = short(ru.get("reason") or titles.get(iid) or "(no reason recorded on the needs event)", 90)
+            full = " ".join(str(ru.get("reason") or titles.get(iid) or "(no reason recorded on the needs event)").split())
+            reason = short(full, 90)
             lk = link_for(e) or item_link(iid)
-            r = _row(f"needs:{iid}", "review", (e.get("seat") or "").upper(),
+            an = ru.get("answered")
+            # answered = his card/words landed after the ask; the agent owes the follow-through, he owes nothing
+            kind = "answered" if an else ASK_KINDS.get(ru.get("class") or "rule", "review")
+            r = _row(f"needs:{iid}", kind, (e.get("seat") or "").upper(),
                      f"{iid} — {reason}", t, link=lk, src="ledger")
-            r.update({"seat": (e.get("seat") or "").upper(), "title": nice_id(iid), "reason": reason})
+            r.update({"seat": (e.get("seat") or "").upper(), "title": nice_id(iid), "reason": reason, "full": full,
+                      "iid": iid, "ask": ru.get("class") or "rule", "ask_why": ru.get("class_why"),
+                      "answered": an, "src_detail": f"rimflow: {iid} open, needs=owner since {e.get('event')}"})
+            if kind == "look":
+                r.update({"ltype": "item look", "seen_id": None, "group": None, "thumb": False, "opened": False})
             rows.append(r)
     # one line per thing: a later event on the same key replaces the earlier line
     dedup: dict[str, dict] = {}
@@ -1118,7 +1241,8 @@ def track_incidents(rows: list[dict], prev: dict, wins: list[dict], services: di
     return out, inc_out, events
 
 
-KIND_ORDER = {"red": 0, "amber": 1, "amber_soft": 2, "warn": 2.5, "stuck": 3, "run": 4, "review": 5, "look": 5.5, "idle": 6, "recovered": 6.4, "done": 7}
+KIND_ORDER = {"red": 0, "amber": 1, "amber_soft": 2, "warn": 2.5, "stuck": 3, "run": 4, "review": 5, "provide": 5.2, "look": 5.5, "idle": 6, "recovered": 6.4,
+              "answered": 6.45, "done": 7}
 
 
 def order_rows(rows: list[dict]) -> list[dict]:
@@ -1127,7 +1251,7 @@ def order_rows(rows: list[dict]) -> list[dict]:
         base = KIND_ORDER.get(r["kind"], 9)
         if r["kind"] in ("red", "amber", "amber_soft", "warn") and acked:
             base = 6.5               # acked alarms drop below the live roster, still visible
-        return (base, -(r.get("since") or 0) if r["kind"] in ("done", "red", "review", "look") else (r.get("since") or 0))
+        return (base, -(r.get("since") or 0) if r["kind"] in ("done", "red", "review", "look", "provide", "answered") else (r.get("since") or 0))
     return sorted(rows, key=k)
 
 
@@ -1159,6 +1283,9 @@ def build_strip(rows: list[dict]) -> list[dict]:
     rule = sum(1 for r in rows if r["kind"] == "review")
     if rule:
         pills.append({"kind": "rule", "text": f"◇ {rule} to rule"})
+    give = sum(1 for r in rows if r["kind"] == "provide")
+    if give:
+        pills.append({"kind": "provide", "text": f"✎ {give} to provide"})
     look = sum(1 for r in rows if r["kind"] == "look" and not r.get("opened"))
     if look:
         pills.append({"kind": "look", "text": f"▣ {look} to look at"})
@@ -1223,6 +1350,7 @@ def collect_snapshot(raw: dict, state: dict, now: float) -> tuple[dict, dict, li
         "telemetry": ({k: raw["telemetry"].get(k) for k in ("at", "grafana", "tier_armed", "game_running")}
                       if raw.get("telemetry") else None),
         "tally": {k: sum(1 for r in rows if r["kind"] == k and not r.get("acked"))
-                  for k in ("red", "amber", "amber_soft", "warn", "run", "done", "review", "look", "recovered")},
+                  for k in ("red", "amber", "amber_soft", "warn", "run", "done", "review", "provide", "look", "answered",
+                            "recovered")},
     }
     return snap, new_state, events
