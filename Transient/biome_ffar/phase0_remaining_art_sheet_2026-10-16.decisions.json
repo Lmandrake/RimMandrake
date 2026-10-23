@@ -1,339 +1,346 @@
 {
-  "biome": "SUBJECTS_phase0_remaining_art",
-  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
-  "decidedCount": 20,
-  "decisions": {
-    "RM_AngelMothEggFertilized": {
-      "at": "2026-10-16T12:05:47.503Z",
-      "decidedAt": "2026-10-16T12:05:47.503Z",
-      "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "reject": {},
-      "retire": {},
-      "rev": "9f7c88a63bab6cbb",
-      "schema": 2,
-      "slots": {
-        "Things/Item/Resource/RM_DustveilEgg": {
-          "at": "2026-10-16T12:05:47.503Z",
-          "pick": "A",
-          "set_id": "3a745e3f89b711e1",
-          "slot_id": "RM_AngelMothEggFertilized/graphicData",
-          "state": "pick"
-        }
-      }
-    },
-    "RM_BedBugEggFertilized": {
-      "at": "2026-10-16T12:05:51.013Z",
-      "decidedAt": "2026-10-16T12:05:51.013Z",
-      "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "reject": {},
-      "retire": {},
-      "rev": "9f7c88a63bab6cbb",
-      "schema": 2,
-      "slots": {
-        "Things/Item/Resource/RM_BedBugEgg": {
-          "at": "2026-10-16T12:05:51.013Z",
-          "pick": "A",
-          "set_id": "0767ab78174ee5f8",
-          "slot_id": "RM_BedBugEggFertilized/graphicData",
-          "state": "pick"
-        }
-      }
-    },
-    "RM_Bezzul": {
-      "at": "2026-10-16T12:06:27.444Z",
-      "decidedAt": "2026-10-16T12:06:19.109Z",
-      "decision": "hold",
-      "note": "drop this from game. Don't need it anymore",
-      "prefill": "A",
-      "rev": "9f7c88a63bab6cbb",
-      "schema": 2,
-      "slots": {}
-    },
-    "RM_Braskeen": {
-      "assign": {
-        "E": "Things/Plant/RM_Braskeen/RM_Braskeen",
-        "F": "Things/Plant/RM_Braskeen/RM_Braskeen"
-      },
-      "at": "2026-10-16T12:05:33.530Z",
-      "decidedAt": "2026-10-16T12:03:27.433Z",
-      "decision": "E",
-      "note": "Add variations based on E. The others are too symmetric and should be removed.",
-      "prefill": "C",
-      "purge": [
-        "945461916ed00ae10eb62f7126d5e0c9c22df70ac82110cbd8a2122eaad2712f",
-        "2b9b675fca431be3682623553912facb7954bcb2756785a2ecdefa43db19396d",
-        "b75e70887de54a52c3c3b8a4d7c76a4a0e5091e6c77772849a599bebf2994142",
-        "268aace147126381485a037e971b9c679e3644f01d79a461e571327018bdece6",
-        "ce4d35a90f75121427747ceda1ca21997a6706dfa6203a14d210eafd0dfac91c"
-      ],
-      "purgeTouched": true,
-      "reject": {},
-      "retire": {},
-      "rev": "9f7c88a63bab6cbb",
-      "schema": 2,
-      "slots": {
-        "Things/Plant/RM_Braskeen/RM_Braskeen": {
-          "at": "2026-10-16T12:03:27.433Z",
-          "pick": "E",
-          "set_id": "1c7a9c5725fce33f",
-          "slot_id": "RM_Braskeen/graphicData",
-          "state": "pick"
-        }
-      }
-    },
-    "RM_Dhoggur": {
-      "at": "2026-10-16T12:07:41.923Z",
-      "decision": "A",
-      "note": "Seems cool, but no description, no assignment ability, no ability to say use this?",
-      "prefill": "A",
-      "rev": "9f7c88a63bab6cbb",
-      "schema": 2,
-      "slots": {}
-    },
-    "RM_FireSpit": {
-      "at": "2026-10-16T12:08:31.308Z",
-      "decidedAt": "2026-10-16T12:08:22.098Z",
-      "decision": "B",
-      "note": "I can't even tell what this is, who ordered it, what its description is, or anything. No ability to judge. I'm assuming this is something's attack maybe?",
-      "prefill": "A",
-      "reject": {},
-      "retire": {},
-      "rev": "9f7c88a63bab6cbb",
-      "schema": 2,
-      "slots": {
-        "Things/Projectile/RM_FireSpit": {
-          "at": "2026-10-16T12:08:22.098Z",
-          "pick": "B",
-          "set_id": "29cf5448c0273e02",
-          "slot_id": "RM_FireSpit/graphicData",
-          "state": "pick"
-        }
-      }
-    },
-    "RM_GiantCrownedSilkie": {
-      "assign": {
-        "D": "Things/Pawn/Animal/RM_GiantCrownedSilkie/RM_GiantCrownedSilkie"
-      },
-      "at": "2026-10-16T12:10:02.856Z",
-      "decidedAt": "2026-10-16T12:09:03.131Z",
-      "decision": "D",
-      "note": "Rename to Sikka Sikka",
-      "prefill": "C",
-      "purge": [
-        "6bcd611a4a74aff828d3e9b89793ccad53a4b303712fba3df4ab61f0d0a5c75f",
-        "6ab810659674d3885d8ffe63fd1eecfef20824a274e13a0b340b59f7e81e5c6c",
-        "df7d17bc033213327c1a6fa6485bfd2ddebff1daeae63b15ed2b5fc1371e1581",
-        "77262c8a489ea8979b6c652111dc4c483ffa0727434e4610bba156cec120d0f2",
-        "dd689de83fa586a620eea2976fbb658f6c87536711491192936ca8cdd2526944",
-        "e38313273886de873821a5bb1c7ac6645ac1a18ab54ce13c56a8c8c927ca7ec4",
-        "ca753c575412496f9044c8ede46d56d79c0097051c06f556bd5a6931692cd414",
-        "d9eb4a4c1dec738cd3f4a4d7fde27de8984a9c782da5fc17f2f9f9ac05cf9738",
-        "ee62ed5065eaaa97d8a49f1ceb43453dd07fbec6da1e1d9cf0f34626c956380c"
-      ],
-      "purgeTouched": true,
-      "reject": {},
-      "retire": {},
-      "rev": "9f7c88a63bab6cbb",
-      "schema": 2,
-      "slots": {
-        "Things/Pawn/Animal/RM_GiantCrownedSilkie/RM_GiantCrownedSilkie": {
-          "at": "2026-10-16T12:09:03.131Z",
-          "pick": "D",
-          "set_id": "f3215d33e46beae7",
-          "slot_id": "RM_GiantCrownedSilkie/lifeStages[2].bodyGraphicData",
-          "state": "pick"
-        }
-      }
-    },
-    "RM_GiantCrownedSilkieSilk": {
-      "at": "2026-10-16T12:10:40.473Z",
-      "decision": "A",
-      "note": "I'd like to accept this, but there's no option to do so",
-      "prefill": "A",
-      "rev": "9f7c88a63bab6cbb",
-      "schema": 2,
-      "slots": {}
-    },
-    "RM_Ismerrow": {
-      "assign": {
-        "E": "not_needed",
-        "F": "Things/Plant/RM_Ismerrow/RM_Ismerrow",
-        "G": "Things/Plant/RM_Ismerrow/RM_Ismerrow",
-        "H": "Things/Plant/RM_Ismerrow/RM_Ismerrow"
-      },
-      "at": "2026-10-16T12:05:17.037Z",
-      "decidedAt": "2026-10-16T12:04:51.362Z",
-      "decision": "A",
-      "note": "",
-      "pool": {
-        "Things/Plant/RM_Ismerrow/RM_Ismerrow": {
-          "add": [
-            "A",
-            "B",
-            "C",
-            "D",
-            "H",
-            "G",
-            "F"
-          ],
-          "baseline": [],
-          "remove": []
-        }
-      },
-      "prefill": "A",
-      "purge": [],
-      "purgeTouched": true,
-      "reject": {},
-      "retire": {},
-      "rev": "9f7c88a63bab6cbb",
-      "schema": 2,
-      "slots": {
-        "Things/Plant/RM_Ismerrow/RM_Ismerrow": {
-          "at": "2026-10-16T12:04:51.362Z",
-          "pick": "A",
-          "set_id": "d52a29ee2e1398e7",
-          "slot_id": "RM_Ismerrow/graphicData",
-          "state": "pick"
-        }
-      }
-    },
-    "RM_Jobbosh": {
-      "at": "2026-10-16T12:11:28.084Z",
-      "decision": "A",
-      "note": "Insufficiently alien... but I don't know what it's supposed to be used for, so it's hard to judge. Could just drop this if it's not currently needed",
-      "prefill": "A",
-      "rev": "9f7c88a63bab6cbb",
-      "schema": 2,
-      "slots": {}
-    },
-    "RM_Jurrox": {
-      "at": "2026-10-16T12:12:12.683Z",
-      "decision": "A",
-      "note": "Wonderfully grotesque. Add it to the Warscar and make a new name and description for it based on its ultra-gaunt appearance.",
-      "prefill": "A",
-      "rev": "9f7c88a63bab6cbb",
-      "schema": 2,
-      "slots": {}
-    },
-    "RM_Leather_RaptorPlates": {
-      "at": "2026-10-16T12:12:30.270Z",
-      "decidedAt": "2026-10-16T12:12:30.270Z",
-      "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "reject": {},
-      "retire": {},
-      "rev": "9f7c88a63bab6cbb",
-      "schema": 2,
-      "slots": {
-        "Things/Item/Resource/RM_Leather_RaptorPlates": {
-          "at": "2026-10-16T12:12:30.270Z",
-          "pick": "A",
-          "set_id": "b1d0f7f99d884f51",
-          "slot_id": "RM_Leather_RaptorPlates/graphicData",
-          "state": "pick"
-        }
-      }
-    },
-    "RM_Leather_RaptorPlatesMiasma": {
-      "at": "2026-10-16T12:12:33.288Z",
-      "decidedAt": "2026-10-16T12:12:33.288Z",
-      "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "reject": {},
-      "retire": {},
-      "rev": "9f7c88a63bab6cbb",
-      "schema": 2,
-      "slots": {
-        "Things/Item/Resource/RM_Leather_RaptorPlatesMiasma": {
-          "at": "2026-10-16T12:12:33.288Z",
-          "pick": "A",
-          "set_id": "c84f785338aafa14",
-          "slot_id": "RM_Leather_RaptorPlatesMiasma/graphicData",
-          "state": "pick"
-        }
-      }
-    },
-    "RM_Pluurva": {
-      "at": "2026-10-16T12:13:30.469Z",
-      "decision": "A",
-      "note": "This is clearly supposed to be for the rot, but I think it's a very old version of a creature already there perhaps? South-facing looks ridiculous with its wide hips and set of one leg wider than the others",
-      "prefill": "A",
-      "rev": "9f7c88a63bab6cbb",
-      "schema": 2,
-      "slots": {}
-    },
-    "RUT_IdeoIcon_AscendantGenome": {
-      "at": "2026-10-16T12:13:46.274Z",
-      "decision": "A",
-      "note": "accept",
-      "prefill": "A",
-      "rev": "9f7c88a63bab6cbb",
-      "schema": 2,
-      "slots": {}
-    },
-    "RUT_IdeoIcon_Astropolitan": {
-      "at": "2026-10-16T12:13:49.545Z",
-      "decision": "A",
-      "note": "accept",
-      "prefill": "A",
-      "rev": "9f7c88a63bab6cbb",
-      "schema": 2,
-      "slots": {}
-    },
-    "RUT_IdeoIcon_Balance": {
-      "at": "2026-10-16T12:13:52.886Z",
-      "decision": "A",
-      "note": "accept",
-      "prefill": "A",
-      "rev": "9f7c88a63bab6cbb",
-      "schema": 2,
-      "slots": {}
-    },
-    "RUT_IdeoIcon_Contract": {
-      "at": "2026-10-16T12:13:55.300Z",
-      "decision": "A",
-      "note": "accept",
-      "prefill": "A",
-      "rev": "9f7c88a63bab6cbb",
-      "schema": 2,
-      "slots": {}
-    },
-    "RUT_IdeoIcon_SunDebt": {
-      "at": "2026-10-16T12:14:09.621Z",
-      "decision": "A",
-      "note": "accept",
-      "prefill": "A",
-      "rev": "9f7c88a63bab6cbb",
-      "schema": 2,
-      "slots": {}
-    },
-    "RUT_IdeoIcon_Weight": {
-      "at": "2026-10-16T12:14:21.490Z",
-      "decision": "A",
-      "note": "accept",
-      "prefill": "A",
-      "rev": "9f7c88a63bab6cbb",
-      "schema": 2,
-      "slots": {}
-    }
-  },
-  "posture": "pick-one",
-  "reviewStatus": {
-    "at": null,
-    "by": null,
-    "evidence": "generated by art_sheet.py --biome; rows marked sit1 carry the owner's desert sitting 1 picks, no human has ruled on this sheet",
-    "state": "prefill"
-  },
-  "savedAt": "2026-10-16T05:14:22-0700",
-  "savedBy": "review-sheet-sidecar",
-  "sheetId": "phase0_remaining_art_sheet_2026-10-16",
-  "snapshot": "infrastructure/state/art/sheets/phase0_remaining_art_sheet_2026-10-16.snapshot.json",
-  "snapshotId": "9f7c88a63bab6cbb",
-  "writeCount": 86
+ "abyss_sheet_2026-10-04": {
+  "unchanged": 49,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "aiwha_wingfirst_sheet_2026-10-15": {
+  "unchanged": 2,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "blue_desert_sheet_2026-10-04": {
+  "unchanged": 33,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "cauldron_sheet_2026-10-04": {
+  "unchanged": 49,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "contagion_sheet_2026-10-04": {
+  "unchanged": 30,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "deep_desert_sheet_2026-10-04": {
+  "unchanged": 43,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "desert_sheet_2026-10-04": {
+  "unchanged": 148,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "donor_art_commission2_sheet_2026-10-15": {
+  "unchanged": 56,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "donor_pack_port_sheet_2026-10-14": {
+  "unchanged": 23,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "donor_pack_redraws_sheet_2026-10-14": {
+  "unchanged": 17,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "feverwood_sheet_2026-10-05": {
+  "unchanged": 45,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "firespit_with_bezzul_sheet_2026-10-16": {
+  "unchanged": 2,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "fleetflier_alien_sheet_2026-10-15": {
+  "unchanged": 3,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "floodedcanyon_sheet_2026-10-05": {
+  "unchanged": 22,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "flowworks_owner_walk_art_sheet_2026-10-11": {
+  "unchanged": 47,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "flyer_north_redraw_sheet_2026-10-15": {
+  "unchanged": 7,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "gelatinousslime_sheet_2026-10-05": {
+  "unchanged": 10,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "greentide_sheet_2026-10-05": {
+  "unchanged": 165,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "greysea_sheet_2026-10-05": {
+  "unchanged": 48,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "gss_all_art_sheet_2026-10-11": {
+  "unchanged": 150,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "gss_owner_walk_art_sheet_2026-10-11": {
+  "unchanged": 5,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "hosereel_coupling_sheet_2026-10-15": {
+  "unchanged": 8,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "icon_outline_batch4_sheet_2026-10-14": {
+  "unchanged": 15,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "lanterndeeps_sheet_2026-10-05": {
+  "unchanged": 30,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "leaningscrub_sheet_2026-10-05": {
+  "unchanged": 153,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "miasma_sheet_2026-10-05": {
+  "unchanged": 54,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "nightsideice_sheet_2026-10-05": {
+  "unchanged": 3,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "own_render_keep_sheet_2026-10-11": {
+  "unchanged": 5,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "phase0_remaining_art_sheet_2026-10-16": {
+  "unchanged": 27,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "pyrelands_sheet_2026-10-05": {
+  "unchanged": 28,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "rustcathedral_sheet_2026-10-05": {
+  "unchanged": 4,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "sluice_panning_warden_sheet_2026-10-11": {
+  "unchanged": 6,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "thechill_sheet_2026-10-05": {
+  "unchanged": 29,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "theforge_sheet_2026-10-05": {
+  "unchanged": 31,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "therot_sheet_2026-10-05": {
+  "unchanged": 118,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "thescald_sheet_2026-10-05": {
+  "unchanged": 26,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "thesump_sheet_2026-10-05": {
+  "unchanged": 16,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "three_picks_sheet_2026-10-15": {
+  "unchanged": 6,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "twilightsea_sheet_2026-10-05": {
+  "unchanged": 53,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "warscar_sheet_2026-10-05": {
+  "unchanged": 19,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "wasteland_sheet_2026-10-05": {
+  "unchanged": 22,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "webwork_sheet_2026-10-05": {
+  "unchanged": 27,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ },
+ "weepingstones_sheet_2026-10-05": {
+  "unchanged": 52,
+  "remapped": 0,
+  "orphaned": 0,
+  "no_ruled_snapshot": 0,
+  "orphans": [],
+  "remap": {}
+ }
 }
