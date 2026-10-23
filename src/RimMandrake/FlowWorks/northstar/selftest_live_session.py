@@ -440,6 +440,50 @@ check(r["status"] == "UNMEASURED" and r["cls"] == "SITE", "B6 wired: a flood tha
 r = run_event(L.b6_flood, flood_changes=True)
 check(r["status"] == "FAIL" and r["cls"] == "MOD", "can-fail B6 wired: the flood changed the canal's fill: FAIL/MOD")
 
+# 8c'. B6 rain tail (20261022T235239: 8 canal squares +1 level across the flood): RainRate lerps out for a while after Clear
+#      is set; rain fill switched back on at that moment filled the canal during the recession. The fake rains for 3,000
+#      ticks after Clear and fills the canal whenever rain fill is on while it still rains.
+class RainTailGame(FakeEventGame):
+    def __init__(self, **kw):
+        FakeEventGame.__init__(self, **kw)
+        self.clear_at, self.rain_filled, self.session = None, False, None
+
+    def rain(self):
+        if self.weather == "TorrentialRain":
+            return 1.0
+        return 0.5 if self.clear_at is not None and self.t < self.clear_at + 3000 else 0.0
+
+    def tick(self, n):
+        FakeEventGame.tick(self, n)
+        fill_on = (getattr(self.session, "_settings", {}) or {}).get("rainFillsExcavationsEnabled", True)
+        if self.rain() > 0.01 and fill_on is not False and str(fill_on).lower() != "false":
+            self.rain_filled = True
+
+    def call(self, tool, **kw):
+        if tool == "jawa/weather_set" and kw.get("weather") == "Clear" and self.weather == "TorrentialRain":
+            self.clear_at = self.t
+        if tool == "jawa/weather_get":
+            return dict(success=True, weather=dict(current=self.weather, rainRate=self.rain()))
+        return FakeEventGame.call(self, tool, **kw)
+
+
+class RainTailWalk(FakeEventWalk):
+    def cells(self, cells):
+        return ({tuple(c): (2, 2 if self.g.rain_filled else 1, 1000) for c in cells}, 0)
+
+
+g = RainTailGame()
+s = FakeEventSession(g)
+s.w = RainTailWalk(g)
+g.session = s
+s._settings = {"rainFillsExcavationsEnabled": True}
+g.rain_filled = False
+L.b6_flood(s)
+r = [x for x in g.rows if x["id"] == "B6_flood_canal_kept"][-1]
+check(r["status"] == "PASS" and s._settings.get("rainFillsExcavationsEnabled") is True,
+      "can-fail B6: rain fill stays off through the fading rain after Clear and is restored after (%s, %s)"
+      % (r["status"], r["detail"].get("rainRateAtRestore")))
+
 # 8d. LS_FULLREAD (2026-10-19 full read): each harness fix below can go red
 check(L.advance_remainder(dict(success=True, executed=500), 500) == 0, "advance: a finished safe_advance owes nothing")
 check(L.advance_remainder(dict(success=False, state="stopped", executed=200), 500) == 300,

@@ -377,6 +377,10 @@ class Session(object):
             # a verdict read on a site that never read back clear (or was dug to the wrong depth) is no verdict
             detail = dict(detail, statusIfSiteReady=status, siteNotReady=self.site_bad[zone][:6])
             status, cls = "UNMEASURED", "SITE"
+        if getattr(self, "env", {}).get("assembly_identical") is False and cls == "MOD" and status in ("PASS", "FAIL"):
+            # B0_assembly_identity FAILed: a MOD verdict on a build that is not the repo's names no code anyone can fix
+            detail = dict(detail if isinstance(detail, dict) else {"detail": detail}, statusIfRepoDll=status)
+            status, cls = "UNMEASURED", "HARNESS"
         r = dict(id=rid, item=item, criterion=cid, status=status, cls=cls, detail=detail, block=block, eyes=eyes)
         self.rows.append(r)
         self.say("  %-34s %-10s %-7s %s %s" % (rid, status, cls, "%s %s" % (item[:34], cid), json.dumps(detail, default=str)[:160]))
