@@ -103,6 +103,8 @@ body.collapsed .sparks{display:none}
 .p-amber,.p-amber_soft{color:var(--a,var(--sand));box-shadow:inset 0 0 0 1px var(--a,var(--sand))}
 .p-warn{color:var(--red);box-shadow:inset 0 0 0 1px #ff554777}
 .p-down{background:#3a2a20;color:var(--red);box-shadow:inset 0 0 0 1px #d2462e88}
+.p-rule{color:var(--cream);box-shadow:inset 0 0 0 1px var(--line)} .p-look{color:var(--lk);box-shadow:inset 0 0 0 1px var(--line)}
+.p-more{color:var(--muted);box-shadow:inset 0 0 0 1px var(--line);cursor:pointer}
 body.collapsed .body,body.collapsed .tb{display:none}
 body.collapsed .strip{border-top:0;cursor:grab}
 .strip .btn{flex:none}
@@ -278,11 +280,14 @@ function chipHTML(c){
   if (c.state === 'dim') return `<span class="${cls}" title="idle windows that are not seats · newest ${ago(c.since)}"><i></i>${esc(c.label)}</span>`;
   return `<span class="${cls}" title="${esc(c.title || c.label)}"><i></i>${esc(c.label)}${extra}</span>`;
 }
+// Collapsed, the strip is all he sees: every pill carries its own cause (owner 2026-10-22, N1), the
+// rule/look counts ride along, and a frozen snapshot over a healthy connection still reads stale (N5).
+const PILL_KINDS = ['red', 'amber', 'warn', 'rule', 'look'];
 function renderStrip(){
-  const pills = (snap ? snap.strip : []).filter(p => p.kind === 'red' || p.kind === 'amber' || p.kind === 'warn').map(p => {
-    let t = p.kind === 'amber' ? '◐ asks' : esc(p.text);
-    return `<span class="pill p-${p.kind}${p.seat ? ' s-' + esc(p.seat) : ''}">${t}</span>`; });
+  const pills = (snap ? snap.strip : []).filter(p => PILL_KINDS.includes(p.kind)).map(p =>
+    `<span class="pill p-${p.kind}${p.seat ? ' s-' + esc(p.seat) : ''}" title="${esc(p.title || p.text)}">${esc(p.text)}</span>`);
   if (!online()) pills.unshift(`<span class="pill p-down">✖ monitor down ${lastMsg ? ago(lastMsg/1000) : ''}</span>`);
+  else if (snap && Date.now()/1000 - snap.collected_at > 20) pills.unshift(`<span class="pill p-down" title="the daemon answers but its last collection is old">◌ stale ${ago(snap.collected_at)}</span>`);
   const chips = snap ? snap.chips || [] : [];
   const live = chips.filter(c => c.state !== 'dim'), dim = chips.filter(c => c.state === 'dim');
   const done = snap ? (snap.strip.find(p => p.kind === 'done') || null) : null;
@@ -291,6 +296,22 @@ function renderStrip(){
     + (done ? `<span class="done" ${dg ? `data-link="${esc(dg.path)}" data-type="path"` : ''} title="finished since ${snap.done_since ? hhmm(snap.done_since) : ''}${dg ? ' · open digest' : ''}">${esc(done.text.replace(' ',''))}</span>` : '')
     + `<button class="btn" id="bexp" title="Expand" style="${document.body.classList.contains('collapsed') ? '' : 'display:none'}">▴</button>`;
   $('bexp').onclick = () => setCollapsed(false);
+  foldOverflow();
+}
+// Never clip silently: pills/chips that do not fit are hidden and counted in one visible "+N" pill whose
+// tooltip lists them; clicking it expands the widget.
+function foldOverflow(){
+  const st = $('strip'); if (!st.clientWidth || st.scrollWidth <= st.clientWidth) return;
+  const items = [...st.querySelectorAll('.pill, .chip')], hidden = [];
+  const room = () => st.scrollWidth > st.clientWidth;
+  const more = document.createElement('span'); more.className = 'pill p-more'; st.insertBefore(more, st.querySelector('.gap'));
+  // drop from the right: dim chips first, then chips, then the lowest-priority pills (rule/look before alarms)
+  const order = items.slice().reverse().sort((a, b) => rank(a) - rank(b));
+  for (const el of order) { if (!room()) break; el.style.display = 'none'; hidden.push(el.title || el.textContent);
+    more.textContent = `+${hidden.length} more`; }
+  more.title = hidden.join('\n'); more.onclick = () => setCollapsed(false);
+  function rank(el){ return el.classList.contains('dim') ? 0 : el.classList.contains('chip') ? 1
+    : el.classList.contains('p-look') || el.classList.contains('p-rule') ? 2 : el.classList.contains('p-warn') ? 3 : 4; }
 }
 
 function online(){ return lastMsg && (Date.now() - lastMsg) < 40000 }
@@ -347,7 +368,7 @@ function fit(){ const p = api(); if (p && p.set_collapsed) p.set_collapsed(docum
 function toastNew(){ const p = api(); if (!p || !p.toast || !snap) return;
   for (const r of snap.rows) {
     if (r.acked || !r.toast_key || r.toasted_elsewhere) continue;
-    if (r.kind === 'red') p.toast(r.toast_key, 'RimPulse · ' + (r.text.startsWith('OOM') ? 'OOM kill' : 'window lost'), r.text);
+    if (r.kind === 'red') p.toast(r.toast_key, 'RimPulse · ' + (r.text.startsWith('OOM') ? 'OOM kill' : r.src === 'sessions' ? 'window lost' : r.src === 'telemetry' ? 'telemetry alarm' : 'alarm'), r.text);
     else if (r.kind === 'amber' && r.seat) p.toast(r.toast_key, 'RimPulse · ' + r.who + ' is waiting on you', r.text);
   } }
 

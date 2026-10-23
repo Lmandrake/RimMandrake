@@ -460,9 +460,11 @@ def classify_sessions(sessions: list[dict], extras: dict, seen: dict, items: dic
                     restarted.append((who, last))
                 else:
                     inc = f"lost:{sid}"
-                    rows.append(_red(inc, who, f"{who} window lost — process gone, session file left",
-                                     last, acks, src="sessions",
-                                     link={"type": "path", "value": win_path(s.get('_file', '')), "label": "session"}))
+                    r = _red(inc, who, f"{who} window lost — process gone, session file left",
+                             last, acks, src="sessions",
+                             link={"type": "path", "value": win_path(s.get('_file', '')), "label": "session"})
+                    r["pill"] = _red_pill(f"{who} window died (process gone)", 1, last)
+                    rows.append(r)
             continue
         new_seen[sid] = {"name": who, "last_alive": now, "file": s.get("_file")}
         item = items.get(who.upper())
@@ -571,6 +573,7 @@ def classify_oom(mem_events: list[dict], acks: dict, now: float) -> list[dict]:
                  link={"type": "path", "value": win_path(str(MEMWATCH_EVENTS)), "label": "events"})
         r["acked"] = not fresh
         r["toast_key"] = f"{inc}@{int(last_t)}"
+        r["pill"] = _red_pill(f"{who} OOM" + (f" @{gb} GB" if gb is not None else ""), n_all, last_t)
         rows.append(r)
     return rows
 
@@ -639,6 +642,31 @@ def _cap(limit_kb) -> str:
     return f"{limit_kb / 1048576:.1f} GB cap" if limit_kb >= 1048576 else f"{limit_kb // 1024} MB cap"
 
 
+def _cap_short(limit_kb) -> str:
+    """'6 GB cap' / '256 MB cap' - the pill-sized form of _cap."""
+    if not limit_kb:
+        return "at cap"
+    if limit_kb >= 1048576:
+        gb = limit_kb / 1048576
+        return f"{gb:.0f} GB cap" if abs(gb - round(gb)) < 0.05 else f"{gb:.1f} GB cap"
+    return f"{limit_kb // 1024} MB cap"
+
+
+def _victim(k: dict) -> str:
+    """'killed python 4.0 GB' from the kernel's Killed-process line (MEASURED 2026-10-22: the BENCH tool
+    kills were one ~4 GB python re-run five times, not page cache)."""
+    if not k.get("task"):
+        return ""
+    a = k.get("anon_kb")
+    return f"killed {k['task']}" + (f" {a / 1048576:.1f} GB" if a else "")
+
+
+def _red_pill(what: str, n: int, t: float) -> str:
+    """A collapsed-strip red pill: WHAT broke and WHY, count, time (owner 2026-10-22: '✖ BENCH 19:40' made
+    him deduce). Never only a name and a time."""
+    return f"✖ {what}" + (f" ×{n}" if n > 1 else "") + f" · {time.strftime('%H:%M', time.localtime(t))}"
+
+
 def today_window(now: float) -> float:
     """'today' = since local midnight, but never less than 6 h (a 23:50 kill still shows at 00:10)."""
     lt = time.localtime(now)
@@ -668,6 +696,7 @@ def classify_kernel_oom(kills: list[dict], acks: dict, now: float) -> list[dict]
         last = ks[-1]
         n = len(ks)
         cap = _cap(last.get("limit_kb"))
+        victim = _victim(last)
         if g == "planted":
             rows.append(_row("oom:planted", "idle", "HARNESS",
                              f"memory pen proven · planted 128 MiB test killed as designed ×{n} today", last["t"],
@@ -684,13 +713,18 @@ def classify_kernel_oom(kills: list[dict], acks: dict, now: float) -> list[dict]
             who = SERVICE_NAMES.get(svc, svc)
             text = (f"OOM kill · {who} ({svc}) at {cap}" + (f" · ×{n} today" if n > 1 else "")
                     + f" · see journalctl --user -u {svc}")
-            r = _row(inc, "red", who.split()[0].upper(), text, last["t"], src="kernel", incident=inc, count=n)
+            r = _row(inc, "red", who.split()[0].upper(), text, last["t"], src="kernel", incident=inc, count=n,
+                     pill=_red_pill(f"{who} OOM · {_cap_short(last.get('limit_kb'))}", n, last["t"]))
         else:
             who = g.split(":", 1)[1]
-            where = "tool cgroup" if last["memcg"].endswith("claude-code-bash") else "window"
-            text = f"OOM kill · {who} {where} at {cap}" + (f" · ×{n} today" if n > 1 else "")
+            tool = last["memcg"].endswith("claude-code-bash")
+            where = "tool cgroup" if tool else "window"
+            text = (f"OOM kill · {who} {where} at {cap}" + (f" · {victim}" if victim else "")
+                    + (f" · ×{n} today" if n > 1 else ""))
             r = _row(inc, "red", who, text, last["t"], src="kernel", incident=inc, count=n,
-                     toasted_elsewhere=True)   # memwatch toasts seat kills itself
+                     toasted_elsewhere=True,   # memwatch toasts seat kills itself
+                     pill=_red_pill(f"{who} {'tool' if tool else 'window'} OOM · {_cap_short(last.get('limit_kb'))}",
+                                    n, last["t"]))
         r["acked"] = not fresh
         r["toast_key"] = f"{inc}@{int(last['t'])}"
         if not g.startswith("svc:"):   # memwatch never records a service kill
@@ -867,7 +901,9 @@ def classify_telemetry(t: dict | None, acks: dict, now: float) -> list[dict]:
         since = al.get("since") or at
         inc = f"tel:{al['id']}@{int(since)}"
         if al.get("level") == "red":
-            rows.append(_red(inc, "TELEMETRY", al["text"], since, acks, "telemetry", link=link))
+            r = _red(inc, "TELEMETRY", al["text"], since, acks, "telemetry", link=link)
+            r["pill"] = _red_pill(short(al["text"], 40), 1, since)
+            rows.append(r)
         else:
             a = acks.get(inc)
             rows.append(_row(inc, "warn", "TELEMETRY", al["text"], since, link=link, src="telemetry", incident=inc,
@@ -904,20 +940,33 @@ def order_rows(rows: list[dict]) -> list[dict]:
 
 
 def build_strip(rows: list[dict]) -> list[dict]:
-    """Alarm pills only (they must survive the widget being collapsed to its strip) + a done tally.
-    Presence lives in `chips`."""
+    """The collapsed strip's pills (they must survive the widget being collapsed): every unacked alarm
+    says WHAT and WHY in its own text (N1, owner 2026-10-22), a seat's question keeps the seat and the
+    question, then the two counts he returns for - to rule, to look at - and the done tally. Presence
+    lives in `chips`."""
     pills = []
     for r in rows:
         if r.get("acked"):
             continue
         if r["kind"] == "red":
-            pills.append({"kind": "red", "text": f"✖ {r['who']} {time.strftime('%H:%M', time.localtime(r['since']))}"})
+            pills.append({"kind": "red", "text": r.get("pill") or _red_pill(short(r["text"], 44), 1, r["since"]),
+                          "title": r["text"], "since": r["since"]})
         elif r["kind"] == "amber":
-            pills.append({"kind": "amber", "text": f"◐ {r['who']}", "since": r["since"], "seat": r.get("seat")})
+            q = r.get("label") or r["text"]
+            pills.append({"kind": "amber", "text": f"◐ {r['who']} {short(q, 40)}", "title": r["text"],
+                          "since": r["since"], "seat": r.get("seat")})
         elif r["kind"] == "amber_soft":
-            pills.append({"kind": "amber_soft", "text": f"◑ {r['who']}", "since": r["since"], "seat": r.get("seat")})
+            pills.append({"kind": "amber_soft", "text": f"◑ {r['who']} finished", "title": r["text"],
+                          "since": r["since"], "seat": r.get("seat")})
         elif r["kind"] == "warn":
-            pills.append({"kind": "warn", "text": r.get("pill") or "◆ test kill"})
+            pills.append({"kind": "warn", "text": r.get("pill") or "◆ " + short(r["text"], 40), "title": r["text"],
+                          "since": r["since"]})
+    rule = sum(1 for r in rows if r["kind"] == "review")
+    if rule:
+        pills.append({"kind": "rule", "text": f"◇ {rule} to rule"})
+    look = sum(1 for r in rows if r["kind"] == "look" and not r.get("opened"))
+    if look:
+        pills.append({"kind": "look", "text": f"▣ {look} to look at"})
     done = sum(1 for r in rows if r["kind"] == "done")
     if done:
         pills.append({"kind": "done", "text": f"✓ {done}"})
