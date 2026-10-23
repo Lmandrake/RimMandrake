@@ -1,0 +1,2617 @@
+{
+ "judge": "delegated classification judge (Sonnet 5.5)",
+ "rule": "owner 2026-10-23: climb/jump/slither if fits 1x1; bigger no, wheeled no, many armless no",
+ "cap": "body ~1.4 for quadrupeds, 1.6 arthropods/slitherers, humanoid droids any",
+ "rows": [
+  {
+   "def": "AV_OutriggerCanoe",
+   "verdict": "NO",
+   "reason": "vehicle/boat, no limbs or climbing body",
+   "corpse_of": null
+  },
+  {
+   "def": "Corpse_AV_OutriggerCanoe",
+   "verdict": "NO",
+   "reason": "vehicle/boat, no limbs or climbing body",
+   "corpse_of": "AV_OutriggerCanoe"
+  },
+  {
+   "def": "Corpse_Toxalope",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": "Toxalope"
+  },
+  {
+   "def": "Toxalope",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": null
+  },
+  {
+   "def": "Corpse_Deer",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": "Deer"
+  },
+  {
+   "def": "Corpse_Donkey",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": "Donkey"
+  },
+  {
+   "def": "Corpse_Mech_Termite",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": "Mech_Termite"
+  },
+  {
+   "def": "Corpse_Warg",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": "Warg"
+  },
+  {
+   "def": "Deer",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": null
+  },
+  {
+   "def": "Donkey",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": null
+  },
+  {
+   "def": "Mech_Termite",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": null
+  },
+  {
+   "def": "Warg",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": null
+  },
+  {
+   "def": "Corpse_RSW_DW_Race_guy762_DroidRace_ADMkI",
+   "verdict": "CLIMB",
+   "reason": "humanoid droid or humanlike body, fits 1x1 (owner: many droids climb)",
+   "corpse_of": "RSW_DW_Race_guy762_DroidRace_ADMkI"
+  },
+  {
+   "def": "Corpse_RSW_DW_Race_guy762_DroidRace_ADMkI_sf",
+   "verdict": "CLIMB",
+   "reason": "humanoid droid or humanlike body, fits 1x1 (owner: many droids climb)",
+   "corpse_of": "RSW_DW_Race_guy762_DroidRace_ADMkI_sf"
+  },
+  {
+   "def": "Corpse_RSW_DW_Race_guy762_DroidRace_GOTO",
+   "verdict": "CLIMB",
+   "reason": "humanoid droid or humanlike body, fits 1x1 (owner: many droids climb)",
+   "corpse_of": "RSW_DW_Race_guy762_DroidRace_GOTO"
+  },
+  {
+   "def": "Corpse_RSW_DW_Race_guy762_DroidRace_KM1HMD",
+   "verdict": "CLIMB",
+   "reason": "humanoid droid or humanlike body, fits 1x1 (owner: many droids climb)",
+   "corpse_of": "RSW_DW_Race_guy762_DroidRace_KM1HMD"
+  },
+  {
+   "def": "Corpse_RSW_DW_Race_guy762_DroidRace_KM1MD",
+   "verdict": "CLIMB",
+   "reason": "humanoid droid or humanlike body, fits 1x1 (owner: many droids climb)",
+   "corpse_of": "RSW_DW_Race_guy762_DroidRace_KM1MD"
+  },
+  {
+   "def": "RSW_DW_Race_guy762_DroidRace_ADMkI",
+   "verdict": "CLIMB",
+   "reason": "humanoid droid or humanlike body, fits 1x1 (owner: many droids climb)",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_DW_Race_guy762_DroidRace_ADMkI_sf",
+   "verdict": "CLIMB",
+   "reason": "humanoid droid or humanlike body, fits 1x1 (owner: many droids climb)",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_DW_Race_guy762_DroidRace_GOTO",
+   "verdict": "CLIMB",
+   "reason": "humanoid droid or humanlike body, fits 1x1 (owner: many droids climb)",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_DW_Race_guy762_DroidRace_KM1HMD",
+   "verdict": "CLIMB",
+   "reason": "humanoid droid or humanlike body, fits 1x1 (owner: many droids climb)",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_DW_Race_guy762_DroidRace_KM1MD",
+   "verdict": "CLIMB",
+   "reason": "humanoid droid or humanlike body, fits 1x1 (owner: many droids climb)",
+   "corpse_of": null
+  },
+  {
+   "def": "UnnaturalCorpse_RSW_DW_Race_guy762_DroidRace_ADMkI",
+   "verdict": "CLIMB",
+   "reason": "humanoid droid or humanlike body, fits 1x1 (owner: many droids climb)",
+   "corpse_of": "RSW_DW_Race_guy762_DroidRace_ADMkI"
+  },
+  {
+   "def": "UnnaturalCorpse_RSW_DW_Race_guy762_DroidRace_ADMkI_sf",
+   "verdict": "CLIMB",
+   "reason": "humanoid droid or humanlike body, fits 1x1 (owner: many droids climb)",
+   "corpse_of": "RSW_DW_Race_guy762_DroidRace_ADMkI_sf"
+  },
+  {
+   "def": "UnnaturalCorpse_RSW_DW_Race_guy762_DroidRace_GOTO",
+   "verdict": "CLIMB",
+   "reason": "humanoid droid or humanlike body, fits 1x1 (owner: many droids climb)",
+   "corpse_of": "RSW_DW_Race_guy762_DroidRace_GOTO"
+  },
+  {
+   "def": "UnnaturalCorpse_RSW_DW_Race_guy762_DroidRace_KM1HMD",
+   "verdict": "CLIMB",
+   "reason": "humanoid droid or humanlike body, fits 1x1 (owner: many droids climb)",
+   "corpse_of": "RSW_DW_Race_guy762_DroidRace_KM1HMD"
+  },
+  {
+   "def": "UnnaturalCorpse_RSW_DW_Race_guy762_DroidRace_KM1MD",
+   "verdict": "CLIMB",
+   "reason": "humanoid droid or humanlike body, fits 1x1 (owner: many droids climb)",
+   "corpse_of": "RSW_DW_Race_guy762_DroidRace_KM1MD"
+  },
+  {
+   "def": "Alligator",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": null
+  },
+  {
+   "def": "Cat_Scimitar",
+   "verdict": "CLIMB",
+   "reason": "agile clawed cat, within 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "Corpse_Alligator",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": "Alligator"
+  },
+  {
+   "def": "Corpse_Cat_Scimitar",
+   "verdict": "CLIMB",
+   "reason": "agile clawed cat, within 1x1",
+   "corpse_of": "Cat_Scimitar"
+  },
+  {
+   "def": "Corpse_Drone_Sentry",
+   "verdict": "NO",
+   "reason": "treaded drone",
+   "corpse_of": "Drone_Sentry"
+  },
+  {
+   "def": "Corpse_HiveQueen",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": "HiveQueen"
+  },
+  {
+   "def": "Corpse_Panda",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": "Panda"
+  },
+  {
+   "def": "Corpse_SeaLion",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": "SeaLion"
+  },
+  {
+   "def": "Corpse_Tiger",
+   "verdict": "CLIMB",
+   "reason": "agile clawed cat, within 1x1",
+   "corpse_of": "Tiger"
+  },
+  {
+   "def": "Corpse_Wolf_Great",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": "Wolf_Great"
+  },
+  {
+   "def": "Drone_Sentry",
+   "verdict": "NO",
+   "reason": "treaded drone",
+   "corpse_of": null
+  },
+  {
+   "def": "HiveQueen",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": null
+  },
+  {
+   "def": "Panda",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": null
+  },
+  {
+   "def": "SeaLion",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": null
+  },
+  {
+   "def": "Tiger",
+   "verdict": "CLIMB",
+   "reason": "agile clawed cat, within 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "Wolf_Great",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": null
+  },
+  {
+   "def": "Corpse_IronScruff_Tardigrade",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": "IronScruff_Tardigrade"
+  },
+  {
+   "def": "IronScruff_Tardigrade",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": null
+  },
+  {
+   "def": "Corpse_RM_Agaripawn",
+   "verdict": "NO",
+   "reason": "pawed ambusher/stilt-walker or heavy pony-sized creeper, no grip, not a climber",
+   "corpse_of": "RM_Agaripawn"
+  },
+  {
+   "def": "Corpse_RM_Ashwallow",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": "RM_Ashwallow"
+  },
+  {
+   "def": "Corpse_RM_Barbslinger",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": "RM_Barbslinger"
+  },
+  {
+   "def": "Corpse_RM_Barkwarden",
+   "verdict": "CLIMB",
+   "reason": "long-armed hook-clawed climber / fingered digger",
+   "corpse_of": "RM_Barkwarden"
+  },
+  {
+   "def": "Corpse_RM_Blisterfloat",
+   "verdict": "CLIMB",
+   "reason": "floater or flier that rises up the shaft, small enough for 1x1",
+   "corpse_of": "RM_Blisterfloat"
+  },
+  {
+   "def": "Corpse_RM_Cindermare",
+   "verdict": "CLIMB",
+   "reason": "grips its prey with limbs, 1.3",
+   "corpse_of": "RM_Cindermare"
+  },
+  {
+   "def": "Corpse_RM_Dakkra",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": "RM_Dakkra"
+  },
+  {
+   "def": "Corpse_RM_Dorrak",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": "RM_Dorrak"
+  },
+  {
+   "def": "Corpse_RM_Durrgak",
+   "verdict": "CLIMB",
+   "reason": "long-armed hook-clawed climber / fingered digger",
+   "corpse_of": "RM_Durrgak"
+  },
+  {
+   "def": "Corpse_RM_ElectricGryllotalpa",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": "RM_ElectricGryllotalpa"
+  },
+  {
+   "def": "Corpse_RM_Emberscythe",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": "RM_Emberscythe"
+  },
+  {
+   "def": "Corpse_RM_Flamefang",
+   "verdict": "CLIMB",
+   "reason": "snake or slitherer, thin enough for a 1x1 ladder",
+   "corpse_of": "RM_Flamefang"
+  },
+  {
+   "def": "Corpse_RM_Gorekite",
+   "verdict": "NO",
+   "reason": "big flier (wing span or tent-sized), flies instead of climbing",
+   "corpse_of": "RM_Gorekite"
+  },
+  {
+   "def": "Corpse_RM_GreaterOomb",
+   "verdict": "NO",
+   "reason": "amorphous rolling refuse ball, no limbs",
+   "corpse_of": "RM_GreaterOomb"
+  },
+  {
+   "def": "Corpse_RM_Gristle",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": "RM_Gristle"
+  },
+  {
+   "def": "Corpse_RM_Gulloth",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": "RM_Gulloth"
+  },
+  {
+   "def": "Corpse_RM_Gulveth",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": "RM_Gulveth"
+  },
+  {
+   "def": "Corpse_RM_Harrok",
+   "verdict": "NO",
+   "reason": "pawed ambusher/stilt-walker or heavy pony-sized creeper, no grip, not a climber",
+   "corpse_of": "RM_Harrok"
+  },
+  {
+   "def": "Corpse_RM_Hush",
+   "verdict": "NO",
+   "reason": "flat sheet two cells across, does not fit 1x1",
+   "corpse_of": "RM_Hush"
+  },
+  {
+   "def": "Corpse_RM_Jossur",
+   "verdict": "NO",
+   "reason": "big flier (wing span or tent-sized), flies instead of climbing",
+   "corpse_of": "RM_Jossur"
+  },
+  {
+   "def": "Corpse_RM_JuggernautBeetle",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": "RM_JuggernautBeetle"
+  },
+  {
+   "def": "Corpse_RM_Julmox",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": "RM_Julmox"
+  },
+  {
+   "def": "Corpse_RM_Kethrel",
+   "verdict": "NO",
+   "reason": "pawed ambusher/stilt-walker or heavy pony-sized creeper, no grip, not a climber",
+   "corpse_of": "RM_Kethrel"
+  },
+  {
+   "def": "Corpse_RM_Khorrak",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": "RM_Khorrak"
+  },
+  {
+   "def": "Corpse_RM_Krannock",
+   "verdict": "CLIMB",
+   "reason": "floater or flier that rises up the shaft, small enough for 1x1",
+   "corpse_of": "RM_Krannock"
+  },
+  {
+   "def": "Corpse_RM_KurrethQueen",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": "RM_KurrethQueen"
+  },
+  {
+   "def": "Corpse_RM_Megapleura",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": "RM_Megapleura"
+  },
+  {
+   "def": "Corpse_RM_Moravatha",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": "RM_Moravatha"
+  },
+  {
+   "def": "Corpse_RM_Murrek",
+   "verdict": "NO",
+   "reason": "pawed ambusher/stilt-walker or heavy pony-sized creeper, no grip, not a climber",
+   "corpse_of": "RM_Murrek"
+  },
+  {
+   "def": "Corpse_RM_Nevarithia",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": "RM_Nevarithia"
+  },
+  {
+   "def": "Corpse_RM_Ollathrix",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": "RM_Ollathrix"
+  },
+  {
+   "def": "Corpse_RM_Ossumatha",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": "RM_Ossumatha"
+  },
+  {
+   "def": "Corpse_RM_Quarrok",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": "RM_Quarrok"
+  },
+  {
+   "def": "Corpse_RM_Shambles",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": "RM_Shambles"
+  },
+  {
+   "def": "Corpse_RM_Sharpshrimp",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": "RM_Sharpshrimp"
+  },
+  {
+   "def": "Corpse_RM_Shokka",
+   "verdict": "NO",
+   "reason": "pawed ambusher/stilt-walker or heavy pony-sized creeper, no grip, not a climber",
+   "corpse_of": "RM_Shokka"
+  },
+  {
+   "def": "Corpse_RM_SikkaSikka",
+   "verdict": "NO",
+   "reason": "flightless bird, no arms",
+   "corpse_of": "RM_SikkaSikka"
+  },
+  {
+   "def": "Corpse_RM_Skerrith",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": "RM_Skerrith"
+  },
+  {
+   "def": "Corpse_RM_Skreth",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": "RM_Skreth"
+  },
+  {
+   "def": "Corpse_RM_Slagmole",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": "RM_Slagmole"
+  },
+  {
+   "def": "Corpse_RM_Sloghog",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": "RM_Sloghog"
+  },
+  {
+   "def": "Corpse_RM_Suush",
+   "verdict": "CLIMB",
+   "reason": "floater or flier that rises up the shaft, small enough for 1x1",
+   "corpse_of": "RM_Suush"
+  },
+  {
+   "def": "Corpse_RM_Thermadon",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": "RM_Thermadon"
+  },
+  {
+   "def": "Corpse_RM_Vaulisk",
+   "verdict": "CLIMB",
+   "reason": "snake or slitherer, thin enough for a 1x1 ladder",
+   "corpse_of": "RM_Vaulisk"
+  },
+  {
+   "def": "Corpse_RM_Vellak",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": "RM_Vellak"
+  },
+  {
+   "def": "Corpse_RM_Ysvaltha",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": "RM_Ysvaltha"
+  },
+  {
+   "def": "RM_Agaripawn",
+   "verdict": "NO",
+   "reason": "pawed ambusher/stilt-walker or heavy pony-sized creeper, no grip, not a climber",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Ashwallow",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Barbslinger",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Barkwarden",
+   "verdict": "CLIMB",
+   "reason": "long-armed hook-clawed climber / fingered digger",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Blisterfloat",
+   "verdict": "CLIMB",
+   "reason": "floater or flier that rises up the shaft, small enough for 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Cindermare",
+   "verdict": "CLIMB",
+   "reason": "grips its prey with limbs, 1.3",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Dakkra",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Dorrak",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Durrgak",
+   "verdict": "CLIMB",
+   "reason": "long-armed hook-clawed climber / fingered digger",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_ElectricGryllotalpa",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Emberscythe",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Flamefang",
+   "verdict": "CLIMB",
+   "reason": "snake or slitherer, thin enough for a 1x1 ladder",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Gorekite",
+   "verdict": "NO",
+   "reason": "big flier (wing span or tent-sized), flies instead of climbing",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_GreaterOomb",
+   "verdict": "NO",
+   "reason": "amorphous rolling refuse ball, no limbs",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Gristle",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Gulloth",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Gulveth",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Harrok",
+   "verdict": "NO",
+   "reason": "pawed ambusher/stilt-walker or heavy pony-sized creeper, no grip, not a climber",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Hush",
+   "verdict": "NO",
+   "reason": "flat sheet two cells across, does not fit 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Jossur",
+   "verdict": "NO",
+   "reason": "big flier (wing span or tent-sized), flies instead of climbing",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_JuggernautBeetle",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Julmox",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Kethrel",
+   "verdict": "NO",
+   "reason": "pawed ambusher/stilt-walker or heavy pony-sized creeper, no grip, not a climber",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Khorrak",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Krannock",
+   "verdict": "CLIMB",
+   "reason": "floater or flier that rises up the shaft, small enough for 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_KurrethQueen",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Megapleura",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Moravatha",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Murrek",
+   "verdict": "NO",
+   "reason": "pawed ambusher/stilt-walker or heavy pony-sized creeper, no grip, not a climber",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Nevarithia",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Ollathrix",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Ossumatha",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Quarrok",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Shambles",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Sharpshrimp",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Shokka",
+   "verdict": "NO",
+   "reason": "pawed ambusher/stilt-walker or heavy pony-sized creeper, no grip, not a climber",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_SikkaSikka",
+   "verdict": "NO",
+   "reason": "flightless bird, no arms",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Skerrith",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Skreth",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Slagmole",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Sloghog",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Suush",
+   "verdict": "CLIMB",
+   "reason": "floater or flier that rises up the shaft, small enough for 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Thermadon",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Vaulisk",
+   "verdict": "CLIMB",
+   "reason": "snake or slitherer, thin enough for a 1x1 ladder",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Vellak",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Ysvaltha",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": null
+  },
+  {
+   "def": "Corpse_RM_Durrok",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": "RM_Durrok"
+  },
+  {
+   "def": "Corpse_RSW_Basilisk",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": "RSW_Basilisk"
+  },
+  {
+   "def": "Corpse_RSW_Bordok",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": "RSW_Bordok"
+  },
+  {
+   "def": "Corpse_RSW_BunkerBug",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": "RSW_BunkerBug"
+  },
+  {
+   "def": "Corpse_RSW_CanCell",
+   "verdict": "CLIMB",
+   "reason": "floater or flier that rises up the shaft, small enough for 1x1",
+   "corpse_of": "RSW_CanCell"
+  },
+  {
+   "def": "Corpse_RSW_Diggerpede",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": "RSW_Diggerpede"
+  },
+  {
+   "def": "Corpse_RSW_Diplocaulus",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": "RSW_Diplocaulus"
+  },
+  {
+   "def": "Corpse_RSW_EnergySpider",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": "RSW_EnergySpider"
+  },
+  {
+   "def": "Corpse_RSW_Eopie",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": "RSW_Eopie"
+  },
+  {
+   "def": "Corpse_RSW_Excretor",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": "RSW_Excretor"
+  },
+  {
+   "def": "Corpse_RSW_FoundryBeetle",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": "RSW_FoundryBeetle"
+  },
+  {
+   "def": "Corpse_RSW_FungalMantis",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": "RSW_FungalMantis"
+  },
+  {
+   "def": "Corpse_RSW_Gelagrub",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": "RSW_Gelagrub"
+  },
+  {
+   "def": "Corpse_RSW_HarvesterBeetle",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": "RSW_HarvesterBeetle"
+  },
+  {
+   "def": "Corpse_RSW_Holcorobeus",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": "RSW_Holcorobeus"
+  },
+  {
+   "def": "Corpse_RSW_Jerba",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": "RSW_Jerba"
+  },
+  {
+   "def": "Corpse_RSW_JewelBeetle",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": "RSW_JewelBeetle"
+  },
+  {
+   "def": "Corpse_RSW_Kaadu",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": "RSW_Kaadu"
+  },
+  {
+   "def": "Corpse_RSW_Klorslug",
+   "verdict": "CLIMB",
+   "reason": "snake or slitherer, thin enough for a 1x1 ladder",
+   "corpse_of": "RSW_Klorslug"
+  },
+  {
+   "def": "Corpse_RSW_Onnik",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": "RSW_Onnik"
+  },
+  {
+   "def": "Corpse_RSW_OpeeSeaKiller",
+   "verdict": "NO",
+   "reason": "aquatic ambusher of huge narrative size",
+   "corpse_of": "RSW_OpeeSeaKiller"
+  },
+  {
+   "def": "Corpse_RSW_OpeeSeaKillerJuv",
+   "verdict": "NO",
+   "reason": "aquatic ambusher of huge narrative size",
+   "corpse_of": "RSW_OpeeSeaKillerJuv"
+  },
+  {
+   "def": "Corpse_RSW_PaintedSpat",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": "RSW_PaintedSpat"
+  },
+  {
+   "def": "Corpse_RSW_Platyhystrix",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": "RSW_Platyhystrix"
+  },
+  {
+   "def": "Corpse_RSW_Protosolpuga",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": "RSW_Protosolpuga"
+  },
+  {
+   "def": "Corpse_RSW_RoyalRhino",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": "RSW_RoyalRhino"
+  },
+  {
+   "def": "Corpse_RSW_Runyip",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": "RSW_Runyip"
+  },
+  {
+   "def": "Corpse_RSW_SandStalker",
+   "verdict": "NO",
+   "reason": "pawed ambusher/stilt-walker or heavy pony-sized creeper, no grip, not a climber",
+   "corpse_of": "RSW_SandStalker"
+  },
+  {
+   "def": "Corpse_RSW_Silooth",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": "RSW_Silooth"
+  },
+  {
+   "def": "Corpse_RSW_Taozin",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": "RSW_Taozin"
+  },
+  {
+   "def": "Corpse_RSW_Zhakka",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": "RSW_Zhakka"
+  },
+  {
+   "def": "RM_Durrok",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_Basilisk",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_Bordok",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_BunkerBug",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_CanCell",
+   "verdict": "CLIMB",
+   "reason": "floater or flier that rises up the shaft, small enough for 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_Diggerpede",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_Diplocaulus",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_EnergySpider",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_Eopie",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_Excretor",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_FoundryBeetle",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_FungalMantis",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_Gelagrub",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_HarvesterBeetle",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_Holcorobeus",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_Jerba",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_JewelBeetle",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_Kaadu",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_Klorslug",
+   "verdict": "CLIMB",
+   "reason": "snake or slitherer, thin enough for a 1x1 ladder",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_Onnik",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_OpeeSeaKiller",
+   "verdict": "NO",
+   "reason": "aquatic ambusher of huge narrative size",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_OpeeSeaKillerJuv",
+   "verdict": "NO",
+   "reason": "aquatic ambusher of huge narrative size",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_PaintedSpat",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_Platyhystrix",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_Protosolpuga",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_RoyalRhino",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_Runyip",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_SandStalker",
+   "verdict": "NO",
+   "reason": "pawed ambusher/stilt-walker or heavy pony-sized creeper, no grip, not a climber",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_Silooth",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_Taozin",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_Zhakka",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": null
+  },
+  {
+   "def": "Corpse_RM_Fethrik",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": "RM_Fethrik"
+  },
+  {
+   "def": "RM_Fethrik",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": null
+  },
+  {
+   "def": "Corpse_RUT_BurnerAscendant",
+   "verdict": "NO",
+   "reason": "pawed ambusher/stilt-walker or heavy pony-sized creeper, no grip, not a climber",
+   "corpse_of": "RUT_BurnerAscendant"
+  },
+  {
+   "def": "Corpse_RUT_EmperorVulture",
+   "verdict": "NO",
+   "reason": "big flier (wing span or tent-sized), flies instead of climbing",
+   "corpse_of": "RUT_EmperorVulture"
+  },
+  {
+   "def": "Corpse_VAEWaste_Megatardi",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": "VAEWaste_Megatardi"
+  },
+  {
+   "def": "RUT_BurnerAscendant",
+   "verdict": "NO",
+   "reason": "pawed ambusher/stilt-walker or heavy pony-sized creeper, no grip, not a climber",
+   "corpse_of": null
+  },
+  {
+   "def": "RUT_EmperorVulture",
+   "verdict": "NO",
+   "reason": "big flier (wing span or tent-sized), flies instead of climbing",
+   "corpse_of": null
+  },
+  {
+   "def": "VAEWaste_Megatardi",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": null
+  },
+  {
+   "def": "Corpse_RUT_GreentideAntRace",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": "RUT_GreentideAntRace"
+  },
+  {
+   "def": "RUT_GreentideAntRace",
+   "verdict": "NO",
+   "reason": "larger than 1x1 (body size 1.6 or more, or described as huge); bigger things no",
+   "corpse_of": null
+  },
+  {
+   "def": "Corpse_GR_Bearalope",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": "GR_Bearalope"
+  },
+  {
+   "def": "Corpse_GR_Bearffalo",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": "GR_Bearffalo"
+  },
+  {
+   "def": "Corpse_GR_Bearman",
+   "verdict": "CLIMB",
+   "reason": "humanoid droid or humanlike body, fits 1x1 (owner: many droids climb)",
+   "corpse_of": "GR_Bearman"
+  },
+  {
+   "def": "Corpse_GR_Booman",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": "GR_Booman"
+  },
+  {
+   "def": "Corpse_GR_Boombeetle",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": "GR_Boombeetle"
+  },
+  {
+   "def": "Corpse_GR_Boomcat",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": "GR_Boomcat"
+  },
+  {
+   "def": "Corpse_GR_Boomsnake",
+   "verdict": "CLIMB",
+   "reason": "snake or slitherer, thin enough for a 1x1 ladder",
+   "corpse_of": "GR_Boomsnake"
+  },
+  {
+   "def": "Corpse_GR_Boomsquirrel",
+   "verdict": "CLIMB",
+   "reason": "agile clawed cat, within 1x1",
+   "corpse_of": "GR_Boomsquirrel"
+  },
+  {
+   "def": "Corpse_GR_Boomwolf",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": "GR_Boomwolf"
+  },
+  {
+   "def": "Corpse_GR_Lizardman",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": "GR_Lizardman"
+  },
+  {
+   "def": "Corpse_GR_Mancat",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": "GR_Mancat"
+  },
+  {
+   "def": "Corpse_GR_Mechacat",
+   "verdict": "CLIMB",
+   "reason": "agile clawed cat, within 1x1",
+   "corpse_of": "GR_Mechacat"
+  },
+  {
+   "def": "Corpse_GR_Mechalope",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": "GR_Mechalope"
+  },
+  {
+   "def": "Corpse_GR_Mechawolf",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": "GR_Mechawolf"
+  },
+  {
+   "def": "Corpse_GR_Moleman",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": "GR_Moleman"
+  },
+  {
+   "def": "Corpse_GR_Muffaloman",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": "GR_Muffaloman"
+  },
+  {
+   "def": "Corpse_GR_Muffalopede",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": "GR_Muffalopede"
+  },
+  {
+   "def": "Corpse_GR_Snakecat",
+   "verdict": "CLIMB",
+   "reason": "snake or slitherer, thin enough for a 1x1 ladder",
+   "corpse_of": "GR_Snakecat"
+  },
+  {
+   "def": "Corpse_GR_Thrumborat",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": "GR_Thrumborat"
+  },
+  {
+   "def": "Corpse_GR_Wolffalo",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": "GR_Wolffalo"
+  },
+  {
+   "def": "GR_Bearalope",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": null
+  },
+  {
+   "def": "GR_Bearffalo",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": null
+  },
+  {
+   "def": "GR_Bearman",
+   "verdict": "CLIMB",
+   "reason": "humanoid droid or humanlike body, fits 1x1 (owner: many droids climb)",
+   "corpse_of": null
+  },
+  {
+   "def": "GR_Booman",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": null
+  },
+  {
+   "def": "GR_Boombeetle",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": null
+  },
+  {
+   "def": "GR_Boomcat",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": null
+  },
+  {
+   "def": "GR_Boomsnake",
+   "verdict": "CLIMB",
+   "reason": "snake or slitherer, thin enough for a 1x1 ladder",
+   "corpse_of": null
+  },
+  {
+   "def": "GR_Boomsquirrel",
+   "verdict": "CLIMB",
+   "reason": "agile clawed cat, within 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "GR_Boomwolf",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": null
+  },
+  {
+   "def": "GR_Lizardman",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": null
+  },
+  {
+   "def": "GR_Mancat",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": null
+  },
+  {
+   "def": "GR_Mechacat",
+   "verdict": "CLIMB",
+   "reason": "agile clawed cat, within 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "GR_Mechalope",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": null
+  },
+  {
+   "def": "GR_Mechawolf",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": null
+  },
+  {
+   "def": "GR_Moleman",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": null
+  },
+  {
+   "def": "GR_Muffaloman",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": null
+  },
+  {
+   "def": "GR_Muffalopede",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": null
+  },
+  {
+   "def": "GR_Snakecat",
+   "verdict": "CLIMB",
+   "reason": "snake or slitherer, thin enough for a 1x1 ladder",
+   "corpse_of": null
+  },
+  {
+   "def": "GR_Thrumborat",
+   "verdict": "NO",
+   "reason": "hooved or horned grazer, no grip, cannot climb a ladder",
+   "corpse_of": null
+  },
+  {
+   "def": "GR_Wolffalo",
+   "verdict": "NO",
+   "reason": "large pawed/clawed quadruped without grip (canid, bear, reptile, amphibian), over the 1.4 cap or no hands",
+   "corpse_of": null
+  },
+  {
+   "def": "Corpse_VVE_Frog",
+   "verdict": "NO",
+   "reason": "vehicle/boat, no limbs or climbing body",
+   "corpse_of": "VVE_Frog"
+  },
+  {
+   "def": "Corpse_VVE_Toad",
+   "verdict": "NO",
+   "reason": "vehicle/boat, no limbs or climbing body",
+   "corpse_of": "VVE_Toad"
+  },
+  {
+   "def": "VVE_Frog",
+   "verdict": "NO",
+   "reason": "vehicle/boat, no limbs or climbing body",
+   "corpse_of": null
+  },
+  {
+   "def": "VVE_Toad",
+   "verdict": "NO",
+   "reason": "vehicle/boat, no limbs or climbing body",
+   "corpse_of": null
+  },
+  {
+   "def": "BS_JustAHead",
+   "verdict": "NO",
+   "reason": "disembodied head, no limbs",
+   "corpse_of": null
+  },
+  {
+   "def": "Corpse_BS_JustAHead",
+   "verdict": "NO",
+   "reason": "disembodied head, no limbs",
+   "corpse_of": "BS_JustAHead"
+  },
+  {
+   "def": "UnnaturalCorpse_BS_JustAHead",
+   "verdict": "NO",
+   "reason": "disembodied head, no limbs",
+   "corpse_of": "BS_JustAHead"
+  },
+  {
+   "def": "BS_GluttonRace",
+   "verdict": "CLIMB",
+   "reason": "humanoid droid or humanlike body, fits 1x1 (owner: many droids climb)",
+   "corpse_of": null
+  },
+  {
+   "def": "Corpse_BS_GluttonRace",
+   "verdict": "CLIMB",
+   "reason": "humanoid droid or humanlike body, fits 1x1 (owner: many droids climb)",
+   "corpse_of": "BS_GluttonRace"
+  },
+  {
+   "def": "UnnaturalCorpse_BS_GluttonRace",
+   "verdict": "CLIMB",
+   "reason": "humanoid droid or humanlike body, fits 1x1 (owner: many droids climb)",
+   "corpse_of": "BS_GluttonRace"
+  },
+  {
+   "def": "Corpse_Megascarab",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": "Megascarab"
+  },
+  {
+   "def": "Corpse_Megaspider",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": "Megaspider"
+  },
+  {
+   "def": "Corpse_Spelopede",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": "Spelopede"
+  },
+  {
+   "def": "Megascarab",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": null
+  },
+  {
+   "def": "Megaspider",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": null
+  },
+  {
+   "def": "Spelopede",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": null
+  },
+  {
+   "def": "Corpse_RSW_DW_Race_OuterRim_MuckrakerDroid",
+   "verdict": "CLIMB",
+   "reason": "humanoid droid or humanlike body, fits 1x1 (owner: many droids climb)",
+   "corpse_of": "RSW_DW_Race_OuterRim_MuckrakerDroid"
+  },
+  {
+   "def": "Corpse_RSW_DW_Race_guy762_DroidRace_HK50series",
+   "verdict": "CLIMB",
+   "reason": "humanoid droid or humanlike body, fits 1x1 (owner: many droids climb)",
+   "corpse_of": "RSW_DW_Race_guy762_DroidRace_HK50series"
+  },
+  {
+   "def": "Corpse_RSW_DW_Race_guy762_DroidRace_HK51series",
+   "verdict": "CLIMB",
+   "reason": "humanoid droid or humanlike body, fits 1x1 (owner: many droids climb)",
+   "corpse_of": "RSW_DW_Race_guy762_DroidRace_HK51series"
+  },
+  {
+   "def": "Corpse_RSW_DW_Race_guy762_DroidRace_HKseries",
+   "verdict": "CLIMB",
+   "reason": "humanoid droid or humanlike body, fits 1x1 (owner: many droids climb)",
+   "corpse_of": "RSW_DW_Race_guy762_DroidRace_HKseries"
+  },
+  {
+   "def": "RSW_DW_Race_OuterRim_MuckrakerDroid",
+   "verdict": "CLIMB",
+   "reason": "humanoid droid or humanlike body, fits 1x1 (owner: many droids climb)",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_DW_Race_guy762_DroidRace_HK50series",
+   "verdict": "CLIMB",
+   "reason": "humanoid droid or humanlike body, fits 1x1 (owner: many droids climb)",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_DW_Race_guy762_DroidRace_HK51series",
+   "verdict": "CLIMB",
+   "reason": "humanoid droid or humanlike body, fits 1x1 (owner: many droids climb)",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_DW_Race_guy762_DroidRace_HKseries",
+   "verdict": "CLIMB",
+   "reason": "humanoid droid or humanlike body, fits 1x1 (owner: many droids climb)",
+   "corpse_of": null
+  },
+  {
+   "def": "UnnaturalCorpse_RSW_DW_Race_OuterRim_MuckrakerDroid",
+   "verdict": "CLIMB",
+   "reason": "humanoid droid or humanlike body, fits 1x1 (owner: many droids climb)",
+   "corpse_of": "RSW_DW_Race_OuterRim_MuckrakerDroid"
+  },
+  {
+   "def": "UnnaturalCorpse_RSW_DW_Race_guy762_DroidRace_HK50series",
+   "verdict": "CLIMB",
+   "reason": "humanoid droid or humanlike body, fits 1x1 (owner: many droids climb)",
+   "corpse_of": "RSW_DW_Race_guy762_DroidRace_HK50series"
+  },
+  {
+   "def": "UnnaturalCorpse_RSW_DW_Race_guy762_DroidRace_HK51series",
+   "verdict": "CLIMB",
+   "reason": "humanoid droid or humanlike body, fits 1x1 (owner: many droids climb)",
+   "corpse_of": "RSW_DW_Race_guy762_DroidRace_HK51series"
+  },
+  {
+   "def": "UnnaturalCorpse_RSW_DW_Race_guy762_DroidRace_HKseries",
+   "verdict": "CLIMB",
+   "reason": "humanoid droid or humanlike body, fits 1x1 (owner: many droids climb)",
+   "corpse_of": "RSW_DW_Race_guy762_DroidRace_HKseries"
+  },
+  {
+   "def": "Corpse_Larva",
+   "verdict": "CLIMB",
+   "reason": "snake or slitherer, thin enough for a 1x1 ladder",
+   "corpse_of": "Larva"
+  },
+  {
+   "def": "Corpse_Locust",
+   "verdict": "CLIMB",
+   "reason": "floater or flier that rises up the shaft, small enough for 1x1",
+   "corpse_of": "Locust"
+  },
+  {
+   "def": "Larva",
+   "verdict": "CLIMB",
+   "reason": "snake or slitherer, thin enough for a 1x1 ladder",
+   "corpse_of": null
+  },
+  {
+   "def": "Locust",
+   "verdict": "CLIMB",
+   "reason": "floater or flier that rises up the shaft, small enough for 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "Corpse_IronScruff_Hydrazoa",
+   "verdict": "CLIMB",
+   "reason": "floater or flier that rises up the shaft, small enough for 1x1",
+   "corpse_of": "IronScruff_Hydrazoa"
+  },
+  {
+   "def": "Corpse_IronScruff_Jellybird",
+   "verdict": "CLIMB",
+   "reason": "floater or flier that rises up the shaft, small enough for 1x1",
+   "corpse_of": "IronScruff_Jellybird"
+  },
+  {
+   "def": "IronScruff_Hydrazoa",
+   "verdict": "CLIMB",
+   "reason": "floater or flier that rises up the shaft, small enough for 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "IronScruff_Jellybird",
+   "verdict": "CLIMB",
+   "reason": "floater or flier that rises up the shaft, small enough for 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "Corpse_RM_BedBug",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": "RM_BedBug"
+  },
+  {
+   "def": "Corpse_RM_BloodropMoth",
+   "verdict": "CLIMB",
+   "reason": "floater or flier that rises up the shaft, small enough for 1x1",
+   "corpse_of": "RM_BloodropMoth"
+  },
+  {
+   "def": "Corpse_RM_Candler",
+   "verdict": "CLIMB",
+   "reason": "snake or slitherer, thin enough for a 1x1 ladder",
+   "corpse_of": "RM_Candler"
+  },
+  {
+   "def": "Corpse_RM_Dredgel",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": "RM_Dredgel"
+  },
+  {
+   "def": "Corpse_RM_Drommath",
+   "verdict": "NO",
+   "reason": "sessile: pupa, bead or perched sac, cannot move",
+   "corpse_of": "RM_Drommath"
+  },
+  {
+   "def": "Corpse_RM_Dunejelly",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": "RM_Dunejelly"
+  },
+  {
+   "def": "Corpse_RM_ElectricTick",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": "RM_ElectricTick"
+  },
+  {
+   "def": "Corpse_RM_FeverSwarm",
+   "verdict": "CLIMB",
+   "reason": "floater or flier that rises up the shaft, small enough for 1x1",
+   "corpse_of": "RM_FeverSwarm"
+  },
+  {
+   "def": "Corpse_RM_FireWasp",
+   "verdict": "CLIMB",
+   "reason": "floater or flier that rises up the shaft, small enough for 1x1",
+   "corpse_of": "RM_FireWasp"
+  },
+  {
+   "def": "Corpse_RM_Frethik",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": "RM_Frethik"
+  },
+  {
+   "def": "Corpse_RM_Garsulix",
+   "verdict": "CLIMB",
+   "reason": "floater or flier that rises up the shaft, small enough for 1x1",
+   "corpse_of": "RM_Garsulix"
+  },
+  {
+   "def": "Corpse_RM_Gembug",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": "RM_Gembug"
+  },
+  {
+   "def": "Corpse_RM_Glomvar",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": "RM_Glomvar"
+  },
+  {
+   "def": "Corpse_RM_GreatboleGrub",
+   "verdict": "CLIMB",
+   "reason": "snake or slitherer, thin enough for a 1x1 ladder",
+   "corpse_of": "RM_GreatboleGrub"
+  },
+  {
+   "def": "Corpse_RM_Grellik",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": "RM_Grellik"
+  },
+  {
+   "def": "Corpse_RM_Illoth",
+   "verdict": "CLIMB",
+   "reason": "floater or flier that rises up the shaft, small enough for 1x1",
+   "corpse_of": "RM_Illoth"
+  },
+  {
+   "def": "Corpse_RM_Karravel",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": "RM_Karravel"
+  },
+  {
+   "def": "Corpse_RM_Karrimeth",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": "RM_Karrimeth"
+  },
+  {
+   "def": "Corpse_RM_Karrobel",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": "RM_Karrobel"
+  },
+  {
+   "def": "Corpse_RM_Karrolun",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": "RM_Karrolun"
+  },
+  {
+   "def": "Corpse_RM_Kasselith",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": "RM_Kasselith"
+  },
+  {
+   "def": "Corpse_RM_Kurreth",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": "RM_Kurreth"
+  },
+  {
+   "def": "Corpse_RM_Liliana",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": "RM_Liliana"
+  },
+  {
+   "def": "Corpse_RM_Ollareth",
+   "verdict": "NO",
+   "reason": "sessile: pupa, bead or perched sac, cannot move",
+   "corpse_of": "RM_Ollareth"
+  },
+  {
+   "def": "Corpse_RM_Qorrax",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": "RM_Qorrax"
+  },
+  {
+   "def": "Corpse_RM_Saluksis",
+   "verdict": "CLIMB",
+   "reason": "floater or flier that rises up the shaft, small enough for 1x1",
+   "corpse_of": "RM_Saluksis"
+  },
+  {
+   "def": "Corpse_RM_ScarRoach",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": "RM_ScarRoach"
+  },
+  {
+   "def": "Corpse_RM_Skerrel",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": "RM_Skerrel"
+  },
+  {
+   "def": "Corpse_RM_Suulk",
+   "verdict": "CLIMB",
+   "reason": "snake or slitherer, thin enough for a 1x1 ladder",
+   "corpse_of": "RM_Suulk"
+  },
+  {
+   "def": "Corpse_RM_Tetchik",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": "RM_Tetchik"
+  },
+  {
+   "def": "Corpse_RM_Thornbug",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": "RM_Thornbug"
+  },
+  {
+   "def": "Corpse_RM_Thozzik",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": "RM_Thozzik"
+  },
+  {
+   "def": "Corpse_RM_ThozzikColony",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": "RM_ThozzikColony"
+  },
+  {
+   "def": "Corpse_RM_ThozzikColonyQueen",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": "RM_ThozzikColonyQueen"
+  },
+  {
+   "def": "Corpse_RM_ThozzikQueen",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": "RM_ThozzikQueen"
+  },
+  {
+   "def": "Corpse_RM_TunnelSnake",
+   "verdict": "CLIMB",
+   "reason": "snake or slitherer, thin enough for a 1x1 ladder",
+   "corpse_of": "RM_TunnelSnake"
+  },
+  {
+   "def": "Corpse_RM_Vaulm",
+   "verdict": "NO",
+   "reason": "sessile: pupa, bead or perched sac, cannot move",
+   "corpse_of": "RM_Vaulm"
+  },
+  {
+   "def": "Corpse_RM_Vaunoom",
+   "verdict": "CLIMB",
+   "reason": "snake or slitherer, thin enough for a 1x1 ladder",
+   "corpse_of": "RM_Vaunoom"
+  },
+  {
+   "def": "Corpse_RM_Vennick",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": "RM_Vennick"
+  },
+  {
+   "def": "RM_BedBug",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_BloodropMoth",
+   "verdict": "CLIMB",
+   "reason": "floater or flier that rises up the shaft, small enough for 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Candler",
+   "verdict": "CLIMB",
+   "reason": "snake or slitherer, thin enough for a 1x1 ladder",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Dredgel",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Drommath",
+   "verdict": "NO",
+   "reason": "sessile: pupa, bead or perched sac, cannot move",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Dunejelly",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_ElectricTick",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_FeverSwarm",
+   "verdict": "CLIMB",
+   "reason": "floater or flier that rises up the shaft, small enough for 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_FireWasp",
+   "verdict": "CLIMB",
+   "reason": "floater or flier that rises up the shaft, small enough for 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Frethik",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Garsulix",
+   "verdict": "CLIMB",
+   "reason": "floater or flier that rises up the shaft, small enough for 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Gembug",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Glomvar",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_GreatboleGrub",
+   "verdict": "CLIMB",
+   "reason": "snake or slitherer, thin enough for a 1x1 ladder",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Grellik",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Illoth",
+   "verdict": "CLIMB",
+   "reason": "floater or flier that rises up the shaft, small enough for 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Karravel",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Karrimeth",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Karrobel",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Karrolun",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Kasselith",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Kurreth",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Liliana",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Ollareth",
+   "verdict": "NO",
+   "reason": "sessile: pupa, bead or perched sac, cannot move",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Qorrax",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Saluksis",
+   "verdict": "CLIMB",
+   "reason": "floater or flier that rises up the shaft, small enough for 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_ScarRoach",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Skerrel",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Suulk",
+   "verdict": "CLIMB",
+   "reason": "snake or slitherer, thin enough for a 1x1 ladder",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Tetchik",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Thornbug",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Thozzik",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_ThozzikColony",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_ThozzikColonyQueen",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_ThozzikQueen",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_TunnelSnake",
+   "verdict": "CLIMB",
+   "reason": "snake or slitherer, thin enough for a 1x1 ladder",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Vaulm",
+   "verdict": "NO",
+   "reason": "sessile: pupa, bead or perched sac, cannot move",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Vaunoom",
+   "verdict": "CLIMB",
+   "reason": "snake or slitherer, thin enough for a 1x1 ladder",
+   "corpse_of": null
+  },
+  {
+   "def": "RM_Vennick",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "Corpse_RSW_AaroxisDendoria",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": "RSW_AaroxisDendoria"
+  },
+  {
+   "def": "Corpse_RSW_AaroxisDendoriaPupa",
+   "verdict": "NO",
+   "reason": "sessile: pupa, bead or perched sac, cannot move",
+   "corpse_of": "RSW_AaroxisDendoriaPupa"
+  },
+  {
+   "def": "Corpse_RSW_BloodropPupa",
+   "verdict": "NO",
+   "reason": "sessile: pupa, bead or perched sac, cannot move",
+   "corpse_of": "RSW_BloodropPupa"
+  },
+  {
+   "def": "Corpse_RSW_BovineBeetlePupa",
+   "verdict": "NO",
+   "reason": "sessile: pupa, bead or perched sac, cannot move",
+   "corpse_of": "RSW_BovineBeetlePupa"
+  },
+  {
+   "def": "Corpse_RSW_ColonyPustuleHornet",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": "RSW_ColonyPustuleHornet"
+  },
+  {
+   "def": "Corpse_RSW_ColonyPustuleHornetQueen",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": "RSW_ColonyPustuleHornetQueen"
+  },
+  {
+   "def": "Corpse_RSW_FacetMoth",
+   "verdict": "CLIMB",
+   "reason": "floater or flier that rises up the shaft, small enough for 1x1",
+   "corpse_of": "RSW_FacetMoth"
+  },
+  {
+   "def": "Corpse_RSW_FacetMothPupa",
+   "verdict": "NO",
+   "reason": "sessile: pupa, bead or perched sac, cannot move",
+   "corpse_of": "RSW_FacetMothPupa"
+  },
+  {
+   "def": "Corpse_RSW_FleeceSpider",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": "RSW_FleeceSpider"
+  },
+  {
+   "def": "Corpse_RSW_FoundryBeetlePupa",
+   "verdict": "NO",
+   "reason": "sessile: pupa, bead or perched sac, cannot move",
+   "corpse_of": "RSW_FoundryBeetlePupa"
+  },
+  {
+   "def": "Corpse_RSW_FungalWeevil",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": "RSW_FungalWeevil"
+  },
+  {
+   "def": "Corpse_RSW_JewelBeetleLarvae",
+   "verdict": "CLIMB",
+   "reason": "snake or slitherer, thin enough for a 1x1 ladder",
+   "corpse_of": "RSW_JewelBeetleLarvae"
+  },
+  {
+   "def": "Corpse_RSW_JewelBeetlePupa",
+   "verdict": "NO",
+   "reason": "sessile: pupa, bead or perched sac, cannot move",
+   "corpse_of": "RSW_JewelBeetlePupa"
+  },
+  {
+   "def": "Corpse_RSW_Kinrath",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": "RSW_Kinrath"
+  },
+  {
+   "def": "Corpse_RSW_Kreetle",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": "RSW_Kreetle"
+  },
+  {
+   "def": "Corpse_RSW_Krykna",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": "RSW_Krykna"
+  },
+  {
+   "def": "Corpse_RSW_Megakrill",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": "RSW_Megakrill"
+  },
+  {
+   "def": "Corpse_RSW_Megaphorid",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": "RSW_Megaphorid"
+  },
+  {
+   "def": "Corpse_RSW_MossBeetle",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": "RSW_MossBeetle"
+  },
+  {
+   "def": "Corpse_RSW_MossBeetlePupa",
+   "verdict": "NO",
+   "reason": "sessile: pupa, bead or perched sac, cannot move",
+   "corpse_of": "RSW_MossBeetlePupa"
+  },
+  {
+   "def": "Corpse_RSW_MutagenicNorphea",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": "RSW_MutagenicNorphea"
+  },
+  {
+   "def": "Corpse_RSW_PustuleHornet",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": "RSW_PustuleHornet"
+  },
+  {
+   "def": "Corpse_RSW_PustuleHornetQueen",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": "RSW_PustuleHornetQueen"
+  },
+  {
+   "def": "Corpse_RSW_PustuleHornetSpawned",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": "RSW_PustuleHornetSpawned"
+  },
+  {
+   "def": "Corpse_RSW_RoyalRhinoPupa",
+   "verdict": "NO",
+   "reason": "sessile: pupa, bead or perched sac, cannot move",
+   "corpse_of": "RSW_RoyalRhinoPupa"
+  },
+  {
+   "def": "Corpse_RSW_SmogMoth",
+   "verdict": "CLIMB",
+   "reason": "floater or flier that rises up the shaft, small enough for 1x1",
+   "corpse_of": "RSW_SmogMoth"
+  },
+  {
+   "def": "Corpse_RSW_SmogPupa",
+   "verdict": "NO",
+   "reason": "sessile: pupa, bead or perched sac, cannot move",
+   "corpse_of": "RSW_SmogPupa"
+  },
+  {
+   "def": "Corpse_RSW_TaozinGrub",
+   "verdict": "CLIMB",
+   "reason": "snake or slitherer, thin enough for a 1x1 ladder",
+   "corpse_of": "RSW_TaozinGrub"
+  },
+  {
+   "def": "Corpse_RSW_TunnelSnake",
+   "verdict": "CLIMB",
+   "reason": "snake or slitherer, thin enough for a 1x1 ladder",
+   "corpse_of": "RSW_TunnelSnake"
+  },
+  {
+   "def": "Corpse_RSW_VentStalker",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": "RSW_VentStalker"
+  },
+  {
+   "def": "RSW_AaroxisDendoria",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_AaroxisDendoriaPupa",
+   "verdict": "NO",
+   "reason": "sessile: pupa, bead or perched sac, cannot move",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_BloodropPupa",
+   "verdict": "NO",
+   "reason": "sessile: pupa, bead or perched sac, cannot move",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_BovineBeetlePupa",
+   "verdict": "NO",
+   "reason": "sessile: pupa, bead or perched sac, cannot move",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_ColonyPustuleHornet",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_ColonyPustuleHornetQueen",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_FacetMoth",
+   "verdict": "CLIMB",
+   "reason": "floater or flier that rises up the shaft, small enough for 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_FacetMothPupa",
+   "verdict": "NO",
+   "reason": "sessile: pupa, bead or perched sac, cannot move",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_FleeceSpider",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_FoundryBeetlePupa",
+   "verdict": "NO",
+   "reason": "sessile: pupa, bead or perched sac, cannot move",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_FungalWeevil",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_JewelBeetleLarvae",
+   "verdict": "CLIMB",
+   "reason": "snake or slitherer, thin enough for a 1x1 ladder",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_JewelBeetlePupa",
+   "verdict": "NO",
+   "reason": "sessile: pupa, bead or perched sac, cannot move",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_Kinrath",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_Kreetle",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_Krykna",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_Megakrill",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_Megaphorid",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_MossBeetle",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_MossBeetlePupa",
+   "verdict": "NO",
+   "reason": "sessile: pupa, bead or perched sac, cannot move",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_MutagenicNorphea",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_PustuleHornet",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_PustuleHornetQueen",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_PustuleHornetSpawned",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_RoyalRhinoPupa",
+   "verdict": "NO",
+   "reason": "sessile: pupa, bead or perched sac, cannot move",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_SmogMoth",
+   "verdict": "CLIMB",
+   "reason": "floater or flier that rises up the shaft, small enough for 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_SmogPupa",
+   "verdict": "NO",
+   "reason": "sessile: pupa, bead or perched sac, cannot move",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_TaozinGrub",
+   "verdict": "CLIMB",
+   "reason": "snake or slitherer, thin enough for a 1x1 ladder",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_TunnelSnake",
+   "verdict": "CLIMB",
+   "reason": "snake or slitherer, thin enough for a 1x1 ladder",
+   "corpse_of": null
+  },
+  {
+   "def": "RSW_VentStalker",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "Corpse_RUT_ScarRoach",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": "RUT_ScarRoach"
+  },
+  {
+   "def": "RUT_ScarRoach",
+   "verdict": "CLIMB",
+   "reason": "small insect or arachnid with legs, well under 1x1",
+   "corpse_of": null
+  },
+  {
+   "def": "Corpse_RM_Visceral",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": "RM_Visceral"
+  },
+  {
+   "def": "Corpse_RUT_VWake",
+   "verdict": "CLIMB",
+   "reason": "snake or slitherer, thin enough for a 1x1 ladder",
+   "corpse_of": "RUT_VWake"
+  },
+  {
+   "def": "RM_Visceral",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": null
+  },
+  {
+   "def": "RUT_VWake",
+   "verdict": "CLIMB",
+   "reason": "snake or slitherer, thin enough for a 1x1 ladder",
+   "corpse_of": null
+  },
+  {
+   "def": "Corpse_GR_Chickenspider",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": "GR_Chickenspider"
+  },
+  {
+   "def": "GR_Chickenspider",
+   "verdict": "CLIMB",
+   "reason": "arthropod with grasping legs, 1.6 or less, fits 1x1; arthropods climb",
+   "corpse_of": null
+  },
+  {
+   "def": "Corpse_VGE_Astronaut",
+   "verdict": "CLIMB",
+   "reason": "human-sized drone with arms, drifts up the ladder in zero-g",
+   "corpse_of": "VGE_Astronaut"
+  },
+  {
+   "def": "Corpse_VGE_Hunter",
+   "verdict": "CLIMB",
+   "reason": "human-sized drone with arms, drifts up the ladder in zero-g",
+   "corpse_of": "VGE_Hunter"
+  },
+  {
+   "def": "VGE_Astronaut",
+   "verdict": "CLIMB",
+   "reason": "human-sized drone with arms, drifts up the ladder in zero-g",
+   "corpse_of": null
+  },
+  {
+   "def": "VGE_Hunter",
+   "verdict": "CLIMB",
+   "reason": "human-sized drone with arms, drifts up the ladder in zero-g",
+   "corpse_of": null
+  }
+ ]
+}
