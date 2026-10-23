@@ -102,3 +102,16 @@ f1c25b3a03 (item) · 2ef76419c3 (brief) · 50733d22fb (drafts, phone collections
   the prompt; cut by border flood fill (rembg was OOM-killed, rc 137).
 - Phone: garden-reel A/B/C images removed from phone/ (drafts kept); `RM_HoseReel_0_options.png` = current + FA/FB/FC;
   per option full, true-scale, facings. All re-Read after the final build; tank option sheets verified intact (1596–1600 px).
+
+## 10. FA reel installed; short-tank port fix (2026-10-22, later)
+- Owner by card: Modern hose reel → FA. Judge mismatches fixed: north/south redrawn from the west master (same single
+  post + base plate, drum as wide as its diameter); laid-out pictures made by emptying each stored picture with a RED
+  core; stored+laid-out fitted with ONE shared scale inside the 2×2 footprint (inset 9 px of the 2.15 canvas). Looked at
+  the six over the footprint box: all inside, consistent.
+- Installed via art.py (`--owner-said` carrying the card label: art.py has neither --by-card nor --why → item
+  ART_INSTALL_WIRE_CARD_NOT_HIS_WORDS). ReelIntakeGeometry.cs regenerated (Modern rows only).
+- MY MISS: the earlier tank install (fb34c9bc2d) turned selftest_hose_ports.py red — the short tank must draw end hose
+  ports on TankPortGeometry.PortDz (Modern −0.016). Pick A redrawn with two end bulkhead fittings, fitted edge to edge
+  with the flange row at dz −0.016, reinstalled. Lesson filed.
+- Selftests GREEN: hose_ports (incl. reel_intake --check), hose_offline (HO9 drawn fittings meet ports PASS), hose_port,
+  looks_round, liquid_look_tune.
