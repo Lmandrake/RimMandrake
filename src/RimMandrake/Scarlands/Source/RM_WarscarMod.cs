@@ -105,13 +105,12 @@ namespace RimMandrake.Scarlands
         public static bool ordnanceRealShot = true;
 
         // WARSCAR_GEIGER_CHOIR_1 toggles.
-        public static bool choirEnabled = true;              // the whole choir (ticks, wind, hum, boil, jar sound)
+        public static bool choirEnabled = true;              // the whole choir (ticks, wind, hum, boil)
         public static float choirVolume = 1f;                // one global volume
         public static float choirTickVolumeCeiling = 1f;     // cap on how loud the tick gets
         public static float choirTickDensity = 1f;           // tick tempo scale
         public static bool choirWindEnabled = true;          // wind-on-metal layer
         public static bool choirReducedRepetition = false;   // fewer, jittered clicks
-        public static bool choirJarWarnings = true;          // caravan message before a polluted tile
 
         // WARSCAR_MARK_TRADE_BUILD_1 -- the mark made a trade
         public static bool markEnabled = true;               // hourly accrual on a Warscar map
@@ -269,7 +268,6 @@ namespace RimMandrake.Scarlands
             Scribe_Values.Look(ref choirTickDensity, "choirTickDensity", 1f);
             Scribe_Values.Look(ref choirWindEnabled, "choirWindEnabled", true);
             Scribe_Values.Look(ref choirReducedRepetition, "choirReducedRepetition", false);
-            Scribe_Values.Look(ref choirJarWarnings, "choirJarWarnings", true);
             Scribe_Values.Look(ref markEnabled, "markEnabled", true);
             Scribe_Values.Look(ref markAccrualPerDay, "markAccrualPerDay", 0.3f);
             Scribe_Values.Look(ref markFloorEnabled, "markFloorEnabled", true);
@@ -563,10 +561,10 @@ namespace RimMandrake.Scarlands
                 list.GapLine();
             }
 
-            if (Group(list, "Geiger choir (Warscar soundscape)", RimMandrake.Shared.SettingScope.Now, new[] { "choirEnabled", "choirVolume", "choirTickVolumeCeiling", "choirTickDensity", "choirWindEnabled", "choirReducedRepetition", "choirJarWarnings" }))
+            if (Group(list, "Geiger choir (Warscar soundscape)", RimMandrake.Shared.SettingScope.Now, new[] { "choirEnabled", "choirVolume", "choirTickVolumeCeiling", "choirTickDensity", "choirWindEnabled", "choirReducedRepetition" }))
             {
                 list.CheckboxLabeled("Geiger choir (Warscar soundscape)", ref choirEnabled,
-                    "Tetchik tick over glower and beetles, wind on ancient metal (silent during the Settling), the projector hum, the pool boil, and the tetchik jar's sound.");
+                    "Tetchik tick over glower and beetles, wind on ancient metal (silent during the Settling), the projector hum and the pool boil.");
                 list.Label("Choir volume: " + choirVolume.ToString("0.00"));
                 choirVolume = list.Slider(choirVolume, 0f, 1f);
                 list.Label("Tick volume ceiling: " + choirTickVolumeCeiling.ToString("0.00"));
@@ -576,8 +574,6 @@ namespace RimMandrake.Scarlands
                 list.CheckboxLabeled("Wind-on-metal layer", ref choirWindEnabled);
                 list.CheckboxLabeled("Reduced-repetition mode", ref choirReducedRepetition,
                     "Far fewer clicks, each with a slightly different pitch.");
-                list.CheckboxLabeled("Tetchik jar warnings", ref choirJarWarnings,
-                    "A caravan carrying a tetchik jar gets a message before it enters a polluted tile.");
                 list.GapLine();
             }
 

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using RimWorld;
-using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 using Verse.Sound;
@@ -8,7 +7,8 @@ using Verse.Sound;
 namespace RimMandrake.Scarlands
 {
     // WARSCAR_GEIGER_CHOIR_1. The Warscar soundscape: tetchik tick (tempo from glower + tetchik density), wind on metal
-    // (silent during RM_Settling), the projector hum and the pool boil, plus the tetchik jar pollution counter.
+    // (silent during RM_Settling), the projector hum and the pool boil. (The tetchik jar, a carried pollution counter with a caravan
+    // warning, was CUT 2026-10-23 by the fluff review.)
     // Deviation from the spec's "ride RM_MapComponent_ProximitySoundscape": that component cannot scale on wind or
     // go silent for a named condition and is tag-driven; this is its own component, same shape as Stillsand's
     // RM_MapComponent_SandListening. Source groups are DATA (RM_GeigerChoirDef). Tags work on pawns because tetchik
@@ -43,16 +43,7 @@ namespace RimMandrake.Scarlands
         public static SoundDef RM_WindOnMetal;
         public static SoundDef RM_ProjectorHum;
         public static SoundDef RM_PoolBoil;
-        public static ThingDef RM_TetchikJar;
         static RM_ChoirDefOf() { DefOfHelper.EnsureInitializedInCtor(typeof(RM_ChoirDefOf)); }
-    }
-
-    // Thin forwarders to RM_PollutionSense (RM_AerosolScreen.cs), kept for the choir's call sites.
-    public static class RM_ChoirPollution
-    {
-        public static bool ToxicAir(Map map) { return RM_PollutionSense.ToxicAirNow(map); }
-        public static bool PollutedHere(Map map) { return RM_PollutionSense.IsPollutedHere(map); }
-        public static bool TilePolluted(PlanetTile tile) { return RM_PollutionSense.TilePolluted(tile); }
     }
 
     public class RM_MapComponent_GeigerChoir : MapComponent
@@ -156,11 +147,7 @@ namespace RimMandrake.Scarlands
             Layer(ref wind, ref windSrc, windOn ? RM_GeigerChoirDef.Resolve(cfg.windMetal) : null, listener, 30f, RM_ChoirDefOf.RM_WindOnMetal, false);
             Layer(ref hum, ref humSrc, RM_GeigerChoirDef.Resolve(cfg.hum), listener, 40f, RM_ChoirDefOf.RM_ProjectorHum, true);
             Layer(ref boil, ref boilSrc, RM_GeigerChoirDef.Resolve(cfg.boil), listener, 28f, RM_ChoirDefOf.RM_PoolBoil, false);
-            jarPlants = plants;
         }
-
-        // Glower plant defs resolved by the last Refresh, reused by JarRate (every 6 ticks per audible jar).
-        private List<ThingDef> jarPlants;
 
         // A screen or ring hums only while it is live (powered and switched on; a dead ring only once woken).
         private static bool Humming(Thing t)
@@ -208,48 +195,6 @@ namespace RimMandrake.Scarlands
                 IntVec3 c = clickCells.RandomElement();
                 if (!Silenced(map, c)) Play(c, TickVolume(density));
             }
-            // Jars on the ground or in a colonist's pack near the listener: a slow base tick, faster over glower and in bad air.
-            if (RM_ChoirDefOf.RM_TetchikJar == null) return;
-            List<Thing> jars = map.listerThings.ThingsOfDef(RM_ChoirDefOf.RM_TetchikJar);
-            bool polluted = RM_ChoirPollution.PollutedHere(map);
-            for (int i = 0; i < jars.Count; i++) JarClick(jars[i].Position, polluted);
-            List<Pawn> cols = map.mapPawns.FreeColonistsSpawned;
-            for (int i = 0; i < cols.Count; i++)
-            {
-                List<Thing> inv = cols[i].inventory?.innerContainer?.InnerListForReading;
-                if (inv == null) continue;
-                for (int k = 0; k < inv.Count; k++)
-                    if (inv[k].def == RM_ChoirDefOf.RM_TetchikJar) JarClick(cols[i].Position, polluted);
-            }
-        }
-
-        public float JarRate(IntVec3 cell, bool polluted)
-        {
-            float glow = 0f;
-            List<ThingDef> plants = jarPlants;
-            if (plants == null)
-            {
-                RM_GeigerChoirDef cfg = RM_GeigerChoirDef.Get();
-                plants = jarPlants = cfg == null ? new List<ThingDef>() : RM_GeigerChoirDef.Resolve(cfg.tickPlants);
-            }
-            // Count glower in the 4-cell neighbourhood by cell (~49 cells), not by walking every plant on the map.
-            for (int r = 0; r < GenRadial.NumCellsInRadius(4f); r++)
-            {
-                IntVec3 c = cell + GenRadial.RadialPattern[r];
-                if (!c.InBounds(map)) continue;
-                Plant pl = c.GetPlant(map);
-                if (pl != null && plants.Contains(pl.def)) glow += 1f;
-            }
-            return (0.02f + glow * 0.02f) * (polluted ? 3f : 1f);
-        }
-
-        private void JarClick(IntVec3 cell, bool polluted)
-        {
-            if (!cell.IsValid || Find.CameraDriver.MapPosition.DistanceToSquared(cell) > 625f) return;
-            // Click gap is 6 ticks; JarRate is per-gap chance, capped by the repetition mode.
-            float chance = JarRate(cell, polluted);
-            if (RM_WarscarSettings.choirReducedRepetition) chance *= 0.3f;
-            if (Rand.Chance(Mathf.Min(chance, 0.4f)) && !Silenced(map, cell)) Play(cell, 0.5f * RM_WarscarSettings.choirVolume);
         }
 
         private void Play(IntVec3 cell, float volume)
@@ -270,64 +215,5 @@ namespace RimMandrake.Scarlands
         }
 
         public override void MapRemoved() { EndAll(); base.MapRemoved(); }
-    }
-
-    // Caravans carrying a tetchik jar: tick on the world view when selected (faster on polluted tiles / toxic weather)
-    // and one caravan message before a polluted tile is entered.
-    public class RM_WorldComponent_JarCaravans : WorldComponent
-    {
-        private readonly Dictionary<int, int> warned = new Dictionary<int, int>();
-
-        public RM_WorldComponent_JarCaravans(World world) : base(world) { }
-
-        public static bool Carries(Caravan c)
-        {
-            if (RM_ChoirDefOf.RM_TetchikJar == null) return false;
-            List<Thing> items = CaravanInventoryUtility.AllInventoryItems(c);
-            for (int i = 0; i < items.Count; i++) if (items[i].def == RM_ChoirDefOf.RM_TetchikJar) return true;
-            return false;
-        }
-
-        // The tile (within 3 path nodes ahead) the caravan is about to enter that is polluted while its own is clean; else -1.
-        public static int PollutedAhead(Caravan c, out int stepsAway)
-        {
-            stepsAway = 0;
-            if (c.pather == null || !c.pather.Moving || c.pather.curPath == null) return -1;
-            if (RM_ChoirPollution.TilePolluted(c.Tile)) return -1;
-            List<PlanetTile> nodes = c.pather.curPath.NodesReversed;
-            for (int i = 1; i <= 3 && nodes.Count - 1 - i >= 0; i++)
-            {
-                PlanetTile t = nodes[nodes.Count - 1 - i];
-                if (RM_ChoirPollution.TilePolluted(t)) { stepsAway = i; return (int)t; }
-            }
-            return -1;
-        }
-
-        public override void WorldComponentTick()
-        {
-            if (!RM_WarscarSettings.choirEnabled || Find.TickManager.TicksGame % 60 != 0) return;
-            List<Caravan> cars = Find.WorldObjects.Caravans;
-            for (int i = 0; i < cars.Count; i++)
-            {
-                Caravan c = cars[i];
-                if (!c.IsPlayerControlled || !Carries(c)) continue;
-                bool bad = RM_ChoirPollution.TilePolluted(c.Tile) || world.gameConditionManager.ConditionIsActive(GameConditionDefOf.ToxicFallout);
-                if (Find.WorldSelector.IsSelected(c) && RM_ChoirDefOf.RM_GeigerTick != null && Rand.Chance(bad ? 0.9f : 0.25f))
-                {
-                    SoundInfo info = SoundInfo.OnCamera();
-                    info.volumeFactor = 0.5f * RM_WarscarSettings.choirVolume;
-                    RM_ChoirDefOf.RM_GeigerTick.PlayOneShot(info);
-                }
-                if (!RM_WarscarSettings.choirJarWarnings) continue;
-                int steps;
-                int tile = PollutedAhead(c, out steps);
-                if (tile < 0) continue;
-                int last;
-                if (warned.TryGetValue(c.ID, out last) && last == tile) continue;
-                warned[c.ID] = tile;
-                Messages.Message("The tetchik jar is ticking faster: polluted ground " + (steps == 1 ? "is the next tile" : steps + " tiles ahead") + ".",
-                    c, MessageTypeDefOf.CautionInput, historical: false);
-            }
-        }
     }
 }
