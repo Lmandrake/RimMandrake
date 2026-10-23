@@ -1,0 +1,1 @@
+A facing fix done by swapping the east/west texture FILES also moves the drawn object to the opposite side of its cell when the art is offset in its canvas (ladder bbox x56-154 of 384): to reverse only the lean, swap AND translate back, or mirror in place. LADDER_EW 2026-10-23.

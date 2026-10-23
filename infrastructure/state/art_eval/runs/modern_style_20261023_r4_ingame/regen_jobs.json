@@ -1,0 +1,22 @@
+[
+ {
+  "id": "arteval_RM_HoseEnd_Modern_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_HoseEnd_Modern",
+  "prompt": "Two separate RimWorld sprites for a modern fire hose, each on a transparent background, painterly vanilla RimWorld style, realistic, clean dark outline, flat side-on view of a hose lying on the ground.\n\nSprite 1, Coupling_Bare: a bare aluminium Storz coupling seen side-on, a short cylindrical body with a flanged rear collar, two raised locking lugs and a smooth spigot end. The rear flange is flat and square-faced so that it seats flush against a tank port's face: the spigot is fully inserted into the dark port nipple, the two mating surfaces are aligned and in continuous contact, and the coupling's edge meets the nipple's edge with no gap and no background between them. Brushed aluminium with soft highlights and a thin dark outline.\n\nSprite 2, Mouth: the bare free end of the hose, finished by a folded canvas lip. A flat, side-on view of the hose's outer end face, 0.30 of the hose width along the hose and 0.86 of the hose width across it, continuing the canvas wrap of the hose body in the same tan-grey woven canvas colour. The outer face is closed and solid: a flat folded-canvas end cap with a stitched hem seam and a rolled edge, a plain flat canvas surface, no metal fittings on it. Soft painterly shading, thin dark outline.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: PORT_MISFIT, DESC_MISS, PORT_MISFIT, DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "modern_style_20261023_r4_ingame",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl"
+ }
+]

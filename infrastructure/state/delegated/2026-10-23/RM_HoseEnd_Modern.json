@@ -1,0 +1,75 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 58.2,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.40243439999999997
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 40.1
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 12.9,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1228887
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_HoseEnd_Modern",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said weak); blocking ['PORT_MISFIT', 'DESC_MISS']; polish ['RES_LOW', 'LEGIB_32']; unreadable ['LEGIBLE']",
+  "gpt regen: unsettled ['K1', 'K2', 'K3'], own blocking ['PORT_MISFIT', 'DESC_MISS']",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v1",
+   "sha": "a4850279ccbf"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v1",
+   "sha": "14056552e355"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "machine@v2",
+   "sha": "e06ee7316a0a"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "south.png": "faf74a399e2988fa8b0e86ab036aec5f84d1a0386d54db743702bd7f772a4043",
+  "scale.png": "bf1c7d8232f40ead72aaeaa8d0a5dbe531495e27c7ee6c6faf84caa050570952",
+  "assembled_1.png": "f0abb0e9b296a095f1b6e051f1417eacc7c4fa88eb7a10e501075a0301ad276a",
+  "assembled_2.png": "65645fff3a866b7790fb9e441b65587434f622e262d9a1bd88f736c0b2edfb97",
+  "assembled_3.png": "96aea97a9da7f895a641b60e7ba27b4275023aa667478820a1fe5c2563c80032",
+  "siblings.png": "b2bb210e09aefdf32b28e6f4fca1a6ec5bee5a5be8de0434b2326dca665b1ac7",
+  "facings.png": "d3d17dcff265ee44756dd62875847440050ecc1e75a353317347c3d3ec1e056d"
+ }
+}
