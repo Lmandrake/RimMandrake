@@ -611,12 +611,16 @@
 !/pile_2026-10-22/ladder_art/**
 !/pile_2026-10-22/ladder_art/compare_32ppc_north_A2.png
 !/pile_2026-10-22/ladder_art/compare_32ppc_north_A3.png
+!/pile_2026-10-22/ladder_art/compare_32ppc_north_A4.png
 !/pile_2026-10-22/ladder_art/compare_32ppc_west_A2.png
 !/pile_2026-10-22/ladder_art/compare_32ppc_west_A3.png
+!/pile_2026-10-22/ladder_art/compare_32ppc_west_A4.png
 !/pile_2026-10-22/ladder_art/compare_64ppc_north_A2.png
 !/pile_2026-10-22/ladder_art/compare_64ppc_north_A3.png
+!/pile_2026-10-22/ladder_art/compare_64ppc_north_A4.png
 !/pile_2026-10-22/ladder_art/compare_64ppc_west_A2.png
 !/pile_2026-10-22/ladder_art/compare_64ppc_west_A3.png
+!/pile_2026-10-22/ladder_art/compare_64ppc_west_A4.png
 !/pile_2026-10-22/ladder_art/judge.md
 !/pile_2026-10-22/ladder_art/optA2_1_full.png
 !/pile_2026-10-22/ladder_art/optA2_2_truescale.png
@@ -624,6 +628,9 @@
 !/pile_2026-10-22/ladder_art/optA3_1_full.png
 !/pile_2026-10-22/ladder_art/optA3_2_truescale.png
 !/pile_2026-10-22/ladder_art/optA3_3_facings.png
+!/pile_2026-10-22/ladder_art/optA4_1_full.png
+!/pile_2026-10-22/ladder_art/optA4_2_truescale.png
+!/pile_2026-10-22/ladder_art/optA4_3_facings.png
 !/pile_2026-10-22/ladder_art/options/optA2_east.png
 !/pile_2026-10-22/ladder_art/options/optA2_north.png
 !/pile_2026-10-22/ladder_art/options/optA2_south.png
@@ -632,6 +639,10 @@
 !/pile_2026-10-22/ladder_art/options/optA3_north.png
 !/pile_2026-10-22/ladder_art/options/optA3_south.png
 !/pile_2026-10-22/ladder_art/options/optA3_west.png
+!/pile_2026-10-22/ladder_art/options/optA4_east.png
+!/pile_2026-10-22/ladder_art/options/optA4_north.png
+!/pile_2026-10-22/ladder_art/options/optA4_south.png
+!/pile_2026-10-22/ladder_art/options/optA4_west.png
 !/pile_2026-10-22/live_helper_pm.md
 !/pile_2026-10-22/live_pm/drawbridge_proof_pm.json
 !/pile_2026-10-22/live_pm/hose_shadow_scrapper_empty.jpg
