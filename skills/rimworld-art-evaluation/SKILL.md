@@ -30,7 +30,8 @@ Opus first pass (claude -p, Read only) ─ band by severity_policy.md
    │ GOOD        = 0 blocking findings + every checklist item answered ok + model did not doubt  ─► ACCEPT
    │ REALLY_BAD  = a gross code, or a blocking finding at confidence ≥ 0.8                      ─► REGEN
    │ WEAK        = anything else                                                                ─► GPT
-   │ owner-KEPT art: judged, never replaced                                                     ─► HOLD_KEPT (flag if not GOOD)
+   │ owner-KEPT art: routed the same, needs a revert record (else HOLD_KEPT); a redraw is flagged
+   │   "replaced your kept art" on the shadow sheet with REVERT (owner card 2026-10-23)
    ▼
 GPT targeted second look (gpt_consult.py + images): answers EACH Opus concern confirmed/refuted/unclear
    │ strong_accept AND every concern refuted WITH evidence AND no blocking finding of its own   ─► ACCEPT
@@ -62,8 +63,8 @@ python3 selftest_art_eval.py                            # pure parts + a mocked 
   it skips subjects already decided, so split a batch across calls freely.
 - `--test` never counts regen rounds, never writes delegated verdicts, never files jobs. Production runs drop it,
   add `--record` (writes `infrastructure/state/delegated/<date>/<subject>.json`, delegation_policy §3) and, when
-  regens should actually be drawn, `--file-regens` (artpipe `fill_queue.py`; only for NONE/PLACEHOLDER/DONOR or
-  candidate art — never over owner-kept art).
+  regens should actually be drawn, `--file-regens` (artpipe `fill_queue.py`; NONE/PLACEHOLDER/DONOR or candidate art,
+  and owner-kept art only with its revert record — install with `art.py install --by-card` citing the card).
 - A spec is JSON: `subject, label, template (creature|plant|machine), module, description, invented,
   earth_body_named, body_plan, departures[], canon{must_show, engine_limits}, owner_notes[], owner_kept,
   depends_on, artpipe_job, previous_prompt, images{south,east,north,west,single,scale,living_reference,

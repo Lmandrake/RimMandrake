@@ -268,7 +268,7 @@ S, E, N, W, scale, play zoom, variants, siblings), each preceded by a one-line c
   (cut off by the canvas), `X-INPUT` (card incomplete). A REDO without a code, a `seen` and a `quote` is invalid
   (the brief's own rule).
 - `confidence` 0–1 per verdict; `needs_human` true when any verdict is UNSURE, any confidence < 0.6, a canon
-  ruling would be needed (A4 limit unclear), or the subject is owner-kept (E3: no verdict on replacing it).
+  ruling would be needed (A4 limit unclear).
 
 ### 3.3 Calibration examples (few-shot from his rulings)
 
@@ -492,7 +492,7 @@ Full text, evidence and code pointers: `skills/rimworld-art-evaluation/reference
 | 2 | weak → GPT | a TARGETED second look: GPT answers each Opus concern confirmed/refuted/unclear | GPT perceives less than Opus (§6); it settles named questions |
 | 3 | GPT strong accept → accept | strong = every concern refuted WITH evidence + no blocking finding of its own | a bare "looks fine" is not a refutation |
 | 4 | otherwise regen | the unrefuted blocking findings become explicit prompt edits; ≤ 3 rounds, then ESCALATE (one line) | a reroll repeats the defect; delegation_policy §4.5 |
-| 5 | — | owner-KEPT art is judged but never auto-replaced (HOLD_KEPT, kept-but-flagged line) | delegation_policy §2.3 — **open question** |
+| 5 | — | owner-KEPT art may be redrawn on a regen verdict, only with a revert record; flagged *replaced your kept art* on the shadow sheet with a one-click revert | owner card 2026-10-23 06:42: *"Yes, but show me after"* (delegation_policy §2.3 exception) |
 | 6 | — | Opus always first: the GPT-image generator is never the sole judge of its own output | independence |
 | 7 | shadow sheets after, turned off when good | `shadow.py`: gated art_sheet sheet, decision + verdicts per row, KEEP/OVERRIDE; prereview.json from the run; per-template streak, threshold a setting (30) | his experiment answer |
 | 8 | live walk → improve criteria | criteria ledger (`ledger.py`) → a named check/prompt/policy change + regression example; `runner.py regress` on every prompt version | his rule |
@@ -526,11 +526,10 @@ The shadow sheet built for this run passes the 14-requirement gate and its prere
 rows: the judged (historical) pictures are no longer what the sheet shows — production specs carry their
 `artpipe_job` so the judged render is a column.
 
-### 8.4 Open questions for the owner
+### 8.4 His answers (owner cards 2026-10-23 06:42)
 
-1. **Kept art:** may the pipeline regenerate owner-kept art it judges really bad (the old picture stays until you
-   rule), or is replacing kept art always yours (today: always yours)?
-2. **Shadow turn-off threshold:** provisional 30 consecutive subjects per template with no blocking override
-   (bounds the miss rate at ≤ 10 % with 95 % confidence); 59 bounds it at ≤ 5 %. Which?
-3. **Blocking override definition:** today an accept↔regen flip or "other" resets the streak; a polish note does not.
+1. **Kept art** — *"Yes, but show me after"*: the pipeline may redraw kept art on a regen verdict; every swap is on
+   the next shadow sheet flagged *replaced your kept art*, revertible in one click through the art ledger.
+2. **Shadow turn-off** — *"30 in a row (Recommended)"*: 30 consecutive subjects per template with no blocking override.
+3. **Blocking override** — *"Keep that definition (Recommended)"*: an accept↔regen flip, "other" or a REVERT; polish notes don't count.
 

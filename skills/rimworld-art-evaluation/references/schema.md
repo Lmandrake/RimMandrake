@@ -8,6 +8,7 @@
  "description": "<def text>", "tier": "RM_", "invented": true, "earth_body_named": false, "body_plan": null,
  "departures": ["<visible feature>"], "canon": {"must_show": [], "engine_limits": []}, "owner_notes": [],
  "owner_kept": false, "depends_on": null, "previous_prompt": null, "size": {"drawSize": [1.4, 1.4]},
+ "kept_install": [{"mod": "SWBestiary", "rel": "<texPath file>", "sha": "<kept picture sha>"}],
  "ports": ["<machines: each code-defined port, e.g. 'south facing: east side, hose'>"],
  "images": {"south": "<png>", "east": "<png>", "north": "<png>", "scale": "<true-scale panel png>",
             "living_reference": {"south": "<png>"}, "siblings": ["<png>"], "flight": [], "variants": [],

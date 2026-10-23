@@ -230,7 +230,8 @@ title attached — `B58 (the dead Jawa pawnkind)`, never bare.
 constraints and requirements we can draft."* Taste calls go to a judge agent (not the maker); every delegated call is
 logged `--why "delegated: <class>"`, never as his approval, and reaches him in a daily digest. Only the short list in
 `design/RimMandrake/delegation_policy.md` §2 still needs him (north-star bars, irreversible acts on others' work,
-replacing art he kept, changing his rulings, outward/paid acts, flyer live tests).
+replacing art he kept (except the art-eval pipeline's redraws, shown to him after with a revert — owner card
+2026-10-23 06:42), changing his rulings, outward/paid acts, flyer live tests).
 
 ## 🔴 Nothing reaches the owner unread — owner, 2026-10-22
 
