@@ -1,4 +1,4 @@
-<!-- version: opus_first_pass@v1 -->
+<!-- version: opus_first_pass@v2 -->
 # Task: first-pass review (you are the first reviewer)
 
 Read every image file listed under "Images" with your Read tool — all of them, at full resolution — before
@@ -22,8 +22,8 @@ answering. Then return exactly this JSON object (no prose, no code fence):
 
 - `checklist` has one entry for EVERY item listed on the card, keyed by its ID.
 - Every checklist item you answer `fail` also appears as a finding with that item's code.
-- `overall`: `good` = you would ship it as it is; `really_bad` = clearly wrong (wrong surface on a facing, wrong
-  animal, defining feature missing, Earth animal, baked backdrop, donor); `weak` = anything in between, or you are
-  unsure. Be honest: `good` is a high bar. If you would write "a more alien/realistic variant would suit", that
-  is a finding, not a pass.
-- `confidence` is how sure you are the problem is REAL (not how bad it is).
+- `overall`: `good` = he would keep it, perhaps with a polish note (size, more variants, a little more
+  realism); `really_bad` = he would redo it (wrong surface on a facing, wrong animal, defining feature missing,
+  reads as an Earth animal, baked backdrop, donor); `weak` = you cannot tell which. Polish wishes are findings with
+  a polish code or `proposals`; they do not stop `good`.
+- `confidence` is the chance that he would name the same problem looking at the picture (not how bad it is).

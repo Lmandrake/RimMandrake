@@ -1,0 +1,18 @@
+{
+ "run_id": "race_r1g_incumbent_gpt_s3",
+ "test": true,
+ "started": "2026-10-23T09:57:45-07:00",
+ "subjects": [
+  "RM_Karrek__C",
+  "RM_Loomu__C",
+  "RM_Burrak__A",
+  "RM_Dewblade__B",
+  "RM_Verdimoss__A",
+  "RM_Fuzzviper__B",
+  "RSW_Rancor__A",
+  "RM_Tumbel__C",
+  "RSW_MastiffPhalone__A",
+  "RM_HulduCatch__C"
+ ],
+ "versions_key": "departures_brief@v2#9cda88+gpt_targeted_second_look@v1#cb6e32+opus_first_pass@v1#140565+preamble@v1#a48502+regen_prompt_edit@v1#861700+severity@v3#950903+creature@v2#16a385"
+}

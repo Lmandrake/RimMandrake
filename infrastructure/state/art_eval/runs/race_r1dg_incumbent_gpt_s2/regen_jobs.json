@@ -1,0 +1,15 @@
+[
+ {
+  "id": "arteval_RM_Mourvel__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Mourvel__B",
+  "prompt": "mourvel: The brief's \"willow-like canopy\" taken literally, and then further: a low wide dome whose entire outer surface is hanging cord-like leaf strands that reach the mud, so the tree is a room with walls. Bark violet-black, strands blue-green. Nothing is visible through it \u2014 the Greentide's one true concealment tree. It is NOT an Earth animal: Low, wide dome silhouette, much broader than it is tall, not a tall trunk carrying a raised crown; Hanging strands cover the whole outer surface and reach the mud all the way round, forming closed walls with no gaps or open skirt; Completely opaque: no trunk, branches or interior show through the strands; Strands are thick round cords, not thin trailing twigs with narrow leaves; Violet-black bark with blue-green strands, not brown bark with yellow-green foliage. The canopy forms one low, wide dome wrapped in dense blue-green cord-like strands reaching the root level, with an opaque outer curtain concealing its interior. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1dg_incumbent_gpt_s2"
+ }
+]

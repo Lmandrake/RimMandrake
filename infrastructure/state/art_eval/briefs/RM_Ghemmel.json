@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Ghemmel",
+ "nearest_earth_animal": "oak",
+ "earth_body_named": false,
+ "departures": [
+  "thick red sap bleeding from cuts and splits in the bark, running down the trunk",
+  "bark visibly split and cracked in many places, with red showing through the splits",
+  "gnarled trunk bent and leaning to one side as if shaped by wind, not upright",
+  "dense, rounded crown of medium-dark leaves"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T10:11:23-07:00",
+ "source": "description only (no image)"
+}

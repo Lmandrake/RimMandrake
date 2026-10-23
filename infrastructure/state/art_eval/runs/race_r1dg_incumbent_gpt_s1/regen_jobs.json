@@ -1,0 +1,28 @@
+[
+ {
+  "id": "arteval_RM_Ghemmel__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Ghemmel__B",
+  "prompt": "ghemmel: The ordinary one, and the roster needs one: gnarled wind-bent trunk, dense rounded crown of medium dark leaves. Its distinguishing feature is not shape but blood \u2014 the bark bleeds thick red wherever it is cut or split, and in this biome it is split everywhere. The commonest mid-storey tree and the source of the biome's red dye. It is NOT an Earth animal: thick red sap bleeding from cuts and splits in the bark, running down the trunk; bark visibly split and cracked in many places, with red showing through the splits; gnarled trunk bent and leaning to one side as if shaped by wind, not upright; dense, rounded crown of medium-dark leaves. Numerous visible bark splits exude thick deep-red blood, with broad red trails and heavy droplets that remain identifiable at normal play size. The ordinary gnarled tree carries conspicuous blood-filled bark fissures and thick red bleeding throughout its trunk and branches, making its alien biology unmistakable. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1dg_incumbent_gpt_s1"
+ },
+ {
+  "id": "arteval_RM_Zhorrel__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Zhorrel__B",
+  "prompt": "zhorrel: No crown at all: a low crossbeam of branches with a hanging curtain of slack finger-thick tentacle-leaves, red-barked above. The tentacles are visibly not still \u2014 the tell is that they move against the wind rather than with it. The strangler: no truce, ever. Kill one and the tentacles are excellent cordage. It is NOT an Earth animal: no rounded or domed crown: the top is a low, flat horizontal crossbeam of branches; a hanging curtain of finger-thick, rope-like tentacles in place of leaves or fine willow fronds; red bark on the upper branches and crossbeam; tentacles that look boneless and fleshy, each with a visible curl or flex rather than hanging as straight, uniform strands; some tentacles angled or swaying in a different direction from nearby plants and grass, so the curtain is visibly not moving with the wind. The hanging curtain consists predominantly of slender, slack, finger-thick tentacle-leaves, with their thickness visibly matching the human scale reference. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1dg_incumbent_gpt_s1"
+ }
+]

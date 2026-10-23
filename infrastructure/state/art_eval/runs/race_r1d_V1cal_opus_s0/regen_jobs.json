@@ -1,0 +1,32 @@
+[
+ {
+  "id": "arteval_RM_Fuzzviper__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Fuzzviper__B",
+  "prompt": "fuzzviper: The runs are safety, and the fuzzviper is the price of believing that. It lies along a tunnel wall being a root until the run's own traffic comes to it. It is NOT an Earth animal: body reads as a plant root: knobbly, irregular, unevenly thick, tapering like a root rather than a smooth snake body; surface covered in fine fuzz like root hairs, with no visible scales; head end hard to tell from a root tip: no distinct wedge-shaped viper head; lies pressed flat along a vertical tunnel wall, following it the way a root would, not coiled on the ground. The head end tapers like a root tip into the same fibrous strands as the body, with the jaw closed, the eyes tiny and buried in fuzz, and no visible fangs, so at a glance it reads as the end of a root. The body is drawn knobbly and unevenly thick, with small side rootlets and kinks, lying long and flat as if it were a root running along a wall face. The head blends into an irregular tapered root tip, with feeding anatomy concealed within its rootlike contour. The body has asymmetric root swellings, abrupt changes in thickness, irregular bends, and a branching tapered end. Fine short root hairs cover the irregular woody body and form a delicate fuzzy fringe along its silhouette. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1d_V1cal_opus_s0"
+ },
+ {
+  "id": "arteval_RM_Mourvel__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Mourvel__B",
+  "prompt": "mourvel: The brief's \"willow-like canopy\" taken literally, and then further: a low wide dome whose entire outer surface is hanging cord-like leaf strands that reach the mud, so the tree is a room with walls. Bark violet-black, strands blue-green. Nothing is visible through it \u2014 the Greentide's one true concealment tree. It is NOT an Earth animal: Low, wide dome silhouette, much broader than it is tall, not a tall trunk carrying a raised crown; Hanging strands cover the whole outer surface and reach the mud all the way round, forming closed walls with no gaps or open skirt; Completely opaque: no trunk, branches or interior show through the strands; Strands are thick round cords, not thin trailing twigs with narrow leaves; Violet-black bark with blue-green strands, not brown bark with yellow-green foliage. Draw a low, wide, continuous dome whose outer surface is an unbroken curtain of blue-green cord strands falling all the way to the ground line on every side, so that the trunk is hidden inside and only a dark hint of the interior shows at the base. The canopy forms a low, wide dome enclosed by continuous, opaque blue-green cord-like leaf curtains reaching the ground and concealing the trunk and interior. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1d_V1cal_opus_s0"
+ }
+]

@@ -1,0 +1,135 @@
+[
+ {
+  "id": "arteval_RM_Ivvol__C_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Ivvol__C",
+  "prompt": "Ivvol: A flat bottom-dweller, its comb a raised dorsal ridge set with a row of eyes \u2014 the ridge surfaces, the eyes count. A doormat-sized floor-thing that knows the feed schedule better than the apprentice does. Passive \u2014 but it learns. Pens with an ivvol have fewer vizhik escapes and no vhorrin has ever grown in one, and no farmer can tell you the mechanism. When finally netted it does not struggle; it goes still, and the whole ridge of eyes turns to the farmer, and it watches. It is NOT an Earth animal: a raised dorsal ridge (the comb) runs down the middle of its flat back, rising clearly above the body like a crest; a single row of many eyes sits along the top of that ridge, not two eyes on the body or a head; the eyes are the creature's main facial feature: there is no fish head with paired eyes and no gill-and-mouth face; the body is a flat, doormat-shaped slab that lies against the floor, with the ridge as its only raised part. The north view shows the rear from the same oblique camera elevation as south and east, with visible rear thickness and a foreshortened back. All three facings depict one consistently sized animal at a shared camera elevation and scale, with comparable projected body extent. The body forms a thin, broad slab resting against the floor, with shallow integrated lateral lobes and the eye-bearing dorsal ridge as its only elevated structure. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_TOPDOWN, F_SIZE_JUMP, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_incumbent_gpt_s2"
+ },
+ {
+  "id": "arteval_RM_Gorrask__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Gorrask__B",
+  "prompt": "Gorrask: Legend on this rock says a stone-crab grew so vast and so old that it no longer fits inside any canyon it did not carve itself. Whatever the truth of that, a gorrask this big has never needed to hurry: it moves once, settles for a season, and the pool truce holds around it exactly as it holds around everything smaller. Its shell is old enough that whole weep-mat colonies have taken root along the seams. It is NOT an Earth animal: shell shows deep seams between its plates, with weep-mat colonies rooted and growing along those seams; the carapace looks like weathered stone, not glossy crab chitin; the shell is so worn and old that it reads as an ancient rock formation, not a living crab's smooth shell; colossal, landform-scale bulk that dwarfs everything around it, more like a hill or canyon boulder than an animal; sits low and fully settled in place, like a fixed part of the terrain, not raised up on its legs. The creature carries an ancient weathered stone carapace with clearly visible weep-mat colonies growing along its deep seams. Deep recessed seams divide the shell plates and support conspicuous rooted weep-mat colonies. The carapace has matte mineral surfaces with chipped edges, pitting and irregular stone coloration. The shell forms an eroded ancient rock mass with fractured plates, worn ridges and accumulated mineral weathering. The creature's broad, irregular rocky bulk dwarfs the nearby human and reads as a settled hill-sized mass. The exposed anatomy has realistic proportions, restrained eyes and a naturally shaped mouth with painterly surface detail. A controlled dark outline supports painterly material shading while preserving clear readability at normal play size. The final sprite is original Gorrask artwork created specifically for RimMandrake. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, STYLE_CARTOON, STYLE_OFF, DONOR",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_incumbent_gpt_s2"
+ },
+ {
+  "id": "arteval_RM_Bladderquill__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Bladderquill__B",
+  "prompt": "Bladderquill: A knee-high fan of stiff translucent quills, each fat at the base with stored water, standing in arcs along the green ring. Cut a quill and it sloshes. It bears the bladder-fruit -- food and drink in one object -- and is the visible promise of the green ring: where bladderquill stands, nobody dies thirsty. It is NOT an Earth animal: stiff translucent quills, not opaque green fleshy leaves; each quill fat and bulbous at its base, with stored water visible through the translucent wall; quills spread in a flat fan, not a radial rosette; bears bladder-fruit: swollen, liquid-filled fruit sacs; knee-high, with thin quill-like spines rather than broad blades. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: ",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_incumbent_gpt_s2"
+ },
+ {
+  "id": "arteval_RM_Steamfrond__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Steamfrond__A",
+  "prompt": "Steamfrond: A rosette of mineral-pale fronds spiralled around a breathing vent, rims crusted with white salt bloom. Grows only at the seep oases -- the green eye in open nothing is a steamfrond ring before it is anything else. Its harvest scrapes seep-salt, a preservative and spice with the underworld's taste, and the only source of it. It is NOT an Earth animal: fronds coloured mineral-pale (whitish-grey), not green; fronds arranged as a spiral rosette around a central open vent in the ground; frond rims crusted with white salt bloom; a visible breathing vent or seep hole at the centre of the rosette, rather than a crown of leaves. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: ",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_incumbent_gpt_s2"
+ },
+ {
+  "id": "arteval_Plant_Ambrosia__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "Plant_Ambrosia__A",
+  "prompt": "Ambrosia: A rare wild bush which yields the ambrosia fruit. Ambrosia fruit is delicious and produces a drug-like mood boost. Ambrosia cannot be farmed, which makes wild ambrosia groves very valuable.\n\nIts rarity, beauty, and desirability are why ambrosia was named after the food of the ancient Greek gods. The mature bush carries clearly recognizable fleshy ambrosia fruits among its leaves. The silhouette shows a coherent leafy bush with branching stems and visible fruit. The sprite consists entirely of the bush, with foliage and fruit supported by stems meeting a rooted base. The final candidate is original ambrosia bush artwork created for RimMandrake. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, LUMP, ALPHA_HALO, DONOR",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_incumbent_gpt_s2"
+ },
+ {
+  "id": "arteval_RSW_Anooba__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Anooba__B",
+  "prompt": "anooba: Anoobas were aggressive pack predators that lived throughout the Outer Rim Territories. Opportunistic hunters as well as scavengers, these wolflike canines would attack virtually anything smaller than themselves (such as scurriers). All facings use matching anatomical dimensions for the head, ears, torso and limbs, with height differences arising only from projection and pose. The muzzle, jaw, throat and neck show exposed pink-to-flesh-brown leather with deep heavy wrinkles, giving the face its distinctive anooba anatomy. A coarse pale grey-white mane covers the crown and continues down the spine as a conspicuous spiky ridge. Small dark eyes sit deeply beneath thick folds of wrinkled brow skin. Natural lighting, textured fur edges and leathery skin transitions define the silhouette with an unoutlined realistic finish. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, CANON_MISS, CANON_MISS, CANON_MISS, CANON_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_incumbent_gpt_s2"
+ },
+ {
+  "id": "arteval_RM_Mourvel__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Mourvel__B",
+  "prompt": "mourvel: The brief's \"willow-like canopy\" taken literally, and then further: a low wide dome whose entire outer surface is hanging cord-like leaf strands that reach the mud, so the tree is a room with walls. Bark violet-black, strands blue-green. Nothing is visible through it \u2014 the Greentide's one true concealment tree. The canopy forms a low, wide, continuous dome of dense blue-green hanging cords reaching ground level, enclosing the violet-black trunk and interior completely. The tree has an alien enclosing canopy built from dense rope-like foliar strands with distinctive fused growth and an uninterrupted room-like silhouette. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_incumbent_gpt_s2"
+ },
+ {
+  "id": "arteval_RSW_Kaadu__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Kaadu__A",
+  "prompt": "kaadu: Kaadu were large, flightless reptavians that inhabited the swamps of the planets Naboo, Obredaan as well as the moon of Rori. They had sharp hearing and a keen sense of smell and adults of the species had distinct markings to distinguish gender. Kaadu were known to be fearless; consequently many were domesticated as steeds during times of conflict, or as patrol animals. This versatility made them a popular export to other worlds as both livestock and mount. The breast, flanks, belly and short tail show continuous leathery reptavian skin with subtle folds and fine scales. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: CANON_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_incumbent_gpt_s2"
+ },
+ {
+  "id": "arteval_RM_LoomuCatch__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_LoomuCatch__A",
+  "prompt": "Loomu: It came to the feed whistle. That IS the catch method, and everyone hates it. The catch retains the Loomu's distinctive draped gray body, pale tubes and tapered appendages in a recognizable alien silhouette. The specimen has softly modeled painterly anatomy, restrained highlights and a proportionate dark contour consistent with vanilla RimWorld. The final catch sprite is original RimMandrake artwork depicting the Loomu. The catch shows the reference Loomu lying limp on the ground, with its gray body folds, pale tubes and tapered appendages preserved and its eyes shut or dull. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_EARTHLY, STYLE_CARTOON, DONOR, CATCH_WRONG",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_incumbent_gpt_s2"
+ }
+]

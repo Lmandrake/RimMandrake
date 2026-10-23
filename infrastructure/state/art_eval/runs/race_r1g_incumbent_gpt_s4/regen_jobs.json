@@ -1,0 +1,156 @@
+[
+ {
+  "id": "arteval_RM_Sillik__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Sillik__B",
+  "prompt": "Sillik: A palm-sized silver-grey licker that lives ON the vertical weep-faces themselves, spread flat against the rock, its whisker-comb fanned around the muzzle to comb the thin water film off the stone. Whole faces stipple with them wherever the rock runs wet. It harvests the thinnest water in the biome and never joins the crowd at the pool \u2014 the one native the water truce barely touches. It is NOT an Earth animal: body spread completely flat against the vertical rock face like a pressed sheet, not raised on splayed legs; a fanned whisker-comb: a ring of comb-like bristles spread around the whole muzzle; the muzzle pressed to the wet stone surface, combing a thin sheen of water; uniform silver-grey colouring with no gecko-style banding, spots or bright skin; palm-sized individuals stippled in numbers across one wet rock face, not a single lizard on a wall. The Sillik reads as an alien sheet-bodied water harvester whose flattened anatomy and integrated muzzle comb define its silhouette. The body forms a thin pressed sheet with flattened limbs lying in the same contact plane as the belly. The muzzle and spread comb lie flush against the implied wall contact plane in a water-combing posture while the sprite retains clean transparency. The skin is uniformly silver-grey with subtle painterly shading and a continuous unpatterned surface. The required colony depiction shows numerous tiny silver-grey individuals stippling a shared implied vertical face while preserving the required transparent background. The face has restrained realistic eye proportions, subdued highlights and a functional feeding expression integrated with the flattened muzzle comb. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_EARTHLY, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, STYLE_CARTOON",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_incumbent_gpt_s4"
+ },
+ {
+  "id": "arteval_RM_Murrin__C_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Murrin__C",
+  "prompt": "Murrin: A hand-length pool fish, deep-keeled, with one tall dorsal comb-fin that cuts the surface in rings whenever the pool is fed. The pools' rings-within-rings, alive. A silent pool with no murrin rings is the first sign an oasis is dying. The gentle baseline every stocked pool is measured against. It is NOT an Earth animal: a single tall comb-like dorsal fin running along the back, its edge divided into separate comb teeth rather than one smooth sail; a deep, sharply keeled body with a blade-like ridge along the belly; the dorsal comb-fin rising clearly above the waterline, with concentric rings spreading out across the pool surface from where it cuts through; ring-within-ring markings on the body that echo the surface ripples. The deep body terminates in a clearly visible sharp ventral blade that remains recognizable in each facing. The flanks carry bold nested-ring markings that echo concentric surface ripples and remain visible at normal play size. The body sprite is an isolated transparent cutout, with its surface rings supplied through a separate water-effect layer. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING, ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_incumbent_gpt_s4"
+ },
+ {
+  "id": "arteval_RM_Sillik__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Sillik__A",
+  "prompt": "Sillik: A palm-sized silver-grey licker that lives ON the vertical weep-faces themselves, spread flat against the rock, its whisker-comb fanned around the muzzle to comb the thin water film off the stone. Whole faces stipple with them wherever the rock runs wet. It harvests the thinnest water in the biome and never joins the crowd at the pool \u2014 the one native the water truce barely touches. It is NOT an Earth animal: body spread completely flat against the vertical rock face like a pressed sheet, not raised on splayed legs; a fanned whisker-comb: a ring of comb-like bristles spread around the whole muzzle; the muzzle pressed to the wet stone surface, combing a thin sheen of water; uniform silver-grey colouring with no gecko-style banding, spots or bright skin; palm-sized individuals stippled in numbers across one wet rock face, not a single lizard on a wall. The muzzle carries a clearly legible radial fan of comb-like bristles that turns consistently with the head in every facing. The Sillik has an alien sheet-flat clinging body and a radial muzzle comb that establish a distinct silhouette. The body forms a thin, broadly spread sheet with its limbs and underside held flush against an implied vertical contact plane. A complete ring of individually readable comb-like bristles fans around the muzzle. The muzzle and bristle tips lie flush against the same implied vertical contact plane as the flattened body. The composition shows numerous distinct palm-sized Silliks in a stippled arrangement suitable for placement across a vertical wet rock face. The creature has believable flattened anatomy, restrained contours and softly varied silver-grey painterly shading. The final candidate is original Sillik artwork created for RimMandrake. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, STYLE_EARTHLY, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, STYLE_CARTOON, DONOR",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_incumbent_gpt_s4"
+ },
+ {
+  "id": "arteval_RM_Dewgourd__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Dewgourd__B",
+  "prompt": "Dewgourd: Owner's spec, verbatim: \"a large melon like gourd that takes a long time to grow but is then worth a lot of food and keeps for a long time.\" A single melon-sized gourd per plant, rind pale and waxy as the stone, swelling in the shade of its own little blade-comb, fed by drip. One slow gourd is a season's promise -- the reason a colony can farm here. It is NOT an Earth animal: rind pale and waxy like stone, not green or striped; exactly one gourd per plant, not a cluster of fruit; a small comb of blade-like leaves standing over the gourd instead of broad, lobed melon leaves; the gourd sits in the shade under its own blade-comb, not lying exposed on open ground. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: ",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_incumbent_gpt_s4"
+ },
+ {
+  "id": "arteval_RM_Weepmat__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Weepmat__A",
+  "prompt": "Weep-mat: A dark green-black mat hugging the cold stone faces, ridged like corduroy, every ridge square to the sea-wind, glistening along the weep-lines. It grows exactly where the stone weeps, so a weep-mat is the wet black streak's green echo -- a face without one is a face that has gone dry. Graze for the sillik. It is NOT an Earth animal: Dark green-black colouring, close to black, not bright moss-green; Regular parallel ridges like corduroy instead of a soft cushion or fuzzy tufts; Every ridge runs the same way, square to the sea-wind, so the mat looks combed or striated; A wet, glistening sheen along the weep-lines, like a damp streak; Lies flat against cold vertical stone faces, following the shape of the wet streak where the stone seeps. The sprite consists of the ridged green mat and its glistening weep-lines, with transparent gaps that reveal the game's underlying stone. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_incumbent_gpt_s4"
+ },
+ {
+  "id": "arteval_RSW_Convor__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Convor__A",
+  "prompt": "convor: Convor (also known as \"Trandoshan birds\"), were a species of beautiful mammavian from the Wasskah moon of Hsskhor. Although Convor had short, plump bodies, they were excellent fliers. Their popularity as a pet meant they often established colonies on other worlds. The eyes have dark brown irises surrounding the dark pupils, with restrained natural highlights. The convor appears about 0.2 m tall in its compact body beside the human, with its long tail scaled proportionally. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: CANON_MISS, CANON_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_incumbent_gpt_s4"
+ },
+ {
+  "id": "arteval_RSW_Warbird__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Warbird__A",
+  "prompt": "RSW_Warbird: The Warbird (or 'Sith warbird') was a species of huge flightless avian from the frigid planet Khar Delba. Sith warbirds were notorious for their bad temper and they typically used their large size to ram down their prey and gore them with their serrated beaks. After the end of the Great Sith War, Sith warbirds continued to be found throughout the galaxy, with survivors of the conflict breeding on worlds where battles had been fought by the Sith. These wild-once-more warbirds were prone to terrorizing local forms of wildlife that posed little threat to them. All three facings have clean transparent feather edges with edge colours matching the adjacent plumage, horn or skin. The east sprite contains the complete tail silhouette with a small transparent margin around every feather tip while preserving the shared animal scale. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: ALPHA_HALO, X_CROP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_incumbent_gpt_s4"
+ },
+ {
+  "id": "arteval_RM_Zhorrel__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Zhorrel__B",
+  "prompt": "zhorrel: No crown at all: a low crossbeam of branches with a hanging curtain of slack finger-thick tentacle-leaves, red-barked above. The tentacles are visibly not still \u2014 the tell is that they move against the wind rather than with it. The strangler: no truce, ever. Kill one and the tentacles are excellent cordage. The red branch framework supports a curtain of slender, slack tentacle-leaves whose individual thickness reads as approximately a human finger at the supplied game scale. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_incumbent_gpt_s4"
+ },
+ {
+  "id": "arteval_RSW_Gualaar__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Gualaar__A",
+  "prompt": "gualaar: The Gualaar was an ungulate species indigenous to the mountains and hills of the planet Naboo. These creatures though tricky to domesticate had both the build and strength to make them perfect beasts of burden. The Royal House of Naboo kept a herd of Gualaar that were used to carry state officials. This regal affiliation and their physical practicality meant they were exported and ultimately spread across multiple worlds. It's similarity in appearance to the legendary Thrumbo is a point of interest amongst several xenobiologists. The Gualaar has one dominant horn sweeping upward and backward from its crown and two clearly visible smaller horns on its snout. The animal has a heavy broad barrel, substantial shoulders and haunches, a long upright neck and a long tail visible consistently across facings. A single very large crown horn sweeps up and back, accompanied by two small snout horns, with their placement preserved in every facing. The coat is white to off-white short fur, the horns are cream or ivory, and the eyes are black. Four thick weight-bearing legs end in broad heavy feet proportionate to the animal's massive body. The silhouette reads as a massive regal burden animal with a broad body and one dominant sweeping crown horn. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, CANON_MISS, CANON_MISS, CANON_MISS, CANON_MISS, CANON_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_incumbent_gpt_s4"
+ },
+ {
+  "id": "arteval_RM_IvvolCatch__C_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_IvvolCatch__C",
+  "prompt": "Ivvol: Lifted from the floor at night, when the eye-ridge closes. By day it sees the net coming, every time. The specimen has the living Ivvol's alien triangular skirt, stout paired limbs and distinctive closed eye-ridge. The catch preserves the living reference's broad triangular body skirt, paired stout limbs and longitudinal eye-ridge while lying limp with the eyes closed. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_EARTHLY, CATCH_WRONG",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_incumbent_gpt_s4"
+ }
+]

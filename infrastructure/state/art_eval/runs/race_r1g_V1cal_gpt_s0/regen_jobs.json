@@ -1,0 +1,164 @@
+[
+ {
+  "id": "arteval_RM_Burrak__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Burrak__B",
+  "prompt": "Burrak: A bear-sized wallower that digs catch-basins that outlive it \u2014 abandoned burrak digs are how new micro-oases start. A working oasis tolerates its one huge elder, worn claw-combs and all, the way a town tolerates its engineer; in fiction the biggest of them earns the name burradar, but it is the same animal grown vast, not a second kind. It is NOT an Earth animal: forelimbs end in broad comb-like rakes of many parallel claws (claw-combs), not hippo stumps or bear paws; heavy digging forelimbs built to excavate basins, visibly more powerful and longer than the hind limbs; claw-comb tines visibly worn, chipped or uneven from digging; body caked or slick with basin mud from wallowing, set in or beside a dug catch-basin. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: ",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_V1cal_gpt_s0"
+ },
+ {
+  "id": "arteval_RM_Huldu__C_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Huldu__C",
+  "prompt": "Huldu: A forearm-length velvet-skinned swimmer, dorsal comb folded flat like wet fur; clings when handled. Warm to the touch \u2014 not seep-warm, body-warm, with a pulse you can feel through the skin. Lifted from the water it does not thrash: it grips the handler's forearm and presses close, and it shivers. None whatsoever, which is its own kind of problem: the huldu is the row that makes the handler the uneasy party. It is NOT an Earth animal: hairless velvet skin, not a fur coat; any fur-like look comes only from the folded comb; a dorsal comb running along the back, folded flat against the body in wet-looking strands; grasping limbs or gripping surfaces made to cling to and wrap around a forearm, not otter paws; small forearm-length body sized to press flat along a human arm, not an otter's long torso and tail. All facings show the same tail anatomy, with its terminal shape consistently represented as it turns with the body. The cheeks, torso and limbs have smooth hairless velvet skin, with strand-like texture confined to the folded dorsal comb. The limbs show elongated grasping digits or broad gripping surfaces visibly shaped to wrap around a human forearm. The animal has a compact, flattened forearm-length body with a proportionally short tail and anatomy suited to pressing along an arm. The Huldu reads as an alien velvet-skinned clinging swimmer through its compact body, specialized gripping limbs and distinct folded dorsal comb. The face has realistic small eyes, restrained highlights, natural muzzle proportions and a neutral mouth. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, STYLE_EARTHLY, STYLE_CARTOON",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_V1cal_gpt_s0"
+ },
+ {
+  "id": "arteval_RM_Vizhik__C_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Vizhik__C",
+  "prompt": "Vizhik: A wrist-thin eel, comb-gills fanned along the whole neck like a ruff, cold, quick, and never where you left it. When a pen is overfull, a vizhik pours itself out of the pen and crosses open rock on its gill-comb \u2014 into the next pool, the cistern, the water barrel, the kitchen stock-pot. Its bite is small and goes septic more often than it should. It is NOT an Earth animal: comb-gills fanned out along the whole length of the neck like a ruff; gill-comb fringes long and stiff enough to carry the body across dry rock, shown braced on the ground; wrist-thin body, far slimmer than an ordinary eel for its length; the ruff of comb-gills is the creature's dominant silhouette feature, not the small paired gill slits an eel has. The south view presents the face head-on from the game's oblique camera, with the neck and body receding behind it. Every facing shows the same pale blue paired neck combs, with their attachment points and projected shapes consistent as the animal turns. Long rigid lower comb rays brace beneath the neck in a visible weight-bearing stance that supports the body. The head and trunk have markedly slender proportions along an elongated body, with the projecting comb providing most of the apparent width. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SOUTH_NOT_FRONT, F_INCONSISTENT, DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_V1cal_gpt_s0"
+ },
+ {
+  "id": "arteval_RM_Huldu__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Huldu__B",
+  "prompt": "Huldu: A forearm-length velvet-skinned swimmer, dorsal comb folded flat like wet fur; clings when handled. Warm to the touch \u2014 not seep-warm, body-warm, with a pulse you can feel through the skin. Lifted from the water it does not thrash: it grips the handler's forearm and presses close, and it shivers. None whatsoever, which is its own kind of problem: the huldu is the row that makes the handler the uneasy party. It is NOT an Earth animal: hairless velvet skin, not a fur coat; any fur-like look comes only from the folded comb; a dorsal comb running along the back, folded flat against the body in wet-looking strands; grasping limbs or gripping surfaces made to cling to and wrap around a forearm, not otter paws; small forearm-length body sized to press flat along a human arm, not an otter's long torso and tail. The swimmer has a clearly visible dorsal comb folded flat along its back in wet-looking strands. The body is visibly covered in soft hairless velvet skin, with strand texture concentrated in the folded dorsal comb. A continuous dorsal comb lies flat against the back as distinct damp strands in every facing. Visible grasping appendages or gripping surfaces curve around the body in a form suited to clinging around a human forearm. The forearm-length body has a low flexible profile and a broad contact surface that can press closely along a human arm. The creature reads as an unfamiliar velvet-skinned swimmer with a folded dorsal comb and specialized clinging anatomy. The face has restrained naturalistic eyes and mouth anatomy, with painterly skin and body shading. The silhouette uses a controlled dark outline with finer contours and painterly transitions within the body. The final facings are newly authored original Huldu artwork matching its velvet-skinned clinging swimmer anatomy. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, STYLE_EARTHLY, STYLE_CARTOON, STYLE_OFF, DONOR",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_V1cal_gpt_s0"
+ },
+ {
+  "id": "arteval_RM_Salvecomb__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Salvecomb__B",
+  "prompt": "Salvecomb: One waist-high arched frond per plant, serrated along its windward edge like a comb's teeth, silver-downy where it combs the fog. Grows alone in shade lines. Its down mats wick clean condensate; field dressing is the fiction. Rare enough to be worth a walk under the overhangs. It is NOT an Earth animal: exactly one frond per plant, a single arched blade, never a clump or rosette of fronds; the frond is one solid blade, not divided into leaflets, and one edge carries a row of evenly spaced, comb-like serrated teeth; silver-white down mats the toothed edge, while the rest of the blade stays bare; a tall, waist-high single arch rising from the ground, standing alone with no neighbouring plants. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: ",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_V1cal_gpt_s0"
+ },
+ {
+  "id": "arteval_RSW_Igitz__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Igitz__A",
+  "prompt": "igitz: Igitz were a species of small amphibians hailing from the planet Naboo. Those blue-skinned, omnivorous critters dwelled in the planet's many dense swamps. Because of the environment in which they had evolved, the igitz were well-adapted to both land and water: while their front paws were clawed for treading on land, their hindquarters were finned, allowing it speed when in water. The igitz were a popular pet in most Gungan civilizations and this lead to the species becoming present on other worlds. All facings show one anatomically consistent dorsal fin running from the back of the head down the spine, with its visible width and overlap changing naturally as the body turns. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_V1cal_gpt_s0"
+ },
+ {
+  "id": "arteval_RSW_Nexu__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Nexu__A",
+  "prompt": "nexu: Nexu's are agile predators with four red eyes and sharp quills. They have infrared vision and are 4.51 meters long. Typically 0.94 meters tall, nexus possess sharp teeth and claws, as well as long tails. It's light build allows it to remain highly agile and difficult to hit. Match the head, shoulder, quill and paw scale across all facings while preserving their directional projection and tail poses. Give every cutout a clean antialiased silhouette whose edge colours match the adjoining fur, claws or quills. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_V1cal_gpt_s0"
+ },
+ {
+  "id": "arteval_RSW_Insectomorph__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Insectomorph__A",
+  "prompt": "insectomorph: Insectomorphs were insectoids from the planet Malastare. These easily domesticated omnivores were often used by the Dugs on their homeworld as battle mounts. Despite their unusual appearance they have been able to flourish as livestock on multiple worlds due to their rapid growth and hardiness. The north view shows the rear haunches and back, with the head facing away and its eyes and mouth fully hidden. The creature visibly reads as a skeletal arthropod mount through its body construction, jointed limbs and compact blunt head. A low skeletal arthropod body stands on four visibly jointed, bone-like legs with terminal pads, markedly longer muscular hind legs and a small blunt arthropod head. The leg segments have gray-white bone undertones, tan-gold coloration and distinct dark brown horizontal bands, with red eyes as the head's saturated accent. The complete east-facing snout and every tooth fit within the transparent canvas with a small clear margin. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_NORTH_FACE, DESC_MISS, CANON_MISS, CANON_MISS, X_CROP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_V1cal_gpt_s0"
+ },
+ {
+  "id": "arteval_RSW_KellDragon__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_KellDragon__B",
+  "prompt": "kell dragon: Kell dragons (also known as 'kell drakes') were were hardy, thick skinned creatures from the mountainous planet Rinderga. They were related to the much larger krayt dragons indigenous to Tatooine, but unlike their larger cousins were comfortable in both deserts and tundra. Kell dragons were believed to have been chemically altered by Sith Alchemy from the original krayt stock for use as effective 'guard beasts' for their tombs and facilities. As a result they also became popular with criminal organisations and these creatures could be found across the galaxy (on planets such as Ruusan, Dromund Kaas, and Arkania to name a few). The north view uses an elevated oblique rear camera with visible rump and haunch depth, a foreshortened back and tail, and the head receding behind the shoulders. The transparent silhouette has clean antialiased edges matching the adjacent grey scales and ivory spikes. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_TOPDOWN, ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_V1cal_gpt_s0"
+ },
+ {
+  "id": "arteval_RM_LoomuCatch__C_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_LoomuCatch__C",
+  "prompt": "Loomu: It came to the feed whistle. That IS the catch method, and everyone hates it. The catch shows the living Loomu's rounded gray mantle, lateral and trailing lobes, and clustered open-ended facial tubes collapsed into a limp specimen lying on the ground. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: CATCH_WRONG",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_V1cal_gpt_s0"
+ }
+]

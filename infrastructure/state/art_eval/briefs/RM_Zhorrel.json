@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Zhorrel",
+ "nearest_earth_animal": "weeping willow",
+ "earth_body_named": false,
+ "departures": [
+  "no rounded or domed crown: the top is a low, flat horizontal crossbeam of branches",
+  "a hanging curtain of finger-thick, rope-like tentacles in place of leaves or fine willow fronds",
+  "red bark on the upper branches and crossbeam",
+  "tentacles that look boneless and fleshy, each with a visible curl or flex rather than hanging as straight, uniform strands",
+  "some tentacles angled or swaying in a different direction from nearby plants and grass, so the curtain is visibly not moving with the wind"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T10:11:25-07:00",
+ "source": "description only (no image)"
+}

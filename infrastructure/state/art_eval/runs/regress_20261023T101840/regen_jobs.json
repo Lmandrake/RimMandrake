@@ -1,0 +1,36 @@
+[
+ {
+  "id": "arteval_RM_Huldu_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Huldu",
+  "prompt": "A single RimWorld creature sprite of the huldu, a forearm-length velvet-skinned alien swimmer, in painterly vanilla RimWorld style, realistic, with a clean dark outline, on a transparent background. Body: compact and small, sized to press flat along a human forearm, with a short rounded torso, a small blunt head, and a short thick tapering tail. Skin: smooth, hairless, short-napped velvet in a warm, muted wet-slate and umber tone, with fine visible skin texture and a matte sheen; there is no fur anywhere on the body, limbs or tail. Dorsal comb: a clear comb of wet, darker strands runs along the spine from the back of the head to the base of the tail, folded flat against the body like wet fur, and is plainly visible in every view. Limbs: four short limbs ending in broad grasping pads with long curling digits, made to cling to and wrap around a forearm; the same limbs and the same tail appear in every facing. Face: realistic and faintly unsettling, with small, dull, wet dark eyes set flat in the head, a small closed mouth with no smile, no external ears, no whiskers and no button nose, and no glossy highlights in the eyes. Facings, all drawn from the same body at the game camera angle: the east view shows the side profile with the dorsal comb along the whole back and the tail trailing behind; the south view shows the front, eyes toward the viewer, with the comb visible running between the shoulders and the gripping pads forward; the north view shows the rear, seen from behind, with the back, haunches and tail toward the viewer, the body foreshortened, the limbs tucked beneath the body, the eyes hidden, and the comb running down the centre of the back. reference: none; build the body from this description.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_EARTHLY, DEPARTURE_MISSING, DESC_MISS, F_INCONSISTENT, F_TOPDOWN, STYLE_CARTOON",
+  "reference": "",
+  "priority": 40,
+  "source_run": "regress_20261023T101840"
+ },
+ {
+  "id": "arteval_RM_Ssurr_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Ssurr",
+  "prompt": "A RimWorld creature sprite of the Ssurr, a hound-sized reptile, in painterly vanilla RimWorld style, realistic, with a thin dark outline of varied weight and a transparent background. The body has a hound's mass: a deep barrel chest, thick sturdy legs with broad feet, a thick short neck and a heavy tail base, on a reptilian frame, covered in textured overlapping teal-mottled scales with cream accents on the throat, belly and fan edge. The face is neutral and reptilian, with a closed level mouth and small matte eyes. Its dominant feature is one enormous rigid half-circle crest-fan, far larger than the head, mounted across the shoulders and rising from the back of the skull with its flat face turned toward the front of the body. The fan is a wheel with radiating spokes, and its whole curved rim carries a row of fine, close-set comb tines, like a dew-comb, each a thin pointed tooth. Front view, eyes toward the viewer: the broad face of the fan stands behind the head as a wheel, centred above the shoulders. Side view: the same fan is seen edge-on as a narrow upright blade-ellipse standing just behind the head, its thin toothed edge rising above the shoulders, the body in profile. Rear view, seen from behind: the plain back face of the same wheel fills the space above the body, over the back, tail and haunches, eyes hidden, with the same teal-mottled hide, cream accents and short thick neck. All three views are drawn at one shared scale, with the body the same height and length and the fan reaching the same height above the back in each. No reference image: build the body from this description.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT, F_SIZE_JUMP, STYLE_CARTOON, DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "regress_20261023T101840"
+ }
+]

@@ -1,0 +1,156 @@
+[
+ {
+  "id": "arteval_RM_Karrek__C_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Karrek__C",
+  "prompt": "Karrek: Finger-length little armored fish, fin-rays hardened into serrated chitin combs. A boiling crowd that hits thrown feed like one animal and leaves nothing. Feed-throwing is safe; wading is not \u2014 a karrek swarm strips a bleeding cut white in seconds. Left hungry two days, the swarm starts on its own smallest. It is NOT an Earth animal: fins are rigid, exposed fin-rays hardened into serrated comb-like chitin blades, not soft membranous fins; body sheathed in armour plating rather than ordinary overlapping fish scales; armour and fin-combs have a hard, glossy, arthropod-like chitin surface; tiny finger-length individuals shown as a dense, churning swarm, not one large fish. The north school shows foreshortened fish from the rear at the game's oblique camera angle, with tail ends closest to the viewer and backs receding away. Each facing depicts a school of matching overall extent and individual fish scale, with the east school distributed through comparable vertical depth. The fish carry conspicuous rigid serrated chitin combs whose individual projecting teeth and open gaps remain clearly visible. The fins consist of exposed rigid chitin blades arranged as serrated combs with distinct spaces between their teeth. Armor plates and fin-combs show a hard glossy chitin finish through restrained sharp highlights and reflective edges. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_TOPDOWN, F_SIZE_JUMP, DESC_MISS, DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_incumbent_gpt_s3"
+ },
+ {
+  "id": "arteval_RM_Loomu__C_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Loomu__C",
+  "prompt": "Loomu: A cat-sized, boneless, dove-grey thing that hangs in the warm seep-throat water and repeats what it hears at the bank: the feed whistle, the wind through the vanes, a child's laugh, its keeper's name for it. Mild in the flesh, terrible in the ear \u2014 a loomu pen at night runs through its whole collection. Handlers stop teaching them words on purpose and cannot stop teaching them by accident. It is NOT an Earth animal: opaque, matte dove-grey flesh, not translucent or glassy; a compact, cat-sized body mass rather than a broad bell with long trailing tentacles; boneless and slack: the body sags and folds softly under its own weight, with no rigid shell, bell rim or skeleton; hangs still, suspended in warm murky seep water, not pulsing or jetting; a visible mouth or throat opening able to make sounds, since it repeats voices and whistles. All three facings preserve the same compact body volume and comparable apparent size, with silhouette differences explained by the same soft anatomy turning. The rear shows the same mantle lobes and downward-hanging throat tubes attached in the same locations, with their visibility and overlap following the body's rotation. The creature has small subdued eyes, a neutral fleshy sound opening and irregular slack anatomical folds rendered with restrained painterly shading. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, F_INCONSISTENT, STYLE_CARTOON",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_incumbent_gpt_s3"
+ },
+ {
+  "id": "arteval_RM_Burrak__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Burrak__A",
+  "prompt": "Burrak: A bear-sized wallower that digs catch-basins that outlive it \u2014 abandoned burrak digs are how new micro-oases start. A working oasis tolerates its one huge elder, worn claw-combs and all, the way a town tolerates its engineer; in fiction the biggest of them earns the name burradar, but it is the same animal grown vast, not a second kind. It is NOT an Earth animal: forelimbs end in broad comb-like rakes of many parallel claws (claw-combs), not hippo stumps or bear paws; heavy digging forelimbs built to excavate basins, visibly more powerful and longer than the hind limbs; claw-comb tines visibly worn, chipped or uneven from digging; body caked or slick with basin mud from wallowing, set in or beside a dug catch-basin. All facings depict matching torso volume and shoulder height under the same camera projection and shared scale. Broad digging claw-combs form a prominent, readable signature on the animal's forelimbs. The burrak has a distinctive alien digging anatomy whose proportions, limb structure and head shape establish a species of its own. Each forelimb ends in a broad rake of many individually readable parallel claws. Long muscular digging forelimbs visibly outweigh and extend beyond the shorter hind limbs. The exposed claw-comb tines have clearly uneven lengths, chipped tips and worn digging edges. The animal's body carries irregular caked and slick basin mud while retaining a clean transparent cutout. The creature has realistic articulated anatomy, restrained facial features and painterly variation in its skin and mud. A restrained dark contour supports painterly body shading and natural surface detail. The final candidate is newly authored original burrak artwork with the required alien digging anatomy. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, DESC_MISS, STYLE_EARTHLY, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, STYLE_CARTOON, STYLE_OFF, DONOR",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_incumbent_gpt_s3"
+ },
+ {
+  "id": "arteval_RM_Dewblade__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Dewblade__B",
+  "prompt": "Dewblade: Shin-high tufts of flat grey-green blades standing edge-on to the sun and face-on to the wind, each blade tipped with a drip-point that feeds its own root. Whole hillsides of them align like iron filings -- the wind made visible. The grass-analog and graze base of the biome, densest toward true water. It is NOT an Earth animal: blades are flat, broad strips standing rigidly edge-on, not thin arching grass leaves; every blade's tip narrows to a distinct drip-point, often with a bead of water at the tip; all blades in a tuft and across neighbouring tufts point the same way, in parallel rows like iron filings, not a random tangle; foliage is a muted grey-green, not a lush or yellow grass green. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: ",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_incumbent_gpt_s3"
+ },
+ {
+  "id": "arteval_RM_Verdimoss__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Verdimoss__A",
+  "prompt": "Verdimoss: Cushions of blue-green moss growing in beaded lines along seep cracks -- and over the old machines, where it takes the colour of oxidised bronze. It marks the seep lines and ages the ruins: every relic in the biome is half-mossed, which is its own sacred ambiguity. Zero yield; pure register, cheap density. It is NOT an Earth animal: grows in beaded lines: strings of separate rounded cushions running along cracks, not a continuous green carpet; blue-green colour, not the yellow-green or forest-green of Earth moss; where it grows over metal it turns the colour of oxidised bronze (a verdigris-teal patina), so it reads as part of the metal surface; follows seep cracks in the ground as narrow linear tracks; drapes over and half-covers old machine relics, so the shape of the machine still shows under the moss. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: ",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_incumbent_gpt_s3"
+ },
+ {
+  "id": "arteval_RM_Fuzzviper__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Fuzzviper__B",
+  "prompt": "fuzzviper: The runs are safety, and the fuzzviper is the price of believing that. It lies along a tunnel wall being a root until the run's own traffic comes to it. South and north show the serpent through the game's oblique camera with visibly foreshortened body length, a frontal head in south and the back of the head and trailing tail in north. The north view shows the serpent receding away from the oblique game camera, with a foreground tail, overlapping body curves, and a foreshortened back leading to the distant head. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_TOPDOWN, F_TOPDOWN",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_incumbent_gpt_s3"
+ },
+ {
+  "id": "arteval_RSW_Rancor__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Rancor__A",
+  "prompt": "RSW_Rancor: Rancors were large carnivorous reptomammals native to the planet of Dathomir. Standing around five meters tall, with their long arms, immense jaws, and armored hides that could withstand blaster fire, they are formidable predators. A subspecies known as the jungle rancor populates the planets Felucia and Teth. The creature has painterly grey-brown hide with grouped brush-shaped highlights and shadows, selective skin detail, and a clean dark contour. The transparent cut-out has clean antialiased edges whose partially transparent pixels match the adjacent hide or claw colours. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_CARTOON, ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_incumbent_gpt_s3"
+ },
+ {
+  "id": "arteval_RM_Tumbel__C_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Tumbel__C",
+  "prompt": "tumbel: A thick runner arching up on woody props well above pawn height, carrying heavy hollow vessels slung along its length, each the size of a crate, dull and leathery-skinned. You walk under it and cannot see out through the vessels. Its hollow shells are cut into containers once harvested \u2014 the roster's own waypoint marker, visible from further away than a flat plant would be. A thick elevated runner spans between distinct woody props, leaving a clearly readable pawn-height passage beneath it and carrying the heavy opaque vessels along its length. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_incumbent_gpt_s3"
+ },
+ {
+  "id": "arteval_RSW_MastiffPhalone__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_MastiffPhalone__A",
+  "prompt": "mastiff phalone: A large, long-bodied four-legged avian predator of the Maridun savannas, built like a griffin: a coat of grey feathers barred with dark blue, a mane of dark feathers over neck and shoulders, and a long feathered tail. Its wings have dwindled to remnants at the front legs, which end, like the hind legs, in long talons big enough to wrap around a man's waist; the head carries a heavy hooked beak and a patch of bare blue skin at the throat. Mastiff phalones hunt in packs of two or more, stalking through tall grass. They will break off from prey that fights back too hard, only to return and strike again later, and an agitated one is said to be as dangerous as a rancor and just as hard to bring down. All facings share matching torso depth, shoulder height and limb scale, with projection and neck posture accounting for their silhouette differences. Each foot carries prominent elongated curved avian talons large enough to suggest grasping a human torso. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, CANON_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_incumbent_gpt_s3"
+ },
+ {
+  "id": "arteval_RM_HulduCatch__C_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_HulduCatch__C",
+  "prompt": "Huldu: Picked up. It holds on. The easiest catch on the farm, and the one that leaves the handler uneasy. The catch has the living reference's brown fur, cream muzzle and chest, small rounded ears, four paws and long thick tapering tail. The specimen lies on its side with its head resting at ground level, relaxed limbs, a settled tail and a closed or visibly dull eye. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: CATCH_WRONG, CATCH_POSE",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1g_incumbent_gpt_s3"
+ }
+]

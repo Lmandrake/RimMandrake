@@ -1,0 +1,32 @@
+[
+ {
+  "id": "arteval_RM_Fuzzviper__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Fuzzviper__B",
+  "prompt": "fuzzviper: The runs are safety, and the fuzzviper is the price of believing that. It lies along a tunnel wall being a root until the run's own traffic comes to it. It is NOT an Earth animal: body reads as a plant root: knobbly, irregular, unevenly thick, tapering like a root rather than a smooth snake body; surface covered in fine fuzz like root hairs, with no visible scales; head end hard to tell from a root tip: no distinct wedge-shaped viper head; lies pressed flat along a vertical tunnel wall, following it the way a root would, not coiled on the ground. The creature reads first as an irregular tunnel root, with its predatory mouth subtly integrated into a root-tip head. The irregular root body carries a dense surface of short fine root hairs that remains distinct from its larger woody contours. The head tapers irregularly like a root tip, with a small concealed mouth integrated into the continuous body contour. The body, head and tail follow one implied vertical wall plane in a flattened root-clinging posture, conveyed entirely by the creature's anatomy and pose on transparent alpha. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1dg_incumbent_gpt_s0"
+ },
+ {
+  "id": "arteval_RM_Tumbel__C_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Tumbel__C",
+  "prompt": "tumbel: A thick runner arching up on woody props well above pawn height, carrying heavy hollow vessels slung along its length, each the size of a crate, dull and leathery-skinned. You walk under it and cannot see out through the vessels. Its hollow shells are cut into containers once harvested \u2014 the roster's own waypoint marker, visible from further away than a flat plant would be. It is NOT an Earth animal: a single thick runner arched up off the ground on woody prop-like supports, standing clearly taller than a pawn, not a vine trailing along the ground or climbing a trellis; crate-sized hollow vessels hung along the underside of the runner, far bigger than any gourd or pumpkin compared with a pawn; dull, matte, leathery vessel skin, with no glossy rind, ribbing or bright gourd colours; vessels hung close enough together along the arch that they form a solid wall, so nothing behind them shows through; a heavy, woody, trunk-thick runner with no thin curling tendrils or broad vine leaves. A thick runner forms a broad elevated arch on distinct woody props, with heavy opaque hollow vessels suspended along its length and clear walking space beneath. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1dg_incumbent_gpt_s0"
+ }
+]

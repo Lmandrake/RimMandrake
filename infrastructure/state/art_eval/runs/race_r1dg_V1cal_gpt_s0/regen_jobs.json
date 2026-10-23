@@ -1,0 +1,19 @@
+[
+ {
+  "id": "arteval_RM_Fuzzviper__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Fuzzviper__B",
+  "prompt": "fuzzviper: The runs are safety, and the fuzzviper is the price of believing that. It lies along a tunnel wall being a root until the run's own traffic comes to it. It is NOT an Earth animal: body reads as a plant root: knobbly, irregular, unevenly thick, tapering like a root rather than a smooth snake body; surface covered in fine fuzz like root hairs, with no visible scales; head end hard to tell from a root tip: no distinct wedge-shaped viper head; lies pressed flat along a vertical tunnel wall, following it the way a root would, not coiled on the ground. The head continues the irregular root silhouette, with feeding structures recessed into a subtle root-tip split so the resting creature reads as a root. The irregular root body carries a visible soft layer of short fine root hairs across its surface and silhouette. The head tapers unevenly like a root tip and blends continuously into the body's thickness, texture and outline. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1dg_V1cal_gpt_s0"
+ }
+]

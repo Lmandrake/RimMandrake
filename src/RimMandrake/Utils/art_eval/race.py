@@ -55,6 +55,13 @@ def load_rows(paths: list) -> list:
 
 def spec_of(row: dict) -> dict:
     s = C.pilot_spec(row["pilot"]) if row.get("pilot") else json.loads((ROOT / row["spec"]).read_text())
+    brief = C.BRIEFS / f"{s['subject']}.json"
+    if not s.get("departures") and brief.is_file():        # as production specs do (pilot_spec, fauna_spec.py)
+        b = json.loads(brief.read_text())
+        s["departures"] = b.get("departures") or []
+        s["earth_body_named"] = bool(b.get("earth_body_named"))
+        if b.get("body_plan"):
+            s["body_plan"] = b["body_plan"]
     s.pop("depends_on", None)
     s["owner_kept"] = False                 # a race judges the picture, never the kept-art routing
     return s
@@ -149,6 +156,82 @@ def cmd_run(a):
           + (f"; killed at budget (resume by re-running): {killed}" if killed else ""))
 
 
+# ------------------------------------------------------------------ replay the GPT stage on recorded Opus passes
+def replay_worker(src_races: str, src_variant: str, out_race: str, name: str, k: int, shards: int, rows_paths: list):
+    """Re-ask ONLY the GPT targeted second look (the variant's gpt prompt) on every recorded WEAK Opus pass of
+    `src_variant`; every other decision is copied. Needs no Claude call (used while the CLI is rate-limited)."""
+    import runner as R
+    policy, settings = P.load_policy(), P.load_settings()
+    want = set()
+    for r in load_rows(rows_paths):
+        s = spec_of(r)
+        want.add(f"{s['subject']}:{s.get('candidate')}" if s.get("candidate") else s["subject"])
+    src = decisions(src_races)[(src_variant, "opus")]
+    keys = sorted(x for x in src if x in want)
+    out = STATE / "runs" / run_id(out_race, name, "opus", k)
+    out.mkdir(parents=True, exist_ok=True)
+    done = set()
+    if (out / "decisions.jsonl").is_file():
+        done = {json.loads(l)["subject"] for l in (out / "decisions.jsonl").read_text().splitlines()}
+    for i, key in enumerate(keys):
+        if i % shards != k:
+            continue
+        rec = json.loads(json.dumps(src[key]))
+        if rec["subject"] in done:
+            continue
+        if rec.get("opus") and rec["opus"]["band"] == "WEAK" and rec.get("gpt"):
+            card_dir = R.storage_root() / "runs" / rec["_run"] / rec["subject"]
+            if not (card_dir / "card.json").is_file():
+                card_dir = None
+            if card_dir is None:
+                rec.update(decision="HOLD_ERROR", reasons=[f"replay: no card dir for {rec['subject']}"])
+            else:
+                card = json.loads((card_dir / "card.json").read_text())
+                tpl = P.load_template(rec["template"])
+                items = P.checklist_for(tpl, card.get("module", ""), P.card_facts(card))
+                concerns = rec["gpt"]["concerns"]
+                attached = [card_dir / f for f in R.image_list(card)][:8]
+                gp = R.gpt_prompt(card, tpl, items, policy, card_dir, concerns, attached)
+                work = card_dir / f"gpt_replay_{out_race}_{name}"; work.mkdir(exist_ok=True)
+                greply, graws, gmetas, gerr = R.ask_validated(
+                    lambda extra: R.call_gpt(gp + (("\n\n# Your previous reply was rejected\n\n" + extra) if extra else ""),
+                                             attached, work),
+                    lambda r: P.validate_gpt(r, concerns), "{err}. Return the JSON object exactly as specified.")
+                rec["models"]["gpt"] = gmetas
+                if greply is None:
+                    rec.update(decision="HOLD_ERROR", reasons=[f"gpt: {gerr}"])
+                else:
+                    step, gd = P.gpt_outcome(greply, concerns, P.card_facts(card), policy,
+                                             settings.get("min_refute_evidence_chars", 15))
+                    rec["gpt"] = {"concerns": concerns, "reply": greply, "detail": gd, "outcome": step}
+                    rec["decision"] = step
+                    rec["reasons"] = rec["reasons"][:1] + [f"replayed gpt ({name}) {greply.get('verdict')}: unsettled "
+                                                           f"{gd['unsettled']}, own blocking {[f['code'] for f in gd['blocking']]}"]
+                rec["prompt_versions"]["gpt_targeted_second_look"] = P.prompt_version(R.PROMPTS / "gpt_targeted_second_look.md")
+        rec["replay_of"] = f"{src_races}/{src_variant}"
+        with (out / "decisions.jsonl").open("a") as fh:
+            fh.write(json.dumps(rec) + "\n")
+        print(f"[replay] {rec['subject']}: {rec['decision']}", file=sys.stderr)
+
+
+def cmd_replay(a):
+    procs = []
+    for v in a.variant:
+        name, _, d = v.partition("=")
+        env = dict(os.environ); env.pop("ART_EVAL_REFS", None)
+        if d:
+            env["ART_EVAL_REFS"] = str(merged_refs(a.race, name, Path(d)))
+        for k in range(a.shards):
+            cmd = [sys.executable, __file__, "_replay", a.src_races, a.src_variant, a.race, name, str(k), str(a.shards)] + a.rows
+            procs.append((f"{name}/s{k}", subprocess.Popen(cmd, env=env, cwd=str(HERE), start_new_session=True)))
+    t0 = time.time()
+    while time.time() - t0 < a.budget and any(p.poll() is None for _, p in procs):
+        time.sleep(5)
+    killed = [tag for tag, p in procs if p.poll() is None and not os.killpg(p.pid, signal.SIGTERM)]
+    print(f"replay {a.race}: {len(procs) - len(killed)}/{len(procs)} shards finished in {round(time.time() - t0)}s"
+          + (f"; killed at budget (resume by re-running): {killed}" if killed else ""))
+
+
 # ------------------------------------------------------------------ score
 def decisions(races: str) -> dict:
     """{(variant, family): {row key: record}} across every shard of the race(s). `races` may be comma-separated:
@@ -166,6 +249,7 @@ def _decisions_one(race: str) -> dict:
         variant, family = f.parent.name[len(f"race_{race}_"):].rsplit("_s", 1)[0].rsplit("_", 1)
         for line in f.read_text().splitlines():
             r = json.loads(line)
+            r.setdefault("_run", f.parent.name)          # the run whose card directory this decision judged
             out.setdefault((variant, family), {})[r["subject"].replace("__", ":", 1)] = r
     return out
 
@@ -239,6 +323,10 @@ def cmd_score(a):
 
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
+    if argv and argv[0] == "_replay":
+        src_races, src_variant, out_race, name, k, shards, *rows = argv[1:]
+        replay_worker(src_races, src_variant, out_race, name, int(k), int(shards), rows)
+        return 0
     if argv and argv[0] == "_worker":
         race, variant, family, k, shards, *rows = argv[1:]
         worker(race, variant, family, int(k), int(shards), rows)
@@ -252,12 +340,20 @@ def main(argv=None):
     r.add_argument("--family", choices=("opus", "gpt"), default="opus")
     r.add_argument("--shards", type=int, default=3)
     r.add_argument("--budget", type=int, default=540, help="seconds before busy shards are killed (resumable)")
+    rp = sub.add_parser("replay-gpt", help="re-ask only the GPT stage (variant gpt prompt) on recorded Opus passes")
+    rp.add_argument("--race", required=True, help="the new race tag")
+    rp.add_argument("--src-races", required=True, help="race tag(s) holding the recorded Opus passes")
+    rp.add_argument("--src-variant", required=True)
+    rp.add_argument("--rows", nargs="+", required=True)
+    rp.add_argument("--variant", action="append", required=True, help="incumbent | name=<overlay dir>")
+    rp.add_argument("--shards", type=int, default=3)
+    rp.add_argument("--budget", type=int, default=540)
     s = sub.add_parser("score")
     s.add_argument("--race", required=True, help="race tag, or tags comma-separated (later ones override)")
     s.add_argument("--rows", nargs="+", required=True)
     s.add_argument("--out")
     a = ap.parse_args(argv)
-    return cmd_run(a) if a.cmd == "run" else cmd_score(a)
+    return {"run": cmd_run, "replay-gpt": cmd_replay, "score": cmd_score}[a.cmd](a)
 
 
 if __name__ == "__main__":

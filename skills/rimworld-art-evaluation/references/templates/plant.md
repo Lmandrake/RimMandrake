@@ -21,7 +21,9 @@ Everything above the JSON block is sent to the reviewer as the class module; the
    supposed to be a willow-like dome the player could step beneath."* Ground cover sits low and reads as a
    texture of the land; a tree shows trunk and canopy.
 3. **Natural, not constructed** — owner 2026-10-18 (Tumbel): *"Do not make it look constructed by people."*
-4. **Stands on its base**: stem or trunk at the bottom centre, nothing cut off, not floating.
+4. **Stands on its base**: stem or trunk meets the ground at the bottom of the picture, nothing cut off, not
+   floating. A lean, sweep or lopsided crown that the description itself asks for is correct, not an `ANCHOR`
+   failure.
 5. **No baked scenery**: no soil mound, rock, cliff, water or ground disc unless the description makes it part
    of the plant.
 6. **Alien where invented** (not a plain Earth plant), **realistic** over illustration — owner 2026-10-18
@@ -36,7 +38,7 @@ Everything above the JSON block is sent to the reviewer as the class module; the
 ```json template
 {
   "template": "plant",
-  "version": "plant@v2",
+  "version": "plant@v3",
   "modules": ["ground_cover", "bush", "tree", "special"],
   "required_panels": {"*": ["single", "scale"]},
   "checklist": [

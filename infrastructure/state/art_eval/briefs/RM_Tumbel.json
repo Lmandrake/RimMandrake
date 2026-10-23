@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Tumbel",
+ "nearest_earth_animal": "gourd vine",
+ "earth_body_named": false,
+ "departures": [
+  "a single thick runner arched up off the ground on woody prop-like supports, standing clearly taller than a pawn, not a vine trailing along the ground or climbing a trellis",
+  "crate-sized hollow vessels hung along the underside of the runner, far bigger than any gourd or pumpkin compared with a pawn",
+  "dull, matte, leathery vessel skin, with no glossy rind, ribbing or bright gourd colours",
+  "vessels hung close enough together along the arch that they form a solid wall, so nothing behind them shows through",
+  "a heavy, woody, trunk-thick runner with no thin curling tendrils or broad vine leaves"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T10:11:26-07:00",
+ "source": "description only (no image)"
+}
