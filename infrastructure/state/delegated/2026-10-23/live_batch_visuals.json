@@ -1,0 +1,103 @@
+{
+ "_meta": {
+  "judge_model": "claude-opus-5-5",
+  "brief": "design/RimMandrake/art_judge_brief.md@7d88eac325e3",
+  "protocol": "delegation_policy.md \u00a74",
+  "date": "2026-10-23"
+ },
+ "MODERN_TANK_PORT_REDRAW_COUPLER_FLOATS": {
+  "verdict": "UNMEASURED",
+  "note": "Lower-lane W and E couplers sit flush on the drawn camlock fittings on all three tanks (tall, IBC, XTall), with no stub or gap. But A2 asks for BOTH lanes, and no capture lays a hose to the upper-lane fittings (they show bare). Needed: the same three W/E shots with hoses also laid to the upper lane (dz +0.5). The C3_north shots are a rusty tank, not a Modern one, so they say nothing here.",
+  "files": [
+   "Transient/live_batch_20261023/tank_modern_tall_W_E.png",
+   "Transient/live_batch_20261023/tank_modern_ibc_W_E.png",
+   "Transient/live_batch_20261023/tank_modern_xtall_W_E.png"
+  ]
+ },
+ "TANK_FLANGE_FIX_HOVERS_MID_PIPE": {
+  "verdict": "PASS",
+  "note": "C3 north: the flange collar sits right under the tank skid where pipe 17,43 meets it; no flange mid-pipe. On map R C1 the west pipe ends in a flange ring at the tank body and the trunk collar touches the skid's SE corner. Minor: a slightly paler section on the vertical pipe just below the skid looks like a texture seam, not a fitting.",
+  "files": [
+   "Transient/live_batch_20261023/C3_north_tank_17_44.png",
+   "Transient/live_batch_20261023/C3_north_flange_closeup.png",
+   "Transient/live_batch_20261023/R_C1_tall_tank.png"
+  ]
+ },
+ "TANK_STUB_HUNT_POINTS_AT_NOTHING": {
+  "verdict": "PASS",
+  "note": "The pipe-to-reel link leaves the pipe with an elbow, runs east and turns down into the top of reel o1. Nothing under the tank ends in air.",
+  "files": [
+   "Transient/live_batch_20261023/C3_north_tank_17_44.png",
+   "Transient/live_batch_20261023/C3_north_flange_closeup.png"
+  ]
+ },
+ "C1_CORD_REWIRE_BATTERY_GOES_SKINNY_DIPPING": {
+  "verdict": "FIX",
+  "note": "The cord does stay over land, but about 1 cell east of the bank pump (35,73) it draws a closed loop around the pump's pipe with a kinked V where it meets itself, and a separate strand goes from the pump's west fitting out and back. The pump also still shows the yellow no-power bolt, so the cord reads as not reaching the pump.",
+  "files": [
+   "Transient/live_batch_20261023/R_C1_battery_pump_cord.png",
+   "Transient/live_batch_20261023/R_C1_overview.png"
+  ]
+ },
+ "C1_TANK_STUB_PRUNE_PIPE_TO_NOWHERE": {
+  "verdict": "PASS",
+  "note": "No dead-end L under the tall tank. The trunk leaves the skid's SE corner with a collar and bends south, and the incoming west pipe ends in a flange ring at the tank body.",
+  "files": [
+   "Transient/live_batch_20261023/R_C1_tall_tank.png",
+   "Transient/live_batch_20261023/R_C1_overview.png"
+  ]
+ },
+ "CREEK_STATIONS_REDESIGN_FORDED_A_PUDDLE": {
+  "verdict": "PASS",
+  "note": "R1 and R2 both run N-S from the grassy north bank to the dirt south bank across the full river width; neither follows an inlet. R1 has no crossing marker drawn (it is a current crossing), so only its framing shows it. An unidentified white dome object sits in the water at R1's north bank (see other_findings).",
+  "files": [
+   "Transient/live_batch_20261023/R_station1_current_crossing.png",
+   "Transient/live_batch_20261023/R_station2_ford_crossing.png"
+  ]
+ },
+ "FORD_STONES_REDRAW_LOOK_LIKE_A_SMUDGE": {
+  "verdict": "PASS",
+  "note": "No longer a dark smear: at play zoom it reads as a chain of pale flat stones with darker wet pebble clusters. Caveat: the pale segments are smooth, elongated sandy ovals, close to a sand path, and the 1-cell column has hard straight vertical edges against the water. The south-bank shoreline also steps sharply at the ford column.",
+  "files": [
+   "Transient/live_batch_20261023/R2_ford_stones_zoom.png",
+   "Transient/live_batch_20261023/R2_ford_north_bank.png",
+   "Transient/live_batch_20261023/R2_ford_south_bank.png",
+   "Transient/live_batch_20261023/R_station2_ford_crossing.png"
+  ]
+ },
+ "PUMPSTATION_SOUTH_PORT_REDRAW_ALMOST_THERE": {
+  "verdict": "PASS",
+  "note": "On both Kludged and Repaired, the hose camlock meets the drawn dark collar at the bottom centre of the art with no gap. Separate from the port: on the Kludged station the hose's straight lead-out continues about 0.4 cell past the point where its curve leaves sideways, a short dead-end hose tail (the detour around the canal scene).",
+  "files": [
+   "Transient/live_batch_20261023/pumpstation_kludged_south_port.png",
+   "Transient/live_batch_20261023/pumpstation_repaired_south_port.png",
+   "Transient/live_batch_20261023/pumpstation_both_context.png"
+  ]
+ },
+ "other_findings": [
+  {
+   "file": "Transient/live_batch_20261023/snapshot_wall_route.png",
+   "seen": "The hose's drawn curve clips the wall's bottom-left corner (it passes over the wall's south end). This agrees with the filed CENTRE_CELLS_FIX_WALK_THROUGH_WALLS. Several dark blurry cross-shaped blotches in the terrain (top right, bottom right, bottom left) look like stale shadows or stains with no building."
+  },
+  {
+   "file": "Transient/live_batch_20261023/pumpstation_kludged_south_port.png",
+   "seen": "Dead-end hose tail below the bend (see the PUMPSTATION note)."
+  },
+  {
+   "file": "Transient/live_batch_20261023/R_station1_current_crossing.png",
+   "seen": "A plain white dome with a black outline and no texture detail sits in the water near the north bank. Possibly a missing or flat texture; identify it."
+  },
+  {
+   "file": "Transient/live_batch_20261023/R_C1_overview.png",
+   "seen": "The pole span over the ditch draws as a saturated bright-red, almost straight line. The C1 sign promises a sag over the ditch; check that red is the intended cable colour."
+  },
+  {
+   "file": "Transient/live_batch_20261023/jc_C_stub_25_130.png",
+   "seen": "One vertical run between two red reels alternates hose (beige) / pipe (copper) / hose. Confirm it is drawn intentionally (bleed-well feed), not a pipe sitting under a hose."
+  },
+  {
+   "file": "Transient/live_batch_20261023/R_C1_battery_pump_cord.png",
+   "seen": "Bank pump shows the no-power bolt (see the C1_CORD note). The Kludged and Repaired stations also show it, which is expected for unpowered god builds."
+  }
+ ]
+}
