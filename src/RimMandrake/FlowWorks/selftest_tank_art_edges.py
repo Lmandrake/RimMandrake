@@ -12,6 +12,13 @@ round the lane's centre line) at each def's drawSize / drawOffset (read from the
   --write : regenerates Source/Machinery/TankArtEdges.cs
 Any art reinstall that moves an outline turns this red until the table is regenerated.
 
+Hose-port fittings are not the tank body (MODERN_TANK_PORT_REDRAW_COUPLER_FLOATS): the Modern tall / IBC / extra-tall art
+carries camlock fittings drawn by art_source/TankPorts/modern_port_fittings.py out to the canvas edge on the lane rows, and
+their bulkhead nut buries the wall under it, so the installed picture cannot show where a PIPE meets the outline (a naive
+measurement reads 0, the canvas edge). For those three this script rebuilds the picture from the fittings script's base
+art, requires it to equal the installed PNG pixel for pixel (red if not: the art was reinstalled some other way and the
+body under the fittings is UNMEASURED), and measures the outline on that base, i.e. the body without its fittings.
+
 Inset = cells from the footprint edge INWARD (along the step from the pipe into the tank) to the drawn edge, on the
 lane's centre line (lane = the pipe cell's index along that side, 0 or 1). Negative = the art overhangs the footprint
 (the tall tanks' tops, drawn up over the pipe cell north of them).
@@ -25,6 +32,8 @@ import numpy as np
 from PIL import Image
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(HERE, "art_source", "TankPorts"))
+import modern_port_fittings  # noqa: E402  (the fittings overlay: which pictures carry one, and their base art)
 TEX = os.path.join(HERE, "Textures", "RimMandrake", "FlowWorks", "Tank")
 OUT = os.path.join(HERE, "Source", "Machinery", "TankArtEdges.cs")
 DEFS = [os.path.join(HERE, "Defs", "LiquidTypes", "ThingDefs", "RM_LiquidTank.xml"),
@@ -64,8 +73,22 @@ def read_defs():
     return out, styles
 
 
+def body_alpha(tank, look):
+    """Opaque mask of the tank BODY: the installed picture, or, where the fittings overlay drew hose ports on it, its base."""
+    installed = Image.open(os.path.join(TEX, look, tank + ".png")).convert("RGBA")
+    if look != "Modern" or tank not in modern_port_fittings.TANKS:
+        return np.array(installed)[..., 3] > 128
+    rebuilt, _ = modern_port_fittings.build(tank)
+    if not np.array_equal(np.array(rebuilt), np.array(installed)):
+        fails.append("%s Modern: the installed art is not modern_port_fittings.py's base + fittings, so the body outline under "
+                     "the hose fittings is UNMEASURED (re-derive the base for the new art)" % tank)
+        return np.array(installed)[..., 3] > 128
+    base = modern_port_fittings.base_image(tank)
+    return np.array(base)[..., 3] > 128
+
+
 def measure(tank, look, size, ds, off):
-    a = np.array(Image.open(os.path.join(TEX, look, tank + ".png")).convert("RGBA"))[..., 3] > 128
+    a = body_alpha(tank, look)
     h, w = a.shape
     ppx, ppz = w / ds[0], h / ds[1]
     fw, fh = int(size[0]), int(size[1])
