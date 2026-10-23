@@ -162,6 +162,10 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             {
                 yield return g;
             }
+            foreach (Gizmo dev in FlowWorksTankDebug.DevGizmos(this))
+            {
+                yield return dev;
+            }
             if (!Hose.RM_HoseSettings.tankModesEnabled || Faction != RimWorld.Faction.OfPlayer)
             {
                 yield break;
