@@ -75,8 +75,10 @@ namespace RimMandrake.FlowWorks.SelfTest
             Check(Near(p.X, 10) && p.Z > 10 && p.Z < 12, "the hose end sits ON the relay's edge (" + p.X + "," + p.Z + ")");
             w.SetBlocked(new Cell(9, 10), BlockKind.Wall);
             w.SetBlocked(new Cell(9, 11), BlockKind.Wall);
-            Check(HoseRelay.TryIntake(r, new V2(0, 10.6), walk, out Cell other) && other.X != 9,
-                "west side walled: the hose takes the next nearest free side (" + other.X + "," + other.Z + ")");
+            // REEL_LINK_FIX_IGNORES_THE_OBVIOUS_PORT: the reel's one drawn connector is its nozzle (west for the default facing);
+            // walling it off refuses the link instead of coupling onto the crank or drum side
+            Check(!HoseRelay.TryIntake(r, new V2(0, 10.6), walk, out _) && !HoseRelay.TryIntake(r, new V2(30, 10.6), walk, out _),
+                "nozzle side walled: no link at all (never the crank or drum side), from the west or the east");
             var all = new List<HoseReelRect> { new HoseReelRect(0, 10, 2, 2), r, new HoseReelRect(30, 10, 2, 2) };
             Check(HoseRelay.RelayOf(new Cell(12, 10), all, 0) == 1 && HoseRelay.RelayOf(new Cell(12, 12), all, 0) == -1 &&
                   HoseRelay.RelayOf(new Cell(2, 10), all, 0) == -1,
@@ -184,7 +186,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                     V2 e = HoseRelay.DrawnEnd(B, intake, look, true, out V2 inward);
                     HoseLay lay = HoseMath.Lay(w, A.Mouth, e, new HoseShapeParams(), 7, inward);
                     Cell into = HoseRelay.SideInto(B, intake);
-                    V2 expect = name == "west" ? new V2(1, 0) : name == "east" ? new V2(-1, 0) : name == "north" ? new V2(0, -1) : new V2(0, 1);
+                    // REEL_LINK_FIX_IGNORES_THE_OBVIOUS_PORT: from every direction the end is on B's one connector, its west nozzle
+                    V2 expect = new V2(1, 0);
                     bool good = lay.Ok && V2.Dist(lay.Flat[lay.Flat.Count - 1], e) < 1e-6 && V2.Dist(lay.Plump[lay.Plump.Count - 1], e) < 1e-6 &&
                                 TailAngleDeg(lay.Flat, inward, 0.5) < 3 && TailAngleDeg(lay.Plump, inward, 0.5) < 3 &&
                                 inward.X == expect.X && inward.Z == expect.Z && into.X == (int)expect.X && into.Z == (int)expect.Z &&
@@ -195,7 +198,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                     HoseLay plain = HoseMath.Lay(w, A.Mouth, e, new HoseShapeParams(), 7);
                     if (plain.Ok && TailAngleDeg(plain.Flat, inward, 0.5) >= 3) bent++;
                 }
-            Check(ok == total && total == 16, "a hose onto a relay from W, E, N and S in every look ends on the drawn inlet/outline, its last 0.5 cell " +
+            Check(ok == total && total == 16, "a hose onto a relay from W, E, N and S in every look ends on its one drawn nozzle (west), its last 0.5 cell " +
                 "straight along the intake (< 3 deg, flat and plump), clear (" + ok + "/" + total + (fails.Length > 0 ? ":" + fails : "") + ")");
             Check(bent > 0, "can-fail: without the end direction the last stretch follows the lay's curve, off the intake axis (" + bent + "/" + total + " lays)");
         }
@@ -669,6 +672,116 @@ namespace RimMandrake.FlowWorks.SelfTest
             TankPorts();
             CollarBoxes();
             OverDraw();
+        }
+    }
+
+    /// <summary>REEL_LINK_FIX_IGNORES_THE_OBVIOUS_PORT (owner walk, save e, 2026-10-23: "It connected from the northern connector
+    /// of the left one to the western on the right, overlapping its handle and ignoring where it has an obvious hose connector"
+    /// and "it said there was no room to attach it, even though it clearly has an open hose port on its right-hand side").
+    /// The walk station exactly: A (39,13) facing N, B (43,13) facing E, C (47,14) facing S, all Scrapper, as RimWorld
+    /// rotates a 2x2 footprint. A hose aimed at a reel ends on that reel's ONE drawn connector (its brass nozzle), never on
+    /// its crank side, from every direction and for every facing; and C's hose reaches B's open nozzle.</summary>
+    internal static class HoseReelLinkChecks
+    {
+        private static void Check(bool ok, string msg) => Program.Check(ok, "reellink: " + msg);
+
+        /// <summary>A 2x2 footprint as RimWorld's GenAdj.OccupiedRect places it for Position (x, z) and rotation rot.</summary>
+        internal static HoseReelRect Placed(int x, int z, int rot)
+        {
+            int mx = x, mz = z;
+            if (rot == 1) mz = z - 1;
+            else if (rot == 2) { mx = x - 1; mz = z - 1; }
+            else if (rot == 3) mx = x - 1;
+            return new HoseReelRect(mx, mz, 2, 2) { Rot = rot };
+        }
+
+        private static Cell NozzleSide(HoseReelRect r)
+        {
+            V2 o = r.Outward.Value;
+            return new Cell((int)Math.Round(o.X), (int)Math.Round(o.Z));
+        }
+
+        private static CordWorld World(params HoseReelRect[] reels)
+        {
+            var w = new CordWorld(70, 40);
+            foreach (HoseReelRect r in reels)
+                for (int x = r.X0; x < r.X0 + r.W; x++)
+                    for (int z = r.Z0; z < r.Z0 + r.H; z++) w.SetExtraCost(new Cell(x, z), (float)HoseMath.BuildingCrossCost);
+            return w;
+        }
+
+        /// <summary>As the game lays (RM_MapComponent_Hoses.LayFrom): the laying reel's own footprint solid, its hose out of its
+        /// nozzle (startOutward), into the relay's drawn end along its axis.</summary>
+        internal static HoseLay LayLink(CordWorld w, HoseReelRect from, HoseReelRect to, out Cell intake, out V2 end)
+        {
+            end = default(V2);
+            Func<Cell, bool> walk = c => w.InBounds(c) && w.IsWalkable(c) && !from.Contains(c);
+            if (!HoseRelay.TryIntake(to, from.Mouth, walk, out intake)) return new HoseLay { Reason = "no intake" };
+            end = HoseRelay.DrawnEnd(to, intake, to.Look ?? "Scrapper", false, out V2 inward);
+            var held = new List<KeyValuePair<Cell, BlockKind>>();
+            for (int x = from.X0; x < from.X0 + from.W; x++)
+                for (int z = from.Z0; z < from.Z0 + from.H; z++)
+                {
+                    var c = new Cell(x, z);
+                    held.Add(new KeyValuePair<Cell, BlockKind>(c, w.BlockAt(c)));
+                    w.SetBlocked(c, BlockKind.Device);
+                }
+            try
+            {
+                return HoseMath.LayAlong(w, from.Mouth, new List<Cell>(), end, new HoseShapeParams { MaxLength = HoseMath.DefaultMaxLength },
+                                         1234, inward, from.Outward);
+            }
+            finally { foreach (var kv in held) w.SetBlocked(kv.Key, kv.Value); }
+        }
+
+        private static void WalkStation()
+        {
+            HoseReelRect A = Placed(39, 13, 0), B = Placed(43, 13, 1), C = Placed(47, 14, 2);
+            CordWorld w = World(A, B, C);
+            // A -> B: the end is on B's nozzle (east, the way B faces), not its crank (west)
+            HoseLay ab = LayLink(w, A, B, out Cell iab, out V2 eab);
+            Cell into = HoseRelay.SideInto(B, iab), ns = NozzleSide(B);
+            double miss = V2.Dist(eab, B.NozzleTip);
+            Check(into.X == -ns.X && into.Z == -ns.Z && miss < 0.06,
+                "walk station A(N) -> B(E): the hose ends on B's brass nozzle (intake " + iab.X + "," + iab.Z + ", into " + into.X + "," + into.Z +
+                ", nozzle side " + ns.X + "," + ns.Z + ", end " + miss.ToString("0.00") + " from the drawn nozzle tip)");
+            Check(ab.Ok, "walk station A(N) -> B(E): laid (" + (ab.Ok ? "ok" : ab.Reason) + ")");
+            // C -> B: B's nozzle is open, the hose reaches it
+            HoseLay cb = LayLink(w, C, B, out Cell icb, out V2 ecb);
+            Cell into2 = HoseRelay.SideInto(B, icb);
+            Check(cb.Ok && into2.X == -ns.X && into2.Z == -ns.Z && V2.Dist(ecb, B.NozzleTip) < 0.06,
+                "walk station C(S) -> B(E): laid onto B's open nozzle (" + (cb.Ok ? "ok" : cb.Reason) + ", into " + into2.X + "," + into2.Z + ")");
+        }
+
+        /// <summary>Every relay facing, every look, a feeder from each of the four directions: the chosen intake is on the
+        /// relay's nozzle side, and the drawn end is the nozzle tip.</summary>
+        private static void EveryFacingEndsOnNozzle()
+        {
+            int total = 0, ok = 0;
+            string fails = "";
+            foreach (int rot in new[] { 0, 1, 2, 3 })
+                foreach (string look in ReelIntakeGeometry.Looks)
+                {
+                    var B = new HoseReelRect(30, 20, 2, 2) { Rot = rot, Look = look };
+                    foreach (var A in new[] { new HoseReelRect(14, 20, 2, 2), new HoseReelRect(46, 20, 2, 2), new HoseReelRect(30, 34, 2, 2), new HoseReelRect(30, 6, 2, 2) })
+                    {
+                        total++;
+                        var w = new CordWorld(70, 40);
+                        if (!HoseRelay.TryIntake(B, A.Mouth, c => w.InBounds(c) && !B.Contains(c), out Cell intake)) { fails += " r" + rot + look + ":none"; continue; }
+                        Cell into = HoseRelay.SideInto(B, intake), ns = NozzleSide(B);
+                        V2 e = HoseRelay.DrawnEnd(B, intake, look, false, out _);
+                        if (into.X == -ns.X && into.Z == -ns.Z && V2.Dist(e, B.NozzleTip) < 0.06) ok++;
+                        else fails += " r" + rot + look + "@" + intake.X + "," + intake.Z;
+                    }
+                }
+            Check(ok == total && total == 64, "every facing x look x feeder direction: the hose ends on the relay's brass nozzle, never its crank or drum (" +
+                ok + "/" + total + (fails.Length > 0 ? ":" + fails.Substring(0, Math.Min(300, fails.Length)) : "") + ")");
+        }
+
+        public static void Run()
+        {
+            WalkStation();
+            EveryFacingEndsOnNozzle();
         }
     }
 }

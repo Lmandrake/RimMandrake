@@ -13,7 +13,7 @@ namespace RimMandrake.FlowWorks.SelfTest
     {
         private static string hoseSuite = "?";
         /// <summary>Suites written for the port (not moved from GSS): excluded from the "moved" count.</summary>
-        private static readonly HashSet<string> NewSuites = new() { "HoseLegacyChecks", "HoseNetChecks", "HoseNetCacheChecks" };
+        private static readonly HashSet<string> NewSuites = new() { "HoseLegacyChecks", "HoseNetChecks", "HoseNetCacheChecks", "HoseReelLinkChecks" };
         private static readonly List<(string suite, int n, int fails)> hoseCounts = new();
         private static int hoseN, hoseFails;
 
@@ -40,6 +40,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             HoseSuite("HoseSelfTest", () => HoseSelfTest.Run(Check));
             HoseSuite("HoseReview6", HoseReview6.Run);
             HoseSuite("HoseReview7", HoseReview7.Run);
+            HoseSuite("HoseReelLinkChecks", HoseReelLinkChecks.Run);
             HoseSuite("HosePileLook", HosePileLook.Run);
             HoseSuite("HoseCarryChecks", HoseCarryChecks.Run);
             HoseSuite("HoseLiveChecks", HoseLiveChecks.Run);
