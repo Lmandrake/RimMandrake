@@ -1,0 +1,36 @@
+[
+ {
+  "id": "arteval_RM_Bileworm_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Bileworm",
+  "prompt": "RimWorld creature sprite, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. A vast, slow slug with a low wide dome of body, dwarfing a person, drawn at one consistent scale with about 650 px of visible body height. The back and flanks are covered in mottled dark glossy olive grey-green skin, and a row of large dark oval pitted breathing holes runs down each flank. The foot and underside are a pale cream-to-ivory colour with deep, prominent transverse ribs, clearly lighter than the mottled back, forming a deep pale ribbed skirt along the lower edge of the body. Two eye-stalks nod over a cluster of blunt-tipped, fleshy yellow finger-like mouthparts, soft and slightly curled, like short tentacles. The body tapers into a smooth tail. In the rear view, seen from behind, the tapering tail end sits low in the foreground with the hump rising behind it, showing the same dark glossy olive mottled skin, the same row of large dark oval breathing holes along each flank, and the same deep pale ribbed skirt, at the same height and width as the front view. The whole creature is a single low wide dome of solid mass, sitting firmly on the ground line.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_INCONSISTENT, F_SIZE_JUMP, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_cauldron_r1_01"
+ },
+ {
+  "id": "arteval_RM_Rhossak_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Rhossak",
+  "prompt": "A single RimWorld creature sprite on a transparent background, painterly vanilla RimWorld style, realistic, clean dark outline. The rhossak is a stag-shaped quadruped grown rather than born. Its entire body is living root: the legs, shoulders, flanks, belly, chest, neck and hindquarters are all made of bundles of tightly wound, twisting roots, with bark-like rind and dark gaps between the bundles, and the root strands of the legs run on continuously into the torso. Every body surface is twisted root, and the neck and chest show wound root cords. Its branching antler-like crown is a spreading mass of root. Along its back runs a row of swollen seed-husks, several of which have split open to show wet red seeds packed like teeth. Each of the four root feet ends in a full cluster of fresh green shoots and small leafy sprigs fanning outward at the hooves, attached to the leg roots as part of the body. Where it stands, new growth has taken hold: separate young sprouts and tiny seedlings stand between the four root feet and just beyond them, each a distinct little plant rising from empty transparent space, with transparent gaps around every sprout, so the creature reads as sprouting new growth wherever it steps. The same feet clusters and scattered nearby sprouts appear in every facing. Its eyes are set deep in the root-wrapped head with a calm, watchful expression, and it stands in a poised, alert stance on four root legs. The sprite is a clean cut-out of the creature and its sprouts alone, on a fully transparent background. Palette: earthy brown and dark bark roots, pale green shoots, vivid wet red seeds.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_cauldron_r1_01"
+ }
+]

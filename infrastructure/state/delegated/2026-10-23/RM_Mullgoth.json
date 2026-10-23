@@ -3,36 +3,43 @@
   "opus": [
    {
     "model_requested": "opus",
-    "seconds": 47.8,
+    "seconds": 39.7,
     "models_reported": [
      "claude-opus-5-5"
     ],
-    "cost_usd": 0.4076742
+    "cost_usd": 0.3724886
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 25.5
    }
   ],
   "regen": {
    "model_requested": "sonnet",
-   "seconds": 13.0,
+   "seconds": 9.5,
    "models_reported": [
     "claude-sonnet-5-5"
    ],
-   "cost_usd": 0.1242847
+   "cost_usd": 0.12391869999999999
   }
  },
  "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
  "subject": "RM_Mullgoth",
  "decision": "REGEN",
  "reasons": [
-  "opus band REALLY_BAD (model said weak); blocking ['F_SIZE_JUMP', 'DEPARTURE_MISSING', 'F_INCONSISTENT', 'ALPHA_HALO', 'STYLE_EARTHLY']; polish []"
+  "opus band WEAK (model said good); blocking ['F_SIZE_JUMP', 'DEPARTURE_MISSING', 'DEPARTURE_MISSING', 'F_INCONSISTENT']; polish []",
+  "gpt regen: unsettled ['K1', 'K2', 'K3'], own blocking ['F_SIZE_JUMP', 'DEPARTURE_MISSING', 'DEPARTURE_MISSING']"
  ],
  "prompt_versions": {
   "preamble": {
-   "tag": "preamble@v1",
-   "sha": "a4850279ccbf"
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
   },
   "opus_first_pass": {
-   "tag": "opus_first_pass@v1",
-   "sha": "14056552e355"
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
   },
   "gpt_targeted_second_look": {
    "tag": "gpt_targeted_second_look@v1",
@@ -47,8 +54,8 @@
    "sha": "9cda888a5233"
   },
   "template": {
-   "tag": "creature@v2",
-   "sha": "16a3854542c6"
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
   },
   "severity": {
    "tag": "severity@v3",
@@ -56,10 +63,10 @@
   }
  },
  "image_sha256": {
-  "south.png": "821653376ec3c3a440aaadde935eb0c739ab4334fbafe08fb5d6d5d29a34769c",
-  "east.png": "503c4d07633c496464f8ba1e8395ae1540eac7f62142f5debefb91909fcc90e7",
-  "north.png": "b9b8371b78698e470f8e66d6d198e668213c96a3b152e139a63867877df46c25",
-  "scale.png": "1103ec7306d4130a01783827371bac6eca10f66122f8859f38035c0b0b0b280d",
-  "facings.png": "c893341bde8c1a010d1a08f2c9b6b913c63487d65568567fb03bd62b52ae5741"
+  "south.png": "656de6223a4ad6efb23f1499c57372ac83bd97ebcc9c8eb148ca453466630317",
+  "east.png": "8a061e79a9ea1e687e9e263fb84774c4a239a834666e926215177c671528778e",
+  "north.png": "9e9a61f94bbfad5c9f9c7e8593c557a345490c349f911370fae8da91f568c05e",
+  "scale.png": "76e3fecbbce7674d47c7c66cb5ed56a24764b3cd1222d4b49dd6c138c6a6b489",
+  "facings.png": "59789ebeedef44d8cace48be55a2193c00743c56d8e1abb638a55bf0e976dbf8"
  }
 }
