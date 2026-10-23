@@ -67,6 +67,8 @@ untouched for everything else.
 
 ## Card 2. Delete the patches that can no longer do anything?
 
+**STATUS: RULED 2026-10-22 by card, option 1 (delete all six); DONE.**
+
 **ANSWERED 2026-10-22 by question card: option 1, delete all listed.** Helper running.
 
 **What was learned.** Reviewers found patches that target mods or creatures we have already retired, so they match
