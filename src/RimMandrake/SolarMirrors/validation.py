@@ -41,7 +41,7 @@ ALL_DEFS = (["ThingDef/%s" % d for d in MIRRORS + RECEIVERS + FIELD_PARTS] + ["J
 PATCH_LONGSHADE = os.path.join(HERE, "Patches", "RM_SolarMirrors_LongShade.xml")
 # Settings that are effects (all-off must turn each one off, design §3.5 "all-off leaves inert decorative buildings").
 EFFECT_TOGGLES = ("shadeEffect", "glowEffect", "blindingDefence", "solarFurnace", "ancientFields", "dustEnabled",
-                  "concentrationHeat", "roomHeat", "heliograph", "dazzle")
+                  "concentrationHeat", "roomHeat", "heliograph", "dazzle", "insolationByGeometry")
 NEEDLES = ("mandrake.rm.solarmirrors", "RimMandrake.SolarMirrors", "RM_CompMirror", "RM_MirrorLight",
            "RM_SolarFurnace", "RM_Heliostat", "RM_StaticMirror", "RM_SignalMirror", "RM_SunStone",
            # The CreatureBehaviors light hook: a TypeLoad/MissingMethod naming it means the shipped
@@ -54,7 +54,7 @@ suite.toggles = ["shadeEffect", "glowEffect", "beamRender", "staticSweep", "blin
                  "blindSeverityPerDay", "solarFurnace", "reflectivityMultiplier", "reAimWorkMultiplier",
                  "passIntervalTicks", "maxChain", "ancientFields", "puzzleMinReAims", "puzzleMirrors", "dustEnabled",
                  "dustPerDay", "heliostatPower", "concentrationHeat", "concentrationCap", "roomHeat", "roomHeatPerLight",
-                 "heliograph", "heliographRange", "dazzle", "dazzleMaxPenalty"]
+                 "heliograph", "heliographRange", "dazzle", "dazzleMaxPenalty", "insolationByGeometry", "highSunBonus"]
 
 
 # ── live chains (design §6.2) ────────────────────────────────────────────
@@ -147,6 +147,10 @@ LIVE_OWED = [
     ("helio", "night", "heliograph", "at night the float menu says why it cannot flash, and offers no faction"),
     ("dazzle", "accuracy", "dazzle", "a hostile shooter in a beam shows the dazzle factor in ShootingAccuracyPawn's explanation"),
     ("concentration", "heat", "concentrationHeat", "a pawn where two beams overlap feels hotter than in one beam, never past maxHeatOffsetC"),
+    # VEE_SOLAR_REWIRE_GEOMETRY_PAINTS_IT (vee_port_plan_2026-10-22.md §4 L3)
+    ("insolation", "high_low_sun", "insolationByGeometry",
+     "an unroofed solar panel's DesiredPowerOutput on a high-sun tile (e >= 35) is 1.25x the glow-only value, and on a "
+     "low-sun tile (0 < e <= 20) equals it; setting off gives the glow-only value on both"),
 ]
 
 
@@ -419,6 +423,27 @@ def _guard_checks(bad):
                 bad.append("%s: ParentName %s resolves to nothing in this mod or the recorded vanilla parents" % (os.path.basename(p), pn))
 
 
+def _insolation_checks(bad):
+    """VEE_SOLAR_REWIRE_GEOMETRY_PAINTS_IT: the panel factor and the derived labels are a function of sun elevation
+    only. The tile-by-tile proof is Utils/remake/selftest_solar_insolation.py; this pins the wiring."""
+    patch = open(os.path.join(SRC, "RM_InsolationPatch.cs"), encoding="utf-8").read()
+    if not re.search(r'HarmonyPatch\(typeof\(CompPowerPlantSolar\), "DesiredPowerOutput", MethodType\.Getter\)', patch):
+        bad.append("insolation: no postfix on CompPowerPlantSolar.DesiredPowerOutput")
+    if "RM_InsolationKernel.InsolationFactor(e.Value, RM_SolarMirrorsSettings.highSunBonus)" not in patch:
+        bad.append("insolation: the patch does not multiply by the kernel factor with the high-sun bonus setting")
+    if "RM_SolarMirrorsSettings.insolationByGeometry" not in patch:
+        bad.append("insolation: the patch does not gate on its Mod Setting")
+    sys.path.insert(0, os.path.normpath(os.path.join(HERE, "..", "Utils", "remake")))
+    import selftest_solar_insolation as st  # noqa: E402
+    import io
+    import contextlib
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        rc = st.main()
+    if rc != 0:
+        bad.extend("insolation: " + ln[5:] for ln in buf.getvalue().splitlines() if ln.startswith("FAIL "))
+
+
 def static_checks():
     """Offline, no game. Returns failure strings; empty means pass."""
     bad = []
@@ -516,6 +541,7 @@ def static_checks():
         bad.append("RM_GlareBlind hediff gone: the blinding defence would silently do nothing")
 
     _math_checks(bad)
+    _insolation_checks(bad)
 
     proj = open(os.path.join(SRC, "RM_SolarMirrors.csproj"), encoding="utf-8").read()
     for f in os.listdir(SRC):
