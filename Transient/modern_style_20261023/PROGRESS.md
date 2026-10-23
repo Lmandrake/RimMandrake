@@ -3,9 +3,9 @@ Started 2026-10-23 06:46 PDT. Stop by ~09:45.
 
 - [x] 1 inventory (inventory.md + composites)
 - [x] 2 style guide design/RimMandrake/flowworks_modern_style_2026-10-23.md + refs/
-- [ ] 3 GPT critique round (gpt_critique.md)
-- [ ] 4 redraw candidates via art-eval pipeline (candidates/)
-- [ ] 5 before/after composites + shadow sheet + prereview + pin
+- [x] 3 GPT critique round (gpt_critique.md)
+- [x] 4 redraw candidates via art-eval pipeline (candidates/)
+- [x] 5 before/after composites + shadow sheet + prereview + pin
 
 ## Log
 - 06:46 skeleton written
@@ -40,3 +40,4 @@ Started 2026-10-23 06:46 PDT. Stop by ~09:45.
 - 08:08 art_sheet built (biome_ffar/modern_style_redraw_sheet_*)
 - 08:10 prereview OK (13 FLAG); next: style guide update, pins, items, commit
 - 08:11 style guide updated with results
+- 08:12 DONE: committed+published 7a8f77a8b8 (earlier b4176897a5). Stopped at a clean boundary.
