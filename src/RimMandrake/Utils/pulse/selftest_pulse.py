@@ -372,5 +372,26 @@ check("the strip counts what is to rule and what is unopened to look at",
       {"◇ 1 to rule", "▣ 4 to look at"} <= {p["text"] for p in cnt}, cnt)
 check("no rule/look pill when there is nothing waiting", not any(p["kind"] in ("rule", "look") for p in pc.build_strip(pr)))
 
+# --- RIMPULSE_SEATS_FIX_WAITING_LOOKS_BUSY: a blocked seat never reads as working; both seats always shown --
+wr, _, _ = pc.classify_sessions([win("w1", "AGENT BENCH", "waiting", 300, 9000, waitingFor="input needed")],
+                                {"w1": {"subagents": 2, "question": "Which herd size?"}}, {}, {}, {}, NOW)
+wc = {c["label"]: c for c in pc.build_chips(wr, NOW)}
+check("a seat with a question card up is chip state 'wait', never 'run'", wc["bench"]["state"] == "wait", wc["bench"])
+check("the seat chip carries its running subagent count", wc["bench"]["agents"] == 2, wc["bench"])
+check("a seat with no window is still shown, as 'missing'", wc.get("foundry", {}).get("state") == "missing", wc.get("foundry"))
+uc = {c["label"]: c for c in pc.build_chips([], NOW, sessions_ok=False)}
+check("when the sessions source failed, absent seats read 'unknown', not 'missing'",
+      uc["bench"]["state"] == "unknown" and uc["foundry"]["state"] == "unknown", uc)
+rc = {c["label"]: c for c in pc.build_chips(pc.classify_sessions([win("r1", "AGENT FOUNDRY", "busy", 5, 900)],
+      {"r1": {"subagents": 3, "transcript_mtime": NOW}}, {}, {"FOUNDRY": "X_ONE_1"}, {}, NOW)[0], NOW)}
+check("a working seat chip's title says what it is doing", "X_ONE_1" in rc["foundry"]["title"] and rc["foundry"]["state"] == "run",
+      rc["foundry"])
+soft = pc.build_strip(pc.classify_sessions([win("s1", "AGENT BENCH", "idle", 300, 9000)], {}, {}, {}, {}, NOW)[0])
+check("finished-and-idle keeps its strip pill, labelled finished/idle", any(p["kind"] == "amber_soft" and "finished" in p["text"]
+                                                                          for p in soft), soft)
+sn = pc.collect_snapshot({"sessions": [], "source_status": {"sessions": {"ok": False}}}, {}, NOW)[0]
+check("collect_snapshot passes a failed sessions source through to the chips",
+      {c["state"] for c in sn["chips"] if c.get("seat") in pc.SEATS} == {"unknown"}, sn["chips"])
+
 print(f"\n{'FAIL' if FAILS else 'OK'}: {len(FAILS)} failing")
 sys.exit(1 if FAILS else 0)
