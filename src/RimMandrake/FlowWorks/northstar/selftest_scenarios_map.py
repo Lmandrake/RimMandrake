@@ -73,6 +73,23 @@ def main():
     check("map R: no creek anchor inside C1's plot",
           all(not (c1["rect"][0] <= cr[0][0] < c1["rect"][0] + c1["rect"][2] and
                    c1["rect"][1] <= cr[0][1] < c1["rect"][1] + c1["rect"][3]) for _, cr, _ in plan))
+    # MAP_R_BUILDER_FIX_FORTY_BANKS_REFUSED: a ragged bank (river cells poking into every candidate plot) anchors while the
+    # wet cells stay within RECLAIM_MAX, never above it; fewest wet cells win.
+    size = (M.MAP_SIZE, M.MAP_SIZE)
+    ragged = dict(river)
+    for x in range(0, M.MAP_SIZE, 4):
+        ragged[(x, 149)] = "WaterMovingShallow"          # one wet cell every 4 columns on the bank row
+    o = M.river_bank_anchor(ragged, size)
+    n = o and M.reclaimed_cells(ragged, o + (48, 40))
+    check("map R: a ragged bank anchors C1 (wet cells reclaimed, <= RECLAIM_MAX)", o is not None and 0 < n <= M.RECLAIM_MAX,
+          (o, n))
+    check("map R: an all-land plot is preferred over a ragged one", M.river_bank_anchor(river, size) is not None and
+          M.reclaimed_cells(river, M.river_bank_anchor(river, size) + (48, 40)) == 0)
+    swamp = dict(river)
+    for x in range(M.MAP_SIZE):
+        for z in range(140, 150):
+            swamp[(x, z)] = "Marsh"
+    check("map R: a bank with more than RECLAIM_MAX wet cells in every plot refuses", M.river_bank_anchor(swamp, size) is None)
     every = placed + [c1]
     # ---------------------------------------------------------------- signs
     labels = M.label_ops(every)

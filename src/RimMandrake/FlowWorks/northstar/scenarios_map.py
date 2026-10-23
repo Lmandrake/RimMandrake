@@ -112,10 +112,16 @@ def synthetic_river(size=MAP_SIZE, z0=150, width=10):
     return t
 
 
-def river_bank_anchor(terrain, size, w=48, h=40, wet_x=(4, 21), avoid=(), margin=12):
-    """C1's plot: origin (x0, z0) whose w x h cells are all land and whose row z0+h (just north of the plot) is moving
-    water for every x in wet_x (the intake, the weir and the pump touch it). None when the river offers no such spot
-    (reported, never faked; rotated anchoring is owed)."""
+RECLAIM_MAX = 80   # C1 plot cells (of 1920) that may be river/marsh before the anchor refuses; clear_plots repaints them Soil
+
+
+def river_bank_anchor(terrain, size, w=48, h=40, wet_x=(4, 21), avoid=(), margin=12, reclaim_max=RECLAIM_MAX):
+    """C1's plot: origin (x0, z0) whose row z0+h (just north of the plot) is moving water for every x in wet_x (the
+    intake, the weir and the pump touch it) and whose w x h cells are land but for at most `reclaim_max` wet cells
+    (a ragged bank; clear_plots repaints the plot Soil, so they become reclaimed bank). Fewest wet cells first, then
+    nearest the map centre. None when the river offers no such spot (reported, never faked).
+    MAP_R_BUILDER_FIX_FORTY_BANKS_REFUSED (2026-10-22, 13 live tiles): an ALL-land plot qualified on 2 of 13 river maps
+    (every rotation together: 3); the near misses had 8-46 river cells on a ragged bank. Allowing 80 qualifies 5 of 13."""
     import review_map_rivers as RV
     W_, H_ = size
     best = None
@@ -126,13 +132,28 @@ def river_bank_anchor(terrain, size, w=48, h=40, wet_x=(4, 21), avoid=(), margin
                 continue
             if any(C_overlap((x0, z0, w, h), r, GAP) for r in avoid):
                 continue
-            if all(RV.is_land(terrain.get((x0 + i, z0 + j))) for i in range(w) for j in range(h)):
-                d = abs(x0 + w // 2 - W_ // 2) + abs(z0 + h // 2 - H_ // 2)
-                if best is None or d < best[0]:
-                    best = (d, (x0, z0))
-        if best:
-            break
+            wet = 0
+            for i in range(w):
+                for j in range(h):
+                    if not RV.is_land(terrain.get((x0 + i, z0 + j))):
+                        wet += 1
+                        if wet > reclaim_max:
+                            break
+                if wet > reclaim_max:
+                    break
+            if wet > reclaim_max:
+                continue
+            d = abs(x0 + w // 2 - W_ // 2) + abs(z0 + h // 2 - H_ // 2)
+            if best is None or (wet, d) < best[0]:
+                best = ((wet, d), (x0, z0))
     return best[1] if best else None
+
+
+def reclaimed_cells(terrain, rect):
+    """Cells of C1's plot that are not land (repainted Soil by clear_plots): the count is a build note."""
+    import review_map_rivers as RV
+    x0, z0, w, h = rect
+    return sum(1 for i in range(w) for j in range(h) if not RV.is_land(terrain.get((x0 + i, z0 + j))))
 
 
 def C_overlap(a, b, pad=0):
@@ -174,6 +195,9 @@ def placed_r(terrain, size):
     else:
         sc = SC.BY_ID["C1"]
         c1 = dict(sc=sc, origin=o, rect=o + tuple(sc["size"]))
+        n = reclaimed_cells(terrain, c1["rect"])
+        if n:
+            notes.append("C1: %d river/marsh cells inside the plot reclaimed as Soil (ragged bank)" % n)
     plan, unplaced = creek_plan(terrain, size, exclude=[c1["rect"]] if c1 else [])
     for sid in unplaced:
         notes.append("C11: station %s found no free crossing" % sid)
@@ -873,6 +897,19 @@ def use_map(B, which):
     return True
 
 
+def remove_tile_settlement(B, t):
+    """A rejected map-R tile's player Settlement WORLD OBJECT. settlement_remove mode='map' drops only the map and leaves
+    the Settlement (its documented contract): 2026-10-22 save c kept 25 phantom 'NorthstarBland' colonies from one run,
+    and a retry on the same world could found none of those tiles (MAP_R_BUILDER_FIX_FORTY_BANKS_REFUSED). A removal
+    that does not read back gone is printed."""
+    ids = [o["id"] for o in (B.call("jawa/world_objects_get", tiles=str(t), limit=20) or {}).get("objects") or []
+           if o.get("isSettlement") and "Player" in str(o.get("faction"))]
+    if ids:
+        r = B.call("jawa/world_objects_remove", ids=",".join(str(i) for i in ids)) or {}
+        if r.get("removed") != len(ids):
+            print("map R: tile %s settlement %s not removed: %s" % (t, ids, str(r)[:200]))
+
+
 def found_map_r(B, max_tries=25):
     """Found map R as a SECOND map in the current game (map C and its colonists stay): a mild river tile whose map has a
     current, moving water on >= 2 edges, AND a straight south bank for C1 plus >= 6 C11 crossings. river_site.py's tile
@@ -919,6 +956,7 @@ def found_map_r(B, max_tries=25):
             print("map R: tile %s rejected: %s" % (t, why))
             if fresh:
                 B.call("jawa/settlement_remove", mode="map", tile=t, force=True)
+            remove_tile_settlement(B, t)
         if mid is None:
             drop("map generate refused or gave no mapId: %s" % str(g)[:160])
             continue
@@ -952,6 +990,7 @@ def found_map_r(B, max_tries=25):
         break
     for m in RS.leftover_maps(RS.loaded_maps(B.call), out["map_r"], generated):
         B.call("jawa/settlement_remove", mode="map", tile=m.get("tile"), force=True)
+        remove_tile_settlement(B, m.get("tile"))
     if out["map_r"] is None:
         if isinstance(out["map_c"], int):
             B.call("jawa/set_current_map", mapId=out["map_c"])
