@@ -50,6 +50,10 @@ past art, and his notes on the subject verbatim. Missing any of these → `UNSUR
   ellipse 0.56 tall for its width). — `design/RimMandrake/building_camera_perspective_2026-10-14.md`
 - C4. Registration on the rigid body: heads centred and sized on the skull mass (crown to chin), never ear tips,
   horns or crests; a flyer's body stays static across frames while wings move. — Owner 2026-10-20
+- C6. A pipe, hose or nozzle is drawn in its true perspective plane: its open bore shows only where the pipe
+  really turns toward the camera. A pipe lying along the ground that shows its inside reads as "bent up" — REDO.
+  — Owner card 2026-10-23 ("Reel_Deployed_north.png shows the inside of the pipe, which implies the pipe is
+  "bent up" towards the viewer … Keep the pipe in the proper perspective plane please.")
 - C5. Flyers: a whole-body directional flip-book, never a wing render-tree. Judge frames from stills only; never
   ask for live flight capture. — Owner 2026-09-19 (CLAUDE.md, flight)
 
