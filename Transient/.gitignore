@@ -388,6 +388,7 @@
 !/live_batch_20261023/pumpstation_both_context.png
 !/live_batch_20261023/pumpstation_kludged_south_port.png
 !/live_batch_20261023/pumpstation_repaired_south_port.png
+!/live_batch_20261023/r2/art_resolution_sim.png
 !/live_batch_20261023/r2/crosses_cells.txt
 !/live_batch_20261023/r2/dome_area.png
 !/live_batch_20261023/r2/dome_muffalo_compare.png
@@ -400,10 +401,12 @@
 !/live_batch_20261023/r2/level_rehearsal_pitfall.json
 !/live_batch_20261023/r2/level_watch_pitfall.log
 !/live_batch_20261023/r2/mapC_terrain.txt
+!/live_batch_20261023/r2/maxzoom_reel_rs2.png
 !/live_batch_20261023/r2/modern_upper_census.txt
 !/live_batch_20261023/r2/tank_modern_208_W_E_bothlanes.png
 !/live_batch_20261023/r2/tank_modern_214_W_E_bothlanes.png
 !/live_batch_20261023/r2/tank_modern_220_W_E_bothlanes.png
+!/live_batch_20261023/r2/vanillazoom_reel_rs11.png
 !/live_batch_20261023/r2/walk_gaps_pitfall_rerun.json
 !/live_batch_20261023/r2/walkgaps_pitfall_watch.log
 !/live_batch_20261023/relay_C_west_inlet_fresh.png
