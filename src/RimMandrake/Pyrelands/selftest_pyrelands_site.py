@@ -423,10 +423,13 @@ class FakeEnv(P.Env):
             fh.write("\n".join(log) + "\n")
         with open(os.path.join(self.config_dir, "Mod_123_RM_PyrelandsMod.xml"), "w") as fh:
             fh.write("<SettingsBlock><ModSettings><ashDustingEnabled>True</ashDustingEnabled></ModSettings></SettingsBlock>")
-        biome_off = "<li><key>Pyrelands</key><value>False</value></li>" if "biome_off" in self.faults else ""
+        # The shape Scribe_Collections really writes for a Dictionary: parallel <keys>/<values> lists (measured on a
+        # live Config/Mod_*.xml 2026-10-22). The old <li><key>..</key><value>..</value></li> fixture matched the old
+        # wrong regex, so the test passed while a real OFF toggle read "absent (ON)".
+        pyre = "False" if "biome_off" in self.faults else "True"
         with open(os.path.join(self.config_dir, "Mod_456_RM_BiomesMod.xml"), "w") as fh:
-            fh.write("<SettingsBlock><ModSettings><enabled>%s<li><key>Warscar</key><value>True</value></li>"
-                     "</enabled></ModSettings></SettingsBlock>" % biome_off)
+            fh.write("<SettingsBlock><ModSettings><enabled><keys><li>Warscar</li><li>Pyrelands</li></keys>"
+                     "<values><li>True</li><li>%s</li></values></enabled></ModSettings></SettingsBlock>" % pyre)
         self._born = 2000.0 if "deploy_after_launch" not in self.faults else 500.0
         for dp, _dn, fn in os.walk(self.mods_dir):
             for x in fn:

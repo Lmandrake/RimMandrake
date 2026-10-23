@@ -661,9 +661,12 @@ def build_site(s, k, fingerprint, saves_dir, work_dir, temp=TARGET_TEMP, census=
     centre = rec["pick"]["centre"]
     rec["retiled"] = retile(s, rec["pick"]["patch"], temp)
     strip_mutators(s, centre)
-    iso = isolate(s)                               # before mapgen: no burn line at gen
-    rec["isolation"] = iso
+    # isolate() runs INSIDE the try: when one read-back refuses midway, the toggles it already turned off are still
+    # put back by the finally (restore_isolation sets every listed field to its shipped default, read back).
+    iso = {"settingsBefore": dict.fromkeys(ISOLATION_OFF)}
     try:
+        iso = isolate(s)                           # before mapgen: no burn line at gen
+        rec["isolation"] = iso
         # The season is set BEFORE the site map exists (PYRE_SITE_CLOCK_REPAIR_ASH_EXPIRES_FIRST, owner: warping time
         # on a populated map is "an EXTREMELY risky proposition"). time_set_ticks simulates nothing, so with no colony
         # on the site the jump costs nothing, and the map is generated AT mid-Summer noon: its loose ash is minutes
