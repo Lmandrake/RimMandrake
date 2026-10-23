@@ -15,8 +15,6 @@ namespace RimMandrake.Pyrelands
     {
         public static JobDef RM_FireHawkCarryEmber;
 
-        // FURNACEBEAST_WORLD_MIGRATION_1 — the world leg's own WorldObjectDef.
-        public static WorldObjectDef RM_FurnaceHerd;
 
         // PYRELANDS_DEDICATED_GRAZER_1 — burrow-on-fire (RM_JobGiver_BurrowOnFire,
         // RM_JobDriver_Burrow). Generic, new this pass — no RUT_ predecessor to

@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
 """Offline read of a savegame's WORLD for two Pyrelands GPT-hunt findings (2026-10-15), no game:
 
-  FURNACE_SEED_DIAGNOSE_SHIPPED_SAVE_HERDLESS  WorldComponent_RM_FurnaceHerdSeeder latches `rm_furnaceHerdSeeded` BEFORE its
-      gates, so a world first loaded with herds off (or with no Deep Desert tile) never gets a herd. Reads the latch and counts
-      RM_FurnaceHerd world objects.
+  Leftover furnace herds  The furnace-beast world migration was CUT 2026-10-23 (design/RimMandrake/fluff_cuts_2026-10-23.md):
+      a save that still holds RM_FurnaceHerd world objects or the old seeder component would log missing-def errors on load.
+      Counts both; any found is a FAIL.
   TRIBES_LOOKUP_DIAGNOSE_FIRST_ONE_FALLS  PyrelandsFactions.TribesOrNull takes the FIRST TribeCivil faction; with one, moot.
 
     python3 src/RimMandrake/Pyrelands/diag/save_world_check.py [path.rws]     (default: the canonical start save)
 
-Prints one JSON line. `seederPresent` false means the save was written without Pyrelands loaded: nothing latched yet, the
-herds seed on the first load that has Pyrelands with furnaceThermalEnabled + furnaceWorldMigrationEnabled on.
+Prints one JSON line.
 Sanity: `worldComponents` and `worldObjects` must be > 0, or the reader is blind and the verdict is UNMEASURED.
 """
 import json
@@ -22,7 +21,7 @@ from game_paths import SAVES  # noqa: E402 - the one seam for the LocalLow Saves
 
 
 SAVE_NAME = "CANONICAL_ASHKARR_START_2026-09-12.rws"   # canon.yml planet.start_savegame (owner-ruled 2026-09-12)
-SEEDER = "RimMandrake.Pyrelands.WorldComponent_RM_FurnaceHerdSeeder"
+SEEDER = "RimMandrake.Pyrelands.WorldComponent_RM_FurnaceHerdSeeder"   # cut 2026-10-23; only its absence is checked
 
 
 def default_save():
@@ -65,15 +64,11 @@ def verdicts(w):
     if w["worldComponents"] == 0 or w["worldObjects"] == 0:
         blind = ("UNMEASURED", "reader is blind: %d world components, %d world objects" % (w["worldComponents"], w["worldObjects"]))
         return blind, blind
-    if not w["seederPresent"]:
-        herd = ("UNMEASURED", "the save was written without Pyrelands loaded (no seeder component): nothing latched; "
-                "herds seed on the first load with Pyrelands and both furnace settings on. Re-run on the freeze candidate.")
-    elif w["seeded"] == "True" and w["herds"] == 0:
-        herd = ("FAIL", "the seeder latched with NO RM_FurnaceHerd on the world: this world never gets furnace herds")
-    elif w["herds"] > 0:
-        herd = ("PASS", "%d RM_FurnaceHerd world objects" % w["herds"])
+    if w["seederPresent"] or w["herds"] > 0:
+        herd = ("FAIL", "the save still holds the cut furnace-herd world leg (seeder component %s, %d RM_FurnaceHerd objects): "
+                "it would log missing-def errors on load" % (w["seederPresent"], w["herds"]))
     else:
-        herd = ("UNMEASURED", "seeder present but not latched (seeded=%r): it seeds on the next load" % w["seeded"])
+        herd = ("PASS", "no furnace-herd seeder or RM_FurnaceHerd world object in the save")
     alive = [f for f in w["tribeCivil"] if f["defeated"] != "True"]
     if len(w["tribeCivil"]) <= 1:
         tribes = ("PASS", "%d TribeCivil faction(s): the first-one lookup is moot" % len(w["tribeCivil"]))

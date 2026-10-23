@@ -199,7 +199,6 @@ MODS = {
         "Scorched ruins (new maps)": "NewMapsOnly",
         "Biome placement (WORLDGEN-AFFECTING)": "NewMapsOnly",
         "Absorbed mechanics (mandrake.rut.pyrelandsmechanics)": "Now",
-        "Furnace-beast herds at world start (WORLDGEN-AFFECTING)": "NewMapsOnly",
         "Giants and herds (restart)": "NextGameStart",
         "Burrowers": "Now",
         "Sand shovelling": "Now",

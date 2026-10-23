@@ -58,9 +58,9 @@ TARGET_TEMP = 50.0                # plan §3.5; control site 30
 CONTROL_TEMP = 30.0
 QUICKTEST_TIMEOUT_MS = 280000
 POLL_S = 1.0
-# Mechanics that start fires / move herds: OFF while the gen census runs (plan §2.3a, §3.7).
+# Mechanics that start fires : OFF while the gen census runs (plan §2.3a, §3.7).
 ISOLATION_OFF = ("burnLineEnabled", "fireHawkSpreadEnabled", "fireClockEnabled",
-                 "furnaceWorldMigrationEnabled", "burrowOnFireEnabled",
+                 "burrowOnFireEnabled",
                  "furnaceThermalEnabled")
 TICKS_PER_DAY = 60000
 TICKS_PER_HOUR = 2500
