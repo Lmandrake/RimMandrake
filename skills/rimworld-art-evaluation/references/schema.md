@@ -8,13 +8,15 @@
  "description": "<def text>", "tier": "RM_", "invented": true, "earth_body_named": false, "body_plan": null,
  "departures": ["<visible feature>"], "canon": {"must_show": [], "engine_limits": []}, "owner_notes": [],
  "owner_kept": false, "depends_on": null, "previous_prompt": null, "size": {"drawSize": [1.4, 1.4]},
+ "ports": ["<machines: each code-defined port, e.g. 'south facing: east side, hose'>"],
  "images": {"south": "<png>", "east": "<png>", "north": "<png>", "scale": "<true-scale panel png>",
             "living_reference": {"south": "<png>"}, "siblings": ["<png>"], "flight": [], "variants": [],
-            "assembled": ["<in-game capture png>"]}}
+            "assembled": ["<in-game capture png>"], "wall_context": "<wall-mounted: each facing composed against its wall>"}}
 ```
 
 Modules: creature `walker | pack | swimmer | amphibious | flyer | catch`; plant `ground_cover | bush | tree |
-special`; machine `machine | part | hose | coupler | reel | tank | pump`. Departures/earth_body_named/body_plan
+special`; machine `machine | part | hose | coupler | reel | tank | pump | wall_mounted` (wall_mounted needs
+`wall_context`; the ladder and reel misses of 2026-10-23 are criteria ledger CL-004/CL-005). Departures/earth_body_named/body_plan
 come from `infrastructure/state/art_eval/briefs/<def>.json` when the spec has none (`runner.py brief`).
 ⛔ `owner_notes` are his notes from OTHER sittings or standing ones — never the verdict the subject is being
 scored against.

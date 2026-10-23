@@ -128,6 +128,11 @@ def main():
     mtpl = P.load_template("machine")
     check("machine without capture held", P.pre_route({"module": "machine", "panels": {"south": 1, "facings": 1, "scale": 1}}, mtpl, None) == "HOLD_INPUT")
 
+    check("wall-mounted needs wall context", P.pre_route({"module": "wall_mounted", "panels": {"south": 1, "facings": 1, "scale": 1}}, mtpl, None) == "HOLD_INPUT")
+    mids = {i["id"] for i in P.checklist_for(mtpl, "wall_mounted", P.card_facts({"ports": ["east side"]}))}
+    check("wall lean + ports checked", {"WALL_LEAN", "PORTS_DRAWN"} <= mids, mids)
+    check("ports item absent without ports", "PORTS_DRAWN" not in {i["id"] for i in P.checklist_for(mtpl, "reel", P.card_facts({}))})
+
     # --- regen findings
     band, d = P.opus_band(opus_reply(items, findings=[{"code": "F_NORTH_FACE", "confidence": 0.5, "fix": "rear view"},
                                                       {"code": "STYLE_CARTOON", "confidence": 0.5, "fix": "realistic"}]), items, inv, pol)
