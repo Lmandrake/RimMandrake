@@ -1,0 +1,1 @@
+queue_lint.py ledger-write guard false-denies 'git commit -F <scratchpad msg> -- …/ledger/events/BENCH.jsonl': the seat scratchpad path contains '-rm-bench', and ARG_WRITER_RE's \brm\b matches it within 80 chars before the ledger path. Put the message file under D:\ClaudeWork\rimmandrake\scratch (or after the pathspec) until the regex requires rm as a command word.
