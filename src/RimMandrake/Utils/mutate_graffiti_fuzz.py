@@ -59,6 +59,12 @@ MUTATIONS = [
     ("lure takes the farthest", "distSqToFallback[i] < distSqToFallback[best]", "distSqToFallback[i] > distSqToFallback[best]"),
     ("lure ties by the highest key", "tieKey[i] < tieKey[best]", "tieKey[i] > tieKey[best]"),
     ("lure takes the first", "if (best < 0 || distSqToFallback[i] < distSqToFallback[best] || (distSqToFallback[i] == distSqToFallback[best] && tieKey[i] < tieKey[best])) best = i;", "if (best < 0) best = i;"),
+    ("wall side prefers south over west", "            if (west) return 3;\n            if (south) return 2;", "            if (south) return 2;\n            if (west) return 3;"),
+    ("wall side ignores north", "            if (north) return 0;\n", ""),
+    ("wall offset east goes west", "dx = side == 1 ? cells : side == 3 ? -cells : 0f;", "dx = side == 1 ? -cells : side == 3 ? cells : 0f;"),
+    ("wall offset z sign flipped", "dz = side == 0 ? cells : side == 2 ? -cells : 0f;", "dz = side == 0 ? -cells : side == 2 ? cells : 0f;"),
+    ("wall angle counter-clockwise", "return side >= 0 && side <= 3 ? side * 90f : 0f;", "return side >= 0 && side <= 3 ? -side * 90f : 0f;"),
+    ("wall angle for no wall", "return side >= 0 && side <= 3 ? side * 90f : 0f;", "return side * 90f;"),
 ]
 
 if __name__ == "__main__":

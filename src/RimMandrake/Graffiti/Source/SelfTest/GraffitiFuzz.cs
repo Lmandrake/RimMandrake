@@ -6,6 +6,7 @@
 //   misc    scrub protection, raid-exit gate, clan-only veto, room rule, thought-active, going-over, paint cadence clamp, spree forms
 //   cells   wall-cell candidate gathering against a sort-then-take oracle (cap, bare before marked, scan order)
 //   lure    the breach-lure choice: nearest wins, ties by key, order does not matter
+//   wall    the wall-face draw: side priority over all 16 neighbour masks, offset onto that wall, angle facing it
 // A failing case is printed as `family seed N: message | detail`; --fuzz-seed N replays it.
 using System;
 using System.Collections.Generic;
@@ -246,6 +247,47 @@ namespace RimMandrake.Graffiti.SelfTest
             });
         }
 
+        // ════════════════════════ wall (GRAFFITI_WALLFACE) ════════════════════════
+        // All 16 neighbour masks against an independent spec: north beats east beats west beats south; the offset is exactly one
+        // unit step of the given length onto that wall; the angle turns the mark's top into the wall (Rot4.AsAngle); no wall draws
+        // as the old upright floor mark.
+        private static List<string> Wall()
+        {
+            return Loop("wall", 1, 1, r =>
+            {
+                int[] stepX = { 0, 1, 0, -1 }, stepZ = { 1, 0, -1, 0 };   // Rot4 0..3 FacingCell
+                int[] priority = { 0, 1, 3, 2 };
+                for (int mask = 0; mask < 16; mask++)
+                {
+                    Steps++;
+                    bool[] has = { (mask & 1) != 0, (mask & 2) != 0, (mask & 4) != 0, (mask & 8) != 0 };   // n, e, s, w
+                    int want = RM_GraffitiKernel.NoWall;
+                    foreach (int p in priority) { if (has[p]) { want = p; break; } }
+                    int side = RM_GraffitiKernel.WallSide(has[0], has[1], has[2], has[3]);
+                    Check(side == want, $"mask {mask}: WallSide {side}, want {want}");
+                    Check(side == RM_GraffitiKernel.NoWall || has[side], $"mask {mask}: side {side} has no wall");
+                    RM_GraffitiKernel.WallFaceOffset(side, 0.5f, out float dx, out float dz);
+                    float angle = RM_GraffitiKernel.WallFaceAngle(side);
+                    if (side == RM_GraffitiKernel.NoWall)
+                    {
+                        Check(dx == 0f && dz == 0f && angle == 0f, $"mask {mask}: no wall but offset ({dx},{dz}) angle {angle}");
+                        continue;
+                    }
+                    Check(dx == 0.5f * stepX[side] && dz == 0.5f * stepZ[side], $"mask {mask}: offset ({dx},{dz}) is not toward side {side}");
+                    Check(angle == side * 90f, $"mask {mask}: angle {angle} does not face side {side}");
+                    // the mark's top (0, 1) turned clockwise by the angle points at the wall
+                    double rad = angle * Math.PI / 180.0;
+                    Check(Math.Abs(Math.Sin(rad) - stepX[side]) < 1e-6 && Math.Abs(Math.Cos(rad) - stepZ[side]) < 1e-6, $"side {side}: the top does not point into the wall");
+                }
+                foreach (int bad in new[] { -2, 4, 99 })
+                {
+                    RM_GraffitiKernel.WallFaceOffset(bad, 0.5f, out float bx, out float bz);
+                    Check(bx == 0f && bz == 0f && RM_GraffitiKernel.WallFaceAngle(bad) == 0f, $"out-of-range side {bad} moved the mark");
+                }
+                Check(RM_GraffitiKernel.WallFaceOffsetCells > 0f && RM_GraffitiKernel.WallFaceOffsetCells <= 1f, "the wall-face offset leaves the wall's own cell");
+            });
+        }
+
         public static bool Run(double scale, int? oneSeed, string only)
         {
             var sw = Stopwatch.StartNew();
@@ -260,6 +302,7 @@ namespace RimMandrake.Graffiti.SelfTest
                 ("misc", () => Misc(1, 1)),
                 ("cells", () => Cells(N(6000), S(1))),
                 ("lure", () => Lure(N(4000), S(1))),
+                ("wall", () => Wall()),
             };
             foreach (var f in fam)
             {

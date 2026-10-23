@@ -6,12 +6,14 @@ namespace RimMandrake.Pyrelands
     // Verse-free decisions of the Pyrelands burn-line (MapComponent_BurnLine, PyrelandsFireFront) and of the two Tribes incidents
     // that read it (IncidentWorker_FireRaid / IncidentWorker_FlameHarvest / PyrelandsFireRite in mandrake.rut.pyrelandsmechanics):
     // the measurement cadence and centroid, the burn-history ring, the arson-debt book, the standing-burn keep-alive clock, the
-    // fire-front clock and line geometry, the lawful-cell test, the raid and harvest gates, the raid's goodwill plan, the raid
+    // fire-front clock, the fresh map's opening front and the line geometry, the lawful-cell test, the raid and harvest gates, the raid's goodwill plan, the raid
     // points and the rite's gate / party size. The mods call these with the same expressions; the offline fuzz drives them.
 
     public enum RM_ReseedDecision { FiresPresent, Quiet, Retry, Reseed }
 
     public enum RM_FrontAction { Disabled, Armed, Wait, Fire }
+
+    public enum RM_OpeningAction { Done, Skip, Light }
 
     public enum RM_RaidPlan { Refuse, InsultFirst, RaidNow }
 
@@ -213,6 +215,23 @@ namespace RimMandrake.Pyrelands
             }
             nextFrontTick = now + schedule();
             return RM_FrontAction.Fire;
+        }
+
+        /// <summary>PYRE_OPENING_FRONT: the opening front of a fresh map. Done stays done; the fire clock off, or a map older than
+        /// the window (no longer fresh), drops it for good (Skip: the caller marks it done, so switching the clock on later never
+        /// lights a late "opening"); otherwise Light (the caller marks it done only once a cell took, so it retries each watch
+        /// interval inside the window). ageTicks is ticks since map generation (or since a test re-arm).</summary>
+        public static RM_OpeningAction OpeningFront(bool done, bool enabled, int ageTicks, int windowTicks)
+        {
+            if (done)
+            {
+                return RM_OpeningAction.Done;
+            }
+            if (!enabled || ageTicks > windowTicks)
+            {
+                return RM_OpeningAction.Skip;
+            }
+            return RM_OpeningAction.Light;
         }
 
         /// <summary>Offsets of a front line of exactly `width` cells through the origin at a bearing (degrees): one cell per step along the

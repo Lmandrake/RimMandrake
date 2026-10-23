@@ -1,6 +1,6 @@
 // Verse-free kernel of Graffiti: the weighted mark pick and its three eligibility gates, the relation-keyed reaction priority, the
-// clan-only veto, scrub protection, the raid-exit gate, the wall-cell candidate gathering, the paint cadence clamp and the breach-lure
-// choice. GraffitiPool, ThoughtWorker_ViewedGraffitiMark, AutoCleanProtection, RaidExitTagger, GraffitiJobUtility, JobDriver_PaintGraffiti,
+// clan-only veto, scrub protection, the raid-exit gate, the wall-cell candidate gathering, the paint cadence clamp, the breach-lure
+// choice and the wall-face draw (side, offset, angle). GraffitiPool, ThoughtWorker_ViewedGraffitiMark, AutoCleanProtection, RaidExitTagger, GraffitiJobUtility, JobDriver_PaintGraffiti,
 // Filth_Mark and BreachBiasHook call these with the same expressions; SelfTest/GraffitiFuzz.cs compiles this file (and the two plain enum
 // files GraffitiForm.cs / GraffitiCategory.cs) alone. Keep it free of Verse/RimWorld/UnityEngine/HarmonyLib (a `using Verse;` here breaks
 // the self-test build, which is the guard rail).
@@ -171,6 +171,42 @@ namespace RimMandrake.Graffiti
                 }
             }
             return bare.Count > 0 ? bare : any;
+        }
+
+        // ---------------------------------------------------------------- wall face (GRAFFITI_WALLFACE)
+        // Owner, by card 2026-10-22 ("Q9 → Graffiti floor cell drawn offset facing wall"): a mark stays on the floor cell beside
+        // the wall but records which side the wall is on, and is DRAWN offset onto that wall and turned to face it, so it reads as
+        // wall art with no new thing class. Sides are Rot4 integers: 0 north (+z), 1 east (+x), 2 south (-z), 3 west (-x).
+
+        /// <summary>How far toward the wall a mark is drawn, in cells: onto the shared edge, half over the wall. [INVENTED; the
+        /// owner judges it in game]</summary>
+        public const float WallFaceOffsetCells = 0.5f;
+
+        public const int NoWall = -1;
+
+        /// <summary>The wall a mark is painted on, from which cardinal neighbours are full-fillage walls. With several, north first
+        /// (the wall face the top-down camera sees, so the mark stays upright), then east, west, south. NoWall with none.</summary>
+        public static int WallSide(bool north, bool east, bool south, bool west)
+        {
+            if (north) return 0;
+            if (east) return 1;
+            if (west) return 3;
+            if (south) return 2;
+            return NoWall;
+        }
+
+        /// <summary>Draw offset (x, z in cells) toward the wall on `side`; (0, 0) for NoWall or an out-of-range side.</summary>
+        public static void WallFaceOffset(int side, float cells, out float dx, out float dz)
+        {
+            dx = side == 1 ? cells : side == 3 ? -cells : 0f;
+            dz = side == 0 ? cells : side == 2 ? -cells : 0f;
+        }
+
+        /// <summary>Draw rotation in degrees (RimWorld's clockwise-from-north, as Rot4.AsAngle): the mark's top points into the wall
+        /// it is painted on. 0 for NoWall or an out-of-range side, which is the old upright floor draw.</summary>
+        public static float WallFaceAngle(int side)
+        {
+            return side >= 0 && side <= 3 ? side * 90f : 0f;
         }
 
         /// <summary>

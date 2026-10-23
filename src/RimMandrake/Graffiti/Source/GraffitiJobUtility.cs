@@ -96,14 +96,18 @@ namespace RimMandrake.Graffiti
         {
             foreach (IntVec3 adj in GenAdj.CardinalDirections)
             {
-                IntVec3 n = c + adj;
-                if (!n.InBounds(map)) continue;
-                if (n.GetEdifice(map) is Building building && building.def.Fillage == FillCategory.Full)
+                if (IsFullWallAt(c + adj, map))
                 {
                     return true;
                 }
             }
             return false;
+        }
+
+        /// <summary>The wall test every mark placer and Filth_Mark's wall-face draw share: an in-bounds full-fillage edifice.</summary>
+        internal static bool IsFullWallAt(IntVec3 n, Map map)
+        {
+            return n.InBounds(map) && n.GetEdifice(map) is Building building && building.def.Fillage == FillCategory.Full;
         }
     }
 }

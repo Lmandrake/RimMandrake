@@ -160,6 +160,23 @@ namespace RimMandrake.Pyrelands
         public const int FireFrontSeedTries = 40;
 
         // ---------------------------------------------------------------
+        // PYRE_OPENING_FRONT — every fresh Pyrelands map starts with one small smouldering front (owner, by card,
+        // 2026-10-22: "GPT review Q7 → Pyrelands fresh map starts with a smouldering front"), so the walk bar "a fresh map
+        // shows an active line of fire, with a scorched trail" is true at arrival instead of 2-4 days in.
+        // ---------------------------------------------------------------
+
+        /// <summary>Cells on the opening front's line: about half a scheduled front. [INVENTED]</summary>
+        public const int OpeningFrontWidthCells = 5;
+
+        /// <summary>The scheduled front's fire size: the reseed's 0.1 smoulder usually dies before it walks, and the bar
+        /// wants a line that walks and leaves a trail. [INVENTED]</summary>
+        public const float OpeningFrontFireSize = 0.35f;
+
+        /// <summary>How long after map generation the opening front may still be lit (it retries each watch interval
+        /// when no lawful cell takes); past it the map is no longer fresh and the opening front is dropped. One hour.</summary>
+        public const int OpeningFrontWindowTicks = 2500;
+
+        // ---------------------------------------------------------------
         // DEEP_TRIBES_FIRE_RITE_1 — the Deep Tribes come to light it.
         //
         // OWNER, 2026-09-16, verbatim: "What about the biome sometimes spawning a
