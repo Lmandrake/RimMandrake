@@ -55,6 +55,10 @@ from scenarios import stage0_swim_pit as S0SWIM  # noqa: E402
 from scenarios.mock_bridge import MockBridge  # noqa: E402
 
 OUT = os.path.join(HERE, "review", "scenarios")
+# SCENARIO_MOCK_HARDEN_INKS_THE_REAL_KEYSHEET (2026-10-22): an offline run (--plan / --dry-run / --mock, map C or --river)
+# rewrote the committed KEYSHEET.md + keysheet.html for the live save with mock text and "(not saved yet)". Only a live
+# build or save writes OUT; an offline sheet goes here (a human reads it once: Transient).
+OFFLINE_OUT = os.path.join(REPO, "Transient", "fw_scenarios_offline")
 TAG = "fw_scen"
 MAP_SIZE = 250
 EDGE_SINK = 10
@@ -1113,8 +1117,10 @@ def river_save_text(save):
     return SAVE_RIVER + " (not saved yet)"
 
 
-def keysheet(placed, live=None, save=None, mock=None):
-    os.makedirs(OUT, exist_ok=True)
+def keysheet(placed, live=None, save=None, mock=None, out_dir=None):
+    """Write KEYSHEET.md + keysheet.html into out_dir (default OUT, the committed walkthrough sheet: live/save runs only)."""
+    out_dir = out_dir or OUT
+    os.makedirs(out_dir, exist_ok=True)
     E = html.escape
     md = ["# FlowWorks composite review scenarios - key sheet", "",
           "Load **%s** (map C) and **%s** (map R: C1, C11). Paused at 10:00, god mode on, clear weather, Peaceful, Mod "
@@ -1163,7 +1169,7 @@ def keysheet(placed, live=None, save=None, mock=None):
             md += ["**Prove first:** `%s` (Stage 0, live owed)." % sc["prove_first"], ""]
     md += ["## Stage 0 - swim out of a flooded sheer pit (C3's bet)", "", S0SWIM.__doc__.strip().split("\n\n")[0], ""]
     text = "\n".join(md) + "\n"
-    with open(os.path.join(OUT, "KEYSHEET.md"), "w", encoding="utf-8") as f:
+    with open(os.path.join(out_dir, "KEYSHEET.md"), "w", encoding="utf-8") as f:
         f.write(text)
     body = []
     for ln in md:
@@ -1198,9 +1204,9 @@ def keysheet(placed, live=None, save=None, mock=None):
             "padding:16px}h1,h2{color:var(--ac)}table{border-collapse:collapse;width:100%;margin:8px 0}"
             "td{border:1px solid var(--li);padding:3px 6px;vertical-align:top}p.t{margin:2px 0 2px 16px}</style></head>"
             "<body>" + "\n".join(out) + "</body></html>")
-    with open(os.path.join(OUT, "keysheet.html"), "w", encoding="utf-8") as f:
+    with open(os.path.join(out_dir, "keysheet.html"), "w", encoding="utf-8") as f:
         f.write(page)
-    return os.path.join(OUT, "KEYSHEET.md")
+    return os.path.join(out_dir, "KEYSHEET.md")
 
 
 # ------------------------------------------------------------------------------------------------ offline runs
@@ -1279,9 +1285,9 @@ def main(argv=None):
             bad = [s for s, v in res["verify"].items() if not v["ok"]] + ([] if river["verify"].get("C1", {}).get("ok") else ["C1"])
             harm = [n for n in res["notes"] + river["notes"] if "not loaded on this mod list" not in n]
             if a.mock and (bad or harm or river["unplaced"]):
-                keysheet(placed, mock=mock_txt)
+                keysheet(placed, mock=mock_txt, out_dir=OFFLINE_OUT)
                 return 1
-        print("key sheet -> %s" % keysheet(placed, mock=mock_txt))
+        print("key sheet (offline, not the committed one) -> %s" % keysheet(placed, mock=mock_txt, out_dir=OFFLINE_OUT))
         if not a.stage0:
             return 0
     if a.stage0:
