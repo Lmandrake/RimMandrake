@@ -588,6 +588,10 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
                 if surprise:
                     comp.verdict, comp.surprises = UNMEASURED, e.summary()
                     comp.detail = "%s: %s" % (e.kind, e)
+                elif str(e).startswith("UNMEASURED"):
+                    # The script says it could not ASK (e.g. spawn_pawn returned no id): a harness gap, never a mod
+                    # FAIL and never a finding -- same rule as inside a component (suite.Component.__exit__).
+                    comp.verdict, comp.detail = UNMEASURED, "%s: %s" % (type(e).__name__, e)
                 else:
                     comp.verdict, comp.detail = FAIL, "%s: %s" % (type(e).__name__, e)
                     findings.append(comp)
