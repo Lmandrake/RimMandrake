@@ -12,8 +12,9 @@
                       junction that grants that research, and the extension fields exist on the CreatureBehaviors class
   ww-nest             nest GenStep constants name defs that exist, the relay comp sits on the wall with the ruled 20~30 day range and a mother
                       race that exists, the GenStepDefs order the nest (324) before the skeleton (325) and both are added to the map generator
-  ww-economy          the thrixweave neighbours: this mod relabels Hyperweave, the campaign economy loads after it, the startup gate reaches the
-                      front extension by a field name that exists, and no def outside the known owners adds Hyperweave to a trader's stock
+  ww-economy          the thrixweave neighbours: this mod relabels Hyperweave and no other mod relabels it a second time, the startup gate
+                      reaches the front extension by a field name that exists, and no def outside the known owners adds Hyperweave to a
+                      trader's stock
   ww-kernel-pure      the kernel imports no Verse / RimWorld / UnityEngine and is listed in the csproj; an unattached emergent comp is WARNed
 
     python3 src/RimMandrake/Utils/lint_webwork_defs.py [--quiet] [--mod-dir D] [--plant-check]
@@ -28,7 +29,6 @@ import xml.etree.ElementTree as ET
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-import biomes_compose  # noqa: E402
 import lint_mod_defs  # noqa: E402
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
@@ -283,32 +283,28 @@ def main(argv):
     for xp in ("Defs/ThingDef[defName=\"Hyperweave\"]/label", "Defs/ThingDef[defName=\"Hyperweave\"]/description"):
         if xp not in rename:
             E("ww-economy", f"RM_Thrixweave_Rename.xml no longer replaces {xp}")
-    eco = os.path.join(SRC, "RimUtinni", "ShokkweaveEconomy")
-    if os.path.isdir(eco):
-        about = read(os.path.join(eco, "About", "About.xml"))
-        la = re.search(r"<loadAfter>(.*?)</loadAfter>", about, flags=re.S)
-        # Webwork is composed into mandrake.rm.biomes (Biomes.compose.json), so its own packageId never loads and an
-        # edge naming it does nothing: the order is only real against the RUNTIME id (about_load_order_lint folds the same way).
-        ww_id = biomes_compose.folded_ids(SRC).get("mandrake.rm.webwork", "mandrake.rm.webwork")
-        if not la or ww_id not in la.group(1).lower():
-            E("ww-economy", f"ShokkweaveEconomy does not load after {ww_id} (Webwork's runtime packageId): its Shokkweave relabel would be overwritten by the thrixweave one")
-        for p in glob.glob(os.path.join(eco, "Patches", "*.xml")):
+    # The campaign's "shokkweave" relabel was dropped when mandrake.rut.shokkweaveeconomy was cut (owner, Biome card 5,
+    # 2026-10-22): the Webwork's thrixweave rename is the ONLY relabel of Hyperweave. A second one would fight it by
+    # load order. Its rare-stock caravans moved to UtinniPatches and stock through a custom generator class, not a
+    # <thingDefs> list, so the trader scan below does not see them.
+    owners = {"Webwork", "CreatureBehaviors"}
+    relabel = re.compile(r'ThingDef\[defName=["\']Hyperweave["\']\]/(label|description)')
+    for p in glob.glob(os.path.join(SRC, "*", "*", "**", "*.xml"), recursive=True):
+        if os.sep + "Textures" + os.sep in p:
+            continue
+        parts = os.path.relpath(p, SRC).split(os.sep)
+        if parts[1] in owners:
+            continue
+        try:
             t = read(p)
-            if "Hyperweave" in t and "ThingDef[defName=\"Hyperweave\"]" in t and "PatchOperationReplace" not in t and "PatchOperationAdd" not in t:
-                W("ww-economy", f"{os.path.basename(p)} names Hyperweave without a replace / add operation")
-        owners = {"Webwork", "ShokkweaveEconomy", "CreatureBehaviors"}
-        for p in glob.glob(os.path.join(SRC, "*", "*", "**", "*.xml"), recursive=True):
-            if os.sep + "Textures" + os.sep in p:
-                continue
-            parts = os.path.relpath(p, SRC).split(os.sep)
-            if parts[1] in owners:
-                continue
-            try:
-                t = read(p)
-            except OSError:
-                continue
-            if "Hyperweave" in t and re.search(r"stockGenerators|thingDefs|ThingDef\b.*Hyperweave", t) and "TraderKindDef" in t and re.search(r"<thingDefs>.*?Hyperweave", t, flags=re.S):
-                E("ww-economy", f"{os.path.relpath(p, SRC)} stocks Hyperweave on a trader outside the sole-source owners")
+        except OSError:
+            continue
+        if "Hyperweave" not in t:
+            continue
+        if relabel.search(t):
+            E("ww-economy", f"{os.path.relpath(p, SRC)} relabels Hyperweave a second time (the Webwork's thrixweave rename is the only one)")
+        if re.search(r"stockGenerators|thingDefs|ThingDef\b.*Hyperweave", t) and "TraderKindDef" in t and re.search(r"<thingDefs>.*?Hyperweave", t, flags=re.S):
+            E("ww-economy", f"{os.path.relpath(p, SRC)} stocks Hyperweave on a trader outside the sole-source owners")
 
     # ---- kernel / csproj / emergent comp ----
     if re.search(r"^\s*using\s+(Verse|RimWorld|UnityEngine|HarmonyLib)", kernel, flags=re.M):

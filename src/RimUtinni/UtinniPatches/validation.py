@@ -453,6 +453,49 @@ def infestation_ban_static(t):
             raise ExpectationFailed("; ".join(bad))
 
 
+@suite.chain("webwork_egg_market")
+def webwork_egg_market(t):
+    """Biome card 5 (owner, by card, 2026-10-22): the Hutt Cartel egg black market and the Wildsteam weaver caravan,
+    ported from the cut mandrake.rut.shokkweaveeconomy. Static half: selftest_webwork_egg_market.findings() applies the
+    two patch files to the real defs and checks the original numbers. Live half: the patched defs as loaded (needs a game on a list with this mod; no live run recorded yet).
+    Not proven by either: a caravan actually arriving and rolling its stock (needs a forced trader-caravan incident)."""
+    with t.component("egg_market_patches_produce_the_original_defs", beyond_toggle=True):
+        import sys
+        if _MOD_DIR not in sys.path:
+            sys.path.insert(0, _MOD_DIR)
+        try:
+            import selftest_webwork_egg_market as eggm
+        except ImportError as e:   # lxml is not on every interpreter modcheck runs under
+            t.upstream_failed = True
+            t.upstream_reason = "UNMEASURED: %s" % e
+            return
+        bad = eggm.findings()
+        if bad:
+            raise ExpectationFailed("; ".join(bad))
+    with t.component("egg_market_defs_live_as_patched", beyond_toggle=True):
+        # Field reads in the shape Webwork/validation.py measured live (2026-10-03): one deep get_defs row's `fields`.
+        want = {"ThingDef/RM_OllathrixEgg": ("tradeability", lambda v: v.strip("[]'\" ") == "All"),
+                "FactionDef/RUT_Jawa_HuttCartel": ("caravanTraderKinds", lambda v: "RUT_Caravan_HuttCartel_EggMarket" in v),
+                "FactionDef/RUT_Jawa_WildsteamClan": ("caravanTraderKinds", lambda v: "RUT_Caravan_Wildsteam_Weavers" in v),
+                "TraderKindDef/RUT_Caravan_Wildsteam_Weavers": ("stockGenerators", lambda v: "RareThrixweave" in v),
+                "TraderKindDef/RUT_Caravan_HuttCartel_EggMarket": ("stockGenerators", lambda v: "RareThrixweave" in v)}
+        for spec, (field, ok) in want.items():
+            r = t.bridge_call("jawa/get_defs", defs=spec, fields=field, deep=True, limit=2)
+            if not _live(t):
+                return
+            rows = (r or {}).get("defs") or []
+            if not isinstance(r, dict) or r.get("success") is False or int(r.get("foundCount", 0)) != 1 or not rows:
+                raise ExpectationFailed("%s did not load: %s" % (spec, str(r)[:200]))
+            f = rows[0].get("fields") or {}
+            if field not in f:
+                t.upstream_failed = True
+                t.upstream_reason = "UNMEASURED: get_defs returned no %s for %s" % (field, spec)
+                return
+            v = f[field] if isinstance(f[field], str) else repr(f[field])
+            if not ok(v):
+                raise ExpectationFailed("%s %s live is %s" % (spec, field, v[:200]))
+
+
 @suite.chain("zersium_forge")
 def zersium_forge(t):
     """ZERSIUM_FORGE_BIOME_1: zersium (RSW_Zersium, mandrake.rsw.armoury) is mined only in the Forge. Its ore has

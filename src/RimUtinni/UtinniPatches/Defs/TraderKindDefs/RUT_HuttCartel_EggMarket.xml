@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ============================================================================
-  RUT_HuttCartel_EggMarket.xml    ShokkweaveEconomy · WEBWORK_EGG_BLACKMARKET_BUILD_1
+  RUT_HuttCartel_EggMarket.xml    UtinniPatches · WEBWORK_EGG_BLACKMARKET_BUILD_1 (moved here from the cut
+  mandrake.rut.shokkweaveeconomy, Biome card 5, 2026-10-22; behaviour unchanged)
   ============================================================================
 
   §1 of design/Jawa/worldbuilding/biomes/webwork_egg_blackmarket_2026-09-24.md.
@@ -14,7 +15,7 @@
   Shape copied from the existing `RUT_Caravan_HuttCartel_Captives`
   (UtinniPatches/Defs/TraderKindDefs/RUT_HuttCartel_Captives.xml): a dedicated
   TraderKindDef appended to `RUT_Jawa_HuttCartel`'s own `caravanTraderKinds`
-  (see ShokkweaveEggBlackMarket.xml, this mod), never a fixed settlement seat
+  (see Patches/RUT_Webwork_EggBlackMarket.xml, this mod), never a fixed settlement seat
   (design §1b: "a static buyer next door deletes the [carry-risk] risk").
 
   🔴 MEASURED, RimSage against the installed 1.6 source (this session,
@@ -82,7 +83,7 @@
            StockGenerator_Tag/_Category anywhere in this repo names
            RM_Contraband (MEASURED: `grep -rn "RM_Contraband" src/` returns
            no hits outside this design's own docs, 2026-09-26), so opening
-           the egg's tradeability to All (ShokkweaveEggBlackMarket.xml)
+           the egg's tradeability to All (RUT_Webwork_EggBlackMarket.xml)
            cannot leak it onto any other trader's shelf by tag route. -->
       <li Class="StockGenerator_BuyTradeTag">
         <tag>RM_Contraband</tag>

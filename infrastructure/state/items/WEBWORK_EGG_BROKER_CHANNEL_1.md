@@ -40,7 +40,8 @@ drawing real content):
    Q11/Q11a reasoning as the rest of this design), with a `workerClass`
    subclassing `BazaarTabWorker`.
 2. `ShouldShow(RM_BazaarSession)` gates on: campaign layer loaded
-   (`mandrake.rut.shokkweaveeconomy` present) AND the current `trader` being
+   (`mandrake.rut.patches` present; the egg market moved there when
+   `mandrake.rut.shokkweaveeconomy` was cut, Biome card 5, 2026-10-22) AND the current `trader` being
    the Hutt Cartel egg-market kind (`RUT_Caravan_HuttCartel_EggMarket`,
    already built in `WEBWORK_EGG_BLACKMARKET_BUILD_1`) OR a dedicated broker
    context — exact gate depends on what `BAZAAR_WINDOW_GRID_1` ends up
@@ -49,7 +50,7 @@ drawing real content):
 3. `DoTabContents` draws the sell-your-eggs-for-the-jackpot flow described in
    §1b: a premium payout without waiting for the caravan's `commonality` roll.
    🔴 Re-check the engine-limit note left on `WEBWORK_EGG_BLACKMARKET_BUILD_1`'s
-   own patch file (`ShokkweaveEggBlackMarket.xml`) before assuming a price
+   own def file (`src/RimUtinni/UtinniPatches/Defs/TraderKindDefs/RUT_HuttCartel_EggMarket.xml`) before assuming a price
    premium is free: `TraderKindDef.PriceTypeFor` never returns a non-Normal
    `PriceType` for `TradeAction.PlayerSells` (MEASURED, RimSage, 2026-09-26) —
    a genuine "broker pays more" jackpot needs its own price calculation in the

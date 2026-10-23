@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_Webwork_EggBlackMarket.xml    UtinniPatches · WEBWORK_EGG_BLACKMARKET_BUILD_1
+  ============================================================================
+
+  Moved here unchanged in behaviour from the cut mandrake.rut.shokkweaveeconomy
+  (ShokkweaveEggBlackMarket.xml), owner Biome card 5 by card, 2026-10-22.
+  §1d/§5 ruling 5 of design/Jawa/worldbuilding/biomes/webwork_egg_blackmarket_2026-09-24.md.
+
+  1) Tradeability: RM_OllathrixEgg (mandrake.rm.webwork, composed into
+     mandrake.rm.biomes) ships an explicit <tradeability>Sellable</tradeability>
+     in the free tier (no trader ever STOCKS it there, only nests do). The
+     campaign layer opens it to All so `RUT_Caravan_HuttCartel_EggMarket` can
+     stock it at all (`TraderCanSell()` is false for Sellable, TradeabilityUtility.cs).
+     The PatchOperationConditional covers both shapes: Replace if the element
+     exists, Add if it does not.
+
+     Leak check (§5 ruling 5, "leak-checked at build against every live
+     TraderKindDef"), MEASURED 2026-09-26 with RimSage against the installed
+     1.6 source: the egg carries `<thingCategories>ResourcesRaw</thingCategories>`,
+     and `StockGenerator_Category categoryDef=ResourcesRaw` is used by five
+     vanilla/DLC TraderKindDefs (TraderKinds_Base_Outlander, _Base_Neolithic,
+     _Orbital_Misc in Core; _Base_Empire, _Caravan_Empire in Royalty), none
+     excluding it. `StockGenerator_Category.GenerateThings` filters on
+     `tradeability.TraderCanSell()`, TRUE for All, so the flip alone would let
+     those ordinary traders roll the black-market egg. The trade TAG route is
+     clean: no StockGenerator_Tag in this repo names `RM_Contraband`.
+
+     FIX: campaign-side, strip `ResourcesRaw` off the egg's `thingCategories`
+     below. `StockGenerator_SingleDef.HandlesThingDef` is a bare defName match,
+     so the Cartel kind's own stocking is untouched; the category-route traders
+     can no longer see the egg. A player without the campaign layer keeps the
+     free tier's ResourcesRaw-categorized, Sellable-only egg.
+
+  2) The Cartel caravan kind is APPENDED to `RUT_Jawa_HuttCartel`'s own
+     `caravanTraderKinds` (Defs/FactionDefs/JawaHuttCartel.xml, this mod,
+     which already lists `RUT_Caravan_HuttCartel_Captives` the same way), so
+     this Add appends alongside it rather than replacing the list.
+  ============================================================================
+-->
+<!-- PATCH_MAYREQUIRE_GUARD_INERT_1: MayRequire on a top-level <Operation> is
+     ignored by vanilla, so the three operations sit under one real
+     PatchOperationFindMod on the composed biomes mod that carries the egg
+     (this mod hard-depends on it today; the guard keeps the file load-safe
+     if that ever changes). -->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>RimMandrake: Baroque Biomes</li></mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/ThingDef[defName="RM_OllathrixEgg"]/tradeability</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ThingDef[defName="RM_OllathrixEgg"]/tradeability</xpath>
+            <value>
+              <tradeability>All</tradeability>
+            </value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ThingDef[defName="RM_OllathrixEgg"]</xpath>
+            <value>
+              <tradeability>All</tradeability>
+            </value>
+          </nomatch>
+        </li>
+
+        <!-- The leak fix: pull RM_OllathrixEgg out of the ResourcesRaw
+             category route (see the header note above) once it goes
+             tradeability All. -->
+        <li Class="PatchOperationRemove">
+          <xpath>Defs/ThingDef[defName="RM_OllathrixEgg"]/thingCategories/li[text()="ResourcesRaw"]</xpath>
+        </li>
+
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/FactionDef[defName="RUT_Jawa_HuttCartel"]/caravanTraderKinds</xpath>
+          <value>
+            <li>RUT_Caravan_HuttCartel_EggMarket</li>
+          </value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>
