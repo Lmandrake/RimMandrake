@@ -36,6 +36,10 @@ Rows (each gets a labelled picture; the overview picture carries all of them):
   is in progress), raiders-never-shelter (a raid-run state read), jump-into-pit hurts nobody (state read; live_session g_pit_access).
   Site for all bars_* rows: east of the hoses, rect "bars_rect" (x = origin+150, 62 wide, 76 tall); live_session's owner zone is 216 wide.
 Then: kill hostiles, Clear weather locked, stepped toward midday, camera framed, shots, ONE save.
+Map: a vanilla biome only (WATER_TRUE_BIOMES; --any-biome overrides), and a 3x3 vanilla WaterShallow swatch south of the ladders
+row is photographed and its mean colour measured: water that does not read blue over red WITHHOLDS the save
+(WATER_LOOK_DIAGNOSE_GREY_ON_THE_ROT: on RM_TheRot every water square drew flat grey-brown). Every frame is zoomed to fit its
+whole rect (water_scenes_walk.fit_root_size), never below the engine's rootSize floor.
 
 Every action goes through Stage: --dry-run prints exactly the calls a live run would make.
 Bridge tools used (all found in the repo): jawa/flowworks_excavation_drive, jawa/build_batch, jawa/battery_set, jawa/static_call (ProofLadder, ProofTank,
@@ -61,6 +65,41 @@ SHALLOWS = ((0.5, 1), (1.0, 2), (1.5, 3), (2.0, 4), (5.0, 10))   # (metres, notc
 BARS_ROWS = ("bars_joint", "bars_dry", "bars_trench", "bars_access", "bars_bridges", "bars_bridge_kinds")
 ALL_ROWS = ("ladders", "spikes", "gates", "shallows", "sprinklers") + BARS_ROWS
 OPT_ROWS = ("hoses", "picks")            # run only when named in --only (own site east of the others; not in the default sweep)
+
+# WATER_LOOK_DIAGNOSE_GREY_ON_THE_ROT (2026-10-23): on a biomes_sprint quicktest on RM_TheRot every dug water square AND a
+# painted vanilla WaterDeep lake drew flat grey-brown (pit mean RGB 67,61,47 against soil 91,57,30; good water on a temperate
+# map reads 83,93,97 -- blue over red). Not FlowWorks: RM_LiquidLooks never touches a base-game terrain (Owned() refuses
+# official ones), so the vanilla lake drew the same with no FlowWorks look on it, and the mod sets no shader global. The
+# map is the variable: the Rot is our night-shoulder biome (pinned low sun, its own sky targets). So the owner's map is a
+# vanilla-biome map, and a vanilla shallow-water swatch is photographed and MEASURED before the save is kept.
+WATER_TRUE_BIOMES = ("TemperateForest", "TemperateSwamp", "BorealForest", "TropicalRainforest", "TropicalSwamp",
+                     "AridShrubland", "Desert", "Tundra", "ColdBog")
+SWATCH = "WaterShallow"
+SWATCH_BLUE_MARGIN = 5          # mean blue minus mean red over the swatch's centre: good 97-83 = +14, the grey Rot water -20
+
+
+def swatch_rect(ox, oz):
+    """The 3x3 vanilla water swatch: inside the cleared site rect, south of the ladders row (pure)."""
+    return (ox - 2, oz - 5, 3, 3)
+
+
+def water_verdict(rgb, margin=SWATCH_BLUE_MARGIN):
+    """True when a mean (r, g, b) reads as water (blue over red by margin), False when grey/brown, None unread (pure)."""
+    if not rgb or len(rgb) < 3 or any(v is None for v in rgb[:3]):
+        return None
+    return (rgb[2] - rgb[0]) >= margin
+
+
+def centre_rgb(png, frac=0.06):
+    """Mean RGB of the centre square (frac of the image height) of a screenshot; None when unreadable."""
+    try:
+        from PIL import Image, ImageStat
+        im = Image.open(png).convert("RGB")
+        W, H = im.size
+        r = max(4, int(H * frac / 2))
+        return [round(v, 1) for v in ImageStat.Stat(im.crop((W // 2 - r, H // 2 - r, W // 2 + r, H // 2 + r))).mean]
+    except Exception:  # noqa: BLE001 - an unreadable picture is no verdict, never a pass
+        return None
 
 
 # ------------------------------------------------------------------ geometry (pure)
@@ -693,6 +732,7 @@ def main(argv=None):
     ap.add_argument("--save-name", default=None)
     ap.add_argument("--no-save", action="store_true")
     ap.add_argument("--no-shots", action="store_true")
+    ap.add_argument("--any-biome", action="store_true", help="stage on a biome outside WATER_TRUE_BIOMES (the swatch still judges)")
     a = ap.parse_args(argv)
     only = [x for x in a.only.split(",") if x] or list(ALL_ROWS)
     for row in only:        # before any bridge call: an unknown row must not clear a site first
@@ -704,10 +744,20 @@ def main(argv=None):
     w = None
     if not a.dry_run:
         import fw_walk_common as C
-        out = os.path.join(C.REPO, "Transient", "owner_review_stage")
+        # a mock run writes synthetic pictures: its own folder, so it never overwrites a live run's evidence (2026-10-23:
+        # a --mock rehearsal replaced the grey-water row_shallows/overview captures WATER_LOOK_DIAGNOSE cited)
+        out = os.path.join(C.REPO, "Transient", "owner_review_stage_mock" if a.mock else "owner_review_stage")
         w = C.make_walk(a, out)
     s = Stage(w, a.dry_run)
     s.say("OWNER REVIEW MAP %s  origin %s  rect %s  rows %s" % (name, (ox, oz), L["rect"], only))
+    if not a.dry_run and not a.mock:
+        mi = s.w.call("jawa/map_info") or {}
+        biome = mi.get("mapBiome") or (mi.get("tileInfo") or {}).get("biome")
+        s.notes.append("map biome %s" % biome)
+        if biome not in WATER_TRUE_BIOMES and not a.any_biome:
+            print("REFUSED: map biome %s is not one where water is known to draw right (%s); load a vanilla-biome map "
+                  "(e.g. a TemperateForest quicktest) or pass --any-biome" % (biome, ", ".join(WATER_TRUE_BIOMES)))
+            return 3
     if not a.dry_run:
         s.chk("kill_hostiles", s.w.call("jawa/kill_hostiles"))
         s.chk("weather_set Clear", s.w.call("jawa/weather_set", weather="Clear", lockWeather=True))
@@ -736,6 +786,13 @@ def main(argv=None):
             caps["gates_grate"] = row_gates(s, L, "RM_SecurityGrateDoor", "gates_grate", "Steel")
         else:
             caps[row] = ROWS[row](s, L)
+    sw = swatch_rect(ox, oz)
+    if [r for r in only if r not in OPT_ROWS + BARS_ROWS]:
+        s.say("SWATCH: vanilla %s %s, photographed and measured before the save (water must read blue over red)" % (SWATCH, sw))
+        if not a.dry_run:
+            s.chk("swatch paint", s.w.call("jawa/set_terrain_batch", ops="%s:%d,%d,%d,%d" % ((SWATCH,) + sw)))
+    else:
+        sw = None
     s.say("FINISH: kill hostiles, Clear weather, step toward midday, frame, shoot, save '%s'" % name)
     if a.dry_run:
         if "hoses" in caps:
@@ -763,7 +820,7 @@ def main(argv=None):
     shots = []
     if "hoses" in caps:
         import shutil
-        hdir = os.path.join(C.REPO, "Transient", "fw_hoses_walk")
+        hdir = os.path.join(C.REPO, "Transient", "fw_hoses_walk_mock" if a.mock else "fw_hoses_walk")
         os.makedirs(hdir, exist_ok=True)
         day = time.strftime("%Y%m%d")
         for scene, (pump, wide, close, who, label) in caps["hoses"]["scenes"].items():
@@ -801,8 +858,20 @@ def main(argv=None):
     over = C.snap(w, "overview", L["rect"])
     if over:
         shots.append(over)
-    s.w.frame(L["rect"])            # clear_ui + closest zoom + frame (frame_cell_rect never zooms IN)
-    if not a.no_save:
+    water_ok = None
+    if sw and not a.no_shots:
+        png = C.snap(w, "water_swatch", (sw[0] - 1, sw[1] - 1, sw[2] + 2, sw[3] + 2))
+        rgb = centre_rgb(png) if png and not a.mock else None     # a synthetic mock picture is no water read
+        water_ok = water_verdict(rgb)
+        s.notes.append("water swatch %s mean RGB %s -> %s" % (sw, rgb, {True: "reads as water", False: "GREY/BROWN: water "
+                       "does not draw right on this map", None: "UNMEASURED"}[water_ok]))
+        if png:
+            shots.append(png)
+    s.w.frame(L["rect"])            # clear_ui + whole-site zoom (water_scenes_walk.fit_root_size)
+    if water_ok is False and not a.no_save:
+        s.notes.append("SAVE WITHHELD: the vanilla water swatch did not read as water (WATER_LOOK_DIAGNOSE_GREY_ON_THE_ROT); "
+                       "stage again on a map where it does")
+    elif not a.no_save:
         r = s.w.call("rimworld/save_game", saveName=name) or {}
         time.sleep(2.0)
         p = r.get("path")

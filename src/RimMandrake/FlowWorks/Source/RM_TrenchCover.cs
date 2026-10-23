@@ -196,7 +196,7 @@ namespace RimMandrake.FlowWorks
 			return "TRENCH trench=" + trench.ToString("F3") + " vanilla=" + vanilla.ToString("F3") + " combined="
 				+ combined.ToString("F3") + " hit=" + hit.ToString("F3") + " hitNoTrench=" + hit0.ToString("F3") + " cage="
 				+ IsCageFor(t, t.Position) + " target=" + t.Position.x + "," + t.Position.z + " shooter=" + s.Position.x + ","
-				+ s.Position.z;
+				+ s.Position.z + " size=" + t.BodySize.ToString("F3");   // the bar follows the target's size (a teenager is 0.8)
 		}
 	}
 

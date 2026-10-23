@@ -303,8 +303,10 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_Volume.LakebedFor(12) == "RM_Lakebed_Abyss" && RM_Volume.LakebedFor(RM_Volume.AbyssBedLevels - 1) == "RM_Lakebed_Deep"
                     && RM_Volume.LakebedFor(RM_Volume.LevelsPerSquare) == "RM_Lakebed_Deep" && RM_Volume.LakebedFor(2) == "RM_Lakebed_Shallow",
                     "terrain bands: shallow < 4 <= deep < 8 <= abyss");
-                // §9.5: the pawn sink is capped at the deep notch (no sprite drawn cells south of its square)
-                Assert(Math.Abs(RM_PitDrawMath.SinkFor(12, 0.3f) - RM_PitDrawMath.SinkFor(4, 0.3f)) < 1e-6, "the sink stops at 4 levels");
+                // §9.5 widened by SINK_CAP_WIDEN_PAWNS_SINK_TO_FOUR (owner's pawn_height_ladder_legible card: a colonist keeps
+                // sinking to 4 m): the sink is capped at 8 levels; ClampSinkToLip keeps the sprite inside the pit opening
+                Assert(Math.Abs(RM_PitDrawMath.SinkFor(12, 0.3f) - RM_PitDrawMath.SinkFor(8, 0.3f)) < 1e-6
+                    && RM_PitDrawMath.SinkFor(8, 0.3f) > RM_PitDrawMath.SinkFor(4, 0.3f), "the sink grows to 8 levels (4 m) and stops there");
                 Assert(Math.Abs(RM_RelativeRulesMath.FallScaleNotches(12) - 3f) < 1e-6 && RM_RelativeRulesMath.FallScaleNotches(40) == 4f,
                     "a 6 m drop is 3 times the 2 m fall; never more than 4 (P7 V3)");
                 Assert(RM_WallFaceMath.NorthFaceHeight(12) == RM_WallFaceMath.NorthMax && RM_WallFaceMath.SouthLining(12) > 0f, "wall faces clamp past 4");

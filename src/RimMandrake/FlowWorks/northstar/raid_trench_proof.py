@@ -266,7 +266,17 @@ def _run(argv, hold):
     res["centre"] = c
     rect = (c[0] - 10, c[1] - 10, 21, 21)
     B.call("jawa/static_call", type=PROOF_TYPE, method="ProofResetRect", args="%d;%d;%d;%d" % rect)
-    V.prepare_site(B, rect, [], "raid_site")
+    # HARNESS (live 20261023T044826): prepare_site's verdict was dropped -- set_terrain_batch refused part of the site
+    # (fish map, TemperateForest river near the centre), the run dug its ring anyway and RAID_island_sealed read a
+    # moat that was never a clean dry ring (bits 0xFF) as a MOD FAIL. A site that did not read back clear runs nothing.
+    site_rows = []
+    if not V.prepare_site(B, rect, site_rows, "raid_site"):
+        why = (site_rows[-1].get("detail") if site_rows and isinstance(site_rows[-1], dict) else None) or "prepare_site refused"
+        res["siteNotReady"] = why
+        for rid in ("RAID_island_sealed", "RAID_outcome"):
+            row(rid, "UNMEASURED", {"class": "SITE", "why": "the raid site did not read back clear; nothing dug or fired",
+                                    "site": why})
+        return 2
     ring = [(x, z) for x in range(c[0] - 6, c[0] + 7) for z in range(c[1] - 6, c[1] + 7) if cheb((x, z), c) >= 5]
     dug = {}   # the depth each ring square actually reached: a dig stopped short (bedrock) is not the raid's fill
     for cell in ring:

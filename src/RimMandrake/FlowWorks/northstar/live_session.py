@@ -1121,6 +1121,17 @@ def g_pit_access(s):
           dict(ladderSeen=seen, afterTicks=s.now() - rescue_t0, downed=rd, incapacitate=str(inc)[:160],
                owed="'built and the colonist carried out' needs a longer ride: read again in B7"), "B4")
     s.pawns["rescue"] = d
+    # HARNESS (live 20261023T044826, B7_rescued_out_of_pit FAIL): every colonist on the map was DRAFTED by then -- park_bystanders
+    # drafts the start colonists and earlier scripts' pawns, and s.order drafts this strip's own -- and a drafted colonist
+    # neither builds the queued ladder nor runs vanilla's DoctorRescue. So nobody could carry him out; the row read a harness
+    # with no rescuer as a MOD FAIL. One undrafted, healthy colonist now stands beside the pit with the ladder's wood, and B7
+    # judges only when that rescuer was read undrafted.
+    if seen and d:
+        rp = (P4[0] + 1, P4[1] + 5)
+        r_id = s.spawn(HUMAN, rp)
+        und = s.call("jawa/set_draft", pawnId=r_id, drafted=False) if r_id else {}
+        wood = s.call("rimworld/spawn_thing", defName="WoodLog", stackCount=75, x=rp[0] + 1, z=rp[1]) if r_id else {}
+        s.pawns["rescuer"] = dict(id=r_id, undrafted=s.mock or und.get("drafted") is False, wood=wood.get("success"))
 
 
 def g_dig_depth(s):
@@ -1777,9 +1788,21 @@ def b7_reload(s):
                    "the look, the build half rides B4 once a builder row exists"), "B7")
     if s.pawns.get("rescue"):
         r = s.climb(s.pawns["rescue"])
-        s.row("B7_rescued_out_of_pit", "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS", "A4",
-              "UNMEASURED" if not r or r.get("depth") is None else ("PASS" if r.get("depth") == 0 else "FAIL"),
-              "MOD" if r and r.get("depth") is not None else "HARNESS", dict(downed=r), "B7")
+        st, cls = rescue_verdict(r, s.pawns.get("rescuer"))
+        s.row("B7_rescued_out_of_pit", "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS", "A4", st, cls,
+              dict(downed=r, rescuer=s.pawns.get("rescuer")), "B7")
+
+
+def rescue_verdict(r, rescuer):
+    """B7 A4 (pure): the downed colonist out of the pit (depth 0) is PASS; still in is FAIL only when an undrafted rescuer
+    stood by since B4 (else UNMEASURED/HARNESS: a map of drafted colonists has nobody to build the ladder or carry him)."""
+    if not r or r.get("depth") is None:
+        return "UNMEASURED", "HARNESS"
+    if r.get("depth") == 0:
+        return "PASS", "MOD"
+    if not (rescuer or {}).get("id") or not (rescuer or {}).get("undrafted"):
+        return "UNMEASURED", "HARNESS"
+    return "FAIL", "MOD"
 
 
 # ============================================================================ B9 owner review
@@ -1914,36 +1937,84 @@ def feed_colonists(s):
     return n
 
 
-def park_cell(zones, size, margin=6, edge=12):
-    """A cell >= margin cells from every zone and >= edge from the map edge (pure). Scans the map on a 3-cell grid from the
-    centre outwards so the walk there is short; None when nothing fits (then nobody is parked and the census says so)."""
+def park_cells(zones, size, margin=6, edge=12):
+    """Every candidate park cell, nearest the map centre first (pure): >= margin cells from every zone (a 5x5 pen around it
+    included) and >= edge from the map edge, on a 3-cell grid. Empty when nothing fits."""
     W, H = size
     cands = [(x, z) for x in range(edge, W - edge, 3) for z in range(edge, H - edge, 3)]
     cands.sort(key=lambda c: (c[0] - W // 2) ** 2 + (c[1] - H // 2) ** 2)
-    for c in cands:
-        if not any(overlaps((c[0], c[1], 1, 1), r, gap=margin) for r in zones.values()):
+    return [c for c in cands if not any(overlaps((c[0] - 2, c[1] - 2, 5, 5), r, gap=margin) for r in zones.values())]
+
+
+def park_cell(zones, size, margin=6, edge=12):
+    """The first park_cells candidate, None when nothing fits (then nobody is parked and the census says so). Pure."""
+    c = park_cells(zones, size, margin, edge)
+    return c[0] if c else None
+
+
+# Terrain a parked colonist must not stand in: water swims (RM_SwimExhaustion) and a river current carries and bruises.
+WET_TERRAIN = ("Water", "Marsh", "Mud", "Channel", "Ice", "Bridge", "Ford", "Lava")
+
+
+def dry_pen(ops):
+    """True when a jawa/get_terrain_batch `ops` string ("Def:x,z[,w,h];...") names only dry ground; False on any wet def,
+    None when nothing was read (pure)."""
+    defs = [op.split(":", 1)[0] for op in str(ops or "").split(";") if ":" in op]
+    if not defs:
+        return None
+    return not any(any(w in d for w in WET_TERRAIN) for d in defs)
+
+
+def pen_cells(cell, n):
+    """n standing cells in the 5x5 pen centred on cell, row by row (pure); more than 25 pawns share cells."""
+    pen = [(cell[0] + dx, cell[1] + dz) for dz in (-2, -1, 0, 1, 2) for dx in (-2, -1, 0, 1, 2)]
+    return [pen[i % len(pen)] for i in range(n)]
+
+
+def v2_plot_rects():
+    """validation_v2's own plot rects (site_spec bodies, scenes, pawn and pit spots) keyed v2_<i>; {} when unreadable.
+    SITE (live 20261023T044826, B1 ABORT 'a pawn stands in a plot rect'): colonists stood at 128,63/64 inside one."""
+    try:
+        import validation_v2 as V2
+        return {"v2_%d" % i: r for i, r in enumerate(V2.site_rects())}
+    except Exception:  # noqa: BLE001 - the session zones still apply; v2's own L4 gate reads any pawn left in a plot
+        return {}
+
+
+def find_dry_park(s, tries=60):
+    """The first park_cells candidate (off every session zone AND every validation_v2 plot) whose 5x5 pen reads dry; None
+    when none of `tries` does (or nothing could be read)."""
+    avoid = dict(s.zones, **v2_plot_rects())
+    for c in park_cells(avoid, s.size)[:tries]:
+        tb = s.call("jawa/get_terrain_batch", rects="%d,%d,5,5" % (c[0] - 2, c[1] - 2))
+        if tb.get("success") is not False and dry_pen(tb.get("ops")):
             return c
     return None
 
 
 def park_bystanders(s, keep=()):
-    """Draft every living colonist not in `keep` and walk it to park_cell (jawa/order_pawn draft=True: a drafted pawn takes no
-    job and drinks nothing; the walk keeps it off every zone a later script digs). Returns [(pawnId, ordered)]."""
+    """TELEPORT every living colonist not in `keep` into a dry 5x5 pen off every zone, then draft it (a drafted pawn takes no
+    job and drinks nothing). SESSION_HURT, live 20261023T044826: the old WALK to the map centre (jawa/order_pawn) crossed the
+    fish map's river at z~94 -- the bystanders were later read bruised/cracked with RM_SwimExhaustion at x 154-240, z 93-96,
+    carried downstream -- and its success (true only on ARRIVAL, waitTicks=1) read False for every pawn, so the park was never
+    known to work. Returns [(pawnId, parked)] where parked = the teleport AND the draft read back."""
     if s.mock:
         return []
-    cell = park_cell(s.zones, s.size)
     keep = {str(k).replace("Thing_", "") for k in keep if k}
+    cols = [c.get("pawnId") for c in (s.call("rimworld/list_colonists") or {}).get("colonists") or []
+            if not c.get("dead") and c.get("pawnId") and str(c.get("pawnId")).replace("Thing_", "") not in keep]
+    cell = s.timing.get("park_cell") or find_dry_park(s)
+    s.timing["park_cell"] = cell
     out = []
-    for c in (s.call("rimworld/list_colonists") or {}).get("colonists") or []:
-        pid = c.get("pawnId")
-        if c.get("dead") or not pid or str(pid).replace("Thing_", "") in keep:
-            continue
-        if cell is None:
-            out.append((pid, draft(s, pid)))
-            continue
-        r = s.call("jawa/order_pawn", pawnId=pid, x=cell[0], z=cell[1], waitTicks=1, draft=True, unpause=False)
-        out.append((pid, r.get("success") is True))
+    for pid, dst in zip(cols, pen_cells(cell, len(cols)) if cell else [None] * len(cols)):
+        tp = True
+        if dst is not None:
+            num = re.sub(r"\D", "", str(pid))
+            tp = (s.w.hp("pawn:%s=tp:%d,%d" % (num, dst[0], dst[1])) or {}).get("success") is True
+        out.append((pid, tp and draft(s, pid)))
     s.timing.setdefault("parked", []).append(dict(cell=cell, pawns=out))
+    if cell is None:
+        s.notes.append("park_bystanders: no dry pen off every zone (drafted where they stand)")
     return out
 
 

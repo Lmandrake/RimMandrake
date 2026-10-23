@@ -212,6 +212,19 @@ def stock_dl(body):
 
 
 # ---------------------------------------------------------------- bridge
+ROOT_FLOOR = 11.0       # rootSize below ~11 breaks the map mesh render (skills/rimbridge/references/traps.md)
+ROOT_CEIL = 60.0        # the engine's far limit
+SCREEN_ASPECT = 16.0 / 9.0     # width/height; the 3467x1826 shots are 1.90, so 16:9 errs toward a little extra margin
+
+
+def fit_root_size(rect, pad=2, aspect=SCREEN_ASPECT, floor=ROOT_FLOOR, ceil=ROOT_CEIL):
+    """The camera rootSize (half the visible height, in cells) that shows the whole rect plus pad cells on every side,
+    clamped to [floor, ceil] (pure)."""
+    _x, _z, w, h = rect
+    need = max((h + 2 * pad) / 2.0, (w + 2 * pad) / (2.0 * aspect))
+    return round(min(ceil, max(floor, need)), 1)
+
+
 class Walk(object):
     def __init__(self, args):
         if getattr(args, "mock", False):
@@ -401,12 +414,17 @@ class Walk(object):
         return self.V.prepare_site(self.B, rect, self.rows, "site_%d_%d" % (x, z))
 
     def frame(self, rect):
+        """Centre the camera on rect and zoom so ALL of it is in frame: fit_root_size, never below the engine floor.
+        HARNESS (owner_review_stage 2026-10-23, WATER_LOOK_DIAGNOSE_GREY_ON_THE_ROT): the old rootSize 8 then
+        frame_cell_rect left EVERY frame at the closest zoom (114 px a cell, ~16 cells tall) -- frame_cell_rect did not
+        zoom OUT either -- so a 66-cell row showed 5 pits and the 64x70 overview a handful of squares; and 8 is below
+        the ~11 floor where the map mesh render breaks (rimbridge traps.md). The zoom is now computed, not asked of a
+        tool, and read back into self.last_cam."""
         x, z, w, h = rect
         self.call("jawa/clear_ui", all=True)
-        # frame_cell_rect never zooms IN past the current zoom (rimworld-live-review): start at the closest zoom so a
-        # 12x8 'close' rect is really close (live 2026-10-19: every hoses '_close' shot was a half-map view)
-        self.call("rimworld/set_camera_zoom", rootSize=8)
-        self.call("rimworld/frame_cell_rect", x=x, z=z, width=w, height=h, paddingCells=2)
+        self.call("rimworld/jump_camera_to_cell", x=int(x + w // 2), z=int(z + h // 2))
+        self.call("rimworld/set_camera_zoom", rootSize=fit_root_size(rect))
+        self.last_cam = self.call("rimworld/get_camera_state")
 
     def shot(self, name, rect):
         if self.args.no_shots:

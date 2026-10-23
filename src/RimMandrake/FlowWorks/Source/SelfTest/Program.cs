@@ -1110,10 +1110,11 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("PitDraw_sink_is_monotonic_in_depth_and_superdeep_clears_head_by_20pct", () =>
             {
                 float k = RM_PitDrawMath.DefaultSinkPerLevel;
-                for (int d = 0; d < 4; d++)
+                for (int d = 0; d < RM_PitDrawMath.SinkCapLevels; d++)
                     Assert(RM_PitDrawMath.SinkFor(d + 1, k) > RM_PitDrawMath.SinkFor(d, k), "deeper draws lower at D=" + (d + 1));
                 AssertClose(RM_PitDrawMath.SinkFor(0, k), 0f, "surface: no sink");
-                AssertClose(RM_PitDrawMath.SinkFor(9, k), RM_PitDrawMath.SinkFor(4, k), "clamped at superdeep");
+                Assert(RM_PitDrawMath.SinkCapLevels == 8, "the sink cap is 4 m (SINK_CAP_WIDEN_PAWNS_SINK_TO_FOUR)");
+                AssertClose(RM_PitDrawMath.SinkFor(9, k), RM_PitDrawMath.SinkFor(8, k), "clamped at 4 m");
                 Assert(RM_PitDrawMath.WallOverHeadRatio(4, k, RM_PitDrawMath.HumanlikeFeetToHeadTop) >= 1.2f - 1e-4f, "D=4 wall >= 1.2x head");
                 Assert(RM_PitDrawMath.WallOverHeadRatio(3, k, RM_PitDrawMath.HumanlikeFeetToHeadTop) < 1f, "D=3 does not bury a person");
                 AssertClose(RM_PitDrawMath.SinkFor(4, 0f), 0f, "per-level 0 is the off dial");

@@ -790,7 +790,9 @@ def _prepare_site(B, rect, rows, rid):
                      ("jawa/set_roof_batch", {"ops": "None:" + r})):
         res = B.call(tool, **kw)
         if isinstance(res, dict) and res.get("success") is False:
-            why.append("%s refused: %s" % (tool, str(res)[:160]))
+            # the message first and long enough to read: live 20261023T044826 cut "...337 cell(s) changed, 104 a" at 160
+            # chars, before the clause that said WHY set_terrain_batch refused
+            why.append("%s refused: %s" % (tool, str(res.get("message") or res)[:400]))
     # a trigger READ BACK as still armed blocks the site; an unreadable listing is only recorded in reveal's result (the
     # proof drivers gate the map-wide read-back once, in preflight: proof_all P3)
     ft = reveal(B, rect).get("fogTriggers") or {}
