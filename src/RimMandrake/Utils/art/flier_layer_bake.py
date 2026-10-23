@@ -86,7 +86,7 @@ def periodic_sample(vals: list[float], t: float) -> float:
     return 0.5 * ((2 * p1) + (-p0 + p2) * f + (2 * p0 - 5 * p1 + 4 * p2 - p3) * f * f + (-p0 + 3 * p1 - 3 * p2 + p3) * f ** 3)
 
 
-def wing_frame(layer: np.ndarray, wg: dict, lb: dict, th_p: float, th_d: float, fold: float):
+def wing_frame(layer: np.ndarray, wg: dict, lb: dict, th_p: float, th_d: float, fold: float, scale: float = 1.0):
     """Inverse-map one wing layer to stroke angles TH_P (proximal) / TH_D (distal), fold FOLD. Returns RGBA uint8."""
     h, w = layer.shape[:2]
     (sx0, sy0), (sx1, sy1) = wg["seam"]
@@ -98,8 +98,10 @@ def wing_frame(layer: np.ndarray, wg: dict, lb: dict, th_p: float, th_d: float, 
     else:
         Nout = -Nout if Nout[0] < 0 else Nout
     R = np.array([sx0, sy0], float)
-    lift = np.array([0.0, -float(lb["lift_k"])])     # screen rise per px of depth toward the camera
+    lift = np.array([0.0, -float(lb.get("lift_k", 0.8))])     # screen rise per px of depth toward the camera
     L = float(lb.get("span_px", 100))
+    fold_ramp = float(lb.get("fold_ramp_px", 0.6 * L))   # how far off the seam the fold reaches full strength
+    span_pow = float(lb.get("span_pow", 1.0))       # <1 narrows the raised wing less than true foreshortening
     (lx0, ly0), (lx1, ly1) = wg["leading_edge"]
     le0 = (np.array([lx0, ly0]) - R)
     le1 = (np.array([lx1, ly1]) - R)
@@ -113,15 +115,43 @@ def wing_frame(layer: np.ndarray, wg: dict, lb: dict, th_p: float, th_d: float, 
     def params(d):
         s = _smooth(d / L)
         th = np.radians(th_p + (th_d - th_p) * s) * (d > 0)
-        f = 1.0 - (1.0 - fold) * _smooth(d / (0.6 * L))
+        f = 1.0 - (1.0 - fold) * _smooth(d / fold_ramp)
         return th, np.where(d > 0, f, 1.0)
 
+    hinge_model = lb.get("model") == "hinge"
+    H = np.array(wg["hinge"], float)
+    ramp = float(lb.get("root_ramp_px", 24))
+    sgn = 1.0 if wg["sign"] > 0 else -1.0
+    ramp_from_hinge = lb.get("ramp_from") == "hinge"
+
+    def forward_hinge(a, d):
+        # 'hinge' model (south, 2026-10-23 redo after the owner read the seam-axis bake as PADDLING): the wing
+        # swings UP/DOWN about its shoulder in the picture plane (the flap axis is the body's long axis, which
+        # points at a south camera), shortening by `scale` (foreshortening + wrist fold) as it rises. The swing
+        # and the shortening ease in over root_ramp_px off the seam, so the membrane root stays on the flank.
+        th, f = params(d)
+        ale = a_le(d)
+        a1 = np.where(a > ale, ale + (a - ale) * f, a)
+        px = R[0] + a1 * A[0] + d * Nout[0] - H[0]
+        py = R[1] + a1 * A[1] + d * Nout[1] - H[1]
+        if ramp_from_hinge:   # attached at the shoulder only: everything beyond ramp px of the hinge swings whole
+            w = _smooth(np.hypot(px, py) / ramp)
+        else:                 # attached along the whole flank seam: the membrane fans out from it
+            w = _smooth(np.maximum(d, 0) / ramp)
+        ph = th * w * sgn
+        sc = 1.0 - (1.0 - scale) * w
+        X = H[0] + sc * (px * np.cos(ph) + py * np.sin(ph))
+        Y = H[1] + sc * (-px * np.sin(ph) + py * np.cos(ph))
+        return X, Y
+
     def forward(a, d):
+        if hinge_model:
+            return forward_hinge(a, d)
         th, f = params(d)
         ale = a_le(d)
         a1 = np.where(a > ale, ale + (a - ale) * f, a)
         dp = np.maximum(d, 0)
-        span = np.where(d > 0, d * np.cos(th), d)
+        span = np.where(d > 0, d * np.abs(np.cos(th)) ** span_pow, d)
         z = dp * np.sin(th)
         X = R[0] + a1 * A[0] + span * Nout[0] + z * lift[0]
         Y = R[1] + a1 * A[1] + span * Nout[1] + z * lift[1]
@@ -168,7 +198,7 @@ def key_angles(lb: dict, n: int):
     for k in range(n):
         t = k / n
         th_d = periodic_sample(prox, t - float(lb.get("distal_lag", 0))) * float(lb.get("distal_gain", 1))
-        out.append((prox[k], th_d, keys[k][1]))
+        out.append((prox[k], th_d, keys[k][1], keys[k][2] if len(keys[k]) > 2 else 1.0))
     return out
 
 
@@ -177,12 +207,12 @@ def bake(master: np.ndarray, fc: dict):
     plate, wings, masks, _ = split_layers(master, fc)
     n = len(lb["keys"])
     frames, info = [], []
-    for k, (tp, td, fold) in enumerate(key_angles(lb, n)):
+    for k, (tp, td, fold, scale) in enumerate(key_angles(lb, n)):
         acc = np.zeros_like(master)
         resid = 0.0
         moved = []
         for wg, layer in zip(fc["wings"], wings):
-            L, r = wing_frame(layer, wg, lb, tp, td, fold)
+            L, r = wing_frame(layer, wg, lb, tp, td, fold, scale)
             resid = max(resid, r)
             moved.append(L)
         for wg, L in zip(fc["wings"], moved):
@@ -193,7 +223,7 @@ def bake(master: np.ndarray, fc: dict):
             if wg.get("occlusion", fc.get("order", "under")) == "over":
                 acc = FC.over(acc, L)
         frames.append(acc)
-        info.append({"frame": k + 1, "theta_prox": tp, "theta_distal": round(td, 2), "fold": fold,
+        info.append({"frame": k + 1, "theta_prox": tp, "theta_distal": round(td, 2), "fold": fold, "scale": scale,
                      "inverse_resid_px": round(resid, 4)})
     return frames, plate, wings, masks, info
 
@@ -384,7 +414,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 system-ui,san
 h1{font-size:18px;margin:0 0 6px} .row{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start}
 .card{background:var(--panel);border-radius:8px;padding:10px} canvas{image-rendering:pixelated;display:block}
 label{margin-right:12px;white-space:nowrap} .mute{color:var(--mute)} button{background:var(--acc);border:0;border-radius:4px;padding:4px 10px;margin-right:6px}
-select{background:#eee}
+select{background:#eee} #strip{max-width:100%;height:auto}
 </style></head><body>
 <h1>__TITLE__</h1>
 <div class="mute">The exact PNG files, drawn whole at a fixed canvas position (never cropped or recentred). Crosshair = canvas centre (128,128). Timing = flyingAnimationTicksPerFrame at 60 ticks/s x game speed.</div>
@@ -408,15 +438,15 @@ select{background:#eee}
 <div class="card" style="margin-top:12px"><div class="mute">all frames (native, same canvas)</div><canvas id="strip"></canvas></div>
 <script>
 const SETS=__DATA__;
-const GUIDE=__GUIDE__;
+const GUIDES=__GUIDE__;
 let cur=Object.keys(SETS)[0], imgs=[], k=0, playing=true, last=0, acc=0;
 const $=id=>document.getElementById(id);
 function loadSet(name){cur=name;imgs=SETS[name].map(src=>{const i=new Image();i.src=src;return i});k=0;}
-function guides(ctx,s){ctx.save();ctx.lineWidth=Math.max(1,s/2);
+function guides(ctx,s){const GUIDE=GUIDES[cur]||{};ctx.save();ctx.lineWidth=Math.max(1,s/2);
  if($('gx').checked){ctx.strokeStyle='rgba(255,255,255,.9)';ctx.beginPath();ctx.moveTo(128*s,0);ctx.lineTo(128*s,256*s);ctx.moveTo(0,128*s);ctx.lineTo(256*s,128*s);ctx.stroke();}
  if($('ge').checked&&GUIDE.eye){ctx.strokeStyle='#3f8';ctx.beginPath();const[a,b]=GUIDE.eye;ctx.moveTo(a[0]*s,a[1]*s);ctx.lineTo(b[0]*s,b[1]*s);ctx.stroke();}
  if($('gs').checked&&GUIDE.shoulder){ctx.strokeStyle='#ff0';ctx.beginPath();const[a,b]=GUIDE.shoulder;ctx.moveTo(a[0]*s,a[1]*s);ctx.lineTo(b[0]*s,b[1]*s);ctx.stroke();
-  ctx.strokeStyle='rgba(255,255,0,.6)';for(const sm of GUIDE.seams){ctx.beginPath();ctx.moveTo(sm[0][0]*s,sm[0][1]*s);ctx.lineTo(sm[1][0]*s,sm[1][1]*s);ctx.stroke();}}
+  ctx.strokeStyle='rgba(255,255,0,.6)';for(const sm of (GUIDE.seams||[])){ctx.beginPath();ctx.moveTo(sm[0][0]*s,sm[0][1]*s);ctx.lineTo(sm[1][0]*s,sm[1][1]*s);ctx.stroke();}}
  if($('gb').checked&&GUIDE.body){ctx.strokeStyle='rgba(0,230,255,.9)';ctx.beginPath();GUIDE.body.forEach((p,i)=>i?ctx.lineTo(p[0]*s,p[1]*s):ctx.moveTo(p[0]*s,p[1]*s));ctx.closePath();ctx.stroke();}
  ctx.restore();}
 function draw(){const im=imgs[k]; if(!im||!im.complete) return;
@@ -437,27 +467,31 @@ loadSet(cur);strip();requestAnimationFrame(t=>{last=t;tick(t)});
 
 
 def cmd_html(a) -> int:
-    sets = {}
+    """Each --frames spec is DIR[:label][@facing]; a set with its own @facing (e.g. an east sanity set beside the south
+    bakes) reads <prefix><k>_<facing>.png and gets guides only when --config describes that facing."""
+    sets, guides = {}, {}
     for spec in a.frames:
-        d, _, label = spec.partition(":") if not spec[1:3] == ":/" else (spec, "", "")
-        if ":" in spec and not label:
-            d, label = spec.rsplit(":", 1)
+        facing = a.facing
+        if "@" in spec:
+            spec, facing = spec.rsplit("@", 1)
+        d, label = (spec.rsplit(":", 1) if ":" in spec[2:] else (spec, ""))
         label = label or Path(d).name
-        paths = FL.frame_paths(Path(d), a.prefix, a.facing)
+        paths = FL.frame_paths(Path(d), a.prefix, facing)
         sets[label] = ["data:image/png;base64," + base64.b64encode(p.read_bytes()).decode() for p in paths]
-    guide = {}
-    if a.config:
-        cfg, fc = load(a.config, a.facing)
-        if fc.get("eyes"):
-            guide["eye"] = fc["eyes"][:2]
-        hinges = [w["hinge"] for w in fc.get("wings", [])][:2]
-        if len(hinges) == 2:
-            guide["shoulder"] = hinges
-        guide["seams"] = [w["seam"] for w in fc.get("wings", []) if w.get("seam")]
-        guide["body"] = fc["protect"][0] if fc.get("protect") else None
+        guide = {}
+        if a.config and facing in json.loads(Path(a.config).read_text())["facings"]:
+            cfg, fc = load(a.config, facing)
+            if fc.get("eyes"):
+                guide["eye"] = fc["eyes"][:2]
+            hinges = [w["hinge"] for w in fc.get("wings", [])][:2]
+            if len(hinges) == 2:
+                guide["shoulder"] = hinges
+            guide["seams"] = [w["seam"] for w in fc.get("wings", []) if w.get("seam")]
+            guide["body"] = fc["protect"][0] if fc.get("protect") else None
+        guides[label] = guide
     opts = "".join(f"<option>{k}</option>" for k in sets)
     html = (HTML.replace("__TITLE__", a.title).replace("__SETS__", opts).replace("__TPF__", str(a.tpf))
-            .replace("__DATA__", json.dumps(sets)).replace("__GUIDE__", json.dumps(guide)))
+            .replace("__DATA__", json.dumps(sets)).replace("__GUIDE__", json.dumps(guides)))
     Path(a.out).write_text(html)
     print(a.out)
     return 0
@@ -476,7 +510,7 @@ def main(argv=None) -> int:
         if name == "sheet":
             p.add_argument("--frames", required=True)
     h = sub.add_parser("html")
-    h.add_argument("--frames", nargs="+", required=True, help="DIR or DIR:label, one per selectable set")
+    h.add_argument("--frames", nargs="+", required=True, help="DIR[:label][@facing], one per selectable set")
     h.add_argument("--prefix", required=True)
     h.add_argument("--facing", default="south")
     h.add_argument("--tpf", type=int, default=10)
