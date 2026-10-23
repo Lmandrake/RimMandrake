@@ -66,6 +66,25 @@ namespace RimMandrake.FlowWorks
 			return c < 0f ? 0f : (c > 1f ? 1f : c);
 		}
 
+		/// <summary>PIT_DEEPSTONE_BUILD_DIGGING_FINALLY_PAYS (owner card 2026-10-19, "deeper stone at superdeep pits"): a cut
+		/// that lands at <paramref name="superdeep"/> or deeper is through the deep stratum, so its chunk roll is of the
+		/// deep stone, whatever the ground on top was.</summary>
+		public static bool StrikesDeepStone(int newDepth, int superdeep)
+		{
+			return superdeep > 0 && newDepth >= superdeep;
+		}
+
+		/// <summary>A stable pick of one of <paramref name="n"/> candidates from a tile's hash: the same tile always draws the
+		/// same deep stone, across saves and reloads (-1 when there are none).</summary>
+		public static int PickIndex(int seed, int n)
+		{
+			if (n <= 0) return -1;
+			// mix the bits so neighbouring tile ids do not walk the list in order
+			uint h = unchecked((uint)seed * 2654435761u);
+			h ^= h >> 16;
+			return (int)(h % (uint)n);
+		}
+
 		/// <summary>Dig work through rock ground: the soft-ground work times the multiplier (never below 1x).</summary>
 		public static int RockWork(int baseWork, float multiplier)
 		{
