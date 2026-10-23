@@ -48,17 +48,24 @@ the resolver, re-asked by the gate, is the only thing that exempts a row from a 
 
 1. **Build** (above). **Check** any sheet: `scaled_review_gate.py check <html>`; game art or not:
    `game_art.py classify <html>`.
-2. **Serve** — `serve_gated.py` only, its output in `<sheet>.serve.log` beside the sheet, or RimPulse cannot
+2. **Read it first** (owner, 2026-10-22: *"Read it first and see if it's obviously broken, malfunctioning, or
+   problematic before wasting a human's time to tell that to you."*). Look at every row — yourself, or a naive judge
+   (a fresh Opus that did not make it; `gpt_consult.py` for a big sheet): does it render, is it recognisable as what
+   it is, does it repeat a ruling, does it contradict its spec? Fix it or rebuild without it (never hand-edit the
+   sheet), then `prereview.py init <sheet> --by seat:<SEAT>|judge:<model>` and fill each row OK / FIXED / FLAG + note,
+   `caught`, `dropped`. `serve_gated.py`, `review_queue.py` and `sheet_to_artifact.py` refuse a sheet without it
+   (exit 4); a row whose pictures change afterwards needs a fresh look (`init` resets only it).
+3. **Serve** — `serve_gated.py` only, its output in `<sheet>.serve.log` beside the sheet, or RimPulse cannot
    list it. Give him the URL and the full native path.
-3. **Refresh** as renders land — `refresh_sheets.py` keeps URLs stable, rebuilds only changed sheets, and
+4. **Refresh** as renders land — `refresh_sheets.py` keeps URLs stable, rebuilds only changed sheets, and
    prints an `UNPUBLISHED:` publish command for a rebuilt sheet only if it is pinned (tracked). Run it.
-4. **Remap** after any rebuild of a sheet he has touched — `remap_decisions.py` (dry run, then `--apply`), so
+5. **Remap** after any rebuild of a sheet he has touched — `remap_decisions.py` (dry run, then `--apply`), so
    every letter he picked still names the same pictures.
-5. **Enact** when he says a sheet is done — `art.py enact <decisions.json>` (dry run), then `--apply`;
+6. **Enact** when he says a sheet is done — `art.py enact <decisions.json>` (dry run), then `--apply`;
    `--hold <subject>` for rows awaiting a sitting, `--mark-done <row>` once a def half of a note is done.
    One pass, at most one batched card for conflicts (owner, 2026-10-08).
-6. **Audit** the enact with a fresh read of the ledger and artpipe — never the enact's own summary.
-7. **Clear followed notes** — enact moves a followed note into `notes_followed`; never act on a raw note
+7. **Audit** the enact with a fresh read of the ledger and artpipe — never the enact's own summary.
+8. **Clear followed notes** — enact moves a followed note into `notes_followed`; never act on a raw note
    without checking it was not already followed (owner, 2026-10-08: *"You shouldn't leave my notes AFTER you
    follow the notes... it can produce accidental multiple firings."*).
 
@@ -68,6 +75,8 @@ its check: `references/traps.md`.
 
 ## Before he sees a sheet
 
+- [ ] every row read by the seat or a naive judge, broken rows fixed or dropped; `prereview.py check <html>` OK, and
+      the one-line `caught` goes to him with the link
 - [ ] built by `art_sheet.py`; `scaled_review_gate.py check` PASS; `game_art.py deliver <html>` OK
 - [ ] a scale panel on every row whose def has a world size; FALLBACK sizes flagged on the row
 - [ ] donor-only rows = 0, or each has a pending render job and the count is shown to him

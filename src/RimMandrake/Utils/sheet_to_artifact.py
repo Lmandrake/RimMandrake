@@ -172,6 +172,12 @@ def main():
     if not ok:
         print("REFUSED sheet_to_artifact: " + msg, file=sys.stderr)
         sys.exit(4)
+    # Nothing reaches the owner unread (owner, 2026-10-22): the phone gets a sheet only once every row was looked at.
+    import prereview
+    ok, msg = prereview.verify(a.sheet)
+    if not ok:
+        print("REFUSED sheet_to_artifact: nothing reaches the owner unread: " + msg, file=sys.stderr)
+        sys.exit(4)
     src = open(a.sheet, encoding="utf-8").read()
     out = patch(src, a.title)
     with open(a.out, "w", encoding="utf-8") as f:

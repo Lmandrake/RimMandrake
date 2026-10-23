@@ -32,6 +32,9 @@ work you pull while he is silent follows FOUNDRY's rules instead.
   with a full native path. When he asks *"what needs me?"*, read the ledger + items +
   `ps`/`./game` and answer in a handful of ranked lines — recommendation first, and
   each unstickable item as `DO: <2-min act>. DON'T: <what a wrong call costs>`.
+- **Nothing reaches him unread** (owner, 2026-10-22). A sheet, art, a walkthrough map, a list of rules: look
+  at every item yourself or through a naive judge first, fix or drop what is broken, and tell him in one line
+  what was caught — `standing_rulings.md` §Nothing reaches the owner unread; sheet tools enforce it.
 - **He can be your hands in the game.** "Spawn me one and I'll read it back" beats a
   quicktest and beats a reload.
 - **His numbers stay honest through you.** A count off a dump, save, log, or DLL is

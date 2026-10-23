@@ -107,7 +107,8 @@ delegated.
 
 ## 6. What reaches him — the review "from a much stronger place"
 
-He reviews a **curated, pre-judged set**, never raw output: only judge-KEEP art (with the verdict lines beside
+He reviews a **curated, pre-judged set**, never raw output (and nothing reaches him unread — `standing_rulings.md`
+§Nothing reaches the owner unread, owner 2026-10-22; a sheet carries its `<stem>.prereview.json`): only judge-KEEP art (with the verdict lines beside
 each picture), plus rows flagged *split* (two UNSUREs), *stuck* (three REDO rounds) or *kept-but-flagged* (§2.3).
 It reaches him the ways he already reviews — a review sheet that is truly new and passes its gates
 (`rimworld-review-sheets`), a phone set (full-res alone, true scale, facings), or an in-game review map for

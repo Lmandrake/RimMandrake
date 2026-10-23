@@ -28,8 +28,9 @@ work *into* rigor ("careful with this one"), never out of it.
    (`rimworld-savegame`).
 5. **History and others' work** — force-push, `reset --hard` over work you did not make,
    deleting work not yours: warn in one line, then only with the owner's word.
-6. **Anything the owner must LOOK at** — always with the complete native path in
-   backticks, spaces as spaces.
+6. **Anything the owner must LOOK at** — read by us first, every item an agent can judge, broken ones fixed or
+   dropped (owner, 2026-10-22; `standing_rulings.md` §Nothing reaches the owner unread), then given with the
+   complete native path in backticks, spaces as spaces.
 
 Ceremony means: the one pre-check the tool names, evidence in the closing commit,
 spec/verify prose only here. Everything not on this list — including maps, saves,

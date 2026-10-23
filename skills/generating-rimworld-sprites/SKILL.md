@@ -187,7 +187,8 @@ python skills/generating-rimworld-sprites/scripts/validate_sprite.py \
   --reference original_south.png --candidate final_south.png
 ```
 
-Findings are graded: **REJECT** blocks, **WARN** asks a human to look, and
+Findings are graded: **REJECT** blocks, **WARN** asks for a look — yours or a naive judge's, before any human
+(owner, 2026-10-22: nothing reaches him unread) — and
 `--strict` promotes warnings to blocks.
 
 | Family | Catches |
@@ -276,7 +277,8 @@ over a checkerboard so transparency is visible rather than read as black.
 texPath — is proven by MACHINE against a screenshot or atlas; art quality and
 style coherence are graded by Opus evaluation. The owner sees art only inside
 a staged review environment, and only for the calls that genuinely need him
-(`infrastructure/VALIDATION_LADDER.md`).
+(`infrastructure/VALIDATION_LADDER.md`) — and only after an agent or naive judge has looked at every picture and
+dropped the broken ones (`standing_rulings.md` §Nothing reaches the owner unread, 2026-10-22).
 
 ## Art direction that survives downscaling
 

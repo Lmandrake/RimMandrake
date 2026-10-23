@@ -232,6 +232,15 @@ logged `--why "delegated: <class>"`, never as his approval, and reaches him in a
 `design/RimMandrake/delegation_policy.md` §2 still needs him (north-star bars, irreversible acts on others' work,
 replacing art he kept, changing his rulings, outward/paid acts, flyer live tests).
 
+## 🔴 Nothing reaches the owner unread — owner, 2026-10-22
+
+*"Read it first and see if it's obviously broken, malfunctioning, or problematic before wasting a human's time to tell
+that to you."* Before ANY human review (sheet, art, phone image, walkthrough map or save, list of rules, report), look at
+every item an agent can judge — yourself or a naive judge (fresh Opus that did not make it; `gpt_consult.py` for a big
+sheet) — and fix or drop what is broken; a walkthrough means a zoomed capture of every station and connection, stared
+at. He gets the survivors plus one line of what was caught. Sheet tools refuse without `<stem>.prereview.json`
+(`src/RimMandrake/Utils/art/prereview.py`). Full text: `standing_rulings.md` §Nothing reaches the owner unread.
+
 ## Owner authority on the ledger — one field per kind of authority (owner, by question card 2026-10-11): `--owner-said` = his words (typo fixes and joining his own sentences are fine, meaning unchanged) · `--by-card "<question → option>"` = a decision he took by card (the label is our text) · `--per-ruling <item-id|event>` = a standing ruling cited by reference (it stands until he changes it) · `--why "…"` = your own words. No transcript proof runs; nothing checks a quote but its shape.
 
 ## Git

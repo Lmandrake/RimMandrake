@@ -34,6 +34,16 @@ binds Windows loopback). Screenshots land in
 `.../RimWorld by Ludeon Studios/Screenshots/`; copy to `Transient/` and view them
 — **a screenshot is a cache, not an observation** until you have actually looked.
 
+🔴 **No walkthrough map or review save reaches him until you have looked at every station** (owner, 2026-10-22:
+*"No walkthrough maps unless you've zoomed in on every station and stared at the screenshot for potential issues
+related to the mod, ok? Typical graphics problems, connections, making sure each graphic objects is recognizable as
+what it is"*). Per station: a tight zoomed capture (`screenshot_cell_rect`, rootSize ~6), Read it, and check what
+the mod draws — does each part render, does every connection meet (hose into reel, pipe into fitting), does anything
+run under a building or draw over what should cover it, is each object recognisable as what it is. Fix or remove a
+broken station, then tell him in one line what was caught. Framing-only checks missed exactly these on the
+2026-10-22 FlowWorks walk. A naive Opus judge may do the staring. Rule: `standing_rulings.md` §Nothing reaches the
+owner unread.
+
 ## This vs a review sheet — and why neither verdict is final
 
 A quick SMALL-modlist game load staged with this skill is a standing review
