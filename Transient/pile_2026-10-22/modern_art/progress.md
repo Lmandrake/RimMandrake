@@ -75,4 +75,4 @@ Copy picks to `Tank/Modern/` and `Hose/Styles/Modern/`, then re-run
 from the art), rebuild, deploy.
 
 ## Shas
-f1c25b3a03 (item) · 2ef76419c3 (brief) · see final report for the drafts/collection commit.
+f1c25b3a03 (item) · 2ef76419c3 (brief) · 50733d22fb (drafts, phone collections, pump item, 2 lessons). DONE.
