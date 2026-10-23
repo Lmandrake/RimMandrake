@@ -1,6 +1,6 @@
 ---
 name: efficient-subagents
-description: Decide whether to spawn a subagent, and how to scope, feed and bound it so it returns 1-2k tokens instead of flooding the parent. Use before any Agent/Task call, when fanning out searches or censuses, or when a seat's context is filling with tool output.
+description: Decide whether to spawn a subagent, and how to scope, feed and bound it so it returns 1-2k tokens instead of flooding the parent. Use before any Agent/Task call, when fanning out searches or censuses, when a seat's context is filling with tool output, or when a helper runs long (context burn: a helper's own growing context is the bill).
 ---
 
 # Efficient subagents
@@ -23,6 +23,34 @@ size of.
   to patch is worse than the file.
 - The subagent would need more setup prose than the task is worth. Use a `fork`
   (inherits your context) or do it yourself.
+
+## Context burn — the helper's own context is the bill
+
+Every model call re-sends the helper's whole conversation, so a helper costs about
+calls x average context: roughly quadratic in run length. Helpers run on a 1M window, so
+nothing compacts unless the definition sets it. A fresh subagent does not inherit the
+parent's conversation but does load both CLAUDE.md files and the skill list (~56k base,
+re-read on every call); a fork inherits everything. Measured 2026-10-23: 2.18B tokens, 89%
+by helpers, top helper 452 calls / 229M; compaction at 150k would have saved ~48%.
+Growth is mostly Bash output and the model's own text, not Read or images.
+
+Rules (the hook `.claude/hooks/block_unbounded_agent.py` enforces the first):
+1. **Spawn only the `rm-*` definitions** (`.claude/agents/`); they carry `autoCompactWindow`, `maxTurns` and no `Agent` tool.
+
+   | type | use | model |
+   |---|---|---|
+   | `rm-fixer` | well-defined fix a selftest/validator proves | sonnet |
+   | `rm-builder` | complex code or design, one item | opus |
+   | `rm-bridge` | live-game section run by script | opus |
+   | `rm-judge` | art/taste judging of work it did not make | opus |
+   | `rm-search` | grep/census/existence check | haiku |
+2. **One item, or one small named batch, per helper**, ending at the item boundary. Never "work N hours"; the next item is a fresh helper briefed from the progress file.
+3. **The progress file is the memory across compaction** and across helpers: decisions, pending operations, evidence paths, updated after each item.
+4. **Bulk output goes to a file** (use `set -o pipefail`, keep the exit status, read stderr), then grep or tail the file; never cat a log, diff or JSON. Read with offset/limit.
+5. **Images only when judging**, at the size the judgment needs (never shrink away the defect).
+6. **Load a skill only when the item needs it**, by section.
+7. **Bridge work is a script** that runs all rows and prints one PASS/FAIL table; read the table and the failures' evidence.
+8. **At most 3 helpers per seat.** Measure: `python3 src/RimMandrake/Utils/token_census.py --since <UTC>`.
 
 ## Hard rules
 
@@ -70,11 +98,6 @@ One question. Bounded inputs. An explicit stop condition.
   complex code generation, and anything acted on without re-deriving it. Full ladder:
   `infrastructure/agents/Agent_Policy.md`; what the gateway can actually reach:
   `~/dev/DispatchOpenCode/bin/delegate where`.
-  **This line said `haiku` for OS-level searches until 2026-10-01 and was wrong twice
-  over.** The gateway carries no Haiku id, *and* `model: haiku` is remapped to
-  `us-gov.anthropic.claude-sonnet-5`, so it resolved to Sonnet anyway — the rung bought
-  nothing and only made the instruction disagree with `Agent_Policy.md`, which had
-  already folded OS searches onto Sonnet. Spell it `sonnet`.
 - 🔴 **A task-scoped negative instruction to a fork must explicitly SUSPEND the
   seat's own standing autonomy doctrine, not just state the narrower task.** A
   fork given "recon only, do NOT touch the bridge, do NOT claim/start/modify
@@ -241,8 +264,7 @@ writing helpers one at a time when their paths could overlap. Brief: `reset --ha
   invisible.
 - A subagent cannot ask you a question mid-flight. Ambiguity comes back as a
   wrong answer.
-- Practical budget here: **4-6 in flight**, not 20. Each costs ~600 MB of seat
-  heap.
+- Practical budget here: **at most 3 helpers in flight per seat**, not 20 (heap and context burn).
 
 ## Examples
 
