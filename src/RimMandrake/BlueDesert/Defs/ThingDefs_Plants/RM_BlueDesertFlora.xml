@@ -235,9 +235,9 @@
 
   <!-- ============== Virr (whistle-reed, mid) — BLUEDESERT_RULED_CONTENT_1 ==============
        Bible §4: a hollow fractal tube, hand-high, branching into graded
-       open-ended pipes. The rising-pitch sound mechanic (ambient sustainer
-       keyed to the charge comp's own two-longtick warm countdown) is
-       BLUEDESERT_MECHANICS_BUILD_1 §5's — this card ships silent-capable,
+       open-ended pipes. The rising-pitch sound (BLUEDESERT_MECHANICS_BUILD_1 §5)
+       was cut 2026-10-23 with the Blue Desert soundscape (fluff review); this
+       card is silent,
        reusing the same CompProperties_PlantCharge every other native flora
        already carries (zero new mechanism class, per the bible). Art:
        Textures/Things/Plant/RM_Virr/RM_Virr_a.png (done, artpipe

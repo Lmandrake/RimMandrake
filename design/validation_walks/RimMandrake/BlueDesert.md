@@ -5,7 +5,7 @@ list: baroque_wave0
 status-hint: a hydrocarbon-ice plateau biome kit — ten fuel-charge natives (dorrak, krissek, vekkit, zhaaz, vrisk, dovvik, utikka, vhaulk, murrek, ossivel), four transparent fractal flora, cold wax, blue ice and its thaw roll, the blue-ice cold rack, the Haze/ice-sand-drift/ice-fog weathers, the vhaulk's gated cistern, rime road and walk-off, the staged ablation salvage and the murrek re-seed; script = `src/RimMandrake/BlueDesert/validation.py`, plan = `northstar_plan.py`, selftest = `selftest_bluedesert.py`
 
 ## must be true
-Every line ends in `→ chain.component` (a suite component that reads the state back) or `→ UNCOVERED: why`. Sources: the mod's About.xml description, `RM_BlueDesertMod.cs` (the 22 settings), the mechanic `.cs` headers (`BlueDesertLife.cs`, `RM_VhaulkDetonation.cs`, `RM_BlueIceThaw.cs`, `RM_ColdSink.cs`, `RM_AblationSalvage.cs`, `RM_VhaulkRoad.cs`, `RM_MurrekDrift.cs`, `RM_BlueDesertWeatherTable.cs`), `BLUEDESERT_MECHANICS_BUILD_1`, `BLUEDESERT_GPT_ENRICHMENT_1`, `LOAD_ERRORS_FAUNA_FLORA_1` (044381748).
+Every line ends in `→ chain.component` (a suite component that reads the state back) or `→ UNCOVERED: why`. Sources: the mod's About.xml description, `RM_BlueDesertMod.cs` (the 18 settings), the mechanic `.cs` headers (`BlueDesertLife.cs`, `RM_VhaulkDetonation.cs`, `RM_BlueIceThaw.cs`, `RM_ColdSink.cs`, `RM_AblationSalvage.cs`, `RM_VhaulkRoad.cs`, `RM_MurrekDrift.cs`, `RM_BlueDesertWeatherTable.cs`), `BLUEDESERT_MECHANICS_BUILD_1`, `BLUEDESERT_GPT_ENRICHMENT_1`, `LOAD_ERRORS_FAUNA_FLORA_1` (044381748).
 
 Load and wiring
 - Every def this mod ships (the biome, ten races and kinds, eight flora, the charge hediffs, the Haze carrier and film, three weathers, blue ice and its mineable, cold wax, the rack, the meltwater can, the melt recipe, the rime road, three salvage incidents, sounds, the halo effecter, the burrow job) resolves in the live game; none is silently discarded for a missing comp or extension type. → defs.defs_resolve
@@ -46,9 +46,9 @@ Cold wax and the cold rack
 - Cold wax ruined by a warm room starts its own wick and is gone. → cold_wax.wax_ruined_wicks_and_goes
 - With `coldWaxWarmReactiveEnabled` off the ruined wax just stays, ruined. → cold_wax.wax_toggle_off_ruined_but_inert
 - A rack loaded with blue ice pulls a warm sealed room well below an identical room holding an empty rack. → cold_rack.rack_cools_loaded_room_only
-- It spends its ice doing so, the cold held scales with `coldSinkCapacityFactor` (x0.25 spends four times as fast, so a drip fits in the run) and the melt drips into cans of meltwater. → cold_rack.rack_spends_ice_and_drips
+- It spends its ice doing so, the cold held scales with `coldSinkCapacityFactor` (x0.25 spends four times as fast, so the spend fits in the run). → cold_rack.rack_spends_ice
 - With `coldSinkEnabled` off the same warm room is left alone and the ice is not spent. → cold_rack.rack_toggle_off_leaves_room_alone
-- The ice clouds from deep blue to white as the cold runs out, and the rack groans and drips. → UNCOVERED: a tint and sounds (visual/audio; the "Ice:" inspect stage needs a run that spends 50% of 30 blocks, which the budget does not afford)
+- The ice clouds from deep blue to white as the cold runs out, and the rack groans. → UNCOVERED: a tint and sounds (visual/audio; the "Ice:" inspect stage needs a run that spends 50% of 30 blocks, which the budget does not afford)
 - The `RM_MeltBlueIce` recipe melts 5 blue ice into 3 cans at a campfire or stove. → UNCOVERED: driving a bill needs a fuelled stove and a cook (the recipe is checked only to resolve, defs.defs_resolve); follow-up BLUE_DESERT_MELT_BILL_1
 
 Blue-ice quarrying
@@ -63,19 +63,10 @@ The vhaulk
 - With `vhaulkEmpTrapEnabled` off an EMP hit is ordinary damage. → vhaulk_gates.emp_trap_off_is_ordinary_damage
 - With `nativeDetonationsEnabled` off a heat kill detonates nothing. → vhaulk_gates.native_toggle_off_no_blast
 - With `masterEnabled` off a heat kill detonates nothing. → vhaulk_gates.master_off_no_blast
-- A walking vhaulk presses a temporary rime road (temp-terrain layer) and crops the flora it passes to growth 0.08 without destroying it. → vhaulk_road.road_laid_and_flora_cropped
-- With `vhaulkRoadEnabled` off it walks like any animal. → vhaulk_road.road_toggle_off_walks_clean
-- The road lasts a few days (`vhaulkRoadDaysFactor`). → UNCOVERED: 2-3 game days (120,000+ ticks) is beyond the run budget; the factor is read/write only → settings.vhaulkRoadDaysFactor_roundtrip
 - A wild vhaulk walks off the map after its stay (`vhaulkStayDaysFactor`, `vhaulkDepartsEnabled`) with a letter and never silently despawns. → vhaulk_departs.vhaulk_walks_off_with_a_letter
 - The `vhaulkStayDaysFactor` field exists and is writable (it is also driven by the walk-off run). → settings.vhaulkStayDaysFactor_roundtrip
-- Its seams boom at long intervals and frost hangs in its wake. → UNCOVERED: an audio one-shot and a dust fleck have no state read
 
-Soundscape (vanilla clips, audio ruling 2026-10-03)
-- Three or more ossivels on the map sing (choir sustainer state on); a pawn bigger than body size 1.0 within 15 cells silences them at once; the silence outlasts the intruder by the hold (900 ticks, PROVISIONAL), then the song resumes. → soundscape.choir_sings_and_falls_silent
-- With `ossivelChoirEnabled` off the ossivels never sing. → soundscape.choir_toggle_off_silent
-- In wind of at least 0.5 the virr nearest the camera sings, and its pitch is higher at full growth than as a seedling. → soundscape.virr_sings_in_wind_pitch_climbs
-- With `virrSongEnabled` off the virr never sings. → soundscape.virr_toggle_off_silent
-- The audible sound itself (the vanilla choir loop, the desolate-wind loop, the murrek's Fleshbeast-dig burst on surfacing, the drift's storm wind as Odyssey's own sandstorm uses). → UNCOVERED: audio has no state read; only the driving state above is read, and the wiring is a static check (validation.py static_checks)
+- The audible sound itself (the murrek's Fleshbeast-dig burst on surfacing, the drift's storm wind as Odyssey's own sandstorm uses). → UNCOVERED: audio has no state read; only the driving state above is read, and the wiring is a static check (validation.py static_checks)
 
 Weather
 - An unroofed colonist under the Haze carrier takes `RM_HazeFilm` and its severity climbs; a roofed one's does not. → haze.haze_film_on_outdoor_colonist
@@ -109,7 +100,6 @@ DRAFT, binds nothing. This mod has no owner-ruled experience bars yet; the inten
 - SUSPECTED, source-read and awaiting the live run: `krissek_blast.krissek_off_quiet` goes red. `RM_KrissekCharge` (and the eight other non-vhaulk charge hediffs) carry the vanilla `HediffCompProperties_ExplodeOnDeath`, which never reads `RM_BlueDesertSettings`, while the Mod Settings text says natives "die like an ordinary animal" with the toggle off. Only the death-action worker (krissek, `RUT_BurnerAscendant`) and the dorrak hump-kill honour it. The check reads what the player sees (does the killer's neighbour burn), so it goes red for the reported reason.
 - RULED OUT: "the vhaulk blast fires from `Notify_PawnKilled`, which has no DamageInfo to gate on" — `RM_HediffComp_HeatGatedExplodeOnDeath` suppresses that hook and explodes from `Notify_PawnDied(dinfo, culprit)`; the heat/kinetic trials (`heat_kill_detonates`, `kinetic_kill_does_not`) read the blast's effect on a witness, so a regression to the vanilla hook goes red on the kinetic trial.
 - RULED OUT: "the warm detonation can run on `CompTick`" — plants only `TickLong` (CLAUDE.md, RimSage-confirmed); the comp overrides `CompTickLong`. `warm_detonates_plants` waits two long ticks plus slack and goes red if the plants live.
-- RULED OUT: "laying the rime road kills the flora under it, and a dead plant detonates" — `TerrainGrid.DoTerrainChangedEffects` only vanishes a plant and the charge comp fires on `KillFinalize` only; `road_laid_and_flora_cropped` counts the path plants after the walk and goes red if any is gone.
 - RULED OUT: "`jawa/mod_settings_field` applies a setting" — it writes the static and never calls `WriteSettings`, so `ruledWeathersEnabled` (applied in `RM_BlueDesertWeatherTable.Apply` on `WriteSettings`) is driven through the real Mod Settings dialog; if the dialog never writes this mod's config file the component is UNMEASURED, never a pass and never a mod fail.
 - RULED OUT: reading `<wildAnimals>` through `jawa/get_defs` — a non-public list it cannot serialise (Pyrelands, 2026-10-01); the suite uses `jawa/biome_probe`, which reads the runtime caches and says `spawning`, `zeroed` or `absent`.
 - RULED OUT: "the quicktest map is a Blue Desert" — it is not. The ablation incident, murrek re-seed and the biome's Haze carrier are keyed on the biome; the carrier is started by hand for `haze.*` and the others are UNCOVERED (BLUE_DESERT_SITE_1).

@@ -81,7 +81,7 @@ namespace RimMandrake.BlueDesert.SelfTest
 
         // ════════════════════════ cold ════════════════════════
         private static readonly string[] CdNames = { "Tick", "Warm", "Load", "Target", "Factor", "Blackout" };
-        public static long Absorbs, Drips, Empties, StageChanges;
+        public static long Absorbs, Empties, StageChanges;
 
         // vanilla GenTemperature.ControlTemperatureTempChange for a cooler (energyLimit < 0)
         private static float CoolStep(float roomTemp, int cells, float energyLimit, float target)
@@ -96,10 +96,9 @@ namespace RimMandrake.BlueDesert.SelfTest
         {
             var r = new Random(seed ^ 0xc01d);
             int cells = new[] { 1, 6, 30, 120 }[r.Next(4)];
-            float T = 25f, target = -5f, fuel = 0f, maxFuel = 20f, melted = 0f;
-            float cold = new[] { 500f, 60f, 5000f }[r.Next(3)], factor = 1f, perSec = -12f, blocksPerCan = new[] { 5f, 1f, 0f }[r.Next(3)];
-            int cansPerMelt = new[] { 0, 1, 3 }[r.Next(3)];
-            double heatRemoved = 0, blocksUsed = 0; long cans = 0; double meltedTotal = 0;
+            float T = 25f, target = -5f, fuel = 0f, maxFuel = 20f;
+            float cold = new[] { 500f, 60f, 5000f }[r.Next(3)], factor = 1f, perSec = -12f;
+            double heatRemoved = 0, blocksUsed = 0;
             int lastStage = RM_BlueKernel.ClarityStage(true, fuel / maxFuel);
             bool power = true;
             int step = 0;
@@ -135,18 +134,6 @@ namespace RimMandrake.BlueDesert.SelfTest
                             Check(T >= target - 1e-3f || tBefore < target, "the rack cooled the room past its target" + where);
                             Check(fuel >= -1e-4f, "negative ice" + where);
                             if (fuel < 0f) fuel = 0f;
-                            melted += blocks; meltedTotal += blocks;
-                            float meltedBeforeDrip = melted;
-                            int drips = RM_BlueKernel.Drip(ref melted, blocksPerCan);
-                            Drips += drips;
-                            if (blocksPerCan <= 0f) Check(drips == 0 && melted == meltedBeforeDrip, "dripped with no blocksPerCan" + where);
-                            else
-                            {
-                                Check(melted < blocksPerCan && melted >= -1e-4f, $"melt store {melted} not in [0, {blocksPerCan})" + where);
-                                Check(Near(melted + drips * blocksPerCan, meltedBeforeDrip, 1e-3), "the drips did not account for the melt" + where);
-                                cans += (long)drips * RM_BlueKernel.CansPerDrip(cansPerMelt);
-                            }
-                            Check(RM_BlueKernel.CansPerDrip(cansPerMelt) >= 1, "a drip with no cans" + where);
                             break;
                         }
                 }
@@ -157,7 +144,6 @@ namespace RimMandrake.BlueDesert.SelfTest
                 Check(stage == (pct > 0.5f ? 0 : pct > 0.1f ? 1 : 2), $"clarity {stage} at {pct}" + where);
                 Check(Near(heatRemoved, blocksUsed, 1e-2 + 1e-4 * blocksUsed), "total heat removed != total ice absorbed" + where);
             }
-            if (blocksPerCan > 0f) Check(Math.Abs(meltedTotal - (cans / (double)RM_BlueKernel.CansPerDrip(cansPerMelt)) * blocksPerCan - melted) < 1e-2 + 1e-4 * meltedTotal, "melt, cans and store do not balance at the end");
             return null;
         }
 
@@ -212,7 +198,7 @@ namespace RimMandrake.BlueDesert.SelfTest
         }
 
         // ════════════════════════ rules ════════════════════════
-        public static long Detonations, EmpKills, ChargeBooms, Departs, ChoirSongs, ChoirSilences, Exposures;
+        public static long Detonations, EmpKills, ChargeBooms, Departs, Exposures;
         private static readonly string[] RlNames = { "Charge", "Choir", "Time", "Intruder", "Singer", "Depart", "Stage" };
 
         private static string RunRules(int seed, List<Act> acts)
@@ -220,10 +206,7 @@ namespace RimMandrake.BlueDesert.SelfTest
             var r = new Random(seed ^ 0x1f);
             // charge
             int warm = 0; bool chargeOn = true;
-            // choir
-            int now = r.Next(0, 10000); int silencedUntil = -1; int min = 3; float radius = 15f; int hold = 900;
-            var singers = new List<int[]>(); var intruders = new List<int[]>();
-            int lastIntruderTick = int.MinValue;
+            int now = r.Next(0, 10000);
             // ablation
             int stage = 0; int silTick = RM_BlueKernel.SilhouetteTick(now, 2f + (float)r.NextDouble(), new[] { 0.1f, 1f, 3f }[r.Next(3)]);
             int expTick = RM_BlueKernel.ExposureTick(silTick, 3f + (float)r.NextDouble(), 1f);
@@ -238,8 +221,8 @@ namespace RimMandrake.BlueDesert.SelfTest
                 switch (a.kind)
                 {
                     case 2: now += 1 + a.a % 9000; break;
-                    case 3: intruders.Add(new[] { a.a % 41 - 20, a.b % 41 - 20 }); if (intruders.Count > 3) intruders.RemoveAt(0); break;
-                    case 4: if (a.b % 3 == 0 && singers.Count > 0) singers.RemoveAt(0); else singers.Add(new[] { a.a % 11 - 5, a.b % 11 - 5 }); if (singers.Count > 7) singers.RemoveAt(0); break;
+                    case 3: break;
+                    case 4: break;
                     case 0:
                         {
                             bool enabled = a.a % 9 != 0, hasMap = a.a % 11 != 0, warmNow = a.b % 2 == 0;
@@ -251,30 +234,7 @@ namespace RimMandrake.BlueDesert.SelfTest
                             else Check(warm == 0 && act == 0, "a cool tick did not reset the charge" + where);
                             break;
                         }
-                    case 1:
-                        {
-                            var res = RM_BlueKernel.Choir(true, now, silencedUntil, min, radius, hold, singers.Count, singers.Select(s => s[0]).ToArray(), singers.Select(s => s[1]).ToArray(),
-                                intruders.Count, intruders.Select(s => s[0]).ToArray(), intruders.Select(s => s[1]).ToArray());
-                            bool anyNear = intruders.Any(i => singers.Any(s => (double)(i[0] - s[0]) * (i[0] - s[0]) + (double)(i[1] - s[1]) * (i[1] - s[1]) <= radius * radius));
-                            int expectUntil = anyNear ? now + hold : silencedUntil;
-                            Check(res.SilencedUntil == expectUntil, $"silenced-until {res.SilencedUntil}, spec {expectUntil}" + where);
-                            bool enough = singers.Count >= min;
-                            Check(res.Silenced == (enough && now < expectUntil) && res.Singing == (enough && !(now < expectUntil)), $"choir state singing={res.Singing} silenced={res.Silenced}" + where);
-                            Check(!(res.Singing && res.Silenced), "singing and silenced at once" + where);
-                            Check(res.Singers == singers.Count, "singer count" + where);
-                            if (res.Singing)
-                            {
-                                Check(res.CentreX >= singers.Min(s => s[0]) && res.CentreX <= singers.Max(s => s[0]) && res.CentreZ >= singers.Min(s => s[1]) && res.CentreZ <= singers.Max(s => s[1]), "choir centre outside the singers' bounds" + where);
-                                ChoirSongs++;
-                            }
-                            if (res.Silenced) ChoirSilences++;
-                            if (anyNear) lastIntruderTick = now;
-                            if (lastIntruderTick != int.MinValue && enough && now - lastIntruderTick < hold) Check(!res.Singing, "the choir sang inside the hold after an intruder" + where);
-                            silencedUntil = res.SilencedUntil;
-                            var off = RM_BlueKernel.Choir(false, now, silencedUntil, min, radius, hold, singers.Count, singers.Select(s => s[0]).ToArray(), singers.Select(s => s[1]).ToArray(), 0, new int[0], new int[0]);
-                            Check(!off.Singing && !off.Silenced && off.Singers == 0 && off.SilencedUntil == silencedUntil, "a gated choir did something" + where);
-                            break;
-                        }
+                    case 1: break;   // was the ossivel choir (cut 2026-10-23, fluff review)
                     case 5:
                         {
                             bool on = a.a % 7 != 0, hash = a.b % 2 == 0, jobExits = a.a % 3 == 0;
@@ -331,24 +291,12 @@ namespace RimMandrake.BlueDesert.SelfTest
                 Check(RM_BlueKernel.IsHeatKill(a, b, c, d) == ((a && b) || (c && d)), "heat kill truth");
                 Check(RM_BlueKernel.PartKills(a, b, c, d) == (a && b && c && d), "part kill truth");
                 Check(RM_BlueKernel.IsEmp(a, b, c) == (a ? b : c), "IsEmp truth");
-                Check(RM_BlueKernel.RoadCell(a, b, c, d, (seed & 1) != 0) == (a && !b && (c || d) && !((seed & 1) != 0)), "road cell truth");
             }
             Check(RM_BlueKernel.WeatherCommonality(true, 0.7f) == 0.7f && RM_BlueKernel.WeatherCommonality(false, 0.7f) == 0f, "ruled weathers toggle");
-            Check(RM_BlueKernel.CropGrowth(0.5f, 0.08f, false) == 0.08f && RM_BlueKernel.CropGrowth(0.05f, 0.08f, false) == 0.05f && RM_BlueKernel.CropGrowth(0.5f, 0.08f, true) == 0.5f && RM_BlueKernel.CropGrowth(0.08f, 0.08f, false) == 0.08f, "crop to growth");
             // timings
             int now = r.Next(0, 1000000); float days = 2f + (float)r.NextDouble() * 3f; float f = new[] { 0f, 0.1f, 1f, 4f }[r.Next(4)];
             int dt = RM_BlueKernel.DepartTick(now, days, f);
             Check(dt >= now + (int)Math.Round(days * 0.1 * 60000) - 1, "stay shorter than the 0.1 factor floor");
-            Check(RM_BlueKernel.RoadRemoveTick(now, days, f) == dt, "road removal and departure clocks disagree on the same inputs");
-            // virr
-            int n = r.Next(0, 8); var vx = new int[n]; var vz = new int[n];
-            for (int i = 0; i < n; i++) { vx[i] = r.Next(-40, 41); vz[i] = r.Next(-40, 41); }
-            int ex = r.Next(-30, 31), ez = r.Next(-30, 31); float rad = 30f;
-            int got = RM_BlueKernel.NearestVirr(n, vx, vz, ex, ez, rad), best = -1; double bd = rad * rad;
-            for (int i = 0; i < n; i++) { double d = (double)(vx[i] - ex) * (vx[i] - ex) + (double)(vz[i] - ez) * (vz[i] - ez); if (d <= bd) { bd = d; best = i; } }
-            Check(got == best, $"nearest virr {got}, spec {best}");
-            float p0 = RM_BlueKernel.VirrPitch(0.85f, 1.35f, 0f), p1 = RM_BlueKernel.VirrPitch(0.85f, 1.35f, 1f);
-            Check(Near(p0, 0.85f, 1e-6) && Near(p1, 1.35f, 1e-6) && RM_BlueKernel.VirrPitch(0.85f, 1.35f, 5f) == p1 && RM_BlueKernel.VirrPitch(0.85f, 1.35f, -1f) == p0, "virr pitch lerp and clamp");
             return null;
         }
 
@@ -459,10 +407,10 @@ namespace RimMandrake.BlueDesert.SelfTest
             }
             if (only != null && !fam.Any(f => f.name == only)) { Console.WriteLine("FAIL unknown --fuzz-only family: " + only); return false; }
             if (Cases == 0) { Console.WriteLine("FAIL no cases ran (--fuzz-scale too small?); a fuzz that checked nothing is not a pass"); return false; }
-            Console.WriteLine($"reached: cold absorbs {Absorbs}, drips {Drips}, empty racks {Empties}, clarity changes {StageChanges}; thaw rolls {Rolls}, picks {Picks}; rules detonations {Detonations}, emp kills {EmpKills}, charge booms {ChargeBooms}, departs {Departs}, choir songs {ChoirSongs} (silenced {ChoirSilences}), exposures {Exposures}; murrek plans {Plans}, burrows {Burrows}, spawns {Spawned}");
+            Console.WriteLine($"reached: cold absorbs {Absorbs}, empty racks {Empties}, clarity changes {StageChanges}; thaw rolls {Rolls}, picks {Picks}; rules detonations {Detonations}, emp kills {EmpKills}, charge booms {ChargeBooms}, departs {Departs}, exposures {Exposures}; murrek plans {Plans}, burrows {Burrows}, spawns {Spawned}");
             if (!oneSeed.HasValue && scale >= 1 && only == null)
             {
-                if (Absorbs == 0 || Drips == 0 || Empties == 0 || StageChanges == 0 || Rolls == 0 || Picks == 0 || Detonations == 0 || EmpKills == 0 || ChargeBooms == 0 || Departs == 0 || ChoirSongs == 0 || ChoirSilences == 0 || Exposures == 0 || Burrows == 0 || Spawned == 0)
+                if (Absorbs == 0 || Empties == 0 || StageChanges == 0 || Rolls == 0 || Picks == 0 || Detonations == 0 || EmpKills == 0 || ChargeBooms == 0 || Departs == 0 || Exposures == 0 || Burrows == 0 || Spawned == 0)
                 { Console.WriteLine("FAIL a fuzz family never reached one of its key transitions (blind)"); ok = false; }
             }
             Console.WriteLine($"bluedesert fuzz: {Cases} cases, {Steps} steps, {sw.Elapsed.TotalSeconds:F2}s total -> {(ok ? "OK" : "FAILED")}");

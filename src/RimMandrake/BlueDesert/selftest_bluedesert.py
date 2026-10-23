@@ -210,9 +210,6 @@ class FakeGame(MockGame):
             blocks = 50.0 / (500.0 * cap)
             rack["fuel"] = max(0.0, rack["fuel"] - blocks)
             rack["melted"] += blocks
-        while rack["melted"] >= 5.0 and "rack_no_drip" not in b:
-            rack["melted"] -= 5.0
-            self.new_thing("RM_BlueIceMeltwaterCan", rack["x"] + 1, rack["z"], 3)
 
     def mine_one(self, q):
         if not q["mine"]:
@@ -314,22 +311,6 @@ class FakeGame(MockGame):
             step = min(abs(gx - q["fx"]), 0.02 * dt)
             q["fx"] += step if gx > q["fx"] else -step
             q["x"] = int(round(q["fx"]))
-            q["racc"] += dt
-            while q["racc"] >= 60:
-                q["racc"] -= 60
-                if (self.on("vhaulkRoadEnabled") and self.on("masterEnabled")) or "road_ignores_toggle" in b:
-                    if "road_never" not in b:
-                        for dx in range(-1, 2):
-                            for dz in range(-1, 2):
-                                self.roads.add((q["x"] + dx, q["z"] + dz))
-                    for th in [o for o in self.things.values() if o["d"] in VM.FLORA
-                               and math.hypot(o["x"] - q["x"], o["z"] - q["z"]) <= 2.9]:
-                        if "crop_never" in b:
-                            continue
-                        if "crop_kills" in b:
-                            del self.things[th["id"]]
-                        else:
-                            th["growth"] = min(th["growth"], 0.08)
         if q.get("depart") is not None and self.ticks >= q["depart"] and "never_departs" not in b \
                 and (self.on("vhaulkDepartsEnabled") and self.on("masterEnabled")) and q["spawned"]:
             q["spawned"] = False
@@ -644,44 +625,6 @@ class FakeGame(MockGame):
         can = "incident_fires_anywhere" in self.bugs
         return {"success": can, "canFireNow": can, "fired": False}
 
-    def t_jawa_static_call(self, p):
-        """RM_BlueDesertSoundProof: a mini-model of RM_MapComponent_BlueDesertSoundscape.Rescan, judged with the
-        same rules as the C# proof (which builds this answer live)."""
-        b, mode, m = self.bugs, p.get("args"), p.get("method")
-        if p.get("type") != "RimMandrake.BlueDesert.RM_BlueDesertSoundProof" or "proof_unanswered" in b:
-            return {"success": False, "error": "no such type"}
-        on = mode != "off"
-        if m == "ProofChoir":
-            gate = on or "choir_ignores_toggle" in b
-            sing = gate and "choir_never_sings" not in b
-            silenced = sing and "choir_not_silenced" not in b
-            echo = sing and "choir_no_echo" in b
-            st = "alone=%s silenced=%s echo=%s" % (sing, silenced, echo)
-            if on:
-                if not sing:
-                    return {"success": True, "result": "FAIL: a lone pack of 4 does not sing " + st}
-                if not silenced:
-                    return {"success": True, "result": "FAIL: a muffalo 5 cells away did not silence the choir " + st}
-                if echo:
-                    return {"success": True, "result": "FAIL: no echo hold " + st}
-                return {"success": True, "result": "PASS " + st}
-            return {"success": True, "result": ("FAIL: off but sang " if sing else "PASS off ") + st}
-        if m == "ProofVirr":
-            if self.weather_now != "RM_IceSandDrift":
-                return {"success": True, "result": "UNMEASURED: wind 0.10 below the singing threshold"}
-            gate = on or "virr_ignores_toggle" in b
-            sing = gate and "virr_never" not in b
-            young, ripe = 0.85 + 0.0, (0.85 if "virr_pitch_flat" in b else 1.35)
-            st = "young=%s@%.2f ripe=%s@%.2f" % (sing, young, sing, ripe)
-            if on:
-                if not sing:
-                    return {"success": True, "result": "FAIL: does not sing " + st}
-                if ripe <= young:
-                    return {"success": True, "result": "FAIL: pitch does not climb with ripeness " + st}
-                return {"success": True, "result": "PASS " + st}
-            return {"success": True, "result": ("FAIL: off but sang " if sing else "PASS off ") + st}
-        return {"success": False, "error": "no such method"}
-
     def t_jawa_letter_list(self, p):
         return {"success": True, "count": len(self.letters), "letters": list(self.letters)}
 
@@ -744,8 +687,7 @@ MUTANTS = {
     "wax_never_wicks": "cold_wax/wax_ruined_wicks_and_goes",
     "wax_ignores_toggle": "cold_wax/wax_toggle_off_ruined_but_inert",
     "rack_never_cools": "cold_rack/rack_cools_loaded_room_only",
-    "rack_no_ice_use": "cold_rack/rack_spends_ice_and_drips",
-    "rack_no_drip": "cold_rack/rack_spends_ice_and_drips",
+    "rack_no_ice_use": "cold_rack/rack_spends_ice",
     "rack_ignores_toggle": "cold_rack/rack_toggle_off_leaves_room_alone",
     "thaw_ignores_toggle": "thaw/thaw_toggle_off_mines_cleanly",
     "thaw_no_yield": "thaw/thaw_toggle_off_mines_cleanly",
@@ -757,10 +699,6 @@ MUTANTS = {
     "emp_toggle_ignored": "vhaulk_gates/emp_trap_off_is_ordinary_damage",
     "vhaulk_native_toggle_ignored": "vhaulk_gates/native_toggle_off_no_blast",
     "vhaulk_master_ignored": "vhaulk_gates/master_off_no_blast",
-    "road_never": "vhaulk_road/road_laid_and_flora_cropped",
-    "crop_never": "vhaulk_road/road_laid_and_flora_cropped",
-    "crop_kills": "vhaulk_road/road_laid_and_flora_cropped",
-    "road_ignores_toggle": "vhaulk_road/road_toggle_off_walks_clean",
     "never_departs": "vhaulk_departs/vhaulk_walks_off_with_a_letter",
     "silent_departure": "vhaulk_departs/vhaulk_walks_off_with_a_letter",
     "haze_never": "haze/haze_film_on_outdoor_colonist",
@@ -770,23 +708,13 @@ MUTANTS = {
     "apply_noop": "weather_apply/ruled_weathers_toggle_applies",
     "incident_fires_anywhere": "ablation_gate/ablation_only_in_blue_desert",
     "log_error": "log/log_clean",
-    "choir_never_sings": "soundscape/choir_sings_and_falls_silent",
-    "choir_not_silenced": "soundscape/choir_sings_and_falls_silent",
-    "choir_no_echo": "soundscape/choir_sings_and_falls_silent",
-    "choir_ignores_toggle": "soundscape/choir_toggle_off_silent",
-    "virr_never": "soundscape/virr_sings_in_wind_pitch_climbs",
-    "virr_pitch_flat": "soundscape/virr_sings_in_wind_pitch_climbs",
-    "virr_ignores_toggle": "soundscape/virr_toggle_off_silent",
 }
 
 # bug -> {component: expected non-PASS verdict} for cases that must read UNMEASURED (never a pass or a fail)
 UNMEASURED_CASES = {
-    "proof_unanswered": {"soundscape/choir_sings_and_falls_silent": "UNMEASURED",
-                         "soundscape/virr_toggle_off_silent": "UNMEASURED"},
     "dialog_unreachable": {"weather_apply/ruled_weathers_toggle_applies": "UNMEASURED"},
     "no_ordered_job": {"butane/foreign_grazer_takes_butane_gut": "UNMEASURED",
-                       "cold_rack/rack_site_ready": "UNMEASURED", "thaw/thaw_toggle_off_mines_cleanly": "UNMEASURED",
-                       "vhaulk_road/road_laid_and_flora_cropped": "UNMEASURED"},
+                       "cold_rack/rack_site_ready": "UNMEASURED", "thaw/thaw_toggle_off_mines_cleanly": "UNMEASURED"},
 }
 
 

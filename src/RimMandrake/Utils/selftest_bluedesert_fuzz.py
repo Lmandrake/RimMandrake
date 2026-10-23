@@ -3,7 +3,7 @@
 
 Seeded fuzz over the production kernels with explicit invariants: the blue-ice heat sink with heat/ice conservation against the
 vanilla cooler step (cold), the thaw-roll counter and weighted pick (thaw), the vhaulk detonation gate / plant charge / departure /
-ablation timeline / ossivel choir (rules), and the murrek reseed plan against an independent oracle (murrek). Built through
+ablation timeline (rules), and the murrek reseed plan against an independent oracle (murrek). Built through
 winbuild.stage_build (dotnet.exe is Windows-native), then run.
 
     python3 src/RimMandrake/Utils/selftest_bluedesert_fuzz.py [--fuzz-scale F] [--fuzz-seed N] [--fuzz-only cold|thaw|rules|murrek]
