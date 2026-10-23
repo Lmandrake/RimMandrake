@@ -1037,7 +1037,7 @@ def classify_game(probe: dict | None, bridge: str | None, now: float) -> list[di
     tok = (bridge or "").split()
     holder = (tok[1] if tok[0] == "HELD" and len(tok) > 1 else tok[0]) if tok else "?"
     state = "UP" if running else "down" if running is False else "unprobed"
-    txt = f"RimWorld {state} · bridge " + ("free" if holder == "FREE" else f"held by {holder}")
+    txt = f"RimWorld {state} · bridge " + ("free" if holder == "FREE" else "unknown" if holder == "?" else f"held by {holder}")
     return [_row("game", "run" if running else "idle", "GAME", txt, (probe or {}).get("at", now), src="probe")]
 
 
