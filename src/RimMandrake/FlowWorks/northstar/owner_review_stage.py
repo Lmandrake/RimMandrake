@@ -60,7 +60,7 @@ NOTCH_M = 0.5                      # one fill notch = 0.5 m of water over a squa
 SHALLOWS = ((0.5, 1), (1.0, 2), (1.5, 3), (2.0, 4), (5.0, 10))   # (metres, notches)
 BARS_ROWS = ("bars_joint", "bars_dry", "bars_trench", "bars_access", "bars_bridges", "bars_bridge_kinds")
 ALL_ROWS = ("ladders", "spikes", "gates", "shallows", "sprinklers") + BARS_ROWS
-OPT_ROWS = ("hoses",)            # run only when named in --only (own site east of the others; not in the default sweep)
+OPT_ROWS = ("hoses", "picks")            # run only when named in --only (own site east of the others; not in the default sweep)
 
 
 # ------------------------------------------------------------------ geometry (pure)
@@ -90,6 +90,7 @@ def layout(ox, oz):
     """Every row's origin. Site rect (x, z, w, h) covers all of it."""
     return dict(
         hoses=(ox + 70, oz), hoses_rect=(ox + 64, oz - 6, 84, 76),
+        picks=(ox, oz + 72), picks_rect=(ox - 3, oz + 68, 56, 18),
         bars=(ox + 150, oz), bars_rect=(ox + 150, oz - 6, 62, 76),
         ladders=(ox, oz), spikes=(ox, oz + 8), gates_sluice=(ox, oz + 16), gates_grate=(ox, oz + 25),
         shallows=(ox, oz + 34), sprinklers=(ox, oz + 49), rect=(ox - 3, oz - 6, 64, 70))
@@ -503,6 +504,58 @@ def row_hoses(s, L):
     return cap
 
 
+def row_picks(s, L):
+    """--only picks (FOUNDRY 2026-10-23, the owner's FlowWorks look list): a pipe faucet fed by a filled tank, a 4 m pit with
+    guardrails on two lips (bare lips beside them), a dug canal joining a vanilla WaterDeep lake at 2.5 m of water and one
+    joining a dug pond at 1 m (CANAL_LAKE_COLOUR_UNIFY_TWO_BLUES L3: equal depth, one colour), and a 2 m canal holding 1 m
+    of water (WATER_DEPTH_RESKIN wall band: the dry face between water and lip)."""
+    px, pz = L["picks"]
+    s.say("ROW picks: faucet, guardrail pit, canal vs lake (2.5 m, 1 m), wall depth band")
+    cap = []
+    # 1 faucet: 2x2 tank, 4 pipe squares east, faucet on the last
+    s.place("RM_LiquidTank", (px, pz + 1))
+    s.store((px, pz + 1))
+    for x in range(px + 2, px + 7):
+        s.place("RM_UniversalPipe", (x, pz + 1))
+    s.place("RM_PipeFaucet", (px + 6, pz + 1))
+    s.pawn((px + 6, pz), "at the faucet")
+    cap.append("faucet: tank -> 5 pipe squares -> RM_PipeFaucet on the last")
+    # 2 guardrail: 5x5 pit 4 m deep, rails on the north and east lips, south and west lips bare
+    gx, gz = px + 11, pz
+    s.pit((gx, gz), 5, 8)
+    for i in range(-1, 6):
+        s.place("RM_PitGuardrail", (gx + i, gz + 5), stuff="Steel")
+    for j in range(0, 5):
+        s.place("RM_PitGuardrail", (gx + 5, gz + j), stuff="Steel")
+    s.pawn((gx + 2, gz + 6), "behind the rail")
+    s.pawn((gx + 2, gz - 1), "bare lip")
+    cap.append("guardrail: 4 m pit, steel rails on N and E lips, S and W lips bare")
+    # 3a canal into a painted vanilla lake, 2.5 m of water both sides
+    lx, lz = px + 21, pz
+    s.say("  paint WaterDeep lake %d,%d 8x6" % (lx, lz))
+    if not s.dry:
+        s.chk("paint lake", s.w.call("jawa/set_terrain_batch", ops="WaterDeep:%d,%d,8,6" % (lx, lz)))
+    for x in range(lx + 8, lx + 15):
+        s.dig((x, lz + 3), 5, 5)
+    cap.append("canal 2.5 m of water joining a vanilla WaterDeep lake (one colour?)")
+    # 3b canal into a dug pond, 1 m of water both sides
+    dx, dz = px + 21, pz + 8
+    for i in range(6):
+        for j in range(5):
+            s.dig((dx + i, dz + j), 2, 2)
+    for x in range(dx + 6, dx + 13):
+        s.dig((x, dz + 2), 2, 2)
+    cap.append("canal 1 m of water joining a dug pond at 1 m (one colour?)")
+    # 4 wall band: 3-wide canal 2 m deep with 1 m of water (the dry face above the water)
+    bx, bz = px + 38, pz + 1
+    for x in range(bx, bx + 10):
+        for j in range(3):
+            s.dig((x, bz + j), 4, 2)
+    cap.append("wall band: 2 m canal, 1 m of water: the face between water and lip")
+    s.ticks(600)
+    return cap
+
+
 # ------------------------------------------------------------------ FlowWorks north-star bars (flowworks_bars_sitting_2026-10-18.md)
 SUSP = "RimMandrake.FlowWorks.Pits.RM_SuspensionProofs"
 TRENCH = "RimMandrake.FlowWorks.RM_TrenchCover"
@@ -626,7 +679,7 @@ def row_bars_bridge_kinds(s, L):
     return cap
 
 
-ROWS = dict(bars_joint=row_bars_joint, bars_dry=row_bars_dry, bars_trench=row_bars_trench, bars_access=row_bars_access,
+ROWS = dict(picks=row_picks, bars_joint=row_bars_joint, bars_dry=row_bars_dry, bars_trench=row_bars_trench, bars_access=row_bars_access,
             bars_bridges=row_bars_bridges, bars_bridge_kinds=row_bars_bridge_kinds, hoses=row_hoses, ladders=row_ladders, spikes=row_spikes, shallows=row_shallows, sprinklers=row_sprinklers)
 
 
@@ -655,8 +708,10 @@ def main(argv=None):
     if not a.dry_run:
         s.chk("kill_hostiles", s.w.call("jawa/kill_hostiles"))
         s.chk("weather_set Clear", s.w.call("jawa/weather_set", weather="Clear", lockWeather=True))
-        if [r for r in only if r not in ("hoses",) + BARS_ROWS]:
+        if [r for r in only if r not in OPT_ROWS + BARS_ROWS]:
             s.w.clear_site(L["rect"])
+        if "picks" in only:
+            s.w.clear_site(L["picks_rect"])
         if [r for r in only if r in BARS_ROWS]:
             s.w.clear_site(L["bars_rect"])
         if "hoses" in only:
@@ -731,6 +786,10 @@ def main(argv=None):
         png = C.snap(w, "row_" + key, rect)
         if png:
             shots.append(C.label_image(png, os.path.join(os.path.dirname(png), "row_%s_labelled.png" % key), title, "", caps[key]))
+    if "picks" in caps:
+        png = C.snap(w, "row_picks", L["picks_rect"])
+        if png:
+            shots.append(C.label_image(png, os.path.join(os.path.dirname(png), "row_picks_labelled.png"), "picks", "", caps["picks"]))
     for key in BARS_ROWS:
         if key in caps:
             png = C.snap(w, key, bars_row_rect(L, key))
