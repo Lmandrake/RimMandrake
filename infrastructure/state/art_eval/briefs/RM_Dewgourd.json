@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Dewgourd",
+ "nearest_earth_animal": "melon",
+ "earth_body_named": true,
+ "departures": [
+  "rind pale and waxy like stone, not green or striped",
+  "exactly one gourd per plant, not a cluster of fruit",
+  "a small comb of blade-like leaves standing over the gourd instead of broad, lobed melon leaves",
+  "the gourd sits in the shade under its own blade-comb, not lying exposed on open ground"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:38:21-07:00",
+ "source": "description only (no image)"
+}

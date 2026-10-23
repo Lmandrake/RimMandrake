@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Gorrask",
+ "nearest_earth_animal": "crab",
+ "earth_body_named": true,
+ "departures": [
+  "shell shows deep seams between its plates, with weep-mat colonies rooted and growing along those seams",
+  "the carapace looks like weathered stone, not glossy crab chitin",
+  "the shell is so worn and old that it reads as an ancient rock formation, not a living crab's smooth shell",
+  "colossal, landform-scale bulk that dwarfs everything around it, more like a hill or canyon boulder than an animal",
+  "sits low and fully settled in place, like a fixed part of the terrain, not raised up on its legs"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:38:23-07:00",
+ "source": "description only (no image)"
+}

@@ -27,12 +27,16 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[4]
 SKILL = ROOT / "skills" / "rimworld-art-evaluation"
-REFS = SKILL / "references"
+# ART_EVAL_REFS points at a full copy of references/ holding a prompt VARIANT under test (variant comparison,
+# references/prompt_variants_2026-10-23.md). Its files carry their own version tags, so a variant's decisions are
+# never pooled with the incumbent's (versions_key). Production runs leave it unset.
+REFS = Path(os.environ["ART_EVAL_REFS"]) if os.environ.get("ART_EVAL_REFS") else SKILL / "references"
 TEMPLATES = ("creature", "plant", "machine")
 STATUSES = ("ok", "fail", "unreadable", "n/a")
 BANDS = ("GOOD", "WEAK", "REALLY_BAD")

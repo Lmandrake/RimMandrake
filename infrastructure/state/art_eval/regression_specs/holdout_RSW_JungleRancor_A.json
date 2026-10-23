@@ -1,0 +1,27 @@
+{
+ "subject": "RSW_JungleRancor",
+ "label": "Jungle Rancor",
+ "template": "creature",
+ "module": "walker",
+ "candidate": "A",
+ "provenance": "holdout from picks_dessicated_sheet_2026-10-19 set d94c7eb845990eb5",
+ "description": "Jungle rancors were a colossal subspecies of the more common rancor that had evolved on the planet Felucia, but existed on other worlds through suspected \"exotic egg sales\" and poaching. This subspecies had extreme sexual dimorphism, with the males (referred to as \"rancor bulls\") being pale whitish grey, having 4 short facial-tusks used for display and an elongated tail for balance. The females were a regal shade of navy blue with webbed hands and had additional layers of thick almost testudine-like growths on their backs (presumably to help avoid predation as juveniles). It's believed this subspecies of rancor was able to grow too such colossal sizes due to it's consumption of the local \"fungal trees\" on their native Felucia, supplementing it's otherwise carnivorous diet in times of prey sparsity.",
+ "tier": "RSW_",
+ "invented": false,
+ "size": {
+  "drawSize": [
+   8,
+   8
+  ],
+  "quad": 8,
+  "mesh": 1,
+  "cells": 8,
+  "kind": "animal"
+ },
+ "images": {
+  "east": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_JungleRancor_A/east.png",
+  "north": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_JungleRancor_A/north.png",
+  "south": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_JungleRancor_A/south.png",
+  "scale": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_JungleRancor_A/scale.png"
+ }
+}

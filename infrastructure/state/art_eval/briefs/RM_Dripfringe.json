@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Dripfringe",
+ "nearest_earth_animal": "Spanish moss",
+ "earth_body_named": false,
+ "departures": [
+  "Dark, smooth fleshy fingers instead of thin grey fibrous strands, leaves or roots",
+  "Each finger narrows to a pointed drip-tip with a water droplet hanging from it",
+  "Fingers sit side by side in one orderly row from a single base, like an upside-down comb with its teeth pointing down, not a tangled clump",
+  "Hangs as a curtain from the lip of a rock overhang or cistern mouth, over a dark opening with a pool of water below",
+  "No leaves, stems, flowers or branching anywhere on the fingers"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:38:22-07:00",
+ "source": "description only (no image)"
+}

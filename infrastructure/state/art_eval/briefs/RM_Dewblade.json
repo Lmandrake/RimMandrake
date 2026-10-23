@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Dewblade",
+ "nearest_earth_animal": "grass",
+ "earth_body_named": true,
+ "departures": [
+  "blades are flat, broad strips standing rigidly edge-on, not thin arching grass leaves",
+  "every blade's tip narrows to a distinct drip-point, often with a bead of water at the tip",
+  "all blades in a tuft and across neighbouring tufts point the same way, in parallel rows like iron filings, not a random tangle",
+  "foliage is a muted grey-green, not a lush or yellow grass green"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:38:18-07:00",
+ "source": "description only (no image)"
+}

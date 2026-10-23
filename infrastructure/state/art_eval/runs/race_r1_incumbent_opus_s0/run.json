@@ -1,0 +1,21 @@
+{
+ "run_id": "race_r1_incumbent_opus_s0",
+ "test": true,
+ "started": "2026-10-23T09:41:02-07:00",
+ "subjects": [
+  "RM_Burrak__B",
+  "RM_Sillik__B",
+  "RM_Loomu__C",
+  "RM_Gorrask__B",
+  "RM_Shadefern__B",
+  "RM_Salvecomb__B",
+  "RM_Weepmat__A",
+  "RSW_Mudhorn__C",
+  "RSW_Nexu__A",
+  "RM_Zhorrel__B",
+  "RSW_MastiffPhalone__A",
+  "RM_HulduCatch__C",
+  "RM_LoomuCatch__A"
+ ],
+ "versions_key": "departures_brief@v2#9cda88+gpt_targeted_second_look@v1#cb6e32+opus_first_pass@v1#140565+preamble@v1#a48502+regen_prompt_edit@v1#861700+severity@v3#950903+creature@v2#16a385"
+}

@@ -1,0 +1,25 @@
+{
+ "subject": "RM_Mourvel",
+ "label": "mourvel",
+ "template": "plant",
+ "module": "tree",
+ "candidate": "B",
+ "provenance": "holdout from tree_art_picks_sheet_2026-10-18 set f72cbf23ae59c550",
+ "description": "The brief's \"willow-like canopy\" taken literally, and then further: a low wide dome whose entire outer surface is hanging cord-like leaf strands that reach the mud, so the tree is a room with walls. Bark violet-black, strands blue-green. Nothing is visible through it \u2014 the Greentide's one true concealment tree.",
+ "tier": "RM_",
+ "invented": true,
+ "size": {
+  "drawSize": [
+   1,
+   1
+  ],
+  "quad": 10.5,
+  "mesh": 1,
+  "cells": 10.5,
+  "kind": "plant"
+ },
+ "images": {
+  "single": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RM_Mourvel_B/single.png",
+  "scale": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RM_Mourvel_B/scale.png"
+ }
+}

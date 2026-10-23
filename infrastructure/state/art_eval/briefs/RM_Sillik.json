@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Sillik",
+ "nearest_earth_animal": "gecko",
+ "earth_body_named": false,
+ "departures": [
+  "body spread completely flat against the vertical rock face like a pressed sheet, not raised on splayed legs",
+  "a fanned whisker-comb: a ring of comb-like bristles spread around the whole muzzle",
+  "the muzzle pressed to the wet stone surface, combing a thin sheen of water",
+  "uniform silver-grey colouring with no gecko-style banding, spots or bright skin",
+  "palm-sized individuals stippled in numbers across one wet rock face, not a single lizard on a wall"
+ ],
+ "body_plan": "wall_clinger",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:38:20-07:00",
+ "source": "description only (no image)"
+}

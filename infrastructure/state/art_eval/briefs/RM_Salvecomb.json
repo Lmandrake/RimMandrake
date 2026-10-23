@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Salvecomb",
+ "nearest_earth_animal": "fern",
+ "earth_body_named": false,
+ "departures": [
+  "exactly one frond per plant, a single arched blade, never a clump or rosette of fronds",
+  "the frond is one solid blade, not divided into leaflets, and one edge carries a row of evenly spaced, comb-like serrated teeth",
+  "silver-white down mats the toothed edge, while the rest of the blade stays bare",
+  "a tall, waist-high single arch rising from the ground, standing alone with no neighbouring plants"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:38:20-07:00",
+ "source": "description only (no image)"
+}

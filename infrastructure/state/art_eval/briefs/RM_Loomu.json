@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Loomu",
+ "nearest_earth_animal": "jellyfish",
+ "earth_body_named": false,
+ "departures": [
+  "opaque, matte dove-grey flesh, not translucent or glassy",
+  "a compact, cat-sized body mass rather than a broad bell with long trailing tentacles",
+  "boneless and slack: the body sags and folds softly under its own weight, with no rigid shell, bell rim or skeleton",
+  "hangs still, suspended in warm murky seep water, not pulsing or jetting",
+  "a visible mouth or throat opening able to make sounds, since it repeats voices and whistles"
+ ],
+ "body_plan": "swimmer",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:38:24-07:00",
+ "source": "description only (no image)"
+}

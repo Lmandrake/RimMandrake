@@ -1,0 +1,70 @@
+[
+ {
+  "id": "arteval_RSW_Igitz__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Igitz__A",
+  "prompt": "igitz: Igitz were a species of small amphibians hailing from the planet Naboo. Those blue-skinned, omnivorous critters dwelled in the planet's many dense swamps. Because of the environment in which they had evolved, the igitz were well-adapted to both land and water: while their front paws were clawed for treading on land, their hindquarters were finned, allowing it speed when in water. The igitz were a popular pet in most Gungan civilizations and this lead to the species becoming present on other worlds. The igitz sits upright on thick bent hind legs, with a round squat body and short forelimbs that end in a few clawed toes. Draw one small spike at the back of the brow and one near the nose, and a short finned tail at the rear that shows on east and north. The body sits upright on thick folded haunches, with visibly shorter forelimbs ending in a few clawed toes beneath the chest. A single longitudinal dorsal frill follows the spine in all facings, appearing edge-on above the head in south and broadside along the back in east. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: CANON_MISS, CANON_MISS, CANON_MISS, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1c_V3own_opus_s1"
+ },
+ {
+  "id": "arteval_RSW_Rancor__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Rancor__A",
+  "prompt": "RSW_Rancor: Rancors were large carnivorous reptomammals native to the planet of Dathomir. Standing around five meters tall, with their long arms, immense jaws, and armored hides that could withstand blaster fire, they are formidable predators. A subspecies known as the jungle rancor populates the planets Felucia and Teth. Render the hide with painterly brushwork and a thin, clean dark outline around the silhouette, keeping the realistic anatomy and texture. Render all three facings with visibly painterly shading, selective skin detail concentrated around the face and major forms, and a restrained clean dark silhouette outline. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_OFF, STYLE_OFF",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1c_V3own_opus_s1"
+ },
+ {
+  "id": "arteval_RSW_Insectomorph__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Insectomorph__A",
+  "prompt": "insectomorph: Insectomorphs were insectoids from the planet Malastare. These easily domesticated omnivores were often used by the Dugs on their homeworld as battle mounts. Despite their unusual appearance they have been able to flourish as livestock on multiple worlds due to their rapid growth and hardiness. The north view shows the rear: the haunches, the back of the hind legs and the hind end of the body, with the head hidden beyond the body and no face or eyes visible. Every facing shows the same dorsal plates and rear tuft, turned with the body, so north shows the plated back and rear end. A low-slung, spider/mantis-like arthropod with a matte bony exoskeleton on four long, thin, jointed skeletal legs, the hind legs about twice as long as the front, the legs tan/gold with dark brown horizontal bands over a bone-white undertone. Edges are defined by lighting and value changes, with only a thin, soft dark edge. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_NORTH_FACE, F_INCONSISTENT, CANON_MISS, CANON_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1c_V3own_opus_s1"
+ },
+ {
+  "id": "arteval_RSW_MastiffPhalone__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_MastiffPhalone__A",
+  "prompt": "mastiff phalone: A large, long-bodied four-legged avian predator of the Maridun savannas, built like a griffin: a coat of grey feathers barred with dark blue, a mane of dark feathers over neck and shoulders, and a long feathered tail. Its wings have dwindled to remnants at the front legs, which end, like the hind legs, in long talons big enough to wrap around a man's waist; the head carries a heavy hooked beak and a patch of bare blue skin at the throat. Mastiff phalones hunt in packs of two or more, stalking through tall grass. They will break off from prey that fights back too hard, only to return and strike again later, and an agitated one is said to be as dangerous as a rancor and just as hard to bring down. Render south and north at the same body scale as the east profile, so the shoulder height and leg thickness match across facings. Give each front leg a small folded remnant wing of grey-blue feathers at the shoulder or elbow, visible in every facing. The feet are scaly raptor feet with long, curved, pale talons, clearly larger than a paw. Show a bright blue patch of bare skin under the beak on the throat, and paint the hooked beak pale bone or ivory. The body reads as avian: feathered legs ending in talons, with wing stubs on the forelegs. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, CANON_MISS, CANON_MISS, CANON_MISS, DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1c_V3own_opus_s1"
+ }
+]

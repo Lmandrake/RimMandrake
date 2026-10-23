@@ -1,0 +1,27 @@
+{
+ "subject": "RSW_Warbird",
+ "label": "RSW_Warbird",
+ "template": "creature",
+ "module": "flyer",
+ "candidate": "A",
+ "provenance": "holdout from picks_dessicated_sheet_2026-10-19 set 027f71e33dd10ddd",
+ "description": "The Warbird (or 'Sith warbird') was a species of huge flightless avian from the frigid planet Khar Delba. Sith warbirds were notorious for their bad temper and they typically used their large size to ram down their prey and gore them with their serrated beaks. After the end of the Great Sith War, Sith warbirds continued to be found throughout the galaxy, with survivors of the conflict breeding on worlds where battles had been fought by the Sith. These wild-once-more warbirds were prone to terrorizing local forms of wildlife that posed little threat to them.",
+ "tier": "RSW_",
+ "invented": false,
+ "size": {
+  "drawSize": [
+   5,
+   5
+  ],
+  "quad": 5,
+  "mesh": 1,
+  "cells": 5,
+  "kind": "animal"
+ },
+ "images": {
+  "east": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_Warbird_A/east.png",
+  "north": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_Warbird_A/north.png",
+  "south": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_Warbird_A/south.png",
+  "scale": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_Warbird_A/scale.png"
+ }
+}

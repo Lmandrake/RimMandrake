@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Vizhik",
+ "nearest_earth_animal": "eel",
+ "earth_body_named": true,
+ "departures": [
+  "comb-gills fanned out along the whole length of the neck like a ruff",
+  "gill-comb fringes long and stiff enough to carry the body across dry rock, shown braced on the ground",
+  "wrist-thin body, far slimmer than an ordinary eel for its length",
+  "the ruff of comb-gills is the creature's dominant silhouette feature, not the small paired gill slits an eel has"
+ ],
+ "body_plan": "serpentine",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:38:19-07:00",
+ "source": "description only (no image)"
+}

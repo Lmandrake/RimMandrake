@@ -1,0 +1,70 @@
+[
+ {
+  "id": "arteval_RSW_Convor__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Convor__A",
+  "prompt": "convor: Convor (also known as \"Trandoshan birds\"), were a species of beautiful mammavian from the Wasskah moon of Hsskhor. Although Convor had short, plump bodies, they were excellent fliers. Their popularity as a pet meant they often established colonies on other worlds. The south and east views have natural dark-brown eyes with restrained highlights. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: CANON_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1c_V1cal_opus_s0"
+ },
+ {
+  "id": "arteval_RSW_Anooba__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Anooba__B",
+  "prompt": "anooba: Anoobas were aggressive pack predators that lived throughout the Outer Rim Territories. Opportunistic hunters as well as scavengers, these wolflike canines would attack virtually anything smaller than themselves (such as scurriers). The muzzle, jaw, throat and neck are hairless, deeply creased, leathery pink-to-flesh-brown skin, with the fur starting only behind the ears and at the shoulders. The crown mane and the spiky dorsal ridge are coarse, pale grey-white hair that stands out against the darker striped body. The eyes are small, dark and sunk deep under a heavy, wrinkled, bare-skin brow. The north view shows the same long, thin, ringed rat tail as the other facings, hanging low and curling to one side behind the haunches. The north view is drawn at the same body scale as south, with the shoulders and haunches as wide as the south view's chest and the ear tips at a matching height. The muzzle, jaw, throat and neck show bare pink-to-flesh-brown leather with deep, heavy wrinkles. A coarse pale grey-white mane covers the crown and continues along the spine as a clearly visible spiky ridge. Small dark eyes sit deep beneath heavy folds of wrinkled brow skin. All facings share matching anatomical proportions and body scale while retaining their directional poses. A heavy protruding lower jaw carries uneven yellowed fangs and a distinct ivory chin tusk projecting from its underside. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: CANON_MISS, CANON_MISS, CANON_MISS, F_INCONSISTENT, F_SIZE_JUMP, CANON_MISS, CANON_MISS, CANON_MISS, F_SIZE_JUMP, CANON_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1c_V1cal_opus_s0"
+ },
+ {
+  "id": "arteval_RSW_Kaadu__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Kaadu__A",
+  "prompt": "kaadu: Kaadu were large, flightless reptavians that inhabited the swamps of the planets Naboo, Obredaan as well as the moon of Rori. They had sharp hearing and a keen sense of smell and adults of the species had distinct markings to distinguish gender. Kaadu were known to be fearless; consequently many were domesticated as steeds during times of conflict, or as patrol animals. This versatility made them a popular export to other worlds as both livestock and mount. The body and neck have smooth reptilian skin with subtle folds and fine scale texture, preserving the yellow-orange markings and cream underside. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: CANON_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1c_V1cal_opus_s0"
+ },
+ {
+  "id": "arteval_RSW_KellDragon__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_KellDragon__B",
+  "prompt": "kell dragon: Kell dragons (also known as 'kell drakes') were were hardy, thick skinned creatures from the mountainous planet Rinderga. They were related to the much larger krayt dragons indigenous to Tatooine, but unlike their larger cousins were comfortable in both deserts and tundra. Kell dragons were believed to have been chemically altered by Sith Alchemy from the original krayt stock for use as effective 'guard beasts' for their tombs and facilities. As a result they also became popular with criminal organisations and these creatures could be found across the galaxy (on planets such as Ruusan, Dromund Kaas, and Arkania to name a few). Scale south and north so the head width, limb thickness and body width match the east profile at the same scale, leaving the north/south height at roughly 200\u2013250 px. Draw the north view from behind at the game's angled camera: the haunches and hind legs standing under the body, the tail trailing toward the camera, the back foreshortened as it recedes, with the three spike rows rising and the head hidden beyond the shoulders. The north view presents the dragon from behind at the game's oblique camera angle, with rear haunches nearest the viewer and the back receding toward the shoulders. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, F_TOPDOWN, F_TOPDOWN",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1c_V1cal_opus_s0"
+ }
+]

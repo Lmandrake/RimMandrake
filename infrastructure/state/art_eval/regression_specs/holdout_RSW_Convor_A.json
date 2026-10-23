@@ -1,0 +1,27 @@
+{
+ "subject": "RSW_Convor",
+ "label": "convor",
+ "template": "creature",
+ "module": "flyer",
+ "candidate": "A",
+ "provenance": "holdout from leaningscrub_open_rows_sheet_2026-10-18 set 22e0b71c2a6db989",
+ "description": "Convor (also known as \"Trandoshan birds\"), were a species of beautiful mammavian from the Wasskah moon of Hsskhor. Although Convor had short, plump bodies, they were excellent fliers. Their popularity as a pet meant they often established colonies on other worlds.",
+ "tier": "RSW_",
+ "invented": false,
+ "size": {
+  "drawSize": [
+   1.25,
+   1.25
+  ],
+  "quad": 1.25,
+  "mesh": 1,
+  "cells": 1.25,
+  "kind": "animal"
+ },
+ "images": {
+  "east": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_Convor_A/east.png",
+  "north": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_Convor_A/north.png",
+  "south": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_Convor_A/south.png",
+  "scale": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_Convor_A/scale.png"
+ }
+}

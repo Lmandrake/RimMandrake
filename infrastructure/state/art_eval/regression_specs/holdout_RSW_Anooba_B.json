@@ -1,0 +1,27 @@
+{
+ "subject": "RSW_Anooba",
+ "label": "anooba",
+ "template": "creature",
+ "module": "walker",
+ "candidate": "B",
+ "provenance": "holdout from leaningscrub_open_rows_sheet_2026-10-18 set 0562743f9b4c9104",
+ "description": "Anoobas were aggressive pack predators that lived throughout the Outer Rim Territories. Opportunistic hunters as well as scavengers, these wolflike canines would attack virtually anything smaller than themselves (such as scurriers).",
+ "tier": "RSW_",
+ "invented": false,
+ "size": {
+  "drawSize": [
+   1.5,
+   1.5
+  ],
+  "quad": 1.5,
+  "mesh": 1,
+  "cells": 1.5,
+  "kind": "animal"
+ },
+ "images": {
+  "east": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_Anooba_B/east.png",
+  "south": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_Anooba_B/south.png",
+  "north": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_Anooba_B/north.png",
+  "scale": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_Anooba_B/scale.png"
+ }
+}

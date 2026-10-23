@@ -117,8 +117,36 @@ def gates(facing_files: dict) -> dict:
     return g
 
 
+CANON_REFS = ROOT / "design/RimStarWars/canon_references"
+
+
+def canon_for(subject: str) -> dict | None:
+    """The canon entry's Must show / Engine limits for a Star Wars (RSW_) subject, read from
+    design/RimStarWars/canon_references/<slug>/description.md, or None. A spec without `canon` used to reach the
+    reviewers with no canon at all (race 2026-10-23: RSW_Gualaar A passed though its entry's NEGATIVE line is
+    "not a slim llama or antelope, not two thin backward horns")."""
+    if not subject.startswith("RSW_"):
+        return None
+    base = subject[4:]
+    for slug in dict.fromkeys([base.lower(), base.split("_")[0].lower()]):
+        f = CANON_REFS / slug / "description.md"
+        if not f.is_file():
+            continue
+        sec, out = None, {"must_show": [], "engine_limits": [], "source": str(f.relative_to(ROOT))}
+        for line in f.read_text().splitlines():
+            if line.startswith("## "):
+                h = line[3:].strip().lower()
+                sec = "must_show" if h.startswith("must show") else "engine_limits" if h.startswith("engine limit") else None
+            elif sec and line.lstrip().startswith("- "):
+                out[sec].append(line.lstrip()[2:].replace("[ ]", "").replace("[x]", "").strip())
+        return out if out["must_show"] else None
+    return None
+
+
 def build_card(spec: dict, out: Path) -> dict:
     """Write the card directory for `spec` into `out` and return card.json's content."""
+    if not spec.get("canon") and canon_for(spec.get("subject", "").split("__")[0]):
+        spec = dict(spec, canon=canon_for(spec["subject"].split("__")[0]))
     out = Path(out)
     if out.exists():
         shutil.rmtree(out)

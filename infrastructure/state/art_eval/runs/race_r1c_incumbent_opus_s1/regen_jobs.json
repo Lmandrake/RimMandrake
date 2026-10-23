@@ -1,0 +1,70 @@
+[
+ {
+  "id": "arteval_RSW_Igitz__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Igitz__A",
+  "prompt": "igitz: Igitz were a species of small amphibians hailing from the planet Naboo. Those blue-skinned, omnivorous critters dwelled in the planet's many dense swamps. Because of the environment in which they had evolved, the igitz were well-adapted to both land and water: while their front paws were clawed for treading on land, their hindquarters were finned, allowing it speed when in water. The igitz were a popular pet in most Gungan civilizations and this lead to the species becoming present on other worlds. One brow spike sits on the head midline on every facing, and the dorsal frill is one continuous ruffled fin from the back of the head down the spine: seen edge-on behind the head on south, as a lengthwise sail on east, and as a midline ridge on north. The animal crouches upright on thick hind haunches with its chest raised and short clawed forelimbs held close to the body. All facings depict the same longitudinal dorsal fin and the same two anatomically fixed head spikes, with their silhouettes changing consistently as the body turns. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, CANON_MISS, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1c_incumbent_opus_s1"
+ },
+ {
+  "id": "arteval_RSW_Rancor__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Rancor__A",
+  "prompt": "RSW_Rancor: Rancors were large carnivorous reptomammals native to the planet of Dathomir. Standing around five meters tall, with their long arms, immense jaws, and armored hides that could withstand blaster fire, they are formidable predators. A subspecies known as the jungle rancor populates the planets Felucia and Teth. The rancor is rendered with painterly brushwork and a thin clean dark outline around its silhouette, keeping the same anatomy and hide detail. All facings use painterly shading with grouped hide textures, concentrated facial detail and a clean restrained dark silhouette outline that remains legible at 32 px per cell. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_OFF, STYLE_OFF",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1c_incumbent_opus_s1"
+ },
+ {
+  "id": "arteval_RSW_Insectomorph__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Insectomorph__A",
+  "prompt": "insectomorph: Insectomorphs were insectoids from the planet Malastare. These easily domesticated omnivores were often used by the Dugs on their homeworld as battle mounts. Despite their unusual appearance they have been able to flourish as livestock on multiple worlds due to their rapid growth and hardiness. The north view shows the rear end: the back of the abdomen and the tall hind legs nearest the camera, the front legs partly hidden beyond, and the head hidden or out of sight, with no face or eyes. Every facing shows the same proportions, with hind legs about twice the length of the front legs in profile as well as from the front and rear. Paint the leg segments tan or gold with dark brown horizontal bands over a gray-white, bone-toned undertone, and keep the red eye as the only saturated accent on the head. Give it a low-slung, skeletal, mantis-like arthropod body on four thin, jointed, bony legs ending in rounded pads, with hind legs about twice as long as the front legs that rise high above the body. Define the silhouette with natural edge lighting and shading instead of a drawn outline. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_NORTH_FACE, F_INCONSISTENT, CANON_MISS, CANON_MISS, CANON_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1c_incumbent_opus_s1"
+ },
+ {
+  "id": "arteval_RSW_MastiffPhalone__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_MastiffPhalone__A",
+  "prompt": "mastiff phalone: A large, long-bodied four-legged avian predator of the Maridun savannas, built like a griffin: a coat of grey feathers barred with dark blue, a mane of dark feathers over neck and shoulders, and a long feathered tail. Its wings have dwindled to remnants at the front legs, which end, like the hind legs, in long talons big enough to wrap around a man's waist; the head carries a heavy hooked beak and a patch of bare blue skin at the throat. Mastiff phalones hunt in packs of two or more, stalking through tall grass. They will break off from prey that fights back too hard, only to return and strike again later, and an agitated one is said to be as dangerous as a rancor and just as hard to bring down. Front and hind feet end in long, curved, raptor-like talons, large and pale-tipped, clearly visible on every facing. Small, stubby remnant wings, a short fan of stiff flight feathers, sit along the back of each front leg at the elbow and turn with the body on every facing. A bright blue patch of bare skin covers the throat under the beak, visible on the south and east facings. The south facing shows the animal at the same scale as the east profile: matching shoulder height, head size and foot size. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: CANON_MISS, CANON_MISS, DESC_MISS, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1c_incumbent_opus_s1"
+ }
+]
