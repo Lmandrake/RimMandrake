@@ -91,6 +91,22 @@ namespace RimMandrake.FlowWorks.Machinery
         public static bool IsPipePole(Thing t) =>
             t is Building && t.def.GetModExtension<RM_LineKindExtension>()?.kind == LineKind.PipePole;
 
+        /// <summary>HOSE_JOINTS_REPAIR_ENDS_MISS_THE_NOZZLES (audit D6: a pipe ending beside a reel drew its dead-end cap in the gap
+        /// and the reel's link stopped short of it): true when a hose reel on <paramref name="c"/> is coupled to
+        /// <paramref name="pipe"/> (CompHoseReel.Port, re-read), so the pipe's arm runs on to the shared edge and the reel's link
+        /// (HoseJoints.ReelFeed) carries it on from the pipe's centre line.</summary>
+        public static bool ReelCoupledTo(IntVec3 c, Thing pipe)
+        {
+            Map map = pipe?.Map;
+            if (map == null || !c.InBounds(map)) return false;
+            List<Thing> l = c.GetThingList(map);
+            for (int i = 0; i < l.Count; i++)
+                if (l[i] is ThingWithComps tw && tw.GetComp<Hose.CompHoseReel>() is Hose.CompHoseReel r && r.Port(true) == pipe) return true;
+            return false;
+        }
+
+        public static bool IsHoseReel(Thing t) => t is ThingWithComps tw && tw.GetComp<Hose.CompHoseReel>() != null;
+
         public static bool IsPartner(Thing t)
         {
             RM_NetRole r = RM_LiquidNet.RoleOfKind(t);
@@ -328,7 +344,8 @@ namespace RimMandrake.FlowWorks.Machinery
             // (SectionLayer_RM_PipeCentreStubs) carries it to the flange's height and on to the flange
             if (partner != null && RM_LiquidJoins.RiserInto(parent.Position, c - parent.Position, partner, out _)) return;
             if (RM_LiquidJoins.PartnerAt(c, parent.Map) != null
-                || (RM_MachinerySettings.pipePolesEnabled && RM_LiquidJoins.PipePoleAt(c, parent.Map))) __result = true;
+                || (RM_MachinerySettings.pipePolesEnabled && RM_LiquidJoins.PipePoleAt(c, parent.Map))
+                || RM_LiquidJoins.ReelCoupledTo(c, parent)) __result = true;
         }
     }
 
@@ -339,7 +356,7 @@ namespace RimMandrake.FlowWorks.Machinery
     {
         private static void Postfix(Building __instance, Map map)
         {
-            if (RM_LiquidJoins.IsPartner(__instance) || RM_LiquidJoins.IsPipePole(__instance)) RM_LiquidJoins.DirtyAround(map, __instance.OccupiedRect());
+            if (RM_LiquidJoins.IsPartner(__instance) || RM_LiquidJoins.IsPipePole(__instance) || RM_LiquidJoins.IsHoseReel(__instance)) RM_LiquidJoins.DirtyAround(map, __instance.OccupiedRect());
         }
     }
 
@@ -349,7 +366,7 @@ namespace RimMandrake.FlowWorks.Machinery
     {
         private static void Prefix(Building __instance, out (Map map, CellRect rect) __state)
         {
-            __state = RM_LiquidJoins.IsPartner(__instance) || RM_LiquidJoins.IsPipePole(__instance) ? (__instance.Map, __instance.OccupiedRect()) : (null, default(CellRect));
+            __state = RM_LiquidJoins.IsPartner(__instance) || RM_LiquidJoins.IsPipePole(__instance) || RM_LiquidJoins.IsHoseReel(__instance) ? (__instance.Map, __instance.OccupiedRect()) : (null, default(CellRect));
         }
 
         private static void Postfix((Map map, CellRect rect) __state)

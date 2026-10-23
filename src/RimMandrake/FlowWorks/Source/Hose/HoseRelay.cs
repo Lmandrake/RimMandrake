@@ -267,4 +267,88 @@ namespace RimMandrake.FlowWorks.Hose
             return false;
         }
     }
+    /// <summary>
+    /// HOSE_JOINTS_REPAIR_ENDS_MISS_THE_NOZZLES (owner 2026-10-22: <i>"I can't even tell what's going on here with the
+    /// connnectors. Just look at them!"</i>, then <i>"let's try to fix the connectors"</i>). The ONE place a hose joint's
+    /// geometry is decided: where each drawn fitting's face lands, where a link from a pipe/tank/pump beside a reel runs, and
+    /// how far a drawn end may sit from its port before the joint check calls it a gap. The draw code (RM_MapComponent_Hoses)
+    /// and the live joint check (HoseProbe "joints") both read these, and HoseJointChecks pins them offline. Lives in this
+    /// file (compiled by the mod and the SelfTest alike) so no project file had to change.
+    ///   * a 2x2 reel has ONE fitting, its brass nozzle (ReelIntakeGeometry.OutletTip, measured per look, art and facing):
+    ///     a laid hose's coupling face sits on it; a link from a port in FRONT of the nozzle of a stored reel couples to it too;
+    ///   * a port on any other side (behind the crank, above or below the drum), or in front of a reel whose nozzle already
+    ///     carries its laid hose, has no fitting to meet: the link runs from the port's centre line in under the reel to its
+    ///     centre (PIPE_ENDS_BUILD_MEET_IN_THE_MIDDLE, owner 2026-10-18), hidden by the reel's body, never ending in air and
+    ///     never carrying a coupling floating between the two buildings.
+    /// </summary>
+    public static class HoseJoints
+    {
+        /// <summary>The joint check's tolerance (cells): a drawn end or fitting face farther than this from the point it must
+        /// meet is a gap. 0.05 cell = ~6 px at the closest zoom (114 px/cell): the smallest gap the audit's crops showed was
+        /// 0.1.</summary>
+        public const double Tolerance = 0.05;
+
+        /// <summary>The centre of a fitting whose working face is at <paramref name="face"/>, pointing along <paramref name="d"/>
+        /// (RM_MapComponent_Hoses.Fitting): face + d x centreOff x size. With centreOff = -JoinerFace the drawn coupling's face
+        /// (art u 0.46, HO9 pins it) lands exactly on <paramref name="face"/>.</summary>
+        internal static V2 FittingCentre(V2 face, V2 d, double centreOff, double size) => face + d * (centreOff * size);
+
+        /// <summary>Where the drawn coupling's face reaches for a fitting centred at <paramref name="centre"/> (the inverse).</summary>
+        internal static V2 CouplingFace(V2 centre, V2 d, double size) => centre + d * (HoseMath.JoinerFace * size);
+
+        /// <summary>The laid hose's reel-end coupling: its face point (seated <see cref="HoseReelRect.NozzleSeat"/> into the
+        /// laid art's nozzle tip) and its axis (into the reel).</summary>
+        internal static V2 NozzleCoupling(HoseReelRect r, out V2 inward)
+        {
+            inward = -(r.Outward ?? new V2(-1, 0));
+            return r.NozzleTip + inward * HoseReelRect.NozzleSeat;
+        }
+
+        /// <summary>The STORED art's nozzle tip (a reel that has not laid its hose shows Reel_PumpHookup).</summary>
+        internal static V2 StoredNozzleTip(HoseReelRect r)
+        {
+            ReelIntakeGeometry.OutletTip(r.Look, false, out double dx, out double dz, r.Rot);
+            return r.Centre + r.FromArt(dx, dz);
+        }
+
+        /// <summary>
+        /// The link from a pipe, tank or pump beside a reel's body to the reel (RM_MapComponent_Hoses.DrawFeed).
+        /// <paramref name="side"/> = unit step from the reel to <paramref name="contact"/> (the port's cell beside it). Returns
+        /// the polyline (from the port's cell centre: a pipe's centre line, or under the tank/pump body) and, when the link
+        /// couples to the nozzle, the coupling's face point and axis; onNozzle false = the link runs in under the reel to its
+        /// centre and no coupling is drawn.
+        /// </summary>
+        internal static List<V2> ReelFeed(HoseReelRect reel, Cell side, Cell contact, bool laid, out bool onNozzle, out V2 face, out V2 axis)
+        {
+            V2 p = contact.Centre, s = new V2(side.X, side.Z);
+            onNozzle = false;
+            face = axis = default(V2);
+            V2? outw = reel.Outward;
+            if (outw.HasValue && !laid && Math.Abs(outw.Value.X - s.X) < 1e-9 && Math.Abs(outw.Value.Z - s.Z) < 1e-9)
+            {
+                V2 tip = StoredNozzleTip(reel);
+                axis = -s;
+                face = tip + axis * HoseReelRect.NozzleSeat;
+                // from the port's centre line, square across inside the port's cell to the nozzle's line, then straight in
+                V2 jog = side.X != 0 ? new V2(p.X, tip.Z) : new V2(tip.X, p.Z);
+                onNozzle = true;
+                var l = new List<V2> { p };
+                if (V2.Dist(jog, p) > 1e-6) l.Add(jog);
+                l.Add(face - axis * 0.02);   // the hose runs into the coupling's back; the coupling face meets the tip
+                return l;
+            }
+            var o = new List<V2> { p };
+            double[] stub = RimMandrake.FlowWorks.Machinery.LiquidJoinRule.CentreStub(contact.X, contact.Z, -side.X, -side.Z, reel.X0, reel.Z0, reel.W, reel.H);
+            if (stub != null) for (int i = 0; i + 1 < stub.Length; i += 2) o.Add(new V2(stub[i], stub[i + 1]));
+            else o.Add(reel.Centre);
+            return o;
+        }
+
+        /// <summary>The joint check's one test: distance from a drawn point to the point it must meet, and whether it passes.</summary>
+        internal static bool Meets(V2 drawn, V2 port, out double gap)
+        {
+            gap = V2.Dist(drawn, port);
+            return gap <= Tolerance;
+        }
+    }
 }

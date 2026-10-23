@@ -76,6 +76,15 @@ def _reel_west(c):
     NORTH; built West one square east keeps the 2x2 on [c, c+(1,1)] with the west outlet these scenes were proven with."""
     return "RM_HoseReel:%d,%d,3" % (c[0] + 1, c[1])
 
+def _reel_toward(c, target):
+    """SCENARIO_REELS_FIX_STILL_FACING_WEST: validation_core.reel_toward without the bridge-side import -- the 2x2 on
+    [c, c+(1,1)] built facing its hose's target (the larger axis from the footprint centre; ties east/west), at the Position
+    that keeps that footprint (N +0, E z+1, S x+1 z+1, W x+1). A reel staged West with its target behind it U-turns."""
+    dx, dz = target[0] + 0.5 - (c[0] + 1), target[1] + 0.5 - (c[1] + 1)
+    rot = (1 if dx > 0 else 3) if abs(dx) >= abs(dz) else (0 if dz > 0 else 2)
+    sx, sz = {0: (0, 0), 1: (0, 1), 2: (1, 1), 3: (1, 0)}[rot]
+    return "RM_HoseReel:%d,%d,%d" % (c[0] + sx, c[1] + sz, rot)
+
 def _QS():
     """The shared quiet isolated test-site profile (Utils/modcheck/quiet_site.py)."""
     d = os.path.join(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "Utils"), "modcheck")
@@ -559,7 +568,7 @@ def main(argv=None):
             canal = [pa.P(16 + k, 9) for k in range(3)]
             for c in canal:
                 dig(c, 2)
-            pa.build("RM_LiquidTank:%d,%d" % pa.north_tank, _reel_west(pa.reel))
+            pa.build("RM_LiquidTank:%d,%d" % pa.north_tank, _reel_toward(pa.reel, pa.P(15, 9)))
             B.ticks(2)
             ft = B.hp("filltank:%d,%d=%s,%d" % (pa.north_tank + (WATER, FILL_UNITS)))
             lay = pa.lay(pa.P(15, 9))
@@ -608,7 +617,7 @@ def main(argv=None):
         s = Plot(xz(a.origin_l6))
         if not s.ready("L6_site_ready", extra_h=6):
             return
-        s.build("RM_LiquidTank:%d,%d" % s.north_tank, _reel_west(s.reel))
+        s.build("RM_LiquidTank:%d,%d" % s.north_tank, _reel_toward(s.reel, s.P(16, 9)))
         build("RM_LiquidTank:%d,%d" % s.tank, faction=nf)
         B.ticks(2)
         ft = B.hp("filltank:%d,%d=%s,%d" % (s.tank + (WATER, FILL_UNITS)))
@@ -667,7 +676,7 @@ def main(argv=None):
         s = Plot(xz(a.origin_l4))
         if not s.ready("L4_site_ready"):
             return
-        s.build("RM_LiquidTank:%d,%d" % s.north_tank, _reel_west(s.reel))
+        s.build("RM_LiquidTank:%d,%d" % s.north_tank, _reel_toward(s.reel, s.P(16, 9)))
         sb = s.build("RM_UniversalCargoTank:%d,%d" % s.tank)
         B.ticks(2)
         ship_def = "RM_UniversalCargoTank"
@@ -706,7 +715,7 @@ def main(argv=None):
         if not s.ready("L5_site_ready"):
             return
         s.water()
-        s.build("RM_LiquidPump:%d,%d" % s.pump, "Battery:%d,%d" % s.battery, _reel_west(s.reel))
+        s.build("RM_LiquidPump:%d,%d" % s.pump, "Battery:%d,%d" % s.battery, _reel_toward(s.reel, s.P(16, 9)))
         B.ticks(2)
         s.charge()
         pw = PH._powered(B, s.pump)

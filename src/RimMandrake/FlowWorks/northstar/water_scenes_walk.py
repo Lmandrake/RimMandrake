@@ -738,11 +738,20 @@ def _reel_west(c):
     NORTH; built West one square east keeps the 2x2 on [c, c+(1,1)] with the west outlet these scenes were proven with."""
     return "RM_HoseReel:%d,%d,3" % (c[0] + 1, c[1])
 
+def _reel_toward(c, target):
+    """SCENARIO_REELS_FIX_STILL_FACING_WEST: validation_core.reel_toward without the bridge-side import -- the 2x2 on
+    [c, c+(1,1)] built facing its hose's target (the larger axis from the footprint centre; ties east/west), at the Position
+    that keeps that footprint (N +0, E z+1, S x+1 z+1, W x+1). A reel staged West with its target behind it U-turns."""
+    dx, dz = target[0] + 0.5 - (c[0] + 1), target[1] + 0.5 - (c[1] + 1)
+    rot = (1 if dx > 0 else 3) if abs(dx) >= abs(dz) else (0 if dz > 0 else 2)
+    sx, sz = {0: (0, 0), 1: (0, 1), 2: (1, 1), 3: (1, 0)}[rot]
+    return "RM_HoseReel:%d,%d,%d" % (c[0] + sx, c[1] + sz, rot)
+
 def _pump_rig(w, g):
     """Pump + battery + two hose reels: hose A from reelA to g["intake"] set Intake, hose B from reelB to g["outflow"]
     set Outflow. Shared by S3 and S5 part G. Returns staging notes (empty when every step read back right)."""
     notes = []
-    r = w.build(";".join(["RM_LiquidPump:%d,%d" % g["pump"], _reel_west(g["reelA"]), _reel_west(g["reelB"]),
+    r = w.build(";".join(["RM_LiquidPump:%d,%d" % g["pump"], _reel_toward(g["reelA"], g["intake"]), _reel_toward(g["reelB"], g["outflow"]),
                           "Battery:%d,%d" % g["battery"]]))
     if r.get("survived") is not None and r.get("survived") < 4:
         notes.append("build: %s" % str(r.get("failed"))[:200])
@@ -772,7 +781,7 @@ def _pump_rig(w, g):
     ra = _gizmo_cycle(w, g["reelA"], "Free end:", "Free end: Intake")
     rb = _gizmo_cycle(w, g["reelB"], "Free end:", "Free end: Outflow")
     for reel, want in ((g["reelA"], "Intake"), (g["reelB"], "Outflow")):
-        rid = next((h.get("id") for h in w.hp("census").get("hoses") or [] if tuple(h.get("reel") or ()) in (tuple(reel), (reel[0] + 1, reel[1]))), None)
+        rid = next((h.get("id") for h in w.hp("census").get("hoses") or [] if tuple(h.get("reel") or ()) in tuple((reel[0] + i, reel[1] + j) for i in (0, 1) for j in (0, 1))), None)
         got = ((w.call("jawa/comp_read", thing="RM_HoseReel%s" % rid, comp="CompHoseReel", members="freeEndRole") or {})
                .get("values") or {}).get("freeEndRole")
         if str(got) != want:
@@ -810,7 +819,7 @@ def _hose_held(w, g=None):
     g = g or s3_geom()
     tot = 0.0
     for reel in (g["reelA"], g["reelB"]):
-        lt = w.call("jawa/list_things", defName="RM_HoseReel", rect="%d,%d,2,1" % reel, limit=2) or {}
+        lt = w.call("jawa/list_things", defName="RM_HoseReel", rect="%d,%d,2,2" % reel, limit=2) or {}
         tid = ((lt.get("things") or [{}])[0]).get("id")
         v = ((w.call("jawa/comp_read", thing=tid, comp="CompHoseReel", members="heldUnits") or {}).get("values") or {})
         try:

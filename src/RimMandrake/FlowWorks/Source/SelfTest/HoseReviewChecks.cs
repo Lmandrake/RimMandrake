@@ -230,6 +230,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             LaysIntoEverySide();
             Station42();
             WireWidth();
+            HoseJointChecks.Run();   // HOSE_JOINTS_REPAIR_ENDS_MISS_THE_NOZZLES: the joint check's offline half (below)
         }
     }
 
@@ -453,4 +454,143 @@ namespace RimMandrake.FlowWorks.SelfTest
         }
     }
 
+    /// <summary>
+    /// HOSE_JOINTS_REPAIR_ENDS_MISS_THE_NOZZLES (owner 2026-10-22, the walkthrough: "I can't even tell what's going on here with
+    /// the connnectors. Just look at them! Obviously not even checked before showing us."). The JOINT CHECK's offline half: every
+    /// joint the draw code makes, for every look, art and facing, ends ON the fitting it must meet (HoseJoints.Tolerance) or
+    /// runs in under a building to its centre; never on the shared edge in air. The art half is validation_hose_offline.py HO9
+    /// (each drawn piece's face and bands = the constants used here); the live half is HoseProbe "joints"
+    /// (northstar/joint_check.py), which measures the drawn pose of every hose on a map.
+    /// </summary>
+    internal static class HoseJointChecks
+    {
+        private static void Check(bool ok, string msg) => Program.Check(ok, "joints: " + msg);
+        private static readonly Cell[] Sides = { new Cell(1, 0), new Cell(0, 1), new Cell(-1, 0), new Cell(0, -1) };
+
+        private static bool InRect(HoseReelRect r, V2 p, double e = 1e-6) =>
+            p.X >= r.X0 - e && p.X <= r.X0 + r.W + e && p.Z >= r.Z0 - e && p.Z <= r.Z0 + r.H + e;
+
+        /// <summary>Every sample of the path lies in the port's cell or under the reel: nothing of it hangs in air beside them.</summary>
+        private static bool Covered(HoseReelRect r, Cell contact, IList<V2> path)
+        {
+            for (int i = 1; i < path.Count; i++)
+            {
+                V2 a = path[i - 1], b = path[i];
+                int n = Math.Max(1, (int)Math.Ceiling(V2.Dist(a, b) / 0.05));
+                for (int k = 0; k <= n; k++)
+                {
+                    V2 q = a + (b - a) * (k / (double)n);
+                    // the jog onto the nozzle's line may cross the port cell's side edge by the tip's measured offset (<= 0.16, Modern
+                    // stored), still along the pipe/port it leaves: 0.2 along the reel's edge, Tolerance across it
+                    bool alongX = contact.Z >= r.Z0 + r.H || contact.Z < r.Z0;   // a north/south port: its edge runs along x
+                    bool inPort = q.X >= contact.X - (alongX ? 0.2 : HoseJoints.Tolerance) && q.X <= contact.X + 1 + (alongX ? 0.2 : HoseJoints.Tolerance)
+                                  && q.Z >= contact.Z - (alongX ? HoseJoints.Tolerance : 0.2) && q.Z <= contact.Z + 1 + (alongX ? HoseJoints.Tolerance : 0.2);
+                    if (!InRect(r, q, HoseJoints.Tolerance) && !inPort) return false;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>The joint rule a feed must obey: it starts on the port's centre line and ends either on the nozzle's coupling
+        /// (with the coupling face on the tip) or at the reel's centre, every sample covered.</summary>
+        internal static bool FeedOk(HoseReelRect r, Cell contact, IList<V2> path, bool onNozzle, V2 face, V2 tip, out string why)
+        {
+            why = null;
+            if (path.Count < 2) { why = "empty"; return false; }
+            if (!HoseJoints.Meets(path[0], contact.Centre, out double g0)) { why = "starts " + g0.ToString("0.000") + " off the port's centre"; return false; }
+            V2 last = path[path.Count - 1];
+            if (onNozzle)
+            {
+                if (!HoseJoints.Meets(face, tip, out double gf) && gf > HoseReelRect.NozzleSeat + HoseJoints.Tolerance) { why = "coupling face " + gf.ToString("0.000") + " off the nozzle tip"; return false; }
+                if (V2.Dist(last, face) > 0.05 + HoseJoints.Tolerance) { why = "hose stops " + V2.Dist(last, face).ToString("0.000") + " short of its coupling"; return false; }
+            }
+            else if (!HoseJoints.Meets(last, r.Centre, out double gc)) { why = "ends " + gc.ToString("0.000") + " from the reel's centre (no fitting there)"; return false; }
+            if (!Covered(r, contact, path)) { why = "runs through air outside the port cell and the reel"; return false; }
+            return true;
+        }
+
+        private static void Feeds()
+        {
+            int total = 0, ok = 0, nozzle = 0;
+            string first = null;
+            foreach (string look in ReelIntakeGeometry.Looks)
+                for (int rot = 0; rot < 4; rot++)
+                    foreach (bool laid in new[] { false, true })
+                        foreach (Cell s in Sides)
+                        {
+                            var r = new HoseReelRect(10, 10, 2, 2) { Look = look, Rot = rot };
+                            foreach (Cell e in r.EdgeCells(s))
+                            {
+                                Cell contact = e + s;
+                                total++;
+                                List<V2> path = HoseJoints.ReelFeed(r, s, contact, laid, out bool onN, out V2 face, out V2 axis);
+                                V2 outw = r.Outward.Value;
+                                bool front = Math.Abs(outw.X - s.X) < 1e-9 && Math.Abs(outw.Z - s.Z) < 1e-9;
+                                if (onN) nozzle++;
+                                bool good = FeedOk(r, contact, path, onN, face, HoseJoints.StoredNozzleTip(r), out string why) && onN == (front && !laid)
+                                            && (!onN || (Math.Abs(axis.X + s.X) < 1e-9 && Math.Abs(axis.Z + s.Z) < 1e-9));
+                                if (good) ok++;
+                                else if (first == null) first = look + " rot" + rot + (laid ? " laid" : " stored") + " side " + s.X + "," + s.Z + ": " + (why ?? "nozzle rule");
+                            }
+                        }
+            Check(ok == total && total == 256 && nozzle == 32,
+                "every look x facing x art x port side x edge cell: the reel link ends ON the nozzle coupling (port in front of a stored reel) or "
+                + "under the reel at its centre, starts on the port's centre line, never in air (" + ok + "/" + total + ", " + nozzle + " on the nozzle"
+                + (first != null ? "; first bad: " + first : "") + ")");
+
+            // can-fail: the pre-fix link (HosePortRule.Feed: edge cell + 0.25 to the port, coupling on the shared edge) is refused
+            var r0 = new HoseReelRect(10, 10, 2, 2) { Look = "Scrapper", Rot = 3 };
+            var side = new Cell(1, 0);
+            Cell touch = r0.EdgeCells(side)[0];
+            HosePortRule.Feed(touch, side, out V2 from, out V2 to, out V2 cp);
+            bool oldRefused = !FeedOk(r0, touch + side, new List<V2> { to, from }, false, default(V2), default(V2), out string oldWhy);
+            Check(oldRefused, "can-fail: the old behind-the-crank stub (ends 0.25 into the edge cell, coupling on the edge) is refused (" + oldWhy + ")");
+        }
+
+        private static void NozzleCouplings()
+        {
+            int total = 0, ok = 0;
+            double worst = 0;
+            foreach (string look in ReelIntakeGeometry.Looks)
+                for (int rot = 0; rot < 4; rot++)
+                {
+                    var r = new HoseReelRect(10, 10, 2, 2) { Look = look, Rot = rot };
+                    V2 face = HoseJoints.NozzleCoupling(r, out V2 inw);
+                    total++;
+                    double size = HoseMath.FittingSize(HoseMath.VisibleWidth(1, 1), HoseMath.PieceBand, HoseMath.CouplingMax);
+                    V2 c = HoseJoints.FittingCentre(face, inw, -HoseMath.JoinerFace, size);
+                    double drawnGap = V2.Dist(HoseJoints.CouplingFace(c, inw, size), r.NozzleTip);
+                    worst = Math.Max(worst, drawnGap);
+                    // the face is seated NozzleSeat into the tip, pointing into the reel, and the fitting's drawn face lands there
+                    if (drawnGap <= HoseReelRect.NozzleSeat + HoseJoints.Tolerance && inw.X * r.Outward.Value.X + inw.Z * r.Outward.Value.Z < -0.999) ok++;
+                }
+            Check(ok == total && total == 16, "laid hose: the reel-end coupling's drawn face meets the measured nozzle tip, every look x facing (" + ok + "/" + total
+                + ", worst " + worst.ToString("0.000") + " cell incl. the " + HoseReelRect.NozzleSeat + " seat)");
+        }
+
+        private static void TankPorts()
+        {
+            int total = 0, ok = 0;
+            foreach (string look in TankPortGeometry.Looks)
+                foreach (int sx in new[] { 1, -1 })
+                {
+                    total++;
+                    TankPortGeometry.PortPoint(look, 20, 20, 2, 2, sx, 0, out V2 port);
+                    var axis = new V2(sx, 0);
+                    // DrawEnds: the hose is bent to port - axis/2 (EndOnPort), the coupling's end at that + axis/2, face -> port
+                    V2 end = port - axis * 0.5 + axis * 0.5;
+                    double size = 1.5 * HoseMath.FittingSize(HoseMath.VisibleWidth(0, 1), HoseMath.PieceBand, HoseMath.CouplingMax);
+                    V2 c = HoseJoints.FittingCentre(end, axis, -HoseMath.JoinerFace, size);
+                    if (HoseJoints.Meets(HoseJoints.CouplingFace(c, axis, size), port, out _) && Math.Abs(port.X - (sx > 0 ? 20 : 22)) < 1e-9) ok++;
+                }
+            Check(ok == total && total == 8, "hose end on a 2x2 tank: the widened coupling's drawn face lands on the measured flange, both sides, every look (" + ok + "/" + total + ")");
+        }
+
+        public static void Run()
+        {
+            Feeds();
+            NozzleCouplings();
+            TankPorts();
+        }
+    }
 }
