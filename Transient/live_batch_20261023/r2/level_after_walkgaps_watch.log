@@ -1,0 +1,3 @@
+start -> {"overflowDestroyedTotal": "0", "releaseLostDl": "0"}
+02:40:28 #1 after jawa/running_mods {"assembly": "RimMandrakeFlowWorks", "details": false} -> {"overflowDestroyedTotal": "0", "releaseLostDl": "0"}
+02:40:31 #7 after jawa/static_call {"type": "RimMandrake.FlowWorks.RM_NorthstarProofs", "method": "ProofStageBasin", "args": "5;2;90;138;4;4;RM_Fluid_Water"} -> {"overflowDestroyedTotal": "200", "releaseLostDl": "0"}

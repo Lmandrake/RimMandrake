@@ -1,0 +1,251 @@
+{
+ "script": "walk_gaps_proof.py",
+ "started": "2026-10-23T02:37:49",
+ "rows": [
+  {
+   "id": "PONDS_DIFFERENT_LIQUIDS_NO_MIX",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL",
+   "criterion": "A5",
+   "detail": {
+    "dl": [
+     [
+      360000,
+      90000
+     ],
+     [
+      360000,
+      90000
+     ]
+    ],
+    "moves": 0,
+    "linked": true,
+    "readout": " | DifferentLiquids(in=1 out=1 on=True) | DifferentLiquids(in=1 out=1 on=True)",
+    "coupling": [
+     [
+      1,
+      1
+     ],
+     [
+      1,
+      1
+     ]
+    ],
+    "rigProblems": []
+   }
+  },
+  {
+   "id": "PONDS_HOSE_LEVEL",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL",
+   "criterion": "A4",
+   "detail": {
+    "dl": [
+     [
+      360000,
+      90000
+     ],
+     [
+      225234,
+      224766
+     ]
+    ],
+    "moves": 18,
+    "linked": true,
+    "flowingSeen": true,
+    "ticks": 4500,
+    "trail": [
+     [
+      3250,
+      [
+       232500,
+       217500
+      ],
+      133
+     ],
+     [
+      3500,
+      [
+       228750,
+       221250
+      ],
+      134
+     ],
+     [
+      3750,
+      [
+       226875,
+       223125
+      ],
+      135
+     ],
+     [
+      4000,
+      [
+       225937,
+       224063
+      ],
+      136
+     ],
+     [
+      4250,
+      [
+       225468,
+       224532
+      ],
+      137
+     ],
+     [
+      4500,
+      [
+       225234,
+       224766
+      ],
+      138
+     ]
+    ],
+    "coupling": [
+     [
+      1,
+      1
+     ],
+     [
+      1,
+      1
+     ]
+    ],
+    "rigProblems": []
+   }
+  },
+  {
+   "id": "PORTS_PIPE_AND_REEL_ON_SIDES",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "FLOWWORKS_PUMP_PORTS_REBUILD_ONE_PER_SIDE",
+   "criterion": "A4",
+   "detail": {
+    "ports": "PUMPPORTS N=none E=reel:53523:c S=free:53524:c+free:53525:r W=pipe coupled=2 corner=0 cornerCoupled=0",
+    "lays": {
+     "92,39": true,
+     "95,39": true,
+     "98,49": true
+    }
+   }
+  },
+  {
+   "id": "PORTS_ONE_HOSE_PER_SIDE",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "FLOWWORKS_PUMP_PORTS_REBUILD_ONE_PER_SIDE",
+   "criterion": "A4",
+   "detail": {
+    "ports": "PUMPPORTS N=none E=reel:53523:c S=free:53524:c+free:53525:r W=pipe coupled=2 corner=0 cornerCoupled=0",
+    "lays": {
+     "92,39": true,
+     "95,39": true,
+     "98,49": true
+    }
+   }
+  },
+  {
+   "id": "PORTS_CORNER_REFUSED",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "item": "FLOWWORKS_PUMP_PORTS_REBUILD_ONE_PER_SIDE",
+   "criterion": "A4",
+   "detail": {
+    "ports": "PUMPPORTS N=none E=reel:53523:c S=free:53524:c+free:53525:r W=pipe coupled=2 corner=0 cornerCoupled=0",
+    "lays": {
+     "92,39": true,
+     "95,39": true,
+     "98,49": true
+    }
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient\\live_batch_20261023\\r2\\walk_gaps_pitfall_rerun.json",
+  "origin": "40,40",
+  "fresh_map": false,
+  "only": "PONDS_DIFFERENT_LIQUIDS_NO_MIX,PONDS_HOSE_LEVEL,PORTS_PIPE_AND_REEL_ON_SIDES,PORTS_ONE_HOSE_PER_SIDE,PORTS_CORNER_REFUSED",
+  "job_ticks": 3000,
+  "level_ticks": 6000,
+  "mock": false,
+  "mock_faults": ""
+ },
+ "missingHooks": {},
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "7ea73741ab2ceaeec055813a7ec9bd6ad9749b73a6bd69fe71841115df2a704a",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "imranfish.xmlextensions",
+   "brrainz.rimbridgeserver",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes",
+   "mandrake.rm.deepdrill"
+  ],
+  "assembly_sha256": "eeb98d908bac61fee1dae82f6de283c49bf933827080b363495489712242b243"
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "startColonistsDrafted": [
+  [
+   "Human147",
+   true
+  ],
+  [
+   "Human151",
+   true
+  ],
+  [
+   "Human155",
+   true
+  ],
+  [
+   "Human50003",
+   false
+  ],
+  [
+   "Human50103",
+   true
+  ],
+  [
+   "Human50111",
+   true
+  ]
+ ],
+ "finished": "2026-10-23T02:40:08"
+}
