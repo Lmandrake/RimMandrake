@@ -1,0 +1,36 @@
+[
+ {
+  "id": "arteval_RM_SuspensionAnchor_Timber_Modern_slack_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_SuspensionAnchor_Timber_Modern_slack",
+  "prompt": "Top-down three-quarter RimWorld sprite, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. Slack rope anchors for a raised drawbridge, Timber structure with Modern look: at each end of a one-lane bridge, two upright mooring bollards of timber with steel fittings, kept exactly as in the reference image (same shape, size and palette). The leaf is raised, so the ropes are disconnected and lie slack on the ground on the bank. Each rope begins on the top of the bollard cap, sags in a small rounded drape over the front lip of the head, and hangs down the post front with a gentle bow, its upper end flush with the cap top and nothing rising above the cap. One continuous strand runs down the front of the post into a loose coil lying on the ground just in front of the post, the coil's far edge at the post foot so nothing crosses behind the post. Where the deck is not up the screen, the coil lies on the ground ahead of the bollard foot. Each coil winds about one and a half turns, spiralling inward so a second inner turn shows, with a hand-thrown wobble in the turns, and a loose rope end running out from the inner turn across the outer one, ending within the coil's own footprint, away from the raised leaf. The coil has the same ground-plane diameter in every view (south, north, east, west): about 1.7 bollard widths measured against its own bollard, with the same rope length, squashed in the screen vertical by ground-plane perspective. The rope is the thin painted rope from the bollard picture, a dark steel cable as thin as the lowered cable. Coils in the north and south views sit slightly inboard so a coil behind the raised leaf stays hidden, and no rope lies over the pit. Flat dark pit and plain deck tile for context only.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: SIGNATURE, F_INCONSISTENT, DESC_MISS, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "slack_coil_20261023_r5"
+ },
+ {
+  "id": "arteval_RM_SuspensionAnchor_Steel_Futuristic_slack_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_SuspensionAnchor_Steel_Futuristic_slack",
+  "prompt": "Painterly vanilla RimWorld sprite, realistic, clean dark outline, transparent background. Top-down three-quarter view of the rope anchor at the end of a one-lane drawbridge over a pit, futuristic steel look, with the drawbridge leaf raised and standing upright at the hinge bank. Two upright steel mooring bollards stand on the anchor square, unchanged from the approved bollard picture. The ropes are disconnected and lie slack on the ground on the bank. Each rope is a thin steel cable, the same thickness as the lowered cable, cut from the bollard picture's own painted rope. Where the deck is up the screen, the cable drops from the bollard head down the post's front into a loose coil lying on the ground just in front of the post, its far edge at the post's foot. Elsewhere the coil lies on the ground ahead of the bollard foot. Each coil is a hand-thrown heap of about one and a half turns spiralling inward: the spacing between the turns is visibly uneven, the outer turn is wider on one side and narrower on the other, the turns are gently asymmetric and lopsided, and a second inner turn shows. A loose rope end leaves the inner turn and curves gently along the ground in a soft S-bend, crossing over the outer winding, and stops within the coil's own footprint, well short of the raised leaf. The coil ring is squashed in the screen vertical, as a ground-plane circle seen in perspective. North and south coils sit slightly inboard so a coil behind the raised leaf stays hidden. Every coil lies on the bank beside the pit, with the pit as a flat dark rectangle clear of rope. The deck is a plain deck tile. Show south, east and north rotations, plus the west assembled view, with the raised leaf for context.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "slack_coil_20261023_r5"
+ }
+]

@@ -1,0 +1,45 @@
+{
+ "subject": "RM_SuspensionAnchor_Steel_Scrapper_slack",
+ "label": "Raised drawbridge slack ropes (Steel, Scrapper look)",
+ "template": "machine",
+ "module": "part",
+ "candidate": "G",
+ "provenance": "offline render 2026-10-23 r7 \u00b7 SLACK_LOOP_REDRAW_STANDS_UP_IN_PROFILE (render_cables.py mirror of the print path; rope coil from RM_DrawbridgeCableMath.Slack)",
+ "artpipe_job": null,
+ "description": "The rope anchors at each end of a one-lane drawbridge over a pit: two UPRIGHT mooring bollards per anchor square (already judged and installed; not under review here). UNDER REVIEW: the RAISED state's ropes. When the leaf is raised (stands upright at the hinge bank) the ropes are disconnected and must lie SLACK on the ground on the bank, in every rotation. Owner: ropes should be \"slack and disconnected\". The previous shape read as upright hooks/arches standing above the bollards in rotations N/S. Round 1 (coil ahead of the bollard head) was judged REGEN: on the bank where the deck lies up the screen (rotation N picture's lower bank, every S picture), the ring sat just above the bollard head and read as a halo floating at head height. Round 2 (coil ringed round the post foot) was judged REGEN: the ring's far arc was drawn over the post base, each coil read as a clean single hoop, and coils behind the raised leaf poked out at its edges. New shape (r3): where the deck is up the screen, the rope drops from the bollard head down the post's FRONT into a loose coil lying on the ground just in front of the post, its far edge at the post's foot (nothing crosses behind the post); elsewhere the coil lies on the ground ahead of the bollard foot. Each coil is a loose, slightly uneven coil of one to two turns spiralling inward, ending in a loose end that points away from the deck and the centre line; ring squashed in the screen vertical (ground-plane perspective, art brief C6); N/S coils sit slightly inboard so a coil behind the raised leaf stays hidden; never over the pit. The rope is cut from the bollard picture's own painted rope, so a steel cable stays as thin as the lowered cable. Rounds 3-5 tuned the coil: an uneven inward spiral with a loose end, the same coil size in every rotation, and the loose end turned away from the leaf so the rope never looks still tied on. The judged rotations are south/east/north plus assembled_1 = W; assembled_2 = lowered N (context only). Images are OFFLINE renders of the game's print path (pit = flat dark rectangle, deck = plain deck tile, the raised leaf for context). ",
+ "tier": "RM_",
+ "invented": false,
+ "earth_body_named": false,
+ "body_plan": null,
+ "departures": [],
+ "canon": {
+  "must_show": [],
+  "engine_limits": []
+ },
+ "owner_notes": [
+  "Raised ropes should be slack and disconnected (owner 2026-10-23)",
+  "art brief C6: true perspective plane"
+ ],
+ "owner_kept": false,
+ "depends_on": null,
+ "previous_prompt": null,
+ "size": {
+  "drawSize": [
+   1,
+   1
+  ]
+ },
+ "ports": [
+  "each bollard: one rope, disconnected when raised"
+ ],
+ "images": {
+  "south": "/home/mandrake/rm/bench/Transient/slack_coil_20261023/r7/after_Scrapper_Steel_raised_S.png",
+  "east": "/home/mandrake/rm/bench/Transient/slack_coil_20261023/r7/after_Scrapper_Steel_raised_E.png",
+  "north": "/home/mandrake/rm/bench/Transient/slack_coil_20261023/r7/after_Scrapper_Steel_raised_N.png",
+  "assembled": [
+   "/home/mandrake/rm/bench/Transient/slack_coil_20261023/r7/after_Scrapper_Steel_raised_W.png",
+   "/home/mandrake/rm/bench/Transient/slack_coil_20261023/r7/after_Scrapper_Steel_lowered_N.png"
+  ],
+  "scale": "/home/mandrake/rm/bench/Transient/drawbridge_bollards_20261023/art_eval/scale_Scrapper_Steel.png"
+ }
+}

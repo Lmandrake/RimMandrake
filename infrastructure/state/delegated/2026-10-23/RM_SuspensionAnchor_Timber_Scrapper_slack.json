@@ -1,0 +1,69 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 81.5,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.5401054
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 40.0
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_SuspensionAnchor_Timber_Scrapper_slack",
+ "decision": "ACCEPT",
+ "reasons": [
+  "opus band WEAK (model said good); blocking ['DESC_MISS', 'LAYER_ORDER']; polish ['LEGIB_32']; unreadable ['BORE (n/a on an unconditional item)']",
+  "gpt strong_accept: unsettled [], own blocking []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v1",
+   "sha": "a4850279ccbf"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v1",
+   "sha": "14056552e355"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "machine@v2",
+   "sha": "e06ee7316a0a"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "south.png": "9077497d29827d995eaf9f2e1d1e18f18fe07a3a6a6cd203ae6fa548c90f00d1",
+  "east.png": "00ac764359cadc292b49d878b519b438f1715b3a2a29f5fa47f88c1a078457e7",
+  "north.png": "b02d309faa8baf87d761e6c13a35d4f2a24b82b78c0a7af5e22065b35e31bd6b",
+  "scale.png": "59305227949c8ad67967bcdb9b3db356722451167b5574a7bec39f4f25c1246c",
+  "assembled_1.png": "b02d309faa8baf87d761e6c13a35d4f2a24b82b78c0a7af5e22065b35e31bd6b",
+  "assembled_2.png": "9077497d29827d995eaf9f2e1d1e18f18fe07a3a6a6cd203ae6fa548c90f00d1",
+  "assembled_3.png": "00ac764359cadc292b49d878b519b438f1715b3a2a29f5fa47f88c1a078457e7",
+  "assembled_4.png": "8800bc441c818cfb17a2850cd0584bcbccba9543c4619ded4ccd86b0e8c1098a",
+  "assembled_5.png": "dc47dc4ca04022df8a80499ab56722c37907c4be6d6b9bf9c9f88906fcbe8ac5",
+  "facings.png": "ec2a13ffed59ae69fb0a4d3810f8f7d49a6f60b3c0d88ecda6a570ec1c43006b"
+ }
+}

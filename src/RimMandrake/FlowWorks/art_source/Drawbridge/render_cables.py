@@ -44,18 +44,40 @@ def taut(r):
     return out
 
 
-def slack(r, n=14):
+COIL_ASPECT, COIL_MARGIN, COIL_WIDE, COIL_WOBBLE = 0.55, 0.05, 0.15, 0.10
+UPRIGHT_FOOT_NORTH = 0.27   # RM_DrawbridgeCableMath.UprightFootNorth: the post foot in every styled Timber/Steel _north picture
+
+
+def slack(r, vertical, foot=-1.0, n=44):
+    """RM_DrawbridgeCableMath.Slack: a loose coil flat on the ground (squashed in the screen's vertical), in front of an upright
+    post's foot when the deck is up the screen, else ahead of the attachment; ends in a loose end pointing away from the deck."""
     s = 1.0 if r["lateral"] >= 0 else -1.0
-    reach = SLACK_REACH
-    f = min(1.0, 0.8 * abs(r["lateral"]) / 0.17)
-    P = [(r["attach"], r["lateral"]), (reach, r["lateral"] + 0.05 * s * f), (reach, r["lateral"] - 0.13 * s * f),
-         (r["attach"] + 0.3 * (reach - r["attach"]), r["lateral"] - 0.17 * s * f)]
-    pts = []
+    lat = abs(r["lateral"])
+    along_room = max(0.06, (SLACK_REACH - r["attach"]) / 2)
+    lat_room = (0.5 - 2 * COIL_MARGIN) / 2
+    if vertical:
+        rl = min(COIL_WIDE, lat_room)
+        ra = min(COIL_ASPECT * rl, along_room)
+    else:
+        ra = max(min(COIL_WIDE, along_room), 0.15)
+        rl = min(COIL_ASPECT * ra, lat_room)
+    ca = max(foot - ra, ra + COIL_MARGIN) if foot >= 0 else min(r["attach"] + ra, SLACK_REACH - ra)
+    want = lat - 0.04 if vertical else lat
+    cl = s * min(max(want, COIL_MARGIN + rl), 0.5 - COIL_MARGIN - rl)
+    t0 = math.atan2((r["lateral"] - cl) / rl, (r["attach"] - ca) / ra)
+    tail = s * (math.pi / 2 + (0.6 if vertical else 0.0))
+    sweep = 2 * math.pi + (s * (t0 - tail)) % (2 * math.pi)
+    pts = [(r["attach"], r["lateral"])]
     for i in range(n + 1):
         t = i / n
-        u = 1 - t
-        b = (u ** 3, 3 * u * u * t, 3 * u * t * t, t ** 3)
-        pts.append((sum(b[j] * P[j][0] for j in range(4)), sum(b[j] * P[j][1] for j in range(4))))
+        th = t0 - s * t * sweep
+        k = (1.0 - 0.45 * t) * (1.0 + COIL_WOBBLE * math.sin(5 * math.pi * t))
+        pts.append((ca + k * ra * math.cos(th), cl + k * rl * math.sin(th)))
+    for k in (0.95, 1.3):
+        a = min(max(ca + k * ra * math.cos(tail), 0.02), min(SLACK_REACH, ca + ra))
+        l = cl + k * rl * math.sin(tail)
+        l = s * min(max(s * l, COIL_MARGIN), 0.5 - COIL_MARGIN)
+        pts.append((a, l))
     return pts
 
 
@@ -201,7 +223,8 @@ def draw_anchor(cv, center, look, mat, rot, raised, after):
         cv.quad(center, (1, 1), ang, t, FLIP_UV if flip else FULL_UV)
     for r in ropes:
         if raised:
-            pts = slack(r)
+            foot = UPRIGHT_FOOT_NORTH if facing == "north" and mat in ("Timber", "Steel") else -1.0   # SlackFoot
+            pts = slack(r, fz != 0, foot)   # the coil lies flat in every rotation
             src = r["attach"] + 0.01
             for i in range(len(pts) - 1):
                 src = rope_run(cv, t, r, facing, h, world(center, facing, flip, ang, *pts[i]), world(center, facing, flip, ang, *pts[i + 1]), src, True)

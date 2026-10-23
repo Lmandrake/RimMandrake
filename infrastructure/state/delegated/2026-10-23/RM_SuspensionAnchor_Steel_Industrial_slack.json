@@ -1,0 +1,65 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 3.1,
+    "models_reported": [],
+    "cost_usd": 0,
+    "error": "You've hit your session limit \u00b7 resets 1:10pm (America/Los_Angeles)"
+   },
+   {
+    "model_requested": "opus",
+    "seconds": 3.1,
+    "models_reported": [],
+    "cost_usd": 0,
+    "error": "You've hit your session limit \u00b7 resets 1:10pm (America/Los_Angeles)"
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_SuspensionAnchor_Steel_Industrial_slack",
+ "decision": "HOLD_ERROR",
+ "reasons": [
+  "opus: You've hit your session limit \u00b7 resets 1:10pm (America/Los_Angeles)"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v1",
+   "sha": "a4850279ccbf"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v1",
+   "sha": "14056552e355"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "machine@v2",
+   "sha": "e06ee7316a0a"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "south.png": "eec04fb4ae15df2b9f8a5a5dd2e6fc98f3f56a6d65db313cac5571d22e860e41",
+  "east.png": "c9797dccf09eaaf3541d2982ae74b285c7f584c96269fed0943b6eeb86d8ffd0",
+  "north.png": "135de1dd9885b367db2e16901621abaa4bcd1a4986b8cd39c6ed86c7bb85ea65",
+  "scale.png": "77b950b40fc8cc68ef7ed8bdb079e4afe8197a8b594d5948530adfd31ba0e5c4",
+  "assembled_1.png": "f1f8381024ac17600785b3e6a711bbc23b23294f0324440fe6928d1485e45f04",
+  "assembled_2.png": "6854f7b16ecf9eef72063d83b592d32a08dcaf99dc26807de07d7863b93c8ebe",
+  "facings.png": "8967f8f74fc404f999c5f2495dd0dc9de46b290f1ceeeac0089d36bd2bb89b80"
+ }
+}

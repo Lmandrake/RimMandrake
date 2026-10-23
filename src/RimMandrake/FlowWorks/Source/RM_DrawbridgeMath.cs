@@ -659,27 +659,94 @@ namespace RimMandrake.FlowWorks
 			return list;
 		}
 
-		/// <summary>Raised (slack, disconnected): a loose loop lying on the bank from the attachment point, curling toward the
-		/// square's centre line (the two ropes never cross) and never past <see cref="SlackReach"/>. A cubic through four
-		/// control points, all inside along ≤ SlackReach, so the curve is too (convex hull).</summary>
-		public static List<(double A, double L)> Slack(RopeArt r, int n = 14)
+		/// <summary>How flat a ground coil reads on screen: its screen-vertical extent over its screen-horizontal one. A rope lying
+		/// on the ground is seen as a squashed ring; a loop taller than this reads as a hook standing up (SLACK_LOOP_REDRAW_STANDS_UP_IN_PROFILE,
+		/// art brief C6: the true perspective plane).</summary>
+		public const double CoilAspect = 0.55;
+
+		/// <summary>The smallest along semi-axis of an E/W coil: below it the squashed ring is too thin to read as slack.</summary>
+		public const double MinCoilAlong = 0.15;
+
+		/// <summary>A slack coil keeps this far from the square's centre line (the two ropes never cross) and from its edge.</summary>
+		public const double CoilMargin = 0.05;
+
+		/// <summary>A slack coil's semi-axis across the screen, the same in every rotation.</summary>
+		public const double CoilWide = 0.15;
+
+		/// <summary>How uneven a slack coil's turns are (radius ± this fraction).</summary>
+		public const double CoilWobble = 0.10;
+
+		/// <summary>The foot of an upright bollard in its _north picture (rope frame along): every styled Timber/Steel _north
+		/// picture's lowest opaque row is along 0.270 (measured 2026-10-23, 8 pictures). The deck is up the screen there, so the
+		/// post's head (the attachment point) is drawn above its foot and a coil placed ahead of the head floats at head height
+		/// like a halo; the rope must drop to the ground at the foot instead (art-eval run slack_coil_20261023, GPT K1/K2).</summary>
+		public const double UprightFootNorth = 0.27;
+
+		/// <summary>Where a slack coil must lie for this print: the upright post's foot when the deck is up the screen (a styled
+		/// per-facing _north print), else -1 (the coil lies ahead of the attachment point).</summary>
+		public static double SlackFoot(string key, string facing)
 		{
-			double s = r.Lateral >= 0 ? 1.0 : -1.0;   // toward the centre line is -s
-			double reach = SlackReach;
-			double f = System.Math.Min(1.0, 0.8 * System.Math.Abs(r.Lateral) / 0.17);   // ropes set close together curl less, so the loops stay apart
-			double a0 = r.Attach, l0 = r.Lateral;
-			double a1 = reach, l1 = r.Lateral + 0.05 * s * f;
-			double a2 = reach, l2 = r.Lateral - 0.13 * s * f;
-			double a3 = r.Attach + 0.3 * (reach - r.Attach), l3 = r.Lateral - 0.17 * s * f;
-			var pts = new List<(double, double)>();
+			return facing == "north" && key != null && Art.ContainsKey(key + "/north") ? UprightFootNorth : -1;
+		}
+
+		/// <summary>Raised (slack, disconnected): the rope drops from its attachment point into a coil lying flat on the bank, a
+		/// ring squashed in the screen's vertical (<see cref="CoilAspect"/>) in EVERY rotation, so it lies on the ground plane and
+		/// never stands up as a hook. alongScreenVertical: the rope runs up/down the screen (rotations N/S), so the coil's
+		/// short axis is along the rope; else (E/W) its short axis is lateral. The coil stays on its own side of the centre line,
+		/// inside the square, and never past <see cref="SlackReach"/>; it winds a little over one turn, closing inward (a loose
+		/// end, not a hoop). foot >= 0 (<see cref="SlackFoot"/>): the coil lies on the ground just in front of the post, its far
+		/// edge at the foot, so the rope drops down the post's front from its head into it and never crosses the post behind it
+		/// (a ring round the foot drew its far arc over the post base: art-eval slack_coil_20261023_r2, LAYER_ORDER).</summary>
+		public static List<(double A, double L)> Slack(RopeArt r, bool alongScreenVertical, double foot = -1, int n = 44)
+		{
+			double s = r.Lateral >= 0 ? 1.0 : -1.0;
+			double lat = System.Math.Abs(r.Lateral);
+			double alongRoom = System.Math.Max(0.06, (SlackReach - r.Attach) / 2);   // semi-axis room ahead of the bollard
+			double latRoom = (0.5 - 2 * CoilMargin) / 2;                                // semi-axis room on its own side
+			double ra, rl;
+			if (alongScreenVertical)
+			{
+				rl = System.Math.Min(CoilWide, latRoom);                     // CoilWide across the screen in every rotation (_r5: E/W coils
+				ra = System.Math.Min(CoilAspect * rl, alongRoom);            // were 1.4x the N/S ones)
+			}
+			else
+			{
+				ra = System.Math.Max(System.Math.Min(CoilWide, alongRoom), MinCoilAlong);
+				rl = System.Math.Min(CoilAspect * ra, latRoom);
+			}
+			double cA = foot >= 0
+				? System.Math.Max(foot - ra, ra + CoilMargin)                // on the ground in front of the upright post, touching its foot
+				: System.Math.Min(r.Attach + ra, SlackReach - ra);           // a far-forward attachment (Heavy): the coil reaches back beside it
+			// N/S: drawn a little inboard of the rope, so a coil behind a raised leaf (half-width ~0.40) stays hidden (run _r2: "stray ears")
+			double want = alongScreenVertical ? lat - 0.04 : lat;
+			double cL = s * System.Math.Min(System.Math.Max(want, CoilMargin + rl), 0.5 - CoilMargin - rl);
+			// start on the coil at the point facing the attachment point and wind inward (closing to 55 %, uneven: a loose coil of
+			// rope, not a turned ring) between one and two turns, so the coil ends on its outer-back side; the loose end runs from
+			// there straight out across the turns, away from the centre line and the deck (_r3 "no loose end", _r5 "end points at
+			// the leaf": a rope still tied on)
+			double t0 = System.Math.Atan2((r.Lateral - cL) / rl, (r.Attach - cA) / ra);
+			double dir = s;   // +lateral rope winds clockwise in (along, lateral): away from the centre line first
+			double tail = s * (System.Math.PI / 2 + (alongScreenVertical ? 0.6 : 0.0));   // E/W: straight out sideways, clear of the post
+			double sweep = 2.0 * System.Math.PI + Mod(dir * (t0 - tail), 2.0 * System.Math.PI);
+			var pts = new List<(double, double)> { (r.Attach, r.Lateral) };
 			for (int i = 0; i <= n; i++)
 			{
-				double t = (double)i / n, u = 1 - t;
-				double b0 = u * u * u, b1 = 3 * u * u * t, b2 = 3 * u * t * t, b3 = t * t * t;
-				pts.Add((b0 * a0 + b1 * a1 + b2 * a2 + b3 * a3, b0 * l0 + b1 * l1 + b2 * l2 + b3 * l3));
+				double t = (double)i / n;
+				double th = t0 - dir * t * sweep;
+				double k = (1.0 - 0.45 * t) * (1.0 + CoilWobble * System.Math.Sin(5.0 * System.Math.PI * t));
+				pts.Add((cA + k * ra * System.Math.Cos(th), cL + k * rl * System.Math.Sin(th)));
+			}
+			foreach (double k in new[] { 0.95, 1.3 })
+			{
+				double a = System.Math.Min(System.Math.Max(cA + k * ra * System.Math.Cos(tail), 0.02), System.Math.Min(SlackReach, cA + ra));
+				double l = cL + k * rl * System.Math.Sin(tail);
+				l = s * System.Math.Min(System.Math.Max(s * l, CoilMargin), 0.5 - CoilMargin);
+				pts.Add((a, l));
 			}
 			return pts;
 		}
+
+		private static double Mod(double x, double m) => ((x % m) + m) % m;
 
 		/// <summary>The rope's direction in the picture's UV space (v up): a styled north picture and the unstyled single
 		/// picture point up, south down, east right.</summary>

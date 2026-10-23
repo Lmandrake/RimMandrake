@@ -1,0 +1,36 @@
+[
+ {
+  "id": "arteval_RM_SuspensionAnchor_Timber_Scrapper_slack_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_SuspensionAnchor_Timber_Scrapper_slack",
+  "prompt": "RimWorld sprite, top-down three-quarter view, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. Timber and scrapper look: a one-lane drawbridge rope anchor in its RAISED state, the leaf standing upright at the hinge bank, so the ropes are disconnected and lie slack on the ground on the bank. Two upright mooring bollards stand at the anchor square, unchanged from the installed bollard picture. From each bollard's tie point just under its head, a short slack length of rope sags down the front of the post and continues along the ground in a gentle S-curve into a loose coil lying on the ground in front of the post, its far edge at the post's foot. Where the coil lies ahead of the bollard foot, the same short slack rope runs from the tie point down to the ground and into the coil, so the rope is continuous from post to pile. Each coil is a loose pile of rope winding about one and a half turns: an outer turn, then a clearly separated inner half-turn spiralling toward the centre with a visible sliver of dark ground between the turns, and the rope's free end leaving the inner turn and lying out across the outer turn as a short exposed strand with a frayed tip, apart from the pile. The coil outline is irregular and slightly lumpy, like rope dropped by hand, squashed in the screen vertical as a ground-plane ellipse. The rope colour and thickness come from the bollard picture's own painted rope, so a steel cable stays as thin as the lowered cable. Coils in the north and south views sit slightly inboard so a coil behind the raised leaf stays hidden. Coils stay clear of the pit, which is a flat dark rectangle beside a plain deck tile, with the raised leaf shown for context.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: DESC_MISS, DESC_MISS, DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "slack_coil_20261023_r3"
+ },
+ {
+  "id": "arteval_RM_SuspensionAnchor_Steel_Industrial_slack_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_SuspensionAnchor_Steel_Industrial_slack",
+  "prompt": "Top-down three-quarter RimWorld sprite, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. A steel industrial drawbridge rope anchor in its raised, disconnected state: an upright steel mooring bollard (kept exactly as in the reference picture: same shape, same steel palette, same position) with its thin steel cable slack and disconnected. The cable drops from the bollard head down the post's front and ends in a loose coil lying on the ground just in front of the post, the coil's far edge touching the post's foot, with nothing crossing behind the post. Each coil is a loose, open, hand-laid spiral of about one and a half turns, squashed in the screen vertical as a ring lying flat on the ground. The outer turn is wide and slightly lopsided; the inner turn is smaller and sits off-centre; the spacing between the turns changes around the coil, wide on one side and nearly touching on the other, so the turns read as a spiral and not as concentric ovals. The cable has slight kinks and uneven curvature, like a steel line dropped in a heap. The inner end of the spiral leaves the coil as a short loose tail lying out across the bare ground beside the ring, clearly separated from the turns, ending in a plain cut tip. The cable is a single thin dark steel strand with a pale highlight along its top, as thin as the lowered cable, cut from the bollard picture's own painted rope. The coil lies on the bank ground, slightly inboard so a coil behind the raised leaf stays hidden, and lies clear of the pit, which is a flat dark rectangle. Context: plain deck tile, raised leaf standing upright at the hinge bank.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: DESC_MISS, DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "slack_coil_20261023_r3"
+ }
+]
