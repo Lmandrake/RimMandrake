@@ -41,7 +41,8 @@ Scald**.
       1.6 assembly before its C# is spent — **2026-09-13, all 5 named
       claims resolved with source/binary citations, see "spike pass"
       below.**
-- [ ] Build lands per the spec's build order, after `ALPHA_MECHANICS_KIT_1`
+- [x] **2026-10-22: all six mechanics built** (S3's catch reaches the ship-landed floor
+      at `d5634e4ad`; see the last section). Original text: Build lands per the spec's build order, after `ALPHA_MECHANICS_KIT_1`
       (closed), the miasma kit's RM_ generics (anchor half built, scatterer
       half not — see below), `LIQUID_TYPES_MOD_1` (closed), and
       `FISH_BESTIARY_COMMISSION_1` (**checked this pass: still `doing`,
@@ -49,7 +50,9 @@ Scald**.
       below). **Not done this pass** — this item ran the spikes only, per
       `LIQUID_TYPES_SPIKES_1`'s/`MIASMA_MECHANICS_1`'s own precedent; the
       full 6-mechanic build is later, separate FOUNDRY work.
-- [ ] A quicktest map in the biome shows: forced steam weather with clear
+- [ ] **Read on a Scald FLOOR map (ship landing on `RM_SeabedLayer`), the only Scald map a
+      colony reaches** — the surface `RM_TheScald` is impassable (BENCH note 2026-09-26). Original
+      text: A quicktest map in the biome shows: forced steam weather with clear
       spells; a condenser producing on a vent and refusing placement off
       one; a pawn swimming the margin ring and never pathing through boil
       cells; a fishable water body once the bucket is ruled; wrecks in
@@ -722,3 +725,20 @@ water" criterion is untouched. Art is queued (artpipe job `RM_DistilledWater`); 
 (`steam_catch_checks`, chain `scald_steam_catch_output`) now fails if the outputDef is unset
 or not shipped. Still owed: the FlowWorks pipe-water form (FlowWorks work), and a live read of
 a condenser dropping water on a vent and refusing off one.
+
+## S3 floor-catch pass — 2026-10-22 (FOUNDRY, offline)
+Found: the ship lands on the sea-floor layer, whose `RM_SeabedFloor_TheScald` biome shipped
+`maxFishPopulation 0` and no `fishTypes`; `Zone_Fishing`/`WaterBodyTracker` stop on
+`Tile.MaxFishPopulation <= 0` and `WaterBody.SetFishTypes` reads `map.Biome.fishTypes` (RimSage), so no
+floor could fish — only the retired hatch's pocket maps (sea biome) could. `RM_SeabedFloorLife` now copies
+the sea's `fishTypes` + `maxFishPopulation` onto its floor and re-asserts the population (all four seas;
+under the existing `seabedFloorLifeEnabled` toggle, tooltip updated). Check
+`floor_biomes_carry_sea_catch` (DivingInteraction `validation.py`, chain `seabed_floor_ambient_carryover`)
+was red for that reason, then green. The margin ring lands on the floor through
+`RM_SeaFloorBandsExtension` (share 0.12, ringing each boiling core), so no bridge cove painting is owed.
+S5's "sail PawnKind/ThinkTree/Duty owed" is stale: `RM_Noohm` is the sail, tethered by
+`RM_MapComponent_ScaldVentForecast`; spec and scatterer header corrected.
+**Still owed, all live (L2, Scald floor map):** forced steam with clear spells; condenser producing
+`RM_DistilledWater` on a vent and refusing off one; a fishing zone on `RUT_ScaldMargin` yielding Scald
+catches and none on boil; wrecks salvageable at burn cost; sails gathering at and tethered to vents.
+Off-item: FlowWorks pipe-water form; `RM_DistilledWater` art (artpipe).
