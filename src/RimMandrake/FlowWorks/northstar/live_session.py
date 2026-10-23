@@ -685,8 +685,16 @@ def b0_preflight(s):
     s.call("jawa/incident_queue_clear")
     mi = s.call("jawa/map_info")
     if mi.get("sizeX"):
-        s.size = (int(mi["sizeX"]), int(mi.get("sizeZ") or mi["sizeX"]))
-        s.zones = plan_zones(s.size)
+        size = (int(mi["sizeX"]), int(mi.get("sizeZ") or mi["sizeX"]))
+        try:
+            s.zones, s.size = plan_zones(size), size
+        except ValueError as ex:
+            # HARNESS (review 2026-10-23): the shelf packer fits 250 (the calm saved site) and 325, and raises on 200-300
+            # otherwise; that crashed B0 before the clock-rate row. The 250 plan is kept and the mismatch is a row: on a
+            # smaller map its zones run off the edge and their prepare_site reads them SITE, never a MOD verdict.
+            s.row("B0_zone_plan", "-", "-", "UNMEASURED", "HARNESS", dict(mapSize=size, kept=s.size, why=str(ex)), "B0")
+    feed_colonists(s)
+    park_bystanders(s)          # SESSION_HURT: the start colonists walk off every zone before B1 digs; B0's 600 ticks walk them
     t0, w0 = s.now(), time.time()
     s.advance(600)
     dt, dw = s.now() - t0, max(1e-3, time.time() - w0)
@@ -1874,19 +1882,93 @@ def restore_after_weather(s, label):
                                                    weather=ws.get("after")))
 
 
+# SESSION_HURT_DIAGNOSE_BRUISED_AT_THE_BELL (20261022T235239, offline triage 2026-10-23): the GovernorStops that voided
+# climb_proof, liquid_checks L2/L4/L6 and proof_hose realflow named BYSTANDERS -- Elisa (372) and Knight (380), the
+# quicktest's own start colonists (ids far below any script spawn), undrafted and unfed of thirst the whole session. The
+# sprinkler_live stop named Godders (46108, spawned mid-session): UNPROVEN whether a bystander or sprinkler_live's own
+# T21/T22 colonist (that script stages acid water) -- the census below will say. Presumed routes for the bystanders, both
+# closed here: (1) THIRST: feed_colonists topped Food and Rest but never FlowWorks' own RM_Thirst, so
+# by B3 a thirsty bystander went for the nearest liquid -- a dug channel of oil/tar/slime (ToxicBuildup +0.12 a drink,
+# RM_ThirstMath.ToxicBuildupPerDrink: health 0.91 -> 0.84 'ToxicBuildup age 15') or a pit it walked down into; (2) GROUND:
+# each B3 script digs its zone around whoever stands there (prepare_site sweeps NON-colonists only), so a bystander on a
+# freshly dug square falls (FlowWorks Blunt fall damage: 'Bruise/Torso', 'Bruise/Leg age 0'). RULED OUT: a raid or animal
+# (every stop's kind is hurt/downed with no hostile_arrival trigger; B0 and run_sub clear both). The bystander census below
+# records, per sub-script, every colonist's new hediffs and cell, so the next stop names its source instead of a guess.
+FEED_NEEDS = ("Food", "Rest", "RM_Thirst")
+PARK_EXEMPT = ("proof_hose.py",)     # realflow drives the map's own colonists (B.hp colonists): parked 150 cells off they never arrive
+
+
 def feed_colonists(s):
-    """Top up Food and Rest on every colonist: an unfed quicktest colony reaches Starving inside a session and the
-    governor then stops every sub-script's clock (live 2026-10-19: liquid_checks L2-L6 and proof_hose realflow UNMEASURED)."""
+    """Top up Food, Rest and FlowWorks thirst on every colonist: an unfed quicktest colony reaches Starving inside a session
+    and the governor then stops every sub-script's clock (live 2026-10-19: liquid_checks L2-L6 and proof_hose realflow
+    UNMEASURED); a thirsty one drinks toxic channel water or walks into a pit (SESSION_HURT, above)."""
     if s.mock:
         return 0
     n = 0
     for c in (s.call("rimworld/list_colonists") or {}).get("colonists") or []:
         if c.get("dead") or not c.get("pawnId"):
             continue
-        for need in ("Food", "Rest"):
+        for need in FEED_NEEDS:
             s.call("jawa/pawn_need", pawn=c["pawnId"], action="need", need=need, level=1.0)
         n += 1
     return n
+
+
+def park_cell(zones, size, margin=6, edge=12):
+    """A cell >= margin cells from every zone and >= edge from the map edge (pure). Scans the map on a 3-cell grid from the
+    centre outwards so the walk there is short; None when nothing fits (then nobody is parked and the census says so)."""
+    W, H = size
+    cands = [(x, z) for x in range(edge, W - edge, 3) for z in range(edge, H - edge, 3)]
+    cands.sort(key=lambda c: (c[0] - W // 2) ** 2 + (c[1] - H // 2) ** 2)
+    for c in cands:
+        if not any(overlaps((c[0], c[1], 1, 1), r, gap=margin) for r in zones.values()):
+            return c
+    return None
+
+
+def park_bystanders(s, keep=()):
+    """Draft every living colonist not in `keep` and walk it to park_cell (jawa/order_pawn draft=True: a drafted pawn takes no
+    job and drinks nothing; the walk keeps it off every zone a later script digs). Returns [(pawnId, ordered)]."""
+    if s.mock:
+        return []
+    cell = park_cell(s.zones, s.size)
+    keep = {str(k).replace("Thing_", "") for k in keep if k}
+    out = []
+    for c in (s.call("rimworld/list_colonists") or {}).get("colonists") or []:
+        pid = c.get("pawnId")
+        if c.get("dead") or not pid or str(pid).replace("Thing_", "") in keep:
+            continue
+        if cell is None:
+            out.append((pid, draft(s, pid)))
+            continue
+        r = s.call("jawa/order_pawn", pawnId=pid, x=cell[0], z=cell[1], waitTicks=1, draft=True, unpause=False)
+        out.append((pid, r.get("success") is True))
+    s.timing.setdefault("parked", []).append(dict(cell=cell, pawns=out))
+    return out
+
+
+def bystander_census(s):
+    """{pawnId: dict(hediffs=[defName], cell=...)} for every living colonist, from jawa/pawn_get (cell as list_colonists gives it)."""
+    if s.mock:
+        return {}
+    out = {}
+    for c in (s.call("rimworld/list_colonists") or {}).get("colonists") or []:
+        pid = c.get("pawnId")
+        if c.get("dead") or not pid:
+            continue
+        out[pid] = dict(hediffs=sorted(hediffs(s.call("jawa/pawn_get", pawn=pid))), cell=c.get("position") or c.get("cell"),
+                        name=c.get("name") or c.get("label"))
+    return out
+
+
+def census_delta(before, after):
+    """{pawnId: {new: [hediffs], cell}} for colonists that gained a hediff between two censuses (pure)."""
+    out = {}
+    for pid, a in (after or {}).items():
+        new = sorted(set(a.get("hediffs") or []) - set(((before or {}).get(pid) or {}).get("hediffs") or []))
+        if new:
+            out[pid] = dict(new=new, cell=a.get("cell"), name=a.get("name"), spawnedDuring=pid not in (before or {}))
+    return out
 
 
 def run_sub(s, step):
@@ -1919,6 +2001,9 @@ def run_sub(s, step):
     s.call("jawa/kill_hostiles")
     s.call("jawa/incident_queue_clear")
     feed_colonists(s)
+    if script not in PARK_EXEMPT:
+        park_bystanders(s, keep=(s.pawns.get("rescue"),))     # SESSION_HURT: nobody stands where this script digs
+    census0 = bystander_census(s)
     if os.path.exists(out):
         os.remove(out)                      # a crash before the script writes must not re-read an earlier run's rows
     s.say("  RUN %s %s" % (script, " ".join(fill)))
@@ -1935,6 +2020,10 @@ def run_sub(s, step):
                 last = time.time()
         rc = p.wait()
     s.timing[script] = round(time.time() - t0, 1)
+    hurt = census_delta(census0, bystander_census(s))
+    if hurt:
+        s.timing.setdefault("bystanders", {})[script] = hurt
+        s.notes.append("%s: colonists gained hediffs %s" % (script, json.dumps(hurt, default=str)[:400]))
     rows = []
     try:
         with open(out, encoding="utf-8") as f:
