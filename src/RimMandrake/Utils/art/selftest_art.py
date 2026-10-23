@@ -235,7 +235,10 @@ def main():
                  "twins": [{"defName": "RM_Beast", "relation": "tier_twin_same_stem", "in_this_biome": True}],
                  "art": {"resources": [{"res": "Things/Beast/Beast", "role": "body", "prior_selection": {
                      "decision": "B", "note": "", "picked_label": "x", "picked_faces": {"south": sgreen}}}]},
-                 "artpipe_state_jobs": []}
+                 "artpipe_state_jobs": [],
+                 # both Beast pictures are already ruled in this temp ledger (above), and a sheet drops a row whose
+                 # options are all ruled (c87bbf460); this section tests twin linking, so the row is shown on purpose
+                 "reopen": True}
         row_b = {"key": "RM_Beast", "kind": "fauna", "label": "beast", "defNames": ["RM_Beast"], "placements": [],
                  "canon": {"entry": None}, "twins": [], "art": {"resources": []}, "artpipe_state_jobs": []}
         cen = tmp / "census.json"
@@ -300,7 +303,8 @@ def main():
         os.environ["ARTPIPE_STATE_DIR"] = str(tmp / "artpipe")
         row_c = {"key": "RG_Plant_Brambles", "kind": "flora", "label": "thorny bush", "defNames": ["RG_Plant_Brambles"],
                  "placements": [], "canon": {"entry": None}, "twins": [], "artpipe_state_jobs": [],
-                 "art": {"resources": [{"res": "Things/Plant/RG_Brambles", "role": "body"}]}}
+                 "art": {"resources": [{"res": "Things/Plant/RG_Brambles", "role": "body"}]},
+                 "reopen": True}   # sgreen/sblue are already ruled here; this tests the donor join, not the drop
         row_d = {"key": "RM_Foxwing", "kind": "fauna", "label": "foxwing", "defNames": ["RM_Foxwing"], "placements": [],
                  "canon": {"entry": None}, "twins": [], "art": {"resources": []}, "artpipe_state_jobs": []}
         cen2 = tmp / "census2.json"
