@@ -259,7 +259,7 @@ def build(R, label_line):
                 R.call("jawa/set_draft", pawnId=str(pid), drafted=True)
             elif pid is not None and str(role).startswith("face:"):
                 rot = R.call("jawa/set_pawn_rotation", pawnId=str(pid), dir=role[5:], lockRotation=True)
-                if rot.get("applied") is not True:
+                if rot.get("success") is not True:            # per-pawn "applied" lives in rot["pawns"], not top level
                     R.notes.append("R%d %s: %s not turned to face %s: %s" % (k + 1, st["id"], kind, role[5:], str(rot)[:160]))
     R.call("rimworld/pause_game", pause=True)
     verify = {}

@@ -1,4 +1,4 @@
-# FlowWorks walkthrough — save RM_fw_walkthrough_20261022d (2026-10-23)
+# FlowWorks walkthrough — save RM_fw_walkthrough_20261023e (2026-10-23)
 
 *For Lukas, walking FlowWorks in game, and for the seat that files his notes. Written 2026-10-23 ~04:30 PDT from the
 code, `map_r_placed.json`, the ledger and the night's live batch (`Transient/live_batch_20261023/RESULTS*.md`).
@@ -9,9 +9,9 @@ The per-plot detail (every piece, every poke, "broken looks like") stays in the 
 
 | # | fact | what it means for the walk |
 |---|---|---|
-| 0.1 | **Save d was written 2026-10-22 21:25.** Tonight's *layout* fixes were proven on in-memory rebuilds that were thrown away, so they are **not in save d**: creek crossings (C11 R1/R2), C1's battery cord moved inland, C1's dead tank stub, the C1 pipe tail at map R 142,45, the C5 pipe tail at map C 131,41, the R1 muffalo turned side-on. | Either the seat rebuilds map R and C5 into a fresh save before you walk (preferred), or you walk the old layout and skip those points. A rebuild moves C1 and the R stations (the last in-memory rebuild put C1 at 15,34), so the map R cells below then come from the new `map_r_placed.json`; `--goto` follows it. Since 5547ca7a09, `scenarios_map.py --save` refuses while the joint check is red, and map R's flat hose crossing (§3) is red until that fix is deployed. Drawing fixes (anything in the mod's code or art) **do** show on save d, because the game draws with the deployed mod. |
-| 0.2 | Deployed now: FlowWorks **ab0204307d** (04:06 PDT) and Gimme Some Slack **2ae04e1509**. HEAD also has 5547ca7a09 (hose drawn ABOVE batteries, crossing shadow), **not deployed**. | Two hose looks in §3 (battery, flat crossing) are fixed in code but not in your game yet. |
-| 0.3 | Every load of save d opens a VEF "New faction: Giant ant colony" dialog over the screen (`ANT_FACTION_SILENCE_KNOCKS_EVERY_LOAD`). | Click **Do nothing**. |
+| 0.1 | **Save e was written 2026-10-23 ~06:09 PDT** from save d, with map R rebuilt fresh (a new river tile) and C5 rebuilt in place, so tonight's layout fixes are **in the save**: creek crossings bank to bank (C11), C1's battery cord inland, no C1 tank stub or pipe tail, no C5 pipe tail at 131,41, the R1 muffalo side-on and locked. Joint check on save e: map R PASS (14 joints, the flat crossing is gone); map C one FAIL, the known C7 faucet stub at 25,130 (`PIPE_FAUCET_BUILD_TAP_NAME_NOW_FREE`), so it was saved with `--allow-red-joints` for that alone. | Load save e. Every map R cell below is new (map R moved); map C cells are unchanged. |
+| 0.2 | Deployed for save e: FlowWorks at **6f5d51a159** (includes 5547ca7a09: hose drawn ABOVE batteries, raised crossing; the regenerated under-couplers and steel pumping-station couplers) and Gimme Some Slack **2ae04e1509**. Landed after that deploy and **not in your game**: the reel/bleed-well redraw (5023191939) and ladder parity (db328ddd54). Biomes and Luminous Pigment are as FOUNDRY last deployed them. | The reel pictures you see are the previous ones until the seat redeploys (a 3-minute restart). |
+| 0.3 | Save e has the hidden "Giant ant colony" faction (`RM_GreentideAntFaction`, required by Baroque Biomes) added through VEF's own **Add the faction** button, so the "New faction" dialog no longer opens: a reload of save e at 06:12 opened none (`ANT_FACTION_SILENCE_KNOCKS_EVERY_LOAD`). | Nothing to do. |
 | 0.4 | Your saved FlowWorks Mod Settings hold nothing but defaults (absent = shipped default, not off). Your Gimme Some Slack cord style is **Extension cord** (ships Star Wars Jawa). | What you see is the shipped behaviour, except the cord look. |
 | 0.5 | Canal overflow ("Overfilled channels spill water onto the ground") **ships OFF and is OFF on load**, although C13's sign says it is on. | Switch it ON before C13, OFF after; don't save the game with it on (it is a Mod Setting and outlives the save). |
 | 0.6 | Joint fittings ("Connector fittings at liquid joins") are ON. Last night's "you switched them off" was wrong: the setting was simply absent, so it was at its default. | Nothing to do. |
@@ -30,8 +30,8 @@ last walk; walk them only if you have time. Map C first (north-west to east), th
 | stop | station | anchor cell(s) | the feature, in one sentence | do this |
 |---|---|---|---|---|
 | 1 **focus** | **C3** The Labyrinth Rescue (Scrapper), plot 12,12 40x40 | reel o1 18,42 · pump 17,42 · tank 17,44 · battery 18,39 · Hobb's pit 34,25 · relay reel o2 48,40 · reel park x 13, z 15-34 · turned reels 39-47,13 | Water from a pond reaches a colonist trapped in a 4 m pit by hose, through a maze. | Zoom on o1 where it meets the pump/pipe and the nozzle; follow the hose to Hobb's pit lip. Select o1 > Free end: **Outflow**, unpause: pond falls, pit fills. Look at the reel park (four looks; plump / filling / flat / wound) and the three turned reels. |
-| 2 **focus** | **C12** The Oubliette and the Kennel (Modern), plot 62,12 40x36 | oubliette 66,34-37 · concealed pit 72,34 · 3 m ladder pit 65-67,16-18 (portable ladders on all four walls) · 5 m gear pit 73,17 · jump-pack 78,17 · kennel ring 80,30 · thrumbo shaft 97,35 | What a pit holds and every way in and out of one. | Look at the four portable ladders (W 65,17 · N 66,18 · E 67,17 · S 66,16). Order the drafted colonist across the concealed pit's planks (walks like floor). Unpause: wardens work from the lip; the husky climbs out, the chicken stays. |
-| 3 **focus** | **C5** The Fuel Depot (Industrial), plot 112,12 40x36 | cargo tanks 114,42 · filling bay 114,26 · our hose on THEIR tank 132,20 → 142,20 · containment canal 134,33 · pump 133,34 | A fuel stop: cargo tanks, a filling bay, a tapped neighbour's tank, a canal that burns. | Zoom on each pipe entering a tank (riser onto the flange) and on the hose end at their tank (142,20). Set bay jobs Store / Fill / Empty and the pump-side tank to Dump; unpause. |
+| 2 **focus** | **C12** The Oubliette and the Kennel (Modern), plot 62,12 40x36 | oubliette 66,34-37 · concealed pit 72,34 · 3 m ladder pit 65-67,16-18 (portable ladders on all four walls) · 5 m gear pit 72-74,16-18: a portable ladder **lying flat** at 72,16 (too short for 5 m) and Elvee at 74,18 **wearing climbing gear** · jump-pack 78,17 · kennel ring 80,30 · thrumbo shaft 97,35 | What a pit holds and every way in and out of one. | Look at the four portable ladders leaning on their walls (W 65,17 · N 66,18 · E 67,17 · S 66,16), then the flat one in the gear pit (72,16) and Elvee's climbing gear (74,18) (`PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS`). Order the drafted colonist across the concealed pit's planks (walks like floor). Unpause: wardens work from the lip; the husky climbs out, the chicken stays. |
+| 3 **focus** | **C5** The Fuel Depot (Industrial), plot 112,12 40x36 (rebuilt for save e; no pipe tail at 131,41) | cargo tanks 114,42 · filling bay 114,26 · our hose on THEIR tank 132,20 → 142,20 · containment canal 134,33 · pump 133,34 | A fuel stop: cargo tanks, a filling bay, a tapped neighbour's tank, a canal that burns. | Zoom on each pipe entering a tank (riser onto the flange) and on the hose end at their tank (142,20). Set bay jobs Store / Fill / Empty and the pump-side tank to Dump; unpause. |
 | 4 | **C6** The Tar Seep (Scrapper), plot 162,12 40x36 | sluices at the ditches' west ends 166,42 / 166,35 · slime pit 189,24 · vat 169,17 | Tar crawls, water runs, slime holds. | Open both race sluices, unpause, compare the two fronts. |
 | 5 | **C9** The Trench Line, plot 162,62 44x32 | trench 172,64 · wet bay 175,84 | Trench cover and movement cost. | Hover a lane (walk cost by depth). Raids are on the branch save `RM_fw_composite_raid`. |
 | 6 | **C8** The Canal Lock (Futuristic), plot 112,62 44x24 | S1 130,73 · S2 137,73 · swimmer 132,75 | A swimmer rides a lock chamber up and down on timers. | Order the swimmer into the chamber; unpause to 13:00. |
@@ -43,26 +43,25 @@ last walk; walk them only if you have time. Map C first (north-west to east), th
 | 12 **focus** | **MG** Modern gallery (staged into save d, open grass north of C13, x 100-160, z 198-226) | Modern tanks: short 116,202 · tall 116,208 · IBC 116,214 · extra-tall 116,220, each with a Modern reel at 104,z laid to its west port · FA fire reels: stored 134,210, laid west 132,204→120,204, laid north 140,204→140,214, laid south 126,222→126,211 | Your card picks for Modern tanks and the Modern (FA pedestal fire) reel, with hoses coupled. | Zoom on each tank's west port: the coupler should seem to go **under** the tank (your 10:27 ruling). Look at each FA reel's nozzle and shadow. |
 | 13 **focus** | **C10** The Rain Basin, plot 196,112 44x40 | pond 197,140 · sluices A 209,143 / B 221,143 · pump + tank + hose 210,149 · closed ledger (two tanks, one hose) 236,117 | Ponds, springs and canals; every litre accounted. | Zoom on the ledger's two tank ports; open sluice A then B and unpause. |
 
-### Map R (map 48, river tile 1246) — switch: `--river --labels`, then `--river --goto C1`
+### Map R (map 51, river tile 1360) — switch: `--river --labels`, then `--river --goto C1`
 
-C1 in save d sits at origin **96,35** (48x40). C11's eight stations are on river crossings; in save d the R1 and R2
-crossings still run **along** a shoreline inlet at z 105 (the old layout, 0.1).
+C1 in save e sits at origin **155,81** (48x40). C11's eight stations run bank to bank across the river.
 
 | stop | station | anchor cell(s) | the feature, in one sentence | do this |
 |---|---|---|---|---|
-| 14 **focus** | **C1** The Thirsty Terraces (all four looks) | bank weir 106,74 · bank pump 116,74 · terrace 1 + S1 98-123,68 · S2 124,62 · pipe poles 128,73 and 133,73 (span over the dry ditch) · tall tank 140,72 · sprinkler rows from 135,65 · field hose 98,43 crossed by a second hose at 116,43-49 | A crop three steps above a river: lifted, carried over a ditch on poles, stored and sprayed. | Zoom on the pole span (now copper, 2 % sag) and where each ground pipe meets a pole. Open S1, unpause an in-game hour: the sprinklers spray. Look at the hose crossing at 116,43. |
-| 15 | **R7** ferry rope | crossing 52,105 → 52,74 | A rope ferry across the deep run. | Order a colonist across; look whether the rope reads above the water. |
-| 16 **focus** | **R2** ford stones | 78,105 → 73,105 (save d; the old inlet crossing) | Ford stones stop the current; a wader beside them is carried. | Look at the stones (untinted since tonight); unpause ~30 s: the control colonist in the water is carried, the one on the stones is not. |
-| 17 | **R6** silt trap | 87,75 → 87,105 | Silt richens the neighbouring soil. | Look. |
-| 18 | **R1** current | 114,105 → 104,105 (save d; old inlet crossing); a wild muffalo one cell into the water beside it | The river carries animals and logs. | Unpause and watch the muffalo and logs drift. In save d the muffalo faces north and reads as a white dome (its rear); not a missing texture. |
-| 19 | **R3** weir · **R5** stakes | weir 152,104 → 152,73; stakes 152,73 → 152,104 | A weir pools the river; a stake levee holds the bank. | Look; dev "seasonal flood" breaches the worn weir. |
-| 20 | **R4** breach | 178,102 → 178,71 | A worn weir breaks in a flood. | Look. |
-| 21 | **R8** placer / sluice box | 204,100 → 204,69 | Panning and a sluice box draw from one shared stock. | Look. |
+| 14 | **R8** placer / sluice box | 21,39 → 34,39 | Panning and a sluice box draw from one shared stock. | Look. |
+| 15 | **R7** ferry rope | crossing 47,52 → 47,45 | A rope ferry across the deep run. | Order a colonist across; look whether the rope reads above the water. |
+| 16 | **R5** stakes | 73,74 → 83,74 | A stake levee holds the bank. | Look. |
+| 17 **focus** | **R2** ford stones | 99,95 → 99,88 | Ford stones stop the current; a wader beside them is carried. | Look at the stones (untinted); unpause ~30 s: the control colonist in the water is carried, the one on the stones is not. |
+| 18 **focus** | **R1** current | 125,116 → 125,107; a wild muffalo at 127,115, turned west and locked | The river carries animals and logs. | Check the muffalo reads side-on, not as a white dome; unpause and watch it and the logs drift. |
+| 19 **focus** | **C1** The Thirsty Terraces (all four looks) | bank weir 165,120 · bank pump 175,120 (battery 174,116, cord inland 174,118-120) · terrace 1 + S1 157-182,114 · S2 183,108 · pipe poles 187,119 and 192,119 (span over the dry ditch) · tall tank 199,118 · sprinkler rows from 194,111 · field hose from 157,90 crossed by a second hose at 175,89-95 | A crop three steps above a river: lifted, carried over a ditch on poles, stored and sprayed. | Zoom on the pole span (copper, 2 % sag) and where each ground pipe meets a pole. Open S1, unpause an in-game hour: the sprinklers spray. Look at the hose crossing near 175,89: the top hose should lift and shade. |
+| 20 | **R3** weir | 180,129 → 193,129 | A weir pools the river. | Look; dev "seasonal flood" breaches the worn weir. |
+| 21 | **R4** breach | 206,143 → 206,153 | A worn weir breaks in a flood. | Look. |
+| 22 | **R6** silt trap | 226,169 → 235,169 | Silt richens the neighbouring soil. | Look. |
 
 ## 2. What changed since your last walk (save b, 2026-10-22 ~18:00)
 
-Plain words; item ID in brackets. "Drawn" = shows on save d. "Builder only" = fixed in the scene builder, proven on a
-rebuild, **not in save d** (0.1).
+Plain words; item ID in brackets. "Drawn" = shows on save e (the game draws with the deployed mod).
 
 | where it shows | what changed | kind |
 |---|---|---|
@@ -82,10 +81,10 @@ rebuild, **not in save d** (0.1).
 | new lays onto a tank | A hose aimed at a tank's own square now ends in front of its port (or is refused), never lying on the lid (HOSE_TANK_LAY_FIX_ENDS_ON_LID). | new lays only |
 | anywhere (build it) | **Pipe faucet** (RM_PipeFaucet): a fitting on a pipe that colonists drink from and fill bottles at; four top-view looks (31f0455f60, 799e2490e0). None is staged; god-build one on a C7 pipe to try it. | new building |
 | map C 112,162 | **C13 The Spill Yard** plot (overflow) is new since save b. | saved |
-| C11 R1/R2 | Creek crossings now run bank to bank across the river (CREEK_STATIONS_REDESIGN_FORDED_A_PUDDLE). | builder only |
-| C1 | Battery cord runs inland, not over the river (C1_CORD_REWIRE_BATTERY_GOES_SKINNY_DIPPING); dead pipe stub under the tall tank and the pipe tail at 142,45 removed (C1_TANK_STUB_PRUNE_PIPE_TO_NOWHERE, WALK_PIPES_PRUNE_TWO_TAILS_TO_NOWHERE). | builder only |
-| C5 | Pipe tail at 131,41 removed (WALK_PIPES_PRUNE_TWO_TAILS_TO_NOWHERE). | builder only |
-| C11 R1 | Muffalo spawned side-on and locked (RIVER_MUFFALO_FIX_SHOWS_ITS_REAR). | builder only |
+| C11 R1/R2 | Creek crossings now run bank to bank across the river (CREEK_STATIONS_REDESIGN_FORDED_A_PUDDLE). | saved |
+| C1 | Battery cord runs inland, not over the river (C1_CORD_REWIRE_BATTERY_GOES_SKINNY_DIPPING); dead pipe stub under the tall tank and the pipe tail at 142,45 removed (C1_TANK_STUB_PRUNE_PIPE_TO_NOWHERE, WALK_PIPES_PRUNE_TWO_TAILS_TO_NOWHERE). | saved |
+| C5 | Pipe tail at 131,41 removed (WALK_PIPES_PRUNE_TWO_TAILS_TO_NOWHERE). | saved |
+| C11 R1 | Muffalo spawned side-on and locked (RIVER_MUFFALO_FIX_SHOWS_ITS_REAR). | saved |
 
 Your 10:41 card on the hose look is in force: **hoses stay over-ground**, joints fixed and gated by a joint check
 (HOSE_LOOK_DECIDE_OVERGROUND_OR_UNDERPIPE, closed). If the gate cannot go green on both walkthrough maps in one sitting,
@@ -97,9 +96,8 @@ Each is filed; a note that only repeats one of these needs no words beyond "seen
 
 | item | state | station / cell | what you would see |
 |---|---|---|---|
-| (several, see 0.1) | fixed in the builder, not in save d | C1, C5, C11 R1/R2 | The old layouts: C1 battery cord arcing north over the river; a dead pipe stub under C1's tall tank (140,72) and a pipe tail at 142,45; a pipe tail at C5 131,41; R1/R2 crossing along an inlet instead of across; R1 muffalo as a white dome. (C1_CORD_REWIRE_BATTERY_GOES_SKINNY_DIPPING, C1_TANK_STUB_PRUNE_PIPE_TO_NOWHERE, WALK_PIPES_PRUNE_TWO_TAILS_TO_NOWHERE, CREEK_STATIONS_REDESIGN_FORDED_A_PUDDLE, RIVER_MUFFALO_FIX_SHOWS_ITS_REAR) |
-| `HOSE_BUILDINGS_FIX_BATTERY_HIDE_AND_SEEK` | built in HEAD, not deployed (0.2) | C3 north, battery 18,39 + power connector | A hose that crosses a walk-over building draws under it. The green GSS power cords running under the same battery (and at C4's pump) are the same rule owed in GSS, recorded on `HOSE_ROUTE_FIX_TUNNELS_UNDER_WALLS` (hose audit D12). |
-| `HOSE_CROSSING_FIX_FLAT_AS_A_PANCAKE` | built in HEAD, not deployed | C1 field hoses, map R 116,43 | Two hoses cross flat, one painted over the other, no lift or shadow. |
+| `HOSE_BUILDINGS_FIX_BATTERY_HIDE_AND_SEEK` | built, deployed for save e | C3 north, battery 18,39 + power connector | A hose that crosses a walk-over building draws under it. The green GSS power cords running under the same battery (and at C4's pump) are the same rule owed in GSS, recorded on `HOSE_ROUTE_FIX_TUNNELS_UNDER_WALLS` (hose audit D12). |
+| `HOSE_CROSSING_FIX_FLAT_AS_A_PANCAKE` | built, deployed for save e | C1 field hoses, map R 175,89 | Two hoses cross flat, one painted over the other, no lift or shadow. |
 | `HOSE_NOZZLE_DIAGNOSE_HUGS_WALL_ENDS` | open | C3 maze, any reel within ~2 cells of a wall end | The hose's straight run out of the nozzle can still graze a wall corner (6 of 172 test scenes). |
 | `HOSE_SIDEPORT_FIX_AIMS_AT_OLD_MIDPOINT` | open | MG tanks, C5, C7 — a hose arriving at a moved port from the side | The coupling and under-coupler sit at the old edge midpoint, not the moved port. |
 | `TANK_LANE_FITTINGS_REDRAW_MODERN_ONLY` (+ `TANK_SOUTH_PORT_…`, `TANK_NS_PORTS_…`) | built; live look partly unmeasured; art regen running | every under-coupler | The collar/pipe art is a plain first pass; on tall tanks the north collar is wholly hidden behind the tank top (by the ruling). |
@@ -113,7 +111,7 @@ Each is filed; a note that only repeats one of these needs no words beyond "seen
 | `OVERFLOW_DIAGNOSE_FIRST_WET_RUN` (under `CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED`) | open | C13 | The proof's rain-spill, return-to-pit and ledger rows failed; the look is still yours (§4). |
 | `PIPE_FAUCET_BUILD_TAP_NAME_NOW_FREE` | built | C7 pipe west end 25,130 | A real open pipe end beside the bleed wells (recorded as known; a faucet is the fitting that would close it). |
 | `SETTINGS_SEARCH_FIX_LABELS_NOT_FOUND` | built, live check owed | Mod Settings search box | Typing part of a checkbox's words may say "No setting matches"; scroll instead. |
-| `ANT_FACTION_SILENCE_KNOCKS_EVERY_LOAD` | open | every load | The "Giant ant colony" dialog (0.3). |
+| `ANT_FACTION_SILENCE_KNOCKS_EVERY_LOAD` | fixed in save e only (other saves still ask) | every load of an older save | The "Giant ant colony" dialog (0.3). |
 
 ## 4. Questions only you can answer
 

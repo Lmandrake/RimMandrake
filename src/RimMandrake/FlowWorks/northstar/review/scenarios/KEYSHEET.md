@@ -1,6 +1,6 @@
 # FlowWorks composite review scenarios - key sheet
 
-Load **RM_fw_walkthrough_20261022c** (map C) and **RM_fw_walkthrough_20261022c, its second map (switch with `--river --goto C1`)** (map R: C1, C11). Paused at 10:00, god mode on, clear weather, Peaceful, Mod Settings at shipped defaults. **Every plot is still until your first poke: its START.** Reload the save to reset. Raids live in **RM_fw_composite_raid**, rain in **RM_fw_composite_rain** (load the branch, never the main save, for those pokes).
+Load **RM_fw_walkthrough_20261023e** (map C) and **RM_fw_walkthrough_20261023e, its second map (switch with `--river --goto C1`)** (map R: C1, C11). Paused at 10:00, god mode on, clear weather, Peaceful, Mod Settings at shipped defaults. **Every plot is still until your first poke: its START.** Reload the save to reset. Raids live in **RM_fw_composite_raid**, rain in **RM_fw_composite_rain** (load the branch, never the main save, for those pokes).
 
 Each scenario has a gold title label (number, name, START, what to look for), its try lines under the plot, small rust labels on every part a poke touches, violet **DEFERRED** labels on every piece not built yet, and in-save sign books (a Novel; mouse over it, press i) at its north-west corner and at each DEFERRED piece - the books survive a plain load with no agent.
 
