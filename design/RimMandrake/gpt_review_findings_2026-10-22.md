@@ -55,7 +55,7 @@ Offline gate after the fixes: validation 9/9, matrix 58/58, selftest_proof_all A
 
 | # | GPT sev → ours | verdict | where | outcome |
 |---|---|---|---|---|
-| 1 | BLOCKER | CONFIRMED | `validation.py:57` (`suite.toggles = []`); no Source/ | **Owner question Q1.** This pure-XML pack has no settings, which goes against *"Every mod ships superb Mod Settings… no exceptions."* |
+| 1 | BLOCKER | CONFIRMED | `validation.py:57` (`suite.toggles = []`); no Source/ | **Answered (Q1):** a concept of the religion of the Nine, not a mod of its own. The fold itself is open: see "Ishko: folding into the Nine's mod" below. |
 | 2 | HIGH → MED | CONFIRMED | `Defs/LandmarkDefs_IshkoDark.xml` (Cold Lava Tube had `<LavaCaves>0.4</LavaCaves>`; Odyssey: "Small lava-filled cave networks") | **Fixed `bf28588c1`.** Removed, because the description says "long since gone out… claimed cold". |
 | 3 | HIGH → LOW | CONFIRMED | `validation.py` placement cleanup | **Fixed `bf28588c1`.** `_restore()` removes the landmark and every mutator the add introduced, re-adds any it displaced, then reads the tile back. An unverified restore FAILs. The add is now inside the protected block. (Severity is LOW: the quicktest world is disposable.) |
 | 4 | HIGH → MED | CONFIRMED | `About/About.xml` (the art mod was only `loadAfter`) | **Fixed `bf28588c1`.** `mandrake.rut.ashkarrlandmarkart` is now a `modDependency`. |
@@ -63,7 +63,7 @@ Offline gate after the fixes: validation 9/9, matrix 58/58, selftest_proof_all A
 | 6 | MED | CONFIRMED | `validation.py` `_candidate_tiles` | **Fixed `bf28588c1`.** Candidate tiles must carry none of the three anchors. Mock tile 2 carries Hollow and is skipped. |
 | 7 | MED | CONFIRMED | `validation.py` defs chain | **Fixed `bf28588c1`.** It now asserts anchor chance == 1 and the exact `iconTexturePath` from our XML. |
 | 8 | MED | CONFIRMED | `northstar_plan.py` mock (every optional at 0.2) | **Fixed `bf28588c1`.** The mock parses the Defs XML, rolls one optional deterministically so the restore is exercised, and has a new `no_restore` break. |
-| 9 | MED-SUSPECT | CONFIRMED that no geometry backs the names | Defs descriptions vs Hollow/Chasm anchors | **Owner question Q2.** |
+| 9 | MED-SUSPECT | CONFIRMED that no geometry backs the names | Defs descriptions vs Hollow/Chasm anchors | **Fixed (Q2 answered: principles).** The three descriptions now say what Ishko is drawn toward or away from, and claim no shade, roof or cold. |
 | 10 | MED → LOW | CONFIRMED | stored run JSON | **Partly fixed.** The new restore and placement records keep before/after state. The running-package identity in the record is still open. |
 | 11 | LOW | CONFIRMED | `validation.py` source chain (`return` inside the first `with`) | **Fixed `bf28588c1`.** Both components are now declared under declaration probing. |
 
@@ -242,19 +242,19 @@ These are ranked by the wall-clock time they save per acceptance cycle. The esti
 | 9b | **Shorten clocks, don't wait them out** (Pyrelands E.11-13). Test the reseed, fresh-burn and spoil waits (120k, 102k and 270k ticks) on a shortened clock plus a read-back of the shipped constant, and record the shipped duration as INFERRED. | 30–75 min per long wait | **Adopt later.** It needs the INFERRED verdict in modcheck (Pyrelands #10); the policy already allows it (`debug_process.md`). |
 | 10 | **Pre-registered structured result lines** such as `GSS_ACCEPT …` and `FW_ACCEPT row=… source=… dll=… running=…` (all three). | makes a sitting decidable by grep | **Adopt later**, as the shape for new rows. Do not rewrite the existing harnesses for it. |
 | — | GPT's wall-clock budgets: GSS 41–54 min automated plus 10–15 owner; Ishko 15–25 (+15 if no shared full load); FW 2.5–4.5 h; Pyrelands 60–85 min. | — | Informational; none is measured. |
-| — | Ishko: three morphology maps to prove "lightless" or "overhang" geometry. | — | **Reject** unless the owner rules the names are physical promises (Q2). |
+| — | Ishko: three morphology maps to prove "lightless" or "overhang" geometry. | — | **Rejected.** The owner ruled the names are principles (Q2). |
 | — | Restoring the old 109-scene GSS matrix. | — | **Reject.** GPT agrees: keep the reduced matrix. |
 | — | Replacing GREEN-FULL with a compatibility smoke test. | — | **Reject.** GPT also says not to; GREEN-FULL is the owner's bar. |
 
 ## Owner questions
 
-**Q1. Ishko's landmarks have no Mod Settings, and the rule is "every mod, no exceptions."**
+**Q1. Ishko's landmarks have no Mod Settings, and the rule is "every mod, no exceptions."** ANSWERED 2026-10-22: *"Likely fold this mod into the religion mod of the 9. It's a concept, not a mod."* How to fold is the open question below.
 
 - (a) Add a small C# settings screen with a switch per landmark. *Buys:* rule compliance. *Costs:* a DLL for a pure-XML pack, and the switches would do almost nothing: players get a frozen world, so a landmark already in the save stays, and turning it "off" cannot remove it safely.
 - (b) **Recommended:** rule that a content-only pack whose content lives in the shipped save is exempt. *Buys:* no fake switches. *Costs:* one written exception to a standing rule.
 - (c) Put Ishko's switches on the composite's or the art mod's settings screen. *Buys:* one screen. *Costs:* the same near-meaningless switches.
 
-**Q2. Are "Lightless Sink", "Shadowed Overhang" and "Cold" physical promises, or names and lore?**
+**Q2. Are "Lightless Sink", "Shadowed Overhang" and "Cold" physical promises, or names and lore?** ANSWERED 2026-10-22: *"I believe it's referring to principles that guide what he is drawn toward or away from."* The descriptions are reworded to match.
 
 - (a) **Recommended:** names and lore over vanilla Hollow, Chasm and Cavern terrain. *Buys:* nothing to build; the lava contradiction is already removed. *Costs:* the names promise a little more than the map shows.
 - (b) Physical promises: build shade or roof geometry and prove it. *Buys:* places that match their names. *Costs:* new generation code, three live maps, and a Direct Sun interaction.
@@ -317,3 +317,40 @@ GPT's other FlowWorks questions are left as they are in the reply and not presse
 - whether overflow appears in the composite walk.
 
 Each is a design call to make when that feature is next touched.
+
+## Ishko: folding into the Nine's mod (owner question, open)
+
+The owner said on 2026-10-22: *"Likely fold this mod into the religion mod of the 9. It's a concept, not a mod."*
+The descriptions are already fixed (Q2). The move itself has NOT been made. "Likely" is not a final word, and the
+move crosses a naming tier, so it is his call.
+
+Facts, measured 2026-10-22:
+
+- **The religion mod of the Nine is Ninefold** (`mandrake.rm.ninefold`, `src/RimMandrake/Ninefold`). It is the
+  nine-god satiation engine, and its `God.cs` names Ishko. It has a C# settings screen. The other candidate is
+  Salvation Rites (`mandrake.rut.rites`), the liturgy tree. It is pure XML with no settings screen.
+- **Ishko's mod is three LandmarkDefs and nothing else:** `RUT_LightlessSink`, `RUT_ShadowedOverhang` and
+  `RUT_ColdLavaTube`. It has no memes, precepts or C#. It needs Odyssey and borrows its icons from
+  `mandrake.rut.ashkarrlandmarkart`.
+- **Saves:** no `CANONICAL_ASHKARR_START_*` save names any of the three (an exact `<def>NAME</def>` search). Old
+  test saves do: 13, 14 and 19 of them respectively. Those are throwaway quicktest worlds that rolled the landmark
+  by chance.
+- **The tier rule:** `design/NAMING_SCHEME_PLAN.md` says one mod may not straddle tiers. Ninefold is RimMandrake.
+  Content that names the Nine is RimUtinni. Ninefold's own tier is still a named decision there (engine RimMandrake
+  plus a RimUtinni content pack, or all RimUtinni). Ninefold already carries Ishko rows, such as `RM_Tilt_Ishko_*`.
+- **Mod Settings:** a landmark already in the shipped save cannot be switched off safely. Folded into Ninefold, it
+  would need no new switch: Ninefold's own screen covers the mod.
+
+Options:
+
+- (a) **Recommended: fold the three defs into Ninefold.** Rename them to `RM_` (no canonical save names them). Ninefold
+  gains a load-after on Odyssey and on the landmark-art mod. `mandrake.rut.ishkolandmarks` leaves every mod list and
+  the `ishko` test tier. Its 8 checks move into Ninefold's `validation.py`. *Buys:* exactly what he said, and one
+  less mod. *Costs:* about an hour of work plus one 22-second sitting to re-prove it. A RimMandrake mod carries more
+  Nine content and leans on a RimUtinni art mod. The 13 to 19 old test saves lose that landmark when loaded.
+- (b) Fold them into Salvation Rites instead. *Buys:* the same tier, so no straddle. *Costs:* Rites is the liturgy,
+  not the Nine's engine, and it has no settings screen either.
+- (c) Treat it as a concept only. The files stay put and are recorded as part of the Nine's religion, exempt from a
+  settings screen of their own. *Buys:* nothing moves and nothing breaks. *Costs:* an extra packageId stays in the
+  list.
+

@@ -12,6 +12,8 @@ Verified first, not assumed: no existing legal LandmarkDef in the current stack 
 
 Each anchors on a real, legal TileMutatorDef (Hollow, Chasm, Cavern respectively) so no new C# is needed - the same pattern every vanilla LandmarkDef uses. Icons reuse the existing Ash'karr-styled repaints of the closest vanilla silhouette (mandrake.rut.ashkarrlandmarkart's house style) rather than shipping with no icon or a mismatched one; bespoke art is a follow-up.
 
+The three names are principles of Ishko's doctrine - what he is drawn toward or away from - not promises about the ground: each landmark is ordinary Hollow, Chasm or Cavern terrain.
+
 Placement on the actual Ash'karr world is deliberately NOT done here - that stays the owner's hand.</description>
 
   <modDependencies>
