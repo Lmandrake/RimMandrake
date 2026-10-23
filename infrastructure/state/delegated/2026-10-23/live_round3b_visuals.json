@@ -1,0 +1,33 @@
+{"judge_model": "claude-opus-5-5", "brief": "design/RimMandrake/art_judge_brief.md@267570299b", "subject": "FlowWorks live round 3b (post-deploy ab0204307d) hose/coupler mechanics",
+ "scope": "mechanics only (placement, attachment, layering); coupler art plainness is out of scope (regen running)",
+ "evidence_dir": "Transient/live_batch_20261023/r3b/",
+ "verdicts": [
+  {"item": "HOSE_BEND_FIX_SHAVES_WALL_CORNERS", "pictures": ["hose_bend_wall_corner.png", "hose_bend_wall_corner_zoom.png"], "verdict": "PASS",
+   "seen": "hose passes west of the wall and swings under its south end with clear ground between hose and the SW corner at full and zoom; wall_census poseCells start 105,208, no wall cell listed"},
+  {"item": "HOSE_LEADIN_FIX_STUB_IN_THE_CANAL", "pictures": ["kludged_leadin_zoom.png", "kludged_leadin_context.png", "under_station_Kludged_south_side.png", "tank_port_met_straight_zoom.png"], "verdict": "PASS",
+   "seen": "no stub reaches the canal: collar under the station, coupler, short sleeve, then the hose turns east off the sleeve; canal cells untouched. Straight tank arrival (green tall tank, west) reads normal: sleeve, coupler, collar, grey pipe into the body.",
+   "remark": "the sleeve runs ~1/4 hose-width past the hose's 90-degree turn (small tail below the turn), and there is no elbow fitting, just a hard L; cosmetic, not a canal stub"},
+  {"item": "TANK_LANE_FITTINGS_REDRAW_MODERN_ONLY", "pictures": ["under_tall_Scrapper_4sides.png", "under_tall_Industrial_4sides.png", "under_tall_Futuristic_4sides.png", "under_tall_Modern_4sides.png", "under_cargo_Scrapper_WE_upper_side.png", "cargo_Scrapper_E_coupler_zoom.png"], "verdict": "UNMEASURED",
+   "seen": "tall tank W/E lanes in all four looks: collar meets the coupling, pipe runs into the body side, no gap. Scrapper cargo E reads attached; Scrapper cargo upper W does not (see CARGO_UPPER_PORT_DECIDE_NOTHING_UNDER).",
+   "needed": "XTall tank W/E in Scrapper/Industrial/Futuristic and cargo tank W/E in Industrial/Futuristic; a clean Industrial tall shot (the C9 debug labels cover the east coupler)"},
+  {"item": "TANK_SOUTH_PORT_REDRAW_STUB_PEEKS_OUT", "pictures": ["under_tall_*_4sides.png", "under_station_Repaired_south.png", "under_station_Kludged_south_side.png"], "verdict": "UNMEASURED",
+   "seen": "tall tank south in all four looks: pipe emerges from beneath the body/skid, collar, coupler, sleeve; nothing peeks or floats. Both stations' south ports read right.",
+   "needed": "a hose coupled on the SOUTH port of the cargo tank (any non-Modern look) - no cargo south shot in r3b"},
+  {"item": "TANK_NS_PORTS_REDRAW_COUPLE_THIN_AIR", "pictures": ["under_tall_*_4sides.png"], "verdict": "UNMEASURED",
+   "seen": "tall tanks: south couples at the body; north hose sleeve tucks behind the tank top, no thin-air gap in any look",
+   "needed": "RM_UniversalCargoTank non-Modern NORTH port with a hose coupled (named in the item, not shot)",
+   "remark": "on every tall look the north collar/coupler is fully hidden behind the body, so 'a collar at the port' is not visible on north; consistent with the under-the-fixture ruling, flag only if he wants it seen"},
+  {"item": "UNDER_COUPLER_DECIDE_CORNER_CROWDING", "pictures": ["under_tall_Modern_4sides.png"], "verdict": "UNMEASURED",
+   "seen": "Modern tall: south pipe and west pipe are separated, each meets the body; no bare pipe T on open ground below-left",
+   "needed": "Modern XTall with hoses on S and W (the item names tall AND XTall; only tall was shot)"},
+  {"item": "CARGO_UPPER_PORT_DECIDE_NOTHING_UNDER", "pictures": ["under_cargo_Scrapper_WE_upper_side.png", "cargo_Scrapper_E_coupler_zoom.png"], "verdict": "FIX",
+   "seen": "Scrapper cargo upper WEST: the copper under-pipe behind the collar ends in a flat cut end on open ground above the tank's rounded shoulder, ~0.1 cell short of any body; the upper coupler's lugs also overlap the lower (side-arrival) collar",
+   "fix": "move the upper W port down (or extend its under-pipe) until the pipe end is occluded by opaque body, and space the two W ports so the couplers do not overlap",
+   "remark": "upper EAST on the same tank reads attached (collar against the end bracket)"}
+ ],
+ "other_pngs": [
+  {"picture": "river_R1_muffalo.png / river_R1_muffalo_turned_west.png", "seen": "muffalo renders as a flat pale-blue/white cel blob with a black keyline and no fur texture (north = featureless dome); looks like a placeholder or wrong graphic, not vanilla muffalo art; standing in deep water"},
+  {"picture": "hose_bend_wall_corner.png, tank_port_met_straight_zoom.png", "seen": "the tanks' shadows are large dark T-shaped blocks detached 1-2 cells NW (and SE for the IBC) from their tanks, while the wall's shadow is attached; looks like a shadow offset/shape defect (or sun-angle model), worth a check"},
+  {"picture": "under_tall_Industrial_4sides.png, under_cargo_Scrapper_WE_upper_side.png, kludged_leadin_context.png", "seen": "debug/scenario labels (C9 try, DEFERRED: ... item tags) drawn over the subject; harness clutter, obscures the Industrial east coupler"}
+ ],
+ "proposals": ["capture spec for coupler checks should name every def x look x side the item lists (XTall, cargo N/S, all looks) and require debug overlays off"]}
