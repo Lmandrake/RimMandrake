@@ -28,6 +28,14 @@ namespace RimMandrake.FlowWorks.Hose
         public static bool CacheFresh(int now, int lastTick, int interval) =>
             lastTick != int.MinValue && (long)now - lastTick >= 0 && (long)now - lastTick < interval;
 
+        /// <summary>HOSE_WORLD_SNAPSHOT_FIX_STALE_WHILE_PAUSED: may the hose CordWorld built at <paramref name="builtTick"/> from
+        /// map version <paramref name="builtVersion"/> answer at <paramref name="now"/>? Only while no map change (building or tree
+        /// spawned/despawned, terrain, path cost or fog changed: RM_MapComponent_Hoses.MapChanged) has bumped the version since, AND
+        /// it is at most <paramref name="maxAge"/> ticks old. The tick alone was the old rule: a wall or tank built while PAUSED
+        /// left the tick unchanged, so the route check and planner read the square as open until the clock moved.</summary>
+        public static bool SnapshotFresh(int now, int builtTick, int maxAge, int builtVersion, int version) =>
+            builtTick >= 0 && builtVersion == version && (long)now - builtTick >= 0 && (long)now - builtTick <= maxAge;
+
         /// <summary>Section 7, the end-kind rule: a relay intake beats a port (pipe/tank beside the end) beats water beats
         /// nothing. No hose out = None.</summary>
         public static HoseEndKind EndKind(bool hoseOut, bool onRelay, bool besidePort, bool inWater)

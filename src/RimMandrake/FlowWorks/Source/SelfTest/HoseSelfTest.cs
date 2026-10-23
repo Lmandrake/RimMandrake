@@ -41,6 +41,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             Round4();
             Round5();
             PortEnds();
+            SnapshotWhilePaused();
             Console.WriteLine($"hose: {mine - mineFails}/{mine} checks passed");
         }
 
@@ -644,6 +645,60 @@ namespace RimMandrake.FlowWorks.SelfTest
         /// attaching at attachment points (or graphics no longer support that)". The reel's coupling sat at a constant nozzle
         /// (u 9/256 at drawSize 2.8) after two art installs moved the drawn nozzle ~0.5 cell; the tank end coupled half a cell
         /// beside the drawn flange. The pixel side (table vs texture) is FlowWorks/selftest_hose_ports.py; these pin the geometry.</summary>
+        // ------------------------------------------------------------------ HOSE_WORLD_SNAPSHOT_FIX_STALE_WHILE_PAUSED
+        /// <summary>A wall built while PAUSED (same tick) must be seen by the route check: the snapshot World() returns is keyed
+        /// on (tick, map version), and every map change bumps the version. Simulated: a bool wall grid is "the map", Build() is
+        /// World()'s copy of it, Read() is World()'s cache rule (HoseLive.SnapshotFresh, the production rule).</summary>
+        private static void SnapshotWhilePaused()
+        {
+            var walls = new bool[30, 30];
+            int version = 0, builtTick = -1, builtVersion = -1, builds = 0;
+            CordWorld cached = null;
+            CordWorld Build()
+            {
+                builds++;
+                var cw = new CordWorld(30, 30);
+                for (int x = 0; x < 30; x++) for (int z = 0; z < 30; z++) if (walls[x, z]) cw.SetBlocked(new Cell(x, z), BlockKind.Wall);
+                return cw;
+            }
+            CordWorld Read(int now, int maxAge)
+            {
+                if (cached != null && HoseLive.SnapshotFresh(now, builtTick, maxAge, builtVersion, version)) return cached;
+                int v = version;
+                cached = Build(); builtTick = now; builtVersion = v;
+                return cached;
+            }
+            var reel = new Cell(5, 15);
+            var target = new Cell(20, 15);
+            const int paused = 1000;
+            C(HoseMath.CheckInstall(Read(paused, 0), reel, target, 40) == null, "paused build: open field installs before the wall");
+            // the player builds a full-height wall across the field while paused: the tick does not move
+            for (int z = 0; z < 30; z++) walls[12, z] = true;
+            CordWorld stale = cached;
+            C(HoseMath.CheckInstall(stale, reel, target, 40) == null, "paused build: the OLD snapshot still reads the wall open (the bug this guards)");
+            C(HoseLive.SnapshotFresh(paused, builtTick, 0, builtVersion, builtVersion), "paused build: tick-only rule would call the snapshot fresh (old behaviour)");
+            version++;   // what RM_MapComponent_Hoses.MapChanged does on BuildingSpawned
+            C(HoseMath.CheckInstall(Read(paused, 0), reel, target, 40) == "no route", "paused build: route check sees the wall built while paused (no route)");
+            C(HoseMath.CheckInstall(Read(paused, 60), reel, target, 40) == "no route", "paused build: a maxAge-60 reader sees it too");
+            int b = builds;
+            Read(paused + 30, 60);
+            C(builds == b, "unchanged map: a maxAge-60 read 30 ticks later reuses the snapshot");
+            Read(paused + 61, 60);
+            C(builds == b + 1, "unchanged map: older than maxAge is rebuilt");
+            C(!HoseLive.SnapshotFresh(5, -1, 60, 0, 0), "never-built snapshot is never fresh");
+            // production wiring
+            string comp = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Hose", "RM_MapComponent_Hoses.cs"));
+            C(comp.Contains("HoseLive.SnapshotFresh(now, worldTick, maxAge, worldVersion, mapVersion)") && comp.Contains("worldVersion = version;"),
+              "World() uses the versioned cache rule");
+            foreach (string ev in new[] { "BuildingSpawned += OnBuilding", "BuildingDespawned += OnBuilding", "ThingSpawned += OnThing",
+                                          "TerrainChanged += OnCell", "PathCostRecalculate += OnCell", "CellFogChanged += OnFog", "MapFogged += MapChanged" })
+                C(comp.Contains("map.events." + ev), "World() invalidates on " + ev.Split(' ')[0]);
+            C(comp.Contains("private void MapChanged() => mapVersion++;") && comp.Contains("UnhookMapEvents();"), "map changes bump the version; MapRemoved unhooks");
+            C(comp.Contains("private void OnBuilding(Building b) => MapChanged();"), "a building spawned or despawned (the paused build) always bumps the version");
+            C(comp.Contains("if (CordSig.CellSig(world, cell) != LiveCellSig(cell)) MapChanged();"),
+              "a per-cell event bumps only when the cell reads differently from the snapshot (snow/filth path-cost churn does not rebuild per tick)");
+        }
+
         private static void PortEnds()
         {
             // reel: per look, the laid hose's coupling meets that look's measured nozzle, inside the west cell, and the looks differ
