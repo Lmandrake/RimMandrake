@@ -3528,6 +3528,7 @@ def phase_X(L, args):
               "deck prints %s; ring terrain %s (one surface: no seam between deck cells or at the lip; the frame is "
               "still the judge's)" % (sorted(printed), sorted(around)))
         _x8b_cover_occupant(L, cov[0], occ)
+        _x8c_lid_walker(L, cov[1])
         B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
         _x10_canal_fire(L)
 
@@ -3569,10 +3570,39 @@ def _x8b_cover_occupant(L, c, occ):
     inspect = kc.get("inspect", "") if okc else ""
     good = (kv.get("pawn") not in (None, "none") and kv.get("covered") == "True" and kv.get("beneath") == "True"
             and kv.get("held") == "True" and kv.get("trapped") == "True" and kv.get("onLoad") == "False"
-            and kv.get("hidden") == "True" and "Below,_hidden:" in inspect)
+            and kv.get("hidden") == "True" and kv.get("drawPatch", "True") == "True" and "Below,_hidden:" in inspect)
     L.row("X8b_cover_occupant_stays_below", good, "MOD",
           "%s | lid inspect %s (want: still on %d,%d, beneath/held/trapped True, onLoad False, hidden, named under the lid; "
           "a pawn popped up reads pawn=none here or beneath=False)" % (txt, inspect[:160], c[0], c[1]))
+
+
+def _x8c_lid_walker(L, c):
+    """PIT_LID_FIX_VICKY_PEEKS_THROUGH (owner 2026-10-22: Vicky on a covered pit "just gets a funny dark square around her but
+    otherwise is still "over" the cover"; card 2026-10-22 "covered cells are floor"): a colonist put on the laid lid at c is a
+    walker ON it, not beneath: not hidden, and drawn at ground (sink 0, real DrawPos at the cell centre), not sunk to the
+    D=4 floor. X8b's colonist is the other half: beneath, hidden (the draw patch really applied)."""
+    B = L.B
+    r = B.call("jawa/spawn_pawn", kindDef="Colonist", faction="player", x=c[0], z=c[1], count=1)
+    if not r.get("success"):
+        L.row("X8c_lid_walker_drawn_at_ground", False, "HARNESS", "spawn colonist on the lid: %r" % (str(r)[:200],),
+              status="UNMEASURED")
+        return
+    B.call("rimworld/step_game_ticks", ticks=60, pauseFirst=True, timeoutMs=60000)
+    ok, kv, txt = _proof(B, "ProofBeneath", "%d,%d" % c)
+    if not ok or "sink" not in kv or "drawDz" not in kv:
+        L.row("X8c_lid_walker_drawn_at_ground", False, "HARNESS", "ProofBeneath has no sink/drawDz (stale DLL?): %s" % txt[:200],
+              status="UNMEASURED")
+        return
+    try:
+        sink, dz = float(kv["sink"]), float(kv["drawDz"])
+    except ValueError:
+        L.row("X8c_lid_walker_drawn_at_ground", False, "HARNESS", "unreadable sink/drawDz: %s" % txt[:200], status="UNMEASURED")
+        return
+    good = (kv.get("pawn") not in (None, "none") and kv.get("covered") == "True" and kv.get("beneath") == "False"
+            and kv.get("hidden") == "False" and sink == 0.0 and abs(dz) < 0.05)
+    L.row("X8c_lid_walker_drawn_at_ground", good, "MOD",
+          "%s (want: on the lid at %d,%d, covered, beneath/hidden False, sink 0, drawDz ~0; a walker drawn sunk into the "
+          "pit under the lid reads sink>0, drawDz<0)" % (txt, c[0], c[1]))
 
 
 def _x10_canal_fire(L):
@@ -3768,6 +3798,8 @@ class MockBridge(object):
         "fluids_look_same": ["X6_two_fluids_distinct"],                # one fill terrain for every fluid
         "cover_shows_hole": ["X8_cover_hides_pit", "X9_cover_deck_uniform"],   # cover prints the pit
         "cover_lifts_occupant": ["X8b_cover_occupant_stays_below"],    # a lid laid over a pit occupant lifts her onto it
+        "beneath_drawn": ["X8b_cover_occupant_stays_below"],           # the hide prefix never ran: she draws over the lid
+        "lid_walker_sunk": ["X8c_lid_walker_drawn_at_ground"],         # a walker on a lid draws sunk to the pit floor
         "fire_never_spreads": ["X10_canal_fire"],                     # the front never leaves the lit cell
         "fire_never_burns": ["X10_canal_fire"],                       # a burning cell never spends its liquid
         "fire_no_ash": ["X10_canal_fire"],                            # a spent cell is not left scorched
@@ -4502,8 +4534,13 @@ class MockBridge(object):
             c = (x, z)
             here = self.spawned_at.get(c, [])
             b = bool(here) and here[0] in self.beneath
+            hid = b and "beneath_drawn" not in self.faults
+            sunk = bool(here) and c in self.covers and (b or "lid_walker_sunk" in self.faults)
             res = "BENEATH cell=%d,%d pawn=%s beneath=%s held=%s trapped=%s onLoad=%s hidden=%s covered=%s" % (
-                x, z, here[0] if here else "none", b, b, b, not b, b, c in self.covers)
+                x, z, here[0] if here else "none", b, b, b, not b, hid, c in self.covers)
+            if here:
+                res += " drawPatch=%s sink=%s drawDz=%s" % (hid or not b, "1.200" if sunk else "0.000",
+                                                           "-1.200" if sunk else "0.000")
         elif method == "ProofIgnite" and "ignite_type_missing" in self.faults:
             return dict(success=False, message="Type not found: %s" % type)
         elif method == "ProofIgnite":

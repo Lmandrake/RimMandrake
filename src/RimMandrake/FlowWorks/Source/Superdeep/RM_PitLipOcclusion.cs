@@ -101,7 +101,7 @@ namespace RimMandrake.FlowWorks
 				frameRects.Add(new PawnRect
 				{
 					pawn = q, l = qp.x - qh.x, r = qp.x + qh.x, bot = qp.z - qh.y, top = qp.z + qh.y,
-					depth = eng.HollowDepthAt(q.Position)
+					depth = Pits.RM_SuspensionUnderpass.DrawDepth(q, q.Position, eng.HollowDepthAt(q.Position))
 				});
 			}
 		}
@@ -145,8 +145,10 @@ namespace RimMandrake.FlowWorks
 				{
 					continue;
 				}
-				int d = eng.HollowDepthAt(p.Position);
-				if (d <= 0)
+				// PIT_LID_FIX_VICKY_PEEKS_THROUGH: the depth the pawn is DRAWN at (a walker on a lid is at ground: no cover round
+				// it); a pawn beneath a lid is not drawn, so nothing to cover
+				int d = Pits.RM_SuspensionUnderpass.DrawDepth(p, p.Position, eng.HollowDepthAt(p.Position));
+				if (d <= 0 || Pits.RM_PitCoverBeneath.IsBeneath(p))
 				{
 					continue;
 				}
@@ -155,7 +157,7 @@ namespace RimMandrake.FlowWorks
 				// sits on the wrong ground (owner's shots 2026-10-05: a brown block behind a pawn wading out, a darker
 				// strip round one stepping into a deep filled pit). The sink itself still eases in and out.
 				if (p.pather != null && p.pather.Moving && p.pather.nextCell.IsValid
-					&& eng.HollowDepthAt(p.pather.nextCell) != d)
+					&& Pits.RM_SuspensionUnderpass.DrawDepth(p, p.pather.nextCell, eng.HollowDepthAt(p.pather.nextCell)) != d)
 				{
 					continue;
 				}
@@ -180,7 +182,7 @@ namespace RimMandrake.FlowWorks
 						{
 							break;
 						}
-						if (eng.HollowDepthAt(cand) < d && !eng.IsSourceCell(cand))
+						if (Pits.RM_SuspensionUnderpass.SeenDepthAt(map, eng, cand) < d && !eng.IsSourceCell(cand))
 						{
 							lipCell = cand;
 							break;
@@ -205,11 +207,13 @@ namespace RimMandrake.FlowWorks
 					for (int cz = Mathf.FloorToInt(z0); cz < Mathf.CeilToInt(z1); cz++)
 					{
 						IntVec3 g = new IntVec3(cx, 0, cz);
-						if (!g.InBounds(map) || eng.HollowDepthAt(g) >= d)
+						if (!g.InBounds(map) || Pits.RM_SuspensionUnderpass.SeenDepthAt(map, eng, g) >= d)
 						{
 							continue;
 						}
-						TerrainDef t = map.terrainGrid.TerrainAt(g);
+						// a lid square is drawn in the ground the lid prints, not the pit floor under it
+						Pits.Building_PitCover lid = eng.HollowDepthAt(g) > 0 ? Pits.RM_PitCoverUtility.CoverAt(map, g) : null;
+						TerrainDef t = lid != null ? lid.PrintedSurface : map.terrainGrid.TerrainAt(g);
 						if (t == null || t.IsWater)
 						{
 							continue;

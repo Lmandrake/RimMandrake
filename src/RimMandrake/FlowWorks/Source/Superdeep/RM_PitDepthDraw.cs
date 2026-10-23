@@ -107,7 +107,7 @@ namespace RimMandrake.FlowWorks
 				{
 					break;
 				}
-				if (ex.HollowDepthAt(cand) < d)
+				if (Pits.RM_SuspensionUnderpass.SeenDepthAt(map, ex, cand) < d)   // a lid is ground: the near lip
 				{
 					lipZ = cand.z + 1f;
 					break;

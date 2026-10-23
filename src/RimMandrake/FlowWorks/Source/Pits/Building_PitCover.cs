@@ -216,6 +216,10 @@ namespace RimMandrake.FlowWorks.Pits
             }
         }
 
+        /// <summary>PIT_LID_FIX_VICKY_PEEKS_THROUGH: the terrain this lid last printed (null until printed), so the pit lip
+        /// occluder can draw a lid square in the ground it shows without a per-frame SurfaceAround census.</summary>
+        public TerrainDef PrintedSurface { get; private set; }
+
         public override void Print(SectionLayer layer)
         {
             Map map = Map;
@@ -224,6 +228,7 @@ namespace RimMandrake.FlowWorks.Pits
                 return;
             }
             TerrainDef surface = RM_PitCoverUtility.SurfaceAround(map, Position);
+            PrintedSurface = surface;
             Material mat = surface?.graphic?.MatSingle;
             if (mat == null)
             {

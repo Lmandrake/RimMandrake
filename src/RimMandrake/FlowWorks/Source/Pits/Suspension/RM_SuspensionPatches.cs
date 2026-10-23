@@ -531,10 +531,21 @@ namespace RimMandrake.FlowWorks.Pits
 		}
 
 		/// <summary>The sink depth (notches) the pawn's draw reads on a square: its walking height on a suspension deck in the
-		/// deck band, the hole's depth under it (floor band). Covers keep their old read.</summary>
+		/// deck band, the hole's depth under it (floor band). PIT_LID_FIX_VICKY_PEEKS_THROUGH: on a concealed pit's intact lid,
+		/// the lid's walking height (ground, 0; owner card 2026-10-22 "covered cells are floor") unless the pawn is beneath that
+		/// lid (it is not drawn at all then). Before this a walker on a lid drew sunk to the hole's floor, shadowless, with the
+		/// lip occluder's ground squares round it, still on top of the lid.</summary>
 		public static int DrawDepth(Pawn p, IntVec3 c, int hollow)
 		{
-			if (hollow <= 0 || p?.Map == null || !(RM_MapComponent_SuspensionBridges.DeckAt(p.Map, c) is Building_SuspensionDeck d))
+			if (hollow <= 0 || p?.Map == null)
+			{
+				return hollow;
+			}
+			if (RM_PitCoverUtility.CoverAt(p.Map, c) != null)
+			{
+				return c == p.Position && RM_PitCoverBeneath.IsBeneath(p) ? hollow : RM_SpanUtility.WalkingDepth(p.Map, c, hollow);
+			}
+			if (!(RM_MapComponent_SuspensionBridges.DeckAt(p.Map, c) is Building_SuspensionDeck d))
 			{
 				return hollow;
 			}
@@ -545,6 +556,14 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 			int h = d.DeckNotches;
 			return h < hollow ? h : hollow;
+		}
+
+		/// <summary>PIT_LID_FIX_VICKY_PEEKS_THROUGH: the depth a square SHOWS to the draw (the pit lip search): an intact lid
+		/// shows its walking height (ground), so it is the near lip of an open part of its pit; anything else its hollow depth.</summary>
+		public static int SeenDepthAt(Map map, RM_MapComponent_Excavation eng, IntVec3 c)
+		{
+			int h = eng.HollowDepthAt(c);
+			return h > 0 && RM_PitCoverUtility.CoverAt(map, c) != null ? RM_SpanUtility.WalkingDepth(map, c, h) : h;
 		}
 
 		/// <summary>Is this pawn standing on a deck (deck band)?</summary>
