@@ -3,36 +3,34 @@
   "opus": [
    {
     "model_requested": "opus",
-    "seconds": 31.5,
-    "models_reported": [
-     "claude-opus-5-5"
-    ],
-    "cost_usd": 0.34801439999999995
+    "seconds": 7.0,
+    "models_reported": [],
+    "cost_usd": 0,
+    "error": "You've hit your session limit \u00b7 resets 1:10pm (America/Los_Angeles)"
+   },
+   {
+    "model_requested": "opus",
+    "seconds": 7.1,
+    "models_reported": [],
+    "cost_usd": 0,
+    "error": "You've hit your session limit \u00b7 resets 1:10pm (America/Los_Angeles)"
    }
-  ],
-  "regen": {
-   "model_requested": "sonnet",
-   "seconds": 11.1,
-   "models_reported": [
-    "claude-sonnet-5-5"
-   ],
-   "cost_usd": 0.1192447
-  }
+  ]
  },
  "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
  "subject": "RM_Vurra",
- "decision": "REGEN",
+ "decision": "HOLD_ERROR",
  "reasons": [
-  "opus band REALLY_BAD (model said really_bad); blocking ['DONOR', 'F_INCONSISTENT']; polish ['STYLE_EARTHLY']"
+  "opus: You've hit your session limit \u00b7 resets 1:10pm (America/Los_Angeles)"
  ],
  "prompt_versions": {
   "preamble": {
-   "tag": "preamble@v1",
-   "sha": "a4850279ccbf"
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
   },
   "opus_first_pass": {
-   "tag": "opus_first_pass@v1",
-   "sha": "14056552e355"
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
   },
   "gpt_targeted_second_look": {
    "tag": "gpt_targeted_second_look@v1",
@@ -47,8 +45,8 @@
    "sha": "9cda888a5233"
   },
   "template": {
-   "tag": "creature@v2",
-   "sha": "16a3854542c6"
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
   },
   "severity": {
    "tag": "severity@v3",
@@ -56,10 +54,10 @@
   }
  },
  "image_sha256": {
-  "south.png": "aeb65a3bca6335c59402732c6913c329f230b7ff8cbe9ec68edb0b71613fa94f",
-  "east.png": "c2bdb8a5cfc4acf21ec097f4e721cd86b5683701650480086ac555d04219f23b",
-  "north.png": "1203e1a13fa147827b1c52ce47ec35617a7218600d6b0cb30be630ca5324f2f0",
-  "scale.png": "b0f8ab3030abf02c5ade311ef339bf9093a946b3f1b7f822a2ebc32036f015fc",
-  "facings.png": "3e3aaa5585c472ed2d2b371198ffeefbd7a37e0ba65f79c03666b817e7973137"
+  "south.png": "07ffb89d1a8426c3741c83993b9030ad8c5556923cee567ec9db4d76af17b8e3",
+  "east.png": "afbe2b85f63d1c30e3b7cdaaf2dbdbfcad8dd9ed45c90208d6f4af5b17d3efe0",
+  "north.png": "9e97ca9e67df681c6fe43e8f6396c3f3b1b64129b6cd19a51ce3cf80b9f48491",
+  "scale.png": "63d996818be8ef20ffe1e60770be5c82841312215ba025972f8216f5ad0e54b3",
+  "facings.png": "65eae1df1dbaa0ac5c97ce2df2ef18c61a1df34ac98efa8032811eaa09c1efc5"
  }
 }

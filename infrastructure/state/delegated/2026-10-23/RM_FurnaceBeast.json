@@ -3,34 +3,34 @@
   "opus": [
    {
     "model_requested": "opus",
-    "seconds": 45.0,
+    "seconds": 42.1,
     "models_reported": [
      "claude-opus-5-5"
     ],
-    "cost_usd": 0.3722378
+    "cost_usd": 0.4009366
    }
   ],
   "gpt": [
    {
     "model_reported": "gpt-6.1-sol",
-    "seconds": 49.0
+    "seconds": 60.1
    }
   ],
   "regen": {
    "model_requested": "sonnet",
-   "seconds": 12.8,
+   "seconds": 14.3,
    "models_reported": [
     "claude-sonnet-5-5"
    ],
-   "cost_usd": 0.1246747
+   "cost_usd": 0.1283247
   }
  },
  "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
  "subject": "RM_FurnaceBeast",
  "decision": "REGEN",
  "reasons": [
-  "opus band WEAK (model said weak); blocking ['DEPARTURE_MISSING', 'DESC_MISS', 'DEPARTURE_MISSING', 'STYLE_OFF']; polish ['MATERIAL_PAINT', 'RES_LOW']",
-  "gpt regen: unsettled ['K1', 'K2', 'K3'], own blocking ['DEPARTURE_MISSING', 'DEPARTURE_MISSING']"
+  "opus band WEAK (model said weak); blocking ['F_SIZE_JUMP', 'F_INCONSISTENT', 'ALPHA_HALO']; polish []",
+  "gpt regen: unsettled ['K1', 'K3'], own blocking ['F_SIZE_JUMP', 'STYLE_OFF']"
  ],
  "prompt_versions": {
   "preamble": {
@@ -63,10 +63,10 @@
   }
  },
  "image_sha256": {
-  "south.png": "b9dec3bb6e87591c0b23e756aee744e68a75a19465666a51e1de1525d81fc6b3",
-  "east.png": "656846160abff5b60063513e4c07fe573a7d91152905dc7ceb9d0f750e38b53c",
-  "north.png": "3036e8deeff2a94b92cef6b2d753196957c2aee4e7abac12d4bf513e2c484f47",
-  "scale.png": "057ca9fd673c16f33ab9262fdb136928df0dc9de8bd8afbe1a98d8d2a1e45c42",
-  "facings.png": "74e7f342a53b081e43bbb8f0bfd78ca71586c386e8e4437ac1d3dce0a2d972ee"
+  "south.png": "d584a758685e7c9e7d4ca6c1dbd12b99cf87b1576732af64d1c01cd321d5b18c",
+  "east.png": "96796d097e2661d1a7b29fce711343036299ac55359a3b161eb9b7e132436e9d",
+  "north.png": "f8045cd31a62a3bd7dbbb5dbf3a34c75ce711145f239080f79ac8a736a4e2104",
+  "scale.png": "4798c81720e8990899ea081352e54169b863ab6414d27b53c8a54b92a7485cad",
+  "facings.png": "b5b32f181e0a0f81c5bdc34a007edd6f543ba039333b5f0ccbdbef2ba89ffd68"
  }
 }

@@ -3,27 +3,26 @@
   "opus": [
    {
     "model_requested": "opus",
-    "seconds": 53.9,
+    "seconds": 41.4,
     "models_reported": [
      "claude-opus-5-5"
     ],
-    "cost_usd": 0.39672820000000003
+    "cost_usd": 0.37138459999999995
    }
   ],
-  "regen": {
-   "model_requested": "sonnet",
-   "seconds": 14.1,
-   "models_reported": [
-    "claude-sonnet-5-5"
-   ],
-   "cost_usd": 0.1292427
-  }
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 25.0
+   }
+  ]
  },
  "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
  "subject": "RM_Emberscythe",
- "decision": "REGEN",
+ "decision": "ACCEPT",
  "reasons": [
-  "opus band REALLY_BAD (model said really_bad); blocking ['F_TOPDOWN', 'F_TOPDOWN', 'DUPLICATE', 'DEPARTURE_MISSING', 'DEPARTURE_MISSING', 'DEPARTURE_MISSING', 'STYLE_OFF', 'F_SOUTH_NOT_FRONT', 'F_NORTH_FACE']; polish ['STYLE_EARTHLY']"
+  "opus band WEAK (model said good); blocking ['DEPARTURE_MISSING']; polish ['STYLE_EARTHLY']",
+  "gpt strong_accept: unsettled [], own blocking []"
  ],
  "prompt_versions": {
   "preamble": {
@@ -56,10 +55,10 @@
   }
  },
  "image_sha256": {
-  "south.png": "c6dbd050ed5d36e925b071dbfebdc9488bf0e5549e6b614800ac289359ea2852",
-  "east.png": "ea64c65774f82aab6311e571c7f910057b2cf1e9723dcd85e8c475fc412ccd2f",
-  "north.png": "499db40cb6db673b5bb78534ea3fde867c73bc6d5f32c22779d702562a3bf8d5",
-  "scale.png": "a6c4556bfe6a89a6ef7ba599510ddf77144674a5496cc08f3da9e4b76b096eed",
-  "facings.png": "fd0010fa456861e2b2f1ba8534a965f738016f1c53bafd776f3cf1c3c47682c7"
+  "south.png": "c628cd2b9ada791d2faab4e5bd4667c129906ee8f2661b96f7d4fe78a40d40f1",
+  "east.png": "efef3ca88beb35e96e9a90bbdfa42c5fdcc26f7c0f253c7470486117bfeaa9b3",
+  "north.png": "316ce8d0b989aaf626e938c5d6fd6f51b63984ff50dae5bb793143591c32ac44",
+  "scale.png": "6b44572a1daabbaa338a32af3ee0d6a0216c16ca6cb4fabd63d286c5354041c4",
+  "facings.png": "5eb0c2b829b2fb198131b2c5b696c8f8187aecf615addf8634c5e594c7a1dcd0"
  }
 }

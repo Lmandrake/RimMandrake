@@ -1,0 +1,19 @@
+[
+ {
+  "id": "arteval_RM_Ashwallow_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Ashwallow",
+  "prompt": "A single RimWorld creature sprite on a transparent background, painterly vanilla RimWorld style, realistic, clean dark outline. The ashwallow is a low, broad grazer of a burning savanna, shown in its grazing posture: the body sits close to the ground, wide and rounded across the back, with four short legs splayed outward to the sides and the head lowered so the face rests at ground level raking the root-mat. The head is a broad, flat spade-shaped shovel nearly as wide as the front of the body, thin in profile with a straight blunt leading edge, fused into the front rim of the body. A bold row of blunt, squared digging teeth runs along the full width of that spade-shaped jaw edge, each tooth large enough to stay readable at 32 px, clearly visible in front and side views. Small eyes sit at the sides of the face. The hide is a cool, pale, spent-ash grey. Cracked plates of hide are heaviest across the shoulders and join into a continuous, smooth ash-grey shell divided by fine crack lines, flowing over the back; toward the hindquarters the plates thin out and darker grey skin shows between them. The low rounded shell and short folding legs suggest how the body would close into a smooth dome. The rear view, seen from behind, shows the back, shell and haunches with the eyes hidden. Build the body from this description alone, reference: none.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, STYLE_EARTHLY, DESC_MISS, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_pyrelands_r1_03"
+ }
+]

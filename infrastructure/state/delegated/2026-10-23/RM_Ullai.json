@@ -3,27 +3,26 @@
   "opus": [
    {
     "model_requested": "opus",
-    "seconds": 41.9,
+    "seconds": 36.2,
     "models_reported": [
      "claude-opus-5-5"
     ],
-    "cost_usd": 0.367168
+    "cost_usd": 0.3486208
    }
   ],
-  "regen": {
-   "model_requested": "sonnet",
-   "seconds": 12.7,
-   "models_reported": [
-    "claude-sonnet-5-5"
-   ],
-   "cost_usd": 0.12473870000000001
-  }
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 35.0
+   }
+  ]
  },
  "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
  "subject": "RM_Ullai",
- "decision": "REGEN",
+ "decision": "ACCEPT",
  "reasons": [
-  "opus band REALLY_BAD (model said weak); blocking ['STYLE_EARTHLY', 'DEPARTURE_MISSING', 'DEPARTURE_MISSING', 'DEPARTURE_MISSING', 'DESC_MISS']; polish ['SCALE_WRONG']"
+  "opus band WEAK (model said good); blocking ['F_SOUTH_NOT_FRONT']; polish ['LEGIB_32']",
+  "gpt strong_accept: unsettled [], own blocking []"
  ],
  "prompt_versions": {
   "preamble": {
@@ -56,10 +55,10 @@
   }
  },
  "image_sha256": {
-  "south.png": "0c68c43f6e04c9a8feb3543558052937c4b5b91d3737b530c39799cbab7c3406",
-  "east.png": "79409b81ae9eb101c11de8aa7394436444d3290845f001552a12211476813a44",
-  "north.png": "472796045a7da4f05f0fce3fbea35cd10ad42727faacd8d64d0c3adaeb01b78d",
-  "scale.png": "4b97f5141d8fc7b9eda96cc72a8b611f11e2473433ac571330122a960a78a203",
-  "facings.png": "32600918029b8373a4fa4d033cfb156726b1e8e2a9e99b9adcc73950dadaad27"
+  "south.png": "d5a5a615c64ec6ec1e5c4ea136cd0fc1479a23e512576eef00847d8643053100",
+  "east.png": "96a089b174cce88981106794c977b978135a32131a600efa8155c8bf4d7c0ddd",
+  "north.png": "d2379d006a4d2366fe9414290522e1bcfed8525661b069d2efe0fee08faa8481",
+  "scale.png": "4b234a207631324dc7b69c25127b8b8eca88b75dd4d9961ade1c0da3764cfa8d",
+  "facings.png": "8be83b288ef66bb5a59eb4fcb0f70341c20219ff05eb5f012e2d886855144e1c"
  }
 }

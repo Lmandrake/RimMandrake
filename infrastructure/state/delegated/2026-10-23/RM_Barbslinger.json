@@ -3,27 +3,26 @@
   "opus": [
    {
     "model_requested": "opus",
-    "seconds": 54.8,
+    "seconds": 43.5,
     "models_reported": [
      "claude-opus-5-5"
     ],
-    "cost_usd": 0.3959178
+    "cost_usd": 0.36623019999999995
    }
   ],
-  "regen": {
-   "model_requested": "sonnet",
-   "seconds": 14.8,
-   "models_reported": [
-    "claude-sonnet-5-5"
-   ],
-   "cost_usd": 0.1295167
-  }
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 25.4
+   }
+  ]
  },
  "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
  "subject": "RM_Barbslinger",
- "decision": "REGEN",
+ "decision": "ACCEPT",
  "reasons": [
-  "opus band REALLY_BAD (model said really_bad); blocking ['DESC_MISS', 'DEPARTURE_MISSING', 'DEPARTURE_MISSING', 'DEPARTURE_MISSING', 'DEPARTURE_MISSING', 'F_INCONSISTENT', 'F_TOPDOWN', 'STYLE_CARTOON']; polish ['STYLE_EARTHLY']"
+  "opus band WEAK (model said good); blocking ['DEPARTURE_MISSING', 'STYLE_OFF']; polish ['MATERIAL_PAINT']",
+  "gpt strong_accept: unsettled [], own blocking []"
  ],
  "prompt_versions": {
   "preamble": {
@@ -56,10 +55,10 @@
   }
  },
  "image_sha256": {
-  "south.png": "1c3c8fcdfd643a7a495f0ddea73e065db37095178e71ef5b88b66f00550fffc8",
-  "east.png": "1fc8a0019921797449e3c2c5f5687a5b594aa39afbbcd01996367f7388476c4a",
-  "north.png": "9185ca2e981fc40b3ea28d1a128395e132f027a13bcb8726816af57a06b6b143",
-  "scale.png": "054ccbf6cc67729babf1abab4982d48cf46ae6e8d9901a58761d96c9bb9b8160",
-  "facings.png": "a2afd0cbce0b9280e1e27d5570a533479730046ee9e209924d8671304f82f757"
+  "south.png": "a58fedb329f2acfe2a0ea5aac1172e55fcc2ff6c1edb5d67196e30cfe7a8da19",
+  "east.png": "18a03c9910821b1345cfaccc01f084561c1beb97d41b5545c3784b4659a43466",
+  "north.png": "8ec6ae919a7399f70baa556a486fddf8001c5a8cb3e1ce1c5dbfa5df75c593ef",
+  "scale.png": "8a77b10a63bd0b0f805493c1c69ed0b7b0f65c89e071e3d4235dca17b49da1ad",
+  "facings.png": "007ab0af1ffdaffa9dfc7eaf27ab3894f9dab3e2eed9cacd322ab04569285daa"
  }
 }

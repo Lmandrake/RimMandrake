@@ -3,36 +3,34 @@
   "opus": [
    {
     "model_requested": "opus",
-    "seconds": 40.8,
-    "models_reported": [
-     "claude-opus-5-5"
-    ],
-    "cost_usd": 0.36209339999999995
+    "seconds": 6.9,
+    "models_reported": [],
+    "cost_usd": 0,
+    "error": "You've hit your session limit \u00b7 resets 1:10pm (America/Los_Angeles)"
+   },
+   {
+    "model_requested": "opus",
+    "seconds": 7.6,
+    "models_reported": [],
+    "cost_usd": 0,
+    "error": "You've hit your session limit \u00b7 resets 1:10pm (America/Los_Angeles)"
    }
-  ],
-  "regen": {
-   "model_requested": "sonnet",
-   "seconds": 13.2,
-   "models_reported": [
-    "claude-sonnet-5-5"
-   ],
-   "cost_usd": 0.12313669999999999
-  }
+  ]
  },
  "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
  "subject": "RM_Chikka",
- "decision": "REGEN",
+ "decision": "HOLD_ERROR",
  "reasons": [
-  "opus band REALLY_BAD (model said really_bad); blocking ['DONOR', 'DEPARTURE_MISSING', 'F_INCONSISTENT', 'STYLE_CARTOON']; polish ['SCALE_WRONG', 'STYLE_EARTHLY']"
+  "opus: You've hit your session limit \u00b7 resets 1:10pm (America/Los_Angeles)"
  ],
  "prompt_versions": {
   "preamble": {
-   "tag": "preamble@v1",
-   "sha": "a4850279ccbf"
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
   },
   "opus_first_pass": {
-   "tag": "opus_first_pass@v1",
-   "sha": "14056552e355"
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
   },
   "gpt_targeted_second_look": {
    "tag": "gpt_targeted_second_look@v1",
@@ -47,8 +45,8 @@
    "sha": "9cda888a5233"
   },
   "template": {
-   "tag": "creature@v2",
-   "sha": "16a3854542c6"
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
   },
   "severity": {
    "tag": "severity@v3",
@@ -56,10 +54,10 @@
   }
  },
  "image_sha256": {
-  "south.png": "d6aa711a16b5add5b3a48cdae3035d37647780f4205da0a7784b1546c163e791",
-  "east.png": "fa90086d7e9ef7faca0cfaa2e8d9903f37d719ddd4b7e3d56d21d32fce19c8aa",
-  "north.png": "47385213d8d08b5c66e43b808669620bb3440becf7bec1b1ffb0deba2cb112cd",
-  "scale.png": "730040dfcdd78350a9e28bdfeebe63e22aff4cf4040f7a1b9c39cd03ae182a8b",
-  "facings.png": "053b848d0dd84a7a509a67218de2c52f170b031fa0e84a37c5e5005c085365c4"
+  "south.png": "2a426d3ff2d021124ecac9144264c346dfb8a67a82c12a1b1543d7012dd422a3",
+  "east.png": "d0dbba70006c518603ad9a14299dcd81355408b87ad4cd31f446b139dd8ee5ad",
+  "north.png": "26161744561579a3c9771018c44792802990228a5ec5e193507c9295a6ee567f",
+  "scale.png": "e303f134236ceb2546c459781a89dbc89a496e3eb229e692457597e5d3845da9",
+  "facings.png": "1920cab8824fa9e27dad144c22994dc6e7d16cd4fcd981594c02cf1ed93902f9"
  }
 }
