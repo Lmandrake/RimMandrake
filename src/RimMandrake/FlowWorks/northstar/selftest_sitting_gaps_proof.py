@@ -103,16 +103,6 @@ check("canal-lake PASS", G.canal_lake_verdict(W("WaterDeep", "True", 3), W("Wate
 check("can-fail canal-lake: two defs", G.canal_lake_verdict(W("RM_WaterChestDeepStill", "True", 3), W("WaterDeep", "False", 3))[0] == "FAIL")
 check("canal-lake: dry canal UNMEASURED/SITE", G.canal_lake_verdict(W("Soil", "True", 0), W("WaterDeep", "False", 3))[:2] == ("UNMEASURED", "SITE"))
 check("canal-lake: unequal depth UNMEASURED/SITE", G.canal_lake_verdict(W("WaterShallow", "True", 1), W("WaterDeep", "False", 3))[:2] == ("UNMEASURED", "SITE"))
-check("pond draw PASS", G.pond_draw_verdict(True, 0.6, 0.0, 0, 6000)[0] == "PASS")
-check("can-fail pond: remainder kept", G.pond_draw_verdict(True, 0.6, 0.05, 0, 5500)[0] == "FAIL")
-check("can-fail pond: units lost", G.pond_draw_verdict(True, 0.6, 0.0, 0, 5000)[0] == "FAIL")
-check("pond: unpowered UNMEASURED/SITE", G.pond_draw_verdict(False, 0.6, 0.6, 0, 0)[:2] == ("UNMEASURED", "SITE"))
-check("pond: started over 1,000 L UNMEASURED/SITE", G.pond_draw_verdict(True, 1.5, 0.0, 0, 15000)[:2] == ("UNMEASURED", "SITE"))
-mud = {"1,1": "Mud", "2,1": "Mud"}
-check("pond dry PASS", G.pond_dry_verdict(True, kv("wet=0 stock=0"), mud)[0] == "PASS")
-check("can-fail pond dry: wet at 0", G.pond_dry_verdict(True, kv("wet=6 stock=0"), mud)[0] == "FAIL")
-check("can-fail pond dry: water terrain left", G.pond_dry_verdict(True, {}, dict(mud, x="WaterShallow"))[0] == "FAIL")
-check("pond dry: never drained UNMEASURED/SITE", G.pond_dry_verdict(False, {}, mud)[:2] == ("UNMEASURED", "SITE"))
 lg = os.path.join(tempfile.mkdtemp(), "Player.log")
 with open(lg, "w") as f:
     f.write("RimWorld 1.6\nConfig error in RM_PipeFaucet: x\nRM_PipeFaucet loaded fine\n")
@@ -147,10 +137,7 @@ EXPECT = {"": {},
           "search_unfiltered": {"SETTINGS_SEARCH_FINDS_ROW": (U, H)},
           "no_dialog": {"SETTINGS_SEARCH_FINDS_ROW": (U, H)},
           "canal_two_defs": {"CANAL_LAKE_ONE_DEF": (F, M)},
-          "canal_dry": {"CANAL_LAKE_ONE_DEF": (U, S)},
-          "pond_remainder": {"POND_LAST_DROP_DRAWN": (F, M), "POND_DRY_STAGES_TO_BED": (U, S)},
-          "pond_wet_at_zero": {"POND_DRY_STAGES_TO_BED": (F, M)},
-          "pump_unpowered": {"POND_LAST_DROP_DRAWN": (U, S), "POND_DRY_STAGES_TO_BED": (U, S)}}
+          "canal_dry": {"CANAL_LAKE_ONE_DEF": (U, S)}}
 check("every FakeBridge fault has an expectation", sorted(k for k in EXPECT if k) == sorted(G.FakeBridge.FAULTS))
 tmp = tempfile.mkdtemp()
 for fault, want in EXPECT.items():

@@ -78,14 +78,7 @@ ROWS (PROVE / EXPECT / LIES), in run order:
      SAME terrain def on canal (48,42) and lake (43,42) at water depths within 0.5 m; the frame (--shots) is the L3 judge's
      input -- an Opus judge, not this script, decides the colour. LIES: a canal that did not fill (dug / fill not set) is
      not the scene (UNMEASURED/SITE).
-  POND_LAST_DROP_DRAWN        POND_PUMP_FIX_LAST_DROP_COUNTS A2.
-  POND_DRY_STAGES_TO_BED      POND_PUMP_FIX_LAST_DROP_COUNTS A3.
-     pond_pump.py's rig plot-local at (70,40): a 3x2 WaterShallow pond (72..74, 45..46), pump (73,47), battery (76,46),
-     pipes (73,48..49), RM_LiquidTank (73,50). levelExactEnabled must read True; refill off for the draw; the body set to
-     0.6 notch (600 L) by ProofSetBodyFraction. Up to 12 pump cycles: EXPECT stock to reach 0 dL and the tank to gain
-     exactly the starting dL (+-1). A3, one pulse after dry: ProofPondDepth wet=0 (or no formed pond) and no pond square's
-     terrain still a water def. LIES: an unpowered pump moves nothing (UNMEASURED/SITE); a pond never pumped dry cannot
-     show A3 (UNMEASURED/SITE).
+  (POND_PUMP_FIX_LAST_DROP_COUNTS A2/A3 are NOT here: pond_pump.py --drain carries them, 67633f878, written the same hour.)
 
 ANTI-GUESSING NOTES
 - Every tool and proof hook named here exists in the 2026-10-23 tree (JawaBench.BridgeTools, RM_*Proofs.cs, HoseProbe);
@@ -116,18 +109,14 @@ from level_water import _volume_const  # noqa: E402  (constants read from RM_Vol
 
 DEFS = os.path.abspath(os.path.join(HERE, "..", "Defs"))
 LPROOF = "RimMandrake.FlowWorks.Machinery.RM_LineProofs"
-NPROOF = "RimMandrake.FlowWorks.RM_NorthstarProofs"
-PROMO = "RimMandrake.FlowWorks.RM_PromotionProofs"
 SUSP = "RimMandrake.FlowWorks.Pits.RM_SuspensionProofs"
 WLOOK = "RimMandrake.FlowWorks.RM_WaterLookProofs"
-S_FW = "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings"
 S_TH = "RimMandrake.FlowWorks.Thirst.RM_ThirstSettings"
 S_RIVER = "RimMandrake.FlowWorks.RiverColors.RM_RiverColorsSettings"
 MOD_ID = "mandrake.rm.flowworks"
 LOOKS = ("Scrapper", "Industrial", "Modern", "Futuristic")        # RM_PipeFaucet_<Look> / RM_UniversalPipe_<Look> ThingStyleDefs
 FRESH = "RM_Liquid_FreshWater"
 UNITS_PER_LITRE = _volume_const("UnitsPerLitre", 10)
-UNITS_PER_LEVEL = _volume_const("UnitsPerLevel", 10000)
 DRINK_DL = int(round(1.5 * UNITS_PER_LITRE))                    # RM_DrinkFromFaucet takes 1.5 L (T30 bar)
 SEARCH_LABEL = "Liquid crosses between the pieces of a huge network"
 SEARCH_QUERIES = ("Liquid crosses", "huge network", "pieces")
@@ -141,14 +130,10 @@ S3 = dict(pond=[(1 + i, 31 + j) for i in range(4) for j in range(3)], canal=[(15
           reelA=(9, 33), reelB=(9, 30), intake=(4, 32), intake_alt=[(4, 31), (4, 33)], outflow=(15, 32), battery=(12, 36))
 LAKE = (40, 40, 6, 6)
 CANAL = [(46 + i, 42) for i in range(6)]
-POND = [(72 + i, 45 + j) for j in (0, 1) for i in range(3)]
-POND_RIG = dict(pump=(73, 47), battery=(76, 46), pipes=[(73, 48), (73, 49)], tank=(73, 50))
-POND_START_LEVELS = 0.6                                          # 600 L: "a natural pond holding under 1,000 L"
 
 ROW_IDS = ["RIVER_LAYER_REDRAWS_CLEAN", "CONVERTER_BIG_RECIPE_RUNS", "REACTOR_NEXT_REACTION_RUNS", "RAILING_HAS_STUFF",
            "FAUCET_TAB_PIPE_ONLY", "T30_pipe_faucet", "FAUCET_LOOKS_RESOLVE", "FAUCET_TAKES_MODERN", "GUARDRAIL_ATLAS_RESOLVES",
-           "REEL_FACINGS_LAY_ALONG_AXIS", "S3_HOSES_ON_BARE_GROUND", "SETTINGS_SEARCH_FINDS_ROW", "CANAL_LAKE_ONE_DEF",
-           "POND_LAST_DROP_DRAWN", "POND_DRY_STAGES_TO_BED"]
+           "REEL_FACINGS_LAY_ALONG_AXIS", "S3_HOSES_ON_BARE_GROUND", "SETTINGS_SEARCH_FINDS_ROW", "CANAL_LAKE_ONE_DEF"]
 ROW_ITEM = {
     "RIVER_LAYER_REDRAWS_CLEAN": ("FLOWWORKS_RIVERCOLOR_FIX_DICT_SELF_ENUM", "A1"),
     "CONVERTER_BIG_RECIPE_RUNS": ("FLOWWORKS_CONVERTER_FIX_BLOCKED_STARVES_REST", "A1"),
@@ -163,8 +148,6 @@ ROW_ITEM = {
     "S3_HOSES_ON_BARE_GROUND": ("HOSE_PATHING_REPAIR_SCENIC_ROUTE_PLEASE", "A1"),
     "SETTINGS_SEARCH_FINDS_ROW": ("SETTINGS_SEARCH_FIX_LABELS_NOT_FOUND", "A1"),
     "CANAL_LAKE_ONE_DEF": ("CANAL_LAKE_COLOUR_UNIFY_TWO_BLUES", "A1"),
-    "POND_LAST_DROP_DRAWN": ("POND_PUMP_FIX_LAST_DROP_COUNTS", "A2"),
-    "POND_DRY_STAGES_TO_BED": ("POND_PUMP_FIX_LAST_DROP_COUNTS", "A3"),
 }
 # rows whose criterion is wider than the row: verify --result partial, never pass, from this row alone
 PARTIAL = {"REEL_FACINGS_LAY_ALONG_AXIS": "the turning-gravship half is not staged",
@@ -480,40 +463,6 @@ def canal_lake_verdict(canal, lake):
         return "UNMEASURED", "SITE", "not the same water depth (canal %.2f m, lake %.2f m)" % (wc, wl)
     same = canal.get("terrain") == lake.get("terrain")
     return ("PASS" if same else "FAIL"), "MOD", "" if same else "canal draws %s, lake %s" % (canal.get("terrain"), lake.get("terrain"))
-
-
-def pond_draw_verdict(powered, s0, s_end, u0, u1):
-    """s0/s_end: body stock in notches; u0/u1: tank dL. PASS = drained to 0 dL and the tank gained exactly that."""
-    if not powered:
-        return "UNMEASURED", "SITE", "the pump never read powered"
-    if None in (s0, s_end, u0, u1):
-        return "UNMEASURED", "HARNESS", "a read returned nothing"
-    if s0 * UNITS_PER_LEVEL >= 10000 or s0 <= 0:
-        return "UNMEASURED", "SITE", "the pond did not start under 1,000 L (stock %.3f notches)" % s0
-    left_dl = s_end * UNITS_PER_LEVEL
-    gained = u1 - u0
-    want = int(round(s0 * UNITS_PER_LEVEL))
-    if left_dl > 0.5:
-        return "FAIL", "MOD", "the pond kept %.1f dL the pump never took" % left_dl
-    if abs(gained - want) > 1:
-        return "FAIL", "MOD", "the tank gained %d dL, the pond held %d" % (gained, want)
-    return "PASS", "MOD", ""
-
-
-def pond_dry_verdict(drained, pond_kv, terrains):
-    """pond_kv: ProofPondDepth kv ({} = no formed pond any more); terrains: {cell: defName}."""
-    if not drained:
-        return "UNMEASURED", "SITE", "the pond was never pumped dry"
-    if not terrains or any(t is None for t in terrains.values()):
-        return "UNMEASURED", "HARNESS", "a pond square's terrain did not read"
-    bad = []
-    wet = pond_kv.get("wet") if pond_kv else None
-    if wet not in (None, "0"):
-        bad.append("ProofPondDepth reads wet=%s at stock %s" % (wet, pond_kv.get("stock")))
-    still = sorted(c for c, t in terrains.items() if "water" in str(t).lower())
-    if still:
-        bad.append("%d square(s) still draw water: %s" % (len(still), [terrains[c] for c in still][:3]))
-    return ("FAIL" if bad else "PASS"), "MOD", "; ".join(bad)
 
 
 # ====================================================================== the run
@@ -1025,81 +974,14 @@ def scene_canal_lake(ctx, mine):
                                                    shot=ctx["shot"]("canal_lake", P(38, 38) + (16, 10))))
 
 
-def scene_pond(ctx, mine):
-    B, P, static, row = ctx["B"], ctx["P"], ctx["static"], ctx["row"]
-    exact = ctx["truthy"](ctx["sget"](S_FW, "levelExactEnabled"))
-    refill_was = ctx["sget"](S_FW, "refillEnabled")
-    pond = [P(*c) for c in POND]
-    try:
-        if exact is not True:
-            for rid in mine:
-                row(rid, "UNMEASURED", "SITE", {"why": "levelExactEnabled reads %r" % (exact,)})
-            return
-        B.call("jawa/set_terrain_batch", ops="WaterShallow:%d,%d,3,2" % pond[0])
-        cls_r = B.call("jawa/flowworks_body_report", x=pond[1][0], z=pond[1][1], classify=True, _answer=True) or {}
-        body = cls_r.get("body") or {}
-        V.require(body and not body.get("limitless") and body.get("cellCount") == 6, "a 6-square limited pond", body, cls="SITE")
-        ctx["sset"](S_FW, "refillEnabled", False)
-        cap = fnum(body.get("capacity")) or 0
-        V.require(cap > 0, "the pond has a capacity", body, cls="SITE")
-        static(NPROOF, "ProofSetBodyFraction", "%d;%d;%.6f" % (pond[1][0], pond[1][1], POND_START_LEVELS / cap if cap else 0))
-        rig = POND_RIG
-        ctx["build"](";".join(["RM_LiquidPump:%d,%d" % P(*rig["pump"]), "Battery:%d,%d" % P(*rig["battery"])]
-                              + ["RM_UniversalPipe:%d,%d" % P(*c) for c in rig["pipes"]] + ["RM_LiquidTank:%d,%d" % P(*rig["tank"])]))
-        ctx["ticks"](2)
-        lt = B.call("jawa/list_things", defName="Battery", rect="%d,%d,1,2" % P(*rig["battery"]), limit=2, _answer=True) or {}
-        bid = ((lt.get("things") or [{}])[0]).get("id")
-        if bid is not None:
-            B.call("jawa/battery_set", thing=bid, mode="setPct", value=1.0, _answer=True)
-
-        def stock():
-            r = B.call("jawa/flowworks_body_report", x=pond[1][0], z=pond[1][1], classify=False, _answer=True) or {}
-            b = r.get("body")
-            return 0.0 if (r.get("success") is not False and b is None) else fnum((b or {}).get("stock"))
-
-        def units():
-            r = B.hp("tank:%d,%d" % P(*rig["tank"]), answer=True)
-            return r.get("units") if r.get("success") else None
-
-        s0, u0, powered, trace = stock(), units(), False, []
-        for _ in range(12):
-            ctx["ticks"](250)
-            pm = B.hp("pump:%d,%d" % P(*rig["pump"]), answer=True)
-            powered = powered or pm.get("powered") is True
-            s, u = stock(), units()
-            trace.append(dict(stock=s, units=u, moved=pm.get("lastMovedUnits")))
-            if s is not None and s * UNITS_PER_LEVEL <= 0.5:
-                break
-        s_end, u1 = trace[-1]["stock"] if trace else None, trace[-1]["units"] if trace else None
-        if "POND_LAST_DROP_DRAWN" in mine:
-            st, cls, why = pond_draw_verdict(powered, s0, s_end, u0, u1)
-            row("POND_LAST_DROP_DRAWN", st, cls, dict(why=why, s0=s0, sEnd=s_end, u0=u0, u1=u1, trace=trace, capacity=cap))
-        if "POND_DRY_STAGES_TO_BED" in mine:
-            drained = s_end is not None and s_end * UNITS_PER_LEVEL <= 0.5
-            B.hp("flick:%d,%d=off" % P(*rig["pump"]), answer=True)
-            ctx["ticks"](260)
-            kp, tp = static(PROMO, "ProofPondDepth", "%d,%d" % pond[1], answer=True)
-            terr = {}
-            for c in pond:
-                ci = B.call("rimworld/get_cell_info", x=c[0], z=c[1], _answer=True) or {}
-                terr["%d,%d" % c] = (ci.get("cell") or {}).get("terrainDefName")
-            st, cls, why = pond_dry_verdict(drained, kp, terr)
-            row("POND_DRY_STAGES_TO_BED", st, cls, dict(why=why, pondDepth=tp, terrains=terr,
-                                                        shot=ctx["shot"]("pond_dry", P(70, 43) + (8, 9))))
-    finally:
-        if refill_was is not None:
-            ctx["sset"](S_FW, "refillEnabled", refill_was)
-
-
 SCENES = [("river", scene_river), ("census", scene_census), ("railing", scene_railing), ("faucet", scene_faucet),
           ("guardrail", scene_guardrail), ("reels", scene_reels), ("s3", scene_s3), ("search", scene_search),
-          ("canal_lake", scene_canal_lake), ("pond", scene_pond)]
+          ("canal_lake", scene_canal_lake)]
 SCENE_ROWS = {"river": ["RIVER_LAYER_REDRAWS_CLEAN"], "census": ["CONVERTER_BIG_RECIPE_RUNS", "REACTOR_NEXT_REACTION_RUNS"],
               "railing": ["RAILING_HAS_STUFF"],
               "faucet": ["FAUCET_TAB_PIPE_ONLY", "T30_pipe_faucet", "FAUCET_LOOKS_RESOLVE", "FAUCET_TAKES_MODERN"],
               "guardrail": ["GUARDRAIL_ATLAS_RESOLVES"], "reels": ["REEL_FACINGS_LAY_ALONG_AXIS"], "s3": ["S3_HOSES_ON_BARE_GROUND"],
-              "search": ["SETTINGS_SEARCH_FINDS_ROW"], "canal_lake": ["CANAL_LAKE_ONE_DEF"],
-              "pond": ["POND_LAST_DROP_DRAWN", "POND_DRY_STAGES_TO_BED"]}
+              "search": ["SETTINGS_SEARCH_FINDS_ROW"], "canal_lake": ["CANAL_LAKE_ONE_DEF"]}
 
 
 # ====================================================================== offline stand-in
@@ -1128,15 +1010,11 @@ class FakeBridge(object):
       search_unfiltered the search never filters (control shows the row)                -> UNMEASURED/HARNESS
       no_dialog         the settings dialog does not open                               -> UNMEASURED/HARNESS
       canal_two_defs    MOD: canal and lake draw different defs at equal depth
-      canal_dry         the canal fill never takes                                      -> UNMEASURED/SITE
-      pond_remainder    MOD: the pump leaves the sub-notch remainder                    -> DRAWN FAIL, DRY UNMEASURED/SITE
-      pond_wet_at_zero  MOD: the dry pond still draws water
-      pump_unpowered    the pump never powers                                           -> both POND rows UNMEASURED/SITE"""
+      canal_dry         the canal fill never takes                                      -> UNMEASURED/SITE"""
     FAULTS = ("river_throws", "river_off", "log_dead", "rail_nostuff", "rail_none", "no_pipenet_tab", "faucet_anywhere",
               "faucet_untabbed", "faucet_log_error", "faucet_dry", "faucet_rough", "other_water", "faucet_nomatch",
               "pipe_style_refused", "rail_fence_art", "reel_fixed_west", "reel_lay_refused", "hose_over_pump", "search_misses",
-              "search_unfiltered", "no_dialog", "canal_two_defs", "canal_dry", "pond_remainder", "pond_wet_at_zero",
-              "pump_unpowered")
+              "search_unfiltered", "no_dialog", "canal_two_defs", "canal_dry")
 
     def __init__(self, faults=()):
         self.f = set(faults)
@@ -1152,10 +1030,7 @@ class FakeBridge(object):
         self.reels = {}         # pos -> dict(rot, corner, laid, to)
         self.query = ""
         self.dialog = False
-        self.stock = None
-        self.cap = 12.0
-        self.pond_pump = self.pond_tank = None
-        self.pump_off = False
+        self.pump = None
         fd, self.player_log = tempfile.mkstemp(suffix="_Player.log")
         with os.fdopen(fd, "w") as f:
             f.write("Mono path[0] = ...\nRimWorld 1.6.4630 rev123\n")
@@ -1224,11 +1099,6 @@ class FakeBridge(object):
         if verb == "tank":
             c = tuple(int(v) for v in arg.split(","))
             return {"success": True, "units": self.tanks[c]} if c in self.tanks else {"success": False, "error": "no tank there"}
-        if verb == "pump":
-            return {"success": True, "powered": "pump_unpowered" not in self.f, "lastMovedUnits": 0}
-        if verb == "flick":
-            self.pump_off = True
-            return {"success": True}
         return {"success": False, "error": "unknown verb"}
 
     def _tick(self, n):
@@ -1246,14 +1116,6 @@ class FakeBridge(object):
                         p["mem"].append("RM_Thought_DrankRough")
             else:
                 p["job"] = "Wait_Wander"
-        # the pump drawing the pond (one draw per 250-tick cycle)
-        if n >= 250 and self.stock is not None and not self.pump_off and "pump_unpowered" not in self.f and self.pond_tank:
-            take = min(self.stock, 0.25)
-            if "pond_remainder" in self.f:
-                take = min(take, max(0.0, self.stock - 0.05))
-            if take > 0:
-                self.stock = round(self.stock - take, 6)
-                self.tanks[self.pond_tank] += int(round(take * UNITS_PER_LEVEL))
 
     def static(self, ty, m, arg):
         if ty == "Verse.Log":
@@ -1286,15 +1148,6 @@ class FakeBridge(object):
                 ter = ("RM_WaterChestDeepStill" if "canal_two_defs" in self.f else "WaterDeep") if wet else "Soil"
                 return "WATERLOOK cell=%d,%d terrain=%s still=True dug=True hollow=0 waterM=%s" % (c[0], c[1], ter, fill * 0.5 if wet else 0)
             return "WATERLOOK cell=%d,%d terrain=%s still=True dug=False hollow=0 waterM=3.0" % (c[0], c[1], self.terrain.get(c, "Soil"))
-        if m == "ProofSetBodyFraction":
-            x, z, frac = arg.split(";")
-            self.stock = round(self.cap * float(frac), 6)
-            return "SET #1 frac %s stock %.3f of %.1f" % (frac, self.stock, self.cap)
-        if m == "ProofPondDepth":
-            if self.stock is None:
-                return "REFUSED: no formed pond at " + arg
-            wet = "6" if (self.stock > 0 or "pond_wet_at_zero" in self.f) else "0"
-            return "POND id=1 limitless=False stock=%.2f capacity=%.2f wet=%s census=mud:%s" % (self.stock, self.cap, wet, 6 - int(wet))
         return "REFUSED: unknown " + m
 
     def call(self, tool, **kw):
@@ -1344,13 +1197,8 @@ class FakeBridge(object):
                     continue
                 if d == "RM_LiquidTank":
                     self.tanks[c] = 0
-                    if self.pond_pump is not None:
-                        self.pond_tank = c
                 if d == "RM_LiquidPump":
-                    self.pond_pump = c
-                    self.pond_tank = None
-                    for r in self.reels.values():
-                        r.setdefault("pump", c)
+                    self.pump = c
                 style = None
                 if d == "RM_PipeFaucet":
                     under = [self.things[t]["style"] for t in self._at("RM_UniversalPipe", c)]
@@ -1358,7 +1206,7 @@ class FakeBridge(object):
                     style = style.replace("RM_UniversalPipe_", "RM_PipeFaucet_")
                 self._thing(d, c, stuff=kw.get("stuff"), rot=rot, style=style)
             # S3: tag the two reels of the rig once the pump stands (A = the one north of the pump)
-            pump = self.pond_pump
+            pump = self.pump
             if pump:
                 for pos, r in self.reels.items():
                     if r["tag"] is None and abs(r["corner"][0] - pump[0]) <= 1 and abs(r["corner"][1] - pump[1]) <= 3:
@@ -1419,14 +1267,6 @@ class FakeBridge(object):
             return {"success": True, "needs": [{"need": "RM_Thirst", "level": p["thirst"]}], "memories": [{"def": m} for m in p["mem"]]}
         if tool == "rimworld/list_colonists":
             return {"success": True, "colonists": [{"pawnId": pid, "job": p["job"], "dead": False} for pid, p in self.pawns.items()]}
-        if tool == "jawa/flowworks_body_report":
-            if self.stock is None and kw.get("classify") and any(v == "WaterShallow" for v in self.terrain.values()):
-                return {"success": True, "body": {"id": 1, "limitless": False, "stock": self.cap, "capacity": self.cap, "cellCount": 6}}
-            if self.stock is not None:
-                if self.stock <= 0 and "pond_wet_at_zero" not in self.f:
-                    return {"success": True, "body": None}
-                return {"success": True, "body": {"id": 1, "limitless": False, "stock": self.stock, "capacity": self.cap, "cellCount": 6}}
-            return {"success": True, "body": None}
         if tool == "jawa/set_terrain_batch":
             ter, rect = str(kw.get("ops")).split(":")
             x, z, w, h = (int(v) for v in rect.split(","))
@@ -1434,12 +1274,6 @@ class FakeBridge(object):
                 for j in range(h):
                     self.terrain[(x + i, z + j)] = ter
             return {"success": True}
-        if tool == "rimworld/get_cell_info":
-            c = (kw["x"], kw["z"])
-            ter = self.terrain.get(c, "Soil")
-            if self.stock is not None and self.stock * UNITS_PER_LEVEL <= 0.5 and ter == "WaterShallow" and "pond_wet_at_zero" not in self.f:
-                ter = "Mud"
-            return {"success": True, "cell": {"terrainDefName": ter}}
         # settings dialog
         if tool == "rimworld/list_mod_settings_surfaces":
             return {"success": True, "surfaces": [{"modId": "mod-settings:%s:abc" % MOD_ID, "handleTypeName": "RimMandrakeFlowWorksMod"}]}
