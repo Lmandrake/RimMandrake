@@ -1,0 +1,1 @@
+In a clone shared by several helpers, a 'git add' of new files can silently vanish from the index before your commit (another helper's index operation): the pathspec commit then fails with 'did not match any file(s) known to git'. Re-run git add immediately before the commit and check 'git status --short | grep ^A' first. (VEE_DEEP_ORES_MIGRATE_RICH_AND_POOR, 2026-10-22)
