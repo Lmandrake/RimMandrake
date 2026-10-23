@@ -12,8 +12,9 @@ package snapshot (built about 15:47). The verdicts are:
 
 "Fixed" names the commit on `origin/main`.
 
-**Status: GimmeSomeSlack, IshkoDarkLandmarks, FlowWorks, Pyrelands, Graffiti and Webwork are processed.**
-TheRot and BiomesComposite had not replied by the end of this pass. The driver is still
+**Status: seven of eight are processed: GimmeSomeSlack, IshkoDarkLandmarks, FlowWorks, Pyrelands, Graffiti,
+Webwork and TheRot.** BiomesComposite's consult started at 17:33 and had not replied by the end of this pass; it needs
+the same treatment. The driver is still
 running, and each later reply needs the same pass.
 
 ## GimmeSomeSlack: 14 findings, 14 CONFIRMED, 0 FALSE, 0 STALE
@@ -188,6 +189,35 @@ The three commits since the snapshot touched only `northstar_plan.py` and `valid
 - **Mock run:** `--mock --mock-skip-site` gives 1 PASS / 11 FAIL / 75 UNMEASURED, identical to the 23:00Z run before these edits. The mock is red on its own and needs a pass; that is not caused here.
 - **GPT's budget:** 65–100 min. It has two minimal starts (shipped defaults, then all-off at 4–7 min) and one shared full-list load batched with Sump, CreatureBehaviors and GravshipLanding.
 
+## TheRot: 17 findings, 14 CONFIRMED, 2 CONFIRMED-by-design, 1 UNVERIFIABLE-OFFLINE
+
+The `AA_AnimaColossus` removal (`1b82da72f`) staled no finding.
+
+| # | GPT sev → ours | verdict | where (current) | outcome |
+|---|---|---|---|---|
+| 1 | MED-HIGH | CONFIRMED | `Source/RM_HwelgrueSwallow.cs` (holder `removeContentsIfDestroyed:false`; the cap's `Vanish` never reaches Downed or Killed) | **Fixed `292c84956`.** `PostDestroy` releases the passenger where the hwelgrue stood. |
+| 2 | MED | CONFIRMED (partly) | retaliation ungated; digestion runs with the mod off | **Retaliation gated `292c84956`.** What all-off does to an existing passenger is GPT's question; our recommendation is to release them, to settle at the next Rot sitting. |
+| 3 | MED | CONFIRMED, by design | `RM_LivingMatRoot.cs:111` (grown cells reset on respawn; the header says why) | Left as is. |
+| 4 | MED-LOW | CONFIRMED | `RM_SwallowedCore.cs:95-122` (`claimChecked` set once; the fuzz invariant says the carrier never changes) | **Owner question Q11.** |
+| 5 | — | CONFIRMED | `RM_LivingMatRoot` is dev-spawn only | GPT G1: how is the root earned? Design. |
+| 6 | — | CONFIRMED | Rot generates on other players' worlds | Already tracked: `webworks_open_questions_2026-10-22.md:33`. |
+| 7 | MED | CONFIRMED | draft bar 4: "36,000 ticks (1.5 days)" | **Fixed `292c84956`.** 1.5 days is 90,000 ticks, and the cost line is corrected. The draft is not yet hash-bound. |
+| 8 | LOW | CONFIRMED (overstated: it doubles the warming rate; the ceiling holds) | `RM_LivingMatRoot.cs` room dedupe `at == now` | **Fixed `292c84956`.** One push per room per sweep interval. |
+| 9 | — | UNVERIFIABLE-OFFLINE | lethal ship-weapon hit may skip the integrity change | Check the callback order with RimSage. |
+| 10 | MED-HIGH | CONFIRMED | `RM_RegenerantVeil` alarm: no Rot race carries `RM_AlarmResponderExtension` | **Open (design).** The veil's defence answers no one: which species respond? |
+| 11 | MED | CONFIRMED | `Swallowable` had no stockpile check (`Edible` did) | **Fixed `292c84956`.** It now matches draft bar 2. |
+| 12 | LOW | CONFIRMED, by design | spore cloud slider governs nothing off the Rot | Cross-biome is unsupported by ruling. |
+| 13 | LOW | CONFIRMED | Sheenblood unjoining yields 2 husks | **Open (small design).** |
+| 14 | MED | CONFIRMED (recomputed: 48.5% small fauna) | `RM_TheRot_Biome.xml` roster | It goes on the Rot's review sheet; evictions are stopped. |
+| 15 | LOW-MED | CONFIRMED | amber weeper ("poison dart") and tumrata ("keeps longer") descriptions vs a `RawFungus` yield | **Open.** Small text corrections. |
+| 16 | MED | CONFIRMED | `validation.py:780` `or "spent True"`; `ProofRange` is tautological (`without = with / RangeFactor`) | **Open.** `spent True` may be a legitimate "already claimed" state, so it was not cut blind. `ProofRange` needs a stat read before and after unlinking. |
+| 17 | MED (art) | CONFIRMED | Nogtyl A painted vs B flat cartoon in one random pool | Cosmetic change: the owner first. |
+
+- **CONFIRMED:** a failed reveal in the Nav log still consumes an entry (`RM_NavigatorLog.cs:~62`).
+- **CONFIRMED:** six byte-identical texture pairs share random pools.
+- **CONFIRMED:** agaripods are comfortable down to -15 °C and Shambles to 0 °C. The Rot's cold ecology needs a design read.
+- **GPT's budget:** 77–106 min, on two maps (R and a cold control) plus one shared full-list load.
+
 ## Loose ends from other helpers
 
 - **`selftest_hose_port.py` P9, 24 vs 22 credit sites: REAL drift, not stale.** `Source/SelfTest/TransferChecks.cs` `CreditTags` gained "credit site: pump overflow spill" and "credit site: gravity overflow" in `1da459a0d` (09:54, overflow stages 2-3). The python mirror `CREDIT_SITES` stayed at 22. Another helper re-synced the mirror in `37f064ef7` (16:36). `selftest_hose_port.py` now passes (0 failing).
@@ -267,6 +297,11 @@ These are ranked by the wall-clock time they save per acceptance cycle. The esti
 
 - (a) **Recommended:** have the web GenStep place one or two gutters on every Webwork map. *Buys:* the research and the junction become reachable again. *Costs:* small GenStep code plus one map read.
 - (b) Retire the gutter and re-point the junction and the research at something that is placed. *Buys:* less content. *Costs:* a research-tree edit and losing the gutter's role.
+
+**Q11. The Rot: when the navigator-core carrier leaves the world** (shipped off, killed off-map, or its ID goes stale), may another hwelgrue inherit the one core?
+
+- (a) **Recommended:** yes. A stale carrier is released and the next hwelgrue that checks may claim it, so the unique item is never lost forever. *Costs:* the fuzz test's "the carrier never changes" invariant is rewritten.
+- (b) No. That animal keeps it for good. *Buys:* a simpler rule. *Costs:* a world where the core can vanish with no sign (against "no animal or pawn ever vanishes without a readable sign").
 
 GPT's Graffiti questions on content, left in the reply for the design sitting:
 
