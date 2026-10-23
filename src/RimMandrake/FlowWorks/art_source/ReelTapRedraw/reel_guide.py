@@ -154,7 +154,7 @@ def reel(frame, state, build):
         sc.box(min(xs), max(xs), min(zs), max(zs), h0, h1, **k)
     def cyl(p0, p1, r, **k):
         sc.cyl(T(p0), T(p1), r, **k)
-    H = 0.52           # axle height
+    H = 0.52 if build == "frame" else 0.95   # axle height (the pedestal lifts the drum so its single post shows)
     R = 0.42           # flange radius
     if build == "frame":
         box(-0.62, 0.62, -0.40, 0.40, 0.0, 0.08, tone=120)                       # skid
@@ -163,11 +163,12 @@ def reel(frame, state, build):
             box(sx - 0.035, sx + 0.035, -0.05, 0.05, 0.08, H + 0.04, tone=115)   # upright to the axle
         cyl((-0.56, 0, H), (0.56, 0, H), 0.05, tone=90)                          # axle
     else:
-        box(-0.34, 0.34, -0.34, 0.34, 0.0, 0.05, tone=120)                       # base plate
-        box(-0.07, 0.07, -0.07, 0.07, 0.05, H - 0.30, tone=115)                  # pedestal post
-        box(-0.50, 0.50, -0.06, 0.06, H - 0.32, H - 0.24, tone=112)              # yoke crossbar
+        # judge 2026-10-23: the owner's 2026-10-15 Modern pick is a single-post pedestal - keep it in every facing
+        box(-0.30, 0.30, -0.30, 0.30, 0.0, 0.05, tone=120)                       # square foot plate
+        cyl((0, 0, 0.05), (0, 0, H - R - 0.06), 0.075, tone=140)                 # the single round post
+        box(-0.50, 0.50, -0.06, 0.06, H - R - 0.10, H - R - 0.04, tone=112)      # yoke crossbar on the post
         for sx in (-0.47, 0.47):
-            box(sx - 0.035, sx + 0.035, -0.06, 0.06, H - 0.32, H + 0.04, tone=115)
+            box(sx - 0.035, sx + 0.035, -0.06, 0.06, H - R - 0.10, H + 0.04, tone=115)
         cyl((-0.53, 0, H), (0.53, 0, H), 0.05, tone=90)
     for fx in (-0.40, 0.40):                                                     # flanges
         cyl((fx - 0.025, 0, H), (fx + 0.025, 0, H), R, tone=150)
@@ -188,8 +189,9 @@ def reel(frame, state, build):
         cyl((0.60, 0, H + 0.24), (0.76, 0, H + 0.24), 0.03, tone=130)            # handle
     else:
         cyl((0.44, 0, H), (0.62, 0, H), 0.045, tone=140)
-        cyl((0.62, 0, H), (0.62, 0, H + 0.18), 0.03, tone=140)                   # valve stem up
-        cyl((0.62, 0, H + 0.18), (0.62, 0, H + 0.21), 0.11, tone=165)            # handwheel, lying flat
+        cyl((0.62, 0, H - 0.05), (0.62, 0, H + 0.08), 0.06, tone=150)            # valve body
+        cyl((0.62, 0, H + 0.08), (0.62, 0, H + 0.20), 0.025, tone=140)           # valve stem up
+        cyl((0.62, 0, H + 0.20), (0.62, 0, H + 0.23), 0.13, tone=165)            # spoked handwheel, lying flat
     return sc
 
 

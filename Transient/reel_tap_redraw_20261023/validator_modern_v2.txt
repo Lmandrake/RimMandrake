@@ -1,0 +1,30 @@
+## Modern/Reel_PumpHookup
+REJECT subject height is 155px against the reference's 173px (-10%). A damaged variant may lose area but must still span its footprint.
+REJECT subject aspect 1.381 against the reference's 1.266 - the art was squashed, not redrawn.
+REJECT subject origin x=9 against the reference's 22 - the subject sits in a different place on the canvas.
+REJECT subject origin y=50 against the reference's 16 - the subject sits in a different place on the canvas.
+WARN   0.20% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.
+## Modern/Reel_PumpHookup_north
+WARN   0.15% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.
+WARN   covers 142% of the reference's area - the subject gained material.
+## Modern/Reel_PumpHookup_south
+REJECT subject width is 100px against the reference's 107px (-7%). A damaged variant may lose area but must still span its footprint.
+REJECT subject height is 229px against the reference's 199px (+15%). A damaged variant may lose area but must still span its footprint.
+REJECT subject height exceeds the reference by 11.7% of canvas - art outside the footprint overlaps neighbouring buildings in game.
+REJECT subject aspect 0.437 against the reference's 0.538 - the art was squashed, not redrawn.
+WARN   0.14% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.
+## Modern/Reel_Deployed
+REJECT subject height is 160px against the reference's 173px (-8%). A damaged variant may lose area but must still span its footprint.
+REJECT subject origin y=48 against the reference's 16 - the subject sits in a different place on the canvas.
+WARN   0.24% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.
+## Modern/Reel_Deployed_north
+WARN   0.13% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.
+WARN   covers 142% of the reference's area - the subject gained material.
+## Modern/Reel_Deployed_south
+REJECT subject width is 99px against the reference's 107px (-7%). A damaged variant may lose area but must still span its footprint.
+REJECT subject height is 233px against the reference's 197px (+18%). A damaged variant may lose area but must still span its footprint.
+REJECT subject height exceeds the reference by 14.1% of canvas - art outside the footprint overlaps neighbouring buildings in game.
+REJECT subject aspect 0.425 against the reference's 0.543 - the art was squashed, not redrawn.
+REJECT subject origin y=12 against the reference's 25 - the subject sits in a different place on the canvas.
+WARN   0.17% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.
+WARN   covers 117% of the reference's area - the subject gained material.
