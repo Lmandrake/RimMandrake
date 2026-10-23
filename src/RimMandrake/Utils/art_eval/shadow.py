@@ -39,7 +39,8 @@ KEY = "pipeline_check"
 OPTIONS = [["keep", "KEEP the pipeline's decision"],
            ["should_accept", "OVERRIDE: the art is fine, accept it"],
            ["should_regen", "OVERRIDE: the art is bad, regenerate"],
-           ["other", "OVERRIDE: something else (write a note)"]]
+           ["other", "OVERRIDE: something else (write a note)"],
+           ["revert", "REVERT: put my kept version back (rows that replaced your kept art)"]]
 
 
 def load_run(run_id: str) -> list:
@@ -50,7 +51,7 @@ def row_line(r: dict) -> tuple[str, str]:
     """(why, context) shown on his row: the decision, then each reviewer's verdict and blocking codes."""
     o, g = r.get("opus") or {}, r.get("gpt") or {}
     ob = [f["code"] for f in (o.get("detail") or {}).get("blocking", []) + (o.get("detail") or {}).get("gross", [])]
-    why = f"PIPELINE: {r['decision']}" + (f" (regen round {r['round']})" if r.get("round") else "")
+    why = ("REPLACED YOUR KEPT ART · " if r.get("replaces_kept") else "") + f"PIPELINE: {r['decision']}" + (f" (regen round {r['round']})" if r.get("round") else "")
     why += f" · Opus {o.get('band', '-')}" + (f": {', '.join(sorted(set(ob)))}" if ob else "")
     if g:
         why += f" · GPT {g['reply'].get('verdict')}" + (f", unsettled {', '.join(g['detail']['unsettled'])}" if g['detail']['unsettled'] else "")
@@ -113,7 +114,7 @@ def write_prereview(sheet: Path, recs: list):
             row.update(verdict="FLAG", note="the picture the pipeline judged is NOT on this row (the sheet shows what is "
                                             "installed / found by name); " + why)
             continue
-        flag = r["decision"] in ("ESCALATE", "HOLD_ERROR", "HOLD_KEPT", "HOLD_INPUT")
+        flag = r["decision"] in ("ESCALATE", "HOLD_ERROR", "HOLD_KEPT", "HOLD_INPUT") or r.get("replaces_kept")
         row.update(verdict="FLAG" if flag else "OK", note=why)
     counts = {}
     for r in recs:
@@ -134,7 +135,18 @@ def sheet_shas(sheet: Path) -> dict:
     return out
 
 
-def ingest(decisions_path: Path, run_id: str) -> list:
+def revert(rec: dict, apply: bool) -> list:
+    """The one-click revert: put the owner-kept picture(s) back through the art ledger (art.py install, his
+    shadow-sheet click as --by-card). Dry run unless apply. Returns [(argv, exit code, output tail)]."""
+    out = []
+    for argv in P.revert_commands(rec, f"shadow sheet {rec['subject']}: replaced your kept art → REVERT: put my kept version back"):
+        cmd = [sys.executable] + argv[1:] + ([] if apply else ["--dry-run"])
+        p = subprocess.run(cmd, cwd=str(ROOT), capture_output=True, text=True, timeout=300)
+        out.append((cmd, p.returncode, (p.stdout + p.stderr)[-400:]))
+    return out
+
+
+def ingest(decisions_path: Path, run_id: str, apply_reverts: bool = False) -> list:
     """His answers -> shadow_log.jsonl rows; every OVERRIDE also becomes a criteria-ledger entry (source
     owner_override, his note as owner_said). Blank answers are skipped — silence is not agreement."""
     d = json.loads(Path(decisions_path).read_text())
@@ -149,10 +161,12 @@ def ingest(decisions_path: Path, run_id: str) -> list:
         override = ans != "keep"
         # a blocking override: he says the pipeline let bad art through, or regenerated art he would keep
         blocking = (ans == "should_regen" and r["decision"] == "ACCEPT") or (ans == "should_accept" and r["decision"] in ("REGEN", "ESCALATE")) \
-            or ans == "other"
+            or ans in ("other", "revert")
         e = {"at": row.get("at") or dt.datetime.now().astimezone().isoformat(timespec="seconds"), "run": run_id,
              "subject": subj, "template": r["template"], "pipeline_decision": r["decision"], "owner_answer": ans,
              "override": override, "blocking": blocking, "note": row.get("note", "")}
+        if ans == "revert" and r.get("replaces_kept"):
+            e["revert"] = [{"cmd": c, "rc": rc, "out": o} for c, rc, o in revert(r, apply_reverts)]
         with log.open("a") as fh:
             fh.write(json.dumps(e) + "\n")
         if override:
@@ -175,12 +189,13 @@ def main(argv=None):
     sub = ap.add_subparsers(dest="cmd", required=True)
     b = sub.add_parser("build"); b.add_argument("run_id"); b.add_argument("--name")
     i = sub.add_parser("ingest"); i.add_argument("decisions"); i.add_argument("--run", required=True)
+    i.add_argument("--apply-reverts", action="store_true", help="run art.py install for his REVERT clicks (default dry run)")
     sub.add_parser("status")
     a = ap.parse_args(argv)
     if a.cmd == "build":
         print(build(a.run_id, a.name))
     elif a.cmd == "ingest":
-        for e in ingest(Path(a.decisions), a.run):
+        for e in ingest(Path(a.decisions), a.run, a.apply_reverts):
             print(json.dumps(e))
     else:
         for st in status():

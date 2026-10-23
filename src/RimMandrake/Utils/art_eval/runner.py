@@ -245,7 +245,8 @@ def evaluate(spec: dict, card_dir: Path, rev: Reviewers, policy: dict, settings:
     if step == "HOLD_KEPT":
         rec["decision"] = "HOLD_KEPT"
         if band != "GOOD":
-            rec["reasons"].append("kept-but-flagged: owner-kept art the first reviewer did not pass — reaches him, never replaced")
+            rec["reasons"].append("kept-but-flagged: owner-kept art the first reviewer did not pass, and the card has no "
+                                  "revert record (kept_install), so it cannot be redrawn — reaches him")
         return rec
     if step == "GPT":
         concerns = P.concerns_from(od)
@@ -284,6 +285,12 @@ def evaluate(spec: dict, card_dir: Path, rev: Reviewers, policy: dict, settings:
             rq = P.deterministic_regen_prompt(card, fs)
             rq["fallback_why"] = str(e) if not meta.get("error") else meta["error"]
         rec["regen"] = {"findings": [f["code"] for f in fs], "request": rq}
+        if P.replaces_kept(card, decision):
+            rec["replaces_kept"] = True
+            rec["kept_install"] = card["kept_install"]
+            rec["install_by_card"] = P.KEPT_ART_CARD
+            rec["revert"] = P.revert_commands(card, "shadow sheet: replaced your kept art → REVERT")
+            rec["reasons"].append("REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) — on the next shadow sheet with a revert")
     return rec
 
 
@@ -361,7 +368,11 @@ def regen_jobs(recs: list, run_id: str) -> list:
                      "target_def": r["subject"], "prompt": rq["prompt"], "canvas_w": 1024, "canvas_h": 1024,
                      "facings": [] if r["module"] in ("catch", "ground_cover", "bush", "tree", "special") else ["south", "east", "north"],
                      "style_notes": "art_eval regen round %s; fixes: %s" % (r.get("round"), ", ".join(r["regen"]["findings"])),
-                     "reference": "", "priority": 40, "source_run": run_id})
+                     "reference": "", "priority": 40, "source_run": run_id}
+                    | ({"replaces_kept": True, "install_by_card": r["install_by_card"],
+                        "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"%s\"; "
+                                            "revert record in the run's decisions.jsonl" % r["install_by_card"]}
+                       if r.get("replaces_kept") else {}))
     return rows
 
 
@@ -441,6 +452,8 @@ def selftest_dry_run(tmp: Path) -> list:
     base = {"template": "creature", "module": "walker", "invented": True, "description": "a beast", "images": imgs}
     specs = [dict(base, subject=n) for n in ("RM_DryGood", "RM_DryBad", "RM_DryWeak", "RM_DryKept")]
     specs[3]["owner_kept"] = True
+    specs.append(dict(base, subject="RM_DryKeptRevertible", owner_kept=True,
+                      kept_install=[{"mod": "SWBestiary", "rel": "Things/Pawn/X/X_south.png", "sha": "a" * 64}]))
     specs.append({"subject": "RM_DryBadCatch", "template": "creature", "module": "catch", "invented": True,
                   "depends_on": "RM_DryBad", "description": "dead beast",
                   "images": {"single": imgs["south"], "scale": imgs["scale"], "living_reference": {"south": imgs["south"]}}})
@@ -452,7 +465,8 @@ def selftest_dry_run(tmp: Path) -> list:
             items = P.checklist_for(tpl, "walker", P.card_facts({"invented": True}))
             f = {"RM_DryBad": [{"code": "F_NORTH_FACE", "confidence": 0.95, "fix": "rear view"}],
                  "RM_DryWeak": [{"code": "F_NORTH_FACE", "confidence": 0.4, "fix": "rear view"}],
-                 "RM_DryKept": [{"code": "STYLE_CARTOON", "confidence": 0.9}]}.get(subj, [])
+                 "RM_DryKept": [{"code": "STYLE_CARTOON", "confidence": 0.9}],
+                 "RM_DryKeptRevertible": [{"code": "STYLE_CARTOON", "confidence": 0.9, "fix": "realistic"}]}.get(subj, [])
             return json.dumps({"schema": "rm-art-eval/opus@v1", "subject": subj, "observed": {},
                                "checklist": {i["id"]: {"status": "ok", "seen": "-"} for i in items},
                                "findings": f, "overall": "good" if not f else "weak"}), {"models_reported": ["mock-opus"]}

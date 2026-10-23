@@ -50,14 +50,17 @@ as **owner's rule + guard**, with the evidence that made the guard necessary and
   owner, not a sheet (delegation_policy §4.5).
 - **Code:** `policy.regen_findings`, `policy.cap_regen`, `runner.evaluate`, `runner.regen_jobs` (fill_queue rows).
 
-## 5. Owner-KEPT art is never auto-replaced  ⚠️ OPEN QUESTION
+## 5. Owner-KEPT art may be redrawn — and he sees every swap after, with a revert
 
-- **Guard:** a subject marked `owner_kept` is still judged (so a bad keep is visible) but routed `HOLD_KEPT`;
-  if Opus did not band it GOOD the run summary carries a *kept-but-flagged* line for him. Never regen.
-- **Why:** delegation_policy §2.3 reserves replacing kept art to him (*"Why are we replacing items for which I
-  know I have good versions?"*, 2026-10-19), and `art.py install` refuses it anyway.
-- **Open:** may the pipeline regenerate kept art it judges REALLY_BAD (keeping the old picture until he rules)?
-  Until he says so, no.
+- **Rule:** owner card 2026-10-23 06:42: *"Kept art judged really bad: may the pipeline redraw it on its own? → Yes, but show me after"* (delegation_policy §2.3 exception).
+- **Guard:** kept art routes like any other subject; a regen verdict redraws it. Only when the spec carries a
+  revert record — `kept_install: [{mod, rel, sha}]`, every kept file — otherwise `HOLD_KEPT` (+ a kept-but-flagged
+  line if not GOOD). A redraw is recorded `replaces_kept`, with `revert` (the `art.py install` argv lists that put the
+  kept sha back); its regen job carries `install_by_card` so the install is `art.py install --by-card "<that card>"`.
+  The next shadow sheet flags the row *REPLACED YOUR KEPT ART* and offers **REVERT**; `shadow.py ingest` runs the
+  revert through the art ledger (dry run unless `--apply-reverts`) and counts it as a blocking override.
+- **Code:** `policy.after_opus`, `policy.revert_record_ok`, `policy.revert_commands`, `runner.evaluate`,
+  `shadow.revert`.
 
 ## 6. The generator never judges itself
 
@@ -73,7 +76,7 @@ as **owner's rule + guard**, with the evidence that made the guard necessary and
   buttons) and a `prereview.json` written from the pipeline's own look. A row whose judged picture is not on the
   sheet is FLAGged (the sheet must show what was judged). `shadow.py ingest` turns his answers into
   `shadow_log.jsonl` rows and every OVERRIDE into a criteria-ledger entry.
-- **Turn-off threshold (PROVISIONAL, a setting):** per template, `off_after_consecutive_clean` (30) consecutive
+- **Turn-off threshold (owner card 2026-10-23: *"30 in a row"*; a setting):** per template, `off_after_consecutive_clean` (30) consecutive
   owner-reviewed subjects with no **blocking** override (he says accept→regen or regen→accept, or "other"). A polish
   override does not reset the streak. Eligibility is printed by `shadow.py status`; turning it off is his word.
   Statistical note for him: with zero misses in n independent subjects, the one-sided 95 % upper bound on the miss
@@ -118,18 +121,17 @@ root.
 |---|---|
 | required panel missing (machine without assembled capture, catch without living reference) | HOLD_INPUT |
 | catch, living animal REGEN / ESCALATE / waiting | REGEN_AFTER_SOURCE |
-| owner-kept | HOLD_KEPT (+ kept-but-flagged line if not GOOD) |
+| owner-kept, no revert record | HOLD_KEPT (+ kept-but-flagged line if not GOOD) |
+| owner-kept with a revert record | routed like any subject; a REGEN is flagged *replaced your kept art* + revert |
 | Opus GOOD | ACCEPT |
 | Opus REALLY_BAD | REGEN (round n) or ESCALATE after 3 |
 | Opus WEAK → GPT strong accept (all refuted with evidence, no own blocking) | ACCEPT |
 | Opus WEAK → GPT anything else | REGEN (round n) or ESCALATE after 3 |
 | a reviewer reply invalid twice, or a transport failure | HOLD_ERROR (one line) |
 
-## Open questions for the owner
+## His answers (owner cards 2026-10-23 06:42)
 
-1. **Kept art** (§5): may a REALLY_BAD owner-kept picture be regenerated (old one stays until he rules), or is kept
-   art always his?
-2. **Shadow turn-off threshold** (§7): 30 clean subjects per template (≤10 % miss bound) is the provisional
-   setting; 59 gives ≤5 %. Which?
-3. **What counts as a blocking override** on the shadow sheet: today accept↔regen flips and "other" reset the
+1. Kept art: *"Yes, but show me after"* — §5.
+2. Shadow off: *"30 in a row (Recommended)"* — §7's setting stands.
+3. Override definition: *"Keep that definition (Recommended)"* — accept↔regen flips, "other" and REVERT reset the
    streak; a polish note does not.

@@ -71,8 +71,10 @@ past art, and his notes on the subject verbatim. Missing any of these → `UNSUR
   the slot still owes ours. — Owner 2026-10-05, card 2026-10-05, 2026-10-18 (memory `no-donor-art-kept`)
 - E2. Script-drawn stand-ins and borrowed vanilla textures are no art (`placeholder_detect.py`). — Owner
   2026-10-05 (req 3)
-- E3. A picture he KEPT is never displaced by a delegated call; if it looks wrong, say so in the report. —
-  Owner 2026-10-19; `delegation_policy.md` §2.3
+- E3. A picture he KEPT is never displaced by a delegated call, except by the art-eval pipeline's regen verdict
+  (redrawn, shown to him after on the shadow sheet as *replaced your kept art*, one-click revert); if a kept
+  picture looks wrong, say so in the report. — Owner 2026-10-19; owner card 2026-10-23 06:42 (*"Kept art judged really bad: may the pipeline redraw it on its own? → Yes, but show me after"*);
+  `delegation_policy.md` §2.3
 - E4. His note on a subject is a requirement, quoted verbatim; a candidate that ignores it is REDO. — Owner (req 9)
 
 ### F. Cosmetic changes to pawns

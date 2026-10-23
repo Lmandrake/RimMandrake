@@ -28,7 +28,7 @@ Everything not on the §2 list. That includes, and is not limited to:
 | `technical` | harness thresholds, test-site choice, refactors inside a mod, MOD/SITE/HARNESS calls with evidence, tool design |
 | `scope` | splitting, narrowing, ordering, closing and dropping items; which of several valid routes to build |
 | `design` | mechanics detail, numbers (already PROVISIONAL-marked per FOUNDRY.md), roster rows inside a biome sheet's open questions, prose and labels a player reads |
-| `art` | keep/redo of a render, which candidate goes live, regen briefs, queueing regens (still only for NONE/PLACEHOLDER/DONOR destinations) |
+| `art` | keep/redo of a render, which candidate goes live, regen briefs, queueing regens (only for NONE/PLACEHOLDER/DONOR destinations, plus the art-eval pipeline's redraws of kept art under §2.3's exception) |
 | `cosmetic` | gene, head, eye, skin, hair, body, texPath and tint changes; face-part art; building looks; water and terrain tints |
 
 Taste calls (`design`, `art`, `cosmetic`) go through a judge first (§4). Technical and scope calls are taken
@@ -50,9 +50,14 @@ Each line is reserved by a ruling of his that says so; nothing else is.
    deleting work not yours — *"only with the owner's word"* (CHARTER, expensive list #5). Re-freezing the
    frozen `official` dump — *"only the owner re-freezes it"* (CHARTER, Instruments). Purging a picture from the
    art store — `art.py purge` takes `--owner-said` only.
-3. **Replacing art he KEPT.** *"Why are we replacing items for which I know I have good versions?"*
-   (2026-10-19). `art.py install --reason` already refuses over an owner-kept picture; a delegated call never
-   works around that refusal. A judge may record that a kept picture looks wrong — that goes in his set (§6).
+3. **Replacing art he KEPT** — with ONE exception. *"Why are we replacing items for which I know I have good
+   versions?"* (2026-10-19). `art.py install --reason` refuses over an owner-kept picture; a delegated call never
+   works around that refusal. **Exception (owner card 2026-10-23 06:42, *"Yes, but show me after"*):** the art-eval
+   pipeline (`skills/rimworld-art-evaluation`) MAY redraw a kept picture when its verdict is regen (Opus really
+   bad, or a weak one GPT did not strong-accept), only with a revert record, installing through
+   `art.py install --by-card "Kept art judged really bad: may the pipeline redraw it on its own? → Yes, but show me after"`; every such swap appears on the next shadow sheet flagged
+   *replaced your kept art* with a one-click revert to the kept version through the art ledger. Any other
+   replacement of kept art is still his.
 4. **Overturning or reinterpreting a standing ruling of his** — CLAUDE.md, `standing_rulings.md`,
    `biome_rulings.md`, a canon entry's `## ruling` (*"The ruling is his, never yours"*, `AGENT_BRIEF.md`), and
    deliberate departures from canon. Applying a ruling to a case it does not name is delegated; changing what
@@ -109,7 +114,7 @@ delegated.
 
 He reviews a **curated, pre-judged set**, never raw output (and nothing reaches him unread — `standing_rulings.md`
 §Nothing reaches the owner unread, owner 2026-10-22; a sheet carries its `<stem>.prereview.json`): only judge-KEEP art (with the verdict lines beside
-each picture), plus rows flagged *split* (two UNSUREs), *stuck* (three REDO rounds) or *kept-but-flagged* (§2.3).
+each picture), plus rows flagged *split* (two UNSUREs), *stuck* (three REDO rounds), *kept-but-flagged* or *replaced your kept art* (§2.3).
 It reaches him the ways he already reviews — a review sheet that is truly new and passes its gates
 (`rimworld-review-sheets`), a phone set (full-res alone, true scale, facings), or an in-game review map for
 visuals judged by looking — never a sheet of REDOs. Delegated art may be installed before his review; biome art

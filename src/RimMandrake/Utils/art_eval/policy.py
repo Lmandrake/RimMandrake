@@ -14,7 +14,9 @@ Every rule below is that pipeline plus one of the seat's guards (skill `rimworld
   GPT outcome      ACCEPT only on strong_accept + every concern refuted WITH evidence + no policy-blocking finding
                    of its own; anything else REGEN
   regen            reason-driven (the blocking findings' fixes), at most max_rounds per subject, then ESCALATE
-  owner-kept art   never auto-replaced: HOLD_KEPT (delegation_policy §2.3)
+  owner-kept art   MAY be redrawn when the pipeline says regen (owner card 2026-10-23 06:42, KEPT_ART_CARD) — only
+                   with a revert record (the kept picture's install path + sha), flagged on the next shadow sheet as
+                   "replaced your kept art" with a one-click revert; no revert record -> HOLD_KEPT
   catch items      follow their living creature: living REGEN/ESCALATE -> REGEN_AFTER_SOURCE
   incomplete card  HOLD_INPUT, never sent to a model
 
@@ -34,6 +36,8 @@ REFS = SKILL / "references"
 TEMPLATES = ("creature", "plant", "machine")
 STATUSES = ("ok", "fail", "unreadable", "n/a")
 BANDS = ("GOOD", "WEAK", "REALLY_BAD")
+KEPT_ART_CARD = "Kept art judged really bad: may the pipeline redraw it on its own? → Yes, but show me after"
+KEPT_ART_EVENT = "1792763093645804582"          # the OWNER ledger event (tsn) carrying that card
 DECISIONS = ("ACCEPT", "REGEN", "ESCALATE", "HOLD_KEPT", "HOLD_INPUT", "REGEN_AFTER_SOURCE", "HOLD_ERROR")
 DEFAULT_SETTINGS = {
     "max_regen_rounds": 3,
@@ -265,11 +269,27 @@ def pre_route(card: dict, template: dict, living_decision: str | None) -> str | 
 
 
 def after_opus(band: str, card: dict) -> str:
-    """'ACCEPT' | 'REGEN' | 'GPT' | 'HOLD_KEPT'. Owner-kept art is judged (so a bad keep is flagged) but never
-    routed to replacement."""
-    if card.get("owner_kept"):
+    """'ACCEPT' | 'REGEN' | 'GPT' | 'HOLD_KEPT'. Owner-kept art routes like any other (owner card 2026-10-23:
+    "Yes, but show me after") — but only when it can be put back: no revert record -> HOLD_KEPT."""
+    if card.get("owner_kept") and not revert_record_ok(card):
         return "HOLD_KEPT"
     return {"GOOD": "ACCEPT", "REALLY_BAD": "REGEN", "WEAK": "GPT"}[band]
+
+
+def revert_record_ok(card: dict) -> bool:
+    """A kept picture can be put back only if the card names every kept file: [{mod, rel, sha}]."""
+    k = card.get("kept_install")
+    return bool(k) and all(isinstance(x, dict) and x.get("mod") and x.get("rel") and x.get("sha") for x in k)
+
+
+def revert_commands(card_or_rec: dict, by_card: str) -> list:
+    """art.py install argv lists that put the owner-kept picture(s) back (the one-click revert)."""
+    return [["python3", "src/RimMandrake/Utils/art/art.py", "install", k["mod"], k["rel"], k["sha"], "--by-card", by_card]
+            for k in card_or_rec.get("kept_install") or []]
+
+
+def replaces_kept(card: dict, decision: str) -> bool:
+    return bool(card.get("owner_kept")) and decision == "REGEN"
 
 
 def cap_regen(decision: str, prior_rounds: int, max_rounds: int) -> tuple[str, int]:
