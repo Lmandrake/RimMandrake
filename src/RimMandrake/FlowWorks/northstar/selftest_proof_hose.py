@@ -216,6 +216,21 @@ def vh_reel_facing_checks(VH):
           "brass = inward == [1, 0] and V.reel_facing(dst, RELAY_TARGET[dst]) == 3" in src)
 
 
+def vh_review_site_checks(VH):
+    """RELAY_PROOF_FIX_SITE_WIPES_THE_REVIEW: a scene that clears and repaints its rect refuses on a --no-fresh-map run."""
+    import argparse
+    r1, r2, r3 = {}, {}, {}
+    check("VH site: fresh_map=False refuses and names the reason", VH.refuse_review_site(argparse.Namespace(fresh_map=False), r1)
+          and "fresh map" in r1.get("aborted", ""), r1)
+    check("VH site: a fresh map and a standalone run (no attribute) build", not VH.refuse_review_site(argparse.Namespace(fresh_map=True), r2)
+          and not VH.refuse_review_site(argparse.Namespace(), r3) and not r2 and not r3)
+    src = open(VH.__file__, encoding="utf-8").read()
+    for fn in ("run_live", "run_maze", "run_relay", "run_carry"):
+        body = src.split("def %s(args):" % fn)[1].split("\ndef ")[0]
+        check("VH site: %s checks refuse_review_site before its first destroy_batch" % fn,
+              0 <= body.find("refuse_review_site(args, res)") < body.find("jawa/destroy_batch"))
+
+
 def zoo_start_checks(Zoo):
     """PROOF_SWEEPS_FIX_OTHER_ZOOS_STILL_OPEN: validation_core.sweep_at_start, the opening sweep validation_v2
     (--current-map), liquid_checks, raid_trench_proof and water_scenes_walk share."""
@@ -523,6 +538,7 @@ def main():
     check("reels: nozzle side cells by facing (E = the footprint's east column, W = its west column)",
           PH._nozzle_side(10, 20, 1) == (11, 12, 20, 22) and PH._nozzle_side(10, 20, 3) == (10, 11, 20, 22))
     vh_reel_facing_checks(VH)
+    vh_review_site_checks(VH)
     print("selftest_proof_hose: %s (%d failing)" % ("PASS" if not FAILS else "FAIL", len(FAILS)))
     return 0 if not FAILS else 1
 

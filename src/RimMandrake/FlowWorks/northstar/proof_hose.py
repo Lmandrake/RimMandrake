@@ -621,7 +621,7 @@ class Proof(object):
         return not self.args.only or name in ("preflight", "session") or name in self.args.only
 
     def ns(self, **kw):
-        return argparse.Namespace(**dict({"save": None, "save_load": None, "removal_check": None, "fresh_map": False, "out": None}, **kw))
+        return argparse.Namespace(**dict({"save": None, "save_load": None, "removal_check": None, "fresh_map": not self.args.no_fresh_map, "out": None}, **kw))
 
     def checkpoint(self, final=False):
         path = getattr(self, "out_path", None)
