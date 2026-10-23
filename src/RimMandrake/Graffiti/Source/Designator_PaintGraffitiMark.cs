@@ -51,9 +51,11 @@ namespace RimMandrake.Graffiti
             // nearby" search the job itself later uses, so this refuses a
             // designation nowhere near any wall at all rather than
             // accepting it and letting it sit unworked forever.
-            if (!GraffitiJobUtility.TryFindWallMarkCellNear(loc, Map, out IntVec3 _))
+            // GPT deep review 2026-10-22 #5: the job paints the CLICKED cell, so that cell itself must stand against a wall
+            // (a wall merely "nearby" accepted orders that painted open floor)
+            if (!loc.Standable(Map) || !GraffitiJobUtility.HasCardinalWall(loc, Map))
             {
-                return "No wall nearby to paint on.";
+                return "Mark a floor cell right against a wall.";
             }
             return true;
         }

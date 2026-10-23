@@ -97,7 +97,8 @@ def mod_glyphs():
     for path in sorted(glob.glob(os.path.join(MOD, "Defs", "*.xml"))):
         root = parse(path)
         if root is None:
-            continue
+            # GPT deep review 2026-10-22 #16: our OWN defs failing to parse is a failure, never a silent skip
+            raise SystemExit("FAIL: our own Defs file does not parse: %s" % path)
         for td in root.iter("ThingDef"):
             name = td.findtext("defName")
             for ext in td.iter("li"):

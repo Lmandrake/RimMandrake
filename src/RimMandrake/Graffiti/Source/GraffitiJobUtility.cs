@@ -92,7 +92,7 @@ namespace RimMandrake.Graffiti
             return PickFrom(cells, states, out result);
         }
 
-        private static bool HasCardinalWall(IntVec3 c, Map map)
+        internal static bool HasCardinalWall(IntVec3 c, Map map)
         {
             foreach (IntVec3 adj in GenAdj.CardinalDirections)
             {
