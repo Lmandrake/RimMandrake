@@ -159,6 +159,13 @@ namespace RimMandrake.Cauldron.SelfTest
                                     Check(RM_VentKernel.Matches(h, temperament, recent) == want, $"Matches({h}) != spec");
                                 }
                                 if (temperament == RM_VentTemperament.Stable) Check(!(RM_VentKernel.Matches(RM_VentHabitat.StableRing, temperament, recent) && RM_VentKernel.Matches(RM_VentHabitat.RecentBlowout, temperament, recent)), "a stable ring vent that recently blew out is in two habitats");
+                                // ring planting: empty cells always plant; only a mapgen roll wipes, and never a tree or another vent flower
+                                for (int bits = 0; bits < 16; bits++)
+                                {
+                                    bool mg = (bits & 1) != 0, occ = (bits & 2) != 0, tree = (bits & 4) != 0, vf = (bits & 8) != 0;
+                                    int sAct = !occ ? 1 : (mg && !tree && !vf) ? 2 : 0;
+                                    Check(RM_VentKernel.RingPlantAction(mg, occ, tree, vf) == sAct, $"RingPlantAction({mg},{occ},{tree},{vf}) != spec {sAct}");
+                                }
                             }
                             break;
                         case 5: // output and recovery

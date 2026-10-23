@@ -469,6 +469,14 @@ class Fake(object):
             ch = min(0.75, self.WIND * 0.4) if self.settings.get("ventGasDrifts") == "True" else 0.0
             return {"success": True, "result": "total=%d cells=%d cx=%.3f cz=%.3f heading=%d wind=%.3f chance=%.3f ticks=%d"
                     % (c[0], 49 if c[0] else 0, c[1], c[2], self.heading(), self.WIND, ch, self.ticks)}
+        if method == "ProofVentRings":
+            b = self.broken
+            rp = 0 if "ring_old_map" in b else 2 if "gardens_off_map" in b else 1
+            ringed = (rp == 1 and "ring_flat" not in b) or (rp == 2 and "ring_ignores_toggle" in b)
+            rc = (30, 24, 6) if ringed else (4, 3, 1)   # per 100 ring cells; control is ~4 / 3 / 0.7 per 100
+            return {"success": True, "result": "ringPass=%d; RM_BloodBouquet vents=2 ring=%d/100 ctrl=300/10000; "
+                    "RM_CrystalFlower vents=3 ring=%d/100 ctrl=400/10000; RM_GiantToxicFlower vents=1 ring=%d/100 ctrl=70/10000"
+                    % (rp, rc[1], rc[0], rc[2])}
         if method == "DriftChance":
             w = float(a[0])
             c = 0.4 if "drift_flat" in self.broken else max(0.0, min(0.75, w * 0.4))
@@ -525,7 +533,7 @@ class Fake(object):
     def t_map_info(self, **k):
         # map_is_cauldron: the real RM_Cauldron site (SPRINT_SITES_DIAGNOSE_VENOMVINE_SCRATCHES, live 2026-10-16)
         return {"success": True, "sizeX": 250, "sizeZ": 250,
-                "mapBiome": V.BIOME if ("map_is_cauldron" in self.broken or self.chain == "ruins") else "TemperateForest"}
+                "mapBiome": V.BIOME if ("map_is_cauldron" in self.broken or self.chain in ("ruins", "vent_gardens")) else "TemperateForest"}
 
     # ------------------------------------------------------------ tools: defs
     def t_get_defs(self, defs="", fields=None, limit=200, deep=False, **k):
@@ -990,6 +998,7 @@ BREAKS = {
     "no_warden": "fire.fire_warden_beats_fire",
     "warden_ignores_toggle": "fire.fire_warden_toggle_off",
     "vent_ext_missing": "load.vent_habitat_wired",
+    "ring_flat": "vent_gardens.vent_flowers_ring_vs_control",
     "weather_mult_flat": "vents.vent_weather_multiplier",
     "weather_ignores_toggle": "vents.vent_weather_multiplier",
     "no_falter": "vents.vent_falter_precedes_bloom",
@@ -1109,6 +1118,21 @@ def main():
     if reds or got != "UNMEASURED":
         bad.append("harness break stale_twin: expected rhossak_bind_off_unbinds UNMEASURED and no rhossak red, got %s / %s"
                    % (got, reds))
+    # SITE: a Cauldron site saved before the ring fix (ringPass 0) reads background rings: UNMEASURED, never red.
+    res = run(["ring_old_map"])
+    reds = sorted(k for k, v in res.items() if v[0] in ("FAIL", "CRASH"))
+    got = res.get("vent_gardens.vent_flowers_ring_vs_control", ("?",))[0]
+    if reds or got != "UNMEASURED":
+        bad.append("site break ring_old_map: expected vent_flowers_ring_vs_control UNMEASURED and no red, got %s / %s" % (got, reds))
+    # A4 OFF arm: a map generated with ventGardensEnabled off reads flat rings (PASS); rings anyway -> FAIL.
+    res = run(["gardens_off_map"])
+    got = res.get("vent_gardens.vent_flowers_ring_vs_control", ("?",))[0]
+    if got != "PASS":
+        bad.append("gardens_off_map: expected vent_flowers_ring_vs_control PASS (flat rings with the toggle off), got %s" % got)
+    res = run(["gardens_off_map", "ring_ignores_toggle"])
+    got = res.get("vent_gardens.vent_flowers_ring_vs_control", ("?",))[0]
+    if got != "FAIL":
+        bad.append("gardens_off_map+ring_ignores_toggle: expected vent_flowers_ring_vs_control FAIL, got %s" % got)
     # SITE: the Utinni layer is not on the tier -> the shrine row cannot ask: UNMEASURED, never red.
     res = run(["no_utinni"])
     reds = sorted(k for k, v in res.items() if v[0] in ("FAIL", "CRASH"))

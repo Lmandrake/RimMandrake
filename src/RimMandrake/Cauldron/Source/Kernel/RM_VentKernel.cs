@@ -96,6 +96,18 @@ namespace RimMandrake.Cauldron
 
         public static bool InRing(float distance, float minRadius, float radius) { return distance >= minRadius && distance <= radius; }
 
+        // What a vent-ring cell does with a flower roll: 0 refuse, 1 plant into the empty cell, 2 wipe the occupant then
+        // plant. The vent flowers are also on the biome's wild roster, and the gardens' MapGenerated runs after the plant
+        // genstep, so on a fresh map most ring cells already hold a wild plant: refusing every occupied cell left the
+        // rings no denser than the rest of the map (live 2026-10-23). At mapgen only (no player plants yet), a ring roll
+        // may replace a wild non-tree plant; never a tree, never another vent flower, never after mapgen.
+        public static int RingPlantAction(bool mapgen, bool occupied, bool occupantIsTree, bool occupantIsVentFlower)
+        {
+            if (!occupied) return 1;
+            if (!mapgen || occupantIsTree || occupantIsVentFlower) return 0;
+            return 2;
+        }
+
         // ---- suppression ------------------------------------------------------------------------------
         // A drinker adds `amount` of the 0..1 meter; at 1 the meter resets and the vent is due to fall silent.
         public static bool AddSuppression(ref float suppression, float amount, bool alreadySilenced, bool hasExt)

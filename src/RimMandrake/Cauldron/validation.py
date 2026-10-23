@@ -34,10 +34,11 @@ NOT DRIVEN HERE (walk lines say UNCOVERED, with the reason):
     (CAULDRON_FIRE_INSTIGATOR_TOOL_1).
   * Wild-vexxiss shearing (60 in-game days, tame-only), toxic-gear resistance to the vent bloom, a
     butchered zisska's real yield (needs a built bench + bill): only the defs are read.
-  * Vent flowers (crystal / blood / giant toxic rings, CAULDRON_VENT_ENRICHMENT_HOOKS_1): the spread only runs on
-    a map whose biome roster names the plants, and takes days of ticks. Only the wiring is read
-    (load.vent_habitat_wired). `ventsEnabled` (worldgen), `ventFalterMessage` (a Messages.Message the bridge
-    cannot list) and `ventGardensEnabled` are write/read-back roundtrips only.
+  * Vent flowers (crystal / blood / giant toxic rings, CAULDRON_VENT_ENRICHMENT_HOOKS_1): the ONGOING spread takes days
+    of ticks and is not driven. The MAPGEN rings are read by `vent_gardens` (RM_MapComponent_CondensateGardens.
+    ProofVentRings: ring vs far-control density per flower on the map as generated); a map generated with
+    `ventGardensEnabled` off is that toggle's OFF arm. `ventsEnabled` (worldgen) and `ventFalterMessage` (a
+    Messages.Message the bridge cannot list) are write/read-back roundtrips only.
   * CAULDRON_ENRICHMENT_VISUALS_1 (dewfall beads, dewfall saturation, assay flecks, vexxiss prints): toggles are
     roundtrips only. Beads need a locked dewfall over unroofed non-home ground for hours (a chain is owed);
     saturation and flecks stay dormant until their art is on disk; prints sit on CreatureBehaviors' track grid,
@@ -1057,6 +1058,67 @@ def ruins_chain(t):
             if missing:
                 _fail("%s resolves but no shrine stands within 7 cells of rig(s) %s: the Utinni patch (Cauldron_OomoShrine.xml) "
                       "did not reach the kit's shrineDefs, or the placement found no free cell" % (SHRINE, missing))
+
+
+# --------------------------------------------------------------------------- chain: vent flower rings at mapgen (read-only)
+# CAULDRON_VENT_ENRICHMENT_HOOKS_1 A3/A4. Live 2026-10-23 (16-mod, fresh RM_Cauldron map): vent-keyed flowers were not
+# clearly denser near vents than in control rects. MOD: the three flowers are also on the biome's wild roster (0.5 / 0.4 /
+# 0.08) and the gardens' MapGenerated runs after the plant genstep, so the ring roll refused nearly every cell (already
+# planted) and the rings were background. Fixed: a mapgen ring roll may replace a wild non-tree plant
+# (RM_VentKernel.RingPlantAction). The proof reads the map AS GENERATED, so this chain runs before any chain clears a pad.
+
+RING_RATIO_MIN = 3.0      # ring density / far-control density for a flower with a matching vent (mapgenChance 0.3 vs ~4%)
+RING_OFF_RATIO_MAX = 2.0  # with ventGardensEnabled off at mapgen the ring is background only
+RING_MIN_CELLS = 20       # fewer fertile ring cells than this cannot carry a density
+CTRL_MIN_CELLS = 500
+
+
+def _ring_lines(text):
+    """'ringPass=1; RM_X vents=2 ring=12/80 ctrl=40/9000; ...' -> (ringPass, {def: (vents, rc, rcells, cc, ccells)})."""
+    m = re.match(r"ringPass=(\d)", text or "")
+    rows = {}
+    for d, v, rc, rn, cc, cn in re.findall(r"(\w+) vents=(\d+) ring=(\d+)/(\d+) ctrl=(\d+)/(\d+)", text or ""):
+        rows[d] = (int(v), int(rc), int(rn), int(cc), int(cn))
+    return (int(m.group(1)) if m else None), rows
+
+
+@suite.chain("vent_gardens")
+def vent_gardens_chain(t):
+    """Vent flower rings on a freshly generated Cauldron map: each flower with a matching vent stands >= RING_RATIO_MIN
+    times denser in its ring than far from every vent; on a map generated with ventGardensEnabled off, < RING_OFF_RATIO_MAX."""
+    with _comp(t, "vent_flowers_ring_vs_control", toggle="ventGardensEnabled"):
+        if _live(t):
+            mi = t.bridge_call("jawa/map_info") or {}
+            if _live(t) and mi.get("mapBiome") != BIOME:
+                _unmeasured(t, "the map's biome is %r, not %s: vents generate only on a Cauldron map" % (mi.get("mapBiome"), BIOME))
+            text = _static(t, "RimMandrake.Cauldron.RM_MapComponent_CondensateGardens", "ProofVentRings", "current")
+            _note(t, "ProofVentRings", text)
+            # LIES: a site saved before the ring fix (ringPass 0) reads background rings and would FAIL against a fixed
+            # mod; a map whose vents were spawned by a chain (not mapgen) has no rings at all. Both are SITE.
+            if text.startswith("no vents"):
+                _unmeasured(t, "no RM_CauldronVent on the map (ventsEnabled off at mapgen, or an old site): %s" % text)
+            rp, rows = _ring_lines(text)
+            if rp in (None, 0):
+                _unmeasured(t, "the map predates the ring fix or never ran the gardens' mapgen (ringPass %r): "
+                               "generate a fresh RM_Cauldron map with the current build" % rp)
+            if not rows:
+                _unmeasured(t, "ProofVentRings read no flower lines: %r" % text)
+            bad, measured = [], 0
+            for d, (nv, rc, rn, cc, cn) in sorted(rows.items()):
+                if nv < 1 or rn < RING_MIN_CELLS or cn < CTRL_MIN_CELLS:
+                    continue
+                measured += 1
+                ring_d, ctrl_d = rc / float(rn), cc / float(cn)
+                ratio = ring_d / ctrl_d if ctrl_d > 0 else (float("inf") if rc >= 3 else 0.0)
+                if rp == 1 and ratio < RING_RATIO_MIN:
+                    bad.append("%s ring %d/%d vs control %d/%d (x%.2f < %.1f)" % (d, rc, rn, cc, cn, ratio, RING_RATIO_MIN))
+                if rp == 2 and ratio >= RING_OFF_RATIO_MAX and rc >= 3:
+                    bad.append("%s rings with ventGardensEnabled off at mapgen: %d/%d vs %d/%d (x%.2f)" % (d, rc, rn, cc, cn, ratio))
+            if not measured:
+                _unmeasured(t, "no flower had a matching vent with %d+ fertile ring cells and %d+ control cells: %r"
+                            % (RING_MIN_CELLS, CTRL_MIN_CELLS, text))
+            if bad:
+                _fail("; ".join(bad))
 
 
 # --------------------------------------------------------------------------- chain: weather
