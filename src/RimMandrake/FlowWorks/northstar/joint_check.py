@@ -91,12 +91,21 @@ def main(argv):
     results, worst = [], "PASS"
     rank = {"PASS": 0, "UNMEASURED": 1, "FAIL": 2}
     with _bridge() as B:
-        maps = [None]
+        maps, cur = [None], None
         if all_maps:
-            info = B.call("rimworld/get_game_info", {}) or {}
-            ids = [m.get("id", m.get("uniqueID")) for m in (info.get("maps") or []) if isinstance(m, dict)]
-            maps = [i for i in ids if i is not None] or [None]
-            cur = (B.call("rimworld/get_camera_state", {}) or {}).get("mapId")
+            # rimworld/get_game_info carries no map list (only mapCount) and the camera's mapId is "Map_0", not an int
+            # (2026-10-22 live: --all-maps silently read the current map only). jawa/set_current_map refuses an unknown
+            # id WITHOUT switching and lists loadedMaps in the refusal (river_site.loaded_maps); jawa/map_info gives cur.
+            r = B.call("jawa/set_current_map", {"mapId": -1}) or {}
+            det = r.get("details") if isinstance(r.get("details"), dict) else {}
+            lm = det.get("loadedMaps", r.get("loadedMaps"))
+            ids = [m.get("mapId") for m in lm if isinstance(m, dict)] if isinstance(lm, list) and not r.get("success") else []
+            maps = [i for i in ids if isinstance(i, int)]
+            cur = (B.call("jawa/map_info", {}) or {}).get("mapId")
+            if not maps:
+                print("map list unreadable: %s" % str(r)[:200])
+                print("JOINT CHECK: UNMEASURED")
+                return 2
         for mid in maps:
             if mid is not None:
                 B.call("jawa/set_current_map", {"mapId": int(mid)})
@@ -108,7 +117,7 @@ def main(argv):
                 print(ln)
             results.append({"map": mid, "verdict": verdict, "answer": ans})
             worst = max(worst, verdict, key=lambda v: rank[v])
-        if all_maps and cur is not None:
+        if all_maps and isinstance(cur, int):
             B.call("jawa/set_current_map", {"mapId": int(cur)})
     print("JOINT CHECK: %s" % worst)
     if out:
