@@ -159,44 +159,108 @@ namespace RimMandrake.Contagion
                 && !p.InMentalState; // its own emitted manhunters are not re-eaten
         }
 
+        // Absorb diagnostics, per pass, never scribed (CONTAGION_MECHANICS_BUILD_1 A6: live 2026-10-19e read 0 of 6
+        // Unfinished absorbed in ten passes, every survivor on a Wait job, and the old Absorb skipped them in silence).
+        // Read live through RM_CoalescenceProof.AbsorbReport. Index = AbsorbWhy.
+        public enum AbsorbWhy { Candidate, OutOfRange, Eaten, Downed, AlreadyWalking, NoRingCell, Unreachable, Ordered, OrderLost, Count }
+        private readonly int[] lastPassCounts = new int[(int)AbsorbWhy.Count];
+        private readonly int[] totalCounts = new int[(int)AbsorbWhy.Count];
+        private int absorbPasses;
+        // Pawns ordered last pass: one still absorbable, in range, outside the ring and NOT on our Goto this pass lost
+        // the order between passes (a pather error ends a Goto into vanilla's Wait 250, then the main think tree, where
+        // CreatureBehaviors' sun escape can send it to shade instead).
+        private readonly HashSet<int> orderedLastPass = new HashSet<int>();
+        private readonly HashSet<int> orderedThisPass = new HashSet<int>();
+        private static readonly List<IntVec3> tmpRing = new List<IntVec3>();
+
+        public int AbsorbPasses => absorbPasses;
+        public int LastPass(AbsorbWhy w) => lastPassCounts[(int)w];
+        public int Total(AbsorbWhy w) => totalCounts[(int)w];
+
+        private void Count(AbsorbWhy w)
+        {
+            lastPassCounts[(int)w]++;
+            totalCounts[(int)w]++;
+        }
+
         private void Absorb(RM_CoalescenceExtension ext)
         {
+            absorbPasses++;
+            System.Array.Clear(lastPassCounts, 0, lastPassCounts.Length);
+            orderedThisPass.Clear();
             tmpPawns.Clear();
             tmpPawns.AddRange(Map.mapPawns.AllPawnsSpawned);
-            CellRect rect = this.OccupiedRect();
+            CellRect ringRect = this.OccupiedRect().ExpandedBy(1);
             for (int i = 0; i < tmpPawns.Count; i++)
             {
                 Pawn p = tmpPawns[i];
                 if (!IsAbsorbable(p, ext)) continue;
-                if (!p.Position.InHorDistOf(Position, ext.absorbRadius)) continue;
+                Count(AbsorbWhy.Candidate);
+                if (!p.Position.InHorDistOf(Position, ext.absorbRadius)) { Count(AbsorbWhy.OutOfRange); continue; }
 
-                if (rect.ExpandedBy(1).Contains(p.Position))
+                if (ringRect.Contains(p.Position))
                 {
                     FleckMaker.ThrowDustPuffThick(p.DrawPos, Map, 1.5f, new Color(0.45f, 0.05f, 0.08f));
                     p.Destroy(DestroyMode.Vanish);
                     Grow(1);
+                    Count(AbsorbWhy.Eaten);
                     continue;
                 }
 
-                if (p.Downed || p.jobs == null) continue;
+                if (p.Downed || p.jobs == null) { Count(AbsorbWhy.Downed); continue; }
                 Job cur = p.CurJob;
-                if (cur != null && cur.def == JobDefOf.Goto && cur.targetA.IsValid
-                    && rect.ExpandedBy(1).Contains(cur.targetA.Cell)) continue;
-                IntVec3 dest = IntVec3.Invalid;
-                float best = float.MaxValue;
+                if (cur != null && cur.def == JobDefOf.Goto && cur.targetA.IsValid && ringRect.Contains(cur.targetA.Cell))
+                {
+                    Count(AbsorbWhy.AlreadyWalking);
+                    orderedThisPass.Add(p.thingIDNumber);
+                    continue;
+                }
+                if (orderedLastPass.Contains(p.thingIDNumber)) Count(AbsorbWhy.OrderLost);
+
+                // The NEAREST ring cell this pawn can actually reach. The old code took the nearest standable cell and
+                // gave up when that one cell was unreachable (a wall or rock on the near side), with 15 more to try.
+                tmpRing.Clear();
                 foreach (IntVec3 c in GenAdj.CellsAdjacent8Way(this))
                 {
-                    if (!c.InBounds(Map) || !c.Standable(Map)) continue;
-                    float d = c.DistanceToSquared(p.Position);
-                    if (d < best) { best = d; dest = c; }
+                    if (c.InBounds(Map) && c.Standable(Map)) tmpRing.Add(c);
                 }
-                if (!dest.IsValid || !p.CanReach(dest, PathEndMode.OnCell, Danger.Deadly)) continue;
+                if (tmpRing.Count == 0) { Count(AbsorbWhy.NoRingCell); continue; }
+                IntVec3 from = p.Position;
+                tmpRing.Sort((a, b) => a.DistanceToSquared(from).CompareTo(b.DistanceToSquared(from)));
+                IntVec3 dest = IntVec3.Invalid;
+                for (int k = 0; k < tmpRing.Count; k++)
+                {
+                    if (p.CanReach(tmpRing[k], PathEndMode.OnCell, Danger.Deadly)) { dest = tmpRing[k]; break; }
+                }
+                tmpRing.Clear();
+                if (!dest.IsValid) { Count(AbsorbWhy.Unreachable); continue; }
                 Job job = JobMaker.MakeJob(JobDefOf.Goto, dest);
                 job.locomotionUrgency = LocomotionUrgency.Walk;
                 job.expiryInterval = 2500;
                 p.jobs.StartJob(job, JobCondition.InterruptForced);
+                Count(AbsorbWhy.Ordered);
+                orderedThisPass.Add(p.thingIDNumber);
             }
             tmpPawns.Clear();
+            orderedLastPass.Clear();
+            orderedLastPass.UnionWith(orderedThisPass);
+        }
+
+        // One line for the proof hook: "passes=N last[...] total[...]".
+        public string AbsorbReport()
+        {
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            sb.Append("passes=").Append(absorbPasses).Append(" mass=").Append(mass).Append(" last[");
+            for (int w = 0; w < (int)AbsorbWhy.Count; w++)
+            {
+                sb.Append(w == 0 ? "" : " ").Append((AbsorbWhy)w).Append('=').Append(lastPassCounts[w]);
+            }
+            sb.Append("] total[");
+            for (int w = 0; w < (int)AbsorbWhy.Count; w++)
+            {
+                sb.Append(w == 0 ? "" : " ").Append((AbsorbWhy)w).Append('=').Append(totalCounts[w]);
+            }
+            return sb.Append(']').ToString();
         }
 
         private void TryEmit(RM_CoalescenceExtension ext, int stage)
@@ -282,6 +346,26 @@ namespace RimMandrake.Contagion
             string s = base.GetInspectString();
             string line = "Stage " + (Stage + 1) + ", absorbed mass " + mass + ".";
             return s.NullOrEmpty() ? line : s + "\n" + line;
+        }
+    }
+
+    // jawa/static_call proof hook (validation.py, coalescence chain): what Absorb did with its candidates, so a live
+    // "0 absorbed" names its cause (out of range / unreachable / no ring cell / order lost between passes) instead
+    // of leaving the harness to guess from the survivors' jobs.
+    public static class RM_CoalescenceProof
+    {
+        public static string AbsorbReport(Thing coalescence)
+        {
+            Building_RM_Coalescence c = coalescence as Building_RM_Coalescence;
+            if (c == null)
+            {
+                return "UNMEASURED " + (coalescence?.ThingID ?? "null") + " is not a Building_RM_Coalescence";
+            }
+            if (!c.Spawned)
+            {
+                return "UNMEASURED " + c.ThingID + " is not spawned";
+            }
+            return "OK " + c.AbsorbReport();
         }
     }
 }

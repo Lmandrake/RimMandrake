@@ -1889,13 +1889,28 @@ def coalescence(t):
                                     "downed": r.get("downed"), "faction": r.get("faction"),
                                     "mental": c.get("inMentalState"), "moving": mv, "job": list(_job_sample(c))})
                     _note(t, "unabsorbed Unfinished", who)
+                    # LIVE 2026-10-19e: 0 of 6 absorbed, every survivor on Wait 10-25 cells off, and Absorb skipped them in
+                    # silence. Building_RM_Coalescence now counts what each pass did (OutOfRange / Unreachable /
+                    # NoRingCell / Ordered / OrderLost ...); the report names the cause. Ordered and OrderLost climbing
+                    # together = the walk is ordered and then lost between passes (a pather error ends a Goto into
+                    # vanilla's Wait 250, then the main tree runs). Leading theory, UNPROVEN: the shade-hop IS live here
+                    # (RM_Contagion carries RM_SunHeatExtension, kind overhead, and the arm runs with the Burn off under
+                    # an open sky), and three survivors resting on Wait on ONE cell (188,131) is the shape of
+                    # RM_JobGiver_SunEscape dashing neighbours to the same nearestShade cell and MakeRest's Wait. So once
+                    # a Goto ends early, sun escape wins. The 22-mod list (PASS 2026-10-17) may lack that behaviour.
+                    # (Best-effort read: `_answer`.)
+                    rep = t.bridge_call("jawa/static_call", type="RimMandrake.Contagion.RM_CoalescenceProof",
+                                        method="AbsorbReport", args=str(_STATE["coal"]), _answer=True)
+                    rep_text = str((rep or {}).get("result") or rep)
+                    _note(t, "absorb report", rep_text)
                     skipped = [w for w in who if w["downed"] or w["faction"] or w["mental"]]
                     if who and len(skipped) == len(who):
                         _unmeasured(t, "FIXTURE: every surviving Unfinished is one Absorb skips by design (downed, "
                                        "factioned or in a mental state): %s" % who)
                     _fail("after %d passes the Coalescence reads Stage %s, mass %s (want Stage >= 2 at mass >= %d); "
-                          "%d of 6 Unfinished still alive and walkable: %s"
-                          % (10, stage, mass, STAGE_MASS[1], len(left), [w for w in who if w not in skipped]))
+                          "%d of 6 Unfinished still alive and walkable: %s; absorb report: %s"
+                          % (10, stage, mass, STAGE_MASS[1], len(left), [w for w in who if w not in skipped],
+                             rep_text[:400]))
 
         with _comp(t, "coalescence_emits_manhunters_and_grows_on_its_own"):
             if _live(t):
