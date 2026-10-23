@@ -366,7 +366,7 @@ def facings_image(rows: list[tuple[str, dict]], title: str, out: Path) -> None:
         y = HD + ri * (TILE + RL + 12) + RL
         words, line, lines = lab.split(), "", []
         for w in words:
-            if len(line) + len(w) > 28:
+            if line and len(line) + len(w) > 28:
                 lines.append(line)
                 line = ""
             line = (line + " " + w).strip()
