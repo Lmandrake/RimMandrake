@@ -599,7 +599,9 @@ def hediffs(snap):
 
 
 # ============================================================================ B0 preflight
-REPO_DLL = os.path.join(HERE, "..", "Assemblies", "RimMandrakeFlowWorks.dll")
+# FW_REPO_DLL: a shared clone's working-tree DLL can be another helper's uncommitted rebuild (2026-10-23: three rebuilds
+# in one hour); the driver deploys the COMMITTED blob and points this at an export of it so B0 judges what was deployed
+REPO_DLL = os.environ.get("FW_REPO_DLL") or os.path.join(HERE, "..", "Assemblies", "RimMandrakeFlowWorks.dll")
 
 
 def _file_sha256(path):
