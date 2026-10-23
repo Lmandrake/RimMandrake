@@ -1,0 +1,93 @@
+{
+ "script": "live_session.py",
+ "started": "2026-10-22T13:48:20",
+ "rows": [
+  {
+   "id": "B0_tier_truth",
+   "item": "-",
+   "criterion": "-",
+   "status": "PASS",
+   "cls": "HARNESS",
+   "detail": {
+    "running": 14,
+    "flowworks": true,
+    "why": ""
+   },
+   "block": "B0",
+   "eyes": false
+  },
+  {
+   "id": "B0_clock_rate",
+   "item": "-",
+   "criterion": "-",
+   "status": "PASS",
+   "cls": "HARNESS",
+   "detail": {
+    "ticks": 600,
+    "wall_s": 2.95,
+    "ticks_per_s": 203.5,
+    "frameBudgetMs": 150.0
+   },
+   "block": "B0",
+   "eyes": false
+  },
+  {
+   "id": "B6_flood_canal_kept",
+   "item": "POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD",
+   "criterion": "A6",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "why": "",
+    "weather": "{'success': True, 'before': 'Clear', 'after': 'TorrentialRain', 'lockInForce': True, 'gamePaused': True, 'notes': ['regi",
+    "weatherBefore": {
+     "current": "Clear",
+     "last": "Clear",
+     "curWeatherAge": 902,
+     "rainRate": 0.0,
+     "snowRate": 0.0
+    },
+    "floodReachedAfter": 4500,
+    "recededAfter": 2500,
+    "changed": [],
+    "changedValues": [],
+    "rainFillWas": "True"
+   },
+   "block": "B6",
+   "eyes": false
+  }
+ ],
+ "args": {
+  "dry_run": false,
+  "mock": false,
+  "list": false,
+  "only": "B0,B6",
+  "skip": "",
+  "frame_budget_ms": 150.0,
+  "player_log": "",
+  "no_owner_save": true,
+  "out_dir": "Transient/pile_2026-10-22/belt/ls6"
+ },
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "113d57bf1b0c87237edaa31a474f5fef259c888a601d5c71484f19a083d0eaf2",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes"
+  ],
+  "assembly_sha256": "77cd778941b152c46490c667102391c3a2360153ea0ccbf0f0e71f7cff22322e"
+ }
+}

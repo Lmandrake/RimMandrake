@@ -1,0 +1,496 @@
+{
+ "script": "live_session.py",
+ "started": "2026-10-22T13:46:36",
+ "rows": [
+  {
+   "id": "B0_tier_truth",
+   "item": "-",
+   "criterion": "-",
+   "status": "PASS",
+   "cls": "HARNESS",
+   "detail": {
+    "running": 14,
+    "flowworks": true,
+    "why": ""
+   },
+   "block": "B0",
+   "eyes": false
+  },
+  {
+   "id": "B0_clock_rate",
+   "item": "-",
+   "criterion": "-",
+   "status": "PASS",
+   "cls": "HARNESS",
+   "detail": {
+    "ticks": 600,
+    "wall_s": 1.53,
+    "ticks_per_s": 391.4,
+    "frameBudgetMs": 150.0
+   },
+   "block": "B0",
+   "eyes": false
+  },
+  {
+   "id": "B4_dig_8m_readout",
+   "item": "PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "readout": "OK Hole 8 m \u00b7 Water 0.00 m (0 L)",
+    "owed": "'machine labour digs it by Dig to depth' (colonists stop at 2 m: DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL) is the P10 walk: job read below"
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_dig_cost_notch16",
+   "item": "DIG_COST_TUNE_DEEP_IS_A_MEGAPROJECT",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "work": 51200.0,
+    "want": 51200,
+    "setting": "True",
+    "why": "",
+    "designator": {
+     "accepted": true
+    },
+    "how": "INFERRED: the job's per-cut work function read live, the progress bar not timed"
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_cover_40",
+   "item": "SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT",
+   "criterion": "A3",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "def_": "RM_PitCover_WovenScrap",
+    "rating": 40.0,
+    "trail": [
+     {
+      "n": 1,
+      "total": 60.8,
+      "depths": [
+       4.0
+      ],
+      "covers_left": 0
+     }
+    ]
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_grenade_no_blast_cover",
+   "item": "TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT",
+   "criterion": "A4",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "trench": 30.0,
+    "open": 25.0,
+    "added": {
+     "trench": {
+      "Crack": 5.0,
+      "Shredded": 25.0
+     },
+     "open": {
+      "Shredded": 20.0,
+      "Crack": 5.0
+     }
+    },
+    "drafted": [
+     true,
+     true
+    ],
+    "cells": [
+     [
+      136,
+      18
+     ],
+     [
+      147,
+      18
+     ]
+    ],
+    "want": [
+     [
+      136,
+      18
+     ],
+     [
+      147,
+      18
+     ]
+    ],
+    "note": "severity ADDED by the blast (pre-blast read subtracted); a blast is random per part"
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_cover_120",
+   "item": "SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT",
+   "criterion": "A3",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "def_": "RM_PitCover_PlankLattice",
+    "rating": 120.0,
+    "trail": [
+     {
+      "n": 1,
+      "total": 60.7,
+      "depths": [
+       4.0
+      ],
+      "covers_left": 6
+     },
+     {
+      "n": 2,
+      "total": 109.5,
+      "depths": [
+       4.0,
+       4.0
+      ],
+      "covers_left": 6
+     },
+     {
+      "n": 3,
+      "total": 170.3,
+      "depths": [
+       4.0,
+       4.0,
+       4.0
+      ],
+      "covers_left": 0
+     }
+    ]
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_reservoir_fish_rolled",
+   "item": "FISH_ROLL_MEND_PONDS_BORN_BARREN",
+   "criterion": "A2",
+   "status": "FAIL",
+   "cls": "MOD",
+   "detail": {
+    "why": "a 200-square dug water body rolled no fish (certain at 200+)",
+    "waterBody": {
+     "hasBody": true,
+     "type": "Freshwater",
+     "size": 200,
+     "hasFish": false,
+     "commonFish": [],
+     "population": 20.0
+    },
+    "fwBody": {
+     "id": null,
+     "cellCount": null,
+     "stock": null,
+     "capacity": null,
+     "limitless": null
+    }
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_reservoir_catch",
+   "item": "POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD",
+   "criterion": "A7",
+   "status": "FAIL",
+   "cls": "MOD",
+   "detail": {
+    "why": "fishing zone refused on the dug reservoir",
+    "refusals": [
+     "water body has no fish (WaterBody.HasFish false: barren roll, no fish types, or population 0)"
+    ],
+    "error": "NOTHING was zoned - every cell in 113,17,10,20 was refused, so the zone was not created."
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_access_portable_ladder_out",
+   "item": "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS",
+   "criterion": "A1",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "ladder": {
+     "def_": "RM_LadderPortable",
+     "asked": [
+      49,
+      18
+     ],
+     "rot_asked": 0,
+     "rot_read": 0,
+     "survived": true,
+     "note": ""
+    },
+    "pawn": {
+     "cell": [
+      52,
+      25
+     ],
+     "depth": 0.0,
+     "held": "False",
+     "trapped": "False",
+     "raw": "CLIMB k=2 held=False trapped=False cell=52,25 | POCKET k=2 comp=0 pocket=False size=62408 depth=0 gen=1501 built=1501 rebuilds=306"
+    },
+    "orderTaken": true,
+    "owed": "build-by-colonist, uninstall/re-set and the 4 m refusal are not read by this row"
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_access_gear_climbs_sheer_4m",
+   "item": "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "gear": "{'success': True, 'action': 'wear', 'displaced': [], 'notes': [], 'pawn': {'thingId': 'Human42459', 'thingIdNumber': 42459, 'name': \"Ludmilla 'Mila' Fisher\", 'n",
+    "pawn": {
+     "cell": [
+      51,
+      25
+     ],
+     "depth": 0.0,
+     "held": "False",
+     "trapped": "False",
+     "raw": "CLIMB k=7 held=False trapped=False cell=51,25 | POCKET k=7 comp=0 pocket=False size=62500 depth=0 gen=1501 built=1501 rebuilds=306"
+    },
+    "orderTaken": true
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_access_no_gear_stays_in",
+   "item": "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "pawn": {
+     "cell": [
+      58,
+      16
+     ],
+     "depth": 8.0,
+     "held": "False",
+     "trapped": "False",
+     "raw": "CLIMB k=2 held=False trapped=False cell=58,16 | POCKET k=2 comp=2 pocket=True size=9 depth=8 gen=1501 built=1501 rebuilds=306"
+    }
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_cover_220",
+   "item": "SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT",
+   "criterion": "A3",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "def_": "RM_PitCover_ReinforcedFrame",
+    "rating": 220.0,
+    "trail": [
+     {
+      "n": 1,
+      "total": 48.8,
+      "depths": [
+       4.0
+      ],
+      "covers_left": 6
+     },
+     {
+      "n": 2,
+      "total": 109.6,
+      "depths": [
+       4.0,
+       4.0
+      ],
+      "covers_left": 6
+     },
+     {
+      "n": 3,
+      "total": 158.5,
+      "depths": [
+       4.0,
+       4.0,
+       4.0
+      ],
+      "covers_left": 6
+     },
+     {
+      "n": 4,
+      "total": 219.3,
+      "depths": [
+       4.0,
+       4.0,
+       4.0,
+       4.0
+      ],
+      "covers_left": 6
+     },
+     {
+      "n": 5,
+      "total": 280.1,
+      "depths": [
+       4.0,
+       4.0,
+       4.0,
+       4.0,
+       4.0
+      ],
+      "covers_left": 0
+     }
+    ]
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_access_jump_pack_in_no_fall",
+   "item": "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS",
+   "criterion": "A3",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "pack": "{'success': True, 'action': 'wear', 'displaced': [], 'notes': [], 'pawn': {'thingId': 'Human42466', 'thingIdNumber': 424",
+    "jump": "{'success': True, 'action': 'cast', 'accepted': True, 'ticksElapsed': 125, 'timedOut': False, 'speedChanged': True, 'speedRestored': True, 'preCast': {'pawn': {",
+    "pawn": {
+     "cell": [
+      67,
+      17
+     ],
+     "depth": 6.0,
+     "held": "False",
+     "trapped": "False",
+     "raw": "CLIMB k=2 held=False trapped=False cell=67,17 | POCKET k=2 comp=3 pocket=True size=9 depth=6 gen=1501 built=1501 rebuilds=306"
+    },
+    "hediffs": {
+     "Stab": 6.0
+    },
+    "owed": "jump back out, skip, knockback-still-falls: not read"
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_rail_unrailed_control",
+   "item": "FALL_GUARDRAILS_BUILD_REAL_OBJECT",
+   "criterion": "A3",
+   "status": "UNMEASURED",
+   "cls": "OWED",
+   "detail": {
+    "pawn": {
+     "cell": [
+      168,
+      12
+     ],
+     "depth": 0.0,
+     "held": "False",
+     "trapped": "False",
+     "raw": "CLIMB k=2 held=False trapped=False cell=168,12 | POCKET k=2 comp=0 pocket=False size=62408 depth=0 gen=1501 built=1501 rebuilds=306"
+    },
+    "why": "the unrailed control does not fall (AI keeps off lips): the bar needs his ruling, A4/A7 knockback rows already discriminate"
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_access_rescue_ladder_queued",
+   "item": "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS",
+   "criterion": "A4",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "ladderSeen": true,
+    "afterTicks": 1030,
+    "downed": {
+     "cell": [
+      76,
+      17
+     ],
+     "depth": 10.0,
+     "held": "False",
+     "trapped": "False",
+     "raw": "CLIMB k=2 held=False trapped=False cell=76,17 | POCKET k=2 comp=4 pocket=True size=9 depth=10 gen=1501 built=1501 rebuilds=306"
+    },
+    "incapacitate": "{'success': True, 'action': 'downed', 'allowBleedingWoundsHonoured': False, 'downedBefore': False, 'deadBefore': False, 'downedAfter': True, 'deadAfter': False,",
+    "owed": "'built and the colonist carried out' needs a longer ride: read again in B7"
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_dehydration_rate",
+   "item": "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY",
+   "criterion": "T6",
+   "status": "UNMEASURED",
+   "cls": "HARNESS",
+   "detail": {
+    "sev": [
+     0.00225,
+     0.00750000076
+    ],
+    "ticks": 1000,
+    "projected60k": null,
+    "home": [
+     183,
+     17
+    ],
+    "wandered": [],
+    "how": "INFERRED from the measured rate"
+   },
+   "block": "B4",
+   "eyes": false
+  }
+ ],
+ "args": {
+  "dry_run": false,
+  "mock": false,
+  "list": false,
+  "only": "B0,B4",
+  "skip": "",
+  "frame_budget_ms": 150.0,
+  "player_log": "",
+  "no_owner_save": true,
+  "out_dir": "Transient/pile_2026-10-22/belt/ls"
+ },
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "113d57bf1b0c87237edaa31a474f5fef259c888a601d5c71484f19a083d0eaf2",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes"
+  ],
+  "assembly_sha256": "77cd778941b152c46490c667102391c3a2360153ea0ccbf0f0e71f7cff22322e"
+ }
+}

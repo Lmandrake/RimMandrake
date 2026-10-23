@@ -26,3 +26,4 @@ PHONE READY: Transient/pile_2026-10-22/phone/reel_ns_phone.png (+ reel_ns_phone.
 - (Step 2) 08:51 filed 16 artpipe jobs reelns_<look>_<stored|laid>_<north|south>_v1 (Transient/pile_2026-10-22/reelns/make_jobs.py -> jobs.json), canon_reference = installed west art per look/state, target_texpath Reel_<state>_<facing>.
 - (Step 2) 08:58 11/16 done, 5 active
 - (Step 2) 08:59 16/16 renders done (0 failed)
+- 09:01 publish blocked by another agent's dirty RM_SheetMath.cs (upstream touched it); pushed my commit via a scratch clone cherry-pick as 2b85094eb0 (committer email = gmail there: public repo identity slip, lesson filed). Local bench still holds 64443aeede (same patch) + 8e13037d85 (belt agent's, unpushed); the next rebase drops mine as already applied.
