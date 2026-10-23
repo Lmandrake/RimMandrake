@@ -109,3 +109,31 @@ or a grey composite pump with a pressure switch), `Sprinkler/Modern/RM_Sprinkler
 `Hose/Styles/Modern/{Coupling_Bare,EndCap_Bare,Nozzle_Bare,Mouth,Binding,Strand_Flat,Strand_Plump}.png`, joins
 `Joins/Modern/{Coupler,Flange,Saddle}.png`, and the non-liquid Modern pipe/pipe-pole/weir/drawbridge/suspension sets.
 Each deserves the same M1–M4 look; the pump is the next most visible.
+
+## Fire hose reels — owner, 2026-10-22, on the reel options card: *"Try looking up firehose reel"*
+
+None of the three garden/commercial reels was picked; the Modern reel is to be a **fire hose reel**. Real modern classes
+(sources below):
+- **Swinging fire hose reel (EN 671-1)** — a red pressed-steel drum on a swing-arm wall/pedestal bracket that pivots
+  out, red semi-rigid hose (EN 694), a brass or chrome manual stop valve (or automatic valve in the hub), a red/chrome
+  jet-spray nozzle clipped to a holder, hose guide rollers. Always red (refs F1–F5).
+- **Hose reel cabinet** — the same red reel housed in a galvanised, red-painted or brushed stainless cabinet with a
+  solid or clear/wired-glass door, surface or recessed mounted (refs F6–F8).
+- **Booster reel / fire cart reel** — fire-apparatus booster reel (Hannay F series: steel, graphite or red, bevel-gear
+  manual rewind crank, 90° ball-bearing swivel inlet, red rubber booster hose) or a red powder-coated hose cart
+  (refs F9–F12).
+Judge: M1 applies (a fire reel, not a red-painted garden reel); red is the product colour here and passes M3.
+
+Sources:
+- F1 Angus Fire Tartan swinging arm hose reel — https://angusfire.co.uk/products-catalogue/tartan-swinging-arm-hose-reel
+- F2 Vigil swinging automatic hose reel (EN 671-1, LPCB) — https://www.fireprotectiononline.co.uk/fire-brigade-equipment/25mm-swinging-automatic-fire-hose-reel
+- F3 Swinging fire hose reel (manual) — https://www.fireprotectiononline.co.uk/fire-brigade-equipment/swinging-fire-hose-reel
+- F4 NOHA 1SW (red reel, 1" manual stop valve) — https://saval.nl/en/products/noha-model-1sw
+- F5 Pivaset PV-23A hydrant reel, automatic valve, "always red" — https://www.pivaset.fi/en/pv-23a/pv-23a-kela-550-150-25mm-25m-464
+- F6 NAFFCO fire hose reel cabinets (galvanised/stainless, solid or glass door, BS EN 671-1) — https://www.naffco.com/en/fire-hose-reel-cabinets-bsi-lpcb-approved-1
+- F7 PAR Group fire hose and hose reel cabinets (GRP) — https://www.par-group.co.uk/health-and-safety/fire-protection/fire-hose-and-hose-reel-cabinets/
+- F8 Fullblaze FB200 stainless double-door hose cabinet — https://fullblaze-me.smartway.co/products/4
+- F9 Hannay F24-23-24 RT booster reel, bevel gear manual rewind, red — https://www.flashwildfireservices.ca/products/hannay-reel-f24-23-24-rt
+- F10 Hannay booster hose reel — https://firesafetyusa.com/products/hannay-booster-hose-reel
+- F11 Hannay FF series (steel, graphite finish; swivel inlet) — https://www.dultmeier.com/hannay-ff-series-hose-reels-for-booster-hose-and-collapsible-fire-hose
+- F12 Fire Safety USA red powder-coated mobile hose cart — https://firesafetyusa.com/products/mobile-hose-cart

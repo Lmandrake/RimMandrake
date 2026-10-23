@@ -86,3 +86,19 @@ f1c25b3a03 (item) · 2ef76419c3 (brief) · 50733d22fb (drafts, phone collections
 - Short A and B redrawn twice with a raised camera (v3, axis-aligned): A now shows a lit top with the lid as an
   ellipse; B is axis-aligned but its top face is still weak (the generator resists a high angle on horizontal drums) —
   flagged, not hidden. v1/v2 raws kept in D:\ClaudeWork\rimmandrake\modern_art\raw.
+
+## 9. Owner picks installed + fire hose reels (2026-10-22, later)
+- Owner by card: short A white leg tank, tall B green poly, cargo B IBC steel, extra-tall A white poly → installed with
+  `art.py install` (--owner-said carries the card label; art.py has no --by-card), fb34c9bc2d. Selftests looks_round +
+  liquid_look_tune GREEN; tanks are Graphic_Single, no geometry tool reads them. Not deployed.
+- Reel: none picked; owner "Try looking up firehose reel". Brief gained a fire-hose-reel section (12 sources F1–F12).
+- Fire reel drafts (`drafts/Reel_{PumpHookup,Deployed}{,_north,_south}_F{A,B,C}.png`): FA swinging pedestal fire reel
+  (EN 671 style, red drum, handwheel stop valve), FB stainless fire-reel cabinet with glass door, FC Hannay-style red
+  booster reel with bevel-gear crank and brass swivel.
+- Self-judge: REDO and regenerated — FA stored south, FA laid-out north/south, FC laid-out north/south (the generator
+  turned the drum axis left-right, unlike the stored views); laid-out views were then drawn by emptying the matching
+  stored picture. KEEP all 18 now. Notes: FA laid-out west shows a steel-grey core where N/S show red (minor); FB's
+  turned views vary a little in cabinet proportion. Codex returned the three west masters as OPAQUE RGB on black despite
+  the prompt; cut by border flood fill (rembg was OOM-killed, rc 137).
+- Phone: garden-reel A/B/C images removed from phone/ (drafts kept); `RM_HoseReel_0_options.png` = current + FA/FB/FC;
+  per option full, true-scale, facings. All re-Read after the final build; tank option sheets verified intact (1596–1600 px).
