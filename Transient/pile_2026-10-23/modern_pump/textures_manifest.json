@@ -1,0 +1,83 @@
+{
+ "rows": [
+  {
+   "key": "ModernPump",
+   "label": "pump, modern look (A = today; B, C, D = candidates)",
+   "part": "pump",
+   "look": "Modern",
+   "variant": "A",
+   "section": "modern pump",
+   "resources": [
+    "RimMandrake/FlowWorks/Pump/Modern/RM_LiquidPump"
+   ],
+   "render_match": "modernpump_",
+   "reference_textures": [
+    {
+     "path": "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Pump/Modern/RM_LiquidPump.png",
+     "size": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "TODAY's Modern art (red repaint, kept)"
+     }
+    }
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "RM_LiquidPump.xml / RM_LiquidPumpStyles.xml: Graphic_Single drawSize (1,1), size (1,1), not rotatable"
+   }
+  },
+  {
+   "key": "ModernSprinkler",
+   "label": "sprinkler, modern look (A = today; B, C, D = candidates)",
+   "part": "sprinkler",
+   "look": "Modern",
+   "variant": "A",
+   "section": "modern sprinkler",
+   "resources": [
+    "RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead"
+   ],
+   "render_match": "modernsprinkler_",
+   "reference_textures": [
+    {
+     "path": "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead.png",
+     "size": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "TODAY's Modern art (red repaint, kept)"
+     }
+    }
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "RM_Sprinklers.xml: Graphic_Single drawSize (1,1), drawOffset z 0.18 (Modern)"
+   }
+  }
+ ],
+ "lead_html": "<p>Owner 2026-10-22: <i>\"The 'modern' tank and reel art isn't supposed to be just painted with the primary colors ... Modern water tanks. Modern hose reels. Like you would buy in home depot\"</i>. The tanks and reel are done; the Modern <b>pump</b> and <b>sprinkler head</b> are still the red repaint. Column A is today's picture; columns B, C, D are three candidate real modern products (pump B jet pump, C pool/booster pump, D stainless booster; sprinkler B pop-up rotor, C brass impact head, D micro spinner). Keep the one you like per subject, or note what to change. Nothing is installed until you pick (it replaces art you kept). Containers and hose ends were left alone (not red repaints); the small Modern join fittings are still red. Item MODERN_PUMP_REDRAW_SAME_RED_DIFFERENT_DAY; brief design/RimMandrake/flowworks_modern_art_brief.md.</p>"
+}

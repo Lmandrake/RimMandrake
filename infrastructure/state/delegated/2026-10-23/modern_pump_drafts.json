@@ -1,0 +1,53 @@
+{
+ "judge_model": "gpt-6.1-sol (gpt_consult.py, codex.exe)",
+ "brief": "design/RimMandrake/art_judge_brief.md@dc0d3621a + flowworks_modern_art_brief.md M1-M4",
+ "subject": "RM_LiquidPump (Modern style)",
+ "item": "MODERN_PUMP_REDRAW_SAME_RED_DIFFERENT_DAY",
+ "verdicts": [
+  {
+   "picture": "Transient/pile_2026-10-23/modern_pump/cand/Pump_Modern_A.png (pass 1)",
+   "facing": "single",
+   "verdict": "KEEP",
+   "notes": "Recognisable modern pump treatment. The casing, motor and connections remain distinct at play zoom. Deliberate top-down view is appropriate here."
+  },
+  {
+   "picture": "Transient/pile_2026-10-23/modern_pump/cand/Pump_Modern_B.png (pass 1)",
+   "facing": "single",
+   "verdict": "REDO",
+   "notes": "Modern materials and four-port registration work, but the product identity is wrong for this subject.",
+   "violated": "M1",
+   "seen": "The dominant transparent window exposes a perforated basket. The object reads as an inline basket strainer rather than a liquid pump; no identifiable motor or switch establishes the requested product.",
+   "redo_brief": "Replace the dominant basket window with an identifiable composite pump housing, motor and pressure switch, preserving the four centred port endpoints.",
+   "quote": "Each Modern picture is recognisably one real product class listed below (a poly storage tank, an IBC tote, a resin hose-reel cart \u2026)."
+  },
+  {
+   "picture": "Transient/pile_2026-10-23/modern_pump/cand/Pump_Modern_C.png (pass 1)",
+   "facing": "single",
+   "verdict": "REDO",
+   "notes": "The stainless clamp connections and blue housing otherwise communicate modern materials, and the required plan-view port arrangement is preserved.",
+   "violated": "M2",
+   "seen": "Four prominent silver bolt heads secure the blue circular face cover, making a bolted end-cap a major visible feature.",
+   "redo_brief": "Replace the bolted blue face cover with a smooth moulded motor housing while preserving the stainless clamp connections and all four port endpoints.",
+   "quote": "Rivets, weld seams, rust, hazard stripes and bolted end-caps belong to the other looks."
+  },
+  {
+   "picture": "eb26dfa77f15e7b674729ac50239cdb2c975ad79f099458503efa21448b66cd5",
+   "facing": "single",
+   "verdict": "KEEP",
+   "notes": "pass 2 after redraw: The redraw establishes a motor and reads as a composite utility pump, resolving the basket-strainer concern. Main shapes remain distinct at play zoom."
+  },
+  {
+   "picture": "ef2881d177df5516ad19557e361e7227dd0dfd014d7b3f781514edc143711af7",
+   "facing": "single",
+   "verdict": "KEEP",
+   "notes": "pass 2 after redraw: The blue face now reads as a motor fan guard rather than a bolted cover. Stainless and blue motor remain distinct at play zoom; modern form extends beyond colour."
+  }
+ ],
+ "ranking": [
+  "A",
+  "B",
+  "C"
+ ],
+ "scope": "drafts for the owner's pick only; replaces kept art (E3, delegation_policy \u00a72.3), nothing installed",
+ "proposals": []
+}
