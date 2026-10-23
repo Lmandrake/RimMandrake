@@ -39,6 +39,8 @@
 
   <ItemGroup>
     <Compile Include="Kernel\RM_DeepDrillKernel.cs" />
+    <Compile Include="Kernel\RM_TileResourceKernel.cs" />
+    <Compile Include="RM_TileResources.cs" />
     <Compile Include="..\..\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
     <Compile Include="RM_DeepHomeDef.cs" />
     <Compile Include="Patch_DeepHome.cs" />

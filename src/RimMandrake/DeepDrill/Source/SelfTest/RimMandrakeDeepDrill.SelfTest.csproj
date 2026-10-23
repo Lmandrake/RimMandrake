@@ -14,6 +14,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\Kernel\RM_DeepDrillKernel.cs" />
+    <Compile Include="..\Kernel\RM_TileResourceKernel.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
 </Project>
