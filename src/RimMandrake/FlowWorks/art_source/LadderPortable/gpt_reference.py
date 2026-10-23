@@ -44,8 +44,7 @@ d.rectangle([x0 - rl, y0, x0, y1], fill=(6, 5, 4, 255)); d.rectangle([x1, y0, x1
 d.rectangle([x0 - rl, y1 - sl // 2, x1 + rl, y1 + sl // 2], fill=(6, 5, 4, 255))
 base = im.copy()
 lad = Image.open(opt / "optA7_north.png").convert("RGBA").resize((int(1.5 * P),) * 2, Image.LANCZOS)
-cx = x0 + P // 2 + P // 2  # centred on the north wall, between the two cells
-cx = x0 + P            # pit centre column line
+cx = x0 + P            # pit centre column line: centred on the north wall, between the two cells
 cy = y0 + P // 2 - P // 4  # north-row cell centre, drawOffset +0.25 north
 im.alpha_composite(lad, (cx - lad.width // 2, cy - lad.height // 2))
 im.convert("RGB").save(out)

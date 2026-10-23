@@ -87,7 +87,6 @@ OPTS = {
 
 def build(name, o, L):
     out = {}
-    sh_n = [(100, 250), (210, 262), (330, 296), (190, 292)]
     out["north"] = finish(([shadow([(130, 258), (250, 258), (282, 284), (110, 284)], .38)] if o["sh"] else []) + [project(L, o["N"])])
     out["south"] = finish([project(L, o["S"], (0.0, 0.30))])
     west = finish(([shadow([(120, 296), (200, 300), (280, 322), (150, 328)], .36)] if o["sh"] else []) + [project(L, o["W"])])
