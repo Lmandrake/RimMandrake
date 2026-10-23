@@ -639,7 +639,8 @@ class Proof(object):
         print("== %s" % name, flush=True)
         if name not in ("preflight", "session", "walls"):     # walls reads the map as it stands (a loaded save): no calming
             try:
-                self.B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
+                # only what arrived after preflight's keep snapshot: a loaded review save keeps its staged pawns
+                self.res.setdefault("sweeps", {})[name] = V.sweep_non_colonists(self.B)
                 self.res.setdefault("site_calm_blocks", {})[name] = V.site_calm(self.B).get("ok")   # statics reset by any load
                 # a giant plant regrown near a site re-plans trunk blockers into it (V.clear_huge_plants), re-calmed per block
                 self.res.setdefault("huge_plants_cleared", {})[name] = V.clear_huge_plants(self.B)
@@ -674,10 +675,15 @@ class Proof(object):
     # ---------------------------------------------------------------- preflight
     def preflight(self):
         B = self.B
+        V.keep_pawns_reset()
         if not self.args.no_fresh_map:
             B.call("rimworld/go_to_main_menu")
             B.call("rimworld/start_debug_game_ready", readiness="mapData", pauseIfNeeded=True, timeoutMs=280000)
         ok, waited = V._wait_playing(B, leave_s=0)
+        if self.args.no_fresh_map:
+            # PROOF_HOSE_SWEEP_FIX_ATE_THE_ZOO: a map we did not make keeps every non-colonist already on it (staged animals,
+            # prisoners); the sweeps below and per block remove only later arrivals
+            self.res["kept_pawns"] = V.keep_pawns_on_map(B)
         rm = B.call("jawa/running_mods", assembly="RimMandrakeFlowWorks", details=False) or {}
         running = [p.lower() for p in rm.get("packageIds") or []]
         self.res["log_revive"] = V.log_revive(B)     # the log budget (Z) is blind once Verse.Log hit its 10,000 cap
@@ -705,7 +711,7 @@ class Proof(object):
         hd = B.hp("defaults")
         B.call("jawa/weather_set", weather="Clear", lockWeather=True)
         B.call("jawa/incident_queue_clear")
-        B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
+        self.res.setdefault("sweeps", {})["preflight"] = V.sweep_non_colonists(B)
         self.res["site_calm"] = V.site_calm(B)       # static boring world: storyteller/mental/disease off, wild spawner blocked
         drafted = [p["id"] for p in (B.hp("colonists").get("pawns") or []) if B.hp("pawn:%d=draft" % p["id"]).get("success")]
         self.row("preflight", "HP2_probes_site_pinned", "PASS" if hd.get("success") else "UNMEASURED", "HARNESS",

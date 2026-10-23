@@ -133,6 +133,74 @@ def run_fake(args_only=None, gss=False, hoses=None, bridge_cls=None):
     return P, json.load(open(P.out_path, encoding="utf-8"))
 
 
+def _zoo_bridge():
+    """PROOF_HOSE_SWEEP_FIX_ATE_THE_ZOO: a walkthrough save holding a colonist, a staged wild muffalo, a prisoner and a
+    player husky; a stray wild boar walks in after the first roster read. pawn_force_incapacitate vanish removes an id."""
+    class ZooFake(NetFakeBridge):
+        def __init__(self, *a, **kw):
+            NetFakeBridge.__init__(self, *a, **kw)
+            self.roster = [{"id": 1, "isPlayer": True, "intelligence": "Humanlike", "faction": "PlayerColony"},
+                           {"id": 50, "isPlayer": False, "intelligence": "Animal", "faction": None},
+                           {"id": 51, "isPlayer": False, "intelligence": "Humanlike", "faction": "Pirate", "prisoner": True},
+                           {"id": 52, "isPlayer": True, "intelligence": "Animal", "faction": "PlayerColony"}]
+            self.reads, self.vanished, self.bulk = 0, [], 0
+
+        def call(self, tool, **kw):
+            if tool == "jawa/list_pawns":
+                self.reads += 1
+                if self.reads == 2:
+                    self.roster.append({"id": 60, "isPlayer": False, "intelligence": "Animal", "faction": None})
+                return {"success": True, "pawns": [dict(r) for r in self.roster]}
+            if tool == "jawa/pawn_force_incapacitate":
+                self.vanished.append(kw.get("pawn"))
+                self.roster = [r for r in self.roster if r["id"] != kw.get("pawn")]
+                return {"success": True}
+            if tool == "jawa/destroy_bulk":
+                self.bulk += 1
+                if not kw.get("dryRun", True):
+                    self.roster = [r for r in self.roster if r["isPlayer"] and r["intelligence"] == "Humanlike"]
+                return {"success": True, "matchedCount": 0}
+            return NetFakeBridge.call(self, tool, **kw)
+    return ZooFake
+
+
+def zoo_checks():
+    import validation_core as V
+    Zoo = _zoo_bridge()
+    holder = {}
+
+    def mk(*a, **kw):
+        holder["B"] = Zoo(*a, **kw)
+        return holder["B"]
+    with contextlib.redirect_stdout(io.StringIO()):
+        _, res = run_fake(bridge_cls=mk)
+    B = holder["B"]
+    ids = sorted(r["id"] for r in B.roster)
+    check("zoo: --no-fresh-map never calls destroy_bulk on a save that holds non-colonists", B.bulk == 0, B.bulk)
+    check("zoo: the staged muffalo, prisoner and player husky survive every sweep", ids[:4] == [1, 50, 51, 52], ids)
+    check("zoo: the stray that walked in after the snapshot is vanished, and only it", B.vanished == [60] and 60 not in ids,
+          (B.vanished, ids))
+    check("zoo: the result records the kept snapshot", sorted((res.get("kept_pawns") or {}).get("kept") or []) == [50, 51, 52],
+          res.get("kept_pawns"))
+    # nothing kept (a fresh map): the old bulk route; an unreadable snapshot: nothing removed at all
+    V.keep_pawns_reset()
+    fb = Zoo(tempfile.mkdtemp(), b"")
+    check("zoo: nothing kept -> destroy_bulk route", V.sweep_non_colonists(fb)["route"] == "destroy_bulk" and fb.bulk == 1)
+
+    class Blind(FakeBridge):
+        def call(self, tool, **kw):
+            if tool == "jawa/list_pawns":
+                return {"success": False, "message": "no"}
+            if tool == "jawa/destroy_bulk":
+                raise AssertionError("bulk on a blind snapshot")
+            return FakeBridge.call(self, tool, **kw)
+    bl = Blind(tempfile.mkdtemp(), b"")
+    kp = V.keep_pawns_on_map(bl)
+    sw = V.sweep_non_colonists(bl)
+    check("zoo: an unreadable snapshot refuses every sweep (removes nothing)", "error" in kp and sw["route"].startswith("refused"), sw)
+    V.keep_pawns_reset()
+
+
 def main():
     import proof_hose as PH
     dr = PH.declared_rows()
@@ -393,6 +461,7 @@ def main():
     # SL2's helper refuses an old hose class in the blob
     import validation_hose as VH
     check("SL2 helper refuses an old GSS hose class", bool(VH.save_class_hits(b'<li Class="RimMandrake.GimmeSomeSlack.Hose.CompHoseReel"/>')["offending"]))
+    zoo_checks()
     print("selftest_proof_hose: %s (%d failing)" % ("PASS" if not FAILS else "FAIL", len(FAILS)))
     return 0 if not FAILS else 1
 
