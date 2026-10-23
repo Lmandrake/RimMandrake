@@ -13,7 +13,9 @@ WHAT IT PROVES, by state read on a bland built site (left half RM_GreentideChurn
 RM_ChurnmudSealed): the mire hediff on mud and not on safe ground or sealed floor; the master switch;
 the dwell-then-bury of a loose item on mud and not elsewhere; the buried-cache switch; the dig-out job;
 the Frenzy dose route, its master switch and the FeverMark immunity gate; the density applier's write
-onto the live BiomeDef. Every def the mod ships resolves; every Mod Settings field round-trips.
+onto the live BiomeDef; the giant ants (both kinds spawn, the raid switch and strength land on the live faction and
+kind defs, the old RUT_ names a save holds resolve to the RM_ defs). Every def the mod ships resolves; every Mod
+Settings field round-trips. Also unproven: the ants' directed assault in a forced raid, and carapace butchering/walls.
 NOT PROVEN HERE (UNMEASURED, named): the ambient Frenzy incident (dry-run fire_incident reports
 success=False with canFireNow=False, so it is no instrument), the stench grenade, the cross-biome
 churnmud (worldgen once, on a fresh map), the stuck threshold and the free-mired job (a ~6000-tick
@@ -169,6 +171,69 @@ SPINE_DEFS = [("WeatherDef", "RM_RoilWeather"), ("WeatherDef", "RM_BreaklightCle
               ("ThingDef", "RM_GreatboleTrunkSegment"), ("ThingDef", "RM_GreatboleDeadHusk"),
               ("TerrainDef", "RM_RootCauseway"), ("TerrainDef", "RM_ToxinSealedFloor"),
               ("GenStepDef", "RM_GenStep_LivingBoles"), ("GenStepDef", "RM_GenStep_RootCauseways")]
+
+
+# --------------------------------------------------------------------------- the giant ants (GREENTIDE_ANTS_MIGRATE_NO_ANT_LEFT_BEHIND)
+# Moved here from mandrake.rut.greentideraidant (Biome card 8, 2026-10-22). Old RUT_ names a save holds are aliased.
+
+ANT_KINDS = ("RM_GreentideAnt", "RM_GreentideAntSoldier")
+ANT_POWER = (160.0, 150.0)          # shipped combatPower, checked against the XML by ant_findings
+ANT_ALIASES = [("RUT_GreentideAntFaction", "RM_GreentideAntFaction"), ("RUT_GreentideAnt", "RM_GreentideAnt"),
+               ("RUT_GreentideAntSoldier", "RM_GreentideAntSoldier"), ("RUT_GreentideAntRace", "RM_GreentideAntRace"),
+               ("Corpse_RUT_GreentideAntRace", "Corpse_RM_GreentideAntRace"),
+               ("RUT_GreentideAntCarapace", "RM_GreentideAntCarapace"),
+               ("RUT_GreentideAntCarapaceWall", "RM_GreentideAntCarapaceWall"),
+               ("Blueprint_RUT_GreentideAntCarapaceWall", "Blueprint_RM_GreentideAntCarapaceWall"),
+               ("Frame_RUT_GreentideAntCarapaceWall", "Frame_RM_GreentideAntCarapaceWall")]
+
+
+def ant_findings():
+    """Offline: the ants ship here under RM_ names, wired to each other, their art on disk, every old name aliased."""
+    bad = []
+    ants = ET.parse(os.path.join(HERE, "Defs", "ThingDefs_Races", "RM_GreentideAnts.xml")).getroot()
+    fac = ET.parse(os.path.join(HERE, "Defs", "FactionDefs", "RM_GreentideAnt_Faction.xml")).getroot()
+    by = {e.findtext("defName"): e for e in list(ants) + list(fac)}
+    for n in ("RM_GreentideAntRace", "RM_ThinkTree_GreentideAnt", "RM_GreentideAntCarapace",
+              "RM_GreentideAntCarapaceWall", "RM_GreentideAntFaction") + ANT_KINDS:
+        if n not in by:
+            bad.append("ant def %s is not shipped" % n)
+    if len(by) < 7:
+        return bad + ["sanity probe: %d ant defs parsed (parser broke)" % len(by)]
+    if bad:
+        return bad          # the wiring checks below index these defs
+    race = by["RM_GreentideAntRace"]
+    if race.findtext("race/thinkTreeMain") != "RM_ThinkTree_GreentideAnt":
+        bad.append("ant race does not run RM_ThinkTree_GreentideAnt")
+    if race.findtext("race/leatherDef") != "RM_GreentideAntCarapace":
+        bad.append("ant race leather is not RM_GreentideAntCarapace")
+    f = by["RM_GreentideAntFaction"]
+    for field, want in (("hidden", "true"), ("permanentEnemy", "true"), ("maxConfigurableAtWorldCreation", "1"),
+                        ("startingCountAtWorldCreation", "1"), ("displayInFactionSelection", "false")):
+        if f.findtext(field) != want:
+            bad.append("ant faction %s must be %s (world creation and raid-only shape)" % (field, want))
+    if f.find("pawnGroupMakers/li/options/RM_GreentideAnt") is None:
+        bad.append("ant faction's Combat group does not buy RM_GreentideAnt")
+    for kind, power in zip(ANT_KINDS, ANT_POWER):
+        if by[kind].findtext("race") != "RM_GreentideAntRace":
+            bad.append("%s is not of RM_GreentideAntRace" % kind)
+        if float(by[kind].findtext("combatPower") or 0) != power:
+            bad.append("%s combatPower is not the %g the script assumes" % (kind, power))
+    tex = os.path.join(HERE, "Textures")
+    for e in by.values():
+        for tp in [x.text for x in e.iter("texPath")] + [e.findtext("uiIconPath")]:
+            if not tp or tp.startswith(("Things/Item/Resource/Cloth", "Things/Building/Linked/Wall_Blueprint")):
+                continue
+            if not (os.path.isfile(os.path.join(tex, tp + ".png")) or os.path.isfile(os.path.join(tex, tp + "_south.png"))):
+                bad.append("ant texture %s is not in this mod's Textures" % tp)
+    text = open(os.path.join(HERE, "Defs", "ThingDefs_Races", "RM_GreentideAnts.xml"), encoding="utf-8").read()
+    if re.search(r">RUT_|<RUT_", text):
+        bad.append("an ant def still names a RUT_ def")
+    al = ET.parse(os.path.join(HERE, "Defs", "Misc", "RM_GreentideTierMove_Aliases.xml")).getroot()
+    have = {(li.findtext("from"), li.findtext("to")) for li in al.iter("li")}
+    for pair in ANT_ALIASES:
+        if pair not in have:
+            bad.append("save alias %s -> %s is missing" % pair)
+    return bad
 
 
 def spine_findings(biome_root=None, defs=None):
@@ -720,6 +785,51 @@ if Suite is not None:
                 if not text.startswith("REFUSED"):
                     _fail("vurrakAmbushEnabled OFF but the contact check still ran: %s" % text)
 
+    # ----------------------------------------------------------------------- 6b. giant ants (GREENTIDE_ANTS_MIGRATE_NO_ANT_LEFT_BEHIND)
+
+    def _ant_state(t):
+        r = t.bridge_call("jawa/static_call", type="RimMandrake.Greentide.RM_GreentideAntRaidApplier",
+                          method="ProofApply", args="")
+        return str((r or {}).get("result", "")) or "no result: %r" % (r,)
+
+    @suite.chain("giant_ants")
+    def giant_ants(t):
+        """Both ant kinds spawn; the raid switch blocks every raid strategy on the ant faction and restores it; the
+        strength multiplier divides both kinds' combatPower; the old RUT_ names resolve through the alias proof."""
+        for kind in ANT_KINDS:
+            with _comp(t, "spawns_%s" % kind, beyond_toggle=True):
+                r = t.bridge_call("jawa/spawn_pawn", kindDef=kind, x=SITE, z=SITE, faction="none", count=1)
+                if _live(t):
+                    if not ((r or {}).get("pawns") or []):
+                        _fail("spawn_pawn(%s) returned no pawn: %s" % (kind, str(r)[:160]))
+        with _comp(t, "raids_off_blocks_every_strategy", toggle="antRaidsEnabled"):
+            if _live(t):
+                on = _ant_state(t)
+                with _arm(t, antRaidsEnabled=False):
+                    off = _ant_state(t)
+                back = _ant_state(t)
+                if not on.startswith("raids=on") or not off.startswith("raids=off") or not back.startswith("raids=on"):
+                    _fail("raid switch did not take: shipped %r, off %r, restored %r" % (on, off, back))
+        with _comp(t, "strength_divides_combat_power", beyond_toggle=True):
+            if _live(t):
+                with _arm(t, antRaidStrength=2.0):
+                    doubled = _ant_state(t)
+                back = _ant_state(t)
+                want, shipped = "power=%s" % ",".join("%g" % (p / 2.0) for p in ANT_POWER), \
+                    "power=%s" % ",".join("%g" % p for p in ANT_POWER)
+                if want not in doubled or shipped not in back:
+                    _fail("strength 2.0 read %r (want %s), restored %r (want %s)" % (doubled, want, back, shipped))
+        with _comp(t, "old_rut_names_load_as_rm_defs", beyond_toggle=True):
+            r = t.bridge_call("jawa/static_call", type="RimMandrake.EnvironmentalHazards.RM_DefAliasProof",
+                              method="ProofAliases", args="")
+            if _live(t):
+                text = str((r or {}).get("result", ""))
+                if not text:
+                    _unmeasured(t, "alias proof returned nothing: %r" % (r,))
+                bad = [a for a in ANT_ALIASES if ("PASS %s->%s;" % a) not in text]
+                if bad:
+                    _fail("ant aliases not resolving: %s (proof: %s)" % (bad, text[:300]))
+
     # ----------------------------------------------------------------------- 7. honest UNMEASURED
 
     def _um(chain, comp, why, toggle=None):
@@ -728,6 +838,12 @@ if Suite is not None:
                 _unmeasured(t, why)
         fn.__doc__ = "UNMEASURED: " + why
         suite.chain(chain)(fn)
+
+    _um("giant_ants_raid", "directed_assault_sends_ants_at_the_colony",
+        "needs a forced RaidEnemy from RM_GreentideAntFaction and ticks for the ants to path in; first live pass owed",
+        "antRaidsEnabled")
+    _um("giant_ants_carapace", "butcher_yields_carapace_and_wall_builds_from_it",
+        "needs a butcher bill on an ant corpse and a built wall; no bridge reader written for either yet")
 
     _um("cross_biome_churnmud", "churnmud_seeded_once_on_a_fresh_non_greentide_map",
         "WORLDGEN-AFFECTING: RM_MapComponent_CrossBiomeChurnmud runs once on a freshly generated map; needs a new map "
@@ -864,6 +980,7 @@ def static_checks():
     if os.path.exists(os.path.join(HERE, "Patches", "RM_Greentide_FaunaHooks.xml")):
         bad.append("the vanilla Warg/Muffalo hook patch is back")
     bad.extend(spine_findings())
+    bad.extend(ant_findings())
     bad.extend("greatbole ladder: " + x for x in ladder_findings(ladder_parse()))
     if not any(f.endswith(".dll") for f in os.listdir(os.path.join(HERE, "Assemblies"))):
         bad.append("no DLL in Assemblies")

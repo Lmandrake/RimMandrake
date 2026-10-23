@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  GREENTIDE_ANTS_MOVE_TO_FREE_TIER: the Greentide's raid-only giant ants, moved down from the campaign tier
+  (mandrake.rut.greentideraidant, RUT_ names) into this free mod under RM_ names. Owner, Biome card 8, 2026-10-22,
+  by question card: move the ants into the free Greentide mod under our own name, no Star Wars.
+
+  Origin (THEY_MOD_REPLICATION_1): a re-authoring of the donor "They! (Giant Ants)" (Sapiently.TheyAtomicMonsters)
+  from its own plain-text XML; stats, tools and race fields 1:1. The donor's one piece of C#, a directed off-map
+  assault, is RM_JobGiver_DirectedAssault + RM_DirectedAssaultExtension in mandrake.rm.creaturebehaviors.
+  Raid-events only, never a wildlife roster row (BIOME_FAUNA_ASSIGNMENT_SITTING_1). The hidden raid faction is
+  Defs/FactionDefs/RM_GreentideAnt_Faction.xml; its raid switch and strength are RM_GreentideAntRaidApplier.
+
+  Still owed, recorded and not invented here: a coined name (the label stays the plain "giant ant"; a Star-Wars-style
+  name may come later as a campaign-layer label patch), new art (the textures are the existing ledger pictures,
+  moved), and two raid-call sounds (soundCall/soundAngry left unset, both optional).
+
+  Saves holding the old RUT_ names load as these defs through Defs/Misc/RM_GreentideTierMove_Aliases.xml.
+-->
+<Defs>
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_GreentideAntRace</defName>
+    <label>giant ant</label>
+    <description>A mutated giant ant that raids in the Greentide's jungles.
+Relentless and hungry.</description>
+    <statBases>
+      <MoveSpeed>3.8</MoveSpeed>
+      <MarketValue>150</MarketValue>
+      <!-- Stated directly: bodySize 2.0 squared, the numbers the donor's yield patches computed. -->
+      <MeatAmount>280</MeatAmount>
+      <BoneAmount MayRequire="sihv.rombonesPort">100</BoneAmount>
+      <ComfyTemperatureMin>-63.2</ComfyTemperatureMin>
+      <ComfyTemperatureMax>75.8</ComfyTemperatureMax>
+      <ArmorRating_Blunt>0.2</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.3</ArmorRating_Sharp>
+    </statBases>
+    <uiIconScale>1.5</uiIconScale>
+
+    <race>
+      <thinkTreeMain>RM_ThinkTree_GreentideAnt</thinkTreeMain>
+      <thinkTreeConstant>AnimalConstant</thinkTreeConstant>
+      <body>BeetleLike</body>
+      <baseBodySize>2.0</baseBodySize>
+      <baseHealthScale>1.5</baseHealthScale>
+      <foodType>OmnivoreAnimal, AnimalProduct</foodType>
+
+      <leatherDef>RM_GreentideAntCarapace</leatherDef>
+
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+      <lifeExpectancy>10</lifeExpectancy>
+
+      <lifeStageAges>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0</minAge>
+          <soundWounded>Pawn_BigInsect_Pain</soundWounded>
+          <soundDeath>Pawn_BigInsect_Death</soundDeath>
+          <!-- soundCall/soundAngry: two raid-call clips are owed; unset rather than a placeholder SoundDef. -->
+        </li>
+      </lifeStageAges>
+
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+    </race>
+
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_DirectedAssaultExtension">
+        <huntRadius>60</huntRadius>
+        <arrivalDistance>5</arrivalDistance>
+      </li>
+    </modExtensions>
+
+    <tools>
+      <li>
+        <label>mandibles</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>18</power>
+        <cooldownTime>1.6</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+        <chanceFactor>0.8</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <chanceFactor>0.1</chanceFactor>
+      </li>
+      <li>
+        <label>venomous sting</label>
+        <capacities>
+          <li>Stab</li>
+        </capacities>
+        <power>40</power>
+        <cooldownTime>3.5</cooldownTime>
+        <chanceFactor>0.1</chanceFactor>
+        <armorPenetration>0.10</armorPenetration>
+        <extraMeleeDamages>
+          <li>
+            <def>ToxicBite</def>
+            <amount>10</amount>
+          </li>
+        </extraMeleeDamages>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+  </ThingDef>
+
+  <!-- Both donor kinds, 1:1. RM_GreentideAnt is the one the faction's pawnGroupMakers use; RM_GreentideAntSoldier
+       mirrors the donor's GiantAnt_Soldier, which the donor never wired into a group maker either (kept for parity).
+       Their combatPower is the shipped value at raid strength 1.0; RM_GreentideAntRaidApplier divides it by the
+       strength setting. -->
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_GreentideAnt</defName>
+    <label>giant ant</label>
+    <race>RM_GreentideAntRace</race>
+    <combatPower>160</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_GreentideAnt/RM_GreentideAnt</texPath>
+          <drawSize>2.0</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_GreentideAnt/dessicated_RM_GreentideAnt</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>RM_GreentideAntSoldier</defName>
+    <label>giant ant soldier</label>
+    <race>RM_GreentideAntRace</race>
+    <combatPower>150</combatPower>
+    <defaultFactionType>RM_GreentideAntFaction</defaultFactionType>
+    <aiAvoidCover>true</aiAvoidCover>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_GreentideAnt/RM_GreentideAnt</texPath>
+          <drawSize>2.5</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- The donor's ThinkTree_GiantAnt shape, same subtree order, its custom JobGiver replaced by ours. -->
+  <ThinkTreeDef>
+    <defName>RM_ThinkTree_GreentideAnt</defName>
+    <thinkRoot Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="ThinkNode_Subtree">
+          <treeDef>Downed</treeDef>
+        </li>
+        <li Class="ThinkNode_Subtree">
+          <treeDef>BurningResponse</treeDef>
+        </li>
+        <li Class="ThinkNode_Subtree">
+          <treeDef>MentalStateCritical</treeDef>
+        </li>
+        <li Class="ThinkNode_Subtree">
+          <treeDef>MentalStateNonCritical</treeDef>
+        </li>
+        <li Class="RimMandrake.CreatureBehaviors.RM_JobGiver_DirectedAssault" />
+        <li Class="ThinkNode_Tagger">
+          <tagToGive>Idle</tagToGive>
+          <subNodes>
+            <li Class="JobGiver_WanderAnywhere" />
+            <li Class="JobGiver_IdleError" />
+          </subNodes>
+        </li>
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+
+  <!-- The carapace leather. statFactors are the live shape the campaign's armour patch used to put on the donor's
+       They_AntCarapace (a full replace, so the donor's MaxHitPoints 0.85 is gone too); stated here, no patch. -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_GreentideAntCarapace</defName>
+    <label>giant ant carapace</label>
+    <description>The hard, chitinous shell of a giant ant. It is exceptionally durable and heat resistant.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Cloth</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(120, 110, 100)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.2</MarketValue>
+      <Mass>0.05</Mass>
+      <Flammability>0.5</Flammability>
+      <StuffPower_Armor_Sharp>0.75</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>0.5</StuffPower_Armor_Blunt>
+      <StuffPower_Insulation_Heat>20</StuffPower_Insulation_Heat>
+    </statBases>
+    <thingCategories>
+      <li>Leathers</li>
+    </thingCategories>
+    <stuffProps>
+      <categories>
+        <li>Leathery</li>
+        <li>Woody</li>
+      </categories>
+      <commonality>0.05</commonality>
+      <statFactors>
+        <ArmorRating_Sharp>1.50</ArmorRating_Sharp>
+        <ArmorRating_Blunt>1.25</ArmorRating_Blunt>
+        <ArmorRating_Heat>0.42</ArmorRating_Heat>
+        <Beauty>1.05</Beauty>
+        <Comfort>1.00</Comfort>
+      </statFactors>
+    </stuffProps>
+  </ThingDef>
+
+  <!-- The donor's carapace wall, 1:1. -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_GreentideAntCarapaceWall</defName>
+    <label>carapace wall</label>
+    <description>A wall built from densely packed giant ant carapaces and soil. It is tougher than wood and fairly fire resistant.</description>
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <graphicData>
+      <texPath>Things/Building/Linked/RM_GreentideAntCarapaceWall_Atlas</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Wall</li>
+        <li>Rock</li>
+      </linkFlags>
+      <damageData>
+        <rect>(0,0,1,1)</rect>
+      </damageData>
+    </graphicData>
+    <uiIconPath>Things/Building/Linked/RM_GreentideAntCarapaceWall_MenuIcon</uiIconPath>
+    <statBases>
+      <MaxHitPoints>250</MaxHitPoints>
+      <WorkToBuild>150</WorkToBuild>
+      <Flammability>0.4</Flammability>
+      <MeditationFocusStrength>0.22</MeditationFocusStrength>
+    </statBases>
+    <costList>
+      <RM_GreentideAntCarapace>5</RM_GreentideAntCarapace>
+    </costList>
+    <building>
+      <isInert>true</isInert>
+      <ai_chillDestination>false</ai_chillDestination>
+      <blueprintGraphicData>
+        <texPath>Things/Building/Linked/Wall_Blueprint_Atlas</texPath>
+      </blueprintGraphicData>
+    </building>
+    <fillPercent>1</fillPercent>
+    <passability>Impassable</passability>
+    <holdsRoof>true</holdsRoof>
+    <blockLight>true</blockLight>
+    <designationCategory>Structure</designationCategory>
+    <staticSunShadowHeight>1.0</staticSunShadowHeight>
+  </ThingDef>
+</Defs>

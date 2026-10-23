@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-  <!-- THEY_MOD_REPLICATION_1. Ports donor's Faction_Ants.xml.
-       🔴 World creation (2026-10-20 remake: the faction was ABSENT after worldgen).
-       In 1.6 a world made through Page_CreateWorldParams passes the page's faction
-       list to FactionGenerator.InitializeFactions, which then creates ONLY that list;
-       requiredCountAtGameStart is read solely on the no-page path (factions == null).
-       The page list is ConfigurableFactions (maxConfigurableAtWorldCreation > 0,
-       default -1) x startingCountAtWorldCreation. The old 0 here (copied from the
-       donor's zeroing patch) plus the -1 default kept it off the list for good.
-       Now shaped like Core's hidden Insect/Ancients: configurable 1, start 1, not
-       shown in the selection list. Owner ruling 7 (2026-10-19): Green Tide present
-       at paint. -->
+  <!-- GREENTIDE_ANTS_MOVE_TO_FREE_TIER: the giant ants' hidden, raid-only faction (was RUT_GreentideAntFaction in
+       mandrake.rut.greentideraidant; a save naming the old def loads it as this one, Defs/Misc/RM_GreentideTierMove_Aliases.xml).
+       Raid switch and strength: RM_GreentideAntRaidApplier (Mod Settings, "Giant ant raids").
+
+       World creation (MEASURED 2026-10-20, the remake found the faction ABSENT after worldgen): in 1.6 a world made
+       through Page_CreateWorldParams passes the page's faction list to FactionGenerator.InitializeFactions, which
+       creates ONLY that list; requiredCountAtGameStart is read solely on the no-page path. The page list is
+       ConfigurableFactions (maxConfigurableAtWorldCreation > 0, default -1) x startingCountAtWorldCreation. So it is
+       shaped like Core's hidden Insect/Ancients: configurable 1, start 1, not shown in the selection list. -->
   <FactionDef>
-    <defName>RUT_GreentideAntFaction</defName>
+    <defName>RM_GreentideAntFaction</defName>
     <label>giant ant colony</label>
     <pawnSingular>ant</pawnSingular>
     <pawnsPlural>ants</pawnsPlural>
@@ -60,7 +58,7 @@
         <kindDef>Combat</kindDef>
         <commonality>100</commonality>
         <options>
-          <RUT_GreentideAnt>100</RUT_GreentideAnt>
+          <RM_GreentideAnt>100</RM_GreentideAnt>
         </options>
       </li>
     </pawnGroupMakers>

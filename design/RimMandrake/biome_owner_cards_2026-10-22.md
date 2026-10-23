@@ -232,6 +232,10 @@ nothing forces it out.
 
 **ANSWERED 2026-10-22 by question card: option 3, move the ants into the free Greentide mod under our own name (no Star Wars).**
 
+**Enacted 2026-10-22 (`GREENTIDE_ANTS_MIGRATE_NO_ANT_LEFT_BEHIND`):** the ants are `RM_` defs in `src/RimMandrake/Greentide` (composed into
+`mandrake.rm.biomes`); `mandrake.rut.greentideraidant` is deleted and off the ruled mod lists; old `RUT_` names in the dev saves
+load through a def alias, so no save edit; the five references are now comments naming the new defs. Name, art, sounds still owed.
+
 **What was learned.** This mod replicates the donor "They!" giant ants as our own: the ant race and its two pawn
 kinds, a hidden faction that only raids, carapace leather and a carapace wall. Your sheet note says it is needed only if
 the faction exists at the faction pass. Facts: the faction is already in every dev save (3-4 mentions each) and is created

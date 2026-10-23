@@ -156,6 +156,12 @@ namespace RimMandrake.Greentide
         public static bool greatboleSeedPlantingEnabled = true;
         public static bool greatboleServantsEnabled = false;
 
+        // GREENTIDE_ANTS_MIGRATE_NO_ANT_LEFT_BEHIND — the giant ants' raids, written onto the live faction and kind defs by
+        // RM_GreentideAntRaidApplier (startup and on window close). Off: the ant faction is never picked for a raid.
+        // Strength multiplies how many ants a raid's points buy (1.0 = shipped).
+        public static bool antRaidsEnabled = true;
+        public static float antRaidStrength = 1f;
+
         private static string biomeListBuffer;
         private static Vector2 scrollPosition;
         private static float lastContentHeight = 1200f;
@@ -198,6 +204,8 @@ namespace RimMandrake.Greentide
             Scribe_Values.Look(ref greatboleCatastropheEnabled, "greatboleCatastropheEnabled", true);
             Scribe_Values.Look(ref greatboleSeedPlantingEnabled, "greatboleSeedPlantingEnabled", true);
             Scribe_Values.Look(ref greatboleServantsEnabled, "greatboleServantsEnabled", false);
+            Scribe_Values.Look(ref antRaidsEnabled, "antRaidsEnabled", true);
+            Scribe_Values.Look(ref antRaidStrength, "antRaidStrength", 1f);
         }
 
         /// <summary>True if the cross-biome opt-in currently applies to this biome (never to Greentide's own - that is native, not "cross").</summary>
@@ -494,6 +502,20 @@ namespace RimMandrake.Greentide
                   + "every configuration. Takes effect the next time the game starts.");
                 list.GapLine();
             }
+
+            if (Group(list, "Giant ant raids", RimMandrake.Shared.SettingScope.Now, new[] { "antRaidsEnabled", "antRaidStrength" }))
+            {
+                list.CheckboxLabeled("Giant ant raids", ref antRaidsEnabled,
+                    "On: the hidden giant ant colony can be chosen for raids like any hostile faction, and its ants charge "
+                  + "straight at your colony. Off: it is never chosen for a raid; ants already on a map stay.");
+                if (antRaidsEnabled)
+                {
+                    list.Label("  Raid strength: " + antRaidStrength.ToString("0.00")
+                             + "x (how many ants a raid of the same size sends; 1.00 is the shipped number)");
+                    antRaidStrength = list.Slider(antRaidStrength, 0.25f, 3f);
+                }
+                list.GapLine();
+            }
             list.Label("Breaklight, the dry-air blower's field, living greatbole placement and "
               + "root causeways are switched in the Environmental Hazards Kit's settings.");
 
@@ -558,6 +580,7 @@ namespace RimMandrake.Greentide
             // immediately rather than waiting on the next game load.
             RM_GreentideDensityApplier.Apply();
             RM_ThurrockAuraApplier.Apply();
+            RM_GreentideAntRaidApplier.Apply();
         }
     }
 }

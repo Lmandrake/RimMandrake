@@ -80,11 +80,9 @@ Load last.</description>
           same silent-no-op class as the two entries above.
         * Sapiently.TheyAtomicMonsters (They! (Giant Ants)) - REMOVED
           2026-09-25 (THEY_MOD_REPLICATION_1): its MegafaunaYield.xml block
-          is gone, replaced by RUT_GreentideAntRace's own statBases in
-          src/RimUtinni/GreentideRaidAnt. The mod itself stays in
-          ModsConfig.xml until a full-list live-verify session confirms the
-          replacement raids correctly with it disabled — that session, and
-          the actual mod-list removal, are still owed. -->
+          is gone, replaced by RM_GreentideAntRace's own statBases in
+          src/RimMandrake/Greentide. The donor was retired 2026-09-28
+          (infrastructure/state/facts/retired_mods.json). -->
   <loadAfter>
     <li>BiomesTeam.BiomesCore</li>                        <!-- Biomes! Core -->
     <li>BiomesTeam.BiomesPollutedLands</li>               <!-- Biomes! Polluted Lands -->

@@ -203,6 +203,8 @@ namespace RimMandrake.EnvironmentalHazards
 
     // jawa/static_call proof: for every alias, what a save naming the old def
     // resolves to through the real engine entry points (the patched methods).
+    // The type list must cover every def type an alias names; FactionDef and PawnKindDef joined it for the
+    // Greentide ants' tier move (GREENTIDE_ANTS_MIGRATE_NO_ANT_LEFT_BEHIND), which would otherwise read FAIL with no type.
     public static class RM_DefAliasProof
     {
         public static string ProofAliases(string unused)
@@ -216,7 +218,7 @@ namespace RimMandrake.EnvironmentalHazards
                     Def target = null;
                     Type type = null;
                     string want = null;
-                    foreach (Type t in new[] { typeof(ThingDef), typeof(HediffDef), typeof(ThoughtDef), typeof(TerrainDef), typeof(ResearchProjectDef), typeof(RecipeDef), typeof(WeatherDef), typeof(GameConditionDef), typeof(IncidentDef) })
+                    foreach (Type t in new[] { typeof(ThingDef), typeof(HediffDef), typeof(ThoughtDef), typeof(TerrainDef), typeof(ResearchProjectDef), typeof(RecipeDef), typeof(WeatherDef), typeof(GameConditionDef), typeof(IncidentDef), typeof(FactionDef), typeof(PawnKindDef) })
                     {
                         if (!a.AppliesTo(t))
                         {

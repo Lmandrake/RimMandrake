@@ -30,4 +30,26 @@
       <li><from>RUT_GreatboleDeadHusk</from><to>RM_GreatboleDeadHusk</to></li>
     </aliases>
   </RimMandrake.EnvironmentalHazards.RM_DefAliasDef>
+
+  <!-- GREENTIDE_ANTS_MIGRATE_NO_ANT_LEFT_BEHIND (Biome card 8, 2026-10-22): the giant ants moved here from
+       mandrake.rut.greentideraidant. MEASURED in the four ASHKARR_DEV_*_2026-10-20 saves: the faction's
+       <def>RUT_GreentideAntFaction</def> and a faction-list <li>, <animal>RUT_GreentideAntRace</animal>,
+       Corpse_RUT_GreentideAntRace in thing filters, and (PARITY_QUIET_R3) a hat with <stuff>RUT_GreentideAntCarapace</stuff>.
+       All are Scribe def lookups, so each loads as the new def here; without these a load says "Could not load
+       reference to ... named RUT_..." and the ant faction comes back with no def. Typed, so no terrain hash is claimed.
+       Kept until the world remake writes saves that hold the RM_ names. -->
+  <RimMandrake.EnvironmentalHazards.RM_DefAliasDef>
+    <defName>RM_GreentideAntTierMoveAliases</defName>
+    <aliases>
+      <li><from>RUT_GreentideAntFaction</from><to>RM_GreentideAntFaction</to><defType>FactionDef</defType></li>
+      <li><from>RUT_GreentideAnt</from><to>RM_GreentideAnt</to><defType>PawnKindDef</defType></li>
+      <li><from>RUT_GreentideAntSoldier</from><to>RM_GreentideAntSoldier</to><defType>PawnKindDef</defType></li>
+      <li><from>RUT_GreentideAntRace</from><to>RM_GreentideAntRace</to><defType>ThingDef</defType></li>
+      <li><from>Corpse_RUT_GreentideAntRace</from><to>Corpse_RM_GreentideAntRace</to><defType>ThingDef</defType></li>
+      <li><from>RUT_GreentideAntCarapace</from><to>RM_GreentideAntCarapace</to><defType>ThingDef</defType></li>
+      <li><from>RUT_GreentideAntCarapaceWall</from><to>RM_GreentideAntCarapaceWall</to><defType>ThingDef</defType></li>
+      <li><from>Blueprint_RUT_GreentideAntCarapaceWall</from><to>Blueprint_RM_GreentideAntCarapaceWall</to><defType>ThingDef</defType></li>
+      <li><from>Frame_RUT_GreentideAntCarapaceWall</from><to>Frame_RM_GreentideAntCarapaceWall</to><defType>ThingDef</defType></li>
+    </aliases>
+  </RimMandrake.EnvironmentalHazards.RM_DefAliasDef>
 </Defs>

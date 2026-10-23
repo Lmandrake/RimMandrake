@@ -132,6 +132,7 @@ MODS = {
         "The Roil (WORLDGEN-AFFECTING)": "NewMapsOnly",
         "Greatbole fruitfall and harvest ladder": "Now",
         "Greatbole seeds and servants": "NextGameStart",
+        "Giant ant raids": "Now",   # RM_GreentideAntRaidApplier on window close, 2026-10-22
     }, ()),
     "Miasma": ("RM_MiasmaMod.cs", "RM_Miasma.csproj", {
         "Biome rarity (WORLDGEN-AFFECTING)": "NewMapsOnly",

@@ -2459,8 +2459,8 @@
     </Operation>
 
   <!-- THEY_MOD_REPLICATION_1, 2026-09-25: They_AntCarapace armour boost
-       removed — the def is retired. Its replacement, RUT_GreentideAntCarapace
-       (src/RimUtinni/GreentideRaidAnt), states the same statFactors directly,
+       removed — the def is retired. Its replacement, RM_GreentideAntCarapace
+       (src/RimMandrake/Greentide), states the same statFactors directly,
        so no patch is needed for it. -->
 
   <Operation Class="PatchOperationFindMod">
