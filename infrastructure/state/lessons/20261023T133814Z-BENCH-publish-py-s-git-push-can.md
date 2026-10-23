@@ -1,0 +1,1 @@
+publish.py's git push can hang 9+ minutes after the commit already reached origin (2026-10-23, BENCH): check 'git branch -r --contains <sha>' before re-publishing or waiting; then stop only your own push by PID.
