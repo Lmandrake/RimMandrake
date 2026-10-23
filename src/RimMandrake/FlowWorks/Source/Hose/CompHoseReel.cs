@@ -389,7 +389,11 @@ namespace RimMandrake.FlowWorks.Hose
             else
             {
                 relay = comp.RelayAt(this, new Cell(target.x, target.z));
-                if (relay == null) target = ApproachIfOnPort(comp, target);
+                if (relay == null)
+                {
+                    string portWhy = ApproachIfOnPort(comp, ref target);
+                    if (portWhy != null) return portWhy;
+                }
             }
             if (relay != null && comp.Loops(this, relay, true)) return "that reel already feeds this one (a chain may not loop back)";
             return comp.CheckInstall(this, target);
@@ -397,31 +401,36 @@ namespace RimMandrake.FlowWorks.Hose
 
         /// <summary>Joints study 2026-10-22: aimed AT a port thing (a tank, pump or machine standing on an unwalkable square), the end
         /// goes to the free square beside it nearest this reel's mouth that couples to that same thing (HosePorts.FindAt), as an
-        /// aim at another reel goes to its intake. Anything else is returned unchanged (and judged as before).</summary>
-        private IntVec3 ApproachIfOnPort(RM_MapComponent_Hoses comp, IntVec3 target)
+        /// aim at another reel goes to its intake. Anything else is left unchanged (and judged as before).
+        /// HOSE_TANK_LAY_FIX_ENDS_ON_LID: "solid" is read off the LIVE path grid, never the cached CordWorld snapshot -- the
+        /// snapshot is per tick, so a tank built while paused read walkable, the aim fell through and the end lay ON the tank's
+        /// lid; and an aim at a solid port with no free square in front of it is refused (HosePortRule.AimAtSolidPort) instead of
+        /// falling through. Null = fine, else the refusal.</summary>
+        private string ApproachIfOnPort(RM_MapComponent_Hoses comp, ref IntVec3 target)
         {
             Map map = parent.Map;
-            if (map == null || !target.InBounds(map)) return target;
-            CordWorld w = comp.World();
-            if (w.IsWalkable(new Cell(target.x, target.z))) return target;
+            if (map == null || !target.InBounds(map) || target.Walkable(map)) return null;
             Thing port = null;
             foreach (Thing t in target.GetThingList(map))
             {
                 if (t != parent && HosePorts.Classify(t) != HosePortKind.None) { port = t; break; }
             }
-            if (port == null) return target;
+            if (port == null) return null;
+            CordWorld w = comp.World();
             var cells = new List<Cell>();
             CellRect rc = port.OccupiedRect();
             foreach (IntVec3 c in rc.ExpandedBy(1).EdgeCells)
             {
                 bool corner = (c.x < rc.minX || c.x > rc.maxX) && (c.z < rc.minZ || c.z > rc.maxZ);
                 var cell = new Cell(c.x, c.z);
-                if (corner || !c.InBounds(map) || !w.IsWalkable(cell) || Rect.Contains(cell)) continue;
+                if (corner || !c.InBounds(map) || !c.Walkable(map) || !w.IsWalkable(cell) || Rect.Contains(cell)) continue;
                 if (HosePorts.FindAt(map, c, parent, out _, out _) != port) continue;
                 cells.Add(cell);
             }
-            int pick = HosePortRule.NearestApproach(cells, Rect.Mouth);
-            return pick < 0 ? target : new IntVec3(cells[pick].X, 0, cells[pick].Z);
+            string why = HosePortRule.AimAtSolidPort(true, port.LabelNoCount, cells, Rect.Mouth, out int pick);
+            if (why != null) return why;
+            target = new IntVec3(cells[pick].X, 0, cells[pick].Z);
+            return null;
         }
 
         /// <summary>Player order: a colonist carries the end from the reel out to target. Null = placed, else why not.</summary>

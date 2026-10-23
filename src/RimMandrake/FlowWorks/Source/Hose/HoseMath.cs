@@ -1730,6 +1730,19 @@ namespace RimMandrake.FlowWorks.Hose
             return best;
         }
 
+        /// <summary>HOSE_TANK_LAY_FIX_ENDS_ON_LID (live art look 2026-10-22): a lay aimed at a solid port thing's own square (a
+        /// tank) must end on the free square in front of its port, never on the thing itself, and is REFUSED when no such square
+        /// is free (an aim that fell through unchanged left the end lying on the tank's lid, 0.207 cell off its port). Null =
+        /// fine (pick = the chosen approach, or -1 when the aim was not at a solid port), else the refusal.</summary>
+        internal static string AimAtSolidPort(bool aimedAtSolidPort, string portLabel, IList<Cell> approach, V2 mouth, out int pick)
+        {
+            pick = -1;
+            if (!aimedAtSolidPort) return null;
+            pick = NearestApproach(approach, mouth);
+            return pick >= 0 ? null : "no free square in front of the " + (string.IsNullOrEmpty(portLabel) ? "tank" : portLabel)
+                                      + "'s port to couple the hose to (clear a square beside it, or aim at one)";
+        }
+
         internal static readonly Cell[] SideOrder = { new Cell(1, 0), new Cell(0, 1), new Cell(-1, 0), new Cell(0, -1) };
 
         /// <summary>Index of the chosen candidate, or -1. side = the unit step from the reel to the contact cell.</summary>
