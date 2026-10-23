@@ -281,6 +281,33 @@ def seabed_floor_generators(t):
         t.screenshot()
 
 
+def floor_fish_carryover_checks(here=None):
+    """SCALD_MECHANICS_1 S3 (2026-10-22, offline): the ship lands on the sea-floor LAYER, whose floor biome
+    shipped with maxFishPopulation 0 and no fishTypes, so a fishing zone there could never catch anything --
+    Zone_Fishing and WaterBodyTracker both stop on Tile.MaxFishPopulation <= 0 (PrimaryBiome.maxFishPopulation
+    x mutator factor), and WaterBody.SetFishTypes reads map.Biome.fishTypes (decompile, RimSage). Only the
+    retired hatch's pocket maps, which used the SEA biome itself, could fish. So RM_SeabedFloorLife must copy
+    the sea's catch (fishTypes + maxFishPopulation) onto its floor, and re-assert the population, and the
+    Scald (the sea this was found on) must carry a catch to copy. Returns a list of failures."""
+    import os, re
+    here = here or os.path.dirname(os.path.abspath(__file__))
+    bad = []
+    src = open(os.path.join(here, "Source", "RM_SeabedFloorLife.cs"), encoding="utf-8").read()
+    code = "\n".join(l for l in src.splitlines() if not l.strip().startswith("//"))
+    for needle in ("floor.fishTypes = sea.fishTypes", "floor.maxFishPopulation = sea.maxFishPopulation"):
+        if needle not in code:
+            bad.append("RM_SeabedFloorLife does not copy the catch (%s missing)" % needle)
+    reassert = code.split("public static void Reassert(", 1)[-1].split("public static void ReassertAll", 1)[0]
+    if "maxFishPopulation" not in reassert:
+        bad.append("RM_SeabedFloorLife.Reassert does not restore maxFishPopulation")
+    scald = os.path.join(here, "..", "TerminalBiomes", "Defs", "BiomeDefs", "RM_TheScald.xml")
+    text = open(scald, encoding="utf-8").read() if os.path.exists(scald) else ""
+    pop = re.search(r"<maxFishPopulation>([0-9.]+)</maxFishPopulation>", text)
+    if "<fishTypes" not in text or not pop or float(pop.group(1)) <= 0:
+        bad.append("sanity probe: RM_TheScald carries no fishTypes/positive maxFishPopulation to copy")
+    return bad
+
+
 @suite.chain("seabed_floor_ambient_carryover")
 def seabed_floor_ambient_carryover(t):
     """SEABED_FLOOR_AMBIENT_CARRYOVER_1: layer floors carry the hatch's temperature, flora and refilling cast.
@@ -318,6 +345,11 @@ def seabed_floor_ambient_carryover(t):
                     if float(f.get("plantDensity") or 0) <= 0 or float(f.get("animalDensity") or 0) <= 0}
             if flat:
                 raise ExpectationFailed("floor biome(s) still at zero density live (startup copy off or failed): %r" % flat)
+        t.screenshot()
+    with t.component("floor_biomes_carry_sea_catch", beyond_toggle=True):
+        bad = floor_fish_carryover_checks(here)
+        if bad:
+            raise ExpectationFailed("; ".join(bad))
         t.screenshot()
     # Not a component (it would record PASS with nothing asked): UNMEASURED until a Chill layer floor can be made
     # live (SEABED_DESCENT_ASCENT_1 or a debug map on a floor tile): OutdoorTemp ~ -110, Twilight floor plants > 0,

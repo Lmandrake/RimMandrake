@@ -223,7 +223,7 @@ namespace RimMandrake.DivingInteraction
         // generic encounter map, as before.
         public static bool seabedFloorContentEnabled = true;
         // SEABED_FLOOR_AMBIENT_CARRYOVER_1. RESTART-REQUIRED: each sea-floor layer biome takes its sea's
-        // flora and cast at startup, so floors grow plants and refill their animals over time.
+        // flora, cast and catch at startup, so floors grow plants, refill their animals over time and can be fished.
         public static bool seabedFloorLifeEnabled = true;
         // SEABED_FAUNA_SINGLE_SEEDER_1. WORLDGEN-AFFECTING: a sea-floor layer map's starting animals come from
         // RM_SeaFloorFauna alone; vanilla's Animals step is skipped there, and refilling over time is vanilla's
@@ -383,10 +383,11 @@ namespace RimMandrake.DivingInteraction
 
             if (Group(list, "Sea-floor life (restart)", RimMandrake.Shared.SettingScope.Now, new[] { "seabedFloorLifeEnabled" }, "[next game start]"))
                 {
-                list.CheckboxLabeled("Sea-floor layer: floors grow their sea's plants and refill their animals (restart)", ref seabedFloorLifeEnabled,
+                list.CheckboxLabeled("Sea-floor layer: floors grow their sea's plants, refill their animals and hold its catch (restart)", ref seabedFloorLifeEnabled,
                     "Shipped default: ON. Takes effect after a restart (read once at startup). Each sea floor on the sea-floor layer grows "
-                  + "the flora of the sea above it and slowly repopulates with that sea's animals, as the hatch's "
-                  + "floors did. Off: floors keep only the animals placed when they were generated, and no plants.");
+                  + "the flora of the sea above it, slowly repopulates with that sea's animals, and can be fished for that "
+                  + "sea's catch, as the hatch's floors could. Off: floors keep only the animals placed when they were "
+                  + "generated, no plants, and no fish.");
                 list.GapLine();
             }
 
