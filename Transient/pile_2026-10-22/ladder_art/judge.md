@@ -1,0 +1,10 @@
+# Judge verdict - portable ladder options A/B/C (independent; looked at every image)
+Requirement E4 (owner 2026-10-22): "portable ladder needs to be much more "vertical" in profile." The current art is a flat, tilted-over ladder; all three options stand upright, so all three answer E4.
+
+- **A (plumb, ~18 deg lean, mild taper): KEEP, flagged.** E4 yes. B1 mostly: painterly rope-and-iron detail. D4 clean alpha. Flag B2/B1: no black keyline, rails thin; at 64 px/cell it reads as a ladder, at 32 px/cell a pale hairline-with-rungs (still legible as a ladder, clearly apart from the dark pit floor).
+- **B (steep, ~12 deg, strong taper): REDO.** E4 yes (most vertical), but B2: narrowest; west/east read as a single thin stick at 64 and 32 px/cell, rungs vanish. Greater verticality bought by losing legibility; the strong taper on north also looks like an A-frame stepladder, not a wall ladder.
+- **C (A + baked ground shadow): CUT as drawn.** D4 "Real alpha: no backdrop, halo, ground shadow or scenery" - the blurred dark ellipse is baked into the PNG, and it floats detached from the foot on west/east (D3). The shadow, if wanted, is an engine/def matter, not art. Art itself equals A, so no new information.
+- Missed by maker (all): no black keyline (B1 asks for a clean black outline readable at standard zoom); west/east ladders are far thinner than north (C2 proportion mismatch, plausibly perspective but heavy); softness from ~1.4x upscale (D2; native redraw would beat it); E2 placeholder_detect not run on a projected copy of our own flat art; B3 sibling keeps (vanilla/our RM_Ladder) not compared.
+- Legibility at game zoom: A ok, B poor, C = A. Nothing is wrong about size: ~3 cells tall beside a 1.5-cell human reads right.
+- **Ranking: A > C(art only) > B.**
+- **Show him? Yes, A only, as kept-but-flagged** (one pic, full-res + true-scale + facings), noting the missing keyline and thin rails; suggested redo brief if he balks: same upright projection, rails ~1.5x thicker, 2-3 px dark outline, no shadow.
