@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Offline composite of every hose-coupling fixture x look with a hose coupled on each port side, BEFORE (no under-coupler,
-the hose's own stub ribbon to the centre as today) and AFTER (the under-coupler collar + pipe beneath the fixture).
+the hose's own stub ribbon to the centre as today) and AFTER (the under-coupler collar + pipe beneath the fixture,
+its length from Source/Machinery/UnderCouplerReach.cs; a port listed -1 there keeps the BEFORE stub).
 
 Draw order is the game's altitude order, bottom to top: ground, (after) under-coupler pipe then collar | (before) hose stub
 to the footprint centre, hose strand, brass coupling, binding wrap, and the FIXTURE SPRITE on top (the hose band sits below
@@ -23,6 +24,7 @@ sys.path.insert(0, FW)
 import selftest_hose_fittings as gate  # noqa: E402  (defs, ports, constants parsed from the C#)
 
 TEX = os.path.join(FW, "Textures")
+TABLE = gate.reach_table() or {}   # UnderCouplerReach.cs: the pipe ends beneath the first opaque body run (-1: none drawn)
 HOSE = os.path.join(TEX, "RimMandrake", "FlowWorks", "Hose")
 GROUND = (126, 112, 92, 255)
 VIS = 0.18                      # HoseMath.FlatVisible (flat pose, thickness 1)
@@ -71,7 +73,10 @@ def render(b, look, g, dz_table, geo, ppc, after):
         nx, nz = gate.SIDES[side]
         d = (-nx, -nz)                    # inward: end cell -> fixture
         reach = gate.reach_of(pt, side, b["size"], geo)
-        if after:
+        clipped = gate.table_reach(TABLE, b, look, side, pt) if after else None
+        if clipped is not None and clipped >= 0:
+            reach = clipped
+        if after and (clipped is None or clipped >= 0):
             cl, cw, pw = geo
             pl = reach - cl / 2
             quad(can, pipe, (pt[0] + d[0] * (cl / 2 + pl / 2), pt[1] + d[1] * (cl / 2 + pl / 2)), d, pl, pw, w2p, ppc)

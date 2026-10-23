@@ -5,7 +5,7 @@ namespace RimMandrake.FlowWorks.Machinery
 {
     /// <summary>
     /// The hose UNDER-COUPLER's drawing (geometry and the owner's ruling: <see cref="UnderCouplerGeometry"/>): a collar at the
-    /// port point and a pipe running on inward to the fixture's footprint centre line, in the fixture's look, at the altitude
+    /// port point and a pipe running on inward until it is beneath the fixture's opaque body (UnderCouplerReach), in the fixture's look, at the altitude
     /// the caller gives (the hose band, below the building layer, so the fixture's opaque art covers it). Per frame, only
     /// where a hose is coupled (RM_MapComponent_Hoses.DrawEnds). Nothing while the join fittings are switched off.
     /// </summary>
@@ -38,6 +38,16 @@ namespace RimMandrake.FlowWorks.Machinery
             if (collar == null || pipe == null) return false;
             CellRect r = port.OccupiedRect();
             double reach = UnderCouplerGeometry.Reach(px, pz, sx, sz, r.minX, r.minZ, r.Width, r.Height);
+            // judge FIX 2026-10-23: the pipe ends beneath the first opaque body run of the fixture's art (UnderCouplerReach,
+            // measured from the installed art), never across open ground; no body on this axis = no under-coupler
+            int side = sz == 1 ? 0 : sz == -1 ? 1 : sx == 1 ? 2 : 3;
+            int lane = sx != 0 ? (int)System.Math.Floor(pz - r.minZ) : (int)System.Math.Floor(px - r.minX);
+            lane = System.Math.Max(0, System.Math.Min((sx != 0 ? r.Height : r.Width) - 1, lane));
+            if (UnderCouplerReach.TryGet(port.def.defName, PipeLook.IsStyled(port.def) ? look : "", side, lane, out double measured))
+            {
+                if (measured < 0) return false;
+                reach = measured;
+            }
             UnderCouplerGeometry.Pipe(reach, out double pc, out double pl);
             // +u of each sprite points inward (along (sx, sz)): the plane's +x rotated onto that axis
             Quaternion q = Quaternion.Euler(0f, -Mathf.Atan2(sz, sx) * Mathf.Rad2Deg, 0f);
