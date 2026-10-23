@@ -1,3 +1,4 @@
+using System;
 using HarmonyLib;
 using UnityEngine;
 using Verse;
@@ -70,7 +71,8 @@ namespace RimMandrake.FlowWorks
 			int dFrom = Pits.RM_SuspensionUnderpass.DrawDepth(pawn, from, ex.HollowDepthAt(from));
 			if (pawn.pather == null || !pawn.pather.Moving)
 			{
-				return Clamped(ex, pawn.Map, from, dFrom, perLevel);
+				// PIT_BOAR_FIX_SUNBATHES_ON_THE_WALL: the tween may lag (or, paused, freeze) behind Position: hold the drawn centre
+				return Held(Clamped(ex, pawn.Map, from, dFrom, perLevel), drawPos, dFrom);
 			}
 			IntVec3 to = pawn.pather.nextCell;
 			int dTo = to.IsValid ? Pits.RM_SuspensionUnderpass.DrawDepth(pawn, to, ex.HollowDepthAt(to)) : dFrom;
@@ -83,7 +85,8 @@ namespace RimMandrake.FlowWorks
 			float t = RM_PitDrawMath.StepProgress(a.x, a.z, b.x, b.z, drawPos.x, drawPos.z);
 			float sa = Clamped(ex, pawn.Map, from, dFrom, perLevel);
 			float sb = to.IsValid ? Clamped(ex, pawn.Map, to, dTo, perLevel) : sa;
-			return sa + (sb - sa) * t;
+			// the shallower end's lip, so a step onto a shelf eases instead of popping; 0 (stepping in from ground) holds nothing
+			return Held(sa + (sb - sa) * t, drawPos, Math.Min(dFrom, dTo));
 		}
 
 		/// <summary>Sink on cell <paramref name="c"/> of dug depth <paramref name="d"/>, held so the drawn centre
@@ -99,22 +102,25 @@ namespace RimMandrake.FlowWorks
 			{
 				return sink;
 			}
-			float lipZ = float.NaN;
-			for (int k = 1; k <= RM_PitDrawMath.SinkCapLevels * 2; k++)
-			{
-				IntVec3 cand = new IntVec3(c.x, 0, c.z - k);
-				if (!cand.InBounds(map))
-				{
-					break;
-				}
-				if (Pits.RM_SuspensionUnderpass.SeenDepthAt(map, ex, cand) < d)   // a lid is ground: the near lip
-				{
-					lipZ = cand.z + 1f;
-					break;
-				}
-			}
+			float lipZ = RM_PitDrawMath.LipZBelow(c.x, c.z, d, SeenDepth, RM_PitDrawMath.SinkCapLevels * 2);
 			return RM_PitDrawMath.ClampSinkToLip(sink, c.z + 0.5f, lipZ);
 		}
+
+		/// <summary>The drawn-centre hold (RM_PitDrawMath.HoldToDrawnLip) under the same switch as the per-cell clamp: with the
+		/// clamp off (validation_v2's X rows measure the sink by depth) the sink is left whole.</summary>
+		private static float Held(float sink, Vector3 drawPos, int d)
+		{
+			return RimMandrakeFlowWorksSettings.pitSinkClampEnabled ? RM_PitDrawMath.HoldToDrawnLip(sink, drawPos.x, drawPos.z, d, SeenDepth) : sink;
+		}
+
+		/// <summary>The lip finder's depth lookup (RM_PitDrawMath.LipZBelow) on the map <see cref="ExcavationOf"/> last cached
+		/// (SinkOf caches its pawn's map before any lip is looked for): -1 off the map, else the depth the square SHOWS (an
+		/// intact lid is ground). One delegate, no allocation per pawn per frame.</summary>
+		private static readonly Func<int, int, int> SeenDepth = (x, z) =>
+		{
+			IntVec3 q = new IntVec3(x, 0, z);
+			return cachedComp != null && q.InBounds(cachedMap) ? Pits.RM_SuspensionUnderpass.SeenDepthAt(cachedMap, cachedComp, q) : -1;
+		};
 
 		private static RM_MapComponent_Excavation ExcavationOf(Map map)
 		{
