@@ -383,7 +383,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                     if (Digest(last) != Digest(f))
                     {
                         var r = DeterminismChecks.Compare(last, f);
-                        // KNOWN GAP C1: the per-edge cache re-plans a cord only when a cell inside its corridor (its strands' bounding box
+                        // KNOWN GAP C1 (an accepted non-goal, owner 2026-10-22; src/RimMandrake/GimmeSomeSlack/KNOWN_LIMITS.md): the per-edge cache re-plans a cord only when a cell inside its corridor (its strands' bounding box
                         // + 3 cells, design 8.2.7) changed walkability, but the sprawl looks up to Cap (2.6) cells either side of the PLANNED
                         // path, which can lie outside that box. A change confined to the 3..7 cells beyond a cord's corridor leaves its
                         // cached geometry standing while a fresh build would differ. Raising the margin to 7 clears every case but fails the

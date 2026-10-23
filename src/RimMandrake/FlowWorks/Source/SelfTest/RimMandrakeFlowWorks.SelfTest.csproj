@@ -42,6 +42,7 @@
     <!-- The REAL production source file. This is what makes the coverage
          genuine rather than a reimplementation nobody keeps in sync. -->
     <Compile Include="..\RM_StockMath.cs" />
+    <Compile Include="..\RM_EngineSwitch.cs" />
     <Compile Include="..\RM_Volume.cs" />
     <Compile Include="..\RM_BedMath.cs" />
     <Compile Include="..\RM_LakeFloorMath.cs" />

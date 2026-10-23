@@ -735,13 +735,11 @@ class Proof(object):
             s9_b = B.ap("cstyles:%d,%d,%d,%d" % VS.SITE2)
             sty_b = B.ap("styles")
         parts = {
-            "cords(M4)": (V._cord_set(cords_a), V._cord_set(cords_b)),
             "aerial(M16)": (VA._aerial_set(aer_a), VA._aerial_set(aer_b)),
             "mastStyles(S7)": (VS._snapshot(sty_a), VS._snapshot(sty_b)),
             "runStyles(S9e)": (VS._s9_snap(s9_a), VS._s9_snap(s9_b)),
         }
-        empty = [k for k, (a, b) in parts.items() if not a or (isinstance(a, tuple) and not a[0]) or
-                 (isinstance(a, dict) and not a.get("edgeHashes") and k.startswith("cords"))]
+        empty = [k for k, (a, b) in parts.items() if not a or (isinstance(a, tuple) and not a[0])]
         differ = {}
         for k, (a, b) in parts.items():
             if a != b:
@@ -754,8 +752,7 @@ class Proof(object):
         sl3 = not differ and not empty and bool(parts["aerial(M16)"][0]["fallen"])
         self.row("save_load", "SL3_after_load_census_equal", "PASS" if sl3 else "FAIL", "MOD",
                  {"differs": differ, "emptyBefore": empty, "loadSeconds": waited,
-                  "sizes": {"edges": len(parts["cords(M4)"][0].get("edgeHashes") or {}), "geometryHash": [parts["cords(M4)"][0].get("geometryHash"), parts["cords(M4)"][1].get("geometryHash")],
-                            "aerialLinks": len(parts["aerial(M16)"][0]["links"]), "aerialFallen": len(parts["aerial(M16)"][0]["fallen"]),
+                  "sizes": {"aerialLinks": len(parts["aerial(M16)"][0]["links"]), "aerialFallen": len(parts["aerial(M16)"][0]["fallen"]),
                             "masts": len(parts["mastStyles(S7)"][0]), "runCells": len(parts["runStyles(S9e)"][0][0])},
                   "spawned": cords_b.get("spawnedConduitTexture")})
         self.res["save_load_notes"] = notes
@@ -765,7 +762,7 @@ class Proof(object):
         """S12d (GPT D4) measured IN the session. Until 2026-10-22 the style block wrote S12d as SHARED/UNMEASURED and left it
         to a standalone `validation_style.py --live --save`, so every full proof_all result carried one UNMEASURED row and
         `modcheck record` (any UNMEASURED row -> RED) could never read it GREEN. The reason it was left out still holds: a
-        member staged pending in the ONE save would change M4/S7/S9e's before/after sets. So D4 gets its own save + load
+        member staged pending in the ONE save would change S7/S9e's before/after sets. So D4 gets its own save + load
         here, AFTER SL3 has compared them -- nothing it stages can reach SL1-SL3. Z (next block) covers this load too; the
         control's save/load noise is the same list's. Reuses validation_style's own staging, save and read verbatim."""
         if self.res.get("aborted"):

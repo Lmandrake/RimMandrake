@@ -40,7 +40,7 @@ SEATS = ("BENCH", "FOUNDRY")
 # selftest re-reads the C# so this table cannot drift from what ships.
 SETTINGS = {
     "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings": {
-        "depthEngineEnabled": True, "pulseIntervalTicks": 250.0, "flowPerPulse": 1.0,
+        "depthEngineEnabled": True, "depthEngineLiveForTests": False, "pulseIntervalTicks": 250.0, "flowPerPulse": 1.0,
         "digToDepthEnabled": True,
         "maxDigDepth": 4.0, "digCostRisesWithDepth": True,   # colonist cap 2 m (DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL); P6 curve
         "machineDigEnabled": True, "maxMachineDigDepth": 40.0,   # machine labour digs to 20 m
@@ -243,7 +243,7 @@ SETTINGS_SOURCES = {     # type -> C# file (relative to the mod's source folder)
 }
 # Scribed migration flags the MOD sets itself (hoseSettingsImported goes True on the first load after the hose port): no
 # control, never a player setting, never on the toggle floor, never compared to a shipped default.
-INTERNAL_FLAGS = ("hoseSettingsImported",)
+INTERNAL_FLAGS = ("hoseSettingsImported", "depthEngineLiveForTests")
 # Mod subclasses whose ModSettings files the run must restore byte-for-byte (plan 3.3).
 MOD_CLASSES = ("RimMandrakeFlowWorksMod", "RiverSteamMod")   # PitsMod retired 2026-10-02
 

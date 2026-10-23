@@ -482,6 +482,9 @@ item carries these amendments.
       ice tier), and what lowering a cap does.
     - **D7:** turning OFF never makes standing water vanish silently. OFF stops new spills, and existing
       sheets keep draining. The "Dry all" action is a disclosed purge.
+    - **D7, depth engine (owner 2026-10-22):** the depth-engine switch applies on the next load only (*"We shouldn't be
+      supporting live changes to the physics."*). A game loaded with the engine off dries its standing spills once
+      (a disclosed message) and spills nothing new; the running game keeps the state it started with.
 15. **Existing `Flood_FlowWorks` accounting faults, filed with the build so they do not migrate into the
     sheet:**
     - Expiry, an empty frontier or a missing def can destroy a release with `remainingVolume > 0`, which

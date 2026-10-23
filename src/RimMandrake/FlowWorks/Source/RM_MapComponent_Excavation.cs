@@ -82,6 +82,7 @@ namespace RimMandrake.FlowWorks
 		/// <summary>Fire-burn cadence while the depth engine is OFF only (GPT review #18). Not scribed: on load an
 		/// off-engine fire waits at most one interval for its next burn.</summary>
 		private int nextOffBurnTick = -1;
+		private bool offLoadSheetHandled;
 
 		/// <summary>VISCOSITY (FLOWWORKS_BUILD_PROGRAM_1 Phase 3/7): pulses run on this map, scribed so a viscous
 		/// fluid's every-Nth-pulse cadence survives a save. <see cref="RM_StockMath.FluidMovesThisPulse"/>.</summary>
@@ -2684,13 +2685,19 @@ namespace RimMandrake.FlowWorks
 				lookWatcher.Tick(map, this, excavatedCells);
 			}
 			int now = Find.TickManager.TicksGame;
-			if (!RimMandrakeFlowWorksSettings.depthEngineEnabled)
+			if (!RimMandrakeFlowWorksSettings.DepthEngineActive)
 			{
+				// The setting applies on reload (owner 2026-10-22), so a game loaded with the engine off stays off. Water
+				// already standing on the ground is dried ONCE here (disclosed by a message), the simplest rule: nothing
+				// runs its soak, evaporation or run-back with the engine off, so nothing is left frozen in place.
+				if (!offLoadSheetHandled)
+				{
+					offLoadSheetHandled = true;
+					map.GetComponent<Sheet.RM_MapComponent_Sheet>()?.DryAll("The depth engine is off in Mod Settings, so spilled water on this map cannot drain: dried all of it");
+				}
 				// Nothing pours with the engine off, but a fire still burning (Tick above keeps its heat and harm)
 				// must still consume its fuel, or it burns forever (GPT FlowWorks review #18). It runs on its OWN
-				// timer: the pulse schedule stays frozen while the engine is off (E4 contract,
-				// flowworks_northstar_script_plan_2026-10-02.md E4), so switching it back on pulses at once.
-				// The first off-burn waits for the tick the pulse was due, so turning the engine off never burns early.
+				// timer. The first off-burn waits for the tick the pulse was due, so a game loaded off never burns early.
 				if (now >= Mathf.Max(nextPulseTick, nextOffBurnTick))
 				{
 					nextOffBurnTick = now + RimMandrakeFlowWorksSettings.PulseIntervalTicks;

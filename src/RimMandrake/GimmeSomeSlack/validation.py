@@ -5,7 +5,7 @@ Design: design/RimMandrake/messy_conduit_design_2026-10-02.md (section 5 "First 
 
     python3    src/RimMandrake/GimmeSomeSlack/validation.py                 # offline tier, 0 ticks
     python.exe src/RimMandrake/GimmeSomeSlack/validation.py --live --fresh-map   # gimmesomeslack tier, bridge held
-    python.exe src/RimMandrake/GimmeSomeSlack/validation.py --save-load NAME     # M4 on the current map's scene (after --live)
+    python.exe src/RimMandrake/GimmeSomeSlack/validation.py --save-load NAME     # save a NEW file for --removal-check (after --live)
     python.exe src/RimMandrake/GimmeSomeSlack/validation.py --removal-check NAME # M9: a tier WITHOUT the mod (e.g. flowworks)
     python.exe src/RimMandrake/Utils/modcheck/cli.py run GimmeSomeSlack           # the same checks as a modcheck suite
 
@@ -17,16 +17,16 @@ UNMEASURED/UNBUILT/UNCOVERED read UNMEASURED, never PASS).
     anchor (clamped inside the map), every tick goes through t.wait_ticks (clockgate + detector sweeps when the
     run is situational), the runner's map stands in for L0 (--fresh-map), and the SITE rect is destroyed at the end.
   Separate lanes, NOT chains, and why:
-  * M4 --save-load: it loads a save, which replaces the map the runner's Session, anchor, fixture ledger and
+  * --save-load: it loads a save, which replaces the map the runner's Session, anchor, fixture ledger and
     bland-world proof belong to; every later chain would run on a map the runner did not prepare.
   * M9 --removal-check: needs a cold load onto a mod list WITHOUT this mod; a suite runs inside one list.
   * northstar_matrix/run_live.py: places 100 scenes over an absolute 226x100 REGION with map-wide clears
     (non-colonists destroyed, weather/clock pinned), which the anchor/teardown model and the bland world cannot
     contain; it reads a spec JSON precomputed by design_spec.py (numpy, absent under python.exe); ~26 min wall.
 
-M4 (--save-load): census, save as a NEW name with the Saves folder stat'd before/after (only NAME.rws may
-appear, nothing else may change), assert the save holds nothing of ours, load it, census, compare the cord set
-(geometry hash, per-edge hashes, node types, decals, ends). M9 (--removal-check): load_game NAME with
+--save-load: save as a NEW name with the Saves folder stat'd before/after (only NAME.rws may
+appear, nothing else may change), assert the save holds nothing of ours, load it. (Bar M4, cord polylines identical
+after load, was STRUCK by the owner 2026-10-22.) M9 (--removal-check): load_game NAME with
 ignoreModCompatibility on a list without the mod, step 60 ticks, no warning+ log entry or Player.log line may
 name the mod. Batch: --live, then --save-load, then ONE cold load onto the other tier for --removal-check.
 
@@ -122,10 +122,10 @@ SHIPPED = {"enabled": "true", "style": "CordStyle.StarWarsJawa", "slack": "1f", 
            # lane C art styles
            "extCordColorMode": "ExtCordColorMode.Mixed", "extCordColor": "0"}
 
-# The UNBUILT/UNCOVERED placeholder rows (U_motion_look, U_style_missing_art, M4_save_load_hash, M9_remove_mod_clean) are
+# The UNBUILT/UNCOVERED placeholder rows (U_motion_look, U_style_missing_art, M9_remove_mod_clean) are
 # GONE (owner 2026-10-05 densification, design/RimMandrake/gimmesomeslack_verification_consolidation_2026-10-05.md
 # section 2 "Core" + section 7 items 3-4): the two U looks are taste and live on the human review sheet as notes
-# (human_review.py), M4 is proof_all.py's SL3 (one save/load), M9 is the walk's extended E1 (paused by the owner).
+# (human_review.py), M9 is the walk's extended E1 (paused by the owner).
 
 # SHARED (set by proof_all.py): one session, one map. The per-script harness/site rows collapse into proof_all's
 # P1-P3 (doc section 2 "Harness/site rows"): a harness row is then written only when it is NOT PASS (a fault still
@@ -1523,7 +1523,7 @@ def run_style_shots():
     return 1 if bad else 0
 
 
-# ============================================================================ M4 / M9 (own modes)
+# ============================================================================ save-load / M9 (own modes)
 def reveal(B, rect, ticks=30):
     """validation_core.reveal (moved at the hose port: it now walks the colonist through B's OWN probe, so Gimme Some
     Slack's harness no longer needs FlowWorks' HoseProbe)."""
@@ -1569,19 +1569,19 @@ def _cord_set(c):
 
 
 def run_save_load(args):
-    """M4 on whatever scene the current map holds (run after --live): census, save under a NEW name with the Saves
-    folder stat'd before/after (save_game has written the current slot instead of the name), load, census, compare."""
+    """On whatever scene the current map holds (run after --live): census, save under a NEW name with the Saves
+    folder stat'd before/after (save_game has written the current slot instead of the name), load it."""
     B = Bridge()
     rows = []
     res = {"mod": MOD, "mode": "save-load", "tier": TIER, "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "rows": rows}
     name = args.save_load
     ca = _frame_poll_census(B)
     if not ca.get("edgeHashes"):
-        row(rows, "M4_save_load_hash", "FAIL", "SITE", "no cords on the current map to compare: %s" % str(ca)[:200])
+        row(rows, "SAVE_precondition", "FAIL", "SITE", "no cords on the current map to compare: %s" % str(ca)[:200])
         return res
     before = _saves_stat()
     if name + ".rws" in before:
-        row(rows, "M4_save_load_hash", "FAIL", "HARNESS", "%s.rws already exists; pick a new name" % name)
+        row(rows, "SAVE_precondition", "FAIL", "HARNESS", "%s.rws already exists; pick a new name" % name)
         return res
     sv = B.call("rimworld/save_game", saveName=name)
     _wait_saved(name)
@@ -1590,7 +1590,7 @@ def run_save_load(args):
     changed = sorted(n for n in before if n in after and after[n] != before[n])
     gone = sorted(set(before) - set(after))
     ok_save = new == [name + ".rws"] and not changed and not gone
-    row(rows, "M4a_save_landed_new_file_only", "PASS" if ok_save else "FAIL", "HARNESS",
+    row(rows, "SAVE_landed_new_file_only", "PASS" if ok_save else "FAIL", "HARNESS",
         {"new": new, "changed": changed, "gone": gone, "size": after.get(name + ".rws"), "tool": sv.get("success")})
     if not ok_save:
         res["aborted"] = "save did not land as a new file only -- not loading"
@@ -1607,15 +1607,9 @@ def run_save_load(args):
     ld = B.call("rimworld/load_game", saveName=name)
     ok, waited = _wait_playing(B)
     if not ok:
-        row(rows, "M4_save_load_hash", "FAIL", "SITE", {"load": ld.get("success"), "state": waited})
+        row(rows, "SAVE_load", "FAIL", "SITE", {"load": ld.get("success"), "state": waited})
         return res
-    cb = _frame_poll_census(B)
-    sa, sb = _cord_set(ca), _cord_set(cb)
-    diff = sorted(k for k in sa if sa[k] != sb[k])
-    row(rows, "M4_save_load_hash", "PASS" if not diff and sa["edgeHashes"] else "FAIL", "MOD",
-        {"geometryHash": [sa["geometryHash"], sb["geometryHash"]], "edges": len(sa["edgeHashes"] or {}), "differs": diff,
-         "loadSeconds": waited, "spawned": cb.get("spawnedConduitTexture")})
-    res["before"], res["after"] = sa, sb
+    row(rows, "SAVE_load", "PASS", "HARNESS", {"loadSeconds": waited})
     return res
 
 
@@ -1840,7 +1834,7 @@ def main(argv=None):
     ap.add_argument("--live", action="store_true")
     ap.add_argument("--fresh-map", action="store_true")
     ap.add_argument("--out", default=None)
-    ap.add_argument("--save-load", default=None, metavar="NAME", help="M4: census, save as NAME (new), load, census, compare")
+    ap.add_argument("--save-load", default=None, metavar="NAME", help="census, save as NAME (new), load, census, compare")
     ap.add_argument("--removal-check", default=None, metavar="NAME", help="M9: load NAME on a tier WITHOUT the mod, read the log")
     ap.add_argument("--style-shots", action="store_true",
                     help="lane C: on the current map (after --live and validation_aerial --live) screenshot every style, same rects")

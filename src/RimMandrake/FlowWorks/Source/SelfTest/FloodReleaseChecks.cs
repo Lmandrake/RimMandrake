@@ -234,6 +234,19 @@ namespace RimMandrake.FlowWorks.SelfTest
 				Assert(diverged > 0, "can-fail: dropping the refused squares on load must change some walk (else this proves nothing)");
 			});
 
+			Case("Depth_engine_switch_applies_on_reload_only", () =>
+			{
+				// owner 2026-10-22: "We shouldn't be supporting live changes to the physics." The game keeps the value it started with.
+				object key = null; bool snap = true; object g1 = new object(), g2 = new object();
+				Assert(EngineSwitch.Resolve(ref key, ref snap, g1, true, false), "game 1 starts with the engine on");
+				Assert(EngineSwitch.Resolve(ref key, ref snap, g1, false, false), "flipping it off mid-game changes nothing");
+				Assert(!EngineSwitch.Resolve(ref key, ref snap, g2, false, false), "the next load (a new game) reads the new value");
+				Assert(!EngineSwitch.Resolve(ref key, ref snap, g2, true, false), "...and keeps it until the next reload");
+				Assert(EngineSwitch.Resolve(ref key, ref snap, g2, true, true), "the harness switch reads the live value (can-fail: without it the live value is ignored)");
+				string src = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs") + RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Sheet", "RM_MapComponent_Sheet.cs"));
+				Assert(!src.Contains("RimMandrakeFlowWorksSettings.depthEngineEnabled"), "the pulse and the spill gate read DepthEngineActive, never the live checkbox");
+			});
+
 			Case("Overflow_settings_ship_owner_defaults_master_off_every_field_saved", () =>
 			{
 				// owner card 2026-10-22: the placeholder loss rates are the Mod Settings defaults; D7: the master switch ships OFF

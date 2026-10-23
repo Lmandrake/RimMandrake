@@ -330,6 +330,9 @@ def _restore(t, typ, field, default):
 def _setting(t, field, value):
     """Flip one Mod Settings field for the duration of a block, restore the shipped default in finally."""
     typ = SETTINGS_OF[field]
+    if field == "depthEngineEnabled":
+        # the engine switch applies on RELOAD (owner 2026-10-22); the harness flips it live through its own never-saved switch
+        t.set_setting(typ, {"depthEngineLiveForTests": True})
     t.set_setting(typ, {field: value})
     try:
         yield
@@ -338,6 +341,8 @@ def _setting(t, field, value):
         # left the setting flipped for every later chain (MEASURED 2026-10-06: superdeepCaptureEnabled stuck False ->
         # capture-down "NotHeld", sluice "held=False", pit occupants walking out: four FAILs in other chains).
         _restore(t, typ, field, DEFAULTS[field])
+        if field == "depthEngineEnabled":
+            _restore(t, typ, "depthEngineLiveForTests", False)
 
 
 @contextmanager

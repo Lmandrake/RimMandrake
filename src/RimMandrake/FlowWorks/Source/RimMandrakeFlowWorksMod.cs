@@ -40,6 +40,13 @@ namespace RimMandrake.FlowWorks
         //   7. digToDepthEnabled — deepening. Off: one level only, the way
         //      the mod shipped before the four-depth ruling.
         public static bool depthEngineEnabled = true;
+        // Applies on the NEXT LOAD only (owner 2026-10-22: "We shouldn't be supporting live changes to the physics."). The
+        // checkbox writes depthEngineEnabled; the running game reads DepthEngineActive, the value its game started with.
+        // depthEngineLiveForTests is the proof harness's switch (never saved, never shown): on, the live value is read.
+        public static bool depthEngineLiveForTests = false;
+        private static object engineKey;
+        private static bool engineAtLoad = true;
+        public static bool DepthEngineActive => EngineSwitch.Resolve(ref engineKey, ref engineAtLoad, Current.Game, depthEngineEnabled, depthEngineLiveForTests);
         public static float pulseIntervalTicks = 250f;
         public static float flowPerPulse = 1f;
         public static bool digToDepthEnabled = true;
@@ -1055,7 +1062,9 @@ namespace RimMandrake.FlowWorks
                 "The depth/fill engine: liquid pours into the deepest excavated squares first "
               + "and overflows from a full square into any neighbour with room. Off: nothing "
               + "pours and a dug channel is inert earthworks. Digging still works, and a "
-              + "channel still costs what it costs to cross.");
+              + "channel still costs what it costs to cross. Applies after reload: the game "
+              + "you are playing keeps the setting it started with. Loaded with the engine off, "
+              + "any standing spilled water is dried once.");
 
             list.Gap();
             list.Label("Flow pulse: every " + (PulseIntervalTicks / 60f).ToString("0.#") + " s of game time");

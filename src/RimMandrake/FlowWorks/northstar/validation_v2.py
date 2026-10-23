@@ -2766,6 +2766,7 @@ def phase_J(L, args):
         ov0 = e0.get("overflowDestroyedTotal")
         snap0 = _snapshot(L)
         # --- E4 OFF half: the real scheduler must not pulse
+        L.sset(S_FW, "depthEngineLiveForTests", True)   # the switch applies on reload (owner 2026-10-22); the harness reads it live
         L.sset(S_FW, "depthEngineEnabled", False)
         eo = L.eng()
         n0 = eo.get("nextPulseTick")
@@ -2788,6 +2789,7 @@ def phase_J(L, args):
                   "MOD", "OFF for %s ticks, past the due tick %s: nextPulseTick %s->%s, cells moved %s" % (
                       ran_off, n0, n0, e1.get("nextPulseTick"), moved[:4]))
         L.sset(S_FW, "depthEngineEnabled", True)
+        L.sset(S_FW, "depthEngineLiveForTests", False)
         # --- E1b: pin below the clamp floor; the engine must clamp to 60
         L.sset(S_FW, "pulseIntervalTicks", 30.0)
         e2 = L.eng()
