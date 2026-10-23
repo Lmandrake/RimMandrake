@@ -1,0 +1,1 @@
+A live session that runs a deployed DLL older than the repo's produces MOD verdicts on code nobody can name: check assembly identity (type_probe sha vs repo DLL) BEFORE reading any setting -- a newer setting the old build lacks aborts the sweep with a misleading 'No public field' (live_session 20261022T235239 B1).
