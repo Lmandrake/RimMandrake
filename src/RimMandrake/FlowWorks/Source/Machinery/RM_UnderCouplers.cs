@@ -16,6 +16,14 @@ namespace RimMandrake.FlowWorks.Machinery
 
         private static readonly System.Collections.Generic.Dictionary<string, Material[]> matCache = new System.Collections.Generic.Dictionary<string, Material[]>();
 
+        /// <summary>Per-def under-coupler look for fixtures that are not style-picked and whose art is not the default (Scrapper, copper) look:
+        /// Kludged = weathered dark steel pipework (Industrial set); Repaired = painted white/red steel, clean brushed steel (Modern set).</summary>
+        public static readonly System.Collections.Generic.Dictionary<string, string> ArtLookOverride = new System.Collections.Generic.Dictionary<string, string>
+        {
+            { "RM_PumpingStation_Kludged", "Industrial" },
+            { "RM_PumpingStation_Repaired", "Modern" },
+        };
+
         public static void ResetFrame() => lastDraws = 0;
 
         /// <summary>True when a hose coupled to <paramref name="port"/> gets an under-coupler (any spawned non-pipe port).</summary>
@@ -28,6 +36,8 @@ namespace RimMandrake.FlowWorks.Machinery
         {
             if (!Wanted(port) || System.Math.Abs(sx) + System.Math.Abs(sz) != 1) return false;
             string look = RM_LiquidJoins.LookOf(port);
+            // PUMPSTATION_COUPLER_MATCH_FIX_STEEL (delegated art pick 2026-10-23): unstyled fixtures whose art is steel, not copper
+            if (!PipeLook.IsStyled(port.def) && ArtLookOverride.TryGetValue(port.def.defName, out string artLook)) look = artLook;
             // per-look cache: RM_LiquidJoins.Mat builds a key string per call, and this runs every frame for every coupled hose end
             if (!matCache.TryGetValue(look ?? "", out Material[] mp))
             {
