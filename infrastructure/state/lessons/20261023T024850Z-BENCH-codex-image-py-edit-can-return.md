@@ -1,0 +1,1 @@
+codex_image.py edit can return an OPAQUE RGB picture on pure black even when the prompt asks for a real alpha channel (3 of 3 fire-reel masters, 2026-10-22): check im.mode after every render. rembg_cut.py was OOM-killed (rc 137) in the seat cgroup; a border flood fill over max-channel <= 10 cut the flat black cleanly because the subject never touched pure black.
