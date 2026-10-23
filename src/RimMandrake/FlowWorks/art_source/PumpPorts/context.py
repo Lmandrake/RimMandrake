@@ -3,6 +3,8 @@
 brass face on the port point). OFFLINE composite, not a game capture."""
 import sys
 from PIL import Image, ImageDraw
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..")))
 T = '/home/mandrake/rm/bench/src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/'
 UNDER = True
 REACH = 0.299
@@ -23,19 +25,21 @@ def scene(pump_png, look, ppc, reach=None):
     x = 0
     while x < cx:
         bg.alpha_composite(seg.crop((0, 0, min(seg.width, cx - x), seg.height)), (x, cy - seg.height // 2)); x += seg.width
-    # hose under-coupler beneath the pump at the east (hose) port: UnderCouplerGeometry collar 0.140625 x 0.3125, pipe 0.21875
+    # hose under-coupler beneath the pump at the east (hose) port: UnderCouplerGeometry collar CL x CW, pipe PW
     # wide from mid-collar to the reach (UnderCouplerReach.cs, 0.299 for the redrawn pumps); +u of the sprites points inward
     if UNDER:
         J = T + f'Joins/{look}/'
         port_x = cx + ppc // 2
         reach = REACH
-        pl = reach - 0.140625 / 2
+        import selftest_hose_fittings as _gate   # UnderCouplerGeometry constants, parsed from the C#
+        CL, CW, PW = _gate.under_geom()
+        pl = reach - CL / 2
         up = Image.open(J + 'UnderPipe.png').convert('RGBA').transpose(Image.FLIP_LEFT_RIGHT)
-        up = up.resize((max(1, round(pl * ppc)), round(0.21875 * ppc)), Image.LANCZOS)
+        up = up.resize((max(1, round(pl * ppc)), round(PW * ppc)), Image.LANCZOS)
         bg.alpha_composite(up, (round(port_x - reach * ppc), cy - up.height // 2))
         uc = Image.open(J + 'UnderCollar.png').convert('RGBA').transpose(Image.FLIP_LEFT_RIGHT)
-        uc = uc.resize((round(0.140625 * ppc), round(0.3125 * ppc)), Image.LANCZOS)
-        bg.alpha_composite(uc, (round(port_x - 0.140625 * ppc), cy - uc.height // 2))
+        uc = uc.resize((round(CL * ppc), round(CW * ppc)), Image.LANCZOS)
+        bg.alpha_composite(uc, (round(port_x - CL * ppc), cy - uc.height // 2))
     # pump
     pump = Image.open(pump_png).convert('RGBA').resize((ppc, ppc), Image.LANCZOS)
     bg.alpha_composite(pump, (cx - ppc // 2, cy - ppc // 2))

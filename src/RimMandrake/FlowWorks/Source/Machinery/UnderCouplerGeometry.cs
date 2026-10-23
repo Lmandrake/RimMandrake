@@ -15,9 +15,12 @@ namespace RimMandrake.FlowWorks.Machinery
     /// </summary>
     public static class UnderCouplerGeometry
     {
-        /// <summary>Cells: the collar's length along the axis and width across it; the pipe's width (its length is
-        /// <see cref="PipeLength"/>). Canvas px at 256 px/cell: collar 36 x 80, pipe 32 (stretched) x 56.</summary>
-        public const double CollarLength = 0.140625, CollarWidth = 0.3125, PipeWidth = 0.21875;
+        /// <summary>Cells: the collar's length along the axis and width across it; the pipe's width (its length runs to
+        /// <see cref="Reach"/>). Sprites stay 36 x 80 (collar) and 32 (stretched) x 56 (pipe) px. UNDERCOUPLER_GIRTH_TUNE_PEEKS_PAST_NECK
+        /// (owner 2026-10-23, "connectors that match the more modern pipe and hose sizes"): the collar is the old one x 0.7
+        /// (aspect kept), no wider than a plain hose coupling face (0.222); the pipe is the hose's flat width (0.18) rounded up
+        /// to 48/256, the narrowest the gate allows (it must span the hose).</summary>
+        public const double CollarLength = 0.0984375, CollarWidth = 0.21875, PipeWidth = 0.1875;
 
         /// <summary>How far the spigot runs inward from the port point (px, pz) along the unit step (sx, sz) (end cell -> fixture)
         /// to the footprint's centre line; never shorter than the collar.</summary>
