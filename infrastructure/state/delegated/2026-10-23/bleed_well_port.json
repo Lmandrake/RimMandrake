@@ -1,0 +1,21 @@
+{
+  "subject": "Is a bleed well (RM_LiquidTap) a pipe-end port for joint_check?",
+  "item": "JOINT_CHECK_FIX_TAPS_LOOK_LIKE_NOTHING",
+  "judge": "delegated design judge (did not write 029c53c3a3)",
+  "class": "delegated: design-ruling",
+  "decision": "B",
+  "verdict": "REDO",
+  "adjacency": "none - a bleed well joins no pipe at any adjacency (orthogonal or diagonal). Its only output is the dug-channel cell its rotation faces (Building_LiquidDrill.OutletCell). Same for RM_LiquidDrill (same class).",
+  "evidence": [
+    "src/RimMandrake/FlowWorks/Defs/Drilling/ThingDefs/RM_LiquidDrill.xml:9-11 - raises liquid 'into a dug channel at its outlet cell (Building_LiquidDrill.OutletCell)'",
+    "src/RimMandrake/FlowWorks/Defs/Drilling/ThingDefs/RM_LiquidDrill.xml:18-21 - 'Not a tap on a pipe (it is off the pipe net)' per LIQUID_TAP_RENAME_NOT_A_FAUCET (owner card 2026-10-22)",
+    "src/RimMandrake/FlowWorks/Defs/Drilling/ThingDefs/RM_LiquidDrill.xml:90 - player description: 'It stands on its own, not on a pipe network'",
+    "src/RimMandrake/FlowWorks/Source/Drilling/Building_LiquidDrill.cs:61,115-140 - output goes only to excavation at OutletCell; no pipe/net/tank call",
+    "src/RimMandrake/FlowWorks/Source/Machinery/RM_LiquidNet.cs:116-141 - RoleOfKind gives Building_LiquidDrill no role (None): the net cannot join it",
+    "infrastructure/state/ledger/events/OWNER.jsonl:1707,1709 - owner card 'What should tap mean? -> Rename now, file a faucet'; close: 'description says it is off the pipe net'",
+    "infrastructure/state/ledger/events/OWNER.jsonl:1710 - PIPE_FAUCET_BUILD_TAP_NAME_NOW_FREE: the pipe-attached fitting is a SEPARATE, unbuilt def; 'C7's bleed-well line beside a pipe is the natural staging spot' (future faucet), not a connection",
+    "src/RimMandrake/FlowWorks/northstar/scenarios/c07_bathhouse_tower.py:39-42,110 - scene itself says 'ground wells, off the pipe net' / 'not on the pipe'",
+    "src/RimMandrake/FlowWorks/northstar/joint_check.py:71-77 - comment 'a bleed well that works beside a pipe' contradicts all of the above"
+  ],
+  "consequence": "joint_check: drop RM_LiquidTap and RM_LiquidDrill from PORT_DEF_PREFIXES (keep RM_SprinklerHead* - a real net Machine via CompRM_SprinklerBase - and RM_PipeFaucet, the owner-filed pipe fitting), fix the joint_check.py:71-75 comment, and update selftest_joint_check.py:76-77,100 which asserts the tap is a port. A pipe end beside a bleed well or drill is a real stub. Scenes: C7's pipe at z=18 (x 13..24) is owner-sanctioned staging for the future faucet, so the wells beside it are not wrong, but its west end (13,18) is a real dead end until PIPE_FAUCET lands - end it on a fitting/tank or accept the stub as a known C7 FAIL row; C4 (17,17) lays no pipe to its well and is unaffected. No owner question: the owner card of 2026-10-22 already decided this."
+}
