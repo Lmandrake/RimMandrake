@@ -3900,3 +3900,5 @@
 {"path": "src/RimUtinni/ShokkweaveEconomy/Patches/ShokkweaveRename.xml", "seat": "FOUNDRY", "sha256": null, "ts": "2026-10-23T06:43:15.905847Z", "verdict": "pruned"}
 {"path": "src/RimUtinni/ShokkweaveEconomy/Source/GenStep_ScatterWebworkSilk.cs", "seat": "FOUNDRY", "sha256": null, "ts": "2026-10-23T06:43:15.905848Z", "verdict": "pruned"}
 {"path": "src/RimUtinni/ShokkweaveEconomy/Source/ShokkweaveEconomySettings.cs", "seat": "FOUNDRY", "sha256": null, "ts": "2026-10-23T06:43:15.905849Z", "verdict": "pruned"}
+{"cleanCount": 4, "date": "2026-10-22", "path": "src/RimMandrake/LeaningScrub/validation.py", "seat": "FOUNDRY", "sha": "523c2ea81", "sha256": "c815c8a70e06d565bed5cb0be5c73c962a157781ca666445a0e38ef815f54a98", "ts": "2026-10-23T06:43:53.361855Z", "verdict": "clean"}
+{"cleanCount": 5, "date": "2026-10-22", "path": "src/RimMandrake/Utils/art/art_sheet.py", "seat": "FOUNDRY", "sha": "523c2ea81", "sha256": "bdeeb2734d7b7e985c7ab28b9ce11312616540fd078b365e1566b7a5179277f5", "ts": "2026-10-23T06:44:25.047252Z", "verdict": "clean"}
