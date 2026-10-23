@@ -32,7 +32,14 @@ namespace RimMandrake.TheRot
     //   double heat  the root pushes no heat where RM_MapComponent_WarmGround already runs (the Rot, or a cross-biome
     //                opt-in map), and only one root heats any one room per sweep.
     //
-    // The clocks (eat / spread / die back) and the heat step are RM_TheRotKernel.MatRootStep / MatHeatStep, fuzzed offline
+    //   budding      owner by card 2026-10-22 ("A well-fed root buds a second one now and then"; the cost he accepted: free
+    //                heat multiplies). A root held at >= budWellFedPercent food (always, in the Rot) for portableWarmMatBudDays
+    //                rolls portableWarmMatBudChance; a hit sprouts a new root on a cell of its own mat, paid for with budCost
+    //                food (handed to the bud) off the Rot. A map never holds more than portableWarmMatBudCap roots, installed
+    //                and minified both counted. Each bud heats only through the same mat-room rule, at the same 21 C cap, and
+    //                one push per room per sweep, so more roots grow more mat faster but never make one room hotter.
+    //
+    // The clocks (eat / spread / die back / bud) and the heat step are RM_TheRotKernel.MatRootStep / MatHeatStep, fuzzed offline
     // (selftest_therot_fuzz.py --fuzz-only mat); this comp only reads the game and applies the decisions.
     //
     // Grown cells are saved as absolute cells and CLEARED on any non-load respawn (reinstall, gravship landing): the
@@ -57,6 +64,10 @@ namespace RimMandrake.TheRot
         public float spreadMinFuelPercent = 0.5f;
         public int starveGraceTicks = 120000;
         public int dieBackIntervalTicks = 5000;
+        // Budding (interval, chance and cap are Mod Settings; these two are the measurable "well fed" bar and the price).
+        public float budWellFedPercent = 0.8f;
+        public float budCost = 10f;
+        public float budMinSpacing = 2f;
 
         public CompProperties_RM_LivingMatRoot()
         {
@@ -85,9 +96,14 @@ namespace RimMandrake.TheRot
             {
                 yield return "CompProperties_RM_LivingMatRoot needs tickerType Rare (it sweeps on CompTickRare).";
             }
-            if (parentDef.GetCompProperties<CompProperties_Refuelable>() == null)
+            CompProperties_Refuelable fuel = parentDef.GetCompProperties<CompProperties_Refuelable>();
+            if (fuel == null)
             {
                 yield return "CompProperties_RM_LivingMatRoot needs a CompProperties_Refuelable to hold its food.";
+            }
+            else if (budWellFedPercent <= 0f || budWellFedPercent > 1f || budCost < 0f || budCost > fuel.fuelCapacity * budWellFedPercent)
+            {
+                yield return "CompProperties_RM_LivingMatRoot: budWellFedPercent must be >0 and <=1, and budCost must fit inside a well-fed gauge.";
             }
         }
     }
@@ -102,6 +118,7 @@ namespace RimMandrake.TheRot
         public List<IntVec3> grown = new List<IntVec3>();
         public RM_TheRotKernel.MatRootState clocks;
         public string lastStatus = "";
+        public string budStatus = "";
 
         public CompProperties_RM_LivingMatRoot Props => (CompProperties_RM_LivingMatRoot)props;
         private CompRefuelable Food => parent.TryGetComp<CompRefuelable>();
@@ -125,6 +142,7 @@ namespace RimMandrake.TheRot
             Scribe_Values.Look(ref clocks.starvingTicks, "starvingTicks", 0);
             Scribe_Values.Look(ref clocks.spreadTimer, "spreadTimer", 0);
             Scribe_Values.Look(ref clocks.dieBackTimer, "dieBackTimer", 0);
+            Scribe_Values.Look(ref clocks.wellFedTicks, "wellFedTicks", 0);
             if (Scribe.mode == LoadSaveMode.PostLoadInit && grown == null)
             {
                 grown = new List<IntVec3>();
@@ -134,11 +152,12 @@ namespace RimMandrake.TheRot
         public override void CompTickRare()
         {
             base.CompTickRare();
-            DoSweep(false);
+            DoSweep(false, false);
         }
 
-        /// <summary>One 250-tick sweep. <paramref name="hurry"/> treats every timer as elapsed (proof calls only).</summary>
-        public void DoSweep(bool hurry)
+        /// <summary>One 250-tick sweep. <paramref name="hurry"/> treats the eat/spread/die-back timers as elapsed and
+        /// <paramref name="hurryBud"/> the bud clock and roll (proof calls only; neither ever lifts the cap).</summary>
+        public void DoSweep(bool hurry, bool hurryBud)
         {
             if (!parent.Spawned)
             {
@@ -170,8 +189,108 @@ namespace RimMandrake.TheRot
             {
                 DieBackOne();
             }
+            // Always called: an unfed root is under the well-fed bar, so the kernel restarts its bud clock.
+            budStatus = TryBudSweep(inRot, food, appetite, hurryBud);
 
             lastStatus = fed ? Heat(inRot, hurry) : "starving: not heating";
+        }
+
+        /// <summary>Roots of this def on the map, installed or minified (an uninstalled root on the shelf still counts toward the cap).</summary>
+        public static int RootsOnMap(Map map, ThingDef def)
+        {
+            int n = map.listerThings.ThingsOfDef(def).Count;
+            foreach (Thing t in map.listerThings.ThingsInGroup(ThingRequestGroup.MinifiedThing))
+            {
+                if ((t as MinifiedThing)?.InnerThing?.def == def)
+                {
+                    n++;
+                }
+            }
+            return n;
+        }
+
+        private string TryBudSweep(bool inRot, CompRefuelable food, float appetite, bool hurryBud)
+        {
+            if (!RM_TheRotSettings.portableWarmMatBudding)
+            {
+                clocks.wellFedTicks = 0;
+                return "";
+            }
+            Map map = parent.Map;
+            int cap = Mathf.Max(1, RM_TheRotSettings.portableWarmMatBudCap);
+            int roots = RootsOnMap(map, parent.def);
+            float cost = Props.budCost * appetite;
+            int interval = Mathf.Max(2500, Mathf.RoundToInt(RM_TheRotSettings.portableWarmMatBudDays * GenDate.TicksPerDay));
+            bool bud = RM_TheRotKernel.MatBudStep(ref clocks.wellFedTicks, Sweep, hurryBud, true, inRot, food?.Fuel ?? 0f,
+                food?.Props.fuelCapacity ?? 0f, Props.budWellFedPercent, interval, RM_TheRotSettings.portableWarmMatBudChance,
+                Rand.Value, roots, cap, cost);
+            if (bud)
+            {
+                Thing child = TryBud();
+                if (child != null)
+                {
+                    roots++;
+                    if (!inRot && food != null)
+                    {
+                        food.ConsumeFuel(cost);
+                        CompRefuelable cf = child.TryGetComp<CompRefuelable>();
+                        if (cf != null)
+                        {
+                            cf.ConsumeFuel(cf.Fuel);
+                            cf.Refuel(cost);
+                        }
+                    }
+                    Messages.Message("A living mat root has budded a second root in its mat.", child, MessageTypeDefOf.PositiveEvent);
+                }
+            }
+            if (roots >= cap)
+            {
+                return "this map holds its most roots (" + roots + " of " + cap + "): no budding";
+            }
+            if (clocks.wellFedTicks <= 0)
+            {
+                return inRot ? "" : "buds only while at least " + Props.budWellFedPercent.ToStringPercent() + " fed";
+            }
+            return "well fed: next bud roll in " + Mathf.Max(0, interval - clocks.wellFedTicks).ToStringTicksToPeriod();
+        }
+
+        /// <summary>Sprouts a new root on a cell of mat in this root's room and radius, at least budMinSpacing from every
+        /// root, farthest first. Returns the new root, or null when no cell will take one.</summary>
+        public Thing TryBud()
+        {
+            Map map = parent.Map;
+            Room room = parent.GetRoom();
+            if (room == null)
+            {
+                return null;
+            }
+            List<Thing> others = map.listerThings.ThingsOfDef(parent.def);
+            IntVec3 best = IntVec3.Invalid;
+            float bestD = -1f;
+            foreach (IntVec3 c in GenRadial.RadialCellsAround(parent.Position, Props.spreadRadius, true))
+            {
+                if (!c.InBounds(map) || c.GetRoom(map) != room || !IsMat(map.terrainGrid.TerrainAt(c)) || !c.Standable(map)
+                    || c.GetFirstBuilding(map) != null || others.Any(o => o.Position.DistanceTo(c) < Props.budMinSpacing))
+                {
+                    continue;
+                }
+                float d = c.DistanceToSquared(parent.Position);
+                if (d > bestD)
+                {
+                    bestD = d;
+                    best = c;
+                }
+            }
+            if (!best.IsValid)
+            {
+                return null;
+            }
+            Thing child = GenSpawn.Spawn(ThingMaker.MakeThing(parent.def), best, map);
+            if (parent.Faction != null)
+            {
+                child.SetFaction(parent.Faction);
+            }
+            return child;
         }
 
         private bool IsMat(TerrainDef t)
@@ -338,6 +457,10 @@ namespace RimMandrake.TheRot
                 return null;
             }
             string s = "Living mat: " + (lastStatus.NullOrEmpty() ? "settling in" : lastStatus) + ". Grown here: " + grown.Count + " cells.";
+            if (!budStatus.NullOrEmpty())
+            {
+                s += "\nBudding: " + budStatus + ".";
+            }
             if (!InRot && Food != null && !Food.HasFuel && RM_TheRotSettings.portableWarmMatDieBack)
             {
                 int left = Props.starveGraceTicks - clocks.starvingTicks;
@@ -429,7 +552,7 @@ namespace RimMandrake.TheRot
                         food.Refuel(food.Props.fuelCapacity - food.Fuel);
                     }
                     float before = food?.Fuel ?? 0f;
-                    r.DoSweep(true);
+                    r.DoSweep(true, false);
                     ate += before - (food?.Fuel ?? 0f);
                 }
                 room = r.parent.GetRoom();
@@ -448,6 +571,32 @@ namespace RimMandrake.TheRot
                     + " (mat " + mat + "/" + cells + ") | outdoor " + map.mapTemperature.OutdoorTemp.ToString("0.0") + " | " + r.lastStatus);
             }
             return string.Join(" || ", rows);
+        }
+
+        /// <summary>Tops the first root up to full and runs <paramref name="sweeps"/> sweeps with the bud clock and roll hurried
+        /// (the cap and the food are not). "BUD roots a->b | cap C | budded k | food f | status" or "REFUSED: why".</summary>
+        public static string ProofBud(int sweeps)
+        {
+            Map map = Find.CurrentMap;
+            if (map == null) return "REFUSED: no map";
+            List<RM_CompLivingMatRoot> roots = Roots(map);
+            if (roots.Count == 0) return "REFUSED: no RM_LivingMatRoot on the current map (ProofStage first)";
+            RM_CompLivingMatRoot r = roots[0];
+            CompRefuelable food = r.parent.TryGetComp<CompRefuelable>();
+            int a = RM_CompLivingMatRoot.RootsOnMap(map, RootDef);
+            int budded = 0;
+            for (int s = 0; s < sweeps; s++)
+            {
+                if (food != null)
+                {
+                    food.Refuel(food.Props.fuelCapacity - food.Fuel);
+                }
+                int before = RM_CompLivingMatRoot.RootsOnMap(map, RootDef);
+                r.DoSweep(true, true);
+                budded += RM_CompLivingMatRoot.RootsOnMap(map, RootDef) - before;
+            }
+            return "BUD roots " + a + "->" + RM_CompLivingMatRoot.RootsOnMap(map, RootDef) + " | cap " + RM_TheRotSettings.portableWarmMatBudCap
+                + " | budded " + budded + " | food " + (food?.Fuel ?? -1f).ToString("0.00") + " | " + r.budStatus;
         }
     }
 }

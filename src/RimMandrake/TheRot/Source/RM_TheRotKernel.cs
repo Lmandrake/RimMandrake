@@ -327,7 +327,33 @@ namespace RimMandrake.TheRot
 
         public struct MatRootState
         {
-            public int starvingTicks, spreadTimer, dieBackTimer;
+            public int starvingTicks, spreadTimer, dieBackTimer, wellFedTicks;
+        }
+
+        /// <summary>
+        /// One sweep of the bud clock (owner by card 2026-10-22: "A well-fed root buds a second one now and then"). Well fed = in the
+        /// Rot, or holding at least wellFedPercent of its food after this sweep's meal. The clock runs only while well fed and budding is
+        /// on, and restarts the moment either is not. When it reaches interval the root rolls (roll in [0,1) is passed in): below chance
+        /// it buds, provided the map holds fewer than cap roots and (off the Rot) it can pay budCost. The clock restarts after every
+        /// roll, hit or miss. hurry treats the clock as elapsed and the roll as a hit (proof calls only); the cap and the food are never
+        /// hurried, so no call of any kind takes a map past its cap.
+        /// </summary>
+        public static bool MatBudStep(ref int wellFedTicks, int sweep, bool hurry, bool budOn, bool inRot, float fuel, float fuelMax,
+            float wellFedPercent, int interval, float chance, float roll, int rootsOnMap, int cap, float budCost)
+        {
+            bool wellFed = inRot || (fuelMax > 0f && fuel / fuelMax >= wellFedPercent);
+            if (!budOn || !wellFed)
+            {
+                wellFedTicks = 0;
+                return false;
+            }
+            wellFedTicks += sweep;
+            if (!hurry && wellFedTicks < interval) return false;
+            wellFedTicks = 0;
+            if (!hurry && roll >= chance) return false;
+            if (rootsOnMap >= cap) return false;
+            if (!inRot && fuel < budCost) return false;
+            return true;
         }
 
         /// <summary>What one sweep decided. <c>eat</c> is the upkeep taken this sweep (a spread's cost is charged by the caller

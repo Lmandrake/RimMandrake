@@ -17,6 +17,13 @@ namespace RimMandrake.TheRot
     //   sites     an entry in siteEntries also generates RM_NavigatorSalvageSite (vanilla item-stash shape, always
     //             defended when violent quests are allowed, no timeout). Free tier: QuestNode_GetSiteTile near the
     //             colony. Campaign: campaignSiteTiles (patched) are used in order, preset in the slate as siteTile.
+    //   last camp ROT_WARM_MAT_BUILD_WORKS_FOR_FOOD (owner by card 2026-10-22: the living mat root is a QUEST REWARD). The
+    //             entry named lastCampEntry (the log's last site, entry 8) reveals lastCampQuest (RM_NavigatorLastCamp) instead
+    //             of a plain salvage site: the crew's last camp, where the warm mat took them in and a root of it knotted where
+    //             they lay. Its stash holds a minified RM_LivingMatRoot (RM_QuestNode_AddMinifiedToStash). With the root
+    //             switched off in Mod Settings (portableWarmMat) the entry reveals a plain salvage site. The cost of this route:
+    //             the root is earned only by a player who keeps the giant alive long enough to hear the whole log
+    //             (lastCampEntry x navigatorPingsPerEntry pings); cutting the core out early ends the log, and the root with it.
     //   death     the carrier's death (RM_CompSwallowedCore.Notify_Killed) cuts the log mid-line with a letter;
     //             entries read and sites revealed stay. Pings stop with the carrier, so the count can never move.
     //   landing   a grav engine APPEARING on the carrier's map (landing, on a new map or an existing one) pings at
@@ -30,6 +37,8 @@ namespace RimMandrake.TheRot
         public List<string> entries = new List<string>();
         public List<int> siteEntries = new List<int>();
         public List<int> campaignSiteTiles = new List<int>();
+        public int lastCampEntry = -1;
+        public QuestScriptDef lastCampQuest;
 
         public override IEnumerable<string> ConfigErrors()
         {
@@ -38,6 +47,10 @@ namespace RimMandrake.TheRot
             foreach (int i in siteEntries)
             {
                 if (i < 1 || i > entries.Count) yield return "siteEntries names entry " + i + " of " + entries.Count;
+            }
+            if (lastCampEntry > 0 && (lastCampQuest == null || !siteEntries.Contains(lastCampEntry)))
+            {
+                yield return "lastCampEntry " + lastCampEntry + " must be one of siteEntries and name a lastCampQuest";
             }
         }
     }
@@ -63,7 +76,7 @@ namespace RimMandrake.TheRot
             int n = ++w.entriesRead;
             string text = def.entries[n - 1];
             string tail = "";
-            if (def.siteEntries.Contains(n) && TryRevealSite(w, def, map) != null)
+            if (def.siteEntries.Contains(n) && TryRevealSite(w, def, map, SiteScriptFor(def, n)) != null)
             {
                 w.sitesRevealed++;
                 tail = "\n\nThe entry names a place. Your navigator has marked it on the map.";
@@ -73,9 +86,16 @@ namespace RimMandrake.TheRot
                 LetterDefOf.NeutralEvent);
         }
 
-        public static Quest TryRevealSite(RM_WorldComponent_SwallowedCore w, RM_NavigatorLogDef def, Map map)
+        /// <summary>The quest an entry's site uses: the last camp (the mat root's quest) for lastCampEntry while the root is
+        /// switched on, otherwise the plain salvage site (null).</summary>
+        public static QuestScriptDef SiteScriptFor(RM_NavigatorLogDef def, int entry)
         {
-            QuestScriptDef script = DefDatabase<QuestScriptDef>.GetNamedSilentFail("RM_NavigatorSalvageSite");
+            return entry == def.lastCampEntry && def.lastCampQuest != null && RM_TheRotSettings.portableWarmMat ? def.lastCampQuest : null;
+        }
+
+        public static Quest TryRevealSite(RM_WorldComponent_SwallowedCore w, RM_NavigatorLogDef def, Map map, QuestScriptDef scriptOverride = null)
+        {
+            QuestScriptDef script = scriptOverride ?? DefDatabase<QuestScriptDef>.GetNamedSilentFail("RM_NavigatorSalvageSite");
             if (script == null) return null;
             Slate slate = new Slate();
             Map home = map ?? RimMandrake.EnvironmentalHazards.RM_SurfaceHome.AnyPlayerSurfaceHomeMap;
@@ -112,6 +132,40 @@ namespace RimMandrake.TheRot
         }
     }
 
+    /// <summary>
+    /// QuestGen node (ROT_WARM_MAT_BUILD_WORKS_FOR_FOOD): puts one minified <c>thingDef</c> into the site's item stash, after
+    /// Util_GenerateSite and before the stash's QuestNode_AddItemsReward, and appends it to generatedItemStashThings so the reward
+    /// listing shows it. The stash's own [itemStashContents] text was written before this node runs, so the quest text names the
+    /// added thing itself. A site with no stash part logs an error and gives nothing (never a silent miss).
+    /// </summary>
+    public class RM_QuestNode_AddMinifiedToStash : QuestNode
+    {
+        public SlateRef<ThingDef> thingDef;
+        public SlateRef<Site> site;
+
+        protected override bool TestRunInt(Slate slate)
+        {
+            return thingDef.GetValue(slate) != null;
+        }
+
+        protected override void RunInt()
+        {
+            Slate slate = QuestGen.slate;
+            ThingDef def = thingDef.GetValue(slate);
+            Site s = site.GetValue(slate);
+            SitePart part = s?.parts?.FirstOrDefault(p => p.things != null);
+            if (def == null || part == null)
+            {
+                Log.Error("[TheRot] RM_QuestNode_AddMinifiedToStash: no " + (def == null ? "thingDef" : "item-stash site part") + "; the reward was not added.");
+                return;
+            }
+            Thing inner = ThingMaker.MakeThing(def);
+            Thing reward = def.Minifiable ? inner.MakeMinified() : inner;
+            part.things.TryAdd(reward, false);
+            slate.Get<List<Thing>>("generatedItemStashThings")?.Add(reward);
+        }
+    }
+
     /// <summary>Debug proofs for jawa/static_call (validation.py chain navigator_log).</summary>
     public static class RM_NavigatorLogProof
     {
@@ -143,6 +197,23 @@ namespace RimMandrake.TheRot
                 RM_NavigatorLog.Notify_Ping(w, Find.CurrentMap);
             }
             return "KILLED entries " + before + " -> " + w.entriesRead + " | cut " + w.logCut;
+        }
+
+        /// <summary>Generates the last-camp quest directly (sitesRevealed is not moved) and reads its site's stash.
+        /// "CAMP quest Q | site S | stash n | root R" or "REFUSED: why".</summary>
+        public static string ProofLastCamp()
+        {
+            RM_WorldComponent_SwallowedCore w = RM_WorldComponent_SwallowedCore.Get;
+            RM_NavigatorLogDef def = RM_NavigatorLog.Def;
+            if (w == null || def == null) return "REFUSED: no world component or log def";
+            if (def.lastCampQuest == null) return "REFUSED: the log names no lastCampQuest";
+            Quest q = RM_NavigatorLog.TryRevealSite(w, def, Find.CurrentMap, def.lastCampQuest);
+            if (q == null) return "REFUSED: " + def.lastCampQuest.defName + " could not run here";
+            Site site = q.PartsListForReading.OfType<QuestPart_SpawnWorldObject>().Select(p => p.worldObject).OfType<Site>().FirstOrDefault();
+            SitePart part = site?.parts?.FirstOrDefault(p => p.things != null);
+            int n = part?.things?.Count ?? 0;
+            bool root = part != null && part.things.Any(t => (t as MinifiedThing)?.InnerThing?.def.defName == "RM_LivingMatRoot");
+            return "CAMP quest " + q.root.defName + " | site " + (site != null) + " | stash " + n + " | root " + root;
         }
 
         public static string Report(RM_WorldComponent_SwallowedCore w)

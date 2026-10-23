@@ -5,6 +5,9 @@
   flight log is read out as a letter; entries listed in siteEntries also reveal a salvage site
   (RM_NavigatorSalvageSite). campaignSiteTiles: empty = free tier (vanilla tile finder near the colony); the
   campaign patch (UtinniPatches) fills it with authored Ash'karr tiles, used in order.
+  lastCampEntry (ROT_WARM_MAT_BUILD_WORKS_FOR_FOOD, owner by card 2026-10-22: the living mat root is a quest reward):
+  the last site entry reveals RM_NavigatorLastCamp instead, whose stash also holds a minified RM_LivingMatRoot. Firing
+  route: C# only (RM_NavigatorLog.ReadEntry -> TryRevealSite), so validate_quest.py's never-fires warning is expected.
   ENTRY TEXT: DRAFT, written by FOUNDRY 2026-10-03 for the free RM_ tier (no franchise names); BENCH/owner may rewrite.
 -->
 <Defs>
@@ -12,6 +15,8 @@
   <RimMandrake.TheRot.RM_NavigatorLogDef>
     <defName>RM_NavigatorLog</defName>
     <label>the dead ship's log</label>
+    <lastCampEntry>8</lastCampEntry>
+    <lastCampQuest>RM_NavigatorLastCamp</lastCampQuest>
     <siteEntries>
       <li>2</li>
       <li>4</li>
@@ -106,6 +111,109 @@
           <parms>
             <hiddenSitePartsPossible>true</hiddenSitePartsPossible>
           </parms>
+        </li>
+        <li Class="QuestNode_SpawnWorldObjects">
+          <worldObjects>$site</worldObjects>
+        </li>
+        <li Class="QuestNode_AddItemsReward">
+          <items>$generatedItemStashThings</items>
+          <inSignalChoiceUsed>site.MapGenerated</inSignalChoiceUsed>
+          <generateQuestParts>false</generateQuestParts>
+        </li>
+        <li Class="QuestNode_NoWorldObject">
+          <worldObject>$site</worldObject>
+          <node Class="QuestNode_End" />
+        </li>
+      </nodes>
+    </root>
+  </QuestScriptDef>
+
+  <!--
+    The crew's last camp (ROT_WARM_MAT_BUILD_WORKS_FOR_FOOD). The Rot is generous and hungry and shares everything,
+    including you: the crew lay down on the warm mat, it took them in, and where they lay a root of it has knotted.
+    Same shape as RM_NavigatorSalvageSite (item stash, defended when violent quests are allowed, no timeout), plus the
+    root. Text: DRAFT, FOUNDRY 2026-10-22, free RM_ tier (no franchise names); BENCH/owner may rewrite.
+  -->
+  <QuestScriptDef>
+    <defName>RM_NavigatorLastCamp</defName>
+    <autoAccept>true</autoAccept>
+    <rootSelectionWeight>0</rootSelectionWeight>
+    <rootMinPoints>0</rootMinPoints>
+    <everAcceptableInSpace>true</everAcceptableInSpace>
+    <questDescriptionRules>
+      <rulesStrings>
+        <li>questDescription->The dead ship's last entry points past the third ridge from [map_definite]. That is where the crew stopped walking. The warm mat took them in the way it takes everything, gently and completely, and where they lay a root of it has knotted itself, its heart still beating. The Rot shares what it has. Cut the root free and fed, it will warm a room anywhere.\n\nThe crew's last cache lies with it, worth [itemStashContentsValue]:\n\n[itemStashContents]\n\nand a living mat root.\n\nIt seems that [allSitePartsDescriptionsExceptFirst]</li>
+      </rulesStrings>
+    </questDescriptionRules>
+    <questNameRules>
+      <rulesStrings>
+        <li>questName->[camp] Past the Third Ridge</li>
+        <li>camp->The Last Camp</li>
+        <li>camp->Where They Lay</li>
+        <li>camp->The Warm Bed</li>
+      </rulesStrings>
+    </questNameRules>
+    <root Class="QuestNode_Sequence">
+      <nodes>
+        <li Class="QuestNode_SubScript">
+          <def>Util_RandomizePointsChallengeRating</def>
+          <parms>
+            <pointsFactorTwoStar>1.5</pointsFactorTwoStar>
+            <pointsFactorThreeStar>2</pointsFactorThreeStar>
+          </parms>
+        </li>
+        <li Class="QuestNode_SubScript">
+          <def>Util_GetDefaultRewardValueFromPoints</def>
+        </li>
+        <li Class="QuestNode_SubScript">
+          <def>Util_AdjustPointsForDistantFight</def>
+        </li>
+        <li Class="QuestNode_GetMap" />
+        <li Class="QuestNode_IsSet">
+          <name>siteTile</name>
+          <elseNode Class="QuestNode_GetSiteTile">
+            <storeAs>siteTile</storeAs>
+            <preferCloserTiles>true</preferCloserTiles>
+          </elseNode>
+        </li>
+        <li Class="QuestNode_ViolentQuestsAllowed">
+          <node Class="QuestNode_Set">
+            <name>siteThreatChance</name>
+            <value>1</value>
+          </node>
+          <elseNode Class="QuestNode_Set">
+            <name>siteThreatChance</name>
+            <value>0</value>
+          </elseNode>
+        </li>
+        <li Class="QuestNode_GetSitePartDefsByTagsAndFaction">
+          <storeAs>sitePartDefs</storeAs>
+          <storeFactionAs>siteFaction</storeFactionAs>
+          <sitePartsTags>
+            <li>
+              <tag>ItemStash</tag>
+            </li>
+            <li>
+              <tag>ItemStashQuestThreat</tag>
+              <chance>$siteThreatChance</chance>
+            </li>
+          </sitePartsTags>
+        </li>
+        <li Class="QuestNode_GetDefaultSitePartsParams">
+          <tile>$siteTile</tile>
+          <faction>$siteFaction</faction>
+          <sitePartDefs>$sitePartDefs</sitePartDefs>
+          <storeSitePartsParamsAs>sitePartsParams</storeSitePartsParamsAs>
+        </li>
+        <li Class="QuestNode_SubScript">
+          <def>Util_GenerateSite</def>
+          <parms>
+            <hiddenSitePartsPossible>true</hiddenSitePartsPossible>
+          </parms>
+        </li>
+        <li Class="RimMandrake.TheRot.RM_QuestNode_AddMinifiedToStash">
+          <thingDef>RM_LivingMatRoot</thingDef>
+          <site>$site</site>
         </li>
         <li Class="QuestNode_SpawnWorldObjects">
           <worldObjects>$site</worldObjects>
