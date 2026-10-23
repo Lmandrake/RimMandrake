@@ -183,6 +183,14 @@ namespace RimMandrake.FlowWorks
 			ThingDef chunk;
 			float chance;
 			ThingDef rock = RM_DigDiscovery.RockGroundAt(map, c);
+			// PIT_DEEPSTONE_BUILD_DIGGING_FINALLY_PAYS: at superdeep and below the cut is through the deep stratum, rock
+			// whatever lay on top, so it rolls that stone at the wall-mining rate.
+			ThingDef deep = RimMandrakeFlowWorksSettings.digDeepStoneEnabled
+				&& RM_DigDiscoveryMath.StrikesDeepStone(newDepth, RM_ExcavationDepth.Superdeep) ? RM_DeepStone.RockFor(map) : null;
+			if (deep != null)
+			{
+				rock = deep;
+			}
 			if (rock != null)
 			{
 				chunk = rock.building.mineableThing;
@@ -208,9 +216,19 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			Finds++;
-			LastFind = chunk.defName + " x1 @" + c.x + "," + c.z + " D=" + newDepth + (rock != null ? " (rock ground)" : " (chunk, non-rock)");
+			LastFind = chunk.defName + " x1 @" + c.x + "," + c.z + " D=" + newDepth
+				+ (deep != null ? " (deep stone)" : rock != null ? " (rock ground)" : " (chunk, non-rock)");
+			Thing target = placed != null && !placed.Destroyed ? placed : made;
+			if (deep != null && RimMandrakeFlowWorksSettings.digFindLetterEnabled && found.Add(chunk))
+			{
+				// the first deep stone a map turns up is news: the pit has broken through to a new layer
+				Find.LetterStack.ReceiveLetter("RMFlow_DeepStoneLetterLabel".Translate(chunk.LabelCap),
+					"RMFlow_DeepStoneLetterText".Translate(chunk.label, digger?.LabelShort ?? ""),
+					LetterDefOf.PositiveEvent, target);
+				return;
+			}
 			Messages.Message("RMFlow_DigFindMessage".Translate(digger?.LabelShort ?? "", 1, chunk.label),
-				placed != null && !placed.Destroyed ? placed : made, MessageTypeDefOf.PositiveEvent, false);
+				target, MessageTypeDefOf.PositiveEvent, false);
 		}
 
 		public string Report(Map map)
@@ -436,7 +454,125 @@ namespace RimMandrake.FlowWorks
 		}
 	}
 
-	/// <summary>static_call surface: "" reports; "force" makes the next cut roll with certainty.</summary>
+	/// <summary>PIT_DEEPSTONE_BUILD_DIGGING_FINALLY_PAYS: a BiomeDef's deep stratum, the stone a superdeep cut breaks
+	/// through (rulings 12_rocks_design.md idea 6: basalt under the Pyrelands, ice under the night side, wreck layers under
+	/// Warscar). <c>deepRocks</c> names natural rock buildings (the ThingDef whose mineableThing is the chunk); a tile draws
+	/// one of them, stably. A biome that names none gets the fallback in <see cref="RM_DeepStone.RockFor"/>.</summary>
+	public class RM_DeepStoneExtension : DefModExtension
+	{
+		public List<ThingDef> deepRocks;
+	}
+
+	/// <summary>PIT_DEEPSTONE_BUILD_DIGGING_FINALLY_PAYS (owner card 2026-10-19, "deeper stone at superdeep pits"): which
+	/// stone lies under a map. The biome's own <see cref="RM_DeepStoneExtension"/> list wins. Otherwise (PROVISIONAL, until
+	/// BIOME_STONES_DESIGN_BASALT_JOINS_THE_BAND gives each biome its stones) a natural stone the tile does NOT show on its
+	/// surface, allowed in that biome by vanilla's own rule, picked stably from the tile's hash: so the deep layer is always
+	/// something new, and the same planet square always holds the same one. Null when no such stone exists.</summary>
+	public static class RM_DeepStone
+	{
+		// The answer is a pure function of the tile and its biome (and the def database), so the cache is keyed on those,
+		// never on the Map: nothing here pins a map that is gone.
+		private static int cacheTile = int.MinValue;
+		private static BiomeDef cacheBiome;
+		private static ThingDef cacheRock;
+
+		public static ThingDef RockFor(Map map)
+		{
+			if (map == null)
+			{
+				return null;
+			}
+			int tile = map.Tile.GetHashCode();
+			if (tile == cacheTile && ReferenceEquals(map.Biome, cacheBiome))
+			{
+				return cacheRock;
+			}
+			cacheRock = Resolve(map);
+			cacheTile = tile;
+			cacheBiome = map.Biome;
+			return cacheRock;
+		}
+
+		private static bool IsStone(ThingDef rock)
+		{
+			ThingDef chunk = rock?.building?.mineableThing;
+			if (chunk == null || !rock.IsNonResourceNaturalRock || rock.building.isResourceRock)
+			{
+				return false;
+			}
+			if (chunk.thingCategories != null)
+			{
+				foreach (ThingCategoryDef cat in chunk.thingCategories)
+				{
+					if (cat == ThingCategoryDefOf.StoneChunks)
+					{
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+
+		private static ThingDef Resolve(Map map)
+		{
+			int seed = map.Tile.GetHashCode() ^ 0x5D33;
+			BiomeDef biome = map.Biome;
+			List<ThingDef> own = new List<ThingDef>();
+			List<ThingDef> named = biome?.GetModExtension<RM_DeepStoneExtension>()?.deepRocks;
+			if (named != null)
+			{
+				foreach (ThingDef d in named)
+				{
+					if (d?.building?.mineableThing != null)
+					{
+						own.Add(d);
+					}
+				}
+			}
+			if (own.Count > 0)
+			{
+				return own[RM_DigDiscoveryMath.PickIndex(seed, own.Count)];
+			}
+			HashSet<ThingDef> surface = new HashSet<ThingDef>();
+			IEnumerable<ThingDef> src = Find.World != null ? Find.World.NaturalRockTypesIn(map.Tile) : null;
+			if (src != null)
+			{
+				foreach (ThingDef d in src)
+				{
+					if (d != null) surface.Add(d);
+				}
+			}
+			List<ThingDef> pool = new List<ThingDef>();
+			foreach (ThingDef d in DefDatabase<ThingDef>.AllDefsListForReading)
+			{
+				if (!IsStone(d) || surface.Contains(d))
+				{
+					continue;
+				}
+				// vanilla's RockAllowedInBiome: a biome-specific rock lies only under the biomes that list it
+				if (d.building.biomeSpecific && (biome == null || !biome.extraRockTypes.NotNullAndContains(d)))
+				{
+					continue;
+				}
+				pool.Add(d);
+			}
+			// definition order is load order; sort by name so a mod-list reshuffle never moves a tile's stone
+			pool.Sort((a, b) => string.CompareOrdinal(a.defName, b.defName));
+			return pool.Count > 0 ? pool[RM_DigDiscoveryMath.PickIndex(seed, pool.Count)] : null;
+		}
+
+		/// <summary>static_call surface (RM_DigDiscoveryProof "deepstone"): what lies under the current map and why.</summary>
+		public static string Report(Map map)
+		{
+			ThingDef r = RockFor(map);
+			bool own = map?.Biome?.GetModExtension<RM_DeepStoneExtension>()?.deepRocks?.Count > 0;
+			return "DEEPSTONE " + (r == null ? "none" : r.defName + " chunk=" + r.building.mineableThing.defName)
+				+ " | source " + (own ? "biome" : "fallback") + " | enabled " + RimMandrakeFlowWorksSettings.digDeepStoneEnabled;
+		}
+	}
+
+	/// <summary>static_call surface: "" reports; "force" makes the next cut roll with certainty; "deepstone" names the
+	/// stone a superdeep cut on this map breaks through.</summary>
 	public static class RM_DigDiscoveryProof
 	{
 		public static string ProofReport(string arg)
@@ -451,6 +587,10 @@ namespace RimMandrake.FlowWorks
 			{
 				RM_DigDiscoveryState.ForceNextRoll = true;
 				return "ARMED: the next canal cut rolls with certainty | " + ex.DigDiscovery.Report(map);
+			}
+			if (arg == "deepstone")
+			{
+				return RM_DeepStone.Report(map);
 			}
 			return ex.DigDiscovery.Report(map);
 		}

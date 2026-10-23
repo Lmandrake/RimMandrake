@@ -489,6 +489,8 @@ namespace RimMandrake.FlowWorks
         public static bool digRockChunksEnabled = true;
         public static float digRockChunkMultiplier = 1f;
         public static float digSoilChunkPercent = 0.5f;
+        // PIT_DEEPSTONE_BUILD_DIGGING_FINALLY_PAYS (owner card 2026-10-19): superdeep cuts break through to a deeper stone.
+        public static bool digDeepStoneEnabled = true;
         public static bool swaleEnabled = true;
         public static float swaleRateMultiplier = 1f;
 
@@ -714,6 +716,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref digRockChunksEnabled, "digRockChunksEnabled", true);
             Scribe_Values.Look(ref digRockChunkMultiplier, "digRockChunkMultiplier", 1f);
             Scribe_Values.Look(ref digSoilChunkPercent, "digSoilChunkPercent", 0.5f);
+            Scribe_Values.Look(ref digDeepStoneEnabled, "digDeepStoneEnabled", true);
             Scribe_Values.Look(ref swaleEnabled, "swaleEnabled", true);
             Scribe_Values.Look(ref swaleRateMultiplier, "swaleRateMultiplier", 1f);
             // ── Rivers (River Works, merged 2026-10-05): one settings file, unique keys ──
@@ -780,7 +783,7 @@ namespace RimMandrake.FlowWorks
             .Declare("digRockGroundEnabled", "digRockWorkMultiplier")
             .Declare("digToDepthEnabled", "maxDigDepth", "digCostRisesWithDepth", "machineDigEnabled")
             .Declare("machineDigEnabled", "maxMachineDigDepth")
-            .Declare("digRockChunksEnabled", "digRockChunkMultiplier", "digSoilChunkPercent")
+            .Declare("digRockChunksEnabled", "digRockChunkMultiplier", "digSoilChunkPercent", "digDeepStoneEnabled")
             .Declare("liquidDrillingEnabled", "drillUnitsPerCycle")
             .Declare("swaleEnabled", "swaleRateMultiplier")
             .Independent("pulseIntervalTicks", "digToDepthEnabled", "drillYieldChanceMultiplier", "wardenFromLipEnabled", "waterBodyTypeFlipFixEnabled",
@@ -805,7 +808,7 @@ namespace RimMandrake.FlowWorks
             .Name("trapTriggerEnabled", "Concealed pits give way under enough weight")
             .Name("superdeepRoomsEnabled", "An enclosed pit is its own room")
             .Name("digFindsEnabled", "Digging a canal can turn up minerals")
-            .Name("digRockGroundEnabled", "Canals can be dug through rock ground").Name("digRockChunksEnabled", "Digging can turn up rock chunks").Name("liquidDrillingEnabled", "Drilling and bleed wells")
+            .Name("digRockGroundEnabled", "Canals can be dug through rock ground").Name("digRockChunksEnabled", "Digging can turn up rock chunks").Name("digDeepStoneEnabled", "Pits 2 m deep reach a deeper stone").Name("liquidDrillingEnabled", "Drilling and bleed wells")
             .Name("swaleEnabled", "A watered swale enriches the ground around it");
 
         private static object GetField(string n)
@@ -1012,7 +1015,7 @@ namespace RimMandrake.FlowWorks
             }
 
             // ── FLOWWORKS_QUARRY_DIGGING_1 — what a canal cut turns up ────
-            if (Section(list, "Finds while digging", new[] { "digFindsEnabled", "digFindsLocalOnly", "digFindChanceMultiplier", "digFindBudgetPercent", "digFindLetterEnabled", "digRockGroundEnabled", "digRockWorkMultiplier", "digRockChunksEnabled", "digRockChunkMultiplier", "digSoilChunkPercent" }))
+            if (Section(list, "Finds while digging", new[] { "digFindsEnabled", "digFindsLocalOnly", "digFindChanceMultiplier", "digFindBudgetPercent", "digFindLetterEnabled", "digRockGroundEnabled", "digRockWorkMultiplier", "digRockChunksEnabled", "digRockChunkMultiplier", "digSoilChunkPercent", "digDeepStoneEnabled" }))
             {
             list.CheckboxLabeled("Digging a canal can turn up minerals", ref digFindsEnabled,
                 "Each time a square is cut a level deeper there is a small chance of a lump of something the land holds, "
@@ -1046,12 +1049,17 @@ namespace RimMandrake.FlowWorks
                 "Each cut a level deeper through rock ground has the same chance of a chunk of that rock as mining a standing rock wall "
               + "(25% in the base game). Through anything else (soil, sand, gravel) a chunk is very rare. Shares the guard of mineral finds: "
               + "filling in and re-digging pays nothing twice.");
-            using (Dependent(list, "digRockChunkMultiplier", "digSoilChunkPercent"))
+            using (Dependent(list, "digRockChunkMultiplier", "digSoilChunkPercent", "digDeepStoneEnabled"))
             {
                 list.Label("Rock chunk chance in rock: x" + digRockChunkMultiplier.ToString("F2") + " of the wall-mining rate");
                 digRockChunkMultiplier = list.Slider(digRockChunkMultiplier, 0f, 4f);
                 list.Label("Rock chunk chance in non-rock ground: " + digSoilChunkPercent.ToString("F1") + "% per cut");
                 digSoilChunkPercent = list.Slider(digSoilChunkPercent, 0f, 5f);
+                list.CheckboxLabeled("Pits 2 m deep reach a deeper stone", ref digDeepStoneEnabled,
+                    "Every cut that reaches 2 m or deeper is through bedrock: its chunk roll is a stone this map does not show on "
+                  + "its surface (the biome's own deep stone where it names one), at the rock-ground rate above. The first one a "
+                  + "map turns up comes with a letter. Same guard: filling in and re-digging pays nothing twice. "
+                  + "Off: deep cuts turn up the same stone as shallow ones.");
             }
 
             }

@@ -109,6 +109,7 @@ SETTINGS = {
         "digFindBudgetPercent": 5.0, "digFindLetterEnabled": True,
         "digRockGroundEnabled": True, "digRockWorkMultiplier": 4.0, "digRockChunksEnabled": True,
         "digRockChunkMultiplier": 1.0, "digSoilChunkPercent": 0.5,   # DIG_ROCK_TUNE_STONE_FIGHTS_BACK
+        "digDeepStoneEnabled": True,   # PIT_DEEPSTONE_BUILD_DIGGING_FINALLY_PAYS
           # FLOWWORKS_QUARRY_DIGGING_1 (FlowWorks half)
         "excavationWallMaterialEnabled": True, "pitLipOcclusionEnabled": True, "pitLipOcclusion": 0.85, "pitLipOccupantCutEnabled": True, "pitLipOccupantCutWidth": 1.0, "pitSinkClampEnabled": True,
         "liquidSurfaceMotionEnabled": True, "liquidWakesEnabled": True, "pitScorchEnabled": True,
