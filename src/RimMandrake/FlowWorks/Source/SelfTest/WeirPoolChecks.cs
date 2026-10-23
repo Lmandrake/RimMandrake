@@ -8,6 +8,8 @@
 // NOT proven here: that tile 825's own grid has this shape (ProofWeirPool now prints the neighbourhood for that).
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text.RegularExpressions;
 using RimMandrake.FlowWorks.Rivers;
 
 namespace RimMandrake.FlowWorks.SelfTest
@@ -231,6 +233,131 @@ namespace RimMandrake.FlowWorks.SelfTest
                 for (int r = 0; r < 4; r++)
                     for (int d = -1; d < 8; d++)
                         Assert((RM_RiverMath.WeirArtRot(r, d) & 1) == (r & 1), "the art never changes the wall's axis");
+            });
+                    // ── WEIR_CATCH_FIX_NO_FREE_FISH + WEIR_LOOK_REDESIGN_WHITEWATER_FROZEN_SOLID (weir review 2026-10-23) ──
+            // Owner: "they should just capture anything floating downstream. No auto fish capture." The intake is exactly
+            // where the carry (RM_MapComponent_RiverCurrent.StepOne) stops a thing: an in-current cell whose flow step lands
+            // on the wall (a weir cell is not standable).
+            Case("WeirCatch_intake_is_where_the_carry_stops", () =>
+            {
+                // straight river flowing east (dir 0), z in 0..5; a N-S wall at x=10 spanning z 0..5 (three joined sections)
+                Func<int, int, int> east = (x, z) => (z >= 0 && z <= 5 && x >= 0 && x < 30) ? 0 : -1;
+                var wall = new List<int[]>();
+                for (int z = 0; z <= 5; z++) wall.Add(new[] { 10, z });
+                List<int[]> intake = RM_RiverMath.WeirIntakeCells(wall, east);
+                Assert(intake.Count == 6, "one intake cell per wet wall cell on a straight river, got " + intake.Count);
+                foreach (int[] c in intake)
+                    Assert(c[0] == 9 && c[1] >= 0 && c[1] <= 5, "intake lies just upstream (x=9), got (" + c[0] + "," + c[1] + ")");
+                // can-fail: downstream cells and the wall itself are never intake
+                Assert(!intake.Exists(c => c[0] >= 10), "nothing at or below the wall is intake");
+                // diagonal flow (NE, dir 1): the cells SW of the wall cells feed it too
+                Func<int, int, int> ne = (x, z) => (x >= 0 && x < 30 && z >= -5 && z < 30) ? 1 : -1;
+                List<int[]> diag = RM_RiverMath.WeirIntakeCells(wall, ne);
+                Assert(diag.Exists(c => c[0] == 9 && c[1] == -1), "a NE flow feeds the wall's low end from (9,-1)");
+                Assert(!diag.Exists(c => c[0] == 9 && c[1] == 5), "(9,5) flows NE to (10,6), beside the wall: not intake");
+                // no current: no intake
+                Assert(RM_RiverMath.WeirIntakeCells(wall, (x, z) => -1).Count == 0, "still water feeds nothing");
+                // no duplicates when two wall cells share a feeder
+                var seen = new HashSet<long>();
+                foreach (int[] c in diag) Assert(seen.Add(((long)c[0] << 32) ^ (uint)c[1]), "intake cells are distinct");
+            });
+
+            Case("WeirCatch_budget_never_exceeds_the_cap", () =>
+            {
+                Assert(RM_RiverMath.WeirCaptureBudget(0, 30, 75) == 30, "an empty weir takes up to the cap");
+                Assert(RM_RiverMath.WeirCaptureBudget(25, 30, 10) == 5, "a near-full weir takes only the room left");
+                Assert(RM_RiverMath.WeirCaptureBudget(30, 30, 10) == 0 && RM_RiverMath.WeirCaptureBudget(40, 30, 10) == 0, "a full weir takes nothing");
+                Assert(RM_RiverMath.WeirCaptureBudget(0, 30, 0) == 0, "nothing offered, nothing taken");
+            });
+
+            Case("WeirCatch_no_free_fish_or_drift_in_source", () =>
+            {
+                string w = RiverSwitchFlipChecks.Src(Path.Combine("Rivers", "RM_Weir.cs"));
+                Assert(!w.Contains("Notify_Fished") && !w.Contains("CommonFish") && !w.Contains("UncommonFish"), "the weir never touches the fish stock");
+                Assert(!w.Contains("RM_RiverDriftDef.RollFor"), "the weir never rolls biome drift out of nothing");
+                Assert(!w.Contains("ThingMaker.MakeThing"), "the weir creates nothing: it only moves what floated in");
+                RiverSwitchFlipChecks.Has(w, @"RM_RiverMath\.WeirIntakeCells\(", "the capture reads the intake rule");
+                RiverSwitchFlipChecks.Has(w, @"if \(!RM_RiversSettings\.weirCapturesFloating\)", "capture obeys its setting");
+                string set = RiverSwitchFlipChecks.Src(Path.Combine("Rivers", "RM_RiversSettings.cs"));
+                Assert(!set.Contains("weirCatchesFish") && !set.Contains("weirCatchesDrift") && !set.Contains("weirDriftChance"),
+                    "the fish/drift settings are gone, not left as dead switches");
+                Assert(set.Contains("\"weirCapturesFloating\"") && set.Contains("\"weirWhiteWater\""), "the new settings are in the WORKS reset list");
+            });
+
+            Case("WeirFoam_only_where_the_current_crosses_the_wall", () =>
+            {
+                // horizontal (E-W) wall, placed rot 1 or 3: a current with a south component falls south
+                Assert(RM_RiverMath.WeirFoamStep(1, 6, out int dx, out int dz) && dx == 0 && dz == -1, "E-W wall, flow S -> foam south");
+                Assert(RM_RiverMath.WeirFoamStep(3, 1, out dx, out dz) && dx == 0 && dz == 1, "E-W wall, flow NE -> foam north");
+                Assert(!RM_RiverMath.WeirFoamStep(1, 0, out _, out _) && !RM_RiverMath.WeirFoamStep(3, 4, out _, out _), "flow along an E-W wall: no foam (screenshot 2)");
+                Assert(RM_RiverMath.WeirFoamStep(0, 0, out dx, out dz) && dx == 1 && dz == 0, "N-S wall, flow E -> foam east");
+                Assert(RM_RiverMath.WeirFoamStep(2, 3, out dx, out dz) && dx == -1 && dz == 0, "N-S wall, flow NW -> foam west");
+                Assert(!RM_RiverMath.WeirFoamStep(0, 2, out _, out _) && !RM_RiverMath.WeirFoamStep(2, -1, out _, out _), "along a N-S wall, or no current: none");
+                // the foam side always agrees with the art's spill face (WeirArtRot)
+                for (int r = 0; r < 4; r++)
+                    for (int d = 0; d < 8; d++)
+                        if (RM_RiverMath.WeirFoamStep(r, d, out dx, out dz))
+                        {
+                            int art = RM_RiverMath.WeirArtRot(r, d);
+                            int ex = art == 0 ? 1 : art == 2 ? -1 : 0, ez = art == 1 ? -1 : art == 3 ? 1 : 0;
+                            Assert(dx == ex && dz == ez, "foam side matches the spill face for rot " + r + " dir " + d);
+                        }
+            });
+
+            Case("WeirFoam_image_left_side_in_the_world", () =>
+            {
+                // the frames are drawn crest-up falling south; the draw turns them, so "image-left" (the _a end) moves
+                RM_RiverMath.WeirFoamLeft(0, -1, out int lx, out int lz); Assert(lx == -1 && lz == 0, "falling S: left is W");
+                RM_RiverMath.WeirFoamLeft(1, 0, out lx, out lz); Assert(lx == 0 && lz == -1, "falling E: left is S");
+                RM_RiverMath.WeirFoamLeft(-1, 0, out lx, out lz); Assert(lx == 0 && lz == 1, "falling W: left is N");
+                RM_RiverMath.WeirFoamLeft(0, 1, out lx, out lz); Assert(lx == 1 && lz == 0, "falling N: left is E");
+                foreach (var f in new[] { new[] { 0, -1 }, new[] { 1, 0 }, new[] { -1, 0 }, new[] { 0, 1 } })
+                {
+                    RM_RiverMath.WeirFoamLeft(f[0], f[1], out lx, out lz);
+                    Assert(lx * f[0] + lz * f[1] == 0, "the end side runs along the wall, never along the fall");
+                }
+                Assert(RM_RiverMath.WeirFoamSuffix(true, true) == "" && RM_RiverMath.WeirFoamSuffix(false, true) == "_a"
+                    && RM_RiverMath.WeirFoamSuffix(true, false) == "_b" && RM_RiverMath.WeirFoamSuffix(false, false) == "_ab",
+                    "a side with no foam beside it ends in broken foam");
+            });
+
+            Case("WeirFoam_scales_with_flow", () =>
+            {
+                RM_RiverMath.WeirFoamLook none = RM_RiverMath.WeirFoam(RM_RiverMath.LaneNone, false);
+                RM_RiverMath.WeirFoamLook m = RM_RiverMath.WeirFoam(RM_RiverMath.LaneMargin, false);
+                RM_RiverMath.WeirFoamLook c = RM_RiverMath.WeirFoam(RM_RiverMath.LaneCentre, false);
+                RM_RiverMath.WeirFoamLook s = RM_RiverMath.WeirFoam(RM_RiverMath.LaneCentre, true);
+                Assert(none.alpha == 0f, "no lane, no foam");
+                Assert(m.alpha > 0f && m.alpha < c.alpha && c.alpha <= s.alpha && s.alpha <= 1f, "margin < centre <= flood in strength");
+                Assert(m.fps < c.fps && c.fps < s.fps, "faster water tumbles faster");
+                Assert(m.length <= c.length && c.length < s.length && s.length <= 2f, "a flood throws the foam further");
+                Assert(RM_RiverMath.WeirFoam(RM_RiverMath.LaneMargin, true).alpha >= c.alpha, "a flood margin runs like the centre");
+            });
+
+            Case("WeirFoam_frame_loops_and_desyncs", () =>
+            {
+                for (int i = 0; i < 200; i++)
+                {
+                    int f = RM_RiverMath.WeirFoamFrame(i * 0.037f, 10f, 12, 5);
+                    Assert(f >= 0 && f < 12, "frame in range");
+                }
+                Assert(RM_RiverMath.WeirFoamFrame(0f, 10f, 12, 0) == 0 && RM_RiverMath.WeirFoamFrame(0.1f, 10f, 12, 0) == 1, "10 fps steps one frame per 0.1 s");
+                Assert(RM_RiverMath.WeirFoamFrame(1.2f, 10f, 12, 0) == 0, "12 frames at 10 fps loop every 1.2 s");
+                Assert(RM_RiverMath.WeirFoamFrame(0f, 10f, 12, 7) != RM_RiverMath.WeirFoamFrame(0f, 10f, 12, 8), "neighbouring weirs are out of step");
+                Assert(RM_RiverMath.WeirFoamFrame(-3f, 10f, 12, -5) >= 0, "negative inputs never index out of range");
+            });
+
+            Case("WeirLook_no_flat_tint_and_animated_foam_in_source", () =>
+            {
+                string w = RiverSwitchFlipChecks.Src(Path.Combine("Rivers", "RM_Weir.cs"));
+                Assert(!w.Contains("WaterRoot"), "the flat pool-tint/static-foam strip is gone from the weir's draw");
+                RiverSwitchFlipChecks.Has(w, @"protected override void DrawAt\(Vector3 drawLoc, bool flip = false\)", "the foam is drawn in real time");
+                RiverSwitchFlipChecks.Has(w, @"RM_RiverMath\.WeirFoamStep\(", "the foam is drawn only where the current crosses the wall");
+                RiverSwitchFlipChecks.Has(w, @"RM_RiverMath\.WeirFoamFrame\(Time\.realtimeSinceStartup", "the foam frame comes from real time");
+                string xml = File.ReadAllText(Path.Combine(Path.GetDirectoryName(RiverSwitchFlipChecks.SrcPath("RM_Volume.cs")), "..", "Defs", "Rivers", "RM_BankWorks.xml"));
+                Assert(Regex.IsMatch(xml, @"<defName>RM_BankWeir</defName>[\s\S]*?<drawerType>MapMeshAndRealTime</drawerType>[\s\S]*?</ThingDef>"),
+                    "RM_BankWeir is drawn MapMeshAndRealTime (the wall in the mesh, the foam per frame)");
+                Assert(!Regex.IsMatch(xml, @"<defName>RM_BankWeir</defName>[\s\S]*?catches fish[\s\S]*?</ThingDef>"), "the description no longer promises fish");
             });
         }
     }

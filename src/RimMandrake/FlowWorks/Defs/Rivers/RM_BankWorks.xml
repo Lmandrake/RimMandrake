@@ -53,12 +53,13 @@
   </ThingDef>
 
   <!-- Weir. 1x2 across the bank edge (RM_PlaceWorker_RiverWeir): one end in moving water, one on
-       solid ground. Arrests drift, calms ~8 cells upstream (owner card 2), catches fish from the
-       river's stock + biome drift onto its bank end, breaches when run down in a flood. -->
+       solid ground. Arrests drift, calms ~8 cells upstream (owner card 2), lifts whatever the current carries
+       into it onto its bank end (owner 2026-10-23: "No auto fish capture"), breaches when run down in a flood.
+       MapMeshAndRealTime: the wall is in the map mesh, the white-water flip-book is drawn per frame (RM_Weir.cs DrawAt). -->
   <ThingDef ParentName="BuildingBase">
     <defName>RM_BankWeir</defName>
     <label>weir</label>
-    <description>A low timber wall set across the current from the bank: a level crest the river spills over, white water at its foot and a calm pool behind it. Build further sections end to end out into the current and they join into one wall across the river; a breach anywhere along it drains the pool. It stops whatever the river carries into it, calms the water for a long stretch upstream so it can be crossed and worked, and catches fish - and whatever else this country's rivers bring down - from the same stock your fishing zones draw on. Haul its catch and keep it repaired: a weir left to wear down when a flood comes breaches, washes its catch downstream and takes the stake-line below it with it.</description>
+    <description>A low timber wall set across the current from the bank: a level crest the river spills over, tumbling white water at its foot and slack water behind it. Build further sections end to end out into the current and they join into one wall across the river; a breach anywhere along it lets the current run again. It stops whatever the river carries into it - loose goods, wreckage, the drowned - and lifts it onto its bank as its catch, and it slows the current for a long stretch upstream so the water there can be crossed and worked. Haul its catch and keep it repaired: a weir left to wear down when a flood comes breaches, washes its catch downstream and takes the stake-line below it with it.</description>
     <thingClass>RimMandrake.FlowWorks.Rivers.RM_Building_BankWeir</thingClass>
     <graphicData>
       <!-- RIVER_WEIR_ART_JUDGE_CODEX_SQUINTS (owner 2026-10-16: "(1) but in the four art styles"): per-heading art in four
@@ -70,6 +71,7 @@
     </graphicData>
     <uiIconPath>RimMandrake/FlowWorks/Weir/Scrapper/RM_BankWeir_east</uiIconPath>
     <altitudeLayer>Building</altitudeLayer>
+    <drawerType>MapMeshAndRealTime</drawerType>
     <passability>PassThroughOnly</passability>
     <fillPercent>0.4</fillPercent>
     <size>(1,2)</size>

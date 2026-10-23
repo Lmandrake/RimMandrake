@@ -336,7 +336,7 @@ def hose_live_rows(t):
 # routing, a bruise landing) is still owed to a live row.
 RIVER_FLIP_TOGGLES = ["riverWorksEnabled", "scaleWithRiverSize", "floodSurgeEnabled", "countSeasonalFloods",
                       "countTorrentialRainFloods", "carryAnimals", "carryStrangers", "carryItems",
-                      "crossingHazardsEnabled", "pathfinderAvoidsCurrents", "weirCatchesDrift"]
+                      "crossingHazardsEnabled", "pathfinderAvoidsCurrents", "weirWhiteWater"]
 
 
 _SELFTEST_CASES = {}

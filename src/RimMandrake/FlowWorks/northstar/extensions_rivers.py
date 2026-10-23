@@ -29,7 +29,7 @@ suite.toggles = [
     "riverWorksEnabled", "surfaceCurrentEnabled", "scaleWithRiverSize", "floodSurgeEnabled",
     "countSeasonalFloods", "countTorrentialRainFloods", "carryAnimals", "carryStrangers", "carryItems",
     "washOffMapEdge", "takenByLandTraceEnabled", "pathfinderAvoidsCurrents", "crossingHazardsEnabled", "fordsEnabled",
-    "bankWorksEnabled", "breachEnabled", "stakeLineLevee", "weirCatchesFish", "weirCatchesDrift",
+    "bankWorksEnabled", "breachEnabled", "stakeLineLevee", "weirCapturesFloating", "weirWhiteWater",
     "breachWashesCatch", "siltRichening", "ferryEnabled", "ferryRopeGuidesColonists",
     # FLOWWORKS_QUARRY_DIGGING_1 river half (settings class RimMandrake.FlowWorks.Quarry.RM_QuarrySettings)
     "sluiceBoxEnabled", "panningEnabled", "placerFloodRefill",
@@ -422,11 +422,16 @@ def works(t):
     # LOOK, judged in a joint session per the visual-review rule; owed, no predicate (the sheet shows the offline composite).
     with _owed(t, "weir_joined_wall_art_in_game", "joined weir art seen in game at ordinary zoom: owner joint look"):
         pass
-    with t.component("weir_fish_draws_stock", toggle="weirCatchesFish"):
+    # WEIR_CATCH_FIX_NO_FREE_FISH (owner 2026-10-23: "they should just capture anything floating downstream. No auto
+    # fish capture."). PROVE ProofWeirCapture: a stack laid in the weir's intake is lifted onto dry bank and nothing is
+    # created. EXPECT intake>0, lifted=1, onDry=True, unitsAfter=unitsBefore, created=0. LIES: intake=0 (no flow onto the
+    # wall at this site) proves nothing -- the probe answers UNMEASURED then.
+    with t.component("weir_captures_floating", toggle="weirCapturesFloating"):
         if t._guard():
-            kv = _kv(_works(t, "ProofWeirCatch", "20"))
-            if int(kv.get("fishRolls", 0)) <= 0 or float(kv.get("after", 0)) >= float(kv.get("before", 0)):
-                raise ExpectationFailed("weir caught no fish or the stock did not drop: %r" % kv)
+            kv = _kv(_works(t, "ProofWeirCapture"))
+            if (int(kv.get("lifted", 0)) != 1 or kv.get("onDry") != "True" or kv.get("created") != "0"
+                    or kv.get("unitsAfter") != kv.get("unitsBefore")):
+                raise ExpectationFailed("weir did not lift the floating stack onto its bank, or made something: %r" % kv)
     with t.component("breach_wash", toggle="breachWashesCatch"):
         if t._guard():
             kv = _kv(_works(t, "ProofBreach"))

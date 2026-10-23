@@ -5,6 +5,8 @@
   Our own biomes add their own defs in their own mods (owed, per-biome sitting - never a sweep).
   ALL TABLES PROVISIONAL: picked as "what this country's banks would shed into a river" - fruit and
   forage off the banks, hides of what drowns upstream. Every defName checked against RimSage 2026-10-05.
+  UNUSED since the weir review 2026-10-23 (owner: "No auto fish capture" - a weir catches only what floats into it).
+  Kept as data for the open question: should rivers carry this flotsam ONTO the map as real floating things?
 -->
 <Defs>
 

@@ -179,16 +179,6 @@ namespace RimMandrake.FlowWorks.Rivers
 			return fastLane ? extraFastLane : extraEdgeLane;
 		}
 
-		/// <summary>A weir's drift roll chance per catch, or -1 when drift catching is off (no roll at all).</summary>
-		public static float DriftRollChance(bool weirCatchesDrift, float weirDriftChance)
-		{
-			if (!weirCatchesDrift)
-			{
-				return -1f;
-			}
-			return weirDriftChance < 0f ? 0f : (weirDriftChance > 1f ? 1f : weirDriftChance);
-		}
-
 		/// <summary>A breach's stake cascade: the snap order (cells) of a stake at offset (dx, dz) from the
 		/// weir, nearest-downstream first; -1 for a stake upstream of the weir (the breach does not reach it).
 		/// With no flow direction (dir &lt; 0) the plain distance orders it.</summary>
@@ -533,6 +523,132 @@ namespace RimMandrake.FlowWorks.Rivers
 			}
 			int dx = StepX[flowDir];
 			return dx > 0 ? 0 : dx < 0 ? 2 : placedRot;
+		}
+
+		// ── weir review 2026-10-23 (WEIR_CATCH_FIX_NO_FREE_FISH, WEIR_LOOK_REDESIGN_WHITEWATER_FROZEN_SOLID) ──
+
+		/// <summary>The weir's intake: every in-current cell (dirAt &gt;= 0) outside the wall whose one flow step lands on a
+		/// wall cell - exactly where the surface carry stops a drifting thing (a weir cell is not standable). Distinct cells,
+		/// in wall order. Owner 2026-10-23: "they should just capture anything floating downstream."</summary>
+		public static List<int[]> WeirIntakeCells(List<int[]> wall, Func<int, int, int> dirAt)
+		{
+			HashSet<long> onWall = new HashSet<long>();
+			for (int i = 0; i < wall.Count; i++)
+			{
+				onWall.Add(CellKey(wall[i][0], wall[i][1]));
+			}
+			HashSet<long> seen = new HashSet<long>();
+			List<int[]> intake = new List<int[]>();
+			for (int i = 0; i < wall.Count; i++)
+			{
+				for (int d = 0; d < 8; d++)
+				{
+					int nx = wall[i][0] + StepX[d], nz = wall[i][1] + StepZ[d];
+					long key = CellKey(nx, nz);
+					if (onWall.Contains(key) || seen.Contains(key))
+					{
+						continue;
+					}
+					int f = dirAt(nx, nz);
+					if (f < 0 || f > 7 || !onWall.Contains(CellKey(nx + StepX[f], nz + StepZ[f])))
+					{
+						continue;
+					}
+					seen.Add(key);
+					intake.Add(new[] { nx, nz });
+				}
+			}
+			return intake;
+		}
+
+		private static long CellKey(int x, int z) => ((long)x << 32) ^ (uint)z;
+
+		/// <summary>How many items a weir may lift onto its bank now: the room under the cap, never more than offered.</summary>
+		public static int WeirCaptureBudget(int held, int cap, int offered)
+		{
+			int room = cap - held;
+			if (room <= 0 || offered <= 0)
+			{
+				return 0;
+			}
+			return offered < room ? offered : room;
+		}
+
+		/// <summary>The downstream side of a wall (unit step dx, dz, perpendicular to it) when the current at its wet end
+		/// crosses it; false when the current runs along the wall or there is none - then no water falls over it and no
+		/// white water is drawn. Agrees with <see cref="WeirArtRot"/>'s spill face.</summary>
+		public static bool WeirFoamStep(int placedRot, int flowDir, out int dx, out int dz)
+		{
+			dx = 0;
+			dz = 0;
+			if (flowDir < 0 || flowDir > 7)
+			{
+				return false;
+			}
+			if ((placedRot & 1) == 1)
+			{
+				dz = StepZ[flowDir];
+			}
+			else
+			{
+				dx = StepX[flowDir];
+			}
+			return dx != 0 || dz != 0;
+		}
+
+		/// <summary>The world step to the white water's IMAGE-LEFT side (the frames' _a end) when it falls along (dx, dz): the
+		/// frames are drawn crest-up falling south and turned about the vertical, so image-left is west falling south, south
+		/// falling east, north falling west, east falling north.</summary>
+		public static void WeirFoamLeft(int dx, int dz, out int lx, out int lz)
+		{
+			// image-left is west at rest (falling south); turning the fall turns it with it: (dx, dz) -> (dz, -dx)
+			lx = dz;
+			lz = -dx;
+		}
+
+		/// <summary>Which end variant to draw: "" when foam continues on both sides, _a / _b when the image-left / -right side
+		/// has none beside it, _ab for a lone cell.</summary>
+		public static string WeirFoamSuffix(bool leftContinues, bool rightContinues)
+		{
+			return leftContinues ? (rightContinues ? "" : "_b") : (rightContinues ? "_a" : "_ab");
+		}
+
+		/// <summary>How the white water reads at one wet section: opacity, flip-book speed and how far downstream it reaches
+		/// (cells). Scaled to the flow: margin water light and slow, the centre full, a flood brighter, faster, further.</summary>
+		public struct WeirFoamLook
+		{
+			public float alpha;
+			public float fps;
+			public float length;
+		}
+
+		public static WeirFoamLook WeirFoam(int lane, bool surge)
+		{
+			if (lane == LaneNone)
+			{
+				return new WeirFoamLook { alpha = 0f, fps = 0f, length = 0f };
+			}
+			if (surge)
+			{
+				return new WeirFoamLook { alpha = 1f, fps = 14f, length = 1.5f };
+			}
+			return lane == LaneCentre
+				? new WeirFoamLook { alpha = 0.9f, fps = 10f, length = 1f }
+				: new WeirFoamLook { alpha = 0.6f, fps = 7f, length = 1f };
+		}
+
+		/// <summary>The flip-book frame at real time <paramref name="seconds"/>, looping over <paramref name="frames"/>;
+		/// <paramref name="phase"/> (a thing id) puts neighbouring weirs out of step.</summary>
+		public static int WeirFoamFrame(float seconds, float fps, int frames, int phase)
+		{
+			if (frames <= 0)
+			{
+				return 0;
+			}
+			if (seconds < 0f) seconds = 0f;
+			if (fps < 0f) fps = 0f;
+			long n = (long)(seconds * fps + 1e-4f) + (phase & 0x7fffffff);
+			return (int)(n % frames);
 		}
 }
 }

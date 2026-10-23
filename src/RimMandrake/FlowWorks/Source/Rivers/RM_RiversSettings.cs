@@ -55,12 +55,12 @@ namespace RimMandrake.FlowWorks.Rivers
 		public static bool stakeLineLevee = true;
 		// Owner card 2: the weir calms a long stretch, ~8 cells upstream.
 		public static int weirPoolLength = 8;
-		public static bool weirCatchesFish = true;
-		public static float weirCatchIntervalHours = 6f;      // PROVISIONAL
+		// Owner 2026-10-23 (WEIR_CATCH_FIX_NO_FREE_FISH): "they should just capture anything floating downstream. No auto
+		// fish capture." The weir lifts what the current carried into it onto its bank; it creates nothing.
+		public static bool weirCapturesFloating = true;
 		public static int weirHeldCatchCap = 30;              // PROVISIONAL
-		// Owner card 2: plus drift, BIOME-RELEVANT per biome (RM_RiverDriftDef), never generic wood.
-		public static bool weirCatchesDrift = true;
-		public static float weirDriftChance = 0.25f;          // PROVISIONAL, per catch interval
+		// Owner 2026-10-23 (WEIR_LOOK_REDESIGN_WHITEWATER_FROZEN_SOLID): white water "needs to be an animated effect".
+		public static bool weirWhiteWater = true;
 		// Owner ruling 4: a breach washes the held catch a few cells downstream.
 		public static bool breachWashesCatch = true;
 		public static int breachWashCells = 4;                // PROVISIONAL
@@ -80,7 +80,7 @@ namespace RimMandrake.FlowWorks.Rivers
 		// section lists the window's Reset buttons use (THE CURRENT with the master switch; WORKS with fords).
 		private static readonly System.Collections.Generic.Dictionary<string, object> shippedDefaults = RM_SettingsReset.Snapshot(typeof(RM_RiversSettings));
 		public static readonly string[] CurrentFields = { "riverWorksEnabled", "surfaceCurrentEnabled", "currentStrength", "centreTicksPerCell", "marginTicksPerCell", "itemDriftFactor", "scaleWithRiverSize", "floodSurgeEnabled", "countSeasonalFloods", "countTorrentialRainFloods", "carryAnimals", "carryStrangers", "carryItems", "washOffMapEdge", "washedAwayMinDays", "washedAwayMaxDays", "takenByLandTraceEnabled", "pathfinderAvoidsCurrents", "crossingHazardsEnabled", "bruiseChancePerStep", "dropChancePerStep" };
-		public static readonly string[] WorksFields = { "fordsEnabled", "bankWorksEnabled", "wearRateMultiplier", "breachEnabled", "breachHpFraction", "stakeSnapTicksPerCell", "stakeLineLevee", "weirPoolLength", "weirCatchesFish", "weirCatchIntervalHours", "weirHeldCatchCap", "weirCatchesDrift", "weirDriftChance", "breachWashesCatch", "breachWashCells", "siltRichening", "siltIntervalDays", "ferryEnabled", "ferryMaxSpan", "ferryRopeGuidesColonists" };
+		public static readonly string[] WorksFields = { "fordsEnabled", "bankWorksEnabled", "wearRateMultiplier", "breachEnabled", "breachHpFraction", "stakeSnapTicksPerCell", "stakeLineLevee", "weirPoolLength", "weirCapturesFloating", "weirHeldCatchCap", "weirWhiteWater", "breachWashesCatch", "breachWashCells", "siltRichening", "siltIntervalDays", "ferryEnabled", "ferryMaxSpan", "ferryRopeGuidesColonists" };
 
 		public static void ResetFields(string[] names) => RM_SettingsReset.Reset(typeof(RM_RiversSettings), shippedDefaults, names);
 
@@ -115,11 +115,9 @@ namespace RimMandrake.FlowWorks.Rivers
 			Scribe_Values.Look(ref stakeSnapTicksPerCell, "stakeSnapTicksPerCell", 150);
 			Scribe_Values.Look(ref stakeLineLevee, "stakeLineLevee", true);
 			Scribe_Values.Look(ref weirPoolLength, "weirPoolLength", 8);
-			Scribe_Values.Look(ref weirCatchesFish, "weirCatchesFish", true);
-			Scribe_Values.Look(ref weirCatchIntervalHours, "weirCatchIntervalHours", 6f);
+			Scribe_Values.Look(ref weirCapturesFloating, "weirCapturesFloating", true);
 			Scribe_Values.Look(ref weirHeldCatchCap, "weirHeldCatchCap", 30);
-			Scribe_Values.Look(ref weirCatchesDrift, "weirCatchesDrift", true);
-			Scribe_Values.Look(ref weirDriftChance, "weirDriftChance", 0.25f);
+			Scribe_Values.Look(ref weirWhiteWater, "weirWhiteWater", true);
 			Scribe_Values.Look(ref breachWashesCatch, "breachWashesCatch", true);
 			Scribe_Values.Look(ref breachWashCells, "breachWashCells", 4);
 			Scribe_Values.Look(ref siltRichening, "siltRichening", true);
@@ -220,7 +218,7 @@ namespace RimMandrake.FlowWorks.Rivers
 				l.Label("Stake snap: " + (RM_RiversSettings.stakeSnapTicksPerCell / 60f).ToString("0.00") + " s a square");
 				RM_RiversSettings.stakeSnapTicksPerCell = Mathf.RoundToInt(l.Slider(RM_RiversSettings.stakeSnapTicksPerCell, 10f, 1000f));
 				l.CheckboxLabeled("  Breach washes the held catch downstream", ref RM_RiversSettings.breachWashesCatch,
-					"On, a weir that breaches lets the fish and drift it was holding wash downstream. Off: the catch stays in the weir.");
+					"On, a weir that breaches lets the catch it was holding wash downstream. Off: the catch stays on the bank.");
 				if (RM_RiversSettings.breachWashesCatch)
 				{
 					l.Label("  Washed this many squares: " + RM_RiversSettings.breachWashCells);
@@ -231,16 +229,16 @@ namespace RimMandrake.FlowWorks.Rivers
 				"Floodwater cannot pass a stake. Any gap lets it in. Off: floods flow through stake-lines.");
 			l.Label("Weir calms this many squares upstream: " + RM_RiversSettings.weirPoolLength + " (0 = its own square only)");
 			RM_RiversSettings.weirPoolLength = Mathf.RoundToInt(l.Slider(RM_RiversSettings.weirPoolLength, 0f, 20f));
-			l.CheckboxLabeled("Weirs catch fish", ref RM_RiversSettings.weirCatchesFish,
-				"From the river's own stock, the same stock your fishing zones draw on.");
-			l.CheckboxLabeled("Weirs catch drift from upriver", ref RM_RiversSettings.weirCatchesDrift,
-				"Things that belong to this biome's rivers wash into the weir now and then.");
-			l.Label("Catch every " + RM_RiversSettings.weirCatchIntervalHours.ToString("F1") + " hours");
-			RM_RiversSettings.weirCatchIntervalHours = l.Slider(RM_RiversSettings.weirCatchIntervalHours, 1f, 48f);
-			l.Label("Drift chance per catch: " + RM_RiversSettings.weirDriftChance.ToStringPercent());
-			RM_RiversSettings.weirDriftChance = l.Slider(RM_RiversSettings.weirDriftChance, 0f, 1f);
-			l.Label("Weir holds at most " + RM_RiversSettings.weirHeldCatchCap + " items before it stops catching");
-			RM_RiversSettings.weirHeldCatchCap = Mathf.RoundToInt(l.Slider(RM_RiversSettings.weirHeldCatchCap, 5f, 200f));
+			l.CheckboxLabeled("Weirs catch what floats into them", ref RM_RiversSettings.weirCapturesFloating,
+				"Items and corpses the current carries into a weir are lifted onto its bank as its catch, to be hauled. "
+			  + "A weir never makes fish or anything else. Off: things pile up against the wall in the water.");
+			if (RM_RiversSettings.weirCapturesFloating)
+			{
+				l.Label("  Weir holds at most " + RM_RiversSettings.weirHeldCatchCap + " items before it stops catching");
+				RM_RiversSettings.weirHeldCatchCap = Mathf.RoundToInt(l.Slider(RM_RiversSettings.weirHeldCatchCap, 5f, 200f));
+			}
+			l.CheckboxLabeled("Animated white water below weirs", ref RM_RiversSettings.weirWhiteWater,
+				"Tumbling foam where the river falls over a weir, stronger in fast water and floods. Off: no foam is drawn.");
 			l.CheckboxLabeled("Silt-traps richen the bank", ref RM_RiversSettings.siltRichening,
 				"On, a silt-trap slowly makes the bank soil beside it richer. Off: it only holds the silt.");
 			if (RM_RiversSettings.siltRichening)
