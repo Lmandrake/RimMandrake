@@ -354,3 +354,16 @@ Options:
   settings screen of their own. *Buys:* nothing moves and nothing breaks. *Costs:* an extra packageId stays in the
   list.
 
+
+## Owner answers, 2026-10-22 evening (by question card; owner's words verbatim where quoted)
+
+- Q1 Ishko settings: *"Likely fold this mod into the religion mod of the 9. It's a concept, not a mod."* Later: *"I think the Nine Gods belong in Salvation Rites. They are NOT a general reuse mod."* -> Ishko landmarks move into Salvation Rites (helper running); Ninefold's own home is an OPEN owner question (written up by that helper).
+- Q2 landmark names: *"I believe it's referring to principles that guide what he is drawn toward or away from."* -> lore only (descriptions already rewritten, 08fd00768).
+- Q3 GSS M4: *"I don't value that the polylines are identical after load. Strike that."* -> done d8b98ae78.
+- Q5 depth engine off: *"...have the depth engine change apply only upon reload ... We shouldn't be supporting live changes to the physics."* -> done d8b98ae78.
+- Q6 ponds: pump to the last decilitre (card: option a). BUILD OWED.
+- Q7 Pyrelands burn line: start every fresh map with a small smouldering front (option a). BUILD OWED.
+- Q8 Struck Glass ring rite: *"We need to re-examine the rites and special items within each map. Many of them are somewhat fluff"* -> no rite-discovery build; see special-mechanics review.
+- Q9 Graffiti: floor cell, drawn offset facing the wall (option a). BUILD OWED (needs his look in game).
+- Q10 Webwork gutter: *"We need to review all of these special mechanics."* -> no placement build; see special-mechanics review.
+- Q11 Rot core carrier: yes, the next hwelgrue may claim it (option a). BUILD OWED (rewrite the fuzz invariant).
