@@ -1,0 +1,190 @@
+[
+ {
+  "id": "arteval_RM_Gorrask__C_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Gorrask__C",
+  "prompt": "Gorrask: Legend on this rock says a stone-crab grew so vast and so old that it no longer fits inside any canyon it did not carve itself. Whatever the truth of that, a gorrask this big has never needed to hurry: it moves once, settles for a season, and the pool truce holds around it exactly as it holds around everything smaller. Its shell is old enough that whole weep-mat colonies have taken root along the seams. It is NOT an Earth animal: shell shows deep seams between its plates, with weep-mat colonies rooted and growing along those seams; the carapace looks like weathered stone, not glossy crab chitin; the shell is so worn and old that it reads as an ancient rock formation, not a living crab's smooth shell; colossal, landform-scale bulk that dwarfs everything around it, more like a hill or canyon boulder than an animal; sits low and fully settled in place, like a fixed part of the terrain, not raised up on its legs. The north view shows the same low, wide crab from behind: the domed plated shell seen from the rear, the claw tips just visible at the front edges, and many short legs splayed and tucked beneath, matching east's leg count and the top of its shell. All three facings show the body at the same height, with east's shell top level with the shell top on south and north. The gorrask rests with its shell's lower rim on the ground and its legs folded and mostly hidden under the shell, like a boulder half-sunk in place. The carapace is irregular, eroded canyon rock with strata lines, pits, cracks and broken edges, so the outline reads as a weathered boulder outcrop with the animal barely discernible. The stone is painted with soft, varied, realistic rock texture and gradual lighting, under a thin dark outline. The outline is a thin, dark, vanilla-weight edge around the silhouette only, with plate seams shown by shading and moss rather than black lines. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_SIZE_JUMP, DEPARTURE_MISSING, DEPARTURE_MISSING, STYLE_CARTOON, STYLE_OFF",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1_incumbent_opus_s1"
+ },
+ {
+  "id": "arteval_RM_Huldu__C_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Huldu__C",
+  "prompt": "Huldu: A forearm-length velvet-skinned swimmer, dorsal comb folded flat like wet fur; clings when handled. Warm to the touch \u2014 not seep-warm, body-warm, with a pulse you can feel through the skin. Lifted from the water it does not thrash: it grips the handler's forearm and presses close, and it shivers. None whatsoever, which is its own kind of problem: the huldu is the row that makes the handler the uneasy party. It is NOT an Earth animal: hairless velvet skin, not a fur coat; any fur-like look comes only from the folded comb; a dorsal comb running along the back, folded flat against the body in wet-looking strands; grasping limbs or gripping surfaces made to cling to and wrap around a forearm, not otter paws; small forearm-length body sized to press flat along a human arm, not an otter's long torso and tail. Draw a hairless, velvet-skinned small swimmer whose head, limbs and silhouette are clearly not mammalian otter: no whiskers, no round ears, no fur coat. Give it smooth velvet skin, a dorsal comb lying flat along the back in wet strands, long grasping limbs with clinging pads or fingers, and a compact forearm-length body. Show a distinct dorsal comb running the length of the back, folded flat in wet, fur-like strands, visible on every facing. Use the same tail shape, limbs and dorsal comb on south, east and north, each turned with the body. The north view shows the rear from the game's angled camera: haunches, tail and the back of the head seen from behind and slightly above, with the body foreshortened. Give it small, wet, unreadable eyes and a neutral, unsettling face painted realistically. Draw east in a level swimming or crawling pose with the same body length and mass as south and north. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_EARTHLY, DEPARTURE_MISSING, DESC_MISS, F_INCONSISTENT, F_TOPDOWN, STYLE_CARTOON, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1_incumbent_opus_s1"
+ },
+ {
+  "id": "arteval_RM_Murrin__C_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Murrin__C",
+  "prompt": "Murrin: A hand-length pool fish, deep-keeled, with one tall dorsal comb-fin that cuts the surface in rings whenever the pool is fed. The pools' rings-within-rings, alive. A silent pool with no murrin rings is the first sign an oasis is dying. The gentle baseline every stocked pool is measured against. It is NOT an Earth animal: a single tall comb-like dorsal fin running along the back, its edge divided into separate comb teeth rather than one smooth sail; a deep, sharply keeled body with a blade-like ridge along the belly; the dorsal comb-fin rising clearly above the waterline, with concentric rings spreading out across the pool surface from where it cuts through; ring-within-ring markings on the body that echo the surface ripples. The north view shows the fish's tail end facing the camera: the forked tail fin is foreshortened in front, the deep keeled body narrows behind it, and the comb-fin rises as a thin upright edge above, all at the same height as south. On south the dorsal comb-fin rises straight up from the head as a thin vertical edge with its comb teeth seen end-on, matching a fin that runs front to back along the spine. Every facing carries the same treatment of the comb-fin, and any surface rings are shown consistently on south, east and north or on none of them. The body is laterally compressed and deep, with a sharp blade-like keel ridge running along the belly from throat to anal fin, clearly visible in profile. The flanks carry distinct concentric ring-within-ring markings in a lighter and darker tone that echo pool ripples, visible on every facing. The comb-fin's base is ringed by faint concentric surface ripples on every facing, reading as the fin cutting the pool surface while the body stays clean alpha. The south face is a realistic fish head with lateral eyes set on the sides of the skull and a neutral, unexpressive mouth, painted with natural dull eye tones. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_TOPDOWN, F_INCONSISTENT, F_INCONSISTENT, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, STYLE_CARTOON, F_NORTH_FACE",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1_incumbent_opus_s1"
+ },
+ {
+  "id": "arteval_RM_Burrak__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Burrak__A",
+  "prompt": "Burrak: A bear-sized wallower that digs catch-basins that outlive it \u2014 abandoned burrak digs are how new micro-oases start. A working oasis tolerates its one huge elder, worn claw-combs and all, the way a town tolerates its engineer; in fiction the biggest of them earns the name burradar, but it is the same animal grown vast, not a second kind. It is NOT an Earth animal: forelimbs end in broad comb-like rakes of many parallel claws (claw-combs), not hippo stumps or bear paws; heavy digging forelimbs built to excavate basins, visibly more powerful and longer than the hind limbs; claw-comb tines visibly worn, chipped or uneven from digging; body caked or slick with basin mud from wallowing, set in or beside a dug catch-basin. Paint original Burrak art: a bear-sized, mud-caked digging wallower in the painterly RimWorld style. Show massive forelimbs, longer than the hind legs, ending in broad rakes of many parallel chipped claws, and a body slick with drying basin mud. Make the claw-comb digging forelimbs the dominant, legible silhouette feature on every facing. Give the burrak a heavy, low, alien wallower head and body plan with no canine ears or dog muzzle. Draw south as the animal facing the camera from the game's angled view, with face, chest and forelimbs, and north as the rear with haunches, hind legs and tail. The south view shows the face, chest and both claw-comb forelimbs head-on, toward the camera. Every facing shows the same standing body with the same limbs and a dorsal crest that turns consistently with the body. Scale the facings so the body mass is equal in every view. Render in painterly vanilla RimWorld style with real anatomy, muddy textured hide and a thin dark outline. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DONOR, DEPARTURE_MISSING, DESC_MISS, STYLE_EARTHLY, F_TOPDOWN, F_SOUTH_NOT_FRONT, F_INCONSISTENT, F_SIZE_JUMP, STYLE_CARTOON",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1_incumbent_opus_s1"
+ },
+ {
+  "id": "arteval_RM_Rockfinger__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Rockfinger__B",
+  "prompt": "Rockfinger: A gnarled, wind-stripped hardwood rooted in the rim cracks of the tall stone, branches clawing out over the drop, bark pale as the stone it grips. At this biome's low sun its shadow runs down the rock face and across the ground for many times its height -- you meet the shadow before the tree. Scarce, and hardy the way it has to be. Slow, scattered, precious timber in high stone country; a felled rockfinger is a caravan event. It is NOT an Earth animal: rooted directly in a crack in a vertical stone cliff rim, not standing in soil on flat ground; branches reaching out sideways over the drop like grasping, claw-like fingers instead of a rounded or conical crown; bark as pale as the surrounding stone, nearly the same colour as the rock it grips; a very long shadow cast down the rock face and across the ground, many times the tree's own height. The rockfinger shows an unearthly trait: stone-pale bark with mineral-like plates or ridges, finger-jointed clawing branch tips, and foliage of an unfamiliar form (for example stiff, scale-like fronds in an unusual hue) instead of pine-needle tufts. The trunk flares into a broad, low root crown that meets the bottom edge of the cell, with its roots hugging the ground line. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_EARTHLY, ANCHOR",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1_incumbent_opus_s1"
+ },
+ {
+  "id": "arteval_RM_Dripfringe__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Dripfringe__B",
+  "prompt": "Dripfringe: A curtain of dark fleshy fingers hanging from overhang lips and cistern mouths, each finger a drip-tip, forever ticking water into the catch-pool below. The comb inverted -- teeth down. A dripfringe curtain over a dark mouth means water below. It is NOT an Earth animal: Dark, smooth fleshy fingers instead of thin grey fibrous strands, leaves or roots; Each finger narrows to a pointed drip-tip with a water droplet hanging from it; Fingers sit side by side in one orderly row from a single base, like an upside-down comb with its teeth pointing down, not a tangled clump; Hangs as a curtain from the lip of a rock overhang or cistern mouth, over a dark opening with a pool of water below; No leaves, stems, flowers or branching anywhere on the fingers. Show the fringe hanging from a short dark fleshy root-lip that runs across the top of the picture as part of the plant, with the drip-tips falling to just above the bottom edge of the canvas so the curtain fills the cell's height. The curtain\u2019s upper fleshy seam visibly joins a supporting lip, with its drip-tip fingers hanging beneath that attachment. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: ANCHOR, ANCHOR",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1_incumbent_opus_s1"
+ },
+ {
+  "id": "arteval_RM_Fuzzviper__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Fuzzviper__B",
+  "prompt": "fuzzviper: The runs are safety, and the fuzzviper is the price of believing that. It lies along a tunnel wall being a root until the run's own traffic comes to it. The north view shows the viper from behind at the game's oblique camera: the coiled tail and rear body large in the foreground, and the body foreshortening upward toward a partly hidden head, so the back of the body faces the viewer. The north view shows the root-serpent from an oblique rear angle, with the nearer tail overlapping a foreshortened body that recedes toward the head, while retaining its branching woody anatomy. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_TOPDOWN, F_TOPDOWN",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1_incumbent_opus_s1"
+ },
+ {
+  "id": "arteval_RSW_Anooba__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Anooba__B",
+  "prompt": "anooba: Anoobas were aggressive pack predators that lived throughout the Outer Rim Territories. Opportunistic hunters as well as scavengers, these wolflike canines would attack virtually anything smaller than themselves (such as scurriers). The north view shows the same long, thin, ringed tail as south and east, seen from behind and trailing or curling to one side. The north view shows the furred backs of the ears, with the pink inner surfaces facing away from the camera. All facings show the animal with the same body height and ear height, in a matching stance. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1_incumbent_opus_s1"
+ },
+ {
+  "id": "arteval_RM_Ghemmel__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Ghemmel__B",
+  "prompt": "ghemmel: The ordinary one, and the roster needs one: gnarled wind-bent trunk, dense rounded crown of medium dark leaves. Its distinguishing feature is not shape but blood \u2014 the bark bleeds thick red wherever it is cut or split, and in this biome it is split everywhere. The commonest mid-storey tree and the source of the biome's red dye. The bark is split and cracked along the trunk and main branches, and thick, dark blood-red sap oozes and runs from many splits, clearly red and visible. The trunk and crown have an unfamiliar structure, such as bark with a non-Earth texture and leaves of an unusual shape, so the tree reads as alien rather than a recoloured bonsai. The dense rounded crown is made of varied, irregular masses of medium-dark leaves with natural variation, not a repeated rosette motif. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, STYLE_EARTHLY, STYLE_CARTOON",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1_incumbent_opus_s1"
+ },
+ {
+  "id": "arteval_RSW_Insectomorph__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Insectomorph__A",
+  "prompt": "insectomorph: Insectomorphs were insectoids from the planet Malastare. These easily domesticated omnivores were often used by the Dugs on their homeworld as battle mounts. Despite their unusual appearance they have been able to flourish as livestock on multiple worlds due to their rapid growth and hardiness. The north view shows the creature from behind: the rump, hind legs and tail end toward the camera, with the head hidden beyond the body and no eyes or mouth visible. South and north are distinct pictures: south shows the head and chest toward the camera, north shows the rump and hind end toward the camera. The south view is seen from a low front three-quarter angle: the head and chest are large in the foreground, the forelegs stand under the chest, and the back is foreshortened behind the head. The segmented dorsal armour plates and rump spikes from the east view appear on south and north as overlapping plates seen end-on, with the same long toothed snout. The insectomorph reads as an insectoid: a segmented chitinous exoskeleton, jointed arthropod legs and an insect-like head with mandibles, on a body sturdy enough to be ridden as a mount. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_NORTH_FACE, DUPLICATE, F_TOPDOWN, F_INCONSISTENT, DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1_incumbent_opus_s1"
+ },
+ {
+  "id": "arteval_RSW_Gualaar__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Gualaar__A",
+  "prompt": "gualaar: The Gualaar was an ungulate species indigenous to the mountains and hills of the planet Naboo. These creatures though tricky to domesticate had both the build and strength to make them perfect beasts of burden. The Royal House of Naboo kept a herd of Gualaar that were used to carry state officials. This regal affiliation and their physical practicality meant they were exported and ultimately spread across multiple worlds. It's similarity in appearance to the legendary Thrumbo is a point of interest amongst several xenobiologists. Use a thinner, slightly varied dark outline and deeper painted volume shading on the body and legs. The coat has softly blended painterly volume, varied natural fur groupings and a restrained dark contour that remains clear at normal play size. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_OFF, STYLE_OFF",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1_incumbent_opus_s1"
+ },
+ {
+  "id": "arteval_RM_IvvolCatch__C_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_IvvolCatch__C",
+  "prompt": "Ivvol: Lifted from the floor at night, when the eye-ridge closes. By day it sees the net coming, every time. Draw the catch as the living Ivvol's own flat, triangular, brown-mottled body with broad lateral flaps and stubby clawed rear limbs, lying limp on the ground with its dorsal ridge of eyes closed into lidded bumps. Give the body the living reference's alien silhouette, a flat triangular shape with wing-like flaps and a raised eye-ridge, and no fish tail or fins. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: CATCH_WRONG, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1_incumbent_opus_s1"
+ }
+]

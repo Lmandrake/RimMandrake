@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Kirruk",
+ "nearest_earth_animal": "hawk",
+ "earth_body_named": false,
+ "departures": [
+  "wings that are themselves combs: the trailing edge is split into a row of separate comb-teeth with open gaps between them, not a smooth feathered edge",
+  "light or sky visible through the slots in the wing, so it reads as a comb and not as a solid membrane or a feathered surface",
+  "long, stiff, rigid wings held straight out and flat, without a hawk's flexible, fingered primary feathers",
+  "hangs motionless in an updraft beside a tall stone rock face, wings fully spread and still rather than flapping or banking"
+ ],
+ "body_plan": "flyer",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:38:22-07:00",
+ "source": "description only (no image)"
+}

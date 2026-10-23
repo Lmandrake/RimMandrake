@@ -1,0 +1,160 @@
+[
+ {
+  "id": "arteval_RM_Ivvol__C_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Ivvol__C",
+  "prompt": "Ivvol: A flat bottom-dweller, its comb a raised dorsal ridge set with a row of eyes \u2014 the ridge surfaces, the eyes count. A doormat-sized floor-thing that knows the feed schedule better than the apprentice does. Passive \u2014 but it learns. Pens with an ivvol have fewer vizhik escapes and no vhorrin has ever grown in one, and no farmer can tell you the mechanism. When finally netted it does not struggle; it goes still, and the whole ridge of eyes turns to the farmer, and it watches. It is NOT an Earth animal: a raised dorsal ridge (the comb) runs down the middle of its flat back, rising clearly above the body like a crest; a single row of many eyes sits along the top of that ridge, not two eyes on the body or a head; the eyes are the creature's main facial feature: there is no fish head with paired eyes and no gill-and-mouth face; the body is a flat, doormat-shaped slab that lies against the floor, with the ridge as its only raised part. North shows the rear seen from behind and above at the game's ~35\u00b0 camera: the tail end and rear paddles nearest the viewer, the foreshortened back and eyeless ridge receding upward, the body as low and wide as on south. North is drawn at the same body height and width as south and east, so the creature keeps one size when it turns. The north view shows the rear at the game's oblique camera angle, with a foreshortened back, visible rear thickness and the crest receding away from the viewer. All three facings depict the same body dimensions at one shared scale, with north's projected length consistent with the corrected oblique camera. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_TOPDOWN, F_SIZE_JUMP, F_TOPDOWN, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1_V1cal_opus_s2"
+ },
+ {
+  "id": "arteval_RM_Ssurr__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Ssurr__B",
+  "prompt": "Ssurr: A hound-sized reptile with one enormous half-circle crest-fan folded flat or blazing open \u2014 closed it is a blade, open it is a wheel. Its breeding displays happen at the pools, harmless and spectacular; the fan doubles as its dew-comb on the weeping faces, so courtship and drinking are the same gesture. The tamable charmer of the biome. It is NOT an Earth animal: a single enormous half-circle crest-fan as the dominant structure, not a neck collar or ruff around the throat; when open the fan reads as a wheel: a rigid half-circle disc with radiating spokes, far larger than the head; when folded the fan lies flat into one straight blade-like edge along the body; the fan's rim or spokes carry fine comb-like tines (its dew-comb), so the fan has a toothed edge, not a smooth membrane; hound-sized and hound-proportioned reptile body, not a small slender lizard. Draw the fan as one rigid half-disc fixed to the body in a single orientation, shown edge-on/foreshortened in the views where it turns away and full-face only in the views where it faces the camera, so all three facings are the same structure rotated. Paint the north rear view with the same teal-green back, dark stripe pattern and spotted flanks as the south and east views. Show the resting sprite with the fan folded flat into a single straight blade-edge along the neck and back, keeping the open wheel for a display variant. Render with painterly, realistic reptile scales and soft volumetric shading, a thin dark outline, and a neutral reptilian mouth line with no smile. Give the body a deeper chest, thicker legs and a hound-like stance and mass under the fan. Line the fan's outer rim with a row of fine, closely spaced comb tines like the teeth of a comb. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT, DEPARTURE_MISSING, STYLE_CARTOON, DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1_V1cal_opus_s2"
+ },
+ {
+  "id": "arteval_RM_Vizhik__C_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Vizhik__C",
+  "prompt": "Vizhik: A wrist-thin eel, comb-gills fanned along the whole neck like a ruff, cold, quick, and never where you left it. When a pen is overfull, a vizhik pours itself out of the pen and crosses open rock on its gill-comb \u2014 into the next pool, the cistern, the water barrel, the kitchen stock-pot. Its bite is small and goes septic more often than it should. It is NOT an Earth animal: comb-gills fanned out along the whole length of the neck like a ruff; gill-comb fringes long and stiff enough to carry the body across dry rock, shown braced on the ground; wrist-thin body, far slimmer than an ordinary eel for its length; the ruff of comb-gills is the creature's dominant silhouette feature, not the small paired gill slits an eel has. East shows the same pale blue comb-gill ruff circling the whole neck in profile, rays fanning above and below the neck, with the same blue-grey spotted body and the small pectoral fins visible on every facing. The lower comb-gill rays are long and stiff and press down onto the ground beneath the neck on every facing, lifting the front of the body like legs. All facings show the same continuous neck ruff with matching ray lengths, attachment points and membrane colors, projected consistently as the body turns. The lower comb-gill rays brace against a common ground plane and visibly support the slender body in a crawling posture. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, DEPARTURE_MISSING, F_INCONSISTENT, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1_V1cal_opus_s2"
+ },
+ {
+  "id": "arteval_RM_Sillik__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Sillik__A",
+  "prompt": "Sillik: A palm-sized silver-grey licker that lives ON the vertical weep-faces themselves, spread flat against the rock, its whisker-comb fanned around the muzzle to comb the thin water film off the stone. Whole faces stipple with them wherever the rock runs wet. It harvests the thinnest water in the biome and never joins the crowd at the pool \u2014 the one native the water truce barely touches. It is NOT an Earth animal: body spread completely flat against the vertical rock face like a pressed sheet, not raised on splayed legs; a fanned whisker-comb: a ring of comb-like bristles spread around the whole muzzle; the muzzle pressed to the wet stone surface, combing a thin sheen of water; uniform silver-grey colouring with no gecko-style banding, spots or bright skin; palm-sized individuals stippled in numbers across one wet rock face, not a single lizard on a wall. Paint original art for the Sillik: a flattened silver-grey alien licker pressed against a wet rock face. The body is a thin pressed sheet with a ring of comb-bristles around the muzzle and no bushy squirrel tail. A ring of stiff comb-like bristles fans around the whole muzzle and is clearly visible in every facing. The body lies spread flat like a pressed sheet, with the muzzle and its fanned bristle-comb pressed to the stone. South shows the face and fanned whisker-comb head-on toward the camera. Paint it in a realistic painterly style with silver-grey fur texture, soft shading and a thin dark outline. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DONOR, STYLE_EARTHLY, DESC_MISS, DEPARTURE_MISSING, F_SOUTH_NOT_FRONT, STYLE_CARTOON",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1_V1cal_opus_s2"
+ },
+ {
+  "id": "arteval_Plant_Ambrosia__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "Plant_Ambrosia__B",
+  "prompt": "Ambrosia: A rare wild bush which yields the ambrosia fruit. Ambrosia fruit is delicious and produces a drug-like mood boost. Ambrosia cannot be farmed, which makes wild ambrosia groves very valuable.\n\nIts rarity, beauty, and desirability are why ambrosia was named after the food of the ancient Greek gods. The mature bush carries clusters of ripe ambrosia fruit hanging among its leaves, clearly visible as the harvestable item, with flowers secondary or absent. The bush's own woody stems meet the bottom edge of the picture directly on transparent alpha, with no rock or soil beneath. The mature bush bears clearly visible ambrosia fruit among its foliage. The bush ends in natural stems and foliage at its base, surrounded by transparent pixels. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, ALPHA_HALO, DESC_MISS, ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1_V1cal_opus_s2"
+ },
+ {
+  "id": "arteval_RSW_Rancor__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Rancor__A",
+  "prompt": "RSW_Rancor: Rancors were large carnivorous reptomammals native to the planet of Dathomir. Standing around five meters tall, with their long arms, immense jaws, and armored hides that could withstand blaster fire, they are formidable predators. A subspecies known as the jungle rancor populates the planets Felucia and Teth. Render the rancor with painterly brushwork, slightly simplified hide texture and a clean thin dark outline around the silhouette. Render all three facings with painterly shading, grouped skin details and a clean dark silhouette contour, retaining the rancor's anatomy, armored hide and immense jaws. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_OFF, STYLE_OFF",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1_V1cal_opus_s2"
+ },
+ {
+  "id": "arteval_RM_Mourvel__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Mourvel__B",
+  "prompt": "mourvel: The brief's \"willow-like canopy\" taken literally, and then further: a low wide dome whose entire outer surface is hanging cord-like leaf strands that reach the mud, so the tree is a room with walls. Bark violet-black, strands blue-green. Nothing is visible through it \u2014 the Greentide's one true concealment tree. Draw a low, wider-than-tall dome whose entire outer surface is a dense unbroken curtain of cord-like blue-green strands hanging all the way to the ground line, completely hiding the trunk, with at most a hint of violet-black bark at the crown top. Make the hanging strands cord-like ropes or filaments rather than willow-leaf clusters, so the dome reads as an alien growth and not a recoloured weeping willow. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1_V1cal_opus_s2"
+ },
+ {
+  "id": "arteval_RSW_JungleRancor__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_JungleRancor__A",
+  "prompt": "Jungle Rancor: Jungle rancors were a colossal subspecies of the more common rancor that had evolved on the planet Felucia, but existed on other worlds through suspected \"exotic egg sales\" and poaching. This subspecies had extreme sexual dimorphism, with the males (referred to as \"rancor bulls\") being pale whitish grey, having 4 short facial-tusks used for display and an elongated tail for balance. The females were a regal shade of navy blue with webbed hands and had additional layers of thick almost testudine-like growths on their backs (presumably to help avoid predation as juveniles). It's believed this subspecies of rancor was able to grow too such colossal sizes due to it's consumption of the local \"fungal trees\" on their native Felucia, supplementing it's otherwise carnivorous diet in times of prey sparsity. The navy female's forehands show visible skin webbing stretched between the clawed digits on every facing. Render the hide with painterly brush shading and a clean dark outline in the vanilla RimWorld manner while keeping the realistic anatomy. The silhouette edge is a clean cut-out with no coloured fringe pixels around the spikes. The female's hands have clearly visible skin membranes spanning the spaces between the fingers in every facing where those spaces are exposed. The creature uses matte painterly shading, selective surface detail, and a clean dark silhouette while retaining its realistic anatomy. The transparent silhouette has clean antialiased edges whose colors match the adjacent skin, armor, and spikes. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, STYLE_OFF, ALPHA_HALO, DESC_MISS, STYLE_OFF, ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1_V1cal_opus_s2"
+ },
+ {
+  "id": "arteval_RSW_KellDragon__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_KellDragon__B",
+  "prompt": "kell dragon: Kell dragons (also known as 'kell drakes') were were hardy, thick skinned creatures from the mountainous planet Rinderga. They were related to the much larger krayt dragons indigenous to Tatooine, but unlike their larger cousins were comfortable in both deserts and tundra. Kell dragons were believed to have been chemically altered by Sith Alchemy from the original krayt stock for use as effective 'guard beasts' for their tombs and facilities. As a result they also became popular with criminal organisations and these creatures could be found across the galaxy (on planets such as Ruusan, Dromund Kaas, and Arkania to name a few). The north view shows the rear at the game's oblique camera: haunches and hind legs standing under the body, the tail trailing toward the camera and foreshortened, the back and spikes rising above the hips, and the shoulders and crest partly hidden behind the hips, with the body as compact top to bottom as the south view. The north view shows the dragon from the game's oblique rear camera, with substantial rear-facing haunches, weight-bearing legs, a foreshortened back, and the tail extending toward the viewer along the ground plane. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_TOPDOWN, F_TOPDOWN",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1_V1cal_opus_s2"
+ },
+ {
+  "id": "arteval_RM_LoomuCatch__C_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_LoomuCatch__C",
+  "prompt": "Loomu: It came to the feed whistle. That IS the catch method, and everyone hates it. The catch shows the same grey hooded Loomu as living_reference.png: smooth dome head, pale tubular pipes under the face and a draping mantle, lying slack on its side. The body has the Loomu's alien anatomy, a hooded mantle with an organ-pipe whistle cluster, rather than a fish's. The bundle of pale tubular pipes under the face is clearly visible on the dead specimen. The specimen lies flat and limp on the ground, mantle slack, eyes shut or dull. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: CATCH_WRONG, STYLE_EARTHLY, DESC_MISS, CATCH_POSE",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1_V1cal_opus_s2"
+ }
+]

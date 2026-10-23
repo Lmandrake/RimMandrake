@@ -1,0 +1,25 @@
+{
+ "subject": "RM_Ghemmel",
+ "label": "ghemmel",
+ "template": "plant",
+ "module": "tree",
+ "candidate": "B",
+ "provenance": "holdout from tree_art_picks_sheet_2026-10-18 set 8508f7a512cd43ed",
+ "description": "The ordinary one, and the roster needs one: gnarled wind-bent trunk, dense rounded crown of medium dark leaves. Its distinguishing feature is not shape but blood \u2014 the bark bleeds thick red wherever it is cut or split, and in this biome it is split everywhere. The commonest mid-storey tree and the source of the biome's red dye.",
+ "tier": "RM_",
+ "invented": true,
+ "size": {
+  "drawSize": [
+   1,
+   1
+  ],
+  "quad": 5,
+  "mesh": 1,
+  "cells": 5,
+  "kind": "plant"
+ },
+ "images": {
+  "single": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RM_Ghemmel_B/single.png",
+  "scale": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RM_Ghemmel_B/scale.png"
+ }
+}

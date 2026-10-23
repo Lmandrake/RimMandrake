@@ -1,0 +1,27 @@
+{
+ "subject": "RSW_Insectomorph",
+ "label": "insectomorph",
+ "template": "creature",
+ "module": "walker",
+ "candidate": "A",
+ "provenance": "holdout from picks_dessicated_sheet_2026-10-19 set 6d79febfe6365149",
+ "description": "Insectomorphs were insectoids from the planet Malastare. These easily domesticated omnivores were often used by the Dugs on their homeworld as battle mounts. Despite their unusual appearance they have been able to flourish as livestock on multiple worlds due to their rapid growth and hardiness.",
+ "tier": "RSW_",
+ "invented": false,
+ "size": {
+  "drawSize": [
+   2,
+   2
+  ],
+  "quad": 2,
+  "mesh": 1,
+  "cells": 2,
+  "kind": "animal"
+ },
+ "images": {
+  "east": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_Insectomorph_A/east.png",
+  "north": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_Insectomorph_A/north.png",
+  "south": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_Insectomorph_A/south.png",
+  "scale": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_Insectomorph_A/scale.png"
+ }
+}

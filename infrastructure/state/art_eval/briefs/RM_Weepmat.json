@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Weepmat",
+ "nearest_earth_animal": "moss",
+ "earth_body_named": false,
+ "departures": [
+  "Dark green-black colouring, close to black, not bright moss-green",
+  "Regular parallel ridges like corduroy instead of a soft cushion or fuzzy tufts",
+  "Every ridge runs the same way, square to the sea-wind, so the mat looks combed or striated",
+  "A wet, glistening sheen along the weep-lines, like a damp streak",
+  "Lies flat against cold vertical stone faces, following the shape of the wet streak where the stone seeps"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:38:20-07:00",
+ "source": "description only (no image)"
+}

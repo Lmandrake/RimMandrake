@@ -1,0 +1,27 @@
+{
+ "subject": "RM_Fuzzviper",
+ "label": "fuzzviper",
+ "template": "creature",
+ "module": "walker",
+ "candidate": "B",
+ "provenance": "holdout from leaningscrub_open_rows_sheet_2026-10-18 set 5d87e5a4fbc93a46",
+ "description": "The runs are safety, and the fuzzviper is the price of believing that. It lies along a tunnel wall being a root until the run's own traffic comes to it.",
+ "tier": "RM_",
+ "invented": true,
+ "size": {
+  "drawSize": [
+   0.9,
+   0.9
+  ],
+  "quad": 0.9,
+  "mesh": 1,
+  "cells": 0.9,
+  "kind": "animal"
+ },
+ "images": {
+  "east": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RM_Fuzzviper_B/east.png",
+  "north": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RM_Fuzzviper_B/north.png",
+  "south": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RM_Fuzzviper_B/south.png",
+  "scale": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RM_Fuzzviper_B/scale.png"
+ }
+}

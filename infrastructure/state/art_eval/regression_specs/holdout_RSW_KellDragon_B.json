@@ -1,0 +1,27 @@
+{
+ "subject": "RSW_KellDragon",
+ "label": "kell dragon",
+ "template": "creature",
+ "module": "walker",
+ "candidate": "B",
+ "provenance": "holdout from picks_dessicated_sheet_2026-10-19 set 477e62faa82cbcc3",
+ "description": "Kell dragons (also known as 'kell drakes') were were hardy, thick skinned creatures from the mountainous planet Rinderga. They were related to the much larger krayt dragons indigenous to Tatooine, but unlike their larger cousins were comfortable in both deserts and tundra. Kell dragons were believed to have been chemically altered by Sith Alchemy from the original krayt stock for use as effective 'guard beasts' for their tombs and facilities. As a result they also became popular with criminal organisations and these creatures could be found across the galaxy (on planets such as Ruusan, Dromund Kaas, and Arkania to name a few).",
+ "tier": "RSW_",
+ "invented": false,
+ "size": {
+  "drawSize": [
+   3,
+   3
+  ],
+  "quad": 3,
+  "mesh": 1,
+  "cells": 3,
+  "kind": "animal"
+ },
+ "images": {
+  "east": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_KellDragon_B/east.png",
+  "north": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_KellDragon_B/north.png",
+  "south": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_KellDragon_B/south.png",
+  "scale": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_KellDragon_B/scale.png"
+ }
+}

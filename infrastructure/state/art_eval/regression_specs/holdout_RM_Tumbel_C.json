@@ -1,0 +1,25 @@
+{
+ "subject": "RM_Tumbel",
+ "label": "tumbel",
+ "template": "plant",
+ "module": "tree",
+ "candidate": "C",
+ "provenance": "holdout from tree_art_picks_sheet_2026-10-18 set 6f2cf1c6dbb1133a",
+ "description": "A thick runner arching up on woody props well above pawn height, carrying heavy hollow vessels slung along its length, each the size of a crate, dull and leathery-skinned. You walk under it and cannot see out through the vessels. Its hollow shells are cut into containers once harvested \u2014 the roster's own waypoint marker, visible from further away than a flat plant would be.",
+ "tier": "RM_",
+ "invented": true,
+ "size": {
+  "drawSize": [
+   1,
+   1
+  ],
+  "quad": 5,
+  "mesh": 1,
+  "cells": 5,
+  "kind": "plant"
+ },
+ "images": {
+  "single": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RM_Tumbel_C/single.png",
+  "scale": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RM_Tumbel_C/scale.png"
+ }
+}

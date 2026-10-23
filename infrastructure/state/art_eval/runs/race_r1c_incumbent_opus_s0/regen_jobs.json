@@ -1,0 +1,87 @@
+[
+ {
+  "id": "arteval_RSW_Convor__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Convor__A",
+  "prompt": "convor: Convor (also known as \"Trandoshan birds\"), were a species of beautiful mammavian from the Wasskah moon of Hsskhor. Although Convor had short, plump bodies, they were excellent fliers. Their popularity as a pet meant they often established colonies on other worlds. The eyes are normal-sized and dark brown-black, with a small natural highlight and no amber or orange iris. The east profile shows the same short, plump, upright owl posture as south, with the body near-vertical and the head set on top of the shoulders. The folded primaries extend in long tips below the belly line toward the tail base on every facing. The eyes have dark brown irises with restrained natural highlights. The east view shows a short, plump owl torso held upright over the feet, matching the south and north body proportions. Both folded wings have long tapered tips extending visibly below the feathered torso. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: CANON_MISS, CANON_MISS, CANON_MISS, CANON_MISS, CANON_MISS, CANON_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1c_incumbent_opus_s0"
+ },
+ {
+  "id": "arteval_RSW_Anooba__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Anooba__B",
+  "prompt": "anooba: Anoobas were aggressive pack predators that lived throughout the Outer Rim Territories. Opportunistic hunters as well as scavengers, these wolflike canines would attack virtually anything smaller than themselves (such as scurriers). The muzzle, jaw, throat and neck are hairless, deeply wrinkled, leathery pink-to-flesh-brown skin in heavy folds, with fur beginning only behind the head. The crown mane and spiky dorsal ridge are coarse pale grey-white hair, contrasting with the darker striped grey body. The eyes are small, dark and deep-set beneath a heavy wrinkled skin brow. The north view shows the same long, thin, rat-like striped tail, trailing behind and curling low. The south, east and north views show the animal at the same body size, with matching shoulder height and ear-tip height. The north view's silhouette edge is soft and painterly, matching the outline weight of south and east. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: CANON_MISS, CANON_MISS, CANON_MISS, F_INCONSISTENT, F_SIZE_JUMP, STYLE_OFF",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1c_incumbent_opus_s0"
+ },
+ {
+  "id": "arteval_RSW_Nexu__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Nexu__A",
+  "prompt": "nexu: Nexu's are agile predators with four red eyes and sharp quills. They have infrared vision and are 4.51 meters long. Typically 0.94 meters tall, nexus possess sharp teeth and claws, as well as long tails. It's light build allows it to remain highly agile and difficult to hit. All three facings depict the same physical head size, limb thickness and foot size at one shared scale, with the east view retaining its low agile posture. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1c_incumbent_opus_s0"
+ },
+ {
+  "id": "arteval_RSW_Kaadu__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Kaadu__A",
+  "prompt": "kaadu: Kaadu were large, flightless reptavians that inhabited the swamps of the planets Naboo, Obredaan as well as the moon of Rori. They had sharp hearing and a keen sense of smell and adults of the species had distinct markings to distinguish gender. Kaadu were known to be fearless; consequently many were domesticated as steeds during times of conflict, or as patrol animals. This versatility made them a popular export to other worlds as both livestock and mount. The body has a continuous reptilian skin surface with subtle scales, smooth contours and the existing yellow-orange markings and pale underside. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: CANON_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1c_incumbent_opus_s0"
+ },
+ {
+  "id": "arteval_RSW_KellDragon__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_KellDragon__B",
+  "prompt": "kell dragon: Kell dragons (also known as 'kell drakes') were were hardy, thick skinned creatures from the mountainous planet Rinderga. They were related to the much larger krayt dragons indigenous to Tatooine, but unlike their larger cousins were comfortable in both deserts and tundra. Kell dragons were believed to have been chemically altered by Sith Alchemy from the original krayt stock for use as effective 'guard beasts' for their tombs and facilities. As a result they also became popular with criminal organisations and these creatures could be found across the galaxy (on planets such as Ruusan, Dromund Kaas, and Arkania to name a few). The north view shows the animal from behind at the game's angled camera: rounded haunches and rear legs planted under the body, the spiked back rising toward the shoulders and the tail coming toward the viewer, at about the height of the east view. All three facings show the same squat, low animal at matching body size, with the south and north silhouettes about as tall as the east body's shoulder height plus spikes. The south view shows a low, squat head-on reptile with the spiked back only slightly visible behind the head, keeping the body wide and low. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_TOPDOWN, F_SIZE_JUMP, F_SOUTH_NOT_FRONT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1c_incumbent_opus_s0"
+ }
+]

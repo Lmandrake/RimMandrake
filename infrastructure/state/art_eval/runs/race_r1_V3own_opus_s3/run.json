@@ -1,0 +1,20 @@
+{
+ "run_id": "race_r1_V3own_opus_s3",
+ "test": true,
+ "started": "2026-10-23T09:41:03-07:00",
+ "subjects": [
+  "RM_Karrek__C",
+  "RM_Vellak__B",
+  "RM_Kirruk__C",
+  "RM_Huldu__B",
+  "RM_Dewgourd__B",
+  "RM_Verdimoss__A",
+  "Plant_Ambrosia__A",
+  "RSW_Igitz__A",
+  "RSW_Warbird__A",
+  "RM_Tumbel__C",
+  "RSW_Kaadu__A",
+  "RM_VizhikCatch__C"
+ ],
+ "versions_key": "departures_brief@v2#9cda88+gpt_targeted_second_look@v1#cb6e32+opus_first_pass@v1-V3own#33f5d7+preamble@v1-V3own#b2a1a8+regen_prompt_edit@v1#861700+severity@v3#950903+creature@v2#16a385"
+}

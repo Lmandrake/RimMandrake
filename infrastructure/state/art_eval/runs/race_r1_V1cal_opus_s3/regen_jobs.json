@@ -1,0 +1,126 @@
+[
+ {
+  "id": "arteval_RM_Karrek__C_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Karrek__C",
+  "prompt": "Karrek: Finger-length little armored fish, fin-rays hardened into serrated chitin combs. A boiling crowd that hits thrown feed like one animal and leaves nothing. Feed-throwing is safe; wading is not \u2014 a karrek swarm strips a bleeding cut white in seconds. Left hungry two days, the swarm starts on its own smallest. It is NOT an Earth animal: fins are rigid, exposed fin-rays hardened into serrated comb-like chitin blades, not soft membranous fins; body sheathed in armour plating rather than ordinary overlapping fish scales; armour and fin-combs have a hard, glossy, arthropod-like chitin surface; tiny finger-length individuals shown as a dense, churning swarm, not one large fish. The north view shows the swarm from behind at the game's angled camera: foreshortened bodies receding away, tail fins and plated backs nearest the viewer, matching the head-on foreshortening of south. The plates and fin-combs carry crisp specular highlights and a lacquered, beetle-shell sheen. The north school shows foreshortened fish from their tail ends at the game's oblique camera angle, with rear armour and tails prominent. Armour plates and rigid fin-combs carry selective crisp reflections that make their hard chitin surface visibly glossy. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_TOPDOWN, DEPARTURE_MISSING, F_TOPDOWN, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1_V1cal_opus_s3"
+ },
+ {
+  "id": "arteval_RM_Vellak__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Vellak__B",
+  "prompt": "Vellak: Camel-tall striders that walk the dry country between pools in single file down the caravan roads, dorsal sail-combs fanned to drink the wind as they come. From the rim, moving lines converging on water: pilgrimage made visible. The RM_ tier's own pilgrim ring \u2014 the free mod keeps the pilgrimage identity without a canon herd, which only stacks on top in the campaign. It is NOT an Earth animal: a tall dorsal sail-comb (a fanned crest of spines with membrane between them) running along the back, standing where a camel's hump would be; the sail-comb shown fanned open and spread wide, not folded flat against the body; a long-legged strider build: very tall, thin stilt legs carrying a body high off the ground, with no hump. On south and north, the sail-comb stands edge-on along the centre line of the back, rising directly behind the head on south and directly along the spine above the rump on north. The dorsal sail follows one consistent plane along the spinal midline, appearing narrow behind the neck and above the back in front and rear views, with any lateral lean reversing screen sides between those views. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1_V1cal_opus_s3"
+ },
+ {
+  "id": "arteval_RM_Kirruk__C_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Kirruk__C",
+  "prompt": "Kirruk: A hawk-sized soarer that rides the wind forced up the tall stone, long stiff wings that are themselves combs \u2014 slotted trailing edges like comb-teeth \u2014 hanging motionless on the updraft off a rock face, wings combing the wet air as it hangs. It drinks the way the biome does, on the wing, and lands only to nest on the rims. The RM_ tier's own sky presence. It is NOT an Earth animal: wings that are themselves combs: the trailing edge is split into a row of separate comb-teeth with open gaps between them, not a smooth feathered edge; light or sky visible through the slots in the wing, so it reads as a comb and not as a solid membrane or a feathered surface; long, stiff, rigid wings held straight out and flat, without a hawk's flexible, fingered primary feathers; hangs motionless in an updraft beside a tall stone rock face, wings fully spread and still rather than flapping or banking. Draw the east profile with the body and head the same size as on south and north, so the bird's length matches the other facings. The east view shows the same motionless glide as south and north: both wings held straight out and level, the near wing in front and the far wing just visible behind. Give the kirruk a non-raptor head and body, such as an unfamiliar head shape and skin or plate texture, so only the comb wings stay bird-like and a stranger would not name a hawk. The wings are long, narrow, rigid straight blades of even width, with the comb teeth evenly spaced along the whole trailing edge rather than splayed at the tip like primaries. The east view holds both wings fully spread and still, level with the body, as if hanging on an updraft. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, F_INCONSISTENT, STYLE_EARTHLY, DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1_V1cal_opus_s3"
+ },
+ {
+  "id": "arteval_RM_Huldu__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Huldu__B",
+  "prompt": "Huldu: A forearm-length velvet-skinned swimmer, dorsal comb folded flat like wet fur; clings when handled. Warm to the touch \u2014 not seep-warm, body-warm, with a pulse you can feel through the skin. Lifted from the water it does not thrash: it grips the handler's forearm and presses close, and it shivers. None whatsoever, which is its own kind of problem: the huldu is the row that makes the handler the uneasy party. It is NOT an Earth animal: hairless velvet skin, not a fur coat; any fur-like look comes only from the folded comb; a dorsal comb running along the back, folded flat against the body in wet-looking strands; grasping limbs or gripping surfaces made to cling to and wrap around a forearm, not otter paws; small forearm-length body sized to press flat along a human arm, not an otter's long torso and tail. Paint original art of the huldu: a small velvet-skinned swimmer with a folded wet dorsal comb and clinging limbs. A dorsal comb runs the length of the back, folded flat in wet-looking strands, visible on east and north and peeking above the head on south. The huldu reads as an unfamiliar alien swimmer: velvet skin, a strand-like dorsal comb and gripping limbs, with no shell. Show hairless velvet skin, the folded wet dorsal comb, and grasping limbs made to wrap around a forearm. Render with realistic painterly shading, a thin clean dark outline and naturalistic eyes. Draw the body at the same height on all facings. The body is a soft, hairless, velvet-skinned forearm-length swimmer with no shell. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DONOR, DESC_MISS, STYLE_EARTHLY, DEPARTURE_MISSING, STYLE_CARTOON, F_SIZE_JUMP, X_WRONG",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1_V1cal_opus_s3"
+ },
+ {
+  "id": "arteval_Plant_Ambrosia__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "Plant_Ambrosia__A",
+  "prompt": "Ambrosia: A rare wild bush which yields the ambrosia fruit. Ambrosia fruit is delicious and produces a drug-like mood boost. Ambrosia cannot be farmed, which makes wild ambrosia groves very valuable.\n\nIts rarity, beauty, and desirability are why ambrosia was named after the food of the ancient Greek gods. The mature bush carries clusters of visible ambrosia fruit among its leaves as the clear focal point. Paint new, original art for the ambrosia bush in the painterly vanilla RimWorld style. The bush grows from its own woody stems and foliage alone, on a transparent background with no rocks. A rounded leafy bush silhouette with branching stems, dense foliage and fruit fills the cell. Render the bush in soft painterly shading with a thin dark outline, matching vanilla RimWorld plants. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, DONOR, ALPHA_HALO, LUMP, STYLE_CARTOON",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1_V1cal_opus_s3"
+ },
+ {
+  "id": "arteval_RSW_Igitz__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Igitz__A",
+  "prompt": "igitz: Igitz were a species of small amphibians hailing from the planet Naboo. Those blue-skinned, omnivorous critters dwelled in the planet's many dense swamps. Because of the environment in which they had evolved, the igitz were well-adapted to both land and water: while their front paws were clawed for treading on land, their hindquarters were finned, allowing it speed when in water. The igitz were a popular pet in most Gungan civilizations and this lead to the species becoming present on other worlds. The fin is one dorsal sail running from the shoulders to the finned rump: south shows it as a narrow edge-on crest behind the head, north shows the same sail edge-on down the spine with the rump fins flaring at the hips. All three facings show one consistent dorsal and rump fin structure, with its attachment points and projected width changing coherently as the body turns. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1_V1cal_opus_s3"
+ },
+ {
+  "id": "arteval_RM_Tumbel__C_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Tumbel__C",
+  "prompt": "tumbel: A thick runner arching up on woody props well above pawn height, carrying heavy hollow vessels slung along its length, each the size of a crate, dull and leathery-skinned. You walk under it and cannot see out through the vessels. Its hollow shells are cut into containers once harvested \u2014 the roster's own waypoint marker, visible from further away than a flat plant would be. The vessels are closed, gourd- or pod-like hollow shells with dull leathery skin and no open mouth or lid, slung heavily along the runner like sacks, so the plant reads as an unfamiliar alien growth rather than a pitcher plant. The hanging vessels have distinctive alien shell anatomy, with heavy leathery bodies and irregular openings that establish a recognizable unfamiliar plant. A long thick runner arches between separate woody props above human height, leaving a clear walkable passage beneath its hanging vessels. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_EARTHLY, STYLE_EARTHLY, DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1_V1cal_opus_s3"
+ },
+ {
+  "id": "arteval_RM_VizhikCatch__C_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_VizhikCatch__C",
+  "prompt": "Vizhik: Picked off wet stone after an escape, gloved \u2014 not caught in the pool, caught traveling. Draw the same slender blue-grey eel body as the living Vizhik, with its radiating head frill and the red-and-white dorsal sail behind the head, ending in a long tapering tail. Show the eel lying limp on its side, flat on the ground in a loose S-curve, with the frill collapsed and the eye dull and filmed. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: CATCH_WRONG, CATCH_POSE",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1_V1cal_opus_s3"
+ }
+]

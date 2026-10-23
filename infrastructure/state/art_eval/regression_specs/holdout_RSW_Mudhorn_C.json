@@ -1,0 +1,27 @@
+{
+ "subject": "RSW_Mudhorn",
+ "label": "mudhorn",
+ "template": "creature",
+ "module": "walker",
+ "candidate": "C",
+ "provenance": "holdout from leaningscrub_open_rows_sheet_2026-10-18 set b37ea66b5dd9a00a",
+ "description": "Mudhorns were large horned creatures that originated from the planet Arvala-7. The eggs of mudhorns were considered a delicacy by Jawas. It was this reason that populations of these creatures were established on other worlds as a result of unscrupulous bartering deals.",
+ "tier": "RSW_",
+ "invented": false,
+ "size": {
+  "drawSize": [
+   4.5,
+   4.5
+  ],
+  "quad": 4.5,
+  "mesh": 1,
+  "cells": 4.5,
+  "kind": "animal"
+ },
+ "images": {
+  "east": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_Mudhorn_C/east.png",
+  "north": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_Mudhorn_C/north.png",
+  "south": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_Mudhorn_C/south.png",
+  "scale": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_Mudhorn_C/scale.png"
+ }
+}

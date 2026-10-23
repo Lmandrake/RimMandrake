@@ -1,0 +1,25 @@
+{
+ "subject": "RM_Zhorrel",
+ "label": "zhorrel",
+ "template": "plant",
+ "module": "tree",
+ "candidate": "B",
+ "provenance": "holdout from tree_art_picks_sheet_2026-10-18 set da584b854cfec4d6",
+ "description": "No crown at all: a low crossbeam of branches with a hanging curtain of slack finger-thick tentacle-leaves, red-barked above. The tentacles are visibly not still \u2014 the tell is that they move against the wind rather than with it. The strangler: no truce, ever. Kill one and the tentacles are excellent cordage.",
+ "tier": "RM_",
+ "invented": true,
+ "size": {
+  "drawSize": [
+   1,
+   1
+  ],
+  "quad": 7.5,
+  "mesh": 1,
+  "cells": 7.5,
+  "kind": "plant"
+ },
+ "images": {
+  "single": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RM_Zhorrel_B/single.png",
+  "scale": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RM_Zhorrel_B/scale.png"
+ }
+}

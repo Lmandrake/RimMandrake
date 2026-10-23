@@ -1,0 +1,27 @@
+{
+ "subject": "RSW_Nexu",
+ "label": "nexu",
+ "template": "creature",
+ "module": "walker",
+ "candidate": "A",
+ "provenance": "holdout from picks_dessicated_sheet_2026-10-19 set 6b761e2777680a7e",
+ "description": "Nexu's are agile predators with four red eyes and sharp quills. They have infrared vision and are 4.51 meters long. Typically 0.94 meters tall, nexus possess sharp teeth and claws, as well as long tails. It's light build allows it to remain highly agile and difficult to hit.",
+ "tier": "RSW_",
+ "invented": false,
+ "size": {
+  "drawSize": [
+   1.8,
+   1.8
+  ],
+  "quad": 1.8,
+  "mesh": 1,
+  "cells": 1.8,
+  "kind": "animal"
+ },
+ "images": {
+  "east": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_Nexu_A/east.png",
+  "north": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_Nexu_A/north.png",
+  "south": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_Nexu_A/south.png",
+  "scale": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_Nexu_A/scale.png"
+ }
+}

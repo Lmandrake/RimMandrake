@@ -1,0 +1,53 @@
+[
+ {
+  "id": "arteval_RSW_Rancor__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Rancor__A",
+  "prompt": "RSW_Rancor: Rancors were large carnivorous reptomammals native to the planet of Dathomir. Standing around five meters tall, with their long arms, immense jaws, and armored hides that could withstand blaster fire, they are formidable predators. A subspecies known as the jungle rancor populates the planets Felucia and Teth. Render the rancor with painterly brushwork and a clean thin dark outline around the silhouette, in the vanilla RimWorld style, keeping the current anatomy and hide detail. Render the same rancor anatomy with painterly surface marks, broader readable shadow shapes and a restrained dark contour that remains clear at 32 px per cell. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_OFF, STYLE_OFF",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1c_V1cal_opus_s1"
+ },
+ {
+  "id": "arteval_RSW_Insectomorph__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Insectomorph__A",
+  "prompt": "insectomorph: Insectomorphs were insectoids from the planet Malastare. These easily domesticated omnivores were often used by the Dugs on their homeworld as battle mounts. Despite their unusual appearance they have been able to flourish as livestock on multiple worlds due to their rapid growth and hardiness. The north view shows the creature from behind: the hind haunches and long hind legs nearest the camera, the striped back receding away, and no head, eyes or mouth visible. Every facing shows the same body turned in place: north shows the rear and haunches, and the dorsal plate ridge shown in profile on east appears as a row of plates along the spine on south and north. The leg segments are tan/gold over a bone-white undertone, with dark brown horizontal bands, and the red eyes stay the only saturated accent. In profile the hind legs are about twice the length of the front legs and heavily muscled, so the rear rides high and the head sits low and forward. The body reads as a lean, bony, skeletal frame with a matte exoskeleton stretched over visible bone ridges, rather than overlapping armour plates. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_NORTH_FACE, F_INCONSISTENT, CANON_MISS, CANON_MISS, CANON_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1c_V1cal_opus_s1"
+ },
+ {
+  "id": "arteval_RSW_MastiffPhalone__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_MastiffPhalone__A",
+  "prompt": "mastiff phalone: A large, long-bodied four-legged avian predator of the Maridun savannas, built like a griffin: a coat of grey feathers barred with dark blue, a mane of dark feathers over neck and shoulders, and a long feathered tail. Its wings have dwindled to remnants at the front legs, which end, like the hind legs, in long talons big enough to wrap around a man's waist; the head carries a heavy hooked beak and a patch of bare blue skin at the throat. Mastiff phalones hunt in packs of two or more, stalking through tall grass. They will break off from prey that fights back too hard, only to return and strike again later, and an agitated one is said to be as dangerous as a rancor and just as hard to bring down. Each foot ends in long curved raptor talons, large and pale against the dark scaly toes, and a small stub of feathered wing sprouts from the back of each foreleg at the shoulder, visible on south, east and north. Draw the feet as large, splayed bird-of-prey feet with long hooked talons that read clearly at normal zoom. The beak is a heavy pale ivory hook, and a vivid bright-blue patch of bare skin covers the throat under the beak on south and east. All four feet have clearly separated elongated avian digits ending in large curved talons capable of encircling a human waist. Each front leg carries a small recognizable folded wing remnant with a distinct group of flight feathers. A clearly visible bright blue patch of bare skin extends beneath the beak onto the throat in the front and side views. The east view shares the standing shoulder height, limb proportions and overall body scale of the south and north views. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: CANON_MISS, DESC_MISS, CANON_MISS, CANON_MISS, CANON_MISS, DESC_MISS, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1c_V1cal_opus_s1"
+ }
+]

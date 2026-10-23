@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Bladderquill",
+ "nearest_earth_animal": "aloe",
+ "earth_body_named": false,
+ "departures": [
+  "stiff translucent quills, not opaque green fleshy leaves",
+  "each quill fat and bulbous at its base, with stored water visible through the translucent wall",
+  "quills spread in a flat fan, not a radial rosette",
+  "bears bladder-fruit: swollen, liquid-filled fruit sacs",
+  "knee-high, with thin quill-like spines rather than broad blades"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:38:21-07:00",
+ "source": "description only (no image)"
+}

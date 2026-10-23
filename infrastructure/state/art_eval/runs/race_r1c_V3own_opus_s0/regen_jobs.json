@@ -1,0 +1,70 @@
+[
+ {
+  "id": "arteval_RSW_Convor__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Convor__A",
+  "prompt": "convor: Convor (also known as \"Trandoshan birds\"), were a species of beautiful mammavian from the Wasskah moon of Hsskhor. Although Convor had short, plump bodies, they were excellent fliers. Their popularity as a pet meant they often established colonies on other worlds. The eyes are dark brown-black owl eyes, normal-sized, with a small catchlight. The folded wing tips extend down past the lower belly on the front view, as they do on east. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: CANON_MISS, CANON_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1c_V3own_opus_s0"
+ },
+ {
+  "id": "arteval_RSW_Anooba__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Anooba__B",
+  "prompt": "anooba: Anoobas were aggressive pack predators that lived throughout the Outer Rim Territories. Opportunistic hunters as well as scavengers, these wolflike canines would attack virtually anything smaller than themselves (such as scurriers). Paint the muzzle, jaw, throat and neck as bare, deeply creased, leathery pink-to-flesh-brown skin with no fur, from the brow down to the chest. Make the crown mane and spiky dorsal ridge coarse pale grey-white hair that stands out against the darker striped body. Set small dark eyes deep under a heavy, wrinkled, bare-skinned brow ridge. Scale the north rear view so its body width and height match the south front view. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: CANON_MISS, CANON_MISS, CANON_MISS, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1c_V3own_opus_s0"
+ },
+ {
+  "id": "arteval_RSW_Kaadu__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Kaadu__A",
+  "prompt": "kaadu: Kaadu were large, flightless reptavians that inhabited the swamps of the planets Naboo, Obredaan as well as the moon of Rori. They had sharp hearing and a keen sense of smell and adults of the species had distinct markings to distinguish gender. Kaadu were known to be fearless; consequently many were domesticated as steeds during times of conflict, or as patrol animals. This versatility made them a popular export to other worlds as both livestock and mount. The body has close-fitting reptilian skin with subtle scales, a smooth cream underside and clean skin contours while retaining the yellow coat and dark markings. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: CANON_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1c_V3own_opus_s0"
+ },
+ {
+  "id": "arteval_RSW_KellDragon__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_KellDragon__B",
+  "prompt": "kell dragon: Kell dragons (also known as 'kell drakes') were were hardy, thick skinned creatures from the mountainous planet Rinderga. They were related to the much larger krayt dragons indigenous to Tatooine, but unlike their larger cousins were comfortable in both deserts and tundra. Kell dragons were believed to have been chemically altered by Sith Alchemy from the original krayt stock for use as effective 'guard beasts' for their tombs and facilities. As a result they also became popular with criminal organisations and these creatures could be found across the galaxy (on planets such as Ruusan, Dromund Kaas, and Arkania to name a few). The north view shows the animal from behind at the game's 35-degree camera: haunches and the tail base nearest the viewer, the back and spike rows receding upward toward a hidden head, and the legs standing under the body, with the same height on canvas as the south view. North shows the rear end: haunches, hind legs and the tail toward the camera, viewed from slightly above. North and south match in apparent body bulk, and east shows the same body at the same scale in profile. Every facing shows the legs standing under a low body and the spike rows lying along the back, seen from the same 35-degree camera. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_TOPDOWN, F_NORTH_FACE, F_SIZE_JUMP, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1c_V3own_opus_s0"
+ }
+]

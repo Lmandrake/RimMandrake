@@ -1,0 +1,70 @@
+[
+ {
+  "id": "arteval_RSW_Mudhorn__C_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Mudhorn__C",
+  "prompt": "mudhorn: Mudhorns were large horned creatures that originated from the planet Arvala-7. The eggs of mudhorns were considered a delicacy by Jawas. It was this reason that populations of these creatures were established on other worlds as a result of unscrupulous bartering deals. Scale the east profile so its body height (shoulder hump to feet) matches the south and north views of the same animal. The creature is painted in painterly RimWorld style with a clean dark outline around the silhouette. The whole east silhouette, horn tip included, sits inside the canvas with a clear transparent margin on every side. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, STYLE_OFF, X_CROP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1c_V2ver_opus_s2"
+ },
+ {
+  "id": "arteval_RSW_Warbird__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Warbird__A",
+  "prompt": "RSW_Warbird: The Warbird (or 'Sith warbird') was a species of huge flightless avian from the frigid planet Khar Delba. Sith warbirds were notorious for their bad temper and they typically used their large size to ram down their prey and gore them with their serrated beaks. After the end of the Great Sith War, Sith warbirds continued to be found throughout the galaxy, with survivors of the conflict breeding on worlds where battles had been fought by the Sith. These wild-once-more warbirds were prone to terrorizing local forms of wildlife that posed little threat to them. The east facing's edge pixels carry only the feather colours of the body, so the silhouette stays clean green and tan on dark ground. The beak is deep and massive, with a short rounded hook at its tip. The transparent silhouette has clean antialiased edges matching the adjacent feather and beak colours. The long neck carries a large heavy hooked beak with a short, blunt terminal tip. The complete east-facing tail fits within the canvas with a small transparent margin. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: ALPHA_HALO, CANON_MISS, ALPHA_HALO, CANON_MISS, X_CROP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1c_V2ver_opus_s2"
+ },
+ {
+  "id": "arteval_RSW_JungleRancor__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_JungleRancor__A",
+  "prompt": "Jungle Rancor: Jungle rancors were a colossal subspecies of the more common rancor that had evolved on the planet Felucia, but existed on other worlds through suspected \"exotic egg sales\" and poaching. This subspecies had extreme sexual dimorphism, with the males (referred to as \"rancor bulls\") being pale whitish grey, having 4 short facial-tusks used for display and an elongated tail for balance. The females were a regal shade of navy blue with webbed hands and had additional layers of thick almost testudine-like growths on their backs (presumably to help avoid predation as juveniles). It's believed this subspecies of rancor was able to grow too such colossal sizes due to it's consumption of the local \"fungal trees\" on their native Felucia, supplementing it's otherwise carnivorous diet in times of prey sparsity. Colour the back, shell and arms dark brown to charcoal, with no blue or violet hue anywhere on the body. Paint the throat, chest and belly a warm pale tan/ochre with wrinkled skin. Give the spikes on the arm bands, shoulders and head deep rust-red tips. Draw the east profile in the same upright stance and body height as south and north. Render with painterly brushwork and a slightly flatter, hand-painted shading in the vanilla RimWorld style. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: CANON_MISS, CANON_MISS, CANON_MISS, F_SIZE_JUMP, STYLE_OFF",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1c_V2ver_opus_s2"
+ },
+ {
+  "id": "arteval_RSW_Gualaar__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Gualaar__A",
+  "prompt": "gualaar: The Gualaar was an ungulate species indigenous to the mountains and hills of the planet Naboo. These creatures though tricky to domesticate had both the build and strength to make them perfect beasts of burden. The Royal House of Naboo kept a herd of Gualaar that were used to carry state officials. This regal affiliation and their physical practicality meant they were exported and ultimately spread across multiple worlds. It's similarity in appearance to the legendary Thrumbo is a point of interest amongst several xenobiologists. The head carries one very large cream/ivory horn rising from the crown and sweeping up and back, Thrumbo-like, plus two small cream horns on the snout, consistent on every facing. The body is a massive, broad-barrelled beast of burden with thick pillar legs ending in broad heavy feet, with a long upright neck and a long tail. The coat is uniform white to off-white short fur, with cream/ivory horns and black eyes. A single great Thrumbo-like horn dominates the head silhouette on every facing. The animal is rendered in painterly vanilla RimWorld style with soft volumetric shading and a thin clean dark outline. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: CANON_MISS, CANON_MISS, CANON_MISS, DESC_MISS, STYLE_CARTOON",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1c_V2ver_opus_s2"
+ }
+]

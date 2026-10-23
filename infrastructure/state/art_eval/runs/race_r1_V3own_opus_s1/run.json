@@ -1,0 +1,21 @@
+{
+ "run_id": "race_r1_V3own_opus_s1",
+ "test": true,
+ "started": "2026-10-23T09:41:03-07:00",
+ "subjects": [
+  "RM_Gorrask__C",
+  "RM_Huldu__C",
+  "RM_Murrin__C",
+  "RM_Burrak__A",
+  "RM_Bladderquill__B",
+  "RM_Rockfinger__B",
+  "RM_Dripfringe__B",
+  "RM_Fuzzviper__B",
+  "RSW_Anooba__B",
+  "RM_Ghemmel__B",
+  "RSW_Insectomorph__A",
+  "RSW_Gualaar__A",
+  "RM_IvvolCatch__C"
+ ],
+ "versions_key": "departures_brief@v2#9cda88+gpt_targeted_second_look@v1#cb6e32+opus_first_pass@v1-V3own#33f5d7+preamble@v1-V3own#b2a1a8+regen_prompt_edit@v1#861700+severity@v3#950903+creature@v2#16a385"
+}

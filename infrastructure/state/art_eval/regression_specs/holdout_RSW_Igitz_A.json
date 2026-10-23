@@ -1,0 +1,27 @@
+{
+ "subject": "RSW_Igitz",
+ "label": "igitz",
+ "template": "creature",
+ "module": "amphibious",
+ "candidate": "A",
+ "provenance": "holdout from leaningscrub_open_rows_sheet_2026-10-18 set c537c4aed35a44ef",
+ "description": "Igitz were a species of small amphibians hailing from the planet Naboo. Those blue-skinned, omnivorous critters dwelled in the planet's many dense swamps. Because of the environment in which they had evolved, the igitz were well-adapted to both land and water: while their front paws were clawed for treading on land, their hindquarters were finned, allowing it speed when in water. The igitz were a popular pet in most Gungan civilizations and this lead to the species becoming present on other worlds.",
+ "tier": "RSW_",
+ "invented": false,
+ "size": {
+  "drawSize": [
+   1.25,
+   1.25
+  ],
+  "quad": 1.25,
+  "mesh": 1,
+  "cells": 1.25,
+  "kind": "animal"
+ },
+ "images": {
+  "east": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_Igitz_A/east.png",
+  "north": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_Igitz_A/north.png",
+  "south": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_Igitz_A/south.png",
+  "scale": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_Igitz_A/scale.png"
+ }
+}

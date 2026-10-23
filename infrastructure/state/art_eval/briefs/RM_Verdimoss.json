@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Verdimoss",
+ "nearest_earth_animal": "moss",
+ "earth_body_named": true,
+ "departures": [
+  "grows in beaded lines: strings of separate rounded cushions running along cracks, not a continuous green carpet",
+  "blue-green colour, not the yellow-green or forest-green of Earth moss",
+  "where it grows over metal it turns the colour of oxidised bronze (a verdigris-teal patina), so it reads as part of the metal surface",
+  "follows seep cracks in the ground as narrow linear tracks",
+  "drapes over and half-covers old machine relics, so the shape of the machine still shows under the moss"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:38:21-07:00",
+ "source": "description only (no image)"
+}

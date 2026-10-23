@@ -1,0 +1,173 @@
+[
+ {
+  "id": "arteval_RM_Burrak__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Burrak__B",
+  "prompt": "Burrak: A bear-sized wallower that digs catch-basins that outlive it \u2014 abandoned burrak digs are how new micro-oases start. A working oasis tolerates its one huge elder, worn claw-combs and all, the way a town tolerates its engineer; in fiction the biggest of them earns the name burradar, but it is the same animal grown vast, not a second kind. It is NOT an Earth animal: forelimbs end in broad comb-like rakes of many parallel claws (claw-combs), not hippo stumps or bear paws; heavy digging forelimbs built to excavate basins, visibly more powerful and longer than the hind limbs; claw-comb tines visibly worn, chipped or uneven from digging; body caked or slick with basin mud from wallowing, set in or beside a dug catch-basin. The burrak has a non-ursine head (a low, wide, flat-snouted digging skull with no round bear ears), a hide of thick mud-caked plates instead of shaggy fur, and an alien silhouette dominated by massive rake forelimbs. All three facings show one animal with the same mud-grey palette, the same head shape and the same planted rake forelimbs. North shows the forelimbs reaching down and forward, partly hidden by the body. The north view shows the rear from the same low game-camera angle as south: haunches, tail and hind legs planted, with the shoulders and claw-tips just visible beyond the back. Each forelimb ends in a broad, flat rake of eight or more closely set parallel tines, some chipped, broken short or worn to uneven lengths. The body bulk matches across facings, with east's body length consistent with south's width and height. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_EARTHLY, F_INCONSISTENT, F_TOPDOWN, DEPARTURE_MISSING, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1_V3own_opus_s0"
+ },
+ {
+  "id": "arteval_RM_Sillik__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Sillik__B",
+  "prompt": "Sillik: A palm-sized silver-grey licker that lives ON the vertical weep-faces themselves, spread flat against the rock, its whisker-comb fanned around the muzzle to comb the thin water film off the stone. Whole faces stipple with them wherever the rock runs wet. It harvests the thinnest water in the biome and never joins the crowd at the pool \u2014 the one native the water truce barely touches. It is NOT an Earth animal: body spread completely flat against the vertical rock face like a pressed sheet, not raised on splayed legs; a fanned whisker-comb: a ring of comb-like bristles spread around the whole muzzle; the muzzle pressed to the wet stone surface, combing a thin sheen of water; uniform silver-grey colouring with no gecko-style banding, spots or bright skin; palm-sized individuals stippled in numbers across one wet rock face, not a single lizard on a wall. Make the south view a head-on front view at the game camera angle, with the whisker-comb ring framing the muzzle toward the viewer. Make the body a thin, flattened, sheet-like creature pressed against the surface, with a full ring of comb bristles around the muzzle and anatomy that does not read as a gecko. Make the body a flat, pressed sheet in uniform silver-grey, with a continuous ring of comb-bristles around the entire muzzle. Give it small, matte, realistic eyes and a closed muzzle pressed into the comb, rendered naturalistically. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SOUTH_NOT_FRONT, STYLE_EARTHLY, DEPARTURE_MISSING, STYLE_CARTOON",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1_V3own_opus_s0"
+ },
+ {
+  "id": "arteval_RM_Loomu__C_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Loomu__C",
+  "prompt": "Loomu: A cat-sized, boneless, dove-grey thing that hangs in the warm seep-throat water and repeats what it hears at the bank: the feed whistle, the wind through the vanes, a child's laugh, its keeper's name for it. Mild in the flesh, terrible in the ear \u2014 a loomu pen at night runs through its whole collection. Handlers stop teaching them words on purpose and cannot stop teaching them by accident. It is NOT an Earth animal: opaque, matte dove-grey flesh, not translucent or glassy; a compact, cat-sized body mass rather than a broad bell with long trailing tentacles; boneless and slack: the body sags and folds softly under its own weight, with no rigid shell, bell rim or skeleton; hangs still, suspended in warm murky seep water, not pulsing or jetting; a visible mouth or throat opening able to make sounds, since it repeats voices and whistles. The north view shows the same draped grey body from behind at the game's angled camera: the rounded back of the hood sagging into its ruffled hem, the tips of the pipe tubes just peeking past the sides, no face. All three facings show one body: a slack dove-grey hood draping to a soft hem, with the same cluster of pale pipe tubes under the face and the same warm grey, turned to front, side and back. Each facing shows the body at the same overall size, with the back view about as tall as the front view. The face has small, dull, recessed eyes set in wet folded flesh and no smile, with the throat opening and pipes giving it an eerie, realistic invertebrate look. The body is one compact sagging mass with no long arms and no feet, its lower hem folding softly as if hanging in water. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_TOPDOWN, F_INCONSISTENT, F_SIZE_JUMP, STYLE_CARTOON, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1_V3own_opus_s0"
+ },
+ {
+  "id": "arteval_RM_Gorrask__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Gorrask__B",
+  "prompt": "Gorrask: Legend on this rock says a stone-crab grew so vast and so old that it no longer fits inside any canyon it did not carve itself. Whatever the truth of that, a gorrask this big has never needed to hurry: it moves once, settles for a season, and the pool truce holds around it exactly as it holds around everything smaller. Its shell is old enough that whole weep-mat colonies have taken root along the seams. It is NOT an Earth animal: shell shows deep seams between its plates, with weep-mat colonies rooted and growing along those seams; the carapace looks like weathered stone, not glossy crab chitin; the shell is so worn and old that it reads as an ancient rock formation, not a living crab's smooth shell; colossal, landform-scale bulk that dwarfs everything around it, more like a hill or canyon boulder than an animal; sits low and fully settled in place, like a fixed part of the terrain, not raised up on its legs. Paint an original gorrask: a vast, low stone-crab whose carapace is weathered rock plates with weep-mat growing in the seams. Show the shell as ancient stone plates split by deep seams, with mat-like weep-mat colonies rooted along each seam. The carapace is cracked, lichen-weathered grey stone with deep seams full of weep-mat, massive and low like a canyon boulder. Render in painterly realistic vanilla style with a thin dark outline, textured stone surfaces and small dull eyes set deep under the shell rim. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DONOR, DESC_MISS, DEPARTURE_MISSING, STYLE_CARTOON",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1_V3own_opus_s0"
+ },
+ {
+  "id": "arteval_RM_Weepmat__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Weepmat__A",
+  "prompt": "Weep-mat: A dark green-black mat hugging the cold stone faces, ridged like corduroy, every ridge square to the sea-wind, glistening along the weep-lines. It grows exactly where the stone weeps, so a weep-mat is the wet black streak's green echo -- a face without one is a face that has gone dry. Graze for the sillik. It is NOT an Earth animal: Dark green-black colouring, close to black, not bright moss-green; Regular parallel ridges like corduroy instead of a soft cushion or fuzzy tufts; Every ridge runs the same way, square to the sea-wind, so the mat looks combed or striated; A wet, glistening sheen along the weep-lines, like a damp streak; Lies flat against cold vertical stone faces, following the shape of the wet streak where the stone seeps. Have the ridges on every lobe run parallel in one shared direction, and add wet specular glints along the dark streaks between the pads. The mat has a coherent parallel corduroy grain across its lobes, with distinct wet highlights tracing the weep-lines through the dark green-black growth. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1_V3own_opus_s0"
+ },
+ {
+  "id": "arteval_RSW_Mudhorn__C_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Mudhorn__C",
+  "prompt": "mudhorn: Mudhorns were large horned creatures that originated from the planet Arvala-7. The eggs of mudhorns were considered a delicacy by Jawas. It was this reason that populations of these creatures were established on other worlds as a result of unscrupulous bartering deals. The east profile shows the body at the same depth and leg length as the south and north views, scaled to match. The east view sits with clear margin on all sides, with the whole horn tip inside the canvas. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, X_CROP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1_V3own_opus_s0"
+ },
+ {
+  "id": "arteval_RSW_Nexu__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Nexu__A",
+  "prompt": "nexu: Nexu's are agile predators with four red eyes and sharp quills. They have infrared vision and are 4.51 meters long. Typically 0.94 meters tall, nexus possess sharp teeth and claws, as well as long tails. It's light build allows it to remain highly agile and difficult to hit. The east profile's head and leg sizes match the south view's head and leg sizes exactly. The east facing matches the anatomical scale of the south facing in its head, chest, forelegs and paws while retaining its long, low side profile. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1_V3own_opus_s0"
+ },
+ {
+  "id": "arteval_RM_Zhorrel__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Zhorrel__B",
+  "prompt": "zhorrel: No crown at all: a low crossbeam of branches with a hanging curtain of slack finger-thick tentacle-leaves, red-barked above. The tentacles are visibly not still \u2014 the tell is that they move against the wind rather than with it. The strangler: no truce, ever. Kill one and the tentacles are excellent cordage. Draw many more, thinner, finger-thick tentacle-leaves hanging slack and long in a dense curtain, with only a few tips curling. The red-barked crossbeam supports a curtain of slender, finger-thick tentacle-leaves hanging loosely under gravity, with occasional subtle bends suggesting independent movement. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1_V3own_opus_s0"
+ },
+ {
+  "id": "arteval_RSW_MastiffPhalone__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_MastiffPhalone__A",
+  "prompt": "mastiff phalone: A large, long-bodied four-legged avian predator of the Maridun savannas, built like a griffin: a coat of grey feathers barred with dark blue, a mane of dark feathers over neck and shoulders, and a long feathered tail. Its wings have dwindled to remnants at the front legs, which end, like the hind legs, in long talons big enough to wrap around a man's waist; the head carries a heavy hooked beak and a patch of bare blue skin at the throat. Mastiff phalones hunt in packs of two or more, stalking through tall grass. They will break off from prey that fights back too hard, only to return and strike again later, and an agitated one is said to be as dangerous as a rancor and just as hard to bring down. Each of the four feet ends in long curved raptor talons, large and pale-tipped, clearly visible on south and east. Small vestigial feathered wing stubs grow at the back of each front leg near the shoulder, visible in profile and from the front. A patch of bare blue skin sits on the throat under the beak, visible on south and east. Keep east's body length matching the depth implied by the south and north views, at the same body scale. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, DESC_MISS, DESC_MISS, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1_V3own_opus_s0"
+ },
+ {
+  "id": "arteval_RM_HulduCatch__C_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_HulduCatch__C",
+  "prompt": "Huldu: Picked up. It holds on. The easiest catch on the farm, and the one that leaves the handler uneasy. The catch shows the same brown furred otter-bodied Huldu as the living reference, with cream throat, whiskers and a long tapered tail, lying limp on its side. The body lies flat on its side, limp, with eyes closed or dull and the limbs slack. The specimen keeps the living Huldu's body but shows alien departures that no Earth animal has. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: CATCH_WRONG, CATCH_POSE, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1_V3own_opus_s0"
+ },
+ {
+  "id": "arteval_RM_LoomuCatch__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_LoomuCatch__A",
+  "prompt": "Loomu: It came to the feed whistle. That IS the catch method, and everyone hates it. Paint original art of the dead Loomu specimen in the mod's own painterly style. Show the same pale grey Loomu as the living reference: a draped hood-mantle, a cluster of pipe tubes and small tentacles. Show the whole Loomu lying slack on its side, mantle collapsed flat, tubes splayed, eyes dull and shut. Show the alien grey cephalopod body with its organ-pipe tubes so it cannot read as Earth meat. Use painterly soft shading with a thin dark outline that matches the living reference. Make the catch recognisably the Loomu, with its hood and pipe-tube cluster clearly visible. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: DONOR, CATCH_WRONG, CATCH_POSE, STYLE_EARTHLY, STYLE_CARTOON, DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_r1_V3own_opus_s0"
+ }
+]

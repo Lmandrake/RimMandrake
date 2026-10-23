@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Murrin",
+ "nearest_earth_animal": "angelfish",
+ "earth_body_named": true,
+ "departures": [
+  "a single tall comb-like dorsal fin running along the back, its edge divided into separate comb teeth rather than one smooth sail",
+  "a deep, sharply keeled body with a blade-like ridge along the belly",
+  "the dorsal comb-fin rising clearly above the waterline, with concentric rings spreading out across the pool surface from where it cuts through",
+  "ring-within-ring markings on the body that echo the surface ripples"
+ ],
+ "body_plan": "swimmer",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:38:17-07:00",
+ "source": "description only (no image)"
+}

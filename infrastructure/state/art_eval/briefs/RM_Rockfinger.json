@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Rockfinger",
+ "nearest_earth_animal": "bristlecone pine",
+ "earth_body_named": false,
+ "departures": [
+  "rooted directly in a crack in a vertical stone cliff rim, not standing in soil on flat ground",
+  "branches reaching out sideways over the drop like grasping, claw-like fingers instead of a rounded or conical crown",
+  "bark as pale as the surrounding stone, nearly the same colour as the rock it grips",
+  "a very long shadow cast down the rock face and across the ground, many times the tree's own height"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:38:19-07:00",
+ "source": "description only (no image)"
+}

@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Karrek",
+ "nearest_earth_animal": "piranha",
+ "earth_body_named": true,
+ "departures": [
+  "fins are rigid, exposed fin-rays hardened into serrated comb-like chitin blades, not soft membranous fins",
+  "body sheathed in armour plating rather than ordinary overlapping fish scales",
+  "armour and fin-combs have a hard, glossy, arthropod-like chitin surface",
+  "tiny finger-length individuals shown as a dense, churning swarm, not one large fish"
+ ],
+ "body_plan": "swimmer",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:38:23-07:00",
+ "source": "description only (no image)"
+}

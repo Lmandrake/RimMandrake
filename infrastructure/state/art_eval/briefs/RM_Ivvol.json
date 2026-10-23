@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Ivvol",
+ "nearest_earth_animal": "flounder",
+ "earth_body_named": false,
+ "departures": [
+  "a raised dorsal ridge (the comb) runs down the middle of its flat back, rising clearly above the body like a crest",
+  "a single row of many eyes sits along the top of that ridge, not two eyes on the body or a head",
+  "the eyes are the creature's main facial feature: there is no fish head with paired eyes and no gill-and-mouth face",
+  "the body is a flat, doormat-shaped slab that lies against the floor, with the ridge as its only raised part"
+ ],
+ "body_plan": "swimmer",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:38:24-07:00",
+ "source": "description only (no image)"
+}

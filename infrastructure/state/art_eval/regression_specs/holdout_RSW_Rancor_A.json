@@ -1,0 +1,27 @@
+{
+ "subject": "RSW_Rancor",
+ "label": "RSW_Rancor",
+ "template": "creature",
+ "module": "walker",
+ "candidate": "A",
+ "provenance": "holdout from picks_dessicated_sheet_2026-10-19 set ead802b0b5ac1025",
+ "description": "Rancors were large carnivorous reptomammals native to the planet of Dathomir. Standing around five meters tall, with their long arms, immense jaws, and armored hides that could withstand blaster fire, they are formidable predators. A subspecies known as the jungle rancor populates the planets Felucia and Teth.",
+ "tier": "RSW_",
+ "invented": false,
+ "size": {
+  "drawSize": [
+   5.3,
+   5.3
+  ],
+  "quad": 5.3,
+  "mesh": 1,
+  "cells": 5.3,
+  "kind": "animal"
+ },
+ "images": {
+  "east": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_Rancor_A/east.png",
+  "north": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_Rancor_A/north.png",
+  "south": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_Rancor_A/south.png",
+  "scale": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_Rancor_A/scale.png"
+ }
+}

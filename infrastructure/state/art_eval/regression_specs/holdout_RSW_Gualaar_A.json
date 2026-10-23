@@ -1,0 +1,27 @@
+{
+ "subject": "RSW_Gualaar",
+ "label": "gualaar",
+ "template": "creature",
+ "module": "walker",
+ "candidate": "A",
+ "provenance": "holdout from picks_dessicated_sheet_2026-10-19 set 59d339300e13e9d6",
+ "description": "The Gualaar was an ungulate species indigenous to the mountains and hills of the planet Naboo. These creatures though tricky to domesticate had both the build and strength to make them perfect beasts of burden. The Royal House of Naboo kept a herd of Gualaar that were used to carry state officials. This regal affiliation and their physical practicality meant they were exported and ultimately spread across multiple worlds. It's similarity in appearance to the legendary Thrumbo is a point of interest amongst several xenobiologists.",
+ "tier": "RSW_",
+ "invented": false,
+ "size": {
+  "drawSize": [
+   3,
+   3
+  ],
+  "quad": 3,
+  "mesh": 1,
+  "cells": 3,
+  "kind": "animal"
+ },
+ "images": {
+  "east": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_Gualaar_A/east.png",
+  "north": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_Gualaar_A/north.png",
+  "south": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_Gualaar_A/south.png",
+  "scale": "/home/mandrake/rm/foundry/Transient/art_eval_holdout_20261023/RSW_Gualaar_A/scale.png"
+ }
+}

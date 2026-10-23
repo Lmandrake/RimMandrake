@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Steamfrond",
+ "nearest_earth_animal": "fern",
+ "earth_body_named": false,
+ "departures": [
+  "fronds coloured mineral-pale (whitish-grey), not green",
+  "fronds arranged as a spiral rosette around a central open vent in the ground",
+  "frond rims crusted with white salt bloom",
+  "a visible breathing vent or seep hole at the centre of the rosette, rather than a crown of leaves"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:38:21-07:00",
+ "source": "description only (no image)"
+}
