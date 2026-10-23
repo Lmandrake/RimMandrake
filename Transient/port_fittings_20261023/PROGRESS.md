@@ -21,3 +21,8 @@ Gate: src/RimMandrake/FlowWorks/selftest_hose_fittings.py
 - pump install with --why alone was refused at pre-push by art_guard; re-recorded with --reason script:port_fittings.py (2ed58b8340); lesson filed
 - selftests: hose_fittings PASS (41 known), tank_art_edges PASS (TankArtEdges.cs unchanged, no C# rebuild)
 - DONE
+
+## 22:42 FIX helper: starting on 4 judge FIXes (UCT x3 upper W/E stubs, Futuristic LiquidTank NE collar)
+- 22:47 cause: UCT upper W/E port row (128 px = z 1.5) is ABOVE the body's side silhouette (body top ~133; side reachable only rows >=180), nearest opaque at that row = strap top; E nozzle occupies rows 148-195 to 35 px from edge. LT-Fut NE port column x=384 lies over the kept elbow fixture (cols 351-411) + valve (to 467). Plan: coupler stays at the port; a thin bypass pipe routes around fixtures to a collar on the body (UCT: drop 23 px from edge to the end-cap side ~row 240; LT: jog right past the valve, down to the right shoulder). Before-snapshot of all 18 outputs in scratchpad.
+- 22:50 port_fittings.py: ROUTES bypass for the 4 FIX ports; regenerated 18 outputs: 14 byte-identical to before (cmp), 4 differ; kept-fixture pixels untouched (UCT nozzle: 0 px touched; LT elbow/valve box: 0 px). 4 cmp PNGs re-rendered (AFTER half from new art, overlays kept; method verified exact on Modern UCT).
+- 22:51 selftests hose_fittings + tank_art_edges PASS (installed art unchanged). Filed CARGO_PORT_DECIDE_PERCHED_ON_SHOULDERS (FOUNDRY): UCT upper W/E port row sits above the body's side silhouette. Lesson filed. Committing.

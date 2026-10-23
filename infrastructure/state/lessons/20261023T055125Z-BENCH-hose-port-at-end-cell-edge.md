@@ -1,0 +1,1 @@
+A hose port at the end-cell edge midpoint can sit ABOVE a tank's drawn side silhouette (RM_UniversalCargoTank upper W/E, row 128 vs body side from row ~180): measure the body's extent at the port row on body_image before drawing a straight stub, and when kept art blocks the run, reroute (port_fittings.py ROUTES) and prove 0 base-opaque fixture pixels touched.
