@@ -81,10 +81,6 @@
       "why": "zeroes startingCountAtWorldCreation on TradersGuild and CASacrilegHunters; consistent with the ban"
     },
     {
-      "path": "src/RimUtinni/UtinniPatches/Patches/StatNorm_CaravanAdventures_BossStatsNeutral.xml",
-      "why": "guarded patch on the cut Caravan Adventures; names no faction def today, listed in case it does"
-    },
-    {
       "path": "src/RimUtinni/UtinniPatches/Patches/GalacticEmpire.xml",
       "why": "Empire.permanentEnemyToEveryoneExcept lists TradersGuild, so the Empire is not at war with it; harmless for a banished faction, and dropping it would make the Empire hostile to a hidden faction for nothing"
     },

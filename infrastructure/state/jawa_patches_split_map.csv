@@ -82,7 +82,6 @@ JawaTerrain_SaltPans.xml,RUT,HIGH,Adds Jawa_SaltCrust salt-pan density to desert
 JawaWorld_BiomeMix.xml,RUT,HIGH,Configures the game producing the SOURCE world Ash'karr is painted from; owner-ratified biome tiering,no
 JawaWorld_Name.xml,RUT,HIGH,"Literally sets the world's generated name to ""Ash'karr""",no
 JawaXenotype_Repoint.xml,RSW,MEDIUM,Repoints a PawnKindDef to RSW_MandrakeJawa instead of RSW_RimMandrakeJawa — both RSW species xenotypes,"yes — fixes an RM-generator-authored def and enacts an owner playthrough-specific canonicalization, but entities involved are pure RSW species defs"
-MechanoidIntrusion_AllowRivers.xml,RUT,HIGH,"Fixes river visibility at the ""Rust Cathedral"", a named Ash'karr landmark, using this world's specific tile IDs",no
 PetNames_Ashkarr.xml,RSW,MEDIUM,Repoints SW Animal Collection's tamed-pet namer to a Jawa/SW-person-name corpus; generic re-theming despite filename suffix,no
 PirateWaster_Yield.xml,RUT,HIGH,"Exists solely so the campaign-specific ""Blackstar Company"" faction can generate at all — fix-mod tie-break",no
 PlanetLayer_BackgroundWater.xml,RUT,HIGH,"Repoints world background water rendering to Jawa_BackgroundWater (""water of Ash'karr..."")",no
