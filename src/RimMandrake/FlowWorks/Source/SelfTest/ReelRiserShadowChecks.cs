@@ -219,8 +219,10 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "the riser shows with the links on even when the under-run is off");
                 Assert(j.Contains("p.z = (float)pz;"), "the (off) flange fitting moves onto the riser's end");
                 string hoses = Src("Hose", "RM_MapComponent_Hoses.cs");
-                Assert(hoses.Contains("fe.Port.def.defName != TankPortGeometry.TankDef") && hoses.Contains("TankPortGeometry.PortPoint("),
-                    "the hose ends on the same table the riser reads");
+                string hoseMath = Src("Hose", "HoseMath.cs");
+                Assert(hoses.Contains("TankPortGeometry.HosePort(fe.Port.def.defName")
+                    && hoseMath.Contains("if (def == TankDef) return PortPoint(look, bx, bz, bw, bh, sx, sz, out port);"),
+                    "the hose ends on the same table the riser reads (HosePort hands the tank to PortPoint)");
             });
 
             Case("HoseShadow_empty_is_darker_and_wider_full_unchanged", () =>
