@@ -1,0 +1,14 @@
+{
+ "run_id": "e2e_weepingstones_20261023",
+ "test": true,
+ "started": "2026-10-23T06:22:15-07:00",
+ "subjects": [
+  "RM_Ssurr",
+  "RM_Huldu",
+  "RM_Vellak",
+  "RM_Burrak",
+  "RM_Shadefern",
+  "RM_HulduCatch"
+ ],
+ "versions_key": "departures_brief@v1#946be1+gpt_targeted_second_look@v1#cb6e32+opus_first_pass@v1#140565+preamble@v1#a48502+regen_prompt_edit@v1#861700+severity@v2#1b8dfa+creature@v2#16a385"
+}

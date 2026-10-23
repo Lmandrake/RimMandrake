@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Huldu",
+ "nearest_earth_animal": "otter",
+ "earth_body_named": false,
+ "departures": [
+  "hairless velvet skin, not a fur coat; any fur-like look comes only from the folded comb",
+  "a dorsal comb running along the back, folded flat against the body in wet-looking strands",
+  "grasping limbs or gripping surfaces made to cling to and wrap around a forearm, not otter paws",
+  "small forearm-length body sized to press flat along a human arm, not an otter's long torso and tail"
+ ],
+ "body_plan": "swimmer",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v1",
+  "sha": "946be1a006c9"
+ },
+ "at": "2026-10-23T06:19:48-07:00",
+ "source": "description only (no image)"
+}

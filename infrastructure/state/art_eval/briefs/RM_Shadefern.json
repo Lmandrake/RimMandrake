@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Shadefern",
+ "nearest_earth_animal": "fern",
+ "earth_body_named": true,
+ "departures": [
+  "grows from a vertical face of standing stone, not from soil or ground",
+  "every frond swept to one side in parallel, as if combed, not a radiating rosette",
+  "pale, light-catching rachis (frond midribs) standing out against the deep-green leaflets",
+  "deep-green fronds lying on the shaded side of the rock"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T06:28:45-07:00",
+ "source": "description only (no image)"
+}

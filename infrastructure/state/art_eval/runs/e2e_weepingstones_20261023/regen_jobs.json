@@ -1,0 +1,83 @@
+[
+ {
+  "id": "arteval_RM_Ssurr_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Ssurr",
+  "prompt": "A single RimWorld creature sprite on a transparent background: the Ssurr, a hound-sized, hound-proportioned reptile with a deep barrel chest, thick muscular neck, sturdy straight-boned legs with broad clawed feet and a heavy tapering tail. Teal-green scaled skin with dark green mottling over the back and tail, a cream belly, and a row of small dorsal spikes down the spine and along the tail. The head is neutral and reptilian: a flat closed mouth line and slit-pupil amber eyes with a matte surface. Its defining feature is one enormous half-circle crest-fan mounted upright across the back of the neck, its flat edge lying across the shoulders. The fan is a rigid disc with radiating spokes, and its outer rim carries a dense row of fine, closely spaced comb-like tines between and along the spokes, so the edge reads as a toothed comb. In this pose the fan is folded: collapsed into one straight, blade-like toothed ridge lying flat along the neck and back, rising slightly above the spine. (For an open display pose, the fan stands as a wheel far larger than the head, broad face toward the viewer in the front view.) The fan stays in the same transverse position in every view and turns with the body: in the front view, eyes toward the viewer, the fan stands behind the head; in the rear view, seen from behind, the back of the fan, the teal-green mottled back, the dorsal spike ridge and the tail fill the view with the head hidden; in the side view the fan appears edge-on as a thin upright half-disc rising from the back of the neck. The body colour, mottling and spike ridge are identical in all views. Rendering: painterly vanilla RimWorld style, realistic, soft blended shading, fine scaled reptile skin texture, thin clean dark outline, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT, STYLE_CARTOON, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "e2e_weepingstones_20261023"
+ },
+ {
+  "id": "arteval_RM_Huldu_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Huldu",
+  "prompt": "A single RimWorld creature sprite on a transparent background: the Huldu, an alien forearm-length swimmer. Painterly vanilla RimWorld style, realistic, clean dark outline, soft hand-painted shading. The body is compact, short and low, sized to press flat along a human arm. The skin is smooth, hairless and velvety, matte with a faint wet sheen, in a muted grey-brown with a paler belly. A distinct band of dark, wet-looking strands, the dorsal comb, lies folded flat from the nape to the base of the tail, clearly visible against the lighter velvet skin; it reads as wet fur but is only the comb. The head is blunt and low, with no external ears, no whiskers and no cream bib. The face is realistic and unsettling: small, dull, deep-set eyes with no highlights, a flat nose and a closed, neutral mouth, calm, watchful and expressionless. Each limb is short and ends in wide gripping pads with long curling digits made to wrap around a human forearm. The tail is short, blunt and tapering, and the same on every facing. Pose: a low, flat swimming-and-resting posture, belly near the ground, head carried low, limbs drawn in close to the body. The same body design, limbs, tail, comb and scale appear on every facing, with silhouette height matching within 15%. Front view: seen from the front, eyes toward the viewer, gripping forelimbs tucked under the chin. Side view: the full profile of the low body, the comb running along the back from nape to tail, gripping limbs visible. Rear view, seen from behind at the game's slightly raised angle: the haunches, the back of the comb and the base of the tail face the viewer, the body foreshortens away from the viewer, the head is hidden behind the shoulders, and the limbs are folded in close to the body. Reference: none; the body is built from this description.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_EARTHLY, DEPARTURE_MISSING, DESC_MISS, F_INCONSISTENT, F_TOPDOWN, F_SIZE_JUMP, STYLE_CARTOON",
+  "reference": "",
+  "priority": 40,
+  "source_run": "e2e_weepingstones_20261023"
+ },
+ {
+  "id": "arteval_RM_Vellak_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Vellak",
+  "prompt": "A Vellak, a camel-tall strider of the dry country, painterly vanilla RimWorld sprite style, realistic, clean dark outline, transparent background. Body plan: a very tall, long-legged strider with thin stilt legs carrying a lean body high off the ground, a long neck and a small head, with no hump. Along the midline of the spine, from shoulders to rump, rises a tall dorsal sail-comb: a fanned crest of spines with membrane between them, standing where a camel's hump would be, rooted on the centre line of the back. Palette: dusty sand and ochre hide with a warm membrane in the sail between darker ribs. The sail-comb is one single structure in every view, same height, same attachment on the spine midline and same rib arrangement. Side view (east): the sail-comb is fanned open and spread wide, a broad ribbed fan along the back, the full body in profile with the head toward the right of the image. Front view (south), eyes toward the viewer: the head and chest in the foreground, the legs symmetrical on either side, and the same sail-comb rising from the midline of the back behind the head, seen nearly edge-on as a tall narrow upright crest with a little fanned width, centred above the neck and shoulders. Rear view (north), seen from behind: the haunches, tail and back in the foreground, eyes hidden, the legs symmetrical on either side, and the same sail-comb standing upright on the midline of the spine, centred above the back, seen nearly edge-on as a tall narrow crest with a little fanned width. Reference: keep the approved east side view as the reference so the sail height, spine attachment and rib arrangement match in the front and rear views.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "e2e_weepingstones_20261023"
+ },
+ {
+  "id": "arteval_RM_Burrak_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Burrak",
+  "prompt": "A single RimWorld animal sprite, the burrak: a bear-sized, heavy-bodied wallower that digs catch-basins. Painterly vanilla RimWorld style, realistic, transparent background, a thin dark-brown edge outline that varies with the light (thicker in shadow, nearly gone in highlights). Body plan: a deep, heavy barrel body on short hind limbs, with massive digging forelimbs that are visibly longer, thicker and more powerful than the hind limbs, planted on the ground ahead of the body. Head: a low, broad, shovel-like skull with a flat wide muzzle and small deep-set eyes, no external round mammal ears, no fur. Hide: slick, mud-plastered grey-tan skin in thick overlapping folds and leathery plates, mottled and caked with wet basin mud, the same colour, texture and head shape in every facing. Forefeet: each is a broad, flat rake of eight or more closely set parallel claw-tines like a comb, the tips visibly worn, chipped and of uneven length from digging, with mud packed between the tines. Setting: the animal stands in or beside a freshly dug mud catch-basin. Front view: eyes toward the viewer, shovel skull and both claw-combs planted forward. Side profile: the same bulk as the front view, a broad rounded shoulder mass rising to a matching height, head low and forward. Rear view, seen from behind: rump and short tail with the haunches, eyes hidden, forelimbs planted on the ground ahead of the body with only the elbows and outer edges of the claw-combs peeking out beside the shoulders at ground level, claws pointing down. One animal, consistent across all facings.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_EARTHLY, F_INCONSISTENT, F_INCONSISTENT, DEPARTURE_MISSING, F_SIZE_JUMP, STYLE_OFF",
+  "reference": "",
+  "priority": 40,
+  "source_run": "e2e_weepingstones_20261023"
+ },
+ {
+  "id": "arteval_RM_Shadefern_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Shadefern",
+  "prompt": "A single RimWorld plant sprite: Shadefern, a low clump of alien stone-shade fern, seen from above at a slight angle, centred, on a transparent background. Deep-green fronds with a cold blue-black undertone in the shadowed folds grow from one small base. Each frond has a slender, faintly luminous pale rachis that catches bounced light. Off the rachis, the frond is made of long, narrow, ribbed blades, with fine parallel veins, smooth edges and tapering curved tips. The blades are fused along their bases, so each frond reads as a single comb-like vane, and the branching is uneven, with a few long blades split off at irregular intervals. New growth is a flat, tightly folded blade that unrolls straight. Every frond in the clump is swept to the same side, as if combed in one direction, so the whole plant leans cold-side. Painterly vanilla RimWorld style, realistic, soft shading, clean dark outline, small sprite readable at about 0.7 tile. Reference: none; build the plant from this description.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_EARTHLY, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "e2e_weepingstones_20261023"
+ }
+]

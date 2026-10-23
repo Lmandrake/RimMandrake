@@ -1,0 +1,4 @@
+{"pilot": "RM_Shadefern:B", "expect": "ACCEPT", "from": "CL-001", "why": "owner kept Shadefern B on 2026-10-10"}
+{"pilot": "RM_Huldu:C", "expect": "NOT_ACCEPT", "from": "owner_key", "why": "owner REDO, weepingstones sheet sitting 2026-10-10"}
+{"pilot": "RM_Ssurr:B", "expect": "NOT_ACCEPT", "from": "owner_key", "why": "owner REDO, weepingstones sheet sitting 2026-10-10"}
+{"pilot": "RM_Vellak:B", "expect": "NOT_ACCEPT", "from": "owner_key", "why": "owner REDO, weepingstones sheet sitting 2026-10-10"}

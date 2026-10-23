@@ -25,7 +25,7 @@ A new code, or a code moved between columns, is a **criteria change**: add a row
 
 ```json policy
 {
-  "version": "severity@v1",
+  "version": "severity@v2",
   "high_confidence": 0.8,
   "codes": {
     "F_NORTH_FACE":        {"brief": "C1", "default": "blocking", "means": "north shows a face or eyes; north is the rear"},
@@ -34,7 +34,7 @@ A new code, or a code moved between columns, is a **criteria change**: add a row
                             "polish_when": ["body_plan:wall_clinger", "body_plan:serpentine"],
                             "why_polish": "owner kept Sillik (overhead wall-clinger), Weeping Stones 2026-10-10"},
     "F_SIZE_JUMP":         {"brief": "C2", "default": "blocking", "means": "one facing markedly bigger or smaller"},
-    "F_INCONSISTENT":      {"brief": "C2", "default": "blocking", "means": "facings disagree on anatomy/palette, or a structure does not turn with the body (Ssurr's fan)"},
+    "F_INCONSISTENT":      {"brief": "C2", "default": "blocking", "means": "facings disagree on anatomy/palette, or a structure does not turn with the body"},
     "F_MISSING":           {"brief": "C2", "default": "blocking", "means": "a facing the template needs is absent"},
     "SCALE_WRONG":         {"brief": "D1", "default": "polish",   "means": "size beside the human contradicts the description",
                             "why_polish": "owner kept Rockfinger with 'make it 50% larger'; size is usually a drawSize fix"},
@@ -46,7 +46,7 @@ A new code, or a code moved between columns, is a **criteria change**: add a row
                             "polish_when": ["earth_body_named", "not_invented"],
                             "why_polish": "owner kept Burrak/Vobbal whose def text names the Earth body; canon and vanilla subjects are not invented"},
     "DEPARTURE_MISSING":   {"brief": "E4", "default": "blocking", "means": "a required departure from the nearest Earth animal (card `departures`) is absent"},
-    "DESC_MISS":           {"brief": "A2", "default": "blocking", "means": "the description's defining feature is missing or wrong (Ambrosia without its fruit)"},
+    "DESC_MISS":           {"brief": "A2", "default": "blocking", "means": "the description's defining feature is missing or wrong (a fruiting plant without its fruit)"},
     "CANON_MISS":          {"brief": "A2", "default": "blocking", "means": "a canon Must show line fails (never for an Engine limit, A4)"},
     "SIBLING_MISMATCH":    {"brief": "B3", "default": "blocking", "means": "reads as a different artist or size class than the owner-kept siblings"},
     "OWNER_NOTE_IGNORED":  {"brief": "E4", "default": "blocking", "means": "an owner note on the subject is not honoured"},

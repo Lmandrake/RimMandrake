@@ -210,7 +210,8 @@ def evaluate(spec: dict, card_dir: Path, rev: Reviewers, policy: dict, settings:
     items = P.checklist_for(tpl, card.get("module", ""), facts)
     rec = {"subject": card["subject"], "candidate": card.get("candidate"), "template": spec["template"],
            "module": card.get("module"), "at": now(), "card_sha": card["card_sha"],
-           "image_sha256": card["image_sha256"], "gates": card["gates"], "prompt_versions": prompt_versions(spec["template"]),
+           "image_sha256": card["image_sha256"], "source_sha256": card.get("source_sha256", {}),
+           "artpipe_job": spec.get("artpipe_job"), "gates": card["gates"], "prompt_versions": prompt_versions(spec["template"]),
            "models": {}, "opus": None, "gpt": None, "regen": None, "reasons": []}
     living_dec = living.get(card.get("depends_on")) if card.get("depends_on") else None
     pre = P.pre_route(card, tpl, living_dec)
@@ -311,11 +312,19 @@ def run(specs: list, run_id: str, rev: Reviewers | None = None, test: bool = Fal
     rounds = {} if test else (json.loads(rounds_file.read_text()) if rounds_file.is_file() else {})
     living = {} if test else history_decisions()
     specs = sorted(specs, key=lambda s: s.get("module") == "catch")      # living animals first
-    (out / "run.json").write_text(json.dumps({"run_id": run_id, "test": test, "started": now(),
-                                              "subjects": [s["subject"] for s in specs],
-                                              "versions_key": versions_key(prompt_versions("creature"))}, indent=1))
-    recs = []
+    recs, done = [], set()
+    if (out / "decisions.jsonl").is_file():                               # resume: a run id is appended to, never redone
+        for line in (out / "decisions.jsonl").read_text().splitlines():
+            r = json.loads(line)
+            recs.append(r); done.add(r["subject"]); living[r["subject"]] = r["decision"]
+    meta = json.loads((out / "run.json").read_text()) if (out / "run.json").is_file() else {
+        "run_id": run_id, "test": test, "started": now(), "subjects": [],
+        "versions_key": versions_key(prompt_versions("creature"))}
+    meta["subjects"] = list(dict.fromkeys(meta["subjects"] + [s["subject"] for s in specs]))
+    (out / "run.json").write_text(json.dumps(meta, indent=1))
     for s in specs:
+        if s["subject"] in done:
+            continue
         t0 = time.time()
         rec = evaluate(s, work / s["subject"], rev, policy, settings, living, rounds)
         rec["seconds"] = round(time.time() - t0, 1)

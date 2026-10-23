@@ -124,9 +124,10 @@ def build_card(spec: dict, out: Path) -> dict:
         shutil.rmtree(out)
     out.mkdir(parents=True)
     imgs = spec.get("images", {})
-    panels, shas = {}, {}
+    panels, shas, src_shas = {}, {}, {}
 
     def put(name, src):
+        src_shas[name] = sha256_file(src)              # the artstore/art-ledger sha of the judged picture
         im = shrink(Image.open(src))
         dst = out / f"{name}.png"
         im.save(dst)
@@ -163,7 +164,7 @@ def build_card(spec: dict, out: Path) -> dict:
         shas["facings.png"] = sha256_file(out / "facings.png")
     g = gates({f: out / f"{f}.png" for f in facing_src} or ({"single": out / "single.png"} if "single" in panels else {}))
     card = {k: v for k, v in spec.items() if k != "images"}
-    card.update({"panels": panels, "image_sha256": shas, "gates": g,
+    card.update({"panels": panels, "image_sha256": shas, "source_sha256": src_shas, "gates": g,
                  "card_sha": hashlib.sha256(json.dumps([card.get("description"), shas], sort_keys=True).encode()).hexdigest()[:16]})
     (out / "card.json").write_text(json.dumps(card, indent=1))
     (out / "card.md").write_text(card_md(card))
@@ -180,7 +181,7 @@ def card_md(card: dict) -> str:
         s = card["size"]
         L.append(f"- size: {json.dumps({k: s[k] for k in s if k != 'source'})}")
     L += ["", "## Intended description (the def text)", "", (card.get("description") or "(none)").strip()]
-    if card.get("departures"):
+    if card.get("departures") and card.get("template") == "creature":   # plants use only earth_body_named
         L += ["", "## Required departures from the nearest Earth animal (each must be visible)", ""]
         L += [f"{n}. {d}" for n, d in enumerate(card["departures"], 1)]
     if card.get("canon"):

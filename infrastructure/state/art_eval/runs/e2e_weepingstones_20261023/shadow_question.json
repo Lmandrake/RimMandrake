@@ -1,0 +1,55 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ]
+ ],
+ "rows": {
+  "RM_Ssurr": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 1) \u00b7 Opus REALLY_BAD: DEPARTURE_MISSING, F_INCONSISTENT, STYLE_CARTOON",
+   "context": "judged candidate B (image sha b4cfc17699); F_INCONSISTENT: The fan is a face-on wheel behind the body on south and north, but a lengthwise dorsal sail along the spine on east.; F_INCONSISTENT: The north body is grey-brown/tan; the south and east bodies are teal-green with cream bellies and dark green mottling.; STYLE_CARTOON: Thick black outlines on every shape, flat banded shading and a smiling face with glossy eyes; it reads as a cartoon sticker."
+  },
+  "RM_Huldu": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 1) \u00b7 Opus REALLY_BAD: DEPARTURE_MISSING, DESC_MISS, F_INCONSISTENT, F_SIZE_JUMP, F_TOPDOWN, STYLE_CARTOON, STYLE_EARTHLY",
+   "context": "judged candidate C (image sha 940e99f39a); STYLE_EARTHLY: The east facing is a textbook Earth otter standing upright, with whiskers, round ears, a cream bib, a fur coat and a long tapering tail. Sou; DEPARTURE_MISSING: The body is fur-coated, not hairless velvet. The limbs are ordinary otter paws and webbed feet, not gripping limbs. East shows a long otter ; DESC_MISS: The dorsal comb, folded flat like wet fur, is absent from the east profile, and only a faint streak shows on south."
+  },
+  "RM_Vellak": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: DEPARTURE_MISSING, F_INCONSISTENT, STYLE_CARTOON, STYLE_EARTHLY \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate B (image sha 8e2e7d0fe8); F_INCONSISTENT: The sail-comb hangs off the right side of the back as a broadside fin from neck to rump. It is not a thin edge-on crest standing on the spin; STYLE_EARTHLY: The head, ears, split lip, S-curved neck, two-toed feet, tan coat and tufted tail are all a camel/guanaco; only the sail is alien.; STYLE_CARTOON: Smooth vector-like gradients, uniform bold outline, simplified muscle forms and a soft, gentle face give a clean illustrated or cartoon look"
+  },
+  "RM_Burrak": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 1) \u00b7 Opus REALLY_BAD: DEPARTURE_MISSING, F_INCONSISTENT, F_SIZE_JUMP, STYLE_EARTHLY, STYLE_OFF",
+   "context": "judged candidate B (image sha d590f4cd16); STYLE_EARTHLY: The east profile is a brown bear: shaggy brown fur, a bear head with a round ear and muzzle, a shoulder hump. South reads as a bear or groun; F_INCONSISTENT: East is dark-brown furred with a bear face and ear. South and north are grey-tan mottled hide with a flatter face, so the palette and head a; F_INCONSISTENT: The forelimbs appear above and beside the shoulders with the claws pointing upward like raised hands. On south and east the forelimbs are pl"
+  },
+  "RM_Shadefern": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: STYLE_EARTHLY, STYLE_OFF \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate B (image sha 55ae8b8d00); STYLE_EARTHLY: Pinnate fronds, fiddleheads and leaflet shapes that are indistinguishable from an Earth shield fern such as Polystichum. The combed one-side; STYLE_OFF: The fronds have slightly darker, crisper edges with more contrast than the soft vanilla painterly flora, so the art leans towards an illustr"
+  },
+  "RM_HulduCatch": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN_AFTER_SOURCE \u00b7 Opus -",
+   "context": "judged candidate C (image sha 16c98b9048); "
+  }
+ }
+}

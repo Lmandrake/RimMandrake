@@ -1,0 +1,15 @@
+[
+ {
+  "id": "arteval_RM_Shadefern_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Shadefern",
+  "prompt": "A single Shadefern, a deep-green fern growing from a small patch of vertical standing stone, drawn in painterly vanilla RimWorld style, realistic, with a clean dark outline, on a transparent background. The basal crown of the fern, where every frond springs from the stone, sits at the exact bottom centre of the canvas, on the vertical centre line. From that centred crown, every frond sweeps out in parallel to one side, as if combed, in long arching strokes, and the plant is composed so its mass is balanced around the crown and fills the square canvas without drifting off-centre. The deep-green leaflets are dense and overlapping, and the pale rachis (frond midribs) stand out clearly against them, catching bounced light. The fronds lie on the shaded face of the rock. The whole plant is intact, fully in frame and grounded at the bottom of the canvas. Keep the palette, the combed parallel frond direction, the pale rachis and the stone-face growth exactly as in the previous render; only the crown position and balance change.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: ANCHOR, ANCHOR",
+  "reference": "",
+  "priority": 40,
+  "source_run": "e2e_weepingstones_20261023_r2"
+ }
+]

@@ -56,6 +56,7 @@ see them**; fix one in its own repo and push there — a queue item here never r
 | `reading-rimworld-graphics` | Finding and reading RimWorld texture assets from disk — loose PNGs, Unity AssetBundles, and the base game's resources.assets — so… |
 | `rimbridge` | Drive a live RimWorld from outside via the RimBridgeServer GABP bridge and its JawaBench companion - author the planet, author… |
 | `rimbridge-companion` | Write, build, deploy and prove new [Tool] methods in the JawaBench companion DLL so the RimBridge bridge can do something it… |
+| `rimworld-art-evaluation` | Automated evaluation of RimMandrake game art — creatures (walkers, swimmers, flyers, catch items), plants, and machines with… |
 | `rimworld-canon-references` | Grade Star Wars creature, species and droid work against design/RimStarWars/canon_references/ — 137 entries whose sourced canon… |
 | `rimworld-content-moderation` | Deciding what content stays in a RimWorld campaign out of a large mod stack — building contact sheets of real sprites straight… |
 | `rimworld-crew-and-nemesis-events` | Design and build RimWorld 1.6 events about PEOPLE for a small fixed crew — who may join (a stranger, a castaway, a relative, a… |
@@ -68,7 +69,7 @@ see them**; fix one in its own repo and push there — a queue item here never r
 | `rimworld-load-round` | How to spend a RimWorld cold load — and how to stop needing one |
 | `rimworld-modding` | Author, patch, validate and debug RimWorld mods — XML PatchOperations, custom Defs, C#/Harmony assemblies, def inheritance that… |
 | `rimworld-quests` | Design, author, validate and debug RimWorld quests |
-| `rimworld-review-sheets` | Use before building, serving, refreshing, enacting or retiring any RimMandrake review sheet, and before showing the owner ANY game art to… |
+| `rimworld-review-sheets` | Use before building, serving, refreshing, enacting or retiring any RimMandrake review sheet, and before showing the owner ANY… |
 | `rimworld-savegame` | Reading, grepping and editing a RimWorld `.rws` savegame — plain XML plus base64/raw-DEFLATE map grids of 2-byte def shortHashes |
 | `rimworld-scenario-building` | Authoring a RimWorld scenario and the game-creation settings around it — ScenarioDefs, .rsc scenario files, ScenParts, Custom… |
 | `rimworld-scene-composition` | Make a scattered/scenic site (a ruin, a bone field, a wreck, a camp) read as ONE authored place at a glance instead of a props… |
@@ -76,7 +77,7 @@ see them**; fix one in its own repo and push there — a queue item here never r
 | `rimworld-start-prep` | Getting the mod list and load order into the state you actually intend BEFORE RimWorld launches — the three uncoordinated writers… |
 | `rimworld-world-editing` | Author RimWorld's PLANET from the bridge - tiles, biomes, elevation, rivers, roads, mutators, landmarks, named regions and… |
 | `rimworld-xenotypes` | Authoring, moving, spawning and debugging RimWorld xenotypes and the genes that give them a face |
-| `telemetry` | Query recorded history (game TPS, bridge, host, disks) before re-measuring live; arm the 1 s test tier; add series |
+| `telemetry` | Query recorded history before re-measuring anything about the game, a live test, the bridge, host memory, disks or the art… |
 | `using-rimflow` | Use before ANY rimflow / src/RimMandrake/rimflow/cli.py call — file, claim, start, close, drop, supersede, note, next, seat… |
 | `verify-before-you-escalate` | Run the one command that settles a written claim before acting on it, escalating it, or raising an alarm about it |
 <!-- doc_roster:END -->
