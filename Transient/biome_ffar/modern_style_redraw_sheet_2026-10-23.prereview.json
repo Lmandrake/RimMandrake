@@ -1,0 +1,74 @@
+{
+ "sheet": "modern_style_redraw_sheet_2026-10-23.html",
+ "looked_by": "seat:BENCH",
+ "when": "2026-10-23T08:10:21-07:00",
+ "caught": "3 pipeline rounds caught: dotted spec line read as perforation (removed), tee 4th stub (cut), pinched hub (socket cross), pump/faucet connectors not matching the 0.136-cell pipe (rebuilt at exact width), mock placement errors (fixed). No candidate ACCEPTED: GPT will not strong-accept from an offline mock; every row needs an in-game assembled capture.",
+ "rows": {
+  "MS_PipeSpan": {
+   "fp": "41eda1b3effb4ad3",
+   "verdict": "FLAG",
+   "note": "seat looked: network PVC strip, dash line removed after r3 (MATERIAL_PAINT). r3 PORT_MISFIT = mock has no poles; RES_LOW = live 128x32 canvas kept."
+  },
+  "MS_Faucet": {
+   "fp": "4f7fa122d05334f9",
+   "verdict": "FLAG",
+   "note": "seat looked: brass hose bib, blue lever, PVC riser 34 px vs pipe 35. r3 Opus said good; only blocker PORT_MISFIT 0.25 from the offline mock; GPT unsure. Needs in-game capture."
+  },
+  "MS_Pump": {
+   "fp": "313a7bc086f07b5f",
+   "verdict": "FLAG",
+   "note": "seat looked: electric booster pump (owner-kept red pump redrawn under the 06:42 ruling); port stubs cut from the network pipe at exactly 70 px = 0.136 cell (owner: connectors must match modern pipe/hose sizes). r3 Opus said good with NO blocking finding; GPT unsure only because the assembled view is an offline mock."
+  },
+  "MS_Sprinkler": {
+   "fp": "748ef9d29f7d85f4",
+   "verdict": "FLAG",
+   "note": "seat looked: brass impact sprinkler on a black riser, camera raised in r3. Riser socket 19 px (thinner than the 35 px main, as a real riser). r3 Opus said good, PORT_MISFIT 0.2 from the mock; REGEN at cap."
+  },
+  "MS_Coupler": {
+   "fp": "f021227feac152ed",
+   "verdict": "FLAG",
+   "note": "seat looked: PVC socket coupling, 45 px on the 0.5-cell canvas (1.3x the 35 px pipe). pipeline runs modern_style_20261023(_r2,_r3), 3 rounds, Opus first pass + GPT second look: joins REGEN at cap (mock cannot show the machine-tank edge)."
+  },
+  "MS_Flange": {
+   "fp": "f6290b8bd87e7ac0",
+   "verdict": "FLAG",
+   "note": "seat looked: PVC flange plate + socket hub, flush to the port edge, 72 px = 2x pipe. pipeline runs modern_style_20261023(_r2,_r3), 3 rounds, Opus first pass + GPT second look: joins REGEN at cap (placement only checkable in game)."
+  },
+  "MS_Saddle": {
+   "fp": "963af7edceb032db",
+   "verdict": "FLAG",
+   "note": "seat looked: PVC tapping saddle with stainless bolts, sleeve 46 px on the 35 px pipe, outlet 41 px vs hose 46. pipeline runs modern_style_20261023(_r2,_r3), 3 rounds, Opus first pass + GPT second look: joins REGEN at cap."
+  },
+  "MS_UnderCollar": {
+   "fp": "c77660ea4e1e9109",
+   "verdict": "FLAG",
+   "note": "seat looked: grey moulded sleeve (lightened after r2 read it as gunmetal). r3 Opus: CAM_WRONG 0.3 (side elevation of a top-down part)."
+  },
+  "MS_UnderPipe": {
+   "fp": "740f04853e8260ac",
+   "verdict": "FLAG",
+   "note": "seat looked: white PVC profile from the network strip (UnderCouplers/conform_generated.py profile mode)."
+  },
+  "MS_HoseCoupling": {
+   "fp": "e37736fb58ab3a8c",
+   "verdict": "FLAG",
+   "note": "seat looked: satin aluminium Storz, same silhouette and geometry (bbox identical), right end flat side-on (no bore, C6). r3: SIBLING_MISMATCH 0.45 (keyline heavier than the tanks)."
+  },
+  "MS_HoseMouth": {
+   "fp": "360a61de17339926",
+   "verdict": "FLAG",
+   "note": "seat looked: the free end is now a canvas lip seen from above, no bore (owner 2026-10-23: 'the end of this hose looks horrible'). r3: RES_LOW 0.7 (weave soft at 4x), DESC_MISS 0.4."
+  },
+  "MS_Pipe": {
+   "fp": "8d3badc8e1e8fa58",
+   "verdict": "FLAG",
+   "note": "seat looked (atlas + 32/128 px mock): white PVC, socket tees/crosses, white socket rings at elbows, capped lone tile. pipeline runs modern_style_20261023(_r2,_r3), 3 rounds, Opus first pass + GPT second look: r3 Opus said good; policy WEAK (STYLE_OFF smooth shading 0.45, elbow ring read as metal - fixed after r3 with a white PVC ring, not re-judged); GPT unsure (mock placement). Needs in-game capture."
+  },
+  "MS_PipeIcon": {
+   "fp": "8e4782e13d001e77",
+   "verdict": "FLAG",
+   "note": "seat looked: derived from the atlas by build_pipe_atlas; thin cross with caps, reads as PVC. Not separately judged."
+  }
+ },
+ "dropped": []
+}

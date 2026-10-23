@@ -1,0 +1,121 @@
+[
+ {
+  "id": "arteval_RM_UniversalPipe_Modern_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_UniversalPipe_Modern",
+  "prompt": "Top-down view, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. A modern white Schedule 40 PVC pressure pipe network piece seen strictly from above, lying flat on the ground. The straight pipe run is a slim white cylinder, 0.136 of a cell wide, with soft shading along its length. The socket fittings (elbows, tees, cross, end caps) are the same white PVC, and each socket hub is only slightly wider than the pipe: a thin raised collar, outer width about 1.3 times the pipe width, with a visible seam line where pipe enters the socket. Every opening of a fitting is the same size as the pipe it joins, so a branch hub, a cross arm, an end cap and a pipe-to-hose coupler all sit at the pipe's scale, and the coupler on a branch continues the pipe line as one fitting of equal width, with the hose leaving it at the same width. Fittings are centered on the pipe axis and aligned with it. Clean white body, subtle grey shading, thin dark outline, no background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: PORT_MISFIT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "modern_style_20261023_r3"
+ },
+ {
+  "id": "arteval_RM_LiquidPump_Modern_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_LiquidPump_Modern",
+  "prompt": "Top-down three-quarter game sprite for RimWorld, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. A single compact modern commercial electric booster pump filling one square cell, centered. A flat black rectangular base plate sits at the bottom. On it stands a ribbed charcoal-grey electric motor cylinder with visible cooling fins, coupled to a thermoplastic pump housing in pale grey with a round volute casing. A small gray pressure switch box with a short wire sits on top of the housing, and a small round pressure gauge with a white dial and red needle is mounted on the front of the housing. A white PVC pipe manifold runs around the pump, with four short white union stubs (threaded nut collars) extending to the middle of each of the four edges of the cell: one at the top edge, one at the right edge, one at the bottom edge, one at the left edge, each ending flush with the cell border. The object is symmetric enough that one picture reads correctly in any rotation. Soft top-left lighting, subtle shading, matte plastic and brushed-metal materials, crisp readable silhouette at small size. Nothing else in the frame; empty transparent surroundings.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: ",
+  "reference": "",
+  "priority": 40,
+  "source_run": "modern_style_20261023_r3"
+ },
+ {
+  "id": "arteval_RM_PipeFaucet_Modern_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_PipeFaucet_Modern",
+  "prompt": "A modern pipe faucet for a RimWorld colony, single 1x1 cell sprite, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. A brass quarter-turn hose bib with a blue lever handle, mounted on a short white PVC riser pipe. The riser base is a slip coupling exactly the same width as the riser pipe, a neat collar seated flush on the pipe end, its outer diameter equal to the pipe's. The riser continues down into a straight clean-cut pipe stub of the same white PVC and the same width, ending at the sprite's lower edge so it meets a connecting pipe of matching width. Brass body with warm gold highlights and darker bronze shading, the blue lever clearly readable, the white PVC with soft grey shading. The faucet is one compact object centered in the frame, viewed from a slightly raised front angle, lit from the upper left.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: PORT_MISFIT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "modern_style_20261023_r3"
+ },
+ {
+  "id": "arteval_RM_HoseEnd_Modern_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_HoseEnd_Modern",
+  "prompt": "Two separate RimWorld game sprites on a transparent background, painterly vanilla RimWorld style, realistic, clean dark outline, each centred on its own square canvas.\n\nSprite 1, Coupling_Bare: a modern aluminium Storz fire-hose coupling, a short matte silver metal ring with two small symmetrical lugs, seen from above as it lies flat on the ground, hose axis horizontal, neutral grey-blue shading, worn brushed metal highlights.\n\nSprite 2, Mouth: the free end of a modern fire hose lying flat on the ground, seen side-on as a flat strip. It is the last part of the hose: a flattened canvas lip about 0.30 of the hose length wide and 0.86 of the hose width tall, slightly flared outward at its tip, with a darker folded edge along the end, a stitched seam where it meets the hose body, and a faint crease shading that shows the canvas lying flat. The end is a closed flat face, a solid canvas edge, so the whole piece reads as a flattened woven canvas cuff in the same tan-and-grey canvas colour and weave as the hose body, clearly distinct as its own end piece. Soft ground shadow beneath, no background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "modern_style_20261023_r3"
+ },
+ {
+  "id": "arteval_RM_SprinklerHead_Modern_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_SprinklerHead_Modern",
+  "prompt": "A single modern lawn sprinkler head for a RimWorld pipe-network tile, centered, filling a 1x1 square sprite, seen from a slight top-down three-quarter angle. From the bottom up: the end of a feeding pipe enters the base of a short, thick white PVC socket (a cylindrical collar with a visible lower rim and a flat base at the bottom of the sprite); out of the socket's top opening rises a slim matte black riser tube; on top of the riser sits a polished brass impact sprinkler head with a small angled nozzle, a spring-loaded swing arm and a deflector. The pipe ends at the socket's base, so the riser visibly rises out of the pipe fitting, and the socket, riser and brass head share one vertical axis as one clean stack. Colors: white PVC, matte black, warm brass with soft highlights. Transparent background, painterly vanilla RimWorld style, realistic, clean dark outline, soft shading, no ground or shadow plane.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: PORT_MISFIT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "modern_style_20261023_r3"
+ },
+ {
+  "id": "arteval_RM_LiquidJoins_Modern_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_LiquidJoins_Modern",
+  "prompt": "Sprite sheet of five modern plumbing join pieces for a RimWorld colony, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. All pieces are seen from the same 35-degree elevated building camera looking down, so every round part shows a lit elliptical top face about 0.56 as tall as wide. Laid out in one row with clear space between pieces, each readable on its own: (1) a white PVC socket coupling, a short fat cylinder with a raised centre ridge and two open ends, round lit top face visible; (2) a white PVC flange, a thick disc with a central pipe bore and four stainless steel bolts around the rim, sitting flush against a straight port edge; (3) a white PVC tee saddle, a curved clamp strapped over a short length of white pipe with a small hose stub rising from its top; (4) a grey moulded wall sleeve, a thick grey collar rising around a white PVC pipe, its upper rim showing as a lit grey ellipse about 0.56 as tall as wide with the white pipe emerging from the centre of the ellipse; (5) a short straight length of white PVC pipe with a round lit end face. Soft top-left light, white PVC with subtle blue-grey shading, grey sleeve in mid grey, bolts in brushed stainless steel. reference: none.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: PORT_MISFIT, CAM_WRONG",
+  "reference": "",
+  "priority": 40,
+  "source_run": "modern_style_20261023_r3"
+ },
+ {
+  "id": "arteval_RM_PipeSpan_Modern_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_PipeSpan_Modern",
+  "prompt": "A single RimWorld sprite, painterly vanilla RimWorld style, realistic, with a clean dark outline, on a transparent background. Side-on view of a modern aerial pipe span strung horizontally between two pipe poles. The span is a long, thin, seamless straight strip of white PVC pipe, about twelve times as long as it is thick, with a smooth continuous body and soft cylindrical shading (lighter along the top, darker along the underside). At the far left and far right edges stand the tops of two slim grey metal pipe poles, each a short stub ending in a pole-top fitting. Each end of the pipe is capped by a short, slightly wider white collar join that seats into the fitting on its pole top. The pipe's centerline, both collar joins and both pole-top fittings lie on one horizontal line in one plane, so each end meets its pole top at exactly the same height. The pipe runs the full width of the image between the two pole tops. Palette: clean white PVC, mid-grey pole metal, dark brown-black outline. Nothing else in the frame.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: PORT_MISFIT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "modern_style_20261023_r3"
+ }
+]

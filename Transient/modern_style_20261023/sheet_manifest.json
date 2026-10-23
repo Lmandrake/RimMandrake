@@ -1,0 +1,487 @@
+{
+ "schema": 1,
+ "lead_html": "<p>Modern look redraw (MODERN_LOOK_REDESIGN_BEYOND_RED_ENAMEL): each row shows the LIVE Modern texture and, as a reference beside it, the r3 candidate. Pipeline (Opus first pass, GPT second look, 3 rounds) did not ACCEPT any: GPT will not strong-accept from an offline mock \u2014 every machine needs an in-game assembled capture. In-context mock: Transient/modern_style_20261023/composites/before_after_128.png. Style guide: design/RimMandrake/flowworks_modern_style_2026-10-23.md.</p>",
+ "rows": [
+  {
+   "key": "MS_Pipe",
+   "label": "Solid pipe atlas \u2014 white Sch40 PVC (was red enamel; owner-kept, redrawn under the 06:42 ruling)",
+   "part": "Pipe",
+   "look": "Modern",
+   "section": "Modern redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/Pipe/Modern/UniversalPipe_Atlas"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "C# / def draw size (see style guide)"
+   },
+   "reference_textures": [
+    {
+     "path": "Transient/modern_style_20261023/cand_r3/UniversalPipe_Atlas.png",
+     "size": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "candidate r3, drawn at the row size"
+     }
+    }
+   ]
+  },
+  {
+   "key": "MS_PipeIcon",
+   "label": "Pipe menu icon",
+   "part": "Pipe",
+   "look": "Modern",
+   "section": "Modern redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/Pipe/Modern/UniversalPipe_MenuIcon"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "C# / def draw size (see style guide)"
+   },
+   "reference_textures": [
+    {
+     "path": "Transient/modern_style_20261023/cand_r3/UniversalPipe_MenuIcon.png",
+     "size": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "candidate r3, drawn at the row size"
+     }
+    }
+   ]
+  },
+  {
+   "key": "MS_Coupler",
+   "label": "Coupler (machine-tank edge) \u2014 PVC socket coupling",
+   "part": "Joins",
+   "look": "Modern",
+   "section": "Modern redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/Joins/Modern/Coupler"
+   ],
+   "size": {
+    "drawSize": [
+     0.5,
+     0.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "C# / def draw size (see style guide)"
+   },
+   "reference_textures": [
+    {
+     "path": "Transient/modern_style_20261023/cand_r3/Coupler.png",
+     "size": {
+      "drawSize": [
+       0.5,
+       0.5
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "candidate r3, drawn at the row size"
+     }
+    }
+   ]
+  },
+  {
+   "key": "MS_Flange",
+   "label": "Flange (pipe meets tank/machine) \u2014 PVC flange",
+   "part": "Joins",
+   "look": "Modern",
+   "section": "Modern redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/Joins/Modern/Flange"
+   ],
+   "size": {
+    "drawSize": [
+     0.5,
+     0.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "C# / def draw size (see style guide)"
+   },
+   "reference_textures": [
+    {
+     "path": "Transient/modern_style_20261023/cand_r3/Flange.png",
+     "size": {
+      "drawSize": [
+       0.5,
+       0.5
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "candidate r3, drawn at the row size"
+     }
+    }
+   ]
+  },
+  {
+   "key": "MS_Saddle",
+   "label": "Saddle (hose on a pipe) \u2014 PVC tapping saddle",
+   "part": "Joins",
+   "look": "Modern",
+   "section": "Modern redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/Joins/Modern/Saddle"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "C# / def draw size (see style guide)"
+   },
+   "reference_textures": [
+    {
+     "path": "Transient/modern_style_20261023/cand_r3/Saddle.png",
+     "size": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "candidate r3, drawn at the row size"
+     }
+    }
+   ]
+  },
+  {
+   "key": "MS_UnderCollar",
+   "label": "Under-coupler collar \u2014 grey moulded wall sleeve",
+   "part": "Joins",
+   "look": "Modern",
+   "section": "Modern redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/Joins/Modern/UnderCollar"
+   ],
+   "size": {
+    "drawSize": [
+     0.28,
+     0.62
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "C# / def draw size (see style guide)"
+   },
+   "reference_textures": [
+    {
+     "path": "Transient/modern_style_20261023/cand_r3/UnderCollar.png",
+     "size": {
+      "drawSize": [
+       0.28,
+       0.62
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "candidate r3, drawn at the row size"
+     }
+    }
+   ]
+  },
+  {
+   "key": "MS_UnderPipe",
+   "label": "Under-coupler pipe \u2014 white PVC",
+   "part": "Joins",
+   "look": "Modern",
+   "section": "Modern redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/Joins/Modern/UnderPipe"
+   ],
+   "size": {
+    "drawSize": [
+     0.25,
+     0.44
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "C# / def draw size (see style guide)"
+   },
+   "reference_textures": [
+    {
+     "path": "Transient/modern_style_20261023/cand_r3/UnderPipe.png",
+     "size": {
+      "drawSize": [
+       0.25,
+       0.44
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "candidate r3, drawn at the row size"
+     }
+    }
+   ]
+  },
+  {
+   "key": "MS_PipeSpan",
+   "label": "Aerial pipe span \u2014 white PVC",
+   "part": "PipeSpan",
+   "look": "Modern",
+   "section": "Modern redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/PipePole/Modern/PipeSpan"
+   ],
+   "size": {
+    "drawSize": [
+     3,
+     0.25
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "C# / def draw size (see style guide)"
+   },
+   "reference_textures": [
+    {
+     "path": "Transient/modern_style_20261023/cand_r3/PipeSpan.png",
+     "size": {
+      "drawSize": [
+       3,
+       0.25
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "candidate r3, drawn at the row size"
+     }
+    }
+   ]
+  },
+  {
+   "key": "MS_Faucet",
+   "label": "Faucet \u2014 brass hose bib on a PVC riser",
+   "part": "Faucet",
+   "look": "Modern",
+   "section": "Modern redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/Faucet/Modern/RM_PipeFaucet"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "C# / def draw size (see style guide)"
+   },
+   "reference_textures": [
+    {
+     "path": "Transient/modern_style_20261023/cand_r3/RM_PipeFaucet.png",
+     "size": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "candidate r3, drawn at the row size"
+     }
+    }
+   ]
+  },
+  {
+   "key": "MS_Sprinkler",
+   "label": "Sprinkler \u2014 brass impact sprinkler on a riser",
+   "part": "Sprinkler",
+   "look": "Modern",
+   "section": "Modern redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "C# / def draw size (see style guide)"
+   },
+   "reference_textures": [
+    {
+     "path": "Transient/modern_style_20261023/cand_r3/RM_SprinklerHead.png",
+     "size": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "candidate r3, drawn at the row size"
+     }
+    }
+   ]
+  },
+  {
+   "key": "MS_Pump",
+   "label": "Pump \u2014 electric booster pump, PVC port stubs at the drawn pipe width (0.136 cell)",
+   "part": "Pump",
+   "look": "Modern",
+   "section": "Modern redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/Pump/Modern/RM_LiquidPump"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "C# / def draw size (see style guide)"
+   },
+   "reference_textures": [
+    {
+     "path": "Transient/modern_style_20261023/cand_r3/RM_LiquidPump.png",
+     "size": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "candidate r3, drawn at the row size"
+     }
+    }
+   ]
+  },
+  {
+   "key": "MS_HoseCoupling",
+   "label": "Hose coupling \u2014 satin aluminium Storz, flat side-on end",
+   "part": "Hose",
+   "look": "Modern",
+   "section": "Modern redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/Styles/Modern/Coupling_Bare"
+   ],
+   "size": {
+    "drawSize": [
+     0.72,
+     0.72
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "C# / def draw size (see style guide)"
+   },
+   "reference_textures": [
+    {
+     "path": "Transient/modern_style_20261023/cand_r3/Coupling_Bare.png",
+     "size": {
+      "drawSize": [
+       0.72,
+       0.72
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "candidate r3, drawn at the row size"
+     }
+    }
+   ]
+  },
+  {
+   "key": "MS_HoseMouth",
+   "label": "Hose free end \u2014 canvas lip, no bore (was a black bore staring at the camera)",
+   "part": "Hose",
+   "look": "Modern",
+   "section": "Modern redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/Hose/Styles/Modern/Mouth"
+   ],
+   "size": {
+    "drawSize": [
+     0.054,
+     0.155
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "C# / def draw size (see style guide)"
+   },
+   "reference_textures": [
+    {
+     "path": "Transient/modern_style_20261023/cand_r3/Mouth.png",
+     "size": {
+      "drawSize": [
+       0.054,
+       0.155
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "candidate r3, drawn at the row size"
+     }
+    }
+   ]
+  }
+ ]
+}

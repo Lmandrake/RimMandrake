@@ -1,0 +1,13 @@
+# art_eval run modern_style_20261023_r2
+
+| subject | cand | template/module | Opus band | GPT | decision | s | reasons |
+|---|---|---|---|---|---|---|---|
+| RM_UniversalPipe_Modern | r1 | machine/part | WEAK | regen | **REGEN** | 181.4 | opus band WEAK (model said weak); blocking ['PORT_MISFIT', 'DESC_MISS', 'PORT_UNDRAWN', 'DESC_MISS', 'DESC_MISS']; polish []; gpt regen: unsettled ['K1', 'K2', 'K3', 'K4', 'K5'], own blocking ['DESC_MISS', 'DESC_MISS', 'DESC_MISS'] |
+| RM_LiquidPump_Modern | r1 | machine/pump | WEAK | unsure | **REGEN** | 144.1 | opus band WEAK (model said weak); blocking ['OWNER_NOTE_IGNORED', 'PORT_MISFIT', 'SIBLING_MISMATCH']; polish []; unreadable ['ROTATIONS (n/a on an unconditional item)']; gpt unsure: unsettled ['K2', 'K3'], own blocking ['SIBLING_MISMATCH'] |
+| RM_PipeFaucet_Modern | r1 | machine/part | WEAK | unsure | **REGEN** | 84.8 | opus band WEAK (model said good); blocking ['PORT_MISFIT']; polish ['LEGIB_32']; unreadable ['ROTATIONS (n/a on an unconditional item)']; gpt unsure: unsettled ['K1', 'K2'], own blocking [] |
+| RM_HoseEnd_Modern | r1 | machine/hose | WEAK | regen | **REGEN** | 113.0 | opus band WEAK (model said weak); blocking ['DESC_MISS', 'SIBLING_MISMATCH', 'PORT_MISFIT']; polish ['RES_LOW']; unreadable ['PORTS', 'LAYERS', 'ROTATIONS (n/a on an unconditional item)']; gpt regen: unsettled ['K1', 'K2', 'K3', 'K4', 'K5', 'K6'], own blocking ['DESC_MISS', 'SIBLING_MISMATCH'] |
+| RM_PipeSpan_Modern | r1 | machine/part | WEAK | unsure | **REGEN** | 81.0 | opus band WEAK (model said weak); blocking ['PORT_MISFIT']; polish ['MATERIAL_PAINT', 'LEGIB_32']; unreadable ['PORTS', 'LAYERS', 'ROTATIONS (n/a on an unconditional item)']; gpt unsure: unsettled ['K1', 'K2', 'K3', 'K4'], own blocking [] |
+| RM_SprinklerHead_Modern | r1 | machine/part | WEAK | unsure | **REGEN** | 116.4 | opus band WEAK (model said weak); blocking ['CAM_WRONG', 'PORT_MISFIT']; polish ['LEGIB_32']; unreadable ['ROTATIONS (n/a on an unconditional item)']; gpt unsure: unsettled ['K2', 'K3'], own blocking ['PORT_MISFIT', 'F_MISSING'] |
+| RM_LiquidJoins_Modern | r1 | machine/coupler | WEAK | unsure | **REGEN** | 152.7 | opus band WEAK (model said weak); blocking ['PORT_MISFIT', 'PORT_MISFIT', 'OWNER_NOTE_IGNORED', 'SIBLING_MISMATCH']; polish ['MATERIAL_PAINT', 'LEGIB_32']; unreadable ['ROTATIONS (n/a on an unconditional item)']; gpt unsure: unsettled ['K1', 'K2', 'K3', 'K5'], own blocking ['PORT_MISFIT', 'PORT_MISFIT'] |
+
+Models reported: claude-opus-5-5, claude-sonnet-5-5, gpt-6.1-sol · prompt versions: `departures_brief@v2#9cda88+gpt_targeted_second_look@v1#cb6e32+opus_first_pass@v1#140565+preamble@v1#a48502+regen_prompt_edit@v1#861700+severity@v3#950903+machine@v2#e06ee7`

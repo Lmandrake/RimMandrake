@@ -1,0 +1,47 @@
+{
+ "subject": "RM_LiquidJoins_Modern",
+ "label": "RM LiquidJoins Modern",
+ "template": "machine",
+ "module": "coupler",
+ "candidate": "r1",
+ "provenance": "codex imagegen 2026-10-23 \u00b7 Transient/modern_style_20261023",
+ "artpipe_job": null,
+ "description": "Modern join pieces drawn by C# on the pipe network: Coupler (machine-tank shared edge), Flange (pipe meets tank/machine, flush to the port edge), Saddle (hose on a pipe), UnderCollar + UnderPipe (under-coupler beneath a fixture). Intended product: white PVC socket coupling, PVC flange with stainless bolts, PVC tee saddle, grey moulded wall sleeve, white PVC pipe. Top-down. NOTE: the assembled panel is an OFFLINE MOCK composed from the textures with the C# sizes (pipe atlas tiles, join/fitting sizes), not an in-game capture; placement of joins in it is approximate.",
+ "tier": "RM_",
+ "invented": false,
+ "earth_body_named": true,
+ "body_plan": null,
+ "departures": [],
+ "canon": {
+  "must_show": [],
+  "engine_limits": []
+ },
+ "owner_notes": [
+  "Owner 2026-10-23: \"solid pipe looks pretty horrible actually. We need a whole art review of the Modern style. You made it all enamel red. That was never the intention. ... This is supposed to be stuff you can really see in the real world right now (modern), not just primary colors.\"",
+  "Owner 2026-10-23: \"Modern should instead be thought of as \"modern consumer / commercial\" and industrial is \"brutalist\"\"",
+  "Owner 2026-10-23: \"We should unfortunately regen the pumps and such to have connectors that match the more modern pipe and hose sizes. looks a bit silly.\" (pipe 0.136 cell wide, hose 0.18 cell flat)"
+ ],
+ "owner_kept": false,
+ "depends_on": null,
+ "previous_prompt": null,
+ "size": {
+  "drawSize": [
+   1,
+   1
+  ]
+ },
+ "ports": [],
+ "images": {
+  "south": "/home/mandrake/rm/bench/Transient/modern_style_20261023/cand_r3/joins_sheet.png",
+  "scale": "/home/mandrake/rm/bench/Transient/modern_style_20261023/specs_r3/RM_LiquidJoins_Modern_scale.png",
+  "siblings": [
+   "/home/mandrake/rm/bench/src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Tank/Modern/RM_LiquidTank.png",
+   "/home/mandrake/rm/bench/src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Tank/Modern/RM_LiquidTankTall.png",
+   "/home/mandrake/rm/bench/src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Tank/Modern/RM_UniversalCargoTank.png",
+   "/home/mandrake/rm/bench/src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Hose/Styles/Modern/Reel_PumpHookup.png"
+  ],
+  "assembled": [
+   "/home/mandrake/rm/bench/Transient/modern_style_20261023/composites/cand_r3_x2.png"
+  ]
+ }
+}

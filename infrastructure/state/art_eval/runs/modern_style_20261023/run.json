@@ -1,0 +1,13 @@
+{
+ "run_id": "modern_style_20261023",
+ "test": false,
+ "started": "2026-10-23T07:15:50-07:00",
+ "subjects": [
+  "RM_UniversalPipe_Modern",
+  "RM_LiquidPump_Modern",
+  "RM_LiquidJoins_Modern",
+  "RM_PipeFaucet_Modern",
+  "RM_SprinklerHead_Modern"
+ ],
+ "versions_key": "departures_brief@v2#9cda88+gpt_targeted_second_look@v1#cb6e32+opus_first_pass@v1#140565+preamble@v1#a48502+regen_prompt_edit@v1#861700+severity@v3#950903+creature@v2#16a385"
+}
