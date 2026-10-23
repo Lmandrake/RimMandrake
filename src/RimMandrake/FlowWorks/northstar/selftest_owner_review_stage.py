@@ -69,5 +69,18 @@ rects = [ORS.bars_row_rect(L, r) for r in ORS.BARS_ROWS]
 check("each bars row has its own rect", len(set(rects)) == len(ORS.BARS_ROWS), rects)
 bx, bz, bw, bh = L["bars_rect"]
 check("every bars row rect sits inside the bars site", all(bx <= r[0] and r[0] + r[2] <= bx + bw and bz <= r[1] and r[1] + r[3] <= bz + bh for r in rects), rects)
+# WATER_LOOK_DIAGNOSE_GREY_ON_THE_ROT: the swatch verdict and the whole-row framing
+check("good temperate water (83,93,97) reads as water", ORS.water_verdict([83, 93, 97]) is True)
+check("can-fail: the grey Rot pit water (67,61,47) does not", ORS.water_verdict([67, 61, 47]) is False)
+check("an unread picture is no verdict", ORS.water_verdict(None) is None and ORS.water_verdict([1, None, 3]) is None)
+sw = ORS.swatch_rect(100, 100)
+rx, rz, rw, rh = L["rect"]
+check("the swatch sits inside the cleared site, clear of the ladders row (z >= 100)",
+      rx <= sw[0] and sw[0] + sw[2] <= rx + rw and rz <= sw[1] and sw[1] + sw[3] <= 100, (sw, L["rect"]))
+import water_scenes_walk as WSW  # noqa: E402
+fr = WSW.fit_root_size((97, 131, 66, 12))
+check("a 66-wide row is framed whole (16:9 view %.0f cells wide >= 70)" % (2 * fr * WSW.SCREEN_ASPECT), 2 * fr * WSW.SCREEN_ASPECT >= 70, fr)
+check("a small rect never zooms below the engine floor 11 (the old rootSize 8 sat under it)", WSW.fit_root_size((0, 0, 3, 3)) == WSW.ROOT_FLOOR)
+check("the 64x70 overview fits top to bottom", 2 * WSW.fit_root_size(L["rect"]) >= 74)
 print("selftest_owner_review_stage: %d failure(s)" % len(FAILS))
 sys.exit(1 if FAILS else 0)

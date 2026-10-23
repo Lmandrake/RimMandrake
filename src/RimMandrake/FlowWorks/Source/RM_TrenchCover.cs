@@ -158,7 +158,8 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>Bridge/proof read (jawa/static_call, northstar/trench_cover_proof.py): arg "targetId;shooterId".
-		/// "TRENCH trench=t vanilla=v combined=c hit=h hitNoTrench=h0 cage=b target=x,z shooter=x,z", where hitNoTrench is
+		/// "TRENCH trench=t vanilla=v combined=c hit=h hitNoTrench=h0 cage=b target=x,z shooter=x,z size=s" (s = the target's
+		/// BodySize, which sets its height and so the bar: a Biotech teenager is 0.8), where hitNoTrench is
 		/// the same report with trench cover switched off for the read (restored at once), or "REFUSED: ...".</summary>
 		public static string ProofTrenchCover(string arg)
 		{

@@ -273,7 +273,8 @@ def _run(argv, hold):
     if not V.prepare_site(B, rect, site_rows, "raid_site"):
         why = (site_rows[-1].get("detail") if site_rows and isinstance(site_rows[-1], dict) else None) or "prepare_site refused"
         res["siteNotReady"] = why
-        for rid in ("RAID_island_sealed", "RAID_outcome"):
+        for rid in ("RAID_island_sealed", "RAID_outcome", "MASKSWAP_no_wall_crossing",
+                    "RAID_LADDER_BREACH" if a.depth <= 6 else "RAID_FILL_CAUSEWAY"):
             row(rid, "UNMEASURED", {"class": "SITE", "why": "the raid site did not read back clear; nothing dug or fired",
                                     "site": why})
         return 2
