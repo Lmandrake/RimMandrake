@@ -1,0 +1,1 @@
+Parallel helpers in one clone share the FlowWorks SelfTest staged build dir (D:\ClaudeWork\rimmandrake\build\selftest_*): a second helper's run fails MSB3027/MSB3021 'file locked by RimMandrakeFlowWorks.SelfTest' - an env failure, not a verdict; wait ~40 s and retry (selftest_flowworks_stock.py's dotnet_lock does not cover another helper's running exe).
