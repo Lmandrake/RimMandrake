@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- CAULDRON_FLORA_EXPANSION_BUILD_1. Icons are retinted vanilla placeholders; item art is owed. -->
+<!-- CAULDRON_FLORA_EXPANSION_BUILD_1. Item art is our own: Textures/Things/Item/RM_<Name>.png. -->
 <Defs>
   <ThingDef ParentName="PlantFoodRawBase">
     <defName>RM_TsevrixPulp</defName>

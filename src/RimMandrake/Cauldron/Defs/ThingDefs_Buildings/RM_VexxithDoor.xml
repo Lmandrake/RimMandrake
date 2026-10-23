@@ -10,7 +10,8 @@
 
   PROVISIONAL numbers (invented, owed to DESIGN_MATERIALS_REVIEW_1): costStuffCount 25 (vanilla
   Door's), WorkToBuild 1200, MaxHitPoints 200.
-  Placeholder art: vanilla simple-door textures tinted by the stuff colour. Own art is owed.
+  Art: own door leaf Textures/Things/Building/RM_VexxithDoor/RM_VexxithDoor.png (tinted by the stuff
+  colour); the architect icon is still vanilla's DoorSimple_MenuIcon.
 -->
 <Defs>
   <ThingDef ParentName="DoorBase">

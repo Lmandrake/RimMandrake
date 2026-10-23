@@ -3,8 +3,8 @@
   <!--
     RM_CauldronFlora.xml    RimMandrake: The Cauldron
 
-    POISONFOREST_RM_MOD_BUILD_1: three renamed, duplicated copies of the
-    frozen twin's own flora, per biome_mod_architecture.md §7 Q13
+    POISONFOREST_RM_MOD_BUILD_1: renamed, duplicated copies of the
+    frozen twin's own flora (two left; the third, RM_TreeMartyr, is cut), per biome_mod_architecture.md §7 Q13
     ("content wired into TWO biome mods: DUPLICATE, THEN DIVERGE — each mod
     carries its own copy under its own defName; the second copy is
     regenerated later, art and identity, into a distinct variant").
@@ -34,7 +34,7 @@
     <defName>RM_TwistingThornwood</defName>
     <label>twisting thornwood</label>
     <description>A tree the Cauldron has wrung into a corkscrew, its trunk armoured in hard grey thorns and weeping the forest's metallic sweat from every split in the bark. The wood inside is dense and slow-grown, and cutting it is a long, ugly job: the thorns fight back, and the sweat dries into the grain like solder.</description>
-    <!-- METAL SECOND YIELD (owner-ruled, both trees; CAULDRON_TREE_METAL_YIELD_1):
+    <!-- METAL SECOND YIELD (owner-ruled; the other tree, RM_TreeMartyr, is cut; CAULDRON_TREE_METAL_YIELD_1):
          steel beside the wood, scaled by growth. See RM_CompMetalYield. -->
     <comps>
       <li Class="RimMandrake.Cauldron.RM_CompProperties_MetalYield">
@@ -43,8 +43,8 @@
         <countAtFullGrowth>12</countAtFullGrowth>
       </li>
     </comps>
-    <!-- CAULDRON_ENRICHMENT_VISUALS_1 V3: metal flecks by assay band (RM_AssayFlecks). Overlay art owed
-         (256x256, registered to the tree art); until it is on disk the flecks stay off. -->
+    <!-- CAULDRON_ENRICHMENT_VISUALS_1 V3: metal flecks by assay band (RM_AssayFlecks). Overlay art on disk:
+         Textures/Things/Plant/RM_AssayFlecks/Flecks_{Light,Heavy}.png (without it the flecks stay off). -->
     <modExtensions>
       <li Class="RimMandrake.Cauldron.RM_AssayFlecksExtension">
         <lightTexPath>Things/Plant/RM_AssayFlecks/Flecks_Light</lightTexPath>
@@ -158,8 +158,8 @@
     <!-- CAULDRON_VENT_ENRICHMENT_HOOKS_1: vent-keyed habitat (StableRing). -->
     <modExtensions>
       <!-- CAULDRON_ENRICHMENT_VISUALS_1 V2: dew variant while RM_Dewfall (RM_DewfallSaturation). Spec
-           default set (spec V2: owner may trim). Art owed, 256x256 against the base; until it is on disk
-           the swap is skipped and the Plant.Graphic patch is not installed. -->
+           default set (spec V2: owner may trim). Art on disk: Textures/Things/Plant/RM_Dewfall/ (a missing
+           texture would skip the swap, and with none the Plant.Graphic patch is not installed). -->
       <li Class="RimMandrake.Cauldron.RM_DewfallGraphicExtension">
         <texPath>Things/Plant/RM_Dewfall/RM_CrystalFlower_dew</texPath>
       </li>
@@ -198,8 +198,8 @@
     <!-- CAULDRON_VENT_ENRICHMENT_HOOKS_1: vent-keyed habitat (ChronicLeak). -->
     <modExtensions>
       <!-- CAULDRON_ENRICHMENT_VISUALS_1 V2: dew variant while RM_Dewfall (RM_DewfallSaturation). Spec
-           default set (spec V2: owner may trim). Art owed, 256x256 against the base; until it is on disk
-           the swap is skipped and the Plant.Graphic patch is not installed. -->
+           default set (spec V2: owner may trim). Art on disk: Textures/Things/Plant/RM_Dewfall/ (a missing
+           texture would skip the swap, and with none the Plant.Graphic patch is not installed). -->
       <li Class="RimMandrake.Cauldron.RM_DewfallGraphicExtension">
         <texPath>Things/Plant/RM_Dewfall/RM_BloodBouquet_dew</texPath>
       </li>
@@ -280,8 +280,8 @@
     </plant>
     <modExtensions>
       <!-- CAULDRON_ENRICHMENT_VISUALS_1 V2: dew variant while RM_Dewfall (RM_DewfallSaturation). Spec
-           default set (spec V2: owner may trim). Art owed, 256x256 against the base; until it is on disk
-           the swap is skipped and the Plant.Graphic patch is not installed. -->
+           default set (spec V2: owner may trim). Art on disk: Textures/Things/Plant/RM_Dewfall/ (a missing
+           texture would skip the swap, and with none the Plant.Graphic patch is not installed). -->
       <li Class="RimMandrake.Cauldron.RM_DewfallGraphicExtension">
         <texPath>Things/Plant/RM_Dewfall/RM_RedBugloss_dew</texPath>
       </li>
@@ -343,8 +343,8 @@
     </plant>
     <modExtensions>
       <!-- CAULDRON_ENRICHMENT_VISUALS_1 V2: dew variant while RM_Dewfall (RM_DewfallSaturation). Spec
-           default set (spec V2: owner may trim). Art owed, 256x256 against the base; until it is on disk
-           the swap is skipped and the Plant.Graphic patch is not installed. -->
+           default set (spec V2: owner may trim). Art on disk: Textures/Things/Plant/RM_Dewfall/ (a missing
+           texture would skip the swap, and with none the Plant.Graphic patch is not installed). -->
       <li Class="RimMandrake.Cauldron.RM_DewfallGraphicExtension">
         <texPath>Things/Plant/RM_Dewfall/RM_KeeningCordax_dew</texPath>
       </li>
@@ -379,8 +379,8 @@
     <!-- CAULDRON_VENT_ENRICHMENT_HOOKS_1: vent-keyed habitat (RecentBlowout). -->
     <modExtensions>
       <!-- CAULDRON_ENRICHMENT_VISUALS_1 V2: dew variant while RM_Dewfall (RM_DewfallSaturation). Spec
-           default set (spec V2: owner may trim). Art owed, 256x256 against the base; until it is on disk
-           the swap is skipped and the Plant.Graphic patch is not installed. -->
+           default set (spec V2: owner may trim). Art on disk: Textures/Things/Plant/RM_Dewfall/ (a missing
+           texture would skip the swap, and with none the Plant.Graphic patch is not installed). -->
       <li Class="RimMandrake.Cauldron.RM_DewfallGraphicExtension">
         <texPath>Things/Plant/RM_Dewfall/RM_GiantToxicFlower_dew</texPath>
       </li>

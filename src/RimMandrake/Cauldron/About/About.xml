@@ -50,8 +50,8 @@ replacing the donor BiomesPlus.BiomeWorker_PoisonForest — a donor type in
 workerClass is a hard dependency the RimMandrake tier may not assume), two
 new terrain defs (RM_CauldronSoil / RM_CauldronSoilRich, replacing the donor
 BiomesPlus terrain names the twin used with no def backing them anywhere in
-this repo), three renamed-and-duplicated flora ThingDefs (RM_TwistingThornwood,
-RM_DarkCrust (a third, RM_TreeMartyr, was cut 2026-10-18) — the frozen twin's own RUT_-prefixed copies stay
+this repo), two renamed-and-duplicated flora ThingDefs (RM_TwistingThornwood,
+RM_DarkCrust; a third, RM_TreeMartyr, was cut 2026-10-18) — the frozen twin's own RUT_-prefixed copies stay
 in place unchanged, serving the live campaign world and RUT_CrackedLands,
 which still shares RM_TwistingThornwood's species; this mod's copies are its
 own, per the "duplicate, then diverge" rule for content wired into two biome
@@ -64,16 +64,16 @@ named (crystal flower, blood bouquet, raven nettle, red bugloss, giant agaritox,
 keening cordax, giant toxic flower) are now owned RM_ defs, so wildPlants no
 longer depends on Alpha Biomes; RM_Xithess (a filter-frond with a vent-chemistry
 yield) joins them. Three owned natives are added (RM_Vexxiss, RM_Zisska,
-RM_Eskith, with RM_Vexxith shear material and RM_ZisskaMeat) and four Alpha
-Animals imports (Plasmorph, Lucifer bug, Radyak), each
-MayRequire'd. The thornwood and martyr tree carry a growth-scaled metal
-second yield.
+RM_Eskith, with RM_Vexxith shear material and RM_ZisskaMeat) and one owner-ruled
+Alpha Animals import, the radyak, now our own port RM_Radyak. The thornwood
+carries a growth-scaled metal second yield.
 
 CAULDRON_MECHANICS_BUILD_1: the biome's four own weathers (scatter-dusk, vapour
 bank, dewfall, vent bloom) replace the donor fog; a vent bloom builds a slow
 metal-load condition on anyone outdoors under open sky. The vexxiss puts out
 fires, goes for whoever started them, and turns the water it wades through
-toxic. Each is a Mod Settings toggle. Not yet built: the vexxiss's wild-shear job.
+toxic. Each is a Mod Settings toggle. Vexxith comes only from shearing a tamed
+vexxiss; a wild-shear job is not built.
 
 RHOSSAK_MIGRATE_ROOTS_TAKE_HOLD (owner by card 2026-10-19: "Make them animals and make them bind."): the rhossak
 and the galled rhossak are our own animals (RM_Rhossak, RM_GalledRhossak), no longer Alpha Memes dryads.
@@ -97,10 +97,9 @@ acid-proof vexxith door, takes no acid damage (vanilla acid burn, and the
 Warscar bloom acid when that biome is present). This is the mod's one Harmony
 patch, so it now needs Harmony. Both are Mod Settings toggles.
 
-⚠️ Not fully donor-free: the world-map texture (Biomes/PoisonForest, BiomesPlus)
-carries no MayRequire, inherited unchanged from the frozen campaign twin. The
-inline fauna rows (Genetic Rim, Alpha Animals, Horrors) are
-individually MayRequire'd and degrade gracefully without them.
+The world-map texture is our own (World/Biomes/RM_Cauldron), and every
+inline fauna and flora row is an RM_ def; the former Genetic Rim, Alpha
+Animals, Alpha Memes and Horrors rows are our ports.
 
 NOT in this mod: the Star Wars-tier fauna (Neebray, Mynock, GraniteSlug,
 RSW_Screecher, RSW_VentStalker) that inhabit this biome in the campaign —

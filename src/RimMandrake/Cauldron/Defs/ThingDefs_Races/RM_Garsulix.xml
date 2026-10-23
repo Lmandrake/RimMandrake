@@ -7,7 +7,9 @@
   copies and retire these mods!!! Just get it done." Commonality 0.7 in RM_Cauldron, unchanged.
   Folded in: label/description from UtinniPatches Cauldron_Rename.xml (owner: "this is a hideous creature now named
   Garsulix that Hungers ..."); comfort -50.3..44.5 from AnimalTolerances_Ashkarr.xml (pinned live value).
-  Kept: the VEF comps (insect jelly product, asexual fission, floating) and the small death explosion.
+  Kept: the VEF comps (insect jelly product, asexual fission, floating), each MayRequire'd on VEF (not a declared
+  dependency of this mod: without it the class is unknown and the comp row errors at load), and the small death
+  explosion.
   DROPPED with the donor mods:
     * GeneticRim.DefExtension_Hybrid (PawnKindDef) and VEF AnimalStatExtension listing GR_HybridRole* stats;
     * tradeTag AnimalGenetic (VGE's hybrid trader tag) -> AnimalUncommon;
@@ -54,17 +56,17 @@
       </li>
     </tools>
     <comps>
-      <li Class="VEF.AnimalBehaviours.CompProperties_AnimalProduct">
+      <li Class="VEF.AnimalBehaviours.CompProperties_AnimalProduct" MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">
         <resourceDef>InsectJelly</resourceDef>
         <gatheringIntervalDays>3</gatheringIntervalDays>
         <resourceAmount>8</resourceAmount>
         <customResourceString>VanillaJellyGrowth</customResourceString>
       </li>
-      <li Class="VEF.AnimalBehaviours.CompProperties_AsexualReproduction">
+      <li Class="VEF.AnimalBehaviours.CompProperties_AsexualReproduction" MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">
         <reproductionIntervalDays>9</reproductionIntervalDays>
         <customString>Asexual fission in: </customString>
       </li>
-      <li Class="VEF.AnimalBehaviours.CompProperties_Floating" />
+      <li Class="VEF.AnimalBehaviours.CompProperties_Floating" MayRequire="OskarPotocki.VanillaFactionsExpanded.Core" />
     </comps>
     <race>
       <deathAction>
