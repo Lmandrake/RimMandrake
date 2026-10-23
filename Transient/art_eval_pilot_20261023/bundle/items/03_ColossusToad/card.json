@@ -1,0 +1,97 @@
+{
+ "defName": "ColossusToad",
+ "label": "Colossus toad",
+ "class": "fauna/walker",
+ "tier": "a donor mod's def, not one of ours",
+ "description": "A massive frog bioengineered for industrial farms. While safe to eat, its thick skin secretes an unpleasant slime.",
+ "biome": "RM_WeepingStones",
+ "canon": null,
+ "size": {
+  "kind": "animal",
+  "cells": 1.75,
+  "bodySize": 0.8,
+  "drawSize": [
+   1.75,
+   1.75
+  ],
+  "mesh": 1,
+  "visualMax": null,
+  "source": "live def dump 2026-10-04 17:39Z \u00b7 PawnKindDef ColossusToad, last lifeStage bodyGraphicData \u00b7 drawSize: XML agrees, Races_Animal.xml (declared)"
+ },
+ "candidates": [
+  {
+   "letter": "A",
+   "provenance_label_shown_to_owner": "IN GAME \u00b7 ludeon.rimworld.odyssey",
+   "lane": "body",
+   "facings": [
+    "south",
+    "east",
+    "north"
+   ],
+   "files": {
+    "south": {
+     "file": "A_south.png",
+     "px": [
+      128,
+      128
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "east": {
+     "file": "A_east.png",
+     "px": [
+      128,
+      128
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "north": {
+     "file": "A_north.png",
+     "px": [
+      128,
+      128
+     ],
+     "how": "artstore (full resolution)"
+    }
+   },
+   "true_scale_panel": "A_scale_full.png"
+  },
+  {
+   "letter": "B",
+   "provenance_label_shown_to_owner": "render 2026-10-05 \u00b7 gapall_ColossusToad_v1",
+   "lane": "body",
+   "facings": [
+    "south",
+    "east",
+    "north"
+   ],
+   "files": {
+    "south": {
+     "file": "B_south.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "east": {
+     "file": "B_east.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "north": {
+     "file": "B_north.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    }
+   },
+   "true_scale_panel": "B_scale_full.png"
+  }
+ ]
+}

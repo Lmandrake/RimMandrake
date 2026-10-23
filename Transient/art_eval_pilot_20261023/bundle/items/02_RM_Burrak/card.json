@@ -1,0 +1,97 @@
+{
+ "defName": "RM_Burrak",
+ "label": "Burrak",
+ "class": "fauna/walker",
+ "tier": "our own design (franchise-free RM_/RUT_)",
+ "description": "A bear-sized wallower that digs catch-basins that outlive it \u2014 abandoned burrak digs are how new micro-oases start. A working oasis tolerates its one huge elder, worn claw-combs and all, the way a town tolerates its engineer; in fiction the biggest of them earns the name burradar, but it is the same animal grown vast, not a second kind.",
+ "biome": "RM_WeepingStones",
+ "canon": null,
+ "size": {
+  "kind": "animal",
+  "cells": 1.9,
+  "bodySize": 2.2,
+  "drawSize": [
+   1.9,
+   1.9
+  ],
+  "mesh": 1,
+  "visualMax": null,
+  "source": "live def dump 2026-10-04 17:39Z \u00b7 PawnKindDef RM_Burrak, last lifeStage bodyGraphicData \u00b7 drawSize: XML agrees, RM_WeepingStonesNatives.xml (declared)"
+ },
+ "candidates": [
+  {
+   "letter": "A",
+   "provenance_label_shown_to_owner": "donor original \u00b7 Vanilla Textures Expanded",
+   "lane": "body",
+   "facings": [
+    "south",
+    "east",
+    "north"
+   ],
+   "files": {
+    "south": {
+     "file": "A_south.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "east": {
+     "file": "A_east.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "north": {
+     "file": "A_north.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    }
+   },
+   "true_scale_panel": "A_scale_full.png"
+  },
+  {
+   "letter": "B",
+   "provenance_label_shown_to_owner": "render 2026-09-24 \u00b7 weepingstones2_burrak",
+   "lane": "renders found by NAME",
+   "facings": [
+    "south",
+    "east",
+    "north"
+   ],
+   "files": {
+    "south": {
+     "file": "B_south.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "east": {
+     "file": "B_east.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "north": {
+     "file": "B_north.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    }
+   },
+   "true_scale_panel": "B_scale_full.png"
+  }
+ ]
+}

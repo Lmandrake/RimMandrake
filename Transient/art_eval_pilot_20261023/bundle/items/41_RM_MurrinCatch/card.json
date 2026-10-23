@@ -1,0 +1,98 @@
+{
+ "defName": "RM_MurrinCatch",
+ "label": "Murrin",
+ "class": "item/catch",
+ "tier": "our own design (franchise-free RM_/RUT_)",
+ "description": "A hand-length pool fish, deep-keeled, one tall dorsal comb-fin still folding. Gentle in the net and gentle on the plate.",
+ "biome": "RM_WeepingStones",
+ "canon": null,
+ "size": {
+  "kind": "plant",
+  "cells": 1.0,
+  "bodySize": null,
+  "drawSize": [
+   1,
+   1
+  ],
+  "mesh": 1,
+  "visualMax": null,
+  "source": "live def dump 2026-10-04 17:39Z \u00b7 ThingDef RM_MurrinCatch \u00b7 drawSize: XML RM_StockedPoolCatchItems.xml: declared nowhere in the chain FishBase \u2192 ResourceBase \u2192 engine default \u00b7 visualSizeRange.max: XML RM_StockedPoolCatchItems.xml: declared nowhere in the chain FishBase \u2192 ResourceBase \u00b7 maxMeshCount: XML RM_StockedPoolCatchItems.xml: declared nowhere in the chain FishBase \u2192 ResourceBase \u2192 engine default"
+ },
+ "candidates": [
+  {
+   "letter": "A",
+   "provenance_label_shown_to_owner": "IN GAME \u00b7 WeepingStones",
+   "lane": "body",
+   "facings": [
+    "single"
+   ],
+   "files": {
+    "single": {
+     "file": "A_single.png",
+     "px": [
+      128,
+      128
+     ],
+     "how": "artstore (full resolution)"
+    }
+   },
+   "true_scale_panel": "A_scale_full.png"
+  },
+  {
+   "letter": "B",
+   "provenance_label_shown_to_owner": "render landed after the committed build (from art ledger)",
+   "lane": "body",
+   "facings": [
+    "single"
+   ],
+   "files": {
+    "single": {
+     "file": "B_single.png",
+     "px": [
+      128,
+      128
+     ],
+     "how": "artstore (full resolution)"
+    }
+   },
+   "true_scale_panel": "B_scale_full.png"
+  },
+  {
+   "letter": "C",
+   "provenance_label_shown_to_owner": "render 2026-09-24 \u00b7 weepingstones_murrin",
+   "lane": "renders found by NAME",
+   "facings": [
+    "south",
+    "east",
+    "north"
+   ],
+   "files": {
+    "south": {
+     "file": "C_south.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "east": {
+     "file": "C_east.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "north": {
+     "file": "C_north.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    }
+   },
+   "true_scale_panel": "C_scale_full.png"
+  }
+ ]
+}

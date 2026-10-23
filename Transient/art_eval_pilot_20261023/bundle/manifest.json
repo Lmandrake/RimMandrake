@@ -1,0 +1,523 @@
+{
+ "biome": "RM_WeepingStones",
+ "biome_intent": "High pale stone standing in the path of the sea-wind. Most of this country is bright, dry, wind-scoured ridge and shoulder -- but every cold shaded face of it weeps: thin black streaks of wet running down white rock, moss crowding the seep lines, and here and there a true pool with a green ring around it and a crowd at the water. An oasis here is never merely found water; it is a working thing, part stone, part machine, part congregation of everything that drinks.",
+ "items": [
+  {
+   "n": 1,
+   "defName": "RSW_Boma",
+   "class": "fauna/walker",
+   "dir": "items/01_RSW_Boma",
+   "candidates": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ]
+  },
+  {
+   "n": 2,
+   "defName": "RM_Burrak",
+   "class": "fauna/walker",
+   "dir": "items/02_RM_Burrak",
+   "candidates": [
+    "A",
+    "B"
+   ]
+  },
+  {
+   "n": 3,
+   "defName": "ColossusToad",
+   "class": "fauna/walker",
+   "dir": "items/03_ColossusToad",
+   "candidates": [
+    "A",
+    "B"
+   ]
+  },
+  {
+   "n": 4,
+   "defName": "RSW_Dactillion",
+   "class": "fauna/flyer",
+   "dir": "items/04_RSW_Dactillion",
+   "candidates": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ]
+  },
+  {
+   "n": 5,
+   "defName": "RSW_Fanback",
+   "class": "fauna/amphibious",
+   "dir": "items/05_RSW_Fanback",
+   "candidates": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ]
+  },
+  {
+   "n": 6,
+   "defName": "RM_Gorrask",
+   "class": "fauna/walker",
+   "dir": "items/06_RM_Gorrask",
+   "candidates": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "n": 7,
+   "defName": "RM_Huldu",
+   "class": "fauna/swimmer",
+   "dir": "items/07_RM_Huldu",
+   "candidates": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "n": 8,
+   "defName": "RM_Ivvol",
+   "class": "fauna/swimmer",
+   "dir": "items/08_RM_Ivvol",
+   "candidates": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "n": 9,
+   "defName": "RM_Karrek",
+   "class": "fauna/swimmer",
+   "dir": "items/09_RM_Karrek",
+   "candidates": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "n": 10,
+   "defName": "RM_Kirruk",
+   "class": "fauna/flyer",
+   "dir": "items/10_RM_Kirruk",
+   "candidates": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "n": 11,
+   "defName": "RM_Loomu",
+   "class": "fauna/swimmer",
+   "dir": "items/11_RM_Loomu",
+   "candidates": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "n": 12,
+   "defName": "RM_Mirrik",
+   "class": "fauna/flyer",
+   "dir": "items/12_RM_Mirrik",
+   "candidates": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ]
+  },
+  {
+   "n": 13,
+   "defName": "RM_Murrin",
+   "class": "fauna/swimmer",
+   "dir": "items/13_RM_Murrin",
+   "candidates": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "n": 14,
+   "defName": "RSW_Ollopom",
+   "class": "fauna/amphibious",
+   "dir": "items/14_RSW_Ollopom",
+   "candidates": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ]
+  },
+  {
+   "n": 15,
+   "defName": "RM_Sillik",
+   "class": "fauna/walker",
+   "dir": "items/15_RM_Sillik",
+   "candidates": [
+    "A",
+    "B"
+   ]
+  },
+  {
+   "n": 16,
+   "defName": "RM_Skarrin",
+   "class": "fauna/swimmer",
+   "dir": "items/16_RM_Skarrin",
+   "candidates": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "n": 17,
+   "defName": "RM_Ssurr",
+   "class": "fauna/walker",
+   "dir": "items/17_RM_Ssurr",
+   "candidates": [
+    "A",
+    "B"
+   ]
+  },
+  {
+   "n": 18,
+   "defName": "RM_Tirbak",
+   "class": "fauna/walker_pack",
+   "dir": "items/18_RM_Tirbak",
+   "candidates": [
+    "A",
+    "B"
+   ]
+  },
+  {
+   "n": 19,
+   "defName": "RM_Vellak",
+   "class": "fauna/walker_pack",
+   "dir": "items/19_RM_Vellak",
+   "candidates": [
+    "A",
+    "B"
+   ]
+  },
+  {
+   "n": 20,
+   "defName": "RM_Vhakk",
+   "class": "fauna/walker",
+   "dir": "items/20_RM_Vhakk",
+   "candidates": [
+    "A",
+    "B"
+   ]
+  },
+  {
+   "n": 21,
+   "defName": "RM_Vizhik",
+   "class": "fauna/swimmer",
+   "dir": "items/21_RM_Vizhik",
+   "candidates": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "n": 22,
+   "defName": "Plant_Ambrosia",
+   "class": "flora/bush",
+   "dir": "items/22_Plant_Ambrosia",
+   "candidates": [
+    "A",
+    "B"
+   ]
+  },
+  {
+   "n": 23,
+   "defName": "RM_Bladderquill",
+   "class": "flora/bush",
+   "dir": "items/23_RM_Bladderquill",
+   "candidates": [
+    "A",
+    "B"
+   ]
+  },
+  {
+   "n": 24,
+   "defName": "RM_Dewblade",
+   "class": "flora/ground_cover",
+   "dir": "items/24_RM_Dewblade",
+   "candidates": [
+    "A",
+    "B"
+   ]
+  },
+  {
+   "n": 25,
+   "defName": "RM_Dewgourd",
+   "class": "flora/bush",
+   "dir": "items/25_RM_Dewgourd",
+   "candidates": [
+    "A",
+    "B"
+   ]
+  },
+  {
+   "n": 26,
+   "defName": "RM_Dripfringe",
+   "class": "flora/special",
+   "dir": "items/26_RM_Dripfringe",
+   "candidates": [
+    "A",
+    "B"
+   ]
+  },
+  {
+   "n": 27,
+   "defName": "Plant_Reeds",
+   "class": "flora/bush",
+   "dir": "items/27_Plant_Reeds",
+   "candidates": [
+    "A",
+    "B"
+   ]
+  },
+  {
+   "n": 28,
+   "defName": "RM_Rockfinger",
+   "class": "flora/tree",
+   "dir": "items/28_RM_Rockfinger",
+   "candidates": [
+    "A",
+    "B"
+   ]
+  },
+  {
+   "n": 29,
+   "defName": "RM_Salvecomb",
+   "class": "flora/bush",
+   "dir": "items/29_RM_Salvecomb",
+   "candidates": [
+    "A",
+    "B"
+   ]
+  },
+  {
+   "n": 30,
+   "defName": "RM_Shadefern",
+   "class": "flora/bush",
+   "dir": "items/30_RM_Shadefern",
+   "candidates": [
+    "A",
+    "B"
+   ]
+  },
+  {
+   "n": 31,
+   "defName": "RM_Dewshrooms",
+   "class": "flora/bush",
+   "dir": "items/31_RM_Dewshrooms",
+   "candidates": [
+    "A",
+    "B",
+    "C",
+    "E"
+   ]
+  },
+  {
+   "n": 32,
+   "defName": "RM_Steamfrond",
+   "class": "flora/bush",
+   "dir": "items/32_RM_Steamfrond",
+   "candidates": [
+    "A",
+    "B"
+   ]
+  },
+  {
+   "n": 33,
+   "defName": "RM_Verdimoss",
+   "class": "flora/ground_cover",
+   "dir": "items/33_RM_Verdimoss",
+   "candidates": [
+    "A",
+    "B"
+   ]
+  },
+  {
+   "n": 34,
+   "defName": "RM_Weepmat",
+   "class": "flora/ground_cover",
+   "dir": "items/34_RM_Weepmat",
+   "candidates": [
+    "A",
+    "B"
+   ]
+  },
+  {
+   "n": 35,
+   "defName": "RM_Duul",
+   "class": "item/catch",
+   "dir": "items/35_RM_Duul",
+   "candidates": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "n": 36,
+   "defName": "RM_HulduCatch",
+   "class": "item/catch",
+   "dir": "items/36_RM_HulduCatch",
+   "candidates": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ]
+  },
+  {
+   "n": 37,
+   "defName": "RM_Ikkal",
+   "class": "item/catch",
+   "dir": "items/37_RM_Ikkal",
+   "candidates": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "n": 38,
+   "defName": "RM_IvvolCatch",
+   "class": "item/catch",
+   "dir": "items/38_RM_IvvolCatch",
+   "candidates": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ]
+  },
+  {
+   "n": 39,
+   "defName": "RM_KarrekCatch",
+   "class": "item/catch",
+   "dir": "items/39_RM_KarrekCatch",
+   "candidates": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ]
+  },
+  {
+   "n": 40,
+   "defName": "RM_LoomuCatch",
+   "class": "item/catch",
+   "dir": "items/40_RM_LoomuCatch",
+   "candidates": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ]
+  },
+  {
+   "n": 41,
+   "defName": "RM_MurrinCatch",
+   "class": "item/catch",
+   "dir": "items/41_RM_MurrinCatch",
+   "candidates": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "n": 42,
+   "defName": "RM_Ozhu",
+   "class": "item/catch",
+   "dir": "items/42_RM_Ozhu",
+   "candidates": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "n": 43,
+   "defName": "RM_SkarrinCatch",
+   "class": "item/catch",
+   "dir": "items/43_RM_SkarrinCatch",
+   "candidates": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ]
+  },
+  {
+   "n": 44,
+   "defName": "RM_Tarrik",
+   "class": "item/catch",
+   "dir": "items/44_RM_Tarrik",
+   "candidates": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "n": 45,
+   "defName": "RM_Ullo",
+   "class": "item/catch",
+   "dir": "items/45_RM_Ullo",
+   "candidates": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "n": 46,
+   "defName": "RM_VizhikCatch",
+   "class": "item/catch",
+   "dir": "items/46_RM_VizhikCatch",
+   "candidates": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ]
+  },
+  {
+   "n": 47,
+   "defName": "RM_Vobbal",
+   "class": "item/catch",
+   "dir": "items/47_RM_Vobbal",
+   "candidates": [
+    "A",
+    "B",
+    "C"
+   ]
+  }
+ ]
+}

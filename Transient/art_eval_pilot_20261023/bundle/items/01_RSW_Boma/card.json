@@ -1,0 +1,213 @@
+{
+ "defName": "RSW_Boma",
+ "label": "Boma",
+ "class": "fauna/walker",
+ "tier": "canon Star Wars creature (has a canon-library entry)",
+ "description": "Bomas were ravenous beasts native to planet Onderon and its moon Dxun. In their native environment they hunted Cannoks with ease and were considered dangerous by several Mandalorian clans. They were sometimes introduced into ecosystems on other worlds where Cannoks had become established to help maintain their population.",
+ "biome": "RM_WeepingStones",
+ "canon": {
+  "entry": "design/RimStarWars/canon_references/boma/description.md",
+  "must_show": "- [ ] BODY PLAN: a squat, monstrous, low four-legged reptilian predator in a bulldog/toad-like crouch: a broad heavy head sunk into the shoulders with almost no neck; very short, massively muscled legs; a thick, moderately long tail curled up behind\n- [ ] Wide face bearing 2 short horns at the sides of the head and 2 pale curved tusks jutting from the lower jaw; a wide snarling mouth full of small teeth\n- [ ] COLOUR LAYOUT: olive-green over back, head, legs and tail; paler tan-yellow throat; tusks and claws pale, the lightest elements\n- [ ] Thick, deeply wrinkled, folded, scaled hide\n- [ ] Long pale curved claws on the short legs\n- [ ] Realistic rendering: natural thick wrinkled reptile-hide texture and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: \"That's realistic, not these cartoon versions you keep using\")\n- [ ] NEGATIVE: not a dog or bulldog (no fur, no floppy ears); not a lizard or crocodile (no long low snout, no sprawling slim body); not the blue-grey comic mount",
+  "engine_limits": "none known"
+ },
+ "size": {
+  "kind": "animal",
+  "cells": 3.5,
+  "bodySize": 2,
+  "drawSize": [
+   3.5,
+   3.5
+  ],
+  "mesh": 1,
+  "visualMax": null,
+  "source": "live def dump 2026-10-04 17:39Z \u00b7 PawnKindDef RSW_Boma, last lifeStage bodyGraphicData \u00b7 drawSize: XML agrees, RSW_Boma.xml (declared)"
+ },
+ "candidates": [
+  {
+   "letter": "A",
+   "provenance_label_shown_to_owner": "IN GAME \u00b7 SWBestiary",
+   "lane": "body",
+   "facings": [
+    "south",
+    "east",
+    "north"
+   ],
+   "files": {
+    "south": {
+     "file": "A_south.png",
+     "px": [
+      512,
+      512
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "east": {
+     "file": "A_east.png",
+     "px": [
+      512,
+      512
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "north": {
+     "file": "A_north.png",
+     "px": [
+      512,
+      512
+     ],
+     "how": "artstore (full resolution)"
+    }
+   },
+   "true_scale_panel": "A_scale_full.png"
+  },
+  {
+   "letter": "B",
+   "provenance_label_shown_to_owner": "render landed after the committed build (from art ledger)",
+   "lane": "body",
+   "facings": [
+    "south",
+    "east",
+    "north"
+   ],
+   "files": {
+    "south": {
+     "file": "B_south.png",
+     "px": [
+      512,
+      512
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "east": {
+     "file": "B_east.png",
+     "px": [
+      512,
+      512
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "north": {
+     "file": "B_north.png",
+     "px": [
+      512,
+      512
+     ],
+     "how": "artstore (full resolution)"
+    }
+   },
+   "true_scale_panel": "B_scale_full.png"
+  },
+  {
+   "letter": "C",
+   "provenance_label_shown_to_owner": "render 2026-09-23 \u00b7 canon_boma_v1",
+   "lane": "body",
+   "facings": [
+    "south",
+    "east",
+    "north"
+   ],
+   "files": {
+    "south": {
+     "file": "C_south.png",
+     "px": [
+      160,
+      160
+     ],
+     "how": "sheet THUMBNAIL from git (full-res purged \u2014 reduced resolution)"
+    },
+    "east": {
+     "file": "C_east.png",
+     "px": [
+      160,
+      160
+     ],
+     "how": "sheet THUMBNAIL from git (full-res purged \u2014 reduced resolution)"
+    },
+    "north": {
+     "file": "C_north.png",
+     "px": [
+      160,
+      160
+     ],
+     "how": "sheet THUMBNAIL from git (full-res purged \u2014 reduced resolution)"
+    }
+   },
+   "true_scale_panel": "C_scale_full.png"
+  },
+  {
+   "letter": "D",
+   "provenance_label_shown_to_owner": "render 2026-09-13 \u00b7 boma_toyfig_a",
+   "lane": "body",
+   "facings": [
+    "east"
+   ],
+   "files": {
+    "east": {
+     "file": "D_east.png",
+     "px": [
+      160,
+      160
+     ],
+     "how": "sheet THUMBNAIL from git (full-res purged \u2014 reduced resolution)"
+    }
+   },
+   "true_scale_panel": "D_scale_full.png"
+  },
+  {
+   "letter": "E",
+   "provenance_label_shown_to_owner": "render 2026-09-13 \u00b7 boma_toyfig_b",
+   "lane": "body",
+   "facings": [
+    "east"
+   ],
+   "files": {
+    "east": {
+     "file": "E_east.png",
+     "px": [
+      160,
+      160
+     ],
+     "how": "sheet THUMBNAIL from git (full-res purged \u2014 reduced resolution)"
+    }
+   },
+   "true_scale_panel": "E_scale_full.png"
+  },
+  {
+   "letter": "F",
+   "provenance_label_shown_to_owner": "history 2026-09-12 \u00b7 SWBestiary",
+   "lane": "body",
+   "facings": [
+    "south",
+    "east",
+    "north"
+   ],
+   "files": {
+    "south": {
+     "file": "F_south.png",
+     "px": [
+      160,
+      160
+     ],
+     "how": "sheet THUMBNAIL from git (full-res purged \u2014 reduced resolution)"
+    },
+    "east": {
+     "file": "F_east.png",
+     "px": [
+      160,
+      160
+     ],
+     "how": "sheet THUMBNAIL from git (full-res purged \u2014 reduced resolution)"
+    },
+    "north": {
+     "file": "F_north.png",
+     "px": [
+      160,
+      160
+     ],
+     "how": "sheet THUMBNAIL from git (full-res purged \u2014 reduced resolution)"
+    }
+   },
+   "true_scale_panel": "F_scale_full.png"
+  }
+ ]
+}

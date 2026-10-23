@@ -1,0 +1,61 @@
+{
+ "defName": "Plant_Reeds",
+ "label": "Reeds",
+ "class": "flora/bush",
+ "tier": "a donor mod's def, not one of ours",
+ "description": "A tall slender plant that grows in water.",
+ "biome": "RM_WeepingStones",
+ "canon": null,
+ "size": {
+  "kind": "plant",
+  "cells": 1.0,
+  "bodySize": null,
+  "drawSize": [
+   1,
+   1
+  ],
+  "mesh": 4,
+  "visualMax": 0.8,
+  "source": "live def dump 2026-10-04 17:39Z \u00b7 ThingDef Plant_Reeds \u00b7 drawSize: XML Plants_Water.xml: declared nowhere in the chain WaterPlantBase \u2192 PlantBase \u2192 PlantBaseNonEdible \u2192 engine default \u00b7 visualSizeRange.max: XML agrees, Plants_Water.xml (declared) \u00b7 maxMeshCount: XML agrees, Plants_Water.xml (declared)"
+ },
+ "candidates": [
+  {
+   "letter": "A",
+   "provenance_label_shown_to_owner": "IN GAME \u00b7 ludeon.rimworld.odyssey",
+   "lane": "body",
+   "facings": [
+    "single"
+   ],
+   "files": {
+    "single": {
+     "file": "A_single.png",
+     "px": [
+      64,
+      64
+     ],
+     "how": "artstore (full resolution)"
+    }
+   },
+   "true_scale_panel": "A_scale_full.png"
+  },
+  {
+   "letter": "B",
+   "provenance_label_shown_to_owner": "render 2026-10-05 \u00b7 gapbs_Plant_Reeds_v1",
+   "lane": "body",
+   "facings": [
+    "single"
+   ],
+   "files": {
+    "single": {
+     "file": "B_single.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    }
+   },
+   "true_scale_panel": "B_scale_full.png"
+  }
+ ]
+}

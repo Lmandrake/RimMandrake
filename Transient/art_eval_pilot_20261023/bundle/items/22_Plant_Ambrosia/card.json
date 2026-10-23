@@ -1,0 +1,61 @@
+{
+ "defName": "Plant_Ambrosia",
+ "label": "Ambrosia",
+ "class": "flora/bush",
+ "tier": "a donor mod's def, not one of ours",
+ "description": "A rare wild bush which yields the ambrosia fruit. Ambrosia fruit is delicious and produces a drug-like mood boost. Ambrosia cannot be farmed, which makes wild ambrosia groves very valuable.\n\nIts rarity, beauty, and desirability are why ambrosia was named after the food of the ancient Greek gods.",
+ "biome": "RM_WeepingStones",
+ "canon": null,
+ "size": {
+  "kind": "plant",
+  "cells": 1.1,
+  "bodySize": null,
+  "drawSize": [
+   1,
+   1
+  ],
+  "mesh": 1,
+  "visualMax": 1.1,
+  "source": "live def dump 2026-10-04 17:39Z \u00b7 ThingDef Plant_Ambrosia \u00b7 drawSize: XML Plants_Special.xml: declared nowhere in the chain PlantBase \u2192 PlantBaseNonEdible \u2192 engine default \u00b7 visualSizeRange.max: XML agrees, Plants_Special.xml (declared) \u00b7 maxMeshCount: XML Plants_Special.xml: declared nowhere in the chain PlantBase \u2192 PlantBaseNonEdible \u2192 engine default"
+ },
+ "candidates": [
+  {
+   "letter": "A",
+   "provenance_label_shown_to_owner": "IN GAME \u00b7 RimUtinni Patches (Jawa campaign)",
+   "lane": "body",
+   "facings": [
+    "single"
+   ],
+   "files": {
+    "single": {
+     "file": "A_single.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    }
+   },
+   "true_scale_panel": "A_scale_full.png"
+  },
+  {
+   "letter": "B",
+   "provenance_label_shown_to_owner": "render 2026-10-07 \u00b7 sheet_redo_Plant_Ambrosia_v3",
+   "lane": "body",
+   "facings": [
+    "single"
+   ],
+   "files": {
+    "single": {
+     "file": "B_single.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    }
+   },
+   "true_scale_panel": "B_scale_full.png"
+  }
+ ]
+}

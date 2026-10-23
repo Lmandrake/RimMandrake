@@ -1,0 +1,312 @@
+{
+ "defName": "RSW_Dactillion",
+ "label": "Dactillion",
+ "class": "fauna/flyer",
+ "tier": "canon Star Wars creature (has a canon-library entry)",
+ "description": "The dactillions were a reptavian native to the sinkhole world of Utapau. Dactillions shared both avian and lizard traits, with long, thin wings and thick, scaled hides. A dactillion's pair of wings allowed it to ride the thermal updrafts in a Utapau sinkhole, and its prominent limbs allowed it to scale the rocky side. An avian cousin of the speedy varactyl, the dactillion served as a mounts.",
+ "biome": "RM_WeepingStones",
+ "canon": {
+  "entry": "design/RimStarWars/canon_references/dactillion/description.md",
+  "must_show": "- [ ] BODY PLAN: a large, rideable pterosaur-shaped flyer: long slender neck, elongated toothless beak, digit-supported membrane wings (not feathered), long thin tail, clawed hands/feet used for perching, gripping and scaling rock walls (not a bird's talons)\n- [ ] COLOUR LAYOUT: body, neck and head blue-grey to slate-grey; wing membranes dark maroon/wine-red (the darkest, warmest element); beak pale tan/bone-coloured with the forked tip gold or pale yellow; eyes red/orange\n- [ ] Beak: long, toothless, ending in a two-pronged (bicorn) hooked tip \u2014 the forked prongs clearly visible\n- [ ] Clawed hands/feet suited to perching and gripping (not a bird's talons)\n- [ ] NEGATIVE: not a bird (no feathers, no fan tail, no single-pointed beak), not a dragon or wyvern (no scaled horned head, no teeth, no thick tail); not purple-bodied with blue wings, not a short-necked bat",
+  "engine_limits": "none known"
+ },
+ "size": {
+  "kind": "animal",
+  "cells": 3.5,
+  "bodySize": 3,
+  "drawSize": [
+   3.5,
+   3.5
+  ],
+  "mesh": 1,
+  "visualMax": null,
+  "source": "live def dump 2026-10-04 17:39Z \u00b7 PawnKindDef RSW_Dactillion, last lifeStage bodyGraphicData \u00b7 drawSize: XML agrees, RSW_Dactillion.xml (declared)"
+ },
+ "candidates": [
+  {
+   "letter": "A",
+   "provenance_label_shown_to_owner": "IN GAME \u00b7 SWBestiary",
+   "lane": "body",
+   "facings": [
+    "south",
+    "east",
+    "north"
+   ],
+   "files": {
+    "south": {
+     "file": "A_south.png",
+     "px": [
+      512,
+      512
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "east": {
+     "file": "A_east.png",
+     "px": [
+      512,
+      512
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "north": {
+     "file": "A_north.png",
+     "px": [
+      512,
+      512
+     ],
+     "how": "artstore (full resolution)"
+    }
+   },
+   "true_scale_panel": "A_scale_full.png"
+  },
+  {
+   "letter": "B",
+   "provenance_label_shown_to_owner": "render landed after the committed build (from art ledger)",
+   "lane": "body",
+   "facings": [
+    "south",
+    "east",
+    "north"
+   ],
+   "files": {
+    "south": {
+     "file": "B_south.png",
+     "px": [
+      512,
+      512
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "east": {
+     "file": "B_east.png",
+     "px": [
+      512,
+      512
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "north": {
+     "file": "B_north.png",
+     "px": [
+      512,
+      512
+     ],
+     "how": "artstore (full resolution)"
+    }
+   },
+   "true_scale_panel": "B_scale_full.png"
+  },
+  {
+   "letter": "C",
+   "provenance_label_shown_to_owner": "render 2026-09-13 \u00b7 dactillion_toyfig_b",
+   "lane": "body",
+   "facings": [
+    "east"
+   ],
+   "files": {
+    "east": {
+     "file": "C_east.png",
+     "px": [
+      160,
+      160
+     ],
+     "how": "sheet THUMBNAIL from git (full-res purged \u2014 reduced resolution)"
+    }
+   },
+   "true_scale_panel": "C_scale_full.png"
+  },
+  {
+   "letter": "D",
+   "provenance_label_shown_to_owner": "history 2026-09-12 \u00b7 SWBestiary",
+   "lane": "body",
+   "facings": [
+    "south",
+    "east",
+    "north"
+   ],
+   "files": {
+    "south": {
+     "file": "D_south.png",
+     "px": [
+      160,
+      160
+     ],
+     "how": "sheet THUMBNAIL from git (full-res purged \u2014 reduced resolution)"
+    },
+    "east": {
+     "file": "D_east.png",
+     "px": [
+      160,
+      160
+     ],
+     "how": "sheet THUMBNAIL from git (full-res purged \u2014 reduced resolution)"
+    },
+    "north": {
+     "file": "D_north.png",
+     "px": [
+      160,
+      160
+     ],
+     "how": "sheet THUMBNAIL from git (full-res purged \u2014 reduced resolution)"
+    }
+   },
+   "true_scale_panel": "D_scale_full.png"
+  },
+  {
+   "letter": "E",
+   "provenance_label_shown_to_owner": "donor original \u00b7 mlie.starwarsanimalcollection",
+   "lane": "body",
+   "facings": [
+    "south",
+    "east",
+    "north"
+   ],
+   "files": {
+    "south": {
+     "file": "E_south.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "east": {
+     "file": "E_east.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "north": {
+     "file": "E_north.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    }
+   },
+   "true_scale_panel": "E_scale_full.png"
+  },
+  {
+   "letter": "F",
+   "provenance_label_shown_to_owner": "IN GAME \u00b7 Dactillion_Flying_",
+   "lane": "wing-beat flight frames",
+   "facings": [
+    "fly_1_south",
+    "fly_2_south",
+    "fly_3_south",
+    "fly_4_south",
+    "fly_1_east",
+    "fly_2_east",
+    "fly_3_east",
+    "fly_4_east",
+    "fly_1_north",
+    "fly_2_north",
+    "fly_3_north",
+    "fly_4_north"
+   ],
+   "files": {
+    "fly_1_south": {
+     "file": "F_fly_1_south.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "fly_2_south": {
+     "file": "F_fly_2_south.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "fly_3_south": {
+     "file": "F_fly_3_south.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "fly_4_south": {
+     "file": "F_fly_4_south.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "fly_1_east": {
+     "file": "F_fly_1_east.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "fly_2_east": {
+     "file": "F_fly_2_east.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "fly_3_east": {
+     "file": "F_fly_3_east.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "fly_4_east": {
+     "file": "F_fly_4_east.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "fly_1_north": {
+     "file": "F_fly_1_north.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "fly_2_north": {
+     "file": "F_fly_2_north.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "fly_3_north": {
+     "file": "F_fly_3_north.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "fly_4_north": {
+     "file": "F_fly_4_north.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    }
+   },
+   "true_scale_panel": null
+  }
+ ]
+}

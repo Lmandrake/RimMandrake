@@ -1,0 +1,99 @@
+{
+ "defName": "RM_Dewshrooms",
+ "label": "Sikkra lure",
+ "class": "flora/bush",
+ "tier": "our own design (franchise-free RM_/RUT_)",
+ "description": "Tiny caps that light up a cold teal in the dark to draw small prey, which lands, sticks to the gills and is slowly digested. Whole swarms of gnats die to a single patch; the light is the trap.",
+ "biome": "RM_WeepingStones",
+ "canon": null,
+ "size": {
+  "kind": "plant",
+  "cells": 1.0,
+  "bodySize": null,
+  "drawSize": [
+   1,
+   1
+  ],
+  "mesh": 9,
+  "visualMax": 0.5,
+  "source": "live def dump 2026-10-04 17:39Z \u00b7 ThingDef RM_Dewshrooms \u00b7 drawSize: XML RM_RotSporeKit_Flora.xml: declared nowhere in the chain PlantBase \u2192 PlantBaseNonEdible \u2192 engine default \u00b7 visualSizeRange.max: XML agrees, RM_RotSporeKit_Flora.xml (declared) \u00b7 maxMeshCount: XML agrees, RM_RotSporeKit_Flora.xml (declared)"
+ },
+ "candidates": [
+  {
+   "letter": "A",
+   "provenance_label_shown_to_owner": "IN GAME \u00b7 RimMandrake: Baroque Biomes",
+   "lane": "body",
+   "facings": [
+    "single"
+   ],
+   "files": {
+    "single": {
+     "file": "A_single.png",
+     "px": [
+      64,
+      64
+     ],
+     "how": "artstore (full resolution)"
+    }
+   },
+   "true_scale_panel": "A_scale_full.png"
+  },
+  {
+   "letter": "B",
+   "provenance_label_shown_to_owner": "render landed after the committed build (from art ledger)",
+   "lane": "body",
+   "facings": [
+    "single"
+   ],
+   "files": {
+    "single": {
+     "file": "B_single.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    }
+   },
+   "true_scale_panel": "B_scale_full.png"
+  },
+  {
+   "letter": "C",
+   "provenance_label_shown_to_owner": "render landed after the committed build (from art ledger)",
+   "lane": "body",
+   "facings": [
+    "single"
+   ],
+   "files": {
+    "single": {
+     "file": "C_single.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    }
+   },
+   "true_scale_panel": "C_scale_full.png"
+  },
+  {
+   "letter": "E",
+   "provenance_label_shown_to_owner": "render 2026-09-19 \u00b7 rot_dewshrooms_v2",
+   "lane": "renders found by NAME",
+   "facings": [
+    "single"
+   ],
+   "files": {
+    "single": {
+     "file": "E_single.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    }
+   },
+   "true_scale_panel": "E_scale_full.png"
+  }
+ ]
+}

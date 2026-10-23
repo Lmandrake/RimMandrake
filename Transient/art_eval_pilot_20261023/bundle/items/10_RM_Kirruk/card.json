@@ -1,0 +1,134 @@
+{
+ "defName": "RM_Kirruk",
+ "label": "Kirruk",
+ "class": "fauna/flyer",
+ "tier": "our own design (franchise-free RM_/RUT_)",
+ "description": "A hawk-sized soarer that rides the wind forced up the tall stone, long stiff wings that are themselves combs \u2014 slotted trailing edges like comb-teeth \u2014 hanging motionless on the updraft off a rock face, wings combing the wet air as it hangs. It drinks the way the biome does, on the wing, and lands only to nest on the rims. The RM_ tier's own sky presence.",
+ "biome": "RM_WeepingStones",
+ "canon": null,
+ "size": {
+  "kind": "animal",
+  "cells": 0.85,
+  "bodySize": 0.5,
+  "drawSize": [
+   0.85,
+   0.85
+  ],
+  "mesh": 1,
+  "visualMax": null,
+  "source": "live def dump 2026-10-04 17:39Z \u00b7 PawnKindDef RM_Kirruk, last lifeStage bodyGraphicData \u00b7 drawSize: XML agrees, RM_WeepingStonesNatives.xml (declared)"
+ },
+ "candidates": [
+  {
+   "letter": "A",
+   "provenance_label_shown_to_owner": "donor original \u00b7 Vanilla Textures Expanded",
+   "lane": "body",
+   "facings": [
+    "south",
+    "east",
+    "north"
+   ],
+   "files": {
+    "south": {
+     "file": "A_south.png",
+     "px": [
+      128,
+      128
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "east": {
+     "file": "A_east.png",
+     "px": [
+      128,
+      128
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "north": {
+     "file": "A_north.png",
+     "px": [
+      128,
+      128
+     ],
+     "how": "artstore (full resolution)"
+    }
+   },
+   "true_scale_panel": "A_scale_full.png"
+  },
+  {
+   "letter": "B",
+   "provenance_label_shown_to_owner": "donor original \u00b7 Gerrymon's Upscaled Vanilla Textures",
+   "lane": "body",
+   "facings": [
+    "south",
+    "east",
+    "north"
+   ],
+   "files": {
+    "south": {
+     "file": "B_south.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "east": {
+     "file": "B_east.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "north": {
+     "file": "B_north.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    }
+   },
+   "true_scale_panel": "B_scale_full.png"
+  },
+  {
+   "letter": "C",
+   "provenance_label_shown_to_owner": "render 2026-09-24 \u00b7 weepingstones2_kirruk",
+   "lane": "renders found by NAME",
+   "facings": [
+    "south",
+    "east",
+    "north"
+   ],
+   "files": {
+    "south": {
+     "file": "C_south.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "east": {
+     "file": "C_east.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "north": {
+     "file": "C_north.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    }
+   },
+   "true_scale_panel": "C_scale_full.png"
+  }
+ ]
+}

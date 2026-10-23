@@ -1,0 +1,61 @@
+{
+ "defName": "RM_Salvecomb",
+ "label": "Salvecomb",
+ "class": "flora/bush",
+ "tier": "our own design (franchise-free RM_/RUT_)",
+ "description": "One waist-high arched frond per plant, serrated along its windward edge like a comb's teeth, silver-downy where it combs the fog. Grows alone in shade lines. Its down mats wick clean condensate; field dressing is the fiction. Rare enough to be worth a walk under the overhangs.",
+ "biome": "RM_WeepingStones",
+ "canon": null,
+ "size": {
+  "kind": "plant",
+  "cells": 0.7,
+  "bodySize": null,
+  "drawSize": [
+   1,
+   1
+  ],
+  "mesh": 1,
+  "visualMax": 0.7,
+  "source": "live def dump 2026-10-04 17:39Z \u00b7 ThingDef RM_Salvecomb \u00b7 drawSize: XML RM_WeepingStonesNativeFlora.xml: declared nowhere in the chain PlantBase \u2192 PlantBaseNonEdible \u2192 engine default \u00b7 visualSizeRange.max: XML agrees, RM_WeepingStonesNativeFlora.xml (declared) \u00b7 maxMeshCount: XML RM_WeepingStonesNativeFlora.xml: declared nowhere in the chain PlantBase \u2192 PlantBaseNonEdible \u2192 engine default"
+ },
+ "candidates": [
+  {
+   "letter": "A",
+   "provenance_label_shown_to_owner": "IN GAME \u00b7 our deployed art (render weepingstones2_salvecomb)",
+   "lane": "body",
+   "facings": [
+    "single"
+   ],
+   "files": {
+    "single": {
+     "file": "A_single.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    }
+   },
+   "true_scale_panel": "A_scale_full.png"
+  },
+  {
+   "letter": "B",
+   "provenance_label_shown_to_owner": "render 2026-10-05 \u00b7 gapfin_RM_Salvecomb_v1",
+   "lane": "body",
+   "facings": [
+    "single"
+   ],
+   "files": {
+    "single": {
+     "file": "B_single.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    }
+   },
+   "true_scale_panel": "B_scale_full.png"
+  }
+ ]
+}

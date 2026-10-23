@@ -1,0 +1,117 @@
+{
+ "defName": "RM_KarrekCatch",
+ "label": "Karrek",
+ "class": "item/catch",
+ "tier": "our own design (franchise-free RM_/RUT_)",
+ "description": "A basket-trapped handful of finger-length armored fish, chitin combs still snapping. Never a line, never bare hands.",
+ "biome": "RM_WeepingStones",
+ "canon": null,
+ "size": {
+  "kind": "plant",
+  "cells": 1.0,
+  "bodySize": null,
+  "drawSize": [
+   1,
+   1
+  ],
+  "mesh": 1,
+  "visualMax": null,
+  "source": "live def dump 2026-10-04 17:39Z \u00b7 ThingDef RM_KarrekCatch \u00b7 drawSize: XML RM_StockedPoolCatchItems.xml: declared nowhere in the chain FishBase \u2192 ResourceBase \u2192 engine default \u00b7 visualSizeRange.max: XML RM_StockedPoolCatchItems.xml: declared nowhere in the chain FishBase \u2192 ResourceBase \u00b7 maxMeshCount: XML RM_StockedPoolCatchItems.xml: declared nowhere in the chain FishBase \u2192 ResourceBase \u2192 engine default"
+ },
+ "candidates": [
+  {
+   "letter": "A",
+   "provenance_label_shown_to_owner": "donor original \u00b7 [TW1.6]\u5802\u4e38\u8d34\u56fe\u91cd\u7f6e~\u98df\u7269 Tang's~Retexture~Foods",
+   "lane": "body",
+   "facings": [
+    "single"
+   ],
+   "files": {
+    "single": {
+     "file": "A_single.png",
+     "px": [
+      250,
+      250
+     ],
+     "how": "artstore (full resolution)"
+    }
+   },
+   "true_scale_panel": "A_scale_full.png"
+  },
+  {
+   "letter": "B",
+   "provenance_label_shown_to_owner": "donor original \u00b7 Gerrymon's Upscaled Vanilla Textures",
+   "lane": "body",
+   "facings": [
+    "single"
+   ],
+   "files": {
+    "single": {
+     "file": "B_single.png",
+     "px": [
+      128,
+      128
+     ],
+     "how": "artstore (full resolution)"
+    }
+   },
+   "true_scale_panel": "B_scale_full.png"
+  },
+  {
+   "letter": "C",
+   "provenance_label_shown_to_owner": "render 2026-10-05 \u00b7 gapall_RM_KarrekCatch_v1",
+   "lane": "renders found by NAME",
+   "facings": [
+    "single"
+   ],
+   "files": {
+    "single": {
+     "file": "C_single.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    }
+   },
+   "true_scale_panel": "C_scale_full.png"
+  },
+  {
+   "letter": "D",
+   "provenance_label_shown_to_owner": "render 2026-09-24 \u00b7 weepingstones_karrek",
+   "lane": "renders found by NAME",
+   "facings": [
+    "south",
+    "east",
+    "north"
+   ],
+   "files": {
+    "south": {
+     "file": "D_south.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "east": {
+     "file": "D_east.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    },
+    "north": {
+     "file": "D_north.png",
+     "px": [
+      256,
+      256
+     ],
+     "how": "artstore (full resolution)"
+    }
+   },
+   "true_scale_panel": "D_scale_full.png"
+  }
+ ]
+}
