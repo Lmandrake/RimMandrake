@@ -424,7 +424,18 @@ namespace JawaBench.BridgeTools
                         fFlavor.SetValue(book, body);
                         fDesc.SetValue(book, title + "\n\n" + body);
                         fInval.SetValue(book, false);
-                        if (!GenPlace.TryPlaceThing(book, cell, map, ThingPlaceMode.Direct) &&
+                        // BARREL_PAIR_FIX_SIZE_MISMATCH: vanilla draws every item 0.8x when its cell holds more than one
+                        // (Graphic.Print, MultipleItemsPerCellDrawn), so a sign dropped on a staged barrel shrank it next to
+                        // its twin. Put the sign on the nearest walkable cell that holds no item.
+                        IntVec3 target = cell;
+                        Func<IntVec3, bool> itemFree = c => c.InBounds(map) && c.Walkable(map)
+                            && !c.GetThingList(map).Any(t => t.def.category == ThingCategory.Item);
+                        if (!itemFree(cell))
+                        {
+                            foreach (IntVec3 c in GenRadial.RadialCellsAround(cell, 8f, false))
+                                if (itemFree(c)) { target = c; break; }
+                        }
+                        if (!GenPlace.TryPlaceThing(book, target, map, ThingPlaceMode.Direct) &&
                             !GenPlace.TryPlaceThing(book, cell, map, ThingPlaceMode.Near))
                         {
                             if (!book.Destroyed) book.Destroy(DestroyMode.Vanish);
