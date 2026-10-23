@@ -11,9 +11,9 @@ namespace RimMandrake.Utinni.Atlas
     // Sources (read from our own src, 2026-10-02):
     //   mandrake.rm.lorestages  RimMandrake.LoreStages.GameComponent_LoreStage
     //                           static Current; int GetStage(string ladderId) (0 = absent)
-    //   mandrake.rm.ninefold    RimMandrake.Ninefold.GameComponent_Ninefold
+    //   mandrake.rut.rites    RimMandrake.Utinni.Rites.GameComponent_Ninefold
     //                           static Instance; bool IsUnveiled(God god);
-    //                           enum RimMandrake.Ninefold.God
+    //                           enum RimMandrake.Utinni.Rites.God
     public static class AtlasCompat
     {
         private static bool loreLooked;
@@ -63,8 +63,8 @@ namespace RimMandrake.Utinni.Atlas
         {
             if (nineLooked) return;
             nineLooked = true;
-            Type t = FindType("RimMandrake.Ninefold.GameComponent_Ninefold");
-            godEnum = FindType("RimMandrake.Ninefold.God");
+            Type t = FindType("RimMandrake.Utinni.Rites.GameComponent_Ninefold");
+            godEnum = FindType("RimMandrake.Utinni.Rites.God");
             if (t == null || godEnum == null) return;
             nineInstance = t.GetProperty("Instance", BindingFlags.Public | BindingFlags.Static);
             nineIsUnveiled = t.GetMethod("IsUnveiled", BindingFlags.Public | BindingFlags.Instance, null, new[] { godEnum }, null);

@@ -723,7 +723,7 @@ MODS = {
         "Roster size and grudge strength": "NextPulse",
         "Remember them permanently": "NextPulse",
     }, ()),
-    "Ninefold": ("RM_NinefoldMod.cs", "Ninefold.csproj", {
+    "Rites": ("RM_NinefoldMod.cs", "RimMandrake.Utinni.Rites.csproj", {   # Ninefold, folded into Salvation Rites 2026-10-22
         "Ninefold engine": "Now",
         "First-contact letters": "Now",
         "Event impact and mood": "Now",

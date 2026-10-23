@@ -14,7 +14,7 @@ namespace RimMandrake.Aftermath
     //
     // Field NAMES are a reflection contract. A consumer with no assembly
     // reference to this mod binds to them by string (see
-    // src/RimMandrake/Ninefold/Source/ChronicleSubscriber.cs); renaming one
+    // src/RimUtinni/Rites/Source/ChronicleSubscriber.cs); renaming one
     // silently unbinds every such consumer with no compile error anywhere.
     public class ChronicleEvent
     {

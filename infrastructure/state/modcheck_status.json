@@ -906,13 +906,6 @@
     "status": "RED",
     "ts": 1791234245.6975172
   },
-  "Ninefold": {
-    "hash": "a259fa805551aaff10924d6897e95fedd138d698854ce58f086cbd053533fce3",
-    "minor": null,
-    "run_id": "Ninefold@1789295352",
-    "status": "RED",
-    "ts": 1789295353.327609
-  },
   "OasisMaker": {
     "hash": "6a8c0fe6d0424d98b53bdb5c46e8b63e2b70f8f3bb7cd132fed012cebfd481dd",
     "minor": null,

@@ -1,8 +1,8 @@
 # Rites — validation walk
 subject: src/RimUtinni/Rites  (packageId `mandrake.rut.rites`)
-deps: mandrake.rut.antiquities (own tier, hard modDependency + loadAfter); Ludeon.RimWorld.Odyssey (Ishko's LandmarkDefs are `MayRequire`-gated on it); mandrake.rut.ashkarrlandmarkart (modDependency + loadAfter, supplies the landmark icons)
+deps: brrainz.harmony (hard modDependency + loadAfter, for the Ninefold hooks); mandrake.rut.antiquities (own tier, hard modDependency + loadAfter); Ludeon.RimWorld.Odyssey (Ishko's LandmarkDefs are `MayRequire`-gated on it); mandrake.rut.ashkarrlandmarkart (modDependency + loadAfter, supplies the landmark icons)
 list: the `rites` tier (minimal+mandrake.rm.gimmesomeslack+mandrake.rut.antiquities+mandrake.rut.ashkarrlandmarkart)
-status-hint: the liturgy research tree — five ResearchProjectDefs chained T0..T4, each tier past the Scrap Shrine gated by a hiddenPrerequisites on an Antiquities stage (visible-locked, not hidden from the tree); plus Ishko's three landmarks (section below).
+status-hint: the liturgy research tree — five ResearchProjectDefs chained T0..T4, each tier past the Scrap Shrine gated by a hiddenPrerequisites on an Antiquities stage (visible-locked, not hidden from the tree); plus Ishko's three landmarks and the Nine's favour engine, Ninefold (sections below).
 
 ## must be true
 - ResearchTabDef `RUT_Rites` exists, label "the rites".
@@ -49,3 +49,27 @@ I4. [D] def read-back: LandmarkDef `RUT_ColdLavaTube` exists; category=mountain;
 I5. [B] jawa/get_defs {defs: "LandmarkDef/<name>", fields: "category,commonality,mutatorChances,iconTexturePath", deep: true} for each of the 3 RUT_ defNames → confirms the RESOLVED defs (Odyssey active, no ConfigError) match steps 2-4, and each `iconTexturePath` is non-empty
 I6. [B] jawa/world_mutators_get over tiles 0-1999 → three land tiles with no landmark; for each Ishko def, `jawa/world_landmarks_set {action:add, def, tiles, forced:true, checkValid:true}` → expect `added`=1 and the tile read back carrying the def AND its Required anchor mutator (Hollow/Chasm/Cavern); then remove the landmark (and the anchor mutator if the tile did not already have it)
 I7. [S] (human pass) once the owner places one of the three, confirm its icon (the reused Ash'karr-styled Hollow/Chasm/Cavern art) reads correctly in the landmark legend and tooltip
+
+## The Nine (Ninefold)
+
+The nine-god favour engine: a satiation and mood value per god (Ishko, Ohm, Oomo, MobUnloo, Rekko, TaBaa, Zizzik, Shkaar, Ozzik), the band ladder (Wrathful/Slighted/Neutral/Content/Exalted), a per-god Mood random walk, Harmony hooks that call `ApplyDelta`, first-contact letters, favour tilts (`Defs/RUT_GodFavourTilts.xml`), the Nine Faults rite's workers and the offerings, with a settings screen (Mod Settings: Salvation Rites). It was its own mod, `mandrake.rm.ninefold` (namespace `RimMandrake.Ninefold`), until 2026-10-22 (owner: *"the Nine Gods belong in Salvation Rites. They are NOT a general reuse mod."*). Its earlier live results are at a retired package and an old hash: these chains need a fresh `rites` sitting. <!-- walklint-ok: names the retired packageId as history -->
+
+### must be true
+- On load, `NinefoldMod` logs how many event-hook patches applied: 0 is a load failure, not neutral.
+- `GameComponent_Ninefold` persists a satiation value AND a mood value per one of the 9 `God` enum members, and both survive a save/load round-trip (its own log warns if a saved list's count does not match `GodExtensions.Count` = 9).
+- A save written before the fold (class `RimMandrake.Ninefold.GameComponent_Ninefold`, in all 18 canonical Ash'karr start saves) loads with its favour intact: `NinefoldLegacyTypeConverter` maps the old class names to `RimMandrake.Utinni.Rites.*`. Offline proof: `selftest_ninefold_fuzz.py --saves`.
+- Each of the five original wired events (research completed, mental break started, birth outcome, building deconstructed, building repaired) moves at least one god's satiation by a measurable, non-zero delta when it fires; `ApplyDelta` logs each call in dev mode: `"[Ninefold] <god> satiation ..."`.
+- `God` enum member ORDER is a save-format contract (`NINEFOLD_ENUM_ORDER_SAVE_TRAP_1` in `God.cs`): append only, never reorder.
+
+### the walk
+N1. [L] Player.log after load contains `"[Ninefold] ready: "` followed by a non-zero patch count, and no "Config error in mandrake.rut.rites"   # load-time
+N2. [B] jawa/research_finish_project on any real ResearchProjectDef → expect Player.log line `"[Ninefold] <god> satiation ..."` naming the god the research-completed hook is wired to
+N3. [B] jawa/pawn_force_mental_break on a colonist → expect a second `"[Ninefold] <god> satiation ..."` line for the mental-break-started hook's god
+N4. [D] before/after each of steps N2-N3, read the live satiation for the affected god (`GameComponent_Ninefold.GetSatiation(God)`) and assert the delta is non-zero and moves the band ladder consistently
+N5. [B] save the game and reload → re-read the same god's satiation/mood and confirm it matches the pre-save value, with no `"[Ninefold] saved satiation list has ..."` or `"saved mood list has ..."` warning in Player.log
+N6. [B] load a canonical Ash'karr start save made before the fold (it names `RimMandrake.Ninefold.GameComponent_Ninefold`) → no "Could not find class RimMandrake.Ninefold" error in Player.log, and `GetSatiation` returns the saved, non-zero values (for `CANONICAL_ASHKARR_START_2026-10-18_DONORFREE_REPAIRED_AREAFIX` Rekko 90, TaBaa 67, Zizzik 87, Shkaar 100), not a fresh zero vector
+
+### anti-guessing notes
+- `Log.Error("[Ninefold] NINEFOLD_ENUM_ORDER_SAVE_TRAP_1: God." + ...)` in `God.cs` is a live self-check the mod already runs; its ABSENCE from Player.log after step N5 is part of the pass condition.
+- The type alias only runs when the save's mod list differs from the running game's (`BackCompatibility.CheckSaveIdenticalToCurrentEnvironment`); a save naming the old class was always written with `mandrake.rm.ninefold` loaded, so it always differs. If the old `Mods\Ninefold` folder is still deployed AND active, its own classes answer first and the hooks run twice: retire it from the live list before N6. <!-- walklint-ok: names the retired mod folder -->
+- No [S] line: satiation/mood is never surfaced as a UI number.

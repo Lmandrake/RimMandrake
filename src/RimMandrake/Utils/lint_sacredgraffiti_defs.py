@@ -35,7 +35,7 @@ def mark_findings(mod_dir):
     if not marks:
         return ["ERROR sacredgraffiti-marks: no RM_SacredMark_* ThingDef parsed (sanity probe: Defs moved?)"]
     cats = _enum(os.path.join(SRC, "Graffiti", "Source", "GraffitiCategory.cs"), "GraffitiCategory")
-    gods = _enum(os.path.join(SRC, "Ninefold", "Source", "God.cs"), "God")
+    gods = _enum(os.path.join(os.path.dirname(SRC), "RimUtinni", "Rites", "Source", "God.cs"), "God")
     if len(cats) < 4 or len(gods) < 9:
         errs.append("ERROR sacredgraffiti-marks: enum probe read %d categories and %d gods (sanity probe failed)" % (len(cats), len(gods)))
     for m in marks:

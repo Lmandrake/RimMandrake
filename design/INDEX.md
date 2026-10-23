@@ -1623,7 +1623,6 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `Inhabited.md` | Inhabited (local) — validation walk | — |
 | `LoadTracer.md` | Load Tracer (local) — validation walk | — |
 | `MandrakePatches.md` | RimMandrake Patches — validation walk | — |
-| `Ninefold.md` | RimMandrake Ninefold (M0 — safe core) — validation walk | — |
 | `Oracle.md` | RimMandrake: Oracle — validation walk | — |
 | `PhytokinBarkHeadFix.md` | Bark Head East Fix — Vanilla Races Expanded: Phytokin — validation walk | — |
 | `PlanetPresetPrime.md` | Planet Preset Prime (local) — validation walk | — |

@@ -28,8 +28,26 @@ mandrake.rut.ashkarrlandmarkart). Their names are principles of his
 doctrine, not promises about the terrain. They moved here 2026-10-22 from
 the retired mandrake.rut.ishkolandmarks (owner: "It's a concept, not a
 mod."; "I think the Nine Gods belong in Salvation Rites."). Placing them on
-the Ash'karr world is the owner's hand.</description>
+the Ash'karr world is the owner's hand.
+
+And the Nine themselves: Ninefold, the nine-god favour engine, folded in
+2026-10-22 from the retired mandrake.rm.ninefold (owner: "the Nine Gods
+belong in Salvation Rites. They are NOT a general reuse mod."). A nine-god
+satiation and mood vector with its band ladder (Wrathful to Exalted), a
+per-god Mood random walk, Harmony hooks binding colony events to the gods'
+favour, first-contact letters, favour that tilts the odds of a few
+incidents and weathers, the Nine Faults rite's workers and the Left Behind
+offering, with a settings screen (Mod Settings: Salvation Rites). Saves made
+before the fold keep the gods' favour: the old class names
+(RimMandrake.Ninefold.*) are mapped to the new ones on load. If the
+Chronicle engine (mandrake.rm.aftermath) is loaded, the gods hear its
+battles by reflection; there is no dependency in either direction.</description>
   <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
     <li>
       <packageId>mandrake.rut.antiquities</packageId>
       <displayName>Antiquities</displayName>
@@ -46,6 +64,7 @@ the Ash'karr world is the owner's hand.</description>
     </li>
   </modDependencies>
   <loadAfter>
+    <li>brrainz.harmony</li>
     <li>mandrake.rut.antiquities</li>
     <li>Ludeon.RimWorld.Odyssey</li>
     <li>mandrake.rut.ashkarrlandmarkart</li>

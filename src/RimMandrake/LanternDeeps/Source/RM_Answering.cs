@@ -277,8 +277,8 @@ namespace RimMandrake.LanternDeeps
         {
             if (resolved) return;
             resolved = true;
-            System.Type n = AccessTools.TypeByName("RimMandrake.Ninefold.GameComponent_Ninefold");
-            godType = AccessTools.TypeByName("RimMandrake.Ninefold.God");
+            System.Type n = AccessTools.TypeByName("RimMandrake.Utinni.Rites.GameComponent_Ninefold");
+            godType = AccessTools.TypeByName("RimMandrake.Utinni.Rites.God");
             if (n == null || godType == null) return;
             instanceProp = AccessTools.Property(n, "Instance");
             applyDelta = AccessTools.Method(n, "ApplyDelta", new[] { godType, typeof(float), typeof(string) });

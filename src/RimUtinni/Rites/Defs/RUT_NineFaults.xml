@@ -6,9 +6,9 @@
   Spec (ruled by the owner 2026-10-01): design/Jawa/nine_faults_permanent_rite_2026-10-01.md §2.
   Replaces the Gift of Working Things (ruled; no def of that devotion existed in src/).
 
-  XML only. Every worker is the RM tier's engine in mandrake.rm.ninefold
-  (Source/NineFaults.cs, Source/Offerings.cs), which never names a faith; the faith
-  is data here, the same split as UtinniPatches' RUT_TheReturn over Stillsand.
+  Every worker is this mod's own Ninefold engine (Source/NineFaults.cs,
+  Source/Offerings.cs), folded into Salvation Rites from mandrake.rm.ninefold
+  2026-10-22 (owner: "the Nine Gods belong in Salvation Rites").
 
     RUT_Ritual_NineFaults     the precept. Always startable while a fresh find stands.
     RUT_FreshFind             the target: a machine taken on this map, never run
@@ -17,13 +17,13 @@
                               Rekko to Zizzik by market value; Poor starts a fire,
                               Good/Excellent leave a memory, Excellent an art tale.
 
-  Gates: mandrake.rm.ninefold (every worker) and Ideology (every ritual def type).
+  Gate: Ideology (every ritual def type).
   Not wired into The Salvation's ideoligion here: adding the precept to the
   campaign ideo is a .rid / save step.
 -->
 <Defs>
 
-  <ThoughtDef MayRequire="mandrake.rm.ninefold,Ludeon.RimWorld.Ideology">
+  <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RUT_GaveTheFirstSpark</defName>
     <thoughtClass>Thought_AttendedRitual</thoughtClass>
     <durationDays>6</durationDays>
@@ -37,7 +37,7 @@
     </stages>
   </ThoughtDef>
 
-  <TaleDef MayRequire="mandrake.rm.ninefold,Ludeon.RimWorld.Ideology">
+  <TaleDef MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RUT_GaveTheNineFaults</defName>
     <label>gave a machine the nine faults</label>
     <taleClass>Tale_SinglePawn</taleClass>
@@ -59,7 +59,7 @@
     </rulePack>
   </TaleDef>
 
-  <PreceptDef MayRequire="mandrake.rm.ninefold,Ludeon.RimWorld.Ideology">
+  <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RUT_Ritual_NineFaults</defName>
     <label>Nine Faults</label>
     <description>The first spark through a found machine is Zizzik's. A thing just dragged out of a ruin has been no one's yet: not Ohm's, who wakes machines, nor Rekko's, who restores them. Worshippers surround a machine the clan has found on this ground and never run, and miswire it, nine faults in sequence, until the ninth burns it out. It is lost forever, and a slag hulk stands where it was.</description>
@@ -75,7 +75,7 @@
     <notifyPlayerOnOpportunity>false</notifyPlayerOnOpportunity>
   </PreceptDef>
 
-  <RitualPatternDef MayRequire="mandrake.rm.ninefold,Ludeon.RimWorld.Ideology">
+  <RitualPatternDef MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RUT_NineFaultsPattern</defName>
     <ritualBehavior>RUT_NineFaultsBehavior</ritualBehavior>
     <ritualObligationTargetFilter>RUT_FreshFind</ritualObligationTargetFilter>
@@ -87,12 +87,12 @@
     <ritualExplanation>Select a machine the clan found on this ground and has never run: claimed from a ruin, or installed from a find. Switching it on or working at it spends the chance, and so does departure. The machine is destroyed.</ritualExplanation>
   </RitualPatternDef>
 
-  <RitualObligationTargetFilterDef MayRequire="mandrake.rm.ninefold,Ludeon.RimWorld.Ideology">
+  <RitualObligationTargetFilterDef MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RUT_FreshFind</defName>
-    <workerClass>RimMandrake.Ninefold.RM_RitualObligationTargetWorker_FreshFind</workerClass>
+    <workerClass>RimMandrake.Utinni.Rites.RM_RitualObligationTargetWorker_FreshFind</workerClass>
   </RitualObligationTargetFilterDef>
 
-  <RitualBehaviorDef MayRequire="mandrake.rm.ninefold,Ludeon.RimWorld.Ideology">
+  <RitualBehaviorDef MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RUT_NineFaultsBehavior</defName>
     <durationTicks>2500</durationTicks>
     <roles /><!-- Dialog_BeginRitual.CreateRitualRoleAssignments foreach-es behavior.def.roles; null NREs the rite start -->
@@ -111,10 +111,10 @@
     </stages>
   </RitualBehaviorDef>
 
-  <RitualOutcomeEffectDef MayRequire="mandrake.rm.ninefold,Ludeon.RimWorld.Ideology">
+  <RitualOutcomeEffectDef MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RUT_NineFaultsOutcome</defName>
     <description>The ninth fault burns the found machine out; a slag hulk is left where it stood. A poor rite catches fire early.</description>
-    <workerClass>RimMandrake.Ninefold.RM_RitualOutcomeEffectWorker_NineFaults</workerClass>
+    <workerClass>RimMandrake.Utinni.Rites.RM_RitualOutcomeEffectWorker_NineFaults</workerClass>
     <startingQuality>0.3</startingQuality>
     <comps>
       <li Class="RitualOutcomeComp_ParticipantCount">
@@ -157,7 +157,7 @@
       </li>
     </outcomeChances>
     <modExtensions>
-      <li Class="RimMandrake.Ninefold.RM_NineFaultsExtension">
+      <li Class="RimMandrake.Utinni.Rites.RM_NineFaultsExtension">
         <hulkDef>ChunkSlagSteel</hulkDef>
         <excellentTale>RUT_GaveTheNineFaults</excellentTale>
         <poorFireSize>0.6</poorFireSize>

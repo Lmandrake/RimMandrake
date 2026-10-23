@@ -13,13 +13,13 @@ namespace RimMandrake.Aftermath
     // listens. This is the whole point of CHRONICLE_NINEFOLD_DECOUPLE_1: the
     // recorder used to call GameComponent_Ninefold.ApplyDelta directly, which
     // cost this mod a hard modDependency and a compile-time assembly
-    // reference on mandrake.rm.ninefold.
+    // reference on mandrake.rut.rites.
     //
     // 🔴 Type name, method names and the ChronicleEvent field names are a
     // REFLECTION CONTRACT (soft-hook law 3): consumers bind by string and a
     // rename breaks them with no compile error on either side. The gated
     // Aftermath -> RimChronicle rename row must move the consumers' name
-    // strings in the same change; RimMandrake.Ninefold.ChronicleSubscriber
+    // strings in the same change; RimMandrake.Utinni.Rites.ChronicleSubscriber
     // already probes the post-rename name first for that reason.
     public static class ChronicleEvents
     {

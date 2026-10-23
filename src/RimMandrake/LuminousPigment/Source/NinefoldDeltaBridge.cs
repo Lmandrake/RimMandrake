@@ -13,7 +13,7 @@ namespace RimMandrake.LuminousPigment
     // as a normal, silent no-op -- Ninefold is a soft dependency this mod is
     // fully functional without (About.xml).
     //
-    // Verified against src/RimMandrake/Ninefold/Source/GameComponent_
+    // Verified against src/RimUtinni/Rites/Source/GameComponent_
     // Ninefold.cs, God.cs and RM_NinefoldMod.cs: `public static
     // GameComponent_Ninefold Instance`, `public void ApplyDelta(God god, float
     // amount, string reason = null)`, `public float GetSatiation(God god)`,
@@ -25,9 +25,9 @@ namespace RimMandrake.LuminousPigment
     // (the vermilion's Ishko penalty).
     internal static class NinefoldDeltaBridge
     {
-        private const string NinefoldTypeName = "RimMandrake.Ninefold.GameComponent_Ninefold";
-        private const string GodTypeName = "RimMandrake.Ninefold.God";
-        private const string SettingsTypeName = "RimMandrake.Ninefold.RM_NinefoldSettings";
+        private const string NinefoldTypeName = "RimMandrake.Utinni.Rites.GameComponent_Ninefold";
+        private const string GodTypeName = "RimMandrake.Utinni.Rites.God";
+        private const string SettingsTypeName = "RimMandrake.Utinni.Rites.RM_NinefoldSettings";
 
         private static bool resolved;
         private static bool warned;

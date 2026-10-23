@@ -4,7 +4,7 @@
     UI_APPEARANCE_BUILD_1 Tier 2: reflection-set Widgets'/InspectPaneUtility's
     colour fields once at startup. No Harmony - this is a field set, not a patch.
     Every reference is Private=false: nothing but our own DLL may land next to
-    the mod. Same recipe as src/RimMandrake/Ninefold/Source/Ninefold.csproj,
+    the mod. Same recipe as src/RimUtinni/Rites/Source/RimMandrake.Utinni.Rites.csproj,
     minus the Harmony reference this mod does not need.
 
     Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):

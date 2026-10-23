@@ -345,10 +345,17 @@ What was done:
   add one. Q1's gap is now a Rites question, and it closes if Ninefold moves in (option (a) below).
 - The game's copy of `Mods\IshkoDarkLandmarks` still has to be removed at the next deploy. Only a dry run was made.
 
-## Ninefold home (owner question, open)
+## Ninefold home (RULED 2026-10-22 by question card: option (a), fold Ninefold into Salvation Rites; built)
 
 His words also say *"the Nine Gods belong in Salvation Rites. They are NOT a general reuse mod."* The Nine Gods'
-engine is Ninefold. Nothing about Ninefold has been moved: moving it is a bigger change and crosses a naming tier.
+engine was Ninefold. **Ruled and built 2026-10-22** (card: "Ninefold home → fold Ninefold into Salvation Rites"):
+the 32 C# files, the settings screen and the selftest now live in `src/RimUtinni/Rites/Source` (namespace
+`RimMandrake.Utinni.Rites`, DLL `RimMandrake.Utinni.Rites.dll`); the 20 tilts are `RUT_Tilt_*` in
+`Defs/RUT_GodFavourTilts.xml`; `mandrake.rm.ninefold` is retired. Saves keep the gods' favour through a type alias
+(`NinefoldLegacyTypeConverter`, a `BackCompatibilityConverter` at the front of the game's chain, mapping
+`RimMandrake.Ninefold.*` to `RimMandrake.Utinni.Rites.*`), proven offline by `selftest_ninefold_fuzz.py --saves`.
+The live `rites` sitting is owed (ledger: `NINEFOLD_MERGE_NINE_GODS_ONE_ROOF`). The facts and options
+below are the record of the question as it was put.
 
 Facts, measured 2026-10-22:
 
@@ -364,7 +371,7 @@ Facts, measured 2026-10-22:
   - **LuminousPigment** (RimMandrake) and **AftermathRites** (RimUtinni) list it in `loadAfter` only.
   - **Graffiti** (RimMandrake) carries a hook string that a RimUtinni pack reads.
   - It is in the DEV, TEST, AUTHORING and SHIP lists, but not PAINT.
-- **Saves:** 18 of the 34 `CANONICAL_ASHKARR_START_*` saves contain
+- **Saves:** all 18 `CANONICAL_ASHKARR_START_*.rws` saves (34 files counting their `.bak` copies) contain
   `<li Class="RimMandrake.Ninefold.GameComponent_Ninefold">`, and 88 of the 420 saves name "Ninefold". No canonical
   save names an `RM_Tilt_` def. If the class's namespace or name changes, those saves need a type alias (C#
   back-compatibility). Otherwise they lose the Nine's favour state when loaded. No save may be edited.
@@ -396,7 +403,7 @@ Options:
 
 ## Owner answers, 2026-10-22 evening (by question card; owner's words verbatim where quoted)
 
-- Q1 Ishko settings: *"Likely fold this mod into the religion mod of the 9. It's a concept, not a mod."* Later: *"I think the Nine Gods belong in Salvation Rites. They are NOT a general reuse mod."* -> Ishko landmarks moved into Salvation Rites (done; live proof owed). Ninefold's own home is an OPEN owner question: see "Ninefold home".
+- Q1 Ishko settings: *"Likely fold this mod into the religion mod of the 9. It's a concept, not a mod."* Later: *"I think the Nine Gods belong in Salvation Rites. They are NOT a general reuse mod."* -> Ishko landmarks moved into Salvation Rites (done; live proof owed). Ninefold's own home: ruled by card, fold into Salvation Rites (built 2026-10-22; live proof owed): see "Ninefold home".
 - Q2 landmark names: *"I believe it's referring to principles that guide what he is drawn toward or away from."* -> lore only (descriptions already rewritten, 08fd00768).
 - Q3 GSS M4: *"I don't value that the polylines are identical after load. Strike that."* -> done d8b98ae78.
 - Q5 depth engine off: *"...have the depth engine change apply only upon reload ... We shouldn't be supporting live changes to the physics."* -> done d8b98ae78.

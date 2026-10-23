@@ -539,7 +539,7 @@ def t_starwarsraces():
           v.get("xenotype_applies_fragile_genes") == FAIL, (v, d))
 
 
-# ------------------------------------------------------------------ Ninefold
+# ------------------------------------------------------------------ Ninefold  (its suite is in Salvation Rites since 2026-10-22)
 def t_ninefold():
     calls = []
 
@@ -555,7 +555,7 @@ def t_ninefold():
             return {"success": True, "messages": [{"text": "[Ninefold] Zizzik satiation +15.0 (x)"}]}
         return {"success": True}
     w = FakeWatch()
-    v, d = run_chain("Ninefold", "mental_break_started", h, watch=w)
+    v, d = run_chain("Rites", "mental_break_started", h, watch=w)
     kinds = [k for k, _m, _p in w.declared]
     check("Ninefold: the induced break is declared as a mental expectation", kinds == ["mental"], w.declared)
     m = w.declared[0][1]
@@ -566,7 +566,7 @@ def t_ninefold():
     check("Ninefold: component still measured", v.get("mental_break_ledger") == PASS, (v, d))
 
     calls[:] = []
-    v, d = run_chain("Ninefold", "building_repaired_and_deconstructed", h)
+    v, d = run_chain("Rites", "building_repaired_and_deconstructed", h)
     dmg = [c for c in calls if c[0] == "jawa/damage"]
     check("Ninefold: the wall is hit with a NON-destructive blunt hit", dmg and dmg[0][1].get("damageDef") == "Blunt", dmg)
     fac = [c for c in calls if c[0] == "jawa/set_thing_props"]
@@ -574,7 +574,7 @@ def t_ninefold():
           fac and fac[0][1].get("faction") == "PlayerColony", fac)
 
     waits = []
-    run_chain("Ninefold", "birth_outcome", h, waits=waits)
+    run_chain("Rites", "birth_outcome", h, waits=waits)
     check("Ninefold: the birth wait covers labor (<=25000) + pushing (<=5000) ticks", sum(waits) >= 30000, waits)
 
 

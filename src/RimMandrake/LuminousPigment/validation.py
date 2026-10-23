@@ -4,7 +4,7 @@ First north-star script (LUMINOUS_PIGMENT_FIRST_SCRIPT_1). Walk: design/validati
 (every `## must be true` line carries an arrow to the component below that covers it). Spec:
 design/RimMandrake/deepfire_luminous_pigment_spec.md. Never deployed (deploy_custom_mods.py excludes `.py`).
 
-TIER. `luminouspigment_ns` (modset_builder.py): bridge + this mod + Ninefold, all five DLCs. Without Ninefold the
+TIER. `luminouspigment_ns` (modset_builder.py): bridge + this mod + Ninefold (Salvation Rites), all five DLCs. Without Ninefold the
 god-delta chain reads UNMEASURED, never PASS.
 
 WHAT IS REUSED. The six `src/RimMandrake/bridgetools/prove_deepfire_*.py` harnesses were PROVEN live 2026-09-30
@@ -1515,7 +1515,7 @@ def _god_check(t, name, rep, table, key="deltas"):
     if not _live(t):
         return
     if not rep.get("ninefold"):
-        _unmeasured(t, "%s: Ninefold is not loaded (the tier must carry mandrake.rm.ninefold)" % name)
+        _unmeasured(t, "%s: Ninefold is not loaded (the tier must carry mandrake.rut.rites, which holds Ninefold)" % name)
     if not rep.get("engineEnabled") or not rep.get("godsReact"):
         _unmeasured(t, "%s: Ninefold engine or godsReact is OFF: %s" % (name, json.dumps(rep)[:200]))
     mult = rep.get("multiplier", 1.0)
@@ -1559,7 +1559,7 @@ def gods(t):
         # StatueGodOf answers null for every god unless Ninefold is loaded (NinefoldDeltaBridge.IsGod), so without
         # it statueGod reads '' -- not a defect in the idol tagging. Say UNMEASURED, as the sibling arms do.
         if _live(t) and not ir.get("ninefold"):
-            _unmeasured(t, "Rekko idol: Ninefold is not loaded (the tier must carry mandrake.rm.ninefold)")
+            _unmeasured(t, "Rekko idol: Ninefold is not loaded (the tier must carry mandrake.rut.rites, which holds Ninefold)")
         _chk(t, ir.get("statueGod") == "Rekko", "idol read as %r, not Rekko" % ir.get("statueGod"))
         tbl = dict((g, STATUE if g == "Rekko" else -ISHKO if g == "Ishko" else LIKE) for g in GODS)
         _god_check(t, "Rekko idol: Rekko +15, Ishko -3, others +3", ir, tbl)

@@ -18,7 +18,7 @@ namespace RimMandrake.Aftermath
     // never fires, exactly like every OTHER Ninefold-tied consumer's null
     // guard already does.
     //
-    // Verified against source, not guessed (src/RimMandrake/Ninefold/Source/
+    // Verified against source, not guessed (src/RimUtinni/Rites/Source/
     // GameComponent_Ninefold.cs, God.cs, SatiationBand.cs): `public static
     // GameComponent_Ninefold Instance`, `public SatiationBand GetBand(God
     // god)`, enum `God` has member `Zizzik`, enum `SatiationBand` is ordered
@@ -26,9 +26,9 @@ namespace RimMandrake.Aftermath
     // `>=` comparison against Content is correct.
     internal static class NinefoldBandBridge
     {
-        private const string NinefoldTypeName = "RimMandrake.Ninefold.GameComponent_Ninefold";
-        private const string GodTypeName = "RimMandrake.Ninefold.God";
-        private const string BandTypeName = "RimMandrake.Ninefold.SatiationBand";
+        private const string NinefoldTypeName = "RimMandrake.Utinni.Rites.GameComponent_Ninefold";
+        private const string GodTypeName = "RimMandrake.Utinni.Rites.God";
+        private const string BandTypeName = "RimMandrake.Utinni.Rites.SatiationBand";
 
         private static bool resolved;
         private static bool warned;

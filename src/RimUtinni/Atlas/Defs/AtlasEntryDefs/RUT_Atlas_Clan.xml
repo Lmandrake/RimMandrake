@@ -166,7 +166,7 @@
     <rewardCount>2</rewardCount>
   </RimMandrake.Utinni.Atlas.AtlasEntryDef>
 
-  <!-- Ninefold (mandrake.rm.ninefold): GameComponent_Ninefold.IsUnveiled(God).
+  <!-- Ninefold (mandrake.rut.rites): GameComponent_Ninefold.IsUnveiled(God).
        Observed by reflection only; the unveiling chain is its own authority. -->
   <RimMandrake.Utinni.Atlas.AtlasEntryDef>
     <defName>RUT_Atlas_OzzikUnveiled</defName>
@@ -179,7 +179,7 @@
     <category>Gods</category>
     <completion>Performed</completion>
     <order>10</order>
-    <subjectPackageId>mandrake.rm.ninefold</subjectPackageId>
+    <subjectPackageId>mandrake.rut.rites</subjectPackageId>
     <triggers>
       <li Class="RimMandrake.Utinni.Atlas.AtlasTrigger_GodUnveiled">
         <god>Ozzik</god>
@@ -200,7 +200,7 @@
     <category>Gods</category>
     <completion>Performed</completion>
     <order>20</order>
-    <subjectPackageId>mandrake.rm.ninefold</subjectPackageId>
+    <subjectPackageId>mandrake.rut.rites</subjectPackageId>
     <triggers>
       <li Class="RimMandrake.Utinni.Atlas.AtlasTrigger_GodUnveiled">
         <god>TaBaa</god>

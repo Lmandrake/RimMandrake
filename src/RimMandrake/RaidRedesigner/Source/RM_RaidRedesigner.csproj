@@ -3,7 +3,7 @@
   <!--
     PLOT_MECHANISM_MODS_WAVE_1 (roster half): GameComponent_OldFriends and its
     eight capture-hook Harmony postfixes. Same recipe as
-    src/RimMandrake/Ninefold/Source/Ninefold.csproj (Harmony via
+    src/RimUtinni/Rites/Source/RimMandrake.Utinni.Rites.csproj (Harmony via
     brrainz.harmony at runtime, never bundled) plus a compile-time reference
     to mandrake.rm.property's own assembly (Patch_TakingResolved.cs patches
     RimMandrake.Property.PropertyEngine.Fire).

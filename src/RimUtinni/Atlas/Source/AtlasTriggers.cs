@@ -324,8 +324,8 @@ namespace RimMandrake.Utinni.Atlas
         public override bool Check() => AtlasCompat.LoreStageOf(ladder) >= minStage;
     }
 
-    // PERFORMED: one of the nine has unveiled itself (mandrake.rm.ninefold's
-    // first-contact chain). `god` is the RimMandrake.Ninefold.God enum name:
+    // PERFORMED: one of the nine has unveiled itself (mandrake.rut.rites's
+    // first-contact chain). `god` is the RimMandrake.Utinni.Rites.God enum name:
     // Ishko, Ohm, Oomo, MobUnloo, Rekko, TaBaa, Zizzik, Shkaar, Ozzik.
     public class AtlasTrigger_GodUnveiled : AtlasTrigger
     {

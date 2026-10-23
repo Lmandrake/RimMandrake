@@ -46,7 +46,7 @@
        hediffRequiredAny, colonistsOnly, ...) that could restrict it to droids
        without a code change, so a Harmony postfix on the private
        Pawn_NeedsTracker.ShouldHaveNeed is the fix. Same HarmonyDll recipe as
-       src/RimMandrake/Ninefold/Source/Ninefold.csproj. -->
+       src/RimUtinni/Rites/Source/RimMandrake.Utinni.Rites.csproj. -->
   <PropertyGroup Condition="'$(HarmonyDll)' == ''">
     <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
   </PropertyGroup>
