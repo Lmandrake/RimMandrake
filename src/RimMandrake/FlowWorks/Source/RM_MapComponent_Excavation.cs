@@ -2077,6 +2077,7 @@ namespace RimMandrake.FlowWorks
 				+ " burned=" + (burnedLevelsTotal * RM_Volume.UnitsPerLevel).ToString("F1")
 				+ " spilled(session)=" + Machinery.RM_LiquidSpill.SpilledUnits
 				+ " toLimitless=" + (limitlessReturnedTotal * RM_Volume.UnitsPerLevel).ToString("F1")
+				+ " | debug(session, dL): dbgAdded=" + LiquidTypes.RM_TankDebugMath.DebugAddedUnits + " dbgRemoved=" + LiquidTypes.RM_TankDebugMath.DebugRemovedUnits
 				+ " | inputs: flowSources=" + (mapControlPouredTotal * RM_Volume.UnitsPerLevel).ToString("F1")
 				+ " fromLimitless(session, exact)=" + limitlessPaidDl * (RM_Volume.UnitsPerLevel / RM_LevelSolve.U)   // review day 2: was never read
 				+ " exits: flowSinks=" + (mapControlDrainedTotal * RM_Volume.UnitsPerLevel).ToString("F1")
