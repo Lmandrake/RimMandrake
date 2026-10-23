@@ -487,6 +487,9 @@ repl = [{"seat": None, "who": "LOST", "started": NOW - 30, "upd": NOW - 5}]
 rr, _, _ = pc.track_incidents(lostr, {}, repl, {}, NOW)
 check("a lost window replaced by a new window of the same name is 'recovered'",
       rr[0]["kind"] == "recovered" and "replaced" in rr[0]["text"], rr)
+s4c, _, _ = pc.collect_snapshot({**raw4, "sessions": []}, st4, NOW + 10)
+check("a recovered occurrence stays recovered when its seat window later closes (no wolf-cry re-raise)",
+      next(r for r in s4c["rows"] if r["key"] == "oom:seat:BENCH")["kind"] == "recovered", s4c["rows"])
 old_hist = {"oom:gone": {"last": NOW - 3 * 86400, "status": "open"}}
 check("incident history older than 48 h is pruned", "oom:gone" not in pc.track_incidents([], old_hist, [], {}, NOW)[1])
 

@@ -163,8 +163,8 @@ function esc(s){ return String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<
 const OLD = 3*86400, OLD_AGE_TAG = 72*3600;
 const LIMIT = {rule:5, look:4};
 // one light per collector; the snapshot's source names mapped to short labels
-const LIGHTS = [['sessions','sessions'],['subagents','agents'],['ledger','ledger'],['hands','hands'],['sheets','sheets'],['probe','game'],['bridge','bridge'],['artpipe','art'],['kernel','kernel'],['memwatch','mem'],['telemetry','tel']];
-const STALE_AFTER = {kernel:90, sessions:30, subagents:30, memwatch:180, ledger:120, artpipe:120, bridge:120, probe:120, sheets:150, hands:30, telemetry:60};
+const LIGHTS = [['sessions','sessions'],['subagents','agents'],['ledger','ledger'],['hands','hands'],['sheets','sheets'],['probe','game'],['bridge','bridge'],['artpipe','art'],['kernel','kernel'],['memwatch','mem'],['services','svc'],['telemetry','tel']];
+const STALE_AFTER = {services:60, kernel:90, sessions:30, subagents:30, memwatch:180, ledger:120, artpipe:120, bridge:120, probe:120, sheets:150, hands:30, telemetry:60};
 // Silence is never health (RIMPULSE_SOURCES_FIX_SILENCE_READS_HEALTHY): a source that is absent or failed
 // is down; one whose read works but whose data is old (s.stale, set by the daemon) is stale. The game
 // probe has no failure mode of its own, so a missing probe is 'stale' (game state unknown), not 'ok'.
@@ -339,7 +339,8 @@ function foldOverflow(){
     more.textContent = `+${hidden.length} more`; }
   more.title = hidden.join('\n'); more.onclick = () => setCollapsed(false);
   function rank(el){ return el.classList.contains('dim') ? 0 : el.classList.contains('chip') ? 1
-    : el.classList.contains('p-look') || el.classList.contains('p-rule') ? 2 : el.classList.contains('p-warn') ? 3 : 4; }
+    : el.classList.contains('p-look') || el.classList.contains('p-rule') || el.classList.contains('p-recovered') ? 2
+    : el.classList.contains('p-warn') ? 3 : 4; }
 }
 
 function online(){ return lastMsg && (Date.now() - lastMsg) < 40000 }
