@@ -1,0 +1,1 @@
+Harness stagers: an undrafted spawned colonist wanders off during step_game_ticks (hold it with order_pawn to its own cell, draft=True); a pump corner case needs its own pump so no neighbouring reel body is edge-adjacent to the corner cell (relay hides corner).
