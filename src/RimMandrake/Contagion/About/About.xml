@@ -107,15 +107,15 @@ replaces described the pre-port donor roster (ten `wildPlants` rows on
 `CONTAGION_RULED_CONTENT_1` Wave A and `CONTAGION_FLORA_PORT_1` replaced the
 whole roster. Current state: `wildAnimals` (23 rows) and `wildPlants` (13
 rows) are entirely `RM_`-owned with one exception, `RM_RustPuff`
-(`MayRequire="mandrake.rm.biomes"`, the composed Baroque Biomes mod that now carries RustPuff). Terrain/
-texture fields still carry no `MayRequire` (inherited unguarded from the
-frozen campaign twin, pre-existing gap, not introduced by this build).
+(`MayRequire="mandrake.rm.biomes"`, the composed Baroque Biomes mod that now carries RustPuff). The terrain
+defs (`RM_AlienSand*`, our ports in `Defs/RM_Contagion_DonorPorts.xml`) and the world texture
+(`World/Biomes/RM_Contagion`) are this mod's own, so they need no `MayRequire`.
 
 NOT in this mod: the Ashfall Research Base and every other campaign plot hook
 (`OCULAR_OVERDRIVE_SITE_1`); F5, "the Contagion die-off ring," which is a
 mechanic of the neighboring Forge biome despite the name and already ships in
-`RimMandrake.EnvironmentalHazards` — its defs stay in RimUtinni pending
-`THEFORGE_RM_MOD_BUILD_1`, not this build.
+`RimMandrake.EnvironmentalHazards`; its creep defs (`RM_DyingCreep`, `RM_DeadCreep`) moved into this
+mod on 2026-10-16 (PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE).
 
 Live proof (step 5, a scratch-world quicktest with all five expansions) is
 Desktop-only and OWED — see the item's own verify record.</description>

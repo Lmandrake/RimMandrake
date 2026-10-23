@@ -5,7 +5,12 @@
     mods!!! Just get it done."). Alpha Biomes (sarg.alphabiomes) defs the frozen campaign twin of the Contagion (RUT_Contagion)
     (src/RimUtinni/UtinniPatches/Defs/BiomeDefs) still named, ported as RM_ defs with the donor's own values so the
     painted planet keeps its ground and flora. Art: StandIn/<donor texPath> marked stand-in copies (art ledger,
-    provenance kind=donor standin=true) until regenerated; texPaths not served by Alpha Biomes are left as they were.
+    provenance kind=donor standin=true) until regenerated; texPaths not served by Alpha Biomes are left as they were
+    (RM_AlienGrass, RM_AlienTree and RM_AlienTree_Polluted draw from UtinniPatches' Textures, so they show only with
+    the campaign layer loaded; RM_Contagion's own roster names none of them).
+    The donors' harvest item GU_RedWood lived in Alpha Animals (retired): no def of it exists any more, so the three
+    trees that yielded it yield vanilla WoodLog (PROVISIONAL, 2026-10-22 review; the dead name was a load-time
+    cross-reference error on every launch).
   -->
   <!-- RM_AlienGrass: port of AB_AlienGrass (Alpha Biomes 1.6/Defs/ThingDefs_Plants/Plants_OcularForest.xml), plain XML copy 2026-10-18 for donor retirement. -->
   <ThingDef ParentName="PlantBase">
@@ -39,9 +44,9 @@
   <ThingDef ParentName="PlantBase">
     <defName>RM_AlienTree</defName>
     <label>ocular tree</label>
-    <description>This outlandish tree is not even 100% carbon based, and it seems to be struggling to grow from exposure to a terrestrial environment. Strange fruits resembling eyeballs hang from the tree, but they are probably not edible. Its wood releases a powerful, sweet scent. Perhaps it can be somehow useful.\n\nPlant details: Ocular Trees are a cultivated plant that also appears in the wild, and it needs minimum terrain fertility of 0.05. Can be harvested for Red Wood. Tree lover ideologies don't much care about chopping down these weird trees.</description>
+    <description>This outlandish tree is not even 100% carbon based, and it seems to be struggling to grow from exposure to a terrestrial environment. Strange fruits resembling eyeballs hang from the tree, but they are probably not edible. Its wood releases a powerful, sweet scent. Perhaps it can be somehow useful.\n\nPlant details: Ocular Trees are a cultivated plant that also appears in the wild, and it needs minimum terrain fertility of 0.05. Can be harvested for wood. Tree lover ideologies don't much care about chopping down these weird trees.</description>
     <descriptionHyperlinks>
-      <ThingDef>GU_RedWood</ThingDef>
+      <ThingDef>WoodLog</ThingDef>
     </descriptionHyperlinks>
     <statBases>
       <MaxHitPoints>200</MaxHitPoints>
@@ -77,7 +82,7 @@
       <soundHarvesting>Harvest_Tree</soundHarvesting>
       <soundHarvestFinish>Harvest_Tree_Finish</soundHarvestFinish>
       <harvestWork>300</harvestWork>
-      <harvestedThingDef>GU_RedWood</harvestedThingDef>
+      <harvestedThingDef>WoodLog</harvestedThingDef>
       <harvestTag>Wood</harvestTag>
       <harvestYield>10</harvestYield>
       <harvestMinGrowth>0.2</harvestMinGrowth>
@@ -102,9 +107,9 @@
   <ThingDef ParentName="PollutionTreeWithStumpBase">
     <defName>RM_AlienTree_Polluted</defName>
     <label>mutated ocular tree</label>
-    <description>This ocular tree has been affected by pollution and mutated in strange ways. Concerningly, it seems to actually be flourishing in these conditions.\n\nPlant details: Mutated ocular trees are a wild plant, and they need minimum terrain fertility of 0.05. Can only grow in polluted terrains. Can be harvested for small amounts of Red Wood. Tree lover ideologies don't much care about chopping down these weird trees.</description>
+    <description>This ocular tree has been affected by pollution and mutated in strange ways. Concerningly, it seems to actually be flourishing in these conditions.\n\nPlant details: Mutated ocular trees are a wild plant, and they need minimum terrain fertility of 0.05. Can only grow in polluted terrains. Can be harvested for small amounts of wood. Tree lover ideologies don't much care about chopping down these weird trees.</description>
     <descriptionHyperlinks>
-      <ThingDef>GU_RedWood</ThingDef>
+      <ThingDef>WoodLog</ThingDef>
     </descriptionHyperlinks>
     <statBases>
       <MaxHitPoints>300</MaxHitPoints>
@@ -142,7 +147,7 @@
       <soundHarvesting>Harvest_Tree</soundHarvesting>
       <soundHarvestFinish>Harvest_Tree_Finish</soundHarvestFinish>
       <harvestWork>800</harvestWork>
-      <harvestedThingDef>GU_RedWood</harvestedThingDef>
+      <harvestedThingDef>WoodLog</harvestedThingDef>
       <harvestTag>Wood</harvestTag>
       <harvestYield>6</harvestYield>
       <harvestMinGrowth>0.4</harvestMinGrowth>
@@ -265,9 +270,9 @@
   <ThingDef ParentName="PlantBase">
     <defName>RM_GlobularPlant</defName>
     <label>globular aberration</label>
-    <description>A sickly pink orb supported by a network of gnarled branches. A reddish sap constantly drips from its wood, and seems to keep insects at bay.\n\nPlant details: Globular aberrations are a wild plant that cannot be cultivated, and it needs minimum terrain fertility of 0.05. Can be harvested for red wood.\n\nBased on artwork by Rob Smyth, https://robsmythart.com/projects</description>
+    <description>A sickly pink orb supported by a network of gnarled branches. A reddish sap constantly drips from its wood, and seems to keep insects at bay.\n\nPlant details: Globular aberrations are a wild plant that cannot be cultivated, and it needs minimum terrain fertility of 0.05. Can be harvested for wood.\n\nBased on artwork by Rob Smyth, https://robsmythart.com/projects</description>
     <descriptionHyperlinks>
-      <ThingDef>GU_RedWood</ThingDef>
+      <ThingDef>WoodLog</ThingDef>
     </descriptionHyperlinks>
     <statBases>
       <MaxHitPoints>200</MaxHitPoints>
@@ -299,7 +304,7 @@
       <soundHarvesting>Harvest_Tree</soundHarvesting>
       <soundHarvestFinish>Harvest_Tree_Finish</soundHarvestFinish>
       <harvestWork>300</harvestWork>
-      <harvestedThingDef>GU_RedWood</harvestedThingDef>
+      <harvestedThingDef>WoodLog</harvestedThingDef>
       <harvestTag>Wood</harvestTag>
       <harvestYield>10</harvestYield>
       <harvestMinGrowth>0.2</harvestMinGrowth>

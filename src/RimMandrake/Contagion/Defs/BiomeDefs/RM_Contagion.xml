@@ -27,12 +27,10 @@
         among 52 unadjudicated multi-homed species; multi-home evictions are
         stopped by owner ruling, so it is not moved or renamed here.
 
-    Everything else — texture, terrain, weather, diseases — is the twin's
-    content unchanged.
-
-    ⚠️ NOT donor-free: terrain/texture entries carry no MayRequire (inherited
-    from the twin, not this build's scope to fix) — see About.xml for the
-    disclosure.
+    Diseases are the twin's content unchanged. Since then: the world texture is
+    our own (World/Biomes/RM_Contagion), the terrains are our ports
+    (RM_AlienSand / RM_AlienSandFine / RM_RichAlienSand, Defs/RM_Contagion_DonorPorts.xml)
+    and the weather is our own Bloom (below), so the def is donor-free.
 
     🔧 FIXED 2026-09-29 (CONTAGION_FINAL_BAN_SWEEP_1): the wildPlants row named
     `RUT_RustPuff` with `MayRequire="mandrake.rut.rotsporekit"` — dead on
@@ -208,8 +206,8 @@
       <!-- Moved here from the Cauldron by the owner's Cauldron sheet notes 2026-10-09 ("This belongs in the Contagion,
            not here... move." / "This creature should be moved to the Contagion."): two donor rows re-admitted on
            his word, after Wave A's donor-out ruling above. Both are our own ports now (Defs/ThingDefs_Races/
-           RM_ContagionBulloos.xml, Phase 0 P3). The MayRequire stays only until our art is installed at our own path:
-           until then their texPath is the donor's. -->
+           RM_ContagionBulloos.xml, Phase 0 P3), on our own art and texPaths since 5ead1e026, so the rows carry no
+           MayRequire. -->
       <RM_OcularJelly>0.5</RM_OcularJelly>  <!-- zhool; our port of AA_OcularJelly -->
       <RM_InfectedAerofleet>0.5</RM_InfectedAerofleet>  <!-- blistered bulloo: a floating ball of gas, an unfortunate visitor become infected; our port of AA_InfectedAerofleet -->
     </wildAnimals>
