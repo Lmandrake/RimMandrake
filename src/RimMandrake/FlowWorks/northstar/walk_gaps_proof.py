@@ -78,8 +78,8 @@ Rows (plot coords from --origin, default 40,40; site rect origin-(2,6) .. +64 x 
   PORTS_CORNER_REFUSED       FLOWWORKS_PUMP_PORTS_REBUILD_ONE_PER_SIDE A4 (walk stop 5), read by RM_NorthstarProofs.ProofPumpPorts.
      scene G: an RM_LiquidPump at (52,4); a pipe on its West side (51,4) and (50,4); reel A built West with its body on the
      East side (footprint (53,4)); reels B (52,-1) and C (55,-1) both laid with their free ends to the South side (52,3) (not
-     North: (52,5) is diagonal to the pipe, which a free end may pick); reel D (58,9) laid to the SE corner (53,3) (reels are
-     2x2: A covers (53..54,4..5), so NE is taken).
+     North: (52,5) is diagonal to the pipe, which a free end may pick); reel D is on a SECOND pump (52,19), laid to its SE corner (53,18) with nothing else in
+     coupling reach (on pump 1 the corner (53,3) touches reel A's body: a relay, corner=0).
      EXPECT W=pipe and E=reel:A:c (a pipe and a hose on two sides, both kept); S holds two
      free ends, exactly one coupled and it is the LOWER thing id (one hose per side); corner>=1 with cornerCoupled=0. The
      ledger A4 text predates the owner's 2026-10-20 correction (pipes join wherever adjacent and never take a port): its
@@ -833,18 +833,26 @@ def scene_ponds(ctx, mine):
 def scene_ports(ctx, mine):
     B, P, row, static, xz = ctx["B"], ctx["P"], ctx["row"], ctx["static"], ctx["xz"]
     pump = P(52, 4)
-    ra, rb, rc, rd = P(53, 4), P(52, -1), P(55, -1), P(58, 9)
+    ra, rb, rc = P(53, 4), P(52, -1), P(55, -1)
+    # PROOF_REELS_FIX_STILL_STAGED_WEST (a): the corner case gets its OWN pump and reel, 15 cells south, with nothing else in
+    # coupling reach. On pump 1 the SE corner (53,3) is edge-adjacent to reel A's body (53,4): reel D's free end coupled to A as
+    # a relay and ProofPumpPorts skips relayed ends (corner=0, live round 2 2026-10-23). Reel D2 stands 7 east of the corner
+    # cell so it faces West with its full straight lead-out, and touches nothing.
+    pump2, rd = P(52, 19), P(60, 19)
+    corner = P(53, 18)                           # pump2's SE corner (diagonal), 2+ cells from every body, pipe and hose end
     ctx["build"]("RM_LiquidPump:%d,%d" % pump, "RM_UniversalPipe:%d,%d" % P(51, 4), "RM_UniversalPipe:%d,%d" % P(50, 4),
                  V.reel_toward(ra, None), V.reel_toward(rb, P(52, 3), roomy=True), V.reel_toward(rc, P(52, 3), roomy=True),
-                 V.reel_toward(rd, P(53, 3), roomy=True))
+                 "RM_LiquidPump:%d,%d" % pump2, V.reel_toward(rd, corner, roomy=True))
     ctx["ticks"](2)
     lays = {}
-    for r, to in ((rb, P(52, 3)), (rc, P(52, 3)), (rd, P(53, 3))):
+    for r, to in ((rb, P(52, 3)), (rc, P(52, 3)), (rd, corner)):
         lays[xz(r)] = B.hp("lay:%d,%d,%d,%d" % (r + to), answer=True)
     ctx["ticks"](2)
     _k, txt = static(NPROOF, "ProofPumpPorts", xz(pump), answer=True)
     sides, nums = ports_parse(txt) if txt.startswith("PUMPPORTS") else ({}, {})
-    det = {"ports": txt[:300], "lays": {k: (v or {}).get("success") for k, v in lays.items()}}
+    _k2, txt2 = static(NPROOF, "ProofPumpPorts", xz(pump2), answer=True)
+    nums2 = ports_parse(txt2)[1] if txt2.startswith("PUMPPORTS") else {}
+    det = {"ports": txt[:300], "cornerPump": txt2[:300], "lays": {k: (v or {}).get("success") for k, v in lays.items()}}
     if "PORTS_PIPE_AND_REEL_ON_SIDES" in mine:
         st, cls = ports_sides_verdict(sides)
         row("PORTS_PIPE_AND_REEL_ON_SIDES", st, det, cls=cls)
@@ -852,7 +860,7 @@ def scene_ports(ctx, mine):
         st, cls = ports_one_per_side_verdict(sides)
         row("PORTS_ONE_HOSE_PER_SIDE", st, det, cls=cls)
     if "PORTS_CORNER_REFUSED" in mine:
-        st, cls = ports_corner_verdict(nums)
+        st, cls = ports_corner_verdict(nums2)
         row("PORTS_CORNER_REFUSED", st, det, cls=cls)
 
 
