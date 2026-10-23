@@ -369,6 +369,7 @@ remember the intent).
 ## Card 14. Shyrack's fourth flying frame has the wrong file name
 
 **ANSWERED 2026-10-22 by question card: option 1, rename the three _44 files to _4.**
+**DONE 2026-10-22:** `git mv` of `Shyrack_Flying_44_{east,north,south}.png` to `_4` in `src/RimStarWars/SWBestiary/Textures/swanimals/Shyrack/`; bytes unchanged, so the art ledger (sha-keyed) reports already-live; no other file cites the old name. Flight state read still owed (never live).
 
 **What was learned.** The Shyrack flyer is set to a 4-frame flying animation. The game looks for frame files `_1`
 to `_4`, but the fourth set of three images is named `_44` (checked: `Shyrack_Flying_1..3` and `Shyrack_Flying_44` in the

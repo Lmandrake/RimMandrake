@@ -35,14 +35,9 @@
   `Shyrack_Dessicated`, and all 12 flying-animation frame textures
   (`Shyrack_Flying_{1,2,3,44}_{south,east,north}`) the donor's own
   PawnKindDef `flyingAnimationFramePathPrefix`/`flyingAnimationFrameCount`
-  fields reference. **Flagged, not fixed**: the donor names its 4th flying
-  frame `Shyrack_Flying_44_<facing>`, not `_4_<facing>` — with
-  `flyingAnimationFrameCount>4</flyingAnimationFrameCount>` RimWorld looks
-  for frame index 4 and won't find it under this naming; this is the
-  donor's own pre-existing asset-naming quirk (present, unchanged, across
-  all 3 facings — not a one-off typo we introduced), ported byte-identical
-  rather than guessed at a rename, matching this item's "verbatim port,
-  don't invent fixes to donor content" convention. Every texPath the def
+  fields reference. **Fixed 2026-10-22 (owner card 14)**: the donor named its 4th flying frame
+  `Shyrack_Flying_44_<facing>`; the three files are renamed `Shyrack_Flying_4_<facing>`
+  so `flyingAnimationFrameCount` 4 resolves (bytes unchanged). Every texPath the def
   references is otherwise present. Sits at Textures/swanimals/Shyrack/.
 
   Wired into the live cast this same pass: per cast_assignment.csv's current
