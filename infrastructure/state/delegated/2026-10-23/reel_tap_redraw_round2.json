@@ -1,0 +1,27 @@
+{
+ "item": "REEL_TAP_CAMERA_REDRAW_STILL_SIDE_ON",
+ "class": "delegated: art judgement",
+ "judge": "naive Opus judge (not the maker), 2026-10-23, round 2 (Modern only)",
+ "brief": "design/RimMandrake/art_judge_brief.md (B3, C2, C3, C6)",
+ "prior": "infrastructure/state/delegated/2026-10-23/reel_tap_redraw.json (Modern stored/laid FIX: pedestal + handwheel)",
+ "evidence": "Transient/reel_tap_redraw_20261023/composites/Modern_stored.png, Modern_laid.png; full-res candidates/Hose/Styles/Modern/*.png",
+ "prior_fix_check": {
+  "pedestal": "RESOLVED. Single round post on a bolted square foot plate in W, N and S, both states; no box base. Matches the 2026-10-15 pick (before art's post-on-plate).",
+  "handwheel": "RESOLVED. North near-hub valve is a spoked handwheel on a chrome body, not a cap."
+ },
+ "maker_flags": {
+  "north_handwheel_faces_viewer": "NOT A DEFECT. Measured on Reel_PumpHookup_north.png: wheel is ~0.56 tall for its width, i.e. a horizontal wheel seen through the ~35deg building camera, same treatment as the W and S wheels; the chrome body below it reads as the valve stub projecting toward the camera.",
+  "south_pipe_covers_post": "NOTE ONLY. The outlet pipe runs in front of the post, which is geometrically correct (near-hub coupling down to the south-edge outlet); the foot plate and post edges still show either side, so the pedestal still reads."
+ },
+ "common_findings": {
+  "C3": "All facings drawn from the ~35deg building camera: W shows the drum side over the plate top; N/S show the near flange as a disk with the far flange and drum foreshortened above it.",
+  "C6": "No bore on any ground-lying pipe. Only the S outlet coupling shows a bore, where it points at the camera at the cell edge (same as the passed looks). W gooseneck side-on.",
+  "C2": "W/N/S agree in size, proportions and red/chrome palette in both states; the reel axis and valve end are consistent across facings (valve opposite the intake).",
+  "hose_meets_outlet": "W and S: coupling ends exactly at the hose marker. N: intake hidden; hose starts at the far flange rim, accepted as in round 1.",
+  "halo_float": "None seen; every part inside the footprint and grounded on the plate."
+ },
+ "verdicts": [
+  {"candidate": "Modern stored", "verdict": "PASS", "notes": "Pedestal and handwheel restored; facings agree."},
+  {"candidate": "Modern laid", "verdict": "PASS", "notes": "Same frame/pedestal as stored; remaining wraps and chrome core read correctly in N/S."}
+ ]
+}
