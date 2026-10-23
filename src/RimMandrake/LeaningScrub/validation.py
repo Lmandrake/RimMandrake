@@ -1117,9 +1117,9 @@ def gale_chain(t):
                 own = t.bridge_call("jawa/set_thing_props", thing=ids["turbine"], faction="PlayerColony")
                 if _live(t) and "faction" not in json.dumps((own or {}).get("changed")):
                     _unmeasured(t, "set_thing_props could not make the turbine player-owned: %r" % (own,))
-                _set(t, "galeTurbineBreakdownMtbDays", 0)     # 0 = never: keep the turbine whole
                 try:
-                    t.wait_ticks(4100)       # the wind ramps into the Gale over the transition
+                    _set(t, "galeTurbineBreakdownMtbDays", 0)     # 0 = never: keep the turbine whole
+                    t.wait_ticks(4100)      # the wind ramps into the Gale over the transition
                     on1 = _turbine_output(t, ids["turbine"])
                     with _setting(t, "galeTurbineSurgeEnabled", False):
                         off = _turbine_output(t, ids["turbine"])
@@ -1353,7 +1353,7 @@ def dripping_chain(t):
                 _note(t, "dripping harvest: venom items / stand standing / inspect",
                       [venom, standing, lines])
                 if venom < 1:
-                    _unmeasured(t, "no venom was harvested in 1200 ticks (job not done): cannot "
+                    _unmeasured(t, "no venom was harvested in 7200 ticks (job not done): cannot "
                                    "judge whether the stand survives")
                 if standing != 1:
                     _fail("the harvest destroyed the dripping stand (drippingRegrowEnabled is ON "
