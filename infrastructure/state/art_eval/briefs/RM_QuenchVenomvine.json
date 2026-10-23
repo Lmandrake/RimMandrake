@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_QuenchVenomvine",
+ "nearest_earth_animal": "bamboo",
+ "earth_body_named": false,
+ "departures": [
+  "cane is near-black, not green or tan",
+  "every hand-span the cane swells into a bulbous knuckle, much fatter than the cane, not a thin bamboo ring-node",
+  "the knuckles have a faint wet slate-blue sheen that stands out against the dull black cane",
+  "the cane is thick and swollen-looking rather than slender and smooth"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:41:57-07:00",
+ "source": "description only (no image)"
+}

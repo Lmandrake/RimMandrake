@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_FE_Plant_ScorchFruit",
+ "nearest_earth_animal": "pine cone",
+ "earth_body_named": true,
+ "departures": [
+  "a solid, seamless woody casing sealed fully shut, with no open scales, seams or gaps like a pine cone's",
+  "the casing split open along irregular heat-burst cracks rather than opening in neat rows or along a hinge",
+  "scorch and char marks on the cracked casing where fire split it",
+  "soft, ripe fruit flesh showing through the cracks, not dry seeds or nut kernels"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:43:00-07:00",
+ "source": "description only (no image)"
+}

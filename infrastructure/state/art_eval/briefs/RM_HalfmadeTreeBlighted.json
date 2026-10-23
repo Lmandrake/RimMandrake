@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_HalfmadeTreeBlighted",
+ "nearest_earth_animal": "dead tree",
+ "earth_body_named": true,
+ "departures": [
+  "The overall silhouette barely reads as a plant: no clear trunk, branches and crown",
+  "Infection growth covers almost the whole form, so far more of it shows than any bark or wood",
+  "Only small scraps of the original tree are left, and they are swallowed by the infected mass",
+  "No healthy foliage or ordinary leaves anywhere on it",
+  "Visibly further overwritten than the standard halfmade tree, with a larger share of infected surface"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:41:10-07:00",
+ "source": "description only (no image)"
+}

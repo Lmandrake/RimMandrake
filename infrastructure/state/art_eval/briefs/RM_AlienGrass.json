@@ -1,0 +1,21 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_AlienGrass",
+ "nearest_earth_animal": "lawn grass",
+ "earth_body_named": true,
+ "departures": [
+  "eye-like orbs, each with a visible iris and pupil, growing on or tipping the blades (the 'ocular' structure)",
+  "blades whose surface reads as non-organic, such as glassy, crystalline or metallic sheen, rather than matte green leaf tissue",
+  "colouring that departs from ordinary chlorophyll green, so the tuft does not read as a terrestrial lawn plant"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:40:41-07:00",
+ "source": "description only (no image)"
+}

@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RSW_Plant_Nysyllin_Wild",
+ "nearest_earth_animal": "mint herb",
+ "earth_body_named": true,
+ "departures": [
+  "low, soft-stemmed herbaceous plant, not a woody shrub or tree",
+  "wild growth habit: an irregular, uneven clump rather than a tidy cultivated row plant",
+  "dense harvestable leafy foliage that reads as a medicinal herb crop, with no flowers, fruit or seed heads as the focal point",
+  "must not be a recognisable Earth culinary herb (mint, basil, sage leaf shape); the leaf form should be its own"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:42:45-07:00",
+ "source": "description only (no image)"
+}

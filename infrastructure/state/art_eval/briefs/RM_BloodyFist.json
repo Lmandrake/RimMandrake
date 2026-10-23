@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_BloodyFist",
+ "nearest_earth_animal": "thistle",
+ "earth_body_named": false,
+ "departures": [
+  "bloom head shaped as a clenched fist: tightly closed knuckle-like lobes, not an open flower or a bristly tuft",
+  "dark blood-red blooms packed into the knuckle mass",
+  "armored seed-fist: the head is a hard, plated shell with no soft petals or fluff",
+  "rounded, compact seed-fist that sits loosely on the stalk tip, as if ready to break off and roll",
+  "single spined stalk carrying the fist, with spines along the stem"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:40:48-07:00",
+ "source": "description only (no image)"
+}

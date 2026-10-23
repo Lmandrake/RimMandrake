@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RSW_QuissaBloom",
+ "nearest_earth_animal": "cornflower",
+ "earth_body_named": true,
+ "departures": [
+  "blue petals as the colour that dominates the plant, not a green plant with small blue dots",
+  "a vivid, saturated blue that stands out from the surrounding wild vegetation",
+  "a single wild-growing flowering plant on its own stems and leaves, not a cut bouquet or a potted garden flower",
+  "a large, conspicuous bloom head that reads as the plant's main feature at sprite size"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:42:52-07:00",
+ "source": "description only (no image)"
+}

@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_SheddingVenomvine",
+ "nearest_earth_animal": "bramble",
+ "earth_body_named": false,
+ "departures": [
+  "lopsided stand: the sunward face is bare and the opposite face still carries its thorns",
+  "the bare sunward side is pale, scarred cane, not green leafy stems",
+  "the stand is tall and ragged, with no tidy bush or arching blackberry-cane shape",
+  "a long rust-coloured V of shed thorns fans out downwind across the ground from the plant",
+  "thorns are big enough to read on their own as litter on the ground, not fine bramble prickles"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:42:05-07:00",
+ "source": "description only (no image)"
+}

@@ -1,0 +1,68 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 27.1,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.3268654
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 31.4
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 5.1,
+   "models_reported": [],
+   "cost_usd": 0,
+   "error": "You've hit your session limit \u00b7 resets 1:10pm (America/Los_Angeles)"
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_RedLeaves__GU_RedLeaves",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said good); blocking ['LUMP']; polish ['SCALE_WRONG', 'WANTS_VARIANTS']",
+  "gpt regen: unsettled ['K1'], own blocking ['LUMP']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "plant@v3",
+   "sha": "bf05d6dbb0b8"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "single.png": "a5786a689e54789d8c4a1126d02fb17cac14ffae3b82c643ee6b4590efea9fcd",
+  "scale.png": "0b58a064a6172e006b3a95527c62569ca3568de6be6dac46d99daa974d5ec9e7"
+ }
+}

@@ -1,0 +1,26 @@
+{
+ "run_id": "flora_cauldron_20261023",
+ "test": false,
+ "started": "2026-10-23T10:10:19-07:00",
+ "subjects": [
+  "RM_BloodBouquet__RM_BloodBouquet_a",
+  "RM_CrystalFlower__RM_CrystalFlower_a",
+  "RM_DarkCrust__RM_DarkCrust_a",
+  "RM_Fexxil__RM_Fexxil",
+  "RM_GiantAgariTox__RM_GiantAgariTox_a",
+  "RM_GiantToxicFlower__RM_GiantToxicFlower_a",
+  "RM_Ixalith__RM_Ixalith",
+  "RM_KeeningCordax__RM_KeeningCordax_a_a",
+  "RM_KeeningCordax__RM_KeeningCordax_a_b",
+  "RM_KeeningCordax__RM_KeeningCordax_a_c",
+  "RM_Kissaveth__RM_Kissaveth",
+  "RM_RavenNettle__RM_RavenNettle_a",
+  "RM_RedBugloss__RM_RedBugloss_a",
+  "RM_Selvix__RM_Selvix",
+  "RM_Sessarix__RM_Sessarix",
+  "RM_Tsevrix__RM_Tsevrix",
+  "RM_TwistingThornwood__TwistingThornwood_a",
+  "RM_Xithess__RM_Xithess_a"
+ ],
+ "versions_key": "departures_brief@v2#9cda88+gpt_targeted_second_look@v1#cb6e32+opus_first_pass@v1#140565+preamble@v1#a48502+regen_prompt_edit@v1#861700+severity@v3#950903+creature@v2#16a385"
+}

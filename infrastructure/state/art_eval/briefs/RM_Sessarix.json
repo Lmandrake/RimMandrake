@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Sessarix",
+ "nearest_earth_animal": "puffball fungus",
+ "earth_body_named": false,
+ "departures": [
+  "glossy, wet-looking amber-orange resin skin, not a matte or dusty fungal surface",
+  "a tar-black core visible through the translucent resin skin",
+  "boils that swell up out of cracks in the stone or slag, with no stalk, cap, gills or root base",
+  "a cluster of uneven blisters fused to cracked rock, not separate round bodies",
+  "growing on bare rock or ruined masonry with no soil, moss or leaf litter around it"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:40:33-07:00",
+ "source": "description only (no image)"
+}

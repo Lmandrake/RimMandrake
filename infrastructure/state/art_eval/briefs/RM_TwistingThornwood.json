@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_TwistingThornwood",
+ "nearest_earth_animal": "thorn tree",
+ "earth_body_named": true,
+ "departures": [
+  "trunk wrung into a tight corkscrew spiral rather than growing straight or merely gnarled",
+  "trunk armoured all over in dense hard grey thorns, not bark with scattered spines",
+  "metallic, solder-like sweat oozing from every split in the bark",
+  "dried metallic streaks set into the bark and grain like solder seams"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:40:31-07:00",
+ "source": "description only (no image)"
+}

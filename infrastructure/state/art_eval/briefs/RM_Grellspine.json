@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Grellspine",
+ "nearest_earth_animal": "bramble",
+ "earth_body_named": true,
+ "departures": [
+  "short, low-growing form: a squat mound kept close to the ground, not a tall bush or climbing vine",
+  "dense, tough tangle of interlocking branches with no open gaps or visible central trunk",
+  "thorns covering every branch, thick and prominent enough to see at sprite scale",
+  "branches that look hardened and toxin-adapted, as if grown in polluted ground, rather than green and leafy like a healthy shrub"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:41:43-07:00",
+ "source": "description only (no image)"
+}

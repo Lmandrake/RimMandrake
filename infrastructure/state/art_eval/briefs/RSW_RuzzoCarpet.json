@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RSW_RuzzoCarpet",
+ "nearest_earth_animal": "moss",
+ "earth_body_named": false,
+ "departures": [
+  "deep crimson colour throughout the whole plant, with no green foliage",
+  "a low, flat mat that hugs the ground like a carpet rather than standing as an upright plant",
+  "a dense, continuous rug-like surface instead of separate leaves, fronds or tufts",
+  "no visible stalks, flowers or trunk rising above the mat"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:42:49-07:00",
+ "source": "description only (no image)"
+}

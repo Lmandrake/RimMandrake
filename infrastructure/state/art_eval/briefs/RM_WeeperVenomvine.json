@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_WeeperVenomvine",
+ "nearest_earth_animal": "bramble",
+ "earth_body_named": false,
+ "departures": [
+  "every cane tip ends in a hanging bead of brown, old-tea-coloured liquid instead of a leaf, flower or berry",
+  "the ground directly beneath the plant is dark and glistening wet",
+  "a ring of dark pools encircles the plant at its base",
+  "the soil inside the ring is bare, with no green growth"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:42:30-07:00",
+ "source": "description only (no image)"
+}

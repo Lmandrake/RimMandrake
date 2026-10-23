@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Sapblister",
+ "nearest_earth_animal": "barrel cactus",
+ "earth_body_named": false,
+ "departures": [
+  "body is one swollen, globular mass, puffed up like a bloated sac rather than a ribbed column or sphere",
+  "the skin is covered in raised blisters instead of the even ribs and spine rows a cactus has",
+  "red sap weeps from the blisters, showing as glossy beads, runs and streaks down the skin",
+  "the red sap is thick and visibly viscous, pooling or crusting where it has run instead of dripping thin"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:41:24-07:00",
+ "source": "description only (no image)"
+}

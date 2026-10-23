@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Ixalith",
+ "nearest_earth_animal": "reeds",
+ "earth_body_named": false,
+ "departures": [
+  "thin black wire-like stalks instead of green, fibrous plant stems",
+  "translucent films stretched across the gaps between neighbouring stalks, like soap skins",
+  "each film banded in shifting oil-slick iridescent colour rather than flat pigment",
+  "no leaves, flowers, seed heads or catkins; the only structures are the bare stalks and the films between them"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:40:18-07:00",
+ "source": "description only (no image)"
+}

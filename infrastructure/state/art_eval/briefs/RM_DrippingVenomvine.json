@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_DrippingVenomvine",
+ "nearest_earth_animal": "bramble",
+ "earth_body_named": false,
+ "departures": [
+  "amber, translucent liquid beads hanging in rows along the full length of every cane, not clustered berries or fruit",
+  "canes visibly wet and glistening, with venom pooled and dripping from them",
+  "thorns on the canes that are swollen or overfull with venom, beads forming at the thorn tips",
+  "a stand tall enough that a person works underneath it, canes arching overhead rather than a low hedge"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:41:38-07:00",
+ "source": "description only (no image)"
+}

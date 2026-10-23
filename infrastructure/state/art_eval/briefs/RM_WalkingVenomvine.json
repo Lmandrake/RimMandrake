@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_WalkingVenomvine",
+ "nearest_earth_animal": "bramble",
+ "earth_body_named": false,
+ "departures": [
+  "The whole stand is a long, low wedge, tall at one end and sloping down to ground level at the other, not a round mound or a thicket of arching canes",
+  "The tall cane at the tail is black and about as high as a man, not green or brown",
+  "The low end is a fringe of thin rust-ochre runners lying flat on the ground, not upright shoots or arching stems",
+  "Its height drops steadily from the black cane down to the runners, so the stand has a clear direction rather than looking the same all round",
+  "The oldest cane at the far tail end is dying back, so the tall end looks old and withered and the low end looks new"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:42:31-07:00",
+ "source": "description only (no image)"
+}

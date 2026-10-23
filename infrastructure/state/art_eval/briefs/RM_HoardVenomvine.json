@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_HoardVenomvine",
+ "nearest_earth_animal": "bramble bush",
+ "earth_body_named": false,
+ "departures": [
+  "canes coil inward into a closed, fist-like knot instead of arching outward the way a bramble's do",
+  "squat, compact mass about as tall as a man, with no sprawling runners or trailing stems",
+  "canes are entirely black, with no green leaves, flowers or berries showing",
+  "scrap metal, a rifle, gear and clothing are visibly grown into the canes and partly swallowed by them, not just lying on top",
+  "cold metallic glints show from deep inside the tangle, so it reads as a nest packed with scrap"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:41:48-07:00",
+ "source": "description only (no image)"
+}

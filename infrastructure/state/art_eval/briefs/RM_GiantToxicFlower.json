@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_GiantToxicFlower",
+ "nearest_earth_animal": "lily",
+ "earth_body_named": true,
+ "departures": [
+  "oversized bloom, far larger than any garden flower and towering over a pawn",
+  "lurid toxic-green petals, not the white, pink or red of an Earth flower",
+  "faint venomous droplets beading and oozing from the petal surfaces",
+  "a single solitary plant with no leaves, buds or companion stems clustered around it",
+  "dead matter (remains or decayed debris) lying in the ground at its base that feeds it"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:40:18-07:00",
+ "source": "description only (no image)"
+}

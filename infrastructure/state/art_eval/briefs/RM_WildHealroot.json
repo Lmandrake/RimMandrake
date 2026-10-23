@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_WildHealroot",
+ "nearest_earth_animal": "ginseng",
+ "earth_body_named": false,
+ "departures": [
+  "the harvestable medicinal root is visibly exposed at the base, as the name 'healroot' implies, not hidden underground like a ginseng root",
+  "a low, compact, stunted growth habit that reads as slow-growing, not a tall, open, leafy herb",
+  "thick, tough-looking stems and leaves that read as a hardier wild form than the domesticated healroot",
+  "an irregular, untamed wild shape rather than the neat, symmetrical form of a cultivated crop plant"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:42:39-07:00",
+ "source": "description only (no image)"
+}

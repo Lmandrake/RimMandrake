@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Lashgrass",
+ "nearest_earth_animal": "grass",
+ "earth_body_named": false,
+ "departures": [
+  "filaments are red, with no green anywhere",
+  "fine thread-like filaments instead of flat grass blades",
+  "low, even carpet of filaments hugging the ground, not upright tufts or clumps",
+  "filaments bent back and recoiling away from a central point, forming a ring or wave spreading outward across the carpet"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:41:11-07:00",
+ "source": "description only (no image)"
+}

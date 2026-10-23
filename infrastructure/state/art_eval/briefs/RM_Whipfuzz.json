@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Whipfuzz",
+ "nearest_earth_animal": "grass",
+ "earth_body_named": true,
+ "departures": [
+  "blades are silver, not green",
+  "blades are very thin and whip-like, finer than ordinary grass blades",
+  "blades lie almost flat to the ground instead of standing upright in tufts",
+  "all blades are swept the same way, as if streaming in wind, forming a low prostrate mat"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:42:39-07:00",
+ "source": "description only (no image)"
+}

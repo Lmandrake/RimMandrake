@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Xithess",
+ "nearest_earth_animal": "palm tree",
+ "earth_body_named": false,
+ "departures": [
+  "trunk is pale (whitish), not brown or grey bark",
+  "only about person-height: a short single trunk, not a tall palm",
+  "crown is small, roughly fistful-sized, sitting on top of the trunk, not a broad canopy",
+  "crown is a fan of very fine, hair-thin filter fronds like a comb, not broad palm leaves or leafy fern fronds",
+  "fronds spread and curl in different directions with no single wind direction, as if reaching through fog"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:40:38-07:00",
+ "source": "description only (no image)"
+}

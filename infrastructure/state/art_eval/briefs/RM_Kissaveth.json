@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Kissaveth",
+ "nearest_earth_animal": "puffball mushroom",
+ "earth_body_named": false,
+ "departures": [
+  "bladders are gas-filled sacs with skins thin enough to be translucent, not opaque fungal flesh",
+  "deep violet fluid visibly pooled inside each bladder, with a visible liquid level that contrasts against the pale lavender skin",
+  "a clump of several separate bladders, each raised on its own short stalk rather than sitting directly on the ground",
+  "pale lavender bladder skin, not white, tan or brown",
+  "no cap, gills, leaves or fruit: the bladder-on-stalk is the whole visible structure"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:40:25-07:00",
+ "source": "description only (no image)"
+}

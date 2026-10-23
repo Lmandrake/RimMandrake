@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_RavenNettle",
+ "nearest_earth_animal": "stinging nettle",
+ "earth_body_named": true,
+ "departures": [
+  "jet-black colour over the whole plant, stalks and leaves alike, with no green",
+  "stalks bristling with fine hairs, each hair visibly barbed or hooked at the tip rather than a straight sting",
+  "a dense hair coat that makes the stalks read as fuzzy or bristly in silhouette",
+  "growing as a thick, tight clump that hides the ground beneath it completely, not as scattered single stems"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:40:24-07:00",
+ "source": "description only (no image)"
+}

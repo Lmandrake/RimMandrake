@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_CrownVenomvine",
+ "nearest_earth_animal": "ivy vine",
+ "earth_body_named": false,
+ "departures": [
+  "grows as one upright, self-standing column taller than a man, not a vine trailing or sprawling over a support",
+  "the column is solid black from base to crown, not a green leafy stem",
+  "a single flower sits only at the very top of the column, with no blooms along its length",
+  "a dense grey cloud of small winged dustflutters swarms around the flowering crown"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:41:33-07:00",
+ "source": "description only (no image)"
+}

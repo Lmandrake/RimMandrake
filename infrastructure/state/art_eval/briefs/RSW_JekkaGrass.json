@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RSW_JekkaGrass",
+ "nearest_earth_animal": "grass",
+ "earth_body_named": true,
+ "departures": [
+  "sparse, widely spaced tufts on bare, barren-looking ground rather than a dense lush sward",
+  "pale, washed-out, low-saturation colouring suited to a dim, low-light habitat rather than vivid lawn green",
+  "short, stunted growth hugging the ground rather than tall waving blades",
+  "dry, wiry, thin blades rather than soft broad leaves"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:42:39-07:00",
+ "source": "description only (no image)"
+}

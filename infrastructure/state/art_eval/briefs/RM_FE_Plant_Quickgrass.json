@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_FE_Plant_Quickgrass",
+ "nearest_earth_animal": "lawn grass",
+ "earth_body_named": true,
+ "departures": [
+  "low, unusually dense mat of blades, thicker and more uniform than any wild grass tuft",
+  "vivid living green growing straight out of black burned ground and grey ash",
+  "blades visibly thick and fleshy with stored food, not thin dry wild-grass blades",
+  "roots out of all proportion to the plant, plunging far below the short blades where soil or the cut edge of the clump shows them"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:42:56-07:00",
+ "source": "description only (no image)"
+}

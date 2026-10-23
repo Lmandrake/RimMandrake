@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_RedBugloss",
+ "nearest_earth_animal": "bugloss",
+ "earth_body_named": true,
+ "departures": [
+  "blooms are deep red, not the blue-violet of Earth bugloss",
+  "blooms are funnel-shaped and grouped in dense clusters, not in a loose coiled spray",
+  "stems are thickly covered in visibly coarse bristles, more than a fine hairy fuzz",
+  "bristles read as hollow tubes (open tips or translucent shafts), not solid hairs",
+  "the red blooms are the only bright colour on the plant against a dull, ashy stem and foliage"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:40:26-07:00",
+ "source": "description only (no image)"
+}

@@ -1,0 +1,25 @@
+{
+ "run_id": "flora_contagion_s1",
+ "test": false,
+ "started": "2026-10-23T10:10:19-07:00",
+ "subjects": [
+  "RM_AlienTree__AB_OcularTreeA",
+  "RM_AlienTree__AB_OcularTreeC",
+  "RM_Bleedleaf__RM_Bleedleaf",
+  "RM_DyingCreep__RM_DyingCreep_a",
+  "RM_Eyebark__RM_Eyebark_b",
+  "RM_Eyebark__RM_Eyebark_d",
+  "RM_GlobularPlant__AB_GlobularPlant",
+  "RM_HalfAlienTree__AB_HalfAlienTreeA",
+  "RM_HalfmadeTree__RM_HalfmadeTree_a",
+  "RM_HalfmadeTree__RM_HalfmadeTree_c",
+  "RM_HalfmadeTreeBlighted__RM_HalfmadeTreeBlighted",
+  "RM_Meatvine__RM_Meatvine",
+  "RM_RedLeaves__GU_RedLeaves",
+  "RM_RustPuff__RustPuff_A",
+  "RM_RustPuff__RustPuff_C",
+  "RM_Sapblister__RM_Sapblister",
+  "RM_Toothmoss__RM_Toothmoss"
+ ],
+ "versions_key": "departures_brief@v2#9cda88+gpt_targeted_second_look@v1#cb6e32+opus_first_pass@v1#140565+preamble@v1#a48502+regen_prompt_edit@v1#861700+severity@v3#950903+creature@v2#16a385"
+}

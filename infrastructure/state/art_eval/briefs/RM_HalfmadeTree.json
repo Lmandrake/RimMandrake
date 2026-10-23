@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_HalfmadeTree",
+ "nearest_earth_animal": "oak tree",
+ "earth_body_named": false,
+ "departures": [
+  "the plant is split into two clearly different halves, each a different alien growth, not one trunk with one canopy",
+  "one half is covered in red, swollen, organic-looking structures instead of bark or leaves",
+  "the other half is gnarled, dark, twisted growth with no green foliage",
+  "a visible ragged front where the red structures eat into and overwrite the dark growth",
+  "neither half shows an ordinary tree shape: no normal trunk-branch-leaf canopy"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:40:58-07:00",
+ "source": "description only (no image)"
+}

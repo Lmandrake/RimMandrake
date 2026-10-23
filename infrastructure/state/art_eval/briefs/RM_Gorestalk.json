@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Gorestalk",
+ "nearest_earth_animal": "cactus",
+ "earth_body_named": false,
+ "departures": [
+  "columns made of soft, glistening, tube-like flesh like stood-up entrails, not woody or waxy plant skin",
+  "ring-shaped bulges and pinches running up each column, like the folds of a gut",
+  "deep visceral red all over, with no green anywhere",
+  "no spines, leaves, needles, flowers or branching arms; each column is a bare upright tube",
+  "tall columns packed close together into a solid wall you cannot see through"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:40:56-07:00",
+ "source": "description only (no image)"
+}

@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_LureVenomvine",
+ "nearest_earth_animal": "bramble",
+ "earth_body_named": false,
+ "departures": [
+  "canes are solid black from base to tip, not green or brown woody stems",
+  "fruit are pale, pearl-white and pearl-lustrous, not dark red or purple berries",
+  "each fruit is a single smooth, soft-skinned orb, not a cluster of drupelets like a blackberry",
+  "the fruit hang down singly among the canes like pendants, not held in upright clusters at branch tips",
+  "the plant forms a dense thicket of black canes, not a single bush or a trailing vine"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:41:52-07:00",
+ "source": "description only (no image)"
+}

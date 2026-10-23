@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_VenomvineThicket",
+ "nearest_earth_animal": "bramble",
+ "earth_body_named": false,
+ "departures": [
+  "built from long horizontal vine runners stacked one over another, not upright arching canes growing from a central root crown",
+  "runners matted and woven into one solid chest-high mass with no gaps between separate plants, like a living wall",
+  "interior completely black and lightless where it shows, with no light coming through the tangle",
+  "thorns along the runners beaded or wet with venomvine sap",
+  "no berries, flowers or open sprays of foliage; the vine-thorn tangle is the whole visible plant"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:42:26-07:00",
+ "source": "description only (no image)"
+}

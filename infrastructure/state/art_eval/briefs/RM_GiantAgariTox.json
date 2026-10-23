@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_GiantAgariTox",
+ "nearest_earth_animal": "fly agaric",
+ "earth_body_named": true,
+ "departures": [
+  "colossal scale: the mushroom towers over and dwarfs the trees beside it",
+  "mottled purple-green cap, not the red-with-white-spots fly agaric cap",
+  "stout stalk with deep visible ridges, not a smooth slender stem",
+  "faint visible haze of spores oozing from the rim of the cap"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:40:14-07:00",
+ "source": "description only (no image)"
+}

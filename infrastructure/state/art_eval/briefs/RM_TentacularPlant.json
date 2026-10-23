@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_TentacularPlant",
+ "nearest_earth_animal": "shrub",
+ "earth_body_named": false,
+ "departures": [
+  "branches are soft, sinuous tentacle-like limbs that curl and droop, not stiff woody twigs",
+  "a distinct blue nodule caps the end of every branch, so the tips read as round blue knobs rather than leaves, buds or flowers",
+  "overall silhouette is a cluster of tentacles rising from the ground, not a leafy, rounded bush crown",
+  "the harvestable tentacular fruit is visible on the plant as tentacle-like growths, not berries or ordinary fruit"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:41:30-07:00",
+ "source": "description only (no image)"
+}

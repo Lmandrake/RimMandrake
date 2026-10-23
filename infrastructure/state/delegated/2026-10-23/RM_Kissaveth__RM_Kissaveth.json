@@ -1,0 +1,68 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 25.0,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.3205976
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 26.7
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 4.0,
+   "models_reported": [],
+   "cost_usd": 0,
+   "error": "You've hit your session limit \u00b7 resets 1:10pm (America/Los_Angeles)"
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Kissaveth__RM_Kissaveth",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said good); blocking ['STYLE_OFF', 'CONSTRUCTED']; polish []",
+  "gpt regen: unsettled ['K1'], own blocking ['STYLE_OFF']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "plant@v3",
+   "sha": "bf05d6dbb0b8"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "single.png": "b9c80d6edee60c3db8d5be80b3c1e3cac47e9652cb213ba6c6b4968c1d0344f5",
+  "scale.png": "c2ad7dd3f8c9e76f403c94011f12962292dd80628334439608c72c15c417c43c"
+ }
+}

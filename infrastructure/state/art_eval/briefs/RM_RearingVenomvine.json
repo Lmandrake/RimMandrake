@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_RearingVenomvine",
+ "nearest_earth_animal": "bramble",
+ "earth_body_named": false,
+ "departures": [
+  "canes are black, not green or brown, with no leaves, thorns, flowers or berries shown",
+  "the stand rears straight up as one flat fan of canes, not a tangled rounded thicket",
+  "the undersides of the canes carry pale, bone-like bands across a black upper surface",
+  "when at rest the canes lie low in long parallel sweeps all angled the same way, not arching and rooting at random",
+  "it stands alone and upright on an open, flat plain with nothing else upright nearby"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:42:01-07:00",
+ "source": "description only (no image)"
+}

@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_TwitcherVenomvine",
+ "nearest_earth_animal": "bamboo",
+ "earth_body_named": false,
+ "departures": [
+  "a clump of whip-thin, flexible canes rather than stiff, jointed upright bamboo poles",
+  "at least one cane held cocked back in a tensed, drawn-whip curve, poised to strike like a rearing snake",
+  "some canes visibly spent: slack, limp and drooping toward the ground, in contrast with the tensed one",
+  "the striking cane ends in a distinct venom-bearing tip, not a leaf, bud or plain taper"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:42:27-07:00",
+ "source": "description only (no image)"
+}

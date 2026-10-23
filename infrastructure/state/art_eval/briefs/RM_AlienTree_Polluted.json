@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_AlienTree_Polluted",
+ "nearest_earth_animal": "tree",
+ "earth_body_named": true,
+ "departures": [
+  "Eye-like ocular organs set visibly into the trunk, branches or canopy as the plant's signature structure",
+  "Mutated, malformed growth: irregular swellings and distorted, asymmetric branching unlike any Earth tree",
+  "Eyes themselves show the mutation: mismatched sizes, clustered or extra eyes rather than an orderly arrangement",
+  "Reads as vigorous and flourishing, not withered or dead, despite plainly growing in polluted ground"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:40:42-07:00",
+ "source": "description only (no image)"
+}

@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Rattlegrope",
+ "nearest_earth_animal": "octopus",
+ "earth_body_named": false,
+ "departures": [
+  "no head, mantle, eyes or beak: the whole creature is a knot of tentacle-like limbs and nothing else",
+  "the limbs are tangled and knotted into one another at the centre, not radiating cleanly from a body",
+  "a round blue nodule sits at the tip of every limb",
+  "the limbs reach up and grope into open air on dry land, not hanging limp or trailing underwater"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:41:12-07:00",
+ "source": "description only (no image)"
+}

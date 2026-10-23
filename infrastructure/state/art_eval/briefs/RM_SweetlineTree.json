@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_SweetlineTree",
+ "nearest_earth_animal": "oak",
+ "earth_body_named": false,
+ "departures": [
+  "deeply rough, coarse bark broken by large polished-smooth worn patches on the trunk where beasts have rubbed",
+  "drifts of shed animal fur piled around the base of the trunk",
+  "fur caught in the bark and matted with resin into felt-like mats on the trunk",
+  "visible resin glistening on the bark and binding the trapped fur",
+  "a single massive ancient trunk standing alone, far larger than any surrounding shrubland growth"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:42:13-07:00",
+ "source": "description only (no image)"
+}

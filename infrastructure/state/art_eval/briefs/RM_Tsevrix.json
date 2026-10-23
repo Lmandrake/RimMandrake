@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Tsevrix",
+ "nearest_earth_animal": "puffball mushroom",
+ "earth_body_named": false,
+ "departures": [
+  "fist-sized inflated bladders, each a swollen sac like a wet paper lantern, with no cap, gills or stem",
+  "waxy, glossy, wet-looking skin, not matte or powdery like fungus",
+  "sulfur-yellow bladders netted with cinnabar-red veining",
+  "a low, loose heap of many bladders spilled at the foot of a stone, not upright individual fruiting bodies"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:40:33-07:00",
+ "source": "description only (no image)"
+}

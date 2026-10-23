@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Pillowmoss",
+ "nearest_earth_animal": "moss",
+ "earth_body_named": false,
+ "departures": [
+  "a fat, swollen, domed cushion with real height and bulk, not a thin flat carpet of moss",
+  "low and squat, hugging the ground as a single rounded mound, with no stems, fronds or upright sprigs",
+  "surface covered in beads of fog water, droplets clearly visible all over the cushion",
+  "a ring of dark, visibly wet ground right around its base that stands out against the dry plain"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:41:53-07:00",
+ "source": "description only (no image)"
+}

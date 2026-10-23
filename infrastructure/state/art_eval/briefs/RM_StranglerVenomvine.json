@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_StranglerVenomvine",
+ "nearest_earth_animal": "wisteria",
+ "earth_body_named": false,
+ "departures": [
+  "canes thin as cord, no thicker than a wrist at any point: no thick woody trunk or swollen base",
+  "canes very long and rope-like, running unbroken from end to end",
+  "canes laid round their support in tight, closely packed turns like coiled rope, not loosely draped or trailing",
+  "grips by winding and tightening around the support: no tendrils, aerial roots or sucker pads",
+  "the support it binds shows strain where the coils bite, such as cracked mortar or a constricted, failing trunk"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-23T09:42:14-07:00",
+ "source": "description only (no image)"
+}
