@@ -1,0 +1,45 @@
+{
+ "subject": "RM_PitGuardrail",
+ "item": "GUARDRAIL_ART_RESKIN_BORROWED_FENCE",
+ "brief": "design/RimMandrake/art_judge_brief.md@3af8e3b3c",
+ "judge_via": "src/RimMandrake/Utils/gpt_consult.py (naive judge, not the maker)",
+ "inputs": "atlas on neutral ground; 96 and 32 px/cell layouts in wood/steel/stone tints; vanilla Fence_Atlas_Smooth (donor); 192 px/cell true-scale run beside vanilla humans; def facts",
+ "rounds": [
+  {
+   "judge_model": "gpt-6",
+   "brief": "design/RimMandrake/art_judge_brief.md@not-provided",
+   "subject": "RM_PitGuardrail",
+   "verdicts": [
+    {
+     "picture": "img00_gr_atlas.png",
+     "facing": "south",
+     "verdict": "REDO",
+     "violated": "B1",
+     "quote": "a clean black outline readable at standard zoom",
+     "seen": "Posts and rails have soft grey edging without a readable black keyline. At 32 px/cell, the thin mid rail and wood-tinted edges merge into the brown ground.",
+     "redo_brief": "Give the painted posts and both rails a clean, restrained black keyline readable at 32 px/cell, preserving the untinted material-multiplication base, linked geometry and current scale."
+    }
+   ],
+   "proposals": [],
+   "round": 1,
+   "note": "round 1 asked UNSURE for missing scale panel first; this is the REDO after inputs were completed"
+  },
+  {
+   "judge_model": "GPT-6",
+   "brief": "design/RimMandrake/art_judge_brief.md@unknown",
+   "subject": "RM_PitGuardrail",
+   "verdicts": [
+    {
+     "picture": "img00_gr_atlas.png",
+     "facing": "south",
+     "verdict": "KEEP",
+     "notes": "Inputs complete. Clean dark outlines remain readable at 32 px/cell without becoming huge keylines. Posts and two rails read clearly; the true-scale panel supports a low guardrail beside vanilla humans. Linked runs and corners join consistently. Neutral shading supports material tinting. No visible perspective, footprint or halo defect. Original painted components assembled by script satisfy E1\u2013E2 and the owner note, \"Yes, make our own\". No sibling keeps; canon and pawn-face checks do not apply. Brief git SHA was not supplied."
+    }
+   ],
+   "proposals": [],
+   "round": 2,
+   "note": "after a 2 px near-black keyline (build_guardrail_atlas.py KEYLINE)"
+  }
+ ],
+ "final": "KEEP"
+}

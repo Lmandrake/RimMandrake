@@ -21,8 +21,6 @@
        N/S/E/W neighbour it faces, auto-turned to the biggest drop when the placed rotation faces none:
        RM_LadderWallMath). It joins its square to that wall square only. Slid down (lowered) it is drawn pressed
        against that wall; slid up (raised) it is drawn lying on the rim beyond it (drawOffset per facing).
-       PLACEHOLDER ART: the old single pictures, turned per facing, until the per-wall set
-       (art_source/Ladder/, RM_LadderHung_* / RM_LadderStowed_*, Graphic_Multi) is ruled on and installed.
        A dug cell is exitable only by a ladder in
        it that lets THIS pawn climb (RM_LadderRules.LadderLetsOut, per
        pawn): raised, it lets nobody out; lowered, it works like a prison
@@ -34,9 +32,7 @@
        It deliberately does NOT change pathing, passability, line of sight
        or escape odds. Anything more is an elevation model in disguise.
 
-       Art: fwart_RM_Ladder from the 2026-10-06 FlowWorks commission (owner:
-       commission versions of ALL FlowWorks art), installed through the art
-       ledger and shown on the review map for his look; not yet ruled on.
+       Art: the wall-rails set below (graphicData comment; art_source/Ladder/v2).
        ================================================================== -->
   <ThingDef ParentName="BuildingBase">
     <defName>RM_Ladder</defName>
@@ -251,7 +247,9 @@
        need (and support existing fences acting this way too)"). A low railing on the lip of a sheer drop: it stops falls
        over its edges (RM_FallRails; any isFence building does the same), never walking along the lip or climbing out.
        Not a fence (isFence would pen animals) and not an edifice (the dig and fill-in designators stay usable on a ledge).
-       Art: vanilla fence art, first pass (a bespoke look is the owner's call: art item GUARDRAIL_ART_RESKIN_BORROWED_FENCE).
+       Art: our own (GUARDRAIL_ART_RESKIN_BORROWED_FENCE, owner card 2026-10-21 "Yes, make our own"): a near-white linked atlas
+       composed by FlowWorks/art_source/Guardrail/build_guardrail_atlas.py, tinted by the stuff like vanilla fence art;
+       only the _Smooth appearance exists, which every stuff appearance falls back to.
        Cost and HP PROVISIONAL. -->
   <ThingDef ParentName="BuildingBase">
     <defName>RM_PitGuardrail</defName>
@@ -259,7 +257,7 @@
     <description>A low railing of posts and a top bar, built on the lip of a sheer drop. Nobody walks off a railed edge, and a blast that would throw someone over it stops them at the rail. People still walk along the lip and climb up past it, and anyone may still jump in on purpose. It does not stop a pit cover giving way. Any fence standing on a lip works the same way.</description>
     <thingClass>Building</thingClass>
     <graphicData>
-      <texPath>Things/Building/Linked/Fence</texPath>
+      <texPath>RimMandrake/FlowWorks/Guardrail</texPath>
       <graphicClass>Graphic_Appearances</graphicClass>
       <linkType>Asymmetric</linkType>
       <linkFlags>
@@ -280,13 +278,7 @@
         <rect>(0.35,0.1,0.3,0.7)</rect>
       </damageData>
     </graphicData>
-    <uiIconPath>Things/Building/Linked/Fence_MenuIcon</uiIconPath>
-    <uiIconPathsStuff>
-      <li>
-        <appearance>Metal</appearance>
-        <iconPath>Things/Building/Linked/FenceMetal_MenuIcon</iconPath>
-      </li>
-    </uiIconPathsStuff>
+    <uiIconPath>RimMandrake/FlowWorks/Guardrail/RM_PitGuardrail_MenuIcon</uiIconPath>
     <altitudeLayer>Building</altitudeLayer>
     <passability>Standable</passability>
     <pathCost>20</pathCost>
@@ -316,7 +308,7 @@
       <expandHomeArea>false</expandHomeArea>
       <ai_chillDestination>false</ai_chillDestination>
       <blueprintGraphicData>
-        <texPath>Things/Building/Linked/Fence_Blueprint</texPath>
+        <texPath>RimMandrake/FlowWorks/GuardrailBlueprint</texPath>
         <graphicClass>Graphic_Appearances</graphicClass>
       </blueprintGraphicData>
     </building>
