@@ -583,8 +583,8 @@ AQ = [fi("CARD_ANSWERED", 900), le("needs", "CARD_ANSWERED", 800, to="owner", re
       le("needs", "REASKED", 600, to="owner", reason="a second question"),
       fi("OLD_WORDS", 900, ownerSaid="file this and ask me", needs="owner"),
       fi("PLAIN_RULE", 900), le("needs", "PLAIN_RULE", 800, to="owner", reason="decide the cap"),
-      fi("A_LOOK", 900), le("needs", "A_LOOK", 800, to="owner", reason="only the L4 in-situ look remains (LOOK, not a ruling)"),
-      fi("L4_ONLY", 900), le("implemented", "L4_ONLY", 800, sha="abc1234", needs="owner",
+      fi("A_LOOK", 900), le("needs", "A_LOOK", 800, to="owner", reason="only the L4 in-situ look remains (LOOK, not a ruling)", evidence="Transient/x_sheet.png"),
+      fi("L4_ONLY", 900), le("implemented", "L4_ONLY", 800, sha="abc1234", needs="owner", evidence="Transient/y_sheet.png",
                              criteria=[{"id": "A1", "level": "L4", "text": "owner opens the rendered sheet and glances at it"}]),
       fi("A_FACT", 900, title="Second test PC: needs its name/address"),
       le("needs", "A_FACT", 800, to="owner", reason="waiting on him"),
@@ -603,9 +603,10 @@ check("a re-ask after his answer is a new question: back on 'to rule'", aq["REAS
 check("his words ON the ask (file --owner-said ... --needs owner) do not count as its answer",
       aq["OLD_WORDS"]["kind"] == "review", aq.get("OLD_WORDS"))
 check("a plain needs=owner ask stays 'to rule'", aq["PLAIN_RULE"]["kind"] == "review", aq.get("PLAIN_RULE"))
-check("'LOOK, not a ruling' on the needs event is a look, not a ruling", aq["A_LOOK"]["kind"] == "look", aq.get("A_LOOK"))
-check("an item owing only an L4 criterion is a look", aq["L4_ONLY"]["kind"] == "look" and aq["L4_ONLY"]["ltype"] == "item look",
-      aq.get("L4_ONLY"))
+check("'LOOK, not a ruling' is a look by class, and with only an item .md to open it is not listed (owner 2026-10-23)",
+      "A_LOOK" not in aq and pc.owner_rulings(AQ)["A_LOOK"]["class"] == "look", aq.get("A_LOOK"))
+check("an item owing only an L4 criterion is a look by class, not listed without an artifact",
+      "L4_ONLY" not in aq and pc.owner_rulings(AQ)["L4_ONLY"]["class"] == "look", aq.get("L4_ONLY"))
 check("an ask for a fact (a PC's name/address) is 'to provide'", aq["A_FACT"]["kind"] == "provide", aq.get("A_FACT"))
 _W = lambda **kw: type("I", (), {"title": kw.get("t", ""), "kind": kw.get("k", "art"), "owed_levels": lambda self: [],
                                "criteria": kw.get("c", []), "outstanding": {c["id"] for c in kw.get("c", [])}})()
@@ -613,6 +614,9 @@ check("a live in-game walkthrough is class 'walk', never a look (owner 2026-10-2
       pc.ask_class(_W(t="Walk the ponds in game with him"), {"reason": "joint walkthrough"})[0] == "walk"
       and pc.ask_class(_W(c=[{"id": "A4", "level": "L4", "text": "owner looks at both in game"}]), {"reason": ""})[0] == "walk",
       pc.ask_class(_W(t="Walk the ponds in game"), {"reason": ""}))
+check("a look whose only link is an item .md or a commit is not listed (owner 2026-10-23: a look is an artifact to open)",
+      not pc._is_artifact_link({"value": "D:\\bench\\items\\X.md"}) and not pc._is_artifact_link({"value": "https://github.com/a/b/commit/abc"})
+      and not pc._is_artifact_link(None) and pc._is_artifact_link({"value": "D:\\Transient\\sheet.html"}))
 check("a sheet or picture to open stays a look", pc.ask_class(_W(t="Water art sheet"), {"reason": "look: sheet"})[0] == "look")
 check("a verb is not a fact: 'address the drift' / 'provide feedback' stay rulings",
       [pc.ask_class(type("I", (), {"title": t, "kind": "task", "owed_levels": lambda self: []})(), {"reason": ""})[0]
@@ -623,7 +627,7 @@ check("unblocking re-asks it fresh, as a plain ask", aq.get("UNPARKED", {}).get(
 check("kind decision is a ruling even when its words mention a sheet", aq["A_DECISION"]["kind"] == "review", aq.get("A_DECISION"))
 st_aq = {p["text"] for p in pc.build_strip(pc.classify_ledger(AQ, NOW - 3600, NOW)[0])}
 check("the strip counts rule / provide / look separately and never counts answered asks",
-      {"◇ 5 to rule", "✎ 1 to provide", "▣ 2 to look at"} <= st_aq, st_aq)   # 5 = 4 + UNPARKED; PARKED never
+      {"◇ 5 to rule", "✎ 1 to provide"} <= st_aq and not any("to look at" in t for t in st_aq), st_aq)   # 5 = 4 + UNPARKED; PARKED never
 check("every to-rule row carries its full reason and its source", all(r.get("full") and r["src"] == "ledger" for r in aq.values()))
 
 # the amber ask: full card text, expires on its tool_result

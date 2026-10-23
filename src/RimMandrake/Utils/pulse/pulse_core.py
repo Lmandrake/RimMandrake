@@ -337,6 +337,12 @@ def ask_class(it, ev: dict) -> tuple[str, str]:
     return klass, why
 
 
+def _is_artifact_link(lk) -> bool:
+    """True when a look row's link is something to open and review: not missing, not an item/spec .md, not a commit."""
+    v = str((lk or {}).get("value") or "")
+    return bool(v) and not v.lower().endswith(".md") and "/commit/" not in v
+
+
 def ask_class_raw(it, ev: dict) -> tuple[str, str]:
     """('rule' | 'look' | 'provide', why) for an open item waiting on the owner. Pure over the item fold.
 
@@ -1060,6 +1066,8 @@ def classify_ledger(ledger: list[dict], since: float, now: float,
                       "iid": iid, "ask": ru.get("class") or "rule", "ask_why": ru.get("class_why"),
                       "answered": an, "src_detail": f"rimflow: {iid} open, needs=owner since {e.get('event')}"})
             if kind == "look":
+                if not _is_artifact_link(lk):
+                    continue            # a look is a thing he OPENS (sheet, image, page); an item .md or a commit is not
                 r.update({"ltype": "item look", "seen_id": None, "group": None, "thumb": False, "opened": False})
             rows.append(r)
     # one line per thing: a later event on the same key replaces the earlier line
