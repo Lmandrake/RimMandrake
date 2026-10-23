@@ -1,0 +1,1 @@
+While the owner walks a save, do not touch the bridge at all, reads included: FOUNDRY's read-only camera/ui polling (get_camera_state, get_ui_state every 30 s) began 06:37:35 PDT and BENCH logged the owner's 'someone automated is moving around the map' at 06:37:51 (causation unproven). An owner walk means hands off; wait on rimflow bridge who, not on the game (2026-10-23).
