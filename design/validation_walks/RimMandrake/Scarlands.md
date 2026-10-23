@@ -33,10 +33,9 @@ Sources: `About/About.xml`, `Source/RM_WarscarMod.cs` (settings class RM_Warscar
 - With `warDustEnabled` a sweep job on a film cell yields `RM_WarDust` (more in crater bowls). → settling.war_dust_sweep (UNMEASURED: needs a live film cell and a pawn)
 - With `warDustBlightCureEnabled` a grower carries one war dust to a blighted crop and cures it. → settling.war_dust_cures_blight (UNMEASURED: needs a sown zone with dev Blight and a grower)
 - `ordnancePerMap` buried shells are film-free and inspectable after a Settling, and defusing one yields a shell. → settling.buried_ordnance_revealed_and_defusable (UNMEASURED: needs a live Settling)
-- Choir defs resolve (ticks, wind on metal, projector hum, pool boil, captured tetchik, tetchik jar and its recipe); `choirEnabled` gates them. → geiger_choir.choir_defs_resolve
+- Choir defs resolve (ticks, wind on metal, projector hum, pool boil); `choirEnabled` gates them. → geiger_choir.choir_defs_resolve
 - Standing over thick glower ticks faster than bare slag, scaled by `choirTickDensity` and capped by `choirTickVolumeCeiling`; `choirVolume` is the one global volume; `choirReducedRepetition` jitters the clicks. → geiger_choir.tick_tempo_follows_glower_density (UNMEASURED: needs a live map with glower)
 - The wind-on-metal layer (`choirWindEnabled`) is silent while the Settling runs and returns after. → geiger_choir.wind_layer_silent_during_settling (UNMEASURED: needs live ruins and a Settling)
-- A caravan carrying `RM_TetchikJar` gets a message before a polluted tile (`choirJarWarnings`). → geiger_choir.jar_caravan_warning (UNMEASURED: needs a live world tile and a caravan)
 - The Warscar mark defs resolve (`RM_WarscarMark`, `RM_WarscarMarkThought`); `markEnabled` gates them. → warscar_mark.mark_defs_resolve
 - A colonist on a Warscar map accrues the mark at `markAccrualPerDay` and it pays the trade offsets (hacking, mech butchery, smelting) when `markTradeBonusesEnabled`. → warscar_mark.mark_accrues_and_pays
 - Past 0.5 the mark never fades below 0.25 while `markFloorEnabled`. → warscar_mark.mark_floor_arms

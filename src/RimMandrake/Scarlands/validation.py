@@ -46,8 +46,7 @@ def settings_fields():
 
 
 DEFAULTS = settings_fields()
-CHOIR_DEFS = ["SoundDef/RM_GeigerTick", "SoundDef/RM_WindOnMetal", "SoundDef/RM_ProjectorHum", "SoundDef/RM_PoolBoil",
-              "ThingDef/RM_CapturedTetchik", "ThingDef/RM_TetchikJar", "RecipeDef/RM_MakeTetchikJar"]
+CHOIR_DEFS = ["SoundDef/RM_GeigerTick", "SoundDef/RM_WindOnMetal", "SoundDef/RM_ProjectorHum", "SoundDef/RM_PoolBoil"]
 SETTLING_DEFS = ["GameConditionDef/RM_Settling", "ThingDef/RM_Filth_SettledFilm", "ThingDef/RM_WarDust",
                  "ThingDef/RM_BuriedOrdnance", "JobDef/RM_SweepWarDust", "JobDef/RM_DefuseOrdnance",
                  "JobDef/RM_TriggerOrdnance", "JobDef/RM_DustBlight", "RecipeDef/RM_StretchDyeWithWarDust"]
@@ -504,11 +503,11 @@ def static_checks():
     if 'Compile Include="RM_GeigerChoir.cs"' not in csproj:
         bad.append("RM_GeigerChoir.cs missing from RM_Warscar.csproj")
     choir = open(os.path.join(HERE, "Source", "RM_GeigerChoir.cs")).read()
-    for needle in ("RM_MapComponent_GeigerChoir", "RM_WorldComponent_JarCaravans", "CompChotrix.All", "RM_Settling",
-                   "choirWindEnabled", "choirJarWarnings", "choirReducedRepetition"):
+    for needle in ("RM_MapComponent_GeigerChoir", "CompChotrix.All", "RM_Settling",
+                   "choirWindEnabled", "choirReducedRepetition"):
         if needle not in choir:
             bad.append("RM_GeigerChoir.cs lacks %s" % needle)
-    for f in ("SoundDefs/RM_GeigerChoir.xml", "ChoirDefs/RM_GeigerChoirDef.xml", "ThingDefs_Items/RM_TetchikJar.xml"):
+    for f in ("SoundDefs/RM_GeigerChoir.xml", "ChoirDefs/RM_GeigerChoirDef.xml"):
         try:
             ET.parse(os.path.join(HERE, "Defs", f))
         except Exception as e:
@@ -517,10 +516,6 @@ def static_checks():
     for n in ("RM_GeigerTick", "RM_WindOnMetal", "RM_ProjectorHum", "RM_PoolBoil"):
         if "<defName>%s</defName>" % n not in snd:
             bad.append("sound def %s missing" % n)
-    if not os.path.exists(os.path.join(HERE, "Textures", "Things", "Item", "RM_TetchikJar.png")):
-        bad.append("RM_TetchikJar texture missing")
-    if "RM_CapturedTetchik" not in open(os.path.join(HERE, "Defs", "ThingDefs_Races", "RM_WarscarFauna.xml")).read():
-        bad.append("tetchik butcherProducts does not yield RM_CapturedTetchik")
     # WARSCAR_LOOSENED_PANEL_BUILD_1
     lp = open(os.path.join(HERE, "Defs", "ThingDefs_Buildings", "RM_LoosenedPanel.xml")).read()
     for needle in ("<defName>RM_LoosenedPanel</defName>", "RimMandrake.Scarlands.RM_Building_LoosenedPanel",
@@ -992,12 +987,6 @@ def _build_suite():
                 return
             _unmeasured(t, "WindSustainerActive false while RM_Settling runs and true again after needs a live map with ancient "
                            "metal in range and a forced Settling")
-        with t.component("jar_caravan_warning", toggle="choirJarWarnings"):
-            if t.session is None:
-                return
-            _unmeasured(t, "a caravan carrying RM_TetchikJar receiving the message approaching a polluted tile needs a live world "
-                           "with a polluted tile and a caravan on a path")
-
     @suite.chain("reload_midstate")
     def reload_midstate(t):
         import time as _time
