@@ -93,12 +93,10 @@ desert roads. That is his decision.
 
 ## 4. Looks that remain after the fixes
 
-- **Biome faces are flat colour fields** (`af7d8b365`, `7a0d4309f`). In September the faces came from World
-  Map Enhanced (`zal.worldmapenhanced`, Workshop 3599967849) and GRimTerra World Map. Both are on the
-  retired lists, not the 324. Putting either back is a cosmetic mod change, which needs his card.
-  Proposal: re-add WME alone, at the next consolidated cold load (+1 mod). Its hill decal sets would
-  also replace the vanilla blots on 49% of tiles. The cost is donor art in the world look, so it must
-  be his call.
+- **Biome faces are our own calm procedural faces** (`0f01bd5f7`, calmed in `fce7ac7b4`), and they read dim and
+  flat. In September the faces came from World Map Enhanced (`zal.worldmapenhanced`, Workshop 3599967849) and
+  GRimTerra World Map. **The owner ruled by card on 2026-10-23 not to re-add WME: we make our own world art.**
+  Three looks for him to choose from: `world_faces_own_art_2026-10-23.md`.
 - **Feature labels** are large at mid zoom (Glass Reach, Twilight Sea, Dew Horn and others overlap the
   globe), as in `wl2_sea_900.png`. Not investigated.
 - **Icon clutter:** about 140 world objects, and Mutator World Icons draws an icon per mutated tile
