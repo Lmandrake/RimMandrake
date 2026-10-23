@@ -463,8 +463,12 @@ moved into the north star; one remains.
 
 **Pipes, ports and hoses**
 - `hose_and_pipe_girth_sensible` — side by side at a pump, a tank, a tap and a sprinkler, with a colonist beside them, a hose and a solid pipe look sized for each other, for the port they enter and for the colonist. *Source: owner 2026-10-18, "we need to do a live game walk of the hoses vs pipes to make sure the diameters are sensible." His numbers for what "sensible" is are owed at the sitting.* **Not accepted — 2026-10-20 he typed:** *"Both pipe and hose art need a better
-  definition of width. Colonists don't have arms. Need an in-game look"*. A width spec is owed, and the bar is judged at
-  an in-game look: `HOSE_PIPE_WALK_JUDGE_GIRTH_IN_GAME`.
+  definition of width. Colonists don't have arms. Need an in-game look"*. The width spec was then ruled by card
+  (2026-10-20: pipe 30 cm, hose half the pipe, cord = GSS wire; `design/RimMandrake/flowworks_line_widths_2026-10-20.md`),
+  and on the 2026-10-21 walk he said *"Make the pipes half as thick. Flexible hoses need to be much thinner too"*
+  (`PIPE_GIRTH_TUNE_HALF_AS_THICK`, `HOSE_GIRTH_TUNE_MUCH_THINNER`). Shipped widths have moved since the card, so the bar
+  is judged at the in-game look in walkthrough save e (§4, C3 hose girth) — `LINE_WIDTH_JUDGE_ARMS_NOT_INCLUDED` — and
+  offered for acceptance at the sitting that ends that walk.
 
 ## anti-guessing notes
 - ✅ **The DRAFT banner that used to open `## north star` was false and is deleted** (2026-09-17).
