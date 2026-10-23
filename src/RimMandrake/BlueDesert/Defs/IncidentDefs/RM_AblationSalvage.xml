@@ -6,7 +6,8 @@
 
   "The line gives back slowly": three variants of one staged incident
   (Source/RM_AblationSalvage.cs) — wreckage, meteoritic metal, a freeze-dried
-  body. Crack (map-wide sound + unlocated message) -> hours later a dark
+  body. Crack (unlocated message; its sounds went with the 2026-10-23 soundscape cut,
+  so crackSound/exposeSound stay unset) -> hours later a dark
   shape under thinning ice, with vekkit and vrisk drawn to it and circling
   -> hours later the ice gives way and the letter arrives.
 

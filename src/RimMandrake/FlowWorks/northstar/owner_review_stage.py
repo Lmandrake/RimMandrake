@@ -771,8 +771,10 @@ def main(argv=None):
             s.w.clear_site(L["hoses_rect"])
     else:
         s.say("  kill hostiles; Clear weather locked")
-        if [r for r in only if r not in ("hoses",) + BARS_ROWS]:      # the same three tests as the live branch above
+        if [r for r in only if r not in OPT_ROWS + BARS_ROWS]:      # the same four tests as the live branch above
             s.say("  clear_site %s" % (L["rect"],))
+        if "picks" in only:
+            s.say("  clear_site %s (picks)" % (L["picks_rect"],))
         if [r for r in only if r in BARS_ROWS]:
             s.say("  clear_site %s (bars)" % (L["bars_rect"],))
         if "hoses" in only:
