@@ -6,11 +6,10 @@
   (our rename/tolerance patches on the donor def are folded in). Departures:
     - wildBiomes dropped (the biome roster casts it); AnimalStatExtension (donor stat defs) dropped.
     - VEF.* comps and VEF_ abilities kept, guarded MayRequire OskarPotocki.VanillaFactionsExpanded.Core (a framework we keep, not the donor).
-    - texPath is OUR final path; the PNGs are owed through artpipe (no donor art is reused). Until the art is
-      installed through the art ledger this def has no picture: ART OWED, never a pass of the art bar.
+    - texPath is OUR final path; our own art is installed (Textures/Things/Pawn/Animal/RM_SikkaSikka/).
     - dessicated donor art and alternate random graphics dropped (vanilla fallback).
     - folded 2 op(s) from src/RimUtinni/UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml
-    - texPath Things/Item/Resource/AA_SilkieSilk -> Things/Item/Resource/RM_SikkaSikkaSilk (ART OWED, RM_SikkaSikkaSilk)
+    - texPath Things/Item/Resource/AA_SilkieSilk -> Things/Item/Resource/RM_SikkaSikkaSilk (our art, installed)
 -->
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_SikkaSikka</defName>

@@ -30,9 +30,11 @@
         RSW_VentStalker — mandrake.rsw.swbestiary) are OUT, per §7 Q11
         ("RimMandrake should not name star wars ever"). They ride
         src/RimUtinni/UtinniPatches/Patches/WildAnimals_Cauldron.xml as
-        PatchOperationAdd onto this def instead. The other 13 rows (Genetic
-        Rim, Alpha Animals, Alpha Memes, Horrors — none Star Wars, Q9) stay
-        inline unchanged.
+        PatchOperationAdd onto this def instead. The other inline rows were
+        donor kinds (Genetic Rim, Alpha Animals, Alpha Memes, Horrors) and are
+        now our own ports (RM_Garsulix, RM_Rhossak/RM_GalledRhossak, RM_Visceral,
+        RM_BedBug, RM_CrystalMit, RM_SikkaSikka, RM_DecayDrake, RM_Bileworm,
+        RM_Mullgoth, RM_Radyak); donors retired 2026-10-18/19.
       - wildPlants: RM_TwistingThornwood and RM_DarkCrust are (RM_TreeMartyr cut, owner 2026-10-18)
         this mod's own plants (Defs/ThingDefs_Plants/RM_CauldronFlora.xml) per
         §7 Q13 ("content wired into two biome mods: duplicate, then diverge" —
@@ -43,18 +45,17 @@
         RM_RedBugloss, RM_GiantAgariTox, RM_KeeningCordax,
         RM_GiantToxicFlower) at the same weights, plus RM_Xithess.
       - wildAnimals (CAULDRON_RULED_CONTENT_1): +3 owned natives (RM_Vexxiss,
-        RM_Zisska, RM_Eskith) and +3 owner-ruled Alpha Animals imports
-        (Plasmorph, LuciferBug, Radyak). The imports override
-        the frozen sheet's no-grazer and ban-9 lines on purpose. Lylek,
-        Skalder and Silooth (RSW_ ports) ride the Utinni patch.
+        RM_Zisska, RM_Eskith) and the owner-ruled Alpha Animals import Radyak,
+        now our port RM_Radyak (Plasmorph and LuciferBug are no longer rows).
+        The import overrides the frozen sheet's no-grazer and ban-9 lines on
+        purpose. Lylek, Skalder and Silooth (RSW_ ports) ride the Utinni patch.
+      - texture: our own World/Biomes/RM_Cauldron (the donor PoisonForest
+        texture is gone).
 
-    Everything else — texture, terrain (Marsh/Riverbank), diseases —
-    is the twin's content unchanged.
-
-    ⚠️ Not fully donor-free: the texture (Biomes/PoisonForest, BiomesPlus) is
-    still the donor's, see About.xml. wildPlants are now all owned (no Alpha
-    Biomes rows remain). The donor wildAnimals rows all carry MayRequire
-    gates and degrade gracefully without them.
+    Terrain (Marsh/Riverbank) and diseases are the twin's content unchanged.
+    Every wildPlants and wildAnimals row is an RM_ def; the three MayRequire
+    gates left name our own mods (mandrake.rut.patches, mandrake.rm.scarlands,
+    mandrake.rsw.swbestiary), not donors.
   -->
 
   <BiomeDef>
@@ -153,8 +154,8 @@
       <RM_Vexxiss>0.02</RM_Vexxiss>  <!-- vexxiss - the armoured living boiler-mound; shear-only vexxith -->
       <RM_Zisska>0.5</RM_Zisska>  <!-- zisska - herd rasper, toxic prized meat, steel on butcher -->
       <RM_Eskith>0.4</RM_Eskith>  <!-- eskith - silent-flock small bird -->
-      <!-- CAULDRON_RULED_CONTENT_1: owner-ruled donor imports (Alpha Animals, Q9 inline). Wired and kept on purpose:
-           overrides the frozen sheet's no-grazer / ban-9 lines. Do not "fix" them back out. -->
+      <!-- CAULDRON_RULED_CONTENT_1: the owner-ruled Alpha Animals import, now our port. Wired and kept on purpose:
+           overrides the frozen sheet's no-grazer / ban-9 lines. Do not "fix" it back out. -->
       <RM_Radyak>0.1</RM_Radyak>  <!-- ossrith; our port of AA_Radyak (DONOR_CODE_PLAIN_PORTS_1), art installed 2026-10-10 -->
     </wildAnimals>
     <coastalWildAnimals />

@@ -6,8 +6,8 @@
   (our rename/tolerance patches on the donor def are folded in). Departures:
     - wildBiomes dropped (the biome roster casts it); AnimalStatExtension (donor stat defs) dropped.
     - VEF.* comps and VEF_ abilities kept, guarded MayRequire OskarPotocki.VanillaFactionsExpanded.Core (a framework we keep, not the donor).
-    - texPath is OUR final path; the PNGs are owed through artpipe (no donor art is reused). Until the art is
-      installed through the art ledger this def has no picture: ART OWED, never a pass of the art bar.
+    - texPath is OUR final path; our own art installed through the art ledger (5ead1e026). The donor's art
+      credit was dropped from the description with the donor art (2026-10-22 review).
     - dessicated donor art and alternate random graphics dropped (vanilla fallback).
     - folded 2 op(s) from src/RimUtinni/UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml
     - folded 5 op(s) from src/RimUtinni/UtinniPatches/Patches/BiomeCastEvictions_WildBiomes.xml
@@ -16,7 +16,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_CrystalMit</defName>
     <label>crystalmit</label>
-    <description>A Crystalmit is a Pebblemit that has been genetically modified to feed on minerals. Crystalmits have a partly silicon-based biology, so they can derive substenance from eating scattered rocks.\n\nCrystalmits were created as a quick way of removing rock rubble from mining operations, but wild ones may prove to be a nuisance for colonies who'd rather use rocks for something useful.\n\nArt by Feroxiious (check her Instagram at https://www.instagram.com/feroxiious/).</description>
+    <description>A Crystalmit is a Pebblemit that has been genetically modified to feed on minerals. Crystalmits have a partly silicon-based biology, so they can derive substenance from eating scattered rocks.\n\nCrystalmits were created as a quick way of removing rock rubble from mining operations, but wild ones may prove to be a nuisance for colonies who'd rather use rocks for something useful.</description>
     <statBases>
       <MoveSpeed>1.8</MoveSpeed>
       <ComfyTemperatureMin>-88.2</ComfyTemperatureMin>
