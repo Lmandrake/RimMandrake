@@ -108,6 +108,8 @@ body.collapsed .sparks{display:none}
 .p-rule{color:var(--cream);box-shadow:inset 0 0 0 1px var(--line)} .p-look{color:var(--lk);box-shadow:inset 0 0 0 1px var(--line)}
 .p-recovered{color:var(--avocado);box-shadow:inset 0 0 0 1px #9aab5f66;cursor:pointer}
 .row.rec .x{color:var(--avocado)} .row.rec .bar{background:var(--avocado)}
+.row.rec.failed .x{color:var(--muted)} .row.rec.failed .bar{background:var(--mustard)}
+.row.rec.held .x{color:var(--faint)} .row.rec.held .bar{background:var(--faint)}
 .p-blind{color:var(--mustard);box-shadow:inset 0 0 0 1px #e0aa3e77}
 .p-more{color:var(--muted);box-shadow:inset 0 0 0 1px var(--line);cursor:pointer}
 body.collapsed .body,body.collapsed .tb{display:none}
@@ -160,7 +162,7 @@ for (const id of ['tb','strip']) $(id).addEventListener('mousedown', e => {
 });
 let snap = null, lastMsg = 0, seenKeys = new Set(), firstPaint = true, es = null;
 const openedHere = new Set();     // look items opened here, drawn opened at once until the next snapshot confirms
-const ex = {};                    // which folds are open: rule, look, ruleOld, lookOld, acked
+const ex = {};                    // which folds are open: rule, look, ruleOld, lookOld, acked, answered, recovered, failed, held
 function lsGet(k){ try { return localStorage.getItem(k) } catch(e){ return null } }
 function lsSet(k,v){ try { localStorage.setItem(k,v) } catch(e){} }
 const pref = JSON.parse(lsGet('pulse.pref') || '{}');
@@ -177,15 +179,15 @@ const OLD = 3*86400, OLD_AGE_TAG = 72*3600;
 const LIMIT = {rule:5, look:4, give:4};
 // every row says where it came from and how old that reading is (owner 2026-10-23: "inaccurate", "stale")
 const SRC_LABEL = {sessions:'window', ledger:'ledger', hands:'hand', sheets:'sheet', kernel:'kernel', memwatch:'mem',
-  telemetry:'tel', probe:'probe', artpipe:'art'};
+  telemetry:'tel', probe:'probe', artpipe:'art', failures:'job'};
 function srcTag(r){ return `<em>${esc(SRC_LABEL[r.src] || r.src || '?')}</em>` }
 function srcTip(r){ const s = snap && snap.sources && snap.sources[r.src];
   return `\nsource: ${r.src_detail || r.src || 'unknown'}` + (s && s.at ? ` · read ${ago(s.at)} ago` : ' · not reporting'); }
 function srcAge(names){ return names.map(n => { const s = snap.sources && snap.sources[n], st = srcState(n);
   return `<span class="sa ${st}" title="${esc(n)} collector: ${st} ${esc(srcWhy(n))}">${esc(SRC_LABEL[n] || n)} ${s && s.at ? ago(s.at) : '—'}</span>`; }).join(' '); }
 // one light per collector; the snapshot's source names mapped to short labels
-const LIGHTS = [['sessions','sessions'],['subagents','agents'],['ledger','ledger'],['hands','hands'],['sheets','sheets'],['probe','game'],['bridge','bridge'],['artpipe','art'],['kernel','kernel'],['memwatch','mem'],['services','svc'],['telemetry','tel']];
-const STALE_AFTER = {services:60, kernel:90, sessions:30, subagents:30, memwatch:180, ledger:120, artpipe:120, bridge:120, probe:120, sheets:150, hands:30, telemetry:60};
+const LIGHTS = [['sessions','sessions'],['subagents','agents'],['ledger','ledger'],['hands','hands'],['sheets','sheets'],['probe','game'],['bridge','bridge'],['artpipe','art'],['kernel','kernel'],['memwatch','mem'],['services','svc'],['telemetry','tel'],['failures','jobs']];
+const STALE_AFTER = {services:60, kernel:90, sessions:30, subagents:30, memwatch:180, ledger:120, artpipe:120, bridge:120, probe:120, sheets:150, hands:30, telemetry:60, failures:30};
 // Silence is never health (RIMPULSE_SOURCES_FIX_SILENCE_READS_HEALTHY): a source that is absent or failed
 // is down; one whose read works but whose data is old (s.stale, set by the daemon) is stale. The game
 // probe has no failure mode of its own, so a missing probe is 'stale' (game state unknown), not 'ok'.
@@ -308,6 +310,12 @@ function render(){
   // broke while he was away, and the evidence says it is fine again: history, never red (incident model)
   const rec = rows.filter(r => r.kind === 'recovered');
   if (rec.length) h += `<div class="more" data-ex="recovered">recovered (${rec.length}) ${ex.recovered ? '▴' : '▾'}</div>` + (ex.recovered ? rec.map(recHTML).join('') : '');
+  // a job failed and nothing waits on it (agent iteration): history, folded, never a pill or a toast
+  const fl = rows.filter(r => r.kind === 'failed');
+  if (fl.length) h += `<div class="more" data-ex="failed" title="build / selftest / artpipe / digest attempts that failed; red only when work stays blocked or output is lost">failed, not blocking (${fl.length}) ${ex.failed ? '▴' : '▾'}</div>` + (ex.failed ? fl.map(r => recHTML(r).replace('row rec', 'row rec failed').replace('↺ ', '· ')).join('') : '');
+  // Nothing reaches the owner unread (owner 2026-10-22): hands with no pre-read and sheets with no pre-review record
+  const held = rows.filter(r => r.kind === 'held');
+  if (held.length) h += `<div class="more" data-ex="held" title="not in 'to look at': nobody recorded reading these first">held back, not pre-read (${held.length}) ${ex.held ? '▴' : '▾'}</div>` + (ex.held ? held.map(r => recHTML({...r, text: r.text + ' — ' + (r.why || '')}).replace('row rec', 'row rec held').replace('↺ ', '◌ ')).join('') : '');
   if (acked.length) h += `<div class="more" data-ex="acked">acknowledged (${acked.length}) ${ex.acked ? '▴' : '▾'}</div>` + (ex.acked ? acked.map(r => redHTML(r, false)).join('') : '');
   const body = $('body'), st = body.scrollTop;
   body.innerHTML = h; body.scrollTop = st;
@@ -471,7 +479,8 @@ function fit(){ const p = api(); if (p && p.set_collapsed) p.set_collapsed(docum
 function toastNew(){ const p = api(); if (!p || !p.toast || !snap) return;
   for (const r of snap.rows) {
     if (r.acked || !r.toast_key || r.toasted_elsewhere) continue;
-    if (r.kind === 'red') p.toast(r.toast_key, 'RimPulse · ' + (r.text.startsWith('OOM') ? 'OOM kill' : r.src === 'sessions' ? 'window lost' : r.src === 'telemetry' ? 'telemetry alarm' : 'alarm'), r.text);
+    // the server names the alarm (toast_title) where it knows better than the row's source does
+    if (r.kind === 'red') p.toast(r.toast_key, 'RimPulse · ' + (r.toast_title || (r.text.startsWith('OOM') ? 'OOM kill' : r.src === 'sessions' ? 'window lost' : r.src === 'telemetry' ? 'telemetry alarm' : 'alarm')), r.text);
     else if (r.kind === 'amber' && r.seat) p.toast(r.toast_key, 'RimPulse · ' + r.who + ' is waiting on you', r.text);
   } }
 

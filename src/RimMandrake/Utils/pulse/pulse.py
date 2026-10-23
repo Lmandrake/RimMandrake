@@ -10,22 +10,33 @@
                                saved dated under D:\\ClaudeWork\\rimmandrake\\dashboard\\digests\\ and
                                shown in the widget. `./pulse back` is the "I'm back" form.
   pulse.py ack <incident> [--noise]
-  pulse.py hand <path-or-url> [--title "what it is"] [--seat BENCH|FOUNDRY]
+  pulse.py hand <path-or-url> --read-by seat:<SEAT>|judge:<model> --caught "<one line>"
+                [--title "what it is"] [--seat BENCH|FOUNDRY]
                                HAND THE OWNER SOMETHING TO LOOK AT. It appears in the widget's
                                "to look at" list (one line, tiny preview for images, an open link,
                                coloured by --seat) until he opens it, which marks it seen. Use it
                                for a thing you deliberately made for his eyes: a contact sheet,
                                a review page, a keeper save, a folder of shots. Relative paths
-                               resolve against the cwd; handing the same target again re-raises it.
-                               Review-sheet servers (Transient/biome_ffar/*.serve.log) need no hand:
-                               pulse lists every live one with its unseen count by itself.
+                               resolve against the cwd. Nothing reaches the owner unread (owner
+                               2026-10-22): --read-by and --caught are required and a missing path is
+                               refused. Re-handing the revision he already opened does not re-open it;
+                               a changed file (a new revision) does.
+                               Review-sheet servers (Transient/biome_ffar/*.serve.log) need no hand: pulse
+                               lists every live one whose sheet has a valid pre-review record
+                               (src/RimMandrake/Utils/art/prereview.py); the rest are "held back".
+  pulse.py withdraw <id> [--by <id|title>]
+                               take a hand back (or mark it superseded); it stays listed, dimmed, uncounted
   pulse.py seen <id>           mark a look item seen without opening it (ids print from `hand`)
+  pulse.py report <task> failed|ok [--cause ..] [--blocks] [--lost] [--seat ..] [--link ..]
+                               one attempt of a build/selftest/artpipe/digest job; red only when work stays
+                               blocked (--blocks, 15 min) or output is lost (--lost); else history
   pulse.py metrics             time-to-notice red, question age, alert precision
   pulse.py refresh             ask the running daemon for a full re-collect now (the widget's ⟳ button)
   pulse.py update [--restart]  fast-forward THIS checkout to origin/main (the dedicated deploy checkout
                                under the agent storage root; refuses a seat clone), restart on new code
 
-State: ~/.local/state/rm-dashboard/ (state.json, pulse_now.json, pulse.jsonl, metrics.jsonl).
+State: ~/.local/state/rm-dashboard/ (state.json and pulse_now.json - daemon only; last_digest.json - `since`
+only; hands.jsonl, failures.jsonl, pulse.jsonl, metrics.jsonl - append-only).
 The widget is src/RimMandrake/Utils/pulse/widget/ (Windows, pywebview).
 """
 from __future__ import annotations
@@ -80,10 +91,27 @@ def load_state() -> dict:
 
 
 def save_json(name: str, obj) -> None:
+    """Atomic replace through a tmp name unique to this process AND thread: two writers sharing one `.tmp`
+    could rename each other's half-written file into place (RIMPULSE_STATE_FIX_TWO_WRITERS_ONE_FILE)."""
     p = _p(name)
-    tmp = p.with_suffix(p.suffix + ".tmp")
+    tmp = p.with_name(f"{p.name}.{os.getpid()}.{threading.get_ident()}.tmp")
     tmp.write_text(json.dumps(obj, ensure_ascii=False))
     os.replace(tmp, p)
+
+
+# ONE WRITER PER FILE (RIMPULSE_STATE_FIX_TWO_WRITERS_ONE_FILE, GPT rec 9): state.json is written only by the
+# daemon process; `pulse.py since` writes only last_digest.json, which the daemon reads on every tick. Before,
+# the digest process rewrote state.json from its own copy, so an ack or seen the daemon saved in between could
+# be lost (the lock was process-local), and both used one `.tmp` name.
+LAST_DIGEST = "last_digest.json"
+
+
+def load_last_digest() -> dict | None:
+    try:
+        d = json.loads(_p(LAST_DIGEST).read_text())
+        return d if isinstance(d, dict) and d.get("rec") else None
+    except (OSError, ValueError):
+        return None
 
 
 ROTATE_BYTES = 32 << 20   # an append-only log past this is renamed <stem>.<YYYYmmdd-HHMMSS-micro>.jsonl and restarted
@@ -120,6 +148,7 @@ class Collector:
         self.sheets: dict = {"at": 0, "rows": []}
         self.tick_lock = threading.Lock()   # one collection at a time: the 5 s loop and a refresh never interleave
         self.last_refresh: dict | None = None
+        self.wake = threading.Event()       # ack/seen ask the ONE loop for an early tick; they never start their own
 
     def _ledger(self) -> list[dict]:
         """Re-read (and re-fold through rimflow's replay) only when a ledger file in either clone moved.
@@ -179,6 +208,7 @@ class Collector:
             self.artpipe = a
         raw["artpipe"] = self.artpipe
         raw["hands"] = src("hands", pc.read_hands) or []
+        raw["failures"] = src("failures", pc.read_failures) or []
         if now - self.sheets["at"] > 45:
             r = src("sheets", pc.read_sheets)
             if r is not None:
@@ -199,13 +229,14 @@ class Collector:
             return self._tick(force)
 
     def _tick(self, force: bool) -> dict:
-        now = time.time()
+        # snapshot time never moves backwards, even if the wall clock steps back (GPT rec 9's check)
+        now = max(time.time(), self.snapshot.get("collected_at") or 0)
         raw = self.gather(now, force)
         with _lock:
-            disk = load_state()   # `pulse.py since` writes the digest fields from another process
-            if ((disk.get("last_digest") or {}).get("at") or 0) > ((self.state.get("last_digest") or {}).get("at") or 0):
-                self.state["last_digest"] = disk["last_digest"]
-                self.state["done_since"] = disk.get("done_since")
+            ld = load_last_digest()   # written by `pulse.py since` (its only file); merged here, by the one writer
+            if ld and (ld["rec"].get("at") or 0) > ((self.state.get("last_digest") or {}).get("at") or 0):
+                self.state["last_digest"] = ld["rec"]
+                self.state["done_since"] = ld.get("done_since")
             snap, new_state, events = pc.collect_snapshot(raw, self.state, now)
             self._notice_metrics(snap, new_state, now)
             snap["digest"] = new_state.get("last_digest")
@@ -263,15 +294,19 @@ class Collector:
         append("metrics.jsonl", {"m": "alarm_ack", "id": inc, "label": label, "actor": actor,
                                  "kind": (row or {}).get("kind"),
                                  "latency_s": round(time.time() - (row or {}).get("since", time.time()))})
-        threading.Thread(target=self.tick, daemon=True).start()
+        self.wake.set()
         return True
 
-
     def seen(self, sid: str) -> bool:
+        """Mark a look opened. For a hand, the revision he opened is kept too: re-handing that same revision
+        does not re-open it, a new one does."""
+        rev = next((r.get("rev") for r in self.snapshot.get("rows", []) if r.get("seen_id") == sid), None)
         with _lock:
             self.state.setdefault("seen_look", {})[sid] = time.time()
+            if rev:
+                self.state.setdefault("seen_rev", {})[sid] = rev
             save_json("state.json", self.state)
-        threading.Thread(target=self.tick, daemon=True).start()
+        self.wake.set()
         return True
 
     def refresh(self, timeout: float = REFRESH_TIMEOUT) -> dict:
@@ -343,22 +378,72 @@ def thumb_bytes(path: str, w: int = 78, h: int = 54) -> bytes | None:
         return None
 
 
-def hand(target: str, title: str | None, seat: str | None) -> dict:
-    """Write one hand-off record (pure file append; the daemon picks it up within 5 s)."""
+READ_BY_RE = re.compile(r"(seat|judge):\S.*")   # the prereview.py vocabulary: the seat that looked, or a naive judge
+
+
+def target_rev(path: str) -> str | None:
+    """A content revision for a handed path: sha1 of the file's bytes (size+mtime past 64 MB), or of a folder's
+    listing (names, sizes, mtimes). None for a url. Re-handing the same revision does not re-open it."""
+    p = Path(path)
+    h = hashlib.sha1()
+    if p.is_file():
+        st = p.stat()
+        if st.st_size > 64 << 20:
+            h.update(f"{st.st_size}:{st.st_mtime_ns}".encode())
+        else:
+            h.update(p.read_bytes())
+    elif p.is_dir():
+        for c in sorted(p.rglob("*")):
+            if c.is_file():
+                st = c.stat()
+                h.update(f"{c.relative_to(p)}:{st.st_size}:{st.st_mtime_ns}\n".encode())
+    else:
+        return None
+    return h.hexdigest()[:12]
+
+
+def hand(target: str, title: str | None, seat: str | None, read_by: str | None = None,
+         caught: str | None = None) -> dict:
+    """Write one hand-off record (pure file append; the daemon picks it up within 5 s). REFUSES (ValueError) a
+    path that does not exist and a hand nobody read first - Nothing reaches the owner unread (owner 2026-10-22):
+    `read_by` is `seat:<SEAT>` or `judge:<model>`, `caught` one line of what was fixed or dropped ('nothing' is
+    a valid answer)."""
+    if not (read_by and READ_BY_RE.fullmatch(read_by.strip())):
+        raise ValueError(f"--read-by {read_by!r}: say who looked at it first, 'seat:<SEAT>' or 'judge:<model>' "
+                         "(Nothing reaches the owner unread, owner 2026-10-22)")
+    if not (caught or "").strip():
+        raise ValueError("--caught is empty: one line of what was fixed or dropped before he sees it ('nothing' is valid)")
     if re.match(r"^https?://", target):
-        tgt, win = target, None
+        tgt, win, rev = target, None, None
     else:
         p = Path(target).expanduser()
         p = p if p.is_absolute() else Path.cwd() / p
         tgt = os.path.normpath(str(p))
-        win = pc.win_path(tgt)
+        if not os.path.exists(tgt):
+            raise ValueError(f"no such target: {tgt} (a hand of a missing file is a delivery problem)")
+        win, rev = pc.win_path(tgt), target_rev(tgt)
     rec = {"id": "hand:" + hashlib.sha1(tgt.encode()).hexdigest()[:10], "target": tgt, "win": win,
-           "title": title or Path(tgt).name or tgt, "seat": (seat or "").upper() or None, "ts": time.time()}
+           "title": title or Path(tgt).name or tgt, "seat": (seat or "").upper() or None, "ts": time.time(),
+           "rev": rev, "read_by": read_by.strip(), "caught": caught.strip()[:200]}
+    append("hands.jsonl", rec)
+    return rec
+
+
+def withdraw(hid: str, superseded_by: str | None = None) -> dict:
+    """Withdraw a hand (or mark it superseded by another hand id / title). It stays listed, dimmed and uncounted,
+    so what he already opened keeps its history."""
+    known = {h["id"]: h for h in pc.read_hands()}
+    if hid not in known:
+        raise ValueError(f"no hand {hid!r} (ids print from `hand`; known: {', '.join(sorted(known)) or 'none'})")
+    rec = {"id": hid, "withdrawn": time.time(), "superseded_by": superseded_by}
     append("hands.jsonl", rec)
     return rec
 
 
 ROOT = Path(__file__).resolve().parents[4]   # the checkout this code runs from
+# what the sparse deploy checkout holds (systemd/install.sh sets the same list): pulse itself, rimflow's fold,
+# and art/ for prereview.py (the "to look at" gate). Files directly in a parent dir (Utils/rmpaths.py) come free.
+SPARSE_DIRS = ("src/RimMandrake/Utils/pulse", "src/RimMandrake/rimflow", "src/RimMandrake/Utils/art")
 _CODE: dict = {}
 
 
@@ -387,6 +472,11 @@ def update_code(root: Path = ROOT, timeout: float = 60) -> dict:
     def git(*a):
         return subprocess.run(["git", "-C", str(root), *a], capture_output=True, text=True, timeout=timeout)
     old = git("rev-parse", "HEAD").stdout.strip()
+    have = set(git("sparse-checkout", "list").stdout.split())
+    if have and not set(SPARSE_DIRS) <= have:   # a dir pulse newly imports from (art/ for prereview.py, 2026-10-23)
+        s = git("sparse-checkout", "set", *SPARSE_DIRS)
+        if s.returncode != 0:
+            raise RuntimeError(f"git sparse-checkout set: rc {s.returncode}: {(s.stderr or s.stdout).strip()[:200]}")
     p = git("pull", "--ff-only", "-q", "origin", "main")
     if p.returncode != 0:
         raise RuntimeError(f"git pull --ff-only: rc {p.returncode}: {(p.stderr or p.stdout).strip()[:200]}")
@@ -464,6 +554,9 @@ def build_digest(snap: dict, since: float, now: float) -> list[dict]:
     for r in rows:   # broke and recovered inside the interval: history he should still hear about
         if r["kind"] == "recovered" and (r.get("since") or 0) >= since and take(r):
             issues.append(line("↺", r))
+    for r in rows:   # a job that failed in the interval and is not blocking anything: history, said once
+        if r["kind"] == "failed" and (r.get("since") or 0) >= since and take(r):
+            issues.append(line("·", r))
     for r in rows:
         if r["kind"] == "warn" and not r.get("acked") and take(r):
             issues.append(line("◆", r))
@@ -479,7 +572,9 @@ def build_digest(snap: dict, since: float, now: float) -> list[dict]:
     looks, look_old = [], []
     for r in rows:
         if r["kind"] == "look" and not r.get("opened") and take(r):
-            (looks if (r.get("since") or 0) >= since else look_old).append(line("▣", r, r.get("title") or r["text"]))
+            (looks if (r.get("since") or 0) >= since else look_old).append(
+                line("▣", r, (r.get("title") or r["text"]) + (" (target missing - a delivery problem)" if r.get("missing") else "")))
+    held = sum(1 for r in rows if r["kind"] == "held")
     done = [line("✓", r, f"{r['who']:<8} {r['text']}") for r in sorted(rows, key=lambda r: r.get("since") or 0)
             if r["kind"] == "done" and (r.get("since") or 0) >= since and take(r)]
     answered = [r for r in rows if r["kind"] == "answered"]
@@ -487,14 +582,18 @@ def build_digest(snap: dict, since: float, now: float) -> list[dict]:
            {"id": "rule", "title": "Needs your verdict or a fact", "lines": asks, "backlog": ask_old,
             "note": (f"{len(answered)} you already answered, an agent still owes the follow-through"
                      if answered else "")},
-           {"id": "look", "title": "To look at", "lines": looks, "backlog": look_old},
+           {"id": "look", "title": "To look at", "lines": looks, "backlog": look_old,
+            "note": f"{held} held back: nobody recorded reading them first" if held else ""},
            {"id": "done", "title": "Done", "lines": done, "backlog": []}]
     return out
 
 
 def make_digest(mode: str, since: float | None = None) -> dict:
     now = time.time()
-    state = load_state()
+    state = load_state()   # read only: this process never writes state.json
+    ld = load_last_digest()
+    if ld and (ld["rec"].get("at") or 0) > ((state.get("last_digest") or {}).get("at") or 0):
+        state["last_digest"] = ld["rec"]   # the daemon may not have merged our last one yet
     if since is not None:
         basis = "the interval you asked for"
     elif mode == "back":
@@ -557,11 +656,7 @@ def make_digest(mode: str, since: float | None = None) -> dict:
     path.write_text("\n".join(md))
     rec = {"at": now, "mode": mode, "since": since, "basis": basis, "path": pc.win_path(str(path)), "head": head,
            "tail": tail, "lines": lines}
-    with _lock:
-        st = load_state()
-        st["last_digest"] = rec
-        st["done_since"] = since
-        save_json("state.json", st)
+    save_json(LAST_DIGEST, {"rec": rec, "done_since": since})   # the daemon merges it into state.json
     append("metrics.jsonl", {"m": "digest", "mode": mode, "since": since, "lines": len(lines),
                              "new": sum(1 for ln in lines if ln["new"])})
     return {"text": "\n".join(text), "path": rec["path"], "rec": rec}
@@ -680,7 +775,8 @@ def daemon() -> None:
     threading.Thread(target=srv.serve_forever, daemon=True).start()
     print(f"pulse: serving http://127.0.0.1:{PORT}/  state {pc.STATE_DIR}", flush=True)
     while True:
-        time.sleep(INTERVAL)
+        col.wake.wait(INTERVAL)   # the ONE collection loop: every INTERVAL, or at once after an ack/seen
+        col.wake.clear()
         try:
             col.tick()
         except Exception as e:  # never die on one bad tick; the snapshot just ages and goes STALE
@@ -815,6 +911,19 @@ def main(argv=None) -> int:
     hd.add_argument("target")
     hd.add_argument("--title")
     hd.add_argument("--seat")
+    hd.add_argument("--read-by", help="who looked at it first: seat:<SEAT> or judge:<model> (required)")
+    hd.add_argument("--caught", help="one line: what was fixed or dropped before he sees it; 'nothing' is valid (required)")
+    wd = sub.add_parser("withdraw")
+    wd.add_argument("id")
+    wd.add_argument("--by", help="the hand id or title that supersedes it")
+    rp = sub.add_parser("report")
+    rp.add_argument("task", help="e.g. build:FlowWorks, selftests:nightly, digest:scheduled")
+    rp.add_argument("status", choices=("failed", "ok"))
+    rp.add_argument("--cause")
+    rp.add_argument("--seat")
+    rp.add_argument("--blocks", action="store_true", help="required work cannot go on without this job")
+    rp.add_argument("--lost", action="store_true", help="the job's output is gone")
+    rp.add_argument("--link", help="a log or output path")
     sn = sub.add_parser("seen")
     sn.add_argument("id")
     mt = sub.add_parser("metrics")
@@ -827,15 +936,22 @@ def main(argv=None) -> int:
     args = ap.parse_args(argv)
     if args.cmd == "daemon":
         daemon()
-    elif args.cmd == "collect":
-        snap = Collector().tick()
+    elif args.cmd == "collect":   # read-only: only the daemon writes state.json / pulse_now.json
+        col, now = Collector(), time.time()
+        snap = pc.collect_snapshot(col.gather(now), col.state, now)[0]
         for r in snap["rows"]:
             print(f"{r['kind']:<10} {r['who']:<9} {r['text']}")
         print(" | ".join(p["text"] for p in snap["strip"]))
     elif args.cmd == "since":
+        import failreport
         mode = "back" if args.back else "scheduled" if args.scheduled else "manual"
         since = parse_since(args.since) if args.since else None
-        d = make_digest(mode, since)
+        try:
+            d = make_digest(mode, since)
+        except Exception as e:   # a scheduled digest never written is output lost: the one red a job earns at once
+            failreport.report(f"digest:{mode}", False, cause=f"{type(e).__name__}: {e}", lost=mode == "scheduled")
+            raise
+        failreport.report(f"digest:{mode}", True)
         if not args.quiet:
             print(d["text"])
         print(f"saved: {d['path']}")
@@ -846,8 +962,25 @@ def main(argv=None) -> int:
                                      headers={"Content-Type": "application/json"})
         print(urllib.request.urlopen(req, timeout=5).read().decode())
     elif args.cmd == "hand":
-        r = hand(args.target, args.title, args.seat)
-        print(f"handed: {r['id']}  {r['title']}  ->  {r['win'] or r['target']}")
+        try:
+            r = hand(args.target, args.title, args.seat, args.read_by, args.caught)
+        except ValueError as e:
+            print(f"hand REFUSED: {e}", file=sys.stderr)
+            return 2
+        print(f"handed: {r['id']}  {r['title']}  ->  {r['win'] or r['target']}  (rev {r['rev'] or '-'}, read by {r['read_by']})")
+    elif args.cmd == "withdraw":
+        try:
+            r = withdraw(args.id, args.by)
+        except ValueError as e:
+            print(f"withdraw REFUSED: {e}", file=sys.stderr)
+            return 2
+        print(f"withdrawn: {r['id']}" + (f" (superseded by {r['superseded_by']})" if r["superseded_by"] else ""))
+    elif args.cmd == "report":
+        import failreport
+        ok = failreport.report(args.task, args.status == "ok", cause=args.cause, seat=args.seat, blocks=args.blocks,
+                               lost=args.lost, link=args.link)
+        print(f"reported {args.task} {args.status}" if ok else "report NOT written (see stderr)")
+        return 0 if ok else 1
     elif args.cmd == "seen":
         import urllib.request
         req = urllib.request.Request(f"http://127.0.0.1:{PORT}/api/seen", method="POST",
