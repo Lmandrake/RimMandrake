@@ -5,7 +5,7 @@ Writes <outdir>/<Look>/UnderCollar.png and UnderPipe.png -- the art Machinery/Un
 machine where a hose is coupled. Each canvas is exactly its quad at 256 px/cell, +u (left -> right) pointing INTO the
 fixture: the collar's left edge is the port point, where the hose's brass coupling face meets it.
 
-  UnderCollar  36 x 80 px (0.140625 x 0.3125 cell): face ring, a groove (the look's accent), the collar body
+  UnderCollar  36 x 80 px (drawn 0.0984375 x 0.21875 cell since UNDERCOUPLER_GIRTH_TUNE; was 0.140625 x 0.3125): face ring, a groove (the look's accent), the collar body
   UnderPipe    32 x 56 px (stretched along, 0.21875 cell wide): a plain cylinder of the look's pipe material
 
 Materials are port_fittings.MATERIALS (coupler colour for the collar, nipple colour for the pipe), so the under-couplers
@@ -25,7 +25,7 @@ import modern_port_fittings as mpf  # noqa: E402
 import port_fittings as pf  # noqa: E402
 
 LOOKS = ("Scrapper", "Industrial", "Modern", "Futuristic")
-COLLAR = (36, 80)   # along, cross (px) -- UnderCouplerGeometry.CollarLength / CollarWidth x 256
+COLLAR = (36, 80)   # along, cross (px) -- sprite canvas; UnderCouplerGeometry draws it at CollarLength x CollarWidth
 PIPE = (32, 56)     # along (stretched), cross -- PipeWidth x 256
 
 

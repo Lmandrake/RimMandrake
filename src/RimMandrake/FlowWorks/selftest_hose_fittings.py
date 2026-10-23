@@ -174,6 +174,22 @@ def hose_half_width():
     return float(m.group(1)) / 4.0 if m else None
 
 
+def hose_coupling_face():
+    """Widest part of a plain (unwidened) hose coupling on a flat hose, cells: HoseMath.FittingSize(FlatVisible, PieceBand,
+    CouplingMax) x CouplingMax -- the modern hose girth the under-coupler collar matches (owner 2026-10-23: "connectors that
+    match the more modern pipe and hose sizes")."""
+    src = open(HOSE_MATH).read()
+    vals = {}
+    for k in ("FlatVisible", "WrapK", "PieceBand", "CouplingMax"):
+        m = re.search(r"\b%s = ([0-9.]+)" % k, src)
+        if not m:
+            return None
+        vals[k] = float(m.group(1))
+    v = vals["FlatVisible"]
+    size = min(v / vals["PieceBand"], 0.95 * vals["WrapK"] * v / vals["CouplingMax"])
+    return size * vals["CouplingMax"]
+
+
 def ports(b, look, dz_table, moves=None):
     """[(side, lane, (x, z))] in footprint coordinates (footprint minimum at 0,0), deduplicated per point. moves: the
     MovedAlong table to apply (None = the C#'s, {} = every lane at its edge midpoint, as before OFF_BODY_PORTS)."""
@@ -482,6 +498,10 @@ def main():
     if dz_table is None or half_w is None or geo is None:
         return 1
     check(geo[2] / 2 >= half_w and geo[1] >= geo[2], "under-coupler pipe spans the hose's half-width and the collar is the wider part")
+    face = hose_coupling_face()
+    check(face is not None and geo[1] <= face + 1e-9,
+          "UNDERCOUPLER_GIRTH_TUNE_PEEKS_PAST_NECK: under-coupler collar (%.4f cell) no wider than a plain hose coupling face (%s cell)"
+          % (geo[1], "%.4f" % face if face else None))
     sanity(half_w)
     defs = load_defs()
     names = sorted(b["def"] for b in defs)
