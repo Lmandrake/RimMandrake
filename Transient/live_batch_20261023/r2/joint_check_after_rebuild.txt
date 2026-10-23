@@ -1,0 +1,9 @@
+map 0: FAIL
+55 joints on 27 reels, tolerance 0.05 cell: 1 gap(s), 0 unmeasured
+  FAIL reel None at [25, 130] rot None pipe_stub          gap 0.000 at - -- known FAIL: C7 pipe west end staged for the future faucet (PIPE_FAUCET_BUILD_TAP_NAME_NOW_FREE)
+map 48: FAIL
+25 joints on 4 reels, tolerance 0.05 cell: 3 gap(s), 0 unmeasured
+  FAIL reel None at [142, 45] rot None pipe_stub          gap 0.000 at - -- pipe end at no port: a stub drawn into nothing
+  FAIL reel [1864471, 1864472] at [116, 43] rot None hose_crossing      gap 0.000 at 1 cell(s) -- laid hoses 1864471 and 1864472 cross flat (D11: no lift or shadow)
+  FAIL reel [1886194, 1886195] at [35, 42] rot None hose_crossing      gap 0.000 at 1 cell(s) -- laid hoses 1886194 and 1886195 cross flat (D11: no lift or shadow)
+JOINT CHECK: FAIL
