@@ -282,8 +282,10 @@ namespace RimMandrake.GimmeSomeSlack.Core
 
         /// <summary>One cell's part of a corridor hash: walkable, door, and (GPT source read 2026-10-06 B7/A13) the route cost
         /// (trees 1.5, water 3), so a tree cut or planted re-plans the cords and hoses through it instead of leaving the old
-        /// route standing until a reload.</summary>
-        internal static ulong CellSig(CordWorld w, Cell c) => CordSig.CellSig(w, c);
+        /// route standing until a reload. CORD_LOOP_UNTANGLE_LASSOED_A_PIPE: a busy cell (a pipe or conduit laid there) is folded
+        /// in too, so building a pipe beside a cord re-lays the loops that would now lasso it (the hose world has no busy
+        /// cells, so its shared CordSig.CellSig formula is untouched).</summary>
+        internal static ulong CellSig(CordWorld w, Cell c) => CordSig.CellSig(w, c) ^ (w.IsBusy(c) ? 1UL << 62 : 0UL);
 
         /// <summary>An edge with a machine at either end is that device's lead: one cord (round 3).</summary>
         public static bool DeviceLead(CordNode a, CordNode b) => (a.IsMachine && a.Machine != null) || (b.IsMachine && b.Machine != null);
