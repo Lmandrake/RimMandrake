@@ -483,7 +483,7 @@ def classify_sessions(sessions: list[dict], extras: dict, seen: dict, items: dic
         if status == "waiting" and seat:
             q = ex.get("question") or s.get("waitingFor") or "waiting"
             label = "asks" if ex.get("question") else "waiting"
-            add(_amber(key, who, f"{who} {label}: {short(q, 90)}", upd, acks, explicit=True, sub=sub), "run")
+            add(_amber(key, who, f"{who} {label}: {short(q, 90)}", upd, acks, explicit=True, sub=sub), "wait")
         elif (status == "idle" and sub == 0 and seat and did and now - upd >= IDLE_AMBER_SECS
               and now - upd < SEAT_WAIT_FADE_SECS):
             add(_amber(key, who, f"{who} finished — idle, waiting for you{doing}", upd, acks,
@@ -823,22 +823,33 @@ def classify_looks(hands: list[dict], sheets: list[dict], seen_look: dict, now: 
     return rows
 
 
-def build_chips(rows: list[dict], now: float) -> list[dict]:
+def build_chips(rows: list[dict], now: float, sessions_ok: bool = True) -> list[dict]:
     """The bottom strip: one small chip per thing that is alive, active first, stale last.
     Seat chips carry the seat; rimworld and mem are plain; idle non-seat windows merge into ONE
-    dim chip at the far right (never a top row)."""
+    dim chip at the far right (never a top row).
+
+    Both seats ALWAYS have a chip (RIMPULSE_SEATS_FIX_WAITING_LOOKS_BUSY): `wait` (a question card is
+    up - it never reads as working), `run`, `stuck`, `idle`, `stale`, `missing` (no window open) or
+    `unknown` (the sessions source failed, so absence proves nothing). The chip carries its running
+    subagent count and, as its title, what each window is doing."""
     chips = []
     wins = [r for r in rows if r.get("win")]
     for seat in SEATS:
         ws = [r["win"] for r in wins if r["win"]["seat"] == seat]
         if not ws:
+            chips.append({"label": seat.lower(), "seat": seat, "state": "missing" if sessions_ok else "unknown",
+                          "n": 0, "agents": 0, "since": 0,
+                          "title": f"no {seat} window open" if sessions_ok
+                          else f"{seat}: unknown - the sessions source is not reporting"})
             continue
         latest = max(w["upd"] for w in ws)
         agents = sum(w["sub"] for w in ws)
-        st = ("run" if any(w["state"] == "run" for w in ws) else "stuck" if any(w["state"] == "stuck" for w in ws)
+        states = {w["state"] for w in ws}
+        st = ("wait" if "wait" in states else "run" if "run" in states else "stuck" if "stuck" in states
               else "idle" if now - latest < SEAT_WAIT_FADE_SECS else "stale")
+        doing = [r["text"] for r in wins if r["win"]["seat"] == seat]
         chips.append({"label": seat.lower(), "seat": seat, "state": st, "n": len(ws), "agents": agents,
-                      "since": latest})
+                      "since": latest, "title": " | ".join(doing)})
     for r in rows:
         if r["key"] == "game":
             chips.append({"label": "rimworld", "plain": True, "state": r["kind"] if r["kind"] == "run" else "idle",
@@ -856,7 +867,7 @@ def build_chips(rows: list[dict], now: float) -> list[dict]:
         (others if w["state"] in ("run", "stuck") else dim).setdefault(w["label"], []).append(w)
     for lab, ws in others.items():
         chips.append({"label": lab, "state": "run", "n": len(ws), "since": max(w["upd"] for w in ws)})
-    rank = {"run": 0, "stuck": 0, "red": 0, "idle": 1, "stale": 2}
+    rank = {"wait": 0, "run": 0, "stuck": 0, "red": 0, "idle": 1, "stale": 2, "missing": 2, "unknown": 2}
     chips.sort(key=lambda c: (rank.get(c["state"], 1), -(c.get("since") or 0)))
     if dim:
         chips.append({"label": " · ".join(f"{k}{'×%d' % len(v) if len(v) > 1 else ''}" for k, v in
@@ -956,7 +967,7 @@ def build_strip(rows: list[dict]) -> list[dict]:
             pills.append({"kind": "amber", "text": f"◐ {r['who']} {short(q, 40)}", "title": r["text"],
                           "since": r["since"], "seat": r.get("seat")})
         elif r["kind"] == "amber_soft":
-            pills.append({"kind": "amber_soft", "text": f"◑ {r['who']} finished", "title": r["text"],
+            pills.append({"kind": "amber_soft", "text": f"◑ {r['who']} finished · idle", "title": r["text"],
                           "since": r["since"], "seat": r.get("seat")})
         elif r["kind"] == "warn":
             pills.append({"kind": "warn", "text": r.get("pill") or "◆ " + short(r["text"], 40), "title": r["text"],
@@ -1003,7 +1014,7 @@ def collect_snapshot(raw: dict, state: dict, now: float) -> tuple[dict, dict, li
     new_state = dict(state)
     new_state.update({"seen": seen, "open": open_now})
     snap = {
-        "v": 2, "collected_at": now, "rows": rows, "strip": build_strip(rows), "chips": build_chips(rows, now), "counts": counts,
+        "v": 2, "collected_at": now, "rows": rows, "strip": build_strip(rows), "chips": build_chips(rows, now, (raw.get("source_status") or {}).get("sessions", {}).get("ok", True)), "counts": counts,
         "done_since": since, "sources": raw.get("source_status", {}),
         "sparks": (raw.get("telemetry") or {}).get("sparks"),
         "telemetry": ({k: raw["telemetry"].get(k) for k in ("at", "grafana", "tier_armed", "game_running")}

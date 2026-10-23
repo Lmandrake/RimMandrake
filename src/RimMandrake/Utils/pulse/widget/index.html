@@ -89,6 +89,8 @@ html,body{height:100%;background:var(--term);color:var(--text);font:12.5px/1.5 v
 .chip.stale{opacity:.45} .chip.stale i{background:transparent;box-shadow:inset 0 0 0 1px var(--c,var(--faint))}
 .chip.dim{--c:var(--faint);color:var(--faint)} .chip.dim i{background:transparent;box-shadow:inset 0 0 0 1px var(--faint)}
 .chip.red{--c:var(--red);color:var(--red)} .chip.red i{background:var(--red)}
+.chip.wait i{background:var(--mustard);box-shadow:0 0 7px var(--mustard)} .chip.wait small{color:var(--mustard)}
+.chip.missing,.chip.unknown{opacity:.6} .chip.missing i,.chip.unknown i{background:transparent;box-shadow:inset 0 0 0 1px var(--faint)}
 .chip small{color:var(--faint);font-size:10px}
 .c-BENCH{--c:var(--bench)} .c-FOUNDRY{--c:var(--foundry)} .c-ART{--c:var(--art)} .c-plain{--c:var(--text)}
 .strip .gap{flex:1;min-width:4px;height:1px;background:linear-gradient(90deg,var(--line2),transparent)}
@@ -276,13 +278,17 @@ function chipHTML(c){
   const cls = ['chip', c.state, c.seat ? 'c-' + c.seat : '', c.plain ? 'c-plain' : ''].join(' ');
   let extra = '';
   if (c.n > 1) extra = `<small>×${c.n}</small>`;
+  if (c.agents) extra += `<small>+${c.agents} agent${c.agents > 1 ? 's' : ''}</small>`;
+  if (c.state === 'wait') extra += `<small>asks you</small>`;
+  if (c.state === 'missing') extra += `<small>no window</small>`;
+  if (c.state === 'unknown') extra += `<small>?</small>`;
   if (c.state === 'stale') extra += `<small>${ago(c.since)}</small>`;
   if (c.state === 'dim') return `<span class="${cls}" title="idle windows that are not seats · newest ${ago(c.since)}"><i></i>${esc(c.label)}</span>`;
   return `<span class="${cls}" title="${esc(c.title || c.label)}"><i></i>${esc(c.label)}${extra}</span>`;
 }
 // Collapsed, the strip is all he sees: every pill carries its own cause (owner 2026-10-22, N1), the
 // rule/look counts ride along, and a frozen snapshot over a healthy connection still reads stale (N5).
-const PILL_KINDS = ['red', 'amber', 'warn', 'rule', 'look'];
+const PILL_KINDS = ['red', 'amber', 'amber_soft', 'warn', 'rule', 'look'];
 function renderStrip(){
   const pills = (snap ? snap.strip : []).filter(p => PILL_KINDS.includes(p.kind)).map(p =>
     `<span class="pill p-${p.kind}${p.seat ? ' s-' + esc(p.seat) : ''}" title="${esc(p.title || p.text)}">${esc(p.text)}</span>`);
