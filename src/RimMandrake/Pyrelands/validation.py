@@ -1100,6 +1100,7 @@ def burn_line(t):
 
 
 OPENING_WAIT_TICKS = 6 * BURN_WATCH_TICKS   # PYRE_OPENING_FRONT: lit on the first watch interval; a few for slack
+OPENING_WINDOW = 2500                       # PyrelandsTuning.OpeningFrontWindowTicks
 
 
 @suite.chain("opening_front")
@@ -1110,11 +1111,31 @@ def opening_front(t):
     MapComponent_BurnLine.RearmOpeningFront (the map counts as fresh, its window starting now), a few watch intervals, then
     ProbeOpeningFront must say done with lit > 0 and the map must hold free-standing Fire again. Evidence only (shows=[]):
     burn_line_present stays the one component of that bar. The arrival on a TRULY fresh map is the walk's own look.
+    The A4 old-save half runs FIRST, before the re-arm: a loaded fixture (saved before 05033a3f7, or later with the front
+    long done) must read done=True, lit=0 and never light it - the saved flag defaults TRUE, so a pre-change save carries no
+    key and loads as done.
     Lessons from runs go here."""
     _pad(t, PAD_PROBE)
+    with _comp(t, "opening_front_old_save_inert", shows=[]):
+        r = t.bridge_call("jawa/static_call", type=BURN_LINE, method="ProbeOpeningFront")
+        kv = parse_kv((_ok(r, "ProbeOpeningFront") or {}).get("result")) if _live(t) else {}
+        _note(t, "opening front on the loaded save, before any re-arm", {"probe": kv})
+        if _live(t):
+            if "done" not in kv or not str(kv.get("mapAge") or "").lstrip("-").isdigit():
+                _unmeasured(t, "ProbeOpeningFront unreadable (stale FireEcologyHook.dll?): %r" % r)
+            # LIES: a map inside its first OPENING_WINDOW ticks is a FRESH map, not an old save; a re-arm earlier in this
+            # session leaves lit > 0 on any map. Neither is the old-save half.
+            if int(kv["mapAge"]) <= OPENING_WINDOW:
+                _unmeasured(t, "SITE: the map is %s ticks old (window %d): a fresh map, not a loaded old save" % (kv["mapAge"], OPENING_WINDOW))
+            if t.session is not None and getattr(t.session, "_pyre_opening_rearmed", False):
+                _unmeasured(t, "HARNESS: RearmOpeningFront already ran this session; reload the fixture for the old-save read")
+            if kv.get("done") != "True" or kv.get("lit") != "0" or kv.get("litTick") != "-1":
+                _fail("a loaded save past its window lit (or still owes) an opening front: %r" % kv)
     with _comp(t, "opening_front", shows=[]):
         _set(t, {"fireClockEnabled": True})
         _extinguish(t)
+        if t.session is not None:
+            t.session._pyre_opening_rearmed = True
         r = t.bridge_call("jawa/static_call", type=BURN_LINE, method="RearmOpeningFront")
         if _live(t) and str((_ok(r, "RearmOpeningFront") or {}).get("result")).strip() != "1":
             _unmeasured(t, "RearmOpeningFront refused (is this Pyrelands DLL deployed, is the current map Pyrelands?): %r" % r)
