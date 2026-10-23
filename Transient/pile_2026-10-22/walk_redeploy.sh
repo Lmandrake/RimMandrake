@@ -29,3 +29,11 @@ python3 -c "
 L=open('/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Player.log',errors='replace').read().splitlines()
 bad=[l for l in L if 'Exception' in l or 'rror' in l]
 print('Player.log', len(L), 'lines; error/exception lines:', len(bad)); [print('  ', b[:200]) for b in bad[:8]]"
+# re-check stop 6 (ponds unpoked) and overflow OFF, frame stop 1, re-save b in place (raw save: b IS the loaded slot)
+timeout 200 python.exe $f water "call:jawa/mod_settings_field:{\"typeName\":\"RimMandrake.FlowWorks.Sheet.RM_SheetSettings\",\"action\":\"get\",\"field\":\"sheetOverflowEnabled\"}" 2>&1 | tr -d '\r' | grep -o '^HIGH.*\|^LOW.*\|"value": "[^"]*"'
+timeout 120 python.exe src/RimMandrake/FlowWorks/northstar/scenarios_map.py --goto C3 2>&1 | tr -d '\r' | tail -1
+timeout 100 python.exe $f 'call:rimworld/pause_game:{"pause":true}' 'call:jawa/clear_ui:{"all":true}' 'call:rimworld/save_game:{"saveName":"RM_fw_walkthrough_20261022b"}' 2>&1 | tr -d '\r' | cut -c1-60 | tail -1
+timeout 15 tail -f /dev/null
+SV="/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Saves"
+ls -la --time-style=+%H:%M:%S "$SV" | grep walkthrough
+echo "original md5 $(md5sum "$SV/RM_fw_walkthrough_20261022.rws" | cut -c1-12) (want ea795bfb21c2)"
