@@ -44,5 +44,7 @@ Upkeep: sand, grit and ash storms dull mirrors in the open until a colonist clea
 
 Ancient mirror fields: on the Long Shade, where the sun never moves, a map can hold a field of seized ancient heliostats before a sealed vault. Free their bearings, turn each between its old brass pins, and light every sun-stone to open the vault. Every field is checked to be solvable before it is placed.
 
+Solar panels and sun height: on a tidally locked world, solar panels make up to a quarter more power where the sun stands high, from the sun's height alone (never the biome). The world map marks high-sun ground "strong sun" and the far night side "sunless".
+
 Every effect has its own switch in Mod Settings (with an "all off" button that leaves inert decorative buildings). Mirror light is our own grid on top of the shade grid; it never adds a new kind of heat.</description>
 </ModMetaData>

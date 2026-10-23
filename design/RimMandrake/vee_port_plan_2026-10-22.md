@@ -232,8 +232,8 @@ biome exclusion.** They were painted by `world/audit_2026-08-26/plan.py` (sectio
 `VEE_MoreSolarPower` on every tile within arc ≤ 55° of the substellar point, `VEE_LessSolarPower` on every tile at
 arc ≥ 125°, and the terminator belt left bare. Measured on R3 against engine lat/long (`world/world_tiles_sub7b.csv`,
 `world_physics_audit.arc_deg`): More covers sun elevation 34.96°…89.22°, all 4,362 on the day side. Less covers
-−89.22°…−34.96°, all 3,900 on the night side. 0 tiles carry both. Of the 4,674 tiles at elevation ≥ 35°, the
-unmarked ones are `RM_TheScald` 312 and `RM_Stillsand` 4. Of the 4,674 at ≤ −35°, the unmarked ones are
+−89.22°…−34.96°, all 3,900 on the night side. 0 tiles carry both. Of the 4,674 tiles at elevation ≥ 34.95° (4,664 at ≥ 35° exactly), the
+unmarked ones are `RM_TheScald` 312 and `RM_Stillsand` 4. Of the 4,674 at ≤ −34.95°, the unmarked ones are
 `RUT_Umbra` 662, `RM_BlueDesert` 89, `RM_TheChill` 18, `RM_NightsideIce` 6 and `RM_TheRot` 3. Those gaps come from
 the script's biome blacklist (`Glowforest`, `AB_RockyCrags`, water), which is the only biome-specific part.
 
@@ -254,7 +254,7 @@ VEE's ×1.25 on the day side is the only effect left.
 - **The mutators survive as derived labels**, so "port all" holds and the world-map inspector still says
   something. `RM_StrongInsolation` ("strong sun: solar panels at full strength", where e ≥ 35°) and `RM_Sunless`
   ("the sun never rises here", where e ≤ −35°) have no worker and no extension. At the stamp they are painted from
-  the same geometry, **with no biome exclusions**: 4,674 + 4,674 tiles, including the 316 and 778 that the old
+  the same geometry, **with no biome exclusions**: 4,664 + 4,664 tiles at exactly ±35° (`Utils/remake/solar_insolation.py`), including the 316 and 778 that the old
   blacklist skipped. A selftest proves that label = f(e) on every tile, so the label cannot drift from the effect.
 - Mod Settings (SolarMirrors): "Solar output follows sun height" (on/off, default on) and "high-sun bonus"
   (0–50%, default 25%). With the setting off, panels run at vanilla glow-only output and the labels remain
@@ -290,8 +290,9 @@ here. Item `VEE_DEADLIFE_VENTS_ASK_ZOMBIES_AGAIN` (needs owner).
 - **L0 offline:** every row of `vee_port_map.json` has a port def in `src/` of the right element type (extend
   `selftest_retired_mutator_ports.py` to read both maps). No def or patch of ours names a `VEE_` world def, with a
   planted negative to prove the scan can see. `validate_patch.py --defs` is clean. The solar selftest proves the
-  label equals f(e) on all 21,872 tiles, with a probe that the known 4,362/3,900 split reproduces from the arc
-  rule. The landform workers' pure geometry has unit tests (`SelfTest/`).
+  label equals f(e) on all 21,872 tiles against an independent arc implementation, with a probe that the old
+  paint's biome blacklist removes tiles on the same instrument (`selftest_solar_insolation.py`; R3's per-tile solar set is
+  not in the repo, so the 4,362/3,900 split itself is re-checked only against the live census at the stamp). The landform workers' pure geometry has unit tests (`SelfTest/`).
 - **L1 rename proof (offline, on a copy):** the rewrite keeps 27,913 entries minus the drops, each port carries
   exactly its donor's tile set, and other bytes are identical. The shortHash simulation reproduces every live hash
   of a capture made with the ports deployed.

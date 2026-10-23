@@ -38,6 +38,9 @@ namespace RimMandrake.SolarMirrors
         public static float heliographRange = 12f;      // world tiles at full daylight; range 2-40
         public static bool dazzle = true;               // hostiles in a beam shoot worse
         public static float dazzleMaxPenalty = 0.4f;    // accuracy lost in full light; range 0-0.9
+        // VEE_SOLAR_REWIRE_GEOMETRY_PAINTS_IT (vee_port_plan_2026-10-22.md §4): solar panels follow the sun's height.
+        public static bool insolationByGeometry = true; // off = vanilla glow-only panel output
+        public static float highSunBonus = 0.25f;       // PROVISIONAL (VEE's x1.25); range 0-0.5
 
         public override void ExposeData()
         {
@@ -68,6 +71,8 @@ namespace RimMandrake.SolarMirrors
             Scribe_Values.Look(ref heliographRange, "heliographRange", 12f);
             Scribe_Values.Look(ref dazzle, "dazzle", true);
             Scribe_Values.Look(ref dazzleMaxPenalty, "dazzleMaxPenalty", 0.4f);
+            Scribe_Values.Look(ref insolationByGeometry, "insolationByGeometry", true);
+            Scribe_Values.Look(ref highSunBonus, "highSunBonus", 0.25f);
             RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
@@ -233,6 +238,19 @@ namespace RimMandrake.SolarMirrors
                 list.GapLine();
             }
 
+            if (Group(list, "Solar panels", RimMandrake.Shared.SettingScope.Now, new[] { "insolationByGeometry", "highSunBonus" }))
+            {
+                list.CheckboxLabeled("RM_SolarMirrors_Setting_Insolation".Translate(), ref insolationByGeometry,
+                    "RM_SolarMirrors_Setting_Insolation_Tip".Translate());
+                if (insolationByGeometry)
+                {
+                    list.Label("RM_SolarMirrors_Setting_HighSunBonus".Translate(highSunBonus.ToStringPercent()),
+                        tooltip: "RM_SolarMirrors_Setting_HighSunBonus_Tip".Translate());
+                    highSunBonus = Mathf.Round(list.Slider(highSunBonus, 0f, 0.5f) * 20f) / 20f;
+                }
+                list.GapLine();
+            }
+
             if (Group(list, "Work and timing", RimMandrake.Shared.SettingScope.Now, new[] { "reAimWorkMultiplier", "passIntervalTicks" }))
             {
                 list.Label("RM_SolarMirrors_Setting_ReAim".Translate(reAimWorkMultiplier.ToStringPercent()));
@@ -285,6 +303,8 @@ namespace RimMandrake.SolarMirrors
             heliographRange = 12f;
             dazzle = true;
             dazzleMaxPenalty = 0.4f;
+            insolationByGeometry = true;
+            highSunBonus = 0.25f;
         }
 
         /// <summary>Every effect off: mirrors are inert decorative buildings (design §3.5). Used by the settings
@@ -302,6 +322,7 @@ namespace RimMandrake.SolarMirrors
             roomHeat = false;
             heliograph = false;
             dazzle = false;
+            insolationByGeometry = false;
         }
     }
 

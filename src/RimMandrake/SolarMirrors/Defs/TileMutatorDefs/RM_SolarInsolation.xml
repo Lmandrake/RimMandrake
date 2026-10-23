@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- VEE_SOLAR_REWIRE_GEOMETRY_PAINTS_IT (design/RimMandrake/vee_port_plan_2026-10-22.md §4). The ports of
+     VEE_MoreSolarPower and VEE_LessSolarPower, as DERIVED, number-free labels: no worker, no extension, and no code
+     reads them. The effect lives in geometry (RM_InsolationPatch + Kernel/RM_InsolationKernel.cs: the panel factor is a
+     function of the tile's sun elevation alone). These labels are painted at the one stamp from the same elevation,
+     with NO biome exclusions: RM_StrongInsolation where e >= 35°, RM_Sunless where e <= -35°
+     (RM_InsolationKernel.LabelFor; selftest_solar_insolation.py proves label = f(e) on every tile).
+     The category string is the donor's, as in the 2026-10-19 port precedent, so the stamp's AddMutator displacement
+     is like-for-like. No worldgen (owner, 2026-08-15): chanceOnNonLandmarkTile 0, no biome lists. -->
+<Defs>
+
+  <TileMutatorDef>
+    <defName>RM_StrongInsolation</defName>
+    <label>strong sun</label>
+    <description>The sun stands high over this place. Solar panels here run at their strongest.</description>
+    <categories>
+      <li>VEE_Solar</li>
+    </categories>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_Sunless</defName>
+    <label>sunless</label>
+    <description>The sun never rises here. Solar panels make no power.</description>
+    <categories>
+      <li>VEE_Solar</li>
+    </categories>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+  </TileMutatorDef>
+
+</Defs>

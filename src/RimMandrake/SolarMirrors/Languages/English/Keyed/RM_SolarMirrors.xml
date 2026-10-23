@@ -122,4 +122,9 @@
   <RM_SolarMirrors_Hint_Dark>The stone at {0} is still dark; one of the ancient mirrors has a pin on it.</RM_SolarMirrors_Hint_Dark>
   <RM_SolarMirrors_Hint_DarkRelay>The stone at {0} is still dark, and no mirror has a pin on it: its light must come by way of another mirror.</RM_SolarMirrors_Hint_DarkRelay>
   <RM_SolarMirrors_Hint_Next>Try turning the ancient mirror at {0} to pin {1}.</RM_SolarMirrors_Hint_Next>
+
+  <RM_SolarMirrors_Setting_Insolation>Solar output follows sun height</RM_SolarMirrors_Setting_Insolation>
+  <RM_SolarMirrors_Setting_Insolation_Tip>On a tidally locked world, solar panels make more power where the sun stands high and none extra where it hangs low, from the sun's height alone (never the biome). Off: panels follow the sky's brightness only, as in vanilla.</RM_SolarMirrors_Setting_Insolation_Tip>
+  <RM_SolarMirrors_Setting_HighSunBonus>High-sun bonus: {0}</RM_SolarMirrors_Setting_HighSunBonus>
+  <RM_SolarMirrors_Setting_HighSunBonus_Tip>Extra solar output once the sun stands 35 degrees or more above the horizon. It ramps in smoothly from 20 degrees. Provisional; tuned live later.</RM_SolarMirrors_Setting_HighSunBonus_Tip>
 </LanguageData>
