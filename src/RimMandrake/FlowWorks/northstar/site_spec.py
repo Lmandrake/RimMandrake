@@ -197,7 +197,7 @@ SETTINGS = {
     # RAIDERS_TRENCH_BUILD_BREACH_AND_JUMP
     "RimMandrake.FlowWorks.RM_RaiderTrenchSettings": {
         "raiderTrenchEnabled": True, "raiderJumpsEnabled": True, "raiderLaddersEnabled": True, "raiderFillEnabled": True,
-        "raiderLadderSpeed": 1.0, "raiderFillSpeed": 1.0, "raiderJumpPackShare": 0.1,
+        "raiderLadderSpeed": 1.0, "raiderFillSpeed": 0.5, "raiderJumpPackShare": 0.1,
     },
     # DEEP_WATER_BUILD_SWIM_OR_SINK (numeric defaults are RM_SwimMath consts)
     "RimMandrake.FlowWorks.Swimming.RM_SwimSettings": {
