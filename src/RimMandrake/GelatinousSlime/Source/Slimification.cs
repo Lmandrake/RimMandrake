@@ -210,12 +210,6 @@ namespace RimMandrake.GelatinousSlime
                     LetterDefOf.NegativeEvent,
                     (map != null && pos.IsValid) ? new TargetInfo(pos, map) : TargetInfo.Invalid);
             }
-            else if (SlimeSettings.flavorEntryRecorded && map != null && pos.IsValid)
-            {
-                // The ruled flavor hook (§10, round 2): the body acknowledges
-                // what it just filed. A mod-settings toggle, on by default.
-                MoteMaker.ThrowText(pos.ToVector3Shifted(), map, "Entry recorded", 3.5f);
-            }
         }
 
         // ────────────────────────────────────────────────────────────────

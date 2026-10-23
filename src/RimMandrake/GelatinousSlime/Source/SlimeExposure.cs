@@ -65,23 +65,6 @@ namespace RimMandrake.GelatinousSlime
                     {
                         pawn.health.AddHediff(SlimeDefs.Slimification);
                     }
-
-                    // The ruled read-mark flavor hook (§10, round 2), a
-                    // mod-settings toggle, on by default. Only creatures the
-                    // body has actually got into leave a mark, and only rarely
-                    // — this runs for every pawn on a crowded map.
-                    if (SlimeSettings.flavorReadMarks
-                        && SlimeDefs.SlimeSmear != null
-                        && pawn.Position.InBounds(map)
-                        && Rand.Chance(0.06f))
-                    {
-                        HediffComp_Slimification comp = SlimeUtility.GetSlimification(pawn);
-                        if (comp != null && comp.parent.Severity >= 0.2f)
-                        {
-                            FilthMaker.TryMakeFilth(pawn.Position, map, SlimeDefs.SlimeSmear, 1,
-                                                    FilthSourceFlags.None, false);
-                        }
-                    }
                 }
             }
             catch (Exception e)

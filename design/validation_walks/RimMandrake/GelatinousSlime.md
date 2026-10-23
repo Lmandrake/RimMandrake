@@ -7,7 +7,7 @@ status-hint: a country-sized slime body that reads what stands on it (slimificat
 ## must be true
 Each line ends `→ chain.component` (a component in validation.py) or `→ UNCOVERED: <why>`.
 - Every def the mod ships resolves in the live game (a def silently discarded for a bad field or missing type is a failure, not an absence). → defs_static.all_defs_resolve
-- The shipped Mod Settings defaults hold: rarity 1, flavour hooks on, titanoslime engulfs/grows/sheds on, growth permanent (titanoslimeReversible OFF, owner ruling 2026-09-21), max stage 5, higher-priority archive preferred. → defs_static.settings_defaults
+- The shipped Mod Settings defaults hold: rarity 1, titanoslime engulfs/grows/sheds on, growth permanent (titanoslimeReversible OFF, owner ruling 2026-09-21), max stage 5, higher-priority archive preferred. → defs_static.settings_defaults
 - All five slime terrains carry the tag `RM_SlimeTerrain`; the exposure mechanic keys on that tag and nothing else. → defs_static.terrain_tagged
 - `RM_Slimification` has four stages at severity 0 / 0.2 / 0.5 / 0.9, max severity 1.0, pain factor 0 from the third stage (placid), no stage grants a mental state (never hostile), and carries the `HediffComp_Slimification` comp that drives rate and dissolution. → defs_static.slimification_def_ladder
 - Cure geography is data on the BiomeDef: Desert, ExtremeDesert, AridShrubland and Ocean each carry `decayPerDay` as shipped in `Patches/DryingBiomes.xml`; a non-drying biome and the slime biome itself carry none. → defs_static.drying_biomes_tagged
@@ -23,18 +23,17 @@ Each line ends `→ chain.component` (a component in validation.py) or `→ UNCO
 - At severity 1.0 a colonist is returned to the flow: no corpse, a slime smear and raw slime where they stood. → dissolution.returned_to_the_flow
 - The slime antidote clears the film at any stage below 1.0, including on a comatose patient, costs ToxicBuildup, and is consumed; an untreated control keeps its film. → antidote.antidote_clears_film_and_poisons
 - Eating raw slime cures poison AND charges slimification in the same bite (the wondrous and the fatal are one mechanism). → raw_slime_bargain.raw_slime_cures_poison_and_charges_fee
-- Slimified creatures leave smears only while the read-marks setting is on. → read_marks_flavour.read_marks_follow_setting
 - A Slime-marked colonist is liked less by others, more when heavily filed (opinion offsets -12 / -22 / -36). → slime_marked_opinion.marked_colonist_is_liked_less
 - A blank gene seeker reports itself unprimed (the seeker comp is wired). → seeker_and_weather.blank_seeker_reports_unprimed
 - Slime rain is a weather that can occur. → seeker_and_weather.slime_rain_can_fall
 - Titanoslimes spawn across stages (mass roll 0 / 4 / 12), and `titanoslimeMaxStage` clamps the spawn stage. → titanoslime.stage_roll_spreads
 - A cut stage-2+ titanoslime sheds a gelatid when `titanoslimeSheds` is on, and none when it is off. → titanoslime.sheds_when_cut, titanoslime.does_not_shed_when_setting_off
-- Every Mod Settings field writes and reads back (rarity, spawn factor, flavour hook, engulf, grow, reversible, archive preference). → settings_flip.*
+- Every Mod Settings field writes and reads back (rarity, spawn factor, engulf, grow, reversible, archive preference). → settings_flip.*
 - The Slime-marked increment of the gene injectable (x2 for The Reek, none with Pheromone charm), the extract job on liquid slime, the fast injected clock (~3 days) and the antidote race. → `seeker_proofs.seeker_loads_without_the_dialog` + `extract_job_swaps_to_a_loaded_seeker` + `injection_marks_starts_fast_clock_and_antidote_wins_the_race` + `slimification_off_reverses_the_injected_clock` (`RM_SlimeSeekerProof` via jawa/static_call stands in for the never-built `jawa/slime_seeker_load`: SetLoad, the real extract job, the real injection and antidote target effects). The archive DIALOG itself stays a judge pass.
 - Farm conversion (growing zone on slime grass reverts to rich slime). → UNCOVERED: needs a map on the RM_GelatinousSlime biome (the gate is read at map FinalizeInit) and ~50,000 ticks of sampling (a few cells per 2500-tick pass): statistical, §4 boundary.
 - The visitor trickle and the generation-time visitor seed (3-5 never-hostile arrivals at severity 0.25-0.7). → UNCOVERED: needs an RM_GelatinousSlime map generated fresh; the site recipe for a slime-biome scratch map is owed (SLIME_BIOME_SITE_1).
 - Titanoslime engulf, permanent growth through starving / dry ground / wounds, save-load round trip. → UNCOVERED: needs feeding and 70,000 ticks off slime; proven by hand 2026-09-21 (TITANOSLIME_PERMANENT_GROWTH_LIVE_1); `titanoslimeReversible` default is guarded by settings_defaults.
-- Biome worldgen rarity (`rarityFactor`), `titanoslimeSpawnFactor` applying to rosters on WriteSettings, the "Entry recorded" mote text. → UNCOVERED: worldgen is frozen (planet painted once, CLAUDE.md); the roster field is non-public; mote text has no bridge reader.
+- Biome worldgen rarity (`rarityFactor`), `titanoslimeSpawnFactor` applying to rosters on WriteSettings. → UNCOVERED: worldgen is frozen (planet painted once, CLAUDE.md); the roster field is non-public.
 - Art, sprites, overlays. → UNCOVERED: visual, judge pass (none of this mod's art exists yet; magenta is expected).
 
 ## the walk
