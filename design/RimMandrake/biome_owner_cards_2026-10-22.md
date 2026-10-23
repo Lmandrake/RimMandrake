@@ -322,6 +322,8 @@ the art tool will not delete it. The new pick supersedes the older one for the l
 
 ## Card 12. Durrok and mullgoth: restore the sizes you ruled?
 
+**ANSWERED 2026-10-22 (his earlier answer on whose creatures they are covers this): option 2, wait; sizes settle at the biome reviews.**
+
 **What was learned.** On 2026-09-19 you ruled the Rot's adult sizes by card: durrok 2 -> 6 cells, mullgoth 3.8 -> 5.
 The patch that carried that aimed at the old Alpha Animals creatures, which no longer exist, so nothing applies now.
 Our copies still draw at 2 and 3.8 (checked: the durrok's adult stage draws at 2, the mullgoth's at 3.8). Since then the
@@ -343,6 +345,8 @@ Source: `review_findings_2026-10-22/ruled_values_questions.md`.
 
 ## Card 13. Three Inhabited cast files disagree with the notes that generate them
 
+**ANSWERED 2026-10-22 by question card: option 2, the notes are right; regenerate the files.**
+
 **What was learned.** Three cast files of the Inhabited mod (Empire, Wildsteam, Droids) differ from what the
 generator would write from their source notes. Empire: race Hussar vs Echani, plus an extra multitool. Wildsteam: three
 race lines (Yttakin vs Wookiee, Ortolan and the others). Droids: one hook text and an extra sniper rifle. Running the
@@ -363,6 +367,8 @@ remember the intent).
 ---
 
 ## Card 14. Shyrack's fourth flying frame has the wrong file name
+
+**ANSWERED 2026-10-22 by question card: option 1, rename the three _44 files to _4.**
 
 **What was learned.** The Shyrack flyer is set to a 4-frame flying animation. The game looks for frame files `_1`
 to `_4`, but the fourth set of three images is named `_44` (checked: `Shyrack_Flying_1..3` and `Shyrack_Flying_44` in the
