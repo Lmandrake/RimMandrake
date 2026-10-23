@@ -862,7 +862,16 @@ def run_river(B, terrain, size, log=None, soak=False):
         for d, n_, (x, z) in o["items"]:
             R.call("rimworld/spawn_thing", defName=d, stackCount=n_, x=x, z=z)
         for kind, (x, z), fac, role in o["pawns"]:
-            R.call("jawa/spawn_pawn", kindDef=kind, x=x, z=z, faction=fac, count=1)
+            # RIVER_MUFFALO_FIX_SHOWS_ITS_REAR: this loop used to drop the station's role, so the R1 muffalo's
+            # "face:west/east" never reached set_pawn_rotation and every map R build left it facing north (a dome)
+            sp = R.call("jawa/spawn_pawn", kindDef=kind, x=x, z=z, faction=fac, count=1)
+            pid = ((sp.get("pawns") or [{}])[0] or {}).get("id")
+            if pid and role == "drafted":
+                R.call("jawa/set_draft", pawnId=str(pid), drafted=True)
+            elif pid and str(role).startswith("face:"):
+                rot = R.call("jawa/set_pawn_rotation", pawnId=str(pid), dir=role[5:], lockRotation=True)
+                if rot.get("success") is not True:
+                    R.notes.append("C11 %s: %s not turned to face %s: %s" % (st["id"], kind, role[5:], str(rot)[:160]))
         if st["id"] == "r_ford":                      # C11's control colonist: in the moving water beside the stones
             (bx, bz), d = cr[0], cr[1]
             p_ = (-d[1], d[0])
