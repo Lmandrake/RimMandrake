@@ -1,0 +1,1 @@
+Close a rimflow item only AFTER ./publish: publish rebases the local commit, so a close --sha taken from the pre-publish HEAD names a hash that never reaches origin (SCALD_PLACEMENT_DECIDE_ARC_OR_THERMOMETER closed at 1a0f60137, landed as c27b0ba5c). Use the sha publish prints, or git log after it.
