@@ -38,3 +38,16 @@ Verdict: (a) mast join = MOD (FlowWorks join draw), stays open with a precise sp
 
 ## End state
 Game UP, save RM_fw_walkthrough_20261022d reloaded (tick 130096, map C current, paused); all in-memory changes of this round (raid site, map R C1 rebuild) discarded; saves b/c/d untouched (no save written). Bridge still held by BENCH for the deploy + re-check round.
+
+## Re-checks (coordinator, after round 3a)
+The repo FlowWorks DLL (4cff1a0718, hose C#) is newer than the deployed one (97d64309ec75), so validation_v2 refused L2 (stale DLL). Runs below use a `git archive` export of HEAD 9d47065dcd (Utils, FlowWorks, _Shared, GSS) at D:\ClaudeWork\scratch\bench_v2_export_r3a with the DEPLOYED DLL copied in (sha 97d64309ec75 both) - the skill's assembly-identity route; the Python fixes under test are HEAD's.
+
+| item | run | result |
+|---|---|---|
+| X8C_WALKER_FIX_FELL_THROUGH_THE_FLOOR | validation_v2 --live, calm site | PASS, closed: X8c pawn Human21253 on the lid 141,70 covered=True sink 0.000 drawDz 0.000; X8b PASS (sink 1.2); LIVE GREEN 63/63, 294.8 s (r3a/v2_calm_x8c_export.log/.json) |
+| PROOF_REELS_FIX_STILL_STAGED_WEST | walk_gaps --fresh-map x2; rehearsal | ports rows PASS both runs (cornerPump corner=1 cornerCoupled=0); rehearsal UNMEASURED (hang below) -> note, open |
+| LEVEL_REHEARSAL_FIX_POURS_ON_FULL_PONDS | walk_gaps --fresh-map then pipe_levelling --rehearsal on the same map (level_watch: excavation overflowDestroyedTotal/releaseLostDl after every mutating call) | 0 lost, 0 conservation exceptions while it ran, but the rehearsal never finished: run 1 silent 9 min (buffered stdout), run 2 (-u) printed GOVERNOR_STOP hostile_arrival RM_HullBolt (mech) at 10:55:52Z then polled mod_settings_field until killed at 530 s -> UNMEASURED, note; HARNESS filed LEVEL_REHEARSAL_UNSTICK_WAITS_FOR_GODOT (r3a/level_rehearsal.log) |
+| walk_gaps TANKS_JOINED_ONE_LEVEL | same runs | FAIL, as the script's own doc predicts (Store tanks only buffer; storage fill is pump-only, GSS ruling 3) - known, not new |
+| RIVER_MUFFALO_FIX_SHOWS_ITS_REAR | not reached this round (deploy round first) | owed |
+
+Two killed runs left mod_settings_field calls of unknown outcome; reconciled as partial (settings writes are idempotent; the deploy restart resets the session).
