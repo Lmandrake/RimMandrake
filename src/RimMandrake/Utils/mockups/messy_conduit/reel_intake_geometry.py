@@ -24,6 +24,7 @@ the C# keeps one set of rules. Frames: 0 = west (east is it mirrored), 1 = north
 Run: python3 src/RimMandrake/Utils/mockups/messy_conduit/reel_intake_geometry.py   (rewrites the .cs; deterministic)
      ... --check   exit 1 when the committed .cs no longer matches the installed art / drawSize (FlowWorks/selftest_hose_ports.py)
      ... --out P   write the generated .cs to P instead
+     ... --tex D   measure candidate art under D (laid out like Textures/.../Hose) instead of the installed art
 """
 import os
 import re
@@ -204,6 +205,9 @@ namespace RimMandrake.FlowWorks.Hose
 
 
 def main(argv):
+    global TEX
+    if "--tex" in argv:
+        TEX = os.path.abspath(argv[argv.index("--tex") + 1])
     cs = generate()
     if "--check" in argv:
         have = open(OUT, newline="").read()

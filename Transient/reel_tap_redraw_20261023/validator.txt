@@ -1,0 +1,172 @@
+## Hose/Reel_Deployed.png
+REJECT subject width exceeds the reference by 3.1% of canvas - art outside the footprint overlaps neighbouring buildings in game.
+REJECT subject height is 125px against the reference's 117px (+7%). A damaged variant may lose area but must still span its footprint.
+REJECT subject height exceeds the reference by 3.1% of canvas - art outside the footprint overlaps neighbouring buildings in game.
+REJECT subject origin x=12 against the reference's 36 - the subject sits in a different place on the canvas.
+WARN   0.29% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.
+WARN   covers 127% of the reference's area - the subject gained material.
+4 blocking problem(s) - do not deploy this.
+## Hose/Reel_Deployed_north.png
+REJECT subject height is 163px against the reference's 199px (-18%). A damaged variant may lose area but must still span its footprint.
+REJECT subject aspect 0.620 against the reference's 0.497 - the art was squashed, not redrawn.
+REJECT subject origin y=46 against the reference's 26 - the subject sits in a different place on the canvas.
+WARN   0.07% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.
+3 blocking problem(s) - do not deploy this.
+## Hose/Reel_Deployed_south.png
+REJECT subject width is 102px against the reference's 89px (+15%). A damaged variant may lose area but must still span its footprint.
+REJECT subject width exceeds the reference by 5.1% of canvas - art outside the footprint overlaps neighbouring buildings in game.
+REJECT subject aspect 0.540 against the reference's 0.484 - the art was squashed, not redrawn.
+WARN   0.11% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.
+WARN   covers 143% of the reference's area - the subject gained material.
+3 blocking problem(s) - do not deploy this.
+## Hose/Reel_PumpHookup.png
+REJECT subject width is 205px against the reference's 169px (+21%). A damaged variant may lose area but must still span its footprint.
+REJECT subject width exceeds the reference by 14.1% of canvas - art outside the footprint overlaps neighbouring buildings in game.
+REJECT subject height is 127px against the reference's 108px (+18%). A damaged variant may lose area but must still span its footprint.
+REJECT subject height exceeds the reference by 7.4% of canvas - art outside the footprint overlaps neighbouring buildings in game.
+REJECT subject origin x=14 against the reference's 50 - the subject sits in a different place on the canvas.
+REJECT subject origin y=64 against the reference's 77 - the subject sits in a different place on the canvas.
+WARN   0.09% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.
+WARN   covers 163% of the reference's area - the subject gained material.
+6 blocking problem(s) - do not deploy this.
+## Hose/Reel_PumpHookup_north.png
+REJECT subject width is 101px against the reference's 133px (-24%). A damaged variant may lose area but must still span its footprint.
+REJECT subject aspect 0.620 against the reference's 0.842 - the art was squashed, not redrawn.
+REJECT subject origin x=78 against the reference's 62 - the subject sits in a different place on the canvas.
+WARN   0.09% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.
+3 blocking problem(s) - do not deploy this.
+## Hose/Reel_PumpHookup_south.png
+REJECT subject width is 101px against the reference's 109px (-7%). A damaged variant may lose area but must still span its footprint.
+REJECT subject aspect 0.529 against the reference's 0.574 - the art was squashed, not redrawn.
+WARN   0.07% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.
+2 blocking problem(s) - do not deploy this.
+## Hose/Styles/Futuristic/Reel_Deployed.png
+REJECT subject width is 207px against the reference's 231px (-10%). A damaged variant may lose area but must still span its footprint.
+REJECT subject height is 126px against the reference's 107px (+18%). A damaged variant may lose area but must still span its footprint.
+REJECT subject height exceeds the reference by 7.4% of canvas - art outside the footprint overlaps neighbouring buildings in game.
+REJECT subject aspect 1.643 against the reference's 2.159 - the art was squashed, not redrawn.
+WARN   0.10% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.
+4 blocking problem(s) - do not deploy this.
+## Hose/Styles/Futuristic/Reel_Deployed_north.png
+REJECT subject width is 101px against the reference's 89px (+13%). A damaged variant may lose area but must still span its footprint.
+REJECT subject width exceeds the reference by 4.7% of canvas - art outside the footprint overlaps neighbouring buildings in game.
+REJECT subject height is 163px against the reference's 214px (-24%). A damaged variant may lose area but must still span its footprint.
+REJECT subject aspect 0.620 against the reference's 0.416 - the art was squashed, not redrawn.
+REJECT subject origin y=46 against the reference's 18 - the subject sits in a different place on the canvas.
+WARN   covers 123% of the reference's area - the subject gained material.
+5 blocking problem(s) - do not deploy this.
+## Hose/Styles/Futuristic/Reel_Deployed_south.png
+REJECT subject width is 99px against the reference's 109px (-9%). A damaged variant may lose area but must still span its footprint.
+REJECT subject height is 194px against the reference's 212px (-8%). A damaged variant may lose area but must still span its footprint.
+WARN   0.17% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.
+2 blocking problem(s) - do not deploy this.
+## Hose/Styles/Futuristic/Reel_PumpHookup.png
+REJECT subject origin x=12 against the reference's 37 - the subject sits in a different place on the canvas.
+WARN   0.09% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.
+1 blocking problem(s) - do not deploy this.
+## Hose/Styles/Futuristic/Reel_PumpHookup_north.png
+REJECT subject width is 100px against the reference's 115px (-13%). A damaged variant may lose area but must still span its footprint.
+REJECT subject height is 164px against the reference's 205px (-20%). A damaged variant may lose area but must still span its footprint.
+REJECT subject aspect 0.610 against the reference's 0.561 - the art was squashed, not redrawn.
+REJECT subject origin y=46 against the reference's 26 - the subject sits in a different place on the canvas.
+WARN   0.05% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.
+4 blocking problem(s) - do not deploy this.
+## Hose/Styles/Futuristic/Reel_PumpHookup_south.png
+REJECT subject width is 102px against the reference's 113px (-10%). A damaged variant may lose area but must still span its footprint.
+REJECT subject aspect 0.540 against the reference's 0.611 - the art was squashed, not redrawn.
+WARN   0.10% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.
+2 blocking problem(s) - do not deploy this.
+## Hose/Styles/Industrial/Reel_Deployed.png
+REJECT subject height is 128px against the reference's 106px (+21%). A damaged variant may lose area but must still span its footprint.
+REJECT subject height exceeds the reference by 8.6% of canvas - art outside the footprint overlaps neighbouring buildings in game.
+REJECT subject aspect 1.594 against the reference's 1.962 - the art was squashed, not redrawn.
+REJECT subject origin x=15 against the reference's 35 - the subject sits in a different place on the canvas.
+REJECT subject origin y=64 against the reference's 77 - the subject sits in a different place on the canvas.
+WARN   0.08% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.
+WARN   covers 135% of the reference's area - the subject gained material.
+5 blocking problem(s) - do not deploy this.
+## Hose/Styles/Industrial/Reel_Deployed_north.png
+REJECT subject width is 100px against the reference's 107px (-7%). A damaged variant may lose area but must still span its footprint.
+REJECT subject height is 164px against the reference's 195px (-16%). A damaged variant may lose area but must still span its footprint.
+REJECT subject aspect 0.610 against the reference's 0.549 - the art was squashed, not redrawn.
+REJECT subject origin y=46 against the reference's 32 - the subject sits in a different place on the canvas.
+WARN   covers 125% of the reference's area - the subject gained material.
+4 blocking problem(s) - do not deploy this.
+## Hose/Styles/Industrial/Reel_Deployed_south.png
+REJECT subject width is 101px against the reference's 85px (+19%). A damaged variant may lose area but must still span its footprint.
+REJECT subject width exceeds the reference by 6.2% of canvas - art outside the footprint overlaps neighbouring buildings in game.
+REJECT subject height is 191px against the reference's 172px (+11%). A damaged variant may lose area but must still span its footprint.
+REJECT subject height exceeds the reference by 7.4% of canvas - art outside the footprint overlaps neighbouring buildings in game.
+REJECT subject aspect 0.529 against the reference's 0.494 - the art was squashed, not redrawn.
+WARN   0.08% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.
+WARN   covers 185% of the reference's area - the subject gained material.
+5 blocking problem(s) - do not deploy this.
+## Hose/Styles/Industrial/Reel_PumpHookup.png
+REJECT subject width is 213px against the reference's 196px (+9%). A damaged variant may lose area but must still span its footprint.
+REJECT subject width exceeds the reference by 6.6% of canvas - art outside the footprint overlaps neighbouring buildings in game.
+REJECT subject height is 122px against the reference's 107px (+14%). A damaged variant may lose area but must still span its footprint.
+REJECT subject height exceeds the reference by 5.9% of canvas - art outside the footprint overlaps neighbouring buildings in game.
+REJECT subject origin x=10 against the reference's 42 - the subject sits in a different place on the canvas.
+WARN   0.14% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.
+WARN   covers 134% of the reference's area - the subject gained material.
+5 blocking problem(s) - do not deploy this.
+## Hose/Styles/Industrial/Reel_PumpHookup_north.png
+REJECT subject height is 163px against the reference's 206px (-21%). A damaged variant may lose area but must still span its footprint.
+REJECT subject aspect 0.620 against the reference's 0.476 - the art was squashed, not redrawn.
+REJECT subject origin y=46 against the reference's 24 - the subject sits in a different place on the canvas.
+3 blocking problem(s) - do not deploy this.
+## Hose/Styles/Industrial/Reel_PumpHookup_south.png
+REJECT subject height is 191px against the reference's 172px (+11%). A damaged variant may lose area but must still span its footprint.
+REJECT subject height exceeds the reference by 7.4% of canvas - art outside the footprint overlaps neighbouring buildings in game.
+REJECT subject aspect 0.529 against the reference's 0.622 - the art was squashed, not redrawn.
+WARN   0.11% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.
+WARN   covers 127% of the reference's area - the subject gained material.
+3 blocking problem(s) - do not deploy this.
+## Hose/Styles/Modern/Reel_Deployed.png
+REJECT subject width is 202px against the reference's 219px (-8%). A damaged variant may lose area but must still span its footprint.
+REJECT subject height is 123px against the reference's 173px (-29%). A damaged variant may lose area but must still span its footprint.
+REJECT subject aspect 1.642 against the reference's 1.266 - the art was squashed, not redrawn.
+REJECT subject origin y=66 against the reference's 16 - the subject sits in a different place on the canvas.
+WARN   0.23% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.
+4 blocking problem(s) - do not deploy this.
+## Hose/Styles/Modern/Reel_Deployed_north.png
+REJECT subject height is 144px against the reference's 179px (-20%). A damaged variant may lose area but must still span its footprint.
+REJECT subject aspect 0.701 against the reference's 0.575 - the art was squashed, not redrawn.
+REJECT subject origin y=56 against the reference's 41 - the subject sits in a different place on the canvas.
+WARN   0.09% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.
+WARN   covers 132% of the reference's area - the subject gained material.
+3 blocking problem(s) - do not deploy this.
+## Hose/Styles/Modern/Reel_Deployed_south.png
+REJECT subject height is 183px against the reference's 197px (-7%). A damaged variant may lose area but must still span its footprint.
+REJECT subject origin y=36 against the reference's 25 - the subject sits in a different place on the canvas.
+WARN   0.11% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.
+2 blocking problem(s) - do not deploy this.
+## Hose/Styles/Modern/Reel_PumpHookup.png
+REJECT subject height is 117px against the reference's 173px (-32%). A damaged variant may lose area but must still span its footprint.
+REJECT subject aspect 1.829 against the reference's 1.266 - the art was squashed, not redrawn.
+REJECT subject origin x=8 against the reference's 22 - the subject sits in a different place on the canvas.
+REJECT subject origin y=70 against the reference's 16 - the subject sits in a different place on the canvas.
+WARN   0.29% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.
+4 blocking problem(s) - do not deploy this.
+## Hose/Styles/Modern/Reel_PumpHookup_north.png
+REJECT subject height is 144px against the reference's 184px (-22%). A damaged variant may lose area but must still span its footprint.
+REJECT subject aspect 0.694 against the reference's 0.571 - the art was squashed, not redrawn.
+REJECT subject origin y=56 against the reference's 36 - the subject sits in a different place on the canvas.
+WARN   0.05% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.
+WARN   covers 118% of the reference's area - the subject gained material.
+3 blocking problem(s) - do not deploy this.
+## Hose/Styles/Modern/Reel_PumpHookup_south.png
+REJECT subject height is 183px against the reference's 199px (-8%). A damaged variant may lose area but must still span its footprint.
+REJECT subject origin y=36 against the reference's 23 - the subject sits in a different place on the canvas.
+WARN   0.09% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.
+2 blocking problem(s) - do not deploy this.
+## Machinery/RM_LiquidTap.png
+REJECT subject width is 147px against the reference's 130px (+13%). A damaged variant may lose area but must still span its footprint.
+REJECT subject width exceeds the reference by 6.6% of canvas - art outside the footprint overlaps neighbouring buildings in game.
+REJECT subject height is 217px against the reference's 193px (+12%). A damaged variant may lose area but must still span its footprint.
+REJECT subject height exceeds the reference by 9.4% of canvas - art outside the footprint overlaps neighbouring buildings in game.
+REJECT subject origin x=74 against the reference's 88 - the subject sits in a different place on the canvas.
+REJECT subject origin y=20 against the reference's 32 - the subject sits in a different place on the canvas.
+WARN   0.22% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.
+WARN   covers 146% of the reference's area - the subject gained material.
+6 blocking problem(s) - do not deploy this.
