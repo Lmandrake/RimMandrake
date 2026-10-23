@@ -56,6 +56,7 @@ python3 shadow.py ingest <sheet>.decisions.json --run <run id>   # his KEEP/OVER
 python3 shadow.py status                                # per-template streak vs the turn-off threshold
 python3 ledger.py add|fix|list                          # the criteria ledger (how the pipeline learns)
 python3 runner.py regress                               # re-run the regression set after ANY prompt/template/policy change
+python3 race.py run --race <tag> --rows <rows.jsonl>... --variant incumbent --variant <name>=<overlay dir>   # race prompt variants in parallel; race.py score --race <tag> --rows ...  (references/prompt_variants_2026-10-23.md)
 python3 selftest_art_eval.py                            # pure parts + a mocked end-to-end run
 ```
 
@@ -101,9 +102,20 @@ Format and examples: `references/criteria_ledger.md`.
 | `references/templates/{creature,plant,machine}.md` | the class module sent to reviewers + required panels + checklist (machine-read) |
 | `references/prompts/*.md` | preamble, opus_first_pass, gpt_targeted_second_look, regen_prompt_edit, departures_brief (versioned) |
 | `references/criteria_ledger.md` | the learning loop |
+| `references/prompt_variants_<date>.md` | variant races against owner verdicts: tables, decisions (method in the 2026-10-23 file) |
 | `src/RimMandrake/Utils/art_eval/` | policy.py (pure), cards.py, runner.py, shadow.py, ledger.py, selftest_art_eval.py |
 | `infrastructure/state/art_eval/` | settings.json, runs/<id>/, criteria_ledger.jsonl, regression.jsonl, briefs/, shadow_log.jsonl |
 
 Neighbours: `rimworld-review-sheets` (his page), `design/RimMandrake/art_judge_brief.md` (constraint IDs the codes
 cite), `rimworld-sprite-facings` and `generating-rimworld-sprites` (the facts the preamble quotes),
 `rimworld-live-review` (machine captures), `chatgpt-consult` (GPT is guidance, never a grading key).
+
+## Subagent budget — read before spawning ANY helper for this pipeline (owner, 2026-10-23)
+
+Helpers on this stream burned the account's Opus session limit in one morning. Hard rules, full text and the
+measured incident in `references/subagent_budget.md`: **every brief carries `max_turns` and `max_judge_calls`
+(default 60 turns); fresh helper per batch, never one long-lived one; one Opus helper at a time, three total;
+loops are one driver script, not a turn per picture; wait with Monitor, never polling turns; judge each picture once
+per (image hash, prompt version); prompt comparison = incumbent + 2 variants, ≤12 known verdicts, one round per
+order; probe quota before judge-heavy work and never record a 429 as a verdict; measure every helper afterwards with
+`scripts/helper_cost.py`.**
