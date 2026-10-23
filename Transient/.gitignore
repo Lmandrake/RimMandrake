@@ -393,6 +393,8 @@
 !/live_batch_20261023/r2/dome_area.png
 !/live_batch_20261023/r2/dome_muffalo_compare.png
 !/live_batch_20261023/r2/dome_muffalo_repro.png
+!/live_batch_20261023/r2/joint_check_all_r2.json
+!/live_batch_20261023/r2/joint_check_all_r2.txt
 !/live_batch_20261023/r2/kludged_census.txt
 !/live_batch_20261023/r2/kludged_repro.png
 !/live_batch_20261023/r2/kludged_repro_zoom.png
@@ -402,11 +404,16 @@
 !/live_batch_20261023/r2/level_rehearsal_fresh.json
 !/live_batch_20261023/r2/level_rehearsal_pitfall.json
 !/live_batch_20261023/r2/level_watch_pitfall.log
+!/live_batch_20261023/r2/liquid_checks_L2_r2.json
+!/live_batch_20261023/r2/liquid_checks_L2_r2.log
 !/live_batch_20261023/r2/mapC_terrain.txt
 !/live_batch_20261023/r2/maxzoom_reel_rs2.png
 !/live_batch_20261023/r2/modern_upper_census.txt
+!/live_batch_20261023/r2/pole_span_after_fix.png
 !/live_batch_20261023/r2/proof_hose_relay_fresh.json
 !/live_batch_20261023/r2/proof_hose_relay_fresh.log
+!/live_batch_20261023/r2/proof_hose_relay_saved.json
+!/live_batch_20261023/r2/proof_hose_relay_saved.log
 !/live_batch_20261023/r2/tank_modern_208_W_E_bothlanes.png
 !/live_batch_20261023/r2/tank_modern_214_W_E_bothlanes.png
 !/live_batch_20261023/r2/tank_modern_220_W_E_bothlanes.png
@@ -415,6 +422,8 @@
 !/live_batch_20261023/r2/walk_gaps_ports_fresh.json
 !/live_batch_20261023/r2/walk_gaps_ports_fresh.log
 !/live_batch_20261023/r2/walkgaps_pitfall_watch.log
+!/live_batch_20261023/r2/zoo_r2_after_L2.json
+!/live_batch_20261023/r2/zoo_r2_before_L2.json
 !/live_batch_20261023/relay_C_west_inlet_fresh.png
 !/live_batch_20261023/snapshot_wall_route.png
 !/live_batch_20261023/tank_modern_ibc_W_E.png
