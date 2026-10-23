@@ -1,0 +1,163 @@
+{
+ "schema": 1,
+ "generated": "2026-10-23T04:46:46-0700",
+ "git_head": null,
+ "biome_order": [
+  "SUBJECTS_modern_pump_sprinkler"
+ ],
+ "biomes": {
+  "SUBJECTS_modern_pump_sprinkler": {
+   "label": "Modern pump and sprinkler: real modern products",
+   "slug": "modern_pump_sprinkler",
+   "subjects": true,
+   "ground_terrain": "Soil",
+   "title": "Modern pump and sprinkler: real modern products \u2014 game art",
+   "lead_html": "<p>Owner 2026-10-22: <i>\"The 'modern' tank and reel art isn't supposed to be just painted with the primary colors ... Modern water tanks. Modern hose reels. Like you would buy in home depot\"</i>. The tanks and reel are done; the Modern <b>pump</b> and <b>sprinkler head</b> are still the red repaint. Column A is today's picture; columns B, C, D are three candidate real modern products (pump B jet pump, C pool/booster pump, D stainless booster; sprinkler B pop-up rotor, C brass impact head, D micro spinner). Keep the one you like per subject, or note what to change. Nothing is installed until you pick (it replaces art you kept). Containers and hose ends were left alone (not red repaints); the small Modern join fittings are still red. Item MODERN_PUMP_REDRAW_SAME_RED_DIFFERENT_DAY; brief design/RimMandrake/flowworks_modern_art_brief.md.</p>",
+   "rows": [
+    {
+     "key": "ModernPump",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "pump, modern look (A = today; B, C, D = candidates)",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "render_match": "modernpump_",
+     "standin": null,
+     "reference_textures": [
+      {
+       "path": "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Pump/Modern/RM_LiquidPump.png",
+       "size": {
+        "drawSize": [
+         1,
+         1
+        ],
+        "footprint": [
+         1,
+         1
+        ],
+        "source": "TODAY's Modern art (red repaint, kept)"
+       }
+      }
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "RM_LiquidPump.xml / RM_LiquidPumpStyles.xml: Graphic_Single drawSize (1,1), size (1,1), not rotatable"
+     },
+     "runtimeDesc": {
+      "def": "ModernPump",
+      "label": "pump, modern look (A = today; B, C, D = candidates)",
+      "description": "pump \u00b7 look Modern \u00b7 texture RimMandrake/FlowWorks/Pump/Modern/RM_LiquidPump \u00b7 drawn at 1\u00d71 cells",
+      "source": "texture manifest textures_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Pump/Modern/RM_LiquidPump",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "ModernPump"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Pump/Modern/RM_LiquidPump"
+     }
+    },
+    {
+     "key": "ModernSprinkler",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "sprinkler, modern look (A = today; B, C, D = candidates)",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "render_match": "modernsprinkler_",
+     "standin": null,
+     "reference_textures": [
+      {
+       "path": "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead.png",
+       "size": {
+        "drawSize": [
+         1,
+         1
+        ],
+        "footprint": [
+         1,
+         1
+        ],
+        "source": "TODAY's Modern art (red repaint, kept)"
+       }
+      }
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "RM_Sprinklers.xml: Graphic_Single drawSize (1,1), drawOffset z 0.18 (Modern)"
+     },
+     "runtimeDesc": {
+      "def": "ModernSprinkler",
+      "label": "sprinkler, modern look (A = today; B, C, D = candidates)",
+      "description": "sprinkler \u00b7 look Modern \u00b7 texture RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead \u00b7 drawn at 1\u00d71 cells",
+      "source": "texture manifest textures_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "ModernSprinkler"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead"
+     }
+    }
+   ],
+   "textures_manifest": "/home/mandrake/rm/foundry/Transient/pile_2026-10-23/modern_pump/textures_manifest.json"
+  }
+ }
+}

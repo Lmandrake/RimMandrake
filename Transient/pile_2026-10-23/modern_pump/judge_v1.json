@@ -1,0 +1,69 @@
+{
+  "verdicts": [
+    {
+      "subject": "RM_LiquidPump",
+      "picture": "Pump A",
+      "verdict": "KEEP",
+      "violated": "",
+      "quote": "",
+      "seen": "Grey composite housing, black motor ventilation grille, rectangular switch housing and moulded union collars. Four centred ports retain the required reach.",
+      "notes": "Recognisable modern pump treatment. The casing, motor and connections remain distinct at play zoom. Deliberate top-down view is appropriate here.",
+      "redo_brief": ""
+    },
+    {
+      "subject": "RM_LiquidPump",
+      "picture": "Pump B",
+      "verdict": "REDO",
+      "violated": "M1",
+      "quote": "Each Modern picture is recognisably one real product class listed below (a poly storage tank, an IBC tote, a resin hose-reel cart …).",
+      "seen": "The dominant transparent window exposes a perforated basket. The object reads as an inline basket strainer rather than a liquid pump; no identifiable motor or switch establishes the requested product.",
+      "notes": "Modern materials and four-port registration work, but the product identity is wrong for this subject.",
+      "redo_brief": "Replace the dominant basket window with an identifiable composite pump housing, motor and pressure switch, preserving the four centred port endpoints."
+    },
+    {
+      "subject": "RM_LiquidPump",
+      "picture": "Pump C",
+      "verdict": "REDO",
+      "violated": "M2",
+      "quote": "Rivets, weld seams, rust, hazard stripes and bolted end-caps belong to the other looks.",
+      "seen": "Four prominent silver bolt heads secure the blue circular face cover, making a bolted end-cap a major visible feature.",
+      "notes": "The stainless clamp connections and blue housing otherwise communicate modern materials, and the required plan-view port arrangement is preserved.",
+      "redo_brief": "Replace the bolted blue face cover with a smooth moulded motor housing while preserving the stainless clamp connections and all four port endpoints."
+    },
+    {
+      "subject": "RM_SprinklerHead",
+      "picture": "Sprinkler A",
+      "verdict": "KEEP",
+      "violated": "",
+      "quote": "",
+      "seen": "Dark moulded sprinkler body with a green nozzle cap, exposed riser and silver saddle foot over the horizontal pipe.",
+      "notes": "Recognisable modern irrigation hardware. Restrained material colours and a simple silhouette survive play zoom, although the head is less immediately distinctive than B.",
+      "redo_brief": ""
+    },
+    {
+      "subject": "RM_SprinklerHead",
+      "picture": "Sprinkler B",
+      "verdict": "KEEP",
+      "violated": "",
+      "quote": "",
+      "seen": "Brass impact sprinkler with a projecting nozzle and dark impact arm, mounted on a black riser and saddle foot.",
+      "notes": "Strongest sprinkler identity. The brass head, asymmetric arm and dark support remain readable at play zoom; materials and building perspective suit the brief.",
+      "redo_brief": ""
+    },
+    {
+      "subject": "RM_SprinklerHead",
+      "picture": "Sprinkler C",
+      "verdict": "KEEP",
+      "violated": "",
+      "quote": "",
+      "seen": "Clear domed head with blue moulded spinner components above a black riser and silver saddle foot.",
+      "notes": "Reads as a modern plastic rotary sprinkler. The pale head and blue collar remain distinct at play zoom, though the internal mechanism simplifies into a bright cap.",
+      "redo_brief": ""
+    }
+  ],
+  "ranking": {
+    "pump": ["A", "C", "B"],
+    "sprinkler": ["B", "A", "C"]
+  },
+  "proposals": []
+}

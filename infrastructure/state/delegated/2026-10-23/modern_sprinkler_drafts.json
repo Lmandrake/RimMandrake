@@ -1,0 +1,33 @@
+{
+ "judge_model": "gpt-6.1-sol (gpt_consult.py, codex.exe)",
+ "brief": "design/RimMandrake/art_judge_brief.md@dc0d3621a + flowworks_modern_art_brief.md M1-M4",
+ "subject": "RM_SprinklerHead (Modern style)",
+ "item": "MODERN_PUMP_REDRAW_SAME_RED_DIFFERENT_DAY",
+ "verdicts": [
+  {
+   "picture": "Transient/pile_2026-10-23/modern_pump/cand/Sprinkler_Modern_A.png (pass 1)",
+   "facing": "single",
+   "verdict": "KEEP",
+   "notes": "Recognisable modern irrigation hardware. Restrained material colours and a simple silhouette survive play zoom, although the head is less immediately distinctive than B."
+  },
+  {
+   "picture": "Transient/pile_2026-10-23/modern_pump/cand/Sprinkler_Modern_B.png (pass 1)",
+   "facing": "single",
+   "verdict": "KEEP",
+   "notes": "Strongest sprinkler identity. The brass head, asymmetric arm and dark support remain readable at play zoom; materials and building perspective suit the brief."
+  },
+  {
+   "picture": "Transient/pile_2026-10-23/modern_pump/cand/Sprinkler_Modern_C.png (pass 1)",
+   "facing": "single",
+   "verdict": "KEEP",
+   "notes": "Reads as a modern plastic rotary sprinkler. The pale head and blue collar remain distinct at play zoom, though the internal mechanism simplifies into a bright cap."
+  }
+ ],
+ "ranking": [
+  "B",
+  "A",
+  "C"
+ ],
+ "scope": "drafts for the owner's pick only; replaces kept art (E3, delegation_policy \u00a72.3), nothing installed",
+ "proposals": []
+}

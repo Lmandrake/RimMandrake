@@ -1,0 +1,87 @@
+{
+ "biome": "SUBJECTS_modern_pump_sprinkler",
+ "built": "2026-10-23T04:47:27-0700",
+ "census": "Transient/biome_ffar/modern_pump_sprinkler.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 11 mods \u2014 a test list): 320 active",
+ "rows": {
+  "ModernPump": {
+   "columns": {
+    "A": {
+     "single": "d7067d4dd9fe9256334a4bce3d061c911c382e1c9adf697fb49459e42d5cebc3"
+    },
+    "B": {
+     "single": "6681e712eb188c679574102a9a6dfa01997a1ce3e609e15a5286b8f0eed54d5d"
+    },
+    "C": {
+     "single": "eb26dfa77f15e7b674729ac50239cdb2c975ad79f099458503efa21448b66cd5"
+    },
+    "D": {
+     "single": "ef2881d177df5516ad19557e361e7227dd0dfd014d7b3f781514edc143711af7"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Pump/Modern/RM_LiquidPump",
+    "B": "RimMandrake/FlowWorks/Pump/Modern/RM_LiquidPump",
+    "C": "RimMandrake/FlowWorks/Pump/Modern/RM_LiquidPump",
+    "D": "RimMandrake/FlowWorks/Pump/Modern/RM_LiquidPump"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render modernpump_a_v1",
+    "C": "render modernpump_b_v1",
+    "D": "render modernpump_c_v1"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Pump/Modern/RM_LiquidPump",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "modernpump"
+  },
+  "ModernSprinkler": {
+   "columns": {
+    "A": {
+     "single": "6b63f2ceaad01087cf9f6077308aefc3dfb45b78421bd59d428049ad7b575c2d"
+    },
+    "B": {
+     "single": "26bab38490eed9e70e57419ab6f9edef543f7932a0e9f09ba7ec5e9e62109b39"
+    },
+    "C": {
+     "single": "ad610d596da82a0375f42cf96c9eec9c14f66d11999b2be083e6f7274850b788"
+    },
+    "D": {
+     "single": "c234b730bf924ec0b70ab4f5ae4afba7a02d8a5717db914ffd7f8737c40c3372"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead",
+    "B": "RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead",
+    "C": "RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead",
+    "D": "RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render modernsprinkler_a_v1",
+    "C": "render modernsprinkler_b_v1",
+    "D": "render modernsprinkler_c_v1"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "modernsprinkler"
+  }
+ },
+ "sheetId": "modern_pump_sprinkler_sheet_2026-10-23",
+ "snapshotId": "6b0cc9f205831463"
+}

@@ -1,0 +1,19 @@
+{
+ "sheet": "modern_pump_sprinkler_sheet_2026-10-23.html",
+ "looked_by": "judge:gpt-6.1-sol",
+ "when": "2026-10-23T04:48:06-0700",
+ "caught": "Outside judge (GPT gpt-6.1-sol, did not make them) REDO'd two pump drafts: one read as a basket strainer, one had a bolted cover; both redrawn and passed on a second look. Every picture looked at full size, true scale and 32/48 px.",
+ "rows": {
+  "ModernPump": {
+   "fp": "56b14e55cded9f7b",
+   "verdict": "OK",
+   "note": "B/C/D all judge KEEP (judge_v1 + judge_v2.json): B jet pump, C pool/booster pump with motor cowl, D stainless booster with smooth blue motor; ports end where today's do (fitted to the live fill box). Judge ranking B, C, D."
+  },
+  "ModernSprinkler": {
+   "fp": "f8f8e32a94932420",
+   "verdict": "OK",
+   "note": "B/C/D judge KEEP: B pop-up rotor (darkest, least distinct at 32 px), C brass impact head (strongest), D blue micro spinner. Foot kept on today's bottom row; drawOffset re-measured on install."
+  }
+ },
+ "dropped": []
+}
