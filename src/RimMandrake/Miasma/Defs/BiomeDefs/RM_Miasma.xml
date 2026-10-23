@@ -262,7 +262,7 @@
       <RM_Mantrap>0.2</RM_Mantrap>  <!-- lastvine (renamed from mantrap, Miasma sheet 2026-10-08) - root-ambush; our port of AA_Mantrap (Phase 0 P3, Defs/ThingDefs_Races/RM_Lastvine.xml); art installed at our own path -->
       <RM_Sharpshrimp>0.2</RM_Sharpshrimp>  <!-- sharpshrimp (renamed from raptor shrimp, Miasma sheet 2026-10-08) - channel-predator -->
       <RM_DecayDrake>0.1</RM_DecayDrake>  <!-- fermatalis - composter; our port of AA_DecayDrake (DONOR_CODE_PLAIN_PORTS_1) -->
-      <RM_Bileworm MayRequire="mandrake.rm.scarlands">0.1</RM_Bileworm>  <!-- helixien - strange -->
+      <RM_Bileworm MayRequire="mandrake.rm.warscar">0.1</RM_Bileworm>  <!-- helixien - strange -->
       <RM_Thermadon>0.1</RM_Thermadon>  <!-- duskfire - channel-predator; our port of AA_Thermadon (DONOR_CODE_PLAIN_PORTS_1) -->
       <!-- Miasma sheet 2026-10-08 (owner, row RSW_AaroxisDendoria: "RimMandrake tier, not SW ... Rename it Liliana"): the wingless silk moth, ported RSW_AaroxisDendoria -> RM_Liliana (Defs/ThingDefs_Races/RM_Liliana.xml), weight 0.3 carried over from WildAnimals_Miasma.xml. AA_Slurrypede CUT from this roster by the same sheet ("cut from this biome"; scoped to the Miasma only). -->
       <RM_Liliana>0.3</RM_Liliana>  <!-- liliana - strange; wingless silk moth -->
