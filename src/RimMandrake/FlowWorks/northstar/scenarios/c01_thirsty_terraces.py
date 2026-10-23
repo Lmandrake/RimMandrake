@@ -37,7 +37,7 @@ SETUP = dict(
     + [("RM_PipePole", 32, 38, None, None), ("RM_PipePole", 37, 38, None, None)]
     + [("RM_UniversalPipe", x, 38, None, None) for x in range(38, 44)]
     + [("RM_LiquidTankTall", 44, 37, None, None)]
-    + [("RM_UniversalPipe", 46, z, None, None) for z in range(10, 38)]
+    + [("RM_UniversalPipe", 46, z, None, None) for z in range(12, 38)]   # from the top sprinkler row (z 12) down: z 10-11 was a tail past its T into nothing
     + [("RM_UniversalPipe", x, z, None, None) for z, _ in ROWS for x in range(38, 46)]
     + [("RM_SprinklerHead", x, z, None, None) for z, _ in ROWS for x in (39, 41, 43)]
     + [("RM_Swale", 14, 19, None, None),
