@@ -262,6 +262,10 @@ def main():
           and [t for t, _ in w.calls].index("jawa/destroy_batch") < [t for t, _ in w.calls].index("jawa/set_draft"),
           str((plant, r.evidence)))
     w = FakeWorld(pawns=[pawn_row("Yume", x=124, z=126)])
+    H.settle_bystanders(w, ground_categories="Plant,Filth")
+    check("ground_categories reaches destroy_batch (LeaningScrub lifts thorn-litter filth too)",
+          [p.get("categories") for t, p in w.calls if t == "jawa/destroy_batch"] == ["Plant,Filth"], str(w.calls))
+    w = FakeWorld(pawns=[pawn_row("Yume", x=124, z=126)])
     H.settle_bystanders(w, clear_ground=None)
     check("control: clear_ground=None clears nothing",
           not [p for t, p in w.calls if t == "jawa/destroy_batch"], str(w.calls))
