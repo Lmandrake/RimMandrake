@@ -300,8 +300,9 @@ def build(donor_name, registry):
         dn = d.find("defName")
         if dn is not None and dn.text.strip() in rename:
             dn.text = rename[dn.text.strip()]
-            if dn.text in labels and d.find("label") is not None:
-                d.find("label").text = labels[dn.text]
+        # (the loop above already renamed defName text, so the label override keys on OUR name)
+        if dn is not None and dn.text.strip() in labels and d.find("label") is not None:
+            d.find("label").text = labels[dn.text.strip()]
         return d
 
     out = [rewrite(tdef), rewrite(kdef)] + [rewrite(x) for x in support]
