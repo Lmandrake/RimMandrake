@@ -216,6 +216,26 @@ def vh_reel_facing_checks(VH):
           "brass = inward == [1, 0] and V.reel_facing(dst, RELAY_TARGET[dst]) == 3" in src)
 
 
+def reel_room_checks():
+    """PROOF_REELS_FIX_STILL_STAGED_WEST: reels whose target is nearer than the straight lead-out, or whose facing is built against,
+    fall back to West; reels with room face their target as before."""
+    import validation_core as V
+    check("room: a target 3 cells north of the reel (live 'no room for the straight lead-out') -> West, not North",
+          V.reel_facing((52, -1), (52, 3)) == 0 and V.reel_facing_roomy((52, -1), (52, 3)) == 3
+          and V.reel_toward((52, -1), (52, 3), roomy=True) == "RM_HoseReel:53,-1,3")
+    check("room: a target 20 cells east keeps East; a plain reel_toward is unchanged",
+          V.reel_facing_roomy((10, 5), (40, 5)) == 1 and V.reel_toward((10, 5), (40, 5)) == V.reel_toward((10, 5), (40, 5), roomy=True))
+    check("room: a blocked East (pipe on the reel's east edge) falls to West even with 80 cells of run",
+          V.reel_facing_roomy((10, 5), (90, 5), blocked=(1,)) == 3 and V.reel_toward((10, 5), (90, 5), blocked=(1,)).endswith(",3"))
+    import pipe_levelling_perf_proof as PL
+    ops = PL.rig_ops(100, 4, 95, 149)
+    check("room: levelling rig - reel 1 West (4 cells to the lip), reel 2 West not East into the pipe",
+          ops[0].endswith(",3") and ops[1].endswith(",3"), ops[:2])
+    ops = PL.rig_ops(200, 4, 95, 249)
+    check("room: levelling rig far from the lip still faces West for reel 1 and never East for reel 2",
+          ops[0].endswith(",3") and ops[1].endswith(",3"), ops[:2])
+
+
 def vh_west_inlet_checks(VH):
     """VALIDATION_HOSE_REELS_FIX_STILL_WEST: the live relay C end (76.353, 100.924) on a reel at (76, 100) is the inlet."""
     check("VH inlet: the live end 0.353 inside the edge, 0.076 low, meets the inlet", VH.west_inlet_ok([76.353, 100.924], (76, 100), 0.75))
@@ -547,6 +567,7 @@ def main():
     vh_reel_facing_checks(VH)
     vh_review_site_checks(VH)
     vh_west_inlet_checks(VH)
+    reel_room_checks()
     print("selftest_proof_hose: %s (%d failing)" % ("PASS" if not FAILS else "FAIL", len(FAILS)))
     return 0 if not FAILS else 1
 
