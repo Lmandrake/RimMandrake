@@ -115,9 +115,10 @@ Stored tile temperatures in the dev save equal the painted record (`world/ASHKAR
 on all 21,872 tiles (max |Δ| ≤ 1 °C: none), and track the ruled curve
 `[70,58,38,14,−22,−58,−80]` on arc minus 5.5 °C/km (biome medians within ±1 °C of it). Mismatches:
 
-- **The Scald** (`RM_TheScald`, 312 tiles): sheet `design/Jawa/worldbuilding/biomes/the_scald.md` §0
-  puts it at arc 0–30, air +58..+70 °C; the planet has it at arc 23–51 (median 36), 36..53 °C
-  (median 46), and 7.8 °C under the curve on every tile.
+- **The Scald** (`RM_TheScald`, 312 tiles): at arc 23–51 (median 36), where the owner placed it
+  (~35° arc, 2026-08-16), at 36..53 °C (median 46): 7.8 °C under the curve on every tile, because its
+  temperature is still the value for its first, perched 1,411 m painting (now −350 m). The repaint
+  stamps the curve value (`world/repaint_2026-10-21/scald_temperature.csv`).
 - Smaller local departures (|Δ| > 5 °C): RM_TwilightSea 83, RM_TheRot 61, RM_Abyss 45, RUT_Umbra 19,
   RM_FloodedCanyon 17 tiles — authored in the record, not drift.
 - 🔴 **Seasons still swing.** Under the tidal lock the daily swing is off, but vanilla
@@ -165,7 +166,7 @@ Restore steps: item `PLANET_RINGS_RESTORE_DEBRIS_STILL_IN_ORBIT`.
 
 - `TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING` — pick the dev save; a load-time guard so the full list cannot load unlocked.
 - `PLANET_RINGS_RESTORE_DEBRIS_STILL_IN_ORBIT` — ride the next larger-list cold load.
-- The Scald's arc/temperature vs its sheet (§3) goes on the end-of-build paint list, not a repaint now:
+- The Scald's temperature (§3) goes on the end-of-build paint list, not a repaint now:
   filed as a line in `infrastructure/state/items/BIOME_PAINT_ONCE_AT_THE_END_1.md`.
 
 ## 9. Live check, 2026-10-20 evening (FOUNDRY, 325-mod list)

@@ -7,10 +7,8 @@
   Scald, the crater lake at (35,185) that is the item's "boiling ocean"
   (design/Jawa/worldbuilding/ASHKARR_WORLD_DEFINITION.md §Water; region
   "Scald" in world/ASHKARR_WORLDMAP_tiles.csv, biome=Lake, MEASURED 312/312
-  tiles water=1). Sits in the Anvil substellar band (arc 0-30, +70..+58 C) —
-  "the hottest lake in the hottest place"
-  (design/Jawa/worldbuilding/biomes/terminator_sea.md §2's own comparison
-  table: "the Scald's coast ... +38 to +58 C, overhead, fierce").
+  tiles water=1). Sits in the Dune Sea band, tiles at arc 23-51 (centre ~35),
+  air +44..+61 C at sea level (the_scald.md §0, measured 2026-10-22).
 
   Mechanic and values lifted from
   design/Jawa/mods/REGROWTH_BOILING_LIFT_SPEC.md §R-B3/R-B4a (route (b):
@@ -272,7 +270,7 @@
   <TerrainDef ParentName="WaterShallowBase">
     <defName>RUT_ScaldWaterShallow</defName>
     <label>shallow boiling water</label>
-    <description>Shallow water at the boil. Steam stands off it even in the flat, unmoving light of the Anvil, and the mud at its edge is baked hard.</description>
+    <description>Shallow water at the boil. Steam stands off it even under the high, unmoving sun, and the mud at its edge is baked hard.</description>
     <renderPrecedence>394</renderPrecedence>
     <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterShallowRampPolluted</pollutedTexturePath>
@@ -306,7 +304,7 @@
   <TerrainDef ParentName="WaterShallowBase">
     <defName>RUT_ScaldWaterOceanShallow</defName>
     <label>shallow boiling water</label>
-    <description>Shallow water at the boil. Steam stands off it even in the flat, unmoving light of the Anvil, and the mud at its edge is baked hard.</description>
+    <description>Shallow water at the boil. Steam stands off it even under the high, unmoving sun, and the mud at its edge is baked hard.</description>
     <renderPrecedence>396</renderPrecedence>
     <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterShallowRampPolluted</pollutedTexturePath>

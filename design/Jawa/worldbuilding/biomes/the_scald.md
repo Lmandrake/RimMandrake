@@ -24,10 +24,18 @@ two seas").
 
 ## 0. The measurements everything rests on
 
-Per `LIQUID_BIOMES_MAP_1_RECONCILIATION.md` (MEASURED there): **312 tiles, one
-crater** — centre (35,185), radius 10.5, in the **Anvil substellar band (arc
-0–30, air +58..+70 °C)**: the hottest lake in the hottest place. Ruled depth
-−30 m; live-measured **−350 m**. **A terminal pan: eight rivers end in it;
+**312 tiles, one crater** — centre (arc 35, bearing 185), radius 10.5, in the
+**Dune Sea band**: tiles at arc 23–51 (median 36), where the owner placed it
+(*"the dayside ocean at ~35° arc"*, 2026-08-16, `worldgen_interactive_def.md`).
+It is not in the Anvil (arc < 20). Sun height 39–67° (median 54°). Ruled depth
+−30 m; live-measured **−350 m** on all 312 tiles (dev save R3, 2026-10-20).
+**Air (tile temperature):** the ruled arc curve at sea level, **+44..+61 °C,
+median +54 °C** (`world_physics_audit.t_intent`). The tiles still carry
++36..+53 °C, the value for the lake's first, perched 1,411 m painting; the
+repaint stamps the curve value from
+`world/repaint_2026-10-21/scald_temperature.csv`. **Direct Sun** on an exposed
+pawn: 55 °C × sin(sun height) = +34..+51 °C, median +45 °C, the same geometry
+as everywhere. *(Measured 2026-10-22, `Transient/scald_arc_investigation_2026-10-22.md`.)* **A terminal pan: eight rivers end in it;
 none leave.** The Greentide's twin groves flank it; the Cracked Lands' storms
 are its grandchildren.
 
@@ -40,7 +48,7 @@ itself is ruled at `design/Jawa/mods/REGROWTH_BOILING_LIFT_SPEC.md` (R-B,
 
 ## 1. What it is
 
-A crater sea that boils. Volcanic heat rises under it and the substellar sun
+A crater sea that boils. Volcanic heat rises under it and the high dayside sun
 stands over it, and between the two the water never rests — a roiling,
 steaming, mineral-fouled expanse ringed by geysered shores, its steam
 climbing forever to the border peaks. In its depths, rainbow sheets of
@@ -52,7 +60,7 @@ drinks at all.
 
 ## 2. Planetary position
 
-The substellar basin (arc 0–30) × **volcanic crater + terminal pan**: the one
+The Dune Sea band (arc ~35, rim 23–51) × **volcanic crater + terminal pan**: the one
 standing water the deep dayside permits, because fire keeps it and the
 mountains fence it. The heart of the dayside's hydrology (§3).
 

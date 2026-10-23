@@ -126,7 +126,8 @@ From the dump's `BiomeDef` packageIds, 2026-10-21T11:18Z:
    - Add a name alias only for by-name references that survive into a save, such as the
      `RM_WastelandScorchedStars` policy entries (if that plant is renamed).
 2. **Settle the placement edits.** These are the paint-list rows that change which tiles a biome sits on:
-   - the Scald on its ruled arc and temperature (`SCALD_PLACEMENT_DECIDE_ARC_OR_THERMOMETER`, owner card);
+   - the Scald: **no placement edit.** The owner ruled by card 2026-10-22 that its 312 tiles stay at arc ~35
+     (`SCALD_PLACEMENT_DECIDE_ARC_OR_THERMOMETER`). Only its temperature changes: see step 6;
    - the Warscar pilgrim camps (`WARSCAR_PILGRIM_CAMP_SITES_1`). These are world objects, not biome edits, so on
      a dev world they can follow later.
    - The hand-placed geological landmarks (`GEO_LANDMARKS_SKETCH_BEFORE_THE_PAINT_DRIES`) are the same kind of
@@ -160,7 +161,11 @@ From the dump's `BiomeDef` packageIds, 2026-10-21T11:18Z:
      resolves silently (`RUT_UmbraRename_Aliases.xml` header). This is not a fault. Do not save before step 7.
    - Then run `jawa/world_tile_import` with the CSV path in Windows form, `apply:false` and `expectTiles:21872`.
      Bar: `unknownBiomes: []`, `biomeSkipped: 0` and `success: true`. Then run it again with `apply:true`.
-   - Then run `jawa/world_tile_validate` on the same path (bar: 0 mismatches), then `jawa/world_commit`.
+   - Then run `jawa/world_tile_validate` on the same path (bar: 0 mismatches).
+   - Then the Scald's temperature: `jawa/world_tile_import` with `world/repaint_2026-10-21/scald_temperature.csv`
+     (`tile,temp_c`, 312 rows: the ruled arc curve at −350 m, 43.8..60.7 °C; the tiles hold the perched-1,411 m
+     values, 7.8 °C low), `expectTiles:21872`, dry run then `apply:true`; `world_tile_validate` on it (0 mismatches).
+     Then `jawa/world_commit`.
 7. **Read back what the stamp must not have disturbed:**
    - `jawa/world_mutators_audit` must show 0 offenders. This is the equivalent of w9 stage 3; the renames keep
      water and land where they were, so the bar is 0 with nothing to fix.
@@ -203,6 +208,6 @@ or a variant.
 | Game down for the deploy; game up and the bridge for steps 6–8 | game-down, bridge | BENCH releases the bridge or the driver (`rimflow bridge who`) |
 | A new dump after the deploy, for step 9's census | game-up | `dump_request.txt` armed at the cold load |
 | The canonical save. Deleting the twins makes `CANONICAL_ASHKARR_START_2026-09-12.rws` load 19,969 tiles as the default biome. Its world stays recorded in `world/ASHKARR_WORLDMAP_*.csv` and `world/rescue_2026-10-19/` | **owner card** | he retires it as a loadable reference, or keeps the twins one more cycle |
-| The Scald placement | **owner card** | move the tiles to arc 0–30, warm the tiles, or amend the sheet |
+| The Scald placement | answered 2026-10-22 (card) | tiles stay at arc ~35; sheet corrected; temperature stamped in step 6 |
 | The VEE mutators and landmarks (14,413 + 805), including 8,262 solar-power entries | **owner card** | port, drop, or keep |
 | Content still owed a biome-mod migration | none | MEASURED 0 donor references on the painted `RM_` defs |
