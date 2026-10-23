@@ -336,6 +336,57 @@ namespace RimMandrake.ExplosiveGrowth
             return string.Join(" ", parts);
         }
 
+        /// <summary>EXPLOSIVE_PLANT_GROWTH_1 A3 (S0-7): a stalled (terminator) biome never cycles. A mature dry native on a
+        /// water spill and a mature wet native each get a forced charge of 0.5, then one real ledger pass runs: in a stalled
+        /// biome both read cycles=False and both charges are gone (the ledger drops a charge whose plant does not cycle).
+        /// On any other in-scope map the dry arm is the control: cycles=True and its charge survives the pass.
+        /// mayRun=False (the map is out of scope) also drops charges, for a different reason: the suite reads that as UNMEASURED.</summary>
+        public static string ProofStalled(Map map)
+        {
+            map = map ?? Find.CurrentMap;
+            var comp = RM_MapComponent_ExplosiveGrowth.For(map);
+            if (comp == null) return "ERROR no map component";
+            var parts = new List<string>
+            {
+                "biome=" + map.Biome?.defName,
+                "stalled=" + RM_ExplosiveGrowthRegistry.IsTerminatorBiome(map.Biome),
+                "mayRun=" + RM_ExplosiveGrowthRegistry.MapMayRun(map.Biome),
+                "on=" + ExplosiveGrowthSettings.On
+            };
+            var placed = new List<Thing>();
+            try
+            {
+                var arms = new List<(string key, Plant p)>();
+                foreach (var (key, def) in new[] { ("dry", FirstOf(map, RM_Archetype.DryNative, false)), ("wetn", FirstOf(map, RM_Archetype.WetNative, false)) })
+                {
+                    Plant p = PlaceDef(map, def, 1f);
+                    if (p == null) { parts.Add(key + "=NONE"); continue; }
+                    placed.Add(p);
+                    if (key == "dry") { Thing w = Spill(map, p.Position); if (w != null) placed.Add(w); }
+                    RM_PlantProfile prof = RM_ExplosiveGrowthRegistry.For(p.def);
+                    comp.DebugSetCharge(p, 0.5f);
+                    bool armed = comp.TryGetCharge(p, out _);
+                    parts.Add(string.Format("{0}={1} {0}R={2:0.0000} {0}Cycles={3} {0}Armed={4}", key, p.def.defName,
+                        comp.MoistureFactorFor(p, prof), comp.CyclesHere(p, prof), armed));
+                    arms.Add((key, p));
+                }
+                var pass = HarmonyLib.AccessTools.Method(typeof(RM_MapComponent_ExplosiveGrowth), "Pass", new[] { typeof(int), typeof(int) });
+                if (pass == null) { parts.Add("pass=MISSING"); return string.Join(" ", parts); }
+                pass.Invoke(comp, new object[] { Find.TickManager.TicksGame, 250 });
+                foreach (var (key, p) in arms)
+                {
+                    bool kept = comp.TryGetCharge(p, out RM_ChargeRecord rec);
+                    parts.Add(string.Format("{0}ChargeAfterPass={1}", key, kept ? rec.charge.ToString("0.000") : "none"));
+                    comp.DebugSetCharge(p, 0f);
+                }
+            }
+            finally
+            {
+                foreach (Thing t in placed) if (!t.Destroyed) t.Destroy();
+            }
+            return string.Join(" ", parts);
+        }
+
         // ── TREE_BURST_BUILD_LITRES_BUY_YEARS (tree_burst_design_2026-10-17.md §3, §4, §6a): the tree rows, read live ──
 
         private static int CountNear(Map map, IntVec3 c, ThingDef def, float radius)

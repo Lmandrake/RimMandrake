@@ -1143,7 +1143,7 @@ FLIPS = [
     ("treeLitresPerDayOfLife", 40.0, 80.0),  # probe_tree_life reads the drink at the default
     ("treeDrinkLitresPerDay", 40.0, 20.0),   # a continuous source's daily cap: needs a river tree over days
     ("treeBurstDefaultLogs", 10, 5),         # a non-wood tree's burst: probe_tree_life reads the default when it picks one
-    ("stuntedMultiplier", 0.4, 0.5),         # needs a stalled biome (PoisonForest), not on the solo tier
+    ("stuntedMultiplier", 0.4, 0.5),         # its effect is read by probe_stalled on an RM_Cauldron map (S0-7)
     ("wetNativeMultiplier", 4.0, 3.0),       # probe_rules reads it at the default
     ("dryDryMultiplier", 0.1, 0.2),
     ("vanillaDryMultiplier", 0.1, 0.2),
@@ -1327,6 +1327,10 @@ def probe_rules(t):
         if _live(t):
             if not raw or raw.startswith("ERROR"):
                 _unmeasured(t, "ProofRules gave no read: %r" % raw[:200])
+            biome = (t.bridge_call("jawa/map_info") or {}).get("mapBiome")
+            if biome in STALLED_BIOMES:
+                _unmeasured(t, "SITE: %s is a stalled biome (S0-7): every arm reads stuntedMultiplier by design; "
+                               "probe_stalled measures it" % biome)
             if v.get("rain") == "1":
                 _unmeasured(t, "SITE: it is raining on the map (every unroofed cell is wet): %s" % raw[:200])
             bad = []
@@ -1352,6 +1356,58 @@ def probe_rules(t):
             if not _near(v.get("burstShare"), 0.3333, 0.04): bad.append("dry-native Burst share %s, want 1 in 3 (C3)" % v.get("burstShare"))
             if bad:
                 _fail("; ".join(bad) + " | " + raw[:400])
+
+
+# --------------------------------------------------------------------------- stalled biomes (S0-7, EXPLOSIVE_PLANT_GROWTH_1 A3)
+# Live 2026-10-23 (16-mod, fresh RM_Cauldron map): ProofRules read r=0.4 for the dry, tree and wet-native arms, on a spill and
+# after use - the stunted rate, no water boost: CORRECT (RM_ExplosiveGrowthKernel.MoistureFactor returns s.stunted first
+# when stalled). RULED OUT: "a mod bug keeps the Cauldron dry" - the rate law is the ruled one. The "never cycles" half was
+# unobserved; probe_stalled reads it: a forced charge on a mature plant of ours is dropped by one real ledger pass.
+
+STALLED_BIOMES = ("RM_Cauldron", "RUT_Cauldron")   # terminatorBiomes: Cauldron/Defs/ExplosiveGrowth + the RUT roster
+
+
+@suite.chain("probe_stalled")
+def probe_stalled(t):
+    """RM_ExplosiveGrowthProof.ProofStalled. On a stalled map: dry and wet natives read r = stuntedMultiplier, cycles=False,
+    and a forced 0.5 charge is gone after one pass. On any other in-scope map the dry arm is the control (cycles=True,
+    the charge survives), so the row measures on every map and can go red on both."""
+    with _comp(t, "stalled_biome_never_cycles"):
+        _prep(t, 40)
+        _suite_scope(t)
+        r = t.bridge_call("jawa/static_call", type="RimMandrake.ExplosiveGrowth.RM_ExplosiveGrowthProof", method="ProofStalled",
+                          args="current")
+        text = str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+        _note(t, "ProofStalled", text)
+        if _live(t):
+            if not text or text.startswith("ERROR") or "pass=MISSING" in text:
+                _unmeasured(t, "ProofStalled gave no read (stale DLL?): %r" % text[:200])
+            v = dict(re.findall(r"(\w+)=([\w.\-]+)", text))
+            if v.get("on") != "True" or v.get("mayRun") != "True":
+                _unmeasured(t, "SITE: the engine is off or this map is out of scope (on=%s mayRun=%s): a dropped charge "
+                               "would prove nothing" % (v.get("on"), v.get("mayRun")))
+            if v.get("dry", "NONE") == "NONE":
+                _unmeasured(t, "SITE: no plantable dry native near the map centre: %s" % text[:300])
+            if v.get("dryArmed") != "True":
+                _unmeasured(t, "HARNESS: the forced charge did not take (DebugSetCharge): %s" % text[:300])
+            stalled = v.get("stalled") == "True"
+            if stalled != (v.get("biome") in STALLED_BIOMES):
+                _fail("biome %s reads stalled=%s; the terminator roster says %s" % (v.get("biome"), v.get("stalled"),
+                      v.get("biome") in STALLED_BIOMES))
+            bad = []
+            if stalled:
+                stunted = 0.4
+                for k in ("dry", "wetn"):
+                    if v.get(k, "NONE") == "NONE":
+                        continue
+                    if v.get(k + "Cycles") != "False": bad.append("%s cycles=%s on a stalled map" % (k, v.get(k + "Cycles")))
+                    if v.get(k + "ChargeAfterPass") != "none": bad.append("%s charge %s survived a pass on a stalled map" % (k, v.get(k + "ChargeAfterPass")))
+                    if not _near(v.get(k + "R"), stunted, 1e-3): bad.append("%s r=%s, want stuntedMultiplier %s" % (k, v.get(k + "R"), stunted))
+            else:
+                if v.get("dryCycles") != "True": bad.append("control: dry native cycles=%s off a stalled map" % v.get("dryCycles"))
+                if v.get("dryChargeAfterPass") in (None, "none"): bad.append("control: the dry native's charge was dropped off a stalled map")
+            if bad:
+                _fail("; ".join(bad) + " | " + text[:400])
 
 
 # --------------------------------------------------------------------------- trees (TREE_BURST_BUILD_LITRES_BUY_YEARS)
