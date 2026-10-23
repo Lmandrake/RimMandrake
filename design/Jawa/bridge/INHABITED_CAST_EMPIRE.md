@@ -176,7 +176,6 @@ adult: hands out the water. Scrupulously fair, universally loathed, has never ta
 
 **Fitter Kobbo Vunt** · Ugnaught · m · 74
 `traits: Abrasive, Ascetic, GreatMemory`
-`item: SurvivalTools_Multitool`
 `skills: Construction 18`
 childhood: won the right to his trade at twenty, tusks against a cousin, in the proper way.
 adult: nineteen years keeping Imperial machinery alive by doing the opposite of the manual.
