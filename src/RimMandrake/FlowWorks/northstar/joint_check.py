@@ -140,10 +140,16 @@ def stub_joints(pipes, poles, reel_fps, hose_ends, is_partner, port_cells=()):
     return out
 
 
+def _line_cells(h):
+    """The cells a laid hose is DRAWN through: poseCells when the probe has them (CENTRE_CELLS_FIX_WALK_THROUGH_WALLS: the
+    plan's centreCells crossed a wall the drawn pose went round), else the plan's centreCells of an older probe."""
+    return h.get("poseCells") or h.get("centreCells")
+
+
 def crossing_joints(hoses):
     """Pure: one hose_crossing joint per pair of laid hoses whose centre lines share a cell (relay pairs exempt within one
     cell of the relay reel's footprint)."""
-    laid = [h for h in hoses or [] if h.get("laid") and h.get("centreCells")]
+    laid = [dict(h, centreCells=_line_cells(h)) for h in hoses or [] if h.get("laid") and _line_cells(h)]
     owner = {}
     for h in laid:
         for c in set(tuple(c) for c in h["centreCells"]):
