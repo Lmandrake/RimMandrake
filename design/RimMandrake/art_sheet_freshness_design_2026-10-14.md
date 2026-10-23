@@ -68,7 +68,8 @@ The first trial rebuild (Leaning Scrub) re-resolved 17 rows, for example `RSW_An
   of 2026-10-19 (*"How far do we go to make art review fast and reliable? → Python command, no agent before you see
   it"*, relaxing his 2026-10-14 card from "stale sheets are refused" to "stale rows are refused") each stale ROW is
   served with a red `STALE: <reason>` badge and its pick controls off; the other rows work. Nothing serves a stale row
-  as fresh. `selftest_sheet_freshness.py` (a) proves it.
+  as fresh. Since 2026-10-22 "no agent" means no agent composes the page — one still reads every row first and
+  serving needs `<stem>.prereview.json` (`standing_rulings.md` §Nothing reaches the owner unread). `selftest_sheet_freshness.py` (a) proves it.
 - A page with no `ITEMS` is refused (exit 5); a check that crashes labels every row stale, never fresh.
 
 ## Install invalidates

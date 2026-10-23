@@ -8,8 +8,11 @@ that route refuses any sheet whose PICTURES are game art (game_art.classify), wh
 Same arguments as the review-sheets skill's serve_sheet.py (it is exec'd after the check). A sheet that never passed
 `scaled_review_gate` (no stamp), or was edited after it (stamp mismatch), is REFUSED with exit 4 and nothing starts.
 Stamp: `python3 scaled_review_gate.py check <sheet> --stamp` (stamps only a passing sheet).
+NOTHING REACHES THE OWNER UNREAD (owner, 2026-10-22; standing_rulings.md): after the stamp / non-art check, a sheet is
+served only with a complete pre-review record beside it (prereview.py: who looked at every row, per-row verdicts, what
+was dropped); missing or incomplete is REFUSED with exit 4 and the refusal names how to produce it.
 STALE ROWS ARE LABELLED, NOT THE SHEET REFUSED (owner, by card 2026-10-19: "How far do we go to make art review fast
-and reliable? → Python command, no agent before you see it", relaxing his 2026-10-14 card "stale sheets are refused" to
+and reliable? → Python command", relaxing his 2026-10-14 card "stale sheets are refused" to
 "stale rows are refused"). Freshness is still re-measured from disk (sheet_freshness.verify_html) at start and on every
 page load. A row that no longer shows what is installed is served with a red `STALE: <reason>` badge and its pick
 controls switched off (notes and the per-picture delete still work: both are content-addressed); the other rows are
@@ -27,6 +30,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import scaled_review_gate as SG  # noqa: E402
 import nonart_sheet as NA  # noqa: E402
+import prereview as PR  # noqa: E402
 
 SERVE = Path.home() / ".claude" / "skills" / "review-sheets" / "assets" / "serve_sheet.py"
 READ_ONLY = ("--status", "--selftest", "--help", "-h")
@@ -179,6 +183,16 @@ def serve_with_followed_guard(argv: list[str], fresh=None) -> int:
     return mod.main()
 
 
+def prereview_gate(p: Path) -> int:
+    """0 = an agent or naive judge looked at every row as it is now (prereview.py); 4 = refused, the fix named."""
+    ok, msg = PR.verify(p)
+    if not ok:
+        print(f"REFUSED serve_gated: nothing reaches the owner unread: {msg}", file=sys.stderr)
+        return 4
+    print(f"serve_gated: {msg}", file=sys.stderr, flush=True)
+    return 0
+
+
 def main(argv: list[str]) -> int:
     if any(a in READ_ONLY for a in argv):
         os.execv(sys.executable, [sys.executable, str(SERVE)] + argv)
@@ -212,14 +226,14 @@ def main(argv: list[str]) -> int:
         if not ok:
             print(f"REFUSED serve_gated: {p.name}: non-art route: {msg}", file=sys.stderr)
             return 4
-        return serve_with_followed_guard(argv)
+        return prereview_gate(p) or serve_with_followed_guard(argv)
     if not ok:
         print(f"REFUSED serve_gated: {p.name}: {msg}.\nBuild it with art_sheet.py --biome <RM_X> (gated), or stamp a sheet that "
               f"passes with `scaled_review_gate.py check {p.name} --stamp`.", file=sys.stderr)
         return 4
     # freshness re-measured at start and on every page load (owner 2026-10-12); since his card of 2026-10-19 a stale ROW is
     # labelled and its picks switched off, and the rest of the sheet serves
-    rc = startup_freshness(p)
+    rc = prereview_gate(p) or startup_freshness(p)
     if rc:
         return rc
     return serve_with_followed_guard(argv, fresh=fresh_gate(p))

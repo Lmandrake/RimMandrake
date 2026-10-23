@@ -19,7 +19,8 @@ texPath). For each, three PNGs land in DIR, sortable and named with the plain su
 A job id joins its siblings (the same family minus the _south/_east/_north suffix) from the artpipe render folder.
 A defName with no job shows its artpipe renders from the art ledger (one question per render set).
 Sizes come from the live def dump through scale_panel.Resolver, as on the sheets. The absolute paths are printed last,
-one per line, for a seat to send with SendUserFile in batches of 6-10.
+one per line, for a seat to send with SendUserFile in batches of 6-10 — only after the seat (or a naive judge) has
+Read every one and dropped what is broken (owner, 2026-10-22; standing_rulings.md "Nothing reaches the owner unread").
 """
 from __future__ import annotations
 
@@ -435,6 +436,9 @@ def main(argv=None) -> int:
         out = L.REPO_ROOT / out
     for p in build(a.items, out.resolve()):
         print(p)
+    print("chat_review: nothing reaches the owner unread (owner, 2026-10-22) — Read every PNG above yourself or through a "
+          "naive judge, drop or fix what is broken, and send only the survivors with one line of what was caught.",
+          file=sys.stderr)
     return 0
 
 

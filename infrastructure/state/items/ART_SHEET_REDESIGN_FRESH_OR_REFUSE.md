@@ -85,6 +85,8 @@ Design: `design/RimMandrake/art_sheet_freshness_design_2026-10-14.md`. Tool: `sr
 ## 2026-10-19 — stale ROWS are labelled, the sheet still serves (owner, by card)
 
 Card: *"How far do we go to make art review fast and reliable? → Python command, no agent before you see it"*
+(narrowed by the owner 2026-10-22: no agent COMPOSES the page, but one reads every row before he sees it —
+`standing_rulings.md` §Nothing reaches the owner unread; `prereview.py` gates serving)
 (design `design/RimMandrake/art_sheet_speedup_2026-10-19.md`, option B, which names this relaxation: "stale sheet is
 refused" becomes "stale rows are refused"). `serve_gated.py` (`fresh_gate`, `label_stale`, `startup_freshness`) now
 serves a sheet with stale rows: each carries a red `STALE: <reason>` badge, its pick controls are off (notes and the

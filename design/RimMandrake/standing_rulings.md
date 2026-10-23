@@ -302,15 +302,41 @@ infrastructure/state/   ledger, items, facts/, V1.md   written only through rimf
   items/<ID>.md         LIVE item prose only — this glob is the live set
   items/closed/         prose of done/dropped/superseded items (moved on close)
   handoffs/             reboot handoffs — NOT queue items, never greppable queue state
-Transient/              output to LOOK AT, then bin    tracked+pushed, ~14 days
+Transient/              output to LOOK AT, then bin    UNTRACKED (pins only), ~14 days
 ```
 
 **Transient rule**: a human reads it once → `Transient/`; a program reads it →
 `/tmp`, never the repo; anyone-later → the repo, committed outside `Transient/`.
-Tracked and pushed so the owner can review it from another machine (his ruling
-2026-09-01, recorded in `.gitignore`), but shelf life is ~14 days: never the
+Untracked since 2026-10-18 (owner, by card: *"Stop tracking; pin to keep"*): an unpinned
+file lives only in the clone that wrote it; pin with `transient_pin.py add <path>`
+(`*.decisions.json` always stay tracked). Shelf life ~14 days: never the
 only copy of anything, and never a committed doc citing a file inside it.
 `rimflow sweep --transient` lists by age; it never deletes.
+
+## Nothing reaches the owner unread — owner, 2026-10-22
+
+> *"for a review sheet to be worth showing a human, YOU need to look at it yourself first to see if it passes muster
+> on any item you can judge. That's just a general rule for RimMandrake from now on. No walkthrough maps unless you've
+> zoomed in on every station and stared at the screenshot for potential issues related to the mod, ok? Typical
+> graphics problems, connections, making sure each graphic objects is recognizable as what it is, etc. Use a naive
+> Opus if you need to judge things, or a GPT consult if you want to make a bigger sheet and send it out. Now please
+> work on this principle until it's a coherent, concise principle and implement it for all human review. Art sheets,
+> lists of rules... it's all the same. Read it first and see if it's obviously broken, malfunctioning, or problematic
+> before wasting a human's time to tell that to you."*
+
+🔴 **Whatever we put in front of him to judge** — review sheet, art set, phone image, walkthrough map or save, list of
+rules, report, a card's material — **the presenter first looks at every item an agent can judge**, itself or through a
+naive judge (a fresh-context Opus that did not make it; `gpt_consult.py` for a big sheet), and **fixes or drops what is
+obviously broken**: does not render, does not connect, is not recognisable as what it is, contradicts itself or its
+spec, repeats something he already ruled. A walkthrough: a zoomed capture of every station, connection and path, each
+stared at for the mod's faults. He gets what survived, items an agent cannot judge marked as such, and one line of
+what was caught. **Test:** if his first comment is something we could have seen, it was not ready.
+**Enforced** for sheets: `serve_gated.py`, `review_queue.py` and `sheet_to_artifact.py` refuse a sheet without a
+complete `<stem>.prereview.json` (`src/RimMandrake/Utils/art/prereview.py`); maps, images and prose rest on the
+presenter. **Unchanged:** who decides (`delegation_policy.md`), the scaled-review gate, a grader's score as evidence
+only. The 2026-10-19 card *"Python command, no agent before you see it"* now means no agent COMPOSES the page; one
+still reads it. Incident: 2026-10-22 FlowWorks walkthrough (hoses missing reels, under buildings, unreadable
+connectors, a pawn over a pit cover), `infrastructure/state/lessons/20261023T014915Z-BENCH-walk-shown-owner-2026-10-22.md`.
 
 ## Options he must LOOK at ship as a savegame — owner, 2026-09-02
 

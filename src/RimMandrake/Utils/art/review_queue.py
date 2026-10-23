@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """review_queue.py — `art.py review awaiting-pick`: every row waiting on the owner's pick, on ONE gated page, with no
-agent in the loop (owner, by question card 2026-10-19: "How far do we go to make art review fast and reliable? →
-Python command, no agent before you see it"; design: design/RimMandrake/art_sheet_speedup_2026-10-19.md, option B).
+agent composing it (owner, by question card 2026-10-19: "How far do we go to make art review fast and reliable? →
+Python command"; design: design/RimMandrake/art_sheet_speedup_2026-10-19.md, option B). Since 2026-10-22 an agent READS
+it before he does (owner: "Read it first and see if it's obviously broken"): build with --no-serve, look at every row,
+write the record (prereview.py), then serve; serve() refuses a page with no complete pre-review record.
 
     python3 src/RimMandrake/Utils/art/art.py review awaiting-pick              # build, serve, open in his browser
     python3 src/RimMandrake/Utils/art/art.py review awaiting-pick --dry-run    # list the rows and where they come from
@@ -386,6 +388,10 @@ def serve(base: str, t0: float) -> str:
     import refresh_sheets as R
     sf = _server_file(base)
     html, dec = OUT / f"{base}.html", OUT / f"{base}.decisions.json"
+    import prereview as PR  # checked before reusing a live server too: a rebuilt page may hold unread rows
+    ok, msg = PR.verify(html)
+    if not ok:
+        raise SystemExit(f"REFUSED review_queue serve: nothing reaches the owner unread: {msg}")
     try:
         cur = json.loads(sf.read_text())
     except (OSError, ValueError):

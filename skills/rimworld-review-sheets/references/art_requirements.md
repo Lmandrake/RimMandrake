@@ -42,7 +42,8 @@ set and never merges biome rosters.
    render shows the grader's reading under its pictures, per facing: score and each flagged line
    with its reason, or UNGRADED when nothing was checked (0/0). It never hides, blocks or demotes a
    picture; renders the old gate filed `failed_canon` carry "grader flagged (advisory)" and stay
-   pickable.
+   pickable. (The grader is advisory; the pre-review look is not — a picture an agent or naive judge sees is broken
+   is fixed or dropped before he sees it, owner 2026-10-22, `standing_rulings.md` §Nothing reaches the owner unread.)
 7. **Do not repeat what he already ruled.** A subject ruled on any other sheet renders collapsed at
    the bottom — "Already ruled on <sheet>: <pick>" — expandable, never deleted (2026-10-05: *"a lot
    of redundant creatures from other forms listed on here as well that I've already reviewed"*).

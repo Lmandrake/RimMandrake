@@ -103,5 +103,6 @@ Every REDO quotes the violated line and says what you SAW. A REDO without a quot
 Only judge-KEEP pictures, with these verdict lines beside them, plus rows flagged *split*, *stuck* or
 *kept-but-flagged* (`delegation_policy.md` §6). Pages shown to him use the warm dark-brown palette he chose
 (memory `owner-likes-70s-brown-palette`, 2026-09-08) — a page convention, never a constraint on game art. Every
-sheet is truly new (Owner 2026-10-21), gated by `art_sheet.py`, and the seat looked at its own render first
-(Owner 2026-10-05). When he overturns a KEEP, his reason becomes a new line here, sourced to his words.
+sheet is truly new (Owner 2026-10-21), gated by `art_sheet.py`, and read before he sees it: every row looked at by the
+seat or a naive judge, broken rows fixed or dropped, recorded in `<stem>.prereview.json` (Owner 2026-10-05 and
+2026-10-22, `standing_rulings.md` §Nothing reaches the owner unread). Your verdict file can be that look. When he overturns a KEEP, his reason becomes a new line here, sourced to his words.
