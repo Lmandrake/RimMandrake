@@ -445,12 +445,14 @@ namespace RimMandrake.FlowWorks.SelfTest
             Check(forced.Ok, "scenic: the cost never blocks (a hose with no way round still lays: " + (forced.Reason ?? "laid") + ")");
             Check(HoseMath.SegmentAvoidsBuildings(Rig(true), new V2(17, 7.5), new V2(25, 7.5)) && !HoseMath.SegmentAvoidsBuildings(Rig(true), new V2(17, 9), new V2(25, 9)),
                 "scenic: a straight shortcut across the drum is refused, one past it is not");
-            // the live hose world (Verse-bound, not compiled here): World() and LiveCellSig must cost a reel/pump the same
+            // the live hose world (Verse-bound, not compiled here): World() and LiveCellSig must cost a reel/pump (and, since
+            // HOSE_BUILDINGS_FIX_BATTERY_HIDE_AND_SEEK, any walk-over building drawn above the hose) the same
             string mc = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Hose", "RM_MapComponent_Hoses.cs"));
             Check(System.Text.RegularExpressions.Regex.IsMatch(mc, @"WalkableFast\(idx\)\) \{ if \(CostsAsBuilding\(ed\)\) cw\.SetExtraCost\(cell, HoseMath\.BuildingCrossCost\); continue; \}")
                   && System.Text.RegularExpressions.Regex.IsMatch(mc, @"WalkableFast\(idx\)\) \{ if \(CostsAsBuilding\(ed\)\) extra = HoseMath\.BuildingCrossCost; \}")
-                  && System.Text.RegularExpressions.Regex.IsMatch(mc, @"CostsAsBuilding\(Building ed\) => ed != null && \(CompHoseReelOf\(ed\) != null \|\| ed is [\w.]*Building_LiquidPump\)"),
-                "scenic: the live hose world and its per-cell signature both cost a reel or pump BuildingCrossCost");
+                  && System.Text.RegularExpressions.Regex.IsMatch(mc, @"CostsAsBuilding\(Building ed\) =>\s+ed != null && \(IsRig\(ed\) \|\| DrawsOverHose\(ed\)\)")
+                  && System.Text.RegularExpressions.Regex.IsMatch(mc, @"IsRig\(Building ed\) =>\s+ed != null && \(CompHoseReelOf\(ed\) != null \|\| ed is [\w.]*Building_LiquidPump\)"),
+                "scenic: the live hose world and its per-cell signature both cost a reel, a pump or a walk-over building drawn above the hose BuildingCrossCost");
         }
     }
 
@@ -586,11 +588,87 @@ namespace RimMandrake.FlowWorks.SelfTest
             Check(ok == total && total == 8, "hose end on a 2x2 tank: the widened coupling's drawn face lands on the measured flange, both sides, every look (" + ok + "/" + total + ")");
         }
 
+        /// <summary>JOINT_GATE_HARDEN_TRUST_THE_DRAWN_BOX: the drawn collar's opaque box covers the nozzle tip / tank flange for the
+        /// couplings the draw places, and a collar stopping short of the tip (audit D9) or beside the port reads as a gap.</summary>
+        private static void CollarBoxes()
+        {
+            int total = 0, ok = 0, caught = 0;
+            double size = HoseMath.FittingSize(HoseMath.VisibleWidth(1, 1), HoseMath.PieceBand, HoseMath.CouplingMax);
+            foreach (string look in ReelIntakeGeometry.Looks)
+                for (int rot = 0; rot < 4; rot++)
+                {
+                    var r = new HoseReelRect(10, 10, 2, 2) { Look = look, Rot = rot };
+                    V2 face = HoseJoints.NozzleCoupling(r, out V2 inw);
+                    V2 c = HoseJoints.FittingCentre(face, inw, -HoseMath.JoinerFace, size);
+                    total++;
+                    if (HoseJoints.CollarBoxGap(c, inw, size, HoseMath.CouplingMax, r.NozzleTip) <= HoseJoints.Tolerance) ok++;
+                    // D9: the collar drawn 0.2 cell back from where it belongs (out along the hose) stops short of the tip
+                    if (HoseJoints.CollarBoxGap(c - inw * 0.2, inw, size, HoseMath.CouplingMax, r.NozzleTip) > HoseJoints.Tolerance) caught++;
+                }
+            Check(ok == total && total == 16, "the reel-end collar as drawn covers the measured nozzle tip, every look x facing (" + ok + "/" + total + ")");
+            Check(caught == total, "can-fail: a collar drawn 0.2 cell short of the nozzle (audit D9) is a gap in the box test (" + caught + "/" + total + ")");
+
+            int tt = 0, tok = 0, side = 0;
+            foreach (string look in TankPortGeometry.Looks)
+                foreach (int sx in new[] { 1, -1 })
+                {
+                    tt++;
+                    TankPortGeometry.PortPoint(look, 20, 20, 2, 2, sx, 0, out V2 port);
+                    var axis = new V2(sx, 0);
+                    double s = 1.5 * HoseMath.FittingSize(HoseMath.VisibleWidth(0, 1), HoseMath.PieceBand, HoseMath.CouplingMax);
+                    V2 c = HoseJoints.FittingCentre(port, axis, -HoseMath.JoinerFace, s);
+                    if (HoseJoints.CollarBoxGap(c, axis, s, HoseMath.CouplingMax, port) <= HoseJoints.Tolerance) tok++;
+                    if (HoseJoints.CollarBoxGap(c + new V2(0, 0.4), axis, s, HoseMath.CouplingMax, port) > HoseJoints.Tolerance) side++;
+                }
+            Check(tok == tt && tt == 8, "the port-end collar as drawn covers the tank's measured flange, both sides, every look (" + tok + "/" + tt + ")");
+            Check(side == tt, "can-fail: a collar 0.4 cell beside the flange (audit D8's kink) is a gap (" + side + "/" + tt + ")");
+        }
+
+        /// <summary>HOSE_BUILDINGS_FIX_BATTERY_HIDE_AND_SEEK / HOSE_CROSSING_FIX_FLAT_AS_A_PANCAKE: the over-draw spans.</summary>
+        private static void OverDraw()
+        {
+            var line = new List<V2> { new V2(0, 0.5), new V2(10, 0.5) };
+            List<double[]> one = HoseOverDraw.Spans(line, c => c.X == 4, HoseOverDraw.BuildingMargin);
+            bool spanOk = one.Count == 1 && Math.Abs(one[0][0] - 3.7) < 0.06 && Math.Abs(one[0][1] - 5.3) < 0.06;
+            Check(spanOk, "a hose across one building cell (x 4) is redrawn over [3.7, 5.3] (cell + the sprite margin) ("
+                + string.Join(" ", one.Select(s => s[0].ToString("0.00") + "-" + s[1].ToString("0.00"))) + ")");
+            List<V2> part = one.Count == 1 ? HoseOverDraw.Slice(line, one[0][0], one[0][1]) : new List<V2>();
+            Check(part.Count >= 2 && Math.Abs(part[0].X - one[0][0]) < 1e-9 && Math.Abs(part[part.Count - 1].X - one[0][1]) < 1e-9,
+                "the redrawn stretch is the pose cut exactly to the span");
+            Check(HoseOverDraw.Covers(one, 4.5) && !HoseOverDraw.Covers(one, 2.0), "Covers: inside the span yes, before it no");
+            List<double[]> two = HoseOverDraw.Spans(line, c => c.X == 4 || c.X == 5, HoseOverDraw.BuildingMargin);
+            List<double[]> apart = HoseOverDraw.Spans(line, c => c.X == 2 || c.X == 7, HoseOverDraw.BuildingMargin);
+            Check(two.Count == 1 && apart.Count == 2, "adjacent building cells merge into one stretch, separate ones stay two (" + two.Count + ", " + apart.Count + ")");
+            Check(HoseOverDraw.Spans(line, c => false, HoseOverDraw.BuildingMargin).Count == 0, "no building on the way, nothing redrawn");
+
+            var up = new List<V2> { new V2(0, 5), new V2(10, 5) };
+            var cross = new List<IList<V2>> { new List<V2> { new V2(5, 0), new V2(5, 10) } };
+            List<double[]> cs = HoseOverDraw.CrossSpans(up, cross, 0.2, 0.25);
+            Check(cs.Count == 1 && Math.Abs(cs[0][0] - 4.55) < 0.06 && Math.Abs(cs[0][1] - 5.45) < 0.06,
+                "a hose crossing another square on casts its crossing shadow over [4.55, 5.45] (overlap +- margin) ("
+                + string.Join(" ", cs.Select(s => s[0].ToString("0.00") + "-" + s[1].ToString("0.00"))) + ")");
+            var far = new List<IList<V2>> { new List<V2> { new V2(0, 7), new V2(10, 7) } };
+            Check(HoseOverDraw.CrossSpans(up, far, 0.2, 0.25).Count == 0, "a hose 2 cells away is not crossed: no crossing shadow");
+            List<double[]> point = HoseOverDraw.SpansWhere(up, p => Math.Abs(p.X - 5) < 1e-9, 0);
+            Check(point.Count == 1 && HoseOverDraw.Covers(point, 5) && V2.Dist(HoseOverDraw.PointAtArc(up, 0.5 * (point[0][0] + point[0][1])), new V2(5, 5)) < 1e-9,
+                "a single touching sample with no margin is still a (zero-length) span the probe can test, and its point is on the hose");
+
+            // the redrawn stretch sits above the Building layer and its top below Item, and the planner prices the buildings
+            double yo = DrawOrder.Alt(HoseOverDraw.OverBuildingLayer) + DrawOrder.HoseBaseLift, top = yo + HoseMath.CrossBand * HoseMath.CrossRanks + DrawOrder.HoseFittingLift + 0.0005;
+            Check(yo > DrawOrder.Alt(15 + 1) && top < DrawOrder.Alt(18), "the over-building stretch draws above Building (15) and BuildingBelowTop, its top under Item (18): "
+                + yo.ToString("0.0000") + ".." + top.ToString("0.0000"));
+            string src = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Hose", "RM_MapComponent_Hoses.cs"));
+            Check(src.Contains("ed != null && (IsRig(ed) || DrawsOverHose(ed))") && src.Contains("DrawOverBuildings(cur,") && src.Contains("DrawCrossShadow(r, cur,"),
+                "revert guard (source text): the hose world costs walk-over buildings drawn above the hose, and the draw redraws/shadows over them");
+        }
+
         public static void Run()
         {
             Feeds();
             NozzleCouplings();
             TankPorts();
+            CollarBoxes();
+            OverDraw();
         }
     }
 }

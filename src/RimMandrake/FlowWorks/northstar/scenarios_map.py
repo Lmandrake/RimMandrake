@@ -1072,6 +1072,8 @@ def river_main(B, a):
                                   len(res["notes"]), os.path.relpath(MAP_R_PLACED, REPO)))
         bad = not v.get("ok") or res["c11"] < 8 or (res["signs"] or 0) != res["sign_ops"] or moved
         if a.save:
+            if not joint_gate_ok(B, a.allow_red_joints):
+                return 1
             name = RM.free_save_name(a.name or SAVE_RIVER, RM.saves_stat())
             r = RM.save_keeper(B, name, signs=r_labels(*load_map_r()[1:]))
             print("save %s: ok=%s" % (name, r["ok"]))
@@ -1240,6 +1242,33 @@ def mock_summary(res, river):
     return lines
 
 
+class _PositionalBridge(object):
+    """joint_check calls B.call(tool, params_dict); reviewmap.LiveBridge takes keywords."""
+    def __init__(self, B):
+        self.B = B
+
+    def call(self, tool, params=None):
+        return self.B.call(tool, **(params or {}))
+
+
+def joint_gate_ok(B, allow_why=None):
+    """JOINT_GATE_HARDEN_TRUST_THE_DRAWN_BOX (audit F9; owner card 2026-10-23 "Keep over-ground, add a joint check"): the
+    walkthrough save is what the owner is shown, so it is refused while joint_check's gate is not PASS on every loaded map
+    (every collar on its nozzle/port by its drawn box, no hose under a building or rig, no flat crossing, no wall crossing,
+    no pipe stub, a crop of every joint). --allow-red-joints WHY writes it anyway, for a save that is not for him."""
+    import joint_check as JC
+    crops = os.path.join(REPO, "Transient", "joint_gate", time.strftime("%Y%m%dT%H%M%S"))
+    verdict, _ = JC.gate(_PositionalBridge(B), all_maps=True, crops_dir=crops)
+    print("JOINT GATE: %s (crops %s)" % (verdict, os.path.relpath(crops, REPO)))
+    if verdict == "PASS":
+        return True
+    if allow_why:
+        print("JOINT GATE is %s; saving anyway (--allow-red-joints: %s) -- NOT a save to show the owner" % (verdict, allow_why))
+        return True
+    print("save refused: nothing is shown to the owner until the joint gate passes (fix the joints, or --allow-red-joints WHY)")
+    return False
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     for f in ("plan", "dry-run", "mock", "build", "fresh-map", "soak", "labels", "save", "stage0", "river", "no-soak"):
@@ -1249,6 +1278,8 @@ def main(argv=None):
     ap.add_argument("--branch", choices=sorted(BRANCH_SAVE), default=None)
     ap.add_argument("--name", default=None)
     ap.add_argument("--log", default=os.path.join(REPO, "Transient", "fw_scenarios_build_log.md"))
+    ap.add_argument("--allow-red-joints", default=None, metavar="WHY",
+                    help="--save: write the save although the joint gate is not PASS (say why; the save is then not for the owner)")
     a = ap.parse_args(argv)
     only = set(a.only.upper().split(",")) if a.only else None
     placed = placed_c(only)
@@ -1349,6 +1380,8 @@ def main(argv=None):
         print("branch %s save %s: ok=%s; notes %s" % (a.branch, name, r["ok"], R.notes[:5]))
         return 0 if r["ok"] else 1
     if a.save:
+        if not joint_gate_ok(B, a.allow_red_joints):
+            return 1
         R.sweep(R.keep_rects(placed))
         R.pin_clock()                                 # the soak ran the clock 2 h: on to the next 10:00 (no sim)
         R.call("rimworld/pause_game", pause=True)

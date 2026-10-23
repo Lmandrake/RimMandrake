@@ -350,5 +350,156 @@ namespace RimMandrake.FlowWorks.Hose
             gap = V2.Dist(drawn, port);
             return gap <= Tolerance;
         }
+
+        /// <summary>JOINT_GATE_HARDEN_TRUST_THE_DRAWN_BOX (audit F9: "the drawn collar's box must overlap the nozzle/port sprite
+        /// box"). The opaque box of a coupling AS DRAWN (RM_MapComponent_Hoses records each one's centre, axis and size): the
+        /// Coupling_Bare art runs from the hose entry at the canvas's -X edge (-0.5 size) to its brass face at +JoinerFace size
+        /// along <paramref name="d"/>, and is <paramref name="band"/> x size wide (its widest opaque band, HO9 pins both).
+        /// Returns the distance from <paramref name="target"/> (the measured nozzle tip or port point) to that box: 0 when the
+        /// drawn collar covers the point, so a collar that stops short of the nozzle (audit D9) or floats beside a port reads as
+        /// a gap even when the geometry function that placed it says otherwise.</summary>
+        internal static double CollarBoxGap(V2 centre, V2 d, double size, double band, V2 target)
+        {
+            V2 u = d.Norm();
+            V2 rel = target - centre;
+            double along = rel.X * u.X + rel.Z * u.Z, perp = Math.Abs(rel.X * u.Z - rel.Z * u.X);
+            double lo = -0.5 * size, hi = HoseMath.JoinerFace * size, hw = 0.5 * band * size;
+            double da = along < lo ? lo - along : along > hi ? along - hi : 0;
+            double dp = Math.Max(0, perp - hw);
+            return Math.Sqrt(da * da + dp * dp);
+        }
+    }
+
+    /// <summary>
+    /// HOSE_BUILDINGS_FIX_BATTERY_HIDE_AND_SEEK (audit F2/D2: "the hose is going under the battery and wall") and
+    /// HOSE_CROSSING_FIX_FLAT_AS_A_PANCAKE (audit F8/D11: two hoses "cross flat, one painted over the other with no lift or
+    /// shadow"). The Verse-free half of drawing a laid hose OVER something: which stretches of a drawn pose (arc spans, cells
+    /// from its start) lie over a flagged cell (a walk-over building drawn above the hose layer) or over another hose, and the
+    /// pose cut to such a span. The draw (RM_MapComponent_Hoses) redraws those stretches above the building layer, or casts a
+    /// crossing shadow there, and records the spans so the joint check reads what was drawn. Lives in this file (compiled
+    /// by the mod and the SelfTest alike) so no project file had to change.
+    /// </summary>
+    public static class HoseOverDraw
+    {
+        /// <summary>Sampling step along the pose (cells).</summary>
+        public const double Step = 0.05;
+        /// <summary>A building's sprite overhangs its cell a little (a battery's is 1 x 2 on 1 x 2 cells but its outline art
+        /// runs to the edge): each span over a building runs this far past the flagged cells at both ends.</summary>
+        public const double BuildingMargin = 0.3;
+        /// <summary>The altitude layer a hose stretch lying over a walk-over building is redrawn on (vanilla
+        /// AltitudeLayer.BuildingOnTop = 17: above Building 15, below Item 18 and every pawn layer), plus the hose's base lift
+        /// and its crossing band, so its top (CrossRanks bands + fittings) stays under the Item layer (SelfTest pins it).</summary>
+        public const int OverBuildingLayer = 17;
+
+        /// <summary>Arc spans {a0, a1} (sorted, merged, clipped to [0, L]) where the pose's samples satisfy
+        /// <paramref name="flagged"/>, each widened by <paramref name="margin"/> at both ends.</summary>
+        internal static List<double[]> SpansWhere(IList<V2> pts, Func<V2, bool> flagged, double margin)
+        {
+            var o = new List<double[]>();
+            if (pts == null || pts.Count < 2) return o;
+            double[] s = Geo.CumLen(pts);
+            double L = s[s.Length - 1];
+            if (L < 1e-9) return o;
+            int n = Math.Max(1, (int)Math.Ceiling(L / Step));
+            double start = -1, last = 0;
+            int k = 0;
+            for (int i = 0; i <= n; i++)
+            {
+                double t = L * i / n;
+                while (k < s.Length - 2 && s[k + 1] < t) k++;
+                double seg = s[k + 1] - s[k];
+                V2 p = pts[k] + (pts[k + 1] - pts[k]) * (seg < 1e-12 ? 0 : Geo.Clamp((t - s[k]) / seg, 0, 1));
+                if (flagged(p)) { if (start < 0) start = t; last = t; }
+                else if (start >= 0) { Add(o, start - margin, last + margin, L); start = -1; }
+            }
+            if (start >= 0) Add(o, start - margin, last + margin, L);
+            return o;
+        }
+
+        /// <summary>Spans over cells <paramref name="flagged"/> marks (a walk-over building drawn above the hose).</summary>
+        internal static List<double[]> Spans(IList<V2> pts, Func<Cell, bool> flagged, double margin) =>
+            SpansWhere(pts, p => flagged(p.Floor), margin);
+
+        /// <summary>Spans where the pose passes within <paramref name="reach"/> of any of <paramref name="lowers"/> (the hoses
+        /// drawn beneath it): where the two ribbons overlap, reach = the sum of their half widths.</summary>
+        internal static List<double[]> CrossSpans(IList<V2> upper, IList<IList<V2>> lowers, double reach, double margin)
+        {
+            var near = new List<IList<V2>>();
+            if (upper == null || upper.Count < 2 || lowers == null) return new List<double[]>();
+            Bounds(upper, out double ux0, out double uz0, out double ux1, out double uz1);
+            foreach (IList<V2> q in lowers)
+            {
+                if (q == null || q.Count < 2) continue;
+                Bounds(q, out double x0, out double z0, out double x1, out double z1);
+                if (x0 - reach > ux1 || x1 + reach < ux0 || z0 - reach > uz1 || z1 + reach < uz0) continue;
+                near.Add(q);
+            }
+            if (near.Count == 0) return new List<double[]>();
+            return SpansWhere(upper, p =>
+            {
+                foreach (IList<V2> q in near) if (DistToPolyline(p, q) <= reach) return true;
+                return false;
+            }, margin);
+        }
+
+        /// <summary>The pose between arc <paramref name="a0"/> and <paramref name="a1"/> (end points interpolated).</summary>
+        internal static List<V2> Slice(IList<V2> pts, double a0, double a1)
+        {
+            var o = new List<V2>();
+            if (pts == null || pts.Count < 2 || a1 <= a0) return o;
+            double[] s = Geo.CumLen(pts);
+            o.Add(PointAt(pts, s, a0));
+            for (int i = 0; i < pts.Count; i++) if (s[i] > a0 + 1e-6 && s[i] < a1 - 1e-6) o.Add(pts[i]);
+            o.Add(PointAt(pts, s, a1));
+            return o;
+        }
+
+        /// <summary>True when arc <paramref name="t"/> lies inside one of <paramref name="spans"/>.</summary>
+        internal static bool Covers(IList<double[]> spans, double t)
+        {
+            if (spans == null) return false;
+            foreach (double[] sp in spans) if (t >= sp[0] - 1e-9 && t <= sp[1] + 1e-9) return true;
+            return false;
+        }
+
+        /// <summary>Distance from <paramref name="p"/> to the polyline <paramref name="q"/> (its nearest segment).</summary>
+        internal static double DistToPolyline(V2 p, IList<V2> q)
+        {
+            double best = double.MaxValue;
+            for (int i = 1; i < q.Count; i++)
+            {
+                V2 a = q[i - 1], ab = q[i] - a;
+                double l2 = ab.X * ab.X + ab.Z * ab.Z;
+                double u = l2 < 1e-12 ? 0 : Geo.Clamp(((p.X - a.X) * ab.X + (p.Z - a.Z) * ab.Z) / l2, 0, 1);
+                double dd = V2.Dist(a + ab * u, p);
+                if (dd < best) best = dd;
+            }
+            return best;
+        }
+
+        /// <summary>The point at arc <paramref name="t"/> along the pose (clamped to its ends).</summary>
+        internal static V2 PointAtArc(IList<V2> pts, double t) => PointAt(pts, Geo.CumLen(pts), t);
+
+        private static V2 PointAt(IList<V2> pts, double[] s, double t)
+        {
+            int k = 0;
+            while (k < s.Length - 2 && s[k + 1] < t) k++;
+            double seg = s[k + 1] - s[k];
+            return pts[k] + (pts[k + 1] - pts[k]) * (seg < 1e-12 ? 0 : Geo.Clamp((t - s[k]) / seg, 0, 1));
+        }
+
+        private static void Bounds(IList<V2> q, out double x0, out double z0, out double x1, out double z1)
+        {
+            x0 = z0 = double.MaxValue; x1 = z1 = double.MinValue;
+            foreach (V2 p in q) { x0 = Math.Min(x0, p.X); z0 = Math.Min(z0, p.Z); x1 = Math.Max(x1, p.X); z1 = Math.Max(z1, p.Z); }
+        }
+
+        private static void Add(List<double[]> o, double a0, double a1, double L)
+        {
+            a0 = Math.Max(0, a0); a1 = Math.Min(L, a1);
+            if (a1 < a0) return;          // a zero-length span (one flagged sample, no margin) is kept: Covers still sees it
+            if (o.Count > 0 && a0 <= o[o.Count - 1][1] + 1e-9) { o[o.Count - 1][1] = Math.Max(o[o.Count - 1][1], a1); return; }
+            o.Add(new[] { a0, a1 });
+        }
     }
 }
