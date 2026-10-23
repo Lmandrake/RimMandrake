@@ -155,7 +155,7 @@ class Fake(object):
                     if "regrow_broken" in b:
                         del self.things[pl["id"]]
                     else:
-                        pl["growth"] = 0.3
+                        pl["growth"] = 1.0 if "regrow_full" in b else 0.3
         # --- the Stall freeze and wandering
         for p in self.pawns.values():
             if p["faction"] != "none" or p["dead"]:
@@ -645,7 +645,9 @@ class Fake(object):
             lines = ["Smothered: dead through, ready to fall." if due
                      else "Smothered under a blanket: dead wood in 2 days."]
         elif d == "RM_DrippingVenomvine":
-            lines = ["Growth: %d%%" % int(100 * t.get("growth", 1))]
+            # vanilla Plant.GetInspectString: "<N>% grown" plus "Growth rate: <R>%" (the trap 4cdec5dd8 fixed: the old
+            # regex read the RATE line and failed a correct 30% stand)
+            lines = ["%d%% grown" % int(100 * t.get("growth", 1)), "Growth rate: 100%"]
         elif d == "Campfire":
             lines = ["Fuel: %d / 20" % round(self.fuel(t["id"]))]
         elif d == V.TREE and (self.on("sweetlineStationsEnabled") or "station_ignores_toggle" in self.broken):
@@ -725,6 +727,7 @@ BREAKS = {
     "smother_ignores_toggle": "smother.smother_off_holds_claims",
     "no_mature": "smother.smother_matures_to_dead_wood",
     "regrow_broken": "dripping.dripping_survives_harvest",
+    "regrow_full": "dripping.dripping_survives_harvest",
     "crown_ignores_toggle": "crown.crown_toggle_off_stays_away",
     "no_crown": "crown.crown_mob_gathers",
     "bloom_ignores_toggle": "bloom.bloom_toggle_off_quiet",
