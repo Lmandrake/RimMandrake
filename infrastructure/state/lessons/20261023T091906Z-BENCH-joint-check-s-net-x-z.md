@@ -1,0 +1,1 @@
+joint_check's net:x,z probe returns the FIRST role-bearing thing in a cell, so a sprinkler head standing on a pipe cell reads as a pipe and a bleed well (Building_LiquidDrill, role None) as nothing; count ports by def, not by net: role.
