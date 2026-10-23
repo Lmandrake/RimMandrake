@@ -1,0 +1,22 @@
+{
+  "_judge": {"judge_model": "claude-opus-5-5", "brief": "design/RimMandrake/art_judge_brief.md", "source": "Transient/port_fittings_20261023/cmp_*.png",
+    "note": "16 tank pictures are owner-KEPT (E3): a verdict here does not decide whether they get replaced; they go to him. General remark, not a verdict: the added tubes in every look are smoother and cleaner than the painterly bodies they join (B4 lesson only); at 64 px/cell this does not show."},
+  "cmp_Scrapper_RM_LiquidTank.png": {"verdict": "PASS", "note": "4 N/S copper stalks with brass mouths and dark collars sit flush on the body top and under the skid; kept body unchanged. The N stalks are long risers, but they read."},
+  "cmp_Scrapper_RM_LiquidTankTall.png": {"verdict": "PASS", "note": "W/E stubs collar onto the body side and the skid, S stubs hang under the skid; copper/brass matches the kept brass; no drift."},
+  "cmp_Scrapper_RM_UniversalCargoTank.png": {"verdict": "FIX", "note": "Upper W/E stubs float over the dome shoulders, anchored only to the strap tops; the E stub covers the kept brass hose outlet at upper right. N+W/E form a crowded T-cluster at each strap. Lower and S ports are fine."},
+  "cmp_Scrapper_RM_UniversalCargoTankXTall.png": {"verdict": "PASS", "note": "W/E stubs at mid-body and skid, short S stubs under the skid; attached and legible; body unchanged."},
+  "cmp_Industrial_RM_LiquidTank.png": {"verdict": "PASS", "note": "Steel N/S stalks with dark collars at the body top and under the skid; the steel tone fits, but it is bluer and cleaner than the grimy body."},
+  "cmp_Industrial_RM_LiquidTankTall.png": {"verdict": "PASS", "note": "W/E stubs collared to the body and skid, S stubs under the skid; reads as couplers at game scale; no drift."},
+  "cmp_Industrial_RM_UniversalCargoTank.png": {"verdict": "FIX", "note": "Same layout defect as Scrapper: upper W/E stubs hover over the dome shoulders on the strap tops, and the E stub covers the kept brass outlet fitting."},
+  "cmp_Industrial_RM_UniversalCargoTankXTall.png": {"verdict": "PASS", "note": "W/E and S couplers attached to the body and skid; clean; the hazard-band body is unchanged."},
+  "cmp_Futuristic_RM_LiquidTank.png": {"verdict": "FIX", "note": "The NE stalk's collar sits on the kept elbow-pipe/valve fixture above the body line (it is not on the body) and clips the valve wheel's left edge. The NW, S and body are fine. The stalks' blotchy silver texture is rougher than the glossy body."},
+  "cmp_Futuristic_RM_LiquidTankTall.png": {"verdict": "PASS", "note": "Silver W/E stubs with dark collars on the body and base, S stubs under the base, cyan rims at the mouths; attached; no drift."},
+  "cmp_Futuristic_RM_UniversalCargoTank.png": {"verdict": "FIX", "note": "Upper W/E stubs float over the dome shoulders on the strap tops; the E stub covers the kept cyan outlet nozzle at upper right."},
+  "cmp_Futuristic_RM_UniversalCargoTankXTall.png": {"verdict": "PASS", "note": "W/E stubs on the body and base, S stubs under the base; matches the silver/cyan trim; body unchanged."},
+  "cmp_Modern_RM_LiquidTank.png": {"verdict": "PASS", "note": "Dark-grey PVC-style N/S stalks with silver rims match the black cap and grey fittings; collared to the body top and the underside."},
+  "cmp_Modern_RM_LiquidTankTall.png": {"verdict": "PASS", "note": "The kept W/E fittings are unchanged. The new S stubs cap onto the lower dome and read as couplers, though their flat tops look slightly leg-like."},
+  "cmp_Modern_RM_UniversalCargoTank.png": {"verdict": "PASS", "note": "The kept W/E fittings are unchanged; short S couplers under the pallet match them exactly."},
+  "cmp_Modern_RM_UniversalCargoTankXTall.png": {"verdict": "PASS", "note": "The kept W/E fittings are unchanged; the S couplers cap onto the body bottom in the same material as the W/E fittings."},
+  "cmp_RM_PumpingStation_Kludged.png": {"verdict": "PASS", "note": "A single S coupler hangs from the pipe support block: a dark collar and a rust-brown ring that match the kludged palette; visible at game scale; no drift."},
+  "cmp_RM_PumpingStation_Repaired.png": {"verdict": "PASS", "note": "A single S coupler under the wooden skid, with steel/cream rings that echo the cream pipework; attached and legible; no drift."}
+}
