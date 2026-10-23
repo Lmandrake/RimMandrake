@@ -6,6 +6,8 @@
                                                        hose and every fitting; the open end draws the Mouth; the free end defaults Open
   HO7_hose_gpt_read_fixes (was O7's hose shapes)       the Verse-bound GPT source-read fixes (B1-B14) are present in the source
   HO8_no_visible_fire_hose (was O6's B20, hose files)  no player-visible 'fire hose' text in the moved hose files
+  HO9_drawn_fittings_meet_ports (2026-10-22)         the *_Bare pieces the draw code really uses, every look: coupling face at
+                                                       JoinerFace, bands at PieceBand / CouplingMax / NozzleMax / EndCapMax
 
     python3 src/RimMandrake/FlowWorks/validation_hose_offline.py      # prints the three rows; exit 1 on any FAIL
 Each row carries its own can-fail (a planted magenta/seam strip; a planted missing fragment).
@@ -251,7 +253,87 @@ def ho8_no_visible_fire_hose(rows):
     row(rows, "HO8_no_visible_fire_hose", "PASS" if not probs else "FAIL", "MOD", probs or "%d hose files swept, planted hit seen" % len(paths))
 
 
-OFFLINE_IDS = ["HO5_hose_art_sane", "HO6_hose_fittings", "HO7_hose_gpt_read_fixes", "HO8_no_visible_fire_hose"]
+# ---------------------------------------------------------------- HO9 (HOSE_JOINTS_REPAIR_ENDS_MISS_THE_NOZZLES, 2026-10-22)
+# The pieces DrawEnds/DrawFeed actually draw are the *_Bare ones (since 8ac23ee0f4, 2026-10-04), per look. HO6 measures
+# Coupling_Brass/EndCap, which nothing draws, so when 2e22f30e3c (2026-10-17) installed small centred "gauge" couplings
+# (opaque x 50-85 of 128 instead of 58-122) every coupling face landed 0.2-0.4 fitting-size short of its nozzle or port and
+# HO6 stayed green. HO9 pins every drawn piece of every look to the constants the draw code places it with.
+LOOKS = ("Scrapper", "Industrial", "Modern", "Futuristic")
+FACE_TOL, BAND_TOL_PX = 0.025, 5
+
+
+def _look_png(tex, look, name):
+    return os.path.join(tex, "Hose", name + ".png") if look == "Scrapper" else os.path.join(tex, "Hose", "Styles", look, name + ".png")
+
+
+def piece_geometry(path):
+    """(face, widest, entry) of a fitting PNG: face = rightmost opaque column as canvas units from the centre (the end that
+    meets the nozzle/port), widest = tallest opaque column (px), entry = opaque px 3 columns in from the hose end."""
+    from PIL import Image
+    im = Image.open(path).convert("RGBA")
+    a = im.getchannel("A")
+    w, h = im.size
+    cols = [sum(1 for y in range(h) if a.getpixel((x, y)) > 128) for x in range(w)]
+    xs = [x for x in range(w) if cols[x]]
+    if not xs:
+        return None
+    return ((xs[-1] + 1) / float(w) - 0.5, max(cols) * 128.0 / h, cols[min(w - 1, xs[0] + 3)] * 128.0 / h)
+
+
+def drawn_fitting_problems(tex=TEX, src=SRC):
+    hs = "".join(open(os.path.join(src, "Hose", f), encoding="utf-8").read() for f in ("HoseMath.cs", "RM_MapComponent_Hoses.cs"))
+    face = float(re.search(r"JoinerFace = ([0-9.]+)", hs).group(1))
+    pb = float(re.search(r"PieceBand = ([0-9.]+)f?[,;]", hs).group(1))
+    maxes = {n: float(re.search(r"\b%s = ([0-9.]+)f?[,;]" % c, hs).group(1)) * 128
+             for n, c in (("Coupling_Bare", "CouplingMax"), ("Nozzle_Bare", "NozzleMax"), ("EndCap_Bare", "EndCapMax"))}
+    probs, seen = [], 0
+    for look in LOOKS:
+        for n, mx in maxes.items():
+            g = piece_geometry(_look_png(tex, look, n))
+            if g is None:
+                probs.append("%s %s: empty or missing" % (look, n))
+                continue
+            seen += 1
+            f, widest, entry = g
+            if abs(widest - mx) > BAND_TOL_PX:
+                probs.append("%s %s widest band %.0f px, the code sizes it as %.0f px" % (look, n, widest, mx))
+            if n == "Coupling_Bare":
+                # the coupling's face is what meets the reel nozzle / port / the other joiner half
+                if abs(f - face) > FACE_TOL:
+                    probs.append("%s Coupling_Bare face at %.3f canvas, the code puts the face at %.3f: drawn %.2f fitting-size short"
+                                 % (look, f, face, face - f))
+                if entry < pb * 128 * 0.75 or entry > pb * 128 * 1.5:
+                    probs.append("%s Coupling_Bare hose entry %.0f px, the code sizes the hose band as %.0f px" % (look, entry, pb * 128))
+    return probs, seen
+
+
+def ho9_drawn_fittings(rows):
+    import shutil
+    import tempfile
+    probs, seen = drawn_fitting_problems()
+    # can-fail: the 2026-10-17 gauge coupling (small, centred) planted in a scratch texture tree must be refused
+    tmp = tempfile.mkdtemp(prefix="ho9_")
+    planted = False
+    try:
+        shutil.copytree(os.path.join(TEX, "Hose"), os.path.join(tmp, "Hose"))
+        from PIL import Image
+        im = Image.new("RGBA", (128, 128), (0, 0, 0, 0))
+        for x in range(50, 86):
+            for y in range(60, 70):
+                im.putpixel((x, y), (180, 120, 60, 255))
+        im.save(os.path.join(tmp, "Hose", "Coupling_Bare.png"))
+        pp, _ = drawn_fitting_problems(tex=tmp)
+        planted = any("Scrapper Coupling_Bare face" in p for p in pp)
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+    if not planted:
+        probs.append("HARNESS: a planted short gauge coupling was not refused")
+    row(rows, "HO9_drawn_fittings_meet_ports", "PASS" if not probs and seen == 12 else "FAIL", "MOD",
+        probs or "%d drawn pieces (4 looks x coupling/nozzle/cap) match JoinerFace/PieceBand/*Max; planted gauge coupling refused" % seen)
+
+
+OFFLINE_IDS = ["HO5_hose_art_sane", "HO6_hose_fittings", "HO7_hose_gpt_read_fixes", "HO8_no_visible_fire_hose",
+               "HO9_drawn_fittings_meet_ports"]
 
 
 def run_offline():
@@ -260,6 +342,7 @@ def run_offline():
     ho6_hose_fittings(rows)
     ho7_hose_gpt_read_fixes(rows)
     ho8_no_visible_fire_hose(rows)
+    ho9_drawn_fittings(rows)
     return rows
 
 
