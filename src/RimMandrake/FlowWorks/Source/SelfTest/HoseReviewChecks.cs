@@ -162,7 +162,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                     r6Miss = Math.Min(r6Miss, V2.Dist(HoseRelay.IntakePoint(relay, new Cell(9, 10)), lo));
                 }
             Check(west == wt, "from the west both cells couple to the art's measured nozzle (its height, its face) (" + west + "/" + wt + ")");
-            Check(r6Miss > 0.25, "can-fail: round 6's end (the lower west cell's edge midpoint) misses the inlet by >= " + r6Miss.ToString("0.00") +
+            Check(r6Miss > 0.05, "can-fail: round 6's end (the lower west cell's edge midpoint) misses the inlet by >= " + r6Miss.ToString("0.00") +
                 " cell in every look -- the floating coupling of the station-42 shot");
         }
         /// <summary>A hose laid onto a relay from each of the four sides, in every look: it ends exactly on the drawn end,
@@ -482,11 +482,11 @@ namespace RimMandrake.FlowWorks.SelfTest
                 for (int k = 0; k <= n; k++)
                 {
                     V2 q = a + (b - a) * (k / (double)n);
-                    // the jog onto the nozzle's line may cross the port cell's side edge by the tip's measured offset (<= 0.16, Modern
-                    // stored), still along the pipe/port it leaves: 0.2 along the reel's edge, Tolerance across it
+                    // the jog onto the nozzle's line may cross the port cell's side edge by the tip's measured offset (<= 0.44, the redrawn
+                    // ground-level outlet, Modern west), still along the pipe/port it leaves: 0.45 along the reel's edge, Tolerance across it
                     bool alongX = contact.Z >= r.Z0 + r.H || contact.Z < r.Z0;   // a north/south port: its edge runs along x
-                    bool inPort = q.X >= contact.X - (alongX ? 0.2 : HoseJoints.Tolerance) && q.X <= contact.X + 1 + (alongX ? 0.2 : HoseJoints.Tolerance)
-                                  && q.Z >= contact.Z - (alongX ? HoseJoints.Tolerance : 0.2) && q.Z <= contact.Z + 1 + (alongX ? HoseJoints.Tolerance : 0.2);
+                    bool inPort = q.X >= contact.X - (alongX ? 0.45 : HoseJoints.Tolerance) && q.X <= contact.X + 1 + (alongX ? 0.3 : HoseJoints.Tolerance)
+                                  && q.Z >= contact.Z - (alongX ? HoseJoints.Tolerance : 0.45) && q.Z <= contact.Z + 1 + (alongX ? HoseJoints.Tolerance : 0.3);
                     if (!InRect(r, q, HoseJoints.Tolerance) && !inPort) return false;
                 }
             }

@@ -21,30 +21,30 @@ namespace RimMandrake.FlowWorks.Hose
 
         private static readonly double[,] table =
         {
-            { -0.076, -0.353, -0.147, -0.387, 0.072, -0.387, -0.340, -0.639, 0.450, -0.639, -0.416, -0.530, 0.500, -0.530 },   // Scrapper Reel_PumpHookup
-            { -0.302, -0.244, -0.114, -0.261, 0.055, -0.261, -0.298, -0.572, 0.500, -0.614, -0.408, -0.488, 0.500, -0.488 },   // Scrapper Reel_Deployed
-            { 0.021, -0.278, -0.240, -0.303, 0.063, -0.345, -0.315, -0.588, 0.433, -0.588, -0.458, -0.555, 0.500, -0.555 },   // Industrial Reel_PumpHookup
-            { -0.109, -0.227, -0.189, -0.278, 0.055, -0.320, -0.357, -0.639, 0.500, -0.639, -0.441, -0.546, 0.500, -0.546 },   // Industrial Reel_Deployed
-            { 0.067, -0.127, -0.122, -0.345, 0.500, -0.110, -0.349, -0.085, 0.500, -0.093, -0.063, -0.504, 0.164, -0.496 },   // Modern Reel_PumpHookup
-            { 0.067, -0.127, -0.114, -0.345, 0.475, -0.101, -0.349, -0.085, 0.500, -0.093, -0.080, -0.504, 0.164, -0.496 },   // Modern Reel_Deployed
-            { -0.008, -0.244, -0.189, -0.227, 0.063, -0.227, -0.416, -0.538, 0.500, -0.538, -0.500, -0.437, 0.500, -0.437 },   // Futuristic Reel_PumpHookup
-            { -0.218, -0.068, -0.105, -0.169, 0.114, -0.177, -0.357, -0.572, 0.500, -0.572, -0.492, -0.555, 0.576, -0.555 },   // Futuristic Reel_Deployed
-            { 0.013, -0.303, -0.500, -0.437, 0.147, -0.395, -0.366, -0.479, 0.416, -0.463, -0.366, -0.496, 0.408, -0.471 },   // Scrapper Reel_PumpHookup_north
-            { 0.008, -0.160, -0.483, -0.303, 0.500, -0.303, -0.273, -0.597, 0.500, -0.588, -0.290, -0.605, 0.500, -0.597 },   // Scrapper Reel_Deployed_north
-            { 0.013, -0.135, -0.492, -0.278, 0.500, -0.278, -0.441, -0.614, 0.550, -0.597, -0.433, -0.614, 0.559, -0.597 },   // Industrial Reel_PumpHookup_north
-            { 0.004, -0.202, -0.500, -0.370, 0.500, -0.370, -0.399, -0.555, 0.500, -0.546, -0.399, -0.563, 0.500, -0.555 },   // Industrial Reel_Deployed_north
-            { 0.000, -0.227, -0.156, -0.227, 0.164, -0.227, -0.240, -0.572, 0.391, -0.580, -0.240, -0.588, 0.391, -0.588 },   // Modern Reel_PumpHookup_north
-            { 0.008, -0.269, -0.156, -0.227, 0.172, -0.227, -0.223, -0.588, 0.374, -0.597, -0.214, -0.597, 0.374, -0.605 },   // Modern Reel_Deployed_north
-            { 0.008, -0.152, -0.500, -0.295, 0.500, -0.295, -0.466, -0.546, 0.508, -0.521, -0.450, -0.546, 0.534, -0.521 },   // Futuristic Reel_PumpHookup_north
-            { 0.004, -0.085, -0.391, -0.345, 0.416, -0.345, -0.349, -0.639, 0.500, -0.630, -0.349, -0.647, 0.500, -0.639 },   // Futuristic Reel_Deployed_north
-            { 0.000, -0.269, -0.080, -0.328, 0.105, -0.185, -0.475, -0.563, 0.450, -0.563, -0.433, -0.555, 0.450, -0.555 },   // Scrapper Reel_PumpHookup_south
-            { -0.017, -0.244, -0.307, -0.248, 0.055, -0.454, -0.416, -0.672, 0.382, -0.672, -0.500, -0.630, 0.374, -0.622 },   // Scrapper Reel_Deployed_south
-            { -0.008, -0.337, -0.248, -0.227, 0.055, -0.429, -0.500, -0.572, 0.391, -0.639, -0.567, -0.546, 0.399, -0.622 },   // Industrial Reel_PumpHookup_south
-            { 0.000, -0.295, -0.189, -0.454, 0.088, -0.580, -0.483, -0.647, 0.366, -0.656, -0.483, -0.639, 0.349, -0.639 },   // Industrial Reel_Deployed_south
-            { -0.143, -0.219, -0.097, -0.127, 0.055, -0.169, -0.189, -0.605, 0.500, -0.614, -0.189, -0.513, 0.500, -0.521 },   // Modern Reel_PumpHookup_south
-            { -0.139, -0.219, -0.097, -0.143, 0.063, -0.185, -0.189, -0.605, 0.500, -0.614, -0.189, -0.513, 0.500, -0.530 },   // Modern Reel_Deployed_south
-            { 0.000, -0.269, -0.055, -0.219, 0.055, -0.219, -0.660, -0.530, 0.366, -0.555, -0.559, -0.530, 0.366, -0.546 },   // Futuristic Reel_PumpHookup_south
-            { 0.000, -0.118, -0.172, -0.143, 0.055, -0.261, -0.500, -0.546, 0.450, -0.555, -0.500, -0.546, 0.441, -0.555 },   // Futuristic Reel_Deployed_south
+            { -0.214, -0.043, -0.500, -0.404, 0.349, -0.387, -0.441, -0.530, 0.399, -0.530, -0.500, -0.471, 0.500, -0.471 },   // Scrapper Reel_PumpHookup
+            { -0.227, -0.026, -0.500, -0.412, 0.324, -0.387, -0.206, -0.714, 0.609, -0.672, -0.500, -0.471, 0.500, -0.471 },   // Scrapper Reel_Deployed
+            { -0.214, -0.009, -0.500, -0.412, 0.340, -0.395, -0.433, -0.563, 0.382, -0.572, -0.500, -0.488, 0.500, -0.488 },   // Industrial Reel_PumpHookup
+            { -0.218, -0.051, -0.500, -0.370, 0.357, -0.370, -0.164, -0.689, 0.576, -0.656, -0.500, -0.463, 0.500, -0.463 },   // Industrial Reel_Deployed
+            { -0.416, -0.001, -0.181, -0.555, 0.475, -0.244, -0.408, -0.404, 0.240, -0.404, -0.298, -0.353, 0.198, -0.353 },   // Modern Reel_PumpHookup
+            { -0.437, -0.026, -0.189, -0.513, 0.492, -0.278, -0.181, -0.555, 0.710, -0.496, -0.282, -0.328, 0.231, -0.328 },   // Modern Reel_Deployed
+            { -0.218, -0.026, -0.500, -0.379, 0.332, -0.362, -0.416, -0.546, 0.382, -0.546, -0.500, -0.471, 0.500, -0.471 },   // Futuristic Reel_PumpHookup
+            { -0.223, -0.034, -0.500, -0.412, 0.340, -0.395, -0.122, -0.714, 0.534, -0.656, -0.500, -0.471, 0.500, -0.471 },   // Futuristic Reel_Deployed
+            { 0.004, -0.324, -0.324, -0.320, 0.492, -0.320, -0.416, -0.580, 0.198, -0.580, -0.416, -0.588, 0.198, -0.588 },   // Scrapper Reel_PumpHookup_north
+            { 0.008, -0.320, -0.475, -0.320, 0.492, -0.320, -0.408, -0.580, 0.198, -0.580, -0.408, -0.588, 0.189, -0.588 },   // Scrapper Reel_Deployed_north
+            { 0.008, -0.320, -0.475, -0.320, 0.492, -0.320, -0.408, -0.580, 0.206, -0.580, -0.408, -0.588, 0.206, -0.588 },   // Industrial Reel_PumpHookup_north
+            { 0.004, -0.328, -0.475, -0.311, 0.483, -0.311, -0.416, -0.588, 0.214, -0.588, -0.416, -0.588, 0.500, -0.597 },   // Industrial Reel_Deployed_north
+            { 0.013, -0.240, -0.282, -0.236, 0.298, -0.236, -0.492, -0.580, 0.147, -0.588, -0.492, -0.588, 0.147, -0.597 },   // Modern Reel_PumpHookup_north
+            { 0.004, -0.261, -0.172, -0.236, 0.189, -0.236, -0.466, -0.580, 0.139, -0.580, -0.466, -0.580, 0.139, -0.580 },   // Modern Reel_Deployed_north
+            { 0.004, -0.328, -0.475, -0.311, 0.483, -0.311, -0.408, -0.588, 0.500, -0.597, -0.408, -0.588, 0.500, -0.597 },   // Futuristic Reel_PumpHookup_north
+            { 0.008, -0.320, -0.492, -0.320, 0.500, -0.320, -0.416, -0.580, 0.500, -0.588, -0.416, -0.588, 0.500, -0.597 },   // Futuristic Reel_Deployed_north
+            { 0.000, -0.211, -0.088, -0.269, 0.088, -0.269, -0.500, -0.605, 0.441, -0.588, -0.500, -0.597, 0.441, -0.580 },   // Scrapper Reel_PumpHookup_south
+            { 0.008, -0.211, -0.072, -0.286, 0.080, -0.286, -0.198, -0.588, 0.424, -0.580, -0.181, -0.588, 0.424, -0.580 },   // Scrapper Reel_Deployed_south
+            { 0.000, -0.211, -0.080, -0.269, 0.080, -0.269, -0.500, -0.605, 0.433, -0.588, -0.500, -0.597, 0.433, -0.580 },   // Industrial Reel_PumpHookup_south
+            { 0.000, -0.211, -0.088, -0.261, 0.088, -0.261, -0.500, -0.605, 0.458, -0.588, -0.500, -0.597, 0.458, -0.580 },   // Industrial Reel_Deployed_south
+            { 0.000, -0.043, -0.063, -0.051, 0.072, -0.051, -0.063, -0.622, 0.500, -0.588, -0.055, -0.614, 0.500, -0.588 },   // Modern Reel_PumpHookup_south
+            { 0.000, -0.026, -0.055, -0.034, 0.063, -0.034, -0.063, -0.597, 0.500, -0.588, -0.055, -0.605, 0.500, -0.597 },   // Modern Reel_Deployed_south
+            { 0.004, -0.211, -0.055, -0.278, 0.055, -0.278, -0.500, -0.597, 0.424, -0.580, -0.500, -0.605, 0.433, -0.580 },   // Futuristic Reel_PumpHookup_south
+            { 0.008, -0.194, -0.072, -0.269, 0.088, -0.269, -0.500, -0.597, 0.450, -0.588, -0.500, -0.605, 0.450, -0.597 },   // Futuristic Reel_Deployed_south
         };
 
         public static int LookIndex(string look)
@@ -84,30 +84,30 @@ namespace RimMandrake.FlowWorks.Hose
 
         private static readonly double[,] outlet =
         {
-            { -0.647, -0.076 },   // Scrapper Reel_PumpHookup
-            { -0.764, -0.302 },   // Scrapper Reel_Deployed
-            { -0.722, 0.021 },   // Industrial Reel_PumpHookup
-            { -0.781, -0.109 },   // Industrial Reel_Deployed
-            { -0.890, 0.067 },   // Modern Reel_PumpHookup
-            { -0.890, 0.067 },   // Modern Reel_Deployed
-            { -0.764, -0.008 },   // Futuristic Reel_PumpHookup
-            { -0.932, -0.218 },   // Futuristic Reel_Deployed
-            { -0.705, 0.013 },   // Scrapper Reel_PumpHookup_north
-            { -0.857, 0.008 },   // Scrapper Reel_Deployed_north
-            { -0.873, 0.013 },   // Industrial Reel_PumpHookup_north
-            { -0.806, 0.004 },   // Industrial Reel_Deployed_north
-            { -0.773, 0.000 },   // Modern Reel_PumpHookup_north
-            { -0.731, 0.008 },   // Modern Reel_Deployed_north
-            { -0.857, 0.008 },   // Futuristic Reel_PumpHookup_north
-            { -0.924, 0.004 },   // Futuristic Reel_Deployed_north
-            { -0.739, 0.000 },   // Scrapper Reel_PumpHookup_south
-            { -0.764, -0.017 },   // Scrapper Reel_Deployed_south
-            { -0.672, -0.008 },   // Industrial Reel_PumpHookup_south
-            { -0.714, 0.000 },   // Industrial Reel_Deployed_south
-            { -0.789, -0.143 },   // Modern Reel_PumpHookup_south
-            { -0.789, -0.139 },   // Modern Reel_Deployed_south
-            { -0.731, 0.000 },   // Futuristic Reel_PumpHookup_south
-            { -0.890, 0.000 },   // Futuristic Reel_Deployed_south
+            { -0.957, -0.214 },   // Scrapper Reel_PumpHookup
+            { -0.974, -0.227 },   // Scrapper Reel_Deployed
+            { -0.991, -0.214 },   // Industrial Reel_PumpHookup
+            { -0.949, -0.218 },   // Industrial Reel_Deployed
+            { -0.999, -0.416 },   // Modern Reel_PumpHookup
+            { -0.974, -0.437 },   // Modern Reel_Deployed
+            { -0.974, -0.218 },   // Futuristic Reel_PumpHookup
+            { -0.966, -0.223 },   // Futuristic Reel_Deployed
+            { -0.689, 0.004 },   // Scrapper Reel_PumpHookup_north
+            { -0.689, 0.008 },   // Scrapper Reel_Deployed_north
+            { -0.689, 0.008 },   // Industrial Reel_PumpHookup_north
+            { -0.689, 0.004 },   // Industrial Reel_Deployed_north
+            { -0.773, 0.013 },   // Modern Reel_PumpHookup_north
+            { -0.756, 0.004 },   // Modern Reel_Deployed_north
+            { -0.689, 0.004 },   // Futuristic Reel_PumpHookup_north
+            { -0.689, 0.008 },   // Futuristic Reel_Deployed_north
+            { -0.798, 0.000 },   // Scrapper Reel_PumpHookup_south
+            { -0.798, 0.008 },   // Scrapper Reel_Deployed_south
+            { -0.798, 0.000 },   // Industrial Reel_PumpHookup_south
+            { -0.798, 0.000 },   // Industrial Reel_Deployed_south
+            { -0.966, 0.000 },   // Modern Reel_PumpHookup_south
+            { -0.983, 0.000 },   // Modern Reel_Deployed_south
+            { -0.798, 0.004 },   // Futuristic Reel_PumpHookup_south
+            { -0.815, 0.008 },   // Futuristic Reel_Deployed_south
         };
 
         /// <summary>HOSE_ENDS_FIX_MISSES_THE_PORTS: the drawn nozzle's tip, (dx, dz) cells from the 2x2 footprint centre, for
