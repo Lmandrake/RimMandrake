@@ -7,21 +7,18 @@ using Verse;
 namespace RimMandrake.Stillsand
 {
     // ════════════════════════════════════════════════════════════════════
-    // §12 Mod Settings: a toggle each for the gale, abrasion, carry, static, emergence
-    // (plus per-row toggles) and dust devils; frequency sliders. Defaults are shipped
+    // §12 Mod Settings: a toggle each for the gale, carry, emergence (plus per-row toggles)
+    // and seeding; a frequency slider. (Abrasion, static and the dust devils were cut
+    // 2026-10-23, fluff review.) Defaults are shipped
     // behaviour. All off: the biome keeps Odyssey's own sandstorm and nothing else.
     // ════════════════════════════════════════════════════════════════════
     public class RM_DuneGaleSettings : ModSettings
     {
         public static bool galeEnabled = true;
         public static float galeFrequency = 1f;
-        public static bool abrasionEnabled = true;
         public static bool carryEnabled = true;
-        public static bool staticEnabled = true;
         public static bool emergenceEnabled = true;
         public static bool seedingEnabled = true;
-        public static bool dustDevilsEnabled = true;
-        public static float dustDevilFrequency = 1f;
         private static Dictionary<string, bool> emergenceOff = new Dictionary<string, bool>();
 
         public static bool EmergenceAllowed(string key)
@@ -34,13 +31,9 @@ namespace RimMandrake.Stillsand
             base.ExposeData();
             Scribe_Values.Look(ref galeEnabled, "galeEnabled", true);
             Scribe_Values.Look(ref galeFrequency, "galeFrequency", 1f);
-            Scribe_Values.Look(ref abrasionEnabled, "abrasionEnabled", true);
             Scribe_Values.Look(ref carryEnabled, "carryEnabled", true);
-            Scribe_Values.Look(ref staticEnabled, "staticEnabled", true);
             Scribe_Values.Look(ref emergenceEnabled, "emergenceEnabled", true);
             Scribe_Values.Look(ref seedingEnabled, "seedingEnabled", true);
-            Scribe_Values.Look(ref dustDevilsEnabled, "dustDevilsEnabled", true);
-            Scribe_Values.Look(ref dustDevilFrequency, "dustDevilFrequency", 1f);
             Scribe_Collections.Look(ref emergenceOff, "emergenceOff", LookMode.Value, LookMode.Value);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
@@ -93,7 +86,7 @@ namespace RimMandrake.Stillsand
         private static readonly HashSet<string> collapsedSections = new HashSet<string>();
 
         /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
-        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): the gale and dust-devil switches are read in TryExecute and their frequencies in BaseChanceThisGame (storyteller rolls, NextPulse); abrasion, carry and static are read on gale ticks and emergence and seeding at gale end (Now).</summary>
+        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): the gale switch is read in TryExecute and its frequency in BaseChanceThisGame (storyteller rolls, NextPulse); carry is read on gale ticks and emergence and seeding at gale end (Now).</summary>
         private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
         {
             bool searching = !string.IsNullOrWhiteSpace(searchQuery);
@@ -137,15 +130,11 @@ namespace RimMandrake.Stillsand
                 list.GapLine();
             }
 
-            if (Group(list, "Gale effects", RimMandrake.Shared.SettingScope.Now, new[] { "abrasionEnabled", "carryEnabled", "staticEnabled" }))
+            if (Group(list, "Gale effects", RimMandrake.Shared.SettingScope.Now, new[] { "carryEnabled" }))
             {
-                list.CheckboxLabeled("Abrasion", ref abrasionEnabled,
-                    "Exposed pawns take slow scratches; light walls and thin roof edges wear.");
                 list.CheckboxLabeled("Carry", ref carryEnabled,
                     "Light pawns and animals in the open on a crest can be dragged downwind. One carried off the "
                     + "edge gets a letter and always comes back, alive or not.");
-                list.CheckboxLabeled("Gale static", ref staticEnabled,
-                    "Charged dust: brief stuns on turrets and mechanoids, sparks on metal.");
                 list.GapLine();
             }
 
@@ -159,15 +148,6 @@ namespace RimMandrake.Stillsand
                 }
                 list.CheckboxLabeled("Seeding", ref seedingEnabled,
                     "Gale end wakes dormant dust husks nearby, lays glasscrust, and blooms hourbloom at any water.");
-                list.GapLine();
-            }
-
-            if (Group(list, "Dust devils", RimMandrake.Shared.SettingScope.NextPulse, new[] { "dustDevilsEnabled", "dustDevilFrequency" }))
-            {
-                list.CheckboxLabeled("Dust devils", ref dustDevilsEnabled,
-                    "A fair-weather column that wanders the flat, lifts light items and spooks animals. Never damages.");
-                list.Label("Dust devil frequency: x" + dustDevilFrequency.ToString("0.00"));
-                dustDevilFrequency = Mathf.Round(list.Slider(dustDevilFrequency, 0f, 3f) * 20f) / 20f;
                 list.GapLine();
             }
 

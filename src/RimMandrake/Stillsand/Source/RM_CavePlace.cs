@@ -11,9 +11,9 @@ namespace RimMandrake.Stillsand
 {
     // STILLSAND_CAVE_AS_PLACE_1 — the precious cave as a place, not a prop table.
     //   1. preservation: nothing rots on a roofed cave cell (RM_CavePreservation)
-    //   2. the drip: one ambient water sound per cave (RM_CavePlaceUtil.PlaceDrip)
+    //   2. (the drip, one ambient water sound per cave, was CUT 2026-10-23, fluff review)
     //   3. the lens grotto's grown-biosilica wall ring (RM_CaveElement_WallRing)
-    //   4. the taken cave's own tribal mark (RM_CaveElement_WallMark)
+    //   4. (the taken cave's own tribal mark was CUT 2026-10-23, fluff review)
     public static class RM_CavePreservation
     {
         // Vanilla rots on a 250-tick Rare tick (or per-tick on Normal); a 60-tick scan freezes an
@@ -126,43 +126,6 @@ namespace RimMandrake.Stillsand
 
     public static class RM_CavePlaceUtil
     {
-        public static void PlaceDrip(Map map, RM_MapComponent_PreciousCave comp)
-        {
-            if (!RM_PreciousCaveSettings.dripEnabled || comp == null || comp.caveCells.NullOrEmpty())
-            {
-                return;
-            }
-            ThingDef def = DefDatabase<ThingDef>.GetNamedSilentFail("RM_CaveDripSource");
-            if (def == null)
-            {
-                return;
-            }
-            // Near the seep when the cave has one, else at the back of the chamber.
-            IntVec3 cell = IntVec3.Invalid;
-            foreach (IntVec3 c in comp.caveCells)
-            {
-                if (c.InBounds(map) && c.GetTerrain(map).defName == "RM_WaterBrineShallow")
-                {
-                    cell = c;
-                    break;
-                }
-            }
-            if (!cell.IsValid)
-            {
-                RM_PreciousCaveContext ctx = new RM_PreciousCaveContext
-                {
-                    map = map, floor = comp.caveCells, centre = comp.chamberCentre, mouth = comp.mouthCell,
-                };
-                cell = ctx.Pick(RM_CavePlace.back, c => c.InBounds(map) && c.Standable(map));
-            }
-            if (!cell.IsValid)
-            {
-                return;
-            }
-            GenSpawn.Spawn(ThingMaker.MakeThing(def), cell, map);
-            Log.Message("[Stillsand] cave place: drip source at " + cell);
-        }
-
         /// <summary>Rock cells touching the cave floor (8-neighbourhood), natural rock only.</summary>
         public static List<IntVec3> WallRingCells(Map map, IEnumerable<IntVec3> floor)
         {
@@ -219,33 +182,6 @@ namespace RimMandrake.Stillsand
                 n++;
             }
             Log.Message("[Stillsand] cave place: " + wall.defName + " ring of " + n + " cells");
-        }
-    }
-
-    /// <summary>Marks one wall cell at the back of the cave with a wall-attached filth def
-    /// (the taken cave's tribal glyph).</summary>
-    public class RM_CaveElement_WallMark : RM_SetPieceElement
-    {
-        public ThingDef mark;
-        public RM_CavePlace place = RM_CavePlace.back;
-
-        public override void SpawnAt(IntVec3 loc, Map map, GenStepParams parms)
-        {
-            if (mark == null || !RM_PreciousCaveSettings.tribalMarkEnabled)
-            {
-                return;
-            }
-            RM_PreciousCaveContext ctx = RM_PreciousCaveContext.For(loc, map);
-            IntVec3 floorCell = ctx.Pick(place, c => c.InBounds(map) && c.Standable(map)
-                && GenAdj.CardinalDirections.Any(d => RM_CavePlaceUtil.IsNaturalRock(c + d, map)));
-            if (!floorCell.IsValid)
-            {
-                return;
-            }
-            IntVec3 wallCell = GenAdj.CardinalDirections.Select(d => floorCell + d)
-                .First(w => RM_CavePlaceUtil.IsNaturalRock(w, map));
-            GenSpawn.Spawn(ThingMaker.MakeThing(mark), wallCell, map);
-            Log.Message("[Stillsand] cave place: " + mark.defName + " on the wall at " + wallCell);
         }
     }
 }

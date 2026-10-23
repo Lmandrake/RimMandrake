@@ -1,10 +1,7 @@
 #!/usr/bin/env python3
-"""Wrapper for the C# selftest of the Stillsand skeleton dune burial
-(STILLSAND_SKELETONS_REMAINDER_1 §2, src/RimMandrake/Stillsand/Source/RM_SkeletonBurialLogic.cs).
-Same shape as selftest_precious_caves.py. Covers the footprint mean, the bury/strip
-hysteresis, a dune passing over (buries once, strips once), no flicker at the
-threshold, the tint and inspect line, and a planted-break probe. What it cannot
-cover (a real sand grid, the dunes engine moving sand, the redraw) is §8's live proof.
+"""Wrapper for the C# selftest of the Stillsand skeleton kit's pure math (RM_HorizonMath: the dust-on-the-horizon
+timing). Same shape as selftest_precious_caves.py. (The dune-burial logic it was written for,
+RM_SkeletonBurialLogic.cs, was cut 2026-10-23 by the fluff review; the project keeps its name.)
 
 dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path, so this script finds
 dotnet.exe and converts the project path to a D-drive-style path first.

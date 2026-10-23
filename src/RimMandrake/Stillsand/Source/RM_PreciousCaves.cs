@@ -921,7 +921,6 @@ namespace RimMandrake.Stillsand
             if (pick < 0)
             {
                 Log.Message("[Stillsand] precious cave roll: no row enabled with weight > 0 [" + table + "]; the cave stays bare.");
-                RM_CavePlaceUtil.PlaceDrip(map, comp);
                 return;
             }
             RM_PreciousCaveDef row = rows[pick];
@@ -955,7 +954,6 @@ namespace RimMandrake.Stillsand
             {
                 RM_PreciousCaveContext.Current = null;
             }
-            RM_CavePlaceUtil.PlaceDrip(map, comp);
         }
     }
 }

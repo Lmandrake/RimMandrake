@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   RM_CavePlace.xml                    RimMandrake — STILLSAND_CAVE_AS_PLACE_1
-  The cave as a place: the grown-biosilica wall (lens grotto), the drip source, the tribal mark
-  (taken cave). Mechanism: Source/RM_CavePlace.cs.
+  The cave as a place: the grown-biosilica wall (lens grotto). Mechanism: Source/RM_CavePlace.cs.
+  (The drip source and the taken cave's tribal mark were cut 2026-10-23, fluff review.)
 
-  PLACEHOLDER ART: the wall atlas and the glyph are procedurally drawn stand-ins; real jobs
-  (RM_GrownBiosilicaWall, RM_StillsandTribalMark) are queued in the artpipe.
+  PLACEHOLDER ART: the wall atlas is a procedurally drawn stand-in; its real job
+  (RM_GrownBiosilicaWall) is queued in the artpipe.
 -->
 <Defs>
 
@@ -35,58 +35,5 @@
     </building>
   </ThingDef>
 
-  <!-- the one water sound: an invisible, unselectable source carrying vanilla's ambient sound comp -->
-  <ThingDef>
-    <defName>RM_CaveDripSource</defName>
-    <label>drip</label>
-    <description>Somewhere in the dark, water.</description>
-    <thingClass>ThingWithComps</thingClass>
-    <category>Ethereal</category>
-    <drawerType>None</drawerType>
-    <selectable>false</selectable>
-    <useHitPoints>false</useHitPoints>
-    <tickerType>Never</tickerType>
-    <altitudeLayer>Item</altitudeLayer>
-    <comps>
-      <li Class="CompProperties_AmbientSound">
-        <sound>RM_CaveDrip</sound>
-      </li>
-    </comps>
-  </ThingDef>
-
-  <!-- the taken cave's own tribal glyph: plain Filth, wall-attached. No Graffiti-mod dependency. -->
-  <ThingDef>
-    <defName>RM_StillsandTribalMark</defName>
-    <label>tribal glyph</label>
-    <description>A spiral and three dots, rubbed into the wall in ochre. Whoever emptied this cave signed it.</description>
-    <thingClass>Filth</thingClass>
-    <category>Filth</category>
-    <altitudeLayer>BuildingOnTop</altitudeLayer>
-    <useHitPoints>false</useHitPoints>
-    <drawerType>MapMeshOnly</drawerType>
-    <graphicData>
-      <texPath>Things/Filth/RM_StillsandTribalMark</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
-      <shaderType>Transparent</shaderType>
-    </graphicData>
-    <filth>
-      <placementMask>
-        <li>Unnatural</li>
-      </placementMask>
-      <rainWashes>false</rainWashes>
-      <cleaningWorkToReduceThickness>1200</cleaningWorkToReduceThickness>
-      <canFilthAttach>false</canFilthAttach>
-    </filth>
-    <building>
-      <isEdifice>false</isEdifice>
-      <canPlaceOverWall>true</canPlaceOverWall>
-    </building>
-    <staticSunShadowHeight>0</staticSunShadowHeight>
-    <castEdgeShadows>false</castEdgeShadows>
-    <statBases>
-      <Flammability>0</Flammability>
-      <Beauty>2</Beauty>
-    </statBases>
-  </ThingDef>
 
 </Defs>
