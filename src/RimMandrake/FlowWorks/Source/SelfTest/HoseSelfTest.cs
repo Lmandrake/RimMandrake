@@ -288,7 +288,18 @@ namespace RimMandrake.FlowWorks.SelfTest
             C(HosePortRule.NearestApproach(approach, new V2(5.5, 9.5)) == 1, "aim at a tank: the free side nearest the mouth");
             C(HosePortRule.NearestApproach(new List<Cell>(), new V2(5.5, 9.5)) == -1, "aim at a tank with no free side: unchanged (then refused)");
             string reelSrc = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Hose", "CompHoseReel.cs"));
-            C(reelSrc.Contains("if (relay == null) target = ApproachIfOnPort(comp, target);"), "the order redirects an aim at a port thing before the install check");
+            C(reelSrc.Contains("string portWhy = ApproachIfOnPort(comp, ref target);") && reelSrc.Contains("if (portWhy != null) return portWhy;"),
+              "the order redirects an aim at a port thing before the install check, and returns its refusal");
+            // HOSE_TANK_LAY_FIX_ENDS_ON_LID: an aim at a tank's own square ends in front of its port or is refused, never on the lid
+            C(HosePortRule.AimAtSolidPort(true, "liquid tank", approach, new V2(5.5, 9.5), out int ap) == null && ap == 1,
+              "aim at a tank's own square: ends on the free square in front of its port nearest the mouth");
+            string noSide = HosePortRule.AimAtSolidPort(true, "liquid tank", new List<Cell>(), new V2(5.5, 9.5), out int ap0);
+            C(noSide != null && ap0 == -1 && noSide.Contains("liquid tank") && noSide.Contains("port"),
+              "aim at a tank with no free square in front of its port: refused with a reason naming it (was: end left on the lid) -> " + noSide);
+            C(HosePortRule.AimAtSolidPort(false, "x", new List<Cell>(), new V2(5.5, 9.5), out int ap1) == null && ap1 == -1,
+              "an aim that is not at a solid port is left to the install check unchanged");
+            C(reelSrc.Contains("target.Walkable(map)) return null;") && !reelSrc.Contains("if (w.IsWalkable(new Cell(target.x, target.z))) return target;"),
+              "'aimed at a solid port' reads the live path grid, not the per-tick CordWorld snapshot (a tank built while paused read walkable)");
             // a straight-line-near target whose only route is long: refused on route length
             CordWorld w2 = Open(40, 40);
             for (int z = 0; z <= 36; z++) w2.SetBlocked(new Cell(10, z), BlockKind.Wall);
