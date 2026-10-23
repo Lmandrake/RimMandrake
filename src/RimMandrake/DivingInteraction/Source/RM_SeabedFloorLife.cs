@@ -85,6 +85,10 @@ namespace RimMandrake.DivingInteraction
                 floor.plantDensity = sea.plantDensity;
                 floor.animalDensity = animals;
             }
+            if (floor.maxFishPopulation != sea.maxFishPopulation)
+            {
+                floor.maxFishPopulation = sea.maxFishPopulation;   // not seen reset; cheap insurance beside the densities
+            }
         }
 
         public static void ReassertAll()
@@ -118,6 +122,14 @@ namespace RimMandrake.DivingInteraction
             floor.wildPlantRegrowDays = sea.wildPlantRegrowDays;
             Traverse.Create(floor).Field("wildAnimals").SetValue(animals);
             floor.animalDensity = sea.animalDensity * animalDensityFactor;
+
+            // SCALD_MECHANICS_1 S3: the catch. A fishing zone reads map.Biome.fishTypes (WaterBody.SetFishTypes) and
+            // stops when Tile.MaxFishPopulation (PrimaryBiome.maxFishPopulation) is 0, which every floor shipped with,
+            // so no layer floor could fish. The sea's own table and population carry over unchanged; the
+            // freshwater/saltwater split still applies per terrain (the Scald's boil is Saltwater with no salt list,
+            // so only its cool margin RUT_ScaldMargin fishes, as on the hatch's pocket maps).
+            floor.fishTypes = sea.fishTypes;
+            floor.maxFishPopulation = sea.maxFishPopulation;
 
             // Drop every lazily built cache so the copied lists are what the engine reads.
             foreach (string f in new[] { "cachedAnimalCommonalities", "cachedPlantCommonalities", "cachedWildPlants",
