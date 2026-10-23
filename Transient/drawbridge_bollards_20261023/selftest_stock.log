@@ -1,0 +1,1117 @@
+staging src/RimMandrake/FlowWorks/Source/SelfTest/RimMandrakeFlowWorks.SelfTest.csproj -> D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2
+  src/
++ dotnet.exe build D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj -c Release
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(26,23): warning CS0649: Field 'MachineInfo.InsetS' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(33,20): warning CS0649: Field 'MachineInfo.HomeX' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(33,27): warning CS0649: Field 'MachineInfo.HomeZ' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(26,31): warning CS0649: Field 'MachineInfo.InsetN' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(18,24): warning CS0649: Field 'MachineInfo.Z0' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(70,39): warning CS0649: Field 'CordWorld.LinkAllowed' is never assigned to, and will always have its default value null [D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(26,39): warning CS0649: Field 'MachineInfo.InsetE' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(17,28): warning CS0649: Field 'MachineInfo.Kind' is never assigned to, and will always have its default value [D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(26,47): warning CS0649: Field 'MachineInfo.InsetW' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(32,21): warning CS0649: Field 'MachineInfo.HasHome' is never assigned to, and will always have its default value false [D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\TakenIdentityChecks.cs(25,25): warning CS0649: Field 'TakenIdentityChecks.FakePawn.dead' is never assigned to, and will always have its default value false [D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(18,20): warning CS0649: Field 'MachineInfo.X0' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(16,23): warning CS0649: Field 'MachineInfo.Id' is never assigned to, and will always have its default value null [D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj]
+  RimMandrakeFlowWorks.SelfTest -> D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\bin\Release\net8.0\RimMandrakeFlowWorks.SelfTest.dll
+
+Build succeeded.
+
+D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(26,23): warning CS0649: Field 'MachineInfo.InsetS' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(33,20): warning CS0649: Field 'MachineInfo.HomeX' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(33,27): warning CS0649: Field 'MachineInfo.HomeZ' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(26,31): warning CS0649: Field 'MachineInfo.InsetN' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(18,24): warning CS0649: Field 'MachineInfo.Z0' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(70,39): warning CS0649: Field 'CordWorld.LinkAllowed' is never assigned to, and will always have its default value null [D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(26,39): warning CS0649: Field 'MachineInfo.InsetE' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(17,28): warning CS0649: Field 'MachineInfo.Kind' is never assigned to, and will always have its default value [D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(26,47): warning CS0649: Field 'MachineInfo.InsetW' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(32,21): warning CS0649: Field 'MachineInfo.HasHome' is never assigned to, and will always have its default value false [D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\TakenIdentityChecks.cs(25,25): warning CS0649: Field 'TakenIdentityChecks.FakePawn.dead' is never assigned to, and will always have its default value false [D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(18,20): warning CS0649: Field 'MachineInfo.X0' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(16,23): warning CS0649: Field 'MachineInfo.Id' is never assigned to, and will always have its default value null [D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj]
+    13 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:01.08
+D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(16,23): warning CS0649: Field 'MachineInfo.Id' is never assigned to, and will always have its default value null [D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(18,24): warning CS0649: Field 'MachineInfo.Z0' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(26,39): warning CS0649: Field 'MachineInfo.InsetE' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(33,20): warning CS0649: Field 'MachineInfo.HomeX' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(70,39): warning CS0649: Field 'CordWorld.LinkAllowed' is never assigned to, and will always have its default value null [D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(26,31): warning CS0649: Field 'MachineInfo.InsetN' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(26,23): warning CS0649: Field 'MachineInfo.InsetS' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(18,20): warning CS0649: Field 'MachineInfo.X0' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(33,27): warning CS0649: Field 'MachineInfo.HomeZ' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(32,21): warning CS0649: Field 'MachineInfo.HasHome' is never assigned to, and will always have its default value false [D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\TakenIdentityChecks.cs(25,25): warning CS0649: Field 'TakenIdentityChecks.FakePawn.dead' is never assigned to, and will always have its default value false [D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(26,47): warning CS0649: Field 'MachineInfo.InsetW' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\_Shared\SlackGeometry\CordWorld.cs(17,28): warning CS0649: Field 'MachineInfo.Kind' is never assigned to, and will always have its default value [D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_d378a4b2\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj]
+ok    Capacity_is_cells_times_bed_times_volumePerTile
+ok    Capacity_scales_linearly_with_footprint
+ok    Capacity_of_a_viscous_liquid_is_higher_in_fill_units
+ok    Capacity_of_an_empty_footprint_is_zero
+ok    PerCellBudget_floors_above_zero_at_the_lowest_slider_notch
+ok    PerCellVolume_is_the_budget_read_backwards
+ok    PerCellVolume_of_an_empty_body_is_zero_not_a_divide_by_zero
+ok    Limitless_needs_edge_contact_AND_size
+ok    Wetness_cutoff_is_600_wet_5000_temperate_never_dry
+ok    Limitless_by_wetness_river_and_edge_always_inland_by_cutoff
+ok    Limitless_is_forced_when_the_flood_fill_truncates
+ok    Limitless_off_in_settings_makes_every_body_limited
+ok    Refill_baseline_is_ooze_times_cellCount
+ok    Refill_is_proportional_to_footprint
+ok    Refill_rain_term_multiplies_the_baseline
+ok    Refill_never_stops_entirely_without_rain
+ok    Season_bands_are_ordered_wet_over_neutral_over_cool_over_dry
+ok    Refill_accrual_is_INVARIANT_to_pulse_interval
+ok    Refill_over_a_full_day_equals_the_per_day_rate
+ok    Refill_clamps_to_capacity_and_never_above
+ok    Scenario_one_cell_seep_takes_multiple_seasons_to_refill_from_empty
+ok    Scenario_that_same_seep_refills_far_faster_in_a_wet_spring
+ok    SupportedCells_at_full_stock_is_the_whole_footprint
+ok    SupportedCells_floors_rather_than_rounds
+ok    SupportedCells_of_an_empty_body_is_zero
+ok    SupportedCells_never_returns_negative
+ok    SupportedCells_with_no_per_cell_volume_is_zero_not_a_crash
+ok    SupportedCellsKeepingLast_keeps_one_cell_while_any_stock_remains
+ok    LocalRemovalKeepsConnected_detects_a_bridge_cell
+ok    Recession_order_prefers_FEWEST_neighbours_first
+ok    Recession_order_tie_breaks_on_GREATEST_distance_from_centroid
+ok    Recession_order_final_tie_break_is_the_deterministic_cell_index
+ok    Recession_order_is_a_STRICT_preference_so_an_incumbent_is_never_displaced_by_an_equal
+ok    Recession_order_spares_an_OUTFLOW_cell_until_last
+ok    Scenario_three_cell_pond_drawn_down_recedes_then_recovers_its_cells
+ok    Scenario_a_limitless_edge_body_never_runs_down_and_never_recedes
+ok    Credit_to_a_limited_body_stops_at_capacity
+ok    Credit_to_a_full_body_is_refused_entirely
+ok    Credit_below_capacity_is_accepted_whole
+ok    Credit_of_nothing_is_nothing
+ok    Credit_and_debit_round_trip_conserves_exactly
+ok    Displaced_is_what_the_shallower_cell_can_no_longer_hold
+ok    Displacing_a_cell_with_slack_sheds_NOTHING
+ok    Displacing_a_brimming_cell_at_every_depth_sheds_exactly_one
+ok    Displacing_an_unexcavated_cell_is_zero_not_negative
+ok    Displacement_clamps_a_fill_that_exceeds_its_own_brim
+ok    CellRoom_is_the_gap_below_the_brim
+ok    CreditableLevels_converts_fill_units_to_WHOLE_levels
+ok    CreditableLevels_floors_rather_than_crediting_a_part_level
+ok    CreditableLevels_to_a_full_body_is_zero_so_the_rest_overflows
+ok    CreditableLevels_to_a_LIMITLESS_body_takes_everything
+ok    CreditableLevels_of_nothing_offered_is_nothing
+ok    CreditableLevels_refuses_rather_than_dividing_by_a_zero_unit
+ok    Scenario_fill_in_one_end_of_a_full_canal_and_the_rest_gets_DEEPER
+ok    Scenario_filling_in_a_sealed_full_canal_destroys_exactly_the_overflow
+ok    Scenario_channel_is_served_BEFORE_the_body_so_displacement_stays_visible
+ok    Scenario_displaced_liquid_the_channel_cannot_hold_goes_home_to_the_pond
+ok    FlowOrder_equal_depth_overflow_only_runs_away_from_the_source
+ok    FlowOrder_gravity_survives_at_an_equal_key
+ok    FlowOrder_without_a_source_levels_run_toward_the_sink
+ok    FlowOrder_is_a_strict_order_so_no_level_can_return
+ok    FluidsCompatible_wet_cell_refuses_a_different_fluid
+ok    FluidsCompatible_dry_or_unrecorded_cells_take_any_fluid
+ok    Viscosity_stride_from_ticksPerTile
+ok    Viscosity_tar_moves_one_pulse_in_six_water_every_pulse
+ok    SharedSource_every_adjacent_channel_gets_the_source_either_dig_order
+ok    SharedSource_source_joins_but_is_never_expanded_through
+ok    SharedSource_one_channel_touching_two_sources_lists_each_once
+ok    PitExposure_coupling_never_weakens_and_pit_room_needs_half_deep
+ok    PitExposure_narrowing_moves_both_safe_bounds_by_N
+ok    PitExposure_resistance_falls_faster_with_rate_and_floors_at_zero
+ok    PitWidth_required_width_bands
+ok    PitWidth_matrix_small_large_x_1x1_trench_2x2
+ok    PitWidth_fill_in_one_cell_releases_large
+ok    PitWidth_diagonal_run_does_not_count
+ok    PitTrap_held_gates_and_step_rule
+ok    PitFall_only_forced_or_concealed
+ok    PitRoute_ladder_way_out_and_never_in_by_accident
+ok    Ladder_raise_lower_usable_and_entry
+ok    PitTrap_spike_damage_scales_with_body_size
+ok    FlowDoor_sluice_holds_small_grate_holds_prisoners
+ok    PitDraw_sink_is_monotonic_in_depth_and_superdeep_clears_head_by_20pct
+ok    PitDraw_StepProgress_projects_onto_the_step
+ok    PitDraw_sink_never_carries_the_centre_south_of_the_lip
+ok    LiquidHeat_kind_hot_cold_neither_and_both
+ok    LiquidHeat_cell_energy_scales_with_fill_and_strength_and_sign
+ok    LiquidHeat_room_never_passes_its_target
+ok    LiquidHeat_room_cap_is_eight_heaters_per_interval
+ok    LiquidHeat_budget_bounds_cost_and_keeps_average_power
+ok    Fire_burn_is_one_rate_one_notch_a_day_canal_or_pond
+ok    ExcavationSanity_corrupt_grid_is_clamped_and_palette_compacts
+ok    Fire_front_fuse_is_outrunnable_detonation_is_fast_and_source_reach_bounded
+ok    FillEffects_drowning_is_head_under_nonswimmer_any_depth
+ok    FillEffects_poison_scales_with_fill_and_resistance
+ok    PitRoom_wall_splits_sides_and_lip_jobs_never_stand_in_the_pit
+ok    PitRoom_capture_down_needs_a_held_person_and_a_prison_bed
+ok    Fire_explosions_light_and_rain_douses
+ok    DigFinds_guard_depth_size_budget
+ok    DeepStone_superdeep_strikes_and_stable_pick
+ok    DigRock_chunk_chance_and_work
+ok    Placer_stock_sluice_pan
+ok    Pump_unit_bridge
+ok    Liquid_unit_contract_roundtrip_conserves
+ok    Converter_cycle_math
+ok    WallFaces_every_depth_differs
+ok    WallFaces_D3_is_a_wall_D4_taller
+ok    SouthLining_thicker_than_north_and_grows
+ok    Scorch_ash_floor_char_walls_lobed_halo
+ok    Scorch_round4_dirt_drips_debris
+ok    Liquid_bubbles_rate
+ok    Liquid_see_through
+ok    Pit_step_cost_walk_normal_climb_slow_fall_fast
+ok    WallFace_mitre_and_measured_bevels
+ok    LipOcclusion_band
+ok    LipOcclusion_occupant_cut
+ok    LipCover_keeps_the_wall_edge_shadow
+ok    LipOcclusion_boar_hangs_out
+ok    StockReload_index_rebuild_rule
+ok    LipOcclusion_skips_shallower_pawn
+ok    Scorch_fade_rule
+ok    ContainerMat_classify_stuff
+ok    ContainerMat_registry_hot_and_acid_flags
+ok    ContainerMat_leather_refuses_hot_and_acid_every_size
+ok    ContainerMat_wood_refuses_acid_holds_hot
+ok    ContainerMat_glass_plasteel_hold_acid_metal_refuses
+ok    ContainerMat_only_leather_refuses_hot
+ok    ContainerMat_capacity_shipped_numbers
+ok    ContainerMat_scaled_units_rounding
+ok    ContainerMat_stone_bottle_reads_glass
+ok    ContainerMat_every_bottled_liquid_has_a_container_colour
+ok    Fuzz_cell_body_tank_sequences
+      20000 cases, 896848 steps, 1.36 s
+ok    Fuzz_flow_and_recession_orders_are_strict
+      200000 cases, 0 steps, 0.04 s
+ok    Fuzz_converter_never_overspends
+      5000 cases, 1246180 steps, 0.03 s
+ok    Fuzz_pit_width_monotone
+      20000 cases, 40000 steps, 0.05 s
+fuzz total: 245000 cases, 2183028 steps, 1.48 s
+ok    Kernel_fuzz_ledger_bounds_nomix_settles
+      5000 scenes, 328779 pulses, 1.21 s
+ok    Kernel_limitless_source_fills_its_component
+      2000 scenes, 591080 pulses, 0.26 s
+ok    LEVELSET_DIAGNOSE_SHALLOW_RIM_STAYS_DRY_limitless_source_fills_at_shipped_flags
+      2000 scenes, 592088 pulses, 0.54 s
+      OK: far end holds 2 with the pump as input (without: 0); settled after the pump stops
+ok    FLOW_ORDER_EXTERNAL_INPUT_1_pump_fed_channel_spreads_and_settles
+      OK: after a reload the far end of the dug-on channel holds 2 (old rule, probe: 0, the stall)
+ok    PUMP_FED_CHANNEL_STALL_PROVE_AFTER_RELOAD_brimming_outlet_reload_resumes_spread
+      OK: a D=1 canal fed only at its inlet fills to the far end (pump and drill)
+ok    FLOWWORKS_PUMP_FIX_D1_CANAL_STALLS_driver_fed_d1_canal_fills
+      OK: upstream of a shut sluice fills from the source both ways (x=1..3: 1,1,1)
+ok    FLOWWORKS_SLUICE_FIX_BELOW_SOURCE_LUCK_upstream_of_shut_sluice_fills
+      OK: seam start visits every cell over n pulses (n incl. 7919, 15838, 23757, 39595)
+ok    FLOWWORKS_STRIDE_FIX_WALKS_INTO_WALL_seam_start_covers_network
+      OK: 200-cell channel, cap 50: seams fixed 49/200 wet, seams moving 200/200 wet after 3000 pulses (3002 rotated walks; after 400: 136, one uncapped piece 200), settled=True; 40-cell inside-cap control identical=True
+ok    FLOW_ORDER_EXTERNAL_INPUT_1_part2_oversized_network_exchanges_across_seams
+kernel total: 9006 scenes, 1517707 pulses, 2.10 s
+ok    TAKEN_BY_LAND_SERVICE_1_kernel_decides_return_outcomes_and_schedules
+      OK: front after 30 pulses: tar creep-off 40, tar creep-on 5; slime after 48: 6; water after 10: off 40 on 40
+ok    THICK_LIQUID_CREEP_1_front_speed_down_a_40_cell_channel
+      OK: surface F=1,1,1,1,1,1,1,1,0,0 (sum 8, max neighbour step 1, spread 1, at rest after pulse 4, worst imbalance 0.000); old rule F=2,2,2,2,0,0,0,0,0,0
+ok    WATER_SURFACE_REWIRE_flat_channel_levels
+      OK: surface F=0,0,0,0,0,0,0,0,0,0,0,0,0 drained 26/26 at rest after pulse 37; old rule F=0,1,1,1,1,1,1,1,1,1,1,1,1
+ok    WATER_SURFACE_REWIRE_edge_drained_channel_empties
+      OK: (a) trench+hole F=0,0,0,0,1,4 step 1 rest 8; (b) 1/3 beside 3/4: surface 1,3, old rule 0,4; (c) 3/4|1/1|0/4 -> 4,0,0
+ok    WATER_SURFACE_REWIRE_deep_hole_beside_shallow_trench_levels_by_surface
+      OK: after 1 pulse 1000000000, after 80 2222222222, worst imbalance 0.000
+ok    WATER_SURFACE_REWIRE_source_still_fills_channel
+      OK: 1000 scenes: 0 not at rest by pulse 150, 0 unbalanced, 0 with a wet step of 2+
+ok    WATER_SURFACE_REWIRE_random_scenes_settle_and_conserve
+      OK: (a) blob -> max 1, pieces 1, sum 30/30, rest 2; (b) pond-fed -> max 1, pieces 1, sum 30/30, rest 30; unit pass: pieces 2
+ok    WATER_LEVELSET_low_volume_wide_basin_one_patch
+      OK: 100 units -> all 1: True (rest 5); 150 units -> min 1 max 2, pieces of 2: 1, rest 3
+ok    WATER_LEVELSET_enough_volume_flat_sheet
+      OK: step D2|D4 surfaces {-1} sum 120/120 rest 1; sill 3/4|1/1|0/4 -> 3,0,1
+ok    WATER_LEVELSET_stepped_floor_flat_surface
+      OK: (a) pond 40 down a drained canal: left 0, drained 40/40, rest 71; (b) 500 random scenes, 0 failing
+ok    WATER_LEVELSET_conserves_and_edge_drains
+      OK: (a) east branch: stripes 2 -> 0, pieces 1, sum 10/10, rest 1; (b) station 1 lower canal: loaded 15 units, 14 stripes; after 16 pulses 0 stripes; most stripes while the pond still paid 0 (standing two pulses running after pulse 16: 0); after 600 left 0, drained 35/35
+ok    WATER_LEVELSET_striped_save_gathers
+      OK: 7.58 ms/pulse over 100 pulses, 21700 units in, worst imbalance 0.000
+ok    WATER_LEVELSET_wide_basin_cost
+      OK: surface F=1,1,1,1,1,1,1,1,0,0 (sum 8, max neighbour step 1, spread 1, at rest after pulse 4, worst imbalance 0.000); old rule F=2,2,2,2,0,0,0,0,0,0
+ok    WATER_LEVELSET_rewire_flat_channel_levels
+      OK: surface F=0,0,0,0,0,0,0,0,0,0,0,0,0 drained 26/26 at rest after pulse 26; old rule F=0,1,1,1,1,1,1,1,1,1,1,1,1
+ok    WATER_LEVELSET_rewire_edge_drained_channel_empties
+      OK: (a) trench+hole F=0,0,0,0,1,4 step 1 rest 2; (b) 1/3 beside 3/4: surface 1,3, old rule 0,4; (c) 3/4|1/1|0/4 -> 3,0,1
+ok    WATER_LEVELSET_rewire_deep_hole_beside_shallow_trench
+      OK: after 1 pulse 1000000000, after 80 2222222222, worst imbalance 0.000
+ok    WATER_LEVELSET_rewire_source_still_fills_channel
+      OK: 1000 scenes: 0 not at rest by pulse 150, 0 unbalanced, 0 with a wet step of 2+
+ok    WATER_LEVELSET_rewire_random_scenes_settle_and_conserve
+      OK: race(off) after 3 = 0000000111; shipped per pulse 1000000000 1100000000 1110000000 1111000000 1111100000 1111110000 1111111000 1111111100 1111111110 1111111111, stock 290.0; worst imbalance 0.000
+ok    CANAL_FILL_FRONT_TRACE_MOUTH_STAYS_DRY_dead_end_fills_from_far_end
+      OK: water 2 cells, tar 2 cells; channel over the tar holds 1 tar
+ok    Ruling1_touching_water_and_tar_stay_separate
+      OK: channel holds only tar (2/2, 2/2)
+ok    Ruling1_channel_touching_both_pools_never_mixes
+      OK: both orders pay (A,B)=(1, 0)
+ok    Ruling2_scarce_supply_paid_by_cell_index
+      OK: shut sluice holds F=2,2,2,0,0,0,0; opened and grate both fill x=1..7
+ok    Sluice_shut_seals_grate_passes
+      OK: sealed sink keeps F=2; unsealed sink drains to 0
+ok    Sealed_sink_does_not_drain
+      OK: 3 cells at cap 3 complete; at cap 2 truncated with 2 kept
+ok    CollectBody_exact_cap_not_truncated
+ok    P1_pour_water_first_tank_does_not_starve_a_tar_channel
+ok    P1_pour_prefers_the_first_feasible_tank_and_the_deepest_emptiest_cell
+ok    P2_converter_short_first_input_does_not_starve_the_next
+ok    P3_bath_craft_pays_or_does_not_complete
+ok    P11_station_reach_is_measured_from_the_footprint
+ok    P5_flood_debits_every_level_it_fills_into_a_deep_cell
+ok    P6a_flood_switch_off_keeps_hands_off_engine_cells
+ok    P6b_tar_cooling_never_glazes_an_engine_cell
+ok    P8_burn_pulse_never_consumes_replacement_water
+ok    P9b_natural_heat_list_goes_stale_on_a_kind_change_not_15000_ticks_later
+ok    P7_full_palette_compacts_in_session_and_keeps_every_identity
+ok    P7_every_key_in_use_refuses_without_touching_palette_or_grid
+ok    P7_kernel_refuses_a_dry_claim_before_debiting_the_source
+ok    P9a_heat_budget_under_the_budget_visits_everything_at_face_value
+ok    P9a_heat_budget_late_excavated_cells_are_not_starved
+ok    P9a_heat_budget_natural_cells_get_a_share_when_excavated_fill_the_budget
+ok    P9a_heat_budget_few_excavated_beside_a_big_lake_are_not_overweighted
+ok    FuelFire_classify_kinds_and_settings
+      100-cell moat: chemfuel 198 ticks (3.3 s), oil 8910 ticks
+ok    FuelFire_inferno_spreads_like_gasoline
+      60 cells, 144 levels: all gone in 1250 ticks (21 s); oil would take 240000 ticks a brim cell
+ok    FuelFire_inferno_burns_down_in_seconds_and_conserves
+ok    FuelFire_inferno_heat_and_halo_scale
+      60x1: 60 cells, 20 blasts (spacing 3), 59 ticks, max 1 cells / 1 blasts per tick, plan 0.5 ms
+ok    FuelFire_detonation_channel_goes_almost_at_once
+      30x30: 900 cells, 100 blasts (spacing 3), 30 ticks, max 58 cells / 4 blasts per tick, plan 0.2 ms
+      2000x1: 2000 cells, 223 blasts (spacing 9), 1000 ticks, max 2 cells / 2 blasts per tick, plan 2.7 ms
+      141x141: 19881 cells, 225 blasts (spacing 10), 280 ticks, max 141 cells / 4 blasts per tick, plan 14.8 ms
+ok    FuelFire_detonation_budgets_hold_on_big_bodies
+ok    RiverSwitchFlip_riverWorksEnabled
+ok    RiverSwitchFlip_scaleWithRiverSize
+ok    RiverSwitchFlip_floodSurgeEnabled
+ok    RiverSwitchFlip_countSeasonalFloods
+ok    RiverSwitchFlip_countTorrentialRainFloods
+ok    RiverSwitchFlip_carryAnimals
+ok    RiverSwitchFlip_carryStrangers
+ok    RiverSwitchFlip_carryItems
+ok    RiverSwitchFlip_crossingHazardsEnabled
+ok    RiverSwitchFlip_pathfinderAvoidsCurrents
+ok    RiverSwitchFlip_weirCapturesFloating
+ok    RiverSwitchFlip_flotsamEnabled
+ok    RiverSwitchFlip_weirWhiteWater
+ok    RiverWalk_flier_never_carried
+ok    RiverWalk_stake_line_snaps_nearest_downstream_first
+ok    HoseSwitchFlip_tankModesEnabled
+ok    HoseSwitchFlip_freeEndRolesEnabled
+ok    HoseSwitchFlip_hoseHoldsLiquid
+ok    HoseSwitchFlip_liquidTheftEnabled
+ok    HoseTankFeed_refused_add_puts_back
+ok    Transfer_Move_refusal_on_either_leg_changes_nothing
+ok    Transfer_Move_composite_legs_are_all_or_nothing
+ok    Transfer_Adapter_boundary_conserves_with_carry
+ok    Transfer_site_pump_draw_channel
+ok    Transfer_site_pump_draw_source
+ok    Transfer_site_pump_draw_pond_to_the_last_decilitre
+ok    Transfer_site_pump_pour
+ok    Transfer_site_converter
+ok    Transfer_site_reactor
+ok    Transfer_site_bath
+ok    Transfer_site_adapter
+ok    Transfer_site_tank_settle
+ok    Transfer_caller_coverage
+ok    Net_tank_between_two_runs_is_in_both_runs_do_not_merge
+ok    Net_tank_hose_tank_is_one_component_of_one_conductor
+ok    Net_machines_do_not_conduct
+ok    Net_free_end_ports_attach_to_their_hose_component
+ok    Net_store_is_origin_independent_and_route_from_the_tree
+ok    Net_over_size_component_is_refused_never_partly_operated
+ok    Net_revision_bumps_on_each_listed_event
+ok    Plan_three_plus_two_room_takes_a_level
+ok    Plan_fill_order_fullest_holder_then_empty_by_id
+ok    Plan_draw_order_emptiest_holder_first
+ok    Plan_two_origins_get_the_same_plan
+ok    Plan_consumer_rotation_two_machines_take_turns
+ok    Plan_callers_use_plans_and_rotation
+ok    Settle_ship_Fill_loads_from_base
+ok    Settle_ship_Empty_unloads_to_base
+ok    Settle_two_Fill_tanks_never_take_from_each_other
+ok    Settle_Empty_Fill_Dump_on_one_component
+ok    Settle_moves_only_stock_present_at_the_start
+ok    Settle_empty_Fill_tank_rotates_liquids_by_cycle
+ok    Settle_production_tick_and_jobs
+      settled in 10 cycles at -29626 / -29704 dL-per-square
+ok    LEVELLING_one_square_vs_hundred_square_basin_converge_to_one_surface
+ok    LEVELLING_ten_parallel_links_sum_and_still_never_overshoot
+ok    LEVELLING_same_body_loop_moves_nothing
+ok    LEVELLING_siphon_over_a_crest_flows
+ok    LEVELLING_exposed_intake_stops
+ok    LEVELLING_water_and_oil_never_exchange
+ok    LEVELLING_dry_receiver_takes_the_source_liquid
+ok    LEVELLING_limitless_sea_fills_a_pit_to_the_brim_and_counts_it
+      300 scenes, 300 reached a fixed point
+ok    LEVELLING_fuzz_conserves_converges_never_oscillates_never_mixes
+      400 links, budget 64/cycle: 77.6 us per cycle (one cycle = 250 ticks)
+ok    LEVELLING_budget_n_bodies_on_one_network
+ok    PumpPorts_hose_at_a_side_port
+ok    PumpPorts_pipes_join_adjacent_hoses_at_ports
+ok    Pump_lake_to_canal_with_no_tank
+ok    Pump_blocked_outflow_falls_to_tanks
+ok    Pump_budget_is_shared_across_intakes_and_outflows
+ok    Pump_world_to_world_refusal_puts_the_take_back
+ok    Pump_pond_round_trip_production
+ok    Pump_pour_is_faster_than_gravity
+ok    Pump_production_world_mover
+ok    DeepDig_cap_setting_2_8_20_and_never_shallows
+ok    DeepDig_no_dig_code_reads_terrain_for_depth
+ok    DeepDig_colonists_2m_machines_deeper
+ok    DeepDig_cost_curve_numbers_measured
+ok    DeepDig_square_4774_digs_and_holds_152000_L_level
+ok    DeepDig_legacy_notch_kernel_survives_past_2m
+ok    DeepDig_pits_past_2m_trap_by_band_ladders_and_ramps_by_delta
+ok    PitRoom_depth_three_metres_scaled_by_body_height
+ok    PitStuck_alert_only_for_a_held_colonist_cut_off_from_food_or_bed
+ok    Fall_deep_drops_can_kill_by_metres
+ok    Relative_spikes_on_a_sheer_drop_at_any_depth
+ok    Relative_falls_by_metres_fallen_8m_and_capped
+ok    Relative_drowning_head_under_not_hole_depth
+ok    Relative_shooting_across_a_cliff_edge_only
+      shot rule: 79800 asks, 5491 blocked, 0.053 us/ask
+ok    Relative_shooting_line_walk_cost_measured
+ok    Relative_pit_rooms_person_pocket_any_depth
+ok    Relative_free_fall_step_is_the_drop
+ok    Relative_rules_wired_at_call_sites
+ok    Relative_head_fraction_live_with_drowning_off
+ok    FallRail_threshold_is_the_doors_own_fall
+ok    FallRail_edge_set_down_a_sheer_drop_only
+ok    FallRail_jump_in_is_deliberate
+ok    FallRail_vanilla_fences_count
+ok    FallRail_placement_beside_a_sheer_drop
+ok    FallRail_line_is_8_adjacent_and_inclusive
+ok    FallRail_throw_stops_at_the_rail
+ok    FallRail_doors_def_and_setting_wired
+ok    Swim_who_swims_by_race_gene_and_load
+ok    Swim_swimmer_vs_nonswimmer_in_2m_8m_and_lake_water
+    timeline: warned at 1.40 h, under at 2.00 h, dead at 3.10 h
+ok    Swim_exhaustion_timeline_warns_before_drowning
+    load   endurance h   cost x   swim ticks/square (13 + 60 x cost)
+    0.00   2.00          1.00     73
+    0.26   1.36          1.39     96
+    0.46   0.86          1.69     114
+    0.66   0.36          1.99     132
+    0.74   0.00          2.11     140  SINKS
+ok    Swim_armour_and_carried_weight_table
+ok    Swim_pathing_swimmers_cross_nonswimmers_never
+ok    Swim_pawn_dropped_in_deep_water
+ok    Swim_nonwater_fluids_refuse
+ok    Swim_wired_at_call_sites
+ok    Swim_reapply_fingerprint_no_alloc_and_cost
+ok    SWIM_REAPPLY_cold_tables_still_recompute
+ok    SWIM_DUG_reservoir_swimmable_pits_keep_their_rules
+ok    Swim_shallow_drowning_switch_alone
+ok    WetCost_person_height_matches_the_relative_rules_table
+ok    WetCost_aim_0_85_at_chest_depth_1_0_below
+ok    WetCost_chest_depth_is_relative_to_height
+ok    WetCost_aim_factor_clamped_never_helps
+ok    WetCost_cold_offset_only_while_in_water
+ok    WetCost_swimmers_have_no_ranged_verb_melee_kept
+ok    WetCost_wiring_patches_settings_and_statdef
+ok    Fish_born_small_vanilla_never_rolls_again
+ok    Fish_born_small_mended_rolls_at_75_100_200
+ok    Fish_two_ponds_merging_past_100_roll
+ok    Fish_drained_and_refilled_vanilla_loses_fish_and_zone
+ok    Fish_drained_and_refilled_mended_same_fish_and_zone_back
+ok    Fish_partial_dry_rejoins_live_zone_deleted_zone_stays_deleted
+ok    Fish_refill_veto_rolls_fresh_by_size
+ok    Body_split_vanilla_stays_one_mended_becomes_two
+ok    Body_split_stale_body_vanilla_throws_mended_clean
+ok    Body_split_round_an_island_is_no_split
+      3000 scenes, 26886 steps that added a body
+ok    Body_split_pieces_match_true_components_fuzz
+      29932 removals, 10474 walked, 10474 real splits
+ok    Body_split_local_test_never_misses
+ok    Plants_pump_cycle_reeds_live_dry_spell_kills_after_grace
+ok    WaterMend_settings_wired_and_shipped_on
+ok    Rewire_fill_look_is_metres_of_water
+ok    Rewire_five_is_dead_and_nothing_multiplies_a_pond
+ok    FluidDef_config_errors_check_every_fill_tier_including_very_shallow
+ok    Review_night_core_dig_scan_copies_and_pump_circle_ignores_hose_fill
+ok    Review_night_core_taken_letter_subject_and_proof_reset_bound
+ok    Rewire_thin_sheets_are_pumped_burned_drowned_and_warm
+ok    Readout_limitless_says_Endless
+ok    Readout_two_numbers_and_the_limitless_mark
+ok    Volume_one_square_is_one_square
+ok    Volume_one_ruler_scheme_A
+ok    Volume_bed_depth_follows_the_water
+ok    Volume_migration_keeps_the_fill_fraction_and_every_tank_unit
+ok    Volume_litres_model_3
+ok    Volume_litres_production_wiring
+ok    Volume_production_wiring
+ok    Pond_dug_bed_leaves_and_returns_exactly
+ok    Pond_restore_is_checked_and_waits_for_occupants
+ok    Pond_bed_predicate_is_kept_current
+ok    Pond_bed_hollow_math
+ok    Pond_bed_hollow_round_trip_is_lifo_exact
+ok    Pond_bed_dig_starts_from_the_bed
+ok    Pond_bed_cut_review_2026_10_14
+ok    Settings_section_reset_covers_int_fields
+ok    Pond_bed_hollow_readers_pinned
+ok    Pond_truncated_index_persists_and_ledger_probe_exists
+ok    Ledger_report_counts_decilitres_and_limitless_input
+ok    Settings_text_no_absolute_pit_rules
+ok    Refill_stays_in_decilitres
+ok    DeepBed_drained_lake_holds_nobody
+ok    DeepBed_map_edge_is_shore
+ok    DeepBed_drawdown_sheds_shallowest_first_and_refills_lifo_exact
+ok    DeepBed_rough_rect_lake_drains_shallow_first
+ok    DeepBed_equal_beds_match_the_old_average_model
+ok    DeepBed_recession_set_matches_the_old_order
+ok    DeepBed_readers_read_past_four
+ok    DeepBed_wiring_and_settings
+ok    Pond_capacity_dug_out_and_back_in_any_order
+ok    Fillin_displacement_reaches_a_dry_pond_and_the_whole_network
+  DeepBed bench: lake 39381 squares, deepest 27, capacity 587068 levels; walk 2.3 ms, beds 22.2 ms (both once per lake); per drain pulse: scan 0.63 ms + 64 sheds 7.00 ms
+ok    DeepBed_bench_offline
+ok    Lake_floor_same_seed_same_floor_any_order
+  LakeFloor table: Flat r 0.05: mean deepest 2.6 m, max 4.5 m, silted 18/40 | SmallHills r 0.30: mean deepest 4.3 m, max 9.0 m, silted 15/40 | LargeHills r 0.55: mean deepest 9.2 m, max 19.5 m, silted 8/40 | Mountainous r 0.80: mean deepest 16.0 m, max 34.5 m, silted 5/40 | Impassable r 0.95: mean deepest 26.8 m, max 50.0 m, silted 2/40
+  LakeFloor: a 230-wide chasm-country lake, deepest of 30 draws 48.5 m
+ok    Lake_floors_deepen_with_roughness_50m_only_in_mountains
+ok    Lake_floors_vary_lake_to_lake_silted_and_deep
+  LakeFloor irregularity: 20 lakes >= 6 m, mean fraction >= 1 m off-radial 0.24
+ok    Lake_floors_are_irregular_not_a_radial_crater
+ok    Lake_floor_full_lake_is_unchanged_on_screen_and_holds_its_floor
+ok    Lake_floor_drained_lake_keeps_the_water_in_reach
+ok    Lake_floor_wiring_formation_settings_and_save
+  LakeFloor bench: 37739 squares, deepest 26 m, way out moved 416, 22 ms (once per lake, at map creation)
+ok    Lake_floor_bench_offline
+ok    Climb_limit_bands_by_body_size
+ok    Step_allowed_relative_both_ways
+ok    Diagonal_never_cuts_a_cliff_corner
+ok    Step_cost_slow_at_K_free_on_ramp
+ok    Falls_by_drop_over_K
+ok    Pocket_dried_pond_never_traps_a_person
+ok    Pocket_gradual_bowl_traps_nobody
+ok    Pocket_sheer_D3_traps_person_not_muffalo
+ok    Pocket_sheer_D2_traps_rat_not_person
+ok    Pocket_ramp_D4_to_D1_frees_everyone
+ok    Pocket_wall_and_width_rules
+ok    Pocket_trench_splits_the_surface_and_no_cap
+ok    Pocket_band_and_held_gates
+ok    Pocket_D4_pit_traps_a_standard_pawn
+ok    Pocket_wiring_pinned_at_call_sites
+ok    WallReach_passable_table_by_kind_and_class
+ok    WallReach_class_door_bits_only_on_a_ByPawn_walk_without_bashing
+ok    WallReach_winch_site_walls_and_trench_cut_it_only_together
+ok    WallReach_ladders_rekeyed_down_across_and_up
+ok    WallReach_locked_gate_and_second_gap_behind_the_moat
+ok    WallReach_wild_animal_at_a_player_door_and_a_trench
+ok    WallReach_non_swimmer_at_a_water_moat
+ok    WallReach_vetoed_never_on_an_unknown
+ok    WallReach_ramp_joins_any_band
+ok    WallReach_bounded_log_and_rebuild_throttle
+ok    WallReach_fuzz_four_way_equals_eight_way_and_refines_both_halves
+        offline 250x250: wall-aware label 1.14 ms/band, depth-only pocket label 0.63 ms/band (net8 JIT, not Unity Mono: an order-of-magnitude read only)
+ok    WallReach_offline_rebuild_ms_250_square
+ok    WallReach_wall_built_is_seen_at_once_not_at_next_path
+ok    WallReach_wiring_source_pins
+ok    Cliff_mask_bits_follow_the_step_rule
+ok    Cliff_mask_ramp_and_ladder_join_cardinals_only
+ok    Cliff_mask_offsets_match_vanilla_CellConnection
+ok    Cliff_mask_components_equal_the_pocket_grid
+ok    Cliff_mask_walls_stay_walls_with_a_ramp
+ok    Ramp_beats_ladder_and_both_join
+ok    Ramp_wiring_pinned_at_call_sites
+ok    Cliff_mask_wiring_pinned_at_call_sites
+ok    Cliff_mask_lowered_ladder_at_wall_lets_a_person_down_and_out_of_D4
+ok    Pawnless_reach_counts_a_lowered_ladder_as_the_masks_do
+ok    Reach_veto_needs_a_way_at_both_ends
+ok    Map_edge_island_ringed_by_a_trench_is_cut_off
+ok    Trench_laddered_on_both_walls_is_one_route
+ok    Trench_reach_agrees_with_the_pathfinder_every_direction
+ok    StartPath_reach_answers_for_the_walker_not_the_person_band
+ok    Too_wide_pawn_is_not_walled_in_by_the_masks
+ok    Ramp_spawn_and_despawn_reach_the_masks
+ok    Outflow_dump_drain_takes_levels_into_channels_any_units_onto_ground
+ok    Outflow_dump_drain_conserves_without_a_pump
+ok    Outflow_spill_filth_count
+ok    Outflow_production_outlet_spill_and_drain
+ok    HoseHold_capacity_is_cells_times_units_per_cell
+ok    HoseHold_conserves_across_fill_change_of_liquid_and_stop
+ok    HoseHold_change_of_liquid_flushes_first
+ok    HoseHold_production_fill_flush_drain_and_save
+ok    Theft_spotting_matches_power_theft
+ok    Theft_accrues_per_day_of_taking_and_idle_accrues_nothing
+ok    Theft_witness_sees_a_2x2_tank_from_every_side
+ok    Theft_production_tick_join_and_switch
+ok    Adapter_save_keys_map_to_modes
+ok    Adapter_short_accept_puts_units_back
+ok    Adapter_production_modes
+ok    RIVER_SWEEP_can_fail_pre_fix_take_hands_colonists_to_npc_factions
+ok    RIVER_SWEEP_held_pawns_keep_faction_state_and_gear
+ok    RIVER_SWEEP_hold_alone_stops_the_swap_and_restore_alone_mends_it
+ok    SWEEP_PRISONER_escape_into_the_current_is_a_sweep
+ok    SWEEP_PRISONER_RETURN_edge_cell_escapes_pre_fix_stays_post_fix
+ok    RIVER_SWEEP_kernel_rules
+ok    P10_wash_failed_placement_respawns_at_old_cell
+ok    P10_WashCatch_routes_through_WashHeld
+      old strand=(0,-1)
+      new strand=(-1,-4)
+ok    WeirBreach_live_scene_old_strands_home_new_leaves_disc
+      sites=1988 oldStrandedHome=645 outside45degCone=0
+ok    WeirBreach_off_axis_rivers_every_site_washes_downstream_out_of_reach
+ok    WeirBreach_downstream_walk_follows_flow_never_back
+ok    WeirBreach_WashCatch_routes_through_WashStrand
+      old spine=0 new spine=3
+ok    WeirPool_edge_lane_minimal_scene_old_zero_new_pools
+      sites=864 oldPool0=130 newShortOfFull=0
+ok    WeirPool_off_axis_rivers_every_bank_edge_pools
+ok    WeirPool_straight_river_unchanged_from_old_rule
+ok    WeirPool_walk_never_goes_downstream_or_across
+ok    WeirPool_length_honoured_and_no_revisit
+ok    WeirJoin_placement_straddle_or_continue
+ok    WeirJoin_run_head_and_gap
+ok    WeirArt_facing_follows_the_current
+ok    WeirCatch_intake_is_where_the_carry_stops
+ok    WeirCatch_budget_never_exceeds_the_cap
+ok    WeirCatch_no_free_fish_or_drift_in_source
+ok    WeirFoam_only_where_the_current_crosses_the_wall
+ok    WeirFoam_image_left_side_in_the_world
+ok    WeirFoam_scales_with_flow
+ok    WeirFoam_frame_loops_and_desyncs
+ok    Flotsam_enters_only_where_the_river_comes_in
+ok    Flotsam_rate_and_switch
+ok    FerryRope_strip_spans_post_to_post
+ok    Flotsam_wired_in_source
+ok    WeirAutoRotate_crosses_the_current
+ok    WeirLook_no_flat_tint_and_animated_foam_in_source
+ok    RiverArt_stake_ridges_one_span_per_touching_pair
+ok    RiverArt_silt_wedge_upstream_and_grows
+ok    RiverArt_stake_and_silt_trap_wired_in_four_looks
+ok    Slime_no_slip_where_it_should_not
+ok    Slime_fuller_and_climbing_out_slip_more
+ok    Slime_nearly_uncrossable_in_time
+ok    Slime_climb_out_takes_a_great_deal_of_time
+ok    Slime_natural_ground_slips_too
+ok    Slime_shipped_data_and_wiring
+ok    HoseText_water_end_is_no_intake
+ok    HoseText_reel_inspect_names_free_end
+ok    PipeStyles_looks_are_the_wires_looks
+ok    PipeStyles_resolve_rule
+ok    TankStyles_four_looks_per_tank
+ok    TankStyles_choose_style_gizmo
+ok    PipeStyles_restyle_clears_cached_graphic
+ok    PipeStyles_shipped_style_defs
+ok    PipeStyles_pipe_is_styleable
+ok    BuildMenu_pipes_and_tanks_in_the_pipe_networks_tab
+ok    PumpStyles_four_looks_scrapper_keeps_todays_pump
+ok    Pitch_never_solidifies_in_bulk
+ok    LiquidJoin_flange_face_on_the_shared_edge
+ok    LiquidJoin_shared_edge
+ok    LiquidJoin_hose_thickness_scale
+ok    LiquidJoin_wiring_shipped
+ok    PipeStub_1x1_runs_edge_to_centre
+ok    PipeStub_multicell_enters_at_edge_then_turns_to_centre
+ok    PipeStub_corner_adjacent_runs_under_to_centre
+ok    PipeStub_tank_corner_joins_and_runs_under
+ok    TankFlange_sits_on_the_drawn_edge_every_tank_look_side_lane
+ok    PipeStub_corner_elbow_only_when_not_joined_beside
+ok    PipeStub_wiring_shipped
+ok    ReelFacing_outlet_nozzle_and_picture_turn_with_the_reel
+ok    ReelFacing_target_on_the_outlet_side_lays_with_no_U_loop
+ok    ReelFacing_relay_inlet_turns_with_the_relay
+ok    ReelFacing_def_rotatable_west_default_preview_and_legacy_saves
+ok    PipeTankRiser_ends_on_the_hose_flange_not_under_the_skid
+ok    PipeTankRiser_wiring_link_stops_layer_prints_flange_follows
+ok    HoseShadow_empty_is_darker_and_wider_full_unchanged
+ok    ContainerStyle_looks_and_names
+ok    ContainerStyle_tech_default
+ok    ContainerStyle_stacks_keep_looks_apart
+ok    ContainerStyle_window_colours
+ok    ContainerStyle_shipped_style_defs
+ok    ContainerStyle_item_bases_wired
+ok    ContainerStyle_dbh_bottles_masked
+ok    ContainerStyle_call_sites
+ok    TankDebug_picker_water_first
+ok    TankDebug_fill_is_capacity_and_ledger_records
+ok    MachinerySettings_toggle_rows_scan_the_defs_once_not_every_frame
+ok    SettingsReset_restores_shipped_values_and_skips_non_settings
+ok    SettingsReset_every_named_screen_has_a_reset_button
+ok    ReviewFix_PitExposure_marker_narrows_comfort_and_leaves_off_map
+ok    ReviewFix_BottleResidue_lands_on_the_map_when_there_is_one
+ok    ReviewFix_Drill_draws_no_power_when_switched_off
+ok    ReviewFix_Excavation_fill_to_surface_clears_fluid_key
+ok    ReviewFix_ShootingCache_forgets_a_removed_map
+ok    ReviewFix_Stock_recession_and_refill_count_wet_cells
+ok    ReviewFix_Settings_reset_clears_disabledFluids
+ok    ReviewFix_LiquidDef_unread_fields_are_not_forms
+ok    TankSearch_refusal_only_from_usable_tanks
+ok    PitCover_path_cost_keeps_fire_snow_and_doors
+ok    PlacerStock_cap_follows_the_setting_live
+ok    PlacerStock_debited_only_after_placement
+ok    RiverCurrent_cheap_test_first_and_no_stack_on_stack
+ok    FerryPathProof_destroys_only_its_own_posts
+ok    FerryProof_searches_every_crossing_within_the_rope_span
+ok    PitDepthDraw_shots_leave_from_the_unsunk_position
+ok    PitLipOcclusion_pawn_rects_read_once_per_frame
+ok    SuperdeepTrap_cover_beside_open_pit_is_no_way_out
+ok    PitRooms_pit_room_is_a_pocket_at_the_setting_depth
+ok    PitStepCost_stepping_off_a_cover_is_no_climb
+ok    PlacerStock_old_save_recovers_its_base_from_the_cap
+ok    DigFind_letter_points_at_the_stack_it_landed_in
+ok    Settings_pit_section_reset_reruns_rebuild_redraw_apply
+ok    LiquidDrill_unstamped_outlet_is_left_to_the_engine
+ok    LiquidDef_unread_forms_do_not_count
+ok    LiquidSuites_only_real_water_is_fishable
+ok    PitFill_splashes_agree_with_the_fluid_look
+ok    NaturalTar_burns_and_is_not_a_fishing_water
+ok    DigCanal_and_FillInCanal_designations_never_share_a_cell
+ok    DigFind_force_spent_on_every_cut_and_budget_debited_only_on_a_drop
+ok    Ruling18_flow_door_stands_on_a_wet_dug_cell_only
+ok    Ruling18_patch_reads_the_dug_grid_and_the_frame_seals_nothing
+ok    PitRoute_picks_a_ladder_the_pawn_can_reach_not_just_the_nearest
+ok    Ruling19_every_liquid_has_a_wake_water_clear_tar_barely
+ok    BottleLoop_no_tank_takes_bottles_unasked_and_gives_them_back
+ok    BottleLoop_search_and_jobs_read_the_tank_job
+ok    GptA_corrosion_destroys_worn_out_apparel
+ok    GptA_rotation_starved_stranger_on_another_store_never_stalls
+ok    GptA_rotation_unservable_neighbour_forfeits_after_one_yield
+ok    GptA_converter_multi_input_rotates
+ok    GptA_bottle_fill_and_wash_pay_the_body_and_keep_wear
+ok    GptA_settle_tank_in_two_components_shares_one_budget
+ok    GptA_adapter_send_debt_is_paid
+ok    GptA_destroyed_tank_drill_converter_keep_their_contents
+ok    GptA_hoses_off_never_retract_on_obstacles
+ok    GptA_hose_orders_fresh_order_on_dropped_end_runs
+ok    GptA_hose_drain_and_spill_go_back_to_the_pond
+ok    GptA_hose_import_marked_done_after_success
+ok    GptA_hose_install_range_from_the_mouth
+ok    GptA_dbh_water_only_on_plain_water_and_full_dbh_gated
+ok    GptA_liquid_fire_cover_flyers_save_and_blast_identity
+ok    GptA_theft_only_charged_when_the_player_reaches_the_tank
+ok    Gpt1016_hose_nan_setting_reads_as_default
+ok    Gpt1016_converter_blocked_small_recipe_does_not_starve_big_one
+ok    Gpt1016_bottle_jobs_never_lose_the_paid_container
+ok    Gpt1016_reactor_stalled_reaction_does_not_end_the_shift
+ok    HoseNan_shape_settings_read_through_FiniteClamp
+ok    Rain_roofed_brimming_square_spills_nothing
+ok    DugSwim_refresh_reuses_scratch
+ok    SuspensionBridges_band_reset_and_lean_load_tick
+ok    SuperdeepTrap_IsHeldAt_builds_no_closure
+ok    RaiderTrench_plans_on_the_pawns_own_grid
+ok    NorthstarProofs_refuse_negative_units_and_unknown_mode_first
+ok    Hoses_ghosts_pruned_in_tick_and_no_joiner_array
+ok    MapControl_rate_to_levels
+ok    MapControl_rate_clamps
+ok    MapControl_blocked_source_never_banks
+ok    MapControl_pick_targets
+ok    MapControl_source_and_sink_conserve_through_the_kernel
+ok    MapControl_wiring_and_master_switch
+ok    MapControl_level_holder_need
+ok    MapControl_level_holder_conserves_through_the_kernel
+ok    MapControl_timer_schedule
+ok    MapControl_edge_rules
+ok    MapControl_thermostat_energy
+ok    MapControl_six_wiring
+ok    FlowDoorFacing_spans_between_the_banks
+ok    FlowDoorFacing_superdeep_channel_is_not_a_wall
+ok    FlowDoorFacing_ends_bends_and_mouths
+ok    FlowDoorFacing_gates_side_by_side_form_one_barrier
+ok    FlowDoorFacing_walls_still_win_and_dry_ground_is_vanilla
+ok    FlowDoorFacing_call_site_is_vanilla_door_rotation
+ok    LadderWall_placed_rotation_stands_on_a_wall
+ok    LadderWall_auto_turns_to_the_biggest_drop
+ok    LadderWall_no_wall_refused
+ok    LadderWall_joins_only_the_wall_it_hangs_on
+ok    LadderWall_slid_up_holds_everyone_slid_down_is_the_prison_door
+ok    LadderRails_raise_either_side_lower_only_from_above
+ok    LadderRails_gizmo_job_and_ai_ask_the_rule
+ok    LadderWall_call_sites
+ok    PitAccess_portable_ladder_reach
+ok    PitAccess_climbing_gear_climbs_every_step
+ok    PitAccess_gear_is_slow_only_past_the_natural_limit
+ok    PitAccess_jumps_and_skips_land_safely
+ok    PitAccess_rescue_queues_a_ladder_only_when_nobody_can_go
+ok    PitAccess_call_sites_wired
+ok    PitTravel_fly_jump_float_cross_freely_and_never_fall
+ok    PitTravel_every_trap_mask_reach_and_fall_read_asks_it
+ok    PitAccess_defs_and_settings_shipped
+ok    WallClimb_which_things_are_walls
+ok    WallClimb_gear_required_raiders_by_setting
+ok    WallClimb_unroofed_on_both_sides_and_the_wall
+ok    WallClimb_is_slow_x20
+ok    WallClimb_routes_only_when_shorter
+ok    WallClimb_gear_chance
+ok    WallClimb_pathfind_budget_and_memos
+ok    WallClimb_wiring
+ok    TrenchStride_run_widths
+ok    TrenchStride_bridged_view_and_canonical
+ok    TrenchStride_pocket_labels_join_the_banks
+ok    TrenchStride_cliff_bits_open_the_crossing
+ok    TrenchStride_underpass_views_compose
+ok    TrenchStride_wiring_every_judge_reads_the_stride_view
+ok    TrenchStride_cross_mod_key_matches_HugeThings
+ok    RaiderTrench_decision_order
+ok    RaiderTrench_cardinal_line
+ok    RaiderTrench_fill_causeway
+ok    RaiderTrench_ladder_slots
+ok    RaiderTrench_times_and_jump_share
+ok    RaiderTrench_breach_fits_a_raid
+ok    RaiderTrench_wiring
+ok    LadderParity_no_keys
+ok    LadderParity_climbers_per_creature
+ok    LadderParity_chop_wood_then_build
+ok    LadderParity_raids_bring_some_ladders_never_all
+ok    LadderParity_build_on_demand_and_carried_is_faster
+ok    LadderParity_take_each_others_ladders
+ok    LadderParity_breach_scar_and_repair
+ok    LadderParity_one_way_over_a_single_unroofed_wall
+ok    LadderParity_wiring
+ok    SpanBase_cover_read_is_decked_surface_no_underpass
+ok    SpanBase_drop_and_underpass_rules
+ok    SpanBase_cover_is_the_trap_tier_of_the_base
+ok    SpanBase_height_sites_read_DeckedAt
+ok    Beneath_who_goes_under_a_new_lid
+ok    Beneath_leaves_only_into_an_open_pit_square
+ok    Beneath_trapped_when_no_open_neighbour
+ok    Beneath_wired_at_the_call_sites
+ok    LidWalker_drawn_at_ground_not_sunk
+ok    CoverFloor_planked_squares_are_ground_open_squares_the_pit
+ok    CoverFloor_laying_or_lifting_a_lid_invalidates_path_and_reach
+ok    DrillWhyNot_each_condition_names_its_reason
+ok    DrillSurvey_empty_survey_refuses_unsurveyed_allows
+ok    DrillSurvey_placeworker_wired_on_drill_and_bleed_well
+ok    Drawbridge_P1_materials_timber_and_steel_only
+ok    Drawbridge_P1_split_one_leaf_or_two_each_hinged_on_its_own_bank
+ok    Drawbridge_P1_leaf_is_rigid_off_its_seat_and_reversible
+ok    Drawbridge_P2_tip_order_nearest_hinge_then_cell
+ok    Drawbridge_P2_six_riders_one_free_square_one_lands_five_fall
+ok    Drawbridge_P2_landings_never_through_a_wall_and_within_reach
+ok    Drawbridge_P2_tip_wiring_once_per_raise_band_aware_overflow_falls
+ok    Drawbridge_P3_sides_raise_either_lower_winch_only
+ok    Drawbridge_P3_drive_timber_hands_steel_power_freezes
+ok    Drawbridge_P3_winch_lost_crashes_down_and_hits
+ok    Drawbridge_P3_winch_gone_any_way_crashes_and_unlinks
+ok    Drawbridge_P1_tower_mid_span_refused
+ok    Drawbridge_P3_one_winch_per_leaf_on_its_own_bank
+ok    Drawbridge_P3_peace_auto_lowers_free_hostiles_lock
+ok    Drawbridge_P4_raid_plank_fits_and_commits_once
+ok    Drawbridge_P4_raiders_trench_hand_off_and_winch
+ok    Drawbridge_P5_hoses_on_a_leaf_cut_while_raised_rejoin_lowered
+ok    Drawbridge_P5_gravship_edge_bridge_collapses_at_launch
+ok    Drawbridge_P5_length_by_material_from_settings
+ok    Drawbridge_P6_gate_never_open_on_a_raised_leaf_locked_only_by_order
+ok    Drawbridge_P6_real_build_buttons
+ok    Drawbridge_P6_art_contract_paths_with_stand_ins
+ok    Drawbridge_Looks_paths_look_first_then_material
+ok    Drawbridge_Looks_raid_plank_pieces
+ok    Drawbridge_Looks_wired_at_the_draw_sites
+ok    Drawbridge_P1_decked_reads_raised_and_only_drawbridge_decks_raise
+ok    Drawbridge_raised_leaf_draws_without_its_winch
+ok    Drawbridge_P1_structure_reads_see_a_raised_leaf
+ok    Drawbridge_P1_toggle_forces_pocket_rebuild_and_repath
+ok    Drawbridge_P1_raise_never_collapses
+ok    Drawbridge_P1_leaf_record_saves_per_leaf_versioned
+ok    Drawbridge_Cables_lowered_reach_deck_raised_slack_vs_art
+ok    Drawbridge_Cables_canfail_old_stop_short_and_moved_attach
+ok    Drawbridge_Cables_raised_leaf_edge_crops_the_stiff_rope
+ok    Drawbridge_Cables_call_sites
+ok    LineCrossing_P2_table_every_kind_by_every_surface
+ok    LineCrossing_P2_rigid_only_on_solid_ground_cover_carries_nothing
+ok    LineCrossing_P2_surface_deck_wins_over_the_hole_under_it
+ok    LineCrossing_P2_every_refusal_has_a_reason_every_allow_none
+ok    LineCrossing_P1_style_change_does_not_change_permission
+ok    LineCrossing_P2_gates_at_placement_rebuild_and_frame_completion
+ok    LineDigBreak_cancelled_or_refused_dig_breaks_nothing
+ok    LineDigBreak_commit_breaks_rigid_and_cords_once_never_hose
+ok    LineDigBreak_repeat_commit_is_idempotent
+ok    LineDigBreak_liquid_net_splits_where_the_pipe_broke
+ok    PowerCord_def_is_a_FlexCord_power_transmitter_of_its_own
+ok    PowerCord_placeable_on_rope_timber_steel_decks_and_leaf_refused_dug_and_cover
+ok    PowerCord_restyled_conduit_still_refused_on_decks
+ok    PowerCord_dig_break_catches_the_cord_def
+ok    PowerCord_leaf_raise_disconnects_lower_rejoins_the_power_net
+ok    PowerCord_deck_collapse_destroys_it_and_records_the_fallen_wire_first
+ok    DeckCollapse_cord_drops_one_live_fallen_wire_and_the_net_splits_once
+ok    DeckCollapse_repeat_teardown_is_idempotent
+ok    DeckCollapse_unpowered_or_disconnected_cord_shocks_nobody
+ok    DeckCollapse_hose_across_a_collapsed_deck_is_reeled_in
+ok    DeckCollapse_every_collapse_path_clears_through_ClearDeckTop
+ok    DeckCollapse_GSS_shock_seam_is_soft_and_load_safe
+ok    PipePole_P3_support_on_solid_ground_only_refused_on_deck_cover_dug
+ok    PipePole_P3_span_length_cap_follows_the_slider
+ok    PipePole_P3_sag_at_the_slider_extremes
+ok    PipePole_P3_span_is_not_walkable_and_not_in_pawn_topology
+ok    PipePole_D5_ground_pipe_reaches_the_pole_and_the_span_is_the_looks_pipe
+ok    PipePole_P4_dig_kills_the_pole_so_its_spans_fall
+ok    PipePole_P3_settings_and_the_gss_seam_line_up
+ok    PipeSpan_P3_edge_joins_two_60pct_components_cap_after_join_refused
+ok    PipeSpan_P3_edge_joins_two_40pct_components_accepted_as_one
+ok    PipeSpan_P3_one_logical_edge_no_duplicate_cardinal_or_reverse_span
+ok    PipeSpan_P3_ring_of_two_pole_routes_cut_in_turn
+ok    PipeSpan_P3_cut_span_splits_the_net_once
+ok    PipeSpan_P3_production_wiring_adapter_callback_join_order
+ok    LineReadout_P9_four_cases_read_apart
+ok    LineReadout_P9_counts_and_dry_pole
+ok    LineReadout_P9_adapters_print_the_lines
+ok    PipePoleGravship_P8_aboard_span_rekeys_on_landing
+ok    PipePoleGravship_P8_edge_span_coils_and_no_support_loss
+ok    S1 Join: straight-on (heading east to a point ahead, curvature 0 both ends)
+ok    S1 Join: 90 degrees, starting on a curve (k0 = 0.4) and ending straight
+ok    S1 Join: U-turn (opposed headings, the end 1 cell to the side and behind)
+ok    S1 Join: S offset with end curvature (k1 = -0.3)
+ok    S2 the screenshot: B's end on A's end, both heading east, mates face to face
+ok    S3 straight-on: B already arrives from the east heading west (near identity)
+ok    S3 90 degrees: B comes down from the north onto A's end
+ok    S3 opposed: B runs parallel beside A, same heading, ending one cell north of A's end
+ok    S5 MatePair: at 90 degrees both hoses bend part way (gentler than one looping round); every case still passes the bars
+    splice cost: cold 19 ms (stiff), 18.2 ms per full search
+ok    S4 a stiffer hose (MinBendRadius 2.0) keeps its bound; the screenshot solve is cheap
+ok    HoseDraw_D1_a_bend_round_a_wall_end_never_shaves_its_corner
+ok    HoseDraw_D2_a_port_met_from_the_side_draws_no_lead_in_stub
+ok    HoseDraw_D3_a_side_arrival_at_a_moved_port_slides_onto_it
+ok    HoseWall_S1_hose_on_a_seam_between_two_wall_cells_is_refused
+ok    HoseWall_S2_corner_and_face_grazes_still_pass
+ok    HoseWall_S3_WallDepth_agrees_with_the_independent_ruler
+ok    HoseWall_S4_replanned_lays_never_cross_a_wall
+ok    HoseBand_P5_refuses_a_dug_square_without_ramp_or_ladder
+ok    HoseBand_P5_routes_lip_ramp_floor
+ok    HoseBand_P5_routes_lip_ladder_floor_and_raised_ladder_leaves_it_hanging
+ok    HoseBand_swim_split_pool_stays_one_floor
+ok    Scenario_C4_C10_hoses_lay_offline
+ok    HoseBand_P5_endpoint_reach_respects_band
+ok    HoseBand_P5_newly_dug_square_replans_or_retracts_once
+ok    HoseBand_P2_pit_cover_carries_no_hose
+ok    HoseBand_P5_no_bands_leaves_gss_signatures_unchanged
+ok    Suspension_tiers_are_the_items_numbers
+ok    Suspension_drag_validator_ends_middle_length_width
+ok    Suspension_spans_supports_and_swing_order
+ok    Suspension_load_sag_and_falls
+ok    Suspension_wiring_sources_defs_patches
+ok    Grate_fire_attach_open_pit_times_three_quarters
+ok    Grate_drain_splash_and_types
+ok    Grate_wiring_sites_defs_settings
+ok    Underpass_band_step_clearance_and_sunken_height
+ok    Underpass_shots_between_bands_and_crush
+ok    Underpass_wiring_masks_sites_not_tunnels
+ok    Waters_spannable_and_flood_damage
+ok    Waters_wiring_path_swim_current_settings
+ok    Jetty_reach_root_type_and_load
+ok    Jetty_wiring_record_designator_defs
+ok    Looks_four_styles_registered_and_carried
+ok    Leftovers_tower_load_wreck_band_link
+ok    Suspension_deck_built_over_the_hole_floor
+ok    Underpass_reach_agrees_with_the_pathfinder_under_and_beside_decks
+ok    Underpass_reach_view_rules_and_wiring
+ok    Thirst_provider_rule
+ok    Thirst_fall_rate_ruled
+ok    Thirst_heat_cap_ruled
+ok    Thirst_bottle_and_quality
+ok    Thirst_use_class_gate_ruled
+ok    Thirst_autofill_potable_only_in_source
+ok    Thirst_slime_last_resort_ruled
+ok    Thirst_salt_break_ruled
+ok    Thirst_awkward_access_ruled
+ok    Thirst_reserve_orders_sprinklers_ruled
+ok    Thirst_q12_defaults_ruled
+ok    Thirst_bottle_stock_batches_ruled
+ok    Thirst_dehydration_ruled
+ok    Thirst_defs_shipped
+ok    Thirst_bottles_generated
+ok    Thirst_dbh_bridge_patch
+ok    Thirst_harmony_target_and_call_sites
+ok    Thirst_review_fixes_B2_B3_in_source
+ok    PondDepth_S1_shallow_out_not_shrink
+ok    PondDepth_S2_min_depth_is_one_patch
+ok    PondDepth_S4_head_rule_ditch_above_surface_stops
+ok    PondDepth_S3_pond_canal_pond_level_to_one_surface
+ok    PondDepth_S4_return_half_and_dead_band
+ok    PondDepth_S5_relay_is_a_pure_function_of_stock
+ok    PondDepth_S8_occupied_square_waits_share_goes_on
+    S7: 40,000-square lake, histogram 0.1 ms once, s/r/patch 7.29 ms a pulse (bar 10)
+ok    PondDepth_S7_cost_40000_square_lake
+    S5A trace:
+      p1 stock 35 pond [4 4 4 4 4 4 4 4 3] canal [1 0 0 0 0 0 0 0 0 0]
+      p2 stock 35 pond [4 4 4 4 4 4 4 4 3] canal [1 0 0 0 0 0 0 0 0 0]
+      p3 stock 35 pond [4 4 4 4 4 4 4 4 3] canal [1 0 0 0 0 0 0 0 0 0]
+      p4 stock 35 pond [4 4 4 4 4 4 4 4 3] canal [1 0 0 0 0 0 0 0 0 0]
+      p5 stock 35 pond [4 4 4 4 4 4 4 4 3] canal [1 0 0 0 0 0 0 0 0 0]
+      p6 stock 35 pond [4 4 4 4 4 4 4 4 3] canal [1 0 0 0 0 0 0 0 0 0]
+      p7 stock 35 pond [4 4 4 4 4 4 4 4 3] canal [1 0 0 0 0 0 0 0 0 0]
+      p8 stock 35 pond [4 4 4 4 4 4 4 4 3] canal [1 0 0 0 0 0 0 0 0 0]
+      p9 stock 35 pond [4 4 4 4 4 4 4 4 3] canal [1 0 0 0 0 0 0 0 0 0]
+      p10 stock 35 pond [4 4 4 4 4 4 4 4 3] canal [1 0 0 0 0 0 0 0 0 0]
+      p11 stock 35 pond [4 4 4 4 4 4 4 4 3] canal [1 0 0 0 0 0 0 0 0 0]
+      p12 stock 35 pond [4 4 4 4 4 4 4 4 3] canal [1 0 0 0 0 0 0 0 0 0]
+      p20 stock 35 pond [4 4 4 4 4 4 4 4 3] canal [1 0 0 0 0 0 0 0 0 0]
+      p30 stock 35 pond [4 4 4 4 4 4 4 4 3] canal [1 0 0 0 0 0 0 0 0 0]
+      p40 stock 35 pond [4 4 4 4 4 4 4 4 3] canal [1 0 0 0 0 0 0 0 0 0]
+      p50 stock 35 pond [4 4 4 4 4 4 4 4 3] canal [1 0 0 0 0 0 0 0 0 0]
+      p60 stock 35 pond [4 4 4 4 4 4 4 4 3] canal [1 0 0 0 0 0 0 0 0 0]
+ok    Level_S5A_closed_pond_feeds_canal_one_surface
+    S2 trace:
+      p1 pond [1 0 1 0] trench [0 0 0 0 0 0]
+      p2 pond [1 1 1 1] trench [0 0 0 0 0 0]
+      p3 pond [1 2 1 2] trench [0 0 0 0 0 0]
+      p4 pond [2 2 2 2] trench [0 0 0 0 0 0]
+      p5 pond [2 3 2 3] trench [0 0 0 0 0 0]
+      p6 pond [3 3 3 3] trench [0 0 0 0 0 0]
+      p7 pond [3 4 3 4] trench [0 0 0 0 0 0]
+      p8 pond [4 4 3 4] trench [1 0 0 0 0 0]
+      p9 pond [4 4 3 4] trench [1 1 0 0 0 0]
+      p10 pond [4 4 3 4] trench [1 1 1 0 0 0]
+      p11 pond [4 4 3 4] trench [1 1 1 1 0 0]
+      p12 pond [4 4 3 4] trench [1 1 1 1 1 0]
+      p13 pond [4 4 3 4] trench [1 1 1 1 1 1]
+      p14 pond [4 4 4 4] trench [1 1 1 1 1 1]
+      p15 pond [4 4 4 4] trench [1 1 1 1 1 1]
+      p16 pond [4 4 4 4] trench [1 1 1 1 1 1]
+ok    Level_S2_dug_pond_fills_as_one_surface
+    S5F end: pond stock 2 canal 2
+ok    Level_S5F_pond_and_deep_canal_square_level
+    S5B trace:
+      p1 stock 3 canal [1 0 0 0 0 0 0 0 0 0]
+      p2 stock 3 canal [1 0 0 0 0 0 0 0 0 0]
+      p3 stock 3 canal [1 0 0 0 0 0 0 0 0 0]
+      p4 stock 3 canal [1 0 0 0 0 0 0 0 0 0]
+      p5 stock 3 canal [1 0 0 0 0 0 0 0 0 0]
+      p6 stock 3 canal [1 0 0 0 0 0 0 0 0 0]
+      p7 stock 3 canal [1 0 0 0 0 0 0 0 0 0]
+      p8 stock 3 canal [1 0 0 0 0 0 0 0 0 0]
+      p10 stock 3 canal [1 0 0 0 0 0 0 0 0 0]
+      p20 stock 3 canal [1 0 0 0 0 0 0 0 0 0]
+      p30 stock 3 canal [1 0 0 0 0 0 0 0 0 0]
+      p40 stock 3 canal [1 0 0 0 0 0 0 0 0 0]
+      p50 stock 3 canal [1 0 0 0 0 0 0 0 0 0]
+      p60 stock 3 canal [1 0 0 0 0 0 0 0 0 0]
+ok    Level_S5B_one_square_pond_feeds_canal_no_shuttle
+ok    Exact_S5A_full_pond_wets_all_ten_canal_squares_at_0237
+ok    Exact_S5B_one_pond_square_wets_all_ten_at_45mm
+ok    Exact_S5F_pond_square_and_dug_pit_level_at_one_metre_each
+ok    Exact_S5_control_low_pond_feeds_no_shallow_canal
+ok    Exact_S5E_wide_basin_one_flat_sheet
+ok    Exact_S6_pond_alone_nine_squares_at_1444
+ok    Exact_S1_limitless_canal_fills_by_pulse_10_unbroken
+ok    Exact_sill_splits_a_falling_body_and_joins_a_rising_one
+ok    Exact_fuzz_conserves_to_the_decilitre_and_rests_level
+ok    Exact_fuzz_past_2m_conserves_and_rests_level
+ok    Exact_migration_reads_float_stock_to_the_decilitre
+ok    Exact_look_follows_true_metres
+ok    Exact_surface_gap_sees_a_step
+ok    LevelPour_spread_fills_the_square_then_the_canal_nearest_first
+ok    LevelPour_S3_pump_fills_the_canal_to_the_brim_not_one_notch
+ok    LevelPour_S5G_pump_empties_a_one_square_pond_into_six_level_squares
+ok    LevelPour_hose_leftover_on_a_sheet_lands_in_the_canal
+ok    LevelPour_S5C_filling_in_a_sheet_displaces_it_nothing_destroyed
+ok    LevelPour_S5D_full_run_with_nowhere_to_go_loses_exactly_1000_L
+ok    LevelPour_production_sites_use_the_decilitre_walk
+ok    HOSE_LEFTOVER_full_canal_goes_to_the_nearest_home_with_room
+ok    LevelPour_whole_level_pour_is_all_or_nothing
+ok    P14_one_ladder_maps_metres_to_def_for_every_rung
+ok    P14_lake_drawdown_and_dug_staging_read_the_same_table
+ok    P14_no_SetTempTerrain_stages_liquid_and_wet_dug_squares_have_a_water_body_type
+ok    P14_full_natural_lake_terrain_unchanged_by_formation_or_a_joining_canal
+ok    P14_save_migration_temp_fill_to_base_write_litres_logged
+ok    WaterLook_deep_steps_start_at_5_and_10_metres
+ok    WaterLook_navy_overlay_reproduces_the_approved_mock
+ok    WaterLook_wall_band_follows_the_gap_to_the_lip
+ok    WaterLook_settings_and_layers_are_wired
+ok    WaterLook_key_changes_at_tint_steps_and_band_rungs_only
+ok    WaterLook_layers_listen_to_their_own_flag_and_the_engine_runs_the_watcher
+ok    Sheet_units_one_cm_is_200_dL_and_a_week_is_1680_pulses
+ok    Sheet_conserves_to_the_dL_over_10k_pulses_with_every_exit
+ok    Sheet_extent_is_finite_and_bounded_by_V_over_qmin
+ok    Sheet_offer_order_does_not_change_the_outcome
+ok    Sheet_walls_hold_grates_pass_doors_leak_slowly
+      relief 0: returned 15000 of 30000, held 15000 on 75 squares, residue 0 dL
+ok    Sheet_runs_back_into_the_canal_when_it_is_drawn_down_relief_0
+      relief 200: returned 13943 of 30000, held 16057 on 77 squares, residue 0 dL
+ok    Sheet_runs_back_into_the_canal_when_it_is_drawn_down_relief_200
+ok    Sheet_full_caps_refuse_back_to_the_inflow_and_lowering_a_cap_deletes_nothing
+ok    Sheet_tier_hysteresis_does_not_flap
+      sheet bench: 4000 wet cells, 0.231 ms per pulse (target 1 ms, provisional)
+ok    Sheet_bench_250x250_4000_wet_three_sweeps
+ok    Sheet_save_load_continuation_matches_the_uninterrupted_run
+ok    Sheet_crops_die_after_a_week_of_standing_overflow_film_irrigates
+ok    Sheet_fluids_never_mix_and_the_lake_absorbs_disclosed
+      surface spread: levelled 1 dL after 1 pulse; diffusion alone 808 after 1, 28 after 60
+ok    Sheet_D8_a_puddle_lies_level_in_one_pulse_diffusion_alone_does_not
+ok    Sheet_D8_levelling_keeps_doors_slow_and_skips_settled_puddles
+ok    Sheet_D10_freezes_to_its_own_ice_keeping_every_dL_and_thaws_back
+ok    Sheet_preview_changes_nothing_and_counts_a_duplicate_lip_once
+ok    Sheet_engine_credit_partial_and_refused_conserve_to_the_dL
+ok    Sheet_hand_over_to_the_engine_is_counted_and_never_overdraws
+ok    Sheet_dry_all_is_a_disclosed_purge
+ok    Sheet_tier_reports_replay_in_order_to_the_real_tier_after_purge_and_refill
+ok    Sheet_a_door_beside_a_drain_leaks_slowly_too
+ok    Sheet_a_zero_percent_door_is_sealed
+      200 pulses allocate: dry map 0 B, settled 29×29 puddle 0 B (was ~25 MB: 2 × 62.5 kB a pulse)
+ok    Sheet_pulse_allocates_nothing_in_steady_state
+ok    Sheet_preview_matches_what_the_spill_accepts
+ok    Sheet_all_liquids_each_follow_their_own_FluidDef
+ok    Sheet_real_fuel_numbers_propane_boils_above_its_boiling_point_and_spills_burn_at_pool_fire_rates
+ok    Sheet_D5_fuel_burns_away_counted_and_the_front_runs_at_the_fuel_speed
+ok    Sheet_a_body_of_another_liquid_refuses_the_return
+ok    Sheet_all_liquids_and_silent_release_loss_are_wired
+ok    FloodRelease_volume_is_whole_decilitres_one_notch_is_10000
+ok    FloodRelease_dug_pour_never_overdraws_and_old_float_rule_did
+ok    FloodRelease_conserves_to_the_dL_over_2000_random_releases
+ok    FloodRelease_walk_is_deterministic_and_draws_are_fair
+ok    FloodRelease_save_load_continuation_walks_like_uninterrupted_and_only_with_refusals_saved
+ok    Depth_engine_switch_applies_on_reload_only
+ok    Overflow_settings_ship_owner_defaults_master_off_every_field_saved
+ok    FloodRelease_production_text_one_end_saved_refusals_no_global_Rand
+ok    Sprinkler_ruled_cost
+ok    Sprinkler_pulse_all_or_nothing
+ok    Sprinkler_needs_a_pump
+ok    Sprinkler_thick_liquid_clogs
+ok    Sprinkler_expiry_one_pulse_plus_grace
+ok    Sprinkler_spend_dries_until_next_pulse
+ok    Sprinkler_liquid_key_per_cell
+ok    Sprinkler_picks_most_held_liquid
+ok    Sprinkler_sealed_cells_never_charged
+ok    Sprinkler_valve_budget_and_reserve
+ok    Sprinkler_conserves_litres
+ok    Sprinkler_walls_and_effects_wired
+ok    Sprinkler_shipped_defs
+ok    Sprinkler_vfe_patch_findmod
+ok    Sprinkler_review_fixes_B1_P1_in_source
+
+897/897 passed
+
+hose suites (moved from Gimme Some Slack's SelfTest):
+  hose r4: st22 route 18.5 laid 19.6; st23 route 22.2 laid 23.7; owner maze route 34.6 (40-cell lay 33.5); slack cap 19.4/21; joiners st22 1 st23 0 owner 1 (bends 1/2/3)
+  hose r5: boxed target 250x250: bounded 1389 cells 8 ms, unbounded 62491 cells 20 ms; st34 owner maze taut 34.8 (needs 37), bounded search 73 expansions, unbounded 73; spiral 7x7: route 19.0, hose 21 found it in 19 expansions (unbounded 19); 9x9: route 33.0, hose 36 found it in 33 expansions (unbounded 33); 11x11: route 51.0, hose 55 found it in 51 expansions (unbounded 51); 13x13: route 73.0, hose 78 found it in 73 expansions (unbounded 73)
+hose: 186/186 checks passed
+  HoseSelfTest: 186/186
+  HoseReview6: 26/26
+  HoseReview7: 25/25
+  HoseReelLinkChecks: 7/7
+  pilelook hoses: end case rank B 0 / A 1; joiner case kept 0; before 1+1 on top, after 0+0
+  HosePileLook: 6/6
+  HoseCarryChecks: 33/33
+  HoseLiveChecks: 21/21
+  StyleStage3Checks: 9/9
+  HoseGptFix: 26/26
+  HoseLegacyChecks: 24/24
+  HoseNetChecks: 39/39
+  net perf: best of 3 passes, 4 revisions, 0.00013 ms/tick mean (budget 0.05), worst tick 0.115 ms (budget 1)
+  rev 2 net perf: 20 reels, 4 pumps (1 pouring), 10 tanks (3 with jobs), 2 intake + 2 outflow ends: 0.00018 ms/tick mean (budget 0.05), worst tick 0.121 ms (budget 1)
+  relay index n=20: rebuild + every query = 20 intake enumerations (old per-query shape: 214)
+  relay index n=60: rebuild + every query = 60 intake enumerations (old per-query shape: 3152)
+  relay index n=60: 0.0417 ms per rebuild + 60 reels' queries (budget 0.25; it runs only when a laid end changes); old per-query shape 9.315 ms
+  HoseNetCacheChecks: 22/22
+  fuzz hose      2798 cases      8200 steps   10.97 s   (2407 laid, 0 via fallback, 4 known-gap class(es) tallied below)
+    known gap G3 [free] 1/1249 laid: G3 bend beyond the blend under 95% of minR: 0.46 < 1.2  (seed 1164, reel(3,8) -> (9,15) max 41.5 minR 1.2 walls 9, walls (2,12) (2,13) (4,13) (5,13) (6,13) (7,13) (8,13) (9,13) (10,13))
+    known gap G4 [free] 2/1249 laid: G4 plump hose longer than flat: 14.34 vs 14.04  (seed 253, reel(10,6) -> (18,12) max 54.8 minR 2.0 walls 4, walls (15,10) (16,10) (17,10) (14,11))
+    known gap G4 [outlet] 8/1158 laid: G4 plump hose longer than flat: 17.99 vs 17.43  (seed 46, reel(13,14) -> (0,22) max 49.1 minR 2.0 walls 5, walls (2,18) (2,19) (5,19) (1,21) (2,21))
+    known gap G5 [outlet] 1/1158 laid: G5 flat hose crosses itself (design: no loops)  (seed 933, reel(20,7) -> (2,0) max 57.7 minR 2.0 walls 1, walls (17,6))
+    G2 locator: 0/963 outlet lays bend under 95% of minR; tightest bend in the straight run 0, in the blend 0, beyond it 0
+    G2 locator: same seed laid WITHOUT the outlet bends within 95% of minR in 0/0 of those (2x2 reels)
+    G2 locator: turn across the blend (outward vs heading after it) median NaN deg failing vs 111 deg passing; target bearing from outward median NaN deg failing vs 93 passing; radius <= blend/turn in 0/0
+    G6 (cost vs length, GPT B2, FIXED 2026-10-06): not reproduced: hose 40, the corridor route needs 37.4 (fits) but the search returns a 59.0-cell route (57 cells, 37 in the dry tunnel stretch, extra cost 0) and CheckInstall says 'ok'
+    refused after the route check [free] route too long (the laid hose, lead-out included, is longer than the hose): 1
+    refused after the route check [outlet] no room for the straight lead-out from the nozzle: 191
+    refused after the route check [outlet] route too long (the laid hose, lead-out included, is longer than the hose): 96
+  fuzz trail     1500 cases    133643 steps    0.64 s
+hose fuzz total: 4298 cases, 141843 steps, 11.61 s
+  HoseFuzz: 4/4
+hose: 428/428 assertions passed (moved from Gimme Some Slack: 336; new: 92)

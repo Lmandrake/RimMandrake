@@ -17,7 +17,7 @@ from PIL import Image, ImageDraw
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 TEX = os.path.join(HERE, "..", "..", "Textures")
-SB = os.path.join(TEX, "RimMandrake", "FlowWorks", "SuspensionBridge")
+SB = os.environ.get("RM_ANCHOR_SB") or os.path.join(TEX, "RimMandrake", "FlowWorks", "SuspensionBridge")   # override: render candidate anchors
 DB = os.path.join(TEX, "Things", "Building", "FlowWorks", "Drawbridge")
 FIX = json.load(open(os.path.join(HERE, "anchor_cable_art.json")))
 S = 96  # px per cell
@@ -32,8 +32,8 @@ def tex(path):
 
 
 # ---- RM_DrawbridgeCableMath mirror ----
-def ropes_of(look, mat):
-    k = "%s/%s/east" % (look, mat)
+def ropes_of(look, mat, facing="east"):
+    k = "%s/%s/%s" % (look, mat, facing)   # per facing: an upright bollard's attachment differs by facing (ANCHOR_BOLLARD)
     return FIX["anchors"][k]
 
 
@@ -184,7 +184,7 @@ def rope_run(cv, t, r, facing, h, s, e, src, slack_on):
 def draw_anchor(cv, center, look, mat, rot, raised, after):
     facing, flip, ang, t = anchor_setup(look, mat, rot)
     fx, fz, _ = DIRS[rot]
-    ropes = ropes_of(look, mat)
+    ropes = ropes_of(look, mat, facing)
     if not after:
         cv.quad(center, (1, 1), ang, t, FLIP_UV if flip else FULL_UV)
         return

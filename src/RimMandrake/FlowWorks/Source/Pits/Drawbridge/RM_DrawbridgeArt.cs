@@ -326,7 +326,7 @@ namespace RimMandrake.FlowWorks.Pits
 			{
 				return null;   // a styled picture prints unrotated per facing; the unstyled single prints rotated
 			}
-			var p = new AnchorPrint { ropes = RM_DrawbridgeCableMath.Art[key], slack = deck.leafRaised, mat = g.MatAt(rot, a) };
+			var p = new AnchorPrint { slack = deck.leafRaised, mat = g.MatAt(rot, a) };
 			if (rotated)
 			{
 				p.facing = "single";
@@ -343,6 +343,7 @@ namespace RimMandrake.FlowWorks.Pits
 				p.flip = rot == Rot4.West;
 				p.angle = 0f;
 			}
+			p.ropes = RM_DrawbridgeCableMath.RopesFor(key, p.facing);   // upright bollards: per-facing attachment
 			p.center = a.TrueCenter() + g.DrawOffset(rot);
 			Vector3 dir = p.World(1, 0) - p.World(0, 0);
 			IntVec3 f = rot.FacingCell;

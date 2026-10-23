@@ -1,0 +1,48 @@
+{
+ "subject": "RM_SuspensionAnchor_Timber_Industrial",
+ "label": "Drawbridge anchor bollards (Timber, Industrial look)",
+ "template": "machine",
+ "module": "part",
+ "candidate": "A",
+ "provenance": "offline render 2026-10-23 \u00b7 ANCHOR_BOLLARD_REDRAW_LIES_DOWN_ON_DUTY (build_bollards.py composite of a codex image_gen bollard + the old painted ropes; render_cables.py mirror of the print path)",
+ "artpipe_job": null,
+ "description": "The rope anchors at each end of a one-lane timber drawbridge over a pit, Industrial look: two UPRIGHT mooring bollards per anchor square, each holding one rope/cable to the bridge deck. Owner asked (card 2026-10-23) to redraw the old flat, lying-down fixtures as upright bollards seen from the building camera (orthographic, ~35 deg: a round cap is an ellipse 0.56 tall for its width, sides vertical) in every facing. An upright post looks the same from every side, so the bollard is NOT rotated per facing; only the rope direction changes. Where the rope runs away from the camera (north) the post stands in front of it. LOWERED: ropes run continuously from each bollard to the deck end. RAISED (the leaf stands upright at the hinge bank): ropes lie as slack loops on the bank. Images are OFFLINE renders of the game's print path (pit = flat dark rectangle, deck = plain deck tile for context). The third assembled image shows the three anchor sprite files (south, east, north) on ground colour. Each bollard has its rope wound twice round the post just above the flange; the rope leaves the wrap at ground level toward the deck. The slack loops' curve on the raised bank comes from the earlier rope-math fix (DRAWBRIDGE_CABLES_FIX_STOP_SHORT, its live look still owed), not from this redraw.",
+ "tier": "RM_",
+ "invented": false,
+ "earth_body_named": false,
+ "body_plan": null,
+ "departures": [],
+ "canon": {
+  "must_show": [],
+  "engine_limits": []
+ },
+ "owner_notes": [
+  "Redraw the anchors as upright bollards? -> Redraw, I'll judge after (Recommended)"
+ ],
+ "owner_kept": false,
+ "depends_on": null,
+ "previous_prompt": null,
+ "size": {
+  "drawSize": [
+   1,
+   1
+  ]
+ },
+ "ports": [
+  "each bollard: one rope toward the deck it faces"
+ ],
+ "images": {
+  "south": "/home/mandrake/rm/bench/Transient/drawbridge_bollards_20261023/after/after_Industrial_Timber_lowered_S.png",
+  "east": "/home/mandrake/rm/bench/Transient/drawbridge_bollards_20261023/after/after_Industrial_Timber_lowered_E.png",
+  "north": "/home/mandrake/rm/bench/Transient/drawbridge_bollards_20261023/after/after_Industrial_Timber_lowered_N.png",
+  "assembled": [
+   "/home/mandrake/rm/bench/Transient/drawbridge_bollards_20261023/after/after_Industrial_Timber_raised_N.png",
+   "/home/mandrake/rm/bench/Transient/drawbridge_bollards_20261023/after/after_Industrial_Timber_raised_S.png",
+   "/home/mandrake/rm/bench/Transient/drawbridge_bollards_20261023/art_eval/sprites_Industrial_Timber.png",
+   "/home/mandrake/rm/bench/Transient/drawbridge_bollards_20261023/after/after_Industrial_Timber_raised_E.png",
+   "/home/mandrake/rm/bench/Transient/drawbridge_bollards_20261023/after/after_Industrial_Timber_lowered_W.png",
+   "/home/mandrake/rm/bench/Transient/drawbridge_bollards_20261023/after/after_Industrial_Timber_raised_W.png"
+  ],
+  "scale": "/home/mandrake/rm/bench/Transient/drawbridge_bollards_20261023/art_eval/scale_Industrial_Timber.png"
+ }
+}

@@ -565,22 +565,41 @@ namespace RimMandrake.FlowWorks
 		/// <summary>A slack rope never reaches past this along the anchor square: it lies on the bank, never over the pit.</summary>
 		public const double SlackReach = 0.9;
 
-		/// <summary>Key "look/material" for the styled pictures (all three facings are the same picture turned), "base/material"
-		/// for the unstyled single picture.</summary>
+		/// <summary>Measured by art_source/Drawbridge/measure_cable_art.py (anchor_cable_art.json). Key "look/material/facing"
+		/// for the styled Timber/Steel pictures, upright bollards since ANCHOR_BOLLARD_REDRAW_LIES_DOWN_ON_DUTY: the post occludes the
+		/// rope that runs away from the camera, so the attachment point differs per facing. "look/material" for the styled Heavy
+		/// pictures (all facings the same picture turned), "base/material" for the unstyled single picture. Look up with
+		/// <see cref="RopesFor"/>.</summary>
 		public static readonly Dictionary<string, RopeArt[]> Art = new Dictionary<string, RopeArt[]>
 		{
 			{ "Futuristic/Heavy", new[] { new RopeArt(0.21289, 0.05078, 0.62500, 0.94922), new RopeArt(-0.21289, 0.05078, 0.62500, 0.94922) } },
-			{ "Futuristic/Steel", new[] { new RopeArt(0.20312, 0.03906, 0.41406, 0.94922), new RopeArt(-0.20312, 0.03906, 0.41406, 0.94922) } },
-			{ "Futuristic/Timber", new[] { new RopeArt(0.21484, 0.03906, 0.46875, 0.94922), new RopeArt(-0.21875, 0.03906, 0.46875, 0.94922) } },
+			{ "Futuristic/Steel/east", new[] { new RopeArt(0.20312, 0.03906, 0.41406, 0.94922), new RopeArt(-0.20312, 0.03906, 0.41406, 0.94922) } },
+			{ "Futuristic/Steel/north", new[] { new RopeArt(0.20312, 0.03906, 0.56250, 0.94922), new RopeArt(-0.20312, 0.03906, 0.56250, 0.94922) } },
+			{ "Futuristic/Steel/south", new[] { new RopeArt(0.20312, 0.03906, 0.37500, 0.94922), new RopeArt(-0.20312, 0.03906, 0.37500, 0.94922) } },
+			{ "Futuristic/Timber/east", new[] { new RopeArt(0.21484, 0.03906, 0.41797, 0.94922), new RopeArt(-0.21875, 0.03906, 0.41797, 0.94922) } },
+			{ "Futuristic/Timber/north", new[] { new RopeArt(0.21484, 0.03906, 0.57812, 0.94922), new RopeArt(-0.21875, 0.03906, 0.57812, 0.94922) } },
+			{ "Futuristic/Timber/south", new[] { new RopeArt(0.21484, 0.03906, 0.37500, 0.94922), new RopeArt(-0.21875, 0.03906, 0.37500, 0.94922) } },
 			{ "Industrial/Heavy", new[] { new RopeArt(0.21680, 0.05078, 0.52344, 0.94922), new RopeArt(-0.21875, 0.04688, 0.52344, 0.94922) } },
-			{ "Industrial/Steel", new[] { new RopeArt(0.22852, 0.03516, 0.50391, 0.94922), new RopeArt(-0.23438, 0.03125, 0.50391, 0.94922) } },
-			{ "Industrial/Timber", new[] { new RopeArt(0.23047, 0.04688, 0.50391, 0.94922), new RopeArt(-0.23242, 0.04297, 0.50391, 0.94922) } },
+			{ "Industrial/Steel/east", new[] { new RopeArt(0.22852, 0.03516, 0.41406, 0.94922), new RopeArt(-0.23438, 0.03125, 0.41797, 0.94922) } },
+			{ "Industrial/Steel/north", new[] { new RopeArt(0.22852, 0.03516, 0.56250, 0.94922), new RopeArt(-0.23438, 0.03125, 0.56250, 0.94922) } },
+			{ "Industrial/Steel/south", new[] { new RopeArt(0.22852, 0.03516, 0.37500, 0.94922), new RopeArt(-0.23438, 0.03125, 0.37500, 0.94922) } },
+			{ "Industrial/Timber/east", new[] { new RopeArt(0.23047, 0.04688, 0.41406, 0.94922), new RopeArt(-0.23242, 0.04297, 0.41406, 0.94922) } },
+			{ "Industrial/Timber/north", new[] { new RopeArt(0.23047, 0.04688, 0.57422, 0.94922), new RopeArt(-0.23242, 0.04297, 0.57422, 0.94922) } },
+			{ "Industrial/Timber/south", new[] { new RopeArt(0.23047, 0.04688, 0.37109, 0.94922), new RopeArt(-0.23242, 0.04297, 0.37500, 0.94922) } },
 			{ "Modern/Heavy", new[] { new RopeArt(0.20508, 0.04297, 0.72656, 0.94922), new RopeArt(-0.20898, 0.04297, 0.72656, 0.94922) } },
-			{ "Modern/Steel", new[] { new RopeArt(0.21484, 0.03125, 0.44531, 0.94922), new RopeArt(-0.21875, 0.03125, 0.44531, 0.94922) } },
-			{ "Modern/Timber", new[] { new RopeArt(0.20117, 0.04297, 0.60547, 0.94922), new RopeArt(-0.20508, 0.04297, 0.60547, 0.94922) } },
+			{ "Modern/Steel/east", new[] { new RopeArt(0.21484, 0.03125, 0.42578, 0.94922), new RopeArt(-0.21875, 0.03125, 0.42188, 0.94922) } },
+			{ "Modern/Steel/north", new[] { new RopeArt(0.21484, 0.03125, 0.56250, 0.94922), new RopeArt(-0.21875, 0.03125, 0.56250, 0.94922) } },
+			{ "Modern/Steel/south", new[] { new RopeArt(0.21484, 0.03125, 0.37500, 0.94922), new RopeArt(-0.21875, 0.03125, 0.37500, 0.94922) } },
+			{ "Modern/Timber/east", new[] { new RopeArt(0.20117, 0.04297, 0.41406, 0.94922), new RopeArt(-0.20508, 0.04297, 0.41406, 0.94922) } },
+			{ "Modern/Timber/north", new[] { new RopeArt(0.20117, 0.04297, 0.57812, 0.94922), new RopeArt(-0.20508, 0.04297, 0.57812, 0.94922) } },
+			{ "Modern/Timber/south", new[] { new RopeArt(0.20117, 0.04297, 0.37500, 0.94922), new RopeArt(-0.20508, 0.04297, 0.37500, 0.94922) } },
 			{ "Scrapper/Heavy", new[] { new RopeArt(0.21094, 0.04688, 0.48438, 0.94922), new RopeArt(-0.21484, 0.04688, 0.48438, 0.94922) } },
-			{ "Scrapper/Steel", new[] { new RopeArt(0.21484, 0.03125, 0.40625, 0.94922), new RopeArt(-0.21875, 0.03125, 0.40625, 0.94922) } },
-			{ "Scrapper/Timber", new[] { new RopeArt(0.21289, 0.05078, 0.48047, 0.94922), new RopeArt(-0.21289, 0.05078, 0.48047, 0.94922) } },
+			{ "Scrapper/Steel/east", new[] { new RopeArt(0.21484, 0.03125, 0.42188, 0.94922), new RopeArt(-0.21875, 0.03125, 0.42188, 0.94922) } },
+			{ "Scrapper/Steel/north", new[] { new RopeArt(0.21484, 0.03125, 0.57031, 0.94922), new RopeArt(-0.21875, 0.03125, 0.57031, 0.94922) } },
+			{ "Scrapper/Steel/south", new[] { new RopeArt(0.21484, 0.03125, 0.37500, 0.94922), new RopeArt(-0.21875, 0.03125, 0.37500, 0.94922) } },
+			{ "Scrapper/Timber/east", new[] { new RopeArt(0.21289, 0.05078, 0.41016, 0.94922), new RopeArt(-0.21289, 0.05078, 0.41016, 0.94922) } },
+			{ "Scrapper/Timber/north", new[] { new RopeArt(0.21289, 0.05078, 0.57422, 0.94922), new RopeArt(-0.21289, 0.05078, 0.57422, 0.94922) } },
+			{ "Scrapper/Timber/south", new[] { new RopeArt(0.21289, 0.05078, 0.37109, 0.94922), new RopeArt(-0.21289, 0.05078, 0.37109, 0.94922) } },
 			{ "base/Heavy", new[] { new RopeArt(0.19336, 0.05078, 0.71094, 1.00000), new RopeArt(-0.19531, 0.04688, 0.71094, 1.00000) } },
 			{ "base/Rope", new[] { new RopeArt(0.12109, 0.03906, 0.37109, 1.00000), new RopeArt(-0.12109, 0.03906, 0.36719, 1.00000) } },
 			{ "base/Steel", new[] { new RopeArt(0.22461, 0.02734, 0.45703, 1.00000), new RopeArt(-0.22852, 0.02734, 0.45703, 1.00000) } },
@@ -617,7 +636,14 @@ namespace RimMandrake.FlowWorks
 			}
 			string mat = file.Substring(pre.Length);
 			string key = styled ? (parts.Length >= 2 ? parts[parts.Length - 2] : "") + "/" + mat : "base/" + mat;
-			return Art.ContainsKey(key) ? key : null;
+			return Art.ContainsKey(key) || Art.ContainsKey(key + "/east") ? key : null;
+		}
+
+		/// <summary>The rope table of one picture: the per-facing entry ("look/material/facing") where the art differs by facing,
+		/// else the shared one.</summary>
+		public static RopeArt[] RopesFor(string key, string facing)
+		{
+			return Art.TryGetValue(key + "/" + facing, out RopeArt[] r) ? r : Art[key];
 		}
 
 		/// <summary>Lowered: each rope is the painted run (attach → painted end) plus, where the picture stops short of the
