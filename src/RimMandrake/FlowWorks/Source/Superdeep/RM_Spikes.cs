@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace RimMandrake.FlowWorks
@@ -154,6 +155,119 @@ namespace RimMandrake.FlowWorks
 			}
 			string why = RM_SpikeUtility.PlacementRefusal(map.GetComponent<RM_MapComponent_Excavation>(), loc);
 			return why == null ? AcceptanceReport.WasAccepted : new AcceptanceReport(why);
+		}
+	}
+
+	/// <summary>PIT_SPIKES_FIX_OVER_WALL_AND_SUBMERGE: the spikes drawn as the variant's own stakes laid on the floor the pit's
+	/// walls leave visible (RM_SpikeDrawMath.FloorRect / Layout), never over the far-wall face, the side bevels or the
+	/// outline, and fading out under water (SubmergedAlpha: gone at 1 m). drawerType RealtimeOnly (the fill changes without
+	/// a map-mesh rebuild). The variant is the one Graphic_Random already picks for this thing, so saves keep their look;
+	/// an unknown texture falls back to the plain sprite.</summary>
+	public class Building_RM_Spikes : Building
+	{
+		private const int AlphaSteps = 32;
+		private Mesh mesh;
+		private int meshKey = -1;
+		private int variant = -2;
+		private Texture2D tex;
+		private static readonly List<float> Quads = new List<float>();
+
+		protected override void DrawAt(Vector3 drawLoc, bool flip = false)
+		{
+			RM_MapComponent_Excavation eng = Map?.GetComponent<RM_MapComponent_Excavation>();
+			if (variant == -2)
+			{
+				Graphic g = Graphic is Graphic_Random r ? r.SubGraphicFor(this) : null;
+				tex = g?.MatSingle?.mainTexture as Texture2D;
+				variant = tex != null ? RM_SpikeDrawMath.VariantOf(tex.name) : -1;
+			}
+			IntVec3 c = Position;
+			int d = eng != null ? eng.HollowDepthAt(c) : 0;
+			if (variant < 0 || d <= 0)
+			{
+				base.DrawAt(drawLoc, flip);
+				return;
+			}
+			float alpha = RM_SpikeDrawMath.SubmergedAlpha(eng.FillAt(c));
+			int a = Mathf.RoundToInt(alpha * AlphaSteps);
+			if (a <= 0)
+			{
+				return;
+			}
+			Map map = Map;
+			int north = SectionLayer_RMExcavationWalls.NeighbourLevel(map, eng, c + IntVec3.North, d);
+			int south = SectionLayer_RMExcavationWalls.NeighbourLevel(map, eng, c + IntVec3.South, d);
+			int west = SectionLayer_RMExcavationWalls.NeighbourLevel(map, eng, c + IntVec3.West, d);
+			int east = SectionLayer_RMExcavationWalls.NeighbourLevel(map, eng, c + IntVec3.East, d);
+			bool faces = RimMandrakeFlowWorksSettings.excavationWallFacesEnabled, outline = RimMandrakeFlowWorksSettings.pitOutlineEnabled;
+			int key = Key(d) | Key(d - north) << 4 | Key(d - south) << 8 | Key(d - west) << 12 | Key(d - east) << 16
+				| (faces ? 1 << 20 : 0) | (outline ? 1 << 21 : 0);
+			if (mesh == null || key != meshKey)
+			{
+				Rebuild(d, north, south, west, east, faces, outline);
+				meshKey = key;
+			}
+			if (mesh == null)
+			{
+				return;
+			}
+			Material mat = MaterialPool.MatFrom(tex, ShaderDatabase.Transparent, new Color(1f, 1f, 1f, (float)a / AlphaSteps));
+			Graphics.DrawMesh(mesh, new Vector3(c.x, drawLoc.y, c.z), Quaternion.identity, mat, 0);
+		}
+
+		/// <summary>A drop as a 4-bit key field (negative = a neighbour deeper than us: no wall, same as 0).</summary>
+		private static int Key(int v) => v <= 0 ? 0 : (v > 15 ? 15 : v);
+
+		private void Rebuild(int d, int north, int south, int west, int east, bool faces, bool outline)
+		{
+			RM_SpikeDrawMath.FloorRect(d, north, south, west, east, faces, outline, out float x0, out float z0, out float x1, out float z1);
+			int n = RM_SpikeDrawMath.Layout(variant, thingIDNumber, x0, z0, x1, z1, Quads);
+			if (mesh != null)
+			{
+				UnityEngine.Object.Destroy(mesh);
+				mesh = null;
+			}
+			if (n == 0)
+			{
+				return;
+			}
+			var verts = new List<Vector3>(n * 4);
+			var uv = new List<Vector2>(n * 4);
+			var tris = new int[n * 6];
+			for (int i = 0; i < n; i++)
+			{
+				int o = i * RM_SpikeDrawMath.Out;
+				float x = Quads[o], z = Quads[o + 1], w = Quads[o + 2], h = Quads[o + 3];
+				float u0 = Quads[o + 4], v0 = Quads[o + 5], u1 = Quads[o + 6], v1 = Quads[o + 7];
+				int q = i * 4;
+				// one mesh draws its triangles in order, so Layout's far-first sort puts nearer stakes on top
+				verts.Add(new Vector3(x, 0f, z));
+				verts.Add(new Vector3(x, 0f, z + h));
+				verts.Add(new Vector3(x + w, 0f, z + h));
+				verts.Add(new Vector3(x + w, 0f, z));
+				uv.Add(new Vector2(u0, v0));
+				uv.Add(new Vector2(u0, v1));
+				uv.Add(new Vector2(u1, v1));
+				uv.Add(new Vector2(u1, v0));
+				int t = i * 6;
+				tris[t] = q; tris[t + 1] = q + 1; tris[t + 2] = q + 2;
+				tris[t + 3] = q; tris[t + 4] = q + 2; tris[t + 5] = q + 3;
+			}
+			mesh = new Mesh { name = "RM_Spikes_stakes" };
+			mesh.SetVertices(verts);
+			mesh.SetUVs(0, uv);
+			mesh.triangles = tris;
+			mesh.RecalculateBounds();
+		}
+
+		public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
+		{
+			if (mesh != null)
+			{
+				UnityEngine.Object.Destroy(mesh);
+				mesh = null;
+			}
+			base.DeSpawn(mode);
 		}
 	}
 }

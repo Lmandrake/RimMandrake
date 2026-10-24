@@ -555,7 +555,7 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>A neighbour's floor level: hollow depth (dug, or a dry pond bed's); off-map or a natural liquid cell counts as level with
 		/// this cell (no wall into a lake or the map edge).</summary>
-		private static int NeighbourLevel(Map map, RM_MapComponent_Excavation eng, IntVec3 n, int myDepth)
+		internal static int NeighbourLevel(Map map, RM_MapComponent_Excavation eng, IntVec3 n, int myDepth)
 		{
 			if (!n.InBounds(map) || eng.IsSourceCell(n))
 			{
