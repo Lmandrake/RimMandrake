@@ -1,0 +1,275 @@
+{
+ "biome": "SUBJECTS_owner_escalations_leaningscrub_1",
+ "built": "2026-10-24T06:01:41-0700",
+ "census": "Transient/biome_ffar/owner_escalations_leaningscrub_1.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 14 mods \u2014 a test list): 320 active",
+ "rows": {
+  "RM_Chikka": {
+   "columns": {
+    "A": {
+     "east": "464ca343cec1db01a7dd3f2c76b41dffbe28da6b0109c251e644ce81f52d5c8b",
+     "north": "af51dc299fa37ad10b711257da064b11e35ab49f5e2e1e50d725cc9458df5e0e",
+     "south": "27d7aad7fd625efc154e5a70afcf53151004aa0f63333361b94d401457605fa7"
+    },
+    "B": {
+     "east": "8168c1eccbae4fb8bac5398af81fc5df35a6f4c14773fe598fb4cf7b9217f04a",
+     "north": "56c1d203cb78db04e17c04ffd68125aa5e869a57240f5a81928b4c5db2f298a4",
+     "south": "b7b167b667f8a25f7d785c1de40abd36407d435afdc1ef52248e4a69a8a65d9a"
+    },
+    "C": {
+     "east": "a365db8e9f50624eb723b147e12da17ecdfcf4210d06c2b241c37b7577d388b6",
+     "north": "abc038f44a59bf75aaa93c6faa76e7538a138523b4088e7d06369ebec4dd0409",
+     "south": "082726f32631d97cf4e82cae4da18811be5f5996d8217b2fbd7e88f9ee7ad4a9"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Chikka/RM_Chikka",
+    "B": "Things/Pawn/Animal/RM_Chikka/RM_Chikka",
+    "C": "Things/Pawn/Animal/RM_Chikka/RM_Chikka"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render arteval_RM_Chikka_r2",
+    "C": "render arteval_RM_Chikka_r1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Chikka/RM_Chikka"
+   ],
+   "res": "Things/Pawn/Animal/RM_Chikka/RM_Chikka",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "chikka"
+  },
+  "RM_Crustweevil": {
+   "columns": {
+    "A": {
+     "east": "7d3f5a59f0748f0c40ae8dc9b055591f0105cdd5574385d3be14b3d980c70aad",
+     "north": "85967dc8670b0bba453316961a6f6a87f7d74b00fdd7a3032a5cfbe3287aeef6",
+     "south": "64bf5c5961411d9f77032c0ad9150ce0113621b5cf48cba18a4424777171d813"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Crustweevil/RM_Crustweevil"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LeaningScrub"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Crustweevil/RM_Crustweevil"
+   ],
+   "res": "Things/Pawn/Animal/RM_Crustweevil/RM_Crustweevil",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "crustweevil"
+  },
+  "RM_Durrok": {
+   "columns": {
+    "A": {
+     "east": "cf024497dad1b72f3dd711fd0f198e48a298fe0c17c2fe5dc4b649b95c23e372",
+     "north": "33f529b0b5daaa8f04b656afc58d863347d95526d7a86187e06a540569aa920c",
+     "south": "c1c75f694dd45511727d9637684623ef97e47b297f82a663c886eafc1c1e0137"
+    },
+    "B": {
+     "east": "38404a11e7e7171bf43c046f229e5bcf6925c7600ec318a39faabd3d8a987101",
+     "north": "5528b691f5a1f617a74fe438bd6d02d5bf95e560d0f16a5ca909780b7c8d0ca1",
+     "south": "c1f71f73dd7a8cf80116b53da1ed039f5754347fb7c01945dc3dfd2c96b39ffa"
+    },
+    "C": {
+     "east": "4982269898a9e0e62d8e9e45bb812d9cf7325daf0593e53b779f958e06f68fd6",
+     "north": "489f620dffbe631fc716dab5dbe186ad7edc6424a2550a9bbe09c1eea85f8c31",
+     "south": "b941093941c5c3ea4ac7b22d8cddde17b19a0fe77d804aaa6f24600d3f2c19e5"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Durrok/RM_Durrok",
+    "B": "Things/Pawn/Animal/RM_Durrok/RM_Durrok",
+    "C": "Things/Pawn/Animal/RM_Durrok/RM_Durrok"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render arteval_RM_Durrok_r2",
+    "C": "render arteval_RM_Durrok_r1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Durrok/RM_Durrok"
+   ],
+   "res": "Things/Pawn/Animal/RM_Durrok/RM_Durrok",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "durrok"
+  },
+  "RM_Dustflutter": {
+   "columns": {
+    "A": {
+     "east": "7e3d9051998ca502d4c2e7c661810754c40bfdd7deb7dfac96c1711c819c1c22",
+     "north": "f5186623f783d757ef20443f87f4e273592adc26be0e9807b8e2e74d91fecef5",
+     "south": "b393ac17ca441f8caa1af46ed272f414612de317660965cd0f5dea26ec49dbdf"
+    },
+    "B": {
+     "east": "2bfcc0774f2da190e00597bb54103f273be0c0a3f2cd2c04727c4df2ce159d88",
+     "north": "3301d6e6298c127646c232b05d7b2aa37fb10e13ebd595ef7105cff4a3d65fd1",
+     "south": "80e0a01050e17ac98e5db57009c9742314b8481103c99c8b1c244102ef6286b0"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Dustflutter/RM_Dustflutter",
+    "B": "Things/Pawn/Animal/RM_Dustflutter/RM_Dustflutter"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LeaningScrub",
+    "B": "render arteval_RM_Dustflutter_r2"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Dustflutter/RM_Dustflutter"
+   ],
+   "res": "Things/Pawn/Animal/RM_Dustflutter/RM_Dustflutter",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "dustflutter"
+  },
+  "RM_Fuzzrunner": {
+   "columns": {
+    "A": {
+     "east": "2328eb361ccfbf6ced95fdc7d0d966c9e90230155844fa39c67551580f43d45b",
+     "north": "4eec55e783afb44ace15bc479cce2134973b5efbe26f2e169960b270d0bb6992",
+     "south": "64f9cea9cf00ce4f17af472fbdc346b26e4e621feb7bfdf74d46aa8f31fd7484"
+    },
+    "B": {
+     "east": "4a9ef988afa1ea28117e51192e32baf8a3f511e5c4d37106d42b8f9aac8aceb4",
+     "north": "3278dd7f0280548bd341a49339d786699489e608bfe50878e6134c7c37a38011",
+     "south": "4a5003107587ee3a0c8c08246f32f3208f05516ff227212cb227374fa4b26832"
+    },
+    "C": {
+     "east": "2328eb361ccfbf6ced95fdc7d0d966c9e90230155844fa39c67551580f43d45b",
+     "north": "3be3e066f4c459ae98fdaa68227002f9625761697aa96564836ac61551672d79",
+     "south": "90099fd69d82e72f24ec0d03a63897fe871f16e4775fe2d65aee88fccffb7ec7"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Fuzzrunner/RM_Fuzzrunner",
+    "B": "Things/Pawn/Animal/RM_Fuzzrunner/RM_Fuzzrunner",
+    "C": "Things/Pawn/Animal/RM_Fuzzrunner/RM_Fuzzrunner"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LeaningScrub",
+    "B": "render arteval_RM_Fuzzrunner_r2",
+    "C": "render leaningscrub_fuzzrunner_v1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Fuzzrunner/RM_Fuzzrunner"
+   ],
+   "res": "Things/Pawn/Animal/RM_Fuzzrunner/RM_Fuzzrunner",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "fuzzrunner"
+  },
+  "RM_Fuzzviper": {
+   "columns": {
+    "A": {
+     "east": "d33428cad4ebc3c356ec13163ed6a23847b6d5cbff9f668e3b6be66b9c48c694",
+     "north": "cdae58e535b701a0d75545a61d5fe668f6020063fdcc275633f49de832d8a50d",
+     "south": "5cf72a82011943a74d47dce57d47667a1c052e6c87a83a4e285097ed9e2068cf"
+    },
+    "B": {
+     "east": "35d7362f23d73e5cd6a412796de0831ea0745b28186ab6640a6cf23b52c433eb",
+     "north": "794c257d316a46776bbbda488daa0ada84cb0a7ed5730bfedeb22f88fdb8ce53",
+     "south": "29191f698ca6aa85dd55b0aa29fb8591636c2f9a0c9f400f93b2b78d529ae5d1"
+    },
+    "C": {
+     "east": "517de1e738f6674a18d253696e56c28207c5b91544b51a478bbea952501f4ffd",
+     "north": "ce7fdefb983b0393085e9fe68a4dd3e1de5c7e3a9476396029b118e0e9e3f12c",
+     "south": "cab73166b4652b652c9c0e6af30bd2a5fd18adae4932966410b8981ae150347c"
+    },
+    "D": {
+     "east": "d33428cad4ebc3c356ec13163ed6a23847b6d5cbff9f668e3b6be66b9c48c694",
+     "north": "62fce50c6499f7d5ae946404b76e8c4c63795ab44e1f51bdbe5da5157c7682f7",
+     "south": "70d8112e69f83742271df4cfab6956daa24c5c81f47d2d9bbc1d550f828ba9bc"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Fuzzviper/RM_Fuzzviper",
+    "B": "Things/Pawn/Animal/RM_Fuzzviper/RM_Fuzzviper",
+    "C": "Things/Pawn/Animal/RM_Fuzzviper/RM_Fuzzviper",
+    "D": "Things/Pawn/Animal/RM_Fuzzviper/RM_Fuzzviper"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LeaningScrub",
+    "B": "render arteval_RM_Fuzzviper_r2",
+    "C": "render arteval_RM_Fuzzviper_r1",
+    "D": "render standtall_b1_rm_fuzzviper"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Fuzzviper/RM_Fuzzviper"
+   ],
+   "res": "Things/Pawn/Animal/RM_Fuzzviper/RM_Fuzzviper",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "fuzzviper"
+  },
+  "RM_Ribbonwhip": {
+   "columns": {
+    "A": {
+     "east": "57050a772703d4083fc2bdeff543f4d9552f8f5aa9ff59e9f82466ea5a5535e7",
+     "north": "55b65d4412ac461cb9d135693539970ec7dc57bbeb267b1184f1e7c1473ddd3d",
+     "south": "ca3c3f1136d0c1b495871df539479ebca7acde4fab02ec37e1f72dfdbfd333c6"
+    },
+    "B": {
+     "east": "c47608d0da5cab3e7f621a96011589309ca834de701ce8c2b772d3b233a19afc",
+     "north": "647e82f36ff8c441666c9a951f576bcce1cf4e2cb79396c51afe0b3bedb5b03e",
+     "south": "59b79962ea10d3c3ba5e96ea64f88f5655ddf0867fb008f6a8f335929ef595d5"
+    },
+    "C": {
+     "east": "16aa61c2b264258e3398b93d5503ff8dd7127fc54d0027eafb57e55d0ef82c14",
+     "north": "93037176327e1a79cd63c0742cef4b2d72ab51a902238fe0d44f01bd95c187d6",
+     "south": "bbdd0967b27ab45249855941d783c62ab5fc2ba58b92fac4b5990b881485bc97"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Ribbonwhip/RM_Ribbonwhip",
+    "B": "Things/Pawn/Animal/RM_Ribbonwhip/RM_Ribbonwhip",
+    "C": "Things/Pawn/Animal/RM_Ribbonwhip/RM_Ribbonwhip"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LeaningScrub",
+    "B": "render arteval_RM_Ribbonwhip_r2",
+    "C": "render arteval_RM_Ribbonwhip_r1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Ribbonwhip/RM_Ribbonwhip"
+   ],
+   "res": "Things/Pawn/Animal/RM_Ribbonwhip/RM_Ribbonwhip",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "ribbonwhip"
+  }
+ },
+ "sheetId": "owner_escalations_leaningscrub_1_sheet_2026-10-24",
+ "snapshotId": "d8e8edea48eb4779"
+}

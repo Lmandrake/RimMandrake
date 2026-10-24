@@ -1,0 +1,30 @@
+{
+ "run_id": "owner_escalations_cauldron_20261024",
+ "test": true,
+ "composite": true,
+ "note": "owner review packet: every fauna_* run record of these subjects (round-3 escalations, Surrik, Mullgoth, owner-kept replacements Bileworm/CrystalMit/Suush); no judging happened in this run",
+ "sources": [
+  "fauna_cauldron_00",
+  "fauna_cauldron_01",
+  "fauna_cauldron_02",
+  "fauna_cauldron_03",
+  "fauna_cauldron_r1_00",
+  "fauna_cauldron_r1_01",
+  "fauna_cauldron_r1_02",
+  "fauna_cauldron_r2_00",
+  "fauna_cauldron_r2_01",
+  "fauna_cauldron_r2_02",
+  "fauna_cauldron_r3_00",
+  "fauna_cauldron_r3_01"
+ ],
+ "subjects": [
+  "RM_BedBug",
+  "RM_DecayDrake",
+  "RM_Vexxiss",
+  "RM_Mullgoth",
+  "RM_Bileworm",
+  "RM_CrystalMit",
+  "RM_Suush"
+ ],
+ "dropped": {}
+}

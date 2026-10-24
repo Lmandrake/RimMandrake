@@ -1,0 +1,54 @@
+{
+ "run_id": "owner_escalations_contagion_20261024",
+ "test": true,
+ "composite": true,
+ "note": "owner review packet: every fauna_* run record of these subjects (round-3 escalations, Surrik, Mullgoth, owner-kept replacements Bileworm/CrystalMit/Suush); no judging happened in this run",
+ "sources": [
+  "fauna_contagion_00",
+  "fauna_contagion_01",
+  "fauna_contagion_02",
+  "fauna_contagion_r1_00",
+  "fauna_contagion_r1_01",
+  "fauna_contagion_r1_02",
+  "fauna_contagion_r1_03",
+  "fauna_contagion_r2_00",
+  "fauna_contagion_r2_01",
+  "fauna_contagion_r2_02",
+  "fauna_contagion_r2_03",
+  "fauna_contagion_r3_00",
+  "fauna_contagion_r3_01",
+  "fauna_contagion_r3_02",
+  "fauna_contagion_r3_03"
+ ],
+ "subjects": [
+  "RM_Bloodlurk",
+  "RM_ContagionIkee",
+  "RM_Danglemaw",
+  "RM_Fleshsop",
+  "RM_Gawpsack",
+  "RM_Meltgut",
+  "RM_OcularJelly",
+  "RM_Peeper",
+  "RM_Scaldhide"
+ ],
+ "dropped": {
+  "RM_Crustweevil:r1": [
+   "south"
+  ],
+  "RM_Crustweevil:r2": [
+   "north"
+  ],
+  "RM_Surrik:r1": [
+   "east"
+  ],
+  "RM_Dustflutter:r1": [
+   "east"
+  ],
+  "RM_Fuzzrunner:r1": [
+   "east"
+  ],
+  "RM_Peeper:r3": [
+   "south"
+  ]
+ }
+}
