@@ -155,7 +155,7 @@ namespace RimMandrake.FlowWorks.SelfTest
         }
 
         /// <summary>The mated hose's bars (S2/S3). <paramref name="raw"/> the hose as laid, <paramref name="M"/> mated.</summary>
-        private static void MateBars(string tag, List<V2> raw, List<V2> M, V2 C, V2 axisIn, double straight, double kmax, List<V2> partner)
+        private static void MateBars(string tag, List<V2> raw, List<V2> M, V2 C, V2 axisIn, double straight, double kmax, List<V2> partner, bool g2 = false)
         {
             Assert(M != null && M.Count >= 4, tag + ": no mated pose");
             Assert(V2.Dist(M[M.Count - 1], C) < 2e-3, $"{tag}: ends at {M[M.Count - 1]}, not on the coupling {C}");
@@ -173,9 +173,20 @@ namespace RimMandrake.FlowWorks.SelfTest
             while (same < M.Count && same < raw.Count && V2.Dist(M[same], raw[same]) < 1e-9) same++;
             Assert(same >= 2, tag + ": the hose was re-laid from its start");
             // G2 across the cut: mean curvature just before and just after agree; bound held over the whole re-shaped part
-            double sc = s[same - 1];
-            double kb = MeanCurv(M, Math.Max(0, sc - 0.5), sc), ka = MeanCurv(M, sc, Math.Min(L, sc + 0.5));
-            Assert(Math.Abs(kb - ka) < 0.2 * kmax, $"{tag}: curvature jumps at the cut ({kb:0.000} -> {ka:0.000})");
+            // (the clothoid mate ramps curvature at up to the ruler's dk/ds cap, faster than the 0.2 kmax mean-curvature bar
+            // allows over half a cell, so for a MatePair made under HoseMath.G2On (g2) the ruler itself judges the cut and the run, length kept)
+            if (g2)
+            {
+                var rep = HoseCurveMetrics.Measure(M, HoseCurveMetrics.EndSpec.Free(raw[0], "start"),
+                    HoseCurveMetrics.EndSpec.Fitting(C, -axisIn, straight, "mate"), kmax, Geo.Length(raw));
+                Assert(rep.Ok, $"{tag}: ruler {rep.Line()}");
+            }
+            else
+            {
+                double sc = s[same - 1];
+                double kb = MeanCurv(M, Math.Max(0, sc - 0.5), sc), ka = MeanCurv(M, sc, Math.Min(L, sc + 0.5));
+                Assert(Math.Abs(kb - ka) < 0.2 * kmax, $"{tag}: curvature jumps at the cut ({kb:0.000} -> {ka:0.000})");
+            }
             List<V2> tail = M.Skip(Math.Max(0, same - 2)).ToList();
             double kMax = Curv(tail).Skip(1).Take(tail.Count - 2).Select(Math.Abs).DefaultIfEmpty(0).Max();
             Assert(kMax <= kmax * 1.05, $"{tag}: curvature {kMax:0.000} over the bound {kmax:0.000}");
@@ -272,20 +283,29 @@ namespace RimMandrake.FlowWorks.SelfTest
                 List<V2> B = Line(new V2(10, 10), C, 0.25);
                 HoseSpliceMath.Mate m = HoseSpliceMath.MatePair(A, B, C, kmax, Width, out List<V2> Am, out List<V2> Bm);
                 Assert(m != null, "no mate at 90 degrees");
-                MateBars("pair90 A", A, Am, C, m.Axis, straight, kmax, Bm);
-                MateBars("pair90 B", B, Bm, C, -m.Axis, straight, kmax, Am);
-                // the older-hose-holds answer (A untouched) costs more: B alone loops round A's end
-                List<V2> Bonly = HoseSpliceMath.MateTail(B, C, new V2(-1, 0), straight, kmax, A, null, out HoseSpliceMath.Seed so);
-                Assert(so != null && m.Cost < so.Cost - 0.5, $"the pair ({m.Cost:0.00}) is not gentler than B looping alone ({so?.Cost:0.00})");
-                double total = Geo.Length(Am) + Geo.Length(Bm) - Geo.Length(A) - Geo.Length(B);
-                Assert(total < Geo.Length(Bonly) - Geo.Length(B), $"the pair adds {total:0.00} cells, B alone {Geo.Length(Bonly) - Geo.Length(B):0.00}");
+                // with the clothoid fit on the coupling slides (both lengths kept, MatePairG2); otherwise it stays at C
+                MateBars("pair90 A", A, Am, m.C, m.Axis, straight, kmax, Bm, HoseMath.G2On);
+                MateBars("pair90 B", B, Bm, m.C, -m.Axis, straight, kmax, Am, HoseMath.G2On);
+                if (HoseMath.G2On)
+                {
+                    foreach (var (raw, got, nm) in new[] { (A, Am, "A"), (B, Bm, "B") })
+                        Assert(Math.Abs(Geo.Length(got) - Geo.Length(raw)) < 0.01 * Geo.Length(raw), $"pair90 {nm} length {Geo.Length(got):0.000} vs {Geo.Length(raw):0.000}");
+                }
+                else
+                {
+                    // the older-hose-holds answer (A untouched) costs more: B alone loops round A's end
+                    List<V2> Bonly = HoseSpliceMath.MateTail(B, C, new V2(-1, 0), straight, kmax, A, null, out HoseSpliceMath.Seed so);
+                    Assert(so != null && m.Cost < so.Cost - 0.5, $"the pair ({m.Cost:0.00}) is not gentler than B looping alone ({so?.Cost:0.00})");
+                    double total = Geo.Length(Am) + Geo.Length(Bm) - Geo.Length(A) - Geo.Length(B);
+                    Assert(total < Geo.Length(Bonly) - Geo.Length(B), $"the pair adds {total:0.00} cells, B alone {Geo.Length(Bonly) - Geo.Length(B):0.00}");
+                }
                 List<V2> A0 = Wavy(new V2(-25, -1.2), new V2(20, 0), 0.35);
                 V2 C0 = A0[A0.Count - 1];
                 List<V2> B0 = ReelHose(C0 + new V2(0.1, 0.12));
                 HoseSpliceMath.Mate m0 = HoseSpliceMath.MatePair(A0, B0, C0, kmax, Width, out List<V2> A0m, out List<V2> B0m);
                 Assert(m0 != null, "no mate for the screenshot");
-                MateBars("pair screenshot A", A0, A0m, C0, m0.Axis, straight, kmax, B0m);
-                MateBars("pair screenshot B", B0, B0m, C0, -m0.Axis, straight, kmax, A0m);
+                MateBars("pair screenshot A", A0, A0m, m0.C, m0.Axis, straight, kmax, B0m, HoseMath.G2On);
+                MateBars("pair screenshot B", B0, B0m, m0.C, -m0.Axis, straight, kmax, A0m, HoseMath.G2On);
             });
             Case("S4 a stiffer hose (MinBendRadius 2.0) keeps its bound; the screenshot solve is cheap", () =>
             {

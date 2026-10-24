@@ -132,6 +132,8 @@ namespace RimMandrake.FlowWorks.SelfTest
             public bool Fed, MayRefuse;
             public double RefLen;
             public string Diag;
+            /// <summary>Why this open end did not couple to the open end beside it (null = it did, or has no partner).</summary>
+            public string NoMate;
             public HoseCurveMetrics.Report Rep;
         }
 
@@ -192,6 +194,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 }
                 // mates: open free ends within one cell of each other (RefreshMates), solved on the flat lays
                 var mates = new Dictionary<string, (HoseSpliceMath.Mate m, bool isA)>();
+                var unmated = new Dictionary<string, string>();
                 var names = st.Reels.Where(r => r.Tank == null && r.RelayTo == null && lays[r.Name].lay.Ok).Select(r => r.Name).ToList();
                 for (int i = 0; i < names.Count; i++)
                     for (int j = i + 1; j < names.Count; j++)
@@ -200,8 +203,14 @@ namespace RimMandrake.FlowWorks.SelfTest
                         if (mates.ContainsKey(a.Name) || mates.ContainsKey(b.Name)) continue;
                         if (Math.Max(Math.Abs(a.End.X - b.End.X), Math.Abs(a.End.Z - b.End.Z)) > 1) continue;
                         List<V2> A = lays[a.Name].lay.Flat, B = lays[b.Name].lay.Flat;
-                        HoseSpliceMath.Mate m = HoseSpliceMath.MatePair(A, B, A[A.Count - 1], kmax, vis, out _, out _);
-                        if (m == null) continue;
+                        HoseSpliceMath.Mate m = HoseSpliceMath.MatePair(A, B, A[A.Count - 1], kmax, vis, out _, out _,
+                            lays[a.Name].lay.Lead0, lays[b.Name].lay.Lead0);
+                        if (m == null)
+                        {
+                            // two open ends within a cell of each other must couple (RefreshMates); none fitting is a failure
+                            unmated[a.Name] = unmated[b.Name] = "no mate fits with " + b.Name + "/" + a.Name + " (length and start leads kept): " + HoseClothoid.TailWhy;
+                            continue;
+                        }
                         mates[a.Name] = (m, true);
                         mates[b.Name] = (m, false);
                     }
@@ -211,22 +220,21 @@ namespace RimMandrake.FlowWorks.SelfTest
                     foreach (var pose in Poses)
                     {
                         var d = new Drawn { Station = st.Name, Reel = r.Name, PoseName = pose.name, Lay = L.lay, Start = L.start, End = L.end,
-                            Fed = r.FedBy != null, MayRefuse = r.MayRefuse };
+                            Fed = r.FedBy != null, MayRefuse = r.MayRefuse, NoMate = unmated.TryGetValue(r.Name, out string nm) ? nm : null };
                         o.Add(d);
                         if (!L.lay.Ok) continue;
                         List<V2> pts = HoseMath.DrawnPose(L.lay, pose.e, pose.since, T, p.PlumpAmount, L.portAt, L.portAxis);
                         if (mates.TryGetValue(r.Name, out var mm))
                         {
-                            List<V2> q = HoseSpliceMath.MateTail(pts, mm.m.C, mm.isA ? mm.m.Axis : -mm.m.Axis, HoseSpliceMath.CouplingStraight(vis),
-                                kmax, null, mm.isA ? mm.m.SeedA : mm.m.SeedB, out _, vis);
-                            d.Diag = "pre-mate: " + HoseCurveMetrics.Measure(pts, d.Start, HoseCurveMetrics.EndSpec.Free(pts[pts.Count - 1], "x"), kmax, 0).Line() + (q == null ? " MateTail null" : "");
-                            if (q != null) pts = q;
+                            List<V2> q = HoseSpliceMath.MateEnd(pts, mm.m, mm.isA, kmax, vis, L.lay.Lead0);
+                            if (q == null) d.Diag = "MateEnd null: " + HoseClothoid.TailWhy;
+                            else pts = q;
                             V2 ax = mm.isA ? mm.m.Axis : -mm.m.Axis;
                             d.End = HoseCurveMetrics.EndSpec.Fitting(mm.m.C, -ax, HoseSpliceMath.CouplingStraight(vis), "mate");
                         }
                         d.Pts = pts;
                         d.RefLen = L.lay.FlatLen;
-                        d.Rep = HoseCurveMetrics.Measure(pts, d.Start, d.End, kmax, mates.ContainsKey(r.Name) ? 0 : d.RefLen);
+                        d.Rep = HoseCurveMetrics.Measure(pts, d.Start, d.End, kmax, mates.ContainsKey(r.Name) && !HoseMath.G2On ? 0 : d.RefLen);
                     }
                 }
             }
@@ -261,17 +269,19 @@ namespace RimMandrake.FlowWorks.SelfTest
                         if (d.MayRefuse && !string.IsNullOrEmpty(d.Lay.Reason)) return;
                         throw new Exception("refused: " + (d.Lay.Reason ?? "(no reason)"));
                     }
+                    if (d.NoMate != null) throw new Exception(d.NoMate);
                     if (d.MayRefuse && !d.Rep.Ok) throw new Exception("laid through a sub-Rmin corridor: " + d.Rep.Line());
                     if (!d.Rep.Ok && !KnownOnly(d)) throw new Exception(d.Rep.Line() + (d.Lay.G2 ? " [g2]" : " [shaped: " + d.Lay.G2Why + "]") + (d.Diag != null ? " {" + d.Diag + "}" : ""));
                 });
             }
             // R5 + splice: a mated pair is ONE curve through its coupling (A then B reversed)
-            foreach (var g in all.Where(d => d.End.Name == "mate").GroupBy(d => d.Station + "/" + d.PoseName))
+            foreach (var g in all.Where(d => d.End.Name == "mate" || d.NoMate != null).GroupBy(d => d.Station + "/" + d.PoseName))
             {
                 var pair = g.ToList();
                 if (pair.Count != 2) continue;
                 Case($"HoseCurve splice {g.Key}", () =>
                 {
+                    if (pair[0].NoMate != null) throw new Exception(pair[0].NoMate);
                     HoseCurveMetrics.Report r = HoseCurveMetrics.Splice(pair[0].Pts, pair[1].Pts, pair[0].Start, pair[1].Start, kmax, out double seam);
                     if (!r.Ok) throw new Exception($"seam {seam:0.000} " + r.Line());
                 });
@@ -286,7 +296,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             {
                 sb.Append($"{d.Station}/{d.Reel}/{d.PoseName}: ");
                 if (!d.Lay.Ok) sb.Append("REFUSED " + d.Lay.Reason + (d.MayRefuse ? " (pass)" : "") + $" pathLen {d.Lay.PathLen:0.00}");
-                else sb.Append((d.Rep.Ok ? "PASS " : KnownOnly(d) ? "KNOWN " : "FAIL ") + d.Rep.Line() + (d.Lay.G2 ? " [g2]" : " [shaped: " + d.Lay.G2Why + "]"));
+                else sb.Append((d.NoMate != null ? "FAIL (" + d.NoMate + ") " : d.Rep.Ok ? "PASS " : KnownOnly(d) ? "KNOWN " : "FAIL ") + d.Rep.Line() + (d.Lay.G2 ? " [g2]" : " [shaped: " + d.Lay.G2Why + "]"));
                 sb.Append('\n');
             }
             System.IO.File.WriteAllText(path, sb.ToString());
