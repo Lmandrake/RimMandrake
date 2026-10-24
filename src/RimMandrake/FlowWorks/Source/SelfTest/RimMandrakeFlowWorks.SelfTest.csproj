@@ -59,6 +59,7 @@
     <Compile Include="..\RM_PitTrapMath.cs" />
     <Compile Include="..\Sprinklers\RM_SprinklerKernel.cs" />
     <Compile Include="..\Sprinklers\RM_PipeSeatMath.cs" />
+    <Compile Include="..\Sprinklers\RM_SprayPlan.cs" />
     <Compile Include="SprinklerChecks.cs" />
     <Compile Include="..\Superdeep\RM_FlowDoorFacingMath.cs" />
     <Compile Include="..\Superdeep\RM_LadderWallMath.cs" />
