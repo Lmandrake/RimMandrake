@@ -1659,7 +1659,7 @@ def metric_controls():
     cs = "public float territoryPeriodSeconds = 900f; public float territoryLeadShare = 0.6f; public float territoryRagged = 0.08f;" \
          " public int tremorCap = 3; public float tremorMaxFraction = 0.2f; public float tremorFlickerSeconds = 0.8f;" \
          " public int patternSet = 0; public int patternTempo = 1; public int patternIntensity = 0;"
-    xml ="<Defs><X><defName>A</defName><palette><li>(204,150,92,0)</li></palette></X></Defs>"
+    xml = "<Defs><X><defName>A</defName><palette><li>(204,150,92,0)</li></palette></X></Defs>"
     out.append(("judge_defaults tremor 0.2", judge_defaults(read_defaults(cs, xml, 'DefaultSchemeDefName = "A"'))[0], FAIL))
     xml_w = "<Defs><X><defName>A</defName><palette><li>(250,250,250,0)</li></palette><flasherCount>2</flasherCount></X></Defs>"
     out.append(("judge_defaults white + flashers", judge_defaults(read_defaults(cs.replace("0.2f", "0.04f"), xml_w, 'DefaultSchemeDefName = "A"'))[0], FAIL))
