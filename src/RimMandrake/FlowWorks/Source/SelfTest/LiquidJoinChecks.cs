@@ -215,7 +215,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(reach != null && Near(reach[1], 10) && Near(reach[3], 10 + sc) && Near(reach[0], 10.5) && Near(reach[2], 10.5), "reach: edge to outline");
                 Assert(LiquidJoinRule.ReachStub(10, 12, 0, -1, -0.6) == null, "no reach into an overhang");
                 string joins = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Machinery", "RM_LiquidJoins.cs"));
-                Assert(joins.Contains("LiquidJoinRule.FlangeOnArt(d.x, d.z, riser ? 0 : RM_LiquidJoins.DrawnInset(c, d, b)"),
+                Assert(joins.Contains("LiquidJoinRule.FlangeOnArt(d.x, d.z, RM_LiquidJoins.DrawnInset(c, d, b)"),
                     "can-fail: the section layer prints the flange on the drawn outline");
                 Assert(joins.Contains("poly = LiquidJoinRule.ReachStub(c.x, c.z, d.x, d.z, RM_LiquidJoins.DrawnInset(c, d, b));"), "the stub layer carries the arm to it");
             });

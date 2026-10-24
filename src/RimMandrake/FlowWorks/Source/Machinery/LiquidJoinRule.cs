@@ -135,28 +135,184 @@ namespace RimMandrake.FlowWorks.Machinery
         }
 
         /// <summary>
-        /// PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID (owner card 2026-10-22, "Draw fittings + pipe riser"): a pipe cell (cx, cz) beside a
-        /// 2x2 universal tank on its west or east side (dx = +1 / -1, dz = 0; footprint bx, bz, bw, bh) cannot meet the tank's
-        /// drawn flange, which sits at mid-height (<paramref name="portZ"/>, TankPortGeometry.PortPoint: z + 1.0 give or take the
-        /// look), because a cell centre is at z + 0.5 or z + 1.5: the arm slid in under the skid. Instead the arm stops at the
-        /// pipe cell's centre and a short riser jogs to the port's height, then runs on to the flange on the shared edge -- the
-        /// same point a hose coupled there ends. <paramref name="under"/> = also the run on beneath the tank to its centre
-        /// (pipesUnderToCentre). Null when the pipe does not face the tank from the west or east.
+        /// PIPE_JOINS_REDRAW_RISER_ELBOW_AND_COLLAR (owner 2026-10-24: "joins look horrible ... The collar by the tank is
+        /// superimposed and odd. the corner has no treatment at all in the north. In the south there is a crude "cap" graphic").
+        /// A pipe cell (cx, cz) beside a 2x2 universal tank on its west or east (dx = +1: the tank is east) meets the tank's
+        /// drawn port at mid-height (<paramref name="portZ"/>, TankPortGeometry.PortPoint), not at the cell's centre row. The
+        /// pipe bends onto that height in the bore's own cross-section (a strip of the straight tile, StripQuads) instead of
+        /// square straights and a flange laid over the nozzle. <paramref name="mask"/> = the cell's linked-atlas mask (Up 1,
+        /// Right 2, Down 4, Left 8; the link patch leaves the tank's side out). Three cases (laid out offline first,
+        /// Tools/fw_scenes_pipejoins.py riser_after, judged on its sheets):
+        ///   Gentle  -- the cell carries only this run (mask = the side away from the tank, or nothing): no cell tile; one S
+        ///              bend from the far edge onto the port's height;
+        ///   Fitting -- the cell has an arm toward the port's row: the atlas's own tee/elbow, hub and all, drawn AT the port's
+        ///              height (FittingMask, FittingZ); the cell keeps its own tile when it has other arms (PlainTile);
+        ///   Elbow   -- otherwise: the cell's tile plus a half arm toward the port's row, cut where a quarter bend of radius
+        ///              ElbowRadius turns it into the port (CellMask, shown between CropZ0 and CropZ1).
+        /// Every case then runs on along the port's height from the shared edge to <paramref name="runToX"/> (the footprint's
+        /// centre with the under-run on, else just under the drawn nozzle). Null when dx is not +1 / -1.
         /// </summary>
-        public static double[] RiserStub(int cx, int cz, int dx, int dz, int bx, int bz, int bw, int bh, double portZ, bool under)
+        public static RiserPlan RiserBend(int cx, int cz, int dx, int mask, double portZ, double runToX)
         {
-            if (dz != 0 || Math.Abs(dx) != 1) return null;
-            int nx = cx + dx;
-            if (nx < bx || nx >= bx + bw || cz < bz || cz >= bz + bh) return null;
-            double x0 = cx + 0.5, z0 = cz + 0.5, ex = cx + 0.5 + dx * 0.5;
-            var pts = new System.Collections.Generic.List<double> { x0, z0, x0, portZ, ex, portZ };
-            if (under)
+            if (Math.Abs(dx) != 1) return null;
+            double x = cx + 0.5, z = cz + 0.5, edge = x + dx * 0.5;
+            int away = dx > 0 ? LinkLeft : LinkRight, into = dx > 0 ? LinkRight : LinkLeft;
+            mask &= ~into;   // a link toward the tank (vanilla linking to a pipe under it) is the riser itself, not an arm
+            int sg = portZ > z ? 1 : -1;
+            int vert = sg > 0 ? LinkUp : LinkDown, opp = sg > 0 ? LinkDown : LinkUp;
+            var plan = new RiserPlan { CellMask = -1, FittingMask = -1, CropZ0 = cz, CropZ1 = cz + 1, Path = new System.Collections.Generic.List<double[]>() };
+            double[] run = { 0, edge, portZ, runToX, portZ };
+            if (mask == away || mask == 0)
             {
-                double mx = bx + bw / 2.0, mz = bz + bh / 2.0;
-                pts.Add(mx); pts.Add(portZ);
-                if (Math.Abs(portZ - mz) > 1e-9) { pts.Add(mx); pts.Add(mz); }
+                plan.Kind = RiserKind.Gentle;
+                plan.Path.AddRange(SBend(x - dx * 0.5, z, edge, portZ));
             }
-            return pts.ToArray();
+            else if ((mask & vert) != 0)
+            {
+                plan.Kind = RiserKind.Fitting;
+                int rest = mask & ~vert;
+                plan.PlainTile = rest != 0;
+                if (rest != 0) plan.CellMask = mask;
+                plan.FittingMask = vert | into | (rest != 0 ? opp : 0);
+                plan.FittingZ = portZ;
+            }
+            else
+            {
+                plan.Kind = RiserKind.Elbow;
+                plan.CellMask = mask | vert;
+                double z0 = portZ - sg * ElbowRadius;
+                if (sg > 0) plan.CropZ1 = z0; else plan.CropZ0 = z0;
+                double ccx = x + dx * ElbowRadius;
+                plan.Path.Add(new double[] { 1, ccx, z0, ElbowRadius, dx > 0 ? 180 : 0, -dx * sg * 90 });
+                plan.Path.Add(new double[] { 0, ccx, portZ, edge, portZ });
+            }
+            plan.Path.Add(run);
+            return plan;
+        }
+
+        public const int LinkUp = 1, LinkRight = 2, LinkDown = 4, LinkLeft = 8;
+
+        /// <summary>True when the path <paramref name="path"/> ends west of where it starts (a riser into a tank on the pipe's
+        /// west): StripQuads' "left of travel" is then south, so the strip swaps its two rims to keep the tile's north up.</summary>
+        public static bool TravelsWest(System.Collections.Generic.List<double[]> path)
+        {
+            if (path == null || path.Count == 0) return false;
+            SegmentAt(path[0], 0, out double x0, out _, out _, out _);
+            SegmentAt(path[path.Count - 1], 1, out double x1, out _, out _, out _);
+            return x1 < x0;
+        }
+
+        /// <summary>The quarter bend's radius where an elbow riser turns into the port (cell units).</summary>
+        public const double ElbowRadius = 0.22;
+
+        /// <summary>Half the width of a bent strip: the bore is 0.136 cell wide in every look (measured), plus its rim shadow.</summary>
+        public const double BoreHalf = 0.12;
+
+        /// <summary>With the under-run off, how far a riser runs on past the shared edge, under the tank's drawn nozzle.</summary>
+        public const double UnderNozzle = 0.15;
+
+        public enum RiserKind { Gentle, Fitting, Elbow }
+
+        /// <summary>RiserBend's answer. Path segments: {0, x0, z0, x1, z1} a line; {1, cx, cz, r, a0, sweep} an arc (degrees,
+        /// counter-clockwise from east), in travel order from the pipe cell into the tank.</summary>
+        public sealed class RiserPlan
+        {
+            public RiserKind Kind;
+            /// <summary>The cell's own tile is drawn as the plain linked atlas would draw it (the Print skip leaves it).</summary>
+            public bool PlainTile;
+            /// <summary>The atlas tile the riser draws on the cell itself (Elbow: cropped to CropZ0..CropZ1); -1 none.</summary>
+            public int CellMask;
+            public double CropZ0, CropZ1;
+            /// <summary>The atlas tile drawn centred at (cell x, FittingZ) (Fitting); -1 none.</summary>
+            public int FittingMask;
+            public double FittingZ;
+            public System.Collections.Generic.List<double[]> Path;
+        }
+
+        /// <summary>Two equal arcs from (x0, z0) heading along x to (x1, z1) heading along x; a line when level.</summary>
+        public static System.Collections.Generic.List<double[]> SBend(double x0, double z0, double x1, double z1)
+        {
+            var list = new System.Collections.Generic.List<double[]>();
+            double w = x1 - x0, h = z1 - z0;
+            if (Math.Abs(h) < 1e-6) { list.Add(new double[] { 0, x0, z0, x1, z1 }); return list; }
+            int sx = w > 0 ? 1 : -1, sz = h > 0 ? 1 : -1;
+            double th = 2 * Math.Atan2(Math.Abs(h), Math.Abs(w));
+            double r = Math.Abs(w) / (2 * Math.Sin(th));
+            double a0 = sx > 0 ? -90 * sz : 180 + 90 * sz;
+            double sweep = sz * sx * th * 180 / Math.PI;
+            double midX = x0 + sx * r * Math.Sin(th), midZ = z0 + sz * r * (1 - Math.Cos(th));
+            double c2x = x1, c2z = z1 - sz * r;
+            list.Add(new double[] { 1, x0, z0 + sz * r, r, a0, sweep });
+            list.Add(new double[] { 1, c2x, c2z, r, Math.Atan2(midZ - c2z, midX - c2x) * 180 / Math.PI, -sweep });
+            return list;
+        }
+
+        /// <summary>A point and unit heading along one path segment at fraction f.</summary>
+        public static void SegmentAt(double[] seg, double f, out double px, out double pz, out double tx, out double tz)
+        {
+            if (seg[0] == 0)
+            {
+                double len = Math.Sqrt((seg[3] - seg[1]) * (seg[3] - seg[1]) + (seg[4] - seg[2]) * (seg[4] - seg[2]));
+                px = seg[1] + (seg[3] - seg[1]) * f; pz = seg[2] + (seg[4] - seg[2]) * f;
+                tx = len > 0 ? (seg[3] - seg[1]) / len : 1; tz = len > 0 ? (seg[4] - seg[2]) / len : 0;
+                return;
+            }
+            double a = (seg[4] + seg[5] * f) * Math.PI / 180, s = Math.Sign(seg[5]);
+            px = seg[1] + seg[3] * Math.Cos(a); pz = seg[2] + seg[3] * Math.Sin(a);
+            tx = -Math.Sin(a) * s; tz = Math.Cos(a) * s;
+        }
+
+        public static double SegmentLength(double[] seg) => seg[0] == 0
+            ? Math.Sqrt((seg[3] - seg[1]) * (seg[3] - seg[1]) + (seg[4] - seg[2]) * (seg[4] - seg[2]))
+            : Math.Abs(seg[5]) * Math.PI / 180 * seg[3];
+
+        /// <summary>One quad of a bent strip: corners in print order (start right, start left, end left, end right) as
+        /// x, z pairs, and its slice of the straight east-west tile along the run (U0..U1, within one tile).</summary>
+        public struct StripQuad
+        {
+            public double X0, Z0, X1, Z1, X2, Z2, X3, Z3, U0, U1;
+        }
+
+        /// <summary>
+        /// The straight tile's cross-section carried along a path, as the offline compositor draws it (fw_compositor
+        /// Scene.strip): u = distance along the path (wrapped to the tile, so a quad never spans a tile seam), the tile's north
+        /// side on the LEFT of travel, halfW either side. Arcs are cut into steps of at most 8 degrees.
+        /// </summary>
+        public static System.Collections.Generic.List<StripQuad> StripQuads(System.Collections.Generic.List<double[]> path, double halfW)
+        {
+            var quads = new System.Collections.Generic.List<StripQuad>();
+            if (path == null) return quads;
+            double s = 0;
+            foreach (double[] seg in path)
+            {
+                double len = SegmentLength(seg);
+                if (len < 1e-9) continue;
+                int steps = seg[0] == 0 ? 1 : Math.Max(1, (int)Math.Ceiling(Math.Abs(seg[5]) / 8.0));
+                var fs = new System.Collections.Generic.List<double>();
+                for (int k = 0; k <= steps; k++) fs.Add((double)k / steps);
+                // a cut at every whole tile length along the run
+                for (double w = Math.Floor(s) + 1; w < s + len - 1e-9; w += 1) fs.Add((w - s) / len);
+                fs.Sort();
+                for (int k = 0; k + 1 < fs.Count; k++)
+                {
+                    double fa = fs[k], fb = fs[k + 1];
+                    if (fb - fa < 1e-9) continue;
+                    double sa = s + fa * len, sb = s + fb * len, tile = Math.Floor(sa + 1e-9);
+                    SegmentAt(seg, fa, out double ax, out double az, out double atx, out double atz);
+                    SegmentAt(seg, fb, out double bx, out double bz, out double btx, out double btz);
+                    // left of travel = heading turned a quarter counter-clockwise (-tz, tx)
+                    quads.Add(new StripQuad
+                    {
+                        X0 = ax + atz * halfW, Z0 = az - atx * halfW,
+                        X1 = ax - atz * halfW, Z1 = az + atx * halfW,
+                        X2 = bx - btz * halfW, Z2 = bz + btx * halfW,
+                        X3 = bx + btz * halfW, Z3 = bz - btx * halfW,
+                        U0 = sa - tile, U1 = Math.Min(1.0, sb - tile)
+                    });
+                }
+                s += len;
+            }
+            return quads;
         }
 
         /// <summary>One straight axis-aligned piece of a stub, drawn as a plane of the pipe's straight atlas tile: centre, its

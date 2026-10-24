@@ -180,30 +180,72 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(Src("RimMandrake_FlowWorks.csproj").Contains(@"Hose\PlaceWorker_HoseReelOutlet.cs"), "the preview is in the mod build");
             });
 
-            Case("PipeTankRiser_ends_on_the_hose_flange_not_under_the_skid", () =>
+            Case("PipeTankRiser_bends_onto_the_port_no_cap_no_collar", () =>
             {
-                // tank 2x2 at (20, 20); pipes west of it on the lower row (19, 20) and upper row (19, 21), east on (22, 20)
+                // PIPE_JOINS_REDRAW_RISER_ELBOW_AND_COLLAR: tank 2x2 at (20, 20); pipes west of it on the lower row (19, 20) and
+                // upper row (19, 21), east on (22, 20). Masks: Up 1, Right 2, Down 4, Left 8.
+                const int U = LiquidJoinRule.LinkUp, R = LiquidJoinRule.LinkRight, D = LiquidJoinRule.LinkDown, W = LiquidJoinRule.LinkLeft;
                 foreach (string look in TankPortGeometry.Looks)
                 {
                     Assert(TankPortGeometry.PortPoint(look, 20, 20, 2, 2, 1, 0, out V2 portW), look + " west port");
                     Assert(TankPortGeometry.PortPoint(look, 20, 20, 2, 2, -1, 0, out V2 portE), look + " east port");
+                    Assert(Math.Abs(portW.Z - 21.0) < 0.1, look + ": the port is at mid-height, z + 1.0 (" + portW.Z.ToString("0.000") + ")");
                     foreach (var (cx, cz, dx, port) in new[] { (19, 20, 1, portW), (19, 21, 1, portW), (22, 20, -1, portE) })
                     {
-                        double[] r = LiquidJoinRule.RiserStub(cx, cz, dx, 0, 20, 20, 2, 2, port.Z, false);
-                        Assert(r != null && r.Length == 6, look + " riser from (" + cx + "," + cz + ")");
-                        Assert(Near(r[0], cx + 0.5) && Near(r[1], cz + 0.5), "the riser leaves the pipe cell's centre");
-                        Assert(Near(r[2], cx + 0.5) && Near(r[3], port.Z), "it rises to the flange's height " + port.Z.ToString("0.000"));
-                        Assert(Near(r[4], port.X) && Near(r[5], port.Z), look + ": it ends ON the flange the hose ends on (" + r[4] + "," + r[5] + ") vs " + port);
-                        Assert(Math.Abs(r[3] - 21.0) < 0.1, look + ": the flange is at mid-height, z + 1.0 (" + r[3].ToString("0.000") + ")");
-                        double[] u = LiquidJoinRule.RiserStub(cx, cz, dx, 0, 20, 20, 2, 2, port.Z, true);
-                        Assert(u.Length >= 8 && Near(u[u.Length - 2], 21) && Near(u[u.Length - 1], 21), "with the under-run it goes on to the centre");
-                        // can-fail: the old stub enters at the pipe's own row, under the skid on the lower row
-                        double[] old = LiquidJoinRule.CentreStub(cx, cz, dx, 0, 20, 20, 2, 2);
-                        if (cz == 20) Assert(Math.Abs(old[1] - port.Z) > 0.4, "can-fail: the old arm met the edge at z " + old[1] + ", half a square under the flange");
+                        int away = dx > 0 ? W : R;
+                        bool up = port.Z > cz + 0.5;
+                        int vert = up ? U : D, opp = up ? D : U;
+                        foreach (int mask in new[] { 0, away, away | vert, away | opp, vert, opp, vert | opp, away | vert | opp })
+                        {
+                            string what = look + " (" + cx + "," + cz + ") mask " + mask;
+                            var plan = LiquidJoinRule.RiserBend(cx, cz, dx, mask, port.Z, 21.0);
+                            Assert(plan != null && plan.Path.Count > 0, what + ": a plan");
+                            // the strip is one continuous path ending level ON the port's height at the run's end
+                            double px = 0, pz = 0;
+                            for (int i = 0; i < plan.Path.Count; i++)
+                            {
+                                LiquidJoinRule.SegmentAt(plan.Path[i], 0, out double sx, out double sz, out _, out _);
+                                if (i > 0) Assert(Near(sx, px) && Near(sz, pz), what + ": the path is continuous at segment " + i);
+                                LiquidJoinRule.SegmentAt(plan.Path[i], 1, out px, out pz, out _, out _);
+                            }
+                            LiquidJoinRule.SegmentAt(plan.Path[plan.Path.Count - 1], 1, out _, out _, out double etx, out double etz);
+                            Assert(Near(px, 21.0) && Near(pz, port.Z) && Near(etx, dx) && Near(etz, 0), what + ": it runs in level at the port's height");
+                            bool lone = mask == 0 || mask == away;
+                            Assert(lone == (plan.Kind == LiquidJoinRule.RiserKind.Gentle), what + ": a lone run is the gentle S, no cap tile");
+                            if (lone)
+                            {
+                                LiquidJoinRule.SegmentAt(plan.Path[0], 0, out double x0, out double z0, out double tx0, out double tz0);
+                                Assert(Near(x0, cx + 0.5 - dx * 0.5) && Near(z0, cz + 0.5) && Near(tx0, dx) && Near(tz0, 0),
+                                    what + ": the S starts level on the far edge, where the neighbour's arm ends");
+                                Assert(plan.CellMask < 0 && plan.FittingMask < 0 && !plan.PlainTile, what + ": no tile of its own");
+                            }
+                            else if ((mask & vert) != 0)
+                            {
+                                Assert(plan.Kind == LiquidJoinRule.RiserKind.Fitting && Near(plan.FittingZ, port.Z), what + ": a fitting at the port");
+                                Assert((plan.FittingMask & vert) != 0 && (plan.FittingMask & (dx > 0 ? R : W)) != 0, what + ": the fitting turns into the tank");
+                                Assert(plan.PlainTile == (mask != vert), what + ": the cell keeps its tile only when it has other arms");
+                            }
+                            else
+                            {
+                                Assert(plan.Kind == LiquidJoinRule.RiserKind.Elbow && plan.CellMask == (mask | vert), what + ": an elbow off the tile");
+                                Assert(!plan.PlainTile && plan.CropZ1 - plan.CropZ0 < 1 && plan.CropZ1 - plan.CropZ0 > 0.4, what + ": the tile is cut where the bend turns");
+                                LiquidJoinRule.SegmentAt(plan.Path[0], 0, out double x0, out double z0, out double tx0, out double tz0);
+                                Assert(Near(x0, cx + 0.5) && Near(tx0, 0) && Near(Math.Abs(tz0), 1)
+                                       && (Near(z0, plan.CropZ0) || Near(z0, plan.CropZ1)), what + ": the bend leaves the tile's cut arm along it");
+                            }
+                            var withInto = LiquidJoinRule.RiserBend(cx, cz, dx, mask | (dx > 0 ? R : W), port.Z, 21.0);
+                            Assert(withInto.Kind == plan.Kind && withInto.CellMask == plan.CellMask && withInto.FittingMask == plan.FittingMask
+                                   && withInto.PlainTile == plan.PlainTile, what + ": a link toward the tank changes nothing (it is the riser)");
+                            Assert(LiquidJoinRule.TravelsWest(plan.Path) == (dx < 0), what + ": the strip knows which way is north (west-going swaps rims)");
+                            foreach (var q in LiquidJoinRule.StripQuads(plan.Path, LiquidJoinRule.BoreHalf))
+                                Assert(q.U0 >= -1e-9 && q.U1 <= 1 + 1e-9 && q.U1 > q.U0, what + ": a strip quad stays inside one tile (" + q.U0 + ".." + q.U1 + ")");
+                        }
                     }
-                    Assert(LiquidJoinRule.RiserStub(20, 19, 0, 1, 20, 20, 2, 2, portW.Z, false) == null, "a pipe from the south gets no riser (no flange there)");
-                    Assert(LiquidJoinRule.RiserStub(19, 22, 1, 0, 20, 20, 2, 2, portW.Z, false) == null, "a pipe beside the corner, not the tank, gets none");
+                    Assert(LiquidJoinRule.RiserBend(20, 19, 0, 0, portW.Z, 21) == null, "a pipe from the south gets no riser");
                 }
+                // can-fail: the old stub entered at the pipe's own row, half a square under the port
+                double[] old = LiquidJoinRule.CentreStub(19, 20, 1, 0, 20, 20, 2, 2);
+                Assert(Math.Abs(old[1] - 21.0) > 0.4, "can-fail: the old arm met the edge at z " + old[1]);
             });
 
             Case("PipeTankRiser_wiring_link_stops_layer_prints_flange_follows", () =>
@@ -213,11 +255,19 @@ namespace RimMandrake.FlowWorks.SelfTest
                        && j.Contains("Hose.TankPortGeometry.PortPoint(PipeLook.LookOfThing(b)"), "RiserInto: the universal tank's measured flange, as the hose's PortEnd");
                 Assert(j.Contains("RM_LiquidJoins.RiserInto(parent.Position, c - parent.Position, partner, out _)) return;"),
                     "the pipe's own arm stops at its centre where a riser takes over");
-                Assert(j.Contains("LiquidJoinRule.RiserStub(c.x, c.z, d.x, d.z, r.minX, r.minZ, r.Width, r.Height, portZ, under)"),
-                    "the stub layer prints the riser");
+                Assert(j.Contains("RM_LiquidJoins.RiserPlanFor(t, d, b, portZ, under, cellRisers > 1)") && j.Contains("n += PrintRiser(t, c, plan,"),
+                    "the stub layer prints the riser's bend");
+                Assert(j.Contains("if (RiserCount(c, map) > 1) return false;"),
+                    "a cell between two tanks keeps its tile in the Print skip too, as the layer bends from its centre");
+                Assert(j.Contains("relevantChangeTypes = (ulong)MapMeshFlagDefOf.Buildings | (ulong)MapMeshFlagDefOf.Things;"),
+                    "the riser layer regenerates when a neighbouring pipe changes the link mask");
+                Assert(j.Contains("if (LiquidJoinRule.TravelsWest(plan.Path)) { float sw = vr; vr = vl; vl = sw; }"),
+                    "a west-going strip keeps the tile's north rim on the north");
+                Assert(j.Contains("class Patch_Pipe_RiserReplacesTile") && j.Contains("return !RM_LiquidJoins.RiserReplacesTile(thing);"),
+                    "the cell's own cap/corner tile gives way to the bend");
                 Assert(j.Contains("public override bool Visible => RM_MachinerySettings.pipesUnderToCentre || RM_MachinerySettings.pipeLinksIntoMachines;"),
                     "the riser shows with the links on even when the under-run is off");
-                Assert(j.Contains("p.z = (float)pz;"), "the (off) flange fitting moves onto the riser's end");
+                Assert(j.Contains("if (riser) continue;") && !j.Contains("p.z = (float)pz;"), "no flange laid over the tank's own nozzle on a riser");
                 string hoses = Src("Hose", "RM_MapComponent_Hoses.cs");
                 string hoseMath = Src("Hose", "HoseMath.cs");
                 Assert(hoses.Contains("TankPortGeometry.HosePort(fe.Port.def.defName")

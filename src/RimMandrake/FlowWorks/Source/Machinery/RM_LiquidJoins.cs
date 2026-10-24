@@ -82,6 +82,70 @@ namespace RimMandrake.FlowWorks.Machinery
             return true;
         }
 
+        /// <summary>The linked-atlas mask the pipe <paramref name="pipe"/> prints with (Up 1, Right 2, Down 4, Left 8), from its
+        /// own Graphic_Linked's ShouldLinkWith (link patches and all); -1 when its graphic is not linked.</summary>
+        public static int LinkMask(Thing pipe)
+        {
+            if (!(pipe.Graphic is Graphic_Linked gl)) return -1;
+            IntVec3 c = pipe.Position;
+            int mask = 0;
+            if (gl.ShouldLinkWith(c + IntVec3.North, pipe)) mask |= LiquidJoinRule.LinkUp;
+            if (gl.ShouldLinkWith(c + IntVec3.East, pipe)) mask |= LiquidJoinRule.LinkRight;
+            if (gl.ShouldLinkWith(c + IntVec3.South, pipe)) mask |= LiquidJoinRule.LinkDown;
+            if (gl.ShouldLinkWith(c + IntVec3.West, pipe)) mask |= LiquidJoinRule.LinkLeft;
+            return mask;
+        }
+
+        /// <summary>PIPE_JOINS_REDRAW_RISER_ELBOW_AND_COLLAR: the riser the pipe <paramref name="pipe"/> draws into the tank
+        /// <paramref name="b"/> on its side <paramref name="d"/> (RiserInto said yes, port at <paramref name="portZ"/>). A cell
+        /// between two tanks (<paramref name="fromCentre"/>, RiserCount above 1) keeps its own tile and bends into each tank
+        /// from its centre, so both bends start on drawn pipe. Null when not linked.</summary>
+        public static LiquidJoinRule.RiserPlan RiserPlanFor(Thing pipe, IntVec3 d, Thing b, double portZ, bool under, bool fromCentre)
+        {
+            int mask = LinkMask(pipe);
+            if (mask < 0) return null;
+            IntVec3 c = pipe.Position;
+            CellRect r = b.OccupiedRect();
+            double edge = c.x + 0.5 + d.x * 0.5;
+            double runTo = under ? r.minX + r.Width / 2.0 : edge + d.x * LiquidJoinRule.UnderNozzle;
+            if (!fromCentre) return LiquidJoinRule.RiserBend(c.x, c.z, d.x, mask, portZ, runTo);
+            var plan = new LiquidJoinRule.RiserPlan { Kind = LiquidJoinRule.RiserKind.Gentle, PlainTile = true, CellMask = -1, FittingMask = -1,
+                Path = LiquidJoinRule.SBend(c.x + 0.5, c.z + 0.5, edge, portZ) };
+            plan.Path.Add(new double[] { 0, edge, portZ, runTo, portZ });
+            return plan;
+        }
+
+        /// <summary>How many tanks the pipe on <paramref name="c"/> rises into (cardinal partners RiserInto says yes to).</summary>
+        public static int RiserCount(IntVec3 c, Map map)
+        {
+            int k = 0;
+            foreach (IntVec3 d in GenAdj.CardinalDirections)
+            {
+                Thing b = PartnerAt(c + d, map);
+                if (b != null && RiserInto(c, d, b, out _)) k++;
+            }
+            return k;
+        }
+
+        /// <summary>True when the pipe <paramref name="pipe"/>'s own linked tile is replaced by its riser (the Print skip). The
+        /// riser layer makes the same decision: a cell rising into two tanks keeps its tile (RiserPlanFor fromCentre).</summary>
+        public static bool RiserReplacesTile(Thing pipe)
+        {
+            if (!RM_MachinerySettings.pipeLinksIntoMachines || pipe == null || !pipe.Spawned) return false;
+            Map map = pipe.Map;
+            IntVec3 c = pipe.Position;
+            if (PartnerAt(c, map) != null) return false;
+            if (RiserCount(c, map) > 1) return false;
+            foreach (IntVec3 d in GenAdj.CardinalDirections)
+            {
+                Thing b = PartnerAt(c + d, map);
+                if (b == null || !RiserInto(c, d, b, out double pz)) continue;
+                LiquidJoinRule.RiserPlan plan = RiserPlanFor(pipe, d, b, pz, RM_MachinerySettings.pipesUnderToCentre, false);
+                return plan != null && !plan.PlainTile;
+            }
+            return false;
+        }
+
         /// <summary>TANK_FLANGE_FIX_HOVERS_MID_PIPE: cells from the shared footprint edge inward to where the pipe on
         /// <paramref name="c"/> meets the DRAWN outline of the tank <paramref name="b"/> on c + d (TankArtEdges, measured per look,
         /// side and lane); 0 for anything unmeasured (machines, other tanks: the footprint edge, as before).</summary>
@@ -213,13 +277,13 @@ namespace RimMandrake.FlowWorks.Machinery
                             Thing b = RM_LiquidJoins.PartnerAt(c + d, map);
                             double pz = 0;
                             bool riser = RM_MachinerySettings.pipeLinksIntoMachines && RM_LiquidJoins.RiserInto(c, d, b, out pz);
-                            // TANK_FLANGE_FIX_HOVERS_MID_PIPE: the face on the tank's DRAWN outline, not the footprint edge (a riser
-                            // ends on the universal tank's port flange, which the art draws on the edge itself)
-                            if (!LiquidJoinRule.FlangeOnArt(d.x, d.z, riser ? 0 : RM_LiquidJoins.DrawnInset(c, d, b), out double ox, out double oz, out double ang))
+                            // PIPE_JOINS_REDRAW_RISER_ELBOW_AND_COLLAR (owner 2026-10-24: "The collar by the tank is superimposed
+                            // and odd"): a riser bends into the tank's own drawn nozzle, so no flange is laid over it
+                            if (riser) continue;
+                            // TANK_FLANGE_FIX_HOVERS_MID_PIPE: the face on the tank's DRAWN outline, not the footprint edge
+                            if (!LiquidJoinRule.FlangeOnArt(d.x, d.z, RM_LiquidJoins.DrawnInset(c, d, b), out double ox, out double oz, out double ang))
                                 continue;   // the sprite covers the whole pipe cell: no visible join
                             Vector3 p = c.ToVector3Shifted() + new Vector3((float)ox, 0f, (float)oz);
-                            if (riser)
-                                p.z = (float)pz;   // PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID: on the riser's end, the drawn flange
                             p.y = yPipe;
                             Printer_Plane.PrintPlane(this, p, new Vector2(s, s), m, -(float)ang);
                         }
@@ -266,7 +330,9 @@ namespace RimMandrake.FlowWorks.Machinery
     {
         public SectionLayer_RM_PipeCentreStubs(Section section) : base(section)
         {
-            relevantChangeTypes = MapMeshFlagDefOf.Buildings;
+            // Things too: a riser's plan follows the cell's link mask, which a neighbouring pipe changes (the Print skip
+            // regenerates on Things, so this layer must as well or the two disagree)
+            relevantChangeTypes = (ulong)MapMeshFlagDefOf.Buildings | (ulong)MapMeshFlagDefOf.Things;
         }
 
         public override bool Visible => RM_MachinerySettings.pipesUnderToCentre || RM_MachinerySettings.pipeLinksIntoMachines;
@@ -283,12 +349,60 @@ namespace RimMandrake.FlowWorks.Machinery
 
         /// <summary>The pipe's straight tile (east-west or north-south) from its own linked atlas, in its own look; null when the
         /// pipe's graphic is not an atlas.</summary>
-        public static Material StraightMat(Thing pipe, bool eastWest)
+        public static Material StraightMat(Thing pipe, bool eastWest) =>
+            AtlasMat(pipe, eastWest ? LiquidJoinRule.LinkLeft | LiquidJoinRule.LinkRight : LiquidJoinRule.LinkUp | LiquidJoinRule.LinkDown);
+
+        /// <summary>One tile of the pipe's own linked atlas (mask: Up 1, Right 2, Down 4, Left 8); null when not an atlas.</summary>
+        public static Material AtlasMat(Thing pipe, int mask)
         {
             Graphic g = pipe.Graphic;
             Material atlas = g is Graphic_Linked gl && gl.SubGraphic != null ? gl.SubGraphic.MatSingleFor(pipe) : g?.MatSingleFor(pipe);
             if (atlas == null) return null;
-            return MaterialAtlasPool.SubMaterialFromAtlas(atlas, eastWest ? LinkDirections.Left | LinkDirections.Right : LinkDirections.Up | LinkDirections.Down);
+            return MaterialAtlasPool.SubMaterialFromAtlas(atlas, (LinkDirections)mask);
+        }
+
+        /// <summary>PIPE_JOINS_REDRAW_RISER_ELBOW_AND_COLLAR: print a RiserBend plan for the pipe <paramref name="t"/> -- the
+        /// cell's cropped tile (Elbow), the fitting at the port's height (Fitting), and the bent strip of the straight tile.
+        /// Returns the strip quads printed.</summary>
+        private int PrintRiser(Thing t, IntVec3 c, LiquidJoinRule.RiserPlan plan, float yTile)
+        {
+            if (plan.CellMask >= 0 && !plan.PlainTile)
+            {
+                Material m = AtlasMat(t, plan.CellMask);
+                float v0 = (float)(plan.CropZ0 - c.z), v1 = (float)(plan.CropZ1 - c.z);
+                if (m != null && v1 > v0)
+                {
+                    uvs[0] = new Vector2(0f, v0); uvs[1] = new Vector2(0f, v1); uvs[2] = new Vector2(1f, v1); uvs[3] = new Vector2(1f, v0);
+                    Printer_Plane.PrintPlane(this, new Vector3(c.x + 0.5f, yTile, (float)(plan.CropZ0 + plan.CropZ1) / 2f),
+                        new Vector2(1f, v1 - v0), m, 0f, false, uvs, null, 0f);
+                }
+            }
+            if (plan.FittingMask >= 0)
+            {
+                Material m = AtlasMat(t, plan.FittingMask);
+                if (m != null)
+                    Printer_Plane.PrintPlane(this, new Vector3(c.x + 0.5f, yTile + 0.0005f, (float)plan.FittingZ), Vector2.one, m, 0f);
+            }
+            Material sm = StraightMat(t, true);
+            if (sm == null) return 0;
+            LayerSubMesh mesh = GetSubMesh(sm);
+            // the cross-section is not symmetric (rim shadow on the south): StripQuads puts v "left of travel", which is north
+            // only for eastward travel, so a riser travelling west (tank on its west, dx -1) swaps the two rims
+            float y = yTile + 0.001f, vr = 0.5f - (float)LiquidJoinRule.BoreHalf, vl = 0.5f + (float)LiquidJoinRule.BoreHalf;
+            if (LiquidJoinRule.TravelsWest(plan.Path)) { float sw = vr; vr = vl; vl = sw; }
+            List<LiquidJoinRule.StripQuad> quads = LiquidJoinRule.StripQuads(plan.Path, LiquidJoinRule.BoreHalf);
+            foreach (LiquidJoinRule.StripQuad q in quads)
+            {
+                int k = mesh.verts.Count;
+                mesh.verts.Add(new Vector3((float)q.X0, y, (float)q.Z0)); mesh.uvs.Add(new Vector3((float)q.U0, vr, 0f));
+                mesh.verts.Add(new Vector3((float)q.X1, y, (float)q.Z1)); mesh.uvs.Add(new Vector3((float)q.U0, vl, 0f));
+                mesh.verts.Add(new Vector3((float)q.X2, y, (float)q.Z2)); mesh.uvs.Add(new Vector3((float)q.U1, vl, 0f));
+                mesh.verts.Add(new Vector3((float)q.X3, y, (float)q.Z3)); mesh.uvs.Add(new Vector3((float)q.U1, vr, 0f));
+                for (int j = 0; j < 4; j++) mesh.colors.Add(new Color32(255, 255, 255, 255));
+                mesh.tris.Add(k); mesh.tris.Add(k + 1); mesh.tris.Add(k + 2);
+                mesh.tris.Add(k); mesh.tris.Add(k + 2); mesh.tris.Add(k + 3);
+            }
+            return quads.Count;
         }
 
         public override void Regenerate()
@@ -313,6 +427,7 @@ namespace RimMandrake.FlowWorks.Machinery
                     if (RM_LiquidJoins.PartnerAt(c, map) != null) break;   // a pipe under a tank or machine is hidden already
                     // FLOWWORKS_PUMP_PORTS_REBUILD_ONE_PER_SIDE: a pipe joins any tank or machine across a corner too (the net is
                     // 8-way for every member), so it draws its under-run to the centre from there as well (CornerStub)
+                    int cellRisers = -1;   // RiserCount, read on the first riser only
                     for (int di = 0; di < 8; di++)
                     {
                         IntVec3 d = di < 4 ? GenAdj.CardinalDirections[di] : GenAdj.DiagonalDirections[di - 4];
@@ -322,8 +437,12 @@ namespace RimMandrake.FlowWorks.Machinery
                         double[] poly;
                         if (di < 4 && risers && RM_LiquidJoins.RiserInto(c, d, b, out double portZ))
                         {
-                            poly = LiquidJoinRule.RiserStub(c.x, c.z, d.x, d.z, r.minX, r.minZ, r.Width, r.Height, portZ, under);
+                            if (cellRisers < 0) cellRisers = RM_LiquidJoins.RiserCount(c, map);
+                            LiquidJoinRule.RiserPlan plan = RM_LiquidJoins.RiserPlanFor(t, d, b, portZ, under, cellRisers > 1);
+                            if (plan == null) continue;
+                            n += PrintRiser(t, c, plan, t.TrueCenter().y);
                             nr++;
+                            continue;
                         }
                         else if (!under)
                         {
@@ -381,6 +500,20 @@ namespace RimMandrake.FlowWorks.Machinery
             if (RM_LiquidJoins.PartnerAt(c, parent.Map) != null
                 || (RM_MachinerySettings.pipePolesEnabled && RM_LiquidJoins.PipePoleAt(c, parent.Map))
                 || RM_LiquidJoins.ReelCoupledTo(c, parent)) __result = true;
+        }
+    }
+
+    /// <summary>PIPE_JOINS_REDRAW_RISER_ELBOW_AND_COLLAR (owner 2026-10-24: "In the south there is a crude "cap" graphic that's
+    /// inappropriate"): a pipe cell whose riser redraws it (RiserBend: Gentle, Elbow, or a lone Fitting) prints no linked tile
+    /// of its own -- SectionLayer_RM_PipeCentreStubs prints the bend in its place.</summary>
+    [RimMandrake.Shared.PatchFeature("Universal pipe: joins", typeof(RM_MachinerySettings), "pipeLinksIntoMachines")]
+    [HarmonyPatch(typeof(Graphic_Linked), nameof(Graphic_Linked.Print))]
+    internal static class Patch_Pipe_RiserReplacesTile
+    {
+        private static bool Prefix(Thing thing, float extraRotation)
+        {
+            if (thing == null || extraRotation != 0f || !RM_LiquidNet.IsPipe(thing)) return true;
+            return !RM_LiquidJoins.RiserReplacesTile(thing);
         }
     }
 
