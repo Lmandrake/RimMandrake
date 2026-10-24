@@ -187,6 +187,11 @@ namespace RimMandrake.AtmosphericBase
             int i = IndexOf(t);
             if (i < 0) return false;
             RM_TakenEmitter rec = taken[i];
+            // §9.9 also holds between evaluations (take-all-back button, channel switched off, prune, a save edited while
+            // closed): a colour someone else left on the lamp is never written over by the saved one.
+            CompGlower now = rec.thing != null && !rec.thing.Destroyed ? RM_EmitterDiscovery.GlowerOf(rec.thing) : null;
+            if (now != null && RM_HeldLampPolicy.EditedExternally(RM_GlowAccess.Snapshot(now), rec.lastLeft))
+                return ReleaseKeepingEdit(rec.thing);
             taken.RemoveAt(i);
             compositor.Forget(rec.thing);
             CompGlower g = rec.thing != null && !rec.thing.Destroyed ? RM_EmitterDiscovery.GlowerOf(rec.thing) : null;
@@ -346,6 +351,7 @@ namespace RimMandrake.AtmosphericBase
             {
                 RM_TakenEmitter rec = taken[i];
                 CompGlower g = rec.thing != null && !rec.thing.Destroyed ? RM_EmitterDiscovery.GlowerOf(rec.thing) : null;
+                if (g != null && RM_HeldLampPolicy.EditedExternally(RM_GlowAccess.Snapshot(g), rec.lastLeft)) g = null;   // theirs to keep (§9.9)
                 if (g != null && rec.prior != null) RM_GlowAccess.RestoreFieldOnly(g, rec.prior);
             }
             taken.Clear();
