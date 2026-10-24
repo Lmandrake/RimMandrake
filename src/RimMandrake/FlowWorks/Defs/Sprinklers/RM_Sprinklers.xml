@@ -23,8 +23,8 @@
       <texPath>RimMandrake/FlowWorks/Sprinkler/Scrapper/RM_SprinklerHead</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(1,1)</drawSize>
-      <!-- drawOffset z = (foot_y - 128)/256: the riser saddle's centre on the pipe axis, measured per look on the 2026-10-21 line_joins art (Scrapper 139, Industrial 180, Modern 173, Futuristic 163.5 px of 256) -->
-      <drawOffset>(0,0,0.04)</drawOffset>
+      <!-- drawOffset z = (seat_y - 128)/256 = 12/256: every look's squat head (art_source/Sprinkler/squat_heads.py, SPRINKLER_SEAT_FIX_HEAD_BESIDE_ELBOW) puts the clamp's seat on canvas row 140, so one offset lands it on the pipe axis; RM_PipeSeatMath adds the elbow shift -->
+      <drawOffset>(0,0,0.047)</drawOffset>
       <damageData>
         <rect>(0.3,0.3,0.4,0.4)</rect>
       </damageData>
@@ -71,8 +71,8 @@
       <texPath>RimMandrake/FlowWorks/Sprinkler/Scrapper/RM_SprinklerHead</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(1,1)</drawSize>
-      <!-- drawOffset z = (foot_y - 128)/256: the riser saddle's centre on the pipe axis, measured per look on the 2026-10-21 line_joins art (Scrapper 139, Industrial 180, Modern 173, Futuristic 163.5 px of 256) -->
-      <drawOffset>(0,0,0.04)</drawOffset>
+      <!-- drawOffset z = (seat_y - 128)/256 = 12/256: every look's squat head (art_source/Sprinkler/squat_heads.py, SPRINKLER_SEAT_FIX_HEAD_BESIDE_ELBOW) puts the clamp's seat on canvas row 140, so one offset lands it on the pipe axis; RM_PipeSeatMath adds the elbow shift -->
+      <drawOffset>(0,0,0.047)</drawOffset>
     </graphicData>
   </ThingStyleDef>
 
@@ -84,8 +84,8 @@
       <texPath>RimMandrake/FlowWorks/Sprinkler/Industrial/RM_SprinklerHead</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(1,1)</drawSize>
-      <!-- drawOffset z = (foot_y - 128)/256: the riser saddle's centre on the pipe axis, measured per look on the 2026-10-21 line_joins art (Scrapper 139, Industrial 180, Modern 173, Futuristic 163.5 px of 256) -->
-      <drawOffset>(0,0,0.2)</drawOffset>
+      <!-- drawOffset z = (seat_y - 128)/256 = 12/256: every look's squat head (art_source/Sprinkler/squat_heads.py, SPRINKLER_SEAT_FIX_HEAD_BESIDE_ELBOW) puts the clamp's seat on canvas row 140, so one offset lands it on the pipe axis; RM_PipeSeatMath adds the elbow shift -->
+      <drawOffset>(0,0,0.047)</drawOffset>
     </graphicData>
   </ThingStyleDef>
 
@@ -97,8 +97,8 @@
       <texPath>RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(1,1)</drawSize>
-      <!-- drawOffset z = (foot_y - 128)/256: the riser saddle's centre on the pipe axis, measured per look on the 2026-10-21 line_joins art (Scrapper 139, Industrial 180, Modern 173, Futuristic 163.5 px of 256) -->
-      <drawOffset>(0,0,0.18)</drawOffset>
+      <!-- drawOffset z = (seat_y - 128)/256 = 12/256: every look's squat head (art_source/Sprinkler/squat_heads.py, SPRINKLER_SEAT_FIX_HEAD_BESIDE_ELBOW) puts the clamp's seat on canvas row 140, so one offset lands it on the pipe axis; RM_PipeSeatMath adds the elbow shift -->
+      <drawOffset>(0,0,0.047)</drawOffset>
     </graphicData>
   </ThingStyleDef>
 
@@ -110,8 +110,8 @@
       <texPath>RimMandrake/FlowWorks/Sprinkler/Futuristic/RM_SprinklerHead</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(1,1)</drawSize>
-      <!-- drawOffset z = (foot_y - 128)/256: the riser saddle's centre on the pipe axis, measured per look on the 2026-10-21 line_joins art (Scrapper 139, Industrial 180, Modern 173, Futuristic 163.5 px of 256) -->
-      <drawOffset>(0,0,0.14)</drawOffset>
+      <!-- drawOffset z = (seat_y - 128)/256 = 12/256: every look's squat head (art_source/Sprinkler/squat_heads.py, SPRINKLER_SEAT_FIX_HEAD_BESIDE_ELBOW) puts the clamp's seat on canvas row 140, so one offset lands it on the pipe axis; RM_PipeSeatMath adds the elbow shift -->
+      <drawOffset>(0,0,0.047)</drawOffset>
     </graphicData>
   </ThingStyleDef>
 

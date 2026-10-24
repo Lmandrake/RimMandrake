@@ -9,6 +9,12 @@ Each check must FAIL on the art he rejected (the shipped code, emulated as BEFOR
     riser_gaps                                       PASS both; can-fail: the scene with its riser strips removed
     riser_rims_north                                 PASS after; can-fail: the review's west-going rim flip re-created
   parity: the emulation's constants are the C#'s (LiquidJoinRule ElbowRadius/BoreHalf/UnderNozzle, TankPortGeometry PortDz).
+  sprinkler head, every look x nine stations (SPRINKLER_SEAT_FIX_HEAD_BESIDE_ELBOW):
+    head_centroid_on_axis, head_squat   FAIL on the tall heads (art_source/Sprinkler/raw at their shipped drawOffsets),
+                                        PASS on the installed squat heads at the Defs' drawOffset
+    head_seat_on_pipe                   PASS on both; can-fail: the elbow seat put back at the cell centre (the old bug)
+  parity: fw_scenes_sprinkler.seat == RM_PipeSeatMath.Seat for all 16 masks x every look (read from the C# source via
+          selftest_pipe_seat's parser); every RM_SprinklerHead drawOffset z == (squat_heads.SEAT_Y - 128) / 256 to 3 dp.
 """
 # selftest-timeout: 400
 import re
@@ -20,6 +26,10 @@ sys.path.insert(0, str(HERE))
 import fw_compositor as fc  # noqa: E402
 import fw_offline_checks as ck  # noqa: E402
 import fw_scenes_pipejoins as sp  # noqa: E402
+import fw_scenes_sprinkler as ss  # noqa: E402
+import selftest_pipe_seat as ps  # noqa: E402
+sys.path.insert(0, str(HERE.parent / "art_source" / "Sprinkler"))
+import squat_heads  # noqa: E402
 
 PX = 40
 fails = []
@@ -66,8 +76,47 @@ def pipe_joins():
         want(not ok, "%s can-fail: riser_rims_north sees the west-going flip (%s)" % (look, d))
 
 
+def sprinkler_parity():
+    src = (fc.FW / "Source/Sprinklers/RM_PipeSeatMath.cs").read_text()
+    for name, py in (("LoneStubScrapperPx", ss.LONE_STUB_SCRAPPER_PX), ("ShownCellPx", ss.SHOWN_CELL_PX)):
+        m = re.search(r"const float %s = ([-\d.]+)f;" % name, src)
+        want(m is not None and abs(float(m.group(1)) - py) < 1e-9, "parity: %s C# %s == python %s" % (name, m and m.group(1), py))
+    arcs = ps.arcs_from_source()
+    bad = [(look, mask) for look in fc.LOOKS + ("NoSuchLook",) for mask in range(16)
+           if max(abs(a - b) for a, b in zip(ss.seat(mask, look), ps.seat(mask, look, arcs))) > 1e-6]
+    want(not bad, "parity: fw_scenes_sprinkler.seat == RM_PipeSeatMath.Seat, 16 masks x 5 looks (mismatch %s)" % bad)
+    want(abs(ss.elbow_arc("Scrapper")[0] - arcs["Scrapper"][0]) < 1e-9, "parity: elbow_arc reads as ElbowArc")
+    oz = ss.def_offsets()
+    need = round((squat_heads.SEAT_Y - 128) / 256, 3)
+    want(all(abs(v - need) < 1e-9 for v in oz.values()) and len(oz) == 4,
+         "parity: every RM_SprinklerHead_<Look> drawOffset z %s == (SEAT_Y %d - 128)/256 = %s" % (oz, squat_heads.SEAT_Y, need))
+
+
+def sprinkler():
+    for look in fc.LOOKS:
+        before, after = ss.board(look, "before", PX), ss.board(look, "after", PX)
+        for f in (ck.head_centroid_on_axis, ck.head_squat):
+            okb, db = f(before)
+            oka, da = f(after)
+            want(not okb, "%s %s FAILS on the tall head (%s)" % (look, f.__name__, db))
+            want(oka, "%s %s passes on the squat head (%s)" % (look, f.__name__, da))
+        for name, sc in (("tall", before), ("squat", after)):
+            ok, d = ck.head_seat_on_pipe(sc)
+            want(ok, "%s head_seat_on_pipe passes on the %s head (%s)" % (look, name, d))
+    real = ss.seat
+    try:
+        ss.seat = lambda mask, look: (0.0, 0.0)          # the cell-centre seat SPRINKLER_HEAD_FIX_FLOATS_OFF_CURVE fixed
+        for look in fc.LOOKS:
+            ok, d = ck.head_seat_on_pipe(ss.board(look, "after", PX))
+            want(not ok, "%s can-fail: head_seat_on_pipe sees a cell-centre seat on the elbows (%s)" % (look, d))
+    finally:
+        ss.seat = real
+
+
 if __name__ == "__main__":
     parity()
     pipe_joins()
+    sprinkler_parity()
+    sprinkler()
     print("%d FAIL" % len(fails) if fails else "ALL OK")
     sys.exit(1 if fails else 0)
