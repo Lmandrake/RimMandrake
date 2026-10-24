@@ -56,7 +56,7 @@ SEAT_WAIT_FADE_SECS = 2 * 3600   # "finished, waiting for you" fades to a plain 
 SEATS = ("BENCH", "FOUNDRY")     # the only windows that can ask for the owner
 OLD_ASK_SECS = 3 * 86400        # older asks fold into one "older (N)" line (nothing dropped)
 RULE_WINDOW_SECS = 14 * 86400   # a ruling older than this (since needs became owner) leaves the widget, not rimflow
-SHEETS_DIRS = [c / "Transient" / "biome_ffar" for c in CLONES]
+SHEETS_DIRS = [c / "Transient" for c in CLONES]   # every sheet root under Transient (one level of subfolders too)
 # Telemetry (TELEMETRY_BUILD_EVERY_TICK_ACCOUNTED): the Windows-side telemetryd writes its alert
 # verdicts + sparklines here; pulse only displays them (design 08 §5.6: pulse is the attention surface).
 TELEMETRY_STATE = Path(os.environ.get("RM_TELEMETRY_ALERTS", "/mnt/e/telemetry/state/alerts.json"))
@@ -562,7 +562,7 @@ def read_sheets(dirs: list[Path] | None = None, probe=sheet_alive, review=sheet_
     from concurrent.futures import ThreadPoolExecutor
     logs: dict[str, Path] = {}
     for d in (dirs if dirs is not None else SHEETS_DIRS):
-        for f in glob.glob(str(d / "*.serve.log")):
+        for f in glob.glob(str(d / "*.serve.log")) + glob.glob(str(d / "*" / "*.serve.log")):
             f = Path(f)
             if f.name not in logs or f.stat().st_mtime > logs[f.name].stat().st_mtime:
                 logs[f.name] = f
@@ -1180,8 +1180,6 @@ def build_chips(rows: list[dict], now: float, sessions_ok: bool = True) -> list[
         elif r["key"] == "artpipe":
             chips.append({"label": "artpipe", "seat": "ART", "state": r["kind"] if r["kind"] == "run" else "idle",
                           "since": r["since"], "title": r["text"]})
-    bad = any(r["kind"] == "red" and not r.get("acked") and r.get("src") in ("memwatch", "kernel") for r in rows)
-    chips.append({"label": "mem", "plain": True, "state": "red" if bad else "idle", "since": 0})
     others, dim = {}, {}
     for r in wins:
         w = r["win"]
@@ -1192,10 +1190,7 @@ def build_chips(rows: list[dict], now: float, sessions_ok: bool = True) -> list[
         chips.append({"label": lab, "state": "run", "n": len(ws), "since": max(w["upd"] for w in ws)})
     rank = {"wait": 0, "run": 0, "stuck": 0, "red": 0, "idle": 1, "stale": 2, "missing": 2, "unknown": 2}
     chips.sort(key=lambda c: (rank.get(c["state"], 1), -(c.get("since") or 0)))
-    if dim:
-        chips.append({"label": " · ".join(f"{k}{'×%d' % len(v) if len(v) > 1 else ''}" for k, v in
-                                          sorted(dim.items(), key=lambda kv: -max(w["upd"] for w in kv[1]))),
-                      "state": "dim", "since": max(w["upd"] for v in dim.values() for w in v)})
+    # the dim idle-window chip is gone from his view: windows that are not seats are not his
     return chips
 
 
@@ -1204,10 +1199,7 @@ def classify_artpipe(a: dict, now: float, at: float) -> list[dict]:
         return []
     kind = "run" if a.get("active", 0) > 0 or a.get("pending", 0) > 0 else "idle"
     txt = f"artpipe · {a['active']} active · {a['pending']} queued"
-    if a.get("done") is not None and a["done"] >= 0:
-        txt += f" · {a['done']} done"
-    if a.get("failed", 0) > 0:
-        txt += f" · {a['failed']} failed"
+    # the lifetime done/failed totals are agent iteration, not his: the failed/ row below carries the detail
     rows = [_row("artpipe", kind, "ART", txt, at, src="artpipe")]
     if a.get("failed", 0) > 0:   # failed jobs are history (the daemon retries or a seat re-queues), never red
         rows.append(_row("fail:artpipe", "failed", "ART", f"artpipe · {a['failed']} job{'s' * (a['failed'] > 1)} in failed/"
@@ -1280,7 +1272,19 @@ def telemetry_episodes(t: dict | None, prev: dict | None, now: float) -> tuple[d
     return {**t, "alerts": show}, eps
 
 
-def classify_telemetry(t: dict | None, acks: dict, now: float) -> list[dict]:
+# RIMPULSE_RED_FIX_MEANS_YOUR_VERB: BENCH's throwaway test colonies die as tests do and Windows RAM dips when
+# agents run; both read as "your colony" / "your PC" but he has no verb. They alarm only in HIS play session.
+TEST_SESSION_ALERTS = ("colony_dead", "colonist_hostile", "mem_low")
+
+
+def owner_play_session(game_running: bool | None, bridge: str | None) -> bool:
+    """His own play session = the game is running and no seat holds the bridge (a held bridge is a test
+    session). No bridge line, no probe or no game: not provably his, so those alarms stay quiet."""
+    tok = (bridge or "").split()
+    return bool(game_running) and bool(tok) and tok[0] == "FREE"
+
+
+def classify_telemetry(t: dict | None, acks: dict, now: float, owner_play: bool = True) -> list[dict]:
     """Rows for telemetryd's alerts. Pass the payload through `telemetry_episodes` first: then an alert's
     `since` is its episode start, so its incident (and toast, and ack) stays the same across re-opens."""
     if not t:
@@ -1296,6 +1300,8 @@ def classify_telemetry(t: dict | None, acks: dict, now: float) -> list[dict]:
                          incident=inc, acked=a is not None, pill="◆ telemetry"))
         return rows
     for al in t.get("alerts") or []:
+        if not owner_play and any(k in str(al.get("id")) for k in TEST_SESSION_ALERTS):
+            continue
         since = al.get("since") or at
         inc = f"tel:{al['id']}@{int(since)}"
         n = al.get("flaps") or 1
@@ -1492,6 +1498,54 @@ KIND_ORDER = {"red": 0, "amber": 1, "amber_soft": 2, "warn": 2.5, "stuck": 3, "r
               "failed": 6.42, "answered": 6.45, "held": 6.46, "done": 7}
 
 
+ANSWERED_SHOW_SECS = 24 * 3600     # "answered, agent to follow up" is agent debt: his view only after it ages a day
+AGENT_KINDS = ("recovered", "failed", "held")     # §3 remove-list: agent iteration, kept for the digest only
+
+
+def owner_view(rows: list[dict], now: float) -> list[dict]:
+    """RIMPULSE_RED_FIX_MEANS_YOUR_VERB. Red means: he has a verb AND work waits on it - the monitor is down
+    (the widget itself says so), a SEAT window died and was not replaced, or a card blocks a seat (that is
+    the amber pinned at the top). Every other red is an agent or machine event that heals itself: it drops to
+    `warn` and is flagged `agent` (the digest still tells it; the widget, strip, tally and phone do not).
+    Also flagged `agent`: the §3 remove-list rows (recovered / failed / held, a young `answered`, the idle
+    planted-OOM proof) and every `amber_soft` (seat finished, idle), which becomes a line in `health`.
+    Pure; returns new rows."""
+    out = []
+    for r in rows:
+        k = r["kind"]
+        if k == "red":
+            inc = r.get("incident") or ""
+            seat_dead = ((inc.startswith("lost:") or inc.startswith("oom:seat:")) and (r.get("who") or "").upper() in SEATS)
+            if not seat_dead and r.get("src") != "telemetry":   # telemetry reds are already gated by owner_play
+                r = {**r, "kind": "warn", "agent": True, "was": "red", "pill": None}
+        elif k in AGENT_KINDS or k == "amber_soft" or r.get("key") == "oom:planted":
+            r = {**r, "agent": True}
+        elif k == "answered":
+            t = (r.get("answered") or {}).get("t") or r.get("since") or 0
+            if now - t < ANSWERED_SHOW_SECS:
+                r = {**r, "agent": True}
+        elif k == "warn" and r.get("src") == "telemetry":
+            r = {**r, "agent": True}      # telemetry warns are Grafana's; "blind" (stale payload) stays: silence is not health
+            if str(r.get("key", "")).startswith("tel:stale"):
+                r["agent"] = False
+        out.append(r)
+    return out
+
+
+def health_lines(rows: list[dict], chips: list[dict], now: float) -> list[str]:
+    """One sentence about the run, replacing the 'finished, idle, waiting for you' pills: a seat that
+    stopped is a health fact (the belt), not a request."""
+    lines = []
+    for r in rows:
+        if r["kind"] == "amber_soft" and r.get("seat") and not r.get("acked"):
+            m = int((now - (r.get("since") or now)) // 60)
+            lines.append(f"{r['who']} finished, idle {m} min — belt stopped" if m < 120 else f"{r['who']} finished, idle {m // 60} h — belt stopped")
+    for c in chips:
+        if c.get("seat") in SEATS and c["state"] == "missing":
+            lines.append(f"{c['seat']} has no window open")
+    return lines
+
+
 def order_rows(rows: list[dict]) -> list[dict]:
     def k(r):
         acked = 1 if r.get("acked") else 0
@@ -1508,6 +1562,7 @@ def build_strip(rows: list[dict]) -> list[dict]:
     question, then the two counts he returns for - to rule, to look at - and the done tally. Presence
     lives in `chips`."""
     pills = []
+    rows = [r for r in rows if not r.get("agent")]
     for r in rows:
         if r.get("acked"):
             continue
@@ -1517,9 +1572,6 @@ def build_strip(rows: list[dict]) -> list[dict]:
         elif r["kind"] == "amber":
             q = r.get("label") or r["text"]
             pills.append({"kind": "amber", "text": f"◐ {r['who']} {short(q, 40)}", "title": r["text"],
-                          "since": r["since"], "seat": r.get("seat")})
-        elif r["kind"] == "amber_soft":
-            pills.append({"kind": "amber_soft", "text": f"◑ {r['who']} finished · idle", "title": r["text"],
                           "since": r["since"], "seat": r.get("seat")})
         elif r["kind"] == "warn":
             pills.append({"kind": "warn", "text": r.get("pill") or "◆ " + short(r["text"], 40), "title": r["text"],
@@ -1536,10 +1588,7 @@ def build_strip(rows: list[dict]) -> list[dict]:
     look = sum(1 for r in rows if look_pending(r))
     if look:
         pills.append({"kind": "look", "text": f"▣ {look} to look at"})
-    done = sum(1 for r in rows if r["kind"] == "done")
-    if done:
-        pills.append({"kind": "done", "text": f"✓ {done}"})
-    return pills
+    return pills                       # no done tally: finished work is told in the digest, not counted here
 
 
 def source_freshness(status: dict, raw: dict, now: float) -> dict:
@@ -1571,15 +1620,17 @@ def collect_snapshot(raw: dict, state: dict, now: float) -> tuple[dict, dict, li
     looks = classify_looks(raw.get("hands", []), raw.get("sheets", []), state.get("seen_look", {}), now,
                            state.get("seen_rev", {}))
     tel, tel_eps = telemetry_episodes(raw.get("telemetry"), state.get("tel_episodes"), now)
+    owner_play = owner_play_session((raw.get("probe") or {}).get("rimworld_running")
+                                    or (raw.get("telemetry") or {}).get("game_running"), raw.get("bridge"))
     rows = (oom + srows + lrows + looks
             + classify_artpipe(raw.get("artpipe", {}), now, raw.get("at", {}).get("artpipe", now))
             + classify_game(raw.get("probe"), raw.get("bridge"), now)
-            + classify_telemetry(tel, acks, now)
+            + classify_telemetry(tel, acks, now, owner_play)
             + classify_failures(raw.get("failures") or [], acks, now))
     wins = [r["win"] for r in srows if r.get("win")]
     rows, incidents, inc_events = track_incidents(rows, state.get("incidents", {}), wins, raw.get("services") or {}, now)
     events.extend(inc_events)
-    rows = order_rows(rows)
+    rows = order_rows(owner_view(rows, now))
     # metrics: alarm transitions (question age, red open)
     open_prev = state.get("open", {})
     open_now = {r["incident"]: {"kind": r["kind"], "since": r["since"], "who": r["who"]}
@@ -1591,15 +1642,16 @@ def collect_snapshot(raw: dict, state: dict, now: float) -> tuple[dict, dict, li
         if inc not in open_now:
             events.append({"m": "alarm_close", "id": inc, "kind": o["kind"], "who": o.get("who"),
                            "age_s": round(now - o["since"])})
+    chips = build_chips(rows, now, (raw.get("source_status") or {}).get("sessions", {}).get("ok", True))
     new_state = dict(state)
     new_state.update({"seen": seen, "open": open_now, "incidents": incidents, "tel_episodes": tel_eps})
     snap = {
-        "v": 2, "collected_at": now, "rows": rows, "strip": build_strip(rows), "chips": build_chips(rows, now, (raw.get("source_status") or {}).get("sessions", {}).get("ok", True)), "counts": counts,
+        "v": 2, "collected_at": now, "rows": rows, "strip": build_strip(rows), "chips": chips, "health": health_lines(rows, chips, now), "counts": counts,
         "done_since": since, "sources": source_freshness(raw.get("source_status", {}), raw, now),
-        "sparks": (raw.get("telemetry") or {}).get("sparks"),
+        "sparks": None,          # sparklines are Grafana's, not his
         "telemetry": ({k: raw["telemetry"].get(k) for k in ("at", "grafana", "tier_armed", "game_running")}
                       if raw.get("telemetry") else None),
-        "tally": {k: sum(1 for r in rows if r["kind"] == k and not r.get("acked"))
+        "tally": {k: sum(1 for r in rows if r["kind"] == k and not r.get("acked") and not r.get("agent"))
                   for k in ("red", "amber", "amber_soft", "warn", "run", "done", "review", "provide", "look", "answered",
                             "recovered", "failed", "held")},
     }
