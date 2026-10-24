@@ -542,3 +542,18 @@ invisible to the grid.
 |---|---|---|
 | a. Keep the lines as playtest notes, never gates | Sound intent survives in writing | Two documents keep saying different things unless one is edited |
 | b. Delete the hear lines; sound lives only in Phase 6 playtesting | One story | The intent for acoustic territory is lost from the walk |
+
+
+## 9. Owner decisions (question cards, 2026-10-23 evening)
+
+1. **Install:** a settings button "hand over every lamp on this map"; the per-lamp opt-in survives.
+2. **Territory:** *"The various gods should [be] associated with many such patterns. In the [Utinni]-aligned version they will be player settings."* (typed; his words as recorded) - per-god shapes/patterns; off the Utinni they are player settings. Tides through doors (A) is one such shape; the wedge stays available.
+3. **Palette:** widen it (deeper low end, brighter high end, still warm); fix the (217,217,208) mislabel (real vanilla lamp is (214,148,94)).
+4. **Drawn layer:** only for embers in black and the Narrator wash; ordinary patterns stay real lamp light.
+5. **White:** one reserved token; anything near it is banned (the Narrator's exact white is chosen at calibration).
+6. **Lamp switched off by hand:** silent, no anger; only power loss and stripping anger (L17).
+7. **Order:** live run of phases 1-4 with cost measured, then the faster engine (B), then Phase 5.
+8. **Walk "must hear" lines:** kept as playtest notes that never gate.
+9. **Another mod/player edits a held lamp:** *"It is released. In Utinni this displeases gods."* - release the lamp, keep the edit; aboard the Utinni the edit angers the gods (new rule, to be written into the definition).
+10. **Reload:** restart gently from the start of the pattern (so no clock offset or gesture state is saved; a long-uptime double clock is not required for reload).
+11. **Earlier same day:** no colour-blind/photosensitivity planning; maximise aesthetics.
