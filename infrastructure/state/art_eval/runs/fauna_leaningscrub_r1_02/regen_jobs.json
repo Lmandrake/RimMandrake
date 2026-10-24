@@ -1,0 +1,87 @@
+[
+ {
+  "id": "arteval_RM_Tikkit_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Tikkit",
+  "prompt": "Painterly vanilla RimWorld sprite, realistic, clean dark outline, transparent background. Front view, seen from the front, with the eyes toward the viewer. A small loose cluster of five to seven identical tikkits, tiny living alien plains creatures of the clicking nation, at ground level. Each tikkit faces the camera: a small blunt head with dark eyes and only short, stiff sensory stubs, set at the front of a squat, compact, low-slung body whose belly is close to the ground. Each body is built of overlapping dry, hard, ridged plates, like a seed pod or pinecone, in pale straw and bone-brown tones with darker ridge lines; the shoulders and flanks show interlocking serrated scutes that could rub together and click, and this ridged plating is the dominant feature of every body. The upper body is bare plate, with no wings. All legs are short, similar in length and tucked close under the body. The creatures sit on bare dry ground beneath a few low blades of dry plain grass, the grass leaves overlapping and sheltering them, so they are hidden under the canopy and not perched on the stems. The cluster reads as one patch of the swarm, every individual the same creature, with the same grass, the same pale straw and bone-brown palette and the same soft organic silhouette as the side and rear views of this group. The whole cluster fills about the same height in the frame as the other views, roughly 130 px tall, centered with transparent margin around it. Small scale, readable at tiny size, muted dry-plains palette.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SOUTH_NOT_FRONT, F_INCONSISTENT, F_SIZE_JUMP, DONOR, X_WRONG",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_r1_02"
+ },
+ {
+  "id": "arteval_RM_TunnelSnake_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_TunnelSnake",
+  "prompt": "RimWorld creature sprite, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. A long, low ambush predator called the yanker, dormant in a tight, compressed coil. The coil is a narrow, elongated oval with flattened, parallel flanks and sharp straight side edges, squeezed as if between two close walls, though no walls are drawn and the background stays clean transparent alpha. The body is a wide, flat ribbon, visibly broader than it is thick: shallow, stacked, strap-like bands with a flattened cross-section and a low profile, the whole coil only a little taller than the head. A fringe of fine tactile filaments lies folded flat and close along the flanks, with the tips just reaching out at the edges. The head rests on top of the low coil: a blunt wedge-shaped head with a toothed mouth. Projecting forward from beneath the jaw is a pair of large, jointed, hooked grasping arms, like barbed mandible-claws, held low and forward beside the head, open and reaching, oversized (about a third of the head-to-coil length) so the seize-and-yank signature reads at standard zoom. The front view, the side view and the rear view show the same coil at the same height, width and bulk; only the head and arm projection changes between them. The rear view, seen from behind, shows the coil's tail end, the flat bands and the arms folded low, with the eyes hidden. The silhouette is alien, its own species: flat ribbon body, big forward grasping arms and a fringe of flank filaments. Sized to read about 2.7 cells.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, DEPARTURE_MISSING, DEPARTURE_MISSING, F_SIZE_JUMP, DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_r1_02"
+ },
+ {
+  "id": "arteval_RM_Vissler_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Vissler",
+  "prompt": "A single RimWorld creature sprite on a transparent background, painterly vanilla RimWorld style, realistic, clean dark outline. The vissler: a small, low, slippery, smooth-skinned, soft-bodied walker with a rounded head, two small eyes and four short legs. Its body is compact and small. It has exactly one dominant arm: a big muscular arm about as long as the whole body and three times as thick as a leg, ending in a clear grippable hand, the obvious thing a hand would close on. Where this arm meets the shoulder, a distinct pale seam or collar ring marks the clean break-line where it comes off. On the opposite shoulder, a small pale bud shows an arm regrowing in place of a full limb. The other limbs are plain short legs. The creature reads as a small body attached to one oversized, sheddable arm. Muted earthy body palette, with a warm orange accent on the break-line collar. Anatomy fixed across all facings: the giant arm grows from the creature's own left shoulder and the regrowth bud from its own right shoulder. Front view (eyes toward the viewer): the giant arm is on the viewer's left and the regrowth bud on the viewer's right. Rear view (seen from behind, showing back, haunches and hind legs, eyes hidden): the giant arm is on the viewer's right and the small regrowth bud on the viewer's left shoulder, so each stays on its own anatomical shoulder as the animal turns. Side view facing east: the giant arm hangs from the near shoulder with its break-line collar facing the viewer, and the small regrowth bud sits on the far shoulder, just peeking over the top of the back opposite the big arm, at the same shoulder position as in the front view. All facings share one body scale and one standing shoulder height: the side profile stands at the same body height as the front and rear views, with the same back height, upright short legs and head level, and a body mass of the same volume, lengthened slightly front to back but not lowered or stretched. The arm alone is foreshortened by the viewing angle.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_INCONSISTENT, F_INCONSISTENT, F_SIZE_JUMP, F_INCONSISTENT, F_INCONSISTENT, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_r1_02"
+ },
+ {
+  "id": "arteval_RM_Vurra_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Vurra",
+  "prompt": "A single RimWorld creature sprite: the vurra, a massive alien worm of uncertain origin, painted fresh in the painterly vanilla RimWorld style, realistic, with a clean dark outline, on a transparent background. The body is thick and long, many times the girth of a human arm and long enough to loom over a lone traveler, nowhere near earthworm scale. The head is a predator's head that can threaten someone, with a strong armored brow, a broad jaw and a menacing, watchful look. The skin is plainly alien: overlapping hard plates in slate-violet and bone-grey with a mottled, pitted, faintly glossy texture and darker ridges between the plates. Along the underside runs a row of small, pale, spiked legs, short and sharp like bone thorns, evenly spaced, all the same size and shape. The creature is neither fast nor frenzied: it is heavy, deliberate and menacing, body resting low with the head slightly raised. The creature is drawn at one shared scale and the same body bulk in every view, with the same raised posture, filling the same overall height in the frame. In the rear view, seen from behind, the long plated body recedes away from the viewer along the ground, its groundward length compressed by perspective, so the hindquarters and tail tip are nearest the viewer and the raised front end rises just above them, with the head turned away and its eyes hidden. In the front view, eyes toward the viewer, the raised head is nearest, with the body receding behind it. In the side view the body lies low in profile, curved to fit the same overall height as the other views. Reference: none; build the body from this description.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_r1_02"
+ },
+ {
+  "id": "arteval_RM_Zellik_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Zellik",
+  "prompt": "A single RimWorld creature sprite, the zellik, at rest, in painterly vanilla RimWorld style, realistic, with a clean dark outline, standing alone on a fully transparent background. The zellik looks like a furled, closed umbrella that nobody wants, hunched and upright. The whole body is one tightly furled canopy: a narrow, tapering cone about one third as wide as it is tall. One central shaft runs up through the peak. Eight to ten distinct, darker, bony ribs radiate from the shaft and run in straight lines down to the lower rim, like the spokes of a closed umbrella. Thin, drab, dull grey-brown matte membrane is stretched flat and taut between neighboring ribs, so every rib reads as a separate structural line. The canopy wraps down around the entire body, enclosing legs, tendrils and underbody. Beneath the lower rim show only two short clawed feet, toes curled as if gripping empty air, with transparent alpha directly beneath and around them: the zellik and its feet are the only painted pixels. Front view (south): the feet and curled toes point toward the camera, and one clear front-only cue shows at the hem, a narrow sensory slit just above the rim with a single leading claw tip below it, facing the viewer. Rear view (north): the smooth, unbroken back seam of the canopy runs down the center, with the heels and rear of the feet toward the viewer, and the slit and leading claw tip hidden. The surface is matte and weathered, fur and ears absent, eyes hidden, and the creature reads as a drab object rather than a mammal. The ribs converge on the central shaft at the peak and curve gently down to the lower rim.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: ALPHA_HALO, DUPLICATE, F_SOUTH_NOT_FRONT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_r1_02"
+ }
+]

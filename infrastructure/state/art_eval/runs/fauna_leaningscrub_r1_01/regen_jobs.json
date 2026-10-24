@@ -1,0 +1,104 @@
+[
+ {
+  "id": "arteval_RM_Ribbonwhip_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Ribbonwhip",
+  "prompt": "A RimWorld creature sprite, the ribbonwhip: a single flat ribbon-bodied predator, no wider than a plant stem along its whole length, shown alone on a fully transparent background. The body is a thin flat band with a gentle twist along its length, so its broad glossy face and its thin pale edge alternate, with shading that follows the flat face and a light edge highlight. It lies in a long wind-bent S-curve, both the head end and the tail end lifted, as if draped across the tips of unseen plant stems; the ribbon floats clear of the bottom of the canvas with empty transparent space beneath every part of it. The image contains only the creature's own body: the surrounding space is empty transparent alpha. At one end is a distinct narrow flat predator's head with a visible mouth slit and two small dark eyes; at the other end the body tapers to a fine tail tip. The palette is muted dried-grass olive and straw green with a pale edge, with a darker olive-brown dorsal stripe and fine pale cross-bands in a faint rust-tan hue, so the creature reads clearly as an animal. Front view, eyes toward the viewer: the narrow flat head faces the camera, foreshortened, with the body trailing back and away in an arc. Side view: the full length of the ribbon in profile with the head at the right. Rear view, seen from behind: the tapering tail end toward the viewer, head hidden behind the body. Painterly vanilla RimWorld style, realistic, clean dark outline.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SOUTH_NOT_FRONT, F_INCONSISTENT, ALPHA_HALO, DESC_MISS, DEPARTURE_MISSING, X_WRONG",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_r1_01"
+ },
+ {
+  "id": "arteval_RM_Rollbug_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Rollbug",
+  "prompt": "A single RimWorld creature sprite in a painterly, realistic style modelled on vanilla RimWorld art, with a clean dark outline, on a transparent background. The rollbug is a low, broad, squat alien crawler that hugs the floor. It has a flattened, segmented, plated shell like an overlapping armored saddle, a small low head with small dark eyes, eight short stubby legs tucked under the body so the belly nearly touches the ground, and two broad forelimbs shaped as clasping pads pressed against a ball. It is pushing and rolling a packed ball that is clearly bigger than its own body, about one and a half times the body length, and dominates the silhouette. The ball is a lumpy, compacted mass of whatever it has gathered: bone fragments, ribs and teeth, scraps of hide and cloth, bits of metal and grit pressed together, with remains visible across its whole surface. The body has a muted earthy palette of dark umber and slate, while the ball is in bone-white, grey and brown scrap tones. The arrangement is the same on every facing: the ball sits ahead of the rollbug in its direction of travel, with the rollbug's head and forelimbs pressed against the ball's near side and the body pushing from behind. In the front view, seen from the camera, the ball is nearest the viewer at the lower centre and the rollbug's low plated back and rump rise behind and just above it, with the shell and tops of the short legs visible around the ball's edges. The bug sits low against the ball, its shell top level with the lower third of the ball's height. All legs are tucked to one shared ground line. The ball has the same diameter and the body the same size in every view, because all views show the same physical rollbug and the same debris ball; only the viewing direction changes the silhouette, and the sprite fills the same proportion of the canvas in each view.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_INCONSISTENT, F_SIZE_JUMP, F_INCONSISTENT, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_r1_01"
+ },
+ {
+  "id": "arteval_RM_Shirrel_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Shirrel",
+  "prompt": "A RimWorld creature sprite of the shirrel, an alien plains glider that waits all year for a gale and climbs sweetline trees. It is shown grounded and closed. Transparent background, painterly vanilla RimWorld style, realistic, clean dark outline, one creature at game scale (about 1.2 tiles). The body is a lean, angular, four-limbed frame with dusty sand-brown leathery, plated skin, compact and narrow like a climber clinging to a trunk. The sail is folded tight against the back into a compact bundle of bark-grey spars packed along the spine and flanks, with the pale membrane tucked inside the bundle and hidden from view, so the creature looks closed and its silhouette is the body and limbs alone. Every facing (front view with eyes toward the viewer, side view, rear view seen from behind) shows this same compact closed form: a narrow climbing creature with the spar bundle riding close on its back and no sail surface showing. The tail is a thin, stiff, rod-like spar that adds no width to the body. The head is narrow, smooth and angular, with small bare eyes and bare skin around the ears. The limbs are long and hooked, built for gripping tree trunks, with strong curved claws. The palette is single and consistent: dusty sand-brown skin and darker bark-grey spars.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_r1_01"
+ },
+ {
+  "id": "arteval_RM_Shokka_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Shokka",
+  "prompt": "A single RimWorld creature sprite, the shokka, a flat ambush predator of the dry barrens, in painterly vanilla RimWorld style, realistic, with a clean dark outline on a transparent background. The creature is drawn alone on clean transparent alpha, with nothing else in the frame, and clean transparent space surrounds the whole silhouette. Each facing contains only the animal and its pelt, with the outline closing cleanly around the limbs, flanks and tail. The shokka lies perfectly still with its belly on the ground, body splayed flat and much wider than tall, a broad disc-like body with the shoulders level with the back and a smooth low silhouette. Its limbs are folded flat and sprawl out to the sides with elbows out, and its head rests forward with the chin low on the ground. The head in profile is a broad, rounded, flattened ambush head with a blunt short muzzle and soft lips closed over the teeth, set low to the ground. The tail is a short, smooth, furred taper with no ridges or plates, lying along the ground and carrying the same silky pelt as the body. The pelt is a soft irregular dapple of pale ash, sand and dusty grey patches with smooth blended edges, in dry barrens tones that merge with bare ground, and it has a clear satiny sheen with bright specular highlights along the back and flanks where the light catches it. The same silky dappled pelt texture runs continuously through the muzzle, cheeks, limbs and tail, so the whole animal reads as one furred, ground-hugging body. It rests motionless in a resting ambush posture, facing open ground, and its dappled hide alone carries the camouflage.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: ALPHA_HALO, STYLE_EARTHLY, ALPHA_HALO, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_r1_01"
+ },
+ {
+  "id": "arteval_RM_Surrik_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Surrik",
+  "prompt": "A single creature sprite for RimWorld, the surrik, a large alien root-crust swimmer, painted in the vanilla RimWorld style, realistic, with a clean dark outline, on a transparent background. The creature fills the canvas at a visible height of about 190 to 210 px. The surrik is one smooth slate-brown animal with a paler underside, half-sunk in an intact, root-bound ground crust of tan-brown root-mat slabs, dark twisting roots and sparse dry vegetation; the same body, hide and crust appear in every facing. It lies low and horizontal, mid-glide, swimming through the crust as through water: its back breaks the surface like a swimmer's, the mat ridges up and peels aside in a bow wave at the leading edge, the mat flows around the massive shoulders, and a trailing wake furrow closes behind the body. The ground crust is whole and unbroken, a continuous mat with a smooth surface. The body is an alien, streamlined, seal-like bulk with massive, broad shoulders forming the leading edge that pushes through the mat. The head is blunt and low, set beneath and behind the shoulder line with no neck held out. The face is realistic and predatory: small, dull, deep-set eyes set wide apart in leathery, weathered, matte skin, and a wide, hard-lipped, underslung jaw that opens upward from beneath the head, like an ambush predator striking from below the crust. The hide is smooth matte slate-brown. The body tapers into a heavy haunch and tail that stay sunk in the mat, and the limbs are smooth, short flippered stubs, mostly hidden below the crust line. Front view: seen from the front with the eyes toward the viewer, the broad shoulders and low head with the upturned jaw rising out of the bulging mat. Rear view: seen from behind at the game's angled camera, the haunches and tail nearest the viewer, the back rising away toward the shoulders, which hump up at the far end, the eyes hidden. Side view: true side profile, half-sunk in the root crust, the massive shoulders leading on the right, the head low behind them, and a smooth streamlined back trailing left to the tail. Every view is the living surrik itself, painted fresh in one consistent hand and palette.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_INCONSISTENT, F_SIZE_JUMP, DONOR, F_TOPDOWN, DEPARTURE_MISSING, STYLE_CARTOON, X_WRONG",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_r1_01"
+ },
+ {
+  "id": "arteval_RM_Thornhold_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Thornhold",
+  "prompt": "A single RimWorld creature sprite of the thornhold, a stubborn alien den-guardian that lives in venomvine thickets, painted in a vanilla RimWorld style with realistic rendering, a clean dark outline, a transparent background, and one creature centered. Its body is long, low and narrow like a ferret or weasel, slung close to the ground on short legs, about three times as long as it is tall, with a slim torso and a flat, level back built to thread tight tunnels. The flanks and rump are sleek, covered in short flat fur with only a few small quills, while a bony beak-like snout and a few bony plates add alien character. The head, face and forequarters carry the densest and longest quills: a bristling fan of spear-like spines radiating forward and slightly outward from the brow, cheeks, throat and shoulders, every point aimed ahead of the nose so the snout is framed by a halo of forward-pointing quills reaching beyond it toward the threat. The nape and neck behind the head hold only short quills lying flat, so the quill mass leads the face and does not rise up and back. In side view the long quills lead the snout in profile; in front view they point straight at the viewer; in rear view the quill mass shows only as the shoulder ridge behind the head. The quill tips are wet and stained a sickly green-yellow, visibly venomed. A long, whip-like tail set with rows of venom-tipped quills rises from the hips and curls forward over the back, poised to strike; it has a thick quilled base and a slender, arcing length. Its head is lowered toward the threat, its legs are planted, and its whole posture holds its ground with stubborn resolve.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_r1_01"
+ }
+]
