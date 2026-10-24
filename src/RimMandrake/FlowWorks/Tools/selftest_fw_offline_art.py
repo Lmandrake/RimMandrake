@@ -15,7 +15,7 @@ Each check must FAIL on the art he rejected (the shipped code, emulated as BEFOR
                                         PASS on the installed squat heads at the Defs' drawOffset, at two scales (px 40, 64)
     head_clamp_straddles_pipe           PASS on the squat heads; can-fail: the head shifted 0.1 cell north, south or east
     head_seat_on_pipe                   PASS on the squat heads; can-fail: the elbow seat put back at the cell centre
-    centroid, clamp and squat checks can-fail on a blank head; every check passes for every head look on every pipe
+    centroid, clamp and squat checks can-fail on a blank head, the seat check on a board with no head; every check passes for every head look on every pipe
     look (the seat follows the pipe's look in game)
   parity: fw_scenes_sprinkler.seat == RM_PipeSeatMath.Seat for all 16 masks x every look (k, r and the stub read from the
           C# source via selftest_pipe_seat's parser); the installed head PNGs == squat_heads.shipped(raw) pixel for pixel,
@@ -155,6 +155,10 @@ def sprinkler():
         for f in (ck.head_centroid_on_axis, ck.head_clamp_straddles_pipe, ck.head_squat):
             ok, d = f(ss.board(look, "after", PX, head=blank))
             want(not ok, "%s can-fail: %s refuses a blank head (%s)" % (look, f.__name__, d))
+        headless = ss.board(look, "after", PX)
+        headless.draws = [dr for dr in headless.draws if not (dr[3] and dr[3].get("kind") == "head")]
+        ok, d = ck.head_seat_on_pipe(headless)
+        want(not ok and d == "no head drawn", "%s can-fail: head_seat_on_pipe refuses a board with no head (%s)" % (look, d))
     real = ss.seat
     try:
         ss.seat = lambda mask, look: (0.0, 0.0)          # the cell-centre seat SPRINKLER_HEAD_FIX_FLOATS_OFF_CURVE fixed
