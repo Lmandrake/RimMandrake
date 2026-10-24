@@ -1,0 +1,1588 @@
+{
+ "chains": [
+  {
+   "name": "canal_spikes",
+   "components": [
+    {
+     "name": "spikes_only_on_superdeep",
+     "toggle": "spikesEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofPlacement(Verse.Map, Verse.IntVec3)",
+        "result": "ACCEPT depth 4 drop 4",
+        "thingArgs": [],
+        "ticksGame": 35311,
+        "operation": {
+         "OperationId": "op_d683ef3d62c54bab992d6a17122b9e1a",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 35311
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofPlacement(Verse.Map, Verse.IntVec3)",
+        "result": "REFUSE depth 4 drop 0: Spikes go only at the foot of a sheer drop of 2 m or more. The tallest wall over this square is 0 m.",
+        "thingArgs": [],
+        "ticksGame": 35311,
+        "operation": {
+         "OperationId": "op_002e91757d304a46932e31cd5c3a2797",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 35311
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofPlacement(Verse.Map, Verse.IntVec3)",
+        "result": "REFUSE depth 1 drop 1: Spikes go only at the foot of a sheer drop of 2 m or more. The tallest wall over this square is 0.5 m.",
+        "thingArgs": [],
+        "ticksGame": 35311,
+        "operation": {
+         "OperationId": "op_ca300d5c08a84ce5b16924f7f56cbf25",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 45
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 35311
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofPlacement(Verse.Map, Verse.IntVec3)",
+        "result": "REFUSE depth 2 drop 2: Spikes go only at the foot of a sheer drop of 2 m or more. The tallest wall over this square is 1 m.",
+        "thingArgs": [],
+        "ticksGame": 35311,
+        "operation": {
+         "OperationId": "op_ab46b8403ac74b1593e927000682f615",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 35311
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofPlacement(Verse.Map, Verse.IntVec3)",
+        "result": "REFUSE depth 3 drop 3: Spikes go only at the foot of a sheer drop of 2 m or more. The tallest wall over this square is 1.5 m.",
+        "thingArgs": [],
+        "ticksGame": 35311,
+        "operation": {
+         "OperationId": "op_3e44806e55414240ab40f980cacdd9db",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 35311
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "descent_onto_spikes_stabs",
+     "toggle": "spikesEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofDescent(Verse.Map, Verse.IntVec3)",
+        "result": "HITS 3 | INJURIES Stab 1 | bodySize 0.8",
+        "thingArgs": [],
+        "ticksGame": 35311,
+        "operation": {
+         "OperationId": "op_c53a741546354148af42fddffa68cfc3",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 35311
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "spikes_off_harmless",
+     "toggle": "spikesEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'spikesEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofDescent(Verse.Map, Verse.IntVec3)",
+        "result": "HITS 0 | INJURIES Stab 1 | bodySize 0.8",
+        "thingArgs": [],
+        "ticksGame": 35311,
+        "operation": {
+         "OperationId": "op_e34bbdee71d548bea3897e7dde55f158",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 30
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 35311
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 6 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": [],
+    "runValidity": {
+     "verdict": "CLEAN",
+     "note": "CLEAN: no visitor observed",
+     "visitors": [],
+     "letters": [],
+     "disruptions": [],
+     "observationFailures": [],
+     "abortedBy": null
+    },
+    "receipts": [
+     {
+      "actionId": "A1",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Pirate",
+      "returnedIds": [
+       "Human7932"
+      ],
+      "toolKinds": [
+       "Pirate"
+      ],
+      "readBackKinds": [
+       "Pirate"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     }
+    ],
+    "receiptProblems": [],
+    "baselineScene": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\bench\\Transient\\modcheck\\surprises\\20261024T081129\\FlowWorksExtensions_canal_spikes_scene_baseline.json"
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "toggle_pit_exposure",
+   "components": [
+    {
+     "name": "pit_exposure_on",
+     "toggle": "pitExposureEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/spawn_pawn",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "Human7940",
+          "name": "Nummy",
+          "kindRequested": "Colonist",
+          "kindActual": "Colonist",
+          "kindSubstituted": false,
+          "faction": "PlayerColony",
+          "hostile": false,
+          "x": 84,
+          "z": 160,
+          "spawned": true,
+          "xenotype": "Baseliner",
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 35311,
+        "operation": {
+         "OperationId": "op_46dba6020045484c81aadf6c9ec82102",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 35311
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(1000) [watched] -> 1000 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 1000,
+        "requested": 1000
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "count": 1,
+        "pawns": [
+         {
+          "thingId": "Human7940",
+          "thingIdNumber": 7940,
+          "name": "Naomi 'Nummy' Seratina",
+          "nameShort": "Nummy",
+          "title": "colonist",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "gender": "Female",
+          "ageBiologicalYears": 14,
+          "ageChronologicalYears": 379,
+          "developmentalStage": "Adult",
+          "xenotype": "Baseliner",
+          "ideo": "Academy of Humanity",
+          "childhood": "StoryWriter67",
+          "adulthood": "Colonist97",
+          "headType": "Female_AverageNormal",
+          "bodyType": "Female",
+          "hair": "Long",
+          "beard": "NoBeard",
+          "position": {
+           "x": 84,
+           "z": 159
+          },
+          "traits": [
+           {
+            "def": "Nudist",
+            "degree": 0,
+            "label": "Nudist",
+            "forced": false
+           }
+          ],
+          "skills": [
+           {
+            "skill": "Shooting",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Melee",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Construction",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Mining",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Cooking",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Plants",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Animals",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Crafting",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Artistic",
+            "levelRaw": 6,
+            "levelEffective": 6,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Medicine",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Social",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Intellectual",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           }
+          ],
+          "apparel": [
+           {
+            "def": "Apparel_CollarShirt",
+            "defName": "Apparel_CollarShirt",
+            "stuff": "Synthread",
+            "hp": 130
+           },
+           {
+            "def": "Apparel_Pants",
+            "defName": "Apparel_Pants",
+            "stuff": "Synthread",
+            "hp": 130
+           }
+          ],
+          "equipment": [],
+          "hediffs": [
+           {
+            "def": "RM_PitExposure",
+            "severity": 0.5
+           },
+           {
+            "def": "Heatstroke",
+            "severity": 0.00337500032
+           }
+          ],
+          "needs": [
+           {
+            "need": "Mood",
+            "level": 0.490799963,
+            "pct": 0.490799963
+           },
+           {
+            "need": "Food",
+            "level": 0.771999955,
+            "pct": 0.771999955
+           },
+           {
+            "need": "Rest",
+            "level": 0.9535761,
+            "pct": 0.9535761
+           },
+           {
+            "need": "Joy",
+            "level": 0.505193949,
+            "pct": 0.505193949
+           },
+           {
+            "need": "Beauty",
+            "level": 0.466400057,
+            "pct": 0.466400057
+           },
+           {
+            "need": "Comfort",
+            "level": 0.483199924,
+            "pct": 0.483199924
+           },
+           {
+            "need": "Outdoors",
+            "level": 1.0,
+            "pct": 1.0
+           },
+           {
+            "need": "DrugDesire",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RoomSize",
+            "level": 0.25,
+            "pct": 0.25
+           },
+           {
+            "need": "RM_Thirst",
+            "level": 0.7797154,
+            "pct": 0.7797154
+           }
+          ]
+         }
+        ],
+        "ticksGame": 36311,
+        "operation": {
+         "OperationId": "op_9e0d05ca8d6e46448b26eccaff91ef6b",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 46
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 36311
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "pit_exposure_off",
+     "toggle": "pitExposureEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'pitExposureEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/spawn_pawn",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "Human7946",
+          "name": "Sappy",
+          "kindRequested": "Colonist",
+          "kindActual": "Colonist",
+          "kindSubstituted": false,
+          "faction": "PlayerColony",
+          "hostile": false,
+          "x": 84,
+          "z": 159,
+          "spawned": true,
+          "xenotype": "Baseliner",
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 36311,
+        "operation": {
+         "OperationId": "op_971223b2c7b6461f9344470e5ca51856",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 46
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 36311
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(1000) [watched] -> 1000 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 1000,
+        "requested": 1000
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "count": 1,
+        "pawns": [
+         {
+          "thingId": "Human7946",
+          "thingIdNumber": 7946,
+          "name": "Nate 'Sappy' Hancock",
+          "nameShort": "Sappy",
+          "title": "furniture builder",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "gender": "Male",
+          "ageBiologicalYears": 38,
+          "ageChronologicalYears": 114,
+          "developmentalStage": "Adult",
+          "xenotype": "Baseliner",
+          "ideo": "Academy of Humanity",
+          "childhood": "ConventChild16",
+          "adulthood": "FurnitureBuilder83",
+          "headType": "Male_NarrowPointy",
+          "bodyType": "Male",
+          "hair": "Troubadour",
+          "beard": "MuttonChops",
+          "position": {
+           "x": 84,
+           "z": 161
+          },
+          "traits": [
+           {
+            "def": "TorturedArtist",
+            "degree": 0,
+            "label": "Tortured artist",
+            "forced": false
+           },
+           {
+            "def": "BodyPurist",
+            "degree": 0,
+            "label": "Body purist",
+            "forced": false
+           },
+           {
+            "def": "Industriousness",
+            "degree": 2,
+            "label": "Industrious",
+            "forced": false
+           }
+          ],
+          "skills": [
+           {
+            "skill": "Shooting",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Melee",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Construction",
+            "levelRaw": 9,
+            "levelEffective": 9,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Mining",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Cooking",
+            "levelRaw": 4,
+            "levelEffective": 4,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Plants",
+            "levelRaw": 11,
+            "levelEffective": 11,
+            "passion": "Minor",
+            "xpSinceLastLevel": -1.0,
+            "disabled": false
+           },
+           {
+            "skill": "Animals",
+            "levelRaw": 7,
+            "levelEffective": 7,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Crafting",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Artistic",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Medicine",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Social",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Intellectual",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           }
+          ],
+          "apparel": [
+           {
+            "def": "Apparel_BasicShirt",
+            "defName": "Apparel_BasicShirt",
+            "stuff": "Synthread",
+            "hp": 130
+           },
+           {
+            "def": "Apparel_Pants",
+            "defName": "Apparel_Pants",
+            "stuff": "Synthread",
+            "hp": 130
+           }
+          ],
+          "equipment": [],
+          "hediffs": [],
+          "needs": [
+           {
+            "need": "Mood",
+            "level": 0.480800033,
+            "pct": 0.480800033
+           },
+           {
+            "need": "Food",
+            "level": 0.771999955,
+            "pct": 0.771999955
+           },
+           {
+            "need": "Rest",
+            "level": 0.9504612,
+            "pct": 0.9504612
+           },
+           {
+            "need": "Joy",
+            "level": 0.569382,
+            "pct": 0.569382
+           },
+           {
+            "need": "Beauty",
+            "level": 0.466400057,
+            "pct": 0.466400057
+           },
+           {
+            "need": "Comfort",
+            "level": 0.483199924,
+            "pct": 0.483199924
+           },
+           {
+            "need": "Outdoors",
+            "level": 1.0,
+            "pct": 1.0
+           },
+           {
+            "need": "DrugDesire",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RoomSize",
+            "level": 0.25,
+            "pct": 0.25
+           },
+           {
+            "need": "RM_Thirst",
+            "level": 0.7849006,
+            "pct": 0.7849006
+           }
+          ]
+         }
+        ],
+        "ticksGame": 37311,
+        "operation": {
+         "OperationId": "op_a8bb59c365fd4893a4970a0f706ce68d",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 37311
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 6 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 5,
+    "fed": 0,
+    "ticks_spent": 2000,
+    "surprises": [],
+    "hits_seen": [
+     {
+      "tick": 35911,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] Technologist role activated"
+     },
+     {
+      "tick": 36311,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] Technologist role activated"
+     },
+     {
+      "tick": 36911,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] Technologist role activated"
+     },
+     {
+      "tick": 37311,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] Technologist role activated"
+     },
+     {
+      "tick": 37311,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] Technologist role activated"
+     }
+    ],
+    "close_problems": [],
+    "runValidity": {
+     "verdict": "CLEAN",
+     "note": "CLEAN: no visitor observed",
+     "visitors": [],
+     "letters": [],
+     "disruptions": [],
+     "observationFailures": [],
+     "abortedBy": null
+    },
+    "receipts": [
+     {
+      "actionId": "A1",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human7940"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     },
+     {
+      "actionId": "A2",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human7946"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     }
+    ],
+    "receiptProblems": [],
+    "baselineScene": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\bench\\Transient\\modcheck\\surprises\\20261024T081129\\FlowWorksExtensions_toggle_pit_exposure_scene_baseline.json"
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "pit_prison_room",
+   "components": [
+    {
+     "name": "pit_is_its_own_room",
+     "toggle": "superdeepRoomsEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofRoom(System.String)",
+        "result": "ROOM split=True pitRoom=True proper=True edge=False prison=False roomsOn=True pitId=391 lipId=352",
+        "thingArgs": [],
+        "ticksGame": 37311,
+        "operation": {
+         "OperationId": "op_ca91266412d44097b2ae77e5283e079e",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 37311
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "rooms_off_pit_joins_lip",
+     "toggle": "superdeepRoomsEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'superdeepRoomsEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "Void RebuildAllMaps()",
+        "result": "null",
+        "thingArgs": [],
+        "ticksGame": 37311,
+        "operation": {
+         "OperationId": "op_fe9db89a12e446c693d125bab420c5fe",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 86
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 37311
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofRoom(System.String)",
+        "result": "ROOM split=False pitRoom=False proper=False edge=True prison=False roomsOn=False pitId=392 lipId=392",
+        "thingArgs": [],
+        "ticksGame": 37311,
+        "operation": {
+         "OperationId": "op_8fd74f098b9a488ba33e71815ee0d969",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 37311
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "Void RebuildAllMaps()",
+        "result": "null",
+        "thingArgs": [],
+        "ticksGame": 37311,
+        "operation": {
+         "OperationId": "op_840dae6398e948b594248d1f5d7c0088",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 90
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 37311
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "prisoner_bed_makes_prison_cell",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/build_batch",
+       "result": {
+        "success": true,
+        "placed": 1,
+        "survived": 1,
+        "lostToLaterOps": 0,
+        "failedCount": 0,
+        "failed": [],
+        "displacedCount": 0,
+        "displaced": [],
+        "placeWorkerWarningsCount": 0,
+        "placeWorkerWarnings": [],
+        "qualityIgnoredForDefs": [],
+        "message": "1 placed.",
+        "note": "Walls create NO roof - roof separately. Run jawa/map_commit after the batch.",
+        "things": [
+         {
+          "def": "Bed",
+          "stuff": "WoodLog",
+          "x": 84,
+          "z": 159,
+          "rot": 0,
+          "faction": "PlayerColony",
+          "hitPoints": 91,
+          "maxHitPoints": 91,
+          "quality": "Normal",
+          "destroyed": false
+         }
+        ],
+        "ticksGame": 37311,
+        "operation": {
+         "OperationId": "op_b93d9c29ece04f4c9aab1d0d2ce4a60e",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 37311
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "Bed7952",
+          "def": "Bed",
+          "label": "Wooden bed (normal)",
+          "x": 84,
+          "z": 159,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 91,
+          "maxHitPoints": 91,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "stuff": "WoodLog",
+          "quality": "Normal"
+         }
+        ],
+        "scanned": 4635,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 2,
+        "perDef": {
+         "Bed": 1
+        },
+        "ticksGame": 37311,
+        "message": "1 of 1 matching thing(s) returned, 4635 examined.",
+        "operation": {
+         "OperationId": "op_fdf734a9e3c14161b0f72ded167d9a79",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 37311
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/set_bed_owner_type",
+       "result": {
+        "success": true,
+        "mode": "set",
+        "thingId": "Bed7952",
+        "label": "Wooden bed (normal)",
+        "def": "Bed",
+        "ownerTypeBefore": "Colonist",
+        "ownerTypeAfter": "Prisoner",
+        "forPrisonersAfter": true,
+        "medicalBefore": false,
+        "medicalAfter": false,
+        "changed": [
+         "ownerType"
+        ],
+        "alreadyInRequestedState": false,
+        "ownersBefore": 0,
+        "ownersAfter": 0,
+        "faction": "New Arrivals",
+        "roomIsPrisonCell": false,
+        "roomTouchesMapEdge": false,
+        "prisonerIntakeBlockers": [],
+        "ticksGame": 37311,
+        "operation": {
+         "OperationId": "op_e11e1012d27c40e4b45c9987523623f5",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 37311
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "Void RebuildAllMaps()",
+        "result": "null",
+        "thingArgs": [],
+        "ticksGame": 37311,
+        "operation": {
+         "OperationId": "op_c7e260e673a94318b5acf9447a659c79",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 95
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 37311
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofRoom(System.String)",
+        "result": "ROOM split=True pitRoom=True proper=True edge=False prison=True roomsOn=True pitId=407 lipId=403",
+        "thingArgs": [],
+        "ticksGame": 37311,
+        "operation": {
+         "OperationId": "op_e267d39e219643328339af469ffad908",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 37311
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "capture_down_from_the_lip",
+     "toggle": "captureDownEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "surprise: safe_advance stopped after 60 of 60 tick(s): hostile_arrival: arrived: Human Pirate (humanlike)",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": {
+      "kind": "surprise",
+      "message": "safe_advance stopped after 60 of 60 tick(s): hostile_arrival: arrived: Human Pirate (humanlike)",
+      "hits": [],
+      "evidence": [],
+      "screenshots": [],
+      "stopBy": {
+       "seq": 24,
+       "kind": "hostile_arrival",
+       "severity": "threat",
+       "tick": 37330,
+       "map": 0,
+       "subjectId": 7953,
+       "subject": "Partridge",
+       "critical": false,
+       "declared": false,
+       "detail": "arrived: Human Pirate (humanlike)"
+      },
+      "triggers": [
+       {
+        "seq": 24,
+        "kind": "hostile_arrival",
+        "severity": "threat",
+        "tick": 37330,
+        "map": 0,
+        "subjectId": 7953,
+        "subject": "Partridge",
+        "critical": false,
+        "declared": false,
+        "detail": "arrived: Human Pirate (humanlike)"
+       },
+       {
+        "seq": 25,
+        "kind": "departed",
+        "severity": "info",
+        "tick": 37330,
+        "map": 0,
+        "subjectId": 7940,
+        "subject": "Nummy",
+        "critical": false,
+        "declared": false,
+        "detail": "left the spawned set (not a death unless a tombstone says so)"
+       },
+       {
+        "seq": 26,
+        "kind": "departed",
+        "severity": "info",
+        "tick": 37330,
+        "map": 0,
+        "subjectId": 7946,
+        "subject": "Sappy",
+        "critical": false,
+        "declared": false,
+        "detail": "left the spawned set (not a death unless a tombstone says so)"
+       }
+      ]
+     }
+    },
+    {
+     "name": "capture_down_off",
+     "toggle": "captureDownEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "a surprise ended this chain earlier: surprise: safe_advance stopped after 60 of 60 tick(s): hostile_arrival: arrived: Human Pirate (humanlike)",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "warden_served_from_lip",
+     "toggle": "wardenFromLipEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "a surprise ended this chain earlier: surprise: safe_advance stopped after 60 of 60 tick(s): hostile_arrival: arrived: Human Pirate (humanlike)",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "warden_lip_off",
+     "toggle": "wardenFromLipEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "a surprise ended this chain earlier: surprise: safe_advance stopped after 60 of 60 tick(s): hostile_arrival: arrived: Human Pirate (humanlike)",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 6 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": [],
+    "runValidity": {
+     "verdict": "CLEAN",
+     "note": "CLEAN: no visitor observed",
+     "visitors": [],
+     "letters": [],
+     "disruptions": [],
+     "observationFailures": [],
+     "abortedBy": null
+    },
+    "receipts": [
+     {
+      "actionId": "A1",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Pirate",
+      "returnedIds": [
+       "Human7953"
+      ],
+      "toolKinds": [
+       "Pirate"
+      ],
+      "readBackKinds": [
+       "Pirate"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     },
+     {
+      "actionId": "A2",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human7960"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     }
+    ],
+    "receiptProblems": [],
+    "baselineScene": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\bench\\Transient\\modcheck\\surprises\\20261024T081129\\FlowWorksExtensions_pit_prison_room_scene_baseline.json"
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [],
+ "refused": "",
+ "walk": null,
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
+ "run_validity": "CLEAN",
+ "anchor": [
+  113,
+  118
+ ],
+ "site_save": null,
+ "wall_s": 62.3,
+ "chains_run": [
+  "canal_spikes",
+  "toggle_pit_exposure",
+  "pit_prison_room"
+ ],
+ "chains_declared": [
+  "current",
+  "swept",
+  "taken_by_land",
+  "works",
+  "placer",
+  "plot_A_dug_channel",
+  "plot_B_fill_tiers",
+  "plot_C_limitless_canal",
+  "plot_C2_tar_and_fluids",
+  "plot_D_limited_pond",
+  "plot_E_fire",
+  "plot_F_slime",
+  "plot_H_depth_ladder",
+  "plot_G_pit",
+  "toggle_fill_in",
+  "toggle_fill_in_displacement",
+  "toggle_recession",
+  "toggle_refill",
+  "toggle_liquid_ignition",
+  "all_off_still_digs",
+  "toggle_canal_fire",
+  "toggle_liquid_corrosion",
+  "toggle_superdeep_capture",
+  "toggle_ladder_required",
+  "ladder_prison_door",
+  "pit_cover_fall",
+  "canal_spikes",
+  "flow_doors",
+  "toggle_superdeep_shooting",
+  "toggle_pit_exposure",
+  "toggle_pit_depth_draw",
+  "pit_fill_effects",
+  "toggle_pit_fill_effects",
+  "slime_slip",
+  "toggle_bottle_loop",
+  "toggle_bottle_dirty",
+  "toggle_tank_loop",
+  "toggle_liquid_drilling",
+  "toggle_typed_shores",
+  "toggle_trap_trigger",
+  "toggle_fall_damage",
+  "toggle_river_steam",
+  "fluid_identity_recorded",
+  "swale_enrichment",
+  "fire_explosion",
+  "fire_foam",
+  "fire_rain",
+  "fire_queue_origin",
+  "fuel_moat_chemfuel",
+  "fuel_moat_astrofuel",
+  "fuel_moat_propane",
+  "pit_prison_room",
+  "liquid_pump",
+  "bottle_revert",
+  "wall_faces",
+  "dig_finds",
+  "machinery_pipes",
+  "machinery_found_works",
+  "liquid_heat"
+ ],
+ "script": "extension_proof",
+ "mod": "FlowWorks",
+ "mode": "live",
+ "mod_hash": "108807f8e6c926918bf4dedc6357afbf19ea98adaaac8fc682ab2d3382e838d3",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks"
+  ],
+  "running_sha256": "c74dc4170b83fff4082e70e6271cb799ff3b0555962540423b5ac5ba62b0dd38",
+  "assembly_sha256": "b2f40b34d963d3c1c6a6caaaae9c4db2d66ee0cc1f5d11923820477006d84f9c",
+  "assembly_matches": 1
+ },
+ "aborted": null,
+ "site": "dry"
+}
