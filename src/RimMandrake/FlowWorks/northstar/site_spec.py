@@ -143,6 +143,7 @@ SETTINGS = {
         "litresPerFilth": 400.0, "liquidTheftEnabled": True, "liquidTheftGoodwillPerDay": 2.0, "liquidTheftSightRange": 12.0,
         "pipeLinksIntoMachines": True, "joinFittings": True,   # PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID: fittings installed, ON (owner card 2026-10-22; art only)
         "pipesUnderToCentre": True,   # PIPE_ENDS_BUILD_MEET_IN_THE_MIDDLE (art only)
+        "pipeStraightVariants": True,   # straight-run variants by cell hash (RM_PipeStraightVariantsDraw; art only)
         "lineCrossingRulesEnabled": True,   # PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE P2 (RM_LineCrossing)
         "pipePolesEnabled": True, "pipePoleMaxSpan": 12.0, "pipePoleSag": 0.02,   # PIPE_POLES phase 4 (RM_PipePoles; sag: owner's widths card)
     },
@@ -188,6 +189,7 @@ SETTINGS = {
     "RimMandrake.FlowWorks.Sprinklers.RM_SprinklerSettings": {
         "sprinklersEnabled": True, "sprinklerLitresPerCellHour": 0.5, "sprinklerNativeRadius": 2.9,
         "sprinklerNonWaterEffects": True, "vfeSprinklerAdapterEnabled": True, "vfeThirstValve": True,
+        "sprinklerSprayEffects": True,   # animated spray (RM_SprinklerSprayFx; art only)
     },
     # WALL_SCALING_BUILD_ROPE_OVER_RAMPARTS (own static class; registered 2026-10-19)
     "RimMandrake.FlowWorks.RM_WallClimbSettings": {
