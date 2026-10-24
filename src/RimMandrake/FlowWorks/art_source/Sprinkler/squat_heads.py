@@ -17,15 +17,21 @@ Usage: squat_heads.py [--src DIR] [--out DIR]   (default: raw/ in, out/ out)
 Writes <out>/<Look>/RM_SprinklerHead.png and <out>/seat.json (seat_y, bbox and part rows per look; a record for a human,
 nothing reads it). The installed textures must equal squat(raw/<Look>) pixel for pixel: selftest_fw_offline_art.py
 asserts it, which is what makes the Defs' one drawOffset z = (SEAT_Y - 128)/256 true of the shipped art.
+The Modern head is then recoloured from firetruck red to waterworks blue (shipped(): ModernStyle/waterworks_blue.py,
+MODERN_PIPE_REDRAW_FIRETRUCK_RED_RETIRED); the recolour copies alpha unchanged, so the seat holds for it too.
 """
 import argparse
 import json
 from pathlib import Path
 
+import sys
+
 import numpy as np
 from PIL import Image
 
 HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE.parent / "ModernStyle"))
+import waterworks_blue  # noqa: E402
 TEX = HERE / "raw"   # the tall 2026-10-21 heads, kept as the source (the shipped textures become the output)
 LOOKS = ("Scrapper", "Industrial", "Modern", "Futuristic")
 
@@ -97,6 +103,14 @@ def squat(im):
                 "parts_rows": [top, dome_end, sad_start, bot]}
 
 
+def shipped(look, im):
+    """The installed head for `look` from its tall raw head: squat(), then the Modern waterworks-blue recolour."""
+    out, info = squat(im)
+    if look == "Modern":
+        out, _ = waterworks_blue.recolour(out, waterworks_blue.SPRINKLER)
+    return out, info
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--src", default=str(TEX))
@@ -105,7 +119,7 @@ def main(argv=None):
     seat = {}
     for look in LOOKS:
         im = Image.open(Path(a.src) / look / "RM_SprinklerHead.png").convert("RGBA")
-        out, info = squat(im)
+        out, info = shipped(look, im)
         d = Path(a.out) / look
         d.mkdir(parents=True, exist_ok=True)
         out.save(d / "RM_SprinklerHead.png")
