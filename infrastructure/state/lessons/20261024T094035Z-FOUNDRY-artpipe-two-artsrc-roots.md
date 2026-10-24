@@ -1,0 +1,2 @@
+Artpipe outputs live under more than one _artsrc root: D:\Luke\dev\Rimworld\infrastructure\artpipe\_artsrc for older jobs, and D:\ClaudeWork\rimmandrake\artpipe\_artsrc for newer ones (stdout_tail may even name a third, now-gone root, D:\Luke\dev\_artpipe). An audit that assumed one root reported 'NO_OUTPUT 94' for jobs whose outputs existed. Take each job's path from its manifest's worker_stdout_tail OK line, and probe a known-present job first.
+home: infrastructure/state/facts/instrument_traps.md
