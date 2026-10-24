@@ -11,6 +11,13 @@ corner has no treatment at all in the north. In the south there is a crude "cap"
   riser_kinks        every riser turns smoothly: heading changes by at most 2 degrees where two pieces meet
   riser_gaps         the riser's centreline is drawn pipe all the way from the cell to the port (no hole)
   riser_rims_north   the bent strip keeps the straight tile's north rim on the north, both sides of a tank
+
+Sprinkler head (SPRINKLER_SEAT_FIX_HEAD_BESIDE_ELBOW; his words: "their alignment still reads poorly, need adjustment
+onto the pipe ... make the sprinkler object be shorter, squatter, and wider so that it looks ok over any pipe"):
+  head_centroid_on_axis  the head's drawn mass sits on the pipe's drawn centreline: within HEAD_TOL cell across and along,
+                         on N/S, E/W, every elbow, end, tee and cross (a tall head's mass floats north of an E/W pipe)
+  head_squat             drawn no taller than wide, and at least 2.5 bore widths wide so it straddles any pipe
+  head_seat_on_pipe      the seat point (cell centre + RM_PipeSeatMath) lands on drawn pipe (within half a bore)
 Each returns (ok, detail).
 """
 import math
@@ -110,3 +117,58 @@ def riser_rims_north(scene, half_w=0.12):
 
 
 PIPE_JOIN_CHECKS = (collar_on_riser, end_cap_on_riser, riser_kinks, riser_gaps, riser_rims_north)
+
+
+# ---- sprinkler head (scenes: fw_scenes_sprinkler.board) --------------------------------------------------------------
+HEAD_TOL = 0.12      # cell: how far the head's alpha-weighted centre may sit from the drawn pipe centreline
+BORE = 0.136         # cell: the universal pipe's bore width, every look (measured; fw_scenes_pipejoins.BORE_HALF)
+
+
+def _heads(scene):
+    return [m for _, _, _, m in scene.draws if m and m.get("kind") == "head"]
+
+
+def _alpha(scene, meta):
+    return np.asarray(scene.render(only=lambda m: m is meta))[..., 3].astype(float)
+
+
+def head_centroid_on_axis(scene, tol=HEAD_TOL):
+    worst, where = 0.0, None
+    for m in _heads(scene):
+        a = _alpha(scene, m)
+        ys, xs = np.nonzero(a > 40)
+        w = a[ys, xs]
+        cx = (xs * w).sum() / w.sum() / scene.P
+        cz = scene.h - (ys * w).sum() / w.sum() / scene.P
+        off = max(abs(cx - m["seat"][0]), abs(cz - m["seat"][1]))
+        if off > worst:
+            worst, where = off, (m["mask"], round(cx - m["seat"][0], 3), round(cz - m["seat"][1], 3))
+    return worst <= tol, "worst head-centre offset %.3f cell (mask, dx, dz = %s), tolerance %.2f" % (worst, where, tol)
+
+
+def head_squat(scene, max_ratio=1.0, min_bores=2.5):
+    bad = []
+    for m in _heads(scene)[:1]:          # one art per board: every station draws the same texture at the same size
+        ys, xs = np.nonzero(_alpha(scene, m) > 40)
+        w, h = (xs.max() - xs.min() + 1) / scene.P, (ys.max() - ys.min() + 1) / scene.P
+        if h / w > max_ratio or w < min_bores * BORE:
+            bad.append("%.3f wide x %.3f tall (h/w %.2f, needs <= %.2f; width needs >= %.3f)"
+                       % (w, h, h / w, max_ratio, min_bores * BORE))
+        else:
+            return True, "%.3f wide x %.3f tall (h/w %.2f)" % (w, h, h / w)
+    return False, "; ".join(bad) or "no head drawn"
+
+
+def head_seat_on_pipe(scene):
+    pipe = np.asarray(scene.render(only=lambda m: m.get("kind") == "pipe"))[..., 3]
+    off = []
+    for m in _heads(scene):
+        x, y = scene.to_px(*m["seat"])
+        r = max(1, round(BORE / 2 * scene.P))          # within half a bore: an end cell's pipe stops AT the seat
+        win = pipe[max(0, round(y) - r):round(y) + r + 1, max(0, round(x) - r):round(x) + r + 1]
+        if not (win >= 128).any():
+            off.append(m["mask"])
+    return not off, "seat off the drawn pipe at masks %s" % off if off else "every seat on drawn pipe"
+
+
+SPRINKLER_CHECKS = (head_centroid_on_axis, head_squat, head_seat_on_pipe)
