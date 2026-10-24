@@ -62,6 +62,15 @@ def model_for(rung: str) -> str:
             or rung)
 
 
+def spec_key(x: dict) -> str:
+    """Identity of one judged picture set: the subject, plus its candidate letter when it has one. Two candidates of
+    one subject (a pilot's A and C, a regen next to the original) must not share a card dir, a resume entry, a
+    regression row or a delegated verdict. Regen ROUNDS stay per subject on purpose: the cap counts redraws of the
+    subject, whichever candidate they replace."""
+    c = x.get("candidate")
+    return f"{x['subject']}__{c}" if c else x["subject"]
+
+
 def now():
     return dt.datetime.now().astimezone().isoformat(timespec="seconds")
 
@@ -324,17 +333,17 @@ def run(specs: list, run_id: str, rev: Reviewers | None = None, test: bool = Fal
     if (out / "decisions.jsonl").is_file():                               # resume: a run id is appended to, never redone
         for line in (out / "decisions.jsonl").read_text().splitlines():
             r = json.loads(line)
-            recs.append(r); done.add(r["subject"]); living[r["subject"]] = r["decision"]
+            recs.append(r); done.add(spec_key(r)); living[r["subject"]] = r["decision"]
     meta = json.loads((out / "run.json").read_text()) if (out / "run.json").is_file() else {
         "run_id": run_id, "test": test, "started": now(), "subjects": [],
         "versions_key": versions_key(prompt_versions("creature"))}
     meta["subjects"] = list(dict.fromkeys(meta["subjects"] + [s["subject"] for s in specs]))
     (out / "run.json").write_text(json.dumps(meta, indent=1))
     for s in specs:
-        if s["subject"] in done:
+        if spec_key(s) in done:
             continue
         t0 = time.time()
-        rec = evaluate(s, work / s["subject"], rev, policy, settings, living, rounds)
+        rec = evaluate(s, work / spec_key(s), rev, policy, settings, living, rounds)
         rec["seconds"] = round(time.time() - t0, 1)
         living[s["subject"]] = rec["decision"]
         if rec["decision"] == "REGEN" and not test:
@@ -356,12 +365,28 @@ def run(specs: list, run_id: str, rev: Reviewers | None = None, test: bool = Fal
     if jobs:
         (out / "regen_jobs.json").write_text(json.dumps(jobs, indent=1))
         if file_regens and not test:
-            subprocess.run([sys.executable, str(ROOT / "src/RimMandrake/Utils/artpipe/fill_queue.py"),
-                            "--input", str(out / "regen_jobs.json")], check=False, timeout=120)
+            filing = file_regen_jobs(out / "regen_jobs.json")
+            (out / "regen_filing.json").write_text(json.dumps(filing, indent=1))
+            if not filing["ok"]:
+                print(f"[art_eval] REGEN FILING FAILED ({filing['why']}): {len(jobs)} job(s) in {out / 'regen_jobs.json'} "
+                      f"are NOT in the artpipe queue", file=sys.stderr)
     if record and not test:
         write_delegated(recs)
     (out / "summary.md").write_text(summary(recs, run_id, test))
     return recs
+
+
+def file_regen_jobs(jobs_file: Path, runner=subprocess.run) -> dict:
+    """File regen_jobs.json with fill_queue.py. fill_queue exits 1 on a duplicate id or a row error, 2 on no input:
+    anything but 0 means some regens were not filed, so it is returned (and written beside the run), never dropped."""
+    cmd = [sys.executable, str(ROOT / "src/RimMandrake/Utils/artpipe/fill_queue.py"), "--input", str(jobs_file)]
+    try:
+        r = runner(cmd, check=False, timeout=120, capture_output=True, text=True)
+    except subprocess.TimeoutExpired:
+        return {"ok": False, "rc": None, "why": "fill_queue timed out after 120s", "tail": ""}
+    tail = ((getattr(r, "stdout", "") or "") + (getattr(r, "stderr", "") or ""))[-800:]
+    return {"ok": r.returncode == 0, "rc": r.returncode, "why": f"fill_queue exit {r.returncode}" if r.returncode else "filed",
+            "tail": tail}
 
 
 def regen_jobs(recs: list, run_id: str) -> list:
@@ -371,7 +396,7 @@ def regen_jobs(recs: list, run_id: str) -> list:
         if r["decision"] != "REGEN":
             continue
         rq = r["regen"]["request"]
-        rows.append({"id": f"arteval_{r['subject']}_r{r.get('round', 1)}", "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+        rows.append({"id": f"arteval_{spec_key(r)}_r{r.get('round', 1)}", "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
                      "target_def": r["subject"], "prompt": rq["prompt"], "canvas_w": 1024, "canvas_h": 1024,
                      "facings": [] if r["module"] in ("catch", "ground_cover", "bush", "tree", "special") else ["south", "east", "north"],
                      "style_notes": "art_eval regen round %s; fixes: %s" % (r.get("round"), ", ".join(r["regen"]["findings"])),
@@ -388,7 +413,7 @@ def write_delegated(recs: list):
     d = ROOT / "infrastructure/state/delegated" / day
     d.mkdir(parents=True, exist_ok=True)
     for r in recs:
-        (d / f"{r['subject']}.json").write_text(json.dumps({
+        (d / f"{spec_key(r)}.json").write_text(json.dumps({
             "judge_model": r["models"], "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
             "subject": r["subject"], "decision": r["decision"], "reasons": r["reasons"],
             "prompt_versions": r["prompt_versions"], "image_sha256": r["image_sha256"]}, indent=1))
@@ -433,10 +458,10 @@ def regress(rev: Reviewers | None = None) -> dict:
     rows = [json.loads(l) for l in (STATE / "regression.jsonl").read_text().splitlines() if l.strip()]
     specs = [C.pilot_spec(r["pilot"]) if r.get("pilot") else json.loads((ROOT / r["spec"]).read_text()) for r in rows]
     rid = "regress_" + dt.datetime.now().strftime("%Y%m%dT%H%M%S")
-    recs = {r["subject"]: r for r in run(specs, rid, rev=rev, test=True)}
+    recs = {spec_key(r): r for r in run(specs, rid, rev=rev, test=True)}
     res = []
     for row, s in zip(rows, specs):
-        d = recs[s["subject"]]["decision"]
+        d = recs[spec_key(s)]["decision"]
         # A HOLD_* (transport error, missing panel, kept art) decided nothing: it is UNMEASURED, never a pass.
         # (2026-10-23: a session-limit outage made every row HOLD_ERROR and the NOT_ACCEPT rows "passed".)
         measured = d == "ACCEPT" or d in ("REGEN", "ESCALATE", "REGEN_AFTER_SOURCE")

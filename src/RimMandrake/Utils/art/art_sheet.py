@@ -744,6 +744,8 @@ RENDER = '<script id="RENDER">' + DOUBLES_BODY + COMMON_JS + "</script>" + STYLE
 def pick_options(n: int) -> list[dict]:
     """Column letters (per row: the same letter is a different picture on every row, so no group bulk),
     then redo / hold. Only 'hold' gets an all-rows button."""
+    if n > len(LETTERS):
+        raise SystemExit(f"art_sheet: {n} picture columns but only {len(LETTERS)} letters — hide or purge some sets (--hide-sets)")
     opts = [{"key": LETTERS[i], "label": LETTERS[i], "hotkey": str(i + 1) if i < 9 else "",
              "color": "#5ac37f", "counts": "in", "bulk": False} for i in range(n)]
     return opts + [{"key": "redo", "label": "redo", "hotkey": "r", "color": "#e8b64c",
@@ -766,6 +768,9 @@ def generate(resources: list[str], out_html: Path, title: str, sheet_id: str, br
         rows.append(build_row(idx, res, order, slots))
     maxcols = 0
     for row in rows:
+        if len(row["cols"]) > len(LETTERS):
+            raise SystemExit(f"art_sheet: row {row['res']} has {len(row['cols'])} picture sets, more than the {len(LETTERS)} "
+                             f"letters — hide or purge some (--hide-sets)")
         for i, c in enumerate(row["cols"]):
             c["letter"] = LETTERS[i]
             c["purgeable"] = c["kind"] != "live" and not (c["kind"] == "donor" and c.get("winner"))   # the game's own art
@@ -3692,13 +3697,13 @@ def textures_census(name: str, manifest: Path, label: str | None = None) -> tupl
 
 
 def subjects_with_textures(name: str, manifest: Path, defs, jobs=(), label=None, lead_html="", reopen=(), question=None,
-                           hide_sets=()) -> tuple[Path, str]:
+                           hide_sets=(), references: dict | None = None) -> tuple[Path, str]:
     """--subjects/--jobs AND --textures: one look-over census of def art plus C#-drawn texture art (owner, 2026-10-21:
     "a sheet with all your bridge art on it"). The subjects census, with the manifest's rows appended; a key present in
     both stays the def row. Returns (census path, census key)."""
     tpath, tkey = textures_census(name, Path(manifest), label)
     trows = json.loads(Path(tpath).read_text())["biomes"][tkey]["rows"]
-    cpath, key = subjects_census(name, defs, jobs, label, lead_html, reopen, question, hide_sets)
+    cpath, key = subjects_census(name, defs, jobs, label, lead_html, reopen, question, hide_sets, references)
     cen = json.loads(Path(cpath).read_text())
     have = {r["key"] for r in cen["biomes"][key]["rows"]}
     cen["biomes"][key]["rows"] += [r for r in trows if r["key"] not in have]
@@ -3757,7 +3762,8 @@ def main(argv=None):
             fam, _, why = spec.partition("=")
             RECOMMEND[fam.strip()] = why.strip() or "the agent's pick"
         cpath, key = subjects_with_textures(a.name, Path(a.textures), a.subjects, a.jobs, a.label, a.lead, a.reopen,
-                                            load_question(a.question) if a.question else None, a.hide_sets)
+                                            load_question(a.question) if a.question else None, a.hide_sets,
+                                            json.loads(Path(a.references).read_text()) if a.references else None)
         a.biome, a.census = [key], str(cpath)
     elif a.textures:
         if not a.name:

@@ -153,7 +153,21 @@ def source_files(spec: dict) -> dict:
     for many in ("assembled", "flight", "variants"):
         for n, p in enumerate(imgs.get(many) or [], 1):
             out[f"{many}_{n}"] = p
+    if imgs.get("wall_context"):
+        out["wall_context"] = imgs["wall_context"]
+    for comp in ("living_reference", "siblings"):
+        for lab, p in _comp_items(imgs.get(comp)):
+            out[f"{comp}_{lab}"] = p
     return out
+
+
+def _comp_items(v) -> list:
+    """[(label, file)] of a composite panel's input: a dict {label: file} or a list of files (labelled by stem)."""
+    if not v:
+        return []
+    if isinstance(v, dict):
+        return list(v.items())
+    return [(Path(x).stem, x) for x in v]
 
 
 def build_card(spec: dict, out: Path) -> dict:
@@ -193,8 +207,9 @@ def build_card(spec: dict, out: Path) -> dict:
     for comp in ("living_reference", "siblings"):
         v = imgs.get(comp)
         if v:
-            files = list(v.values()) if isinstance(v, dict) else list(v)
-            labs = list(v.keys()) if isinstance(v, dict) else [Path(x).stem for x in files]
+            labs, files = [a for a, _ in _comp_items(v)], [b for _, b in _comp_items(v)]
+            for lab, f in zip(labs, files):
+                src_shas[f"{comp}_{lab}"] = sha256_file(f)
             im = strip(files, labs, tile=384, title=f"{comp.replace('_', ' ').upper()} — reference, not a candidate")
             im.save(out / f"{comp}.png")
             panels[comp] = f"{comp}.png"

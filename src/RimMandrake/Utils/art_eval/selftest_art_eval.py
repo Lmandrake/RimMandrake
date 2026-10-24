@@ -228,6 +228,138 @@ def main():
     except (ImportError, AttributeError) as e:
         check("shadow candidate columns", False, repr(e))
 
+    # --- cards.py (ART_EVAL_PROVE_CARDS_PY_UNTESTED, ART_EVAL_FIX_CARD_SOURCES_OMIT_CONTEXT)
+    from PIL import Image, ImageDraw
+    import cards as CD
+    with tempfile.TemporaryDirectory() as td:
+        td = Path(td)
+
+        def spr(name, h, color=(120, 90, 60, 255), opaque=False):
+            im = Image.new("RGBA", (200, 200), (0, 0, 0, 0 if not opaque else 255))
+            ImageDraw.Draw(im).rectangle([50, 200 - h, 150, 199], fill=color)
+            p = td / name
+            im.save(p)
+            return str(p)
+
+        s_, e_, n_ = spr("s.png", 100), spr("e.png", 150), spr("n.png", 100)
+        g = CD.gates({"south": s_, "east": e_, "north": n_})
+        check("gates: heights measured at visible alpha", g["visible_height_px"] == {"south": 100, "east": 150, "north": 100}, g)
+        check("gates: spread 50% flagged", g["height_spread"] == 0.5 and g["height_spread_flag"] is True, g)
+        check("gates: identical pictures reported as duplicates", g["duplicates"] == [["south", "north"]], g)
+        check("gates: real alpha seen", g["alpha"]["south"] is True, g)
+        g2 = CD.gates({"south": spr("o.png", 100, opaque=True)})
+        check("gates: opaque picture has no alpha, one facing has no spread", g2["alpha"]["south"] is False and "height_spread" not in g2, g2)
+        halo = Image.new("RGBA", (50, 50), (0, 0, 0, 0))
+        halo.putpixel((10, 10), (255, 255, 255, 8))
+        check("visible_bbox ignores a sub-visible halo", CD.visible_bbox(halo) is None)
+        st = CD.strip([s_, e_], ["a", "b"], tile=128)
+        check("strip: one tile per image at one shared scale", st.size == (256, 128 + 30), st.size)
+        check("canon_for: non-RSW subject has none", CD.canon_for("RM_Huldu") is None)
+        check("canon_for: unknown RSW subject has none", CD.canon_for("RSW_NoSuchCreatureEver") is None)
+        cb = CD.canon_for("RSW_Boarwolf")
+        check("canon_for: Boarwolf must_show read from its entry", bool(cb and cb["must_show"] and cb["source"].endswith("description.md")), cb)
+        wall, liv_a, liv_b, sib = spr("wall.png", 120), spr("la.png", 90), spr("lb.png", 80), spr("sib.png", 70)
+        spec = {"subject": "RM_CardProbe", "label": "probe", "template": "creature", "module": "walker", "candidate": "A",
+                "description": "a probe", "images": {"south": s_, "east": e_, "north": n_, "scale": spr("sc.png", 60),
+                                                     "wall_context": wall, "living_reference": {"south": liv_a, "east": liv_b},
+                                                     "siblings": [sib]}}
+        sf = CD.source_files(spec)
+        check("source_files names the wall context picture", sf.get("wall_context") == wall, sf)
+        check("source_files names every living-reference picture", sf.get("living_reference_south") == liv_a and sf.get("living_reference_east") == liv_b, sf)
+        check("source_files names the sibling pictures", sf.get("siblings_sib") == sib, sf)
+        card = CD.build_card(spec, td / "card")
+        for pn in ("south", "east", "north", "scale", "wall_context", "living_reference", "siblings", "facings"):
+            check(f"build_card writes panel {pn}", pn in card["panels"] and (td / "card" / f"{pn}.png").is_file(), card["panels"])
+        check("build_card: card.md carries the measured gates", "Measured by code" in (td / "card/card.md").read_text())
+        check("build_card: every image sha recorded", set(card["image_sha256"]) >= {"south.png", "facings.png", "wall_context.png"})
+        check("build_card: source shas cover wall and living pictures",
+              {"wall_context", "living_reference_south", "south"} <= set(card["source_sha256"]), card["source_sha256"])
+        check("card_sha stable for the same inputs", CD.build_card(spec, td / "card")["card_sha"] == card["card_sha"])
+        try:
+            CD.build_card(dict(spec, subject="RM_X", images={"south": s_}), td / "card2")
+        except Exception as ex:   # a one-facing creature card must still build (gates skip the spread)
+            check("build_card: one-facing card builds", False, repr(ex))
+
+    # --- two candidates of one subject do not collide (ART_EVAL_FIX_SAME_SUBJECT_CANDIDATES_COLLIDE)
+    try:
+        import runner as RN
+        check("spec_key: no candidate -> the subject", RN.spec_key({"subject": "RM_A"}) == "RM_A")
+        check("spec_key: candidate joins the subject", RN.spec_key({"subject": "RM_A", "candidate": "C"}) == "RM_A__C")
+        with tempfile.TemporaryDirectory() as td:
+            td = Path(td)
+            im = Image.new("RGBA", (128, 128), (0, 0, 0, 0))
+            ImageDraw.Draw(im).ellipse([20, 20, 100, 120], fill=(100, 80, 60, 255))
+            ps = {}
+            for f in ("south", "east", "north", "scale"):
+                ps[f] = str(td / f"{f}.png"); im.save(ps[f])
+            tpl_ = P.load_template("creature")
+
+            class Clean(RN.Reviewers):
+                def opus(self, prompt, card_dir):
+                    its = P.checklist_for(tpl_, "walker", P.card_facts({"invented": True}))
+                    return json.dumps({"schema": "rm-art-eval/opus@v1", "subject": "RM_Two", "observed": {},
+                                       "checklist": {i["id"]: {"status": "ok", "seen": "-"} for i in its},
+                                       "findings": [], "overall": "good"}), {"models_reported": ["mock"]}
+            two = [{"subject": "RM_Two", "candidate": c, "template": "creature", "module": "walker", "invented": True,
+                    "description": "a beast", "images": ps} for c in ("A", "B")]
+            recs = RN.run(two, "two", rev=Clean(), test=True, work_root=td / "w", state_root=td / "s")
+            check("two candidates, two records", len(recs) == 2 and {r["candidate"] for r in recs} == {"A", "B"}, recs)
+            check("two candidates keep two card dirs", (td / "w/two/RM_Two__A/card.json").is_file() and (td / "w/two/RM_Two__B/card.json").is_file())
+            recs2 = RN.run(two, "two", rev=Clean(), test=True, work_root=td / "w", state_root=td / "s")
+            lines = (td / "s/two/decisions.jsonl").read_text().splitlines()
+            check("resume skips both candidates, not just the first", len(lines) == 2 and len(recs2) == 2, len(lines))
+            old_root, RN.ROOT = RN.ROOT, td / "repo"
+            try:
+                RN.write_delegated(recs)
+            finally:
+                RN.ROOT = old_root
+            names = sorted(p.name for p in (td / "repo/infrastructure/state/delegated").glob("*/*.json"))
+            check("delegated verdicts do not overwrite each other", names == ["RM_Two__A.json", "RM_Two__B.json"], names)
+            jobs = RN.regen_jobs([dict(r, decision="REGEN", round=1, regen={"request": {"prompt": "p"}, "findings": []}) for r in recs], "two")
+            check("regen job ids differ per candidate", len({j["id"] for j in jobs}) == 2, [j["id"] for j in jobs])
+
+        # --- file_regens no longer swallows a failed filing (ART_EVAL_HARDEN_FILE_REGENS_SILENT_FAILURE)
+        class Done:
+            def __init__(self, rc, err=""):
+                self.returncode, self.stdout, self.stderr = rc, "", err
+        check("filing ok on exit 0", RN.file_regen_jobs(Path("x.json"), runner=lambda *a, **k: Done(0))["ok"] is True)
+        bad = RN.file_regen_jobs(Path("x.json"), runner=lambda *a, **k: Done(1, "REFUSED duplicate: arteval_x_r1"))
+        check("filing failure is reported with the exit code and output", bad["ok"] is False and bad["rc"] == 1 and "duplicate" in bad["tail"], bad)
+
+        def boom(*a, **k):
+            import subprocess as sp
+            raise sp.TimeoutExpired("fill_queue", 120)
+        check("filing timeout is reported", RN.file_regen_jobs(Path("x.json"), runner=boom)["ok"] is False)
+    except ImportError as e:
+        check("runner importable (candidates)", False, str(e))
+
+    # --- art_sheet: --subjects + --textures keeps --references; letters run out loudly (ART_SHEET_FIX_COMBINED_MODE_DROPS_REFERENCES)
+    try:
+        sys.path.insert(0, str(HERE.parent / "art"))
+        import art_sheet as AS
+        with tempfile.TemporaryDirectory() as td:
+            td = Path(td)
+            mp = td / "m.json"
+            mp.write_text(json.dumps({"rows": [{"key": "T_Leaf", "label": "leaf", "part": "Leaf", "look": "Timber", "section": "T",
+                                                "resources": ["Mod/T/Leaf"], "size": {"drawSize": [1.0, 2.0], "footprint": [1, 2], "source": "L.cs:1"}}]}))
+            old_out, AS.BIOME_OUT = AS.BIOME_OUT, td
+            try:
+                cp, key = AS.subjects_with_textures("ref_probe", mp, ["RM_SuspensionDeck_Steel"], label="x",
+                                                    references={"RM_SuspensionDeck_Steel": ["/a/cand.png"]})
+            finally:
+                AS.BIOME_OUT = old_out
+            rows = {r["key"]: r for r in json.loads(Path(cp).read_text())["biomes"][key]["rows"]}
+            check("combined mode keeps --references on the def row", rows["RM_SuspensionDeck_Steel"].get("reference_textures") == ["/a/cand.png"], rows["RM_SuspensionDeck_Steel"].keys())
+        n = len(AS.LETTERS)
+        check("pick_options at the letter limit works", len(AS.pick_options(n)) == n + 2)
+        try:
+            AS.pick_options(n + 1)
+            check("pick_options past the letters refuses by name", False)
+        except SystemExit as ex:
+            check("pick_options past the letters refuses by name", "letters" in str(ex))
+    except (ImportError, AttributeError) as e:
+        check("art_sheet importable", False, repr(e))
+
     print(f"{'PASS' if not FAILS else 'FAIL'}: art_eval selftest, {len(FAILS)} failure(s)")
     return 1 if FAILS else 0
 
