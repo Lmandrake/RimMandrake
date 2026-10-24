@@ -1,39 +1,33 @@
 #!/usr/bin/env python3
-"""The Modern bottle as a soda bottle and the Modern bucket as an orange pail (MODERN_BOTTLE_REDRAW_SODA_AND_ORANGE_PAIL).
+"""The Modern bucket as an orange pail (MODERN_BOTTLE_REDRAW_SODA_AND_ORANGE_PAIL); the Modern bottle stays the pilot.
 
 Owner 2026-10-24: "Modern bottle should look soda-like. Modern bucket should be orange."
 
-Both are repaints of the installed pilot sprites (v1/out/<Size>/Modern, LIQUID_CONTAINERS_REDRAW_NO_MANA_POTIONS), not
+The pail is a repaint of the installed pilot sprite (v1/out/<Size>/Modern, LIQUID_CONTAINERS_REDRAW_NO_MANA_POTIONS), not
 redraws: the alpha channel and the CutoutComplex mask (R = liquid -> the liquid's colour, G = trim -> the Stuff colour, owner
 by card 2026-10-16) are kept byte for byte, so the liquid and trim tinting work exactly as before. Only painted body pixels
 move, never a liquid or trim pixel.
 
-Bottle: the contour PET shape and petaloid base were already a soda bottle's; what read as "a bottle of something" was the
-label, a red/yellow/teal party swirl. The label band (fixed by the original's saturated, unmasked pixels) is repainted as
-soda trade dress -- deep cola red with one white wave ribbon, shaded as a cylinder with a soft vertical highlight, no text
--- and nothing else: the liquid already carries the original's carbonation dots, which read as fizz in any liquid colour
-(the liquid tint multiplies over them).
+Bottle: the soda repaint (cola-red label, white swoosh) shipped in f17e02293b and the owner ruled it out on the review
+sheet: "I like the before bottles but the after buckets on the review sheet". The installed Modern bottle is the pilot
+again, byte for byte, and its code is gone from here; only the pail is built.
 
 Bucket: the painted body (the blue of the original, by hue weight) is recoloured to a hardware-store safety orange, value
 lifted so the orange is bright; white glints, the grey liquid and the trim (rim, handle) are not blue and stay.
 
-    python3 modern_soda_pail.py <out_dir>    # <out_dir>/<rel> for both pieces + preview.png
+    python3 modern_soda_pail.py <out_dir>    # <out_dir>/<rel> for the pail + preview.png
 """
 import sys
 from pathlib import Path
 
 import numpy as np
-from PIL import Image, ImageFilter
+from PIL import Image
 
 HERE = Path(__file__).resolve().parent
 SRC = HERE / "v1" / "out"
-REL = {"Bottle": "Things/Item/Resource/FlowWorks/Modern/RM_Bottle.png",
+REL = {"Bottle": "Things/Item/Resource/FlowWorks/Modern/RM_Bottle.png",   # installed == the pilot (owner, see above)
        "Bucket": "Things/Item/Resource/FlowWorks/Modern/RM_Bucket.png"}
 
-LABEL_ROWS = (84, 156)           # the label band lies in these rows of the 256 px bottle
-COLA = np.array([0.74, 0.05, 0.06])
-WHITE = np.array([0.97, 0.96, 0.94])
-RIBBON_W = 0.13                  # ribbon half-width, in label heights
 ORANGE_H = 27 / 360
 BLUE_H, BLUE_CORE, BLUE_EDGE = 215 / 360, 35 / 360, 55 / 360
 
@@ -66,51 +60,6 @@ def hsv_to_rgb(h, s, v):
     return out
 
 
-def label_region():
-    """Bool mask of the bottle's label band, from the original: saturated, opaque, neither liquid nor trim, closed."""
-    im, m = load("Bottle")
-    _, s, _ = hsv(im[..., :3])
-    y = np.arange(im.shape[0])[:, None]
-    lab = (s > 0.35) & (im[..., 3] > 0.5) & (m[..., 0] < 128) & (m[..., 1] < 128)
-    lab &= (y >= LABEL_ROWS[0]) & (y < LABEL_ROWS[1])
-    li = Image.fromarray((lab * 255).astype(np.uint8)).filter(ImageFilter.MaxFilter(3)).filter(ImageFilter.MinFilter(3))
-    return (np.asarray(li) > 127) & (im[..., 3] > 0.5) & (m[..., 0] < 128) & (m[..., 1] < 128)
-
-
-def _smooth(x, w):
-    return np.clip(0.5 + x / w, 0.0, 1.0)
-
-
-def build_bottle():
-    im, m = load("Bottle")
-    rgb = im[..., :3].copy()
-    lab = label_region()
-    h, w = lab.shape
-    # label coordinates, smoothed so the ribbon is one clean curve (the cut-out band's own edges are ragged by a pixel):
-    # u across the whole band (its sides are vertical here), v from a moving-average top and bottom edge per column
-    cols = np.where(lab.any(0))[0]
-    x0, x1 = cols.min(), cols.max() + 1
-    top = np.array([np.where(lab[:, x])[0].min() for x in cols], float)
-    bot = np.array([np.where(lab[:, x])[0].max() + 1 for x in cols], float)
-    k = np.ones(15) / 15
-    top = np.convolve(np.pad(top, 7, mode="edge"), k, "valid")
-    bot = np.convolve(np.pad(bot, 7, mode="edge"), k, "valid")
-    yy, xx = np.mgrid[0:h, 0:w] + 0.5
-    u = np.clip((xx - x0) / (x1 - x0), 0, 1)
-    tt, bb = np.zeros(w), np.ones(w)
-    tt[cols], bb[cols] = top, bot
-    v = np.clip((yy - tt[None, :]) / np.maximum(bb - tt, 1)[None, :], 0, 1)
-    shade = 0.50 + 0.50 * np.sin(np.pi * np.clip(u, 0, 1)) ** 0.6
-    hi = 0.30 * np.exp(-((u - 0.30) / 0.07) ** 2)
-    centre = 0.50 + 0.24 * np.sin(np.pi * (2 * u - 1))          # one S-swoosh across the visible face
-    ribbon = _smooth(RIBBON_W * (0.6 + 0.6 * np.sin(np.pi * u)) - np.abs(v - centre), 0.035)   # tapered ends
-    paint = COLA[None, None] * (1 - ribbon[..., None]) + WHITE[None, None] * ribbon[..., None]
-    paint = paint * shade[..., None]
-    paint = paint + (1 - paint) * hi[..., None]
-    rgb[lab] = paint[lab]
-    return _img(rgb, im)
-
-
 def blue_weight(rgb):
     h, s, _ = hsv(rgb)
     dist = np.abs(h - BLUE_H)
@@ -133,27 +82,10 @@ def _img(rgb, im):
     return Image.fromarray(np.dstack([np.clip(np.round(rgb * 255), 0, 255).astype(np.uint8), a]), "RGBA")
 
 
-BUILD = {"Bottle": build_bottle, "Bucket": build_bucket}
+BUILD = {"Bucket": build_bucket}
 
-LABEL_RED_MIN = 0.55     # share of the label that is cola red
-LABEL_WHITE = (0.12, 0.40)  # share of the label that is the white ribbon
-LABEL_OTHER_MAX = 0.02   # share of the label in any other saturated hue (the old swirl's yellow, teal, orange)
 PAIL_ORANGE_MIN = 0.70   # share of the painted body that is orange
 PAIL_BLUE_MAX = 0.01
-
-
-def bottle_reads_as_soda(img):
-    """(ok, red, white, other) over the original's label band: cola red with a white ribbon and no other hue. FAILS on the
-    original (multicolour swirl label: red 0.31, yellow/teal/orange 0.58, no white)."""
-    a = np.asarray(img.convert("RGBA")).astype(float) / 255.0
-    lab = label_region()
-    h, s, v = hsv(a[..., :3])
-    hd = np.minimum(h, 1 - h)
-    red = float(((hd < 15 / 360) & (s > 0.6) & (v > 0.25))[lab].mean())
-    white = float(((s < 0.15) & (v > 0.75))[lab].mean())
-    other = float(((hd > 25 / 360) & (s > 0.4) & (v > 0.25))[lab].mean())
-    ok = red >= LABEL_RED_MIN and LABEL_WHITE[0] <= white <= LABEL_WHITE[1] and other <= LABEL_OTHER_MAX
-    return ok, red, white, other
 
 
 def pail_is_orange(img):
@@ -173,8 +105,8 @@ def pail_is_orange(img):
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
     out = Path(argv[0] if argv else ".")
-    pv = Image.new("RGBA", (256 * 4, 256), (70, 70, 70, 255))
-    for i, size in enumerate(("Bottle", "Bucket")):
+    pv = Image.new("RGBA", (256 * 2, 256), (70, 70, 70, 255))
+    for i, size in enumerate(("Bucket",)):
         im = BUILD[size]()
         dst = out / REL[size]
         dst.parent.mkdir(parents=True, exist_ok=True)
