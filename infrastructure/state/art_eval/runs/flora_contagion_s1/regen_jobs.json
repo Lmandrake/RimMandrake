@@ -114,5 +114,21 @@
   "reference": "",
   "priority": 40,
   "source_run": "flora_contagion_s1"
+ },
+ {
+  "id": "arteval_RM_RustPuff__RustPuff_A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_RustPuff__RustPuff_A",
+  "prompt": "A single RimWorld plant sprite on a transparent background: a cluster of unusually large puffball mushrooms, much bigger than any Earth puffball, seen from a slightly raised front view. The caps are round and dome-shaped with a matte, dry, irregular fungal skin in muted tan and dull ochre, drawn in a painterly style with visible brush strokes, fine cracks, papery flaking patches and rough scales. Over the caps lies a layer of rust-red to red-brown spore dust where the spores have settled, and a cloud of coarse, visible rust-coloured flakes drifts off the tops of the puffballs, each flake distinct and chunky. The ground directly beneath and around the cluster is stained red-brown by fallen spores. Lighting is soft and restrained, with small muted highlights and shading built from painterly strokes, so the surfaces read as dry, textured and organic. A clean dark hand-drawn outline surrounds the whole cluster. Painterly vanilla RimWorld plant style, realistic proportions, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_OFF, STYLE_OFF",
+  "reference": "",
+  "priority": 40,
+  "source_run": "flora_contagion_s1",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl"
  }
 ]

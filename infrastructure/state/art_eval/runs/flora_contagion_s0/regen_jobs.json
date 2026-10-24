@@ -82,5 +82,34 @@
   "replaces_kept": true,
   "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
   "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl"
+ },
+ {
+  "id": "arteval_RM_Rattlegrope__RM_Rattlegrope_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Rattlegrope__RM_Rattlegrope",
+  "prompt": "A single RimWorld bush sprite, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. The rattlegrope is a knot of thick, tentacle-like limbs and nothing else: limbs of dull muted brown-grey flesh, tangled and knotted into one another at the centre, then reaching upward and outward to grope into open air on dry land, curling gently at the ends. Every limb ends in a round, glossy, saturated blue nodule, a bead the size of a plum, so a blue bead crowns each tentacle tip. The blue nodules are the only bright colour in the plant: each is large, rounded, with a small white highlight, clearly visible at normal play zoom against the muted brown-grey limbs. The limb tips are smooth and end directly in the blue bead. The silhouette is an irregular, upright tangle of limbs, with the dense knotted tangle low at the centre and the blue-tipped ends spreading above. Seen from a three-quarter overhead view as RimWorld plants are, centred in the frame with transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "flora_contagion_s0",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl"
+ },
+ {
+  "id": "arteval_RM_TentacularPlant__AB_TentacularPlant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_TentacularPlant__AB_TentacularPlant",
+  "prompt": "An original RimMandrake painting of a tall alien plant for RimWorld, drawn from scratch. A cluster of five to seven fleshy, soft, sinuous tentacle stalks of uneven heights rises from a clump of pointed green-brown sheaths at the ground. The stalks are muted olive-teal with paler undersides; they curl and droop, two lean outward and one arches over the top. Each stalk ends in one round, glossy, speckled blue nodule held at the tip by small claw-like bracts, so every tip reads as a blue knob and not a leaf, bud or flower. A few short, pale, tentacle-like fruit growths bud from the lower stems. Front view, the whole plant centred and readable at small size. Painterly vanilla RimWorld style, realistic shading, clean dark outline, transparent background with real alpha, no ground shadow plate, no text.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: DONOR",
+  "reference": "",
+  "priority": 40,
+  "source_run": "flora_contagion_s0"
  }
 ]
