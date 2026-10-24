@@ -381,6 +381,8 @@ def _vacuous_check_probs(EXT):
             return {"result": "FILLED"}
         if tool == "jawa/static_call" and p.get("method") == "ProofSetBodyFraction":   # plot D stages its small pond
             return {"result": "SET #1 frac 0.200 stock 20.00 of 100.00"}
+        if tool == "jawa/static_call" and p.get("method") == "ProofPitWater":          # exact dug water: dry by default
+            return {"result": "PITWATER dl=0 wet=0 cells=1"}
         if tool == "jawa/flowworks_excavation_drive" or tool == "jawa/flowworks_excavation_report":
             return {"success": True, "depth": 4, "fill": 0}
         if tool == "jawa/spawn_pawn":
@@ -615,6 +617,11 @@ def _repair_probes(EXT, base):
                 if st["n"] is not None:
                     st["n"] += 1
                 return {"success": True, "depth": 3, "fill": 2 if (gain and after) else 1, "isSourceCell": False}
+            if tl == "jawa/static_call" and p.get("method") == "ProofPitWater":   # the bar reads exact water (dl)
+                after = st["n"] is not None and st["n"] >= 12
+                if st["n"] is not None:
+                    st["n"] += 1
+                return {"result": "PITWATER dl=%d wet=1 cells=1" % (20000 if (gain and after) else 10000)}
             return base(tl, p)
         return _ext_run(EXT, "plot_D_limited_pond", h).get("pond_empty_stops_flow")
     for stock, gain, want in ((5.0, False, "UNMEASURED"), (0.0, False, "PASS"), (0.4, False, "PASS"), (0.0, True, "FAIL")):
@@ -632,11 +639,80 @@ def _repair_probes(EXT, base):
                         "body": {"id": 1, "limitless": False, "stock": 0.2 * st["reads"] if rise else 0.2}}
             if tl == "jawa/flowworks_excavation_report":
                 return {"success": True, "depth": 3, "fill": 1, "isSourceCell": False}
+            if tl == "jawa/static_call" and p.get("method") == "ProofPitWater":
+                return {"result": "PITWATER dl=10000 wet=1 cells=1"}
             return base(tl, p)
         return _ext_run(EXT, "plot_D_limited_pond", h).get("pond_recharge_visible")
     for rise, want in ((False, "FAIL"), (True, "PASS")):
         if recharge(rise) != want:
             out.append("pond_recharge_visible rise=%s: %s, want %s" % (rise, recharge(rise), want))
+    # canal_fill_front reads EXACT water (ProofPitWater dl), not the integer F: 2026-10-24 live plot C crept one cell per
+    # pulse, 0.74 level each (terrain RM_WaterThin, source paid the levels), while F read 0000000000 and the bar FAILed
+    # "channel stayed dry, source debited". Old bar on this reading: FAIL; new: PASS. Dry dl with a debit: FAIL.
+    def canal(dl_front, pit_ok=True):
+        st = {}
+
+        def h(tl, p):
+            if tl == "jawa/flowworks_body_report":      # classify=True: stock0 before the window; False: after (paid 3 x 0.74)
+                stock = 287.6 if p.get("classify") else 287.6 - 0.7414 * 3
+                return {"success": True, "isSourceCell": True, "body": {"id": 1, "stock": stock, "limitless": False}}
+            if tl == "jawa/flowworks_engine_state":
+                st["e"] = st.get("e", 1000) + 750
+                return {"success": True, "depthEngineEnabled": True, "nextPulseTick": st["e"], "pulseIntervalTicks": 250}
+            if tl == "jawa/flowworks_excavation_report":
+                return {"success": True, "depth": 1, "fill": 0, "isSourceCell": False}
+            if tl == "jawa/static_call" and p.get("method") == "ProofPitWater":
+                if not pit_ok:
+                    return {"result": "REFUSED: no excavation engine"}
+                x = int(str(p.get("args")).split(",")[0])
+                i = x - st.setdefault("x0", x)       # the first read is the mouth (cells[0])
+                return {"result": "PITWATER dl=%d wet=1 cells=1" % (dl_front if 0 <= i < 3 else 0)}
+            return base(tl, p)
+        return _ext_run(EXT, "plot_C_limitless_canal", h).get("canal_fill_front")
+    for dl, ok, want in ((7414, True, "PASS"), (0, True, "FAIL"), (7414, False, "UNMEASURED")):
+        got = canal(dl, ok)
+        if got != want:
+            out.append("canal_fill_front dl=%d pitwater_ok=%s: %s, want %s" % (dl, ok, got, want))
+    # all_off_still_digs shares plot T with plot_C2: its pond and dug run must keep a dry row off C2's tar strip (a body
+    # stays classified for the map's life and 8-adjacency joins it). 2026-10-24 live: the run sat inside the strip, F=1.
+    def painted(chain):
+        cells, digs = set(), set()
+
+        def h(tl, p):
+            if tl == "jawa/set_terrain_batch":
+                for op in str(p.get("ops", "")).split(";"):
+                    terr, _, r = op.partition(":")
+                    if terr and terr != "Soil" and r:
+                        x, z, w, hh = (int(v) for v in r.split(",")[:4])
+                        cells.update((x + i, z + j) for i in range(w) for j in range(hh))
+            if tl == "jawa/flowworks_excavation_drive":
+                digs.add((int(p["x"]), int(p["z"])))
+            return base(tl, p)
+        _ext_run(EXT, chain, h)
+        return cells, digs
+    tar, _ = painted("plot_C2_tar_and_fluids")
+    pond, dug = painted("all_off_still_digs")
+    near = {(x + dx, z + dz) for x, z in tar for dx in (-1, 0, 1) for dz in (-1, 0, 1)}
+    if not tar or not pond or not dug or (pond | dug) & near:
+        out.append("all_off_still_digs pond/run touches plot_C2's tar strip (sticky body): %d pond, %d dug cells within 1 of %d tar"
+                   % (len(pond & near), len(dug & near), len(tar)))
+    # plot_F slime_occupant_look sets its colonist down INSIDE the D=3 run (a walk in from outside is a ladderless 1.5 m
+    # drop the pit path veto refuses: 2026-10-24 live the pawn never left its spawn cell)
+    spawns, runs = [], set()
+
+    def fh(tl, p):
+        if tl == "jawa/spawn_pawn":
+            spawns.append((int(p["x"]), int(p["z"])))
+        if tl == "jawa/flowworks_excavation_drive":
+            runs.add((int(p["x"]), int(p["z"])))
+        if tl == "jawa/static_call" and p.get("method") == "ProofFillWithFluid":
+            return {"result": "FILLED fluid=" + EXT.SLIME}
+        if tl == "jawa/flowworks_excavation_report":
+            return {"success": True, "depth": 3, "fill": 3}
+        return base(tl, p)
+    _ext_run(EXT, "plot_F_slime", fh)
+    if not spawns or not runs or any(sp not in runs for sp in spawns):
+        out.append("plot_F slime occupant must be set down inside the slime run: spawns %s, run %s" % (spawns, sorted(runs)))
     # dig_finds: the letter is owed only for a FIRST find (Scribed found-list); on a re-run save no letter is right
     def digs(first0, letter, finds=True):
         g = {"depth": 0, "finds": 0, "first": first0, "letters": 0, "cuts": 0}
@@ -929,9 +1005,12 @@ def _new_probes(EXT, RIV, base):
             return True
 
         def bridge_call(self, tool, **p):
-            return {"success": True, "depth": 1, "fill": self.fills.pop(0)}
+            if tool == "jawa/static_call":       # the bar reads exact water (ProofPitWater dl), not the integer F
+                return {"result": "PITWATER dl=%d wet=1 cells=1" % self.fills.pop(0)}
+            return {"success": True, "depth": 1, "fill": 0}
     cells = [(i, 0) for i in range(4)]
-    for fills, want in (([0, 0, 0, 0], True), ([1, 1, 1, 1], True), ([1, 1, 0, 0], False)):
+    # a sub-notch tar film (dl 3000 = 0.3 level, F reads 0) is wet: the integer-F bar called it "no liquid at all"
+    for fills, want in (([0, 0, 0, 0], True), ([10000] * 4, True), ([10000, 10000, 0, 0], False), ([3000, 0, 0, 0], False)):
         try:
             EXT._expect_tar_lag(_TT(fills), cells)
             raised = False
@@ -943,7 +1022,20 @@ def _new_probes(EXT, RIV, base):
     # tank loop (TANK_LOOP_REBUILD_BOTTLES_FIND_THE_RIVER): a stateful fake game. `moves` = the WorkGivers act; a Store tank
     # staged at TANK_STAGE_UNITS falls, a Fill tank staged empty rises, a bottle pond fill swaps empty -> filled.
     def tank_game(moves, tank_refused=False):
-        st = {"mode": None, "units": 0, "polls": 0, "bottle_polls": 0}
+        # realistic: one 1.5 L bottle (15 units) moves, the inspect line rounds like RM_Volume.FormatLitres (0.1 kL from
+        # 1 kL up, so 12 kL - 1.5 L still reads "12 kL"), and a mode-only ProofTank keeps the stock and reads it exactly
+        st = {"mode": None, "units": 0, "polls": 0, "bottle_polls": 0, "moved": False}
+
+        def fmt(u):
+            l = u / 10.0
+            return ("%g kL" % round(l / 1000.0, 1 if l < 100000 else 0)) if l >= 1000 else ("%g L" % round(l, 0 if l >= 100 else 1))
+
+        def live_units():
+            st["polls"] += 1
+            if moves and st["polls"] >= 3 and not st["moved"]:
+                st["moved"] = True
+                st["units"] += 15 if st["mode"] == "Fill" else -15
+            return st["units"]
 
         def h(tl, p):
             if tl == "jawa/static_call" and p.get("method") == "ProofTank":
@@ -952,14 +1044,18 @@ def _new_probes(EXT, RIV, base):
                 a = p["args"].split(";")
                 if len(a) == 4 and int(a[3]) > 160000:      # a real RM_LiquidTank holds 160,000 units (16 kL)
                     return {"result": "REFUSED: tank would not take %s %s" % (a[3], a[2])}
-                st["mode"], st["units"], st["polls"] = a[1], (int(a[3]) if len(a) == 4 else 0), 0
-                return {"result": "TANK mode=%s effective=%s liquid=x units=%d" % (a[1], a[1], st["units"])}
+                if len(a) == 4:
+                    st["mode"], st["units"], st["polls"], st["moved"] = a[1], int(a[3]), 0, False
+                    u = st["units"]
+                else:
+                    st["mode"] = a[1]
+                    u = live_units()
+                return {"result": "TANK mode=%s effective=%s liquid=x units=%d" % (a[1], a[1], u)}
+            if tl == "jawa/build_batch" and "RM_LiquidTank" in str(p.get("ops")):
+                st["units"], st["polls"], st["moved"] = 0, 0, False     # a new tank is empty
             if tl == "jawa/inspect_string":
-                st["polls"] += 1
-                u = st["units"]
-                if moves and st["polls"] >= 3:
-                    u = 50000
-                return {"things": [{"inspect": ("Holding: Fresh water (%s / 16 kL)" % ("%g L" % (u / 10.0) if u < 10000 else "%g kL" % (u / 10000.0))) if u else "Empty"}]}
+                u = live_units()
+                return {"things": [{"inspect": ("Holding: Fresh water (%s / 16 kL)" % fmt(u)) if u else "Empty"}]}
             if tl == "jawa/list_things":
                 st["bottle_polls"] += 1
                 done = moves and st["bottle_polls"] >= 4
