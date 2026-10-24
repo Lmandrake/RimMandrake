@@ -78,15 +78,21 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
         /// and geometry hash (GimmeSomeSlackProbe.Fresh's comparison).</summary>
         internal static (int same, int diff, int missing, List<string> diffKeys) Compare(List<LaidPiece> incr, List<LaidPiece> fresh)
         {
-            var cur = incr.Where(p => p.EndA != null).ToDictionary(p => p.Key, p => p.GeometryHash());
+            // every piece by Key (cords, nodes, coils, tangles), both directions: a surplus incremental-only piece
+            // (a stale cord kept after a topology change) counts as missing from the fresh build, GPT FE_cs_selftests_4.1
+            var cur = incr.ToDictionary(p => p.Key, p => p.GeometryHash());
+            var freshKeys = new HashSet<string>(fresh.Select(p => p.Key));
             int same = 0, diff = 0, missing = 0;
             var keys = new List<string>();
-            foreach (LaidPiece p in fresh.Where(p => p.EndA != null))
+            foreach (LaidPiece p in fresh)
             {
-                if (!cur.TryGetValue(p.Key, out ulong h)) { missing++; keys.Add("missing " + p.EndA + "|" + p.EndB); }
+                string tag = p.EndA != null ? p.EndA + "|" + p.EndB : p.Key;
+                if (!cur.TryGetValue(p.Key, out ulong h)) { missing++; keys.Add("missing " + tag); }
                 else if (h == p.GeometryHash()) same++;
-                else { diff++; keys.Add(p.EndA + "|" + p.EndB); }
+                else { diff++; keys.Add(tag); }
             }
+            foreach (LaidPiece p in incr)
+                if (!freshKeys.Contains(p.Key)) { missing++; keys.Add("stale " + (p.EndA != null ? p.EndA + "|" + p.EndB : p.Key)); }
             return (same, diff, missing, keys);
         }
 
@@ -128,6 +134,13 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             CordWorld wf = StageWorld(f12.GetProperty("w").GetInt32(), f12.GetProperty("h").GetInt32(), st12[st12.Count - 1], out HashSet<Cell> lf);
             var neg = Compare(new CordBuilder().Build(wh, o12, c => lh.Contains(c)), new CordBuilder().Build(wf, o12, c => lf.Contains(c)));
             check(iHeater >= 0 && neg.diff + neg.missing > 0, $"determinism control: heater-only ring vs finished ring reads different ({neg.diff} different, {neg.missing} missing)");
+            // negative control 2: an incremental result carrying one surplus piece must read as a difference
+            {
+                var one = new CordBuilder().Build(wf, o12, c => lf.Contains(c));
+                var stale = new List<LaidPiece>(one) { new LaidPiece { Key = "stale-control" } };
+                var sc = Compare(stale, one);
+                check(sc.missing == 1 && sc.diff == 0, $"determinism control: a surplus incremental-only piece reads as a difference ({sc.missing} missing, {sc.diff} different)");
+            }
             check(scenes == 64 && ring == 4, $"determinism: replayed {scenes} floor scenes ({ring} ring), want 64 (4 ring)");
             Console.WriteLine($"determinism: {scenes - bad}/{scenes} floor scenes fresh == incremental");
         }
