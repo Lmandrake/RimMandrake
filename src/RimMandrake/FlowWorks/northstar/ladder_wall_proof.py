@@ -4,13 +4,19 @@ climb one-way over single walls without roofs as well."; design design/RimMandra
   python.exe src/RimMandrake/FlowWorks/northstar/ladder_wall_proof.py [out.json] [--fresh-map]
 
 Run from the repo root with python.exe; the bridge must be held. Scene (map centre c, a cleared 21x21 site): a single
-granite wall line north-south at x = c+3 (z = c-3..c+3), no roof; the PLAYER's portable ladder on (c+2, c) facing east (the
-wall); one colonist on the ladder's square (a quicktest colonist wears no climbing gear; "climb:" reports byLadder). Acts through RM_LadderParity.ProofLadderParity.
+granite wall line north-south at x = c+3 running the full site (z = c-10..c+10), no roof; the PLAYER's portable ladder on
+(c+2, c) facing east (the wall); one DRAFTED colonist on the ladder's square (a quicktest colonist wears no climbing gear;
+"climb:" reports byLadder). Drafted, it takes no work job, so it cannot walk off or round the wall after (or instead of) the
+climb (LADDER_WALL_FIX_CLIMBER_WALKS_ROUND_WALL). Acts through RM_LadderParity.ProofLadderParity.
 
 Rows:
   LADDER_PARITY_WALL_LADDER_PLACED   PASS/FAIL  the ladder stands on undug ground facing the wall (its inspect reads the
                                                  over-the-wall line; read back with "may:").
-  LADDER_PARITY_OVER_WALL            PASS/FAIL  "climb:" orders the colonist over; after 900 ticks it stands east of the wall.
+  LADDER_PARITY_OVER_WALL            PASS/FAIL  "climb:" orders the colonist over; its square and curJob are polled every
+                                                 POLL ticks up to WAIT ticks, and the FIRST sample with x > wallX inside the
+                                                 wall's z span is the verdict (a later walk-off cannot hide it). Never
+                                                 crossing while drafted is FAIL with the job trace: refile as MOD on
+                                                 RM_ClimbOverWall. No sample read is UNMEASURED.
   LADDER_PARITY_ONE_WAY              PASS/FAIL  from the far side (no ladder there, no gear) "climb:" finds NO_CROSSING.
   LADDER_PARITY_DOUBLE_WALL_REFUSED  PASS/FAIL  a second wall line at x = c+4 makes the crossing two squares thick: NO_CROSSING.
   LADDER_PARITY_CLIMBER_CENSUS       PASS/FAIL  (A7) a colony dog (Husky), a wild Cobra, a wild Muffalo and a spawned colonist
@@ -37,6 +43,7 @@ HPROBE = "RimMandrake.FlowWorks.Hose.HoseProbe"
 OUT = os.path.join(REPO, "Transient", "fw_scenes", "live")
 
 
+POLL, WAIT = 30, 900
 CENSUS = (("Husky", "player", False), ("Cobra", None, True), ("Muffalo", None, False), ("Colonist", "player", True))
 
 
@@ -45,6 +52,20 @@ def pawn_num(pid):
     import re
     m = re.search(r"(\d+)$", str(pid or ""))
     return int(m.group(1)) if m else None
+
+
+def first_crossing(samples, wx, z_span):
+    """samples: [(tick, x, z, job)] in order. -> (status, the first sample east of the wall inside z_span or None). Pure.
+    UNMEASURED when no sample has a position."""
+    seen = False
+    for s_ in samples:
+        t, x, z, _job = s_
+        if x is None or z is None:
+            continue
+        seen = True
+        if x > wx and z_span[0] <= z <= z_span[1]:
+            return "PASS", s_
+    return ("FAIL" if seen else "UNMEASURED"), None
 
 
 def census_verdict(reads):
@@ -104,10 +125,25 @@ def main(argv=None):
             r = json.loads(r["content"][0]["text"])
         return r
 
-    def pos(pid):
+    def prow(pid):
         lp = B.call("jawa/list_pawns", includeHealth=False, limit=500) or {}
-        p = next((p_ for p_ in lp.get("pawns") or [] if pawn_num(p_.get("id")) == pawn_num(pid)), None)
+        return next((p_ for p_ in lp.get("pawns") or [] if pawn_num(p_.get("id")) == pawn_num(pid)), None)
+
+    def pos(pid):
+        p = prow(pid)
         return None if p is None else (p.get("x"), p.get("z"))
+
+    def job_of(pid):
+        """(curJob, curJobTargetA) through the bridge's own pawn read, asked by list_pawns' ThingID (never the bare
+        number); (None, why) when it cannot be read."""
+        p = prow(pid)
+        if p is None:
+            return None, "not in list_pawns"
+        try:
+            r = B.call("jawa/attack_target_probe", pawn=str(p.get("id")), maxDist=1, _answer=True) or {}
+            return r.get("curJob"), r.get("curJobTargetA") or r.get("message") or r.get("error")
+        except Exception as ex:  # noqa: BLE001
+            return None, "ERROR %s" % type(ex).__name__
 
     if a.fresh_map:
         if (B.call("rimworld/get_ui_state") or {}).get("programState") == "Playing":
@@ -128,7 +164,8 @@ def main(argv=None):
     B.call("jawa/static_call", type=PROOF_TYPE, method="ProofResetRect", args="%d;%d;%d;%d" % rect)
     V.prepare_site(B, rect, [], "ladder_wall_site")
     wx = c[0] + 3
-    B.call("jawa/spawn_batch", ops=";".join("Wall:%d,%d" % (wx, z) for z in range(c[1] - 3, c[1] + 4)), stuff="BlocksGranite")
+    z_span = (c[1] - 10, c[1] + 10)   # the full site: no way round inside the cleared rect
+    B.call("jawa/spawn_batch", ops=";".join("Wall:%d,%d" % (wx, z) for z in range(z_span[0], z_span[1] + 1)), stuff="BlocksGranite")
     foot = (c[0] + 2, c[1])
     res["build"] = str(B.call("jawa/build_batch", ops="RM_LadderPortable:%d,%d,1" % foot, wipeExisting=False) or {})[:300]
     adv(60)
@@ -138,15 +175,33 @@ def main(argv=None):
         return 2
     pid = cols[0]["id"]
     B.probe_of(HPROBE, "pawn:%d=tp:%d,%d" % (pid, foot[0], foot[1]))
+    res["draft"] = str(B.probe_of(HPROBE, "pawn:%d=draft" % pid))[:200]   # no work job: it cannot walk off or round
     adv(30)
     may = parity(B, "may:%d,%d,%d" % (pid, foot[0], foot[1]))
     row("LADDER_PARITY_WALL_LADDER_PLACED", "PASS" if "ladder=RM_LadderPortable" in may else "FAIL",
         {"may": may, "build": res["build"]})
     order = parity(B, "climb:%d,%d,%d" % (pid, wx, c[1]))
-    adv(900)
-    p1 = pos(pid)
-    over = p1 is not None and p1[0] is not None and p1[0] > wx
-    row("LADDER_PARITY_OVER_WALL", "PASS" if over else ("UNMEASURED" if p1 is None else "FAIL"), {"order": order, "after": p1, "wallX": wx})
+    samples, t = [], 0
+    j0 = job_of(pid)
+    samples.append((0, None, None, j0[0]))
+    while t < WAIT:
+        adv(POLL)
+        t += POLL
+        p_ = pos(pid)
+        samples.append((t, p_[0] if p_ else None, p_[1] if p_ else None, job_of(pid)[0]))
+        st, hit = first_crossing(samples, wx, z_span)
+        if st == "PASS":
+            break
+    st, hit = first_crossing(samples, wx, z_span)
+    p1 = (samples[-1][1], samples[-1][2]) if samples[-1][1] is not None else None
+    over = st == "PASS"
+    jobs = []
+    for s_ in samples:
+        if not jobs or jobs[-1][1] != s_[3]:
+            jobs.append((s_[0], s_[3]))     # (tick, curJob) at each change: shows the climb job and when it ended
+    row("LADDER_PARITY_OVER_WALL", st, {"order": order, "firstCrossing": hit, "after": p1, "wallX": wx, "zSpan": z_span,
+        "drafted": res.get("draft"), "jobAtOrder": j0, "jobTrace": jobs, "samples": len(samples) - 1,
+        "ifFail": "drafted and walled the full site: never crossing is MOD on RM_ClimbOverWall"})
     if over:
         back = parity(B, "climb:%d,%d,%d" % (pid, wx, p1[1]))
         row("LADDER_PARITY_ONE_WAY", "PASS" if back.startswith("NO_CROSSING") else "FAIL",
@@ -156,7 +211,7 @@ def main(argv=None):
     # a double wall: a second line east of the first; teleport back to the ladder and ask again
     B.probe_of(HPROBE, "pawn:%d=tp:%d,%d" % (pid, foot[0], foot[1]))
     adv(10)
-    B.call("jawa/spawn_batch", ops=";".join("Wall:%d,%d" % (wx + 1, z) for z in range(c[1] - 3, c[1] + 4)), stuff="BlocksGranite")
+    B.call("jawa/spawn_batch", ops=";".join("Wall:%d,%d" % (wx + 1, z) for z in range(z_span[0], z_span[1] + 1)), stuff="BlocksGranite")
     adv(30)
     dbl = parity(B, "climb:%d,%d,%d" % (pid, wx, c[1]))
     row("LADDER_PARITY_DOUBLE_WALL_REFUSED", "PASS" if dbl.startswith("NO_CROSSING") else "FAIL", {"read": dbl})
