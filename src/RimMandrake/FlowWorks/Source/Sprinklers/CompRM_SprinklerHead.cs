@@ -48,17 +48,52 @@ namespace RimMandrake.FlowWorks.Sprinklers
 				nextPulseTick = now + RM_SprinklerKernel.PulseTicks;
 				DoPulse();
 			}
-			if (state == RM_SprinklerState.Spraying && ShowsOwnSpray) RM_Sprinkle.ThrowSpray(parent, lastLiquid, CoverRadius);
 		}
 
+		/// <summary>False where another mod draws the spray (VFE's rotating head).</summary>
 		protected virtual bool ShowsOwnSpray => true;
+
+		/// <summary>SPRINKLER_SPRAY_REDRAW_REAL_THROW: true while RM_SprinklerSprayFx should draw this head's droplets.</summary>
+		public bool DrawsSpray => state == RM_SprinklerState.Spraying && ShowsOwnSpray;
+
+		/// <summary>The cells the last paid pulse wetted (null when it did not spray). Not saved: rebuilt once on demand after a
+		/// load (<see cref="SprayPlan"/>).</summary>
+		public List<IntVec3> sprayCells;
+
+		private List<RM_SprayDrop>[] sprayPlan;
+		private bool sprayCellsRebuilt;
 
 		public RM_Sprinkle.Result DoPulse()
 		{
 			List<IntVec3> cells = FeatureEnabled && SwitchOn ? CellsForPulse() : new List<IntVec3>();
 			RM_Sprinkle.Result r = RM_Sprinkle.Pulse(parent, cells, FeatureEnabled, SwitchOn);
 			Record(r);
+			sprayCells = r.state == RM_SprinklerState.Spraying ? cells : null;
+			sprayPlan = null;
 			return r;
+		}
+
+		/// <summary>The rotor plan (RM_SprayPlan) over <see cref="sprayCells"/>, offsets from the head's cell; null when nothing
+		/// is sprayed. After a load the cells are recomputed once (CellsForPulse, no charge) since they are not saved.</summary>
+		public List<RM_SprayDrop>[] SprayPlan()
+		{
+			if (!DrawsSpray) return null;
+			if (sprayCells == null && !sprayCellsRebuilt)
+			{
+				sprayCellsRebuilt = true;
+				sprayCells = CellsForPulse();
+				sprayPlan = null;
+			}
+			if (sprayCells == null || sprayCells.Count == 0) return null;
+			if (sprayPlan == null)
+			{
+				var dx = new List<int>(sprayCells.Count);
+				var dz = new List<int>(sprayCells.Count);
+				IntVec3 o = parent.Position;
+				foreach (IntVec3 c in sprayCells) { dx.Add(c.x - o.x); dz.Add(c.z - o.z); }
+				sprayPlan = RM_SprayPlan.Plan(dx, dz);
+			}
+			return sprayPlan;
 		}
 
 		protected virtual void Record(RM_Sprinkle.Result r)
