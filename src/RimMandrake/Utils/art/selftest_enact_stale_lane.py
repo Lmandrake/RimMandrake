@@ -39,7 +39,9 @@ resolves the lane through it (a proved rename) or refuses by name. The decisions
   12 the donor proof also needs the letter to have been a set of the donor lane: a juvenile set slotted or keyed under
     the donor and re-filed under the adult today is refused, as the same `decision` is;
   10 snapshot revisions committed out of build order: the newest build at or before the click is used;
-  5 schema 1 with today's snapshot built BEFORE his click: routed by today's snapshot as before (no lookup, no change).
+  5 schema 1 with today's snapshot built BEFORE his click: routed by today's snapshot as before (no lookup, no change);
+  14 a pick with ONE facing refused (its live file owner-kept by another row) installs NO facing (never a creature mixed
+    from two sets: leaningscrub_2 RM_TunnelSnake B, RM_Vurra B); 13 two rows' different picks for one shared file.
 Fixture under /home/mandrake/rm/scratch/BENCH (never /tmp), from selftest_enact_ws; git history is replaced by a list.
 """
 from __future__ import annotations
@@ -317,6 +319,35 @@ def main():
         r, inst = plan({"schema": None, "decision": "B"})
         check(any(i["letter"] == "B" and i["rel"] == "swanimals/Kite/Kite_east.png" for i in inst)
               and not r["plan"].get("lane_resolved", []), f"5 an unrebuilt sheet routes as before ({inst})")
+
+        # 14 one facing of a pick refused (the live east file owner-kept from ANOTHER row): no facing of the pick is
+        # installed, never north/south beside the old east (leaningscrub_2 RM_TunnelSnake B, RM_Vurra B, 2026-10-24)
+        EAST, NORTH = "swanimals/Kite/Kite_east.png", "swanimals/Kite/Kite_north.png"
+        live_north = L.store_put_bytes(T.noise_png(960))       # the row's old north, live beside the old east
+        kr["columns"]["B"]["north"] = L.store_put_bytes(T.noise_png(961))
+        sp.write_text(json.dumps(snap))
+        prot0, idx0 = L.Index.protected, L.Index.__init__
+
+        def idx_init(self, *a, **k):
+            idx0(self, *a, **k)
+            self.live[(T.MOD, NORTH)] = {"sha": live_north, "mod": T.MOD, "rel": NORTH}
+        L.Index.__init__ = idx_init
+        try:
+            r0, inst0 = plan({"decision": "B"})
+            L.Index.protected = lambda self, s: (
+                [{"id": "kx", "target": {"row": "RSW_Other"}, "via": "other.decisions.json"}]
+                if any(r_ == EAST and ev.get("sha") == s for (m_, r_), ev in self.live.items()) else prot0(self, s))
+            r, inst = plan({"decision": "B"})
+        finally:
+            L.Index.protected, L.Index.__init__ = prot0, idx0
+            kr["columns"]["B"].pop("north", None)
+            sp.write_text(json.dumps(snap))
+        check({i["rel"] for i in inst0 if i["letter"] == "B"} == {EAST, NORTH},
+              f"14 a two-facing pick with no keep installs both facings ({inst0} / {r0['conflicts']})")
+        check(not any(i["letter"] == "B" for i in inst)
+              and any(c.startswith("RSW_Kite: pick B not installed at all") for c in r["conflicts"]),
+              f"14 ...with the live east owner-kept from another row: NO facing installed, never north beside the old "
+              f"east ({inst} / {r['conflicts']})")
 
         # 13 two rows sharing ONE lane (the bridge anchors' Heavy/Steel/Timber of a look), each with its own pick:
         # installing both keeps only the last; neither is installed, both are named
