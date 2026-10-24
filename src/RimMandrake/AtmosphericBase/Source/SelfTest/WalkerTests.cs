@@ -211,6 +211,27 @@ internal static class WalkerTests
         }
     }
 
+    private static void CoilTwoMaps()
+    {
+        Chain(6, 5, out RM_RoomGraph g, out RM_FixtureSet f);
+        Chain(3, 4, out RM_RoomGraph g2, out RM_FixtureSet f2);
+        const string coil = "<primitive>Coil</primitive><entries>1~3</entries><coils>3</coils><hop>0.3</hop><length>4</length><turnChance>0.3</turnChance>";
+        RM_Layer shared = Layer(coil).layers[0], solo = Layer(coil).layers[0];
+        RM_WalkMap w = RM_WalkMap.For(g, f, RM_Anchor.Core), w2 = RM_WalkMap.For(g2, f2, RM_Anchor.Core);
+        int before = RM_CoilPrimitive.Restarts;
+        bool same = true;
+        for (int st = 0; st < 120; st++)
+        {
+            int[] a = RM_CoilPrimitive.Trails(solo, f, w, st).SelectMany(x => x).ToArray();
+            RM_CoilPrimitive.Trails(shared, f2, w2, st / 3);     // the other map, on the same layer, at an earlier step
+            int[] b = RM_CoilPrimitive.Trails(shared, f, w, st).SelectMany(x => x).ToArray();
+            if (!a.SequenceEqual(b)) same = false;
+        }
+        int restarts = RM_CoilPrimitive.Restarts - before;
+        Check("S7 coil: two maps sharing one layer, alternating, neither restarts the other and the figure is undisturbed",
+              same && restarts == 3, "restarts " + restarts + " (want 3: solo, shared on each map)");
+    }
+
     private static void Tell()
     {
         bool ok = true; string why = "";
@@ -291,6 +312,7 @@ internal static class WalkerTests
     {
         Procession();
         Coil();
+        CoilTwoMaps();
         Tell();
         Count();
     }

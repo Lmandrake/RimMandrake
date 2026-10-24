@@ -129,6 +129,20 @@ namespace RimMandrake.AtmosphericBase
 
         /// <summary>True when the fixture shows the previous owner now: within the linger, and the new owner's pattern sits
         /// on its lowest entry (so the old rhythm shows through the new one's low moments, never over its peaks).</summary>
+        public enum Action { None = 0, ShowLead, ShowSecond, Drop }
+
+        /// <summary>What to do with one scar entry (the claimant held before the flip, and when): show the previous owner
+        /// now through the lead's or the second's scheme, drop the entry (that claimant left the top two, or the linger
+        /// is over), or leave it. Keyed by claimant, not by the lead/second flag, so a re-ranked pair never shows the
+        /// wrong palette. The compositor runs exactly this.</summary>
+        public static Action Decide(string prevClaimant, string lead, string second, int idx, double sinceFlip, float linger, bool keeps)
+        {
+            bool prevLead = prevClaimant == lead;
+            if (!prevLead && prevClaimant != second) return Action.Drop;
+            if (ShowsPrevious(idx, 0, sinceFlip, linger, keeps)) return prevLead ? Action.ShowLead : Action.ShowSecond;
+            return sinceFlip >= Linger(linger, keeps) ? Action.Drop : Action.None;
+        }
+
         public static bool ShowsPrevious(int newIdx, int newLowest, double sinceFlip, float linger, bool keeps)
         {
             float lg = Linger(linger, keeps);
@@ -162,6 +176,21 @@ namespace RimMandrake.AtmosphericBase
             if (d.r[mid] + d.g[mid] + d.b[mid] > 0) return mid;
             for (int i = 0; i < n; i++) if (d.r[i] + d.g[i] + d.b[i] > 0) return i;
             return 0;
+        }
+
+        /// <summary>Per hushed room, the one lamp that keeps the ember: the lowest id among the lamps the hush can hold
+        /// (a mood owns it and it is not flickering for a tremor). A substrate-shown or tremor lamp never reaches Apply,
+        /// so choosing one would leave the room without its ember (L8). `owned` / `tremor` are parallel to `ids`.</summary>
+        public static Dictionary<int, int> PickKeepers(IList<int> ids, IList<int> rooms, IList<bool> owned, IList<bool> tremor, ICollection<int> hushed)
+        {
+            var keepers = new Dictionary<int, int>();
+            for (int i = 0; i < ids.Count; i++)
+            {
+                int rm = rooms[i];
+                if (rm < 0 || !hushed.Contains(rm) || !owned[i] || tremor[i]) continue;
+                if (!keepers.TryGetValue(rm, out int k) || ids[i] < k) keepers[rm] = ids[i];
+            }
+            return keepers;
         }
 
         /// <summary>Narrow idx toward the held entry by w; monotone in w (never overshoots, never turns back). In a dark

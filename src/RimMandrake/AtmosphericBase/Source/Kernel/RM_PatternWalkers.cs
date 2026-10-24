@@ -287,12 +287,23 @@ namespace RimMandrake.AtmosphericBase
 
         private sealed class State
         {
-            public RM_WalkMap map;
             public long step = -1;
             public int[][] trail;   // [coil][j] slot j steps back (0 = the head)
         }
 
-        private static readonly ConditionalWeakTable<RM_Layer, State> states = new ConditionalWeakTable<RM_Layer, State>();
+        // State is per (walk map, layer): a layer (one scheme) is shared by every map it runs on, so keying by layer alone
+        // made two maps restart the coil from step 0 on every alternate call (second review). The table is weak on the map.
+        private static readonly ConditionalWeakTable<RM_WalkMap, Dictionary<RM_Layer, State>> states = new ConditionalWeakTable<RM_WalkMap, Dictionary<RM_Layer, State>>();
+
+        private static State StateOf(RM_WalkMap w, RM_Layer l)
+        {
+            Dictionary<RM_Layer, State> d = states.GetOrCreateValue(w);
+            if (!d.TryGetValue(l, out State st)) d[l] = st = new State();
+            return st;
+        }
+
+        /// <summary>How many times a trail was (re)started from step 0 (the selftest proves two maps do not restart each other).</summary>
+        internal static int Restarts { get; private set; }
 
         public RM_CostClass Cost(RM_Layer l) => RM_CostClass.Heavy;
 
@@ -318,17 +329,18 @@ namespace RimMandrake.AtmosphericBase
             return best;
         }
 
-        /// <summary>The coils' trails at step s (advanced forward from the cached step; restarted from 0 when s goes back
-        /// or the fixture set changed).</summary>
+        /// <summary>The coils' trails at step s (advanced forward from the cached step; restarted from 0 when s goes back;
+        /// the state lives per walk map, so a fresh fixture set restarts it and two maps never disturb each other).</summary>
         public static int[][] Trails(RM_Layer l, RM_FixtureSet f, RM_WalkMap w, long s)
         {
-            State st = states.GetOrCreateValue(l);
+            State st = StateOf(w, l);
             int k = Math.Max(1, Math.Min(l.coils, MaxCoils)), len = Math.Max(1, Math.Min(l.length, MaxLength));
             int F = w.tour.Length;
             if (s < 0) s = 0;
-            if (!ReferenceEquals(st.map, w) || s < st.step || st.trail == null)
+            if (s < st.step || st.trail == null)
             {
-                st.map = w; st.step = 0; st.trail = new int[k][];
+                Restarts++;
+                st.step = 0; st.trail = new int[k][];
                 for (int c = 0; c < k; c++)
                 {
                     st.trail[c] = new int[len];
