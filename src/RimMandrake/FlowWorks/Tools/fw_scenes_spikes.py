@@ -248,16 +248,20 @@ def render(pit, mode="after", P=160, faces=True, outline=True):
         v = pit.variant_of.get((x, z), (x * 7 + z * 3) % 3)
         src = Image.open(TEXDIR / ("RM_Spikes_%s.png" % STAKES.VARIANTS[v])).convert("RGBA")
         S = src.width
-        quads, alpha = [], 1.0
+        quads, alpha, laid = [], 1.0, 0
         if mode == "before":
             quads = [(0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0)]
+            laid = 1
         else:
             d, n, s, w, e = pit.nbrs(x, z)
             a = round(submerged_alpha(pit.f[z][x]) * ALPHA_STEPS)
             alpha = a / ALPHA_STEPS
-            if a > 0 and d > 0:
+            if d > 0:
                 quads = layout(v, pit.seeds.get((x, z), x * 1000 + z), *floor_rect(d, n, s, w, e, faces, outline))
-        cells[(x, z)] = dict(alpha=alpha, quads=len(quads), fill=pit.f[z][x])
+                laid = len(quads)          # the stakes the cell has dry: a deep cell must have some to hide
+            if a <= 0:
+                quads = []
+        cells[(x, z)] = dict(alpha=alpha, quads=len(quads), laid=laid, fill=pit.f[z][x])
         for (qx, qz, qw, qh, u0, v0, u1, v1) in quads:
             crop = src.crop((round(u0 * S), round((1 - v1) * S), round(u1 * S), round((1 - v0) * S)))
             r0, r1, c0, c1 = box(x, z, qx, qz, qx + qw, qz + qh)
@@ -306,7 +310,8 @@ def spikes_submerged(res):
     if 0 not in by_fill or not deep:
         return False, "scene needs a dry spiked cell and one under >= %.1f m (has fills %s)" % (SUBMERGE_M, fills)
     peak = {f: max(v) for f, v in by_fill.items()}
-    why = []
+    why = ["%.1f m cell %s has no stakes even dry (nothing to submerge)" % (c["fill"] * METRES_PER_LEVEL, xz)
+           for xz, c in sorted(res["cells"].items()) if c["fill"] in deep and not c["laid"]]
     if peak[0] < 0.99:
         why.append("dry spikes not fully visible (%.2f)" % peak[0])
     for a, b in zip(fills, fills[1:]):
