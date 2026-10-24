@@ -50,7 +50,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             int oldVanilla = WaterStubs(Canal(OldRule, false, true));
             Check(oldVanilla == 2, $"old rule, no swim (the 2026-10-16 PASS): {oldVanilla} water stubs, want 2");
             int oldSwim = WaterStubs(Canal(OldRule, true, true));
-            Check(oldSwim == 0, $"can-fail: old rule with FlowWorks swim reads the canal as ground ({oldSwim} water stubs, want 0)");
+            Check(oldSwim == 0, $"can-fail: old rule with deep-water swim on reads the canal as ground ({oldSwim} water stubs, want 0)");
             int newSwim = WaterStubs(Canal(SnapshotBlock.Of, true, true));
             Check(newSwim == 2, $"swimmable deep water still buries the waterproof run ({newSwim} water stubs, want 2)");
             int newVanilla = WaterStubs(Canal(SnapshotBlock.Of, false, true));
