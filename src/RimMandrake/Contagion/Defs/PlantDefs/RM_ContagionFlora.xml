@@ -93,7 +93,7 @@
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Wombpod</defName>
     <label>wombpod</label>
-    <description>Translucent gestation pods the goo grows in sheltered hollows, each with something part-made floating in it. Cutting one open frees a sac that will hatch into a bloody mess, the host a genome sample can be injected into. Never food.</description>
+    <description>Translucent gestation pods grown in sheltered hollows, each holding something half formed. Cutting one open releases a sac that hatches into a bloody mess suitable for genome injection. Inedible.</description>
     <statBases>
       <MaxHitPoints>35</MaxHitPoints>
       <Flammability>0.5</Flammability>
@@ -252,7 +252,7 @@
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Bleedleaf</defName>
     <label>bleedleaf</label>
-    <description>A low shrub whose leaves wet through with red at the veins and drip -- not even 100% carbon based, whatever it is made of.</description>
+    <description>A low shrub whose leaves seep red fluid along the veins and drip from their tips. Its tissues are only partly carbon-based.</description>
     <statBases>
       <MaxHitPoints>60</MaxHitPoints>
       <Flammability>1.0</Flammability>
@@ -482,7 +482,7 @@
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_HalfmadeTree</defName>
     <label>halfmade tree</label>
-    <description>The infection front made visible: half of this tree is one alien plant, and the other half is a second, different alien wrongness overwriting the first -- pulsating red structures eating into gnarled dark growth, neither half anything a person would call a tree back home. It advances in a Bloom and burns back in a Burn.</description>
+    <description>A tree divided between pale, curled growth and red muscular boughs. The red tissue is eating through the older half, replacing it as it grows. The infection advances during a Bloom and burns back in a Burn.</description>
     <statBases>
       <MaxHitPoints>200</MaxHitPoints>
       <Flammability>0.8</Flammability>
@@ -539,7 +539,7 @@
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_HalfmadeTreeBlighted</defName>
     <label>blighted halfmade tree</label>
-    <description>A halfmade tree further gone: the infection has all but finished overwriting it, and what's left barely reads as a plant at all. Downslope, front-line texture -- the leading edge of the Bloom.</description>
+    <description>An infected halfmade tree reduced to hollow, bone-pale tissue and red, tendon-like branches. These growths mark the leading edge of the Bloom downslope.</description>
     <statBases>
       <MaxHitPoints>260</MaxHitPoints>
       <Flammability>0.9</Flammability>
