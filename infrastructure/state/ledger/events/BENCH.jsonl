@@ -4935,3 +4935,4 @@
 {"seat":"BENCH","event":"bridge","state":"released","ts":"2026-10-24T21:50:21Z","tsn":1792878621365822787}
 {"seat":"BENCH","event":"close","id":"DEPLOY_PLAN_FIX_REDUNDANT_TREE_PASSES","sha":"a5a7bf7d22aa","ts":"2026-10-24T22:01:07Z","tsn":1792879267539630893}
 {"seat":"BENCH","event":"file","id":"DEPLOY_PLAN_FIX_STALE_INVENTORY_CACHE","title":"deploy inventory cache must not outlive a run","kind":"bug","target":"v1","needs":"offline","for":"BENCH","why":"code review of a5a7bf7d22: per-root inventory cache _INV outlived a run, so a 2nd main() or a tree() caller (preflight_bridge c_deploy) in one process saw stale trees; fixed with forget_all() at main entry/exit and in c_deploy","ts":"2026-10-24T22:02:36Z","tsn":1792879356841388183}
+{"seat":"BENCH","event":"close","id":"DEPLOY_PLAN_FIX_STALE_INVENTORY_CACHE","sha":"0fd4436617c18f5fba338fd432f5f5bf6684bdc0","ts":"2026-10-24T22:02:49Z","tsn":1792879369751041910}
