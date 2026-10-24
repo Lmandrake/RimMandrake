@@ -1,0 +1,251 @@
+{
+ "biome": "SUBJECTS_suspension_redesign",
+ "built": "2026-10-24T16:17:40-0700",
+ "census": "Transient/biome_ffar/suspension_redesign.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 11 mods \u2014 a test list): 320 active",
+ "rows": {
+  "RM_SuspensionAnchor_Heavy": {
+   "columns": {
+    "A": {
+     "east": "6a2023628c0592d8f8ea7123cc5d5f6722cee6572c4b4770cde026208e2a7e8b",
+     "north": "f691cb4e39403ec7cb0f8b4b21b71c4ae53df3166ff47627f5d45ad2fc9f372a",
+     "single": "ad564f371e2be8527a9087b044db816b6474a9530f26487716318bc148827625",
+     "south": "700cc8a52e639783f6f08e1327d59532325b8e206a944c0e00fafa4d413a01a8"
+    },
+    "B": {
+     "east": "77663e3d9c0f0fb529354f0c2658afce7f4e28b1a275013dd55f63ba70b03ac1",
+     "north": "2fbecaeb1b6b0130e1e8eabaf4ed4ed0cbbd7c235142d6eb0f56c1af5e08f516",
+     "south": "e2623b8c090dc33eccf8fc02bb13e69c5a163397c21377d1fb1c749fe4e79efc"
+    },
+    "C": {
+     "south": "0aefddc120999a02787fea0b8f384a7bc0be67ff85fa8e8561e4089b8454c10c"
+    },
+    "D": {
+     "east": "b8fbae8907766c643834db157afad9c4ff0dbdaed5600225ba3c49d3b8bcff7b",
+     "north": "1e7c7384e2688ac477c903f5982399d3639b8289c361ca0b9927bb919ba1275b",
+     "south": "8d7476aa0c025126891186cb33b3aff88cfa061f8742fcda58bb90beda7afc8c"
+    },
+    "E": {
+     "south": "08e94dfd27ca4181802879a993137fc0f824b9751474a366e6a33c642ddea390"
+    },
+    "F": {
+     "east": "99db2ca21ffb30587ccbf359f38f6ef148fb2d667f8ac77b4fe6d73a7a4ececb",
+     "north": "50f1ed878bce2ae1485abc9299549a4621e59e91b39157cba59dc4db3418214a",
+     "south": "4d440a58b0beebd49e50c11ebdc1f21ba63c212618b43678d15786fa6d6c2fac"
+    },
+    "G": {
+     "south": "9c5d4b0bdcfd1053f53e8042cacaceb06348ec3c180210b32c0c42a5bc7c2e5b"
+    },
+    "H": {
+     "east": "a253650c41c98c1acbab7c33593e4d485a8e10702d740241c2c5512c0d1ac0bd",
+     "north": "98c8f4251c60d500aeba7644e6a3f849a89b3b13cf90436784652feb5de17907",
+     "south": "0b93b342ba92fcab66f7d848748dd51fea86c52427b614832a44fb8ab5c0f872"
+    },
+    "I": {
+     "south": "ce7af66e3bbde7841d6564fb1d264305566cc54f6eea5c8c158db4e94632be31"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Heavy",
+    "B": "RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionAnchor_Heavy",
+    "C": "RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionAnchor_Heavy",
+    "D": "RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionAnchor_Heavy",
+    "E": "RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionAnchor_Heavy",
+    "F": "RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionAnchor_Heavy",
+    "G": "RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionAnchor_Heavy",
+    "H": "RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionAnchor_Heavy",
+    "I": "RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionAnchor_Heavy"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "IN GAME \u2014 FlowWorks",
+    "C": "render RM_SuspensionAnchor_Heavy_Futuristic_rd1a",
+    "D": "IN GAME \u2014 FlowWorks",
+    "E": "render RM_SuspensionAnchor_Heavy_Industrial_rd1a",
+    "F": "IN GAME \u2014 FlowWorks",
+    "G": "render RM_SuspensionAnchor_Heavy_Modern_rd1a",
+    "H": "IN GAME \u2014 FlowWorks",
+    "I": "render RM_SuspensionAnchor_Heavy_Scrapper_rd1a"
+   },
+   "pools": [],
+   "res": "Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Heavy",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I"
+   ],
+   "shownBase": [],
+   "subject_key": "suspensionanchor_heavy"
+  },
+  "RM_SuspensionAnchor_Steel": {
+   "columns": {
+    "A": {
+     "east": "7047d14d1aef3a5bdd2cf5e72787a8e8b8b550133e793048cd6b681f0af3f3e1",
+     "north": "e7a81ea971e375893f058ac6bfa22bacb1ccefbb663fa3a314f32c1134795538",
+     "single": "67c789776bfbb8983ddc2a324938bc0f9a822789a12ddf05a0c79ea6d4d03a05",
+     "south": "b5d9f6bff212af6b3e78fc698ea25a53df40d913c9629ecf02064312314a015d"
+    },
+    "B": {
+     "east": "30cb5c38afd8a9c215c1d2f4afc1b6ffa50a2de230d5e0382a67ebd04b882f6f",
+     "north": "fb7b95321e8bfb3aa304dafd854df6f2357ca2cc77e51d08c021d0e453116fab",
+     "south": "43acdc3aef04203a943558c3343b674cd212c76dca29fee66b2dc020edace6a4"
+    },
+    "C": {
+     "south": "f7be14849f5e665afcacea8d06deba98a726fd0cb43475bb010bb730358deb80"
+    },
+    "D": {
+     "east": "40f8e4dbb30b41b6e6a54117d0edd71788fecb9beb6f7fbc5633c6d644f8bdda",
+     "north": "9fee39432af5b233bebd6e31d9c995e4d5ee1895214edc6c7f5847ecfe0587d5",
+     "south": "ebcf57e3be46ce964520ead3fff8b1172dd5d2ab47d246bc31b18fe902f44586"
+    },
+    "E": {
+     "south": "1b95969fccba82d3b73b4b699526a4823c2163c9de8f7cfd5676c8b7d01035ed"
+    },
+    "F": {
+     "east": "89bb6e7c6dfcad2f8c41af076e306d494dfca4f8cd7c304eeadd12b2262e0ae7",
+     "north": "af3a46f18e4c3e42fd46bca2ceb4c4e6865a342d861e2eea23683ec723d3530b",
+     "south": "a3f8db79e7c01dc966b3e9d05dbac537c5f606289e91794c4a8343a215acab2d"
+    },
+    "G": {
+     "south": "f44075d559cc0f5eb892845b2e9450bd08c9533fa6ca0856e50aa0eeebe8f69d"
+    },
+    "H": {
+     "east": "e7ed4eccc4e63383ee1b4c88046d0b9f6f71929c391b0a155dca41376bb1b67a",
+     "north": "fe809238284e622b75dc75bcf6fbfc9f6e6b0a7ac7f14ffce955503553545206",
+     "south": "70a2d5dfed6409791965e4879e268d1894ca507400b68d70eccf172d079ddc5a"
+    },
+    "I": {
+     "south": "a53fe45ae86289ed9570308fc31d1773af44bf3135566e7e115cd0c5339dab15"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Steel",
+    "B": "RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionAnchor_Steel",
+    "C": "RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionAnchor_Steel",
+    "D": "RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionAnchor_Steel",
+    "E": "RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionAnchor_Steel",
+    "F": "RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionAnchor_Steel",
+    "G": "RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionAnchor_Steel",
+    "H": "RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionAnchor_Steel",
+    "I": "RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionAnchor_Steel"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "IN GAME \u2014 FlowWorks",
+    "C": "render RM_SuspensionAnchor_Steel_Futuristic_rd1a",
+    "D": "IN GAME \u2014 FlowWorks",
+    "E": "render RM_SuspensionAnchor_Steel_Industrial_rd1a",
+    "F": "IN GAME \u2014 FlowWorks",
+    "G": "render RM_SuspensionAnchor_Steel_Modern_rd1a",
+    "H": "IN GAME \u2014 FlowWorks",
+    "I": "render RM_SuspensionAnchor_Steel_Scrapper_rd1a"
+   },
+   "pools": [],
+   "res": "Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Steel",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I"
+   ],
+   "shownBase": [],
+   "subject_key": "suspensionanchor_steel"
+  },
+  "RM_SuspensionDeck_Heavy": {
+   "columns": {
+    "A": {
+     "single": "bbaa712396bb38d2f79020a2d050dd58f0bce8bb001a2b801d33e78d50faab3b"
+    },
+    "B": {
+     "single": "c48ebc63bc4de963d9bc4fefb438be5fa120625f54c013d4e09ff5b9ed125247"
+    },
+    "C": {
+     "single": "f7fd5edce043ab0cf04653bba06468c0536f90479500bc1e2b2194c165d3a5b3"
+    },
+    "D": {
+     "single": "e05b9d983b182756906953b00b67e4a1e8f779827fda81afea1ead27834c021d"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Heavy_Atlas",
+    "B": "RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionDeck_Heavy",
+    "C": "RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionDeck_Heavy",
+    "D": "RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck_Heavy"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "IN GAME \u2014 FlowWorks",
+    "C": "IN GAME \u2014 FlowWorks",
+    "D": "IN GAME \u2014 FlowWorks"
+   },
+   "pools": [],
+   "res": "Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Heavy_Atlas",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "suspensiondeck_heavy"
+  },
+  "RM_SuspensionDeck_Steel": {
+   "columns": {
+    "A": {
+     "single": "af77a2ffd3531cfda50a622fdcab5ebf4b6ab46600954845cdb1ded3edce8d8d"
+    },
+    "B": {
+     "single": "368acaca3b3f2cdec7f5d756dd6e829e87c65386e0525648b56e41012e782055"
+    },
+    "C": {
+     "single": "fb743469a086543177355f8cc247cb23dbe4fe6434854fb6fc39e3db70f94bb9"
+    },
+    "D": {
+     "single": "84b1548db2dd1d2921ef50928e9e4ce9700d961e2a2d2048667ac777056fca79"
+    },
+    "E": {
+     "single": "d0a9aeeeedc2ef8976770a42e4b870a430e6b9ce6d8a541e5ac251bfb661febb"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Steel_Atlas",
+    "B": "RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionDeck_Steel",
+    "C": "RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionDeck_Steel",
+    "D": "RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeck_Steel",
+    "E": "RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck_Steel"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "IN GAME \u2014 FlowWorks",
+    "C": "IN GAME \u2014 FlowWorks",
+    "D": "IN GAME \u2014 FlowWorks",
+    "E": "IN GAME \u2014 FlowWorks"
+   },
+   "pools": [],
+   "res": "Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Steel_Atlas",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "suspensiondeck_steel"
+  }
+ },
+ "sheetId": "suspension_redesign_sheet_2026-10-24",
+ "snapshotId": "1dc784332efee9c1"
+}
