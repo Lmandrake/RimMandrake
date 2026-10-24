@@ -214,7 +214,13 @@ def ingest(decisions_path: Path, run_id: str, apply_reverts: bool = False) -> li
     log = STATE / "shadow_log.jsonl"
     # re-ingesting the same answers must not log them twice: shadow_status counts rows, so a duplicate would grow the
     # clean streak (and re-file ledger entries, re-run reverts). A CHANGED answer is a new ruling and is logged.
-    logged = {ingest_key(json.loads(l)) for l in log.read_text().splitlines() if l.strip()} if log.is_file() else set()
+    prior = [json.loads(l) for l in log.read_text().splitlines() if l.strip()] if log.is_file() else []
+    logged = {ingest_key(p) for p in prior}
+    # ...but a ruling first ingested with the default dry-run revert must still get its real revert from a later
+    # --apply-reverts ingest. Applied reverts: a log row whose revert really ran clean, or a REVERTS record.
+    rlog = STATE / "shadow_reverts.jsonl"
+    applied = {ingest_key(p) for p in prior if revert_applied(p.get("revert"))}
+    applied |= {tuple(json.loads(l)["key"]) for l in rlog.read_text().splitlines() if l.strip()} if rlog.is_file() else set()
     out = []
     for subj, row in (d.get("decisions") or {}).items():
         ans = (row.get("q") or {}).get(KEY)
@@ -230,11 +236,24 @@ def ingest(decisions_path: Path, run_id: str, apply_reverts: bool = False) -> li
             e = {"at": row.get("at") or dt.datetime.now().astimezone().isoformat(timespec="seconds"), "run": run_id,
                  "subject": r["subject"], "template": r["template"], "pipeline_decision": r["decision"], "owner_answer": ans,
                  "override": override, "blocking": blocking, "note": row.get("note", "")}
-            if ingest_key(e) in logged:
+            key = ingest_key(e)
+            wants_revert = ans == "revert" and bool(r.get("replaces_kept"))
+            if key in logged:
+                if not (wants_revert and apply_reverts and key not in applied):
+                    continue
+                # logged before with a dry-run revert: run the real one now; the ruling itself is not logged again
+                e["revert"] = [{"cmd": c, "rc": rc, "out": o} for c, rc, o in revert(r, True)]
+                if revert_applied(e["revert"]):
+                    applied.add(key)
+                    with rlog.open("a") as fh:
+                        fh.write(json.dumps({"key": list(key), "at": e["at"], "revert": e["revert"]}) + "\n")
+                out.append(e)
                 continue
-            logged.add(ingest_key(e))
-            if ans == "revert" and r.get("replaces_kept"):
+            logged.add(key)
+            if wants_revert:
                 e["revert"] = [{"cmd": c, "rc": rc, "out": o} for c, rc, o in revert(r, apply_reverts)]
+                if revert_applied(e["revert"]):
+                    applied.add(key)
             with log.open("a") as fh:
                 fh.write(json.dumps(e) + "\n")
             if override:
@@ -243,6 +262,11 @@ def ingest(decisions_path: Path, run_id: str, apply_reverts: bool = False) -> li
                                      owner_said=row.get("note") or f"(card answer: {ans})", run=run_id)
             out.append(e)
     return out
+
+
+def revert_applied(rv) -> bool:
+    """True when a revert record really ran (not --dry-run) and every command exited 0."""
+    return bool(rv) and all(x.get("rc") == 0 and "--dry-run" not in (x.get("cmd") or []) for x in rv)
 
 
 def ingest_key(e: dict) -> tuple:

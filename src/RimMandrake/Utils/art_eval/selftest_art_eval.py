@@ -451,6 +451,16 @@ def main():
             finally:
                 RN.STATE = old_state
             check("history: latest decision by its time, not run-dir name; blank lines skipped", hd == {"RM_H": "ACCEPT"}, hd)
+            # across a DST change the text order of the offsets is not time order: 01:10-08:00 is after 01:50-07:00
+            for rid, at, dec in (("dst_a", "2026-11-01T01:50:00-07:00", "REGEN"), ("dst_b", "2026-11-01T01:10:00-08:00", "ACCEPT")):
+                (td / "runs" / rid).mkdir(parents=True)
+                (td / "runs" / rid / "decisions.jsonl").write_text(json.dumps({"subject": "RM_D", "decision": dec, "at": at}) + "\n")
+            old_state, RN.STATE = RN.STATE, td
+            try:
+                hd = RN.history_decisions()
+            finally:
+                RN.STATE = old_state
+            check("history: latest by instant across a DST offset change", hd.get("RM_D") == "ACCEPT", hd)
             # resume after a crash: the REGEN rounds already logged count toward the cap
             sd = td / "s2"
             (sd / "r1").mkdir(parents=True)
@@ -479,6 +489,29 @@ def main():
             finally:
                 SH.STATE, SH.load_run = old
             check("re-ingesting the same answers logs them once (the clean streak is not inflated)", len(a1) == 1 and a2 == [] and n == 1, (a1, a2, n))
+        # a REVERT first ingested as the default dry run must still be applied by a later --apply-reverts ingest
+        with tempfile.TemporaryDirectory() as td:
+            td = Path(td)
+            df = td / "d.json"
+            df.write_text(json.dumps({"decisions": {"RM_V": {"q": {SH.KEY: "revert"}, "note": ""}}}))
+            calls = []
+
+            def fake_revert(rec, apply):
+                calls.append(apply)
+                return [(["art.py", "install"] + ([] if apply else ["--dry-run"]), 0, "")]
+            old = SH.STATE, SH.load_run, SH.revert, SH.LG.add
+            SH.STATE, SH.load_run, SH.revert = td, (lambda rid: [{"subject": "RM_V", "template": "creature", "decision": "ACCEPT",
+                                                                  "replaces_kept": True}]), fake_revert
+            SH.LG.add = lambda *a, **k: "ledger-stub"
+            try:
+                SH.ingest(df, "r")
+                b2 = SH.ingest(df, "r", apply_reverts=True)
+                b3 = SH.ingest(df, "r", apply_reverts=True)
+                n = len((td / "shadow_log.jsonl").read_text().splitlines())
+            finally:
+                SH.STATE, SH.load_run, SH.revert, SH.LG.add = old
+            check("dry-run ingest then --apply-reverts applies the revert once, logs the ruling once",
+                  calls == [False, True] and len(b2) == 1 and b3 == [] and n == 1, (calls, b2, b3, n))
     except (ImportError, NameError, AttributeError) as e:
         check("review 2026-10-24 checks", False, repr(e))
 

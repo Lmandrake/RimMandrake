@@ -36,7 +36,7 @@ import re
 import sys
 import time
 import xml.etree.ElementTree as ET
-from collections import defaultdict
+from collections import Counter, defaultdict
 from io import BytesIO
 from pathlib import Path
 
@@ -1459,18 +1459,28 @@ def _ground_out_of_flip(graphics: list[dict]) -> None:
                 u["cols"].append(c)
 
 
+def _letter_rank(l: str) -> tuple:
+    return (LETTERS.index(l) if l in LETTERS else len(LETTERS), l)
+
+
 def _assign_letters(cols: list[dict], prev: dict, reserved=()) -> None:
     """Reuse the remembered letter for a column whose pictures are unchanged; new columns take the next letter
     never used on this row before (remembered or reserved). Letters are append-only: a set keeps its letter for
     good and a vanished set's letter is never handed to another set."""
-    back = {}
-    for l, f in (prev or {}).items():
-        back.setdefault(tuple(sorted(f.items())), l)
+    # faces -> EVERY letter they carried, in letter order: two columns of a row can hold the same pictures (a lane's
+    # live column beside an earlier lane's render of those bytes, _take_unseen), and each keeps its own letter
+    back: dict = {}
+    for l, f in sorted((prev or {}).items(), key=lambda lf: _letter_rank(lf[0])):
+        back.setdefault(tuple(sorted(f.items())), []).append(l)
     used = set((prev or {}).keys()) | set(reserved or ())
+    taken = {c.get("letter") for c in cols if c.get("letter")}
     for c in cols:
-        l = back.get(_fkey(c))
-        if l and l not in {d.get("letter") for d in cols}:
+        if c.get("letter"):
+            continue
+        l = next((x for x in back.get(_fkey(c), []) if x not in taken), None)
+        if l:
             c["letter"] = l
+            taken.add(l)
     free = (l for l in LETTERS if l not in used)
     if sum(1 for c in cols if not c.get("letter")) > sum(1 for l in LETTERS if l not in used):
         raise SystemExit(f"art_sheet: a row has more than {len(LETTERS)} picture sets — letters run out; hide or purge some (--hide-sets)")
@@ -1487,11 +1497,15 @@ def _merge_memory(ruled_rows: dict, prev_rows: dict) -> dict:
         r, p = ruled_rows.get(k) or {}, prev_rows.get(k) or {}
         cols = dict(r.get("columns") or {})
         labels, gof = dict(r.get("labels") or {}), dict(r.get("graphic_of") or {})
-        have = {tuple(sorted(f.items())) for f in cols.values()}
-        for l, f in (p.get("columns") or {}).items():
-            if l not in cols and tuple(sorted(f.items())) not in have:
+        # a set the ruled snapshot already has under another letter is not added again (that letter drifted), but a
+        # set the later snapshot shows MORE times than the ruled one (duplicate-picture columns) adds its extra letters
+        have = Counter(tuple(sorted(f.items())) for f in cols.values())
+        later = Counter(tuple(sorted(f.items())) for f in (p.get("columns") or {}).values())
+        for l, f in sorted((p.get("columns") or {}).items(), key=lambda lf: _letter_rank(lf[0])):
+            fk = tuple(sorted(f.items()))
+            if l not in cols and have[fk] < later[fk]:
                 cols[l] = f
-                have.add(tuple(sorted(f.items())))
+                have[fk] += 1
                 if l in (p.get("labels") or {}):
                     labels[l] = p["labels"][l]
                 if l in (p.get("graphic_of") or {}):
