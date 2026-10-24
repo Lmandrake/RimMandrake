@@ -236,6 +236,16 @@ namespace RimMandrake.FlowWorks.SelfTest
         /// <summary>A KNOWN owner item (design section 7): the fed relay's own hose leaves the nozzle its feed couples into.</summary>
         internal static bool KnownOnly(Drawn d) => d.Fed && d.Rep != null && d.Rep.Fails.All(f => f.StartsWith("R2-start") || f.StartsWith("R3-start"));
 
+        /// <summary>The clothoid solver's running cost: solves, iterations, mean and total time.</summary>
+        internal static string SolverCost()
+        {
+            double ms = HoseClothoid.Ticks * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
+            return $"clothoid solver: {HoseClothoid.Solves} solves, {HoseClothoid.Iters} iterations, {ms:F0} ms total, "
+                + $"{(HoseClothoid.Solves > 0 ? ms / HoseClothoid.Solves : 0):F2} ms/solve; feasible {HoseClothoid.Feasibles} "
+                + $"({HoseClothoid.FeasIters} it, {HoseClothoid.FeasTicks * 1000.0 / System.Diagnostics.Stopwatch.Frequency:F0} ms)"
+                + $"; lays fitted {HoseMath.G2Done}/{HoseMath.G2Tried}";
+        }
+
         internal static void Run(Action<string, Action> Case)
         {
             HoseClothoidChecks.Run(Case);

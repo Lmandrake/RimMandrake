@@ -253,13 +253,30 @@ Instrument: `SelfTest/HoseCurveChecks.cs` + `Hose/HoseCurveMetrics.cs` (the rule
 per end, max kappa vs 1/R x 1.05, dkappa/ds vs 2.5/R, length error, splice seams), over the hard stations
 (`hose_hard_bends`, `hose_hard_maze`, `hose_hard_fittings`, §4.2) in four poses each (flat, plump, filling, settling),
 plus 6 synthetic clothoid cases (`SelfTest/HoseClothoidChecks.cs`). Run: `RimMandrakeFlowWorks.SelfTest --hose-curves
-[g2] [report <path>|dump <path>]`; not in the default run while it fails.
+[g2off] [report <path>|dump <path>]` (G2 is on by default since 2026-10-24; `g2off` measures the shaped poses alone);
+not in the default run while it fails. `--hose-fuzz [g2off]` runs the hose fuzz alone and prints the solver's cost.
 
 | run | passed |
 |---|---|
 | today's code (before, 2026-10-23 23:00) | 12/52 (+5 of 6 synthetic cases once added = 17/58) |
 | `--hose-curves` with G2 off (game default) | 17/58 |
 | `--hose-curves g2` (clothoid fit on) | 30/58 |
+| step 1 (2026-10-24): Gauss-Newton solver, G2 on by default | 30/58 (same cases as the old solver); `g2off` 17/58 |
+
+Solver cost (step 1, 2026-10-24; logs `D:\ClaudeWork\rimmandrake\scratch\hose_geometry_20261023\st_full3.log`, `hc_on.log`):
+
+| solver | per solve | hose fuzz (2798 cases, 2407 laid) |
+|---|---|---|
+| finite-difference Levenberg-Marquardt (before) | seconds per lay | not run (G2 off in the fuzz) |
+| GN-SQP with analytic Jacobian, retry any infeasible fit | 0.72 ms | 13092 solves, 9.4 s = 3.9 ms per laid hose |
+| GN-SQP, retry only fits whose end came within 0.3 cell (kept) | 0.55 ms | 9450 solves, 5.2 s = 2.2 ms per laid hose; 3054 of 5298 poses fitted (58%) |
+
+Feasible solves take ~20 iterations (~0.35 ms); the cost is the infeasible ones, which press the curvature bounds (the
+shaped route is tighter than 0.95/R with the ramp limit): step 4's re-route. In the game the fit runs at lay time and,
+for a G2 port tail, once per drawn-pose cache miss (once a tick during a fill/settle transition, not per frame).
+The full FlowWorks selftest with G2 on: 428/428 hose assertions, fuzz 4/4, known-gap classes 4 -> 1 (G3, G5 and the free
+G4 gone; G4 outlet 8 -> 6); the hose fuzz takes 16.4 s instead of 10.9 s. `LayOpen`'s "plump is shorter / straighter"
+asserts hold only for a shaped (non-G2) lay; a G2 lay is asserted to keep its length (R6) and drape no wider.
 
 Remaining failures with g2 on (`D:\ClaudeWork\rimmandrake\scratch\hose_geometry_20261023\after_report.txt`):
 - **mates** (mateA/B, splice): the flat G2 lays are clean (pre-mate lead 0.0 deg), then `HoseSpliceMath.MateTail` re-lays
@@ -286,7 +303,9 @@ Remaining failures with g2 on (`D:\ClaudeWork\rimmandrake\scratch\hose_geometry_
 - **HoseFair (own first plan)**: penalised fairing of the shaped polyline with pinned straight samples; rejected by the
   GPT attack (blockers 1, 2, 4) and by the first solver run (an active-set KKT version stalled with zero accepted steps).
 - **Active-set KKT solve** of the clothoid chain: replaced by Levenberg-Marquardt with penalty continuation (weights
-  10 -> 1e7) and a hard final bound check; plus `Snap`, a similarity about the start (<= 1% stretch, <= 0.01 rad) that
+  10 -> 1e7) and a hard final bound check (itself replaced 2026-10-24: its finite-difference Jacobian cost seconds a lay;
+  now Gauss-Newton SQP with the end equalities hard through a KKT step, the bounds as steep one-sided penalties, an
+  analytic Jacobian from the rigid-rotation identity, an L1 merit line search and a minimum-norm Newton polish); plus `Snap`, a similarity about the start (<= 1% stretch, <= 0.01 rad) that
   closes the small gap a near-taut length leaves.
 - **GPT's point that a too-narrow corridor is an infeasible success fixture** (blocker 3): accepted; the 1-wide L
   corridor row in `hose_hard_bends` may refuse with a reason (`MayRefuse`) but fails if it is laid through the corridor.

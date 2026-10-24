@@ -885,15 +885,17 @@ namespace RimMandrake.FlowWorks.Hose
             return lay;
         }
 
-        /// <summary>HOSE_CURVE_REBUILD_SMOOTH_AS_PHYSICS: off = the poses are left as the shaping stages made them. OFF in the
-        /// game until the clothoid solver is fast enough (2026-10-23: finite-difference Levenberg-Marquardt costs seconds per
-        /// lay); the offline ruler (`--hose-curves g2`) switches it on.</summary>
-        internal static bool G2On = false;
+        /// <summary>HOSE_CURVE_REBUILD_SMOOTH_AS_PHYSICS: off = the poses are left as the shaping stages made them. ON since
+        /// 2026-10-24: the Gauss-Newton solver with the analytic Jacobian costs about half a millisecond a solve (the hose fuzz:
+        /// ~2 ms per laid hose); the offline ruler's `--hose-curves g2off` measures the shaped poses alone.</summary>
+        internal static bool G2On = true;
         /// <summary>The fit's curvature limit as a fraction of 1/R (the ruler allows 1/R x 1.05 on its discrete stencil).</summary>
         internal const double G2KappaMargin = 0.95;
         /// <summary>Tracking weights tried in turn: a fit that drapes too far from the shaped pose (into a wall, over a reel) is
         /// pulled back onto it.</summary>
         private static readonly double[] G2TrackWeights = { 1, 8, 64 };
+        /// <summary>An infeasible fit is retried heavier only when its end came this close (cells).</summary>
+        internal static double G2RetryGap = 0.3;
 
         /// <summary>HOSE_CURVE_REBUILD_SMOOTH_AS_PHYSICS (owner 2026-10-23 22:15): the shaped flat and charged poses re-laid as
         /// clothoid chains (HoseClothoid) of the hose's own length, so position, heading and curvature are continuous everywhere,
@@ -911,6 +913,7 @@ namespace RimMandrake.FlowWorks.Hose
             if (!G2On || lay.Flat.Count < 3) return;
             double L = Geo.Length(lay.Flat);
             if (L < 1.0) return;
+            G2Tried++;
             double[] sF = Geo.CumLen(lay.Flat);
             double half = JoinerHalf(VisibleWidth(1, p.PlumpAmount));
             var spans = new List<(double, double)>();
@@ -935,7 +938,9 @@ namespace RimMandrake.FlowWorks.Hose
                 foreach (double tw in G2TrackWeights)
                 {
                     HoseClothoid.Result r = HoseClothoid.Fair(route, L, a0, lead0, a1, lead1, spans, kmax, tw);
-                    if (!r.Feasible) { why.Add("x" + tw + " " + r.Why); continue; }
+                    // a heavier pull onto the route mostly helps a fit that strayed (into a wall, over a reel); an infeasible fit
+                    // whose end stayed far off (ends and bend limits that disagree) is not retried: it is the costly kind
+                    if (!r.Feasible) { why.Add("x" + tw + " " + r.Why); if (r.EndErr > G2RetryGap) break; continue; }
                     if (!Clear(w, r.Pts)) { why.Add("x" + tw + " touches a wall"); continue; }
                     if (Rig(r.Pts) > rig0) { why.Add("x" + tw + " crosses a reel"); continue; }
                     if (BodyRuleOn && BodyGap(w, r.Pts, sk, EndSkip) < gap0 - 1e-9) { why.Add("x" + tw + " body nearer a wall"); continue; }
@@ -954,7 +959,11 @@ namespace RimMandrake.FlowWorks.Hose
             lay.Centre = ResampleN(lay.Centre, f.Count);
             lay.Joints = js.Select(s => Math.Max(1, Math.Min(f.Count - 2, (int)Math.Round(s / step)))).ToList();
             lay.G2 = true;
+            G2Done++;
         }
+
+        /// <summary>Lays the G2 fit was tried on / held on (selftest cost report).</summary>
+        internal static long G2Tried, G2Done;
 
         /// <summary>REEL_LINK_FIX_IGNORES_THE_OBVIOUS_PORT: a DirectJoin plan laid as drawn (see LayOnce's <c>shaped</c>). The plan
         /// already runs straight out of the nozzle for LeadOutStraight cells, round at the minimum radius and straight into the

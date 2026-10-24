@@ -214,10 +214,20 @@ namespace RimMandrake.FlowWorks.SelfTest
             C(lay.Flat.Count == lay.Plump.Count, "flat and plump poses have matching samples (crossfade)");
             double straight = V2.Dist(a, b);
             C(lay.FlatLen > straight * 1.03 && lay.FlatLen <= lay.PathLen + 6.5, "flat slack within the hose budget (" + lay.FlatLen.ToString("0.0") + " over " + straight.ToString("0.0") + ")");
-            C(lay.PlumpLen < lay.FlatLen * 0.995 && lay.PlumpLen >= straight, "plump is shorter (" + lay.PlumpLen.ToString("0.00") + " < " + lay.FlatLen.ToString("0.00") + ")");
             double latF = MaxLateral(lay.Flat, a, b), latP = MaxLateral(lay.Plump, a, b);
             C(latF >= 0.3 && latF <= 2.4, "flat lies in gentle S-curves (max excursion " + latF.ToString("0.00") + " cells)");
-            C(latP < latF * 0.9, "plump is straighter (" + latP.ToString("0.00") + " < " + latF.ToString("0.00") + ")");
+            if (lay.G2)
+            {
+                // the G2 fit (design flowworks_hose_geometry_g2 R6, owner "hose vanishing when it fills"): the charged pose keeps
+                // the hose's length, so filling re-drapes the slack instead of shortening the hose
+                C(Math.Abs(lay.PlumpLen - lay.FlatLen) <= 0.02 * lay.FlatLen, "plump keeps the hose's length (" + lay.PlumpLen.ToString("0.00") + " vs " + lay.FlatLen.ToString("0.00") + ")");
+                C(latP <= latF * 1.1, "plump drapes no wider than flat (" + latP.ToString("0.00") + " vs " + latF.ToString("0.00") + ")");
+            }
+            else
+            {
+                C(lay.PlumpLen < lay.FlatLen * 0.995 && lay.PlumpLen >= straight, "plump is shorter (" + lay.PlumpLen.ToString("0.00") + " < " + lay.FlatLen.ToString("0.00") + ")");
+                C(latP < latF * 0.9, "plump is straighter (" + latP.ToString("0.00") + " < " + latF.ToString("0.00") + ")");
+            }
             C(lay.MinBendFlat >= p.MinBendRadius * 0.95, "flat min bend radius " + lay.MinBendFlat.ToString("0.00") + " >= " + p.MinBendRadius);
             C(lay.MinBendPlump >= p.MinBendRadius * 0.95, "plump min bend radius " + lay.MinBendPlump.ToString("0.00"));
             C(!HoseMath.SelfIntersects(lay.Flat), "no loops: the flat hose never crosses itself");

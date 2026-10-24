@@ -11,8 +11,9 @@ namespace RimMandrake.FlowWorks.Hose
     /// position, heading and curvature are continuous everywhere by construction (G2), and the hard limits are linear in the
     /// unknowns: |kappa| &lt;= kmax at every node (hence everywhere), |kappa(i+1) - kappa(i)| &lt;= J x interval (the sharpest
     /// curvature ramp), kappa = 0 over every straight lead and joiner span, and the total length is exactly the hose's.
-    /// The ends (position, and heading where a fitting fixes the axis) and the limits are met by Levenberg-Marquardt with
-    /// penalty continuation and then checked exactly; the shape preference (stay on the planned route, fair curvature) is the only soft part.
+    /// The ends (position, and heading where a fitting fixes the axis) are hard equalities of a Gauss-Newton SQP (analytic
+    /// Jacobian, KKT step, L1 merit line search, then a minimum-norm Newton polish), the limits are steep one-sided penalties,
+    /// and both are then checked exactly; the shape preference (stay on the planned route, fair curvature) is the only soft part.
     /// Design: design/RimMandrake/flowworks_hose_geometry_g2_2026-10-23.md (method chosen after the GPT attack, section 5).
     /// Verse-free; the offline selftest (HoseCurveChecks) and the game share it.
     /// </summary>
@@ -23,7 +24,7 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>The steepest curvature ramp the solver allows, as a multiple of kmax per cell (the ruler's cap is 2.5).</summary>
         public const double JerkPerKmax = 2.2;
         /// <summary>An end equality counts as met within this (cells / radians).</summary>
-        public const double EndTol = 2e-3;
+        public const double EndTol = 2e-4;
         /// <summary>The largest stretch (fraction of length) and turn (rad) Snap may use to close a near-taut gap.</summary>
         public const double SnapFrac = 0.01, SnapTurn = 0.01;
 
@@ -64,7 +65,8 @@ namespace RimMandrake.FlowWorks.Hose
             public List<V2> Pts;
         }
 
-        public static long Solves, Iters;
+        /// <summary>Cost counters for the offline ruler (SolverCost); a few adds per solve.</summary>
+        public static long Solves, Iters, Ticks, Feasibles, FeasIters, FeasTicks;
 
         private static double Clamp(double v, double lo, double hi) => v < lo ? lo : v > hi ? hi : v;
 
@@ -108,6 +110,17 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>Solves <paramref name="pr"/>. The result's points always come from the curve (never snapped onto the ends);
         /// Feasible = every end equality met within EndTol and every bound held.</summary>
         public static Result Solve(Problem pr)
+        {
+            long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
+            long it0 = Iters;
+            Result r = SolveCore(pr);
+            long dt = System.Diagnostics.Stopwatch.GetTimestamp() - t0;
+            Ticks += dt;
+            if (r.Feasible) { Feasibles++; FeasIters += Iters - it0; FeasTicks += dt; }
+            return r;
+        }
+
+        private static Result SolveCore(Problem pr)
         {
             Solves++;
             var res = new Result();
@@ -175,113 +188,229 @@ namespace RimMandrake.FlowWorks.Hose
                 Sample(pr.P0, th0, K, l, sub, out double thE);
                 th1 = pr.Theta1.Value + Math.Round((thE - pr.Theta1.Value) / (2 * Math.PI)) * 2 * Math.PI;
             }
-            // Levenberg-Marquardt on one least-squares system: the route tracking, curvature fairness and bending energy, plus
-            // the end equalities and the curvature / ramp limits as penalty rows whose weight climbs until they hold to well
-            // under EndTol (a penalty continuation; the limits aim a hair inside so the hard check below holds exactly)
+            // Gauss-Newton SQP on the node curvatures (2026-10-24, replaces a finite-difference Levenberg-Marquardt that cost
+            // seconds per lay): the soft part (track the route at the nodes, fair curvature, bending energy, and the curvature
+            // and ramp limits as one-sided quadratic penalties, which are linear in the unknowns and so exact in Gauss-Newton) is
+            // minimised subject to the end equalities (position, and heading where a fitting fixes it) as hard linearised
+            // constraints, solved through the KKT system's Schur complement. The Jacobian is analytic: past node j+1 a change of
+            // kappa_j only turns the rest of the chain rigidly about node j+1, so every product of two columns over the track
+            // rows is a closed form in suffix sums and the normal matrix costs O(nv^2) per iteration, not O(rows x nv^2).
             double dk = J * l, kIn = kmax * 0.995, dIn = dk * 0.995;
             int nE = 2 + (pr.Theta1.HasValue ? 1 : 0);
-            double wT = Math.Sqrt(Math.Max(1e-9, pr.TrackWeight) * res.Step);
-            double wF = Math.Sqrt(0.15 / l), wB = Math.Sqrt(0.02 * l);
-            int nr = 2 * ns + N + (N + 1) + nE + (N + 1) + N;
-            var x0 = new double[nv];
-            for (int v = 0; v < vars.Count; v++) x0[v] = K[vars[v]];
-            if (freeTh) x0[nv - 1] = th0;
-            double[] Kof(double[] x)
+            double wT2 = Math.Max(1e-9, pr.TrackWeight) * l, wF2 = 0.15 / l, wB2 = 0.02 * l, wI2 = 1e6;
+            var Qn = new V2[N + 1];
+            for (int i = 0; i <= N; i++) Qn[i] = Q[Math.Min(ns - 1, i * sub)];
+            int nk = vars.Count;
+            var varOf = new int[N + 1];
+            for (int i = 0; i <= N; i++) varOf[i] = -1;
+            for (int v = 0; v < nk; v++) varOf[vars[v]] = v;
+            var pN = new V2[N + 1];
+            var thN = new double[N + 1];
+            var E0 = new V2[N];
+            var E1 = new V2[N];
+            // the node chain (positions, headings) and, per interval, d(end of piece)/d(k at its start, k at its end)
+            void Chain(double[] KK, double t0, bool derivs)
             {
-                var KK = (double[])K.Clone();
-                for (int v = 0; v < vars.Count; v++) KK[vars[v]] = x[v];
-                return KK;
-            }
-            double Th(double[] x) => freeTh ? x[nv - 1] : th0;
-            void Eval(double[] x, double wE, double wI, double[] r)
-            {
-                double[] KK = Kof(x);
-                List<V2> P = Sample(pr.P0, Th(x), KK, l, sub, out double tE);
-                int k = 0;
-                for (int q = 0; q < ns; q++) { r[k++] = wT * (P[q].X - Q[q].X); r[k++] = wT * (P[q].Z - Q[q].Z); }
-                for (int i = 0; i < N; i++) r[k++] = wF * (KK[i + 1] - KK[i]);
-                for (int i = 0; i <= N; i++) r[k++] = wB * KK[i];
-                r[k++] = wE * (P[ns - 1].X - pr.P1.X);
-                r[k++] = wE * (P[ns - 1].Z - pr.P1.Z);
-                if (pr.Theta1.HasValue) r[k++] = wE * (tE - th1);
-                for (int i = 0; i <= N; i++) r[k++] = wI * Math.Max(0, Math.Abs(KK[i]) - kIn);
-                for (int i = 0; i < N; i++) r[k++] = wI * Math.Max(0, Math.Abs(KK[i + 1] - KK[i]) - dIn);
-            }
-            double Cost(double[] r) { double f = 0; for (int k = 0; k < r.Length; k++) f += r[k] * r[k]; return f; }
-            var rr = new double[nr];
-            var r2 = new double[nr];
-            double[] xc = x0;
-            int it = 0, stall = 0;
-            int active = 0;
-            foreach (double wPen in new[] { 10.0, 300.0, 1e4, 3e5, 1e7 })
-            {
-                Eval(xc, wPen, wPen, rr);
-                double f0 = Cost(rr), mu = 1e-3;
-                for (int inner = 0; inner < 40; inner++, it++)
+                pN[0] = pr.P0;
+                thN[0] = t0;
+                for (int i = 0; i < N; i++)
                 {
-                    Iters++;
-                    var Jr = new double[nr, nv];
-                    for (int v = 0; v < nv; v++)
+                    double x = 0, z = 0, x0 = 0, z0 = 0, x1 = 0, z1 = 0, k0 = KK[i], k1 = KK[i + 1], th = thN[i];
+                    for (int g = 0; g < 4; g++)
                     {
-                        var xp = (double[])xc.Clone();
-                        double h = 1e-7 * Math.Max(1, Math.Abs(xp[v]));
-                        xp[v] += h;
-                        Eval(xp, wPen, wPen, r2);
-                        for (int k = 0; k < nr; k++) Jr[k, v] = (r2[k] - rr[k]) / h;
+                        double tau = 0.5 * l * (1 + GX[g]);
+                        double q2 = tau * tau / (2 * l);
+                        double a = th + k0 * tau + (k1 - k0) * q2;
+                        double c = Math.Cos(a) * GW[g], s = Math.Sin(a) * GW[g];
+                        x += c; z += s;
+                        if (derivs) { x0 += -s * (tau - q2); z0 += c * (tau - q2); x1 += -s * q2; z1 += c * q2; }
                     }
-                    var H = new double[nv, nv];
-                    var g = new double[nv];
-                    for (int a2 = 0; a2 < nv; a2++)
-                    {
-                        double ga = 0;
-                        for (int k = 0; k < nr; k++) ga += Jr[k, a2] * rr[k];
-                        g[a2] = ga;
-                        for (int b2 = a2; b2 < nv; b2++)
-                        {
-                            double sum = 0;
-                            for (int k = 0; k < nr; k++) sum += Jr[k, a2] * Jr[k, b2];
-                            H[a2, b2] = H[b2, a2] = sum;
-                        }
-                    }
-                    bool took = false;
-                    for (int tries = 0; tries < 12; tries++)
-                    {
-                        var A = new double[nv, nv + 1];
-                        for (int a2 = 0; a2 < nv; a2++)
-                        {
-                            for (int b2 = 0; b2 < nv; b2++) A[a2, b2] = H[a2, b2];
-                            A[a2, a2] += mu * (H[a2, a2] + 1e-6);
-                            A[a2, nv] = -g[a2];
-                        }
-                        double[] d = Gauss(A, nv);
-                        if (d != null)
-                        {
-                            var xn = new double[nv];
-                            for (int v = 0; v < nv; v++) xn[v] = xc[v] + d[v];
-                            Eval(xn, wPen, wPen, r2);
-                            double f1 = Cost(r2);
-                            if (f1 < f0)
-                            {
-                                double drop = f0 - f1;
-                                xc = xn;
-                                Array.Copy(r2, rr, nr);
-                                f0 = f1;
-                                mu = Math.Max(1e-9, mu * 0.3);
-                                took = true;
-                                if (drop < 1e-12 * (1 + f0)) inner = 1000;
-                                break;
-                            }
-                        }
-                        stall++;
-                        mu *= 10;
-                    }
-                    if (!took) break;
+                    pN[i + 1] = new V2(pN[i].X + 0.5 * l * x, pN[i].Z + 0.5 * l * z);
+                    thN[i + 1] = th + 0.5 * l * (k0 + k1);
+                    if (derivs) { E0[i] = new V2(0.5 * l * x0, 0.5 * l * z0); E1[i] = new V2(0.5 * l * x1, 0.5 * l * z1); }
                 }
             }
-            for (int k = 2 * ns + N + (N + 1) + nE; k < nr; k++) if (rr[k] > 0) active++;
+            V2 Rot(V2 a) => new V2(-a.Z, a.X);
+            double SoftCost(double[] KK)
+            {
+                double f = 0;
+                for (int q = 1; q <= N; q++) { V2 d = pN[q] - Qn[q]; f += wT2 * (d.X * d.X + d.Z * d.Z); }
+                for (int i = 0; i < N; i++) { double d = KK[i + 1] - KK[i]; f += wF2 * d * d; double o = Math.Abs(d) - dIn; if (o > 0) f += wI2 * o * o; }
+                for (int i = 0; i <= N; i++) { f += wB2 * KK[i] * KK[i]; double o = Math.Abs(KK[i]) - kIn; if (o > 0) f += wI2 * o * o; }
+                return 0.5 * f;
+            }
+            double[] Cons()
+            {
+                var c = new double[nE];
+                c[0] = pN[N].X - pr.P1.X; c[1] = pN[N].Z - pr.P1.Z;
+                if (nE == 3) c[2] = thN[N] - th1;
+                return c;
+            }
+            var KC = (double[])K.Clone();
+            double thC = th0;
+            int it = 0, stall = 0, active = 0;
+            {
+                var U = new V2[nv];
+                var Cc = new double[nv];
+                var D = new V2[nv];
+                var St = new int[nv];
+                var Sn = new double[N + 2];
+                var Sr = new V2[N + 2];
+                var SW = new V2[N + 2];
+                var SWr = new double[N + 2];
+                var S2 = new double[N + 2];
+                var H = new double[nv * nv];
+                var g = new double[nv];
+                var A = new double[nE * nv];
+                double rho = 10, mu = 1e-8;
+                bool perturbed = false;
+                Chain(KC, thC, true);
+                double fC = SoftCost(KC);
+                double[] cC = Cons();
+                for (; it < 60; it++)
+                {
+                    Iters++;
+                    // columns: rigid form J_q = U + C x Rot(p_q) for q >= St, plus node j's own D at q = j
+                    for (int v = 0; v < nk; v++)
+                    {
+                        int j = vars[v];
+                        V2 Dj = j >= 1 ? E1[j - 1] : new V2(0, 0);
+                        double dth = j >= 1 ? 0.5 * l : 0;
+                        V2 dp1 = Dj + Rot(pN[j + 1] - pN[j]) * dth + E0[j];
+                        Cc[v] = dth + 0.5 * l;
+                        U[v] = dp1 - Rot(pN[j + 1]) * Cc[v];
+                        D[v] = Dj;
+                        St[v] = j + 1;
+                    }
+                    if (freeTh) { U[nv - 1] = -Rot(pN[0]); Cc[nv - 1] = 1; D[nv - 1] = new V2(0, 0); St[nv - 1] = 0; }
+                    Sn[N + 1] = 0; Sr[N + 1] = new V2(0, 0); SW[N + 1] = new V2(0, 0); SWr[N + 1] = 0; S2[N + 1] = 0;
+                    for (int q = N; q >= 0; q--)
+                    {
+                        V2 r = q == 0 ? new V2(0, 0) : pN[q] - Qn[q], w = Rot(pN[q]);
+                        Sn[q] = Sn[q + 1] + 1;
+                        Sr[q] = Sr[q + 1] + r;
+                        SW[q] = SW[q + 1] + w;
+                        SWr[q] = SWr[q + 1] + w.X * r.X + w.Z * r.Z;
+                        S2[q] = S2[q + 1] + w.X * w.X + w.Z * w.Z;
+                    }
+                    V2 RigidAt(int a, int q) => q >= St[a] ? U[a] + Rot(pN[q]) * Cc[a] : (a < nk && q == vars[a] ? D[a] : new V2(0, 0));
+                    double Dot(V2 a, V2 b) => a.X * b.X + a.Z * b.Z;
+                    for (int a = 0; a < nv; a++)
+                    {
+                        // the track rows; node 0 is the fixed start (residual 0, column 0)
+                        double ga = Dot(U[a], Sr[St[a]]) + Cc[a] * SWr[St[a]];
+                        if (a < nk) { int ja = vars[a]; if (ja >= 1) ga += Dot(D[a], pN[ja] - Qn[ja]); }
+                        g[a] = wT2 * ga;
+                        for (int b = a; b < nv; b++)
+                        {
+                            // later start = the column with the larger first nonzero row
+                            int lo = a, hi = b;
+                            int fa = a < nk ? vars[a] : -1, fb = b < nk ? vars[b] : -1;
+                            if (fa > fb) { lo = b; hi = a; }
+                            int Q0 = St[hi];
+                            double h = Sn[Q0] * Dot(U[a], U[b]) + Cc[b] * Dot(U[a], SW[Q0]) + Cc[a] * Dot(U[b], SW[Q0]) + Cc[a] * Cc[b] * S2[Q0];
+                            if (hi < nk) { int jh = vars[hi]; if (jh >= 1) h += Dot(RigidAt(lo, jh), D[hi]); }
+                            H[a * nv + b] = H[b * nv + a] = wT2 * h;
+                        }
+                        for (int e = 0; e < nE; e++) A[e * nv + a] = e < 2 ? (e == 0 ? RigidAt(a, N).X : RigidAt(a, N).Z) : Cc[a];
+                    }
+                    // fairness, bending and the one-sided limit penalties (rows on the node curvatures only)
+                    void Pair(int i0, int i1, double w, double r)
+                    {
+                        int a = varOf[i0], b = varOf[i1];
+                        if (a >= 0) { g[a] -= w * r; H[a * nv + a] += w; }
+                        if (b >= 0) { g[b] += w * r; H[b * nv + b] += w; }
+                        if (a >= 0 && b >= 0) { H[a * nv + b] -= w; H[b * nv + a] -= w; }
+                    }
+                    for (int i = 0; i < N; i++)
+                    {
+                        double d = KC[i + 1] - KC[i];
+                        Pair(i, i + 1, wF2, d);
+                        double o = Math.Abs(d) - dIn;
+                        if (o > 0) Pair(i, i + 1, wI2, Math.Sign(d) * o);
+                    }
+                    for (int v = 0; v < nk; v++)
+                    {
+                        double kv = KC[vars[v]];
+                        g[v] += wB2 * kv; H[v * nv + v] += wB2;
+                        double o = Math.Abs(kv) - kIn;
+                        if (o > 0) { g[v] += wI2 * Math.Sign(kv) * o; H[v * nv + v] += wI2; }
+                    }
+                    bool took = false, restart = false;
+                    for (int tries = 0; tries < 8 && !took; tries++)
+                    {
+                        double[] d = KktStep(H, g, A, cC, nv, nE, mu, out double[] lam);
+                        if (d == null && !perturbed)
+                        {
+                            // a degenerate start (a dead straight chain with slack to spare: the end cannot move along the
+                            // chord to first order) is broken by one small deterministic drape, then made to hold the bounds
+                            perturbed = restart = true;
+                            for (int v = 0; v < nk; v++) KC[vars[v]] += 0.15 * kmax * Math.Cos(2 * Math.PI * vars[v] / N);
+                            MakeFeasible(KC, fixedK, kIn, dIn);
+                            break;
+                        }
+                        if (d == null) { mu = Math.Max(1e-6, mu * 100); stall++; continue; }
+                        for (int e = 0; e < nE; e++) rho = Math.Max(rho, 1.5 * Math.Abs(lam[e]));
+                        double phi0 = fC + rho * L1(cC);
+                        for (double alpha = 1; alpha > 1e-3 && !took; alpha *= 0.5)
+                        {
+                            var KN = (double[])KC.Clone();
+                            for (int v = 0; v < nk; v++) KN[vars[v]] += alpha * d[v];
+                            double thT = freeTh ? thC + alpha * d[nv - 1] : thC;
+                            Chain(KN, thT, false);
+                            double fN = SoftCost(KN);
+                            double[] cN = Cons();
+                            if (fN + rho * L1(cN) < phi0 - 1e-12 * (1 + Math.Abs(phi0)))
+                            {
+                                double moved = 0;
+                                for (int v = 0; v < nv; v++) moved = Math.Max(moved, Math.Abs(alpha * d[v]));
+                                KC = KN; thC = thT; fC = fN; cC = cN;
+                                took = true;
+                                mu = Math.Max(1e-10, mu * 0.3);
+                                if (moved < 1e-9 && L1(cC) < 1e-7) it = 1000;
+                            }
+                            else stall++;
+                        }
+                        if (!took) mu = Math.Max(1e-6, mu * 100);
+                    }
+                    if (restart) { Chain(KC, thC, true); fC = SoftCost(KC); cC = Cons(); continue; }
+                    if (!took || it >= 1000) break;
+                    Chain(KC, thC, true);
+                }
+                if (it >= 1000) it = it - 1000 + 1;
+                // polish: a near-met end the merit search stopped short of is closed by minimum-norm Newton steps on the end
+                // equalities alone (quadratic convergence; the soft part barely moves), kept only while they shrink the gap
+                for (int pol = 0; pol < 6 && L1(cC) > 1e-10 && L1(cC) < 0.1; pol++)
+                {
+                    Chain(KC, thC, true);
+                    for (int v = 0; v < nk; v++)
+                    {
+                        int j = vars[v];
+                        V2 Dj = j >= 1 ? E1[j - 1] : new V2(0, 0);
+                        double dth = j >= 1 ? 0.5 * l : 0;
+                        double cj = dth + 0.5 * l;
+                        V2 dpN = Dj + Rot(pN[j + 1] - pN[j]) * dth + E0[j] + Rot(pN[N] - pN[j + 1]) * cj;
+                        A[v] = dpN.X; A[nv + v] = dpN.Z; if (nE == 3) A[2 * nv + v] = cj;
+                    }
+                    if (freeTh) { V2 r0 = Rot(pN[N] - pN[0]); A[nv - 1] = r0.X; A[2 * nv - 1] = r0.Z; if (nE == 3) A[3 * nv - 1] = 1; }
+                    var I = new double[nv * nv];
+                    for (int v = 0; v < nv; v++) I[v * nv + v] = 1;
+                    double[] d = KktStep(I, new double[nv], A, cC, nv, nE, 0, out _);
+                    if (d == null) break;
+                    var KN = (double[])KC.Clone();
+                    for (int v = 0; v < nk; v++) KN[vars[v]] += d[v];
+                    double thT = freeTh ? thC + d[nv - 1] : thC;
+                    Chain(KN, thT, false);
+                    double[] cN = Cons();
+                    if (L1(cN) >= L1(cC)) break;
+                    KC = KN; thC = thT; cC = cN;
+                }
+                for (int i = 0; i <= N; i++) if (Math.Abs(KC[i]) > kIn + 1e-9) active++;
+                for (int i = 0; i < N; i++) if (Math.Abs(KC[i + 1] - KC[i]) > dIn + 1e-9) active++;
+            }
             res.Iterations = it;
-            double[] KF = Kof(xc);
-            res.Theta0 = Th(xc);
+            double[] KF = KC;
+            res.Theta0 = thC;
             res = Finish(res, pr, KF, res.Theta0, l, sub);
             res.HeadErr = pr.Theta1.HasValue ? Math.Abs(Sum(KF, l) + res.Theta0 - th1) : 0;
             bool ok = res.EndErr < EndTol && res.HeadErr < EndTol && BoundsHold(KF, kmax, J * l, 1e-6);
@@ -376,6 +505,71 @@ namespace RimMandrake.FlowWorks.Hose
                     if (!fixedK[i].HasValue && Math.Abs(K[i] - K[i + 1]) > dk) { K[i] = Clamp(K[i], K[i + 1] - dk, K[i + 1] + dk); moved = true; }
                 if (!moved) break;
             }
+        }
+
+        private static double L1(double[] c) { double t = 0; foreach (double v in c) t += Math.Abs(v); return t; }
+
+        /// <summary>One Gauss-Newton step of min 1/2 d'Md + g'd subject to A d = -c (M = H + mu diag, nE &lt;= 3 rows of A): the
+        /// Schur complement through one Cholesky of M. Null when M is not positive definite or the constraints are degenerate.</summary>
+        internal static double[] KktStep(double[] H, double[] g, double[] A, double[] c, int n, int nE, double mu, out double[] lam)
+        {
+            lam = new double[nE];
+            var M = new double[n * n];
+            for (int i = 0; i < n * n; i++) M[i] = H[i];
+            for (int i = 0; i < n; i++) M[i * n + i] += mu * (H[i * n + i] + 1e-6) + 1e-12;
+            if (!Cholesky(M, n)) return null;
+            double[] y = CholSolve(M, n, g);
+            var Z = new double[nE][];
+            for (int e = 0; e < nE; e++) { var a = new double[n]; Array.Copy(A, e * n, a, 0, n); Z[e] = CholSolve(M, n, a); }
+            // (A M^-1 A') lam = c - A M^-1 g
+            var S = new double[nE, nE + 1];
+            for (int e = 0; e < nE; e++)
+            {
+                double ay = 0;
+                for (int i = 0; i < n; i++) ay += A[e * n + i] * y[i];
+                S[e, nE] = c[e] - ay;
+                for (int f = 0; f < nE; f++) { double t = 0; for (int i = 0; i < n; i++) t += A[e * n + i] * Z[f][i]; S[e, f] = t; }
+            }
+            double[] l = Gauss(S, nE);
+            if (l == null) return null;
+            lam = l;
+            var d = new double[n];
+            for (int i = 0; i < n; i++)
+            {
+                double t = y[i];
+                for (int e = 0; e < nE; e++) t += Z[e][i] * l[e];
+                d[i] = -t;
+            }
+            return d;
+        }
+
+        /// <summary>In-place lower Cholesky of a dense symmetric n x n matrix (row-major); false when not positive definite.</summary>
+        private static bool Cholesky(double[] M, int n)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                double s = M[j * n + j];
+                for (int k = 0; k < j; k++) s -= M[j * n + k] * M[j * n + k];
+                if (!(s > 1e-300)) return false;
+                double d = Math.Sqrt(s);
+                M[j * n + j] = d;
+                for (int i = j + 1; i < n; i++)
+                {
+                    double t = M[i * n + j];
+                    int ri = i * n, rj = j * n;
+                    for (int k = 0; k < j; k++) t -= M[ri + k] * M[rj + k];
+                    M[i * n + j] = t / d;
+                }
+            }
+            return true;
+        }
+
+        private static double[] CholSolve(double[] M, int n, double[] b)
+        {
+            var y = new double[n];
+            for (int i = 0; i < n; i++) { double t = b[i]; for (int k = 0; k < i; k++) t -= M[i * n + k] * y[k]; y[i] = t / M[i * n + i]; }
+            for (int i = n - 1; i >= 0; i--) { double t = y[i]; for (int k = i + 1; k < n; k++) t -= M[k * n + i] * y[k]; y[i] = t / M[i * n + i]; }
+            return y;
         }
 
         /// <summary>Gaussian elimination with partial pivoting on an n x (n+1) augmented matrix; null when singular.</summary>
