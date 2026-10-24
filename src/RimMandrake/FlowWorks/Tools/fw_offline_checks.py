@@ -9,8 +9,9 @@ and in-game testing from now on, so we don't repeat mistakes."
 
 Pipe joins (PIPE_JOINS_REDRAW_RISER_ELBOW_AND_COLLAR; his words: "The collar by the tank is superimposed and odd. the
 corner has no treatment at all in the north. In the south there is a crude "cap" graphic that's inappropriate"):
-  collar_on_riser    no Flange pixel is drawn on a pipe that rises into a tank's own drawn nozzle
-  end_cap_on_riser   no dead-end atlas tile (0 or 1 arm) on a cell whose pipe carries on into a tank
+  collar_on_riser    no flange draw the emulation TAGGED riser=True has pixels (a draw-list check on the emulation's
+                     tags: a flange reaching a riser by an untagged path is not counted)
+  end_cap_on_riser   no dead-end atlas tile (0 or 1 arm) TAGGED riser=True (same: the emulation's tags, not geometry)
   riser_kinks        every riser turns smoothly: heading changes by at most 2 degrees where two pieces meet
   riser_gaps         the riser's centreline is drawn pipe all the way from the cell to the port (no hole)
   riser_rims_north   the bent strip keeps the straight tile's north rim on the north, both sides of a tank
@@ -42,6 +43,8 @@ def _popcount(m):
 
 
 def collar_on_riser(scene):
+    """Pixels of flange draws the scene tagged riser=True. It trusts the scene's tags, so it proves the emulated draw
+    path, not that no flange overlaps a riser's pixels."""
     if not scene.risers:
         return False, "no risers in scene (nothing to measure)"
     im = np.asarray(scene.render(only=lambda m: m.get("kind") == "flange" and m.get("riser")))
