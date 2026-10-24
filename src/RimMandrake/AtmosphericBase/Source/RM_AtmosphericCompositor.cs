@@ -473,6 +473,8 @@ namespace RimMandrake.AtmosphericBase
                     double ot = mine ? RM_PatternChoice.TempoTime(time, set.patternTempo) : time;
                     int idx = RM_SchemeKernel.PaletteIndex(data, ref pc, ot, flash != null && flash.Contains(id));
                     if (mine) idx = RM_PatternChoice.Apply(data, idx, set.patternIntensity);
+                    // T3 (c): a god's reading keeps Gentle's floor unless the scenario set Full (RM_GodGate)
+                    else if (RM_SignatureDef.ForScheme(owner.scheme) != null) idx = RM_GodGate.Apply(data, idx, comp.godIntensity);
                     RM_AtmosphericSchemeDef shown = owner.scheme;
                     // M3 SCAR: the winner's lowest moments still show the previous owner, for the winner's linger
                     if (second != null && scarOf.TryGetValue(id, out KeyValuePair<string, double> sc))

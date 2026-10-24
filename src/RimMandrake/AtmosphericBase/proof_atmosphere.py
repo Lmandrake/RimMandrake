@@ -864,6 +864,103 @@ def judge_neutral_wiring(compositor_cs, settings_cs):
     return _r(PASS, MOD, "DefaultMood runs the picked neutral scheme; tempo and intensity shape the default claimant only; all three Scribed")
 
 
+NINE_GODS = ("Ishko", "Ohm", "Oomo", "MobUnloo", "Rekko", "TaBaa", "Zizzik", "Shkaar", "Ozzik")
+NINE_DARK = ("Ishko", "Zizzik")
+_NINE_PER_GOD = ("the signature loads with its resting, pleased and angry readings, each named for it",
+                 "the signature has a label and a tell",
+                 "all three readings validate clean in the scheme kernel",
+                 "no entry sits within the Narrator's reserved white",
+                 "the three readings share one palette (identity rides hue)",
+                 "2,400 samples per reading are valid palette indices",
+                 "Full plays every entry as authored",
+                 "Gentle never shows an entry under the god floor",
+                 "shows only on a Utinni map with a grav engine; inert anywhere else",
+                 "territory is the design's ")
+KERNEL_NINE_CHECKS = tuple(
+    ["Nine/%s: %s" % (g, c) for g in NINE_GODS for c in _NINE_PER_GOD]
+    + ["Nine/%s: %s" % (g, "a dark god: true black in the palette, mayGoDark set" if g in NINE_DARK
+                        else "never dark: no black entry, mayGoDark unset") for g in NINE_GODS]
+    + ["Nine/%s: Full reaches true black (a dark god is not floored at Full)" % g for g in NINE_DARK]
+    + ["Nine/Shkaar: visibly gold at every entry, well clear of the Narrator's white",
+       "Nine/Shkaar: a fighting rank share of at least 0.4",
+       "Nine/Rekko: leans bronze above his patina floor, clear of the vanilla lamp",
+       "Nine/Rekko: M3 SCAR is his: every reading keeps what was, past the 30 s linger",
+       "Nine: the campaign tier's signature file is found from the selftest exe",
+       "Nine: the signature file parses strictly (every field known, every enum and reference resolved)",
+       "Nine: nine signatures and 27 readings, nothing else",
+       "Nine: every def loads only with AtmosphericBase (MayRequire mandrake.rm.atmosphericbase)",
+       "Nine: every reading belongs to exactly one god",
+       "Nine control: the design's proposed Blaze (255,236,150) is NOT gold (the judgement can fail)",
+       "Nine control: the design's proposed Burnish (200,146,74) is NOT bronze enough",
+       "pairing: exactly the two canon pairings are authored",
+       "pairing: Ishko and Ta'Baa meet at the threshold (Ishko from the core, Ta'Baa from the threshold), either louder",
+       "pairing: the authored Sh'kaar rule hunts Ishko whichever of them is louder",
+       "pairing: every other pair plays the leader's own shape",
+       "settings: the neutral set names no god's reading",
+       "settings: AtmosphericBase's own scheme file ships no god (no signature, no RUT_ reading)",
+       "gate: a neutral scheme shows anywhere",
+       "Nine control: a field-name typo (<dwel>) fails the parse loudly",
+       "Nine control: an enum typo (Treshold) fails the parse loudly",
+       "Nine control: a primitive typo (Proccession) fails the parse loudly",
+       "Nine control: a reading reference typo fails the parse loudly",
+       "Nine control: a pairing reference typo fails the parse loudly",
+       "Nine control: a non-bool bool (yes) fails the parse loudly",
+       "Nine control: a def type typo fails the parse loudly",
+       "Nine control: a near-white entry slipped into Sh'kaar is refused by the reserved-white guard (L11)"])
+
+
+def judge_nine_log(text):
+    """D12: the Nine aboard the Utinni (T3c), from the kernel's own lines: every god's three readings load strictly,
+    pass the palette guard, keep the Gentle floor, show only on a Utinni map, and play the design's territory."""
+    return judge_kernel_lines(text, KERNEL_NINE_CHECKS,
+                              "kernel selftest drove all nine gods: strict def load (typos fail loudly), reserved white "
+                              "clear, Gentle floored and Full as authored, Utinni-only gate, design territories, the two "
+                              "canon pairings, Sh'kaar gold and Rekko bronze")
+
+
+def judge_nine_gate_wiring(mapcomp_cs, compositor_cs, api_cs):
+    """D12b: the god gate reaches the game -- moods are filtered by MayShow, a god's reading passes the god intensity,
+    the intensity is Scribed and the gate looks for a real grav engine."""
+    need = (("a god's reading passes the god intensity", r"RM_GodGate\.Apply\(data, idx, comp\.godIntensity\)", compositor_cs),
+            ("only a signature's reading is god-gated", r"RM_SignatureDef\.ForScheme\(owner\.scheme\) != null", compositor_cs),
+            ("ranked moods filtered by the gate", r"RankedMoods[\s\S]*?MayShow\(", mapcomp_cs),
+            ("pushed mood filtered by the gate", r"PushedMood[\s\S]*?MayShow\(", mapcomp_cs),
+            ("godIntensity Scribed", r'Scribe_Values\.Look\(ref godIntensity, "godIntensity"', mapcomp_cs),
+            ("the gate looks for a grav engine", r"Building_GravEngine", mapcomp_cs),
+            ("API sets the god intensity", r"\bSetGodIntensity\s*\(", api_cs),
+            ("API answers whether gods may show", r"\bGodsMayShow\s*\(", api_cs))
+    miss = [n for n, rx, txt in need if not re.search(rx, txt)]
+    if miss:
+        return _r(FAIL, MOD, "the god gate is not wired: %s" % "; ".join(miss))
+    return _r(PASS, MOD, "moods pass MayShow (Utinni map with a grav engine); a god's reading takes the Scribed god intensity; API exposes both")
+
+
+def judge_nine_disk(nine_xml, about_xml):
+    """D12c: the Nine ship in the campaign tier only -- 9 signatures, 27 readings, every def MayRequire'd on
+    AtmosphericBase, the tier loads after it, and no reading sits in the reserved white."""
+    if not nine_xml:
+        return _r(FAIL, MOD, "RUT_NineSignatures.xml not found in UtinniPatches")
+    opens = re.findall(r"<(RimMandrake\.\w+\.)?(RM_SignatureDef|RM_AtmosphericSchemeDef)\b([^>]*)>", nine_xml)
+    sigs = sum(1 for o in opens if o[1] == "RM_SignatureDef")
+    schemes = sum(1 for o in opens if o[1] == "RM_AtmosphericSchemeDef")
+    bare = sum(1 for o in opens if 'MayRequire="mandrake.rm.atmosphericbase"' not in o[2])
+    la = re.search(r"<loadAfter>([\s\S]*?)</loadAfter>", about_xml or "")
+    after = bool(la and re.search(r"<li>\s*mandrake\.rm\.atmosphericbase\s*</li>", la.group(1), re.I))
+    wst, _c, wdet = judge_reserved_white({"RUT_NineSignatures.xml": nine_xml})
+    bad = []
+    if (sigs, schemes) != (9, 27):
+        bad.append("%d signatures / %d readings (want 9 / 27)" % (sigs, schemes))
+    if bare:
+        bad.append("%d def(s) without MayRequire on AtmosphericBase" % bare)
+    if not after:
+        bad.append("UtinniPatches About.xml does not loadAfter mandrake.rm.atmosphericbase")
+    if wst != PASS:
+        bad.append("reserved white: " + wdet)
+    if bad:
+        return _r(FAIL, MOD, "; ".join(bad))
+    return _r(PASS, MOD, "9 signatures, 27 readings, all MayRequire'd; the Utinni tier loads after AtmosphericBase; " + wdet)
+
+
 def judge_kernel_lines(text, checks, passmsg):
     """Find each named check's line in a kernel selftest log. No log = UNMEASURED, never a pass."""
     if not text:
@@ -963,6 +1060,12 @@ def offline_rows(rows, kernel_log=None):
     add(rows, "D10.territory_shapes_behaviour", *judge_territory_log(klog))
     add(rows, "D11.neutral_choice_behaviour", *judge_choice_log(klog))
     add(rows, "D11b.neutral_choice_wiring", *judge_neutral_wiring(rd("RM_AtmosphericCompositor.cs"), rd("RM_AtmosphericBaseSettings.cs")))
+    add(rows, "D12.nine_behaviour", *judge_nine_log(klog))
+    add(rows, "D12b.nine_gate_wiring", *judge_nine_gate_wiring(rd("RM_MapComponent_AtmosphericBase.cs"),
+                                                               rd("RM_AtmosphericCompositor.cs"), rd("RM_AtmosphericBaseAPI.cs")))
+    ut = os.path.join(REPO, "src", "RimUtinni", "UtinniPatches")
+    rt = lambda *a: open(os.path.join(ut, *a), encoding="utf-8").read() if os.path.exists(os.path.join(ut, *a)) else ""
+    add(rows, "D12c.nine_disk", *judge_nine_disk(rt("Defs", "AtmosphericBase", "RUT_NineSignatures.xml"), rt("About", "About.xml")))
     return d
 
 
@@ -1764,6 +1867,25 @@ def metric_controls():
     out.append(("judge_neutral_wiring real source", judge_neutral_wiring(co_real, st_real)[0], PASS))
     out.append(("judge_neutral_wiring tempo on every claimant", judge_neutral_wiring(co_real.replace("mine ? RM_PatternChoice.TempoTime(time, set.patternTempo) : time", "RM_PatternChoice.TempoTime(time, set.patternTempo)"), st_real)[0], FAIL))
     out.append(("judge_neutral_wiring intensity not Scribed", judge_neutral_wiring(co_real, st_real.replace('Scribe_Values.Look(ref patternIntensity, "patternIntensity", 0);', ""))[0], FAIL))
+    nlog = "\n".join("ok    " + n + " x" for n in KERNEL_NINE_CHECKS) + "\nall AtmosphericBase kernel selftests passed"
+    out.append(("judge_nine_log good", judge_nine_log(nlog)[0], PASS))
+    out.append(("judge_nine_log a typo loaded clean", judge_nine_log(nlog.replace("ok    Nine control: an enum typo", "FAIL  Nine control: an enum typo"))[0], FAIL))
+    out.append(("judge_nine_log Ishko under the floor", judge_nine_log(nlog.replace("ok    Nine/Ishko: Gentle never", "FAIL  Nine/Ishko: Gentle never"))[0], FAIL))
+    out.append(("judge_nine_log older build", judge_nine_log(clog)[0], UNM))
+    out.append(("judge_nine_log none", judge_nine_log("")[0], UNM))
+    mc_real = open(os.path.join(src_dir, "RM_MapComponent_AtmosphericBase.cs"), encoding="utf-8").read()
+    api_real = open(os.path.join(src_dir, "RM_AtmosphericBaseAPI.cs"), encoding="utf-8").read()
+    out.append(("judge_nine_gate_wiring real source", judge_nine_gate_wiring(mc_real, co_real, api_real)[0], PASS))
+    out.append(("judge_nine_gate_wiring god intensity dropped", judge_nine_gate_wiring(mc_real, co_real.replace("comp.godIntensity", "0"), api_real)[0], FAIL))
+    out.append(("judge_nine_gate_wiring no grav-engine look", judge_nine_gate_wiring(mc_real.replace("Building_GravEngine", "Building"), co_real, api_real)[0], FAIL))
+    ut = os.path.join(REPO, "src", "RimUtinni", "UtinniPatches")
+    nx = open(os.path.join(ut, "Defs", "AtmosphericBase", "RUT_NineSignatures.xml"), encoding="utf-8").read()
+    ab = open(os.path.join(ut, "About", "About.xml"), encoding="utf-8").read()
+    out.append(("judge_nine_disk real files", judge_nine_disk(nx, ab)[0], PASS))
+    out.append(("judge_nine_disk one MayRequire lost", judge_nine_disk(nx.replace(' MayRequire="mandrake.rm.atmosphericbase"', "", 1), ab)[0], FAIL))
+    out.append(("judge_nine_disk white in a palette", judge_nine_disk(nx.replace("<li>(200,148,40,0)</li>", "<li>(250,250,250,0)</li>", 1), ab)[0], FAIL))
+    out.append(("judge_nine_disk no loadAfter", judge_nine_disk(nx, ab.replace("<li>mandrake.rm.atmosphericbase</li>", ""))[0], FAIL))
+    out.append(("judge_nine_disk file missing", judge_nine_disk("", ab)[0], FAIL))
     out.append(("judge_defaults Full by default", judge_defaults(read_defaults(cs.replace("0.2f", "0.04f") + " public int patternIntensity = 1;", xml, 'DefaultSchemeDefName = "A"'))[0], FAIL))
     out.append(("judge_drawn_layer not built", judge_drawn_layer("public const bool DrawnLayerBuilt = false;")[0], UNM))
     out.append(("judge_drawn_layer blind", judge_drawn_layer("")[0], UNM))

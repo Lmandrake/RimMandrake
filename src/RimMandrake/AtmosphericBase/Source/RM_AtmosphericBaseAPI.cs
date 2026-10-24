@@ -81,5 +81,21 @@ namespace RimMandrake.AtmosphericBase
             RM_MapComponent_AtmosphericBase c = RM_MapComponent_AtmosphericBase.For(map);
             if (c != null) c.scenarioDecides = decides;
         }
+
+        /// <summary>T3 (c): the Nine's intensity on this map (RM_Intensity: Gentle keeps a floor, Full is Full). The
+        /// scenario owns it, never the player's settings; a god's reading shows only aboard a Utinni gravship
+        /// (scenarioDecides and a player grav engine, RM_GodGate.MayShow), and elsewhere a pushed god mood is inert.</summary>
+        public static void SetGodIntensity(Map map, RM_Intensity intensity)
+        {
+            RM_MapComponent_AtmosphericBase c = RM_MapComponent_AtmosphericBase.For(map);
+            if (c != null) c.godIntensity = (int)intensity;
+        }
+
+        /// <summary>Would a god's reading show on this map now (the Utinni gate)?</summary>
+        public static bool GodsMayShow(Map map)
+        {
+            RM_MapComponent_AtmosphericBase c = RM_MapComponent_AtmosphericBase.For(map);
+            return c != null && RM_GodGate.MayShow(true, c.scenarioDecides, c.HasGravEngine);
+        }
     }
 }

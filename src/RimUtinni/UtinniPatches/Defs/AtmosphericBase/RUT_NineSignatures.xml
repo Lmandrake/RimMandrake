@@ -1,0 +1,599 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ATMOSPHERIC_BASE_BUILD_PROGRAM_1 T3 part (c): THE NINE'S LIGHT ABOARD THE UTINNI. One RM_SignatureDef per god (its
+  territory shape, its three readings, its canon pairings) and the 27 readings as RM_AtmosphericSchemeDef. Source:
+  design/RimMandrake/atmospheric_base_god_patterns_2026-10-24.md §2.1-2.9 (names, palettes, motions, moods, territory)
+  and §4 (the defName pattern; "the Nine ship in the campaign tier"). Owner rulings, review package §9:
+    12  the Nine exist only aboard Utinni gravships. AtmosphericBase shows a reading only on a map whose scenario
+        decides for it AND that carries a player grav engine (Kernel/RM_GodGate.MayShow); anywhere else a pushed god
+        mood is inert, and the settings never list a god (the neutral set is RM_PatternChoice.NeutralSchemes alone).
+    13  Sh'kaar stays visibly gold, distinct from the Narrator's white; Rekko leans bronze. Both palettes are moved below.
+    14  Full is Full (a dark god reaches true black); Gentle keeps a floor (RM_GodGate.GodFloor). The scenario sets it.
+    15  canon pairings are authored (Ishko and Ta'Baa meet at the threshold; Sh'kaar hunts Ishko); elsewhere the leader's
+        shape applies (Kernel/RM_TerritoryShapes.Plan).
+  Every RGB is the design doc's PROPOSAL (§2: "every RGB is a proposal") unless a comment marks it as moved. Every
+  period, dwell, hop, count and chance not stated in §2 is PROVISIONAL (agent's choice, the owner has not ruled); the
+  design's ranges (dwell 8-20 s, hop 0.15-0.3 s, a 3-5 min tide, period 20-40 s) are played at one value inside them.
+  Readings the kernel cannot yet express exactly are approximated and say so (MIMIC, the family count and the Narrator
+  are not here: MIMIC is a scheme switch the scenario makes, the count is consumer-supplied).
+  MayRequire: the defs load only when AtmosphericBase is active, so the campaign tier never hard-depends on it.
+  Kernel limits these obey: a Tide period >= 240 s; an approach fits inside approachEvery; full black needs mayGoDark
+  and motion; no entry within 100 of (255,255,255). The selftest (SelfTest/NineTests.cs) parses this file strictly.
+-->
+<Defs>
+
+  <!-- ============================================================ 2.1 ISHKO THE UNMASKABLE: the eyes in the dark -->
+  <!-- Palette Black (0,0,0), Smoulder (26,10,4), Coal (64,26,8), Eye (205,98,24). Gentle lifts Black and Smoulder to
+       Coal (GodFloor 48); Full lets him reach true black. -->
+
+  <RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef MayRequire="mandrake.rm.atmosphericbase">
+    <defName>RUT_Scheme_Ishko_Resting</defName>
+    <label>Ishko, resting</label>
+    <description>The inside of the ship belongs to something that does not blink. The rooms breathe coal-dark, so slowly you are never sure they moved, and somewhere in the dark one pair of orange eyes opens, stares, closes, and opens somewhere else.</description>
+    <palette>
+      <li>(0,0,0,0)</li>        <!-- Black -->
+      <li>(26,10,4,0)</li>      <!-- Smoulder -->
+      <li>(64,26,8,0)</li>      <!-- Coal -->
+      <li>(205,98,24,0)</li>    <!-- Eye -->
+    </palette>
+    <mayGoDark>true</mayGoDark>
+    <layers>
+      <li><primitive>Breath</primitive><scope>Field</scope><entries>1~2</entries><period>300</period></li>
+      <!-- dwell 14 s inside the design's 8-20; hop 4 s closed between stares: provisional -->
+      <li><primitive>Procession</primitive><entries>0~3</entries><heads>1</heads><pair>true</pair><step>Jump</step><dwell>14</dwell><hop>4</hop></li>
+    </layers>
+  </RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef>
+
+  <RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef MayRequire="mandrake.rm.atmosphericbase">
+    <defName>RUT_Scheme_Ishko_Pleased</defName>
+    <label>Ishko, pleased</label>
+    <description>True black, the stillest look aboard. Very rarely, one pair of eyes opens in it and closes again.</description>
+    <palette>
+      <li>(0,0,0,0)</li>
+      <li>(26,10,4,0)</li>
+      <li>(64,26,8,0)</li>
+      <li>(205,98,24,0)</li>
+    </palette>
+    <mayGoDark>true</mayGoDark>
+    <layers>
+      <li><primitive>Steady</primitive><entries>0</entries></li>
+      <!-- "eyes rarely open": 40 s closed for every 8 s open, provisional. The drawn ember layer is not built. -->
+      <li><primitive>Procession</primitive><entries>0~3</entries><heads>1</heads><pair>true</pair><step>Jump</step><dwell>8</dwell><hop>40</hop></li>
+    </layers>
+  </RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef>
+
+  <RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef MayRequire="mandrake.rm.atmosphericbase">
+    <defName>RUT_Scheme_Ishko_Angry</defName>
+    <label>Ishko, angry</label>
+    <description>The Prepared Dark. A sightline of ember light turns through the rooms and stops on things, and the eyes are open everywhere at once, one long stare.</description>
+    <palette>
+      <li>(0,0,0,0)</li>
+      <li>(26,10,4,0)</li>
+      <li>(64,26,8,0)</li>
+      <li>(205,98,24,0)</li>
+    </palette>
+    <mayGoDark>true</mayGoDark>
+    <layers>
+      <li><primitive>Breath</primitive><scope>Field</scope><entries>0~1</entries><period>300</period></li>
+      <li><primitive>Sweep</primitive><combine>Max</combine><field>Turn</field><entries>1~3</entries><period>40</period><lit>0.2</lit><pauseChance>0.5</pauseChance><pause>6</pause></li>
+      <!-- "every room's eyes open and close together" is approximated by four pairs on one long dwell: provisional -->
+      <li><primitive>Procession</primitive><entries>0~3</entries><heads>4</heads><pair>true</pair><step>Jump</step><dwell>20</dwell><hop>6</hop></li>
+    </layers>
+  </RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef>
+
+  <RimMandrake.AtmosphericBase.RM_SignatureDef MayRequire="mandrake.rm.atmosphericbase">
+    <defName>RUT_Signature_Ishko</defName>
+    <label>Ishko the Unmaskable</label>
+    <territory><shape>Tide</shape><anchor>Core</anchor></territory>   <!-- farthest from any exterior door: he holds the inside -->
+    <readings><resting>RUT_Scheme_Ishko_Resting</resting><pleased>RUT_Scheme_Ishko_Pleased</pleased><angry>RUT_Scheme_Ishko_Angry</angry></readings>
+    <pairings>
+      <!-- canon (design §2.6): Ta'Baa "tolerates Ishko only at the threshold, hand in hand" -->
+      <li><with>RUT_Signature_TaBaa</with><myAnchor>Core</myAnchor><theirAnchor>Threshold</theirAnchor><label>at the threshold</label></li>
+    </pairings>
+    <tell>a pair of glowing orange eyes in the dark</tell>
+  </RimMandrake.AtmosphericBase.RM_SignatureDef>
+
+  <!-- ============================================================ 2.2 OHM THE ALL-CURRENT: the current in the wire -->
+  <!-- Palette Cold (18,40,112), Current (40,150,212), Arc (150,205,255). Never dark. -->
+
+  <RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef MayRequire="mandrake.rm.atmosphericbase">
+    <defName>RUT_Scheme_Ohm_Resting</defName>
+    <label>Ohm, resting</label>
+    <description>The ship's wiring made visible. A cold blue mass, and now and then a pulse of current runs along the conduits from the power, answered a moment later at the junctions.</description>
+    <palette>
+      <li>(18,40,112,0)</li>    <!-- Cold -->
+      <li>(40,150,212,0)</li>   <!-- Current -->
+      <li>(150,205,255,0)</li>  <!-- Arc -->
+    </palette>
+    <layers>
+      <li><primitive>Steady</primitive><entries>0</entries></li>
+      <!-- hop 0.25 s inside the design's 0.15-0.3, tail 2, ECHO 2 s at the junctions: the echo delay is provisional -->
+      <li><primitive>Procession</primitive><combine>Max</combine><graph>Conduits</graph><entries>0~1</entries><heads>1</heads><hop>0.25</hop><dwell>0</dwell><tail>2</tail><echo>2</echo><anchor>Power</anchor></li>
+    </layers>
+  </RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef>
+
+  <RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef MayRequire="mandrake.rm.atmosphericbase">
+    <defName>RUT_Scheme_Ohm_Pleased</defName>
+    <label>Ohm, pleased</label>
+    <description>Regular current on every line, and a ring of arc light spreading out of a fixture as if a machine had just woken.</description>
+    <palette>
+      <li>(18,40,112,0)</li>
+      <li>(40,150,212,0)</li>
+      <li>(150,205,255,0)</li>
+    </palette>
+    <layers>
+      <li><primitive>Steady</primitive><entries>0</entries></li>
+      <li><primitive>Procession</primitive><combine>Max</combine><graph>Conduits</graph><entries>0~1</entries><heads>3</heads><hop>0.2</hop><dwell>0</dwell><tail>2</tail><echo>2</echo><anchor>Power</anchor></li>
+      <!-- the waking machine: the scenario names no fixture yet, so the ring seeds from a fixture by turn: provisional -->
+      <li><primitive>Ripple</primitive><combine>Max</combine><entries>0~2</entries><period>60</period><seed>Fixture</seed><speed>1</speed><width>1</width></li>
+    </layers>
+  </RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef>
+
+  <RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef MayRequire="mandrake.rm.atmosphericbase">
+    <defName>RUT_Scheme_Ohm_Angry</defName>
+    <label>Ohm, angry</label>
+    <description>Blackout. The pulses stall halfway down the wire and run back to the source, fast, and one junction stutters.</description>
+    <palette>
+      <li>(18,40,112,0)</li>
+      <li>(40,150,212,0)</li>
+      <li>(150,205,255,0)</li>
+    </palette>
+    <flasherCount>1</flasherCount>
+    <flasherPeriodSeconds>1.5</flasherPeriodSeconds>   <!-- provisional -->
+    <layers>
+      <li><primitive>Steady</primitive><entries>0</entries></li>
+      <!-- M2 APPROACH, Fast withdraw: 4 hops at 1 hop/s, 1 s held, 1.3 s back, every 12 s: provisional -->
+      <li><primitive>Procession</primitive><combine>Max</combine><graph>Conduits</graph><entries>0~2</entries><heads>2</heads><hop>0.2</hop><dwell>0</dwell><tail>2</tail><anchor>Power</anchor><reach>4</reach><speed>1</speed><approachEvery>12</approachEvery><pause>1</pause><withdraw>Fast</withdraw></li>
+    </layers>
+  </RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef>
+
+  <RimMandrake.AtmosphericBase.RM_SignatureDef MayRequire="mandrake.rm.atmosphericbase">
+    <defName>RUT_Signature_Ohm</defName>
+    <label>Ohm the All-Current</label>
+    <territory><shape>Circuit</shape><anchor>Power</anchor></territory>   <!-- what the wiring reaches (falls back to tide from power) -->
+    <readings><resting>RUT_Scheme_Ohm_Resting</resting><pleased>RUT_Scheme_Ohm_Pleased</pleased><angry>RUT_Scheme_Ohm_Angry</angry></readings>
+    <tell>current running in the wire</tell>
+  </RimMandrake.AtmosphericBase.RM_SignatureDef>
+
+  <!-- ============================================================ 2.3 OOMO THE UNSPILLED: the tide and the droplet -->
+  <!-- Palette Deep (14,52,60), Ebb (40,110,120), Flood (90,170,170), Bead (170,216,206). Never dark: Deep is his floor. -->
+
+  <RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef MayRequire="mandrake.rm.atmosphericbase">
+    <defName>RUT_Scheme_Oomo_Resting</defName>
+    <label>Oomo, resting</label>
+    <description>A slow tide of sea light crosses the ship, four minutes a tide, and in every room a single bright droplet trembles and never falls.</description>
+    <palette>
+      <li>(14,52,60,0)</li>     <!-- Deep -->
+      <li>(40,110,120,0)</li>   <!-- Ebb -->
+      <li>(90,170,170,0)</li>   <!-- Flood -->
+      <li>(170,216,206,0)</li>  <!-- Bead: 106 from the Narrator's white -->
+    </palette>
+    <layers>
+      <li><primitive>Sweep</primitive><field>Axis</field><angle>270</angle><entries>0~2</entries><period>240</period><lit>0.4</lit></li>
+      <li><primitive>Count</primitive><entries>2~3</entries><n>1</n><perRoom>true</perRoom><tremble>true</tremble></li>
+    </layers>
+  </RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef>
+
+  <RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef MayRequire="mandrake.rm.atmosphericbase">
+    <defName>RUT_Scheme_Oomo_Pleased</defName>
+    <label>Oomo, pleased</label>
+    <description>A fuller tide, the water standing higher in every room, and the droplets trembling bright above it.</description>
+    <palette>
+      <li>(14,52,60,0)</li>
+      <li>(40,110,120,0)</li>
+      <li>(90,170,170,0)</li>
+      <li>(170,216,206,0)</li>
+    </palette>
+    <layers>
+      <!-- the design's family count is consumer-supplied and not here; pleased plays a higher tide: provisional -->
+      <li><primitive>Sweep</primitive><field>Axis</field><angle>270</angle><entries>1~2</entries><period>240</period><lit>0.5</lit></li>
+      <li><primitive>Count</primitive><entries>2~3</entries><n>1</n><perRoom>true</perRoom><tremble>true</tremble></li>
+    </layers>
+  </RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef>
+
+  <RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef MayRequire="mandrake.rm.atmosphericbase">
+    <defName>RUT_Scheme_Oomo_Angry</defName>
+    <label>Oomo, angry</label>
+    <description>Thirst. The mirage: the lit water draws inward, room by room, back to one room, and leaves the rest in the deep.</description>
+    <palette>
+      <li>(14,52,60,0)</li>
+      <li>(40,110,120,0)</li>
+      <li>(90,170,170,0)</li>
+      <li>(170,216,206,0)</li>
+    </palette>
+    <layers>
+      <li><primitive>Ripple</primitive><direction>In</direction><fill>Bloom</fill><seed>Anchor</seed><anchor>Medoid</anchor><entries>0~2</entries><period>120</period><speed>0.2</speed><width>1</width><holdSeconds>20</holdSeconds></li>
+      <li><primitive>Count</primitive><entries>2~3</entries><n>1</n><perRoom>true</perRoom><tremble>true</tremble></li>
+    </layers>
+  </RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef>
+
+  <RimMandrake.AtmosphericBase.RM_SignatureDef MayRequire="mandrake.rm.atmosphericbase">
+    <defName>RUT_Signature_Oomo</defName>
+    <label>Oomo the Unspilled</label>
+    <territory><shape>Tide</shape><anchor>Medoid</anchor></territory>
+    <readings><resting>RUT_Scheme_Oomo_Resting</resting><pleased>RUT_Scheme_Oomo_Pleased</pleased><angry>RUT_Scheme_Oomo_Angry</angry></readings>
+    <tell>a single trembling droplet that never falls</tell>
+  </RimMandrake.AtmosphericBase.RM_SignatureDef>
+
+  <!-- ============================================================ 2.4 MOB'UNLOO THE EVER-OWED: the tally -->
+  <!-- Palette Verdigris (30,82,60), Copper (172,92,40), Coin (232,172,82). The only god on an exact metre. -->
+
+  <RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef MayRequire="mandrake.rm.atmosphericbase">
+    <defName>RUT_Scheme_MobUnloo_Resting</defName>
+    <label>Mob'Unloo, resting</label>
+    <description>Accounting made visible. In every room one lamp at a time steps up to coin on a strict eight-second beat, and when the room is full the tally clears and begins again.</description>
+    <palette>
+      <li>(30,82,60,0)</li>     <!-- Verdigris -->
+      <li>(172,92,40,0)</li>    <!-- Copper -->
+      <li>(232,172,82,0)</li>   <!-- Coin -->
+    </palette>
+    <layers>
+      <li><primitive>Steady</primitive><entries>1</entries></li>
+      <li><primitive>Count</primitive><entries>1~2</entries><perRoom>true</perRoom><accumulate>true</accumulate><beat>8</beat></li>
+    </layers>
+  </RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef>
+
+  <RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef MayRequire="mandrake.rm.atmosphericbase">
+    <defName>RUT_Scheme_MobUnloo_Pleased</defName>
+    <label>Mob'Unloo, pleased</label>
+    <description>The debt is paid. The full tally chimes: the whole territory steps up to coin together on the beat.</description>
+    <palette>
+      <li>(30,82,60,0)</li>
+      <li>(172,92,40,0)</li>
+      <li>(232,172,82,0)</li>
+    </palette>
+    <layers>
+      <li><primitive>Steady</primitive><entries>1</entries></li>
+      <li><primitive>Count</primitive><entries>1~2</entries><perRoom>true</perRoom><accumulate>true</accumulate><beat>8</beat></li>
+      <!-- the chime: every lamp at once (phaseSpread 0) on a 16 s cycle, two beats: provisional -->
+      <li><primitive>Breath</primitive><combine>Max</combine><scope>Field</scope><phaseSpread>0</phaseSpread><entries>1~2</entries><period>16</period></li>
+    </layers>
+  </RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef>
+
+  <RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef MayRequire="mandrake.rm.atmosphericbase">
+    <defName>RUT_Scheme_MobUnloo_Angry</defName>
+    <label>Mob'Unloo, angry</label>
+    <description>An unpaid line. The ledger goes green, the tally keeps counting on the beat, and in every room one lamp is held at copper, off the count, the entry that will not balance.</description>
+    <palette>
+      <li>(30,82,60,0)</li>
+      <li>(172,92,40,0)</li>
+      <li>(232,172,82,0)</li>
+    </palette>
+    <layers>
+      <li><primitive>Steady</primitive><entries>0</entries></li>
+      <li><primitive>Count</primitive><entries>0~2</entries><perRoom>true</perRoom><accumulate>true</accumulate><beat>8</beat></li>
+      <!-- "the tally restarts one short each time" is not expressible yet; the held Copper entry is: provisional -->
+      <li><primitive>Count</primitive><entries>0~2</entries><n>1</n><perRoom>true</perRoom><markEntry>1</markEntry><pick>NearestAnchor</pick></li>
+    </layers>
+  </RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef>
+
+  <RimMandrake.AtmosphericBase.RM_SignatureDef MayRequire="mandrake.rm.atmosphericbase">
+    <defName>RUT_Signature_MobUnloo</defName>
+    <label>Mob'Unloo the Ever-Owed</label>
+    <territory><shape>Wedge</shape></territory>   <!-- the ledger column; the wedge's boundary is already exact (ragged 0) -->
+    <readings><resting>RUT_Scheme_MobUnloo_Resting</resting><pleased>RUT_Scheme_MobUnloo_Pleased</pleased><angry>RUT_Scheme_MobUnloo_Angry</angry></readings>
+    <tell>a tally stepping on a strict beat</tell>
+  </RimMandrake.AtmosphericBase.RM_SignatureDef>
+
+  <!-- ============================================================ 2.5 REKKO OF THE SECOND HAND: the mender -->
+  <!-- Palette Patina (60,44,26), Bronze (150,100,50), Burnish MOVED from the proposal's (200,146,74) to (176,122,56):
+       ruling §9.13 "Rekko leans bronze". The proposal sat 26 from the vanilla lamp amber (214,148,94); this is 60 from it
+       and keeps blue under a third of red. M3 SCAR is his: a lamp he wins keeps its previous owner for minutes. -->
+
+  <RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef MayRequire="mandrake.rm.atmosphericbase">
+    <defName>RUT_Scheme_Rekko_Resting</defName>
+    <label>Rekko, resting</label>
+    <description>The mender's round. A slow visitor goes lamp to lamp in bronze, and each lamp it leaves stays a step warmer, until the room is whole.</description>
+    <palette>
+      <li>(60,44,26,0)</li>     <!-- Patina -->
+      <li>(150,100,50,0)</li>   <!-- Bronze -->
+      <li>(176,122,56,0)</li>   <!-- Burnish (moved, see above) -->
+    </palette>
+    <scarLinger>240</scarLinger>   <!-- "I keep what was": four minutes, provisional -->
+    <scarKeeps>true</scarKeeps>
+    <layers>
+      <li><primitive>Steady</primitive><entries>0</entries></li>
+      <li><primitive>Procession</primitive><entries>1~2</entries><heads>1</heads><step>Walk</step><hop>2</hop><dwell>6</dwell><trace>1</trace></li>
+    </layers>
+  </RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef>
+
+  <RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef MayRequire="mandrake.rm.atmosphericbase">
+    <defName>RUT_Scheme_Rekko_Pleased</defName>
+    <label>Rekko, pleased</label>
+    <description>A restoration. The room stands mended in bronze at once and holds, and the mender still walks it, burnishing.</description>
+    <palette>
+      <li>(60,44,26,0)</li>
+      <li>(150,100,50,0)</li>
+      <li>(176,122,56,0)</li>
+    </palette>
+    <scarLinger>240</scarLinger>
+    <scarKeeps>true</scarKeeps>
+    <layers>
+      <li><primitive>Steady</primitive><entries>1</entries></li>
+      <li><primitive>Procession</primitive><entries>1~2</entries><heads>1</heads><step>Walk</step><hop>1</hop><dwell>6</dwell><trace>1</trace></li>
+    </layers>
+  </RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef>
+
+  <RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef MayRequire="mandrake.rm.atmosphericbase">
+    <defName>RUT_Scheme_Rekko_Angry</defName>
+    <label>Rekko, angry</label>
+    <description>The unmending. Something repairable was scrapped: the mender walks the round again and every lamp it passes goes back to patina, and in every room one lamp stays dark bronze, the missing thing.</description>
+    <palette>
+      <li>(60,44,26,0)</li>
+      <li>(150,100,50,0)</li>
+      <li>(176,122,56,0)</li>
+    </palette>
+    <scarLinger>240</scarLinger>
+    <scarKeeps>true</scarKeeps>
+    <layers>
+      <li><primitive>Steady</primitive><entries>1</entries></li>
+      <!-- "in reverse order" is not expressible (a walk has one direction): the walk undoes forward. Provisional. -->
+      <li><primitive>Procession</primitive><entries>0</entries><heads>1</heads><step>Walk</step><hop>2</hop><dwell>6</dwell><trace>1</trace></li>
+      <li><primitive>Count</primitive><entries>0~2</entries><n>1</n><perRoom>true</perRoom><markEntry>0</markEntry></li>
+    </layers>
+  </RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef>
+
+  <RimMandrake.AtmosphericBase.RM_SignatureDef MayRequire="mandrake.rm.atmosphericbase">
+    <defName>RUT_Signature_Rekko</defName>
+    <label>Rekko of the Second Hand</label>
+    <territory><shape>Tide</shape><anchor>Shrine</anchor></territory>   <!-- falls back to the medoid with no shrine -->
+    <readings><resting>RUT_Scheme_Rekko_Resting</resting><pleased>RUT_Scheme_Rekko_Pleased</pleased><angry>RUT_Scheme_Rekko_Angry</angry></readings>
+    <tell>a lamp left one step warmer</tell>
+  </RimMandrake.AtmosphericBase.RM_SignatureDef>
+
+  <!-- ============================================================ 2.6 TA'BAA THE UNROOTED: always toward the door -->
+  <!-- Palette Dusk (70,70,82), Wind (128,130,140), Dawn (220,170,92), Horizon (250,202,112). The quickest gentle god. -->
+
+  <RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef MayRequire="mandrake.rm.atmosphericbase">
+    <defName>RUT_Scheme_TaBaa_Resting</defName>
+    <label>Ta'Baa, resting</label>
+    <description>Light that always leaves. Wind-grey waves run through the rooms toward the nearest door, one after another, and never come back.</description>
+    <palette>
+      <li>(70,70,82,0)</li>     <!-- Dusk -->
+      <li>(128,130,140,0)</li>  <!-- Wind -->
+      <li>(220,170,92,0)</li>   <!-- Dawn -->
+      <li>(250,202,112,0)</li>  <!-- Horizon -->
+    </palette>
+    <layers>
+      <li><primitive>Sweep</primitive><field>Toward</field><entries>0~1</entries><period>30</period><lit>0.3</lit></li>
+    </layers>
+  </RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef>
+
+  <RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef MayRequire="mandrake.rm.atmosphericbase">
+    <defName>RUT_Scheme_TaBaa_Pleased</defName>
+    <label>Ta'Baa, pleased</label>
+    <description>A launch. Dawn waves run for the doors, quickening as they go, and flare to the horizon at the threshold.</description>
+    <palette>
+      <li>(70,70,82,0)</li>
+      <li>(128,130,140,0)</li>
+      <li>(220,170,92,0)</li>
+      <li>(250,202,112,0)</li>
+    </palette>
+    <layers>
+      <li><primitive>Steady</primitive><entries>1</entries></li>
+      <!-- the catalog's Unmooring to the thrust axis is a later scheme switch; the quickening is here: provisional -->
+      <li><primitive>Sweep</primitive><combine>Max</combine><field>Toward</field><entries>1~3</entries><period>24</period><lit>0.35</lit><accelerate>0.5</accelerate></li>
+    </layers>
+  </RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef>
+
+  <RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef MayRequire="mandrake.rm.atmosphericbase">
+    <defName>RUT_Scheme_TaBaa_Angry</defName>
+    <label>Ta'Baa, angry</label>
+    <description>Rooted too long. The waves run to the door, stop there, and come back, quicker each time: we stayed too long.</description>
+    <palette>
+      <li>(70,70,82,0)</li>
+      <li>(128,130,140,0)</li>
+      <li>(220,170,92,0)</li>
+      <li>(250,202,112,0)</li>
+    </palette>
+    <layers>
+      <li><primitive>Steady</primitive><entries>0</entries></li>
+      <!-- M2 APPROACH from the core: 3 hops at 0.5 hop/s, 6 s at the door, 2 s back, every 30 s; quickening: provisional -->
+      <li><primitive>Sweep</primitive><combine>Max</combine><field>Toward</field><entries>0~2</entries><period>30</period><lit>0.3</lit><accelerate>0.3</accelerate><anchor>Core</anchor><reach>3</reach><speed>0.5</speed><approachEvery>30</approachEvery><pause>6</pause><withdraw>Fast</withdraw></li>
+    </layers>
+  </RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef>
+
+  <RimMandrake.AtmosphericBase.RM_SignatureDef MayRequire="mandrake.rm.atmosphericbase">
+    <defName>RUT_Signature_TaBaa</defName>
+    <label>Ta'Baa the Unrooted</label>
+    <territory><shape>Tide</shape><anchor>Threshold</anchor></territory>   <!-- the rim; meets Ishko's core at the threshold -->
+    <readings><resting>RUT_Scheme_TaBaa_Resting</resting><pleased>RUT_Scheme_TaBaa_Pleased</pleased><angry>RUT_Scheme_TaBaa_Angry</angry></readings>
+    <tell>a wave running for the door</tell>
+  </RimMandrake.AtmosphericBase.RM_SignatureDef>
+
+  <!-- ============================================================ 2.7 ZIZZIK THE SPARK-MAKER: the wrong spark -->
+  <!-- Palette Void (0,0,0), Bile (22,52,10), Rot (72,140,30), Sick (182,232,62). Void between coils under Full; Gentle
+       lifts Void to Bile. Territory ragged 0.2 with islands is the design's; the tide shape has no per-signature
+       raggedness yet (the kernel's own applies). MIMIC is a scheme switch the scenario makes, not a reading. -->
+
+  <RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef MayRequire="mandrake.rm.atmosphericbase">
+    <defName>RUT_Scheme_Zizzik_Resting</defName>
+    <label>Zizzik, resting</label>
+    <description>Asleep, the gentlest god by accident. A dim bile-green, and about once a minute one lamp twitches the wrong colour and is still again.</description>
+    <palette>
+      <li>(0,0,0,0)</li>        <!-- Void -->
+      <li>(22,52,10,0)</li>     <!-- Bile -->
+      <li>(72,140,30,0)</li>    <!-- Rot -->
+      <li>(182,232,62,0)</li>   <!-- Sick -->
+    </palette>
+    <mayGoDark>true</mayGoDark>
+    <layers>
+      <li><primitive>Steady</primitive><entries>1</entries></li>
+      <li><primitive>Tell</primitive><entries>3</entries><interval>60</interval><beat>1</beat></li>
+    </layers>
+  </RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef>
+
+  <RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef MayRequire="mandrake.rm.atmosphericbase">
+    <defName>RUT_Scheme_Zizzik_Pleased</defName>
+    <label>Zizzik, pleased</label>
+    <description>Awake and fed: the Writhe. Green coils crawl through the dark, crossing and brightening where they cross.</description>
+    <palette>
+      <li>(0,0,0,0)</li>
+      <li>(22,52,10,0)</li>
+      <li>(72,140,30,0)</li>
+      <li>(182,232,62,0)</li>
+    </palette>
+    <mayGoDark>true</mayGoDark>
+    <layers>
+      <li><primitive>Steady</primitive><entries>0</entries></li>
+      <!-- two coils of five, 0.6 s a step, a turn in three: provisional -->
+      <li><primitive>Coil</primitive><combine>Max</combine><entries>1~3</entries><coils>2</coils><length>5</length><hop>0.6</hop><turnChance>0.3</turnChance></li>
+    </layers>
+  </RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef>
+
+  <RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef MayRequire="mandrake.rm.atmosphericbase">
+    <defName>RUT_Scheme_Zizzik_Angry</defName>
+    <label>Zizzik, angry</label>
+    <description>Wrong sparks. Lamps jump from nothing to sick green and back with nothing between, and two of them stutter.</description>
+    <palette>
+      <li>(0,0,0,0)</li>
+      <li>(22,52,10,0)</li>
+      <li>(72,140,30,0)</li>
+      <li>(182,232,62,0)</li>
+    </palette>
+    <mayGoDark>true</mayGoDark>
+    <flasherCount>2</flasherCount>
+    <flasherPeriodSeconds>1.3</flasherPeriodSeconds>   <!-- "irregular": two flashers on an odd period, provisional -->
+    <layers>
+      <li><primitive>Steady</primitive><entries>1</entries></li>
+      <!-- "Void to Sick, nothing between": the spark rises 0~3 in 0.6 s, too quick to read the middle: provisional -->
+      <li><primitive>Spark</primitive><entries>0~3</entries><period>7</period><rise>0.6</rise><oneIn>3</oneIn></li>
+    </layers>
+  </RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef>
+
+  <RimMandrake.AtmosphericBase.RM_SignatureDef MayRequire="mandrake.rm.atmosphericbase">
+    <defName>RUT_Signature_Zizzik</defName>
+    <label>Zizzik the Spark-Maker</label>
+    <territory><shape>Tide</shape><anchor>Medoid</anchor></territory>
+    <readings><resting>RUT_Scheme_Zizzik_Resting</resting><pleased>RUT_Scheme_Zizzik_Pleased</pleased><angry>RUT_Scheme_Zizzik_Angry</angry></readings>
+    <tell>one lamp twitching the wrong colour</tell>
+  </RimMandrake.AtmosphericBase.RM_SignatureDef>
+
+  <!-- ============================================================ 2.8 SH'KAAR THE ALL-SEARING: nowhere outside it -->
+  <!-- Palette MOVED, ruling §9.13 "Sh'kaar stays visibly gold, distinct from the Narrator's white; no shimmer
+       exception": the proposal's Glare (255,212,92) and Blaze (255,236,150) sat 168 and 106 from (255,255,255), Blaze
+       a pale near-white. Brass (200,148,40) is kept; Glare is (240,190,70) and Blaze (255,218,104), 155 from white,
+       blue under 0.45 of red: gold at every entry. -->
+
+  <RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef MayRequire="mandrake.rm.atmosphericbase">
+    <defName>RUT_Scheme_Shkaar_Resting</defName>
+    <label>Sh'kaar, resting</label>
+    <description>Nowhere outside it. The whole territory rises and falls together in brass, with no front anywhere: excellent light to work by, and cruel to look at.</description>
+    <palette>
+      <li>(200,148,40,0)</li>   <!-- Brass -->
+      <li>(240,190,70,0)</li>   <!-- Glare (moved) -->
+      <li>(255,218,104,0)</li>  <!-- Blaze (moved) -->
+    </palette>
+    <layers>
+      <li><primitive>Breath</primitive><scope>Field</scope><phaseSpread>0</phaseSpread><entries>0~1</entries><period>240</period></li>
+    </layers>
+  </RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef>
+
+  <RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef MayRequire="mandrake.rm.atmosphericbase">
+    <defName>RUT_Scheme_Shkaar_Pleased</defName>
+    <label>Sh'kaar, pleased</label>
+    <description>Bad news, and he is glad of it. The field stands at glare and the top of it shimmers with heat.</description>
+    <palette>
+      <li>(200,148,40,0)</li>
+      <li>(240,190,70,0)</li>
+      <li>(255,218,104,0)</li>
+    </palette>
+    <layers>
+      <li><primitive>Breath</primitive><scope>Field</scope><phaseSpread>0</phaseSpread><entries>0~1</entries><period>240</period></li>
+      <!-- the shimmer: the top band only, a random tenth, rise 0.5 s (design §2.8); the 10 s slot is provisional -->
+      <li><primitive>Spark</primitive><combine>Max</combine><entries>1~2</entries><period>10</period><rise>0.5</rise><oneIn>10</oneIn></li>
+    </layers>
+  </RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef>
+
+  <RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef MayRequire="mandrake.rm.atmosphericbase">
+    <defName>RUT_Scheme_Shkaar_Angry</defName>
+    <label>Sh'kaar, angry</label>
+    <description>Hunting. A blazing beam turns through the ship and stops over the darkest room it finds; when Ishko holds rooms, it is his.</description>
+    <palette>
+      <li>(200,148,40,0)</li>
+      <li>(240,190,70,0)</li>
+      <li>(255,218,104,0)</li>
+    </palette>
+    <layers>
+      <li><primitive>Steady</primitive><entries>0</entries></li>
+      <li><primitive>Sweep</primitive><combine>Max</combine><field>Turn</field><entries>0~2</entries><period>30</period><lit>0.15</lit><pauseChance>0.6</pauseChance><pause>6</pause></li>
+    </layers>
+  </RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef>
+
+  <RimMandrake.AtmosphericBase.RM_SignatureDef MayRequire="mandrake.rm.atmosphericbase">
+    <defName>RUT_Signature_Shkaar</defName>
+    <label>Sh'kaar the All-Searing</label>
+    <territory><shape>Tide</shape><anchor>Open</anchor><minShare>0.4</minShare></territory>   <!-- largest rooms and exterior first -->
+    <readings><resting>RUT_Scheme_Shkaar_Resting</resting><pleased>RUT_Scheme_Shkaar_Pleased</pleased><angry>RUT_Scheme_Shkaar_Angry</angry></readings>
+    <pairings>
+      <!-- canon (design §2.8): he "hunts the hider"; his front surges into Ishko's -->
+      <li><with>RUT_Signature_Ishko</with><myAnchor>Open</myAnchor><theirAnchor>Core</theirAnchor><hunts>true</hunts><label>hunts the hider</label></li>
+    </pairings>
+    <tell>a field of brass with no edge</tell>
+  </RimMandrake.AtmosphericBase.RM_SignatureDef>
+
+  <!-- ============================================================ 2.9 OZZIK THE SHAMED: the broken crown -->
+  <!-- Palette Mourning (40,20,62), Royal (100,50,142), Tarnish (168,128,52), Crown (232,182,72). Never dark: Mourning is
+       his floor. The bloom's tiers ride a slow ring (0.1 hop/s, ten seconds a step). -->
+
+  <RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef MayRequire="mandrake.rm.atmosphericbase">
+    <defName>RUT_Scheme_Ozzik_Resting</defName>
+    <label>Ozzik, resting</label>
+    <description>Grandeur in tiers. Purple light builds outward from the grandest room a step at a time, every room is crowned in gold on its brightest lamp, and one crown is always tarnished.</description>
+    <palette>
+      <li>(40,20,62,0)</li>     <!-- Mourning -->
+      <li>(100,50,142,0)</li>   <!-- Royal -->
+      <li>(168,128,52,0)</li>   <!-- Tarnish -->
+      <li>(232,182,72,0)</li>   <!-- Crown -->
+    </palette>
+    <layers>
+      <li><primitive>Ripple</primitive><fill>Bloom</fill><seed>Anchor</seed><anchor>Grandest</anchor><entries>0~1</entries><period>120</period><speed>0.1</speed><width>1</width><holdSeconds>30</holdSeconds></li>
+      <li><primitive>Count</primitive><entries>0~3</entries><n>1</n><perRoom>true</perRoom><pick>Brightest</pick><markEntry>3</markEntry></li>
+      <!-- the wound: one crown in the territory stays Tarnish (one fixture, not one per room): provisional -->
+      <li><primitive>Count</primitive><entries>0~3</entries><n>1</n><pick>Brightest</pick><markEntry>2</markEntry></li>
+    </layers>
+  </RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef>
+
+  <RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef MayRequire="mandrake.rm.atmosphericbase">
+    <defName>RUT_Scheme_Ozzik_Pleased</defName>
+    <label>Ozzik, pleased</label>
+    <description>Exalted, which is exposure. The bloom climbs past royal into gold and every crown blazes: magnificent, and dangerous.</description>
+    <palette>
+      <li>(40,20,62,0)</li>
+      <li>(100,50,142,0)</li>
+      <li>(168,128,52,0)</li>
+      <li>(232,182,72,0)</li>
+    </palette>
+    <layers>
+      <!-- "overreaches its share" is the scenario's rank push, not a palette: provisional -->
+      <li><primitive>Ripple</primitive><fill>Bloom</fill><seed>Anchor</seed><anchor>Grandest</anchor><entries>1~2</entries><period>90</period><speed>0.15</speed><width>1</width><holdSeconds>30</holdSeconds></li>
+      <li><primitive>Count</primitive><entries>0~3</entries><n>2</n><perRoom>true</perRoom><pick>Brightest</pick><markEntry>3</markEntry></li>
+    </layers>
+  </RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef>
+
+  <RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef MayRequire="mandrake.rm.atmosphericbase">
+    <defName>RUT_Scheme_Ozzik_Angry</defName>
+    <label>Ozzik, angry</label>
+    <description>The grief-pall. Ash falls through the rooms in mourning purple, and every crown has tarnished.</description>
+    <palette>
+      <li>(40,20,62,0)</li>
+      <li>(100,50,142,0)</li>
+      <li>(168,128,52,0)</li>
+      <li>(232,182,72,0)</li>
+    </palette>
+    <layers>
+      <!-- the catalog's Ashfall: a falling axis (270 degrees); "one by one" is approximated by all at once: provisional -->
+      <li><primitive>Sweep</primitive><field>Axis</field><angle>270</angle><entries>0~1</entries><period>90</period><lit>0.35</lit></li>
+      <li><primitive>Count</primitive><entries>0~3</entries><n>1</n><perRoom>true</perRoom><pick>Brightest</pick><markEntry>2</markEntry></li>
+    </layers>
+  </RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef>
+
+  <RimMandrake.AtmosphericBase.RM_SignatureDef MayRequire="mandrake.rm.atmosphericbase">
+    <defName>RUT_Signature_Ozzik</defName>
+    <label>Ozzik the Shamed</label>
+    <territory><shape>Tide</shape><anchor>Grandest</anchor></territory>
+    <readings><resting>RUT_Scheme_Ozzik_Resting</resting><pleased>RUT_Scheme_Ozzik_Pleased</pleased><angry>RUT_Scheme_Ozzik_Angry</angry></readings>
+    <tell>a crown, tarnished</tell>
+  </RimMandrake.AtmosphericBase.RM_SignatureDef>
+
+</Defs>
