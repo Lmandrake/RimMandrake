@@ -216,6 +216,26 @@ def repo_deleted(src, gone):
             and not os.path.exists(os.path.join(src, g))}
 
 
+def composed_repo_deleted(gone, man=None):
+    """repo_deleted() for the COMPOSED target (COMPOSE_PLAN_FIX_COMMITTED_DELETES):
+    its temp folder has no git history, so map each game-only path under
+    Biomes/<key>/ back through the manifest entry to its source folder and ask
+    that folder's history. Paths outside every current entry stay hand edits."""
+    if not gone:
+        return set()
+    man = man if man is not None else biomes_compose.load_manifest(SRC_ROOT)
+    if not man:
+        return set()
+    out = set()
+    for e in biomes_compose.composed_entries(man):
+        sdir = os.path.join(SRC_ROOT, biomes_compose.TIER_DIR, e["source"])
+        pre = biomes_compose.dest_rel(e).replace("/", os.sep) + os.sep
+        sub = [g.replace("/", os.sep)[len(pre):] for g in gone
+               if g.replace("/", os.sep).startswith(pre)]
+        out |= {pre + r for r in repo_deleted(sdir, sub)}
+    return {g for g in gone if g.replace("/", os.sep) in out}
+
+
 def worktree_deleted(src, gone):
     """Subset of `gone` that HEAD still TRACKS but the working tree no longer
     has: a delete, `git rm` or `git mv` not yet committed (often another helper's move in
@@ -598,7 +618,7 @@ def _run(args, targets, holds, mods_dir, active):
         held = held_new + held_changed + held_gone + held_same
         # Files the REPO deleted (git history) are stale deploys, not hand
         # edits: --apply prunes them without --prune. Hand-edits stay kept.
-        stale = repo_deleted(real_src, gone) if not composed else set()
+        stale = repo_deleted(real_src, gone) if not composed else composed_repo_deleted(gone)
         stale = {r for r in stale if inside(dst, r)}
         wt_gone = worktree_deleted(real_src, gone) if not composed else set()
 
@@ -829,7 +849,8 @@ def _def_guard(args, targets, holds, mods_dir):
         if args.prune:
             pruned = set(gone)
         elif n == getattr(args, "compose_target", None):
-            pruned = set()
+            pruned = {r.replace(os.sep, "/") for r in
+                      composed_repo_deleted([g.replace("/", os.sep) for g in gone], man or {})}
         else:
             pruned = {r.replace(os.sep, "/") for r in
                       repo_deleted(src, [g.replace("/", os.sep) for g in gone])}
