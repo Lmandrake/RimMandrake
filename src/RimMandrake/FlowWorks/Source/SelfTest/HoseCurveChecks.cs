@@ -185,7 +185,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                         for (int x = 0; x < 2; x++) for (int z = 0; z < 2; z++) { var c = new Cell(r.Rect.X0 + x, r.Rect.Z0 + z); held.Add(c); w.SetBlocked(c, BlockKind.Device); }
                     var sp = new HoseShapeParams { MaxLength = r.MaxLength };
                     HoseLay lay;
-                    try { lay = HoseMath.LayAlong(w, r.Rect.Mouth, new List<Cell>(), end, sp, seed++, inward, outward); }
+                    ulong sd = seed++;
+                    // step 3: a tank-port end is laid onto the port's axis as EnsureLay does (HoseMath.PortLay)
+                    try { lay = HoseMath.PortLay((e1, in1) => HoseMath.LayAlong(w, r.Rect.Mouth, new List<Cell>(), e1, sp, sd, in1, outward), end, inward, portAt, portAxis); }
                     finally { foreach (Cell c in held) { w.SetBlocked(c, BlockKind.None); w.SetExtraCost(c, HoseMath.BuildingCrossCost); } }
                     // the nozzle's straight run is owed by every reel (R2), the fed relay's included (KNOWN: it shares the nozzle)
                     V2 ax = r.Rect.Outward ?? new V2(r.Dir.X, r.Dir.Z);

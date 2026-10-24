@@ -140,6 +140,9 @@ namespace RimMandrake.FlowWorks.Hose
         public string G2Why;
         /// <summary>The curvature limit the lay was shaped under (1/R) and the straight runs at its start (the lead-out) and end.</summary>
         public double Kmax = 1 / 1.2, Lead0, Lead1;
+        /// <summary>HOSE_CURVE_REBUILD_SMOOTH_AS_PHYSICS step 3: why a tank-port end was laid to its cell centre (the draw then
+        /// bends it onto the port) instead of onto the port's axis; null = laid onto the port, or no port.</summary>
+        public string PortWhy;
     }
 
     public static class HoseMath
@@ -1245,6 +1248,9 @@ namespace RimMandrake.FlowWorks.Hose
         {
             List<V2> pts = Pose(lay, e, ticksSinceChange, transitionTicks, plumpAmount);
             if (!portAt.HasValue) return pts;
+            // HOSE_CURVE_REBUILD_SMOOTH_AS_PHYSICS step 3: EnsureLay lays a tank-port end onto the port (endInward = its axis),
+            // so the hose already arrives there dead straight; re-shaping it here would only bend what the lay got right
+            if (OnPortAxis(pts, portAt.Value - portAxis * 0.5, portAxis)) return pts;
             // HOSE_LEADIN_FIX_STUB_IN_THE_CANAL: a hose that meets the port from the side is not re-aimed (the Hermite would loop
             // back behind the end); DrawEnds gives it an elbow fitting instead (HoseMath.PortFitting)
             if (!SideArrival(pts, portAxis))
@@ -1261,6 +1267,39 @@ namespace RimMandrake.FlowWorks.Hose
             }
             // HOSE_SIDEPORT_FIX_AIMS_AT_OLD_MIDPOINT: a side arrival keeps its heading but slides onto a moved port
             return SlideEndOnto(pts, portAt.Value, portAxis);
+        }
+
+        /// <summary>HOSE_CURVE_REBUILD_SMOOTH_AS_PHYSICS step 3 (EnsureLay and HoseCurveChecks alike): a free end coupled to a tank
+        /// port is laid onto the port itself -- ending half a cell out from the flange (<paramref name="portAt"/> - axis x 0.5),
+        /// its last EndStraight dead straight along <paramref name="portAxis"/> -- so the clothoid fit owns the arrival. When that
+        /// lay is refused or no G2 curve fits it (a run too short for the lead-out, the port and the bend radius together), the
+        /// end is laid as before, to <paramref name="cellEnd"/> with a free heading, and DrawnPose bends it onto the port; a lay
+        /// is never refused for the port's sake. <paramref name="layTo"/> lays to (end, endInward).</summary>
+        internal static HoseLay PortLay(Func<V2, V2?, HoseLay> layTo, V2 cellEnd, V2? inward, V2? portAt, V2 portAxis)
+        {
+            if (!portAt.HasValue) return layTo(cellEnd, inward);
+            V2 ax = portAxis.Norm();
+            HoseLay onPort = layTo(portAt.Value - ax * 0.5, ax);
+            if (onPort.Ok && (onPort.G2 || !G2On)) return onPort;
+            HoseLay old = layTo(cellEnd, inward);
+            if (!old.Ok) return onPort.Ok ? onPort : old;
+            old.PortWhy = onPort.Ok ? "no G2 curve onto the port axis: " + onPort.G2Why : "refused onto the port axis: " + onPort.Reason;
+            return old;
+        }
+
+        /// <summary>True when pts ends on <paramref name="end"/> (within 0.02 cell) and its last EndStraight runs along
+        /// <paramref name="axis"/> (within 1 degree): the lay already meets the port, nothing to re-aim.</summary>
+        internal static bool OnPortAxis(IList<V2> pts, V2 end, V2 axis)
+        {
+            int n = pts.Count;
+            if (n < 2 || V2.Dist(pts[n - 1], end) > 0.02) return false;
+            V2 u = axis.Norm();
+            V2 back = PointBack(pts, HoseRelay.EndStraight);
+            V2 d = pts[n - 1] - back;
+            double len = d.Len;
+            if (len < 1e-6) return false;
+            double cos = (d.X * u.X + d.Z * u.Z) / len;
+            return cos > Math.Cos(Math.PI / 180);
         }
 
         /// <summary>Smallest discrete bend radius (segment / turning angle) over points more than skip cells from either end.</summary>
