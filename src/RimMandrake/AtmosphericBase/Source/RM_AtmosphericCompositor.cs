@@ -155,6 +155,74 @@ namespace RimMandrake.AtmosphericBase
                                                                   room?.Role?.defName);
                 roomOf[t.thingIDNumber] = room?.ID ?? -1;
             }
+            RefreshGraph(comp);
+        }
+
+        // ---- step 4: the graph substrate (RM_PatternGraph). Rebuilt from the rooms every membership pass, but the old
+        // instance -- with its cached anchor fields -- is kept unless the topology key moved (a wall or door edit), and the
+        // fixture set is kept unless membership moved.
+        private const int GraphRoomCap = 400;
+        public RM_RoomGraph Graph { get; private set; }
+        public RM_FixtureSet Fixtures { get; private set; }
+        public long graphRebuilds, fixtureSetRebuilds;
+
+        /// <summary>Rooms that share a district border with r (RimWorld keeps adjacency on District, not Room).</summary>
+        private static IEnumerable<Room> NeighborRooms(Room r)
+        {
+            foreach (District d in r.Districts)
+                foreach (District nd in d.Neighbors)
+                {
+                    Room n = nd?.Room;
+                    if (n != null && n != r) yield return n;
+                }
+        }
+
+        private static bool Interior(Room r) => r != null && !r.IsDoorway && !r.PsychologicallyOutdoors && !r.IsHuge;
+
+        private void RefreshGraph(RM_MapComponent_AtmosphericBase comp)
+        {
+            var seen = new HashSet<int>();
+            var queue = new Queue<Room>();
+            var rooms = new List<RM_RoomFacts>();
+            var doors = new List<KeyValuePair<int, int>>();
+            var ems = new List<int>(); var nodes = new List<int>(); var xs = new List<float>(); var zs = new List<float>();
+            foreach (Thing t in comp.TakenThings)
+            {
+                if (t == null || !t.Spawned) continue;
+                Room r = t.GetRoom();
+                ems.Add(t.thingIDNumber); nodes.Add(Interior(r) ? r.ID : -1);
+                xs.Add(t.Position.x); zs.Add(t.Position.z);
+                if (Interior(r) && seen.Add(r.ID)) queue.Enqueue(r);
+            }
+            // the base = every interior room reachable through doors from a room holding a taken fixture
+            while (queue.Count > 0 && rooms.Count < GraphRoomCap)
+            {
+                Room r = queue.Dequeue();
+                bool threshold = false;
+                foreach (Room n in NeighborRooms(r))
+                {
+                    if (n == null) continue;
+                    if (n.IsDoorway)
+                    {
+                        foreach (Room m in NeighborRooms(n))
+                        {
+                            if (m == null || m == r) continue;
+                            if (!Interior(m)) { threshold = true; continue; }
+                            doors.Add(new KeyValuePair<int, int>(r.ID, m.ID));
+                            if (seen.Add(m.ID)) queue.Enqueue(m);
+                        }
+                    }
+                    else if (!Interior(n)) threshold = true;
+                    else { doors.Add(new KeyValuePair<int, int>(r.ID, n.ID)); if (seen.Add(n.ID)) queue.Enqueue(n); }
+                }
+                // shrine / power flags are owed (no verified role or comp to read them from yet): those anchors fall back to Core
+                rooms.Add(new RM_RoomFacts { id = r.ID, cells = r.CellCount, threshold = threshold });
+            }
+            RM_RoomGraph g = RM_RoomGraph.Build(rooms, doors);
+            if (Graph == null || Graph.TopologyKey != g.TopologyKey) { Graph = g; graphRebuilds++; }
+            for (int i = 0; i < nodes.Count; i++) if (nodes[i] >= 0 && Graph.Node(nodes[i]) < 0) nodes[i] = -1;
+            var fs = new RM_FixtureSet(ems, nodes, xs, zs);
+            if (Fixtures == null || Fixtures.Key != fs.Key) { Fixtures = fs; fixtureSetRebuilds++; }
         }
 
         public bool InGroup(RM_MapComponent_AtmosphericBase comp, Thing t, string group)
@@ -310,7 +378,8 @@ namespace RimMandrake.AtmosphericBase
                 }
                 if (owner != null)
                 {
-                    int idx = RM_SchemeKernel.PaletteIndex(data, id, room, time, flash != null && flash.Contains(id));
+                    RM_PatternCtx pc = RM_PatternCtx.Of(id, room, Graph, Fixtures);
+                    int idx = RM_SchemeKernel.PaletteIndex(data, ref pc, time, flash != null && flash.Contains(id));
                     n += Show(comp, t, owner.scheme, idx);
                 }
                 else

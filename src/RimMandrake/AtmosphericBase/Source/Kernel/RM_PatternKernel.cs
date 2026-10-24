@@ -49,11 +49,27 @@ namespace RimMandrake.AtmosphericBase
         public void Reset() { lo = hi = -2; }
     }
 
-    /// <summary>What a primitive may know about one fixture at one evaluation. group = its room id (-1 = none).</summary>
+    /// <summary>What a primitive may know about one fixture at one evaluation. group = its room id (-1 = none).
+    /// graph / node / fixtures / slot are the step-4 substrate (null / -1 when the caller has none: the room-local
+    /// primitives never read them, and a graph primitive with no graph treats every fixture as one room).</summary>
     public struct RM_PatternCtx
     {
         public int emitter;
         public int group;
+        public RM_RoomGraph graph;
+        public int node;
+        public RM_FixtureSet fixtures;
+        public int slot;
+
+        public static RM_PatternCtx Of(int emitter, int group, RM_RoomGraph graph, RM_FixtureSet fixtures)
+        {
+            return new RM_PatternCtx
+            {
+                emitter = emitter, group = group, graph = graph,
+                node = graph != null ? graph.Node(group) : -1,
+                fixtures = fixtures, slot = fixtures != null ? fixtures.Slot(emitter) : -1,
+            };
+        }
     }
 
     public interface RM_IPrimitive

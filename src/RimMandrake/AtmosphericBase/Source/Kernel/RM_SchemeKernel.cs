@@ -140,7 +140,13 @@ namespace RimMandrake.AtmosphericBase
         /// layer, bit-identical to the pre-grammar function (selftest: 60,000 samples against a frozen copy).</summary>
         public static int PaletteIndex(RM_SchemeData s, int emitter, int group, double time, bool flasher)
         {
-            var c = new RM_PatternCtx { emitter = emitter, group = group };
+            var c = new RM_PatternCtx { emitter = emitter, group = group, node = -1, slot = -1 };
+            return RM_PatternEvaluator.Index(s, ref c, time, flasher);
+        }
+
+        /// <summary>The same with the step-4 graph substrate in reach (the compositor's call).</summary>
+        public static int PaletteIndex(RM_SchemeData s, ref RM_PatternCtx c, double time, bool flasher)
+        {
             return RM_PatternEvaluator.Index(s, ref c, time, flasher);
         }
 

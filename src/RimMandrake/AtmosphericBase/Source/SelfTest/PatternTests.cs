@@ -295,8 +295,126 @@ internal static class PatternTests
         Check("step 3: every shipped scheme def loads and validates under the grammar (" + shipped.Count + ")", allClean, why);
     }
 
+    // ---------------------------------------------------------------- build step 4: the graph substrate
+    private static RM_RoomFacts R(int id, int cells = 20, bool th = false, bool shrine = false, bool power = false)
+        => new RM_RoomFacts { id = id, cells = cells, threshold = th, shrine = shrine, power = power };
+    private static KeyValuePair<int, int> D(int a, int b) => new KeyValuePair<int, int>(a, b);
+
+    private static string Dist(RM_RoomGraph g, RM_Anchor a)
+    {
+        var p = new List<string>();
+        for (int i = 0; i < g.Count; i++) p.Add(g.roomIds[i] + ":" + g.Distance(a, i));
+        return string.Join(",", p);
+    }
+
+    private static RM_FixtureSet Fx(int n, Func<int, int> roomOf)
+    {
+        var e = new List<int>(); var r = new List<int>(); var x = new List<float>(); var z = new List<float>();
+        for (int i = 0; i < n; i++) { e.Add(1000 + (i * 7919) % 997); r.Add(roomOf(i)); x.Add(i % 5); z.Add(i / 5); }
+        return new RM_FixtureSet(e, r, x, z);
+    }
+
+    private static void Step4()
+    {
+        // ring of 6: 10-11-12-13-14-15-10, threshold at 10
+        var ringRooms = new List<RM_RoomFacts> { R(10, 30, th: true), R(11), R(12), R(13), R(14), R(15) };
+        var ringDoors = new List<KeyValuePair<int, int>> { D(10, 11), D(11, 12), D(12, 13), D(13, 14), D(14, 15), D(15, 10) };
+        RM_RoomGraph ring = RM_RoomGraph.Build(ringRooms, ringDoors);
+        Check("step 4 ring: hop distances from the threshold wrap both ways", Dist(ring, RM_Anchor.Threshold) == "10:0,11:1,12:2,13:3,14:2,15:1", Dist(ring, RM_Anchor.Threshold));
+        Check("step 4 ring: the far room is 3 hops (max distance)", ring.MaxDistance(RM_Anchor.Threshold) == 3);
+        Check("step 4 ring: every room is equally central, Core ties to the lowest id", ring.AnchorNodes(RM_Anchor.Core)[0] == ring.Node(10));
+
+        // branch (tree): hall 1 with wings 2-3-4 and 5-6, and a dead end 7 off 1
+        var brRooms = new List<RM_RoomFacts> { R(1, 60), R(2), R(3), R(4, 10, th: true), R(5), R(6, 90), R(7, 8, shrine: true) };
+        var brDoors = new List<KeyValuePair<int, int>> { D(1, 2), D(2, 3), D(3, 4), D(1, 5), D(5, 6), D(1, 7) };
+        RM_RoomGraph br = RM_RoomGraph.Build(brRooms, brDoors);
+        Check("step 4 branch: Core is the hall (least eccentric)", br.roomIds[br.AnchorNodes(RM_Anchor.Core)[0]] == 1);
+        Check("step 4 branch: Medoid is the hall (least total distance)", br.roomIds[br.AnchorNodes(RM_Anchor.Medoid)[0]] == 1);
+        Check("step 4 branch: Open is the room with most doors", br.roomIds[br.AnchorNodes(RM_Anchor.Open)[0]] == 1);
+        Check("step 4 branch: Grandest is the most cells", br.roomIds[br.AnchorNodes(RM_Anchor.Grandest)[0]] == 6);
+        Check("step 4 branch: Shrine is the flagged room", br.roomIds[br.AnchorNodes(RM_Anchor.Shrine)[0]] == 7);
+        Check("step 4 branch: no power room falls back to Core", br.roomIds[br.AnchorNodes(RM_Anchor.Power)[0]] == 1);
+        Check("step 4 branch: distances from the threshold", Dist(br, RM_Anchor.Threshold) == "1:3,2:2,3:1,4:0,5:4,6:5,7:4", Dist(br, RM_Anchor.Threshold));
+
+        // open plan: one big room and two closets; and a single room; and an empty map
+        RM_RoomGraph open = RM_RoomGraph.Build(new List<RM_RoomFacts> { R(1, 400, th: true), R(2, 4), R(3, 4) }, new List<KeyValuePair<int, int>> { D(1, 2), D(1, 3) });
+        Check("step 4 open plan: max distance 1", open.MaxDistance(RM_Anchor.Core) == 1 && open.MaxDistance(RM_Anchor.Threshold) == 1);
+        RM_RoomGraph one = RM_RoomGraph.Build(new List<RM_RoomFacts> { R(5) }, null);
+        Check("step 4 single room: every anchor is it, distance 0", one.Distance(RM_Anchor.Threshold, 0) == 0 && one.Distance(RM_Anchor.Grandest, 0) == 0 && one.MaxDistance(RM_Anchor.Core) == 0);
+        RM_RoomGraph none = RM_RoomGraph.Build(null, null);
+        Check("step 4 no rooms: an outdoor fixture sits at distance 1, nothing throws", none.Count == 0 && none.Distance(RM_Anchor.Core, -1) == 1);
+        Check("step 4 an unknown room (outdoors) sits one past the farthest", br.Distance(RM_Anchor.Threshold, -1) == 6 && br.Distance(RM_Anchor.Threshold, br.Node(999)) == 6);
+
+        // islands: an unreached room sits past the farthest too, never Unreached
+        RM_RoomGraph isl = RM_RoomGraph.Build(new List<RM_RoomFacts> { R(1, th: true), R(2), R(3) }, new List<KeyValuePair<int, int>> { D(1, 2) });
+        Check("step 4 island room is reachable-last, not lost", isl.Distance(RM_Anchor.Threshold, isl.Node(3)) == 2);
+
+        // determinism: permuted input, duplicate and reversed doors, self-loops and unknown rooms change nothing
+        var perm = new List<RM_RoomFacts>(brRooms); perm.Reverse();
+        var pd = new List<KeyValuePair<int, int>>(brDoors) { D(2, 1), D(3, 3), D(4, 99), D(1, 2) }; pd.Reverse();
+        RM_RoomGraph br2 = RM_RoomGraph.Build(perm, pd);
+        Check("step 4 input order, duplicate/reversed doors, self-loops, unknown rooms: same key, same fields",
+              br2.TopologyKey == br.TopologyKey && Dist(br2, RM_Anchor.Threshold) == Dist(br, RM_Anchor.Threshold));
+
+        // invalidation: a wall edit (door added/removed, room split) moves the key; a fixture change does not touch the graph
+        var cut = new List<KeyValuePair<int, int>>(ringDoors); cut.RemoveAt(2);
+        Check("step 4 a door removed (wall edit) moves the topology key", RM_RoomGraph.Build(ringRooms, cut).TopologyKey != ring.TopologyKey);
+        var more = new List<KeyValuePair<int, int>>(ringDoors) { D(10, 13) };
+        Check("step 4 a door added moves the topology key", RM_RoomGraph.Build(ringRooms, more).TopologyKey != ring.TopologyKey);
+        var split = new List<RM_RoomFacts>(ringRooms) { R(16) };
+        Check("step 4 a room split off moves the topology key", RM_RoomGraph.Build(split, ringDoors).TopologyKey != ring.TopologyKey);
+        var grown = new List<RM_RoomFacts>(ringRooms); grown[1] = R(11, 40);
+        Check("step 4 a room resized moves the topology key", RM_RoomGraph.Build(grown, ringDoors).TopologyKey != ring.TopologyKey);
+        int built = br.FieldsBuilt;
+        for (int i = 0; i < 100; i++) { br.Field(RM_Anchor.Threshold); br.Distance(RM_Anchor.Threshold, i % br.Count); }
+        Check("step 4 an anchor field is computed once and cached", br.FieldsBuilt == built);
+
+        // fixture sets at 0/1/2/7/11/25: key moves with membership only, slot lookup is total, the graph is never rebuilt
+        int[] counts = { 0, 1, 2, 7, 11, 25 };
+        var keys = new HashSet<ulong>(); bool slotsOk = true, centroidOk = true; string why = "";
+        foreach (int n in counts)
+        {
+            RM_FixtureSet fs = Fx(n, i => 1 + i % 7);
+            keys.Add(fs.Key);
+            for (int k = 0; k < fs.Count; k++) if (fs.Slot(fs.ids[k]) != k) { slotsOk = false; why += n + "/" + k + " "; }
+            if (fs.Slot(-5) != -1) slotsOk = false;
+            if (n == 0 && (fs.cx != 0 || fs.cz != 0)) centroidOk = false;
+            if (n == 1 && (fs.cx != 0 || fs.cz != 0)) centroidOk = false;
+            if (n == 25 && (Math.Abs(fs.cx - 2f) > 1e-5 || Math.Abs(fs.cz - 2f) > 1e-5)) centroidOk = false;
+            for (int k = 1; k < fs.Count; k++) if (fs.ids[k] <= fs.ids[k - 1]) slotsOk = false;
+            RM_PatternCtx c = RM_PatternCtx.Of(n > 0 ? fs.ids[0] : 7, 1, br, fs);
+            if (n > 0 && (c.slot != 0 || c.node != br.Node(1))) slotsOk = false;
+        }
+        Check("step 4 fixture sets of 0/1/2/7/11/25: sorted, every slot found, unknown = -1", slotsOk, why);
+        Check("step 4 fixture-set centroids", centroidOk);
+        Check("step 4 fixture-set keys differ with membership", keys.Count == counts.Length);
+        Check("step 4 the same membership in any order gives the same key",
+              new RM_FixtureSet(new[] { 3, 1, 2 }, new[] { 1, 1, 2 }, new[] { 0f, 1f, 2f }, new[] { 0f, 0f, 0f }).Key
+              == new RM_FixtureSet(new[] { 1, 2, 3 }, new[] { 1, 2, 1 }, new[] { 1f, 2f, 0f }, new[] { 0f, 0f, 0f }).Key);
+        Check("step 4 a fixture moved to another room moves the key",
+              new RM_FixtureSet(new[] { 1, 2 }, new[] { 1, 1 }, new[] { 0f, 1f }, new[] { 0f, 0f }).Key
+              != new RM_FixtureSet(new[] { 1, 2 }, new[] { 1, 2 }, new[] { 0f, 1f }, new[] { 0f, 0f }).Key);
+        Check("step 4 the graph-free ctx (old PaletteIndex call) still evaluates bit-identically",
+              RM_SchemeKernel.PaletteIndex(One("<layers><li><primitive>Breath</primitive></li></layers>"), 42, 3, 17.25, false)
+              == RM_SchemeKernel.PaletteIndex(One("<layers><li><primitive>Breath</primitive></li></layers>"), ref Ctx(42, 3, br), 17.25, false));
+
+        // cost: a 400-room grid builds and fields every anchor quickly (the compositor caps the base at 400 rooms)
+        var gr = new List<RM_RoomFacts>(); var gd = new List<KeyValuePair<int, int>>();
+        for (int i = 0; i < 400; i++) { gr.Add(R(i, 10 + i % 13, th: i < 20)); if (i % 20 != 19) gd.Add(D(i, i + 1)); if (i + 20 < 400) gd.Add(D(i, i + 20)); }
+        var sw = System.Diagnostics.Stopwatch.StartNew();
+        RM_RoomGraph big = RM_RoomGraph.Build(gr, gd);
+        foreach (RM_Anchor a in Enum.GetValues(typeof(RM_Anchor))) big.Field(a);
+        sw.Stop();
+        Check("step 4 400-room grid: build + all 7 anchor fields under 2 s (" + sw.ElapsedMilliseconds + " ms)", sw.ElapsedMilliseconds < 2000);
+        Check("step 4 400-room grid: threshold row 0, far row 19 hops", big.MaxDistance(RM_Anchor.Threshold) == 19);
+    }
+
+    private static RM_PatternCtx ctxBox;
+    private static ref RM_PatternCtx Ctx(int e, int g, RM_RoomGraph graph) { ctxBox = RM_PatternCtx.Of(e, g, graph, null); return ref ctxBox; }
+
     internal static void Run()
     {
         Step2And3();
+        Step4();
     }
 }
