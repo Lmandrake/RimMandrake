@@ -32,7 +32,7 @@ from PIL import Image
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent / "ModernStyle"))
 import waterworks_blue  # noqa: E402
-TEX = HERE / "raw"   # the tall 2026-10-21 heads, kept as the source (the shipped textures become the output)
+RAW = HERE / "raw"   # the tall 2026-10-21 heads, kept as the source (the shipped textures become the output)
 LOOKS = ("Scrapper", "Industrial", "Modern", "Futuristic")
 
 TARGET_W = 92      # px of 256 the clamp spans: 0.36 cell, over 2.5 bore widths (bore 0.136 cell)
@@ -113,7 +113,7 @@ def shipped(look, im):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("--src", default=str(TEX))
+    ap.add_argument("--src", default=str(RAW))
     ap.add_argument("--out", default=str(HERE / "out"))
     a = ap.parse_args(argv)
     seat = {}

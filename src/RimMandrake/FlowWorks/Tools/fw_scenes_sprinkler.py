@@ -57,9 +57,9 @@ def seat(mask, look):
     return d * (1 if mask & E else -1), d * (1 if mask & N else -1)
 
 
-def def_offsets(base=False):
-    """drawOffset z per look from the ThingStyleDefs RM_SprinklerHead_<Look> (the def, never a guess); with base=True also
-    "base" for the ThingDef RM_SprinklerHead itself (drawn when a head has no style). Raises when one is missing."""
+def _def_vectors(field, base):
+    """graphicData/<field> parsed as a float tuple per look from the ThingStyleDefs RM_SprinklerHead_<Look> (the def, never a
+    guess); with base=True also "base" for the ThingDef RM_SprinklerHead itself. Raises when a def or the field is missing."""
     root = ET.parse(DEFS).getroot()
     want = {"RM_SprinklerHead_%s" % look: look for look in fc.LOOKS}
     if base:
@@ -68,14 +68,24 @@ def def_offsets(base=False):
     for d in root:
         name = d.findtext("defName")
         if name in want and d.tag in ("ThingDef", "ThingStyleDef"):
-            v = d.findtext("graphicData/drawOffset")
+            v = d.findtext("graphicData/" + field)
             if v is None:
-                raise ValueError("%s has no graphicData/drawOffset in %s" % (name, DEFS.name))
-            out[want[name]] = float(v.strip().strip("()").split(",")[2])
+                raise ValueError("%s has no graphicData/%s in %s" % (name, field, DEFS.name))
+            out[want[name]] = tuple(float(x) for x in v.strip().strip("()").split(","))
     missing = sorted(set(want.values()) - set(out))
     if missing:
         raise ValueError("no sprinkler head def for %s in %s" % (missing, DEFS.name))
     return out
+
+
+def def_offsets(base=False):
+    """drawOffset z per look (see _def_vectors). The scenes draw the head on drawSize (1,1); def_draw_sizes() guards that."""
+    return {k: v[2] for k, v in _def_vectors("drawOffset", base).items()}
+
+
+def def_draw_sizes(base=False):
+    """drawSize (x, z) per look (see _def_vectors). The seat formula drawOffset z = (SEAT_Y - 128)/256 assumes (1, 1)."""
+    return _def_vectors("drawSize", base)
 
 
 def head_tex(look, mode):
