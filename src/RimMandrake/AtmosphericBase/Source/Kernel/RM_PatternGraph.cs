@@ -163,6 +163,38 @@ namespace RimMandrake.AtmosphericBase
         }
     }
 
+    /// <summary>The result of one membership pass: the graph and fixture set to use, and whether each was replaced.</summary>
+    public struct RM_GraphRefresh
+    {
+        public RM_RoomGraph graph;
+        public RM_FixtureSet fixtures;
+        public bool graphRebuilt, fixturesRebuilt;
+    }
+
+    /// <summary>The keep-or-replace rule the compositor runs every membership pass, kept here (pure, no game types) so
+    /// the selftest can drive it: the previous graph -- with its cached fields -- is kept unless the TopologyKey of the
+    /// freshly read rooms and doors moved; the fixture set is kept unless its membership key moved. A lamp taken,
+    /// released or moved inside rooms already in the base therefore never rebuilds a field (review R1, D7).</summary>
+    public static class RM_GraphCache
+    {
+        public static RM_GraphRefresh Refresh(RM_RoomGraph prevGraph, RM_FixtureSet prevFixtures,
+                                              IList<RM_RoomFacts> rooms, IList<KeyValuePair<int, int>> doors,
+                                              IList<int> emitters, IList<int> roomOfEmitter, IList<float> xs, IList<float> zs)
+        {
+            var r = new RM_GraphRefresh();
+            RM_RoomGraph g = RM_RoomGraph.Build(rooms, doors);
+            if (prevGraph == null || prevGraph.TopologyKey != g.TopologyKey) { r.graph = g; r.graphRebuilt = true; }
+            else r.graph = prevGraph;
+            int n = emitters?.Count ?? 0;
+            var nodes = new int[n];
+            for (int i = 0; i < n; i++) { int id = roomOfEmitter[i]; nodes[i] = id >= 0 && r.graph.Node(id) >= 0 ? id : -1; }
+            var fs = new RM_FixtureSet(emitters ?? new int[0], nodes, xs ?? new float[0], zs ?? new float[0]);
+            if (prevFixtures == null || prevFixtures.Key != fs.Key) { r.fixtures = fs; r.fixturesRebuilt = true; }
+            else r.fixtures = prevFixtures;
+            return r;
+        }
+    }
+
     /// <summary>The taken fixtures, sorted by id: position, room, and their centroid. Rebuilt on a
     /// membership change; never touches the room graph's cached fields.</summary>
     public sealed class RM_FixtureSet

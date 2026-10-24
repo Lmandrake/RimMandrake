@@ -629,33 +629,113 @@ def judge_pattern_layers(xml_by_name, built):
         n_s, n_l, ",".join(sorted(built))))
 
 
+GRAPH_KEY_ALLOWED = {"f", "i", "j", "h", "adj", "id", "cells", "threshold", "shrine", "power", "ulong", "uint"}
+FACT_FIELDS_ALLOWED = {"id", "cells", "threshold", "shrine", "power"}
+
+
+def topology_key_inputs(graph_cs):
+    """Dataflow of the TopologyKey (review R1): Build's parameter types, every identifier that is xor-ed into the key
+    hash, and RM_RoomFacts' fields. None when the scan cannot see the hash (blind, never a pass)."""
+    m = re.search(r"public static RM_RoomGraph Build\(([^)]*)\)(.*?)return new RM_RoomGraph\(", graph_cs, re.S)
+    if not m:
+        return None
+    terms = re.findall(r"\bh\s*=\s*\(h\s*\^\s*(.*?)\)\s*\*\s*1099511628211UL", m.group(2))
+    terms += re.findall(r"\bh\s*\^=\s*([^;]*);", m.group(2))
+    if not terms:
+        return None
+    idents = set()
+    for t in terms:
+        idents |= set(re.findall(r"[A-Za-z_]\w*", t))
+    fm = re.search(r"struct RM_RoomFacts\s*\{(.*?)\}", graph_cs, re.S)
+    fields = set()
+    if fm:
+        for decl in re.findall(r"public\s+[\w<>\[\]]+\s+([^;]+);", fm.group(1)):
+            fields |= {x.strip() for x in decl.split(",")}
+    parts, depth, cur = [], 0, ""
+    for ch in m.group(1):
+        depth += ch == "<"
+        depth -= ch == ">"
+        if ch == "," and depth == 0:
+            parts.append(cur)
+            cur = ""
+        else:
+            cur += ch
+    parts.append(cur)
+    types = [x.strip().rsplit(" ", 1)[0].replace(" ", "") for x in parts if x.strip()]
+    return {"params": types, "idents": idents, "fields": fields, "terms": len(terms)}
+
+
 def judge_graph_substrate(compositor_cs, csproj, graph_cs):
-    """§4 graph substrate wired (build step 4): the graph file is compiled, the compositor keeps a built graph unless
-    its topology key moved (a wall/door edit, never a membership change), and passes graph + fixture set into the
-    pattern ctx at the palette call. Disk only: whether the rooms it reads are the right ones is a live question."""
+    """§4 graph substrate wired (build step 4, behavioural form after review R1): the graph file is compiled; the
+    compositor's keep-or-replace rule is the kernel's RM_GraphCache.Refresh (which the kernel selftest drives: lamps
+    taken/released/moved keep the same graph and every cached field, a door edit replaces it -- row D7b reads that
+    run); and the TopologyKey's inputs, traced through Build's hash, are room facts and doors only. Disk only: whether
+    the rooms it reads are the right ones is a live question."""
     if not graph_cs:
         return _r(UNM, HARNESS, "Kernel/RM_PatternGraph.cs not found: the scan is blind")
+    ki = topology_key_inputs(graph_cs)
+    if ki is None:
+        return _r(UNM, HARNESS, "no TopologyKey hash found in RM_RoomGraph.Build: the dataflow scan is blind")
     bad = []
     if not re.search(r'<Compile Include="Kernel\\RM_PatternGraph\.cs"\s*/>', csproj):
         bad.append("RM_PatternGraph.cs not compiled by RM_AtmosphericBase.csproj")
-    if not re.search(r"RM_RoomGraph\.Build\(", compositor_cs):
-        bad.append("compositor never builds an RM_RoomGraph")
-    if not re.search(r"Graph\.TopologyKey\s*!=\s*\w+\.TopologyKey", compositor_cs):
-        bad.append("compositor replaces the graph without a topology-key compare (cached fields lost every pass)")
-    if re.search(r"TopologyKey[^;\n]*Fixture|Fixture[^;\n]*TopologyKey", graph_cs):
-        bad.append("topology key mixes in fixtures (membership change would invalidate the fields)")
+    if not re.search(r"RM_GraphCache\.Refresh\(\s*Graph\s*,\s*Fixtures\s*,", compositor_cs):
+        bad.append("compositor does not keep its graph through RM_GraphCache.Refresh (the rule the selftest drives)")
+    if re.search(r"Graph\s*=\s*RM_RoomGraph\.Build\(|Graph\s*=\s*g\s*;", compositor_cs):
+        bad.append("compositor replaces Graph directly, bypassing the tested keep-or-replace rule")
+    if not re.search(r"prevGraph\.TopologyKey\s*!=\s*\w+\.TopologyKey", graph_cs):
+        bad.append("RM_GraphCache.Refresh replaces the graph without a topology-key compare (cached fields lost every pass)")
+    stray = sorted(ki["idents"] - GRAPH_KEY_ALLOWED)
+    if stray:
+        bad.append("topology key hashes %s (not a room fact or door): a membership change would invalidate the fields" % stray)
+    odd_params = [t for t in ki["params"] if t not in ("IList<RM_RoomFacts>", "IList<KeyValuePair<int,int>>")]
+    if odd_params or len(ki["params"]) != 2:
+        bad.append("RM_RoomGraph.Build takes %s: the key may only see rooms and doors" % ki["params"])
+    odd_fields = sorted(ki["fields"] - FACT_FIELDS_ALLOWED)
+    if odd_fields:
+        bad.append("RM_RoomFacts carries %s: a fixture fact would ride into the key" % odd_fields)
     if not re.search(r"RM_PatternCtx\.Of\(\s*\w+\s*,\s*\w+\s*,\s*Graph\s*,\s*Fixtures\s*\)", compositor_cs):
         bad.append("the palette call does not pass Graph and Fixtures into the pattern ctx")
     if bad:
         return _r(FAIL, MOD, "; ".join(bad))
-    return _r(PASS, MOD, "graph compiled; kept unless TopologyKey moves; Graph+Fixtures reach the pattern ctx (live room reading owed)")
+    return _r(PASS, MOD, "graph compiled; kept by RM_GraphCache.Refresh unless TopologyKey moves; key inputs = %s over %d hash terms "
+              "(room facts + doors only); Graph+Fixtures reach the pattern ctx (live room reading owed)"
+              % (sorted(ki["idents"] & {"id", "cells", "threshold", "shrine", "power"}), ki["terms"]))
+
+
+KERNEL_CACHE_CHECKS = ("R1 cache: lamps taken, released and moved inside the base keep the SAME graph instance",
+                       "R1 cache: ... and rebuild no cached field",
+                       "R1 cache: a door edit (same fixtures) replaces the graph",
+                       "R1 sweep Toward: a room unreachable from any threshold room is lit after every reachable room")
+
+
+def judge_kernel_log(text):
+    """D7b: the behavioural half of D7 -- the kernel selftest's own lines for the graph cache and the sweep island
+    (selftest_atmosphericbase_kernel.py output, passed with --kernel-log). No log = UNMEASURED, never a pass."""
+    if not text:
+        return _r(UNM, HARNESS, "no kernel selftest log (run selftest_atmosphericbase_kernel.py > LOG, then --kernel-log LOG)")
+    if "AtmosphericBase kernel selftest" not in text:
+        return _r(UNM, HARNESS, "the log is not a kernel selftest run")
+    missing, failed = [], []
+    for name in KERNEL_CACHE_CHECKS:
+        line = next((ln for ln in text.splitlines() if name in ln), None)
+        if line is None:
+            missing.append(name)
+        elif not line.startswith("ok"):
+            failed.append(name)
+    if failed:
+        return _r(FAIL, MOD, "kernel selftest FAILED: %s" % failed)
+    if missing:
+        return _r(UNM, HARNESS, "the log lacks %s (an older kernel build?)" % missing)
+    return _r(PASS, MOD, "kernel selftest drove RM_GraphCache.Refresh: fixture changes keep the graph and its fields, a door edit "
+              "replaces it; the sweep island is lit last")
 
 
 def kernel_cs():
     return open(os.path.join(HERE, "Source", "Kernel", "RM_PatternKernel.cs"), encoding="utf-8").read()
 
 
-def offline_rows(rows):
+def offline_rows(rows, kernel_log=None):
     src = os.path.join(HERE, "Source")
     proof_cs = open(os.path.join(src, "RM_AtmosphericBaseProof.cs"), encoding="utf-8").read()
     has = re.search(r"public static string ProofSample\(string \w+\)", proof_cs) is not None
@@ -673,6 +753,8 @@ def offline_rows(rows):
     gp = os.path.join(src, "Kernel", "RM_PatternGraph.cs")
     add(rows, "D7.graph_substrate_disk", *judge_graph_substrate(rd("RM_AtmosphericCompositor.cs"), rd("RM_AtmosphericBase.csproj"),
                                                                 open(gp, encoding="utf-8").read() if os.path.exists(gp) else ""))
+    klog = open(kernel_log, encoding="utf-8", errors="replace").read() if kernel_log and os.path.exists(kernel_log) else ""
+    add(rows, "D7b.graph_cache_behaviour", *judge_kernel_log(klog))
     return d
 
 
@@ -1419,15 +1501,29 @@ def metric_controls():
     out.append(("judge_pattern_layers sweep good", judge_pattern_layers({"l.xml": sl}, fb)[0], PASS))
     out.append(("judge_pattern_layers sweep lit 0", judge_pattern_layers({"l.xml": sl.replace("0.3", "0")}, fb)[0], FAIL))
     out.append(("judge_pattern_layers sweep bad field", judge_pattern_layers({"l.xml": sl.replace("Toward", "Sideways")}, fb)[0], FAIL))
-    gcomp = ("g = RM_RoomGraph.Build(rooms, doors); if (Graph == null || Graph.TopologyKey != g.TopologyKey) Graph = g;\n"
+    gcomp = ("RM_GraphRefresh rr = RM_GraphCache.Refresh(Graph, Fixtures, rooms, doors, ems, nodes, xs, zs); Graph = rr.graph;\n"
              "RM_PatternCtx pc = RM_PatternCtx.Of(id, room, Graph, Fixtures);")
     gproj = '<Compile Include="Kernel\\RM_PatternGraph.cs" />'
-    gsrc = "public readonly ulong TopologyKey;"
-    out.append(("judge_graph_substrate good", judge_graph_substrate(gcomp, gproj, gsrc)[0], PASS))
+    gpath = os.path.join(HERE, "Source", "Kernel", "RM_PatternGraph.cs")
+    gsrc = open(gpath, encoding="utf-8").read() if os.path.exists(gpath) else ""
+    hashline = "h = (h ^ (uint)f[i].cells) * 1099511628211UL;"
+    out.append(("judge_graph_substrate good (real graph source)", judge_graph_substrate(gcomp, gproj, gsrc)[0], PASS))
     out.append(("judge_graph_substrate not compiled", judge_graph_substrate(gcomp, "", gsrc)[0], FAIL))
-    out.append(("judge_graph_substrate no key compare", judge_graph_substrate(gcomp.replace("Graph.TopologyKey != g.TopologyKey", "true"), gproj, gsrc)[0], FAIL))
-    out.append(("judge_graph_substrate ctx without graph", judge_graph_substrate(gcomp.replace("Graph, Fixtures", "null, null"), gproj, gsrc)[0], FAIL))
+    out.append(("judge_graph_substrate no key compare", judge_graph_substrate(gcomp, gproj, gsrc.replace("prevGraph.TopologyKey != g.TopologyKey", "true"))[0], FAIL))
+    out.append(("judge_graph_substrate bypasses cache", judge_graph_substrate(gcomp.replace("RM_GraphCache.Refresh(Graph, Fixtures,", "Build(") + " Graph = g;", gproj, gsrc)[0], FAIL))
+    out.append(("judge_graph_substrate key hashes a fixture", judge_graph_substrate(gcomp, gproj, gsrc.replace(hashline, hashline + " h = (h ^ (uint)lampCount) * 1099511628211UL;"))[0], FAIL))
+    out.append(("judge_graph_substrate key via ^= fixture", judge_graph_substrate(gcomp, gproj, gsrc.replace(hashline, hashline + " h ^= fixtures.Key;"))[0], FAIL))
+    out.append(("judge_graph_substrate Build takes fixtures", judge_graph_substrate(gcomp, gproj, gsrc.replace(
+        "Build(IList<RM_RoomFacts> rooms, IList<KeyValuePair<int, int>> doors)", "Build(IList<RM_RoomFacts> rooms, IList<KeyValuePair<int, int>> doors, RM_FixtureSet fx)"))[0], FAIL))
+    out.append(("judge_graph_substrate facts carry a lamp", judge_graph_substrate(gcomp, gproj, gsrc.replace("public bool threshold, shrine, power;", "public bool threshold, shrine, power;\n        public int lamps;"))[0], FAIL))
+    out.append(("judge_graph_substrate ctx without graph", judge_graph_substrate(gcomp.replace("Graph, Fixtures)", "null, null)"), gproj, gsrc)[0], FAIL))
     out.append(("judge_graph_substrate blind", judge_graph_substrate(gcomp, gproj, "")[0], UNM))
+    out.append(("judge_graph_substrate hash unseen", judge_graph_substrate(gcomp, gproj, gsrc.replace("1099511628211UL", "PRIME"))[0], UNM))
+    klog = "\n".join("ok    " + n + " x" for n in KERNEL_CACHE_CHECKS) + "\nall AtmosphericBase kernel selftests passed"
+    out.append(("judge_kernel_log good", judge_kernel_log(klog)[0], PASS))
+    out.append(("judge_kernel_log a cache check failed", judge_kernel_log(klog.replace("ok    R1 cache: a door", "FAIL  R1 cache: a door"))[0], FAIL))
+    out.append(("judge_kernel_log older build", judge_kernel_log(klog.replace(KERNEL_CACHE_CHECKS[0], "something else"))[0], UNM))
+    out.append(("judge_kernel_log none", judge_kernel_log("")[0], UNM))
     out.append(("built_primitives reads the registry", PASS if {"Steady", "Breath", "Spark"} <= built else FAIL, PASS))
     return out
 
@@ -1475,6 +1571,7 @@ def main():
     ap.add_argument("--fixture", help="ThingID of a lit lamp for L10/R1 when the pick hook is missing")
     ap.add_argument("--with-reload", action="store_true", help="run R1 (saves and reloads the current game)")
     ap.add_argument("--out", default=DEFAULT_OUT)
+    ap.add_argument("--kernel-log", help="output of selftest_atmosphericbase_kernel.py: feeds the behavioural rows (D7b)")
     a = ap.parse_args()
     if a.selftest:
         rc, report = selftest()
@@ -1482,7 +1579,7 @@ def main():
             print("wrote %s" % write_out(a.out, "selftest", report))
         return rc
     rows = []
-    d = offline_rows(rows)
+    d = offline_rows(rows, a.kernel_log)
     if not a.offline:
         try:
             proof(Live(a.fixture), rows, with_reload=a.with_reload, disk_defaults=d)
