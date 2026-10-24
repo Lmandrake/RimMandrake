@@ -1,0 +1,2 @@
+enact: a schema-1 pick has two entry routes, KEYED picks{lane:L} and DERIVED from a decision letter. A guard added to one route is not on the other. In 3ff777b26a the moved-between-existing-lanes refusal and the same-pictures check went onto the derived route only, so keyed picks still route by a stale lane (Hawkbat G). When reviewing an enact guard, test it on BOTH routes: a keyed case and a decision case in the selftest.
+home: rimworld-review-sheets
