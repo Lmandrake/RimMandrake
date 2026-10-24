@@ -17,6 +17,7 @@ import os
 import struct
 import subprocess
 import sys
+import shutil
 import tempfile
 import time
 import types
@@ -205,11 +206,47 @@ def test_timeout_still_harvests() -> None:
             # A clean run where the agent DID place the file needs no harvest.
             def agent_copies(prompt, images, workdir, timeout, verbose,
                             model=None, hm=None, reasoning_effort=None, **_kw):
-                tiny_png(Path(workdir) / "art3.png")
+                gen = tiny_png(home / ci.GENERATED_SUBDIR / "sess3" / "exec-3.png")
+                shutil.copy2(gen, Path(workdir) / "art3.png")
                 return 0, "", False
             ci.run_codex = agent_copies
             out3 = Path(td) / "art3.png"
             check("normal path still works", ci.do_image(args_for(out3)) == 0)
+
+            # CODEX_FOREIGN_IMAGE_COPY: image_gen returned no path, the agent copied an UNRELATED older image
+            # (another session's) into place while this run's own render sat in the home. Ours must win.
+            stranger = tiny_png(Path(td) / "otherhome" / ci.GENERATED_SUBDIR / "old" / "bollards.png", 6, 4)
+            def agent_copies_foreign(prompt, images, workdir, timeout, verbose,
+                                     model=None, hm=None, reasoning_effort=None, **_kw):
+                tiny_png(home / ci.GENERATED_SUBDIR / "sess4" / "exec-4.png", 8, 8)
+                shutil.copy2(stranger, Path(workdir) / "art4.png")
+                return 0, "", False
+            ci.run_codex = agent_copies_foreign
+            out4 = Path(td) / "art4.png"
+            rc = ci.do_image(args_for(out4))
+            check("foreign agent copy is replaced by this run's render", rc == 0 and out4.is_file()
+                  and ci.png_info(out4)["width"] == 8, f"rc={rc}")
+
+            # ...and when this run generated nothing, the foreign copy is a FAILURE, never an OK.
+            def agent_copies_foreign_only(prompt, images, workdir, timeout, verbose,
+                                          model=None, hm=None, reasoning_effort=None, **_kw):
+                shutil.copy2(stranger, Path(workdir) / "art5.png")
+                return 0, "", False
+            ci.run_codex = agent_copies_foreign_only
+            out5 = Path(td) / "art5.png"
+            rc = ci.do_image(args_for(out5))
+            check("foreign copy with nothing generated fails", rc == 1 and not out5.exists(), f"rc={rc}")
+
+            # A file we cannot trace to any cache (the agent post-processed or moved its own render) is kept.
+            def agent_postprocesses(prompt, images, workdir, timeout, verbose,
+                                    model=None, hm=None, reasoning_effort=None, **_kw):
+                tiny_png(home / ci.GENERATED_SUBDIR / "sess6" / "exec-6.png", 8, 8)
+                tiny_png(Path(workdir) / "art6.png", 2, 2)
+                return 0, "", False
+            ci.run_codex = agent_postprocesses
+            out6 = Path(td) / "art6.png"
+            rc = ci.do_image(args_for(out6))
+            check("untraceable agent file is kept", rc == 0 and ci.png_info(out6)["width"] == 2, f"rc={rc}")
     finally:
         ci.run_codex, ci.base_codex_home = real_run_codex, real_base
         ci.HARVEST_GRACE_S = real_grace
@@ -251,7 +288,7 @@ def test_force_regen_failure_does_not_report_stale_success() -> None:
             def writes_new(prompt, images, workdir, timeout, verbose,
                            model=None, hm=None, reasoning_effort=None, **_kw):
                 time.sleep(0.01)
-                tiny_png(out)
+                shutil.copy2(tiny_png(home / ci.GENERATED_SUBDIR / "sessf" / "exec-f.png"), out)
                 return 0, "", False
             ci.run_codex = writes_new
             rc = ci.do_image(args)
@@ -779,12 +816,15 @@ def test_home_must_be_windows_visible() -> None:
 
 def test_staging_round_trip() -> None:
     """ext4 caller paths: inputs copied into a scratch job dir, codex runs THERE, outputs come back."""
-    real_run_codex, real_scratch = ci.run_codex, ci.CODEX_SCRATCH
+    real_run_codex, real_scratch, real_base = ci.run_codex, ci.CODEX_SCRATCH, ci.base_codex_home
     seen = {}
     try:
         with tempfile.TemporaryDirectory() as td:
             td = Path(td)
             ci.CODEX_SCRATCH = td / "scratch"
+            home = td / "codexhome"
+            (home / ci.GENERATED_SUBDIR).mkdir(parents=True)
+            ci.base_codex_home = lambda: home
             ref = tiny_png(td / "in" / "ref.png")
             schema = td / "schema.json"
             schema.write_text("{}")
@@ -792,7 +832,7 @@ def test_staging_round_trip() -> None:
             def fake(prompt, images, workdir, timeout, verbose, model=None, hm=None,
                      reasoning_effort=None, output_schema=None, output_last_message=None):
                 seen.update(workdir=workdir, images=images, schema=output_schema, model=model)
-                tiny_png(Path(workdir) / "art.png")
+                shutil.copy2(tiny_png(home / ci.GENERATED_SUBDIR / "s" / "exec-s.png"), Path(workdir) / "art.png")
                 Path(output_last_message).write_text('{"status":"ok"}')
                 return 0, "", False
             ci.run_codex = fake
@@ -816,7 +856,7 @@ def test_staging_round_trip() -> None:
             args2 = args_for(Path("/mnt/d/x/art.png"))
             check("Windows-drive paths are not staged", _REAL_NEEDS_STAGING(args2) is False)
     finally:
-        ci.run_codex, ci.CODEX_SCRATCH = real_run_codex, real_scratch
+        ci.run_codex, ci.CODEX_SCRATCH, ci.base_codex_home = real_run_codex, real_scratch, real_base
 
 
 def test_ensure_home_sandbox_guard() -> None:

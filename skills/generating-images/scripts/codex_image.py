@@ -29,6 +29,7 @@ _rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / 
 from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import argparse
 import base64
+import hashlib
 import json
 import os
 import re
@@ -862,6 +863,41 @@ def snapshot_generated(home: Path) -> set[Path]:
     return {p for p in root.rglob("*") if p.is_file()}
 
 
+def _sha(p: Path) -> str:
+    return hashlib.sha256(p.read_bytes()).hexdigest()
+
+
+def _preexisting_twin(out: Path, home: Path, before: set[Path]) -> Path | None:
+    """A cache image that existed BEFORE this run and is byte-identical to `out`, else None.
+
+    Searched: this home's pre-run snapshot, the shared base home, and sibling worker homes (home.parent/*).
+    Size is compared first so only same-size files are hashed."""
+    roots = {home / GENERATED_SUBDIR}
+    try:
+        roots.add(base_codex_home() / GENERATED_SUBDIR)
+    except EnvError:
+        pass
+    try:
+        roots.update(d / GENERATED_SUBDIR for d in home.parent.iterdir() if d.is_dir())
+    except OSError:
+        pass
+    size, digest = out.stat().st_size, None
+    for root in roots:
+        if not root.is_dir():
+            continue
+        own = root == home / GENERATED_SUBDIR
+        for p in root.rglob("*"):
+            try:
+                if (own and p not in before) or not p.is_file() or p.stat().st_size != size:
+                    continue
+                digest = digest or _sha(out)
+                if _sha(p) == digest:
+                    return p
+            except OSError:
+                continue
+    return None
+
+
 def harvest_new(home: Path, before: set[Path]) -> list[Path]:
     """Files that appeared under generated_images, newest last."""
     after = snapshot_generated(home)
@@ -1155,6 +1191,29 @@ def _do_image(args, finalize=None) -> int:
         print(output[-4000:], file=sys.stderr)
 
     fresh = out.is_file() and (not existed_before or out.stat().st_mtime != mtime_before)
+
+    # 🔴 CODEX_FOREIGN_IMAGE_COPY: when image_gen returns no path, the agent has gone looking for "the newest
+    # PNG" in the owner's global ~/.codex/generated_images (not its own CODEX_HOME) and copied an unrelated
+    # image from another session (arteval_RM_TruffleMole_r1_south 2026-10-23: a sheet of 8 bollards, while
+    # this run's two real mole renders sat unharvested in the worker home). A placed file whose bytes equal
+    # an image that ALREADY existed in a codex cache before this run is proven foreign: replace it with this
+    # run's newest render of the same type, or fail. A file we cannot trace (post-processed, or moved out of
+    # generated_images) is left alone — "source not found" is not proof.
+    if fresh:
+        foreign_src = _preexisting_twin(out, home, before)
+        if foreign_src is not None:
+            made = [p for p in harvest_new(home, before) if p.suffix.lower() == out.suffix.lower()]
+            if made:
+                shutil.copy2(made[-1], out)
+                print(f"note: agent placed a copy of {foreign_src} (not this run's render); replaced it "
+                      f"with {made[-1].name} from {GENERATED_SUBDIR}/", file=sys.stderr)
+            else:
+                foreign = out.with_name(out.stem + ".foreign" + out.suffix)
+                os.replace(out, foreign)
+                fresh = False
+                print(f"ERROR agent placed a copy of {foreign_src}, an image that existed before this "
+                      f"run, and this run left no render of its own (kept as {foreign.name}).",
+                      file=sys.stderr)
 
     # 🔴 Harvest on EVERY path, timeout included. The agent was asked to copy
     # the file here; whether it did, and whether our own ceiling expired while
