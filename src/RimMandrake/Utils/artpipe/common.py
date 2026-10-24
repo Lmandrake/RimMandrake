@@ -522,6 +522,12 @@ _FACING_CONTRADICTIONS = {
 }
 
 
+def facing_contradictions(prompt: str) -> list:
+    """The gate's own phrase list applied to a prompt: sorted contradicting phrases (empty = the gate accepts it)."""
+    low = (prompt or "").lower()
+    return sorted(ph for ph in _FACING_CONTRADICTIONS if ph in low)
+
+
 def _refuse_contradicted_facing(path, job: dict) -> None:
     """Refuse a single-facing job whose prompt argues with its own stamp.
 
@@ -533,8 +539,7 @@ def _refuse_contradicted_facing(path, job: dict) -> None:
     facing = job.get("facing")
     if not facing:
         return
-    low = (job.get("prompt") or "").lower()
-    hits = sorted(ph for ph in _FACING_CONTRADICTIONS if ph in low)
+    hits = facing_contradictions(job.get("prompt") or "")
     if not hits:
         return
     why = "; ".join(f"{ph!r} asks for {_FACING_CONTRADICTIONS[ph]}" for ph in hits)

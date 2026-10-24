@@ -389,8 +389,43 @@ def file_regen_jobs(jobs_file: Path, runner=subprocess.run) -> dict:
             "tail": tail}
 
 
-def regen_jobs(recs: list, run_id: str) -> list:
-    """fill_queue.py rows (JSON art list) for every REGEN — filed only with --file-regens."""
+def _gate_hits(prompt: str) -> list:
+    """Phrases artpipe's per-facing filing gate (common._refuse_contradicted_facing) would refuse in this prompt.
+    Reads the gate's own list, so the two cannot drift."""
+    import importlib.util
+    ap = ROOT / "src/RimMandrake/Utils/artpipe"
+    if str(ap) not in sys.path:
+        sys.path.append(str(ap))
+    spec = importlib.util.spec_from_file_location("artpipe_common_gate", ap / "common.py")
+    m = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(m)
+    return m.facing_contradictions(prompt)
+
+
+def gate_clean_prompt(prompt: str, neutralize=None, hits=None) -> tuple:
+    """(prompt, how) — a prompt the per-facing filing gate accepts. The regen-prompt model speaks about every facing at
+    once ("consistent across all facings", "top-down-friendly"); one job draws one facing, so the prompt is made
+    facing-neutral (fauna_drive.neutral_prompt: model rewrite, else drop the offending sentences) and re-checked; a
+    prompt that still fails is returned with how='STILL_REFUSED' so the caller can say so rather than file it."""
+    hits = hits or _gate_hits
+    if not hits(prompt):
+        return prompt, "unchanged"
+    if neutralize is None:
+        import fauna_drive
+        neutralize = fauna_drive.neutral_prompt
+    new, how = neutralize(prompt)
+    if not new.strip() or hits(new):
+        sents = re.split(r"(?<=[.!?])\s+", prompt)
+        new = " ".join(s for s in sents if not hits(s))
+        how = "sentence-drop"
+        if not new.strip() or hits(new):
+            return prompt, "STILL_REFUSED"
+    return new, how
+
+
+def regen_jobs(recs: list, run_id: str, neutralize=None, hits=None) -> list:
+    """fill_queue.py rows (JSON art list) for every REGEN — filed only with --file-regens. A row with facings gets a
+    prompt the filing gate accepts (gate_clean_prompt); the row's style_notes say what was done."""
     rows = []
     for r in recs:
         if r["decision"] != "REGEN":
@@ -405,6 +440,10 @@ def regen_jobs(recs: list, run_id: str) -> list:
                         "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"%s\"; "
                                             "revert record in the run's decisions.jsonl" % r["install_by_card"]}
                        if r.get("replaces_kept") else {}))
+        if rows[-1]["facings"]:
+            rows[-1]["prompt"], how = gate_clean_prompt(rows[-1]["prompt"], neutralize, hits)
+            if how != "unchanged":
+                rows[-1]["style_notes"] += "; prompt_gate: " + how
     return rows
 
 
