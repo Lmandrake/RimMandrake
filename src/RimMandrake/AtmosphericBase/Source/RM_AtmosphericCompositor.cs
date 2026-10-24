@@ -26,6 +26,7 @@
 // ownership (which fixture is held, its take-over snapshot, what was last left on it) and the pushed moods.
 // Before anything is written, a held lamp whose colour someone else changed is released with that colour kept (§9.9,
 // RM_MapComponent_AtmosphericBase.ReleaseExternallyEdited).
+using System;
 using System.Collections.Generic;
 using RimWorld;
 using Verse;
@@ -88,8 +89,10 @@ namespace RimMandrake.AtmosphericBase
         private readonly Dictionary<string, string> flasherKeyOf = new Dictionary<string, string>();
         private readonly Dictionary<int, bool> leadOf = new Dictionary<int, bool>();
         private string allocKey;
-        // M3 SCAR: fixture -> (was it the lead's before the flip, pattern clock at the flip). Not saved (§9.10).
-        private readonly Dictionary<int, KeyValuePair<bool, double>> scarOf = new Dictionary<int, KeyValuePair<bool, double>>();
+        // M3 SCAR: fixture -> (the claimant that held it before the flip, pattern clock at the flip). Not saved (§9.10).
+        // Bounded by the taken fixtures (Forget, and a pass with one mood, clear it; an expired entry is dropped on read).
+        private readonly Dictionary<int, KeyValuePair<string, double>> scarOf = new Dictionary<int, KeyValuePair<string, double>>();
+        private string prevLead, prevSecond;   // the claimants the last allocation was made for (leadOf reads against them)
         // M4 HUSH: room id -> (start on the pattern clock, settle, hold). Not saved.
         private readonly Dictionary<int, RM_HushRequest> hushOf = new Dictionary<int, RM_HushRequest>();
         private double lastTime;
@@ -101,6 +104,17 @@ namespace RimMandrake.AtmosphericBase
         public bool Hush(int roomId, float settle, float hold)
         {
             if (roomId < 0 || !(settle > 0f) || hold < 0f) return false;
+            // a second witness while the room is rising or holding extends the hold; it must not snap the room back to 0
+            if (hushOf.TryGetValue(roomId, out RM_HushRequest old))
+            {
+                double since = lastTime - old.start;
+                if (since >= 0 && since < old.settle + old.hold)
+                {
+                    old.hold = (float)Math.Max(old.hold, since - old.settle + hold);
+                    hushOf[roomId] = old;
+                    return true;
+                }
+            }
             hushOf[roomId] = new RM_HushRequest { start = lastTime, settle = settle, hold = hold };
             return true;
         }
@@ -333,7 +347,7 @@ namespace RimMandrake.AtmosphericBase
                 foreach (Thing t in driven)
                     if (InGroup(comp, t, lead.group) || InGroup(comp, t, second.group)) union.Add(t);
             lastUnionCount = union.Count;
-            if (second == null) { if (leadOf.Count > 0) leadOf.Clear(); scarOf.Clear(); allocKey = null; }
+            if (second == null) { if (leadOf.Count > 0) leadOf.Clear(); scarOf.Clear(); allocKey = null; prevLead = prevSecond = null; }
             else
             {
                 RM_TerritoryTuning tt = set.TerritoryTuning;
@@ -352,15 +366,21 @@ namespace RimMandrake.AtmosphericBase
                     for (int i = 0; i < ids.Count; i++)
                     {
                         next[ids[i]] = got[i];
-                        if (leadOf.TryGetValue(ids[i], out bool was) && was != got[i])
+                        // read the old bool against the claimants it was made for, so a re-ranked pair still scars
+                        if (leadOf.TryGetValue(ids[i], out bool was))
                         {
-                            territoryFlips++;
-                            scarOf[ids[i]] = new KeyValuePair<bool, double>(was, time);
+                            string before = was ? prevLead : prevSecond, after = got[i] ? lead.claimant : second.claimant;
+                            if (before != after)
+                            {
+                                territoryFlips++;
+                                scarOf[ids[i]] = new KeyValuePair<string, double>(before, time);
+                            }
                         }
                     }
                     leadOf.Clear();
                     foreach (KeyValuePair<int, bool> kv in next) leadOf[kv.Key] = kv.Value;
                     allocKey = key;
+                    prevLead = lead.claimant; prevSecond = second.claimant;
                     allocations++;
                 }
             }
@@ -429,14 +449,16 @@ namespace RimMandrake.AtmosphericBase
                     int idx = RM_SchemeKernel.PaletteIndex(data, ref pc, time, flash != null && flash.Contains(id));
                     RM_AtmosphericSchemeDef shown = owner.scheme;
                     // M3 SCAR: the winner's lowest moments still show the previous owner, for the winner's linger
-                    if (second != null && scarOf.TryGetValue(id, out KeyValuePair<bool, double> sc))
+                    if (second != null && scarOf.TryGetValue(id, out KeyValuePair<string, double> sc))
                     {
-                        if (RM_Scar.ShowsPrevious(idx, 0, time - sc.Value, data.scarLinger, data.scarKeeps))
+                        bool prevWasLead = sc.Key == lead.claimant;
+                        if (!prevWasLead && sc.Key != second.claimant) scarOf.Remove(id);   // that claimant left the top two
+                        else if (RM_Scar.ShowsPrevious(idx, 0, time - sc.Value, data.scarLinger, data.scarKeeps))
                         {
-                            RM_SchemeData pd = sc.Key ? leadData : secondData;
-                            HashSet<int> pf = sc.Key ? leadFlash : secondFlash;
+                            RM_SchemeData pd = prevWasLead ? leadData : secondData;
+                            HashSet<int> pf = prevWasLead ? leadFlash : secondFlash;
                             idx = RM_SchemeKernel.PaletteIndex(pd, ref pc, time, pf != null && pf.Contains(id));
-                            shown = sc.Key ? lead.scheme : second.scheme;
+                            shown = prevWasLead ? lead.scheme : second.scheme;
                             data = pd;
                             scarShows++;
                         }

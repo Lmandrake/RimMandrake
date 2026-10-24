@@ -69,7 +69,7 @@ namespace RimMandrake.AtmosphericBase
             if (l.reach <= 0) return true;
             if (!Window(l, Hops(l, ref c), out double enter, out double leave)) return false;
             double e = l.approachEvery, u = t - Math.Floor(t / e) * e;
-            return u > enter && u < leave;
+            return u >= enter && u < leave;   // >= : at the cycle start (u = 0) the nearest room is already inside, as NextEdge assumes
         }
 
         /// <summary>The next time after t the room enters or leaves the front (never later than the true change).</summary>
@@ -104,6 +104,8 @@ namespace RimMandrake.AtmosphericBase
         {
             if (l.echo < 0f || float.IsNaN(l.echo)) e.Add("echo must be >= 0 s (0 = no echo)");
             if (l.echoInvert && !(l.echo > 0f)) e.Add("echoInvert needs echo > 0");
+            if (l.echo > 0f && l.primitive == RM_Primitive.Coil)
+                e.Add("echo cannot shape a Coil: its walk is stateful in time and an answering room reading an earlier time would restart it from t = 0");
             if (l.reach < 0) e.Add("reach must be >= 0 hops (0 = no approach)");
             if (l.reach > 0)
             {

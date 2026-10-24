@@ -39,9 +39,10 @@ namespace RimMandrake.AtmosphericBase
         public int[][] nb;          // slot -> neighbour slots (same room nearest 3 + the nearest in each adjacent room)
         public int Groups => groupSize.Length;
 
-        private static RM_RoomGraph lastGraph;
-        private static RM_FixtureSet lastFixtures;
-        private static readonly Dictionary<RM_Anchor, RM_WalkMap> byAnchor = new Dictionary<RM_Anchor, RM_WalkMap>();
+        // One cache entry per fixture set (never a single static slot: two maps alternate within a frame and would rebuild
+        // the whole map on every call). The entry follows the graph instance; the weak key lets a dead map's set go.
+        private sealed class Entry { public RM_RoomGraph graph; public readonly Dictionary<RM_Anchor, RM_WalkMap> byAnchor = new Dictionary<RM_Anchor, RM_WalkMap>(); }
+        private static readonly ConditionalWeakTable<RM_FixtureSet, Entry> cache = new ConditionalWeakTable<RM_FixtureSet, Entry>();
         public static int Builds { get; private set; }
 
         /// <summary>The map for (graph, fixtures, anchor); null when there is no fixture set. Rebuilt only when the graph or
@@ -49,13 +50,11 @@ namespace RimMandrake.AtmosphericBase
         public static RM_WalkMap For(RM_RoomGraph g, RM_FixtureSet f, RM_Anchor a)
         {
             if (f == null) return null;
-            if (!ReferenceEquals(g, lastGraph) || !ReferenceEquals(f, lastFixtures))
-            {
-                byAnchor.Clear(); lastGraph = g; lastFixtures = f;
-            }
-            if (byAnchor.TryGetValue(a, out RM_WalkMap m)) return m;
+            Entry e = cache.GetOrCreateValue(f);
+            if (!ReferenceEquals(g, e.graph)) { e.byAnchor.Clear(); e.graph = g; }
+            if (e.byAnchor.TryGetValue(a, out RM_WalkMap m)) return m;
             m = Build(g, f, a);
-            byAnchor[a] = m;
+            e.byAnchor[a] = m;
             Builds++;
             return m;
         }
