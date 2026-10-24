@@ -1,0 +1,68 @@
+{
+  "criterion": "The prefill is the agent's lean after looking at every picture at every zoom: glass reads as large soft colour under water without speckle; The Chill reads darkest of all seas.",
+  "decisions": {
+    "Chill_still_abyss": {
+      "decision": "",
+      "note": "",
+      "prefill": "maybe"
+    },
+    "Chill_still_dusk": {
+      "decision": "",
+      "note": "",
+      "prefill": "maybe"
+    },
+    "Chill_still_night": {
+      "decision": "",
+      "note": "",
+      "prefill": "pick"
+    },
+    "Chill_still_night_nofilm": {
+      "decision": "",
+      "note": "",
+      "prefill": "maybe"
+    },
+    "GreySea_clear_ref": {
+      "decision": "",
+      "note": "",
+      "prefill": "pick"
+    },
+    "MineralWater_row_ref": {
+      "decision": "",
+      "note": "",
+      "prefill": "pick"
+    },
+    "Scald_row_ref": {
+      "decision": "",
+      "note": "",
+      "prefill": "pick"
+    },
+    "TwilightSea_deep_ref": {
+      "decision": "",
+      "note": "",
+      "prefill": "pick"
+    },
+    "TwilightSea_glass_bloom": {
+      "decision": "",
+      "note": "",
+      "prefill": "maybe"
+    },
+    "TwilightSea_glass_jewel": {
+      "decision": "",
+      "note": "",
+      "prefill": "maybe"
+    },
+    "TwilightSea_glass_panes": {
+      "decision": "",
+      "note": "",
+      "prefill": "maybe"
+    }
+  },
+  "posture": "whitelist",
+  "reviewStatus": {
+    "at": null,
+    "by": null,
+    "evidence": "agent variations; no human has ruled",
+    "state": "prefill"
+  },
+  "sheetId": "world_water_review_r2_2026-10-24"
+}
