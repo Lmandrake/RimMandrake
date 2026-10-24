@@ -146,7 +146,7 @@ def main():
                 {"why": "the square is not at D3 before the colonist cut", "depth": d0, "drive": str(drive)[:200]})
             return 2
         des = B.call("jawa/designate_batch", action="add", designation="RM_DigCanal", rect="%d,%d,1,1" % c) or {}
-        probe = B.call("jawa/flowworks_job_probe", x=c[0], z=c[1], kind="dig", pawn=cids[0]) or {}
+        probe = B.call("jawa/flowworks_job_probe", x=c[0], z=c[1], kind="dig", pawnId=cids[0]) or {}
         order = B.call("jawa/ordered_job", pawnId=cids[0], jobDef="RM_DigCanalJob", targetAX=c[0], targetAZ=c[1], waitTicks=0) or {}
         job_ok, job_why = job_gate(probe, order)
         res["job_probe"], res["job_order"] = probe, order
