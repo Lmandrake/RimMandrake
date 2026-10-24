@@ -28,22 +28,7 @@
      "artpipe_state_jobs": [],
      "render_match": "modernpump_",
      "standin": null,
-     "reference_textures": [
-      {
-       "path": "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Pump/Modern/RM_LiquidPump.png",
-       "size": {
-        "drawSize": [
-         1,
-         1
-        ],
-        "footprint": [
-         1,
-         1
-        ],
-        "source": "TODAY's Modern art (red repaint, kept)"
-       }
-      }
-     ],
+     "reference_textures": [],
      "runtimeSize": {
       "drawSize": [
        1,
@@ -99,22 +84,7 @@
      "artpipe_state_jobs": [],
      "render_match": "modernsprinkler_",
      "standin": null,
-     "reference_textures": [
-      {
-       "path": "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead.png",
-       "size": {
-        "drawSize": [
-         1,
-         1
-        ],
-        "footprint": [
-         1,
-         1
-        ],
-        "source": "TODAY's Modern art (red repaint, kept)"
-       }
-      }
-     ],
+     "reference_textures": [],
      "runtimeSize": {
       "drawSize": [
        1,

@@ -1,0 +1,57 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 34.3,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.3604606
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_KowakianMonkeyLizard",
+ "decision": "ACCEPT",
+ "reasons": [
+  "opus band GOOD (model said good); blocking []; polish ['LEGIB_32', 'SCALE_WRONG']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "b198aea19fb8355317d7552b6769966e225bd0156182ec3115cc988a3b8424dc",
+  "east.png": "6b386042d245846fd5f34be8ab66cd977c6ebe30f9b5e12652b92e66ea27ac3f",
+  "north.png": "ca2e22f29d1db08ae8dfcf31811a0da4daa1d750ab5747e7c179062b28a75dcf",
+  "scale.png": "c20c7344ba70581661e5fff0d8e67f52e32e93c7a0d0b826095f79e557e52e71",
+  "facings.png": "259cdb834bb740ad2838c5363de12c5bac964a1729bf6c755e1aa2fb3f52ad32"
+ }
+}

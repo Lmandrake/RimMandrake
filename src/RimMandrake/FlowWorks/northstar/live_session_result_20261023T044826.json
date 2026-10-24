@@ -1,0 +1,1603 @@
+{
+ "script": "live_session.py",
+ "started": "2026-10-23T05:46:43",
+ "rows": [
+  {
+   "id": "B0_tier_truth",
+   "item": "-",
+   "criterion": "-",
+   "status": "PASS",
+   "cls": "HARNESS",
+   "detail": {
+    "running": 11,
+    "flowworks": true,
+    "why": ""
+   },
+   "block": "B0",
+   "eyes": false
+  },
+  {
+   "id": "B0_assembly_identity",
+   "item": "-",
+   "criterion": "-",
+   "status": "PASS",
+   "cls": "HARNESS",
+   "detail": {
+    "loaded": "274be3dfd23f",
+    "repo": "274be3dfd23f",
+    "mvidMatchesFile": true,
+    "location": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\FlowWorks\\Assemblies\\RimMandrakeFlowWorks.dll",
+    "why": ""
+   },
+   "block": "B0",
+   "eyes": false
+  },
+  {
+   "id": "B0_clock_rate",
+   "item": "-",
+   "criterion": "-",
+   "status": "PASS",
+   "cls": "HARNESS",
+   "detail": {
+    "ticks": 600,
+    "wall_s": 0.64,
+    "ticks_per_s": 937.3,
+    "frameBudgetMs": 150.0
+   },
+   "block": "B0",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:L1_fresh_map",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 1,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:L2_tier_live",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "FAIL",
+   "cls": "HARNESS",
+   "detail": {
+    "rc": 1,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:L3_defs_live",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 1,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:E1a_cadence_shipped",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 1,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:L4_site_ready",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "FAIL",
+   "cls": "SITE",
+   "detail": {
+    "rc": 1,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:ABORT",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "FAIL",
+   "cls": "SITE",
+   "detail": {
+    "rc": 1,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:Z_settings_restored",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 1,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "B2_dialog_fall_damage_A1",
+   "item": "FALL_DAMAGE_BUILD_DEEP_DROPS_KILL",
+   "criterion": "A1",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "label": "A deep fall can kill",
+    "why": "found through the settings search box",
+    "shot": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Screenshots\\live_session_settings_1792756348.png",
+    "textChars": 1327
+   },
+   "block": "B2",
+   "eyes": false
+  },
+  {
+   "id": "B2_dialog_pit_room_A1",
+   "item": "PIT_ROOM_TUNE_TALL_FOLK_DIG_DEEPER",
+   "criterion": "A1",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "label": "A pit room's floor is at least",
+    "why": "found through the settings search box",
+    "shot": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Screenshots\\live_session_settings_1792756348.png",
+    "textChars": 1327
+   },
+   "block": "B2",
+   "eyes": false
+  },
+  {
+   "id": "B2_dialog_pit_alert_A1",
+   "item": "PIT_ALERT_BUILD_RED_MEANS_HELP",
+   "criterion": "A1",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "label": "Red alert: a colonist stuck in a pit",
+    "why": "found through the settings search box",
+    "shot": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Screenshots\\live_session_settings_1792756348.png",
+    "textChars": 1327
+   },
+   "block": "B2",
+   "eyes": false
+  },
+  {
+   "id": "B2_dialog_beach_ring_A1",
+   "item": "BEACH_RING_RETIRE_DRAINED_MEANS_DRY",
+   "criterion": "A1",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "label": "Shore shelf",
+    "why": "found through the settings search box",
+    "shot": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Screenshots\\live_session_settings_1792756348.png",
+    "textChars": 1327
+   },
+   "block": "B2",
+   "eyes": false
+  },
+  {
+   "id": "B2_dialog_fall_guardrails_A2",
+   "item": "FALL_GUARDRAILS_BUILD_REAL_OBJECT",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "label": "Guardrails and fences stop falls off a lip",
+    "why": "found through the settings search box",
+    "shot": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Screenshots\\live_session_settings_1792756348.png",
+    "textChars": 1327
+   },
+   "block": "B2",
+   "eyes": false
+  },
+  {
+   "id": "B2_guardrail_disk_roundtrip",
+   "item": "FALL_GUARDRAILS_BUILD_REAL_OBJECT",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "before": "True",
+    "fileHadFalse": true
+   },
+   "block": "B2",
+   "eyes": false
+  },
+  {
+   "id": "B2_tank_tall_twice",
+   "item": "TANK_TALL_BUILD_TWICE_THE_DRINK",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "short": 160000.0,
+    "tall": 320000.0,
+    "offered": 10000000,
+    "placed": [
+     true,
+     true
+    ]
+   },
+   "block": "B2",
+   "eyes": false
+  },
+  {
+   "id": "B2_readout_sea_never_dry",
+   "item": "DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "lake": "OK Endless (about 2 m deep)",
+    "lakeRect": [
+     232,
+     20,
+     18,
+     11
+    ],
+    "edgeCell": "WaterDeep:249,25,1,1",
+    "sticky": "True",
+    "why": "",
+    "lakeBody": {
+     "id": 5,
+     "limitless": true,
+     "cellCount": 198,
+     "stock": 792.0,
+     "capacity": 792.0
+    }
+   },
+   "block": "B2",
+   "eyes": false
+  },
+  {
+   "id": "B2_readout_drainable_not_endless",
+   "item": "FLOWWORKS_ENDLESS_LABEL_WIRE_READOUT_PLAINLY",
+   "criterion": "A1",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "marked": [],
+    "reads": {
+     "dug_dry": "OK Hole 1 m \u00b7 Water 0.00 m (0 L)",
+     "canal": "OK Hole 0.5 m \u00b7 Water 0.50 m (1,000 L)",
+     "pond": "OK Hole 2 m \u00b7 Water 1.33 m (2,667 L)"
+    },
+    "bar": "limitless_body_marked: a pond, canal or pit carries no Endless mark"
+   },
+   "block": "B2",
+   "eyes": false
+  },
+  {
+   "id": "B2_readout_two_numbers_and_sea",
+   "item": "DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "reads": {
+     "dug_dry": "OK Hole 1 m \u00b7 Water 0.00 m (0 L)",
+     "canal": "OK Hole 0.5 m \u00b7 Water 0.50 m (1,000 L)",
+     "pond": "OK Hole 2 m \u00b7 Water 1.33 m (2,667 L)",
+     "ground": "OK -",
+     "lake": "OK Endless (about 2 m deep)"
+    },
+    "wording": "owner looks at these strings (V8 kept by card)"
+   },
+   "block": "B2",
+   "eyes": true
+  },
+  {
+   "id": "B2_readout_metres_litres",
+   "item": "LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "canal": "OK Hole 0.5 m \u00b7 Water 0.50 m (1,000 L)",
+    "pond": "OK Hole 2 m \u00b7 Water 1.33 m (2,667 L)",
+    "eyes": "settings UI by eye: B2 dialog screenshot"
+   },
+   "block": "B2",
+   "eyes": true
+  },
+  {
+   "id": "trench_cover_proof:TRENCH_square_on_blocks_044",
+   "item": "TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT",
+   "criterion": "A2",
+   "status": "FAIL",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\trench_cover_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "trench_cover_proof:TRENCH_square_on_hit_falls",
+   "item": "TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT",
+   "criterion": "A2",
+   "status": "FAIL",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\trench_cover_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "trench_cover_proof:TRENCH_enfilade_zero",
+   "item": "TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\trench_cover_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "trench_cover_proof:TRENCH_lip_shooter_zero",
+   "item": "TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\trench_cover_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "trench_cover_proof:TRENCH_one_back_third",
+   "item": "TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT",
+   "criterion": "A2",
+   "status": "FAIL",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\trench_cover_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "trench_cover_proof:TRENCH_wet_same_as_dry",
+   "item": "TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT",
+   "criterion": "A2",
+   "status": "FAIL",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\trench_cover_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "trench_cover_proof:TRENCH_raiders_cast_from_canal",
+   "item": "-",
+   "criterion": "-",
+   "status": "UNMEASURED",
+   "cls": "OWED",
+   "detail": {
+    "rc": 1,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\trench_cover_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "trench_cover_proof:TRENCH_raiders_skip_sheer_cage",
+   "item": "-",
+   "criterion": "-",
+   "status": "UNMEASURED",
+   "cls": "OWED",
+   "detail": {
+    "rc": 1,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\trench_cover_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "trench_cover_proof:TRENCH_no_blast_cover",
+   "item": "-",
+   "criterion": "-",
+   "status": "UNMEASURED",
+   "cls": "OWED",
+   "detail": {
+    "rc": 1,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\trench_cover_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "trench_cover_proof:TRENCH_cast_search_cost",
+   "item": "-",
+   "criterion": "-",
+   "status": "UNMEASURED",
+   "cls": "OWED",
+   "detail": {
+    "rc": 1,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\trench_cover_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "climb_proof:CLIMB_pond_person_free",
+   "item": "PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP",
+   "criterion": "A1",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 0,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\climb_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "climb_proof:CLIMB_pond_person_walks_out",
+   "item": "PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP",
+   "criterion": "A1",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 0,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\climb_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "climb_proof:CLIMB_D3_person_trapped",
+   "item": "PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP",
+   "criterion": "A1",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 0,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\climb_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "climb_proof:CLIMB_D3_person_cannot_walk_out",
+   "item": "PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP",
+   "criterion": "A1",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 0,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\climb_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "climb_proof:CLIMB_D3_muffalo_free",
+   "item": "PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP",
+   "criterion": "A1",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 0,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\climb_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "climb_proof:CLIMB_D2_rat_trapped",
+   "item": "PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP",
+   "criterion": "A1",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 0,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\climb_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "climb_proof:CLIMB_ladder_prison_door",
+   "item": "PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP",
+   "criterion": "A1",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 0,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\climb_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "climb_proof:CLIMB_mask_seals_cliff_edge",
+   "item": "PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP",
+   "criterion": "A1",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 0,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\climb_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "climb_proof:CLIMB_ramp_walk_out",
+   "item": "PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP",
+   "criterion": "A1",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 0,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\climb_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "climb_proof:CLIMB_ramp_frees_and_retraps",
+   "item": "PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP",
+   "criterion": "A1",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 0,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\climb_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "climb_proof:CLIMB_step_cost_slow_at_K",
+   "item": "PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP",
+   "criterion": "A1",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 0,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\climb_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "climb_proof:CLIMB_rebuild_follows_fill",
+   "item": "PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP",
+   "criterion": "A1",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 0,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\climb_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "climb_proof:CLIMB_hauler_fetches_ramped_floor",
+   "item": "PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP",
+   "criterion": "A1",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 0,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\climb_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "climb_proof:CLIMB_raider_never_crosses_ramped_moat",
+   "item": "PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP",
+   "criterion": "A1",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 0,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\climb_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "climb_proof:CLIMB_save_reload_pockets_identical",
+   "item": "PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP",
+   "criterion": "A1",
+   "status": "UNMEASURED",
+   "cls": "OWED",
+   "detail": {
+    "rc": 0,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\climb_proof_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "B3_sprinkler_live",
+   "item": "-",
+   "criterion": "-",
+   "status": "UNMEASURED",
+   "cls": "HARNESS",
+   "detail": {
+    "rc": 1,
+    "why": "no result rows",
+    "log": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\sprinkler_live.log"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "liquid_checks:LC_preflight",
+   "item": "-",
+   "criterion": "-",
+   "status": "PASS",
+   "cls": "HARNESS",
+   "detail": {
+    "rc": 1,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\liquid_checks_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "liquid_checks:L2_block",
+   "item": "LIQUID_LEDGER_BUILD_NO_UNIT_LOST",
+   "criterion": "A3",
+   "status": "UNMEASURED",
+   "cls": "HARNESS",
+   "detail": {
+    "rc": 1,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\liquid_checks_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "liquid_checks:L4_block",
+   "item": "LIQUID_LEDGER_BUILD_NO_UNIT_LOST",
+   "criterion": "A5",
+   "status": "UNMEASURED",
+   "cls": "HARNESS",
+   "detail": {
+    "rc": 1,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\liquid_checks_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "liquid_checks:L5_block",
+   "item": "LIQUID_LEDGER_BUILD_NO_UNIT_LOST",
+   "criterion": "A6",
+   "status": "UNMEASURED",
+   "cls": "HARNESS",
+   "detail": {
+    "rc": 1,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\liquid_checks_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "liquid_checks:L6_block",
+   "item": "LIQUID_LEDGER_BUILD_NO_UNIT_LOST",
+   "criterion": "A7",
+   "status": "UNMEASURED",
+   "cls": "HARNESS",
+   "detail": {
+    "rc": 1,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\liquid_checks_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "proof_hose:HP1_tier_running_startup_log_clean",
+   "item": "-",
+   "criterion": "-",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\proof_hose_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "proof_hose:HP2_probes_site_pinned",
+   "item": "-",
+   "criterion": "-",
+   "status": "PASS",
+   "cls": "HARNESS",
+   "detail": {
+    "rc": 1,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\proof_hose_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "proof_hose:REALFLOW_block",
+   "item": "-",
+   "criterion": "-",
+   "status": "UNMEASURED",
+   "cls": "HARNESS",
+   "detail": {
+    "rc": 1,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\proof_hose_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "proof_hose:SL1_save_landed_new_file_only",
+   "item": "HOSE_RULINGS_BUILD_THREE_REVERSALS_ONE_CARD",
+   "criterion": "A5",
+   "status": "PASS",
+   "cls": "HARNESS",
+   "detail": {
+    "rc": 1,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\proof_hose_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "proof_hose:SL2_save_names_no_class_of_ours",
+   "item": "HOSE_RULINGS_BUILD_THREE_REVERSALS_ONE_CARD",
+   "criterion": "A5",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\proof_hose_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "proof_hose:SL3_hoses_and_reel_styles_survive",
+   "item": "HOSE_RULINGS_BUILD_THREE_REVERSALS_ONE_CARD",
+   "criterion": "A5",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\proof_hose_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "proof_hose:SL4_carry_states_survive",
+   "item": "HOSE_RULINGS_BUILD_THREE_REVERSALS_ONE_CARD",
+   "criterion": "A5",
+   "status": "UNMEASURED",
+   "cls": "SITE",
+   "detail": {
+    "rc": 1,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\proof_hose_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "proof_hose:Z_log_budget",
+   "item": "-",
+   "criterion": "-",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\proof_hose_result.json"
+   },
+   "block": "B3",
+   "eyes": false
+  },
+  {
+   "id": "B4_dig_8m_readout",
+   "item": "PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "readout": "OK Hole 8 m \u00b7 Water 0.00 m (0 L)",
+    "owed": "'machine labour digs it by Dig to depth' (colonists stop at 2 m: DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL) is the P10 walk: job read below"
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_dig_cost_notch16",
+   "item": "DIG_COST_TUNE_DEEP_IS_A_MEGAPROJECT",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "work": 51200.0,
+    "want": 51200,
+    "setting": "True",
+    "why": "",
+    "designator": {
+     "accepted": true
+    },
+    "how": "INFERRED: the job's per-cut work function read live, the progress bar not timed"
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_cover_40",
+   "item": "SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT",
+   "criterion": "A3",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "def_": "RM_PitCover_WovenScrap",
+    "rating": 40.0,
+    "trail": [
+     {
+      "n": 1,
+      "total": 60.7,
+      "depths": [
+       4.0
+      ],
+      "covers_left": 0
+     }
+    ]
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_grenade_no_blast_cover",
+   "item": "TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT",
+   "criterion": "A4",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "trench": 25.0,
+    "open": 30.0,
+    "added": {
+     "trench": {
+      "Shredded": 20.0,
+      "Crack": 5.0
+     },
+     "open": {
+      "Shredded": 20.0,
+      "Crack": 10.0
+     }
+    },
+    "drafted": [
+     true,
+     true
+    ],
+    "cells": [
+     [
+      136,
+      18
+     ],
+     [
+      147,
+      18
+     ]
+    ],
+    "want": [
+     [
+      136,
+      18
+     ],
+     [
+      147,
+      18
+     ]
+    ],
+    "note": "severity ADDED by the blast (pre-blast read subtracted); a blast is random per part"
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_cover_120",
+   "item": "SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT",
+   "criterion": "A3",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "def_": "RM_PitCover_PlankLattice",
+    "rating": 120.0,
+    "trail": [
+     {
+      "n": 1,
+      "total": 60.7,
+      "depths": [
+       4.0
+      ],
+      "covers_left": 6
+     },
+     {
+      "n": 2,
+      "total": 121.5,
+      "depths": [
+       4.0,
+       4.0
+      ],
+      "covers_left": 0
+     }
+    ]
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_cover_220",
+   "item": "SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT",
+   "criterion": "A3",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "def_": "RM_PitCover_ReinforcedFrame",
+    "rating": 220.0,
+    "trail": [
+     {
+      "n": 1,
+      "total": 60.8,
+      "depths": [
+       4.0
+      ],
+      "covers_left": 6
+     },
+     {
+      "n": 2,
+      "total": 121.5,
+      "depths": [
+       4.0,
+       4.0
+      ],
+      "covers_left": 6
+     },
+     {
+      "n": 3,
+      "total": 182.5,
+      "depths": [
+       4.0,
+       4.0,
+       4.0
+      ],
+      "covers_left": 6
+     },
+     {
+      "n": 4,
+      "total": 243.3,
+      "depths": [
+       4.0,
+       4.0,
+       4.0,
+       4.0
+      ],
+      "covers_left": 0
+     }
+    ]
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_reservoir_fish_rolled",
+   "item": "FISH_ROLL_MEND_PONDS_BORN_BARREN",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "why": "",
+    "waterBody": {
+     "hasBody": true,
+     "type": "Freshwater",
+     "size": 200,
+     "hasFish": true,
+     "commonFish": [
+      "Fish_Salmon"
+     ],
+     "population": 20.0
+    },
+    "fwBody": {
+     "id": null,
+     "cellCount": null,
+     "stock": null,
+     "capacity": null,
+     "limitless": null
+    }
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_access_portable_ladder_out",
+   "item": "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS",
+   "criterion": "A1",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "ladder": {
+     "def_": "RM_LadderPortable",
+     "asked": [
+      49,
+      18
+     ],
+     "rot_asked": 0,
+     "rot_read": 0,
+     "survived": true,
+     "note": ""
+    },
+    "pawn": {
+     "cell": [
+      52,
+      25
+     ],
+     "depth": 0.0,
+     "held": "False",
+     "trapped": "False",
+     "raw": "CLIMB k=2 held=False trapped=False cell=52,25 | POCKET k=2 comp=0 pocket=False size=62408 depth=0 gen=1810 built=1810 rebuilds=311"
+    },
+    "orderTaken": true,
+    "owed": "build-by-colonist, uninstall/re-set and the 4 m refusal are not read by this row"
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_access_gear_climbs_sheer_4m",
+   "item": "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "gear": "{'success': True, 'action': 'wear', 'displaced': [], 'notes': [], 'pawn': {'thingId': 'Human101471', 'thingIdNumber': 101471, 'name': \"Harry 'Grief' Bass\", 'nam",
+    "pawn": {
+     "cell": [
+      52,
+      25
+     ],
+     "depth": 0.0,
+     "held": "False",
+     "trapped": "False",
+     "raw": "CLIMB k=7 held=False trapped=False cell=52,25 | POCKET k=7 comp=0 pocket=False size=62500 depth=0 gen=1810 built=1810 rebuilds=311"
+    },
+    "orderTaken": true
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_access_no_gear_stays_in",
+   "item": "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "pawn": {
+     "cell": [
+      58,
+      16
+     ],
+     "depth": 8.0,
+     "held": "False",
+     "trapped": "False",
+     "raw": "CLIMB k=2 held=False trapped=False cell=58,16 | POCKET k=2 comp=2 pocket=True size=9 depth=8 gen=1810 built=1810 rebuilds=311"
+    }
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_access_jump_pack_in_no_fall",
+   "item": "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS",
+   "criterion": "A3",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "pack": "{'success': True, 'action': 'wear', 'displaced': [], 'notes': [], 'pawn': {'thingId': 'Human101477', 'thingIdNumber': 10",
+    "jump": "{'success': True, 'action': 'cast', 'accepted': True, 'ticksElapsed': 120, 'timedOut': False, 'speedChanged': True, 'speedRestored': True, 'preCast': {'pawn': {",
+    "pawn": {
+     "cell": [
+      67,
+      17
+     ],
+     "depth": 6.0,
+     "held": "False",
+     "trapped": "False",
+     "raw": "CLIMB k=2 held=False trapped=False cell=67,17 | POCKET k=2 comp=3 pocket=True size=9 depth=6 gen=1810 built=1810 rebuilds=311"
+    },
+    "hediffs": {
+     "Scarification": 2.5
+    },
+    "owed": "jump back out, skip, knockback-still-falls: not read"
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_rail_unrailed_control",
+   "item": "FALL_GUARDRAILS_BUILD_REAL_OBJECT",
+   "criterion": "A3",
+   "status": "UNMEASURED",
+   "cls": "OWED",
+   "detail": {
+    "pawn": {
+     "cell": [
+      174,
+      11
+     ],
+     "depth": 0.0,
+     "held": "False",
+     "trapped": "False",
+     "raw": "CLIMB k=2 held=False trapped=False cell=174,11 | POCKET k=2 comp=0 pocket=False size=62408 depth=0 gen=1810 built=1810 rebuilds=311"
+    },
+    "why": "the unrailed control does not fall (AI keeps off lips): the bar needs his ruling, A4/A7 knockback rows already discriminate"
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_access_rescue_ladder_queued",
+   "item": "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS",
+   "criterion": "A4",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "ladderSeen": true,
+    "afterTicks": 1030,
+    "downed": {
+     "cell": [
+      76,
+      17
+     ],
+     "depth": 10.0,
+     "held": "False",
+     "trapped": "False",
+     "raw": "CLIMB k=2 held=False trapped=False cell=76,17 | POCKET k=2 comp=4 pocket=True size=9 depth=10 gen=1810 built=1810 rebuilds=311"
+    },
+    "incapacitate": "{'success': True, 'action': 'downed', 'allowBleedingWoundsHonoured': False, 'downedBefore': False, 'deadBefore': False, 'downedAfter': True, 'deadAfter': False,",
+    "owed": "'built and the colonist carried out' needs a longer ride: read again in B7"
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_b4_shared_crashed",
+   "item": "-",
+   "criterion": "-",
+   "status": "UNMEASURED",
+   "cls": "HARNESS",
+   "detail": {
+    "error": "safe_advance stopped after 120 of 130 tick(s): hurt: health 0.89 -> 0.79; newest hediff Bruise/Arm age 15"
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B5_ice_freeze_thaw",
+   "item": "POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD",
+   "criterion": "A5",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "why": "",
+    "conditions": [
+     "{'success': True, 'action': 'start', 'scope': 'map', 'notes': ['registered ColdS",
+     "{'success': True, 'action': 'start', 'scope': 'map', 'notes': ['registered DeepF"
+    ],
+    "frozeAfter": 7500,
+    "thawAfter": 2000,
+    "coldest": -16.8817272,
+    "temps": [
+     -10.446167,
+     -11.665554,
+     -12.8870239,
+     -14.1114483,
+     -15.3397045,
+     -16.8817272
+    ],
+    "staleIce": 0,
+    "thawAll": null,
+    "iceSeries": [
+     10,
+     10,
+     10,
+     10,
+     3,
+     3,
+     3,
+     3
+    ],
+    "thawTemps": [
+     13.3382339,
+     13.3914337,
+     13.43281,
+     13.4457874
+    ],
+    "expectedMelts": 1.1,
+    "expectedFreezes": 0.99,
+    "before": [
+     10000,
+     10000,
+     10000
+    ],
+    "after": [
+     10000,
+     10000,
+     10000
+    ]
+   },
+   "block": "B5",
+   "eyes": false
+  },
+  {
+   "id": "B6_flood_canal_kept",
+   "item": "POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD",
+   "criterion": "A6",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "why": "",
+    "weather": "{'success': True, 'before': 'Clear', 'after': 'TorrentialRain', 'lockInForce': True, 'gamePaused': True, 'notes': ['regi",
+    "weatherBefore": {
+     "current": "Clear",
+     "last": "Clear",
+     "curWeatherAge": 302,
+     "rainRate": 0.0,
+     "snowRate": 0.0
+    },
+    "floodReachedAfter": 5500,
+    "recededAfter": 3500,
+    "changed": [],
+    "changedValues": [],
+    "rainFillWas": "True",
+    "rainFillOffReadBack": true,
+    "rainRateAtRestore": 0.0
+   },
+   "block": "B6",
+   "eyes": false
+  },
+  {
+   "id": "B7_reload_A3",
+   "item": "PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT",
+   "criterion": "A3",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "save": "RM_live_session_reload_20261023_051824",
+    "differs": [],
+    "unread": [],
+    "pairs": {},
+    "settledSame": [],
+    "settleTicks": 0,
+    "pocketTimingAfterLoad": "unread: No public static ProofPocketTiming with 0 params."
+   },
+   "block": "B7",
+   "eyes": false
+  },
+  {
+   "id": "B7_reload_A2",
+   "item": "PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "save": "RM_live_session_reload_20261023_051824",
+    "differs": [],
+    "unread": [],
+    "pairs": {},
+    "settledSame": [],
+    "settleTicks": 0,
+    "pocketTimingAfterLoad": "unread: No public static ProofPocketTiming with 0 params."
+   },
+   "block": "B7",
+   "eyes": false
+  },
+  {
+   "id": "B7_reload_save_reload_pockets_iden",
+   "item": "PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH",
+   "criterion": "save_reload_pockets_identical",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "save": "RM_live_session_reload_20261023_051824",
+    "differs": [],
+    "unread": [],
+    "pairs": {},
+    "settledSame": [],
+    "settleTicks": 0,
+    "pocketTimingAfterLoad": "unread: No public static ProofPocketTiming with 0 params."
+   },
+   "block": "B7",
+   "eyes": false
+  },
+  {
+   "id": "B7_pipe_look_survives",
+   "item": "HOSE_RULINGS_BUILD_THREE_REVERSALS_ONE_CARD",
+   "criterion": "A2",
+   "status": "UNMEASURED",
+   "cls": "OWED",
+   "detail": {
+    "why": "needs a colonist-built styled pipe (blueprint->frame->building); objects_sheet.choose_look stages the look, the build half rides B4 once a builder row exists"
+   },
+   "block": "B7",
+   "eyes": false
+  },
+  {
+   "id": "B7_rescued_out_of_pit",
+   "item": "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS",
+   "criterion": "A4",
+   "status": "FAIL",
+   "cls": "MOD",
+   "detail": {
+    "downed": {
+     "cell": [
+      76,
+      17
+     ],
+     "depth": 10.0,
+     "held": "False",
+     "trapped": "False",
+     "raw": "CLIMB k=2 held=False trapped=False cell=76,17 | POCKET k=2 comp=4 pocket=True size=9 depth=10 gen=14 built=14 rebuilds=2"
+    }
+   },
+   "block": "B7",
+   "eyes": false
+  },
+  {
+   "id": "raid_trench_proof:RAID_island_sealed",
+   "item": "PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH",
+   "criterion": "raid",
+   "status": "FAIL",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\raid_trench_proof_result.json"
+   },
+   "block": "B8",
+   "eyes": false
+  },
+  {
+   "id": "raid_trench_proof:RAID_outcome",
+   "item": "PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH",
+   "criterion": "raid",
+   "status": "MEASURED",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\raid_trench_proof_result.json"
+   },
+   "block": "B8",
+   "eyes": false
+  },
+  {
+   "id": "raid_trench_proof:MASKSWAP_no_wall_crossing",
+   "item": "PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH",
+   "criterion": "raid",
+   "status": "UNMEASURED",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\raid_trench_proof_result.json"
+   },
+   "block": "B8",
+   "eyes": false
+  },
+  {
+   "id": "raid_trench_proof:RAID_LADDER_BREACH",
+   "item": "PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH",
+   "criterion": "raid",
+   "status": "UNMEASURED",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\raid_trench_proof_result.json"
+   },
+   "block": "B8",
+   "eyes": false
+  },
+  {
+   "id": "B9_props_staged",
+   "item": "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS",
+   "criterion": "A5",
+   "status": "UNMEASURED",
+   "cls": "OWED",
+   "detail": {
+    "rect": [
+     107,
+     47,
+     30,
+     10
+    ],
+    "why": "his look: portable ladder diagonal vs flat, climbing gear icon"
+   },
+   "block": "B9",
+   "eyes": true
+  },
+  {
+   "id": "B9_b9_owner_crashed",
+   "item": "-",
+   "criterion": "-",
+   "status": "UNMEASURED",
+   "cls": "HARNESS",
+   "detail": {
+    "error": "safe_advance stopped after 480 of 1400 tick(s): death: died: RM_PitDrowning"
+   },
+   "block": "B9",
+   "eyes": false
+  },
+  {
+   "id": "thirst_live:T7_no_dbh_clean_log",
+   "item": "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY",
+   "criterion": "T1-T5,T7,T9,T10",
+   "status": "UNMEASURED",
+   "cls": "HARNESS",
+   "detail": {
+    "rc": 1,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\thirst_live_result.json"
+   },
+   "block": "B10",
+   "eyes": false
+  },
+  {
+   "id": "thirst_live:T1_provider_line",
+   "item": "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY",
+   "criterion": "T1-T5,T7,T9,T10",
+   "status": "UNMEASURED",
+   "cls": "HARNESS",
+   "detail": {
+    "rc": 1,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\thirst_live_result.json"
+   },
+   "block": "B10",
+   "eyes": false
+  },
+  {
+   "id": "thirst_live:T2_one_thirst_need",
+   "item": "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY",
+   "criterion": "T1-T5,T7,T9,T10",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\thirst_live_result.json"
+   },
+   "block": "B10",
+   "eyes": false
+  },
+  {
+   "id": "thirst_live:T3_need_falls",
+   "item": "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY",
+   "criterion": "T1-T5,T7,T9,T10",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\thirst_live_result.json"
+   },
+   "block": "B10",
+   "eyes": false
+  },
+  {
+   "id": "thirst_live:T4_bottle_satisfies",
+   "item": "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY",
+   "criterion": "T1-T5,T7,T9,T10",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\thirst_live_result.json"
+   },
+   "block": "B10",
+   "eyes": false
+  },
+  {
+   "id": "thirst_live:T5_salt_water_quality",
+   "item": "SALT_BOTTLE_DIAGNOSE_DRUNK_FOR_NOTHING",
+   "criterion": "T5",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\thirst_live_result.json"
+   },
+   "block": "B10",
+   "eyes": false
+  },
+  {
+   "id": "thirst_live:T10_terrain_drink",
+   "item": "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY",
+   "criterion": "T1-T5,T7,T9,T10",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\thirst_live_result.json"
+   },
+   "block": "B10",
+   "eyes": false
+  },
+  {
+   "id": "thirst_live:T9_animals_drink",
+   "item": "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY",
+   "criterion": "T1-T5,T7,T9,T10",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "rc": 1,
+    "src": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\live_session\\20261023T044826\\thirst_live_result.json"
+   },
+   "block": "B10",
+   "eyes": false
+  }
+ ],
+ "args": {
+  "dry_run": false,
+  "mock": false,
+  "list": false,
+  "only": "",
+  "skip": "",
+  "frame_budget_ms": 150.0,
+  "player_log": "",
+  "no_owner_save": false,
+  "out_dir": null
+ },
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "d0fdd241e9cb4437625eabaf2d11d5f743a1845e20dcd499861437ed99a75fe8",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks"
+  ],
+  "assembly_sha256": "274be3dfd23f449c5d5347d21deb40d639177b16c376d000887842544d3f4107"
+ }
+}
