@@ -1,0 +1,118 @@
+{
+  "criterion": "The prefill is the agent's lean from looking at every render: does the sea read as deep water, open to shallow, at all three zooms, without sparkle.",
+  "decisions": {
+    "Chill_clear": {
+      "decision": "",
+      "note": "",
+      "prefill": "maybe"
+    },
+    "Chill_deep": {
+      "decision": "",
+      "note": "",
+      "prefill": "maybe"
+    },
+    "Chill_row": {
+      "decision": "",
+      "note": "",
+      "prefill": "pick"
+    },
+    "GreySea_clear": {
+      "decision": "",
+      "note": "",
+      "prefill": "maybe"
+    },
+    "GreySea_deep": {
+      "decision": "",
+      "note": "",
+      "prefill": "maybe"
+    },
+    "GreySea_row": {
+      "decision": "",
+      "note": "",
+      "prefill": "pick"
+    },
+    "MineralWater_clear": {
+      "decision": "",
+      "note": "",
+      "prefill": "maybe"
+    },
+    "MineralWater_deep": {
+      "decision": "",
+      "note": "",
+      "prefill": "maybe"
+    },
+    "MineralWater_row": {
+      "decision": "",
+      "note": "",
+      "prefill": "pick"
+    },
+    "Scald_clear": {
+      "decision": "",
+      "note": "",
+      "prefill": "maybe"
+    },
+    "Scald_deep": {
+      "decision": "",
+      "note": "",
+      "prefill": "maybe"
+    },
+    "Scald_row": {
+      "decision": "",
+      "note": "",
+      "prefill": "pick"
+    },
+    "TwilightSea_clear": {
+      "decision": "",
+      "note": "",
+      "prefill": "maybe"
+    },
+    "TwilightSea_deep": {
+      "decision": "",
+      "note": "",
+      "prefill": "maybe"
+    },
+    "TwilightSea_row": {
+      "decision": "",
+      "note": "",
+      "prefill": "pick"
+    },
+    "film_off": {
+      "decision": "",
+      "note": "",
+      "prefill": "no"
+    },
+    "film_shelf": {
+      "decision": "",
+      "note": "",
+      "prefill": "pick"
+    },
+    "film_today": {
+      "decision": "",
+      "note": "",
+      "prefill": "maybe"
+    },
+    "ripple_calm": {
+      "decision": "",
+      "note": "",
+      "prefill": "maybe"
+    },
+    "ripple_swell": {
+      "decision": "",
+      "note": "",
+      "prefill": "maybe"
+    },
+    "ripple_wavelets": {
+      "decision": "",
+      "note": "",
+      "prefill": "pick"
+    }
+  },
+  "posture": "whitelist",
+  "reviewStatus": {
+    "at": null,
+    "by": null,
+    "evidence": "agent variations; no human has ruled",
+    "state": "prefill"
+  },
+  "sheetId": "world_water_review_2026-10-24"
+}
