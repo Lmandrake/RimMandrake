@@ -42,6 +42,9 @@ resolves the lane through it (a proved rename) or refuses by name. The decisions
   5 schema 1 with today's snapshot built BEFORE his click: routed by today's snapshot as before (no lookup, no change);
   14 a pick with ONE facing refused (its live file owner-kept by another row) installs NO facing (never a creature mixed
     from two sets: leaningscrub_2 RM_TunnelSnake B, RM_Vurra B); 13 two rows' different picks for one shared file.
+  15 a pick or ticked variant with ONE facing already live at another path (Fuzzrunner C east == the base east),
+    purged or slotless installs NO facing while siblings would (ENACT_VARIANT_FACING_FIX_LIVE_SHA_SKIP); a facing
+    live at the pick's own slot still lets the rest install.
 Fixture under /home/mandrake/rm/scratch/BENCH (never /tmp), from selftest_enact_ws; git history is replaced by a list.
 """
 from __future__ import annotations
@@ -376,6 +379,47 @@ def main():
                   f"13 ...one row alone still installs there ({r['conflicts']})")
         finally:
             snap["rows"].pop("RSW_Kite2", None)
+            sp.write_text(json.dumps(snap))
+
+        # 15 one facing of a pick or a ticked variant is ALREADY LIVE at another path (or purged, or slotless) while
+        # its sibling facings would install: the set would mix with the old facing at the target, so none of it
+        # installs (ENACT_VARIANT_FACING_FIX_LIVE_SHA_SKIP: Fuzzrunner C east == live base east; BedBug V_E). A facing
+        # live at the pick's OWN slot is not a skip of that kind: the rest installs as before.
+        fs = F["s"]
+        new_n = L.store_put_bytes(T.noise_png(970))
+        old_b, old_fc = dict(kr["columns"]["B"]), dict(snap["rows"]["RSW_Fan"]["columns"]["C"])
+        L.Index.__init__ = idx_init                 # the row's old north is live (as in 14): north has a slot
+        try:
+            kr["columns"]["B"] = {"east": fs["fa"], "north": new_n}        # east ships as Fan's east (another def)
+            sp.write_text(json.dumps(snap))
+            r, inst = plan({"decision": "B"})
+            check(not any(i["letter"] == "B" for i in inst)
+                  and any(c.startswith("RSW_Kite: pick B not installed at all") for c in r["conflicts"]),
+                  f"15 a pick whose east is live elsewhere installs NO facing, never north beside the old east "
+                  f"({inst} / {r['conflicts']})")
+            kr["columns"]["B"] = {"east": fs["ta"], "north": new_n}        # east is ALREADY at Kite_east, its own slot
+            sp.write_text(json.dumps(snap))
+            r, inst = plan({"decision": "B"})
+            check(any(i["letter"] == "B" and i["rel"] == "swanimals/Kite/Kite_north.png" for i in inst),
+                  f"15 ...a facing live at the pick's own slot does not hold the rest ({inst} / {r['conflicts']})")
+            kr["columns"]["B"] = old_b
+            L.Index.__init__ = idx0
+            snap["rows"]["RSW_Fan"]["columns"]["C"] = {"east": fs["fa"], "north": new_n}   # V_C east == live base east
+            sp.write_text(json.dumps(snap))
+            d = json.loads(json.dumps(doc))
+            d["decisions"] = {"RSW_Fan": {"decision": "B", "at": at, "decidedAt": at, "note": "", "variants": ["C"]}}
+            p = F["root"] / "case_variant_live_facing.decisions.json"
+            p.write_text(json.dumps(d))
+            E.reset_caches()
+            r = E.enact(p, apply=False, no_deploy=True)
+            vc = [i for i in r["plan"]["install"] if i["row"] == "RSW_Fan" and i["letter"] == "C"]
+            check(r["ok"] and not vc and any(c.startswith("RSW_Fan: pick C not installed at all") for c in r["conflicts"]),
+                  f"15 a ticked variant whose east is the live base east installs NO facing, never FanV_C_north "
+                  f"alone ({vc} / {r['conflicts']})")
+        finally:
+            L.Index.__init__ = idx0
+            kr["columns"]["B"] = old_b
+            snap["rows"]["RSW_Fan"]["columns"]["C"] = old_fc
             sp.write_text(json.dumps(snap))
     finally:
         os.environ.pop("ART_BIOME_SHEETS_DIR", None)
