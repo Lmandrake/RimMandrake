@@ -1,0 +1,44 @@
+{
+ "judge_model": {},
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_SuspensionAnchor_Heavy_Modern",
+ "decision": "HOLD_INPUT",
+ "reasons": [
+  "missing panels ['scale', 'assembled']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "machine@v2",
+   "sha": "e06ee7316a0a"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "south.png": "4d440a58b0beebd49e50c11ebdc1f21ba63c212618b43678d15786fa6d6c2fac",
+  "siblings.png": "93c8946c8987f2aebee8ff75828379633a50d5061416f8e32f46c53d861a407c",
+  "facings.png": "15f6aa79f4ddc20829e50bf611d6de78a7531299f9dac309aadff76cc501ede6"
+ }
+}

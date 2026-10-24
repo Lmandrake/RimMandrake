@@ -1,0 +1,44 @@
+{
+ "judge_model": {},
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_SuspensionAnchor_Heavy_Futuristic",
+ "decision": "HOLD_INPUT",
+ "reasons": [
+  "missing panels ['scale', 'assembled']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "machine@v2",
+   "sha": "e06ee7316a0a"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "south.png": "e2623b8c090dc33eccf8fc02bb13e69c5a163397c21377d1fb1c749fe4e79efc",
+  "siblings.png": "7b4fb743fca52af2949bbe42fcc7103375d3760263acb789f1703793ccea47cd",
+  "facings.png": "e51c46472f651c0a01b04a35eae0bb0864e16179381db8ebcec608f80f8d7254"
+ }
+}

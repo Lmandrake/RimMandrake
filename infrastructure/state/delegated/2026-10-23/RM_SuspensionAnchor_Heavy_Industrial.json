@@ -1,0 +1,44 @@
+{
+ "judge_model": {},
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_SuspensionAnchor_Heavy_Industrial",
+ "decision": "HOLD_INPUT",
+ "reasons": [
+  "missing panels ['scale', 'assembled']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "machine@v2",
+   "sha": "e06ee7316a0a"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "south.png": "8d7476aa0c025126891186cb33b3aff88cfa061f8742fcda58bb90beda7afc8c",
+  "siblings.png": "93e15dc63e3f1bff3a6db9bb85e5d685351ac58dcbae356134bb11fe584ef393",
+  "facings.png": "e704173243d61ddaa244f157f7ca4c7a12bf4e4ce02867eac49a02b597f0bf01"
+ }
+}

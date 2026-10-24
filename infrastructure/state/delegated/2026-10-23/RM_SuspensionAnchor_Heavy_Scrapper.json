@@ -1,0 +1,44 @@
+{
+ "judge_model": {},
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_SuspensionAnchor_Heavy_Scrapper",
+ "decision": "HOLD_INPUT",
+ "reasons": [
+  "missing panels ['scale', 'assembled']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "machine@v2",
+   "sha": "e06ee7316a0a"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "south.png": "0b93b342ba92fcab66f7d848748dd51fea86c52427b614832a44fb8ab5c0f872",
+  "siblings.png": "7755fcdc1f3f32b04bd852cf835f8d1a8bb614dbd426aecbea3a12deba533ca0",
+  "facings.png": "2dfb6336619697cec7e5af2273025d9087bc7b70fdac4b2b015c5bdd194b05d4"
+ }
+}
