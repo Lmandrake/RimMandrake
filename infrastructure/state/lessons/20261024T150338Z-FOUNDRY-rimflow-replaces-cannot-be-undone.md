@@ -1,0 +1,2 @@
+rimflow file --replaces X supersedes X in the same act and there is no un-supersede: a --replaces pasted onto the wrong file line (a batch of file calls written by copy-paste) points the old item at the wrong successor for good; only a note can correct it. Write each file call with its own --replaces checked against the item it really replaces, and never send a half-edited batch line (2026-10-24, WORLD_DECALS_BUILD_SEPTEMBER_CHARM_REDRAWN -> RIVERS_ROADS_... by slip).
+home: using-rimflow
