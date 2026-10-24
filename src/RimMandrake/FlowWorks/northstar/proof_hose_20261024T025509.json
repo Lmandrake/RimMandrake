@@ -1,0 +1,2057 @@
+{
+ "mod": "FlowWorks",
+ "script": "proof_hose.py",
+ "tier": "flowworks",
+ "mode": "live",
+ "started": "2026-10-24T02:55:09",
+ "rows": [
+  {
+   "id": "HP1_tier_running_startup_log_clean",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "playing": true,
+    "flowworks": true,
+    "gimmesomeslack": true,
+    "startupLogRead": true,
+    "startupErrorsNamingHose": []
+   },
+   "block": "preflight"
+  },
+  {
+   "id": "HP2_probes_site_pinned",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "hoseProbe": true,
+    "colonistsDrafted": [
+     558,
+     562,
+     566
+    ]
+   },
+   "block": "preflight"
+  },
+  {
+   "id": "MX_H00_Flat_straight_L6",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Flat",
+    "blend": 0,
+    "visibleWidth": 0.18,
+    "widthOverWire": 2.88,
+    "minBendFlat": 1.3047,
+    "minBendPlump": 1.3047,
+    "couplings": 2,
+    "flatLen": 12.2378,
+    "pathLen": 11.5885,
+    "poseLen": 12.2378,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "unwalkableAt": [],
+    "fellBack": false,
+    "geometryHash": "8905edb9d35865b5",
+    "provider": "none",
+    "transitionTicks": 30
+   },
+   "block": "matrix_hose"
+  },
+  {
+   "id": "MX_H01_Flat_corner_L14",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Flat",
+    "blend": 0,
+    "visibleWidth": 0.18,
+    "widthOverWire": 2.88,
+    "minBendFlat": 1.384,
+    "minBendPlump": 1.384,
+    "couplings": 2,
+    "flatLen": 21.2644,
+    "pathLen": 19.3743,
+    "poseLen": 21.2644,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "unwalkableAt": [],
+    "fellBack": false,
+    "geometryHash": "db8c90fccd2a681c",
+    "provider": "none",
+    "transitionTicks": 30
+   },
+   "block": "matrix_hose"
+  },
+  {
+   "id": "MX_H02_Flat_water_L24",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Flat",
+    "blend": 0,
+    "visibleWidth": 0.18,
+    "widthOverWire": 2.88,
+    "minBendFlat": 1.2675,
+    "minBendPlump": 1.2675,
+    "couplings": 2,
+    "flatLen": 28.3893,
+    "pathLen": 28.1086,
+    "poseLen": 28.3893,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "unwalkableAt": [],
+    "fellBack": true,
+    "geometryHash": "f5bf624ee9a0d663",
+    "provider": "none",
+    "transitionTicks": 30
+   },
+   "block": "matrix_hose"
+  },
+  {
+   "id": "MX_H03_Plump_straight_L14",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Plump",
+    "blend": 1,
+    "visibleWidth": 0.23,
+    "widthOverWire": 3.68,
+    "minBendFlat": 1.2675,
+    "minBendPlump": 1.2675,
+    "couplings": 2,
+    "flatLen": 18.3401,
+    "pathLen": 18.5048,
+    "poseLen": 18.3401,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "unwalkableAt": [],
+    "fellBack": false,
+    "geometryHash": "96b1abcc3fa16adb",
+    "provider": "debug",
+    "transitionTicks": 30
+   },
+   "block": "matrix_hose"
+  },
+  {
+   "id": "MX_H04_Plump_corner_L24",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Plump",
+    "blend": 1,
+    "visibleWidth": 0.23,
+    "widthOverWire": 3.68,
+    "minBendFlat": 1.2675,
+    "minBendPlump": 1.2675,
+    "couplings": 2,
+    "flatLen": 28.6485,
+    "pathLen": 28.694,
+    "poseLen": 28.6487,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "unwalkableAt": [],
+    "fellBack": false,
+    "geometryHash": "91a64434ecff7584",
+    "provider": "debug",
+    "transitionTicks": 30
+   },
+   "block": "matrix_hose"
+  },
+  {
+   "id": "MX_H05_Plump_water_L6",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Plump",
+    "blend": 1,
+    "visibleWidth": 0.23,
+    "widthOverWire": 3.68,
+    "minBendFlat": 1.2675,
+    "minBendPlump": 1.2675,
+    "couplings": 2,
+    "flatLen": 11.8437,
+    "pathLen": 11.5885,
+    "poseLen": 11.8437,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "unwalkableAt": [],
+    "fellBack": false,
+    "geometryHash": "f69cb895cd45ec98",
+    "provider": "debug",
+    "transitionTicks": 30
+   },
+   "block": "matrix_hose"
+  },
+  {
+   "id": "MX_H06_Filling50_straight_L24",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Filling",
+    "blend": 0.4667,
+    "visibleWidth": 0.2025,
+    "widthOverWire": 3.2401,
+    "minBendFlat": 1.2675,
+    "minBendPlump": 1.2675,
+    "couplings": 2,
+    "flatLen": 28.391,
+    "pathLen": 28.1086,
+    "poseLen": 28.391,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "unwalkableAt": [],
+    "fellBack": false,
+    "geometryHash": "5923a3c248da091b",
+    "provider": "debug",
+    "transitionTicks": 30
+   },
+   "block": "matrix_hose"
+  },
+  {
+   "id": "MX_H07_Filling50_corner_L6",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Filling",
+    "blend": 0.4667,
+    "visibleWidth": 0.2025,
+    "widthOverWire": 3.2401,
+    "minBendFlat": 1.2675,
+    "minBendPlump": 1.2675,
+    "couplings": 2,
+    "flatLen": 13.8129,
+    "pathLen": 12.679,
+    "poseLen": 13.8129,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "unwalkableAt": [],
+    "fellBack": false,
+    "geometryHash": "b1e5ab9722639024",
+    "provider": "debug",
+    "transitionTicks": 30
+   },
+   "block": "matrix_hose"
+  },
+  {
+   "id": "MX_H08_Filling50_water_L14",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Filling",
+    "blend": 0.4667,
+    "visibleWidth": 0.2025,
+    "widthOverWire": 3.2401,
+    "minBendFlat": 1.2675,
+    "minBendPlump": 1.2675,
+    "couplings": 2,
+    "flatLen": 18.3407,
+    "pathLen": 16.1471,
+    "poseLen": 18.3407,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "unwalkableAt": [],
+    "fellBack": false,
+    "geometryHash": "eed4c796526940bd",
+    "provider": "debug",
+    "transitionTicks": 30
+   },
+   "block": "matrix_hose"
+  },
+  {
+   "id": "H1b_install_validity",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "far": "too far",
+    "wall": "target blocked",
+    "ok": null
+   },
+   "block": "hose"
+  },
+  {
+   "id": "H2_hose_laid_as_hose_cord",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "kind": "Hose",
+    "layOk": true,
+    "pathLen": 23.54,
+    "flatLen": 23.8262,
+    "plumpLen": 23.8259,
+    "straight": 22.5277,
+    "points": 97,
+    "couplings": 2,
+    "fellBack": false,
+    "unwalkablePoints": 0,
+    "selfIntersects": false,
+    "geometryHash": "5fc6fcef339caf99",
+    "lay1": null,
+    "lay2": null,
+    "lastLayMs": 26
+   },
+   "block": "hose"
+  },
+  {
+   "id": "H6_plump_within_transition",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "mid": {
+     "state": "Filling",
+     "blend": 0.4667,
+     "wobbling": true
+    },
+    "after": {
+     "state": "Plump",
+     "blend": 1,
+     "widthOverWire": 3.68,
+     "poseLen": 23.8259,
+     "history": [
+      [
+       15716,
+       "Filling"
+      ],
+      [
+       15746,
+       "Plump"
+      ]
+     ]
+    },
+    "flat": {
+     "widthOverWire": 2.88,
+     "poseLen": 23.8262
+    },
+    "transitionTicks": 30
+   },
+   "block": "hose"
+  },
+  {
+   "id": "H7_no_flicker_fast_toggle",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "toggles": 30,
+    "every": 40,
+    "history": [
+     [
+      15761,
+      "Filling"
+     ],
+     [
+      15791,
+      "Plump"
+     ]
+    ],
+    "state": "Plump",
+    "transitions": 2
+   },
+   "block": "hose"
+  },
+  {
+   "id": "H8_collapse_after_release",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "after400": {
+     "state": "Plump",
+     "blend": 1
+    },
+    "after1200": {
+     "state": "Flat",
+     "blend": 0,
+     "history": [
+      [
+       15716,
+       "Filling"
+      ],
+      [
+       15746,
+       "Plump"
+      ],
+      [
+       17460,
+       "Draining"
+      ],
+      [
+       17490,
+       "Flat"
+      ]
+     ]
+    },
+    "releaseTicks": 500,
+    "minPlumpDwell": 600
+   },
+   "block": "hose"
+  },
+  {
+   "id": "H9_stiffness_setting",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "minBend2": 2.7387,
+    "hash2": "bde73c1572183142",
+    "hashDefault": "a456d90a758615ca"
+   },
+   "block": "hose"
+  },
+  {
+   "id": "M1_open_maze_short_route",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "layOk": true,
+    "pathLen": 11.5433,
+    "bbox": [
+     42.5,
+     86.5,
+     54.026,
+     86.773
+    ],
+    "fellBack": false,
+    "minBendFlat": 15.4181,
+    "unwalkablePoints": 0,
+    "lay": null,
+    "viaGap": true
+   },
+   "block": "maze"
+  },
+  {
+   "id": "M2_gap_walled_reroutes",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "laid": true,
+    "layOk": true,
+    "pathLen": 22.7506,
+    "bbox": [
+     41.4895,
+     86.5,
+     54.026,
+     91.4941
+    ],
+    "fellBack": false,
+    "minBendFlat": 1.2173,
+    "unwalkablePoints": 0,
+    "selfIntersects": false,
+    "relays": 1,
+    "before": 11.5433
+   },
+   "block": "maze"
+  },
+  {
+   "id": "M3_length_cap_install",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "reason": "route too long",
+    "maxLength": 20
+   },
+   "block": "maze"
+  },
+  {
+   "id": "M3b_laid_hose_over_cap_retracts",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "laid": false,
+    "layOk": false,
+    "pathLen": null,
+    "maxLength": 20,
+    "retractReason": "route too long",
+    "retractTick": 18506,
+    "retracts": 5,
+    "note": "HOSE_BLOCKED_REROUTE_RETRACT_1: a re-plan enforces the cap; expected reeled in, reason 'route too long'"
+   },
+   "block": "maze"
+  },
+  {
+   "id": "M4_unreachable_retracts",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "laid": false,
+    "layOk": false,
+    "state": "Flat",
+    "reelGraphic": null,
+    "retractReason": "no route",
+    "retractTick": 19006,
+    "check": "no route",
+    "relay": null,
+    "retracts": 6,
+    "note": "expected: reeled in at the next 250-tick check, retractReason 'no route'"
+   },
+   "block": "maze"
+  },
+  {
+   "id": "M5_walls_removed_recovers",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "laid": true,
+    "layOk": true,
+    "pathLen": 11.5433,
+    "bbox": [
+     42.5,
+     86.5,
+     54.026,
+     86.773
+    ],
+    "lay": null
+   },
+   "block": "maze"
+  },
+  {
+   "id": "P1_reel_couples_to_tank",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "port": "RM_LiquidTank",
+    "portKind": "Tank",
+    "portSide": [
+     1,
+     0
+    ],
+    "feedDraws": 1,
+    "feedDrawsAtM1": 0
+   },
+   "block": "maze"
+  },
+  {
+   "id": "P2_lone_reel_not_coupled",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "port": null,
+    "portKind": "None"
+   },
+   "block": "maze"
+  },
+  {
+   "id": "RL2_one_hose_cannot_reach",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "reason": "too far",
+    "maxLength": 40
+   },
+   "block": "relay"
+  },
+  {
+   "id": "RL3_hose_onto_relay_B",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "relayTo": [
+     44,
+     101
+    ],
+    "far": [
+     46,
+     100
+    ],
+    "endPoint": [
+     45.957,
+     100.786
+    ],
+    "pathLen": 25.8616,
+    "flatLen": 31.4129,
+    "maxLength": 40,
+    "layOk": true,
+    "reason": null,
+    "intake": true,
+    "onEdge": true,
+    "brassSide": false,
+    "westInlet": true,
+    "relayEnd": {
+     "drawnEnd": [
+      45.957,
+      100.786
+     ],
+     "endPoint": [
+      45.957,
+      100.786
+     ],
+     "inward": [
+      -1,
+      0
+     ],
+     "edgeOffset": -0.043,
+     "withinEdge": true,
+     "tailAngleDeg": 0,
+     "tolerance": 0.75,
+     "relayLook": "Scrapper",
+     "relayArt": "stored"
+    }
+   },
+   "block": "relay"
+  },
+  {
+   "id": "RL4_relay_B_onward_to_C",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "relayTo": [
+     77,
+     100
+    ],
+    "far": [
+     75,
+     100
+    ],
+    "endPoint": [
+     76.043,
+     100.786
+    ],
+    "pathLen": 30.069,
+    "flatLen": 30.5912,
+    "maxLength": 40,
+    "layOk": true,
+    "reason": null,
+    "intake": true,
+    "onEdge": true,
+    "brassSide": true,
+    "westInlet": true,
+    "relayEnd": {
+     "drawnEnd": [
+      76.043,
+      100.786
+     ],
+     "endPoint": [
+      76.043,
+      100.786
+     ],
+     "inward": [
+      1,
+      0
+     ],
+     "edgeOffset": -0.043,
+     "withinEdge": true,
+     "tailAngleDeg": 0,
+     "tolerance": 0.75,
+     "relayLook": "Scrapper",
+     "relayArt": "stored"
+    }
+   },
+   "block": "relay"
+  },
+  {
+   "id": "RL5_ring_refused",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "lay": "that reel already feeds this one (a chain may not loop back)",
+    "check": "too far"
+   },
+   "block": "relay"
+  },
+  {
+   "id": "RL6_debug_flow_propagates",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "A": {
+     "state": "Plump",
+     "provider": "debug",
+     "signal": true
+    },
+    "B": {
+     "state": "Plump",
+     "provider": "debug",
+     "signal": true,
+     "fedBy": [
+      [
+       20,
+       101
+      ]
+     ]
+    },
+    "relayCouplings": 2
+   },
+   "block": "relay"
+  },
+  {
+   "id": "RL7_no_latch",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "A": {
+     "state": "Flat",
+     "provider": "none"
+    },
+    "B": {
+     "state": "Flat",
+     "provider": "none"
+    }
+   },
+   "block": "relay"
+  },
+  {
+   "id": "RL8_chain_beyond_one_hose",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "span": 56,
+    "maxLength": 40,
+    "pathA": 25.8616,
+    "pathB": 30.069
+   },
+   "block": "relay"
+  },
+  {
+   "id": "RL9_overhead_drawn_over_hose",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "hose": 2903,
+    "overhead": 3005,
+    "spanMat": 3005
+   },
+   "block": "relay"
+  },
+  {
+   "id": "CR1_deploy_carrying",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "order": {
+     "success": true,
+     "cmd": "order:82,68=deploy:106,68",
+     "reason": null,
+     "pending": "Deploy",
+     "pendingAt": [
+      106,
+      68
+     ],
+     "carry": "Stored"
+    },
+    "startjob": {
+     "success": true,
+     "cmd": "startjob:82,68=forced;558",
+     "job": "RM_CarryHoseEnd",
+     "curJob": "RM_CarryHoseEnd",
+     "pending": "Deploy",
+     "pendingAt": [
+      106,
+      68
+     ]
+    },
+    "ticks": 69,
+    "seen": [
+     "Stored",
+     "Carrying"
+    ],
+    "hose": {
+     "carry": "Carrying",
+     "carrier": 558,
+     "far": [
+      -1000,
+      -1000
+     ],
+     "trailCount": 2,
+     "trailLast": [
+      84,
+      69
+     ],
+     "pulled": 0.8973,
+     "pending": "Deploy",
+     "pendingAt": [
+      106,
+      68
+     ],
+     "wound": 0,
+     "state": "Flat"
+    }
+   },
+   "block": "carry"
+  },
+  {
+   "id": "CR2_trail_follows_walk",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "before": {
+     "carry": "Carrying",
+     "carrier": 558,
+     "far": [
+      -1000,
+      -1000
+     ],
+     "trailCount": 2,
+     "trailLast": [
+      84,
+      69
+     ],
+     "pulled": 0.8973,
+     "pending": "Deploy",
+     "pendingAt": [
+      106,
+      68
+     ],
+     "wound": 0,
+     "state": "Flat"
+    },
+    "after": {
+     "carry": "Carrying",
+     "carrier": 558,
+     "far": [
+      -1000,
+      -1000
+     ],
+     "trailCount": 4,
+     "trailLast": [
+      86,
+      68
+     ],
+     "pulled": 2.5407,
+     "pending": "Deploy",
+     "pendingAt": [
+      106,
+      68
+     ],
+     "wound": 0,
+     "state": "Flat"
+    },
+    "pawnPos": [
+     86,
+     68
+    ]
+   },
+   "block": "carry"
+  },
+  {
+   "id": "CR3_draft_drops_end",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "draft": true,
+    "pawn": {
+     "id": 558,
+     "name": "Noah",
+     "pos": [
+      86,
+      68
+     ],
+     "drafted": true,
+     "downed": false,
+     "job": "Wait_Combat",
+     "forced": false,
+     "driver": "JobDriver_Wait",
+     "toil": 0
+    },
+    "hose": {
+     "carry": "Dropped",
+     "carrier": null,
+     "far": [
+      86,
+      68
+     ],
+     "trailCount": 4,
+     "trailLast": [
+      86,
+      68
+     ],
+     "pulled": 2.5407,
+     "pending": "Deploy",
+     "pendingAt": [
+      106,
+      68
+     ],
+     "wound": 0,
+     "state": "Flat"
+    }
+   },
+   "block": "carry"
+  },
+  {
+   "id": "CR5_resume_laid_at_target",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "startjob": "work",
+    "resumeTicks": 45,
+    "layTicks": 360,
+    "seen": [
+     "Dropped",
+     "Carrying",
+     "Carrying",
+     "Laid"
+    ],
+    "hose": {
+     "carry": "Laid",
+     "carrier": null,
+     "far": [
+      106,
+      68
+     ],
+     "trailCount": 24,
+     "trailLast": [
+      106,
+      68
+     ],
+     "pulled": 22.5277,
+     "pending": "None",
+     "pendingAt": null,
+     "wound": 0,
+     "state": "Flat"
+    }
+   },
+   "block": "carry"
+  },
+  {
+   "id": "CR5b_laid_hose_plumps",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "state": "Plump",
+    "provider": "debug",
+    "signal": true
+   },
+   "block": "carry"
+  },
+  {
+   "id": "CR5c_end_kind",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "endKind": "Free",
+    "note": "endKind is stage S4"
+   },
+   "block": "carry"
+  },
+  {
+   "id": "CR6_retract_stored",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "order": {
+     "success": true,
+     "cmd": "order:82,68=retract",
+     "reason": null,
+     "pending": "Retract",
+     "pendingAt": null,
+     "carry": "Laid"
+    },
+    "startjob": {
+     "success": true,
+     "cmd": "startjob:82,68=forced;558",
+     "job": "RM_RetractHose",
+     "curJob": "RM_RetractHose",
+     "pending": "Retract",
+     "pendingAt": null
+    },
+    "ticks": 810,
+    "budget": 1426,
+    "seen": [
+     "Laid",
+     "Retracting",
+     "Stored"
+    ],
+    "hose": {
+     "carry": "Stored",
+     "carrier": null,
+     "far": [
+      106,
+      68
+     ],
+     "trailCount": 0,
+     "trailLast": null,
+     "pulled": 0,
+     "pending": "None",
+     "pendingAt": null,
+     "wound": 0,
+     "state": "Flat"
+    }
+   },
+   "block": "carry"
+  },
+  {
+   "id": "CR7_no_instant_gizmos_without_devmode",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "devModeOff_labels": [
+     "Deploy hose",
+     "Choose style",
+     "End look: plain",
+     "Free end: Capped"
+    ],
+    "offending": [],
+    "devModeOn_labels": [
+     "Deploy hose",
+     "Choose style",
+     "End look: plain",
+     "Free end: Capped",
+     "DEV: lay hose instantly"
+    ],
+    "control_found_in_devmode": [
+     "DEV: lay hose instantly"
+    ],
+    "devModeBefore": true
+   },
+   "block": "carry"
+  },
+  {
+   "id": "R1_pick_reaches_reel",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "bad": [],
+    "finishbuild": {
+     "success": true,
+     "cmd": "finishbuild",
+     "worker": "Noah",
+     "workerHasIdeo": true,
+     "frames": 2,
+     "built": 2,
+     "errors": []
+    },
+    "meaning": "PASS = each picked look is the designator's style and lands on the blueprint (build) or building (god)"
+   },
+   "block": "style_hose"
+  },
+  {
+   "id": "R2_built_reels_stored_art",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "bad": [],
+    "defaultLook": "Scrapper",
+    "styleArtMissing": [],
+    "meaning": "PASS = blueprint -> frame -> building kept each look; each reel prints its look's STORED art and selects its look's hose set"
+   },
+   "block": "style_hose"
+  },
+  {
+   "id": "R3_laid_out_per_look",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "bad": [],
+    "reelsNotInDefaultLook": 3,
+    "defaultLook": "Scrapper",
+    "meaning": "PASS = each laid reel prints its look's EMPTY DRUM and its hose draws that look's pieces, including >= 3 reels whose look is not the global default"
+   },
+   "block": "style_hose"
+  },
+  {
+   "id": "R5_reeled_in_per_look",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "bad": [],
+    "meaning": "PASS = reeling in restores each look's STORED art and keeps the stored style"
+   },
+   "block": "style_hose"
+  },
+  {
+   "id": "R6_reinstall_keeps_look",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "reinstall": {
+     "success": true,
+     "cmd": "reinstall:20774:113,136",
+     "styleBefore": "RM_HoseReel_Industrial",
+     "minifiedStyle": "RM_HoseReel_Industrial",
+     "installBlueprint": 20776,
+     "installStyle": "RM_HoseReel_Industrial"
+    },
+    "after": {
+     "id": 20774,
+     "rawStyle": "RM_HoseReel_Industrial",
+     "look": "Industrial",
+     "reelTex": "RimMandrake/FlowWorks/Hose/Styles/Industrial/Reel_Deployed",
+     "laid": true
+    },
+    "art": ""
+   },
+   "block": "style_hose"
+  },
+  {
+   "id": "R7_legacy_reel_default_look",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "build": true,
+    "legacy": {
+     "rawStyle": null,
+     "style": "RM_HoseReel_Scrapper",
+     "look": "Scrapper",
+     "reelTex": "RimMandrake/FlowWorks/Hose/Reel_Deployed",
+     "laid": true
+    },
+    "defaultLook": "Scrapper",
+    "art": "",
+    "meaning": "PASS = an unstyled reel stores NO style (an older save is unchanged) yet draws, and lays its hose in, the default look"
+   },
+   "block": "style_hose"
+  },
+  {
+   "id": "NS_hose_carries_real_units",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "lay": {
+     "success": true,
+     "cmd": "lay:161,158,174,159",
+     "reason": null,
+     "layOk": true
+    },
+    "before": {
+     "success": true,
+     "cmd": "tank:175,159",
+     "id": 20781,
+     "liquid": null,
+     "units": 0,
+     "capacity": 160000,
+     "tick": 22605
+    },
+    "after": {
+     "success": true,
+     "cmd": "tank:175,159",
+     "id": 20781,
+     "liquid": "RM_Liquid_FreshWater",
+     "units": 9418,
+     "capacity": 160000,
+     "tick": 22755
+    },
+    "gained": 9418,
+    "hoseTook": 582,
+    "discoveredAfterTicks": 0,
+    "movedTicksAfterDiscovery": 150,
+    "bound": [
+     60,
+     250
+    ],
+    "pumpPoweredAfterTicks": 140,
+    "credits": 1,
+    "netLink": {
+     "a": "RM_LiquidPump@161,157",
+     "b": "RM_LiquidTank@175,159"
+    }
+   },
+   "block": "realflow"
+  },
+  {
+   "id": "NS_hose_ends_on_ports",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "nozzleTip": [
+     162.974,
+     158.773
+    ],
+    "footprint": [
+     161,
+     158,
+     2,
+     2
+    ],
+    "look": "Scrapper",
+    "portEnd": [
+     175,
+     160.021
+    ],
+    "tank": [
+     175,
+     159
+    ],
+    "want": "nozzleTip inside the reel's facing-side cells (E); portEnd = [tank x0, tank z0 + 1 +- 0.1]"
+   },
+   "block": "realflow"
+  },
+  {
+   "id": "NS_hose_tint_is_carried_liquid",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "tintLiquid": "RM_Liquid_FreshWater",
+    "want": "RM_Liquid_FreshWater",
+    "tarHalf": "UNMEASURED here: a tar channel needs a fresh map's active fluid (water ran first)"
+   },
+   "block": "realflow"
+  },
+  {
+   "id": "NS_hose_plumps_only_from_powered_pump",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "plumpedAfterTicks": 30,
+    "flatAfterCut": 870,
+    "bound": 905,
+    "plumpedAtTick": 22785,
+    "cutTick": 22785,
+    "tankStillAfterCut": [
+     9418,
+     9418
+    ],
+    "cut": {
+     "success": true,
+     "destroyed": 1,
+     "message": "Destroyed 1 thing(s) across 2 cell(s)."
+    }
+   },
+   "block": "realflow"
+  },
+  {
+   "id": "NS_hose_dropped_carries_nothing",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "staged": {
+     "success": true,
+     "cmd": "settrail:189,158=dropped;189,158;190,159;191,159;192,159;193,159;194,159;195,159;196,159;197,159;198,159;199,159;200,159;201,159;202,159",
+     "carry": "Dropped",
+     "trail": 14,
+     "trailLength": 11.5489,
+     "layOk": true
+    },
+    "units": [
+     0,
+     0
+    ],
+    "netLink": null,
+    "pumpPoweredAfterTicks": 190
+   },
+   "block": "realflow"
+  },
+  {
+   "id": "NS_hose_port_removed_discovered",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "afterRemove": null,
+    "afterRebuild61": {
+     "a": "RM_LiquidPump@217,157",
+     "b": "RM_LiquidTank@231,159"
+    },
+    "destroy": {
+     "success": true,
+     "destroyed": 1,
+     "message": "Destroyed 1 thing(s) across 4 cell(s)."
+    }
+   },
+   "block": "realflow"
+  },
+  {
+   "id": "NS_hose_port_removed_moves",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "units": [
+     0,
+     10000
+    ]
+   },
+   "block": "realflow"
+  },
+  {
+   "id": "NS_hose_far_end_pump",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "lay": {
+     "success": true,
+     "cmd": "lay:161,174,174,175",
+     "reason": null,
+     "layOk": true
+    },
+    "units": [
+     0,
+     9422
+    ],
+    "hoseTook": 578,
+    "pumpPoweredAfterTicks": 100,
+    "discoveredAfterTicks": 0,
+    "movedTicksAfterDiscovery": 70,
+    "netLink": {
+     "a": "RM_LiquidTank@161,176",
+     "b": "RM_LiquidPump@175,175"
+    },
+    "net": {
+     "success": true,
+     "cmd": "net:175,175",
+     "origin": "RM_LiquidPump",
+     "links": 4,
+     "tanks": [
+      {
+       "tank": [
+        161,
+        176
+       ],
+       "units": 9422,
+       "liquid": "RM_Liquid_FreshWater",
+       "route": [
+        [
+         161,
+         175
+        ]
+       ]
+      }
+     ],
+     "componentBuilds": 2,
+     "revisionBumps": 20,
+     "settles": 0,
+     "settledUnits": 0,
+     "dumpedUnits": 0,
+     "spilledUnits": 0,
+     "hoseDrainedUnits": 582,
+     "placedInWaterUnits": 0,
+     "placedNearbyUnits": 582,
+     "returnedUnits": 0,
+     "homedFarUnits": 0,
+     "lostUnits": 0,
+     "moves": 9,
+     "putBacks": 0,
+     "theftCaught": 0,
+     "theftGoodwill": 0,
+     "tooLarge": false,
+     "indexRebuilds": 8,
+     "levelCycles": 25,
+     "levelLinks": 0,
+     "levelMoves": 0,
+     "levelMovedDl": 0
+    }
+   },
+   "block": "realflow"
+  },
+  {
+   "id": "NS_relay_chain_carries",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "layA": {
+     "success": true,
+     "cmd": "lay:189,174,199,174",
+     "reason": null,
+     "layOk": true
+    },
+    "layB": {
+     "success": true,
+     "cmd": "lay:199,174,208,175",
+     "reason": null,
+     "layOk": true
+    },
+    "relayTo": [
+     199,
+     175
+    ],
+    "pumpPoweredAfterTicks": 60,
+    "units": [
+     0,
+     8755
+    ],
+    "hoseTook": 1245,
+    "discoveredAfterTicks(B)": 0,
+    "movedTicksAfterDiscovery": 10,
+    "creditsA": 1,
+    "creditsB": 1
+   },
+   "block": "realflow"
+  },
+  {
+   "id": "NS_pipe_and_hose_one_net",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "lay": {
+     "success": true,
+     "cmd": "lay:218,176,230,176",
+     "reason": null,
+     "layOk": true
+    },
+    "units": [
+     0,
+     9473
+    ],
+    "hoseTook": 527,
+    "net": {
+     "success": true,
+     "cmd": "net:217,173",
+     "origin": "RM_LiquidPump",
+     "links": 6,
+     "tanks": [
+      {
+       "tank": [
+        231,
+        176
+       ],
+       "units": 9473,
+       "liquid": "RM_Liquid_FreshWater",
+       "route": [
+        [
+         218,
+         177
+        ]
+       ]
+      }
+     ],
+     "componentBuilds": 6,
+     "revisionBumps": 31,
+     "settles": 0,
+     "settledUnits": 0,
+     "dumpedUnits": 0,
+     "spilledUnits": 391,
+     "hoseDrainedUnits": 1827,
+     "placedInWaterUnits": 0,
+     "placedNearbyUnits": 1436,
+     "returnedUnits": 0,
+     "homedFarUnits": 0,
+     "lostUnits": 0,
+     "moves": 20,
+     "putBacks": 0,
+     "theftCaught": 0,
+     "theftGoodwill": 0,
+     "tooLarge": false,
+     "indexRebuilds": 11,
+     "levelCycles": 28,
+     "levelLinks": 0,
+     "levelMoves": 0,
+     "levelMovedDl": 0
+    }
+   },
+   "block": "realflow"
+  },
+  {
+   "id": "NS_tank_does_not_bridge_pipe_runs",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "reached": [
+     [
+      215,
+      174
+     ],
+     [
+      231,
+      176
+     ]
+    ],
+    "secondRunTank": [
+     212,
+     174
+    ],
+    "probeSawPumpTank": true,
+    "secondRunTankBuilt": true
+   },
+   "block": "realflow"
+  },
+  {
+   "id": "NS_external_pipe_is_visual_only",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "detail": {
+    "probe": 0,
+    "why": "no VE PipeSystem pipe on the flowworks tier: the offline kernel row (HoseNetChecks) is the evidence"
+   },
+   "block": "realflow"
+  },
+  {
+   "id": "NS_tank_feeds_hose",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "units": [
+     0,
+     39412
+    ],
+    "source": [
+     120000,
+     80000
+    ],
+    "hoseTook": 588,
+    "perCycleCap": 20000,
+    "job": {
+     "clicks": 2,
+     "ok": true,
+     "want": "Job: Empty",
+     "label": "Job: Empty"
+    },
+    "fill": {
+     "success": true,
+     "cmd": "filltank:161,192=RM_Liquid_FreshWater,120000",
+     "liquid": "RM_Liquid_FreshWater",
+     "units": 120000
+    },
+    "credits": 2,
+    "netLink": {
+     "a": "RM_LiquidTank@161,192",
+     "b": "RM_LiquidTank@175,191"
+    }
+   },
+   "block": "realflow"
+  },
+  {
+   "id": "HW1_no_laid_hose_crosses_a_wall",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "laid": 20,
+    "crossing": [],
+    "checked": [
+     20626,
+     20637,
+     20639,
+     20654,
+     20660,
+     20661,
+     20670,
+     20744,
+     20754,
+     20755,
+     20774,
+     20777,
+     20780,
+     20790,
+     20794,
+     20801,
+     20807,
+     20808,
+     20815,
+     20827
+    ]
+   },
+   "block": "walls"
+  },
+  {
+   "id": "SL1_save_landed_new_file_only",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "new": [
+     "RM_fw_hose_proof_20261024030249.rws"
+    ],
+    "changed": []
+   },
+   "block": "save_load"
+  },
+  {
+   "id": "SL2_save_names_no_class_of_ours",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "drivers": 0,
+    "offending": [],
+    "RM_MapComponent_Hoses": 0,
+    "rmHoseState": 16,
+    "colonistsOnHoseJobsAtSave": 0,
+    "hoseReelStylesInSave": {
+     "Scrapper": 1,
+     "Industrial": 1,
+     "Modern": 1,
+     "Futuristic": 1
+    },
+    "hosesAtSave": "some"
+   },
+   "block": "save_load"
+  },
+  {
+   "id": "SL3_hoses_and_reel_styles_survive",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "hoses": 30,
+    "hosesEqual": true,
+    "reelStylesEqual": true,
+    "loadSeconds": 4
+   },
+   "block": "save_load"
+  },
+  {
+   "id": "SL4_carry_states_survive",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "detail": {
+    "dropped(CR4a)": {
+     "before": {
+      "carry": null,
+      "far": null,
+      "trailCount": null,
+      "trailLast": null,
+      "pending": null,
+      "pendingAt": null
+     },
+     "after": {
+      "carry": null,
+      "far": null,
+      "trailCount": null,
+      "trailLast": null,
+      "pending": null,
+      "pendingAt": null
+     }
+    },
+    "carrying(CR4b)": {
+     "before": {
+      "carry": null,
+      "carrier": null,
+      "far": null,
+      "trailCount": null,
+      "trailLast": null,
+      "pulled": null,
+      "pending": null,
+      "pendingAt": null,
+      "wound": null,
+      "state": null
+     },
+     "after": {
+      "carry": null,
+      "carrier": null,
+      "far": null,
+      "trailCount": null,
+      "trailLast": null,
+      "pulled": null,
+      "pending": null,
+      "pendingAt": null,
+      "wound": null,
+      "state": null
+     }
+    },
+    "resumedAfterLoad(CR5)": {},
+    "staging": {
+     "reel1": [
+      82,
+      68
+     ],
+     "reel2": [
+      82,
+      74
+     ],
+     "colonists": 3,
+     "reel1_staged": {
+      "carry": null,
+      "seen": [
+       null
+      ],
+      "pawn": 558
+     },
+     "p1": 558,
+     "reel2_staged": {
+      "carry": null,
+      "seen": [
+       null
+      ],
+      "pawn": 562
+     },
+     "p2": 562
+    },
+    "allCarried": {
+     "before": {
+      "(189, 159)": {
+       "carry": "Dropped",
+       "carrier": null,
+       "far": [
+        202,
+        159
+       ],
+       "trailCount": 14,
+       "trailLast": [
+        202,
+        159
+       ],
+       "pulled": 11.5489,
+       "pending": "None",
+       "pendingAt": null,
+       "wound": 0,
+       "state": "Flat"
+      }
+     },
+     "after": {
+      "(189, 159)": {
+       "carry": "Dropped",
+       "carrier": null,
+       "far": [
+        202,
+        159
+       ],
+       "trailCount": 14,
+       "trailLast": [
+        202,
+        159
+       ],
+       "pulled": 11.5489,
+       "pending": "None",
+       "pendingAt": null,
+       "wound": 0,
+       "state": "Flat"
+      }
+     }
+    }
+   },
+   "block": "save_load"
+  },
+  {
+   "id": "PP1_preport_midcarry_save_loads",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "detail": "needs --preport-save MIDCARRY,MIDRETRACT: two saves made BEFORE the port, one with a colonist mid-carry and one mid-retract",
+   "block": "preport"
+  },
+  {
+   "id": "PP2_preport_midretract_save_loads",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "detail": "needs --preport-save MIDCARRY,MIDRETRACT: two saves made BEFORE the port, one with a colonist mid-carry and one mid-retract",
+   "block": "preport"
+  },
+  {
+   "id": "Z_log_budget",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "errorsNamingHoseOrFlowWorks": [],
+    "otherErrors": 0,
+    "tap": {
+     "polls": 833,
+     "lost": 0,
+     "kept": 1
+    },
+    "siteClearErrors": 0,
+    "newWarnings": 1
+   },
+   "block": "session"
+  }
+ ],
+ "blocks": {
+  "preflight": {
+   "wall_s": 21.0,
+   "rows": 2,
+   "raised": null
+  },
+  "matrix_hose": {
+   "wall_s": 54.0,
+   "rows": 9,
+   "raised": null
+  },
+  "hose": {
+   "wall_s": 37.0,
+   "rows": 6,
+   "raised": null
+  },
+  "maze": {
+   "wall_s": 20.9,
+   "rows": 8,
+   "raised": null
+  },
+  "relay": {
+   "wall_s": 6.5,
+   "rows": 8,
+   "raised": null
+  },
+  "carry": {
+   "wall_s": 44.6,
+   "rows": 8,
+   "raised": null
+  },
+  "style_hose": {
+   "wall_s": 10.5,
+   "rows": 6,
+   "raised": null
+  },
+  "realflow": {
+   "wall_s": 106.8,
+   "rows": 13,
+   "raised": null
+  },
+  "walls": {
+   "wall_s": 0.2,
+   "rows": 1,
+   "raised": null
+  },
+  "save_load": {
+   "wall_s": 166.1,
+   "rows": 4,
+   "raised": null
+  },
+  "preport": {
+   "wall_s": 1.1,
+   "rows": 2,
+   "raised": null
+  },
+  "session": {
+   "wall_s": 0.0,
+   "rows": 1,
+   "raised": null
+  }
+ },
+ "doc": "design/RimMandrake/hose_port_to_flowworks_design_FINAL_2026-10-10.md",
+ "offline": {
+  "red": [],
+  "steps": {
+   "hose_offline": {
+    "exit": 0,
+    "tail": [
+     "HO8_no_visible_fire_hose     PASS      35 hose files swept, planted hit seen",
+     "HO9_drawn_fittings_meet_ports PASS      12 drawn pieces (4 looks x coupling/nozzle/cap) match JoinerFace/PieceBand/*Max; planted gauge coupling refused"
+    ]
+   },
+   "style_hose_R0": {
+    "exit": 0,
+    "tail": [
+     "R0_reel_styles_offline       PASS      {'problems': [], 'reelDefSeen': True, 'artFilesFound': 36, 'defsXmlSwept': 2220, 'styleDefs': 4}"
+    ]
+   },
+   "hose_port_gates": {
+    "exit": 0,
+    "tail": [
+     "UNMEASURED  PP1/PP2 pre-port saves load through the aliases (live rows; no fixtures yet) -- P3/P8 above are source shape only",
+     "hose port gates: PASS (0 failing)"
+    ]
+   },
+   "selftest_proof_hose": {
+    "exit": 0,
+    "tail": [
+     "ok    _posix: a D: export path becomes /mnt/d (offline gate from python.exe), WSL paths unchanged ",
+     "selftest_proof_hose: PASS (0 failing)"
+    ]
+   },
+   "csharp_selftest": {
+    "exit": 0,
+    "tail": [
+     "  HoseFuzz: 4/4",
+     "hose: 428/428 assertions passed (moved from Gimme Some Slack: 336; new: 92)"
+    ]
+   },
+   "design_spec": {
+    "exit": 0,
+    "tail": [
+     "wrote /mnt/d/ClaudeWork/rimmandrake/scratch/fw_hose_proof/scenes_design.json"
+    ]
+   }
+  },
+  "wall_s": 303.3
+ },
+ "log_revive": {
+  "alive": true,
+  "sentinel": "[proof log sentinel] revive 1792835717444",
+  "emitted": true,
+  "why": null,
+  "cleared": true
+ },
+ "mod_hash": "ef6861ef2870eba21d8675b98971f17f903f625d141f16429351b8b0086f94c9",
+ "sweeps": {
+  "preflight": {
+   "route": "destroy_bulk",
+   "removed": 15,
+   "left": [],
+   "kept": 0
+  },
+  "matrix_hose": {
+   "route": "destroy_bulk",
+   "removed": 0,
+   "left": [],
+   "kept": 0
+  },
+  "hose": {
+   "route": "destroy_bulk",
+   "removed": 0,
+   "left": [],
+   "kept": 0
+  },
+  "maze": {
+   "route": "destroy_bulk",
+   "removed": 0,
+   "left": [],
+   "kept": 0
+  },
+  "relay": {
+   "route": "destroy_bulk",
+   "removed": 0,
+   "left": [],
+   "kept": 0
+  },
+  "carry": {
+   "route": "destroy_bulk",
+   "removed": 0,
+   "left": [],
+   "kept": 0
+  },
+  "style_hose": {
+   "route": "destroy_bulk",
+   "removed": 0,
+   "left": [],
+   "kept": 0
+  },
+  "realflow": {
+   "route": "destroy_bulk",
+   "removed": 0,
+   "left": [],
+   "kept": 0
+  },
+  "save_load": {
+   "route": "destroy_bulk",
+   "removed": 0,
+   "left": [],
+   "kept": 0
+  },
+  "preport": {
+   "route": "destroy_bulk",
+   "removed": 0,
+   "left": [],
+   "kept": 0
+  }
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "wall_s": 469.5,
+ "site_notes": [
+  {
+   "id": "H0_probe_channel",
+   "detail": "defaults applied"
+  },
+  {
+   "id": "H1_reels_built",
+   "detail": {
+    "reels": 11,
+    "build": true,
+    "walls": true,
+    "textures": true
+   }
+  },
+  {
+   "id": "RL1_reels_built",
+   "detail": {
+    "build": true,
+    "maxLength": 40
+   }
+  },
+  {
+   "id": "CR0_scene",
+   "detail": {
+    "pawn": {
+     "id": 558,
+     "name": "Noah",
+     "pos": [
+      85,
+      68
+     ],
+     "drafted": false,
+     "downed": false,
+     "job": null,
+     "forced": false,
+     "driver": null,
+     "toil": -1
+    },
+    "reel": [
+     82,
+     68
+    ]
+   }
+  }
+ ],
+ "certifiable": true,
+ "site_calm_blocks": {
+  "matrix_hose": true,
+  "hose": true,
+  "maze": true,
+  "relay": true,
+  "carry": true,
+  "style_hose": true,
+  "realflow": true,
+  "save_load": true,
+  "preport": true
+ },
+ "huge_plants_cleared": {
+  "matrix_hose": {
+   "blockers": 0,
+   "tiles": 0,
+   "blockersLeft": 0
+  },
+  "hose": {
+   "blockers": 0,
+   "tiles": 0,
+   "blockersLeft": 0
+  },
+  "maze": {
+   "blockers": 0,
+   "tiles": 0,
+   "blockersLeft": 0
+  },
+  "relay": {
+   "blockers": 0,
+   "tiles": 0,
+   "blockersLeft": 0
+  },
+  "carry": {
+   "blockers": 0,
+   "tiles": 0,
+   "blockersLeft": 0
+  },
+  "style_hose": {
+   "blockers": 0,
+   "tiles": 0,
+   "blockersLeft": 0
+  },
+  "realflow": {
+   "blockers": 0,
+   "tiles": 0,
+   "blockersLeft": 0
+  },
+  "save_load": {
+   "blockers": 0,
+   "tiles": 0,
+   "blockersLeft": 0
+  },
+  "preport": {
+   "blockers": 0,
+   "tiles": 0,
+   "blockersLeft": 0
+  }
+ },
+ "save": "RM_fw_hose_proof_20261024030249.rws",
+ "site_calm_restore": false
+}

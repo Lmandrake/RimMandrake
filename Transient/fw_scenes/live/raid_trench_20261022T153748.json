@@ -1,0 +1,4343 @@
+{
+ "script": "raid_trench_proof.py",
+ "mode": "live",
+ "rows": [
+  {
+   "id": "RAID_island_sealed",
+   "status": "PASS",
+   "detail": {
+    "read": "CLIFF k=2 bits=0xCB vanilla=0xFF derived=True derives=2 | POCKET k=2 comp=2 pocket=False size=81 depth=0 gen=706 built=706 rebuilds=89",
+    "eastBit": false
+   }
+  },
+  {
+   "id": "RAID_outcome",
+   "status": "MEASURED",
+   "detail": {
+    "outcome": [
+     "LEFT",
+     "STALL",
+     "SHOT_ACROSS"
+    ],
+    "firstColonistDownOnIsland": {
+     "tick": 1250,
+     "nearestHostile": 7
+    },
+    "raidersSeen": 6,
+    "onIsland": [],
+    "inTrench": [],
+    "cameNear": [
+     "Human46128",
+     "Human46135"
+    ],
+    "despawnedAlive": [
+     "Human46143",
+     "Human46153",
+     "Human46159"
+    ],
+    "aliveNearAtEnd": 2,
+    "lateMovePerRaiderPerSample": 0.0,
+    "ticksWatched": 15000,
+    "lords": [
+     {
+      "job": "LordJob_SleepThenAssaultColony",
+      "faction": "Mechanoid",
+      "pawns": 4
+     },
+     {
+      "job": "LordJob_AssaultColony",
+      "faction": "PirateYttakin",
+      "pawns": 2
+     }
+    ],
+    "jobTrace": {
+     "Human46121": "duty=none toil=none job=Wait_Downed giver=JobGiver_IdleForever started=12232 exp=2500 enemy=none | workEnds n=0 | next=None",
+     "Human46128": "duty=Kidnap toil=LordToil_KidnapCover job=Wait giver=none started=14841 exp=250 enemy=none | workEnds n=2 sameTick=0 last=InterruptForced@toil0 t=2521 | next=RM_RaiderFillTrench (131, 0, 124) reachOwn=True reachPather=True immediate=False reserve=True",
+     "Human46135": "duty=Kidnap toil=LordToil_KidnapCover job=Wait giver=none started=14640 exp=250 enemy=none | workEnds n=1 sameTick=0 last=InterruptForced@toil1 t=1320 | next=RM_RaiderFillTrench (131, 0, 124) reachOwn=True reachPather=True immediate=True reserve=True"
+    }
+   }
+  },
+  {
+   "id": "MASKSWAP_no_wall_crossing",
+   "status": "PASS",
+   "detail": {
+    "raidersWithin15": 2,
+    "islandSealed": "PASS",
+    "sampledOnIslandOrTrench": [],
+    "churnRebuilds": 60,
+    "raiderWays": [],
+    "caveat": "sampled every 250 ticks; never seen, not proven impossible; a crossing over the raid's own ladder/plank is legal (RAIDERS_TRENCH) and masks the question"
+   }
+  },
+  {
+   "id": "RAID_FILL_CAUSEWAY",
+   "status": "FAIL",
+   "detail": {
+    "onIsland": [],
+    "inTrench": [],
+    "raiderWays": [],
+    "filledSquares": [],
+    "wallsLaddered": [],
+    "outcome": [
+     "LEFT",
+     "STALL",
+     "SHOT_ACROSS"
+    ],
+    "bar": "raiders within 15 squares; raider-faction ladders/planks on both trench walls and a raider used them (in the trench or on the island) -- no stall"
+   }
+  }
+ ],
+ "samples": [
+  {
+   "tick": 250,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 155,
+     "z": 125,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 149,
+     "z": 121,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 155,
+     "z": 120,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46143",
+     "x": 157,
+     "z": 122,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46153",
+     "x": 155,
+     "z": 125,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Slasher"
+    },
+    {
+     "id": "Human46159",
+     "x": 150,
+     "z": 129,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Slasher"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human613",
+     "x": 123,
+     "z": 125,
+     "dead": false,
+     "downed": false
+    },
+    {
+     "id": "Human616",
+     "x": 125,
+     "z": 124,
+     "dead": false,
+     "downed": false
+    },
+    {
+     "id": "Human619",
+     "x": 123,
+     "z": 123,
+     "dead": false,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 500,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 155,
+     "z": 125,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 141,
+     "z": 126,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 153,
+     "z": 120,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46143",
+     "x": 157,
+     "z": 122,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46153",
+     "x": 155,
+     "z": 125,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Slasher"
+    },
+    {
+     "id": "Human46159",
+     "x": 150,
+     "z": 129,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Slasher"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 125,
+     "dead": false,
+     "downed": false
+    },
+    {
+     "id": "Human616",
+     "x": 127,
+     "z": 121,
+     "dead": false,
+     "downed": false
+    },
+    {
+     "id": "Human619",
+     "x": 122,
+     "z": 123,
+     "dead": false,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 750,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 155,
+     "z": 125,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 141,
+     "z": 126,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 138,
+     "z": 121,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46143",
+     "x": 157,
+     "z": 122,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46153",
+     "x": 155,
+     "z": 125,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Slasher"
+    },
+    {
+     "id": "Human46159",
+     "x": 150,
+     "z": 129,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Slasher"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human613",
+     "x": 125,
+     "z": 127,
+     "dead": false,
+     "downed": false
+    },
+    {
+     "id": "Human616",
+     "x": 125,
+     "z": 123,
+     "dead": false,
+     "downed": false
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 1000,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 155,
+     "z": 125,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 141,
+     "z": 126,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46143",
+     "x": 157,
+     "z": 122,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46153",
+     "x": 155,
+     "z": 125,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Slasher"
+    },
+    {
+     "id": "Human46159",
+     "x": 150,
+     "z": 129,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Slasher"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human613",
+     "x": 125,
+     "z": 128,
+     "dead": false,
+     "downed": false
+    },
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": false
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 1250,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 155,
+     "z": 125,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 141,
+     "z": 126,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46143",
+     "x": 157,
+     "z": 122,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46153",
+     "x": 155,
+     "z": 125,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Slasher"
+    },
+    {
+     "id": "Human46159",
+     "x": 150,
+     "z": 129,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Slasher"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": false
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 1500,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 155,
+     "z": 125,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 141,
+     "z": 126,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46143",
+     "x": 157,
+     "z": 122,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46153",
+     "x": 155,
+     "z": 125,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Slasher"
+    },
+    {
+     "id": "Human46159",
+     "x": 150,
+     "z": 129,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Slasher"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": false
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 1750,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 155,
+     "z": 125,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 141,
+     "z": 126,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46143",
+     "x": 157,
+     "z": 122,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46153",
+     "x": 155,
+     "z": 125,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Slasher"
+    },
+    {
+     "id": "Human46159",
+     "x": 150,
+     "z": 129,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Slasher"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": false
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 2000,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 155,
+     "z": 125,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 141,
+     "z": 126,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46143",
+     "x": 157,
+     "z": 122,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46153",
+     "x": 155,
+     "z": 125,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Slasher"
+    },
+    {
+     "id": "Human46159",
+     "x": 150,
+     "z": 129,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Slasher"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": false
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    }
+   ]
+  },
+  {
+   "tick": 2250,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 155,
+     "z": 125,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 141,
+     "z": 126,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46143",
+     "x": 157,
+     "z": 122,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46153",
+     "x": 155,
+     "z": 125,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Slasher"
+    },
+    {
+     "id": "Human46159",
+     "x": 150,
+     "z": 129,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Slasher"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    }
+   ]
+  },
+  {
+   "tick": 2500,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 157,
+     "z": 121,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46143",
+     "x": 158,
+     "z": 125,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46153",
+     "x": 159,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Slasher"
+    },
+    {
+     "id": "Human46159",
+     "x": 149,
+     "z": 128,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Slasher"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 3,
+     "z": 3,
+     "dead": false,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 2750,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46143",
+     "x": 163,
+     "z": 143,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46153",
+     "x": 162,
+     "z": 138,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Slasher"
+    },
+    {
+     "id": "Human46159",
+     "x": 153,
+     "z": 144,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Slasher"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 5,
+     "z": 5,
+     "dead": false,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 3000,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46143",
+     "x": 165,
+     "z": 160,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46153",
+     "x": 164,
+     "z": 154,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Slasher"
+    },
+    {
+     "id": "Human46159",
+     "x": 153,
+     "z": 163,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Slasher"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 8,
+     "z": 5,
+     "dead": false,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 3250,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46143",
+     "x": 160,
+     "z": 175,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46153",
+     "x": 164,
+     "z": 166,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Slasher"
+    },
+    {
+     "id": "Human46159",
+     "x": 153,
+     "z": 184,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Slasher"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 8,
+     "z": 5,
+     "dead": false,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 3500,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46143",
+     "x": 159,
+     "z": 187,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46153",
+     "x": 165,
+     "z": 179,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Slasher"
+    },
+    {
+     "id": "Human46159",
+     "x": 156,
+     "z": 199,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Slasher"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 7,
+     "z": 8,
+     "dead": false,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 3750,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46143",
+     "x": 161,
+     "z": 202,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46153",
+     "x": 164,
+     "z": 191,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Slasher"
+    },
+    {
+     "id": "Human46159",
+     "x": 159,
+     "z": 219,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Slasher"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 7,
+     "z": 7,
+     "dead": false,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 4000,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46143",
+     "x": 163,
+     "z": 219,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46153",
+     "x": 162,
+     "z": 204,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Slasher"
+    },
+    {
+     "id": "Human46159",
+     "x": 158,
+     "z": 239,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Slasher"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 9,
+     "z": 2,
+     "dead": false,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 4250,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46143",
+     "x": 165,
+     "z": 238,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46153",
+     "x": 164,
+     "z": 216,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Slasher"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 9,
+     "z": 2,
+     "dead": false,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 4500,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46153",
+     "x": 164,
+     "z": 231,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Slasher"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 12,
+     "z": 0,
+     "dead": false,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 4750,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46153",
+     "x": 164,
+     "z": 245,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Slasher"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 12,
+     "z": 0,
+     "dead": false,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 5000,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 10,
+     "z": 0,
+     "dead": false,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 5250,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 7,
+     "z": 0,
+     "dead": false,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 5500,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 6,
+     "z": 1,
+     "dead": false,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 5750,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 4,
+     "z": 0,
+     "dead": false,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 6000,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 4,
+     "z": 1,
+     "dead": false,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 6250,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 6,
+     "z": 5,
+     "dead": false,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 6500,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 6,
+     "z": 5,
+     "dead": false,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 6750,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 1,
+     "z": 4,
+     "dead": false,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 7000,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 0,
+     "z": 5,
+     "dead": false,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 7250,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 2,
+     "z": 1,
+     "dead": false,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 7500,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 3,
+     "z": 0,
+     "dead": false,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 7750,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 7,
+     "z": 1,
+     "dead": false,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 8000,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 8,
+     "z": 2,
+     "dead": false,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 8250,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 5,
+     "z": 2,
+     "dead": false,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 8500,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 3,
+     "z": 4,
+     "dead": false,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 8750,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 6,
+     "z": 6,
+     "dead": false,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 9000,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 5,
+     "z": 7,
+     "dead": false,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 9250,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 7,
+     "z": 7,
+     "dead": false,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 9500,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 7,
+     "z": 7,
+     "dead": false,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 9750,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": true,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 7,
+     "z": 4,
+     "dead": false,
+     "downed": false
+    },
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": true,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 10000,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": true,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 7,
+     "z": 4,
+     "dead": false,
+     "downed": false
+    },
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": true,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 10250,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": true,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 8,
+     "z": 1,
+     "dead": false,
+     "downed": false
+    },
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": true,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 10500,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": true,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 7,
+     "z": 1,
+     "dead": false,
+     "downed": false
+    },
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": true,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 10750,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": true,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 3,
+     "z": 2,
+     "dead": false,
+     "downed": false
+    },
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": true,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 11000,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": true,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 3,
+     "z": 2,
+     "dead": false,
+     "downed": false
+    },
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": true,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 11250,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": true,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 8,
+     "z": 0,
+     "dead": false,
+     "downed": false
+    },
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": true,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 11500,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": true,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 8,
+     "z": 0,
+     "dead": false,
+     "downed": false
+    },
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": true,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 11750,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": true,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 8,
+     "z": 3,
+     "dead": false,
+     "downed": false
+    },
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": true,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 12000,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": true,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 9,
+     "z": 5,
+     "dead": false,
+     "downed": false
+    },
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": true,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 12250,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": true,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 4,
+     "z": 3,
+     "dead": false,
+     "downed": false
+    },
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": true,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 12500,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": true,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 3,
+     "z": 2,
+     "dead": false,
+     "downed": false
+    },
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": true,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 12750,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": true,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 5,
+     "z": 5,
+     "dead": false,
+     "downed": false
+    },
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": true,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 13000,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": true,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 7,
+     "z": 7,
+     "dead": false,
+     "downed": false
+    },
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": true,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 13250,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": true,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 5,
+     "z": 7,
+     "dead": false,
+     "downed": false
+    },
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": true,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 13500,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": true,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 1,
+     "z": 5,
+     "dead": false,
+     "downed": false
+    },
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": true,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 13750,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": true,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 2,
+     "z": 5,
+     "dead": false,
+     "downed": false
+    },
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": true,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 14000,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": true,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 6,
+     "z": 5,
+     "dead": false,
+     "downed": false
+    },
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": true,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 14250,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": true,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 6,
+     "z": 5,
+     "dead": false,
+     "downed": false
+    },
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": true,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 14500,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": true,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 2,
+     "z": 8,
+     "dead": false,
+     "downed": false
+    },
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": true,
+     "downed": false
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": true,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 14750,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": true,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 2,
+     "z": 8,
+     "dead": false,
+     "downed": false
+    },
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": true,
+     "downed": false
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": true,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 15000,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human46121",
+     "x": 141,
+     "z": 121,
+     "dead": false,
+     "downed": true,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46128",
+     "x": 135,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human46135",
+     "x": 132,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human616",
+     "x": 124,
+     "z": 124,
+     "dead": false,
+     "downed": true
+    },
+    {
+     "id": "Human54686",
+     "x": 6,
+     "z": 6,
+     "dead": false,
+     "downed": false
+    },
+    {
+     "id": "Human613",
+     "x": 126,
+     "z": 127,
+     "dead": true,
+     "downed": false
+    },
+    {
+     "id": "Human619",
+     "x": 125,
+     "z": 126,
+     "dead": true,
+     "downed": false
+    }
+   ]
+  }
+ ],
+ "log": [
+  "quicktest map up: True (17 s)",
+  "threat structures: {'removed': [('Hive', 'Hive45471'), ('GlowPod', 'GlowPod45486'), ('EggSac', 'EggSac45487')], 'threatsAfter': 0, 'error': None}",
+  "scene: centre (125, 125), island 9x9, trench 88 squares D 4 (2 m) width 2, colonists on the island: [613, 616, 619]",
+  "RAID_island_sealed         PASS       {\"read\": \"CLIFF k=2 bits=0xCB vanilla=0xFF derived=True derives=2 | POCKET k=2 comp=2 pocket=False size=81 depth=0 gen=706 built=706 rebuilds=89\", \"eastBit\": false}",
+  "assault faction: PirateYttakin (hostile factions on this map: ['TribeRoughNeanderthal', 'PirateYttakin', 'TribeSavageImpid', 'OutlanderRoughPig', 'PirateWaster', 'AncientsHostile', 'Mechanoid', 'Insect', 'HoraxCult', 'Entities', 'RM_Thozziks', 'Salvagers'])",
+  "direct assault: 6 pawns ['Human46121', 'Human46128', 'Human46135', 'Human46143', 'Human46153', 'Human46159']; lord {\"success\": true, \"lordIndex\": 1, \"faction\": \"PirateYttakin\", \"requested\": 6, \"memberCount\": 6, \"members\": [\"Sam\", \"Shadow\", \"Hoark\", \"Harris\", \"Raywolfen\", \"Kin'faytt\"], \"flags\": {\"canKidnap\": true, \"canTimeoutOrFlee\": true, \"sappers\": false, \"useAvoidGridSmart\": false, \"canSteal\": true, \"breachers",
+  "  t+  250  raiders 6 (near 0, dead 0, downed 0)  closest 24  colonists down/dead 0",
+  "  t+ 2000  raiders 6 (near 1, dead 0, downed 0)  closest 7  colonists down/dead 2",
+  "  t+ 4000  raiders 6 (near 2, dead 0, downed 0)  closest 7  colonists down/dead 3",
+  "  t+ 6000  raiders 3 (near 2, dead 0, downed 0)  closest 7  colonists down/dead 3",
+  "  t+ 8000  raiders 3 (near 2, dead 0, downed 0)  closest 7  colonists down/dead 3",
+  "  t+10000  raiders 3 (near 2, dead 0, downed 1)  closest 7  colonists down/dead 3",
+  "  t+12000  raiders 3 (near 2, dead 0, downed 1)  closest 7  colonists down/dead 3",
+  "  t+14000  raiders 3 (near 2, dead 0, downed 1)  closest 7  colonists down/dead 3",
+  "RAID_outcome               MEASURED   {\"outcome\": [\"LEFT\", \"STALL\", \"SHOT_ACROSS\"], \"firstColonistDownOnIsland\": {\"tick\": 1250, \"nearestHostile\": 7}, \"raidersSeen\": 6, \"onIsland\": [], \"inTrench\": [], \"cameNear\": [\"Human46128\", \"Human46135\"], \"despawnedAlive\": [\"Human46143\", \"Human46153\", \"Human46159\"], \"aliveNearAtEnd\": 2, \"lateMovePerRaiderPerSample\": 0.0, \"ticksWatched\": 15000, \"lords\": [{\"job\": \"LordJob_SleepThenAssaultColony\", \"faction\": \"Mechanoid\", \"pawns\": 4}, {\"job\": \"LordJob_AssaultColony\", \"faction\": \"PirateYttakin\", \"pawns\": 2}], \"jobTrace\": {\"Human46121\": \"duty=none toil=none job=Wait_Downed giver=JobGiver_IdleForever ",
+  "MASKSWAP_no_wall_crossing  PASS       {\"raidersWithin15\": 2, \"islandSealed\": \"PASS\", \"sampledOnIslandOrTrench\": [], \"churnRebuilds\": 60, \"raiderWays\": [], \"caveat\": \"sampled every 250 ticks; never seen, not proven impossible; a crossing over the raid's own ladder/plank is legal (RAIDERS_TRENCH) and masks the question\"}",
+  "RAID_FILL_CAUSEWAY         FAIL       {\"onIsland\": [], \"inTrench\": [], \"raiderWays\": [], \"filledSquares\": [], \"wallsLaddered\": [], \"outcome\": [\"LEFT\", \"STALL\", \"SHOT_ACROSS\"], \"bar\": \"raiders within 15 squares; raider-faction ladders/planks on both trench walls and a raider used them (in the trench or on the island) -- no stall\"}",
+  "result: Transient\\fw_scenes\\live\\raid_trench_20261022T153748.json",
+  "storyteller restore: enableStoryteller restored to True"
+ ],
+ "centre": [
+  125,
+  125
+ ],
+ "raid": {
+  "success": true,
+  "lordIndex": 1,
+  "faction": "PirateYttakin",
+  "requested": 6,
+  "memberCount": 6,
+  "members": [
+   "Sam",
+   "Shadow",
+   "Hoark",
+   "Harris",
+   "Raywolfen",
+   "Kin'faytt"
+  ],
+  "flags": {
+   "canKidnap": true,
+   "canTimeoutOrFlee": true,
+   "sappers": false,
+   "useAvoidGridSmart": false,
+   "canSteal": true,
+   "breachers": false,
+   "canPickUpOpportunisticWeapons": false
+  },
+  "refused": [],
+  "notAdded": [],
+  "ticksGame": 73,
+  "operation": {
+   "OperationId": "op_81ed66df6ac7461f9e8521373f188cb5",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 73
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 73
+  }
+ },
+ "screenshot": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Screenshots\\raid_trench_1792708770.png"
+}

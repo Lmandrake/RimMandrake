@@ -1,0 +1,231 @@
+{
+ "name": "FlowWorksExtensions__works__letter_unexpected__t2__001",
+ "when_utc": "2026-10-17T19:20:46Z",
+ "hits": [
+  {
+   "detector": "letter_unexpected",
+   "severity": "SURPRISE",
+   "summary": "new letter [ThreatSmall] Seasonal flooding",
+   "evidence": {
+    "defName": "ThreatSmall",
+    "label": "Seasonal flooding",
+    "arrivalTick": 2,
+    "count": 1,
+    "known_defName": true
+   },
+   "suggest": [],
+   "focus": null,
+   "fingerprint": "letter_unexpected:('ThreatSmall', 'Seasonal flooding', 2)"
+  }
+ ],
+ "snapshot": {
+  "tick": 2,
+  "epoch": 0,
+  "map_id": 5,
+  "pawns": [],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "Seasonal flooding",
+    "arrivalTick": 2,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "Seasonal flooding",
+     2
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 0,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 6,
+   "adaptDays": 0.0,
+   "totalThreatPointsFactor": 0.8,
+   "ticksGame": 2
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": false
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Error",
+   "Exception registering Verse.Pawn Verse.Pawn in loaded object directory with unique thing ID -1: System.ArgumentException: An item with the same key has already been added. Key: -1\r\n[Ref FF0803AD] Duplicate stacktrace, see ref for original"
+  ],
+  [
+   "Error",
+   "Exception registering Verse.Pawn Verse.Pawn in loaded object directory with unique load ID [excepted]: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref A461AFC4] Duplicate stacktrace, see ref for original"
+  ],
+  [
+   "Error",
+   "Exception registering Verse.Pawn Verse.Pawn in loaded object directory with unique thing ID -1: System.ArgumentException: An item with the same key has already been added. Key: -1\r\n[Ref FF0803AD] Duplicate stacktrace, see ref for original"
+  ],
+  [
+   "Error",
+   "Exception registering Verse.Pawn Verse.Pawn in loaded object directory with unique load ID [excepted]: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref A461AFC4] Duplicate stacktrace, see ref for original"
+  ],
+  [
+   "Error",
+   "Exception registering Verse.Pawn Verse.Pawn in loaded object directory with unique thing ID -1: System.ArgumentException: An item with the same key has already been added. Key: -1\r\n[Ref FF0803AD] Duplicate stacktrace, see ref for original"
+  ],
+  [
+   "Error",
+   "Exception registering Verse.Pawn Verse.Pawn in loaded object directory with unique load ID [excepted]: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref A461AFC4] Duplicate stacktrace, see ref for original"
+  ],
+  [
+   "Error",
+   "Exception registering Verse.Pawn Verse.Pawn in loaded object directory with unique thing ID -1: System.ArgumentException: An item with the same key has already been added. Key: -1\r\n[Ref FF0803AD] Duplicate stacktrace, see ref for original"
+  ],
+  [
+   "Error",
+   "Exception registering Verse.Pawn Verse.Pawn in loaded object directory with unique load ID [excepted]: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref A461AFC4] Duplicate stacktrace, see ref for original"
+  ],
+  [
+   "Error",
+   "Exception registering Verse.Pawn Verse.Pawn in loaded object directory with unique thing ID -1: System.ArgumentException: An item with the same key has already been added. Key: -1\r\n[Ref FF0803AD] Duplicate stacktrace, see ref for original"
+  ],
+  [
+   "Error",
+   "Could not resolve cross refs: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref F55C3116]\n  at Verse.Thing.ExposeData () [0x00028] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.ThingWithComps.ExposeData () [0x00000] in <61e4173561894da49d210260257b5097>:"
+  ],
+  [
+   "Error",
+   "Could not resolve cross refs: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref F55C3116] Duplicate stacktrace, see ref for original"
+  ],
+  [
+   "Error",
+   "Precept_Animal had null thingDef after loading."
+  ],
+  [
+   "Error",
+   "Apparel_VestRoyal515 is made from stuff but has no stuff set. Setting default stuff."
+  ],
+  [
+   "Error",
+   "Some pawnsAlive were null after loading."
+  ],
+  [
+   "Error",
+   "Some pawnsDead were null after loading."
+  ],
+  [
+   "Warning",
+   "Some auto-slaughter configs had null animals after loading."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] volume model 2 -> 3: 0 limited pond(s) rescaled; canals unchanged; tanks keep every stored litre."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] excavation load repair: 0 depth, 0 fill, 0 fluid key(s) fixed; 1 unused palette entry dropped."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] level model 0 -> 1 (exact decilitres, one surface per body): canals 0 wet square(s), 0 L before and after (0 limited pond(s))."
+  ],
+  [
+   "Message",
+   "[JawaBench] TPS marker game: session 5dfd2ce295564ce287c915ab56706ad9 seq 203 utc 2026-10-17T19:20:34.432Z"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "LudeonTK.Dialog_DevPalette",
+   "layer": "Dialog",
+   "id": 13,
+   "isDebug": true,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "layer": "Super",
+   "id": -1594957246,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 3,
+   "type": "Verse.ImmediateWindow",
+   "layer": "Super",
+   "id": -1594957181,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 4,
+   "type": "Verse.ImmediateWindow",
+   "layer": "Super",
+   "id": -1594957120,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 0,
+  "overhead_spent": 0,
+  "total_spent": 0,
+  "epoch": 0,
+  "last_seen_tick": 2,
+  "open_frames": [],
+  "entries": []
+ },
+ "context": {
+  "mod": "FlowWorksExtensions",
+  "chain": "works",
+  "policy": "record"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\bench\\Transient\\modcheck\\surprises\\20261017T122037\\FlowWorksExtensions__works__letter_unexpected__t2__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 8325027,
+  "width": 3467,
+  "height": 1826,
+  "md5": "30e4f21ec9d0bfddf4fc4da0751a65b5",
+  "why": ""
+ },
+ "notes": []
+}

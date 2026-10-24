@@ -1,9 +1,9 @@
 [
  {
   "id": "S1.a",
-  "status": "MATCHES",
+  "status": "DIFFERS",
   "doc": "All 8 canal cells hold 1 level.",
-  "game": "all 8 hold 1 level first at pulse 8"
+  "game": "all 8 hold 1 level first at pulse None"
  },
  {
   "id": "S1.b",
@@ -19,8 +19,8 @@
  },
  {
   "id": "S1.d",
-  "status": "MATCHES",
+  "status": "UNMEASURED",
   "doc": "The lake never visibly shrinks (LIMITLESS).",
-  "game": "lake limitless at every pulse: True (stock 616.0 -> 616.0)"
+  "game": "lake limitless at every pulse: False (stock None -> None)"
  }
 ]

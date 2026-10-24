@@ -1,0 +1,245 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_e2e_weepingstones_20261023",
+ "built": "2026-10-23T06:33:27-0700",
+ "census": "Transient/biome_ffar/art_eval_shadow_e2e_weepingstones_20261023.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 14 mods \u2014 a test list): 320 active",
+ "rows": {
+  "RM_Burrak": {
+   "columns": {
+    "A": {
+     "east": "7f02d5f9b617bcbd01dc532a07bbac0d27a719e1a6345b9cb54b5e559eb7a37b",
+     "north": "772e1ecb8a196c752934b99b00b77785f097f4c7f44a36489ae6f8c12bff2987",
+     "south": "508d91f7cc057d871895fa5f34ffd068880c8b6689301721f11eee783bd3e89c"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Burrak/RM_Burrak"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 WeepingStones"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Burrak/RM_Burrak"
+   ],
+   "res": "Things/Pawn/Animal/RM_Burrak/RM_Burrak",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "burrak"
+  },
+  "RM_Huldu": {
+   "columns": {
+    "A": {
+     "east": "308e8e9a7ddc6e5bd8b4a771ca6c07a60176e3e025e0f634df8b51ff5708cb8b",
+     "north": "960868de2da9cdcf86cab27bc86377ca70896d74111cc51d70d0791df31b8955",
+     "south": "626542cd94627f7069720e728efcf59bd379bc8fa7a3f212461bca6695de2701"
+    },
+    "B": {
+     "east": "1ae19ed711bb983d4e8658821d768551c67629ae93ad840f8b087a37ef490662",
+     "north": "3aee15d32350d707373584f900c78976c6bf3bde1564b421f2df2d3e9c89fa7f",
+     "south": "b6050e2bd0befe1d2775034e75cf9b6ebcdc6614400ec97000901dac3e7f00b3"
+    },
+    "C": {
+     "east": "26136762c89acb348ea480211859add4ae8f4139f13115cb7419d03e382989ed",
+     "north": "8da5b6923d668f32e08dc23d4a5e7cf47c22655c35e9706ab5eedf4e0b32c642",
+     "south": "903b315e9bab8446207d3c96c7db71c37f393667e36adc800fd51e6d9396db9b"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Huldu/RM_Huldu",
+    "B": "Things/Pawn/Animal/RM_Huldu/RM_Huldu",
+    "C": "Things/Pawn/Animal/RM_Huldu/RM_Huldu"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 WeepingStones",
+    "B": "render enact_9f4d6fc2_huldu_v1",
+    "C": "render weepingstones_huldu"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Huldu/RM_Huldu"
+   ],
+   "res": "Things/Pawn/Animal/RM_Huldu/RM_Huldu",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "huldu"
+  },
+  "RM_HulduCatch": {
+   "columns": {
+    "A": {
+     "single": "16c98b90489fb7748a34ff332aee2ce62dde56bba0cf1c55141ef63827efce78"
+    },
+    "B": {
+     "east": "38110daacc015fbdb2c945eb140dfd9c98f98488015bfefdea5c294c9df98930",
+     "north": "10156d12fda8b1e4a2fce8f8367af13cbc7850e9c52dab9a06ff6af73b26f5b2",
+     "south": "ff2a50bdb46723fcf6bc67a4461b2e30ba38d8f0c7e1a5a85ccf8ef3407a95fd"
+    },
+    "C": {
+     "east": "1ae19ed711bb983d4e8658821d768551c67629ae93ad840f8b087a37ef490662",
+     "north": "3aee15d32350d707373584f900c78976c6bf3bde1564b421f2df2d3e9c89fa7f",
+     "south": "b6050e2bd0befe1d2775034e75cf9b6ebcdc6614400ec97000901dac3e7f00b3"
+    },
+    "D": {
+     "east": "308e8e9a7ddc6e5bd8b4a771ca6c07a60176e3e025e0f634df8b51ff5708cb8b",
+     "north": "960868de2da9cdcf86cab27bc86377ca70896d74111cc51d70d0791df31b8955",
+     "south": "626542cd94627f7069720e728efcf59bd379bc8fa7a3f212461bca6695de2701"
+    },
+    "E": {
+     "east": "26136762c89acb348ea480211859add4ae8f4139f13115cb7419d03e382989ed",
+     "north": "8da5b6923d668f32e08dc23d4a5e7cf47c22655c35e9706ab5eedf4e0b32c642",
+     "south": "903b315e9bab8446207d3c96c7db71c37f393667e36adc800fd51e6d9396db9b"
+    },
+    "F": {
+     "single": "e26a5b50c9c005561b0dd943d2b84e7eeb3db3b5b29d66d55818e46b8e794e94"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Fish/RM_HulduCatch",
+    "B": "Things/Item/Fish/RM_HulduCatch",
+    "C": "_reference:RM_Huldu",
+    "D": "_reference:RM_Huldu",
+    "E": "_reference:RM_Huldu",
+    "F": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 WeepingStones",
+    "B": "render enact_26d21692_hulducatch_v1",
+    "C": "render enact_9f4d6fc2_huldu_v1",
+    "D": "render enact_huldu_from_c_v2",
+    "E": "render weepingstones_huldu",
+    "F": "render gapall_RM_HulduCatch_v1"
+   },
+   "pools": [],
+   "res": "Things/Item/Fish/RM_HulduCatch",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
+   "shownBase": [],
+   "subject_key": "hulducatch"
+  },
+  "RM_Shadefern": {
+   "columns": {
+    "A": {
+     "single": "25b81180c5d14513c8c6a50f9a5994992717547992c99885a364546929716922"
+    },
+    "B": {
+     "single": "0ecb9766ce2654949dbc2df19f74277fb98a3a8b9f77370f05526433f5a936ea"
+    },
+    "C": {
+     "single": "42b88aba32be22df1a2d223b1f9131a8bcfbe64e8cc04d8e534d4c0883f468c8"
+    },
+    "D": {
+     "single": "eeb6a1d8b1b7cbc54e7beceda649d485f47ece8af08fbccd0571310664db6284"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Shadefern",
+    "B": "Things/Plant/RM_Shadefern",
+    "C": "Things/Plant/RM_Shadefern",
+    "D": "Things/Plant/RM_Shadefern"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RM_Shadefern_a (1 of 2) \u2014 WeepingStones",
+    "B": "IN GAME \u2014 random variant RM_Shadefern_b (2 of 2) \u2014 WeepingStones",
+    "C": "render wsvar_shadefern_b_v1",
+    "D": "render weepingstones2_shadefern"
+   },
+   "pools": [
+    "Things/Plant/RM_Shadefern"
+   ],
+   "res": "Things/Plant/RM_Shadefern",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "shadefern"
+  },
+  "RM_Ssurr": {
+   "columns": {
+    "A": {
+     "east": "522935c4248b99068da0c202108a98d4aa71b632c8a261c1e562273eadd4293c",
+     "north": "530b2469521232c736fc1c623fef044d164d9785a6ff74ee66ec05ec1bb5ce7c",
+     "south": "d45d511069d0a7df46c97bcb4693220d9b77670e31c3f394036d1d306c71c365"
+    },
+    "B": {
+     "east": "952013656ee140fedbe8316b1089f32df22b9acdcc1dcfa5adb8205b4c65f6f7",
+     "north": "00627f74cb7e3bab9744a9b6d40909c40bf9959b4eb8e7588e86aab5bb4a616a",
+     "south": "2ae50f3e85486040e3f9b108a152cd09b5cd4127893f85f58387fc33c5fc3786"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Ssurr/RM_Ssurr",
+    "B": "Things/Pawn/Animal/RM_Ssurr/RM_Ssurr"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 WeepingStones",
+    "B": "render weepingstones2_ssurr"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Ssurr/RM_Ssurr"
+   ],
+   "res": "Things/Pawn/Animal/RM_Ssurr/RM_Ssurr",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "ssurr"
+  },
+  "RM_Vellak": {
+   "columns": {
+    "A": {
+     "east": "8a2eed2f99925a69bdf77bd9c6d53f240225d74b6964c2150282811a90b6da97",
+     "north": "e3eb7013f22e23391d26ae46e46e51b393ba746dc602cf3c96cfd9daf0fa02bc",
+     "south": "7b8f75708adc19877cff4853494285ae66d0fdcf392c758d0a9ba3b43fe0c204"
+    },
+    "B": {
+     "east": "828cb0ac7399669ceadfbf4b8ed240ed19002d13a1f1833f1824d0e89277c580",
+     "north": "ebadd5dcc09f1cee86165510adb461435a6aa005cf8d685014ffd5fb5d04674f",
+     "south": "b187d277748b24ae70ebb167c226adfffedb6dd43159051d5ef99b4501f5431b"
+    },
+    "C": {
+     "east": "2249b4e15a50be2fb77f971a2c152f1ce0ed41e5aeba9652dec9a264a1816cdb",
+     "north": "5d9c685accfd3ca940ed20cb682afc21d86b60631c94efbdd6b4205e8176ee7b",
+     "south": "f6aac57889191ca00a890a121346b47e8aaba0504a5ad7a9138b7f91983c83c8"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Vellak/RM_Vellak",
+    "B": "Things/Pawn/Animal/RM_Vellak/RM_Vellak",
+    "C": "Things/Pawn/Animal/RM_Vellak/RM_Vellak"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 WeepingStones",
+    "B": "render enact_3df263b9_vellak_v1",
+    "C": "render weepingstones2_vellak"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Vellak/RM_Vellak"
+   ],
+   "res": "Things/Pawn/Animal/RM_Vellak/RM_Vellak",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "vellak"
+  }
+ },
+ "sheetId": "art_eval_shadow_e2e_weepingstones_20261023_sheet_2026-10-23",
+ "snapshotId": "d0303f0897921093"
+}
