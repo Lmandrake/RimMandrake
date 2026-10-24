@@ -7,7 +7,7 @@ every shipped universal-pipe atlas (Textures/.../Pipe/<Look>/UniversalPipe_Atlas
 704 px atlas, 176 px tile, 22 px padding, 132 px shown cell, mask bits N=1 E=2 S=4 W=8, row 0 at the bottom):
   1. elbows (masks 3, 6, 9, 12): the seat lies within 1 px of the midpoint of the pipe's alpha run along the cell
      diagonal toward the bend (the drawn centreline); the old cell-centre seat does NOT (can-fail: the bug);
-  2. the lone stub (mask 0): the seat is the drawn flange's centre within 1 px (Scrapper's sits 4 px SE);
+  2. the lone stub (mask 0): the seat is the drawn flange's centre within 1 px (centred since Scrapper v3; v2's sat 4 px SE);
      every other mask: the seat is (0,0), the pipe covers it, and each arm's cross-section is centred within 1 px;
   3. can-fail: a seat moved 2 px along the diagonal fails check 1.
 """
@@ -83,8 +83,11 @@ def seat(mask, look, arcs):
 
 
 def cell_alpha(look, mask):
-    a = np.asarray(Image.open(TEX / look / "UniversalPipe_Atlas.png").convert("RGBA")).astype(float)[..., 3] / 255
-    assert a.shape == (4 * T, 4 * T), a.shape
+    im = Image.open(TEX / look / "UniversalPipe_Atlas.png").convert("RGBA")
+    if im.size != (4 * T, 4 * T):            # a look authored at another size (Scrapper v3: 1408 px) is judged in 704 px units
+        assert im.size[0] == im.size[1] and im.size[0] % (4 * T) == 0, im.size
+        im = im.resize((4 * T, 4 * T), Image.BOX)
+    a = np.asarray(im).astype(float)[..., 3] / 255
     col, row = mask % 4, 3 - mask // 4
     return a[row * T + P:row * T + P + C, col * T + P:col * T + P + C]
 

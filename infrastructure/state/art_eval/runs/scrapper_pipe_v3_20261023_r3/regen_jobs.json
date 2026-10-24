@@ -1,0 +1,19 @@
+[
+ {
+  "id": "arteval_RM_UniversalPipe_Scrapper__F_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_UniversalPipe_Scrapper",
+  "prompt": "Plain straight pipe cells for a RimWorld floor water pipe, Scrapper salvage look, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background, seen from directly above, drawn flat, low and thin (the tube is 36 px tall in a 264 px cell). One oxidised copper tube, symmetric across its axis, uniform width along the whole cell, with fine verdigris grain. The verdigris is irregular in spacing and size: some stretches carry dense green-and-orange patina, others show bare oxidised copper, with a few large patches and a few tiny flecks, so the surface reads as organic weathering and no dash rhythm or stripe pattern forms along a multi-cell run. Bright copper wear marks sit at uneven intervals, varied in length and angle. Provide several plain variants, each with its own distinct arrangement of copper wear and verdigris patches, different in position and count from the others, cut from different parts of a long weathered strip. At the left and right edge of every cell the tube width, dark outline and base copper colour are identical to the atlas straight, so neighbouring cells join without a seam. Keep unchanged: the elbows bent on the pipe axis, the bolted scrap-plate boss centred on every 3- and 4-way junction and on a lone cell, the bolted clamp-collar cap closing each dead end, and the occasional hardware variants (crude field weld seam, wire wrap with clamp, patch plate) on about one straight cell in four.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: OWNER_NOTE_IGNORED, OWNER_NOTE_IGNORED",
+  "reference": "",
+  "priority": 40,
+  "source_run": "scrapper_pipe_v3_20261023_r3"
+ }
+]

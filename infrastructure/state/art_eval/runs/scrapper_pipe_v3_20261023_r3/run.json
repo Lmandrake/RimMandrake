@@ -1,0 +1,9 @@
+{
+ "run_id": "scrapper_pipe_v3_20261023_r3",
+ "test": true,
+ "started": "2026-10-23T23:10:26-07:00",
+ "subjects": [
+  "RM_UniversalPipe_Scrapper"
+ ],
+ "versions_key": "departures_brief@v2#9cda88+gpt_targeted_second_look@v1#cb6e32+opus_first_pass@v2#85b8f1+preamble@v2#7130aa+regen_prompt_edit@v1#861700+severity@v3#950903+creature@v3#fdc520"
+}

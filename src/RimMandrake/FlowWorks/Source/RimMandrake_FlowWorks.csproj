@@ -312,6 +312,8 @@
     <Compile Include="Machinery\LiquidJoinRule.cs" />
     <Compile Include="Machinery\TankArtEdges.cs" />
     <Compile Include="Machinery\RM_LiquidJoins.cs" />
+    <Compile Include="Machinery\PipeStraightVariants.cs" />
+    <Compile Include="Machinery\RM_PipeStraightVariantsDraw.cs" />
     <Compile Include="Machinery\UnderCouplerGeometry.cs" />
     <Compile Include="Machinery\RM_UnderCouplers.cs" />
     <Compile Include="Machinery\UnderCouplerReach.cs" />

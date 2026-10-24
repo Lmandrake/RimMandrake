@@ -1,0 +1,69 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 54.0,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.48581620000000003
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 28.7
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_UniversalPipe_Scrapper",
+ "decision": "ESCALATE",
+ "reasons": [
+  "opus band WEAK (model said good); blocking ['ALPHA_HALO']; polish ['LEGIB_32']",
+  "gpt regen: unsettled ['K1'], own blocking ['ALPHA_HALO']",
+  "still failing after 3 regen rounds \u2014 one line to the owner"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "machine@v2",
+   "sha": "e06ee7316a0a"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "south.png": "4e94a9873e722252279235b343c1d6d27e7b54b784c7f71751b0795764a80f7c",
+  "single.png": "4e94a9873e722252279235b343c1d6d27e7b54b784c7f71751b0795764a80f7c",
+  "scale.png": "8f714c6493464bd1eeece5459e272374f0b8681dd1cfa93d8137d1b1d4c70f48",
+  "assembled_1.png": "5024ad5adc2b8e9daffe2d37950319a5437981a33a475216cc590062057a75c9",
+  "assembled_2.png": "73f289bfa1b2a961cf56bedd5f6f0812f6295b68e73dec052cb5b76aac9b97b3",
+  "assembled_3.png": "f9221327f1a4702fd857555c9160771770594c7df90267596e97803eaa8917d7",
+  "variants_1.png": "b70038d2eaf49173be34d7227a23dfcd76aebd3bd9049f7b2611ccf73d810855",
+  "siblings.png": "ab9c1c602372afc88a15cf3f062d3479fa70eef1f5fedb8f5222aa48b46ecb41",
+  "facings.png": "9105416e65c15db9bd9e5d9ae39033b7a07dbe8e234d281cab5ec382469f7a13"
+ }
+}
