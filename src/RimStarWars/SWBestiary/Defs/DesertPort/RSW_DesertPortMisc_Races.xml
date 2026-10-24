@@ -2,7 +2,7 @@
 <!--
 DESERT_FAMILY_PORT_EXECUTION_1 - MISC batch (16 fauna + 7 flora; AB_GiantStikehr
 EXCLUDED per the item's own note: cut from the Extreme Desert the same day as
-misplaced, not part of this port). RSW_Korrum (AA_BoulderMit) added
+misplaced, not part of this port). RM_Korrum (AA_BoulderMit) added
 2026-09-20 to close this file's own dangling useMeatFrom reference at
 RSW_Khorrak and finish the item's "11 unblocked rows" list. RSW_Khorrak itself
 was retired 2026-10-11 (KHORRAK_STEEL_DIET_TIER_1: RM_Khorrak in mandrake.rm.longshade
@@ -57,88 +57,8 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 
 	<!-- RM_Chikka moved to src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Chikka.xml (CHIKKA_HOME_DECIDE_NOT_STAR_WARS, 2026-10-24): not a Star Wars creature. -->
 
-	<ThingDef ParentName="AnimalThingBase">
-		<!-- Alpha Animals AA_Eyeling -> RSW_Ikee. Body AA_EyeBody substituted with vanilla Monkey (confirmed HeadAttackTool group present on Head). ToolCapacityDef AA_ToxicSting substituted with vanilla Scratch (donor poison chain dropped). -->
-		<defName>RSW_Ikee</defName>
-		<label>ikee</label>
-		<description>A grotesquely enlarged eye that drags itself along on a few fleshy tentacles. Not very useful for much of anything. Said to result from infusing an animal with strange energies from beyond ordinary space.</description>
-		<statBases>
-			<MoveSpeed>3.0</MoveSpeed>
-			<MarketValue>100</MarketValue>
-			<ComfyTemperatureMin>0</ComfyTemperatureMin>
-			<ComfyTemperatureMax>60</ComfyTemperatureMax>
-			<MeatAmount>0</MeatAmount>
-			<Wildness>0.2</Wildness>
-		</statBases>
-		<tools>
-			<li>
-				<label>eye</label>
-				<capacities>
-					<li>Scratch</li>
-				</capacities>
-				<power>8</power>
-				<cooldownTime>2</cooldownTime>
-				<linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
-				<chanceFactor>0.2</chanceFactor>
-			</li>
-		</tools>
-		<race>
-			<body>Monkey</body>
-			<herdAnimal>false</herdAnimal>
-			<predator>false</predator>
-			<baseBodySize>0.133</baseBodySize>
-			<baseHealthScale>0.5</baseHealthScale>
-			<baseHungerRate>0.1</baseHungerRate>
-			<foodType>OmnivoreRoughAnimal</foodType>
-			<leatherDef>Leather_Light</leatherDef>
-			<useMeatFrom>Pig</useMeatFrom>
-			<trainability>Intermediate</trainability>
-			<lifeExpectancy>12</lifeExpectancy>
-			<herdMigrationAllowed>false</herdMigrationAllowed>
-			<lifeStageAges>
-				<li><def>AnimalBaby</def><minAge>0</minAge></li>
-				<li><def>AnimalJuvenile</def><minAge>0.1</minAge></li>
-				<li><def>AnimalAdult</def><minAge>0.2222</minAge></li>
-			</lifeStageAges>
-			<soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
-			<soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
-			<soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
-		</race>
-		<tradeTags>
-			<li>AnimalUncommon</li>
-		</tradeTags>
-	</ThingDef>
-	<PawnKindDef ParentName="AnimalKindBase">
-		<defName>RSW_Ikee</defName>
-		<label>ikee</label>
-		<race>RSW_Ikee</race>
-		<combatPower>10</combatPower>
-		<ecoSystemWeight>0.30</ecoSystemWeight>
-		<lifeStages>
-			<li>
-				<bodyGraphicData>
-					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Stareling_east/_north/_south -->
-					<texPath>Things/Pawn/Animal/RSW_Ikee/RSW_Ikee</texPath>
-					<drawSize>0.333</drawSize>
-				</bodyGraphicData>
-			</li>
-			<li>
-				<bodyGraphicData>
-					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Stareling_east/_north/_south -->
-					<texPath>Things/Pawn/Animal/RSW_Ikee/RSW_Ikee</texPath>
-					<drawSize>0.417</drawSize>
-				</bodyGraphicData>
-			</li>
-			<li>
-				<bodyGraphicData>
-					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Stareling_east/_north/_south -->
-					<texPath>Things/Pawn/Animal/RSW_Ikee/RSW_Ikee</texPath>
-					<drawSize>0.5</drawSize>
-				</bodyGraphicData>
-			</li>
-		</lifeStages>
-	</PawnKindDef>
-
+	<!-- RM_Ikee moved to src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Ikee.xml (SWB_RM_FAUNA_DECIDE_HOME_LIKE_CHIKKA, 2026-10-24): not a Star Wars creature. -->
+	
 	<!-- RM_Durrok moved to src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Durrok.xml (SWB_RM_FAUNA_DECIDE_HOME_LIKE_CHIKKA, 2026-10-24): not a Star Wars creature. -->
 
 
@@ -146,7 +66,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 
 
 	<ThingDef ParentName="AnimalThingBase">
-		<!-- Alpha Animals AA_TetraSlug -> RSW_Vozzik. Body AA_ArmouredSlug substituted with vanilla TurtleLike (HeadAttackTool confirmed present, matching sibling RSW_Korrum usage of the same body in this batch). useMeatFrom AA_Helixien (not ported, dangling - Helixien is not in this batch) substituted with Megaspider, matching the insectoid/exotic theme already used for RSW_Ulgga. The ranged attack is REBUILT in our own C# (PORTED_BEAST_MECHANICS_REBUILD_1, owner 2026-09-20 "Rebuild in our c#."): RimMandrake.StarWars.SWBestiary.CompProperties_InnateAbility below replaces VEF.AnimalBehaviours.CompProperties_InitialAbility, granting RSW_VoltmawPlasmaVolley - our own copy of the donor's AA_Plasma, four ionized bolts at range 20. MEASURED from Alpha Animals' own def: this creature's ability was a plasma/tesla volley, never a chemfuel ejection. Still dropped: CompProperties_Electrified, the slow recharging of nearby batteries - donor framework, and owed work rather than a decision. -->
+		<!-- Alpha Animals AA_TetraSlug -> RSW_Vozzik. Body AA_ArmouredSlug substituted with vanilla TurtleLike (HeadAttackTool confirmed present, matching sibling RM_Korrum usage of the same body in this batch). useMeatFrom AA_Helixien (not ported, dangling - Helixien is not in this batch) substituted with Megaspider, matching the insectoid/exotic theme already used for RSW_Ulgga. The ranged attack is REBUILT in our own C# (PORTED_BEAST_MECHANICS_REBUILD_1, owner 2026-09-20 "Rebuild in our c#."): RimMandrake.StarWars.SWBestiary.CompProperties_InnateAbility below replaces VEF.AnimalBehaviours.CompProperties_InitialAbility, granting RSW_VoltmawPlasmaVolley - our own copy of the donor's AA_Plasma, four ionized bolts at range 20. MEASURED from Alpha Animals' own def: this creature's ability was a plasma/tesla volley, never a chemfuel ejection. Still dropped: CompProperties_Electrified, the slow recharging of nearby batteries - donor framework, and owed work rather than a decision. -->
 		<defName>RSW_Vozzik</defName>
 		<label>vozzik</label>
 		<description>A massive slug, common on glitterworlds as a glorified mobile power plant. Off the grid it is deployed by research stations as a self-contained energy source; in the wild it simply grazes, slow and armored, across open ground.</description>
@@ -328,118 +248,6 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 		</lifeStages>
 	</PawnKindDef>
 
-	<ThingDef ParentName="AnimalThingBase">
-		<!-- Alpha Animals AA_BoulderMit -> RSW_Korrum (was RSW_Bokka until 2026-09-22; see the header). Body already vanilla TurtleLike (matches sibling RSW_Khorrak/RSW_Zhakka/RSW_Vozzik usage of the same body in this batch); tools/capacities (TurtleBeakAttackTool Bite, HeadAttackTool Blunt) already vanilla, no substitution needed. Dropped: VEF.AnimalBehaviours.CompProperties_AnimalProduct (periodic random-stone-chunk harvest, donor framework - matches this batch's standing rule of dropping AnimalProduct comps, e.g. RM_Chikka/RM_Durrok above), VEF.AnimalBehaviours.AnimalStatExtension modExtension (info-card flavor + linked art image, donor framework). butcherProducts (plain vanilla chunk items, not a comp) kept. Donor's own custom SoundDef AA_BouldermitSound (soundWounded/soundAngry) substituted with vanilla Pawn_Megascarab_Wounded/Pawn_Megascarab_Angry, completing the vanilla Megascarab sound family already used donor-side for Death/Call. This closes the batch's own dangling useMeatFrom reference at RSW_Khorrak above (now useMeatFrom>RSW_Korrum). -->
-		<defName>RSW_Korrum</defName>
-		<label>korrum</label>
-		<description>A massive genetically-engineered crab that carries a boulder for a shell. Korrums are placid to the point of indifference, ignoring nearly anything short of a direct attack, and their armor is thick enough that most predators leave them alone rather than bother. Old spacer stories tell of one grown so large it had a whole mountain for a home.</description>
-		<statBases>
-			<MoveSpeed>1.00</MoveSpeed>
-			<ComfyTemperatureMin>-65</ComfyTemperatureMin>
-			<MarketValue>350</MarketValue>
-			<ArmorRating_Blunt>0.7</ArmorRating_Blunt>
-			<ArmorRating_Sharp>0.7</ArmorRating_Sharp>
-			<LeatherAmount>0</LeatherAmount>
-			<MeatAmount>10</MeatAmount>
-			<FilthRate>12</FilthRate>
-			<Wildness>0.7</Wildness>
-		</statBases>
-		<tools>
-			<li>
-				<capacities>
-					<li>Bite</li>
-				</capacities>
-				<power>32</power>
-				<cooldownTime>2.1</cooldownTime>
-				<linkedBodyPartsGroup>TurtleBeakAttackTool</linkedBodyPartsGroup>
-			</li>
-			<li>
-				<label>head</label>
-				<capacities>
-					<li>Blunt</li>
-				</capacities>
-				<power>12</power>
-				<cooldownTime>1.65</cooldownTime>
-				<linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
-				<chanceFactor>0.2</chanceFactor>
-			</li>
-		</tools>
-		<race>
-			<herdAnimal>false</herdAnimal>
-			<predator>false</predator>
-			<body>TurtleLike</body>
-			<baseBodySize>4.00</baseBodySize>
-			<baseHungerRate>0.05</baseHungerRate>
-			<baseHealthScale>9.0</baseHealthScale>
-			<foodType>VegetarianRoughAnimal</foodType>
-			<meatLabel>crab meat</meatLabel>
-			<manhunterOnDamageChance>0.01</manhunterOnDamageChance>
-			<manhunterOnTameFailChance>0.2</manhunterOnTameFailChance>
-			<trainability>None</trainability>
-			<gestationPeriodDays>30</gestationPeriodDays>
-			<litterSizeCurve>
-				<points>
-					<li>(0.99, 0)</li>
-					<li>(1, 1)</li>
-					<li>(1.01, 0)</li>
-				</points>
-			</litterSizeCurve>
-			<lifeExpectancy>650</lifeExpectancy>
-			<lifeStageAges>
-				<li><def>AnimalBaby</def><minAge>0</minAge></li>
-				<li><def>AnimalJuvenile</def><minAge>0.25</minAge></li>
-				<li><def>AnimalAdult</def><minAge>0.50</minAge>
-					<soundWounded>Pawn_Megascarab_Wounded</soundWounded>
-					<soundDeath>Pawn_Megascarab_Death</soundDeath>
-					<soundCall>Pawn_Megascarab_Call</soundCall>
-					<soundAngry>Pawn_Megascarab_Angry</soundAngry>
-				</li>
-			</lifeStageAges>
-			<soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
-			<soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
-			<soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
-		</race>
-		<butcherProducts>
-			<ChunkSandstone>2</ChunkSandstone>
-			<ChunkGranite>2</ChunkGranite>
-			<ChunkLimestone>2</ChunkLimestone>
-			<ChunkSlate>2</ChunkSlate>
-			<ChunkMarble>2</ChunkMarble>
-		</butcherProducts>
-		<tradeTags>
-			<li>AnimalExotic</li>
-		</tradeTags>
-	</ThingDef>
-	<PawnKindDef ParentName="AnimalKindBase">
-		<defName>RSW_Korrum</defName>
-		<label>korrum</label>
-		<race>RSW_Korrum</race>
-		<combatPower>350</combatPower>
-		<canArriveManhunter>false</canArriveManhunter>
-		<ecoSystemWeight>0.2</ecoSystemWeight>
-		<lifeStages>
-			<li>
-				<bodyGraphicData>
-					<!-- KORRUM_ART_REGEN_1: our own artpipe render, landed 2026-09-24 -->
-					<texPath>swanimals/Korrum/Korrum</texPath>
-					<drawSize>1.5</drawSize>
-				</bodyGraphicData>
-			</li>
-			<li>
-				<bodyGraphicData>
-					<!-- KORRUM_ART_REGEN_1: our own artpipe render, landed 2026-09-24 -->
-					<texPath>swanimals/Korrum/Korrum</texPath>
-					<drawSize>2.7</drawSize>
-				</bodyGraphicData>
-			</li>
-			<li>
-				<bodyGraphicData>
-					<!-- KORRUM_ART_REGEN_1: our own artpipe render, landed 2026-09-24 -->
-					<texPath>swanimals/Korrum/Korrum</texPath>
-					<drawSize>3.5</drawSize>
-				</bodyGraphicData>
-			</li>
-		</lifeStages>
-	</PawnKindDef>
-
+	<!-- RM_Korrum moved to src/RimMandrake/Scarlands/Defs/ThingDefs_Races/RM_Korrum.xml (SWB_RM_FAUNA_DECIDE_HOME_LIKE_CHIKKA, 2026-10-24): not a Star Wars creature. -->
+	
 </Defs>

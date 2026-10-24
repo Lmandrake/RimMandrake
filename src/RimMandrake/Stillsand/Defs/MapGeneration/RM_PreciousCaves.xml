@@ -52,7 +52,7 @@
         <count>1</count>
         <place>back</place>
       </li>
-      <!-- RM_Ikee element removed 2026-10-05: the RM_ ikee was cut as a duplicate of RSW_Ikee (owner, Stillsand sheet: "duplicate, remove"); this RM-tier def may not name the RSW_ one. -->
+      <!-- RM_Ikee element removed 2026-10-05: the RM_ ikee was cut as a duplicate of RSW_Ikee, itself renamed RM_Ikee and moved to this mod 2026-10-24 (owner, Stillsand sheet: "duplicate, remove"); this RM-tier def may not name the RSW_ one. -->
     </elements>
   </RimMandrake.Stillsand.RM_PreciousCaveDef>
 

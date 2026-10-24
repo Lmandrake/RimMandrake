@@ -39,7 +39,7 @@
       same commonalities (RM_Rimclaw, RM_Bileworm, RM_ElectricTick,
       RM_ElectricGryllotalpa, RM_JuggernautBeetle; Defs/ThingDefs_Races/). The
       four Star Wars-tier rows (RSW_Mynock, RSW_MegaphoridLarva,
-      RSW_FoundryBeetle, RSW_Korrum) are wired via mandrake.rut.patches' own
+      RSW_FoundryBeetle, RM_Korrum) are wired via mandrake.rut.patches' own
       WildAnimals_Warscar.xml PatchOperationAdd — an RM-tier def may not name
       RimStarWars- or RimUtinni-tier content directly (Q11a).
     - wildPlants: RM_Glower/RM_ScorchedStars are OWN DUPLICATES (own defNames,
@@ -171,6 +171,8 @@
       <RM_Rakeshank>0.12</RM_Rakeshank>
       <!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 (owner 2026-10-04, Stillsand sheet: "This should go into the Warscar."): the vozzik giant, moved here from the Stillsand. Def + skeleton wiring stay in mandrake.rm.stillsand (same composed mod). Weight carried over verbatim (giant-rare); PROVISIONAL. -->
       <RM_Vozzik MayRequire="mandrake.rm.biomes">0.0005</RM_Vozzik>
+      <!-- SWB_RM_FAUNA_DECIDE_HOME_LIKE_CHIKKA (owner 2026-10-24: "a lot of alpha animal ports got classified as Star Wars. We should move all of those."): the korrum, RSW_Korrum renamed RM_Korrum and moved here from SWBestiary; its row came off Utinni WildAnimals_Warscar.xml. 0.05, deliberately NOT the roster's 0.5 (ECOSYSTEM_PYRAMID_LAW_1, do not "fix" this). -->
+      <RM_Korrum>0.05</RM_Korrum>
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>

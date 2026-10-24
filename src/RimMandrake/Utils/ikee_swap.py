@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """ikee_swap.py -- runbook step 6 (Transient/phase0_L1_runbook.md): replace the save's ikee `AA_Eyeling` "Marquee"
-with our `RSW_Ikee`, re-bond it with Yeku, save under the donor-free name. Owner ruling 2026-10-15, by card: the
+with our `RM_Ikee`, re-bond it with Yeku, save under the donor-free name. Owner ruling 2026-10-15, by card: the
 ikee is replaced at the live round, not hand-edited offline.
 
     python3 src/RimMandrake/Utils/ikee_swap.py                       # DRY RUN (default): prints every call, runs none
@@ -45,7 +45,7 @@ OLD = "AA_Eyeling669122"
 OLD_DEF = "AA_Eyeling"
 CELL = (175, 134)
 NAME = "Marquee"
-NEW_KIND = "RSW_Ikee"
+NEW_KIND = "RM_Ikee"
 RETIRED = ("mlie.starwarsanimalcollection", "sarg.alphaanimals", "daria40k.alphaanimalspatchoutposts",
            "sarg.alphabiomes")
 BACKUPS = rm_win("scratch", "save_backups")
@@ -153,7 +153,7 @@ class Swap(object):
                           destroyCorpses=True)
             if self.live:
                 self.need([p.get("id") for p in (k.get("killedPawns") or [])] == [OLD], "killed exactly %s" % OLD, k)
-        sp = self.call("jawa/spawn_pawn", "spawn our RSW_Ikee at the old cell, player faction (= tame)",
+        sp = self.call("jawa/spawn_pawn", "spawn our RM_Ikee at the old cell, player faction (= tame)",
                        kindDef=NEW_KIND, x=cell[0], z=cell[1], faction="player", count=1)
         if self.live:
             got = (sp.get("pawns") or [{}])[0]
@@ -167,7 +167,7 @@ class Swap(object):
             self.need(self.new_id in json.dumps(rel) and "Bond" in json.dumps(rel), "Bond to %s listed" % self.new_id,
                       rel)
             self.need(OLD not in json.dumps(rel), "no relation to the old ikee remains", rel)
-        np_ = self.call("jawa/pawn_get", "VERIFY: the new pawn is RSW_Ikee, named Marquee, player", pawn=self.new_id)
+        np_ = self.call("jawa/pawn_get", "VERIFY: the new pawn is RM_Ikee, named Marquee, player", pawn=self.new_id)
         if self.live:
             j = json.dumps(_pawn(np_))
             self.need(NEW_KIND in j and NAME in j, "def %s and name %s read back" % (NEW_KIND, NAME), _pawn(np_))
@@ -179,8 +179,8 @@ class Swap(object):
             self.need(os.path.isfile(dest) and os.path.getmtime(dest) >= t0 - 2, "the named file was written", dest)
             self.need(sha256(dest) != before or self.save_as != self.save, "its content changed", dest)
         self.out("then, offline, WSL (no game): python3 src/RimMandrake/Utils/save_adoption_check.py --save '%s'\n"
-                 "    expect: the ikee row gone, RSW_Ikee present, control <def>Human</def> = 75; and\n"
-                 "    MEASURE_ALLOW_SCAN=1 grep -c '<def>RSW_Ikee</def>' -> >= 1 ; '<def>AA_Eyeling</def>' -> 1 "
+                 "    expect: the ikee row gone, RM_Ikee present, control <def>Human</def> = 75; and\n"
+                 "    MEASURE_ALLOW_SCAN=1 grep -c '<def>RM_Ikee</def>' -> >= 1 ; '<def>AA_Eyeling</def>' -> 1 "
                  "(the world pawn, left alone)" % dest.replace("<Saves>", "$SAVES"))
         return {"backup": bak, "newId": self.new_id, "calls": self.log}
 

@@ -208,6 +208,8 @@
       <RM_Ulgga MayRequire="mandrake.rm.biomes">0.015</RM_Ulgga>
       <!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 (owner 2026-10-04, Long Shade sheet): "Move this to RimMandrake, then move to our custom extreme desert biome to swim in the sand". The vosska, moved here from the Long Shade; sand-swimmer fields added on its def. Weight carried over verbatim; PROVISIONAL. -->
       <RM_Vosska MayRequire="mandrake.rm.biomes">0.05</RM_Vosska>
+      <!-- SWB_RM_FAUNA_DECIDE_HOME_LIKE_CHIKKA (owner 2026-10-24: "a lot of alpha animal ports got classified as Star Wars. We should move all of those."): the ikee, RSW_Ikee renamed RM_Ikee and moved here from SWBestiary; its row came off Utinni WildAnimals_Stillsand.xml at the same weight. -->
+      <RM_Ikee>0.15</RM_Ikee>
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>

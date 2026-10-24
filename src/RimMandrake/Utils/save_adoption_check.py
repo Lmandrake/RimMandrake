@@ -278,7 +278,7 @@ def worklist(things, rels, landmarks, kinds, refs):
                  "it will NOT be dropped. Ikee swap: destroy it, spawn %s at its cell%s." % (
                      p["id"], p["def"], ", name %s" % p["name"] if p["name"] else "", p["where"], p["pos"] or "-",
                      p["faction"] or "none", ",".join(p.get("nowFrom") or []) or "?",
-                     "RSW_Ikee" if "Eyeling" in p["def"] else "its port",
+                     "RM_Ikee" if "Eyeling" in p["def"] else "its port",
                      "; re-create " + ", ".join("%s with %s (%s)" % (r["relation"], r["pawnName"] or r["pawn"],
                                                                      r["pawn"]) for r in rb) if rb else
                      "; no other pawn relates to it"))
@@ -286,7 +286,7 @@ def worklist(things, rels, landmarks, kinds, refs):
     things = [t for t in things if not t.get("rehomed")]
     for p in pawns:
         rb = [r for r in rels if r["other"] == p["id"]]
-        repl = "RSW_Ikee" if "Eyeling" in (p["def"] or "") else "a port of %s (none known)" % p["def"]
+        repl = "RM_Ikee" if "Eyeling" in (p["def"] or "") else "a port of %s (none known)" % p["def"]
         W.append("PAWN %s (%s%s) %s at %s, faction %s: Scribe drops it on load. Replace with %s%s." % (
             p["id"], p["def"], ", name %s" % p["name"] if p["name"] else "", p["where"], p["pos"] or "-",
             p["faction"] or "none", repl,

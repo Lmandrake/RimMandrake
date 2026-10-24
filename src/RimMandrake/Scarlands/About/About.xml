@@ -65,7 +65,7 @@ owned ports of former donor rows (rimclaw, bileworm, electric tick, electric
 gryllotalpa, juggernaut beetle; ported from ReGrowth, Alpha Animals and
 Insectoids 2 Isopoda stats by WARSCAR_SHEET_DONOR_PORT_1). The four Star
 Wars-tier rows of the frozen twin's live roster (`RSW_Mynock`,
-`RSW_MegaphoridLarva`, `RSW_FoundryBeetle`, `RSW_Korrum`) are wired onto this
+`RSW_MegaphoridLarva`, `RSW_FoundryBeetle`, `RM_Korrum`) are wired onto this
 biome from `mandrake.rut.patches`' own `WildAnimals_Warscar.xml`
 (`PatchOperationAdd` onto this def's `wildAnimals`) rather than referenced
 directly here, because an RM-tier def may not name RimUtinni- or

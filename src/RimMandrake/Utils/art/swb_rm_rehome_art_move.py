@@ -35,6 +35,9 @@ BATCHES = {
     "1": [(f"{ANIMAL}/RM_Durrok", "LeaningScrub", f"{ANIMAL}/RM_Durrok"),
           (f"{ANIMAL}/RM_Mullgoth", "LeaningScrub", f"{ANIMAL}/RM_Mullgoth"),
           (f"{ANIMAL}/RM_Vurra", "LeaningScrub", f"{ANIMAL}/RM_Vurra")],
+    # run 2: defName renames RSW_X -> RM_X, so the folder and filename stems follow
+    "2": [(f"{ANIMAL}/RSW_Ikee", "Stillsand", f"{ANIMAL}/RM_Ikee"),
+          ("swanimals/Korrum", "Scarlands", f"{ANIMAL}/RM_Korrum")],
 }
 
 
