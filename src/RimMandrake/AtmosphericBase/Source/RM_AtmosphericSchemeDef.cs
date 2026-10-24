@@ -17,6 +17,9 @@ namespace RimMandrake.AtmosphericBase
         public bool mayGoDark;
         public int flasherCount;
         public float flasherPeriodSeconds;
+        // The pattern grammar (design atmospheric_base_god_patterns_2026-10-24.md §4): a stack of primitives, bottom first.
+        // Absent = the old one-pattern form above, run as one layer. Present but empty is a config error.
+        public List<RM_Layer> layers;
 
         [Unsaved] private RM_SchemeData? data;
 
@@ -33,6 +36,7 @@ namespace RimMandrake.AtmosphericBase
                         pattern = pattern, massPeriodSeconds = massPeriodSeconds, sparkSeconds = sparkSeconds,
                         sparkOneIn = sparkOneIn, mayGoDark = mayGoDark, flasherCount = flasherCount,
                         flasherPeriodSeconds = flasherPeriodSeconds,
+                        layers = layers?.ToArray(),
                     };
                     for (int i = 0; i < n; i++) { d.r[i] = palette[i].r; d.g[i] = palette[i].g; d.b[i] = palette[i].b; }
                     data = d;

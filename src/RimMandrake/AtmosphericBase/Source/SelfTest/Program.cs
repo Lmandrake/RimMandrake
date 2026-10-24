@@ -16,9 +16,9 @@ using Verse;
 
 internal static class Program
 {
-    private static readonly List<string> Fails = new List<string>();
+    internal static readonly List<string> Fails = new List<string>();
 
-    private static void Check(string name, bool ok, string detail = "")
+    internal static void Check(string name, bool ok, string detail = "")
     {
         Console.WriteLine((ok ? "ok    " : "FAIL  ") + name + (ok ? "" : "  " + detail));
         if (!ok) Fails.Add(name);
@@ -52,7 +52,7 @@ internal static class Program
         return s;
     }
 
-    private static string FindUp(string rel)
+    internal static string FindUp(string rel)
     {
         string d = AppDomain.CurrentDomain.BaseDirectory;
         for (int i = 0; i < 14 && d != null; i++)
@@ -526,6 +526,7 @@ internal static class Program
         Phase2();
         Phase3();
         Phase4();
+        PatternTests.Run();
 
         if (Fails.Count > 0)
         {

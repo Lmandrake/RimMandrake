@@ -531,6 +531,75 @@ def repo_scheme_xml():
     return out
 
 
+PRIMITIVE_PARAMS = {   # independent of the C# kernel: what each built primitive must be given to be meaningful
+    "Steady": (), "Breath": ("period",), "Spark": ("period", "rise", "oneIn"),
+}
+
+
+def built_primitives(kernel_cs):
+    """The primitives the kernel's registry table actually builds (read from RM_PatternKernel.cs, not mirrored)."""
+    return set(re.findall(r"\{\s*RM_Primitive\.(\w+)\s*,\s*new\s+RM_\w+Primitive\(\)\s*\}", kernel_cs))
+
+
+def scheme_layers(xml):
+    """[(defName, palette size, [ {field: text} per layer ])] for every RM_AtmosphericSchemeDef carrying <layers>."""
+    xml = re.sub(r"<!--.*?-->", "", xml, flags=re.S)
+    out = []
+    root = ET.fromstring(xml)
+    for d in root:
+        if not d.tag.endswith("RM_AtmosphericSchemeDef") or d.find("layers") is None:
+            continue
+        out.append((d.findtext("defName") or "?", len(d.findall("palette/li")),
+                    [dict((f.tag, (f.text or "").strip()) for f in li) for li in d.findall("layers/li")]))
+    return out
+
+
+def judge_pattern_layers(xml_by_name, built):
+    """§4: every authored layer names a built primitive, a palette slice inside the palette, a known combine and
+    sane params. Blind (no layered scheme anywhere, or no built primitive read) is UNMEASURED, never PASS."""
+    if not built:
+        return _r(UNM, HARNESS, "no built primitive read from RM_PatternKernel.cs: the scan is blind")
+    n_s = n_l = 0
+    bad = []
+    for name, xml in sorted(xml_by_name.items()):
+        for dn, pn, layers in scheme_layers(xml):
+            n_s += 1
+            if not layers:
+                bad.append("%s: empty <layers>" % dn)
+            for i, l in enumerate(layers):
+                n_l += 1
+                at = "%s layers[%d]" % (dn, i)
+                prim = l.get("primitive", "Steady")
+                if prim not in built:
+                    bad.append("%s: primitive %s not built" % (at, prim))
+                    continue
+                ent = l.get("entries")
+                if ent:
+                    m = re.fullmatch(r"\s*(\d+)\s*(?:~\s*(\d+)\s*)?", ent)
+                    lo, hi = (int(m.group(1)), int(m.group(2) or m.group(1))) if m else (-1, -1)
+                    if not m or lo > hi or hi >= pn:
+                        bad.append("%s: entries %r outside palette 0~%d" % (at, ent, pn - 1))
+                if l.get("combine", "Over") not in ("Over", "Max"):
+                    bad.append("%s: combine %r" % (at, l.get("combine")))
+                for k in ("period", "rise"):
+                    if k in l and not float(l[k]) > 0:
+                        bad.append("%s: %s=%s" % (at, k, l[k]))
+                if prim == "Spark" and float(l.get("rise", 2)) > float(l.get("period", 120)):
+                    bad.append("%s: rise longer than its slot" % at)
+                if "oneIn" in l and int(l["oneIn"]) < 1:
+                    bad.append("%s: oneIn=%s" % (at, l["oneIn"]))
+    if n_s == 0:
+        return _r(UNM, HARNESS, "no scheme carries <layers> yet: nothing to judge (built: %s)" % ",".join(sorted(built)))
+    if bad:
+        return _r(FAIL, MOD, "; ".join(bad[:8]))
+    return _r(PASS, MOD, "%d layered scheme(s), %d layer(s): built primitives only, slices inside palettes, params sane (built: %s)" % (
+        n_s, n_l, ",".join(sorted(built))))
+
+
+def kernel_cs():
+    return open(os.path.join(HERE, "Source", "Kernel", "RM_PatternKernel.cs"), encoding="utf-8").read()
+
+
 def offline_rows(rows):
     src = os.path.join(HERE, "Source")
     proof_cs = open(os.path.join(src, "RM_AtmosphericBaseProof.cs"), encoding="utf-8").read()
@@ -545,6 +614,7 @@ def offline_rows(rows):
     rd = lambda fn: open(os.path.join(src, fn), encoding="utf-8").read()
     add(rows, "D5.held_lamp_rules_disk", *judge_held_lamp_rules(rd("RM_MapComponent_AtmosphericBase.cs"),
                                                                 rd("RM_AtmosphericCompositor.cs"), rd("RM_AtmosphericBaseSettings.cs")))
+    add(rows, "D6.pattern_layers_disk", *judge_pattern_layers(repo_scheme_xml(), built_primitives(kernel_cs())))
     return d
 
 
@@ -1264,6 +1334,19 @@ def metric_controls():
         mc_ok, co_ok + "\nScribe_Values.Look(ref clockOrigin, \"o\");", st_ok)[0], FAIL))
     out.append(("judge_held_lamp_rules switch-off releases", judge_held_lamp_rules(
         mc_ok, co_ok.replace("{ skippedUnlit++; continue; }", "{ comp.Release(t); continue; }"), st_ok)[0], FAIL))
+    lay = ("<Defs><RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef><defName>L</defName><palette><li>(182,118,62,0)</li>"
+           "<li>(220,158,96,0)</li></palette><layers>%s</layers></RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef></Defs>")
+    br = "<li><primitive>Breath</primitive><period>60</period><entries>0~1</entries></li>"
+    built = built_primitives(kernel_cs())
+    out.append(("judge_pattern_layers good", judge_pattern_layers({"l.xml": lay % br}, built)[0], PASS))
+    out.append(("judge_pattern_layers entries past palette", judge_pattern_layers({"l.xml": lay % br.replace("0~1", "0~2")}, built)[0], FAIL))
+    out.append(("judge_pattern_layers unbuilt primitive", judge_pattern_layers({"l.xml": lay % br.replace("Breath", "Nonesuch")}, built)[0], FAIL))
+    out.append(("judge_pattern_layers bad combine", judge_pattern_layers({"l.xml": lay % br.replace("</li>", "<combine>Blend</combine></li>")}, built)[0], FAIL))
+    out.append(("judge_pattern_layers spark rise > slot", judge_pattern_layers(
+        {"l.xml": lay % "<li><primitive>Spark</primitive><period>2</period><rise>3</rise></li>"}, built)[0], FAIL))
+    out.append(("judge_pattern_layers blind registry", judge_pattern_layers({"l.xml": lay % br}, set())[0], UNM))
+    out.append(("judge_pattern_layers no layered scheme", judge_pattern_layers({}, built)[0], UNM))
+    out.append(("built_primitives reads the registry", PASS if {"Steady", "Breath", "Spark"} <= built else FAIL, PASS))
     return out
 
 

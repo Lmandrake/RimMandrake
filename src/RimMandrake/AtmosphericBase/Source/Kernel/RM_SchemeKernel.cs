@@ -33,6 +33,7 @@ namespace RimMandrake.AtmosphericBase
         public bool mayGoDark;          // L8: may an entry be full black
         public int flasherCount;        // L7: how many fixtures in the group play the fast role
         public float flasherPeriodSeconds;
+        public RM_Layer[] layers;       // the authored <layers>; null = the old one-pattern scheme (one layer, see LegacyLayers)
 
         public int Count => r == null ? 0 : r.Length;
     }
@@ -85,13 +86,19 @@ namespace RimMandrake.AtmosphericBase
                 for (int j = 0; j < i; j++)
                     if (s.r[i] == s.r[j] && s.g[i] == s.g[j] && s.b[i] == s.b[j]) e.Add("palette[" + i + "] repeats palette[" + j + "]");
             }
-            if (anyDark && s.pattern == RM_PatternKind.Steady)
-                e.Add("a Steady scheme may not hold full black: L8 says a chosen dark always carries motion");
-            if (s.pattern != RM_PatternKind.Steady && !(s.massPeriodSeconds > 0f)) e.Add("massPeriodSeconds must be > 0");
-            if (s.pattern == RM_PatternKind.Sparks)
+            bool layered = s.layers != null;
+            bool moves = layered ? RM_PatternKernel.AnyMotion(s.layers) : s.pattern != RM_PatternKind.Steady;
+            if (anyDark && !moves)
+                e.Add("a Steady (motionless) scheme may not hold full black: L8 says a chosen dark always carries motion");
+            if (layered) RM_PatternKernel.LayerErrors(s.layers, n, e);
+            else
             {
-                if (!(s.sparkSeconds > 0f) || s.sparkSeconds > s.massPeriodSeconds) e.Add("sparkSeconds must be > 0 and fit inside massPeriodSeconds");
-                if (s.sparkOneIn < 1) e.Add("sparkOneIn must be >= 1");
+                if (s.pattern != RM_PatternKind.Steady && !(s.massPeriodSeconds > 0f)) e.Add("massPeriodSeconds must be > 0");
+                if (s.pattern == RM_PatternKind.Sparks)
+                {
+                    if (!(s.sparkSeconds > 0f) || s.sparkSeconds > s.massPeriodSeconds) e.Add("sparkSeconds must be > 0 and fit inside massPeriodSeconds");
+                    if (s.sparkOneIn < 1) e.Add("sparkOneIn must be >= 1");
+                }
             }
             if (s.flasherCount < 0) e.Add("flasherCount is negative");
             if (s.flasherCount > 0 && !(s.flasherPeriodSeconds > 0f)) e.Add("flasherPeriodSeconds must be > 0 when there are flashers");
@@ -129,40 +136,12 @@ namespace RimMandrake.AtmosphericBase
             return k < n ? k : len - k;
         }
 
+        /// <summary>The pattern, now the layered evaluator (RM_PatternKernel.cs); an old one-pattern scheme runs as one
+        /// layer, bit-identical to the pre-grammar function (selftest: 60,000 samples against a frozen copy).</summary>
         public static int PaletteIndex(RM_SchemeData s, int emitter, int group, double time, bool flasher)
         {
-            int n = s.Count;
-            if (n <= 1) return 0;
-            if (flasher)
-            {
-                double fp = s.flasherPeriodSeconds;
-                long fstep = (long)Math.Floor(time / fp + Frac01(emitter, 3) * n);
-                return (int)(fstep % n);
-            }
-            switch (s.pattern)
-            {
-                case RM_PatternKind.RoomBreath:
-                {
-                    int len = 2 * n - 2;
-                    double u = time / s.massPeriodSeconds + Frac01(group, 1);
-                    long step = (long)Math.Floor(u * len);
-                    return PingPong(n, (int)(step % len));
-                }
-                case RM_PatternKind.Sparks:
-                {
-                    double p = s.massPeriodSeconds;
-                    double shifted = time + Frac01(emitter, 2) * p;
-                    long slot = (long)Math.Floor(shifted / p);
-                    if (Mix(emitter, unchecked((int)slot)) % (uint)s.sparkOneIn != 0) return 0;
-                    double within = shifted - slot * p;
-                    if (within >= s.sparkSeconds) return 0;
-                    int len = 2 * n - 1;                        // 0..n-1..0, rest at both ends
-                    int k = Math.Min(len - 1, (int)Math.Floor(within / s.sparkSeconds * len));
-                    return k < n ? k : len - 1 - k;
-                }
-                default:
-                    return 0;
-            }
+            var c = new RM_PatternCtx { emitter = emitter, group = group };
+            return RM_PatternEvaluator.Index(s, ref c, time, flasher);
         }
 
         /// <summary>L7: the framework picks which fixtures flash -- the flasherCount with the lowest hash, so the choice is
