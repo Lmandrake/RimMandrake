@@ -11,10 +11,12 @@ Each check must FAIL on the art he rejected (the shipped code, emulated as BEFOR
   parity: the emulation's constants are the C#'s (LiquidJoinRule ElbowRadius/BoreHalf/UnderNozzle, TankPortGeometry PortDz).
   sprinkler head, every look x nine stations (SPRINKLER_SEAT_FIX_HEAD_BESIDE_ELBOW):
     head_centroid_on_axis, head_squat   FAIL on the tall heads (art_source/Sprinkler/raw at their shipped drawOffsets),
-                                        PASS on the installed squat heads at the Defs' drawOffset
-    head_seat_on_pipe                   PASS on both; can-fail: the elbow seat put back at the cell centre (the old bug)
-  parity: fw_scenes_sprinkler.seat == RM_PipeSeatMath.Seat for all 16 masks x every look (read from the C# source via
-          selftest_pipe_seat's parser); every RM_SprinklerHead drawOffset z == (squat_heads.SEAT_Y - 128) / 256 to 3 dp.
+                                        PASS on the installed squat heads at the Defs' drawOffset, at two scales (px 40, 64)
+    head_seat_on_pipe                   PASS on the squat heads; can-fail: the elbow seat put back at the cell centre
+  parity: fw_scenes_sprinkler.seat == RM_PipeSeatMath.Seat for all 16 masks x every look (k, r and the stub read from the
+          C# source via selftest_pipe_seat's parser); the installed head PNGs == squat_heads.squat(raw) pixel for pixel,
+          and every RM_SprinklerHead drawOffset z (the four styles and the base ThingDef) == (SEAT_Y - 128) / 256 to 3 dp
+          -- together: the art's seat row lands on the pipe axis.
 """
 # selftest-timeout: 400
 import re
@@ -86,23 +88,35 @@ def sprinkler_parity():
            if max(abs(a - b) for a, b in zip(ss.seat(mask, look), ps.seat(mask, look, arcs))) > 1e-6]
     want(not bad, "parity: fw_scenes_sprinkler.seat == RM_PipeSeatMath.Seat, 16 masks x 5 looks (mismatch %s)" % bad)
     want(abs(ss.elbow_arc("Scrapper")[0] - arcs["Scrapper"][0]) < 1e-9, "parity: elbow_arc reads as ElbowArc")
-    oz = ss.def_offsets()
+    import numpy as np
+    from PIL import Image
+    for look in fc.LOOKS:
+        made, _ = squat_heads.squat(Image.open(ss.RAW / look / "RM_SprinklerHead.png").convert("RGBA"))
+        shipped = Image.open(fc.FW / "Textures/RimMandrake/FlowWorks/Sprinkler" / look / "RM_SprinklerHead.png").convert("RGBA")
+        same = made.size == shipped.size and np.array_equal(np.asarray(made), np.asarray(shipped))
+        want(same, "parity: installed %s head == squat_heads.squat(raw/%s) pixel for pixel" % (look, look))
+    try:
+        oz = ss.def_offsets(base=True)
+    except ValueError as e:
+        want(False, "parity: sprinkler head drawOffsets readable (%s)" % e)
+        return
     need = round((squat_heads.SEAT_Y - 128) / 256, 3)
-    want(all(abs(v - need) < 1e-9 for v in oz.values()) and len(oz) == 4,
-         "parity: every RM_SprinklerHead_<Look> drawOffset z %s == (SEAT_Y %d - 128)/256 = %s" % (oz, squat_heads.SEAT_Y, need))
+    want(all(abs(v - need) < 1e-9 for v in oz.values()),
+         "parity: RM_SprinklerHead (+ each style) drawOffset z %s == (SEAT_Y %d - 128)/256 = %s" % (oz, squat_heads.SEAT_Y, need))
 
 
 def sprinkler():
+    for px in (PX, 64):
+        for look in fc.LOOKS:
+            before, after = ss.board(look, "before", px), ss.board(look, "after", px)
+            for f in (ck.head_centroid_on_axis, ck.head_squat):
+                okb, db = f(before)
+                oka, da = f(after)
+                want(not okb, "px%d %s %s FAILS on the tall head (%s)" % (px, look, f.__name__, db))
+                want(oka, "px%d %s %s passes on the squat head (%s)" % (px, look, f.__name__, da))
     for look in fc.LOOKS:
-        before, after = ss.board(look, "before", PX), ss.board(look, "after", PX)
-        for f in (ck.head_centroid_on_axis, ck.head_squat):
-            okb, db = f(before)
-            oka, da = f(after)
-            want(not okb, "%s %s FAILS on the tall head (%s)" % (look, f.__name__, db))
-            want(oka, "%s %s passes on the squat head (%s)" % (look, f.__name__, da))
-        for name, sc in (("tall", before), ("squat", after)):
-            ok, d = ck.head_seat_on_pipe(sc)
-            want(ok, "%s head_seat_on_pipe passes on the %s head (%s)" % (look, name, d))
+        ok, d = ck.head_seat_on_pipe(ss.board(look, "after", PX))
+        want(ok, "%s head_seat_on_pipe passes (%s)" % (look, d))
     real = ss.seat
     try:
         ss.seat = lambda mask, look: (0.0, 0.0)          # the cell-centre seat SPRINKLER_HEAD_FIX_FLOATS_OFF_CURVE fixed
