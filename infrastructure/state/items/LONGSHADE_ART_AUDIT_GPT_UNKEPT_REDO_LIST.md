@@ -41,3 +41,15 @@ Rows where GPT says redo/cut and the owner has NO keep on record. Filed as a FIN
 - T216 (live) cut: Wrong-body placeholder: a smooth orange tailed tadpole/lizard rather than a squat, warty worrt with a broad mouth, heavy belly and long splayed forelimbs.
 
 Cartoon placeholders for Eopie / LongtailGorg / Worrt are probably a STALE DEF DUMP in the sheet, not installed art; check before acting (see GIZKA_SHEET_FIX_ALTERNATE_SHOWN_AS_RENDER).
+
+## Per-row outcome (FOUNDRY, 2026-10-24, delegated: GPT art triage)
+Gate = regen_eligibility.Gate over every texPath of the def; pipeline = infrastructure/state/art_eval/runs/*/decisions.jsonl; PROTECTED = art.py status live slots. Queued directly: NONE (no redo slot is NONE/PLACEHOLDER/DONOR; dessicated slots that are DONOR are not what GPT flagged).
+
+| def | gate | protected slots | art-eval runs so far | outcome |
+|---|---|---|---|---|
+| RSW_Clodhopper | REFUSED_REGEN | 1 | none | CANDIDATE: never judged; intake filed as GPTREDO_JUDGE_UNJUDGED_ROWS (art-eval run, not a direct regen). |
+| RM_Harrok | REFUSED_REGEN | 0 | none | CANDIDATE: never judged; intake filed as GPTREDO_JUDGE_UNJUDGED_ROWS (art-eval run, not a direct regen). |
+| RM_Mirrak | REFUSED_REGEN | 0 | none | CANDIDATE: never judged; intake filed as GPTREDO_JUDGE_UNJUDGED_ROWS (art-eval run, not a direct regen). |
+| RM_Pirrik | REFUSED_REGEN | 0 | none | CANDIDATE: never judged; intake filed as GPTREDO_JUDGE_UNJUDGED_ROWS (art-eval run, not a direct regen). |
+| RSW_LongtailGorg | REFUSED_REGEN | 12 | none | UNQUEUED: 39 ruled owner keep events, 12 protected slots - the "no owner keep" premise is false; GPT redo needs his word / revert record. Cartoon-placeholder tiles: the live files are ledger artpipe renders (REFUSED_REGEN), a stale-sheet-dump is plausible but unviewed. |
+| RSW_Worrt | REFUSED_REGEN | 9 | none | UNQUEUED: 11 ruled owner keep events, 9 protected slots - the "no owner keep" premise is false; GPT redo needs his word / revert record. Cartoon-placeholder tiles: the live files are ledger artpipe renders (REFUSED_REGEN), a stale-sheet-dump is plausible but unviewed. |
