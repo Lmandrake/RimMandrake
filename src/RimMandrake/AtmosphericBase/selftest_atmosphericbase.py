@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""selftest_atmosphericbase.py -- offline proof for AtmosphericBase's take_over_proof (Phase 1) and one_mood_proof (Phase 2) chains.
+"""selftest_atmosphericbase.py -- offline proof for AtmosphericBase's take_over_proof (Phase 1), one_mood_proof (Phase 2)
+and territory_proof (Phases 3-4) chains.
 
 Run bare: python3 src/RimMandrake/AtmosphericBase/selftest_atmosphericbase.py   (exit 0 = clean)
 
@@ -29,7 +30,9 @@ CHAIN = "take_over_proof"
 STUB = "release_after_save_reload_restores"
 MOOD = "one_mood_proof"
 MOOD_STUB = "unlit_fixture_not_driven"
-STUBS = (STUB, MOOD_STUB)
+TERR = "territory_proof"
+TERR_STUB = "territory_boundary_visible_and_tremor_reads_as_presence"
+STUBS = (STUB, MOOD_STUB, TERR_STUB)
 
 
 def check(name, cond, detail=""):
@@ -80,24 +83,47 @@ def mood_text(brk, eligible=2, lit=True, held=0, no_map=False, scheme_ok=True):
     return s + " " + " ".join("%s=%s" % kv for kv in d.items())
 
 
-def make_ext(brk, stale=False, mood=None, **kw):
+def terr_text(brk, lit=12, no_map=False, schemes_ok=True, tremor_seen=5):
+    """What the shipped ProofTerritory answers."""
+    if no_map:
+        return "schemes=True map=-"
+    s = "schemes=%s" % ("True" if schemes_ok else "False")
+    if not schemes_ok:
+        return s + " lit=-"
+    s += " lit=%d others_held=0" % lit
+    if lit < 2:
+        return s
+    T = lambda k: "False" if k in brk else "True"  # noqa: E731
+    d = dict(one_owner=T("one_owner"), both_sides=T("both_sides"), own_palette=T("own_palette"),
+             moved="%d/%d" % (lit, lit), boundary_moves=T("boundary_moves"), flips=40, allocations=241, writes=300,
+             tremor_contributors=3, tremor_cap_held=T("tremor_cap_held"), tremor_seen=tremor_seen, tremor_max=1,
+             tremor_fraction_held=T("tremor_fraction_held"), tremor_own_palette=T("tremor_own_palette"),
+             territory_off_one_mood=T("territory_off_one_mood"), released_exact=T("t_released_exact"),
+             palette_violations=(1 if "t_palette_violations" in brk else 0))
+    return s + " " + " ".join("%s=%s" % kv for kv in d.items())
+
+
+def make_ext(brk, stale=False, mood=None, terr=None, **kw):
     def ext(game, tool, p):
         if tool != "jawa/static_call" or p.get("type") != V._PROOF:
             return None
         if stale:
             return {"success": False, "message": "no public static method %s" % p.get("method")}
+        if p.get("method") == "ProofTerritory":
+            return {"success": True, "result": terr_text(brk, **(terr or {}))}
         if p.get("method") == "ProofCompositor":
             return {"success": True, "result": mood_text(brk, **(mood or {}))}
         return {"success": True, "result": proof_text(brk, **kw)}
     return ext
 
 
-def run(brk=(), stale=False, mood=None, **kw):
+def run(brk=(), stale=False, mood=None, terr=None, **kw):
     suite = Suite("AtmosphericBaseProofs")
     suite.chain(CHAIN)(V.take_over_proof)
     suite.chain(MOOD)(V.one_mood_proof)
+    suite.chain(TERR)(V.territory_proof)
     game = MockGame()
-    game.ext = make_ext(set(brk), stale=stale, mood=mood, **kw)
+    game.ext = make_ext(set(brk), stale=stale, mood=mood, terr=terr, **kw)
     s = FastSession(transport=MockTransport(game), strict=False)
     with s:
         res = runner.run_suite(suite, s, anchor=None, mod=None)
@@ -136,6 +162,23 @@ def main():
                       ("released_exact", "release_after_a_mood_restores_exactly")):
         got = run((brk,))
         check("mood break %-26s reddens %s" % (brk, comp), got.get(comp) == "FAIL", got.get(comp))
+
+    check("clean: the territory stub is UNMEASURED, never PASS", clean.get(TERR_STUB) == "UNMEASURED", clean)
+    tk = ("territory_every_fixture_one_claimant_one_palette", "territory_both_presences_hold_ground", "territory_boundary_moves",
+          "tremor_capped_at_three_in_own_palette", "territory_release_restores_exactly")
+    check("clean: the Phase 3-4 chain ran (6 components)", sum(1 for k in clean if k in tk + (TERR_STUB,)) == 6, sorted(clean))
+    one = run(terr=dict(lit=1))
+    check("territory: fewer than two lit fixtures -> every bar UNMEASURED", all(one[k] == "UNMEASURED" for k in tk), one)
+    check("territory: no flicker sampled -> tremor bar UNMEASURED, not PASS", run(terr=dict(tremor_seen=0))["tremor_capped_at_three_in_own_palette"] == "UNMEASURED")
+    check("territory: shipped schemes missing -> FAIL", run(terr=dict(schemes_ok=False))["territory_every_fixture_one_claimant_one_palette"] == "FAIL")
+    check("territory: no map -> UNMEASURED", run(terr=dict(no_map=True))["territory_every_fixture_one_claimant_one_palette"] == "UNMEASURED")
+    check("territory: stale DLL -> UNMEASURED", run(stale=True)["territory_every_fixture_one_claimant_one_palette"] == "UNMEASURED")
+    for brk, comp in (("one_owner", tk[0]), ("own_palette", tk[0]), ("territory_off_one_mood", tk[0]), ("t_palette_violations", tk[0]),
+                      ("both_sides", tk[1]), ("boundary_moves", tk[2]),
+                      ("tremor_cap_held", tk[3]), ("tremor_fraction_held", tk[3]), ("tremor_own_palette", tk[3]),
+                      ("t_released_exact", tk[4])):
+        got = run((brk,))
+        check("territory break %-24s reddens %s" % (brk, comp), got.get(comp) == "FAIL", got.get(comp))
 
     got = run(eligible=0)
     for k in ("take_drive_release_restores_exactly", "untaken_neighbour_untouched", "light_channel_off_refuses_and_releases",
@@ -198,14 +241,27 @@ def main():
     CO = "RM_AtmosphericCompositor.cs"
     mutate(CO, "if (!g.Glows) { skippedUnlit++; continue; }", "", "unlit fixtures driven (L9)", "[gate]")
     mutate(CO, "if (!tracker.Want(id, RM_ChangeTracker.Pack(", "if (false && !tracker.Want(id, RM_ChangeTracker.Pack(", "changed-only lost", "[wiring]")
-    mutate(CO, "comp.Drive(t, mood.scheme.palette[idx])", "comp.Drive(t, new ColorInt(1, 2, 3, 0))", "a computed colour", "[wiring]")
+    mutate(CO, "comp.Drive(t, scheme.palette[idx])", "comp.Drive(t, new ColorInt(1, 2, 3, 0))", "a computed colour", "[wiring]")
     mutate(CO, "        public static RM_MoodClaim DefaultMood()", "        static ColorInt X(ColorInt a, ColorInt b) => ColorInt.Lerp(a, b, 0.5f);\n        public static RM_MoodClaim DefaultMood()",
            "a colour interpolated", "[L4]")
     mutate(CO, "Evaluate(comp, UnityEngine.Time.realtimeSinceStartup)", "Evaluate(comp, Find.TickManager.TicksGame / 60.0)", "game time, not real time (L10)", "[gate]")
     mutate(MC, "if (!RM_PaletteGuard.IsMember(color))", "if (false)", "palette guard off", "[gate]")
     mutate(MC, "compositor.Update(this);", "", "compositor never runs", "[gate]")
     mutate(MC, "if (g != null && rec.prior != null) RM_GlowAccess.RestoreFieldOnly(g, rec.prior);", "", "map removal forgets to restore", "[gate]")
-    mutate(MC, 'Scribe_Deep.Look(ref mood, "mood");', "", "mood unscribed", "[wiring]")
+    mutate(MC, 'Scribe_Collections.Look(ref moods, "moods", LookMode.Deep);', "", "moods unscribed", "[wiring]")
+    mutate(MC, 'Scribe_Deep.Look(ref legacyMood, "mood")', "legacyMood = null", "Phase 2 save's mood dropped", "[wiring]")
+    mutate(MC, "live.Sort((x, y) => RM_TerritoryKernel.CompareRank(x.rank, x.claimant, y.rank, y.claimant));", "", "moods never ordered by rank", "[gate]")
+    mutate(CO, "RM_MoodClaim second = set.territory && ranked.Count > 1", "RM_MoodClaim second = ranked.Count > 1", "territory switch ignored", "[gate]")
+    mutate(CO, "if (set.tremor && lead != null)", "if (lead != null)", "tremor switch ignored", "[gate]")
+    mutate(CO, "bool[] got = RM_TerritoryKernel.Allocate(", "bool[] got = RM_TerritoryKernel.Lead0(", "territory not allocated", "[gate]")
+    mutate(CO, "int w = Show(comp, t, tremorMoods[tr.Key].scheme, tr.Value);", "int w = Show(comp, t, lead.scheme, tr.Value);", "tremor in the leader's palette", "[wiring]")
+    mutate(CO, "RM_TremorTuning tu = set.TremorTuning;", "var tu = new RM_Tremor_T { cap = 9 };", "tremor tuning bypassed", "[gate]")
+    mutate("Kernel/RM_TerritoryKernel.cs", "public const int LawCap = 3;", "public const int LawCap = 5;", "L6 cap raised", "[wiring]")
+    mutate("RM_AtmosphericBaseSettings.cs", "TremorTuning => RM_TremorTuning.Clamp(new RM_TremorTuning", "TremorTuning => (new RM_TremorTuning", "tremor tuning unclamped", "[wiring]")
+    mutate("RM_AtmosphericBaseSettings.cs", 'Scribe_Values.Look(ref territoryLeadShare, "territoryLeadShare", 0.6f);', "", "territory share unscribed", "[settings]")
+    mutate("RM_AtmosphericBaseProof.cs", "                    comp.RestoreMoods(prior);\n                }\n                cur.lightChannel = wasLight; cur.compositor = wasComp; cur.defaultMood",
+           "                }\n                cur.lightChannel = wasLight; cur.compositor = wasComp; cur.defaultMood", "proof forgets the player's moods", "[gate]")
+    mutate("RM_AtmosphericBase.csproj", 'Compile Include="Kernel\\RM_TerritoryKernel.cs"', 'Compile Include="Kernel\\X.cs"', "territory kernel left out", "[wiring]")
     mutate("RM_AtmosphericSchemeDef.cs", "foreach (string e in RM_SchemeKernel.Errors(Data)) yield return e;", "", "scheme laws unchecked at load", "[gate]")
     mutate("RM_AtmosphericBaseSettings.cs", 'Scribe_Values.Look(ref defaultMoodGroup, "defaultMoodGroup", 0);', "", "group setting unscribed", "[settings]")
     mutate("Defs/RM_AtmosphericSchemes.xml", "<defName>RM_Scheme_Lamplight</defName>", "<defName>RM_Scheme_Lamp</defName>", "default scheme not shipped", "[wiring]")

@@ -31,8 +31,10 @@ namespace RimMandrake.AtmosphericBase
     {
         public bool scenarioDecides;
         private List<RM_TakenEmitter> taken = new List<RM_TakenEmitter>();
-        // Phase 2: at most one mood per map (no rank exists to order two; territory is Phase 3). Saved.
-        private RM_MoodClaim mood;
+        // Phase 3: one mood per CLAIMANT (a push by the same claimant replaces its own). Saved. The compositor orders them
+        // by the rank each consumer supplied: the top two hold territory, the next three at most are tremor.
+        private List<RM_MoodClaim> moods = new List<RM_MoodClaim>();
+        public const int MaxMoods = 16;
         // Groups a hooking mod registered (§2.2 source 1). NOT saved: the registering mod re-registers on load.
         private readonly Dictionary<string, HashSet<Thing>> registeredGroups = new Dictionary<string, HashSet<Thing>>();
         public readonly RM_Compositor compositor = new RM_Compositor();
@@ -152,30 +154,83 @@ namespace RimMandrake.AtmosphericBase
             compositor.Update(this);
         }
 
-        // ---------------------------------------------------------------- Phase 2: one mood, groups
+        // ---------------------------------------------------------------- Phases 2-3: moods, groups
 
-        /// <summary>The mood showing now: the pushed one, else the framework's gentle default when switched on.</summary>
-        public RM_MoodClaim EffectiveMood => mood ?? RM_Compositor.DefaultMood();
-        public RM_MoodClaim PushedMood => mood;
+        /// <summary>The loudest mood showing now: the top-ranked pushed one, else the gentle default when switched on.</summary>
+        public RM_MoodClaim EffectiveMood
+        {
+            get
+            {
+                List<RM_MoodClaim> r = RankedMoods();
+                return r.Count > 0 ? r[0] : null;
+            }
+        }
 
-        /// <summary>Phase 2 holds ONE mood: a push replaces whatever was pushed before and returns it. Refused (null
-        /// returned, nothing changed) for an empty claimant or group, or a scheme that failed validation.</summary>
+        /// <summary>The loudest pushed mood, or null.</summary>
+        public RM_MoodClaim PushedMood
+        {
+            get
+            {
+                RM_MoodClaim best = null;
+                foreach (RM_MoodClaim m in moods)
+                    if (m?.scheme != null && m.scheme.Valid && (best == null || RM_TerritoryKernel.CompareRank(m.rank, m.claimant, best.rank, best.claimant) < 0))
+                        best = m;
+                return best;
+            }
+        }
+
+        public int PushedMoodCount => moods.Count;
+
+        /// <summary>Every live mood, loudest first (§2.6 step 1). Rank is the consumer's; it is only ORDERED here. With
+        /// nothing pushed, the gentle default alone (or nothing when it is switched off).</summary>
+        public List<RM_MoodClaim> RankedMoods()
+        {
+            var live = new List<RM_MoodClaim>();
+            foreach (RM_MoodClaim m in moods)
+                if (m?.scheme != null && m.scheme.Valid && !string.IsNullOrEmpty(m.group)) live.Add(m);
+            if (live.Count == 0)
+            {
+                RM_MoodClaim d = RM_Compositor.DefaultMood();
+                if (d != null) live.Add(d);
+                return live;
+            }
+            live.Sort((x, y) => RM_TerritoryKernel.CompareRank(x.rank, x.claimant, y.rank, y.claimant));
+            return live;
+        }
+
+        /// <summary>Push a mood. The same claimant pushing again replaces its own mood (returned in `replaced`); a new
+        /// claimant joins the others. Refused (false, nothing changed) for an empty claimant or group, a scheme that failed
+        /// validation, or a full map (MaxMoods).</summary>
         public bool PushMood(string claimant, string group, RM_AtmosphericSchemeDef scheme, float rank, out RM_MoodClaim replaced)
         {
             replaced = null;
             if (string.IsNullOrEmpty(claimant) || string.IsNullOrEmpty(group) || scheme == null || !scheme.Valid) return false;
-            replaced = mood;
-            mood = new RM_MoodClaim { claimant = claimant, group = group, scheme = scheme, rank = rank };
+            if (float.IsNaN(rank) || float.IsInfinity(rank)) return false;
+            var claim = new RM_MoodClaim { claimant = claimant, group = group, scheme = scheme, rank = rank };
+            int i = moods.FindIndex(m => m.claimant == claimant);
+            if (i >= 0) { replaced = moods[i]; moods[i] = claim; return true; }
+            if (moods.Count >= MaxMoods) return false;
+            moods.Add(claim);
             return true;
         }
 
-        /// <summary>Release the pushed mood, only by the claimant that holds it. The next evaluation shows the default
-        /// (or each fixture's own glow).</summary>
+        /// <summary>Release a mood, only by the claimant that holds it. The next evaluation re-allocates what it held.</summary>
         public bool ReleaseMood(string claimant)
         {
-            if (mood == null || mood.claimant != claimant) return false;
-            mood = null;
-            return true;
+            return claimant != null && moods.RemoveAll(m => m.claimant == claimant) > 0;
+        }
+
+        /// <summary>The proof's seam: lift every pushed mood off the map (to be put back with RestoreMoods).</summary>
+        public List<RM_MoodClaim> TakeAllMoods()
+        {
+            var all = moods;
+            moods = new List<RM_MoodClaim>();
+            return all;
+        }
+
+        public void RestoreMoods(List<RM_MoodClaim> all)
+        {
+            moods = all ?? new List<RM_MoodClaim>();
         }
 
         public void RegisterGroup(string name, IEnumerable<Thing> members)
@@ -208,21 +263,28 @@ namespace RimMandrake.AtmosphericBase
                 if (g != null && rec.prior != null) RM_GlowAccess.RestoreFieldOnly(g, rec.prior);
             }
             taken.Clear();
-            mood = null;
+            moods.Clear();
             registeredGroups.Clear();
         }
+
+        private RM_MoodClaim legacyMood;
 
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref scenarioDecides, "scenarioDecides", false);
             Scribe_Collections.Look(ref taken, "taken", LookMode.Deep);
-            Scribe_Deep.Look(ref mood, "mood");
+            Scribe_Collections.Look(ref moods, "moods", LookMode.Deep);
+            // A Phase 2 save held ONE mood under "mood"; read it once and carry it into the list.
+            if (Scribe.mode == LoadSaveMode.LoadingVars) Scribe_Deep.Look(ref legacyMood, "mood");
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 if (taken == null) taken = new List<RM_TakenEmitter>();
                 taken.RemoveAll(r => r == null || r.thing == null || r.prior == null);
-                if (mood != null && (mood.scheme == null || string.IsNullOrEmpty(mood.claimant) || string.IsNullOrEmpty(mood.group))) mood = null;
+                if (moods == null) moods = new List<RM_MoodClaim>();
+                if (legacyMood != null && !moods.Exists(m => m?.claimant == legacyMood.claimant)) moods.Add(legacyMood);
+                legacyMood = null;
+                moods.RemoveAll(m => m == null || m.scheme == null || string.IsNullOrEmpty(m.claimant) || string.IsNullOrEmpty(m.group));
             }
         }
     }

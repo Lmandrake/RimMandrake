@@ -16,6 +16,32 @@ namespace RimMandrake.AtmosphericBase
         public bool compositor = true;      // Phase 2: animate held lights at all
         public bool defaultMood = true;     // Phase 2: the gentle default (Lamplight) when nothing has pushed a mood
         public int defaultMoodGroup = 0;    // index into RM_SchemeKernel.DefaultGroups: ship, rooms, halls, exterior
+        // Phase 3: territory. Only ever acts when TWO OR MORE claimants have pushed moods; the shipped default (one gentle
+        // mood, nothing pushed) never reaches it, so none of these changes what an install with no consumer looks like.
+        public bool territory = true;                 // the second-loudest mood holds ground beside the loudest (L5)
+        public float territoryPeriodSeconds = 900f;   // one full turn of the boundary: slow, a front not a show
+        public float territoryLeadShare = 0.6f;       // the louder claimant's share of the fixtures
+        public float territoryRagged = 0.08f;         // how uneven the front is (0 = a straight line)
+        // Phase 4: the tremor. Moods ranked third and below, at most three, brief flickers in their own palette (L6).
+        public bool tremor = true;
+        public int tremorCap = 3;                     // contributors; L6 caps it at three whatever this says
+        public float tremorSlotSeconds = 30f;         // a fixture may flicker once per slot...
+        public int tremorOneIn = 4;                   // ...in one slot of this many...
+        public float tremorFlickerSeconds = 0.8f;     // ...for this long
+        public float tremorMaxFraction = 0.04f;       // never more than this share of the lights at once (ceiling 0.10)
+
+        /// <summary>The territory knobs as the kernel takes them, clamped to the laws' bounds.</summary>
+        public RM_TerritoryTuning TerritoryTuning => RM_TerritoryTuning.Clamp(new RM_TerritoryTuning
+        {
+            periodSeconds = territoryPeriodSeconds, leadShare = territoryLeadShare, ragged = territoryRagged,
+        });
+
+        /// <summary>The tremor knobs as the kernel takes them, clamped (L6's cap of three is enforced there).</summary>
+        public RM_TremorTuning TremorTuning => RM_TremorTuning.Clamp(new RM_TremorTuning
+        {
+            cap = tremorCap, slotSeconds = tremorSlotSeconds, oneIn = tremorOneIn,
+            flickerSeconds = tremorFlickerSeconds, maxFraction = tremorMaxFraction,
+        });
 
         private static readonly RM_AtmosphericBaseSettings Defaults = new RM_AtmosphericBaseSettings();
 
@@ -29,6 +55,16 @@ namespace RimMandrake.AtmosphericBase
             Scribe_Values.Look(ref compositor, "compositor", true);
             Scribe_Values.Look(ref defaultMood, "defaultMood", true);
             Scribe_Values.Look(ref defaultMoodGroup, "defaultMoodGroup", 0);
+            Scribe_Values.Look(ref territory, "territory", true);
+            Scribe_Values.Look(ref territoryPeriodSeconds, "territoryPeriodSeconds", 900f);
+            Scribe_Values.Look(ref territoryLeadShare, "territoryLeadShare", 0.6f);
+            Scribe_Values.Look(ref territoryRagged, "territoryRagged", 0.08f);
+            Scribe_Values.Look(ref tremor, "tremor", true);
+            Scribe_Values.Look(ref tremorCap, "tremorCap", 3);
+            Scribe_Values.Look(ref tremorSlotSeconds, "tremorSlotSeconds", 30f);
+            Scribe_Values.Look(ref tremorOneIn, "tremorOneIn", 4);
+            Scribe_Values.Look(ref tremorFlickerSeconds, "tremorFlickerSeconds", 0.8f);
+            Scribe_Values.Look(ref tremorMaxFraction, "tremorMaxFraction", 0.04f);
         }
 
         private static readonly string[] GroupLabels = { "Every handed-over light", "Rooms only", "Halls only", "Outdoors only" };
@@ -130,6 +166,40 @@ namespace RimMandrake.AtmosphericBase
                     }
                     Find.WindowStack.Add(new FloatMenu(opts));
                 }
+                list.GapLine();
+            }
+
+            if (Group(list, "Territory (two moods at once)", RimMandrake.Shared.SettingScope.Now,
+                      new[] { "territory", "territoryPeriodSeconds", "territoryLeadShare", "territoryRagged" }))
+            {
+                list.CheckboxLabeled("Two moods share the lights", ref territory,
+                    "Only matters when two or more scenarios or mods have each set a mood. On: the louder holds most of the "
+                  + "handed-over lights, the other holds the rest, each in its own colours, and the line between them turns "
+                  + "slowly around the ship. Off: only the loudest mood shows. The gentle default never uses this.");
+                list.Label("One full turn of the boundary: " + Mathf.RoundToInt(territoryPeriodSeconds) + " s (real time)");
+                territoryPeriodSeconds = Mathf.Round(list.Slider(territoryPeriodSeconds, RM_TerritoryKernel.MinPeriodSeconds, 3600f) / 30f) * 30f;
+                list.Label("Share of the lights the louder mood holds: " + Mathf.RoundToInt(territoryLeadShare * 100f) + "%");
+                territoryLeadShare = Mathf.Round(list.Slider(territoryLeadShare, RM_TerritoryKernel.MinLeadShare, RM_TerritoryKernel.MaxLeadShare) * 20f) / 20f;
+                list.Label("How uneven the boundary is: " + Mathf.RoundToInt(territoryRagged * 100f) + "% (0 = a straight line)");
+                territoryRagged = Mathf.Round(list.Slider(territoryRagged, 0f, RM_TerritoryKernel.MaxRagged) * 100f) / 100f;
+                list.GapLine();
+            }
+
+            if (Group(list, "Tremor (third and later moods)", RimMandrake.Shared.SettingScope.Now,
+                      new[] { "tremor", "tremorCap", "tremorSlotSeconds", "tremorOneIn", "tremorFlickerSeconds", "tremorMaxFraction" }))
+            {
+                list.CheckboxLabeled("Quieter moods stir the lights", ref tremor,
+                    "Only matters when three or more moods are set. On: up to three quieter moods show as brief, scattered "
+                  + "flickers in their own colours, never holding ground. Off: only the two loudest moods show.");
+                list.Label("Moods that may stir: " + tremorCap + " (at most " + RM_TremorKernel.LawCap + ")");
+                tremorCap = Mathf.RoundToInt(list.Slider(tremorCap, 0f, RM_TremorKernel.LawCap));
+                list.Label("A light may flicker once every " + Mathf.RoundToInt(tremorSlotSeconds) + " s, in one of " + tremorOneIn + " such windows");
+                tremorSlotSeconds = Mathf.Round(list.Slider(tremorSlotSeconds, RM_TremorKernel.MinSlotSeconds, 120f));
+                tremorOneIn = Mathf.RoundToInt(list.Slider(tremorOneIn, 1f, 12f));
+                list.Label("One flicker lasts " + tremorFlickerSeconds.ToString("0.0") + " s");
+                tremorFlickerSeconds = Mathf.Round(list.Slider(tremorFlickerSeconds, 0.1f, RM_TremorKernel.MaxFlickerSeconds) * 10f) / 10f;
+                list.Label("Never more than " + Mathf.RoundToInt(tremorMaxFraction * 100f) + "% of the lights at once (one light at the least)");
+                tremorMaxFraction = Mathf.Round(list.Slider(tremorMaxFraction, 0.01f, RM_TremorKernel.MaxFraction) * 100f) / 100f;
                 list.GapLine();
             }
 

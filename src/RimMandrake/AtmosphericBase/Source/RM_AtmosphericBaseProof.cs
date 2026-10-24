@@ -1,4 +1,4 @@
-// ATMOSPHERIC_BASE_BUILD_PROGRAM_1 Phases 1-2 -- live proof hooks for validation.py (jawa/static_call).
+// ATMOSPHERIC_BASE_BUILD_PROGRAM_1 Phases 1-4 -- live proof hooks for validation.py (jawa/static_call).
 // ProofTakeover runs the SHIPPED take-over on the current map and leaves it as it found it: settings restored in
 // finally, the test fixture released, the scenario flag put back. Answers one line of key=value; "-" where the map has
 // nothing to test on (no eligible fixture, no excluded glower of a kind), which the suite reads as UNMEASURED.
@@ -153,7 +153,7 @@ namespace RimMandrake.AtmosphericBase
             int wasGroup = cur.defaultMoodGroup;
             Map map = Find.CurrentMap;
             RM_MapComponent_AtmosphericBase comp = RM_MapComponent_AtmosphericBase.For(map);
-            RM_MoodClaim prior = comp?.PushedMood;
+            List<RM_MoodClaim> prior = comp?.TakeAllMoods();   // the proof mood is the only one while it runs
             Thing a = null;
             bool pushed = false;
             try
@@ -252,10 +252,121 @@ namespace RimMandrake.AtmosphericBase
                     cur.lightChannel = true;
                     if (a != null) comp.Release(a);
                     comp.UnregisterGroup(EmptyGroup);
-                    if (prior != null) comp.PushMood(prior.claimant, prior.group, prior.scheme, prior.rank, out _);
-                    else comp.ReleaseMood(ProofClaimant);
+                    comp.ReleaseMood(ProofClaimant);
+                    comp.RestoreMoods(prior);
                 }
                 cur.lightChannel = wasLight; cur.compositor = wasComp; cur.defaultMood = wasDefault; cur.defaultMoodGroup = wasGroup;
+            }
+        }
+
+        // ------------------------------------------------------------------ Phases 3-4: territory and tremor
+        // ProofTerritory hands over up to MaxProofFixtures untaken LIT fixtures, lifts every pushed mood off the map, and
+        // pushes two territory moods (the shipped Lamplight louder than the shipped Fireflies, both over "ship") and four
+        // tremor moods (one more than L6 allows). It then evaluates the SHIPPED compositor at every step of one full turn
+        // of the boundary, on explicit times. Answers key=value; leaves the map as it found it.
+        private const int MaxProofFixtures = 40;
+        private static readonly string[] TremorClaimants = { "atmosphericbase.proof.t1", "atmosphericbase.proof.t2", "atmosphericbase.proof.t3", "atmosphericbase.proof.t4" };
+        private const string SecondClaimant = "atmosphericbase.proof.second";
+
+        public static string ProofTerritory(string args)
+        {
+            RM_AtmosphericBaseSettings cur = RM_AtmosphericBaseSettings.Cur;
+            bool wasLight = cur.lightChannel, wasComp = cur.compositor, wasTerr = cur.territory, wasTremor = cur.tremor;
+            Map map = Find.CurrentMap;
+            RM_MapComponent_AtmosphericBase comp = RM_MapComponent_AtmosphericBase.For(map);
+            List<RM_MoodClaim> prior = comp?.TakeAllMoods();
+            var held = new List<Thing>();
+            var before = new Dictionary<Thing, RM_GlowSnapshot>();
+            try
+            {
+                RM_AtmosphericSchemeDef la = DefDatabase<RM_AtmosphericSchemeDef>.GetNamedSilentFail(RM_Compositor.DefaultSchemeDefName);
+                RM_AtmosphericSchemeDef ff = DefDatabase<RM_AtmosphericSchemeDef>.GetNamedSilentFail("RM_Scheme_Fireflies");
+                string s = "schemes=" + B(la != null && la.Valid && ff != null && ff.Valid);
+                if (map == null || comp == null) return s + " map=-";
+                if (la == null || ff == null || !la.Valid || !ff.Valid) return s + " lit=-";
+                cur.lightChannel = true; cur.compositor = true; cur.territory = true; cur.tremor = true;
+                foreach (Building b in RM_EmitterDiscovery.EligibleOn(map))
+                {
+                    if (held.Count >= MaxProofFixtures) break;
+                    if (comp.IsTaken(b) || !RM_EmitterDiscovery.GlowerOf(b).Glows) continue;
+                    before[b] = RM_GlowAccess.Snapshot(RM_EmitterDiscovery.GlowerOf(b));
+                    if (comp.TakeOver(b)) held.Add(b);
+                }
+                s += " lit=" + held.Count + " others_held=" + (comp.TakenCount - held.Count);
+                if (held.Count < 2) return s;
+                int violations0 = RM_PaletteGuard.violations;
+                comp.PushMood(ProofClaimant, RM_SchemeKernel.GroupShip, la, 10f, out _);
+                comp.PushMood(SecondClaimant, RM_SchemeKernel.GroupShip, ff, 5f, out _);
+                for (int i = 0; i < TremorClaimants.Length; i++)
+                    comp.PushMood(TremorClaimants[i], RM_SchemeKernel.GroupShip, i % 2 == 0 ? la : ff, -i, out _);
+                RM_AtmosphericSchemeDef[] tremorScheme = { la, ff, la };
+
+                RM_TerritoryTuning tt = cur.TerritoryTuning;
+                RM_TremorTuning tu = cur.TremorTuning;
+                double t0 = 5000.0, dt = tt.periodSeconds / RM_TerritoryKernel.StepsPerTurn;
+                comp.compositor.ResetCounters();
+                comp.compositor.Evaluate(comp, t0, refreshMembership: true);
+                var owners0 = held.ToDictionary(x => x, x => comp.compositor.TerritoryOwner(x));
+                var changed = new HashSet<Thing>();
+                bool oneOwner = true, bothSides = true, ownPalette = true, tremorOwn = true;
+                int tremorSeen = 0, maxTremor = 0, maxContrib = 0;
+                for (int k = 0; k <= RM_TerritoryKernel.StepsPerTurn; k++)
+                {
+                    double t = t0 + k * dt + 0.5 * dt;
+                    comp.compositor.Evaluate(comp, t);
+                    int lead = 0, second = 0, tremor = 0;
+                    foreach (Thing x in held)
+                    {
+                        int o = comp.compositor.TerritoryOwner(x);
+                        int tr = comp.compositor.TremorContributor(x);
+                        if (o == 0) lead++; else if (o == 1) second++; else oneOwner = false;
+                        if (o != owners0[x]) changed.Add(x);
+                        if (!comp.compositor.Shows(x, out long v) || v == RM_ChangeTracker.Substrate) { ownPalette = false; continue; }
+                        RM_AtmosphericSchemeDef want = tr >= 0 ? (tr < tremorScheme.Length ? tremorScheme[tr] : null) : (o == 0 ? la : ff);
+                        CompGlower g = RM_EmitterDiscovery.GlowerOf(x);
+                        bool ok = want != null && (ushort)(v >> 8) == want.shortHash && g.GlowColor == want.palette[(int)(v & 0xFF)];
+                        if (tr >= 0) { tremor++; if (!ok) tremorOwn = false; }
+                        else if (!ok) ownPalette = false;
+                    }
+                    if (lead == 0 || second == 0) bothSides = false;
+                    tremorSeen += tremor;
+                    maxTremor = System.Math.Max(maxTremor, tremor);
+                    maxContrib = System.Math.Max(maxContrib, comp.compositor.lastTremorContributors);
+                }
+                s += " one_owner=" + B(oneOwner) + " both_sides=" + B(bothSides) + " own_palette=" + B(ownPalette)
+                   + " moved=" + changed.Count + "/" + held.Count + " boundary_moves=" + B(changed.Count == held.Count)
+                   + " flips=" + comp.compositor.territoryFlips + " allocations=" + comp.compositor.allocations
+                   + " writes=" + comp.compositor.writes;
+                s += " tremor_contributors=" + maxContrib + " tremor_cap_held=" + B(maxContrib <= RM_TremorKernel.LawCap)
+                   + " tremor_seen=" + tremorSeen + " tremor_max=" + maxTremor
+                   + " tremor_fraction_held=" + B(maxTremor <= RM_TremorKernel.InstantCap(comp.compositor.lastDrivenCount, tu.maxFraction))
+                   + " tremor_own_palette=" + B(tremorOwn);
+
+                cur.territory = false; cur.tremor = false;
+                comp.compositor.Evaluate(comp, t0);
+                bool offOne = held.All(x => comp.compositor.TerritoryOwner(x) == -1 && comp.compositor.Shows(x, out long v) && (ushort)(v >> 8) == la.shortHash);
+                s += " territory_off_one_mood=" + B(offOne);
+
+                foreach (Thing x in held) comp.Release(x);
+                bool exact = held.All(x => RM_GlowAccess.Snapshot(RM_EmitterDiscovery.GlowerOf(x)).SameAs(before[x]));
+                held.Clear();
+                s += " released_exact=" + B(exact) + " palette_violations=" + (RM_PaletteGuard.violations - violations0);
+                return s;
+            }
+            catch (System.Exception e)
+            {
+                return "ERROR " + e.GetType().Name + ": " + e.Message;
+            }
+            finally
+            {
+                if (comp != null)
+                {
+                    cur.lightChannel = true;
+                    foreach (Thing x in held) comp.Release(x);
+                    comp.TakeAllMoods();
+                    comp.RestoreMoods(prior);
+                }
+                cur.lightChannel = wasLight; cur.compositor = wasComp; cur.territory = wasTerr; cur.tremor = wasTremor;
             }
         }
     }
