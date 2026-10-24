@@ -1,0 +1,51 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_fauna_excretor_r1_00",
+ "built": "2026-10-24T10:10:08-0700",
+ "census": "Transient/biome_ffar/art_eval_shadow_fauna_excretor_r1_00.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 26 mods \u2014 a test list): 320 active",
+ "rows": {
+  "RSW_Excretor": {
+   "columns": {
+    "A": {
+     "east": "0a20ff93042f043a877cbac86d43c6a84f8d18af65ae4e709b008a5676132086",
+     "north": "7fe6f50df8a7e84c9f6874bb071cc38c22e5712d0d9687a9de75e6b765bc007b",
+     "south": "a0060ea348821f8c5ce276c5978c3cfcea454a428b7f25a0a1867bf4eaf82087"
+    },
+    "B": {
+     "east": "0a20ff93042f043a877cbac86d43c6a84f8d18af65ae4e709b008a5676132086",
+     "north": "c6fee02abd34428995a367bb5b5a457009afd537e728f587d0743c6abb1eff79",
+     "south": "1ebb66b07ec805aee4dfe6cf1de38706e2da80d7dc3d4fd4c4f61c3fc9c54d7e"
+    },
+    "C": {
+     "east": "e8660932434bc7a8ea4d9cd6703047fd8df579c77ee61010762d2082f8f5557e",
+     "north": "659de0e0c7fd9c913b86563c7ed9ac5b05d28aaca95dc6819d026b0a60f0d219",
+     "south": "4fcf648585a7e303ec12321f740f70a6ec7e1762d6659ed6b6916f55fce0cf91"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/FeralNerf/FeralNerf",
+    "B": "swanimals/FeralNerf/FeralNerf",
+    "C": "swanimals/FeralNerf/FeralNerf"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render leaningscrub_feralnerf_v1",
+    "C": "render enact_eb982163_excretor_v1"
+   },
+   "pools": [
+    "swanimals/FeralNerf/FeralNerf"
+   ],
+   "res": "swanimals/FeralNerf/FeralNerf",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "excretor"
+  }
+ },
+ "sheetId": "art_eval_shadow_fauna_excretor_r1_00_sheet_2026-10-24",
+ "snapshotId": "5c8023cb1b71a70d"
+}
