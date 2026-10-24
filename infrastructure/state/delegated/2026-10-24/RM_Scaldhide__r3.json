@@ -1,0 +1,65 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 44.6,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.3697266
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 65.7
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Scaldhide",
+ "decision": "ESCALATE",
+ "reasons": [
+  "opus band WEAK (model said really_bad); blocking ['F_SOUTH_NOT_FRONT', 'CONSTRUCTED', 'DUPLICATE', 'DEPARTURE_MISSING']; polish ['LEGIB_32']",
+  "gpt regen: unsettled ['K2', 'K4'], own blocking ['CONSTRUCTED', 'DEPARTURE_MISSING']",
+  "still failing after 3 regen rounds \u2014 one line to the owner"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "ed1e39f0a86e5ca14ccb6f25e6dfa0e34c05f2adc58f19c210f99d860660a034",
+  "east.png": "76d06490d5b1a3f18b234bffe04b60f362cad005792da98b264b76d877634f49",
+  "north.png": "39332d27ec4f787b1a7b75af0fc05cb794d402c122c2f034ba580de93fb7346c",
+  "scale.png": "57f940ff2418c59caf78611e6bfcadbfdbd357a3b961d68127919a2a699ca0ef",
+  "facings.png": "51197f86f50874478c2df4a92ac841f6f4b03e888853bc3df8379510cc18030b"
+ }
+}

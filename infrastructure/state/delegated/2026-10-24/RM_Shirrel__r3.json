@@ -1,0 +1,58 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 40.5,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.3711308
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Shirrel",
+ "decision": "ESCALATE",
+ "reasons": [
+  "opus band REALLY_BAD (model said really_bad); blocking ['DEPARTURE_MISSING', 'STYLE_EARTHLY', 'DEPARTURE_MISSING', 'DEPARTURE_MISSING', 'F_INCONSISTENT']; polish ['FLYER_WINGS_GROUNDED']",
+  "still failing after 3 regen rounds \u2014 one line to the owner"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "8a7d113d6417216814d7934bdc514f6a66bf1196475db01bef1cca14d30f0e35",
+  "east.png": "41877ac2c4399833f8e541015db97c112acacbac2c8a9b8a94b6d83fd71798ea",
+  "north.png": "a9609fc80cc042aedcb2e5e317e43a41a8563fa5a2288449e682a5bbc8ccb60c",
+  "scale.png": "ce631d9c40beccee4bbfffb029ab433915758b9d4b7ee0fe14aa427de2570a93",
+  "facings.png": "32fa4662d0717166cac3d7057c1d8fb1c0a59b9a72bbc53a7934bd16e6a75d13"
+ }
+}
