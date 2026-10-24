@@ -1,0 +1,2 @@
+rimworld/load_game (and load_game_ready, which reports 'map data is available' with state.longEventPending=true) returns before the map's things are spawned. A hook queried at once answers 'no eligible fixture', and a persistence row reads that as a LOST claim. Poll the subject until it exists before judging. Seen in AtmosphericBase R1, 2026-10-24: the save held the claim and it came back seconds later.
+home: live-debugging-proof-harness
