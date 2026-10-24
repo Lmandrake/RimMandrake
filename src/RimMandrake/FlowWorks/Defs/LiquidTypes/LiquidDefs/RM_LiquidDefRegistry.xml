@@ -92,18 +92,18 @@
     </surfaceLook>
     <conversions>
       <li>
-        <tier>Crude</tier>
-        <process>distill</process>
-        <product>RM_Liquid_FreshWater</product>
-        <inputLitres>400</inputLitres>
-        <outputLitres>200</outputLitres>
-      </li>
-      <li>
         <tier>Industrial</tier>
         <process>desalinate</process>
         <product>RM_Liquid_FreshWater</product>
         <inputLitres>600</inputLitres>
         <outputLitres>400</outputLitres>
+      </li>
+      <li>
+        <tier>Crude</tier>
+        <process>distill</process>
+        <product>RM_Liquid_FreshWater</product>
+        <inputLitres>400</inputLitres>
+        <outputLitres>200</outputLitres>
       </li>
     </conversions>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
@@ -223,6 +223,7 @@
       <shallow>RM_WaterPoisonedShallow</shallow>
       <deep>RM_WaterPoisonedDeep</deep>
     </terrainSuite>
+    <canalFluid>RM_Fluid_Poison</canalFluid>
     <bottled>
       <bottle>RM_Bottle_ToxicWater</bottle>
       <litresPerBottle>1.5</litresPerBottle>
@@ -241,17 +242,17 @@
     </surfaceLook>
     <conversions>
       <li>
-        <tier>Crude</tier>
-        <process>filter</process>
-        <product>RM_Liquid_FreshWater</product>
-        <inputLitres>600</inputLitres>
-        <outputLitres>200</outputLitres>
-      </li>
-      <li>
         <tier>Industrial</tier>
         <process>detox</process>
         <product>RM_Liquid_FreshWater</product>
         <inputLitres>400</inputLitres>
+        <outputLitres>200</outputLitres>
+      </li>
+      <li>
+        <tier>Crude</tier>
+        <process>filter</process>
+        <product>RM_Liquid_FreshWater</product>
+        <inputLitres>600</inputLitres>
         <outputLitres>200</outputLitres>
       </li>
     </conversions>
@@ -425,17 +426,17 @@
     </surfaceLook>
     <conversions>
       <li>
-        <tier>Household</tier>
-        <process>distill</process>
-        <product>RM_Liquid_FreshWater</product>
-        <inputLitres>800</inputLitres>
-        <outputLitres>200</outputLitres>
-      </li>
-      <li>
         <tier>Industrial</tier>
         <process>desalinate</process>
         <product>RM_Liquid_FreshWater</product>
         <inputLitres>600</inputLitres>
+        <outputLitres>200</outputLitres>
+      </li>
+      <li>
+        <tier>Household</tier>
+        <process>distill</process>
+        <product>RM_Liquid_FreshWater</product>
+        <inputLitres>800</inputLitres>
         <outputLitres>200</outputLitres>
       </li>
     </conversions>
@@ -475,6 +476,14 @@
       <wake>1.0</wake>
       <seeThrough>0.35</seeThrough>
     </surfaceLook>
+  </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
+
+  <RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
+    <defName>RM_Liquid_NotDrinkable</defName>
+    <label>not a drink</label>
+    <description>Stands in for terrain that wades like water but cannot be drunk.</description>
+    <thirstQuality>Fouled</thirstQuality>
+    <useClass>Never</useClass>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
   <RimMandrake.FlowWorks.LiquidTypes.LiquidDef>

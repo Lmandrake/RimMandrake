@@ -27,6 +27,11 @@
       <li>WaterFreshShallowStill</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_NotDrinkable</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallow">
@@ -54,6 +59,11 @@
       <li>WaterFreshShallowStill</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_NotDrinkable</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallow">
@@ -81,6 +91,11 @@
       <li>WaterFreshDeep</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_NotDrinkable</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallow">
@@ -106,6 +121,11 @@
       <li>WaterFreshDeep</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_NotDrinkable</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <!-- takeSplashes on every fill tier agrees with its fluid's surface look (RM_LiquidLooks.Apply writes look.splashes
@@ -129,6 +149,11 @@
       <li>WaterFreshShallowStill</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_NotDrinkable</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallow">
@@ -153,6 +178,11 @@
       <li>WaterFreshShallowStill</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_NotDrinkable</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallow">
@@ -177,6 +207,11 @@
       <li>WaterFreshDeep</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_NotDrinkable</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallow">
@@ -199,6 +234,11 @@
       <li>WaterFreshDeep</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_NotDrinkable</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
 
@@ -224,6 +264,11 @@
       <li>WaterFreshShallowStill</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_NotDrinkable</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallow">
@@ -248,6 +293,11 @@
       <li>WaterFreshShallowStill</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_NotDrinkable</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallow">
@@ -272,6 +322,11 @@
       <li>WaterFreshDeep</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_NotDrinkable</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallow">
@@ -294,6 +349,11 @@
       <li>WaterFreshDeep</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_NotDrinkable</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallow">
@@ -318,6 +378,11 @@
       <li>WaterFreshShallowStill</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_NotDrinkable</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallow">
@@ -345,6 +410,11 @@
       <li>WaterFreshShallowStill</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_NotDrinkable</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallow">
@@ -372,6 +442,11 @@
       <li>WaterFreshDeep</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_NotDrinkable</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallow">
@@ -397,6 +472,11 @@
       <li>WaterFreshDeep</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_NotDrinkable</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <!-- PROPANE_CANAL_WIRE_STILL_NO_FLUID: RM_Fluid_Propane's fill ladder, cloned from chemfuel's tiers (same
@@ -423,6 +503,11 @@
       <li>WaterFreshShallowStill</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_NotDrinkable</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallow">
@@ -450,6 +535,11 @@
       <li>WaterFreshShallowStill</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_NotDrinkable</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallow">
@@ -477,6 +567,11 @@
       <li>WaterFreshDeep</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_NotDrinkable</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallow">
@@ -502,6 +597,11 @@
       <li>WaterFreshDeep</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_NotDrinkable</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallow">
@@ -526,6 +626,11 @@
       <li>WaterFreshShallowStill</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_NotDrinkable</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallow">
@@ -553,6 +658,11 @@
       <li>WaterFreshShallowStill</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_NotDrinkable</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallow">
@@ -580,6 +690,11 @@
       <li>WaterFreshDeep</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_NotDrinkable</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallow">
@@ -605,6 +720,11 @@
       <li>WaterFreshDeep</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_NotDrinkable</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <!-- BOILING_ICY_CANAL_FLUIDS_1: boiling and icy water ladders, cloned from blood's tiers (same pathCost/passability);

@@ -846,14 +846,16 @@ def build_compat_patch(out_dir: Path):
 #   household  fueled still (distill/cool/filter) - research
 #   industrial found works: desal plant (desalinate/distill), detox works
 #              (detox/filter), tar refinery (refine)
+# LIQUID_CONVERTER_FIX_PICKS_CRUDE_FIRST: CompLiquidConverter.StepFor returns the FIRST row the machine is eligible for, so
+# list the highest tier first: an industrial machine then runs its industrial recipe, a lesser one skips it (tier above its own).
 LIQUID_CONVERSIONS = {
     "saltwater": [
-        {"tier": "Crude", "process": "distill", "product": "RM_Liquid_FreshWater", "inputLitres": 400, "outputLitres": 200},
         {"tier": "Industrial", "process": "desalinate", "product": "RM_Liquid_FreshWater", "inputLitres": 600, "outputLitres": 400},
+        {"tier": "Crude", "process": "distill", "product": "RM_Liquid_FreshWater", "inputLitres": 400, "outputLitres": 200},
     ],
     "brine": [
-        {"tier": "Household", "process": "distill", "product": "RM_Liquid_FreshWater", "inputLitres": 800, "outputLitres": 200},
         {"tier": "Industrial", "process": "desalinate", "product": "RM_Liquid_FreshWater", "inputLitres": 600, "outputLitres": 200},
+        {"tier": "Household", "process": "distill", "product": "RM_Liquid_FreshWater", "inputLitres": 800, "outputLitres": 200},
     ],
     "boiling": [
         {"tier": "Crude", "process": "cool", "product": "RM_Liquid_FreshWater", "inputLitres": 200, "outputLitres": 200},
@@ -862,8 +864,8 @@ LIQUID_CONVERSIONS = {
         {"tier": "Crude", "process": "cool", "product": "RM_Liquid_FreshWater", "inputLitres": 200, "outputLitres": 200},
     ],
     "toxic": [
-        {"tier": "Crude", "process": "filter", "product": "RM_Liquid_FreshWater", "inputLitres": 600, "outputLitres": 200},
         {"tier": "Industrial", "process": "detox", "product": "RM_Liquid_FreshWater", "inputLitres": 400, "outputLitres": 200},
+        {"tier": "Crude", "process": "filter", "product": "RM_Liquid_FreshWater", "inputLitres": 600, "outputLitres": 200},
     ],
     "acid": [
         {"tier": "Industrial", "process": "detox", "product": "RM_Liquid_FreshWater", "inputLitres": 600, "outputLitres": 200},
@@ -1017,6 +1019,8 @@ LIQUID_DEF_ROWS = {
         "viscosityClass": "Water",
         "pH": 7,
         "terrainSuite": {"shallow": "RM_WaterPoisonedShallow", "deep": "RM_WaterPoisonedDeep"},
+        # NATURAL_LIQUID_FIX_PUMPS_AS_FRESH_WATER: without a canalFluid a pump or channel at a poisoned pond read it as RM_Fluid_Water.
+        "canalFluid": "RM_Fluid_Poison",
         "thirstQuality": "Toxic",
         "distillable": True,
         "bottled": {"bottle": "RM_Bottle_ToxicWater", 
@@ -1094,6 +1098,16 @@ LIQUID_DEF_ROWS = {
         "worldTag": "RM_Liquid_Propane",  # frozen world's propane lake under Umbra, LIQUID_BIOMES_MAP_1
         "bottled": {"bottle": "RM_Bottle_Propane", 
                     "bucket": "RM_Bucket_Propane", "barrel": "RM_Barrel_Propane"},
+    },
+    # FILL_TERRAIN_FIX_HAZARDS_DRUNK_AS_WATER / DEEP_SAND_FIX_READS_AS_FRESHWATER: a terrain that carries the Water tag for
+    # wading or fishing but is not a drink (hazard fill tiers, deep sand) points here through RM_DrinkableTerrainExtension.
+    # thirstQuality only satisfies ConfigErrors' form check; useClass Never makes MayDrink refuse it for every pawn. No
+    # terrainSuite and no canalFluid, so no pump, body or bottle indexes it.
+    "not_drinkable": {
+        "defName": "RM_Liquid_NotDrinkable",
+        "label": "not a drink",
+        "description": "Stands in for terrain that wades like water but cannot be drunk.",
+        "thirstQuality": "Fouled",
     },
     "chemfuel": {
         "defName": "RM_Liquid_Chemfuel",
@@ -1306,6 +1320,7 @@ USE_CLASS = {
     "tar": "Never",
     "propane": "Never",
     "chemfuel": "Never",
+    "not_drinkable": "Never",
     "lava": "Never",
 }
 
