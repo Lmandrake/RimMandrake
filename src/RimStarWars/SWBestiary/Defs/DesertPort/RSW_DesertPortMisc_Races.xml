@@ -7,7 +7,7 @@ misplaced, not part of this port). RM_Korrum (AA_BoulderMit) added
 RSW_Khorrak and finish the item's "11 unblocked rows" list. RSW_Khorrak itself
 was retired 2026-10-11 (KHORRAK_STEEL_DIET_TIER_1: RM_Khorrak in mandrake.rm.longshade
 is the only khorrak and now carries the steel diet); MEASURED count of
-ThingDef ParentName="AnimalThingBase" in this file is now 4 (RM_Chikka moved
+ThingDef ParentName="AnimalThingBase" in this file is now 2 (RSW_Vozzik, RSW_Zhakka; RM_Chikka moved
 to LeaningScrub 2026-10-24, CHIKKA_HOME_DECIDE_NOT_STAR_WARS; RM_Vurra, RM_Durrok,
 RM_Mullgoth moved there the same day, SWB_RM_FAUNA_DECIDE_HOME_LIKE_CHIKKA). Owner ruling 2026-09-20: "All of the desert
 sheet should be keep but replace with our own version of creature and art. Port.

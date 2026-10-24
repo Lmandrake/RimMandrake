@@ -18,7 +18,7 @@
   every other split biome's Star-Wars-fauna routing uses (see
   WildAnimals_Pyrelands.xml, WildAnimals_Greentide.xml, WildAnimals_CrackedLands.xml).
 
-  ROSTER (the four Star Wars-tier rows):
+  ROSTER (the three Star Wars-tier rows left; a fourth, RSW_Korrum, moved to RM_Korrum 2026-10-24):
 
   🔴 MLIE_ABSORPTION_BIOME_WIRING_1 (2026-09-25): the swap flagged below as
   "not this item's scope" is now done — Mynock retargeted to our own

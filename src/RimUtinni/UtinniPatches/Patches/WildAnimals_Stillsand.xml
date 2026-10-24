@@ -26,7 +26,7 @@
   STALE pre-rename defNames — RSW_Spineroller, RSW_Stareling, RSW_Voltmaw — a
   same-day rename (NONCANON_BEAST_RENAME_1, f7cf979ab, 2026-09-24) landed
   between that table being written and this file, renaming them to RSW_Kudda,
-  RM_Ikee and RSW_Vozzik respectively (same commonalities, same rows). This
+  RSW_Ikee (since renamed RM_Ikee, 2026-10-24) and RSW_Vozzik respectively (same commonalities, same rows). This
   file follows the live def, not the item's now-stale table.
 
   🔴 LONGSHADE_RULED_CONTENT_1 (2026-09-27 sitting, Q6) cut RSW_Kudda and
@@ -40,7 +40,7 @@
   docs and the roster JSON, never this XML.
 
   🔴 STILLSAND_RULED_CONTENT_1 (2026-09-27 sitting, Q1 RATIFIED) further cut
-  RM_Ikee, RSW_Vozzik, RSW_SandLion (vekka) and RSW_Drazzik from the Add
+  RSW_Ikee, RSW_Vozzik, RSW_SandLion (vekka) and RSW_Drazzik from the Add
   block below, and RSW_LightPipeNub/RSW_Ollim from the wildPlants block —
   all four are invented content (Q11a), tier-moved to native RM_-tier copies
   authored directly in RM_Stillsand_Biome.xml's own wildAnimals/wildPlants
@@ -52,11 +52,11 @@
   own Add block — which targets RM_Stillsand, the free tier — drops the six
   rows that RM_Stillsand now carries natively instead.
 
-  🔴 LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 (2026-10-05): RM_Ikee was cut as a
-  duplicate and RSW_Ikee came back into the Add block below (0.15) — the
+  🔴 LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 (2026-10-05): the RM_-tier ikee copy was cut as a
+  duplicate and RSW_Ikee (now RM_Ikee) came back into the Add block below (0.15) — the
   ikee's six-row note above is history for that one row.
 
-  8 wildAnimals rows remain, all mandrake.rsw.swbestiary (our own RSW_
+  6 wildAnimals rows remain, all mandrake.rsw.swbestiary (our own RSW_
   ports) — every one of them genuinely canon (§2a) or explicitly deferred
   (qorrax, owner art-review pending). RSW_Kreetle STAYS (Q6: "kreetle ONE
   home, the Stillsand" — this doc's own §7 recommendation to cut it was

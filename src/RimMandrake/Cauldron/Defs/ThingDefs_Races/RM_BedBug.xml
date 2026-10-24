@@ -5,10 +5,10 @@
   Stats, tools, race fields and pawnkind numbers are the donor's own, as the creature the game shows today
   (our rename/tolerance patches on the donor def are folded in). Departures:
     - wildBiomes dropped (the biome roster casts it); AnimalStatExtension (donor stat defs) dropped.
-    - VEF.* comps and VEF_ abilities kept, guarded MayRequire OskarPotocki.VanillaFactionsExpanded.Core (a framework we keep, not the donor).
+    - VEF.* comps and VEF_ abilities dropped (none in this file; the only comp is CompProperties_EggLayer).
     - texPath is OUR final path; our own art installed through the art ledger (5ead1e026, 04c6c578c). The
       donor's art credit was dropped from the description with the donor art (2026-10-22 review).
-    - dessicated donor art and alternate random graphics dropped (vanilla fallback).
+    - dessicated donor art dropped (vanilla fallback); the two alternate random graphics (RM_BedBugV_D, RM_BedBugV_E) are wired on the PawnKindDef.
     - folded 2 op(s) from src/RimUtinni/UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml
     - folded 1 op(s) from src/RimUtinni/UtinniPatches/Patches/BiomeCastEvictions_WildBiomes.xml
     - leatherDef Leather_Chitin dropped (decoration item; no art owed)
