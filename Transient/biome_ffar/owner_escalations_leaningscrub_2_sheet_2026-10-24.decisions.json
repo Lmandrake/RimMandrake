@@ -1,0 +1,221 @@
+{
+  "biome": "SUBJECTS_owner_escalations_leaningscrub_2",
+  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
+  "decidedCount": 7,
+  "decisions": {
+    "RM_Rollbug": {
+      "at": "2026-10-24T13:32:13.756Z",
+      "decidedAt": "2026-10-24T13:32:13.756Z",
+      "decision": "C",
+      "note": "",
+      "prefill": "A",
+      "qPrefill": {
+        "pipeline_check": "keep"
+      },
+      "reject": {},
+      "retire": {},
+      "rev": "466c068825dbf376",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/RM_Rollbug/RM_Rollbug": {
+          "at": "2026-10-24T13:32:13.756Z",
+          "pick": "C",
+          "set_id": "fdd7270f32c2488f",
+          "slot_id": "RM_Rollbug/lifeStages[2].bodyGraphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_Shirrel": {
+      "at": "2026-10-24T13:34:33.186Z",
+      "decidedAt": "2026-10-24T13:34:33.186Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "qPrefill": {
+        "pipeline_check": "keep"
+      },
+      "reject": {},
+      "retire": {},
+      "rev": "466c068825dbf376",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/RM_Shirrel/RM_Shirrel": {
+          "at": "2026-10-24T13:34:33.186Z",
+          "pick": "A",
+          "set_id": "13e7e862aa809c9a",
+          "slot_id": "RM_Shirrel/lifeStages[2].bodyGraphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_Shokka": {
+      "at": "2026-10-24T13:35:54.280Z",
+      "decidedAt": "2026-10-24T13:35:54.280Z",
+      "decision": "C",
+      "note": "",
+      "prefill": "A",
+      "qPrefill": {
+        "pipeline_check": "keep"
+      },
+      "reject": {},
+      "retire": {},
+      "rev": "466c068825dbf376",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/RM_Shokka/RM_Shokka": {
+          "at": "2026-10-24T13:35:54.280Z",
+          "pick": "C",
+          "set_id": "5d0ef566fe55ea22",
+          "slot_id": "RM_Shokka/lifeStages[2].bodyGraphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_Surrik": {
+      "at": "2026-10-24T13:36:40.916Z",
+      "decidedAt": "2026-10-24T13:36:40.916Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "qPrefill": {
+        "pipeline_check": "keep"
+      },
+      "reject": {},
+      "retire": {},
+      "rev": "466c068825dbf376",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/RM_Surrik/RM_Surrik": {
+          "at": "2026-10-24T13:36:40.916Z",
+          "pick": "B",
+          "set_id": "5ee6260db3afa9da",
+          "slot_id": "RM_Surrik/lifeStages[2].bodyGraphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_TunnelSnake": {
+      "at": "2026-10-24T13:39:51.525Z",
+      "decidedAt": "2026-10-24T13:39:15.642Z",
+      "decision": "B",
+      "note": "",
+      "pool": {
+        "Things/Pawn/Animal/RM_TunnelSnake/RM_TunnelSnake": {
+          "add": [
+            "C"
+          ],
+          "baseline": [
+            "6967a09259bda786"
+          ],
+          "remove": []
+        }
+      },
+      "prefill": "A",
+      "purge": [
+        "d19250d2b134d8038649ad3a9a146862df98a9a52ea85eaca6db1bfdbcbf90de",
+        "5f5c9c531370a8b7bb6acf365e1610f2681d806e05a5fab3b97d639d9bd9ba4d",
+        "640204f1eb8cfc3bc9bd87c7c1229fa9f5c9fbd94329e267651028655c8edb29"
+      ],
+      "purgeTouched": true,
+      "qPrefill": {
+        "pipeline_check": "keep"
+      },
+      "reject": {},
+      "retire": {
+        "Things/Pawn/Animal/RM_TunnelSnake/RM_TunnelSnake": [
+          "A"
+        ]
+      },
+      "rev": "466c068825dbf376",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/RM_TunnelSnake/RM_TunnelSnake": {
+          "at": "2026-10-24T13:39:15.642Z",
+          "pick": "B",
+          "set_id": "cb16c54f19c78d10",
+          "slot_id": "RM_TunnelSnake/lifeStages[2].bodyGraphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_Vissler": {
+      "at": "2026-10-24T13:37:50.479Z",
+      "decidedAt": "2026-10-24T13:37:23.617Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "e8bdea3ca8716b6423d793fc032545964131fe858a50de8aec3addb00f36fdfa",
+        "9d43b45753cbebc38ee0c3072fd3bc008fb22bd75b1310b0d71be83f41c9da58",
+        "85f72253076df3369c1ab63e7626680b632b40769a7c138dafcf0f167b349862",
+        "a9b0110a5ed0c677a462941e5c9426fa0292c74b0c16a8b9ef2ca072f9cfde7b",
+        "a0879297ce10852a01f1fd92a6b6ada533f3d47dee41bdc3a11565b652d083cd",
+        "df5f22da01f50c6c2a382dc60766b739d9a54f138ae1306a41065e6c82f70f08"
+      ],
+      "purgeTouched": true,
+      "qPrefill": {
+        "pipeline_check": "keep"
+      },
+      "reject": {},
+      "retire": {},
+      "rev": "466c068825dbf376",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/RM_Vissler/RM_Vissler": {
+          "at": "2026-10-24T13:37:23.617Z",
+          "pick": "A",
+          "set_id": "be217027c2c6b495",
+          "slot_id": "RM_Vissler/lifeStages[2].bodyGraphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_Vurra": {
+      "at": "2026-10-24T13:38:28.227Z",
+      "decidedAt": "2026-10-24T13:38:21.271Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "ca58052156284730204c507ebbbdb2047be95b099ba8f591e7fde0c25666efa3",
+        "b8feca46a077caeb2e64af3821841bd67b0859845e69f5163594005ef1da5f61",
+        "ae17b2ea48ac820eee83a571f4a0c81f2095a6b59bcd2555a76526ed22789117"
+      ],
+      "purgeTouched": true,
+      "qPrefill": {
+        "pipeline_check": "keep"
+      },
+      "reject": {},
+      "retire": {
+        "Things/Pawn/Animal/RM_Vurra/RM_Vurra": [
+          "A"
+        ]
+      },
+      "rev": "466c068825dbf376",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/RM_Vurra/RM_Vurra": {
+          "at": "2026-10-24T13:38:21.271Z",
+          "pick": "B",
+          "set_id": "0baef8de90e64adf",
+          "slot_id": "RM_Vurra/lifeStages[2].bodyGraphicData",
+          "state": "pick"
+        }
+      }
+    }
+  },
+  "posture": "pick-one",
+  "reviewStatus": {
+    "at": null,
+    "by": null,
+    "evidence": "generated by art_sheet.py --biome; rows marked sit1 carry the owner's desert sitting 1 picks, no human has ruled on this sheet; every qPrefill is an agent guess, his answers land in q",
+    "state": "prefill"
+  },
+  "savedAt": "2026-10-24T06:39:52-0700",
+  "savedBy": "review-sheet-sidecar",
+  "sheetId": "owner_escalations_leaningscrub_2_sheet_2026-10-24",
+  "snapshot": "infrastructure/state/art/sheets/owner_escalations_leaningscrub_2_sheet_2026-10-24.snapshot.json",
+  "snapshotId": "466c068825dbf376",
+  "writeCount": 22
+}

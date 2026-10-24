@@ -85,7 +85,9 @@
  "RM_Ullai": 1,
  "RM_UniversalPipe_Modern": 3,
  "RM_UniversalPipe_Scrapper": 3,
+ "RM_Venomvine": 2,
  "RM_Vexxiss": 3,
+ "RM_Vhorrin": 1,
  "RM_Visceral": 1,
  "RM_Vissler": 3,
  "RM_Vurra": 3,
@@ -93,5 +95,6 @@
  "RM_Zisska": 3,
  "RSW_Clodhopper": 1,
  "RSW_Gizka": 1,
+ "RSW_KowakianMonkeyLizard": 2,
  "RSW_Mynock": 1
 }
