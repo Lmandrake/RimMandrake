@@ -671,7 +671,7 @@ namespace RimMandrake.AtmosphericBase
             RM_Compositor c = comp.compositor;
             return "{\"evaluations\":" + c.evaluations + ",\"fixtureEvaluations\":" + c.fixtureEvaluations + ",\"writes\":" + c.writes
                  + ",\"skippedUnchanged\":" + c.skippedUnchanged + ",\"skippedUnlit\":" + c.skippedUnlit + ",\"lastEvalWrites\":" + c.lastEvalWrites
-                 + ",\"maxEvalWrites\":" + c.maxEvalWrites + ",\"allocations\":" + c.allocations + ",\"territoryFlips\":" + c.territoryFlips
+                 + ",\"maxEvalWrites\":" + c.maxEvalWrites + ",\"allocations\":" + c.allocations + ",\"territoryFlips\":" + c.territoryFlips + ",\"tideAllocations\":" + c.tideAllocations
                  + ",\"tremorWrites\":" + c.tremorWrites + ",\"maxTremorCount\":" + c.maxTremorCount + ",\"violations\":" + RM_PaletteGuard.violations + "}";
         }
 

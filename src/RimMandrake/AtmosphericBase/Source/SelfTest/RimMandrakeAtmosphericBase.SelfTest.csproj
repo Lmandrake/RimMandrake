@@ -54,11 +54,13 @@
     <Compile Include="..\Kernel\RM_PatternWalkers.cs" />
     <Compile Include="..\Kernel\RM_PatternModifiers.cs" />
     <Compile Include="..\Kernel\RM_TerritoryKernel.cs" />
+    <Compile Include="..\Kernel\RM_TerritoryShapes.cs" />
     <Compile Include="..\RM_GlowAccess.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="PatternTests.cs" />
     <Compile Include="WalkerTests.cs" />
     <Compile Include="ModifierTests.cs" />
+    <Compile Include="TerritoryTests.cs" />
   </ItemGroup>
 
 </Project>

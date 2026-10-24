@@ -713,5 +713,6 @@ internal static class PatternTests
         StepR1();
         WalkerTests.Run();
         ModifierTests.Run();
+        TerritoryTests.Run();
     }
 }

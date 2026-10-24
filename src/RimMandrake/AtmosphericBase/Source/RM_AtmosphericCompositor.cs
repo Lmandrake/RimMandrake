@@ -132,6 +132,8 @@ namespace RimMandrake.AtmosphericBase
         public long evaluations, fixtureEvaluations, writes, skippedUnchanged, skippedUnlit;
         public int lastEvalWrites, maxEvalWrites;
         public long allocations, territoryFlips, tremorWrites;   // Phase 3-4
+        public long tideAllocations;                                 // allocations that ran as a TIDE (RM_TerritoryShapes)
+        public string lastPlan;                                      // the last territory plan, for the proof readout
         public int lastTremorCount, maxTremorCount, lastTremorContributors, lastUnionCount, lastDrivenCount;
 
         /// <summary>Which of the two territory claimants holds this fixture after the last evaluation: 0 the loudest,
@@ -159,7 +161,7 @@ namespace RimMandrake.AtmosphericBase
         {
             evaluations = fixtureEvaluations = writes = skippedUnchanged = skippedUnlit = 0;
             lastEvalWrites = maxEvalWrites = 0;
-            allocations = territoryFlips = tremorWrites = 0;
+            allocations = territoryFlips = tremorWrites = tideAllocations = 0;
             lastTremorCount = maxTremorCount = lastTremorContributors = lastUnionCount = lastDrivenCount = 0;
         }
 
@@ -347,21 +349,36 @@ namespace RimMandrake.AtmosphericBase
                 foreach (Thing t in driven)
                     if (InGroup(comp, t, lead.group) || InGroup(comp, t, second.group)) union.Add(t);
             lastUnionCount = union.Count;
-            if (second == null) { if (leadOf.Count > 0) leadOf.Clear(); scarOf.Clear(); allocKey = null; prevLead = prevSecond = null; }
+            if (second == null) { if (leadOf.Count > 0) leadOf.Clear(); scarOf.Clear(); allocKey = null; prevLead = prevSecond = null; lastPlan = null; }
             else
             {
                 RM_TerritoryTuning tt = set.TerritoryTuning;
                 long step = RM_TerritoryKernel.ClockStep(time, tt.periodSeconds);
+                // the shape (Kernel/RM_TerritoryShapes.cs): a canon pairing of the two signatures, else the leader's own
+                RM_SignatureDef leadSig = RM_SignatureDef.ForScheme(lead.scheme), otherSig = RM_SignatureDef.ForScheme(second.scheme);
+                RM_TerritoryPlan plan = RM_TerritoryShapes.Plan(leadSig?.defName, leadSig?.territory?.Shape ?? RM_TerritoryShape.Wedge,
+                                                                otherSig?.defName, RM_SignatureDef.Rules);
+                float floor = otherSig?.territory?.minShare ?? 0f;
+                if (floor > 0f) tt.leadShare = System.Math.Min(tt.leadShare, 1f - floor);
+                lastPlan = plan.ToString();
                 uint uh = 2166136261U;
                 foreach (Thing t in union) uh = RM_SchemeKernel.Mix(uh ^ (uint)t.thingIDNumber);
-                string key = lead.claimant + "|" + second.claimant + "|" + step + "|" + union.Count + "|" + uh + "|" + tt.leadShare + "|" + tt.ragged;
+                string key = lead.claimant + "|" + second.claimant + "|" + step + "|" + union.Count + "|" + uh + "|" + tt.leadShare + "|" + tt.ragged
+                             + "|" + lastPlan + "|" + (Graph?.TopologyKey ?? 0UL);
                 if (key != allocKey)
                 {
                     var ids = new List<int>(union.Count);
                     var xs = new List<float>(union.Count);
                     var zs = new List<float>(union.Count);
-                    foreach (Thing t in union) { ids.Add(t.thingIDNumber); xs.Add(t.Position.x); zs.Add(t.Position.z); }
-                    bool[] got = RM_TerritoryKernel.Allocate(ids, xs, zs, step, RM_TerritoryKernel.PairSalt(lead.claimant, second.claimant), tt);
+                    var nodes = new List<int>(union.Count);
+                    foreach (Thing t in union)
+                    {
+                        ids.Add(t.thingIDNumber); xs.Add(t.Position.x); zs.Add(t.Position.z);
+                        int slot = Fixtures != null ? Fixtures.Slot(t.thingIDNumber) : -1;
+                        nodes.Add(slot >= 0 && Graph != null ? Graph.Node(Fixtures.room[slot]) : -1);
+                    }
+                    bool[] got = RM_TerritoryShapes.Allocate(ids, xs, zs, nodes, Graph, step, RM_TerritoryKernel.PairSalt(lead.claimant, second.claimant), tt, plan);
+                    if (RM_TerritoryShapes.RunsAsTide(plan, nodes, Graph)) tideAllocations++;
                     var next = new Dictionary<int, bool>(ids.Count);
                     for (int i = 0; i < ids.Count; i++)
                     {

@@ -45,7 +45,9 @@
     <Compile Include="Kernel\RM_PatternWalkers.cs" />
     <Compile Include="Kernel\RM_PatternModifiers.cs" />
     <Compile Include="Kernel\RM_TerritoryKernel.cs" />
+    <Compile Include="Kernel\RM_TerritoryShapes.cs" />
     <Compile Include="RM_AtmosphericSchemeDef.cs" />
+    <Compile Include="RM_SignatureDef.cs" />
     <Compile Include="RM_AtmosphericCompositor.cs" />
     <Compile Include="RM_AtmosphericExcluded.cs" />
     <Compile Include="RM_GlowAccess.cs" />
