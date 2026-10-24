@@ -259,7 +259,8 @@ namespace RimMandrake.FlowWorks.SelfTest
             return $"clothoid solver: {HoseClothoid.Solves} solves, {HoseClothoid.Iters} iterations, {ms:F0} ms total, "
                 + $"{(HoseClothoid.Solves > 0 ? ms / HoseClothoid.Solves : 0):F2} ms/solve; feasible {HoseClothoid.Feasibles} "
                 + $"({HoseClothoid.FeasIters} it, {HoseClothoid.FeasTicks * 1000.0 / System.Diagnostics.Stopwatch.Frequency:F0} ms)"
-                + $"; lays fitted {HoseMath.G2Done}/{HoseMath.G2Tried}";
+                + $"; lays fitted {HoseMath.G2Done}/{HoseMath.G2Tried}; mates: joint chains solved {HoseSpliceMath.MateJointSolved}, "
+                + $"pairs drawn on a joint half {HoseSpliceMath.MateJointUsed}, leads shortened {HoseSpliceMath.MateLeadShortened}";
         }
 
         internal static void Run(Action<string, Action> Case)
@@ -297,15 +298,13 @@ namespace RimMandrake.FlowWorks.SelfTest
             }
         }
 
-        /// <summary>Rows owed to HOSE_MATE_REWIRE_CONTINUOUS_COUPLING (design sections 6 "Step 6" and 7): even with the lead-out
-        /// shortened to 0.6 (owner by card 2026-10-24 "Shorten the lead-out") no mate fits from the discrete coupling slide,
-        /// though the offline explorer finds one off it. Matched by case-name prefix.</summary>
-        internal static readonly string[] Owed =
-        {
-            "HoseCurve hose_hard_fittings/mateA/", "HoseCurve hose_hard_fittings/mateB/", "HoseCurve splice hose_hard_fittings/",
-        };
-        /// <summary>Rows that must pass (MEASURED 2026-10-24: 47 of 59 at step 6; 48 of 60 after the exact-lead case). Raise it when a row starts passing; never lower it.</summary>
-        internal const int Floor = 48, Rows = 60;
+        /// <summary>Rows allowed to fail, matched by case-name prefix. Empty since HOSE_MATE_REWIRE_CONTINUOUS_COUPLING: the
+        /// hose_hard_fittings mates (mateA/, mateB/, splice) used to find no coupling on the discrete slide and now couple
+        /// where the joint chain meets (HoseSpliceMath.MateJoint).</summary>
+        internal static readonly string[] Owed = { };
+        /// <summary>Rows that must pass (MEASURED 2026-10-24: 47 of 59 at step 6; 48 of 60 after the exact-lead case; 60 of 60
+        /// with the joint mate). Raise it when a row starts passing; never lower it.</summary>
+        internal const int Floor = 60, Rows = 60;
 
         /// <summary>The default run's guard: <see cref="Run"/> over the hard stations, collected into one case. The case fails
         /// when fewer than <see cref="Floor"/> rows pass, when a row outside <see cref="Owed"/> fails, or when the row count is

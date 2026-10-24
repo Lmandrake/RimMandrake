@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using RimMandrake.Shared.Slack;
 
 namespace RimMandrake.FlowWorks.Hose
@@ -584,6 +585,10 @@ namespace RimMandrake.FlowWorks.Hose
             /// <summary>Each hose's straight lead-out as the pair solve kept it: the lay's own, or shorter when no pair fits
             /// behind it (owner by card 2026-10-24 "Shorten the lead-out"); <see cref="MateEnd"/> keeps the same.</summary>
             public double LeadA, LeadB;
+            /// <summary>HOSE_MATE_REWIRE_CONTINUOUS_COUPLING: an end drawn as <see cref="MateJoint"/>'s chain half because the
+            /// tail re-shape could not reach the coupling (null: re-shaped by <see cref="MateTailG2"/>); <see cref="MateEnd"/>
+            /// draws it as the pair solve accepted it.</summary>
+            public List<V2> EndA, EndB;
         }
 
 
@@ -672,28 +677,214 @@ namespace RimMandrake.FlowWorks.Hose
             if (corner.Len > 0.2) dirs.Add(corner.Norm());
             dirs.Add(-ua); dirs.Add(-ub);
             foreach (V2 back in new[] { -ua, -ub }) { dirs.Add((back + back.Perp).Norm()); dirs.Add((back - back.Perp).Norm()); }
+            // HOSE_MATE_REWIRE_CONTINUOUS_COUPLING: the coupling where the two hoses meet with both lengths kept, solved as one
+            // curve (MateJoint) rather than picked from the rings; it competes in the first ring with C itself
+            List<V2> ja = null, jb = null;
+            var first = new List<(V2 c, List<V2> axes)> { (C, axes) };
+            if (MateJoint(A, B, straight, kmax, leadA, leadB, out V2 jc, out V2 ju, out ja, out jb)) first.Insert(0, (jc, new List<V2> { ju }));
             Mate best = null;
             foreach (double r in MateSlide)
             {
-                foreach (V2 d in r == 0 ? new List<V2> { new V2(0, 0) } : dirs)
+                var cands = r == 0 ? first : dirs.Select(d => (C + d * r, axes)).ToList();
+                for (int ci = 0; ci < cands.Count; ci++)
                 {
-                    V2 Ci = C + d * r;
-                    foreach (V2 u in axes)
+                    var (Ci, ax) = cands[ci];
+                    // the joint proposal (first in ring 0): an end the tail re-shape cannot reach takes the joint chain's half
+                    bool joint = r == 0 && ja != null && ci == 0;
+                    foreach (V2 u in ax)
                     {
-                        List<V2> a = MateTailG2(A, Ci, u, straight, kmax, null, width, leadA, out double ca);
+                        List<V2> a = MateTailG2(A, Ci, u, straight, kmax, null, width, leadA, out double ca), endA = null, endB = null;
+                        if (a == null && joint) { a = endA = ja; ca = JointCost(ja, A, kmax); }
                         if (a == null) continue;
                         List<V2> b = MateTailG2(B, Ci, -u, straight, kmax, a, width, leadB, out double cb);
+                        if (b == null && joint) { b = endB = jb; cb = JointCost(jb, B, kmax); }
                         if (b == null) continue;
                         if (!ClearOf(a, A, b, straight, width)) continue;
+                        // a joint half was not re-solved clear of its partner by MateTailG2, so both directions are checked
+                        if ((endA != null || endB != null) && !ClearOf(b, B, a, straight, width)) continue;
                         if (best != null && ca + cb >= best.Cost) continue;
-                        best = new Mate { C = Ci, Axis = u, Cost = ca + cb, PtsA = a, LeadA = leadA, LeadB = leadB };
+                        best = new Mate { C = Ci, Axis = u, Cost = ca + cb, PtsA = a, LeadA = leadA, LeadB = leadB, EndA = endA, EndB = endB };
                         Am = a; Bm = b;
                     }
                 }
                 if (best != null) break;
             }
+            if (best != null && (best.EndA != null || best.EndB != null)) MateJointUsed++;
             return best;
         }
+
+        /// <summary>
+        /// HOSE_MATE_REWIRE_CONTINUOUS_COUPLING: the coupling two hoses reach with both lengths kept, found continuously. A run
+        /// from A's mouth to its end, on through the coupling and back along B to B's mouth, is ONE clothoid chain
+        /// (<see cref="HoseClothoid.Solve"/>) of length |A| + |B|: it leaves A's mouth along A's lead (straight
+        /// <paramref name="leadA"/>), arrives at B's mouth against B's lead (straight <paramref name="leadB"/>), and is dead
+        /// straight for <paramref name="straight"/> either side of arc |A| -- the two coupling runs, face to face. The coupling is
+        /// the chain's point at arc |A| and the axis its heading there, so position and heading are wherever the two hoses
+        /// actually meet, not a point of a fixed grid (the offline explorer's joint mate solve, hose_geometry_explore.py
+        /// solve_mate). The caller still re-shapes and checks each end (<see cref="MateTailG2"/>, <see cref="ClearOf"/>), so a
+        /// proposal that crosses itself or the partner is refused exactly as a ring candidate is. False when the chain does not
+        /// solve.
+        /// </summary>
+        internal static bool MateJoint(List<V2> A, List<V2> B, double straight, double kmax, double leadA, double leadB, out V2 C, out V2 axis,
+            out List<V2> endA, out List<V2> endB)
+        {
+            C = axis = default(V2);
+            endA = endB = null;
+            // the chain re-lays each hose from its lead on, so a hose with no lead to keep (not laid from a fitting) is left to
+            // the tail re-shape, which keeps its head
+            if (A == null || B == null || A.Count < 3 || B.Count < 3 || leadA <= 0 || leadB <= 0) return false;
+            double[] sa = Geo.CumLen(A), sb = Geo.CumLen(B);
+            double LA = sa[sa.Length - 1], LB = sb[sb.Length - 1];
+            if (LA - leadA < straight + 0.5 || LB - leadB < straight + 0.5) return false;
+            var track = new List<V2>(A.Count + B.Count);
+            track.AddRange(A);
+            for (int i = B.Count - 1; i >= 0; i--) track.Add(B[i]);
+            // at least ~16 free curvatures between the leads and the coupling runs (4 end equalities)
+            double free = LA + LB - leadA - leadB - 2 * straight;
+            double thA = HoseClothoid.HeadingAt(A, sa, 0), thB = HoseClothoid.HeadingAt(B, sb, 0);
+            // the laid pair as the guide, then the same with its corners cut (the two ends' meeting is a kink in it), then
+            // Dubins guides through couplings around the laid meeting (JointGuides)
+            var guides = new List<(List<V2> g, double tw)> { (track, 0.3), (CutCorners(track, 3), 0.3), (CutCorners(track, 3), 0.02) };
+            foreach (List<V2> g in JointGuides(A[0], thA, leadA, LA, B[0], thB, leadB, LB, A[A.Count - 1], straight, kmax))
+            {
+                guides.Add((g, 0.3));
+                guides.Add((g, 0.02));
+            }
+            HoseClothoid.Result r = null;
+            foreach (var (guide, tw) in guides)
+            {
+                var pr = new HoseClothoid.Problem
+                {
+                    P0 = A[0], Theta0 = thA, P1 = B[0], Theta1 = thB + Math.PI,
+                    Lead0 = leadA, Lead1 = leadB, L = LA + LB, Track = guide, Kmax = kmax, TrackWeight = tw,
+                    Step = Math.Max(0.15, Math.Min(HoseClothoid.NodeStep, free / 16)),
+                };
+                pr.Straight.Add((LA - straight, LA + straight));
+                r = HoseClothoid.Solve(pr);
+                if (r.Feasible && r.Pts != null && r.Pts.Count >= 3 && !HoseMath.SelfIntersects(r.Pts)) break;
+                r = null;
+            }
+            if (r == null) return false;
+            double[] s = Geo.CumLen(r.Pts);
+            int seg = 0;
+            while (seg < r.Pts.Count - 2 && s[seg + 1] < LA) seg++;
+            double t = Math.Max(0, Math.Min(1, (LA - s[seg]) / Math.Max(1e-12, s[seg + 1] - s[seg])));
+            C = r.Pts[seg] + (r.Pts[seg + 1] - r.Pts[seg]) * t;
+            axis = (r.Pts[seg + 1] - r.Pts[seg]).Norm();
+            // the two halves, each from its own mouth to the coupling; within its lead each keeps the lay's own samples (the
+            // chain's lead is the same straight, so the shape is unchanged and the lead reads as untouched)
+            var ha = new List<V2>();
+            var hb = new List<V2>();
+            for (int i = 0; i < r.Pts.Count; i++)
+            {
+                if (s[i] < LA - 1e-9) ha.Add(r.Pts[i]);
+                else if (s[i] > LA + 1e-9) hb.Add(r.Pts[i]);
+            }
+            ha.Add(C);
+            hb.Insert(0, C);
+            hb.Reverse();
+            endA = KeepLead(ha, A, sa, leadA);
+            endB = KeepLead(hb, B, sb, leadB);
+            MateJointSolved++;
+            return true;
+        }
+
+        /// <summary><paramref name="half"/> (a joint chain's half, starting on <paramref name="raw"/>'s straight lead) with its
+        /// samples within <paramref name="lead"/> replaced by <paramref name="raw"/>'s own there -- only when those lie on the
+        /// half's lead line, so the drawn shape does not change.</summary>
+        private static List<V2> KeepLead(List<V2> half, List<V2> raw, double[] sr, double lead)
+        {
+            if (half.Count < 3 || lead <= 0) return half;
+            V2 d = (half[1] - half[0]).Norm();
+            var o = new List<V2>();
+            for (int i = 0; i < raw.Count && sr[i] <= lead + 1e-9; i++)
+            {
+                V2 q = raw[i] - half[0];
+                if (Math.Abs(q.X * d.Z - q.Z * d.X) > 1e-6 || q.X * d.X + q.Z * d.Z < -1e-9) return half;
+                o.Add(raw[i]);
+            }
+            if (o.Count == 0) return half;
+            double[] sh = Geo.CumLen(half);
+            double last = V2.Dist(o[o.Count - 1], half[0]);
+            for (int i = 0; i < half.Count; i++) if (sh[i] > last + 1e-6) o.Add(half[i]);
+            return o;
+        }
+
+        /// <summary>A joint half's cost on <see cref="MateTailG2"/>'s scale: bending energy plus the displaced area against the
+        /// lay.</summary>
+        private static double JointCost(List<V2> half, List<V2> raw, double kmax) =>
+            BendEnergy(half) / Math.Max(1e-9, kmax) + DisplaceWeight * Displacement(half, raw);
+
+        /// <summary>Mate pairs drawn with a joint chain's half (selftest cost report).</summary>
+        internal static long MateJointUsed;
+
+        /// <summary>Most Dubins guides <see cref="MateJoint"/> tries.</summary>
+        internal const int MaxJointGuides = 8;
+
+        /// <summary>
+        /// Guides for <see cref="MateJoint"/>, as the offline explorer seeds its joint mate (hose_geometry_explore.py
+        /// solve_mate): a coupling at the laid meeting <paramref name="C0"/> or 0.8 cell round it, its axis one of a fan of
+        /// headings (toward it from A's lead end, +-30..180 degrees, both arrivals, the bisector and its reverse), and each hose
+        /// laid from its lead end onto its coupling run as the shortest Dubins path at 1.15 / 1.6 x the bend radius. A guide
+        /// whose half is longer than its hose cannot be followed and is dropped; the rest are tried closest first in how
+        /// evenly they share the slack (each half's guide length over its hose's), since the chain's coupling sits at arc |A|.
+        /// </summary>
+        private static List<List<V2>> JointGuides(V2 PA, double thA, double leadA, double LA, V2 PB, double thB, double leadB, double LB,
+            V2 C0, double straight, double kmax)
+        {
+            V2 Dir(double th) => new V2(Math.Cos(th), Math.Sin(th));
+            V2 dA = Dir(thA), dB = Dir(thB), QA = PA + dA * leadA, QB = PB + dB * leadB;
+            var cs = new List<V2> { C0 };
+            foreach (double rad in new[] { 0.8, 1.6, 2.4 })
+                for (int i = 0; i < 8; i++) cs.Add(C0 + Dir(i * Math.PI / 4) * rad);
+            var found = new List<(double score, List<V2> g)>();
+            foreach (V2 Ci in cs)
+            {
+                double baseTh = Math.Atan2(Ci.Z - QA.Z, Ci.X - QA.X), bis = Math.Atan2(dA.Z - dB.Z, dA.X - dB.X);
+                var phis = new List<double> { thA, thB + Math.PI, bis, bis + Math.PI };
+                foreach (double deg in new double[] { 0, -30, 30, -60, 60, -90, 90, -120, 120, 180 }) phis.Add(baseTh + deg * Math.PI / 180);
+                foreach (double phi in phis)
+                {
+                    V2 u = Dir(phi), ta = Ci - u * straight, tb = Ci + u * straight;
+                    foreach (double rf in new[] { 1.0, 1.15, 1.6 })
+                    {
+                        List<V2> wa = HoseMath.Dubins(QA, dA, ta, u, rf / kmax, 0.1), wb = HoseMath.Dubins(QB, dB, tb, -u, rf / kmax, 0.1);
+                        if (wa == null || wb == null) continue;
+                        double ga = leadA + Geo.Length(wa) + V2.Dist(QA, wa[0]) + straight, gb = leadB + Geo.Length(wb) + V2.Dist(QB, wb[0]) + straight;
+                        if (ga > LA || gb > LB) continue;
+                        var g = new List<V2> { PA, QA };
+                        g.AddRange(wa);
+                        g.Add(Ci);
+                        for (int i = wb.Count - 1; i >= 0; i--) g.Add(wb[i]);
+                        g.Add(QB);
+                        g.Add(PB);
+                        found.Add((Math.Abs(ga / LA - gb / LB), g));
+                    }
+                }
+            }
+            return found.OrderBy(f => f.score).Take(MaxJointGuides).Select(f => f.g).ToList();
+        }
+
+        /// <summary><paramref name="p"/> smoothed by <paramref name="rounds"/> rounds of Chaikin corner cutting, its two ends kept.</summary>
+        private static List<V2> CutCorners(List<V2> p, int rounds)
+        {
+            List<V2> c = p;
+            for (int k = 0; k < rounds; k++)
+            {
+                var o = new List<V2>(2 * c.Count) { c[0] };
+                for (int i = 0; i + 1 < c.Count; i++)
+                {
+                    o.Add(c[i] * 0.75 + c[i + 1] * 0.25);
+                    o.Add(c[i] * 0.25 + c[i + 1] * 0.75);
+                }
+                o.Add(c[c.Count - 1]);
+                c = o;
+            }
+            return c;
+        }
+
+        /// <summary>Joint mate chains that solved (selftest cost report).</summary>
+        internal static long MateJointSolved;
 
         /// <summary>One end of a solved pair re-shaped onto its coupling (<paramref name="isA"/>: A travels along the axis, B
         /// against it): <see cref="MateTailG2"/> with the fit on, else <see cref="MateTail"/> with the pair's cached seed. B is
@@ -705,6 +896,8 @@ namespace RimMandrake.FlowWorks.Hose
             V2 ax = isA ? m.Axis : -m.Axis;
             double straight = CouplingStraight(visible);
             IList<V2> partner = isA ? null : m.PtsA;
+            List<V2> joint = isA ? m.EndA : m.EndB;
+            if (HoseMath.G2On && joint != null) return new List<V2>(joint);
             if (HoseMath.G2On) return MateTailG2(pts, m.C, ax, straight, kmax, partner, visible, Math.Min(startLead, isA ? m.LeadA : m.LeadB), out _);
             return MateTail(pts, m.C, ax, straight, kmax, partner, isA ? m.SeedA : m.SeedB, out _, visible);
         }
