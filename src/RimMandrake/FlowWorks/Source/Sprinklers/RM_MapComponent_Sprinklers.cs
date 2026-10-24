@@ -49,8 +49,9 @@ namespace RimMandrake.FlowWorks.Sprinklers
 
 		public override void MapComponentTick()
 		{
-			if (heads.Count == 0) return;
 			int now = Find.TickManager.TicksGame;
+			RM_SprinklerSprayFx.Tick(map, heads, now);   // visual only; returns at once off screen or with the setting off
+			if (heads.Count == 0) return;
 			for (int i = heads.Count - 1; i >= 0; i--)
 			{
 				CompRM_SprinklerBase h = heads[i];

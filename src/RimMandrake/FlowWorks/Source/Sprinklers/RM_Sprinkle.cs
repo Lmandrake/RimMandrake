@@ -163,30 +163,5 @@ namespace RimMandrake.FlowWorks.Sprinklers
 				}
 			}
 		}
-
-		private static ThingDef sprayMote;
-		private static bool sprayResolved;
-
-		/// <summary>The spray mote (OQ-S6 art), tinted by the liquid's colour: the "obvious reason" a cell is wet (GM1).</summary>
-		public static void ThrowSpray(Thing head, LiquidDef liquid, float radius)
-		{
-			if (!sprayResolved)
-			{
-				sprayResolved = true;
-				sprayMote = DefDatabase<ThingDef>.GetNamedSilentFail("RM_Mote_SprinklerSpray");
-			}
-			Map map = head.Map;
-			if (sprayMote == null || map == null || !head.Position.ShouldSpawnMotesAt(map)) return;
-			for (int i = 0; i < 3; i++)
-			{
-				if (!(ThingMaker.MakeThing(sprayMote) is MoteThrown m)) return;
-				m.Scale = Rand.Range(0.5f, 0.9f);
-				m.rotationRate = Rand.Range(-60f, 60f);
-				m.exactPosition = head.TrueCenter() + new Vector3(0f, 0f, 0.1f);
-				m.instanceColor = liquid != null ? new Color(liquid.color.r, liquid.color.g, liquid.color.b, 0.75f) : new Color(0.8f, 0.9f, 1f, 0.75f);
-				m.SetVelocity(Rand.Range(0f, 360f), Rand.Range(0.6f, 1.2f) * Mathf.Max(1f, radius));
-				GenSpawn.Spawn(m, head.Position, map);
-			}
-		}
 	}
 }

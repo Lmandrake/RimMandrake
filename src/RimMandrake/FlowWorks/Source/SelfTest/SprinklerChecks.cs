@@ -1,6 +1,6 @@
 // SPRINKLER_HEADS_BUILD_PUMP_REQUIRED (design/RimMandrake/sprinklers_design_2026-10-16.md §6 step 1, OQ-S1..S7 ruled 2026-10-16).
 // Offline halves: the production kernel (Sprinklers/RM_SprinklerKernel.cs, compiled in) and the shipped XML (head def, styles,
-// mote, the VFE FindMod patch) plus the call sites that carry the rulings. Each case has a can-fail.
+// spray droplet flecks, the VFE FindMod patch) plus the call sites that carry the rulings. Each case has a can-fail.
 // NOT proven here (live, owed; FlowWorks.md walk rows): a head on a pump net drawing cells x 0.5 L per hour, drying when
 // starved, clogging on tar, the liquid key of a slime, No pressure without a pump, the VFE boost skipped in our biomes.
 using System;
@@ -140,7 +140,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                     string tex = (string)st.Element("graphicData")?.Element("texPath");
                     Assert(tex == "RimMandrake/FlowWorks/Sprinkler/" + look + "/RM_SprinklerHead", "art path for " + look + ": " + tex);
                 }
-                Assert(d.Descendants("ThingDef").Any(e => (string)e.Element("defName") == "RM_Mote_SprinklerSpray"), "spray mote");
+                Assert(!d.Descendants("ThingDef").Any(e => (string)e.Element("defName") == "RM_Mote_SprinklerSpray"), "the burst-ring spray mote is gone");
             });
             Case("Sprinkler_vfe_patch_findmod", () =>
             {
@@ -187,7 +187,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                     }
                 }
                 RM_PipeSeatMath.Seat(0, "Scrapper", out float lx, out float lz);
-                Assert(Math.Abs(lx - 4f / 132f) < 1e-6 && Math.Abs(lz + 4f / 132f) < 1e-6, "Scrapper lone flange 4 px SE");
+                // the flange's pixel offset is measured on the atlas by Tools/selftest_pipe_seat.py (v2 atlas 4 px SE, v3 centred)
+                float stub = RM_PipeSeatMath.LoneStubScrapperPx / RM_PipeSeatMath.ShownCellPx;
+                Assert(Math.Abs(lx - stub) < 1e-6 && Math.Abs(lz + stub) < 1e-6, "Scrapper lone flange: LoneStubScrapperPx east and south");
                 RM_PipeSeatMath.Seat(3, "Scrapper", out float sx3, out _);
                 RM_PipeSeatMath.Seat(3, "Modern", out float mx3, out _);
                 Assert(Math.Abs(sx3 * Math.Sqrt(2) - 0.2071) < 1e-3 && Math.Abs(mx3 * Math.Sqrt(2) - 0.2761) < 1e-3, "measured diagonal seats");
@@ -210,6 +212,89 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(b.Contains("comp.DontDrawParent()") && b.Contains("comp.PostPrintOnto(layer)") && b.Contains("ShadowGraphic"), "the rest of ThingWithComps.Print is kept");
                 Assert(Src("Thirst/Building_RM_PipeFaucet.cs").Contains("override void Print(SectionLayer layer) => Sprinklers.RM_PipeSeat.Print(layer, this)"), "the faucet sits on the bend too");
             });
+
+            // SPRINKLER_SPRAY_REDRAW_REAL_THROW: the droplets land exactly on the watered cells (Sprinklers/RM_SprayPlan.cs)
+            Case("Sprinkler_spray_lands_on_the_watered_cells", () =>
+            {
+                var rng = new Random(20261023);
+                var sets = new List<KeyValuePair<string, List<int[]>>>();
+                foreach (float r in new[] { 1.9f, 2.9f, 3.9f }) sets.Add(new KeyValuePair<string, List<int[]>>("disc " + r, Disc(r, c => true)));
+                sets.Add(new KeyValuePair<string, List<int[]>>("wall east", Disc(2.9f, c => c[0] < 2)));
+                sets.Add(new KeyValuePair<string, List<int[]>>("random", Disc(3.9f, c => rng.NextDouble() < 0.6)));
+                sets.Add(new KeyValuePair<string, List<int[]>>("far lone", new List<int[]> { new[] { 40, 0 }, new[] { 0, 0 } }));
+                foreach (var set in sets)
+                {
+                    List<int[]> cells = set.Value;
+                    List<RM_SprayDrop>[] plan = RM_SprayPlan.Plan(cells.Select(c => c[0]).ToList(), cells.Select(c => c[1]).ToList());
+                    Assert(plan.Length == RM_SprayPlan.Steps && plan.All(st => st != null), set.Key + ": a list per step");
+                    var landed = new HashSet<int>();
+                    foreach (List<RM_SprayDrop> step in plan)
+                    {
+                        foreach (RM_SprayDrop dr in step)
+                        {
+                            int[] c = cells[dr.cell];
+                            landed.Add(dr.cell);
+                            float lim = 0.5f - RM_SprayPlan.CellMargin + 1e-4f;
+                            Assert(Math.Abs(dr.landX - c[0]) <= lim && Math.Abs(dr.landZ - c[1]) <= lim, set.Key + ": lands inside its cell, off its edges");
+                            int cx = (int)Math.Round(dr.landX), cz = (int)Math.Round(dr.landZ);
+                            Assert(cx == c[0] && cz == c[1], set.Key + ": the landing point's cell is the watered cell");
+                            Assert(dr.band == RM_SprayPlan.BandOf((float)Math.Sqrt(dr.landX * dr.landX + dr.landZ * dr.landZ)), set.Key + ": band by distance");
+                        }
+                    }
+                    Assert(landed.Count == cells.Count, set.Key + ": every watered cell gets droplets (" + landed.Count + " of " + cells.Count + ")");
+                }
+                // can-fail: a cell outside the set is never a landing; a ray never runs backwards through a cell
+                List<int[]> half = Disc(2.9f, c => c[0] < 2);
+                List<RM_SprayDrop>[] hp = RM_SprayPlan.Plan(half.Select(c => c[0]).ToList(), half.Select(c => c[1]).ToList());
+                Assert(!hp.SelectMany(st => st).Any(dr => Math.Round(dr.landX) >= 2), "can-fail: nothing lands behind the wall");
+                Assert(!RM_SprayPlan.RayThroughCell(1, 0, -2, 0, out _, out _) && RM_SprayPlan.RayThroughCell(1, 0, 2, 0, out double t0, out double t1) && Math.Abs(t0 - 1.5) < 1e-9 && Math.Abs(t1 - 2.5) < 1e-9, "ray slab arithmetic");
+                Assert(RM_SprayPlan.Plan(new List<int>(), new List<int>()).All(st => st.Count == 0), "no cells, no droplets");
+                Assert(RM_SprayPlan.StepAt(8, 0) == 2 && RM_SprayPlan.StepAt(9, 0) == -1 && RM_SprayPlan.StepAt(RM_SprayPlan.RevolutionTicks, 0) == 0, "rotor clock");
+            });
+            Case("Sprinkler_spray_flight_matches_its_fleck", () =>
+            {
+                XDocument d = XDocument.Load(Path.Combine(ModRoot, "Defs", "Sprinklers", "RM_Sprinklers.xml"));
+                for (int b = 0; b < RM_SprayPlan.BandTicks.Length; b++)
+                {
+                    int ticks = RM_SprayPlan.BandTicks[b];
+                    XElement f = d.Descendants("FleckDef").FirstOrDefault(e => (string)e.Element("defName") == RM_SprayPlan.BandDefName(b));
+                    Assert(f != null && (string)f.Attribute("ParentName") == "FleckBase_RandomGraphic_Thrown", "band " + b + " fleck ships, thrown");
+                    Assert(Math.Abs(float.Parse((string)f.Element("archDuration")) - ticks / 60f) < 1e-3f, "band " + b + ": arc time = flight time");
+                    Assert(Math.Abs(float.Parse((string)f.Element("archHeight")) - RM_SprayPlan.BandArch[b]) < 1e-4f, "band " + b + ": arch height");
+                    Assert(f.Descendants("texPath").Select(e => e.Value).SequenceEqual(new[] { "A", "B", "C", "D" }.Select(x => "Things/Mote/DustVeryFine" + x)), "band " + b + ": vanilla droplet art");
+                    float fin = float.Parse((string)f.Element("fadeInTime")), fout = float.Parse((string)f.Element("fadeOutTime"));
+                    float life = fin + RM_SprayPlan.SolidSeconds(ticks, fin, fout) + fout;
+                    // vanilla FleckStatic.TimeInterval: EndOfLife (age >= life) is checked BEFORE it ages and moves a tick
+                    int moves = 0;
+                    for (float age = 0f; age < life; age += 1f / 60f) moves++;
+                    Assert(moves == ticks, "band " + b + ": the droplet moves exactly its flight ticks (" + moves + " of " + ticks + ")");
+                    float sx = 0.1f, sz = 0.3f, lx = -2.35f, lz = 1.6f;
+                    RM_SprayPlan.Velocity(sx, sz, lx, lz, ticks, out float vx, out float vz);
+                    Assert(Math.Abs(sx + vx * ticks / 60f - lx) < 1e-4f && Math.Abs(sz + vz * ticks / 60f - lz) < 1e-4f, "band " + b + ": nozzle + v * flight = landing");
+                    int over = 0;
+                    for (float age = 0f; age < life + 2f / 60f; age += 1f / 60f) over++;
+                    Assert(over != ticks, "can-fail: two ticks more life overshoots the landing");
+                }
+                Assert(Src("Sprinklers/RM_Sprinkle.cs").IndexOf("ThrowSpray", StringComparison.Ordinal) < 0
+                    && Src("Sprinklers/CompRM_SprinklerHead.cs").IndexOf("ThrowSpray", StringComparison.Ordinal) < 0, "the burst-ring throw is gone");
+                string fx = Src("Sprinklers/RM_SprinklerSprayFx.cs");
+                Assert(fx.Contains("RM_SprinklerSettings.sprinklerSprayEffects && map == Find.CurrentMap") && fx.Contains("CurrentViewRect")
+                    && fx.Contains("MaxFlecksPerTick"), "bounded: setting, shown map, camera view, per-tick cap");
+                Assert(fx.Contains("\"GroundWaterSplash\"") && fx.Contains("h.SprayPlan()"), "splashes on vanilla GroundWaterSplash; droplets from the watered-cell plan");
+                Assert(Src("Sprinklers/RM_MapComponent_Sprinklers.cs").Contains("RM_SprinklerSprayFx.Tick(map, heads, now)"), "the map's tick drives the spray");
+                Assert(Src("Sprinklers/CompRM_SprinklerHead.cs").Contains("sprayCells = r.state == RM_SprinklerState.Spraying ? cells : null"), "the plan is the pulse's own cells");
+            });
+        }
+
+        /// <summary>Offsets (dx, dz) within <paramref name="r"/> of the head, kept by <paramref name="keep"/>.</summary>
+        private static List<int[]> Disc(float r, Func<int[], bool> keep)
+        {
+            var list = new List<int[]>();
+            int n = (int)Math.Ceiling(r);
+            for (int x = -n; x <= n; x++)
+                for (int z = -n; z <= n; z++)
+                    if (x * x + z * z <= r * r && keep(new[] { x, z })) list.Add(new[] { x, z });
+            return list;
         }
 
         private static KeyValuePair<string, int> KV(string k, int v) => new KeyValuePair<string, int>(k, v);

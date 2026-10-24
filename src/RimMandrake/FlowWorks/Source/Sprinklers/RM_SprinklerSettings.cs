@@ -21,6 +21,9 @@ namespace RimMandrake.FlowWorks.Sprinklers
 		public static bool vfeSprinklerAdapterEnabled = true;
 		/// <summary>OQ-S4 RULED: the first VFE upgrade, the moisture (thirst) valve.</summary>
 		public static bool vfeThirstValve = true;
+		/// <summary>SPRINKLER_SPRAY_REDRAW_REAL_THROW: a spraying head's droplets arc onto the cells it waters (RM_SprinklerSprayFx).
+		/// Visual only: off draws nothing and changes no watering.</summary>
+		public static bool sprinklerSprayEffects = true;
 
 		public static readonly float[] RadiusChoices = { 1.9f, 2.9f, 3.9f };
 
@@ -42,6 +45,7 @@ namespace RimMandrake.FlowWorks.Sprinklers
 			Scribe_Values.Look(ref sprinklerNonWaterEffects, "sprinklerNonWaterEffects", true);
 			Scribe_Values.Look(ref vfeSprinklerAdapterEnabled, "vfeSprinklerAdapterEnabled", true);
 			Scribe_Values.Look(ref vfeThirstValve, "vfeThirstValve", true);
+			Scribe_Values.Look(ref sprinklerSprayEffects, "sprinklerSprayEffects", true);
 		}
 
 		public static void DoSettingsSection(Listing_Standard list)
@@ -63,6 +67,9 @@ namespace RimMandrake.FlowWorks.Sprinklers
 			list.CheckboxLabeled("Sprayed acid or boiling liquid hurts; sprayed fuel leaves flammable puddles", ref sprinklerNonWaterEffects,
 				"On: a pawn standing in a spray of a corrosive or scalding liquid takes that liquid's contact harm once per spray, "
 				+ "and a flammable liquid lays its puddles on the sprayed ground. Off: any liquid is sprayed harmlessly.");
+			list.CheckboxLabeled("Animated sprinkler spray", ref sprinklerSprayEffects,
+				"On: a spraying head's jet sweeps round and its droplets arc out and splash down on exactly the squares it waters "
+				+ "(only for heads on screen). Off: no spray is drawn; the watering is unchanged.");
 			if (RM_SprinklerVFE.VfeLoaded)
 			{
 				list.CheckboxLabeled("Vanilla Furniture Expanded - Farming sprinkler draws water from pipes", ref vfeSprinklerAdapterEnabled,

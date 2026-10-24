@@ -6,7 +6,9 @@
     cell (OQ-S1, Mod Setting sprinklerLitresPerCellHour) from the tanks on its pipe run and keeps those cells sprinkled until
     the next spray; walls stop the spray (OQ-S7). Radius 2.9 (29 cells) PROVISIONAL; cost and work PROVISIONAL.
   * Four looks (OQ-S6 art, owner-approved), one ThingStyleDef per pipe look; a new head takes the look of the pipe it is built on.
-  * RM_Mote_SprinklerSpray: the spray, tinted by the liquid's colour.
+  * RM_Fleck_SprinklerDrop_0..3 (SPRINKLER_SPRAY_REDRAW_REAL_THROW): the spray's droplets, one def per flight band of
+    Source/Sprinklers/RM_SprayPlan.cs (archDuration = BandTicks/60 s, archHeight = BandArch; SelfTest checks both), on vanilla
+    Things/Mote/DustVeryFineA..D tinted by the liquid's colour; RM_SprinklerSprayFx lands them on the watered cells.
   Code: Source/Sprinklers/. Settings: RM_SprinklerSettings (sprinklersEnabled, ...).
 -->
 <Defs>
@@ -113,21 +115,164 @@
     </graphicData>
   </ThingStyleDef>
 
-  <ThingDef ParentName="MoteBase">
-    <defName>RM_Mote_SprinklerSpray</defName>
-    <thingClass>MoteThrown</thingClass>
+  <FleckDef ParentName="FleckBase_RandomGraphic_Thrown">
+    <defName>RM_Fleck_SprinklerDrop_0</defName>
+    <randomGraphics>
+      <li>
+        <shaderType>Mote</shaderType>
+        <graphicClass>Graphic_Fleck</graphicClass>
+        <texPath>Things/Mote/DustVeryFineA</texPath>
+        <renderInstanced>true</renderInstanced>
+        <drawSize>(0.7,0.7)</drawSize>
+      </li>
+      <li>
+        <shaderType>Mote</shaderType>
+        <graphicClass>Graphic_Fleck</graphicClass>
+        <texPath>Things/Mote/DustVeryFineB</texPath>
+        <renderInstanced>true</renderInstanced>
+        <drawSize>(0.7,0.7)</drawSize>
+      </li>
+      <li>
+        <shaderType>Mote</shaderType>
+        <graphicClass>Graphic_Fleck</graphicClass>
+        <texPath>Things/Mote/DustVeryFineC</texPath>
+        <renderInstanced>true</renderInstanced>
+        <drawSize>(0.7,0.7)</drawSize>
+      </li>
+      <li>
+        <shaderType>Mote</shaderType>
+        <graphicClass>Graphic_Fleck</graphicClass>
+        <texPath>Things/Mote/DustVeryFineD</texPath>
+        <renderInstanced>true</renderInstanced>
+        <drawSize>(0.7,0.7)</drawSize>
+      </li>
+    </randomGraphics>
     <altitudeLayer>MoteOverhead</altitudeLayer>
-    <mote>
-      <fadeInTime>0.05</fadeInTime>
-      <solidTime>0.25</solidTime>
-      <fadeOutTime>0.6</fadeOutTime>
-    </mote>
-    <graphicData>
-      <graphicClass>Graphic_Mote</graphicClass>
-      <texPath>RimMandrake/FlowWorks/Sprinkler/RM_SprinklerSpray</texPath>
-      <shaderType>Mote</shaderType>
-      <drawSize>(1,1)</drawSize>
-    </graphicData>
-  </ThingDef>
+    <fadeInTime>0.03</fadeInTime>
+    <solidTime>0.1983</solidTime>   <!-- overridden per droplet (RM_SprayPlan.SolidSeconds) -->
+    <fadeOutTime>0.03</fadeOutTime>
+    <archHeight>0.18</archHeight>
+    <archDuration>0.2667</archDuration>   <!-- 16 ticks: RM_SprayPlan.BandTicks[0] / 60 -->
+  </FleckDef>
+
+  <FleckDef ParentName="FleckBase_RandomGraphic_Thrown">
+    <defName>RM_Fleck_SprinklerDrop_1</defName>
+    <randomGraphics>
+      <li>
+        <shaderType>Mote</shaderType>
+        <graphicClass>Graphic_Fleck</graphicClass>
+        <texPath>Things/Mote/DustVeryFineA</texPath>
+        <renderInstanced>true</renderInstanced>
+        <drawSize>(0.7,0.7)</drawSize>
+      </li>
+      <li>
+        <shaderType>Mote</shaderType>
+        <graphicClass>Graphic_Fleck</graphicClass>
+        <texPath>Things/Mote/DustVeryFineB</texPath>
+        <renderInstanced>true</renderInstanced>
+        <drawSize>(0.7,0.7)</drawSize>
+      </li>
+      <li>
+        <shaderType>Mote</shaderType>
+        <graphicClass>Graphic_Fleck</graphicClass>
+        <texPath>Things/Mote/DustVeryFineC</texPath>
+        <renderInstanced>true</renderInstanced>
+        <drawSize>(0.7,0.7)</drawSize>
+      </li>
+      <li>
+        <shaderType>Mote</shaderType>
+        <graphicClass>Graphic_Fleck</graphicClass>
+        <texPath>Things/Mote/DustVeryFineD</texPath>
+        <renderInstanced>true</renderInstanced>
+        <drawSize>(0.7,0.7)</drawSize>
+      </li>
+    </randomGraphics>
+    <altitudeLayer>MoteOverhead</altitudeLayer>
+    <fadeInTime>0.03</fadeInTime>
+    <solidTime>0.3817</solidTime>   <!-- overridden per droplet (RM_SprayPlan.SolidSeconds) -->
+    <fadeOutTime>0.03</fadeOutTime>
+    <archHeight>0.33</archHeight>
+    <archDuration>0.4500</archDuration>   <!-- 27 ticks: RM_SprayPlan.BandTicks[1] / 60 -->
+  </FleckDef>
+
+  <FleckDef ParentName="FleckBase_RandomGraphic_Thrown">
+    <defName>RM_Fleck_SprinklerDrop_2</defName>
+    <randomGraphics>
+      <li>
+        <shaderType>Mote</shaderType>
+        <graphicClass>Graphic_Fleck</graphicClass>
+        <texPath>Things/Mote/DustVeryFineA</texPath>
+        <renderInstanced>true</renderInstanced>
+        <drawSize>(0.7,0.7)</drawSize>
+      </li>
+      <li>
+        <shaderType>Mote</shaderType>
+        <graphicClass>Graphic_Fleck</graphicClass>
+        <texPath>Things/Mote/DustVeryFineB</texPath>
+        <renderInstanced>true</renderInstanced>
+        <drawSize>(0.7,0.7)</drawSize>
+      </li>
+      <li>
+        <shaderType>Mote</shaderType>
+        <graphicClass>Graphic_Fleck</graphicClass>
+        <texPath>Things/Mote/DustVeryFineC</texPath>
+        <renderInstanced>true</renderInstanced>
+        <drawSize>(0.7,0.7)</drawSize>
+      </li>
+      <li>
+        <shaderType>Mote</shaderType>
+        <graphicClass>Graphic_Fleck</graphicClass>
+        <texPath>Things/Mote/DustVeryFineD</texPath>
+        <renderInstanced>true</renderInstanced>
+        <drawSize>(0.7,0.7)</drawSize>
+      </li>
+    </randomGraphics>
+    <altitudeLayer>MoteOverhead</altitudeLayer>
+    <fadeInTime>0.03</fadeInTime>
+    <solidTime>0.5150</solidTime>   <!-- overridden per droplet (RM_SprayPlan.SolidSeconds) -->
+    <fadeOutTime>0.03</fadeOutTime>
+    <archHeight>0.48</archHeight>
+    <archDuration>0.5833</archDuration>   <!-- 35 ticks: RM_SprayPlan.BandTicks[2] / 60 -->
+  </FleckDef>
+
+  <FleckDef ParentName="FleckBase_RandomGraphic_Thrown">
+    <defName>RM_Fleck_SprinklerDrop_3</defName>
+    <randomGraphics>
+      <li>
+        <shaderType>Mote</shaderType>
+        <graphicClass>Graphic_Fleck</graphicClass>
+        <texPath>Things/Mote/DustVeryFineA</texPath>
+        <renderInstanced>true</renderInstanced>
+        <drawSize>(0.7,0.7)</drawSize>
+      </li>
+      <li>
+        <shaderType>Mote</shaderType>
+        <graphicClass>Graphic_Fleck</graphicClass>
+        <texPath>Things/Mote/DustVeryFineB</texPath>
+        <renderInstanced>true</renderInstanced>
+        <drawSize>(0.7,0.7)</drawSize>
+      </li>
+      <li>
+        <shaderType>Mote</shaderType>
+        <graphicClass>Graphic_Fleck</graphicClass>
+        <texPath>Things/Mote/DustVeryFineC</texPath>
+        <renderInstanced>true</renderInstanced>
+        <drawSize>(0.7,0.7)</drawSize>
+      </li>
+      <li>
+        <shaderType>Mote</shaderType>
+        <graphicClass>Graphic_Fleck</graphicClass>
+        <texPath>Things/Mote/DustVeryFineD</texPath>
+        <renderInstanced>true</renderInstanced>
+        <drawSize>(0.7,0.7)</drawSize>
+      </li>
+    </randomGraphics>
+    <altitudeLayer>MoteOverhead</altitudeLayer>
+    <fadeInTime>0.03</fadeInTime>
+    <solidTime>0.6317</solidTime>   <!-- overridden per droplet (RM_SprayPlan.SolidSeconds) -->
+    <fadeOutTime>0.03</fadeOutTime>
+    <archHeight>0.63</archHeight>
+    <archDuration>0.7000</archDuration>   <!-- 42 ticks: RM_SprayPlan.BandTicks[3] / 60 -->
+  </FleckDef>
 
 </Defs>
