@@ -262,7 +262,7 @@ frame, over demoting them to playtest-only as the hear axis is (§12), and over
 giving motion its own axis.
 
 The problem it answers, MEASURED 2026-09-17 while walking AtmosphericBase: that
-mod's checklist carries **10 of 23 bars about change over time** — a boundary
+mod's checklist then carried **10 of its 23 bars about change over time** (it carries 28 now) — a boundary
 that travels, a darkness that writhes, a rise-hold-release, a return to what was
 underneath, two anger reactions each needing a before and an after — and
 `judge.py` took `shots[-1]`, the last screenshot only, under a prompt instructing

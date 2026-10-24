@@ -1,6 +1,7 @@
 // ATMOSPHERIC_BASE_BUILD_PROGRAM_1 Phase 1 -- the code door, as far as Phase 1 reaches (spec §2.8). A scenario that
 // decides for a map calls SetScenarioDecides(map, true) and then TakeOver for the fixtures it hands over; the player's
 // buttons are hidden on that map. Groups, moods and gestures are later phases.
+using System;
 using System.Collections.Generic;
 using Verse;
 
@@ -14,6 +15,35 @@ namespace RimMandrake.AtmosphericBase
         public static bool Release(Thing t) => RM_MapComponent_AtmosphericBase.For(t?.MapHeld)?.Release(t) ?? false;
         public static bool IsTaken(Thing t) => RM_MapComponent_AtmosphericBase.For(t?.MapHeld)?.IsTaken(t) ?? false;
         public static int ReleaseAll(Map map) => RM_MapComponent_AtmosphericBase.For(map)?.ReleaseAll() ?? 0;
+
+        /// <summary>Hand over every eligible lamp on the map (the settings button, owner decision §9.1). 0 where the
+        /// player may not choose. Reverse with ReleaseAll.</summary>
+        public static int TakeOverAll(Map map) => RM_MapComponent_AtmosphericBase.For(map)?.TakeOverAll() ?? 0;
+
+        // ---- §9.9 (owner, 2026-10-23): "It is released. In Utinni this displeases gods."
+        // A held lamp whose colour another mod or the player changed is released with that colour kept. On a map whose
+        // scenario decides (the Utinni -- SetScenarioDecides is how the mod knows it is aboard), the release is ALSO an
+        // offence against the gods. AtmosphericBase has no anger of its own and never acts on one (L2): it raises this
+        // event and counts it, and the scenario that owns the gods subscribes and decides what displeasure means.
+        // Off the Utinni nothing is raised. A lamp switched off by hand never raises it (L17).
+
+        /// <summary>(map, the released lamp). Raised once per lamp, after it is released.</summary>
+        public static event Action<Map, Thing> LampEditedAboardUtinni;
+
+        /// <summary>How many times this session the event was raised (the proof and a late subscriber read it).</summary>
+        public static int LampEditedAboardUtinniCount { get; private set; }
+
+        internal static void RaiseLampEditedAboardUtinni(Map map, Thing lamp)
+        {
+            LampEditedAboardUtinniCount++;
+            Action<Map, Thing> h = LampEditedAboardUtinni;
+            if (h == null) return;
+            foreach (Action<Map, Thing> one in h.GetInvocationList())
+            {
+                try { ((Action<Map, Thing>)one)(map, lamp); }
+                catch (Exception ex) { Log.ErrorOnce("[AtmosphericBase] a LampEditedAboardUtinni subscriber threw: " + ex, 0x52414C45); }
+            }
+        }
 
         // ---- Phase 2: one mood per map, groups. A consumer supplies rank; Phase 2 carries it and orders nothing.
         // Group names: a registered group, or one of the framework's own "ship" / "rooms" / "halls" / "exterior".

@@ -244,7 +244,7 @@ def main():
     mutate(CO, "comp.Drive(t, scheme.palette[idx])", "comp.Drive(t, new ColorInt(1, 2, 3, 0))", "a computed colour", "[wiring]")
     mutate(CO, "        public static RM_MoodClaim DefaultMood()", "        static ColorInt X(ColorInt a, ColorInt b) => ColorInt.Lerp(a, b, 0.5f);\n        public static RM_MoodClaim DefaultMood()",
            "a colour interpolated", "[L4]")
-    mutate(CO, "Evaluate(comp, UnityEngine.Time.realtimeSinceStartup)", "Evaluate(comp, Find.TickManager.TicksGame / 60.0)", "game time, not real time (L10)", "[gate]")
+    mutate(CO, "Evaluate(comp, PatternClock(UnityEngine.Time.realtimeSinceStartup))", "Evaluate(comp, Find.TickManager.TicksGame / 60.0)", "game time, not real time (L10)", "[gate]")
     mutate(MC, "if (!RM_PaletteGuard.IsMember(color))", "if (false)", "palette guard off", "[gate]")
     mutate(MC, "compositor.Update(this);", "", "compositor never runs", "[gate]")
     mutate(MC, "if (g != null && rec.prior != null) RM_GlowAccess.RestoreFieldOnly(g, rec.prior);", "", "map removal forgets to restore", "[gate]")
@@ -265,6 +265,41 @@ def main():
     mutate("RM_AtmosphericSchemeDef.cs", "foreach (string e in RM_SchemeKernel.Errors(Data)) yield return e;", "", "scheme laws unchecked at load", "[gate]")
     mutate("RM_AtmosphericBaseSettings.cs", 'Scribe_Values.Look(ref defaultMoodGroup, "defaultMoodGroup", 0);', "", "group setting unscribed", "[settings]")
     mutate("Defs/RM_AtmosphericSchemes.xml", "<defName>RM_Scheme_Lamplight</defName>", "<defName>RM_Scheme_Lamp</defName>", "default scheme not shipped", "[wiring]")
+    # ---- owner decisions §9 (2026-10-23)
+    # §9.5 reserved white: a pale palette entry anywhere is refused; the kernel keeps the distance test
+    mutate("Defs/RM_AtmosphericSchemes.xml", "<li>(255,210,148,0)</li>", "<li>(255,240,199,0)</li>", "a cream entry shipped (L11)", "[L11]")
+    mutate("Defs/RM_AtmosphericSchemes.xml", "<li>(234,176,106,0)</li>", "<li>(199,230,255,0)</li>", "a cool-white entry shipped (L11)", "[L11]")
+    mutate("Kernel/RM_SchemeKernel.cs", "if (NearNarratorWhite(", "if (false && NearNarratorWhite(", "kernel white test bypassed", "[gate]")
+    god = dict(srcs)
+    god["repo:RimMandrake/SomeGods/Defs/G.xml"] = ("<Defs><RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef><defName>RM_Scheme_Moon</defName>"
+                                                   "<palette><li>(120,140,200,0)</li><li>(230,235,250,0)</li></palette>"
+                                                   "</RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef></Defs>")
+    got = V.static_findings(god)
+    check("a god's pale palette in ANOTHER mod reddens the reserved-white scan", any("[L11]" in g and "RM_Scheme_Moon" in g for g in got), got)
+    check("the god scan names only the pale entry", sum("RM_Scheme_Moon" in g for g in got) == 1, got)
+    blind = dict((k, v) for k, v in srcs.items() if not k.endswith(".xml") or "RM_AtmosphericSchemeDef" not in v)
+    check("no scheme XML at all is a blind scan, not a clean one", any("blind" in g for g in V.static_findings(blind)), V.static_findings(blind))
+    # §9.9 external edit: release keeps THEIR colour; aboard the Utinni it is reported
+    mutate(CO, "comp.ReleaseExternallyEdited();", "", "external edits never looked for", "[gate]")
+    mutate(MC, "            compositor.Forget(t);\n            externalEditReleases++;",
+           "            compositor.Forget(t);\n            RM_GlowAccess.Restore(RM_EmitterDiscovery.GlowerOf(t), new RM_GlowSnapshot());\n            externalEditReleases++;",
+           "external edit overwritten by the saved colour", "[external-edit]")
+    mutate(MC, "RM_HeldLampPolicy.DispleasesGods(RM_HeldLampEvent.ColourEditedExternally, scenarioDecides)",
+           "RM_HeldLampPolicy.DispleasesGods(RM_HeldLampEvent.ColourEditedExternally, true)", "offence raised off the Utinni", "[gate]")
+    mutate(MC, "RM_AtmosphericBaseAPI.RaiseLampEditedAboardUtinni(map, t);", "", "the gods never hear of it", "[gate]")
+    mutate(MC, "            taken[i].lastLeft = RM_GlowSnapshot.Of(color);\n", "", "own writes read as edits", "[gate]")
+    mutate(MC, 'Scribe_Deep.Look(ref lastLeft, "lastLeft");', "", "lastLeft unscribed", "[wiring]")
+    mutate("RM_AtmosphericBaseAPI.cs", "public static event Action<Map, Thing> LampEditedAboardUtinni;", "public static Action<Map, Thing> Hook;", "offence hook removed", "[wiring]")
+    # §9.6 / L17: a hand switch-off stays held and silent
+    mutate(CO, "if (!g.Glows) { skippedUnlit++; continue; }", "if (!g.Glows) { comp.ReleaseKeepingEdit(t); continue; }", "switch-off releases (L17)", "[wiring]")
+    # §9.10 reload: the pattern restarts from its start; nothing that resumes it is saved
+    mutate(CO, "if (clockOrigin < 0) clockOrigin = realtime;\n            return realtime - clockOrigin;", "return realtime;", "pattern resumes mid-way on reload", "[gate]")
+    mutate(CO, "        public double PatternClock(double realtime)", "        public void ExposeData() { Scribe_Values.Look(ref clockOrigin, \"clockOrigin\"); }\n        public double PatternClock(double realtime)",
+           "pattern clock saved", "[reload]")
+    # §9.1 hand over every lamp: only where the player may choose; the settings button calls it, and its reverse
+    mutate(MC, "if (!RM_AtmosphericDesignators.PlayerMayChoose(map)) return 0;", "", "whole-map hand-over ignores the scenario", "[gate]")
+    mutate("RM_AtmosphericBaseSettings.cs", "                DrawWholeMapButtons(list);\n", "", "whole-map buttons never drawn", "[gate]")
+    mutate("RM_AtmosphericBaseSettings.cs", 'Messages.Message("Atmospheric Base: " + comp.ReleaseAll()', 'Messages.Message("Atmospheric Base: " + 0', "no way back from hand-over-all", "[gate]")
 
     if FAILS:
         print("\n%d AtmosphericBase selftest(s) FAILED" % len(FAILS))

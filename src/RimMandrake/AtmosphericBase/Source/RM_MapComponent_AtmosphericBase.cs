@@ -6,7 +6,13 @@
 //  * the light channel switched off in Mod Settings -> every fixture on every map released on the next frame;
 //  * a fixture that leaves the map (uninstalled, minified, moved by gravship) -> restored, then forgotten, so the
 //    colour it carries away is its own;
-//  * a destroyed fixture -> forgotten (there is nothing left to restore).
+//  * a destroyed fixture -> forgotten (there is nothing left to restore);
+//  * the "Hand over every lamp on this map" button has a reverse: "Take glow back from every lamp" (ReleaseAll).
+// One way leaves WITHOUT a restore (owner decision §9.9, 2026-10-23): another mod or the player changes a held lamp's
+// colour. `lastLeft` is what the framework last left in the override; when the fixture holds anything else, the lamp is
+// released and THEIR colour is kept (ReleaseKeepingEdit). Aboard the Utinni (scenarioDecides) that release displeases
+// the gods: it is reported through RM_AtmosphericBaseAPI.LampEditedAboardUtinni, never acted on here (L2). A lamp
+// switched off by hand is silent (L17): it stays held and simply is not driven while unlit (L9).
 // `scenarioDecides`: a scenario that decides for this map hides both buttons; it hands lights over through the API.
 // MapComponentUpdate runs every frame, paused or not (Phase 0, Q1), which is where the reverse designators are kept
 // registered (RM_AtmosphericDesignators) and the channel switch is honoured.
@@ -19,11 +25,16 @@ namespace RimMandrake.AtmosphericBase
     {
         public Thing thing;
         public RM_GlowSnapshot prior = new RM_GlowSnapshot();
+        // What the framework last left in the override (prior at take-over, then each write). Saved, so an edit made
+        // while the game was closed (a mod's own save data) still reads as an edit. Null on a save from before
+        // §9.9: adopted from the fixture on the first look, never read as an edit.
+        public RM_GlowSnapshot lastLeft;
 
         public void ExposeData()
         {
             Scribe_References.Look(ref thing, "thing");
             Scribe_Deep.Look(ref prior, "prior");
+            Scribe_Deep.Look(ref lastLeft, "lastLeft");
         }
     }
 
@@ -94,7 +105,80 @@ namespace RimMandrake.AtmosphericBase
         public bool TakeOver(Thing t)
         {
             if (TakeOverRefusal(t) != null) return false;
-            taken.Add(new RM_TakenEmitter { thing = t, prior = RM_GlowAccess.Snapshot(RM_EmitterDiscovery.GlowerOf(t)) });
+            RM_GlowSnapshot now = RM_GlowAccess.Snapshot(RM_EmitterDiscovery.GlowerOf(t));
+            taken.Add(new RM_TakenEmitter { thing = t, prior = now, lastLeft = now.Copy() });
+            return true;
+        }
+
+        /// <summary>The settings button "Hand over every lamp on this map" (owner decision §9.1): every eligible lamp not
+        /// yet held. Refused as a whole (0) where the player may not choose (channel off, the button switched off, or a
+        /// scenario decides for this map). Reversible: ReleaseAll gives every one its own glow back.</summary>
+        public int TakeOverAll()
+        {
+            if (!RM_AtmosphericDesignators.PlayerMayChoose(map)) return 0;
+            int n = 0;
+            foreach (Building b in new List<Building>(RM_EmitterDiscovery.EligibleOn(map)))
+                if (TakeOver(b)) n++;
+            return n;
+        }
+
+        /// <summary>How many eligible lamps on this map are not held yet (the settings button's label).</summary>
+        public int UnheldEligibleCount()
+        {
+            int n = 0;
+            foreach (Building b in RM_EmitterDiscovery.EligibleOn(map))
+                if (!IsTaken(b)) n++;
+            return n;
+        }
+
+        // ---- §9.9: an external colour edit releases the lamp and keeps the edit
+        public int externalEditReleases, externalEditOffences;
+
+        /// <summary>Release every held lamp whose override is not what the framework last left there. Called at the top
+        /// of every evaluation, before anything is written. Returns how many were released.</summary>
+        public int ReleaseExternallyEdited()
+        {
+            List<Thing> edited = null;
+            for (int i = 0; i < taken.Count; i++)
+            {
+                RM_TakenEmitter rec = taken[i];
+                if (rec.thing == null || rec.thing.Destroyed) continue;
+                CompGlower g = RM_EmitterDiscovery.GlowerOf(rec.thing);
+                if (g == null) continue;
+                RM_GlowSnapshot now = RM_GlowAccess.Snapshot(g);
+                if (rec.lastLeft == null) { rec.lastLeft = now; continue; }
+                if (RM_HeldLampPolicy.EditedExternally(now, rec.lastLeft)) (edited ?? (edited = new List<Thing>())).Add(rec.thing);
+            }
+            if (edited == null) return 0;
+            foreach (Thing t in edited) ReleaseKeepingEdit(t);
+            return edited.Count;
+        }
+
+        /// <summary>Forget a held lamp WITHOUT writing its saved colour back: someone else's colour is on it now and it is
+        /// theirs to keep. Aboard the Utinni this displeases the gods (reported, never acted on here).</summary>
+        public bool ReleaseKeepingEdit(Thing t)
+        {
+            int i = IndexOf(t);
+            if (i < 0) return false;
+            taken.RemoveAt(i);
+            compositor.Forget(t);
+            externalEditReleases++;
+            if (RM_HeldLampPolicy.DispleasesGods(RM_HeldLampEvent.ColourEditedExternally, scenarioDecides))
+            {
+                externalEditOffences++;
+                RM_AtmosphericBaseAPI.RaiseLampEditedAboardUtinni(map, t);
+            }
+            return true;
+        }
+
+        /// <summary>The compositor's substrate write: the fixture's own glow, as it was handed over.</summary>
+        public bool ShowSubstrate(Thing t)
+        {
+            int i = IndexOf(t);
+            CompGlower g = i < 0 ? null : RM_EmitterDiscovery.GlowerOf(t);
+            if (g == null) return false;
+            RM_GlowAccess.Restore(g, taken[i].prior);
+            taken[i].lastLeft = taken[i].prior.Copy();
             return true;
         }
 
@@ -122,11 +206,13 @@ namespace RimMandrake.AtmosphericBase
         /// not been handed over can be driven, and (L4) no colour outside a loaded scheme's palette is ever written.</summary>
         public bool Drive(Thing t, ColorInt color)
         {
-            if (!RM_AtmosphericBaseSettings.Cur.lightChannel || !IsTaken(t)) return false;
+            int i = t == null ? -1 : IndexOf(t);
+            if (!RM_AtmosphericBaseSettings.Cur.lightChannel || i < 0) return false;
             if (!RM_PaletteGuard.IsMember(color)) { RM_PaletteGuard.violations++; return false; }
             CompGlower g = RM_EmitterDiscovery.GlowerOf(t);
             if (g == null) return false;
             if (g.GlowColor != color || !g.HasGlowColorOverride) RM_GlowAccess.WriteColor(g, color);
+            taken[i].lastLeft = RM_GlowSnapshot.Of(color);
             return true;
         }
 

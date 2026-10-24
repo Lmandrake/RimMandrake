@@ -60,7 +60,7 @@ GATES = (   # (setting, file, class, member) -- the setting must be read inside 
     ("PlayerMayChoose", "RM_AtmosphericDesignators.cs", "RM_Designator_ReleaseGlow", "CanDesignateThing"),
     ("TakeOverRefusal", "RM_AtmosphericDesignators.cs", "RM_Designator_TakeOverGlow", "CanDesignateThing"),
     ("TakeOverRefusal", "RM_MapComponent_AtmosphericBase.cs", "RM_MapComponent_AtmosphericBase", "TakeOver"),
-    ("IsTaken", "RM_MapComponent_AtmosphericBase.cs", "RM_MapComponent_AtmosphericBase", "Drive"),
+    ("IndexOf(t)", "RM_MapComponent_AtmosphericBase.cs", "RM_MapComponent_AtmosphericBase", "Drive"),
     ("RM_GlowAccess.Restore", "RM_MapComponent_AtmosphericBase.cs", "RM_MapComponent_AtmosphericBase", "Release"),
     ("WriteColor", "RM_GlowAccess.cs", "RM_GlowAccess", "Restore"),
     ("EnsureRegistered", "RM_MapComponent_AtmosphericBase.cs", "RM_MapComponent_AtmosphericBase", "MapComponentUpdate"),
@@ -78,6 +78,27 @@ GATES = (   # (setting, file, class, member) -- the setting must be read inside 
     ("RM_SchemeKernel.PaletteIndex", "RM_AtmosphericCompositor.cs", "RM_Compositor", "Evaluate"),
     ("RM_SchemeKernel.Errors", "RM_AtmosphericSchemeDef.cs", "RM_AtmosphericSchemeDef", "ConfigErrors"),
     ("realtimeSinceStartup", "RM_AtmosphericCompositor.cs", "RM_Compositor", "Update"),
+    # owner decisions §9 (2026-10-23)
+    ("PatternClock(", "RM_AtmosphericCompositor.cs", "RM_Compositor", "Update"),                       # §9.10 reload
+    ("clockOrigin", "RM_AtmosphericCompositor.cs", "RM_Compositor", "PatternClock"),
+    ("comp.ReleaseExternallyEdited()", "RM_AtmosphericCompositor.cs", "RM_Compositor", "Evaluate"),   # §9.9
+    ("comp.ShowSubstrate(t)", "RM_AtmosphericCompositor.cs", "RM_Compositor", "Evaluate"),
+    ("RM_HeldLampPolicy.EditedExternally", "RM_MapComponent_AtmosphericBase.cs", "RM_MapComponent_AtmosphericBase", "ReleaseExternallyEdited"),
+    ("ReleaseKeepingEdit", "RM_MapComponent_AtmosphericBase.cs", "RM_MapComponent_AtmosphericBase", "ReleaseExternallyEdited"),
+    ("scenarioDecides", "RM_MapComponent_AtmosphericBase.cs", "RM_MapComponent_AtmosphericBase", "ReleaseKeepingEdit"),
+    ("RM_HeldLampPolicy.DispleasesGods", "RM_MapComponent_AtmosphericBase.cs", "RM_MapComponent_AtmosphericBase", "ReleaseKeepingEdit"),
+    ("RaiseLampEditedAboardUtinni", "RM_MapComponent_AtmosphericBase.cs", "RM_MapComponent_AtmosphericBase", "ReleaseKeepingEdit"),
+    ("compositor.Forget", "RM_MapComponent_AtmosphericBase.cs", "RM_MapComponent_AtmosphericBase", "ReleaseKeepingEdit"),
+    ("lastLeft", "RM_MapComponent_AtmosphericBase.cs", "RM_MapComponent_AtmosphericBase", "Drive"),
+    ("lastLeft", "RM_MapComponent_AtmosphericBase.cs", "RM_MapComponent_AtmosphericBase", "ShowSubstrate"),
+    ("lastLeft", "RM_MapComponent_AtmosphericBase.cs", "RM_MapComponent_AtmosphericBase", "TakeOver"),
+    ("PlayerMayChoose", "RM_MapComponent_AtmosphericBase.cs", "RM_MapComponent_AtmosphericBase", "TakeOverAll"),  # §9.1
+    ("TakeOver(b)", "RM_MapComponent_AtmosphericBase.cs", "RM_MapComponent_AtmosphericBase", "TakeOverAll"),
+    ("PlayerMayChoose", "RM_AtmosphericBaseSettings.cs", "RM_AtmosphericBaseSettings", "DrawWholeMapButtons"),
+    ("comp.TakeOverAll()", "RM_AtmosphericBaseSettings.cs", "RM_AtmosphericBaseSettings", "DrawWholeMapButtons"),
+    ("comp.ReleaseAll()", "RM_AtmosphericBaseSettings.cs", "RM_AtmosphericBaseSettings", "DrawWholeMapButtons"),
+    ("DrawWholeMapButtons", "RM_AtmosphericBaseSettings.cs", "RM_AtmosphericBaseSettings", "DoWindowContents"),
+    ("if (NearNarratorWhite(", "Kernel/RM_SchemeKernel.cs", "RM_SchemeKernel", "Errors"),                  # §9.5
     # Phases 3-4
     ("RankedMoods", "RM_AtmosphericCompositor.cs", "RM_Compositor", "Evaluate"),
     ("CompareRank", "RM_MapComponent_AtmosphericBase.cs", "RM_MapComponent_AtmosphericBase", "RankedMoods"),
@@ -111,9 +132,69 @@ WIRING = (  # (file, needle, why)
     ("RM_AtmosphericBaseSettings.cs", "TremorTuning => RM_TremorTuning.Clamp(", "tremor tuning reaches the kernel unclamped (L6 cap)"),
     ("Kernel/RM_TerritoryKernel.cs", "public const int LawCap = 3;", "the tremor's cap of three contributors (L6) moved"),
     ("RM_AtmosphericCompositor.cs", 'DefaultSchemeDefName = "RM_Scheme_Lamplight"', "the default scheme is no longer the shipped Lamplight"),
+    ("RM_MapComponent_AtmosphericBase.cs", 'Scribe_Deep.Look(ref lastLeft, "lastLeft")', "an edit made across a reload is not seen (§9.9)"),
+    ("RM_AtmosphericCompositor.cs", "if (!g.Glows) { skippedUnlit++; continue; }",
+     "a lamp switched off by hand must stay held and silent (L17): skipped, never released or reported"),
+    ("RM_AtmosphericBaseAPI.cs", "public static event Action<Map, Thing> LampEditedAboardUtinni;", "the Utinni offence hook (§9.9) is gone"),
     ("Defs/RM_AtmosphericSchemes.xml", "<defName>RM_Scheme_Lamplight</defName>", "the default scheme the compositor names is not shipped"),
 )
 EXCLUSIONS = ("isPawn", "isPlant", "isApparelOrEquipment", "hologramMarked")
+# L11 reserved token (owner decision §9.5). Mirrors RM_SchemeKernel.NarratorWhite* / ReservedWhiteDistance; PROVISIONAL,
+# to be calibrated at the live look. Every RM_AtmosphericSchemeDef anywhere under src/ -- the gods' palettes included,
+# whichever mod ships them -- is held to it.
+NARRATOR_WHITE = (255, 255, 255)
+RESERVED_WHITE_DISTANCE = 100
+REPO_SRC = os.path.normpath(os.path.join(HERE, "..", ".."))
+_SCHEME_TAG = "RM_AtmosphericSchemeDef"
+
+
+def near_narrator_white(rgb):
+    return sum((int(c) - w) ** 2 for c, w in zip(rgb[:3], NARRATOR_WHITE)) <= RESERVED_WHITE_DISTANCE ** 2
+
+
+def scheme_palettes(xml):
+    """[(defName, [(r,g,b), ...])] for every scheme def in one XML text."""
+    out = []
+    for m in re.finditer(r"<(?:[\w.]+\.)?%s\b[^>]*>(.*?)</(?:[\w.]+\.)?%s>" % (_SCHEME_TAG, _SCHEME_TAG), _xml_code(xml), re.S):
+        body = m.group(1)
+        dn = (re.search(r"<defName>([^<]+)</defName>", body) or [None, "?"])[1]
+        pal = re.search(r"<palette>(.*?)</palette>", body, re.S)
+        cols = [tuple(int(v) for v in li.split(",")[:3]) for li in
+                re.findall(r"<li>\s*\(?\s*([0-9]+\s*,\s*[0-9]+\s*,\s*[0-9]+[^<)]*)\)?\s*</li>", pal.group(1) if pal else "")]
+        out.append((dn, cols))
+    return out
+
+
+def _xml_code(xml):
+    return re.sub(r"<!--.*?-->", "", xml, flags=re.S)
+
+
+def reserved_white_findings(xml_by_name):
+    """Pure over {name: xml text}: every palette entry of every scheme def keeps its distance from the Narrator's white."""
+    bad = []
+    for name, xml in sorted(xml_by_name.items()):
+        for dn, cols in scheme_palettes(xml):
+            for c in cols:
+                if near_narrator_white(c):
+                    bad.append("[L11] %s %s: palette entry %s is within %d of the Narrator's white" % (name, dn, c, RESERVED_WHITE_DISTANCE))
+    return bad
+
+
+def repo_scheme_xml():
+    """{repo-relative path: text} of every XML under src/ that declares a scheme def (this mod's and any other's)."""
+    out = {}
+    for dirpath, dirs, files in os.walk(REPO_SRC):
+        dirs[:] = [d for d in dirs if d not in ("bin", "obj", ".git")]
+        for fn in files:
+            if fn.endswith(".xml"):
+                p = os.path.join(dirpath, fn)
+                try:
+                    t = open(p, encoding="utf-8", errors="replace").read()
+                except OSError:
+                    continue
+                if _SCHEME_TAG in t:
+                    out[os.path.relpath(p, REPO_SRC).replace(os.sep, "/")] = t
+    return out
 
 
 def load_sources():
@@ -130,6 +211,10 @@ def load_sources():
     for fn in sorted(os.listdir(d)) if os.path.isdir(d) else ():
         if fn.endswith(".xml"):
             out["Defs/" + fn] = open(os.path.join(d, fn), encoding="utf-8").read()
+    own = os.path.relpath(d, REPO_SRC).replace(os.sep, "/") + "/"
+    for rel, t in repo_scheme_xml().items():
+        if not rel.startswith(own):
+            out["repo:" + rel] = t
     return out
 
 
@@ -201,6 +286,19 @@ def static_findings(srcs):
             bad.append("[exclusion] Classify no longer tests %s" % ex)
         elif cap >= 0 and at > cap:
             bad.append("[exclusion] Classify tests %s AFTER capability, so a glowing %s could be driven" % (ex, ex))
+    # §9.9: the external-edit release keeps THEIR colour -- it must never write the saved one back
+    rk = member_body(srcs.get("RM_MapComponent_AtmosphericBase.cs", ""), "RM_MapComponent_AtmosphericBase", "ReleaseKeepingEdit") or ""
+    if re.search(r"Restore|WriteColor", rk):
+        bad.append("[external-edit] ReleaseKeepingEdit writes a colour; an external edit is the owner's to keep, never overwritten")
+    # §9.10: nothing that would resume a pattern is saved
+    for fn in ("RM_AtmosphericCompositor.cs",):
+        if re.search(r"Scribe_\w+\.Look\(ref (clockOrigin|tracker|leadOf|lastTremor)", _code(srcs.get(fn, ""))):
+            bad.append("[reload] %s saves pattern state; a reload restarts the pattern from its start (§9.10)" % fn)
+    # §9.5: every scheme palette, this mod's and the gods', keeps its distance from the Narrator's white
+    schemes = dict((k, v) for k, v in srcs.items() if k.endswith(".xml") and _SCHEME_TAG in v)
+    if not any(scheme_palettes(v) and any(c for _, c in scheme_palettes(v)) for v in schemes.values()):
+        bad.append("[L11] no scheme palette was read at all; the reserved-white scan is blind")
+    bad.extend(reserved_white_findings(schemes))
     x = srcs.get("RM_AtmosphericBaseSettings.cs", "")
     for f in SETTINGS:
         if not re.search(r'Scribe_Values\.Look\(ref %s, "%s"' % (f, f), x):
