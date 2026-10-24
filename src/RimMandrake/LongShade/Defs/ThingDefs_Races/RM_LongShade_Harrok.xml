@@ -15,7 +15,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Harrok</defName>
     <label>harrok</label>
-    <description>A pole with a mouth. The harrok stands on four long, thin legs in the open sun, hardly breathing, its narrow body held a full man's height above the sand. It does not hunt. It stands at the edge of a patch of shade so that its own long shadow lies across the rim, and the animals that come to rest in that thin cool strip are lying under it. It is the one shadow on this ground that is real and has a mouth.</description>
+    <description>A narrow-bodied animal held a man's height above the sand on four thin legs. It stands beside shelter and lets its long shadow cross the edge, taking the small animals that settle beneath it. It seldom moves and does not chase its prey.</description>
     <statBases>
       <MoveSpeed>1.2</MoveSpeed>
       <MarketValue>300</MarketValue>

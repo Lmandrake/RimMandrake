@@ -22,7 +22,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Voorpak</defName>
     <label>voorpak</label>
-    <description>Voorpaks were a non-sentient but still quite smart species of puffy-looking mammalians that were native to the planet of Naboo. Diminutive carnivores, voorpaks were much beloved by many due to their cuteness and as pets which in turn led to their export to many other worlds.</description>
+    <description>A small Naboo carnivore with a round, pale-furred body carried on six thin, bare legs. Its soft coat makes it a popular pet, despite its sharp teeth.</description>
     <statBases>
       <MoveSpeed>3.0</MoveSpeed>
       <MarketValue>150</MarketValue>

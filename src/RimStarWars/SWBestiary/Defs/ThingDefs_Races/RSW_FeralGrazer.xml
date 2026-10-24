@@ -34,7 +34,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_FeralGrazer</defName>
     <label>feral grazer</label>
-    <description>These slow-moving herbivorous mammalia were native to Alderaan. 'Feral' or 'wild' grazers were significantly leaner than the fatter and more well-fed domestic grazer; however both species were distantly related to Nerfs. Their horns, tough leathery hides and fat layers acted as an additional defense against predation.</description>
+    <description>A slow-moving Alderaanian herbivore with spotted leathery hide, a horned face and small scutes along its spine. Wild grazers are substantially leaner than domestic stock. Their horns, tough hide and underlying fat offer some protection from predators.</description>
     <statBases>
       <MoveSpeed>2.0</MoveSpeed>
       <MarketValue>350</MarketValue>

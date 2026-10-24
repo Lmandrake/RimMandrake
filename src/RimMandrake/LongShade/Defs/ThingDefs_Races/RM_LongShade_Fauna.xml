@@ -61,7 +61,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Bokka</defName>
     <label>bokka</label>
-    <description>These large reptile-like animals normally feed on the likes of cacti. If angered, however, their durable hide makes them quite difficult to kill.\n\nTheir longer back legs and strange appearance lends credence to the belief that they were engineered to live in arid environments. Why they live underground, however, is uncertain.</description>
+    <description>A low, reptile-like grazer with overlapping armour and unusually long hind legs. Bokka feed on cacti and live underground; their heavy hide makes an angry one difficult to kill.</description>
     <statBases>
       <MoveSpeed>3.25</MoveSpeed>
       <MarketValue>250</MarketValue>
@@ -667,7 +667,7 @@
     <defName>RM_Dunejelly</defName>
     <!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 (owner 2026-10-04: "Tint it more green. Rename to Dunejelly." / "belongs at RimMandrake level"): renamed from RM_Jellypot / "jellypot"; RSW_Jellypot retired onto this def. texPath unchanged so the owner-kept art still binds; the green tint is an art job. -->
     <label>dunejelly</label>
-    <description>A pale green, glassy dome of a creature, slightly translucent, with a small brown head poking out of one side of its low body. The insect jelly it produces fills its large thoracic sac. It is almost always found near insectoid hives, which tend it much as ants farm aphids, and it does not seem able to breed in captivity.</description>
+    <description>A low, translucent green dome with pale lobes inside and a small brown head protruding near its base. Insectoid hives tend these creatures for the insect jelly stored in their swollen bodies. They have not been known to breed in captivity.</description>
     <statBases>
       <MoveSpeed>1.65</MoveSpeed>
       <ComfyTemperatureMin>-25</ComfyTemperatureMin>
@@ -970,9 +970,7 @@
 		<!-- Renamed RM_GreatDevourer -> RM_Gulloth and moved to the franchise-free RM_ tier, owner card 2026-10-08: the canon sarlacc association is gone; RSW_GreatDevourer -> RM_Gulloth (the RSW_ twin was retired). The Sarlacc mod patches its rooting behaviour on top (RSW_SarlaccSeeker_Rooting.xml). -->
 		<defName>RM_Gulloth</defName>
 		<label>gulloth</label>
-		<description>An armoured worm, a mouth with a body behind it, that swims the sand on the water it was born with. It gorges on small prey to top that reserve up, and where one hunts the small life of a region can collapse. It wanders until it finds rich food and a water source worth claiming. Desert tribes call it the seeker.
-
-It will not attack large creatures, humans included, unless provoked. Its armour is thinner than it looks, and it heals slowly.</description>
+		<description>An armoured, sand-swimming worm that replenishes its water reserve by gorging on small prey, sometimes stripping a hunting ground bare. It wanders in search of food and water; desert tribes call it the seeker. It leaves humans and other large animals alone unless provoked, and its thin armour and slow healing make injuries costly.</description>
 		<statBases>
 			<MoveSpeed>2.8</MoveSpeed>
 			<ComfyTemperatureMin>-5</ComfyTemperatureMin>
@@ -1124,7 +1122,7 @@ It will not attack large creatures, humans included, unless provoked. Its armour
 		<!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 (owner 2026-10-04: "Keep art, rename to the Oreclaw, lives in RimMandrake level."): renamed from RM_Groundrunner / "groundrunner"; RSW_Groundrunner retired onto this def. texPaths unchanged so the kept art binds. -->
 		<defName>RM_Oreclaw</defName>
 		<label>oreclaw</label>
-		<description>A heavy, rust-furred digger with a long pointed snout, small eyes and a bear's hunched, powerful build. Its front paws end in great curved claws, and rough grey plates of hardened skin cover its shoulders and forearms. Desert prospectors keep oreclaws as living tools, since the claws break rock that plasteel cannot and the animal can drag boulders no colonist can lift. Tame ones are docile, but a cornered oreclaw will use those claws on anything near.</description>
+		<description>A heavy, rust-furred digger with a long pointed snout, rough grey shoulder plates and great curved foreclaws. Prospectors tame oreclaws to break rock and drag boulders. Usually docile in captivity, they become dangerous when cornered.</description>
 		<statBases>
 			<MoveSpeed>3.00</MoveSpeed>
 			<ComfyTemperatureMin>-10</ComfyTemperatureMin>

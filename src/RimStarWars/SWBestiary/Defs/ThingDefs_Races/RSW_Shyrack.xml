@@ -48,7 +48,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Shyrack</defName>
     <label>shyrack</label>
-    <description>Shyracks were large, bat-like avian creatures with razor like teeth native to the caves of the planet Korriban. While ungainly and slow-moving without eyes, Shyracks were potentially dangerous pests, especially when they converged as a flock on an opponent. It's believed these creatures were spread to various planets as "live prey" for the others beasts in Sith armies (such as the Tuk'ata).</description>
+    <description>A large, bat-like creature from the caves of Korriban, with leathery wings and sharp teeth. Ungainly alone, shyracks become dangerous when a flock converges on an intruder.</description>
     <statBases>
       <MoveSpeed>1.5</MoveSpeed>
       <MarketValue>200</MarketValue>

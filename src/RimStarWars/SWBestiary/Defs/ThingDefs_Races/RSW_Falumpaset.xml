@@ -30,7 +30,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Falumpaset</defName>
     <label>falumpaset</label>
-    <description>The falumpaset were a large mammalalian creature native to the planet Naboo. Their distinctive bellowing calls could be heard for kilometers around and their intelligence made them likely to form strong bonds with their handlers. Easily domesticated as beasts of burden (or sometimes war mounts), falumpasets could be found all over the galaxy.</description>
+    <description>A huge, long-legged herbivore from Naboo, with a heavy rump, wrinkled spotted hide and a low-hung head. Gungans and Naboo domesticate falumpasets to pull carts and haul heavy loads. They are strong swimmers.</description>
     <statBases>
       <MoveSpeed>4.3</MoveSpeed>
       <MarketValue>350</MarketValue>

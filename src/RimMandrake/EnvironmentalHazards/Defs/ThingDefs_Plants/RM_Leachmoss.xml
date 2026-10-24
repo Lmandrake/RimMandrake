@@ -66,7 +66,7 @@
     <defName>RM_Leachmoss</defName>
 <altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>leachmoss</label>
-    <description>A low mat of dull, dust-dulled moss that races everything else on the ground for whatever nutrient the wind just delivered. It is shallow and short-lived, but it is fast: the instant a patch of fertile ground opens up, this is what fills it first, over and over, ahead of anything slower. It holds no territory by strength -- only by getting there before anything else can.</description>
+    <description>A shallow mat of dust-dulled moss that is first to colonise newly exposed fertile ground. It grows quickly on windblown nutrients, then dies back.</description>
     <statBases>
       <MaxHitPoints>60</MaxHitPoints>
       <Flammability>0.2</Flammability>

@@ -25,7 +25,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Bolotaur</defName>
     <label>bolotaur</label>
-    <description>The Bolotaur are a large, long-necked herbivorous reptilian creatures native to the planet Kashyyyk. They were short-lived but reproduced quickly and were a favoured mount by the Trandoshan species, which resulted in their spread to many worlds as beasts of burden and livestock.</description>
+    <description>A large, long-necked reptile native to Kashyyyk, sometimes tamed as a mount. Bolotaurs spend most of their short lives eating to sustain a fast metabolism, and reproduce quickly enough to remain numerous.</description>
     <statBases>
       <MoveSpeed>5.5</MoveSpeed>
       <MarketValue>500</MarketValue>

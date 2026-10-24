@@ -36,7 +36,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Jakobeast</defName>
     <label>jakobeast</label>
-    <description>Jakobeasts were polar herd animals found in the tundras of icy planets in the Outer Rim. Jakobeasts were domesticated primarily for their meat, milk, and fur. While excellent livestock, they were ill-suited to serve as mounts, guards, or attack animals. . Jakobeasts were introduced by colonists that sought herd animals capable of defending themselves. As a result of the settlers' efforts, the creatures spread to hundreds of worlds, occasionally surviving long after the settlers themselves had vanished into history. Wild jakobeasts were hunted for their horns, which supposedly possess mysterious properties.</description>
+    <description>A huge, shaggy herd animal from the icy Outer Rim, with a striped coat, curved tusks and backward-sweeping horns. Jakobeasts are raised for meat, milk and fur; despite their size, they make poor mounts and guards.</description>
     <statBases>
       <MoveSpeed>4.5</MoveSpeed>
       <ComfyTemperatureMin>-80</ComfyTemperatureMin>

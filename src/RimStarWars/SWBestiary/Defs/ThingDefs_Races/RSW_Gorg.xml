@@ -42,7 +42,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Gorg</defName>
     <label>gorg</label>
-    <description>Gorgs, known as 'chubas' in Huttese, were small precocious amphibians that could be found on several planets. They were popularly favored as food by many humanoid species. Thus they became popular livestock on sparse worlds due to their high temperature tolerance, minimal food consumption and fast breeding.</description>
+    <description>Gorgs are small amphibians, known as chubas in Huttese and used as food by many species. The name covers several species with different body shapes and colours.</description>
     <statBases>
       <MoveSpeed>2.9</MoveSpeed>
       <MarketValue>50</MarketValue>

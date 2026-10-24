@@ -36,7 +36,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Eopie</defName>
     <label>eopie</label>
-    <description>Eopies were a species of quadrupedal mammallian herbivores native to the planet Tatooine. These tough creatures were acclimated to their homeworld's endless deserts, and as a result were domesticated and exported offworld as pack animals. The eopie's rough skin helped to protect it against the heat while its hooves were adapted to climbing rocky cliffs.</description>
+    <description>A pale, leathery desert herbivore from Tatooine, with thin legs and a long, drooping snout. Eopies carry heavy loads and pick their way over rocky ground on broad, splayed feet. They are easily domesticated, though stubborn.</description>
     <statBases>
       <MoveSpeed>4.3</MoveSpeed>
       <MarketValue>200</MarketValue>

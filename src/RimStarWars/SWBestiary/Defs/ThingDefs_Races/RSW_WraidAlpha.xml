@@ -55,7 +55,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_WraidAlpha</defName>
     <label>alpha wraid</label>
-    <description>A rarer, more specialised branch of the wraid line, fully committed to the outer dayside's sprint economy: bigger and tougher than an ordinary wraid, it lies coiled in a shadow patch waiting for something to overextend, then bursts out at a speed nothing can evade. The burst cooks it from within — it must reach shade again before the heat catches up, or the same speed that let it hunt starts to fail it.</description>
+    <description>Larger and tougher than an ordinary wraid, the alpha has a broad plated head, massive forelegs and small hind legs. It waits in shade, then attacks in a bounding rush. The exertion rapidly overheats it, forcing it back into shelter.</description>
     <statBases>
       <MoveSpeed>5.0</MoveSpeed>
       <MarketValue>950</MarketValue>

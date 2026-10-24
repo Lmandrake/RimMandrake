@@ -34,7 +34,7 @@
   <ThingDef ParentName="PlantBase">
     <defName>RM_Dewfringe</defName>
     <label>dewfringe</label>
-    <description>A low, sparse fringe of pale filaments beaded with dew, growing only where a shadow's edge meets open ground. It never spreads past that line — a stand of dewfringe is how you can see where the shade actually ends, a faint living halo ringing every patch in the Long Shade. Too pale and too thin to ever read as lush, but it is the densest growth this biome has.</description>
+    <description>A low, sparse fringe of pale filaments beaded with dew. It grows only where shade meets open ground, tracing the edge of each sheltered patch with a faint living rim.</description>
     <statBases>
       <MaxHitPoints>50</MaxHitPoints>
       <Flammability>0.1</Flammability>

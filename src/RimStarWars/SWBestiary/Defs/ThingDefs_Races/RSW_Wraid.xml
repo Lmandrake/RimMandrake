@@ -29,7 +29,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Wraid</defName>
     <label>wraid</label>
-    <description>Wraids were large reptilian creatures found on many desert planets across the galaxy (including but not limited to Tatooine, Ruhnuk, Korriban and even Tython). They were carnivorous creatures, relying on scavening and ambush to find their prey. Wraids were often over hunted for their valuable hides, causing their populations to spike and fall.</description>
+    <description>A large desert reptile with a broad plated skull, enormous forelimbs and two small hind legs. Often hunted for its hide and skull plates, it can cover ground in powerful bounds when provoked.</description>
     <statBases>
       <MoveSpeed>5.0</MoveSpeed>
       <MarketValue>750</MarketValue>

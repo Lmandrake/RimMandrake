@@ -11,7 +11,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Nuna</defName>
     <label>nuna</label>
-    <description>Nuna (commonly called 'swamp turkeys'), were reptavian gamebirds native to the planet Naboo. Nuna were diminutive bipeds, mostly covered in scaly skin and sporting a distinctive dorsal ridge. They possessed a notably prominent jutting jaw and two large wattles hanging from either side of their mouths. They were transported as livestock as well as a game animal, allowing for wild populations on other worlds.</description>
+    <description>Nunas are small, flightless reptavians with ridged olive-green backs, clawed legs and two wattles beside a broad, jutting jaw. Often called swamp turkeys, they are native to Naboo and have spread to many worlds. They are easy livestock, raised for meat and eggs.</description>
     <statBases>
       <MoveSpeed>3</MoveSpeed>
       <MarketValue>100</MarketValue>

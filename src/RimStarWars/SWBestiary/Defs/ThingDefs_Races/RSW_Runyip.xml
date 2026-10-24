@@ -38,7 +38,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Runyip</defName>
     <label>runyip</label>
-    <description>Runyip or Yavin Runyip were a species of squat quadrupeds from the moon Yavin 4. The creatures had antlered heads with a flexible nose. Their coats had a characteristic pattern of black or dark brown stripes on a whitish background. It is believed this striation made them a popular game animal for export to other worlds.</description>
+    <description>A squat forest herbivore from Yavin 4 with branching antlers and a flexible snout. Dark brown stripes cross its pale coat, and its front toes bear claws.</description>
     <statBases>
       <MoveSpeed>2.0</MoveSpeed>
       <MarketValue>350</MarketValue>

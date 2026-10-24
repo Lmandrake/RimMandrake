@@ -59,7 +59,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RM_Gloomcast</defName>
     <label>gloomcast</label>
-    <description>A colossal, slow-moving grazer that crosses the open dayside in a single committed march, absorbing a furnace's worth of heat along the way. It filter-feeds through the sand as it goes, straining the buried canopy and the small life sheltering in it, and radiates the crossing's heat fiercely once it reaches shade — which is also the only moving shadow most of this desert ever sees. Nothing this large has a predator. Everything that can reach it rides in its shadow instead.</description>
+    <description>A colossal grazer that strains buried vegetation and small animals from the sand during long crossings of the open dayside. It sheds the stored heat fiercely when it reaches shade. Smaller animals travel in its moving shadow; nothing hunts it.</description>
     <statBases>
       <MoveSpeed>2.2</MoveSpeed>
       <MarketValue>6000</MarketValue>

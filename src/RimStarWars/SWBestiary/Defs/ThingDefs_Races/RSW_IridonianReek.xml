@@ -46,7 +46,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_IridonianReek</defName>
     <label>iridonian reek</label>
-    <description>Reek could be found on the planets Iridonia, Kashyyyk, Ithor, Codian Moon, Tatooine and Saleucami (to name just a few). Various subspecies invariably sprung up as the base stock adapted to new environments. The Iridonian Reek was bred as a 'war mount' by the Iridonian Zabraks. Instead of giving them a meat diet, the Iridonian reeks were given a natural diet consisting of plant matter to keep them fierce and strong with natural vigor, which also turned a reek's skin gray. Adapted to Iridonia, their skin could resist sharp and blunt weapon attacks during battle. The Iridonian reek's horns were much sharper and longer than those of other reeks.</description>
+    <description>A massive, territorial herbivore with thick, knobbly brown hide, a tall central horn and two forward-curving cheek horns. The red head and shoulders mark the meat-fed form associated with arena stock, whose handlers deliberately encouraged aggression.</description>
     <statBases>
       <MoveSpeed>5.5</MoveSpeed>
       <ComfyTemperatureMin>-5</ComfyTemperatureMin>

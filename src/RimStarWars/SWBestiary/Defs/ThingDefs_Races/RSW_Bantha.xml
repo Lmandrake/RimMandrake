@@ -19,7 +19,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RSW_Bantha</defName>
     <label>bantha</label>
-    <description>Banthas are a species of large, hairy mammals with sharp, spiraling horns. They inhabit the desert planet Tatooine, though they are bred on many worlds throughout the galaxy. They are social herd animals, and are often domesticated, and used prominently, by Tusken Raiders as mounts and companionship.</description>
+    <description>A huge, shaggy herd animal with pale spiral horns and a broad, slit-like mouth. Native to Tatooine and bred on many worlds, banthas provide meat, milk and wool. Tusken Raiders keep them as mounts and companions.</description>
     <statBases>
       <MoveSpeed>4.5</MoveSpeed>
       <ComfyTemperatureMin>-20</ComfyTemperatureMin>

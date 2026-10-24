@@ -63,7 +63,7 @@
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Venomvine</defName>
     <label>venomvine</label>
-    <description>A low, matted tangle of rust-dark runners that grows nowhere except the ground worth having. It does not compete for the shade so much as hold it: every runner carries short recurved thorns along its underside, angled to catch an ankle, and the sap they carry does not kill quickly enough to be a defence against anything but staying. Walk through a stand and you pay once. Lie down in one and you keep paying.</description>
+    <description>A low mat of rust-dark runners rooted in the best shade. Recurved thorns beneath the runners catch ankles and deliver a slow-acting venom. Crossing a stand hurts; lying in one keeps adding to the dose.</description>
     <statBases>
       <MaxHitPoints>300</MaxHitPoints>
       <!-- arid_shrubland.md: "resist fire greatly and burn only grudgingly";

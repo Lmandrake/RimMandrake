@@ -47,7 +47,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Gutkurr</defName>
     <label>gutkurr</label>
-    <description>Gutkurrs were fierce insectile predators native to the planet Ryloth. They were aggressive and displayed very limited intelligence, however they were observed to work in small hunting packs. These traits however has made them popular game animals and "pets" for criminal organisations across the galaxy, spreading these monsterous creatures to many worlds.</description>
+    <description>A large insectile predator from Ryloth, with powerful hind legs, short hooked forearms and a spiked, blaster-resistant shell. Gutkurrs hunt in packs and can surround careless prey.</description>
     <statBases>
       <MoveSpeed>4.5</MoveSpeed>
       <ComfyTemperatureMin>-5</ComfyTemperatureMin>

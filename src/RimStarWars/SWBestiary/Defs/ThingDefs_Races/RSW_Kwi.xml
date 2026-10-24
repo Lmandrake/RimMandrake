@@ -59,7 +59,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Kwi</defName>
     <label>Kwi</label>
-    <description>The Kwi were large, bipedal saurians native to the planet Dathomir. They were herbivorous and yet remarkably sociable and intelligent. They were believed to be the degenerated descendants of the saurian 'Kwa' race. How they arrived on the various worlds they populated is unknown; perhaps they are the long descendants of the pan-galactic 'Kwa' or maybe they are just escaped circus specimens.</description>
+    <description>A large, blue-skinned bipedal herbivore from Dathomir, marked with black stripes and carried on powerful hind legs. Kwi are semi-sentient herd animals that honk and grunt to one another, the degenerate descendants of the saurian Kwa.</description>
     <statBases>
       <MoveSpeed>5.0</MoveSpeed>
       <MarketValue>600</MarketValue>

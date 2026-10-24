@@ -29,7 +29,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Worrt</defName>
     <label>worrt</label>
-    <description>The Worrt was an amphibious creature native to the planet Tatooine, though they could also be found on other worlds (including Nal Hutta and Phaeda). Worrts were omnivorous, but was also known to attempt to eat rocks and metal objects. They used their long, prehensile tongue to catch smaller prey, such as gorgs, but were known to also attack creatures larger than itself.</description>
+    <description>A squat, warty amphibian from Tatooine, with a broad mouth, two cranial palps and long forelimbs ending in splayed fingers. It waits in the sand and catches small prey with a purple, prehensile tongue. Its venomous bite can kill a bantha, though it also attempts to swallow rocks and metal.</description>
     <statBases>
       <MoveSpeed>2.5</MoveSpeed>
       <MarketValue>100</MarketValue>

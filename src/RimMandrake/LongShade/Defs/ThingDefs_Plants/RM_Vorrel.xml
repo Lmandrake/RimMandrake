@@ -66,7 +66,7 @@
   <ThingDef ParentName="PlantBase">
     <defName>RM_Vorrel</defName>
     <label>vorrel</label>
-    <description>A low, dense bush of the shaded water pockets, hung with fat pale fruit that looks like the most ordinary good luck on this planet. It is not. Each fruit is packed with live seed that takes root in the gut of whatever eats it, and a body full of them has hours, not days. What the plant wants from the arrangement is the walk: a dying animal here makes for the nearest shadow by instinct, and a shadow is the one ground a seed could never have reached on its own.</description>
+    <description>A low, dense bush of shaded water pockets, hung with fat, pale fruit. Its seeds take root in the gut of whatever eats them, killing the host within hours. The dying animal’s retreat into shelter carries them to another patch of shade.</description>
     <statBases>
       <MaxHitPoints>110</MaxHitPoints>
       <Flammability>0</Flammability>
