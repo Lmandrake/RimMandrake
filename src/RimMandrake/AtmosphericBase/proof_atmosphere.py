@@ -534,7 +534,11 @@ def repo_scheme_xml():
 PRIMITIVE_PARAMS = {   # independent of the C# kernel: what each built primitive must be given to be meaningful
     "Steady": (), "Breath": ("period",), "Spark": ("period", "rise", "oneIn"),
     "Tide": ("period", "anchor", "ragged", "band", "hold", "low", "high"),
+    "Ripple": ("period", "anchor", "seed", "direction", "fill", "speed", "width", "holdSeconds", "oneShot"),
+    "Sweep": ("period", "field", "angle", "lit"),
 }
+RIPPLE_ENUMS = {"seed": ("Anchor", "Fixture", "Hull"), "direction": ("Out", "In"), "fill": ("Shell", "Bloom")}   # design §1 P4
+SWEEP_FIELDS = ("Axis", "Turn", "Toward")   # design §1 P5
 TIDE_ANCHORS = ("Core", "Medoid", "Threshold", "Open", "Grandest", "Shrine", "Power")   # design §1 P3
 
 
@@ -601,6 +605,22 @@ def judge_pattern_layers(xml_by_name, built):
                         bad.append("%s: low/high %s/%s" % (at, l.get("low", 0), l.get("high", 1)))
                     if l.get("anchor", "Core") not in TIDE_ANCHORS:
                         bad.append("%s: anchor %r" % (at, l.get("anchor")))
+                if prim == "Ripple":
+                    for k in ("speed", "width"):
+                        if not float(l.get(k, 1)) > 0:
+                            bad.append("%s: ripple %s=%s" % (at, k, l[k]))
+                    if float(l.get("holdSeconds", 4)) < 0:
+                        bad.append("%s: holdSeconds=%s" % (at, l["holdSeconds"]))
+                    for k, ok in RIPPLE_ENUMS.items():
+                        if k in l and l[k] not in ok:
+                            bad.append("%s: %s %r" % (at, k, l[k]))
+                    if l.get("anchor", "Core") not in TIDE_ANCHORS:
+                        bad.append("%s: anchor %r" % (at, l.get("anchor")))
+                if prim == "Sweep":
+                    if not 0 < float(l.get("lit", 0.25)) <= 1:
+                        bad.append("%s: lit %s outside (0, 1]" % (at, l.get("lit")))
+                    if l.get("field", "Axis") not in SWEEP_FIELDS:
+                        bad.append("%s: field %r" % (at, l.get("field")))
     if n_s == 0:
         return _r(UNM, HARNESS, "no scheme carries <layers> yet: nothing to judge (built: %s)" % ",".join(sorted(built)))
     if bad:
@@ -1390,6 +1410,15 @@ def metric_controls():
     out.append(("judge_pattern_layers tide fast period", judge_pattern_layers({"l.xml": tl.replace("<period>300", "<period>120")}, tb)[0], FAIL))
     out.append(("judge_pattern_layers tide bad anchor", judge_pattern_layers({"l.xml": tl.replace("Threshold", "Attic")}, tb)[0], FAIL))
     out.append(("judge_pattern_layers tide unbuilt", judge_pattern_layers({"l.xml": tl}, built - {"Tide"})[0], FAIL))
+    rl = lay % "<li><primitive>Ripple</primitive><period>60</period><seed>Hull</seed><fill>Bloom</fill><entries>0~1</entries></li>"
+    sl = lay % "<li><primitive>Sweep</primitive><period>40</period><field>Toward</field><lit>0.3</lit><entries>0~1</entries></li>"
+    fb = built | {"Ripple", "Sweep"}
+    out.append(("judge_pattern_layers ripple good", judge_pattern_layers({"l.xml": rl}, fb)[0], PASS))
+    out.append(("judge_pattern_layers ripple speed 0", judge_pattern_layers({"l.xml": rl.replace("<period>60", "<speed>0</speed><period>60")}, fb)[0], FAIL))
+    out.append(("judge_pattern_layers ripple bad seed", judge_pattern_layers({"l.xml": rl.replace("Hull", "Moon")}, fb)[0], FAIL))
+    out.append(("judge_pattern_layers sweep good", judge_pattern_layers({"l.xml": sl}, fb)[0], PASS))
+    out.append(("judge_pattern_layers sweep lit 0", judge_pattern_layers({"l.xml": sl.replace("0.3", "0")}, fb)[0], FAIL))
+    out.append(("judge_pattern_layers sweep bad field", judge_pattern_layers({"l.xml": sl.replace("Toward", "Sideways")}, fb)[0], FAIL))
     gcomp = ("g = RM_RoomGraph.Build(rooms, doors); if (Graph == null || Graph.TopologyKey != g.TopologyKey) Graph = g;\n"
              "RM_PatternCtx pc = RM_PatternCtx.Of(id, room, Graph, Fixtures);")
     gproj = '<Compile Include="Kernel\\RM_PatternGraph.cs" />'

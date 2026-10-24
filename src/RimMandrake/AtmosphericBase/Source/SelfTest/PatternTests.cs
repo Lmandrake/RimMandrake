@@ -516,6 +516,97 @@ internal static class PatternTests
         Check("step 5 tide: a clean tide has no errors", RM_SchemeKernel.Errors(t3).Count == 0, string.Join("; ", RM_SchemeKernel.Errors(t3)));
     }
 
+    // first time in [0, horizon) a fixture's index leaves lo (-1 = never)
+    private static double FirstLit(RM_SchemeData s, ref RM_PatternCtx c, double horizon, double dt)
+    {
+        for (double t = 0; t < horizon; t += dt) if (RM_PatternEvaluator.Index(s, ref c, t, false) != 0) return t;
+        return -1;
+    }
+
+    private static void Step6()
+    {
+        const string rip = "<layers><li><primitive>Ripple</primitive><period>60</period><anchor>Core</anchor>{0}</li></layers>";
+        const string swp = "<layers><li><primitive>Sweep</primitive><period>40</period>{0}</li></layers>";
+        string three = "<li>(40,20,8,0)</li><li>(130,90,40,0)</li><li>(220,158,96,0)</li>";
+        string two = "<li>(40,20,8,0)</li><li>(220,158,96,0)</li>";
+        RM_RoomGraph g = Branch();
+        var ems = new List<int>(); var rs = new List<int>(); var xs = new List<float>(); var zs = new List<float>();
+        for (int i = 0; i < 22; i++) { ems.Add(700 + i); rs.Add(g.roomIds[i % g.Count]); xs.Add(3 * (i % 7) + 0.5f * i); zs.Add(2 * (i / 7) + (i % 3)); }
+        var fs = new RM_FixtureSet(ems, rs, xs, zs);
+        Func<int, RM_PatternCtx> onGraph = i => RM_PatternCtx.Of(700 + i % 22, i % 13 == 12 ? -1 : g.roomIds[i % 22 % g.Count], g, fs);
+
+        NextChangeAgrees("step 6 ripple shell, 3 entries", One(string.Format(rip, ""), three), true, 300, 0.05, 130, onGraph);
+        NextChangeAgrees("step 6 ripple bloom, 3 entries, hold 3", One(string.Format(rip, "<fill>Bloom</fill><holdSeconds>3</holdSeconds><width>2</width>"), three), true, 300, 0.05, 130, onGraph, 5);
+        NextChangeAgrees("step 6 ripple in, fixture seed", One(string.Format(rip, "<seed>Fixture</seed><direction>In</direction><speed>1</speed>"), two), true, 300, 0.05, 130, onGraph, 7);
+        NextChangeAgrees("step 6 ripple hull, oneShot", One(string.Format(rip, "<seed>Hull</seed><oneShot>true</oneShot>"), three), true, 200, 0.05, 40, onGraph, 8);
+        NextChangeAgrees("step 6 sweep axis, 3 entries", One(string.Format(swp, "<angle>30</angle>"), three), true, 300, 0.02, 90, onGraph);
+        NextChangeAgrees("step 6 sweep turn, lit 0.5", One(string.Format(swp, "<field>Turn</field><lit>0.5</lit>"), two), true, 300, 0.02, 90, onGraph, 3);
+        NextChangeAgrees("step 6 sweep toward, lit 1", One(string.Format(swp, "<field>Toward</field><lit>1</lit>"), three), true, 300, 0.02, 90, onGraph, 4);
+
+        // ripple is monotone in graph distance: a farther room never lights before a nearer one
+        RM_SchemeData r3 = One(string.Format(rip, ""), three);
+        var first = new double[g.Count]; bool mono = true; string why = "";
+        for (int i = 0; i < g.Count; i++) { RM_PatternCtx c = RM_PatternCtx.Of(i, g.roomIds[i], g, null); first[i] = FirstLit(r3, ref c, 60, 0.01); }
+        for (int i = 0; i < g.Count; i++) for (int j = 0; j < g.Count; j++)
+            if (g.Distance(RM_Anchor.Core, i) < g.Distance(RM_Anchor.Core, j) && !(first[i] >= 0 && first[i] < first[j])) { mono = false; why = g.roomIds[i] + " vs " + g.roomIds[j]; }
+        Check("step 6 ripple: first-lit time strictly increases with door-distance from the seed", mono, why);
+        RM_SchemeData rIn = One(string.Format(rip, "<direction>In</direction>"), three);
+        bool monoIn = true;
+        for (int i = 0; i < g.Count; i++) { RM_PatternCtx c = RM_PatternCtx.Of(i, g.roomIds[i], g, null); first[i] = FirstLit(rIn, ref c, 60, 0.01); }
+        for (int i = 0; i < g.Count; i++) for (int j = 0; j < g.Count; j++)
+            if (g.Distance(RM_Anchor.Core, i) > g.Distance(RM_Anchor.Core, j) && !(first[i] < first[j])) monoIn = false;
+        Check("step 6 ripple In: the ring closes on the seed (farthest room first)", monoIn);
+
+        // one shot fires once; bloom stands
+        RM_SchemeData once = One(string.Format(rip, "<oneShot>true</oneShot>"), three);
+        bool fired = true;
+        for (int i = 0; i < g.Count; i++)
+        {
+            RM_PatternCtx c = RM_PatternCtx.Of(i, g.roomIds[i], g, null);
+            if (FirstLit(once, ref c, 30, 0.02) < 0) fired = false;
+            for (double t = 30; t < 400; t += 0.5) if (RM_PatternEvaluator.Index(once, ref c, t, false) != 0) fired = false;
+            if (!double.IsPositiveInfinity(RM_PatternEvaluator.NextChange(once, ref c, 31, false))) fired = false;
+        }
+        Check("step 6 ripple oneShot: every room lights once, then lo for good and NextChange is Never", fired);
+        RM_SchemeData bloom = One(string.Format(rip, "<fill>Bloom</fill><holdSeconds>5</holdSeconds>"), three);
+        double tg = (g.MaxDistance(RM_Anchor.Core) + 1 + 1) / 0.5;
+        bool stands = true;
+        for (int i = 0; i < 13; i++) { RM_PatternCtx c = onGraph(i); for (double t = tg + 0.01; t < tg + 5; t += 0.1) if (RM_PatternEvaluator.Index(bloom, ref c, t, false) != 2) stands = false; }
+        Check("step 6 ripple bloom: the whole base stands at hi for holdSeconds", stands);
+
+        // sweep toward: within a wave, an inner room never lights after its outward neighbour
+        RM_SchemeData tw = One(string.Format(swp, "<field>Toward</field><lit>0.3</lit>"), two);
+        bool outward = true;
+        for (int i = 0; i < g.Count; i++) { RM_PatternCtx c = RM_PatternCtx.Of(i, g.roomIds[i], g, null); first[i] = FirstLit(tw, ref c, 40, 0.01); }
+        for (int i = 0; i < g.Count; i++) foreach (int j in g.adj[i])
+            if (g.Distance(RM_Anchor.Threshold, j) < g.Distance(RM_Anchor.Threshold, i) && !(first[i] < first[j])) outward = false;
+        Check("step 6 sweep Toward: the wave runs outward (deeper room lights before its rim-side neighbour)", outward);
+
+        // sweep turn: one room of fixtures on a circle goes round in angle order
+        RM_RoomGraph one = RM_RoomGraph.Build(new List<RM_RoomFacts> { R(1, 100) }, null);
+        var e2 = new List<int>(); var r2 = new List<int>(); var x2 = new List<float>(); var z2 = new List<float>();
+        for (int i = 0; i < 11; i++) { double a = 2 * Math.PI * (i + 0.5) / 11 - Math.PI; e2.Add(500 + i); r2.Add(1); x2.Add((float)(10 + 5 * Math.Cos(a))); z2.Add((float)(10 + 5 * Math.Sin(a))); }
+        var f2 = new RM_FixtureSet(e2, r2, x2, z2);
+        RM_SchemeData turn = One(string.Format(swp, "<field>Turn</field><lit>0.2</lit>"), two);
+        var en = new double[11]; int desc = 0; bool all = true;
+        for (int i = 0; i < 11; i++) { RM_PatternCtx c = RM_PatternCtx.Of(500 + i, 1, one, f2); en[i] = FirstLit(turn, ref c, 40, 0.01); if (en[i] < 0) all = false; }
+        for (int i = 0; i < 11; i++) if (!(en[(i + 1) % 11] > en[i])) desc++;
+        Check("step 6 sweep Turn: the beam goes round the fixtures in angle order", all && desc == 1, string.Join(",", Array.ConvertAll(en, v => v.ToString("F2"))));
+        RM_PatternCtx bare = new RM_PatternCtx { emitter = 3, group = 9, node = -1, slot = -1 };
+        Check("step 6 ripple and sweep without a graph evaluate without throwing",
+              RM_PatternEvaluator.Index(r3, ref bare, 10, false) >= 0 && RM_PatternEvaluator.NextChange(tw, ref bare, 10, false) > 10);
+
+        Check("step 6 ripple and sweep cost class is Front", RM_PatternKernel.Cost(r3.layers) == RM_CostClass.Front && RM_PatternKernel.Cost(tw.layers) == RM_CostClass.Front);
+        Check("step 6 ripple: speed 0 refused", HasError(One(string.Format(rip, "<speed>0</speed>")), "speed"));
+        Check("step 6 ripple: width 0 refused", HasError(One(string.Format(rip, "<width>0</width>")), "width"));
+        Check("step 6 ripple: negative holdSeconds refused", HasError(One(string.Format(rip, "<holdSeconds>-1</holdSeconds>")), "holdSeconds"));
+        Check("step 6 sweep: lit 0 refused", HasError(One(string.Format(swp, "<lit>0</lit>")), "lit"));
+        Check("step 6 sweep: lit 1.5 refused", HasError(One(string.Format(swp, "<lit>1.5</lit>")), "lit"));
+        Check("step 6 sweep: an unknown field is refused by the loader", Throws(() => One(string.Format(swp, "<field>Sideways</field>"))));
+        Check("step 6 clean ripple and sweep have no errors", RM_SchemeKernel.Errors(r3).Count == 0 && RM_SchemeKernel.Errors(tw).Count == 0,
+              string.Join("; ", RM_SchemeKernel.Errors(r3)) + string.Join("; ", RM_SchemeKernel.Errors(tw)));
+    }
+
     private static bool Throws(Action a) { try { a(); return false; } catch (Exception) { return true; } }
 
     private static RM_PatternCtx ctxBox;
@@ -526,5 +617,6 @@ internal static class PatternTests
         Step2And3();
         Step4();
         Step5();
+        Step6();
     }
 }

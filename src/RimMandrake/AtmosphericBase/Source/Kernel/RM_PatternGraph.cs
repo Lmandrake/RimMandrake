@@ -138,6 +138,21 @@ namespace RimMandrake.AtmosphericBase
 
         public int MaxDistance(RM_Anchor a) { Field(a); return maxOf[a]; }
 
+        private readonly Dictionary<int, int[]> fromNode = new Dictionary<int, int[]>();
+
+        /// <summary>Hop distance from one room (a seed fixture's), cached like the anchor fields; [Count] holds the max.</summary>
+        public int[] FieldFrom(int node)
+        {
+            if (fromNode.TryGetValue(node, out int[] f)) return f;
+            int[] d = Bfs(new[] { node });
+            f = new int[Count + 1];
+            int mx = 0;
+            for (int i = 0; i < Count; i++) { f[i] = d[i]; if (d[i] != Unreached && d[i] > mx) mx = d[i]; }
+            f[Count] = mx;
+            fromNode[node] = f; FieldsBuilt++;
+            return f;
+        }
+
         /// <summary>A room's distance from the anchor; a fixture with no known room (outdoors) sits one hop past the
         /// farthest room, so fronts still reach it last and never skip it.</summary>
         public int Distance(RM_Anchor a, int node)
@@ -160,6 +175,36 @@ namespace RimMandrake.AtmosphericBase
 
         public int Count => ids.Length;
         public int Slot(int emitter) => slotOf.TryGetValue(emitter, out int s) ? s : -1;
+
+        private readonly Dictionary<float, KeyValuePair<float, float>> extent = new Dictionary<float, KeyValuePair<float, float>>();
+
+        /// <summary>Fixture slot k projected on the unit vector at `degrees`.</summary>
+        public float Project(int k, float degrees)
+        {
+            double r = degrees * Math.PI / 180.0;
+            return (float)(x[k] * Math.Cos(r) + z[k] * Math.Sin(r));
+        }
+
+        /// <summary>The min and max projection along `degrees` over the set, cached per angle.</summary>
+        public KeyValuePair<float, float> Extent(float degrees)
+        {
+            if (extent.TryGetValue(degrees, out KeyValuePair<float, float> e)) return e;
+            float lo = float.MaxValue, hi = float.MinValue;
+            for (int k = 0; k < Count; k++) { float p = Project(k, degrees); if (p < lo) lo = p; if (p > hi) hi = p; }
+            e = Count == 0 ? new KeyValuePair<float, float>(0, 0) : new KeyValuePair<float, float>(lo, hi);
+            extent[degrees] = e;
+            return e;
+        }
+
+        /// <summary>The seed fixture of a ripple: the one with the lowest hash, so the choice is stable (cf. flashers).</summary>
+        private int seedSlot = -2;
+        public int SeedSlot()
+        {
+            if (seedSlot != -2) return seedSlot;
+            int best = -1; uint bh = uint.MaxValue;
+            for (int k = 0; k < Count; k++) { uint h = RM_SchemeKernel.Mix(ids[k], 911); if (h < bh) { bh = h; best = k; } }
+            return seedSlot = best;
+        }
 
         public RM_FixtureSet(IList<int> emitters, IList<int> rooms, IList<float> xs, IList<float> zs)
         {
