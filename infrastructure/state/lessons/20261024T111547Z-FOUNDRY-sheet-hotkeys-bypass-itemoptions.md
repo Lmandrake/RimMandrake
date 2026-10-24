@@ -1,0 +1,2 @@
+review-sheets template number hotkeys (1-9 -> A-I on every row) and shift+digit group bulk call setDecision directly and skip itemOptions/bulk:false, so an art sheet's setDecision wrapper must check that the letter is a set of the row's slot itself (fixed c3a382b9e0). Also: snapshot graphic_of is NOT slot membership (former/alternate texPaths sit in a slot lane), so do not use it as an enact guard.
+home: rimworld-review-sheets
