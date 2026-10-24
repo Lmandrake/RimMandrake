@@ -170,7 +170,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_OcularJelly</defName>
     <label>zhool</label>
-    <description>A drifting, gas-filled shape that hangs at canopy height, watching the cloud below. It breathes out a faint reddish haze that turns whatever plant it touches into something that shares its own strange flesh. When a zhool sinks low and settles, the valley's old hands know a Burn is coming.</description>
+    <description>A gas-filled, veined bell trailing loose tendrils through the canopy. It exhales a reddish haze that turns nearby plants into growths of the same strange flesh. When zhools sink and settle, a Burn is close.</description>
     <statBases>
       <MoveSpeed>2</MoveSpeed>
       <ComfyTemperatureMin>-35</ComfyTemperatureMin>

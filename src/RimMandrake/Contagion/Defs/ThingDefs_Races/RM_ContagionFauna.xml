@@ -375,7 +375,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Scorchpod</defName>
     <label>scorchpod</label>
-    <description>A blistered walking seed-case on too few legs, shell sweating metal, smoking faintly the moment the light touches it. Gallium-based, not carbon — the one native that can walk into the Burn, and almost always cooks before it gets where it's going. When it dies the shell splits, and what spills out burns like acid.</description>
+    <description>A gallium-based seed-case on too few legs, its blistered shell sweating metal and smoking in sunlight. It walks into the Burn and often cooks before it gets where it is going. When it dies, the shell splits and spills a corrosive fluid.</description>
     <statBases>
       <MoveSpeed>2.4</MoveSpeed>
       <Mass>10</Mass>
@@ -1220,7 +1220,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_ContagionIkee</defName>
     <label>ikee</label>
-    <description>A shivering eye-cluster on legs that follows bigger things and watches. It lives off the goo's leavings and dives into the pockets when the light comes.</description>
+    <description>A shivering eye on a knot of fleshy tendrils that follows bigger things and watches. It feeds on the goo's leavings and hides in sheltered crevices when the cloud tears.</description>
     <statBases>
       <MoveSpeed>4.0</MoveSpeed>
       <Mass>6</Mass>
@@ -1322,7 +1322,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Peeper</defName>
     <label>peeper</label>
-    <description>A once-predator gone soft and eye-studded — extra eyes opened in its hide until watching replaced hunting. A docile mid-tier browser of the goo margins, and another sky-reader the patient can learn from.</description>
+    <description>Once a predator, now a docile browser with extra eyes scattered through its hide. It feeds along the goo margins and spends much of its time watching the sky.</description>
     <statBases>
       <MoveSpeed>3.4</MoveSpeed>
       <Mass>25</Mass>
