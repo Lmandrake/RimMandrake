@@ -63,6 +63,12 @@ Each check must FAIL on the art he rejected (the shipped code, emulated as BEFOR
                         stake box holds one stake at every mip up to MIP_CHECK; can-fail: the approved boxes sampled straight
                         from the shipped sprites (review s2c: neighbours' slivers), one texel in a box's bilinear ring, cells
                         too small for the lower mips (review s3)
+  concealed pit cover, the owner's shot = one lid on a 3x3 pit's centre (PLANK_COVER_REDRAW_READS_AS_EMPTY_PIT, fw_scenes_covers):
+    cover_reads_as_material   FAIL on the shipped ground print, PASS on the tier texture drawn (planks), laid on ground,
+                              cropped edge to edge (planks_full), every tier, every scene; can-fail: the texture dusted to
+                              15% alpha, a cell with no cover
+    deck_matches_ground       PASS on the shipped print of a deck over the whole pit (why it was ruled: pit_covered_invisible),
+                              FAIL on the drawn lattice (the trade the owner is shown)
 """
 # selftest-timeout: 400
 import hashlib
@@ -77,6 +83,7 @@ import fw_offline_checks as ck  # noqa: E402
 import fw_scenes_pipejoins as sp  # noqa: E402
 import fw_scenes_sprinkler as ss  # noqa: E402
 import fw_scenes_spikes as spk  # noqa: E402
+import fw_scenes_covers as cov  # noqa: E402
 import selftest_pipe_seat as ps  # noqa: E402
 sys.path.insert(0, str(HERE.parent / "art_source" / "Sprinkler"))
 import squat_heads  # noqa: E402
@@ -458,6 +465,24 @@ def spikes():
     n = st.dirty_boxes(tight[..., 3], [q[2:] for q in tlib], levels=0)
     want(n == 0, "dirty_boxes: the same 24x64 atlas is clean at full resolution (the mip levels are what fail it)")
 
+def covers():
+    for name, mk in cov.SCENES:
+        for tier in cov.TIERS:
+            for mode in ("before", "planks", "planks_ground", "planks_full", "dusted"):
+                pit, cs = mk()
+                res = cov.render(pit, cs, mode, tier, P=PX)
+                ok = [cov.cover_reads_as_material(res, c)[0] for c in sorted(cs)]
+                if mode in ("before", "dusted"):
+                    want(not any(ok), "cover_reads_as_material FAILS %s (%s, %s): %d/%d cells" % (mode, name, tier, sum(ok), len(ok)))
+                else:
+                    want(all(ok), "cover_reads_as_material %s (%s, %s): %d/%d cells" % (mode, name, tier, sum(ok), len(ok)))
+    pit, cs = cov.SCENES[1][1]()
+    want(cov.deck_matches_ground(cov.render(pit, cs, "before", P=PX))[0], "deck_matches_ground: shipped print of a whole-pit deck")
+    want(not cov.deck_matches_ground(cov.render(pit, cs, "planks", P=PX))[0], "deck_matches_ground FAILS the drawn lattice (B)")
+    blank = cov.render(pit, set(), "planks", P=PX)
+    want(not cov.cover_reads_as_material(blank, (2, 2))[0], "cover_reads_as_material can-fail: a cell with no cover")
+
+
 if __name__ == "__main__":
     parity()
     pipe_joins()
@@ -467,5 +492,6 @@ if __name__ == "__main__":
     ladder()
     rail_ladder()
     spikes()
+    covers()
     print("%d FAIL" % len(fails) if fails else "ALL OK")
     sys.exit(1 if fails else 0)
