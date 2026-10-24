@@ -34,6 +34,7 @@ import json
 import os
 import re
 import shutil
+import stat
 import struct
 import subprocess
 import sys
@@ -867,16 +868,15 @@ def _sha(p: Path) -> str:
     return hashlib.sha256(p.read_bytes()).hexdigest()
 
 
-def _preexisting_twin(out: Path, home: Path, before: set[Path]) -> Path | None:
-    """A cache image that is NOT this run's render and is byte-identical to `out`, else None.
+def _cache_entries(home: Path, before: set[Path]) -> list[tuple[Path, Path, os.stat_result]]:
+    """Every cache file that is NOT this run's render, as (root, path, stat).
 
     Searched: this home's PRE-RUN snapshot (`before`; files this run made are skipped), then every file
     in the shared base home and in sibling homes (home.parent/*) regardless of age — a render another
     session made there, even mid-run, is still not ours. Roots are de-duplicated by resolved path, so an
-    alias of our own home (a `..` or symlink spelling) can never make this run's render look foreign.
-    Size is compared first so only same-size files are hashed."""
+    alias of our own home (a `..` or symlink spelling) can never make this run's render look foreign."""
     own_root = home / GENERATED_SUBDIR
-    roots, seen = [own_root], set()
+    roots, seen, entries = [own_root], set(), []
     try:
         roots.append(base_codex_home() / GENERATED_SUBDIR)
     except EnvError:
@@ -885,7 +885,6 @@ def _preexisting_twin(out: Path, home: Path, before: set[Path]) -> Path | None:
         roots.extend(d / GENERATED_SUBDIR for d in home.parent.iterdir() if d.is_dir())
     except OSError:
         pass
-    size, digest = out.stat().st_size, None
     for root in roots:
         try:
             key = root.resolve()
@@ -897,20 +896,230 @@ def _preexisting_twin(out: Path, home: Path, before: set[Path]) -> Path | None:
         own = root is own_root
         for p in root.rglob("*"):
             try:
-                if (own and p not in before) or not p.is_file() or p.stat().st_size != size:
+                if own and p not in before:
                     continue
-                digest = digest or _sha(out)
-                if _sha(p) == digest:
-                    return p
+                st = p.stat()
             except OSError:
                 continue
+            if stat.S_ISREG(st.st_mode):
+                entries.append((root, p, st))
+    return entries
+
+
+def _preexisting_twin(out: Path, home: Path, before: set[Path], entries=None) -> Path | None:
+    """A cache image that is NOT this run's render (see _cache_entries) and is byte-identical to `out`,
+    else None. Size is compared first so only same-size files are hashed."""
+    if entries is None:
+        entries = _cache_entries(home, before)
+    size, digest = out.stat().st_size, None
+    for _root, p, st in entries:
+        if st.st_size != size:
+            continue
+        try:
+            digest = digest or _sha(out)
+            if _sha(p) == digest:
+                return p
+        except OSError:
+            continue
+    return None
+
+
+# 🔴 CODEX_FOREIGN_COPY_GUARD_FIX_RESIZED: the byte check above is beaten by one extra step. Three round-3
+# art-eval workers (Zisska r3 south, Surrik r3 south, SparkleechGrub r3 east, 2026-10-24) each RESIZED one
+# unrelated pipe-flange render from the shared ~/.codex cache to 256x256 and placed it; the bytes matched
+# nothing in the cache, so all three shipped as "ok". A placed file is therefore also compared by picture:
+# both images are cropped to their alpha bounding box (undoing transparent padding) and box-filtered to a
+# 16x16 RGB-over-grey + alpha thumbnail (undoing resize, recompression and aspect squash); the distance is
+# the mean absolute byte difference. MEASURED 2026-10-24 over the 311 newest artpipe outputs and 1,362
+# cache renders: the resized flange sits 1.12 from its cache source, a second resized copy 1.61 from its
+# twin; the nearest LEGITIMATE pair (two facings of one creature) is 7.05. Center-cropping a non-square
+# source to a square is not undone - that case is still only caught if the crop leaves the thumbnail near.
+FOREIGN_THUMB_N = 16
+FOREIGN_NEAR = 4.0
+# Decoding one cache render on /mnt/c costs ~50 ms and the worker caches hold ~11k of them, so thumbnails
+# are kept in a per-root index (keyed on size + mtime) and only new files are decoded. A cold index is
+# filled newest-first - an agent that goes looking takes "the newest PNG" - within this budget.
+FOREIGN_THUMB_BUDGET_S = 90.0
+FOREIGN_THUMB_DIR = CODEX_SCRATCH / "foreign_guard_thumbs"
+# Other jobs' outputs in the same run: artpipe places job <id> at <root>/<id>/<id>.png. Only that layout is
+# searched, only files newer than the window, newest first, at most this many.
+FOREIGN_PEER_WINDOW_S = 24 * 3600
+FOREIGN_PEER_MAX = 400
+IMAGE_SUFFIXES = {".png", ".webp", ".jpg"}
+
+
+def _pil_image():
+    """PIL.Image, or None when Pillow is not importable (the guard then degrades to the byte check)."""
+    try:
+        from PIL import Image
+    except ImportError:
+        return None
+    return Image
+
+
+def _thumb(p: Path) -> bytes | None:
+    """The 16x16 comparison thumbnail of an image file, or None if it cannot be decoded or is fully
+    transparent (nothing to compare)."""
+    Image = _pil_image()
+    if Image is None:
+        return None
+    try:
+        with Image.open(p) as im:
+            im = im.convert("RGBA")
+    except Exception:  # noqa: BLE001 - any undecodable cache file (truncated, bomb, unknown format) is skipped
+        return None
+    bbox = im.getchannel("A").point(lambda v: 255 if v > 16 else 0).getbbox()
+    if bbox is None:
+        return None
+    im = im.crop(bbox).resize((FOREIGN_THUMB_N, FOREIGN_THUMB_N), Image.BOX)
+    flat = Image.alpha_composite(Image.new("RGBA", im.size, (128, 128, 128, 255)), im).convert("RGB")
+    return flat.tobytes() + im.getchannel("A").tobytes()
+
+
+def _thumb_dist(a: bytes, b: bytes) -> float:
+    return sum(abs(x - y) for x, y in zip(a, b)) / len(a)
+
+
+class _ThumbIndex:
+    """Persistent thumbnails for one cache root: {relative path: [size, mtime_ns, base64 thumb | None]}.
+    Written atomically; concurrent workers may overwrite each other's additions, which only costs a
+    re-decode. On save, entries for files not in `live` (deleted since) are dropped."""
+
+    def __init__(self, root: Path):
+        key = hashlib.sha1(str(root.resolve()).encode()).hexdigest()[:16]
+        self.root, self.path = root, FOREIGN_THUMB_DIR / f"{key}.json"
+        try:
+            data = json.loads(self.path.read_text())
+        except (OSError, ValueError):
+            data = {}
+        self.data = data if isinstance(data, dict) else {}
+        self.changed = False
+
+    def get(self, p: Path, st: os.stat_result):
+        """(found, thumb): found False means the file has no current entry."""
+        e = self.data.get(str(p.relative_to(self.root)))
+        if isinstance(e, list) and len(e) == 3 and e[0] == st.st_size and e[1] == st.st_mtime_ns:
+            try:
+                return True, (base64.b64decode(e[2]) if e[2] else None)
+            except (TypeError, ValueError):
+                pass
+        return False, None
+
+    def put(self, p: Path, st: os.stat_result, thumb: bytes | None) -> None:
+        self.data[str(p.relative_to(self.root))] = [
+            st.st_size, st.st_mtime_ns, base64.b64encode(thumb).decode() if thumb else None]
+        self.changed = True
+
+    def save(self, live: set[str]) -> None:
+        kept = {k: v for k, v in self.data.items() if k in live}
+        if not self.changed and len(kept) == len(self.data):
+            return
+        try:
+            self.path.parent.mkdir(parents=True, exist_ok=True)
+            tmp = self.path.with_name(f"{self.path.name}.{os.getpid()}.tmp")
+            tmp.write_text(json.dumps(kept, separators=(",", ":")))
+            os.replace(tmp, self.path)
+        except OSError as exc:
+            print(f"note: foreign-copy thumbnail index not saved ({exc})", file=sys.stderr)
+
+
+def _peer_outputs(layout_out: Path) -> list[Path]:
+    """Other jobs' outputs beside this one, when `layout_out` is <root>/<id>/<id>.<ext>: every
+    <root>/<other>/<other>.<ext> newer than FOREIGN_PEER_WINDOW_S, newest first, capped."""
+    job_dir = layout_out.parent
+    if layout_out.stem != job_dir.name:
+        return []
+    cutoff, found = time.time() - FOREIGN_PEER_WINDOW_S, []
+    try:
+        dirs = [d for d in job_dir.parent.iterdir() if d.name != job_dir.name]
+    except OSError:
+        return []
+    for d in dirs:
+        p = d / (d.name + layout_out.suffix)
+        try:
+            mtime = p.stat().st_mtime
+        except OSError:
+            continue
+        if mtime >= cutoff:
+            found.append((mtime, p))
+    found.sort(reverse=True)
+    return [p for _m, p in found[:FOREIGN_PEER_MAX]]
+
+
+def _near_copy(out: Path, entries, inputs, layout_out: Path) -> tuple[Path, float] | None:
+    """A cache render (from `entries`) or another job's output that `out` is a resized/recompressed copy
+    of, with its distance; else None. A candidate that is itself near one of this call's input images is
+    never a match: an edit of a reference legitimately looks like that reference."""
+    if _pil_image() is None:
+        print("note: Pillow is not importable; the foreign-copy guard is byte-identity only",
+              file=sys.stderr)
+        return None
+    mine = _thumb(out)
+    if mine is None:
+        return None
+    refs = [t for t in (_thumb(Path(i)) for i in inputs) if t is not None]
+
+    def match(t: bytes | None) -> float | None:
+        if t is None:
+            return None
+        d = _thumb_dist(mine, t)
+        if d > FOREIGN_NEAR or any(_thumb_dist(t, r) <= FOREIGN_NEAR for r in refs):
+            return None
+        return d
+
+    indexes: dict[Path, _ThumbIndex] = {}
+    deadline, unread = time.monotonic() + FOREIGN_THUMB_BUDGET_S, 0
+    try:
+        for root, p, st in sorted(entries, key=lambda e: e[2].st_mtime_ns, reverse=True):
+            if p.suffix.lower() not in IMAGE_SUFFIXES:
+                continue
+            idx = indexes.get(root) or indexes.setdefault(root, _ThumbIndex(root))
+            found, t = idx.get(p, st)
+            if not found:
+                if time.monotonic() > deadline:
+                    unread += 1
+                    continue
+                t = _thumb(p)
+                idx.put(p, st, t)
+            d = match(t)
+            if d is not None:
+                return p, d
+    finally:
+        live: dict[Path, set[str]] = {}
+        for root, p, _st in entries:
+            if root in indexes:
+                live.setdefault(root, set()).add(str(p.relative_to(root)))
+        for root, idx in indexes.items():
+            idx.save(live.get(root, set()))
+        if unread:
+            print(f"note: foreign-copy guard ran out of its {FOREIGN_THUMB_BUDGET_S:.0f}s budget; "
+                  f"{unread} older cache image(s) were not compared by picture", file=sys.stderr)
+    for p in _peer_outputs(layout_out):
+        d = match(_thumb(p))
+        if d is not None:
+            return p, d
+    return None
+
+
+def foreign_source(out: Path, home: Path, before: set[Path], inputs=(),
+                   layout_out: Path | None = None) -> tuple[Path, str] | None:
+    """Where a placed `out` was copied from, if it is not this run's render: (source, how), else None.
+    Byte-identical cache file first, then a resized/recompressed copy of a cache render or of another
+    job's output (see FOREIGN_NEAR)."""
+    entries = _cache_entries(home, before)
+    twin = _preexisting_twin(out, home, before, entries)
+    if twin is not None:
+        return twin, "byte-identical copy"
+    near = _near_copy(out, entries, inputs, layout_out or out)
+    if near is not None:
+        return near[0], f"resized/recompressed copy (picture distance {near[1]:.2f} <= {FOREIGN_NEAR})"
     return None
 
 
 def harvest_new(home: Path, before: set[Path]) -> list[Path]:
     """Files that appeared under generated_images, newest last."""
     after = snapshot_generated(home)
-    new = [p for p in (after - before) if p.suffix.lower() in {".png", ".webp", ".jpg"}]
+    new = [p for p in (after - before) if p.suffix.lower() in IMAGE_SUFFIXES]
     return sorted(new, key=lambda p: p.stat().st_mtime)
 
 
@@ -1102,6 +1311,7 @@ def stage_and_run(args) -> int:
     job.mkdir(parents=True, exist_ok=True)
     inner = copy.copy(args)
     inner.out = str(job / real_out.name)
+    inner.layout_out = str(real_out)   # the foreign-copy guard's peer search looks beside the REAL output
     inner.force = True
     staged_imgs = []
     for n, img in enumerate(args.image or []):
@@ -1205,15 +1415,18 @@ def _do_image(args, finalize=None) -> int:
     # PNG" in the owner's global ~/.codex/generated_images (not its own CODEX_HOME) and copied an unrelated
     # image from another session (arteval_RM_TruffleMole_r1_south 2026-10-23: a sheet of 8 bollards, while
     # this run's two real mole renders sat unharvested in the worker home). A placed file whose bytes equal
-    # a cache image that is not this run's (see _preexisting_twin) is proven foreign: it is set aside and the
-    # harvest below takes this run's own newest render, or the run fails. A file we cannot trace
-    # (post-processed, or moved out of generated_images) is left alone — "source not found" is not proof.
-    foreign_src = _preexisting_twin(out, home, before) if fresh else None
-    if foreign_src is not None:
+    # a cache image that is not this run's, or a resized/recompressed copy of one or of another job's output
+    # (see foreign_source), is proven foreign: it is set aside and the harvest below takes this run's own
+    # newest render, or the run fails. A file we cannot trace (post-processed beyond recognition, or moved
+    # out of generated_images) is left alone — "source not found" is not proof.
+    found = foreign_source(out, home, before, images,
+                           Path(getattr(args, "layout_out", None) or out)) if fresh else None
+    foreign_src = found[0] if found else None
+    if found is not None:
         foreign = out.with_name(out.stem + ".foreign" + out.suffix)
         os.replace(out, foreign)
         fresh = False
-        print(f"note: agent placed a copy of {foreign_src}, not this run's render; set aside as "
+        print(f"note: agent placed a {found[1]} of {foreign_src}, not this run's render; set aside as "
               f"{foreign.name}, harvesting this run's own render instead", file=sys.stderr)
 
     # 🔴 Harvest on EVERY path, timeout included. The agent was asked to copy
