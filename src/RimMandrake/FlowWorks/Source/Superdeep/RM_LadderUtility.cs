@@ -24,14 +24,16 @@ namespace RimMandrake.FlowWorks
 		/// <summary>Bumped whenever any ladder is raised or lowered: caches of ladder-derived joins key on it (a toggle while paused).</summary>
 		public static int StateVersion;
 
-		/// <summary>PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS: either ladder, the fixed wall ladder (RM_Ladder) or the portable one
-		/// (RM_LadderPortable). Every ladder read in the mod goes through this.</summary>
+		/// <summary>PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS: any ladder, the fixed wall ladders (wooden RM_Ladder and its steel
+		/// twin RM_LadderSteel, LADDER_TEXT_RECONCILE_STEEL_NOT_WOOD) or the portable one (RM_LadderPortable). Every ladder
+		/// read in the mod goes through this.</summary>
 		public static bool IsLadderDef(BuildableDef d)
 		{
-			return d != null && (d == RimMandrakeFlowWorks_DefOf.RM_Ladder || d == RimMandrakeFlowWorks_DefOf.RM_LadderPortable);
+			return d != null && (d == RimMandrakeFlowWorks_DefOf.RM_Ladder || d == RimMandrakeFlowWorks_DefOf.RM_LadderSteel
+				|| d == RimMandrakeFlowWorks_DefOf.RM_LadderPortable);
 		}
 
-		/// <summary>Every ladder on the map, both defs, into <paramref name="into"/> (cleared first).</summary>
+		/// <summary>Every ladder on the map, all three defs, into <paramref name="into"/> (cleared first).</summary>
 		public static List<Thing> AllLadders(Map map, List<Thing> into)
 		{
 			into.Clear();
@@ -42,6 +44,10 @@ namespace RimMandrake.FlowWorks
 			if (RimMandrakeFlowWorks_DefOf.RM_Ladder != null)
 			{
 				into.AddRange(map.listerThings.ThingsOfDef(RimMandrakeFlowWorks_DefOf.RM_Ladder));
+			}
+			if (RimMandrakeFlowWorks_DefOf.RM_LadderSteel != null)
+			{
+				into.AddRange(map.listerThings.ThingsOfDef(RimMandrakeFlowWorks_DefOf.RM_LadderSteel));
 			}
 			if (RimMandrakeFlowWorks_DefOf.RM_LadderPortable != null)
 			{

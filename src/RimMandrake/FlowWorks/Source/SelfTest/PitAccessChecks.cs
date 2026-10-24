@@ -87,6 +87,8 @@ namespace RimMandrake.FlowWorks.SelfTest
             {
                 string u = Src("Superdeep", "RM_LadderUtility.cs");
                 RiverSwitchFlipChecks.Has(u, @"RimMandrakeFlowWorks_DefOf\.RM_LadderPortable", "IsLadderDef names the portable ladder");
+                RiverSwitchFlipChecks.Has(u, @"d == RimMandrakeFlowWorks_DefOf\.RM_LadderSteel", "IsLadderDef names the steel wall ladder");
+                RiverSwitchFlipChecks.Has(u, @"ThingsOfDef\(RimMandrakeFlowWorks_DefOf\.RM_LadderSteel\)", "AllLadders scans the steel wall ladder");
                 RiverSwitchFlipChecks.Has(u, @"if \(ladder == null \|\| !RM_LadderUtility\.Reaches\(ladder\)\)", "LadderLetsOut gates on reach");
                 RiverSwitchFlipChecks.Has(u, @"Props\.portable \|\| !RimMandrakeFlowWorksSettings\.ladderRaiseLowerEnabled", "no up/down button on a portable ladder");
                 RiverSwitchFlipChecks.Has(u, @"RMFlow_LadderPortableTooDeep", "placement refuses a wall too deep");
