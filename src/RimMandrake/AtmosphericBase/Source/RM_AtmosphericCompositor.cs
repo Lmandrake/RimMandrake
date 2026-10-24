@@ -20,6 +20,12 @@
 // shape at hundreds of fixtures; the counters below are what the live cost re-measure reads. The territory allocation
 // is recomputed only when the boundary's clock steps or the union changes.
 // Evaluated from MapComponentUpdate on REAL time (L10): it keeps running while the game is paused.
+// RELOAD (owner decision §9.10, 2026-10-23): the pattern restarts gently from its start. The clock is real time since
+// this compositor's first evaluation (`clockOrigin`, never saved); the compositor is built fresh with its map component
+// on every load, and it saves no phase, gesture or tracker state, so nothing resumes mid-gesture. What IS saved is
+// ownership (which fixture is held, its take-over snapshot, what was last left on it) and the pushed moods.
+// Before anything is written, a held lamp whose colour someone else changed is released with that colour kept (§9.9,
+// RM_MapComponent_AtmosphericBase.ReleaseExternallyEdited).
 using System.Collections.Generic;
 using RimWorld;
 using Verse;
@@ -83,6 +89,14 @@ namespace RimMandrake.AtmosphericBase
         private readonly Dictionary<int, bool> leadOf = new Dictionary<int, bool>();
         private string allocKey;
         private int lastEvalFrame = -9999, lastMembershipFrame = -9999;
+        private double clockOrigin = -1;   // §9.10: the pattern's t = 0 is this compositor's first evaluation. Not saved.
+
+        /// <summary>Seconds into the pattern on this load (0 at the first evaluation after a load or a new game).</summary>
+        public double PatternClock(double realtime)
+        {
+            if (clockOrigin < 0) clockOrigin = realtime;
+            return realtime - clockOrigin;
+        }
 
         // ---- counters (the cost re-measure, and the proof)
         public long evaluations, fixtureEvaluations, writes, skippedUnchanged, skippedUnlit;
@@ -161,7 +175,7 @@ namespace RimMandrake.AtmosphericBase
                 lastMembershipFrame = f;
                 RefreshMembership(comp);
             }
-            Evaluate(comp, UnityEngine.Time.realtimeSinceStartup);
+            Evaluate(comp, PatternClock(UnityEngine.Time.realtimeSinceStartup));
         }
 
         private HashSet<int> FlashersFor(RM_MapComponent_AtmosphericBase comp, RM_MoodClaim m, RM_SchemeData data)
@@ -190,6 +204,7 @@ namespace RimMandrake.AtmosphericBase
         /// <summary>One evaluation at an explicit time (the proof calls this directly). Returns the writes it made.</summary>
         public int Evaluate(RM_MapComponent_AtmosphericBase comp, double time, bool refreshMembership = false)
         {
+            comp.ReleaseExternallyEdited();   // §9.9: before anything is written
             if (refreshMembership) RefreshMembership(comp);
             RM_AtmosphericBaseSettings set = RM_AtmosphericBaseSettings.Cur;
             List<RM_MoodClaim> ranked = set.compositor ? comp.RankedMoods() : new List<RM_MoodClaim>();
@@ -272,11 +287,9 @@ namespace RimMandrake.AtmosphericBase
 
             // steps 5-6: one quantised value per fixture, written only on change
             int n = 0;
-            var drivenIds = new HashSet<int>();
             foreach (Thing t in driven)
             {
                 int id = t.thingIDNumber;
-                drivenIds.Add(id);
                 int room = roomOf.TryGetValue(id, out int r) ? r : -1;
                 if (tremorAt != null && tremorAt.TryGetValue(id, out KeyValuePair<int, int> tr))
                 {
@@ -303,8 +316,8 @@ namespace RimMandrake.AtmosphericBase
                 else
                 {
                     if (!tracker.Want(id, RM_ChangeTracker.Substrate)) { skippedUnchanged++; continue; }
-                    RM_GlowAccess.Restore(RM_EmitterDiscovery.GlowerOf(t), comp.PriorOf(t));
-                    n++;
+                    if (comp.ShowSubstrate(t)) n++;
+                    else tracker.Forget(id);
                 }
             }
             writes += n;

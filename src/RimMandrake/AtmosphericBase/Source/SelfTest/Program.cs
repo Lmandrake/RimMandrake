@@ -104,6 +104,18 @@ internal static class Program
         RM_SchemeData ok = Pal(204, 150, 92, 224, 168, 104, 244, 188, 118);
         Check("a warm three-entry RoomBreath scheme validates clean", RM_SchemeKernel.Errors(ok).Count == 0, string.Join("; ", RM_SchemeKernel.Errors(ok)));
         Check("L11: a bright-white entry is refused", RM_SchemeKernel.Errors(Pal(204, 150, 92, 217, 217, 208)).Exists(e => e.Contains("L11")));
+        // §9.5: one reserved-token distance from the Narrator's white, not "every channel >= 200"
+        Check("L11: the Narrator's white itself is refused", RM_SchemeKernel.Errors(Pal(204, 150, 92, 255, 255, 255)).Exists(e => e.Contains("L11")));
+        Check("L11: a cream (255,240,199) that the old all-channels test let through is refused",
+              RM_SchemeKernel.Errors(Pal(204, 150, 92, 255, 240, 199)).Exists(e => e.Contains("L11")));
+        Check("L11: a cool white (199,230,255) that the old all-channels test let through is refused",
+              RM_SchemeKernel.Errors(Pal(204, 150, 92, 199, 230, 255)).Exists(e => e.Contains("L11")));
+        Check("L11: a warm bright (255,210,148) lies outside the reserved distance and is admitted",
+              !RM_SchemeKernel.Errors(Pal(204, 150, 92, 255, 210, 148)).Exists(e => e.Contains("L11")));
+        Check("L11: the reserved token is pure white at a distance of 100 (provisional)",
+              RM_SchemeKernel.NarratorWhiteR == 255 && RM_SchemeKernel.NarratorWhiteG == 255 && RM_SchemeKernel.NarratorWhiteB == 255
+              && RM_SchemeKernel.ReservedWhiteDistance == 100 && RM_SchemeKernel.NearNarratorWhite(198, 198, 198)
+              && !RM_SchemeKernel.NearNarratorWhite(197, 197, 197));
         Check("L8: full black without mayGoDark is refused", RM_SchemeKernel.Errors(Pal(204, 150, 92, 0, 0, 0)).Exists(e => e.Contains("mayGoDark")));
         var dark = Pal(204, 150, 92, 0, 0, 0); dark.mayGoDark = true;
         Check("L8: full black WITH mayGoDark and motion is allowed", RM_SchemeKernel.Errors(dark).Count == 0, string.Join("; ", RM_SchemeKernel.Errors(dark)));
@@ -211,13 +223,22 @@ internal static class Program
         if (xml == null) return;
         List<KeyValuePair<string, RM_SchemeData>> shipped = ShippedSchemes(xml);
         Check("the shipped file holds Lamplight (the default) and Fireflies", shipped.Exists(p => p.Key == "RM_Scheme_Lamplight") && shipped.Exists(p => p.Key == "RM_Scheme_Fireflies"));
+        // §9.3: the default palette is WIDER than the old (204,150,92)-(244,188,118) lamplight range, both ways
+        RM_SchemeData lamp = shipped.Find(p => p.Key == "RM_Scheme_Lamplight").Value;
+        int lo = int.MaxValue, hi = 0;
+        for (int i = 0; i < lamp.Count; i++) { int m = Math.Max(lamp.r[i], Math.Max(lamp.g[i], lamp.b[i])); lo = Math.Min(lo, m); hi = Math.Max(hi, m); }
+        Check("default Lamplight reaches deeper than the old low end (max channel < 204)", lo < 204, "lowest max channel = " + lo);
+        Check("default Lamplight reaches brighter than the old high end (max channel > 244)", hi > 244, "highest max channel = " + hi);
         foreach (var p in shipped)
         {
             List<string> errs = RM_SchemeKernel.Errors(p.Value);
             Check("shipped " + p.Key + " validates clean", errs.Count == 0, string.Join("; ", errs));
             int minMax = int.MaxValue;
             for (int i = 0; i < p.Value.Count; i++) minMax = Math.Min(minMax, Math.Max(p.Value.r[i], Math.Max(p.Value.g[i], p.Value.b[i])));
-            Check("shipped " + p.Key + ": every entry keeps a working-light max channel (>= 200)", minMax >= 200, "min of max channels = " + minMax);
+            Check("shipped " + p.Key + ": every entry keeps a working-light max channel (>= 176)", minMax >= 176, "min of max channels = " + minMax);
+            bool warm = true;
+            for (int i = 0; i < p.Value.Count; i++) warm &= p.Value.r[i] >= p.Value.g[i] && p.Value.g[i] >= p.Value.b[i];
+            Check("shipped " + p.Key + ": every entry is warm (r >= g >= b)", warm);
             Check("shipped " + p.Key + " has no flashers (a gentle scheme; L7's fast role is not the default)", p.Value.flasherCount == 0);
         }
     }
@@ -449,7 +470,7 @@ internal static class Program
         // SetGlowColorInternal cannot run in this process (see RM_GlowAccess.ColorWriterForSelfTest); the field-only
         // writer stands in for it, so what is proven here is the snapshot/restore logic over the REAL fields.
         RM_GlowAccess.ColorWriterForSelfTest = RM_GlowAccess.WriteColorFieldOnly;
-        var props = new ColorInt(217, 217, 208, 0);
+        var props = new ColorInt(214, 148, 94, 0);   // the vanilla StandingLamp (Core Buildings_Furniture.xml)
         var drive = new ColorInt(23, 201, 117, 0);
 
         CompGlower g = Glower(props, 12f);
@@ -481,6 +502,26 @@ internal static class Program
         var a = new RM_GlowSnapshot { hadColor = true, color = drive };
         var b = new RM_GlowSnapshot { hadColor = true, color = picked };
         Check("snapshots with different colours differ", !a.SameAs(b));
+
+        // ---- §9.9: an external colour edit releases the lamp and keeps the edit; aboard the Utinni it displeases gods
+        CompGlower x = Glower(props, 12f);
+        RM_GlowSnapshot left = RM_GlowAccess.Snapshot(x).Copy();          // take-over: lastLeft = prior
+        Check("a lamp just handed over is not edited", !RM_HeldLampPolicy.EditedExternally(RM_GlowAccess.Snapshot(x), left));
+        RM_GlowAccess.WriteColor(x, drive); left = RM_GlowSnapshot.Of(drive);   // the framework drives it
+        Check("the framework's own write is not an edit", !RM_HeldLampPolicy.EditedExternally(RM_GlowAccess.Snapshot(x), left));
+        RM_GlowAccess.WriteColor(x, picked);                              // another mod / the colour picker
+        Check("another writer's colour on a held lamp is an edit", RM_HeldLampPolicy.EditedExternally(RM_GlowAccess.Snapshot(x), left));
+        RM_GlowAccess.WriteColor(x, null);
+        Check("another writer CLEARING the override is an edit too", RM_HeldLampPolicy.EditedExternally(RM_GlowAccess.Snapshot(x), left));
+        Check("a save from before the rule (nothing known left) is never read as an edit",
+              !RM_HeldLampPolicy.EditedExternally(RM_GlowAccess.Snapshot(x), null));
+        Check("an external edit releases the lamp", RM_HeldLampPolicy.Releases(RM_HeldLampEvent.ColourEditedExternally));
+        Check("aboard the Utinni an external edit displeases the gods", RM_HeldLampPolicy.DispleasesGods(RM_HeldLampEvent.ColourEditedExternally, true));
+        Check("off the Utinni an external edit is silent", !RM_HeldLampPolicy.DispleasesGods(RM_HeldLampEvent.ColourEditedExternally, false));
+        // §9.6 / L17: a lamp switched off by hand is silent, everywhere, and stays held
+        Check("L17: a hand switch-off never displeases the gods, aboard the Utinni or not",
+              !RM_HeldLampPolicy.DispleasesGods(RM_HeldLampEvent.SwitchedOffByHand, true) && !RM_HeldLampPolicy.DispleasesGods(RM_HeldLampEvent.SwitchedOffByHand, false));
+        Check("L17: a hand switch-off does not release the lamp", !RM_HeldLampPolicy.Releases(RM_HeldLampEvent.SwitchedOffByHand));
 
         Phase2();
         Phase3();

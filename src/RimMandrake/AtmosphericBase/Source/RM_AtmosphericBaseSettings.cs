@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Reflection;
+using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -120,6 +121,31 @@ namespace RimMandrake.AtmosphericBase
         private static Vector2 scrollPos;
         private static float viewHeight = 400f;
 
+        /// <summary>Owner decision §9.1 (2026-10-23): "hand over every lamp on this map", beside the per-lamp opt-in,
+        /// with its reverse. Acts on the map being viewed; shown only where the player may choose
+        /// (RM_AtmosphericDesignators.PlayerMayChoose: channel on, buttons on, no scenario deciding).</summary>
+        private static void DrawWholeMapButtons(Listing_Standard list)
+        {
+            Map map = Find.CurrentMap;
+            RM_MapComponent_AtmosphericBase comp = RM_MapComponent_AtmosphericBase.For(map);
+            if (comp == null)
+            {
+                list.Label("Load a game to hand over every lamp on a map at once.");
+                return;
+            }
+            if (!RM_AtmosphericDesignators.PlayerMayChoose(map))
+            {
+                list.Label(comp.scenarioDecides ? "This map's scenario decides which lights are handed over."
+                                                : "Handing over every lamp needs the light channel and the hand-over buttons on.");
+                return;
+            }
+            int unheld = comp.UnheldEligibleCount();
+            if (list.ButtonText("Hand over every lamp on this map (" + unheld + " not yet handed over)"))
+                Messages.Message("Atmospheric Base: " + comp.TakeOverAll() + " lights handed over.", MessageTypeDefOf.NeutralEvent, false);
+            if (comp.TakenCount > 0 && list.ButtonText("Take glow back from every lamp on this map (" + comp.TakenCount + ")"))
+                Messages.Message("Atmospheric Base: " + comp.ReleaseAll() + " lights given back their own glow.", MessageTypeDefOf.NeutralEvent, false);
+        }
+
         public void DoWindowContents(Rect inRect)
         {
             Rect view = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(viewHeight, inRect.height));
@@ -143,6 +169,7 @@ namespace RimMandrake.AtmosphericBase
                     "Selecting a lamp, wall light or floor light you own shows \"Hand glow to Atmospheric Base\" and "
                   + "\"Take glow back\". Off: the buttons are hidden; lights already handed over stay handed over, and "
                   + "scenarios and other mods can still hand lights over. Maps whose scenario decides never show them.");
+                DrawWholeMapButtons(list);
                 list.GapLine();
             }
 

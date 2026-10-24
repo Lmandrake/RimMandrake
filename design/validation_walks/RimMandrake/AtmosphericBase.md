@@ -3,14 +3,13 @@
 subject: src/RimMandrake/AtmosphericBase  (packageId `mandrake.rm.atmosphericbase`)
 deps: none (loadAfter Ludeon.RimWorld only; no Harmony)
 list: minimal
-status-hint: **Phases 1-2 BUILT 2026-10-11, never run live** (`ATMOSPHERIC_BASE_BUILD_PROGRAM_1`): capability
+status-hint: **Phases 1-4 + §9 decisions BUILT offline, never run live** (`ATMOSPHERIC_BASE_BUILD_PROGRAM_1`): capability
 discovery, the hard exclusion list, the per-thing "Hand glow to Atmospheric Base" / "Take glow back" buttons (riding
 `Find.ReverseDesignatorDatabase`, no Harmony), the scenario-decides switch, exact restore of the CompGlower colour override
 on release (radius is never written; it belongs to `_Shared/LightLedger`). Phase 2: schemes as data
 (`RM_AtmosphericSchemeDef`, shipped `RM_Scheme_Lamplight` default + `RM_Scheme_Fireflies`), default groups
 (ship/rooms/halls/exterior) plus registered groups, and the compositor driving ONE mood -- palette-index only (L4),
-written only on change, unlit fixtures skipped, real time. Five Mod Settings. Phases 3-10 (territory, tremor, gestures,
-sound, witness ledger, def hooks, library, consumers) are not built. The definition is
+written only on change, unlit fixtures skipped, real time. Five Mod Settings. Phases 3-4 (territory, tremor) BUILT offline 2026-10-23. The owner's 2026-10-24 package decisions (§9) BUILT offline 2026-10-23: wider warm Lamplight palette, a whole-map "hand over every lamp" settings button (reversible), an external colour edit releases the lamp and keeps the edit (displeases the gods only aboard the Utinni, via the `LampEditedAboardUtinni` event), reload restarts the pattern from its start, the Narrator's white reserved by distance (provisional 100, calibrate at the live look), hand switch-off silent. **None of it has run live.** Phases 5-10 (gestures, sound, witness ledger, def hooks, library, consumers) are not built. The definition is
 `design/RimMandrake/atmospheric_base_mod_definition.md`. Script: `src/RimMandrake/AtmosphericBase/validation.py`
 (chains `take_over_proof`, `one_mood_proof`), selftests `selftest_atmosphericbase.py` (mock + planted breaks) and
 `selftest_atmosphericbase_kernel.py` (C# kernel against the real CompGlower).

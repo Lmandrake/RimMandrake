@@ -5,21 +5,26 @@
   are not here. Source: design/RimMandrake/atmospheric_base_scheme_catalog.md III-2 Lamplight (the catalog names it the
   mod's shipped default) and III-1 Fireflies.
 
-  Brightness is carried by the palette (GlowGrid.GroundGlowAt reads the max channel). Every entry keeps its max
-  channel at or above 200, close to a vanilla standing lamp's 217, so the default never becomes an invisible
-  work-light penalty (catalog III-1's caveat; spec §5: the default must stay bright enough to work under).
-  No entry is bright white (all channels >= 200): L11 reserves that for the Narrator, and the kernel refuses it.
+  Brightness is carried by the palette (GlowGrid.GroundGlowAt reads the max channel). The vanilla StandingLamp and
+  WallLamp glow (214,148,94) (Core Buildings_Furniture.xml:1361,1471); (217,217,208) is the Royalty ethereal light, not a
+  vanilla lamp. Lamplight was widened per the owner (review package §9.3, 2026-10-23: deeper low end, brighter high
+  end, still warm and restrained): it ran (204,150,92)-(244,188,118), within 40 of the vanilla lamp in every channel and
+  so hard to tell from it; it now runs (182,118,62) Tallow, below the lamp, through (220,158,96) Lamp, beside it, to
+  (255,210,148) Hearth, 62 above it in green. The low entry keeps a max channel of 182 (within 15% of the lamp's 214)
+  so the default stays a working light (spec §5); the selftest holds that floor at 176.
+  No entry is near the Narrator's white: L11 reserves one white token, and the kernel refuses any entry within
+  RM_SchemeKernel.ReservedWhiteDistance of it (Hearth is 116 away).
 -->
 <Defs>
 
   <RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef>
     <defName>RM_Scheme_Lamplight</defName>
     <label>lamplight</label>
-    <description>Someone keeps this place, and has for a long time. Each room breathes slowly through three warm levels on its own clock, so no two rooms are ever quite together. Nothing travels.</description>
+    <description>Someone keeps this place, and has for a long time. Each room breathes slowly through three warm levels, from a low tallow glow to a bright hearth, on its own clock, so no two rooms are ever quite together. Nothing travels.</description>
     <palette>
-      <li>(204,150,92,0)</li>   <!-- Tallow -->
-      <li>(224,168,104,0)</li>  <!-- Lamp -->
-      <li>(244,188,118,0)</li>  <!-- Hearth -->
+      <li>(182,118,62,0)</li>   <!-- Tallow: deeper than a vanilla lamp -->
+      <li>(220,158,96,0)</li>   <!-- Lamp: beside the vanilla lamp (214,148,94) -->
+      <li>(255,210,148,0)</li>  <!-- Hearth: brighter, still warm -->
     </palette>
     <pattern>RoomBreath</pattern>
     <massPeriodSeconds>120</massPeriodSeconds>

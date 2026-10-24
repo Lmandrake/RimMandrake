@@ -42,6 +42,44 @@ namespace RimMandrake.AtmosphericBase
         {
             return "color=" + (hadColor ? color.ToString() : "none");
         }
+
+        public static RM_GlowSnapshot Of(ColorInt? c) => new RM_GlowSnapshot { hadColor = c.HasValue, color = c ?? default(ColorInt) };
+
+        public RM_GlowSnapshot Copy() => new RM_GlowSnapshot { hadColor = hadColor, color = color };
+    }
+
+    /// <summary>What can happen to a held lamp that is not the framework's own doing (owner decisions §9.6 and §9.9,
+    /// 2026-10-23).</summary>
+    public enum RM_HeldLampEvent
+    {
+        /// <summary>The player flicked it off (CompFlickable) -- L17: silent. It stays held, it is simply unlit (L9).</summary>
+        SwitchedOffByHand,
+        /// <summary>Another mod or the player changed its colour while it was held: "It is released. In Utinni this
+        /// displeases gods." The lamp is released with THEIR colour kept (the saved colour is never written over it).</summary>
+        ColourEditedExternally,
+    }
+
+    /// <summary>Pure policy for held lamps; compiled into the offline selftest.</summary>
+    public static class RM_HeldLampPolicy
+    {
+        /// <summary>True when the override the fixture holds now is not what the framework last left there: someone
+        /// else wrote it. `lastLeft` null means the framework does not yet know (a save from before this rule), never an
+        /// edit.</summary>
+        public static bool EditedExternally(RM_GlowSnapshot now, RM_GlowSnapshot lastLeft)
+        {
+            return now != null && lastLeft != null && !now.SameAs(lastLeft);
+        }
+
+        /// <summary>Does the framework release the lamp on this event?</summary>
+        public static bool Releases(RM_HeldLampEvent e) => e == RM_HeldLampEvent.ColourEditedExternally;
+
+        /// <summary>Does this event displease the gods? Only an external colour edit, and only aboard the Utinni (the
+        /// map whose scenario decides, RM_AtmosphericBaseAPI.SetScenarioDecides). A hand switch-off never does (L17).
+        /// AtmosphericBase only REPORTS it (RM_AtmosphericBaseAPI.LampEditedAboardUtinni); it never acts on anger (L2).</summary>
+        public static bool DispleasesGods(RM_HeldLampEvent e, bool aboardUtinni)
+        {
+            return aboardUtinni && e == RM_HeldLampEvent.ColourEditedExternally;
+        }
     }
 
     public static class RM_GlowAccess

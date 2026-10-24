@@ -40,7 +40,29 @@ namespace RimMandrake.AtmosphericBase
     public static class RM_SchemeKernel
     {
         public const int MaxPalette = 8;       // "a small fixed set" (L4); the catalog runs P = 1..4
-        public const int WhiteFloor = 200;     // L11: an entry whose every channel is >= this is the Narrator's white
+
+        // L11, as ruled 2026-10-23 (review package §9.5): white is ONE reserved token, the Narrator's, and anything near
+        // it is banned from every scheme -- gods' palettes included, which all arrive as RM_AtmosphericSchemeDefs and
+        // pass Errors() in ConfigErrors. "Near" is one distance check against the token, replacing the old
+        // "all channels >= 200" floor, which let a cream (255,240,199) or a cool white (199,230,255) through.
+        // 🔴 PROVISIONAL, TO BE CALIBRATED AT THE LIVE LOOK: the Narrator's exact white is chosen there, and so is the
+        // distance. Until then both are conservative: pure white, and a Euclidean RGB radius of 100 (on 0-255
+        // channels), which refuses the cream and the cool white above (58 and 61 away) and the Royalty ethereal light
+        // (217,217,208) (71 away), and admits the default's brightest entry (255,210,148) (116 away).
+        public const int NarratorWhiteR = 255, NarratorWhiteG = 255, NarratorWhiteB = 255;
+        public const int ReservedWhiteDistance = 100;
+
+        public static int DistanceSqToNarratorWhite(int r, int g, int b)
+        {
+            int dr = r - NarratorWhiteR, dg = g - NarratorWhiteG, db = b - NarratorWhiteB;
+            return dr * dr + dg * dg + db * db;
+        }
+
+        /// <summary>L11: this colour is the Narrator's reserved white or near enough to be read as it.</summary>
+        public static bool NearNarratorWhite(int r, int g, int b)
+        {
+            return DistanceSqToNarratorWhite(r, g, b) <= ReservedWhiteDistance * ReservedWhiteDistance;
+        }
 
         // ---------------------------------------------------------------- validation (a def's ConfigErrors)
 
@@ -55,8 +77,8 @@ namespace RimMandrake.AtmosphericBase
             for (int i = 0; i < n; i++)
             {
                 if (s.r[i] < 0 || s.g[i] < 0 || s.b[i] < 0) e.Add("palette[" + i + "] has a negative channel");
-                if (s.r[i] >= WhiteFloor && s.g[i] >= WhiteFloor && s.b[i] >= WhiteFloor)
-                    e.Add("palette[" + i + "] is bright white, which L11 reserves for the Narrator");
+                if (NearNarratorWhite(s.r[i], s.g[i], s.b[i]))
+                    e.Add("palette[" + i + "] is within " + ReservedWhiteDistance + " of the Narrator's white, which L11 reserves for the Narrator");
                 bool dark = s.r[i] == 0 && s.g[i] == 0 && s.b[i] == 0;
                 anyDark |= dark;
                 if (dark && !s.mayGoDark) e.Add("palette[" + i + "] is full black but mayGoDark is false");

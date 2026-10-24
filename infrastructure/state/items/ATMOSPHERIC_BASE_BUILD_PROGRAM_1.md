@@ -1,9 +1,9 @@
 # ATMOSPHERIC_BASE_BUILD_PROGRAM_1 — the ambient framework the gods speak through
 
 Design is DONE and is not to be re-derived: `design/RimMandrake/atmospheric_base_mod_definition.md`
-holds fifteen laws, the object model, and §9's verbatim record of every ruling from the owner's
+holds seventeen laws (L16 and L17 added 2026-09-17), the object model, and §9's verbatim record of every ruling from the owner's
 sitting on 2026-09-16. The DRAFT north star is
-`design/validation_walks/RimMandrake/AtmosphericBase.md` (18 lines; DRAFT binds nothing until he
+`design/validation_walks/RimMandrake/AtmosphericBase.md` (28 bars: 22 must-show, 6 cannot-show; DRAFT binds nothing until he
 validates). Candidate schemes to react to:
 `Transient/dynamiclighting_scheme_catalog_DRAFT_2026-09-16.md`.
 

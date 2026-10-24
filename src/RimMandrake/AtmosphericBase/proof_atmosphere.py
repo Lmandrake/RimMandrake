@@ -49,7 +49,8 @@ STEPS_PER_TURN = 240
 LAW_CAP = 3                 # L6: at most three tremor contributors
 MAX_FRACTION = 0.10         # L6: never more than a tenth of the lights flicker at once
 MAX_FLICKER = 2.0
-WHITE_FLOOR = 200           # L11: every channel >= 200 reads as Narrator white
+NARRATOR_WHITE = (255, 255, 255)   # L11: the Narrator's reserved token (mirrors RM_SchemeKernel.NarratorWhite*)
+RESERVED_WHITE_DISTANCE = 100      # PROVISIONAL, calibrate at the live look (mirrors RM_SchemeKernel.ReservedWhiteDistance)
 MIN_LIT, MIN_SPREAD = 10, 8  # a territory needs this many lit fixtures over this many distinct cells to show a front
 LIGHT_SHOW_PER_MIN = 6      # gentle default: a fixture changes at most this often per minute...
 LIGHT_SHOW_MIN_GAP = 2.0    # ...and never twice within this many seconds
@@ -97,7 +98,9 @@ def _rgb(fx):
 
 
 def _is_white(c):
-    return all(int(x) >= WHITE_FLOOR for x in c[:3])
+    """L11 reserved-token test: within RESERVED_WHITE_DISTANCE (Euclidean RGB) of the Narrator's white."""
+    d2 = sum((int(x) - w) ** 2 for x, w in zip(c[:3], NARRATOR_WHITE))
+    return d2 <= RESERVED_WHITE_DISTANCE ** 2
 
 
 def _pal(p):
@@ -294,7 +297,7 @@ def m_white(results):
                     bad.append((R.get("scenario"), round(s["t"], 2), fx[0], _rgb(fx)))
     if bad:
         return _r(FAIL, MOD, "%d non-Narrator samples read white, e.g. %s" % (len(bad), bad[:3]))
-    return _r(PASS, MOD, "no non-Narrator sample has every channel >= %d" % WHITE_FLOOR)
+    return _r(PASS, MOD, "no non-Narrator sample lies within %d of the Narrator's white" % RESERVED_WHITE_DISTANCE)
 
 
 def m_light_show(R):
@@ -448,6 +451,86 @@ def judge_defaults(d):
         d["defaultScheme"], d["territoryPeriodSeconds"], int(d["tremorCap"]), d["tremorMaxFraction"]))
 
 
+def scheme_palettes(xml):
+    """[(defName, [(r,g,b), ...])] for every RM_AtmosphericSchemeDef in one XML text (comments ignored)."""
+    xml = re.sub(r"<!--.*?-->", "", xml, flags=re.S)
+    out = []
+    for m in re.finditer(r"<(?:[\w.]+\.)?RM_AtmosphericSchemeDef\b[^>]*>(.*?)</(?:[\w.]+\.)?RM_AtmosphericSchemeDef>", xml, re.S):
+        body = m.group(1)
+        dn = (re.search(r"<defName>([^<]+)</defName>", body) or [None, "?"])[1]
+        pal = re.search(r"<palette>(.*?)</palette>", body, re.S)
+        out.append((dn, [tuple(int(v) for v in x.split(",")[:3]) for x in
+                         re.findall(r"<li>\s*\(?\s*([0-9]+\s*,\s*[0-9]+\s*,\s*[0-9]+)[^<]*</li>", pal.group(1) if pal else "")]))
+    return out
+
+
+def judge_reserved_white(xml_by_name):
+    """§9.5 / L11 over EVERY scheme def under src/ (this mod's and the gods', whichever mod ships them)."""
+    n, near = 0, []
+    for name, xml in sorted(xml_by_name.items()):
+        for dn, cols in scheme_palettes(xml):
+            n += len(cols)
+            near += ["%s %s" % (dn, c) for c in cols if _is_white(c)]
+    if n == 0:
+        return _r(UNM, HARNESS, "no scheme palette entry was read: the scan is blind")
+    if near:
+        return _r(FAIL, MOD, "within %d of the Narrator's white: %s" % (RESERVED_WHITE_DISTANCE, "; ".join(near)))
+    return _r(PASS, MOD, "%d palette entries in %d file(s), none within %d of the Narrator's white" % (n, len(xml_by_name), RESERVED_WHITE_DISTANCE))
+
+
+def _member(src, name):
+    """Body of the first method/property `name` in C# text (comments removed), or ''."""
+    src = re.sub(r"//[^\n]*", "", src)
+    m = re.search(r"\b%s\s*(?:\([^)]*\))?\s*\{" % re.escape(name), src)
+    if not m:
+        return ""
+    i = depth = 0
+    i = m.end()
+    depth = 1
+    j = i
+    while j < len(src) and depth:
+        depth += {"{": 1, "}": -1}.get(src[j], 0)
+        j += 1
+    return src[i:j]
+
+
+def judge_held_lamp_rules(mc, co, st):
+    """Owner decisions §9.1/§9.6/§9.9/§9.10 as they stand in the source (disk; the live chain is owed)."""
+    bad = []
+    rk = _member(mc, "ReleaseKeepingEdit")
+    if not rk:
+        bad.append("ReleaseKeepingEdit missing")
+    elif re.search(r"Restore|WriteColor", rk):
+        bad.append("an external edit is overwritten on release (§9.9)")
+    elif "scenarioDecides" not in rk or "RaiseLampEditedAboardUtinni" not in rk:
+        bad.append("the Utinni offence is not raised from the scenario-decides map (§9.9)")
+    if "comp.ReleaseExternallyEdited()" not in _member(co, "Evaluate"):
+        bad.append("external edits are never looked for (§9.9)")
+    if "if (!g.Glows) { skippedUnlit++; continue; }" not in co:
+        bad.append("a hand switch-off is no longer skipped silently (§9.6, L17)")
+    if "PatternClock(" not in _member(co, "Update") or re.search(r"Scribe_\w+\.Look\(ref clockOrigin", co):
+        bad.append("the pattern does not restart from its start on reload (§9.10)")
+    if "PlayerMayChoose" not in _member(mc, "TakeOverAll") or "comp.TakeOverAll()" not in st or "comp.ReleaseAll()" not in st:
+        bad.append("the whole-map hand-over button or its reverse is missing (§9.1)")
+    if bad:
+        return _r(FAIL, MOD, "; ".join(bad))
+    return _r(PASS, MOD, "external edit released and kept, Utinni offence reported, switch-off silent, reload restarts, whole-map hand-over gated and reversible (disk)")
+
+
+def repo_scheme_xml():
+    out = {}
+    root = os.path.join(REPO, "src")
+    for dirpath, dirs, files in os.walk(root):
+        dirs[:] = [d for d in dirs if d not in ("bin", "obj", ".git")]
+        for fn in files:
+            if fn.endswith(".xml"):
+                p = os.path.join(dirpath, fn)
+                t = open(p, encoding="utf-8", errors="replace").read()
+                if "RM_AtmosphericSchemeDef" in t:
+                    out[os.path.relpath(p, root)] = t
+    return out
+
+
 def offline_rows(rows):
     src = os.path.join(HERE, "Source")
     proof_cs = open(os.path.join(src, "RM_AtmosphericBaseProof.cs"), encoding="utf-8").read()
@@ -458,6 +541,10 @@ def offline_rows(rows):
                       open(os.path.join(HERE, "Defs", "RM_AtmosphericSchemes.xml"), encoding="utf-8").read(),
                       open(os.path.join(src, "RM_AtmosphericCompositor.cs"), encoding="utf-8").read())
     add(rows, "D1.default_gentle_disk", *judge_defaults(d))
+    add(rows, "D4.reserved_white_all_schemes", *judge_reserved_white(repo_scheme_xml()))
+    rd = lambda fn: open(os.path.join(src, fn), encoding="utf-8").read()
+    add(rows, "D5.held_lamp_rules_disk", *judge_held_lamp_rules(rd("RM_MapComponent_AtmosphericBase.cs"),
+                                                                rd("RM_AtmosphericCompositor.cs"), rd("RM_AtmosphericBaseSettings.cs")))
     return d
 
 
@@ -875,9 +962,9 @@ class Live(object):
 
 
 # ---------------------------------------------------------------- the stub instrument (a small model of the mod)
-LAMP = [(204, 150, 92), (224, 168, 104), (244, 188, 118)]
+LAMP = [(182, 118, 62), (220, 158, 96), (255, 210, 148)]   # mirrors RM_Lamplight (widened, §9.3)
 FIRE = [(210, 158, 94), (234, 176, 106), (255, 196, 120)]
-SUBSTRATE = (217, 217, 208)       # a vanilla standing lamp: near-white, but it is not ours (role S)
+SUBSTRATE = (214, 148, 94)        # the vanilla standing lamp (Core Buildings_Furniture.xml): not ours (role S)
 WHITE = (255, 255, 255)
 
 
@@ -1156,6 +1243,27 @@ def metric_controls():
     xml_w = "<Defs><X><defName>A</defName><palette><li>(250,250,250,0)</li></palette><flasherCount>2</flasherCount></X></Defs>"
     out.append(("judge_defaults white + flashers", judge_defaults(read_defaults(cs.replace("0.2f", "0.04f"), xml_w, 'DefaultSchemeDefName = "A"'))[0], FAIL))
     out.append(("judge_defaults gentle", judge_defaults(read_defaults(cs.replace("0.2f", "0.04f"), xml, 'DefaultSchemeDefName = "A"'))[0], PASS))
+    xml_c = "<Defs><X><defName>A</defName><palette><li>(204,150,92,0)</li><li>(255,240,199,0)</li></palette></X></Defs>"
+    out.append(("judge_defaults cream (old test let it pass)", judge_defaults(read_defaults(cs.replace("0.2f", "0.04f"), xml_c, 'DefaultSchemeDefName = "A"'))[0], FAIL))
+    out.append(("_is_white cool white (199,230,255)", PASS if _is_white((199, 230, 255)) else FAIL, PASS))
+    out.append(("_is_white warm hearth (255,210,148)", FAIL if _is_white((255, 210, 148)) else PASS, PASS))
+    god = ("<Defs><RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef><defName>G</defName><palette><li>(120,140,200,0)</li>"
+           "<li>(230,235,250,0)</li></palette></RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef></Defs>")
+    out.append(("judge_reserved_white pale god palette", judge_reserved_white({"g.xml": god})[0], FAIL))
+    out.append(("judge_reserved_white blind", judge_reserved_white({})[0], UNM))
+    out.append(("judge_reserved_white warm", judge_reserved_white({"g.xml": god.replace("230,235,250", "255,210,148")})[0], PASS))
+    mc_ok = ("public int TakeOverAll() { if (!RM_AtmosphericDesignators.PlayerMayChoose(map)) return 0; }\n"
+             "public bool ReleaseKeepingEdit(Thing t) { if (scenarioDecides) RM_AtmosphericBaseAPI.RaiseLampEditedAboardUtinni(map, t); }")
+    co_ok = ("public void Update(X c) { Evaluate(c, PatternClock(UnityEngine.Time.realtimeSinceStartup)); }\n"
+             "public int Evaluate(X comp, double time) { comp.ReleaseExternallyEdited(); if (!g.Glows) { skippedUnlit++; continue; } }")
+    st_ok = "comp.TakeOverAll(); comp.ReleaseAll();"
+    out.append(("judge_held_lamp_rules good", judge_held_lamp_rules(mc_ok, co_ok, st_ok)[0], PASS))
+    out.append(("judge_held_lamp_rules edit overwritten", judge_held_lamp_rules(
+        mc_ok.replace("if (scenarioDecides)", "RM_GlowAccess.Restore(g, p); if (scenarioDecides)"), co_ok, st_ok)[0], FAIL))
+    out.append(("judge_held_lamp_rules clock saved", judge_held_lamp_rules(
+        mc_ok, co_ok + "\nScribe_Values.Look(ref clockOrigin, \"o\");", st_ok)[0], FAIL))
+    out.append(("judge_held_lamp_rules switch-off releases", judge_held_lamp_rules(
+        mc_ok, co_ok.replace("{ skippedUnlit++; continue; }", "{ comp.Release(t); continue; }"), st_ok)[0], FAIL))
     return out
 
 
