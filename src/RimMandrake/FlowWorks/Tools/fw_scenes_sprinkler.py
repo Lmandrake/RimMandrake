@@ -3,6 +3,8 @@
 
 Owner 2026-10-24: "We need to test it on N/S pipes, E/W pipes, and corner bend pipes."
 
+Owner sheets stage matched pairs (a look's head on that look's pipe); selftest_fw_offline_art.py also checks every head
+look on every pipe look (board(pipe_look=...)), the in-game mixed case.
 One board per look and mode: nine stations, each a 4x3 block (an empty column apart) whose cell (1, 1) carries the head:
   1 N/S straight  2 E/W straight  3 elbow N+E  4 elbow E+S  5 elbow S+W  6 elbow W+N  7 end (N)  8 tee (E+S+W)  9 cross
 The head prints as RM_PipeSeat.Print does: the cell centre + the style's drawOffset + RM_PipeSeatMath.Seat(mask, look).
@@ -84,10 +86,13 @@ def head_tex(look, mode):
     return fc.tex("RimMandrake/FlowWorks/Sprinkler/%s/RM_SprinklerHead" % look)
 
 
-def board(look, mode, px=96, head=None, offset_z=None):
-    """The nine stations for one look. head / offset_z override the art and drawOffset (checks use this)."""
+def board(look, mode, px=96, head=None, offset_z=None, pipe_look=None, shift_x=0.0):
+    """The nine stations for one look. head / offset_z / shift_x override the art, the drawOffset z and add an x shift (checks
+    use these). pipe_look draws the head of `look` on another look's pipe: the seat follows the PIPE's look, as in
+    Building_RM_SprinklerHead (RM_PipeSeatMath.Seat(mask, look of the drawn atlas)), the art and drawOffset the head's."""
     s = fc.Scene(4 * len(STATIONS), 3, px=px)
-    atlas = fc.pipe_atlas(look)
+    pl = pipe_look or look
+    atlas = fc.pipe_atlas(pl)
     img = head if head is not None else head_tex(look, mode)
     if offset_z is not None:
         oz = offset_z
@@ -105,8 +110,8 @@ def board(look, mode, px=96, head=None, offset_z=None):
         for (x, z), m in cells.items():
             s.plane(fc.atlas_tile(atlas, m), x + 0.5, z + 0.5, 1, 1, alt="FloorEmplacement",
                     meta={"kind": "pipe", "cell": (x, z), "mask": m})
-        sx, sz = seat(mask, look)
-        s.thing(img, cx, cz, offset=(sx, sz + oz), alt="Building",
+        sx, sz = seat(mask, pl)
+        s.thing(img, cx, cz, offset=(sx + shift_x, sz + oz), alt="Building",
                 meta={"kind": "head", "cell": (cx, cz), "mask": mask, "look": look, "seat": (cx + 0.5 + sx, cz + 0.5 + sz)})
         s.label(4 * i + 0.08, 2.95, "%d %s" % (i + 1, name))
     return s

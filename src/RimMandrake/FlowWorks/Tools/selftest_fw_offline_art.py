@@ -12,7 +12,10 @@ Each check must FAIL on the art he rejected (the shipped code, emulated as BEFOR
   sprinkler head, every look x nine stations (SPRINKLER_SEAT_FIX_HEAD_BESIDE_ELBOW):
     head_centroid_on_axis, head_squat   FAIL on the tall heads (art_source/Sprinkler/raw at their shipped drawOffsets),
                                         PASS on the installed squat heads at the Defs' drawOffset, at two scales (px 40, 64)
+    head_clamp_straddles_pipe           PASS on the squat heads; can-fail: the head shifted 0.1 cell north, south or east
     head_seat_on_pipe                   PASS on the squat heads; can-fail: the elbow seat put back at the cell centre
+    both centroid and clamp checks can-fail on a blank head; every check passes for every head look on every pipe
+    look (the seat follows the pipe's look in game)
   parity: fw_scenes_sprinkler.seat == RM_PipeSeatMath.Seat for all 16 masks x every look (k, r and the stub read from the
           C# source via selftest_pipe_seat's parser); the installed head PNGs == squat_heads.squat(raw) pixel for pixel,
           and every RM_SprinklerHead drawOffset z (the four styles and the base ThingDef) == (SEAT_Y - 128) / 256 to 3 dp
@@ -114,9 +117,22 @@ def sprinkler():
                 oka, da = f(after)
                 want(not okb, "px%d %s %s FAILS on the tall head (%s)" % (px, look, f.__name__, db))
                 want(oka, "px%d %s %s passes on the squat head (%s)" % (px, look, f.__name__, da))
+    from PIL import Image
+    blank = Image.new("RGBA", (256, 256), (0, 0, 0, 0))
     for look in fc.LOOKS:
-        ok, d = ck.head_seat_on_pipe(ss.board(look, "after", PX))
-        want(ok, "%s head_seat_on_pipe passes (%s)" % (look, d))
+        oz = ss.def_offsets()[look]
+        for pl in fc.LOOKS:
+            sc = ss.board(look, "after", PX, pipe_look=pl)
+            for f in (ck.head_centroid_on_axis, ck.head_clamp_straddles_pipe, ck.head_seat_on_pipe):
+                ok, d = f(sc)
+                want(ok, "%s head on %s pipe: %s passes (%s)" % (look, pl, f.__name__, d))
+        for what, kw in (("north 0.1", {"offset_z": oz + 0.1}), ("south 0.1", {"offset_z": oz - 0.1}),
+                         ("east 0.1", {"shift_x": 0.1})):
+            ok, d = ck.head_clamp_straddles_pipe(ss.board(look, "after", PX, **kw))
+            want(not ok, "%s can-fail: head_clamp_straddles_pipe sees the head shifted %s (%s)" % (look, what, d))
+        for f in (ck.head_centroid_on_axis, ck.head_clamp_straddles_pipe):
+            ok, d = f(ss.board(look, "after", PX, head=blank))
+            want(not ok, "%s can-fail: %s refuses a blank head (%s)" % (look, f.__name__, d))
     real = ss.seat
     try:
         ss.seat = lambda mask, look: (0.0, 0.0)          # the cell-centre seat SPRINKLER_HEAD_FIX_FLOATS_OFF_CURVE fixed

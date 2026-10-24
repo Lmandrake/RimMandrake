@@ -16,6 +16,7 @@ Sprinkler head (SPRINKLER_SEAT_FIX_HEAD_BESIDE_ELBOW; his words: "their alignmen
 onto the pipe ... make the sprinkler object be shorter, squatter, and wider so that it looks ok over any pipe"):
   head_centroid_on_axis  the head's drawn mass sits on the pipe's drawn centreline: within HEAD_TOL cell across and along,
                          on N/S, E/W, every elbow, end, tee and cross (a tall head's mass floats north of an E/W pipe)
+  head_clamp_straddles_pipe  centred across on the seat within half a bore, clamp's lowest row 0.03-0.15 cell south of it
   head_squat             drawn no taller than wide, and at least 2.5 bore widths wide so it straddles any pipe
   head_seat_on_pipe      the seat point (cell centre + RM_PipeSeatMath) lands on drawn pipe (within half a bore); seat MATH
                          only, it reads no head pixel (the art's seat row is pinned by the selftest's drawOffset parity)
@@ -134,10 +135,17 @@ def _alpha(scene, meta):
 
 
 def head_centroid_on_axis(scene, tol=HEAD_TOL):
+    """Coarse: the head's alpha-weighted centre within tol of the seat (a tall head's mass floats north). Lopsided by design
+    (the squat dome sits ~0.1 cell north of its seat), so head_clamp_straddles_pipe carries the exact placement."""
+    heads = _heads(scene)
+    if not heads:
+        return False, "no head drawn"
     worst, where = 0.0, None
-    for m in _heads(scene):
+    for m in heads:
         a = _alpha(scene, m)
         ys, xs = np.nonzero(a > 40)
+        if not len(xs):
+            return False, "head at mask %s draws no opaque pixel" % m["mask"]
         w = a[ys, xs]
         cx = (xs * w).sum() / w.sum() / scene.P
         cz = scene.h - (ys * w).sum() / w.sum() / scene.P
@@ -145,6 +153,28 @@ def head_centroid_on_axis(scene, tol=HEAD_TOL):
         if off > worst:
             worst, where = off, (m["mask"], round(float(cx - m["seat"][0]), 3), round(float(cz - m["seat"][1]), 3))
     return worst <= tol, "worst head-centre offset %.3f cell (mask, dx, dz = %s), tolerance %.2f" % (worst, where, tol)
+
+
+CLAMP_BELOW = (0.03, 0.15)   # cell: how far the head's lowest opaque row hangs south of the seat (the clamp's front lip)
+
+
+def head_clamp_straddles_pipe(scene, below=CLAMP_BELOW):
+    """Exact placement: every head is centred across on its seat (bbox centre within half a bore in x) and its clamp
+    straddles the pipe axis (lowest opaque row between below[0] and below[1] cell south of the seat): a head shifted
+    north, south or sideways by a tenth of a cell fails."""
+    heads, bad = _heads(scene), []
+    if not heads:
+        return False, "no head drawn"
+    for m in heads:
+        ys, xs = np.nonzero(_alpha(scene, m) > 40)
+        if not len(xs):
+            bad.append((m["mask"], "blank"))
+            continue
+        bx = (xs.min() + xs.max() + 1) / 2 / scene.P - m["seat"][0]
+        hang = m["seat"][1] - (scene.h - (ys.max() + 1) / scene.P)
+        if abs(bx) > BORE / 2 or not below[0] <= hang <= below[1]:
+            bad.append((m["mask"], "dx %.3f" % bx, "hang %.3f" % hang))
+    return not bad, ("off seat: %s (|dx| <= %.3f, hang %s)" % (bad[:4], BORE / 2, below)) if bad else "every clamp on its seat"
 
 
 def head_squat(scene, max_ratio=1.0, min_bores=2.5):
@@ -174,4 +204,4 @@ def head_seat_on_pipe(scene):
     return not off, "seat off the drawn pipe at masks %s" % off if off else "every seat on drawn pipe"
 
 
-SPRINKLER_CHECKS = (head_centroid_on_axis, head_squat, head_seat_on_pipe)
+SPRINKLER_CHECKS = (head_centroid_on_axis, head_clamp_straddles_pipe, head_squat, head_seat_on_pipe)
