@@ -45,6 +45,8 @@ resolves the lane through it (a proved rename) or refuses by name. The decisions
   15 a pick or ticked variant with ONE facing already live at another path (Fuzzrunner C east == the base east),
     purged or slotless installs NO facing while siblings would (ENACT_VARIANT_FACING_FIX_LIVE_SHA_SKIP); a facing
     live at the pick's own slot still lets the rest install.
+  16 a live picture owner-kept by an ALIAS of the row (carriedFrom, RSW_X/RM_X, census tier_twin_same_stem) blocks his
+    pick and his ✕ only when the keep is newer; a real other row, or a shared-texPath twin, still blocks.
 Fixture under /home/mandrake/rm/scratch/BENCH (never /tmp), from selftest_enact_ws; git history is replaced by a list.
 """
 from __future__ import annotations
@@ -420,6 +422,59 @@ def main():
             L.Index.__init__ = idx0
             kr["columns"]["B"] = old_b
             snap["rows"]["RSW_Fan"]["columns"]["C"] = old_fc
+            sp.write_text(json.dumps(snap))
+
+        # 16 the live east is owner-kept by an ALIAS of this row (a rename's old name, RSW_X ported as RM_X, a census
+        # tier_twin_same_stem twin): it blocks his pick, and his ✕, only when it is newer (leaningscrub_2
+        # RM_TunnelSnake B / RM_Vurra B, ENACT_ALIAS_KEEP_FIX_BLOCKS_NEWER_PICK); any other row still blocks
+        xsha = L.store_put_bytes(T.noise_png(980))      # an old picture of the row, live nowhere, his ✕ on it
+        cpath = Path(os.environ["ENACT_CENSUS"])
+        census0 = cpath.read_text()
+        kr["columns"]["B"]["north"] = L.store_put_bytes(T.noise_png(981))
+        sp.write_text(json.dumps(snap))
+        keep = {}
+
+        def prot16(self, s):
+            if s == xsha or any(r_ == EAST and ev.get("sha") == s for (m_, r_), ev in self.live.items()):
+                return [{"id": "ka", "target": {"row": keep["row"]}, "at": keep["at"], "via": "old.decisions.json"}]
+            return prot0(self, s)
+
+        def run16(row_, at_, rec=None, twins=None):
+            keep.update(row=row_, at=at_)
+            c = json.loads(census0)
+            c["biomes"].setdefault(snap["biome"], {"rows": []})["rows"].append(
+                {"key": "RSW_Kite", "defNames": ["RSW_Kite"], "twins": twins or []})
+            cpath.write_text(json.dumps(c))
+            r, inst = plan(dict({"decision": "B", "purge": [xsha]}, **(rec or {})))
+            got = {i["rel"] for i in inst if i["letter"] == "B"}
+            purged = any(x["sha"] == xsha for x in r["plan"]["purge"])
+            return got, purged, r["conflicts"]
+        L.Index.__init__, L.Index.protected = idx_init, prot16
+        try:
+            old, new = "2026-10-05T00:00:00Z", "2026-10-11T00:00:00Z"
+            got, purged, cf = run16("RSW_KiteOld", old, {"carriedFrom": "RSW_KiteOld"})
+            check(got == {EAST, NORTH} and purged,
+                  f"16 an older keep by the row's old name (carriedFrom): B installs at every facing, ✕ purged "
+                  f"({got} / {purged} / {cf})")
+            got, purged, cf = run16("RSW_KiteOld", new, {"carriedFrom": "RSW_KiteOld"})
+            check(not got and not purged and any(c.startswith("RSW_Kite: pick B not installed at all") for c in cf),
+                  f"16 ...a NEWER keep by the old name: refused whole, ✕ not purged ({got} / {purged} / {cf})")
+            got, purged, cf = run16("RM_Kite", old)
+            check(got == {EAST, NORTH} and purged,
+                  f"16 an older keep by RM_Kite (RSW_ swapped for RM_): installs, ✕ purged ({got} / {purged} / {cf})")
+            got, purged, cf = run16("RUT_Kite", old, twins=[{"defName": "RUT_Kite", "relation": "tier_twin_same_stem"}])
+            check(got == {EAST, NORTH} and purged,
+                  f"16 an older keep by a census tier_twin_same_stem twin: installs ({got} / {purged} / {cf})")
+            got, purged, cf = run16("RUT_Kite", old,
+                                    twins=[{"defName": "RUT_Kite", "relation": "tier_twin_shared_texpath"}])
+            check(not got and not purged, f"16 ...a shared-texPath twin is another creature: blocks ({got} / {purged})")
+            got, purged, cf = run16("RSW_Other", old)
+            check(not got and not purged and any(c.startswith("RSW_Kite: pick B not installed at all") for c in cf),
+                  f"16 an older keep by a real other row still blocks pick and ✕ ({got} / {purged} / {cf})")
+        finally:
+            L.Index.protected, L.Index.__init__ = prot0, idx0
+            cpath.write_text(census0)
+            kr["columns"]["B"].pop("north", None)
             sp.write_text(json.dumps(snap))
     finally:
         os.environ.pop("ART_BIOME_SHEETS_DIR", None)
