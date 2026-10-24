@@ -51,7 +51,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Ronto</defName>
     <label>ronto</label>
-    <description>Ronto were large, quadruped mammals that were commonly used as beasts of burden on Tatooine. They were known for their loyalty and strength, being able to carry heavy cargo. Their tolerance to heat and relatively low food consuption made them a popular export to arid worlds as beasts of burden.</description>
+    <description>A huge, four-legged saurian with a long neck, wrinkled hide and broad earflaps. Strong but easily startled, rontos carry cargo and riders across Tatooine. They tolerate desert heat but require large amounts of water.</description>
     <statBases>
       <MoveSpeed>4.7</MoveSpeed>
       <MarketValue>1000</MarketValue>

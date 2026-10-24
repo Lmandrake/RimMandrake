@@ -225,7 +225,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Qorrax</defName>
     <label>qorrax</label>
-    <description>Descended from squid this tentacled monstrosity is like a spider the size of a deer. Fast and aggressive with a lethal bite delivered by venomous beak. An internal shell protects their vital organs.</description>
+    <description>A deer-sized, squid-descended predator that runs on its tentacles. Its beak delivers a venomous bite, and an internal shell protects its vital organs.</description>
     <statBases>
       <MoveSpeed>8.8</MoveSpeed>
       <MarketValue>250</MarketValue>

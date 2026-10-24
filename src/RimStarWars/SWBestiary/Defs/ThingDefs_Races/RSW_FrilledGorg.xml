@@ -50,7 +50,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_FrilledGorg</defName>
     <label>frilled gorg</label>
-    <description>Frilled Gorgs, were small frilled amphibians that could be found on several planets. This subspecies was notable for the frills along it's back and tail (hence the name) and for being slightly more aggressive in nature. Their spread to others worlds is often the consequence of culinary import of either eggs or escaped live specimens.</description>
+    <description>A small amphibian with frills along its back and tail and a more aggressive disposition than other gorgs. Transported as eggs or live food, it has established populations on several worlds.</description>
     <statBases>
       <MoveSpeed>2.3</MoveSpeed>
       <MarketValue>70</MarketValue>

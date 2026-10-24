@@ -44,7 +44,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Sketto</defName>
     <label>sketto</label>
-    <description>Skettos were carnivorous flying reptiles that dwelled in the caverns of the planet Tatooine. Only emerging at daybreak and twilight, they possessed many rods in their eyes to assist their vision in low-light conditions as they ate airborne insects. Though reptilian, they were warm-blooded and gave birth to a single offspring at a time. Their small size and lower metabolism made them excellent stowaways and populations easily established themselves on other worlds.</description>
+    <description>A lean flying reptile up to a metre long, with four narrow wings, fanged jaws and a long, prehensile tail. Skettos shelter in caves by day and emerge at night to catch small flying animals and suck blood from larger sleeping ones.</description>
     <statBases>
       <MoveSpeed>3.0</MoveSpeed>
       <MarketValue>60</MarketValue>

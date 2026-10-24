@@ -21,7 +21,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Zeer</defName>
     <label>zeer</label>
-    <description>The Zeer were a species of long-necked herbivorous animals of unknown planetary origin. They were sociable herd animals. Their exotic appearance made them popular in both galactic zoological exhibits and circuses, ultimately leading to their spread to multiple worlds in order to supply demand.</description>
+    <description>A tall herd browser from Naboo, with a long neck, a tan coat crossed by dark rust-brown bands and two pale horns hooked back from the head. Generally calm, zeer browse leaves from the very tops of tall trees.</description>
     <statBases>
       <MoveSpeed>3.0</MoveSpeed>
       <MarketValue>600</MarketValue>

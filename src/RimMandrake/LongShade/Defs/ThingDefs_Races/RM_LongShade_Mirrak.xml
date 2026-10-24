@@ -73,7 +73,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Mirrak</defName>
     <label>mirrak</label>
-    <description>A dark oblong on the open ground, about the size of the shadow a boulder would throw — except there is no boulder. The mirrak is a wafer-flat ambusher that lies pressed to the sand in full light, its matte back exactly the colour of the long shadows around it. Anything overheated enough to run for the nearest shade and small enough to fit finds the dark closing over it like a book.\n\nEvery real shadow here points the same way. A mirrak's points whichever way the animal lies.</description>
+    <description>A wafer-flat ambusher whose matte, dark back passes for a boulder's long shadow, even in full sun. It folds shut around small animals fleeing the heat. Real shadows all point the same way; a mirrak points whichever way it lies.</description>
     <statBases>
       <MoveSpeed>1.6</MoveSpeed>
       <MarketValue>260</MarketValue>

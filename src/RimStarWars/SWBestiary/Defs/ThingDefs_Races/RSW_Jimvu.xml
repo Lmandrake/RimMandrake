@@ -33,7 +33,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Jimvu</defName>
     <label>jimvu</label>
-    <description>The jimvu were native to the grasslands of the planet Naboo. The jimvu was an agile, six-legged, ungulate-like reptile whose best defense was its swiftness. Their main predators were the veermok and narglatch. They were exported as a prey species on various worlds where typically large predators where hunted for sport.</description>
+    <description>A lean, six-legged reptile from Naboo, with violet-blotched skin, a hooked beak and a row of purple knobs down its neck. Its chief defence against veermok and narglatch is speed.</description>
     <statBases>
       <MoveSpeed>6.0</MoveSpeed>
       <MarketValue>450</MarketValue>

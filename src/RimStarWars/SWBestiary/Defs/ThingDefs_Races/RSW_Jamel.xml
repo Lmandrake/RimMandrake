@@ -30,7 +30,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Jamel</defName>
     <label>Jamel</label>
-    <description>Jamel were a slow moving reptomammal creature native to the planet Utapau. Jamels were one of the many creatures used as beasts of burden on their planet of origin and exported offworld for such purposes. Their natural resilience meant they made great livestock even in harsh environments.</description>
+    <description>A yellow-skinned reptomammal from Utapau, with a high hump, spindly legs and a long face ending in a red bill. Slow but resilient, jamels are widely used as beasts of burden.</description>
     <statBases>
       <MoveSpeed>1.5</MoveSpeed>
       <MarketValue>150</MarketValue>

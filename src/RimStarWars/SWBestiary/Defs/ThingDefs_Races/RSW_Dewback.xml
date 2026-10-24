@@ -18,7 +18,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Dewback</defName>
     <label>dewback</label>
-    <description>Dewbacks are large, four-legged, omnivorous, cold-blooded reptiles native to the Dune Sea of Tatooine. As such, they are well-adapted to the harsh desert climate. This and the fact that they can be easily domesticated make them commonly employed as beasts of burden by both the inhabitants of the desert planet and the off-worlders wandering its dunes. Due to their numerous useful traits and versatility, they are quite possibly the most respected of all the creatures native to Tatooine.</description>
+    <description>A large, cold-blooded omnivore native to Tatooine, commonly domesticated as a mount and pack animal. Its thick hide withstands desert heat and dust. Usually plodding, it can manage a short burst of speed.</description>
     <statBases>
       <MoveSpeed>4.7</MoveSpeed>
       <MarketValue>700</MarketValue>

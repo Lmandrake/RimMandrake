@@ -81,7 +81,7 @@
   <ThingDef ParentName="PlantBase">
     <defName>RM_Pavecrust</defName>
     <label>pavecrust</label>
-    <description>A thin crust of grey lichen edged in amber and rust, cracked like old paving. It spreads over bare hardpan, can be walked on without harm and does not burn. Scraped up in scraps, it burns slow and hot.</description>
+    <description>A thin crust of grey lichen edged in amber and rust, cracked like old paving. It spreads over bare hardpan, tolerating foot traffic and resisting fire while growing. Harvested scraps burn slowly and hot.</description>
     <statBases>
       <MaxHitPoints>40</MaxHitPoints>
       <Flammability>0</Flammability>
@@ -118,7 +118,7 @@
   <ThingDef ParentName="TreeBase">
     <defName>RM_Shadespire</defName>
     <label>shadespire</label>
-    <description>The only vertical that grows here: a slow, hard, banded column three or four metres tall, hung with husk-like fruits on short arms. One stands every few hundred cells, and its shadow is a small patch of its own, with its own dew ring and its own tenants. Felling one yields dense pale wood, and erases a harbour.</description>
+    <description>A rare, hard, banded column three or four metres tall, hung with husk-like fruits on short arms. Each shelters a small patch of life, with dewfringe marking the edge of its shadow. Felling one yields dense pale wood and removes the shelter.</description>
     <minifiedDef IsNull="True" />
     <statBases>
       <MaxHitPoints>300</MaxHitPoints>

@@ -50,7 +50,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Skalder</defName>
     <label>skalders</label>
-    <description>A thick-skinned herbivore from the acid-geyser plains of Florrum, with a heavy layered mantle, pale flank bands and two long tusks. It senses impending eruptions and runs surprisingly fast on its short legs; although seldom ridden, it makes a sturdy pack animal.</description>
+    <description>A heavy, grey-green herbivore from Florrum, with two tusks and a huge ridged mantle over its neck and back. Its thick hide protects it from acidic geysers, and it can sense an approaching eruption in time to escape. Rarely ridden, it can nevertheless move surprisingly fast.</description>
     <statBases>
       <MoveSpeed>4.8</MoveSpeed>
       <MarketValue>650</MarketValue>

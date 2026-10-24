@@ -23,7 +23,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_TeeMuss</defName>
     <label>tee muss</label>
-    <description>Tee-muss were a species of domesticated farm animals native to the jungle planet Onderon. They were found on various worlds around the galaxy due to escape from domestic populations.</description>
+    <description>A long-legged, mottled tan ungulate native to Onderon, with a shaggy mane, a short proboscis and lower-jaw tusks. Tee-muss are kept as farm animals and mounts on several worlds.</description>
     <statBases>
       <MoveSpeed>4.3</MoveSpeed>
       <MarketValue>250</MarketValue>

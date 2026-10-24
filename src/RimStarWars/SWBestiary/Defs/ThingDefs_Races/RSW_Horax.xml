@@ -49,7 +49,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Horax</defName>
     <label>horax</label>
-    <description>Horaxes were colossal, slow reptiles native to the planet Nelvaan. They were capable of growing to huge sizes thanks to the low gravity of their homeworld. Their powerfully muscled frames were covered in thick, knobby, blue skin which provided excellent defence. The mouth of the horax contained many sharp teeth, the most prominent being the four enormous saber-like fangs that protruded from its maw. At the end of the beasts' snouts was a pair of shovel-like horns used to uproot entire trees in search of small prey. Their sale and export to other worlds as juveniles as gladiatorial beasts often resulted in the specimens outgrowing their containment and escaping to form wild populations.</description>
+    <description>A colossal, slow reptile from Nelvaan, protected by thick blue hide and armed with exposed saber fangs, shovel-like snout horns and a spiked tail club. It uproots trees and tears open burrows to reach small prey.</description>
     <statBases>
       <MoveSpeed>2.0</MoveSpeed>
       <MarketValue>4000</MarketValue>

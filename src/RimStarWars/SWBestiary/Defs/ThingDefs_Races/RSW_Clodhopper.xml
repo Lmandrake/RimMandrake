@@ -31,7 +31,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Clodhopper</defName>
     <label>clodhopper</label>
-    <description>Clodhoppers were omnivorous and dim-witted flightless avians from the planet Naboo but could be found as castaway populations on numerous worlds due to illegal egg exports. Clodhopper weren't large creatures, but they fed in swarms becoming a real menace to agriculture. They were protected by tough, durable skin. Fast-breeding, dimwitted, voracious grazers, clodhoppers would use their powerful forelegs to forage.</description>
+    <description>A small, wingless, four-limbed forager native to Naboo, with tough brown skin, a crimson neck and a pale beak. Clodhoppers breed rapidly and feed in swarms, using powerful clawed forelegs to forage and hop. Off-world export is forbidden after accidental introductions devastated farmland.</description>
     <statBases>
       <MoveSpeed>2.0</MoveSpeed>
       <MarketValue>100</MarketValue>

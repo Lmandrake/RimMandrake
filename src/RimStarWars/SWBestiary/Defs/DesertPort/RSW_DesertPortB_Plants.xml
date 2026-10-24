@@ -15,7 +15,7 @@
          (and the harvested item, itself a reskin of the base's). Edit gameplay on RM_Crimmelroot, never here. -->
     <defName>RSW_Plant_Chakroot_Wild</defName>
     <label>wild chak-root plant</label>
-    <description>Chak-root was a flavorful red root plant that grew in the marshlands of the planet Erysthes, but was also be found on Naboo (amongst others where it was exported). The sale of this plant carried high taxes, so it was a favorite of smugglers who often developed a taste for it themselves.</description>
+    <description>A flavorful red root plant from the marshlands of Erysthes, also found on Naboo. Heavy sales taxes have made it a favorite cargo of smugglers.</description>
     <graphicData>
       <texPath>Things/Plant/RSW_Plant_Chakroot_Wild</texPath>
     </graphicData>
@@ -45,7 +45,7 @@
          (and the harvested item, itself a reskin of the base's). Edit gameplay on RM_Thrannagourd, never here. -->
     <defName>RSW_Plant_HubbaGourd_Wild</defName>
     <label>wild hubba gourd plant</label>
-    <description>A hardy gourd crop native to the planet Tatooine. It was popular with both the Jawa and Tusken people and was a major staple in their diet. It was soon exported to other worlds with arid evironments where it thrived in such harsh conditions.</description>
+    <description>A tough-skinned, ribbed gourd that grows in rock recesses and cliff shade on Tatooine. Its green husk ripens to yellow-orange and carries tiny reflective crystals that shield it from the sun. The sour, fibrous fruit is a staple food of Jawas and Tusken Raiders.</description>
     <graphicData>
       <texPath>Things/Plant/RSW_Plant_HubbaGourd_Wild</texPath>
     </graphicData>

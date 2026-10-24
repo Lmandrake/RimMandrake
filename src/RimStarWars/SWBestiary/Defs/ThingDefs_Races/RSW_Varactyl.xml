@@ -24,7 +24,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Varactyl</defName>
     <label>varactyl</label>
-    <description>Varactyls, also known as 'dragonmounts', were reptavian herbivores native to the planet Utapau, though some specimens found their way to other worlds (such as Kashyyyk and Belsavis) as their eggs were easily transported by Black-marketeers. They had beaked faces and long, powerful tails and not only could a varactyl run very fast, but their feet were adapted with tiny hairlike structures that allowed them to climb the rocky walls of sinkholes.</description>
+    <description>A giant reptavian herbivore from Utapau, with a beaked head, feathered mane and long, powerful tail. Fine gripping structures on its feet let it climb steep rock faces, even while carrying a rider.</description>
     <statBases>
       <MoveSpeed>5.5</MoveSpeed>
       <MarketValue>500</MarketValue>

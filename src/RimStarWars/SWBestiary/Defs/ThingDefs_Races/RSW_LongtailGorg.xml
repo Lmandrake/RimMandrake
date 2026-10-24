@@ -67,7 +67,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_LongtailGorg</defName>
     <label>longtail gorg</label>
-    <description>Longtail Gorgs, were small tailed amphibians that could be found on several planets. This subspecies was slightly larger than the usual and had a tail (hence the name) and could lay unfertilized eggs. Their spread can be attributed to this variety being a favoured snack among the Hutt species.</description>
+    <description>A small, spotted amphibian with a broad mouth, splayed toes and an unusually long tail flattened at the tip. Longtail gorgs turn up on several worlds, often as live food for Hutts.</description>
     <statBases>
       <MoveSpeed>2.3</MoveSpeed>
       <MarketValue>90</MarketValue>

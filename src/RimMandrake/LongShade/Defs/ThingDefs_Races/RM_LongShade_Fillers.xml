@@ -53,7 +53,7 @@
     <!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 (owner 2026-10-04: "Keep art, rename it Chorn."): renamed from RM_Sollak / "sollak". texPaths unchanged so the kept art still binds. -->
     <defName>RM_Chorn</defName>
     <label>chorn</label>
-    <description>A towering, long-legged giant five cells across, with a flat, rocky slab of a back, a raised hump over the shoulders and a long, hooked, beaked head on a thick neck. Its hide is cracked and mottled ochre and rust, like sun-baked stone. A chorn never hurries: a standing herd is its own patch of shade, each animal shading the next, and nothing on the open sand challenges one on purpose. They cross the widest gaps in the desert by outlasting the heat that would kill anything smaller.</description>
+    <description>A towering, long-legged grazer with a slab-flat back, a raised shoulder hump and a hooked beak on a thick neck. Its cracked ochre and rust hide resembles sun-baked stone. Chorn cross wide gaps slowly, enduring the heat; a standing herd makes its own shelter, each animal shading the next.</description>
     <statBases>
       <MoveSpeed>2.6</MoveSpeed>
       <MarketValue>500</MarketValue>
@@ -161,7 +161,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Gennok</defName>
     <label>gennok</label>
-    <description>A slow, strong endurer bred for one job: cover ground that would kill a faster animal. A gennok never sprints and rarely needs to — it simply keeps moving, patch to patch, long after anything chasing it has had to stop and find shade.</description>
+    <description>A heavy, thick-hided animal carrying broad, parasol-like growths on its back. Bred for endurance, it plods between patches of shade long after faster animals have stopped to cool.</description>
     <statBases>
       <MoveSpeed>2.8</MoveSpeed>
       <MarketValue>320</MarketValue>
@@ -264,7 +264,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Tebbra</defName>
     <label>tebbra</label>
-    <description>A quick, close-country grazer that keeps to the dense scatter of a good patch and never ventures far from it. Tebbra move in tight little herds, always within a few bounds of the nearest shade, and rely on speed rather than size to get there before anything catches them in the open.</description>
+    <description>A small, lean grazer with long, springing legs and a narrow, ridged head. Tebbra move in tight herds through broken rock, feeding within a few bounds of shelter and sprinting for shade when disturbed.</description>
     <statBases>
       <MoveSpeed>5.2</MoveSpeed>
       <MarketValue>90</MarketValue>
@@ -371,7 +371,7 @@
          Wraid reuse) since the free tier can't carry a cross-mod BodyDef. -->
     <defName>RM_Dakkra</defName>
     <label>dakkra</label>
-    <description>A close, low ambusher that lies coiled in a shadow patch waiting for something to overextend, then bursts out at a speed nothing in the open can match. The burst runs it hot fast — it has to reach shade again before its own heat catches up, or the same speed that let it hunt starts to fail it. A row of fins runs down its back and a smaller fan tips its tail; at rest it flares them wide to dump heat into the shade, and folds them flat the instant it runs.</description>
+    <description>A low ambusher that waits in shade, then makes a short, fast rush at exposed prey. The burst quickly overheats it, forcing it to reach shelter before its speed fails. It spreads a row of dorsal fins and a smaller tail fan to shed heat in shade, folding both flat when it runs.</description>
     <statBases>
       <MoveSpeed>4.6</MoveSpeed>
       <MarketValue>380</MarketValue>
@@ -532,7 +532,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Pirrik</defName>
     <label>pirrik</label>
-    <description>A palm-sized flier with plumage that throws back what little light reaches the shade it lives in — a scatter of colour with no source of its own. It is born, feeds, breeds and dies inside the moving shadow of a single gloomcast, never landing on open sand: leaving the shadow even for a moment, in this light, is not a risk this bird is built to survive. When its gloomcast dies, so, eventually, does it.</description>
+    <description>A palm-sized bird whose iridescent plumage reflects light without producing any of its own. It feeds and breeds within the moving shadow of a single gloomcast and cannot survive on sunlit sand. When its gloomcast dies, the pirrik eventually dies too.</description>
     <statBases>
       <MoveSpeed>3.0</MoveSpeed>
       <MarketValue>90</MarketValue>

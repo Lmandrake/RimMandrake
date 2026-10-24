@@ -36,7 +36,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Shaak</defName>
     <label>shaaks</label>
-    <description>Shaaks were plump pachydermoid herd animals native to the planet of Naboo. Shaaks were often raised for their meat, and had large, rotund bodies. Due to their high rate of reproduction they were often sold offworld in livestock markets.</description>
+    <description>A bulbous herd herbivore from Naboo, commonly raised for meat and hide. Its enormous body rests on four short legs, with a small head carried low to graze. The leathery hide is brown.</description>
     <statBases>
       <MoveSpeed>2.4</MoveSpeed>
       <MarketValue>200</MarketValue>

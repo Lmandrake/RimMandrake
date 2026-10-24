@@ -37,7 +37,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Hrumph</defName>
     <label>hrumph</label>
-    <description>The hrumphs were powerful, thick-necked herbivores native to planet Naboo, but also found on other worlds like Aargonar. Hrumphs received their name from the loud, deep, guttural sounds they produced. They had four long horns for defense and for the protection of their two long, sensitive ears. They were not choosy about their food which made them hardy enough to survive on many other worlds.</description>
+    <description>A broad-backed herbivore from Naboo, with a heavy chest, lightly tanned hide dotted with purple and four long horns sheltering sensitive ears. Its loud, deep, guttural call gave it its name.</description>
     <statBases>
       <MoveSpeed>4.5</MoveSpeed>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>

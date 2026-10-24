@@ -20,7 +20,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Iriaz</defName>
     <label>iriaz</label>
-    <description>Iriaz were docile creatures from the grassland planet Dantooine. While not normally aggressive, they could attack if provoked. They were a prey of choice for local hunters (and natural predators alike) given that they were a relatively common creature; furthering their export to many planets.</description>
+    <description>A lean, greenish herd grazer from Dantooine, marked with yellow-orange spots and a pair of backward-sweeping horns. Usually docile, it can charge when cornered or escape in a short burst that soon leaves it winded.</description>
     <statBases>
       <MoveSpeed>4.0</MoveSpeed>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>

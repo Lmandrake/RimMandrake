@@ -22,7 +22,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Uvak</defName>
     <label>uvak</label>
-    <description>Uvak were a large, membranous-winged reptavian species with sharp beaks. They were native to the planet of Kesh, where they were used by the indigenous Keshiri as pack animals and mounts. It's was believed that the deities known as the "Skyborn" may have transplanted these creatures to other worlds before disappearing into Keshiri mythology.</description>
+    <description>A large, scaled reptavian with four clawed legs, a sharp beak and broad leathery wings. Native to Kesh, uvak serve as pack animals and flying mounts, and can become temperamental when separated from their riders.</description>
     <statBases>
       <MoveSpeed>3.0</MoveSpeed>
       <MarketValue>750</MarketValue>

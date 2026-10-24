@@ -12,7 +12,7 @@
 		<defName>RM_SurraGrass</defName>
 <altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
 		<label>surra grass</label>
-		<description>Wild grass. Grows anywhere there is a little light and minimally fertile ground.</description>
+		<description>A wiry, tufted grass that grows on thin soil in sheltered shade.</description>
 		<statBases>
 			<MaxHitPoints>85</MaxHitPoints>
 			<Flammability>1.3</Flammability>
@@ -46,7 +46,7 @@
 	<ThingDef ParentName="BushBase">
 		<defName>RM_VellaraBloom</defName>
 		<label>vellara bloom</label>
-		<description>A rare, huge flower with a striking color and a strong, sweet smell. Popular in gardening wherever it can be grown at all.</description>
+		<description>A rare, thick-leaved rosette bearing huge flowers of pink, gold and violet. Its strong, sweet scent makes it popular in gardens wherever shelter allows it to grow.</description>
 		<statBases>
 			<Beauty>10</Beauty>
 		</statBases>
