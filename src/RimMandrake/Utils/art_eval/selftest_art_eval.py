@@ -372,6 +372,17 @@ def main():
     except (ImportError, AttributeError) as e:
         check("art_sheet importable", False, repr(e))
 
+    # --- plant pool cards share their def's sheet row (ART_EVAL_SHADOW_FIX_PLANT_KEPT_ROWS)
+    try:
+        import shadow as SH
+        pr = [{"subject": "RM_Ruskara__a", "source_files": {"single": "/x/a.png"}}, {"subject": "RM_Ruskara__b", "source_files": {"single": "/x/b.png"}},
+              {"subject": "RM_Hound", "source_files": {"south": "/x/h.png"}}]
+        check("plant cards map to their def row", [SH.row_id(r) for r in pr] == ["RM_Ruskara", "RM_Ruskara", "RM_Hound"])
+        check("one row per def, both cards under it", sorted(SH.by_row(pr)) == ["RM_Hound", "RM_Ruskara"] and len(SH.by_row(pr)["RM_Ruskara"]) == 2)
+        check("references are keyed by the def row, all candidates kept", SH.reference_map(pr) == {"RM_Ruskara": ["/x/a.png", "/x/b.png"], "RM_Hound": ["/x/h.png"]}, SH.reference_map(pr))
+    except ImportError as e:
+        check("shadow importable", False, repr(e))
+
     # --- fauna_spec reads graphicClass and the art ledger's keeps (ART_EVAL_SPEC_FIX_GRAPHIC_SINGLE_FACINGS)
     try:
         import xml.etree.ElementTree as ET
