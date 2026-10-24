@@ -199,7 +199,7 @@ namespace RimMandrake.AtmosphericBase
             int n = s.Count;
             if (n <= 1) return 0;
             if (flasher) return FlasherIndex(s, c.emitter, t);
-            RM_Layer[] layers = s.layers ?? RM_PatternKernel.LegacyLayers(s);
+            RM_Layer[] layers = s.layers ?? s.legacy ?? RM_PatternKernel.LegacyLayers(s);
             int v = RM_PatternKernel.Pass;
             foreach (RM_Layer l in layers)
             {
@@ -222,7 +222,7 @@ namespace RimMandrake.AtmosphericBase
                 double u = t / fp + RM_SchemeKernel.Frac01(c.emitter, 3) * n;
                 return NextStep(u, fp, t);
             }
-            RM_Layer[] layers = s.layers ?? RM_PatternKernel.LegacyLayers(s);
+            RM_Layer[] layers = s.layers ?? s.legacy ?? RM_PatternKernel.LegacyLayers(s);
             double best = RM_PatternKernel.Never;
             foreach (RM_Layer l in layers)
             {

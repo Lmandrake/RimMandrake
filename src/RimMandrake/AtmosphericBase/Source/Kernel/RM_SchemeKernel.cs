@@ -33,6 +33,7 @@ namespace RimMandrake.AtmosphericBase
         public bool mayGoDark;          // L8: may an entry be full black
         public int flasherCount;        // L7: how many fixtures in the group play the fast role
         public float flasherPeriodSeconds;
+        public RM_Layer[] legacy;       // a def's one-pattern form pre-built as layers once (so the 10 Hz loop allocates nothing); null = built per call
         public RM_Layer[] layers;       // the authored <layers>; null = the old one-pattern scheme (one layer, see LegacyLayers)
 
         public int Count => r == null ? 0 : r.Length;
