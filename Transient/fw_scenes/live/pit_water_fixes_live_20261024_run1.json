@@ -1,0 +1,173 @@
+{
+ "script": "pit_water_fixes_live.py",
+ "started": "2026-10-24T07:37:05",
+ "rows": [
+  {
+   "id": "PWF_swim_getter_patched",
+   "item": "SWIM_DEPTH_FIX_TWO_METRES_WALKED",
+   "status": "PASS",
+   "detail": {
+    "postfixes": [
+     "RimMandrake.FlowWorks.Swimming.RM_Patch_Pawn_SwimPose.Postfix"
+    ]
+   }
+  },
+  {
+   "id": "PWF_swim_2m",
+   "item": "SWIM_DEPTH_FIX_TWO_METRES_WALKED",
+   "status": "PASS",
+   "detail": {
+    "swims2m": true,
+    "swims1m": false,
+    "arrived2m": true,
+    "arrived1m": true
+   }
+  },
+  {
+   "id": "PWF_swim_5m_surface",
+   "item": "DEEP_PIT_SWIM_FIX_FIVE_METRES_WALKS",
+   "status": "PASS",
+   "detail": {
+    "swims": true,
+    "sink": 0.0,
+    "arrived": true,
+    "proof": "SINK id=Human48118 cell=165,103 depth=10 fill=10 fluid=RM_Fluid_Water sink=0 drawDz=0 moving=False wallOverHead=2.4 enabled=True"
+   }
+  },
+  {
+   "id": "PWF_drafted_swimmer_all_cells",
+   "item": "DRAFTED_SWIMMER_FIX_PIT_BOTTOM_ROW",
+   "status": "PASS",
+   "detail": {
+    "n": 24,
+    "bad": []
+   }
+  },
+  {
+   "id": "PWF_wet_pit_enterable",
+   "item": "WATERED_PIT_FIX_NO_WAY_IN",
+   "status": "PASS",
+   "detail": {
+    "in": true,
+    "out": true,
+    "report": "{'success': True, 'cell': {'x': 143, 'z': 103}, 'mapId': 0, 'depthRaw': 3, 'fillRaw': 3, 'isSuperdeep': False, 'pitWidth': 0, 'hasLadder': False, 'room': {'id': 75, 'role': 'None', 'isPrisonCell': False, 'cellCount': 25721, 'touchesMapEdge': True}, 'pawns': [], 'legacyHolders': [], 'descentCount': 0"
+   }
+  },
+  {
+   "id": "PWF_wet_pit_ladder_ramp",
+   "item": "WATERED_PIT_FIX_NO_WAY_IN",
+   "status": "FAIL",
+   "detail": {
+    "wet": {
+     "RM_Ladder": false,
+     "RM_PitRamp": true
+    },
+    "dryControl": {
+     "RM_Ladder": true,
+     "RM_PitRamp": true
+    },
+    "rampSpan": 3,
+    "raw": [
+     "{'success': True, 'def': 'RM_Ladder', 'acceptableCells': 0, 'tested': 1, 'cellsInRect': 1, 'truncated': False, 'godMode': False, 'cells': [{'x': 143, 'z': 105, 'canPlace': False, 'reason': 'Must hang on a wall of the pit: a ladder climbs to",
+     "{'success': True, 'def': 'RM_PitRamp', 'stuff': 'WoodLog', 'acceptableCells': 1, 'tested': 1, 'cellsInRect': 1, 'truncated': False, 'godMode': False, 'cells': [{'x': 148, 'z': 104, 'canPlace': True, 'canSpawn': True, 'occupants': []}], 'tic",
+     "{'success': True, 'def': 'RM_Ladder', 'acceptableCells': 1, 'tested': 1, 'cellsInRect': 1, 'truncated': False, 'godMode': False, 'cells': [{'x': 152, 'z': 105, 'canPlace': True, 'canSpawn': True, 'occupants': []}], 'ticksGame': 10566, 'oper",
+     "{'success': True, 'def': 'RM_PitRamp', 'stuff': 'WoodLog', 'acceptableCells': 1, 'tested': 1, 'cellsInRect': 1, 'truncated': False, 'godMode': False, 'cells': [{'x': 171, 'z': 104, 'canPlace': True, 'canSpawn': True, 'occupants': []}], 'tic"
+    ]
+   }
+  },
+  {
+   "id": "PWF_click_patch_wired",
+   "item": "PIT_CLICK_FIX_SHIFTED_ONE_DOWN",
+   "status": "PASS",
+   "detail": {
+    "prefixes": [
+     "RimMandrake.FlowWorks.RM_Patch_PitClickDrawnRow.Prefix"
+    ],
+    "sinks": {
+     "112": 0.6,
+     "113": 0.6,
+     "114": 0.6,
+     "115": 0.6,
+     "116": 0.0
+    },
+    "clicked": 112,
+    "picked": 113,
+    "pawnInPit": true
+   }
+  },
+  {
+   "id": "PWF_click_end_to_end",
+   "item": "PIT_CLICK_FIX_SHIFTED_ONE_DOWN",
+   "status": "PASS",
+   "detail": {
+    "clicked": 112,
+    "picked": 113,
+    "endZ": 113,
+    "click": "{'success': True, 'actionKind': 'click_dispatched', 'clickCell': {'x': 149, 'z': 112}, 'target': 'cell 149,112', 'button': 'right', 'holdDurationMs': 0, 'modifiers': 'none', 'selectedPawns': ['McLaugh",
+    "class_": "MOD"
+   }
+  },
+  {
+   "id": "PWF_shallow_depth_shader",
+   "item": "SHALLOW_RIPPLE_FIX_DARK_RING_STATIC",
+   "status": "PASS",
+   "detail": {
+    "values": {
+     "RM_WaterThin": "Map/WaterDepth",
+     "RM_WaterVeryShallow": "Map/WaterDepth"
+    },
+    "control": "Map/WaterDepth",
+    "missing": [],
+    "raw": null
+   }
+  },
+  {
+   "id": "PWF_sluice_closed_blocks",
+   "item": "SLUICE_GATE_REWIRE_TURNS_LIKE_A_DOOR",
+   "status": "FAIL",
+   "detail": {
+    "throughSluice": true,
+    "throughDoor": true,
+    "built": [
+     "{'success': True, 'placed': 1, 'survived': 1, 'lostToLaterOps': 0, 'failedCount': 0, 'failed': [], 'displacedCount': 0, 'displaced': [], 'placeWorkerWarningsCou",
+     "{'success': True, 'placed': 1, 'survived': 1, 'lostToLaterOps': 0, 'failedCount': 0, 'failed': [], 'displacedCount': 0, 'displaced': [], 'placeWorkerWarningsCou"
+    ]
+   }
+  },
+  {
+   "id": "PWF_godmode_ladder_free",
+   "item": "GODMODE_LADDER_FIX_ASKS_FOR_WOOD",
+   "status": "PASS",
+   "detail": {
+    "built": [
+     "RM_LadderPortable"
+    ],
+    "blueprintsOrFrames": [],
+    "trail": [
+     [
+      "RM_LadderPortable"
+     ]
+    ],
+    "incap": "{'success': True, 'action': 'downed', 'allowBleedingWoundsHonoured': False, 'downedBefore': False, 'deadBefore': False, 'downedAfter': True, 'deadAfter': False,"
+   }
+  }
+ ],
+ "args": {
+  "out": "D:\\ClaudeWork\\scratch\\pwf_run1.json",
+  "fresh_map": true,
+  "origin": "140,100"
+ },
+ "mapColonists": [
+  "Human128",
+  "Human131",
+  "Warg32441",
+  "Human148"
+ ],
+ "siteDig": [],
+ "finished": "2026-10-24T07:40:53",
+ "summary": {
+  "PASS": 9,
+  "FAIL": 2,
+  "UNMEASURED": 0
+ }
+}
