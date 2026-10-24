@@ -655,14 +655,15 @@ namespace RimMandrake.FlowWorks
 			// ANCHOR_BASE_REDRAW_STILL_LYING_FLAT, no longer the one rotated single
 			string look = parts.Length >= 2 ? parts[parts.Length - 2] : "";
 			string key = styled && look != "SuspensionBridge" ? look + "/" + mat : "base/" + mat;
-			return Art.ContainsKey(key) || Art.ContainsKey(key + "/east") ? key : null;
+			return Art.ContainsKey(key + "/east") ? key : null;
 		}
 
-		/// <summary>The rope table of one picture: the per-facing entry ("look/material/facing") where the art differs by facing,
-		/// else the shared one.</summary>
+		/// <summary>The rope table of one picture: its per-facing entry ("look/material/facing"; every anchor is an upright
+		/// per-facing bollard), or null where none was measured (a rotated single, a _west picture of its own): the caller then
+		/// prints the anchor as before (DRAWBRIDGE_ROPES_FIX_DEAD_SINGLE_FACING: the old shared-row fallback threw).</summary>
 		public static RopeArt[] RopesFor(string key, string facing)
 		{
-			return Art.TryGetValue(key + "/" + facing, out RopeArt[] r) ? r : Art[key];
+			return key != null && Art.TryGetValue(key + "/" + facing, out RopeArt[] r) ? r : null;
 		}
 
 		/// <summary>Lowered: each rope is the painted run (attach → painted end) plus, where the picture stops short of the

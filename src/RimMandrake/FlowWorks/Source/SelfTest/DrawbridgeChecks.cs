@@ -929,6 +929,30 @@ namespace RimMandrake.FlowWorks.SelfTest
                 }
             });
 
+            Case("Drawbridge_Cables_ropes_for_unmeasured_print_is_null_not_throw", () =>
+            {
+                // DRAWBRIDGE_ROPES_FIX_DEAD_SINGLE_FACING: every rope table is per facing since the anchors stand upright; a print
+                // with no measured table (a rotated single, an unknown key) gets null and prints as before, never KeyNotFound
+                RM_DrawbridgeCableMath.RopeArt[] single = null, unknown = null;
+                string threw = null;
+                try
+                {
+                    single = RM_DrawbridgeCableMath.RopesFor("base/Steel", "single");
+                    unknown = RM_DrawbridgeCableMath.RopesFor("NoLook/NoMat", "east");
+                }
+                catch (Exception e)
+                {
+                    threw = e.GetType().Name;
+                }
+                Assert(threw == null, "can-fail: RopesFor threw " + threw + " for a print with no per-facing table");
+                Assert(single == null && unknown == null, "an unmeasured print must get no rope table");
+                Assert(RM_DrawbridgeCableMath.RopesFor("base/Steel", "north") == RM_DrawbridgeCableMath.Art["base/Steel/north"], "a measured facing still finds its table");
+                foreach (string k in RM_DrawbridgeCableMath.Art.Keys)
+                    Assert(k.Split('/').Length == 3, "rope table " + k + " is not per facing (look/material/facing)");
+                string art = RiverSwitchFlipChecks.Src(Path.Combine("Pits", "Drawbridge", "RM_DrawbridgeArt.cs"));
+                Assert(art.Contains("if (p.ropes == null)"), "AnchorPrintFor prints as before when the print has no rope table");
+            });
+
             Case("Drawbridge_Cables_call_sites", () =>
             {
                 string deck = RiverSwitchFlipChecks.Src(Path.Combine("Pits", "Suspension", "Building_SuspensionDeck.cs"));
