@@ -1,0 +1,22 @@
+[
+ {
+  "id": "arteval_RM_LadderPortable__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_LadderPortable",
+  "prompt": "The ladder runs as a steep diagonal band from the upper right (top, resting on the rim) down toward the lower left (foot, on the floor), its long axis kept close to vertical so the whole ladder stays tight and narrow against the wall edge on the right half of the image. The rails converge slightly toward the foot, rungs foreshortened as they step down the wall. Both rail tops are visible resting on the rim at the right; both rail feet are planted at the left end on the ground, with a small soft contact shadow under the foot. The background is fully transparent: the ladder is the only object, with no pit, wall, floor, ground fill or guide lines drawn.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: ; prompt_gate: sentence-drop",
+  "reference": "",
+  "priority": 40,
+  "source_run": "ladders_v5g_port_20261024",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl"
+ }
+]
