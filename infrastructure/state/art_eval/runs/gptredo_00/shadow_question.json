@@ -1,0 +1,44 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RM_Harrok": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: DEPARTURE_MISSING \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate live (image sha 1664365a13); DEPARTURE_MISSING: The neck is long and upright, roughly a third of the total height, so the tall silhouette leans on the neck as well as the legs and recalls "
+  },
+  "RM_Mirrak": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: DEPARTURE_MISSING, DESC_MISS, STYLE_EARTHLY \u00b7 GPT regen, unsettled K1, K2, K3, K4, K5, K6",
+   "context": "judged candidate live (image sha d6fa0ac8d0); DEPARTURE_MISSING: Four webbed, clawed legs splay out from under the skirt, and north has a segmented tail ridge.; DEPARTURE_MISSING: The outline is a broad symmetric fan or oval with scalloped frills, not an elongated tapering shape.; DEPARTURE_MISSING: There is no hinge line or fold axis; the body is a domed, keeled shell-and-skirt with no clamshell structure."
+  },
+  "RM_Pirrik": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 1) \u00b7 Opus REALLY_BAD: DEPARTURE_MISSING, DESC_MISS",
+   "context": "judged candidate live (image sha 9b61048abe); DESC_MISS: An insect with four membranous veined wings, six jointed legs, antennae and a needle proboscis. No feathers, beak or bird body.; DEPARTURE_MISSING: Each forewing carries a bright orange-gold hotspot that reads as glowing light from inside the wing, not a reflection."
+  }
+ }
+}

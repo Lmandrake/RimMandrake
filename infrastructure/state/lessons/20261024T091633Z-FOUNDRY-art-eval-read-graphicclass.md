@@ -1,0 +1,2 @@
+Before judging a creature, read its graphicClass (race def AND PawnKind lifeStages): fauna_spec.py fills south/east/north even for Graphic_Single, so RSW_Mynock was judged on _east/_north files the game never draws (gptredo_01, voided, re-judged in gptredo_01b). Also: runner --file-regens prompts can be refused by fill_queue's per-facing gate (top-down / all facings / three facings / overhead); check regen_filing.json is ok after every --file-regens run.
+home: rimworld-art-evaluation

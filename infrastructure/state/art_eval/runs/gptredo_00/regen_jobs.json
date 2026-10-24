@@ -1,0 +1,53 @@
+[
+ {
+  "id": "arteval_RM_Harrok__live_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Harrok",
+  "prompt": "A single RimWorld creature sprite, the harrok, in painterly vanilla RimWorld style, realistic, with a clean dark outline, on a transparent background. Full body visible, feet included, centered in a square frame. A narrow-bodied desert animal held a man's height above the sand on four very thin, straight, stilt-like legs. The legs make up most of its height: each is several times longer than the body is deep, evenly slender from top to bottom with small knob joints and tiny feet, and with no muscled shoulders or haunches. The torso is small, narrow and slender, held perfectly level at the top of the legs, with open empty space beneath it tall enough for small animals to settle in its shadow. The neck is short, about the length of the torso, and the head is carried just above the level of the back, small and low-slung, so the legs supply the dominant vertical silhouette. The overall shape is a low horizontal body on four tall stilts, tall and spindly. Dry sandy tan and dusty grey-brown hide, with darker thin legs. Three-quarter-free flat view in vanilla RimWorld animal style. Front view: eyes toward the viewer, the short neck and head centered above the narrow chest, the four stilt legs standing in two pairs. Side view: the level narrow body in profile with the head forward at back height, four legs spaced along it. Rear view, seen from behind: the back, tail and haunches, eyes hidden, the four stilt legs below.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "gptredo_00"
+ },
+ {
+  "id": "arteval_RM_Mirrak__live_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Mirrak",
+  "prompt": "A single RimWorld creature sprite on a transparent background, painterly vanilla RimWorld style, realistic, clean dark outline. The mirrak is a wafer-flat ambusher that looks exactly like a long cast shadow lying on the ground. Its body is a smooth, limbless, wafer-thin sheet whose edge meets the ground all the way round; the whole silhouette is one unbroken flat shape with smooth edges. The outline is a long, tapering shadow shape: wide and blunt at one end, narrowing to a soft point at the other, about three times longer than wide. The back is a uniform matte near-black with a subtle slightly darker outline, no bright rim and no texture, so it reads as a shadow lying on the ground. A faint, straight midline hinge crease runs the full length of the flat body, dividing it into two equal halves that can fold shut like a closing book or clamshell. The creature is a featureless dark sheet; the only mark at the blunt leading edge is a thin slit-like seam, like the closed edge of a clamshell. Front view (eyes toward the viewer): the blunt leading edge faces the viewer, a thin dark sheet seen nearly edge-on with the slit seam centred along it. Rear view, seen from behind: the tapering soft point faces the viewer, a flat dark sheet with the midline crease running away. Side view: the body is a thin line only a few pixels thick, lying flush on the ground, tapering from the blunt end to the soft point, its edge resting directly on the surface. Centred in frame with clear margin, suitable for a 2x2 tile draw size.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, STYLE_EARTHLY, DESC_MISS, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "gptredo_00"
+ },
+ {
+  "id": "arteval_RM_Pirrik__live_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Pirrik",
+  "prompt": "A single tiny alien bird, palm-sized, for a RimWorld sprite. It has a rounded feathered body, a small head with a short dark beak and two dark eyes, two thin legs with small clawed feet, and two folded feathered wings held against its sides, with a short feathered tail. Its plumage is dark and oily, with a purple-green iridescent sheen: thin, shifting highlights of violet, teal and green that follow the feather contours and fade into deep shadow between the feathers, the way sunlight glints off a beetle shell or a raven's wing. The sheen is reflected light only, and every highlight is cool-toned, soft-edged and lies on the surface of the feathers; the wing feathers, back, breast and tail share the same dark purple-green palette. The bird stands in the cool dark shadow of a gloomcast, a large creature overhead whose shadow darkens the ground, and the bird is drawn small beside the edge of that shadow; the sunlit sand around the shadow is empty of the bird. Top-down three-quarter view in painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. Render the front view with eyes toward the viewer, the side view in profile, and the rear view seen from behind showing back, tail and folded wings.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "gptredo_00"
+ }
+]

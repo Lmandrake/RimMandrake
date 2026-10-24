@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Ruskara",
+ "nearest_earth_animal": "mushroom",
+ "earth_body_named": true,
+ "departures": [
+  "towering height, far taller than any Earth mushroom",
+  "rose-pink, flesh-like body instead of the usual tan, white or brown mushroom tones",
+  "heavy cap that slumps and droops over the stalk like wet hide, not a firm dome or flat cap",
+  "folded, creased rim around the cap's edge",
+  "beads of sap along the folded rim"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-24T01:59:20-07:00",
+ "source": "description only (no image)"
+}

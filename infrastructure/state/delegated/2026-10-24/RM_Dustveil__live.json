@@ -1,0 +1,66 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 39.3,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.36763120000000005
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 10.8,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1220847
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Dustveil",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band REALLY_BAD (model said really_bad); blocking ['F_TOPDOWN', 'DESC_MISS', 'DEPARTURE_MISSING', 'F_INCONSISTENT', 'F_NORTH_FACE']; polish ['STYLE_EARTHLY', 'FLYER_WINGS_GROUNDED']",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "south.png": "6c047d4298191afad7892fb465a6c6b4b5fca09910a3209a70ed2c208f042d2e",
+  "east.png": "767c8f45ed1a4ab973b4facf7ef416c1328d7c7deda27380da8549d62e264392",
+  "north.png": "7414efb52fae589e4247d089f76e1089a520d355a4cc6047cf47865618e51f0f",
+  "scale.png": "1990a15d556e7e71f0cb9be03b14a296b2183260de56c065ec8e2ec3c44f481b",
+  "facings.png": "7d5764a9778d9cea6f34e3724d0104bb686a5146fa0e5793caf35c973e8c03ce"
+ }
+}

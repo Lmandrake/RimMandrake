@@ -1,0 +1,19 @@
+[
+ {
+  "id": "arteval_RSW_Mynock__live_single_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Mynock",
+  "prompt": "A single RimWorld creature sprite sheet of a mynock, a small silicon-based vacuum parasite, in the painterly vanilla RimWorld style: realistic, hand-painted, clean dark outline, transparent background. Three separate pictures of the same creature, each from the angled game camera slightly above the creature, with the body upright. Body plan for all three: a small compact body with a stony, mineral-textured hide, the darkest dark olive-brown on the body and head; broad leathery wings that make up most of the outline, slightly lighter and translucent in the membranes, with visible veins; a round bristled sucker mouth in place of a face; two bulging eyes above the mouth; two small, thin, clawed hind legs under the body; a long, thin whip-like tail. No bat ears and no bat snout. Picture 1, front view, eyes toward the viewer: the round bristled sucker mouth and eyes face the camera, the chest and body sit below the head, the wings are folded along the sides and the whip tail hangs behind the body, the two hind legs visible under the body. Picture 2, side profile: the head with the sucker disc points right, one folded wing lies along the flank, the two thin hind legs sit below the body, and the whip tail trails to the left. Picture 3, rear view, seen from behind: the back of the dark body, the folded wing backs along the sides and the whip tail hanging down, the head tucked out of sight so only the back of the body shows, hind legs visible at the bottom. All three share the same palette, proportions and wing shape, and read clearly at a small size.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_NORTH_FACE, F_TOPDOWN, F_SOUTH_NOT_FRONT, F_INCONSISTENT, DUPLICATE, DONOR, CANON_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "gptredo_01b"
+ }
+]

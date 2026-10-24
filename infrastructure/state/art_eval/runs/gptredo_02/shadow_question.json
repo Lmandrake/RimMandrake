@@ -1,0 +1,44 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RM_Dustveil": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus REALLY_BAD: DEPARTURE_MISSING, DESC_MISS, F_INCONSISTENT, F_NORTH_FACE, F_TOPDOWN",
+   "context": "judged candidate live (image sha 6c047d4298); F_TOPDOWN: A pinned-specimen dorsal view: wings spread flat horizontally, head and antennae at the top, abdomen straight down the centre.; DESC_MISS: The wings are raised in a V or spread flat; none hang down around the body like a veil.; DEPARTURE_MISSING: Departure 1 (veil-like hanging wings) and departure 3 (dust-soft fabric texture instead of patterned scales) are absent; the bold eyespots a"
+  },
+  "RM_Hwelgrue": {
+   "prefill": "keep",
+   "why": "PIPELINE: ACCEPT \u00b7 Opus WEAK: F_INCONSISTENT, STYLE_OFF \u00b7 GPT strong_accept",
+   "context": "judged candidate live (image sha 2747c77961); STYLE_OFF: The outline is a fairly thick, uniform black contour around the whole silhouette and around the individual tendrils.; F_INCONSISTENT: South and north share an almost identical stepped-pyramid silhouette, so the two ends differ mainly by the mouth versus the tail cap."
+  },
+  "RM_ThozzikColonyQueen": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: F_TOPDOWN \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate live (image sha 9d2c53f99e); F_TOPDOWN: North shows the full dorsal plan from head to stinger, with the stinger lying flat in the picture plane pointing down and the legs splayed s"
+  }
+ }
+}

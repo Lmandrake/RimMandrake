@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_AgariluxPrime",
+ "nearest_earth_animal": "mushroom",
+ "earth_body_named": true,
+ "departures": [
+  "vast, tree-scale size: the cap towers high overhead and dwarfs a person, never ground-sized",
+  "pale, washed-out colouring throughout, as an elder of the pale forest",
+  "a heavy, visible pall of spores settled in a low cloud on the ground beneath the cap",
+  "pale hyphae threads spreading outward across the ground from the base like a root mat"
+ ],
+ "body_plan": null,
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-24T01:59:12-07:00",
+ "source": "description only (no image)"
+}

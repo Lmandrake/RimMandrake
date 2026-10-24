@@ -1,0 +1,83 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_gptredo_00",
+ "built": "2026-10-24T02:09:52-0700",
+ "census": "Transient/biome_ffar/art_eval_shadow_gptredo_00.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 26 mods \u2014 a test list): 320 active",
+ "rows": {
+  "RM_Harrok": {
+   "columns": {
+    "A": {
+     "east": "128e3e7e68002ce758f7e38bdc2ad78499cd44a9221b9bc27f2439746ec3439e",
+     "north": "35631c138f55f2fea4824c2feaae8d6ec56c1e65e57a27bfa2947032691e4cb3",
+     "south": "908c17a89dee30cd8b31514669db4c06ff2041058ec7998fa49ff07a24b09b75"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Harrok/RM_Harrok"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LongShade"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Harrok/RM_Harrok"
+   ],
+   "res": "Things/Pawn/Animal/RM_Harrok/RM_Harrok",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "harrok"
+  },
+  "RM_Mirrak": {
+   "columns": {
+    "A": {
+     "east": "dc36ed559866e6cbac4be6dc093b02b1e1f9fe03846416bfcf6cbdc4c92db6d6",
+     "north": "e6792c4fb0d2db51436c5289111eba0d56381e09814f41bd74f817e1e2a72799",
+     "south": "86f703be7c1f6efb0386adf0fef322fc91b987264141a10079b3851bf1cbd387"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Mirrak/RM_Mirrak"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LongShade"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Mirrak/RM_Mirrak"
+   ],
+   "res": "Things/Pawn/Animal/RM_Mirrak/RM_Mirrak",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "mirrak"
+  },
+  "RM_Pirrik": {
+   "columns": {
+    "A": {
+     "east": "45ea9f6c85e60e73ec1ffa09ebd01b4631702cc098be199e84331321e47b56d0",
+     "north": "2e3684e0095f7087fb835e58275922e60380901fe58f55320f2d6d7e832b3162",
+     "south": "d4f7203d766dc2d2ee182c77ea138f8e1ca8b005574eabe07008aa2d7792765b"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Pirrik/RM_Pirrik"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LongShade"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Pirrik/RM_Pirrik"
+   ],
+   "res": "Things/Pawn/Animal/RM_Pirrik/RM_Pirrik",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "pirrik"
+  }
+ },
+ "sheetId": "art_eval_shadow_gptredo_00_sheet_2026-10-24",
+ "snapshotId": "461d995b741a5b55"
+}

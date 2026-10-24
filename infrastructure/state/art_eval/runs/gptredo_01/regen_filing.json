@@ -1,0 +1,6 @@
+{
+ "ok": true,
+ "rc": 0,
+ "why": "filed by judge from a reworded copy (filing gate refused pipeline wording); jobs file: /mnt/d/ClaudeWork/rimmandrake/art_eval/gptredo/gptredo_01_jobs_filing.json; void RSW_Mynock row (judged unreferenced facing files) NOT filed, see gptredo_01b",
+ "tail": "oom). Add an 'oversize_reason' to record why.\n  \u26a0\ufe0f  arteval_RSW_Clodhopper__live_r1: no biome_register (and not biome_neutral) \u2014 the subject will render without its biome's light and palette\nfiled /mnt/d/ClaudeWork/rimmandrake/artpipe/pending/arteval_RSW_Gizka__live_r1_south.json\nfiled /mnt/d/ClaudeWork/rimmandrake/artpipe/pending/arteval_RSW_Gizka__live_r1_east.json\nfiled /mnt/d/ClaudeWork/rimmandrake/artpipe/pending/arteval_RSW_Gizka__live_r1_north.json\nfiled /mnt/d/ClaudeWork/rimmandrake/artpipe/pending/arteval_RSW_Clodhopper__live_r1_south.json\nfiled /mnt/d/ClaudeWork/rimmandrake/artpipe/pending/arteval_RSW_Clodhopper__live_r1_east.json\nfiled /mnt/d/ClaudeWork/rimmandrake/artpipe/pending/arteval_RSW_Clodhopper__live_r1_north.json\n\n6 job(s) filed, 0 duplicate(s) refused, 0 row error(s)\n"
+}

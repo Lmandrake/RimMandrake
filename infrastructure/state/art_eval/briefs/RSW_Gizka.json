@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RSW_Gizka",
+ "nearest_earth_animal": "theropod dinosaur",
+ "earth_body_named": false,
+ "departures": [
+  "blunt, short, rounded head with no long toothed snout or jaw",
+  "upright bipedal stance on two hind legs only",
+  "tiny forelimbs held close to the chest, far smaller than the hind legs",
+  "disproportionately thick, heavy tail held out behind as a counterweight",
+  "small, compact body at ship-pest scale, not a large predator"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-24T01:42:08-07:00",
+ "source": "description only (no image)"
+}

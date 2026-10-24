@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RSW_Clodhopper",
+ "nearest_earth_animal": "turkey",
+ "earth_body_named": false,
+ "departures": [
+  "four limbs and no wings at all; it stands on four legs, not upright on two like a bird",
+  "large, powerful clawed forelegs, bigger and heavier than any bird's limbs",
+  "tough, bare brown skin over the whole body, with no feathers or plumage",
+  "crimson skin on the neck, not a wattle or feathered ruff",
+  "a pale beak on a head carried low and forward on a four-legged body"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-24T01:42:06-07:00",
+ "source": "description only (no image)"
+}

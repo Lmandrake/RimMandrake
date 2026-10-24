@@ -1,0 +1,34 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RSW_Mynock": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 1) \u00b7 Opus REALLY_BAD: CANON_MISS, DONOR, DUPLICATE, F_INCONSISTENT, F_NORTH_FACE, F_SOUTH_NOT_FRONT, F_TOPDOWN",
+   "context": "judged candidate live_single (image sha 7be4f59b26); F_NORTH_FACE: North is byte-identical to south and shows both bulging eyes and the bristled sucker mouth.; F_TOPDOWN: A dorsal plan view: wings laid flat left and right, tail pointing straight up the canvas, head at the bottom.; F_SOUTH_NOT_FRONT: The face is visible, but the body, wings and tail are seen from above as a flat spread-eagle plan."
+  }
+ }
+}

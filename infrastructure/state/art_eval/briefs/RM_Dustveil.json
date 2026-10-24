@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Dustveil",
+ "nearest_earth_animal": "moth",
+ "earth_body_named": true,
+ "departures": [
+  "wings hang downward around the body like a draped veil or curtain, not spread flat or folded tent-wise",
+  "wings unusually broad relative to the body, wider than an ordinary moth's",
+  "wing surface pale and dust-soft, with a powdery, almost fabric-like texture rather than patterned scales",
+  "a visible coat of fine shearable moth-silk on the adult's body"
+ ],
+ "body_plan": "flyer",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-24T01:42:18-07:00",
+ "source": "description only (no image)"
+}

@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Hwelgrue",
+ "nearest_earth_animal": "maggot",
+ "earth_body_named": true,
+ "departures": [
+  "feeding tendrils growing along the length of the body",
+  "scattered dark eye spots dotted over the bone-white hide",
+  "blunt mouth ringed with a fringe of fungal hyphae",
+  "lilac-coloured belly contrasting with the bone-white back",
+  "enormous scale, as long as a hauler"
+ ],
+ "body_plan": "serpentine",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-24T01:42:16-07:00",
+ "source": "description only (no image)"
+}

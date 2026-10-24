@@ -1,0 +1,6 @@
+{
+ "ok": true,
+ "rc": 0,
+ "why": "filed",
+ "tail": "rake/artpipe/pending/arteval_RSW_Mynock__live_single_r1_east.json\nfiled /mnt/d/ClaudeWork/rimmandrake/artpipe/pending/arteval_RSW_Mynock__live_single_r1_north.json\n\n3 job(s) filed, 0 duplicate(s) refused, 0 row error(s)\nWARNING: row 'arteval_RSW_Mynock__live_single_r1' has unknown field(s) ['source_run'] \u2014 NOT carried onto the job (typo, or a field fill_queue does not support)\n  \u26a0\ufe0f  arteval_RSW_Mynock__live_single_r1: canvas 1024x1024 exceeds the drawSize\u00d7128 rule-of-thumb ceiling 256 for drawsize 1.0 \u2014 filing anyway (ART_PAINTERLY_RESTORATION_1: advisory only, generous until re-measured at modded zoom). Add an 'oversize_reason' to record why.\n  \u26a0\ufe0f  arteval_RSW_Mynock__live_single_r1: no biome_register (and not biome_neutral) \u2014 the subject will render without its biome's light and palette\n"
+}

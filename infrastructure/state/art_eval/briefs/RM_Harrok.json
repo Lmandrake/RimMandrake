@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Harrok",
+ "nearest_earth_animal": "giraffe",
+ "earth_body_named": false,
+ "departures": [
+  "body is narrow and slender, not a barrel-chested or deep-bellied mammal torso",
+  "four very thin, stilt-like legs with no muscled haunches or shoulders, far longer than the body is deep",
+  "the body is held level at about a man's height, so the space beneath it is open and tall enough for small animals to settle in its shadow",
+  "the overall silhouette is tall and spindly, the legs making up most of its height rather than a long neck"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-24T01:42:07-07:00",
+ "source": "description only (no image)"
+}

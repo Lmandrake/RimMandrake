@@ -1,0 +1,44 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RSW_Mynock": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 1) \u00b7 Opus REALLY_BAD: CANON_MISS, F_INCONSISTENT, F_TOPDOWN",
+   "context": "judged candidate live (image sha 7be4f59b26); F_INCONSISTENT: South has short lobed wings with no finger ribs or ragged edges, a glossy green-pink mottled hide, a straight spike tail with no spade, and ; CANON_MISS: The south wings have no finger ribs, no ragged edges and no thumb claws, and span barely twice the body width. The tail has no spade flare. ; F_TOPDOWN: The body is laid flat with the wings spread flat on the plane and the tail pointing straight up the canvas, as if seen from directly above w"
+  },
+  "RSW_Gizka": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: F_INCONSISTENT, STYLE_CARTOON \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate live (image sha f54b6f747c); STYLE_CARTOON: A dark, uniform outline goes around the whole silhouette, and the face has a slightly illustrated, frowning-cartoon cast.; F_INCONSISTENT: From behind, the crest flares into a wide fan-like frill, while from the front it is a narrow midline fin."
+  },
+  "RSW_Clodhopper": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus REALLY_BAD: CANON_MISS, DONOR, F_INCONSISTENT, F_NORTH_FACE, F_SIZE_JUMP, F_TOPDOWN, OWNER_NOTE_IGNORED, PLACEHOLDER, STYLE_CARTOON",
+   "context": "judged candidate live (image sha 5f93208a68); F_INCONSISTENT: North is a flat, cel-shaded blob with a black outline, side lobes and a dotted grey patch. It has no legs, claws, ridged hide or neck, and i; PLACEHOLDER: North looks like a leftover stand-in sprite (simple shapes, heavy keyline) rather than the commissioned art.; STYLE_CARTOON: Flat cel fills with a thick black outline: a toy-like sticker look."
+  }
+ }
+}

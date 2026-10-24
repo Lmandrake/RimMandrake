@@ -1,0 +1,17 @@
+{
+ "RM_Harrok": [
+  "/home/mandrake/rm/foundry/src/RimMandrake/LongShade/Textures/Things/Pawn/Animal/RM_Harrok/RM_Harrok_south.png",
+  "/home/mandrake/rm/foundry/src/RimMandrake/LongShade/Textures/Things/Pawn/Animal/RM_Harrok/RM_Harrok_east.png",
+  "/home/mandrake/rm/foundry/src/RimMandrake/LongShade/Textures/Things/Pawn/Animal/RM_Harrok/RM_Harrok_north.png"
+ ],
+ "RM_Mirrak": [
+  "/home/mandrake/rm/foundry/src/RimMandrake/LongShade/Textures/Things/Pawn/Animal/RM_Mirrak/RM_Mirrak_south.png",
+  "/home/mandrake/rm/foundry/src/RimMandrake/LongShade/Textures/Things/Pawn/Animal/RM_Mirrak/RM_Mirrak_east.png",
+  "/home/mandrake/rm/foundry/src/RimMandrake/LongShade/Textures/Things/Pawn/Animal/RM_Mirrak/RM_Mirrak_north.png"
+ ],
+ "RM_Pirrik": [
+  "/home/mandrake/rm/foundry/src/RimMandrake/LongShade/Textures/Things/Pawn/Animal/RM_Pirrik/RM_Pirrik_south.png",
+  "/home/mandrake/rm/foundry/src/RimMandrake/LongShade/Textures/Things/Pawn/Animal/RM_Pirrik/RM_Pirrik_east.png",
+  "/home/mandrake/rm/foundry/src/RimMandrake/LongShade/Textures/Things/Pawn/Animal/RM_Pirrik/RM_Pirrik_north.png"
+ ]
+}
