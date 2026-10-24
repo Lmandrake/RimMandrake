@@ -1,0 +1,2 @@
+A decisions record's `rev` is NOT the snapshot he clicked on: real records keep the rev of an earlier build (thechill RM_HeeminCatch rev 2629db1f = a build with no column D, yet decision D was clicked on the 10-06 20:16 build; abyss RM_Cindermare likewise). Find the sheet he saw by click time: the newest snapshot revision built at or before decidedAt. Preferring a rev match walked past it and refused 35 real picks (enact 3ff777b26a).
+home: rimworld-review-sheets
