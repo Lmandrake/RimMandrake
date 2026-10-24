@@ -192,6 +192,19 @@ namespace RimMandrake.FlowWorks.SelfTest
                     Assert(k.Contains("<" + key + ">"), "key: " + key);
                 }
             });
+            // GODMODE_LADDER_FIX_ASKS_FOR_WOOD (owner 2026-10-24): in god mode the rescue ladder is built at once and free, as
+            // vanilla's god-mode Designator_Build does, never a blueprint waiting on wood; installing a spare is skipped too.
+            Case("PitAccess_god_mode_rescue_ladder_is_instant_and_free", () =>
+            {
+                string a = Src("Superdeep", "RM_PitAccess.cs");
+                int pb = a.IndexOf("private bool PlaceBuild(", StringComparison.Ordinal);
+                Assert(pb > 0, "PlaceBuild found");
+                string body = a.Substring(pb, a.IndexOf("PlaceBlueprintForBuild", pb, StringComparison.Ordinal) - pb);
+                Assert(body.Contains("if (DebugSettings.godMode)") && body.Contains("GenSpawn.Spawn(built, cell, map, rot"),
+                    "god mode spawns the finished ladder before any blueprint is placed");
+                Assert(a.Contains("case RM_PitAccessMath.RescueLadder.InstallPortable when !DebugSettings.godMode:"),
+                    "god mode never queues an install job either");
+            });
         }
     }
 }

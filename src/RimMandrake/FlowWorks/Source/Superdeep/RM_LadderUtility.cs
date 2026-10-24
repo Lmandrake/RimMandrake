@@ -640,7 +640,8 @@ namespace RimMandrake.FlowWorks
 				return false;
 			}
 			RM_MapComponent_Excavation engine = map.GetComponent<RM_MapComponent_Excavation>();
-			if (engine == null || engine.ClimbDepthAt(loc) == 0)
+			// WATERED_PIT_FIX_NO_WAY_IN: "is this a pit" reads the HOLE (water lifts the climb depth, not the hole away)
+			if (engine == null || engine.HollowDepthAt(loc) == 0)
 			{
 				// LADDER_PARITY_BUILD_NO_KEYS_REQUIRED: a portable ladder may lean on a single built wall it faces
 				if (RM_LadderUtility.MaxLevelsOf(checkingDef) > 0)

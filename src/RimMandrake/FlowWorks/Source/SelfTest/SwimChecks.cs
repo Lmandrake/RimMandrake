@@ -367,8 +367,10 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_SwimMath.ClimbDepthWithSwim(6, -1) == 6 && RM_SwimMath.ClimbDepthWithSwim(2, 4) == 2, "never deeper than the hollow");
                 // production wiring
                 string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
-                RiverSwitchFlipChecks.Has(ex, @"int s = RM_SwimMath\.DugSwimClimbDepth\(true, Swimming\.RM_SwimWater\.LiquidSwimmableAt\(map, this, c\), depthGrid\[i\], RM_LevelSolve\.Metres\(dl\), \(int\)\(dl / RM_LevelSolve\.U\)\);",
+                RiverSwitchFlipChecks.Has(ex, @"int s = RM_SwimMath\.DugSwimClimbDepth\(true, swimmable, depthGrid\[i\], metres, \(int\)\(dl / RM_LevelSolve\.U\)\);",
                     "the refresh runs the production rule on every dug square");
+                RiverSwitchFlipChecks.Has(ex, @"bool swimmable = Swimming\.RM_SwimWater\.LiquidSwimmableAt\(map, this, c\); double metres = RM_LevelSolve\.Metres\(dl\);",
+                    "on the square's own liquid and water");
                 RiverSwitchFlipChecks.Has(ex, @"into\[kv\.Key\] = \(byte\)RM_SwimMath\.ClimbDepthWithSwim\(into\[kv\.Key\], kv\.Value\);", "the pocket grid and the cliff masks read the swim surface");
                 RiverSwitchFlipChecks.Has(ex, @"BumpClimbGeneration\(\); Swimming\.RM_SwimPathing\.Bump\(map\);", "a change re-derives the masks, the pocket grid and the swim grids");
                 RiverSwitchFlipChecks.Has(ex, @"map\.pathing\?\.RecalculatePerceivedPathCostAt\(map\.cellIndices\.IndexToCell\(i\)\);", "and re-reads those squares' path costs");
@@ -381,6 +383,41 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(sc, @"if \(eng\.IsDugSwimCell\(c\)\) \{ baseCostOverride = Swimming\.RM_SwimSettings\.swimPathCost; return; \}",
                     "a dug swim square costs the swim cost, not the wet-pit 300");
                 Assert(sc.Contains("int to = eng.ClimbDepthAt(c);") && sc.Contains("int from = eng.ClimbDepthAt(prevCell);"), "the walked step reads the climb depth");
+            });
+            // WATERED_PIT_FIX_NO_WAY_IN (owner review 2026-10-24, row 4): "for water 1.5m in a 1.5m pit, there is 'no way in.' The
+            // pawn says not traversible, and I can't place any ramp or ladder within the pit." Root cause: the climb rule lifted a
+            // dug square to its water surface only at the 2 m SWIM threshold, so a brim-full 1.5 m pit stayed a sheer 3-notch drop
+            // (K = 2); and the wet rungs (WaterShallowBase family) lack Light, so no ladder or ramp passed the terrain gate.
+            Case("WATERED_PIT_chest_deep_water_lifts_the_climb_not_the_swim", () =>
+            {
+                const int K = 2;
+                Assert(RM_SwimMath.DugSwimClimbDepth(true, true, 3, 1.5, 3) == -1, "can-fail: pre-fix rule: 1.5 m is not swum, the pit rule stood");
+                Assert(!RM_PitTrapMath.StepAllowed(0, 3, K), "can-fail: and a dry 3-notch pit is no way in for a person");
+                int lift = RM_SwimMath.DugWadeLiftDepth(true, true, 3, 1.5, 3);
+                Assert(lift == 0 && RM_PitTrapMath.StepAllowed(0, RM_SwimMath.ClimbDepthWithSwim(3, lift), K), "the owner's brim-full 1.5 m pit is level: a way in");
+                Assert(RM_SwimMath.DugWadeLiftDepth(true, true, 3, 1.499, 2) == -1, "under the ChestDeep rung: the pit rule stands");
+                Assert(RM_SwimMath.DugWadeLiftDepth(true, true, 6, 1.5, 3) == 3 && !RM_PitTrapMath.StepAllowed(0, 3, K),
+                    "a 3 m sheer pit with 1.5 m of water still has 1.5 m of wall: still held");
+                Assert(RM_SwimMath.DugWadeLiftDepth(true, false, 3, 1.5, 3) == -1 && RM_SwimMath.DugWadeLiftDepth(false, true, 3, 1.5, 3) == -1,
+                    "never for an unswimmable liquid, nor with swimming off");
+                Assert(RM_SwimMath.DugWadeLiftDepth(true, true, 4, 2.0, 4) == RM_SwimMath.DugSwimClimbDepth(true, true, 4, 2.0, 4), "the two agree at 2 m+");
+                string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
+                RiverSwitchFlipChecks.Has(ex, @"int lift = s >= 0 \? s : RM_SwimMath\.DugWadeLiftDepth\(true, swimmable, depthGrid\[i\], metres, \(int\)\(dl / RM_LevelSolve\.U\)\);",
+                    "the refresh lifts chest-deep squares");
+                RiverSwitchFlipChecks.Has(ex, @"fresh\[i\] = lift \* 2 \+ \(s >= 0 \? 1 : 0\);", "the climb depth and the swim bit travel together");
+                RiverSwitchFlipChecks.Has(ex, @"swimClimb\[kv\.Key\] = kv\.Value >> 1; if \(\(kv\.Value & 1\) == 1\) \{ swimCells\.Add\(kv\.Key\); \}",
+                    "only 2 m+ squares join the SWIM set (cost, non-swimmer closure)");
+                RiverSwitchFlipChecks.Has(ex, @"if \(h == 0 \|\| swimClimb\.Count == 0\)", "can-fail: ClimbDepthAt no longer skips the lift when no square is swum");
+                RiverSwitchFlipChecks.Has(ex, @"excavatedCells\.Count > 0 \|\| swimClimb\.Count > 0\)", "the refresh keeps running while any square is lifted");
+                string doors = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_FlowDoors.cs"));
+                Assert(doors.Contains("RM_FlowDoorRules.IsFlowDoorDef(td) || StandsInWetPit(td)")
+                    && doors.Contains("RM_LadderUtility.IsLadderDef(td)") && doors.Contains("typeof(RM_Building_PitRamp).IsAssignableFrom(td.thingClass)"),
+                    "every ladder and the pit ramp pass the terrain gate on a wet dug square");
+                string lad = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_LadderUtility.cs"));
+                Assert(lad.Contains("if (engine == null || engine.HollowDepthAt(loc) == 0)"), "the ladder asks 'is this a pit' of the HOLE");
+                string ramp = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_PitRamp.cs"));
+                Assert(ramp.Contains("if (eng == null || eng.HollowDepthAt(loc) == 0)") && ramp.Contains("int d = eng.HollowDepthAt(loc);")
+                    && ramp.Contains("int u = up.InBounds(map) ? eng.HollowDepthAt(up) : d;"), "the ramp is judged on the holes, wet or dry");
             });
             // Review day 2 (2026-10-17): drowning in wadeable natural water (a downed person in 0.5 m shallows) is an open owner
             // question; it stays shipped ON, but one setting must turn it off ALONE (deep water and pits keep the rule).

@@ -35,6 +35,8 @@
     <label>thin water</label>
     <description>An ankle-deep sheet of still water over a pond's bed, the silt showing through. What is left of a pond just before its floor turns to mud.</description>
     <texturePath>RimMandrake/FlowWorks/Terrain/RM_WaterThin</texturePath>
+    <!-- SHALLOW_RIPPLE_FIX_DARK_RING_STATIC: owner 2026-10-24, "I think they need the surface ripple simply 'on' as you show for the other waters". -->
+    <waterDepthShader>Map/WaterDepth</waterDepthShader>
     <renderPrecedence>392</renderPrecedence>
     <pathCost>18</pathCost>
     <driesTo>Mud</driesTo>
@@ -49,6 +51,8 @@
     <label>damp film of water</label>
     <description>A wet sheen over the floor, too thin to wade: the ground shows through, darkened and glinting. The first inch of water, or the last of it.</description>
     <texturePath>RimMandrake/FlowWorks/Terrain/RM_WaterVeryShallow</texturePath>
+    <!-- SHALLOW_RIPPLE_FIX_DARK_RING_STATIC: owner 2026-10-24, "I think they need the surface ripple simply 'on' as you show for the other waters". -->
+    <waterDepthShader>Map/WaterDepth</waterDepthShader>
     <renderPrecedence>391</renderPrecedence>
     <pathCost>10</pathCost>
     <driesTo>Mud</driesTo>

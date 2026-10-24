@@ -119,13 +119,14 @@ namespace RimMandrake.FlowWorks
 			bool placed = false;
 			switch (choice)
 			{
-				case RM_PitAccessMath.RescueLadder.InstallPortable:
+				case RM_PitAccessMath.RescueLadder.InstallPortable when !DebugSettings.godMode:
 					if (GenConstruct.CanPlaceBlueprintAt(RimMandrakeFlowWorks_DefOf.RM_LadderPortable, cell, rot, map, false, spare).Accepted)
 					{
 						GenConstruct.PlaceBlueprintForInstall(spare, cell, map, rot, Faction.OfPlayer);
 						placed = true;
 					}
 					break;
+				case RM_PitAccessMath.RescueLadder.InstallPortable:
 				case RM_PitAccessMath.RescueLadder.BuildPortable:
 					placed = PlaceBuild(RimMandrakeFlowWorks_DefOf.RM_LadderPortable, cell, rot);
 					break;
@@ -148,6 +149,17 @@ namespace RimMandrake.FlowWorks
 			if (def == null || !GenConstruct.CanPlaceBlueprintAt(def, cell, rot, map).Accepted)
 			{
 				return false;
+			}
+			// GODMODE_LADDER_FIX_ASKS_FOR_WOOD: owner 2026-10-24, "I tried using godmode to build a new portable ladder ... it
+			// refused saying I didn't have enough wood... and that's not how Godmode is supposed to work." Vanilla god mode builds
+			// instantly and free (Designator_Build.DesignateSingleCell); this rescue ladder must too, never a blueprint that
+			// waits on 12 wood (and, standing on the wall square, blocks his own placement there as an identical blueprint).
+			if (DebugSettings.godMode)
+			{
+				Thing built = ThingMaker.MakeThing(def, def.MadeFromStuff ? GenStuff.DefaultStuffFor(def) : null);
+				built.SetFactionDirect(Faction.OfPlayer);
+				GenSpawn.Spawn(built, cell, map, rot, WipeMode.Vanish);
+				return true;
 			}
 			GenConstruct.PlaceBlueprintForBuild(def, cell, map, rot, Faction.OfPlayer, null);
 			return true;
