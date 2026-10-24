@@ -122,17 +122,62 @@ def decisions(runs_dir: Path = STATE / "runs", prefix: str = "fauna_"):
                 yield f.parent.name, json.loads(line)
 
 
-def regen_counts(recs, rs: dict | None = None) -> dict:
-    """{def: rounds filed in the CURRENT series}. Series 0: the number of REGEN decisions (the old rule). After a
-    reset: 1 (round 1 re-filed by the reset) + REGEN decisions dated after it."""
+PICTURE_KEYS = ("south", "east", "north", "west", "single")   # the judged picture; the scale panel is derived
+
+
+def picture_key(rec: dict) -> frozenset | None:
+    """The judged picture's identity: its facing source shas (decision record `source_sha256`). None when the record
+    predates source shas, so it can never be merged with another picture."""
+    k = frozenset(v for f, v in (rec.get("source_sha256") or {}).items() if f in PICTURE_KEYS and v)
+    return k or None
+
+
+def production_decisions(runs_dir: Path = STATE / "runs"):
+    """(run, record) for every run that was not a --test run (run.json test false); test runs never count rounds."""
+    for f in sorted(runs_dir.glob("*/decisions.jsonl")):
+        try:
+            if json.loads((f.parent / "run.json").read_text()).get("test", True):
+                continue
+        except (OSError, ValueError):
+            continue
+        for line in f.read_text().splitlines():
+            if line.strip():
+                yield f.parent.name, json.loads(line)
+
+
+def _in_series(r: dict, rs: dict) -> bool:
+    d = r["subject"]
+    return not (d in rs and _instant(r.get("at")) <= _instant(rs[d]["at"]))
+
+
+def regened_pictures(recs, rs: dict | None = None) -> dict:
+    """{(def, picture_key): {"run", "round"}} for the first REGEN of each picture in the def's current series.
+    A picture judged again (the same creature listed in two biome batches) must not spend a second round
+    (ARTEVAL_ROUNDS_FIX_REJUDGE_DOUBLE_COUNT: RM_Mullgoth escalated after two renders)."""
     rs = resets() if rs is None else rs
-    n = {}
+    out = {}
+    for run, r in recs:
+        k = picture_key(r)
+        if r.get("decision") != "REGEN" or k is None or not _in_series(r, rs):
+            continue
+        out.setdefault((r["subject"], k), {"run": run, "round": r.get("round") or 1})
+    return out
+
+
+def regen_counts(recs, rs: dict | None = None) -> dict:
+    """{def: rounds filed in the CURRENT series}. Series 0: the number of REGENed PICTURES (one picture judged REGEN
+    in two runs is one round). After a reset: 1 (round 1 re-filed by the reset) + REGENed pictures dated after it."""
+    rs = resets() if rs is None else rs
+    n, seen = {}, set()
     for _, r in recs:
         d = r["subject"]
-        if r.get("decision") != "REGEN":
+        if r.get("decision") != "REGEN" or not _in_series(r, rs):
             continue
-        if d in rs and _instant(r.get("at")) <= _instant(rs[d]["at"]):
-            continue
+        k = picture_key(r)
+        if k is not None:
+            if (d, k) in seen:
+                continue
+            seen.add((d, k))
         n[d] = n.get(d, 0) + 1
     for d in rs:
         n[d] = n.get(d, 0) + 1

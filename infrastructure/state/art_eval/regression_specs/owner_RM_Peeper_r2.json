@@ -1,0 +1,33 @@
+{
+ "subject": "RM_Peeper",
+ "label": "peeper",
+ "template": "creature",
+ "module": "walker",
+ "candidate": "r2",
+ "provenance": "owner-labelled regression case from run fauna_contagion_r2_03; owner PURGED Peeper r2 on owner_escalations_contagion_sheet_2026-10-24; guard: an F_SIZE_JUMP relaxation passes it (replay 2026-10-24)",
+ "description": "A once-predator gone soft and eye-studded \u2014 extra eyes opened in its hide until watching replaced hunting. A docile mid-tier browser of the goo margins, and another sky-reader the patient can learn from.",
+ "tier": "RM_",
+ "invented": true,
+ "size": {
+  "drawSize": [
+   0.9,
+   0.9
+  ]
+ },
+ "source": "RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
+ "owner_kept": false,
+ "images": {
+  "south": "/home/mandrake/rm/foundry/Transient/art_eval_regress_owner_20261024/RM_Peeper_r2/south.png",
+  "east": "/home/mandrake/rm/foundry/Transient/art_eval_regress_owner_20261024/RM_Peeper_r2/east.png",
+  "north": "/home/mandrake/rm/foundry/Transient/art_eval_regress_owner_20261024/RM_Peeper_r2/north.png",
+  "scale": "/home/mandrake/rm/foundry/Transient/art_eval_regress_owner_20261024/RM_Peeper_r2/scale.png"
+ },
+ "departures": [
+  "many extra eyes open across the hide: back, flanks and limbs, not only on the head",
+  "eyes on the back face upward, looking at the sky",
+  "predator build gone soft: a slack, rounded body instead of a lean hunting body",
+  "blunted, dull fangs and claws left over from its predator past"
+ ],
+ "earth_body_named": false,
+ "body_plan": "walker"
+}

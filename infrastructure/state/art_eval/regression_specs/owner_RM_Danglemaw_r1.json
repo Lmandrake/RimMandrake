@@ -1,0 +1,34 @@
+{
+ "subject": "RM_Danglemaw",
+ "label": "danglemaw",
+ "template": "creature",
+ "module": "walker",
+ "candidate": "r1",
+ "provenance": "owner-labelled regression case from run fauna_contagion_r1_01; owner PURGED Danglemaw r1 on owner_escalations_contagion_sheet_2026-10-24; guard: a DEPARTURE_MISSING confidence floor passes it (replay 2026-10-24)",
+ "description": "A mouth on a tendon: a muscular cord anchored in the Eyebark canopy with a free-hanging jaw at the end of it, slack until something walks underneath. Shelter from the sky under the trees is not safe from this.",
+ "tier": "RM_",
+ "invented": true,
+ "size": {
+  "drawSize": [
+   1.7,
+   1.7
+  ]
+ },
+ "source": "RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
+ "owner_kept": false,
+ "images": {
+  "south": "/home/mandrake/rm/foundry/Transient/art_eval_regress_owner_20261024/RM_Danglemaw_r1/south.png",
+  "east": "/home/mandrake/rm/foundry/Transient/art_eval_regress_owner_20261024/RM_Danglemaw_r1/east.png",
+  "north": "/home/mandrake/rm/foundry/Transient/art_eval_regress_owner_20261024/RM_Danglemaw_r1/north.png",
+  "scale": "/home/mandrake/rm/foundry/Transient/art_eval_regress_owner_20261024/RM_Danglemaw_r1/scale.png"
+ },
+ "departures": [
+  "The body is a bare muscular cord like a stretched tendon: no scales, no torso, and no thickening into a trunk anywhere along it",
+  "The upper end is rooted directly into the Eyebark canopy, so it does not coil or wrap around a branch the way a hanging snake does",
+  "The free end is just a jaw with no head behind it: no eyes, no skull shape, no neck",
+  "It hangs slack and straight down under its own weight, not in S-curves or a raised, poised strike pose",
+  "It has no limbs and no tail tip; the cord runs from the anchor point to the jaw and nothing else"
+ ],
+ "earth_body_named": false,
+ "body_plan": "serpentine"
+}

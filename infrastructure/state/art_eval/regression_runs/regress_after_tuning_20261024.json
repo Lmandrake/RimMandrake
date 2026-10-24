@@ -1,0 +1,98 @@
+{
+ "versions_key": "departures_brief@v2#9cda88+gpt_targeted_second_look@v1#cb6e32+opus_first_pass@v2#85b8f1+preamble@v2#7130aa+regen_prompt_edit@v1#861700+severity@v4#e9bbe1+creature@v3#fdc520",
+ "run": "regress_after_tuning_20261024",
+ "at": "2026-10-24T10:23:52-07:00",
+ "passed": 9,
+ "total": 11,
+ "unmeasured": 0,
+ "rows": [
+  {
+   "subject": "RM_Shadefern",
+   "expect": "ACCEPT",
+   "got": "ACCEPT",
+   "pass": true,
+   "unmeasured": false,
+   "why": "owner kept Shadefern B on 2026-10-10"
+  },
+  {
+   "subject": "RM_Huldu",
+   "expect": "NOT_ACCEPT",
+   "got": "REGEN",
+   "pass": true,
+   "unmeasured": false,
+   "why": "owner REDO, weepingstones sheet sitting 2026-10-10"
+  },
+  {
+   "subject": "RM_Ssurr",
+   "expect": "NOT_ACCEPT",
+   "got": "REGEN",
+   "pass": true,
+   "unmeasured": false,
+   "why": "owner REDO, weepingstones sheet sitting 2026-10-10"
+  },
+  {
+   "subject": "RM_Vellak",
+   "expect": "NOT_ACCEPT",
+   "got": "REGEN",
+   "pass": true,
+   "unmeasured": false,
+   "why": "owner REDO, weepingstones sheet sitting 2026-10-10"
+  },
+  {
+   "subject": "RM_Murrin",
+   "expect": "NOT_ACCEPT",
+   "got": "REGEN",
+   "pass": true,
+   "unmeasured": false,
+   "why": "guard: the relaxation must still reject an owner REDO swimmer"
+  },
+  {
+   "subject": "RM_Dewblade",
+   "expect": "ACCEPT",
+   "got": "ACCEPT",
+   "pass": true,
+   "unmeasured": false,
+   "why": "owner kept Dewblade B 2026-10-10; incumbent REGEN, V1cal ACCEPT"
+  },
+  {
+   "subject": "RM_DecayDrake",
+   "expect": "ACCEPT",
+   "got": "ACCEPT",
+   "pass": true,
+   "unmeasured": false,
+   "why": "owner PICKED DecayDrake column C (r2) on owner_escalations_cauldron_sheet_2026-10-24; pipeline REGEN on F_SIZE_JUMP (CL-035)"
+  },
+  {
+   "subject": "RM_Durrok",
+   "expect": "ACCEPT",
+   "got": "REGEN",
+   "pass": false,
+   "unmeasured": false,
+   "why": "owner POOLED Durrok column B (r2) on owner_escalations_leaningscrub_1_sheet_2026-10-24; pipeline REGEN on F_SIZE_JUMP"
+  },
+  {
+   "subject": "RM_Gawpsack",
+   "expect": "ACCEPT",
+   "got": "REGEN",
+   "pass": false,
+   "unmeasured": false,
+   "why": "owner PICKED live Gawpsack (column A) on owner_escalations_contagion_sheet_2026-10-24; pipeline REALLY_BAD on DEPARTURE_MISSING"
+  },
+  {
+   "subject": "RM_Peeper",
+   "expect": "NOT_ACCEPT",
+   "got": "REGEN",
+   "pass": true,
+   "unmeasured": false,
+   "why": "owner PURGED Peeper r2 on owner_escalations_contagion_sheet_2026-10-24; guard: an F_SIZE_JUMP relaxation passes it (replay 2026-10-24)"
+  },
+  {
+   "subject": "RM_Danglemaw",
+   "expect": "NOT_ACCEPT",
+   "got": "REGEN",
+   "pass": true,
+   "unmeasured": false,
+   "why": "owner PURGED Danglemaw r1 on owner_escalations_contagion_sheet_2026-10-24; guard: a DEPARTURE_MISSING confidence floor passes it (replay 2026-10-24)"
+  }
+ ]
+}

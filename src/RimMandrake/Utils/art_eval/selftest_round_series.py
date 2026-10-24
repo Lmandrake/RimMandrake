@@ -31,6 +31,34 @@ def main():
                 ("fauna_x_00", {"subject": "E", "decision": "REGEN", "at": "2026-10-23T10:00:00-07:00"})]
         check("no reset: count is REGENs", RS.regen_counts(recs, {}) == {"D": 3, "E": 1})
         check("no reset: tag rN", RS.tag("D", 2, {}) == "r2")
+
+        # one picture judged REGEN in two biome batches is ONE round (ARTEVAL_ROUNDS_FIX_REJUDGE_DOUBLE_COUNT);
+        # both directions: the same picture merges, a different picture (or one with no shas) still counts
+        pic = {"south": "a" * 64, "east": "b" * 64, "north": "c" * 64, "scale": "s1" * 32}
+        same = dict(pic, scale="s2" * 32)               # the scale panel is derived: not part of the picture
+        other = dict(pic, north="d" * 64)
+        dup = [("fauna_ls_01", {"subject": "M", "decision": "REGEN", "round": 1, "at": "2026-10-23T09:52:00-07:00",
+                                "source_sha256": pic}),
+               ("fauna_ca_01", {"subject": "M", "decision": "REGEN", "round": 2, "at": "2026-10-23T10:01:00-07:00",
+                                "source_sha256": same})]
+        check("same picture in two runs: one round", RS.regen_counts(dup, {}) == {"M": 1})
+        check("different picture: two rounds", RS.regen_counts(
+            dup[:1] + [("fauna_ca_01", dict(dup[1][1], source_sha256=other))], {}) == {"M": 2})
+        check("records without shas never merge", RS.regen_counts(
+            [(r, {k: v for k, v in x.items() if k != "source_sha256"}) for r, x in dup], {}) == {"M": 2})
+        seen = RS.regened_pictures(dup, {})
+        check("first REGEN of a picture is remembered with its round",
+              seen == {("M", RS.picture_key(dup[0][1])): {"run": "fauna_ls_01", "round": 1}})
+        check("picture key ignores scale, None without shas", RS.picture_key({"source_sha256": pic})
+              == RS.picture_key({"source_sha256": same}) and RS.picture_key({}) is None)
+        runs = td / "runs"
+        for name, test, recs_ in (("fauna_prod_01", False, dup[:1]), ("regress_x", True, dup[1:]), ("norunjson", None, dup[1:])):
+            (runs / name).mkdir(parents=True)
+            (runs / name / "decisions.jsonl").write_text("".join(json.dumps(r) + "\n" for _, r in recs_))
+            if test is not None:
+                (runs / name / "run.json").write_text(json.dumps({"test": test}))
+        check("production_decisions skips --test runs and runs without run.json",
+              [r for r, _ in RS.production_decisions(runs)] == ["fauna_prod_01"])
         try:
             RS.add_reset("D", "fauna_x_00", {"why": "mine"}, path=rp)
             check("reset without owner provenance refused", False)

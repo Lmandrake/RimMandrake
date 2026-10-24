@@ -34,6 +34,176 @@ def opus_reply(items, fail=(), unreadable=(), findings=(), overall="good"):
             "findings": list(findings), "overall": overall}
 
 
+def tuning_checks():
+    """Pipeline tuning 2026-10-24 (owner: "Remember to update the pipeline tuning, and fully enact."): his column
+    picks as shadow data, the canvas gate, stopped series, one round per picture, and the measured-policy hooks
+    (present but OFF in severity_policy.md: the replay on his picks showed they pass art he purged)."""
+    import copy
+    import shadow as SH
+    import runner
+    import round_series as RS
+    from PIL import Image
+
+    # --- (e) his picks -> labels -> implied shadow answers; qPrefill never counts
+    snap_row = {"columns": {"A": {"south": "a1", "east": "a2"}, "B": {"south": "b1", "east": "b2"},
+                            "C": {"south": "c1", "east": "c2"}, "D": {"south": "d1", "east": "d2"},
+                            "E": {"south": "e1", "east": "e2"}}}
+    row = {"decision": "B", "pool": {"x": {"add": ["C", "D"], "remove": ["D"]}}, "purge": ["e1"],
+           "retire": {"x": ["A"]}, "qPrefill": {"pipeline_check": "keep"}}
+    lab = SH.pick_labels(row, snap_row)
+    check("picks: picked / pooled (minus removed) / purged / retired / not picked",
+          lab == {"A": SH.RETIRED, "B": SH.PICKED, "C": SH.POOLED, "D": SH.NOT_PICKED, "E": SH.PURGED}, lab)
+    check("picks: an empty row labels nothing positive", set(SH.pick_labels({}, snap_row).values()) == {SH.NOT_PICKED})
+    want = {(SH.PICKED, "ACCEPT"): "keep", (SH.PICKED, "REGEN"): "should_accept", (SH.POOLED, "ESCALATE"): "should_accept",
+            (SH.PURGED, "REGEN"): "keep", (SH.RETIRED, "ACCEPT"): "should_regen", (SH.NOT_PICKED, "REGEN"): None,
+            (SH.NOT_PICKED, "ACCEPT"): None, (SH.PICKED, "HOLD_ERROR"): None}
+    got = {k: SH.answer_from_pick(*k) for k in want}
+    check("picks: implied answers both directions, no evidence -> None", got == want, got)
+    rec = {"subject": "RM_P", "decision": "REGEN", "source_sha256": {"south": "b1", "east": "b2", "scale": "zz"}}
+    check("picks: column matched on facing shas, scale ignored", SH.match_column(rec, snap_row) == "B")
+    check("picks: one shared sha is not a match",
+          SH.match_column(dict(rec, source_sha256={"south": "b1", "east": "q"}), snap_row) is None)
+    with tempfile.TemporaryDirectory() as td:
+        sp = Path(td) / "snap.json"
+        sp.write_text(json.dumps({"rows": {"RM_P": snap_row}}))
+        purged_only = {"subject": "RM_P", "decision": "ACCEPT", "source_sha256": {"south": "e1", "east": "zz"}}
+        got = [(c, l, a) for _, c, l, a in SH.picks_for({"snapshot": str(sp), "decisions": {"RM_P": row}}, [rec, purged_only])]
+        check("picks_for: picked render the pipeline REGENed -> should_accept; purged off-sheet file ACCEPTed -> should_regen",
+              got == [("B", SH.PICKED, "should_accept"), ("-", SH.PURGED, "should_regen")], got)
+
+    # --- (b)/(c) measured hooks: inert without the policy keys; floor fails closed on a missing confidence
+    pol = P.load_policy()
+    check("tuning keys OFF in severity_policy.md (replay: they pass purged art)",
+          "measured" not in pol and "polish_below_confidence" not in pol["codes"]["DEPARTURE_MISSING"], pol.get("measured"))
+    inv = P.card_facts({"invented": True, "gates": {"height_spread": 0.01}}, pol)
+    check("no measured block -> no size_steady fact", "size_steady" not in inv, inv)
+    p2 = copy.deepcopy(pol)
+    p2["measured"] = {"size_steady_max_spread": 0.3}
+    p2["codes"]["F_SIZE_JUMP"]["polish_when"] = ["size_steady"]
+    p2["codes"]["DEPARTURE_MISSING"]["polish_below_confidence"] = 0.5
+    f_lo = P.card_facts({"invented": True, "gates": {"height_spread": 0.3}}, p2)
+    f_hi = P.card_facts({"invented": True, "gates": {"height_spread": 0.31}}, p2)
+    check("size_steady at/below the measured spread only", "size_steady" in f_lo and "size_steady" not in f_hi)
+    check("F_SIZE_JUMP polish only when size_steady", P.severity("F_SIZE_JUMP", f_lo, p2) == "polish"
+          and P.severity("F_SIZE_JUMP", f_hi, p2) == "blocking")
+    check("confidence floor: below -> polish, at/above or missing/garbage -> blocking",
+          [P.severity("DEPARTURE_MISSING", f_hi, p2, c) for c in (0.49, 0.5, None, "x")]
+          == ["polish", "blocking", "blocking", "blocking"])
+
+    # --- (a) canvas gate: only renders the pipeline ordered, only against the drawSize rule
+    check("canvas rule = artpipe common.canvas_for_cells",
+          [P.canvas_rule([d, d]) for d in (0.5, 1.0, 2.0, 2.01, 4.0, 9.0)] == [256, 256, 256, 512, 512, 1024]
+          and P.canvas_rule(None) is None and P.canvas_rule([0]) is None)
+    try:
+        sys.path.insert(0, str(HERE.parent / "artpipe"))
+        import common as AC
+        check("canvas rule agrees with artpipe for 0.3..8", all(P.canvas_rule([x / 10]) == AC.canvas_for_cells(x / 10)
+                                                                 for x in range(3, 81)))
+    except ImportError as e:
+        check("artpipe common importable", False, repr(e))
+    card = {"artpipe_job": "arteval_RM_X_r2", "size": {"drawSize": [1.6, 1.6]}, "canvas_px": {"south": [1024, 1024], "east": [256, 256]}}
+    check("canvas: wrong-size pipeline render is held, right panel not listed",
+          P.canvas_mismatch(card) == [("south", [1024, 1024], 256)], P.canvas_mismatch(card))
+    check("canvas: live / owner art never held", P.canvas_mismatch(dict(card, artpipe_job=None)) == []
+          and P.canvas_mismatch(dict(card, artpipe_job="artpipe_other")) == [])
+    check("canvas: unknown drawSize never held", P.canvas_mismatch(dict(card, size={})) == [])
+    check("canvas: right canvas passes", P.canvas_mismatch(dict(card, canvas_px={"south": [256, 256]})) == [])
+
+    # --- runner: HOLD_CANVAS before any model; regen job canvas from drawSize; stopped series not judged;
+    #     one picture judged in two runs keeps its round
+    calls = []
+
+    class Mock(runner.Reviewers):
+        def opus(self, prompt, card_dir):
+            calls.append(card_dir.name)
+            subj = json.loads((card_dir / "card.json").read_text())["subject"]
+            items = P.checklist_for(P.load_template("creature"), "walker", P.card_facts({"invented": True}))
+            return json.dumps({"schema": "rm-art-eval/opus@v1", "subject": subj, "observed": {},
+                               "checklist": {i["id"]: {"status": "ok", "seen": "-"} for i in items},
+                               "findings": [{"code": "F_NORTH_FACE", "confidence": 0.95, "fix": "rear view"}],
+                               "overall": "weak"}), {"models_reported": ["mock-opus"]}
+
+        def regen(self, prompt, work):
+            return json.dumps({"schema": "rm-art-eval/regen@v1", "subject": "x", "edits": [], "invariants": [],
+                               "reference": "keep", "prompt": "a beast, seen from behind"}), {"models_reported": ["mock"]}
+
+    with tempfile.TemporaryDirectory() as td:
+        td = Path(td)
+
+        def imgs(edge, tag):
+            out = {}
+            for i, f in enumerate(("south", "east", "north", "scale")):
+                p = td / f"{tag}_{f}.png"
+                im = Image.new("RGBA", (edge, edge), (0, 0, 0, 0))
+                im.paste((90 + i, 60 + len(tag), 40, 255), (edge // 4, edge // 4, edge * 3 // 4, edge - 4))
+                im.save(p)
+                out[f] = str(p)
+            return out
+        base = {"template": "creature", "module": "walker", "invented": True, "description": "a beast",
+                "size": {"drawSize": [1.5, 1.5]}}
+        big = dict(base, subject="RM_Big", candidate="r2", artpipe_job="arteval_RM_Big_r2", images=imgs(1024, "big"))
+        ok = dict(base, subject="RM_Ok", candidate="r2", artpipe_job="arteval_RM_Ok_r2", images=imgs(256, "ok"))
+        live = dict(base, subject="RM_Live", candidate="live", images=imgs(1024, "live"))
+        stop = dict(base, subject="RM_Stop", images=imgs(256, "stop"))
+        old = runner.STATE, RS.RESETS
+        runner.STATE, RS.RESETS = td / "state", td / "state" / "round_resets.jsonl"
+        try:
+            (td / "state").mkdir()
+            RS.add_reset("RM_Stop", "x", {"by_card": "q -> a"}, path=RS.RESETS, now="2026-10-24T01:00:00-07:00")
+            RS.add_stop("RM_Stop", {"why": "kept"}, path=RS.RESETS, now="2026-10-24T02:00:00-07:00")
+            import io, contextlib
+            err = io.StringIO()
+            with contextlib.redirect_stderr(err):
+                r1 = runner.run([big, ok, live, stop], "fauna_t_01", rev=Mock(), test=False, work_root=td / "w",
+                                state_root=td / "state" / "runs")
+                (td / "state" / "runs" / "fauna_t_01" / "run.json").write_text(json.dumps({"test": False, "subjects": []}))
+                r2 = runner.run([dict(ok)], "fauna_t_02", rev=Mock(), test=False, work_root=td / "w",
+                                state_root=td / "state" / "runs")
+                r3 = runner.run([dict(ok, images=imgs(256, "ok2"))], "fauna_t_03", rev=Mock(), test=False,
+                                work_root=td / "w", state_root=td / "state" / "runs")
+            d1 = {r["subject"]: r for r in r1}
+            check("runner: 1024 render for drawSize 1.5 -> HOLD_CANVAS, no model call",
+                  d1["RM_Big"]["decision"] == "HOLD_CANVAS" and "RM_Big" not in " ".join(calls)
+                  and "1024x1024 != 256x256" in " ".join(d1["RM_Big"]["reasons"]), (d1["RM_Big"]["decision"], d1["RM_Big"]["reasons"], calls))
+            check("runner: right-canvas render and 1024 live art are judged",
+                  d1["RM_Ok"]["decision"] == "REGEN" and d1["RM_Live"]["decision"] == "REGEN", {k: v["decision"] for k, v in d1.items()})
+            check("runner: stopped series not judged, no decisions line, says series STOPPED",
+                  "RM_Stop" not in d1 and "RM_Stop: series STOPPED" in err.getvalue(), err.getvalue()[-300:])
+            jobs = {j["target_def"]: j for j in runner.regen_jobs(r1, "fauna_t_01")}
+            check("regen job canvas from drawSize (256 for 1.5), drawsize carried",
+                  jobs["RM_Ok"]["canvas_w"] == 256 and jobs["RM_Ok"]["canvas_h"] == 256 and jobs["RM_Ok"]["drawsize"] == 1.5, jobs.get("RM_Ok"))
+            check("regen job without a drawSize says why it is 1024",
+                  runner.regen_jobs([dict(d1["RM_Ok"], canvas_rule=None, drawsize=None)], "x")[0]["canvas_w"] == 1024)
+            check("same picture judged again keeps its round", r2[0]["decision"] == "REGEN" and r2[0]["round"] == 1
+                  and "round not advanced" in " ".join(r2[0]["reasons"]), (r2[0]["round"], r2[0]["reasons"][-1:]))
+            check("a different picture advances the round", r3[0]["round"] == 2, r3[0]["round"])
+            rr = json.loads((td / "state" / "regen_rounds.json").read_text())
+            check("regen_rounds.json: no double count", rr.get("RM_Ok") == 2 and "RM_Stop" not in rr, rr)
+
+            # regress in parts: max_new judges N rows, a resume judges only the rest, never one row twice
+            rows = []
+            for i, sp in enumerate((ok, live, dict(ok, subject="RM_Ok2"))):
+                (td / f"spec{i}.json").write_text(json.dumps(sp))
+                rows.append({"spec": str(td / f"spec{i}.json"), "expect": "NOT_ACCEPT" if i else "ACCEPT"})
+            (td / "state" / "regression.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
+            calls.clear()
+            with contextlib.redirect_stderr(io.StringIO()):
+                o1 = runner.regress(rev=Mock(), run_id="regress_t", max_new=2)
+                o2 = runner.regress(rev=Mock(), run_id="regress_t", max_new=2)
+            check("regress: part 1 incomplete, part 2 finishes, each row judged once",
+                  o1.get("incomplete") == 1 and o2.get("total") == 3 and o2.get("passed") == 2 and len(calls) == 3,
+                  (o1, {k: o2.get(k) for k in ("passed", "total")}, calls))
+            rj = td / "state" / "runs" / "regress_t" / "run.json"
+            rj.write_text(json.dumps(dict(json.loads(rj.read_text()), versions_key="other")))
+            try:
+                runner.regress(rev=Mock(), run_id="regress_t")
+                check("regress: resuming on other prompt versions refused", False)
+            except SystemExit:
+                check("regress: resuming on other prompt versions refused", True)
+        finally:
+            runner.STATE, RS.RESETS = old
+
+
 def main():
     pol = P.load_policy()
     check("policy version", pol["version"].startswith("severity@"), pol.get("version"))
@@ -515,6 +685,7 @@ def main():
     except (ImportError, NameError, AttributeError) as e:
         check("review 2026-10-24 checks", False, repr(e))
 
+    tuning_checks()
     print(f"{'PASS' if not FAILS else 'FAIL'}: art_eval selftest, {len(FAILS)} failure(s)")
     return 1 if FAILS else 0
 
