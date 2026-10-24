@@ -164,10 +164,10 @@
       <RM_ScrubOvercast>5</RM_ScrubOvercast>
     </baseWeatherCommonalities>
     <wildAnimals>
-      <RM_Vurra MayRequire="mandrake.rsw.swbestiary">0.7</RM_Vurra>  <!-- vurra - our port of the donor terrorworm (RSW_DesertPortMisc_Races.xml), Q9 -->
+      <RM_Vurra>0.7</RM_Vurra>  <!-- vurra - our port of the donor terrorworm (this mod, ThingDefs_Races/RM_Vurra.xml), Q9 -->
       <RM_Chikka>0.25</RM_Chikka>  <!-- cactipine - non-Star-Wars donor, Q9; defined in this mod since CHIKKA_HOME_DECIDE_NOT_STAR_WARS (ThingDefs_Races/RM_Chikka.xml) -->
-      <RM_Durrok MayRequire="mandrake.rsw.swbestiary">0.1</RM_Durrok>  <!-- wildpawn - non-Star-Wars donor, Q9 -->
-      <RM_Mullgoth MayRequire="mandrake.rsw.swbestiary">0.025</RM_Mullgoth>  <!-- wildpod - non-Star-Wars donor, Q9 -->
+      <RM_Durrok>0.1</RM_Durrok>  <!-- wildpawn - non-Star-Wars donor, Q9 -->
+      <RM_Mullgoth>0.025</RM_Mullgoth>  <!-- wildpod - non-Star-Wars donor, Q9 -->
       <!-- LEANINGSCRUB_RULED_CONTENT_1: the ruled cast (RM_LeaningScrubFauna.xml) -->
       <RM_Fuzzrunner>1.0</RM_Fuzzrunner>
       <RM_Thornhold>0.4</RM_Thornhold>

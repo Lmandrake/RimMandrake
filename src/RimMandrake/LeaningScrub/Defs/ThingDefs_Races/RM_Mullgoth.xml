@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Mullgoth.xml                              SWB_RM_FAUNA_DECIDE_HOME_LIKE_CHIKKA
+
+  The mullgoth (our port of Alpha Animals AA_Wildpod) is not a Star Wars creature.
+  Owner 2026-10-24: "Yes, it appears that a lot of alpha animal ports got
+  classified as Star Wars. We should move all of those. Durrok and Mullgoth and
+  Vura do need moving out of Star Wars, yes." It moved here, block verbatim, from
+  src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_DesertPortMisc_Races.xml.
+
+  defName RM_Mullgoth is unchanged, so a save holding one still resolves it while
+  this mod is active; no alias is needed. texPaths are unchanged: the pictures
+  moved to this mod's Textures/ at the same relative path through the art ledger.
+-->
+<Defs>
+
+	<ThingDef ParentName="AnimalThingBase">
+		<!-- Alpha Animals AA_Wildpod -> RM_Mullgoth. AA_ToxicBite->Bite. Dropped: CompProperties_AsexualReproduction, CompProperties_HighlyFlammable, CompProperties_AnimalProduct - all VEF.AnimalBehaviours donor framework, same as sibling RM_Durrok. -->
+		<defName>RM_Mullgoth</defName>
+		<label>mullgoth</label>
+		<description>A low, domed animal on four thick legs, draped in pale hair and patched with grey-green moss and lilac lichen. Black slime drips from its belly. Bullets pass through its bulk with little effect, but its coat burns readily.</description>
+		<statBases>
+			<MoveSpeed>3</MoveSpeed>
+			<ComfyTemperatureMin>-15</ComfyTemperatureMin>
+			<MarketValue>400</MarketValue>
+			<LeatherAmount>0</LeatherAmount>
+			<ArmorRating_Blunt>1</ArmorRating_Blunt>
+			<ArmorRating_Heat>-100</ArmorRating_Heat>
+			<ArmorRating_Sharp>2</ArmorRating_Sharp>
+			<FilthRate>16</FilthRate>
+			<Wildness>0.95</Wildness>
+		</statBases>
+		<tools>
+			<li>
+				<label>left paw</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>23</power>
+				<cooldownTime>2.0</cooldownTime>
+				<linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<label>right paw</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>23</power>
+				<cooldownTime>2.0</cooldownTime>
+				<linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<capacities>
+					<li>Bite</li>
+				</capacities>
+				<power>15</power>
+				<cooldownTime>1.65</cooldownTime>
+				<linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<label>head</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>6</power>
+				<cooldownTime>1.65</cooldownTime>
+				<linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+			</li>
+		</tools>
+		<race>
+			<body>QuadrupedAnimalWithPaws</body>
+			<herdAnimal>false</herdAnimal>
+			<predator>false</predator>
+			<baseBodySize>4.0</baseBodySize>
+			<baseHealthScale>3.6</baseHealthScale>
+			<baseHungerRate>0.33</baseHungerRate>
+			<foodType>VegetarianRoughAnimal</foodType>
+			<specificMeatDef>RawFungus</specificMeatDef>
+			<trainability>Intermediate</trainability>
+			<manhunterOnTameFailChance>0.018</manhunterOnTameFailChance>
+			<lifeExpectancy>70</lifeExpectancy>
+			<hasGenders>false</hasGenders>
+			<lifeStageAges>
+				<li><def>AnimalBaby</def><minAge>0</minAge></li>
+				<li><def>AnimalJuvenile</def><minAge>0.25</minAge></li>
+				<li><def>AnimalAdult</def><minAge>0.5</minAge></li>
+			</lifeStageAges>
+			<soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+			<soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+			<soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+		</race>
+		<tradeTags>
+			<li>AnimalExotic</li>
+		</tradeTags>
+	</ThingDef>
+	<PawnKindDef ParentName="AnimalKindBase">
+		<defName>RM_Mullgoth</defName>
+		<label>mullgoth</label>
+		<race>RM_Mullgoth</race>
+		<alternateGraphicChance>0.667</alternateGraphicChance>
+		<alternateGraphics>
+		  <li>
+		    <texPath>Things/Pawn/Animal/RM_Mullgoth/RM_MullgothV_B</texPath>
+		  </li>
+		  <li>
+		    <texPath>Things/Pawn/Animal/RM_Mullgoth/RM_MullgothV_C</texPath>
+		  </li>
+		</alternateGraphics>
+		<combatPower>250</combatPower>
+		<ecoSystemWeight>1</ecoSystemWeight>
+		<lifeStages>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/RM_Mullgoth/RM_Mullgoth</texPath>
+					<drawSize>1.8</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/RM_Mullgoth/RM_Mullgoth</texPath>
+					<drawSize>2.6</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/RM_Mullgoth/RM_Mullgoth</texPath>
+					<drawSize>3.8</drawSize>
+				</bodyGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+</Defs>

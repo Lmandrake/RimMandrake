@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Vurra.xml                              SWB_RM_FAUNA_DECIDE_HOME_LIKE_CHIKKA
+
+  The vurra (our port of Horrors (mlie) Terrorworm) is not a Star Wars creature.
+  Owner 2026-10-24: "Yes, it appears that a lot of alpha animal ports got
+  classified as Star Wars. We should move all of those. Durrok and Mullgoth and
+  Vura do need moving out of Star Wars, yes." It moved here, block verbatim, from
+  src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_DesertPortMisc_Races.xml.
+
+  defName RM_Vurra is unchanged, so a save holding one still resolves it while
+  this mod is active; no alias is needed. texPaths are unchanged: the pictures
+  moved to this mod's Textures/ at the same relative path through the art ledger.
+-->
+<Defs>
+
+	<ThingDef ParentName="AnimalThingBase">
+		<!-- Horrors (mlie) Terrorworm -> RM_Vurra. Donor's HiveMind thinkTreeMain dropped (that mod's own AI framework); default AnimalThingBase think tree applies. Tools verbatim, capacities/groups already vanilla. -->
+		<defName>RM_Vurra</defName>
+		<label>vurra</label>
+		<description>An armoured alien worm large enough to threaten a lone traveler. It moves slowly, is not especially aggressive, and is often found trailing larger creatures on the hunt.</description>
+		<statBases>
+			<MoveSpeed>2.85</MoveSpeed>
+			<ComfyTemperatureMin>0</ComfyTemperatureMin>
+			<MarketValue>300</MarketValue>
+			<LeatherAmount>0</LeatherAmount>
+			<ArmorRating_Blunt>0.1</ArmorRating_Blunt>
+			<ArmorRating_Sharp>0.15</ArmorRating_Sharp>
+			<Wildness>0.95</Wildness>
+		</statBases>
+		<tools>
+			<li>
+				<capacities>
+					<li>Bite</li>
+				</capacities>
+				<power>10</power>
+				<cooldownTime>1.85</cooldownTime>
+				<linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<label>head</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>4</power>
+				<cooldownTime>1.65</cooldownTime>
+				<linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+				<chanceFactor>0.2</chanceFactor>
+			</li>
+		</tools>
+		<race>
+			<body>Snake</body>
+			<herdAnimal>false</herdAnimal>
+			<predator>false</predator>
+			<baseBodySize>0.6</baseBodySize>
+			<baseHealthScale>2.5</baseHealthScale>
+			<baseHungerRate>0.35</baseHungerRate>
+			<foodType>VegetarianRoughAnimal</foodType>
+			<trainability>Advanced</trainability>
+			<lifeExpectancy>6</lifeExpectancy>
+			<nameOnTameChance>1</nameOnTameChance>
+			<meatLabel>insect meat</meatLabel>
+			<gestationPeriodDays>10</gestationPeriodDays>
+			<lifeStageAges>
+				<li><def>EusocialInsectLarva</def><minAge>0</minAge></li>
+				<li><def>EusocialInsectJuvenile</def><minAge>0.03</minAge></li>
+				<li><def>EusocialInsectAdult</def><minAge>0.2</minAge>
+					<soundWounded>Pawn_BigInsect_Pain</soundWounded>
+					<soundDeath>Pawn_BigInsect_Death</soundDeath>
+					<soundCall>Pawn_BigInsect_Call</soundCall>
+					<soundAngry>Pawn_BigInsect_Angry</soundAngry>
+				</li>
+			</lifeStageAges>
+			<soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+			<soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+			<soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+		</race>
+		<tradeTags>
+			<li>Insectoid</li>
+		</tradeTags>
+	</ThingDef>
+	<PawnKindDef ParentName="AnimalKindBase">
+		<defName>RM_Vurra</defName>
+		<label>vurra</label>
+		<race>RM_Vurra</race>
+		<combatPower>50</combatPower>
+		<ecoSystemWeight>0.2</ecoSystemWeight>
+		<lifeStages>
+			<li>
+				<bodyGraphicData>
+					<!-- owner's pick on the Leaning Scrub sheet (2026-10-08), installed via the art ledger -->
+					<texPath>Things/Pawn/Animal/RM_Vurra/RM_Vurra</texPath>
+					<drawSize>2.0</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- owner's pick on the Leaning Scrub sheet (2026-10-08), installed via the art ledger -->
+					<texPath>Things/Pawn/Animal/RM_Vurra/RM_Vurra</texPath>
+					<drawSize>2.0</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- owner's pick on the Leaning Scrub sheet (2026-10-08), installed via the art ledger -->
+					<texPath>Things/Pawn/Animal/RM_Vurra/RM_Vurra</texPath>
+					<drawSize>2.0</drawSize>
+				</bodyGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+</Defs>

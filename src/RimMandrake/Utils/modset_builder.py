@@ -506,7 +506,7 @@ TIERS = {
                "BiomeDef carry its 5 inline non-Star-Wars fauna rows plus its "
                "renamed RM_ plant defs, and does WildAnimals_LeaningScrub.xml "
                "(UtinniPatches) land its 40 Star Wars PatchOperationAdd rows onto "
-               "it. Its Terrorworm row is now RM_Vurra (SWBestiary), so no "
+               "it. Its Terrorworm row is now RM_Vurra (LeaningScrub), so no "
                "donor is named explicitly any more.",
         "want": [
             BRIDGE,
