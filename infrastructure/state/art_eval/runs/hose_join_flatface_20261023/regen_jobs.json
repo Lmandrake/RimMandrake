@@ -1,0 +1,22 @@
+[
+ {
+  "id": "arteval_RM_HoseCoupling_FlatFace_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_HoseCoupling_FlatFace",
+  "prompt": "Four hose coupling sprites on a transparent background, painterly vanilla RimWorld style, realistic, with a clean dark outline, arranged left to right as four looks: (1) Scrapper: dull hand-worked brass with dents and verdigris, (2) Industrial: matte black steel with a yellow-black hazard stripe on the nut, (3) Modern: brushed aluminium with a pale blue-grey tint, (4) Futuristic: smooth white-grey alloy with glowing cyan trim lines. Each is the same single coupling half, lying flat on the ground and seen from straight above, small and compact with a simple readable silhouette. Reading left to right along one straight horizontal axis: the end of a flexible ribbed hose enters from the left into a ribbed crimp collar, then a chunky hex nut, then a short threaded stub with visible thread ridges. The stub ends in a flat, square-cut face: a single straight vertical edge perpendicular to the axis, seen side-on, with a thin bright highlight along the cut edge. The end is a solid flat cap, so the face reads as a clean flat butt end that mates flush with an identical half rotated 180 degrees. The silhouette is symmetric top to bottom about the hose axis. Soft top-down lighting from the upper left, with a small soft contact shadow on the ground.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: PORT_MISFIT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "hose_join_flatface_20261023",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl"
+ }
+]
