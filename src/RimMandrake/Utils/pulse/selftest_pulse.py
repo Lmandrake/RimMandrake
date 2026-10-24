@@ -1013,5 +1013,63 @@ check("failreport.report appends one record the reader sees", failreport.report(
 check("artpipe failed jobs are a calm history row, never red",
       [r["kind"] for r in pc.classify_artpipe({"ok": True, "pending": 0, "active": 0, "failed": 3, "done": 1}, NOW, NOW)] == ["idle", "failed"])
 
+# --- RIMPULSE_AUDIT_20261024: every stale row he found is a permanent case -------------------------------------
+# 1. "never reviewed" came from serve.log's start-up line and never cleared once he had ruled / agents enacted
+with tempfile.TemporaryDirectory() as d:
+    d = Path(d)
+    (d / "esc_sheet_2026-10-24.html").write_text("<html></html>")
+    (d / "esc_sheet_2026-10-24.serve.log").write_text("  7 rows · 7 decided · NEVER reviewed (pre-fill only)\n  serving http://localhost:1/?t=a\n")
+    dj = d / "esc_sheet_2026-10-24.decisions.json"
+    dj.write_text(json.dumps({"savedBy": "review-sheet-sidecar", "writeCount": 5, "savedAt": "2026-10-24T07:08:32-0700",
+                              "reviewStatus": {"state": "prefill"}}))
+    got = pc.read_sheets([d], probe=lambda u: True, review=lambda h: (True, "ok"), ingest=lambda: {})[0]
+    check("a sheet the sidecar wrote (he clicked) is NOT 'never reviewed', though serve.log still says so",
+          got["ruled"] and not got["unreviewed"] and not got["enacted"], got)
+    saved = pc.iso_to_epoch("2026-10-24T07:08:32-0700")
+    got = pc.read_sheets([d], probe=lambda u: True, review=lambda h: (True, "ok"),
+                         ingest=lambda: {"esc_sheet_2026-10-24.decisions.json": saved + 300})[0]
+    check("rulings ingested after the last save: the sheet is enacted", got["enacted"], got)
+    got = pc.read_sheets([d], probe=lambda u: True, review=lambda h: (True, "ok"),
+                         ingest=lambda: {"esc_sheet_2026-10-24.decisions.json": saved - 300})[0]
+    check("rulings ingested BEFORE his last save are not enacted (he changed his mind after)", not got["enacted"], got)
+    dj.write_text(json.dumps({"reviewStatus": {"state": "prefill"}}))
+    got = pc.read_sheets([d], probe=lambda u: True, review=lambda h: (True, "ok"), ingest=lambda: {})[0]
+    check("a pre-fill nobody saved stays 'never reviewed'", got["unreviewed"] and not got["ruled"], got)
+    ev_dir = d / "infrastructure/state/art/events"
+    ev_dir.mkdir(parents=True)
+    ev_dir.joinpath("X.jsonl").write_text(
+        json.dumps({"type": "ruling", "source_file": "Transient/biome_ffar/esc_sheet_2026-10-24.decisions.json",
+                    "ts": "2026-10-24T07:13:19-0700"}) + "\n" + json.dumps({"type": "purge", "source_file": "Transient/z.decisions.json",
+                                                                       "ts": "2026-10-24T07:13:19-0700"}) + "\n")
+    ing = pc.art_ingest_times([d])
+    check("art_ingest_times reads ruling events by decisions-file basename only",
+          list(ing) == ["esc_sheet_2026-10-24.decisions.json"] and ing["esc_sheet_2026-10-24.decisions.json"] > 0, ing)
+base = {"url": "http://localhost:1/?t=a", "rows": 3, "mtime": NOW - 100, "prereviewed": True, "unreviewed": False}
+ls = {r["key"] for r in pc.classify_looks([], [{**base, "name": "a", "enacted": True}, {**base, "name": "b", "ruled": True}], {}, NOW)}
+check("an enacted sheet leaves the to-look list; a ruled-but-not-enacted one stays", ls == {"sheet:b"}, ls)
+ls = {r["key"] for r in pc.classify_looks([], [{**base, "name": "world_water_review_2026-10-24"},
+                                               {**base, "name": "world_water_review_r2_2026-10-24"},
+                                               {**base, "name": "other_r3_x"}, {**base, "name": "other_x"}], {}, NOW)}
+check("a superseded revision (X_r2 over X) drops off; the newest stays; unrelated names are untouched",
+      ls == {"sheet:world_water_review_r2_2026-10-24", "sheet:other_r3_x"}, ls)
+check("sheet_revision: tag split, no tag = 0", pc.sheet_revision("a_r2_b") == ("a_b", 2) and pc.sheet_revision("a_b") == ("a_b", 0)
+      and pc.sheet_revision("pr2_x") == ("pr2_x", 0))
+# 2. a "later - until he asks" filed from his own card is no question
+LT = [fi("LATER_CARD", 900, title="Later: what a weeping peak DOES - not started until he asks", byCard="Look only: they weep (wire the rules later)",
+         needs="owner"),
+      fi("CARD_ASK", 900, title="Pick the cap", byCard="Which cap? -> 3", needs="owner"),
+      fi("LATER_REASKED", 900, title="Later: tooltip", byCard="Look only (later)", needs="owner"),
+      le("needs", "LATER_REASKED", 800, to="owner", reason="now he asked for it")]
+lr = pc.owner_rulings(LT)
+check("an item filed from his card as 'later / until he asks' is not a to-rule row", "LATER_CARD" not in lr, sorted(lr))
+check("a card-filed ask with no 'later' stays an ask; a fresh `needs --to owner` re-asks the later one",
+      "CARD_ASK" in lr and "LATER_REASKED" in lr, sorted(lr))
+# 3. an idle window that finished a day ago did not "just finish"
+ir = {r["who"]: r for r in pc.classify_sessions([sess("i1", "OLDWIN", "idle", 35 * 3600), sess("i2", "NEWWIN", "idle", 120)],
+                                                   {}, {}, {}, {}, NOW)[0]}
+check("an idle window that finished 35 h ago does not read 'just finished'; a fresh one does",
+      "just finished" not in ir["OLDWIN"]["text"] and "35 h" in ir["OLDWIN"]["text"]
+      and "just finished" in ir["NEWWIN"]["text"], [r["text"] for r in ir.values()])
+
 print(f"\n{'FAIL' if FAILS else 'OK'}: {len(FAILS)} failing")
 sys.exit(1 if FAILS else 0)

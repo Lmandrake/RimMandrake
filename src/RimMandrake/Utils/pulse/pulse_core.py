@@ -273,8 +273,10 @@ def owner_rulings(ledger: list[dict]) -> dict:
     verbs: `implemented`, `verify`, `file --needs`, `needs`, close/drop/... all move `needs` or the
     state, and pulse once only knew about `needs` (SCRAPNEST stayed "to rule" after `implemented`
     made it needs=bridge, 2026-10-10). A repeated `needs --to owner` re-asks and moves the time."""
+    import re
     became: dict[str, dict] = {}
     answered: dict[str, dict] = {}
+    decided: set[str] = set()
 
     def obs(ev, world, ok):
         iid = ev.get("id")
@@ -283,7 +285,19 @@ def owner_rulings(ledger: list[dict]) -> dict:
             return
         # a BLOCKED item is parked on something else (another item, or his own "later"): he cannot act on it
         # now, so it is not an ask; unblocking re-asks it fresh (owner 2026-10-23: answered rows lingered)
-        if it.open and it.needs == "owner" and not it.blocked:
+        if (it.open and it.needs == "owner" and not it.blocked and iid in decided
+                and not (ok and ev.get("event") == "needs")):
+            return                      # filed from his card: only a fresh `needs --to owner` asks him again
+        if (it.open and it.needs == "owner" and not it.blocked and ev.get("event") == "file" and ev.get("byCard")
+                and re.search(r"\blater\b|until he asks", f"{it.title or ''} {ev.get('reason') or ''}", re.I)):
+            # filed FROM his own card as a "later - until he asks": the decision is made, the item is parked for
+            # when he calls for it, and no question is waiting on him (owner 2026-10-24,
+            # CONTAGION_PEAKS_WIRE_WEEPING_RULES_LATER). A card-filed ask with no "later" stays an ask.
+            decided.add(iid)
+            became.pop(iid, None)
+            answered.pop(iid, None)
+        elif it.open and it.needs == "owner" and not it.blocked:
+            decided.discard(iid)
             if iid not in became or (ok and ev.get("event") == "needs"):
                 became[iid] = ev            # (re-)asked: any earlier answer was to an earlier question
                 answered.pop(iid, None)
@@ -577,12 +591,80 @@ def sheet_prereviewed(html: Path | None) -> tuple[bool, str]:
     return res
 
 
-def read_sheets(dirs: list[Path] | None = None, probe=sheet_alive, review=sheet_prereviewed) -> list[dict]:
+def sheet_ruling(html: Path | None) -> tuple[bool, float]:
+    """(ruled, saved_epoch) from the sheet's own decisions file beside its html. serve.log's "NEVER reviewed
+    (pre-fill only)" is printed ONCE at server start and never revised, so it said "never reviewed" for sheets he
+    had ruled and the agents had enacted (RIMPULSE_SHEETS_FIX_NEVER_REVIEWED_STICKS, owner 2026-10-24). He has
+    ruled when the sidecar wrote the file (savedBy + writeCount>0), or reviewStatus is 'ruled', or he returned it."""
+    if html is None:
+        return False, 0.0
+    try:
+        doc = json.loads(html.with_name(html.stem + ".decisions.json").read_text())
+    except (OSError, ValueError):
+        return False, 0.0
+    if not isinstance(doc, dict):
+        return False, 0.0
+    rs = doc.get("reviewStatus") if isinstance(doc.get("reviewStatus"), dict) else {}
+    ret = doc.get("returned") if isinstance(doc.get("returned"), dict) else {}
+    try:
+        wc = int(doc.get("writeCount") or 0)
+    except (TypeError, ValueError):
+        wc = 0
+    ruled = bool((doc.get("savedBy") and wc > 0) or rs.get("state") == "ruled" or ret.get("at"))
+    return ruled, iso_to_epoch(str(doc.get("savedAt") or ret.get("at") or ""))
+
+
+_INGEST_CACHE: dict[str, tuple] = {}
+
+
+def art_ingest_times(clones: list[Path] | None = None) -> dict:
+    """{decisions-file basename: epoch of the latest art-ledger `ruling` ingested from it} over every clone's
+    infrastructure/state/art/events/*.jsonl. A sheet whose rulings are ingested at or after its last save has been
+    enacted: nothing is left on it for him. Incremental (the shards are ~15 MB): only appended bytes are read."""
+    out: dict[str, float] = {}
+    for c in (clones if clones is not None else CLONES):
+        for f in glob.glob(str(c / "infrastructure/state/art/events/*.jsonl")):
+            try:
+                st = os.stat(f)
+            except OSError:
+                continue
+            ent = _INGEST_CACHE.get(f)
+            if not ent or ent[0] != st.st_ino or st.st_size < ent[1]:
+                ent = (st.st_ino, 0, {})
+            ino, off, seen = ent[0], ent[1], dict(ent[2])
+            if st.st_size > off:
+                with open(f, "rb") as fh:
+                    fh.seek(off)
+                    for raw in fh:
+                        if not raw.endswith(b"\n"):
+                            break
+                        off += len(raw)
+                        if b'"source_file"' not in raw or b'"ruling"' not in raw:
+                            continue
+                        try:
+                            e = json.loads(raw)
+                        except ValueError:
+                            continue
+                        if e.get("type") == "ruling" and e.get("source_file"):
+                            k = Path(str(e["source_file"]).replace("\\", "/")).name
+                            seen[k] = max(seen.get(k, 0.0), iso_to_epoch(str(e.get("ts") or "")))
+            _INGEST_CACHE[f] = (ino, off, seen)
+            for k, v in seen.items():
+                out[k] = max(out.get(k, 0.0), v)
+    return out
+
+
+def read_sheets(dirs: list[Path] | None = None, probe=sheet_alive, review=sheet_prereviewed, ingest=art_ingest_times) -> list[dict]:
     """Every review-sheet server that answers: the LAST url in its serve.log that is alive
     (SHEETS_INDEX/TONIGHT docs carry stale ports - never read those). `mtime` is the sheet's revision;
-    `prereviewed`/`prereview` say whether a valid pre-review record covers it (unread sheets are held back)."""
+    `prereviewed`/`prereview` say whether a valid pre-review record covers it (unread sheets are held back).
+    `ruled`: his rulings are in the sheet's decisions file; `enacted`: they were ingested after its last save."""
     import re
     from concurrent.futures import ThreadPoolExecutor
+    try:
+        ingested = ingest()
+    except Exception:   # a broken ledger read never hides a sheet: it just cannot prove one enacted
+        ingested = {}
     logs: dict[str, Path] = {}
     for d in (dirs if dirs is not None else SHEETS_DIRS):
         for f in glob.glob(str(d / "*.serve.log")) + glob.glob(str(d / "*" / "*.serve.log")):
@@ -608,8 +690,10 @@ def read_sheets(dirs: list[Path] | None = None, probe=sheet_alive, review=sheet_
             ok, why = review(html)
         except Exception as e:   # a broken checker holds the sheet back and says so; it never waves it through
             ok, why = False, f"pre-review check failed: {type(e).__name__}: {e}"[:200]
-        return {"name": name, "url": live, "unreviewed": info["never_reviewed"], "rows": info["rows"], "mtime": mt,
-                "prereviewed": ok, "prereview": why}
+        ruled, saved = sheet_ruling(html)
+        enacted = bool(ruled and html and ingested.get(html.stem + ".decisions.json", 0.0) >= saved > 0)
+        return {"name": name, "url": live, "unreviewed": info["never_reviewed"] and not ruled, "rows": info["rows"],
+                "mtime": mt, "prereviewed": ok, "prereview": why, "ruled": ruled, "enacted": enacted}
     with ThreadPoolExecutor(8) as ex:
         return [r for r in ex.map(one, logs.values()) if r]
 
@@ -793,7 +877,10 @@ def classify_sessions(sessions: list[dict], extras: dict, seen: dict, items: dic
         elif status == "idle" and sub > 0:
             add(_row(key, "run", who, f"{who} · {sub} agent{'s' * (sub > 1)} working{doing}", upd), "run")
         elif status == "idle":
-            add(_row(key, "idle", who, f"{who} just finished{doing}", upd), "idle")
+            idle_for = now - upd
+            when = ("just finished" if idle_for < 3600 else
+                    f"idle {idle_for / 3600:.0f} h" if idle_for < 48 * 3600 else f"idle {idle_for / 86400:.0f} d")
+            add(_row(key, "idle", who, f"{who} {when}{doing}", upd), "idle")
         else:
             tm = ex.get("transcript_mtime") or upd
             if now - max(tm, upd) >= STUCK_SECS:
@@ -1111,6 +1198,14 @@ def hand_type(target: str) -> str:
     return HAND_TYPES.get(ext, "folder" if not ext else "file")
 
 
+def sheet_revision(name: str) -> tuple[str, int]:
+    """(name without its `_rN` revision tag, N) - world_water_review_r2_2026-10-24 -> (world_water_review_2026-10-24, 2);
+    no tag is revision 0. The rebuilt sheet replaces the one it was rebuilt from."""
+    import re
+    m = re.search(r"_r(\d+)(?=_|$)", name)
+    return (name[:m.start()] + name[m.end():], int(m.group(1))) if m else (name, 0)
+
+
 def classify_looks(hands: list[dict], sheets: list[dict], seen_look: dict, now: float,
                    seen_rev: dict | None = None) -> list[dict]:
     """The "to look at" feed: deliberate hand-offs + live review sheets. Nothing ever drops off when
@@ -1148,7 +1243,14 @@ def classify_looks(hands: list[dict], sheets: list[dict], seen_look: dict, now: 
         elif h.get("missing"):
             r.update(ltype="target missing - delivery problem", missing=True)
         rows.append(r)
-    for x in sorted(sheets, key=lambda x: x["name"]):
+    live_sheets = [x for x in sheets if not x.get("enacted")]   # enacted: his rulings are carried out, nothing left
+    newest: dict[str, int] = {}
+    for x in live_sheets:
+        base, rev = sheet_revision(x["name"])
+        newest[base] = max(newest.get(base, 0), rev)
+    for x in sorted(live_sheets, key=lambda x: x["name"]):
+        if sheet_revision(x["name"])[1] < newest[sheet_revision(x["name"])[0]]:
+            continue                    # a superseded revision (X_r2_... replaces X_...) drops off the list
         if not x.get("prereviewed", True):
             rows.append(_row("held:sheet:" + x["name"], "held", "", x["name"], x["mtime"], src="sheets",
                              why=x.get("prereview") or "no pre-review record",
