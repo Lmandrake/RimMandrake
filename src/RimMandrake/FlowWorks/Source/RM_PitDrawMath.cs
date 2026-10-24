@@ -123,6 +123,77 @@ namespace RimMandrake.FlowWorks
 			return bandBottom;
 		}
 
+		/// <summary>PIT_COVER_FIX_DROPS_THE_SUN_SHADOW — whether ground point (<paramref name="px"/>,<paramref name="pz"/>) lies in a
+		/// vanilla static sun shadow. SectionLayer_SunShadows gives each edifice cell (i,j) with staticSunShadowHeight h a flat quad
+		/// plus W/E/S skirts whose far vertices carry alpha h; its shader moves a vertex by alpha x _CastVect.xz. The union drawn is
+		/// therefore each cell swept by h x (vx,vz): p is shaded iff p - t·h·v lies in a caster's cell for some t in [0,1].
+		/// <paramref name="heightAt"/> is the caster height of a cell (0: none); <paramref name="hMax"/> bounds it, so only cells
+		/// within hMax x v of p are read. vz is always below -0.9 in GenCelestial, so a shadow never reaches north.</summary>
+		public static bool SunShadowed(float px, float pz, float vx, float vz, float hMax, Func<int, int, float> heightAt)
+		{
+			if (hMax <= 0f) return false;
+			int x0 = (int)Math.Floor(Math.Min(px, px - hMax * vx)), x1 = (int)Math.Floor(Math.Max(px, px - hMax * vx));
+			int z0 = (int)Math.Floor(Math.Min(pz, pz - hMax * vz)), z1 = (int)Math.Floor(Math.Max(pz, pz - hMax * vz));
+			for (int i = x0; i <= x1; i++)
+			{
+				for (int j = z0; j <= z1; j++)
+				{
+					float h = heightAt(i, j);
+					if (h > 0f && SweptCellHits(px, pz, i, j, h * vx, h * vz)) return true;
+				}
+			}
+			return false;
+		}
+
+		/// <summary>The caster cells (x, z, height) whose sweep can reach the rect [l,r]x[a,b]: every cell with height &gt; 0 within
+		/// hMax x v back from it. Gathered once per cover piece, so each shade vertex tests only these (SunShadowedBy).</summary>
+		public static void SunCasters(float l, float r, float a, float b, float vx, float vz, float hMax, Func<int, int, float> heightAt,
+			System.Collections.Generic.List<(int x, int z, float h)> into)
+		{
+			into.Clear();
+			if (hMax <= 0f) return;
+			int x0 = (int)Math.Floor(l - Math.Max(0f, hMax * vx)), x1 = (int)Math.Floor(r - Math.Min(0f, hMax * vx));
+			int z0 = (int)Math.Floor(a - Math.Max(0f, hMax * vz)), z1 = (int)Math.Floor(b - Math.Min(0f, hMax * vz));
+			for (int i = x0; i <= x1; i++)
+			{
+				for (int j = z0; j <= z1; j++)
+				{
+					float h = heightAt(i, j);
+					if (h > 0f) into.Add((i, j, h));
+				}
+			}
+		}
+
+		/// <summary>SunShadowed against a caster list from SunCasters.</summary>
+		public static bool SunShadowedBy(float px, float pz, float vx, float vz, System.Collections.Generic.List<(int x, int z, float h)> casters)
+		{
+			for (int k = 0; k < casters.Count; k++)
+			{
+				var c = casters[k];
+				if (SweptCellHits(px, pz, c.x, c.z, c.h * vx, c.h * vz)) return true;
+			}
+			return false;
+		}
+
+		/// <summary>True when p - t·(dx,dz) lies inside the unit cell (i,j) for some t in [0,1] (slab test). The cell is shrunk by
+		/// 1e-4 so a point ON a caster's edge (the cover's bottom row of vertices, which stops at a wall's north edge) is not
+		/// shaded by a shadow that only leaves the other way.</summary>
+		public static bool SweptCellHits(float px, float pz, int i, int j, float dx, float dz)
+		{
+			const float e = 1e-4f;
+			float lo = 0f, hi = 1f;
+			bool Slab(float p, float d, float min)
+			{
+				// min + e <= p - t d <= min + 1 - e
+				if (Math.Abs(d) < 1e-6f) return p >= min + e && p <= min + 1f - e;
+				float ta = (p - min - e) / d, tb = (p - min - 1f + e) / d;
+				lo = Math.Max(lo, Math.Min(ta, tb));
+				hi = Math.Min(hi, Math.Max(ta, tb));
+				return lo <= hi;
+			}
+			return Slab(px, dx, i) && Slab(pz, dz, j);
+		}
+
 		/// <summary>Tween progress from the centre of the cell a pawn is leaving
 		/// (<paramref name="ax"/>,<paramref name="az"/>) toward the next cell's centre, given the
 		/// drawn position (<paramref name="px"/>,<paramref name="pz"/>). Projected onto the

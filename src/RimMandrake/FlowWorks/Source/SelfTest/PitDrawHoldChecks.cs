@@ -50,8 +50,77 @@ namespace RimMandrake.FlowWorks.SelfTest
             return false;
         }
 
+        // PIT_COVER_FIX_DROPS_THE_SUN_SHADOW: save e's walls as SectionLayer_SunShadows sees them (vanilla Wall staticSunShadowHeight 1.0)
+        private static float SaveEHeight(int x, int z) => SaveEWall(x, z) ? 1f : 0f;
+
+        // the fraction of a grid of points over [l,r]x[a,b] that lie in a sun shadow
+        private static float ShadedShare(float l, float r, float a, float b, float vx, float vz, Func<int, int, float> h)
+        {
+            int n = 0, hit = 0;
+            for (int i = 0; i <= 10; i++)
+                for (int k = 0; k <= 10; k++, n++)
+                    if (RM_PitDrawMath.SunShadowed(l + (r - l) * i / 10f, a + (b - a) * k / 10f, vx, vz, 1f, h)) hit++;
+            return hit / (float)n;
+        }
+
         public static void Run(Action<string, Action> Case)
         {
+            Case("PitSun_save_e_east_wall_shades_the_band", () =>
+            {
+                // C3's cover band: x 37.2..39.8, z 21..22, between the pit's south lip (22) and the south wall (row 20)
+                // afternoon cast vector (GenCelestial: x in -15..15, z = -1.5 - 2.5 x^2/100): the east wall's (x 42) shadow runs west
+                float vx = -6f, vz = -1.5f - 2.5f * 36f / 100f;
+                Assert(RM_PitDrawMath.SunShadowed(38.5f, 21.5f, vx, vz, 1f, SaveEHeight), "can-fail: band centre lies in the east wall's shadow");
+                Assert(ShadedShare(37.2f, 39.8f, 21f, 22f, vx, vz, SaveEHeight) > 0.5f, "most of the band is shaded in the afternoon");
+                // morning: the shadow runs east, away from the band; noon: straight south, so the south wall (row 20) never reaches z >= 21
+                Assert(ShadedShare(37.2f, 39.8f, 21f, 22f, 6f, vz, SaveEHeight) == 0f, "morning: no shadow on the band");
+                Assert(ShadedShare(37.2f, 39.8f, 21f, 22f, 0f, -1.5f, SaveEHeight) == 0f, "noon: the south wall's shadow falls south of it");
+                Assert(RM_PitDrawMath.SunShadowed(38.5f, 19.5f, 0f, -1.5f, 1f, SaveEHeight), "noon: the ground south of the south wall is shaded");
+            });
+
+            Case("PitSun_sweep_matches_the_vanilla_mesh", () =>
+            {
+                // one caster at (0,0): its shadow is the unit square swept by height x cast vector (skirt verts displaced by alpha = height)
+                Func<int, int, float> one = (x, z) => x == 0 && z == 0 ? 1f : 0f;
+                Func<int, int, float> half = (x, z) => x == 0 && z == 0 ? 0.5f : 0f;
+                Assert(RM_PitDrawMath.SunShadowed(0.5f, -1.4f, 0f, -1.5f, 1f, one), "inside the swept length");
+                Assert(!RM_PitDrawMath.SunShadowed(0.5f, -1.6f, 0f, -1.5f, 1f, one), "beyond the tip");
+                Assert(RM_PitDrawMath.SunShadowed(0.5f, -0.7f, 0f, -1.5f, 1f, half), "height 0.5 casts half as far");
+                Assert(!RM_PitDrawMath.SunShadowed(0.5f, -0.8f, 0f, -1.5f, 1f, half), "height 0.5: past its tip");
+                Assert(!RM_PitDrawMath.SunShadowed(0.5f, 1.2f, 0f, -1.5f, 1f, one), "never north of the caster");
+                Assert(RM_PitDrawMath.SunShadowed(3.5f, -1.2f, 4f, -1.9f, 1f, one), "slanted: the parallelogram's far corner");
+                Assert(!RM_PitDrawMath.SunShadowed(1.5f, -1.8f, 4f, -1.9f, 1f, one), "slanted: off the parallelogram");
+                Assert(!RM_PitDrawMath.SunShadowed(0.5f, -1.4f, 0f, -1.5f, 1f, (x, z) => 0f), "no caster, no shadow");
+                // the per-piece caster list gives the same answer as the per-point search, over the C3 band at three times of day
+                var list = new System.Collections.Generic.List<(int x, int z, float h)>();
+                foreach (float vx in new[] { -15f, -6f, 0f, 6f, 15f })
+                {
+                    float vz = -1.5f - 2.5f * vx * vx / 100f;
+                    RM_PitDrawMath.SunCasters(37.2f, 39.8f, 21f, 22f, vx, vz, 1f, SaveEHeight, list);
+                    for (int i = 0; i <= 26; i++)
+                        for (int k = 0; k <= 10; k++)
+                        {
+                            float x = 37.2f + 0.1f * i, z = 21f + 0.1f * k;
+                            Assert(RM_PitDrawMath.SunShadowedBy(x, z, vx, vz, list) == RM_PitDrawMath.SunShadowed(x, z, vx, vz, 1f, SaveEHeight),
+                                "caster list agrees at " + x + "," + z + " v " + vx);
+                        }
+                }
+            });
+
+            Case("PitSun_lip_occlusion_carries_the_sun_shadow", () =>
+            {
+                string src = Src("Superdeep", "RM_PitLipOcclusion.cs");
+                Assert(src.Contains("Shader.GetGlobalVector(ShaderPropertyIDs.MapSunLightDirection)"), "the cast vector vanilla's shader displaces by (_CastVect)");
+                Assert(src.Contains("MatBases.SunShadow.color"), "the shadow tint SkyManager sets each frame");
+                Assert(src.Contains("RM_PitDrawMath.SunShadowedBy(x, z, sunVx, sunVz, sunCasters)"), "each shade vertex tests the vanilla sweep");
+                Assert(src.Contains("RM_PitDrawMath.SunCasters(l, r, a, b, sunVx, sunVz, SunHMax, SunHeightAt, sunCasters)"), "casters gathered per piece");
+                Assert(src.Contains("ed.def.staticSunShadowHeight") && src.Contains("map.edificeGrid["), "casters are edifices with a static sun shadow height");
+                Assert(src.Contains("!MatBases.SunShadow.shader.isSupported"), "only where vanilla draws the layer at all");
+                string update = Between(src, "public override void MapComponentUpdate()", "// cover cell by cell");
+                Assert(update.Contains("ReadSunShadow(edgeShadows);"), "read once per frame, gated like SectionLayer_SunShadows.Visible");
+                Assert(src.Contains("if (casters != 0 || sun)"), "a piece with only a sun shadow on it is shaded too");
+            });
+
             Case("PitSoil_cover_stops_at_save_e_south_wall", () =>
             {
                 // the C3 boar held on the lip (drawn centre 22), adult WildBoar drawSize 2.65: sprite band 20.675 .. 22
