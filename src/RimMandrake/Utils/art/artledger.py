@@ -1207,8 +1207,34 @@ def retire(dest, *, reason: str | None = None, owner_said: str | None = None) ->
 
 # ─────────────────────────────────────────────────────────────── purging ──
 
-def purge(sha: str, *, owner_said: str, via: str = "art purge", release_keep=False,
-          release_from_sheet: tuple[str, str] | None = None, live_paths: list[str] | None = None) -> dict:
+def purge_authority(owner_said: str | None = None, by_card: str | None = None, per_ruling: str | None = None,
+                    why: str | None = None) -> dict:
+    """The owner-authority fields a purge (and each keep release it makes) records — one field per kind, as rimflow
+    and `install` (ART_PURGE_WIRE_BY_CARD_FLAG_MISSING): `said` his words only, `by_card` a card pick (our label,
+    never in `said`), `per_ruling` a standing ruling cited by reference, `why` the agent's reason (grants nothing).
+    Refuses when no owner authority is given."""
+    if by_card is not None and not by_card.strip():
+        raise Refused("--by-card needs the card's text: \"question → picked option\"")
+    if per_ruling is not None and (not per_ruling.strip() or any(c.isspace() for c in per_ruling.strip())):
+        raise Refused("--per-ruling needs the ruling's item id or ledger event (a reference, not a quote)")
+    if not ((owner_said and owner_said.strip()) or by_card or per_ruling):
+        raise Refused("purge is the owner's act — needs his typed words (--owner-said), his card pick (--by-card), "
+                      "a standing ruling of his (--per-ruling) or a sheet ruling; --why alone grants nothing")
+    out = {}
+    if owner_said and owner_said.strip():
+        out["said"] = owner_said
+    if by_card:
+        out["by_card"] = by_card.strip()
+    if per_ruling:
+        out["per_ruling"] = per_ruling.strip()
+    if why and why.strip():
+        out["why"] = why.strip()
+    return out
+
+
+def purge(sha: str, *, owner_said: str | None = None, via: str = "art purge", release_keep=False,
+          release_from_sheet: tuple[str, str] | None = None, live_paths: list[str] | None = None,
+          by_card: str | None = None, per_ruling: str | None = None, why: str | None = None) -> dict:
     """Reject+purge: the owner deletes an erroneous render so it stops polluting option
     space. Removes the bytes from the store and records a `purge` event; every sheet and
     every later registration skips the sha. Refuses a picture that is live in a mod
@@ -1217,9 +1243,8 @@ def purge(sha: str, *, owner_said: str, via: str = "art purge", release_keep=Fal
       * release_keep=True — the owner's explicit `art purge --release-keep` (his words recorded on the release);
       * release_keep={keep ids} — exactly those keeps (enact: the keeps this same sheet row minted);
       * release_from_sheet=(via, row) — the keeps that same sheet row minted (ingest).
-    Any other keep on the picture refuses the purge."""
-    if not owner_said or not owner_said.strip():
-        raise Refused("purge is the owner's act — needs his typed words or a sheet ruling")
+    Any other keep on the picture refuses the purge. Authority: `purge_authority` (words, card, standing ruling)."""
+    auth = purge_authority(owner_said, by_card, per_ruling, why)
     idx = Index()
     if live_paths is None:
         live_paths = [f"{m}/Textures/{r}" for (m, r), ev in idx.live.items() if ev.get("sha") == sha]
@@ -1242,10 +1267,10 @@ def purge(sha: str, *, owner_said: str, via: str = "art purge", release_keep=Fal
         k = others[0]
         raise Refused(f"{sha[:12]} carries an owner keep ({k['id']}, {Path(k.get('via') or '').name or 'his words'}"
                       f"{': ' + repr(k.get('said'))[:80] if k.get('said') else ''}) — a purge never silently releases "
-                      f"a keep; ask him, then `art.py purge {sha[:12]} --owner-said \"…\" --release-keep`")
+                      f"a keep; ask him, then `art.py purge {sha[:12]} --owner-said \"…\" | --by-card \"q → option\" --release-keep`")
     for k in prot:
         w.add({"type": "ruling", "id": det_id("release", k["id"], sha), "target": {"sha": sha},
-               "verdict": "release", "releases": k["id"], "by": "owner", "said": owner_said,
+               "verdict": "release", "releases": k["id"], "by": "owner", **auth,
                "trust": "ruled", "via": via})
     removed = False
     p = store_path(sha)
@@ -1253,7 +1278,7 @@ def purge(sha: str, *, owner_said: str, via: str = "art purge", release_keep=Fal
         p.unlink()
         removed = True
     pev = {"type": "purge", "id": det_id("purge", sha), "sha": sha, "by": "owner",
-           "said": owner_said, "via": via, "bytes_removed": removed}
+           **auth, "via": via, "bytes_removed": removed}
     un = idx.unpurged.get(sha)
     if un:                                       # a re-purge after his unpurge: a new id (not deduped), ordered after it
         pev.update(id=det_id("purge", sha, un["id"]), follows=un["id"])
