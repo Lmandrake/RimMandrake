@@ -121,10 +121,7 @@
 !/art_eval_pilot_20261023/prompts/class_flora_special.md
 !/art_eval_pilot_20261023/prompts/class_flora_tree.md
 !/art_eval_pilot_20261023/prompts/class_item_catch.md
-!/art_gen/droidworks_g2/**
 !/art_judgments_2026-10-23.md
-!/artpipe_manual_retries/**
-!/artpipe_quota_failures/**
 !/bench_gss_fw_live_20261011/cut_true.png
 !/bench_gss_fw_live_20261011/gss_owed_checks_result.json
 !/bench_gss_fw_live_20261011/playtest_ladder4.log
@@ -247,14 +244,9 @@
 !/biome_ffar/suspension_four_looks_sheet_2026-10-21.html
 !/biome_sprint_live_order_2026-10-16.md
 !/bridge_run_1_20261023/RESULTS.md
-!/canon_regen_wave1_2026-09-18/**
-!/canon_regen_wave2_2026-09-18/**
-!/canon_regen_wave3_2026-09-23/**
-!/canon_regen_wave4_2026-09-23/**
 !/coupler_regen_20261023/**
 !/coupler_regen_20261023/stations/Kludged_before_after.png
 !/coupler_regen_20261023/stations/Repaired_before_after.png
-!/desert_wraps_candidates/**
 !/dev_underscore_dirs_inventory_2026-10-19.md
 !/donor_regen_eligibility_2026-10-19.md
 !/donor_regen_failures_2026-10-19.md
@@ -269,7 +261,6 @@
 !/face_art_2026-10-21/C_hats_on_heads_predicted.png
 !/face_art_2026-10-21/D_skin_tint_options_simulated.png
 !/facing_lint_calibration_2026-10-16/PROGRESS.md
-!/final_review/beauty/**
 !/flowworks_bars_review_20261023.md
 !/flowworks_gss_owed_20261011.md
 !/flowworks_live_sitting_plan.md
@@ -283,7 +274,6 @@
 !/flowworks_takeover_20261023/PLAN.md
 !/flowworks_takeover_20261023/wave_brief.txt
 !/flyer_census_2026-10-08.py
-!/flyer_study_2026-10-08/**
 !/forge_creature_concepts_sheet_2026-10-20.html
 !/foundry_awareness_live_20261010.json
 !/foundry_fulllist_deploy_20261010.md
@@ -652,7 +642,6 @@
 !/modern_style_20261023/specs_r3/RM_UniversalPipe_Modern_scale.png
 !/night_20261013/fw_live/dugbed_3.json
 !/northstar/**
-!/northstar_trials_gpt/**
 !/off_body_ports_20261023/**
 !/owner_review_2026-10-23.md
 !/owner_triage_20261023.md
@@ -1096,7 +1085,6 @@
 !/under_couplers_20261023/RM_UniversalCargoTank_Industrial.png
 !/under_couplers_20261023/RM_UniversalCargoTank_Modern.png
 !/under_couplers_20261023/RM_UniversalCargoTank_Scrapper.png
-!/vault_quicktest_2026-09-18/**
 !/vf_nre_rootcause_2026-10-19.md
 !/vitals_governor_proof_20261013/proof_clock_modal_cluster_raid_downed_death_specimen_colonyloss_20261012T200957.json
 !/walk_precheck_2026-10-18/**
