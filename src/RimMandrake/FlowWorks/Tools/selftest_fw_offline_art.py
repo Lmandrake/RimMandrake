@@ -34,7 +34,10 @@ Each check must FAIL on the art he rejected (the shipped code, emulated as BEFOR
   pit spikes, a 4 m pit with a 2 m shelf and a 0..2 m water series (PIT_SPIKES_FIX_OVER_WALL_AND_SUBMERGE, fw_scenes_spikes):
     spikes_over_wall    FAIL on the shipped whole-cell sprite, PASS on Building_RM_Spikes' layout; also PASS with the
                         outline off; with the faces off it REFUSES (no wall mask), the no-walls can-fail; can-fail: no spikes
-    spikes_submerged    FAIL shipped (full strength under 2 m), PASS after; can-fail: a scene with no deep cell
+    spikes_submerged    FAIL shipped (full strength under 2 m), PASS after; can-fail: a scene with no deep cell, deep
+                        cells with no stakes at all, a linear fade over 2 m
+    (spikes_over_wall also FAILS when the floor rect forgets the outline: the mask and the rect share tables, so this is
+    the check that a FloorRect drift from the walls is visible)
     parity              the Python layout/hash mirror == SpikeDrawChecks' fixture numbers; RM_SpikeStakes.cs is current
                         (art_source/Spikes/stakes.py --check)
 """
@@ -254,6 +257,21 @@ def spikes():
     dry = spk.Pit([[0, 0, 0], [0, 8, 0], [0, 0, 0]], [[0] * 3, [0, 1, 0], [0] * 3], spikes=[(1, 1)])
     ok, d = spk.spikes_submerged(spk.render(dry, "after", P=PX))
     want(not ok and "needs" in d, "spikes_submerged can-fail: no dry or deep cell (%s)" % d)
+    # can-fail, a floor rect that drifts from the walls: ignore the outline while the scene draws it
+    real_rect, real_alpha = spk.floor_rect, spk.submerged_alpha
+    try:
+        spk.floor_rect = lambda d, n, s, w, e, faces=True, outline=True: real_rect(d, n, s, w, e, faces, False)
+        ok, d = spk.spikes_over_wall(spk.render(spk.check_pit(), "after", P=PX))
+        want(not ok, "spikes_over_wall can-fail: a floor rect that forgets the outline (%s)" % d)
+        spk.floor_rect = lambda d, n, s, w, e, faces=True, outline=True: (0.3, 0.3, 0.3, 0.3)
+        ok, d = spk.spikes_submerged(spk.render(spk.check_pit(), "after", P=PX))
+        want(not ok and "nothing to submerge" in d, "spikes_submerged can-fail: deep cells with no stakes at all (%s)" % d)
+        spk.floor_rect = real_rect
+        spk.submerged_alpha = lambda f: max(0.0, 1 - f * 0.25)   # a linear fade over 2 m: still half drawn at 1 m
+        ok, d = spk.spikes_submerged(spk.render(spk.check_pit(), "after", P=PX))
+        want(not ok and "still drawn under 1.0 m" in d, "spikes_submerged can-fail: a fade too slow (%s)" % d)
+    finally:
+        spk.floor_rect, spk.submerged_alpha = real_rect, real_alpha
     hashes, (n, first, last) = spk.parity()
     want(hashes == [0, 2836592880, 1249282371], "spikes parity: hash fixture %s" % hashes)
     fx = ((0.461248, 0.321038, 0.046875, 0.152344, 0.183594, 0.589844, 0.230469, 0.742188),
