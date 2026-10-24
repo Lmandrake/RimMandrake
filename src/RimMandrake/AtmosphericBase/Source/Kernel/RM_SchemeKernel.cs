@@ -35,6 +35,8 @@ namespace RimMandrake.AtmosphericBase
         public float flasherPeriodSeconds;
         public RM_Layer[] legacy;       // a def's one-pattern form pre-built as layers once (so the 10 Hz loop allocates nothing); null = built per call
         public RM_Layer[] layers;       // the authored <layers>; null = the old one-pattern scheme (one layer, see LegacyLayers)
+        public float scarLinger;        // M3 SCAR: a lamp this scheme wins keeps the previous owner on its lowest entry, s (0 = off)
+        public bool scarKeeps;          // M3 SCAR: the linger may exceed 30 s (Rekko: "I keep what was")
 
         public int Count => r == null ? 0 : r.Length;
     }
@@ -91,6 +93,8 @@ namespace RimMandrake.AtmosphericBase
             bool moves = layered ? RM_PatternKernel.AnyMotion(s.layers) : s.pattern != RM_PatternKind.Steady;
             if (anyDark && !moves)
                 e.Add("a Steady (motionless) scheme may not hold full black: L8 says a chosen dark always carries motion");
+            if (s.scarLinger < 0f || float.IsNaN(s.scarLinger)) e.Add("scarLinger must be >= 0 s");
+            else if (s.scarLinger > RM_Scar.MaxLinger && !s.scarKeeps) e.Add("scarLinger above " + RM_Scar.MaxLinger + " s needs scarKeeps (design M3)");
             if (layered) RM_PatternKernel.LayerErrors(s.layers, n, e);
             else
             {

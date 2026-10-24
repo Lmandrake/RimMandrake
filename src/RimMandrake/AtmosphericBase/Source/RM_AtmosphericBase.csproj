@@ -43,6 +43,7 @@
     <Compile Include="Kernel\RM_PatternGraph.cs" />
     <Compile Include="Kernel\RM_PatternFronts.cs" />
     <Compile Include="Kernel\RM_PatternWalkers.cs" />
+    <Compile Include="Kernel\RM_PatternModifiers.cs" />
     <Compile Include="Kernel\RM_TerritoryKernel.cs" />
     <Compile Include="RM_AtmosphericSchemeDef.cs" />
     <Compile Include="RM_AtmosphericCompositor.cs" />

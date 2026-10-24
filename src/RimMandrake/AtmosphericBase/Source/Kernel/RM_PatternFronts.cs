@@ -283,7 +283,10 @@ namespace RimMandrake.AtmosphericBase
     // A wave along a direction field, one pass per period: Axis (a projection of the fixtures' positions at `angle`:
     // ash falling), Turn (the angle about the fixtures' centroid: a lighthouse beam) or Toward (from the deepest room out
     // through the doors to outdoors: every wave runs outward, never back). A fixture spends `lit` of the period in the
-    // wave, rising lo..hi..lo. Owed: pauseChance/pause and accelerate (design P5), not built in this step.
+    // wave, rising lo..hi..lo.
+    // pauseChance/pause: a pass (period + pause s of wall time) stops at a hashed point and holds `pause` s with that
+    // chance; a pass that does not stop runs evenly over the same wall time, so the passes never drift. accelerate
+    // (-1..1) warps each pass monotonically: w(x) = x + a x (x - 1), slow start and fast finish when a > 0.
     public sealed class RM_SweepPrimitive : RM_IPrimitive
     {
         public RM_CostClass Cost(RM_Layer l) => RM_CostClass.Front;
@@ -317,9 +320,48 @@ namespace RimMandrake.AtmosphericBase
             }
         }
 
+        private static bool Warped(RM_Layer l) => l.pauseChance > 0f || l.accelerate != 0f;
+        private static double Cycle(RM_Layer l) => l.period + (l.pauseChance > 0f ? Math.Max(0f, l.pause) : 0f);
+
+        /// <summary>Does pass k stop, and where (0.15-0.85 of the pass, in front seconds)?</summary>
+        private static bool Stops(RM_Layer l, long k, out double at)
+        {
+            at = l.period * (0.15 + 0.7 * RM_SchemeKernel.Frac01((int)(k & 0x7fffffff), 41));
+            return l.pauseChance > 0f && RM_SchemeKernel.Frac01((int)(k & 0x7fffffff), 43) < l.pauseChance;
+        }
+
+        private static double Warp(double x, double a) => x + a * x * (x - 1);
+
+        private static double Unwarp(double w, double a)
+        {
+            if (Math.Abs(a) < 1e-9) return w;
+            double b = 1 - a, disc = b * b + 4 * a * w;
+            return Math.Min(1, Math.Max(0, (-b + Math.Sqrt(Math.Max(0, disc))) / (2 * a)));
+        }
+
+        /// <summary>The wave's position at wall time t, in passes (non-decreasing; = t / period when not warped).</summary>
+        public static double Passes(RM_Layer l, double t)
+        {
+            if (!Warped(l)) return t / l.period;
+            double cyc = Cycle(l), k = Math.Floor(t / cyc), s = t - k * cyc, tau;
+            if (Stops(l, (long)k, out double at)) tau = s < at ? s : s < at + l.pause ? at : s - l.pause;
+            else tau = s * l.period / cyc;
+            return k + Warp(Math.Min(1, tau / l.period), l.accelerate);
+        }
+
+        /// <summary>The earliest wall time at which Passes reaches p.</summary>
+        public static double TimeOf(RM_Layer l, double p)
+        {
+            if (!Warped(l)) return p * l.period;
+            double k = Math.Floor(p), cyc = Cycle(l);
+            double tau = Unwarp(p - k, l.accelerate) * l.period;
+            double s = Stops(l, (long)k, out double at) ? (tau <= at + 1e-9 ? Math.Min(tau, at) : tau + l.pause) : tau * cyc / l.period;
+            return k * cyc + s;
+        }
+
         private static double U(RM_Layer l, ref RM_PatternCtx c, double t, int len)
         {
-            double phi = t / l.period - Along(l, ref c);
+            double phi = Passes(l, t) - Along(l, ref c);
             phi -= Math.Floor(phi);
             return phi / l.lit * len;
         }
@@ -340,6 +382,14 @@ namespace RimMandrake.AtmosphericBase
             int len = 2 * m - 1;
             // in double: float lit * period lost ~1e-7 per unit, and a dark gap of ~150 units (lit 0.02) put the
             // predicted rise micro-seconds early (review R1, found by the island test)
+            if (Warped(l))
+            {
+                // u to the next unit boundary, in passes, then through the (monotone) warp back to wall time
+                double uu = U(l, ref c, t, len), lt = l.lit, uc = len / lt;
+                double target = uu < 1 ? 1 : uu < len - 1 ? Math.Floor(uu) + 1 : uc + 1;
+                double tw = TimeOf(l, Passes(l, t) + (target - uu) * lt / len);
+                return Math.Max(tw - Math.Max(1e-9, Math.Abs(tw) * 1e-12), t + 1e-9);
+            }
             double lit = l.lit, u = U(l, ref c, t, len), unit = lit * l.period / len, ucycle = len / lit;
             if (u < 1) return RM_Front.Nudge(t + (1 - u) * unit, t);
             if (u < len - 1) return RM_PatternEvaluator.NextStep(u, unit, t);
@@ -351,6 +401,9 @@ namespace RimMandrake.AtmosphericBase
             if (!(l.period > 0f)) e.Add("period must be > 0");
             if (!(l.lit > 0f) || l.lit > 1f) e.Add("lit must lie in (0, 1]");
             if (float.IsNaN(l.angle) || float.IsInfinity(l.angle)) e.Add("angle must be a number of degrees");
+            if (!(l.pauseChance >= 0f && l.pauseChance <= 1f)) e.Add("pauseChance must lie in 0-1");
+            if (l.pauseChance > 0f && !(l.pause > 0f)) e.Add("pauseChance needs pause > 0 s");
+            if (!(l.accelerate >= -1f && l.accelerate <= 1f)) e.Add("accelerate must lie in -1..1 (beyond, the wave would run back)");
         }
     }
 }

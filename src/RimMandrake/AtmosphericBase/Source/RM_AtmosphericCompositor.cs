@@ -88,6 +88,22 @@ namespace RimMandrake.AtmosphericBase
         private readonly Dictionary<string, string> flasherKeyOf = new Dictionary<string, string>();
         private readonly Dictionary<int, bool> leadOf = new Dictionary<int, bool>();
         private string allocKey;
+        // M3 SCAR: fixture -> (was it the lead's before the flip, pattern clock at the flip). Not saved (§9.10).
+        private readonly Dictionary<int, KeyValuePair<bool, double>> scarOf = new Dictionary<int, KeyValuePair<bool, double>>();
+        // M4 HUSH: room id -> (start on the pattern clock, settle, hold). Not saved.
+        private readonly Dictionary<int, RM_HushRequest> hushOf = new Dictionary<int, RM_HushRequest>();
+        private double lastTime;
+        public long scarShows, hushShows;
+
+        private struct RM_HushRequest { public double start; public float settle, hold; }
+
+        /// <summary>M4: hush one room from the next evaluation (RM_AtmosphericBaseAPI.Hush).</summary>
+        public bool Hush(int roomId, float settle, float hold)
+        {
+            if (roomId < 0 || !(settle > 0f) || hold < 0f) return false;
+            hushOf[roomId] = new RM_HushRequest { start = lastTime, settle = settle, hold = hold };
+            return true;
+        }
         private int lastEvalFrame = -9999, lastMembershipFrame = -9999;
         private double clockOrigin = -1;   // §9.10: the pattern's t = 0 is this compositor's first evaluation. Not saved.
 
@@ -121,6 +137,7 @@ namespace RimMandrake.AtmosphericBase
             place.Remove(t.thingIDNumber);
             roomOf.Remove(t.thingIDNumber);
             leadOf.Remove(t.thingIDNumber);
+            scarOf.Remove(t.thingIDNumber);
             allocKey = null;
         }
 
@@ -215,14 +232,26 @@ namespace RimMandrake.AtmosphericBase
                     else if (!Interior(n)) threshold = true;
                     else { doors.Add(new KeyValuePair<int, int>(r.ID, n.ID)); if (seen.Add(n.ID)) queue.Enqueue(n); }
                 }
-                // shrine / power flags are owed (no verified role or comp to read them from yet): those anchors fall back to Core
-                rooms.Add(new RM_RoomFacts { id = r.ID, cells = r.CellCount, threshold = threshold });
+                rooms.Add(new RM_RoomFacts { id = r.ID, cells = r.CellCount, threshold = threshold, shrine = Shrine(r), power = PowerRoom(r) });
             }
             // the keep-or-replace rule lives in the kernel (RM_GraphCache), where the selftest drives it
             RM_GraphRefresh rr = RM_GraphCache.Refresh(Graph, Fixtures, rooms, doors, ems, nodes, xs, zs);
             Graph = rr.graph; Fixtures = rr.fixtures;
             if (rr.graphRebuilt) graphRebuilds++;
             if (rr.fixturesRebuilt) fixtureSetRebuilds++;
+        }
+
+        /// <summary>The shrine anchor: a room whose role is Ideology's WorshipRoom (Data/Ideology/Defs/Rooms/RoomRoles.xml).
+        /// No such room: the kernel's Shrine anchor falls back to Core.</summary>
+        private static bool Shrine(Room r) => r.Role != null && r.Role.defName == "WorshipRoom";
+
+        /// <summary>The power anchor: a room holding a generator or a battery (CompPowerPlant / CompPowerBattery). Read
+        /// on a graph refresh only, never per tick.</summary>
+        private static bool PowerRoom(Room r)
+        {
+            foreach (Thing t in r.ContainedAndAdjacentThings)
+                if ((t.TryGetComp<CompPowerPlant>() != null || t.TryGetComp<CompPowerBattery>() != null) && t.GetRoom() == r) return true;
+            return false;
         }
 
         public bool InGroup(RM_MapComponent_AtmosphericBase comp, Thing t, string group)
@@ -275,6 +304,7 @@ namespace RimMandrake.AtmosphericBase
             comp.ReleaseExternallyEdited();   // §9.9: before anything is written
             if (refreshMembership) RefreshMembership(comp);
             RM_AtmosphericBaseSettings set = RM_AtmosphericBaseSettings.Cur;
+            lastTime = time;
             List<RM_MoodClaim> ranked = set.compositor ? comp.RankedMoods() : new List<RM_MoodClaim>();
             RM_MoodClaim lead = ranked.Count > 0 ? ranked[0] : null;
             RM_MoodClaim second = set.territory && ranked.Count > 1 ? ranked[1] : null;
@@ -303,7 +333,7 @@ namespace RimMandrake.AtmosphericBase
                 foreach (Thing t in driven)
                     if (InGroup(comp, t, lead.group) || InGroup(comp, t, second.group)) union.Add(t);
             lastUnionCount = union.Count;
-            if (second == null) { if (leadOf.Count > 0) leadOf.Clear(); allocKey = null; }
+            if (second == null) { if (leadOf.Count > 0) leadOf.Clear(); scarOf.Clear(); allocKey = null; }
             else
             {
                 RM_TerritoryTuning tt = set.TerritoryTuning;
@@ -322,7 +352,11 @@ namespace RimMandrake.AtmosphericBase
                     for (int i = 0; i < ids.Count; i++)
                     {
                         next[ids[i]] = got[i];
-                        if (leadOf.TryGetValue(ids[i], out bool was) && was != got[i]) territoryFlips++;
+                        if (leadOf.TryGetValue(ids[i], out bool was) && was != got[i])
+                        {
+                            territoryFlips++;
+                            scarOf[ids[i]] = new KeyValuePair<bool, double>(was, time);
+                        }
                     }
                     leadOf.Clear();
                     foreach (KeyValuePair<int, bool> kv in next) leadOf[kv.Key] = kv.Value;
@@ -353,6 +387,19 @@ namespace RimMandrake.AtmosphericBase
             lastTremorCount = tremorAt?.Count ?? 0;
             if (lastTremorCount > maxTremorCount) maxTremorCount = lastTremorCount;
 
+            // M4: the one lamp per hushed room that keeps the ember in a dark hush (its lowest-id driven fixture)
+            Dictionary<int, int> keepers = null;
+            if (hushOf.Count > 0)
+            {
+                keepers = new Dictionary<int, int>();
+                foreach (Thing t in driven)
+                {
+                    int rm = roomOf.TryGetValue(t.thingIDNumber, out int rr) ? rr : -1;
+                    if (rm < 0 || !hushOf.ContainsKey(rm)) continue;
+                    if (!keepers.TryGetValue(rm, out int k) || t.thingIDNumber < k) keepers[rm] = t.thingIDNumber;
+                }
+            }
+
             // steps 5-6: one quantised value per fixture, written only on change
             int n = 0;
             foreach (Thing t in driven)
@@ -380,7 +427,31 @@ namespace RimMandrake.AtmosphericBase
                 {
                     RM_PatternCtx pc = RM_PatternCtx.Of(id, room, Graph, Fixtures);
                     int idx = RM_SchemeKernel.PaletteIndex(data, ref pc, time, flash != null && flash.Contains(id));
-                    n += Show(comp, t, owner.scheme, idx);
+                    RM_AtmosphericSchemeDef shown = owner.scheme;
+                    // M3 SCAR: the winner's lowest moments still show the previous owner, for the winner's linger
+                    if (second != null && scarOf.TryGetValue(id, out KeyValuePair<bool, double> sc))
+                    {
+                        if (RM_Scar.ShowsPrevious(idx, 0, time - sc.Value, data.scarLinger, data.scarKeeps))
+                        {
+                            RM_SchemeData pd = sc.Key ? leadData : secondData;
+                            HashSet<int> pf = sc.Key ? leadFlash : secondFlash;
+                            idx = RM_SchemeKernel.PaletteIndex(pd, ref pc, time, pf != null && pf.Contains(id));
+                            shown = sc.Key ? lead.scheme : second.scheme;
+                            data = pd;
+                            scarShows++;
+                        }
+                        else if (time - sc.Value >= RM_Scar.Linger(data.scarLinger, data.scarKeeps)) scarOf.Remove(id);
+                    }
+                    // M4 HUSH: one room narrows to its held entry, then recovers
+                    if (room >= 0 && hushOf.TryGetValue(room, out RM_HushRequest h))
+                    {
+                        double w = RM_Hush.Weight(time - h.start, h.settle, h.hold);
+                        int held = RM_Hush.Mid(data);
+                        bool dark = held != (data.Count - 1) / 2;   // the middle is black: hold the ember on one lamp
+                        idx = RM_Hush.Apply(idx, held, w, dark, keepers != null && keepers.TryGetValue(room, out int kp) && kp == id);
+                        if (w > 0) hushShows++;
+                    }
+                    n += Show(comp, t, shown, idx);
                 }
                 else
                 {
@@ -388,6 +459,13 @@ namespace RimMandrake.AtmosphericBase
                     if (comp.ShowSubstrate(t)) n++;
                     else tracker.Forget(id);
                 }
+            }
+            if (hushOf.Count > 0)
+            {
+                var done = new List<int>();
+                foreach (KeyValuePair<int, RM_HushRequest> kv in hushOf)
+                    if (RM_Hush.Over(time - kv.Value.start, kv.Value.settle, kv.Value.hold)) done.Add(kv.Key);
+                foreach (int r in done) hushOf.Remove(r);
             }
             writes += n;
             lastEvalWrites = n;
