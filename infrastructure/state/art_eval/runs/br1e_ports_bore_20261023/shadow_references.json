@@ -1,0 +1,16 @@
+{
+ "RM_PumpingStation_Kludged": [
+  "/home/mandrake/rm/bench/src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/Machinery/RM_PumpingStation_Kludged.png",
+  "/mnt/d/ClaudeWork/rimmandrake/scratch/br1e_caps/s5_st_kludged_v.png",
+  "/mnt/d/ClaudeWork/rimmandrake/scratch/br1e_caps/judge_crops/stk_z.png"
+ ],
+ "RM_HoseFreeEnd_Mouth": [
+  "/home/mandrake/rm/bench/src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Hose/Mouth.png",
+  "/mnt/d/ClaudeWork/rimmandrake/scratch/br1e_caps/judge_crops/reels_z.png",
+  "/mnt/d/ClaudeWork/rimmandrake/scratch/br1e_caps/s5_reels_13-16_v.png",
+  "/mnt/d/ClaudeWork/rimmandrake/scratch/br1e_caps/judge_crops/stk_z.png",
+  "/home/mandrake/rm/bench/src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Hose/Styles/Industrial/Mouth.png",
+  "/home/mandrake/rm/bench/src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Hose/Styles/Modern/Mouth.png",
+  "/home/mandrake/rm/bench/src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Hose/Styles/Futuristic/Mouth.png"
+ ]
+}

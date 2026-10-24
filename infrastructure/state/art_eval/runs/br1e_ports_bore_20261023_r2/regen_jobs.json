@@ -1,0 +1,39 @@
+[
+ {
+  "id": "arteval_RM_PumpingStation_Kludged__R1_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_PumpingStation_Kludged",
+  "prompt": "A 3x3 RimWorld building sprite, a kludged found-works pumping station patched back to work, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. Seen from the building camera, looking down at about 35 degrees: the lit top faces of the borrowed electric motor, the pump casing and the manifold pipe are visible above their front faces. Every round opening is an ellipse about 0.56 as tall as wide in its true plane. Composition: a mismatched patched steel plate base, with rope lashings holding the parts together. A borrowed electric motor sits beside the pump casing, both showing their lit top faces. A vertical riser rises from the pump, its top flange a horizontal ellipse with a dark bore. Along the front, a horizontal manifold pipe lies straight on the ground running west to east. Each end flange of the manifold sits on the pipe's side face and is seen nearly edge-on as a narrow vertical ellipse about one third as wide as tall, showing the flange rim and bolt heads with only a thin sliver of dark bore; both end flanges are bare, open metal ports. At the bottom centre of the picture, a short vertical pipe stub drops from the underside of the manifold down the south side to the bottom edge of the picture, clearly visible and standing clear of the wooden skids. The stub ends in a round bolted flange with a bare, open, dark-bored face, the mounting point where a brass hose coupler attaches. The stub is the same weathered steel as the manifold, with matching bolt heads and a clean dark outline. One picture serves every rotation.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: PORT_UNDRAWN",
+  "reference": "",
+  "priority": 40,
+  "source_run": "br1e_ports_bore_20261023_r2",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl"
+ },
+ {
+  "id": "arteval_RM_HoseFreeEnd_Mouth__R1_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_HoseFreeEnd_Mouth",
+  "prompt": "A short piece of the open free end of a hose lying flat on the ground, for a top-down RimWorld sprite, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. The hose is seen from a slightly raised viewpoint, and the end lies in the ground plane, pointing along the hose's length. The cut end is seen nearly edge-on as a hollow tube opening: a thin rim of the hose wall, the thickness of the hose material, rings the opening, and in the look's own wall colour it is lighter than the opening inside it. Inside the rim is a shallow recessed opening, noticeably darker than the hose body, shaded as a gradient: lighter where the near lip catches the light, deepening in shadow along the length of the laid hose, with the curved inner wall and faint inner ribs following the hose away from the viewer. The rim, shaft and opening share one flat plane on the ground, so the tip reads as a hollow hose end resting on the floor. Ribbed rubber-and-fabric hose body in the look's material colour (rust-streaked patched scrapper hose with a rust-edged rim, black industrial rubber with a black rubber lip, red moulded modern hose with a thin pale cut wall, or sleek futuristic composite), with a worn metal collar behind the cut. Soft contact shadow beneath. Keep the colour palette, material, rim and collar details of the previous render.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: DESC_MISS, DESC_MISS, DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "br1e_ports_bore_20261023_r2"
+ }
+]

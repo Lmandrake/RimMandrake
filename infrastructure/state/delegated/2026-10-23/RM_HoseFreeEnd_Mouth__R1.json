@@ -1,0 +1,75 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 41.9,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4017484
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 31.7
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 10.3,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1245647
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_HoseFreeEnd_Mouth",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said good); blocking ['DESC_MISS']; polish ['LEGIB_32']; unreadable ['ROTATIONS (n/a on an unconditional item)']",
+  "gpt regen: unsettled ['K1', 'K2'], own blocking ['DESC_MISS', 'DESC_MISS']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "machine@v2",
+   "sha": "e06ee7316a0a"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "south.png": "18b4518e30f067f2e67f88578b30ec49095a07f9e958306f5e40df2427e23ed5",
+  "scale.png": "18eff2ac6604869fb7e8d2ca8ba2b7151d9cf9f84d5a516a5efe7053e1bc854e",
+  "assembled_1.png": "1b87e5db60a6ca08690cee66887493d8bcada613751a0fed8dcc24215bfe5629",
+  "assembled_2.png": "cb846dc51251bac2c5d4ce7434c15c52a6185d3cf6f41b467741b00c838e95cd",
+  "variants_1.png": "d8e25e151ed42aa041b8824ebf28b375243b4526df6b8bfcdda3741daca4dfdc",
+  "variants_2.png": "473ae53e00b46b5cb296ffc4c64022802e8872a0642ebfe7f4634b9de4f83b5f",
+  "variants_3.png": "ec5eb6f21e448f446e6d946ba13de1e012f2863ee9fd57edda214682f5cb7822",
+  "facings.png": "6f14a0ee5908db679b1876709a2d2b041916a0dae8a18ed2d58c0d4622a18e4a"
+ }
+}

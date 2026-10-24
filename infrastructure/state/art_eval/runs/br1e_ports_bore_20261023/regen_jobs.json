@@ -1,0 +1,39 @@
+[
+ {
+  "id": "arteval_RM_PumpingStation_Kludged__K_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_PumpingStation_Kludged",
+  "prompt": "A 3x3 RimWorld building sprite, a kludged found-works pumping station patched back to work, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. Seen from the building camera, looking down at about 35 degrees: the lit top faces of the borrowed electric motor, the pump casing and the manifold pipe are visible above their front faces. Every round opening is an ellipse about 0.56 as tall as wide in its true plane. Composition: a mismatched patched steel plate base, with rope lashings holding the parts together. A borrowed electric motor sits beside the pump casing, both showing their lit top faces. A vertical riser rises from the pump, its top flange a horizontal ellipse with a dark bore. Along the front, a horizontal manifold pipe lies straight on the ground running west to east. Each end flange of the manifold sits on the pipe's side face and is seen nearly edge-on as a narrow vertical ellipse about one third as wide as tall, showing the flange rim and bolt heads with only a thin sliver of dark bore. A short pipe stub runs down the south side and ends in a brass hose coupler. A hose from a reel is coupled to the west manifold flange and another to the east manifold flange; each brass hose coupler meets its flange at the flange's side face at ground height, flush and bolted, and each hose then lies along the ground leading away west and east. One picture serves every rotation.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: BORE_PLANE, CAM_WRONG, PORT_MISFIT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "br1e_ports_bore_20261023",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl"
+ },
+ {
+  "id": "arteval_RM_HoseFreeEnd_Mouth__K_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_HoseFreeEnd_Mouth",
+  "prompt": "A short piece of the open free end of a hose lying flat on the ground, for a top-down RimWorld sprite, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. The hose is seen from a slightly raised viewpoint, and the end lies in the ground plane. The cut end is seen nearly edge-on: a thin rim or lip line runs across the hose's end, with only a narrow sliver of the near-side inner wall showing below it. The dark bore appears as a shallow, thin crescent hugging the rim, and it widens only as far as the hose curves toward the viewer. The rim, shaft and mouth share one flat plane on the ground, so the tip reads as resting on the floor along the hose's length. Ribbed rubber-and-fabric hose body in the look's material colour (rust-streaked patched scrapper hose, black industrial rubber, red moulded modern hose, or sleek futuristic composite), with a worn metal collar behind the cut. Soft contact shadow beneath. Keep the colour palette, material and collar details of the previous render.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: BORE_PLANE, BORE_PLANE",
+  "reference": "",
+  "priority": 40,
+  "source_run": "br1e_ports_bore_20261023"
+ }
+]

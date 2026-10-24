@@ -1,0 +1,74 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 46.1,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.38243219999999994
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 50.4
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 10.6,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1226187
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_PumpingStation_Kludged",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said good); blocking ['PORT_UNDRAWN', 'FOOTPRINT']; polish []; unreadable ['PORTS', 'LAYERS', 'ROTATIONS (n/a on an unconditional item)']",
+  "gpt unsure: unsettled ['K1', 'K3', 'K4'], own blocking []",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "machine@v2",
+   "sha": "e06ee7316a0a"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "south.png": "a6c31aa9c93d82c7b738b235f167dbc0e16d4a92511773dbb69f53d2179e5ff1",
+  "scale.png": "e9f994757c502c4062d170419bb9079453dfefb30e011b2cb394c3056d9b3526",
+  "assembled_1.png": "ce4bc226b47e83534dcddfee19362c5c43f58f371bda41c2bb76a79accdc68f2",
+  "assembled_2.png": "681d41bfa38eb6fc380778ed997c64db1c70fcc4cebad733b82827c8012fdc42",
+  "siblings.png": "6ea46ae1a69fa33aaf50e46632caaa1d1742a4c603fd6aab61f2c82a0d8fddaa",
+  "facings.png": "5dcd2d139bc58d0643b9c057e7a13e18fa825a6680d7a08ac39391322e28d7ca"
+ }
+}

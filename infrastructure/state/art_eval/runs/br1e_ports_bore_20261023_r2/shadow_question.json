@@ -1,0 +1,39 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RM_PumpingStation_Kludged": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 2) \u00b7 Opus WEAK: FOOTPRINT, PORT_UNDRAWN \u00b7 GPT unsure, unsettled K1, K3, K4",
+   "context": "judged candidate R1 (image sha a6c31aa9c9); PORT_UNDRAWN: No pipe stub or coupler mount descends from the manifold at the bottom centre; only wooden skids sit there.; FOOTPRINT: The machine fills roughly 2.5 by 1.7 of its 3x3 cells and sits low, leaving the north third empty."
+  },
+  "RM_HoseFreeEnd_Mouth": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 2) \u00b7 Opus WEAK: DESC_MISS \u00b7 GPT regen, unsettled K1, K2",
+   "context": "judged candidate R1 (image sha 18b4518e30); DESC_MISS: The pale grey fill nearly matches the canvas hose, so the tip reads as a solid capped stub rather than an open cut end of a hollow hose."
+  }
+ }
+}

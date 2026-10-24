@@ -1,0 +1,39 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RM_PumpingStation_Kludged": {
+   "prefill": "keep",
+   "why": "PIPELINE: ACCEPT (regen round 2) \u00b7 Opus WEAK \u00b7 GPT strong_accept",
+   "context": "judged candidate R1b (image sha a6c31aa9c9); "
+  },
+  "RM_HoseFreeEnd_Mouth": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: BORE_PLANE, DESC_MISS \u00b7 GPT regen, unsettled K1, K3",
+   "context": "judged candidate R2 (image sha efcb9ec5a2); DESC_MISS: In-game, the Modern end shows a pale ring around a light grey interior, so it reads more like a closed pale plug than an open hose end.; BORE_PLANE: The recess is still a fully shaded disc seen face-on in the texture. Only the C# squash keeps it narrow, so at zoom the end still faintly su"
+  }
+ }
+}
