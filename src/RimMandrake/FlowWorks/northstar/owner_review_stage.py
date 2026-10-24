@@ -35,6 +35,9 @@ Rows (each gets a labelled picture; the overview picture carries all of them):
   Bars with NO site (no bridge tool can pose them): wall-climb mid-climb (RM_WallClimb has no pose call; the scale-a-built-wall build
   is in progress), raiders-never-shelter (a raid-run state read), jump-into-pit hurts nobody (state read; live_session g_pit_access).
   Site for all bars_* rows: east of the hoses, rect "bars_rect" (x = origin+150, 62 wide, 76 tall); live_session's owner zone is 216 wide.
+Every station is NUMBERED (standing rule, owner 2026-10-24): Stage.station gives it the next number, its caption line in the
+row picture starts with it, and a world label with the same number sits just north of it; rows are dense (DENSE_GAP squares
+between neighbours at most) and every bridge spans a 3-wide 4 m pit. layout_problems() reports a break of either as a NOTE.
 Then: kill hostiles, Clear weather locked, stepped toward midday, camera framed, shots, ONE save.
 Map: a vanilla biome only (WATER_TRUE_BIOMES; --any-biome overrides), and a 3x3 vanilla WaterShallow swatch south of the ladders
 row is photographed and its mean colour measured: water that does not read blue over red WITHHOLDS the save
@@ -114,8 +117,8 @@ def opposite(r):
     return (r + 2) % 4
 
 
-BARS_Z = dict(bars_joint=(-1, 11), bars_dry=(13, 5), bars_trench=(21, 5), bars_access=(29, 8), bars_bridges=(39, 8),
-              bars_bridge_kinds=(47, 11))     # (z offset from the bars origin, height) of each bars row, from its own staging
+BARS_Z = dict(bars_joint=(-1, 11), bars_dry=(13, 5), bars_trench=(21, 5), bars_access=(29, 8), bars_bridges=(38, 9),
+              bars_bridge_kinds=(46, 13))     # (z offset from the bars origin, height) of each bars row, from its own staging
 
 
 def bars_row_rect(L, row):
@@ -136,9 +139,117 @@ def layout(ox, oz):
 
 
 # ------------------------------------------------------------------ Stage: plan + execution in ONE path
+# REVIEW_STAGER_FIX_NUMBER_EVERY_STATION (owner 2026-10-24: "label and number these stations ... this is a standing
+# requirement" and "the sprinkler stations could all be shown much closer to each other ... dense review rather than
+# sparse"). Every row registers each station (Stage.station) with the rect it occupies: the station gets the next number,
+# its caption line in the row picture starts with that number, and a world label carrying the same number is pinned just
+# north of it (jawa/review_label, tag LABEL_TAG; the bridge writes the labels into the save's sidecar, so they come back
+# with the save). Dense: neighbouring stations in one lane sit at most DENSE_GAP empty squares apart and never overlap.
+DENSE_GAP = 2
+LABEL_TAG = "owner_review_stage"
+LABEL_GOLD = "#ffd27f"
+
+
+def label_op(x, z, text, sub="", col=LABEL_GOLD, size="small", tag=LABEL_TAG):
+    """One jawa/review_label add-op line, 'x|z|text|sub|#rrggbb|size|tag' (the format of modcheck/reviewmap.label_line)."""
+    clean = lambda t: str(t).replace("|", "/").replace("\n", " ").replace("\r", " ")  # noqa: E731
+    return "%d|%d|%s|%s|%s|%s|%s" % (x, z, clean(text), clean(sub), col, size, tag)
+
+
+def station_label_cell(st):
+    """The cell a station's number label is pinned to: its rect's middle column, the row just north of it (pure)."""
+    x, z, w, h = st["rect"]
+    return (x + w // 2, z + h)
+
+
+def station_label_ops(stations):
+    """[add-op] one per station: text = its number, sub = a short name clipped to the room over the station (pure)."""
+    out = []
+    for st in stations:
+        x, z = station_label_cell(st)
+        room = max(8, 3 * (st["rect"][2] + DENSE_GAP))
+        short = st["short"] if len(st["short"]) <= room else st["short"][:room - 1].rstrip() + "~"
+        out.append(label_op(x, z, "%d" % st["n"], short))
+    return out
+
+
+def _overlap(a, b):
+    return a[0] < b[0] + b[2] and b[0] < a[0] + a[2] and a[1] < b[1] + b[3] and b[1] < a[1] + a[3]
+
+
+def _inside(c, r):
+    return r[0] <= c[0] < r[0] + r[2] and r[1] <= c[1] < r[1] + r[3]
+
+
+def layout_problems(stations, rows=None, gap=DENSE_GAP):
+    """[str] every way the station list breaks the standing rule (pure): numbers not 1..N in order, a station without a
+    rect or a name, two stations overlapping, a label pinned inside another station, and -- for rows in `rows` (None =
+    all) -- neighbouring stations of one lane more than `gap` empty squares apart (sparse)."""
+    probs = []
+    if [st["n"] for st in stations] != list(range(1, len(stations) + 1)):
+        probs.append("station numbers not 1..%d in order: %s" % (len(stations), [st["n"] for st in stations]))
+    for st in stations:
+        r = st.get("rect")
+        if not r or len(r) != 4 or r[2] < 1 or r[3] < 1 or not st.get("text"):
+            probs.append("station %s has no rect or no name: %s" % (st.get("n"), st))
+    for i, a in enumerate(stations):
+        for b in stations[i + 1:]:
+            if _overlap(a["rect"], b["rect"]):
+                probs.append("stations %d and %d overlap: %s %s" % (a["n"], b["n"], a["rect"], b["rect"]))
+        lc = station_label_cell(a)
+        for b in stations:
+            if b is not a and _inside(lc, b["rect"]):
+                probs.append("label of station %d at %s sits inside station %d" % (a["n"], lc, b["n"]))
+    lanes = {}
+    for st in stations:
+        if rows is None or st["row"] in rows:
+            lanes.setdefault((st["row"], st["lane"]), []).append(st)
+    for (row, lane), sts in lanes.items():
+        sts = sorted(sts, key=lambda t: t["rect"][0])
+        for a, b in zip(sts, sts[1:]):
+            g = b["rect"][0] - (a["rect"][0] + a["rect"][2])
+            if g > gap:
+                probs.append("sparse: %s lane %s stations %d and %d are %d squares apart (dense = at most %d)" % (
+                    row, lane, a["n"], b["n"], g, gap))
+    return probs
+
+
+def row_rect(stations, row, margin=2):
+    """Camera rect fitting one row's stations and their labels (pure); None when the row has no station."""
+    rs = [st["rect"] for st in stations if st["row"] == row]
+    if not rs:
+        return None
+    x0 = min(r[0] for r in rs) - margin
+    z0 = min(r[1] for r in rs) - margin
+    x1 = max(r[0] + r[2] for r in rs) + margin
+    z1 = max(r[1] + r[3] for r in rs) + margin + 1          # +1: the label row north of the stations
+    return (x0, z0, x1 - x0, z1 - z0)
+
+
 class Stage(object):
     def __init__(self, w, dry):
         self.w, self.dry, self.plan, self.notes = w, dry, [], []
+        self.stations = []
+
+    def station(self, row, rect, text, lane=0, short=None):
+        """Register one station: the next number, the rect it occupies, its caption. Returns the caption line, numbered."""
+        n = len(self.stations) + 1
+        self.stations.append(dict(n=n, row=row, lane=lane, rect=tuple(rect), text=text, short=short or text))
+        self.say("  station %d (%s) %s: %s" % (n, row, tuple(rect), text))
+        return "%d  %s" % (n, text)
+
+    def labels(self):
+        """Pin every station's number label (jawa/review_label, cleared first). The ops are the plan in a dry run."""
+        ops = station_label_ops(self.stations)
+        self.say("  review_label clear tag=%s; add %d station labels" % (LABEL_TAG, len(ops)))
+        for op in ops:
+            self.say("    label %s" % op)
+        if not self.dry:
+            self.w.call("jawa/review_label", action="clear", tag=LABEL_TAG)
+            r = self.w.call("jawa/review_label", action="add", ops="\n".join(ops), tag=LABEL_TAG) or {}
+            if self.chk("review_label add", r) and r.get("refused"):
+                self.notes.append("station labels refused: %s" % str(r.get("refused"))[:200])
+        return ops
 
     def say(self, s):
         self.plan.append(s)
@@ -280,15 +391,15 @@ def row_ladders(s, L):
     cap = []
     ox, oz = L["ladders"]
     for r in range(4):
-        pit = (ox + r * 6, oz)
+        pit = (ox + r * 5, oz)                      # 3-wide pits, 2 squares apart (dense)
         s.pit(pit, 3, 3)
         low, high = wall_cell(pit, r), wall_cell(pit, opposite(r))
         a = s.place("RM_Ladder", low, rot=r)
         b = s.place("RM_Ladder", high, rot=opposite(r))
         s.raise_ladder(high, True)
-        cap.append("%s pit: lowered on %s wall (game reads %s), raised on %s wall (reads %s)" % (
+        cap.append(s.station("ladders", (pit[0], pit[1], 3, 3), "%s pit: lowered on %s wall (game reads %s), raised on %s wall (reads %s)" % (
             ROT[r], ROT[r], ROT[a["rot_read"]] if isinstance(a["rot_read"], int) else "?", ROT[opposite(r)],
-            ROT[b["rot_read"]] if isinstance(b["rot_read"], int) else "?"))
+            ROT[b["rot_read"]] if isinstance(b["rot_read"], int) else "?"), short="ladder low %s" % ROT[r][0]))
     return cap
 
 
@@ -297,7 +408,7 @@ def row_spikes(s, L):
     ox, oz = L["spikes"]
     cap = []
     for k, (wet, label) in enumerate(((0, "dry pit floor"), (2, "under 1 m of water"))):
-        pit = (ox + k * 6, oz)
+        pit = (ox + k * 5, oz)
         s.pit(pit, 3, 3)
         for i in range(3):
             for j in range(3):
@@ -306,7 +417,7 @@ def row_spikes(s, L):
             for i in range(3):
                 for j in range(3):
                     s.fill((pit[0] + i, pit[1] + j), wet)
-        cap.append("RM_Spikes %s" % label)
+        cap.append(s.station("spikes", (pit[0], pit[1], 3, 3), "RM_Spikes %s" % label, short="spikes " + ("wet" if wet else "dry")))
     return cap
 
 
@@ -337,7 +448,7 @@ def row_gates(s, L, door, key, stuff):
                 except Exception as ex:  # noqa: BLE001
                     s.notes.append("hold-open of %s at %s skipped: %s" % (door, mid, ex))
                     label += " [hold-open FAILED: closed]"
-        cap.append(label)
+        cap.append(s.station(key, (x0, oz, 5, 5), label, short="%s %s%s" % (axis, ROT[rot][0], " OPEN" if held else "")))
     return cap
 
 
@@ -350,7 +461,7 @@ def row_shallows(s, L):
         s.dig(c, 1)
     s.fill(strip[0], 1)
     s.fill(strip[1], 1)
-    cap.append("0.2 m: 5-square strip, 2 notches levelled over 5 squares")
+    cap.append(s.station("shallows", (ox, oz + 1, 5, 1), "0.2 m: 5-square strip, 2 notches levelled over 5 squares", short="0.2 m"))
     x = ox + 7
     for metres, notches in SHALLOWS:
         pit = (x, oz)
@@ -358,10 +469,10 @@ def row_shallows(s, L):
         for i in range(3):
             for j in range(3):
                 s.fill((pit[0] + i, pit[1] + j), notches)
-        cap.append("%s m: pit %d deep, %d notches" % (metres, notches, notches))
+        cap.append(s.station("shallows", (x, oz, 3, 3), "%s m: pit %d deep, %d notches" % (metres, notches, notches), short="%s m" % metres))
         x += 5
     s.pit((x, oz), 3, 2)            # the sixth look: a dry 1 m hole, no water
-    cap.append("dry: 1 m hole, no water")
+    cap.append(s.station("shallows", (x, oz, 3, 3), "dry: 1 m hole, no water", short="dry"))
     # The exact-level solver grows a body's dry rim ONE square per flow pulse (RM_FlowKernel.ExactDomain adds a dry square
     # only beside a wet one), so 2 notches in squares 0-1 read 0.33/0.33/0.33/0/0 after one pulse and level at 0.2 m after
     # three (measured live 2026-10-18). The 2026-10-18 run read after 300 ticks = one pulse and reported a false unlevel.
@@ -386,7 +497,7 @@ def row_sprinklers(s, L):
     s.say("ROW sprinklers: four looks, pipe restyled before the head is built")
     cap = []
     for k, look in enumerate(LOOKS):
-        ox = ox0 + k * 14
+        ox = ox0 + k * 8                # a net is 6 wide (tank 2, pipe 4): 2 squares between nets (owner: dense)
         s.place("RM_LiquidTank", (ox, oz))
         for x in range(ox + 2, ox + 6):
             s.place("RM_UniversalPipe", (x, oz))
@@ -411,7 +522,8 @@ def row_sprinklers(s, L):
             if got != look:
                 s.notes.append("pipe look for net %d: asked %s, game reads %s" % (k, look, got))
         s.place("RM_SprinklerHead", (ox + 5, oz))
-        cap.append("sprinkler %s: head at %s (look read back in notes)" % (look, (ox + 5, oz)))
+        cap.append(s.station("sprinklers", (ox, oz - 4, 6, 6), "sprinkler %s: head at %s (look read back in notes)" % (look, (ox + 5, oz)),
+                             short=look))
     s.ticks(PULSE + 300)            # one hourly pulse so every head is mid-spray
     return cap
 
@@ -539,7 +651,7 @@ def row_hoses(s, L):
         cen = s.hp("census")
         s.notes.append("hose census after settle: %s" % str(cen)[:300])
     cap["scenes"] = scenes
-    cap["lines"] = ["%s -- %s" % (k, v[4]) for k, v in scenes.items()]
+    cap["lines"] = [s.station("hoses", v[2], "%s -- %s" % (k, v[4]), lane=i, short=k) for i, (k, v) in enumerate(scenes.items())]
     return cap
 
 
@@ -558,7 +670,7 @@ def row_picks(s, L):
         s.place("RM_UniversalPipe", (x, pz + 1))
     s.place("RM_PipeFaucet", (px + 6, pz + 1))
     s.pawn((px + 6, pz), "at the faucet")
-    cap.append("faucet: tank -> 5 pipe squares -> RM_PipeFaucet on the last")
+    cap.append(s.station("picks", (px, pz, 7, 2), "faucet: tank -> 5 pipe squares -> RM_PipeFaucet on the last", short="faucet"))
     # 2 guardrail: 5x5 pit 4 m deep, rails on the north and east lips, south and west lips bare
     gx, gz = px + 11, pz
     s.pit((gx, gz), 5, 8)
@@ -568,7 +680,7 @@ def row_picks(s, L):
         s.place("RM_PitGuardrail", (gx + 5, gz + j), stuff="Steel")
     s.pawn((gx + 2, gz + 6), "behind the rail")
     s.pawn((gx + 2, gz - 1), "bare lip")
-    cap.append("guardrail: 4 m pit, steel rails on N and E lips, S and W lips bare")
+    cap.append(s.station("picks", (gx - 1, gz - 1, 7, 7), "guardrail: 4 m pit, steel rails on N and E lips, S and W lips bare", short="guardrail"))
     # 3a canal into a painted vanilla lake, 2.5 m of water both sides
     lx, lz = px + 21, pz
     s.say("  paint WaterDeep lake %d,%d 8x6" % (lx, lz))
@@ -576,7 +688,7 @@ def row_picks(s, L):
         s.chk("paint lake", s.w.call("jawa/set_terrain_batch", ops="WaterDeep:%d,%d,8,6" % (lx, lz)))
     for x in range(lx + 8, lx + 15):
         s.dig((x, lz + 3), 5, 5)
-    cap.append("canal 2.5 m of water joining a vanilla WaterDeep lake (one colour?)")
+    cap.append(s.station("picks", (lx, lz, 15, 6), "canal 2.5 m of water joining a vanilla WaterDeep lake (one colour?)", short="canal+lake"))
     # 3b canal into a dug pond, 1 m of water both sides
     dx, dz = px + 21, pz + 8
     for i in range(6):
@@ -584,13 +696,13 @@ def row_picks(s, L):
             s.dig((dx + i, dz + j), 2, 2)
     for x in range(dx + 6, dx + 13):
         s.dig((x, dz + 2), 2, 2)
-    cap.append("canal 1 m of water joining a dug pond at 1 m (one colour?)")
+    cap.append(s.station("picks", (dx, dz, 13, 5), "canal 1 m of water joining a dug pond at 1 m (one colour?)", lane=1, short="canal+pond"))
     # 4 wall band: 3-wide canal 2 m deep with 1 m of water (the dry face above the water)
     bx, bz = px + 38, pz + 1
     for x in range(bx, bx + 10):
         for j in range(3):
             s.dig((x, bz + j), 4, 2)
-    cap.append("wall band: 2 m canal, 1 m of water: the face between water and lip")
+    cap.append(s.station("picks", (bx, bz, 10, 3), "wall band: 2 m canal, 1 m of water: the face between water and lip", short="wall band"))
     s.ticks(600)
     return cap
 
@@ -607,11 +719,11 @@ def row_bars_joint(s, L):
     for k, depth_m in enumerate((1, 2, 4)):                       # 1 m water = 2 notches
         pit = (bx + k * 5, bz + 6)
         s.pit(pit, 3, int(depth_m * 2), 2)
-        cap.append("1 m of water in a %d m hole" % depth_m)
+        cap.append(s.station("bars_joint", (pit[0], pit[1], 3, 3), "1 m of water in a %d m hole" % depth_m, short="1m in %dm" % depth_m))
     for k, wet_m in enumerate((0.5, 1, 2)):
         pit = (bx + k * 5, bz)
         s.pit(pit, 3, 8, int(wet_m * 2))
-        cap.append("%s m of water in a 4 m hole" % wet_m)
+        cap.append(s.station("bars_joint", (pit[0], pit[1], 3, 3), "%s m of water in a 4 m hole" % wet_m, lane=1, short="%sm in 4m" % wet_m))
         if wet_m >= 2:
             s.pawn((pit[0] + 1, pit[1] + 1), "swims: 2 m of water")
     s.pawn((bx + 11, bz + 7), "swims in 1 m water in a 4 m hole")
@@ -626,7 +738,7 @@ def row_bars_dry(s, L):
         pit = (bx + k * 5, bz + 14)
         s.pit(pit, 3, int(m * 2))
         s.pawn((pit[0] + 1, pit[1] + 1), "stands in a %s m hole" % m)
-        cap.append("dry %s m hole, colonist standing in it" % m)
+        cap.append(s.station("bars_dry", (pit[0], pit[1], 3, 3), "dry %s m hole, colonist standing in it" % m, short="dry %s m" % m))
     return cap
 
 
@@ -635,11 +747,11 @@ def row_bars_trench(s, L):
     s.say("ROW bars_trench: waist-deep (1 m) and chest-deep (1.5 m) colonist, a shooter 8 squares east on flat ground")
     cap = []
     for k, (m, what) in enumerate(((1.0, "waist-deep"), (1.5, "chest-deep"))):
-        pit = (bx + k * 5, bz + 22)
+        pit = (bx + k * 12, bz + 22)        # pit + shooter 9 east = 10 wide: the old 5 pitch put shooter 1 inside station 2
         s.pit(pit, 3, int(m * 2))
         tid = s.pawn((pit[0] + 1, pit[1] + 1), what)
         sid = s.pawn((pit[0] + 9, pit[1] + 1), "shooter")
-        cap.append("%s colonist (%s m hole) with a shooter 8 squares east" % (what, m))
+        cap.append(s.station("bars_trench", (pit[0], pit[1], 10, 3), "%s colonist (%s m hole) with a shooter 8 squares east" % (what, m), short=what))
         if not s.dry and tid is not None and sid is not None:
             ok, txt = s.proof(TRENCH, "ProofTrenchCover", "%s;%s" % (tid, sid))
             s.notes.append("trench cover %s: %s" % (what, (txt or "")[:160]))
@@ -653,22 +765,33 @@ def row_bars_access(s, L):
     p2, p4, pg, pn, pc = (bx, bz + 30), (bx + 5, bz + 30), (bx + 10, bz + 30), (bx + 15, bz + 30), (bx + 20, bz + 30)
     s.pit(p2, 3, 4)
     s.place("RM_LadderPortable", (p2[0] + 1, p2[1] + 2), rot=0)
-    cap.append("portable ladder leaning in a 2 m pit")
+    cap.append(s.station("bars_access", (p2[0], p2[1], 3, 3), "portable ladder leaning in a 2 m pit", short="ladder 2m"))
     s.pit(p4, 3, 8)
     s.place("RM_LadderPortable", (p4[0] + 1, p4[1] + 2), rot=0)
-    cap.append("portable ladder against a 4 m wall (too short: lies flat)")
+    cap.append(s.station("bars_access", (p4[0], p4[1], 3, 3), "portable ladder against a 4 m wall (too short: lies flat)", short="ladder 4m"))
     s.pit(pg, 3, 8)
     s.pawn((pg[0] + 1, pg[1] + 1), "WEARS climbing gear, 4 m sheer pit", wear="RM_ClimbingGear")
-    cap.append("climbing gear worn: colonist in a 4 m sheer pit")
+    cap.append(s.station("bars_access", (pg[0], pg[1], 3, 3), "climbing gear worn: colonist in a 4 m sheer pit", short="gear worn"))
     s.pit(pn, 3, 8)
     s.pawn((pn[0] + 1, pn[1] + 1), "no gear, 4 m sheer pit (control)")
-    cap.append("no gear: control colonist in a 4 m sheer pit")
-    s.item("RM_ClimbingGear", (bx + 20, bz + 34))
-    cap.append("climbing gear item on the ground")
-    s.pit((pc[0] + 4, pc[1]), 3, 4)
-    s.place("RM_PitCover_PlankLattice", (pc[0] + 5, pc[1] + 1))
-    cap.append("concealed pit (planks) over a 2 m pit")
+    cap.append(s.station("bars_access", (pn[0], pn[1], 3, 3), "no gear: control colonist in a 4 m sheer pit", short="no gear"))
+    s.item("RM_ClimbingGear", (pc[0], pc[1] + 1))
+    cap.append(s.station("bars_access", (pc[0], pc[1] + 1, 1, 1), "climbing gear item on the ground", short="gear item"))
+    s.pit((pc[0] + 3, pc[1]), 3, 4)
+    s.place("RM_PitCover_PlankLattice", (pc[0] + 4, pc[1] + 1))
+    cap.append(s.station("bars_access", (pc[0] + 3, pc[1], 3, 3), "concealed pit (planks) over a 2 m pit", short="planks"))
     return cap
+
+
+BRIDGE_PITCH = 8          # a 6-square span (anchor, 4 over the pit, anchor): 2 squares between bridges (owner: dense)
+
+
+def span_pit(s, x0, z, depth=8):
+    """The pit a bridge spans (owner 2026-10-24: "Need to see these bridges over pits"): 4 squares long under the span,
+    3 wide (the deck row and one either side), so the bridge reads as crossing a pit, not a one-square trench."""
+    for x in range(x0 + 1, x0 + 5):
+        for dz in (-1, 0, 1):
+            s.dig((x, z + dz), depth)
 
 
 def row_bars_bridges(s, L):
@@ -676,17 +799,19 @@ def row_bars_bridges(s, L):
     s.say("ROW bars_bridges: rope/timber/steel/heavy, railings on (north lane) and off (south lane), concealed pit beside")
     cap = []
     for k, tier in enumerate(("rope", "timber", "steel", "heavy")):
-        x0 = bx + k * 13
+        x0 = bx + k * BRIDGE_PITCH
         for lane, rails in ((0, "on"), (1, "off")):
             z = bz + 40 + lane * 4
-            for x in range(x0 + 1, x0 + 5):
-                s.dig((x, z), 8)
+            span_pit(s, x0, z)
             s.proof(SUSP, "ProofBuild", "%d,%d;%d,%d;%s;god" % (x0, z, x0 + 5, z, tier))
             s.proof(SUSP, "ProofRails", "%d,%d;%s" % (x0 + 2, z, rails))
-            cap.append("%s suspension bridge, railings %s (%s lane)" % (tier, rails, "north" if lane == 0 else "south"))
-    s.pit((bx + 54, bz + 40), 3, 4)
-    s.place("RM_PitCover_PlankLattice", (bx + 55, bz + 41))
-    cap.append("concealed pit (planks, east end) beside the bridges: a concealed pit passes for ground, a bridge does not")
+            cap.append(s.station("bars_bridges", (x0, z - 1, 6, 3), "%s suspension bridge over a 4 m pit, railings %s (%s lane)" % (
+                tier, rails, "north" if lane == 0 else "south"), lane=lane, short="%s rails %s" % (tier, rails)))
+    px = bx + 4 * BRIDGE_PITCH
+    s.pit((px, bz + 39), 3, 4)
+    s.place("RM_PitCover_PlankLattice", (px + 1, bz + 40))
+    cap.append(s.station("bars_bridges", (px, bz + 39, 3, 3), "concealed pit (planks, east end) beside the bridges: a concealed pit "
+                         "passes for ground, a bridge does not", short="planks"))
     return cap
 
 
@@ -696,25 +821,24 @@ def row_bars_bridge_kinds(s, L):
     cap = []
     z = bz + 48
     for k, tier in enumerate(("steelgrated", "heavygrated")):
-        x0 = bx + k * 13
-        for x in range(x0 + 1, x0 + 5):
-            s.dig((x, z), 8)
+        x0 = bx + k * BRIDGE_PITCH
+        span_pit(s, x0, z)
         s.proof(SUSP, "ProofBuild", "%d,%d;%d,%d;%s;god" % (x0, z, x0 + 5, z, tier))
-        cap.append("%s suspension bridge over a 4 m pit" % tier)
+        cap.append(s.station("bars_bridge_kinds", (x0, z - 1, 6, 3), "%s suspension bridge over a 4 m pit" % tier, short=tier))
     z = bz + 52
     for k, tier in enumerate(("steel", "heavy")):
-        x0 = bx + k * 13
-        for x in range(x0 + 1, x0 + 5):
-            s.dig((x, z), 8)
+        x0 = bx + k * BRIDGE_PITCH
+        span_pit(s, x0, z)
         s.proof(SUSP, "ProofJetty", "%d,%d;%d,%d;%s;god" % (x0, z, x0 + 4, z, tier))
-        cap.append("%s jetty reaching out over a 4 m pit" % tier)
+        cap.append(s.station("bars_bridge_kinds", (x0, z - 1, 6, 3), "%s jetty reaching out over a 4 m pit" % tier, lane=1,
+                             short="%s jetty" % tier))
     for k, look in enumerate(("Scrapper", "Industrial", "Modern", "Futuristic")):
-        x0 = bx + k * 13
-        z = bz + 56 + 0
-        for x in range(x0 + 1, x0 + 5):
-            s.dig((x, z), 8)
+        x0 = bx + k * BRIDGE_PITCH
+        z = bz + 56
+        span_pit(s, x0, z)
         s.proof(SUSP, "ProofLook", "%s;%d,%d;%d,%d" % (look, x0, z, x0 + 5, z))
-        cap.append("steel bridge, %s look, railings on" % look)
+        cap.append(s.station("bars_bridge_kinds", (x0, z - 1, 6, 3), "steel bridge over a 4 m pit, %s look, railings on" % look, lane=2,
+                             short="steel %s" % look))
     return cap
 
 
@@ -788,6 +912,9 @@ def main(argv=None):
             caps["gates_grate"] = row_gates(s, L, "RM_SecurityGrateDoor", "gates_grate", "Steel")
         else:
             caps[row] = ROWS[row](s, L)
+    s.labels()                       # every station numbered in the world, the same number as its caption line
+    for p in layout_problems(s.stations, rows=ALL_ROWS):
+        s.notes.append("LAYOUT: " + p)
     sw = swatch_rect(ox, oz)
     if [r for r in only if r not in OPT_ROWS + BARS_ROWS]:
         s.say("SWATCH: vanilla %s %s, photographed and measured before the save (water must read blue over red)" % (SWATCH, sw))
@@ -801,7 +928,9 @@ def main(argv=None):
             s.say("SHOTS (per scene, wide + close) -> Transient/fw_hoses_walk/FlowWorks_HosePipeWalk_%s_<scene>_{wide,close}.png" % time.strftime("%Y%m%d"))
             for k, v in caps["hoses"]["scenes"].items():
                 s.say("  scene %s wide %s close %s colonist %s" % (k, v[1], v[2], v[3]))
-        print("DRY RUN: %d plan lines, no bridge touched." % len(s.plan))
+        for n in s.notes:
+            print("NOTE:", n)
+        print("DRY RUN: %d plan lines, %d stations, no bridge touched." % (len(s.plan), len(s.stations)))
         return 0
     s.chk("kill_hostiles (final)", s.w.call("jawa/kill_hostiles"))
     s.chk("weather_set Clear (final)", s.w.call("jawa/weather_set", weather="Clear", lockWeather=True))
@@ -843,8 +972,7 @@ def main(argv=None):
                        ("shallows", "Water ladder 0.2 / 0.5 / 1 / 1.5 / 2 / 5 m"), ("sprinklers", "Sprinklers: Futuristic / Industrial / Modern / Scrapper")):
         if key not in caps or key == "hoses" or key in BARS_ROWS:
             continue
-        gx, gz = L[key]
-        rect = (gx - 3, gz - 3, 66 if key != "sprinklers" else 60, 12 if key != "sprinklers" else 14)
+        rect = row_rect(s.stations, key)          # the row's stations and their number labels, no wider
         png = C.snap(w, "row_" + key, rect)
         if png:
             shots.append(C.label_image(png, os.path.join(os.path.dirname(png), "row_%s_labelled.png" % key), title, "", caps[key]))

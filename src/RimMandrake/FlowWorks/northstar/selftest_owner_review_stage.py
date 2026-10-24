@@ -82,5 +82,58 @@ fr = WSW.fit_root_size((97, 131, 66, 12))
 check("a 66-wide row is framed whole (16:9 view %.0f cells wide >= 70)" % (2 * fr * WSW.SCREEN_ASPECT), 2 * fr * WSW.SCREEN_ASPECT >= 70, fr)
 check("a small rect never zooms below the engine floor 11 (the old rootSize 8 sat under it)", WSW.fit_root_size((0, 0, 3, 3)) == WSW.ROOT_FLOOR)
 check("the 64x70 overview fits top to bottom", 2 * WSW.fit_root_size(L["rect"]) >= 74)
+# REVIEW_STAGER_FIX_NUMBER_EVERY_STATION: every station numbered, its world label carries the number of its caption line,
+# and the default rows are dense (the 2026-10-24 map spaced sprinkler nets 14 apart and bridges 13 apart, unnumbered).
+import io  # noqa: E402
+import contextlib  # noqa: E402
+
+
+def dry_stage(rows):
+    d = ORS.Stage(None, True)
+    L = ORS.layout(100, 100)
+    caps = {}
+    with contextlib.redirect_stdout(io.StringIO()):
+        for row in rows:
+            if row == "gates":
+                caps["gates_sluice"] = ORS.row_gates(d, L, "RM_Sluice", "gates_sluice", "WoodLog")
+                caps["gates_grate"] = ORS.row_gates(d, L, "RM_SecurityGrateDoor", "gates_grate", "Steel")
+            else:
+                caps[row] = ORS.ROWS[row](d, L)
+        ops = d.labels()
+    return d, caps, ops
+
+
+d, caps, ops = dry_stage(ORS.ALL_ROWS)
+check("every default row registers stations", {st["row"] for st in d.stations} >= set(ORS.ALL_ROWS) - {"gates"} | {"gates_sluice", "gates_grate"},
+      sorted({st["row"] for st in d.stations}))
+check("stations numbered 1..N", [st["n"] for st in d.stations] == list(range(1, len(d.stations) + 1)))
+lines = [c for row in caps.values() for c in (row if isinstance(row, list) else [])]
+check("every caption line is numbered and matches the station list",
+      lines == ["%d  %s" % (st["n"], st["text"]) for st in d.stations], lines[:4])
+check("one world label per station, its text = the station's number",
+      [o.split("|")[2] for o in ops] == [str(st["n"]) for st in d.stations], ops[:3])
+check("every label is pinned on the row north of its station",
+      all(tuple(map(int, o.split("|")[:2])) == ORS.station_label_cell(st) for o, st in zip(ops, d.stations)))
+probs = ORS.layout_problems(d.stations, rows=ORS.ALL_ROWS)
+check("default rows are dense, no overlap, no label inside a station", not probs, probs[:6])
+bars = [st for st in d.stations if st["row"] in ORS.BARS_ROWS]
+check("every bars station sits inside its own row's camera rect",
+      all(ORS._inside((st["rect"][0], st["rect"][1]), ORS.bars_row_rect(L, st["row"])) and
+          ORS._inside((st["rect"][0] + st["rect"][2] - 1, st["rect"][1] + st["rect"][3]), ORS.bars_row_rect(L, st["row"]))
+          for st in bars), [st for st in bars if not ORS._inside((st["rect"][0], st["rect"][1]), ORS.bars_row_rect(L, st["row"]))][:2])
+br = [st for st in d.stations if st["row"] in ("bars_bridges", "bars_bridge_kinds") and "bridge" in st["text"] and not st["text"].startswith("concealed")]
+check("every bridge spans a pit 3 wide (owner: 'see these bridges over pits')",
+      br and all(st["rect"][3] == 3 and "over a 4 m pit" in st["text"] for st in br), [st["text"] for st in br][:3])
+# can-fail: the old spacing (sprinkler nets 14 apart, bridges 13 apart) and an unnumbered row are caught
+old = [dict(n=k + 1, row="sprinklers", lane=0, rect=(100 + 14 * k, 150, 6, 6), text="net", short="net") for k in range(4)]
+check("can-fail: the old 14-apart sprinkler nets read as sparse", any("sparse" in p for p in ORS.layout_problems(old)))
+old_tr = [dict(n=k + 1, row="bars_trench", lane=0, rect=(150 + 5 * k, 122, 10, 3), text="t", short="t") for k in range(2)]
+check("can-fail: the old trench pitch (shooter inside the next station) reads as overlap",
+      any("overlap" in p for p in ORS.layout_problems(old_tr)))
+check("can-fail: numbering with a hole is caught",
+      any("numbers" in p for p in ORS.layout_problems([dict(old[0]), dict(old[1], n=3)])))
+h, hcaps, hops = dry_stage(("hoses", "picks"))
+check("optional rows are numbered too (hoses scenes, picks)", len(hops) == len(h.stations) >= 10 and
+      all(c.split("  ")[0].isdigit() for c in hcaps["hoses"]["lines"] + hcaps["picks"]), len(hops))
 print("selftest_owner_review_stage: %d failure(s)" % len(FAILS))
 sys.exit(1 if FAILS else 0)
