@@ -23,8 +23,8 @@ namespace RimMandrake.FlowWorks.MapControls
 		public float setpoint = 0.5f;
 		public float ratePerPulse = 1f;
 		private float carry;
-		private int pouredTotal;
-		private int takenTotal;
+		private float pouredTotal;
+		private float takenTotal;
 		private float bodyCreditedUnits;
 		private float lastUnit;
 		private float bodyDebitedUnits;
@@ -93,9 +93,11 @@ namespace RimMandrake.FlowWorks.MapControls
 			HoldBody(ex, body, at, due);
 		}
 
-		private void Measure(RM_MapComponent_Excavation ex, out int held, out int capacity)
+		/// <summary>LEVEL_HOLDER_FIX_REFILLS_FRACTIONAL_BASIN: held is measured in dL (whole notches AND the part notch), so a
+		/// spread sheet with no whole notch reads as the water it is, not as an empty basin.</summary>
+		private void Measure(RM_MapComponent_Excavation ex, out long heldDl, out int capacity)
 		{
-			held = 0;
+			heldDl = 0;
 			capacity = 0;
 			foreach (IntVec3 c in Reach())
 			{
@@ -104,18 +106,21 @@ namespace RimMandrake.FlowWorks.MapControls
 					continue;
 				}
 				capacity += ex.DepthAt(c);
-				held += ex.FillAt(c);
+				heldDl += ex.WaterDlAt(c);
 			}
 		}
 
 		private void HoldChannel(RM_MapComponent_Excavation ex, int due)
 		{
-			Measure(ex, out lastHeld, out lastCapacity);
+			Measure(ex, out long heldDl, out lastCapacity);
+			lastHeld = RM_MapControlMath.HeldLevels(heldDl, RM_LevelSolve.U);
 			lastNeed = RM_MapControlMath.LevelHolderNeed(lastHeld, lastCapacity, setpoint);
-			int poured = 0, taken = 0;
-			while (poured + taken < due)
+			long dueDl = due * RM_LevelSolve.U;
+			long poured = 0, taken = 0;   // dL
+			while (poured + taken < dueDl)
 			{
-				int need = RM_MapControlMath.LevelHolderNeed(lastHeld + poured - taken, lastCapacity, setpoint);
+				int need = RM_MapControlMath.LevelHolderNeed(RM_MapControlMath.HeldLevels(heldDl + poured - taken, RM_LevelSolve.U),
+					lastCapacity, setpoint);
 				if (need == 0)
 				{
 					break;
@@ -133,10 +138,10 @@ namespace RimMandrake.FlowWorks.MapControls
 						candCells.Add(c);
 						candVals.Add(ex.FillAt(c) - ex.DepthAt(c));
 					}
-					else if (need < 0 && ex.FillAt(c) > 0 && Mine(ex, c))
+					else if (need < 0 && ex.WaterDlAt(c) > 0 && Mine(ex, c))
 					{
 						candCells.Add(c);
-						candVals.Add(ex.FillAt(c));
+						candVals.Add((int)System.Math.Min(ex.WaterDlAt(c), int.MaxValue));
 					}
 				}
 				int pick = need > 0 ? RM_MapControlMath.PickPourTarget(candVals) : RM_MapControlMath.PickDrainTarget(candVals);
@@ -150,22 +155,23 @@ namespace RimMandrake.FlowWorks.MapControls
 					{
 						break;
 					}
-					poured++;
+					poured += RM_LevelSolve.U;
 				}
 				else
 				{
-					if (!ex.TryTakeLevel(candCells[pick], out _))
+					long took = ex.TryTakeDl(candCells[pick], RM_LevelSolve.U, out _);
+					if (took <= 0)
 					{
 						break;
 					}
-					taken++;
+					taken += took;
 				}
 			}
 			if (poured > 0 || taken > 0)
 			{
-				pouredTotal += poured;
-				takenTotal += taken;
-				ex.NoteMapControlFlow(poured, taken);
+				pouredTotal += poured / (float)RM_LevelSolve.U;
+				takenTotal += taken / (float)RM_LevelSolve.U;
+				ex.NoteMapControlFlowDl(poured, taken);
 			}
 		}
 
@@ -265,7 +271,7 @@ namespace RimMandrake.FlowWorks.MapControls
 				+ " setpoint=" + setpoint.ToString("0.###", CultureInfo.InvariantCulture)
 				+ " rate=" + ratePerPulse.ToString("0.###", CultureInfo.InvariantCulture) + " active=" + active
 				+ " mode=" + lastMode + " held=" + lastHeld + " capacity=" + lastCapacity + " need=" + lastNeed
-				+ " poured=" + pouredTotal + " taken=" + takenTotal
+				+ " poured=" + pouredTotal.ToString("0.###", CultureInfo.InvariantCulture) + " taken=" + takenTotal.ToString("0.###", CultureInfo.InvariantCulture)
 				+ " bodyIn=" + bodyCreditedUnits.ToString("0.##", CultureInfo.InvariantCulture)
 				+ " bodyOut=" + bodyDebitedUnits.ToString("0.##", CultureInfo.InvariantCulture);
 		}
@@ -277,8 +283,8 @@ namespace RimMandrake.FlowWorks.MapControls
 			Scribe_Values.Look(ref setpoint, "RM_levelHolderSetpoint", 0.5f);
 			Scribe_Values.Look(ref ratePerPulse, "RM_levelHolderRate", 1f);
 			Scribe_Values.Look(ref carry, "RM_levelHolderCarry", 0f);
-			Scribe_Values.Look(ref pouredTotal, "RM_levelHolderPoured", 0);
-			Scribe_Values.Look(ref takenTotal, "RM_levelHolderTaken", 0);
+			Scribe_Values.Look(ref pouredTotal, "RM_levelHolderPoured", 0f);
+			Scribe_Values.Look(ref takenTotal, "RM_levelHolderTaken", 0f);
 			Scribe_Values.Look(ref bodyCreditedUnits, "RM_levelHolderBodyIn", 0f);
 			Scribe_Values.Look(ref bodyDebitedUnits, "RM_levelHolderBodyOut", 0f);
 		}

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text;
 using RimWorld;
@@ -130,7 +131,7 @@ namespace RimMandrake.FlowWorks.MapControls
 	}
 
 	/// <summary>FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS: the flow SINK, a source in reverse. Each pulse it takes levels out
-	/// of the dug squares in reach, one at a time from the fullest (RM_MapComponent_Excavation.TryTakeLevel), at its
+	/// of the dug squares in reach, up to a level at a time from the fullest, part notches too (RM_MapComponent_Excavation.TryTakeDl), at its
 	/// rate or, unlimited, everything in reach. Optional liquid filter (default: any). The liquid leaves the map like a
 	/// map-edge sink's and is recorded as an exit (NoteMapControlFlow), never a ledger imbalance.</summary>
 	public class Building_RM_FlowSink : Building_RM_MapControl
@@ -140,7 +141,7 @@ namespace RimMandrake.FlowWorks.MapControls
 		public float ratePerPulse = 1f;
 		public bool unlimited = true;
 		private float carry;
-		private int drainedTotal;
+		private float drainedTotal;
 
 		private readonly List<IntVec3> candCells = new List<IntVec3>();
 		private readonly List<int> candFill = new List<int>();
@@ -151,8 +152,11 @@ namespace RimMandrake.FlowWorks.MapControls
 		public override void FlowPulse(RM_MapComponent_Excavation ex)
 		{
 			int due = unlimited ? UnlimitedCap : RM_MapControlMath.Due(ref carry, ratePerPulse);
-			int done = 0;
-			while (done < due)
+			// UNLIMITED_SINK_FIX_FRACTIONAL_WATER: measured and taken in dL, so a part-notch sheet (exact-level water; no whole
+			// notch, FillAt 0) is a candidate and is drained, the part notch first. Fullest (in dL) first, a notch at most per take.
+			long dueDl = due * RM_LevelSolve.U;
+			long doneDl = 0;
+			while (doneDl < dueDl)
 			{
 				candCells.Clear();
 				candFill.Clear();
@@ -162,24 +166,29 @@ namespace RimMandrake.FlowWorks.MapControls
 					{
 						continue;
 					}
-					int f = ex.FillAt(c);
-					if (f > 0 && (filter == null || (ex.FluidAt(c) ?? ex.ActiveFluid) == filter))
+					long w = ex.WaterDlAt(c);
+					if (w > 0 && (filter == null || (ex.FluidAt(c) ?? ex.ActiveFluid) == filter))
 					{
 						candCells.Add(c);
-						candFill.Add(f);
+						candFill.Add((int)Math.Min(w, int.MaxValue));
 					}
 				}
 				int pick = RM_MapControlMath.PickDrainTarget(candFill);
-				if (pick < 0 || !ex.TryTakeLevel(candCells[pick], out _))
+				if (pick < 0)
 				{
 					break;
 				}
-				done++;
+				long took = ex.TryTakeDl(candCells[pick], Math.Min(RM_LevelSolve.U, dueDl - doneDl), out _);
+				if (took <= 0)
+				{
+					break;
+				}
+				doneDl += took;
 			}
-			if (done > 0)
+			if (doneDl > 0)
 			{
-				drainedTotal += done;
-				ex.NoteMapControlFlow(0, done);
+				drainedTotal += doneDl / (float)RM_LevelSolve.U;
+				ex.NoteMapControlFlowDl(0, doneDl);
 			}
 		}
 
@@ -187,7 +196,7 @@ namespace RimMandrake.FlowWorks.MapControls
 		{
 			sb.AppendLine("Takes " + FluidLabel(filter) + ": "
 				+ (unlimited ? "unlimited" : RM_MapControlMath.RateLabel(ratePerPulse, RimMandrakeFlowWorksSettings.PulseIntervalTicks)));
-			sb.Append("Taken so far: " + drainedTotal + " level(s)");
+			sb.Append("Taken so far: " + drainedTotal.ToString("0.##") + " level(s)");
 		}
 
 		protected override IEnumerable<Gizmo> ControlGizmos()
@@ -215,7 +224,7 @@ namespace RimMandrake.FlowWorks.MapControls
 		public override string StateLine()
 		{
 			return "sink " + ThingID + " at " + Position.x + "," + Position.z + " filter=" + (filter?.defName ?? "any")
-				+ " rate=" + (unlimited ? "unlimited" : ratePerPulse.ToString("0.###")) + " active=" + active + " drained=" + drainedTotal;
+				+ " rate=" + (unlimited ? "unlimited" : ratePerPulse.ToString("0.###")) + " active=" + active + " drained=" + drainedTotal.ToString("0.###");
 		}
 
 		public override void ExposeData()
@@ -225,7 +234,7 @@ namespace RimMandrake.FlowWorks.MapControls
 			Scribe_Values.Look(ref ratePerPulse, "RM_flowSinkRate", 1f);
 			Scribe_Values.Look(ref unlimited, "RM_flowSinkUnlimited", true);
 			Scribe_Values.Look(ref carry, "RM_flowSinkCarry", 0f);
-			Scribe_Values.Look(ref drainedTotal, "RM_flowSinkDrained", 0);
+			Scribe_Values.Look(ref drainedTotal, "RM_flowSinkDrained", 0f);
 		}
 	}
 }

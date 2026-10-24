@@ -152,8 +152,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(pa.Contains("mc.active"), "a switched-off control still pulses");
                 string taps2 = File.ReadAllText(Path.Combine(root, "Source", "MapControls", "RM_FlowTaps.cs"));
                 Assert(taps2.Contains("ex.TryPourLevel(") && taps2.Contains("ex.CanPourLevel("), "the source does not pour through the engine's driver write");
-                Assert(taps2.Contains("ex.TryTakeLevel("), "the sink does not take through the engine");
-                Assert(taps2.Contains("ex.NoteMapControlFlow(done, 0)") && taps2.Contains("ex.NoteMapControlFlow(0, done)"), "a tap does not record its flow");
+                Assert(taps2.Contains("ex.TryTakeDl("), "the sink does not take through the engine");
+                Assert(taps2.Contains("ex.NoteMapControlFlow(done, 0)") && taps2.Contains("ex.NoteMapControlFlowDl(0, doneDl)"), "a tap does not record its flow");
                 string xml = File.ReadAllText(Path.Combine(root, "Defs", "Canals", "ThingDefs", "FlowWorks_MapControls.xml"));
                 Assert(!xml.Contains("<designationCategory>"), "a map control is buildable (designationCategory)");
                 Assert(!xml.Contains("<costList>"), "a map control has a build cost");
@@ -321,7 +321,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string timer = File.ReadAllText(Path.Combine(src, "MapControls", "RM_TimerSwitch.cs"));
                 Assert(timer.Contains("mc.TimerSwitchable") && timer.Contains("RM_FlowDoorRules.IsFlowDoor(door)"), "the timer does not switch controls and flow doors");
                 string holder = File.ReadAllText(Path.Combine(src, "MapControls", "RM_LevelHolder.cs"));
-                Assert(holder.Contains("ex.TryPourLevel(") && holder.Contains("ex.TryTakeLevel(") && holder.Contains("ex.NoteMapControlFlow(poured, taken)"), "the level holder does not move liquid through the engine and the ledger");
+                Assert(holder.Contains("ex.TryPourLevel(") && holder.Contains("ex.TryTakeDl(") && holder.Contains("ex.NoteMapControlFlowDl(poured, taken)"), "the level holder does not move liquid through the engine and the ledger");
                 Assert(holder.Contains("ex.Stock.TryCredit(") && holder.Contains("ex.Stock.TryDebit("), "the level holder does not hold a body through the stock");
                 string xml = File.ReadAllText(Path.Combine(root, "Defs", "Canals", "ThingDefs", "FlowWorks_MapControls.xml"));
                 foreach (string d in new[] { "RM_FlowMeter", "RM_LevelHolder", "RM_TimerSwitch", "RM_MapEdgeSetter", "RM_CurrentPainter", "RM_LiquidThermostat" })
