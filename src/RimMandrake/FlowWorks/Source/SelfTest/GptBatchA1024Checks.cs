@@ -75,6 +75,23 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_MapControlMath.HeldLevels(900, U) == 0 && RM_MapControlMath.HeldLevels(U / 2, U) == 1, "rounds to the nearest level");
                 Assert(RM_MapControlMath.HeldLevels(-5, U) == 0 && RM_MapControlMath.HeldLevels(U, 0) == 0, "nothing from nothing");
             });
+
+            // LEVELLING_BANDS_FIX_STOPS_PAST_EIGHT (FA_core_sim_2.6): whole-notch levelling below eight bands.
+            Case("GptA1024_levelset_levels_a_deep_canal", () =>
+            {
+                foreach (byte dep in new byte[] { 4, 10, 40 })
+                {
+                    var w = new ArrayWorld(5, 3);
+                    w.k.levelBySurfaceEnabled = true; w.k.levelSetEnabled = true; w.k.levelExactEnabled = false;
+                    int[] cells = { 1 * 5 + 1, 1 * 5 + 2, 1 * 5 + 3 };
+                    byte[] start = { 3, 2, 1 };
+                    for (int i = 0; i < 3; i++) { w.k.depth[cells[i]] = dep; w.k.fill[cells[i]] = start[i]; }
+                    w.Sync();
+                    for (int p = 0; p < 20; p++) w.Pulse(cells);
+                    string got = w.k.fill[cells[0]] + "," + w.k.fill[cells[1]] + "," + w.k.fill[cells[2]];
+                    Assert(got == "2,2,2", $"three depth-{dep} squares holding 3,2,1 level to 2,2,2 (old: past eight bands the solve gave up), got {got}");
+                }
+            });
         }
     }
 }

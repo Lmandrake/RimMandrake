@@ -1420,7 +1420,10 @@ namespace RimMandrake.FlowWorks
 		private readonly List<int> lsDomain = new List<int>();
 		private readonly List<int> lsPick = new List<int>();
 		private readonly HashSet<int> lsPicked = new HashSet<int>();
-		private const int LsMaxBands = 8;
+		/// <summary>LEVELLING_BANDS_FIX_STOPS_PAST_EIGHT: the bands the per-band arrays hold. Grown to the deepest square a
+		/// region reaches (a fixed 8 left water below band 8 uncounted, so the solve gave up on any canal dug deeper).</summary>
+		private int lsBands;
+		private const int LsInitialBands = 8;
 
 		/// <summary>WATER_LEVELSET_SOLVE. Per connected WET region of one fluid (as <see cref="LevelWetRegions"/> builds it:
 		/// wet, same fluid, in this partition, not sealed, not held by creep) plus its DRY dug rim (one ring, so the wet
@@ -1429,7 +1432,7 @@ namespace RimMandrake.FlowWorks
 		/// <list type="bullet">
 		/// <item>Water is counted in BANDS: band L is the layer between surface -L and -L+1; a square of dug depth d owns
 		/// bands 1..d and its fill f occupies its lowest f bands. At each band the domain splits into the connected pieces of
-		/// squares deep enough to own it (a merge tree, at most 4 levels deep).</item>
+		/// squares deep enough to own it (a merge tree, one level per band).</item>
 		/// <item>Bottom up, each piece counts the water already below its band (trapped: it cannot climb a sill to another
 		/// piece). Top down, the piece hands its FREE water to its deeper pieces until they are full, and only then lays
 		/// the rest on its own band. So a pit never drains through a dry sill, and a stepped floor ends flat.</item>
@@ -1446,8 +1449,9 @@ namespace RimMandrake.FlowWorks
 			if (lsDomainStamp == null || lsDomainStamp.Length != n)
 			{
 				lsDomainStamp = new int[n];
-				lsCompStamp = new int[n * LsMaxBands];
-				lsCompId = new int[n * LsMaxBands];
+				lsBands = LsInitialBands;
+				lsCompStamp = new int[n * lsBands];
+				lsCompId = new int[n * lsBands];
 				lsNewFill = new int[n];
 				lsStampValue = 0;
 			}
@@ -1564,12 +1568,18 @@ namespace RimMandrake.FlowWorks
 			}
 			for (int i = 0; i < lsDomain.Count; i++)
 			{
-				int dep = Math.Min((int)depth[lsDomain[i]], LsMaxBands);
+				int dep = depth[lsDomain[i]];
 				if (dep > maxBand)
 				{
 					maxBand = dep;
 				}
 				lsNewFill[lsDomain[i]] = 0;
+			}
+			if (maxBand > lsBands)
+			{
+				lsBands = maxBand;
+				lsCompStamp = new int[n * lsBands];   // fresh zeros: no entry matches a live stamp
+				lsCompId = new int[n * lsBands];
 			}
 			// FLOWWORKS_SLUICE_FIX_BELOW_SOURCE_LUCK: this region drains only if a sink is reachable from it. Component-wide, a
 			// region cut off by a shut sluice keyed every square Far and fell back to cell index, so the mouth kept its unit
