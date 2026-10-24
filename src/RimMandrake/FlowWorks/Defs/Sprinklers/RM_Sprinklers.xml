@@ -15,7 +15,7 @@
     <defName>RM_SprinklerHead</defName>
     <label>sprinkler head</label>
     <description>A simple nozzle set on a universal pipe. Once an hour it sprays the liquid its pipe network holds most of onto the ground around it, and the ground stays wet until the next spray. It needs no power, but a working pump must be on its network to give it pressure. Each spray costs half a litre for every cell it reaches, so a head drinks about 350 litres a day: an expensive way to share water. Walls stop the spray. Thick liquids such as tar clog it; acid or boiling liquid hurts anyone standing in the spray, and fuel leaves flammable puddles.</description>
-    <thingClass>Building</thingClass>
+    <thingClass>RimMandrake.FlowWorks.Sprinklers.Building_RM_SprinklerHead</thingClass>
     <category>Building</category>
     <graphicData>
       <texPath>RimMandrake/FlowWorks/Sprinkler/Scrapper/RM_SprinklerHead</texPath>

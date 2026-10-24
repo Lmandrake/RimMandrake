@@ -23,6 +23,9 @@ namespace RimMandrake.FlowWorks.Thirst
 			if (!respawningAfterLoad) Sprinklers.RM_SprinklerLook.MatchPipeUnder(this);
 		}
 
+		/// <summary>SPRINKLER_HEAD_FIX_FLOATS_OFF_CURVE: printed on the pipe's drawn centreline, like a sprinkler head.</summary>
+		public override void Print(SectionLayer layer) => Sprinklers.RM_PipeSeat.Print(layer, this);
+
 		/// <summary>Distinct liquids the tanks on this faucet's net hold and would give to a machine, most held first.</summary>
 		public static List<LiquidDef> NetLiquids(Thing faucet)
 		{
