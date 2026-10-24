@@ -1,0 +1,2 @@
+An enact safety rule (refuse a pick at a stale lane) must be checked against a dry run of HEAD over every real decisions file before trusting it: two drafts that passed their own fixtures regressed real routing - one raised 162 conflicts on rows already shipping, the next refused donor-lane picks that HEAD correctly rebinds to the row's own path via own_slot. Diff install/conflict sets per file (harness: /mnt/d/ClaudeWork/rimmandrake/stale_slot_key/dryrun.py, cache load_jobs or it takes 11 s/file).
+home: rimworld-review-sheets
