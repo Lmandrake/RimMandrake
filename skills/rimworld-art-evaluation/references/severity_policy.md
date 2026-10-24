@@ -25,7 +25,7 @@ A new code, or a code moved between columns, is a **criteria change**: add a row
 
 ```json policy
 {
-  "version": "severity@v3",
+  "version": "severity@v4",
   "high_confidence": 0.8,
   "codes": {
     "F_NORTH_FACE":        {"brief": "C1", "default": "blocking", "means": "north shows a face or eyes; north is the rear"},
@@ -71,6 +71,7 @@ A new code, or a code moved between columns, is a **criteria change**: add a row
     "BORE_PLANE":          {"brief": "C6", "default": "blocking", "means": "a pipe/hose shows its open bore where it does not turn toward the camera"},
     "PORT_MISFIT":         {"brief": "C6", "default": "blocking", "means": "a coupler, hose or cord does not meet its port at the same cell, height and plane"},
     "WALL_LEAN_WRONG":     {"brief": "C3", "default": "blocking", "means": "a wall-mounted/wall-leaning facing leans or is drawn in the perspective of the wrong wall side"},
+    "WALL_AXIS_WRONG":     {"brief": "C3", "default": "blocking", "means": "a wall-climbing fixture's long axis runs along the wall (north-south on an east/west wall) instead of from the rim down into the pit"},
     "PORT_UNDRAWN":        {"brief": "C6", "default": "blocking", "means": "a code-defined port has no drawn connector there, or a drawn connector is not a code port"},
     "LAYER_ORDER":         {"brief": "C3", "default": "blocking", "means": "what is in front does not draw in front in the assembled view"},
     "MATERIAL_PAINT":      {"brief": "B4", "default": "polish",   "means": "colour reads as a coat of paint, not the material"},

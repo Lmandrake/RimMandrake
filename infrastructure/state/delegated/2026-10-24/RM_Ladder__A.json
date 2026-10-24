@@ -3,35 +3,27 @@
   "opus": [
    {
     "model_requested": "opus",
-    "seconds": 66.9,
+    "seconds": 64.0,
     "models_reported": [
      "claude-opus-5-5"
     ],
-    "cost_usd": 0.437464
+    "cost_usd": 0.4695387999999999
    }
   ],
   "gpt": [
    {
     "model_reported": "gpt-6.1-sol",
-    "seconds": 62.0
+    "seconds": 97.4
    }
-  ],
-  "regen": {
-   "model_requested": "sonnet",
-   "seconds": 10.4,
-   "models_reported": [
-    "claude-sonnet-5-5"
-   ],
-   "cost_usd": 0.1174487
-  }
+  ]
  },
  "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
  "subject": "RM_Ladder",
- "decision": "REGEN",
+ "decision": "ESCALATE",
  "reasons": [
-  "opus band WEAK (model said good); blocking ['OWNER_NOTE_IGNORED']; polish ['LEGIB_32']; unreadable ['PORTS (n/a on an unconditional item)']",
-  "gpt unsure: unsettled [], own blocking []",
-  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+  "opus band WEAK (model said good); blocking ['CANON_MISS', 'STYLE_OFF']; polish ['LEGIB_32']; unreadable ['BORE (n/a on an unconditional item)', 'PORTS (n/a on an unconditional item)']",
+  "gpt unsure: unsettled ['K4'], own blocking []",
+  "still failing after 3 regen rounds \u2014 one line to the owner"
  ],
  "prompt_versions": {
   "preamble": {
@@ -55,22 +47,26 @@
    "sha": "9cda888a5233"
   },
   "template": {
-   "tag": "machine@v2",
-   "sha": "e06ee7316a0a"
+   "tag": "machine@v3",
+   "sha": "c807afc131b7"
   },
   "severity": {
-   "tag": "severity@v3",
-   "sha": "95090399e7e1"
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
   }
  },
  "image_sha256": {
-  "south.png": "2b56e48d3990933de926dc923b81a6bc876c0189e15c2f3d20ba074d3dc754cc",
-  "east.png": "dc8aa5a820219062eb70efef5e94c5a19d1842a3596540562307e62e7cd62001",
-  "north.png": "e6a7bbd2ef14ec09917c4172cb7b55f02ba72c9625e1ab61685af2cc1beb0992",
-  "west.png": "9c46bc0c589b0982e01937e7a709302239b111d3e38284ed665c5de079a50217",
-  "scale.png": "f242a38bde501c00fc8c2c6613be7eacf04dd1dc7c3149ddcd41f832600742f7",
-  "wall_context.png": "bdd0c261ac56e64a55c801c9438b24bea9c7fb8a415eae3e4fd1f7fe59bbc760",
-  "siblings.png": "6101f586374371c9ba3e841e3cc039e637b398176ba84b8ec3bff6a0662869f4",
-  "facings.png": "691f4b40c9d3aac6e2565c411910a86e6dc3cc33e3e11b88d6c392d646ba6d30"
+  "south.png": "8dd18624360a1c31b2c580ec1fa70250febf333a9085e15edfe8e9786ce64c45",
+  "east.png": "e586d4a93557af10acba0919699be5661d7ffa57e8b0014263375d04c332d05a",
+  "north.png": "3044a49ba6a8fdd1faa7dc91c4da5b20afd72ac914a4868679ce851b3f98fa22",
+  "west.png": "749ddf27e63a920e56910796518c3172744aecd57672ba446927edc394dd759d",
+  "scale.png": "77e4feae442d8c7efbd1279fa3c75654ba648e93992f91bbe8c4ca64848fe28d",
+  "variants_1.png": "21562faab6d15012a5e7dc004290176ac6339689f44a14c5416cd66bd8d795d0",
+  "variants_2.png": "aa9356ee4161e551d7859aba08a4bea5b6611c3c3d8434a92d86f354adcd5774",
+  "variants_3.png": "45e4533ab6ab90fe6e29d743e2e04f1e3f4795fc98eaba474a09866d763259a0",
+  "variants_4.png": "f6405d8028e248802a54afffc4d44abfee1639654a717e4c95f0a1e33e813989",
+  "variants_5.png": "106949a6b28f688375215f0df69a4300fbfd7f5e9c9ef37cb986544e7a6e9c79",
+  "wall_context.png": "daafb7e319acd54c215bab1b6258e8ab625332a8196c8722a7e77442afefe5e3",
+  "facings.png": "6e04d6bbd83e8b5ce1148969aff1c3850956b60672cc2a916f4df92d12d8a694"
  }
 }

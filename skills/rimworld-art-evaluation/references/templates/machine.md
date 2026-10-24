@@ -44,7 +44,7 @@ keeper savegame through `rimworld-live-review`, batched, so a re-evaluation neve
 ```json template
 {
   "template": "machine",
-  "version": "machine@v2",
+  "version": "machine@v3",
   "modules": ["machine", "part", "hose", "coupler", "reel", "tank", "pump", "wall_mounted"],
   "required_panels": {"*": ["south", "facings", "scale", "assembled"],
                       "wall_mounted": ["south", "facings", "scale", "wall_context"]},
@@ -53,6 +53,7 @@ keeper savegame through `rimworld-live-review`, batched, so a re-evaluation neve
     {"id": "BORE",        "q": "Where does each pipe/hose show its open bore? Only where it turns toward the camera?", "code": "BORE_PLANE"},
     {"id": "PORTS",       "q": "In the assembled view, does every coupler/hose/cord meet its port at the same cell, height and plane?", "code": "PORT_MISFIT"},
     {"id": "WALL_LEAN",   "q": "In wall_context, does each facing's lean/perspective match the wall side it stands on?", "code": "WALL_LEAN_WRONG", "modules": ["wall_mounted"]},
+    {"id": "WALL_AXIS",   "q": "In wall_context, name the direction each facing's long axis runs on screen. A ladder (or any fixture that climbs a wall) on an EAST or WEST wall must run east-west, from its top at that wall's rim down and away from the wall into the pit; one drawn running north-south along the wall is wrong, however well it leans. Same for north/south walls: the long axis runs up/down the face, never along the rim.", "code": "WALL_AXIS_WRONG", "modules": ["wall_mounted"]},
     {"id": "PORTS_DRAWN", "q": "Does every code port on the card have a drawn connector at that point in that facing, and is every drawn connector a code port?", "code": "PORT_UNDRAWN", "when": "ports"},
     {"id": "LAYERS",      "q": "In the assembled view, does what is in front draw in front?", "code": "LAYER_ORDER"},
     {"id": "ROTATIONS",   "q": "Same machine, parts and palette on every rotation?", "code": "F_INCONSISTENT"},
