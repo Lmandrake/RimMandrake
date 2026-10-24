@@ -81,3 +81,23 @@ Rows where GPT says redo/cut and the owner has NO keep on record. Filed as a FIN
 
 Cartoon placeholders for Eopie / LongtailGorg / Worrt are probably a STALE DEF DUMP in the sheet, not installed art; check before acting (see GIZKA_SHEET_FIX_ALTERNATE_SHOWN_AS_RENDER).
 Overlaps existing LEANINGSCRUB_SHEET_ART_REDO_1 (owner's own sheet redo jobs); do not duplicate its jobs.
+
+## Per-row outcome (FOUNDRY, 2026-10-24, delegated: GPT art triage)
+Gate = regen_eligibility.Gate over every texPath of the def; pipeline = infrastructure/state/art_eval/runs/*/decisions.jsonl; PROTECTED = art.py status live slots. Queued directly: NONE (no redo slot is NONE/PLACEHOLDER/DONOR; dessicated slots that are DONOR are not what GPT flagged).
+
+| def | gate | protected slots | art-eval runs so far | outcome |
+|---|---|---|---|---|
+| RM_Ribbonwhip | REFUSED_REGEN | 0 | {'REGEN@r1': 1, 'REGEN@r2': 1} | ALREADY A CANDIDATE: judged by the art-eval pipeline (fauna_leaningscrub_r1_01, latest REGEN r2); no second intake. Regens follow the pipeline loop. |
+| RM_Shokka | REFUSED_REGEN | 0 | {'REGEN@r1': 1, 'REGEN@r2': 1} | ALREADY A CANDIDATE: judged by the art-eval pipeline (fauna_leaningscrub_r1_01, latest REGEN r2); no second intake. Regens follow the pipeline loop. |
+| RM_Surrik | REFUSED_REGEN | 0 | {'REGEN@r1': 1, 'REGEN@r2': 1} | ALREADY A CANDIDATE: judged by the art-eval pipeline (fauna_leaningscrub_r1_01, latest REGEN r2); no second intake. Regens follow the pipeline loop. |
+| RM_Tikkit | REFUSED_REGEN | 0 | {'REGEN@r1': 1, 'REGEN@r2': 1} | ALREADY A CANDIDATE: judged by the art-eval pipeline (fauna_leaningscrub_r1_02, latest REGEN r2); no second intake. Regens follow the pipeline loop. |
+| RSW_JekkaGrass | REFUSED_REGEN | 0 | {'REGEN@r1': 3} | ALREADY A CANDIDATE: judged by the art-eval pipeline (flora_leaningscrub_s0, latest REGEN r1); no second intake. Regens follow the pipeline loop. |
+| RM_QuenchVenomvine | REFUSED_REGEN | 0 | {'REGEN@r1': 1, 'ACCEPT@r0': 4} | ALREADY A CANDIDATE: judged by the art-eval pipeline (flora_leaningscrub_s0, latest ACCEPT r0); no second intake. Regens follow the pipeline loop. |
+| RM_SheddingVenomvine | REFUSED_REGEN | 0 | {'REGEN@r1': 4, 'ACCEPT@r0': 1} | ALREADY A CANDIDATE: judged by the art-eval pipeline (flora_leaningscrub_s0, latest REGEN r1); no second intake. Regens follow the pipeline loop. |
+| RM_SwornVenomvine | REFUSED_REGEN | 0 | {'ACCEPT@r0': 1, 'REGEN@r1': 4} | ALREADY A CANDIDATE: judged by the art-eval pipeline (flora_leaningscrub_s0, latest REGEN r1); no second intake. Regens follow the pipeline loop. |
+| RM_WalkingVenomvine | REFUSED_REGEN | 0 | {'REGEN@r1': 4, 'ACCEPT@r0': 1} | ALREADY A CANDIDATE: judged by the art-eval pipeline (flora_leaningscrub_s0, latest REGEN r1); no second intake. Regens follow the pipeline loop. |
+| RSW_Gizka | REFUSED_REGEN | 1 | none | CANDIDATE: never judged; intake filed as GPTREDO_JUDGE_UNJUDGED_ROWS (art-eval run, not a direct regen). |
+| RSW_LongtailGorg | REFUSED_REGEN | 12 | none | UNQUEUED: 39 ruled owner keep events, 12 protected slots - the "no owner keep" premise is false; GPT redo needs his word / revert record. Cartoon-placeholder tiles: the live files are ledger artpipe renders (REFUSED_REGEN), a stale-sheet-dump is plausible but unviewed. |
+| RSW_Worrt | REFUSED_REGEN | 9 | none | UNQUEUED: 11 ruled owner keep events, 9 protected slots - the "no owner keep" premise is false; GPT redo needs his word / revert record. Cartoon-placeholder tiles: the live files are ledger artpipe renders (REFUSED_REGEN), a stale-sheet-dump is plausible but unviewed. |
+
+Checked: no overlap with LEANINGSCRUB_SHEET_ART_REDO_1 jobs (leaningscrub_redo_jobs_2026-10-05.json targets none of these defs).
