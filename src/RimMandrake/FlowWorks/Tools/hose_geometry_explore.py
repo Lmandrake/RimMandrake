@@ -24,7 +24,8 @@ at radii wider than 1 / KMAX, as HoseMath.Reroute lays its guides. A case no see
 Usage:
   hose_geometry_explore.py rows                 # the hose stations of HoseCurveChecks (short, tankW, tankE, mates)
   hose_geometry_explore.py sweep --out DIR      # the full sweep: JSON + PNG plots in DIR
-  hose_geometry_explore.py check C_JSON         # compare the C# --hose-sweep result with this model
+  hose_geometry_explore.py saturate --out DIR   # rerun every non-kept case with twice the deep search; report what moved
+  hose_geometry_explore.py oracle --out DIR      # the compact verdict table the C# --hose-sweep check compares against
 Numpy and matplotlib only.
 """
 import argparse
@@ -50,11 +51,23 @@ END_STRAIGHT = 0.6
 COUPLING_STRAIGHT = 0.75
 BODY_HALF = 0.125
 MATE_SLIDE = 2.4
-DETOUR = 2.0           # HoseMath.RerouteMaxDetour: a lay longer than this x the route is a detour no one would make
 MAX_LENGTH = 40.0      # a reel's hose
 SAMPLE_SUB = 2
 MAX_SEEDS = 24         # seeds tried per lay (shortest first)
 RHOS = (1.05, 1.15, 1.3, 1.5, 1.8, 2.2, 3.0)   # Dubins seed radii, x 1 / KMAX
+# HOSE_EXPLORER_WIDEN_SEEDS_LONG_LEAD: the deep search a lead no ordinary seed fits gets before it counts as "no fit": every
+# Dubins word at 16 radii, each also stretched (a longer seed loops wider), plus seeded random curvature restarts around it.
+# `saturate` reruns every non-kept case with twice this (DEEP_X2) and reports any verdict that moves.
+RHOS_DEEP = (1.02, 1.05, 1.1, 1.15, 1.22, 1.3, 1.4, 1.5, 1.65, 1.8, 2.0, 2.2, 2.6, 3.0, 3.6, 4.5)
+STRETCH_DEEP = (1.0, 1.25, 1.6)
+RANDOM_DEEP = 12
+DEEP_X2 = dict(rhos=tuple(sorted(set(RHOS_DEEP + (1.08, 1.18, 1.26, 1.35, 1.45, 1.58, 1.72, 1.9, 2.4, 3.3, 4.0, 5.5)))),
+               stretch=(1.0, 1.12, 1.25, 1.4, 1.6, 2.0), random=24)
+DEEP = dict(rhos=RHOS_DEEP, stretch=STRETCH_DEEP, random=RANDOM_DEEP)
+# A lay's PREFERRED length: up to PREFER_DETOUR x the shortest Dubins path. The lead search runs inside it first, so a short
+# span shrinks its lead rather than loop round the room; only when no lead fits there is the lay searched again at any length
+# up to MAX_LENGTH. A long detour is legal (owner, relayed 2026-10-24), never a refusal.
+PREFER_DETOUR = 2.0
 
 GX = np.array([-0.8611363115940526, -0.3399810435848563, 0.3399810435848563, 0.8611363115940526])
 GW = np.array([0.3478548451374538, 0.6521451548625461, 0.6521451548625461, 0.3478548451374538])
@@ -585,8 +598,6 @@ class Model:
                 return False, "crosses itself"
             if c["L"] > MAX_LENGTH + 1e-9:
                 return False, "longer than the hose"
-            if self.ref_len is not None and c["L"] > DETOUR * self.ref_len + 1e-9:
-                return False, "detour"
         if self.mate is not None:
             cx, cz, phi = x[self.iC:self.iC + 3]
             C = np.array([cx, cz])
@@ -644,12 +655,40 @@ def resample(k, n_new):
     return np.interp(np.linspace(0, 1, n_new + 1), s_old, k)
 
 
-def solve_pose(P0, th0, lead, P1, th1, obstacles, ref_len, end_run=END_STRAIGHT, warm=None, rhos=RHOS, max_seeds=MAX_SEEDS):
+def _seed_rng(*vals):
+    """A generator seeded by the case geometry, so a deep search is reproducible run to run."""
+    h = 0
+    for v in np.concatenate([np.ravel(np.asarray(v, float)) for v in vals]):
+        h = (h * 1000003 + int(round(float(v) * 1e4))) % (2 ** 32)
+    return np.random.default_rng(h)
+
+
+def _perturbed(k0, rng, scale=0.35):
+    """A seed's curvature with a random smooth bend added (ends stay 0), ramp-clamped like profile_nodes."""
+    n = len(k0) - 1
+    k = np.asarray(k0, float).copy()
+    knots = rng.normal(0, scale * KMAX, size=4)
+    k = k + np.interp(np.linspace(0, 1, n + 1), np.linspace(0, 1, 4), knots)
+    k = np.clip(k, -KMAX, KMAX)
+    k[0] = k[-1] = 0
+    h = 1.0 / max(1, n)
+    for _ in range(2):
+        for j in range(1, n + 1):
+            k[j] = np.clip(k[j], k[j - 1] - J * h * 2, k[j - 1] + J * h * 2)
+        for j in range(n - 1, -1, -1):
+            k[j] = np.clip(k[j], k[j + 1] - J * h * 2, k[j + 1] + J * h * 2)
+    return k
+
+
+def solve_pose(P0, th0, lead, P1, th1, obstacles, ref_len, end_run=END_STRAIGHT, warm=None, rhos=RHOS, max_seeds=MAX_SEEDS, deep=None,
+               cap=MAX_LENGTH):
     """Is there a G2 lay from the reel mouth (P0, th0) with a straight `lead`, onto the end pose (P1, th1) with a straight end run?
-    Returns (ok, why, model, x) of the first seed that passes the exact check, else the last failure."""
+    Returns (ok, why, model, x) of the first seed that passes the exact check, else the last failure. cap: the longest whole
+    lay searched (PREFER_DETOUR x ref first, then MAX_LENGTH; see PREFER_DETOUR).
+    deep: DEEP / DEEP_X2 (every seed, stretched and randomly restarted) for a lead the ordinary search found nothing at."""
     Q0 = P0 + unit(th0) * lead
     T = np.asarray(P1) - unit(th1) * end_run
-    hi = min(MAX_LENGTH, DETOUR * ref_len) - lead - end_run
+    hi = min(MAX_LENGTH, cap) - lead - end_run
     if hi <= 0.3:
         return False, "no length left for a curve", None, None
     # the lead itself must be clear (the reel it leaves excepted)
@@ -657,6 +696,8 @@ def solve_pose(P0, th0, lead, P1, th1, obstacles, ref_len, end_run=END_STRAIGHT,
     for b in obstacles:
         if b.name != "reel" and np.min(b.sd(lead_pts)[0]) < BODY_HALF - 1e-3:
             return False, "lead-out blocked by " + b.name, None, None
+    if deep:
+        rhos, max_seeds = deep["rhos"], None
     seeds = []
     for rf in rhos:
         for w in dubins_words(Q0, th0, T, th1, rf / KMAX):
@@ -668,16 +709,29 @@ def solve_pose(P0, th0, lead, P1, th1, obstacles, ref_len, end_run=END_STRAIGHT,
                 continue
             seeds.append((Ls, tot, w))
     seeds.sort(key=lambda s: s[0])
+    if deep:
+        rng = _seed_rng(P0, th0, lead, P1, th1)
+        base = list(seeds)
+        for st in deep["stretch"][1:]:
+            seeds += [(Ls * st, tot, ("stretch", w, st)) for Ls, tot, w in base if Ls * st <= hi]
+        for i in range(deep["random"]):
+            if not base:
+                break
+            Ls, tot, w = base[i % len(base)]
+            seeds.append((Ls * (1 + 0.15 * (i % 3)), tot, ("random", w, rng)))
     if warm is not None:
         # continuation: a neighbouring lead's solution, its middle longer by the lead it gave up
         wm, wx = warm
         wh = wm.hoses[0]
         kw = wh.kfull(wx[:wh.nk])
-        Lw = wx[wm.idx[0][1]] * wh.n + (wh.lead0 - lead)
+        hw = wx[wm.idx[0][1]] if wm.idx[0][1] is not None else wh.length[1] / wh.n
+        Lw = hw * wh.n + (wh.lead0 - lead)
         seeds.insert(0, (Lw, wh.end[2] - th0, ("warm", kw)))
     last = (False, "no seed", None, None)
     tries = 0
     for Ls, tot, w in seeds:
+        if time.time() > _DEADLINE[0]:
+            return False, "search time budget spent", None, None
         th1u = th0 + tot
         L = max(Ls, 0.4)
         x = None
@@ -686,6 +740,10 @@ def solve_pose(P0, th0, lead, P1, th1, obstacles, ref_len, end_run=END_STRAIGHT,
             if x is None:
                 if w[0] == "warm":
                     k0 = resample(w[1], n)
+                elif w[0] == "stretch":
+                    k0, _ = profile_nodes(w[1], n, L)
+                elif w[0] == "random":
+                    k0 = _perturbed(profile_nodes(w[1], n, L)[0], w[2])
                 else:
                     k0, _ = profile_nodes(w, n, L)
             else:
@@ -703,62 +761,131 @@ def solve_pose(P0, th0, lead, P1, th1, obstacles, ref_len, end_run=END_STRAIGHT,
             return True, "ok", m, x
         last = (False, why, m, x)
         tries += 1
-        if tries >= max_seeds:
+        if max_seeds is not None and tries >= max_seeds:
             break
     return last
 
 
-def largest_lead(fit):
-    """The owner's rule: the largest lead in [LEAD_MIN, LEAD_OUT] that fits. fit(lead) -> (ok, ...)."""
+def largest_lead(fit, deep=DEEP):
+    """The owner's rule: the largest lead in [LEAD_MIN, LEAD_OUT] that fits. fit(lead, warm, deep) -> (ok, why, model, x).
+    The ordinary grid + bisection first; then, so that "no fit" means no fit (HOSE_EXPLORER_WIDEN_SEEDS_LONG_LEAD):
+    a deep search at LEAD_MIN when nothing fit, and a deep warm march upward from the lead found (the next LEAD_TOL step,
+    then the grid point above, bisected) until a deep search fails too. deep None: the ordinary search only."""
     tried = {}
 
-    def f(lead, warm=None):
+    def f(lead, warm=None, dp=None):
         lead = round(lead, 4)
-        if lead not in tried:
-            tried[lead] = fit(lead, warm)
-        return tried[lead]
-    prev = None
+        key = (lead, dp is not None)
+        if key not in tried:
+            tried[key] = fit(lead, None if warm is None or warm[2] is None else (warm[2], warm[3]), dp)
+        return tried[key]
+
+    def fd(lead, warm):
+        """Deep, but the neighbour's solution alone first (cheap, and usually enough one LEAD_TOL step away)."""
+        key = (round(lead, 4), False)
+        if key in tried and tried[key][0]:
+            return tried[key]
+        if warm is not None and warm[2] is not None:
+            rw = fit(round(lead, 4), (warm[2], warm[3]), None)
+            if rw[0]:
+                tried[key] = rw
+                return rw
+        return f(lead, warm, deep)
+
+    def bisect(lo, r, hi, dp):
+        while hi - lo > LEAD_TOL + 1e-9:
+            mid = round((lo + hi) / 2, 4)
+            rm = f(mid, r, None) if dp is None else fd(mid, r)
+            if rm[0]:
+                lo, r = mid, rm
+            else:
+                hi = mid
+        return lo, r
+
+    lo, r, prev = None, None, None
     for g in LEAD_GRID:
         r = f(g)
         if r[0]:
-            if prev is None:
-                return g, r, tried
-            lo, hi = g, prev       # lo fits, hi does not
-            while hi - lo > LEAD_TOL + 1e-9:
-                mid = round((lo + hi) / 2, 4)
-                rm = f(mid, (r[2], r[3]))
-                if rm[0]:
-                    lo, r = mid, rm
-                else:
-                    hi = mid
-            return lo, r, tried
+            lo = g if prev is None else None
+            if lo is None:
+                lo, r = bisect(g, r, prev, None)
+            break
         prev = g
-    return None, f(LEAD_GRID[-1]), tried
+    if lo is None:
+        if deep is None:
+            return None, r, tried
+        rd = f(LEAD_MIN, None, deep)
+        if not rd[0]:
+            return None, rd, tried
+        lo, r = LEAD_MIN, rd
+    while deep is not None and lo < LEAD_OUT - 1e-9:
+        nxt = min(LEAD_OUT, lo + LEAD_TOL)
+        rr = fd(nxt, r)
+        if not rr[0]:
+            break
+        lo, r = round(nxt, 4), rr
+        above = [g for g in LEAD_GRID if g > lo + 1e-9]
+        if not above:
+            break
+        ra = fd(above[-1], r)
+        if ra[0]:
+            lo, r = above[-1], ra
+            continue
+        lo, r = bisect(lo, r, above[-1], deep)
+    return lo, r, tried
 
 
-def solve_free(P0, th0, lead, P1, obstacles, ref_len, length=None):
-    """A lay to a free end P1 (heading and end curvature free). length None: free in [0.3, cap]; else the hose's whole length."""
+def solve_free(P0, th0, lead, P1, obstacles, ref_len, length=None, warm=None, deep=None, cap=MAX_LENGTH):
+    """A lay to a free end P1 (heading and end curvature free). length None: the whole lay free in [0.3, cap]; else the hose's
+    whole length. deep: every radius of the deep set plus seeded random restarts of each seed."""
     Q0 = P0 + unit(th0) * lead
-    cap = min(MAX_LENGTH, DETOUR * ref_len)
+    cap = min(MAX_LENGTH, cap)
     best = (False, "no seed", None, None)
-    for rf in RHOS:
+    seeds = []
+    for rf in (deep["rhos"] if deep else RHOS):
         for w in turn_to_point(Q0, th0, P1, rf / KMAX):
-            Ls = sum(L for L, _ in w)
-            tot = sum(L * c for L, c in w)
-            L = Ls if length is None else length - lead
-            if L <= 0.2:
-                return False, "no length left for a curve", None, None
-            n = max(4, int(math.ceil(L / (NODE_STEP * 0.9))))
-            k0, _ = profile_nodes(w, n, L)
-            k0[-1] = k0[-2]
-            spec = ("free", 0.3, cap - lead) if length is None else ("fixed", L)
-            hs = Hose(P0, th0, lead, n, ("point", np.asarray(P1, float)), spec, k0=k0, h0=L / n)
-            m = Model([hs], obstacles, ref_len=ref_len)
-            x = m.solve(m.x0())
-            ok, why = m.check(x)
-            if ok:
-                return True, "ok", m, x
-            best = (False, why, m, x)
+            seeds.append(("w", w))
+    if deep:
+        rng = _seed_rng(P0, th0, lead, P1)
+        base = list(seeds)
+        for st in deep["stretch"][1:]:
+            seeds += [("stretch", w, st) for _, w in base]
+        for i in range(deep["random"]):
+            if base:
+                seeds.append(("random", base[i % len(base)][1], rng))
+    if warm is not None:
+        wm, wx = warm
+        wh = wm.hoses[0]
+        hw = wx[wm.idx[0][1]] if wm.idx[0][1] is not None else wh.length[1] / wh.n
+        seeds.insert(0, ("warm", wh.kfull(wx[:wh.nk]), hw * wh.n + (wh.lead0 - lead)))
+    for sd in seeds:
+        if time.time() > _DEADLINE[0]:
+            return False, "search time budget spent", None, None
+        if sd[0] == "warm":
+            Ls = max(0.4, sd[2])
+        else:
+            Ls = sum(L for L, _ in sd[1]) * (sd[2] if sd[0] == "stretch" else 1.0)
+        L = Ls if length is None else length - lead
+        if L <= 0.2:
+            return False, "no length left for a curve", None, None
+        if L > cap:
+            continue
+        n = max(4, int(math.ceil(L / (NODE_STEP * 0.9))))
+        if sd[0] == "warm":
+            k0 = resample(sd[1], n)
+        else:
+            k0, _ = profile_nodes(sd[1], n, L)
+            if sd[0] == "random":
+                k0 = _perturbed(k0, sd[2])
+        k0[-1] = k0[-2]
+        spec = ("free", 0.3, cap - lead) if length is None else ("fixed", L)
+        hs = Hose(P0, th0, lead, n, ("point", np.asarray(P1, float)), spec, k0=k0, h0=L / n)
+        m = Model([hs], obstacles, ref_len=ref_len)
+        x = m.solve(m.x0())
+        ok, why = m.check(x)
+        if ok:
+            return True, "ok", m, x
+        best = (False, why, m, x)
     return best
 
 
@@ -770,9 +897,10 @@ def shortest_free_length(P0, th0, lead, P1, obstacles, ref_len):
     return m.curves(x)[0]["L"]
 
 
-def solve_mate(PA, thA, PB, thB, lead, LA, LB, C0, obstacles, phis=None, warm=None):
+def solve_mate(PA, thA, PB, thB, lead, LA, LB, C0, obstacles, phis=None, warm=None, deep=None):
     """Two hoses of KEPT material lengths LA, LB (lead + middle + coupling run each) meeting head-on at a coupling C within
-    MATE_SLIDE of C0: A arrives heading phi, B heading phi + pi."""
+    MATE_SLIDE of C0: A arrives heading phi, B heading phi + pi. deep: the coupling also started at 16 points around C0
+    (8 directions x 0.8 / 1.6 cells), each with the arrivals' bisector and its reverse, seeded at three radii."""
     cs = COUPLING_STRAIGHT
     LmA, LmB = LA - lead - cs, LB - lead - cs
     if LmA <= 0.2 or LmB <= 0.2:
@@ -787,11 +915,21 @@ def solve_mate(PA, thA, PB, thB, lead, LA, LB, C0, obstacles, phis=None, warm=No
         wm, wx = warm
         seeds.append(("warm", wm, wx))
     for phi in phis:
-        seeds.append(("phi", phi))
+        seeds.append(("phi", phi, np.asarray(C0, float), 1.15))
+    if deep:
+        bis = wrap((thA + thB + math.pi) / 2)
+        for rad in (0.8, 1.6):
+            for a in range(8):
+                Ci = np.asarray(C0, float) + rad * unit(a * math.pi / 4)
+                for phi in (bis, wrap(bis + math.pi), wrap(math.atan2(*(Ci - QA)[::-1]))):
+                    for rf in (1.05, 1.6, 2.4):
+                        seeds.append(("phi", phi, Ci, rf))
     best = (False, "no seed", None, None)
     nA = max(4, int(math.ceil(LmA / (NODE_STEP * 0.9))))
     nB = max(4, int(math.ceil(LmB / (NODE_STEP * 0.9))))
     for sd in seeds:
+        if time.time() > _DEADLINE[0]:
+            return False, "search time budget spent", None, None
         if sd[0] == "warm":
             wm, wx = sd[1], sd[2]
             ha, hb = wm.hoses
@@ -802,12 +940,11 @@ def solve_mate(PA, thA, PB, thB, lead, LA, LB, C0, obstacles, phis=None, warm=No
             turns = hb.end[1]
             C = np.array([cx, cz])
         else:
-            phi = sd[1]
-            C = np.asarray(C0, float)
+            phi, C, rf = sd[1], sd[2], sd[3]
             u = unit(phi)
             ta, tb = C - u * cs, C + u * cs
-            wa = dubins_words(QA, thA, ta, phi, 1.15 / KMAX)
-            wb = dubins_words(QB, thB, tb, phi + math.pi, 1.15 / KMAX)
+            wa = dubins_words(QA, thA, ta, phi, rf / KMAX)
+            wb = dubins_words(QB, thB, tb, phi + math.pi, rf / KMAX)
             if not wa or not wb:
                 continue
             wa = min(wa, key=lambda w: sum(L for L, _ in w))
@@ -834,7 +971,7 @@ def frame(w, h):
 
 
 def run_port(case):
-    """Reel -> port: the largest lead that fits, and at 0.6 without the detour cap when nothing fits."""
+    """Reel -> port: the largest lead that fits (any length up to MAX_LENGTH), deep-searched before it is called no fit."""
     rx, rz, fac = case["reel"]
     fx, fz, face, tank = case["fixture"]
     P0, th0 = reel_mouth(rx, rz, fac)
@@ -849,20 +986,10 @@ def run_port(case):
     lead_pts = np.array([P0 + unit(th0) * LEAD_MIN * q for q in np.linspace(0.05, 1, 6)])
     if np.min(obs[1].sd(lead_pts)[0]) < BODY_HALF - 1e-3:
         return dict(case, lead=None, why="layout: the fixture stands in the nozzle's way", layout=True, ms=0.0)
-    lead, r, tried = largest_lead(lambda ld, warm: solve_pose(P0, th0, ld, P1, th1, obs, ref, warm=warm))
-    out = dict(case, lead=lead, why=r[1], ref=round(ref, 4), tried={str(k): v[1] for k, v in sorted(tried.items())})
-    if lead is None:
-        # nothing within the detour cap: search harder (more radii, every seed) with no cap at all
-        ok, why, m, x = solve_pose(P0, th0, LEAD_MIN, P1, th1, obs, 1e3, max_seeds=40)
-        out["nocap"] = "fits only as a detour" if ok else why
-        if ok:
-            r = (ok, why, m, x)
-            out["detour_ratio"] = round(m.curves(x)[0]["L"] / ref, 3)
-        else:
-            # a stronger search inside the cap too, so a "none" is not just a weak seed
-            ok2, why2, m2, x2 = solve_pose(P0, th0, LEAD_MIN, P1, th1, obs, ref, max_seeds=40)
-            if ok2:
-                out["lead"], out["why"], r = LEAD_MIN, "ok (deep search)", (ok2, why2, m2, x2)
+    lead, r, tried, long_ = _tiers(lambda cap: lambda ld, warm, dp: solve_pose(P0, th0, ld, P1, th1, obs, ref, warm=warm, deep=dp, cap=cap), ref)
+    out = dict(case, lead=lead, why=r[1], ref=round(ref, 4), tried=_tried(tried), long_detour=long_)
+    if r[0]:
+        out["detour_ratio"] = round(r[2].curves(r[3])[0]["L"] / ref, 3)
     _attach(out, r)
     out["ms"] = round(1000 * (time.time() - t), 1)
     return out
@@ -875,8 +1002,10 @@ def run_free(case):
     obs = [Box(rx, rz, rx + 2, rz + 2, "reel")] + [Box(*b) for b in case.get("walls", [])]
     ref = max(dubins_min(P0, th0, P1, th0), math.hypot(*(P1 - P0)))
     t = time.time()
-    lead, r, tried = largest_lead(lambda ld, warm: solve_free(P0, th0, ld, P1, obs, ref))
-    out = dict(case, lead=lead, why=r[1], ref=round(ref, 4), tried={str(k): v[1] for k, v in sorted(tried.items())})
+    lead, r, tried, long_ = _tiers(lambda cap: lambda ld, warm, dp: solve_free(P0, th0, ld, P1, obs, ref, warm=warm, deep=dp, cap=cap), ref)
+    out = dict(case, lead=lead, why=r[1], ref=round(ref, 4), tried=_tried(tried), long_detour=long_)
+    if r[0]:
+        out["detour_ratio"] = round(r[2].curves(r[3])[0]["L"] / ref, 3)
     _attach(out, r)
     out["ms"] = round(1000 * (time.time() - t), 1)
     return out
@@ -884,6 +1013,7 @@ def run_free(case):
 
 def run_mate(case):
     """Two free-end lays whose ends are within a cell, then mated with both lengths kept (each the shortest free lay x slack)."""
+    _DEADLINE[0] = time.time() + CASE_BUDGET
     (ax, az, fa), (bx, bz, fb) = case["reelA"], case["reelB"]
     PA, thA = reel_mouth(ax, az, fa)
     PB, thB = reel_mouth(bx, bz, fb)
@@ -896,18 +1026,43 @@ def run_mate(case):
             lens.append(case["L" + key])
             continue
         ref = max(dubins_min(P, th, E, th), math.hypot(*(E - P)))
-        ld, r, _ = largest_lead(lambda l, warm: solve_free(P, th, l, E, obs, ref))
+        ld, r, _, _ = _tiers(lambda cap: lambda l, warm, dp: solve_free(P, th, l, E, obs, ref, warm=warm, deep=dp, cap=cap), ref)
         if ld is None:
             return dict(case, lead=None, why="the free lay " + key + " itself does not fit: " + r[1], ms=round(1000 * (time.time() - t), 1))
         lens.append(r[2].curves(r[3])[0]["L"] * case.get("slack", 1.0))
     C0 = (EA + EB) / 2
-    lead, r, tried = largest_lead(lambda ld, warm: solve_mate(PA, thA, PB, thB, ld, lens[0], lens[1], C0, obs, warm=warm))
-    out = dict(case, lead=lead, why=r[1], LA=round(lens[0], 4), LB=round(lens[1], 4), tried={str(k): v[1] for k, v in sorted(tried.items())})
+    lead, r, tried = largest_lead(lambda ld, warm, dp: solve_mate(PA, thA, PB, thB, ld, lens[0], lens[1], C0, obs, warm=warm, deep=dp),
+                                  deep=_DEEP[0])
+    out = dict(case, lead=lead, why=r[1], LA=round(lens[0], 4), LB=round(lens[1], 4), tried=_tried(tried))
     _attach(out, r)
     if r[2] is not None and r[2].mate is not None:
         out["C"] = [round(float(v), 4) for v in r[3][r[2].iC:r[2].iC + 3]]
+    if time.time() > _DEADLINE[0]:
+        out["budget_spent"] = True
     out["ms"] = round(1000 * (time.time() - t), 1)
     return out
+
+
+# the deep set the sweep uses (DEEP); `saturate` swaps in DEEP_X2. A list so worker processes inherit it on fork.
+_DEEP = [DEEP]
+# a mate case's wall-clock budget (s): one past it is reported "unsaturated", never "none" (the sweep's call has a hard limit)
+CASE_BUDGET = 420.0
+_DEADLINE = [float("inf")]
+
+
+def _tiers(make_fit, ref):
+    """largest_lead inside the preferred length (PREFER_DETOUR x ref), then, only if nothing fits there, at any length.
+    -> (lead, r, tried, long_detour)."""
+    lead, r, tried = largest_lead(make_fit(PREFER_DETOUR * ref), deep=_DEEP[0])
+    if lead is not None:
+        return lead, r, tried, False
+    lead2, r2, tried2 = largest_lead(make_fit(MAX_LENGTH), deep=_DEEP[0])
+    tried.update({(k[0], k[1], "long"): v for k, v in tried2.items()})
+    return (lead2, r2, tried, True) if lead2 is not None else (None, r, tried, False)
+
+
+def _tried(tried):
+    return {("%s%s%s" % (k[0], " deep" if k[1] else "", " long" if len(k) > 2 else "")): v[1] for k, v in sorted(tried.items(), key=lambda kv: (len(kv[0]), kv[0]))}
 
 
 def _attach(out, r):
@@ -989,17 +1144,17 @@ def sweep_cases(family, span=8, mates=400, seed=20261024):
 def classify(r):
     if r.get("layout"):
         return "layout"
+    if r.get("budget_spent"):
+        return "unsaturated"
     if r.get("lead") is None:
         if str(r.get("why", "")).startswith("explorer error"):
             return "error"
-        if r.get("nocap") == "fits only as a detour":
-            return "detour only"
         return "none at 0.6"
     return "2.2 kept" if r["lead"] >= LEAD_OUT - 1e-9 else "shrunk"
 
 
 # ------------------------------------------------------------------------------------------------ pictures
-COL = {"layout": "#ffffff", "2.2 kept": "#b8c4b0", "detour only": "#e8a33d", "none at 0.6": "#c0392b", "error": "#7d3c98"}
+COL = {"layout": "#ffffff", "2.2 kept": "#b8c4b0", "none at 0.6": "#c0392b", "error": "#7d3c98"}
 
 
 def _boxes_of(r):
@@ -1052,7 +1207,7 @@ def draw_case(ax, r, title=None):
     ax.tick_params(labelsize=5)
     lead = r.get("lead")
     t = title or r.get("name") or r.get("key", "")
-    ax.set_title("%s\nlead %s  %s" % (t, "none" if lead is None else "%.2f" % lead, "" if lead is not None else r.get("nocap") or r.get("why")), fontsize=7)
+    ax.set_title("%s\nlead %s  %s" % (t, "none" if lead is None else "%.2f" % lead, "" if lead is not None else r.get("why")), fontsize=7)
 
 
 def plot_rows(results, path):
@@ -1097,7 +1252,7 @@ def plot_port_map(results, path):
             ax.set_title("reel faces %s, port on fixture's %s face%s" % (fac, face, " (tank)" if face in "EW" else ""), fontsize=8)
             ax.tick_params(labelsize=6)
     fig.suptitle("Reel -> port: each square is the fixture's corner cell (2x2 fixture); colour = largest lead-out that fits\n"
-                 "grey = full 2.2 kept, viridis = shrunk (0.6 dark .. 2.2 light), orange = only a detour > 2x fits, red = nothing even at 0.6,\n"
+                 "grey = full 2.2 kept, viridis = shrunk (0.6 dark .. 2.2 light), red = nothing even at 0.6,\n"
                  "white = a layout no hose can serve (port end run into the reel, or the fixture in the nozzle's way)",
                  fontsize=10)
     sm = cm.ScalarMappable(norm=norm, cmap=cmap)
@@ -1185,7 +1340,7 @@ def summarize(results):
     whys = {}
     for r in results:
         if classify(r) in ("none at 0.6", "error"):
-            w = r.get("nocap") or r.get("why")
+            w = r.get("why")
             whys[w] = whys.get(w, 0) + 1
     if whys:
         s["no_fit_why"] = whys
@@ -1224,9 +1379,9 @@ def cmd_sweep(args):
             n = 0
             for r in pool.imap_unordered(_run, todo, chunksize=2):
                 f.write(json.dumps(r) + "\n")
+                f.flush()      # every row: a run stopped from outside keeps what it finished
                 n += 1
                 if n % 200 == 0:
-                    f.flush()
                     print("  %s %d/%d  %.0f s" % (fam, n, len(todo), time.time() - t0), flush=True)
                 if time.time() - t0 > args.budget:
                     print("  budget reached; rerun to resume", flush=True)
@@ -1248,7 +1403,7 @@ def cmd_plot(args):
             plot_port_map(res, os.path.join(args.out, "map_port.png"))
         if fam == "free":
             plot_free_map(res, os.path.join(args.out, "map_free.png"))
-        bad = [r for r in res if classify(r) in ("none at 0.6", "detour only", "error")]
+        bad = [r for r in res if classify(r) in ("none at 0.6", "error")]
         shr = [r for r in res if classify(r) == "shrunk"]
         shr.sort(key=lambda r: r["lead"])
         step = max(1, len(shr) // 20)
@@ -1259,6 +1414,73 @@ def cmd_plot(args):
     with open(os.path.join(args.out, "summary.json"), "w") as f:
         json.dump(summ, f, indent=1)
     print(json.dumps(summ, indent=1))
+
+
+def _saturate_one(item):
+    _DEEP[0] = DEEP_X2
+    _DEADLINE[0] = time.time() + SATURATE_BUDGET
+    r = _run(item)
+    if time.time() > _DEADLINE[0]:
+        r["budget_spent"] = True
+    return r
+
+
+SATURATE_BUDGET = 360.0
+
+
+def cmd_saturate(args):
+    """Every case the sweep did not keep at 2.2, rerun with DEEP_X2 (24+ radii, 6 stretches, 24 random restarts). A deeper
+    search that moves a verdict means the sweep's search was not saturated: widen DEEP and resweep."""
+    from multiprocessing import Pool
+    moved, n, t0 = [], 0, time.time()
+    path = os.path.join(args.out, "saturation.json")
+    prev = json.load(open(path)) if os.path.exists(path) else {"checked": {}, "moved": []}
+    for fam in ("port", "free", "mate"):
+        res = _load(os.path.join(args.out, "sweep_%s.jsonl" % fam))
+        cases = {c[1]["key"]: c for c in sweep_cases(fam)}
+        shr = [k for k, r in sorted(res.items()) if classify(r) == "shrunk"]
+        pick = set(shr[::args.shrunk_every]) | {k for k, r in res.items() if classify(r) in ("none at 0.6", "unsaturated")}
+        todo = [cases[k] for k in sorted(pick) if k in cases and (fam + " " + k) not in prev["checked"]]
+        print("%s: %d to recheck" % (fam, len(todo)), flush=True)
+        with Pool(args.workers) as pool:
+            for r2 in pool.imap_unordered(_saturate_one, todo, chunksize=1):
+                k = r2["key"]
+                r1 = res[k]
+                a1, a2 = (classify(r1), r1.get("lead")), (classify(r2), r2.get("lead"))
+                prev["checked"][fam + " " + k] = [a1[0], a1[1], a2[0], a2[1]]
+                if a2[0] != "unsaturated" and (a1[0] != a2[0] or (a1[1] is not None and a2[1] is not None and a2[1] > a1[1] + LEAD_TOL + 1e-9)):
+                    prev["moved"].append({"family": fam, "key": k, "sweep": a1, "x2": a2})
+                with open(path, "w") as f:
+                    json.dump(prev, f, indent=1)
+                n += 1
+                if time.time() - t0 > args.budget:
+                    pool.terminate()
+                    break
+        if time.time() - t0 > args.budget:
+            print("budget reached; rerun to resume", flush=True)
+            break
+    with open(path, "w") as f:
+        json.dump(prev, f, indent=1)
+    print("rechecked %d this run, %d total, moved %d -> %s" % (n, len(prev["checked"]), len(prev["moved"]), path))
+
+
+def cmd_oracle(args):
+    """family, key, class, lead, long_detour[, mate geometry] per case: what the C# sweep check reads."""
+    lines = ["# hose_geometry_explore.py oracle: family key class lead long_detour [ax az fa bx bz fb eax eaz ebx ebz LA LB]"]
+    for fam in ("port", "free", "mate"):
+        res = _load(os.path.join(args.out, "sweep_%s.jsonl" % fam))
+        for k in sorted(res):
+            r = res[k]
+            row = [fam, k.replace(" ", "_"), classify(r).replace(" ", "_"), "-" if r.get("lead") is None else "%.2f" % r["lead"],
+                   "1" if r.get("long_detour") else "0"]
+            if fam == "mate":
+                (ax, az, fa), (bx, bz, fb) = r["reelA"], r["reelB"]
+                row += [str(ax), str(az), fa, str(bx), str(bz), fb] + ["%.2f" % v for v in (*r["endA"], *r["endB"])]
+                row += ["-" if r.get("LA") is None else "%.4f" % r["LA"], "-" if r.get("LB") is None else "%.4f" % r["LB"]]
+            lines.append("\t".join(row))
+    with open(args.dest, "w") as f:
+        f.write("\n".join(lines) + "\n")
+    print("wrote %d rows to %s" % (len(lines) - 1, args.dest))
 
 
 def main(argv=None):
@@ -1275,8 +1497,16 @@ def main(argv=None):
     a.add_argument("--budget", type=float, default=480.0, help="seconds; the sweep resumes where it stopped")
     a = sub.add_parser("plot")
     a.add_argument("--out", required=True)
+    a = sub.add_parser("saturate")
+    a.add_argument("--out", required=True)
+    a.add_argument("--shrunk-every", type=int, default=4, help="every n-th shrunk case (every none case is rechecked)")
+    a.add_argument("--workers", type=int, default=max(1, (os.cpu_count() or 2) - 2))
+    a.add_argument("--budget", type=float, default=480.0)
+    a = sub.add_parser("oracle")
+    a.add_argument("--out", required=True)
+    a.add_argument("--dest", required=True)
     args = ap.parse_args(argv)
-    {"rows": cmd_rows, "sweep": cmd_sweep, "plot": cmd_plot}[args.cmd](args)
+    {"rows": cmd_rows, "sweep": cmd_sweep, "plot": cmd_plot, "saturate": cmd_saturate, "oracle": cmd_oracle}[args.cmd](args)
 
 
 if __name__ == "__main__":
