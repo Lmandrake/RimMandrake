@@ -53,7 +53,7 @@ EXPLICIT = {
     "AA_Cactipine": "RM_Chikka", "AA_Helixien": "RM_Bileworm", "AA_Lockjaw": "RM_Siezer",
     "AA_Murkling": "RM_Lirrith", "AA_ShockGoat": "RM_Zhissa",
     "AA_Swarmling": "RM_Chittik", "AA_Wildpawn": "RM_Durrok", "AA_Wildpod": "RM_Mullgoth",
-    "AA_Eyeling": "RSW_Ikee",
+    "AA_Eyeling": "RM_Ikee",
     # shrimps (4da613788), ondrukka (aabcd7a5a), twin-only slime family (3021d7031, 3fbec5530)
     "AA_BloodShrimp": "RM_Zrrik", "AA_RaptorShrimp": "RM_Sharpshrimp",
     "VFEI2_BlackSwarmling": "RM_Ondrukka",

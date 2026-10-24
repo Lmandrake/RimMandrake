@@ -26,7 +26,7 @@
   STALE pre-rename defNames — RSW_Spineroller, RSW_Stareling, RSW_Voltmaw — a
   same-day rename (NONCANON_BEAST_RENAME_1, f7cf979ab, 2026-09-24) landed
   between that table being written and this file, renaming them to RSW_Kudda,
-  RSW_Ikee and RSW_Vozzik respectively (same commonalities, same rows). This
+  RM_Ikee and RSW_Vozzik respectively (same commonalities, same rows). This
   file follows the live def, not the item's now-stale table.
 
   🔴 LONGSHADE_RULED_CONTENT_1 (2026-09-27 sitting, Q6) cut RSW_Kudda and
@@ -40,7 +40,7 @@
   docs and the roster JSON, never this XML.
 
   🔴 STILLSAND_RULED_CONTENT_1 (2026-09-27 sitting, Q1 RATIFIED) further cut
-  RSW_Ikee, RSW_Vozzik, RSW_SandLion (vekka) and RSW_Drazzik from the Add
+  RM_Ikee, RSW_Vozzik, RSW_SandLion (vekka) and RSW_Drazzik from the Add
   block below, and RSW_LightPipeNub/RSW_Ollim from the wildPlants block —
   all four are invented content (Q11a), tier-moved to native RM_-tier copies
   authored directly in RM_Stillsand_Biome.xml's own wildAnimals/wildPlants
@@ -63,7 +63,8 @@
   reversed by the card):
     RSW_Kreetle 0.2, RSW_WarWyrm 0.2, (RSW_KraytDragon cut 2026-10-17),
     RSW_GraniteSlug 0.1, RSW_Scurrier 0.1, RSW_Gizka 0.01,
-    RSW_GreaterKraytDragon 0.001, RSW_Ikee 0.15
+    RSW_GreaterKraytDragon 0.001 (RSW_Ikee 0.15 left 2026-10-24: renamed RM_Ikee and moved into
+    the Stillsand mod, listed inline in RM_Stillsand_Biome.xml, SWB_RM_FAUNA_DECIDE_HOME_LIKE_CHIKKA)
 
   RM_Qorrax (renamed from JOE_Cephalope) is NOT patched here any more: its ThingDef moved
   inline into the RM mod (STILLSAND_BEDAZZLE_CONTENT_1, Q1) and RM_Stillsand's own wildAnimals
@@ -101,7 +102,6 @@
           <RSW_Scurrier>0.1</RSW_Scurrier>
           <RSW_Gizka>0.01</RSW_Gizka>
           <RSW_GreaterKraytDragon>0.001</RSW_GreaterKraytDragon>
-          <RSW_Ikee>0.15</RSW_Ikee>  <!-- back in 2026-10-05: RM_Ikee was cut as its duplicate (owner, Stillsand sheet: "duplicate, remove"); the RSW_ ikee, the Jawas' cute pet, is the one kept. Weight = the cut RM_Ikee row's. -->
         </value>
       </match>
     </match>

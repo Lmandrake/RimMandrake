@@ -98,7 +98,7 @@ def main():
           "PLANTED: a biome hash the live table lacks is lost on load", G["world tileBiome"])
     W = S.worklist(things, rels, lms, kinds, refs)
     w = "\n".join(W)
-    check("Marquee" in w and "Bond with Yeku" in w and "RSW_Ikee" in w, "the worklist names the ikee swap and the "
+    check("Marquee" in w and "Bond with Yeku" in w and "RM_Ikee" in w, "the worklist names the ikee swap and the "
                                                                           "bond to re-create", w)
     check("AB_Mech_RuinedCell x2" in w, "the worklist counts the buildings by def", w)
     blind = os.path.join(d, "blind.rws")

@@ -21,7 +21,7 @@ def check(cond, msg, detail=""):
 
 
 class FakeWorld:
-    defs = {n: {} for n in ("RM_Hollu", "RM_HolluCatch", "RM_Vurra", "VAEWaste_Megatardi", "RM_Dewgourd", "RSW_Korrum")}
+    defs = {n: {} for n in ("RM_Hollu", "RM_HolluCatch", "RM_Vurra", "VAEWaste_Megatardi", "RM_Dewgourd", "RM_Korrum")}
 
 
 def rec(job, res=None, via=None, subjects=()):
@@ -29,7 +29,7 @@ def rec(job, res=None, via=None, subjects=()):
     return {"job": job, "family": fam, "resolution": res, "via": via, "subjects": list(subjects), "evidence": ""}
 
 
-H.load = lambda: {"renames": {"RSW_Ashworm": ["RM_Vurra"], "RSW_Stoneback": ["RSW_Bokka", "RSW_Korrum"]},
+H.load = lambda: {"renames": {"RSW_Ashworm": ["RM_Vurra"], "RSW_Stoneback": ["RSW_Bokka", "RM_Korrum"]},
                   "rename_commit": {"RSW_Ashworm>RM_Vurra": "abc123 NONCANON rename"},
                   "deleted": {"RM_Kudda": "def456 cut", "RSW_Stoneback": "x", "RSW_Ashworm": "y"}}
 out = {k: rec(*v) for k, v in {

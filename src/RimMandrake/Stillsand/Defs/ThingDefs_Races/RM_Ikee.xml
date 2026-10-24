@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Ikee.xml                                   SWB_RM_FAUNA_DECIDE_HOME_LIKE_CHIKKA
+
+  The ikee (our port of Alpha Animals AA_Eyeling) is not a Star Wars creature.
+  Owner 2026-10-24: "Yes, it appears that a lot of alpha animal ports got
+  classified as Star Wars. We should move all of those."
+  Moved here (batch 2) from src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_DesertPortMisc_Races.xml;
+  defNames renamed RSW_Ikee -> RM_Ikee. Saves holding the old names load through
+  src/RimMandrake/LeaningScrub/Defs/Misc/RM_SWBRehome_Aliases.xml.
+-->
+<Defs>
+
+	<ThingDef ParentName="AnimalThingBase">
+		<!-- Alpha Animals AA_Eyeling -> RM_Ikee. Body AA_EyeBody substituted with vanilla Monkey (confirmed HeadAttackTool group present on Head). ToolCapacityDef AA_ToxicSting substituted with vanilla Scratch (donor poison chain dropped). -->
+		<defName>RM_Ikee</defName>
+		<label>ikee</label>
+		<description>A grotesquely enlarged eye that drags itself along on a few fleshy tentacles. Not very useful for much of anything. Said to result from infusing an animal with strange energies from beyond ordinary space.</description>
+		<statBases>
+			<MoveSpeed>3.0</MoveSpeed>
+			<MarketValue>100</MarketValue>
+			<ComfyTemperatureMin>0</ComfyTemperatureMin>
+			<ComfyTemperatureMax>60</ComfyTemperatureMax>
+			<MeatAmount>0</MeatAmount>
+			<Wildness>0.2</Wildness>
+		</statBases>
+		<tools>
+			<li>
+				<label>eye</label>
+				<capacities>
+					<li>Scratch</li>
+				</capacities>
+				<power>8</power>
+				<cooldownTime>2</cooldownTime>
+				<linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+				<chanceFactor>0.2</chanceFactor>
+			</li>
+		</tools>
+		<race>
+			<body>Monkey</body>
+			<herdAnimal>false</herdAnimal>
+			<predator>false</predator>
+			<baseBodySize>0.133</baseBodySize>
+			<baseHealthScale>0.5</baseHealthScale>
+			<baseHungerRate>0.1</baseHungerRate>
+			<foodType>OmnivoreRoughAnimal</foodType>
+			<leatherDef>Leather_Light</leatherDef>
+			<useMeatFrom>Pig</useMeatFrom>
+			<trainability>Intermediate</trainability>
+			<lifeExpectancy>12</lifeExpectancy>
+			<herdMigrationAllowed>false</herdMigrationAllowed>
+			<lifeStageAges>
+				<li><def>AnimalBaby</def><minAge>0</minAge></li>
+				<li><def>AnimalJuvenile</def><minAge>0.1</minAge></li>
+				<li><def>AnimalAdult</def><minAge>0.2222</minAge></li>
+			</lifeStageAges>
+			<soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+			<soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+			<soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+		</race>
+		<tradeTags>
+			<li>AnimalUncommon</li>
+		</tradeTags>
+	</ThingDef>
+
+	<PawnKindDef ParentName="AnimalKindBase">
+		<defName>RM_Ikee</defName>
+		<label>ikee</label>
+		<race>RM_Ikee</race>
+		<combatPower>10</combatPower>
+		<ecoSystemWeight>0.30</ecoSystemWeight>
+		<lifeStages>
+			<li>
+				<bodyGraphicData>
+					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Stareling_east/_north/_south -->
+					<texPath>Things/Pawn/Animal/RM_Ikee/RM_Ikee</texPath>
+					<drawSize>0.333</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Stareling_east/_north/_south -->
+					<texPath>Things/Pawn/Animal/RM_Ikee/RM_Ikee</texPath>
+					<drawSize>0.417</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Stareling_east/_north/_south -->
+					<texPath>Things/Pawn/Animal/RM_Ikee/RM_Ikee</texPath>
+					<drawSize>0.5</drawSize>
+				</bodyGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+</Defs>

@@ -29,7 +29,7 @@
       reference (no ThingDef anywhere in this repo defines it) — corrected to
       Leather_Bear in passing.
     - khorrak: the RSW-tier steel-diet comp (RimMandrake.StarWars.SWBestiary.
-      CompProperties_MetalEater) and its useMeatFrom (RSW_Korrum, staying SW-
+      CompProperties_MetalEater) and its useMeatFrom (RSW_Korrum then, RM_Korrum since 2026-10-24; staying SW-
       tier) are dropped — cross-mod references the free mod cannot carry. Diet
       falls back to plain VegetarianRoughAnimal grazing.
     - jellypot / truffle mole: their shared RSW-tier LifeStageDefs
@@ -360,7 +360,7 @@
 
 
 	<ThingDef ParentName="AnimalThingBase">
-		<!-- LONGSHADE_RULED_CONTENT_1, Q1 tier move: RSW_Khorrak -> RM_Khorrak (was Alpha Animals AA_Terramorph, ported RSW_-tier 2026-09-20). useMeatFrom (RSW_Korrum, an SW-tier creature staying in the Utinni layer) is dropped: a cross-mod reference the free mod cannot carry. The steel diet came with it: KHORRAK_STEEL_DIET_TIER_1 (owner, by question card 2026-10-05: "MOVE IT OVER") moved CompProperties_MetalEater from the SWBestiary assembly into mandrake.rm.creaturebehaviors (already a dependency of this mod) as RM_CompProperties_MetalEater, and RSW_Khorrak was retired. -->
+		<!-- LONGSHADE_RULED_CONTENT_1, Q1 tier move: RSW_Khorrak -> RM_Khorrak (was Alpha Animals AA_Terramorph, ported RSW_-tier 2026-09-20). useMeatFrom (RSW_Korrum then, an SW-tier creature; RM_Korrum since 2026-10-24 staying in the Utinni layer) is dropped: a cross-mod reference the free mod cannot carry. The steel diet came with it: KHORRAK_STEEL_DIET_TIER_1 (owner, by question card 2026-10-05: "MOVE IT OVER") moved CompProperties_MetalEater from the SWBestiary assembly into mandrake.rm.creaturebehaviors (already a dependency of this mod) as RM_CompProperties_MetalEater, and RSW_Khorrak was retired. -->
 		<defName>RM_Khorrak</defName>
 		<label>khorrak</label>
 		<description>A strange crustacean bred for one purpose: mineral processing. The khorrak feeds on iron compounds, chemically working them into vacstone, a dense stone otherwise found only in asteroids. The transmutation is slow: every few days a khorrak sheds a chunk of vacstone where it rests.</description>

@@ -69,8 +69,8 @@
   <Operation Class="PatchOperationSequence">
     <operations>
 
-        <li Class="PatchOperationConditional"><xpath>Defs/ThingDef[defName="RSW_Ikee"]</xpath><match Class="PatchOperationReplace">
-          <xpath>Defs/ThingDef[defName="RSW_Ikee"]/description</xpath>
+        <li Class="PatchOperationConditional"><xpath>Defs/ThingDef[defName="RM_Ikee"]</xpath><match Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="RM_Ikee"]/description</xpath>
           <value>
             <description>A single great eye walking on soft tentacles, warm to the touch and blind to nothing. The clans keep them because an ikee sees the glint of buried metal long before a Jawa does - and because a people known across the desert by their own glowing eyes cannot help but read one as a good omen. It eats what the waste offers.</description>
           </value>
@@ -78,17 +78,17 @@
 
         <li Class="PatchOperationConditional"><xpath>Defs/BiomeDef[defName="Wasteland"]</xpath><match Class="PatchOperationAdd">
           <xpath>Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
-          <value><RSW_Ikee>1.2</RSW_Ikee></value>
+          <value><RM_Ikee>1.2</RM_Ikee></value>
         </match></li>
 
         <li Class="PatchOperationConditional"><xpath>Defs/BiomeDef[defName="ExtremeDesert"]</xpath><match Class="PatchOperationAdd">
           <xpath>Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
-          <value><RSW_Ikee>0.5</RSW_Ikee></value>
+          <value><RM_Ikee>0.5</RM_Ikee></value>
         </match></li>
 
         <li Class="PatchOperationConditional"><xpath>Defs/BiomeDef[defName="ZBiome_DesertOasis"]</xpath><match Class="PatchOperationAdd">
           <xpath>Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
-          <value><RSW_Ikee>0.8</RSW_Ikee></value>
+          <value><RM_Ikee>0.8</RM_Ikee></value>
         </match></li>
 
       </operations>

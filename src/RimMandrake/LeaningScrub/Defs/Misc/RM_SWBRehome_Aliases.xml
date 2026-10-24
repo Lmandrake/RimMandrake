@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SWB_RM_FAUNA_DECIDE_HOME_LIKE_CHIKKA: creatures moved out of SWBestiary (RSW_) into the
+  RM tier under new RM_ defNames. A save holding an old name (the pawn kind, the race, its corpse
+  or meat) loads it as the RM_ def through RM_DefAliasDef
+  (src/RimMandrake/EnvironmentalHazards/Source/RM_DefAliases.cs). An alias applies only when the
+  old name resolves to nothing, so it never shadows a live def.
+-->
+<Defs>
+  <RimMandrake.EnvironmentalHazards.RM_DefAliasDef>
+    <defName>RM_SWBRehomeAliases</defName>
+    <aliases>
+      <!-- batch 2 -->
+      <li><from>RSW_Ikee</from><to>RM_Ikee</to><defType>ThingDef</defType></li>
+      <li><from>Corpse_RSW_Ikee</from><to>Corpse_RM_Ikee</to><defType>ThingDef</defType></li>
+      <li><from>RSW_Ikee</from><to>RM_Ikee</to><defType>PawnKindDef</defType></li>
+      <li><from>RSW_Korrum</from><to>RM_Korrum</to><defType>ThingDef</defType></li>
+      <li><from>Corpse_RSW_Korrum</from><to>Corpse_RM_Korrum</to><defType>ThingDef</defType></li>
+      <li><from>Meat_RSW_Korrum</from><to>Meat_RM_Korrum</to><defType>ThingDef</defType></li>
+      <li><from>RSW_Korrum</from><to>RM_Korrum</to><defType>PawnKindDef</defType></li>
+    </aliases>
+  </RimMandrake.EnvironmentalHazards.RM_DefAliasDef>
+</Defs>
