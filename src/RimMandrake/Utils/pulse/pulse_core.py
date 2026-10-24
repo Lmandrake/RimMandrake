@@ -312,7 +312,7 @@ def owner_rulings(ledger: list[dict]) -> dict:
 # What the owner is being asked for, from the item itself (owner 2026-10-23: a look masqueraded as a ruling).
 RULE_KINDS = {"decision", "ruling", "question", "card", "decide", "design"}
 LOOK_KINDS = {"art", "review", "check", "verify", "trial"}
-_LOOK_RE = r"(\(?\blook\b[,:)]|\bL4\b|\blooks? at\b|\bglances?\b|\bin[- ]game\b|\bin[- ]situ\b|\bwalk\b|\bsheet\b|\bscreenshot|\bkeeper save|\bjoint\b)"
+_LOOK_RE = r"(\(?\blook\b[,:)]|\bL4\b|\blooks? at\b|\bglances?\b|\bin[- ]situ\b|\bwalk\b|\bsheet\b|\bscreenshot|\bkeeper save|\bjoint\b)"
 # a FACT only he has (an address, a host, a key); verbs like "address the issue" or "provide feedback" are not
 _PROVIDE_RE = (r"(\bname/address\b|\b(ip|e-?mail|network|home) address\b|\baddress (of|for)\b|\bhostname\b|"
                r"\bpassword\b|\bcredentials?\b|\bwhich (pc|machine|account)\b|"
@@ -390,12 +390,35 @@ def read_artpipe(d: Path = ARTPIPE_DIR, prev: dict | None = None, now: float = 0
     return out
 
 
-def read_bridge(clone: Path = CLONES[0]) -> str | None:
-    """The BRIDGE holder line. An unreadable file RAISES (source down); a file with no holder line is None."""
+BRIDGE_SHARED = Path(os.environ.get("RM_BRIDGE_SHARED", rm_str("scratch", "BRIDGE_SHARED.json")))
+
+
+def _bridge_line(clone: Path) -> str | None:
     for line in (clone / "infrastructure/state/BRIDGE").read_text().splitlines():
         if line and not line.startswith("#"):
             return line.strip()
     return None
+
+
+def read_bridge(clone: Path = CLONES[0], clones: list[Path] | None = None, shared: Path | None = None) -> str | None:
+    """The BRIDGE holder line. Each clone writes only its OWN mirror (a FOUNDRY take leaves bench's file FREE),
+    so any clone's HELD wins, then the cross-clone shared lock; else the first clone's line. An unreadable
+    primary file RAISES (source down); a file with no holder line is None."""
+    first = _bridge_line(clone)
+    for c in (clones if clones is not None else [x for x in CLONES if x != clone]):
+        try:
+            ln = _bridge_line(c)
+        except OSError:
+            continue
+        if ln and ln.split()[0] == "HELD" and not (first or "").startswith("HELD"):
+            first = ln
+    try:
+        h = json.loads((shared or BRIDGE_SHARED).read_text()).get("holder")
+        if h and not (first or "").startswith("HELD"):
+            first = f"HELD    {h}    (shared lock)"
+    except (OSError, ValueError, AttributeError):
+        pass
+    return first
 
 
 def read_hands(state_dir: Path | None = None) -> list[dict]:

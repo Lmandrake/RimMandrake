@@ -94,7 +94,7 @@ html,body{height:100%;background:var(--term);color:var(--text);font:12.5px/1.5 v
 .chip small{color:var(--faint);font-size:10px}
 .c-BENCH{--c:var(--bench)} .c-FOUNDRY{--c:var(--foundry)} .c-ART{--c:var(--art)} .c-plain{--c:var(--text)}
 .strip .gap{flex:1;min-width:4px;height:1px;background:linear-gradient(90deg,var(--line2),transparent)}
-.strip .done{color:var(--avocado);flex:none;cursor:pointer;padding-left:4px}
+.strip .done{color:var(--faint);font-size:11px;flex:none;cursor:pointer;padding-left:4px}
 .row.tel .x{color:var(--mustard)} .row.tel .bar{background:var(--mustard)}
 .sparks{flex:none;display:flex;gap:10px;padding:2px 10px 0 12px;font-size:10px;color:var(--faint);white-space:nowrap;overflow:hidden}
 .sparks span{display:flex;align-items:center;gap:3px} .sparks svg{width:54px;height:14px}
@@ -369,10 +369,9 @@ function renderStrip(){
   if (rf && rf.cls === 'bad') pills.unshift(`<span class="pill p-down" title="${esc(rf.text)}">✖ ${esc(short(rf.text, 48))}</span>`);
   const chips = snap ? snap.chips || [] : [];
   const live = chips.filter(c => c.state !== 'dim'), dim = chips.filter(c => c.state === 'dim');
-  const done = snap ? (snap.strip.find(p => p.kind === 'done') || null) : null;
   const dg = snap && snap.digest;
   $('strip').innerHTML = pills.join('') + live.map(chipHTML).join('') + '<span class="gap"></span>' + dim.map(chipHTML).join('')
-    + (done ? `<span class="done" ${dg ? `data-link="${esc(dg.path)}" data-type="path"` : ''} title="finished since ${snap.done_since ? hhmm(snap.done_since) : ''}${dg ? ' · open digest' : ''}">${esc(done.text.replace(' ',''))}</span>` : '')
+    + (dg && dg.path ? `<span class="done" data-link="${esc(dg.path)}" data-type="path" title="open the since-you-left digest">digest</span>` : '')
     + `<button class="btn${refreshing ? ' spin' : ''}" id="bref2" title="Refresh: re-read every source now" style="${document.body.classList.contains('collapsed') ? '' : 'display:none'}">&#8635;</button>`
     + `<button class="btn" id="bexp" title="Expand" style="${document.body.classList.contains('collapsed') ? '' : 'display:none'}">▴</button>`;
   $('bexp').onclick = () => setCollapsed(false);
