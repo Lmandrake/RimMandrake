@@ -23,8 +23,8 @@
       <texPath>RimMandrake/FlowWorks/Sprinkler/Scrapper/RM_SprinklerHead</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(1,1)</drawSize>
-      <!-- drawOffset z = (seat_y - 128)/256 = 12/256: every look's squat head (art_source/Sprinkler/squat_heads.py, SPRINKLER_SEAT_FIX_HEAD_BESIDE_ELBOW) puts the clamp's seat on canvas row 140, so one offset lands it on the pipe axis; RM_PipeSeatMath adds the elbow shift -->
-      <drawOffset>(0,0,0.047)</drawOffset>
+      <!-- drawOffset 0: every look's head is drawn seen from above, centred on its canvas (art_source/Sprinkler/top_heads.py, SPRINKLER_HEAD_REDRAW_SEEN_FROM_ABOVE), so it sits on the cell's pipe axis as drawn; RM_PipeSeatMath adds the elbow shift -->
+      <drawOffset>(0,0,0)</drawOffset>
       <damageData>
         <rect>(0.3,0.3,0.4,0.4)</rect>
       </damageData>
@@ -71,8 +71,8 @@
       <texPath>RimMandrake/FlowWorks/Sprinkler/Scrapper/RM_SprinklerHead</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(1,1)</drawSize>
-      <!-- drawOffset z = (seat_y - 128)/256 = 12/256: every look's squat head (art_source/Sprinkler/squat_heads.py, SPRINKLER_SEAT_FIX_HEAD_BESIDE_ELBOW) puts the clamp's seat on canvas row 140, so one offset lands it on the pipe axis; RM_PipeSeatMath adds the elbow shift -->
-      <drawOffset>(0,0,0.047)</drawOffset>
+      <!-- drawOffset 0: every look's head is drawn seen from above, centred on its canvas (art_source/Sprinkler/top_heads.py, SPRINKLER_HEAD_REDRAW_SEEN_FROM_ABOVE), so it sits on the cell's pipe axis as drawn; RM_PipeSeatMath adds the elbow shift -->
+      <drawOffset>(0,0,0)</drawOffset>
     </graphicData>
   </ThingStyleDef>
 
@@ -84,8 +84,8 @@
       <texPath>RimMandrake/FlowWorks/Sprinkler/Industrial/RM_SprinklerHead</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(1,1)</drawSize>
-      <!-- drawOffset z = (seat_y - 128)/256 = 12/256: every look's squat head (art_source/Sprinkler/squat_heads.py, SPRINKLER_SEAT_FIX_HEAD_BESIDE_ELBOW) puts the clamp's seat on canvas row 140, so one offset lands it on the pipe axis; RM_PipeSeatMath adds the elbow shift -->
-      <drawOffset>(0,0,0.047)</drawOffset>
+      <!-- drawOffset 0: every look's head is drawn seen from above, centred on its canvas (art_source/Sprinkler/top_heads.py, SPRINKLER_HEAD_REDRAW_SEEN_FROM_ABOVE), so it sits on the cell's pipe axis as drawn; RM_PipeSeatMath adds the elbow shift -->
+      <drawOffset>(0,0,0)</drawOffset>
     </graphicData>
   </ThingStyleDef>
 
@@ -97,8 +97,8 @@
       <texPath>RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(1,1)</drawSize>
-      <!-- drawOffset z = (seat_y - 128)/256 = 12/256: every look's squat head (art_source/Sprinkler/squat_heads.py, SPRINKLER_SEAT_FIX_HEAD_BESIDE_ELBOW) puts the clamp's seat on canvas row 140, so one offset lands it on the pipe axis; RM_PipeSeatMath adds the elbow shift -->
-      <drawOffset>(0,0,0.047)</drawOffset>
+      <!-- drawOffset 0: every look's head is drawn seen from above, centred on its canvas (art_source/Sprinkler/top_heads.py, SPRINKLER_HEAD_REDRAW_SEEN_FROM_ABOVE), so it sits on the cell's pipe axis as drawn; RM_PipeSeatMath adds the elbow shift -->
+      <drawOffset>(0,0,0)</drawOffset>
     </graphicData>
   </ThingStyleDef>
 
@@ -110,8 +110,8 @@
       <texPath>RimMandrake/FlowWorks/Sprinkler/Futuristic/RM_SprinklerHead</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(1,1)</drawSize>
-      <!-- drawOffset z = (seat_y - 128)/256 = 12/256: every look's squat head (art_source/Sprinkler/squat_heads.py, SPRINKLER_SEAT_FIX_HEAD_BESIDE_ELBOW) puts the clamp's seat on canvas row 140, so one offset lands it on the pipe axis; RM_PipeSeatMath adds the elbow shift -->
-      <drawOffset>(0,0,0.047)</drawOffset>
+      <!-- drawOffset 0: every look's head is drawn seen from above, centred on its canvas (art_source/Sprinkler/top_heads.py, SPRINKLER_HEAD_REDRAW_SEEN_FROM_ABOVE), so it sits on the cell's pipe axis as drawn; RM_PipeSeatMath adds the elbow shift -->
+      <drawOffset>(0,0,0)</drawOffset>
     </graphicData>
   </ThingStyleDef>
 

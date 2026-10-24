@@ -45,7 +45,7 @@ PIECES = (
     "Hose/Styles/Modern/Reel_PumpHookup_north.png",
     "Hose/Styles/Modern/Reel_PumpHookup_south.png",
 )
-SPRINKLER = "Sprinkler/Modern/RM_SprinklerHead.png"  # recoloured inside art_source/Sprinkler/squat_heads.py, after the squat
+SPRINKLER = "Sprinkler/Modern/RM_SprinklerHead.png"  # historical: since SPRINKLER_HEAD_REDRAW_SEEN_FROM_ABOVE the head is cut from the Modern pump (art_source/Sprinkler/top_heads.py), already blue
 
 BLUE_H = 203 / 360   # the photo's main body hue
 HUE_DRIFT = 5 / 360  # +- low-frequency hue wander
