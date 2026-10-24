@@ -61,6 +61,29 @@ PAIR_RE = re.compile(
     r'/Defs/ThingDef\[defName="([^"]+)"\]/race/wildBiomes/([A-Za-z0-9_]+)')
 
 
+ALIASES = os.path.join(REPO, "src", "RimMandrake", "LeaningScrub", "Defs", "Misc",
+                       "RM_SWBRehome_Aliases.xml")
+
+
+def moved_names():
+    """{old RSW_ ThingDef name: new RM_ name} for creatures moved out of SWBestiary.
+
+    🔑 WHY. The newest capture predates a move: it still knows RSW_Baseopsis and has never
+    heard of RM_Baseopsis. Left raw, a regeneration would re-emit the dead RSW_ rows (and
+    their Corpse_RSW_ rows) from the capture half of the animal scan, and drop the live
+    RM_ rows as "not in the live mod set". RM_SWBRehome_Aliases.xml is the move tools' own
+    record of old -> new, so every name read from a capture is canonicalized through it.
+    """
+    out = {}
+    if os.path.isfile(ALIASES):
+        with open(ALIASES, encoding="utf-8") as fh:
+            for m in re.finditer(
+                    r"<from>([^<]+)</from><to>([^<]+)</to><defType>ThingDef</defType>",
+                    fh.read()):
+                out[m.group(1)] = m.group(2)
+    return out
+
+
 def painted_defs():
     """Every BiomeDef painted on Ash'karr, from the frozen tile CSV, plus the rosters'.
 
@@ -123,10 +146,12 @@ def race_to_kinds():
         with open(f, encoding="utf-8") as fh:
             pl = json.load(fh)
         pl = pl if isinstance(pl, list) else pl.get("defs") or []
+        mv = moved_names()
         out = collections.defaultdict(list)
         for k in pl:
             if isinstance(k, dict) and isinstance(k["fields"].get("race"), str):
-                out[k["fields"]["race"]].append(k["defName"])
+                r = k["fields"]["race"]
+                out[mv.get(r, r)].append(mv.get(k["defName"], k["defName"]))
         return out, os.path.basename(cap)
     return None, None
 
@@ -151,18 +176,21 @@ def live_races():
         with open(f, encoding="utf-8") as fh:
             td = json.load(fh)
         td = td if isinstance(td, list) else td.get("defs") or []
-        return {t["defName"] for t in td if isinstance(t, dict)}
+        mv = moved_names()
+        return {mv.get(t["defName"], t["defName"]) for t in td if isinstance(t, dict)}
     return None
 
 
 def animal_side(cache=None):
+    mv = moved_names()
     if cache and os.path.isfile(cache):
         with open(cache, encoding="utf-8") as fh:
             print("   animal-side: reusing cache %s (delete it after any mod change)"
                   % cache)
-            return {b: set(v) for b, v in json.load(fh).items()}
+            return {b: {mv.get(r, r) for r in v}
+                    for b, v in json.load(fh).items()}
     from gen_cast_patch import _animal_side_biomes
-    aside = _animal_side_biomes()
+    aside = {b: {mv.get(r, r) for r in v} for b, v in _animal_side_biomes().items()}
     if cache:
         with open(cache, "w", encoding="utf-8") as fh:
             json.dump({b: sorted(v) for b, v in aside.items()}, fh)
