@@ -60,3 +60,18 @@ Redrawn as `dregen_RM_Vhorrin_DessicatedCobra_r2_south_south`.
 
 Pending: none. Owed: eyes-only judgments (6 of 8) were not pipeline-judged because the items and corpse textures are outside art_eval scope; a human sheet pass would still be welcome.
 Evidence: infrastructure/state/art_eval/runs/gearpack_redraw_2026102{4,4b,4c,4d}; copies in Transient/gearpack_redraw_20261024/.
+
+## Independent judge pass (FOUNDRY judge, 2026-10-24, delegated: art-eval)
+
+Each installed texture was viewed beside its sibling facings and checked against its def and, for the Star Wars ones, the canon entry. Contact sheets: `D:\ClaudeWork\rimmandrake\judge_round3\taskA\`.
+All eight have real alpha, a transparent corner and the job's canvas (256 for corpses, plants and pawns; 128 for items). None of them is the belt pack.
+
+| texture | verdict | why |
+|---|---|---|
+| Neebray_Dessicated | **FAIL, redo filed: NEEBRAY_DESSICATED_REDRAW_BABY_FORM** | It is a dried ADULT space-manta (flat ray, whip tendrils). The mod's living Neebray is the frog-headed baby form, and the canon NEGATIVE says "not a flat ray for the baby form". The r2 job attached only adult references. Left installed. |
+| RM_Vhorrin_south | PASS | It is the dessicatedBodyGraphicData (`Cobra/RM_Vhorrin`). The skeletal ribbed body with dorsal spines matches the east and north facings. |
+| KowakianMonkeyLizardE_south | PASS | It matches E east and north and the A and D south variants: ears, beak, ginger ruff, curled tail. |
+| Convor_Dessicated | PASS | A pale dead owl with a ringed prehensile tail and closed eyes. Minor: it reads more "dead" than "dried", which is acceptable. |
+| RM_Venomvine_c | PASS | A low mat of rust-red runners with recurved thorns, which is what the def describes. Aside: sibling `_b` is a green domed bramble that is off-brief; filed as VENOMVINE_B_REDRAW_GREEN_DOME. |
+| Meat_Reptavian_a / _c | PASS | A marbled raw cut with a scaled rind, consistent with `_b`. |
+| crystal_pearl | PASS | It is a Graphic_Random variant of Force_KyberCrystal (`Things/Item/Resource/Crystal/Synthetic`). The pearlescent faceted shard fits its blue crystal siblings. The old StandIn was a sphere, and a crystal shape is right for this def. |
