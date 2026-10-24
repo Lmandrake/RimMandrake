@@ -7,7 +7,8 @@ misplaced, not part of this port). RSW_Korrum (AA_BoulderMit) added
 RSW_Khorrak and finish the item's "11 unblocked rows" list. RSW_Khorrak itself
 was retired 2026-10-11 (KHORRAK_STEEL_DIET_TIER_1: RM_Khorrak in mandrake.rm.longshade
 is the only khorrak and now carries the steel diet); MEASURED count of
-ThingDef ParentName="AnimalThingBase" in this file is now 8. Owner ruling 2026-09-20: "All of the desert
+ThingDef ParentName="AnimalThingBase" in this file is now 7 (RM_Chikka moved
+to LeaningScrub 2026-10-24, CHIKKA_HOME_DECIDE_NOT_STAR_WARS). Owner ruling 2026-09-20: "All of the desert
 sheet should be keep but replace with our own version of creature and art. Port.
 All of them. Now."
 
@@ -147,108 +148,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 
 
 
-	<ThingDef ParentName="AnimalThingBase">
-		<!-- Alpha Animals AA_Cactipine -> RM_Chikka. Dropped: VEF.AnimalBehaviours.CompProperties_AnimalProduct (periodic medicinal-quill harvest, donor framework). -->
-		<defName>RM_Chikka</defName>
-		<label>chikka</label>
-		<description>A rat-sized, rounded thing, broad as a ball behind and narrowing to a blunt face, with a small, furious pair of eyes at the front. Pale green quills stand over every inch of it, long and ridged along the back, like a porcupine's, and a few tiny feet shove it nose-first through the loose sand. Its quills are medicinal, and its meat reads as neither plant nor animal to most palates.</description>
-		<statBases>
-			<MoveSpeed>4.5</MoveSpeed>
-			<ComfyTemperatureMin>-5</ComfyTemperatureMin>
-			<ComfyTemperatureMax>70</ComfyTemperatureMax>
-			<MarketValue>100</MarketValue>
-			<Wildness>0.75</Wildness>
-		</statBases>
-		<tools>
-			<li>
-				<label>left claw</label>
-				<capacities>
-					<li>Scratch</li>
-				</capacities>
-				<power>6</power>
-				<cooldownTime>1.5</cooldownTime>
-				<linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
-			</li>
-			<li>
-				<label>right claw</label>
-				<capacities>
-					<li>Scratch</li>
-				</capacities>
-				<power>6</power>
-				<cooldownTime>1.5</cooldownTime>
-				<linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
-			</li>
-			<li>
-				<capacities>
-					<li>Bite</li>
-				</capacities>
-				<power>5</power>
-				<cooldownTime>2</cooldownTime>
-				<linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
-			</li>
-		</tools>
-		<race>
-			<body>QuadrupedAnimalWithPawsAndTail</body>
-			<herdAnimal>true</herdAnimal>
-			<predator>false</predator>
-			<baseBodySize>0.5</baseBodySize>
-			<baseHealthScale>0.75</baseHealthScale>
-			<baseHungerRate>0.2</baseHungerRate>
-			<foodType>OmnivoreAnimal, OvivoreAnimal</foodType>
-			<leatherDef>RSW_CactusHide</leatherDef>
-			<specificMeatDef>RSW_CactusMeat</specificMeatDef>
-			<trainability>Intermediate</trainability>
-			<manhunterOnDamageChance>1.0</manhunterOnDamageChance>
-			<manhunterOnTameFailChance>0.2</manhunterOnTameFailChance>
-			<lifeExpectancy>4</lifeExpectancy>
-			<gestationPeriodDays>5.661</gestationPeriodDays>
-			<lifeStageAges>
-				<li><def>AnimalBaby</def><minAge>0</minAge></li>
-				<li><def>AnimalJuvenile</def><minAge>0.1</minAge></li>
-				<li><def>AnimalAdult</def><minAge>0.2222</minAge></li>
-			</lifeStageAges>
-			<soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
-			<soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
-			<soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
-		</race>
-		<tradeTags>
-			<li>AnimalCommon</li>
-		</tradeTags>
-	</ThingDef>
-	<PawnKindDef ParentName="AnimalKindBase">
-		<defName>RM_Chikka</defName>
-		<label>chikka</label>
-		<race>RM_Chikka</race>
-		<combatPower>30</combatPower>
-		<ecoSystemWeight>0.3</ecoSystemWeight>
-		<wildGroupSize>
-			<min>1</min>
-			<max>10</max>
-		</wildGroupSize>
-		<lifeStages>
-			<li>
-				<bodyGraphicData>
-					<!-- owner's pick on the Leaning Scrub sheet (2026-10-08), installed via the art ledger -->
-					<texPath>Things/Pawn/Animal/RM_Chikka/RM_Chikka</texPath>
-					<drawSize>0.8</drawSize>
-				</bodyGraphicData>
-			</li>
-			<li>
-				<bodyGraphicData>
-					<!-- owner's pick on the Leaning Scrub sheet (2026-10-08), installed via the art ledger -->
-					<texPath>Things/Pawn/Animal/RM_Chikka/RM_Chikka</texPath>
-					<drawSize>1.0</drawSize>
-				</bodyGraphicData>
-			</li>
-			<li>
-				<bodyGraphicData>
-					<!-- owner's pick on the Leaning Scrub sheet (2026-10-08), installed via the art ledger -->
-					<texPath>Things/Pawn/Animal/RM_Chikka/RM_Chikka</texPath>
-					<drawSize>1.2</drawSize>
-				</bodyGraphicData>
-			</li>
-		</lifeStages>
-	</PawnKindDef>
+	<!-- RM_Chikka moved to src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Chikka.xml (CHIKKA_HOME_DECIDE_NOT_STAR_WARS, 2026-10-24): not a Star Wars creature. -->
 
 	<ThingDef ParentName="AnimalThingBase">
 		<!-- Alpha Animals AA_Eyeling -> RSW_Ikee. Body AA_EyeBody substituted with vanilla Monkey (confirmed HeadAttackTool group present on Head). ToolCapacityDef AA_ToxicSting substituted with vanilla Scratch (donor poison chain dropped). -->

@@ -442,7 +442,7 @@ REPOINT = {
     "AA_Swarmling": ("RM_Chittik", "mandrake.rm.therot"), "AA_BloodShrimp": ("RM_Zrrik", "mandrake.rm.greentide"),
     "AA_RaptorShrimp": ("RM_Sharpshrimp", "mandrake.rm.miasma"),
     # already ported before this pass (matched by stats, see Transient/phase0_p2_classification.md)
-    "AA_Cactipine": ("RM_Chikka", SWB), "AA_Wildpawn": ("RM_Durrok", SWB), "AA_Wildpod": ("RM_Mullgoth", SWB),
+    "AA_Cactipine": ("RM_Chikka", "mandrake.rm.leaningscrub"), "AA_Wildpawn": ("RM_Durrok", SWB), "AA_Wildpod": ("RM_Mullgoth", SWB),
     "AA_Murkling": ("RM_Lirrith", "mandrake.rm.abyss"), "AA_Helixien": ("RM_Bileworm", "mandrake.rm.warscar"),
 }
 
