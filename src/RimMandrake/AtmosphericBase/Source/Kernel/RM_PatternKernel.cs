@@ -33,6 +33,11 @@ namespace RimMandrake.AtmosphericBase
         public float phaseSpread = 1f;      // Breath: 0 = all units in sync, 1 = phases spread over the whole cycle
         public float rise = 2f;             // Spark: one rise-and-fall, seconds
         public int oneIn = 2;               // Spark: a fixture sparks in 1 of this many slots
+        public RM_Anchor anchor = RM_Anchor.Core;   // Tide: the room the flood starts from (step-4 anchors)
+        public float ragged = 0.04f;        // Tide: per-room jitter of the front, 0-0.2 of the base's reach
+        public float band = 1f;             // Tide: rooms (door hops) between the front's first step and its full entry
+        public float hold = 0.1f;           // Tide: fraction of the period the water stands at full flood and at full ebb
+        public float low = 0f, high = 1f;   // Tide: how far the ebb and the flood reach, 0-1 of the base
 
         [NonSerialized] private int lo = -2, hi = -2;
 
@@ -89,6 +94,7 @@ namespace RimMandrake.AtmosphericBase
             { RM_Primitive.Steady, new RM_SteadyPrimitive() },
             { RM_Primitive.Breath, new RM_BreathPrimitive() },
             { RM_Primitive.Spark, new RM_SparkPrimitive() },
+            { RM_Primitive.Tide, new RM_TidePrimitive() },
         };
 
         public static RM_IPrimitive Get(RM_Primitive p) => table.TryGetValue(p, out RM_IPrimitive x) ? x : null;

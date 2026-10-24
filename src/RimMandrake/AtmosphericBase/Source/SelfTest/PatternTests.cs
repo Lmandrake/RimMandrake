@@ -409,6 +409,115 @@ internal static class PatternTests
         Check("step 4 400-room grid: threshold row 0, far row 19 hops", big.MaxDistance(RM_Anchor.Threshold) == 19);
     }
 
+    // ---------------------------------------------------------------- build step 5: P3 TIDE (as a layer)
+    private static RM_RoomGraph Branch()
+    {
+        var rooms = new List<RM_RoomFacts> { R(1, 60), R(2), R(3), R(4, 10, th: true), R(5), R(6, 90), R(7, 8), R(8), R(9) };
+        var doors = new List<KeyValuePair<int, int>> { D(1, 2), D(2, 3), D(3, 4), D(1, 5), D(5, 6), D(1, 7), D(1, 8), D(1, 9) };
+        return RM_RoomGraph.Build(rooms, doors);
+    }
+
+    private static void Step5()
+    {
+        const string tide = "<layers><li><primitive>Tide</primitive><period>300</period><anchor>Threshold</anchor>{0}</li></layers>";
+        string two = "<li>(40,20,8,0)</li><li>(220,158,96,0)</li>";
+        RM_RoomGraph g = Branch();
+        Func<int, RM_PatternCtx> onGraph = i => RM_PatternCtx.Of(i, i % 11 == 10 ? -1 : g.roomIds[i % 11 % g.Count], g, null);
+        RM_SchemeData t3 = One(string.Format(tide, ""));
+        RM_SchemeData t2 = One(string.Format(tide, ""), two);
+        NextChangeAgrees("step 5 tide, 3 entries, branch graph", t3, true, 300, 0.05, 330, onGraph);
+        NextChangeAgrees("step 5 tide, 2 entries, ragged 0.2, hold 0", One(string.Format(tide, "<ragged>0.2</ragged><hold>0</hold>"), two), true, 300, 0.05, 330, onGraph, 9);
+        NextChangeAgrees("step 5 tide, low 0.2 high 0.7 band 2", One(string.Format(tide, "<low>0.2</low><high>0.7</high><band>2</band>"), "<li>(40,20,8,0)</li><li>(90,50,20,0)</li><li>(150,90,40,0)</li><li>(220,158,96,0)</li>"), true, 300, 0.05, 330, onGraph, 11);
+
+        // the flood runs outward from the anchor by door-distance; each room enters once and leaves once per period
+        var enter = new Dictionary<int, double>(); var flips = new Dictionary<int, int>();
+        var last = new Dictionary<int, int>();
+        int sameInstant = 0, maxAtOnce = 0;
+        for (double t = 0; t < 300; t += 0.02)
+        {
+            int now = 0;
+            for (int i = 0; i < g.Count; i++)
+            {
+                RM_PatternCtx c = RM_PatternCtx.Of(i, g.roomIds[i], g, null);
+                int v = RM_PatternEvaluator.Index(t2, ref c, t, false);
+                if (last.TryGetValue(i, out int pv) && pv != v) { flips[i] = (flips.TryGetValue(i, out int f) ? f : 0) + 1; now++; if (v == 1 && !enter.ContainsKey(i)) enter[i] = t; }
+                last[i] = v;
+            }
+            if (now > 1) sameInstant++;
+            if (now > maxAtOnce) maxAtOnce = now;
+        }
+        bool ordered = enter.Count == g.Count; string ord = "";
+        for (int i = 0; i < g.Count && ordered; i++)
+            for (int j = 0; j < g.Count; j++)
+                if (g.Distance(RM_Anchor.Threshold, i) < g.Distance(RM_Anchor.Threshold, j) && enter[i] >= enter[j]) { ordered = false; ord = g.roomIds[i] + " after " + g.roomIds[j]; break; }
+        Check("step 5 tide floods outward: a nearer room always enters before a farther one (ragged 0.04)", ordered, ord + " entered=" + enter.Count);
+        bool once = true;
+        for (int i = 0; i < g.Count; i++) if (!flips.TryGetValue(i, out int f) || f != 2) once = false;
+        Check("step 5 tide: every room flips exactly twice per period (in once, out once: no chatter at the front)", once);
+        Check("step 5 tide: equal-distance rooms never flip in the same 20 ms (the tie-break), at most one room at a time", sameInstant == 0 && maxAtOnce == 1, "same=" + sameInstant + " max=" + maxAtOnce);
+
+        // hold: the water stands; full flood lights all, full ebb darkens all; an outdoor fixture is reached last
+        bool held = true;
+        for (int i = 0; i < 11; i++)
+        {
+            RM_PatternCtx c = onGraph(i);
+            if (RM_PatternEvaluator.Index(t3, ref c, 0.45 * 300, false) != 2 || RM_PatternEvaluator.Index(t3, ref c, 0.95 * 300, false) != 0) held = false;
+        }
+        Check("step 5 tide: full flood stands at hi for every fixture, full ebb at lo (hold 0.1)", held);
+        RM_PatternCtx outd = RM_PatternCtx.Of(77, -1, g, null);
+        double uOut = RM_TidePrimitive.Position(t3.layers[0], ref outd);
+        bool lastIn = true;
+        for (int i = 0; i < g.Count; i++) { RM_PatternCtx c = RM_PatternCtx.Of(i, g.roomIds[i], g, null); if (RM_TidePrimitive.Position(t3.layers[0], ref c) >= uOut) lastIn = false; }
+        Check("step 5 tide: an outdoor fixture sits past every room", lastIn);
+
+        // front size: rooms caught mid-step (strictly between lo and hi) span at most band+1 shells
+        bool narrow = true;
+        for (double t = 0; t < 300 && narrow; t += 0.5)
+        {
+            int dmin = int.MaxValue, dmax = -1;
+            for (int i = 0; i < g.Count; i++)
+            {
+                RM_PatternCtx c = RM_PatternCtx.Of(i, g.roomIds[i], g, null);
+                int v = RM_PatternEvaluator.Index(t3, ref c, t, false);
+                if (v == 1) { int d = g.Distance(RM_Anchor.Threshold, i); dmin = Math.Min(dmin, d); dmax = Math.Max(dmax, d); }
+            }
+            if (dmax >= 0 && dmax - dmin > 2) narrow = false;
+        }
+        Check("step 5 tide: the front (rooms mid-step) is never wider than band + 1 shells", narrow);
+
+        // one room: the tide goes round it in angle order about the fixtures' centroid (degenerates to a wedge)
+        RM_RoomGraph one = RM_RoomGraph.Build(new List<RM_RoomFacts> { R(1, 100) }, null);
+        var ems = new List<int>(); var rs = new List<int>(); var xs = new List<float>(); var zs = new List<float>();
+        for (int i = 0; i < 11; i++) { double a = 2 * Math.PI * (i + 0.5) / 11 - Math.PI; ems.Add(500 + i); rs.Add(1); xs.Add((float)(10 + 5 * Math.Cos(a))); zs.Add((float)(10 + 5 * Math.Sin(a))); }
+        var fs = new RM_FixtureSet(ems, rs, xs, zs);
+        var en1 = new double[11];
+        for (int i = 0; i < 11; i++)
+        {
+            RM_PatternCtx c = RM_PatternCtx.Of(500 + i, 1, one, fs);
+            en1[i] = -1;
+            for (double t = 0; t < 150; t += 0.02) if (RM_PatternEvaluator.Index(t2, ref c, t, false) == 1) { en1[i] = t; break; }
+        }
+        int descents = 0; bool round = true;
+        for (int i = 0; i < 11; i++) { if (en1[i] < 0) round = false; if (!(en1[(i + 1) % 11] > en1[i])) descents++; }
+        round &= descents == 1;   // cyclic angle order: one wrap, wherever the sweep starts
+        Check("step 5 tide in one room: fixtures enter in angle order round the centroid (wedge degeneration)", round, string.Join(",", Array.ConvertAll(en1, v => v.ToString("F1"))));
+        RM_PatternCtx bare = new RM_PatternCtx { emitter = 3, group = 9, node = -1, slot = -1 };
+        Check("step 5 tide without a graph (old call shape) evaluates without throwing",
+              RM_PatternEvaluator.Index(t3, ref bare, 10, false) >= 0 && RM_PatternEvaluator.NextChange(t3, ref bare, 10, false) > 10);
+
+        Check("step 5 tide cost class is Front", RM_PatternKernel.Cost(t3.layers) == RM_CostClass.Front);
+        Check("step 5 tide is motion for L8", RM_SchemeKernel.Errors(One("<mayGoDark>true</mayGoDark>" + string.Format(tide, ""), "<li>(0,0,0,0)</li><li>(64,26,8,0)</li>")).Count == 0);
+        Check("step 5 tide: period under 240 s refused", HasError(One("<layers><li><primitive>Tide</primitive><period>120</period></li></layers>"), "240"));
+        Check("step 5 tide: ragged 0.3 refused", HasError(One(string.Format(tide, "<ragged>0.3</ragged>")), "ragged"));
+        Check("step 5 tide: hold 0.5 refused", HasError(One(string.Format(tide, "<hold>0.5</hold>")), "hold"));
+        Check("step 5 tide: low >= high refused", HasError(One(string.Format(tide, "<low>0.6</low><high>0.6</high>")), "low and high"));
+        Check("step 5 tide: band 0 refused", HasError(One(string.Format(tide, "<band>0</band>")), "band"));
+        Check("step 5 tide: an unknown anchor is refused by the loader", Throws(() => One(string.Format(tide, "").Replace("Threshold", "Nowhere"))));
+        Check("step 5 tide: a clean tide has no errors", RM_SchemeKernel.Errors(t3).Count == 0, string.Join("; ", RM_SchemeKernel.Errors(t3)));
+    }
+
+    private static bool Throws(Action a) { try { a(); return false; } catch (Exception) { return true; } }
+
     private static RM_PatternCtx ctxBox;
     private static ref RM_PatternCtx Ctx(int e, int g, RM_RoomGraph graph) { ctxBox = RM_PatternCtx.Of(e, g, graph, null); return ref ctxBox; }
 
@@ -416,5 +525,6 @@ internal static class PatternTests
     {
         Step2And3();
         Step4();
+        Step5();
     }
 }
