@@ -30,7 +30,8 @@ namespace RimMandrake.StarWars.JawaIkee
     {
         // Resolved once. def.defName is compared rather than a hard reference so that
         // this assembly does not need a compile-time dependency on Alpha Animals.
-        private const string IkeeDefName = "AA_Eyeling";
+        // RM_Ikee = the Stillsand ikee (was AA_Eyeling); RM_ContagionIkee = the Contagion biome's separately named "ikee".
+        private static bool IsIkee(string defName) => defName == "RM_Ikee" || defName == "RM_ContagionIkee";
 
         protected override ThoughtState CurrentStateInternal(Pawn p)
         {
@@ -56,7 +57,7 @@ namespace RimMandrake.StarWars.JawaIkee
             {
                 Pawn other = all[i];
                 if (other == null || other == p) continue;
-                if (other.def == null || other.def.defName != IkeeDefName) continue;
+                if (other.def == null || !IsIkee(other.def.defName)) continue;
                 if (other.Dead) continue;
                 IntVec3 d = other.Position - p.Position;
                 if (!RSW_IkeeKernel.Nearby(d.x, d.z, radius)) continue;
