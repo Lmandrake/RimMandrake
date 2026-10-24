@@ -61,6 +61,12 @@ CASES = [
           r"ex\.NoteMapControlFlowDl \( poured , taken \)"],
          ("need < 0 && ex.WaterDlAt(c) > 0 && Mine(ex, c)", "need < 0 && ex.FillAt(c) > 0 && Mine(ex, c)"),
          absent=[r"ex\.TryTakeLevel \(", r"need < 0 && ex\.FillAt"]),
+    # ── HOSE_RELOAD_FIX_SPILLS_SAVED_FLOW (FB_hose_gss_1.5) ──
+    Case("HOSE_RELOAD_FIX_SPILLS_SAVED_FLOW", "the flow lease is saved with the held liquid", "Hose/CompHoseReel.cs",
+         r"public override void PostExposeData\(\)",
+         [r"Scribe_Values\.Look \( ref heldUnits , \"rmHoseHeldUnits\" , 0 \) ;"
+          r" Scribe_Values\.Look \( ref flowUntil , \"rmHoseFlowUntil\" , RimMandrake\.FlowWorks\.Machinery\.RM_LiquidNetKernel\.NoLease \) ;"],
+         ("            Scribe_Values.Look(ref flowUntil, \"rmHoseFlowUntil\", RimMandrake.FlowWorks.Machinery.RM_LiquidNetKernel.NoLease);\n", "")),
 ]
 
 

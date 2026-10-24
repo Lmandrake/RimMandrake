@@ -62,8 +62,10 @@ namespace RimMandrake.FlowWorks.Hose
         public bool lastSignal;
         // ---------------------------------------------------------------- real flow (hose port step 6, FINAL §3.2-3.4)
         /// <summary>Runtime: the flow lease. The hose shows flow while TicksGame &lt;= flowUntil; every successful transfer over a
-        /// route through this hose extends it (RM_LiquidNet.Credit). Not saved: a reload re-credits within one machine cycle and the
-        /// saved state machine holds the look across it. Cleared when the hose leaves Laid, on despawn and on a new lay.</summary>
+        /// route through this hose extends it (RM_LiquidNet.Credit). Saved (HOSE_RELOAD_FIX_SPILLS_SAVED_FLOW): unsaved, it loaded as
+        /// NoLease and the once-a-cycle drain check (RM_MapComponent_Hoses) read a working hose as stopped and spilled its held
+        /// liquid before the pump's next transfer; TicksGame is saved too, so the lease resumes where it was. Cleared when the
+        /// hose leaves Laid, on despawn and on a new lay.</summary>
         public int flowUntil = RimMandrake.FlowWorks.Machinery.RM_LiquidNetKernel.NoLease;
         /// <summary>Saved: the liquid the strand shows (its tint), and the pending candidate with when it started.</summary>
         public RimMandrake.FlowWorks.LiquidTypes.LiquidDef tintLiquid, lastLiquid;
@@ -223,6 +225,8 @@ namespace RimMandrake.FlowWorks.Hose
             Scribe_Values.Look(ref freeEndRole, "rmFreeEndRole", Machinery.RM_FreeEndRole.Capped);
             Scribe_Defs.Look(ref heldLiquid, "rmHoseHeldLiquid");
             Scribe_Values.Look(ref heldUnits, "rmHoseHeldUnits", 0);
+            Scribe_Values.Look(ref flowUntil, "rmHoseFlowUntil", RimMandrake.FlowWorks.Machinery.RM_LiquidNetKernel.NoLease);
+            Scribe_Values.Look(ref lastCadence, "rmHoseLastCadence", 250);
             Scribe_Values.Look(ref volumeModel, "rmVolumeModel", RM_Volume.LegacyModel);
             if (Scribe.mode == LoadSaveMode.LoadingVars && volumeModel < RM_Volume.CurrentModel)
             {
