@@ -3,17 +3,17 @@
   "opus": [
    {
     "model_requested": "opus",
-    "seconds": 64.0,
+    "seconds": 78.8,
     "models_reported": [
      "claude-opus-5-5"
     ],
-    "cost_usd": 0.4695387999999999
+    "cost_usd": 0.4572744
    }
   ],
   "gpt": [
    {
     "model_reported": "gpt-6.1-sol",
-    "seconds": 97.4
+    "seconds": 57.8
    }
   ]
  },
@@ -21,8 +21,8 @@
  "subject": "RM_Ladder",
  "decision": "ESCALATE",
  "reasons": [
-  "opus band WEAK (model said good); blocking ['CANON_MISS', 'STYLE_OFF']; polish ['LEGIB_32']; unreadable ['BORE (n/a on an unconditional item)', 'PORTS (n/a on an unconditional item)']",
-  "gpt unsure: unsettled ['K4'], own blocking []",
+  "opus band WEAK (model said good); blocking ['DESC_MISS', 'F_INCONSISTENT']; polish []; unreadable ['BORE (n/a on an unconditional item)', 'PORTS (n/a on an unconditional item)']",
+  "gpt unsure: unsettled [], own blocking []",
   "still failing after 3 regen rounds \u2014 one line to the owner"
  ],
  "prompt_versions": {
@@ -56,17 +56,17 @@
   }
  },
  "image_sha256": {
-  "south.png": "8dd18624360a1c31b2c580ec1fa70250febf333a9085e15edfe8e9786ce64c45",
-  "east.png": "e586d4a93557af10acba0919699be5661d7ffa57e8b0014263375d04c332d05a",
-  "north.png": "3044a49ba6a8fdd1faa7dc91c4da5b20afd72ac914a4868679ce851b3f98fa22",
-  "west.png": "749ddf27e63a920e56910796518c3172744aecd57672ba446927edc394dd759d",
-  "scale.png": "77e4feae442d8c7efbd1279fa3c75654ba648e93992f91bbe8c4ca64848fe28d",
-  "variants_1.png": "21562faab6d15012a5e7dc004290176ac6339689f44a14c5416cd66bd8d795d0",
-  "variants_2.png": "aa9356ee4161e551d7859aba08a4bea5b6611c3c3d8434a92d86f354adcd5774",
-  "variants_3.png": "45e4533ab6ab90fe6e29d743e2e04f1e3f4795fc98eaba474a09866d763259a0",
-  "variants_4.png": "f6405d8028e248802a54afffc4d44abfee1639654a717e4c95f0a1e33e813989",
-  "variants_5.png": "106949a6b28f688375215f0df69a4300fbfd7f5e9c9ef37cb986544e7a6e9c79",
-  "wall_context.png": "daafb7e319acd54c215bab1b6258e8ab625332a8196c8722a7e77442afefe5e3",
-  "facings.png": "6e04d6bbd83e8b5ce1148969aff1c3850956b60672cc2a916f4df92d12d8a694"
+  "south.png": "691f39d925cab8bec3463656d476c36f6f1e2a5656bec375f9370c21000661c1",
+  "east.png": "72b8b4942ee867975d1582cdd2e9d63be498403ad222e831cca8f75929b50d90",
+  "north.png": "dc497ecd28f179f6bae4881c01353aebb816f419323608cfa5125302343f921e",
+  "west.png": "3d8a4db30eafdb39a7852d1ea5427974b600bd9fafa747c0b2335d9076581de0",
+  "scale.png": "4c82546cb44960ff60682938bc4a96fe2176842c386b2084cc944dc72e263e4e",
+  "variants_1.png": "5d2673d3bd13261b13f4deb535532d4f28cc99f250e103add6d9950a0c82acbf",
+  "variants_2.png": "748fa586e4cca5416235b13af20e4b64ca0a3102f4e28c21cf30df52bd7a8b0f",
+  "variants_3.png": "45e69e8cc18d52c5aa1f519bcd013111a4f0e495978002ca26d086f5f67a6a1d",
+  "variants_4.png": "994214d22db2069e6ebaa0043a0db5b4c25f8d4c3ad86ccbda6195a3acd1c436",
+  "variants_5.png": "9b23fad8b15313d566f8f020f6947d15609c260d955031416640b0a3ee814e92",
+  "wall_context.png": "f327a3d73b39e4749cdcef90961c3db3cc27c7e677edc6a3a324f00d81e0081f",
+  "facings.png": "bdb49e64be05773301348de8fc6fdde255a6ea5d7477c1f6154a6f27751f4f96"
  }
 }
