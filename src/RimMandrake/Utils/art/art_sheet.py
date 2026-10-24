@@ -678,11 +678,20 @@ addEventListener('DOMContentLoaded', () => {
   if (typeof orig === 'function') window.setDecision = function (id, key, opts) {
     const it_ = byId.get(id);
     if (it_ && window.artNoSelect(it_).has(key)) { if (typeof showErr === 'function') showErr('Set ' + key + ' is placeholder art — it cannot be picked.'); return; }
+    const g = window.SLX && it_ && (it_.graphics || []).find(x => x.primary && x.lane === 'slot');
+    /* a letter reaches here from the right-hand buttons (only this row's letters) AND from the template's number hotkeys
+       and shift-number group bulk, which send ANY letter of the sheet. A letter that is not a usable set of the primary
+       slot would be written as that slot's pick and enact would install ITS bytes at the primary texture path (a set of
+       another lane, e.g. the young plant or the corpse, drawn as the adult): refuse it. Taking a letter back is allowed. */
+    if (it_ && key && key.length === 1 && /[A-Za-z]/.test(key) && !(opts && opts.toggle && DEC[id] && DEC[id].decision === key)) {
+      const c = g ? window.SLX.colIn(it_, DEC[id] || { decision: '', note: '' }, g.key, key) : null;
+      const usable = g ? !!(c && !c.purgedLive && !c.noSelect) : !it_.letters || it_.letters.includes(key);
+      if (!usable) { if (typeof showErr === 'function') showErr('Set ' + key + ' is not a set of ' + (((g || {}).slot || {}).label || 'this row') + ' — nothing was recorded.'); return; }
+    }
     orig(id, key, opts);
     if (DEC[id]) {
       DEC[id].decidedAt = new Date().toISOString();
       /* the right-hand letter / redo buttons ARE the primary slot's choice: keep the slot record in step */
-      const g = window.SLX && it_ && (it_.graphics || []).find(x => x.primary && x.lane === 'slot');
       if (g) {
         const k = DEC[id].decision, S = window.SLX; S.v2(DEC[id]);
         if (k && k.length === 1) DEC[id].slots[g.key] = { state: 'pick', pick: k, slot_id: (g.slot || {}).id || null, at: DEC[id].decidedAt };

@@ -204,6 +204,48 @@ console.log(JSON.stringify(o));
     check(not o["lgBad"]["ok"], "old tick: a letter that is not an old tick is refused")
 
 
+def hotkey_tests():
+    """The template's number hotkeys (and shift-number group bulk) call setDecision with ANY letter of the sheet, not only
+    this row's: the COMMON_JS wrapper must refuse a letter that is not a usable set of the primary slot, or it is written
+    as that slot's pick and enact installs another lane's bytes at the primary texture (ART_SHEET_LANE_LETTERS_FIX_UNREVIEWED)."""
+    import sheet_js_harness as H
+    if not H.node():
+        check(False, "node is needed (UNMEASURED)")
+        return
+    import subprocess
+    stubs = H.STUBS.replace("const addEventListener = () => {};",
+                            "const __dcl = []; const addEventListener = (ev, f) => { if (ev === 'DOMContentLoaded') __dcl.push(f); };")
+    tpl = r"""
+window.setDecision = (id, key, opts = {}) => { const it = byId.get(id); if (!it) return;
+  const rec = DEC[id] || (DEC[id] = {decision: '', note: ''}); rec.decision = (rec.decision === key && opts.toggle) ? '' : key; };
+const it = """ + json.dumps(ITEM) + r""";
+byId.set(it.id, it);
+__dcl.forEach(f => f());
+const o = {}, cp = x => JSON.parse(JSON.stringify(x));
+window.setDecision(it.id, 'D'); o.otherLane = cp(DEC[it.id] || null); o.errD = errs.slice();
+window.setDecision(it.id, 'E'); o.unassigned = cp(DEC[it.id] || null);
+window.setDecision(it.id, 'Z'); o.absent = cp(DEC[it.id] || null);
+window.setDecision(it.id, 'B'); o.own = cp(DEC[it.id]);
+window.setDecision(it.id, 'B', {toggle: true}); o.back = cp(DEC[it.id]);
+window.setDecision(it.id, 'redo'); o.redo = cp(DEC[it.id]);
+console.log(JSON.stringify(o));
+"""
+    prog = stubs + H.render_script() + "\n;(() => {\n" + tpl + "\n})();"
+    r = subprocess.run([H.node(), "-e", prog], capture_output=True, text=True, timeout=60)
+    if r.returncode:
+        check(False, "hotkey harness ran (" + (r.stderr or r.stdout)[-300:] + ")")
+        return
+    o = json.loads([l for l in r.stdout.splitlines() if l.strip()][-1])
+    check(o["otherLane"] is None and o["errD"] and "not a set of" in o["errD"][0],
+          "hotkey letter D (a set of the YOUNG lane) on the row is refused: no decision, no grown-slot pick")
+    check(o["unassigned"] is None and o["absent"] is None,
+          "an unassigned render's letter and a letter the row lacks are refused by the hotkey path too")
+    check(o["own"]["decision"] == "B" and o["own"]["slots"]["R/Grown"]["pick"] == "B",
+          "a letter of the primary slot still records decision + slot pick")
+    check(o["back"]["decision"] == "" and "R/Grown" not in o["back"]["slots"], "taking it back clears both")
+    check(o["redo"]["decision"] == "redo" and o["redo"]["slots"]["R/Grown"]["state"] == "redraw", "redo still marks the slot redraw")
+
+
 def markup_tests():
     import sheet_js_harness as H
     html = H.item_html(dict(ITEM, label="Pod", effect="", tier="ours", tierText="", flags=[], related=[], elsewhere=[],
@@ -280,6 +322,7 @@ def markup_tests():
 def main():
     derive_tests()
     js_tests()
+    hotkey_tests()
     markup_tests()
     print("\nALL PASS" if not FAILS else f"\n{len(FAILS)} FAILED")
     return 1 if FAILS else 0
