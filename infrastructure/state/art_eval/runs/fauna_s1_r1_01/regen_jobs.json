@@ -1,0 +1,53 @@
+[
+ {
+  "id": "arteval_RM_Fuzzrunner__s1r1_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Fuzzrunner",
+  "prompt": "A single RimWorld creature sprite, a fuzzrunner, in painterly vanilla RimWorld style, realistic, with a thin clean dark painterly outline of consistent weight and a transparent background. The fuzzrunner is a near-spherical, fat, ball-shaped animal whose body fills the silhouette like a rounded river stone, swollen round with stored fog-fat. The body is a swollen sphere with no visible neck or waist; the head sinks straight into the round torso. The same round ball, at the same height, the same width and the same bulk, is shown in every facing, filling the same share of the frame; the rear view, seen from behind, shows the back, the tucked tail and the rounded haunches of the full-size ball, eyes hidden, as tall and as broad as the front view. A dense, even, short fuzz in muted dusty grey-brown covers the whole animal, so the head, body and stubby limbs blend into one soft round mass. The silhouette is a smooth, rounded pebble outline, a stone-like oval; the tail and the short feet tuck in against the body. The whiskers are the dominant facial feature, larger than the eyes, a dense thick mass of fine, short whiskers that sweep down and back and lie close along the fuzz of the cheeks, curving along the rounded body contour and staying inside the smooth outline. The eyes are small and reduced, set deep in the fuzz. The shoulders are broad, rounded and worn smooth, so the fur on them looks polished and flattened from pushing along narrow stem runs. The haunches are rounded, with the tail tucked close against the body. The body proportions are compact and round. The creature is still and stone-like, as if it had just stopped mid-stride.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, DEPARTURE_MISSING, F_SIZE_JUMP, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_s1_r1_01"
+ },
+ {
+  "id": "arteval_RM_Surrik__s1r1_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Surrik",
+  "prompt": "A single creature sprite for RimWorld: the surrik, a large alien root-crust swimmer, rendered in a painterly, realistic vanilla RimWorld style with a clean dark outline on a transparent background. The view is the game's low three-quarter camera, the same height and scale for every facing, so the sprite stays about 108 px tall. The surrik lies low and horizontal, half-sunk in a dense, matted crust of interlaced dark twisting roots and tan-brown root-mat slabs, caught mid-glide as it swims through the crust as though through water. The root mat heaves up and splits in a bow wave in front of the massive shoulders, with torn root ends curling aside, and a closing wake furrow of settling roots trails behind the haunch; the crust is whole and unbroken around the body, thick woven root rather than ferns or leaves. Its build is an alien, heavy-shouldered swimmer: an enormous humped shoulder mass is the tallest, leading part of the silhouette and pushes through the mat, with ridged, armored plates of slate-brown hide over the shoulders. The head is sunk low beneath and behind the shoulder hump, with no neck extended. Along the head runs a wide, upturned jaw line that opens upward, an under-slung striking mouth made to snap up from beneath the crust, clearly visible from the front and the side. Small, deep-set, dark eyes sit wide apart on the low head. The body slopes down from the shoulder hump to a heavy haunch and tail sunk in the mat, the matte slate-brown hide is paler along the underside, and the limbs are smooth, short flippered stubs mostly hidden below the crust line. Front view: the eyes and upturned jaw face the viewer, the shoulder hump rising behind and above the low head. Side view: the shoulder hump is the tallest mass at the front of the body, the head sunk beneath and behind it, the bow wave ahead of the shoulders and the wake behind the haunch. Rear view, seen from behind at the same low camera angle as the front view and mirroring its framing: the rounded back of the shoulders and haunches rises out of the mat, the tail end toward the viewer, foreshortened, as wide and low as the front view, with the eyes hidden. The crust uses the same tan-brown slabs and dark roots throughout.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_TOPDOWN, F_SIZE_JUMP, DEPARTURE_MISSING, DEPARTURE_MISSING, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_s1_r1_01"
+ },
+ {
+  "id": "arteval_RM_Peeper__s1r1_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Peeper",
+  "prompt": "A RimWorld creature sprite of the peeper, a once-predator gone soft and eye-studded, a docile browser of the goo margins. A single quadruped on a transparent background, painterly vanilla RimWorld style, realistic, with a clean dark outline. Size: every standing view shows the same animal at the same body size; the trunk, shoulders and haunches fill the canvas to the same height and length in the front, rear and side views, with the same overall bulk in each. Body: soft and slack, with a rounded sagging belly and heavy loose hide over a once-predatory frame, a thick blunt trunk and no tucked waist; the legs are sturdy and relaxed, the forelegs thick and heavy with large rounded paws of the same size in every view, the belly hanging at the same height above the ground. Head: distinct, with a blunt muzzle and a slack jaw, its surface studded with eyes, set clearly forward of the chest; the slack mouth shows worn, stubby, blunt fangs, and the toes end in short, rounded, dull claws. Eyes: many extra eyes open across the hide of the back, flanks and limbs, not only the head; a dense field of eyes runs along the spine and shoulders as low upturned domes with pupils aimed skyward, forming an even cluster that lies close along the back at one modest height, so the back outline stays level and the front and rear views are no taller than the side view. Pose: a neutral head carried level and in line with the body, standing upright, with an even eye density across the back. Palette: muted, earthy hide tones with pale eyes.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_s1_r1_01"
+ }
+]
