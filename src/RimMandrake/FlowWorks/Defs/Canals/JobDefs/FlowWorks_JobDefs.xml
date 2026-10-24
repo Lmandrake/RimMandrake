@@ -23,6 +23,14 @@
     <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
   </JobDef>
 
+  <!-- SLUICE_GATE_REBUILD_LIFTS_UP_NOT_SIDEWAYS: lift or lower a sluice gate standing beside it, never in it. -->
+  <JobDef>
+    <defName>RM_OperateGateJob</defName>
+    <driverClass>RimMandrake.FlowWorks.JobDriver_RM_OperateGate</driverClass>
+    <reportString>working TargetA.</reportString>
+    <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+  </JobDef>
+
   <!-- SUPERDEEP_PRISON_ROOM_1: capture a held person from the lip, never by entering the pit. -->
   <JobDef>
     <defName>RM_CaptureDown</defName>

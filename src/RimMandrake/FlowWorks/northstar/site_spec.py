@@ -77,7 +77,7 @@ SETTINGS = {
         "spikesEnabled": True, "spikeDamageMultiplier": 1.0, "spikeMinDropMetres": 2.0, "pitGuardrailEnabled": True,   # P7 V4;     # CANAL_BOTTOM_SPIKES_1
         "pitExposureEnabled": True, "pitExposureNarrowing": 8.0, "pitTemperatureCoupling": 3.0, "pitResistanceLossMultiplier": 1.0,   # PIT_TEMPERATURE_SOFTENING_1 (narrowing: owner Q1 2026-10-11)
         "pitDepthDrawOffsetEnabled": True, "pitSinkPerLevel": 0.3,   # PIT_DEPTH_DRAW_OFFSET_1 (PROVISIONAL)
-        "flowDoorsSealedFromPitEnabled": True, "sluiceLetsBigThroughEnabled": True,   # FLOWWORKS_DOOR_FAMILY_1
+        "flowDoorsSealedFromPitEnabled": True,   # FLOWWORKS_DOOR_FAMILY_1
         "canalFireEnabled": True, "burnDaysPerNotch": 1.0,   # Phase 6 (ruling 7); one rate since LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD
         "fireFrontSpeedMultiplier": 1.0, "sourceFireReach": 3.0,                                  # Phase 6 (PROVISIONAL)
         "liquidHeatPushEnabled": True, "liquidHeatStrength": 1.0,                                 # LIQUID_HEAT_PUSH_1 (PROVISIONAL)

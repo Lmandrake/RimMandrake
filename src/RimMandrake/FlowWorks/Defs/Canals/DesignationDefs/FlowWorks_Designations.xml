@@ -25,4 +25,13 @@
     <designateCancelable>false</designateCancelable>
   </DesignationDef>
 
+  <!-- SLUICE_GATE_REBUILD_LIFTS_UP_NOT_SIDEWAYS: the player's order to lift or lower a sluice gate. A colonist works it
+       from a square beside it (the bank above or the canal below), like flicking a switch. -->
+  <DesignationDef>
+    <defName>RM_OperateGate</defName>
+    <texturePath>Designations/Flick</texturePath>
+    <targetType>Thing</targetType>
+    <designateCancelable>false</designateCancelable>
+  </DesignationDef>
+
 </Defs>

@@ -51,4 +51,20 @@
     </requiredCapacities>
   </WorkGiverDef>
 
+  <!-- SLUICE_GATE_REBUILD_LIFTS_UP_NOT_SIDEWAYS: carry out an ordered sluice lift/lower from beside the gate (flick's work
+       type and slot, as the ladder's). -->
+  <WorkGiverDef>
+    <defName>RM_OperateGateWorkGiver</defName>
+    <label>lift and lower sluice gates</label>
+    <giverClass>RimMandrake.FlowWorks.WorkGiver_RM_OperateGate</giverClass>
+    <workType>BasicWorker</workType>
+    <verb>work</verb>
+    <gerund>working a sluice gate</gerund>
+    <canBeDoneWhileDrafted>true</canBeDoneWhileDrafted>
+    <priorityInType>499</priorityInType>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
 </Defs>

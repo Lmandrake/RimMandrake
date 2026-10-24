@@ -1,0 +1,45 @@
+{
+ "biome": "SUBJECTS_grate_door_lifts_up",
+ "built": "2026-10-24T15:34:24-0700",
+ "census": "Transient/biome_ffar/grate_door_lifts_up.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "live ModsConfig.xml: 320 active",
+ "rows": {
+  "RM_SecurityGrateDoor": {
+   "columns": {
+    "A": {
+     "east": "760f5aac94433eb7815de710051d970f60f3f240102e0273ee65da2a266607a4",
+     "single": "e7e2018f35b9fb1bbdf99cdbb3fe968c189785eb994248af2151455482d6ddae",
+     "south": "e7e2018f35b9fb1bbdf99cdbb3fe968c189785eb994248af2151455482d6ddae"
+    },
+    "B": {
+     "single": "40821d7ee76b45378ca59cf47dce032a544514e902a85cf93180d95bd6cf6a89"
+    },
+    "C": {
+     "single": "5d09ebe12153d19b6e885174aa94f3fe6c284f8cba82b557812c2184913c9287"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Building/FlowWorks/Canals/RM_SecurityGrateDoor",
+    "B": "Things/Building/FlowWorks/Doors/RM_SecurityGrateDoor_MenuIcon",
+    "C": "Things/Building/FlowWorks/Doors/RM_SecurityGrateDoor_Mover"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "IN GAME \u2014 FlowWorks",
+    "C": "IN GAME \u2014 FlowWorks"
+   },
+   "pools": [],
+   "res": "Things/Building/FlowWorks/Canals/RM_SecurityGrateDoor",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "securitygratedoor"
+  }
+ },
+ "sheetId": "grate_door_lifts_up_sheet_2026-10-24",
+ "snapshotId": "b9ffb0e839b17b27"
+}

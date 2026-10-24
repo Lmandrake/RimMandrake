@@ -4,7 +4,7 @@ Load the save in RimWorld (Load game > (no keeper saved yet: build, then --save)
 
 Each station is labelled in the world with its number, a short name, its status and what to look at. Status colours: green = works in game, blue = built, not yet seen, gold = partly built, rust = not built.
 
-88 stations: 9 works in game, 70 built, not yet seen, 9 partly built, 0 not built yet.
+88 stations: 0 works in game, 79 built, not yet seen, 9 partly built, 0 not built yet.
 
 ## V - pits: what they look like (south-west block)
 
@@ -24,7 +24,7 @@ Columns: depth 1 to 4, left to right. Rows from the bottom: dry in soil, dry in 
 
 ## 2 · Liquid in canals and ponds
 
-### 1. A canal off the map edge drains - works in game
+### 1. A canal off the map edge drains - built, not yet seen
 
 A canal that runs off the edge of the map drains away. A canal ending inside the map holds its water.
 
@@ -36,7 +36,7 @@ A canal that runs off the edge of the map drains away. A canal ending inside the
 
 **Look for:** weak spot: the upper canal draining too; water standing in the lower one
 
-### 2. Liquid spreads along the canal - works in game
+### 2. Liquid spreads along the canal - built, not yet seen
 
 Liquid spreads along a canal from its pond, in every direction, and stays inside the dug channel. It moves in steady pulses, the same way every time; two canals off one pond both fill. Switching the engine off in settings freezes every canal where it is.
 
@@ -49,7 +49,7 @@ Liquid spreads along a canal from its pond, in every direction, and stays inside
 
 **Look for:** weak spot: liquid outside the dug cells; one branch left dry
 
-### 3. Tar crawls, water runs - works in game
+### 3. Tar crawls, water runs - built, not yet seen
 
 Each liquid keeps its own nature: tar crawls while water runs, and a canal shows the liquid it came from. Water fed from water looks like water; tar fed from tar looks like tar.
 
@@ -136,7 +136,7 @@ Filling in sends water home
 
 **Look for:** weak spot: water deleted at the filled cells; the pond's edge never rising
 
-### 10. Rain fills open trenches - works in game
+### 10. Rain fills open trenches - built, not yet seen
 
 Rain fills open trenches; roofed ones stay dry
 
@@ -179,7 +179,7 @@ Slime is nearly impossible to cross and slow to climb out of. Your words: so sli
 
 ## 1 · Digging canals and pits
 
-### 13. Dig a canal, dig deeper - works in game
+### 13. Dig a canal, dig deeper - built, not yet seen
 
 You mark ground and a colonist digs a canal there; dig again to go one level deeper. There are four depths. The fourth is a pit: nothing more than the deepest dug ground.
 
@@ -192,7 +192,7 @@ You mark ground and a colonist digs a canal there; dig again to go one level dee
 
 **Look for:** weak spot: a D4 strip that still takes a dig order; dug ground that reads as a gravel path
 
-### 14. Fill a canal back in - works in game
+### 14. Fill a canal back in - built, not yet seen
 
 You can fill a canal back in, and the liquid in it is pushed along, not deleted. Only liquid with nowhere at all to go is lost, and the game counts it.
 
@@ -311,7 +311,7 @@ Astrofuel detonates
 
 ## 4 · Pits: catching
 
-### 23. Nothing climbs out of a pit - works in game
+### 23. Nothing climbs out of a pit - built, not yet seen
 
 Anything that falls into a pit cannot climb out. It stays where it is; its info line says it is trapped.
 
@@ -323,7 +323,7 @@ Anything that falls into a pit cannot climb out. It stays where it is; its info 
 
 **Look for:** weak spot: the muffalo on the lip an hour later; no 'trapped' on its info line
 
-### 24. A pit only holds what fits - works in game
+### 24. A pit only holds what fits - built, not yet seen
 
 A pit only holds a creature that fits: anything wider walks out, and narrowing a pit frees it. Your rule: the pit must be as wide as the creature.
 
@@ -348,7 +348,7 @@ Climbing depends on size
 
 **Look for:** weak spot: all three held or all three out; 'trapped' on any but the chicken
 
-### 26. Falling in hurts - works in game
+### 26. Falling in hurts - built, not yet seen
 
 Falling in hurts, and only being forced, blown or jumping in does it: colonists never walk into an open pit
 
@@ -894,7 +894,7 @@ Relay reels: going farther
 
 - reel in the first hose: the second drains (nothing feeds it)
 - lay the third reel's hose back onto the first: refused, a chain may not loop back
-- select the middle reel: 'Relay: fed by the hose from the reel at ...'
+- select the middle reel: 'Relay: fed by the hose from another reel'
 
 **Look for:** weak spot: a hose that does not end in a brass coupling on the NEXT reel (two loose hoses, not a chain); the second hose not plump though fed; a loop back accepted
 
@@ -947,11 +947,11 @@ A hose on THEIR tank
 
 **Look for:** weak spot: the brass coupling not on THEIR tank; their faction is only a state read (HoseProbe census): nobody's inspect names it
 
-### 73. Drills, taps and stills - built, not yet seen
+### 73. Drills, bleed wells and stills - built, not yet seen
 
-Drills and taps bring underground liquids up, and cleaned water feeds thirst
+Drills and bleed wells bring underground liquids up, and cleaned water feeds thirst
 
-**Look at:** a liquid drill, a tap, a fuelled still, a sun-pan still and a drip filter
+**Look at:** a liquid drill, a bleed well, a fuelled still, a sun-pan still and a drip filter
 
 **Poke it:**
 

@@ -1125,19 +1125,40 @@ namespace RimMandrake.FlowWorks.SelfTest
                 AssertClose(RM_PitTrapMath.SpikeDamagePerHit(0.1f, 0f), 1f, "floor 1 per hit");
             });
 
-            Case("FlowDoor_sluice_holds_small_grate_holds_prisoners", () =>
+            // ── SLUICE_GATE_REBUILD_LIFTS_UP_NOT_SIDEWAYS: "When closed, it is not traversible" — a shut sluice opens for
+            //    nobody walking at it, not even a colonist vanilla would let through (the old rule did: it fails here) ──
+            Case("FlowDoor_shut_sluice_opens_for_nobody_grate_holds_prisoners", () =>
             {
-                // (vanillaOpens, heldInPit, sealedRule, isSluice, sluiceRule, playerFaction, humanlike, width)
-                Assert(!RM_PitTrapMath.FlowDoorOpens(true, true, true, false, true, true, true, 1), "held in a pit: grate shut even for a colonist");
-                Assert(!RM_PitTrapMath.FlowDoorOpens(false, true, true, true, true, false, true, 2), "held in a pit: sluice shut even for a big humanlike");
-                Assert(RM_PitTrapMath.FlowDoorOpens(true, true, false, false, true, true, true, 1), "sealed rule off: vanilla decides");
-                Assert(RM_PitTrapMath.FlowDoorOpens(true, false, true, false, true, true, true, 1), "colonist outside a pit: opens");
-                Assert(!RM_PitTrapMath.FlowDoorOpens(false, false, true, false, true, false, true, 1), "grate holds a human prisoner");
-                Assert(!RM_PitTrapMath.FlowDoorOpens(false, false, true, false, true, false, false, 3), "grate holds a big beast");
-                Assert(RM_PitTrapMath.FlowDoorOpens(false, false, true, true, true, false, true, 1), "sluice gives way to a human prisoner");
-                Assert(RM_PitTrapMath.FlowDoorOpens(false, false, true, true, true, false, false, 2), "sluice gives way to a W=2 beast");
-                Assert(!RM_PitTrapMath.FlowDoorOpens(false, false, true, true, true, false, false, 1), "sluice holds a small creature");
-                Assert(!RM_PitTrapMath.FlowDoorOpens(false, false, true, true, false, false, true, 2), "sluice rule off: holds like a door");
+                // (vanillaOpens, heldInPit, sealedRule, isSluice)
+                Assert(!RM_PitTrapMath.FlowDoorOpens(true, false, true, true), "shut sluice: a colonist vanilla lets through stays out");
+                Assert(!RM_PitTrapMath.FlowDoorOpens(true, false, false, true), "shut sluice: rule off changes nothing");
+                Assert(!RM_PitTrapMath.FlowDoorOpens(false, false, true, true), "shut sluice: a prisoner or beast stays in");
+                Assert(!RM_PitTrapMath.FlowDoorOpens(true, true, true, false), "held in a pit: grate shut even for a colonist");
+                Assert(RM_PitTrapMath.FlowDoorOpens(true, true, false, false), "sealed rule off: vanilla decides");
+                Assert(RM_PitTrapMath.FlowDoorOpens(true, false, true, false), "colonist outside a pit: grate opens");
+                Assert(!RM_PitTrapMath.FlowDoorOpens(false, false, true, false), "grate holds a human prisoner");
+                Assert(RM_PitTrapMath.FlowDoorSeals(true, false) && !RM_PitTrapMath.FlowDoorSeals(true, true)
+                    && !RM_PitTrapMath.FlowDoorSeals(false, false), "shut sluice seals; lifted sluice and grate pass liquid");
+            });
+
+            // ── GRATE_DOOR_REBUILD_LIFTS_LIKE_THE_SLUICE: the panel rises straight up, never sideways (vanilla's movers slide
+            //    0.45 x OpenPct sideways; that rule fails the dx checks) ──
+            Case("FlowDoor_gate_panel_lifts_straight_up", () =>
+            {
+                float dx, dz;
+                RM_PitTrapMath.GateLiftOffset(0.56f, 0f, out dx, out dz);
+                AssertClose(dx, 0f, "shut: no sideways");
+                AssertClose(dz, 0f, "shut: panel down");
+                RM_PitTrapMath.GateLiftOffset(0.56f, 0.5f, out dx, out dz);
+                AssertClose(dx, 0f, "half: no sideways");
+                AssertClose(dz, 0.28f, "half: half the lift");
+                RM_PitTrapMath.GateLiftOffset(0.56f, 1f, out dx, out dz);
+                AssertClose(dx, 0f, "open: no sideways");
+                AssertClose(dz, 0.56f, "open: full lift");
+                RM_PitTrapMath.GateLiftOffset(0.56f, 3f, out dx, out dz);
+                AssertClose(dz, 0.56f, "open pct clamps at 1");
+                RM_PitTrapMath.GateLiftOffset(-1f, 1f, out dx, out dz);
+                AssertClose(dz, 0f, "negative lift draws shut");
             });
 
             // ── PIT_DEPTH_DRAW_OFFSET_1: pawns sink with D; D=4 lip is 1.2x a person (owner's 20 %) ──

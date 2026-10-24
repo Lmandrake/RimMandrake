@@ -4,6 +4,7 @@ using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Verse.AI;
 
 namespace RimMandrake.FlowWorks
 {
@@ -16,61 +17,321 @@ namespace RimMandrake.FlowWorks
 	///     (standard) and the ones made of metal grates that always allow liquid (this is just a gate,
 	///     not a sluice gate then)." A SHUT sluice seals its cell: the depth engine moves no liquid into
 	///     or out of it (RM_FlowKernel.sealedCell, fed by SealsLiquid) and the legacy flood walk refuses
-	///     it. Open (a pawn passing, or held open) it passes. The grate passes liquid shut or open.
-	///   • Neither opens for a pawn held in a superdeep pit (setting flowDoorsSealedFromPitEnabled):
-	///     the pit spec §4 door rule, a grid fact now that the holder Thing is retired.
-	///   • The sluice holds small creatures only. A humanlike, or anything too big for a one-wide
-	///     pit (owner Q4, 2026-10-02: W = max(1, round(sqrt(BodySize))) — the same "small" the pit
-	///     uses), forces it (setting sluiceLetsBigThroughEnabled). The grate holds a real prisoner
-	///     exactly like a vanilla door: that is why it exists.
+	///     it. Lifted, it passes. The grate passes liquid shut or open.
+	///   • SLUICE_GATE_REBUILD_LIFTS_UP_NOT_SIDEWAYS (owner 2026-10-24): "Needing a colonist to 'walk' through a sluice gate
+	///     to re-open it makes no sense. A colonist should be able to open/close a sluice gate while standing 'next' to it
+	///     and above or below without walking down to it. And there should be a debug/god-mode click button to force open
+	///     or closed. ... Sluice gates do not open by sliding left/right, they slide 'up' to allow the water through. ...
+	///     When closed, it is not traversible. When open it is." So the sluice is an operated gate, not a door anyone
+	///     walks open: no pawn opens it by walking at it (RM_PitTrapMath.FlowDoorOpens); the player's button orders a lift
+	///     or a lower (designation RM_OperateGate) and a colonist works it from any square touching it
+	///     (WorkGiver_RM_OperateGate); lifted, it is held open and every pawn passes. God mode adds instant force buttons.
+	///     This replaces the old "people and big creatures force a sluice" rule and its setting.
+	///   • The grate holds a real prisoner exactly like a vanilla door: that is why it exists. Neither opens for a pawn
+	///     held in a superdeep pit (setting flowDoorsSealedFromPitEnabled): the pit spec §4 door rule.
+	///   • Both draw as a fixed frame and a panel that slides straight UP (GRATE_DOOR_REBUILD_LIFTS_LIKE_THE_SLUICE, owner:
+	///     "it would still make more sense for them to slide 'up'"), never two leaves sliding apart.
 	///   • Ruling #18 (owner card, 2026-10-11): both may be PLACED on a wet canal cell (RM_Patch_FlowDoorOnWetCanal).
 	///     A blueprint or frame on a dry cut also survives the cut flooding (the same terrain verdict). The half-built
 	///     frame is not a door: it seals nothing (SealsLiquid reads only a finished Building_RM_FlowDoor), so liquid runs
 	///     through the frame cell until the door is finished; then a shut sluice seals it.
-	/// The verdict is RM_PitTrapMath.FlowDoorOpens (Verse-free, covered by the C# selftest).
+	/// The verdicts are RM_PitTrapMath.FlowDoorOpens and GateLiftOffset (Verse-free, covered by the C# selftest).
 	/// </summary>
 	public class RM_FlowDoorExtension : DefModExtension
 	{
-		/// <summary>True for the sluice: humanlikes and big creatures force it.</summary>
-		public bool holdsSmallCreaturesOnly;
+		/// <summary>True for the sluice: an operated gate (lifted and lowered by a colonist beside it), and a shut one seals
+		/// liquid. False for the grate: a door.</summary>
+		public bool isSluice;
+
+		/// <summary>How far, in cells, the panel rises fully open (Tools/fw_gate_lift.py solves it against the art).</summary>
+		public float liftCells = 0.5f;
 	}
 
 	public class Building_RM_FlowDoor : Building_Door
 	{
+		/// <summary>SLUICE_GATE_REBUILD_LIFTS_UP_NOT_SIDEWAYS: the state the player ordered (lifted = true); a colonist carries
+		/// it out. Equal to HoldOpen when nothing is pending. A sluice's lifted state IS vanilla's hold-open (scribed by
+		/// Building_Door): held open, FreePassage is true for every pawn; let go, the gate closes as soon as its square is clear.</summary>
+		public bool wantOpen;
+
+		private Graphic frameGraphic;
+		private Graphic panelGraphic;
+		private Color layerColor;
+		private Color layerColorTwo;
+		private int layersState;   // 0 unchecked, 1 both layer textures present, -1 missing (draw the def's graphic)
+
+		public bool IsSluice => RM_FlowDoorRules.IsSluice(def);
+
+		public float LiftCells => def.GetModExtension<RM_FlowDoorExtension>()?.liftCells ?? 0.5f;
+
 		public override bool PawnCanOpen(Pawn p)
 		{
 			return RM_FlowDoorRules.CanOpen(this, p, base.PawnCanOpen(p));
 		}
 
-		/// <summary>FLOWDOOR_EW_PERSPECTIVE (owner 2026-10-18: "make the East/West facing versions more vertically
-		/// perspectived just like doors work already"). Vanilla's 1x1 door draws its mover through Building_Door.DrawMovers,
-		/// which turns the MESH by Rotation.AsQuat and mirrors the second leaf (plane10Flip): a door spanning North-South
-		/// is the south-facing art rotated 90 degrees, which for a gate drawn front-on reads as a gate lying on its side.
-		/// With a Graphic_Multi def the leaf spanning North-South (Rotation East/West) instead draws the def's _east art
-		/// upright, unrotated and unmirrored (the side-view drawing, as Graphic_Multi's own side views draw), as the same two
-		/// movers sliding apart North and South by vanilla's 0..0.45 open offset. North/South, and any Graphic_Single
-		/// def, keep vanilla's draw unchanged.</summary>
+		/// <summary>The one writer of the gate's state: the colonist's job, the god-mode buttons and the bridge. Open = held
+		/// open (vanilla's hold-open) and opening; shut = let go and closing now, or as soon as nothing stands in it (vanilla's
+		/// Tick retries a blocked close every tick).</summary>
+		public void SetGateOpen(bool open)
+		{
+			wantOpen = open;
+			ClearOrder();
+			holdOpenInt = open;
+			if (!Spawned)
+			{
+				openInt = open;
+				return;
+			}
+			if (open)
+			{
+				DoorOpen();
+			}
+			else if (openInt && !DoorTryClose())
+			{
+				ticksUntilClose = 1;
+			}
+			Map.reachability.ClearCache();
+		}
+
+		/// <summary>The player's order: the gate should end lifted (<paramref name="toOpen"/>) or down. Adds (or, when it
+		/// already is in that state, removes) the operate designation; the state changes only when a colonist works it.</summary>
+		public void Order(bool toOpen)
+		{
+			wantOpen = toOpen;
+			if (wantOpen == HoldOpen)
+			{
+				ClearOrder();
+				return;
+			}
+			DesignationDef d = RimMandrakeFlowWorks_DefOf.RM_OperateGate;
+			if (Spawned && d != null && Map.designationManager.DesignationOn(this, d) == null)
+			{
+				Map.designationManager.AddDesignation(new Designation(this, d));
+			}
+		}
+
+		private void ClearOrder()
+		{
+			DesignationDef d = RimMandrakeFlowWorks_DefOf.RM_OperateGate;
+			Designation des = Spawned && d != null ? Map.designationManager.DesignationOn(this, d) : null;
+			if (des != null)
+			{
+				Map.designationManager.RemoveDesignation(des);
+			}
+		}
+
+		public override void ExposeData()
+		{
+			base.ExposeData();
+			Scribe_Values.Look(ref wantOpen, "rmGateWantOpen", holdOpenInt);   // after base: an old save orders nothing
+		}
+
+		public override void SpawnSetup(Map map, bool respawningAfterLoad)
+		{
+			base.SpawnSetup(map, respawningAfterLoad);
+			if (!respawningAfterLoad)
+			{
+				wantOpen = holdOpenInt;
+			}
+		}
+
+		public override IEnumerable<Gizmo> GetGizmos()
+		{
+			bool sluice = IsSluice;
+			foreach (Gizmo g in base.GetGizmos())
+			{
+				// A sluice is lifted by a colonist, not held open from the menu: vanilla's hold-open toggle goes.
+				if (sluice && g is Command_Toggle t && t.icon == TexCommand.HoldOpen)
+				{
+					continue;
+				}
+				yield return g;
+			}
+			if (sluice && Faction == Faction.OfPlayer)
+			{
+				yield return new Command_Toggle
+				{
+					defaultLabel = (wantOpen ? "RMFlow_GateLifted" : "RMFlow_GateLowered").Translate().ToString()
+						+ (wantOpen != HoldOpen ? " " + "RMFlow_LadderOrdered".Translate().ToString() : ""),
+					defaultDesc = "RMFlow_GateToggleDesc".Translate(),
+					icon = TexCommand.HoldOpen,
+					hotKey = KeyBindingDefOf.Misc3,
+					isActive = () => wantOpen,
+					toggleAction = () => Order(!wantOpen),
+				};
+			}
+			if (DebugSettings.godMode)
+			{
+				yield return new Command_Action
+				{
+					defaultLabel = "RMFlow_GateForceOpen".Translate(),
+					defaultDesc = "RMFlow_GateForceDesc".Translate(),
+					icon = TexCommand.HoldOpen,
+					action = () => SetGateOpen(true),
+				};
+				yield return new Command_Action
+				{
+					defaultLabel = "RMFlow_GateForceClose".Translate(),
+					defaultDesc = "RMFlow_GateForceDesc".Translate(),
+					icon = TexCommand.HoldOpen,
+					action = () => SetGateOpen(false),
+				};
+			}
+		}
+
+		public override string GetInspectString()
+		{
+			string s = base.GetInspectString();
+			if (!IsSluice)
+			{
+				return s;
+			}
+			string line = (HoldOpen ? "RMFlow_GateLiftedInspect" : "RMFlow_GateLoweredInspect").Translate().ToString();
+			if (wantOpen != HoldOpen)
+			{
+				line += " " + (wantOpen ? "RMFlow_GateLiftOrdered" : "RMFlow_GateLowerOrdered").Translate().ToString();
+			}
+			return s.NullOrEmpty() ? line : s + "\n" + line;
+		}
+
+		/// <summary>GRATE_DOOR_REBUILD_LIFTS_LIKE_THE_SLUICE / SLUICE_GATE_REBUILD_LIFTS_UP_NOT_SIDEWAYS: draw the fixed FRAME at
+		/// the cell and the PANEL behind it, raised straight up by RM_PitTrapMath.GateLiftOffset(liftCells, OpenPct), for
+		/// both facings. The art is upright and unrotated in both (FLOWDOOR_EW_PERSPECTIVE, owner 2026-10-18: the side view
+		/// is the def's _east drawing, as Graphic_Multi's own side views draw). The layers are the def's texPath + "_Frame" /
+		/// "_Panel" (cut from the gate art by Tools/fw_gate_lift.py); if either is missing the def's graphic draws as a
+		/// vanilla door, so a missing texture never draws pink.</summary>
 		protected override void DrawAt(Vector3 drawLoc, bool flip = false)
 		{
 			DoorPreDraw();
-			if (!Rotation.IsHorizontal || !(Graphic is Graphic_Multi))
+			if (!EnsureLayers())
 			{
 				base.DrawAt(drawLoc, flip);
 				return;
 			}
-			float offsetDist = 0.45f * OpenPct;
-			Material mat = Graphic.MatAt(Rotation, this);
-			Graphic_Shadow shadow = Graphic.ShadowGraphic;
-			for (int i = 0; i < 2; i++)
-			{
-				Vector3 pos = drawLoc;
-				pos.y = AltitudeLayer.DoorMoveable.AltitudeFor();
-				pos.z += (i == 0 ? 1f : -1f) * def.size.x * offsetDist;
-				UnityEngine.Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(pos, Quaternion.identity,
-					new Vector3(def.size.x, 1f, def.size.z)), mat, 0);
-				shadow?.DrawWorker(pos, Rotation, def, this, 0f);
-			}
+			RM_PitTrapMath.GateLiftOffset(LiftCells, OpenPct, out float dx, out float dz);
+			float alt = AltitudeLayer.DoorMoveable.AltitudeFor();
+			Vector3 scale = new Vector3(def.size.x, 1f, def.size.z);
+			Vector3 panelPos = drawLoc;
+			panelPos.y = alt;
+			panelPos.x += dx;
+			panelPos.z += dz;
+			UnityEngine.Graphics.DrawMesh(panelGraphic.MeshAt(Rotation), Matrix4x4.TRS(panelPos, Quaternion.identity, scale),
+				panelGraphic.MatAt(Rotation, this), 0);
+			Vector3 framePos = drawLoc;
+			framePos.y = alt + Altitudes.AltInc * 0.5f;
+			UnityEngine.Graphics.DrawMesh(frameGraphic.MeshAt(Rotation), Matrix4x4.TRS(framePos, Quaternion.identity, scale),
+				frameGraphic.MatAt(Rotation, this), 0);
+			Graphic.ShadowGraphic?.DrawWorker(framePos, Rotation, def, this, 0f);
 			Comps_PostDraw();
+		}
+
+		/// <summary>Resolves the two layer graphics in the door's stuff colour (re-resolved when the colour changes).</summary>
+		private bool EnsureLayers()
+		{
+			GraphicData gd = def.graphicData;
+			if (layersState == 0)
+			{
+				string path = gd?.texPath;
+				layersState = path != null && gd.graphicClass == typeof(Graphic_Multi)
+					&& ContentFinder<Texture2D>.Get(path + "_Frame_south", false) != null
+					&& ContentFinder<Texture2D>.Get(path + "_Panel_south", false) != null ? 1 : -1;
+			}
+			if (layersState < 0)
+			{
+				return false;
+			}
+			Color c = DrawColor;
+			Color c2 = DrawColorTwo;
+			if (frameGraphic == null || c != layerColor || c2 != layerColorTwo)
+			{
+				Shader shader = gd.shaderType != null ? gd.shaderType.Shader : ShaderDatabase.Cutout;
+				frameGraphic = GraphicDatabase.Get<Graphic_Multi>(gd.texPath + "_Frame", shader, gd.drawSize, c, c2);
+				panelGraphic = GraphicDatabase.Get<Graphic_Multi>(gd.texPath + "_Panel", shader, gd.drawSize, c, c2);
+				layerColor = c;
+				layerColorTwo = c2;
+			}
+			return true;
+		}
+	}
+
+	/// <summary>SLUICE_GATE_REBUILD_LIFTS_UP_NOT_SIDEWAYS: the colonist half of the gate button's order. Offers a sluice only
+	/// with a pending order; the pawn stands on any square touching the gate (the bank above it or the canal below it), never
+	/// in it. Only designated gates are scanned: nobody works a gate unordered.</summary>
+	public class WorkGiver_RM_OperateGate : WorkGiver_Scanner
+	{
+		public override PathEndMode PathEndMode => PathEndMode.Touch;
+
+		public override Danger MaxPathDanger(Pawn pawn)
+		{
+			return Danger.Deadly;
+		}
+
+		public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn)
+		{
+			DesignationDef d = RimMandrakeFlowWorks_DefOf.RM_OperateGate;
+			if (d == null)
+			{
+				yield break;
+			}
+			foreach (Designation des in pawn.Map.designationManager.SpawnedDesignationsOfDef(d))
+			{
+				yield return des.target.Thing;
+			}
+		}
+
+		public override bool ShouldSkip(Pawn pawn, bool forced = false)
+		{
+			DesignationDef d = RimMandrakeFlowWorks_DefOf.RM_OperateGate;
+			return d == null || !pawn.Map.designationManager.AnySpawnedDesignationOfDef(d);
+		}
+
+		public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
+		{
+			if (!(t is Building_RM_FlowDoor gate) || !gate.IsSluice || gate.wantOpen == gate.HoldOpen
+				|| pawn.Map.designationManager.DesignationOn(t, RimMandrakeFlowWorks_DefOf.RM_OperateGate) == null)
+			{
+				return false;
+			}
+			return !t.IsForbidden(pawn) && pawn.CanReserve(t, 1, -1, null, forced);
+		}
+
+		public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
+		{
+			return JobMaker.MakeJob(RimMandrakeFlowWorks_DefOf.RM_OperateGateJob, t);
+		}
+	}
+
+	/// <summary>SLUICE_GATE_REBUILD_LIFTS_UP_NOT_SIDEWAYS: walk to a square touching the gate, work the winch a moment, then
+	/// lift or lower it as ordered.</summary>
+	public class JobDriver_RM_OperateGate : JobDriver
+	{
+		private Building_RM_FlowDoor Gate => job.targetA.Thing as Building_RM_FlowDoor;
+
+		public override bool TryMakePreToilReservations(bool errorOnFailed)
+		{
+			return pawn.Reserve(job.targetA, job, 1, -1, null, errorOnFailed);
+		}
+
+		protected override IEnumerable<Toil> MakeNewToils()
+		{
+			this.FailOnDespawnedOrNull(TargetIndex.A);
+			this.FailOn(() => Gate == null || Gate.wantOpen == Gate.HoldOpen
+				|| Map.designationManager.DesignationOn(job.targetA.Thing, RimMandrakeFlowWorks_DefOf.RM_OperateGate) == null);
+			yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch);
+			yield return Toils_General.Wait(90, TargetIndex.A).WithProgressBarToilDelay(TargetIndex.A);
+			Toil work = ToilMaker.MakeToil("RM_OperateGate");
+			work.initAction = () =>
+			{
+				Building_RM_FlowDoor gate = Gate;
+				if (gate == null)
+				{
+					EndJobWith(JobCondition.Incompletable);
+					return;
+				}
+				gate.SetGateOpen(gate.wantOpen);
+			};
+			work.defaultCompleteMode = ToilCompleteMode.Instant;
+			yield return work;
 		}
 	}
 
@@ -236,7 +497,7 @@ namespace RimMandrake.FlowWorks
 		public static bool IsSluice(ThingDef def)
 		{
 			RM_FlowDoorExtension ext = def?.GetModExtension<RM_FlowDoorExtension>();
-			return ext != null && ext.holdsSmallCreaturesOnly;
+			return ext != null && ext.isSluice;
 		}
 
 		/// <summary>FLOWWORKS_SLUICE_TWO_DOORS_1: the verdict for the edifice on a cell — only a shut sluice
@@ -266,10 +527,7 @@ namespace RimMandrake.FlowWorks
 			}
 			return RM_PitTrapMath.FlowDoorOpens(vanillaOpens,
 				RM_SuperdeepTrap.IsHeld(p), RimMandrakeFlowWorksSettings.flowDoorsSealedFromPitEnabled,
-				IsSluice(door.def), RimMandrakeFlowWorksSettings.sluiceLetsBigThroughEnabled,
-				p.Faction != null && p.Faction == Faction.OfPlayer,
-				p.RaceProps != null && p.RaceProps.Humanlike,
-				RM_SuperdeepTrap.RequiredWidth(p));
+				IsSluice(door.def));
 		}
 
 		private static Building_RM_FlowDoor DoorAt(Map map, IntVec3 c)
@@ -278,8 +536,9 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>Bridge proof (jawa/static_call): every pawn within 3 cells of the flow door at
-		/// <paramref name="cell"/>, and whether the door would open for it.
-		/// "DOOR RM_Sluice stuff WoodLog | Human123 OPEN held=False w=1 | Muffalo9 OPEN ..." (ThingIDs, as jawa/spawn_pawn returns them).</summary>
+		/// <paramref name="cell"/>, and whether the door would open for it walking up to it shut (a sluice: never).
+		/// "DOOR RM_Sluice stuff WoodLog lifted=False want=False | Human123 SHUT held=False w=1 | Muffalo9 SHUT ..." (ThingIDs,
+		/// as jawa/spawn_pawn returns them).</summary>
 		public static string ProofOpen(Map map, IntVec3 cell)
 		{
 			Building_RM_FlowDoor door = DoorAt(map, cell);
@@ -288,7 +547,8 @@ namespace RimMandrake.FlowWorks
 				return "REFUSED: no flow door at " + cell;
 			}
 			StringBuilder sb = new StringBuilder();
-			sb.Append("DOOR ").Append(door.def.defName).Append(" stuff ").Append(door.Stuff?.defName ?? "none");
+			sb.Append("DOOR ").Append(door.def.defName).Append(" stuff ").Append(door.Stuff?.defName ?? "none")
+				.Append(" lifted=").Append(door.HoldOpen).Append(" want=").Append(door.wantOpen);
 			foreach (Pawn p in map.mapPawns.AllPawnsSpawned)
 			{
 				if (p.Position.DistanceTo(cell) > 3.01f)
@@ -301,6 +561,19 @@ namespace RimMandrake.FlowWorks
 					.Append(" w=").Append(RM_SuperdeepTrap.RequiredWidth(p));
 			}
 			return sb.ToString();
+		}
+
+		/// <summary>Bridge tool (jawa/static_call): set the flow door at <paramref name="cell"/> lifted (open) or down, as the
+		/// god-mode buttons do. "DOOR RM_Sluice lifted=True open=True".</summary>
+		public static string ProofSetGate(Map map, IntVec3 cell, bool open)
+		{
+			Building_RM_FlowDoor door = DoorAt(map, cell);
+			if (door == null)
+			{
+				return "REFUSED: no flow door at " + cell;
+			}
+			door.SetGateOpen(open);
+			return "DOOR " + door.def.defName + " lifted=" + door.HoldOpen + " open=" + door.Open;
 		}
 
 		/// <summary>Bridge proof (jawa/static_call): the liquid under a flow door — dug depth and

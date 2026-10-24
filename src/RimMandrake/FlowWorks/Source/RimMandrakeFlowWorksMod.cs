@@ -364,7 +364,6 @@ namespace RimMandrake.FlowWorks
         public static bool pitHidesShadowEnabled = true;           // no ground shadow under a pawn sunk in a cut
         // FLOWWORKS_DOOR_FAMILY_1: the sluice and security grate (two stuffable doors; a shut sluice seals, the grate passes liquid).
         public static bool flowDoorsSealedFromPitEnabled = true;
-        public static bool sluiceLetsBigThroughEnabled = true;
         // FLOWWORKS_BUILD_PROGRAM_1 Phase 3/7 VISCOSITY (PROVISIONAL stride = ticksPerTile / 60): a viscous fluid's level
         // moves only every Nth pulse (tar 6, slime 8, oil 3), so its fill front lags water's.
         public static bool viscosityEnabled = true;
@@ -684,7 +683,6 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref pitScorchEnabled, "pitScorchEnabled", true);
             Scribe_Values.Look(ref pitScorchFadeDays, "pitScorchFadeDays", 20f);
             Scribe_Values.Look(ref flowDoorsSealedFromPitEnabled, "flowDoorsSealedFromPitEnabled", true);
-            Scribe_Values.Look(ref sluiceLetsBigThroughEnabled, "sluiceLetsBigThroughEnabled", true);
             Scribe_Values.Look(ref viscosityEnabled, "viscosityEnabled", true);
             Scribe_Values.Look(ref thickCreepEnabled, "thickCreepEnabled", true);
             Scribe_Values.Look(ref waterFrontCreepEnabled, "waterFrontCreepEnabled", true);
@@ -1605,7 +1603,7 @@ namespace RimMandrake.FlowWorks
 
             }
 
-            if (Section(list, "Pit prisoners, sluice gates and grates", new[] { "superdeepRoomsEnabled", "pitRoomMinDepthMetres", "captureDownEnabled", "wardenFromLipEnabled", "flowDoorsSealedFromPitEnabled", "sluiceLetsBigThroughEnabled" }))
+            if (Section(list, "Pit prisoners, sluice gates and grates", new[] { "superdeepRoomsEnabled", "pitRoomMinDepthMetres", "captureDownEnabled", "wardenFromLipEnabled", "flowDoorsSealedFromPitEnabled" }))
             {
             list.CheckboxLabeled("An enclosed pit is its own room", ref superdeepRoomsEnabled,
                 "A dug pocket a person cannot climb out of counts as a room of its own, separate "
@@ -1636,13 +1634,10 @@ namespace RimMandrake.FlowWorks
               + "within speaking distance, tending from a square touching them. Only if no edge square will do "
               + "does the colonist climb down as usual. Off: they always climb down.");
 
-            list.CheckboxLabeled("Sluice gates and grates cannot be opened from inside a pit", ref flowDoorsSealedFromPitEnabled,
-                "A pawn held down in a pit cannot open a sluice gate or a security grate, even one it "
-              + "could open from outside. Off: they open like ordinary doors for anyone allowed through.");
-            list.CheckboxLabeled("A sluice gate only holds small creatures", ref sluiceLetsBigThroughEnabled,
-                "A sluice gate is a cheap canal door: people (prisoners and raiders included) and any creature too big "
-              + "for a one-wide pit force their way through it. Use a security grate to hold a real "
-              + "prisoner. A shut sluice gate holds liquid back; the grate passes liquid open or shut. Off: a sluice gate holds like an ordinary door.");
+            list.CheckboxLabeled("Grates cannot be opened from inside a pit", ref flowDoorsSealedFromPitEnabled,
+                "A pawn held down in a pit cannot open a security grate, even one it could open from outside. "
+              + "Off: it opens like an ordinary door for anyone allowed through. (A sluice gate never opens for anyone "
+              + "walking at it: a colonist lifts and lowers it from beside it.)");
             }
 
             if (Section(list, "Drowning, poison, slime and exposure", new[] { "pitDrowningEnabled", "pitDrowningRateMultiplier", "pitDrowningHeadFraction", "pitDrowningLyingFraction", "poisonFillEnabled", "slimeSlipEnabled", "slimeSlipChanceMultiplier", "slimeSlipStunSeconds", "slimeClimbOutSlipFactor", "pitExposureEnabled", "pitExposureNarrowing", "pitTemperatureCoupling", "pitResistanceLossMultiplier" }))

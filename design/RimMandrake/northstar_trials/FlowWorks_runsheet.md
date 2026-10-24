@@ -10,14 +10,14 @@ Core proof: `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --l
 | `[RimMandrake.FlowWorks] subsurface survey: this map yields` | map-gen survey ran (aquifer/limitless decisions); absent on a map built before the mod. |
 | `[RimMandrake.FlowWorks] rehydrated ` | a LOAD recovered bodies from the save: expected on golden-save loads, never on a fresh quicktest. |
 | `[RimMandrake.FlowWorks] conservation ledger does not balance` | FAIL (any occurrence): fluid created/destroyed outside the ledger. |
-| `[RimMandrake.FlowWorks] conservation exception` | FAIL: exception in the conservation pass. |
+| `[RimMandrake.FlowWorks] conservation exception: ` | WARN, expected (dev mode): fill-in overflow with nowhere to go destroyed N levels -- the ONE sanctioned conservation exception (RM_MapComponent_Excavation.NotifyOverflowDestroyed; total in overflowDestroyedTotal). Not an exception; suspect only if no fill-in ran. |
 | `[RimMandrake.FlowWorks] fluid(s) recorded in this save no longer exist` | WARN: save references a deleted FluidDef (stale golden). |
 | `[RimMandrake.FlowWorks] <fluid> release cooled` | tar/lava release cooled (heat bars). |
 | `[FlowWorks] Typed liquid shores: repainted` | typedLiquidShoresEnabled quicktests: N tiles repainted > 0 when ON, line absent when OFF. |
 | `[RMFlowWorksDebug] FILL_FLUID ` | debug fill result: 'ok' or 'REFUSED' (fluid-switch refusal bar). |
 | `Config error` | FAIL if it names mandrake.rm.flowworks (preflight P-L2). |
 | `Could not resolve cross-reference` | FAIL if it names an RM_ FlowWorks def (P-L2). |
-| `Exception` | FAIL if the stack names RimMandrake.FlowWorks (P-L2). |
+| `Exception` | FAIL if the stack names RimMandrake.FlowWorks (P-L2); the `conservation exception:` warning above is not one. |
 
 ## Chains and components
 
@@ -28,18 +28,16 @@ Core proof: `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --l
 |---|---|---|
 | `offline_tier_ran` | - | state only |
 | `v2_O1` | - | state only |
-| `v2_O1#2` | - | state only |
 | `v2_O2` | - | state only |
 | `v2_O3` | - | state only |
 | `v2_O4` | - | state only |
 | `v2_O5` | - | state only |
 | `v2_O6` | - | state only |
 | `v2_O7` | - | state only |
-| `v2_O9` | - | state only |
 | `v2_O8` | - | state only |
-| `v2_O8#2` | - | state only |
-| `v2_O8#3` | - | state only |
+| `v2_O9` | - | state only |
 | `v2_O10` | - | state only |
+| `v2_O11` | - | state only |
 | `v2_O-NEG` | - | state only |
 | `v2_O-LIVE-NEG` | - | state only |
 
@@ -89,7 +87,9 @@ Core proof: `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --l
 | `P1_width_matrix` | - | `pit_reads_at_size` |
 | `P2_fillin_releases_large` | - | state only |
 | `P3_walk_in_held` | - | `pit_occupied_distinguishable`, `pit_trapped_reads_as_trapped`, `never_snared_standing` |
+| `P3f_forced_entry_falls` | - | state only |
 | `P4_ladder_frees` | - | `ladder_state_legible` |
+| `P4f_ladder_frees_forced` | - | state only |
 | `P4b_ladder_raised_strands` | `superdeepCapturesOwnFaction` | `ladder_state_legible` |
 | `P5n_own_faction_carveout` | `superdeepCapturesOwnFaction` | state only |
 | `X1_pawn_height_ladder` | - | `pawn_height_ladder_legible` |
@@ -102,10 +102,508 @@ Core proof: `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --l
 | `X7n_viscosity_off` | `viscosityEnabled` | state only |
 | `X8_cover_hides_pit` | - | `pit_covered_invisible` |
 | `X9_cover_deck_uniform` | - | `pit_covered_seam_at_max_zoom` |
+| `X8b_cover_occupant_stays_below` | - | state only |
+| `X8c_lid_walker_drawn_at_ground` | - | state only |
 | `X10_canal_fire` | - | `canal_burning_reads_as_burning_liquid`, `canal_fire_persists`, `canal_spent_after_burn` |
 | `T0n_fluid_switch_refused` | - | `canal_reads_as_same_liquid_as_reservoir` |
 | `E9_log_budget` | - | state only |
 | `Z_settings_restored` | - | state only |
+
+### chain `hose_offline` (validation.py: 0-tick / result-reader)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `hose_offline_ran` | - | state only |
+| `HO5_hose_art_sane` | - | state only |
+| `HO6_hose_fittings` | - | `hose_joiner_reads_brass_screwed_together` |
+| `HO7_hose_gpt_read_fixes` | - | state only |
+| `HO8_no_visible_fire_hose` | - | state only |
+| `HO9_drawn_fittings_meet_ports` | - | state only |
+
+### chain `hose_live_rows` (validation.py: 0-tick / result-reader)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `H2_hose_laid_as_hose_cord` | - | `hose_thicker_stiffer_than_cord` |
+| `MX_H01_Flat_corner_L14` | - | `hose_thicker_stiffer_than_cord` |
+| `H9_stiffness_setting` | - | `hose_thicker_stiffer_than_cord` |
+| `MX_H00_Flat_straight_L6` | - | `hose_plump_when_flowing_flat_when_not` |
+| `MX_H03_Plump_straight_L14` | - | `hose_plump_when_flowing_flat_when_not` |
+| `H6_plump_within_transition` | - | `hose_plump_when_flowing_flat_when_not` |
+| `H8_collapse_after_release` | - | `hose_plump_when_flowing_flat_when_not` |
+| `MX_H04_Plump_corner_L24` | - | `hose_joiner_reads_brass_screwed_together` |
+| `MX_H02_Flat_water_L24` | - | `never_hose_across_impassable` |
+| `R3_laid_out_per_look` | - | `reel_laid_and_wound_look_differ`, `reel_hose_leaves_brass_outlet_nozzle` |
+| `R5_reeled_in_per_look` | - | `reel_laid_and_wound_look_differ` |
+| `CR6_retract_stored` | - | `reel_laid_and_wound_look_differ` |
+| `RL3_hose_onto_relay_B` | - | `relay_chain_reads_connected` |
+| `RL4_relay_B_onward_to_C` | - | `relay_chain_reads_connected` |
+| `RL8_chain_beyond_one_hose` | - | `relay_chain_reads_connected` |
+| `RL9_overhead_drawn_over_hose` | - | `hose_drawn_under_overhead_span` |
+| `R2_built_reels_stored_art` | - | `four_reel_looks_distinguishable` |
+| `CR7_no_instant_gizmos_without_devmode` | - | `reel_offers_choose_style` |
+| `NS_hose_plumps_only_from_powered_pump` | - | `hose_plumps_only_from_powered_pump` |
+| `NS_hose_carries_real_units` | - | `hose_carries_real_units` |
+| `NS_hose_tint_is_carried_liquid` | - | `hose_tint_is_carried_liquid` |
+| `NS_hose_dropped_carries_nothing` | - | `hose_dropped_carries_nothing` |
+| `NS_hose_port_removed_discovered` | - | `hose_follows_port_changes` |
+| `NS_hose_port_removed_moves` | - | `hose_follows_port_changes` |
+| `NS_hose_far_end_pump` | - | `hose_far_end_pump_reaches_reel_tank` |
+| `NS_relay_chain_carries` | - | `relay_chain_carries_liquid` |
+| `NS_pipe_and_hose_one_net` | - | `pipe_and_hose_one_net` |
+| `NS_tank_does_not_bridge_pipe_runs` | - | `never_tank_bridges_pipe_runs` |
+| `NS_external_pipe_is_visual_only` | - | `never_external_pipe_carries` |
+| `NS_tank_feeds_hose` | - | `tank_feeds_hose_without_pump` |
+
+### chain `rivers_switch_flips` (validation.py: 0-tick / result-reader)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `rivers_selftest_ran` | - | state only |
+| `flip_riverWorksEnabled` | `riverWorksEnabled` | state only |
+| `flip_scaleWithRiverSize` | `scaleWithRiverSize` | state only |
+| `flip_floodSurgeEnabled` | `floodSurgeEnabled` | state only |
+| `flip_countSeasonalFloods` | `countSeasonalFloods` | state only |
+| `flip_countTorrentialRainFloods` | `countTorrentialRainFloods` | state only |
+| `flip_carryAnimals` | `carryAnimals` | state only |
+| `flip_carryStrangers` | `carryStrangers` | state only |
+| `flip_carryItems` | `carryItems` | state only |
+| `flip_crossingHazardsEnabled` | `crossingHazardsEnabled` | state only |
+| `flip_pathfinderAvoidsCurrents` | `pathfinderAvoidsCurrents` | state only |
+| `flip_weirWhiteWater` | `weirWhiteWater` | state only |
+| `flip_flotsamEnabled` | `flotsamEnabled` | state only |
+
+### chain `flow_door_facing` (validation.py: 0-tick / result-reader)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `flow_door_facing_selftest_ran` | - | state only |
+| `FlowDoorFacing_spans_between_the_banks` | - | state only |
+| `FlowDoorFacing_superdeep_channel_is_not_a_wall` | - | state only |
+| `FlowDoorFacing_ends_bends_and_mouths` | - | state only |
+| `FlowDoorFacing_gates_side_by_side_form_one_barrier` | - | state only |
+| `FlowDoorFacing_walls_still_win_and_dry_ground_is_vanilla` | - | state only |
+| `FlowDoorFacing_call_site_is_vanilla_door_rotation` | - | state only |
+| `flow_door_facing_live` | - | state only |
+
+### chain `water_level_surface` (validation.py: 0-tick / result-reader)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `level_surface_within_1cm` | - | `still_water_one_surface_height` |
+
+### chain `ladder_hung_on_wall` (validation.py: 0-tick / result-reader)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `ladder_wall_selftest_ran` | - | state only |
+| `LadderWall_placed_rotation_stands_on_a_wall` | - | state only |
+| `LadderWall_auto_turns_to_the_biggest_drop` | - | state only |
+| `LadderWall_no_wall_refused` | - | state only |
+| `LadderWall_joins_only_the_wall_it_hangs_on` | - | state only |
+| `LadderWall_slid_up_holds_everyone_slid_down_is_the_prison_door` | - | state only |
+| `LadderWall_call_sites` | - | state only |
+| `ladder_wall_live` | - | state only |
+
+### chain `limitless_endless` (validation.py: 0-tick / result-reader)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `endless_selftest_ran` | - | state only |
+| `Readout_limitless_says_Endless` | - | state only |
+| `Readout_two_numbers_and_the_limitless_mark` | - | state only |
+| `endless_live` | - | `limitless_body_marked` |
+
+### chain `ladder_rails_raise_lower` (validation.py: 0-tick / result-reader)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `ladder_rails_selftest_ran` | - | state only |
+| `LadderRails_raise_either_side_lower_only_from_above` | - | state only |
+| `LadderRails_gizmo_job_and_ai_ask_the_rule` | - | state only |
+| `ladder_rails_live` | - | `wall_ladder_rides_on_rails` |
+
+### chain `pit_travel_fly_jump_float` (validation.py: 0-tick / result-reader)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `pit_travel_selftest_ran` | - | state only |
+| `PitTravel_fly_jump_float_cross_freely_and_never_fall` | - | state only |
+| `PitTravel_every_trap_mask_reach_and_fall_read_asks_it` | - | state only |
+| `PitAccess_jumps_and_skips_land_safely` | - | state only |
+| `pit_travel_live` | - | `jump_into_pit_lands_unhurt` |
+
+### chain `pump_ports_one_per_side` (validation.py: 0-tick / result-reader)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `pump_ports_selftest_ran` | - | state only |
+| `PumpPorts_hose_at_a_side_port` | - | state only |
+| `PumpPorts_pipes_join_adjacent_hoses_at_ports` | - | state only |
+| `PipeStub_corner_adjacent_runs_under_to_centre` | - | state only |
+| `PipeStub_tank_corner_joins_and_runs_under` | - | state only |
+| `pump_ports_live` | - | `pump_hose_joins_at_side_port` |
+
+### chain `water_ladder_silt` (validation.py: 0-tick / result-reader)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `water_ladder_selftest_ran` | - | state only |
+| `P14_one_ladder_maps_metres_to_def_for_every_rung` | - | state only |
+| `water_silt_live` | - | `half_metre_water_reads_as_silt` |
+
+### chain `deep_water_swims` (validation.py: 0-tick / result-reader)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `swim_selftest_ran` | - | state only |
+| `Swim_pawn_dropped_in_deep_water` | - | state only |
+| `Swim_swimmer_vs_nonswimmer_in_2m_8m_and_lake_water` | - | state only |
+| `Swim_who_swims_by_race_gene_and_load` | - | state only |
+| `Swim_wired_at_call_sites` | - | state only |
+| `swim_live` | - | `deep_water_pawn_swims` |
+
+### chain `trench_cover_and_raiders` (validation.py: 0-tick / result-reader)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `trench_cover_selftest_ran` | - | state only |
+| `trench_cover_live` | - | `trench_wall_cover_shown` |
+| `trench_cage_live` | - | `raiders_never_shelter_in_a_cage` |
+
+### chain `pit_access_gear_ladders` (validation.py: 0-tick / result-reader)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `pit_access_selftest_ran` | - | state only |
+| `PitAccess_climbing_gear_climbs_every_step` | - | state only |
+| `PitAccess_gear_is_slow_only_past_the_natural_limit` | - | state only |
+| `PitAccess_portable_ladder_reach` | - | state only |
+| `PitAccess_defs_and_settings_shipped` | - | state only |
+| `PitAccess_call_sites_wired` | - | state only |
+| `climb_out_live` | - | `geared_pawn_climbs_out` |
+| `portable_ladder_live` | - | `portable_ladder_leans_on_its_wall` |
+| `climbing_gear_look` | - | `climbing_gear_reads_as_kit` |
+
+### chain `wall_scaling_gear` (validation.py: 0-tick / result-reader)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `wall_climb_selftest_ran` | - | state only |
+| `WallClimb_unroofed_on_both_sides_and_the_wall` | - | state only |
+| `WallClimb_gear_required_raiders_by_setting` | - | state only |
+| `WallClimb_is_slow_x20` | - | state only |
+| `WallClimb_routes_only_when_shorter` | - | state only |
+| `WallClimb_wiring` | - | state only |
+| `wall_climb_live` | - | `geared_pawn_scales_built_wall` |
+
+### chain `suspension_bridges_and_covers` (validation.py: 0-tick / result-reader)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `suspension_selftest_ran` | - | state only |
+| `Suspension_spans_supports_and_swing_order` | - | state only |
+| `Suspension_deck_built_over_the_hole_floor` | - | state only |
+| `Underpass_band_step_clearance_and_sunken_height` | - | state only |
+| `Underpass_wiring_masks_sites_not_tunnels` | - | state only |
+| `SpanBase_cover_is_the_trap_tier_of_the_base` | - | state only |
+| `SpanBase_cover_read_is_decked_surface_no_underpass` | - | state only |
+| `under_deck_live` | - | `pawn_walks_under_deck` |
+| `suspension_look` | - | `suspension_bridge_reads_hung` |
+| `cover_vs_bridge_look` | - | `pit_cover_unlike_bridge` |
+
+### chain `pipes_meet_centre` (validation.py: 0-tick / result-reader)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `pipe_centre_selftest_ran` | - | state only |
+| `PipeStub_1x1_runs_edge_to_centre` | - | state only |
+| `PipeStub_multicell_enters_at_edge_then_turns_to_centre` | - | state only |
+| `PipeStub_wiring_shipped` | - | state only |
+| `pipe_centre_live` | - | `pipe_meets_building_centre` |
+
+### chain `flow_map_controls` (validation.py: 0-tick / result-reader)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `map_controls_selftest_ran` | - | state only |
+| `MapControl_rate_to_levels` | - | state only |
+| `MapControl_rate_clamps` | - | state only |
+| `MapControl_blocked_source_never_banks` | - | state only |
+| `MapControl_pick_targets` | - | state only |
+| `MapControl_source_and_sink_conserve_through_the_kernel` | - | state only |
+| `MapControl_wiring_and_master_switch` | `mapControlsEnabled` | state only |
+| `flow_map_controls_live` | - | state only |
+
+### chain `flow_map_controls_six` (validation.py: 0-tick / result-reader)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `map_controls_six_selftest_ran` | - | state only |
+| `MapControl_level_holder_need` | - | state only |
+| `MapControl_level_holder_conserves_through_the_kernel` | - | state only |
+| `MapControl_timer_schedule` | - | state only |
+| `MapControl_edge_rules` | - | state only |
+| `MapControl_thermostat_energy` | - | state only |
+| `MapControl_six_wiring` | `mapControlsEnabled` | state only |
+| `flow_meter_live` | - | state only |
+| `level_holder_live` | - | state only |
+| `timer_switch_live` | - | state only |
+| `map_edge_setter_live` | - | state only |
+| `current_painter_live` | - | state only |
+| `liquid_thermostat_live` | - | state only |
+
+### chain `hose_switch_flips` (validation.py: 0-tick / result-reader)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `hose_selftest_ran` | - | state only |
+| `flip_tankModesEnabled` | `tankModesEnabled` | state only |
+| `flip_freeEndRolesEnabled` | `freeEndRolesEnabled` | state only |
+| `flip_hoseHoldsLiquid` | `hoseHoldsLiquid` | state only |
+| `flip_liquidTheftEnabled` | `liquidTheftEnabled` | state only |
+| `tank_feed_refused_add_puts_back` | - | state only |
+
+### chain `pipe_looks` (validation.py: 0-tick / result-reader)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `selftest_cases` | - | state only |
+| `owned_art_installed` | - | state only |
+| `tank_art_installed` | - | state only |
+| `tank_choose_style_live` | - | state only |
+
+### chain `container_styles` (validation.py: 0-tick / result-reader)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `container_style_selftest_ran` | - | state only |
+| `ContainerStyle_looks_and_names` | - | state only |
+| `ContainerStyle_tech_default` | - | state only |
+| `ContainerStyle_stacks_keep_looks_apart` | - | state only |
+| `ContainerStyle_window_colours` | - | state only |
+| `ContainerStyle_shipped_style_defs` | - | state only |
+| `ContainerStyle_item_bases_wired` | - | state only |
+| `ContainerStyle_dbh_bottles_masked` | - | state only |
+| `ContainerStyle_call_sites` | - | state only |
+| `container_art_installed` | - | state only |
+| `container_styles_live` | - | state only |
+
+### chain `thirst` (validation.py: 0-tick / result-reader)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `thirst_selftest_ran` | - | state only |
+| `T0_provider_rule` | - | state only |
+| `T3o_fall_rate` | - | state only |
+| `T3h_heat_cap` | - | state only |
+| `T4o_bottle_and_quality` | - | state only |
+| `T6o_dehydration` | - | state only |
+| `T8_coloured_bottles_without_dbh` | - | state only |
+| `Td_defs_shipped` | - | state only |
+| `Tb_dbh_bridge_patch` | - | state only |
+| `Th_harmony_target` | - | state only |
+| `Tu_use_class_gate` | - | state only |
+| `Ta_autofill_potable_only` | - | state only |
+| `Ts_slime_last_resort` | - | state only |
+| `Tb_salt_break` | - | state only |
+| `Tk_awkward_access` | - | state only |
+| `Tr_reserve_orders_sprinklers` | - | state only |
+| `Tq_q12_defaults` | - | state only |
+| `Tt_bottle_stock_batches` | - | state only |
+| `T1_provider_line` | - | state only |
+| `T2_one_thirst_need` | `thirstEnabled` | state only |
+| `T3_need_falls` | `thirstHeatScaling` | state only |
+| `T4_bottle_satisfies` | - | state only |
+| `T5_salt_water_quality` | `waterQualityEffects` | state only |
+| `T6_dehydration_readable` | - | state only |
+| `T7_no_dbh_clean_log` | - | state only |
+| `T9_animals_drink` | `animalsGetThirst` | state only |
+| `T10_terrain_drink` | `drinkFromTerrain` | state only |
+| `T11_autofill_skips_salt` | - | state only |
+| `T12_no_routine_salt` | - | state only |
+| `T13_desperate_toxic_last` | `lastResortDrinking` | state only |
+| `T15_slime_effects` | `waterQualityEffects` | state only |
+| `T16_living_slime` | `lastResortDrinking` | state only |
+| `T17_salt_break` | `saltBreakEnabled` | state only |
+| `T18_dubs_last_resort` | `lastResortDrinking` | state only |
+| `T19_awkward_access` | `roughDrinkPenalty` | state only |
+| `T20_bucket_drunk_dry` | - | state only |
+| `T21_drinking_reserve` | - | state only |
+| `T22_no_brine_spray` | - | state only |
+| `T23_fill_tank_is_the_order` | - | state only |
+| `T24_bucket_douses_fire` | `bucketFirefighting` | state only |
+| `T25_snow_to_water` | `snowGathering` | state only |
+| `T26_ice_block_bill` | - | state only |
+| `T27_water_items` | - | state only |
+| `T28_sanguophage_blood` | `sanguophageBloodQuenches` | state only |
+| `T29_bottle_stock_and_batches` | - | state only |
+| `T30_pipe_faucet` | `pipeFaucetsEnabled` | state only |
+| `T14_native_animal_terrible_water` | `animalsGetThirst` | state only |
+
+### chain `sprinklers` (validation.py: 0-tick / result-reader)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `sprinkler_selftest_ran` | - | state only |
+| `S0_ruled_cost` | - | state only |
+| `S1o_all_or_nothing` | - | state only |
+| `S2o_needs_a_pump` | - | state only |
+| `S3o_thick_clogs` | - | state only |
+| `S4o_expiry` | - | state only |
+| `S5o_spend` | - | state only |
+| `S6o_liquid_key` | - | state only |
+| `S7o_sealed` | - | state only |
+| `S8o_valve` | - | state only |
+| `S9o_conserves` | - | state only |
+| `S10o_walls_effects` | - | state only |
+| `S11o_defs` | - | state only |
+| `S12o_vfe_patch` | - | state only |
+| `sprinkler.draws_and_wets` | - | state only |
+| `sprinkler.dries_when_starved` | - | state only |
+| `sprinkler.no_pressure` | - | state only |
+| `sprinkler.thick_clogs` | - | state only |
+| `sprinkler.liquid_key` | - | state only |
+| `sprinkler.acid_hurts_fuel_puddles` | `sprinklerNonWaterEffects` | state only |
+| `sprinkler.walls_stop_spray` | - | state only |
+| `sprinkler_switch_flips.flip_sprinklersEnabled` | `sprinklersEnabled` | state only |
+| `sprinkler.vfe_boost_skipped` | `vfeSprinklerAdapterEnabled` | state only |
+| `sprinkler.vfe_valve` | `vfeThirstValve` | state only |
+
+### chain `drawbridges` (validation.py: 0-tick / result-reader)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `drawbridge_selftest_ran` | - | state only |
+| `Drawbridge_P1_materials_timber_and_steel_only` | - | state only |
+| `Drawbridge_P1_split_one_leaf_or_two_each_hinged_on_its_own_bank` | - | state only |
+| `Drawbridge_P1_leaf_is_rigid_off_its_seat_and_reversible` | - | state only |
+| `Drawbridge_P1_decked_reads_raised_and_only_drawbridge_decks_raise` | - | state only |
+| `Drawbridge_P1_structure_reads_see_a_raised_leaf` | - | state only |
+| `Drawbridge_P1_toggle_forces_pocket_rebuild_and_repath` | - | state only |
+| `Drawbridge_P1_raise_never_collapses` | - | state only |
+| `Drawbridge_P1_leaf_record_saves_per_leaf_versioned` | - | state only |
+| `Drawbridge_P2_tip_order_nearest_hinge_then_cell` | - | state only |
+| `Drawbridge_P2_six_riders_one_free_square_one_lands_five_fall` | - | state only |
+| `Drawbridge_P2_landings_never_through_a_wall_and_within_reach` | - | state only |
+| `Drawbridge_P2_tip_wiring_once_per_raise_band_aware_overflow_falls` | - | state only |
+| `Drawbridge_P3_sides_raise_either_lower_winch_only` | - | state only |
+| `Drawbridge_P3_drive_timber_hands_steel_power_freezes` | - | state only |
+| `Drawbridge_P3_winch_lost_crashes_down_and_hits` | - | state only |
+| `Drawbridge_P3_winch_gone_any_way_crashes_and_unlinks` | - | state only |
+| `Drawbridge_P1_tower_mid_span_refused` | - | state only |
+| `Drawbridge_P3_one_winch_per_leaf_on_its_own_bank` | - | state only |
+| `Drawbridge_P3_peace_auto_lowers_free_hostiles_lock` | - | state only |
+| `Drawbridge_P4_raid_plank_fits_and_commits_once` | - | state only |
+| `Drawbridge_P4_raiders_trench_hand_off_and_winch` | - | state only |
+| `Drawbridge_P5_hoses_on_a_leaf_cut_while_raised_rejoin_lowered` | - | state only |
+| `Drawbridge_P5_gravship_edge_bridge_collapses_at_launch` | - | state only |
+| `Drawbridge_P5_length_by_material_from_settings` | - | state only |
+| `Drawbridge_P6_gate_never_open_on_a_raised_leaf_locked_only_by_order` | - | state only |
+| `Drawbridge_P6_real_build_buttons` | - | state only |
+| `Drawbridge_P6_art_contract_paths_with_stand_ins` | - | state only |
+| `Drawbridge_Looks_paths_look_first_then_material` | - | state only |
+| `Drawbridge_Looks_raid_plank_pieces` | - | state only |
+| `Drawbridge_Looks_wired_at_the_draw_sites` | - | state only |
+| `Drawbridge_raised_leaf_draws_without_its_winch` | - | state only |
+| `Drawbridge_Cables_lowered_reach_deck_raised_slack_vs_art` | - | state only |
+| `Drawbridge_Cables_canfail_old_stop_short_and_moved_attach` | - | state only |
+| `Drawbridge_Cables_raised_leaf_edge_crops_the_stiff_rope` | - | state only |
+| `Drawbridge_Cables_call_sites` | - | state only |
+| `Drawbridge_Cables_ropes_for_unmeasured_print_is_null_not_throw` | - | state only |
+| `Drawbridge_Cables_slack_coil_lies_flat_canfail_old_hook` | - | state only |
+| `Drawbridge_BaseAnchors_upright_multi_per_facing` | - | state only |
+| `Drawbridge_StyledHeavyAnchors_upright_per_facing` | - | state only |
+| `Drawbridge_hose_cut_by_a_raised_leaf_carries_no_liquid` | - | state only |
+| `Drawbridge_raid_plank_between_sunken_banks_lies_at_their_depth` | - | state only |
+| `RAISE_PATH` | - | state only |
+| `RAISE_TIPS_RIDERS` | - | state only |
+| `RAISE_SPARES_UNDERPASS` | - | state only |
+| `LOWER_ONLY_FROM_WINCH` | - | state only |
+| `TWO_LEAF_TIPS_OWN_HINGE` | - | state only |
+| `HOSTILE_LOCKS` | - | state only |
+| `STEEL_UNPOWERED_FREEZES` | - | state only |
+| `WINCH_LOST_CRASHES` | - | state only |
+| `WINCH_DESPAWN_CRASHES` | - | state only |
+| `RAID_UP` | - | state only |
+| `RAID_PLANK` | - | state only |
+| `SAVE_MIDRAISE` | - | state only |
+
+### chain `lines` (validation.py: 0-tick / result-reader)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `lines_selftest_ran` | - | state only |
+| `LineCrossing_P2_table_every_kind_by_every_surface` | - | state only |
+| `LineCrossing_P2_rigid_only_on_solid_ground_cover_carries_nothing` | - | state only |
+| `LineCrossing_P2_surface_deck_wins_over_the_hole_under_it` | - | state only |
+| `LineCrossing_P2_every_refusal_has_a_reason_every_allow_none` | - | state only |
+| `LineCrossing_P1_style_change_does_not_change_permission` | - | state only |
+| `LineCrossing_P2_gates_at_placement_rebuild_and_frame_completion` | - | state only |
+| `LineDigBreak_cancelled_or_refused_dig_breaks_nothing` | - | state only |
+| `LineDigBreak_commit_breaks_rigid_and_cords_once_never_hose` | - | state only |
+| `LineDigBreak_repeat_commit_is_idempotent` | - | state only |
+| `LineDigBreak_liquid_net_splits_where_the_pipe_broke` | - | state only |
+| `DeckCollapse_cord_drops_one_live_fallen_wire_and_the_net_splits_once` | - | state only |
+| `DeckCollapse_repeat_teardown_is_idempotent` | - | state only |
+| `DeckCollapse_unpowered_or_disconnected_cord_shocks_nobody` | - | state only |
+| `DeckCollapse_hose_across_a_collapsed_deck_is_reeled_in` | - | state only |
+| `DeckCollapse_every_collapse_path_clears_through_ClearDeckTop` | - | state only |
+| `DeckCollapse_GSS_shock_seam_is_soft_and_load_safe` | - | state only |
+| `PipePole_P3_support_on_solid_ground_only_refused_on_deck_cover_dug` | - | state only |
+| `PipePole_P3_span_length_cap_follows_the_slider` | - | state only |
+| `PipePole_P3_sag_at_the_slider_extremes` | - | state only |
+| `PipePole_P3_span_is_not_walkable_and_not_in_pawn_topology` | - | state only |
+| `PipePole_P4_dig_kills_the_pole_so_its_spans_fall` | - | state only |
+| `PipePole_P3_settings_and_the_gss_seam_line_up` | - | state only |
+| `PipePole_D5_ground_pipe_reaches_the_pole_and_the_span_is_the_looks_pipe` | - | state only |
+| `PipeSpan_P3_edge_joins_two_60pct_components_cap_after_join_refused` | - | state only |
+| `PipeSpan_P3_edge_joins_two_40pct_components_accepted_as_one` | - | state only |
+| `PipeSpan_P3_one_logical_edge_no_duplicate_cardinal_or_reverse_span` | - | state only |
+| `PipeSpan_P3_ring_of_two_pole_routes_cut_in_turn` | - | state only |
+| `PipeSpan_P3_cut_span_splits_the_net_once` | - | state only |
+| `PipeSpan_P3_production_wiring_adapter_callback_join_order` | - | state only |
+| `HoseBand_P5_refuses_a_dug_square_without_ramp_or_ladder` | - | state only |
+| `HoseBand_P5_routes_lip_ramp_floor` | - | state only |
+| `HoseBand_P5_routes_lip_ladder_floor_and_raised_ladder_leaves_it_hanging` | - | state only |
+| `HoseBand_P5_endpoint_reach_respects_band` | - | state only |
+| `HoseBand_P5_newly_dug_square_replans_or_retracts_once` | - | state only |
+| `HoseBand_P2_pit_cover_carries_no_hose` | - | state only |
+| `HoseBand_P5_no_bands_leaves_gss_signatures_unchanged` | - | state only |
+| `HoseBand_swim_split_pool_stays_one_floor` | - | state only |
+| `Scenario_C4_C10_hoses_lay_offline` | - | state only |
+| `LineReadout_P9_four_cases_read_apart` | - | state only |
+| `LineReadout_P9_counts_and_dry_pole` | - | state only |
+| `LineReadout_P9_adapters_print_the_lines` | - | state only |
+| `PipePoleGravship_P8_aboard_span_rekeys_on_landing` | - | state only |
+| `PipePoleGravship_P8_edge_span_coils_and_no_support_loss` | - | state only |
+| `PowerCord_def_is_a_FlexCord_power_transmitter_of_its_own` | - | state only |
+| `PowerCord_placeable_on_rope_timber_steel_decks_and_leaf_refused_dug_and_cover` | - | state only |
+| `PowerCord_restyled_conduit_still_refused_on_decks` | - | state only |
+| `PowerCord_dig_break_catches_the_cord_def` | - | state only |
+| `PowerCord_leaf_raise_disconnects_lower_rejoins_the_power_net` | - | state only |
+| `PowerCord_deck_collapse_destroys_it_and_records_the_fallen_wire_first` | - | state only |
+| `ReelFacing_outlet_nozzle_and_picture_turn_with_the_reel` | - | state only |
+| `ReelFacing_target_on_the_outlet_side_lays_with_no_U_loop` | - | state only |
+| `ReelFacing_relay_inlet_turns_with_the_relay` | - | state only |
+| `ReelFacing_def_rotatable_west_default_preview_and_legacy_saves` | - | state only |
+| `PipeTankRiser_bends_onto_the_port_no_cap_no_collar` | - | state only |
+| `PipeTankRiser_wiring_link_stops_layer_prints_flange_follows` | - | state only |
+| `HoseShadow_empty_is_darker_and_wider_full_unchanged` | - | state only |
+| `CoverFloor_planked_squares_are_ground_open_squares_the_pit` | - | state only |
+| `CoverFloor_laying_or_lifting_a_lid_invalidates_path_and_reach` | - | state only |
+| `DrillSurvey_empty_survey_refuses_unsurveyed_allows` | - | state only |
+| `DrillSurvey_placeworker_wired_on_drill_and_bleed_well` | - | state only |
+| `DrillWhyNot_each_condition_names_its_reason` | - | state only |
+| `ROPE_DECK_RIGID_REFUSED_FLEX_OK` | - | state only |
+| `COVER_CARRIES_NO_HOSE` | - | state only |
+| `POLE_SPAN_CARRIES_LIQUID` | - | state only |
+| `DIG_UNDER_PIPE_SPLITS_NET` | - | state only |
+| `COLLAPSE_CORD_SHOCKS_ONCE` | - | state only |
+| `LADDER_HOSE_DRAINS_RAISED_STAYS` | - | state only |
+| `DIG_REROUTES_LAID_HOSE` | - | state only |
+| `CORD_DECK_LAMP_LIT` | - | state only |
+| `LEAF_RAISED_LAMP_DARK` | - | state only |
 
 ### chain `plot_A_dug_channel` (extension)
 
@@ -121,6 +619,7 @@ Core proof: `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --l
 |---|---|---|
 | `partial_fill_two_look` | - | `canal_partial_fill_distinct` |
 | `fill_tier_four_look` | - | `fill_tier_legible` |
+| `fill_tier_under_quarter_metre_look` | - | `fill_tier_legible` |
 | `depth_and_fill_joint_look` | - | `depth_and_fill_jointly_legible` |
 
 ### chain `plot_C_limitless_canal` (extension)
@@ -198,7 +697,7 @@ Core proof: `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --l
 | component | toggle | bars decided (judge YES for must-show, NO for never_*) |
 |---|---|---|
 | `fill_in_displacement_on` | `fillInDisplacementEnabled` | state only |
-| `fill_in_displacement_off` | `fillInDisplacementEnabled` | state only |
+| `fill_in_displacement_off` | - | state only |
 
 ### chain `toggle_recession` (extension)
 
@@ -218,7 +717,8 @@ Core proof: `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --l
 
 | component | toggle | bars decided (judge YES for must-show, NO for never_*) |
 |---|---|---|
-| `liquid_ignition_off (default is ON; this row must set OFF explicitly)` | `liquidIgnitionEnabled` | state only |
+| `liquid_ignition_off` | - | state only |
+| `liquid_ignition_on` | - | state only |
 
 ### chain `all_off_still_digs` (extension)
 
@@ -231,12 +731,13 @@ Core proof: `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --l
 | component | toggle | bars decided (judge YES for must-show, NO for never_*) |
 |---|---|---|
 | `canal_fire_off_is_inert` | `canalFireEnabled` | state only |
+| `canal_fire_on_lights` | `canalFireEnabled` | state only |
 
 ### chain `toggle_liquid_corrosion` (extension)
 
 | component | toggle | bars decided (judge YES for must-show, NO for never_*) |
 |---|---|---|
-| `liquid_corrosion_both_sides (default is ON; set OFF explicitly)` | `liquidCorrosionEnabled` | state only |
+| `liquid_corrosion_both_sides` | - | state only |
 
 ### chain `toggle_superdeep_capture` (extension)
 
@@ -250,7 +751,8 @@ Core proof: `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --l
 | component | toggle | bars decided (judge YES for must-show, NO for never_*) |
 |---|---|---|
 | `ladder_required_on` | `ladderRequiredToExitEnabled` | state only |
-| `ladder_required_off` | `ladderRequiredToExitEnabled` | state only |
+| `ladder_required_ladder_lets_out` | - | state only |
+| `ladder_required_off` | - | state only |
 
 ### chain `ladder_prison_door` (extension)
 
@@ -280,8 +782,8 @@ Core proof: `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --l
 | component | toggle | bars decided (judge YES for must-show, NO for never_*) |
 |---|---|---|
 | `grate_passes_sluice_seals` | - | state only |
-| `sluice_holds_small_only` | `sluiceLetsBigThroughEnabled` | state only |
-| `sluice_rule_off_holds` | `sluiceLetsBigThroughEnabled` | state only |
+| `sluice_shut_holds_everyone` | - | state only |
+| `sluice_lifts_and_lowers` | - | state only |
 | `grate_holds_prisoner` | - | state only |
 | `sealed_from_pit` | `flowDoorsSealedFromPitEnabled` | state only |
 | `sealed_rule_off` | `flowDoorsSealedFromPitEnabled` | state only |
@@ -290,8 +792,8 @@ Core proof: `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --l
 
 | component | toggle | bars decided (judge YES for must-show, NO for never_*) |
 |---|---|---|
-| `shooting_rule_on` | `superdeepShootingRuleEnabled` | state only |
-| `shooting_rule_off` | `superdeepShootingRuleEnabled` | state only |
+| `shooting_rule_on` | - | state only |
+| `shooting_rule_off` | - | state only |
 
 ### chain `toggle_pit_exposure` (extension)
 
@@ -321,6 +823,14 @@ Core proof: `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --l
 | `pit_drowning_off` | `pitDrowningEnabled` | state only |
 | `poison_fill_off` | `poisonFillEnabled` | state only |
 
+### chain `slime_slip` (extension)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `slime_slips_the_wader` | `slimeSlipEnabled` | state only |
+| `slime_slip_off` | `slimeSlipEnabled` | state only |
+| `natural_slime_slips` | `slimeSlipEnabled` | state only |
+
 ### chain `toggle_bottle_loop` (extension)
 
 | component | toggle | bars decided (judge YES for must-show, NO for never_*) |
@@ -333,6 +843,7 @@ Core proof: `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --l
 | component | toggle | bars decided (judge YES for must-show, NO for never_*) |
 |---|---|---|
 | `bottle_dirty_on` | `bottleDirtyStageEnabled` | state only |
+| `bottle_wash_returns_clean` | `bottleLoopEnabled` | state only |
 | `bottle_dirty_off` | `bottleDirtyStageEnabled` | state only |
 
 ### chain `toggle_tank_loop` (extension)
@@ -340,40 +851,42 @@ Core proof: `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --l
 | component | toggle | bars decided (judge YES for must-show, NO for never_*) |
 |---|---|---|
 | `tank_loop_on` | `tankLoopEnabled` | state only |
+| `tank_loop_pour_in` | - | state only |
 | `tank_loop_off` | `tankLoopEnabled` | state only |
 
 ### chain `toggle_liquid_drilling` (extension)
 
 | component | toggle | bars decided (judge YES for must-show, NO for never_*) |
 |---|---|---|
-| `liquid_drilling_on` | `liquidDrillingEnabled` | state only |
-| `liquid_drilling_off` | `liquidDrillingEnabled` | state only |
+| `liquid_drilling_on` | - | state only |
+| `liquid_drilling_off` | - | state only |
 
 ### chain `toggle_typed_shores` (extension)
 
 | component | toggle | bars decided (judge YES for must-show, NO for never_*) |
 |---|---|---|
-| `typed_shores_mapgen` | `typedLiquidShoresEnabled` | state only |
+| `typed_shores_mapgen` | - | state only |
 
 ### chain `toggle_trap_trigger` (extension)
 
 | component | toggle | bars decided (judge YES for must-show, NO for never_*) |
 |---|---|---|
-| `trap_trigger_on` | `trapTriggerEnabled` | state only |
 | `trap_trigger_off` | `trapTriggerEnabled` | state only |
 
 ### chain `toggle_fall_damage` (extension)
 
 | component | toggle | bars decided (judge YES for must-show, NO for never_*) |
 |---|---|---|
-| `fall_damage_on` | `fallDamageEnabled` | state only |
-| `fall_damage_off` | `fallDamageEnabled` | state only |
+| `fall_damage_on` | - | state only |
+| `fall_damage_off` | - | state only |
 
 ### chain `toggle_river_steam` (extension)
 
 | component | toggle | bars decided (judge YES for must-show, NO for never_*) |
 |---|---|---|
-| `river_steam` | `riverSteamEnabled` | state only |
+| `river_steam_on` | `riverSteamEnabled` | state only |
+| `river_steam_off` | `riverSteamEnabled` | state only |
+| `river_steam_biome_gate` | - | state only |
 
 ### chain `fluid_identity_recorded` (extension)
 
@@ -410,6 +923,38 @@ Core proof: `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --l
 |---|---|---|
 | `rain_douses_open_fire` | `rainDousesLiquidFireEnabled` | state only |
 | `rain_off_leaves_fire` | `rainDousesLiquidFireEnabled` | state only |
+
+### chain `fire_queue_origin` (extension)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `fire_torch_advances_pending` | - | state only |
+| `fire_front_survives_save` | - | state only |
+| `fire_reach_capped_at_source` | - | state only |
+
+### chain `fuel_moat_chemfuel` (extension)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `chemfuel_moat_goes_up` | `chemfuelInfernoEnabled` | state only |
+| `chemfuel_inferno_off_smoulders` | `chemfuelInfernoEnabled` | state only |
+
+### chain `fuel_moat_astrofuel` (extension)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `astrofuel_channel_detonates` | `astrofuelDetonationEnabled` | state only |
+| `utinni_blast_summons_raid` | - | state only |
+| `astrofuel_detonation_off_burns` | `astrofuelDetonationEnabled` | state only |
+
+### chain `fuel_moat_propane` (extension)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `propane_tank_pours_into_channel` | - | state only |
+| `propane_lake_cut_holds_propane` | - | state only |
+| `propane_never_self_ignites` | - | state only |
+| `propane_vanilla_fire_lights_inferno` | - | state only |
 
 ### chain `pit_prison_room` (extension)
 
@@ -454,12 +999,12 @@ Core proof: `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --l
 | `cut_turns_up_local_find` | `digFindsLocalOnly` | state only |
 | `first_find_sends_letter` | `digFindLetterEnabled` | state only |
 
-### chain `machinery_hoses` (extension)
+### chain `machinery_pipes` (extension)
 
 | component | toggle | bars decided (judge YES for must-show, NO for never_*) |
 |---|---|---|
-| `hose_feeds_far_tank` | `liquidHosesEnabled` | state only |
-| `hoses_off_far_tank_idle` | `liquidHosesEnabled` | state only |
+| `pipe_feeds_far_tank` | `universalPipesEnabled` | state only |
+| `pipes_off_far_tank_idle` | `universalPipesEnabled` | state only |
 
 ### chain `machinery_found_works` (extension)
 
@@ -467,9 +1012,17 @@ Core proof: `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --l
 |---|---|---|
 | `works_only_over_ruin` | `industrialWorksBuildAnywhere` | state only |
 | `build_anywhere_on` | `industrialWorksBuildAnywhere` | state only |
-| `ruins_mapgen` | `liquidWorksRuinsEnabled` | state only |
-| `ruin_stock_mapgen` | `liquidWorksRuinStockEnabled` | state only |
-| `pipe_adapters` | `pipeAdaptersEnabled` | state only |
+| `ruins_mapgen` | - | state only |
+| `ruin_stock_mapgen` | - | state only |
+| `pipe_adapters` | - | state only |
+
+### chain `liquid_heat` (extension)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `liquid_heat_kinds` | `liquidHeatPushEnabled` | state only |
+| `liquid_heat_warms_and_chills` | `liquidHeatPushEnabled` | state only |
+| `liquid_heat_off_is_inert` | `liquidHeatPushEnabled` | state only |
 
 ### chain `current` (extension)
 
@@ -487,14 +1040,24 @@ Core proof: `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --l
 |---|---|---|
 | `returns_home` | `washOffMapEdge` | state only |
 
+### chain `taken_by_land` (extension)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `service_has_river_policy_and_trace_setting` | - | state only |
+
 ### chain `works` (extension)
 
 | component | toggle | bars decided (judge YES for must-show, NO for never_*) |
 |---|---|---|
 | `place_weir_bank_edge` | `bankWorksEnabled` | state only |
 | `weir_arrest_and_pool` | `bankWorksEnabled` | state only |
-| `weir_fish_draws_stock` | `weirCatchesFish` | state only |
+| `weir_joined_wall` | `bankWorksEnabled` | state only |
+| `weir_joined_wall_art_in_game` | - | state only |
+| `river_flotsam_enters_and_leaves` | `flotsamEnabled` | state only |
+| `weir_captures_floating` | `weirCapturesFloating` | state only |
 | `breach_wash` | `breachWashesCatch` | state only |
+| `breach_wash_no_room_keeps_catch` | `breachWashesCatch` | state only |
 | `silt_richen_and_revert` | `siltRichening` | state only |
 | `ferry_rope` | `ferryEnabled` | state only |
 | `levee_engine_fact` | `stakeLineLevee` | state only |
@@ -502,4 +1065,12 @@ Core proof: `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --l
 | `breach_cascade_order` | `breachEnabled` | state only |
 | `ferry_rope_undrafted` | `ferryRopeGuidesColonists` | state only |
 
-Totals: 215 components, 43 distinct bars claimed; extension-only bars (no core row): `canal_fire_reaches_reservoir`, `reservoir_recharge_progress_visible`, `sluice_gate_state_legible`, `spikes_read_distinct`.
+### chain `placer` (extension)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `sluice_washes_pool_from_stock` | `sluiceBoxEnabled` | state only |
+| `panning_draws_stock` | `panningEnabled` | state only |
+| `flood_refill` | - | state only |
+
+Totals: 616 components, 81 distinct bars claimed; extension-only bars (no core row): `canal_fire_reaches_reservoir`, `reservoir_recharge_progress_visible`, `sluice_gate_state_legible`, `spikes_read_distinct`, `still_water_one_surface_height`, `climbing_gear_reads_as_kit`, `deep_water_pawn_swims`, `geared_pawn_scales_built_wall`, `half_metre_water_reads_as_silt`, `pipe_meets_building_centre`, `pit_cover_unlike_bridge`, `portable_ladder_leans_on_its_wall`, `pump_hose_joins_at_side_port`, `raiders_never_shelter_in_a_cage`, `suspension_bridge_reads_hung`, `wall_ladder_rides_on_rails`.

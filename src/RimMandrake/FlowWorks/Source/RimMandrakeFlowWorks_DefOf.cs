@@ -69,6 +69,10 @@ namespace RimMandrake.FlowWorks
 		public static DesignationDef RM_OperateLadder;
 		public static JobDef RM_OperateLadderJob;
 
+		/// <summary>SLUICE_GATE_REBUILD_LIFTS_UP_NOT_SIDEWAYS: the order to lift or lower a sluice gate, and the job that does it.</summary>
+		public static DesignationDef RM_OperateGate;
+		public static JobDef RM_OperateGateJob;
+
 		/// <summary>PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS: the carriable ladder, and the climbing gear (apparel).</summary>
 		public static ThingDef RM_LadderPortable;
 		public static ThingDef RM_ClimbingGear;

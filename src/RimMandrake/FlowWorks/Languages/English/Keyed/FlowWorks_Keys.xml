@@ -41,6 +41,17 @@
   <RMFlow_LadderPortableTooDeep>Too deep for a portable ladder (it reaches {0}). Build the wall ladder instead.</RMFlow_LadderPortableTooDeep>
   <RMFlow_ClimbsAnyWall>Climbing gear: climbs any pit wall, slowly.</RMFlow_ClimbsAnyWall>
   <RMFlow_RescueLadderQueued>{0} is stuck in a pit and cannot climb out: a ladder job was queued at the wall.</RMFlow_RescueLadderQueued>
+  <!-- SLUICE_GATE_REBUILD_LIFTS_UP_NOT_SIDEWAYS -->
+  <RMFlow_GateLifted>Gate lifted</RMFlow_GateLifted>
+  <RMFlow_GateLowered>Gate down</RMFlow_GateLowered>
+  <RMFlow_GateToggleDesc>Lift or lower this sluice gate. Lifted, liquid runs through and anyone can walk through. Down, it holds liquid back and nobody gets through, your own people included. A colonist works it from a square beside it, on the bank above or in the canal below; nobody has to walk through it.</RMFlow_GateToggleDesc>
+  <RMFlow_GateForceOpen>Force open</RMFlow_GateForceOpen>
+  <RMFlow_GateForceClose>Force close</RMFlow_GateForceClose>
+  <RMFlow_GateForceDesc>God mode: open or close this gate now, without a colonist.</RMFlow_GateForceDesc>
+  <RMFlow_GateLiftedInspect>Gate lifted: liquid and anyone can pass.</RMFlow_GateLiftedInspect>
+  <RMFlow_GateLoweredInspect>Gate down: holds liquid back, nobody can pass.</RMFlow_GateLoweredInspect>
+  <RMFlow_GateLiftOrdered>(ordered lifted)</RMFlow_GateLiftOrdered>
+  <RMFlow_GateLowerOrdered>(ordered down)</RMFlow_GateLowerOrdered>
   <RMFlow_ClimbOverWall>Climb over {0}</RMFlow_ClimbOverWall>
   <RMFlow_ClimbOverWallRoofed>roofed (the wall and both sides must be open to the sky)</RMFlow_ClimbOverWallRoofed>
   <RMFlow_ClimbOverWallNoWay>no open side to climb from, or too thick</RMFlow_ClimbOverWallNoWay>

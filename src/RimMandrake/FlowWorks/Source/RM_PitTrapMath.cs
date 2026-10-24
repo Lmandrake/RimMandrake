@@ -381,23 +381,34 @@ namespace RimMandrake.FlowWorks
 			return Math.Max(1f, b * SpikeDamagePerBodySize * m / SpikeHits);
 		}
 
-		/// <summary>FLOWWORKS_DOOR_FAMILY_1 — does a sluice / security grate open for this pawn?
-		/// A pawn held in a superdeep pit never opens one (the pit spec's door rule) while that
-		/// setting is on; otherwise vanilla decides, except that a SLUICE (holds small creatures only)
-		/// also gives way to any non-player humanlike or anything wider than a one-wide pit holds
-		/// (requiredWidth &gt; 1, the owner's Q4 "small").</summary>
-		public static bool FlowDoorOpens(bool vanillaOpens, bool heldInPit, bool sealedFromPitRule,
-			bool isSluice, bool sluiceRule, bool playerFaction, bool humanlike, int requiredWidth)
+		/// <summary>FLOWWORKS_DOOR_FAMILY_1 — does a sluice / security grate open for a pawn walking up to it shut?
+		/// SLUICE_GATE_REBUILD_LIFTS_UP_NOT_SIDEWAYS (owner 2026-10-24: "When closed, it is not traversible. When open it
+		/// is."): a sluice never opens for anyone walking at it; it is lifted and lowered by a colonist working it from beside
+		/// it (Building_RM_FlowDoor.SetGateOpen), and while lifted every pawn passes. The grate is a door: vanilla decides,
+		/// except that a pawn held in a superdeep pit never opens one while that setting is on.</summary>
+		public static bool FlowDoorOpens(bool vanillaOpens, bool heldInPit, bool sealedFromPitRule, bool isSluice)
 		{
+			if (isSluice)
+			{
+				return false;
+			}
 			if (sealedFromPitRule && heldInPit)
 			{
 				return false;
 			}
-			if (vanillaOpens)
-			{
-				return true;
-			}
-			return isSluice && sluiceRule && !playerFaction && (humanlike || requiredWidth > 1);
+			return vanillaOpens;
+		}
+
+		/// <summary>SLUICE_GATE_REBUILD_LIFTS_UP_NOT_SIDEWAYS / GRATE_DOOR_REBUILD_LIFTS_LIKE_THE_SLUICE — where the gate's
+		/// panel draws while it opens: straight up (+z on screen, RimWorld's oblique height) by liftCells x openPct, never
+		/// sideways. Returned as (dx, dz) in cells; the frame stays put. Tools/fw_gate_lift.py solves liftCells against the
+		/// real textures (the lifted panel clears the passage and still overlaps the post tops).</summary>
+		public static void GateLiftOffset(float liftCells, float openPct, out float dx, out float dz)
+		{
+			float p = openPct < 0f ? 0f : (openPct > 1f ? 1f : openPct);
+			float l = liftCells > 0f ? liftCells : 0f;
+			dx = 0f;
+			dz = l * p;
 		}
 
 		/// <summary>FLOWWORKS_SLUICE_TWO_DOORS_1 (owner 2026-10-06): does this flow door hold liquid back? A sluice

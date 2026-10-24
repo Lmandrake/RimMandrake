@@ -58,7 +58,7 @@ FW_TOGGLES = [
     "rainFillsExcavationsEnabled", "edgeSinksEnabled",
     "superdeepCaptureEnabled", "superdeepCapturesOwnFaction",
     "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "spikesEnabled", "superdeepShootingRuleEnabled",
-    "flowDoorsSealedFromPitEnabled", "sluiceLetsBigThroughEnabled",
+    "flowDoorsSealedFromPitEnabled",
     "bottleLoopEnabled", "bottleDirtyStageEnabled", "tankLoopEnabled",
     "liquidDrillingEnabled", "typedLiquidShoresEnabled",
     "swaleEnabled", "pitExposureEnabled",
@@ -1493,6 +1493,13 @@ def _door_proof(t, method, x, z):
     return str((r or {}).get("result", "")) or "no result: %r" % (r,)
 
 
+def _door_proof_set(t, x, z, lifted):
+    """RM_FlowDoorRules.ProofSetGate: lift (True) or lower the flow door at (x, z); "DOOR RM_Sluice lifted=.. open=.."."""
+    r = t.bridge_call("jawa/static_call", type="RimMandrake.FlowWorks.RM_FlowDoorRules", method="ProofSetGate",
+                      args="current|%d,%d|%s" % (x, z, "true" if lifted else "false"))
+    return str((r or {}).get("result", "")) or "no result: %r" % (r,)
+
+
 def _verdict(txt, pid):
     """OPEN / SHUT for pawn ThingID `pid` in a ProofOpen line, else None."""
     for part in txt.split(" | ")[1:]:
@@ -1539,23 +1546,31 @@ def flow_doors(t):
     # PLAYER-owned, as a built door is: spawn_batch leaves a door factionless, and vanilla Building_Door lets anyone
     # open a factionless door -- the hare walked through (MEASURED 2026-10-06: "Hare OPEN"), which says nothing
     # about the sluice rule.
-    _stage(t, "jawa/build_batch", ops="%s:%d,%d;%s:%d,%d" % (SLUICE, sl[0], sl[1], SLUICE, lip[0], lip[1]),
-                  stuff="WoodLog", faction="player")
+    _stage(t, "jawa/build_batch", ops="%s:%d,%d" % (SLUICE, sl[0], sl[1]), stuff="WoodLog", faction="player")
+    # The pit rule is the GRATE's since SLUICE_GATE_REBUILD_LIFTS_UP_NOT_SIDEWAYS (a sluice opens for nobody walking at
+    # it, held or not). This lip grate is spawned FACTIONLESS on purpose: vanilla opens a factionless door for anyone, so
+    # the held pirate is SHUT only by the pit rule, and OPEN with the rule off.
+    _stage(t, "jawa/spawn_batch", ops="%s:%d,%d" % (GRATE, lip[0], lip[1]), stuff="Steel")
     _stage(t, "jawa/build_batch", ops="%s:%d,%d" % (GRATE, gr[0], gr[1]), stuff="Steel", faction="player")
     hum = _spawn_pawn_at(t, "Pirate", x0 + 3, z0 + 2, faction="hostile")
     muf = _spawn_pawn_at(t, "Muffalo", x0 + 1, z0 + 4, faction="none")
     hare = _spawn_pawn_at(t, "Hare", x0 + 1, z0 + 2, faction="none")
-    with t.component("sluice_holds_small_only", toggle="sluiceLetsBigThroughEnabled"):
+    # SLUICE_GATE_REBUILD_LIFTS_UP_NOT_SIDEWAYS (owner 2026-10-24: "When closed, it is not traversible"): a shut sluice
+    # opens for nobody walking at it, human, beast or hare.
+    with t.component("sluice_shut_holds_everyone"):
         txt = _door_proof(t, "ProofOpen", sl[0], sl[1])
         if t._guard():
-            _expect(_verdict(txt, hum) == "OPEN", "sluice held a hostile human: %s" % txt)
-            _expect(_verdict(txt, muf) == "OPEN", "sluice held a muffalo: %s" % txt)
-            _expect(_verdict(txt, hare) == "SHUT", "sluice let a hare through: %s" % txt)
-    with t.component("sluice_rule_off_holds", toggle="sluiceLetsBigThroughEnabled"):
-        with _setting(t, "sluiceLetsBigThroughEnabled", False):
-            txt = _door_proof(t, "ProofOpen", sl[0], sl[1])
-            if t._guard():
-                _expect(_verdict(txt, hum) == "SHUT", "rule off but the sluice still gives way: %s" % txt)
+            _expect(_verdict(txt, hum) == "SHUT", "shut sluice opened for a hostile human: %s" % txt)
+            _expect(_verdict(txt, muf) == "SHUT", "shut sluice opened for a muffalo: %s" % txt)
+            _expect(_verdict(txt, hare) == "SHUT", "shut sluice opened for a hare: %s" % txt)
+    # A colonist lifts it (the god-mode buttons and ProofSetGate share Building_RM_FlowDoor.SetGateOpen): lifted is held
+    # open, so every pawn passes; lowered again, it is shut.
+    with t.component("sluice_lifts_and_lowers"):
+        up = _door_proof_set(t, sl[0], sl[1], True)
+        down = _door_proof_set(t, sl[0], sl[1], False)
+        if t._guard():
+            _expect("lifted=True open=True" in up, "sluice did not lift: %s" % up)
+            _expect("lifted=False" in down, "sluice did not lower: %s" % down)
     with t.component("grate_holds_prisoner"):
         txt = _door_proof(t, "ProofOpen", gr[0], gr[1])
         if t._guard():
@@ -1565,12 +1580,12 @@ def flow_doors(t):
         txt = _door_proof(t, "ProofOpen", lip[0], lip[1])
         if t._guard():
             _expect(_pit_held(t, held, pit) is True, "pirate in the pit is not held")
-            _expect(_verdict(txt, held) == "SHUT", "a held pawn can open the sluice: %s" % txt)
+            _expect(_verdict(txt, held) == "SHUT", "a held pawn can open the grate: %s" % txt)
     with t.component("sealed_rule_off", toggle="flowDoorsSealedFromPitEnabled"):
         with _setting(t, "flowDoorsSealedFromPitEnabled", False):
             txt = _door_proof(t, "ProofOpen", lip[0], lip[1])
             if t._guard():
-                _expect(_verdict(txt, held) == "OPEN", "sealed rule off but the held human still cannot force the sluice: %s" % txt)
+                _expect(_verdict(txt, held) == "OPEN", "sealed rule off but the held human still cannot open the factionless grate: %s" % txt)
 
 
 @suite.chain("toggle_superdeep_shooting")
