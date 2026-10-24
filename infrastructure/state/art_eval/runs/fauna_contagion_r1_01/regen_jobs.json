@@ -1,0 +1,70 @@
+[
+ {
+  "id": "arteval_RM_Danglemaw_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Danglemaw",
+  "prompt": "A single hanging creature sprite for RimWorld, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. A mouth on a tendon: one bare muscular cord, pale reddish-pink with fine parallel fibrous muscle striations, hangs plumb and perfectly straight under its own weight, slack and still, centered on a vertical axis. The cord is one smooth, uniform-width, taut tendon running unbroken down to the jaw, with no scales, no torso, no limbs and no swellings, bulbs, knots or braided strands anywhere along its length. At the top edge of the canvas, a compact patch of dark Eyebark canopy is shown: rough, gnarled brown-grey bark with a few small leaves, cropped by the top edge, as the overhead surface the cord grows from. The cord's upper end flares into short root-like fibres that spread flat and outward and sink into the bark, bark tissue and cord tissue merging at one compact junction, so the cord is rooted directly into the canopy and reads as growing out of it. Below the junction the cord drops straight down without wrapping or coiling around any branch, and the canopy patch stays small and confined to the top edge so the hanging cord and jaw remain the dominant silhouette. The free lower end is only a jaw: a heavy, wide-open, toothed jaw dangling at the bottom of the cord, hinged where the cord meets it, with its opening hanging open and downward, and with no head behind it, no eyes, no skull shape and no neck; the creature is the cord and the jaw and nothing else, ending at the jaw with no tail tip. The subject fills the tall canvas, drawn at 1.7 x 1.7 tile size, reference: none.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_r1_01"
+ },
+ {
+  "id": "arteval_RM_Fleshsop_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Fleshsop",
+  "prompt": "A single RimWorld colony-game creature sprite, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. The Fleshsop is a wet rag of a creature, barely holding a shape: the collapsed remnant of an Unfinished that the goo forgot to take back. Its body hangs as a sodden rag of raw pink-red flesh, a half-melted, shapeless mass with no firm outline. The whole body is slumped heavily to one side and tilted off balance: one shoulder and arm sag outward and press against an implied wall beside it, which carries most of the creature's weight, while the knees buckle inward and the feet barely bear any load. The torso sags down into the hips, the limbs are half-merged into the body as thick folds, and the silhouette is lumpy, uneven and soft, with only a faint humanoid remnant of an Unfinished's form visible inside the collapsing mass: a slumped head, narrow sloped shoulders melting into the chest, and short arm-like and leg-like folds of sodden flesh hanging unevenly, the lower legs pooling into wet lumps at the feet. In every facing the torso collapses sideways toward the same side, the braced shoulder and arm reaching toward the implied support; the east and west views show this as a slumped diagonal from the braced shoulder down to the buckled knees. The front view shows a slack, sorrowful, half-formed face with dull eyes and a mouth hanging open, eyes toward the viewer. The rear view, seen from behind, shows the back with drooping lobes of flesh hanging from it, eyes hidden. The flesh carries bright wet specular highlights, and translucent goo strands run off it, dripping from the mouth and belly into small glossy pools that belong to the feet (part of the sprite, not a ground shadow). Pitiful and exhausted in mood. Reference: none; build the body from this description.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_r1_01"
+ },
+ {
+  "id": "arteval_RM_Gawpsack_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Gawpsack",
+  "prompt": "A single RimWorld creature sprite in a painterly, realistic vanilla RimWorld style, with a thin, soft, dark outline of even weight all the way around the body, on a transparent background. The gawpsack is a drifting, soft, sagging sack floating in open air at treetop height, with no water, no dome and no limbs. Its body is one continuous, thin, pale, semi-translucent membrane, narrower and slumped at the top, heavy and bulging lower down, lumpy and uneven like an overstuffed bag. The membrane stretches smoothly over the whole body like cling film over a bag of marbles. Dozens of mismatched eyes are crammed tightly inside the bag and are seen through the skin: soft glossy highlights run across the membrane surface, fine pale veins cross it, and the membrane bulges gently outward over each eyeball. The mismatched iris colours show muted and slightly hazed beneath the film, and the eyes read as contents of the bag, loose and packed together, with smooth membrane between and over them. The eyes differ in shape, size and colour: round eyes, slit-pupilled goat-like eyes, elongated eyes including a few gold ones, and a few with several pupils, in varied iris colours. Every eye, including the elongated gold ones, has its upper and lower lids parted wide, with a broad band of white sclera visible around the iris, so each eye reads as fully open. Every iris and pupil is rolled clearly to the top of the eyeball, gazing up toward the sky, with a crescent of pale lower sclera showing beneath each iris.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_r1_01"
+ },
+ {
+  "id": "arteval_RM_Gnashling_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Gnashling",
+  "prompt": "A single RimWorld creature sprite sheet entry, painterly vanilla RimWorld style, realistic, clean medium-weight dark outline, transparent background. The gnashling is a fist of teeth with legs: a compact, rounded, clenched lump, fist-sized, that is one oversized mouth packed with rows of sharp bone-white teeth. The mouth-mass is the whole creature: upper and lower jaws, gums and teeth form the entire outline, with no separate torso, trunk or rump behind them. In side view the gaping toothed mouth spans nearly the whole length of the profile, a compact ball of jaw and teeth, and the back of the mouth-mass curves straight down into the hind legs, closing behind the jaws in only a shallow rear curve. Four small stubby legs sprout directly from beneath the mouth-mass, so the creature stands on land on four legs, the body sitting low on top of them. The eyes are set into the mouth-mass above the tooth rows. The outline is one smooth rounded shape as wide as it is tall, tailless, finless and gill-free. The front view shows the open toothy mouth facing the viewer with eyes toward the viewer; the rear view shows the curved back of the jaw-mass with the legs below and the eyes hidden. The palette is muted flesh with bone-white teeth, the outline weight is consistent all round, and the creature is built from this description alone, with reference: none.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_r1_01"
+ }
+]

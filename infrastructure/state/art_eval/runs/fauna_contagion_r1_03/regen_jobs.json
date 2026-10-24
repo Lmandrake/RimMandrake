@@ -1,0 +1,53 @@
+[
+ {
+  "id": "arteval_RM_Peeper_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Peeper",
+  "prompt": "A RimWorld creature sprite sheet of the peeper, a once-predator gone soft and eye-studded, a docile browser of the goo margins, shown in south (front view, eyes toward the viewer), east (side profile) and north (rear view, seen from behind) facings at one shared body scale. Body: a slack, rounded former predator with a feline/canid-derived frame, a longer neck, and a narrow wolf-like muzzle gone flabby; heavy loose hide sags over the once-lean frame into a rounded soft belly, with a relaxed posture and sturdy relaxed legs ending in padded paws with short, dulled, rounded claws. Worn, blunt fang tips show past the lips on the front and side views. The hide is visibly studded with open eyes across the whole body, so the eye-covered skin is the first thing seen on every view: eyes of varied sizes open in a row along the spine looking straight up at the sky, scattered across both flanks and the haunches, and set on the upper legs, as well as a few on the head; they are visible on the front, side and rear views. The side profile stands at the same body height as the front and rear views, the back line reaching the same top edge on all three. Transparent background, painterly vanilla RimWorld style, realistic, clean dark outline. reference: none.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: DEPARTURE_MISSING, STYLE_EARTHLY, DESC_MISS, DEPARTURE_MISSING, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_r1_03"
+ },
+ {
+  "id": "arteval_RM_Scaldhide_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Scaldhide",
+  "prompt": "A single RimWorld creature sprite, the scaldhide, on a transparent background, in painterly vanilla RimWorld style, realistic, with a clean dark outline. The scaldhide is a low, wide, flat armoured slab of scar tissue carried close to the ground on four short, thick, heavy, sinewy legs: it walks out into the killing light and eats what it finds already cooked. The slab is one distinct flattened mass resting on top of the legs and makes up most of the silhouette's height, with the legs stubby and compact and the dark underside just above the ground. The top of the slab is covered in thick, hard armour plates of clearly different sizes and shapes, fused together at crooked, misaligned, asymmetric seams, with seared keloid tissue filling the joins. Each plate has a puckered, seared, glossy keloid-scar surface with cracked char and blistered edges, and raw red tissue shows in the crooked seams; the plates read as rigid slab armour. The upper contour is shallow and nearly flat in every facing: seen from the front or from behind the body is a wide, flat-topped slab with a nearly level top edge and blunt squared flanks. The south view shows the front end of the slab, with a low, blunt, scarred feeding mouth or snout set under the leading edge facing the viewer and small dull eyes; the north view shows the plain rear edge of the slab with back plates and haunch legs, mouth and eyes hidden. The side view shows the long flat slab in profile on its short thick legs, snout at the leading end. The silhouette is alien, a flat uneven scar-plated slab on short legs, so no Earth animal comes to mind. Palette: scorched red-pink, pale scar-white, char brown and near-black seams. Reference: none; build the body from this description.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: DESC_MISS, DEPARTURE_MISSING, DEPARTURE_MISSING, F_SOUTH_NOT_FRONT, DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_r1_03"
+ },
+ {
+  "id": "arteval_RM_Sparkleech_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Sparkleech",
+  "prompt": "A small flying creature for RimWorld, painterly vanilla RimWorld style, realistic, clean thin dark outline, transparent background. The creature is a single flat, ragged flap of wet membrane: the body and the wings are the same sheet of tissue, one continuous surface from edge to edge. The sheet has four distinct lobes in an X-shaped outline, two upper lobes and two lower lobes spreading out from a central point, each lobe with an irregular scalloped edge; this four-lobed X silhouette is identical in every view. A round socket-mouth, a fleshy ring with a dark central opening, is set into the centre of the sheet where the four lobes meet and is the main head feature; the tissue around it puckers toward the ring. In the front view the socket-mouth faces the viewer. In the rear view, seen from behind, the same four lobes appear in the same X arrangement, both upper lobes and both lower lobes clearly visible, and the back of the socket-mouth tube shows as a small rounded fleshy nub in the centre, with the mouth opening hidden. The membrane is smooth, slick and wet, a pale fleshy grey-pink with a continuous unbroken glistening surface and bright specular highlights along its soft folds and ripples. Scattered, discrete glowing points like stolen ocular lights sit embedded in the membrane, each a small bright spot of pale cyan-white with a soft glow, spaced apart across all four lobes, with the same count and placement in front and rear views. The thin dark outline is of identical weight and value throughout, and the palette, membrane texture and light placement style are consistent across the whole creature and across all facings.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_r1_03"
+ }
+]

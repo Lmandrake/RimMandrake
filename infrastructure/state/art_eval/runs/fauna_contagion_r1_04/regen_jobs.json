@@ -1,0 +1,19 @@
+[
+ {
+  "id": "arteval_RM_SparkleechGrub_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_SparkleechGrub",
+  "prompt": "A single wingless sparkleech grub feeding at the base of an ocular tree, drawn as a RimWorld creature sprite in the painterly vanilla RimWorld style: realistic, clean dark outline, transparent background. The grub is a pale, soft-bodied, segmented larva. Its body is long and low, belly flat to the ground, with a shallow, gently rounded back no taller than about a third of its width, and short legs splayed sideways close to the ground. It lies stretched out along the ground in a straight, extended line, uncurled. The head ends in a large, round, socket-like mouth that dominates the face, a ringed sucking socket with a flared rim, entirely unlike a beetle larva's chewing jaws. The head is lowered to ground level and the socket mouth is sealed tight around a thick root, the flared rim pressed flush against the bark with no gap, and the front body segments are slightly drawn back as the grub draws sap. The root belongs to an ocular tree: a short, twisted mass of pale-brown roots running along the ground under and ahead of the grub, with several round, lidded eyeballs bulging from the bark, each with a wet iris and dark pupil, clearly recognizable as eyes. Along the grub's back, the dark segment patches each hold a few small, bright, stolen eye-like glints, echoing the eyes on the roots. The grub and the root mass are the only elements in the frame, on a transparent background with no soil or scenery. In the rear view, seen from behind, the grub's back, tail and haunches face the viewer with the head hidden, and the eyed root mass is still visible beyond it.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_r1_04"
+ }
+]
