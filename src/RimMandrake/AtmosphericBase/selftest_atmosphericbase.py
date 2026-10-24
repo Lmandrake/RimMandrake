@@ -255,7 +255,7 @@ def main():
     mutate(CO, "if (set.tremor && lead != null)", "if (lead != null)", "tremor switch ignored", "[gate]")
     mutate(CO, "bool[] got = RM_TerritoryShapes.Allocate(", "bool[] got = RM_TerritoryShapes.Lead0(", "territory not allocated", "[gate]")
     mutate("Kernel/RM_TerritoryShapes.cs", "return RM_TerritoryKernel.Allocate(", "return RM_TerritoryKernel.Lead0(", "tide loses its wedge fallback", "[gate]")
-    mutate(CO, "int w = Show(comp, t, tremorMoods[tr.Key].scheme, tr.Value);", "int w = Show(comp, t, lead.scheme, tr.Value);", "tremor in the leader's palette", "[wiring]")
+    mutate(CO, "int w = Show(comp, t, tremorMoods[tr.Key].scheme, GodIdx(comp, tremorMoods[tr.Key].scheme, tr.Value));", "int w = Show(comp, t, lead.scheme, GodIdx(comp, lead.scheme, tr.Value));", "tremor in the leader's palette", "[wiring]")
     mutate(CO, "RM_TremorTuning tu = set.TremorTuning;", "var tu = new RM_Tremor_T { cap = 9 };", "tremor tuning bypassed", "[gate]")
     mutate("Kernel/RM_TerritoryKernel.cs", "public const int LawCap = 3;", "public const int LawCap = 5;", "L6 cap raised", "[wiring]")
     mutate("RM_AtmosphericBaseSettings.cs", "TremorTuning => RM_TremorTuning.Clamp(new RM_TremorTuning", "TremorTuning => (new RM_TremorTuning", "tremor tuning unclamped", "[wiring]")

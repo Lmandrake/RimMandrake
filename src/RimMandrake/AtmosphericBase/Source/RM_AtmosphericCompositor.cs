@@ -307,6 +307,10 @@ namespace RimMandrake.AtmosphericBase
             return set;
         }
 
+        /// <summary>T3 (c): a god's reading keeps Gentle's floor on EVERY path that shows it (owner, scar, tremor), unless the scenario set Full.</summary>
+        private static int GodIdx(RM_MapComponent_AtmosphericBase comp, RM_AtmosphericSchemeDef scheme, int idx)
+            => RM_SignatureDef.ForScheme(scheme) != null ? RM_GodGate.Apply(scheme.Data, idx, comp.godIntensity) : idx;
+
         private int Show(RM_MapComponent_AtmosphericBase comp, Thing t, RM_AtmosphericSchemeDef scheme, int idx)
         {
             int id = t.thingIDNumber;
@@ -450,7 +454,7 @@ namespace RimMandrake.AtmosphericBase
                 int room = roomOf.TryGetValue(id, out int r) ? r : -1;
                 if (tremorAt != null && tremorAt.TryGetValue(id, out KeyValuePair<int, int> tr))
                 {
-                    int w = Show(comp, t, tremorMoods[tr.Key].scheme, tr.Value);
+                    int w = Show(comp, t, tremorMoods[tr.Key].scheme, GodIdx(comp, tremorMoods[tr.Key].scheme, tr.Value));
                     n += w; tremorWrites += w;
                     continue;
                 }
@@ -488,6 +492,7 @@ namespace RimMandrake.AtmosphericBase
                             HashSet<int> pf = prevWasLead ? leadFlash : secondFlash;
                             idx = RM_SchemeKernel.PaletteIndex(pd, ref pc, time, pf != null && pf.Contains(id));
                             shown = prevWasLead ? lead.scheme : second.scheme;
+                            idx = GodIdx(comp, shown, idx);   // the previous owner may be a god: Gentle's floor holds here too
                             data = pd;
                             scarShows++;
                         }
