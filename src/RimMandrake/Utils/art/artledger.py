@@ -501,6 +501,12 @@ def canonical_mod(mod) -> str:
         raise Refused(f"mod {raw!r} resolves to {cand}, outside this clone's {sroot}") from None
     if not relp.parts or (cand.exists() and not cand.is_dir()):
         raise Refused(f"mod {raw!r} is not a mod folder under {sroot}")
+    # an existing MOD folder only: it ships Textures/ or has About/About.xml. A typo'd 'src/RimMandrake/FlowWork', a
+    # bare tier 'RimStarWars' or a subfolder 'src/X/Mod/Defs' used to pass and get a new <it>/Textures/ tree that no
+    # deploy reads — art and its owner keep recorded at a dead slot (review 2026-10-24)
+    if not ((cand / "Textures").is_dir() or (cand / "About" / "About.xml").is_file()):
+        raise Refused(f"mod {raw!r} resolves to {cand}, which is not a mod folder (no Textures/ and no "
+                      f"About/About.xml) — give an existing src/<Tier>/<Mod>")
     return f"{sroot.name}/{relp.as_posix()}"
 
 

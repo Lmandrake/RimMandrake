@@ -80,6 +80,14 @@ def test_b(tmp):
     check(L.canonical_mod("FlowWorks") == "src/RimMandrake/FlowWorks", "a bare name with no alias resolves by folder")
     check(refused(L.canonical_mod, "NoSuchMod") is not None, "an unknown mod is refused (it used to land at <repo>/<mod>/)")
     check(refused(L.canonical_mod, "src/../../etc") is not None, "traversal out of src/ is refused")
+    (tmp / "src" / "RimStarWars" / "SWBestiary" / "Defs").mkdir(exist_ok=True)
+    (tmp / "src" / "RimMandrake" / "NewMod" / "About").mkdir(parents=True)
+    (tmp / "src" / "RimMandrake" / "NewMod" / "About" / "About.xml").write_text("<ModMetaData/>")
+    check(refused(L.canonical_mod, "src/RimMandrake/FlowWork") is not None, "a typo'd, nonexistent mod path is refused")
+    check(refused(L.canonical_mod, "RimStarWars") is not None, "a bare tier is not a mod")
+    check(refused(L.canonical_mod, canon + "/Defs") is not None, "a subfolder of a mod is not a mod")
+    check(L.canonical_mod("src/RimMandrake/NewMod") == "src/RimMandrake/NewMod",
+          "a mod with About.xml but no Textures/ yet is accepted")
     check(refused(L.canonical_mod, "/home/mandrake/rm/bench/" + canon) is not None
           or not Path("/home/mandrake/rm/bench").exists(),
           "another clone's absolute path is refused at write")
