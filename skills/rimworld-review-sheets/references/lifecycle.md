@@ -47,8 +47,10 @@ setsid python3 ../../src/RimMandrake/Utils/art/serve_gated.py --no-open --sheet 
     --decisions X_sheet_D.decisions.json > X_sheet_D.serve.log 2>&1 < /dev/null &
 ```
 
-- RimPulse lists sheets ONLY from `Transient/biome_ffar/*.serve.log` (the last URL that answers 200). Output sent
-  anywhere else makes the sheet invisible to it; a dead server's log keeps the sheet listed until stopped.
+- RimPulse lists sheets ONLY from a `<sheet>.serve.log` beside the sheet in `Transient/` or one subfolder down
+  (`pulse_core.SHEETS_DIRS`; the last URL that answers 200). Output sent anywhere else makes the sheet invisible to
+  it; a dead server's log keeps the sheet listed until stopped. Art sheets live in `Transient/biome_ffar/`; a
+  non-art sheet is REFUSED there (`nonart_sheet.py`), so serve it from `Transient/` itself.
 - Start servers one at a time: eight at once raced the WSL loopback relay and four tabs showed "Network error".
 - `refresh_sheets.py` restarts a dead server itself (same log), so an already-served sheet needs nothing.
 - Non-art sheets take the same launcher; it routes them through `nonart_sheet.py check`, which refuses one whose
