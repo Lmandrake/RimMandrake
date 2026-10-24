@@ -66,6 +66,12 @@ namespace RimMandrake.FlowWorks.Machinery
         /// so the elbow would be a second, dead-end run under see-through art.</summary>
         public static bool CornerStubWanted(bool pipeBesideX, bool pipeBesideZ) => !pipeBesideX && !pipeBesideZ;
 
+        /// <summary>SCRAPPER_PIPE_REDRAW_ASKED_TWICE_NOW (owner live 2026-10-23, "bad art alignment"): a fixture built ON a pipe
+        /// (<paramref name="onPipeFixture"/>, PlaceWorker_RM_OnPipe: a sprinkler head) with the pipe still on its cell
+        /// (<paramref name="pipeOnItsCell"/>) is part of the run, so the pipes beside it draw no end flange toward it (measured:
+        /// those flanges were the dark bands across a run either side of every head) and the pipe under it is not hidden.</summary>
+        public static bool JoinsAsPartner(bool onPipeFixture, bool pipeOnItsCell) => !(onPipeFixture && pipeOnItsCell);
+
         /// <summary>
         /// Two footprints (min corner and size, cells) that share an edge (touch cardinally along at least one cell): the
         /// midpoint of the shared segment (world cell units) and the side (unit, from a toward b). False when they overlap,

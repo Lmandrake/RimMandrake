@@ -48,7 +48,8 @@ namespace RimMandrake.FlowWorks.Machinery
             return m;
         }
 
-        /// <summary>A tank or liquid machine (never a pipe) a pipe joins, standing on cell c; null when none.</summary>
+        /// <summary>A tank or liquid machine (never a pipe) a pipe joins, standing on cell c; null when none. A fixture standing ON
+        /// a pipe (a sprinkler head) is part of the run, not a partner (LiquidJoinRule.JoinsAsPartner).</summary>
         public static Thing PartnerAt(IntVec3 c, Map map)
         {
             if (map == null || !c.InBounds(map)) return null;
@@ -56,10 +57,16 @@ namespace RimMandrake.FlowWorks.Machinery
             for (int i = 0; i < l.Count; i++)
             {
                 RM_NetRole r = RM_LiquidNet.RoleOfKind(l[i]);
-                if (r == RM_NetRole.Tank || r == RM_NetRole.Machine) return l[i];
+                if (r != RM_NetRole.Tank && r != RM_NetRole.Machine) continue;
+                if (!LiquidJoinRule.JoinsAsPartner(IsOnPipeFixture(l[i]), RM_LiquidNet.HasPipe(c, map))) continue;
+                return l[i];
             }
             return null;
         }
+
+        /// <summary>A thing built on a universal pipe (its def carries PlaceWorker_RM_OnPipe: the sprinkler heads).</summary>
+        public static bool IsOnPipeFixture(Thing t) =>
+            t?.def?.placeWorkers != null && t.def.placeWorkers.Contains(typeof(Sprinklers.PlaceWorker_RM_OnPipe));
 
         /// <summary>PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID: true when the pipe on <paramref name="c"/> meets <paramref name="b"/> (the
         /// partner on c + d) as a riser onto the drawn flange: a 2x2 universal tank on the pipe's west or east (the one tank whose

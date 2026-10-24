@@ -33,6 +33,17 @@ namespace RimMandrake.FlowWorks.SelfTest
                 try { LiquidJoinRule.Flange(1, 1, out _, out _, out _); } catch (ArgumentException) { threw = true; }
                 Assert(threw, "can-fail: a diagonal flange is refused");
             });
+            Case("LiquidJoin_on_pipe_fixture_is_not_a_partner", () =>
+            {
+                // SCRAPPER_PIPE_REDRAW_ASKED_TWICE_NOW: a sprinkler head on a pipe is part of the run (no flange band beside it)
+                Assert(!LiquidJoinRule.JoinsAsPartner(true, true), "a head standing on its pipe is not a join partner");
+                Assert(LiquidJoinRule.JoinsAsPartner(true, false), "can-fail: a head whose pipe is gone still reads as a partner");
+                Assert(LiquidJoinRule.JoinsAsPartner(false, true) && LiquidJoinRule.JoinsAsPartner(false, false),
+                    "a tank or machine is a partner whether or not a pipe runs under it");
+                string joins = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Machinery", "RM_LiquidJoins.cs"));
+                Assert(joins.Contains("LiquidJoinRule.JoinsAsPartner(IsOnPipeFixture(l[i]), RM_LiquidNet.HasPipe(c, map))")
+                       && joins.Contains("typeof(Sprinklers.PlaceWorker_RM_OnPipe)"), "PartnerAt applies the rule to on-pipe fixtures");
+            });
             Case("LiquidJoin_shared_edge", () =>
             {
                 // pump 1x1 at (5,5), 2x2 tank east of it at (6,5): shared edge x=6, z 5..6, side east
