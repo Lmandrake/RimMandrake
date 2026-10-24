@@ -1201,7 +1201,11 @@ DRAWBRIDGE_CASES = [
     "Drawbridge_Looks_wired_at_the_draw_sites",
     "Drawbridge_raised_leaf_draws_without_its_winch",
     "Drawbridge_Cables_lowered_reach_deck_raised_slack_vs_art", "Drawbridge_Cables_canfail_old_stop_short_and_moved_attach",
-    "Drawbridge_Cables_raised_leaf_edge_crops_the_stiff_rope", "Drawbridge_Cables_call_sites"]
+    "Drawbridge_Cables_raised_leaf_edge_crops_the_stiff_rope", "Drawbridge_Cables_call_sites",
+    "Drawbridge_Cables_ropes_for_unmeasured_print_is_null_not_throw", "Drawbridge_Cables_slack_coil_lies_flat_canfail_old_hook",
+    "Drawbridge_BaseAnchors_upright_multi_per_facing", "Drawbridge_StyledHeavyAnchors_upright_per_facing",
+    "Drawbridge_hose_cut_by_a_raised_leaf_carries_no_liquid",
+    "Drawbridge_raid_plank_between_sunken_banks_lies_at_their_depth"]
 DRAWBRIDGE_LIVE = [
     ("RAISE_PATH", None, "a colonist holding a path over a lowered steel leaf; raised: the production path no longer crosses "
      "it, ToggleCount and RepathCount rise within 10 ticks"),
@@ -1284,11 +1288,12 @@ LINES_CASES = [
     # owner cards 2026-10-22: REEL_OUTLET_DECIDE_ALWAYS_GOES_WEST, PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID, HOSE_GIRTH_TUNE_MUCH_THINNER
     "ReelFacing_outlet_nozzle_and_picture_turn_with_the_reel", "ReelFacing_target_on_the_outlet_side_lays_with_no_U_loop",
     "ReelFacing_relay_inlet_turns_with_the_relay", "ReelFacing_def_rotatable_west_default_preview_and_legacy_saves",
-    "PipeTankRiser_ends_on_the_hose_flange_not_under_the_skid", "PipeTankRiser_wiring_link_stops_layer_prints_flange_follows",
+    "PipeTankRiser_bends_onto_the_port_no_cap_no_collar", "PipeTankRiser_wiring_link_stops_layer_prints_flange_follows",
     "HoseShadow_empty_is_darker_and_wider_full_unchanged",
     # owner cards 2026-10-22: PIT_COVER_WIDEN_PLANKS_BEAR_BOOTS, DRILL_PLACEMENT_ENFORCE_NO_DRY_HOLES
     "CoverFloor_planked_squares_are_ground_open_squares_the_pit", "CoverFloor_laying_or_lifting_a_lid_invalidates_path_and_reach",
-    "DrillSurvey_empty_survey_refuses_unsurveyed_allows", "DrillSurvey_placeworker_wired_on_drill_and_bleed_well"]
+    "DrillSurvey_empty_survey_refuses_unsurveyed_allows", "DrillSurvey_placeworker_wired_on_drill_and_bleed_well",
+    "DrillWhyNot_each_condition_names_its_reason"]
 LINES_LIVE = [
     ("ROPE_DECK_RIGID_REFUSED_FLEX_OK", None, "on a rope deck square the placement gate refuses a pipe and a conduit and accepts "
      "a power cord; a hose to the far bank is laid over >= 3 deck squares"),

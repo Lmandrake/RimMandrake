@@ -34,6 +34,7 @@ Conventions (unchanged from the suite they came from):
   * Each chain builds its own plot with `_plot()` at a fixed offset from the suite anchor.
 """
 import os
+import re
 import time
 from contextlib import contextmanager
 
@@ -256,6 +257,32 @@ def _state(t, cells):
     return out
 
 
+LPROOF = "RimMandrake.FlowWorks.Machinery.RM_LineProofs"   # ProofPitWater: exact dug water per rect, decilitres
+UNITS_PER_LEVEL = 10000                                     # RM_Volume.UnitsPerLevel: decilitres in one notch of one square
+
+
+def _water(t, cells):
+    """Exact water per cell in LEVELS (float), via RM_LineProofs.ProofPitWater (RM_MapComponent_Excavation.WaterDlAt).
+    The engine stores decilitres (WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES); excavation_report's integer `fill` floors a
+    cell holding 0.74 of a notch to 0, so every wet-front bar that read F>=1 called a filling channel dry (2026-10-24 live,
+    plot C: the front crept 1 cell/pulse, terrain RM_WaterThin, the source paid 7.2 levels, F stayed 0000000000).
+    Offline: zeros. A reply that is not a PITWATER reading is UNMEASURED, never dry."""
+    if not t._guard():
+        return [0.0] * len(cells)
+    out = []
+    for x, z in cells:
+        r = t.bridge_call("jawa/static_call", type=LPROOF, method="ProofPitWater", args="%d,%d,1,1" % (x, z))
+        m = re.match(r"PITWATER dl=(-?\d+)", str((r or {}).get("result", "")))
+        if not m:
+            raise ExpectationFailed("UNMEASURED: ProofPitWater(%d,%d) gave no reading: %r" % (x, z, r))
+        out.append(int(m.group(1)) / float(UNITS_PER_LEVEL))
+    return out
+
+
+def _fmt_levels(ws):
+    return "[" + ",".join("%.2f" % w for w in ws) + "]"
+
+
 def _expect_state(t, cells, depth=None, fill=None, what="run"):
     if not t._guard():
         return
@@ -273,19 +300,20 @@ def _wait(t, ticks):
 
 
 def _settle(t, cells, budget_pulses=20):
-    """Step pulse by pulse until the F vector is unchanged across 3 consecutive pulses.
+    """Step pulse by pulse until the exact-water vector (levels, to 0.01) is unchanged across 3 consecutive pulses
+    (the integer F vector read all-zero for a sub-notch channel and "settled" while the front was still creeping).
     Budget exhausted is FAIL (NOT_SETTLED), never a pass."""
     if not t._guard():
         return
     prev, still = None, 0
     for _ in range(budget_pulses):
         _wait(t, PULSE)
-        now = [f for _, f in _state(t, cells)]
+        now = [round(w, 2) for w in _water(t, cells)]
         still = still + 1 if now == prev else 0
         prev = now
         if still >= 3:
             return
-    raise ExpectationFailed("NOT_SETTLED: F vector still changing after %d pulses" % budget_pulses)
+    raise ExpectationFailed("NOT_SETTLED: water vector still changing after %d pulses" % budget_pulses)
 
 
 def _ring(cells):
@@ -708,23 +736,24 @@ def plot_C_limitless_canal(t):
             # accept-far-end-first bar is reverted). Kernel: creepWaterEnabled, one cell per pulse. Bar: the mouth is wet,
             # the front has not run past ~one cell per pulse (3 pulses, +1 slack for window jitter), and every level the
             # body paid is in the channel.
-            fs = [f or 0 for _, f in _state(t, cells)]
-            wet = (fs[0] if fs else 0) >= 1
-            _expect_source_fed(t, e0, stock0, (x0 + 9, z), wet, "mouth cell F<1 after 3 pulses from a stocked source")
-            far = max([i for i, f in enumerate(fs) if f >= 1], default=-1)
+            # wetness is exact water > 0 (_water), not F>=1: a D=1 cell levelled with the source holds < 1 notch
+            ws = _water(t, cells)
+            wet = (ws[0] if ws else 0) > 0
+            _expect_source_fed(t, e0, stock0, (x0 + 9, z), wet, "mouth cell holds no water after 3 pulses from a stocked source")
+            far = max([i for i, w in enumerate(ws) if w > 0], default=-1)
             _expect(far <= 3, "wet front ran %d cells from the mouth in 3 pulses (cap 3 + 1 slack): far end wetted first? %s"
-                    % (far, fs))
+                    % (far, _fmt_levels(ws)))
             stock1 = _body_stock(t, x0 + 9, z)
             if stock0 is not None and stock1 is not None:
                 # the body pays 1 unit per level (water); refill after the first debit adds a fraction (< 1 in 3 pulses)
-                _expect(abs((stock0 - stock1) - sum(fs)) < 1.0,
-                        "source paid %.3f but the channel holds %d levels %s: a debit that landed nowhere"
-                        % (stock0 - stock1, sum(fs), fs))
+                _expect(abs((stock0 - stock1) - sum(ws)) < 1.0,
+                        "source paid %.3f but the channel holds %.3f levels %s: a debit that landed nowhere"
+                        % (stock0 - stock1, sum(ws), _fmt_levels(ws)))
     with t.component("canal_fill_spreads", shows=["canal_fill_spreads_along_itself"]):
         _settle(t, cells, budget_pulses=20)
         if t._guard():
-            fs = [f for _, f in _state(t, cells)]
-            _expect(all((f or 0) >= 1 for f in fs), "channel has a dry gap or dry cell after settle: %s" % fs)
+            ws = _water(t, cells)
+            _expect(all(w > 0 for w in ws), "channel has a dry gap or dry cell after settle: %s" % _fmt_levels(ws))
         _frame(t, *shot_rect)
     with t.component("canal_holds_only_channel",
                      shows=["canal_holds_only_the_channel", "never_liquid_on_open_ground"]):
@@ -748,7 +777,7 @@ def _expect_tar_lag(t, cells):
     non-empty: a channel that took no liquid at all (wet 0) used to PASS as "viscosity lag"."""
     if not t._guard():
         return
-    wet = sum(1 for _, f in _state(t, cells) if (f or 0) >= 1)
+    wet = sum(1 for w in _water(t, cells) if w > 0)
     _expect(wet >= 1, "tar channel took no liquid at all: no front to compare (%d/%d wet)" % (wet, len(cells)))
     _expect(wet < len(cells), "tar wet front reached all %d cells: no viscosity lag" % len(cells))
 
@@ -771,7 +800,7 @@ def _plot_C2_body(t, x0, z0):
         p3 = _frame(t, x0, z0 + 2, 22, 10, "T_pulse3")
         _diptych(t, p1, p3, "T_tar_front")
         if t._guard():
-            wet = any((f or 0) >= 1 for _, f in _state(t, cells))
+            wet = any(w > 0 for w in _water(t, cells))
             _expect_source_fed(t, e0, stock0, (x0 + 9, z0 + 6), wet,
                                "tar channel took no liquid in one full viscosity stride")
         _expect_tar_lag(t, cells)
@@ -836,8 +865,8 @@ def _plot_D_body(t, x0, z0):
         _dig_run(t, cells, 3)
         _settle(t, cells, budget_pulses=40)
         if t._guard():
-            fs = [f for _, f in _state(t, cells)]
-            _expect(any((f or 0) > 0 for f in fs), "channel never took liquid from the pond: %s" % fs)
+            ws = _water(t, cells)
+            _expect(any(w > 0 for w in ws), "channel never took liquid from the pond: %s" % _fmt_levels(ws))
         after = _frame(t, *shot, name="D_after")
         _diptych(t, box.get("before"), after, "D_pond_draw")
     with t.component("pond_shoreline_recedes", toggle="recessionEnabled",
@@ -858,12 +887,12 @@ def _plot_D_body(t, x0, z0):
                 # the draw leaves a drawn-down pond at a fraction, never exactly 0
                 if st0 >= 1.0:
                     raise ExpectationFailed("UNMEASURED: the pond is not empty after the draw (stock %.2f)" % st0)
-                f0 = sum(f or 0 for _, f in _state(t, cells))
+                f0 = sum(_water(t, cells))
             _wait(t, 10 * PULSE)
             if t._guard():
-                f1 = sum(f or 0 for _, f in _state(t, cells))
+                f1 = sum(_water(t, cells))
                 st1 = _pond_stock(t, px, pz)
-                _expect(f1 <= f0 and st1 < 1.0, "the channel still gained liquid from an empty pond: F total %d -> %d, "
+                _expect(f1 <= f0 + 1e-3 and st1 < 1.0, "the channel still gained liquid from an empty pond: water total %.3f -> %.3f, "
                         "stock %.2f -> %.2f" % (f0, f1, st0, st1))
             _frame(t, *shot)
     with t.component("pond_recharge_visible", toggle="refillEnabled",
@@ -874,14 +903,14 @@ def _plot_D_body(t, x0, z0):
         # frames stay for the look; under budget 0.2 a restored shore cell needs stock >= 2, so the picture may
         # legitimately show little -- the judge reads the frame, this reads the liquid.
         if t._guard():
-            a = _pond_stock(t, px, pz) + sum(f or 0 for _, f in _state(t, cells))
+            a = _pond_stock(t, px, pz) + sum(_water(t, cells))
         s0 = _frame(t, *shot, name="D_recharge0")
         _wait(t, 20 * PULSE)
         s1 = _frame(t, *shot, name="D_recharge1")
         _diptych(t, s0, s1, "D_recharge")
         if t._guard():
-            b = _pond_stock(t, px, pz) + sum(f or 0 for _, f in _state(t, cells))
-            _expect(b > a, "the drained pond did not recharge with refill ON (stock + channel F %.3f -> %.3f)" % (a, b))
+            b = _pond_stock(t, px, pz) + sum(_water(t, cells))
+            _expect(b > a, "the drained pond did not recharge with refill ON (stock + channel water %.3f -> %.3f)" % (a, b))
 
 
 @suite.chain("plot_E_fire")
@@ -939,9 +968,13 @@ def _plot_F_body(t, x0, z0):
             _expect_state(t, cells, fill=3, what="slime run")
             _frame(t, x0 + 6, z0 + 6, 6, 1)
         with t.component("slime_occupant_look", shows=["slime_occupant_below_surface"]):
-            pid = _spawn_pawn_at(t, "Colonist", cells[0][0] - 2, cells[0][1])
+            # SET DOWN in the middle cell, never walked in: a D=3 run off D=0 ground is a 1.5 m drop with no ladder, and the
+            # pit path veto (RM_SuperdeepTrap.RelativeVeto; falls are forced only, FLOWWORKS_PIT_FALL_ONLY_FORCED_1) keeps a
+            # walker out -- 2026-10-24 live the colonist ordered in from (x-2) stood at its spawn cell for 300 ticks. The bar
+            # is the occupant's look in slime, not the walk (plot_H sets its deep-pad colonists down the same way).
             mid = cells[len(cells) // 2]
-            _march(t, pid, mid[0], mid[1], 300)
+            pid = _spawn_pawn_at(t, "Colonist", mid[0], mid[1])
+            t.wait_ticks(120)
             if t._guard():
                 px, pz = _pawn_xz(t, pid)
                 _expect((px, pz) in cells, "colonist is not inside the slime run: at %s,%s" % (px, pz))
@@ -1267,7 +1300,11 @@ def all_off_still_digs(t):
     switches (rivers, machinery, hose, thirst, trench cover, pit access, looks ...) ON during the "all off" check."""
     import contextlib
     x0, z0 = _prep_plot(t, "T")
-    px, pz = _limited_pond(t, "T")
+    # dz=11, not the default 4: plot T is also plot_C2's, whose tar strip (rows z0+4..z0+9) stays a classified body for the
+    # life of the map (ruling 16), and the default pond sat ON that strip with the dug cell (px+5, pz+2) inside it. Moving
+    # clear of it did NOT clear the F=1 reading: on a fresh reload with no C2 run the dug cell still filled a full level
+    # (ALL_OFF_DIG_DIAGNOSE_POND_STILL_FLOWS), so that F=1 is the engine's, not C2's body.
+    px, pz = _limited_pond(t, "T", dz=11)
     cells = _channel_from(px + 5, pz + 2, 4)
     with contextlib.ExitStack() as stack:
         for cls, f, off in REG.all_off():
@@ -1887,11 +1924,23 @@ UNITS_PER_LITRE = 10                      # RM_Volume.UnitsPerLitre: the tank un
 UNITS_PER_LEVEL = 1000 * UNITS_PER_LITRE  # RM_Volume.LitresPerLevel x UnitsPerLitre (a channel level = 1 kL = 10,000 units)
 
 
-def _tank_units(t, x, z):
-    """Tank units (decilitres) held by the RM_LiquidTank at (x,z), read from its inspect line ("Holding: <liquid> (a / b)",
-    a and b in litres via RM_Volume.FormatLitres: "15 L", "12.5 kL"; Languages/English/Keyed/LiquidTank_Keys.xml); 0 for
-    "Empty"; None when no tank answers. LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS: the word "units" is gone from the line."""
+def _tank_units(t, x, z, mode=None):
+    """Tank units (decilitres) held by the RM_LiquidTank at (x,z); None when no tank answers.
+
+    With `mode` (the mode the tank was staged to) the read is EXACT: RM_NorthstarProofs.ProofTank "x,z;mode" re-sets the
+    same mode (idempotent) and answers "TANK ... units=<storedUnits>". Use it whenever the change being watched is
+    smaller than the display step: RM_Volume.FormatLitres prints 0.1 kL from 1 kL up, so a 1.5 L bottle drawn from a
+    12 kL tank still reads "12 kL" (tank_loop_on FAILed on that 2026-10-24 while the bottle had filled).
+
+    Without `mode`, the inspect line ("Holding: <liquid> (a / b)", a and b via FormatLitres: "15 L", "12.5 kL";
+    Languages/English/Keyed/LiquidTank_Keys.xml); 0 for "Empty". LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS: the word
+    "units" is gone from the line."""
     import re
+    if mode is not None:
+        r = t.bridge_call("jawa/static_call", type="RimMandrake.FlowWorks.RM_NorthstarProofs", method="ProofTank",
+                          args="%d,%d;%s" % (x, z, mode))
+        m = re.match(r"TANK mode=\S+ effective=\S+ liquid=\S+ units=(\d+)", str((r or {}).get("result", "")))
+        return int(m.group(1)) if m else None
     txt = _tank_text(t, x, z)
     m = re.search(r"\((\d+(?:\.\d+)?) (kL|L) / \d+(?:\.\d+)? (?:kL|L)\)", txt)
     if m:
@@ -1929,12 +1978,13 @@ def _tank_loop_plot(t, mode, bottle_def, liquid=None, units=None):
     return x0, z0, tank
 
 
-def _watch_tank(t, tank, ticks, done=None):
-    """Tank units every 125 ticks (changes only) up to `ticks`; stops early once done(seq) holds."""
+def _watch_tank(t, tank, ticks, done=None, mode=None):
+    """Tank units every 125 ticks (changes only) up to `ticks`; stops early once done(seq) holds. Pass the staged
+    `mode` for an exact read (see _tank_units)."""
     seq = []
     for _ in range(ticks // 125):
         t.wait_ticks(125)
-        u = _tank_units(t, *tank)
+        u = _tank_units(t, tank[0], tank[1], mode)
         if u is not None and (not seq or seq[-1] != u):
             seq.append(u)
         if done is not None and done(seq):
@@ -1962,26 +2012,26 @@ def toggle_tank_loop(t):
     with _setting(t, "bottleLoopEnabled", False):
         _, _, tank = _tank_loop_plot(t, "Store", "RM_BottleEmpty", WATER_LIQUID, TANK_STAGE_UNITS)
         with t.component("tank_loop_on", toggle="tankLoopEnabled"):
-            seq = _watch_tank(t, tank, 3000, lambda s: bool(s) and s[-1] < TANK_STAGE_UNITS)
+            seq = _watch_tank(t, tank, 3000, lambda s: bool(s) and s[-1] < TANK_STAGE_UNITS, mode="Store")
             if t._guard():
-                _expect(bool(seq), "no RM_LiquidTank answered inspect_string at %s" % (tank,))
+                _expect(bool(seq), "no RM_LiquidTank answered ProofTank at %s" % (tank,))
                 _expect(seq[-1] < TANK_STAGE_UNITS, "draw-out never ran: tank units %s never fell below the staged %d "
                                        "(WorkGiver_FillBottleFromTank)" % (seq, TANK_STAGE_UNITS))
         _, _, tank = _tank_loop_plot(t, "Fill", "RM_Bottle_FreshWater")
         with t.component("tank_loop_pour_in"):
-            seq = _watch_tank(t, tank, 3000, lambda s: bool(s) and max(s) > 0)
+            seq = _watch_tank(t, tank, 3000, lambda s: bool(s) and max(s) > 0, mode="Fill")
             if t._guard():
-                _expect(bool(seq), "no RM_LiquidTank answered inspect_string at %s" % (tank,))
+                _expect(bool(seq), "no RM_LiquidTank answered ProofTank at %s" % (tank,))
                 _expect(max(seq) > 0, "pour-in never ran: Fill-mode tank units %s (WorkGiver_EmptyBottleIntoTank)" % seq)
         with _setting(t, "tankLoopEnabled", False):
             _, _, tank = _tank_loop_plot(t, "Store", "RM_BottleEmpty", WATER_LIQUID, TANK_STAGE_UNITS)
             with t.component("tank_loop_off", toggle="tankLoopEnabled"):
-                seen = _watch_tank(t, tank, 3000)
+                seen = _watch_tank(t, tank, 3000, mode="Store")
                 _, _, tank2 = _tank_loop_plot(t, "Fill", "RM_Bottle_FreshWater")
-                seen2 = _watch_tank(t, tank2, 3000)
+                seen2 = _watch_tank(t, tank2, 3000, mode="Fill")
                 if t._guard():
                     # an unanswered tank (seen == []) is UNMEASURED, never a pass: the OFF side must READ the staged 12 kL / the empty tank
-                    _expect(bool(seen) and bool(seen2), "no RM_LiquidTank answered inspect_string (Store %s, Fill %s)" % (seen, seen2))
+                    _expect(bool(seen) and bool(seen2), "no RM_LiquidTank answered ProofTank (Store %s, Fill %s)" % (seen, seen2))
                     _expect(seen == [TANK_STAGE_UNITS], "Store tank drawn down with tankLoopEnabled OFF: units %s" % seen)
                     _expect(not any(seen2), "Fill tank took a bottle with tankLoopEnabled OFF: units %s" % seen2)
 
