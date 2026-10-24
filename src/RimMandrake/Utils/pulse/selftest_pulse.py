@@ -196,8 +196,8 @@ check("current item per seat comes from start without close",
 raw = {"sessions": sessions, "extras": extras, "memwatch": mem, "ledger": ledger, "artpipe": {}, "probe": None,
        "bridge": None}
 snap, st, ev = pc.collect_snapshot(raw, {}, NOW)
-check("rows are ordered red first", snap["rows"][0]["kind"] == "red", [r["kind"] for r in snap["rows"][:3]])
-check("strip carries red and amber pills", {"red", "amber", "amber_soft"} <= {p["kind"] for p in snap["strip"]}, snap["strip"])
+check("rows are ordered by KIND_ORDER (nothing red here: no seat died unreplaced)", [r["kind"] for r in snap["rows"]] == sorted((r["kind"] for r in snap["rows"]), key=lambda k: pc.KIND_ORDER.get(k, 9)), [r["kind"] for r in snap["rows"][:4]])
+check("strip carries the amber card pill and no finished/idle pill", "amber" in {p["kind"] for p in snap["strip"]} and "amber_soft" not in {p["kind"] for p in snap["strip"]}, snap["strip"])
 check("alarm_open events are logged for metrics", sum(1 for e in ev if e["m"] == "alarm_open") >= 3, ev)
 sessions2 = [s if s["sessionId"] != "a" else sess("a", "BENCH", "busy", 1) for s in sessions]
 snap2, st2, ev2 = pc.collect_snapshot({**raw, "sessions": sessions2}, st, NOW + 60)
@@ -237,18 +237,16 @@ check("chip_label names the phone and shortens emergency",
 
 chips = pc.build_chips(rows + [pc._row("game", "run", "GAME", "RimWorld UP", NOW), pc._row("artpipe", "idle", "ART", "artpipe", NOW)], NOW)
 lab = [c["label"] for c in chips]
-check("active chips sort left, the merged dim chip is last", chips[-1]["state"] == "dim" and chips[0]["state"] == "run", lab)
-check("idle non-seat windows merge into ONE dim chip", sum(1 for c in chips if c["state"] == "dim") == 1
-      and "hestia" in chips[-1]["label"] and "phone" in chips[-1]["label"] and "emerg" in chips[-1]["label"], chips[-1])
+check("active chips sort left; no dim idle-window chip any more", not any(c["state"] == "dim" for c in chips) and chips[0]["state"] == "run", lab)
+check("idle non-seat windows are not in his chips", not any(w in c["label"] for c in chips for w in ("hestia", "phone", "emerg")), lab)
 check("the faded foundry seat is a stale chip, sorted after the live one",
       next(c for c in chips if c["label"] == "foundry")["state"] == "stale"
       and lab.index("foundry") > lab.index("bench"), lab)
-check("rimworld and mem chips are plain; artpipe is the ART colour",
-      next(c for c in chips if c["label"] == "rimworld")["plain"] and next(c for c in chips if c["label"] == "mem")["plain"]
+check("rimworld chip is plain, there is no mem chip; artpipe is the ART colour",
+      next(c for c in chips if c["label"] == "rimworld")["plain"] and not any(c["label"] == "mem" for c in chips)
       and next(c for c in chips if c["label"] == "artpipe")["seat"] == "ART")
 red_oom = pc._row("oom:x", "red", "BENCH", "OOM", NOW, src="kernel")
-check("an unacked OOM turns the mem chip red",
-      next(c for c in pc.build_chips([red_oom], NOW) if c["label"] == "mem")["state"] == "red")
+check("an OOM does not make a mem chip", not any(c["label"] == "mem" for c in pc.build_chips([red_oom], NOW)))
 
 # rulings: newest first, titles, never a seat word in the label
 r2 = pc.classify_ledger([fi("OLDER_ASK_1", 9 * 86400 + 5), le("needs", "OLDER_ASK_1", 9 * 86400, to="owner", reason="old"),
@@ -368,6 +366,58 @@ lost, _, _ = pc.classify_sessions([sess("g", "LOST", "busy", 60, alive=False)], 
 check("a lost-window pill says the window died", "LOST window died" in pc.build_strip(lost)[0]["text"], pc.build_strip(lost))
 tel = pc.classify_telemetry({"at": NOW, "alerts": [{"id": "colony_dead", "level": "red", "text": "colony dead: no pawns", "since": NOW - 9}]}, {}, NOW)
 check("a telemetry red pill carries the alert text", "colony dead" in pc.build_strip(tel)[0]["text"], pc.build_strip(tel))
+
+# --- RIMPULSE_RED_FIX_MEANS_YOUR_VERB: red only where he has a verb and work waits ---------------------------
+TA = lambda i, lvl="red": {"at": NOW, "alerts": [{"id": i, "level": lvl, "text": i, "since": NOW - 60}]}  # noqa: E731
+for aid in ("vitals:colony_dead", "vitals:colonist_hostile", "mem_low"):
+    check(f"{aid} is silent outside his play session", pc.classify_telemetry(TA(aid), {}, NOW, owner_play=False) == [])
+    check(f"{aid} alarms in his play session", [r["kind"] for r in pc.classify_telemetry(TA(aid), {}, NOW, owner_play=True)] == ["red"])
+check("another telemetry red is not gated by the session", len(pc.classify_telemetry(TA("modal_stuck"), {}, NOW, owner_play=False)) == 1)
+check("play session = game running and bridge FREE",
+      pc.owner_play_session(True, "FREE since x") and not pc.owner_play_session(True, "HELD BENCH since x")
+      and not pc.owner_play_session(False, "FREE") and not pc.owner_play_session(True, None) and not pc.owner_play_session(None, "FREE"))
+def _snap_tel(bridge, run):
+    return pc.collect_snapshot({"telemetry": {**TA("vitals:colony_dead"), "game_running": run}, "bridge": bridge, "sessions": [], "ledger": []}, {}, NOW)[0]
+check("a BENCH test colony dying (bridge held) raises nothing in his snapshot", not any(r["src"] == "telemetry" for r in _snap_tel("HELD BENCH since x", True)["rows"]))
+check("his own colony dying (bridge free, game up) is red", [r["kind"] for r in _snap_tel("FREE since x", True)["rows"] if r["src"] == "telemetry"] == ["red"])
+ov = pc.owner_view([pc._row("oom:svc:rm-pulse", "red", "RIMPULSE", "OOM", NOW, src="kernel", incident="oom:svc:rm-pulse"),
+                    pc._row("oom:seat:BENCH", "red", "BENCH", "OOM", NOW, src="kernel", incident="oom:seat:BENCH"),
+                    pc._row("lost:a", "red", "BENCH", "lost", NOW, incident="lost:a"),
+                    pc._row("lost:b", "red", "HESTIA", "lost", NOW, incident="lost:b"),
+                    pc._row("fail:j", "red", "JOB", "job stuck", NOW, src="failures", incident="fail:j"),
+                    pc._row("tel:stale@1", "warn", "TELEMETRY", "blind", NOW, src="telemetry", incident="tel:stale@1"),
+                    pc._row("tel:x@1", "warn", "TELEMETRY", "x", NOW, src="telemetry", incident="tel:x@1"),
+                    pc._row("a", "recovered", "X", "r", NOW), pc._row("b", "failed", "X", "f", NOW), pc._row("c", "held", "X", "h", NOW),
+                    pc._row("w1", "amber_soft", "FOUNDRY", "idle", NOW - 600, seat="FOUNDRY"),
+                    pc._row("n1", "answered", "X", "ans", NOW - 60, answered={"t": NOW - 60}),
+                    pc._row("n2", "answered", "X", "ans", NOW - 3 * 86400, answered={"t": NOW - 3 * 86400})], NOW)
+ovk = {r["key"]: r for r in ov}
+check("service OOM, non-seat lost window, and job red drop to agent warn",
+      all(ovk[k]["kind"] == "warn" and ovk[k]["agent"] for k in ("oom:svc:rm-pulse", "lost:b", "fail:j")), ov)
+check("a seat OOM and a seat window lost stay red (he can reopen the seat)",
+      ovk["oom:seat:BENCH"]["kind"] == "red" and ovk["lost:a"]["kind"] == "red" and not ovk["lost:a"].get("agent"))
+check("recovered / failed / held / soft-amber / young answered are agent-only; an old answered shows",
+      all(ovk[k].get("agent") for k in ("a", "b", "c", "w1", "n1")) and not ovk["n2"].get("agent"))
+check("telemetry blind stays visible, other telemetry warns are Grafana's", not ovk["tel:stale@1"].get("agent") and ovk["tel:x@1"].get("agent"))
+vs = pc.build_strip(ov)
+check("agent rows add no pills (no recovered, no soft amber, no done, no demoted red)",
+      sorted(p["kind"] for p in vs) == ["red", "red", "warn"], vs)
+check("no done tally pill", not any(p["kind"] == "done" for p in pc.build_strip([pc._row("i", "done", "F", "x", NOW)] * 3)))
+sh = pc.collect_snapshot({"sessions": [win("s1", "AGENT FOUNDRY", "idle", 300, 9000)], "extras": {}, "ledger": [], "bridge": None}, {}, NOW)[0]
+check("finished-and-idle is a health line, not a pill or a visible row",
+      any("finished, idle" in t and "FOUNDRY" in t for t in sh["health"]) and not any(p["kind"] == "amber_soft" for p in sh["strip"])
+      and all(r.get("agent") for r in sh["rows"] if r["kind"] == "amber_soft") and sh["tally"]["amber_soft"] == 0, sh["health"])
+check("artpipe row carries no lifetime done/failed totals",
+      "done" not in pc.classify_artpipe({"ok": True, "pending": 1, "active": 0, "failed": 3, "done": 17411}, NOW, NOW)[0]["text"])
+import tempfile as _tf
+with _tf.TemporaryDirectory() as _d:
+    _root = Path(_d)
+    for sub in ("", "owner_walk", "biome_ffar"):
+        (_root / sub).mkdir(exist_ok=True)
+        (_root / sub / f"x{sub or 'top'}_sheet_1.serve.log").write_text("serving http://127.0.0.1:1/\n")
+    _got = {r["name"] for r in pc.read_sheets([_root], probe=lambda u: True, review=lambda h: (True, "ok"))}
+    check("the sheet scanner reads the root and every subfolder", _got == {"xtop", "xowner_walk", "xbiome_ffar"}, _got)
+check("SHEETS_DIRS is the Transient root of every clone", all(d.name == "Transient" for d in pc.SHEETS_DIRS) and len(pc.SHEETS_DIRS) == len(pc.CLONES))
 ask = pc.build_strip(pc.classify_sessions(sessions, extras, {}, {}, {}, NOW)[0])
 check("an amber pill keeps the seat and the question", any(p["kind"] == "amber" and "BENCH" in p["text"] and "herd size" in p["text"]
                                                         for p in ask), ask)
@@ -391,8 +441,7 @@ rc = {c["label"]: c for c in pc.build_chips(pc.classify_sessions([win("r1", "AGE
 check("a working seat chip's title says what it is doing", "X_ONE_1" in rc["foundry"]["title"] and rc["foundry"]["state"] == "run",
       rc["foundry"])
 soft = pc.build_strip(pc.classify_sessions([win("s1", "AGENT BENCH", "idle", 300, 9000)], {}, {}, {}, {}, NOW)[0])
-check("finished-and-idle keeps its strip pill, labelled finished/idle", any(p["kind"] == "amber_soft" and "finished" in p["text"]
-                                                                          for p in soft), soft)
+check("finished-and-idle has no strip pill any more", not any(p["kind"] == "amber_soft" for p in soft), soft)
 sn = pc.collect_snapshot({"sessions": [], "source_status": {"sessions": {"ok": False}}}, {}, NOW)[0]
 check("collect_snapshot passes a failed sessions source through to the chips",
       {c["state"] for c in sn["chips"] if c.get("seat") in pc.SEATS} == {"unknown"}, sn["chips"])
@@ -459,8 +508,9 @@ check("a service OOM whose unit has run cleanly since is 'recovered', not red",
       k4["oom:svc:rm-pulse.service"])
 check("a seat tool OOM with the seat window alive and active since is 'recovered'",
       k4["oom:seat:BENCH"]["kind"] == "recovered", k4["oom:seat:BENCH"])
-check("recovered incidents leave the red pills and show as one calm '↺ N recovered' pill",
-      not any(p["kind"] == "red" for p in s4["strip"]) and any(p["text"] == "↺ 2 recovered" for p in s4["strip"]), s4["strip"])
+check("recovered incidents leave the red pills and are agent-only history (no '↺ N recovered' pill either)",
+      not any(p["kind"] in ("red", "recovered") for p in s4["strip"])
+      and sum(1 for r in s4["rows"] if r["kind"] == "recovered" and r.get("agent")) == 2, s4["strip"])
 check("recovery is logged once as a metric event", sum(1 for e in ev4 if e["m"] == "incident_recovered") == 2, ev4)
 check("the incident history keeps first/last/status", st4["incidents"]["oom:svc:rm-pulse.service"]["status"] == "recovered"
       and st4["incidents"]["oom:svc:rm-pulse.service"]["last"] == KILL, st4["incidents"])
@@ -471,13 +521,13 @@ kills2 = kills + pc.parse_kernel_oom([f"{NOW-60:.6f} A kernel: memory: usage 262
 s5, st5, _ = pc.collect_snapshot({**raw4, "kernel_oom": kills2, "services": {"rm-pulse.service": {"active": True, "since": NOW - 50}}},
                                  st4, NOW)
 k5 = {r["key"]: r for r in s5["rows"]}
-check("a NEW kill after recovery re-raises red, watching for recovery",
-      k5["oom:svc:rm-pulse.service"]["kind"] == "red" and "watching for recovery" in k5["oom:svc:rm-pulse.service"]["text"]
+check("a NEW kill after recovery re-opens the incident (agent warn: the service restarts itself), watching for recovery",
+      k5["oom:svc:rm-pulse.service"]["was"] == "red" and k5["oom:svc:rm-pulse.service"]["agent"] and "watching for recovery" in k5["oom:svc:rm-pulse.service"]["text"]
       and st5["incidents"]["oom:svc:rm-pulse.service"]["status"] == "open", k5["oom:svc:rm-pulse.service"])
 s6, _, _ = pc.collect_snapshot({**raw4, "services": {"rm-pulse.service": {"active": False, "since": 0}}, "sessions": []}, {}, NOW)
 k6 = {r["key"]: r for r in s6["rows"]}
 check("no evidence -> still red, and the row says why (service not running / no live window)",
-      k6["oom:svc:rm-pulse.service"]["kind"] == "red" and "service not running" in k6["oom:svc:rm-pulse.service"]["text"]
+      k6["oom:svc:rm-pulse.service"]["was"] == "red" and "service not running" in k6["oom:svc:rm-pulse.service"]["text"]
       and k6["oom:seat:BENCH"]["kind"] == "red" and "no live BENCH window" in k6["oom:seat:BENCH"]["text"], k6)
 fresh_kill = pc.parse_kernel_oom([SVK[2].replace(f"{KILL:.6f}", f"{NOW-120:.6f}"), SVK[3].replace(f"{KILL:.6f}", f"{NOW-120:.6f}")])
 s7, _, _ = pc.collect_snapshot({**raw4, "kernel_oom": fresh_kill}, {}, NOW)
@@ -485,7 +535,7 @@ check("a seat tool kill 2 min ago is not yet recovered (needs 10 clean minutes)"
       next(r for r in s7["rows"] if r["key"] == "oom:seat:BENCH")["kind"] == "red")
 acked_only = pc.collect_snapshot({**raw4, "services": {}}, {"acks": {"oom:svc:rm-pulse.service": {"at": NOW}}}, NOW)[0]
 check("an ack does not make an incident 'recovered' (ack is not resolve)",
-      next(r for r in acked_only["rows"] if r["key"] == "oom:svc:rm-pulse.service")["kind"] == "red")
+      next(r for r in acked_only["rows"] if r["key"] == "oom:svc:rm-pulse.service")["kind"] != "recovered")
 lostr, _, _ = pc.classify_sessions([sess("g", "LOST", "busy", 60, alive=False)], {}, seen_before, {}, {}, NOW)
 repl = [{"seat": None, "who": "LOST", "started": NOW - 30, "upd": NOW - 5}]
 rr, _, _ = pc.track_incidents(lostr, {}, repl, {}, NOW)
@@ -941,7 +991,8 @@ check("old history ages out (a 3-day non-blocking failure, a 2-day-old recovery)
       "fail:build:Ancient" not in fk and "fail:build:OldRecovered" not in fk, list(fk))
 fsnap, _, _ = pc.collect_snapshot({"failures": FR}, {}, NOW)
 fpills = [p["text"] for p in fsnap["strip"] if p["kind"] == "red"]
-check("only the stuck and the lost reach the strip as red pills", len(fpills) == 2 and any("output lost" in p for p in fpills), fpills)
+check("job failures are agent warns now: no red pill, but the stuck and the lost stay in the digest rows",
+      not fpills and sum(1 for r in fsnap["rows"] if r.get("was") == "red" and r["key"].startswith("fail:")) == 2, fpills)
 check("a job-failure red does not get 'recovery unknown' tacked on (its recovery is its next pass)",
       not any("recovery unknown" in r["text"] for r in fsnap["rows"] if r["key"].startswith("fail:")), [r["text"] for r in fsnap["rows"]])
 check("a recovered job is not a strip pill (iteration, folded only)", not any(p["kind"] == "recovered" for p in fsnap["strip"]),

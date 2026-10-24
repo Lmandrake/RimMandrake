@@ -276,6 +276,7 @@ function lookHTML(r, isNew){
 function section(label, items, key, fmt, isNew, srcs){
   items = items.slice().sort((a,b) => ((b.pin||0) - (a.pin||0)) || ((a.opened?1:0) - (b.opened?1:0)) || (b.since - a.since));
   const now = Date.now()/1000, recent = items.filter(r => r.pin || now - r.since < OLD), older = items.filter(r => !r.pin && now - r.since >= OLD);
+  if (older.length === 1) recent.push(older.pop());   // a fold of one hides more than it saves
   let h = `<div class="sec"><b>${label}</b>${items.length}${srcs ? ' ' + srcAge(srcs) : ''}</div>`;
   if (!items.length) return h + `<div class="empty">nothing waiting</div>`;
   const shown = ex[key] ? recent : recent.slice(0, LIMIT[key]);
@@ -287,7 +288,7 @@ function section(label, items, key, fmt, isNew, srcs){
 
 function render(){
   if (!snap) return;
-  const rows = snap.rows || [];
+  const rows = (snap.rows || []).filter(r => !r.agent);   // agent iteration never reaches his view (digest only)
   const isNew = r => !firstPaint && !seenKeys.has(r.key + '|' + r.kind);
   const reds = rows.filter(r => r.kind === 'red' && !r.acked);
   const asks = rows.filter(r => (r.kind === 'amber' || r.kind === 'amber_soft') && !r.acked && r.seat);
@@ -296,7 +297,8 @@ function render(){
   const answered = rows.filter(r => r.kind === 'answered');
   const looks = groupLooks(rows.filter(r => r.kind === 'look').map(r => ({...r, opened: r.opened || openedHere.has(r.seen_id)})));
   const acked = rows.filter(r => r.acked && ['red','amber','amber_soft','warn'].includes(r.kind));
-  let h = reds.map(r => redHTML(r, isNew(r))).join('');
+  let h = (snap.health || []).map(t => `<div class="empty" title="run health">${esc(t)}</div>`).join('');
+  h += reds.map(r => redHTML(r, isNew(r))).join('');
   // a question card being asked heads the list: it is the only truly blocking thing
   h += section('to rule', asks.map(r => ({...r, pin: r.kind === 'amber' ? 2 : 1})).concat(rulings), 'rule', ruleHTML, isNew, ['sessions','ledger']);
   if (gives.length) h += section('to provide', gives, 'give', ruleHTML, isNew, ['ledger']);
