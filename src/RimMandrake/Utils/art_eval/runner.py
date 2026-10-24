@@ -211,6 +211,7 @@ def evaluate(spec: dict, card_dir: Path, rev: Reviewers, policy: dict, settings:
     rec = {"subject": card["subject"], "candidate": card.get("candidate"), "template": spec["template"],
            "module": card.get("module"), "at": now(), "card_sha": card["card_sha"],
            "image_sha256": card["image_sha256"], "source_sha256": card.get("source_sha256", {}),
+           "source_files": {k: str(f) for k, f in C.source_files(spec).items()},
            "artpipe_job": spec.get("artpipe_job"), "gates": card["gates"], "prompt_versions": prompt_versions(spec["template"]),
            "models": {}, "opus": None, "gpt": None, "regen": None, "reasons": []}
     living_dec = living.get(card.get("depends_on")) if card.get("depends_on") else None

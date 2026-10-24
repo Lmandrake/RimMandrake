@@ -206,6 +206,28 @@ def main():
     except ImportError as e:
         check("runner importable", False, str(e))
 
+    # --- shadow sheet shows the judged candidate files, not only what is installed (SHADOW_SHEET_FIX_SHOWS_ONLY_THE_INSTALLED)
+    try:
+        import shadow as SH
+        with tempfile.TemporaryDirectory() as td:
+            td = Path(td)
+            f1, f2, f3 = td / "south.png", td / "assembled_1.png", td / "scale.png"
+            for f, b in ((f1, b"a"), (f2, b"b"), (f3, b"c")):
+                f.write_bytes(b)
+            rec = {"subject": "RM_X", "source_files": {"south": str(f1), "assembled_1": str(f2), "scale": str(f3)},
+                   "source_sha256": {"south": "S" * 64}}
+            refs = SH.reference_map([rec])
+            check("shadow references the candidate files as columns (not the scale composite)",
+                  refs == {"RM_X": [str(f1), str(f2)]}, refs)
+            check("shadow: a judged picture shown only as a reference is on the row",
+                  SH.judged_on_row(rec, set(), {"S" * 64}) is True)
+            check("shadow: a judged picture shown nowhere is still NOT on the row",
+                  SH.judged_on_row(rec, set(), set()) is False)
+            check("shadow: an installed match still counts", SH.judged_on_row(rec, {"S" * 64}, set()) is True)
+            check("shadow: a run without source_files has no references", SH.reference_map([{"subject": "RM_Y"}]) == {})
+    except (ImportError, AttributeError) as e:
+        check("shadow candidate columns", False, repr(e))
+
     print(f"{'PASS' if not FAILS else 'FAIL'}: art_eval selftest, {len(FAILS)} failure(s)")
     return 1 if FAILS else 0
 
