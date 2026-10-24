@@ -1,0 +1,314 @@
+{
+  "biome": "SUBJECTS_owner_escalations_contagion",
+  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
+  "decidedCount": 9,
+  "decisions": {
+    "RM_Bloodlurk": {
+      "at": "2026-10-24T13:51:22.796Z",
+      "decidedAt": "2026-10-24T13:51:09.854Z",
+      "decision": "C",
+      "note": "1205 px/cell?! Why?!",
+      "pool": {
+        "Things/Pawn/Animal/RM_Bloodlurk/RM_Bloodlurk": {
+          "add": [
+            "B"
+          ],
+          "baseline": [
+            "351f301cc220045a"
+          ],
+          "remove": []
+        }
+      },
+      "prefill": "A",
+      "qPrefill": {
+        "pipeline_check": "keep"
+      },
+      "reject": {},
+      "retire": {
+        "Things/Pawn/Animal/RM_Bloodlurk/RM_Bloodlurk": [
+          "A"
+        ]
+      },
+      "rev": "976dc52e528baf5f",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/RM_Bloodlurk/RM_Bloodlurk": {
+          "at": "2026-10-24T13:51:09.854Z",
+          "pick": "C",
+          "set_id": "40117f7251cdf7b8",
+          "slot_id": "RM_Bloodlurk/lifeStages[2].bodyGraphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_ContagionIkee": {
+      "at": "2026-10-24T13:55:19.055Z",
+      "decidedAt": "2026-10-24T13:54:51.149Z",
+      "decision": "A",
+      "note": "",
+      "picks": {},
+      "prefill": "A",
+      "purge": [
+        "d4ebcabdf25e116148940462b848171becb272795db0f3072a39109d11cd4c91",
+        "a23d50ff708f11ac07c18688a22118d728021a38b22f16ad2a52b9fc39bd54f8",
+        "c5331ce4ac40af59753d9bc04c2a7cf6e91ac34b888b5066ad4a5a9d0d11ecc6"
+      ],
+      "purgeTouched": true,
+      "qPrefill": {
+        "pipeline_check": "keep"
+      },
+      "reject": {},
+      "retire": {},
+      "rev": "976dc52e528baf5f",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/RM_ContagionIkee/RM_ContagionIkee": {
+          "at": "2026-10-24T13:54:51.149Z",
+          "pick": "A",
+          "set_id": "f6b59cc46b80f910",
+          "slot_id": "RM_ContagionIkee/lifeStages[2].bodyGraphicData",
+          "state": "pick"
+        },
+        "Things/Pawn/Animal/RSW_Ikee/RSW_Ikee": {
+          "at": "2026-10-24T13:55:19.055Z",
+          "pick": "E",
+          "set_id": "c173d8744ed269a2",
+          "slot_id": null,
+          "state": "pick"
+        }
+      }
+    },
+    "RM_Danglemaw": {
+      "at": "2026-10-24T13:52:20.730Z",
+      "decidedAt": "2026-10-24T13:51:44.934Z",
+      "decision": "A",
+      "note": "Meant to be placed in a tree or other support structure on the map, non-mobile.",
+      "prefill": "A",
+      "purge": [
+        "37bd858ce7b7562c338c8b7a12b5d6c22e31234d62be7e963891448fc87b8c22",
+        "eaf5f2ec4284e0cea6da9a94a81ac0403bcc2f0b8c5f76a46440f7355e5cee1b",
+        "a65db240ffcb7705c0b0a59e8d86a87f6f2ff885a5ea0214cc1f49a8bd9f3d53",
+        "cc26113c66a8fe1fc3076852d95f330a077599fe0ac9bd0df43fb2de466e0ec3",
+        "e354fd19e6aeb11862baeb61b11ad78fc54e9ab7514d5e74dc2fe54465bc0e86",
+        "cea9ecb424a559f759387959eea3646622405e3387d338ab95cfe1e90366b0a1"
+      ],
+      "purgeTouched": true,
+      "qPrefill": {
+        "pipeline_check": "keep"
+      },
+      "reject": {},
+      "retire": {},
+      "rev": "976dc52e528baf5f",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/RM_Danglemaw/RM_Danglemaw": {
+          "at": "2026-10-24T13:51:44.934Z",
+          "pick": "A",
+          "set_id": "32fe5e602765fed9",
+          "slot_id": "RM_Danglemaw/lifeStages[2].bodyGraphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_Fleshsop": {
+      "at": "2026-10-24T13:53:39.847Z",
+      "decidedAt": "2026-10-24T13:53:20.844Z",
+      "decision": "A",
+      "note": "Eliminate the sad-sorrowful versions. Keep  original. These are weapon systems, not sad zombies. Eliminate the \"it needs to be loved to live another day.\" Thatis' ridiculous.",
+      "prefill": "A",
+      "qPrefill": {
+        "pipeline_check": "keep"
+      },
+      "reject": {},
+      "retire": {},
+      "rev": "976dc52e528baf5f",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/RM_Fleshsop/RM_Fleshsop": {
+          "at": "2026-10-24T13:53:20.844Z",
+          "pick": "A",
+          "set_id": "eaf08fe566409260",
+          "slot_id": "RM_Fleshsop/lifeStages[2].bodyGraphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_Gawpsack": {
+      "at": "2026-10-24T13:54:36.555Z",
+      "decidedAt": "2026-10-24T13:54:30.471Z",
+      "decision": "A",
+      "note": "",
+      "pool": {
+        "Things/Pawn/Animal/RM_Gawpsack/RM_Gawpsack": {
+          "add": [
+            "B"
+          ],
+          "baseline": [
+            "c840ebea70fadd32"
+          ],
+          "remove": []
+        }
+      },
+      "prefill": "A",
+      "purge": [
+        "959111c50909076068b779f08f446a048af15c06032b1c9fe3056307a67d6a99",
+        "ffed605d87d0453f76bfc3054b3ddce5677241929d13b4637baa3b10e4ac522a",
+        "80443a5c6948e310c7d6788110f555e41917bb172195662476a049de6d3586d9",
+        "a16baf6d8fbd32a2dfa5384b951b11ae034335db8cb3a0d2887f098703e9c6ee",
+        "1a50bfb36a90dc847cb45fc4eac3d252e4b7b23aab4db3bef788b0faf0fc539a",
+        "6fdd6a7fe50d8b9d2821f821609a0a33c695b2ea7d0ad02e4fcd7175f0078751"
+      ],
+      "purgeTouched": true,
+      "qPrefill": {
+        "pipeline_check": "keep"
+      },
+      "reject": {},
+      "retire": {},
+      "rev": "976dc52e528baf5f",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/RM_Gawpsack/RM_Gawpsack": {
+          "at": "2026-10-24T13:54:30.471Z",
+          "pick": "A",
+          "set_id": "c840ebea70fadd32",
+          "slot_id": "RM_Gawpsack/lifeStages[2].bodyGraphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_Meltgut": {
+      "at": "2026-10-24T13:56:28.062Z",
+      "decidedAt": "2026-10-24T13:56:28.062Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "82f983cf97a9b150676711a7da4e1105eb8d10be851029dc2c4dec38b73762b9",
+        "6ecefaa35338078e0cf8a3541855d2bbe800a183006a8f9d1cd69323bd98f8a4",
+        "66a6051443019147ded6df52c57022d5469b8dd2f02d0ec4b9cccb823c654019",
+        "b2214c1fca592f0a397baffb1850c0d82dd3c776c4284d38c8a466c20b74cc1a",
+        "c5312c8904393c05477d22b29292649f9c0a36ac6bba1311dcd7d83474b1c45f",
+        "9aa877a4826224900ebd7e57ca2733842a6574134ef7d477a709a8eb27c7c56c"
+      ],
+      "purgeTouched": true,
+      "qPrefill": {
+        "pipeline_check": "keep"
+      },
+      "reject": {},
+      "retire": {},
+      "rev": "976dc52e528baf5f",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/RM_Meltgut/RM_Meltgut": {
+          "at": "2026-10-24T13:56:28.062Z",
+          "pick": "A",
+          "set_id": "f79adb6c84b6a46a",
+          "slot_id": "RM_Meltgut/lifeStages[2].bodyGraphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_OcularJelly": {
+      "at": "2026-10-24T14:00:50.533Z",
+      "decision": "A",
+      "note": "Make B and C into two random pool members of a NEW CREATURE, they're absurdly cool. Call it a Zhool'Iza. Same properties, but 1/3 the size of the Zhool.",
+      "picks": {
+        "Things/Pawn/Animal/RM_OcularJelly/RM_OcularJelly_Bell": "D",
+        "Things/Pawn/Animal/RM_OcularJelly/Tentacles/RM_OcularJelly_TentacleA": "E",
+        "Things/Pawn/Animal/RM_OcularJelly/Tentacles/RM_OcularJelly_TentacleB": "F",
+        "Things/Pawn/Animal/RM_OcularJelly/Tentacles/RM_OcularJelly_TentacleC": "G",
+        "Things/Pawn/Animal/RM_OcularJelly/Tentacles/RM_OcularJelly_TentacleD": "H"
+      },
+      "prefill": "A",
+      "purge": [
+        "24900a11e5f134ece06ded26d9415b5f9fc9e473282c96329e970a6b8fe851e9",
+        "4c18eec7c063aa424be4327e160db954afc59b9fe28e413051f8f6684b0e115f"
+      ],
+      "purgeTouched": true,
+      "qPrefill": {
+        "pipeline_check": "keep"
+      },
+      "rev": "976dc52e528baf5f",
+      "schema": 2,
+      "slots": {}
+    },
+    "RM_Peeper": {
+      "at": "2026-10-24T13:56:47.703Z",
+      "decidedAt": "2026-10-24T13:56:38.358Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "ad7bd36658c4165a52405de31d82fd378094ade05f97ee0ce4bc659c707ec00c",
+        "4bb7b12d8e988a4425ad0df7dbc3d50eee688d6ea54f98847318a0e516d8caf7",
+        "1a999aa5b2b4ee291515d5bcee5fe6d06499074a8a0dfac1c43d22b03ce76679",
+        "51a642840a4383600b5ee65124ca2b715eafc9a81eff1e9dbc9610124fe66c40",
+        "a84d390a7bf3cbfe108ab01dd447043e6e3f1344063bf2e145f39818fa4c6973",
+        "24490a6d87f09a54ec9b3b57d7f1373eed471d61f55d19af085b4228a53e6406"
+      ],
+      "purgeTouched": true,
+      "qPrefill": {
+        "pipeline_check": "keep"
+      },
+      "reject": {},
+      "retire": {},
+      "rev": "976dc52e528baf5f",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/RM_Peeper/RM_Peeper": {
+          "at": "2026-10-24T13:56:38.358Z",
+          "pick": "A",
+          "set_id": "efa6f537bcc7fdce",
+          "slot_id": "RM_Peeper/lifeStages[2].bodyGraphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_Scaldhide": {
+      "at": "2026-10-24T13:57:53.785Z",
+      "decidedAt": "2026-10-24T13:57:25.398Z",
+      "decision": "B",
+      "note": "Make (C) into a new creature, it's very cool. New name, description, behavior.",
+      "prefill": "A",
+      "purge": [
+        "a59775c81f49f667cde078e0fdb6175967c1e5e7973295048d7072f210ff1e12",
+        "228246ab38ee253d1b27a4f72973cdf91a972a34bbac76cf8e72ad03a908388d",
+        "7be08d39d58e8f9b930d13d059af961dc92f70b227f878267dfb5b410abab631"
+      ],
+      "purgeTouched": true,
+      "qPrefill": {
+        "pipeline_check": "keep"
+      },
+      "reject": {},
+      "retire": {
+        "Things/Pawn/Animal/RM_Scaldhide/RM_Scaldhide": [
+          "A"
+        ]
+      },
+      "rev": "976dc52e528baf5f",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/RM_Scaldhide/RM_Scaldhide": {
+          "at": "2026-10-24T13:57:25.398Z",
+          "pick": "B",
+          "set_id": "eba41346cc307d6f",
+          "slot_id": "RM_Scaldhide/lifeStages[2].bodyGraphicData",
+          "state": "pick"
+        }
+      }
+    }
+  },
+  "posture": "pick-one",
+  "reviewStatus": {
+    "at": null,
+    "by": null,
+    "evidence": "generated by art_sheet.py --biome; rows marked sit1 carry the owner's desert sitting 1 picks, no human has ruled on this sheet; every qPrefill is an agent guess, his answers land in q",
+    "state": "prefill"
+  },
+  "savedAt": "2026-10-24T07:00:51-0700",
+  "savedBy": "review-sheet-sidecar",
+  "sheetId": "owner_escalations_contagion_sheet_2026-10-24",
+  "snapshot": "infrastructure/state/art/sheets/owner_escalations_contagion_sheet_2026-10-24.snapshot.json",
+  "snapshotId": "976dc52e528baf5f",
+  "writeCount": 84
+}

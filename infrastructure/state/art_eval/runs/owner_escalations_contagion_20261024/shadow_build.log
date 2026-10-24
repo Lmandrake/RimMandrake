@@ -2,10 +2,10 @@
  "biome": "SUBJECTS_owner_escalations_contagion",
  "html": "Transient/biome_ffar/owner_escalations_contagion_sheet_2026-10-24.html",
  "decisions": "Transient/biome_ffar/owner_escalations_contagion_sheet_2026-10-24.decisions.json",
- "wrote_decisions": true,
+ "wrote_decisions": false,
  "gate": "PASS v1",
  "snapshot": "infrastructure/state/art/sheets/owner_escalations_contagion_sheet_2026-10-24.snapshot.json",
- "snapshotId": "976dc52e528baf5f",
+ "snapshotId": "492658acf323f525",
  "census_rows": 9,
  "rows": 9,
  "ruled_rows_gone_kept_in_snapshot": [],
@@ -17,17 +17,14 @@
  "linked_rows": 0,
  "prefilled_sit1": 0,
  "no_art": [],
- "sets": 39,
- "images": 9324
+ "sets": 28,
+ "images": 9325
 }
 
 --- stderr ---
-eval_RM_Bloodlurk_r2_north/arteval_RM_Bloodlurk_r2_north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+/home/mandrake/rm/foundry/src/RimMandrake/Utils/art/art_sheet.py:2443: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  px = [q for q in Image.open(f).convert("RGBA").getdata() if q[3] > 8]
+NOTE RM_Bloodlurk: reference_textures ['/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Bloodlurk_r2_south/arteval_RM_Bloodlurk_r2_south.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Bloodlurk_r2_east/arteval_RM_Bloodlurk_r2_east.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Bloodlurk_r2_north/arteval_RM_Bloodlurk_r2_north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
 NOTE RM_ContagionIkee: reference_textures ['/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_ContagionIkee_r2_south/arteval_RM_ContagionIkee_r2_south.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_ContagionIkee_r2_east/arteval_RM_ContagionIkee_r2_east.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_ContagionIkee_r2_north/arteval_RM_ContagionIkee_r2_north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
-NOTE RM_Danglemaw: reference_textures ['/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Danglemaw_r2_south/arteval_RM_Danglemaw_r2_south.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Danglemaw_r2_east/arteval_RM_Danglemaw_r2_east.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Danglemaw_r2_north/arteval_RM_Danglemaw_r2_north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
-NOTE RM_Fleshsop: reference_textures ['/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Fleshsop_r2_south/arteval_RM_Fleshsop_r2_south.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Fleshsop_r2_east/arteval_RM_Fleshsop_r2_east.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Fleshsop_r2_north/arteval_RM_Fleshsop_r2_north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
-NOTE RM_Gawpsack: reference_textures ['/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Gawpsack_r2_south/arteval_RM_Gawpsack_r2_south.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Gawpsack_r2_east/arteval_RM_Gawpsack_r2_east.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Gawpsack_r2_north/arteval_RM_Gawpsack_r2_north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
-NOTE RM_Meltgut: reference_textures ['/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Meltgut_r2_south/arteval_RM_Meltgut_r2_south.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Meltgut_r2_east/arteval_RM_Meltgut_r2_east.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Meltgut_r2_north/arteval_RM_Meltgut_r2_north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
 NOTE RM_OcularJelly: reference_textures ['/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_OcularJelly_r2_south/arteval_RM_OcularJelly_r2_south.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_OcularJelly_r2_east/arteval_RM_OcularJelly_r2_east.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_OcularJelly_r2_north/arteval_RM_OcularJelly_r2_north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
-NOTE RM_Peeper: reference_textures ['/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Peeper_r2_south/arteval_RM_Peeper_r2_south.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Peeper_r2_east/arteval_RM_Peeper_r2_east.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Peeper_r2_north/arteval_RM_Peeper_r2_north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
 NOTE RM_Scaldhide: reference_textures ['/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Scaldhide_r2_south/arteval_RM_Scaldhide_r2_south.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Scaldhide_r2_east/arteval_RM_Scaldhide_r2_east.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Scaldhide_r2_north/arteval_RM_Scaldhide_r2_north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references

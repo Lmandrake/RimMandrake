@@ -1,0 +1,246 @@
+{
+  "biome": "SUBJECTS_owner_escalations_leaningscrub_1",
+  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
+  "decidedCount": 7,
+  "decisions": {
+    "RM_Chikka": {
+      "at": "2026-10-24T13:42:10.303Z",
+      "decidedAt": "2026-10-24T13:41:43.184Z",
+      "decision": "A",
+      "note": "What's with the HUGE resolution on the 10-24 version? The original one was fine. This is NOT a star wars creature BTW.",
+      "prefill": "A",
+      "purge": [
+        "082726f32631d97cf4e82cae4da18811be5f5996d8217b2fbd7e88f9ee7ad4a9",
+        "a365db8e9f50624eb723b147e12da17ecdfcf4210d06c2b241c37b7577d388b6",
+        "abc038f44a59bf75aaa93c6faa76e7538a138523b4088e7d06369ebec4dd0409"
+      ],
+      "purgeTouched": true,
+      "qPrefill": {
+        "pipeline_check": "keep"
+      },
+      "reject": {},
+      "retire": {},
+      "rev": "d8e8edea48eb4779",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/RM_Chikka/RM_Chikka": {
+          "at": "2026-10-24T13:41:43.184Z",
+          "pick": "A",
+          "set_id": "cf141352d64ed589",
+          "slot_id": "RM_Chikka/lifeStages[2].bodyGraphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_Crustweevil": {
+      "at": "2026-10-24T13:42:29.719Z",
+      "decidedAt": "2026-10-24T13:42:29.718Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "qPrefill": {
+        "pipeline_check": "keep"
+      },
+      "reject": {},
+      "retire": {},
+      "rev": "d8e8edea48eb4779",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/RM_Crustweevil/RM_Crustweevil": {
+          "at": "2026-10-24T13:42:29.718Z",
+          "pick": "A",
+          "set_id": "48c6330bbe4dc863",
+          "slot_id": "RM_Crustweevil/lifeStages[2].bodyGraphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_Durrok": {
+      "at": "2026-10-24T13:44:05.364Z",
+      "decidedAt": "2026-10-24T13:43:57.643Z",
+      "decision": "A",
+      "note": "",
+      "pool": {
+        "Things/Pawn/Animal/RM_Durrok/RM_Durrok": {
+          "add": [
+            "B"
+          ],
+          "baseline": [
+            "c59227228a34107c"
+          ],
+          "remove": []
+        }
+      },
+      "prefill": "A",
+      "purge": [
+        "b941093941c5c3ea4ac7b22d8cddde17b19a0fe77d804aaa6f24600d3f2c19e5",
+        "4982269898a9e0e62d8e9e45bb812d9cf7325daf0593e53b779f958e06f68fd6",
+        "489f620dffbe631fc716dab5dbe186ad7edc6424a2550a9bbe09c1eea85f8c31"
+      ],
+      "purgeTouched": true,
+      "qPrefill": {
+        "pipeline_check": "keep"
+      },
+      "reject": {},
+      "retire": {},
+      "rev": "d8e8edea48eb4779",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/RM_Durrok/RM_Durrok": {
+          "at": "2026-10-24T13:43:57.643Z",
+          "pick": "A",
+          "set_id": "c59227228a34107c",
+          "slot_id": "RM_Durrok/lifeStages[2].bodyGraphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_Dustflutter": {
+      "at": "2026-10-24T13:44:46.821Z",
+      "decidedAt": "2026-10-24T13:44:46.821Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "80e0a01050e17ac98e5db57009c9742314b8481103c99c8b1c244102ef6286b0",
+        "2bfcc0774f2da190e00597bb54103f273be0c0a3f2cd2c04727c4df2ce159d88",
+        "3301d6e6298c127646c232b05d7b2aa37fb10e13ebd595ef7105cff4a3d65fd1"
+      ],
+      "purgeTouched": true,
+      "qPrefill": {
+        "pipeline_check": "keep"
+      },
+      "reject": {},
+      "retire": {},
+      "rev": "d8e8edea48eb4779",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/RM_Dustflutter/RM_Dustflutter": {
+          "at": "2026-10-24T13:44:46.821Z",
+          "pick": "A",
+          "set_id": "a3583b6ac999c86e",
+          "slot_id": "RM_Dustflutter/lifeStages[2].bodyGraphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_Fuzzrunner": {
+      "at": "2026-10-24T13:45:26.108Z",
+      "decidedAt": "2026-10-24T13:45:20.618Z",
+      "decision": "A",
+      "note": "",
+      "pool": {
+        "Things/Pawn/Animal/RM_Fuzzrunner/RM_Fuzzrunner": {
+          "add": [
+            "C"
+          ],
+          "baseline": [
+            "cb8abeaefca19f03"
+          ],
+          "remove": []
+        }
+      },
+      "prefill": "A",
+      "purge": [
+        "4a5003107587ee3a0c8c08246f32f3208f05516ff227212cb227374fa4b26832",
+        "4a9ef988afa1ea28117e51192e32baf8a3f511e5c4d37106d42b8f9aac8aceb4",
+        "3278dd7f0280548bd341a49339d786699489e608bfe50878e6134c7c37a38011"
+      ],
+      "purgeTouched": true,
+      "qPrefill": {
+        "pipeline_check": "keep"
+      },
+      "reject": {},
+      "retire": {},
+      "rev": "d8e8edea48eb4779",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/RM_Fuzzrunner/RM_Fuzzrunner": {
+          "at": "2026-10-24T13:45:20.618Z",
+          "pick": "A",
+          "set_id": "cb8abeaefca19f03",
+          "slot_id": "RM_Fuzzrunner/lifeStages[2].bodyGraphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_Fuzzviper": {
+      "at": "2026-10-24T13:46:40.629Z",
+      "decidedAt": "2026-10-24T13:46:18.275Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "29191f698ca6aa85dd55b0aa29fb8591636c2f9a0c9f400f93b2b78d529ae5d1",
+        "35d7362f23d73e5cd6a412796de0831ea0745b28186ab6640a6cf23b52c433eb",
+        "794c257d316a46776bbbda488daa0ada84cb0a7ed5730bfedeb22f88fdb8ce53",
+        "cab73166b4652b652c9c0e6af30bd2a5fd18adae4932966410b8981ae150347c",
+        "517de1e738f6674a18d253696e56c28207c5b91544b51a478bbea952501f4ffd",
+        "ce7fdefb983b0393085e9fe68a4dd3e1de5c7e3a9476396029b118e0e9e3f12c"
+      ],
+      "purgeTouched": true,
+      "qPrefill": {
+        "pipeline_check": "keep"
+      },
+      "reject": {},
+      "retire": {},
+      "rev": "d8e8edea48eb4779",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/RM_Fuzzviper/RM_Fuzzviper": {
+          "at": "2026-10-24T13:46:18.275Z",
+          "pick": "A",
+          "set_id": "5d87e5a4fbc93a46",
+          "slot_id": "RM_Fuzzviper/lifeStages[2].bodyGraphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_Ribbonwhip": {
+      "at": "2026-10-24T13:47:23.025Z",
+      "decidedAt": "2026-10-24T13:47:20.378Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "bbdd0967b27ab45249855941d783c62ab5fc2ba58b92fac4b5990b881485bc97",
+        "16aa61c2b264258e3398b93d5503ff8dd7127fc54d0027eafb57e55d0ef82c14",
+        "93037176327e1a79cd63c0742cef4b2d72ab51a902238fe0d44f01bd95c187d6"
+      ],
+      "purgeTouched": true,
+      "qPrefill": {
+        "pipeline_check": "keep"
+      },
+      "reject": {},
+      "retire": {
+        "Things/Pawn/Animal/RM_Ribbonwhip/RM_Ribbonwhip": [
+          "A"
+        ]
+      },
+      "rev": "d8e8edea48eb4779",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/RM_Ribbonwhip/RM_Ribbonwhip": {
+          "at": "2026-10-24T13:47:20.378Z",
+          "pick": "B",
+          "set_id": "633e262b740d5dbf",
+          "slot_id": "RM_Ribbonwhip/lifeStages[2].bodyGraphicData",
+          "state": "pick"
+        }
+      }
+    }
+  },
+  "posture": "pick-one",
+  "reviewStatus": {
+    "at": null,
+    "by": null,
+    "evidence": "generated by art_sheet.py --biome; rows marked sit1 carry the owner's desert sitting 1 picks, no human has ruled on this sheet; every qPrefill is an agent guess, his answers land in q",
+    "state": "prefill"
+  },
+  "savedAt": "2026-10-24T06:47:23-0700",
+  "savedBy": "review-sheet-sidecar",
+  "sheetId": "owner_escalations_leaningscrub_1_sheet_2026-10-24",
+  "snapshot": "infrastructure/state/art/sheets/owner_escalations_leaningscrub_1_sheet_2026-10-24.snapshot.json",
+  "snapshotId": "d8e8edea48eb4779",
+  "writeCount": 41
+}

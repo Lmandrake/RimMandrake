@@ -1,0 +1,257 @@
+{
+  "biome": "SUBJECTS_owner_escalations_cauldron",
+  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
+  "decidedCount": 7,
+  "decisions": {
+    "RM_BedBug": {
+      "assign": {
+        "G": "Things/Pawn/Animal/RM_BedBug/RM_BedBug"
+      },
+      "at": "2026-10-24T14:03:16.980Z",
+      "decidedAt": "2026-10-24T14:03:13.103Z",
+      "decision": "A",
+      "note": "",
+      "pool": {
+        "Things/Pawn/Animal/RM_BedBug/RM_BedBug": {
+          "add": [
+            "E",
+            "D"
+          ],
+          "baseline": [
+            "435e237ea6e7a03e"
+          ],
+          "remove": []
+        }
+      },
+      "prefill": "F",
+      "qPrefill": {
+        "pipeline_check": "keep"
+      },
+      "reject": {},
+      "retire": {},
+      "rev": "a22a81b209c21ea6",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/RM_BedBug/RM_BedBug": {
+          "at": "2026-10-24T14:03:13.103Z",
+          "pick": "A",
+          "set_id": "435e237ea6e7a03e",
+          "slot_id": "RM_BedBug/lifeStages[2].bodyGraphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_Bileworm": {
+      "at": "2026-10-24T14:04:09.795Z",
+      "decidedAt": "2026-10-24T14:03:52.126Z",
+      "decision": "A",
+      "note": "",
+      "pool": {
+        "Things/Pawn/Animal/RM_Bileworm/RM_Bileworm": {
+          "add": [
+            "C"
+          ],
+          "baseline": [
+            "01b5260881e8f040"
+          ],
+          "remove": []
+        }
+      },
+      "prefill": "A",
+      "purge": [
+        "a1b6dd1a10af5cf67213b11724efee35a2af8af867bef885c811b5323166e526",
+        "b843f3b3fbfd154db929a90acdaf540626b6878322667bb6939a9f32ab9a236b",
+        "487a4c7a314a1a2b8ac79cc90adbd9f23632ecce116e2433f13674048860a8a0"
+      ],
+      "purgeTouched": true,
+      "qPrefill": {
+        "pipeline_check": "keep"
+      },
+      "reject": {},
+      "retire": {},
+      "rev": "a22a81b209c21ea6",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/RM_Bileworm/RM_Bileworm": {
+          "at": "2026-10-24T14:03:52.126Z",
+          "pick": "A",
+          "set_id": "01b5260881e8f040",
+          "slot_id": "RM_Bileworm/lifeStages[2].bodyGraphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_CrystalMit": {
+      "at": "2026-10-24T14:05:14.601Z",
+      "decidedAt": "2026-10-24T14:05:00.857Z",
+      "decision": "A",
+      "note": "",
+      "pool": {
+        "Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMit": {
+          "add": [
+            "C",
+            "B"
+          ],
+          "baseline": [
+            "3614249a6f302943"
+          ],
+          "remove": []
+        }
+      },
+      "prefill": "E",
+      "purge": [
+        "918f4a66a4a40fdd3b1ff546d2f7ba1be6ca1a16af8cadd96f5a27eda3fbae00",
+        "624dc66dd8a8beeac8c8815a531cd5035a0994de72be15e187a765bbb5cdeea0",
+        "c0ef85c2210c8d324c56f6a1ab060867dcf2281be8c981a412a43c72be139f94",
+        "b9ac78abe816592c882096f888e9e947be6b03b007232d7e54f4c1873e5e4417",
+        "c50de4b85c204bb94ca2098e994761c973c3990f693f0cb71218f7863ca1872c",
+        "cb2c786fc2ec6a02b76ab8ae14281f4d815f113b5ce80c4dafbc757917092c3b"
+      ],
+      "purgeTouched": true,
+      "qPrefill": {
+        "pipeline_check": "keep"
+      },
+      "reject": {},
+      "retire": {},
+      "rev": "a22a81b209c21ea6",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMit": {
+          "at": "2026-10-24T14:05:00.857Z",
+          "pick": "A",
+          "set_id": "3614249a6f302943",
+          "slot_id": "RM_CrystalMit/lifeStages[2].bodyGraphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_DecayDrake": {
+      "at": "2026-10-24T14:05:58.217Z",
+      "decidedAt": "2026-10-24T14:05:50.664Z",
+      "decision": "C",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "875c700ef8be505fdca4f41226a56824f9bf2f392c73d6bd1bbcf08270c1ba0c",
+        "3aa36d102afceeea0d410e41d8af5a4af22ba036eacfced26178f96d4877a6cb",
+        "438fc20932968b785c996e385f333770198d9bb102c65d74978e87740f032597"
+      ],
+      "purgeTouched": true,
+      "qPrefill": {
+        "pipeline_check": "keep"
+      },
+      "reject": {},
+      "retire": {
+        "Things/Pawn/Animal/RM_DecayDrake/RM_DecayDrake": [
+          "A"
+        ]
+      },
+      "rev": "a22a81b209c21ea6",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/RM_DecayDrake/RM_DecayDrake": {
+          "at": "2026-10-24T14:05:50.664Z",
+          "pick": "C",
+          "set_id": "c5ab9adf98b3a088",
+          "slot_id": "RM_DecayDrake/lifeStages[2].bodyGraphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_Mullgoth": {
+      "at": "2026-10-24T14:06:26.144Z",
+      "decidedAt": "2026-10-24T14:06:23.839Z",
+      "decision": "A",
+      "note": "",
+      "pool": {
+        "Things/Pawn/Animal/RM_Mullgoth/RM_Mullgoth": {
+          "add": [
+            "B",
+            "C"
+          ],
+          "baseline": [
+            "509c01edceb99d6d"
+          ],
+          "remove": []
+        }
+      },
+      "prefill": "A",
+      "qPrefill": {
+        "pipeline_check": "keep"
+      },
+      "reject": {},
+      "retire": {},
+      "rev": "a22a81b209c21ea6",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/RM_Mullgoth/RM_Mullgoth": {
+          "at": "2026-10-24T14:06:23.839Z",
+          "pick": "A",
+          "set_id": "509c01edceb99d6d",
+          "slot_id": "RM_Mullgoth/lifeStages[2].bodyGraphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_Suush": {
+      "at": "2026-10-24T14:06:53.342Z",
+      "decidedAt": "2026-10-24T14:06:51.257Z",
+      "decision": "A",
+      "note": "",
+      "pool": {
+        "Things/Pawn/Animal/RM_Suush/RM_Suush": {
+          "add": [
+            "B",
+            "C"
+          ],
+          "baseline": [
+            "e98a4b3d36fc74ba"
+          ],
+          "remove": []
+        }
+      },
+      "prefill": "A",
+      "qPrefill": {
+        "pipeline_check": "keep"
+      },
+      "reject": {},
+      "retire": {},
+      "rev": "a22a81b209c21ea6",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/RM_Suush/RM_Suush": {
+          "at": "2026-10-24T14:06:51.257Z",
+          "pick": "A",
+          "set_id": "e98a4b3d36fc74ba",
+          "slot_id": "RM_Suush/lifeStages[2].bodyGraphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_Vexxiss": {
+      "at": "2026-10-24T14:08:32.103Z",
+      "decision": "A",
+      "note": "I like D & E, but they are too low res. Make higher res versions and accept those. B and C nave poor quality \"faces\"",
+      "prefill": "A",
+      "qPrefill": {
+        "pipeline_check": "keep"
+      },
+      "rev": "a22a81b209c21ea6",
+      "schema": 2,
+      "slots": {}
+    }
+  },
+  "posture": "pick-one",
+  "reviewStatus": {
+    "at": null,
+    "by": null,
+    "evidence": "generated by art_sheet.py --biome; rows marked sit1 carry the owner's desert sitting 1 picks, no human has ruled on this sheet; every qPrefill is an agent guess, his answers land in q",
+    "state": "prefill"
+  },
+  "savedAt": "2026-10-24T07:08:32-0700",
+  "savedBy": "review-sheet-sidecar",
+  "sheetId": "owner_escalations_cauldron_sheet_2026-10-24",
+  "snapshot": "infrastructure/state/art/sheets/owner_escalations_cauldron_sheet_2026-10-24.snapshot.json",
+  "snapshotId": "a22a81b209c21ea6",
+  "writeCount": 46
+}

@@ -1,9 +1,9 @@
 {
  "biome": "SUBJECTS_art_eval_shadow_gptredo_02",
- "built": "2026-10-24T02:13:41-0700",
+ "built": "2026-10-24T03:48:25-0700",
  "census": "Transient/biome_ffar/art_eval_shadow_gptredo_02.subjects.json",
  "census_git_head": null,
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 26 mods \u2014 a test list): 320 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 11 mods \u2014 a test list): 320 active",
  "rows": {
   "RM_Dustveil": {
    "columns": {
@@ -30,11 +30,16 @@
      "north": "9e1cf0f9792c58427e18a98b5fd1a58f02fd03691d599ade7c1d3eed3d73152c"
     },
     "F": {
+     "east": "e2a6ed98d3ce6b579b61375c3658727c389d67f7da3a45eb158039c49fbd3f97",
+     "north": "eafb295fe496fe595447fc9371fc2e1a2ee864a0ee5f69a1493eed335bbd0c69",
+     "south": "3c26a9a0fdb4dbaf0ec848ff78ef859e2f2d6cd6d353ae76a18ea85601e20989"
+    },
+    "G": {
      "east": "c18a97ae21dbc06f1ebcad8b918e9797b8b3b51033000f797c1869b219a64c55",
      "north": "1c09783f7eb9e043385dd94313cd2034c821bdf0d1b8c34ae06fd25dcfd63b11",
      "south": "1cb94df253f6342450f28bb635d37bfe0b30e6f59b22c57d8edd917b0dbeaf2f"
     },
-    "G": {
+    "H": {
      "1_east": "6d28d9d2d9aa1f10c567967a30a3b500ee387bf3fb7e84c6e50fb852e7e91734",
      "1_north": "5e1b3273fd0eaa621a1ae33d9a8457907cec488f5d0b3c9b370d23d9f23df3d6",
      "1_south": "3a42f2c20cfae3135b77be00bcbffb81e7743e3f5e1af07f7d19eeda347dba58",
@@ -51,17 +56,17 @@
      "5_north": "684fa17b78701bf6fc3c5d2c7e621771fac6e9e2c85aab52d3333385e1a2ff34",
      "5_south": "dde75161cea59656a5b47c9b646d82e935235c3e972a01d88210fc74cae19e83"
     },
-    "H": {
+    "I": {
      "east": "639c14334ee8de4d436246658b549c887aa6cb17798b2487b58e641157deee80",
      "north": "87b298083a94df096f33b16f4c9f911e036512cbef4c4b244ee8ef2dada54ee2",
      "south": "28a30123dfd2f03921ee228edafa027c0aa7d042466de5f85dccbe6a0039ed13"
     },
-    "I": {
+    "J": {
      "east": "639c14334ee8de4d436246658b549c887aa6cb17798b2487b58e641157deee80",
      "north": "b410fe8152e0e1879e629ea342754a63b0c135430a30658bdda3d69d3163676a",
      "south": "a8cea57a8a0761364830a74a16376782a34ef3bf3d621dd2b6c837d63f182a14"
     },
-    "J": {
+    "K": {
      "single": "fe7b2f0b5e03fe7ced839bd72939c40bd8d741b6943d3e0feb225dc5512cb541"
     }
    },
@@ -71,11 +76,12 @@
     "C": "RotSpecies/AngelMoth/AngelMoth",
     "D": "RotSpecies/AngelMoth/AngelMoth",
     "E": "RotSpecies/AngelMoth/AngelMoth",
-    "F": "RotSpecies/AngelMoth/AngelMoth_C",
-    "G": "_flip:RM_Dustveil",
-    "H": "Things/Pawn/Animal/RM_DustveilLarva/RM_DustveilLarva",
+    "F": "RotSpecies/AngelMoth/AngelMoth_B",
+    "G": "RotSpecies/AngelMoth/AngelMoth_C",
+    "H": "_flip:RM_Dustveil",
     "I": "Things/Pawn/Animal/RM_DustveilLarva/RM_DustveilLarva",
-    "J": "_byname"
+    "J": "Things/Pawn/Animal/RM_DustveilLarva/RM_DustveilLarva",
+    "K": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 TheRot",
@@ -84,13 +90,15 @@
     "D": "render rotrow_angelmoth_south_v1",
     "E": "render gapall_AA_AngelMoth_v1",
     "F": "IN GAME \u2014 TheRot",
-    "G": "flight frames Dustveil_Flying",
-    "H": "IN GAME \u2014 TheRot",
-    "I": "render donorart_p2_dustveil_larva_v1",
-    "J": "render donorart_p2_dustveil_egg_v1"
+    "G": "IN GAME \u2014 TheRot",
+    "H": "flight frames Dustveil_Flying",
+    "I": "IN GAME \u2014 TheRot",
+    "J": "render donorart_p2_dustveil_larva_v1",
+    "K": "render donorart_p2_dustveil_egg_v1"
    },
    "pools": [
     "RotSpecies/AngelMoth/AngelMoth",
+    "RotSpecies/AngelMoth/AngelMoth_B",
     "RotSpecies/AngelMoth/AngelMoth_C"
    ],
    "res": "RotSpecies/AngelMoth/AngelMoth",
@@ -104,7 +112,8 @@
     "G",
     "H",
     "I",
-    "J"
+    "J",
+    "K"
    ],
    "shownBase": [],
    "subject_key": "dustveil"
@@ -181,5 +190,5 @@
   }
  },
  "sheetId": "art_eval_shadow_gptredo_02_sheet_2026-10-24",
- "snapshotId": "cbc12f2e7f97b178"
+ "snapshotId": "19317d21e9b21a75"
 }
