@@ -470,10 +470,16 @@ with tempfile.TemporaryDirectory() as d:
     (d / "torn.jsonl").write_text('{"a": 1}\n{"b": ')
     check("strict jsonl: one torn line beside good ones is skipped, not raised",
           pc.read_jsonl_tail(d / "torn.jsonl", strict=True) == [{"a": 1}])
-    check("an unreadable BRIDGE file raises (source down), not 'no holder'", raises(lambda: pc.read_bridge(d)))
+    check("an unreadable BRIDGE file raises (source down), not 'no holder'", raises(lambda: pc.read_bridge(d, clones=[], shared=d / "no.json")))
     (d / "infrastructure/state").mkdir(parents=True)
     (d / "infrastructure/state/BRIDGE").write_text("# who\nFREE since x\n")
-    check("a readable BRIDGE file answers its holder line", pc.read_bridge(d) == "FREE since x")
+    check("a readable BRIDGE file answers its holder line", pc.read_bridge(d, clones=[], shared=d / "no.json") == "FREE since x")
+    (d / "other/infrastructure/state").mkdir(parents=True)
+    (d / "other/infrastructure/state/BRIDGE").write_text("HELD    FOUNDRY    since y\n")
+    check("another clone's HELD mirror wins over this clone's stale FREE (a FOUNDRY take is a test session)",
+      pc.read_bridge(d, clones=[d / "other"], shared=d / "no.json").startswith("HELD    FOUNDRY"))
+    (d / "sh.json").write_text('{"holder": "CHECK"}')
+    check("the shared cross-clone lock wins over a FREE mirror", pc.read_bridge(d, clones=[], shared=d / "sh.json").startswith("HELD    CHECK"))
     check("an unreadable artpipe state dir raises, never an idle chip", raises(lambda: pc.read_artpipe(d / "noart")))
     check("telemetry not installed (no state dir) is None, no row", pc.read_telemetry(d / "notel" / "alerts.json") is None)
     (d / "tel").mkdir()
