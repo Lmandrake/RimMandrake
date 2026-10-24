@@ -14,7 +14,7 @@ runner.py counts the new series (1 + REGENs after the reset, cap 3) and job ids 
 so nothing old is edited and no id collides. `rows <source run> --only <DEF>...` then files round 1 of the series.
 Owner prompts: `rows` uses his text VERBATIM, wrapped in the template's style/alpha/size sentences, instead of the
 pipeline's own regen prompt, and never sends it through the facing-neutral rewrite; if his text trips the per-facing
-gate the row is held (printed) rather than reworded. Notes he adds later are re-read on every `rows` call.
+gate the row is held (printed) rather than reworded. A free note on a sheet row is never his prompt (round_series.py).
 
 Why `rows` rewrites the prompt: the regen prompt edit speaks about every facing at once ("the rear view shows ...",
 "all facings"), but each artpipe job draws exactly ONE facing and the daemon stamps that facing's view direction

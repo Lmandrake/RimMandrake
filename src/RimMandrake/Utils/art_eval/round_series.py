@@ -18,9 +18,12 @@ prompt, wrapped by the template sentences (style, alpha, camera/size consistency
 is stamped per job by the artpipe daemon. Sources, newest wins:
   1. infrastructure/state/art_eval/owner_prompts.jsonl  {"at", "def", "text", "owner_said"|"by_card", "source"}
      (the main window appends what he sends in chat with `fauna_drive.py owner-prompt`);
-  2. a non-empty `prompt` or `note` he typed on a row of an owner escalation sheet
-     Transient/biome_ffar/owner_escalations_*_sheet_*.decisions.json (prefill notes are always empty, so a non-empty one is his).
-Both are re-read on every `rows` call, so notes he adds later are picked up with no extra step.
+  2. a non-empty `prompt` field on a row of an owner escalation sheet
+     Transient/biome_ffar/owner_escalations_*_sheet_*.decisions.json.
+A sheet row's free `note` is NEVER a prompt: his notes there are complaints and instructions ("1205 px/cell?! Why?!",
+"Keep original", "Make (C) into a new creature"), and pasting one verbatim as the creature description draws garbage
+over a creature he may have just kept. When a note IS prompt text, the main window records it with
+`fauna_drive.py owner-prompt`. Both sources are re-read on every `rows` call.
 """
 from __future__ import annotations
 
@@ -211,7 +214,7 @@ def add_reset(defname: str, source_run: str, prov: dict, path: Path = RESETS, no
 
 # ------------------------------------------------------------------ owner prompts
 def owner_prompts(root: Path = ROOT, path: Path = OWNER_PROMPTS) -> dict:
-    """{def: {"text", "at", "source"}} newest per def across owner_prompts.jsonl and the owner sheets' notes."""
+    """{def: {"text", "at", "source"}} newest per def across owner_prompts.jsonl and the owner sheets' `prompt` fields."""
     found = {}
 
     def put(d, text, at, source):
@@ -235,7 +238,7 @@ def owner_prompts(root: Path = ROOT, path: Path = OWNER_PROMPTS) -> dict:
             continue
         for d, v in decs.items():
             if isinstance(v, dict):
-                put(d, v.get("prompt") or v.get("note"), at, f"{f.relative_to(root)}#{d}")
+                put(d, v.get("prompt"), at, f"{f.relative_to(root)}#{d}")     # never v["note"]: see module doc
     return found
 
 
