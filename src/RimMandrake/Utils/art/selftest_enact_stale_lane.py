@@ -24,8 +24,17 @@ resolves the lane through it (a proved rename) or refuses by name. The decisions
   8 today's row has no lane data (no graphic_of, no res): a slot key or a schema-1 `picks{lane}` cannot be checked, so it
     is refused by name, never installed at the key's path unchecked;
   6 a pick whose pictures all ship already (an enacted row, whose def was then repointed): no copy and no conflict;
-  7 his lane was a DONOR's (nothing of ours ships there) and today's lane is new: routed as before (the install step
-    sends a donor-lane pick to the row's own path), no refusal, nothing written at the donor path;
+  7 his lane was a DONOR's (nothing of ours ships there) and no rename can be proved: REFUSED by default
+    (ENACT_DONOR_LANE_DECIDE_REFUSE_OR_ROUTE; until 2026-10-24 it was routed by today's lane unproved), schema 1 and a
+    slot key alike;
+  7p ...routed only when proved: the row's graphic (res) on the sheet he clicked on was the donor lane, today a def of
+    the row names today's lane and none names the donor, and the letter shows the same pictures (the fish and catch
+    items moving from a vanilla placeholder to our own path); other pictures under the letter: refused;
+  7t ...the same proof routes when the donor lane is still a column of today's row (floodedcanyon RM_Tarruq B);
+  9 KEYED schema-1 picks (picks{lane: L}) get the decision route's guards (ENACT_KEYED_PICK_FIX_MOVED_LANE): a letter
+    re-filed under another lane that exists today is refused (greentide RSW_Hawkbat G), so is one whose pictures differ
+    from the sheet he clicked on (9b); an unchanged keyed pick installs as before (9c);
+  10 snapshot revisions committed out of build order: the newest build at or before the click is used;
   5 schema 1 with today's snapshot built BEFORE his click: routed by today's snapshot as before (no lookup, no change).
 Fixture under /home/mandrake/rm/scratch/BENCH (never /tmp), from selftest_enact_ws; git history is replaced by a list.
 """
@@ -154,19 +163,95 @@ def main():
               f"({inst} / {r['conflicts'] + r1['conflicts']})")
 
         DON = "Things/Pawn/Animal/Donorbeast/Donorbeast"    # a donor lane: nothing of ours ships there
-        h = older({"A": DON, "B": DON, "C": DON, "Y": KY, "Z": DON})
-        h["rows"]["RSW_Kite"]["columns"]["Z"] = {"east": "0" * 64}   # a set gone today: no rename can be proved
-        history[:] = [h]
+
+        def donor_sheet(res):
+            h = older({"A": DON, "B": DON, "C": DON, "Y": KY, "Z": DON})
+            h["rows"]["RSW_Kite"]["columns"]["Z"] = {"east": "0" * 64}   # a set gone today: no rename can be proved
+            h["rows"]["RSW_Kite"]["res"] = res
+            return h
+        # 7 the clicked sheet's row graphic (res) was NOT the donor lane: nothing proves the def that named the donor
+        # now names today's lane -> refused by default (ENACT_DONOR_LANE_DECIDE_REFUSE_OR_ROUTE)
+        history[:] = [donor_sheet(AD)]
+        r, inst = plan({"schema": None, "decision": "B"})
+        check(not any(i["letter"] == "B" for i in inst)
+              and any(c.startswith("RSW_Kite: pick B ") and "refused" in c for c in r["conflicts"]),
+              f"7 schema 1: a donor lane with no proof the def moved off it to today's lane: refused by name "
+              f"({inst} / {r['conflicts']})")
+        r, inst = plan({"decision": "B", "slots": {DON: slot("B")}})
+        check(not any(i["letter"] == "B" for i in inst)
+              and any(c.startswith(f"RSW_Kite: slot {DON} pick B") and "refused" in c for c in r["conflicts"]),
+              f"7 ...a slot keyed by that donor lane: refused too, nothing installed ({inst} / {r['conflicts']})")
+        # 7p proved: the row's def named the donor lane on the sheet he clicked on (res), today the row's def names
+        # today's lane (RSW_Kite -> swanimals/Kite/Kite in the fixture's defs) and no def names the donor; same pictures
+        history[:] = [donor_sheet(DON)]
         r, inst = plan({"schema": None, "decision": "B"})
         check(any(i["letter"] == "B" and i["rel"] == "swanimals/Kite/Kite_east.png" for i in inst)
               and not any("RSW_Kite:" in c for c in r["conflicts"]),
-              f"7 schema 1: his lane was a donor's (ships nothing of ours), today's lane is new: routed as before, "
-              f"no refusal ({inst} / {r['conflicts']})")
+              f"7p schema 1: donor lane, def repointed to today's lane, same pictures: routed ({inst} / {r['conflicts']})")
         r, inst = plan({"decision": "B", "slots": {DON: slot("B")}})
-        check(not any(i["rel"].startswith("Things/Pawn/Animal/Donorbeast/") for i in inst)
-              and not any("RSW_Kite:" in c and "names a lane" in c for c in r["conflicts"]),
-              f"7 ...a slot keyed by that donor lane: no refusal, nothing written at the donor path "
+        check(any(i["letter"] == "B" and i["rel"] == "swanimals/Kite/Kite_east.png" for i in inst)
+              and not any(i["rel"].startswith("Things/Pawn/Animal/Donorbeast/") for i in inst)
+              and not any("RSW_Kite:" in c for c in r["conflicts"]),
+              f"7p ...the same as a slot keyed by the donor lane: routed to today's lane ({inst} / {r['conflicts']})")
+        h = donor_sheet(DON)
+        h["rows"]["RSW_Kite"]["columns"]["B"] = {"east": "1" * 64}        # B showed other pictures when he clicked
+        history[:] = [h]
+        r, inst = plan({"schema": None, "decision": "B"})
+        check(not any(i["letter"] == "B" for i in inst) and any(
+            c.startswith("RSW_Kite: pick B ") and "refused" in c for c in r["conflicts"]),
+              f"7p ...but not when B showed other pictures on the sheet he clicked on ({inst} / {r['conflicts']})")
+        # 7t the donor lane is STILL a lane today (a vanilla placeholder column kept on the row; floodedcanyon
+        # RM_Tarruq B, Monkey -> RM_Tarruq): with the proof it routes, without it is the both-lanes-exist refusal
+        kr["columns"]["Q"], kr["graphic_of"]["Q"], kr["labels"]["Q"] = {"east": "2" * 64}, DON, "donor original"
+        sp.write_text(json.dumps(snap))
+        try:
+            history[:] = [donor_sheet(DON)]
+            r, inst = plan({"schema": None, "decision": "B"})
+            history[:] = [donor_sheet(AD)]
+            r2, inst2 = plan({"schema": None, "decision": "B"})
+        finally:
+            for k in ("columns", "graphic_of", "labels"):
+                kr[k].pop("Q", None)
+            sp.write_text(json.dumps(snap))
+        check(any(i["letter"] == "B" and i["rel"] == "swanimals/Kite/Kite_east.png" for i in inst)
+              and not any("RSW_Kite:" in c for c in r["conflicts"]),
+              f"7t donor lane still on today's sheet, def repointed: routed (Tarruq B) ({inst} / {r['conflicts']})")
+        check(not any(i["letter"] == "B" for i in inst2) and any(
+            c.startswith("RSW_Kite: pick B ") and "refused" in c for c in r2["conflicts"]),
+              f"7t ...without the proof: refused ({inst2} / {r2['conflicts']})")
+
+        # 9 KEYED schema-1 picks (picks{lane: L}) get the same guards as a decision (ENACT_KEYED_PICK_FIX_MOVED_LANE;
+        # greentide RSW_Hawkbat G, RSW_PekoPeko E)
+        history[:] = [older({"A": AD, "B": AD, "C": AD, "Y": AD})]
+        r, inst = plan({"schema": None, "picks": {AD: "Y"}})
+        check(not any(i["letter"] == "Y" for i in inst)
+              and any(c.startswith("RSW_Kite: pick Y ") and "refused" in c and "Kite_young" in c for c in r["conflicts"])
+              and not any("pick Y" in x for x in r["plan"].get("lane_resolved", [])),
+              f"9 keyed {{AD: Y}}, Y re-filed under the young lane today, both lanes exist: refused, installed at "
+              f"neither ({inst} / {r['conflicts']})")
+        h = older({"A": AD, "B": AD, "C": AD, "Y": KY})
+        h["rows"]["RSW_Kite"]["columns"]["B"] = {"east": "3" * 64}
+        history[:] = [h]
+        r, inst = plan({"schema": None, "picks": {AD: "B"}})
+        check(not any(i["letter"] == "B" for i in inst)
+              and any(c.startswith("RSW_Kite: pick B ") and "refused" in c for c in r["conflicts"]),
+              f"9b keyed {{AD: B}}, B still under AD today but other pictures on the clicked sheet: refused "
               f"({inst} / {r['conflicts']})")
+        history[:] = [older({"A": AD, "B": AD, "C": AD, "Y": KY})]
+        r, inst = plan({"schema": None, "picks": {AD: "B"}})
+        check(any(i["letter"] == "B" and i["rel"] == "swanimals/Kite/Kite_east.png" for i in inst)
+              and not any("RSW_Kite:" in c for c in r["conflicts"]),
+              f"9c keyed {{AD: B}} unchanged since the click: installs as before ({inst} / {r['conflicts']})")
+
+        # 10 revisions committed out of build order: the NEWEST build at or before the click is the sheet he saw, not
+        # the first one git log reaches (a clone pushing an older build later)
+        history[:] = [older({"A": AD, "B": OLD, "C": AD, "Y": KY}), older({"A": OLD, "B": OLD, "C": OLD, "Y": KY})]
+        history[0]["built"] = "2026-10-10T01:00:00-0700"     # 08:00Z, first in git order but the OLDER build
+        history[1]["built"] = "2026-10-10T02:30:00-0700"     # 09:30Z, the newest build before the 10:00Z click
+        r, inst = plan({"decision": "B", "slots": {OLD: slot("B")}})
+        check(any(i["letter"] == "B" and i["rel"] == "swanimals/Kite/Kite_east.png" for i in inst)
+              and not any("RSW_Kite:" in c for c in r["conflicts"]),
+              f"10 out-of-order revisions: the newest build at or before the click decides ({inst} / {r['conflicts']})")
 
         gof0, res0 = kr.pop("graphic_of"), kr.pop("res")    # today's row carries no lane data at all
         sp.write_text(json.dumps(snap))

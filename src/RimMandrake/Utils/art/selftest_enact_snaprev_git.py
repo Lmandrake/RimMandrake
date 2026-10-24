@@ -6,7 +6,10 @@ A temporary git repo under the scratch root holds one snapshot file committed th
 rev2 (bytes that are not UTF-8 JSON — a corrupt or binary revision), rev3 (built 2026-10-05); the disk copy is built
 2026-10-09 (a rebuild after every click below).
 
-  1 a click after rev3 was built resolves to rev3 and reads ONE revision (`git show` once): newest first, stops early;
+  1 a click after rev3 was built: git order is not build order (ENACT_KEYED_PICK_FIX_MOVED_LANE), so the whole bounded
+    window is read for the newest build at or before the click — and unreadable rev2, whose build time is unknown, could
+    be that build, so the answer is None with rev2 named (it used to stop at rev3, reading one revision);
+  1b ...with the window bounded to rev3 alone (SNAP_REV_MAX=1) the same click resolves to rev3, one `git show`;
   2 a click between rev1 and rev3: the walk meets unreadable rev2 before it can reach rev1 — no exception, the answer is
     None and the reason names the revision (it may be the one he saw, so nothing older stands in for it);
   3 a click before every readable build: None, the reason naming the unreadable revision (it could be older still);
@@ -83,8 +86,14 @@ def main():
             return [c for c in calls if "show" in c]
 
         (s, why) = ruled("2026-10-06T00:00:00Z")
-        check(bool(s) and s.get("tag") == "rev3", f"1 a click after rev3 resolves to rev3 ({s and s.get('tag')}, {why})")
-        check(len(shows()) == 1, f"1 ...reading one revision only, lazily ({len(shows())} git show)")
+        h2 = git(root, "log", "--format=%H", "-n", "1", "--skip", "1").strip()
+        check(s is None and h2[:10] in (why or "") and "unreadable" in (why or ""),
+              f"1 a click after rev3, unreadable rev2 in the window: None, rev2 named ({s and s.get('tag')}, {why})")
+        E.SNAP_REV_MAX = 1
+        (s, why) = ruled("2026-10-06T00:00:00Z")
+        check(bool(s) and s.get("tag") == "rev3" and len(shows()) == 1,
+              f"1b ...a window of rev3 alone resolves to rev3, one git show ({s and s.get('tag')}, {len(shows())}, {why})")
+        E.SNAP_REV_MAX = max0
 
         try:
             (s, why) = ruled("2026-10-03T00:00:00Z")
@@ -92,7 +101,6 @@ def main():
         except Exception as e:  # noqa: BLE001 — the point of the case
             ok, s, why = False, None, f"{type(e).__name__}: {e}"
         check(ok and s is None, f"2 a bad revision on the way to the answer: no crash, no stand-in ({s}, {why})")
-        h2 = git(root, "log", "--format=%H", "-n", "1", "--skip", "1").strip()
         check(h2[:10] in (why or "") and "unreadable" in (why or ""),
               f"2 ...the reason names the unreadable revision {h2[:10]} ({why})")
 
