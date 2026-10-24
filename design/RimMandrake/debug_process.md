@@ -333,3 +333,13 @@ Basis: pass 7 (pass 7, 2026-10-13: a test colony starved during long tick advanc
 - **Otherwise decompose.** When compression cannot reach it, verify each component separately and record the integrated whole as **INFERRED**, naming the components it rests on. INFERRED is an accepted verdict, not a gap to chase.
 - **No long runs (owner, 2026-10-13, typed: *"Go back to building and testing things you can directly measure. No more long runs, ok?"*).** Long multi-suite live passes and long game-time waits are not started; work is built and tested in pieces that can be measured directly.
 - **Never chase one hard property for hours.** A mod whose other rows check out is not held hostage by one very-hard-to-demonstrate property. Most mods will have some of these items by necessity. Rows of this kind say so in their contract instead of reading UNMEASURED forever.
+
+## Every owner-found defect becomes a permanent test — owner, 2026-10-24
+
+*"Please find ways to test for those defects in your own offline and in-game testing from now on, so we don't repeat
+mistakes."* A defect the owner finds in a review is not closed by its fix alone: it also gets a machine check that FAILS
+on the old behaviour and PASSES on the fix — an offline selftest (wired into `run_selftests.py`, so the nightly sweep
+runs it) and, where the symptom is live-observable, an in-game proof row. Taste calls add an art-judge criteria-ledger
+entry. Before showing him anything, run these checks so the same class of defect never reaches him twice. Worked set:
+`infrastructure/state/evidence/owner_review_FW_20261024.md` (pits/water, pipe joins, sprinklers, gates that never open,
+recoloured bridges, unnumbered stations).
