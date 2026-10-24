@@ -775,7 +775,10 @@ def gof_resolved(srow: dict, letter: str) -> str | None:
 # (graphic_of), so the snapshot file on disk — and snapshot_by_id — can be a later build than the one he clicked on.
 # A slot key or a letter's lane from that earlier build installs at the OLD path (ENACT_STALE_SLOT_KEY_MIGRATE_PATH:
 # an RM_BrineElder pick keyed by RM_SaltChimney's texPath; SHEET_SCHEMA1_FIX_MOVED_LETTER). Enact therefore reads the
-# revision he saw (built at or before his click) and resolves the lane through it, or refuses by name. The record is
+# revision he saw (built at or before his click) and resolves the lane through it ONLY for a proved rename, else
+# refuses by name: a letter moved between two lanes that both exist, a sheet he saw that cannot be read (no copy, an
+# unreadable git revision), or a row with no lane data today is refused — never routed by either sheet's lane
+# (ENACT_SCHEMA1_MOVE_FIX_OLD_LANE, ENACT_SNAPREV_GIT_HARDEN_READS). The record is
 # never rewritten: the resolution is derived on every run and reported in the plan (`lane_resolved`). Left as before:
 # a pick whose pictures all ship already (nothing is copied), and an old lane where nothing of ours ships (a donor's:
 # the install step sends it to the row's own path) unless the letter moved into a lane that already existed.
@@ -791,47 +794,86 @@ def _when(s) -> float | None:
         return None
 
 
-def snapshot_revisions(snap_path: Path) -> list[dict]:
-    """Every version of a snapshot file: the one on disk, then each git revision, newest first (cached)."""
+SNAP_REV_MAX = 40          # git revisions of one snapshot file ever read (git on D: is slow; older ones are not his)
+SNAP_GIT_TIMEOUT = 30      # seconds per git call; a timeout is a reason, never a crash (ENACT_SNAPREV_GIT_HARDEN_READS)
+
+
+def _git_snap(args: list) -> tuple[bytes | None, str]:
+    try:
+        r = subprocess.run(["git", "-C", str(L.REPO_ROOT), *args], capture_output=True, timeout=SNAP_GIT_TIMEOUT)
+    except subprocess.TimeoutExpired:
+        return None, f"git {args[0]} timed out after {SNAP_GIT_TIMEOUT}s"
+    except (OSError, subprocess.SubprocessError) as e:
+        return None, f"git {args[0]} failed ({type(e).__name__})"
+    if r.returncode:
+        return None, f"git {args[0]} exit {r.returncode}: {r.stderr.decode('utf-8', 'replace').strip()[:80]}"
+    return r.stdout, ""
+
+
+def snapshot_revisions(snap_path: Path):
+    """Every version of a snapshot file, newest first and read LAZILY: the one on disk, then at most SNAP_REV_MAX git
+    revisions, each `git show` run only when the walk reaches it (memoised per file). A revision that cannot be read
+    or parsed (timeout, bad bytes, not JSON) is yielded as {"_unreadable": why} instead of raising or vanishing: it
+    might be the build he saw, so the caller must not let an older one stand in for it."""
     key = str(snap_path)
-    if key in _SNAP_REVS:
-        return _SNAP_REVS[key]
-    out = []
-    try:
-        out.append(json.loads(Path(snap_path).read_text()))
-    except (OSError, ValueError):
-        pass
-    try:
-        rel = Path(snap_path).resolve().relative_to(L.REPO_ROOT).as_posix()
-        revs = subprocess.run(["git", "-C", str(L.REPO_ROOT), "log", "--format=%H", "--", rel],
-                              capture_output=True, text=True, timeout=60).stdout.split()
-    except (ValueError, OSError, subprocess.SubprocessError):
-        revs = []
-    for h in revs:
-        r = subprocess.run(["git", "-C", str(L.REPO_ROOT), "show", f"{h}:{rel}"], capture_output=True, text=True,
-                           timeout=60)
-        if r.returncode:
-            continue
+    memo = _SNAP_REVS.setdefault(key, {"disk": None, "hashes": None, "docs": {}})
+    if memo["disk"] is None:
         try:
-            out.append(json.loads(r.stdout))
-        except ValueError:
-            continue
-    _SNAP_REVS[key] = out
-    return out
+            memo["disk"] = json.loads(Path(snap_path).read_text())
+        except (OSError, ValueError):
+            memo["disk"] = {}
+    if memo["disk"]:
+        yield memo["disk"]
+    if memo["hashes"] is None:
+        try:
+            rel = Path(snap_path).resolve().relative_to(L.REPO_ROOT.resolve()).as_posix()
+        except (ValueError, OSError):
+            rel = None
+        memo["rel"] = rel
+        if rel is None:
+            memo["hashes"] = []
+        else:
+            out, why = _git_snap(["log", "--format=%H", "-n", str(SNAP_REV_MAX), "--", rel])
+            memo["hashes"] = out.decode("ascii", "replace").split() if out is not None else [("", why)]
+    for h in memo["hashes"]:
+        if isinstance(h, tuple):                  # git log itself failed: the history is unknown, not empty
+            yield {"_unreadable": h[1]}
+            return
+        if h not in memo["docs"]:
+            raw, why = _git_snap(["show", f"{h}:{memo['rel']}"])
+            doc = None
+            if raw is not None:
+                try:
+                    doc = json.loads(raw.decode("utf-8"))
+                    why = "" if isinstance(doc, dict) else "not a JSON object"
+                except (UnicodeDecodeError, ValueError) as e:
+                    why = f"not UTF-8 JSON ({type(e).__name__})"
+            memo["docs"][h] = doc if not why else {"_unreadable": f"revision {h[:10]} unreadable: {why}"}
+        yield memo["docs"][h]
 
 
-def ruled_snapshot(snap_path: Path, cur: dict, rev: str | None, at) -> dict | None:
-    """The snapshot he saw when he clicked at `at`: `cur` when it was built no later than that, else the newest
-    revision built at or before the click (one with his record's `rev` as snapshotId first). None: not provable."""
+def ruled_snapshot(snap_path: Path, cur: dict, at) -> tuple[dict | None, str]:
+    """(snapshot he saw when he clicked at `at`, why-not): `cur` when it was built no later than that, else the NEWEST
+    revision built at or before the click — walking newest first and stopping there (revisions are committed in build
+    order). The record's `rev` is not consulted: a superset rebuild keeps the snapshotId, and real schema-1 records carry
+    a `rev` older than the sheet they were clicked on (abyss RM_Cindermare: rev names a build with column A only, the
+    click is B), so preferring it walked past the sheet he saw. (None, why) when it cannot be proved: no click time, no
+    copy built that early, or an UNREADABLE revision reached before the answer (it may be the one he saw)."""
     t = _when(at)
     if t is None:
-        return None
+        return None, "the record has no click time"
     b = _when(cur.get("built"))
     if b is not None and b <= t:
-        return cur
-    seen = [s for s in snapshot_revisions(snap_path) if (_when(s.get("built")) or float("inf")) <= t]
-    seen.sort(key=lambda s: _when(s.get("built")), reverse=True)
-    return next((s for s in seen if rev and s.get("snapshotId") == rev), None) or (seen[0] if seen else None)
+        return cur, ""
+    for s in snapshot_revisions(snap_path):
+        if s.get("_unreadable"):
+            return None, f"a copy of the sheet newer than any readable one is unreadable ({s['_unreadable']})"
+        w = _when(s.get("built"))
+        if w is not None and w <= t:
+            return s, ""
+    if b is None:
+        return None, "today's sheet carries no build time and no copy built at or before your click is on disk or in git"
+    return None, "no copy of the sheet you clicked on (built at or before your click) is on disk or in git"
 
 
 def lanes_of(srow: dict) -> set:
@@ -1035,14 +1077,23 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                 between two lanes of the row (a juvenile set filed under the adult), not a rename"""
                 now = gof_resolved(srow, letter)
                 return bool(rrow) and bool(now) and now != old and now in lanes_of(rrow)
-            for g in [g for g, st in v2_slots.items() if st.get("state") == "pick" and lanes_now and g not in lanes_now
+            no_lanes = ("today's sheet has no lane data for this row (no graphic_of, no res), so the key cannot be "
+                        "checked against it")
+            for g in [g for g, st in v2_slots.items() if st.get("state") == "pick" and g not in lanes_now
                       and not all_live(st.get("pick"))]:
                 st = v2_slots.pop(g)
                 letter = st.get("pick")
-                ruled = ruled_snapshot(snap_path, snap, v.get("rev"), st.get("at") or v.get("decidedAt") or v.get("at"))
+                if not lanes_now:
+                    # a row without lane data used to skip this check and install at the key's path unchecked
+                    stale_refused.add(letter)
+                    P["conflicts"].append(f"{row}: slot {g} pick {letter}: {no_lanes} — refused, nothing installed "
+                                          f"for it; rebuild the sheet, then pick again")
+                    continue
+                ruled, rwhy = ruled_snapshot(snap_path, snap,
+                                             st.get("at") or v.get("decidedAt") or v.get("at"))
                 rrow = ((ruled or {}).get("rows") or {}).get(row) or {}
                 if not rrow:
-                    new, why = None, "no copy of the sheet you clicked on is on disk or in git"
+                    new, why = None, rwhy or "the sheet you clicked on has no such row"
                 elif (rrow.get("columns") or {}).get(letter) != cols.get(letter):
                     new, why = None, f"{letter} is not the same pictures on today's sheet"
                 elif gof_resolved(rrow, letter) != g and assign.get(letter) != g:
@@ -1094,22 +1145,56 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                 picks = {g: l for g, l in picks.items() if l not in foreign or g in own_lane}
             # a row pick (`decision`) or a per-graphic `picks{lane}` (schema 1, or a migrated view) is routed by today's
             # snapshot above; if the sheet was rebuilt after his click and the letter's lane moved or was renamed, route
-            # it by the sheet he clicked on (SHEET_SCHEMA1_FIX_MOVED_LETTER), or refuse by name
+            # it by the sheet he clicked on (SHEET_SCHEMA1_FIX_MOVED_LETTER) only when that is a PROVED rename, else refuse
+            # by name. A letter whose lane cannot be proven unchanged is never routed by the rebuilt sheet's lane
+            # (ENACT_SCHEMA1_MOVE_FIX_OLD_LANE): a wrong texture installed is the worst outcome, a refusal costs a click.
             from_slot = {g for g, st in v2_slots.items() if st.get("state") == "pick" and picks.get(g) == st.get("pick")}
             keyed = {g: l for g, l in (ov.get("picks") or {}).items() if g != "_byname"}
-            ruled1 = None
+            ruled1, rwhy1 = None, ""
             for g, letter in sorted(picks.items()):
-                if g in from_slot or not lanes_now or all_live(letter):
+                if g in from_slot or all_live(letter):
+                    continue
+                if not lanes_now:
+                    picks.pop(g)
+                    P["conflicts"].append(f"{row}: pick {letter} for {g}: {no_lanes} — refused, nothing installed for "
+                                          f"it; rebuild the sheet, then pick again")
                     continue
                 if ruled1 is None:
-                    ruled1 = ruled_snapshot(snap_path, snap, v.get("rev"), v.get("decidedAt") or v.get("at")) or {}
+                    ruled1, rwhy1 = ruled_snapshot(snap_path, snap, v.get("decidedAt") or v.get("at"))
+                    ruled1 = ruled1 or {}
                 rrow = (ruled1.get("rows") or {}).get(row) or {}
                 same = letter in (rrow.get("columns") or {}) and rrow["columns"][letter] == cols.get(letter)
                 intended = g if keyed.get(g) == letter else (gof_resolved(rrow, letter) if same else None)
                 if intended == g and g in lanes_now:
-                    continue
+                    continue        # the lane it had on the sheet he saw is today's lane: proved unchanged
                 if intended is None and g in lanes_now:
-                    continue        # cannot be verified against the sheet he saw: routed as before (remap owns letters)
+                    # the sheet was rebuilt after his click and the sheet he saw cannot be read, or shows other
+                    # pictures under this letter: the lane cannot be proven unchanged. This used to be routed by the
+                    # rebuilt sheet's lane.
+                    picks.pop(g)
+                    why = (rwhy1 if not rrow else
+                           f"{letter} is not the same pictures there as on today's sheet" if letter in (
+                               rrow.get("columns") or {}) else f"{letter} is not a set of this row there")
+                    P["conflicts"].append(f"{row}: pick {letter} is filed under {g.rsplit('/', 1)[-1]} on today's sheet, "
+                                          f"which is not provably the one you clicked on, and its lane there "
+                                          f"cannot be proved: {why} — refused, nothing installed for it; pick again on "
+                                          f"the current sheet")
+                    continue
+                if intended and intended != g and intended in lanes_now and g in lanes_now:
+                    # moved between two lanes that both exist today (a set re-filed by the rebuild, e.g. a juvenile set
+                    # filed under the adult): neither lane is proved — the old one is where the rebuild says the
+                    # pictures do not belong, the new one is not where he clicked. Schema 2's slot guard refuses the
+                    # same click; schema 1 agrees.
+                    picks.pop(g)
+                    was, now = intended.rsplit('/', 1)[-1], g.rsplit('/', 1)[-1]
+                    if was == now:      # two texPaths with one file name (greentide RSW_Fambaa): name them in full
+                        was, now = intended, g
+                    P["conflicts"].append(f"{row}: pick {letter} was a set of {was} on the sheet "
+                                          f"you clicked on (built {ruled1.get('built')}); today's sheet files it under "
+                                          f"{now} and both lanes exist, so which one it belongs to "
+                                          f"cannot be proved — refused, installed at neither; pick again on the current "
+                                          f"sheet")
+                    continue
                 if intended and not ships(intended, letter) and not moved_in(rrow, intended, letter):
                     continue        # his lane was a donor's (or a path that ships nothing now): no lane of ours to keep
                 new, why = resolve_ruled_lane(rrow, srow, intended) if (same and intended) else (

@@ -86,6 +86,8 @@ def main():
         check(not any(i["letter"] == "R" for i in inst)
               and any(c.startswith("RSW_Kite: slot Kite pick R is an unassigned render") for c in r["conflicts"]),
               f"5 a by-name render never assigned to the adult slot (two lanes) is refused by name ({r['conflicts']})")
+        snap["built"] = "2026-10-12T00:00:00Z"   # an older build's key: today's sheet was rebuilt after his click
+        sp.write_text(json.dumps(snap))
         r = plan({"decision": "B", "slots": {"oldfolder/Kite/Kite": slot("B")}})
         inst = [i for i in r["plan"]["install"] if i["row"] == "RSW_Kite"]
         check(not any(i["rel"].startswith("oldfolder/") for i in inst)
