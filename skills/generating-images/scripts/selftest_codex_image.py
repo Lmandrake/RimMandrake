@@ -396,6 +396,73 @@ def test_resized_foreign_copy() -> None:
         ci.HARVEST_GRACE_S = real_grace
 
 
+def noise_texture_png(path: Path, seed: int, base=(110, 80, 50), jitter: int = 30, w: int = 128,
+                      h: int = 128) -> Path:
+    """An opaque full-canvas noise tile around one base colour: what two independent renders of similar
+    terrain (rich soil, packed snow) look like - the same average everywhere, no shared structure."""
+    import random
+    from PIL import Image
+    rnd = random.Random(seed)
+    im = Image.new("RGBA", (w, h))
+    im.putdata([tuple(max(0, min(255, c + rnd.randint(-jitter, jitter))) for c in base) + (255,)
+                for _ in range(w * h)])
+    path.parent.mkdir(parents=True, exist_ok=True)
+    im.save(path)
+    return path
+
+
+def test_lookalike_texture_not_foreign() -> None:
+    """ART_GUARD_RESIZE_VET_UNREVIEWED: two INDEPENDENT renders of look-alike terrain (measured 2026-10-24:
+    dregen BankSilt_Rich vs FE_Ground SoilRich 1.81, PackedIce vs PackedSnow 3.59) sit inside the 16x16
+    picture distance of a resized copy; the guard must not call this run's own post-processed render a
+    foreign copy of the other one. A resized copy of the texture itself is still caught."""
+    real_run_codex, real_base = ci.run_codex, ci.base_codex_home
+    real_grace = ci.HARVEST_GRACE_S
+    try:
+        with tempfile.TemporaryDirectory() as td:
+            td = Path(td)
+            home = td / "codexhome"
+            (home / ci.GENERATED_SUBDIR).mkdir(parents=True)
+            ci.base_codex_home = lambda: home
+            ci.HARVEST_GRACE_S = 0.0
+            other = noise_texture_png(td / "otherhome" / ci.GENERATED_SUBDIR / "old" / "soil_a.png", 11)
+            mine = noise_texture_png(td / "probe" / "soil_b.png", 12)
+            d = ci._thumb_dist(ci._thumb(other), ci._thumb(mine))
+            check("precondition: the two independent soils are inside the coarse distance",
+                  d <= ci.FOREIGN_NEAR, f"{d:.2f}")
+
+            def own_render_resized(prompt, images, workdir, timeout, verbose, model=None, hm=None,
+                                   reasoning_effort=None, **_kw):
+                own = home / ci.GENERATED_SUBDIR / "s1" / "exec-1.png"
+                own.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(mine, own)
+                resized_copy(own, Path(workdir) / "soil.png", (64, 64))   # the agent fits it to the canvas
+                return 0, "", False
+            ci.run_codex = own_render_resized
+            out = td / "soil.png"
+            rc = ci.do_image(args_for(out))
+            check("this run's own resized soil is kept, not set aside as a copy of a look-alike",
+                  rc == 0 and ci.png_info(out)["width"] == 64 and not (td / "soil.foreign.png").exists(),
+                  f"rc={rc}")
+
+            def copies_other(prompt, images, workdir, timeout, verbose, model=None, hm=None,
+                             reasoning_effort=None, **_kw):
+                own = home / ci.GENERATED_SUBDIR / "s2" / "exec-2.png"
+                own.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(mine, own)
+                resized_copy(other, Path(workdir) / "soil2.png", (64, 64))
+                return 0, "", False
+            ci.run_codex = copies_other
+            out2 = td / "soil2.png"
+            rc = ci.do_image(args_for(out2))
+            check("a resized copy of the look-alike texture itself is still caught",
+                  rc == 0 and ci.png_info(out2)["width"] == 128 and (td / "soil2.foreign.png").is_file(),
+                  f"rc={rc}")
+    finally:
+        ci.run_codex, ci.base_codex_home = real_run_codex, real_base
+        ci.HARVEST_GRACE_S = real_grace
+
+
 def test_force_regen_failure_does_not_report_stale_success() -> None:
     """--out already exists (only possible with --force) and the regen fails.
 
@@ -1063,7 +1130,7 @@ def test_ensure_home_sandbox_guard() -> None:
 
 def main() -> int:
     for fn in (test_prompt, test_staging_round_trip, test_run_codex_timeout, test_reasoning_effort_flag,
-               test_timeout_still_harvests, test_resized_foreign_copy,
+               test_timeout_still_harvests, test_resized_foreign_copy, test_lookalike_texture_not_foreign,
                test_force_regen_failure_does_not_report_stale_success,
                test_output_schema_passthrough,
                test_harvest_grace,

@@ -936,6 +936,18 @@ def _preexisting_twin(out: Path, home: Path, before: set[Path], entries=None) ->
 # source to a square is not undone - that case is still only caught if the crop leaves the thumbnail near.
 FOREIGN_THUMB_N = 16
 FOREIGN_NEAR = 4.0
+# 🔴 ART_GUARD_RESIZE_VET_UNREVIEWED: the 16x16 distance alone is NOT proof. Two independent renders of
+# look-alike full-canvas terrain average to the same colour per cell: MEASURED 2026-10-24 over 5,205 artpipe
+# outputs, independent codex dregen tiles sit 1.81 (BankSilt_Rich vs FE_Ground SoilRich), 2.73, 3.59
+# (PackedIce vs PackedSnow) - inside FOREIGN_NEAR. A coarse match is therefore CONFIRMED on shared detail:
+# both pictures alpha-bbox cropped to 32x32 grey, minus a radius-2 box blur, Pearson-correlated. Copies
+# (resized, padded, recompressed) measured 0.96-1.00, and a 2x downscale of pure per-pixel noise (the worst
+# case: all its detail is at the finest scale) 0.90; independent look-alike codex terrain -0.03..0.05. The
+# bar sits between them. Wing frames of one flyer (0.66, 0.83; provenance unknown) were already inside
+# FOREIGN_NEAR before this check and stay so. Pictures with no detail at all (flat fills) cannot be
+# confirmed either way and keep the coarse verdict. Evidence: /mnt/d/ClaudeWork/rimmandrake/guard_vet/.
+FOREIGN_DETAIL_N = 32
+FOREIGN_DETAIL_CORR = 0.5
 # Decoding one cache render on /mnt/c costs ~50 ms and the worker caches hold ~11k of them, so thumbnails
 # are kept in a per-root index (keyed on size + mtime) and only new files are decoded. A cold index is
 # filled newest-first - an agent that goes looking takes "the newest PNG" - within this budget.
@@ -978,6 +990,40 @@ def _thumb(p: Path) -> bytes | None:
 
 def _thumb_dist(a: bytes, b: bytes) -> float:
     return sum(abs(x - y) for x, y in zip(a, b)) / len(a)
+
+
+def _detail(p: Path) -> list[int] | None:
+    """The fine-structure signature of an image file for confirming a coarse match (see
+    FOREIGN_DETAIL_CORR): alpha-bbox crop, FOREIGN_DETAIL_N square grey over mid-grey, minus its own box
+    blur. None if it cannot be decoded or is fully transparent."""
+    Image = _pil_image()
+    if Image is None:
+        return None
+    try:
+        from PIL import ImageFilter
+        with Image.open(p) as im:
+            im = im.convert("RGBA")
+    except Exception:  # noqa: BLE001 - same tolerance as _thumb
+        return None
+    bbox = im.getchannel("A").point(lambda v: 255 if v > 16 else 0).getbbox()
+    if bbox is None:
+        return None
+    n = FOREIGN_DETAIL_N
+    im = im.crop(bbox).resize((n, n), Image.BOX)
+    grey = Image.alpha_composite(Image.new("RGBA", im.size, (128, 128, 128, 255)), im).convert("L")
+    return [a - b for a, b in zip(grey.tobytes(), grey.filter(ImageFilter.BoxBlur(2)).tobytes())]
+
+
+def _detail_corr(a: list[int], b: list[int]) -> float | None:
+    """Pearson correlation of two _detail signatures; None when either has no detail to compare."""
+    n = len(a)
+    ma, mb = sum(a) / n, sum(b) / n
+    va = [x - ma for x in a]
+    vb = [y - mb for y in b]
+    na, nb = sum(x * x for x in va) ** 0.5, sum(y * y for y in vb) ** 0.5
+    if na < n ** 0.5 or nb < n ** 0.5:      # under one grey level of detail per pixel: a flat fill
+        return None
+    return sum(x * y for x, y in zip(va, vb)) / (na * nb)
 
 
 class _ThumbIndex:
@@ -1058,13 +1104,22 @@ def _near_copy(out: Path, entries, inputs, layout_out: Path) -> tuple[Path, floa
     if mine is None:
         return None
     refs = [t for t in (_thumb(Path(i)) for i in inputs) if t is not None]
+    mine_detail: list = []
 
-    def match(t: bytes | None) -> float | None:
+    def match(p: Path, t: bytes | None) -> float | None:
         if t is None:
             return None
         d = _thumb_dist(mine, t)
         if d > FOREIGN_NEAR or any(_thumb_dist(t, r) <= FOREIGN_NEAR for r in refs):
             return None
+        # Coarse look-alike: confirm on shared fine detail (FOREIGN_DETAIL_CORR) before calling it a copy.
+        if not mine_detail:
+            mine_detail.append(_detail(out))
+        theirs = _detail(p)
+        if mine_detail[0] is not None and theirs is not None:
+            c = _detail_corr(mine_detail[0], theirs)
+            if c is not None and c < FOREIGN_DETAIL_CORR:
+                return None
         return d
 
     indexes: dict[Path, _ThumbIndex] = {}
@@ -1081,7 +1136,7 @@ def _near_copy(out: Path, entries, inputs, layout_out: Path) -> tuple[Path, floa
                     continue
                 t = _thumb(p)
                 idx.put(p, st, t)
-            d = match(t)
+            d = match(p, t)
             if d is not None:
                 return p, d
     finally:
@@ -1095,7 +1150,7 @@ def _near_copy(out: Path, entries, inputs, layout_out: Path) -> tuple[Path, floa
             print(f"note: foreign-copy guard ran out of its {FOREIGN_THUMB_BUDGET_S:.0f}s budget; "
                   f"{unread} older cache image(s) were not compared by picture", file=sys.stderr)
     for p in _peer_outputs(layout_out):
-        d = match(_thumb(p))
+        d = match(p, _thumb(p))
         if d is not None:
             return p, d
     return None
