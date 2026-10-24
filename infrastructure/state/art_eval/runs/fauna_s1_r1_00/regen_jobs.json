@@ -1,0 +1,36 @@
+[
+ {
+  "id": "arteval_RM_Crustweevil__s1r1_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Crustweevil",
+  "prompt": "A single tiny crustweevil, a lichen-grazing weevil at centimetre scale, in painterly vanilla RimWorld sprite style, realistic, with a clean dark outline, on a fully transparent background. Draw it from a low oblique game camera, the same camera elevation and the same scale in every facing. The body is a flat, wide, shallow carapace like a thin lid laid on the ground. Its height is about a quarter of its width, the top is nearly level with only a gentle rise along the midline, and the rim skirts the surface. The shell is earthy brown-grey, with small patches of soil crust and pale grey-green lichen growing on its back, so it reads as part of the crust it grazes. The shell fills about 80% of the canvas width and sits centred. The head ends in a broad, flat, wide grazing mouth plate pressed down to ground level, with a short blunt muzzle. Under the mouth plate it holds a small compact tuft of pale grey-green lichen, its near edge eaten back in a neat, clearly cropped, bare-crust scallop that shows it grazing the surface. Six short legs fold in along the edges of the shell in a walking pose, with short antennae at the head. The space beneath the body, legs and mouth is fully transparent, with no ground or soil beyond the creature's own silhouette. South view: front view, eyes toward the viewer, the mouth plate and lichen tuft in front. East view: side profile facing right, the low flat shell in profile. North view: rear view, seen from behind, showing the rear rim of the flat shell, the haunches and the rear legs at the sides, the top of the shell foreshortened to a thin band, the head and eyes hidden, drawn at the same shell width and height as south.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: DEPARTURE_MISSING, F_TOPDOWN, F_SIZE_JUMP, DEPARTURE_MISSING, DEPARTURE_MISSING, F_TOPDOWN, F_SIZE_JUMP, DEPARTURE_MISSING, ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_s1_r1_00"
+ },
+ {
+  "id": "arteval_RM_Dustflutter__s1r1_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Dustflutter",
+  "prompt": "RimWorld creature sprite, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. A dustflutter swarm: many identical small bodies erupting off the dirt in one sudden grey burst. The swarm is an irregular, asymmetric rising cloud: a dense knot of bodies on the ground at the bottom, thinning upward into scattered separate bodies at many different heights, each tilted at its own angle, with clear gaps of empty space between them so every silhouette reads on its own. On the front view (eyes toward the viewer) and the rear view (seen from behind) the cloud rises straight up and outward just like the side view, where it lifts along a diagonal. Each body is a thin, flattened, dust-coloured disc with a soft scalloped rim, like a pressed scrap of grey felt, with a wavy, slightly irregular round-to-teardrop contour. A continuous fringe of many fine, hair-thin bristle-legs edges the whole rim, dangling below the airborne bodies, and a tiny blunt head notch with two dull small eyes sits at one edge. The back is matte, felted, dusty grey with a faint soft ridge down the middle. The whole creature is one flat, dull ash-grey, the same colour as the dusty ground, with plain unmarked surfaces and no wings. The body plan is an alien dust-dweller of dry dirt, a low ground-hugging disc that reads as a swarm of lifted dust scraps rather than a single insect.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: DESC_MISS, STYLE_EARTHLY, DESC_MISS, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_s1_r1_00"
+ }
+]
