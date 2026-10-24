@@ -134,6 +134,12 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>Owner decision by question card 2026-10-06 (straight lead-out): arc length of the flat hose's lead-out (the
         /// straight run out of the nozzle plus the bend that joins it to the laid hose); 0 = no outlet.</summary>
         public double LeadOutLen;
+        /// <summary>HOSE_CURVE_REBUILD_SMOOTH_AS_PHYSICS: the poses are clothoid chains (G2, |kappa| &lt;= 1/R, exact length); when
+        /// false, G2Why says why the shaped poses were kept.</summary>
+        public bool G2;
+        public string G2Why;
+        /// <summary>The curvature limit the lay was shaped under (1/R) and the straight runs at its start (the lead-out) and end.</summary>
+        public double Kmax = 1 / 1.2, Lead0, Lead1;
     }
 
     public static class HoseMath
@@ -304,6 +310,13 @@ namespace RimMandrake.FlowWorks.Hose
         }
 
         private static double Dot(V2 a, V2 b) => a.X * b.X + a.Z * b.Z;
+
+        /// <summary>Smootherstep of x over [0, 1] (0 below, 1 above): value, slope and second derivative are 0 at both ends.</summary>
+        public static double SmootherStep(double x)
+        {
+            x = Geo.Clamp(x, 0, 1);
+            return x * x * x * (x * (6 * x - 15) + 10);
+        }
 
         /// <summary>Smoothstep: the blend eases in and out.</summary>
         public static double Ease(double b)
@@ -827,12 +840,12 @@ namespace RimMandrake.FlowWorks.Hose
                 }
                 if (!done) return new HoseLay { Reason = LeadOutBlocked, PathLen = L };
             }
-            return Finish(w, lay, p, Rig);
+            return Finish(w, lay, p, Rig, endInward, startOutward);
         }
 
         /// <summary>LayOnce's shared tail: joiners (rigid, straightened, dropped where they would touch a wall or a reel),
         /// lengths, bend radii and couplings. <paramref name="Rig"/> counts stray reel/pump cells as the caller judges them.</summary>
-        private static HoseLay Finish(CordWorld w, HoseLay lay, HoseShapeParams p, Func<List<V2>, int> Rig)
+        private static HoseLay Finish(CordWorld w, HoseLay lay, HoseShapeParams p, Func<List<V2>, int> Rig, V2? endInward, V2? startOutward)
         {
             lay.FlatLen = Geo.Length(lay.Flat);
             lay.PlumpLen = Geo.Length(lay.Plump);
@@ -860,6 +873,7 @@ namespace RimMandrake.FlowWorks.Hose
                 lay.Plump = q;
                 lay.Joints.Add(j);
             }
+            G2Fit(w, lay, p, Rig, endInward, startOutward);
             lay.FlatLen = Geo.Length(lay.Flat);
             lay.PlumpLen = Geo.Length(lay.Plump);
             lay.MinBendFlat = MinBendRadius(lay.Flat, EndSkip);
@@ -869,6 +883,77 @@ namespace RimMandrake.FlowWorks.Hose
             lay.Couplings.Add(lay.Flat[lay.Flat.Count - 1]);
             lay.Ok = true;
             return lay;
+        }
+
+        /// <summary>HOSE_CURVE_REBUILD_SMOOTH_AS_PHYSICS: off = the poses are left as the shaping stages made them. OFF in the
+        /// game until the clothoid solver is fast enough (2026-10-23: finite-difference Levenberg-Marquardt costs seconds per
+        /// lay); the offline ruler (`--hose-curves g2`) switches it on.</summary>
+        internal static bool G2On = false;
+        /// <summary>The fit's curvature limit as a fraction of 1/R (the ruler allows 1/R x 1.05 on its discrete stencil).</summary>
+        internal const double G2KappaMargin = 0.95;
+        /// <summary>Tracking weights tried in turn: a fit that drapes too far from the shaped pose (into a wall, over a reel) is
+        /// pulled back onto it.</summary>
+        private static readonly double[] G2TrackWeights = { 1, 8, 64 };
+
+        /// <summary>HOSE_CURVE_REBUILD_SMOOTH_AS_PHYSICS (owner 2026-10-23 22:15): the shaped flat and charged poses re-laid as
+        /// clothoid chains (HoseClothoid) of the hose's own length, so position, heading and curvature are continuous everywhere,
+        /// |curvature| stays under 1/R, the lead-out leaves the nozzle dead straight along its axis, the end arrives straight
+        /// along <paramref name="endInward"/>, and every joiner's run is straight. Both poses get the same material sampling
+        /// (the drawn transition lerps them index by index). A fit that is not feasible, or that touches a wall, a stray reel or
+        /// the body clearance the shaped pose had, is retried pulled closer to the shaped pose; if none holds, the shaped poses
+        /// are kept as they were.</summary>
+        private static void G2Fit(CordWorld w, HoseLay lay, HoseShapeParams p, Func<List<V2>, int> Rig, V2? endInward, V2? startOutward)
+        {
+            double R = Math.Max(0.45, p.MinBendRadius), kmax = G2KappaMargin / R;
+            lay.Kmax = 1 / R;
+            lay.Lead0 = lay.Outlet && startOutward.HasValue ? LeadOutStraight(p) : 0;
+            lay.Lead1 = endInward.HasValue ? HoseRelay.EndStraight : 0;
+            if (!G2On || lay.Flat.Count < 3) return;
+            double L = Geo.Length(lay.Flat);
+            if (L < 1.0) return;
+            double[] sF = Geo.CumLen(lay.Flat);
+            double half = JoinerHalf(VisibleWidth(1, p.PlumpAmount));
+            var spans = new List<(double, double)>();
+            var js = new List<double>();
+            foreach (int j in lay.Joints)
+            {
+                double s = sF[Math.Min(j, sF.Length - 1)];
+                js.Add(s);
+                spans.Add((s - half, s + half));
+            }
+            V2? a0 = null;
+            double lead0 = 0;
+            if (lay.Outlet && startOutward.HasValue) { a0 = startOutward.Value.Norm(); lead0 = LeadOutStraight(p); }
+            V2? a1 = endInward.HasValue ? endInward.Value.Norm() : (V2?)null;
+            double lead1 = a1.HasValue ? HoseRelay.EndStraight : 0;
+            int rigF = Rig(lay.Flat), rigP = Rig(lay.Plump);
+            double sk = lay.LeadOutLen > 0 ? LeadOutStraight(p) : EndSkip, bh = BodyHalf(p.PlumpAmount);
+            double gapF = BodyRuleOn ? Math.Min(bh, BodyGap(w, lay.Flat, sk, EndSkip)) : 0, gapP = BodyRuleOn ? Math.Min(bh, BodyGap(w, lay.Plump, sk, EndSkip)) : 0;
+            var why = new List<string>();
+            List<V2> Fit(List<V2> route, int rig0, double gap0)
+            {
+                foreach (double tw in G2TrackWeights)
+                {
+                    HoseClothoid.Result r = HoseClothoid.Fair(route, L, a0, lead0, a1, lead1, spans, kmax, tw);
+                    if (!r.Feasible) { why.Add("x" + tw + " " + r.Why); continue; }
+                    if (!Clear(w, r.Pts)) { why.Add("x" + tw + " touches a wall"); continue; }
+                    if (Rig(r.Pts) > rig0) { why.Add("x" + tw + " crosses a reel"); continue; }
+                    if (BodyRuleOn && BodyGap(w, r.Pts, sk, EndSkip) < gap0 - 1e-9) { why.Add("x" + tw + " body nearer a wall"); continue; }
+                    return r.Pts;
+                }
+                return null;
+            }
+            List<V2> f = Fit(lay.Flat, rigF, gapF);
+            if (f == null) { lay.G2Why = "flat pose: " + string.Join("; ", why); return; }
+            why.Clear();
+            List<V2> q = Fit(lay.Plump, rigP, gapP);
+            if (q == null || q.Count != f.Count) { lay.G2Why = "charged pose: " + string.Join("; ", why); return; }
+            double step = L / (f.Count - 1);
+            lay.Flat = f;
+            lay.Plump = q;
+            lay.Centre = ResampleN(lay.Centre, f.Count);
+            lay.Joints = js.Select(s => Math.Max(1, Math.Min(f.Count - 2, (int)Math.Round(s / step)))).ToList();
+            lay.G2 = true;
         }
 
         /// <summary>REEL_LINK_FIX_IGNORES_THE_OBVIOUS_PORT: a DirectJoin plan laid as drawn (see LayOnce's <c>shaped</c>). The plan
@@ -884,7 +969,7 @@ namespace RimMandrake.FlowWorks.Hose
             if (!Clear(w, C)) return new HoseLay { Reason = "no clear route (corners too tight for the hose)" };
             var lay = new HoseLay { PathLen = Geo.Length(C), Flat = C, Plump = new List<V2>(C), Centre = new List<V2>(C) };
             if (startOutward.HasValue) { lay.Outlet = true; lay.LeadOutLen = LeadOutStraight(p); }
-            return Finish(w, lay, p, Rig);
+            return Finish(w, lay, p, Rig, endInward, startOutward);
         }
 
         /// <summary>The slack pose: a seeded sinusoid across the planned centreline, ramped to zero over 1.5 cells at
@@ -1129,12 +1214,44 @@ namespace RimMandrake.FlowWorks.Hose
             for (int i = 0; i < n; i++) o.Add(lay.Flat[i] + (lay.Plump[i] - lay.Flat[i]) * e);
             if (!WobbleActive(ticksSinceChange, transitionTicks) || plumpAmount <= 0) return o;
             var w = new List<V2>(n);
+            // HOSE_CURVE_REBUILD_SMOOTH_AS_PHYSICS: on a G2 lay the wobble is off over the straight runs at the ends and fades in
+            // by a smootherstep over a cell (its offset, slope and curvature all start at zero), so it never bends a lead
+            double[] sm = lay.G2 ? Geo.CumLen(o) : null;
+            double Lm = lay.G2 ? sm[n - 1] : 0;
             for (int i = 0; i < n; i++)
             {
                 Geo.TanNorm(o, i, out V2 t, out V2 nn);
-                w.Add(o[i] + nn * Wobble(i / (double)(n - 1), ticksSinceChange, transitionTicks, plumpAmount));
+                double env = 1;
+                if (lay.G2) env = SmootherStep(sm[i] - lay.Lead0 - 0.25) * SmootherStep(Lm - sm[i] - lay.Lead1 - 0.25);
+                w.Add(o[i] + nn * (env * Wobble(i / (double)(n - 1), ticksSinceChange, transitionTicks, plumpAmount)));
             }
             return w;
+        }
+
+        /// <summary>HOSE_CURVE_REBUILD_SMOOTH_AS_PHYSICS: the centreline DrawAll meshes for a laid hose (before a mate and the
+        /// outlet trim), Verse-free so HoseCurveChecks measures the production draw path. <paramref name="portAt"/> = the tank
+        /// port the free end couples to (null = none), <paramref name="portAxis"/> = the step from the end cell into the tank.</summary>
+        internal static List<V2> DrawnPose(HoseLay lay, double e, int ticksSinceChange, int transitionTicks, double plumpAmount,
+            V2? portAt, V2 portAxis)
+        {
+            List<V2> pts = Pose(lay, e, ticksSinceChange, transitionTicks, plumpAmount);
+            if (!portAt.HasValue) return pts;
+            // HOSE_LEADIN_FIX_STUB_IN_THE_CANAL: a hose that meets the port from the side is not re-aimed (the Hermite would loop
+            // back behind the end); DrawEnds gives it an elbow fitting instead (HoseMath.PortFitting)
+            if (!SideArrival(pts, portAxis))
+            {
+                // HOSE_CURVE_REBUILD_SMOOTH_AS_PHYSICS: the last few cells re-laid as a clothoid chain of the same length that
+                // arrives dead straight along the port axis, joined to the kept hose in position, heading and curvature
+                if (G2On)
+                {
+                    List<V2> g = HoseClothoid.TailOnto(pts, portAt.Value - portAxis * 0.5, portAxis.Norm(), HoseRelay.EndStraight,
+                        lay.Kmax * G2KappaMargin, lay.Lead0, out _);
+                    if (g != null) return g;
+                }
+                return EndOnPort(pts, portAt.Value - portAxis * 0.5, portAxis, 1.2);
+            }
+            // HOSE_SIDEPORT_FIX_AIMS_AT_OLD_MIDPOINT: a side arrival keeps its heading but slides onto a moved port
+            return SlideEndOnto(pts, portAt.Value, portAxis);
         }
 
         /// <summary>Smallest discrete bend radius (segment / turning angle) over points more than skip cells from either end.</summary>
