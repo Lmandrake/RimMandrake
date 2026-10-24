@@ -41,9 +41,10 @@ namespace RimMandrake.FlowWorks.Hose
         private static readonly double[] RadiusFactors = { 1.15, 1.5, 2.2 };
         /// <summary>Cut-backs tried (cells of the hose's own end replaced), shortest first.</summary>
         internal static readonly double[] CutBacks = { 1.5, 2.5, 4, 6, 8.5 };
+        /// <summary>Integration substeps per knot interval (Simpson; the heading is exactly quadratic there).</summary>
         private const int Sub = 4;
         /// <summary>Fairing passes on the winning curve.</summary>
-        private const int FairPasses = 6;   // integration substeps per knot interval (Simpson; the heading is exactly quadratic there)
+        private const int FairPasses = 6;
 
         /// <summary>Work counters (probe/selftest): Gauss-Newton solves started and iterations run.</summary>
         public static long Solves, Iterations;
@@ -84,9 +85,10 @@ namespace RimMandrake.FlowWorks.Hose
             return t;
         }
 
-        /// <summary>Curvature sharpness bound (per cell of arc): the hose takes at least one minimum bend radius of length to
-        /// go from straight to its tightest bend (sigma = kmax^2), so the curvature it carries in at an end is held, not dropped
-        /// at once (sigma = kmax^2 / 2: two radii from straight to the tightest bend). Applied at both ends as a tube round the end curvatures; inside, the fairing pass keeps the profile smooth.</summary>
+        /// <summary>Curvature sharpness bound (per cell of arc): sigma = kmax^2 / 2, so the hose takes at least two minimum bend
+        /// radii of length to go from straight to its tightest bend, and the curvature it carries in at an end is held, not
+        /// dropped at once. Applied at both ends as a tube round the end curvatures; inside, the fairing pass keeps the profile
+        /// smooth.</summary>
         internal static double Sharpness(double kmax) => 0.5 * kmax * kmax;
 
         /// <summary>The bounds of knot j: |k| &lt;= kmax, and within sigma x arc of each end's curvature.</summary>
@@ -451,7 +453,9 @@ namespace RimMandrake.FlowWorks.Hose
                 for (int i = 0; i < partner.Count; i++) if (sp[i] < sp[sp.Length - 1] - straight) theirs.Add(partner[i]);
             }
             var cuts = new List<double>();
-            if (seed != null && seed.CutBack > 0) cuts.Add(seed.CutBack);
+            // a cached cut-back is tried first only while it still fits the hose (a shorter pose than the seed's would cut before
+            // its own start)
+            if (seed != null && seed.CutBack > 0 && seed.CutBack <= Math.Max(Lp - 0.3, 0) + 1e-9) cuts.Add(seed.CutBack);
             foreach (double cb in CutBacks) if (cb < Lp - 0.3 && !cuts.Contains(cb)) cuts.Add(cb);
             if (cuts.Count == 0 && Lp > 0.6) cuts.Add(Lp - 0.3);
             List<V2> bestPts = null;
@@ -574,6 +578,9 @@ namespace RimMandrake.FlowWorks.Hose
             public V2 C, Axis;
             public Seed SeedA, SeedB;
             public double Cost;
+            /// <summary>A's re-shaped end as the pair solve accepted it: B was judged clear of this body, so
+            /// <see cref="MateEnd"/> re-solves B against it too.</summary>
+            public List<V2> PtsA;
         }
 
         /// <summary>Unit direction a polyline travels into its last point (chord over its last ~0.75 cell).</summary>
@@ -590,11 +597,10 @@ namespace RimMandrake.FlowWorks.Hose
         /// arrival, B's own arrival reversed, and their bisector are tried, each end re-shaped by <see cref="MateTail"/> (A
         /// travelling along the axis, B against it, each clear of the other), and the axis with the least summed cost wins --
         /// two hoses meeting at a right angle each bend half way rather than one looping round the other. Null when no axis
-        /// works (the caller draws both as laid).
+        /// works (the caller draws both as laid). With the clothoid fit on (<see cref="HoseMath.G2On"/>) each end is re-shaped
+        /// by <see cref="MateTailG2"/> instead: the hose's length kept and nothing within <paramref name="leadA"/> /
+        /// <paramref name="leadB"/> (each hose's straight lead-out from its nozzle) touched.
         /// </summary>
-        /// With the clothoid fit on (<see cref="HoseMath.G2On"/>) each end is re-shaped by <see cref="MateTailG2"/> instead:
-        /// the hose's length kept and nothing within <paramref name="leadA"/> / <paramref name="leadB"/> (each hose's straight
-        /// lead-out from its nozzle) touched.
         internal static Mate MatePair(List<V2> A, List<V2> B, V2 C, double kmax, double visible, out List<V2> Am, out List<V2> Bm,
             double leadA = 0, double leadB = 0)
         {
@@ -620,7 +626,7 @@ namespace RimMandrake.FlowWorks.Hose
                 // A's re-shaped end must clear B's final body too (B's own coupling run excepted)
                 if (!ClearOf(a, A, b, straight, width)) continue;
                 if (best != null && cost >= best.Cost) continue;
-                best = new Mate { C = C, Axis = u, SeedA = sa, SeedB = sb, Cost = cost };
+                best = new Mate { C = C, Axis = u, SeedA = sa, SeedB = sb, Cost = cost, PtsA = a };
                 Am = a; Bm = b;
             }
             return best;
@@ -661,7 +667,7 @@ namespace RimMandrake.FlowWorks.Hose
                         if (b == null) continue;
                         if (!ClearOf(a, A, b, straight, width)) continue;
                         if (best != null && ca + cb >= best.Cost) continue;
-                        best = new Mate { C = Ci, Axis = u, Cost = ca + cb };
+                        best = new Mate { C = Ci, Axis = u, Cost = ca + cb, PtsA = a };
                         Am = a; Bm = b;
                     }
                 }
@@ -671,14 +677,17 @@ namespace RimMandrake.FlowWorks.Hose
         }
 
         /// <summary>One end of a solved pair re-shaped onto its coupling (<paramref name="isA"/>: A travels along the axis, B
-        /// against it): <see cref="MateTailG2"/> with the fit on, else <see cref="MateTail"/> with the pair's cached seed. The
-        /// game's draw and the offline ruler share it. Null when the re-shape fails (the caller draws the pose as laid).</summary>
+        /// against it): <see cref="MateTailG2"/> with the fit on, else <see cref="MateTail"/> with the pair's cached seed. B is
+        /// re-solved clear of A's accepted end (<see cref="Mate.PtsA"/>), as the pair solve judged it, so a window the pair
+        /// refused for crossing A is refused here too. The game's draw and the offline ruler share it. Null when the re-shape
+        /// fails (the caller draws the pose as laid).</summary>
         internal static List<V2> MateEnd(List<V2> pts, Mate m, bool isA, double kmax, double visible, double startLead)
         {
             V2 ax = isA ? m.Axis : -m.Axis;
             double straight = CouplingStraight(visible);
-            if (HoseMath.G2On) return MateTailG2(pts, m.C, ax, straight, kmax, null, visible, startLead, out _);
-            return MateTail(pts, m.C, ax, straight, kmax, null, isA ? m.SeedA : m.SeedB, out _, visible);
+            IList<V2> partner = isA ? null : m.PtsA;
+            if (HoseMath.G2On) return MateTailG2(pts, m.C, ax, straight, kmax, partner, visible, startLead, out _);
+            return MateTail(pts, m.C, ax, straight, kmax, partner, isA ? m.SeedA : m.SeedB, out _, visible);
         }
 
         /// <summary>

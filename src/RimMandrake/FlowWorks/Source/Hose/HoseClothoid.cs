@@ -251,7 +251,8 @@ namespace RimMandrake.FlowWorks.Hose
             }
             var KC = (double[])K.Clone();
             double thC = th0;
-            int it = 0, stall = 0, active = 0;
+            int it = 0, ran = 0, stall = 0, active = 0;
+            bool done = false;
             {
                 var U = new V2[nv];
                 var Cc = new double[nv];
@@ -273,6 +274,7 @@ namespace RimMandrake.FlowWorks.Hose
                 for (; it < 60; it++)
                 {
                     Iters++;
+                    ran++;
                     // columns: rigid form J_q = U + C x Rot(p_q) for q >= St, plus node j's own D at q = j
                     for (int v = 0; v < nk; v++)
                     {
@@ -370,17 +372,16 @@ namespace RimMandrake.FlowWorks.Hose
                                 KC = KN; thC = thT; fC = fN; cC = cN;
                                 took = true;
                                 mu = Math.Max(1e-10, mu * 0.3);
-                                if (moved < 1e-9 && L1(cC) < 1e-7) it = 1000;
+                                if (moved < 1e-9 && L1(cC) < 1e-7) done = true;
                             }
                             else stall++;
                         }
                         if (!took) mu = Math.Max(1e-6, mu * 100);
                     }
                     if (restart) { Chain(KC, thC, true); fC = SoftCost(KC); cC = Cons(); continue; }
-                    if (!took || it >= 1000) break;
+                    if (!took || done) break;
                     Chain(KC, thC, true);
                 }
-                if (it >= 1000) it = it - 1000 + 1;
                 // polish: a near-met end the merit search stopped short of is closed by minimum-norm Newton steps on the end
                 // equalities alone (quadratic convergence; the soft part barely moves), kept only while they shrink the gap
                 for (int pol = 0; pol < 6 && L1(cC) > 1e-10 && L1(cC) < 0.1; pol++)
@@ -411,7 +412,7 @@ namespace RimMandrake.FlowWorks.Hose
                 for (int i = 0; i <= N; i++) if (Math.Abs(KC[i]) > kIn + 1e-9) active++;
                 for (int i = 0; i < N; i++) if (Math.Abs(KC[i + 1] - KC[i]) > dIn + 1e-9) active++;
             }
-            res.Iterations = it;
+            res.Iterations = ran;
             double[] KF = KC;
             res.Theta0 = thC;
             res = Finish(res, pr, KF, res.Theta0, l, sub);
@@ -419,7 +420,7 @@ namespace RimMandrake.FlowWorks.Hose
             bool ok = res.EndErr < EndTol && res.HeadErr < EndTol && BoundsHold(KF, kmax, J * l, 1e-6);
             if (!ok && res.EndErr < SnapFrac * pr.L) ok = Snap(res, pr, KF, l, kmax, J * l, th1);
             res.Feasible = ok;
-            if (!ok && res.Why == null) res.Why = $"ends not met (gap {res.EndErr:0.0000}, heading {res.HeadErr:0.0000}, {it} it, {stall} stalls, {active} limits pressed, N {N}, free {vars.Count})";
+            if (!ok && res.Why == null) res.Why = $"ends not met (gap {res.EndErr:0.0000}, heading {res.HeadErr:0.0000}, {ran} it, {stall} stalls, {active} limits pressed, N {N}, free {vars.Count})";
             return res;
         }
 
