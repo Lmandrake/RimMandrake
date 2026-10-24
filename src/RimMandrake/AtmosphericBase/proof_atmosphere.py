@@ -923,8 +923,10 @@ def judge_nine_gate_wiring(mapcomp_cs, compositor_cs, api_cs):
     the intensity is Scribed and the gate looks for a real grav engine."""
     need = (("a god's reading passes the god intensity", r"RM_GodGate\.Apply\(data, idx, comp\.godIntensity\)", compositor_cs),
             ("only a signature's reading is god-gated", r"RM_SignatureDef\.ForScheme\(owner\.scheme\) != null", compositor_cs),
-            ("ranked moods filtered by the gate", r"RankedMoods[\s\S]*?MayShow\(", mapcomp_cs),
-            ("pushed mood filtered by the gate", r"PushedMood[\s\S]*?MayShow\(", mapcomp_cs),
+            ("a god's tremor keeps the floor", r"Show\(comp, t, tremorMoods\[tr\.Key\]\.scheme, GodIdx\(comp, tremorMoods\[tr\.Key\]\.scheme, tr\.Value\)\)", compositor_cs),
+            ("a god shown as the previous owner (scar) keeps the floor", r"GodIdx\(comp, shown, idx\)", compositor_cs),
+            ("ranked moods filtered by the gate", r"\.Valid && !string\.IsNullOrEmpty\(m\.group\) && MayShow\(m\.scheme\)\) live\.Add", mapcomp_cs),
+            ("pushed mood filtered by the gate", r"m\.scheme\.Valid && MayShow\(m\.scheme\) && \(best == null", mapcomp_cs),
             ("godIntensity Scribed", r'Scribe_Values\.Look\(ref godIntensity, "godIntensity"', mapcomp_cs),
             ("the gate looks for a grav engine", r"Building_GravEngine", mapcomp_cs),
             ("API sets the god intensity", r"\bSetGodIntensity\s*\(", api_cs),
@@ -1302,11 +1304,17 @@ def v_rows(I, rows, pick, kv_all, disk_defaults):
             "ProofTerritory and the V rows agree on boundary, tremor cap and palette")
 
 
-def l10(I, rows, pick, scheme):
-    # Re-pick: the V rows' 'unlit' scenario flicks fixtures[0] off and back on while paused, and a paused PowerNet never
-    # re-powers it, so the run-start pick's first fixture is dark by now (live run 1, 2026-10-23: L10 read null x8).
+def _repick(I, pick):
+    """Re-pick: the V rows' 'unlit' scenario flicks fixtures[0] off and back on while paused, and a paused PowerNet never
+    re-powers it, so the run-start pick's first fixture is dark by now (live run 1, 2026-10-23: L10 read null x8). L10 and
+    R1 both hold a fixture after the V rows, so both ask again."""
     if not I.fixture and pick is not None:
         pick = I.hook("pick")[0] or pick
+    return pick
+
+
+def l10(I, rows, pick, scheme):
+    pick = _repick(I, pick)
     fid = I.fixture or ((pick or {}).get("fixtures") or [None])[0]
     ctl = (pick or {}).get("untaken")
     if fid is None:
@@ -1320,6 +1328,7 @@ def l10(I, rows, pick, scheme):
         add(rows, "L10.real_time_while_paused", UNM, SITE, "could not take over fixture %s" % fid)
         return
     runs, cvals = [], []
+    errs0 = getattr(I, "hook_errors", 0)
     try:
         for _ in range(2):
             I.pause()
@@ -1337,6 +1346,10 @@ def l10(I, rows, pick, scheme):
     finally:
         I.release(fid)
         I.restore_speed(was)
+    if getattr(I, "hook_errors", 0) > errs0:   # a bridge/hook fault reads as showing None: that is the harness, not the mod
+        add(rows, "L10.real_time_while_paused", UNM, HARNESS, "%d hook call(s) failed during the sampling: a missing reading is not a MOD verdict" % (
+            I.hook_errors - errs0))
+        return
     add(rows, "L10.real_time_while_paused", *m_l10(runs, cvals))
 
 
@@ -1344,6 +1357,7 @@ def reload_row(I, rows, pick, with_reload):
     if not with_reload:
         add(rows, "R1.save_reload_release", UNM, HARNESS, "not run: pass --with-reload (it reloads the session's game)")
         return
+    pick = _repick(I, pick)
     fid = I.fixture or ((pick or {}).get("fixtures") or [None])[0]
     if fid is None:
         add(rows, "R1.save_reload_release", UNM, SITE, "no fixture to hold")
@@ -1391,6 +1405,7 @@ class Live(object):
         self.fixture = fixture
         self.settings = {}
         self.tap = None
+        self.hook_errors = 0
 
     def _static(self, typ, method, args=None):
         kw = {"type": typ, "method": method}
@@ -1429,12 +1444,15 @@ class Live(object):
     def hook(self, cmd, **kw):
         text, why = self._static(PROOF_TYPE, "ProofSample", _kvargs(cmd, kw))
         if text in (None, ""):
+            self.hook_errors += 1
             return None, why or "empty answer"
         try:
             o = json.loads(text)
         except ValueError:
+            self.hook_errors += 1
             return None, "not JSON: %s" % str(text)[:120]
         if isinstance(o, dict) and o.get("error"):
+            self.hook_errors += 1
             return None, o["error"]
         return o, None
 
@@ -1709,9 +1727,11 @@ class Stub(object):
         return fid in self.taken
 
     def taken_after_load(self, fid):
-        return fid in self.taken
+        return None if self.v == "never_back" else (fid in self.taken)
 
     def save_reload(self, name):
+        if self.v == "claim_lost":
+            self.taken.clear()
         return True, None
 
     def log_budget(self):
@@ -1746,6 +1766,8 @@ EXPECT = {   # variant -> {row: (status, class)} that variant MUST produce
     "no_fixtures": dict((r, (UNM, SITE)) for r in V_ROWS),
     "blind": dict([("S1.sampler_sees", (FAIL, HARNESS))] + [(r, (UNM, HARNESS)) for r in V_ROWS]),
     "leaky": {"R2.left_as_found": (FAIL, MOD)},
+    "claim_lost": {"R1.save_reload_release": (FAIL, MOD)},
+    "never_back": {"R1.save_reload_release": (UNM, HARNESS)},
 }
 
 
@@ -1778,6 +1800,18 @@ def metric_controls():
     out.append(("m_envelope brightens while dimming", m_envelope(env)[0], FAIL))
     ctl = [{"samples": [{"t": 0, "fx": [], "ctl": [1, 2, 3]}, {"t": 1, "fx": [], "ctl": [1, 2, 4]}]}]
     out.append(("m_control_static control moves", m_control_static(ctl)[0], FAIL))
+    t3 = S([k * 0.4 for k in range(601)], [LAMP[0]] * 601, owner=0, role="T", n=20)
+    for x in t3:
+        x["contributors"] = 4
+        for fx in x["fx"]:
+            fx[6] = 0
+    out.append(("m_tremor 4 contributors", m_tremor({"samples": t3, "palettes": {"tremor": [LAMP]}}, 0.8)[0][0], FAIL))
+    for x in t3:
+        x["contributors"] = 3
+    out.append(("m_tremor flicker outside its palette", m_tremor({"samples": t3, "palettes": {"tremor": [FIRE]}}, 0.8)[2][0], FAIL))
+    out.append(("m_tremor all flickering at once", m_tremor({"samples": t3, "palettes": {"tremor": [LAMP]}}, 0.8)[1][0], FAIL))
+    nar = {"t_g": 0.0, "D": 10.0, "samples": S([k * 0.5 for k in range(20)], [WHITE] * 20, owner=0, role="L")}
+    out.append(("m_narrator_wins alarm holds a lamp", m_narrator_wins(nar)[0], FAIL))
     out.append(("m_l10 ticks moved", m_l10([{"ticks_moved": 60, "values": ["a", "b"]}], [])[0], UNM))
     out.append(("m_l10 frozen", m_l10([{"ticks_moved": 0, "values": ["a"] * 40}], [])[0], FAIL))
     out.append(("m_l10 control reports a scheme", m_l10([{"ticks_moved": 0, "values": ["a", "b"]}], ["x:0"])[0], FAIL))
@@ -1895,6 +1929,10 @@ def metric_controls():
     api_real = open(os.path.join(src_dir, "RM_AtmosphericBaseAPI.cs"), encoding="utf-8").read()
     out.append(("judge_nine_gate_wiring real source", judge_nine_gate_wiring(mc_real, co_real, api_real)[0], PASS))
     out.append(("judge_nine_gate_wiring god intensity dropped", judge_nine_gate_wiring(mc_real, co_real.replace("comp.godIntensity", "0"), api_real)[0], FAIL))
+    out.append(("judge_nine_gate_wiring ranked filter removed", judge_nine_gate_wiring(mc_real.replace("&& MayShow(m.scheme)) live.Add", ") live.Add"), co_real, api_real)[0], FAIL))
+    out.append(("judge_nine_gate_wiring pushed filter removed", judge_nine_gate_wiring(mc_real.replace("m.scheme.Valid && MayShow(m.scheme) && (best", "m.scheme.Valid && (best"), co_real, api_real)[0], FAIL))
+    out.append(("judge_nine_gate_wiring tremor unfloored", judge_nine_gate_wiring(mc_real, co_real.replace("GodIdx(comp, tremorMoods[tr.Key].scheme, tr.Value)", "tr.Value"), api_real)[0], FAIL))
+    out.append(("judge_nine_gate_wiring scar unfloored", judge_nine_gate_wiring(mc_real, co_real.replace("GodIdx(comp, shown, idx)", "idx"), api_real)[0], FAIL))
     out.append(("judge_nine_gate_wiring no grav-engine look", judge_nine_gate_wiring(mc_real.replace("Building_GravEngine", "Building"), co_real, api_real)[0], FAIL))
     ut = os.path.join(REPO, "src", "RimUtinni", "UtinniPatches")
     nx = open(os.path.join(ut, "Defs", "AtmosphericBase", "RUT_NineSignatures.xml"), encoding="utf-8").read()
@@ -1945,6 +1983,25 @@ def selftest():
     return (0 if not bad else 1), report
 
 
+def produce_kernel_log(out_dir, timeout=480):
+    """Run the C# kernel selftest (staged off-tree by selftest_winstage; never touches the deployed mod) into a log under
+    out_dir. Returns (path, why): path None = it could not run, and `why` names the reason (the D7b..D12 rows then read
+    UNMEASURED with that reason in the run's P0 row, never silently)."""
+    import subprocess
+    script = os.path.join(HERE, "selftest_atmosphericbase_kernel.py")
+    os.makedirs(out_dir, exist_ok=True)
+    path = os.path.join(out_dir, "kernel_selftest_%s.log" % time.strftime("%Y%m%dT%H%M%S"))
+    try:
+        r = subprocess.run([sys.executable, script], capture_output=True, text=True, timeout=timeout)
+    except Exception as e:  # noqa: BLE001
+        return None, "%s: %s" % (type(e).__name__, e)
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(r.stdout)
+    if "AtmosphericBase kernel selftest" not in r.stdout:
+        return None, "exit %s and no kernel selftest header in its output (%s)" % (r.returncode, (r.stdout or r.stderr).strip()[:120])
+    return path, "ran the kernel selftest, exit %s" % r.returncode
+
+
 def write_out(out_dir, mode, rows):
     os.makedirs(out_dir, exist_ok=True)
     p = os.path.join(out_dir, "proof_atmosphere_%s_%s.json" % (mode, time.strftime("%Y%m%dT%H%M%S")))
@@ -1960,7 +2017,7 @@ def main():
     ap.add_argument("--fixture", help="ThingID of a lit lamp for L10/R1 when the pick hook is missing")
     ap.add_argument("--with-reload", action="store_true", help="run R1 (saves and reloads the current game)")
     ap.add_argument("--out", default=DEFAULT_OUT)
-    ap.add_argument("--kernel-log", help="output of selftest_atmosphericbase_kernel.py: feeds the behavioural rows (D7b)")
+    ap.add_argument("--kernel-log", help="output of selftest_atmosphericbase_kernel.py: feeds the behavioural rows D7b-D12 (a live run produces one itself when omitted)")
     a = ap.parse_args()
     if a.selftest:
         rc, report = selftest()
@@ -1968,7 +2025,15 @@ def main():
             print("wrote %s" % write_out(a.out, "selftest", report))
         return rc
     rows = []
-    d = offline_rows(rows, a.kernel_log)
+    klog, kwhy = a.kernel_log, "given with --kernel-log"
+    if klog and not os.path.exists(klog):
+        print("--kernel-log %s does not exist" % klog)
+        return 2
+    if not klog and not a.offline:   # a live run judges D7b..D12 itself: produce the log rather than leave six rows blank
+        klog, kwhy = produce_kernel_log(a.out)
+    add(rows, "P0.kernel_log", PASS if klog else UNM, HARNESS,
+        "%s: %s" % (klog, kwhy) if klog else "no kernel selftest log, so D7b D8 D9 D10 D11 D12 read UNMEASURED: %s" % (kwhy or "--offline given no --kernel-log"))
+    d = offline_rows(rows, klog)
     if not a.offline:
         try:
             proof(Live(a.fixture), rows, with_reload=a.with_reload, disk_defaults=d)
