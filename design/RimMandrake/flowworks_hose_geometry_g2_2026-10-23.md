@@ -291,6 +291,14 @@ Remaining failures with g2 on (`D:\ClaudeWork\rimmandrake\scratch\hose_geometry_
 - **TailOnto synthetic** (port 1.5 north of an eastward hose): no window feasible; needs an S-dip guide.
 - **relay**: KNOWN owner item (§7).
 
+### Step 2 (2026-10-24): mates keep length and leave the start lead alone
+
+- With G2 on, `HoseSpliceMath.MatePair` goes through `MatePairG2`. Each end is re-shaped by `HoseClothoid.TailOnto`, using a G2 cut and a window of the same material length, with the start lead plus 0.25 untouched. The coupling point slides (rings 0, 0.3, 0.6, 1.0, 1.6, 2.4 cells) toward the inner corner, behind either hose, or diagonally behind it. The first ring with a clear pair wins. With length kept, a fixed coupling cannot bend toward the partner.
+- The game draw (`Mated` → `MateEnd`) and the ruler share it. The old `MateTail` is used only with G2 off.
+- `--hose-curves`: 30/58 before, 31/59 after. The new passing case is the synthetic slack 90-degree mate, which proves that length is kept to within 1%, the lead samples are unchanged, and both ends pass the ruler.
+- mateA, mateB and splice (12 rows) now fail honestly with "no mate fits (length and start leads kept)" instead of looping. Those hoses are near-taut (4.72 of material against a 4.59 chord) and need a 37-degree turn. This is owed to step 4, as a lay-level re-route or mate.
+- Full FlowWorks selftest is green at 935/935. S5 judges a G2 MatePair with the ruler and checks that both lengths are kept.
+
 ## 7. Owner items
 
 - **Relay reel has one connector.** A relay's feed couples into its nozzle while its own hose leaves the same nozzle —

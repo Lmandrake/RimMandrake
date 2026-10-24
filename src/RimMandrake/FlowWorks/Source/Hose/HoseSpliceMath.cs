@@ -592,7 +592,11 @@ namespace RimMandrake.FlowWorks.Hose
         /// two hoses meeting at a right angle each bend half way rather than one looping round the other. Null when no axis
         /// works (the caller draws both as laid).
         /// </summary>
-        internal static Mate MatePair(List<V2> A, List<V2> B, V2 C, double kmax, double visible, out List<V2> Am, out List<V2> Bm)
+        /// With the clothoid fit on (<see cref="HoseMath.G2On"/>) each end is re-shaped by <see cref="MateTailG2"/> instead:
+        /// the hose's length kept and nothing within <paramref name="leadA"/> / <paramref name="leadB"/> (each hose's straight
+        /// lead-out from its nozzle) touched.
+        internal static Mate MatePair(List<V2> A, List<V2> B, V2 C, double kmax, double visible, out List<V2> Am, out List<V2> Bm,
+            double leadA = 0, double leadB = 0)
         {
             Am = Bm = null;
             if (A == null || B == null || A.Count < 3 || B.Count < 3) return null;
@@ -601,21 +605,131 @@ namespace RimMandrake.FlowWorks.Hose
             var axes = new List<V2> { ua, -ub };
             V2 bis = ua - ub;
             if (bis.Len > 0.2) axes.Add(bis.Norm());
+            if (HoseMath.G2On) return MatePairG2(A, B, C, axes, straight, kmax, width, leadA, leadB, out Am, out Bm);
             Mate best = null;
             foreach (V2 u in axes)
             {
-                List<V2> a = MateTail(A, C, u, straight, kmax, null, null, out Seed sa, width);
+                List<V2> a, b;
+                Seed sa = null, sb = null;
+                double cost;
+                a = MateTail(A, C, u, straight, kmax, null, null, out sa, width);
                 if (a == null) continue;
-                List<V2> b = MateTail(B, C, -u, straight, kmax, a, null, out Seed sb, width);
+                b = MateTail(B, C, -u, straight, kmax, a, null, out sb, width);
                 if (b == null) continue;
+                cost = sa.Cost + sb.Cost;
                 // A's re-shaped end must clear B's final body too (B's own coupling run excepted)
                 if (!ClearOf(a, A, b, straight, width)) continue;
-                double cost = sa.Cost + sb.Cost;
                 if (best != null && cost >= best.Cost) continue;
                 best = new Mate { C = C, Axis = u, SeedA = sa, SeedB = sb, Cost = cost };
                 Am = a; Bm = b;
             }
             return best;
+        }
+
+        /// <summary>Rings (cells) the coupling point may slide back from <c>C</c> when the clothoid mate keeps both lengths.</summary>
+        internal static readonly double[] MateSlide = { 0, 0.3, 0.6, 1.0, 1.6, 2.4 };
+
+        /// <summary>
+        /// <see cref="MatePair"/> with the clothoid fit on. Both hoses keep their length (R6), so turning either end onto a
+        /// shared axis costs material it does not have if the coupling stays where the two were laid: every bend toward the
+        /// other hose lengthens the run to <c>C</c>. The coupling therefore slides -- it is where the two hoses' ends meet,
+        /// not a fixed point -- first not at all, then back by each ring of <see cref="MateSlide"/> toward the inner corner
+        /// (behind both arrivals), behind A and behind B. The first ring with any axis whose two ends both fit, are clear of
+        /// each other and keep their leads wins, cheapest pair inside it. Null when no ring works.
+        /// </summary>
+        private static Mate MatePairG2(List<V2> A, List<V2> B, V2 C, List<V2> axes, double straight, double kmax, double width,
+            double leadA, double leadB, out List<V2> Am, out List<V2> Bm)
+        {
+            Am = Bm = null;
+            V2 ua = Arrival(A), ub = Arrival(B);
+            var dirs = new List<V2>();
+            V2 corner = -(ua + ub);
+            if (corner.Len > 0.2) dirs.Add(corner.Norm());
+            dirs.Add(-ua); dirs.Add(-ub);
+            foreach (V2 back in new[] { -ua, -ub }) { dirs.Add((back + back.Perp).Norm()); dirs.Add((back - back.Perp).Norm()); }
+            Mate best = null;
+            foreach (double r in MateSlide)
+            {
+                foreach (V2 d in r == 0 ? new List<V2> { new V2(0, 0) } : dirs)
+                {
+                    V2 Ci = C + d * r;
+                    foreach (V2 u in axes)
+                    {
+                        List<V2> a = MateTailG2(A, Ci, u, straight, kmax, null, width, leadA, out double ca);
+                        if (a == null) continue;
+                        List<V2> b = MateTailG2(B, Ci, -u, straight, kmax, a, width, leadB, out double cb);
+                        if (b == null) continue;
+                        if (!ClearOf(a, A, b, straight, width)) continue;
+                        if (best != null && ca + cb >= best.Cost) continue;
+                        best = new Mate { C = Ci, Axis = u, Cost = ca + cb };
+                        Am = a; Bm = b;
+                    }
+                }
+                if (best != null) break;
+            }
+            return best;
+        }
+
+        /// <summary>One end of a solved pair re-shaped onto its coupling (<paramref name="isA"/>: A travels along the axis, B
+        /// against it): <see cref="MateTailG2"/> with the fit on, else <see cref="MateTail"/> with the pair's cached seed. The
+        /// game's draw and the offline ruler share it. Null when the re-shape fails (the caller draws the pose as laid).</summary>
+        internal static List<V2> MateEnd(List<V2> pts, Mate m, bool isA, double kmax, double visible, double startLead)
+        {
+            V2 ax = isA ? m.Axis : -m.Axis;
+            double straight = CouplingStraight(visible);
+            if (HoseMath.G2On) return MateTailG2(pts, m.C, ax, straight, kmax, null, visible, startLead, out _);
+            return MateTail(pts, m.C, ax, straight, kmax, null, isA ? m.SeedA : m.SeedB, out _, visible);
+        }
+
+        /// <summary>
+        /// HOSE_CURVE_REBUILD_SMOOTH_AS_PHYSICS step 2: <paramref name="pts"/> with its end re-shaped to couple at
+        /// <paramref name="C"/> along <paramref name="axisIn"/> by <see cref="HoseClothoid.TailOnto"/> -- the cut is G2 (position,
+        /// heading and curvature kept), the re-solved window has the SAME material length as the run it replaces (so the hose
+        /// keeps its length, R6), the last <paramref name="straight"/> runs dead straight along the axis, and nothing within
+        /// <paramref name="startLead"/> + 0.25 cell of the reel is touched (R2/R3 at the start). The window grows until the new
+        /// run is clear of its own body and of <paramref name="partner"/> (its coupling run excepted) as <see cref="MateTail"/>
+        /// requires. <paramref name="cost"/> = bending energy (R x integral of k^2) + <see cref="DisplaceWeight"/> x the area
+        /// between the new run and the old. Null when no window passes.
+        /// </summary>
+        internal static List<V2> MateTailG2(List<V2> pts, V2 C, V2 axisIn, double straight, double kmax, IList<V2> partner,
+            double width, double startLead, out double cost)
+        {
+            cost = double.MaxValue;
+            if (pts == null || pts.Count < 3) return null;
+            axisIn = axisIn.Norm();
+            var theirs = new List<V2>();
+            if (partner != null && partner.Count > 1)
+            {
+                double[] sp = Geo.CumLen(partner);
+                for (int i = 0; i < partner.Count; i++) if (sp[i] < sp[sp.Length - 1] - straight) theirs.Add(partner[i]);
+            }
+            List<V2> o = HoseClothoid.TailOnto(pts, C, axisIn, straight, kmax, startLead, out int kept, (q, k) =>
+            {
+                double[] sq = Geo.CumLen(q);
+                return Clear(q, k, sq[Math.Max(0, k - 1)], theirs, width, null);
+            });
+            if (o == null) return null;
+            var oldTail = new List<V2>();
+            for (int i = Math.Max(0, kept - 1); i < pts.Count; i++) oldTail.Add(pts[i]);
+            var newTail = new List<V2>();
+            for (int i = Math.Max(0, kept - 1); i < o.Count; i++) newTail.Add(o[i]);
+            cost = BendEnergy(newTail) / Math.Max(1e-9, kmax) + DisplaceWeight * Displacement(newTail, oldTail);
+            return o;
+        }
+
+        /// <summary>Integral of k^2 ds along a polyline (turning angle squared over the mean spacing at each interior sample).</summary>
+        private static double BendEnergy(IList<V2> p)
+        {
+            double e = 0;
+            for (int i = 1; i + 1 < p.Count; i++)
+            {
+                V2 a = p[i] - p[i - 1], b = p[i + 1] - p[i];
+                double la = a.Len, lb = b.Len;
+                if (la < 1e-9 || lb < 1e-9) continue;
+                double t = AngleDiff(Math.Atan2(b.Z, b.X), Math.Atan2(a.Z, a.X)), h = 0.5 * (la + lb);
+                e += t * t / h;
+            }
+            return e;
         }
 
         /// <summary>The part of <paramref name="a"/> that differs from <paramref name="raw"/> stays a width clear of

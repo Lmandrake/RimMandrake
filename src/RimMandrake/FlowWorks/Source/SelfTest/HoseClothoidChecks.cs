@@ -1,6 +1,6 @@
 // HOSE_CURVE_REBUILD_SMOOTH_AS_PHYSICS: the clothoid-chain solver (Hose/HoseClothoid.cs) on synthetic problems with known
 // answers, measured by the same ruler as the stations (HoseCurveMetrics): a taut straight, a slack straight that must drape, a
-// quarter turn and a U-turn between fittings, and a tail re-laid onto a port. Each case also checks the solver's own claims
+// quarter turn and a U-turn between fittings, a tail re-laid onto a port, and a hose-to-hose mate. Each case also checks the solver's own claims
 // (exact length, ends met, bounds held) against the drawn points, so a solver that reports Feasible on a wrong curve fails.
 using System;
 using System.Collections.Generic;
@@ -74,6 +74,43 @@ namespace RimMandrake.FlowWorks.SelfTest
                 var rep = HoseCurveMetrics.Measure(t, HoseCurveMetrics.EndSpec.Fitting(o, new V2(1, 0), 1.6, "start"),
                     HoseCurveMetrics.EndSpec.Fitting(new V2(8, 1.5), new V2(0, -1), 0.6, "port"), Kmax, 9);
                 if (!rep.Ok) throw new Exception("kept " + kept + " ruler: " + rep.Line());
+            });
+            Case("HoseClothoid mate: two slack hoses meeting at a right angle couple keeping their lengths and start leads", () =>
+            {
+                // step 2 (design section 6): A runs east from its nozzle, B north from its own; both are laid to the same coupling point
+                List<V2> Drape(V2 a, V2 d, double len, double amp, int n)
+                {
+                    var p = new List<V2>();
+                    V2 nrm = new V2(-d.Z, d.X);
+                    for (int i = 0; i <= n; i++)
+                    {
+                        double t = i / (double)n, s = t * len, w = s <= 1.6 ? 0 : Math.Sin(Math.PI * (s - 1.6) / (len - 1.6)), lift = amp * w * w * w; // G2 at the lead's end
+                        p.Add(a + d * s + nrm * lift);
+                    }
+                    return p;
+                }
+                List<V2> A = Drape(o, new V2(1, 0), 9, 0.5, 45), B = Drape(new V2(9, -9), new V2(0, 1), 9, -0.6, 45);
+                bool was = HoseMath.G2On;
+                HoseMath.G2On = true;
+                try
+                {
+                    const double vis = 0.25;
+                    HoseSpliceMath.Mate m = HoseSpliceMath.MatePair(A, B, A[A.Count - 1], Kmax, vis, out List<V2> Am, out List<V2> Bm, 1.6, 1.6);
+                    if (m == null) throw new Exception("no mate:" + HoseClothoid.TailWhy);
+                    double straight = HoseSpliceMath.CouplingStraight(vis);
+                    foreach (var (raw, got, ax, nm) in new[] { (A, Am, m.Axis, "A"), (B, Bm, -m.Axis, "B") })
+                    {
+                        double l0 = Geo.Length(raw), l1 = Geo.Length(got);
+                        if (Math.Abs(l1 - l0) > 0.01 * l0) throw new Exception($"{nm} length {l1:0.000} vs {l0:0.000}");
+                        double[] sr = Geo.CumLen(raw);
+                        for (int i = 0; i < raw.Count && sr[i] <= 1.6; i++) if (V2.Dist(raw[i], got[i]) > 1e-9) throw new Exception($"{nm} lead sample {i} moved");
+                        V2 d0 = (raw[1] - raw[0]).Norm();
+                        var rep = HoseCurveMetrics.Measure(got, HoseCurveMetrics.EndSpec.Fitting(raw[0], d0, 1.6, "nozzle"),
+                            HoseCurveMetrics.EndSpec.Fitting(m.C, -ax, straight, "mate"), Kmax, l0);
+                        if (!rep.Ok) throw new Exception(nm + " ruler: " + rep.Line());
+                    }
+                }
+                finally { HoseMath.G2On = was; }
             });
         }
     }

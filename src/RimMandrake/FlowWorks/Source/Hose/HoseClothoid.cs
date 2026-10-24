@@ -52,6 +52,9 @@ namespace RimMandrake.FlowWorks.Hose
             public double J = 0;
             /// <summary>Drawn samples per node interval.</summary>
             public int Sub = 2;
+            /// <summary>Node spacing (cells of hose); 0 = <see cref="NodeStep"/>. A short window takes finer nodes so it keeps
+            /// enough free curvatures for its end equalities.</summary>
+            public double Step = 0;
         }
 
         public sealed class Result
@@ -125,7 +128,7 @@ namespace RimMandrake.FlowWorks.Hose
             Solves++;
             var res = new Result();
             double kmax = pr.Kmax, J = pr.J > 0 ? pr.J : JerkPerKmax * pr.Kmax;
-            int N = Math.Max(2, (int)Math.Ceiling(pr.L / NodeStep - 1e-9));
+            int N = Math.Max(2, (int)Math.Ceiling(pr.L / (pr.Step > 0 ? pr.Step : NodeStep) - 1e-9));
             double l = pr.L / N;
             int sub = Math.Max(1, pr.Sub);
             res.Step = l / sub;
@@ -624,12 +627,11 @@ namespace RimMandrake.FlowWorks.Hose
         /// the direction of travel into the fitting), the last <paramref name="straight"/> cells dead straight: the hose is cut at
         /// an exact arc position, its state there (position, heading, curvature) kept, and the window after it re-solved as a
         /// clothoid chain of the SAME material length; the window grows (2.5, 4, 6 cells, then all but the start lead) until a
-        /// solve is feasible. The kept samples are untouched. Null when no window works. <paramref name="kept"/> = the number of
-        /// leading samples kept.</summary>
-        /// <summary>Why the last TailOnto found no window (diagnostics only).</summary>
-        internal static string TailWhy = "";
-
-        internal static List<V2> TailOnto(IList<V2> pts, V2 end, V2 axisIn, double straight, double kmax, double startLead, out int kept)
+        /// solve is feasible (and, given <paramref name="accept"/>, passes it: the whole new pose and its kept count). The kept
+        /// samples are untouched, and nothing before <paramref name="startLead"/> + 0.25 cell is ever cut. Null when no window
+        /// works. <paramref name="kept"/> = the number of leading samples kept.</summary>
+        internal static List<V2> TailOnto(IList<V2> pts, V2 end, V2 axisIn, double straight, double kmax, double startLead, out int kept,
+            Func<List<V2>, int, bool> accept = null)
         {
             kept = 0;
             TailWhy = "";
@@ -655,27 +657,33 @@ namespace RimMandrake.FlowWorks.Hose
                 // fitting, then in along its axis) for a fitting the old tail pointed away from
                 var tail = new List<V2> { P0 };
                 for (int i = seg + 1; i < pts.Count; i++) tail.Add(pts[i]);
-                Result r = null;
                 foreach (List<V2> guide in new[] { Bent(tail, end), Approach(P0, th0, end, axisIn, straight, 1 / kmax, W) })
                 {
                     var pr = new Problem
                     {
                         P0 = P0, Theta0 = th0, Kappa0 = k0, P1 = end, Theta1 = HeadingOf(axisIn), Lead1 = straight, L = W,
                         Track = guide, Kmax = kmax, TrackWeight = 0.3,
+                        // at least ~8 free curvatures between the cut and the straight (3 end equalities)
+                        Step = Math.Max(0.15, Math.Min(NodeStep, (W - straight) / 8)),
                     };
-                    r = Solve(pr);
-                    if (r.Feasible) break;
+                    Result r = Solve(pr);
+                    if (!r.Feasible) { TailWhy += $" W{W:0.0}: {r.Why};"; continue; }
+                    var o = new List<V2>(seg + 1 + r.Pts.Count);
+                    for (int i = 0; i <= seg; i++) o.Add(pts[i]);
+                    if (V2.Dist(o[o.Count - 1], P0) < 1e-6) o.RemoveAt(o.Count - 1);
+                    int k = o.Count;
+                    o.AddRange(r.Pts);
+                    if (accept != null && !accept(o, k)) { TailWhy += $" W{W:0.0}: not accepted;"; continue; }
+                    kept = k;
+                    return o;
                 }
-                if (!r.Feasible) { TailWhy += $" W{W:0.0}: {r.Why};"; if (W >= Lp - minCut - 1e-9) break; continue; }
-                var o = new List<V2>(seg + 1 + r.Pts.Count);
-                for (int i = 0; i <= seg; i++) o.Add(pts[i]);
-                if (V2.Dist(o[o.Count - 1], P0) < 1e-6) o.RemoveAt(o.Count - 1);
-                kept = o.Count;
-                o.AddRange(r.Pts);
-                return o;
+                if (W >= Lp - minCut - 1e-9) break;
             }
             return null;
         }
+
+        /// <summary>Why the last TailOnto found no window (diagnostics only).</summary>
+        internal static string TailWhy = "";
 
         /// <summary>The polyline moved, in proportion to arc fraction (smootherstep), so its last point lands on
         /// <paramref name="end"/> while its first stays put.</summary>

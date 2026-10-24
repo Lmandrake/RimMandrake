@@ -1296,7 +1296,7 @@ namespace RimMandrake.FlowWorks.Hose
                         mateSolves++;
                         List<V2> A = a.lay.Flat, B = b.lay.Flat;
                         HoseSpliceMath.Mate m = A != null && B != null && A.Count > 2 && B.Count > 2
-                            ? HoseSpliceMath.MatePair(A, B, A[A.Count - 1], kmax, vis, out _, out _) : null;
+                            ? HoseSpliceMath.MatePair(A, B, A[A.Count - 1], kmax, vis, out _, out _, a.lay.Lead0, b.lay.Lead0) : null;
                         if (mateSolved.Count > 64) mateSolved.Clear();
                         mateSolved[key] = mi = new MateInfo { key = key.GetHashCode().ToString("x8"), A = a, B = b, mate = m };
                     }
@@ -1324,12 +1324,9 @@ namespace RimMandrake.FlowWorks.Hose
         private List<V2> Mated(CompHoseReel r, MateInfo mi, List<V2> pts)
         {
             bool isA = r == mi.A;
-            HoseSpliceMath.Mate m = mi.mate;
-            CompHoseReel other = isA ? mi.B : mi.A;
             double kmax = 1 / Math.Max(0.45, RM_HoseSettings.Shape().MinBendRadius);
             double vis = HoseMath.VisibleWidth(1, RM_HoseSettings.plumpAmount);
-            List<V2> o = HoseSpliceMath.MateTail(pts, m.C, isA ? m.Axis : -m.Axis, HoseSpliceMath.CouplingStraight(vis), kmax,
-                null, isA ? m.SeedA : m.SeedB, out _, vis);
+            List<V2> o = HoseSpliceMath.MateEnd(pts, mi.mate, isA, kmax, vis, r.lay?.Lead0 ?? 0);
             if (o == null) { mateKept.Remove(r); return pts; }
             int same = 0;
             while (same < o.Count && same < pts.Count && V2.Dist(o[same], pts[same]) < 1e-9) same++;
