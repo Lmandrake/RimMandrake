@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
-"""Sprinkler head on the universal pipe, every look x every cell shape, offline (SPRINKLER_SEAT_FIX_HEAD_BESIDE_ELBOW).
+"""Sprinkler head on the universal pipe, every look x every cell shape, offline (SPRINKLER_SEAT_FIX_HEAD_BESIDE_ELBOW,
+SPRINKLER_HEAD_REDRAW_SEEN_FROM_ABOVE).
 
-Owner 2026-10-24: "We need to test it on N/S pipes, E/W pipes, and corner bend pipes."
+Owner 2026-10-24: "We need to test it on N/S pipes, E/W pipes, and corner bend pipes." Then: "I think the sprinkler should be
+shown as viewed from above though to avoid the constant pipe fitting problems. Like the pump is viewed."
 
 Owner sheets stage matched pairs (a look's head on that look's pipe); selftest_fw_offline_art.py also checks every head
 look on every pipe look (board(pipe_look=...)), the in-game mixed case.
@@ -9,7 +11,10 @@ One board per look and mode: nine stations, each a 4x3 block (an empty column ap
   1 N/S straight  2 E/W straight  3 elbow N+E  4 elbow E+S  5 elbow S+W  6 elbow W+N  7 end (N)  8 tee (E+S+W)  9 cross
 The head prints as RM_PipeSeat.Print does: the cell centre + the style's drawOffset + RM_PipeSeatMath.Seat(mask, look).
   before = the tall 2026-10-21 heads (art_source/Sprinkler/raw) with the drawOffsets they shipped with;
-  after  = the shipped textures with the drawOffset now in Defs/Sprinklers/RM_Sprinklers.xml.
+  squat  = the squat side-view heads that shipped 2026-10-24 morning (art_source/Sprinkler/squat_heads.shipped(raw)) at
+           drawOffset z SQUAT_OFFSET_Z: the owner sheet's BEFORE for the top-down redraw;
+  after  = the shipped textures (the top-down heads, art_source/Sprinkler/top_heads.py) with the drawOffset now in
+           Defs/Sprinklers/RM_Sprinklers.xml.
 Usage: fw_scenes_sprinkler.py [--out DIR] [--px N] [--candidate DIR --offset-z Z]
   -> per-look boards + SHEET_sprinkler_matrix.png. --candidate renders AFTER from <DIR>/<Look>/RM_SprinklerHead.png at
   drawOffset z Z instead of the installed art and the Defs (so a candidate is judged before art.py install).
@@ -33,6 +38,7 @@ STATIONS = (("N/S", N | S), ("E/W", E | W), ("elbow N+E", N | E), ("elbow E+S", 
             ("elbow W+N", W | N), ("end N", N), ("tee E+S+W", E | S | W), ("cross", 15))
 # the drawOffset z each look's TALL head shipped with, as written in the Defs then (rounded from foot_y 139/180/173/163.5)
 TALL_OFFSET_Z = {"Scrapper": 0.04, "Industrial": 0.2, "Modern": 0.18, "Futuristic": 0.14}
+SQUAT_OFFSET_Z = 0.047       # (squat_heads.SEAT_Y 140 - 128) / 256, as the Defs held it for the squat heads
 CANDIDATE = {"dir": None, "offset_z": None}    # set by --candidate / --offset-z
 
 
@@ -91,6 +97,10 @@ def def_draw_sizes(base=False):
 def head_tex(look, mode):
     if mode == "before":
         return Image.open(RAW / look / "RM_SprinklerHead.png").convert("RGBA")
+    if mode == "squat":
+        sys.path.insert(0, str(FW / "art_source" / "Sprinkler"))
+        import squat_heads
+        return squat_heads.shipped(look, Image.open(RAW / look / "RM_SprinklerHead.png").convert("RGBA"))[0]
     if CANDIDATE["dir"]:
         return Image.open(Path(CANDIDATE["dir"]) / look / "RM_SprinklerHead.png").convert("RGBA")
     return fc.tex("RimMandrake/FlowWorks/Sprinkler/%s/RM_SprinklerHead" % look)
@@ -108,6 +118,8 @@ def board(look, mode, px=96, head=None, offset_z=None, pipe_look=None, shift_x=0
         oz = offset_z
     elif mode == "before":
         oz = TALL_OFFSET_Z[look]
+    elif mode == "squat":
+        oz = SQUAT_OFFSET_Z
     else:
         oz = CANDIDATE["offset_z"] if CANDIDATE["offset_z"] is not None else def_offsets()[look]
     for i, (name, mask) in enumerate(STATIONS):
@@ -132,16 +144,16 @@ def build(out, px):
     f, ft = fc.font(26), fc.font(30)
     rows = []
     for look in fc.LOOKS:
-        for mode in ("before", "after"):
+        for mode in ("squat", "after"):
             im = board(look, mode, px).render()
             im.save(out / ("sprinkler_%s_%s.png" % (look, mode)))
-            rows.append(("%s - %s" % (look, "BEFORE (shipped tall head)" if mode == "before" else "AFTER (squat head)"), im))
+            rows.append(("%s - %s" % (look, "BEFORE (squat side view)" if mode == "squat" else "AFTER (seen from above)"), im))
     pad, lh, top = 10, 34, 54
     Wd = pad * 2 + max(im.width for _, im in rows)
     H = top + sum(lh + im.height + pad for _, im in rows)
     sheet = Image.new("RGB", (Wd, H), (28, 28, 28))
     d = ImageDraw.Draw(sheet)
-    d.text((pad, 10), "SPRINKLER_SEAT_FIX_HEAD_BESIDE_ELBOW - every look x N/S, E/W, the four elbows, end, tee, cross",
+    d.text((pad, 10), "SPRINKLER_HEAD_REDRAW_SEEN_FROM_ABOVE - every look x N/S, E/W, the four elbows, end, tee, cross",
            fill=(255, 255, 255), font=ft)
     y = top
     for i, (title, im) in enumerate(rows, 1):

@@ -20,7 +20,12 @@ Sprinkler head (SPRINKLER_SEAT_FIX_HEAD_BESIDE_ELBOW; his words: "their alignmen
 onto the pipe ... make the sprinkler object be shorter, squatter, and wider so that it looks ok over any pipe"):
   head_centroid_on_axis  the head's drawn mass sits on the pipe's drawn centreline: within HEAD_TOL cell across and along,
                          on N/S, E/W, every elbow, end, tee and cross (a tall head's mass floats north of an E/W pipe)
-  head_clamp_straddles_pipe  centred across on the seat within half a bore, clamp's lowest row 0.03-0.15 cell south of it
+  head_top_down          (SPRINKLER_HEAD_REDRAW_SEEN_FROM_ABOVE: "shown as viewed from above ... Like the pump is viewed")
+                         seen from above: the opaque box and the alpha centre both on the seat within TOP_TOL cell, the
+                         alpha mask four-fold symmetric (IoU with its 90-degree turn >= TOP_SYM), at least TOP_BORES bores
+                         across both ways so it hides the joint under it; a side-view head fails the centring and symmetry
+  head_seat_on_centreline  the seat lies on the drawn pipe's centreline: across the run (perpendicular; on an elbow along the
+                         arc's radius) the opaque run through the seat is centred on it within CENTRE_TOL cell
   head_squat             drawn no taller than wide, and at least 2.5 bore widths wide so it straddles any pipe
   head_seat_on_pipe      the seat point (cell centre + RM_PipeSeatMath) is within half a bore of drawn pipe (gross-miss guard); seat MATH
                          only, it reads no head pixel (the art's seat row is pinned by the selftest's drawOffset parity)
@@ -174,7 +179,7 @@ def _alpha(scene, meta):
 
 def head_centroid_on_axis(scene, tol=HEAD_TOL):
     """Coarse: the head's alpha-weighted centre within tol of the seat (a tall head's mass floats north). Lopsided by design
-    (the squat dome sits ~0.1 cell north of its seat), so head_clamp_straddles_pipe carries the exact placement."""
+    (the squat dome sat ~0.1 cell north of its seat), so head_top_down carries the exact placement."""
     heads = _heads(scene)
     if not heads:
         return False, "no head drawn"
@@ -193,26 +198,86 @@ def head_centroid_on_axis(scene, tol=HEAD_TOL):
     return worst <= tol, "worst head-centre offset %.3f cell (mask, dx, dz = %s), tolerance %.2f" % (worst, where, tol)
 
 
-CLAMP_BELOW = (0.03, 0.15)   # cell: how far the head's lowest opaque row hangs south of the seat (the clamp's front lip)
+TOP_TOL = 0.02       # cell: a top-down head is drawn centred on its seat (drawOffset 0)
+TOP_SYM = 0.9        # IoU of the head's alpha mask with itself turned 90 degrees
+TOP_BORES = 2.5      # its opaque extent, both ways, in bore widths
 
 
-def head_clamp_straddles_pipe(scene, below=CLAMP_BELOW):
-    """Exact placement: every head is centred across on its seat (bbox centre within half a bore in x) and its clamp
-    straddles the pipe axis (lowest opaque row between below[0] and below[1] cell south of the seat): a head shifted
-    north, south or sideways by a tenth of a cell fails."""
+def head_top_down(scene, tol=TOP_TOL, sym=TOP_SYM, bores=TOP_BORES):
+    """Every head drawn as seen from above: centred on its seat (box centre and alpha centre, both axes, within tol), its
+    mask four-fold symmetric (IoU with its own 90-degree turn about the seat >= sym) and >= bores bore widths across both
+    ways. A side-view head (dome north of a clamp) fails centring and symmetry; a head nudged 0.05 cell fails centring."""
     heads, bad = _heads(scene), []
     if not heads:
         return False, "no head drawn"
     for m in heads:
-        ys, xs = np.nonzero(_alpha(scene, m) > 40)
+        a = _alpha(scene, m)
+        mask = a > 40
+        ys, xs = np.nonzero(mask)
         if not len(xs):
             bad.append((m["mask"], "blank"))
             continue
-        bx = (xs.min() + xs.max() + 1) / 2 / scene.P - m["seat"][0]
-        hang = m["seat"][1] - (scene.h - (ys.max() + 1) / scene.P)
-        if abs(bx) > BORE / 2 or not below[0] <= hang <= below[1]:
-            bad.append((m["mask"], "dx %.3f" % bx, "hang %.3f" % hang))
-    return not bad, ("off seat: %s (|dx| <= %.3f, hang %s)" % (bad[:4], BORE / 2, below)) if bad else "every clamp on its seat"
+        sx, sy = scene.to_px(*m["seat"])
+        w = a[ys, xs]
+        off = [((xs.min() + xs.max() + 1) / 2 - sx) / scene.P, ((ys.min() + ys.max() + 1) / 2 - sy) / scene.P,
+               ((xs + 0.5) * w).sum() / w.sum() / scene.P - sx / scene.P, ((ys + 0.5) * w).sum() / w.sum() / scene.P - sy / scene.P]
+        r = int(max(xs.max() + 1 - sx, sx - xs.min(), ys.max() + 1 - sy, sy - ys.min())) + 2
+        x0, y0 = int(round(sx)) - r, int(round(sy)) - r
+        win = np.zeros((2 * r, 2 * r), bool)
+        H, W = mask.shape
+        cy0, cx0 = max(0, y0), max(0, x0)
+        win[cy0 - y0:min(H, y0 + 2 * r) - y0, cx0 - x0:min(W, x0 + 2 * r) - x0] = mask[cy0:min(H, y0 + 2 * r), cx0:min(W, x0 + 2 * r)]
+        rot = np.rot90(win)
+        iou = (win & rot).sum() / max(1, (win | rot).sum())
+        ext = min(xs.max() - xs.min() + 1, ys.max() - ys.min() + 1) / scene.P
+        if max(abs(v) for v in off) > tol or iou < sym or ext < bores * BORE:
+            bad.append((m["mask"], "off %.3f" % max(abs(v) for v in off), "iou %.2f" % iou, "extent %.3f" % ext))
+    return not bad, ("not top-down: %s (off <= %.2f, iou >= %.2f, extent >= %.3f)" % (bad[:4], tol, sym, bores * BORE)
+                     if bad else "every head centred, four-fold, covers its joint")
+
+
+CENTRE_TOL = 0.02    # cell
+_DIAG = ((1, 1), (1, -1))
+_ACROSS = {1 | 4: ((1, 0),), 2 | 8: ((0, 1),), 1: ((1, 0),), 4: ((1, 0),), 2: ((0, 1),), 8: ((0, 1),),
+           1 | 2: ((1, 1),), 4 | 8: ((1, 1),), 2 | 4: ((1, -1),), 8 | 1: ((1, -1),)}
+# (dx east, dz north) across the run at the seat; an elbow: the arc's radius; a tee or cross: both diagonals (an axis
+# through a junction runs on down a branch, a diagonal meets the two corners either side of the seat)
+
+
+def head_seat_on_centreline(scene, tol=CENTRE_TOL):
+    """The centreline-distance check SPRINKLER_HEAD_REDRAW_SEEN_FROM_ABOVE owed: walk the drawn pipe's alpha (>= 128) from
+    the seat both ways ACROSS the run (an elbow: along the arc's radius, the diagonal) to its edges; the run's midpoint must
+    be the seat within tol cell. A seat a bore-quarter off the axis fails; head_seat_on_pipe would still pass it."""
+    heads, bad = _heads(scene), []
+    if not heads:
+        return False, "no head drawn"
+    pipe = np.asarray(scene.render(only=lambda m: m.get("kind") == "pipe"))[..., 3]
+    H, W = pipe.shape
+    for m in heads:
+        sx, sy = scene.to_px(*m["seat"])
+        if m["mask"] & 15 in fc.DIRS:                      # an end: its cap rim may cross the seat; sample just up the arm
+            ax, az = fc.DIRS[m["mask"] & 15]
+            sx, sy = sx + 0.06 * scene.P * ax, sy - 0.06 * scene.P * az
+        for dx, dz in _ACROSS.get(m["mask"] & 15, _DIAG):
+            n = math.hypot(dx, dz)
+            ux, uy = dx / n, -dz / n                       # image y runs south
+
+            def reach(sgn):
+                t = 0.0
+                while t < scene.P / 2:                     # half a cell: never down a whole run
+                    x, y = sx + sgn * (t + 0.25) * ux, sy + sgn * (t + 0.25) * uy
+                    if not (0 <= x < W and 0 <= y < H) or pipe[int(y), int(x)] < 128:
+                        return t
+                    t += 0.25
+                return t
+            a, b = reach(1), reach(-1)
+            if a + b == 0:
+                bad.append((m["mask"], "no pipe at seat"))
+                continue
+            mid = (a - b) / 2 / scene.P
+            if abs(mid) > tol or min(a, b) >= scene.P / 2:
+                bad.append((m["mask"], (dx, dz), "%.3f" % mid))
+    return not bad, ("seat off the centreline at %s (tol %.2f cell)" % (bad[:4], tol)) if bad else "every seat on the centreline"
 
 
 def head_squat(scene, max_ratio=1.0, min_bores=2.5):
@@ -234,7 +299,7 @@ def head_seat_on_pipe(scene):
     """Seat MATH near the drawn pipe, a GROSS-miss guard: every head's seat (cell centre + RM_PipeSeatMath.Seat) has pipe
     alpha >= 128 somewhere in a square window of +/- half a bore around it, so a seat up to ~a full bore off the centreline
     still passes (the window is that wide because an end cell's pipe stops AT the seat). It does NOT prove the seat is on
-    the axis; the top-down head redraw (SPRINKLER_HEAD_REDRAW_SEEN_FROM_ABOVE) owes a centreline-distance check. It reads no
+    the axis: head_seat_on_centreline does (SPRINKLER_HEAD_REDRAW_SEEN_FROM_ABOVE). It reads no
     head pixel: that the art's seat row lands on the seat is the drawOffset parity in selftest_fw_offline_art.py."""
     heads = _heads(scene)
     if not heads:
@@ -250,7 +315,7 @@ def head_seat_on_pipe(scene):
     return not off, "seat off the drawn pipe at masks %s" % off if off else "every seat on drawn pipe"
 
 
-SPRINKLER_CHECKS = (head_centroid_on_axis, head_clamp_straddles_pipe, head_squat, head_seat_on_pipe)
+SPRINKLER_CHECKS = (head_centroid_on_axis, head_top_down, head_squat, head_seat_on_pipe, head_seat_on_centreline)
 
 
 # ---- portable ladder (LADDER_PORTABLE_REDRAW_NORTH_FROM_GROUND) ------------------------------------------------------

@@ -1,0 +1,115 @@
+{
+ "biome": "SUBJECTS_sprinkler_head_seen_from_above",
+ "built": "2026-10-24T11:56:45-0700",
+ "census": "Transient/biome_ffar/sprinkler_head_seen_from_above.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 26 mods \u2014 a test list): 320 active",
+ "rows": {
+  "RM_SprinklerHead": {
+   "columns": {
+    "A": {
+     "single": "679f85fcd5f900f995647de4d1ddc78b46e3588e90914a0d193b12db1d6b1696"
+    },
+    "B": {
+     "single": "b90c10a9c1cc4349aa7962d6b1e7e42f3d4b1ceeaa4a13a4da20c9bf76ad3981"
+    },
+    "C": {
+     "single": "3a45a538fde142f66f0785ae130e1bab549455bc3d47ff9a35173ac8f69bba16"
+    },
+    "D": {
+     "single": "0ff4c7f23cda79be9bea27199e4b306bd52f199bc40826549dd084cf9eafe2ba"
+    },
+    "E": {
+     "single": "5bb1ea58020cedcbbe6b35431d66bcba3d8199319a7266b0a970ebe8630eb4d8"
+    },
+    "F": {
+     "single": "991f51b7d8d88ece72835bf550e118b61dcb963f6f1d16705828fc9834291c18"
+    },
+    "G": {
+     "single": "121d70d3e8d9cb3114bb423e785bd9dbfdbfa7a5b5a742fef4a6add772b78659"
+    },
+    "H": {
+     "single": "0dcd7761335185e0e7464dbc4146edd2d36ae305d04ba94b11a94fcce3ef7ded"
+    },
+    "I": {
+     "single": "b5cc3304049d1df8171d0cb5af1ba7970ce2e6762fac0f39b3ff1771c1d9bfd2"
+    },
+    "J": {
+     "single": "5e10abb11c8854669b3234f6a9179ad2101b296839c2ce2c2ca64d1eed12b1dc"
+    },
+    "K": {
+     "single": "26bab38490eed9e70e57419ab6f9edef543f7932a0e9f09ba7ec5e9e62109b39"
+    },
+    "L": {
+     "single": "ad610d596da82a0375f42cf96c9eec9c14f66d11999b2be083e6f7274850b788"
+    },
+    "M": {
+     "single": "c234b730bf924ec0b70ab4f5ae4afba7a02d8a5717db914ffd7f8737c40c3372"
+    },
+    "N": {
+     "single": "38b066dfad920986302082b9b15a8825cdf88d176fcc0dde7c9328d9eef3cba5"
+    },
+    "O": {
+     "single": "6b63f2ceaad01087cf9f6077308aefc3dfb45b78421bd59d428049ad7b575c2d"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Sprinkler/Scrapper/RM_SprinklerHead",
+    "B": "RimMandrake/FlowWorks/Sprinkler/Scrapper/RM_SprinklerHead",
+    "C": "RimMandrake/FlowWorks/Sprinkler/Scrapper/RM_SprinklerHead",
+    "D": "RimMandrake/FlowWorks/Sprinkler/Futuristic/RM_SprinklerHead",
+    "E": "RimMandrake/FlowWorks/Sprinkler/Futuristic/RM_SprinklerHead",
+    "F": "RimMandrake/FlowWorks/Sprinkler/Futuristic/RM_SprinklerHead",
+    "G": "RimMandrake/FlowWorks/Sprinkler/Industrial/RM_SprinklerHead",
+    "H": "RimMandrake/FlowWorks/Sprinkler/Industrial/RM_SprinklerHead",
+    "I": "RimMandrake/FlowWorks/Sprinkler/Industrial/RM_SprinklerHead",
+    "J": "RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead",
+    "K": "RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead",
+    "L": "RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead",
+    "M": "RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead",
+    "N": "RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead",
+    "O": "RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render RM_SprinklerHead_lj_Scrapper",
+    "C": "render RM_SprinklerHead_lj2_Scrapper",
+    "D": "IN GAME \u2014 FlowWorks",
+    "E": "render RM_SprinklerHead_lj_Futuristic",
+    "F": "render RM_SprinklerHead_lj2_Futuristic",
+    "G": "IN GAME \u2014 FlowWorks",
+    "H": "render RM_SprinklerHead_lj_Industrial",
+    "I": "render RM_SprinklerHead_lj2_Industrial",
+    "J": "IN GAME \u2014 FlowWorks",
+    "K": "render modernsprinkler_a_v1",
+    "L": "render modernsprinkler_b_v1",
+    "M": "render modernsprinkler_c_v1",
+    "N": "render RM_SprinklerHead_lj_Modern",
+    "O": "render RM_SprinklerHead_lj2_Modern"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Sprinkler/Scrapper/RM_SprinklerHead",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "O"
+   ],
+   "shownBase": [],
+   "subject_key": "sprinklerhead"
+  }
+ },
+ "sheetId": "sprinkler_head_seen_from_above_sheet_2026-10-24",
+ "snapshotId": "8ff1da19d3d29eb9"
+}
