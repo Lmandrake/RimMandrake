@@ -11,7 +11,8 @@ What it emulates (read from the C#, not guessed):
     drop. Colours are stand-ins (pale face, paler-than-floor bevels, black outline); the checks read masks, not colours.
   * RM_LiquidSurface (TerrainScatter + 0.01): a translucent water film over a cell with fill > 0.
   * the spikes (Building altitude, above all of that): BEFORE = the shipped Graphic_Random sprite on the whole 1x1 cell at
-    full opacity; AFTER = Building_RM_Spikes: RM_SpikeDrawMath.Layout's stakes inside FloorRect, opacity
+    full opacity; AFTER = Building_RM_Spikes: RM_SpikeDrawMath.Layout's stakes (sampled from the variant's stake atlas,
+    art_source/Spikes/atlas/ == the installed RM_SpikeStakes textures) inside FloorRect, opacity
     SubmergedAlpha(fill) quantised to 1/32 as the C# does. The math below mirrors RM_SpikeDrawMath bit for bit (Hash) and
     to float precision (Layout); SpikeDrawChecks.Spikes_parity_fixture_matches_python holds the two together with
     PARITY below.
@@ -110,7 +111,9 @@ _LIB = {}
 
 def library(variant):
     if variant not in _LIB:
-        _LIB[variant] = STAKES.library(STAKES.VARIANTS[variant])
+        lib, pitch = STAKES.library(STAKES.VARIANTS[variant])
+        r6 = lambda q: float(np.float32(float("%.6f" % q)))     # the C# reads these as %.6f float literals
+        _LIB[variant] = [tuple(r6(q) for q in st) for st in lib], tuple(r6(q) for q in pitch)
     return _LIB[variant]
 
 
@@ -246,8 +249,10 @@ def render(pit, mode="after", P=160, faces=True, outline=True):
     cells = {}
     for (x, z) in sorted(pit.spikes):
         v = pit.variant_of.get((x, z), (x * 7 + z * 3) % 3)
-        src = Image.open(TEXDIR / ("RM_Spikes_%s.png" % STAKES.VARIANTS[v])).convert("RGBA")
-        S = src.width
+        name = STAKES.VARIANTS[v]
+        src = Image.open(TEXDIR / ("RM_Spikes_%s.png" % name)).convert("RGBA") if mode == "before" else \
+            Image.open(STAKES.ATLAS_SRC / (STAKES.atlas_name(name) + ".png")).convert("RGBA")
+        SW, SH = src.size
         quads, alpha, laid = [], 1.0, 0
         if mode == "before":
             quads = [(0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0)]
@@ -263,7 +268,7 @@ def render(pit, mode="after", P=160, faces=True, outline=True):
                 quads = []
         cells[(x, z)] = dict(alpha=alpha, quads=len(quads), laid=laid, fill=pit.f[z][x])
         for (qx, qz, qw, qh, u0, v0, u1, v1) in quads:
-            crop = src.crop((round(u0 * S), round((1 - v1) * S), round(u1 * S), round((1 - v0) * S)))
+            crop = src.crop((round(u0 * SW), round((1 - v1) * SH), round(u1 * SW), round((1 - v0) * SH)))
             r0, r1, c0, c1 = box(x, z, qx, qz, qx + qw, qz + qh)
             if r1 <= r0 or c1 <= c0:
                 continue
