@@ -917,12 +917,34 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
         if decided and not is_cut and (dec != "redo" or v2_slots):
             picks, conf = effective_picks(ov, srow) if dec != "redo" else ({}, [])
             # schema 2: HIS per-slot choices (a click on the new sheet) win; a migrated slot is only a view of the above
+            lanes = {x for x in (srow.get("graphic_of") or {}).values() if x != "_byname" and not x.startswith("_reference")}
+            foreign = set()
             for g, st in v2_slots.items():
-                if st.get("state") == "pick" and st.get("pick") in cols:
+                if st.get("state") == "pick" and st.get("pick") in cols and g in lanes \
+                        and assign.get(st["pick"]) != g and gof_resolved(srow, st["pick"]) != g:
+                    # a letter of ANOTHER lane of this snapshot written as this slot's pick (a sheet hotkey reached the
+                    # primary slot with any letter, ART_SHEET_LANE_LETTERS_FIX_UNREVIEWED): its bytes would land at this
+                    # slot's texPath. Refused by name; the slot installs nothing. A slot key the snapshot does not know
+                    # (an older build's path) cannot be checked here and is left as before.
+                    foreign.add(st["pick"])
+                    picks.pop(g, None)
+                    lane_of = gof_resolved(srow, st["pick"]) or (srow.get("graphic_of") or {}).get(st["pick"]) or "?"
+                    lane_of = ("an unassigned render" if lane_of == "_byname" else
+                               f"a set of {lane_of.rsplit('/', 1)[-1]}")
+                    P["conflicts"].append(f"{row}: slot {g.rsplit('/', 1)[-1]} pick {st['pick']} is {lane_of} "
+                                          f"on the sheet, not of this slot — refused, nothing "
+                                          f"installed for it; pick again in that slot's own lane")
+                elif st.get("state") == "pick" and st.get("pick") in cols:
                     picks[g] = st["pick"]
                     conf = [x for x in conf if x[0] != st["pick"]]
                 elif st.get("state") in ("accept", "redraw", "not_drawn"):
                     picks.pop(g, None)
+            if foreign:
+                # the same letter also reached `decision`, which routes it to its own lane above: he never picked it
+                # there (the slot record says where he meant it), so it installs nowhere unless a slot of its own picks it
+                own_lane = {g for g, st in v2_slots.items() if st.get("state") == "pick" and st.get("pick") in foreign
+                            and picks.get(g) == st["pick"]}
+                picks = {g: l for g, l in picks.items() if l not in foreign or g in own_lane}
             for letter, c in conf:
                 shas = [x for x in (cols.get(letter) or {}).values() if x and x not in xed]
                 protect_here |= set(shas)
