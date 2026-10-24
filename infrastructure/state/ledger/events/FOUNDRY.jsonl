@@ -7455,3 +7455,8 @@
 {"seat":"FOUNDRY","event":"claim","id":"COPY_DAMAGED_FAUNA_REDRAW_OWNER_PROMPTS","ts":"2026-10-24T13:32:31Z","tsn":1792848751305530275}
 {"seat":"FOUNDRY","event":"note","id":"ENACT_KEYED_FIX_UNREVIEWED","text":"sha correction: 8035b30ec0 was rebased by ./publish; the code commit on origin is 399c470062","ts":"2026-10-24T13:32:31Z","tsn":1792848751598319311}
 {"seat":"FOUNDRY","event":"start","id":"COPY_DAMAGED_FAUNA_REDRAW_OWNER_PROMPTS","ts":"2026-10-24T13:32:31Z","tsn":1792848751676654408}
+{"seat":"FOUNDRY","event":"start","id":"COPY_DAMAGED_FAUNA_REDRAW_OWNER_PROMPTS","ts":"2026-10-24T13:32:33Z","tsn":1792848753312899352}
+{"seat":"FOUNDRY","event":"lease","id":"ENACT_KEYED_FIX_UNREVIEWED","action":"take","token":"FOUNDRY.pid33089.ffd4183f","expires":"2026-10-24T14:18:11Z","ts":"2026-10-24T13:33:11Z","tsn":1792848791695335892}
+{"seat":"FOUNDRY","event":"claim","id":"ENACT_KEYED_FIX_UNREVIEWED","ts":"2026-10-24T13:33:12Z","tsn":1792848792061723685}
+{"seat":"FOUNDRY","event":"start","id":"ENACT_KEYED_FIX_UNREVIEWED","ts":"2026-10-24T13:33:12Z","tsn":1792848792451066223}
+{"seat":"FOUNDRY","event":"start","id":"ENACT_KEYED_FIX_UNREVIEWED","ts":"2026-10-24T13:33:14Z","tsn":1792848794158837058}
