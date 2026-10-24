@@ -1,0 +1,65 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 36.7,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.3647846
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 40.1
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Gawpsack",
+ "decision": "ESCALATE",
+ "reasons": [
+  "opus band WEAK (model said good); blocking ['DEPARTURE_MISSING', 'DEPARTURE_MISSING']; polish ['LEGIB_32']",
+  "gpt regen: unsettled ['K1', 'K2'], own blocking ['DEPARTURE_MISSING', 'DEPARTURE_MISSING']",
+  "still failing after 3 regen rounds \u2014 one line to the owner"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "e1139ba8ee3dd0369235fff7f83625f4e4165238981aa13103983347d2497edd",
+  "east.png": "bffe9d273077c6c21aad41c83d03e83957ea543ebcf8e421ab997d26c564ca18",
+  "north.png": "60f0ae191b33e1ec736fb72c8c041e4fec32f63f6934cffbb7f2ecc409a7a63a",
+  "scale.png": "e34f6b970efb696ebfac9b9dbd8521fa2094f3be5c894369df7098ec55901e13",
+  "facings.png": "5f1c618bcb34af32a818f36abe6eb188f6d5f371c2a65a680b5efdc79f054a15"
+ }
+}

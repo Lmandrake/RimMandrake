@@ -1,0 +1,58 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 35.9,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.362394
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Shokka",
+ "decision": "ESCALATE",
+ "reasons": [
+  "opus band REALLY_BAD (model said really_bad); blocking ['F_TOPDOWN', 'F_SIZE_JUMP', 'F_INCONSISTENT', 'STYLE_EARTHLY']; polish []",
+  "still failing after 3 regen rounds \u2014 one line to the owner"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "275e916e71ff577f21eb402fb3e49ba931c28c8845b208c4d8416c12982f0959",
+  "east.png": "76fa37586b124aaf5203595d4d1646bfcd4699f646e908cafba5990752db03e3",
+  "north.png": "e777d65153b26c20833d59856d37b9e7f22ccd102ca889c1097f55547a69239e",
+  "scale.png": "3ffda28fb9c4d159e14aff0c1f6cb7fc8ee4b469bed5daba0e621c2e7ba15c2a",
+  "facings.png": "b7889837f28dcf8298227c94c7a812541a3bec1f5b3604a49420ed17102bfa4a"
+ }
+}

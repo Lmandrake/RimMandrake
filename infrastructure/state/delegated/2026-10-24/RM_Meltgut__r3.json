@@ -1,0 +1,65 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 59.8,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.395243
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 66.0
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Meltgut",
+ "decision": "ESCALATE",
+ "reasons": [
+  "opus band WEAK (model said weak); blocking ['F_SOUTH_NOT_FRONT', 'F_INCONSISTENT', 'F_SIZE_JUMP', 'DEPARTURE_MISSING']; polish ['F_TOPDOWN', 'SCALE_WRONG']",
+  "gpt regen: unsettled ['K2', 'K3', 'K4'], own blocking ['F_INCONSISTENT', 'F_SIZE_JUMP', 'DEPARTURE_MISSING']",
+  "still failing after 3 regen rounds \u2014 one line to the owner"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "424345e0c6d39bafd5ee523e33457994ad3293e8124d06c41cd5ff025d7fe923",
+  "east.png": "b7d69384ccf38e49d639a10fe2bb225c2e9453b21bf6fb741b98670e61f9b9eb",
+  "north.png": "6013cafac3c8ad40f08d6d325fa4e53d1cfcd9767922bd56bc20359ae575168a",
+  "scale.png": "4b75955176d5f1c26de8846a9151d2af4485c6727082eb106b794325e8a21ce7",
+  "facings.png": "d84c63fd7af4330d67f2a07d0be87677e6ddcb7184b58f9007155a1187393c7e"
+ }
+}
