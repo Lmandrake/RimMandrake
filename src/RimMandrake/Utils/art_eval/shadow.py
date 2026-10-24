@@ -134,11 +134,21 @@ def build(run_id: str, name: str | None = None) -> Path:
     (qdir / "shadow_build.log").write_text(p.stdout[-4000:] + "\n--- stderr ---\n" + p.stderr[-4000:])
     if p.returncode:
         raise SystemExit(f"art_sheet.py exit {p.returncode}; see {qdir / 'shadow_build.log'}")
-    sheet = ROOT / "Transient/biome_ffar" / f"{name}_sheet_{dt.date.today().isoformat()}.html"
+    sheet = built_sheet_path(p.stdout, name)
     if not sheet.is_file():
         raise SystemExit(f"art_sheet.py succeeded but {sheet} is missing; see the build log")
     write_prereview(sheet, recs)
     return sheet
+
+
+def built_sheet_path(stdout: str, name: str, today: str | None = None) -> Path:
+    """The sheet art_sheet.py says it wrote (its stdout JSON's "html"); the date-derived name only when that cannot be
+    read — art_sheet dates the file itself, so a build that crosses midnight would otherwise miss it."""
+    m = re.search(r'"html":\s*"([^"]+)"', stdout or "")
+    if m:
+        h = Path(m.group(1))
+        return h if h.is_absolute() else ROOT / h
+    return ROOT / "Transient/biome_ffar" / f"{name}_sheet_{today or dt.date.today().isoformat()}.html"
 
 
 def write_prereview(sheet: Path, recs: list):
@@ -202,6 +212,9 @@ def ingest(decisions_path: Path, run_id: str, apply_reverts: bool = False) -> li
     d = json.loads(Path(decisions_path).read_text())
     groups = by_row(load_run(run_id))
     log = STATE / "shadow_log.jsonl"
+    # re-ingesting the same answers must not log them twice: shadow_status counts rows, so a duplicate would grow the
+    # clean streak (and re-file ledger entries, re-run reverts). A CHANGED answer is a new ruling and is logged.
+    logged = {ingest_key(json.loads(l)) for l in log.read_text().splitlines() if l.strip()} if log.is_file() else set()
     out = []
     for subj, row in (d.get("decisions") or {}).items():
         ans = (row.get("q") or {}).get(KEY)
@@ -217,6 +230,9 @@ def ingest(decisions_path: Path, run_id: str, apply_reverts: bool = False) -> li
             e = {"at": row.get("at") or dt.datetime.now().astimezone().isoformat(timespec="seconds"), "run": run_id,
                  "subject": r["subject"], "template": r["template"], "pipeline_decision": r["decision"], "owner_answer": ans,
                  "override": override, "blocking": blocking, "note": row.get("note", "")}
+            if ingest_key(e) in logged:
+                continue
+            logged.add(ingest_key(e))
             if ans == "revert" and r.get("replaces_kept"):
                 e["revert"] = [{"cmd": c, "rc": rc, "out": o} for c, rc, o in revert(r, apply_reverts)]
             with log.open("a") as fh:
@@ -227,6 +243,10 @@ def ingest(decisions_path: Path, run_id: str, apply_reverts: bool = False) -> li
                                      owner_said=row.get("note") or f"(card answer: {ans})", run=run_id)
             out.append(e)
     return out
+
+
+def ingest_key(e: dict) -> tuple:
+    return (e.get("run"), e.get("subject"), e.get("owner_answer"), e.get("note") or "")
 
 
 def status() -> list:
