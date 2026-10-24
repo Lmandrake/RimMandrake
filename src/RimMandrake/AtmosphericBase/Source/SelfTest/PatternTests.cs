@@ -709,5 +709,6 @@ internal static class PatternTests
         Step6();
         Step7Review();
         StepR1();
+        WalkerTests.Run();
     }
 }

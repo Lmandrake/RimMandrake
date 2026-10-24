@@ -536,7 +536,14 @@ PRIMITIVE_PARAMS = {   # independent of the C# kernel: what each built primitive
     "Tide": ("period", "anchor", "ragged", "band", "hold", "low", "high"),
     "Ripple": ("period", "anchor", "seed", "direction", "fill", "speed", "width", "holdSeconds", "oneShot"),
     "Sweep": ("period", "field", "angle", "lit"),
+    "Procession": ("graph", "heads", "hop", "dwell", "step", "tail", "overlap", "trace", "pair", "drawnInBlack", "anchor"),
+    "Coil": ("graph", "coils", "hop", "turnChance", "length", "anchor"),
+    "Tell": ("interval", "beat", "cap"),
+    "Count": ("n", "perRoom", "markEntry", "restEntry", "pick", "tremble", "accumulate", "beat", "anchor"),
 }
+WALK_GRAPHS = ("Adjacency", "Rooms", "Conduits")   # design S7; Conduits falls back to Adjacency (no conduit graph built)
+WALK_STEPS = ("Walk", "Jump")
+COUNT_PICKS = ("Spread", "NearestAnchor", "Brightest")   # Brightest falls back to Spread (no brightness read)
 RIPPLE_ENUMS = {"seed": ("Anchor", "Fixture", "Hull"), "direction": ("Out", "In"), "fill": ("Shell", "Bloom")}   # design §1 P4
 SWEEP_FIELDS = ("Axis", "Turn", "Toward")   # design §1 P5
 TIDE_ANCHORS = ("Core", "Medoid", "Threshold", "Open", "Grandest", "Shrine", "Power")   # design §1 P3
@@ -621,12 +628,56 @@ def judge_pattern_layers(xml_by_name, built):
                         bad.append("%s: lit %s outside (0, 1]" % (at, l.get("lit")))
                     if l.get("field", "Axis") not in SWEEP_FIELDS:
                         bad.append("%s: field %r" % (at, l.get("field")))
+                if prim in ("Procession", "Coil", "Tell", "Count"):
+                    bad.extend(judge_walker_layer(at, prim, l, pn))
     if n_s == 0:
         return _r(UNM, HARNESS, "no scheme carries <layers> yet: nothing to judge (built: %s)" % ",".join(sorted(built)))
     if bad:
         return _r(FAIL, MOD, "; ".join(bad[:8]))
     return _r(PASS, MOD, "%d layered scheme(s), %d layer(s): built primitives only, slices inside palettes, params sane (built: %s)" % (
         n_s, n_l, ",".join(sorted(built))))
+
+
+def judge_walker_layer(at, prim, l, pn):
+    """S7 walkers: the authoring bounds the design sets (independent of RM_PatternWalkers.Errors)."""
+    bad = []
+    f = lambda k, d: float(l.get(k, d))
+    if l.get("graph", "Adjacency") not in WALK_GRAPHS:
+        bad.append("%s: graph %r" % (at, l.get("graph")))
+    if prim == "Procession":
+        if not 1 <= int(l.get("heads", 1)) <= 8:
+            bad.append("%s: heads %s outside 1-8" % (at, l.get("heads")))
+        if f("hop", 0.6) < 0 or f("dwell", 2) < 0 or f("hop", 0.6) + f("dwell", 2) <= 0:
+            bad.append("%s: hop/dwell %s/%s" % (at, l.get("hop"), l.get("dwell")))
+        if not 0 <= int(l.get("tail", 0)) <= 8:
+            bad.append("%s: tail %s outside 0-8" % (at, l.get("tail")))
+        if l.get("step", "Walk") not in WALK_STEPS:
+            bad.append("%s: step %r" % (at, l.get("step")))
+        if int(l.get("trace", 0)) and l.get("step", "Walk") == "Jump":
+            bad.append("%s: trace with step Jump" % at)
+    if prim == "Coil":
+        if not 1 <= int(l.get("coils", 2)) <= 3:
+            bad.append("%s: coils %s outside 1-3" % (at, l.get("coils")))
+        if not 0 <= f("turnChance", 0.2) <= 1:
+            bad.append("%s: turnChance %s outside 0-1" % (at, l.get("turnChance")))
+        if not 1 <= int(l.get("length", 4)) <= 12:
+            bad.append("%s: length %s outside 1-12" % (at, l.get("length")))
+        if not f("hop", 0.6) > 0:
+            bad.append("%s: coil hop %s" % (at, l.get("hop")))
+    if prim == "Tell":
+        if not -1 <= int(l.get("cap", -1)) <= 3:
+            bad.append("%s: cap %s outside -1..3" % (at, l.get("cap")))
+        if not 0 < f("beat", 1) <= f("interval", 60):
+            bad.append("%s: beat %s vs interval %s" % (at, l.get("beat"), l.get("interval")))
+    if prim == "Count":
+        for k in ("markEntry", "restEntry"):
+            if not -1 <= int(l.get(k, -1)) < pn:
+                bad.append("%s: %s %s outside the palette" % (at, k, l.get(k)))
+        if l.get("pick", "Spread") not in COUNT_PICKS:
+            bad.append("%s: pick %r" % (at, l.get("pick")))
+        if l.get("accumulate") == "true" and not f("beat", 1) > 0:
+            bad.append("%s: accumulate beat %s" % (at, l.get("beat")))
+    return bad
 
 
 GRAPH_KEY_ALLOWED = {"f", "i", "j", "h", "adj", "id", "cells", "threshold", "shrine", "power", "ulong", "uint"}
@@ -709,15 +760,28 @@ KERNEL_CACHE_CHECKS = ("R1 cache: lamps taken, released and moved inside the bas
                        "R1 sweep Toward: a room unreachable from any threshold room is lit after every reachable room")
 
 
-def judge_kernel_log(text):
-    """D7b: the behavioural half of D7 -- the kernel selftest's own lines for the graph cache and the sweep island
-    (selftest_atmosphericbase_kernel.py output, passed with --kernel-log). No log = UNMEASURED, never a pass."""
+KERNEL_WALKER_CHECKS = ("S7 procession heads=3: exactly 3 lamps lit in each dwell",
+                        "S7 procession overlap: one lamp in the dwell",
+                        "S7 procession walk: over a lap consecutive head lamps are graph-adjacent",
+                        "S7 ember procession in true black",
+                        "S7 coil: no 8-step window",
+                        "S7 coil: a lamp under two coils flares",
+                        "S7 coil T=1000",
+                        "S7 tell integer cap for 0-25 fixtures",
+                        "S7 count spread n=3",
+                        "S7 count at steady state: zero changes",
+                        "S7 count: a lamp added moves at most one mark",
+                        "S7 count tremble")
+
+
+def judge_kernel_lines(text, checks, passmsg):
+    """Find each named check's line in a kernel selftest log. No log = UNMEASURED, never a pass."""
     if not text:
         return _r(UNM, HARNESS, "no kernel selftest log (run selftest_atmosphericbase_kernel.py > LOG, then --kernel-log LOG)")
     if "AtmosphericBase kernel selftest" not in text:
         return _r(UNM, HARNESS, "the log is not a kernel selftest run")
     missing, failed = [], []
-    for name in KERNEL_CACHE_CHECKS:
+    for name in checks:
         line = next((ln for ln in text.splitlines() if name in ln), None)
         if line is None:
             missing.append(name)
@@ -727,8 +791,35 @@ def judge_kernel_log(text):
         return _r(FAIL, MOD, "kernel selftest FAILED: %s" % failed)
     if missing:
         return _r(UNM, HARNESS, "the log lacks %s (an older kernel build?)" % missing)
-    return _r(PASS, MOD, "kernel selftest drove RM_GraphCache.Refresh: fixture changes keep the graph and its fields, a door edit "
-              "replaces it; the sweep island is lit last")
+    return _r(PASS, MOD, passmsg)
+
+
+def judge_walker_log(text):
+    """D8: the S7 walkers' behaviour, read from the kernel selftest's own lines."""
+    return judge_kernel_lines(text, KERNEL_WALKER_CHECKS,
+                              "kernel selftest drove the walkers: procession exactly-k heads, overlap hand-off, door-adjacent walk "
+                              "(depth-first tour: a backtrack or the lap wrap may jump), ember procession moves in true black; coil "
+                              "never repeats and flares at crossings within budget at 1000 lamps; tell's integer cap; count is still "
+                              "at steady state and stable under membership change (Conduits graph and Brightest pick fall back, unmeasured)")
+
+
+def judge_drawn_layer(kernel):
+    """D8b: the drawn layer (embers in black, the Narrator wash). Not built = UNMEASURED with the flag named."""
+    m = re.search(r"public\s+const\s+bool\s+DrawnLayerBuilt\s*=\s*(true|false)", kernel)
+    if not m:
+        return _r(UNM, HARNESS, "DrawnLayerBuilt not found in RM_PatternKernel.cs: cannot tell")
+    if m.group(1) == "false":
+        return _r(UNM, MOD, "no drawn layer is built: drawnInBlack is a flag-gated no-op; the ember procession runs on real lamps at "
+                  "the dim entry only (the glow between fixtures is unmeasured until a drawn layer exists)")
+    return _r(UNM, HARNESS, "DrawnLayerBuilt=true but no drawn-layer judge exists in this proof yet")
+
+
+def judge_kernel_log(text):
+    """D7b: the behavioural half of D7 -- the kernel selftest's own lines for the graph cache and the sweep island
+    (selftest_atmosphericbase_kernel.py output, passed with --kernel-log). No log = UNMEASURED, never a pass."""
+    return judge_kernel_lines(text, KERNEL_CACHE_CHECKS,
+                              "kernel selftest drove RM_GraphCache.Refresh: fixture changes keep the graph and its fields, a door edit "
+                              "replaces it; the sweep island is lit last")
 
 
 def kernel_cs():
@@ -755,6 +846,8 @@ def offline_rows(rows, kernel_log=None):
                                                                 open(gp, encoding="utf-8").read() if os.path.exists(gp) else ""))
     klog = open(kernel_log, encoding="utf-8", errors="replace").read() if kernel_log and os.path.exists(kernel_log) else ""
     add(rows, "D7b.graph_cache_behaviour", *judge_kernel_log(klog))
+    add(rows, "D8.walkers_behaviour", *judge_walker_log(klog))
+    add(rows, "D8b.drawn_ember_layer", *judge_drawn_layer(kernel_cs()))
     return d
 
 
@@ -1524,7 +1617,19 @@ def metric_controls():
     out.append(("judge_kernel_log a cache check failed", judge_kernel_log(klog.replace("ok    R1 cache: a door", "FAIL  R1 cache: a door"))[0], FAIL))
     out.append(("judge_kernel_log older build", judge_kernel_log(klog.replace(KERNEL_CACHE_CHECKS[0], "something else"))[0], UNM))
     out.append(("judge_kernel_log none", judge_kernel_log("")[0], UNM))
-    out.append(("built_primitives reads the registry", PASS if {"Steady", "Breath", "Spark"} <= built else FAIL, PASS))
+    wlog = "\n".join("ok    " + n + " x" for n in KERNEL_WALKER_CHECKS) + "\nall AtmosphericBase kernel selftests passed"
+    out.append(("judge_walker_log good", judge_walker_log(wlog)[0], PASS))
+    out.append(("judge_walker_log a walker check failed", judge_walker_log(wlog.replace("ok    S7 coil: no", "FAIL  S7 coil: no"))[0], FAIL))
+    out.append(("judge_walker_log older build", judge_walker_log(klog)[0], UNM))
+    out.append(("judge_drawn_layer not built", judge_drawn_layer("public const bool DrawnLayerBuilt = false;")[0], UNM))
+    out.append(("judge_drawn_layer blind", judge_drawn_layer("")[0], UNM))
+    for nm, lay, want in (("procession heads 9", {"heads": "9"}, 1), ("procession trace+Jump", {"trace": "1", "step": "Jump"}, 1),
+                          ("procession clean", {"heads": "3", "tail": "2"}, 0)):
+        out.append(("judge_walker_layer " + nm, FAIL if judge_walker_layer("x", "Procession", lay, 4) else PASS, FAIL if want else PASS))
+    out.append(("judge_walker_layer coil length 13", FAIL if judge_walker_layer("x", "Coil", {"length": "13"}, 4) else PASS, FAIL))
+    out.append(("judge_walker_layer tell beat > interval", FAIL if judge_walker_layer("x", "Tell", {"interval": "1", "beat": "2"}, 4) else PASS, FAIL))
+    out.append(("judge_walker_layer count markEntry outside", FAIL if judge_walker_layer("x", "Count", {"markEntry": "4"}, 4) else PASS, FAIL))
+    out.append(("built_primitives reads the registry", PASS if {"Steady", "Breath", "Spark", "Procession", "Coil", "Tell", "Count"} <= built else FAIL, PASS))
     return out
 
 
