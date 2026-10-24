@@ -17,6 +17,10 @@ namespace RimMandrake.AtmosphericBase
 {
     public enum RM_Primitive { Steady = 0, Breath, Spark, Tide, Ripple, Sweep, Procession, Coil, Tell, Count }
     public enum RM_Combine { Over = 0, Max }
+    public enum RM_Seed { Anchor = 0, Fixture, Hull }
+    public enum RM_Direction { Out = 0, In }
+    public enum RM_Fill { Shell = 0, Bloom }
+    public enum RM_SweepField { Axis = 0, Turn, Toward }
     public enum RM_Scope { Room = 0, Field, Fixture }
     /// <summary>§1 cost classes under engine B: Still (no events at steady state), Light, Front, Heavy, Drawn.</summary>
     public enum RM_CostClass { Still = 0, Light, Front, Heavy, Drawn }
@@ -38,6 +42,16 @@ namespace RimMandrake.AtmosphericBase
         public float band = 1f;             // Tide: rooms (door hops) between the front's first step and its full entry
         public float hold = 0.1f;           // Tide: fraction of the period the water stands at full flood and at full ebb
         public float low = 0f, high = 1f;   // Tide: how far the ebb and the flood reach, 0-1 of the base
+        public RM_Seed seed = RM_Seed.Anchor;       // Ripple: where the ring starts (Anchor uses `anchor`; Hull = the rim)
+        public RM_Direction direction = RM_Direction.Out;   // Ripple: out from the seed, or in to it
+        public RM_Fill fill = RM_Fill.Shell;        // Ripple: a thin ring, or an area that grows, holds and recedes
+        public float speed = 0.5f;          // Ripple: door hops per second
+        public float width = 1f;            // Ripple: the ring's (or the bloom edge's) thickness in hops
+        public float holdSeconds = 4f;      // Ripple bloom: how long the full bloom stands
+        public bool oneShot;                // Ripple: one wave at t = 0 (the pattern's start), never repeated
+        public RM_SweepField field = RM_SweepField.Axis;    // Sweep: what the wave runs along
+        public float angle = 270f;          // Sweep axis: the direction the wave travels, degrees (270 = falling, -z)
+        public float lit = 0.25f;           // Sweep: the fraction of the period a fixture spends in the wave
 
         [NonSerialized] private int lo = -2, hi = -2;
 
@@ -95,6 +109,8 @@ namespace RimMandrake.AtmosphericBase
             { RM_Primitive.Breath, new RM_BreathPrimitive() },
             { RM_Primitive.Spark, new RM_SparkPrimitive() },
             { RM_Primitive.Tide, new RM_TidePrimitive() },
+            { RM_Primitive.Ripple, new RM_RipplePrimitive() },
+            { RM_Primitive.Sweep, new RM_SweepPrimitive() },
         };
 
         public static RM_IPrimitive Get(RM_Primitive p) => table.TryGetValue(p, out RM_IPrimitive x) ? x : null;
