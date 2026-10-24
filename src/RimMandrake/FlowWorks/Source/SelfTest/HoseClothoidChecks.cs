@@ -66,8 +66,8 @@ namespace RimMandrake.FlowWorks.SelfTest
             {
                 // a hose running east that must couple into a port 2 cells north of its line, entering northwards. The port sits
                 // where a 9-cell hose can reach it: at (8, 1.5) the end straight leaves 0.9 < R to turn in, so the shortest
-                // path within R dips south first and runs 6.74 + 1.98 + 0.6 = 9.32 cells (infeasible, measured failing since
-                // 07c6eeeeb4); at (7, 2) it is about 8.3, and the fit has 0.7 of slack to drape
+                // path within R dips south first and runs 6.74 + 1.98 + 0.6 = 9.32 cells (infeasible); at (7, 2) it is about
+                // 8.3, and the fit has 0.7 of slack to drape
                 var pts = Line(o, new V2(9, 0), 36);
                 List<V2> t = HoseClothoid.TailOnto(pts, new V2(7, 2), new V2(0, 1), 0.6, Kmax, 1.6, out int kept);
                 if (t == null) throw new Exception("no window fits:" + HoseClothoid.TailWhy);
@@ -106,7 +106,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                         double l0 = Geo.Length(raw), l1 = Geo.Length(got);
                         if (Math.Abs(l1 - l0) > 0.01 * l0) throw new Exception($"{nm} length {l1:0.000} vs {l0:0.000}");
                         double[] sr = Geo.CumLen(raw);
-                        for (int i = 0; i < raw.Count && sr[i] <= 1.6; i++) if (V2.Dist(raw[i], got[i]) > 1e-9) throw new Exception($"{nm} lead sample {i} moved");
+                        for (int i = 0; i < raw.Count && sr[i] <= 1.6; i++)
+                            if (i >= got.Count || V2.Dist(raw[i], got[i]) > 1e-9) throw new Exception($"{nm} lead sample {i} moved or lost ({got.Count} samples)");
                         V2 d0 = (raw[1] - raw[0]).Norm();
                         var rep = HoseCurveMetrics.Measure(got, HoseCurveMetrics.EndSpec.Fitting(raw[0], d0, 1.6, "nozzle"),
                             HoseCurveMetrics.EndSpec.Fitting(m.C, -ax, straight, "mate"), Kmax, l0);
