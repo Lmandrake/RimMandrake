@@ -1,0 +1,2 @@
+A cross-mod check of the game copy cannot scope on the live ModsConfig.xml (a 26-mod spike that day, SWBestiary absent): it would pass a deploy that breaks the owner's full list. Scope = every deployed mandrake.* folder, minus orphan folders (no repo source) that are off infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml -- 9 such orphans (GreentideRaidAnt, ManyWaters...) produced false refusals before they were scoped out.
+home: skills/rimworld-deploy

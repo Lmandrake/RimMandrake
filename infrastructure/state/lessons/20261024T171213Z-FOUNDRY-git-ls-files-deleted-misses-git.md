@@ -1,0 +1,2 @@
+git ls-files --deleted lists only files still in the INDEX but missing from the worktree; a git rm (staged delete) has left the index, so it is invisible there. Ask git diff --cached --no-renames --name-only --diff-filter=D too. Likewise git log --diff-filter=D misses moves unless --no-renames (log detects renames by default). Cost: deploy planner called another helper's staged RSW_Excretor delete a hand edit to --pull (2026-10-24, 482d2df1b4).
+home: skills/git-efficiency
