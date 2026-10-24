@@ -39,6 +39,19 @@ namespace RimMandrake.FlowWorks
 		private int shadeUsed;
 		private const float ShadeStep = 0.1f;
 
+		/// <summary>PIT_SINK_FIX_SOIL_STRIP_OVER_WALL: a cell the near-lip cover must not paint ground over: it holds a drawn
+		/// edifice (wall, door, fence...). A pit lid is excluded: the cover draws a lid square in the ground it prints.
+		/// Cached once per component, no allocation per frame.</summary>
+		private System.Func<int, int, bool> blocksCover;
+
+		private System.Func<int, int, bool> BlocksCover => blocksCover ?? (blocksCover = (x, z) =>
+		{
+			IntVec3 c = new IntVec3(x, 0, z);
+			if (!c.InBounds(map)) return false;
+			Building ed = c.GetEdifice(map);
+			return ed != null && !(ed is Pits.Building_PitCover);
+		});
+
 		private int EdgeCasters(IntVec3 g) => RM_WallFaceMath.ShadeCasters(o =>
 		{
 			IntVec3 c = new IntVec3(g.x + o.Item1, 0, g.z + o.Item2);
@@ -256,6 +269,12 @@ namespace RimMandrake.FlowWorks
 					}
 					float lipZ = lipCell.z + 1f;
 					if (!RM_WallFaceMath.OccludedBand(lipZ, bottom, top, out float z0, out float z1))
+					{
+						continue;
+					}
+					// PIT_SINK_FIX_SOIL_STRIP_OVER_WALL: never re-draw the ground under a wall (or any drawn edifice) over it
+					z0 = Mathf.Max(z0, RM_PitDrawMath.CoverStopZ(cx, lipZ, z0, BlocksCover));
+					if (z1 <= z0 + 0.001f)
 					{
 						continue;
 					}

@@ -104,6 +104,25 @@ namespace RimMandrake.FlowWorks
 			return ClampSinkToLip(sink, drawZ, LipZBelow(x, z, d, seenDepth, SinkCapLevels * 2));
 		}
 
+		/// <summary>PIT_SINK_FIX_SOIL_STRIP_OVER_WALL — the lowest z the near-lip cover may reach in column <paramref name="x"/>.
+		/// The cover hides the sprite band [<paramref name="bandBottom"/>, <paramref name="lipZ"/>] by re-drawing the GROUND there,
+		/// cell by cell in each cell's terrain; on a cell holding a wall that terrain is the soil UNDER the wall, so a boar held on
+		/// save e's C3 lip (band 20.675..22) painted a 2.65-cell soil strip over the room's south wall at z 20. Scanning south
+		/// from the lip row, the first cell where <paramref name="blocksCover"/> holds (a drawn edifice) stops the cover at its
+		/// north edge; what hangs lower is drawn over the wall, as vanilla draws any pawn standing north of one.
+		/// No blocker in the band: <paramref name="bandBottom"/>.</summary>
+		public static float CoverStopZ(int x, float lipZ, float bandBottom, Func<int, int, bool> blocksCover)
+		{
+			for (int z = (int)Math.Floor(lipZ) - 1; z + 1f > bandBottom; z--)
+			{
+				if (blocksCover(x, z))
+				{
+					return Math.Min(lipZ, z + 1f);
+				}
+			}
+			return bandBottom;
+		}
+
 		/// <summary>Tween progress from the centre of the cell a pawn is leaving
 		/// (<paramref name="ax"/>,<paramref name="az"/>) toward the next cell's centre, given the
 		/// drawn position (<paramref name="px"/>,<paramref name="pz"/>). Projected onto the

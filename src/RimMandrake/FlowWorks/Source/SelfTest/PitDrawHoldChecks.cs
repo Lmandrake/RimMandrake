@@ -35,8 +35,59 @@ namespace RimMandrake.FlowWorks.SelfTest
             return x >= 38 && x <= 39 && z >= 22 && z <= 23 ? 8 : 0;
         }
 
+        // PIT_SINK_FIX_SOIL_STRIP_OVER_WALL: save e map 0's real edifices round the pit (read from RM_fw_walkthrough_20261023e.rws):
+        // the room's south wall on row z 20 (x 35..42) and its east wall on column x 42 (z 20..25)
+        private static bool SaveEWall(int x, int z) => (z == 20 && x >= 35 && x <= 42) || (x == 42 && z >= 20 && z <= 25);
+
+        // the cover's own piece loop (RM_PitLipOcclusion): cells floor(z0) .. ceil(z1)-1 of a column, each painted in its terrain
+        private static bool PaintsAWall(int x, float z0, float z1, Func<int, int, bool> wall)
+        {
+            if (z1 <= z0 + 0.001f) return false;
+            for (int cz = (int)Math.Floor(z0); cz < (int)Math.Ceiling(z1); cz++)
+            {
+                if (wall(x, cz) && Math.Min(z1, cz + 1f) > Math.Max(z0, cz)) return true;
+            }
+            return false;
+        }
+
         public static void Run(Action<string, Action> Case)
         {
+            Case("PitSoil_cover_stops_at_save_e_south_wall", () =>
+            {
+                // the C3 boar held on the lip (drawn centre 22), adult WildBoar drawSize 2.65: sprite band 20.675 .. 22
+                float lip = RM_PitDrawMath.LipZBelow(38, 22, 8, BoarPit, 16);
+                Assert(lip == 22f, "lip 22, got " + lip);
+                float bottom = 22f - 0.5f * 2.65f;
+                Assert(RM_WallFaceMath.OccludedBand(lip, bottom, 22f + 1.325f, out float z0, out float z1), "a band hangs below the lip");
+                Assert(PaintsAWall(38, z0, z1, SaveEWall), "can-fail: the unclipped band paints soil on wall 38,20 (the bug)");
+                for (int x = 37; x <= 39; x++)
+                {
+                    float stop = RM_PitDrawMath.CoverStopZ(x, lip, z0, SaveEWall);
+                    Assert(Math.Abs(stop - 21f) < 1e-4f, "column " + x + ": the cover stops at the wall's north edge 21, got " + stop);
+                    Assert(!PaintsAWall(x, Math.Max(z0, stop), z1, SaveEWall), "column " + x + ": no cover piece on the wall row");
+                }
+                Assert(RM_PitDrawMath.CoverStopZ(38, lip, z0, (x, z) => false) == z0, "no edifice in the band: the band is untouched");
+            });
+
+            Case("PitSoil_cover_edges", () =>
+            {
+                Assert(RM_PitDrawMath.CoverStopZ(38, 22f, 21.2f, SaveEWall) == 21.2f, "band ending above the wall row: unchanged");
+                // a pit dug right against the wall: the lip cell IS the wall -> no cover at all
+                Assert(RM_PitDrawMath.CoverStopZ(38, 21f, 19.5f, SaveEWall) == 21f, "lip cell is a wall: the cover stops at the lip (empty band)");
+                // ground row, then wall two rows down: the ground row keeps its cover
+                Assert(RM_PitDrawMath.CoverStopZ(38, 23f, 20.4f, SaveEWall) == 21f, "ground rows 21-22 covered, the wall row 20 not");
+                Assert(RM_PitDrawMath.CoverStopZ(43, 22f, 20.4f, SaveEWall) == 20.4f, "can-fail: a column outside the room has no wall");
+            });
+
+            Case("PitSoil_lip_occlusion_wires_the_stop", () =>
+            {
+                string src = Src("Superdeep", "RM_PitLipOcclusion.cs");
+                string update = Between(src, "public override void MapComponentUpdate()", "// cover cell by cell");
+                Assert(update.Contains("z0 = Mathf.Max(z0, RM_PitDrawMath.CoverStopZ(cx, lipZ, z0, BlocksCover));"), "the band is clipped at the first edifice south of the lip");
+                string blocks = Between(src, "private System.Func<int, int, bool> BlocksCover", "private int EdgeCasters(");
+                Assert(blocks.Contains("GetEdifice(map)") && blocks.Contains("!(ed is Pits.Building_PitCover)"), "an edifice blocks, a pit lid does not");
+            });
+
             Case("PitDrawHold_lip_found_in_the_drawn_column", () =>
             {
                 Assert(RM_PitDrawMath.LipZBelow(39, 23, 8, BoarPit, 16) == 22f, "north row: the lip is the ground row's north edge, 22");
