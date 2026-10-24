@@ -143,6 +143,8 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>HOSE_CURVE_REBUILD_SMOOTH_AS_PHYSICS step 3: why a tank-port end was laid to its cell centre (the draw then
         /// bends it onto the port) instead of onto the port's axis; null = laid onto the port, or no port.</summary>
         public string PortWhy;
+        /// <summary>Step 4: the shaped route was too tight for a G2 curve and the hose was re-laid along a wider guide.</summary>
+        public bool Rerouted;
     }
 
     public static class HoseMath
@@ -936,11 +938,11 @@ namespace RimMandrake.FlowWorks.Hose
             double sk = lay.LeadOutLen > 0 ? LeadOutStraight(p) : EndSkip, bh = BodyHalf(p.PlumpAmount);
             double gapF = BodyRuleOn ? Math.Min(bh, BodyGap(w, lay.Flat, sk, EndSkip)) : 0, gapP = BodyRuleOn ? Math.Min(bh, BodyGap(w, lay.Plump, sk, EndSkip)) : 0;
             var why = new List<string>();
-            List<V2> Fit(List<V2> route, int rig0, double gap0)
+            List<V2> Fit(List<V2> route, int rig0, double gap0, double len)
             {
                 foreach (double tw in G2TrackWeights)
                 {
-                    HoseClothoid.Result r = HoseClothoid.Fair(route, L, a0, lead0, a1, lead1, spans, kmax, tw);
+                    HoseClothoid.Result r = HoseClothoid.Fair(route, len, a0, lead0, a1, lead1, spans, kmax, tw);
                     // a heavier pull onto the route mostly helps a fit that strayed (into a wall, over a reel); an infeasible fit
                     // whose end stayed far off (ends and bend limits that disagree) is not retried: it is the costly kind
                     if (!r.Feasible) { why.Add("x" + tw + " " + r.Why); if (r.EndErr > G2RetryGap) break; continue; }
@@ -951,11 +953,27 @@ namespace RimMandrake.FlowWorks.Hose
                 }
                 return null;
             }
-            List<V2> f = Fit(lay.Flat, rigF, gapF);
-            if (f == null) { lay.G2Why = "flat pose: " + string.Join("; ", why); return; }
-            why.Clear();
-            List<V2> q = Fit(lay.Plump, rigP, gapP);
-            if (q == null || q.Count != f.Count) { lay.G2Why = "charged pose: " + string.Join("; ", why); return; }
+            List<V2> f = Fit(lay.Flat, rigF, gapF, L);
+            List<V2> q = null;
+            if (f == null)
+            {
+                string flatWhy = "flat pose: " + string.Join("; ", why);
+                why.Clear();
+                // step 4 (design s1, R4: re-route, never kink): the shaped route is too tight for the bend limits, so the hose is
+                // re-laid along a wider guide; both poses take that one curve. A re-route is a choice, not a rescue, so its body
+                // clears every wall by the full charged half-width (bh), never only as well as the shaped pose it replaces
+                f = Reroute(w, lay, p, a0, lead0, a1, lead1, kmax, Math.Min(rigF, rigP), BodyRuleOn ? bh : 0, why, Fit, Rig);
+                if (f == null) { lay.G2Why = flatWhy + " | re-route: " + (why.Count > 0 ? string.Join("; ", why) : "no guide"); return; }
+                q = f;
+                L = Geo.Length(f);
+                lay.Rerouted = true;
+            }
+            else
+            {
+                why.Clear();
+                q = Fit(lay.Plump, rigP, gapP, L);
+                if (q == null || q.Count != f.Count) { lay.G2Why = "charged pose: " + string.Join("; ", why); return; }
+            }
             double step = L / (f.Count - 1);
             lay.Flat = f;
             lay.Plump = q;
@@ -963,6 +981,74 @@ namespace RimMandrake.FlowWorks.Hose
             lay.Joints = js.Select(s => Math.Max(1, Math.Min(f.Count - 2, (int)Math.Round(s / step)))).ToList();
             lay.G2 = true;
             G2Done++;
+        }
+
+        /// <summary>Guide radii for a re-route, as multiples of the fit's own limit 1/kmax: the clothoid ramps into and out of
+        /// each arc need room the Dubins arc alone does not leave.</summary>
+        private static readonly double[] RerouteRadii = { 1.15, 1.4, 1.8 };
+        /// <summary>A free end's heading is tried as shaped and turned by these (degrees).</summary>
+        private static readonly double[] RerouteFreeTurns = { 0, 30, -30, 60, -60 };
+        /// <summary>At most this many guides are fitted per lay (an infeasible fit is the costly kind).</summary>
+        internal static int RerouteMaxFits = 8;
+        /// <summary>A guide longer than this multiple of the shaped route is a detour no one would lay (a loop round a reel).</summary>
+        internal const double RerouteMaxDetour = 2.0;
+        /// <summary>Lengths tried per guide, as multiples of the guide's own.</summary>
+        private static readonly double[] RerouteStretch = { 1.0, 1.05 };
+        internal static long Rerouted;
+
+        /// <summary>HOSE_CURVE_REBUILD_SMOOTH_AS_PHYSICS step 4: when the shaped route cannot carry a G2 curve (too tight a
+        /// turn for R, or a U-turn whose fit stalls), guides are laid between the two lead ends as Dubins paths at radii wider than
+        /// the fit's limit (every word, shortest first), and the hose is fitted to the first guide that stays clear, crosses no
+        /// more reels, keeps the body clearance and is no longer than the hose. The guide's own length is the hose's laid
+        /// length. Lays with joiners are not re-routed (their spans sit on the shaped route). Null when no guide fits.</summary>
+        private static List<V2> Reroute(CordWorld w, HoseLay lay, HoseShapeParams p, V2? a0, double lead0, V2? a1, double lead1,
+            double kmax, int rig0, double gap0, List<string> why, Func<List<V2>, int, double, double, List<V2>> fit, Func<List<V2>, int> rig)
+        {
+            if (lay.Joints.Count > 0) { why.Add("has joiners"); return null; }
+            List<V2> P = lay.Flat;
+            int n = P.Count;
+            V2 A = P[0], B = P[n - 1];
+            double[] s = Geo.CumLen(P);
+            double Ls = s[n - 1];
+            V2 Dir(double t0, double t1) => (At(P, s, t1) - At(P, s, t0)).Norm();
+            V2 Turn(V2 v, double deg) { double c = Math.Cos(deg * Math.PI / 180), si = Math.Sin(deg * Math.PI / 180); return new V2(v.X * c - v.Z * si, v.X * si + v.Z * c); }
+            double look = Math.Min(0.6, Ls / 4);
+            V2 h0 = a0 ?? Dir(0, look), h1 = a1 ?? Dir(Ls - look, Ls);
+            var guides = new List<(double len, List<V2> pts)>();
+            foreach (double t0 in a0.HasValue ? new double[] { 0 } : RerouteFreeTurns)
+                foreach (double t1 in a1.HasValue ? new double[] { 0 } : RerouteFreeTurns)
+                {
+                    V2 g0 = Turn(h0, t0), g1 = Turn(h1, t1);
+                    V2 q0 = A + g0 * lead0, q1 = B - g1 * lead1;
+                    foreach (double m in RerouteRadii)
+                        foreach (List<V2> d in DubinsAll(q0, g0, q1, g1, m / kmax, Sample, true))
+                        {
+                            var g = new List<V2> { A };
+                            if (lead0 > 0) g.Add(q0);
+                            g.AddRange(d);
+                            if (lead1 > 0) g.Add(B);
+                            double len = Geo.Length(g);
+                            // a guide is a lay a hand would make: clear, no loop, over no more reels, and no big detour
+                            if (len > p.MaxLength || len > Ls * RerouteMaxDetour || SelfIntersects(g) || !Clear(w, g) || rig(g) > rig0) continue;
+                            guides.Add((len, g));
+                        }
+                }
+            int fits = 0;
+            foreach (var g in guides.OrderBy(x => x.len))
+            {
+                if (fits++ >= RerouteMaxFits) { why.Add("fit budget spent"); break; }
+                // the guide's own length first; a little more lets the ramps into its arcs drape where the bare length is tight
+                foreach (double stretch in RerouteStretch)
+                {
+                    if (g.len * stretch > p.MaxLength) break;
+                    List<V2> f = fit(g.pts, rig0, gap0, g.len * stretch);
+                    if (f == null || SelfIntersects(f)) continue;
+                    Rerouted++;
+                    return f;
+                }
+            }
+            if (guides.Count == 0) why.Add("no clear guide");
+            return null;
         }
 
         /// <summary>Lays the G2 fit was tried on / held on (selftest cost report).</summary>

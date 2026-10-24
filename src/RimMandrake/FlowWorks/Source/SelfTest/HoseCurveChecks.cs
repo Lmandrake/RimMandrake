@@ -273,7 +273,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                     }
                     if (d.NoMate != null) throw new Exception(d.NoMate);
                     if (d.MayRefuse && !d.Rep.Ok) throw new Exception("laid through a sub-Rmin corridor: " + d.Rep.Line());
-                    if (!d.Rep.Ok && !KnownOnly(d)) throw new Exception(d.Rep.Line() + (d.Lay.G2 ? " [g2]" : " [shaped: " + d.Lay.G2Why + "]") + (d.Diag != null ? " {" + d.Diag + "}" : ""));
+                    if (!d.Rep.Ok && !KnownOnly(d)) throw new Exception(d.Rep.Line() + (d.Lay.G2 ? " [g2" + (d.Lay.Rerouted ? " re-routed" : "") + "]" : " [shaped: " + d.Lay.G2Why + "]") + (d.Lay.PortWhy != null ? " {port: " + d.Lay.PortWhy + "}" : "") + (d.Diag != null ? " {" + d.Diag + "}" : ""));
                 });
             }
             // R5 + splice: a mated pair is ONE curve through its coupling (A then B reversed)
@@ -298,7 +298,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             {
                 sb.Append($"{d.Station}/{d.Reel}/{d.PoseName}: ");
                 if (!d.Lay.Ok) sb.Append("REFUSED " + d.Lay.Reason + (d.MayRefuse ? " (pass)" : "") + $" pathLen {d.Lay.PathLen:0.00}");
-                else sb.Append((d.NoMate != null ? "FAIL (" + d.NoMate + ") " : d.Rep.Ok ? "PASS " : KnownOnly(d) ? "KNOWN " : "FAIL ") + d.Rep.Line() + (d.Lay.G2 ? " [g2]" : " [shaped: " + d.Lay.G2Why + "]"));
+                else sb.Append((d.NoMate != null ? "FAIL (" + d.NoMate + ") " : d.Rep.Ok ? "PASS " : KnownOnly(d) ? "KNOWN " : "FAIL ") + d.Rep.Line() + (d.Lay.G2 ? " [g2" + (d.Lay.Rerouted ? " re-routed" : "") + "]" : " [shaped: " + d.Lay.G2Why + "]") + (d.Lay.PortWhy != null ? " {port: " + d.Lay.PortWhy + "}" : ""));
                 sb.Append('\n');
             }
             System.IO.File.WriteAllText(path, sb.ToString());

@@ -306,12 +306,37 @@ Remaining failures with g2 on (`D:\ClaudeWork\rimmandrake\scratch\hose_geometry_
 - `--hose-curves`: 31/59 before, 35/59 after (tankE passes in all four poses).
 - tankW and short still fail, now with an honest reason: no G2 curve fits onto the port axis (step 4). Full FlowWorks selftest is green at 935/935. Log: `D:\ClaudeWork\rimmandrake\scratch\hose_geometry_20261023\h4_full1.log`.
 
+### Step 4 (2026-10-24): re-route when no curve fits
+- When the flat fit fails, `HoseMath.Reroute` lays guides between the two lead ends as Dubins paths.
+  - Radii are 1.15, 1.4 and 1.8 times 1/kmax, with every word tried.
+  - A free end's heading is tried as shaped and turned by ±30 and ±60 degrees.
+- A guide is kept only if it is clear, has no loop, crosses no more reels than the shaped lay, is no longer than the hose and is at most 2x the shaped length.
+- The hose is fitted to the shortest guide first, at 1.0 and 1.05 of the guide's length, with at most 8 fits.
+  - One curve serves both poses, so its body must clear every wall by the full charged half-width.
+  - It is not allowed to be merely as close as the shaped pose. With that weaker rule, D1 shaved 14 of 200 plain sweep lays.
+- `HoseLay.Rerouted` marks the result, and the ruler's row tag reads `[g2 re-routed]`. Lays with joiners are not re-routed.
+- `--hose-curves`: 35/59 before, 38/59 after (uturn passes in every pose). Full FlowWorks selftest is green at 935/935.
+  - Logs: `D:\ClaudeWork\rimmandrake\scratch\hose_geometry_20261023\h4_14.log` and `full6.log`.
+- 21 rows still fail. Hand reasoning (not a proof) says they are infeasible under today's leads, which makes them owner items (§7):
+  - short (4): the port-axis lay is refused on its lead-out (LeadOutBlocked). An S onto the port axis needs dx of about 2.17 at R, and only 1.73 is free after the leads.
+  - tankW (4): dx is 0.91, which is less than R. Every Dubins guide loops over a reel: it crosses 2-3 reels where the shaped lay crosses none, and runs 14-22 cells for a 5-cell hose.
+    - The cell-centre fallback then lays G2, but `DrawnPose` bends it onto the flange, so it draws a kink.
+  - mateA, mateB and splice (12): each hose is 4.72 long, and 2.2 of that is its lead-out, so only 2.27 is free for B's S-turn onto the shared axis. B's `TailOnto` misses its end by 0.4 to 1.1 cells at every coupling ring.
+    - Tried and dropped: letting the reels pay out up to 3.2 more cells (with every slide ring) fixed no row, so the code does not ship.
+  - TailOnto synthetic (1): unchanged from step 2.
+
 ## 7. Owner items
 
 - **Relay reel has one connector.** A relay's feed couples into its nozzle while its own hose leaves the same nozzle —
   physically impossible (R5), drawn as the V in screenshot 20261023221228. Options: (a) a second fitting on the reel art (an
   inlet swivel on the drum's hub side) and the feed couples there; (b) the feed couples at the nozzle and the relay's own
   hose leaves from the drum's opposite face. Not decided here; joint_check keeps failing it live until he picks.
+- **Short and taut hoses that no G2 curve can carry** (step 4: short, tankW, mates and splice, 20 rows). Once the 2.2-cell lead-out and the 0.6-cell end straight are taken, no curve within R fits.
+  - The options:
+    - (a) refuse the lay with a reason the player sees;
+    - (b) shorten the lead-out on short spans, down to the 0.6 end straight;
+    - (c) keep today's fallback, which is shaped (not G2) and, for tankW, draws a kink at the flange.
+  - The default today is (c). The ruler fails these rows honestly; it is not stubbed to KNOWN.
 
 ## 8. Rejected (GPT attack and own)
 
