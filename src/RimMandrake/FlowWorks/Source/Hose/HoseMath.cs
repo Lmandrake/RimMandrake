@@ -113,6 +113,12 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>Round 4: the reel's hose length (cells). The S-curve slack budget is capped so the laid hose never
         /// reads longer than the hose (infinity = uncapped, the offline default).</summary>
         public double MaxLength = double.PositiveInfinity;
+        /// <summary>Owner by card 2026-10-24 "Shorten the lead-out": the straight lead-out out of the nozzle when the lead search
+        /// shortened it (HoseMath.LayAlong); 0 = the full LeadOutStraight.</summary>
+        public double LeadOut;
+
+        /// <summary>This shape with the straight lead-out set to <paramref name="lead"/>.</summary>
+        public HoseShapeParams WithLeadOut(double lead) => new HoseShapeParams { MinBendRadius = MinBendRadius, Slack = Slack, PlumpAmount = PlumpAmount, CouplingSpacing = CouplingSpacing, MaxLength = MaxLength, LeadOut = lead };
     }
 
     public sealed class HoseLay
@@ -140,6 +146,8 @@ namespace RimMandrake.FlowWorks.Hose
         public string G2Why;
         /// <summary>The curvature limit the lay was shaped under (1/R) and the straight runs at its start (the lead-out) and end.</summary>
         public double Kmax = 1 / 1.2, Lead0, Lead1;
+        /// <summary>The lead-out was shortened below the full one (owner by card 2026-10-24 "Shorten the lead-out"): Lead0 is it.</summary>
+        public bool LeadShortened;
         /// <summary>HOSE_CURVE_REBUILD_SMOOTH_AS_PHYSICS step 3: why a tank-port end was laid to its cell centre (the draw then
         /// bends it onto the port) instead of onto the port's axis; null = laid onto the port, or no port.</summary>
         public string PortWhy;
@@ -405,7 +413,7 @@ namespace RimMandrake.FlowWorks.Hose
             double S = LeadOutStraight(p), R = Math.Max(0.45, p.MinBendRadius) * 1.05;
             if (!OutletClear(w, a, u, S)) return null;
             V2 s0 = a + u * S, e0 = b - v * HoseRelay.EndStraight;
-            var taut = new HoseShapeParams { MinBendRadius = p.MinBendRadius, Slack = 0, PlumpAmount = p.PlumpAmount, CouplingSpacing = p.CouplingSpacing, MaxLength = p.MaxLength };
+            var taut = new HoseShapeParams { MinBendRadius = p.MinBendRadius, Slack = 0, PlumpAmount = p.PlumpAmount, CouplingSpacing = p.CouplingSpacing, MaxLength = p.MaxLength, LeadOut = p.LeadOut };
             var cands = new List<(int hits, double len, List<V2> pts)>();
             var none = new HashSet<Cell>();
             foreach (List<V2> arc in DubinsAll(s0, u, e0, v, R, Sample / 4, true))
@@ -434,8 +442,11 @@ namespace RimMandrake.FlowWorks.Hose
 
         /// <summary>Owner decision by question card 2026-10-06: how far the hose runs dead straight out of the nozzle before it
         /// may bend. Taken from the minimum bend radius: the coupling's own run (OutletStraight) plus half a radius, so a
-        /// stiffer hose stands farther out of the coupling before its (never tighter than minimum) curve starts.</summary>
-        public static double LeadOutStraight(HoseShapeParams p) => HoseReelRect.OutletStraight + 0.5 * Math.Max(0.45, p.MinBendRadius);
+        /// stiffer hose stands farther out of the coupling before its (never tighter than minimum) curve starts.
+        /// A lay the lead search shortened (owner by card 2026-10-24 "Shorten the lead-out") runs straight for its LeadOut.</summary>
+        public static double LeadOutStraight(HoseShapeParams p) => p.LeadOut > 0 ? p.LeadOut : FullLeadOut(p);
+        /// <summary>The full lead-out of the 2026-10-06 card, before any shortening.</summary>
+        public static double FullLeadOut(HoseShapeParams p) => HoseReelRect.OutletStraight + 0.5 * Math.Max(0.45, p.MinBendRadius);
 
         /// <summary>The lead-out: P's start replaced by a straight run of <paramref name="straight"/> from a along u, then the
         /// shortest radius-R curve (Dubins) onto P at some arc d past the straight run, P's heading there matched. The join point
@@ -617,7 +628,7 @@ namespace RimMandrake.FlowWorks.Hose
 
         /// <summary>How far out of the outlet the route is planned from: the straight run plus two bend radii, so even a turn
         /// back past 90 degrees rounds after the coupling's wrap instead of kinking at it.</summary>
-        public static double OutletLead(HoseShapeParams p) => HoseReelRect.OutletStraight + 2 * Math.Max(0.45, p.MinBendRadius);
+        public static double OutletLead(HoseShapeParams p) => p.LeadOut > 0 ? p.LeadOut : HoseReelRect.OutletStraight + 2 * Math.Max(0.45, p.MinBendRadius);
 
         /// <summary>The outlet run from <paramref name="a"/> (plus its 0.5-cell blend) lies on open ground.</summary>
         internal static bool OutletClear(CordWorld w, V2 a, V2 outward, double run = HoseReelRect.OutletStraight)
@@ -632,6 +643,30 @@ namespace RimMandrake.FlowWorks.Hose
         /// round -> settle -> stiffen pipeline. An EMPTY route is the legacy / DEV "planned" hose: it is HoseMath.Lay
         /// itself, so a save written before the carry stage lays byte-identically.</summary>
         internal static HoseLay LayAlong(CordWorld w, V2 a, IList<Cell> route, V2 b, HoseShapeParams p, ulong seed, V2? endInward = null, V2? startOutward = null)
+        {
+            HoseLay lay = LayAlongAt(w, a, route, b, p, seed, endInward, startOutward);
+            if (!startOutward.HasValue || !G2On || p.LeadOut > 0 || (lay.Ok && lay.G2)) return lay;
+            // step 6 (owner by card 2026-10-24 "Shorten the lead-out"): no G2 curve fits behind the full straight lead-out (a
+            // short span), so the lead-out shrinks -- the largest lead in [LeadOutMin, full) whose lay is G2 (LeadSearch), never
+            // shorter than that. A lead-out a wall blocks stays refused (card 2026-10-06); a hose that fits keeps the full lead.
+            double full = FullLeadOut(p);
+            if (!OutletClear(w, a, startOutward.Value, full)) return lay;
+            HoseLay best = null;
+            double got = LeadSearch(full, ld =>
+            {
+                HoseLay t = LayAlongAt(w, a, route, b, p.WithLeadOut(ld), seed, endInward, startOutward);
+                if (!(t.Ok && t.G2)) return false;
+                best = t;
+                return true;
+            });
+            if (got <= 0) return lay;
+            // the search's last fitting lay is the one at `got` (LeadSearch only moves its lower end onto a lead that fit)
+            best.LeadShortened = true;
+            LeadShortened++;
+            return best;
+        }
+
+        private static HoseLay LayAlongAt(CordWorld w, V2 a, IList<Cell> route, V2 b, HoseShapeParams p, ulong seed, V2? endInward, V2? startOutward)
         {
             if (route == null || route.Count == 0) return Lay(w, a, b, p, seed, endInward, startOutward);
             var t = new HoseTrail(a, double.PositiveInfinity);
@@ -673,7 +708,7 @@ namespace RimMandrake.FlowWorks.Hose
             if (!lay.Ok || !Overlong(lay, p.MaxLength)) return lay;
             if (p.Slack > 0)
             {
-                var taut = new HoseShapeParams { MinBendRadius = p.MinBendRadius, Slack = 0, PlumpAmount = p.PlumpAmount, CouplingSpacing = p.CouplingSpacing, MaxLength = p.MaxLength };
+                var taut = new HoseShapeParams { MinBendRadius = p.MinBendRadius, Slack = 0, PlumpAmount = p.PlumpAmount, CouplingSpacing = p.CouplingSpacing, MaxLength = p.MaxLength, LeadOut = p.LeadOut };
                 HoseLay t = LayOnce(w, a, b, planPoints, taut, seed, endInward, startOutward, shaped);
                 if (t.Ok && !Overlong(t, p.MaxLength)) return t;
             }
@@ -938,11 +973,23 @@ namespace RimMandrake.FlowWorks.Hose
             double sk = lay.LeadOutLen > 0 ? LeadOutStraight(p) : EndSkip, bh = BodyHalf(p.PlumpAmount);
             double gapF = BodyRuleOn ? Math.Min(bh, BodyGap(w, lay.Flat, sk, EndSkip)) : 0, gapP = BodyRuleOn ? Math.Min(bh, BodyGap(w, lay.Plump, sk, EndSkip)) : 0;
             var why = new List<string>();
-            List<V2> Fit(List<V2> route, int rig0, double gap0, double len)
+            double fitLen = 0;
+            List<V2> FitAt(List<V2> route, int rig0, double gap0, double len, bool scan)
             {
+                // a shortened lead marks a span near its bend limit, where only a narrow band of lengths carries the curve
+                if (scan && p.LeadOut > 0)
+                    foreach (double m in ShortLeadStretch) { List<V2> r = FitOnce(route, rig0, gap0, len * m); if (r != null) { fitLen = len * m; return r; } }
+                else { List<V2> r = FitOnce(route, rig0, gap0, len); if (r != null) { fitLen = len; return r; } }
+                return null;
+            }
+            List<V2> Fit(List<V2> route, int rig0, double gap0, double len) => FitAt(route, rig0, gap0, len, true);
+            List<V2> FitOnce(List<V2> route, int rig0, double gap0, double len)
+            {
+                if (len > p.MaxLength) return null;
+                foreach (double step in p.LeadOut > 0 ? ShortLeadSteps : FullLeadSteps)
                 foreach (double tw in G2TrackWeights)
                 {
-                    HoseClothoid.Result r = HoseClothoid.Fair(route, len, a0, lead0, a1, lead1, spans, kmax, tw);
+                    HoseClothoid.Result r = HoseClothoid.Fair(route, len, a0, lead0, a1, lead1, spans, kmax, tw, step);
                     // a heavier pull onto the route mostly helps a fit that strayed (into a wall, over a reel); an infeasible fit
                     // whose end stayed far off (ends and bend limits that disagree) is not retried: it is the costly kind
                     if (!r.Feasible) { why.Add("x" + tw + " " + r.Why); if (r.EndErr > G2RetryGap) break; continue; }
@@ -971,7 +1018,8 @@ namespace RimMandrake.FlowWorks.Hose
             else
             {
                 why.Clear();
-                q = Fit(lay.Plump, rigP, gapP, L);
+                L = fitLen;
+                q = FitAt(lay.Plump, rigP, gapP, L, false);
                 if (q == null || q.Count != f.Count) { lay.G2Why = "charged pose: " + string.Join("; ", why); return; }
             }
             double step = L / (f.Count - 1);
@@ -981,6 +1029,50 @@ namespace RimMandrake.FlowWorks.Hose
             lay.Joints = js.Select(s => Math.Max(1, Math.Min(f.Count - 2, (int)Math.Round(s / step)))).ToList();
             lay.G2 = true;
             G2Done++;
+        }
+
+        /// <summary>Owner by card 2026-10-24 "Shorten the lead-out": the shortest straight run a nozzle's lead-out may shrink to.</summary>
+        internal const double LeadOutMin = 0.6;
+        /// <summary>The straight lead-out <paramref name="lay"/> was laid with: its own when the lead search shortened it, else
+        /// <paramref name="p"/>'s.</summary>
+        internal static double LeadOf(HoseLay lay, HoseShapeParams p) => lay.LeadShortened && lay.Lead0 > 0 ? lay.Lead0 : LeadOutStraight(p);
+        /// <summary>The descending grid the lead search tries before bisecting (the full lead itself is tried by the caller).</summary>
+        internal static readonly double[] LeadGrid = { 1.8, 1.4, 1.0, 0.6 };
+        /// <summary>The bisection's resolution (cells).</summary>
+        internal const double LeadTol = 0.05;
+        /// <summary>Lays whose lead-out was shortened (selftest cost report).</summary>
+        internal static long LeadShortened;
+        /// <summary>Node spacings a fit tries (0 = HoseClothoid.NodeStep). A shortened lead marks a short span, whose few free
+        /// curvature nodes the straight leads' node rounding eats; finer nodes give its end equalities room. Long hoses are
+        /// fitted exactly as before.</summary>
+        private static readonly double[] FullLeadSteps = { 0 }, ShortLeadSteps = { 0, 0.25 };
+        /// <summary>Lengths a shortened-lead fit tries, as multiples of its route's (the slack and charged poses then share the
+        /// one found, R6).</summary>
+        internal static readonly double[] ShortLeadStretch = { 1.0, 0.97, 1.03, 0.94, 1.07 };
+
+        /// <summary>The largest lead in [<see cref="LeadOutMin"/>, <paramref name="full"/>) for which <paramref name="fits"/> holds,
+        /// to <see cref="LeadTol"/>: <see cref="LeadGrid"/> descending to the first that fits, then bisection between it and the
+        /// grid lead above it (or <paramref name="full"/>, which the caller found does not fit). 0 when none fits. Deterministic;
+        /// at most |grid| + 5 tries. The offline explorer (FlowWorks/Tools/hose_geometry_explore.py, largest_lead) is the same rule.</summary>
+        internal static double LeadSearch(double full, Func<double, bool> fits)
+        {
+            double prev = full;
+            foreach (double g in LeadGrid)
+            {
+                if (g >= full - 1e-9) continue;
+                if (fits(g))
+                {
+                    double lo = g, hi = prev;
+                    while (hi - lo > LeadTol + 1e-9)
+                    {
+                        double mid = Math.Round((lo + hi) / 2, 4);
+                        if (fits(mid)) lo = mid; else hi = mid;
+                    }
+                    return lo;
+                }
+                prev = g;
+            }
+            return 0;
         }
 
         /// <summary>Guide radii for a re-route, as multiples of the fit's own limit 1/kmax: the clothoid ramps into and out of
@@ -993,7 +1085,7 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>A guide longer than this multiple of the shaped route is a detour no one would lay (a loop round a reel).</summary>
         internal const double RerouteMaxDetour = 2.0;
         /// <summary>Lengths tried per guide, as multiples of the guide's own.</summary>
-        private static readonly double[] RerouteStretch = { 1.0, 1.05 };
+        private static readonly double[] RerouteStretch = { 1.0, 1.05, 1.12, 1.2, 1.3 };
         internal static long Rerouted;
 
         /// <summary>HOSE_CURVE_REBUILD_SMOOTH_AS_PHYSICS step 4: when the shaped route cannot carry a G2 curve (too tight a
@@ -1310,7 +1402,8 @@ namespace RimMandrake.FlowWorks.Hose
             int n = lay.Flat.Count;
             var o = new List<V2>(n);
             for (int i = 0; i < n; i++) o.Add(lay.Flat[i] + (lay.Plump[i] - lay.Flat[i]) * e);
-            if (!WobbleActive(ticksSinceChange, transitionTicks) || plumpAmount <= 0) return o;
+            // a lay whose lead-out was shortened is a span at its bend limit: it has no room to wobble (step 6)
+            if (!WobbleActive(ticksSinceChange, transitionTicks) || plumpAmount <= 0 || lay.LeadShortened) return o;
             var w = new List<V2>(n);
             // HOSE_CURVE_REBUILD_SMOOTH_AS_PHYSICS: on a G2 lay the wobble is off over the straight runs at the ends and fades in
             // by a smootherstep over a cell (its offset, slope and curvature all start at zero), so it never bends a lead

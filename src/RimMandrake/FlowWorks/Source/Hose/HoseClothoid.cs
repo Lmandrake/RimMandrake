@@ -612,11 +612,11 @@ namespace RimMandrake.FlowWorks.Hose
         /// route[last] (arriving along <paramref name="endAxis"/> with a straight <paramref name="lead1"/>, or free). Null result
         /// points when the solve is not feasible.</summary>
         internal static Result Fair(IList<V2> route, double L, V2? startAxis, double lead0, V2? endAxis, double lead1,
-            List<(double, double)> spans, double kmax, double trackWeight)
+            List<(double, double)> spans, double kmax, double trackWeight, double step = 0)
         {
             var pr = new Problem
             {
-                P0 = route[0], P1 = route[route.Count - 1], L = L, Track = route, Kmax = kmax, TrackWeight = trackWeight,
+                P0 = route[0], P1 = route[route.Count - 1], L = L, Track = route, Kmax = kmax, TrackWeight = trackWeight, Step = step,
                 Theta0 = startAxis.HasValue ? HeadingOf(startAxis.Value) : (double?)null, Lead0 = startAxis.HasValue ? lead0 : 0,
                 Theta1 = endAxis.HasValue ? HeadingOf(endAxis.Value) : (double?)null, Lead1 = endAxis.HasValue ? lead1 : 0,
             };

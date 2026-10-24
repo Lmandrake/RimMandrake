@@ -191,7 +191,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                     finally { foreach (Cell c in held) { w.SetBlocked(c, BlockKind.None); w.SetExtraCost(c, HoseMath.BuildingCrossCost); } }
                     // the nozzle's straight run is owed by every reel (R2), the fed relay's included (KNOWN: it shares the nozzle)
                     V2 ax = r.Rect.Outward ?? new V2(r.Dir.X, r.Dir.Z);
-                    var ss = HoseCurveMetrics.EndSpec.Fitting(r.Rect.Mouth, ax, HoseReelRect.OutletStraight, "nozzle");
+                    // step 6 (owner by card 2026-10-24 "Shorten the lead-out"): a lay whose lead-out was shortened owes that run
+                    var ss = HoseCurveMetrics.EndSpec.Fitting(r.Rect.Mouth, ax, NozzleRun(lay.Lead0), "nozzle");
                     lays[r.Name] = (lay, portAt, portAxis, es, ss);
                 }
                 // mates: open free ends within one cell of each other (RefreshMates), solved on the flat lays
@@ -232,6 +233,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                             if (q == null) d.Diag = "MateEnd null: " + HoseClothoid.TailWhy;
                             else pts = q;
                             V2 ax = mm.isA ? mm.m.Axis : -mm.m.Axis;
+                            double ml = mm.isA ? mm.m.LeadA : mm.m.LeadB;
+                            if (ml < L.lay.Lead0 - 1e-9) d.Start = HoseCurveMetrics.EndSpec.Fitting(r.Rect.Mouth, r.Rect.Outward ?? new V2(r.Dir.X, r.Dir.Z), NozzleRun(ml), "nozzle");
                             d.End = HoseCurveMetrics.EndSpec.Fitting(mm.m.C, -ax, HoseSpliceMath.CouplingStraight(vis), "mate");
                         }
                         d.Pts = pts;
@@ -242,6 +245,9 @@ namespace RimMandrake.FlowWorks.SelfTest
             }
             return o;
         }
+
+        /// <summary>The straight run owed out of the nozzle: the full outlet run, or the lead-out a lay shortened below it.</summary>
+        internal static double NozzleRun(double lead0) => lead0 > 0 ? Math.Min(HoseReelRect.OutletStraight, lead0) : HoseReelRect.OutletStraight;
 
         /// <summary>A KNOWN owner item (design section 7): the fed relay's own hose leaves the nozzle its feed couples into.</summary>
         internal static bool KnownOnly(Drawn d) => d.Fed && d.Rep != null && d.Rep.Fails.All(f => f.StartsWith("R2-start") || f.StartsWith("R3-start"));
@@ -291,15 +297,15 @@ namespace RimMandrake.FlowWorks.SelfTest
             }
         }
 
-        /// <summary>Rows owed to HOSE_SHORT_SPAN_DECIDE_NO_CURVE (design sections 6 "Step 4" and 7): no G2 curve fits these
-        /// under today's leads, and they fail until the owner rules. Matched by case-name prefix.</summary>
+        /// <summary>Rows owed to HOSE_MATE_REWIRE_CONTINUOUS_COUPLING (design sections 6 "Step 6" and 7): even with the lead-out
+        /// shortened to 0.6 (owner by card 2026-10-24 "Shorten the lead-out") no mate fits from the discrete coupling slide,
+        /// though the offline explorer finds one off it. Matched by case-name prefix.</summary>
         internal static readonly string[] Owed =
         {
-            "HoseCurve hose_hard_bends/short/", "HoseCurve hose_hard_fittings/tankW/", "HoseCurve hose_hard_fittings/mateA/",
-            "HoseCurve hose_hard_fittings/mateB/", "HoseCurve splice hose_hard_fittings/",
+            "HoseCurve hose_hard_fittings/mateA/", "HoseCurve hose_hard_fittings/mateB/", "HoseCurve splice hose_hard_fittings/",
         };
-        /// <summary>Rows that must pass (MEASURED 2026-10-24, step 5: 39 of 59). Raise it when a row starts passing; never lower it.</summary>
-        internal const int Floor = 39, Rows = 59;
+        /// <summary>Rows that must pass (MEASURED 2026-10-24, step 6: 47 of 59). Raise it when a row starts passing; never lower it.</summary>
+        internal const int Floor = 47, Rows = 59;
 
         /// <summary>The default run's guard: <see cref="Run"/> over the hard stations, collected into one case. The case fails
         /// when fewer than <see cref="Floor"/> rows pass, when a row outside <see cref="Owed"/> fails, or when the row count is

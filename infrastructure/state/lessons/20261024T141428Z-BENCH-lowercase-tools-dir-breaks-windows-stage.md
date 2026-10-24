@@ -1,0 +1,2 @@
+A new folder whose name differs from an existing one only by case (src/RimMandrake/FlowWorks/tools/ beside Tools/) breaks the Windows build stage: rsync to D: (case-insensitive NTFS) folds them and --delete drops files, so selftest GptA_dbh_water... failed with 'Could not find file ...\Tools\generate_liquid_suite.py' (2026-10-24, hose lead-out shrink). Put new files in the existing-cased dir; a namecheck/lint for case-colliding repo paths would catch it.
+home: src/RimMandrake/Utils/winbuild.py
