@@ -853,24 +853,29 @@ def snapshot_revisions(snap_path: Path):
 
 
 def ruled_snapshot(snap_path: Path, cur: dict, at) -> tuple[dict | None, str]:
-    """(snapshot he saw when he clicked at `at`, why-not): `cur` when it was built no later than that, else the NEWEST
-    revision built at or before the click — walking newest first and stopping there (revisions are committed in build
-    order). The record's `rev` is not consulted: a superset rebuild keeps the snapshotId, and real schema-1 records carry
+    """(snapshot he saw when he clicked at `at`, why-not): `cur` when it was built no later than that, else the revision
+    with the NEWEST build stamp at or before the click, over the whole bounded window (SNAP_REV_MAX) — git order is not
+    build order (two clones can push builds out of order), so the first match git log reaches may be an older build.
+    The record's `rev` is not consulted: a superset rebuild keeps the snapshotId, and real schema-1 records carry
     a `rev` older than the sheet they were clicked on (abyss RM_Cindermare: rev names a build with column A only, the
     click is B), so preferring it walked past the sheet he saw. (None, why) when it cannot be proved: no click time, no
-    copy built that early, or an UNREADABLE revision reached before the answer (it may be the one he saw)."""
+    copy built that early, or an UNREADABLE revision anywhere in the window (its build stamp is unknown, so it may be
+    the one he saw)."""
     t = _when(at)
     if t is None:
         return None, "the record has no click time"
     b = _when(cur.get("built"))
     if b is not None and b <= t:
         return cur, ""
+    best, best_w = None, None
     for s in snapshot_revisions(snap_path):
         if s.get("_unreadable"):
-            return None, f"a copy of the sheet newer than any readable one is unreadable ({s['_unreadable']})"
+            return None, f"a copy of the sheet whose build time cannot be read is unreadable ({s['_unreadable']})"
         w = _when(s.get("built"))
-        if w is not None and w <= t:
-            return s, ""
+        if w is not None and w <= t and (best_w is None or w > best_w):
+            best, best_w = s, w
+    if best is not None:
+        return best, ""
     if b is None:
         return None, "today's sheet carries no build time and no copy built at or before your click is on disk or in git"
     return None, "no copy of the sheet you clicked on (built at or before your click) is on disk or in git"
@@ -1077,6 +1082,20 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                 between two lanes of the row (a juvenile set filed under the adult), not a rename"""
                 now = gof_resolved(srow, letter)
                 return bool(rrow) and bool(now) and now != old and now in lanes_of(rrow)
+
+            def donor_proved(rrow, old, new, letter) -> bool:
+                """his lane `old` (on the sheet he clicked on) was a DONOR's and routing the pick to today's lane `new` is
+                proved: nothing of ours ships at `old`; `old` was the row's own graphic there (res: the def's texPath);
+                today no def of the row names `old` and one names `new`, which is where today's sheet files the letter;
+                `new` was not already a lane of that sheet (a move, not a repoint); and the letter shows the same
+                pictures on both sheets. The fish and catch items moving off a vanilla placeholder to our own path
+                (weepingstones RM_Duul, floodedcanyon RM_Tarruq B). Anything else on a donor lane is refused by name
+                (ENACT_DONOR_LANE_DECIDE_REFUSE_OR_ROUTE): it used to be routed by today's lane unproved."""
+                return (bool(rrow) and bool(old) and bool(new) and old != new and new in lanes_now
+                        and gof_resolved(srow, letter) == new and letter in cols
+                        and (rrow.get("columns") or {}).get(letter) == cols.get(letter)
+                        and rrow.get("res") == old and not ships(old, letter) and not moved_in(rrow, old, letter)
+                        and not defs_naming(src, names, old) and bool(defs_naming(src, names, new)))
             no_lanes = ("today's sheet has no lane data for this row (no graphic_of, no res), so the key cannot be "
                         "checked against it")
             for g in [g for g, st in v2_slots.items() if st.get("state") == "pick" and g not in lanes_now
@@ -1102,12 +1121,20 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                     new, why = resolve_ruled_lane(rrow, srow, g)
                 if new and new in v2_slots:
                     new, why = None, f"it was renamed to {new.rsplit('/', 1)[-1]}, which has a slot record of its own"
-                if new:
+                donor = not new and donor_proved(rrow, g, gof_resolved(srow, letter), letter)
+                if donor and gof_resolved(srow, letter) in v2_slots:
+                    donor, why = False, (f"its def now names {gof_resolved(srow, letter).rsplit('/', 1)[-1]}, which has "
+                                         f"a slot record of its own")
+                if donor:
+                    new = gof_resolved(srow, letter)
+                    v2_slots[new] = st
+                    P["lane_resolved"].append(f"{row}: slot {g} pick {letter} -> {new} (a donor's lane on the sheet you "
+                                              f"clicked on, built {ruled.get('built')}; the row's def now names {new}; "
+                                              f"the record is unchanged)")
+                elif new:
                     v2_slots[new] = st
                     P["lane_resolved"].append(f"{row}: slot {g} pick {letter} -> {new} (renamed since the sheet you "
                                               f"clicked on, built {ruled.get('built')}; the record is unchanged)")
-                elif not ships(g, letter) and not moved_in(rrow, g, letter):
-                    v2_slots[g] = st        # a donor lane: routed as before (own_slot), nothing is written at it
                 else:
                     stale_refused.add(letter)
                     P["conflicts"].append(f"{row}: slot {g} pick {letter} names a lane today's sheet does not have and "
@@ -1164,7 +1191,35 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                     ruled1 = ruled1 or {}
                 rrow = (ruled1.get("rows") or {}).get(row) or {}
                 same = letter in (rrow.get("columns") or {}) and rrow["columns"][letter] == cols.get(letter)
-                intended = g if keyed.get(g) == letter else (gof_resolved(rrow, letter) if same else None)
+                is_keyed = keyed.get(g) == letter
+                clicked = gof_resolved(rrow, letter) if same else None     # its lane on the sheet he clicked on
+                today = gof_resolved(srow, letter)                         # its lane on today's sheet
+                intended = g if is_keyed else clicked
+                if is_keyed and g.startswith("_reference"):
+                    continue        # a reference column, not a lane: nothing to route (the install step names a TODO)
+                if is_keyed and g in lanes_now:
+                    # a KEYED pick (picks{lane: L}) gets the decision route's guards (ENACT_KEYED_PICK_FIX_MOVED_LANE):
+                    # the record names the lane, but the letter may have been re-filed under another lane since
+                    # (greentide RSW_Hawkbat G: keyed to the adult flying lane, filed under the juvenile today) or show
+                    # other pictures than when he clicked; either way its bytes are not proved to belong at g
+                    kwhy = ""
+                    if not same:
+                        kwhy = (rwhy1 if not rrow else
+                                f"{letter} is not the same pictures there as on today's sheet" if letter in (
+                                    rrow.get("columns") or {}) else f"{letter} is not a set of this row there")
+                        kwhy = f"it cannot be checked against the sheet you clicked on: {kwhy}"
+                    elif assign.get(letter) == g:
+                        pass        # he assigned the letter to this lane himself
+                    elif today and today != g and today in lanes_now:
+                        kwhy = (f"today's sheet files {letter} under {today.rsplit('/', 1)[-1]} and both lanes exist, "
+                                f"so which one it belongs to cannot be proved")
+                    elif clicked and clicked != g and resolve_ruled_lane(rrow, srow, clicked)[0] != g:
+                        kwhy = f"it was a set of {clicked.rsplit('/', 1)[-1]} on the sheet you clicked on, not of this lane"
+                    if kwhy:
+                        picks.pop(g)
+                        P["conflicts"].append(f"{row}: pick {letter} is recorded for {g.rsplit('/', 1)[-1]} and {kwhy} "
+                                              f"— refused, installed at neither lane; pick again on the current sheet")
+                    continue
                 if intended == g and g in lanes_now:
                     continue        # the lane it had on the sheet he saw is today's lane: proved unchanged
                 if intended is None and g in lanes_now:
@@ -1179,6 +1234,12 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                                           f"which is not provably the one you clicked on, and its lane there "
                                           f"cannot be proved: {why} — refused, nothing installed for it; pick again on "
                                           f"the current sheet")
+                    continue
+                if intended and intended != g and donor_proved(rrow, intended, g, letter):
+                    # his lane was a donor's and the row's def moved off it to today's lane (proved; see donor_proved)
+                    P["lane_resolved"].append(f"{row}: pick {letter} -> {g}: {intended} was a donor's lane on the sheet "
+                                              f"you clicked on (built {ruled1.get('built')}) and the row's def now names "
+                                              f"{g} (the record is unchanged)")
                     continue
                 if intended and intended != g and intended in lanes_now and g in lanes_now:
                     # moved between two lanes that both exist today (a set re-filed by the rebuild, e.g. a juvenile set
@@ -1195,11 +1256,15 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                                           f"cannot be proved — refused, installed at neither; pick again on the current "
                                           f"sheet")
                     continue
-                if intended and not ships(intended, letter) and not moved_in(rrow, intended, letter):
-                    continue        # his lane was a donor's (or a path that ships nothing now): no lane of ours to keep
-                new, why = resolve_ruled_lane(rrow, srow, intended) if (same and intended) else (
+                # a donor lane (nothing of ours ships at it) is no longer routed unproved: a keyed one goes to today's
+                # lane only by donor_proved, otherwise both kinds need a proved rename below or are refused by name
+                donor = bool(intended) and intended == g and donor_proved(rrow, g, today, letter)
+                new, why = (today, "") if donor else resolve_ruled_lane(rrow, srow, intended) if (same and intended) else (
                     None, "today's sheet does not have that lane" + (
                         "" if same else f", and {letter} cannot be checked against the sheet you clicked on"))
+                if not new and intended and not ships(intended, letter):
+                    why = (f"{why}; it was a donor's lane (nothing of ours ships there) and nothing proves the row's "
+                           f"def moved from it to today's lane with the same pictures")
                 if new == g:
                     continue
                 picks.pop(g)
@@ -1207,7 +1272,9 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                     new, why = None, f"that lane ({new.rsplit('/', 1)[-1]}) has another pick, {picks[new]}"
                 if new:
                     picks[new] = letter
-                    P["lane_resolved"].append(f"{row}: pick {letter} -> {new}, the lane it had on the sheet you clicked "
+                    P["lane_resolved"].append(f"{row}: pick {letter} -> {new}, " + (
+                                              "where the row's def now points (the recorded lane was a donor's) on the "
+                                              if donor else "the lane it had on ") + f"the sheet you clicked "
                                               f"on (built {ruled1.get('built')}); "
                                               + (f"the record names {g}" if keyed.get(g) == letter else
                                                  f"today's sheet puts it in {g}") + " (the record is unchanged)")
