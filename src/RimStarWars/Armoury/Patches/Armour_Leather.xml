@@ -1377,14 +1377,14 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_KarraskPlate"]</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_KarraskPlate"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
-        <!-- RSW_KarraskPlate : baseline hide -->
+        <!-- RM_KarraskPlate : baseline hide -->
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RSW_KarraskPlate"]/stuffProps/statFactors</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_KarraskPlate"]/stuffProps/statFactors</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RSW_KarraskPlate"]/stuffProps/statFactors</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_KarraskPlate"]/stuffProps/statFactors</xpath>
             <value>
             <statFactors>
               <ArmorRating_Sharp>1.20</ArmorRating_Sharp>
@@ -1396,7 +1396,7 @@
             </value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RSW_KarraskPlate"]/stuffProps</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_KarraskPlate"]/stuffProps</xpath>
             <value>
             <statFactors>
               <ArmorRating_Sharp>1.20</ArmorRating_Sharp>

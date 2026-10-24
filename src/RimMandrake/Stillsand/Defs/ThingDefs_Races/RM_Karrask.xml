@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- LIVESTOCK_STARTER_TRIO_1 - karrask (molt-plate), the doc's own
+<!--
+  SWB_INVENTED_MIGRATE_TWENTY_LEFT: our own invented livestock (LIVESTOCK_STARTER_TRIO_1), not a Star Wars creature (Q11a); moved to the RM tier with defNames RSW_ -> RM_ (aliases in src/RimMandrake/LeaningScrub/Defs/Misc/RM_SWBRehome_Aliases.xml).
+  Owner 2026-10-24: "Yes, it appears that a lot of alpha animal ports got
+  classified as Star Wars. We should move all of those."
+  Moved here (batch 4) from src/RimStarWars/SWBestiary/Defs/Livestock/ThingDefs_Animals/ThingDefs_Karrask.xml.
+ LIVESTOCK_STARTER_TRIO_1 - karrask (molt-plate), the doc's own
      "straightforward harvest-on-schedule" v1 entry
      (design/Jawa/proposals/ludicrous_livestock_deep_design.md §"UTILITY
      SYMBIOTES"). Zero new job types: the molt itself is vanilla
      CompProperties_Shearable (the same class backing Sheep/Alpaca wool,
      confirmed via RimSage get_def_details) driving the existing shear
      job, and curing the raw shed into wearable plate is a plain bench
-     RecipeDef (RecipeDefs_Karrask.xml) - Bill work, not a new job.
+     RecipeDef (RM_Karrask_Recipes.xml) - Bill work, not a new job.
 
      Two-stage material is deliberate, per the owner's ruling on this row
      ("Don't make it functional plate armor, that's too much. Instead
      it's a tough material... very easy to work and shape (but not very
-     pretty)"): the raw shed (RSW_KarraskShedRaw, ResourceBase - no
-     stuffProps) is mechanically inert until cured into RSW_KarraskPlate
+     pretty)"): the raw shed (RM_KarraskShedRaw, ResourceBase - no
+     stuffProps) is mechanically inert until cured into RM_KarraskPlate
      (LeatherBase - a real Stuff), matching the design doc's "a raw shed
      is brittle and useless" line without needing any C# to enforce it -
      a ThingDef with no stuffProps simply cannot be selected as apparel
@@ -37,13 +42,13 @@
 
      NOT live-verified this pass (offline defs-only build - see
      LIVESTOCK_STARTER_TRIO_1's item file). Sprite generated
-     (KARRASK_ART_MISSING_1) at Textures/Things/Pawn/Animal/Karrask/Karrask.png,
+     (KARRASK_ART_MISSING_1) at Textures/Things/Pawn/Animal/RM_Karrask/RM_Karrask.png,
      conformed from the owner's picked mockup (art/mockups/PICKS.md,
      karrask_opt2). Not yet deployed/load-tested. -->
 <Defs>
 
   <ThingDef ParentName="ResourceBase">
-    <defName>RSW_KarraskShedRaw</defName>
+    <defName>RM_KarraskShedRaw</defName>
     <label>raw karrask shed</label>
     <description>A freshly molted karrask carapace plate, still flexible and faintly damp. Uncured, it is brittle and structurally useless - it has to be cured before it holds an edge or a shape. No stuffProps on this def is deliberate: nothing can be crafted from it until it becomes cured plate.</description>
     <possessionCount>10</possessionCount>
@@ -68,7 +73,7 @@
   </ThingDef>
 
   <ThingDef ParentName="LeatherBase">
-    <defName>RSW_KarraskPlate</defName>
+    <defName>RM_KarraskPlate</defName>
     <label>cured karrask plate</label>
     <description>Chitin-like plate cured from a shed karrask carapace - tough, easy to work and shape into armor or other durable goods, but dull and unglamorous next to a dyed hide or a worked metal. What it lacks in prettiness it makes up in how little labor it takes to turn into something durable.</description>
     <possessionCount>10</possessionCount>
@@ -95,7 +100,7 @@
   </ThingDef>
 
   <ThingDef ParentName="AnimalThingBase">
-    <defName>RSW_Karrask</defName>
+    <defName>RM_Karrask</defName>
     <label>karrask</label>
     <description>A low, heavily plated grazer that forages mineral-rich rock lichen across the desert flats. Every molt cycle it sheds its entire carapace at once, curling into its molting corner for a day while the new plate hardens beneath - disturb it mid-molt and it turns aggressive, and the ruined shed is wasted. Left alone, the shed cures into some of the toughest, easiest-worked material a desert scavenger can get their hands on.</description>
     <statBases>
@@ -112,7 +117,7 @@
     <uiIconScale>1.2</uiIconScale>
     <comps>
       <li Class="CompProperties_Shearable">
-        <woolDef>RSW_KarraskShedRaw</woolDef>
+        <woolDef>RM_KarraskShedRaw</woolDef>
         <shearIntervalDays>15</shearIntervalDays>
         <woolAmount>40</woolAmount>
       </li>
@@ -194,7 +199,7 @@
     </tools>
     <graphicData>
       <!-- see file header: KARRASK_ART_MISSING_1 -->
-      <texPath>Things/Pawn/Animal/Karrask/Karrask</texPath>
+      <texPath>Things/Pawn/Animal/RM_Karrask/RM_Karrask</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>1.5</drawSize>
     </graphicData>
