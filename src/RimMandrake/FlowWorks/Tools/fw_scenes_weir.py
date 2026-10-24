@@ -357,7 +357,7 @@ def facing(d, look):
     cols = np.nonzero(al.any(0))[0]
     c0, c1 = cols.min(), cols.max()
     lum = _lum(north[..., :3])
-    # the crest is the highest, flattest top: brightest columns (Modern's steel strip, Industrial's crest slab); the
+    # the crest is the highest, flattest top: brightest columns (Industrial's crest slab); the
     # labyrinth's teeth are one height both ways: its downstream bays carry the falling water
     colmean = np.array([np.median(lum[al[:, c], c]) if al[:, c].any() else 0 for c in range(north.shape[1])])
     if look == "Futuristic":
@@ -370,6 +370,12 @@ def facing(d, look):
         ok = se is not None and sw is not None and se > sw + 8 and rel >= 0.55
         return ok, "water bays centre row east %s vs west %s (east >= 8 lower); north bays centre at %.2f of the band" \
                    " (>= 0.55, downstream right)" % (None if se is None else round(se), None if sw is None else round(sw), rel)
+    elif look == "Modern":
+        # the crest is the warm dry slab; the curtain below it is a blue-white water sheet, often brighter (v12), so
+        # the crest is the column whose median is least blue, not the brightest
+        warm = north[..., 0].astype(np.float32) - north[..., 2].astype(np.float32)
+        colwarm = np.array([np.median(warm[al[:, c], c]) if al[:, c].any() else -999 for c in range(north.shape[1])])
+        where = float(np.argmax(colwarm))
     else:
         where = float(np.argmax(colmean))
     rel = (where - c0) / max(1, c1 - c0)

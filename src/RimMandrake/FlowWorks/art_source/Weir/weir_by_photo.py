@@ -4,7 +4,7 @@ scavver/crude, industrial, modern, futuristic." Refs, never committed: D:\\Claud
 weir_ref2_stepped_concrete, weir_ref3_smooth_curtain, weir_ref4_labyrinth_zigzag _owner_20261024.png):
   Scrapper   = a crude rubble weir: a heaped ridge of rounded field stones, moss on the dry tops, wet dark at the foot
   Industrial = a stepped concrete weir: level crest, three steps down the spill face, expansion joints, algae low down
-  Modern     = a smooth curtain weir: clean pale concrete, a brushed-steel crest strip, one unbroken ogee face
+  Modern     = a smooth curtain weir: a flat warm-white crest slab with a crisp nose, then one wide concave face carrying a streaked sheet of water
   Futuristic = a labyrinth weir: a white composite wall zig-zagging in plan (two teeth a cell), a cyan strip on its crest
 
 Procedural, deterministic. Each look is a PLAN heightfield (along the wall x, across it v from upstream to downstream,
@@ -263,15 +263,14 @@ def stepped(Wp, Vp, flip):
 
 
 def ogee_profile(vd, Vp):
-    """Smooth curtain: vertical upstream face, a rounded crest, one S-curve down to a short flat toe."""
+    """Smooth curtain: a flat level crest ending in a crisp nose, then one long concave face (water sheet) down to the
+    toe. v12 (judge r6: "a pale rounded tube ... close to Industrial"): the crest is flat, not rounded, and the face is
+    a wide apron, so the plan reads as a slab with a sheet of water down it, not a cylinder."""
     hc = 21.0
-    c0, c1, toe = 0.08 * Vp, 0.30 * Vp, 0.86 * Vp
+    c1, toe = 0.20 * Vp, 0.96 * Vp
     t = np.clip((vd - c1) / (toe - c1), 0, 1)
-    s = t * t * (3 - 2 * t)
-    hh = hc - (hc - 1.8) * s
-    nose = np.clip((vd - c0) / (c1 - c0), 0, 1)
-    hh = hh - 0.9 * (1 - np.sin(nose * np.pi / 2)) * (vd < c1)
-    hh = np.where(vd < c0, hc - 0.9 + 0.9 * np.clip(vd / c0, 0, 1) * 0, hh)
+    s = 1 - (1 - t) ** 2.2                     # steep just below the nose, flattening toward the toe
+    hh = hc - (hc - 1.2) * s
     return np.where((vd >= 0) & (vd < Vp), hh, 0)
 
 
@@ -284,6 +283,7 @@ def ogee(Wp, Vp, flip):
     return P
 
 
+MODERN_D = 84    # Modern plan depth (S px): a wide curtain apron (judge r6)
 LAB_H = 10.0    # the labyrinth wall's height (S px): low, so seen N-S its faces do not stack into a coil (judge r4-r5)
 
 
@@ -363,19 +363,18 @@ def colours(look, P, wrap_v):
             base = np.where((~face)[..., None], base * 1.18, base)   # lit treads against dark risers
             return base, 0.40, 0.72, 0.0
         if look == "Modern":
-            base = np.array([198, 196, 189], np.float32) * (0.97 + 0.05 * g1)[..., None]
-            seam = (al % 128 == 64)
-            base = np.where(seam[..., None], base * 0.85, base)
-            wet = np.clip((5.0 - z) / 5.0, 0, 1) * 0.35
-            base = mix(base, [120, 132, 136], wet)
-            # the curtain: a thin film of water down the sloped face, faint vertical streaks along the wall (judge r4:
-            # "a plain beam")
-            film = (~face) & (z < 19.0) & (z > 2.0)
-            mstreak = pnoise((1, 256), 256, 53, scales=(2, 3, 6))[0][al % 256] ** 2
-            base = np.where(film[..., None], mix(base, [168, 186, 194], 0.25 + 0.45 * mstreak), base)
-            steel = (~face) & (z > 20.0)                    # the crest, a shade off the slab
-            base = np.where(steel[..., None], base * 0.97, base)
-            return base, 0.42, 0.62, 0.03   # the crest in the slab's own colour: no bright line (judge r2, r3)
+            # v12 (judge r6): a warm-white flat crest slab, then the curtain -- a bright blue-white sheet of water with
+            # strong vertical streaks over the whole face, foaming at the toe; no mid-section seam (read as a join line)
+            crest = np.array([224, 220, 210], np.float32) * (0.97 + 0.05 * g1)[..., None]
+            mstreak = pnoise((1, 256), 256, 53, scales=(1.5, 3, 6))[0][al % 256] ** 1.5
+            sheet = mix(np.broadcast_to(np.array([176, 204, 216], np.float32), crest.shape), [238, 246, 250],
+                        0.15 + 0.75 * mstreak)
+            on_face = (z < 20.4) & (top < 30)        # never on the post (its top is ~82): judge r7 "posts tint blue"
+            base = np.where(on_face[..., None], sheet, crest)
+            foam = np.clip((4.0 - z) / 4.0, 0, 1) * 0.6
+            base = mix(base, [240, 246, 248], foam)
+            amb = np.where(on_face, 0.62, 0.46)
+            return base, amb, np.where(on_face, 0.40, 0.58), 0.03
         # Futuristic
         base = np.array([226, 231, 236], np.float32) * (0.98 + 0.03 * g1)[..., None]
         # the downstream bays: water falling off the crest into them, white streaks running with the flow (the photo's
@@ -404,7 +403,7 @@ def body_h(look, flip):
     elif look == "Industrial":
         P, y0 = stepped(Wp, 64, flip), 50
     elif look == "Modern":
-        P, y0 = ogee(Wp, 62, flip), 48
+        P, y0 = ogee(Wp, MODERN_D, flip), 44
     else:
         P, y0 = labyrinth(Wp, 74, flip), 44
     own, z = project(P.h, P.id, KY, y0, 128, wrap=False)
@@ -416,7 +415,7 @@ def body_v(look):
     Lp = round(256 / KY)                  # plan length whose screen image is exactly 256 rows
     ky = 256 / Lp
     if True:
-        depth = {"Scrapper": 92, "Industrial": 64, "Modern": 62, "Futuristic": 74}[look]
+        depth = {"Scrapper": 92, "Industrial": 64, "Modern": MODERN_D, "Futuristic": 74}[look]
         xs = (128 - depth) // 2
         if look == "Scrapper":
             P = rubble(depth, Lp, 43, along_v=True)
