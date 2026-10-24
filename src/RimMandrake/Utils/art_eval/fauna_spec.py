@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Build art_eval specs for LIVE fauna defs (not the pilot bundle): one spec per PawnKind/ThingDef pair.
 
-    python3 fauna_spec.py biome <Mod>=<BiomeDef xml> ...     # list a biome's inline <wildAnimals> (XML elements)
     python3 fauna_spec.py build DEF [DEF...] --out <dir>      # spec JSON + scale panel (+ departures brief if missing)
 
 Reads only the repo: ThingDef (description, label), PawnKindDef lifeStages bodyGraphicData (texPath, adult drawSize =
@@ -60,14 +59,6 @@ def mod_of(path: str) -> str:
     return "/".join(rel.split("/")[:2])
 
 
-def biome_roster(xmlpath: str):
-    out = []
-    for b in ET.parse(xmlpath).getroot().iter("BiomeDef"):
-        w = b.find("wildAnimals")
-        out.append((b.findtext("defName"), [(c.tag, (c.text or "").strip()) for c in (w if w is not None else [])]))
-    return out
-
-
 def ledger_kept_install(files: list):
     """[{mod, rel, sha}] for every file the art ledger says the owner kept (PROTECTED); None when the ledger could
     not be read (UNMEASURED — the caller must not read that as 'not kept')."""
@@ -86,6 +77,8 @@ def ledger_kept_install(files: list):
 
 
 def build_spec(defname: str, things, kinds, tex, outdir: Path, kept_lookup=ledger_kept_install) -> dict:
+    if defname not in things:
+        raise SystemExit(f"fauna_spec: no ThingDef {defname!r} under {SRC}")
     f, d = things[defname]
     label = d.findtext("label")
     desc = " ".join((d.findtext("description") or "").split())
@@ -96,6 +89,9 @@ def build_spec(defname: str, things, kinds, tex, outdir: Path, kept_lookup=ledge
             classes.append((bg.findtext("graphicClass") or "Graphic_Multi").strip())
             ds = (bg.findtext("drawSize") or "1").replace("(", "").replace(")", "").split(",")
             draws.append(float(ds[0]))
+    if not draws:
+        raise SystemExit(f"fauna_spec: {defname} has no PawnKindDef lifeStage bodyGraphicData (race={defname}); "
+                         f"nothing to judge")
     adult = max(range(len(draws)), key=lambda i: draws[i])
     tp = paths[adult]
     text = ET.tostring(d, encoding="unicode")
@@ -115,8 +111,8 @@ def build_spec(defname: str, things, kinds, tex, outdir: Path, kept_lookup=ledge
             imgs["variants"] = vs
     else:
         for face in ("south", "east", "north", "west"):
-            hits = tex.get(f"{tp}_{face}", [])
-            hits.sort(key=lambda p: mod_of(p) != home)
+            # sorted(), never .sort(): the list belongs to the shared texture index and specs build on 4 threads
+            hits = sorted(tex.get(f"{tp}_{face}", []), key=lambda p: mod_of(p) != home)
             if hits:
                 imgs[face] = hits[0]
     shown = imgs.get("south") or imgs.get("single") or (imgs.get("variants") or [None])[0]
@@ -128,7 +124,7 @@ def build_spec(defname: str, things, kinds, tex, outdir: Path, kept_lookup=ledge
     # true-scale panel beside the vanilla human
     import scale_panel as SP
     outdir.mkdir(parents=True, exist_ok=True)
-    scale_src = imgs.get("east") or imgs.get("single") or (imgs.get("variants") or [None])[0]
+    scale_src = imgs.get("east") or imgs.get("south") or imgs.get("single") or (imgs.get("variants") or [None])[0]
     if scale_src:
         compact, full = outdir / f"{defname}_scale.png", outdir / f"{defname}_scale_full.png"
         SP.render_panel(Path(scale_src).read_bytes(), {"kind": "animal", "drawSize": (draws[adult], draws[adult])},

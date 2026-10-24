@@ -103,6 +103,7 @@ def call_gpt(prompt: str, images: list, workdir: Path, timeout: int = 900) -> tu
     pf = workdir / "gpt_prompt.md"
     pf.write_text(prompt)
     out = workdir / "gpt_answer.md"
+    out.unlink(missing_ok=True)   # a reply left by an earlier attempt must never be read as this one's
     cmd = [sys.executable, str(GPT_CONSULT), "--prompt-file", str(pf), "--out", str(out), "--timeout", str(timeout)]
     for im in images:
         cmd += ["-i", str(im)]
@@ -243,7 +244,8 @@ def evaluate(spec: dict, card_dir: Path, rev: Reviewers, policy: dict, settings:
     rec["models"]["opus"] = metas
     (card_dir / "opus_raw.txt").write_text("\n\n=====\n\n".join(raws))
     if reply is None:
-        rec.update(decision="HOLD_ERROR", reasons=[f"opus: {err}"])
+        rec["decision"] = "HOLD_ERROR"
+        rec["reasons"].append(f"opus: {err}")
         return rec
     band, od = P.opus_band(reply, items, facts, policy)
     rec["opus"] = {"band": band, "reply": reply, "detail": od}
@@ -306,16 +308,21 @@ def evaluate(spec: dict, card_dir: Path, rev: Reviewers, policy: dict, settings:
 
 # ------------------------------------------------------------------ run
 def history_decisions() -> dict:
-    """Latest non-test decision per subject across committed runs (for catch dependencies across runs)."""
-    out = {}
+    """Latest non-test decision per subject across committed runs (for catch dependencies across runs). Latest is by
+    the record's own `at`, never by run-dir name: run ids are free text, so their alphabetical order is not time."""
+    best = {}
     for f in sorted((STATE / "runs").glob("*/decisions.jsonl")):
         meta = f.parent / "run.json"
         if meta.is_file() and json.loads(meta.read_text()).get("test"):
             continue
         for line in f.read_text().splitlines():
+            if not line.strip():
+                continue
             r = json.loads(line)
-            out[r["subject"]] = r["decision"]
-    return out
+            at = str(r.get("at") or "")
+            if r["subject"] not in best or at >= best[r["subject"]][0]:
+                best[r["subject"]] = (at, r["decision"])
+    return {k: v[1] for k, v in best.items()}
 
 
 def run(specs: list, run_id: str, rev: Reviewers | None = None, test: bool = False, record: bool = False,
@@ -332,8 +339,12 @@ def run(specs: list, run_id: str, rev: Reviewers | None = None, test: bool = Fal
     recs, done = [], set()
     if (out / "decisions.jsonl").is_file():                               # resume: a run id is appended to, never redone
         for line in (out / "decisions.jsonl").read_text().splitlines():
+            if not line.strip():
+                continue
             r = json.loads(line)
             recs.append(r); done.add(spec_key(r)); living[r["subject"]] = r["decision"]
+            if r["decision"] == "REGEN" and not test:   # a run that died before the merge below still spent these rounds
+                rounds[r["subject"]] = max(rounds.get(r["subject"], 0), r.get("round") or 0)
     meta = json.loads((out / "run.json").read_text()) if (out / "run.json").is_file() else {
         "run_id": run_id, "test": test, "started": now(), "subjects": [],
         "versions_key": versions_key(prompt_versions("creature"))}
@@ -392,6 +403,17 @@ def file_regen_jobs(jobs_file: Path, runner=subprocess.run) -> dict:
 def _gate_hits(prompt: str) -> list:
     """Phrases artpipe's per-facing filing gate (common._refuse_contradicted_facing) would refuse in this prompt.
     Reads the gate's own list, so the two cannot drift."""
+    return _gate_module().facing_contradictions(prompt)
+
+
+_GATE_MODULE = None
+
+
+def _gate_module():
+    """artpipe's common.py, loaded once (it is re-read per sentence by gate_clean_prompt otherwise)."""
+    global _GATE_MODULE
+    if _GATE_MODULE is not None:
+        return _GATE_MODULE
     import importlib.util
     ap = ROOT / "src/RimMandrake/Utils/artpipe"
     if str(ap) not in sys.path:
@@ -399,7 +421,8 @@ def _gate_hits(prompt: str) -> list:
     spec = importlib.util.spec_from_file_location("artpipe_common_gate", ap / "common.py")
     m = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(m)
-    return m.facing_contradictions(prompt)
+    _GATE_MODULE = m
+    return m
 
 
 def gate_clean_prompt(prompt: str, neutralize=None, hits=None) -> tuple:

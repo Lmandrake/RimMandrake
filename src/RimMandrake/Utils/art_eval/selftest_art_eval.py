@@ -418,8 +418,69 @@ def main():
             check("a PROTECTED picture sets owner_kept + kept_install", sp["owner_kept"] is True and sp["kept_install"][0]["mod"] == "Mod/M", sp)
             sp = FS.build_spec("RM_Multi", t3, k3, tex, td / "o", kept_lookup=lambda f: None)
             check("unreadable ledger is UNMEASURED, not 'not kept'", sp["owner_kept"] is False and "owner_kept_unmeasured" in sp)
+            # review 2026-10-24: the shared texture index is never reordered (specs build on 4 threads)
+            tex["X/Multi_south"] = ["/zz/Other/Textures/X/Multi_south.png"] + tex["X/Multi_south"]
+            before = list(tex["X/Multi_south"])
+            FS.build_spec("RM_Multi", t3, k3, tex, td / "o", kept_lookup=lambda f: [])
+            check("build_spec leaves the shared texture index's lists in place", tex["X/Multi_south"] == before, tex["X/Multi_south"])
+            tex2 = {"X/S_south": [png("X/S_south")]}
+            t4, k4 = mk("RM_SouthOnly", None, "X/S")
+            check("a south-only Graphic_Multi still gets a scale panel",
+                  "scale" in FS.build_spec("RM_SouthOnly", t4, k4, tex2, td / "o", kept_lookup=lambda f: [])["images"])
+            for what, args in (("no kind", ("RM_One", t1, {}, tex)), ("no def", ("RM_Nope", t1, k1, tex))):
+                try:
+                    FS.build_spec(*args, td / "o", kept_lookup=lambda f: [])
+                    check(f"build_spec {what}: refuses by name", False)
+                except SystemExit as ex:
+                    check(f"build_spec {what}: refuses by name", "fauna_spec" in str(ex), str(ex))
     except ImportError as e:
         check("fauna_spec importable", False, repr(e))
+
+    # --- review 2026-10-24: runner history/resume, shadow ingest idempotence and sheet path
+    try:
+        import runner as RN
+        import shadow as SH
+        with tempfile.TemporaryDirectory() as td:
+            td = Path(td)
+            for rid, at, dec in (("zz_old", "2026-10-01T00:00:00+00:00", "REGEN"), ("aa_new", "2026-10-20T00:00:00+00:00", "ACCEPT")):
+                (td / "runs" / rid).mkdir(parents=True)
+                (td / "runs" / rid / "decisions.jsonl").write_text(json.dumps({"subject": "RM_H", "decision": dec, "at": at}) + "\n\n")
+            old_state, RN.STATE = RN.STATE, td
+            try:
+                hd = RN.history_decisions()
+            finally:
+                RN.STATE = old_state
+            check("history: latest decision by its time, not run-dir name; blank lines skipped", hd == {"RM_H": "ACCEPT"}, hd)
+            # resume after a crash: the REGEN rounds already logged count toward the cap
+            sd = td / "s2"
+            (sd / "r1").mkdir(parents=True)
+            prev = {"subject": "RM_Two", "candidate": "A", "decision": "REGEN", "round": 2, "reasons": [], "template": "creature",
+                    "module": "walker", "models": {}, "prompt_versions": {}, "regen": {"request": {"prompt": "p"}, "findings": []}}
+            (sd / "r1" / "decisions.jsonl").write_text(json.dumps(prev) + "\n")
+            old_state, RN.STATE = RN.STATE, sd
+            try:
+                RN.run([dict(two[0])], "r1", rev=Clean(), test=False, work_root=td / "w2", state_root=sd)
+                rf = json.loads((sd / "regen_rounds.json").read_text())
+            finally:
+                RN.STATE = old_state
+            check("resume keeps the crashed run's regen rounds", rf.get("RM_Two") == 2, rf)
+        check("sheet path read from art_sheet's stdout", SH.built_sheet_path('{\n "html": "Transient/biome_ffar/x_sheet_2026-10-25.html"}', "x", "2026-10-24")
+              == SH.ROOT / "Transient/biome_ffar/x_sheet_2026-10-25.html")
+        check("sheet path falls back to the date", SH.built_sheet_path("", "x", "2026-10-24").name == "x_sheet_2026-10-24.html")
+        with tempfile.TemporaryDirectory() as td:
+            td = Path(td)
+            df = td / "d.json"
+            df.write_text(json.dumps({"decisions": {"RM_I": {"q": {SH.KEY: "keep"}, "note": ""}}}))
+            old = SH.STATE, SH.load_run
+            SH.STATE, SH.load_run = td, (lambda rid: [{"subject": "RM_I", "template": "creature", "decision": "ACCEPT"}])
+            try:
+                a1, a2 = SH.ingest(df, "r"), SH.ingest(df, "r")
+                n = len((td / "shadow_log.jsonl").read_text().splitlines())
+            finally:
+                SH.STATE, SH.load_run = old
+            check("re-ingesting the same answers logs them once (the clean streak is not inflated)", len(a1) == 1 and a2 == [] and n == 1, (a1, a2, n))
+    except (ImportError, NameError, AttributeError) as e:
+        check("review 2026-10-24 checks", False, repr(e))
 
     print(f"{'PASS' if not FAILS else 'FAIL'}: art_eval selftest, {len(FAILS)} failure(s)")
     return 1 if FAILS else 0
