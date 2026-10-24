@@ -506,14 +506,20 @@ namespace RimMandrake.FlowWorks.Hose
         {
             if (!r.HoseOut) return null;
             V2 end = EndPoint(r, out CompHoseReel relay, out V2? inward);
+            // HOSE_CURVE_REBUILD_SMOOTH_AS_PHYSICS step 3: a laid end on a tank port is laid onto the port's axis (HoseMath.PortLay)
+            V2? portAt = null;
+            V2 portAxis = default(V2);
+            if (relay == null && r.laid && PortEnd(r, out V2 pAt, out portAxis)) portAt = pAt;
             // the relay's look and art (stored / laid) move the drawn inlet, so they are part of the key; S2: so does the
             // walked trail (empty = the planned route, the key as before)
             // the reel's OWN look too: the nozzle (Mouth, where the hose starts) is measured per look, and "Choose style" restyles in place
-            string key = r.parent.Position + "/" + HoseLook.LookOfThing(r.parent) + ">" + r.EndCell + (relay != null ? "R" + relay.parent.thingIDNumber + HoseMaterials.LookOf(relay) + (relay.laid ? "L" : "S") : "") + r.TrailKey() + "|" + RM_HoseSettings.ShapeFingerprint() + (IsFed(r) ? "|fed" : "");
+            string key = r.parent.Position + "/" + HoseLook.LookOfThing(r.parent) + ">" + r.EndCell + (relay != null ? "R" + relay.parent.thingIDNumber + HoseMaterials.LookOf(relay) + (relay.laid ? "L" : "S") : "") + r.TrailKey() + "|" + RM_HoseSettings.ShapeFingerprint() + (IsFed(r) ? "|fed" : "")
+                + (portAt.HasValue ? "|p" + portAt.Value.X.ToString("0.000") + "," + portAt.Value.Z.ToString("0.000") + "/" + portAxis.X + "," + portAxis.Z : "");
             if (r.layKey == key) return r.lay; // a failed lay is cached too (lay null); the 250-tick check clears layKey to retry
             var sw = System.Diagnostics.Stopwatch.StartNew();
             CordWorld w = World();
-            HoseLay lay = LayFrom(r, end, inward, r.TrailCells());
+            IList<Cell> trail = r.TrailCells();
+            HoseLay lay = HoseMath.PortLay((e1, in1) => LayFrom(r, e1, in1, trail), end, inward, portAt, portAxis);
             // owner decision by question card 2026-10-06 (straight lead-out): no clear lead-out from the nozzle = refused with
             // the reason (HoseMath.LeadOutBlocked); the old fallback laid it without the outlet
             LastLayMs = (int)sw.ElapsedMilliseconds;

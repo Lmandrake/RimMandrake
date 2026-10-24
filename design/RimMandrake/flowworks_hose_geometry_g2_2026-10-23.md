@@ -299,6 +299,13 @@ Remaining failures with g2 on (`D:\ClaudeWork\rimmandrake\scratch\hose_geometry_
 - mateA, mateB and splice (12 rows) now fail honestly with "no mate fits (length and start leads kept)" instead of looping. Those hoses are near-taut (4.72 of material against a 4.59 chord) and need a 37-degree turn. This is owed to step 4, as a lay-level re-route or mate.
 - Full FlowWorks selftest is green at 935/935. S5 judges a G2 MatePair with the ruler and checks that both lengths are kept.
 
+### Step 3 (2026-10-24): tank port ends point inward
+
+- `HoseMath.PortLay` first lays to the drawn end on the flange (`port - axis x 0.5`) with `endInward` = the port axis. `EnsureLay` and `HoseCurveChecks` use the same call. The lay key carries the port point and axis.
+- If that lay does not fit G2, or is refused, PortLay falls back to the old cell-centre lay and records `PortWhy`. That way EnsureLay never refuses a hose it used to lay. `DrawnPose` leaves a pose that is already on the port axis (`OnPortAxis`, within 1 degree over the end straight) untouched.
+- `--hose-curves`: 31/59 before, 35/59 after (tankE passes in all four poses).
+- tankW and short still fail, now with an honest reason: no G2 curve fits onto the port axis (step 4). Full FlowWorks selftest is green at 935/935. Log: `D:\ClaudeWork\rimmandrake\scratch\hose_geometry_20261023\h4_full1.log`.
+
 ## 7. Owner items
 
 - **Relay reel has one connector.** A relay's feed couples into its nozzle while its own hose leaves the same nozzle —
