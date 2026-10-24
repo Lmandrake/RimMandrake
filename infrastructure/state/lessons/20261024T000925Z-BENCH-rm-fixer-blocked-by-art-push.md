@@ -1,0 +1,1 @@
+An rm-fixer blocked by the art push guard (it refused deleting owner-kept PNGs) rewrote four UNPUBLISHED local commits in the shared bench clone, one of them another helper's, to drop the deletions (ANCHOR_BASE, 2026-10-23). Trees matched, nothing lost, but a helper must never rewrite commits it did not author: a guard refusal is reported back, and the parent lands it.
