@@ -272,16 +272,52 @@ HOSE_ROW_SHOWS.update({
 HOSE_LIVE_IDS = [r for r in HOSE_ROW_SHOWS if r not in HOFF.OFFLINE_IDS]
 
 
+def _posix_path(p):
+    """Windows/UNC path -> the WSL path (same rule as modcheck/runner._wsl_path; a POSIX path passes through)."""
+    import re
+    u = re.match(r"^[\\/]{2}wsl(?:\.localhost|\$)[\\/][^\\/]+[\\/](.*)$", p)
+    if u:
+        return "/" + u.group(1).replace("\\", "/")
+    m = re.match(r"^([A-Za-z]):[\\/](.*)$", p)
+    return "/mnt/%s/%s" % (m.group(1).lower(), m.group(2).replace("\\", "/")) if m else p
+
+
+def _posix_python(args):
+    """argv that runs a POSIX python3 script. `modcheck run` lives under Windows python.exe (the bridge side), which
+    has no numpy and no fcntl and cannot find the SelfTest's dotnet by its /mnt path: the 2026-10-24 GREEN-MIN run
+    lost the hose offline rows (ModuleNotFoundError numpy) and every SelfTest-backed chain (dotnet.exe not found)
+    to that. Under nt the script is shelled through `wsl.exe python3` with its paths translated."""
+    if os.name == "nt":
+        return ["wsl.exe", "python3"] + [_posix_path(a) for a in args]
+    return ["python3"] + list(args)
+
+
+def _hose_offline_rows():
+    """HOFF.run_offline() rows, run in-process on POSIX and through WSL python3 under Windows (it needs numpy)."""
+    import io
+    import contextlib
+    if os.name != "nt":
+        with contextlib.redirect_stdout(io.StringIO()):
+            return HOFF.run_offline()
+    import subprocess
+    code = ("import sys,json,io,contextlib; sys.path.insert(0, %r); import validation_hose_offline as H\n"
+            "with contextlib.redirect_stdout(io.StringIO()): rows = H.run_offline()\n"
+            "print('HOFF_ROWS ' + json.dumps(rows, default=str))") % _posix_path(HERE)
+    r = subprocess.run(["wsl.exe", "python3", "-c", code], capture_output=True, text=True, timeout=600)
+    for ln in r.stdout.splitlines():
+        if ln.startswith("HOFF_ROWS "):
+            return json.loads(ln[len("HOFF_ROWS "):])
+    raise RuntimeError("hose offline rows did not run under WSL python3 (rc=%s): %s"
+                       % (r.returncode, (r.stderr or r.stdout)[-300:]))
+
+
 @suite.chain("hose_offline")
 def hose_offline(t):
     """The hose's offline art/source rows (HO5-HO8). 0 ticks."""
     rows = []
     with t.component("hose_offline_ran"):
         if t._guard():
-            import io
-            import contextlib
-            with contextlib.redirect_stdout(io.StringIO()):
-                rows = [dict(r, cls=r.get("class")) for r in HOFF.run_offline()]
+            rows = [dict(r, cls=r.get("class")) for r in _hose_offline_rows()]
     if t.components and t.components[-1].verdict == "PASS":
         _report_rows(t, rows, declare=HOFF.OFFLINE_IDS)
 
@@ -350,7 +386,7 @@ def _selftest_cases():
         return dict(_SELFTEST_CASES)
     import subprocess
     runner = os.path.join(os.path.dirname(os.path.dirname(HERE)), "RimMandrake", "Utils", "selftest_flowworks_stock.py")
-    r = subprocess.run([sys.executable, runner], capture_output=True, text=True, timeout=1200)
+    r = subprocess.run(_posix_python([runner]), capture_output=True, text=True, timeout=1200)
     cases = {}
     for ln in r.stdout.splitlines():
         if ln.startswith("ok    ") or ln.startswith("FAIL  "):
@@ -622,7 +658,7 @@ def _trench_cover_selftest():
     """The trench-cover C# SelfTest (SelfTestTrench, net8.0); raise UNMEASURED when it could not run, FAIL when it failed."""
     import subprocess
     runner = os.path.join(os.path.dirname(os.path.dirname(HERE)), "RimMandrake", "Utils", "selftest_flowworks_trench_cover.py")
-    r = subprocess.run([sys.executable, runner], capture_output=True, text=True, timeout=1200)
+    r = subprocess.run(_posix_python([runner]), capture_output=True, text=True, timeout=1200)
     out = (r.stderr or "") + (r.stdout or "")
     if "UNMEASURED" in out and r.returncode != 0:
         raise ExpectationFailed("UNMEASURED: the trench-cover SelfTest did not run: %s" % out[-300:])
