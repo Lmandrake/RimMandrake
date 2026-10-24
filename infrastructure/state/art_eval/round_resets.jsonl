@@ -9,3 +9,4 @@
 {"at": "2026-10-24T07:18:27-07:00", "def": "RM_Fuzzrunner", "stop": true, "series": 1, "why": "coordinator relay: owner kept in-game art for Crustweevil and Dustflutter and chose Fuzzrunner's art on the leaningscrub sheets, picked Surrik B earlier; a fresh series could overwrite those picks"}
 {"at": "2026-10-24T07:18:27-07:00", "def": "RM_Surrik", "stop": true, "series": 1, "why": "coordinator relay: owner kept in-game art for Crustweevil and Dustflutter and chose Fuzzrunner's art on the leaningscrub sheets, picked Surrik B earlier; a fresh series could overwrite those picks"}
 {"at": "2026-10-24T07:18:28-07:00", "def": "RM_Peeper", "stop": true, "series": 1, "why": "coordinator relay: owner kept Peeper A on the contagion sheet"}
+{"at": "2026-10-24T09:28:04-07:00", "def": "RM_Vexxiss", "stop": true, "series": 1, "by_card": "Vexxiss: which becomes the main, and what happens to the other? \u2192 D main, E as variant"}
