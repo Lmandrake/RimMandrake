@@ -1058,6 +1058,20 @@ def _fkey(c: dict) -> tuple:
     return tuple(sorted(c["faces"].items()))
 
 
+def _take_unseen(cols: list, seen: set) -> list:
+    """The columns of a lane that an earlier lane of the row has not shown yet, and record them in `seen`. A lane's
+    IN GAME/shipped (`live`) column is dropped only when an earlier lane already showed those bytes AS live: a render
+    with the same bytes is not the same claim. Gizka, 2026-10-24 (ART_EVAL_SHADOW_FIX_GIZKA_REQ15): render
+    canonregen_rsw_gizka_v1 joined the base Gizka lane by name, its bytes are what GizkaW (the 80% alternate graphic)
+    has installed, and the GizkaW lane's live column was dropped as a duplicate — the installed picture showed only as a
+    render and gate req 15 refused every sheet with the row. `seen` holds _fkey tuples plus ("live", key) markers."""
+    out = [c for c in cols
+           if _fkey(c) not in seen or (c.get("kind") == "live" and ("live", _fkey(c)) not in seen)]
+    seen.update(_fkey(c) for c in out)
+    seen.update(("live", _fkey(c)) for c in out if c.get("kind") == "live")
+    return out
+
+
 def rationalize_row(r: dict, graphics: list, rationalize: bool = False) -> list[str]:
     """Tidy a row's picture sets BEFORE he sees them (owner, 2026-10-21: "ensure that the art is 'rationalized' meaning
     there's not a tangle of random E, W, S, N facings missing gaps … so I can't select any one option because they're
@@ -2835,8 +2849,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                 br["cols"].append(standin_col(r["standin"]))
             if br.get("donorPurged"):
                 donor_purged.add(r["key"])
-            cols = [c for c in br["cols"] if _fkey(c) not in seen]
-            seen.update(_fkey(c) for c in cols)
+            cols = _take_unseen(br["cols"], seen)
             p = res.get("prior_selection")
             graphics.append({"res": res["res"], "role": ROLE_TEXT.get(res.get("role"), res.get("role") or "graphic"),
                              "cols": cols, "prior_raw": p, "joined_by": res.get("joined_by")})
@@ -2848,8 +2861,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                 continue
             _have_res.add(xres)
             br = build_row(idx, xres, order, slots)
-            cols = [c for c in br["cols"] if _fkey(c) not in seen]
-            seen.update(_fkey(c) for c in cols)
+            cols = _take_unseen(br["cols"], seen)
             if cols:
                 graphics.append({"res": xres, "role": ROLE_TEXT.get(xrole, xrole), "cols": cols, "prior_raw": None,
                                  "joined_by": "live-def-dump"})
@@ -2859,8 +2871,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
         # picks 1 of 3: dessicated corpses... and yet I saw not a single dessicated corpse")
         for tex in corpse_lane_texpaths(r.get("artpipe_state_jobs") or [], {g["res"] for g in graphics}):
             br = build_row(idx, tex, order, slots)
-            cols = [c for c in br["cols"] if _fkey(c) not in seen]
-            seen.update(_fkey(c) for c in cols)
+            cols = _take_unseen(br["cols"], seen)
             graphics.append({"res": tex, "role": CORPSE_ROLE, "cols": cols, "prior_raw": None,
                              "joined_by": "artpipe target_texpath (a job the sheet names)"})
         have = {s for g in graphics for c in g["cols"] for s in c["faces"].values()}
@@ -2920,8 +2931,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             lane = next((g for g in graphics if g["res"] == tex), None)
             if lane is None:
                 br = build_row(idx, tex, order, slots)
-                lc = [x for x in br["cols"] if _fkey(x) not in seen]
-                seen.update(_fkey(x) for x in lc)
+                lc = _take_unseen(br["cols"], seen)
                 lane = {"res": tex, "role": "look: " + "/".join(tex.split("/")[-2:]), "cols": lc, "prior_raw": None,
                         "joined_by": "artpipe target_texpath", "look": True}
                 graphics.append(lane)
