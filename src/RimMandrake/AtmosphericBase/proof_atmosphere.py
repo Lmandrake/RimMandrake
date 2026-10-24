@@ -1356,7 +1356,10 @@ def reload_row(I, rows, pick, with_reload):
         I.release(fid)
         add(rows, "R1.save_reload_release", UNM, HARNESS, "save/reload failed: %s" % why)
         return
-    held = I.is_taken(fid)
+    held = I.taken_after_load(fid)
+    if held is None:
+        add(rows, "R1.save_reload_release", UNM, HARNESS, "fixture %s never reappeared after the reload" % fid)
+        return
     I.release(fid)
     after = I.showing(fid)
     good = held and after is None
@@ -1469,6 +1472,18 @@ class Live(object):
     def is_taken(self, fid):
         o, _ = self.hook("is_taken", id=fid)
         return bool((o or {}).get("taken"))
+
+    def taken_after_load(self, fid, wait=60.0):
+        # load_game returns while the load's LongEvent is still pending (map not spawned): the hook then answers "no
+        # eligible fixture", which read as a LOST claim (live run 3, 2026-10-24) though the save held it and it came
+        # back seconds later. Wait for the fixture to exist before judging; None = it never came back.
+        t_end = self.wall() + wait
+        while self.wall() < t_end:
+            o, _ = self.hook("is_taken", id=fid)
+            if o and "taken" in o:
+                return bool(o["taken"])
+            self.sleep(2.0)
+        return None
 
     def save_reload(self, name):
         s = self.B.call("rimworld/save_game", saveName=name) or {}
@@ -1691,6 +1706,9 @@ class Stub(object):
         self.taken.discard(fid)
 
     def is_taken(self, fid):
+        return fid in self.taken
+
+    def taken_after_load(self, fid):
         return fid in self.taken
 
     def save_reload(self, name):
