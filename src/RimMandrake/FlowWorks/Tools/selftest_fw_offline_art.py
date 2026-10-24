@@ -31,6 +31,11 @@ Each check must FAIL on the art he rejected (the shipped code, emulated as BEFOR
     ladder_south_footprint        FAIL on the shipped south stub, PASS installed; can-fail: one nub only
     both can-fail on a blank image
     pinned                        installed N/S == portable_from_ground.north()/south() pixel for pixel
+  portable ladder east/west, panel 3 = the ground ladder raised 30 deg (LADDER_PORTABLE_DECIDE_EAST_WEST_FACING):
+    ladder_east_leans_on_wall     FAIL on the shipped GPT v4 east (v6/before), PASS installed; can-fail: blank, the 55 deg
+                                  candidate (tilt), east mirrored (leans away from its wall), squeezed 0.8x along
+    ladder_west_mirrors_east      PASS installed; can-fail: the shipped v4 west against the installed east, east as west
+    pinned                        installed E/W == portable_from_ground east_a / west_a pixel for pixel
   pit spikes, a 4 m pit with a 2 m shelf and a 0..2 m water series (PIT_SPIKES_FIX_OVER_WALL_AND_SUBMERGE, fw_scenes_spikes):
     spikes_over_wall    FAIL on the shipped whole-cell sprite, PASS on Building_RM_Spikes' layout; also PASS with the
                         outline off; with the faces off it REFUSES (no wall mask), the no-walls can-fail; can-fail: no spikes
@@ -240,6 +245,34 @@ def ladder():
     one.alpha_composite(nub, ((pg.CANVAS - nub.width) // 2, sb[3] - nub.height))   # one nub, centred, on the rim
     ok, d = ck.ladder_south_footprint(one)
     want(not ok and d.startswith("1 nubs"), "ladder south can-fail: one centred nub, the nub count is what fails (%s)" % d)
+    # east/west (LADDER_PORTABLE_DECIDE_EAST_WEST_FACING): panel 3, the ground ladder raised 30 deg; west mirrors east
+    flat = pg.flat()
+    east = Image.open(pg.CANALS / "RM_LadderPortable_east.png").convert("RGBA")
+    west = Image.open(pg.CANALS / "RM_LadderPortable_west.png").convert("RGBA")
+    old_e = Image.open(HERE.parent / "art_source/Ladder/v6/before/RM_LadderPortable_east.png").convert("RGBA")
+    old_w = Image.open(HERE.parent / "art_source/Ladder/v6/before/RM_LadderPortable_west.png").convert("RGBA")
+    ok, d = ck.ladder_east_leans_on_wall(east, flat)
+    want(ok, "ladder east: installed leans on its wall (%s)" % d)
+    ok, d = ck.ladder_east_leans_on_wall(old_e, flat)
+    want(not ok, "ladder east: shipped v4 BEFORE fails (%s)" % d)
+    want(not ck.ladder_east_leans_on_wall(blank, flat)[0], "ladder east can-fail: blank image")
+    ok, d = ck.ladder_east_leans_on_wall(pg.east(pg.TILTS["b"]), flat)
+    want(not ok and "tilt +5" in d, "ladder east can-fail: the 55 deg candidate, the tilt is what fails (%s)" % d)
+    ok, d = ck.ladder_east_leans_on_wall(east.transpose(Image.FLIP_LEFT_RIGHT), flat)
+    want(not ok and "tilt -" in d, "ladder east can-fail: mirrored, leaning away from its wall (%s)" % d)
+    eb = east.getchannel("A").getbbox()
+    short = Image.new("RGBA", blank.size)
+    sq = east.crop(eb).resize((round((eb[2] - eb[0]) * 0.8), round((eb[3] - eb[1]) * 0.8)), Image.LANCZOS)
+    short.alpha_composite(sq, (eb[2] - sq.width, eb[1]))                   # same wall end, 0.8x along and across
+    ok, d = ck.ladder_east_leans_on_wall(short, flat)
+    want(not ok, "ladder east can-fail: squeezed 0.8x (%s)" % d)
+    ok, d = ck.ladder_west_mirrors_east(west, east)
+    want(ok, "ladder west: installed mirrors east (%s)" % d)
+    want(not ck.ladder_west_mirrors_east(old_w, east)[0], "ladder west can-fail: shipped v4 west vs installed east")
+    want(not ck.ladder_west_mirrors_east(east, east)[0], "ladder west can-fail: east used as west unflipped")
+    e_made = pg.east(pg.TILTS[pg.PICK])
+    for f, live, m in (("east", east, e_made), ("west", west, e_made.transpose(Image.FLIP_LEFT_RIGHT))):
+        want(np.array_equal(np.asarray(live), np.asarray(m)), "ladder %s: installed == portable_from_ground %s_%s" % (f, f, pg.PICK))
 
 
 def spikes():

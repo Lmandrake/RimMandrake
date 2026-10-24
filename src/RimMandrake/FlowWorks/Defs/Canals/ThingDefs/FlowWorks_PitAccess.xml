@@ -19,10 +19,10 @@
     <graphicData>
       <texPath>Things/Building/FlowWorks/Canals/RM_LadderPortable</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
-      <!-- on RM_Ladder's rig (384 px canvas, drawSize 1.5, offsets). East/west: art "portable ladder redraw 8" (owner by card 2026-10-22, v4).
-           North + south from the ground sprite RM_LadderPortableFlat turned upright, same 256 px per cell (owner 2026-10-24:
-           "yes I'd like to see the ground portable ladder used"; south = stringer tips only): art_source/Ladder/v6/portable_from_ground.py.
-           East/west still v4 until he picks (v6 sheet.py stations 2-4). -->
+      <!-- on RM_Ladder's rig (384 px canvas, drawSize 1.5, offsets). Every facing from the ground sprite RM_LadderPortableFlat
+           at its own 256 px per cell (owner 2026-10-24: "yes I'd like to see the ground portable ladder used"):
+           art_source/Ladder/v6/portable_from_ground.py. North turned upright; south = stringer tips only; east = raised 30 deg
+           against the east wall, west its mirror (owner 2026-10-24 "portable ladder looks approved", sheet panel 3). -->
       <drawSize>(1.5,1.5)</drawSize>
       <drawOffsetNorth>(0,0,0.25)</drawOffsetNorth>
       <drawOffsetEast>(0,0,0.25)</drawOffsetEast>
