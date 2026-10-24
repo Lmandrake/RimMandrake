@@ -283,7 +283,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                 if (pair.Count != 2) continue;
                 Case($"HoseCurve splice {g.Key}", () =>
                 {
-                    if (pair[0].NoMate != null) throw new Exception(pair[0].NoMate);
+                    string noMate = pair[0].NoMate ?? pair[1].NoMate;
+                    if (noMate != null) throw new Exception(noMate);
                     HoseCurveMetrics.Report r = HoseCurveMetrics.Splice(pair[0].Pts, pair[1].Pts, pair[0].Start, pair[1].Start, kmax, out double seam);
                     if (!r.Ok) throw new Exception($"seam {seam:0.000} " + r.Line());
                 });

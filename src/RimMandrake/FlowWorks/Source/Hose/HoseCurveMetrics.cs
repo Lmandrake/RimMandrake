@@ -178,9 +178,10 @@ namespace RimMandrake.FlowWorks.Hose
             return r;
         }
 
-        /// <summary>R5: two hoses on one fitting. Each must leave along its OWN axis (the angle between the two drawn headings at
-        /// the fitting, over the first <paramref name="straight"/> cells, must match the angle between the two axes within
-        /// MaxLeadAngleDeg); returns the worst mismatch in degrees.</summary>
+        /// <summary>R5: two hoses on one fitting. Each must leave along its OWN axis: over the first <paramref name="straight"/>
+        /// cells, each drawn heading's deviation from its own axis (stricter than comparing the angle between the two headings
+        /// with the angle between the axes, which two hoses bent alike would pass); returns the worse deviation in degrees,
+        /// judged against MaxLeadAngleDeg by the caller.</summary>
         public static double Shared(IList<V2> fromFittingA, V2 axisA, IList<V2> fromFittingB, V2 axisB, double straight)
         {
             Lead(Clean(fromFittingA), axisA, straight, out double a, out _);
