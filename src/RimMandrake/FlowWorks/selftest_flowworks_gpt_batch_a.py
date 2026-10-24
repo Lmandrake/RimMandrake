@@ -67,6 +67,15 @@ CASES = [
          [r"Scribe_Values\.Look \( ref heldUnits , \"rmHoseHeldUnits\" , 0 \) ;"
           r" Scribe_Values\.Look \( ref flowUntil , \"rmHoseFlowUntil\" , RimMandrake\.FlowWorks\.Machinery\.RM_LiquidNetKernel\.NoLease \) ;"],
          ("            Scribe_Values.Look(ref flowUntil, \"rmHoseFlowUntil\", RimMandrake.FlowWorks.Machinery.RM_LiquidNetKernel.NoLease);\n", "")),
+    # ── DUG_FILL_FIX_WALKS_TO_SHEET (batch A code review): the search skips a dug cell that cannot pay ──
+    Case("DUG_FILL_FIX_WALKS_TO_SHEET", "the fill search never walks to a sheet thinner than the container",
+         "LiquidTypes/RM_LiquidBottleUtility.cs",
+         r"private static bool TryFindLiquidCellUncached\(",
+         [r"if \( ex != null && ex\.IsExcavated \( c \) && RM_ContainerMaterialMath\.DugCellDebitDl \("
+          r" container != null \? RM_ContainerMaterials\.UnitsIn \( container , candidate , size \) : candidate\.UnitsFor \( size \) ,"
+          r" ex\.WaterDlAt \( c \) , RM_MapComponent_Excavation\.LevelExact , RM_LevelSolve\.U \) < 0 \) \{ continue ; \}"],
+         ("if (ex != null && ex.IsExcavated(c) && RM_ContainerMaterialMath", "if (false && ex.IsExcavated(c) && RM_ContainerMaterialMath"),
+         order=(r"ex\.Stock\.CanSupply", r"ex\.IsExcavated \( c \) && RM_ContainerMaterialMath\.DugCellDebitDl")),
     # ── TAR_GLASS_FLOOD_FIX_UNREACHABLE_PATH (FA_core_sim_1.8, option A) ──
     Case("TAR_GLASS_FLOOD_FIX_UNREACHABLE_PATH", "the undug bank beside the release hardens to glass", "Flood_FlowWorks.cs",
          r"private void CoolFrontToGlass\(\)",
