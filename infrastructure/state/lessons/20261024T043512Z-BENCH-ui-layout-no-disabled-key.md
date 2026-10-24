@@ -1,0 +1,2 @@
+rimworld/get_ui_layout has no 'disabled' key on widgets, so a greyed-out (disabled) settings switch cannot be read from the layout; prove greying by a capture plus 'click changes nothing' (snapshot the settings fields before and after). Also: the HoseProbe 'pawn:<id>=tp' and 'colonists' commands take the numeric thingIDNumber (107458), not list_pawns' 'Human107458' id, which answers 'no such pawn on this map'. Found by bridge run 1 driver 6, 2026-10-23.
+home: rimbridge
