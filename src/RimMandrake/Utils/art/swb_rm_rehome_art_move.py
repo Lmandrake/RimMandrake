@@ -28,8 +28,8 @@ import artledger as L  # noqa: E402
 OWNER_SAID = ("Yes, it appears that a lot of alpha animal ports got classified as Star Wars. We should move all of "
               "those. Durrok and Mullgoth and Vura do need moving out of Star Wars, yes.")
 # batch 4 rests on the general sentence only (the creature list in OWNER_SAID is batch 1's)
-OWNER_SAID_BY_BATCH = {"4": "Yes, it appears that a lot of alpha animal ports got classified as Star Wars. We should "
-                            "move all of those."}
+_GENERAL = "Yes, it appears that a lot of alpha animal ports got classified as Star Wars. We should move all of those."
+OWNER_SAID_BY_BATCH = {"4": _GENERAL, "5": _GENERAL}
 SRC = REPO / "src/RimStarWars/SWBestiary/Textures"
 REASON = "script:src/RimMandrake/Utils/art/swb_rm_rehome_art_move.py"
 ANIMAL = "Things/Pawn/Animal"
@@ -50,6 +50,8 @@ BATCHES = {
     # run 3 batch 4 (SWB_INVENTED_MIGRATE_TWENTY_LEFT): our own invented livestock (Q11a). The sand stalker stays:
     # it wears the Skarnix picture he sent back for redo (df1fd5ceaa9a), which the ledger will not copy.
     "4": [(f"{ANIMAL}/Karrask", "Stillsand", f"{ANIMAL}/RM_Karrask")],
+    # batch 5: the tellurox, home RM tier by owner card 2026-10-24 09:16 PDT ("Tellurox home → RM tier, lore removed")
+    "5": [(f"{ANIMAL}/Tellurox", "SleepingIce", f"{ANIMAL}/RM_Tellurox")],
 }
 
 

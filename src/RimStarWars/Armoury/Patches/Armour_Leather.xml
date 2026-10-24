@@ -1341,14 +1341,14 @@
        true whichever copy of a co-declared def the load ends up holding. -->
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_TelluroxShell"]</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_TelluroxShell"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
-        <!-- RSW_TelluroxShell : baseline hide -->
+        <!-- RM_TelluroxShell : baseline hide -->
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RSW_TelluroxShell"]/stuffProps/statFactors</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_TelluroxShell"]/stuffProps/statFactors</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RSW_TelluroxShell"]/stuffProps/statFactors</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_TelluroxShell"]/stuffProps/statFactors</xpath>
             <value>
             <statFactors>
               <ArmorRating_Sharp>1.20</ArmorRating_Sharp>
@@ -1360,7 +1360,7 @@
             </value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RSW_TelluroxShell"]/stuffProps</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_TelluroxShell"]/stuffProps</xpath>
             <value>
             <statFactors>
               <ArmorRating_Sharp>1.20</ArmorRating_Sharp>
