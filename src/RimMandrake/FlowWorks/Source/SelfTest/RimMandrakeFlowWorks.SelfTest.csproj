@@ -64,6 +64,9 @@
     <Compile Include="..\Superdeep\RM_FlowDoorFacingMath.cs" />
     <Compile Include="..\Superdeep\RM_LadderWallMath.cs" />
     <Compile Include="LadderWallChecks.cs" />
+    <Compile Include="..\Superdeep\RM_SpikeDrawMath.cs" />
+    <Compile Include="..\Superdeep\RM_SpikeStakes.cs" />
+    <Compile Include="SpikeDrawChecks.cs" />
     <Compile Include="..\Superdeep\RM_PitAccessMath.cs" />
     <Compile Include="PitAccessChecks.cs" />
     <Compile Include="..\Superdeep\RM_WallClimbMath.cs" />

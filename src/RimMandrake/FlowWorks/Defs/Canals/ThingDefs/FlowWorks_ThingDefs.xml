@@ -267,7 +267,12 @@
     <defName>RM_Spikes</defName>
     <label>pit spikes</label>
     <description>Sharpened stakes driven into a pit floor. Whoever falls, is pushed or jumps into this cell lands on them: several deep stab wounds, worse for bigger creatures, armour still counts. Walking up to the edge, or moving along the pit floor, is safe. Can only be built at the foot of a sheer drop of 2 m or more (a mod setting), at any depth.</description>
-    <thingClass>Building</thingClass>
+    <!-- PIT_SPIKES_FIX_OVER_WALL_AND_SUBMERGE (owner 2026-10-24: "They should not be showing drawn over the paler walls ...
+         They should be shown as submerged rapidly"): Building_RM_Spikes lays this sprite's own stakes on the floor the
+         walls leave visible and fades them under water (gone at 1 m); RealtimeOnly because the fill changes without a
+         map-mesh rebuild. The graphic below stays the source of the stakes, the blueprint and the fallback. -->
+    <thingClass>RimMandrake.FlowWorks.Building_RM_Spikes</thingClass>
+    <drawerType>RealtimeOnly</drawerType>
     <graphicData>
       <!-- PIT_SPIKES_REDRAW_SPOKES_NOT_LOGS (owner 2026-10-21, sheet spikes_ladders_redraw: "Accept B, C, D as random
            pool variants"): a folder of three spoke clusters; Graphic_Random picks per thing by thingIDNumber % 3,

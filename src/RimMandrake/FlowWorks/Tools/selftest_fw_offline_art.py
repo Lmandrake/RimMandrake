@@ -31,6 +31,12 @@ Each check must FAIL on the art he rejected (the shipped code, emulated as BEFOR
     ladder_south_footprint        FAIL on the shipped south stub, PASS installed; can-fail: one nub only
     both can-fail on a blank image
     pinned                        installed N/S == portable_from_ground.north()/south() pixel for pixel
+  pit spikes, a 4 m pit with a 2 m shelf and a 0..2 m water series (PIT_SPIKES_FIX_OVER_WALL_AND_SUBMERGE, fw_scenes_spikes):
+    spikes_over_wall    FAIL on the shipped whole-cell sprite, PASS on Building_RM_Spikes' layout; also PASS with the
+                        outline off; with the faces off it REFUSES (no wall mask), the no-walls can-fail; can-fail: no spikes
+    spikes_submerged    FAIL shipped (full strength under 2 m), PASS after; can-fail: a scene with no deep cell
+    parity              the Python layout/hash mirror == SpikeDrawChecks' fixture numbers; RM_SpikeStakes.cs is current
+                        (art_source/Spikes/stakes.py --check)
 """
 # selftest-timeout: 400
 import re
@@ -43,6 +49,7 @@ import fw_compositor as fc  # noqa: E402
 import fw_offline_checks as ck  # noqa: E402
 import fw_scenes_pipejoins as sp  # noqa: E402
 import fw_scenes_sprinkler as ss  # noqa: E402
+import fw_scenes_spikes as spk  # noqa: E402
 import selftest_pipe_seat as ps  # noqa: E402
 sys.path.insert(0, str(HERE.parent / "art_source" / "Sprinkler"))
 import squat_heads  # noqa: E402
@@ -229,6 +236,33 @@ def ladder():
     want(not ok and d.startswith("1 nubs"), "ladder south can-fail: one centred nub, the nub count is what fails (%s)" % d)
 
 
+def spikes():
+    before = spk.render(spk.check_pit(), "before", P=PX)
+    after = spk.render(spk.check_pit(), "after", P=PX)
+    for name, check in (("spikes_over_wall", spk.spikes_over_wall), ("spikes_submerged", spk.spikes_submerged)):
+        ok, d = check(before)
+        want(not ok, "%s FAILS on the shipped sprite (%s)" % (name, d))
+        ok, d = check(after)
+        want(ok, "%s passes after (%s)" % (name, d))
+    for faces, outline in ((True, False), (False, False)):
+        ok, d = spk.spikes_over_wall(spk.render(spk.check_pit(), "after", P=PX, faces=faces, outline=outline))
+        # faces off: the walls layer draws nothing, so no mask; the check must refuse rather than pass vacuously
+        want(ok if faces else (not ok and "no wall" in d), "spikes_over_wall faces=%s outline=%s (%s)" % (faces, outline, d))
+    flat = spk.Pit([[0, 0, 0], [0, 8, 0], [0, 0, 0]], spikes=[])
+    ok, d = spk.spikes_over_wall(spk.render(flat, "after", P=PX))
+    want(not ok and d == "no spikes in the scene", "spikes_over_wall can-fail: no spikes (%s)" % d)
+    dry = spk.Pit([[0, 0, 0], [0, 8, 0], [0, 0, 0]], [[0] * 3, [0, 1, 0], [0] * 3], spikes=[(1, 1)])
+    ok, d = spk.spikes_submerged(spk.render(dry, "after", P=PX))
+    want(not ok and "needs" in d, "spikes_submerged can-fail: no dry or deep cell (%s)" % d)
+    hashes, (n, first, last) = spk.parity()
+    want(hashes == [0, 2836592880, 1249282371], "spikes parity: hash fixture %s" % hashes)
+    fx = ((0.461248, 0.321038, 0.046875, 0.152344, 0.183594, 0.589844, 0.230469, 0.742188),
+          (0.803638, 0.075, 0.050781, 0.175781, 0.878906, 0.191406, 0.929688, 0.367188))
+    want(n == 24 and all(abs(a - b) < 1e-4 for q, f in zip((first, last), fx) for a, b in zip(q, f)),
+         "spikes parity: layout fixture (24 stakes, first/last quad) == SpikeDrawChecks")
+    want(spk.STAKES.render() == spk.STAKES.OUT.read_text(), "RM_SpikeStakes.cs is what art_source/Spikes/stakes.py writes")
+
+
 if __name__ == "__main__":
     parity()
     pipe_joins()
@@ -236,5 +270,6 @@ if __name__ == "__main__":
     sprinkler()
     modern_blue()
     ladder()
+    spikes()
     print("%d FAIL" % len(fails) if fails else "ALL OK")
     sys.exit(1 if fails else 0)

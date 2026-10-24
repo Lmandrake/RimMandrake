@@ -2123,6 +2123,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             SpanBaseChecks.Run(Case);          // SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT: the span base under pit covers, DeckedAt (SpanBaseChecks.cs)
             PitCoverBeneathChecks.Run(Case);   // PIT_COVER_FIX_OCCUPANT_STAYS_BELOW: a lid laid over a pit occupant keeps her below (PitCoverBeneathChecks.cs)
             PitDrawHoldChecks.Run(Case);       // PIT_BOAR_FIX_SUNBATHES_ON_THE_WALL: the sink holds the DRAWN (tweened) centre above the near lip (PitDrawHoldChecks.cs)
+            SpikeDrawChecks.Run(Case);         // PIT_SPIKES_FIX_OVER_WALL_AND_SUBMERGE: stakes on the floor, never the walls; gone under 1 m (SpikeDrawChecks.cs)
             CoverFloorSurveyChecks.Run(Case);   // PIT_COVER_WIDEN_PLANKS_BEAR_BOOTS + DRILL_PLACEMENT_ENFORCE_NO_DRY_HOLES (owner cards 2026-10-22)
             DrawbridgeChecks.Run(Case);        // DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS: leaves, raise state, forced repath, never Collapse (DrawbridgeChecks.cs)
             LineCrossingChecks.Run(Case);      // PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE: line tag + P2 crossing table, style never changes permission (LineCrossingChecks.cs)

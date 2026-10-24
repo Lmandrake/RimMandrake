@@ -212,6 +212,8 @@
     <Compile Include="Superdeep\RM_RaiderTrenchMath.cs" />
     <Compile Include="Superdeep\RM_RaiderTrench.cs" />
     <Compile Include="Superdeep\RM_Spikes.cs" />
+    <Compile Include="Superdeep\RM_SpikeDrawMath.cs" />
+    <Compile Include="Superdeep\RM_SpikeStakes.cs" />
     <Compile Include="Superdeep\RM_FallRails.cs" />
     <Compile Include="Superdeep\RM_PitDepthDraw.cs" />
     <Compile Include="RM_PitDrawMath.cs" />
