@@ -5,6 +5,7 @@
     python3 fauna_drive.py candidates <DEF>... --round N --out <dir>      # done arteval_<DEF>_rN_* renders -> specs
     python3 fauna_drive.py install <DEF> --round N                        # accepted candidate -> art.py install
     python3 fauna_drive.py reset <DEF>... --source-run <run> --by-card "<q -> pick>"   # fresh round series (owner's call)
+    python3 fauna_drive.py stop <DEF>... --why "<he kept/picked its art>"         # end the series: rows/candidates/install refuse
     python3 fauna_drive.py owner-prompt <DEF> --text "<his words>" --owner-said "<his words>"  # his prompt for DEF
     python3 fauna_drive.py prompts [<DEF>...]                             # owner prompts found, and where from
 
@@ -207,8 +208,9 @@ def cmd_install(a):
 
     Gates (all must hold): the candidate's pipeline decision is ACCEPT; the head-to-head compare says B; and when any
     installed file is owner-KEPT the first pass must have been REALLY_BAD (the owner's card 2026-10-23 06:42 says "kept
-    art JUDGED REALLY BAD ... redraw on its own, show me after") — then the install carries that card and the revert
-    (old kept sha) is logged in infrastructure/state/art_eval/fauna_installs.jsonl."""
+    art JUDGED REALLY BAD ... redraw on its own, show me after") and no keep may be newer than that judgement (he
+    looked again and kept it: his newer word) — then the install carries that card and the revert (old kept sha) is
+    logged in infrastructure/state/art_eval/fauna_installs.jsonl. A stopped series installs nothing."""
     import shutil
     if RS.stopped(a.defname):
         print(f"{a.defname}: fresh series STOPPED ({RS.stopped(a.defname)}) - not installed")
@@ -233,17 +235,25 @@ def cmd_install(a):
         print(f"{a.defname}: head-to-head says {cmp.get('winner')} (install_b={cmp.get('install_b')}) - not installed")
         return 3
     idx = AL.cached_index()
-    files, anykept = [], False
+    files, anykept, newer = [], False, []
     for f in ("south", "east", "north"):
         old = spec["images"].get(f)
         if old:
             sha = AL.sha256_file(Path(old))
-            k = bool(idx.protected(sha))
+            keeps = idx.protected(sha)
+            k = bool(keeps)
             anykept |= k
+            newer += RS.keeps_after(keeps, (first or {}).get("at"))
             mod_rel, rel = old.split("/src/", 1)[1].split("/Textures/", 1)
             files.append({"face": f, "mod": mod_rel, "rel": rel, "old_sha": sha, "kept": k})
-    if anykept and first["opus"]["band"] != "REALLY_BAD":
-        print(f"{a.defname}: owner-kept art, first pass band {first['opus']['band']} (not REALLY_BAD) - flagged, not replaced")
+    band = ((first or {}).get("opus") or {}).get("band")
+    if anykept and band != "REALLY_BAD":
+        print(f"{a.defname}: owner-kept art, first pass band {band} (not REALLY_BAD) - flagged, not replaced")
+        return 3
+    if newer:
+        # the kept-art card covers the keep the REALLY_BAD judgement saw; a keep he made after it is his newer word
+        print(f"{a.defname}: owner keep(s) {sorted({k['id'] for k in newer})} made after the first-pass judgement "
+              f"({first and first.get('at')}) - his newer word, not replaced")
         return 3
     dest = ROOT / "Transient" / "fauna_regen" / a.defname
     dest.mkdir(parents=True, exist_ok=True)

@@ -55,6 +55,16 @@ def main():
         RS.add_reset("D", "fauna_x_00", {"by_card": "q → a"}, path=rp, now="2026-10-26T07:00:00-07:00")
         check("a newer reset clears the stop", not RS.stopped("D", RS.resets(rp)) and RS.tag("D", 1, RS.resets(rp)) == "s3r1")
 
+        # install gate: the 2026-10-23 kept-art card covers keeps the REALLY_BAD judgement saw, never a keep he made
+        # AFTER it (he looked again and kept it); a keep with no time is treated as newer (refuse, never overwrite)
+        judged = "2026-10-23T10:00:00-07:00"
+        old_k = {"id": "k1", "ts": "2026-10-20T10:00:00Z"}
+        new_k = {"id": "k2", "ts": "2026-10-24T01:00:00Z"}
+        check("keep older than the judgement: card applies", RS.keeps_after([old_k], judged) == [])
+        check("keep newer than the judgement: refused", [k["id"] for k in RS.keeps_after([old_k, new_k], judged)] == ["k2"])
+        check("keep with no time: refused", [k["id"] for k in RS.keeps_after([{"id": "k3"}], judged)] == ["k3"])
+        check("no judgement time: every keep refuses", len(RS.keeps_after([old_k], None)) == 1)
+
         # owner prompts: sheet note and jsonl, newest wins; prefill (empty) notes ignored
         root = td / "repo"
         sd = root / "Transient/biome_ffar"

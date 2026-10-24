@@ -92,6 +92,19 @@ def add_stop(defname: str, prov: dict, path: Path = RESETS, now: str | None = No
     return rec
 
 
+def keeps_after(keeps: list, judged_at) -> list:
+    """The owner keeps made AFTER the first-pass judgement at JUDGED_AT (or with no time, or no judgement time): the
+    kept-art card (2026-10-23 06:42, "kept art JUDGED REALLY BAD ... redraw") covers the keep that judgement saw, never
+    one he made after it — `fauna_drive install` refuses those rather than overwrite his newer word."""
+    j = _instant(judged_at) if judged_at else 0.0
+    out = []
+    for k in keeps:
+        t = _instant(k.get("at") or k.get("ts"))     # his click (`at`) when recorded, else the ledger stamp
+        if not j or not t or t > j:
+            out.append(k)
+    return out
+
+
 def series(defname: str, rs: dict | None = None) -> int:
     r = (resets() if rs is None else rs).get(defname)
     return int(r["series"]) if r else 0
