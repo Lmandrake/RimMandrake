@@ -557,3 +557,7 @@ invisible to the grid.
 9. **Another mod/player edits a held lamp:** *"It is released. In Utinni this displeases gods."* - release the lamp, keep the edit; aboard the Utinni the edit angers the gods (new rule, to be written into the definition).
 10. **Reload:** restart gently from the start of the pattern (so no clock offset or gesture state is saved; a long-uptime double clock is not required for reload).
 11. **Earlier same day:** no colour-blind/photosensitivity planning; maximise aesthetics.
+12. **Who sees the Nine (god-patterns Q1):** *"Only works on gravships in Utinni. That's the lore."* - the Nine's patterns exist only on gravships in the Utinni campaign. Off the Utinni there are no gods: the neutral, unnamed beautiful patterns (player-selectable) are all there is. *(My reading; it supersedes decision 2's "player settings for the Nine" - the player-settings surface now covers the neutral patterns only.)*
+13. **Hot colours:** keep Sh'kaar's hottest entry visibly gold, Rekko leans bronze; no near-white shimmer exception.
+14. **Dark gods:** Full is Full (truly dark at Full), Gentle keeps a floor.
+15. **Boundary:** authored pairings for canon pairs (Ishko/Ta'Baa, Sh'kaar hunting Ishko), the leader's shape elsewhere.
