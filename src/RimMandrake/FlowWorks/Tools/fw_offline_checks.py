@@ -228,9 +228,12 @@ def head_seat_on_pipe(scene):
     still passes (the window is that wide because an end cell's pipe stops AT the seat). It does NOT prove the seat is on
     the axis; the top-down head redraw (SPRINKLER_HEAD_REDRAW_SEEN_FROM_ABOVE) owes a centreline-distance check. It reads no
     head pixel: that the art's seat row lands on the seat is the drawOffset parity in selftest_fw_offline_art.py."""
+    heads = _heads(scene)
+    if not heads:
+        return False, "no head drawn"
     pipe = np.asarray(scene.render(only=lambda m: m.get("kind") == "pipe"))[..., 3]
     off = []
-    for m in _heads(scene):
+    for m in heads:
         x, y = scene.to_px(*m["seat"])
         r = max(1, round(BORE / 2 * scene.P))          # within half a bore: an end cell's pipe stops AT the seat
         win = pipe[max(0, round(y) - r):round(y) + r + 1, max(0, round(x) - r):round(x) + r + 1]
