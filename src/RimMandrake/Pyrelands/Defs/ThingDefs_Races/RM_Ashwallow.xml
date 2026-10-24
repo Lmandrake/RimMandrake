@@ -43,7 +43,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Ashwallow</defName>
     <label>ashwallow</label>
-    <description>A low, broad grazer of the burning savanna, plated across the shoulders in cracked grey hide the same colour as spent ash. Its face is wide and flat as a spade, the jaw lined with blunt digging teeth that rake the root-mat loose, and its legs fold inward along the body so that, half-buried, it closes into a smooth ash-grey dome. It works the quickgrass in the calm between burns, and the instant it reads a front coming — heat on the wind, the hiss climbing before the light does — it drops flat, digs in, curls its legs under, and goes still. The fire walks over it. It comes back up into the black once the ground has cooled, first into the fertilized ash and first to the regrowth sprint. It has no bite worth the name and nothing to hunt with; going to ground is the only trick it has, and it is enough.</description>
+    <description>A low, broad grazer with cracked ash-grey plates, a spade-shaped face and blunt teeth for digging up roots. Ahead of a fire it digs in and folds its legs beneath the body, sealing itself into a smooth dome. It emerges after the ground cools to feed on fresh regrowth.</description>
     <statBases>
       <MoveSpeed>3.7</MoveSpeed>
       <MarketValue>220</MarketValue>

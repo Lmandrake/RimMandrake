@@ -30,7 +30,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Orray</defName>
     <label>orray</label>
-    <description>Orrays were leathery-skinned reptilian quadrupeds native to the planet Geonosis. The orray had great strength and a quick gait; making it a popular pack animal when domesticated (especially on arid worlds). The orrays used their long snouts to root for insects in time of food scarcity.</description>
+    <description>A stout reptile from Geonosis, with thick grey-brown hide, short powerful legs and a long snout used to root out insects and crush eggs. Its strength and quick gait make it a useful mount and pack animal.</description>
     <statBases>
       <MoveSpeed>5.0</MoveSpeed>
       <MarketValue>600</MarketValue>

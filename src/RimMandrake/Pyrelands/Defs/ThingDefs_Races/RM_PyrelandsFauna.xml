@@ -205,7 +205,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_FurnaceBeast</defName>
     <label>furnace-beast</label>
-    <description>A migratory megafauna whose banded mineral hide stores heat like a stove — a slow thermal capacitor on legs. It charges in the Deep Desert, basking for weeks, then walks into the Pyrelands on purpose when the grass burns: it helps the fire along and drinks the heat of it, glowing brighter at the seams between its plates. Fully charged, a herd marches all the way out to the near terminator and eats everything in sight — it is one of the only things that will strip a thornvine patch — bleeding its banked warmth into the cold air for weeks before turning back to charge again. Fire cannot touch it. Keeping one is possible. It is very hard, it goes badly more often than it goes well, and it never stops being a fire hazard: a kept beast heats your barn for nothing, and every so often it sets the floor of that barn alight.</description>
+    <description>A migratory giant whose banded mineral hide stores desert heat and glows between the plates. It enters the Pyrelands to absorb the burns, then carries its warmth to colder grazing grounds. A kept furnace-beast can heat a barn for weeks, but may also set the floor alight.</description>
     <statBases>
       <MoveSpeed>3.6</MoveSpeed>
       <!-- PYRELANDS_ULLAI_GIANT_BUILD_1: the giant (bs 6). The classic stats are restored at startup when Mod
