@@ -611,10 +611,11 @@ namespace RimMandrake.AtmosphericBase
             List<Building> pool = LitPool(map, comp).ToList();
             Building ctl = pool.Count >= 2 ? pool[pool.Count - 1] : null;
             if (ctl != null) pool.RemoveAt(pool.Count - 1);
+            if (pool.Count > MaxProofFixtures) pool = pool.Take(MaxProofFixtures).ToList();   // spread is of the fixtures a series will hold, not the whole map
             var cells = new HashSet<long>();
             foreach (Building b in pool) cells.Add(((long)(b.Position.x / CellBlock) << 32) ^ (uint)(b.Position.z / CellBlock));
-            return "{\"fixtures\":[" + string.Join(",", pool.Take(MaxProofFixtures).Select(b => b.thingIDNumber.ToString(Inv)).ToArray())
-                 + "],\"lit\":" + System.Math.Min(pool.Count, MaxProofFixtures) + ",\"spread\":" + cells.Count + ",\"spread_block\":" + CellBlock
+            return "{\"fixtures\":[" + string.Join(",", pool.Select(b => b.thingIDNumber.ToString(Inv)).ToArray())
+                 + "],\"lit\":" + pool.Count + ",\"spread\":" + cells.Count + ",\"spread_block\":" + CellBlock
                  + ",\"untaken\":" + (ctl != null ? ctl.thingIDNumber.ToString(Inv) : "null") + "}";
         }
 
