@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
+  SWB_RM_FAUNA_DECIDE_HOME_LIKE_CHIKKA: a Jurassic-donor port, not a Star Wars creature; moved to the RM tier with defNames RSW_ -> RM_ (aliases in src/RimMandrake/LeaningScrub/Defs/Misc/RM_SWBRehome_Aliases.xml).
+  Owner 2026-10-24: "Yes, it appears that a lot of alpha animal ports got
+  classified as Star Wars. We should move all of those."
+  Moved here (batch 3) from src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Absorbed_Protosolpuga.xml.
+
   JURASSIC_RETIREMENT_ABSORPTION, 2026-09-05 - ABSORBED CONTENT, DO NOT DELETE.
 
   Source mod: Jurassic Rimworld - Dinosaurs Only (Continued),
@@ -10,10 +15,10 @@
   ideoligion or any other mod depends on it, and only the creatures that pass
   design/Jawa/worldbuilding/creature_recognizability_rule.md are worth keeping.
 
-  WHICH: survives the recognizability pass STRANGE: a flame-finned amphibian.
+  WHICH: survives the recognizability pass STRANGE: a small dark arthropod nobody can place.
 
   WHAT CHANGED from the donor def, and why - nothing else was touched:
-   * defName JRWDiplocaulus -> RSW_Diplocaulus, per design/NAMING_SCHEME_PLAN.md; the donor
+   * defName JRWProtosolpuga -> RSW_Protosolpuga (RM_Protosolpuga since 2026-10-24), per design/NAMING_SCHEME_PLAN.md; the donor
      names are left free so the two can coexist during the changeover.
    * ParentName AnimalDinoThingBase (the donor's own abstract, Dino_Base.xml) ->
      vanilla AnimalThingBase, with that abstract's two statBases inlined.
@@ -25,7 +30,7 @@
      comp class lives in the donor's ExtraButcheringProducts.dll and its product
      (DinoChitin) is a donor item. Keeping it would throw at load.
    * eggs repointed to the RSW_ egg items in
-     Defs/ThingDefs_Items/RSW_Absorbed_Eggs.xml (absorbed with the creatures, so
+     Defs/ThingDefs_Items/RM_Absorbed_Eggs.xml (absorbed with the creatures, so
      they still breed).
    * tradeTags CarnivoreDinosaur / HerbivoreDinosaur (donor trader tags, no trader
      left to read them) -> vanilla AnimalUncommon.
@@ -37,7 +42,7 @@
      here because the Jurassic group in that generated file was deleted with the
      mod. BoneAmount is NOT baked - it is a modded StatDef and belongs in the
      generated doctrine patch, not in a def.
-   * texPath Things/Pawn/Animal/Diplocaulus -> swanimals/absorbed/Diplocaulus/Diplocaulus; the art
+   * texPath Things/Pawn/Animal/Protosolpuga -> Things/Pawn/Animal/RM_Protosolpuga/RM_Protosolpuga; the art
      was pulled out of the donor's AssetBundle via
      observed/inventory/bundle_textures/ (extract_bundle_textures.py) and lives in
      this mod's Textures/. Dessicated graphics point at VANILLA corpses because the
@@ -45,54 +50,35 @@
 -->
 <Defs>
   <ThingDef ParentName="AnimalThingBase">
-    <defName>RSW_Diplocaulus</defName>
-    <label>Diplocaulus</label>
-    <description>-- > INGEN INTERNAL CASE FILE #03982-1877 [DIPLOCAULUS MAGNICORNUS] CODENAME: CAUL >332
+    <defName>RM_Protosolpuga</defName>
+    <label>Protosolpuga</label>
+    <description>-- > INGEN INTERNAL CASE FILE #03459-1913[PROTOSOLPUGA CARBONARIA] CODENAME: SUN-SPIDER >3246
 
-A unique lepospondyl amphibian that lived during the late carboniferous period, related to modern day amphibians such as newts, frogs and caecilians. It has a bowed head that allow it to reduce water drag when striking prey from beneath the currents, a bizarre skeletal structure that is essentially exclusive to this species.</description>
+An extinct genus of solifugae. They do not possess any venom or stinger, but utilise a powerful, pure-strength bite instead.</description>
     <statBases>
       <MeatAmount>210</MeatAmount>
       <LeatherAmount>30</LeatherAmount>
-      <MoveSpeed>4.5</MoveSpeed>
+      <MoveSpeed>6.0</MoveSpeed>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>
       <MarketValue>500</MarketValue>
       <Wildness>0.50</Wildness>
     </statBases>
     <tools>
       <li>
-        <label>left foot</label>
+        <label>setae</label>
         <capacities>
-          <li>Blunt</li>
+          <li>Cut</li>
         </capacities>
-        <power>3</power>
-        <cooldownTime>2</cooldownTime>
-        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
-      </li>
-      <li>
-        <label>right foot</label>
-        <capacities>
-          <li>Blunt</li>
-        </capacities>
-        <power>3</power>
-        <cooldownTime>2</cooldownTime>
-        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
-      </li>
-      <li>
-        <label>jaw</label>
-        <capacities>
-          <li>Bite</li>
-        </capacities>
-        <power>3</power>
-        <cooldownTime>2</cooldownTime>
-        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
-        <chanceFactor>0.7</chanceFactor>
+        <power>12</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>HeadClaw</linkedBodyPartsGroup>
       </li>
       <li>
         <label>head</label>
         <capacities>
           <li>Blunt</li>
         </capacities>
-        <power>3</power>
+        <power>7</power>
         <cooldownTime>2</cooldownTime>
         <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
         <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
@@ -101,8 +87,8 @@ A unique lepospondyl amphibian that lived during the late carboniferous period, 
     </tools>
     <comps>
       <li Class="CompProperties_EggLayer">
-        <eggFertilizedDef>RSW_DiplocaulusEggFertilized</eggFertilizedDef>
-        <eggUnfertilizedDef>RSW_DiplocaulusEggUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RM_ProtosolpugaEggFertilized</eggFertilizedDef>
+        <eggUnfertilizedDef>RM_ProtosolpugaEggUnFertilized</eggUnfertilizedDef>
         <eggFertilizationCountMax>1</eggFertilizationCountMax>
         <eggLayIntervalDays>14.0</eggLayIntervalDays>
         <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
@@ -113,18 +99,18 @@ A unique lepospondyl amphibian that lived during the late carboniferous period, 
       </li>
     </comps>
     <race>
-      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <body>BeetleLikeWithClaw</body>
       <baseHungerRate>0.5</baseHungerRate>
       <baseBodySize>1.5</baseBodySize>
       <baseHealthScale>2.0</baseHealthScale>
       <packAnimal>false</packAnimal>
-      <predator>false</predator>
-      <foodType>OmnivoreRoughAnimal</foodType>
-      <leatherDef>Leather_Lizard</leatherDef>
-      <gestationPeriodDays>15</gestationPeriodDays>
+      <predator>true</predator>
+      <foodType>CarnivoreAnimal</foodType>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <gestationPeriodDays>30</gestationPeriodDays>
       <trainability>Advanced</trainability>
       <manhunterOnTameFailChance>0.25</manhunterOnTameFailChance>
-      <manhunterOnDamageChance>0.05</manhunterOnDamageChance>
+      <manhunterOnDamageChance>0.25</manhunterOnDamageChance>
       <nuzzleMtbHours>120</nuzzleMtbHours>
       <lifeExpectancy>40</lifeExpectancy>
       <lifeStageAges>
@@ -139,21 +125,22 @@ A unique lepospondyl amphibian that lived during the late carboniferous period, 
         <li>
           <def>AnimalAdult</def>
           <minAge>3.0</minAge>
-          <soundWounded>Pawn_Iguana_Wounded</soundWounded>
-          <soundDeath>Pawn_Iguana_Death</soundDeath>
-          <soundCall>Pawn_Iguana_Call</soundCall>
-          <soundAngry>Pawn_Iguana_Angry</soundAngry>
+          <soundWounded>Pawn_Spelopede_Angry</soundWounded>
+          <soundDeath>Pawn_Spelopede_Death</soundDeath>
+          <soundCall>Pawn_Spelopede_Call</soundCall>
+          <soundAngry>Pawn_Spelopede_Angry</soundAngry>
         </li>
       </lifeStageAges>
       <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
       <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
       <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
       <wildBiomes>
+        <TemperateForest>0.05</TemperateForest>
+        <TemperateSwamp>0.075</TemperateSwamp>
+        <TropicalSwamp>0.075</TropicalSwamp>
         <AridShrubland>0.4</AridShrubland> <!-- Ash'karr cast restored animal-side; the biome-side entry in BiomeCast_Ashkarr.xml went with the retired mod -->
-        <TropicalRainforest>0.1</TropicalRainforest>
-        <TropicalSwamp>0.1</TropicalSwamp>
-        <TemperateForest>0.1</TemperateForest>
-        <TemperateSwamp>0.1</TemperateSwamp>
+        <Desert>0.1</Desert>
+        <ExtremeDesert>0.1</ExtremeDesert>
       </wildBiomes>
     </race>
     <tradeTags>
@@ -161,20 +148,20 @@ A unique lepospondyl amphibian that lived during the late carboniferous period, 
     </tradeTags>
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
-    <defName>RSW_Diplocaulus</defName>
-    <label>Diplocaulus</label>
-    <race>RSW_Diplocaulus</race>
-    <combatPower>25</combatPower>
+    <defName>RM_Protosolpuga</defName>
+    <label>Protosolpuga</label>
+    <race>RM_Protosolpuga</race>
+    <combatPower>35</combatPower>
     <wildGroupSize>
       <min>1</min>
-      <max>2</max>
+      <max>1</max>
     </wildGroupSize>
-    <ecoSystemWeight>1.5</ecoSystemWeight>
+    <ecoSystemWeight>0.2</ecoSystemWeight>
     <lifeStages>
       <li>
-        <label>Diplocaulus hatchling</label>
+        <label>Protosolpuga larvae</label>
         <bodyGraphicData>
-          <texPath>swanimals/absorbed/Diplocaulus/Diplocaulus</texPath>
+          <texPath>Things/Pawn/Animal/RM_Protosolpuga/RM_Protosolpuga</texPath>
           <drawSize>1.50</drawSize>
           <shadowData>
             <volume>(0.3, 0.3, 0.3)</volume>
@@ -182,35 +169,35 @@ A unique lepospondyl amphibian that lived during the late carboniferous period, 
           </shadowData>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Tortoise/Dessicated_Tortoise</texPath>
+          <texPath>Things/Pawn/Animal/Megascarab/Dessicated_Megascarab</texPath>
           <drawSize>1.0</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/absorbed/Diplocaulus/Diplocaulus</texPath>
-          <drawSize>1.75</drawSize>
+          <texPath>Things/Pawn/Animal/RM_Protosolpuga/RM_Protosolpuga</texPath>
+          <drawSize>2</drawSize>
           <shadowData>
             <volume>(0.3, 0.3, 0.3)</volume>
             <offset>(0,0,-0.2)</offset>
           </shadowData>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Tortoise/Dessicated_Tortoise</texPath>
+          <texPath>Things/Pawn/Animal/Megascarab/Dessicated_Megascarab</texPath>
           <drawSize>2.0</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/absorbed/Diplocaulus/Diplocaulus</texPath>
-          <drawSize>2</drawSize>
+          <texPath>Things/Pawn/Animal/RM_Protosolpuga/RM_Protosolpuga</texPath>
+          <drawSize>3.5</drawSize>
           <shadowData>
             <volume>(0.3, 0.3, 0.3)</volume>
             <offset>(0,0,-0.3)</offset>
           </shadowData>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Tortoise/Dessicated_Tortoise</texPath>
+          <texPath>Things/Pawn/Animal/Megascarab/Dessicated_Megascarab</texPath>
           <drawSize>2.0</drawSize>
         </dessicatedBodyGraphicData>
       </li>

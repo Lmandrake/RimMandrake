@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
+  SWB_RM_FAUNA_DECIDE_HOME_LIKE_CHIKKA: follows its egg into the RM tier.
+  Owner 2026-10-24: "Yes, it appears that a lot of alpha animal ports got
+  classified as Star Wars. We should move all of those."
+  Moved here (batch 3) from src/RimStarWars/SWBestiary/Patches/ProximityHatch/RSW_ProtovermesEgg_ProximityHatch.xml.
+
   EGG_PROXIMITY_HATCH_TRIGGER_1. Wires RimMandrake.ProximityHatch's generic
   engine comp (src/RimMandrake/ProximityHatch) onto one real shipping egg -
-  RSW_ProtovermesEggFertilized (Defs/ThingDefs_Items/RSW_Absorbed_Eggs.xml),
+  RM_ProtovermesEggFertilized (Defs/ThingDefs_Items/RM_Absorbed_Eggs.xml),
   which already carries vanilla CompProperties_Hatcher hatching
-  RSW_Protovermes. Not invented content: the egg and its hatcherPawn are
+  RM_Protovermes. Not invented content: the egg and its hatcherPawn are
   the JURASSIC_RETIREMENT_ABSORPTION content, unchanged.
 
   Protovermes was picked over the other seven absorbed eggs in this file
@@ -22,7 +27,7 @@
   below would try to resolve a type from an absent mod's assembly and
   discard this whole FILE the moment that mod is inactive. FindMod is the
   only real per-operation gate; without the engine mod this operation is
-  now a true no-op, and RSW_ProtovermesEggFertilized keeps hatching on its
+  now a true no-op, and RM_ProtovermesEggFertilized keeps hatching on its
   vanilla CompHatcher timer only, exactly as it does today.
 -->
 <Patch>
@@ -32,7 +37,7 @@
       <li>RimMandrake: Proximity Hatch</li>
     </mods>
     <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="RSW_ProtovermesEggFertilized"]/comps</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_ProtovermesEggFertilized"]/comps</xpath>
       <value>
         <li Class="RimMandrake.ProximityHatch.CompProperties_ProximityHatch">
           <!-- Close-range ambush, not a nest you can see coming from across
