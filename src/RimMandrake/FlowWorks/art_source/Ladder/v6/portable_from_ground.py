@@ -14,10 +14,11 @@ canvas at drawSize 1.5 = the SAME 256 px per cell, so the ground sprite is used 
          floor shadow (it would turn into a strip down one side); SHADOW adds the wall contact shadow instead.
   south: drawOffset z -0.25 -> the near rim is canvas row 256. Only the stringer tips show over the near wall
          (owner 2026-10-24, on v5: "only small nubs sticking up"): the top TIP_PX rows of the upright ladder, feet on the rim.
-  east/west CANDIDATES (shown beside GPT v2, not installed until he picks): the ground ladder leaning on the side wall,
-         tilted up toward the rim (east rim x 320), at TILT_A / TILT_B degrees. West mirrors east.
+  east/west: the ground ladder leaning on the side wall, tilted up toward the rim (east rim x 320). The sheet showed
+         TILTS a (30 deg) and b (55 deg) beside GPT v2; owner 2026-10-24 "portable ladder looks approved" with panel 3 =
+         tilt a taken (LADDER_PORTABLE_DECIDE_EAST_WEST_FACING), so PICK = "a" is installed. West mirrors east.
 
-    python3 portable_from_ground.py [out_dir]      # writes RM_LadderPortable_{north,south}.png + east/west candidates
+    python3 portable_from_ground.py [out_dir]      # writes RM_LadderPortable_{north,south,east,west}.png + both candidates
 """
 import sys
 from pathlib import Path
@@ -34,6 +35,7 @@ N_RIM, N_POKE = 128, 60          # far rim row; how far the top pokes past it (t
 S_RIM, TIP_PX = 256, 22          # near rim row; stringer-tip height shown over the near wall (0.086 cell)
 E_RIM = 320                      # east rim column (v5/portable_gpt.py: face band x ~262..320)
 TILTS = {"a": 30, "b": 55}       # east candidates: degrees the ground ladder is raised toward the wall
+PICK = "a"                       # the installed east/west (owner-approved sheet, panel 3)
 SHADOW = (5, 4, 3, 0.30)         # dx, dy, blur, alpha: a soft contact shadow so the upright ladder sits on the wall
 
 
@@ -102,6 +104,7 @@ def build(out_dir=OUT):
         e = east(t)
         made["east_" + k] = e
         made["west_" + k] = e.transpose(Image.FLIP_LEFT_RIGHT)
+    made["east"], made["west"] = made["east_" + PICK], made["west_" + PICK]
     for f, im in made.items():
         im.save(out_dir / ("RM_LadderPortable_%s.png" % f))
     return made

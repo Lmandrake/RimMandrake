@@ -29,6 +29,10 @@ Portable ladder (LADDER_PORTABLE_REDRAW_NORTH_FROM_GROUND; his words: "the one l
   ladder_north_not_compressed  keeps the ground ladder's length/width and rung pitch/stringer span (0.92x..1.09x), >= 0.85 cell
                                long, top poking past the far rim and foot at the face/floor (placement, not just shape)
   ladder_south_footprint       two or more small nubs standing on the near rim: area, height and foot row bounded
+  ladder_east_leans_on_wall    (LADDER_PORTABLE_DECIDE_EAST_WEST_FACING; owner: "portable ladder looks approved", panel 3)
+                               the ground ladder at its own length/width, raised tilt +-4 deg with its wall (east) end up,
+                               that end poking 10..60 px past the east rim column
+  ladder_west_mirrors_east     west == east flipped left-right, pixel for pixel (it leans into its own wall)
 Each returns (ok, detail).
 """
 import math
@@ -309,3 +313,41 @@ def ladder_south_footprint(south, rim_row=256, max_cells2=0.035, max_h_cells=0.1
           and abs(off) <= centre_tol)
     return ok, "%d nubs, area %.3f cell2, height %.3f cell, foot row %d (rim %d), centre %+.0f px" % (
         nubs, area, h, ys.max() + 1, rim_row, off)
+
+
+def _ladder_axis(im):
+    """(major-axis angle deg, east end up positive; length px; width px; east-most column) of the opaque wood, by PCA."""
+    a = np.asarray(im.convert("RGBA"))[..., 3] >= LADDER_SOLID
+    ys, xs = np.nonzero(a)
+    if len(xs) < 50:
+        return None
+    u, v = xs - xs.mean(), ys.mean() - ys          # v: up is positive
+    w, vec = np.linalg.eigh(np.cov(np.vstack([u, v])))
+    mx, my = vec[:, 1]
+    ang = (math.degrees(math.atan2(my, mx)) + 90) % 180 - 90
+    along, across = u * mx + v * my, -u * my + v * mx
+    return ang, float(along.max() - along.min()), float(across.max() - across.min()), int(xs.max())
+
+
+def ladder_east_leans_on_wall(east, flat, tilt=30, tol_deg=4, keep=0.92, rim_col=320, poke=(10, 60)):
+    """The installed east is the ground ladder (flat = RM_LadderPortableFlat's wood) raised tilt degrees toward the east
+    wall: its major axis at tilt +- tol_deg with the wall end UP (a ladder tilted the other way leans away from its wall),
+    length and width each within keep..1/keep x the ground's (no squash), and its wall end poking poke[0]..poke[1] px past
+    the east rim column rim_col (it reaches over the rim like the north)."""
+    g, f = _ladder_axis(east), _ladder_axis(flat)
+    if g is None:
+        return False, "east is blank"
+    near = lambda a, b: keep * b <= a <= b / keep
+    over = g[3] + 1 - rim_col
+    ok = abs(g[0] - tilt) <= tol_deg and near(g[1], f[1]) and near(g[2], f[2]) and poke[0] <= over <= poke[1]
+    return ok, "tilt %+.1f deg (want %+d), length %.0f vs ground %.0f, width %.0f vs %.0f, %+d px past the east rim" % (
+        g[0], tilt, g[1], f[1], g[2], f[2], over)
+
+
+def ladder_west_mirrors_east(west, east):
+    """West is east flipped left-right, pixel for pixel."""
+    w, e = np.asarray(west.convert("RGBA")), np.asarray(east.convert("RGBA"))
+    if w.shape != e.shape:
+        return False, "sizes differ %s vs %s" % (w.shape, e.shape)
+    diff = int(np.sum(np.any(w != e[:, ::-1], axis=2)))
+    return diff == 0, "%d px differ from east mirrored" % diff
