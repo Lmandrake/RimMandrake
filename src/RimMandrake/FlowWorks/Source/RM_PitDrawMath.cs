@@ -123,6 +123,56 @@ namespace RimMandrake.FlowWorks
 			return bandBottom;
 		}
 
+		/// <summary>PIT_LIP_FIX_MUFFALO_OVERHANGS_RIM — half of vanilla's humanlike body mesh (1.5 x 1.5 cells). Measured in bridge
+		/// run 1's s8_pitlip_close.png: a colonist's feet are drawn 0.75 cells below the drawn centre.</summary>
+		public const float HumanlikeBodyHalf = 0.75f;
+
+		/// <summary>The near-lip cover's body-size estimate of half a sprite's extent, in cells: sqrt(bodySize) x 1.2, held to 0.6..2.4, halved.</summary>
+		public static float BodyEstimateHalf(float bodySize)
+		{
+			float s = (float)Math.Sqrt(Math.Max(bodySize, 0.2f)) * 1.2f;
+			return 0.5f * (s < 0.6f ? 0.6f : (s > 2.4f ? 2.4f : s));
+		}
+
+		/// <summary>PIT_LIP_FIX_MUFFALO_OVERHANGS_RIM — half the height the cover must span for a humanlike: the estimate (0.6 for a
+		/// colonist) stopped 0.15 above the feet, which showed below the cover (s8). Never less than the body mesh's half.</summary>
+		public static float HumanlikeHalfHeight(float bodySize)
+		{
+			return Math.Max(BodyEstimateHalf(bodySize), HumanlikeBodyHalf);
+		}
+
+		/// <summary>PROVISIONAL: a body's on-screen height feet to crown, in cells: a colonist's <see cref="HumanlikeFeetToHeadTop"/>
+		/// scaled by sqrt(bodySize) (a muffalo, 2.4: 1.55).</summary>
+		public static float BodyHeightCells(float bodySize)
+		{
+			return HumanlikeFeetToHeadTop * (float)Math.Sqrt(Math.Max(bodySize, 0.2f));
+		}
+
+		/// <summary>PIT_LIP_FIX_MUFFALO_OVERHANGS_RIM — whether square (<paramref name="x"/>,<paramref name="z"/>) is a SIDE bank of the
+		/// opening a pawn at depth <paramref name="d"/> is drawn in, column <paramref name="pawnX"/>: the square is shallower and the
+		/// pawn's own column is at least as deep on that row. Seen from above, x is not foreshortened, so the part of a wide body
+		/// (a muffalo on a corner square) that reaches over the west or east bank is below that bank's ground and hidden by it.
+		/// Rows past the far (north) rim are not side banks: there the sprite stands up in front of the far wall.</summary>
+		public static bool BesideOpening(int x, int z, int pawnX, int d, Func<int, int, int> seenDepth)
+		{
+			int s = seenDepth(x, z);
+			return d > 0 && s >= 0 && s < d && seenDepth(pawnX, z) >= d;
+		}
+
+		/// <summary>PIT_LIP_FIX_MUFFALO_OVERHANGS_RIM — the top of the band a side bank hides of a sprite spanning
+		/// [<paramref name="bottom"/>, <paramref name="top"/>]: the share of the body below ground, SinkFor(d) over its height
+		/// <paramref name="bodyHeight"/>, from the bottom up. A colonist at D4 or deeper, or a muffalo at D6, is wholly hidden.</summary>
+		public static float SideHiddenTop(float bottom, float top, int d, float sinkPerLevel, float bodyHeight)
+		{
+			if (d <= 0 || !(top > bottom))
+			{
+				return bottom;
+			}
+			float f = bodyHeight > 0f ? SinkFor(d, sinkPerLevel) / bodyHeight : 1f;
+			f = f < 0f ? 0f : (f > 1f ? 1f : f);
+			return bottom + (top - bottom) * f;
+		}
+
 		/// <summary>PIT_COVER_FIX_DROPS_THE_SUN_SHADOW — whether ground point (<paramref name="px"/>,<paramref name="pz"/>) lies in a
 		/// vanilla static sun shadow. SectionLayer_SunShadows gives each edifice cell (i,j) with staticSunShadowHeight h a flat quad
 		/// plus W/E/S skirts whose far vertices carry alpha h; its shader moves a vertex by alpha x _CastVect.xz. The union drawn is
