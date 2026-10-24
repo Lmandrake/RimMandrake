@@ -21,3 +21,12 @@ Rows where GPT says redo/cut and the owner has NO keep on record. Filed as a FIN
 - T022 (live) redo: The design works, but the reported approximately 47 native pixels per cell is insufficient for the 5.5-cell creature's intended zoom resolution.
 - T023 (artpipe) redo: Retains the undersampled side design; regenerate genuinely higher-resolution art for the giant draw size.
 
+
+## Per-row outcome (FOUNDRY, 2026-10-24, delegated: GPT art triage)
+Gate = regen_eligibility.Gate over every texPath of the def; pipeline = infrastructure/state/art_eval/runs/*/decisions.jsonl; PROTECTED = art.py status live slots. Queued directly: NONE (no redo slot is NONE/PLACEHOLDER/DONOR; dessicated slots that are DONOR are not what GPT flagged).
+
+| def | gate | protected slots | art-eval runs so far | outcome |
+|---|---|---|---|---|
+| RM_FireWasp | NONE,REFUSED_REGEN | 6 | {'REGEN@r1': 1} | ALREADY A CANDIDATE: judged by the art-eval pipeline (fauna_pyrelands_c, latest REGEN r1); no second intake. Regens follow the pipeline loop. |
+| RM_Flamefang | REFUSED_REGEN | 5 | {'REGEN@r1': 2} | ALREADY A CANDIDATE: judged by the art-eval pipeline (fauna_pyrelands_r1_02, latest REGEN r1); no second intake. Regens follow the pipeline loop. |
+| RM_FurnaceBeast | REFUSED_REGEN | 2 | {'REGEN@r1': 1, 'REGEN@r2': 1} | ALREADY A CANDIDATE: judged by the art-eval pipeline (fauna_pyrelands_r1_00, latest REGEN r2); no second intake. Regens follow the pipeline loop. |
