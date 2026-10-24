@@ -60,6 +60,34 @@ def row_line(r: dict) -> tuple[str, str]:
     return why, ctx
 
 
+REF_KEYS = ("south", "east", "north", "west", "single")
+
+
+def reference_map(recs: list) -> dict:
+    """{subject: [candidate files]} the sheet must show beside the row: the judged facings and every assembled / flight /
+    variants capture, read from the run's `source_files`. Candidates are usually NOT installed, so the installed-art
+    columns never show them; the composite `scale` / `siblings` / `facings` panels are not candidates."""
+    out = {}
+    for r in recs:
+        files = [f for k, f in (r.get("source_files") or {}).items()
+                 if k in REF_KEYS or re.match(r"(assembled|flight|variants)_\d+$", k)]
+        if files:
+            out[r["subject"]] = files
+    return out
+
+
+def file_sha(path: str) -> str | None:
+    import hashlib
+    p = Path(path)
+    return hashlib.sha256(p.read_bytes()).hexdigest() if p.is_file() else None
+
+
+def judged_on_row(r: dict, installed_shas: set, reference_shas: set) -> bool:
+    """True when a picture the pipeline judged is on the row: installed/found by name, or shown as a candidate column."""
+    judged = {v for k, v in (r.get("source_sha256") or {}).items() if k in REF_KEYS}
+    return not judged or bool(judged & (installed_shas | reference_shas))
+
+
 def build(run_id: str, name: str | None = None) -> Path:
     recs = load_run(run_id)
     name = name or "art_eval_shadow_" + re.sub(r"[^a-z0-9_]", "_", run_id.lower())
@@ -77,10 +105,14 @@ def build(run_id: str, name: str | None = None) -> Path:
             "(owner, 2026-10-23: <i>build human review sheets AFTER the process works for quick human feedback</i>). "
             "Each row shows its decision and the reviewers' blocking reasons; press KEEP or an OVERRIDE. Skipping a "
             "row changes nothing.</p>" % run_id)
+    refs = reference_map(recs)
+    reff = qdir / "shadow_references.json"
+    reff.write_text(json.dumps(refs, indent=1))
     jobs = [f"{r['artpipe_job']}={r['subject']}" for r in recs if r.get("artpipe_job")]
     cmd = [sys.executable, str(ART / "art_sheet.py"), "--subjects", *[r["subject"] for r in recs], "--name", name,
            "--label", f"Art-eval shadow check — {run_id}", "--lead", lead, "--question", str(qf),
-           "--reopen", *[r["subject"] for r in recs]] + (["--jobs", *jobs] if jobs else [])
+           "--reopen", *[r["subject"] for r in recs]] + (["--jobs", *jobs] if jobs else []) \
+        + (["--references", str(reff)] if refs else [])
     p = subprocess.run(cmd, cwd=str(ROOT), capture_output=True, text=True, timeout=900)
     (qdir / "shadow_build.log").write_text(p.stdout[-4000:] + "\n--- stderr ---\n" + p.stderr[-4000:])
     if p.returncode:
@@ -109,10 +141,10 @@ def write_prereview(sheet: Path, recs: list):
             row.update(verdict="FLAG", note="row not in the art-eval run: the pipeline did not judge it")
             continue
         why, _ = row_line(r)
-        judged = {v for k, v in (r.get("source_sha256") or {}).items() if k in ("south", "east", "north", "west", "single")}
-        if judged and not judged & shown.get(rid, set()):
+        ref_shas = {h for h in map(file_sha, reference_map([r]).get(rid, [])) if h}
+        if not judged_on_row(r, shown.get(rid, set()), ref_shas):
             row.update(verdict="FLAG", note="the picture the pipeline judged is NOT on this row (the sheet shows what is "
-                                            "installed / found by name); " + why)
+                                            "installed / found by name, and the candidate files); " + why)
             continue
         flag = r["decision"] in ("ESCALATE", "HOLD_ERROR", "HOLD_KEPT", "HOLD_INPUT") or r.get("replaces_kept")
         row.update(verdict="FLAG" if flag else "OK", note=why)

@@ -3586,7 +3586,7 @@ def load_question(path) -> dict:
 
 
 def subjects_census(name: str, defs, jobs=(), label: str | None = None, lead_html: str = "", reopen=(),
-                    question: dict | None = None, hide_sets=()) -> tuple[Path, str]:
+                    question: dict | None = None, hide_sets=(), references: dict | None = None) -> tuple[Path, str]:
     """Write Transient/biome_ffar/<name>.subjects.json: a one-entry census (key SUBJECTS_<name>) holding a row per def,
     plus a row per artpipe job's target_def carrying that job. `lead_html` (--lead) is the sheet's purpose paragraph:
     what he is judging and what skipping does; it is kept in the census, so refresh_sheets rebuilds keep it.
@@ -3604,6 +3604,9 @@ def subjects_census(name: str, defs, jobs=(), label: str | None = None, lead_htm
             raise SystemExit(f"artpipe job {j} names no target_def — bind it as --jobs {j}=<DefName>")
         by_def.setdefault(td, []).append(j)
     rows = [subject_row(R, d, js) for d, js in by_def.items()]
+    for _r in rows:                       # --references: candidate files that are installed nowhere, shown as read-only panels
+        if (references or {}).get(_r["key"]):
+            _r["reference_textures"] = list(references[_r["key"]])
     for _r in rows:                       # --reopen: his earlier ruling could not judge it; show the row open, not collapsed
         if _r["key"] in set(reopen):
             _r["reopen"] = True
@@ -3728,6 +3731,9 @@ def main(argv=None):
     ap.add_argument("--hide-sets", nargs="*", default=[], metavar="LABEL_SUBSTR",
                     help="leave sets whose label contains one of these off the sheet (e.g. regen_fw_thulvane); nothing is purged")
     ap.add_argument("--jobs", nargs="*", default=[], metavar="JOB", help="artpipe job ids; each joins its target_def's row; JOB=DEF binds a job with no target_def")
+    ap.add_argument("--references", metavar="FILE",
+                    help="with --subjects: JSON {def: [PNG path, ...]} - candidate pictures that are installed nowhere, shown "
+                         "read-only at true scale beside that def's row (art_eval shadow sheets)")
     ap.add_argument("--textures", metavar="MANIFEST",
                     help="a texture manifest (art C# draws with no def): one row per texture, sized by the code that draws it")
     ap.add_argument("--name", help="with --subjects/--jobs: the sheet's name (lower_snake); file <name>_sheet_<date>.html")
@@ -3765,7 +3771,8 @@ def main(argv=None):
         if not a.name:
             ap.error("--subjects/--jobs need --name")
         cpath, key = subjects_census(a.name, a.subjects, a.jobs, a.label, a.lead, a.reopen,
-                                     load_question(a.question) if a.question else None, a.hide_sets)
+                                     load_question(a.question) if a.question else None, a.hide_sets,
+                                     json.loads(Path(a.references).read_text()) if a.references else None)
         a.biome, a.census = [key], str(cpath)
     HIDE_CLI[:] = list(a.hide_sets)
     if a.biome:

@@ -143,6 +143,19 @@ def canon_for(subject: str) -> dict | None:
     return None
 
 
+def source_files(spec: dict) -> dict:
+    """{panel name: the file the pipeline judged} exactly as build_card names them (facings, single, scale, numbered sets)."""
+    imgs = spec.get("images", {})
+    out = {f: imgs[f] for f in FACINGS if imgs.get(f)}
+    for one in ("single", "scale"):
+        if imgs.get(one):
+            out[one] = imgs[one]
+    for many in ("assembled", "flight", "variants"):
+        for n, p in enumerate(imgs.get(many) or [], 1):
+            out[f"{many}_{n}"] = p
+    return out
+
+
 def build_card(spec: dict, out: Path) -> dict:
     """Write the card directory for `spec` into `out` and return card.json's content."""
     if not spec.get("canon") and canon_for(spec.get("subject", "").split("__")[0]):
