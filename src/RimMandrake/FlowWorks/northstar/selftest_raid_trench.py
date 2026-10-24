@@ -83,5 +83,10 @@ chk(LW.census_verdict(ok_reads)[0] == "PASS", "census: the table read back PASS"
 chk(LW.census_verdict(dict(ok_reads, Muffalo=ok_reads["Cobra"]))[0] == "FAIL", "census: can-fail, a muffalo that may climb")
 chk(LW.census_verdict(dict(ok_reads, Cobra=None))[0] == "UNMEASURED", "census: an unread pawn UNMEASURED")
 chk(LW.pawn_num("Thing_Husky1234") == 1234 and LW.pawn_num(77) == 77 and LW.pawn_num(None) is None, "census: spawn id parse")
+_S = [(0, None, None, "Wait"), (30, 127, 125, "RM_ClimbOverWall"), (60, 129, 125, "Wait_Combat"), (90, 117, 110, "Wait_Combat")]
+chk(LW.first_crossing(_S, 128, (115, 135)) == ("PASS", _S[2]), "over wall: the FIRST east sample is the verdict, a later walk-off cannot hide it")
+chk(LW.first_crossing(_S[:2], 128, (115, 135))[0] == "FAIL", "over wall: can-fail, still on the ladder side")
+chk(LW.first_crossing([(30, 140, 140, "Goto")], 128, (115, 135))[0] == "FAIL", "over wall: east but outside the wall's z span (walked round) is not a crossing")
+chk(LW.first_crossing(_S[:1], 128, (115, 135))[0] == "UNMEASURED", "over wall: no position read UNMEASURED")
 print("selftest_raid_trench: %s" % ("FAIL" if bad else "ok"))
 sys.exit(1 if bad else 0)
