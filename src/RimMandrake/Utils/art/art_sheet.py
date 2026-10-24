@@ -3722,7 +3722,8 @@ def standin_col(sd: dict) -> dict:
 def textures_census(name: str, manifest: Path, label: str | None = None) -> tuple[Path, str]:
     """A census from a TEXTURE manifest: art C# draws with no def naming it (a mod's cords, decals, overlays).
     Manifest {"rows": [{key, label, part, look, variant, section, resources: [texPath], former: [old texPath],
-    size: {drawSize, footprint, source}, render_match?, standin?, reference_textures?}], "lead_html"?, "ground_terrain"?}.
+    size: {drawSize, footprint, source}, render_match?, standin?, reference_textures?, reopen?}], "lead_html"?, "ground_terrain"?}.
+    reopen: true = show the row although he already ruled every option (a staged redraw beside his KEPT art).
     reference_textures: read-only pictures beside the row (repo-relative PNG, or {path, size} at their own true size). standin =
     {res, label, source, faces: {facing: png}} — the picture the game draws today when the row's texture is an
     engine/vanilla one no ledger holds (Core's resources.assets): shown as that resource's IN GAME column. ground_terrain is the
@@ -3746,6 +3747,9 @@ def textures_census(name: str, manifest: Path, label: str | None = None) -> tupl
                                for k in by_part[(mr.get("section"), mr.get("part"))] if k != mr["key"]],
                      "artpipe_state_jobs": sorted(mr.get("jobs") or []), "render_match": mr.get("render_match"),
                      "standin": mr.get("standin"),
+                     # reopen: a row whose installed art he already ruled (KEPT) is shown again on purpose, because the
+                     # sheet asks him about a staged redraw (its reference_textures) that no ledger column holds
+                     "reopen": bool(mr.get("reopen")),
                      "reference_textures": mr.get("reference_textures") or [],
                      "runtimeSize": sz,
                      "runtimeDesc": {"def": mr["key"], "label": mr["label"],

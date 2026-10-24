@@ -24,7 +24,7 @@ man = {"rows": [
      "resources": ["Mod/New/Clamp"], "former": ["Mod/Old/Clamp", "Mod/Old/Other"],
      "size": {"drawSize": [1.5, 1.5], "footprint": [2, 2], "source": "X.cs:1 TapSize"}, "render_match": "scrapper"},
     {"key": "T_00_Clamp_1Industrial", "label": "clamp — Industrial", "part": "Clamp", "look": "Industrial", "section": "T",
-     "resources": ["Mod/New/Styles/Industrial/Clamp"], "size": {"drawSize": [0.32, 0.08], "source": "Y.cs:2"}}],
+     "resources": ["Mod/New/Styles/Industrial/Clamp"], "size": {"drawSize": [0.32, 0.08], "source": "Y.cs:2"}, "reopen": True}],
     "lead_html": "<p>LEAD</p>", "ground_terrain": "RM_FE_Ash_Deep"}
 with tempfile.TemporaryDirectory() as td:
     mp = Path(td) / "m.json"
@@ -44,6 +44,7 @@ with tempfile.TemporaryDirectory() as td:
     check([t["defName"] for t in r0["twins"]] == ["T_00_Clamp_1Industrial"], "same part linked across looks")
     check(r0["art"]["resources"][0]["former"] == ["Mod/Old/Clamp"], "former path kept only for the same file name")
     check(r0["render_match"] == "scrapper", "render filter carried")
+    check(r0["reopen"] is False and rows["T_00_Clamp_1Industrial"]["reopen"] is True, "manifest reopen carried (default off)")
     R = SP.Resolver()
     s = R.size(r0)
     check(s["status"] == "measured" and s["drawSize"] == [1.5, 1.5] and s["footprint"] == [2, 2]
