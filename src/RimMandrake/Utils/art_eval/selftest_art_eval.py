@@ -318,6 +318,18 @@ def main():
             jobs = RN.regen_jobs([dict(r, decision="REGEN", round=1, regen={"request": {"prompt": "p"}, "findings": []}) for r in recs], "two")
             check("regen job ids differ per candidate", len({j["id"] for j in jobs}) == 2, [j["id"] for j in jobs])
 
+        # --- regen prompts pass artpipe's per-facing filing gate (ART_EVAL_REGEN_FIX_FILING_GATE_REFUSES)
+        bad = ("A hound with grey fur. Keep the look consistent across all facings. Top-down-friendly silhouette. "
+               "Painterly style, transparent background.")
+        rr = dict(recs[0], decision="REGEN", round=1, module="creature", regen={"request": {"prompt": bad}, "findings": []})
+        rows = RN.regen_jobs([rr], "gate", neutralize=lambda p: (p, "noop"))   # a useless rewrite -> sentence-drop, real gate
+        check("regen prompt with 'all facings'/'top-down' passes the real gate", rows[0]["facings"] and not RN._gate_hits(rows[0]["prompt"])
+              and "grey fur" in rows[0]["prompt"] and "prompt_gate" in rows[0]["style_notes"], rows[0]["prompt"])
+        rows = RN.regen_jobs([rr], "gate", neutralize=lambda p: ("A hound with grey fur, transparent background.", "fake"))
+        check("a model rewrite that is gate-clean is used", rows[0]["prompt"].startswith("A hound with grey fur,"), rows[0]["prompt"])
+        check("a clean prompt is left alone", RN.gate_clean_prompt("A hound with grey fur.")[1] == "unchanged")
+        check("a prompt nothing can clean is flagged", RN.gate_clean_prompt("Top-down.", neutralize=lambda p: ("Top-down", "x"))[1] == "STILL_REFUSED")
+
         # --- file_regens no longer swallows a failed filing (ART_EVAL_HARDEN_FILE_REGENS_SILENT_FAILURE)
         class Done:
             def __init__(self, rc, err=""):
