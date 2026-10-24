@@ -228,3 +228,30 @@ Test environment: on RM_TheRot maps the guardian-grove plants (RM_AgelessCap, RM
 | 5.6 underpass | SUSPENSION_UNDERPASS A9 verified | - | - | - |
 | 5.7 titans | - | - | TITAN A5 (SITE: tier) | - |
 Filed: SPILL_FILTH_DIAGNOSE_TWO_OF_THREE, GRENADE_COVER_DIAGNOSE_TRENCH_LEAKS_BLAST (STOPs); QUIET_SITE_FIX_SPORE_GUARDIANS_STILL_BITE (test env); LIVE_SESSION_FIX_B1_NEEDS_PRISTINE_MAP, LIVE_SESSION_FIX_OUTRUNS_FOREGROUND_WINDOW, PROOF_ROWS_FIX_PASS_ON_EMPTY_SAMPLE (HARNESS). Notes: SESSION_HURT, CAUSEWAY. End: fresh AridShrubland map after B9, paused; bridge HELD by BENCH.
+
+## Driver 8 (BENCH, 2026-10-24 08:12Z on; deployed HEAD 2d2a8a4a0b, FlowWorks DLL c92662a1c1 sha256 1ae0d41840f9426e; 14-mod list, swap fw_gss_sitting)
+
+Evidence: `D:\ClaudeWork\rimmandrake\scratch\bench_live_20261024\`.
+
+### §6: 325 perf map (`pipe_levelling_perf_proof.py`), PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL A3
+
+| row | result | evidence |
+|---|---|---|
+| LEVEL_PERF_TICK_TIME (325, full layout) | UNMEASURED (MOD) | s6_perf.log: around lay #46 the main thread froze for about 9 min and the run was killed at 535 s; 2 calls were reconciled |
+| LEVEL_PERF_ALLOC (325, full layout) | UNMEASURED (MOD) | same run |
+| rehearsal, 250 map, 8 rigs (not A3) | msAvg 15.2 ms, msMax 44.2, alloc 8747.8 KB/cycle against a 1024 KB bar | s6_rehearsal.json |
+
+- The first attempt used a factionless Settlement map (Base_Faction, draw NRE storm), so its result is void. The working recipe is `colony_found {tile, faction:Player}`, then `world_tile_map_generate 325`, then `set_current_map`.
+- Microbenches on the quiet rehearsal map:
+  - Hose lays take 0.2-0.8 s at lengths up to 49 cells (maxLength 80), and fresh reels behave the same (laybench*.log).
+  - Tick time is 1-8 ms.
+  - No stall appeared with pond depth on or off (stallab.log, relayab.log).
+- The stalls cluster only in the staging-to-lay window (cs_rehearsal_seq.txt), so the cause is not lay length.
+- Filed: LEVEL_STAGING_DIAGNOSE_FREEZE_ON_BIG_MAP, LEVEL_ALLOC_SHRINK_EIGHTFOLD_OVER_BAR, TILEMAP_GENERATE_FIX_FACTIONLESS_PARENT and LEVEL_PERF_PROOF_SHRINK_TO_FIT_BUDGET.
+
+### Driver 8 §7 GREEN-MIN (BENCH, 2026-10-24) — MEASURED, RED
+- modcheck run 1 (09:06-09:27Z, 11 mods, DLL 7402f4e0): 90 PASS / 15 FAIL / 499 UNMEASURED -> `D:\Luke\dev\RimMandrake\Transient\modcheck\FlowWorks_20261024T092758Z.json`. Most UNMEASURED were the harness: modcheck under python.exe had no numpy/dotnet. Fixed in 30ef2f6b72 (offline rows + C# SelfTests run through WSL python3; 936 SelfTest cases, 0 FAIL). A hostile pirate arriving at 09:24 stopped safe_advance; the 12 live-plot FAILs are untriaged (possibly SITE).
+- validation_v2 --live --fresh-map (DLL 52068a66): 62 PASS / 1 FAIL. The FAIL was L2/O2: pipeStraightVariants and sprinklerSprayEffects were missing from the settings table. Fixed in 547600a437. Recorded at mod hash ef6861ef2870.
+- proof_hose --live: 54 PASS / 10 FAIL / 4 UNMEASURED. 9 are MX width FAILs on the stale GSS design_spec width bar (known since 2026-10-22; waiting on the owner's girth pick), plus CR2_trail_follows_walk. The first run's record was refused for missing env.running; fixed in da5bde380e. The rerun is recorded.
+- GRENADE_COVER root cause (offline, HARNESS): Bomb minDamageToFragment 15 splits 20 damage into k fragments. The trench pawn's 13.333 is 2 of 3 fragments of 6.667; the third was deflected or found no part. n=1 with random apparel. Noted on the item.
+- Owed: rerun modcheck; liquid_checks --only L5 --fresh-map (SPILL_FILTH); triage the 12 live FAILs; rimflow verify the §7 items.
