@@ -64,15 +64,18 @@ namespace RimMandrake.FlowWorks.SelfTest
             });
             Case("HoseClothoid tail re-laid onto a port keeps the head and meets the port straight", () =>
             {
-                // a hose running east that must couple into a port 1.5 cells north of its line, entering northwards
+                // a hose running east that must couple into a port 2 cells north of its line, entering northwards. The port sits
+                // where a 9-cell hose can reach it: at (8, 1.5) the end straight leaves 0.9 < R to turn in, so the shortest
+                // path within R dips south first and runs 6.74 + 1.98 + 0.6 = 9.32 cells (infeasible, measured failing since
+                // 07c6eeeeb4); at (7, 2) it is about 8.3, and the fit has 0.7 of slack to drape
                 var pts = Line(o, new V2(9, 0), 36);
-                List<V2> t = HoseClothoid.TailOnto(pts, new V2(8, 1.5), new V2(0, 1), 0.6, Kmax, 1.6, out int kept);
+                List<V2> t = HoseClothoid.TailOnto(pts, new V2(7, 2), new V2(0, 1), 0.6, Kmax, 1.6, out int kept);
                 if (t == null) throw new Exception("no window fits:" + HoseClothoid.TailWhy);
                 for (int i = 0; i < kept; i++) if (V2.Dist(t[i], pts[i]) > 1e-9) throw new Exception("kept sample " + i + " moved");
                 double len = Geo.Length(t);
                 if (Math.Abs(len - 9) > 0.01) throw new Exception($"length {len:0.000} vs 9 (kept {kept})");
                 var rep = HoseCurveMetrics.Measure(t, HoseCurveMetrics.EndSpec.Fitting(o, new V2(1, 0), 1.6, "start"),
-                    HoseCurveMetrics.EndSpec.Fitting(new V2(8, 1.5), new V2(0, -1), 0.6, "port"), Kmax, 9);
+                    HoseCurveMetrics.EndSpec.Fitting(new V2(7, 2), new V2(0, -1), 0.6, "port"), Kmax, 9);
                 if (!rep.Ok) throw new Exception("kept " + kept + " ruler: " + rep.Line());
             });
             Case("HoseClothoid mate: two slack hoses meeting at a right angle couple keeping their lengths and start leads", () =>

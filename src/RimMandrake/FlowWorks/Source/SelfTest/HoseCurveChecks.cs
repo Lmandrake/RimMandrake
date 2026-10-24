@@ -290,6 +290,40 @@ namespace RimMandrake.FlowWorks.SelfTest
             }
         }
 
+        /// <summary>Rows owed to HOSE_SHORT_SPAN_DECIDE_NO_CURVE (design sections 6 "Step 4" and 7): no G2 curve fits these
+        /// under today's leads, and they fail until the owner rules. Matched by case-name prefix.</summary>
+        internal static readonly string[] Owed =
+        {
+            "HoseCurve hose_hard_bends/short/", "HoseCurve hose_hard_fittings/tankW/", "HoseCurve hose_hard_fittings/mateA/",
+            "HoseCurve hose_hard_fittings/mateB/", "HoseCurve splice hose_hard_fittings/",
+        };
+        /// <summary>Rows that must pass (MEASURED 2026-10-24, step 5: 39 of 59). Raise it when a row starts passing; never lower it.</summary>
+        internal const int Floor = 39, Rows = 59;
+
+        /// <summary>The default run's guard: <see cref="Run"/> over the hard stations, collected into one case. The case fails
+        /// when fewer than <see cref="Floor"/> rows pass, when a row outside <see cref="Owed"/> fails, or when the row count is
+        /// not <see cref="Rows"/> (the instrument went blind or a station was added without moving the floor).</summary>
+        internal static void Guard(Action<string, Action> Case)
+        {
+            var pass = new List<string>();
+            var fail = new List<(string name, string msg)>();
+            Run((name, fn) =>
+            {
+                try { fn(); pass.Add(name); }
+                catch (Exception ex) { fail.Add((name, ex.Message)); }
+            });
+            Case($"HoseCurve_ruler_holds_its_floor_over_the_hard_stations ({pass.Count}/{pass.Count + fail.Count}, floor {Floor})", () =>
+            {
+                var stray = fail.Where(f => !Owed.Any(o => f.name.StartsWith(o))).ToList();
+                if (stray.Count > 0)
+                    throw new Exception(stray.Count + " row(s) outside the owed set fail: "
+                        + string.Join(" | ", stray.Take(3).Select(f => f.name + ": " + (f.msg.Length > 160 ? f.msg.Substring(0, 160) : f.msg))));
+                if (pass.Count + fail.Count != Rows) throw new Exception($"{pass.Count + fail.Count} rows, expected {Rows}");
+                if (pass.Count < Floor) throw new Exception($"{pass.Count} rows pass, floor {Floor}");
+                if (pass.Count > Floor) Console.WriteLine($"        note: {pass.Count} rows pass, above the floor {Floor}: raise HoseCurveChecks.Floor");
+            });
+        }
+
         /// <summary>Every case's numbers, one line each (the before/after record of design section 6).</summary>
         internal static void Report(string path)
         {
