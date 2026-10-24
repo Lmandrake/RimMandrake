@@ -22,6 +22,7 @@ How faithful the render is to the game's inputs:
 
 usage:  python3 world_water_variants.py gen [--out DIR]      faces, scenes, stats.json, prereview contact strips
         python3 world_water_variants.py gen2|sheet2 [--out DIR]   round 2 (Twilight stained glass, still dark Chill); DIR gets _r2
+        python3 world_water_variants.py gen3|sheet3|faces [--out DIR]  round 3 (panes quartered, Chill abyss; faces = the 512 px files to install); DIR gets _r3
         python3 world_water_variants.py sheet [--out DIR]    the owner's review page in Transient/ (keeps his decisions file)
 DIR defaults to <agent storage>/rimmandrake/scratch/worldwater_variants.  Installs nothing.
 """
@@ -447,12 +448,16 @@ def _palette(sea_hex):
     return [np.array(c, float) * (1 - SINK) + b * SINK for c in PRIMARY.values()]
 
 
-def glass_tex(style, sea_hex, seed=7):
+def glass_tex(style, sea_hex, seed=7, scale=1, info=None, rim=1.0):
     """(rgb N x N x 3, alpha N x N) of a seamless stained-glass layer; one texture repeat covers GLASS_PERIOD tiles
-    (12.8 px per tile at N=512), so a 'large' patch of 6-15 tiles is 75-190 px."""
+    (12.8 px per tile at N=512), so a 'large' patch of 6-15 tiles is 75-190 px.
+    scale: linear shrink of the panes (round 3: 2 = a quarter of the area, four times as many; every length - cell size,
+    warp, rim, glow - divides by it, so the shape language stays the r2 one). scale=1 is byte-identical to round 2.
+    rim: the soft rim's width divides by scale * rim (rim > 1 = a thinner rim, so more of a small pane shows).
+    info: if a dict, gets 'idx' (pane id per px) and 'on' (lit per pane) for pane_metrics()."""
     pal = _palette(sea_hex); rng = np.random.default_rng(seed)
     rgb = np.zeros((N, N, 3)); alpha = np.zeros((N, N))
-    life = np.clip(0.80 + 0.20 * z(BW.gblur(band(4, 10, seed + 9), 1.5)), 0.5, 1.2)    # slow glow inside a patch
+    life = np.clip(0.80 + 0.20 * z(BW.gblur(band(4 * scale, 10 * scale, seed + 9), 1.5)), 0.5, 1.2)    # slow glow inside a patch
     if style == "bloom":                 # three independent slow fields, one per colour; a patch where its field leads
         f = np.stack([z(warped(1, 3, seed + 10 * k, 14)) for k in range(3)])
         lead = f.argmax(0); top = f.max(0)
@@ -461,10 +466,10 @@ def glass_tex(style, sea_hex, seed=7):
         rgb = np.stack([BW.gblur(rgb[..., c], 3) for c in range(3)], -1)              # colour meets colour softly
         return rgb, np.clip(a * life, 0, 1)
     # panes / jewel: Voronoi on the torus, its coordinates warped so cells grow organic, not polygonal
-    k = 6; cell = N / k
+    k = 6 * scale; cell = N / k
     seeds = np.array([((i + rng.uniform(0.15, 0.85)) * cell, (j + rng.uniform(0.15, 0.85)) * cell) for i in range(k) for j in range(k)])
     yy, xx = np.mgrid[0:N, 0:N].astype(float)
-    wx = xx + 26 * band(2, 4, seed + 3); wy = yy + 26 * band(2, 4, seed + 4)
+    wx = xx + 26 / scale * band(2 * scale, 4 * scale, seed + 3); wy = yy + 26 / scale * band(2 * scale, 4 * scale, seed + 4)
     d1 = np.full((N, N), np.inf); d2 = np.full((N, N), np.inf); idx = np.zeros((N, N), int)
     for n, (sx, sy) in enumerate(seeds):
         dx = np.abs(wx - sx) % N; dx = np.minimum(dx, N - dx); dy = np.abs(wy - sy) % N; dy = np.minimum(dy, N - dy)
@@ -479,10 +484,32 @@ def glass_tex(style, sea_hex, seed=7):
     colour = rng.permutation(np.arange(len(seeds)) % 3)                               # each primary gets a third
     for n in range(len(seeds)): rgb[idx == n] = pal[colour[n]]
     if style == "panes":                 # even panes, a soft rim
-        a = np.where(on[idx], 0.28 * _ss((edge - 3) / 14), 0.0) * life
+        a = np.where(on[idx], 0.28 * _ss((edge - 3 / (scale * rim)) / (14 / (scale * rim))), 0.0) * life
     else:                                # jewel: fewer, stronger, brightest at the heart, as if lit from below
-        a = np.where(on[idx], 0.38 * _ss((edge - 2) / 34), 0.0) * life
+        a = np.where(on[idx], 0.38 * _ss((edge - 2 / (scale * rim)) / (34 / (scale * rim))), 0.0) * life
+    if info is not None: info.update(idx=idx, on=on)
     return rgb, np.clip(a, 0, 1)
+
+
+def pane_metrics(a, info):
+    """pane sizes in HEX CELLS. The render's world-planar unit (Scene.X/Y, GLASS_PERIOD) is one hex centre-to-centre
+    distance (hexw = sqrt(3) x circumradius), and a hex covers sqrt(3)/2 of hexw^2, so one hex = 0.866 x (N/GLASS_PERIOD)^2 px.
+    cell = the whole Voronoi pane; lit = the part of a lit pane at >= half its own peak alpha (what the eye calls the pane)."""
+    px_per_hex = (N / GLASS_PERIOD) ** 2 * SQ3 / 2
+    idx, on = info["idx"], info["on"]
+    cells = np.bincount(idx.ravel(), minlength=len(on)) / px_per_hex
+    lit = []
+    for n in np.flatnonzero(on):
+        m = idx == n; pk = a[m].max()
+        if pk > 0: lit.append(float((a[m] >= 0.5 * pk).sum()) / px_per_hex)
+    if not lit: raise ValueError("pane_metrics: no lit pane in this texture (seed/present gave none)")
+    lit = np.array(lit); srt = np.sort(lit); cum = np.cumsum(srt) / srt.sum()
+    aw = float(srt[np.searchsorted(cum, 0.5)])   # half the lit glass sits in panes at least this big: what the eye sees
+    return {"panes per repeat": int(len(on)), "lit panes": int(on.sum()), "lit share": round(float(on.mean()), 2),
+            "pane cell area (hex), mean": round(float(cells.mean()), 1),
+            "lit pane visible area (hex), median": round(float(np.median(lit)), 1),
+            "lit pane visible area (hex), p10-p90": f"{np.percentile(lit, 10):.1f}-{np.percentile(lit, 90):.1f}",
+            "lit pane visible area (hex), area-weighted median": round(aw, 1)}
 
 
 # (Glass painted INTO the face, under the ripple - the data-only route - was dropped at prereview 2026-10-24: a face
@@ -663,13 +690,177 @@ def build_sheet2(out):
     write_sheet(STEM2, cfg, rows)
 
 
+# ================================================================ round 3 (owner, 2026-10-24 ~09:50 PDT, on the r2 sheet)
+# "Stained glass, panes: organic panes ~7 tiles, about half of them lit, plain sea between is good, but the panels need to
+# be 1/4th the size and x4 in number. They should be roughly 4-5 cells in area. The Chill, still water, 'abyss' (face
+# value 22; today's Chill row is ~93). Others confirm. [...] Grey sea looking bluish is ok."
+STEM3 = "world_water_review_r3_2026-10-24"
+PANES3 = dict(scale=2, rim=1.15, seed=7)   # 144 panes per 40-hex repeat; lit-pane median 4.5 hexes (r2: 24.7) - pane_metrics
+PANES3S = dict(scale=3, rim=1.0, seed=5)   # alternative: 324 panes, seed 5 = 53% lit (seed 7 lit 60%); area-weighted lit pane ~3 hexes (v3 reads ~7.5 by area)
+CONFIRMED = {"GreySea": "clear", "TwilightSea": "deep", "Scald": "row", "MineralWater": "row"}   # "Others confirm"
+
+
+def items3():
+    """(id, group, kind, arg): r2 panes as 'before', the quartered v3, and the picked Chill abyss with and without films."""
+    g1, g2 = "1. Twilight Sea stained glass: panes, before and after", "2. The Chill: still 'abyss' (your pick)"
+    return [("TwilightSea_glass_panes_r2", g1, "glass", dict(scale=1, rim=1.0, seed=7)),
+            ("TwilightSea_glass_panes_v3", g1, "glass", PANES3),
+            ("TwilightSea_glass_panes_v3_small", g1, "glass", PANES3S),
+            ("Chill_abyss", g2, "still", "abyss"),
+            ("Chill_abyss_nofilm", g2, "still_nofilm", "abyss")]
+
+
+def export_faces(out):
+    """the 512 px faces to install (not tiled): the four confirmed seas + the Chill abyss + the v3 glass texture."""
+    fd = os.path.join(out, "faces"); os.makedirs(fd, exist_ok=True)
+    for s, c in CONFIRMED.items():
+        face, _ = make_water(s, c, "wavelets")
+        Image.fromarray(face).save(os.path.join(fd, f"{s}_{c}.png"))
+    face, _ = make_still("Chill", CHILL_LEVELS["abyss"])
+    Image.fromarray(face).save(os.path.join(fd, "Chill_abyss.png"))
+    rgb, a = glass_tex("panes", hsv_shift(BW.F["TwilightSea"][0], *COLOURS["deep"]), **PANES3)
+    Image.fromarray(np.dstack([np.clip(np.rint(rgb), 0, 255), np.rint(a * 255)]).astype(np.uint8), "RGBA").save(os.path.join(fd, "TwilightGlass_panes_v3.png"))
+    print("FACES", fd, sorted(os.listdir(fd)))
+
+
+def gen3(out):
+    sh = os.path.join(out, "sheet"); os.makedirs(sh, exist_ok=True)
+    land = BW.make(LAND)
+    scenes = {zm: Scene(zm) for zm in ZOOMS}
+    tw_base = hsv_shift(BW.F["TwilightSea"][0], *COLOURS["deep"])
+    stats, water_val = {}, {}
+    refs = [(f"{s}_{c}_ref", "ref", s) for s, c in CONFIRMED.items()]
+    for iid, _g, kind, arg in [(i, None, k, a) for i, _g, k, a in items3()] + [(i, None, k, a) for i, k, a in refs]:
+        glass, films_on, extra = None, True, {}
+        if kind == "glass":
+            face, (base, sec) = make_water("TwilightSea", "deep", "wavelets")
+            info = {}
+            rgb, a = glass_tex("panes", tw_base, info=info, **arg)
+            extra = pane_metrics(a, info)
+            glass = (rgb.astype(np.float32), a.astype(np.float32), GLASS_PERIOD)
+            Image.fromarray(np.dstack([np.clip(np.rint(rgb), 0, 255), np.rint(a * 255)]).astype(np.uint8), "RGBA").save(os.path.join(sh, f"{iid}_glass.png"))
+            bad = BW.verdict("TwilightSea", BW.stats(face), face.shape)
+        elif kind.startswith("still"):
+            face, (base, sec) = make_still("Chill", CHILL_LEVELS[arg]); films_on = kind == "still"
+            bad = still_check(BW.stats(face))
+        else:
+            face, (base, sec) = make_water(arg, CONFIRMED[arg], "wavelets")
+            bad = BW.verdict(arg, BW.stats(face), face.shape)
+        st = BW.stats(face)
+        stats[iid] = {"stats": st, "check": bad, "base": base, "accent": sec, "panes": extra}
+        if kind != "ref": WF.tiled(face).save(os.path.join(sh, f"{iid}_file.png"))
+        for zm, sc in scenes.items():
+            if kind == "ref" and zm != "far": continue
+            im = sc.render(face, land, FILM2, glass=glass, films_on_sea=films_on)
+            im.save(os.path.join(sh, f"{iid}_{zm}.jpg"), **JPG)
+            if zm == "far": water_val[iid] = _water_value(im, sc)
+        if kind != "ref":
+            Image.open(os.path.join(sh, f"{iid}_mid.jpg")).crop((80, 120, 500, 400)).save(os.path.join(sh, f"{iid}.jpg"), **JPG)
+        print(iid, st["mean"], "val", st["val"], "water-after-films", water_val[iid], extra or "", "CHECK " + "; ".join(bad) if bad else "ok")
+    for k in stats: stats[k]["water_value_far"] = water_val[k]
+    names = {r: SEA_LABEL[s] for r, _k, s in refs}
+    box = (40, 150, 40 + 270, 150 + 420)
+    for iid, _g, kind, _a in items3():
+        if not kind.startswith("still"): continue
+        panels = [WF.caption(Image.open(os.path.join(sh, f"{r}_far.jpg")).crop(box), f"{names[r].replace(' (lake)', '')} {water_val[r]}", 14) for r, _k, _s in refs]
+        panels.append(WF.caption(Image.open(os.path.join(sh, f"{iid}_far.jpg")).crop(box), f"The Chill {water_val[iid]}", 14))
+        WF.hstack(panels).save(os.path.join(sh, f"{iid}_lineup.jpg"), **JPG)
+    for r, _k, _s in refs: os.remove(os.path.join(sh, f"{r}_far.jpg"))        # lineup inputs only, not sheet rows
+    json.dump(stats, open(os.path.join(out, "stats.json"), "w"), indent=1)
+    pr = os.path.join(out, "prereview"); os.makedirs(pr, exist_ok=True)
+    ids = [i for i, *_ in items3()]
+    for zm, (x, y) in (("close", (300, 120)), ("mid", (60, 60)), ("far", (60, 100))):
+        WF.hstack([WF.caption(Image.open(os.path.join(sh, f"{i}_{zm}.jpg")).crop((x, y, x + 340, y + 330)), f"{i[:30]} {zm}", 13) for i in ids]).save(
+            os.path.join(pr, f"r3_{zm}.jpg"), **JPG)
+    export_faces(out)
+
+
+def build_sheet3(out):
+    copy_images(out, STEM3)
+    st = json.load(open(os.path.join(out, "stats.json")))
+    rel = STEM3 + "_img/ww_"
+    rows = []
+    for iid, g, kind, arg in items3():
+        s = st[iid]["stats"]; wv = st[iid]["water_value_far"]; pm = st[iid]["panes"]
+        views = [WF._view(rel + f"{iid}_file.png", FILE_CAP, 2 * N, 2 * N),
+                 WF._view(rel + f"{iid}_close.jpg", CLOSE_CAP, *ZOOMS["close"][2]),
+                 WF._view(rel + f"{iid}_mid.jpg", MID_CAP, *ZOOMS["mid"][2]),
+                 WF._view(rel + f"{iid}_far.jpg", FAR_CAP, *ZOOMS["far"][2])]
+        meta = {"face value": str(s["val"]), "water value after films (far)": str(wv),
+                "films": FILM2 + (" (off on this sea)" if kind == "still_nofilm" else ""),
+                "ripple": "none (still)" if kind.startswith("still") else "wavelets"}
+        if kind == "glass":
+            v3 = arg["scale"] > 1
+            med = pm["lit pane visible area (hex), median"]
+            label = {1: "Stained glass, panes as on round 2 (before; lit pane ~%s hexes)",
+                     2: "Stained glass, panes v3: a quarter the size, four times as many (lit pane ~%s hexes)",
+                     3: "Stained glass, panes v3 smaller: a ninth the size, nine times as many (lit pane ~%s hexes)"}[arg["scale"]] % med
+            effect = {1: "Shown only so the change is visible. Not built.",
+                      2: "Your numbers taken literally: 1/4 the size, x4 in number; the typical lit pane is 4-5 hexes, the big ones "
+                         "that catch the eye are 7-10. Same swirl-layer route, a new texture; colours, strength and the half-lit rule unchanged.",
+                      3: "In case the panes above still read too big: here even the big lit panes are ~3-5 hexes. Busier at far zoom."}[arg["scale"]]
+            views.insert(1, WF._view(rel + f"{iid}_glass.png", "the glass layer's own texture (RGBA, 1:1; one repeat = 40 hexes across)", N, N))
+            meta.update({k: str(v) for k, v in pm.items()})
+            prefill = {1: "no", 2: "pick", 3: "maybe"}[arg["scale"]]
+        else:
+            label = ("The Chill, still water, 'abyss' (face value 22), with the sea films as every other sea has them" if kind == "still" else
+                     "The Chill, still water, 'abyss' (face value 22), sea films switched OFF on The Chill only")
+            effect = ("Your pick as you saw it. Texture only: installs the still face on The Chill and its twin." if kind == "still" else
+                      "Same face; the films (pale coast band, dark offshore film) would skip The Chill. Needs a small code change "
+                      "(SEA_FILMS_TUNE_PER_SEA_CHILL_UNLIT). Without it the films lift the face (see the number) and leave a dark ring round islands.")
+            views.append(WF._view(rel + f"{iid}_lineup.jpg", LINEUP_CAP, 5 * 270 + 4 * 8, 420 + 26))
+            prefill = "pick" if kind == "still" else "maybe"
+        rows.append({"id": iid, "label": label, "group": g, "effect": effect, "thumb": rel + f"{iid}.jpg", "prefill": prefill,
+                     "views": views, "meta": meta,
+                     "trueSize": {"none": "a world face has no in-game size; the file is shown 1:1, tiled 2x2, plus close/mid/far zoom"}})
+    vs = st["TwilightSea_glass_panes_v3_small"]["panes"]
+    v3 = st["TwilightSea_glass_panes_v3"]["panes"]; r2 = st["TwilightSea_glass_panes_r2"]["panes"]
+    brief = (
+        "<p><b>You, 2026-10-24:</b> <i>\"Stained glass, panes: organic panes ~7 tiles, about half of them lit, plain sea between "
+        "is good, but the panels need to be 1/4th the size and x4 in number. They should be roughly 4-5 cells in area. The Chill, "
+        "still water, 'abyss' (face value 22; today's Chill row is ~93). Others confirm.\"</i></p>"
+        f"<p><b>Group 1.</b> The panes, before and after. Measured on the glass texture: round 2 had {r2['panes per repeat']} panes "
+        f"per repeat, a lit pane showing ~{r2['lit pane visible area (hex), median']} hexes; v3 has {v3['panes per repeat']} "
+        f"({v3['lit panes']} lit), a lit pane showing ~{v3['lit pane visible area (hex), median']} hexes (most between "
+        f"{v3['lit pane visible area (hex), p10-p90']}); but half the lit glass sits in panes of "
+        f"{v3['lit pane visible area (hex), area-weighted median']}+ hexes, so the eye reads them bigger. The smaller row "
+        f"(v3 smaller) brings that to {vs['lit pane visible area (hex), area-weighted median']}. One repeat of the glass spans 40 hexes; a sea face spans ~3 (assumed).</p>"
+        "<p><b>Group 2.</b> Your Chill pick as shown on round 2, and the same face with the depth films kept off The Chill. "
+        "The last picture in each row puts every sea side by side with its brightness number.</p>"
+        "<p><b>Installed on your word ('Others confirm'):</b> Grey Sea lighter and clearer, Twilight Sea darker and richer (both "
+        "twins); The Scald and the lake keep today's colour. The wider-shelf films are a code default, ticketed. The Twilight glass "
+        "and The Chill wait for this sheet.</p>"
+        "<p><b>Offline renders, not the game</b> (same inputs as round 2). Not shown: the planet's sun lighting, the true face scale. "
+        "Click any picture to open it alone at 1:1 (browser zoom 100%, Ctrl+0).</p>")
+    cfg = {"sheetId": STEM3, "title": "World water, round 3: smaller panes, The Chill abyss",
+           "subtitle": "2026-10-24 · round 3 · WORLD_WATER_REDRAW_SEAS_THAT_READ_DEEP",
+           "briefHtml": brief,
+           "criterion": "The prefill is the agent's lean: v3 panes match your numbers and read as glass, not speckle, at every zoom; the abyss is your pick.",
+           "invented": ["The pane layout (seeded), its rim width and the 4.5-hex target inside your 4-5 are the agent's.",
+                        "The coast layout, islands and Dune Sea land are a test scene."],
+           "posture": {"mode": "whitelist", "explain": "Only rows marked Pick are built. Maybe = try live alongside the pick. No / blank = not built."},
+           "options": [{"key": "pick", "label": "Pick", "hotkey": "1", "color": "#5ac37f", "counts": "in"},
+                       {"key": "maybe", "label": "Maybe", "hotkey": "2", "color": "#d6b84a", "counts": "in"},
+                       {"key": "no", "label": "No", "hotkey": "3", "color": "#e06c6c", "counts": "out"}],
+           "groupLabel": "group", "media": False, "trueSize": "optional",
+           "decisionsFile": STEM3 + ".decisions.json", "decisionsPath": "", "sheetPath": ""}
+    write_sheet(STEM3, cfg, rows)
+
+
 def main():
-    ap = argparse.ArgumentParser(); ap.add_argument("cmd", choices=["gen", "sheet", "gen2", "sheet2"])
+    ap = argparse.ArgumentParser(); ap.add_argument("cmd", choices=["gen", "sheet", "gen2", "sheet2", "gen3", "sheet3", "faces"])
     ap.add_argument("--out", default=None)
     a = ap.parse_args()
     out = a.out or os.path.join(os.path.dirname(BW.storage_root()), "worldwater_variants")
     if a.cmd in ("gen2", "sheet2") and not a.out: out += "_r2"
-    if a.cmd == "gen":
+    if a.cmd in ("gen3", "sheet3", "faces") and not a.out: out += "_r3"
+    if a.cmd == "gen3":
+        gen3(out); print("OUT", out)
+    elif a.cmd == "sheet3":
+        build_sheet3(out)
+    elif a.cmd == "faces":
+        export_faces(out)
+    elif a.cmd == "gen":
         gen(out); print("OUT", out)
     elif a.cmd == "gen2":
         gen2(out); print("OUT", out)

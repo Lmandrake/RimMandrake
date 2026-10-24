@@ -31,7 +31,7 @@
     <allowRoads>true</allowRoads>
     <allowRivers>false</allowRivers>
     <hasVirtualPlants>false</hasVirtualPlants>
-    <texture>World/Biomes/Ocean</texture>  <!-- WORLDMAP_IN_GAME_AUDIT 2026-10-20: vanilla ocean face, drawn with the WorldOcean shader by RM_WorldTerrainShader; the RM_GreySea colour field read as land in game -->
+    <texture>World/Biomes/RM_GreySea</texture>  <!-- WORLD_SEA_FACES_INSTALL_PICKED_LOOKS 2026-10-24: our own water face (owner pick: lighter and clearer; same png as the RUT twin), drawn with the WorldOcean shader by RM_WorldTerrainShader. Before: vanilla Ocean (WORLDMAP_IN_GAME_AUDIT 2026-10-20; the old RM_GreySea colour field read as land). -->
     <impassable>true</impassable>
     <isBackgroundBiome>true</isBackgroundBiome>
 
