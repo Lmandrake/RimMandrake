@@ -1,0 +1,76 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 66.9,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.437464
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 62.0
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 10.4,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1174487
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Ladder",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said good); blocking ['OWNER_NOTE_IGNORED']; polish ['LEGIB_32']; unreadable ['PORTS (n/a on an unconditional item)']",
+  "gpt unsure: unsettled [], own blocking []",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "machine@v2",
+   "sha": "e06ee7316a0a"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "south.png": "2b56e48d3990933de926dc923b81a6bc876c0189e15c2f3d20ba074d3dc754cc",
+  "east.png": "dc8aa5a820219062eb70efef5e94c5a19d1842a3596540562307e62e7cd62001",
+  "north.png": "e6a7bbd2ef14ec09917c4172cb7b55f02ba72c9625e1ab61685af2cc1beb0992",
+  "west.png": "9c46bc0c589b0982e01937e7a709302239b111d3e38284ed665c5de079a50217",
+  "scale.png": "f242a38bde501c00fc8c2c6613be7eacf04dd1dc7c3149ddcd41f832600742f7",
+  "wall_context.png": "bdd0c261ac56e64a55c801c9438b24bea9c7fb8a415eae3e4fd1f7fe59bbc760",
+  "siblings.png": "6101f586374371c9ba3e841e3cc039e637b398176ba84b8ec3bff6a0662869f4",
+  "facings.png": "691f4b40c9d3aac6e2565c411910a86e6dc3cc33e3e11b88d6c392d646ba6d30"
+ }
+}

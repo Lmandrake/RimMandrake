@@ -31,6 +31,8 @@
  "RM_HoseEnd_Modern": 2,
  "RM_HoseFreeEnd_Mouth": 3,
  "RM_InfectedAerofleet": 1,
+ "RM_Ladder": 1,
+ "RM_LadderPortable": 1,
  "RM_LiquidJoins_Modern": 3,
  "RM_LiquidPump_Modern": 3,
  "RM_Meltgut": 2,

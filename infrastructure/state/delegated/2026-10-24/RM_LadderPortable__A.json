@@ -1,0 +1,74 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 33.8,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.376276
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 98.0
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 7.8,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.11511669999999999
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_LadderPortable",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said good); blocking ['ALPHA_HALO']; polish []; unreadable ['BORE (n/a on an unconditional item)', 'PORTS (n/a on an unconditional item)', 'LAYERS (n/a on an unconditional item)']",
+  "gpt unsure: unsettled ['K1', 'K4'], own blocking []",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "machine@v2",
+   "sha": "e06ee7316a0a"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "south.png": "ca043784e11fc56293e2c46aff8000f8ff087311055fc48ecdf545d756a46548",
+  "east.png": "6f3edb909802456601ccdcd5470c68c94a46ba00966a4162408e145f00a0ca40",
+  "north.png": "e2287787cc4c36e3f296af96fffdae8acc86a0a86be94ce057e31473f78d4d47",
+  "scale.png": "c3ab1d11db581382de5957a17274874c6bf416761700c24b905aa63de0b4b44a",
+  "wall_context.png": "50008ac031efd3b88328a99af6f43d80426b7ba86ddde0a0b7416d8c36699b99",
+  "facings.png": "8f10ac2ab2980218e0ef8dacf47109b8b4b80dadb7fd413c379e2556af2c0a30"
+ }
+}
