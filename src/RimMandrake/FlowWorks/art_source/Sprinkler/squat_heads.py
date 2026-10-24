@@ -14,7 +14,9 @@ The result is placed with the seat (where the pipe axis must pass: SEAT_IN_CLAMP
 x-centred, so ONE drawOffset z = (SEAT_Y - 128) / 256 serves every look.
 
 Usage: squat_heads.py [--src DIR] [--out DIR]   (default: raw/ in, out/ out)
-Writes <out>/<Look>/RM_SprinklerHead.png and <out>/seat.json (seat_y and bbox per look).
+Writes <out>/<Look>/RM_SprinklerHead.png and <out>/seat.json (seat_y, bbox and part rows per look; a record for a human,
+nothing reads it). The installed textures must equal squat(raw/<Look>) pixel for pixel: selftest_fw_offline_art.py
+asserts it, which is what makes the Defs' one drawOffset z = (SEAT_Y - 128)/256 true of the shipped art.
 """
 import argparse
 import json
@@ -37,6 +39,13 @@ SEAT_IN_CLAMP = 0.3  # the seat's height in the clamp from its top: the clamp's 
 ALPHA = 40
 
 
+def _first(rows, what):
+    y = next(rows, None)
+    if y is None:
+        raise ValueError("squat_heads: no %s row in this head's alpha width profile" % what)
+    return y
+
+
 def parts(im):
     """Rows of (dome, stem, saddle) by the alpha width profile: the dome ends at the first row after its widest that is
     narrower than 60 % of it; the saddle starts where the width climbs past halfway from the stem's narrowest row to the
@@ -47,17 +56,19 @@ def parts(im):
     top, bot = int(rows[0]), int(rows[-1])
     mid = (top + bot) // 2
     dmax = top + int(np.argmax(w[top:mid + 1]))
-    dome_end = next(y for y in range(dmax, bot) if w[y] < 0.6 * w[dmax])
+    dome_end = _first((y for y in range(dmax, bot) if w[y] < 0.6 * w[dmax]), "dome end (60 % of the widest)")
     half = dome_end + (bot - dome_end) // 2
     neck = dome_end + int(np.argmin(w[dome_end:half + 1]))        # the stem's narrowest row
     cut = (w[neck] + w[half:bot + 1].max()) / 2                   # halfway to the saddle's widest
-    sad_start = next(y for y in range(neck, bot) if w[y] > cut and w[y + 1] > cut)
+    sad_start = _first((y for y in range(neck, bot) if w[y] > cut and w[y + 1] > cut), "saddle start")
     return top, dome_end, sad_start, bot + 1
 
 
 def crop_rows(im, y0, y1):
     c = im.crop((0, y0, im.width, y1))
     bb = c.getchannel("A").point(lambda v: 255 if v > ALPHA else 0).getbbox()
+    if bb is None:
+        raise ValueError("squat_heads: rows %d-%d hold no opaque pixel" % (y0, y1))
     return c.crop((bb[0], 0, bb[2], c.height))
 
 

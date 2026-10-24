@@ -14,8 +14,8 @@ Usage: fw_scenes_sprinkler.py [--out DIR] [--px N] [--candidate DIR --offset-z Z
 """
 import argparse
 import math
-import re
 import sys
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -29,7 +29,7 @@ DEFS = FW / "Defs" / "Sprinklers" / "RM_Sprinklers.xml"
 N, E, S, W = 1, 2, 4, 8        # RM_PipeSeatMath (== Graphic_Linked Up/Right/Down/Left)
 STATIONS = (("N/S", N | S), ("E/W", E | W), ("elbow N+E", N | E), ("elbow E+S", E | S), ("elbow S+W", S | W),
             ("elbow W+N", W | N), ("end N", N), ("tee E+S+W", E | S | W), ("cross", 15))
-# the drawOffset z each look's TALL head shipped with (Defs comment: foot_y 139/180/173/163.5 of 256)
+# the drawOffset z each look's TALL head shipped with, as written in the Defs then (rounded from foot_y 139/180/173/163.5)
 TALL_OFFSET_Z = {"Scrapper": 0.04, "Industrial": 0.2, "Modern": 0.18, "Futuristic": 0.14}
 CANDIDATE = {"dir": None, "offset_z": None}    # set by --candidate / --offset-z
 
@@ -55,13 +55,24 @@ def seat(mask, look):
     return d * (1 if mask & E else -1), d * (1 if mask & N else -1)
 
 
-def def_offsets():
-    """drawOffset z per look from the ThingStyleDefs RM_SprinklerHead_<Look> (the def, never a guess)."""
-    xml = DEFS.read_text()
+def def_offsets(base=False):
+    """drawOffset z per look from the ThingStyleDefs RM_SprinklerHead_<Look> (the def, never a guess); with base=True also
+    "base" for the ThingDef RM_SprinklerHead itself (drawn when a head has no style). Raises when one is missing."""
+    root = ET.parse(DEFS).getroot()
+    want = {"RM_SprinklerHead_%s" % look: look for look in fc.LOOKS}
+    if base:
+        want["RM_SprinklerHead"] = "base"
     out = {}
-    for look in fc.LOOKS:
-        m = re.search(r"<defName>RM_SprinklerHead_%s</defName>.*?<drawOffset>\(([^)]*)\)</drawOffset>" % look, xml, re.S)
-        out[look] = float(m.group(1).split(",")[2]) if m else 0.0
+    for d in root:
+        name = d.findtext("defName")
+        if name in want and d.tag in ("ThingDef", "ThingStyleDef"):
+            v = d.findtext("graphicData/drawOffset")
+            if v is None:
+                raise ValueError("%s has no graphicData/drawOffset in %s" % (name, DEFS.name))
+            out[want[name]] = float(v.strip().strip("()").split(",")[2])
+    missing = sorted(set(want.values()) - set(out))
+    if missing:
+        raise ValueError("no sprinkler head def for %s in %s" % (missing, DEFS.name))
     return out
 
 
