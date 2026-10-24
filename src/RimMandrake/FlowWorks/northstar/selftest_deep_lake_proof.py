@@ -77,5 +77,25 @@ check("the proof holds the pond depth model off while it ticks (live pulses run 
       '("pondDepthEnabled", False)' in _py)
 check("and restores it after (pondDepthEnabled is in FIELDS)", '"refillWaitsForOccupants", "pondDepthEnabled")' in _py)
 
+# DEEP_BEDS_FIX_FLOOR_STOPS_AT_FOUR (SITE, bridge run 1 driver 4): the 5,184-square lake drew a SILTED plains floor ("lake floor
+# #1: 5184 squares, plains (roughness 0.05), silted, deepest 2 m", Player_s2_river_load.log:285). lakeDepthScale 2 only scales a
+# draw's excess over 2 m, so a silted draw stays at the deep notch by design (R11). The proof must read the generator's own draw
+# for THIS footprint (drawDeepest, from ProofDeepLake form) and treat a draw at or under the notch as a SITE retry (another
+# origin = another LakeKey = another draw); the MOD row then judges the record against that draw.
+RUN3 = ("BODY id=1 cells=5184 limitless=False truncated=False capacity=19080.0 levelUnit=1.000 bedSum=19080 deepest=4 "
+        "bodyDeepest=4 drawDeepest=4 silted=True band=plains")
+DRAWN = BODY + " bodyDeepest=20 drawDeepest=20 silted=False band=hills"
+check("run 3: a silted draw at the notch is a SITE retry, not a MOD row", D.draw_verdict(D.parse(RUN3))[0] == "UNMEASURED"
+      and D.draw_verdict(D.parse(RUN3))[1].get("class") == "SITE")
+check("a draw past the notch is a usable site", D.draw_verdict(D.parse(DRAWN))[0] == "PASS")
+check("an old DLL with no drawDeepest is UNMEASURED HARNESS, never PASS",
+      D.draw_verdict(kv)[0] == "UNMEASURED" and D.draw_verdict(kv)[1].get("class") == "HARNESS")
+check("the record equal to the draw (past 4): PASS", D.body_verdict(D.parse(DRAWN), 72)[0] == "PASS")
+check("can-fail: the generator drew 12 but the lake recorded 4 is a MOD FAIL",
+      D.body_verdict(D.parse(DRAWN.replace("bodyDeepest=20", "bodyDeepest=4").replace("drawDeepest=20", "drawDeepest=12")), 72)[0] == "FAIL")
+check("the site loop retries on the draw verdict", "draw_verdict(kv)" in _py and "site_attempts" in _py)
+check("ProofDeepLake form reports the generator's draw for the footprint",
+      "drawDeepest=" in _cs and "bodyDeepest=" in _cs and "RM_LakeFloorMath.Floor(" in _cs)
+
 print("%d failed" % len(fails))
 sys.exit(1 if fails else 0)
