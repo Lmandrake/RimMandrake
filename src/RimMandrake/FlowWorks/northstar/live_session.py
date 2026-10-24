@@ -1317,23 +1317,46 @@ def g_grenade(s):
     # pass 2 (2026-10-19, HARNESS): the sums were whole-body hediff severities, so a spawned pawn's own scars / chronic
     # conditions counted as blast harm (trench 35.0 vs open 20.5 at one 20-damage Bomb each). Read each pawn before the
     # blast and score only the severity the blast ADDED.
-    pre_r = [s.call("jawa/pawn_get", pawn=p) if p else {} for p in (pt, po)]
-    pre_t, pre_o = (hediffs(r) for r in pre_r)
-    pre_read = s.mock or all(r.get("success") is True for r in pre_r)       # an unread pre-state makes every old scar "blast harm"
-    r1 = s.call("jawa/explosion_at", at="%d,%d" % t, radius=1.9, damType="Bomb", damAmount=20)
-    r2 = s.call("jawa/explosion_at", at="%d,%d" % o, radius=1.9, damType="Bomb", damAmount=20)
-    yield Wait(5)
-    post_r = [s.call("jawa/pawn_get", pawn=p) if p else {} for p in (pt, po)]
-    post_read = s.mock or all(r.get("success") is True for r in post_r)    # an unread trench pawn reads as "unharmed"
-    ht, ho = (hediffs(r) for r in post_r)
-    ht = {k: v - pre_t.get(k, 0.0) for k, v in ht.items() if v - pre_t.get(k, 0.0) > 1e-6}
-    ho = {k: v - pre_o.get(k, 0.0) for k, v in ho.items() if v - pre_o.get(k, 0.0) > 1e-6}
-    st, sum_t, sum_o = "UNMEASURED", sum(ht.values()), sum(ho.values())
-    if r1.get("success") and r2.get("success") and pt and po and sum_o > 0 and all(drafted) and placed and pre_read and post_read:
-        st = "PASS" if abs(sum_t - sum_o) <= max(2.0, 0.25 * sum_o) else "FAIL"
+    # pass 3 (2026-10-24, HARNESS, GRENADE_COVER_DIAGNOSE_TRENCH_LEAKS_BLAST): one blast per pawn was n=1 against a
+    # random draw. Bomb 20 >= minDamageToFragment 15 splits into k fragments of 20/k on random parts, and each fragment
+    # meets the pawn's random spawned apparel (deflect / halve). Trench 13.33 vs open 20 was 2 of 3 fragments landing.
+    # So: armorPenetration 10 (no apparel can deflect), healAll before every trial, GRENADE_TRIALS paired trials, and
+    # the bar compares the MEANS. A FlowWorks blast-cover bug would still read red: the trench mean drops trial after trial.
+    trials, ok = [], s.mock or (all(drafted) and placed)
+    for _k in range(GRENADE_TRIALS):
+        heal = [s.call("jawa/pawn_health", pawn=p, action="healAll", confirmDestructive=True) if p else {} for p in (pt, po)]
+        pre_r = [s.call("jawa/pawn_get", pawn=p) if p else {} for p in (pt, po)]
+        pre_t, pre_o = (hediffs(r) for r in pre_r)
+        r1 = s.call("jawa/explosion_at", at="%d,%d" % t, radius=1.9, damType="Bomb", damAmount=20, armorPenetration=10.0)
+        r2 = s.call("jawa/explosion_at", at="%d,%d" % o, radius=1.9, damType="Bomb", damAmount=20, armorPenetration=10.0)
+        yield Wait(5)
+        post_r = [s.call("jawa/pawn_get", pawn=p) if p else {} for p in (pt, po)]
+        read = s.mock or all(r.get("success") is True for r in pre_r + post_r)   # unread = "unharmed": never scored
+        ht, ho = (hediffs(r) for r in post_r)
+        ht = {k: v - pre_t.get(k, 0.0) for k, v in ht.items() if v - pre_t.get(k, 0.0) > 1e-6}
+        ho = {k: v - pre_o.get(k, 0.0) for k, v in ho.items() if v - pre_o.get(k, 0.0) > 1e-6}
+        good = bool(read and r1.get("success") and r2.get("success") and pt and po)
+        trials.append(dict(trench=round(sum(ht.values()), 2), open=round(sum(ho.values()), 2), ok=good,
+                           healed=[bool(h.get("success")) for h in heal], added=dict(trench=ht, open=ho)))
+    st, mean_t, mean_o, n_ok = grenade_verdict(trials, ok)
     s.row("B4_grenade_no_blast_cover", "TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT", "A4", st, "MOD" if st != "UNMEASURED" else "HARNESS",
-          dict(trench=round(sum_t, 2), open=round(sum_o, 2), added=dict(trench=ht, open=ho), drafted=drafted, cells=cells,
-               want=[t, o], note="severity ADDED by the blast (pre-blast read subtracted); a blast is random per part"), "B4")
+          dict(trench=mean_t, open=mean_o, n=n_ok, trials=trials, drafted=drafted, cells=cells, want=[t, o],
+               note="mean severity ADDED per blast over %d paired trials, armorPenetration 10, healAll before each" % n_ok), "B4")
+
+
+GRENADE_TRIALS = 6
+
+
+def grenade_verdict(trials, ok):
+    """-> (status, trench mean, open mean, n good). UNMEASURED unless the pawns were placed/drafted, every trial read
+    back, and every open-ground control was hurt (a blast that hurt nobody measures nothing). PASS when the trench
+    mean is within max(2, 25 %) of the open mean."""
+    good = [x for x in trials if x.get("ok")]
+    if not ok or len(good) < GRENADE_TRIALS or any(x["open"] <= 0 for x in good):
+        return "UNMEASURED", None, None, len(good)
+    mt = round(sum(x["trench"] for x in good) / len(good), 2)
+    mo = round(sum(x["open"] for x in good) / len(good), 2)
+    return ("PASS" if abs(mt - mo) <= max(2.0, 0.25 * mo) else "FAIL"), mt, mo, len(good)
 
 
 def g_rail_lip(s):
