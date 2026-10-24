@@ -1,0 +1,2 @@
+A creature can wear another creature's picture by texPath (RSW_SandStalker draws Things/Pawn/Animal/Skarnix). When the owner rejects that picture (sent back for redo), the art ledger refuses to install_bytes a copy of it anywhere, so a tier move of the BORROWER fails mid-apply after the mover already git-mv'd its defs. Before a move batch, list every texPath the defs draw, look each sha up in the art ledger for a reject/redo verdict, and drop that creature from the batch first; backing out after the fact meant restoring nine files by hand.
+home: skills/rimworld-review-sheets
