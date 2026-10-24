@@ -217,22 +217,28 @@ def repo_deleted(src, gone):
 
 
 def worktree_deleted(src, gone):
-    """Subset of `gone` that git still TRACKS but the working tree no longer
-    has: a delete or `git mv` not yet committed (often another helper's move in
+    """Subset of `gone` that HEAD still TRACKS but the working tree no longer
+    has: a delete, `git rm` or `git mv` not yet committed (often another helper's move in
     progress). It is a repo-side removal, so the plan says so instead of
     calling it a hand edit to --pull -- but it is UNCOMMITTED, so a plain
     --apply does not prune it (only --prune does). Empty outside a git tree."""
     import subprocess
     if not gone or not os.path.isdir(src):
         return set()
+    # `ls-files --deleted` sees only deletes still in the index; a `git rm`
+    # (staged delete) is gone from the index, so ask the index-vs-HEAD diff too.
+    # --no-renames: a staged `git mv` must read as a delete here, not a rename.
     try:
-        out = subprocess.run(["git", "-C", src, "ls-files", "--deleted", "--", "."],
-                             capture_output=True, text=True, timeout=120)
+        outs = [subprocess.run(cmd, capture_output=True, text=True, timeout=120) for cmd in (
+            ["git", "-C", src, "ls-files", "--deleted", "--", "."],
+            ["git", "-C", src, "diff", "--cached", "--no-renames", "--relative",
+             "--name-only", "--diff-filter=D", "--", "."])]
     except (OSError, subprocess.SubprocessError):
         return set()
-    if out.returncode:
+    if any(o.returncode for o in outs):
         return set()
-    missing = {ln.strip().replace("/", os.sep) for ln in out.stdout.splitlines() if ln.strip()}
+    missing = {ln.strip().replace("/", os.sep) for o in outs
+               for ln in o.stdout.splitlines() if ln.strip()}
     return {g for g in gone if g.replace("/", os.sep) in missing
             and not os.path.exists(os.path.join(src, g))}
 
@@ -263,6 +269,10 @@ def active_ids(config):
 
 
 HOLD_FILE = os.path.join(SRC_ROOT, "DEPLOY_HOLD.txt")
+# The owner's real full list (what modlist_swap.py --restore restores): a game
+# folder with no repo source and not on this list never loads, so the def guard
+# leaves it out of scope. Missing file -> nothing is left out.
+FULL_LIST = os.path.join(ROOT, "infrastructure", "state", "modlists", "ModsConfig.FULL.LATEST.xml")
 
 
 def pretty(path, start=None):
@@ -436,10 +446,17 @@ def main():
                     help="build the composed 'RimMandrake: Baroque Biomes' mod from "
                          "src/RimMandrake/Biomes.compose.json into a temp dir and "
                          "plan/deploy THAT (instead of the per-mod folders)")
+    ap.add_argument("--with", dest="with_mods", action="append", metavar="MOD",
+                    help="with --compose: also plan/deploy this ordinary mod in the SAME "
+                         "run, so the def guard judges both together (e.g. --compose "
+                         "biomes --with SWBestiary after a creature moved between them)")
     args = ap.parse_args()
     if args.compose and (args.mod or args.pull):
-        ap.error("--compose builds one target; it does not combine with --mod/--pull")
-    for n in (args.mod or []) + ([args.pull] if args.pull else []):
+        ap.error("--compose builds one target; it does not combine with --mod/--pull "
+                 "(use --with MOD to deploy an ordinary mod alongside it)")
+    if args.with_mods and not args.compose:
+        ap.error("--with only combines with --compose; use --mod for ordinary mods")
+    for n in (args.mod or []) + (args.with_mods or []) + ([args.pull] if args.pull else []):
         folded_refusal([n])
 
     mods_dir = first_existing(_MODS, "the RimWorld Mods folder")
@@ -477,13 +494,14 @@ def main():
         print("done — review with `git diff` before committing")
         return 0
 
-    if args.mod:
+    asked = (args.mod or []) + (args.with_mods or [])
+    if asked:
         # mod_dir() falls back to a guessed path for an unknown name rather
         # than raising, so a typo'd --mod used to sail through: tree() on the
         # nonexistent guessed dir returns an empty set, `gone` becomes EVERY
         # deployed file for that name, and --apply --prune would delete the
         # entire deployed mod folder. Refuse before any of that can happen.
-        unknown = [n for n in args.mod if n not in known_mods]
+        unknown = [n for n in asked if n not in known_mods]
         if unknown:
             sys.exit("deploy_custom_mods.py: no such mod in the repo: %s\n"
                      "  known mods: %s" % (", ".join(unknown), ", ".join(sorted(known_mods))))
@@ -498,7 +516,8 @@ def main():
             sys.exit("deploy_custom_mods.py: REFUSING TO COMPOSE: %s" % e)
         compose_tmp = os.path.dirname(csrc)
         holds = holds + extra
-        targets = [(cname, csrc)]
+        targets = [(cname, csrc)] + [(n, mod_dir(n)) for n in (args.with_mods or [])]
+        args.compose_target = cname
         # A folded member's OWN packageId still active in ModsConfig loads that member a second time beside the
         # composed copy (its defs and types twice). EXPLOSIVE_GROWTH_MERGE_COMES_HOME folded a mod that was live
         # standalone; say so on every compose plan until the list is fixed. Never edits ModsConfig itself.
@@ -531,6 +550,14 @@ def _run(args, targets, holds, mods_dir, active):
           % (len(holds), pretty(HOLD_FILE)))
     print("skip : dirs %s · exts %s\n"
           % (" ".join(sorted(EXCLUDE_DIRS)), " ".join(sorted(EXCLUDE_EXTS))))
+
+    # SWB_BIOMES_DEPLOY_GUARD_DUPLICATE_DEFS: judge the RESULTING game-copy mod
+    # set before anything is written. --apply refuses; a plan says it would.
+    guard_block = _def_guard(args, targets, holds, mods_dir)
+    if guard_block and args.apply:
+        print("REFUSING --apply: the game copy would carry %d def conflict(s) "
+              "listed above. NOTHING WAS WRITTEN." % len(guard_block))
+        return 1
 
     drift = False
     any_leftover = False   # apply-mode exit code; unlike `drift`, NEVER reset by a
@@ -725,6 +752,9 @@ def _run(args, targets, holds, mods_dir, active):
             print("    A hold that matches nothing protects nothing. Fix the "
                   "pattern or delete the line.\n")
 
+    if guard_block:
+        print("DEF GUARD: --apply of this plan would be REFUSED (%d conflict(s); "
+              "see the top of this plan)." % len(guard_block))
     if args.apply and deployed:
         _emit_deploy(deployed, any_leftover)
     if args.apply and wrote:
@@ -750,6 +780,87 @@ def _run(args, targets, holds, mods_dir, active):
     # "0 when repo and game agree" per this module's own docstring. Use the
     # accumulator that is never reset once any mod's post-deploy verify fails.
     return 1 if (any_leftover if args.apply else drift) else 0
+
+
+def _fix_cmd(mods, prune, ctarget):
+    """The one command that deploys `mods` together (composed target via --compose)."""
+    base = "python3 src/RimMandrake/Utils/deploy_custom_mods.py"
+    fold = folded()
+    names = sorted({fold[m][0] if m in fold else m for m in mods})
+    others = [m for m in names if m != ctarget]
+    if ctarget in names:
+        s = base + " --compose biomes" + "".join(" --with %s" % m for m in others)
+    else:
+        s = base + "".join(" --mod %s" % m for m in others)
+    return s + " --apply" + (" --prune" if prune else "")
+
+
+def _def_guard(args, targets, holds, mods_dir):
+    """Cross-mod def check of the post-plan game copy (deploy_def_guard.py).
+    Prints its findings; returns the BLOCKING ones (findings touching a target)."""
+    import deploy_def_guard as G
+    tnames = {n for n, _ in targets}
+    try:
+        man = biomes_compose.load_manifest(SRC_ROOT)
+    except Exception:                                    # noqa: BLE001
+        man = None
+    ctarget = man["target"] if man else None
+    post, pre, repo = {}, {}, {}
+    known = set(mod_dirs()) | ({ctarget} if ctarget else set())
+    full = (active_ids(FULL_LIST) or None) if os.path.isfile(FULL_LIST) else None
+    dead = []
+    if os.path.isdir(mods_dir):
+        for n in sorted(os.listdir(mods_dir)):
+            p = os.path.join(mods_dir, n)
+            if n in tnames or not os.path.isdir(p):
+                continue
+            pid = (package_id(p) or "").lower()
+            if pid.startswith("mandrake."):
+                if full is not None and n not in known and pid not in full:
+                    dead.append(n)              # orphan, never loads: out of scope
+                    continue
+                post[n] = G.xml_files(p)
+    for n, src in targets:
+        dst = os.path.join(mods_dir, n)
+        s, d = G.xml_files(src), G.xml_files(dst)
+        pre[n] = d
+        held = G.held_fn(holds, n)
+        gone = [r for r in d if r not in s and not held(r)]
+        if args.prune:
+            pruned = set(gone)
+        elif n == getattr(args, "compose_target", None):
+            pruned = set()
+        else:
+            pruned = {r.replace(os.sep, "/") for r in
+                      repo_deleted(src, [g.replace("/", os.sep) for g in gone])}
+        post[n] = G.post_files(s, d, held, pruned)
+    for n, p in mod_dirs().items():
+        repo[n] = dict(G.def_files(G.xml_files(p)))
+    if man:
+        for e in biomes_compose.composed_entries(man):
+            sdir = os.path.join(SRC_ROOT, biomes_compose.TIER_DIR, e["source"])
+            pre_rel = biomes_compose.dest_rel(e) + "/"
+            bucket = repo.setdefault(ctarget, {})
+            for rel, p in G.def_files(G.xml_files(sdir)):
+                bucket[pre_rel + rel] = p
+    block, old = G.check(post, pre, tnames, repo,
+                         lambda mods, prune: _fix_cmd(mods, prune, ctarget))
+    print("def guard: %d mod(s) in the resulting game copy (mandrake.*), %d target(s): "
+          "%s" % (len(post), len(tnames), "%d BLOCKING" % len(block) if block else "clean"))
+    if dead:
+        print("  (out of scope: %d orphan game folder(s) with no repo source, not on the "
+              "owner's full list -- never load: %s)" % (len(dead), ", ".join(dead)))
+    for m in block:
+        print("  ! %s" % m)
+    if old:
+        print("  (%d PRE-EXISTING conflict(s) not touching this plan's mods; not blocking)"
+              % len(old))
+        for m in old[:20]:
+            print("    . %s" % m)
+        if len(old) > 20:
+            print("    . ... %d more" % (len(old) - 20))
+    print()
+    return block
 
 
 def _emit_deploy(deployed, leftover):
