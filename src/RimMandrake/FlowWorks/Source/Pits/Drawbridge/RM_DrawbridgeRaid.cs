@@ -224,6 +224,12 @@ namespace RimMandrake.FlowWorks.Pits
 			{
 				return false;
 			}
+			// RAID_PLANK_FIX_SURFACE_HEIGHT_SUNKEN: the plank lies at its banks' height, read as a built bridge's ends are (a sunken
+			// plank only where sunken bridges are on)
+			if (RM_SuspensionMath.DeckNotchesFor(depths[0], depths[depths.Length - 1], RM_SuspensionSettings.sunkenBridges) < 0)
+			{
+				return false;
+			}
 			for (int i = 1; i < cells.Count - 1; i++)
 			{
 				if (!cells[i].InBounds(map) || RM_MapComponent_SuspensionBridges.AnyPartAt(map, cells[i]) || cells[i].GetEdifice(map) != null)
@@ -299,6 +305,7 @@ namespace RimMandrake.FlowWorks.Pits
 				dir = Rot4.FromIntVec3(dir),
 				length = n + 1,
 				width = 1,
+				deckNotches = RM_SuspensionMath.DeckNotchesFor(depths[0], depths[n], RM_SuspensionSettings.sunkenBridges),
 				raidPlank = true,
 			});
 			List<IntVec3> laid = new List<IntVec3>();

@@ -434,6 +434,40 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(fire.Contains("PawnsAt(map, c)") && !fire.Contains("for (int t = things.Count - 1; t >= 0; t--)"),
                     "can-fail: the fire and grate effects walk a snapshot of the pawns, not the live thing list a death or a fire spawn edits");
             });
+            // UNDERPASS_SHOT_FIX_OVERRIDES_VANILLA_REJECT (GPT review FC_pits_superdeep_1.1): the floor-band postfix replaced ANY false
+            // CanHitTargetFrom with the cliff test alone, so a wall-blocked shot under a deck became legal
+            Case("Underpass_shot_reopens_only_a_cliff_rejection_and_reasks_vanilla", () =>
+            {
+                string sh = Src("RM_Patch_SuperdeepShooting.cs");
+                int pre = sh.IndexOf("public static bool Prefix(Verb __instance, IntVec3 root, LocalTargetInfo targ, ref bool __result)", StringComparison.Ordinal);
+                Assert(pre >= 0, "the cliff prefix");
+                string prefix = sh.Substring(pre, sh.IndexOf("return false;", pre, StringComparison.Ordinal) - pre);
+                Assert(prefix.IndexOf("RM_SuperdeepShooting.cliffRejected = false;", StringComparison.Ordinal) < prefix.IndexOf("RuleAppliesTo", StringComparison.Ordinal)
+                    && prefix.Contains("RM_SuperdeepShooting.cliffRejected = false;"), "every call starts with no cliff verdict");
+                Assert(prefix.Contains("if (RM_SuperdeepShooting.floorBandReask)") && prefix.Contains("RM_SuperdeepShooting.cliffRejected = true;"),
+                    "the prefix marks its own rejection, and stands aside while the floor band re-asks");
+                string sp = Src("Pits", "Suspension", "RM_SuspensionPatches.cs");
+                int a = sp.IndexOf("public static class RM_Patch_SuspensionBandShots", StringComparison.Ordinal);
+                string band = sp.Substring(a, sp.IndexOf("public static class RM_Patch_SuspensionDropUnder", a, StringComparison.Ordinal) - a);
+                Assert(!band.Contains("__result = !RM_RelativeRulesMath.ShotBlocked("), "can-fail: the cliff test alone never turns a false into a true");
+                Assert(band.Contains("if (!byCliff)") && band.IndexOf("if (!byCliff)", StringComparison.Ordinal) < band.IndexOf("ShotBlocked(", StringComparison.Ordinal),
+                    "a rejection by vanilla or another mod stands");
+                Assert(band.Contains("__result = __instance.CanHitTargetFrom(root, targ);") && band.Contains("finally"),
+                    "a floor-band shot the cliff wrongly refused is re-asked of vanilla (walls, range, other mods), the guard always cleared");
+            });
+            // CONCEALED_COVER_FIX_SHIELDS_FROM_LIQUID (GPT review FC_pits_superdeep_1.5): a pawn beneath a lid laid over it got a
+            // splash share of 0 from the solid cover above it, so the fill around it never poisoned or drowned it
+            Case("Concealed_cover_does_not_shield_the_pawn_beneath_it_from_the_fill", () =>
+            {
+                string sp = Src("Pits", "Suspension", "RM_SuspensionPatches.cs");
+                int a = sp.IndexOf("public static bool UnderDeck(Pawn p)", StringComparison.Ordinal);
+                Assert(a >= 0, "UnderDeck");
+                string ud = sp.Substring(a, sp.IndexOf("}", a, StringComparison.Ordinal) - a);
+                Assert(ud.Contains("RM_PitCoverBeneath.IsBeneath(p)"), "can-fail: beneath a lid is in the fill like the floor band under a deck");
+                Assert(ud.Contains("RM_SuspensionUnderpass.InFloorBand(p)"), "the floor band still counts");
+                string fill = Src("RM_PitFillEffects.cs");
+                Assert(fill.Contains("Pits.RM_GrateEffects.SplashShare(Pits.RM_SpanUtility.DeckAt(map, c), p)"), "the fill pass asks the same share");
+            });
             Case("Suspension_deck_built_over_the_hole_floor", () =>
             {
                 // SUSPENSION_LIVE_DIAGNOSE_FIRST_REAL_RUN (live 2026-10-19: a timber span read 816 kg with ONE rider: 13 pawns

@@ -336,6 +336,35 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(!db.Contains("RouteCells("), "a cut hose never re-routes across the opened moat");
             });
 
+            // DRAWBRIDGE_HOSE_FIX_STAYS_LINKED_RAISED (GPT review FA_core_sim_1.3 / FB_hose_gss_1.4): the liquid net built its links
+            // from the relay index and rebuilt a null end as a free Intake/Outflow port, so a hose over a raised leaf kept moving liquid
+            Case("Drawbridge_hose_cut_by_a_raised_leaf_carries_no_liquid", () =>
+            {
+                string net = Src("Machinery", "RM_LiquidNet.cs");
+                string ends = Body(net, "private static bool Ends(RM_MapComponent_Hoses comp, CompHoseReel r, out object inlet, out object far)");
+                int cut = ends.IndexOf("RM_Drawbridges.HoseCut(r)", StringComparison.Ordinal);
+                Assert(cut >= 0, "can-fail: the net's link builder reads the leaf cut");
+                Assert(cut < ends.IndexOf("comp.FeedsInto(r)", StringComparison.Ordinal) && cut < ends.IndexOf("r.FreeEnd()", StringComparison.Ordinal),
+                    "the cut is read before the relay and before a null end becomes a free Intake/Outflow port");
+                Assert(Body(net, "public bool Live(RM_NetLink l)").Contains("RM_Drawbridges.HoseCut(r)"),
+                    "a route's link re-checked at transfer time drops the moment the leaf goes up");
+            });
+
+            // RAID_PLANK_FIX_SURFACE_HEIGHT_SUNKEN (GPT review FC_pits_superdeep_1.9): a plank between two sunken banks was registered
+            // with deckNotches 0, a surface deck
+            Case("Drawbridge_raid_plank_between_sunken_banks_lies_at_their_depth", () =>
+            {
+                string raid = Src("Pits", "Drawbridge", "RM_DrawbridgeRaid.cs");
+                string lay = Body(raid, "public static bool TryLay(Pawn p, IntVec3 lip, IntVec3 far)");
+                Assert(lay.Contains("deckNotches = RM_SuspensionMath.DeckNotchesFor(depths[0], depths[n], RM_SuspensionSettings.sunkenBridges)"),
+                    "can-fail: the plank's record carries the banks' depth, read the way a built bridge reads it");
+                string free = Body(raid, "public static bool LineFree(Map map, List<IntVec3> cells, int[] depths)");
+                Assert(free.Contains("RM_SuspensionMath.DeckNotchesFor(depths[0], depths[depths.Length - 1], RM_SuspensionSettings.sunkenBridges) < 0"),
+                    "a line whose banks no bridge could stand on (sunken, sunken bridges off) is refused before the commit");
+                Assert(RM_SuspensionMath.DeckNotchesFor(4, 4, true) == 4 && RM_SuspensionMath.DeckNotchesFor(4, 4, false) < 0
+                    && RM_SuspensionMath.DeckNotchesFor(0, 0, false) == 0, "the shared height rule: equal banks, sunken only when allowed");
+            });
+
             Case("Drawbridge_P5_gravship_edge_bridge_collapses_at_launch", () =>
             {
                 string g = Src("Pits", "Drawbridge", "RM_DrawbridgeGravship.cs");
