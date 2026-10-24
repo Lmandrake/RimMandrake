@@ -1,0 +1,44 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RM_Bloodlurk": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: DEPARTURE_MISSING, F_INCONSISTENT \u00b7 GPT regen, unsettled K1, K2, K3",
+   "context": "judged candidate r2 (image sha 498b7a7651); F_INCONSISTENT: South shows four large raptorial forelimbs, each with its own red dripping claw (an inner tall pair and an outer lower pair). East shows two; DEPARTURE_MISSING: There is no hint of a red-tinged waterline or water's edge. The creature stands on bare alpha, and the only red is blood drips.; DEPARTURE_MISSING: Bright saturated glossy red drips and claw sections stand out strongly against the dark body."
+  },
+  "RM_ContagionIkee": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: F_INCONSISTENT, STYLE_OFF \u00b7 GPT regen, unsettled K1, K2",
+   "context": "judged candidate r2 (image sha 803a52fba1); F_INCONSISTENT: South has two stalked eyes at the top, but north shows three stalked spheres (left, centre, right).; STYLE_OFF: The very glossy, smooth, almost sculpted-render surface on the eyeballs is a bit more 3D-render than painterly vanilla."
+  },
+  "RM_Danglemaw": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: F_NORTH_FACE \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate r2 (image sha 7888ce2a0d); F_NORTH_FACE: From the rear, the jaw shows its inward-pointing fang ring around a transparent hole, so the mouth interior faces the camera much as on sout"
+  }
+ }
+}

@@ -1,0 +1,19 @@
+[
+ {
+  "id": "arteval_RM_SparkleechGrub__r2_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_SparkleechGrub",
+  "prompt": "A single sparkleech grub, a pale, soft, segmented, wingless larva shown in the act of feeding at the roots of an ocular tree, painterly vanilla RimWorld sprite style, realistic, clean dark outline, transparent background. Body plan: a long, plump, ridged segmented body with a tapered tail, pressed low and straight along the ground, not curled into a C. The head ends in a round, socket-like mouth opening as its dominant feature, a circular sucking ring rather than a beetle larva's chewing jaws. The grub's whole underside lies flat along a thick horizontal root that runs beneath its head, abdomen and tail; the socket mouth is clamped onto that root at the head end, feeding. The root is continuous under the full length of the body and leads into the ocular tree's root mass at the tail side, where gnarled roots bear visible eye-like structures (round lidded eyes with pupils set into the wood). The grub's own body is smooth and eyeless: a pale segmented back with soft ridged segment lines. Facing views: east and west are side profiles with the body lying along the root and the mouth at the head end; south is a front view, seen from the front with the round socket mouth toward the viewer, clamped on the root; north is a rear view, seen from behind, showing the segmented back and tapered tail with the head hidden, the only eyes in the image belonging to the tree roots. Small creature, reads clearly at tiny size.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING, F_NORTH_FACE",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_r2_04"
+ }
+]

@@ -1,0 +1,53 @@
+[
+ {
+  "id": "arteval_RM_Gorekite__r2_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Gorekite",
+  "prompt": "A single living flying creature for RimWorld, painterly vanilla RimWorld sprite style, realistic, clean dark outline, transparent background. The whole body is one tent-sized sheet of stretched grey-brown hide, shallow and slack, riding the storm shear. The hide sags and billows unevenly like living tissue: a lumpy, irregular sheet with a wind-torn, asymmetric outline, scalloped and ragged margins, one corner drooping lower than the others, and no even dome. The upper surface is dry and matte, carrying organic tension folds, wrinkles, pores and faint vein networks, thick and fleshy toward the middle and thin and translucent toward the edges; it is one continuous skin, a living blanket made to drape over prey and smother it. No head, eyes or face; the hide itself is the whole body and the whole airfoil, pulled taut in places and loose in others. Exactly one long wet grasper hangs from the fleshy, puckered underside, emerging off-centre, trailing in a loose slack curve that tapers like a muscular tentacle, visibly glistening with slime against the dry hide. Front view (south): the hide spreads toward the viewer, grasper hanging off-centre below. Rear view (north): the same hide seen from behind, its upper surface and trailing edge, grasper emerging off-centre beneath. Side views (east and west): the sheet in profile, sagging in the middle and rippling at the edges, grasper trailing behind and below. Top-down game sprite, consistent palette across all facings, reference: none.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: CONSTRUCTED, CONSTRUCTED",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_r2_02"
+ },
+ {
+  "id": "arteval_RM_Meltgut__r2_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Meltgut",
+  "prompt": "A single RimWorld creature sprite on a transparent background: the meltgut, a colossal house-sized slug, the valley's rendering vat that dissolves the Unfinished. Painterly vanilla RimWorld style, realistic, clean dark outline. The body is a smooth, glossy, wet slug with a broad muscular foot, a tall rounded dome back and a small head with two eyestalks, tinted a sickly pale olive-grey with a lighter underside. It is built on the scale of a small cottage: several pawn-heights tall and many pawn-widths long, and the body fills the frame edge to edge so that a human pawn beside it would stand only as tall as its lower flank. The head and eyestalks are small relative to the huge mass. Its translucent belly wall lets the viewer see into the gut, where exactly three swallowed objects lie lined up one after another, each at roughly human scale: the first nearly whole, a crate with crisp edges; the second half-dissolved, a tool with softened, eaten outlines; the third almost gone, a faint pitted bone shape with the glow of acid around it. The objects sit in pale green digestive fluid. One shared body volume across all facings: the dome has the same width, the same peak height and the same foot-to-back proportions in every view. Front view, eyes toward the viewer: the head lifts above the dome, which is seen end-on, and the head is the highest point. Side view: the same dome in profile, long and low, at the same dome height, with the head forward. Rear view, seen from behind: the tail end and the full dome with the eyes hidden. Height differences between views come only from the camera angle and the raised head. Build the body from this description alone, with no earlier render used as a reference.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: DEPARTURE_MISSING, F_SIZE_JUMP, DEPARTURE_MISSING, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_r2_02"
+ },
+ {
+  "id": "arteval_RM_OcularJelly__r2_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_OcularJelly",
+  "prompt": "A single RimWorld creature sprite, the zhool: a drifting, swollen, gas-filled float body hanging in open air at tree-canopy height, with a few short trailing tentacles beneath it. One or more large, prominent eyes sit on the lower front of the body, angled downward as if watching what lies below. A faint reddish haze breathes out of the body and drifts beneath it. Front view, eyes toward the viewer; side view in profile with the eye angled down; rear view, seen from behind, showing the back and trailing tentacles with the eyes hidden. Style: hand-painted vanilla RimWorld sprite, realistic creature anatomy rendered with painterly flesh shading in a few visible brush-stroke tonal steps, matte mottled skin, restrained small painted highlights (matte dabs, not wet specular glints), simplified chunky forms, and a clean continuous dark outline around the body and every tentacle so it reads clearly at normal game zoom. Keep the palette, body plan and eye placement of the previous render. Transparent background, no ground, no scenery.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: STYLE_OFF",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_r2_02"
+ }
+]

@@ -1,0 +1,53 @@
+[
+ {
+  "id": "arteval_RM_Chikka__r2_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Chikka",
+  "prompt": "RimWorld creature sprite, painterly vanilla RimWorld style, realistic, clean dark olive-green outline, transparent background. A chikka: a rat-sized, rounded creature shaped like a teardrop, broad as a ball behind and narrowing to a blunt face, with no neck, tail or separate head. Pale green quills stand over every inch of its body, the face included, long and ridged along the back like a porcupine's, shaded olive toward the base; no bare snout, belly or legs show. A few tiny feet barely show under the quill skirt, shoving it nose-first through loose sand. A small, furious pair of glaring eyes sits at the very front of the blunt face. Sprite set of three views at one shared scale: front view with the eyes toward the viewer, side view in full teardrop profile, and rear view seen from behind, showing the broad rounded haunches under the quill dome with the eyes hidden. All three views show the same body bulk and the same quill length: a teardrop about as wide as it is tall, and the front view's quills lie swept back along the body so its height and breadth match the rear view's dome. Each view fills about the same share of the frame. Every quill tip ends in a crisp, clean edge against fully transparent background; edge pixels keep the pale green or olive colour of the quill they belong to, with no yellow or off-colour fringe, no glow and no light rim.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_SIZE_JUMP, ALPHA_HALO, F_SIZE_JUMP, ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_r2_00"
+ },
+ {
+  "id": "arteval_RM_Crustweevil__r2_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Crustweevil",
+  "prompt": "A single tiny crustweevil, a weevil-like insect at centimetre scale, drawn as a RimWorld creature sprite in the painterly vanilla RimWorld style, realistic, with a clean dark outline on a fully transparent background. The body is low and wide, built to hug the ground of soil crust and lichen. A broad, flat lichen-crusted skirt carapace spreads over the back, dark brown-black beneath with grey-green lichen rosettes growing on it. Six short legs splay low and outward from under the carapace. The head carries a broad, low grazing mouth held down against the lichen surface. A small lichen-grazed patch of pale soil crust lies beside or behind the creature, so it reads as a surface grazer. The same crustweevil appears in every facing, with the same carapace, the same palette, six legs, and the same body width and height. South view: front view, eyes and grazing mouth toward the viewer, low to the crust. East view: side profile, head to the right, six legs in a walking stance, lichen patch beside it. North view: rear view, seen from behind. The broad carapace with its lichen rosettes fills the frame, the rear legs are splayed low, the abdomen tip points toward the camera, and the head and eyes are hidden beneath the carapace. The cut-out edge is clean, in the dark outline colour, around the carapace, the legs and the lichen patch. Reference: none, built from this description.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_NORTH_FACE, F_INCONSISTENT, F_SIZE_JUMP, ALPHA_HALO, X_WRONG",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_r2_00"
+ },
+ {
+  "id": "arteval_RM_Durrok__r2_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Durrok",
+  "prompt": "A single RimWorld creature sprite, the durrok, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. A low, barrel-bodied quadruped on four short, thick legs, buried under long, pale, glossy white hair that hangs in heavy, wet-looking ropes to the ground, hiding the body outline so it looks like a soaked haystack. The front end is a blunt, featureless mound of hair, with the head and neck hidden entirely under the hair: eyes, ears, muzzle and horns are all out of sight. Mats of grey-green lichen sit in drifts across the back, shoulders and legs, with loose strands trailing where they slip. Behind, a tail-like fall of white cords hangs to the ground in place of a tail. The legs are short and thick, barely showing under the hair, and stay the same length in every view. Consistent proportions across all facings at one shared scale: one standing animal with the same shoulder height, back height, body bulk and leg length in the side, front and rear views. In side view the body is low and long, its height about 0.6 times its length. In the front view, seen with the blunt hair-covered front end toward the viewer, the body is narrower than the side-view length and exactly as tall as the side view. In the rear view, seen from behind, the fall of white cords and the haunches are exactly as tall as the side view and the front view, with the width changing only as the body turns. Every facing sits well inside the canvas with margin around it, with no facing filling the canvas width.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_SIZE_JUMP, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_r2_00"
+ }
+]

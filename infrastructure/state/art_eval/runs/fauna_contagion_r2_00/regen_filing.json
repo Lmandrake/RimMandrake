@@ -1,0 +1,6 @@
+{
+ "ok": false,
+ "rc": 1,
+ "why": "fill_queue exit 1",
+ "tail": "ofile at the creature's own eye level'. If this asset really wants an overhead view, drop the 'facing' key instead.\nERROR skipped row: arteval_RM_ContagionIkee__r2_r3_north refused at filing (daemon would reject it): /home/mandrake/.seat-tmp/FOUNDRY/tmpj_yuhoj1/arteval_RM_ContagionIkee__r2_r3_north.json: this job declares facing 'north', so the daemon stamps an explicit per-facing view direction onto it \u2014 but the prompt body contradicts that stamp: 'top-down' asks for an overhead camera, which the owner ruled is never a facing. Say the SURFACE, never the camera or the set: 'rear view, seen from behind, no face or eyes visible' / 'front view, eyes toward the viewer' / 'side profile at the creature's own eye level'. If this asset really wants an overhead view, drop the 'facing' key instead.\n"
+}

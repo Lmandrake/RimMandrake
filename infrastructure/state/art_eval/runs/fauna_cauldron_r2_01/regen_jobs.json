@@ -1,0 +1,19 @@
+[
+ {
+  "id": "arteval_RM_DecayDrake__r2_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_DecayDrake",
+  "prompt": "A single RimWorld creature sprite, the fermatalis, a heavy, flightless, squat drake, in a painterly, realistic vanilla RimWorld style with a clean dark outline, on a transparent background with no ground plane or backdrop. The body is short, deep and barrel-shaped, a compact squat silhouette, carried on four thick, stout, columnar legs of equal girth, with broad haunches, a blunt, heavy dragon-shaped head, a short thick tail and olive-green scaly hide with amber-orange undertones. The torso is as tall at the shoulder as it is at the haunch, with a deep, heavy shoulder mass, and the forelimbs are as thick and as long as the hind limbs, standing fully upright under the shoulders. A huge round sagging belly hangs low between the legs, wider than the chest and nearly touching the ground; it is the heaviest mass of the body, looks swollen with sour-sweet ferment, and keeps the same full, round volume and the same barrel depth and leg thickness and length throughout. The body keeps one shared scale in every facing: the front view with the eyes toward the viewer, the side profile and the rear view seen from behind all show the same overall height, the same torso depth, the same shoulder bulk, the same belly volume and the same leg dimensions, so the side profile is as tall and as heavy through the shoulder as the front and rear views. The wings are small, stubby vestigial flaps folded tight and flat on the shoulders, back and upper flanks, much shorter than the body and too small for flight. The eyes are alert and watchful. A faint, semi-transparent yellowish yeast-mist curls from the nostrils and mouth, drawn as part of the sprite around the muzzle. Bubbling, sour fermenting mash is crusted on the jaw, the belly and the feet, and drips from the underside of the belly. Two or three compact, soft, bubbling mounds of fermenting mash, pale-green and amber pulp with glossy bubbles, rest on the ground beside the planted feet, each mound a separate rounded silhouette with transparent space around it. The bloated belly, the yeast-mist breath and the bubbling mash mounds at the feet are the most prominent features, and the silhouette reads as an unfamiliar bloated, squat drake with a heavy, grounded stance, a deep barrel body, a sagging belly line and a lowered head.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_SIZE_JUMP, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_cauldron_r2_01"
+ }
+]

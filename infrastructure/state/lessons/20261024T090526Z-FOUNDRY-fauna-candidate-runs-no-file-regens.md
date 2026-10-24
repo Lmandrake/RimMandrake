@@ -1,0 +1,2 @@
+For fauna candidate runs (spec has candidate rN), never pass runner.py --file-regens: its job id is arteval_<spec_key>_r<round> = arteval_RM_X__rN_rM (double suffix, invisible to fauna_drive candidates) with the raw all-facings prompt and no shipping canvas. Run without it, then fauna_drive.py rows <run-ids> --out rows.json --file (facing-neutral prompt, canvas rule, clean arteval_<DEF>_rN id). Mis-filed pending jobs go to artpipe/_withdrawn/.
+home: .claude/skills/rimworld-art-evaluation

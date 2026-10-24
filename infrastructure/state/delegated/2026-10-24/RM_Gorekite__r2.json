@@ -1,0 +1,72 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 35.0,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.3870236
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 44.7
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 12.1,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1211707
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Gorekite",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said good); blocking ['CONSTRUCTED', 'F_INCONSISTENT']; polish []",
+  "gpt regen: unsettled ['K1'], own blocking ['CONSTRUCTED']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "south.png": "323db7b93559b0298ec185ab00d5cfd9c86c49c5b750d91bdbfde8cf4cca779f",
+  "east.png": "bd743ac7cbff236323751394b3dca3a5fb11743787678e51c45291d5fc11231e",
+  "north.png": "d9bf81849e91be7d6a6b8a6334316a5e12e8acd3c008cf84418a945572ff4c62",
+  "scale.png": "75ad8751e25bef4582adca9009f6b946e10571884a1dee0de73536caa7f576bc",
+  "facings.png": "73074cfb4123ccdbcc5548de447786956806d4f93ceb6b14674adc617b8247c8"
+ }
+}

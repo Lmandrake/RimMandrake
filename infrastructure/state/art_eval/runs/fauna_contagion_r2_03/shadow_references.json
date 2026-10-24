@@ -1,0 +1,17 @@
+{
+ "RM_Peeper": [
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Peeper_r2_south/arteval_RM_Peeper_r2_south.png",
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Peeper_r2_east/arteval_RM_Peeper_r2_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Peeper_r2_north/arteval_RM_Peeper_r2_north.png"
+ ],
+ "RM_Scaldhide": [
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Scaldhide_r2_south/arteval_RM_Scaldhide_r2_south.png",
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Scaldhide_r2_east/arteval_RM_Scaldhide_r2_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Scaldhide_r2_north/arteval_RM_Scaldhide_r2_north.png"
+ ],
+ "RM_Sparkleech": [
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Sparkleech_r2_south/arteval_RM_Sparkleech_r2_south.png",
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Sparkleech_r2_east/arteval_RM_Sparkleech_r2_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Sparkleech_r2_north/arteval_RM_Sparkleech_r2_north.png"
+ ]
+}

@@ -1,0 +1,36 @@
+[
+ {
+  "id": "arteval_RM_Fleshsop__r2_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Fleshsop",
+  "prompt": "A single RimWorld colony-game creature sprite, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. The Fleshsop is a wet rag of a creature, barely holding a shape: the collapsed remnant of an Unfinished that the goo forgot to take back. Its body is a sodden rag of raw pink-red flesh, a half-melted, shapeless mass with no firm outline. The whole body is slumped hard to one side in a steep diagonal, its full weight pressed onto one shoulder and forearm that lie flat against a solid vertical surface at the edge of the frame; the body would topple over if that surface were taken away. The braced shoulder and forearm are flattened and spread along the contact line, with a short smear of wet flesh and goo where they press, and they carry the load in every view, the braced side always the same side of the body. The legs are limp, folded and dragging, the knees buckled inward and the feet barely touching the ground, carrying no weight, the lower legs pooling into wet lumps at the feet. The torso sags down into the hips, the limbs are half-merged into the body as thick folds, and the silhouette is lumpy, uneven and soft, with a faint humanoid remnant of an Unfinished's form visible inside the collapsing mass: a slumped head, narrow sloped shoulders melting into the chest, and short arm-like and leg-like folds of sodden flesh hanging unevenly. In the front view the face is slack, sorrowful and half-formed, with dull eyes toward the viewer and a mouth hanging open; the rear view, seen from behind, shows the back with drooping lobes of flesh and the eyes hidden. The flesh has bright wet specular highlights, and translucent goo strands run off it, dripping from the mouth and belly into small glossy pools that belong to the feet (part of the sprite, not a ground shadow). The silhouette edge is a clean dark outline whose outermost pixels take the dark flesh-brown of the adjacent body, then fall straight to full transparency, with no light, red or pink fringe pixels around the feet, goo drips or lobes. Pitiful and exhausted in mood.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: DEPARTURE_MISSING, ALPHA_HALO, DEPARTURE_MISSING, ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_r2_01"
+ },
+ {
+  "id": "arteval_RM_Gawpsack__r2_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Gawpsack",
+  "prompt": "A single RimWorld creature sprite in a loose, painterly, realistic vanilla RimWorld style, on a transparent background, with a clean, thin, soft, dark outline of even weight all the way around the body that stays readable at normal game scale. The gawpsack is a drifting, soft, sagging sack floating in open air at treetop height, with no water, no dome and no limbs. Its body is one continuous, thin, pale, semi-translucent membrane, narrower and slumped at the top, heavy and bulging lower down, lumpy and uneven like an overstuffed bag. The skin is a thin translucent membrane with the eyes pressed against it from inside, dimly visible through it on every facing. One continuous outer membrane visibly encloses the whole cluster of tightly packed eyes, stretching over them like cling film over a bag of marbles. The eyes overlap one another, their contours crowding and pressing together. Their muted iris colours show through the soft folds and creases of the skin. Between and over the eyes the membrane is smooth, pale and slightly cloudy, with no separate sockets or rims. Fine pale veins cross the membrane. The membrane bulges gently outward over each eyeball. On the rear view, seen from behind, the back of the bag shows faint rounded eye shapes and pale muted irises beneath the skin across its bulges, so the packed eyes read as contents of the bag from every side. The eyes differ in shape, size and colour: round eyes, slit-pupilled goat-like eyes, elongated eyes including a few gold ones, and a few with several pupils, in varied iris colours. The eyeballs are not uniform spheres: some are squashed, oval or lumpy where they press against their neighbours. Every eye, including the elongated gold ones, has its upper and lower lids parted wide, with a broad band of white sclera visible around the iris, so each eye reads as fully open. Every iris and pupil is rolled clearly to the top of the eyeball, gazing up toward the sky, with a crescent of pale lower sclera showing beneath each iris. The flesh and eyes are painted with looser visible brushwork and matte, softly worn surfaces, like vanilla RimWorld creatures. Shading uses broad painterly value masses, a lighter upper body and a darker heavier lower body, with only a few small, soft, deliberately placed highlights and hand-painted texture.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: DEPARTURE_MISSING, STYLE_OFF, DEPARTURE_MISSING, STYLE_OFF",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_r2_01"
+ }
+]
