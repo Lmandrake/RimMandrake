@@ -272,6 +272,10 @@ def test_wk_dash_when_weekly_unmeasured():
        console._wk_text(61.0) == "wk 61%")
     ok("wk text: a fractional reading keeps one decimal",
        console._wk_text(99.8) == "wk 99.8%")
+    ok("wk text: shows days/hours until the weekly refresh",
+       console._wk_text(42.0, 1000.0 + 2 * 86400 + 5 * 3600 + 59, now=1000.0) == "wk 42% (2d 5h)"
+       and console._wk_text(42.0, 1000.0 + 3 * 3600 + 7 * 60, now=1000.0) == "wk 42% (3h 7m)"
+       and console._wk_text(42.0, 900.0, now=1000.0) == "wk 42% (0m)")
 
 
 def test_no_ansi_bytes_in_non_tty_output():

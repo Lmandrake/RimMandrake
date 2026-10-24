@@ -112,8 +112,26 @@ def _pct(x: float | None) -> str:
     return f"{xf:.1f}%"
 
 
-def _wk_text(weekly_pct: float | None) -> str:
-    return f"wk {_pct(weekly_pct)}" if weekly_pct is not None else "wk —"
+def _until_text(epoch: float | None, now: float | None = None) -> str:
+    """Time left until the weekly window resets: "2d 5h", "5h 12m", "40m"; "" when unknown."""
+    if epoch is None:
+        return ""
+    left = max(0, int(epoch - (now if now is not None else time.time())))
+    d, rem = divmod(left, 86400)
+    h, rem = divmod(rem, 3600)
+    m = rem // 60
+    if d:
+        return f"{d}d {h}h"
+    if h:
+        return f"{h}h {m}m"
+    return f"{m}m"
+
+
+def _wk_text(weekly_pct: float | None, resets_at: float | None = None, now: float | None = None) -> str:
+    if weekly_pct is None:
+        return "wk —"
+    until = _until_text(resets_at, now)
+    return f"wk {_pct(weekly_pct)} ({until})" if until else f"wk {_pct(weekly_pct)}"
 
 
 def _reset_text(epoch: float | None) -> str:
@@ -529,6 +547,9 @@ class Console:
                 # §4.5's own worked examples spell this "codex weekly NN%" —
                 # distinct from the status line's "wk NN%" shorthand.
                 weekly_txt = _pct(quota.weekly_pct if quota else None)
+                until = _until_text(quota.weekly_resets_at if quota else None)
+                if quota is not None and quota.weekly_pct is not None and until:
+                    weekly_txt += f" ({until} to refresh)"
                 if not work_remains:
                     paren = "clean drain"
                 else:
@@ -646,7 +667,8 @@ class Console:
 
     def _render_status_line(self, phase, quota, pending, in_flight, now, colored=True) -> str:
         on = colored
-        wk = _wk_text(quota.weekly_pct if quota else None)
+        wk = _wk_text(quota.weekly_pct if quota else None,
+                      quota.weekly_resets_at if quota else None, now)
         current_n = quota.current_n if quota else self._configured_n
 
         if phase == "WORKING":
