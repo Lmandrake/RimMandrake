@@ -190,3 +190,41 @@ Captures: `D:\ClaudeWork\rimmandrake\scratch\br1f_caps\` (all), with the cited e
 | owed deep_lake | 2 verified (DEEP_BEDS A1, DRAWDOWN A1) | 0 | 1 partial SITE (DEEP_BEDS A2) | - |
 | owed pit shadow | - | - | - | PIT_COVER A2 captured |
 Filed: REVIEW_STAGE_FIX_SMALL_MAPS_HELD_GATES, REVIEW_MAP_FIX_STATIONS_NO_LEAD_OUT (both HARNESS); lesson ui-layout-no-disabled-key. End: save e loaded, paused; bridge HELD by BENCH.
+
+## Driver 7: §5 long session and hostile rows (export scratch/bridge_run_1h at 5516b15f25, FlowWorks DLL 9b07f8c09557 = deployed; 14-mod list)
+Captures: `D:\ClaudeWork\rimmandrake\scratch\br1g_caps\` (ls_c*/session.json + verify_lines.txt per chunk, r52..r56.json/.log, file7.log, ver7.log, note7.log).
+Deviations from the sheet, both HARNESS:
+- 5.1 ran as `live_session --only B0,<block>` chunks (c1c..c9): a whole session cannot finish inside a 540 s foreground call. Chunking voids rows that need session length (T6 ride <2000 ticks; B7 has no pit registry). Filed LIVE_SESSION_FIX_OUTRUNS_FOREGROUND_WINDOW.
+- 5.2-5.6 ran on a fresh map I made first (fm.py), then the guardian purge, then the script WITHOUT its own `--fresh-map` (raidrow.sh), so spores could be purged before the row.
+Test environment: on RM_TheRot maps the guardian-grove plants (RM_AgelessCap, RM_AgariluxPrime, RM_Skulltop) emit RM_ChokingSpores. Parked colonists collected dozens of Scratch + ToxicBuildup and went down, which GovernorStopped sprinkler/proof_hose three times (c2b, c2d, c2e). The export's recalm.py now destroys them and ends RM_SheenExposureLock. Filed QUIET_SITE_FIX_SPORE_GUARDIANS_STILL_BITE.
+- B1 (c1c, after c1/c1b ABORTs on a used map; HARNESS, filed LIVE_SESSION_FIX_B1_NEEDS_PRISTINE_MAP): validation_v2 all PASS, X8c_lid_walker_drawn_at_ground PASS -> PIT_LID A2 verified. B2 dialogs/readouts all PASS (TANK_TALL verified; seven FOUNDRY items noted VERIFY OWED).
+- B3 liquid (c2b): L2 PASS. L4 SITE/partial. **L5_switched_off_hose_spills FAIL, STOP (PASS earlier today)**: 10000 units spilled, filth thickness in rect 6->8 vs 3 pieces expected. The rect held 6 before, so presumed SITE, unproven; not verified. Filed SPILL_FILTH_DIAGNOSE_TWO_OF_THREE. L6 not run (UNMEASURED). LIQUID A4/A7 stay owed.
+- proof_hose realflow (c2e): 17 PASS, NS_external_pipe + SL4 UNMEASURED SITE -> HOSE_RULINGS A5 partial, not verified. No wall row in realflow -> HOSE_ROUTE A3 UNMEASURED.
+- sprinkler (c2f, after purge): 8/10 PASS incl. T22_no_brine_spray; it then crashed. SESSION_HURT A1 FAIL again: Vikinger parked and drafted at 126,126, ended at 160,95 with Bruise + Crack. Presumed HARNESS; noted.
+- B4 (c3): 13 PASS / 1 FAIL / 4 UNMEASURED. **B4_grenade_no_blast_cover (TRENCH_COVER A4) FAIL, STOP**: trench 13.33 vs open 20; PASS 10-22 (6 trials). n=1, not verified. Filed GRENADE_COVER_DIAGNOSE_TRENCH_LEAKS_BLAST.
+  - B4_dehydration_rate UNMEASURED: chunk ride too short; the 1000-tick hint is 0.27/60k vs the 0.30 bar, so THIRST T6 stays owed.
+  - B4_rail_unrailed_control UNMEASURED (the control never stepped off), so FALL_GUARDRAILS A3 stays owed per his ruling.
+  - No HW1/T8 rows were read (owed). The fish rows are SITE: the Rot biome has no fish.
+- B5 (c4) 4/4 PASS. B6 (c5) PASS. B7 reload PASS but VACUOUS (pairs {}), so treated as UNMEASURED; filed PROOF_ROWS_FIX_PASS_ON_EMPTY_SAMPLE.
+- B8 (c7, Rot map): RAID_island_sealed FAIL (pocket=False), outcome MILL_FAR, LADDER_BREACH/MASKSWAP UNMEASURED. The same check PASSED on all five r52..r56 maps, so presumed SITE; not verified.
+- B9 (c9, AridShrubland; owner_review_stage refuses RM_TheRot with exit 3): stage exit 0, save `FLOWWORKS_OWNER_REVIEW_20261023_2228.rws` written. 8 rows OWED to his eyes.
+- B10 thirst (c8, map had 0 colonists after r56): T3/T4/T5/T9/T10 PASS. T2 FAIL is vacuous (perColonist {}), HARNESS, in PROOF_ROWS_FIX_PASS_ON_EMPTY_SAMPLE. T1/T7 UNMEASURED (no --log in chunk mode).
+- 5.2 (r52, depth 8): **RAID_FILL_CAUSEWAY FAIL**. Six raiders, three came near; outcome LEFT/STALL/SHOT_ACROSS; no square filled. Verified fail: CAUSEWAY A1, RAIDERS_TRENCH A3, LADDER_PARITY A3 (bar "still PASS"). BREACH_SCAR_REPAIR UNMEASURED (nothing filled). island_sealed + MASKSWAP PASS.
+- 5.3 (r53): LADDER_PARITY_RAIDERS_USE_COLONY_LADDERS PASS -> A1 verified. MASKSWAP FAIL is masked by the legal colony ladders (HARNESS, not counted).
+- 5.4 (r54): LADDER_PARITY_RAID_BRINGS_SOME_LADDERS PASS -> A2 verified (raid milled far; MASKSWAP/LADDER_BREACH UNMEASURED).
+- 5.5 (r55, depth 4, 6 trees): LADDER_PARITY_RAIDER_FELLS_TREE PASS is VACUOUS: 6/6 oaks standing, no stump, PASS on chopSeen alone. Not verified; A5 stays owed. Filed in PROOF_ROWS_FIX_PASS_ON_EMPTY_SAMPLE (a MOD "chop never fells" is presumed too). RAID_LADDER_BREACH FAIL: one raider ladder on one wall, no fill. Same no-fill as r52; noted on CAUSEWAY.
+- 5.6 (r56): UND_raiders_walk_under_moat PASS -> SUSPENSION_UNDERPASS A9 verified.
+- 5.7 Titans: UNMEASURED SITE (tier). HugeThings is not on the 14-mod active list (ModsConfig parsed), and adding it was out of scope for this driver.
+- Re-confirmations (PASS, criterion already passed, no verify recorded): FALL_GUARDRAILS A2, TRENCH_COVER A2, LIQUID A3, PIT_ACCESS A1-A4, SUSPENSION_BASE A3, POND_DEPTH A5/A6, SALT_BOTTLE T5, FLOWWORKS_ENDLESS_LABEL A1. These show no regression on those rows.
+- VERIFY OWED by FOUNDRY (BENCH refused on seat; a note with the evidence is on each): BEACH_RING A1, DEPTH_READOUT A2, FALL_DAMAGE A1, LIQUID_DEPTH A2, PIT_ALERT A1, PIT_ROOM A1, VALIDATION_V2 (item), DIG_COST A2, PIT_DEPTH A2.
+
+### Driver 7 tally
+| section | PASS | FAIL | UNMEASURED | judge/owner owed |
+|---|---|---|---|---|
+| 5.1 live_session (chunked) | 4 verified (PIT_LID A2, TANK_TALL); 9 FOUNDRY verifies owed as notes; 11 re-confirmed | 2 STOP regressions filed, unverified (L5 spill, grenade A4); SESSION_HURT A1 presumed HARNESS; B8 island presumed SITE | T6, T1, T7, HW1, T8, L6, LIQUID A4/A7, HOSE_ROUTE A3, HOSE_RULINGS A5 (partial), rail A3, B7 (vacuous), T2 (vacuous) | B9 8 rows (save written) |
+| 5.2 depth 8 | island, MASKSWAP | 3 verified MOD (CAUSEWAY A1, RAIDERS_TRENCH A3, LADDER_PARITY A3) | BREACH_SCAR_REPAIR | - |
+| 5.3 / 5.4 | LADDER_PARITY A1, A2 verified | - | 5.4 MASKSWAP/LADDER_BREACH | - |
+| 5.5 trees | - | RAID_LADDER_BREACH (same no-fill, noted) | LADDER_PARITY A5 (vacuous PASS) | - |
+| 5.6 underpass | SUSPENSION_UNDERPASS A9 verified | - | - | - |
+| 5.7 titans | - | - | TITAN A5 (SITE: tier) | - |
+Filed: SPILL_FILTH_DIAGNOSE_TWO_OF_THREE, GRENADE_COVER_DIAGNOSE_TRENCH_LEAKS_BLAST (STOPs); QUIET_SITE_FIX_SPORE_GUARDIANS_STILL_BITE (test env); LIVE_SESSION_FIX_B1_NEEDS_PRISTINE_MAP, LIVE_SESSION_FIX_OUTRUNS_FOREGROUND_WINDOW, PROOF_ROWS_FIX_PASS_ON_EMPTY_SAMPLE (HARNESS). Notes: SESSION_HURT, CAUSEWAY. End: fresh AridShrubland map after B9, paused; bridge HELD by BENCH.
