@@ -81,8 +81,9 @@ def pipe_joins():
             oka, da = f(after)
             want(not okb, "%s %s FAILS on the shipped joins (%s)" % (look, f.__name__, db))
             want(oka, "%s %s passes on the fix (%s)" % (look, f.__name__, da))
-        ok, d = ck.riser_gaps(after)
-        want(ok, "%s riser_gaps passes on the fix (%s)" % (look, d))
+        for tag, sc in (("shipped", before), ("fix", after)):
+            ok, d = ck.riser_gaps(sc)
+            want(ok, "%s riser_gaps passes on the %s (%s)" % (look, tag, d))
         holed = sp.look_scene(look, "after", PX)
         holed.draws = [dr for dr in holed.draws if not (dr[3] and dr[3].get("kind") == "strip")]
         ok, d = ck.riser_gaps(holed)
