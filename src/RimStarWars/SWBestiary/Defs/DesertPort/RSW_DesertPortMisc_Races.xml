@@ -336,7 +336,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 		<!-- Alpha Animals AA_Wildpawn -> RM_Durrok. AA_ToxicBite->Bite. Dropped: VEF.AnimalBehaviours.CompProperties_AsexualReproduction (spore-clump reproduction), CompProperties_HighlyFlammable (burn hediff on fire), CompProperties_AnimalProduct (periodic raw-fungus harvest) - all donor framework. hasGenders=false kept so vanilla asexual reproduction still applies; the spore-cloud VISUAL/reproduction event itself is what was dropped, not the ability to breed. -->
 		<defName>RM_Durrok</defName>
 		<label>durrok</label>
-		<description>A low, barrel-bodied quadruped on four short, thick legs, so buried under long, pale, glossy hair that no head or neck shows - only a blunt front end and a tail-like fall of white cords behind. The hair hangs in heavy, wet-looking ropes to the ground, and mats of grey-green lichen cling in drifts across its back, shoulders and legs, trailing in strands where they slip. Smaller and less dangerous than its wetland kin for lack of water and rot to grow on, it plods through the scrub like a drowned haystack. Durroks release clumps of spores every few weeks to reproduce; the resulting young are wholly independent from birth, with no bond to their parent. Risky to hunt, but the raw fungus beneath the hide is edible.</description>
+		<description>A low, barrel-bodied quadruped on four short legs, its head and neck buried beneath pale, wet-looking ropes of hair and mats of grey-green lichen. Every few weeks it sheds clumps of spores that produce young needing no parental care. Hunting one is risky; the fungus beneath its hide can be eaten raw.</description>
 		<statBases>
 			<MoveSpeed>4</MoveSpeed>
 			<ComfyTemperatureMin>-15</ComfyTemperatureMin>
@@ -452,7 +452,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 		<!-- Alpha Animals AA_Wildpod -> RM_Mullgoth. AA_ToxicBite->Bite. Dropped: CompProperties_AsexualReproduction, CompProperties_HighlyFlammable, CompProperties_AnimalProduct - all VEF.AnimalBehaviours donor framework, same as sibling RM_Durrok. -->
 		<defName>RM_Mullgoth</defName>
 		<label>mullgoth</label>
-		<description>A low, domed mound on four thick, hairy legs, draped to the ground in long pale hair and patched with grey-green moss and lilac lichen, a black glistening slime dripping from its underside. It looks like a decomposing hillock that decided to walk. Its bulk is nearly impervious to gunfire, bullets punching through with little effect, but it burns extremely readily.</description>
+		<description>A low, domed animal on four thick legs, draped in pale hair and patched with grey-green moss and lilac lichen. Black slime drips from its belly. Bullets pass through its bulk with little effect, but its coat burns readily.</description>
 		<statBases>
 			<MoveSpeed>3</MoveSpeed>
 			<ComfyTemperatureMin>-15</ComfyTemperatureMin>

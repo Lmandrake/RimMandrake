@@ -17,7 +17,7 @@
   <ThingDef ParentName="RM_TheRotPortedCavePlantBase">
     <defName>RM_Ruskara</defName>
     <label>ruskara</label>
-    <description>A heavy, rose-fleshed cap that has slumped over its own stalk like wet hide. It bleeds: dark red beads swell along every fold of the rim, hang, and drop, and the ground under an old one is tacky for a stride around. The sap is harmless and faintly sweet; the Rot's crawlers lick the stalks clean by morning. The flesh beneath is edible, if chewy.</description>
+    <description>A towering, rose-fleshed fungus with a heavy cap slumped over its stalk like wet hide. Harmless, faintly sweet sap beads along the folded rim; crawlers lick the stalk clean by morning. Its flesh is edible but chewy.</description>
     <descriptionHyperlinks>
       <ThingDef>RawFungus</ThingDef>
     </descriptionHyperlinks>

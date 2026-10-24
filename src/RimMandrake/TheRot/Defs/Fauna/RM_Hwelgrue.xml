@@ -11,7 +11,7 @@
   <ThingDef ParentName="RM_PollutedLands_AnimalThingBase">
     <defName>RM_Hwelgrue</defName>
     <label>hwelgrue</label>
-    <description>A colossal, slow decomposer of the Rot: a bone-white maggot as long as a hauler, lilac underneath, its whole length crawling with small wriggling feeding tendrils and scattered with dark eye spots. Its blunt front end opens into a dredge mouth rimmed with hyphae.\n\nIt eats whatever lies down on open ground. It keeps only the metal, and days later passes it in glossy Sheen castings that crack open to show the metal polished bright. Where it rests, things rot faster. It never starts a fight, and it finishes every one.</description>
+    <description>A bone-white maggot as long as a hauler, with a lilac belly, scattered dark eye spots and feeding tendrils along its body; its blunt mouth is fringed with hyphae. It eats whatever lies on open ground, later passing retained metal in glossy Sheen castings that crack open to reveal it polished bright. Decay quickens where it rests, and it fights only when attacked.</description>
     <statBases>
       <MoveSpeed>1.2</MoveSpeed>
       <MarketValue>1500</MarketValue>

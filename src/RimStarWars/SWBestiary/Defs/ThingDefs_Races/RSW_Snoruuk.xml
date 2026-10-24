@@ -4,7 +4,7 @@
   <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Snoruuk</defName>
     <label>snoruuk</label>
-    <description>Snoruuks were mobile mushrooms found on the planet Gamorr. They could be herded and were the favourite livestock of the Gamorreans, which resulted in their transplantation to other worlds.</description>
+    <description>A mobile red mushroom from Gamorr, edible to Gamorreans. Snoruuks gather in rings; tapping one sends the whole group moving away. In winter they take root until the weather improves.</description>
     <statBases>
       <MoveSpeed>1.0</MoveSpeed>
       <MarketValue>60</MarketValue>

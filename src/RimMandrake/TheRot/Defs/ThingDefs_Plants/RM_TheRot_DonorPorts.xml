@@ -56,7 +56,7 @@
   <ThingDef ParentName="RM_TheRotPortedCavePlantBase">
     <defName>RM_Glowstool</defName>
     <label>glowstool</label>
-    <description>A small brown mushroom typically found in caves. It smells like an old, dirty rag pulled from the stomach of a rotting muffalo - but it tastes surprisingly good when cooked. This glowstool variant has adapted to outside life, but produces very few edible caps when harvested.\n\nPlant details: Glowstool is a cultivated plant that also appears in the wild, and it needs minimum terrain fertility of 0.95. Can be harvested for raw fungus.</description>
+    <description>A squat brown-grey mushroom with a strong carrion smell. Unpleasant raw, it becomes rich and savoury when cooked. It yields very few edible caps.</description>
     <descriptionHyperlinks>
       <ThingDef>RawFungus</ThingDef>
     </descriptionHyperlinks>
@@ -200,7 +200,7 @@
   <ThingDef ParentName="RM_TheRotPortedCavePlantBase">
     <defName>RM_LilacBeacon</defName>
     <label>lilac beacon</label>
-    <description>The lilac beacon is a tall mushroom with a bright purple cap. It is much more nutritive than other fungi, but it has a greater risk of being hard on the stomach. This variant has adapted to outside life, but produces very few edible caps when harvested.\n\nPlant details: Lilac beacon is a cultivated plant that also appears in the wild, and it needs minimum terrain fertility of 0.95. Can be harvested for purple raw fungus.</description>
+    <description>A tall mushroom with a bright lilac cap and a dense, pale stalk. Its flesh is unusually filling, but sits heavily in the stomach when raw and can cause digestive trouble even after cooking. It grows wild and can be cultivated for its caps.</description>
     <descriptionHyperlinks>
       <ThingDef>RawFungus</ThingDef>
     </descriptionHyperlinks>
@@ -246,7 +246,7 @@
   <ThingDef ParentName="RM_TheRotPortedCavePlantBase">
     <defName>RM_WitchesOyster</defName>
     <label>witches' oyster</label>
-    <description>A small, ramified fungal colony with a pungent aroma. A witches' oyster produces caps that take quite a long time to deteriorate.\n\nPlant details: Witches' Oyster is a cultivated plant that also appears in the wild, and it needs minimum terrain fertility of 0.95. Can be harvested for pink raw fungus.\n\nBased on art by Alex Konstad, http://www.alexkonstad.com/</description>
+    <description>A towering fungus with pink shelf-caps branching above a single woody foot. The caps have a sharp smell, but their tough flesh keeps well after harvest and makes a useful winter food store.</description>
     <descriptionHyperlinks>
       <ThingDef>RawFungus</ThingDef>
     </descriptionHyperlinks>
@@ -342,7 +342,7 @@
   <ThingDef ParentName="RM_TheRotPortedCavePlantBase">
     <defName>RM_ArbuscularMycorrhiza</defName>
     <label>arbuscular mycorrhiza</label>
-    <description>A mycorrhiza is a symbiotic association between a fungus and a plant. This particular organism is highly advanced, and the two symbionts have almost fused into a single creature that keeps the supporting structures of the original tree (the trunk) and the caps and mycelium of the original fungus. A small quantity of wood can be harvested from its trunk.\n\nPlant details: Arbuscular mycorrhiza is a cultivated plant that also appears in the wild, and it needs minimum terrain fertility of 0.95. Can be harvested for normal wood.\n\nBased on art by Aphrodite: https://www.artstation.com/artwork/3ol4AB</description>
+    <description>A large fungus grown around the wooden remains of a tree, with a pale, ridged trunk and tiers of broad, gilled caps. Its mycelium spreads far underground. It can be cultivated and cut for usable wood.</description>
     <descriptionHyperlinks>
       <ThingDef>WoodLog</ThingDef>
     </descriptionHyperlinks>
@@ -392,7 +392,7 @@
   <ThingDef ParentName="RM_TheRotPortedCavePlantBase">
     <defName>RM_SlimyPholiota</defName>
     <label>slimy pholiota</label>
-    <description>A blueish-pink mushroom, secreting a slimy substance that attracts insects. This substance paralyzes the insects, and eventually kills them, being used by the fungus as fertilizer. Strangely enough, the slimy substance gives this fungus a very rich taste, and it can even be consumed raw.\n\nPlant details: Slimy pholiota is a cultivated plant that also appears in the wild, and it needs minimum terrain fertility of 0.95. Can be harvested for blue raw fungus.\n\nBased on art by Alex Konstad, http://www.alexkonstad.com/</description>
+    <description>A broad blue-pink fungus coated in clear, sweet-smelling slime. Insects drawn to the scent stick to its cap and are slowly digested. Its flesh is rich and safe to eat raw.</description>
     <descriptionHyperlinks>
       <ThingDef>RawFungus</ThingDef>
     </descriptionHyperlinks>
@@ -443,7 +443,7 @@
   <ThingDef ParentName="RM_TheRotPortedCavePlantBase">
     <defName>RM_AgaricusDomeCap</defName>
     <label>agaricus domecap</label>
-    <description>Everything about this fungus screams "I'm toxic, stay away from me". Of course this doesn't stop some enterprising individuals from consuming it as a drug. The agaricus domecap is a psychotropic fungus, and should be consumed with extreme precaution, if at all.\n\nPlant details: Agaricus domecap is a cultivated plant that also appears in the wild, and it needs minimum terrain fertility of 0.95. Can be harvested for psychotropic fungus.\n\nBased on art by Alex Konstad, http://www.alexkonstad.com/</description>
+    <description>A squat fungal dome, blotched yellow and bruise-purple. Small shavings of its pale flesh are psychotropic; larger doses are difficult to recover from.</description>
     <descriptionHyperlinks>
       <ThingDef>RawFungus</ThingDef>
     </descriptionHyperlinks>
@@ -490,7 +490,7 @@
   <ThingDef ParentName="RM_TheRotPortedCavePlantBase">
     <defName>RM_DribblingCap</defName>
     <label>dribbling cap</label>
-    <description>A huge pink mushroom, constantly dribbling a pungent, resin-like substance. This substance is a potent neurotoxin that could potentially be extracted and used as a weapon.\n\nPlant details: Dribbling cap is a cultivated plant that also appears in the wild, and it needs minimum terrain fertility of 0.95. Can be harvested for powerful single use poison darts.\n\nBased on art by Alex Konstad, http://www.alexkonstad.com/</description>
+    <description>A tall pink-lilac mushroom that constantly weeps sharp-smelling amber resin, which runs down its stalk and pools around its foot. The resin is a potent nerve poison; careful collection yields enough to tip a poison dart. It can be cultivated.</description>
     <descriptionHyperlinks>
       <ThingDef>RawFungus</ThingDef>
     </descriptionHyperlinks>
@@ -541,7 +541,7 @@
   <ThingDef ParentName="RM_TheRotPortedCavePlantBase">
     <defName>RM_AgariluxPrime</defName>
     <label>Agarilux Prime</label>
-    <description>An unbelievably large exemplar of Agarilux. This myconic colony has adapted perfectly to its environment, releasing large clouds of extremely dangerous spores that fill the air surrounding it. These spores attack both other fungi and roaming animals, and after they inevitably suffocate, the Agarilux Prime extends prehensile hyphae to feed on their rotting corpses.\n\nThe Agarilux Prime can be cut just like any other plant, but unless the person doing the cutting is perfectly protected against the toxic spores, it will probably prove to be a one-way mission. Or mortars... I guess mortars will work too.</description>
+    <description>A vast elder of the pale forest, its cap towering overhead. Heavy spores settle beneath it and suffocate unprotected creatures, while pale hyphae spread from its base to digest their bodies. Cutting one requires sealed protection; a mortar fired from beyond the spore cloud is safer.</description>
     <statBases>
       <MaxHitPoints>10000</MaxHitPoints>
       <Beauty>100</Beauty>
