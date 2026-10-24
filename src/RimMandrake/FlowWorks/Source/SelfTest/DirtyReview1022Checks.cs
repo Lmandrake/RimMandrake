@@ -102,7 +102,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string draw = Between(src, "private void DrawAll()", "DrawGhosts(y0);");
                 int keyAt = At(draw, "string key = (settled ?");
                 int hit = At(draw, "c.key == key) pts = c.pts;");
-                Assert(keyAt < hit && hit < At(draw, "pts = HoseMath.Pose(lay,"), "Pose runs only when the cached pose misses");
+                Assert(keyAt < hit && hit < At(draw, "pts = HoseMath.DrawnPose(lay,"), "Pose runs only when the cached pose misses");
                 Assert(draw.Contains("pts = pts, rp = rp };"), "the cache stores the pose (and its drawn strand) with its meshes");
             });
         }

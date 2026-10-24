@@ -787,12 +787,10 @@ namespace RimMandrake.FlowWorks.Hose
                 if (r.carry != HoseCarryState.Retracting && c != null && c.pts != null && c.key == key) pts = c.pts;
                 else
                 {
-                    pts = HoseMath.Pose(lay, pi.Eased, pi.Wobbling ? pi.SinceChange : int.MaxValue / 2, T, amt);
-                    // HOSE_LEADIN_FIX_STUB_IN_THE_CANAL: a hose that meets the port from the side is not re-aimed (the Hermite would loop
-                    // back behind the end); DrawEnds gives it an elbow fitting instead (HoseMath.PortFitting)
-                    if (onPort && !HoseMath.SideArrival(pts, portAxis)) pts = HoseMath.EndOnPort(pts, portAt - portAxis * 0.5, portAxis, 1.2);
-                    // HOSE_SIDEPORT_FIX_AIMS_AT_OLD_MIDPOINT: a side arrival keeps its heading but slides onto a moved port
-                    else if (onPort) pts = HoseMath.SlideEndOnto(pts, portAt, portAxis);
+                    // HOSE_CURVE_REBUILD_SMOOTH_AS_PHYSICS: one entry point (HoseMath.DrawnPose) for the pose and its port end, so the
+                    // offline selftest (HoseCurveChecks) measures exactly what is drawn here. It stays inside this update, behind the
+                    // world-map guard above (HOSE_DRAW_FIX_LEAKS_ONTO_WORLDMAP).
+                    pts = HoseMath.DrawnPose(lay, pi.Eased, pi.Wobbling ? pi.SinceChange : int.MaxValue / 2, T, amt, onPort ? portAt : (V2?)null, portAxis);
                     if (mi != null) pts = Mated(r, mi, pts);
                 }
                 // rule 3: a joiner that would sit over a hose drawn beneath is left out (HoseMath.Layer)

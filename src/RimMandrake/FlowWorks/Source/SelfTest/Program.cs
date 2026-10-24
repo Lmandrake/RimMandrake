@@ -156,6 +156,18 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
                 return Fail.Count == 0 ? 0 : 1;
             }
+            // HOSE_CURVE_REBUILD_SMOOTH_AS_PHYSICS: the G2 hose-curve ruler over the hard stations alone (fast loop);
+            // "report <path>" writes one line per drawn pose, "dump <path>" the drawn points as JSON for the previews
+            if (args.Length > 0 && args[0] == "--hose-curves")
+            {
+                // "g2" first: the clothoid G2 fit on (HoseMath.G2On is off in the game until the solver is fast)
+                if (args.Length > 1 && args[1] == "g2") { RimMandrake.FlowWorks.Hose.HoseMath.G2On = true; var rest = new string[args.Length - 1]; Array.Copy(args, 1, rest, 0, rest.Length); rest[0] = "--hose-curves"; args = rest; }
+                if (args.Length > 2 && args[1] == "report") HoseCurveChecks.Report(args[2]);
+                if (args.Length > 2 && args[1] == "dump") HoseCurveChecks.Dump(args[2]);
+                HoseCurveChecks.Run(Case);
+                Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
+                return Fail.Count == 0 ? 0 : 1;
+            }
             if (args.Length > 0 && args[0] == "--oracle-scenes")
             {
                 // A file, not stdin: a large pipe into dotnet.exe across the WSL boundary hangs (measured, 3000 scenes).
