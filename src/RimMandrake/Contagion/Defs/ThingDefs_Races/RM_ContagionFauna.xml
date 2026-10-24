@@ -223,6 +223,12 @@
     <defName>RM_Gawpsack</defName>
     <label>gawpsack</label>
     <race>RM_Gawpsack</race>
+    <alternateGraphicChance>0.5</alternateGraphicChance>
+    <alternateGraphics>
+      <li>
+        <texPath>Things/Pawn/Animal/RM_Gawpsack/RM_GawpsackV_B</texPath>
+      </li>
+    </alternateGraphics>
     <combatPower>15</combatPower>
     <wildGroupSize>1~2</wildGroupSize>
     <ecoSystemWeight>1.2</ecoSystemWeight>
@@ -556,6 +562,12 @@
     <defName>RM_Bloodlurk</defName>
     <label>bloodlurk</label>
     <race>RM_Bloodlurk</race>
+    <alternateGraphicChance>0.5</alternateGraphicChance>
+    <alternateGraphics>
+      <li>
+        <texPath>Things/Pawn/Animal/RM_Bloodlurk/RM_BloodlurkV_B</texPath>
+      </li>
+    </alternateGraphics>
     <combatPower>60</combatPower>
     <wildGroupSize>1~1</wildGroupSize>
     <ecoSystemWeight>0.4</ecoSystemWeight>
@@ -1522,12 +1534,12 @@
   </PawnKindDef>
 
   <!-- ======================================================================
-       FLESHSOP (RM_Fleshsop) — the pitiable — the donor's needs-affection mechanic is flavour text this wave (no Need/relation wiring added, same class of deferral as the Doublemaw/Shambles bite mechanics).
+       FLESHSOP (RM_Fleshsop) — the donor's needs-affection flavour was cut on the owner's note of 2026-10-24 ("These are weapon systems, not sad zombies."); no Need/relation wiring ever existed.
        ====================================================================== -->
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Fleshsop</defName>
     <label>fleshsop</label>
-    <description>A wet rag of a creature, barely holding a shape, that leans on things to stay standing. What an Unfinished looks like when the goo forgets to take it back — it needs to be loved to live another day.</description>
+    <description>A wet rag of a creature, barely holding a shape, that leans on things to stay standing. What an Unfinished looks like when the goo forgets to take it back.</description>
     <statBases>
       <MoveSpeed>2.0</MoveSpeed>
       <Mass>3</Mass>

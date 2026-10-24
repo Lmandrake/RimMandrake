@@ -249,14 +249,17 @@ stings with it anyway.
   3.0 · armored carapace, venom sting.
 - **Wiring:** `RM_ContagionFauna.xml`.
 
-### Fleshsop (`RM_Fleshsop`) — the pitiable
-The owner's word: a wet rag of a creature, barely holding a shape, that leans on
-things to stay standing and needs to be loved to live another day.
+### Fleshsop (`RM_Fleshsop`)
+A wet rag of a creature, barely holding a shape, that leans on things to stay
+standing. Owner, 2026-10-24 (owner_escalations_contagion sheet note): *"These are
+weapon systems, not sad zombies. Eliminate the 'it needs to be loved to live
+another day.' That's ridiculous."* The needs-love framing and the pitiable art
+direction are cut; the reframe as a weapon system is owed (rimflow item
+FLESHSOP_REDESIGN_AS_WEAPON_SYSTEM).
 - **Cycle:** the failing chimera (donor bs 0.2 MEASURED) — what an Unfinished
-  looks like when the goo forgets to take it back. The valley's one tug at the
-  player's sleeve.
+  looks like when the goo forgets to take it back.
 - **Stats:** bodySize 0.2 · commonality 0.5 · omnivore (fed by hand) · speed 2.0 ·
-  the donor's needs-affection mechanic kept on our def.
+  needs-affection flavour cut 2026-10-24 (it was never wired).
 - **Wiring:** `RM_ContagionFauna.xml`.
 
 ### the Unfinished (`RM_TheUnfinished`) — the experiments
