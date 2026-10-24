@@ -127,8 +127,10 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>PIT_LADDER_REDRAW_HUNG_ON_THE_WALL: the wall a ladder on this square hangs on, as a Rot4 index — the
 		/// placed rotation when it faces a shallower neighbour, else the biggest drop (RM_LadderWallMath.Resolve); -1 when the
-		/// square has no wall (or is not dug). Depths are STEP depths (an intact cover reads as ground), the same read the
-		/// cliff masks and the pocket grid join by, so a ladder hung toward a covered pit beside it is a wall here too.</summary>
+		/// square has no wall (or is not dug). Depths are HOLE step depths (RM_SuperdeepTrap.HoleStepDepthAt: an intact cover
+		/// reads as ground, so a ladder hung toward a covered pit beside it is a wall here too; water does not move a wall).
+		/// The masks and the pocket grid still JOIN by the climb step depth, so a ladder under brim-full water joins nothing
+		/// until the water drops (a swimmer floats out without it).</summary>
 		public static int WallRotAt(Map map, IntVec3 c, Rot4 placed)
 		{
 			RM_MapComponent_Excavation eng = map?.GetComponent<RM_MapComponent_Excavation>();
@@ -136,14 +138,16 @@ namespace RimMandrake.FlowWorks
 			{
 				return -1;
 			}
-			int d = RM_SuperdeepTrap.StepDepthAt(map, eng, c);
+			// WET_LADDER_FIX_NO_WALL_WHEN_BRIMFULL: the wall is the dug wall (HoleStepDepthAt); the climb depth, which water
+			// lifts to its surface, read a brim-full pit as level ground with no wall at all
+			int d = RM_SuperdeepTrap.HoleStepDepthAt(map, eng, c);
 			int[] sideD = new int[4];
 			bool[] inB = new bool[4];
 			for (int r = 0; r < 4; r++)
 			{
 				IntVec3 o = new IntVec3(c.x + RM_LadderWallMath.FX[r], 0, c.z + RM_LadderWallMath.FZ[r]);
 				inB[r] = o.InBounds(map);
-				sideD[r] = inB[r] ? RM_SuperdeepTrap.StepDepthAt(map, eng, o) : d;
+				sideD[r] = inB[r] ? RM_SuperdeepTrap.HoleStepDepthAt(map, eng, o) : d;
 			}
 			return RM_LadderWallMath.Resolve(placed.AsInt, d, sideD, inB);
 		}
@@ -671,8 +675,10 @@ namespace RimMandrake.FlowWorks
 			if (max != 0)
 			{
 				IntVec3 w = loc + new Rot4(wall).FacingCell;
-				if (max < 0 || !RM_PitAccessMath.LadderReaches(RM_SuperdeepTrap.StepDepthAt(map, engine, loc),
-					RM_SuperdeepTrap.StepDepthAt(map, engine, w), max))
+				// WET_LADDER_FIX_NO_WALL_WHEN_BRIMFULL: reach is judged on the dug wall too, so a wet pit takes the same portable
+				// ladder a dry one does (not refused "too deep" because water lifted the drop to 0)
+				if (max < 0 || !RM_PitAccessMath.LadderReaches(RM_SuperdeepTrap.HoleStepDepthAt(map, engine, loc),
+					RM_SuperdeepTrap.HoleStepDepthAt(map, engine, w), max))
 				{
 					return "RMFlow_LadderPortableTooDeep".Translate(RM_Volume.FormatMetres(System.Math.Max(0, max)));
 				}

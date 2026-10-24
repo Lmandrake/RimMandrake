@@ -137,6 +137,34 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(g, @"LadderLeadsOut\(k, component, c, ladders\[i\]\.Rotation\.AsInt\)", "the pocket grid reads the ladder's wall");
                 RiverSwitchFlipChecks.Has(g, @"RM_LadderWallMath\.Joins\(rot, d, dx, dz,", "the pocket grid's way out is the production join");
             });
+            // WET_LADDER_FIX_NO_WALL_WHEN_BRIMFULL / WET_PIT_LADDER_FIX_STILL_REFUSED (live 2026-10-24, PWF_wet_pit_ladder_ramp):
+            // RM_Ladder in a 1.5 m pit holding 1.5 m was refused "Must hang on a wall of the pit" while the dry control and the
+            // wet ramp were accepted. WallRotAt read StepDepthAt = ClimbDepthAt, which the water lifts to its surface (0 when
+            // brim-full), so the whole pit read as level ground. The wall is the DUG wall: HoleStepDepthAt (HollowDepthAt).
+            Case("LadderWall_wet_pit_keeps_its_wall", () =>
+            {
+                // the verdict over each read: the climb read of a brim-full pit is all 0 (no wall), the hole read has one
+                Assert(Wall(0, 0, "000", "0@0", "000") == "-", "can-fail: the climb read of a brim-full pit has no wall");
+                Assert(Wall(0, 3, "000", "0@3", "033") == "N", "the hole read of the same pit: the north wall");
+                string t = RiverSwitchFlipChecks.Src("Superdeep/RM_SuperdeepTrap.cs");
+                int h = t.IndexOf("public static int HoleStepDepthAt(", StringComparison.Ordinal);
+                Assert(h > 0, "HoleStepDepthAt exists");
+                string hb = t.Substring(h, t.IndexOf("return d > 0", h, StringComparison.Ordinal) - h);
+                Assert(hb.Contains("eng.HollowDepthAt(c)") && !hb.Contains("ClimbDepthAt"), "HoleStepDepthAt reads the hole, not the climb");
+                string u = RiverSwitchFlipChecks.Src("Superdeep/RM_LadderUtility.cs");
+                int w = u.IndexOf("public static int WallRotAt(", StringComparison.Ordinal);
+                Assert(w > 0, "WallRotAt found");
+                string wb = u.Substring(w, u.IndexOf("return RM_LadderWallMath.Resolve(", w, StringComparison.Ordinal) - w);
+                Assert(!wb.Contains("RM_SuperdeepTrap.StepDepthAt(") && !wb.Contains("ClimbDepthAt("),
+                    "WallRotAt no longer reads the climb step depth (the live refusal)");
+                Assert(System.Text.RegularExpressions.Regex.Matches(wb, @"RM_SuperdeepTrap\.HoleStepDepthAt\(map, eng, (c|o)\)").Count == 2,
+                    "WallRotAt reads the hole for its own square and every side");
+                int p = u.IndexOf("class PlaceWorker_LadderOnExcavation", StringComparison.Ordinal);
+                string pb = u.Substring(p, u.IndexOf("public override void DrawGhost(", p, StringComparison.Ordinal) - p);
+                Assert(pb.Contains("RM_PitAccessMath.LadderReaches(RM_SuperdeepTrap.HoleStepDepthAt(map, engine, loc), RM_SuperdeepTrap.HoleStepDepthAt(map, engine, w), max)"),
+                    "a portable ladder's reach at placement is judged on the dug wall too (not 'too deep' because water lifted it)");
+                Assert(pb.Contains("engine.HollowDepthAt(loc) == 0"), "is-this-a-pit stays on the hole (WATERED_PIT_FIX_NO_WAY_IN)");
+            });
         }
     }
 }

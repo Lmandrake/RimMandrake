@@ -170,6 +170,19 @@ namespace RimMandrake.FlowWorks
 			return d > 0 && Pits.RM_PitCoverUtility.IsCovered(map, c) ? Pits.RM_SpanUtility.WalkingDepth(map, c, d) : d;
 		}
 
+		/// <summary>WET_LADDER_FIX_NO_WALL_WHEN_BRIMFULL: StepDepthAt over the HOLE (HollowDepthAt), not the climb depth. Water
+		/// lifts the climb to its surface (a brim-full pit climbs as 0) but leaves the dug walls where they are, so whatever
+		/// is built against a wall (a ladder's wall, a portable ladder's reach at placement) is judged on this read, wet or dry.</summary>
+		public static int HoleStepDepthAt(Map map, RM_MapComponent_Excavation eng, IntVec3 c)
+		{
+			if (eng == null || !c.InBounds(map))
+			{
+				return 0;
+			}
+			int d = eng.HollowDepthAt(c);
+			return d > 0 && Pits.RM_PitCoverUtility.IsCovered(map, c) ? Pits.RM_SpanUtility.WalkingDepth(map, c, d) : d;
+		}
+
 		/// <summary>Held here under the relative rule: in a pocket of this pawn's climb band, captured, not a flyer, no usable
 		/// ladder in this cell, and some W×W square of the pocket's cells contains the cell.</summary>
 		private static bool IsHeldAtRelative(Pawn p, IntVec3 c, RM_MapComponent_Excavation eng)
