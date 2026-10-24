@@ -155,3 +155,38 @@ Verified: RIVER_MUFFALO A1 and CORD_LOOP A1 (done), JOINT_GATE A3 and LADDER_WAL
 ### Driver 5: MODERN_FITTINGS recipe (calm map 0, x138-153 z138-146; s5_mf_stage*.log, s5_mf_cap*.log)
 - Pipe styled Modern 15/15 first, then faucet and sprinkler built by spawn; both draw red Modern, not rusty. Two Modern poles 10 apart: spans=1 MEASURED (ProofLinkPoles Ok, inspect "Pipe spans: 1/3"). StyleDef and texPath UNMEASURED HARNESS: no reader, filed STYLE_READBACK_PROBE_ANY_BUILT_THING. Capture br1e_caps\s5_mf_panel2.png (plants cleared). L1 judge owed; candidate art not swapped in.
 - End: calm map 0 paused (scene staged in memory, not saved); bridge HELD by BENCH.
+
+## Driver 6: §4 looks map (export scratch/bridge_run_1g at eeac5c18f0; fresh RM_TheRot 250 quicktest tile 23300, then a vanilla TemperateForest 325 map tile 79933, then save e for the pit shadow)
+Captures: `D:\ClaudeWork\rimmandrake\scratch\br1f_caps\` (all), with the cited evidence copied to `captures\br1f\` (untracked).
+- Build: `review_map.py --build --fresh-map` gave visuals 39/39 and gallery 87/87 (`captures\br1f\fw_review_map_verify.json`). Stations 63/66/67 hose lays were refused ("no room for the straight lead-out"), and stations 35/36 'Ladder' never read 'Ladder up'. Filed REVIEW_MAP_FIX_STATIONS_NO_LEAD_OUT.
+- Tanks (batches A and B): 32/32 + 32/32 hoses coupled, with brass couplings and stubs drawn (s6_A_sheet.png, s6_B_sheet.png). L1, judge owed (TANK_LANE/TANK_NS/TANK_SOUTH/UNDER_COUPLER A2, HOSE_SIDEPORT A1). The tall tank's N hose passes behind the tank top (judge).
+- Pumps (batch C, s6_C_sheet.png): W and S couple. The E/N lays aimed 2 cells off, which is HARNESS staging. Judge owed (UNDERCOUPLER_GIRTH A1, PUMP_COUPLING, PUMP_PORTS A1, PUMP_ART A2).
+- PIPE_ADAPTER A1: UNMEASURED, SITE (RM_PipeAdapter_Chemfuel needs VCE, which is absent on this list; the pad is empty).
+- Pipes (s7_ph_sheet.png): tee/cross/elbow/dead end read in all four looks. The tank group pipe jogs up into the tank's W flange with an elbow (s7z_tank_group_close_v.png). Judge owed: PIPE_FITTINGS A1, PIPE_TANK_JOIN A1, PIPE_ENDS A2.
+- Reels (s7_reels_sheet.png, s7n_sheet.png): N back and S front are distinct in each look. The Modern E/W reel shadow is small (s7n_EW_Modern_v.png). Judge owed: REEL_FACINGS A1, MODERN_REEL_SHADOW B2.
+- HOSE_PLUMP A2: the flowing hose is at least as wide as the empty one in every look (s7_ph_sheet.png). Judge owed.
+- PIT_LIP A1 (s8_pitlip_close_v.png): the upper halves of the pawns show in the opening, and the lower halves sit under a translucent lip with a ghost showing. Ambiguous, so judge owed.
+- LIQUID_LOOK A1 (L2): PASS, verified (`captures\br1f\liq.json`, liq_sheet.png). Run 1's off1 miss was HARNESS: ApplyChangedSettings snapshots lazily on the first window draw (FlowWorksMod.cs:2043).
+- FlowWorks settings (`captures\br1f\fws\fws_fw_00..34.png`): every section has 'Reset this section', and p00 has Reset all and the search box. Quarry was not found by name. The separate Water effects window has no reset or search. FLOWWORKS_RESET A1 is L4 (owner, noted); SETTINGS_SCREEN_KIT A5 is judge owed.
+- SETTINGS_KIT A2/A3 (skit.json, skit_sheet.png): on GSS Cables and Pyrelands, master off greys the dependents; clicking a dependent is a no-op; master on restores; Reset asks Confirm/Go back; Go back is a no-op; Confirm resets. Config was restored. get_ui_layout has no 'disabled' key, so that is UNMEASURED (instrument; lesson filed). The GSS Overhead tab is not clickable, so that is UNMEASURED (HARNESS). Judge owed.
+- WATER_LOOK A1 (L2): PASS, verified. On TemperateForest 325 all 12 rows and the overview are whole, and the swatch reads as water (ors_van_sheet.png).
+- WATER_LOOK A2 (L2): FAIL, verified. A fresh RM_TheRot swatch reads as water (RGB 87,99,103; ors_rot_sum.txt), so grey is not reproduced and the biome alone is not the cause.
+- owner_review_stage itself has three HARNESS gaps:
+  - The bars_* rows land off a 250 map.
+  - The held-open sluice and grate read open=False (gate_probe.json). By hand, Hold open plus a walk-in opens the sluice and keeps it open (gate_diag4.json), so the mod is fine.
+  - The trench shooter is unarmed.
+  Filed REVIEW_STAGE_FIX_SMALL_MAPS_HELD_GATES.
+- Wall faces D1..D4 (st_V0..V3): captured, judge owed (EXCAVATION_WALL_ART A1/A3/A4, VISUAL_PRINCIPLES A2/A3).
+- Owed deep_lake_proof --fresh-map (deep_lake.json):
+  - DEEP_BEDS A1: PASS, verified (body = draw = 5 > 4).
+  - DEEP_BEDS A2: partial, SITE. Abyss needs a bed of at least 8 notches and the draw's deepest is 5; the colonist rows pass.
+  - DRAWDOWN A1: PASS, verified (shallow_dries 5<=5, colonist_free, refill hash equal).
+- Owed PIT_COVER A2 (save e C3 boar pit; pit2.json): hour 15.2 and noon, step 120/+420, contrast-boosted crops pit2_*_cb.png. Driver read: no obvious bright box; the boar's ghost patch sits in the shadow band. Judge owed (noted).
+
+### Driver 6 tally
+| section | PASS | FAIL | UNMEASURED | judge/owner owed |
+|---|---|---|---|---|
+| §4 looks | 2 verified (LIQUID A1, WATER_LOOK A1) | 1 verified (WATER_LOOK A2) | 3 (PIPE_ADAPTER A1 SITE; 'disabled' key instrument; GSS Overhead tab HARNESS) | tanks, pumps, pipes, reels, plump, pit lip, wall faces, settings kit/screens (L1/L3); FLOWWORKS_RESET A1 (L4) |
+| owed deep_lake | 2 verified (DEEP_BEDS A1, DRAWDOWN A1) | 0 | 1 partial SITE (DEEP_BEDS A2) | - |
+| owed pit shadow | - | - | - | PIT_COVER A2 captured |
+Filed: REVIEW_STAGE_FIX_SMALL_MAPS_HELD_GATES, REVIEW_MAP_FIX_STATIONS_NO_LEAD_OUT (both HARNESS); lesson ui-layout-no-disabled-key. End: save e loaded, paused; bridge HELD by BENCH.
