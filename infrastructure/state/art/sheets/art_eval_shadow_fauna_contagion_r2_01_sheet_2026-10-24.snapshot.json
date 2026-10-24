@@ -1,0 +1,139 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_fauna_contagion_r2_01",
+ "built": "2026-10-24T02:04:04-0700",
+ "census": "Transient/biome_ffar/art_eval_shadow_fauna_contagion_r2_01.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 14 mods \u2014 a test list): 320 active",
+ "rows": {
+  "RM_Fleshsop": {
+   "columns": {
+    "A": {
+     "east": "854cf9e717567ddba2094e6acc22bcf164e99c15974c6ea5e168c823145ce40e",
+     "north": "e811433e27f0f33781ccf6d35e3b4d81ea61a4ed5eea1098ca7af5cb9a9fc902",
+     "south": "c2e784c442c5b090b3269604291530056fd42952d3d1365be39773d817f2b6e5"
+    },
+    "B": {
+     "east": "1c3a0b98e857a2effbf355797490ee5554b5ee01569b1c62d21bc2573eb0382c",
+     "north": "edeade77c630fb5626c28bff8df1a42a02f59bed3dfeb147dacb7d452a3eb617",
+     "south": "143462d4091b8b8fe35a010562c8f5e754d42a092a75a5560024a9e8922bad4a"
+    },
+    "C": {
+     "east": "be1d1bc1a7a13e432b942d86060cf09052ffee447f98870b752ad7964623c03d",
+     "north": "b4026403a5de4192ba6266c1fa3406e38a2621bfee0e6db2095b4bdeade2716a",
+     "south": "0ff59b25c7b0d22b57dfd24e65bc8ade9ec05aacf6671de6608003b25a65105b"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Fleshsop/RM_Fleshsop",
+    "B": "Things/Pawn/Animal/RM_Fleshsop/RM_Fleshsop",
+    "C": "Things/Pawn/Animal/RM_Fleshsop/RM_Fleshsop"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion",
+    "B": "render arteval_RM_Fleshsop_r1",
+    "C": "render arteval_RM_Fleshsop_r2"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Fleshsop/RM_Fleshsop"
+   ],
+   "res": "Things/Pawn/Animal/RM_Fleshsop/RM_Fleshsop",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "fleshsop"
+  },
+  "RM_Gawpsack": {
+   "columns": {
+    "A": {
+     "east": "55a5f4c93fa78328cf7c6d0a33229e4f7a65aefaa91be613e6c6e3a52f5742ce",
+     "north": "f8245a78438ee9e5ee6c67e248deefa7dcd812d524ee504e7e58893c54eca408",
+     "south": "2d47a2273c11fd68c5c4d888137a7af1c61c6dda7fbca020615d6cf82c98a3e1"
+    },
+    "B": {
+     "east": "f38477b85826b643636ad2b95cdc0b1d3e3ece46affbc557b21d311d31bd674b",
+     "north": "93bebf2614be96f9ea28a59bc90fc67bea675014f7a84cb0757c537037c31279",
+     "south": "0f4105153bfc90b556b5e9adfb8e02a9404d97f00ff1d2142603f2757c9b7f44"
+    },
+    "C": {
+     "east": "1a50bfb36a90dc847cb45fc4eac3d252e4b7b23aab4db3bef788b0faf0fc539a",
+     "north": "6fdd6a7fe50d8b9d2821f821609a0a33c695b2ea7d0ad02e4fcd7175f0078751",
+     "south": "a16baf6d8fbd32a2dfa5384b951b11ae034335db8cb3a0d2887f098703e9c6ee"
+    },
+    "D": {
+     "east": "ffed605d87d0453f76bfc3054b3ddce5677241929d13b4637baa3b10e4ac522a",
+     "north": "80443a5c6948e310c7d6788110f555e41917bb172195662476a049de6d3586d9",
+     "south": "959111c50909076068b779f08f446a048af15c06032b1c9fe3056307a67d6a99"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Gawpsack/RM_Gawpsack",
+    "B": "Things/Pawn/Animal/RM_Gawpsack/RM_Gawpsack",
+    "C": "Things/Pawn/Animal/RM_Gawpsack/RM_Gawpsack",
+    "D": "Things/Pawn/Animal/RM_Gawpsack/RM_Gawpsack"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion",
+    "B": "render arteval_RM_Gawpsack_r1",
+    "C": "render arteval_RM_Gawpsack_r2",
+    "D": "render enact_712dc596_gawpsack_v1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Gawpsack/RM_Gawpsack"
+   ],
+   "res": "Things/Pawn/Animal/RM_Gawpsack/RM_Gawpsack",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "gawpsack"
+  },
+  "RM_Gnashling": {
+   "columns": {
+    "A": {
+     "east": "6f7f10e3b8809180952d7f722b043be298dee7ad26e0395151cbd6d411828d83",
+     "north": "f5c312be74a4a7d9d972b47b731049ad50c0fc0bb0374cbfe2d74d928a268bdb",
+     "south": "0f30ad3d3003331de909b0341db1139f20ee58cd5bee3e3de22b0ccccba1f671"
+    },
+    "B": {
+     "east": "d540238e25bed4168796ee20203bf5b8aa4e53f59c73a8657d70b33fa7eef2ec",
+     "north": "c447a339f8d8d36159925983846412146eab751747c75c03703c74999b161193",
+     "south": "8a4ea2d9b57c3931ce275ec74438a9a38454d87d450d6ee4fe10261005f8241a"
+    },
+    "C": {
+     "east": "fdc193cb2c7497d44d42194c57e687f63ae59edfc09f17c2f5ee689476c30725",
+     "north": "c201bf214f70e0082aa4051f858c1bfd658b965d2920cc3de88cf876e14249ea",
+     "south": "4cf0d42d357de75700e5fa4a16957d04eae7f87cf461a997068e4642b6718666"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Gnashling/RM_Gnashling",
+    "B": "Things/Pawn/Animal/RM_Gnashling/RM_Gnashling",
+    "C": "Things/Pawn/Animal/RM_Gnashling/RM_Gnashling"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion",
+    "B": "render arteval_RM_Gnashling_r1",
+    "C": "render arteval_RM_Gnashling_r2"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Gnashling/RM_Gnashling"
+   ],
+   "res": "Things/Pawn/Animal/RM_Gnashling/RM_Gnashling",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "gnashling"
+  }
+ },
+ "sheetId": "art_eval_shadow_fauna_contagion_r2_01_sheet_2026-10-24",
+ "snapshotId": "8abde1c3304ba87b"
+}

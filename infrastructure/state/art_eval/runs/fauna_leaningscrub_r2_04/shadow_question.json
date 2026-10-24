@@ -1,0 +1,44 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RM_Tikkit": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 3) \u00b7 Opus REALLY_BAD: ALPHA_HALO, F_SIZE_JUMP, STYLE_CARTOON",
+   "context": "judged candidate r2 (image sha 8c73c3f4b2); F_SIZE_JUMP: South's subject is about 130 px tall on the canvas while east and north are about 505\u2013512 px. The whole south composition is rendered at rou; ALPHA_HALO: Semi-transparent grass edges carry red and yellow fringe pixels, clearly visible against the black preview background.; STYLE_CARTOON: Each creature has a round, glossy, bead-black eye with a specular highlight, which leans slightly cute on an otherwise realistic body."
+  },
+  "RM_TunnelSnake": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: DEPARTURE_MISSING, F_SIZE_JUMP \u00b7 GPT regen, unsettled K1, K2",
+   "context": "judged candidate r2 (image sha 411307d3d8); F_SIZE_JUMP: The measured height spread is 75% (south 444, east 309, north 541 px). On north the head and neck rear well above the coil. On east the head; DEPARTURE_MISSING: The coil is a free-standing flat oval. Nothing in the body's shape suggests it is wedged into a narrow gap, such as flattened or compressed "
+  },
+  "RM_Vissler": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: DEPARTURE_MISSING, F_INCONSISTENT, STYLE_CARTOON \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate r2 (image sha 4e9d6e136b); F_INCONSISTENT: In east, the arm (the creature's left limb per south and north) is drawn on the near side, along with the ring and bud, so the near flank ca; STYLE_CARTOON: The front face is broad and flat with small round eyes and a faint upturned mouth, a slightly friendly look.; DEPARTURE_MISSING: The body is squat but fairly bulky relative to the arm, more a stocky quadruped than a small slip-away body."
+  }
+ }
+}

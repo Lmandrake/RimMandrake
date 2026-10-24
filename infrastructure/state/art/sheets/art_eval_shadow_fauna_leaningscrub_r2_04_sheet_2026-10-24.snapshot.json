@@ -1,0 +1,139 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_fauna_leaningscrub_r2_04",
+ "built": "2026-10-24T02:14:36-0700",
+ "census": "Transient/biome_ffar/art_eval_shadow_fauna_leaningscrub_r2_04.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 26 mods \u2014 a test list): 320 active",
+ "rows": {
+  "RM_Tikkit": {
+   "columns": {
+    "A": {
+     "east": "70e1f789b6102e04795a349c7a396b10bd4888c4f2bbd6e460184f9ba36e798d",
+     "north": "3ecd4897c7900a2d3e62f7fd6a84d47c4958b73306d905e7fea4c4f5bf7156ea",
+     "south": "5bda171ece86fb32fdc92118f95c57903ca5dd15e9ada4713839615b310fef17"
+    },
+    "B": {
+     "east": "80074f57c66860dedfc8002f624e49e3868a5ec0b6686279b4706a9a2585724f",
+     "north": "6a5b76aa68d7a292bb1c612b597de2d2c4f256d253f7d978ddccbb2c07a85152",
+     "south": "0df7e964f8bc338a78314a5673cfcfe24266eb6968e884dfd5613434badcd627"
+    },
+    "C": {
+     "east": "a511ed49037af187e0a3f7d0b66bc12fd104fd27c1686ab60fee3bf7ebb197da",
+     "north": "9018adcc1c30167aa4aad8077a3a6e8ce0a0fecc62abf145df4e0243ca72a0b0",
+     "south": "6cfef7edbf01eddcd92a347716b3d6ed3457fd9ed72cc8fad9b80ba453c7eaa2"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Tikkit/RM_Tikkit",
+    "B": "Things/Pawn/Animal/RM_Tikkit/RM_Tikkit",
+    "C": "Things/Pawn/Animal/RM_Tikkit/RM_Tikkit"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LeaningScrub",
+    "B": "render arteval_RM_Tikkit_r2",
+    "C": "render arteval_RM_Tikkit_r1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Tikkit/RM_Tikkit"
+   ],
+   "res": "Things/Pawn/Animal/RM_Tikkit/RM_Tikkit",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "tikkit"
+  },
+  "RM_TunnelSnake": {
+   "columns": {
+    "A": {
+     "east": "5f5c9c531370a8b7bb6acf365e1610f2681d806e05a5fab3b97d639d9bd9ba4d",
+     "north": "854aadcb1c79dc6e824f91dbca5ccedc21776801291fbf7019915cc7f8ef422e",
+     "south": "d19250d2b134d8038649ad3a9a146862df98a9a52ea85eaca6db1bfdbcbf90de"
+    },
+    "B": {
+     "east": "ad468db799fa0b1d9deee0f2ccd17330851e1c123a1710ea4bfc95e6c9a28434",
+     "north": "68ca8b84b6bf52e1848c2f0f199c2428aac0b9ab8bbd1ca8402bcd7ed339a128",
+     "south": "eaea80c90570cc466538f265414c1f9e58c5bf46404fd8f7d5039ab92a5c38c0"
+    },
+    "C": {
+     "east": "1c359ebccae8f4782d6fd56b33123b5bb52d3f3198da15f6f7ad671286644fba",
+     "north": "53d646ae80857dafe954807dada2c2e20439c366a144bd7cd25ac8f38f43626c",
+     "south": "309a83046ed58b070d383ebc18baaa1676a383e133d72761eb1b091c579269f3"
+    },
+    "D": {
+     "east": "5f5c9c531370a8b7bb6acf365e1610f2681d806e05a5fab3b97d639d9bd9ba4d",
+     "north": "640204f1eb8cfc3bc9bd87c7c1229fa9f5c9fbd94329e267651028655c8edb29",
+     "south": "d19250d2b134d8038649ad3a9a146862df98a9a52ea85eaca6db1bfdbcbf90de"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_TunnelSnake/RM_TunnelSnake",
+    "B": "Things/Pawn/Animal/RM_TunnelSnake/RM_TunnelSnake",
+    "C": "Things/Pawn/Animal/RM_TunnelSnake/RM_TunnelSnake",
+    "D": "Things/Pawn/Animal/RM_TunnelSnake/RM_TunnelSnake"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LeaningScrub",
+    "B": "render arteval_RM_TunnelSnake_r2",
+    "C": "render arteval_RM_TunnelSnake_r1",
+    "D": "render rsw_tunnelsnake_v1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_TunnelSnake/RM_TunnelSnake"
+   ],
+   "res": "Things/Pawn/Animal/RM_TunnelSnake/RM_TunnelSnake",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "tunnelsnake"
+  },
+  "RM_Vissler": {
+   "columns": {
+    "A": {
+     "east": "7ce1b88dd71215bb174389b730377f116f6c9eee2eddb178d6b2391bf6a2f12b",
+     "north": "6fa5c8e755ad27ffd6a162bcc8515b73c7602d018d5cb5e3c7303a1be4b04e7c",
+     "south": "8ff558e7314678fb713a8a6adb517b18ee3504bd8496049dcfd0847fe4321fa3"
+    },
+    "B": {
+     "east": "9d43b45753cbebc38ee0c3072fd3bc008fb22bd75b1310b0d71be83f41c9da58",
+     "north": "85f72253076df3369c1ab63e7626680b632b40769a7c138dafcf0f167b349862",
+     "south": "e8bdea3ca8716b6423d793fc032545964131fe858a50de8aec3addb00f36fdfa"
+    },
+    "C": {
+     "east": "a0879297ce10852a01f1fd92a6b6ada533f3d47dee41bdc3a11565b652d083cd",
+     "north": "df5f22da01f50c6c2a382dc60766b739d9a54f138ae1306a41065e6c82f70f08",
+     "south": "a9b0110a5ed0c677a462941e5c9426fa0292c74b0c16a8b9ef2ca072f9cfde7b"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Vissler/RM_Vissler",
+    "B": "Things/Pawn/Animal/RM_Vissler/RM_Vissler",
+    "C": "Things/Pawn/Animal/RM_Vissler/RM_Vissler"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LeaningScrub",
+    "B": "render arteval_RM_Vissler_r2",
+    "C": "render arteval_RM_Vissler_r1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Vissler/RM_Vissler"
+   ],
+   "res": "Things/Pawn/Animal/RM_Vissler/RM_Vissler",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "vissler"
+  }
+ },
+ "sheetId": "art_eval_shadow_fauna_leaningscrub_r2_04_sheet_2026-10-24",
+ "snapshotId": "097d2cb645706f12"
+}

@@ -1,0 +1,44 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RM_Dustflutter": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: DEPARTURE_MISSING, STYLE_CARTOON, STYLE_OFF \u00b7 GPT regen, unsettled K1, K2, K3",
+   "context": "judged candidate r2 (image sha ea16c99922); STYLE_CARTOON: Each body has a round chibi face with two dark dot eyes and a little mouth, rendered as smooth clay or vinyl with soft 3D shading, like a to; STYLE_OFF: The surfaces are uniform and smooth, like a 3D render, with no brushwork or outline.; DEPARTURE_MISSING: The bodies are plump and dome-shaped, standing upright rather than flattened low to the ground."
+  },
+  "RM_Fuzzrunner": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: ALPHA_HALO, DEPARTURE_MISSING, STYLE_CARTOON \u00b7 GPT regen, unsettled K1, K3",
+   "context": "judged candidate r2 (image sha 0d85dd25e6); ALPHA_HALO: Bright yellow and red matte-fringe pixels around the forward whiskers in the east profile, visible on a dark background; a few reddish edge ; STYLE_CARTOON: Two glossy round black eyes, a button nose and a plush-ball body give the front view a slightly soft-toy feel, though the fur rendering is r; DEPARTURE_MISSING: The pom tail on east and north and the visible clawed feet protrude from the outline, so the 'nothing poking out' pebble silhouette is only "
+  },
+  "RM_Fuzzviper": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: F_SIZE_JUMP, STYLE_CARTOON \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate r2 (image sha c4a4365ef0); F_SIZE_JUMP: North's visible height is 965 px against south's 688 px and east's 198 px; north is a full-length body, south a squat column.; STYLE_CARTOON: Two small round bead eyes set symmetrically on a fuzzy rounded mound give the head end a faint plush-toy look."
+  }
+ }
+}

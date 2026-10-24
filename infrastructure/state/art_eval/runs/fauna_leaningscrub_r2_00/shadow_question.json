@@ -1,0 +1,44 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RM_Chikka": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: ALPHA_HALO, F_SIZE_JUMP \u00b7 GPT regen, unsettled K1, K2",
+   "context": "judged candidate r2 (image sha caee64bfbf); F_SIZE_JUMP: The south ball with its upright crest looks taller and wider than the north dome at the shared scale (917 vs 791/769 px height).; ALPHA_HALO: Faint yellowish semi-transparent fringe pixels along the quill tips, visible against a black background."
+  },
+  "RM_Crustweevil": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 3) \u00b7 Opus REALLY_BAD: ALPHA_HALO, F_INCONSISTENT, F_NORTH_FACE, F_SIZE_JUMP, X_WRONG",
+   "context": "judged candidate r2 (image sha c92dc63761); F_NORTH_FACE: The north facing does not show the creature's rear at all (it is unrelated posts).; F_INCONSISTENT: South and east show the lichen-shelled insect; north shows building-style bollards.; F_SIZE_JUMP: The measured 69% height spread comes from north being a different object, not from a pose."
+  },
+  "RM_Durrok": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: DEPARTURE_MISSING, F_SIZE_JUMP \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate r2 (image sha 565349cd07); F_SIZE_JUMP: South is about 44% taller than east and nearly fills the canvas width. It looks like a much bigger animal than the east profile, whose lengt; DEPARTURE_MISSING: The cords are matte, evenly twisted yarn-like ropes. They read as dry rope or mop strands rather than glossy, wet-looking hair.; DEPARTURE_MISSING: The grey-green growth is drawn as branching leafy sprays like ivy or fern rather than crusty, mat-like lichen."
+  }
+ }
+}

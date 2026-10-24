@@ -1,0 +1,131 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_fauna_leaningscrub_r2_00",
+ "built": "2026-10-24T02:09:22-0700",
+ "census": "Transient/biome_ffar/art_eval_shadow_fauna_leaningscrub_r2_00.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 26 mods \u2014 a test list): 320 active",
+ "rows": {
+  "RM_Chikka": {
+   "columns": {
+    "A": {
+     "east": "464ca343cec1db01a7dd3f2c76b41dffbe28da6b0109c251e644ce81f52d5c8b",
+     "north": "af51dc299fa37ad10b711257da064b11e35ab49f5e2e1e50d725cc9458df5e0e",
+     "south": "27d7aad7fd625efc154e5a70afcf53151004aa0f63333361b94d401457605fa7"
+    },
+    "B": {
+     "east": "8168c1eccbae4fb8bac5398af81fc5df35a6f4c14773fe598fb4cf7b9217f04a",
+     "north": "56c1d203cb78db04e17c04ffd68125aa5e869a57240f5a81928b4c5db2f298a4",
+     "south": "b7b167b667f8a25f7d785c1de40abd36407d435afdc1ef52248e4a69a8a65d9a"
+    },
+    "C": {
+     "east": "a365db8e9f50624eb723b147e12da17ecdfcf4210d06c2b241c37b7577d388b6",
+     "north": "abc038f44a59bf75aaa93c6faa76e7538a138523b4088e7d06369ebec4dd0409",
+     "south": "082726f32631d97cf4e82cae4da18811be5f5996d8217b2fbd7e88f9ee7ad4a9"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Chikka/RM_Chikka",
+    "B": "Things/Pawn/Animal/RM_Chikka/RM_Chikka",
+    "C": "Things/Pawn/Animal/RM_Chikka/RM_Chikka"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render arteval_RM_Chikka_r2",
+    "C": "render arteval_RM_Chikka_r1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Chikka/RM_Chikka"
+   ],
+   "res": "Things/Pawn/Animal/RM_Chikka/RM_Chikka",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "chikka"
+  },
+  "RM_Crustweevil": {
+   "columns": {
+    "A": {
+     "east": "7d3f5a59f0748f0c40ae8dc9b055591f0105cdd5574385d3be14b3d980c70aad",
+     "north": "85967dc8670b0bba453316961a6f6a87f7d74b00fdd7a3032a5cfbe3287aeef6",
+     "south": "64bf5c5961411d9f77032c0ad9150ce0113621b5cf48cba18a4424777171d813"
+    },
+    "B": {
+     "east": "96d1b184054ded4347926ec4122fa4545414a57b8572406c1b90f1a8aaf94072",
+     "north": "88b3bd9a7688f0c00005483f2d4a1916b2565242768500bd2a77ae577b59d11b",
+     "south": "245922aee63c0ea3902304dce1c8a49cbc7a80ed549c4f31bc3ff8ed9f350291"
+    },
+    "C": {
+     "east": "8ef6bf26625d880f72794db2a0d579574f936d1cb6a1b8ca67741c496605bfa3",
+     "north": "2e9631cfac6a4b7b33fea00457277ec1d70685da12ca0c519563fcba376b9c56",
+     "south": "6cfef7edbf01eddcd92a347716b3d6ed3457fd9ed72cc8fad9b80ba453c7eaa2"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Crustweevil/RM_Crustweevil",
+    "B": "Things/Pawn/Animal/RM_Crustweevil/RM_Crustweevil",
+    "C": "Things/Pawn/Animal/RM_Crustweevil/RM_Crustweevil"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LeaningScrub",
+    "B": "render arteval_RM_Crustweevil_r2",
+    "C": "render arteval_RM_Crustweevil_r1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Crustweevil/RM_Crustweevil"
+   ],
+   "res": "Things/Pawn/Animal/RM_Crustweevil/RM_Crustweevil",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "crustweevil"
+  },
+  "RM_Durrok": {
+   "columns": {
+    "A": {
+     "east": "cf024497dad1b72f3dd711fd0f198e48a298fe0c17c2fe5dc4b649b95c23e372",
+     "north": "33f529b0b5daaa8f04b656afc58d863347d95526d7a86187e06a540569aa920c",
+     "south": "c1c75f694dd45511727d9637684623ef97e47b297f82a663c886eafc1c1e0137"
+    },
+    "B": {
+     "east": "38404a11e7e7171bf43c046f229e5bcf6925c7600ec318a39faabd3d8a987101",
+     "north": "5528b691f5a1f617a74fe438bd6d02d5bf95e560d0f16a5ca909780b7c8d0ca1",
+     "south": "c1f71f73dd7a8cf80116b53da1ed039f5754347fb7c01945dc3dfd2c96b39ffa"
+    },
+    "C": {
+     "east": "4982269898a9e0e62d8e9e45bb812d9cf7325daf0593e53b779f958e06f68fd6",
+     "north": "489f620dffbe631fc716dab5dbe186ad7edc6424a2550a9bbe09c1eea85f8c31",
+     "south": "b941093941c5c3ea4ac7b22d8cddde17b19a0fe77d804aaa6f24600d3f2c19e5"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Durrok/RM_Durrok",
+    "B": "Things/Pawn/Animal/RM_Durrok/RM_Durrok",
+    "C": "Things/Pawn/Animal/RM_Durrok/RM_Durrok"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render arteval_RM_Durrok_r2",
+    "C": "render arteval_RM_Durrok_r1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Durrok/RM_Durrok"
+   ],
+   "res": "Things/Pawn/Animal/RM_Durrok/RM_Durrok",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "durrok"
+  }
+ },
+ "sheetId": "art_eval_shadow_fauna_leaningscrub_r2_00_sheet_2026-10-24",
+ "snapshotId": "7792f60ed9ecc2dc"
+}

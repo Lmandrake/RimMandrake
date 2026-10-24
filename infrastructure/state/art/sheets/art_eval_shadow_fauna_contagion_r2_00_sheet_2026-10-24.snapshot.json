@@ -1,0 +1,155 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_fauna_contagion_r2_00",
+ "built": "2026-10-24T02:18:15-0700",
+ "census": "Transient/biome_ffar/art_eval_shadow_fauna_contagion_r2_00.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 26 mods \u2014 a test list): 320 active",
+ "rows": {
+  "RM_Bloodlurk": {
+   "columns": {
+    "A": {
+     "east": "fb1a38ff15bda5fc7fa78dc2b2ab3b05163b86b52eb95c436422a24330d6fee5",
+     "north": "a114f9b1b26fcd682f2c18367abc9628e30c0b80c16916f7e0777f8d3b623775",
+     "south": "d0e68df4947a50d356a151604032e4636e1909ead17fc791b41ffdfa47ad8a51"
+    },
+    "B": {
+     "east": "f76ac34802f819c3314bf6657e28ecaf41dfcb4cd0ea98aade09db63b804c64b",
+     "north": "308545cdfcea776bf976b32fb23edca5bcc8623a6e03fa047811c9e392fa0e38",
+     "south": "5c42ac35fd4a4b3cb6745b55d52ea08a860790d13beff3d6e593144d986f8a22"
+    },
+    "C": {
+     "east": "962d6f6220821a6e5d1af62679afb8631ba64ae5ab6dd51dc44024952c8dba2a",
+     "north": "47dbcda696c2000f2ade2d9253212800286b8ae16d01c740ab903ccc2771fbad",
+     "south": "cb6e76afcd6a86bc011d18b63406a92939c26d5be352c81ab18b8ce22a7f4743"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Bloodlurk/RM_Bloodlurk",
+    "B": "Things/Pawn/Animal/RM_Bloodlurk/RM_Bloodlurk",
+    "C": "Things/Pawn/Animal/RM_Bloodlurk/RM_Bloodlurk"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion",
+    "B": "render arteval_RM_Bloodlurk_r1",
+    "C": "render arteval_RM_Bloodlurk_r2"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Bloodlurk/RM_Bloodlurk"
+   ],
+   "res": "Things/Pawn/Animal/RM_Bloodlurk/RM_Bloodlurk",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "bloodlurk"
+  },
+  "RM_ContagionIkee": {
+   "columns": {
+    "A": {
+     "east": "0a52fabd2e890b333b37b01703619d9445cf45d7531caac9a31ba2850b9f7e79",
+     "north": "f124c52df7120969f97fcf7496ba50bd34a564c3bb44a830c0a34c6d011600ab",
+     "south": "37cc9074739786995917f32fd520f643bba62ccad9b4b1d852bbb34506f82ee0"
+    },
+    "B": {
+     "east": "b0f5517607df7db70d98c65d84af14b8c632fd50a6f28f94d2804b53512a55c5",
+     "north": "de5b1cfcaf70fd5c97d0009e2c6f1d65efc040fafa490c40cbe08447143f82cb",
+     "south": "2572fdbbdd576ee502da79efa81372f6463aee497047be62e311283f58fb4cf5"
+    },
+    "C": {
+     "east": "97b300a19de5966797ba9b70c6b8308cc1703c7953ded70d6f4b73a4089e71fe",
+     "north": "e5a90ee57802bbf875959fedfee7cf1826ccb319978e416318084836ffa5ea3b",
+     "south": "46ccb1bdc8e69a4aea80834c12f872f4275dd376ccbfebca1c9a200171c13cca"
+    },
+    "D": {
+     "east": "0ccc49cd92baaa1e5425597da6b14e76c3a2750edfd11111fe225fbb4ae35f29",
+     "north": "ce45e135d05031a07f80d4200bf53836069ef313bfb2e448be32cc2e5ec1b8a9",
+     "south": "c4c193224e834bcf3d267dd8f039fea2a012e24d7b18721baf6b06d5191e77e4"
+    },
+    "E": {
+     "east": "0a52fabd2e890b333b37b01703619d9445cf45d7531caac9a31ba2850b9f7e79",
+     "north": "f124c52df7120969f97fcf7496ba50bd34a564c3bb44a830c0a34c6d011600ab",
+     "south": "a336837e6bad9940c46f8f6bfdc011a1a92c0430561a3e504dc628ed4af8bb20"
+    },
+    "F": {
+     "east": "a23d50ff708f11ac07c18688a22118d728021a38b22f16ad2a52b9fc39bd54f8",
+     "north": "c5331ce4ac40af59753d9bc04c2a7cf6e91ac34b888b5066ad4a5a9d0d11ecc6",
+     "south": "d4ebcabdf25e116148940462b848171becb272795db0f3072a39109d11cd4c91"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_ContagionIkee/RM_ContagionIkee",
+    "B": "Things/Pawn/Animal/RM_ContagionIkee/RM_ContagionIkee",
+    "C": "Things/Pawn/Animal/RM_ContagionIkee/RM_ContagionIkee",
+    "D": "Things/Pawn/Animal/RM_ContagionIkee/RM_ContagionIkee",
+    "E": "Things/Pawn/Animal/RSW_Ikee/RSW_Ikee",
+    "F": "Things/Pawn/Animal/RSW_Ikee/RSW_Ikee"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion",
+    "B": "render arteval_RM_ContagionIkee_r1",
+    "C": "render arteval_RM_ContagionIkee_r2",
+    "D": "history Contagion 2026-09-29",
+    "E": "IN GAME \u2014 SWBestiary",
+    "F": "render stillsand_regen_RSW_Ikee_v2"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_ContagionIkee/RM_ContagionIkee"
+   ],
+   "res": "Things/Pawn/Animal/RM_ContagionIkee/RM_ContagionIkee",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
+   "shownBase": [],
+   "subject_key": "contagionikee"
+  },
+  "RM_Danglemaw": {
+   "columns": {
+    "A": {
+     "east": "78acbbaceeb0bb464ca8b67953580f2209216ddb710987169eb88465f41d6762",
+     "north": "0712b5ffecfd746d9aece691c14f200ddf2f2b8d28d68462444d09906fb9d71d",
+     "south": "fb5e8b4c2368d5479fe910f635604b31997d6c09cb9dd65a617218106ce78523"
+    },
+    "B": {
+     "east": "eaf5f2ec4284e0cea6da9a94a81ac0403bcc2f0b8c5f76a46440f7355e5cee1b",
+     "north": "a65db240ffcb7705c0b0a59e8d86a87f6f2ff885a5ea0214cc1f49a8bd9f3d53",
+     "south": "37bd858ce7b7562c338c8b7a12b5d6c22e31234d62be7e963891448fc87b8c22"
+    },
+    "C": {
+     "east": "e354fd19e6aeb11862baeb61b11ad78fc54e9ab7514d5e74dc2fe54465bc0e86",
+     "north": "cc26113c66a8fe1fc3076852d95f330a077599fe0ac9bd0df43fb2de466e0ec3",
+     "south": "cea9ecb424a559f759387959eea3646622405e3387d338ab95cfe1e90366b0a1"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Danglemaw/RM_Danglemaw",
+    "B": "Things/Pawn/Animal/RM_Danglemaw/RM_Danglemaw",
+    "C": "Things/Pawn/Animal/RM_Danglemaw/RM_Danglemaw"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion",
+    "B": "render arteval_RM_Danglemaw_r2",
+    "C": "render arteval_RM_Danglemaw_r1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Danglemaw/RM_Danglemaw"
+   ],
+   "res": "Things/Pawn/Animal/RM_Danglemaw/RM_Danglemaw",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "danglemaw"
+  }
+ },
+ "sheetId": "art_eval_shadow_fauna_contagion_r2_00_sheet_2026-10-24",
+ "snapshotId": "7315d5b50c31ac63"
+}

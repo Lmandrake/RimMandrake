@@ -1,0 +1,17 @@
+{
+ "RM_Dustflutter": [
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Dustflutter_r2_south/arteval_RM_Dustflutter_r2_south.png",
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Dustflutter_r2_east/arteval_RM_Dustflutter_r2_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Dustflutter_r2_north/arteval_RM_Dustflutter_r2_north.png"
+ ],
+ "RM_Fuzzrunner": [
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Fuzzrunner_r2_south/arteval_RM_Fuzzrunner_r2_south.png",
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Fuzzrunner_r2_east/arteval_RM_Fuzzrunner_r2_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Fuzzrunner_r2_north/arteval_RM_Fuzzrunner_r2_north.png"
+ ],
+ "RM_Fuzzviper": [
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Fuzzviper_r2_south/arteval_RM_Fuzzviper_r2_south.png",
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Fuzzviper_r2_east/arteval_RM_Fuzzviper_r2_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Fuzzviper_r2_north/arteval_RM_Fuzzviper_r2_north.png"
+ ]
+}

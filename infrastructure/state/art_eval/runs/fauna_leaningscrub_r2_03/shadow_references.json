@@ -1,0 +1,17 @@
+{
+ "RM_Shokka": [
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Shokka_r2_south/arteval_RM_Shokka_r2_south.png",
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Shokka_r2_east/arteval_RM_Shokka_r2_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Shokka_r2_north/arteval_RM_Shokka_r2_north.png"
+ ],
+ "RM_Surrik": [
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Surrik_r2_south/arteval_RM_Surrik_r2_south.png",
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Surrik_r2_east/arteval_RM_Surrik_r2_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Surrik_r2_north/arteval_RM_Surrik_r2_north.png"
+ ],
+ "RM_Thornhold": [
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Thornhold_r2_south/arteval_RM_Thornhold_r2_south.png",
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Thornhold_r2_east/arteval_RM_Thornhold_r2_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Thornhold_r2_north/arteval_RM_Thornhold_r2_north.png"
+ ]
+}

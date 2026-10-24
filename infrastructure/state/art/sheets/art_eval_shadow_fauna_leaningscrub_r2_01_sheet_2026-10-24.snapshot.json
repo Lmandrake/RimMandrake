@@ -1,0 +1,147 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_fauna_leaningscrub_r2_01",
+ "built": "2026-10-24T02:10:39-0700",
+ "census": "Transient/biome_ffar/art_eval_shadow_fauna_leaningscrub_r2_01.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 26 mods \u2014 a test list): 320 active",
+ "rows": {
+  "RM_Dustflutter": {
+   "columns": {
+    "A": {
+     "east": "7e3d9051998ca502d4c2e7c661810754c40bfdd7deb7dfac96c1711c819c1c22",
+     "north": "f5186623f783d757ef20443f87f4e273592adc26be0e9807b8e2e74d91fecef5",
+     "south": "b393ac17ca441f8caa1af46ed272f414612de317660965cd0f5dea26ec49dbdf"
+    },
+    "B": {
+     "east": "2bfcc0774f2da190e00597bb54103f273be0c0a3f2cd2c04727c4df2ce159d88",
+     "north": "3301d6e6298c127646c232b05d7b2aa37fb10e13ebd595ef7105cff4a3d65fd1",
+     "south": "80e0a01050e17ac98e5db57009c9742314b8481103c99c8b1c244102ef6286b0"
+    },
+    "C": {
+     "east": "35a568db803f3f77212ccc753959e742ed4f2b4b4af6b98942bde50053e0029d",
+     "north": "b44bc61418a7d97dc5d1365716f99f8f4b37106a2d5142f6feae8d823bf1bf0f",
+     "south": "a5c33413510144fae13bc8149df0f6f5856c45e95d88e3dbbbfa351f92eeadeb"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Dustflutter/RM_Dustflutter",
+    "B": "Things/Pawn/Animal/RM_Dustflutter/RM_Dustflutter",
+    "C": "Things/Pawn/Animal/RM_Dustflutter/RM_Dustflutter"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LeaningScrub",
+    "B": "render arteval_RM_Dustflutter_r2",
+    "C": "render arteval_RM_Dustflutter_r1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Dustflutter/RM_Dustflutter"
+   ],
+   "res": "Things/Pawn/Animal/RM_Dustflutter/RM_Dustflutter",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "dustflutter"
+  },
+  "RM_Fuzzrunner": {
+   "columns": {
+    "A": {
+     "east": "2328eb361ccfbf6ced95fdc7d0d966c9e90230155844fa39c67551580f43d45b",
+     "north": "4eec55e783afb44ace15bc479cce2134973b5efbe26f2e169960b270d0bb6992",
+     "south": "64f9cea9cf00ce4f17af472fbdc346b26e4e621feb7bfdf74d46aa8f31fd7484"
+    },
+    "B": {
+     "east": "4a9ef988afa1ea28117e51192e32baf8a3f511e5c4d37106d42b8f9aac8aceb4",
+     "north": "3278dd7f0280548bd341a49339d786699489e608bfe50878e6134c7c37a38011",
+     "south": "4a5003107587ee3a0c8c08246f32f3208f05516ff227212cb227374fa4b26832"
+    },
+    "C": {
+     "east": "754e14c8f64b47ebb053ea321c519867fe50b1ed8c6c5903612931720329e495",
+     "north": "92d2e372359c942c2554425283bcb84f239864846a90ec0cbdfed9e46a9e463f",
+     "south": "769181a4dfa6ea4940a28f12cc6f27b5489cf925382effe6c266eb57a1e92067"
+    },
+    "D": {
+     "east": "2328eb361ccfbf6ced95fdc7d0d966c9e90230155844fa39c67551580f43d45b",
+     "north": "3be3e066f4c459ae98fdaa68227002f9625761697aa96564836ac61551672d79",
+     "south": "90099fd69d82e72f24ec0d03a63897fe871f16e4775fe2d65aee88fccffb7ec7"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Fuzzrunner/RM_Fuzzrunner",
+    "B": "Things/Pawn/Animal/RM_Fuzzrunner/RM_Fuzzrunner",
+    "C": "Things/Pawn/Animal/RM_Fuzzrunner/RM_Fuzzrunner",
+    "D": "Things/Pawn/Animal/RM_Fuzzrunner/RM_Fuzzrunner"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LeaningScrub",
+    "B": "render arteval_RM_Fuzzrunner_r2",
+    "C": "render arteval_RM_Fuzzrunner_r1",
+    "D": "render leaningscrub_fuzzrunner_v1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Fuzzrunner/RM_Fuzzrunner"
+   ],
+   "res": "Things/Pawn/Animal/RM_Fuzzrunner/RM_Fuzzrunner",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "fuzzrunner"
+  },
+  "RM_Fuzzviper": {
+   "columns": {
+    "A": {
+     "east": "d33428cad4ebc3c356ec13163ed6a23847b6d5cbff9f668e3b6be66b9c48c694",
+     "north": "cdae58e535b701a0d75545a61d5fe668f6020063fdcc275633f49de832d8a50d",
+     "south": "5cf72a82011943a74d47dce57d47667a1c052e6c87a83a4e285097ed9e2068cf"
+    },
+    "B": {
+     "east": "35d7362f23d73e5cd6a412796de0831ea0745b28186ab6640a6cf23b52c433eb",
+     "north": "794c257d316a46776bbbda488daa0ada84cb0a7ed5730bfedeb22f88fdb8ce53",
+     "south": "29191f698ca6aa85dd55b0aa29fb8591636c2f9a0c9f400f93b2b78d529ae5d1"
+    },
+    "C": {
+     "east": "517de1e738f6674a18d253696e56c28207c5b91544b51a478bbea952501f4ffd",
+     "north": "ce7fdefb983b0393085e9fe68a4dd3e1de5c7e3a9476396029b118e0e9e3f12c",
+     "south": "cab73166b4652b652c9c0e6af30bd2a5fd18adae4932966410b8981ae150347c"
+    },
+    "D": {
+     "east": "d33428cad4ebc3c356ec13163ed6a23847b6d5cbff9f668e3b6be66b9c48c694",
+     "north": "62fce50c6499f7d5ae946404b76e8c4c63795ab44e1f51bdbe5da5157c7682f7",
+     "south": "70d8112e69f83742271df4cfab6956daa24c5c81f47d2d9bbc1d550f828ba9bc"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Fuzzviper/RM_Fuzzviper",
+    "B": "Things/Pawn/Animal/RM_Fuzzviper/RM_Fuzzviper",
+    "C": "Things/Pawn/Animal/RM_Fuzzviper/RM_Fuzzviper",
+    "D": "Things/Pawn/Animal/RM_Fuzzviper/RM_Fuzzviper"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LeaningScrub",
+    "B": "render arteval_RM_Fuzzviper_r2",
+    "C": "render arteval_RM_Fuzzviper_r1",
+    "D": "render standtall_b1_rm_fuzzviper"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Fuzzviper/RM_Fuzzviper"
+   ],
+   "res": "Things/Pawn/Animal/RM_Fuzzviper/RM_Fuzzviper",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "fuzzviper"
+  }
+ },
+ "sheetId": "art_eval_shadow_fauna_leaningscrub_r2_01_sheet_2026-10-24",
+ "snapshotId": "a563316b3f10bb41"
+}
