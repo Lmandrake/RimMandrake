@@ -224,6 +224,7 @@
       <Beauty>0</Beauty>
     </statBases>
     <building>
+      <paintable>true</paintable>  <!-- vanilla Paint designator; owner 2026-10-24 wants these player-paintable -->
       <isEdifice>false</isEdifice>
       <expandHomeArea>false</expandHomeArea>
       <ai_chillDestination>false</ai_chillDestination>
@@ -274,6 +275,7 @@
       <Beauty>0</Beauty>
     </statBases>
     <building>
+      <paintable>true</paintable>  <!-- vanilla Paint designator; owner 2026-10-24 wants these player-paintable -->
       <isEdifice>false</isEdifice>
       <expandHomeArea>false</expandHomeArea>
       <ai_chillDestination>false</ai_chillDestination>
@@ -320,6 +322,7 @@
       <Flammability>0.4</Flammability>
     </statBases>
     <building>
+      <paintable>true</paintable>  <!-- vanilla Paint designator; owner 2026-10-24 wants these player-paintable -->
       <expandHomeArea>false</expandHomeArea>
       <ai_chillDestination>false</ai_chillDestination>
     </building>
@@ -369,6 +372,7 @@
       <li>HeavyBridges</li>
     </researchPrerequisites>
     <building>
+      <paintable>true</paintable>  <!-- vanilla Paint designator; owner 2026-10-24 wants these player-paintable -->
       <isEdifice>false</isEdifice>
       <expandHomeArea>false</expandHomeArea>
       <ai_chillDestination>false</ai_chillDestination>
@@ -422,6 +426,7 @@
       <li>HeavyBridges</li>
     </researchPrerequisites>
     <building>
+      <paintable>true</paintable>  <!-- vanilla Paint designator; owner 2026-10-24 wants these player-paintable -->
       <isEdifice>false</isEdifice>
       <expandHomeArea>false</expandHomeArea>
       <ai_chillDestination>false</ai_chillDestination>
@@ -471,6 +476,7 @@
       <li>HeavyBridges</li>
     </researchPrerequisites>
     <building>
+      <paintable>true</paintable>  <!-- vanilla Paint designator; owner 2026-10-24 wants these player-paintable -->
       <expandHomeArea>false</expandHomeArea>
       <ai_chillDestination>false</ai_chillDestination>
     </building>
@@ -604,6 +610,7 @@
       <Beauty>0</Beauty>
     </statBases>
     <building>
+      <paintable>true</paintable>  <!-- vanilla Paint designator; owner 2026-10-24 wants these player-paintable -->
       <isEdifice>false</isEdifice>
       <expandHomeArea>false</expandHomeArea>
       <ai_chillDestination>false</ai_chillDestination>
@@ -656,6 +663,7 @@
       <li>HeavyBridges</li>
     </researchPrerequisites>
     <building>
+      <paintable>true</paintable>  <!-- vanilla Paint designator; owner 2026-10-24 wants these player-paintable -->
       <isEdifice>false</isEdifice>
       <expandHomeArea>false</expandHomeArea>
       <ai_chillDestination>false</ai_chillDestination>
