@@ -93,17 +93,22 @@ def main():
         check("keep with no time: refused", [k["id"] for k in RS.keeps_after([{"id": "k3"}], judged)] == ["k3"])
         check("no judgement time: every keep refuses", len(RS.keeps_after([old_k], None)) == 1)
 
-        # owner prompts: sheet note and jsonl, newest wins; prefill (empty) notes ignored
+        # owner prompts: a sheet row's `prompt` field and jsonl, newest wins. A free `note` is NEVER a prompt: the real
+        # 2026-10-24 escalation notes were complaints ("1205 px/cell?! Why?!", "Keep original"), and rows pasted them
+        # verbatim as the creature description
         root = td / "repo"
         sd = root / "Transient/biome_ffar"
         sd.mkdir(parents=True)
         (sd / "owner_escalations_x_sheet_2026-10-24.decisions.json").write_text(json.dumps({
             "reviewStatus": {"state": "saved", "at": "2026-10-24T08:00:00-07:00"},
-            "decisions": {"D": {"decision": "A", "note": "a squat grey beetle, six legs"},
-                          "E": {"decision": "A", "note": ""}}}))
+            "decisions": {"D": {"decision": "A", "prompt": "a squat grey beetle, six legs", "note": "nice"},
+                          "E": {"decision": "A", "note": ""},
+                          "F": {"decision": "C", "note": "1205 px/cell?! Why?!"},
+                          "G": {"decision": "A", "note": "Keep original. These are weapon systems."}}}))
         op = td / "owner_prompts.jsonl"
         found = RS.owner_prompts(root, op)
-        check("sheet note found, empty note ignored", set(found) == {"D"} and found["D"]["text"].startswith("a squat"))
+        check("sheet prompt field found, empty note ignored", "D" in found and found["D"]["text"].startswith("a squat"))
+        check("sheet notes are never prompts", set(found) == {"D"})
         op.write_text(json.dumps({"at": "2026-10-24T09:00:00-07:00", "def": "D", "text": "newer words",
                                   "owner_said": "newer words"}) + "\n")
         check("newest owner text wins", RS.owner_prompts(root, op)["D"]["text"] == "newer words")

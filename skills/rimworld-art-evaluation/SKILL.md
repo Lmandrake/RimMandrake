@@ -71,8 +71,9 @@ python3 selftest_art_eval.py                            # pure parts + a mocked 
   "…"` appends `infrastructure/state/art_eval/round_resets.jsonl`; every counter (runner cap, fauna_drive rows /
   candidates / install) then counts the new series and job ids carry it (`arteval_<DEF>_s1r1_south`). Then
   `fauna_drive.py rows <source run> --only <DEF>... --out <rows.json> --file` files round 1. His prompt text for a
-  creature (`fauna_drive.py owner-prompt <DEF> --text … --owner-said …`, or a note he typed on an
-  `owner_escalations_*` sheet) is used VERBATIM inside the template's style sentences, never reworded; `fauna_drive.py
+  creature (`fauna_drive.py owner-prompt <DEF> --text … --owner-said …`, or a `prompt` field on an
+  `owner_escalations_*` sheet row; a free sheet `note` is never a prompt — his notes are complaints and
+  instructions, so record one with `owner-prompt` only when it really is prompt text) is used VERBATIM inside the template's style sentences, never reworded; `fauna_drive.py
   prompts` lists what was found. If he keeps or picks the creature's art meanwhile, end the series with
   `fauna_drive.py stop <DEF>... --why|--by-card …` (rows/candidates/install then refuse it). Code: `src/RimMandrake/Utils/art_eval/round_series.py`.
 - A spec is JSON: `subject, label, template (creature|plant|machine), module, description, invented,

@@ -24,8 +24,9 @@ the pipeline's own prompt (below) so it is not idle meanwhile.
   `arteval_<DEF>_s1r1_{south,east,north}`.
 - Owner prompt: `rows` looks up `round_series.owner_prompts()` on every call: newest of
   `infrastructure/state/art_eval/owner_prompts.jsonl` (append with
-  `fauna_drive.py owner-prompt <DEF> --text "<his words>" --owner-said "<his words>"`) and any non-empty `note`/`prompt`
-  he types on an `owner_escalations_*` sheet. His text goes in VERBATIM as the description, between the template's
+  `fauna_drive.py owner-prompt <DEF> --text "<his words>" --owner-said "<his words>"`) and any non-empty `prompt` field
+  on an `owner_escalations_*` sheet row (a free `note` is never read as a prompt: review 2026-10-24 found the real notes
+  are complaints/instructions; record a note that is prompt text with `owner-prompt`). His text goes in VERBATIM as the description, between the template's
   own sentences:
   `A single RimWorld creature sprite of the <label>, painterly vanilla RimWorld style, realistic, clean dark outline,
   transparent background. <HIS TEXT> Same low, angled game camera and the same body size in every drawing. The edges
