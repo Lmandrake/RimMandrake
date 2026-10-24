@@ -28,6 +28,10 @@ this mod. The newest offline proof, `D:\ClaudeWork\rimmandrake\scratch\proof_atm
 holds two rows. P1 (`hook_in_source`) passes. D1 (`default_gentle_disk`) passes: flashers 0, never dark, no
 white anywhere.
 
+> **Owner ruling, 2026-10-24:** *"Do not plan for colorblind or photosensitive at all. Maximize aesthetics."* No
+> accessibility or flash-rate accommodation is designed or tested; GPT's accessibility findings (review file) are
+> void. Gentle-by-default remains, as his 2026-09-16 taste ruling.
+
 ## 1. The mod in plain words, by phase
 
 **The idea.** A ship's own light fixtures become a slow, shifting tapestry. On the Utinni, nine gods live in
