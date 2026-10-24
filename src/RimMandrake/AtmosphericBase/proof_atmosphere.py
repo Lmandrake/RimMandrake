@@ -596,6 +596,28 @@ def judge_pattern_layers(xml_by_name, built):
         n_s, n_l, ",".join(sorted(built))))
 
 
+def judge_graph_substrate(compositor_cs, csproj, graph_cs):
+    """§4 graph substrate wired (build step 4): the graph file is compiled, the compositor keeps a built graph unless
+    its topology key moved (a wall/door edit, never a membership change), and passes graph + fixture set into the
+    pattern ctx at the palette call. Disk only: whether the rooms it reads are the right ones is a live question."""
+    if not graph_cs:
+        return _r(UNM, HARNESS, "Kernel/RM_PatternGraph.cs not found: the scan is blind")
+    bad = []
+    if not re.search(r'<Compile Include="Kernel\\RM_PatternGraph\.cs"\s*/>', csproj):
+        bad.append("RM_PatternGraph.cs not compiled by RM_AtmosphericBase.csproj")
+    if not re.search(r"RM_RoomGraph\.Build\(", compositor_cs):
+        bad.append("compositor never builds an RM_RoomGraph")
+    if not re.search(r"Graph\.TopologyKey\s*!=\s*\w+\.TopologyKey", compositor_cs):
+        bad.append("compositor replaces the graph without a topology-key compare (cached fields lost every pass)")
+    if re.search(r"TopologyKey[^;\n]*Fixture|Fixture[^;\n]*TopologyKey", graph_cs):
+        bad.append("topology key mixes in fixtures (membership change would invalidate the fields)")
+    if not re.search(r"RM_PatternCtx\.Of\(\s*\w+\s*,\s*\w+\s*,\s*Graph\s*,\s*Fixtures\s*\)", compositor_cs):
+        bad.append("the palette call does not pass Graph and Fixtures into the pattern ctx")
+    if bad:
+        return _r(FAIL, MOD, "; ".join(bad))
+    return _r(PASS, MOD, "graph compiled; kept unless TopologyKey moves; Graph+Fixtures reach the pattern ctx (live room reading owed)")
+
+
 def kernel_cs():
     return open(os.path.join(HERE, "Source", "Kernel", "RM_PatternKernel.cs"), encoding="utf-8").read()
 
@@ -615,6 +637,9 @@ def offline_rows(rows):
     add(rows, "D5.held_lamp_rules_disk", *judge_held_lamp_rules(rd("RM_MapComponent_AtmosphericBase.cs"),
                                                                 rd("RM_AtmosphericCompositor.cs"), rd("RM_AtmosphericBaseSettings.cs")))
     add(rows, "D6.pattern_layers_disk", *judge_pattern_layers(repo_scheme_xml(), built_primitives(kernel_cs())))
+    gp = os.path.join(src, "Kernel", "RM_PatternGraph.cs")
+    add(rows, "D7.graph_substrate_disk", *judge_graph_substrate(rd("RM_AtmosphericCompositor.cs"), rd("RM_AtmosphericBase.csproj"),
+                                                                open(gp, encoding="utf-8").read() if os.path.exists(gp) else ""))
     return d
 
 
@@ -1346,6 +1371,15 @@ def metric_controls():
         {"l.xml": lay % "<li><primitive>Spark</primitive><period>2</period><rise>3</rise></li>"}, built)[0], FAIL))
     out.append(("judge_pattern_layers blind registry", judge_pattern_layers({"l.xml": lay % br}, set())[0], UNM))
     out.append(("judge_pattern_layers no layered scheme", judge_pattern_layers({}, built)[0], UNM))
+    gcomp = ("g = RM_RoomGraph.Build(rooms, doors); if (Graph == null || Graph.TopologyKey != g.TopologyKey) Graph = g;\n"
+             "RM_PatternCtx pc = RM_PatternCtx.Of(id, room, Graph, Fixtures);")
+    gproj = '<Compile Include="Kernel\\RM_PatternGraph.cs" />'
+    gsrc = "public readonly ulong TopologyKey;"
+    out.append(("judge_graph_substrate good", judge_graph_substrate(gcomp, gproj, gsrc)[0], PASS))
+    out.append(("judge_graph_substrate not compiled", judge_graph_substrate(gcomp, "", gsrc)[0], FAIL))
+    out.append(("judge_graph_substrate no key compare", judge_graph_substrate(gcomp.replace("Graph.TopologyKey != g.TopologyKey", "true"), gproj, gsrc)[0], FAIL))
+    out.append(("judge_graph_substrate ctx without graph", judge_graph_substrate(gcomp.replace("Graph, Fixtures", "null, null"), gproj, gsrc)[0], FAIL))
+    out.append(("judge_graph_substrate blind", judge_graph_substrate(gcomp, gproj, "")[0], UNM))
     out.append(("built_primitives reads the registry", PASS if {"Steady", "Breath", "Spark"} <= built else FAIL, PASS))
     return out
 
