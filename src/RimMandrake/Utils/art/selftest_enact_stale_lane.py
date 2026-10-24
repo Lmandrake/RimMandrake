@@ -34,6 +34,10 @@ resolves the lane through it (a proved rename) or refuses by name. The decisions
   9 KEYED schema-1 picks (picks{lane: L}) get the decision route's guards (ENACT_KEYED_PICK_FIX_MOVED_LANE): a letter
     re-filed under another lane that exists today is refused (greentide RSW_Hawkbat G), so is one whose pictures differ
     from the sheet he clicked on (9b); an unchanged keyed pick installs as before (9c);
+  11 a keyed pick whose key lane was renamed while the letter was a set of another lane when he clicked: refused (it
+    used to follow the key's rename: a young set at the adult path);
+  12 the donor proof also needs the letter to have been a set of the donor lane: a juvenile set slotted or keyed under
+    the donor and re-filed under the adult today is refused, as the same `decision` is;
   10 snapshot revisions committed out of build order: the newest build at or before the click is used;
   5 schema 1 with today's snapshot built BEFORE his click: routed by today's snapshot as before (no lookup, no change).
 Fixture under /home/mandrake/rm/scratch/BENCH (never /tmp), from selftest_enact_ws; git history is replaced by a list.
@@ -243,6 +247,45 @@ def main():
               and not any("RSW_Kite:" in c for c in r["conflicts"]),
               f"9c keyed {{AD: B}} unchanged since the click: installs as before ({inst} / {r['conflicts']})")
 
+        # 11 a KEYED pick whose key is gone today (renamed) while the letter was a set of ANOTHER lane on the sheet he
+        # clicked on: following the key's rename put a young set at the adult path (review ENACT_KEYED_FIX_UNREVIEWED)
+        OLDY = "oldfolder/Kite/Kite_young"
+        history[:] = [older({"A": OLD, "B": OLD, "C": OLD, "Y": OLDY})]
+        r, inst = plan({"schema": None, "picks": {OLD: "Y"}})
+        check(not any(i["letter"] == "Y" for i in inst)
+              and any(c.startswith(f"RSW_Kite: pick Y is recorded for {OLD}") and "refused" in c for c in r["conflicts"]),
+              f"11 keyed {{OLD: Y}}, Y a young set when he clicked, OLD renamed to the adult lane: refused, never at "
+              f"the adult path ({inst} / {r['conflicts']})")
+        r, inst = plan({"schema": None, "picks": {OLD: "B"}})
+        check(any(i["letter"] == "B" and i["rel"] == "swanimals/Kite/Kite_east.png" for i in inst)
+              and not any("RSW_Kite:" in c for c in r["conflicts"]),
+              f"11 ...keyed {{OLD: B}}, B a set of OLD: still follows the rename ({inst} / {r['conflicts']})")
+        # 12 the donor proof needs the letter to have been a set of the donor lane: a juvenile set (its lane still on
+        # both sheets) keyed or slotted under the donor and re-filed under the adult today is refused, as `decision` is
+        zs = L.store_put_bytes(T.noise_png(902))
+        kr["columns"]["Z"], kr["graphic_of"]["Z"], kr["labels"]["Z"] = {"east": zs}, KY, "render kite_z"
+        kr["graphic_of"]["Y"] = AD
+        sp.write_text(json.dumps(snap))
+        try:
+            h = older({"A": DON, "B": DON, "C": DON, "Y": KY, "Z": KY})
+            h["rows"]["RSW_Kite"]["res"] = DON
+            history[:] = [h]
+            r, inst = plan({"decision": "Y", "slots": {DON: slot("Y")}})
+            r1, inst1 = plan({"schema": None, "picks": {DON: "Y"}})
+            r2, inst2 = plan({"decision": "B", "slots": {DON: slot("B")}})
+        finally:
+            for k in ("columns", "graphic_of", "labels"):
+                kr[k].pop("Z", None)
+            kr["graphic_of"]["Y"] = KY
+            sp.write_text(json.dumps(snap))
+        check(not any(i["letter"] == "Y" for i in inst + inst1)
+              and any(c.startswith(f"RSW_Kite: slot {DON} pick Y") and "refused" in c for c in r["conflicts"])
+              and any(c.startswith("RSW_Kite: pick Y ") and "refused" in c for c in r1["conflicts"]),
+              f"12 slot/keyed {{DON: Y}}, Y a juvenile set re-filed under the adult: refused, not donor-routed "
+              f"({inst + inst1} / {r['conflicts'] + r1['conflicts']})")
+        check(any(i["letter"] == "B" and i["rel"] == "swanimals/Kite/Kite_east.png" for i in inst2),
+              f"12 ...B, a set of the donor lane, still donor-routed ({inst2} / {r2['conflicts']})")
+
         # 10 revisions committed out of build order: the NEWEST build at or before the click is the sheet he saw, not
         # the first one git log reaches (a clone pushing an older build later)
         history[:] = [older({"A": AD, "B": OLD, "C": AD, "Y": KY}), older({"A": OLD, "B": OLD, "C": OLD, "Y": KY})]
@@ -274,6 +317,35 @@ def main():
         r, inst = plan({"schema": None, "decision": "B"})
         check(any(i["letter"] == "B" and i["rel"] == "swanimals/Kite/Kite_east.png" for i in inst)
               and not r["plan"].get("lane_resolved", []), f"5 an unrebuilt sheet routes as before ({inst})")
+
+        # 13 two rows sharing ONE lane (the bridge anchors' Heavy/Steel/Timber of a look), each with its own pick:
+        # installing both keeps only the last; neither is installed, both are named
+        k2 = json.loads(json.dumps(kr))
+        k2["columns"]["B"] = {f: L.store_put_bytes(T.noise_png(950 + n)) for n, f in enumerate(sorted(kr["columns"]["B"]))}
+        snap["rows"]["RSW_Kite2"] = k2
+        sp.write_text(json.dumps(snap))
+        try:
+            d = json.loads(json.dumps(doc))
+            rec = {"schema": 2, "at": at, "decidedAt": at, "note": "", "decision": "B"}
+            d["decisions"] = {"RSW_Kite": dict(rec), "RSW_Kite2": dict(rec)}
+            p = F["root"] / "case_shared_lane.decisions.json"
+            p.write_text(json.dumps(d))
+            E.reset_caches()
+            r = E.enact(p, apply=False, no_deploy=True)
+            both = [i for i in r["plan"]["install"] if i["rel"] == "swanimals/Kite/Kite_east.png"]
+            check(r["ok"] and not both and any("RSW_Kite B" in c and "RSW_Kite2 B" in c and "ONE file" in c
+                                               for c in r["conflicts"]),
+                  f"13 two rows' different picks for one shared file: none installed, both named "
+                  f"({both} / {r['conflicts']})")
+            d["decisions"] = {"RSW_Kite": dict(rec)}
+            p.write_text(json.dumps(d))
+            E.reset_caches()
+            r = E.enact(p, apply=False, no_deploy=True)
+            check(any(i["rel"] == "swanimals/Kite/Kite_east.png" for i in r["plan"]["install"]),
+                  f"13 ...one row alone still installs there ({r['conflicts']})")
+        finally:
+            snap["rows"].pop("RSW_Kite2", None)
+            sp.write_text(json.dumps(snap))
     finally:
         os.environ.pop("ART_BIOME_SHEETS_DIR", None)
     print("\nALL PASS" if not FAILS else f"\n{len(FAILS)} FAILED")
