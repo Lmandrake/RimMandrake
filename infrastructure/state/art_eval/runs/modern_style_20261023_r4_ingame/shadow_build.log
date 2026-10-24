@@ -1,0 +1,33 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_modern_style_20261023_r4_ingame",
+ "html": "Transient/biome_ffar/art_eval_shadow_modern_style_20261023_r4_ingame_sheet_2026-10-23.html",
+ "decisions": "Transient/biome_ffar/art_eval_shadow_modern_style_20261023_r4_ingame_sheet_2026-10-23.decisions.json",
+ "wrote_decisions": true,
+ "gate": "PASS v1",
+ "snapshot": "infrastructure/state/art/sheets/art_eval_shadow_modern_style_20261023_r4_ingame_sheet_2026-10-23.snapshot.json",
+ "snapshotId": "f0116ad32943fdae",
+ "census_rows": 6,
+ "rows": 6,
+ "ruled_rows_gone_kept_in_snapshot": [],
+ "collapsed_ruled_elsewhere": 0,
+ "dropped_all_ruled": [],
+ "canon_rows": 0,
+ "canon_rows_with_images": 0,
+ "canon_rows_with_must_show": 0,
+ "linked_rows": 0,
+ "prefilled_sit1": 0,
+ "no_art": [
+  "RM_HoseEnd_Modern",
+  "RM_LiquidJoins_Modern",
+  "RM_PipeSpan_Modern"
+ ],
+ "sets": 8,
+ "images": 9253
+}
+
+--- stderr ---
+art_sheet: RM_LiquidPump_Modern: dump texPath [] is STALE; using src ['RimMandrake/FlowWorks/Pump/Modern/RM_LiquidPump']
+art_sheet: RM_PipeFaucet_Modern: dump texPath [] is STALE; using src ['RimMandrake/FlowWorks/Faucet/Modern/RM_PipeFaucet']
+art_sheet: RM_UniversalPipe_Modern: dump texPath [] is STALE; using src ['RimMandrake/FlowWorks/Pipe/Modern/UniversalPipe_Atlas']
+/home/mandrake/rm/bench/src/RimMandrake/Utils/art/art_sheet.py:2395: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  px = [q for q in Image.open(f).convert("RGBA").getdata() if q[3] > 8]

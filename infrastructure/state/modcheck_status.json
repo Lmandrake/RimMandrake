@@ -653,33 +653,50 @@
   "FlowWorks": {
     "components": {
       "counts": {
-        "PASS": 61
+        "FAIL": 10,
+        "PASS": 54,
+        "UNMEASURED": 4
       },
-      "not_ok": [],
+      "not_ok": [
+        "MX_H00_Flat_straight_L6",
+        "MX_H01_Flat_corner_L14",
+        "MX_H02_Flat_water_L24",
+        "MX_H03_Plump_straight_L14",
+        "MX_H04_Plump_corner_L24",
+        "MX_H05_Plump_water_L6",
+        "MX_H06_Filling50_straight_L24",
+        "MX_H07_Filling50_corner_L6",
+        "MX_H08_Filling50_water_L14",
+        "CR2_trail_follows_walk",
+        "NS_external_pipe_is_visual_only",
+        "SL4_carry_states_survive",
+        "PP1_preport_midcarry_save_loads",
+        "PP2_preport_midretract_save_loads"
+      ],
       "unbuilt": [],
       "uncovered": []
     },
-    "hash": "497c6ffc372c20132fa1cee938d829023b417cf7fba2f819a9efc544f1b27bec",
+    "hash": "ef6861ef2870eba21d8675b98971f17f903f625d141f16429351b8b0086f94c9",
     "minor": null,
     "owner_review": null,
-    "refused": "step 4 UNMEASURED: no extension_proof result supplied (--extensions)",
-    "run_id": "FlowWorks/validation_v2@v2_run1.json",
+    "refused": null,
+    "run_id": "FlowWorks/proof_hose.py@proof_hose_20261024T031318.json",
     "source": {
-      "assembly_sha256": "355a9d19d950af7db0b06d1a817c0039ece2dd4007d8ebee9c43128650d392e8",
-      "env_running_count": 22,
-      "env_running_sha256": "887084fb344c646cd4e6e08103e9ca469871187e30043ed108f4fe3b494e7254",
-      "result": "../../../rm/bench/Transient/bench_live_20261015_r5/live/v2/v2_run1.json",
-      "started": "2026-10-15T00:53:31",
-      "ticks_spent": 14091,
-      "tier": "ratchet_pilot",
+      "assembly_sha256": "52068a66bcea217266e8679321a2072a90a6391eb2a03fa8b6202adc82281bdb",
+      "env_running_count": 11,
+      "env_running_sha256": "c74dc4170b83fff4082e70e6271cb799ff3b0555962540423b5ac5ba62b0dd38",
+      "result": "src/RimMandrake/FlowWorks/northstar/proof_hose_20261024T031318.json",
+      "started": "2026-10-24T03:13:18",
+      "ticks_spent": null,
+      "tier": "flowworks",
       "verb": "modcheck record"
     },
-    "status": "REFUSED",
+    "status": "RED",
     "step4": {
       "status": "UNMEASURED",
       "why": "no step-4 result supplied (--extensions)"
     },
-    "ts": 1792051389.4811
+    "ts": 1792843125.720475
   },
   "GelatinousSlime": {
     "hash": "3f0c2444e7d23bd55c945fdbd268309a08a77e9a270e8168e38d7e2f85fd6e5e",

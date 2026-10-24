@@ -1,0 +1,36 @@
+  site pin: deepBedsEnabled True -> False (read back False); P11_FLOOR_ON_PAINTED_PONDS stays the owner's
+====================================================================================================
+S1. A source-fed 1-deep canal fills end to end
+    |~~~~~~~~..........
+    |~~~~~~~~11111111..
+    |~~~~~~~~..........
+    readings: canal / pond squares are LITRES (to the litre, from ProofReadout) and ponds / hoses decilitres; 1 notch = 0.5 m in one square = 1,000 L = 10,000 dL; tolerance 10 dL per square read
+S1 staged: lake None (limitless=None, None cells); canal of 8 depth-1 cells (14, 35)..(21, 35), dug dry
+         screenshot: None
+  doc horizons are deadlines ('by pulse N'), never speeds; one pulse = 250 ticks, stepped with a 1.5 s pause
+  pulse  0  canal [0 0 0 0 0 0 0 0]  lake limitless=None stock=None
+  pulse  1  canal [694 0 0 0 0 0 0 0]  lake limitless=None stock=None
+  pulse  2  canal [678 678 0 0 0 0 0 0]  lake limitless=None stock=None
+  pulse  3  canal [662 662 662 0 0 0 0 0]  lake limitless=None stock=None
+         screenshot: None
+  pulse  4  canal [647 647 647 647 0 0 0 0]  lake limitless=None stock=None
+  pulse  5  canal [632 632 632 632 632 0 0 0]  lake limitless=None stock=None
+  pulse  6  canal [619 619 619 619 619 619 0 0]  lake limitless=None stock=None
+  pulse  7  canal [605 605 605 605 605 605 605 0]  lake limitless=None stock=None
+  pulse  8  canal [593 593 593 593 593 593 593 593]  lake limitless=None stock=None
+  pulse  9  canal [593 593 593 593 593 593 593 593]  lake limitless=None stock=None
+  pulse 10  canal [593 593 593 593 593 593 593 593]  lake limitless=None stock=None
+         screenshot: None
+  pulse 11  canal [593 593 593 593 593 593 593 593]  lake limitless=None stock=None
+  pulse 12  canal [593 593 593 593 593 593 593 593]  lake limitless=None stock=None
+  pulse 13  canal [593 593 593 593 593 593 593 593]  lake limitless=None stock=None
+  pulse 14  canal [593 593 593 593 593 593 593 593]  lake limitless=None stock=None
+         screenshot: None
+  S1.a   DIFFERS    doc: All 8 canal cells hold 1 level.
+                    game: all 8 hold 1 level first at pulse None
+  S1.b   MATCHES    doc: At every pulse the wet canal cells form one unbroken run starting at cell 1 (no isolated puddle, no gap).
+                    game: pulses where the wet part was NOT one run from the lake: none
+  S1.c   MATCHES    doc: Once a canal cell is wet it never goes dry again during the scene.
+                    game: a wet cell went dry at pulses: never
+  S1.d   UNMEASURED doc: The lake never visibly shrinks (LIMITLESS).
+                    game: lake limitless at every pulse: False (stock None -> None)
