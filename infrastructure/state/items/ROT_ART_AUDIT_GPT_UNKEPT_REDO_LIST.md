@@ -33,3 +33,15 @@ Rows where GPT says redo/cut and the owner has NO keep on record. Filed as a FIN
 - T117 (live) redo: Preserve the heavy rose canopy and sagging rim, but replace amber-orange droplets and trails with the specified dark red sap.
 
 Overlaps existing ROT_CARTOON_VARIANT_REPAINT_1; check it first.
+
+## Per-row outcome (FOUNDRY, 2026-10-24, delegated: GPT art triage)
+Gate = regen_eligibility.Gate over every texPath of the def; pipeline = infrastructure/state/art_eval/runs/*/decisions.jsonl; PROTECTED = art.py status live slots. Queued directly: NONE (no redo slot is NONE/PLACEHOLDER/DONOR; dessicated slots that are DONOR are not what GPT flagged).
+
+| def | gate | protected slots | art-eval runs so far | outcome |
+|---|---|---|---|---|
+| RM_Dustveil | REFUSED_REGEN | 3 | none | CANDIDATE: never judged; intake filed as GPTREDO_JUDGE_UNJUDGED_ROWS (art-eval run, not a direct regen). |
+| RM_Hwelgrue | REFUSED_REGEN,REFUSED_UNCONFIRMED | 2 | none | CANDIDATE: never judged; intake filed as GPTREDO_JUDGE_UNJUDGED_ROWS (art-eval run, not a direct regen). |
+| RM_ThozzikColonyQueen | REFUSED_REGEN,REFUSED_UNCONFIRMED | 3 | none | CANDIDATE: never judged; intake filed as GPTREDO_JUDGE_UNJUDGED_ROWS (art-eval run, not a direct regen). |
+| RM_AmbrosyxFungus | REFUSED_REGEN | 0 | none | COVERED: Brightbell cartoon variants already retired/repainted under ROT_CARTOON_VARIANT_REPAINT_1; not re-queued. |
+| RM_AgariluxPrime | REFUSED_REGEN | 0 | none | CANDIDATE: never judged; intake filed as GPTREDO_JUDGE_UNJUDGED_ROWS (art-eval run, not a direct regen). |
+| RM_Ruskara | REFUSED_REGEN | 0 | none | CANDIDATE: never judged; intake filed as GPTREDO_JUDGE_UNJUDGED_ROWS (art-eval run, not a direct regen). |
