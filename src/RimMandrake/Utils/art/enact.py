@@ -1007,6 +1007,9 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
          "cuts": [], "todo": [], "done": [], "conflicts": [], "in_game_not_ours": 0, "followed": {},
          "ignored_variants": [], "legacy_unconfirmed": [], "asks": [], "lane_resolved": []}
     held_back: set = set()      # (row, letter) picks with a facing refused: no facing of them is installed
+    # (row, letter) -> why one facing will not land at the set's target (live at another path, purged, no slot): if any
+    # sibling facing would install, the whole set is held (ENACT_VARIANT_FACING_FIX_LIVE_SHA_SKIP)
+    partial_skip: dict = {}
     decs = doc.get("decisions") or {}
     wd_ids = withdrawn_ids()
     confs = DV.confirmations()
@@ -1314,12 +1317,15 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                     if idx.is_purged(sha):      # he picked it, and (on this or another sheet) purged it: his call
                         P["conflicts"].append(f"{row}: pick {letter} {facing} {sha[:12]} was purged by you — it cannot "
                                               f"be installed")
+                        partial_skip.setdefault((row, letter), f"{facing} purged")
                         continue
                     anywhere = idx.live_anywhere(sha)
                     if anywhere:
                         # already shipping — at its own slot or as a graphic variant (RM_Fuzz_a, LongtailGorgV_I):
                         # never copy it over the base slot as well
                         P["installed_already"].append((row, anywhere[0], rel))
+                        if not set(anywhere) & {f"{m}/Textures/{r}" for m, r, _ in slots_for(idx, rel)}:
+                            partial_skip.setdefault((row, letter), f"{facing} already live at {anywhere[0]}")
                         continue
                     slots = slots_for(idx, rel)
                     if not slots:
@@ -1344,6 +1350,7 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                         else:
                             P["todo"].append(f"{row}: pick {letter} {rel} has no slot in any of our mods "
                                              f"(donor art? needs an override texture or a def texPath)")
+                            partial_skip.setdefault((row, letter), f"{facing} has no slot")
                         continue
                     for mod, r, live in slots:
                         if live == sha:
@@ -1396,15 +1403,22 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                 if not gv or picks.get(gv) == vl:
                     continue            # the pick itself, or a letter of another graphic (a per-graphic pick)
                 for facing, sha in sorted((cols.get(vl) or {}).items()):
-                    if not sha or sha in xed or idx.is_purged(sha):
+                    if not sha or sha in xed:
+                        continue
+                    if idx.is_purged(sha):
+                        partial_skip.setdefault((row, vl), f"{facing} purged")
                         continue
                     if idx.live_anywhere(sha):
+                        # live at another path (Fuzzrunner C east == the base east): its sibling facings alone
+                        # would draw beside whatever that variant slot lacks, so the whole variant is held below
                         P["installed_already"].append((row, idx.live_anywhere(sha)[0], f"variant {vl}"))
+                        partial_skip.setdefault((row, vl), f"{facing} already live at {idx.live_anywhere(sha)[0]}")
                         continue
                     own = own_slot(idx, src, gv, facing, vl, row, names, variant=True,
                                    taken={i["rel"] for i in P["install"]})
                     if not own:
                         P["todo"].append(f"{row}: ticked variant {vl} {facing} has no slot it can ship in")
+                        partial_skip.setdefault((row, vl), f"{facing} has no slot")
                         continue
                     rul = keep_ruling(idx, row, vl, sha)
                     P["install"].append({"row": row, "mod": own["mod"], "rel": own["rel"], "sha": sha, "letter": vl,
@@ -1633,6 +1647,12 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                               f"{k[1]} with different pictures — none installed; give each its own texture or pick one")
     P["install"] = [i for i in P["install"] if (i["mod"], i["rel"]) not in clash]
     held_back |= {(i["row"], i["letter"]) for k in clash for i in by_file[k]}
+    planned = {(i["row"], i["letter"]) for i in P["install"]}
+    for (row, letter), why in sorted(partial_skip.items()):
+        if (row, letter) in planned and (row, letter) not in held_back:
+            P["conflicts"].append(f"{row}: pick {letter} {why} — its other facings cannot install alone (a mixed "
+                                  f"set); install that facing at the set's own path by hand, or re-pick")
+            held_back.add((row, letter))
     # a pick with ONE facing refused (owner-kept, or a shared file) installs NO facing: its other facings would draw
     # beside the old pictures of the refused one, a creature mixed from two sets (bug 2026-10-24, leaningscrub_2
     # RM_TunnelSnake B north only, RM_Vurra B north+south); nor does anything it was to replace leave the game
