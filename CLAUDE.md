@@ -108,6 +108,11 @@ search API. Authority: `biome_mod_architecture.md` §7 Q11a; detail in `biome_ru
   `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Config\ModsConfig.xml`.
   🔴 **Parse it** (`ET.parse(p).find("activeMods")`) for the active count — never `grep` it,
   and never cite a mod count written in a doc. ModsConfig describes the NEXT load.
+- 🔴 **Never restore the owner's mod list; only canonical world saves are precious** (owner, 2026-10-24):
+  *"Never worry about my mod list restoration! … Until I start playing (months from now likely) you never need
+  to "restore" mods to anything or worry about harming save games other than canonical world saves."* Leave
+  ModsConfig on whatever tier serves the work; no "restore before release" step. Every save except the canonical
+  world saves (`infrastructure/state/CANONICAL_SAVE.md`) is disposable.
 - **Never guess a defName, field, or namespace.** RimSage (`mcp__rimsage__*`, Windows
   Desktop only), the def, the About.xml, or `measure` — and 🔴 **a number about a large
   artifact comes from `measure`, never from a scan** (`block_blind_scan.py` refuses).
