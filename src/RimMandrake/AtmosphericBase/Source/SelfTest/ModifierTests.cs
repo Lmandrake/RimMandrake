@@ -154,6 +154,18 @@ internal static class ModifierTests
               RM_Scar.ShowsPrevious(0, 0, 5, 12, false) && !RM_Scar.ShowsPrevious(2, 0, 5, 12, false)
               && !RM_Scar.ShowsPrevious(0, 0, 12.5, 12, false) && !RM_Scar.ShowsPrevious(0, 0, 40, 50, false)
               && RM_Scar.ShowsPrevious(0, 0, 40, 50, true) && !RM_Scar.ShowsPrevious(0, 0, -1, 12, false));
+        // the compositor's decision, keyed by claimant: a re-ranked pair must show the previous owner's OWN palette
+        const RM_Scar.Action None = RM_Scar.Action.None, ShowLead = RM_Scar.Action.ShowLead, ShowSecond = RM_Scar.Action.ShowSecond, Drop = RM_Scar.Action.Drop;
+        Check("M3 scar Decide: previous owner is the lead -> show through the lead; the second -> through the second",
+              RM_Scar.Decide("A", "A", "B", 0, 3, 12, false) == ShowLead && RM_Scar.Decide("B", "A", "B", 0, 3, 12, false) == ShowSecond);
+        Check("M3 scar Decide: after the pair is re-ranked (B now lead, A second) the same previous owner A shows through the second",
+              RM_Scar.Decide("A", "B", "A", 0, 3, 12, false) == ShowSecond && RM_Scar.Decide("A", "A", "B", 0, 3, 12, false) == ShowLead);
+        Check("M3 scar Decide: a previous owner in neither top slot is dropped (also with no second)",
+              RM_Scar.Decide("C", "A", "B", 0, 3, 12, false) == Drop && RM_Scar.Decide("C", "A", null, 0, 3, 12, false) == Drop
+              && RM_Scar.Decide("B", "A", null, 0, 3, 12, false) == Drop);
+        Check("M3 scar Decide: off the lowest entry it waits (None), past the linger it is dropped, with scarKeeps it outlives 30 s",
+              RM_Scar.Decide("A", "A", "B", 2, 3, 12, false) == None && RM_Scar.Decide("A", "A", "B", 2, 12.5, 12, false) == Drop
+              && RM_Scar.Decide("A", "A", "B", 0, 40, 50, false) == Drop && RM_Scar.Decide("A", "A", "B", 0, 40, 50, true) == ShowLead);
         RM_SchemeData ok = PatternTests.One("<scarLinger>20</scarLinger>", Pal4);
         Check("M3 scar Errors: a linger over 30 s without scarKeeps is refused, with it accepted, 20 s accepted",
               PatternTests.HasError(PatternTests.One("<scarLinger>45</scarLinger>", Pal4), "scarKeeps")
@@ -189,6 +201,17 @@ internal static class ModifierTests
         RM_SchemeData blackMid = PatternTests.One("", "<li>(0,0,0,0)</li><li>(0,0,0,0)</li><li>(40,16,6,0)</li><li>(205,98,24,0)</li>");
         Check("M4 hush mid: the palette's middle entry, or the lowest lit one when the middle is black (the ember)",
               RM_Hush.Mid(p4) == 1 && RM_Hush.Mid(blackMid) == 2);
+        // the keeper must be a lamp the hush can hold: owned by a mood, not on a tremor flicker, in a hushed room
+        var ids = new List<int> { 1, 2, 3, 4, 5, 6, 7 };
+        var rooms = new List<int> { 10, 10, 10, 10, 20, 20, -1 };
+        var owned = new List<bool> { true, false, true, true, false, true, true };
+        var trem = new List<bool> { true, false, false, false, false, true, false };
+        Dictionary<int, int> kp = RM_Hush.PickKeepers(ids, rooms, owned, trem, new HashSet<int> { 10, 20 });
+        Check("M4 hush keeper: lowest id among owned, non-tremor lamps (not the tremor lamp 1 or the unowned lamp 2); a room with none gets none; room -1 never",
+              kp.Count == 1 && kp[10] == 3 && !kp.ContainsKey(20) && !kp.ContainsKey(-1));
+        Check("M4 hush keeper: an unhushed room gets no keeper",
+              RM_Hush.PickKeepers(ids, rooms, owned, trem, new HashSet<int> { 20 }).Count == 0
+              && RM_Hush.PickKeepers(ids.GetRange(0, 4), rooms.GetRange(0, 4), owned.GetRange(0, 4), trem.GetRange(0, 4), new HashSet<int> { 10 })[10] == 3);
         Check("M4 hush in a dark room: only the keeper holds the ember, the rest settle to black (L8)",
               RM_Hush.Apply(3, 1, 1, true, true) == 1 && RM_Hush.Apply(3, 1, 1, true, false) == 0 && RM_Hush.Apply(3, 1, 0, true, false) == 3);
     }

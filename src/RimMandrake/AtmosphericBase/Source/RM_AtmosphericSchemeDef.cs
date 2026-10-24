@@ -48,7 +48,11 @@ namespace RimMandrake.AtmosphericBase
             }
         }
 
-        public bool Valid => RM_SchemeKernel.Errors(Data).Count == 0;
+        [Unsaved] private bool? valid;
+
+        /// <summary>Cached: the compositor asks this per mood every evaluation (10 Hz), and Errors() allocates a list and
+        /// strings. A def is immutable after load, as Data already assumes.</summary>
+        public bool Valid => valid ?? (valid = RM_SchemeKernel.Errors(Data).Count == 0).Value;
 
         public override IEnumerable<string> ConfigErrors()
         {

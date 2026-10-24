@@ -407,17 +407,20 @@ namespace RimMandrake.AtmosphericBase
             lastTremorCount = tremorAt?.Count ?? 0;
             if (lastTremorCount > maxTremorCount) maxTremorCount = lastTremorCount;
 
-            // M4: the one lamp per hushed room that keeps the ember in a dark hush (its lowest-id driven fixture)
+            // M4: the one lamp per hushed room that keeps the ember in a dark hush (its lowest-id driven fixture that a mood owns)
             Dictionary<int, int> keepers = null;
             if (hushOf.Count > 0)
             {
-                keepers = new Dictionary<int, int>();
+                var kIds = new List<int>(); var kRooms = new List<int>(); var kOwned = new List<bool>(); var kTremor = new List<bool>();
                 foreach (Thing t in driven)
                 {
-                    int rm = roomOf.TryGetValue(t.thingIDNumber, out int rr) ? rr : -1;
-                    if (rm < 0 || !hushOf.ContainsKey(rm)) continue;
-                    if (!keepers.TryGetValue(rm, out int k) || t.thingIDNumber < k) keepers[rm] = t.thingIDNumber;
+                    int id0 = t.thingIDNumber;
+                    kIds.Add(id0);
+                    kRooms.Add(roomOf.TryGetValue(id0, out int rr) ? rr : -1);
+                    kTremor.Add(tremorAt != null && tremorAt.ContainsKey(id0));
+                    kOwned.Add((second != null && leadOf.ContainsKey(id0)) || (lead != null && InGroup(comp, t, lead.group)));
                 }
+                keepers = RM_Hush.PickKeepers(kIds, kRooms, kOwned, kTremor, hushOf.Keys);
             }
 
             // steps 5-6: one quantised value per fixture, written only on change
@@ -451,10 +454,11 @@ namespace RimMandrake.AtmosphericBase
                     // M3 SCAR: the winner's lowest moments still show the previous owner, for the winner's linger
                     if (second != null && scarOf.TryGetValue(id, out KeyValuePair<string, double> sc))
                     {
-                        bool prevWasLead = sc.Key == lead.claimant;
-                        if (!prevWasLead && sc.Key != second.claimant) scarOf.Remove(id);   // that claimant left the top two
-                        else if (RM_Scar.ShowsPrevious(idx, 0, time - sc.Value, data.scarLinger, data.scarKeeps))
+                        RM_Scar.Action act = RM_Scar.Decide(sc.Key, lead.claimant, second.claimant, idx, time - sc.Value, data.scarLinger, data.scarKeeps);
+                        if (act == RM_Scar.Action.Drop) scarOf.Remove(id);
+                        else if (act != RM_Scar.Action.None)
                         {
+                            bool prevWasLead = act == RM_Scar.Action.ShowLead;
                             RM_SchemeData pd = prevWasLead ? leadData : secondData;
                             HashSet<int> pf = prevWasLead ? leadFlash : secondFlash;
                             idx = RM_SchemeKernel.PaletteIndex(pd, ref pc, time, pf != null && pf.Contains(id));
@@ -462,7 +466,6 @@ namespace RimMandrake.AtmosphericBase
                             data = pd;
                             scarShows++;
                         }
-                        else if (time - sc.Value >= RM_Scar.Linger(data.scarLinger, data.scarKeeps)) scarOf.Remove(id);
                     }
                     // M4 HUSH: one room narrows to its held entry, then recovers
                     if (room >= 0 && hushOf.TryGetValue(room, out RM_HushRequest h))
