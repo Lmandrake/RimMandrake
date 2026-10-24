@@ -2,10 +2,10 @@
  "biome": "SUBJECTS_owner_escalations_cauldron",
  "html": "Transient/biome_ffar/owner_escalations_cauldron_sheet_2026-10-24.html",
  "decisions": "Transient/biome_ffar/owner_escalations_cauldron_sheet_2026-10-24.decisions.json",
- "wrote_decisions": true,
+ "wrote_decisions": false,
  "gate": "PASS v1",
  "snapshot": "infrastructure/state/art/sheets/owner_escalations_cauldron_sheet_2026-10-24.snapshot.json",
- "snapshotId": "a22a81b209c21ea6",
+ "snapshotId": "b9d6d76206b1dc22",
  "census_rows": 7,
  "rows": 7,
  "ruled_rows_gone_kept_in_snapshot": [],
@@ -17,15 +17,16 @@
  "linked_rows": 0,
  "prefilled_sit1": 0,
  "no_art": [],
- "sets": 29,
- "images": 9324
+ "sets": 27,
+ "images": 9325
 }
 
 --- stderr ---
-rtpipe/_artsrc/arteval_RM_BedBug_r2_north/arteval_RM_BedBug_r2_north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+GBA").getdata() if q[3] > 8]
+NOTE RM_BedBug: reference_textures ['/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_BedBug_r2_south/arteval_RM_BedBug_r2_south.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_BedBug_r2_east/arteval_RM_BedBug_r2_east.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_BedBug_r2_north/arteval_RM_BedBug_r2_north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
 NOTE RM_DecayDrake: reference_textures ['/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_DecayDrake_r2_south/arteval_RM_DecayDrake_r2_south.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_DecayDrake_r2_east/arteval_RM_DecayDrake_r2_east.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_DecayDrake_r2_north/arteval_RM_DecayDrake_r2_north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
 NOTE RM_Vexxiss: reference_textures ['/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Vexxiss_r2_south/arteval_RM_Vexxiss_r2_south.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Vexxiss_r2_east/arteval_RM_Vexxiss_r2_east.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Vexxiss_r2_north/arteval_RM_Vexxiss_r2_north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
 NOTE RM_Mullgoth: reference_textures ['/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Mullgoth_r3_south/arteval_RM_Mullgoth_r3_south.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Mullgoth_r3_east/arteval_RM_Mullgoth_r3_east.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Mullgoth_r3_north/arteval_RM_Mullgoth_r3_north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
 NOTE RM_Bileworm: reference_textures ['/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Bileworm_r2_south/arteval_RM_Bileworm_r2_south.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Bileworm_r2_east/arteval_RM_Bileworm_r2_east.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Bileworm_r2_north/arteval_RM_Bileworm_r2_north.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Bileworm_r3_south/arteval_RM_Bileworm_r3_south.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Bileworm_r3_east/arteval_RM_Bileworm_r3_east.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Bileworm_r3_north/arteval_RM_Bileworm_r3_north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
-NOTE RM_CrystalMit: reference_textures ['/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_CrystalMit_r2_south/arteval_RM_CrystalMit_r2_south.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_CrystalMit_r2_east/arteval_RM_CrystalMit_r2_east.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_CrystalMit_r2_north/arteval_RM_CrystalMit_r2_north.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_CrystalMit_r3_south/arteval_RM_CrystalMit_r3_south.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_CrystalMit_r3_east/arteval_RM_CrystalMit_r3_east.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_CrystalMit_r3_north/arteval_RM_CrystalMit_r3_north.png', '/mnt/d/ClaudeWork/rimmandrake/owner_packet/RM_CrystalMit_yourkept_south.png', '/mnt/d/ClaudeWork/rimmandrake/owner_packet/RM_CrystalMit_yourkept_east.png', '/mnt/d/ClaudeWork/rimmandrake/owner_packet/RM_CrystalMit_yourkept_north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
-NOTE RM_Suush: reference_textures ['/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Suush_r2_south/arteval_RM_Suush_r2_south.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Suush_r2_east/arteval_RM_Suush_r2_east.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Suush_r2_north/arteval_RM_Suush_r2_north.png', '/mnt/d/ClaudeWork/rimmandrake/owner_packet/RM_Suush_yourkept_east.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RM_CrystalMit: reference_textures ['/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_CrystalMit_r2_south/arteval_RM_CrystalMit_r2_south.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_CrystalMit_r2_east/arteval_RM_CrystalMit_r2_east.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_CrystalMit_r2_north/arteval_RM_CrystalMit_r2_north.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_CrystalMit_r3_south/arteval_RM_CrystalMit_r3_south.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_CrystalMit_r3_east/arteval_RM_CrystalMit_r3_east.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_CrystalMit_r3_north/arteval_RM_CrystalMit_r3_north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RM_Suush: reference_textures ['/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Suush_r2_south/arteval_RM_Suush_r2_south.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Suush_r2_east/arteval_RM_Suush_r2_east.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Suush_r2_north/arteval_RM_Suush_r2_north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
