@@ -1,0 +1,53 @@
+[
+ {
+  "id": "arteval_RM_Gorekite_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Gorekite",
+  "prompt": "A single flying creature for RimWorld, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. The creature is one enormous, tent-sized stretched hide, a continuous taut sheet of thick, dry, leathery dark-red hide pulled tight like a sail or kite. It is a broad, roughly rounded canopy with a smooth overall outline and heavy sagging, ragged, irregular edges, like a wet tarp billowing in the storm wind, wide enough to cover a person. The surface is matte and uniform, with only faint ridges under the skin hinting at internal support, and it has no head, eyes or face. The hide itself is the whole airfoil, and it reads as a blanket or canopy made to drape over and smother prey. Exactly one long grasper hangs from the underside of the hide: it is slick and glistening, with bright wet specular highlights and a few falling drips, clearly contrasting with the dry matte hide above it. The sheet is gently curved and billowing, its thickness and sag clearly visible. Facing rule for the set: the south view is the front view, with the grasper hanging below the hide and its terminal hook curling toward the viewer's right. The north view is the rear view, seen from behind, the same creature turned around: it shows the upper face of the hide with its spine ridge, the grasper root seen from behind, and the long grasper hangs from the underside with its terminal hook curling toward the viewer's left, the mirror image of the south hook. The hook's curl direction reverses between south and north, so the two views read as one body seen from opposite sides.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_r1_02"
+ },
+ {
+  "id": "arteval_RM_Meltgut_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Meltgut",
+  "prompt": "A RimWorld creature sprite in painterly vanilla RimWorld style, realistic, with a clean dark outline and a transparent background. The meltgut is a house-sized slug with the bulk of a small building: one broad, low, domed, soft-bodied mollusc with a smooth wet pale-olive back, a blunt head with two short eye stalks, and a broad muscular foot along the ground. It fills the whole frame edge to edge and is many cells across, with a heavy domed back and a thick foot that give it massive weight. A standing human beside it is a tiny figure reaching only a fraction of the slug's flank, so the slug towers over pawns and dwarfs nearby buildings. The same body is drawn in every facing, from one shared camera angle at one shared scale, with the same wide rounded silhouette and the same body height in the front, rear and side views. A large, pale, glassy translucent belly window runs along the lower flank and belly, at the same position in every facing, and shows the gut as a bright, clear, pale-green fluid chamber as large as a cottage door. Inside the chamber sit exactly three separate swallowed objects in a row along the slug's length from head to tail, evenly spaced with clear fluid between them, each with its own readable silhouette. The object nearest the head is nearly intact, with a crisp dark outline, full colour and solid form. The middle object is half-melted, with frayed translucent edges, washed-out colour and parts eaten away. The object nearest the tail is almost gone, a faint ghostly remnant, barely more than a pale outline fading into the fluid. The three stages of dissolution read at a glance, even at max zoom. Side view (east): the row of three objects runs left to right across the frame along the full length of the body, head at the front. Front view (south), seen with the eyes toward the viewer: the head and both eye stalks face the camera, and the row of objects is foreshortened receding away from the viewer, with the nearly whole object largest and closest and the other two stepping back and smaller behind it. Rear view (north), seen from behind: the broad domed back, the blunt tail end and the foot edge face the camera, with the head, eye stalks and eyes hidden behind the body mass, and the row is foreshortened with the almost-gone object closest and the nearly whole object furthest away. A corrosive acidic sheen coats the slug's skin, with a few faint steaming drips beneath it. The body is built from this description only, with no reference image.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_NORTH_FACE, F_INCONSISTENT, F_SIZE_JUMP, DEPARTURE_MISSING, F_INCONSISTENT, F_SIZE_JUMP, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_r1_02"
+ },
+ {
+  "id": "arteval_RM_OcularJelly_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_OcularJelly",
+  "prompt": "A zhool (Ocular Jelly) is a drifting, swollen, gas-filled creature with a plump, pale balloon-dome body, hanging in open air at tree-canopy height with a cluster of short tentacles trailing from its underside. One large, prominent eye sits low on the dome and is the dominant feature of the creature, its pupil angled downward as if watching the ground below. A small vent beneath the eye breathes out a thin, faint reddish haze: a delicate, translucent veil of pale red mist, low in opacity, that drifts down beneath the tentacles, thinning and fading softly into scattered wisps until it dissolves into the air, with the background clearly visible through it. The haze has a loose, feathered, soft-edged form with no solid core and no defined outline, and it keeps the same light, airy density in every facing, so the body stays the clear subject and the haze reads as a barely-there tint. The dome has a smooth, rounded shape, the flesh is a consistent pale palette, and the proportions are plump and balanced, with the tentacles hanging short and gently curled beneath it. Transparent background, painterly vanilla RimWorld style, realistic, clean dark outline, centred in a square frame.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: DESC_MISS, DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_r1_02"
+ }
+]

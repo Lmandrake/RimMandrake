@@ -1,0 +1,36 @@
+[
+ {
+  "id": "arteval_RM_Bloodlurk_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Bloodlurk",
+  "prompt": "A single RimWorld creature sprite, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. The bloodlurk is a jointed shadow, all forelimb and siphon, standing perfectly still and low on thin jointed walking legs. Its colour is near-black, a deep shadow tone with only a faint dark-red cast, matte with low highlights, so it reads as a shadow on the ground. Its build is a dark, thin, mantis-like frame made of rigid segmented sections, bare and plain, with no markings. The forelimbs are enormous and very long, folded and raised in front of the body, each a chain of rigid jointed segments longer than the whole body; together they make up about two thirds of the silhouette and visual mass, and they are clearly the largest part of the creature in every view. The body is a small, compact segmented core, tucked low behind the forelimbs, with a short narrow neck and a slim abdomen that look tiny beside the arms. Where a head would be there is a thin tubular siphon at the front of the neck, a smooth dark tube. The lower legs and the tips of the forelimbs are glossy with a deep red wet sheen and red-tinged droplets, carrying the red waterline in the creature itself, while the background stays fully transparent and the creature stands alone. reference: none.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_r1_00"
+ },
+ {
+  "id": "arteval_RM_ContagionIkee_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_ContagionIkee",
+  "prompt": "A single small RimWorld creature sprite, a shivering eye-cluster on legs. The whole body is a tight bunch of many wet eyeballs of different sizes, large and small, packed together into one rounded clump, with only thin wet membrane between them. The eyes are the only features on the body, and the clump is bare, with no fur or carapace around it. Each front-facing eyeball has pale off-white sclera, fine red veins and a dark pupil, and a few short optic stalks show among the eyes, with the outermost eyes bulging at the edges of the clump. The eyeballs carry soft, broad painted highlights and small soft wet reflections, and their shading steps between tones in visible hand-painted brush strokes, with brush texture across the sclera and in the flesh and membrane between the eyes, matching vanilla RimWorld's painterly finish. Several thin, jointed legs come straight out from under the eye-cluster, joined directly to it, held in a low watchful stance. The palette, wet look and eye sizes are consistent across the whole clump. In the north view, seen from behind, the sprite shows the fleshy, veined backs of the clustered eyes and the membrane between them, sitting above the legs; every pupil and frontal eye opening is turned away from the viewer and fully hidden behind the clump, the stalks end in their rear surfaces, and the outline is a rounded mass of eye backs. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background, small creature sized for a 0.45 draw size.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: STYLE_OFF, STYLE_OFF, F_NORTH_FACE",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_r1_00"
+ }
+]
