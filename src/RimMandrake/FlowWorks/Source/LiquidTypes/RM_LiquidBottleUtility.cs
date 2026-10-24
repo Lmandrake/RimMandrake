@@ -194,6 +194,13 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             {
                 return true;
             }
+            if (ex.IsExcavated(c))
+            {
+                // DUG_WATER_FILL_FIX_NO_CANAL_DEBIT: a dug cell is on no natural body (BodyAt is null), so TryDebit paid for
+                // free; the liquid comes out of the canal cell itself.
+                long dl = RM_ContainerMaterialMath.DugCellDebitDl(units, ex.WaterDlAt(c), RM_MapComponent_Excavation.LevelExact, RM_LevelSolve.U);
+                return dl >= 0 && (dl == 0 || ex.TryTakeDl(c, dl, out _) == dl);
+            }
             FluidDef fluid = ex.Stock.BodyAt(map, c, ex)?.fluid ?? ex.ActiveFluid;
             float stock = RM_ContainerMaterialMath.BodyStockFor(units, fluid != null ? fluid.volumePerTile : 1f, RM_PumpMath.TankUnitsPerLevel);
             return ex.Stock.TryDebit(map, c, stock, ex);

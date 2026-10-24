@@ -231,6 +231,7 @@
     <Compile Include="SequenceFuzz.cs" />
     <Compile Include="FlowKernelFuzz.cs" />
     <Compile Include="GptFixesAChecks.cs" />
+    <Compile Include="GptBatchA1024Checks.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="..\RM_SheetMath.cs" />
     <Compile Include="SheetWaterChecks.cs" />

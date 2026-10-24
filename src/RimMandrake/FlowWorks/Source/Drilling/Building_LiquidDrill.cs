@@ -205,9 +205,12 @@ namespace RimMandrake.FlowWorks.Drilling
 			}
 			// A refused fill (fluid disabled in settings, or a foreign liquid in the outlet) keeps
 			// the extracted units pending instead of discarding them (GPT FlowWorks review #5).
+			long beforeDl = excavation.WaterDlAt(outlet);
 			if (excavation.TrySetDriverFill(outlet, fill + levels, canalFluid))
 			{
-				pendingUnits -= levels * unitPerLevel;
+				// DRILL_FILL_FIX_LOSES_FRACTIONAL_BRIM: spend what landed, not the levels asked for (a part-notch outlet
+				// filled to its brim takes less than a whole level; the rest stays pending).
+				pendingUnits -= RM_DrillSurveyMath.SpentUnits(beforeDl, excavation.WaterDlAt(outlet), RM_LevelSolve.U, unitPerLevel);
 			}
 		}
 

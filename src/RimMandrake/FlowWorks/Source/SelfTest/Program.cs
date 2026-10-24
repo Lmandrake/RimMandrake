@@ -2109,6 +2109,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             ReviewFixBatch01Checks.Run(Case);  // code-review fixes batch 01: natural tar, dig/fill designations, dig finds
             RulingsWetDoorWakeBottleChecks.Run(Case);  // rulings #18 wet-cell doors, #19 wakes; the bottle-loop fix
             GptFixesAChecks.Run(Case);         // GPT consult fixes, builder A: liquid net, tanks, hoses, bottles (GptFixesAChecks.cs)
+            GptBatchA1024Checks.Run(Case);     // GPT review 2026-10-23 batch A: liquid-sim core (GptBatchA1024Checks.cs)
             GptEdge1016Checks.Run(Case);       // GPT edge-case consult fixes 2026-10-16 (GptEdge1016Checks.cs)
             HoseNanShapeChecks.Run(Case);      // HOSE_SETTINGS_FIX_NAN_SHAPE (HoseNanShapeChecks.cs)
             DirtyReview1022Checks.Run(Case);   // DIRTY-file review 2026-10-22 second pass (DirtyReview1022Checks.cs)

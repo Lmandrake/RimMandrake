@@ -144,6 +144,24 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             return null;
         }
 
+        /// <summary>DUG_WATER_FILL_FIX_NO_CANAL_DEBIT: the decilitres a fill, wash or drink of <paramref name="units"/> container
+        /// units (a unit is a decilitre) takes out of a DUG cell holding <paramref name="haveDl"/>, or -1 when the cell cannot pay
+        /// (the caller must not fill). Exact-level water pays to the decilitre; whole-notch water (exact off) holds whole notches
+        /// only, so the draw rounds UP to whole notches of <paramref name="dlPerNotch"/> -- it may waste, it never creates.</summary>
+        public static long DugCellDebitDl(int units, long haveDl, bool exact, long dlPerNotch)
+        {
+            if (units <= 0)
+            {
+                return 0;
+            }
+            long need = units;
+            if (!exact && dlPerNotch > 0)
+            {
+                need = (need + dlPerNotch - 1) / dlPerNotch * dlPerNotch;
+            }
+            return need <= haveDl ? need : -1;
+        }
+
         /// <summary>BOTTLE_STOCK_MEND_FREE_REFILLS (C2-F2/C2-F3): what <paramref name="units"/> container units of a liquid
         /// spend from a pond body, in the body's own stock unit: a body level is <paramref name="volumePerTile"/> stock and
         /// <paramref name="unitsPerLevel"/> tank units (the pump's rate), so a bottle costs its share of a level.</summary>
