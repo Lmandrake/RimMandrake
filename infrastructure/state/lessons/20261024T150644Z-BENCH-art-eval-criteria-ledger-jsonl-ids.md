@@ -1,0 +1,1 @@
+art_eval criteria_ledger.jsonl ids (CL-NNN) collide across seats: two clones both minted CL-035 the same morning and ./publish refused the replay. Fix was a scratch-clone rebase renumbering ours to CL-042, then reset --keep in the seat clone. Mint CL ids from origin/main's tail right before commit, or key them by seat.
