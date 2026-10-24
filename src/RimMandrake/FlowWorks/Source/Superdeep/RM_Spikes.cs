@@ -161,8 +161,8 @@ namespace RimMandrake.FlowWorks
 	/// <summary>PIT_SPIKES_FIX_OVER_WALL_AND_SUBMERGE: the spikes drawn as the variant's own stakes laid on the floor the pit's
 	/// walls leave visible (RM_SpikeDrawMath.FloorRect / Layout), never over the far-wall face, the side bevels or the
 	/// outline, and fading out under water (SubmergedAlpha: gone at 1 m). drawerType RealtimeOnly (the fill changes without
-	/// a map-mesh rebuild). The variant is the one Graphic_Random already picks for this thing, so saves keep their look;
-	/// an unknown texture falls back to the plain sprite.</summary>
+	/// a map-mesh rebuild). The variant is the one Graphic_Random already picks for this thing, so saves keep their look; its
+	/// stakes are drawn from RM_SpikeStakes.AtlasPath. An unknown texture or a missing atlas falls back to the plain sprite.</summary>
 	public class Building_RM_Spikes : Building
 	{
 		private const int AlphaSteps = 32;
@@ -178,8 +178,13 @@ namespace RimMandrake.FlowWorks
 			if (variant == -2)
 			{
 				Graphic g = Graphic is Graphic_Random r ? r.SubGraphicFor(this) : null;
-				tex = g?.MatSingle?.mainTexture as Texture2D;
-				variant = tex != null ? RM_SpikeDrawMath.VariantOf(tex.name) : -1;
+				variant = RM_SpikeDrawMath.VariantOf((g?.MatSingle?.mainTexture as Texture2D)?.name);
+				// the variant's stake atlas: one clean stake per cell, so a UV box never carries a neighbour's pixels
+				tex = variant >= 0 ? ContentFinder<Texture2D>.Get(RM_SpikeStakes.AtlasPath + RM_SpikeStakes.Variants[variant], false) : null;
+				if (tex == null)
+				{
+					variant = -1;
+				}
 			}
 			IntVec3 c = Position;
 			int d = eng != null ? eng.HollowDepthAt(c) : 0;

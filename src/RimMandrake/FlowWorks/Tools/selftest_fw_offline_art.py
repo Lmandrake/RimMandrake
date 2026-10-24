@@ -36,10 +36,13 @@ Each check must FAIL on the art he rejected (the shipped code, emulated as BEFOR
                         outline off; with the faces off it REFUSES (no wall mask), the no-walls can-fail; can-fail: no spikes
     spikes_submerged    FAIL shipped (full strength under 2 m), PASS after; can-fail: a scene with no deep cell, deep
                         cells with no stakes at all, a linear fade over 2 m
-    (spikes_over_wall also FAILS when the floor rect forgets the outline: the mask and the rect share tables, so this is
-    the check that a FloorRect drift from the walls is visible)
-    parity              the Python layout/hash mirror == SpikeDrawChecks' fixture numbers; RM_SpikeStakes.cs is current
-                        (art_source/Spikes/stakes.py --check)
+    (spikes_over_wall also FAILS when the Python mirror's floor_rect forgets the outline: the mask and the rect share
+    tables, so this is the check that a floor_rect drift from the walls is visible; the C# FloorRect is held by
+    SpikeDrawChecks, not here)
+    parity              the Python layout/hash mirror == SpikeDrawChecks' fixture numbers
+    stakes.check()      RM_SpikeStakes.cs, art_source/Spikes/atlas/ and the installed stake atlases are current and every
+                        stake box holds one stake; can-fail: boxes cut straight from the shipped sprites (review s2c:
+                        neighbours' slivers) and one texel in a box's bilinear ring
 """
 # selftest-timeout: 400
 import re
@@ -240,6 +243,8 @@ def ladder():
 
 
 def spikes():
+    import numpy as np
+    from PIL import Image
     before = spk.render(spk.check_pit(), "before", P=PX)
     after = spk.render(spk.check_pit(), "after", P=PX)
     for name, check in (("spikes_over_wall", spk.spikes_over_wall), ("spikes_submerged", spk.spikes_submerged)):
@@ -274,11 +279,26 @@ def spikes():
         spk.floor_rect, spk.submerged_alpha = real_rect, real_alpha
     hashes, (n, first, last) = spk.parity()
     want(hashes == [0, 2836592880, 1249282371], "spikes parity: hash fixture %s" % hashes)
-    fx = ((0.461248, 0.321038, 0.046875, 0.152344, 0.183594, 0.589844, 0.230469, 0.742188),
-          (0.803638, 0.075, 0.050781, 0.175781, 0.878906, 0.191406, 0.929688, 0.367188))
-    want(n == 24 and all(abs(a - b) < 1e-4 for q, f in zip((first, last), fx) for a, b in zip(q, f)),
-         "spikes parity: layout fixture (24 stakes, first/last quad) == SpikeDrawChecks")
-    want(spk.STAKES.render() == spk.STAKES.OUT.read_text(), "RM_SpikeStakes.cs is what art_source/Spikes/stakes.py writes")
+    fx = ((0.343608, 0.317331, 0.046875, 0.152344, 0.375000, 0.632812, 0.421875, 0.937500),
+          (0.890793, 0.075, 0.050781, 0.164062, 0.281250, 0.609375, 0.332031, 0.937500))
+    want(n == 26 and all(abs(a - b) < 1e-4 for q, f in zip((first, last), fx) for a, b in zip(q, f)),
+         "spikes parity: layout fixture (26 stakes, first/last quad) == SpikeDrawChecks")
+    st = spk.STAKES
+    bad = st.check()
+    want(not bad, "stakes.py --check: .cs, atlas sources and installed atlases current, every box one stake (%s)" % bad)
+    # can-fail, the review s2c defect: stakes cut as padded bboxes straight out of the shipped sprite hold neighbours' pixels
+    dirty = 0
+    for v in st.VARIANTS:
+        a = np.asarray(Image.open(st.TEX / ("RM_Spikes_%s.png" % v)).convert("RGBA"))[..., 3]
+        S = a.shape[0]
+        uvs = [(x0 / S, 1 - (y1 + 1) / S, (x1 + 1) / S, 1 - y0 / S) for x0, y0, x1, y1, _, _ in st._cut(v)[0]]
+        dirty += st.dirty_boxes(a, uvs)
+    want(dirty > 0, "dirty_boxes can-fail: boxes cut from the shipped sprites hold foreign stakes (%d)" % dirty)
+    img, lib, _ = st.atlas("b")
+    smear = img.copy()
+    x1 = int(round(lib[0][4] * img.shape[1]))
+    smear[int(round((1 - lib[0][5]) * img.shape[0])) + 2, x1, 3] = 200      # one opaque texel in stake 0's bilinear ring
+    want(st.dirty_boxes(smear[..., 3], [q[2:] for q in lib]) == 1, "dirty_boxes can-fail: a texel in the bilinear ring")
 
 
 if __name__ == "__main__":
