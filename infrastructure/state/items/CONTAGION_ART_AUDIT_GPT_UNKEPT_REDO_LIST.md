@@ -26,3 +26,13 @@ Rows where GPT says redo/cut and the owner has NO keep on record. Filed as a FIN
 - Reason: The live muzzle and paw-like limbs suggest a swollen quadruped; T056 supplies the required translucent tick anatomy.
 - T055 (live) redo: The pointed muzzle and separated, paw-like limbs read as a swollen quadruped; replace them with tick mouthparts and clustered arthropod legs.
 
+
+## Per-row outcome (FOUNDRY, 2026-10-24, delegated: GPT art triage)
+Gate = regen_eligibility.Gate over every texPath of the def; pipeline = infrastructure/state/art_eval/runs/*/decisions.jsonl; PROTECTED = art.py status live slots. Queued directly: NONE (no redo slot is NONE/PLACEHOLDER/DONOR; dessicated slots that are DONOR are not what GPT flagged).
+
+| def | gate | protected slots | art-eval runs so far | outcome |
+|---|---|---|---|---|
+| RM_Bloodlurk | DONOR,REFUSED_REGEN | 0 | {'REGEN@r1': 1, 'REGEN@r2': 1, 'REGEN@r3': 1} | ALREADY A CANDIDATE: judged by the art-eval pipeline (fauna_contagion_r2_00, latest REGEN r3); no second intake. Regens follow the pipeline loop. |
+| RM_BloodyMess | DONOR,REFUSED_REGEN | 0 | {'REGEN@r1': 1, 'ACCEPT@r1': 1} | ALREADY A CANDIDATE: judged by the art-eval pipeline (fauna_contagion_r1_00, latest ACCEPT r1); no second intake. Regens follow the pipeline loop. |
+| RM_Meltgut | REFUSED_REGEN | 2 | {'REGEN@r1': 1, 'REGEN@r2': 1} | ALREADY A CANDIDATE: judged by the art-eval pipeline (fauna_contagion_r1_02, latest REGEN r2); no second intake. Regens follow the pipeline loop. |
+| RM_Sloshbelly | DONOR,REFUSED_REGEN | 0 | {'REGEN@r1': 1, 'ACCEPT@r1': 1} | ALREADY A CANDIDATE: judged by the art-eval pipeline (fauna_contagion_r1_03, latest ACCEPT r1); no second intake. Regens follow the pipeline loop. |
