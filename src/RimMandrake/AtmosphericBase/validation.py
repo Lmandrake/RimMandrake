@@ -128,7 +128,7 @@ WIRING = (  # (file, needle, why)
     ("RM_AtmosphericCompositor.cs", "if (!tracker.Want(id, RM_ChangeTracker.Substrate)) { skippedUnchanged++; continue; }",
      "a fixture is re-restored every evaluation (§2.6 step 6)"),
     ("RM_AtmosphericCompositor.cs", "comp.Drive(t, scheme.palette[idx])", "the compositor no longer writes a palette member by index (L4)"),
-    ("RM_AtmosphericCompositor.cs", "int w = Show(comp, t, tremorMoods[tr.Key].scheme, tr.Value);", "a tremor flicker is not drawn from its own contributor's palette (L6)"),
+    ("RM_AtmosphericCompositor.cs", "int w = Show(comp, t, tremorMoods[tr.Key].scheme, GodIdx(comp, tremorMoods[tr.Key].scheme, tr.Value));", "a tremor flicker is not drawn from its own contributor's palette (L6)"),
     ("RM_AtmosphericCompositor.cs", "owner = isLead ? lead : second;", "a territory fixture no longer shows its allocated claimant (L5)"),
     ("RM_AtmosphericBaseSettings.cs", "TerritoryTuning => RM_TerritoryTuning.Clamp(", "territory tuning reaches the kernel unclamped"),
     ("RM_AtmosphericBaseSettings.cs", "TremorTuning => RM_TremorTuning.Clamp(", "tremor tuning reaches the kernel unclamped (L6 cap)"),
