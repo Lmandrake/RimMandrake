@@ -1,0 +1,15 @@
+{
+ "RM_PumpingStation_Kludged": [
+  "/mnt/d/ClaudeWork/rimmandrake/scratch/br1e_redraw_judge/gen/station_r1.png",
+  "/mnt/d/ClaudeWork/rimmandrake/scratch/br1e_redraw_judge/gen/station_r1_asm.png",
+  "/mnt/d/ClaudeWork/rimmandrake/scratch/br1e_caps/judge_crops/stk_z.png"
+ ],
+ "RM_HoseFreeEnd_Mouth": [
+  "/mnt/d/ClaudeWork/rimmandrake/scratch/br1e_redraw_judge/gen/Mouth_Scrapper_r1.png",
+  "/mnt/d/ClaudeWork/rimmandrake/scratch/br1e_redraw_judge/gen/mouth_r1_swap.png",
+  "/mnt/d/ClaudeWork/rimmandrake/scratch/br1e_caps/judge_crops/reels_z.png",
+  "/mnt/d/ClaudeWork/rimmandrake/scratch/br1e_redraw_judge/gen/Mouth_Industrial_r1.png",
+  "/mnt/d/ClaudeWork/rimmandrake/scratch/br1e_redraw_judge/gen/Mouth_Modern_r1.png",
+  "/mnt/d/ClaudeWork/rimmandrake/scratch/br1e_redraw_judge/gen/Mouth_Futuristic_r1.png"
+ ]
+}

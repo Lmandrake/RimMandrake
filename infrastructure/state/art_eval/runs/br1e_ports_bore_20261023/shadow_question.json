@@ -1,0 +1,39 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RM_PumpingStation_Kludged": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus REALLY_BAD: BORE_PLANE, CAM_WRONG, PORT_MISFIT",
+   "context": "judged candidate K (image sha 39dd8c734d); BORE_PLANE: Both manifold end flanges are drawn as near-round discs (~70\u00d795 px) turned toward the camera, with dark open bores. This makes the ground-ly; CAM_WRONG: The end flanges face the camera as circles, and the pump body and motor are drawn mostly as a front elevation with little top face. Only the; PORT_MISFIT: The hose end on the east side lies loose about two cells east of the east flange and is not coupled. No hose is attached at the west port, s"
+  },
+  "RM_HoseFreeEnd_Mouth": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: BORE_PLANE \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate K (image sha a9b968f810); BORE_PLANE: The free end of a hose lying flat and pointing east shows its open black bore as an upright ellipse on the end face. The texture is a face-o"
+  }
+ }
+}

@@ -1,0 +1,53 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_br1e_ports_bore_20261023_r2",
+ "built": "2026-10-23T21:20:07-0700",
+ "census": "Transient/biome_ffar/art_eval_shadow_br1e_ports_bore_20261023_r2.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 14 mods \u2014 a test list): 320 active",
+ "rows": {
+  "RM_HoseFreeEnd_Mouth": {
+   "columns": {},
+   "graphic_of": {},
+   "labels": {},
+   "pools": [],
+   "res": null,
+   "reserved": [],
+   "shownBase": [],
+   "subject_key": "hosefreeend_mouth"
+  },
+  "RM_PumpingStation_Kludged": {
+   "columns": {
+    "A": {
+     "single": "03e47d587b7e212d36f820030eb3b735245755efd8d96b3d1029e0790f2a3157"
+    },
+    "B": {
+     "single": "3a2950be2c5f7b7c28dd2c8fd6fb1d8a197f634d078481c84b469b1c90a22224"
+    },
+    "C": {
+     "single": "33699438b1fb355852a825416437c83391582570f17aa884750d14b88b4dbf1f"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Building/FlowWorks/Machinery/RM_PumpingStation_Kludged",
+    "B": "Things/Building/FlowWorks/Machinery/RM_PumpingStation_Kludged",
+    "C": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render RM_PumpingStation_Kludged_v1",
+    "C": "render fwart_RM_PumpingStation_Kludged"
+   },
+   "pools": [],
+   "res": "Things/Building/FlowWorks/Machinery/RM_PumpingStation_Kludged",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "pumpingstation_kludged"
+  }
+ },
+ "sheetId": "art_eval_shadow_br1e_ports_bore_20261023_r2_sheet_2026-10-23",
+ "snapshotId": "4057584ad75d9285"
+}

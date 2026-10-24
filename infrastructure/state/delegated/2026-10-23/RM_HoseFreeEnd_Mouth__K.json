@@ -1,0 +1,76 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 68.9,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.44262559999999995
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 21.6
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 12.2,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1208087
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_HoseFreeEnd_Mouth",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said really_bad); blocking ['BORE_PLANE']; polish ['LEGIB_32']",
+  "gpt regen: unsettled ['K1'], own blocking ['BORE_PLANE']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "machine@v2",
+   "sha": "e06ee7316a0a"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "south.png": "a9b968f8103cb232523a4e787d049d3a44777240bad1c60ebddc7216ffe1a48d",
+  "scale.png": "18eff2ac6604869fb7e8d2ca8ba2b7151d9cf9f84d5a516a5efe7053e1bc854e",
+  "assembled_1.png": "cb846dc51251bac2c5d4ce7434c15c52a6185d3cf6f41b467741b00c838e95cd",
+  "assembled_2.png": "befc2977b4c62d7076a2e0ff580e2573ed4bf4f8add2e283f75c0eebed96f533",
+  "assembled_3.png": "681d41bfa38eb6fc380778ed997c64db1c70fcc4cebad733b82827c8012fdc42",
+  "variants_1.png": "acfd9627f943559caa40e4b29d4ad2bf7d497037dafa15639f23b2eada5e7880",
+  "variants_2.png": "acbe04f18b81f5e787eb5cc4fd9624be1d6814f2c0f1fdf0e514d2944100a3b8",
+  "variants_3.png": "1be477ec5173d654bffcb15b3ddb88b0ab93a116be9fdea67d8a5d536d17a3d9",
+  "facings.png": "0946f3f1a8caed0783ac4e1bd8258906f3dae2e60eac6c466931c278be17c355"
+ }
+}

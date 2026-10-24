@@ -1,0 +1,28 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_br1e_ports_bore_20261023_r2",
+ "html": "Transient/biome_ffar/art_eval_shadow_br1e_ports_bore_20261023_r2_sheet_2026-10-23.html",
+ "decisions": "Transient/biome_ffar/art_eval_shadow_br1e_ports_bore_20261023_r2_sheet_2026-10-23.decisions.json",
+ "wrote_decisions": true,
+ "gate": "PASS v1",
+ "snapshot": "infrastructure/state/art/sheets/art_eval_shadow_br1e_ports_bore_20261023_r2_sheet_2026-10-23.snapshot.json",
+ "snapshotId": "4057584ad75d9285",
+ "census_rows": 2,
+ "rows": 2,
+ "ruled_rows_gone_kept_in_snapshot": [],
+ "collapsed_ruled_elsewhere": 0,
+ "dropped_all_ruled": [],
+ "canon_rows": 0,
+ "canon_rows_with_images": 0,
+ "canon_rows_with_must_show": 0,
+ "linked_rows": 0,
+ "prefilled_sit1": 0,
+ "no_art": [
+  "RM_HoseFreeEnd_Mouth"
+ ],
+ "sets": 3,
+ "images": 9256
+}
+
+--- stderr ---
+/home/mandrake/rm/bench/src/RimMandrake/Utils/art/art_sheet.py:2400: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  px = [q for q in Image.open(f).convert("RGBA").getdata() if q[3] > 8]

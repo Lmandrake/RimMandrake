@@ -1,0 +1,19 @@
+[
+ {
+  "id": "arteval_RM_HoseFreeEnd_Mouth__R2_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_HoseFreeEnd_Mouth",
+  "prompt": "A short piece of the open free end of a hose lying flat on the ground, for a top-down RimWorld sprite, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. The hose is seen from a slightly raised viewpoint, and the end lies in the ground plane. The cut end is seen nearly edge-on: a thin pale cut-wall rim runs around the hose's end, with only a narrow sliver of the near-side inner wall showing below it. Inside the rim the opening is a clearly dark open cavity, a deep charcoal-to-near-black hollow far darker than the hose body and the pale rim, so the end reads as open hose with a deep bore. Just inside the near lip a thin graded band of shading steps from mid grey down to near-black within the first third of the opening, then the dark holds and deepens along the laid hose, giving obvious hollow depth that stays readable when the sprite is small. The rim, shaft and mouth share one flat plane on the ground, so the tip reads as resting on the floor along the hose's length. Ribbed rubber-and-fabric hose body in the look's material colour (rust-streaked patched scrapper hose, black industrial rubber, red moulded modern hose, or sleek futuristic composite), with a worn metal collar behind the cut. Soft contact shadow beneath. Keep the colour palette, material, rim and collar details of the previous render; Scrapper and Industrial keep their material rims. The end face is a thin pale cut wall ringing a dark shaded recess with graded shading, with no flat fill and no concentric seam rings.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: DESC_MISS, DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "br1e_ports_bore_20261023_r3"
+ }
+]
