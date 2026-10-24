@@ -21,7 +21,7 @@ onto the pipe ... make the sprinkler object be shorter, squatter, and wider so t
                          on N/S, E/W, every elbow, end, tee and cross (a tall head's mass floats north of an E/W pipe)
   head_clamp_straddles_pipe  centred across on the seat within half a bore, clamp's lowest row 0.03-0.15 cell south of it
   head_squat             drawn no taller than wide, and at least 2.5 bore widths wide so it straddles any pipe
-  head_seat_on_pipe      the seat point (cell centre + RM_PipeSeatMath) lands on drawn pipe (within half a bore); seat MATH
+  head_seat_on_pipe      the seat point (cell centre + RM_PipeSeatMath) is within half a bore of drawn pipe (gross-miss guard); seat MATH
                          only, it reads no head pixel (the art's seat row is pinned by the selftest's drawOffset parity)
 Portable ladder (LADDER_PORTABLE_REDRAW_NORTH_FROM_GROUND; his words: "the one laying on its side looks really good" /
 "yes I'd like to see the ground portable ladder used"; south "only small nubs sticking up"):
@@ -220,7 +220,10 @@ def head_squat(scene, max_ratio=1.0, min_bores=2.5):
 
 
 def head_seat_on_pipe(scene):
-    """Seat MATH on the drawn pipe: every head's seat (cell centre + RM_PipeSeatMath.Seat) lies on pipe alpha. It reads no
+    """Seat MATH near the drawn pipe, a GROSS-miss guard: every head's seat (cell centre + RM_PipeSeatMath.Seat) has pipe
+    alpha >= 128 somewhere in a square window of +/- half a bore around it, so a seat up to ~a full bore off the centreline
+    still passes (the window is that wide because an end cell's pipe stops AT the seat). It does NOT prove the seat is on
+    the axis; the top-down head redraw (SPRINKLER_HEAD_REDRAW_SEEN_FROM_ABOVE) owes a centreline-distance check. It reads no
     head pixel: that the art's seat row lands on the seat is the drawOffset parity in selftest_fw_offline_art.py."""
     pipe = np.asarray(scene.render(only=lambda m: m.get("kind") == "pipe"))[..., 3]
     off = []
