@@ -1,0 +1,69 @@
+{
+ "biome": "SUBJECTS_hose_reel_firehose_on_the_drum",
+ "built": "2026-10-24T12:08:27-0700",
+ "census": "Transient/biome_ffar/hose_reel_firehose_on_the_drum.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 26 mods \u2014 a test list): 320 active",
+ "rows": {
+  "RM_HoseReel_Modern": {
+   "columns": {
+    "A": {
+     "north": "b19202cf2eb1c6f78558c4ac58476cf092d6505515ce097639f6272fec9ef743",
+     "single": "a065b00b2de581288e551eef406361f1468817ca17add9dbea3e8e4a970e7b04",
+     "south": "1e7c0cf58a5e4145c091599c3cba99908cc68d1acc2b28a538b8f8e27a92bef5"
+    },
+    "B": {
+     "north": "8542aea77ce482a90b42e989efc041fa4b4a51a424bf966a25005b7e22bec752"
+    },
+    "C": {
+     "south": "55953a54feb8c5853639da365135d50685a0e105361495f6ba858347347ad465"
+    },
+    "D": {
+     "single": "0e45f54899ad8e486e67adb3436cd30c4e062c30d78874dbec3df81dfd1c22c2"
+    },
+    "E": {
+     "single": "f749397173516a0aaea167fde8e111ae9fca94b386a41cc4ce8088d9a49446f5"
+    },
+    "F": {
+     "single": "d2170b67339a16c770ed00f1f5777308a68cc7242b17b1872e1214ded20d177c"
+    },
+    "G": {
+     "single": "6057f25493479d7093089766ff1d5944de6a34ae7ba3ac52cd2184139d89fba4"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Hose/Styles/Modern/Reel_PumpHookup",
+    "B": "RimMandrake/FlowWorks/Hose/Styles/Modern/Reel_PumpHookup",
+    "C": "RimMandrake/FlowWorks/Hose/Styles/Modern/Reel_PumpHookup",
+    "D": "RimMandrake/FlowWorks/Hose/Styles/Modern/Reel_PumpHookup",
+    "E": "RimMandrake/FlowWorks/Hose/Styles/Modern/Reel_PumpHookup",
+    "F": "RimMandrake/FlowWorks/Hose/Styles/Modern/Reel_PumpHookup",
+    "G": "RimMandrake/FlowWorks/Hose/Styles/Modern/Reel_PumpHookup"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render reelns_modern_stored_north_v1",
+    "C": "render reelns_modern_stored_south_v1",
+    "D": "render hosereel_coupling_modern_pumphookup_a",
+    "E": "render hosereel_coupling_modern_pumphookup_b",
+    "F": "render RM_MessyConduit_Hose_Reel_PumpHookup_v2",
+    "G": "render RM_MessyConduit_Hose_Reel_PumpHookup"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Hose/Styles/Modern/Reel_PumpHookup",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
+   "shownBase": [],
+   "subject_key": "hosereel_modern"
+  }
+ },
+ "sheetId": "hose_reel_firehose_on_the_drum_sheet_2026-10-24",
+ "snapshotId": "68657f9e8c2fefdd"
+}
