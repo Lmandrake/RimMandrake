@@ -1,0 +1,2 @@
+A refusal reason must be gated to the geometry it names. HOSE_CURVE step 5 first refused every lay with no G2 curve as 'Too close for the hose to bend', which also refused 11/300 long corridor routes in hose maze 6 that were not close at all. Fix: refuse only within TooCloseReach (full lead-out + one turn), and let farther spans keep the shaped lay. Run the broad suites before trusting a new refusal.
+home: NONE
