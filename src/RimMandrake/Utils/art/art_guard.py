@@ -103,7 +103,10 @@ def _authorized(ev: dict, idx: L.Index) -> str | None:
         if ev.get("prev") and idx.protected(ev["prev"]) and not (
                 ev.get("sha") is None and L.held_elsewhere(idx, ev["prev"], (ev.get("mod"), ev.get("rel")))):
             return f"mechanical install ({reason}) displaced owner-kept {ev['prev'][:12]}"
-        if ev.get("sha") is None and not ev.get("said") and ev.get("prev") and idx.protected(ev["prev"]):
+        # a duplicate slot of a kept picture retires mechanically, as artledger.retire allows (e2ac63ff8e
+        # loosened retire and the check above but not this one; CHIKKA_HOME_DECIDE_NOT_STAR_WARS hit it)
+        if ev.get("sha") is None and not ev.get("said") and ev.get("prev") and idx.protected(ev["prev"]) \
+                and not L.held_elsewhere(idx, ev["prev"], (ev.get("mod"), ev.get("rel"))):
             return "retired an owner-kept picture without his words"
         return None
     return f"live event has no ruling and no recognised reason ({reason!r})"

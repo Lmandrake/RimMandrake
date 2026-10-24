@@ -315,6 +315,13 @@ def test_d():
           "retire of a duplicate slot of a kept picture needs no owner words")
     check(refused(L.retire, tmp / mod / "Textures" / "A/Deck.png", reason=WRITER) is not None,
           "retire of the last slot holding a kept picture still needs his words")
+    # the guard agrees with retire (CHIKKA_HOME_DECIDE_NOT_STAR_WARS, 2026-10-24: it refused the duplicate's retire)
+    twin = [e for e in L.read_events() if e.get("type") == "live" and e.get("rel") == "A/DeckTwin.png"][-1]
+    check(twin.get("sha") is None and G._authorized(twin, L.Index()) is None,
+          "guard: the retire of a duplicate slot of a kept picture passes")
+    last = {**twin, "rel": "A/Deck.png"}
+    check(G._authorized(last, L.Index()) is not None,
+          "guard: a mechanical retire of the last slot holding a kept picture is refused")
 
 
 def test_e():

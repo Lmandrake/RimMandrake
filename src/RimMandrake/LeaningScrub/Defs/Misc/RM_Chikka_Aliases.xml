@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CHIKKA_HOME_DECIDE_NOT_STAR_WARS: the chikka's leather and meat moved from SWBestiary (RSW_) to this mod (RM_).
+  A save holding the old name (a stack of leather or meat, an apparel's stuff) loads it as the RM_ def through
+  RM_DefAliasDef (src/RimMandrake/EnvironmentalHazards/Source/RM_DefAliases.cs; EnvironmentalHazards is a dependency
+  of this mod). RM_Chikka itself needs no alias: its defName did not change.
+-->
+<Defs>
+  <RimMandrake.EnvironmentalHazards.RM_DefAliasDef>
+    <defName>RM_ChikkaRehomeAliases</defName>
+    <aliases>
+      <li><from>RSW_CactusHide</from><to>RM_CactusHide</to><defType>ThingDef</defType></li>
+      <li><from>RSW_CactusMeat</from><to>RM_CactusMeat</to><defType>ThingDef</defType></li>
+    </aliases>
+  </RimMandrake.EnvironmentalHazards.RM_DefAliasDef>
+</Defs>

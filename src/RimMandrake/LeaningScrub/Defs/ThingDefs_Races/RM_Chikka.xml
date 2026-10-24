@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Chikka.xml                              CHIKKA_HOME_DECIDE_NOT_STAR_WARS
+
+  The chikka (our port of Alpha Animals AA_Cactipine) is not a Star Wars
+  creature (owner, owner_escalations_leaningscrub_1 2026-10-24: "This is NOT a
+  star wars creature BTW."); by question card 2026-10-24 ("Where should Chikka
+  live?" -> "Move it now") it moved here from
+  src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_DesertPortMisc_Races.xml.
+  The Leaning Scrub is the only biome that lists it.
+
+  defName RM_Chikka is unchanged (it was renamed RSW_ -> RM_ by
+  ALPHA_ANIMAL_PORTS_REHOME_1), so a save holding a chikka still resolves it
+  while this mod is active. Its leather and meat moved with it as RM_CactusHide /
+  RM_CactusMeat (Defs/ThingDefs_Items/RM_ChikkaSupport.xml); a save holding the old
+  RSW_ names loads them through Defs/Misc/RM_Chikka_Aliases.xml. texPaths are
+  unchanged: the owner-kept pictures moved to this mod's Textures/ at the same
+  relative path through the art ledger.
+-->
+<Defs>
+
+	<ThingDef ParentName="AnimalThingBase">
+		<!-- Alpha Animals AA_Cactipine -> RM_Chikka. Dropped: VEF.AnimalBehaviours.CompProperties_AnimalProduct (periodic medicinal-quill harvest, donor framework). -->
+		<defName>RM_Chikka</defName>
+		<label>chikka</label>
+		<description>A rat-sized, rounded thing, broad as a ball behind and narrowing to a blunt face, with a small, furious pair of eyes at the front. Pale green quills stand over every inch of it, long and ridged along the back, like a porcupine's, and a few tiny feet shove it nose-first through the loose sand. Its quills are medicinal, and its meat reads as neither plant nor animal to most palates.</description>
+		<statBases>
+			<MoveSpeed>4.5</MoveSpeed>
+			<ComfyTemperatureMin>-5</ComfyTemperatureMin>
+			<ComfyTemperatureMax>70</ComfyTemperatureMax>
+			<MarketValue>100</MarketValue>
+			<Wildness>0.75</Wildness>
+		</statBases>
+		<tools>
+			<li>
+				<label>left claw</label>
+				<capacities>
+					<li>Scratch</li>
+				</capacities>
+				<power>6</power>
+				<cooldownTime>1.5</cooldownTime>
+				<linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<label>right claw</label>
+				<capacities>
+					<li>Scratch</li>
+				</capacities>
+				<power>6</power>
+				<cooldownTime>1.5</cooldownTime>
+				<linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<capacities>
+					<li>Bite</li>
+				</capacities>
+				<power>5</power>
+				<cooldownTime>2</cooldownTime>
+				<linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+			</li>
+		</tools>
+		<race>
+			<body>QuadrupedAnimalWithPawsAndTail</body>
+			<herdAnimal>true</herdAnimal>
+			<predator>false</predator>
+			<baseBodySize>0.5</baseBodySize>
+			<baseHealthScale>0.75</baseHealthScale>
+			<baseHungerRate>0.2</baseHungerRate>
+			<foodType>OmnivoreAnimal, OvivoreAnimal</foodType>
+			<leatherDef>RM_CactusHide</leatherDef>
+			<specificMeatDef>RM_CactusMeat</specificMeatDef>
+			<trainability>Intermediate</trainability>
+			<manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+			<manhunterOnTameFailChance>0.2</manhunterOnTameFailChance>
+			<lifeExpectancy>4</lifeExpectancy>
+			<gestationPeriodDays>5.661</gestationPeriodDays>
+			<lifeStageAges>
+				<li><def>AnimalBaby</def><minAge>0</minAge></li>
+				<li><def>AnimalJuvenile</def><minAge>0.1</minAge></li>
+				<li><def>AnimalAdult</def><minAge>0.2222</minAge></li>
+			</lifeStageAges>
+			<soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+			<soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+			<soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+		</race>
+		<tradeTags>
+			<li>AnimalCommon</li>
+		</tradeTags>
+	</ThingDef>
+	<PawnKindDef ParentName="AnimalKindBase">
+		<defName>RM_Chikka</defName>
+		<label>chikka</label>
+		<race>RM_Chikka</race>
+		<combatPower>30</combatPower>
+		<ecoSystemWeight>0.3</ecoSystemWeight>
+		<wildGroupSize>
+			<min>1</min>
+			<max>10</max>
+		</wildGroupSize>
+		<lifeStages>
+			<li>
+				<bodyGraphicData>
+					<!-- owner's pick on the Leaning Scrub sheet (2026-10-08), installed via the art ledger -->
+					<texPath>Things/Pawn/Animal/RM_Chikka/RM_Chikka</texPath>
+					<drawSize>0.8</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- owner's pick on the Leaning Scrub sheet (2026-10-08), installed via the art ledger -->
+					<texPath>Things/Pawn/Animal/RM_Chikka/RM_Chikka</texPath>
+					<drawSize>1.0</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- owner's pick on the Leaning Scrub sheet (2026-10-08), installed via the art ledger -->
+					<texPath>Things/Pawn/Animal/RM_Chikka/RM_Chikka</texPath>
+					<drawSize>1.2</drawSize>
+				</bodyGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+</Defs>
