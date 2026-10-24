@@ -166,12 +166,8 @@ def rail_south(P, raised):
     return finish(shadowed(pen.im, **SHADOW))
 
 
-# ---------------------------------------------------------------- portable east/west: the kept north facing, turned
-TEX = HERE.parents[2] / "Textures" / "Things" / "Building" / "FlowWorks" / "Canals"
-
-
-def portable_east():
-    return side_from_north(Image.open(TEX / "RM_LadderPortable_north.png"), s=0.42)   # a leaned ladder: steeper still
+# portable east/west/south: owner 2026-10-24 rejected the squeezed north ("totally flat"); they now come from GPT
+# re-renders fitted by portable_gpt.py, so this script no longer writes any portable facing.
 
 
 def main():
@@ -184,8 +180,6 @@ def main():
             outs[f"{tag}_east"] = rail_east(P, r)
             outs[f"{tag}_south"] = rail_south(P, r)
             outs[f"{tag}_west"] = outs[f"{tag}_east"].transpose(Image.FLIP_LEFT_RIGHT)
-    outs["RM_LadderPortable_east"] = portable_east()
-    outs["RM_LadderPortable_west"] = outs["RM_LadderPortable_east"].transpose(Image.FLIP_LEFT_RIGHT)
     for k, im in outs.items():
         bb = im.getchannel("A").getbbox()
         assert bb and bb[0] > 0 and bb[1] > 0 and bb[2] < C and bb[3] < C, (k, bb)
