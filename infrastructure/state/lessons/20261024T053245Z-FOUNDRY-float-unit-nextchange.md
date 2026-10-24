@@ -1,0 +1,2 @@
+C# NextChange predictions built from float layer fields (l.lit * l.period / len) lose ~1e-7 per unit; over a long dark gap (Sweep lit 0.02 = ~150 units) the predicted change landed microseconds EARLY and the +-1e-6 exactness check caught it. Promote def floats to double before multiplying them into a time (fixed in RM_SweepPrimitive.NextChange, ATMOSPHERIC_BASE_BUILD_PROGRAM_1 R1). A NextChange test with only lit 1 / short gaps cannot see this.
+home: NONE

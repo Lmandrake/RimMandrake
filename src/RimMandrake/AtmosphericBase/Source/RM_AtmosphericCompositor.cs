@@ -218,11 +218,11 @@ namespace RimMandrake.AtmosphericBase
                 // shrine / power flags are owed (no verified role or comp to read them from yet): those anchors fall back to Core
                 rooms.Add(new RM_RoomFacts { id = r.ID, cells = r.CellCount, threshold = threshold });
             }
-            RM_RoomGraph g = RM_RoomGraph.Build(rooms, doors);
-            if (Graph == null || Graph.TopologyKey != g.TopologyKey) { Graph = g; graphRebuilds++; }
-            for (int i = 0; i < nodes.Count; i++) if (nodes[i] >= 0 && Graph.Node(nodes[i]) < 0) nodes[i] = -1;
-            var fs = new RM_FixtureSet(ems, nodes, xs, zs);
-            if (Fixtures == null || Fixtures.Key != fs.Key) { Fixtures = fs; fixtureSetRebuilds++; }
+            // the keep-or-replace rule lives in the kernel (RM_GraphCache), where the selftest drives it
+            RM_GraphRefresh rr = RM_GraphCache.Refresh(Graph, Fixtures, rooms, doors, ems, nodes, xs, zs);
+            Graph = rr.graph; Fixtures = rr.fixtures;
+            if (rr.graphRebuilt) graphRebuilds++;
+            if (rr.fixturesRebuilt) fixtureSetRebuilds++;
         }
 
         public bool InGroup(RM_MapComponent_AtmosphericBase comp, Thing t, string group)

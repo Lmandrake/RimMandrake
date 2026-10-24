@@ -300,7 +300,10 @@ namespace RimMandrake.AtmosphericBase
                     RM_RoomGraph g = c.graph;
                     if (g == null || g.Count == 0) return RM_SchemeKernel.Frac01(c.emitter, 12);
                     int dm = g.MaxDistance(RM_Anchor.Threshold);
-                    if (c.node < 0) return (dm + 1.0) / (dm + 2.0);
+                    if (c.node < 0 || c.node >= g.Count) return (dm + 1.0) / (dm + 2.0);
+                    // a room no threshold room reaches (an island) has no depth: it is lit last, after outdoors, every
+                    // time -- never ahead of the deepest reachable room (review R1)
+                    if (g.Field(RM_Anchor.Threshold)[c.node] == RM_RoomGraph.Unreached) return (dm + 1.5) / (dm + 2.0);
                     return (dm - g.Distance(RM_Anchor.Threshold, c.node)) / (dm + 2.0);
                 }
                 default:
@@ -335,7 +338,9 @@ namespace RimMandrake.AtmosphericBase
             int lo = l.Lo(n), m = l.Hi(n) - lo + 1;
             if (m <= 1) return RM_PatternKernel.Never;
             int len = 2 * m - 1;
-            double u = U(l, ref c, t, len), unit = l.lit * l.period / len, ucycle = len / l.lit;
+            // in double: float lit * period lost ~1e-7 per unit, and a dark gap of ~150 units (lit 0.02) put the
+            // predicted rise micro-seconds early (review R1, found by the island test)
+            double lit = l.lit, u = U(l, ref c, t, len), unit = lit * l.period / len, ucycle = len / lit;
             if (u < 1) return RM_Front.Nudge(t + (1 - u) * unit, t);
             if (u < len - 1) return RM_PatternEvaluator.NextStep(u, unit, t);
             return RM_Front.Nudge(t + (ucycle - u + 1) * unit, t);

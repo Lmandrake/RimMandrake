@@ -640,6 +640,62 @@ internal static class PatternTests
         Check("review: tide, ripple and sweep at t = 1e7..3e7 s: index in range, NextChange after t and within a period", bad == 0, "bad=" + bad + " " + first);
     }
 
+    // ---------------------------------------------------------------- review R1: sweep islands, topology key behaviour
+    private static void StepR1()
+    {
+        // an island room (no door to any threshold room) is lit by Sweep Toward after every reachable room and after
+        // outdoors, at the same place every time
+        var rooms = new List<RM_RoomFacts> { R(1, 60), R(2), R(3), R(4, 10, th: true), R(5), R(6, 90), R(7, 8), R(8), R(9), R(20, 30) };
+        var doors = new List<KeyValuePair<int, int>> { D(1, 2), D(2, 3), D(3, 4), D(1, 5), D(5, 6), D(1, 7), D(1, 8), D(1, 9) };
+        RM_RoomGraph g = RM_RoomGraph.Build(rooms, doors);
+        RM_SchemeData tw = One("<layers><li><primitive>Sweep</primitive><period>40</period><field>Toward</field><lit>0.02</lit></li></layers>",
+                               "<li>(40,20,8,0)</li><li>(220,158,96,0)</li>");
+        int isl = g.Node(20);
+        RM_PatternCtx ci = RM_PatternCtx.Of(20, 20, g, null);
+        double tIsl = FirstLit(tw, ref ci, 40, 0.005), tIsl2 = FirstLit(tw, ref ci, 40, 0.005);
+        RM_PatternCtx co = RM_PatternCtx.Of(99, -1, g, null);
+        double tOut = FirstLit(tw, ref co, 40, 0.005);
+        bool lastAll = tIsl > tOut;
+        string why = "island=" + tIsl.ToString("F3") + " outdoors=" + tOut.ToString("F3");
+        for (int i = 0; i < g.Count; i++)
+        {
+            if (i == isl) continue;
+            RM_PatternCtx c = RM_PatternCtx.Of(i, g.roomIds[i], g, null);
+            double ti = FirstLit(tw, ref c, 40, 0.005);
+            if (!(ti >= 0 && ti < tIsl)) { lastAll = false; why += " room " + g.roomIds[i] + "=" + ti.ToString("F3"); }
+        }
+        Check("R1 sweep Toward: a room unreachable from any threshold room is lit after every reachable room and after outdoors", lastAll && tIsl >= 0, why);
+        Check("R1 sweep Toward: the island's place is deterministic (same first-lit time on a second pass)", tIsl == tIsl2);
+        NextChangeAgrees("R1 sweep toward with an island room", tw, true, 200, 0.02, 90, i => RM_PatternCtx.Of(i, i % 12 == 11 ? -1 : g.roomIds[i % 12 % g.Count], g, null), 13);
+
+        // the keep-or-replace rule the compositor runs (RM_GraphCache.Refresh): a fixture change never rebuilds the
+        // graph or touches its cached fields; a door edit does
+        var ems = new List<int> { 501, 502, 503, 504 }; var rid = new List<int> { 1, 3, 6, 77 };
+        var xs = new List<float> { 1, 5, 9, 30 }; var zs = new List<float> { 2, 2, 7, 30 };
+        RM_GraphRefresh a = RM_GraphCache.Refresh(null, null, rooms, doors, ems, rid, xs, zs);
+        Check("R1 cache: the first pass builds both the graph and the fixture set", a.graphRebuilt && a.fixturesRebuilt && a.graph != null && a.fixtures != null);
+        Check("R1 cache: a fixture in a room outside the graph is outdoors (-1)", a.fixtures.room[a.fixtures.Slot(504)] == -1 && a.fixtures.room[a.fixtures.Slot(502)] == 3);
+        a.graph.Field(RM_Anchor.Threshold); a.graph.Field(RM_Anchor.Core); a.graph.FieldFrom(2);
+        int built = a.graph.FieldsBuilt;
+        var rev = new List<RM_RoomFacts>(rooms); rev.Reverse();
+        var ems2 = new List<int> { 501, 503, 505, 506 }; var rid2 = new List<int> { 1, 6, 3, 9 };          // 502 released, 505/506 taken
+        var xs2 = new List<float> { 1.5f, 9, 4, 12 }; var zs2 = new List<float> { 2, 7.5f, 3, 1 };         // 501 and 503 moved
+        RM_GraphRefresh b = RM_GraphCache.Refresh(a.graph, a.fixtures, rev, doors, ems2, rid2, xs2, zs2);
+        Check("R1 cache: lamps taken, released and moved inside the base keep the SAME graph instance (no rebuild)", !b.graphRebuilt && ReferenceEquals(b.graph, a.graph));
+        Check("R1 cache: ... and rebuild no cached field (FieldsBuilt unchanged after re-reading every field)",
+              Fields(b.graph) == built, "before=" + built + " after=" + b.graph.FieldsBuilt);
+        Check("R1 cache: ... while the fixture set IS replaced (membership key moved)", b.fixturesRebuilt && b.fixtures.Key != a.fixtures.Key);
+        RM_GraphRefresh c2 = RM_GraphCache.Refresh(b.graph, b.fixtures, rooms, doors, ems2, rid2, xs2, zs2);
+        Check("R1 cache: an unchanged pass replaces nothing", !c2.graphRebuilt && !c2.fixturesRebuilt && ReferenceEquals(c2.fixtures, b.fixtures));
+        var cut = new List<KeyValuePair<int, int>>(doors); cut.RemoveAt(0);
+        RM_GraphRefresh d = RM_GraphCache.Refresh(c2.graph, c2.fixtures, rooms, cut, ems2, rid2, xs2, zs2);
+        Check("R1 cache: a door edit (same fixtures) replaces the graph", d.graphRebuilt && !ReferenceEquals(d.graph, c2.graph) && !d.fixturesRebuilt);
+        var flagged = new List<RM_RoomFacts>(rooms); flagged[5] = R(6, 90, shrine: true);
+        Check("R1 cache: a room gaining a shrine flag replaces the graph (flags are topology)", RM_GraphCache.Refresh(c2.graph, c2.fixtures, flagged, doors, ems2, rid2, xs2, zs2).graphRebuilt);
+    }
+
+    private static int Fields(RM_RoomGraph g) { g.Field(RM_Anchor.Threshold); g.Field(RM_Anchor.Core); g.FieldFrom(2); return g.FieldsBuilt; }
+
     private static bool Throws(Action a) { try { a(); return false; } catch (Exception) { return true; } }
 
     private static RM_PatternCtx ctxBox;
@@ -652,5 +708,6 @@ internal static class PatternTests
         Step5();
         Step6();
         Step7Review();
+        StepR1();
     }
 }
