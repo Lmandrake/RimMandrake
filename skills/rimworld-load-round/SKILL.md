@@ -94,8 +94,9 @@ filing anything this sweep surfaces.
 * 🔴 **While it is installed, the live `ModsConfig.xml` is NOT evidence about the owner's
   stack.** A research thread read it and reported Gravship Exporter inactive; it is active
   in the real 578. Read `ModsConfig.FULL.LATEST.xml` instead.
-* 🔴 **Restore before the owner plays.** `--status` prints a loud warning while minimal is
-  live. Leaving his machine on 13 mods is the one unacceptable outcome.
+* **No restore step** (owner, 2026-10-24): *"Never worry about my mod list restoration! … Until I start
+  playing (months from now likely) you never need to "restore" mods to anything."* Leave the list on
+  whatever tier serves the work. `--status`'s warning while minimal is live is informational.
 
 ---
 
