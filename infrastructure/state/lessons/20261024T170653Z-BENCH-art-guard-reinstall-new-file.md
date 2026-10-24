@@ -1,0 +1,2 @@
+Art pre-push guard: a commit that ADDED a texture (old=None) installed with --why is fixed without rewriting history by deleting the target and re-running art.py install with the same bytes plus --owner-said/--reason script:..., because install records prev = the on-disk sha (None when absent) and check_change takes the latest event whose prev matches the commit's old. --file must be inside the clone. Commit the ledger shard before ./publish (the guard reads the ledger at HEAD). Done for RM_SpikeStakes_a/b/c, 86308a0061.
+home: rimworld-review-sheets
