@@ -34,7 +34,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Agaripawn</defName>
     <label>rennok</label>
-    <description>A shambling, waist-high hybrid of animal and fungus, its back and flanks grown over with living caps that feed it and hide it. It is slow, flammable, and never quite alone: hurt one and the others in the grove feel it and come. It breeds by throwing spores, so its young owe it nothing. Hunted or kept, it gives a little edible cap-flesh that keeps longer than most fungus.</description>
+    <description>A massive, shambling animal whose back and flanks are buried beneath living lilac caps that feed it. It burns readily, and nearby kin feel its injuries and come to its aid. It breeds by shedding spores and yields a little edible cap-flesh that keeps longer than most fungus.</description>
     <statBases>
       <MoveSpeed>4</MoveSpeed>
       <ComfyTemperatureMin>-15</ComfyTemperatureMin>
@@ -333,7 +333,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_MycoidColossus</defName>
     <label>vorrugath</label>
-    <description>A walking piece of the pale forest: a cold-blooded six-legged colossus with two spines and six eyes, its back a grove of full-grown caps that trap insects and feed it in turn. It breeds by sporulation and cares for nothing it spawns. It is rarely seen and never mistaken for anything else; when the grove is wounded and something this size answers, the wise are already leaving. Tamed, it can be trimmed for cap-flesh.</description>
+    <description>A colossal, cold-blooded beast with six legs, six eyes, two spines and a grove of full-grown mushroom caps on its back. The caps trap insects and feed it; it reproduces by spores and abandons its offspring. Rare and dangerous when disturbed, a tamed vorrugath can be trimmed for cap-flesh.</description>
     <statBases>
       <MoveSpeed>2.00</MoveSpeed>
       <ComfyTemperatureMin>-30</ComfyTemperatureMin>

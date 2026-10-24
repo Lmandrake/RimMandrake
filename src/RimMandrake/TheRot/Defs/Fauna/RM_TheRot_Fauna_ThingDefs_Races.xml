@@ -4,7 +4,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Brogg</defName>
     <label>brogg</label>
-    <description>A heavy, plated, six-legged grazer built on the dorrak, its broad back a mound of stored mycelium under layered shelves of bracket fungus, its flanks shaggy with hanging hyphae that sway as it walks. It has almost nothing to fear in the pale forest and grazes among the tall caps with a slow, unconcerned grace, ignoring people unless they corner it. A tamed brogg can be milked; a hunted one gives a great deal of meat for the effort.</description>
+    <description>A heavy, six-legged grazer whose plated back carries a mound of stored mycelium and shelves of bracket fungus. Hyphae hang from its flanks as it feeds among the tall caps, usually ignoring people unless cornered. Tame brogg can be milked, and a hunted one yields plenty of meat.</description>
     <statBases>
       <MoveSpeed>4.3</MoveSpeed>
       <MarketValue>350</MarketValue>
@@ -275,7 +275,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Brullith</defName>
     <label>brullith</label>
-    <description>A gigantic, fungal amalgam creature: a natural blend of beast and fungus, the fungus that fed on its kind long ago now growing in its hide.\n\nWhile gentle by nature, it is dangerous when enraged. The strange hide that covers much of it is extremely beautiful and incredibly resistant to damage.</description>
+    <description>A gigantic beast grown together with the fungus that once fed on its kind. Shelves of fungus and hanging hyphae cover a patterned hide of unusual beauty and toughness. Usually placid, a brullith is dangerous when enraged.</description>
     <statBases>
       <MoveSpeed>5.5</MoveSpeed>
       <MarketValue>4000</MarketValue>
@@ -607,7 +607,7 @@
   <ThingDef ParentName="RM_PollutedLands_BaseInsect">
     <defName>RM_ThozzikColony</defName>
     <label>thozzik</label>
-    <description>A hive creature built on the kurreth's armoured, segmented ant body, its forward mandibles held ready. Its toxin sacs are fruiting bodies of a fungus it farms inside itself, and the gas it vents when hurt or killed is that fungus's spore cloud. It defends its hive and its queen with considerable ferocity, stings laced with potent neurotoxin.\n\nIt does not reproduce outside its hive and gives very little meat or chitin. This variety is loyal to the domesticated queen.</description>
+    <description>An armoured hive insect whose toxin sacs are the fruiting bodies of an internal fungus. Wounding or killing it releases a spore cloud, and its sting carries a potent neurotoxin. It obeys only its domesticated queen, breeds within her hive, and yields little meat or chitin.</description>
     <uiIconScale>1.5</uiIconScale>
     <statBases>
       <MoveSpeed>4.0</MoveSpeed>
@@ -920,7 +920,7 @@
   <ThingDef ParentName="BaseInsect">
     <defName>RM_Skerrith</defName>
     <label>skerrith</label>
-    <description>A mantis larger than a person whose carapace grows its own fungus, so that standing still among the caps it is one of them. It hunts from that stillness, and its strike injects a numbing poison that drops the prey before it knows it was struck. When the grove's lure is touched, this is what comes.</description>
+    <description>A mantis larger than a person, with lilac shelf fungi growing from its carapace. It waits among the caps and strikes nearby prey with a numbing venom. Disturbing the grove’s lure draws it out.</description>
     <statBases>
       <MoveSpeed>3.75</MoveSpeed>
       <ArmorRating_Blunt>0.25</ArmorRating_Blunt>
@@ -1113,7 +1113,7 @@
   <ThingDef ParentName="RM_PollutedLands_BaseInsect">
     <defName>RM_ThozzikQueen</defName>
     <label>thozzik queen</label>
-    <description>The hive's matriarch, the kurreth's armoured body swollen around a spore-bearing brood chamber. Very dangerous: nearly as fast as her spawn and her stings inject a more potent form of the neurotoxin, so her swarm quickly overpowers anything living in its way. Her bulk demands long rests between flights.</description>
+    <description>A winged hive matriarch with an armoured abdomen swollen around a spore-bearing brood chamber. She is nearly as fast as her spawn and carries a stronger neurotoxin in her sting. Her bulk forces long rests between flights.</description>
     <uiIconScale>1.5</uiIconScale>
     <statBases>
       <MoveSpeed>3.0</MoveSpeed>
@@ -1270,7 +1270,7 @@
   <ThingDef ParentName="RM_PollutedLands_AnimalThingBase">
     <defName>RM_Illoth</defName>
     <label>illoth</label>
-    <description>A flat, kite-bodied skimmer built on the vrisk, its wing membranes fungal gills dusted with spore powder. A living fungal lantern hangs from its underside and glows faintly in the dark: the lure that draws prey in.</description>
+    <description>A flat, kite-bodied skimmer with spore-dusted, gill-ribbed wings. A living fungal lantern hangs beneath its body, luring prey with a faint amber glow.</description>
     <statBases>
       <MoveSpeed>4</MoveSpeed>
       <MarketValue>350</MarketValue>
@@ -1386,7 +1386,7 @@
   <ThingDef ParentName="RM_PollutedLands_BaseInsect">
     <defName>RM_Thozzik</defName>
     <label>thozzik</label>
-    <description>A hive creature built on the kurreth's armoured, segmented ant body, its forward mandibles held ready. Its toxin sacs are fruiting bodies of a fungus it farms inside itself, and the gas it vents when hurt or killed is that fungus's spore cloud. It defends its hive and its queen with considerable ferocity, stings laced with potent neurotoxin.\n\nIt does not reproduce outside its hive and gives very little meat or chitin.</description>
+    <description>An armoured hive insect whose toxin sacs are the fruiting bodies of an internal fungus. Wounding or killing it releases a spore cloud, and its sting carries a potent neurotoxin. It breeds only within its hive and yields little meat or chitin.</description>
     <uiIconScale>1.5</uiIconScale>
     <statBases>
       <MoveSpeed>4.0</MoveSpeed>

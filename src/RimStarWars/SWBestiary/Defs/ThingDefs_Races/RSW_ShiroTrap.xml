@@ -45,7 +45,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_ShiroTrap</defName>
     <label>shiro-trap</label>
-    <description>The Shiro-trap was native to planet Naboo and was not entirely a separate creature, but in fact a symbiotic pairing of a Tooke-trap plant and a Shiro. The plant disguised the animal, while the Shiro provided the plant a form of locomotion. The plant influences the animal host in one other interesting way by making the generally herbivorous Shiro into a more active predator to repel would be herbivores. Any offspring this creature has will hatch as the non-symbiote version of the Shiro.</description>
+    <description>A slow, armoured reptile from Naboo carrying a Tooke-trap plant between the ridges of its shell. The plant conceals its host, while the Shiro carries the traps from place to place. The pairing feeds readily on Tooke.</description>
     <statBases>
       <MoveSpeed>2.0</MoveSpeed>
       <MarketValue>300</MarketValue>

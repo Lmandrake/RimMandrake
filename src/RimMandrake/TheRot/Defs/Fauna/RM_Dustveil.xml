@@ -31,7 +31,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Dustveil</defName>
     <label>dustveil</label>
-    <description>A broad-winged moth of the Rot, grown as much as hatched: its pale wings are a living felt of fungal threads, dusted with spores, and they hang from it like a veil. It flies in short, fluttering hops, over walls and water alike, and drops to the ground to feed. Its grubs are timid things that nibble at sparse growth. The adults are not timid about anything: they eat cloth, wool first and then any natural fibre, worn or stored, and settle for grass only when nothing better is within reach. A tamed one can be shorn of a fine moth-silk, the fungal felt of its wings, provided the silk is kept well away from every other dustveil, which will eat that too.</description>
+    <description>A broad-winged moth with pale, dust-soft wings that hang like a veil, descended from stock bred to consume waste. Its timid grubs nibble sparse growth; adults prefer wool, then other natural fibres, eating clothing and stored textiles before settling for grass. Tamed adults can be shorn for fine moth-silk, which other dustveils will also eat.</description>
     <statBases>
       <MoveSpeed>3</MoveSpeed>
       <MaxFlightTime>8</MaxFlightTime>

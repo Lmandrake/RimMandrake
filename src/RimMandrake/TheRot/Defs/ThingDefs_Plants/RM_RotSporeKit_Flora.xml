@@ -31,7 +31,7 @@
   <ThingDef ParentName="RM_CaveTreeBase">
     <defName>RM_Skulltop</defName>
     <label>vekkra choker</label>
-    <description>A small mushroom with a pale, bulging cap pitted like a skull, which breathes a steady haze of toxic spores into the air around it. Anything not immune to poison that lingers nearby begins to choke, and the haze fouls the ground where it settles. It is the little cousin of the grath elder, and like the elder it guards nothing but itself; clear it from paths and fields masked, or with fire.</description>
+    <description>A small, pale mushroom with a swollen cap pitted like a skull, and a smaller relative of the grath elder. Its steady haze of toxic spores chokes creatures without poison immunity and fouls the surrounding ground. Clear it from paths and fields with poison protection or fire.</description>
     <tickerType>Normal</tickerType>  <!-- the gas emitter comp only runs on CompTick -->
     <graphicData>
       <texPath>RotSporeKit/Things/Plant/Skulltop/Skulltop</texPath>
@@ -81,7 +81,7 @@
     <defName>RM_Dewshrooms</defName>
 <altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>sikkra lure</label>
-    <description>Clusters of tiny caps that glow a cold teal after dark. The light is a trap: gnats and small moths drift down to it, settle on the gills, stick fast in the glistening slime there and are slowly digested where they stand. A single patch can empty the air of a whole swarm in one night, and by morning its gills are furred with wings. The caps are harmless to touch and worthless to eat.</description>
+    <description>At night, tiny teal-glowing caps lure gnats and moths onto sticky gills, where they are slowly digested. By morning, a busy patch is furred with wings. The caps are harmless to touch and worthless to eat.</description>
     <graphicData>
       <texPath>RotSporeKit/Things/Plant/Seadew</texPath>
       <graphicClass>Graphic_Random</graphicClass>
@@ -616,7 +616,7 @@
   <ThingDef ParentName="RM_CaveTreeBase">
     <defName>RM_FlakespireFungus</defName>
     <label>tarrusk spire</label>
-    <description>A slow-growing mushroom tree: a tall purple-grey spire of a cap, flaking at the edges like old paint, on a stalk as hard and straight-grained as good timber. It takes half a year to reach cutting size and is worth the wait; the stalk cuts into strong, handsome boards, enough to build a hall from.</description>
+    <description>A slow-growing fungus with a tall purple-grey cap that peels into ragged flakes. Its hard, straight-grained stalk can be cut into strong building timber.</description>
     <graphicData>
       <texPath>RotSporeKit/Things/Plant/FlakespireFungus</texPath>
       <graphicClass>Graphic_Random</graphicClass>
@@ -867,7 +867,7 @@
   <ThingDef ParentName="RM_CavePlantBase">
     <defName>RM_GreyLady</defName>
     <label>sylla lace</label>
-    <description>A slender grey mushroom that grows a fine lace from beneath its cap, falling to the ground around the stalk like a veil. The lace is strong, light and soft; cut and spun, it is the pale forest's only cloth, and better than it has any right to be. It can be farmed in open ground or in fungiponic beds, and each plant gives a generous bolt.</description>
+    <description>A slender grey-blue mushroom with fine lace hanging from beneath its cap to the ground. The strong, soft fibres can be harvested for cloth, and the fungus grows in open ground or fungiponic beds.</description>
     <statBases>
       <MaxHitPoints>85</MaxHitPoints>
       <Nutrition>0.2</Nutrition>
@@ -979,7 +979,7 @@
   <ThingDef ParentName="PlantBase">
     <defName>RM_Brightbell</defName>
     <label>tinnik bell</label>
-    <description>A small, nodding bell of a mushroom on a thin pale stem, glowing a soft honey-gold from inside the bell. A patch of them lights a path well enough to walk by at night, which is why colonists plant them along walkways and around doors, and each gives a bite or two of edible fungus besides. Easy to grow, and pleasant to have around in a forest where most things that glow want something from you.</description>
+    <description>A small mushroom whose nodding bells glow honey-gold from within. Colonists grow it beside paths and doors for light and a small edible harvest.</description>
     <graphicData>
       <texPath>RotSporeKit/Things/Plant/Brightbell</texPath>
       <graphicClass>Graphic_Random</graphicClass>
@@ -1027,7 +1027,7 @@
   <ThingDef ParentName="PlantBase">
     <defName>RM_VioletWimple</defName>
     <label>pursk hood</label>
-    <description>A big violet-capped mushroom whose cap droops and folds down around its stalk like a hood. It is not very productive, but the hood is soft and edible, and it grows everywhere in the pale forest, and that is enough.</description>
+    <description>A large violet mushroom whose cap folds down around the stalk like a hood. Common throughout the pale forest, it yields a small harvest of soft, edible cap flesh.</description>
     <graphicData>
       <texPath>RotSporeKit/Things/Plant/VioletWimple</texPath>
       <graphicClass>Graphic_Random</graphicClass>
@@ -1118,7 +1118,7 @@
   <ThingDef ParentName="RM_CavePlantBase">
     <defName>RM_MortalMorelPlant</defName>
     <label>yullcomb</label>
-    <description>A small honeycombed mushroom, brown and pitted like a dried sponge, whose flesh is worked into fungal medicine. Everything about it is slow and delicate: it takes a long time to grow, it must be sown and cut with care, and it crumbles at a careless touch into a dust worth nothing. A good patch is guarded the way other colonies guard a medicine cabinet.</description>
+    <description>A small, brittle fungus with a pale, honeycombed cap and a pale stalk. Its slow-growing flesh is used in fungal medicine and must be harvested carefully. A productive patch is guarded like a medicine cabinet.</description>
     <statBases>
       <MaxHitPoints>60</MaxHitPoints>
       <Nutrition>0.2</Nutrition>

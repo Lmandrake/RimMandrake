@@ -77,7 +77,7 @@
   <ThingDef ParentName="PlantBase">
     <defName>RM_AgelessCap</defName>
     <label>orlath cap</label>
-    <description>A pale, swollen cap the size of a footstool, its skin faintly translucent, as if lit from inside. Brewed alive and on the spot, it is said to give back years to whoever drinks it, and it has to be brewed here, fresh from the ground, or not at all. It bears no malice, but its mycelium runs under everything nearby, and disturbing it makes the cap vent a choking cloud that does not care why you came. It grows very slowly; harvest it gently, or masked.</description>
+    <description>A pale, swollen mushroom the size of a footstool, with faintly translucent skin. Tea brewed from it alive, where it grows, is said to restore lost years. It grows slowly and releases a choking spore cloud when disturbed.</description>
     <tickerType>Normal</tickerType>
     <statBases>
       <MaxHitPoints>180</MaxHitPoints>
@@ -128,7 +128,7 @@
   <ThingDef ParentName="PlantBase">
     <defName>RM_RegenerantVeil</defName>
     <label>mirrash veil</label>
-    <description>A translucent, slowly pulsing sheet of fungal tissue laid over the ground like a wet cloth and threaded straight into the grove's own mycelial network. The pale forest's healing tea is brewed from it alive, fresh from the ground. Wound it and the whole network answers: the grove knows, and whatever guards the grove comes. It grows very slowly and should be harvested by someone who is not in a hurry.</description>
+    <description>A translucent sheet of fungal tissue spread over the ground and joined to the grove's mycelium. It grows slowly and must be brewed fresh and alive to make healing tea. Damaging it calls the grove's guardians.</description>
     <statBases>
       <MaxHitPoints>140</MaxHitPoints>
       <Beauty>15</Beauty>
@@ -167,7 +167,7 @@
   <ThingDef ParentName="PlantBase">
     <defName>RM_EuphoricCrown</defName>
     <label>lussa crown</label>
-    <description>A broad, faintly luminous crown of a cap that brews into the pale forest's own pleasure tea — brewed here, alive, the day it is cut, or not at all. It keeps no defence of its own; ringed the way it is, it has never needed one.</description>
+    <description>A broad, faintly luminous fungal crown whose flesh makes a potent pleasure tea. It must be brewed alive, where it grows, on the day it is cut. It has no defences of its own; the creatures of the grove protect it.</description>
     <statBases>
       <MaxHitPoints>120</MaxHitPoints>
       <Beauty>22</Beauty>
@@ -201,7 +201,7 @@
   <ThingDef ParentName="PlantBase">
     <defName>RM_FalseFruit</defName>
     <label>pekk fruit</label>
-    <description>A small, pale fruiting body grown at the edge of a lussa crown's root mat and shaped to match the crown's own caps, down to the sheen. It is a lure and an alarm, not food: touch one, or try to pick it, and the whole grove knows you are there, and whatever guards the grove comes to see who it is. What little flesh it has is edible, if you live to eat it.</description>
+    <description>A small, pale fungal lure that grows along a lussa crown's root mat, mimicking its caps and sheen. Touching or picking one alerts the grove and draws its guardians. Its scant flesh is edible.</description>
     <thingClass>RimMandrake.CreatureBehaviors.RUT_Plant_FalseFruit</thingClass>
     <statBases>
       <MaxHitPoints>60</MaxHitPoints>
