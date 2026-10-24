@@ -90,7 +90,8 @@ internal static class ModifierTests
         PatternTests.NextChangeAgrees("M1 echoInvert NextChange", inv, false, 300, 0.05, 40, CtxOf(g, f));
         Check("M1 echo Errors: negative echo, and echoInvert without echo, are refused",
               PatternTests.HasError(Layer(breath + "<echo>-1</echo>"), "echo must be")
-              && PatternTests.HasError(Layer(breath + "<echoInvert>true</echoInvert>"), "echoInvert needs"));
+              && PatternTests.HasError(Layer(breath + "<echoInvert>true</echoInvert>"), "echoInvert needs")
+              && PatternTests.HasError(Layer("<primitive>Coil</primitive><echo>6</echo>"), "cannot shape a Coil"));
     }
 
     private static void Approach()
@@ -133,6 +134,10 @@ internal static class ModifierTests
         Check("M2 approach: the front reaches the anchor room before the room one door out, and leaves it after",
               RM_Modifiers.Inside(ls, ref c0, 1) && !RM_Modifiers.Inside(ls, ref c1, 1)
               && RM_Modifiers.Inside(ls, ref c0, 25) && !RM_Modifiers.Inside(ls, ref c1, 25));
+        // the anchor room's window opens at u = 0 exactly (t = 0, 60, ...): Inside and NextEdge must agree there
+        Check("M2 approach: the anchor room is inside at the exact cycle start (u = 0), as NextChange's edge assumes",
+              RM_Modifiers.Inside(ls, ref c0, 0) && RM_Modifiers.Inside(ls, ref c0, 60) && !RM_Modifiers.Inside(ls, ref c0, 59.99)
+              && RM_Modifiers.NextChange(RM_Primitives.Get(RM_Primitive.Sweep), ls, 4, ref c0, 0) < 1.0);
         PatternTests.NextChangeAgrees("M2 approach Slow NextChange", slow, false, 300, 0.05, 70, CtxOf(g, f));
         PatternTests.NextChangeAgrees("M2 approach Fast NextChange", fast, false, 300, 0.05, 70, CtxOf(g, f));
         Check("M2 approach Errors: reach on Breath, a cycle longer than approachEvery, and speed 0 are refused",
