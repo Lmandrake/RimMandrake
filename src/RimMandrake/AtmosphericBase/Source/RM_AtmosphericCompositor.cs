@@ -171,7 +171,9 @@ namespace RimMandrake.AtmosphericBase
         {
             RM_AtmosphericBaseSettings s = RM_AtmosphericBaseSettings.Cur;
             if (!s.defaultMood) return null;
-            RM_AtmosphericSchemeDef d = DefDatabase<RM_AtmosphericSchemeDef>.GetNamedSilentFail(DefaultSchemeDefName);
+            // part (b): the player's neutral pattern (index 0 = DefaultSchemeDefName); an unloadable pick falls back to it
+            RM_AtmosphericSchemeDef d = DefDatabase<RM_AtmosphericSchemeDef>.GetNamedSilentFail(RM_PatternChoice.NeutralScheme(s.patternSet));
+            if (d == null || !d.Valid) d = DefDatabase<RM_AtmosphericSchemeDef>.GetNamedSilentFail(DefaultSchemeDefName);
             if (d == null || !d.Valid) return null;
             int gi = s.defaultMoodGroup;
             if (gi < 0 || gi >= RM_SchemeKernel.DefaultGroups.Length) gi = 0;
@@ -466,7 +468,11 @@ namespace RimMandrake.AtmosphericBase
                 if (owner != null)
                 {
                     RM_PatternCtx pc = RM_PatternCtx.Of(id, room, Graph, Fixtures);
-                    int idx = RM_SchemeKernel.PaletteIndex(data, ref pc, time, flash != null && flash.Contains(id));
+                    // part (b): the player's tempo and intensity shape the default mood only, never a pushed one
+                    bool mine = owner.claimant == DefaultClaimant;
+                    double ot = mine ? RM_PatternChoice.TempoTime(time, set.patternTempo) : time;
+                    int idx = RM_SchemeKernel.PaletteIndex(data, ref pc, ot, flash != null && flash.Contains(id));
+                    if (mine) idx = RM_PatternChoice.Apply(data, idx, set.patternIntensity);
                     RM_AtmosphericSchemeDef shown = owner.scheme;
                     // M3 SCAR: the winner's lowest moments still show the previous owner, for the winner's linger
                     if (second != null && scarOf.TryGetValue(id, out KeyValuePair<string, double> sc))

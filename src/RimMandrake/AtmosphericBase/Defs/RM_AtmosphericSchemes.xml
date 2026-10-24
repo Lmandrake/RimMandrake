@@ -45,4 +45,74 @@
     <sparkOneIn>2</sparkOneIn>
   </RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef>
 
+  <!--
+    ATMOSPHERIC_BASE_BUILD_PROGRAM_1 part (b): the NEUTRAL SET, the patterns a player may pick off the Utinni (owner
+    ruling: no gods there, only unnamed patterns; design §3). Kernel/RM_PatternChoice.cs NeutralSchemes lists them in
+    menu order; Lamplight stays index 0, the shipped default. Each is warm, slow and real lamp light (no drawn layer).
+    Palettes run dim to bright in four entries: entry 0 sits under the working-light floor (max channel 176) and entry 3
+    is a flare, so Gentle (the shipped intensity) plays entries 1-2 only and Full plays all four. None is black, none is
+    near the Narrator's white (the brightest, Lanternwalk's (255,206,140), is 125 away; the radius is 100).
+  -->
+
+  <RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef>
+    <defName>RM_Scheme_Tidewater</defName>
+    <label>tidewater</label>
+    <description>The light comes in like water. From the heart of the base a slow flood rises room by room through the doors, stands, and ebbs back the way it came, four minutes a tide.</description>
+    <palette>
+      <li>(148,94,48,0)</li>    <!-- Ebb: under the working floor (Full only) -->
+      <li>(190,126,68,0)</li>   <!-- Shallows -->
+      <li>(228,166,102,0)</li>  <!-- Flood -->
+      <li>(255,214,152,0)</li>  <!-- Crest (Full only) -->
+    </palette>
+    <layers>
+      <li><primitive>Tide</primitive><entries>0~3</entries><period>240</period><anchor>Core</anchor><band>1.5</band><hold>0.15</hold><ragged>0.05</ragged></li>
+    </layers>
+  </RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef>
+
+  <RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef>
+    <defName>RM_Scheme_Lanternwalk</defName>
+    <label>lantern walk</label>
+    <description>Someone is walking the rounds with a lantern. The rooms breathe low and warm while one brighter light goes lamp to lamp through the base, lingering at each, with a softer glow just behind it.</description>
+    <palette>
+      <li>(186,120,64,0)</li>   <!-- Rest -->
+      <li>(214,150,90,0)</li>   <!-- Lamp: beside the vanilla lamp (214,148,94) -->
+      <li>(238,180,116,0)</li>  <!-- Near: the glow behind the lantern -->
+      <li>(255,206,140,0)</li>  <!-- Lantern (Full only) -->
+    </palette>
+    <layers>
+      <li><primitive>Breath</primitive><entries>0~1</entries><period>150</period><scope>Room</scope></li>
+      <li><primitive>Procession</primitive><combine>Max</combine><entries>1~3</entries><graph>Adjacency</graph><heads>1</heads><hop>1.2</hop><dwell>3</dwell><tail>1</tail><overlap>true</overlap></li>
+    </layers>
+  </RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef>
+
+  <RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef>
+    <defName>RM_Scheme_Rings</defName>
+    <label>rings</label>
+    <description>A stone dropped in still water. Once a minute a soft ring of light spreads from the heart of the base out through the doors and fades at the walls.</description>
+    <palette>
+      <li>(160,104,56,0)</li>   <!-- Still: under the working floor (Full only) -->
+      <li>(196,132,74,0)</li>   <!-- Water -->
+      <li>(230,170,108,0)</li>  <!-- Swell -->
+      <li>(255,212,150,0)</li>  <!-- Ring (Full only) -->
+    </palette>
+    <layers>
+      <li><primitive>Ripple</primitive><entries>0~3</entries><period>60</period><seed>Anchor</seed><anchor>Core</anchor><direction>Out</direction><fill>Shell</fill><speed>0.25</speed><width>1.5</width></li>
+    </layers>
+  </RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef>
+
+  <RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef>
+    <defName>RM_Scheme_Duskfall</defName>
+    <label>duskfall</label>
+    <description>Evening crossing the base. A slow band of warmer light passes over every lamp from one side of the base to the other, then the next comes, a minute and a half apart.</description>
+    <palette>
+      <li>(154,98,52,0)</li>    <!-- Shade: under the working floor (Full only) -->
+      <li>(192,128,70,0)</li>   <!-- Dusk -->
+      <li>(226,162,100,0)</li>  <!-- Glow -->
+      <li>(252,204,140,0)</li>  <!-- Sunset (Full only) -->
+    </palette>
+    <layers>
+      <li><primitive>Sweep</primitive><entries>0~3</entries><period>90</period><field>Axis</field><angle>270</angle><lit>0.35</lit></li>
+    </layers>
+  </RimMandrake.AtmosphericBase.RM_AtmosphericSchemeDef>
+
 </Defs>
