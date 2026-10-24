@@ -94,7 +94,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 // PIT_BOAR_FIX_SUNBATHES_ON_THE_WALL moved the lip scan into RM_PitDrawMath.LipZBelow (s < d) over one SeenDepth lookup
                 Assert(sink.Contains("Pits.RM_SuspensionUnderpass.SeenDepthAt(cachedMap, cachedComp, q)") && sink.Contains("RM_PitDrawMath.LipZBelow(c.x, c.z, d, SeenDepth,"),
                     "the sink clamp sees a lid as the lip");
-                Assert(lip.Contains("int d = Pits.RM_SuspensionUnderpass.DrawDepth(p, p.Position, eng.HollowDepthAt(p.Position));"),
+                Assert(lip.Contains("int d = Pits.RM_SuspensionUnderpass.DrawDepth(p, p.Position, RM_Patch_PitDepthDrawOffset.DrawHollow(p, eng, p.Position));"),
                     "the lip occluder covers a pawn at its DRAWN depth (a lid walker: none)");
                 Assert(lip.Contains("|| Pits.RM_PitCoverBeneath.IsBeneath(p)"), "no lip cover round a hidden beneath pawn");
                 Assert(lip.Contains("SeenDepthAt(map, eng, cand) < d") && lip.Contains("SeenDepthAt(map, eng, g) >= d"),

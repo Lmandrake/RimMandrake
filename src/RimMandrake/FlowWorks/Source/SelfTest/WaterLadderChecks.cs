@@ -228,6 +228,18 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "litres summed before and after and logged");
                 Assert(!Regex.IsMatch(body, @"(fillGrid|partGrid|depthGrid|fluidGrid)\[[^\]]*\] ?[-+]?="), "the migration writes no grid: no water moves");
             });
+
+            // SHALLOW_RIPPLE_FIX_DARK_RING_STATIC (owner 2026-10-24, row 4): the 0.2 m and 0.5 m rungs drew a dark ringed static
+            // surface; vanilla's animated surface (TerrainDef.waterDepthShader Map/WaterDepth) was on every other rung but these.
+            Case("SHALLOW_RIPPLE_every_freshwater_rung_has_the_surface_shader", () =>
+            {
+                XElement root = XDocument.Load(Path.Combine(DefsDir(), "Canals", "TerrainDefs", "FlowWorks_PondStageTerrain.xml")).Root;
+                foreach (string dn in new[] { "RM_WaterThin", "RM_WaterVeryShallow", "RM_WaterChestDeepStill" })
+                {
+                    XElement t = root.Elements("TerrainDef").Single(e => (string)e.Element("defName") == dn);
+                    Assert((string)t.Element("waterDepthShader") == "Map/WaterDepth", dn + " carries waterDepthShader Map/WaterDepth");
+                }
+            });
         }
     }
 }

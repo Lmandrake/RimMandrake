@@ -193,6 +193,24 @@ namespace RimMandrake.FlowWorks
 			return !lying && RM_RelativeRulesMath.HeadUnder(waterMetres, heightMetres, false, headFraction);
 		}
 
+		/// <summary>DRAFTED_SWIMMER_FIX_PIT_BOTTOM_ROW / DEEP_PIT_SWIM_FIX_FIVE_METRES_WALKS / SWIM_DEPTH_FIX_TWO_METRES_WALKED (owner
+		/// 2026-10-24: "if I draft him he is no longer swimming"; "Water 5.0 ... Shown walking, not swimming, no wave effects";
+		/// "water 2.0 is traversible as walking, and I would have expected swimming"). Vanilla draws the swim pose (head only,
+		/// no shadow, ripples) only while a joy-swim job says so (Pawn.Swimming = CurJob.swimming), so a drafted pawn, or one on
+		/// any other job, walked through water over its head. The pose is now the SAME rule that runs swim exhaustion
+		/// (RM_Swim.Tick): swimming on, not flying, not on a deck, a swimmable liquid, standing in water over its head
+		/// (<see cref="IsSwimming"/>). Vanilla's own joy-swim pose is never taken away.</summary>
+		public static bool SwimPose(bool vanillaSwimming, bool swimOn, bool flying, bool onDeck, float waterMetres, bool liquidSwimmable,
+			float heightMetres, bool lying, float headFraction)
+		{
+			if (vanillaSwimming)
+			{
+				return true;
+			}
+			return swimOn && !flying && !onDeck && liquidSwimmable && waterMetres > 0f
+				&& IsSwimming(waterMetres, heightMetres, lying, headFraction);
+		}
+
 		/// <summary>Game hours a swimmer lasts: the stated table.</summary>
 		public static float EnduranceHours(float enduranceFactor, float baseHours)
 		{
@@ -241,11 +259,45 @@ namespace RimMandrake.FlowWorks
 		/// (1.5 m of wall above the surface: still a pit for a person, K = 2).</summary>
 		public static int DugSwimClimbDepth(bool swimOn, bool liquidSwimmable, int holeNotches, double waterMetres, int wholeWaterNotches)
 		{
-			if (!swimOn || !liquidSwimmable || holeNotches <= 0 || waterMetres < SwimMinWaterMetres - 1e-6)
+			return SurfaceClimbDepth(swimOn, liquidSwimmable, holeNotches, waterMetres, wholeWaterNotches, SwimMinWaterMetres);
+		}
+
+		/// <summary>WATERED_PIT_FIX_NO_WAY_IN — the least dug water the climb rule judges at its SURFACE: the ChestDeep rung
+		/// (RM_WaterChestDeepStill, 3 notches). Owner 2026-10-24: "for water 1.5m in a 1.5m pit, there is 'no way in.' ... it
+		/// should be traversible as swimming if walking is no longer allowed." Chest-deep water carries a pawn up to its surface,
+		/// so a brim-full 1.5 m pit is level with the ground; the SWIM set (path cost, non-swimmer closure, swim pose by depth)
+		/// stays at <see cref="SwimMinWaterMetres"/>.</summary>
+		public const double WadeLiftMinWaterMetres = 1.5;
+
+		/// <summary>The climb depth of a dug square holding <see cref="WadeLiftMinWaterMetres"/> or more of swimmable water:
+		/// the hole minus its whole notches of water (as <see cref="DugSwimClimbDepth"/>); -1 = the pit rules stand.</summary>
+		public static int DugWadeLiftDepth(bool swimOn, bool liquidSwimmable, int holeNotches, double waterMetres, int wholeWaterNotches)
+		{
+			return SurfaceClimbDepth(swimOn, liquidSwimmable, holeNotches, waterMetres, wholeWaterNotches, WadeLiftMinWaterMetres);
+		}
+
+		private static int SurfaceClimbDepth(bool swimOn, bool liquidSwimmable, int holeNotches, double waterMetres, int wholeWaterNotches,
+			double minMetres)
+		{
+			if (!swimOn || !liquidSwimmable || holeNotches <= 0 || waterMetres < minMetres - 1e-6)
 			{
 				return -1;
 			}
 			int s = holeNotches - Math.Max(0, wholeWaterNotches);
+			return s < 0 ? 0 : s;
+		}
+
+		/// <summary>DEEP_PIT_SWIM_FIX_FIVE_METRES_WALKS — the depth a FLOATING pawn is drawn at in a hole of
+		/// <paramref name="hollowDepth"/> notches holding <paramref name="wholeWaterNotches"/> whole notches of water: the water's
+		/// surface, never below the floor nor above the ground. A brim-full 5 m pit draws its swimmer at ground level (sink 0),
+		/// not on the floor 5 m down (the owner saw her "jump" in and walk the bottom).</summary>
+		public static int SurfaceDrawDepth(int hollowDepth, int wholeWaterNotches)
+		{
+			if (hollowDepth <= 0)
+			{
+				return 0;
+			}
+			int s = hollowDepth - Math.Max(0, wholeWaterNotches);
 			return s < 0 ? 0 : s;
 		}
 

@@ -143,7 +143,9 @@ namespace RimMandrake.FlowWorks
 			Thing thingToIgnore = null, Thing thing = null)
 		{
 			RM_MapComponent_Excavation eng = map?.GetComponent<RM_MapComponent_Excavation>();
-			if (eng == null || eng.ClimbDepthAt(loc) == 0)
+			// WATERED_PIT_FIX_NO_WAY_IN: the ramp stands on the pit FLOOR, so it is judged on the holes (HollowDepthAt), wet or
+			// dry; the climb depth reads a wet pit at its water surface and would refuse a ramp in any pit holding 1.5 m of water.
+			if (eng == null || eng.HollowDepthAt(loc) == 0)
 			{
 				return "RMFlow_RampNeedsPit".Translate();
 			}
@@ -152,8 +154,8 @@ namespace RimMandrake.FlowWorks
 				return "RMFlow_RampNotOnLadder".Translate();
 			}
 			IntVec3 up = loc + rot.FacingCell;
-			int d = eng.ClimbDepthAt(loc);
-			int u = up.InBounds(map) ? eng.ClimbDepthAt(up) : d;
+			int d = eng.HollowDepthAt(loc);
+			int u = up.InBounds(map) ? eng.HollowDepthAt(up) : d;
 			if (!RM_CliffMaskMath.RampJoins(d, u, RM_PitRamp.MaxSpan))
 			{
 				return "RMFlow_RampMustFaceUphill".Translate(RM_Volume.FormatMetres(RM_PitRamp.MaxSpan));

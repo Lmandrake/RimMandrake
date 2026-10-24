@@ -336,7 +336,7 @@ namespace RimMandrake.FlowWorks
 		public int ClimbDepthAt(IntVec3 c)
 		{
 			int h = HollowDepthAt(c);
-			if (h == 0 || swimCells.Count == 0)
+			if (h == 0 || swimClimb.Count == 0)
 			{
 				return h;
 			}
@@ -384,22 +384,25 @@ namespace RimMandrake.FlowWorks
 					{
 						continue;
 					}
-					int s = RM_SwimMath.DugSwimClimbDepth(true, Swimming.RM_SwimWater.LiquidSwimmableAt(map, this, c), depthGrid[i],
-						RM_LevelSolve.Metres(dl), (int)(dl / RM_LevelSolve.U));
-					if (s >= 0)
+					bool swimmable = Swimming.RM_SwimWater.LiquidSwimmableAt(map, this, c);
+					double metres = RM_LevelSolve.Metres(dl);
+					int s = RM_SwimMath.DugSwimClimbDepth(true, swimmable, depthGrid[i], metres, (int)(dl / RM_LevelSolve.U));
+					// WATERED_PIT_FIX_NO_WAY_IN: chest-deep (1.5 m) water already lifts the climb to its surface; only 2 m+ is SWUM
+					int lift = s >= 0 ? s : RM_SwimMath.DugWadeLiftDepth(true, swimmable, depthGrid[i], metres, (int)(dl / RM_LevelSolve.U));
+					if (lift >= 0)
 					{
-						fresh[i] = s;
+						fresh[i] = lift * 2 + (s >= 0 ? 1 : 0);   // climb depth, low bit = a swim square
 					}
 				}
 			}
 			foreach (KeyValuePair<int, int> kv in fresh)
 			{
-				if (!swimClimb.TryGetValue(kv.Key, out int old) || old != kv.Value)
+				if (!swimClimb.TryGetValue(kv.Key, out int old) || old != kv.Value >> 1 || swimCells.Contains(kv.Key) != ((kv.Value & 1) == 1))
 				{
 					changed.Add(kv.Key);
 				}
 			}
-			foreach (int i in swimCells)
+			foreach (int i in swimClimb.Keys)
 			{
 				if (!fresh.ContainsKey(i))
 				{
@@ -414,8 +417,11 @@ namespace RimMandrake.FlowWorks
 			swimCells.Clear();
 			foreach (KeyValuePair<int, int> kv in fresh)
 			{
-				swimClimb[kv.Key] = kv.Value;
-				swimCells.Add(kv.Key);
+				swimClimb[kv.Key] = kv.Value >> 1;
+				if ((kv.Value & 1) == 1)
+				{
+					swimCells.Add(kv.Key);
+				}
 			}
 			BumpClimbGeneration();
 			Swimming.RM_SwimPathing.Bump(map);
@@ -2673,7 +2679,7 @@ namespace RimMandrake.FlowWorks
 			}
 			// SWIM_DUG_RESERVOIR_FIX_PAWNS_CANT_ENTER: which dug squares are swum (own timer: pumps, hoses and fill-ins write
 			// water between pulses, and the engine may be off)
-			if ((excavatedCells.Count > 0 || swimCells.Count > 0) && Find.TickManager.TicksGame % SwimRefreshTicks == 11)
+			if ((excavatedCells.Count > 0 || swimClimb.Count > 0) && Find.TickManager.TicksGame % SwimRefreshTicks == 11)
 			{
 				RefreshDugSwim();
 			}

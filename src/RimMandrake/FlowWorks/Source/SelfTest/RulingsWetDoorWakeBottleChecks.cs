@@ -49,7 +49,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string doors = Src("Superdeep", "RM_FlowDoors.cs");
                 string patch = Between(doors, "[HarmonyPatch(typeof(GenConstruct), nameof(GenConstruct.CanBuildOnTerrain))]", "public static class RM_FlowDoorRules");
                 Assert(patch.Contains("if (__result ||"), "early-out on every call vanilla already allows");
-                Assert(patch.Contains("IsFlowDoorDef(td)"), "only the flow-door defs are let through");
+                Assert(patch.Contains("IsFlowDoorDef(td) || StandsInWetPit(td)"), "only the flow-door defs, the ladders and the pit ramp are let through (WATERED_PIT_FIX_NO_WAY_IN)");
                 Assert(patch.Contains("eng.ExcavatedDepthAt(cell)") && !patch.Contains("eng.DepthAt("),
                     "can-fail: the DUG depth, never DepthAt (which reads a natural lake as superdeep)");
                 Assert(patch.Contains("RM_PitTrapMath.FlowDoorStandsOn("), "the selftested verdict decides");

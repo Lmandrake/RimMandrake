@@ -84,7 +84,7 @@ namespace RimMandrake.FlowWorks
 	{
 		public static void Postfix(ref bool __result, BuildableDef entDef, IntVec3 c, Map map, Rot4 rot, Thing thingToIgnore)
 		{
-			if (__result || map == null || !(entDef is ThingDef td) || !RM_FlowDoorRules.IsFlowDoorDef(td))
+			if (__result || map == null || !(entDef is ThingDef td) || !(RM_FlowDoorRules.IsFlowDoorDef(td) || StandsInWetPit(td)))
 			{
 				return;
 			}
@@ -103,6 +103,16 @@ namespace RimMandrake.FlowWorks
 				}
 			}
 			__result = true;
+		}
+
+		/// <summary>WATERED_PIT_FIX_NO_WAY_IN — the pit's own way out stands in its water too: every ladder
+		/// (RM_LadderUtility.IsLadderDef) and the pit ramp. Owner 2026-10-24, of a 1.5 m pit holding 1.5 m of water: "I can't
+		/// place any ramp or ladder within the pit. I should be able to build in that pit just like normal despite the water."
+		/// The wet rungs of the water ladder (vanilla WaterShallowBase family) lack the Light affordance BuildingBase asks for.</summary>
+		public static bool StandsInWetPit(ThingDef td)
+		{
+			return td != null && (RM_LadderUtility.IsLadderDef(td)
+				|| (td.thingClass != null && typeof(RM_Building_PitRamp).IsAssignableFrom(td.thingClass)));
 		}
 
 		/// <summary>A floor blueprint or frame under the door: any such order keeps the refusal (stricter than vanilla, which

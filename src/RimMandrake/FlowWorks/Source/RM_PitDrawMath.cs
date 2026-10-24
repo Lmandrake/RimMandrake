@@ -88,6 +88,40 @@ namespace RimMandrake.FlowWorks
 			return float.NaN;
 		}
 
+		/// <summary>PIT_CLICK_FIX_SHIFTED_ONE_DOWN — the row a drafted-move click at height <paramref name="clickZ"/> (in row
+		/// <paramref name="zClick"/>) means. A pawn in a pit is drawn <c>sink</c> cells south of its square, so ordering it to the
+		/// clicked square left it drawn a row below the click (owner 2026-10-24: "only allow them to move 'shifted one down'").
+		/// Scans the clicked row and up to <paramref name="maxRows"/> rows north while each stays sunk
+		/// (<paramref name="restingSink"/> &gt; 0; NaN or 0 ends the run: off the map, or out of the pit) and returns the row
+		/// whose RESTING drawn centre (z + 0.5 - sink) is nearest the click. Ties keep the clicked row; a click on unsunk ground
+		/// is that ground.</summary>
+		public static int PickRowForDrawnClick(int zClick, float clickZ, Func<int, float> restingSink, int maxRows)
+		{
+			float s0 = restingSink(zClick);
+			if (float.IsNaN(s0) || !(s0 > 0f))
+			{
+				return zClick;
+			}
+			int best = zClick;
+			float bestErr = Math.Abs(zClick + 0.5f - s0 - clickZ);
+			for (int k = 1; k <= maxRows; k++)
+			{
+				int z = zClick + k;
+				float s = restingSink(z);
+				if (float.IsNaN(s) || !(s > 0f))
+				{
+					break;
+				}
+				float err = Math.Abs(z + 0.5f - s - clickZ);
+				if (err < bestErr - 1e-4f)
+				{
+					best = z;
+					bestErr = err;
+				}
+			}
+			return best;
+		}
+
 		/// <summary>PIT_BOAR_FIX_SUNBATHES_ON_THE_WALL — hold the DRAWN centre above the near lip of the column it is drawn in.
 		/// The per-cell clamp measures room from the logical cell's centre, but the sink comes off the TWEENED draw position,
 		/// and vanilla's PawnTweener lags the logical cell (spring 0.09 a frame: about 0.85 cell behind a walking boar at any

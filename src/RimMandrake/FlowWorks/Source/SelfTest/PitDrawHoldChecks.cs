@@ -264,6 +264,75 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string clamped = Between(Src("Superdeep", "RM_PitDepthDraw.cs"), "private static float Clamped(", "private static RM_MapComponent_Excavation ExcavationOf(");
                 Assert(clamped.Contains("LipZBelow("), "the per-cell clamp uses the same lip finder");
             });
+
+            // DRAFTED_SWIMMER_FIX_PIT_BOTTOM_ROW / DEEP_PIT_SWIM_FIX_FIVE_METRES_WALKS / SWIM_DEPTH_FIX_TWO_METRES_WALKED (owner review
+            // 2026-10-24 rows 4 and 7): vanilla's swim pose came only from a joy-swim job, so a drafted pawn (or any other job)
+            // walked through water over its head; and the pit sink drew every pawn on the FLOOR, so a swimmer in a brim-full 5 m
+            // pit "jumped" in and walked the bottom.
+            Case("SwimPose_head_under_swims_whatever_the_job", () =>
+            {
+                const float H = 1.75f, F = 0.9f;
+                Assert(RM_SwimMath.SwimPose(false, true, false, false, 2.0f, true, H, false, F), "2.0 m over a 1.75 m person: the swim pose (b)");
+                Assert(RM_SwimMath.SwimPose(false, true, false, false, 5.0f, true, H, false, F), "5 m: swims (c), drafted or not (d)");
+                Assert(!RM_SwimMath.SwimPose(false, true, false, false, 1.5f, true, H, false, F), "can-fail: 1.5 m: wades");
+                Assert(!RM_SwimMath.SwimPose(false, true, false, true, 5.0f, true, H, false, F), "on a deck: never");
+                Assert(!RM_SwimMath.SwimPose(false, true, true, false, 5.0f, true, H, false, F), "flying: never");
+                Assert(!RM_SwimMath.SwimPose(false, true, false, false, 5.0f, false, H, false, F), "an unswimmable liquid: never");
+                Assert(!RM_SwimMath.SwimPose(false, false, false, false, 5.0f, true, H, false, F), "swimming off: vanilla only");
+                Assert(!RM_SwimMath.SwimPose(false, true, false, false, 5.0f, true, H, true, F), "lying: not the swim pose (the drowning rule's)");
+                Assert(RM_SwimMath.SwimPose(true, false, false, false, 0f, false, H, false, F), "vanilla's joy swim is never taken away");
+                string sw = Src("Swimming", "RM_Swim.cs");
+                Assert(sw.Contains("[HarmonyPatch(typeof(Pawn), nameof(Pawn.Swimming), MethodType.Getter)]")
+                    && sw.Contains("__result = SwimsAt(__instance, __instance.Position);"), "the Pawn.Swimming getter reads the rule (renderer, ripples)");
+                Assert(sw.Contains("[HarmonyPatch(typeof(Pawn), nameof(Pawn.WaterCellCost), MethodType.Getter)]")
+                    && sw.Contains("if (__result || inWaterCost ||"),
+                    "can-fail: Pawn.WaterCellCost (path cost) still sees vanilla's pose only: our pose never makes deep water nearly free");
+                Assert(sw.Contains("return RM_SwimMath.SwimPose(false, true, false, deck, RM_SwimWater.WaterMetresAt(map, ex, c),"), "SwimsAt runs the pure rule");
+            });
+
+            Case("PitSink_a_swimmer_floats_at_the_surface", () =>
+            {
+                Assert(RM_SwimMath.SurfaceDrawDepth(10, 10) == 0, "brim-full 5 m pit: drawn at ground level (sink 0)");
+                Assert(RM_SwimMath.SurfaceDrawDepth(10, 4) == 6, "2 m of water in a 5 m pit: 3 m down, at the surface");
+                Assert(RM_SwimMath.SurfaceDrawDepth(4, 9) == 0 && RM_SwimMath.SurfaceDrawDepth(0, 4) == 0, "never above the ground");
+                Assert(RM_SwimMath.SurfaceDrawDepth(10, 0) == 10, "can-fail: no water: the floor");
+                Assert(RM_PitDrawMath.SinkFor(RM_SwimMath.SurfaceDrawDepth(10, 10), 0.3f) == 0f && RM_PitDrawMath.SinkFor(10, 0.3f) > 2f,
+                    "can-fail: pre-fix the 5 m swimmer sank the full cap (the 'jump')");
+                string src = Src("Superdeep", "RM_PitDepthDraw.cs");
+                string sinkOf = Between(src, "public static float SinkOf(", "public static int DrawHollow(");
+                Assert(sinkOf.Contains("DrawDepth(pawn, from, DrawHollow(pawn, ex, from))") && sinkOf.Contains("DrawDepth(pawn, to, DrawHollow(pawn, ex, to))")
+                    && !sinkOf.Contains("ex.HollowDepthAt("), "both ends of a step read the drawn (surface) depth");
+                string dh = Between(src, "public static int DrawHollow(", "public static float RestingSinkAt(");
+                Assert(dh.Contains("Swimming.RM_Patch_Pawn_SwimPose.SwimsAt(pawn, c)") && dh.Contains("RM_SwimMath.SurfaceDrawDepth(h,"),
+                    "a floating pawn reads the surface; a wader the floor");
+            });
+
+            // PIT_CLICK_FIX_SHIFTED_ONE_DOWN (owner 2026-10-24: "even in a waterless pit clicking the colonist appears to only allow
+            // them to move 'shifted one down' by what you would expect where you clicked").
+            Case("PitClick_the_click_means_where_the_pawn_is_drawn", () =>
+            {
+                // a 1 m pit (2 notches, sink 0.6) rows z 10..14, ground elsewhere; no lip clamp bites mid-pit
+                Func<int, float> pit1m = z => z < 0 ? float.NaN : (z >= 10 && z <= 14 ? 0.6f : 0f);
+                Assert(RM_PitDrawMath.PickRowForDrawnClick(12, 12.5f, pit1m, 4) == 13,
+                    "can-fail: a click on row 12's centre means row 13 (drawn at 12.9), not row 12 (drawn at 11.9: 'one down')");
+                Assert(RM_PitDrawMath.PickRowForDrawnClick(12, 12.95f, pit1m, 4) == 13, "near row 13's drawn centre: row 13");
+                Assert(RM_PitDrawMath.PickRowForDrawnClick(14, 14.5f, pit1m, 4) == 14, "the north row: nothing sunk beyond it, stays");
+                Assert(RM_PitDrawMath.PickRowForDrawnClick(5, 5.5f, pit1m, 4) == 5, "ground: ground");
+                Assert(RM_PitDrawMath.PickRowForDrawnClick(9, 9.9f, pit1m, 4) == 9, "the ground row south of the pit stays ground");
+                Assert(RM_PitDrawMath.PickRowForDrawnClick(3, 3.5f, z => float.NaN, 4) == 3, "off the map: unchanged");
+                // ties keep the clicked row: a collapsed south lip (every row drawn at 10.0)
+                Func<int, float> flat = z => z >= 10 && z <= 12 ? (z + 0.5f - 10f) : 0f;
+                Assert(RM_PitDrawMath.PickRowForDrawnClick(10, 10.2f, flat, 4) == 10, "equal drawn rows: the clicked row");
+                string src = Src("Superdeep", "RM_PitDepthDraw.cs");
+                string patch = Between(src, "public static class RM_Patch_PitClickDrawnRow", "[HarmonyFinalizer]");
+                Assert(src.Contains("[HarmonyPatch(typeof(RimWorld.FloatMenuOptionProvider_DraftedMove), \"GetSingleOption\")]"), "on the drafted 'go here' option");
+                Assert(patch.Contains("RM_PitDrawMath.PickRowForDrawnClick(c.z, context.clickPosition.z,")
+                    && patch.Contains("RM_Patch_PitDepthDrawOffset.RestingSinkAt(pawn, q)"), "the pure picker over the production sink");
+                Assert(Between(src, "[HarmonyFinalizer]", "private static RM_MapComponent_Excavation ExcavationOf(").Length > 0
+                    && src.Contains("ClickedRef(context) = __state;"), "the vanilla clicked cell is put back after the option is built");
+                string rest = Between(src, "public static float RestingSinkAt(", "private static float Clamped(");
+                Assert(rest.Contains("Clamped(ex, pawn.Map, c, d, RimMandrakeFlowWorksSettings.pitSinkPerLevel)"), "the resting sink is the drawn one (same clamp)");
+            });
         }
     }
 }

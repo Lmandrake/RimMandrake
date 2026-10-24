@@ -18,8 +18,9 @@ namespace RimMandrake.FlowWorks
 	/// Reads the HOLLOW depth (<see cref="RM_MapComponent_Excavation.HollowDepthAt"/>: dug, or a dry pond bed's, POND_BED step 2), not
 	/// <c>DepthAt</c>: natural water reads through as SUPERDEEP there, and a pawn wading a
 	/// vanilla river must not vanish 1.2 cells into it — vanilla draws its own swimming.
-	/// Fluid in a canal does not lift the pawn: the occupant stays down on the floor
-	/// (<c>slime_occupant_below_surface</c>).
+	/// Fluid in a canal does not lift a WADER: the occupant stays down on the floor
+	/// (<c>slime_occupant_below_surface</c>); a pawn that floats (head under, swimmable water) is drawn at the surface
+	/// (<see cref="DrawHollow"/>, DEEP_PIT_SWIM_FIX_FIVE_METRES_WALKS).
 	///
 	/// Flying pawns are skipped (vanilla lifts them; a flier over a pit is above it).
 	/// Numbers are PROVISIONAL — see <see cref="RM_PitDrawMath"/>; live check owed.
@@ -68,14 +69,14 @@ namespace RimMandrake.FlowWorks
 			IntVec3 from = pawn.Position;
 			// SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD: on a suspension deck the pawn sinks to the deck's height (none at the
 			// surface), under it (floor band) to the hole's floor
-			int dFrom = Pits.RM_SuspensionUnderpass.DrawDepth(pawn, from, ex.HollowDepthAt(from));
+			int dFrom = Pits.RM_SuspensionUnderpass.DrawDepth(pawn, from, DrawHollow(pawn, ex, from));
 			if (pawn.pather == null || !pawn.pather.Moving)
 			{
 				// PIT_BOAR_FIX_SUNBATHES_ON_THE_WALL: the tween may lag (or, paused, freeze) behind Position: hold the drawn centre
 				return Held(Clamped(ex, pawn.Map, from, dFrom, perLevel), drawPos, dFrom);
 			}
 			IntVec3 to = pawn.pather.nextCell;
-			int dTo = to.IsValid ? Pits.RM_SuspensionUnderpass.DrawDepth(pawn, to, ex.HollowDepthAt(to)) : dFrom;
+			int dTo = to.IsValid ? Pits.RM_SuspensionUnderpass.DrawDepth(pawn, to, DrawHollow(pawn, ex, to)) : dFrom;
 			if (dFrom == 0 && dTo == 0)
 			{
 				return 0f;
@@ -87,6 +88,32 @@ namespace RimMandrake.FlowWorks
 			float sb = to.IsValid ? Clamped(ex, pawn.Map, to, dTo, perLevel) : sa;
 			// the shallower end's lip, so a step onto a shelf eases instead of popping; 0 (stepping in from ground) holds nothing
 			return Held(sa + (sb - sa) * t, drawPos, Math.Min(dFrom, dTo));
+		}
+
+		/// <summary>DEEP_PIT_SWIM_FIX_FIVE_METRES_WALKS: the hole depth the sink reads on <paramref name="c"/>. A pawn that floats
+		/// there (Swimming.RM_Patch_Pawn_SwimPose.SwimsAt: head under, swimmable water) is drawn at the water's SURFACE
+		/// (RM_SwimMath.SurfaceDrawDepth); a wader or a pawn on a dry floor stays down on the floor, as before.</summary>
+		public static int DrawHollow(Pawn pawn, RM_MapComponent_Excavation ex, IntVec3 c)
+		{
+			int h = ex.HollowDepthAt(c);
+			if (h <= 0 || !Swimming.RM_Patch_Pawn_SwimPose.SwimsAt(pawn, c))
+			{
+				return h;
+			}
+			return RM_SwimMath.SurfaceDrawDepth(h, (int)(ex.WaterDlAt(c) / RM_LevelSolve.U));
+		}
+
+		/// <summary>PIT_CLICK_FIX_SHIFTED_ONE_DOWN: the sink of <paramref name="pawn"/> standing still at the centre of
+		/// <paramref name="c"/> (the drafted-move click remap reads it; no tween, so no drawn-centre hold).</summary>
+		public static float RestingSinkAt(Pawn pawn, IntVec3 c)
+		{
+			RM_MapComponent_Excavation ex = ExcavationOf(pawn?.Map);
+			if (ex == null || !c.InBounds(pawn.Map) || !RimMandrakeFlowWorksSettings.pitDepthDrawOffsetEnabled || pawn.Flying)
+			{
+				return 0f;
+			}
+			int d = Pits.RM_SuspensionUnderpass.DrawDepth(pawn, c, DrawHollow(pawn, ex, c));
+			return d > 0 ? Clamped(ex, pawn.Map, c, d, RimMandrakeFlowWorksSettings.pitSinkPerLevel) : 0f;
 		}
 
 		/// <summary>Sink on cell <paramref name="c"/> of dug depth <paramref name="d"/>, held so the drawn centre
@@ -134,6 +161,54 @@ namespace RimMandrake.FlowWorks
 				cachedComp = map.GetComponent<RM_MapComponent_Excavation>();
 			}
 			return cachedComp;
+		}
+	}
+
+	/// <summary>PIT_CLICK_FIX_SHIFTED_ONE_DOWN — a drafted "go here" click inside a pit means the square the pawn would be
+	/// DRAWN at the click, not the square under the mouse (RM_PitDrawMath.PickRowForDrawnClick over
+	/// RM_Patch_PitDepthDrawOffset.RestingSinkAt of the first selected pawn). The clicked cell is swapped for the option's
+	/// build only and restored after (the option's delegate keeps vanilla's clicked cell for its exit-grid check).</summary>
+	[HarmonyPatch(typeof(RimWorld.FloatMenuOptionProvider_DraftedMove), "GetSingleOption")]
+	[RimMandrake.Shared.PatchFeature("Pawns sink into dug channels", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "pitDepthDrawOffsetEnabled")]
+	public static class RM_Patch_PitClickDrawnRow
+	{
+		private static readonly AccessTools.FieldRef<RimWorld.FloatMenuContext, IntVec3> ClickedRef =
+			AccessTools.FieldRefAccess<RimWorld.FloatMenuContext, IntVec3>("cachedClickedCell");
+
+		[HarmonyPrefix]
+		public static void Prefix(RimWorld.FloatMenuContext context, out IntVec3 __state)
+		{
+			__state = IntVec3.Invalid;
+			if (context == null || context.map == null || !RimMandrakeFlowWorksSettings.pitDepthDrawOffsetEnabled)
+			{
+				return;
+			}
+			Pawn pawn = context.FirstSelectedPawn;
+			IntVec3 c = ClickedRef(context);
+			if (pawn == null || pawn.Map != context.map || !c.InBounds(context.map))
+			{
+				return;
+			}
+			Map map = context.map;
+			int z = RM_PitDrawMath.PickRowForDrawnClick(c.z, context.clickPosition.z, row =>
+			{
+				IntVec3 q = new IntVec3(c.x, 0, row);
+				return q.InBounds(map) ? RM_Patch_PitDepthDrawOffset.RestingSinkAt(pawn, q) : float.NaN;
+			}, RM_PitDrawMath.SinkCapLevels / 2);
+			if (z != c.z)
+			{
+				__state = c;
+				ClickedRef(context) = new IntVec3(c.x, 0, z);
+			}
+		}
+
+		[HarmonyFinalizer]
+		public static void Finalizer(RimWorld.FloatMenuContext context, IntVec3 __state)
+		{
+			if (__state.IsValid && context != null)
+			{
+				ClickedRef(context) = __state;
+			}
 		}
 	}
 

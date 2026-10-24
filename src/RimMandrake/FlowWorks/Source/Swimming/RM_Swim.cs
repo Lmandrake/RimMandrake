@@ -1127,4 +1127,66 @@ namespace RimMandrake.FlowWorks.Swimming
 			}
 		}
 	}
+
+	/// <summary>The swim pose for anyone standing in water over its head, drafted or on any job (RM_SwimMath.SwimPose; the
+	/// same rule as RM_Swim.Tick's exhaustion). Vanilla reads Pawn.Swimming for the head-only body, the skipped shadow and
+	/// the ripples. Pawn.WaterCellCost also reads it (1 while swimming: vanilla's joy-swim speed); that read is fenced off
+	/// (<see cref="RM_Patch_Pawn_WaterCellCost_SwimFence"/>) so the pose never changes a path cost: swim speed stays ours
+	/// (RM_Patch_PathFollower_SwimSpeed).</summary>
+	[HarmonyPatch(typeof(Pawn), nameof(Pawn.Swimming), MethodType.Getter)]
+	[RimMandrake.Shared.PatchFeature("Swimming in deep water", typeof(RM_SwimSettings), "deepSwimEnabled")]
+	public static class RM_Patch_Pawn_SwimPose
+	{
+		[System.ThreadStatic] internal static bool inWaterCost;
+
+		[HarmonyPostfix]
+		public static void Postfix(Pawn __instance, ref bool __result)
+		{
+			if (__result || inWaterCost || __instance == null || !__instance.Spawned)
+			{
+				return;
+			}
+			__result = SwimsAt(__instance, __instance.Position);
+		}
+
+		/// <summary>Would <paramref name="pawn"/> float, head-only, at cell <paramref name="c"/> of its map? Also read by the pit
+		/// sink (RM_PitDepthDraw): a floating pawn is drawn at the water's surface, not on the pit floor.</summary>
+		public static bool SwimsAt(Pawn pawn, IntVec3 c)
+		{
+			if (!RM_SwimWater.On || pawn == null || pawn.Map == null || pawn.Flying || !c.InBounds(pawn.Map))
+			{
+				return false;
+			}
+			Map map = pawn.Map;
+			TerrainDef t = map.terrainGrid.TerrainAt(c);
+			if (t == null || !t.IsWater)
+			{
+				return false;   // the common case: dry ground (every wet dug square carries a water terrain of the ladder)
+			}
+			RM_MapComponent_Excavation ex = RM_SuperdeepTrap.EngineOf(map);
+			bool deck = Pits.RM_PitCoverUtility.IsCovered(map, c) && !Pits.RM_SuspensionUnderpass.InFloorBand(pawn);
+			return RM_SwimMath.SwimPose(false, true, false, deck, RM_SwimWater.WaterMetresAt(map, ex, c),
+				RM_SwimWater.LiquidSwimmableAt(map, ex, c), RM_Drowning.HeightOf(pawn), RM_Drowning.Lying(pawn),
+				RimMandrakeFlowWorksSettings.pitDrowningHeadFraction);
+		}
+	}
+
+	/// <summary>Pawn.WaterCellCost reads Pawn.Swimming; while it does, the swim pose is vanilla's alone.</summary>
+	[HarmonyPatch(typeof(Pawn), nameof(Pawn.WaterCellCost), MethodType.Getter)]
+	[RimMandrake.Shared.PatchFeature("Swimming in deep water", typeof(RM_SwimSettings), "deepSwimEnabled")]
+	public static class RM_Patch_Pawn_WaterCellCost_SwimFence
+	{
+		[HarmonyPrefix]
+		public static void Prefix(out bool __state)
+		{
+			__state = RM_Patch_Pawn_SwimPose.inWaterCost;
+			RM_Patch_Pawn_SwimPose.inWaterCost = true;
+		}
+
+		[HarmonyFinalizer]
+		public static void Finalizer(bool __state)
+		{
+			RM_Patch_Pawn_SwimPose.inWaterCost = __state;
+		}
+	}
 }
