@@ -1,14 +1,21 @@
 """validation.py -- modcheck suite for RimMandrake AtmosphericBase (mandrake.rm.atmosphericbase).
 
-ATMOSPHERIC_BASE_BUILD_PROGRAM_1, Phases 1-2. Phase 1: capability discovery, the hard exclusion list, the per-thing
+ATMOSPHERIC_BASE_BUILD_PROGRAM_1, Phases 1-4. Phase 1: capability discovery, the hard exclusion list, the per-thing
 take-over / take-back buttons, the scenario-decides switch, exact restore on release (and on the map being removed).
 Phase 2: schemes as data (RM_AtmosphericSchemeDef), the framework's default groups and registered groups, and the
 compositor driving ONE mood -- quantised to the palette (L4), written only on change (§2.6 step 6), unlit fixtures not
 driven (L9), on real time (L10). Five Mod Settings.
+Phase 3: moods held one per claimant and ORDERED by the consumer's rank (read, never computed); the top two take
+territory over the union of their groups -- a wedge of the fixtures that turns on its own slow clock (L5: allocation,
+never mixing). Phase 4: moods ranked below them, at most three (L6), flicker a few fixtures in their own palette, never
+more than tremorMaxFraction of the driven fixtures at once. Ten more Mod Settings; defaults = the shipped gentle look
+(one mood -> neither territory nor tremor ever acts).
 Grounded in Source/, read whole: Kernel/RM_AtmosphericKernel.cs, RM_GlowAccess.cs, RM_EmitterDiscovery.cs,
 RM_MapComponent_AtmosphericBase.cs, RM_AtmosphericDesignators.cs, RM_AtmosphericBaseAPI.cs, RM_AtmosphericBaseSettings.cs,
-RM_AtmosphericBaseProof.cs, Kernel/RM_SchemeKernel.cs, RM_AtmosphericSchemeDef.cs, RM_AtmosphericCompositor.cs.
-Nothing here speaks for Phases 3-10 (territory, tremor, gestures, sound, witness ledger, def hooks): not built.
+RM_AtmosphericBaseProof.cs, Kernel/RM_SchemeKernel.cs, RM_AtmosphericSchemeDef.cs, RM_AtmosphericCompositor.cs,
+Kernel/RM_TerritoryKernel.cs.
+Nothing here speaks for Phases 5-10 (gestures, sound, witness ledger, def hooks): not built. No rank supplier exists
+(NINEFOLD_LOUDNESS_FRONT_1): every rank today is the pushing consumer's own number.
 
 Three layers, cheapest first:
   1. static_findings(srcs) -- pure over the source text: no Harmony anywhere, no def mutated, every .cs compiled,
@@ -21,6 +28,8 @@ Three layers, cheapest first:
   4. one_mood_proof -- RM_AtmosphericBaseProof.ProofCompositor: one held lit fixture, the shipped default scheme pushed
      as a proof mood, the SHIPPED compositor evaluated at explicit times. Its sweep counts are the end-of-Phase-2 cost
      re-measure's input (item ## verify), read on the owner's real list.
+  5. territory_proof -- RM_AtmosphericBaseProof.ProofTerritory: up to 40 held lit fixtures, two territory moods and four
+     tremor moods (one over L6's cap) pushed, the SHIPPED compositor evaluated at every step of one boundary turn.
 
 🔴 NEVER RUN LIVE (either chain). Built offline 2026-10-11; the lit-fixture branch of SetGlowColorInternal (DeRegister/Register on
 the glow grid) runs only in game, so `restored` and `drive` are first proven by the live proof, not by the selftest.
@@ -35,9 +44,11 @@ SRC = os.path.join(HERE, "Source")
 _PROOF = "RimMandrake.AtmosphericBase.RM_AtmosphericBaseProof"
 
 suite = Suite("AtmosphericBase")
-suite.toggles = ["lightChannel", "playerTakeoverButton", "compositor", "defaultMood"]
+suite.toggles = ["lightChannel", "playerTakeoverButton", "compositor", "defaultMood", "territory", "tremor"]
 
-SETTINGS = ("lightChannel", "playerTakeoverButton", "compositor", "defaultMood", "defaultMoodGroup")
+SETTINGS = ("lightChannel", "playerTakeoverButton", "compositor", "defaultMood", "defaultMoodGroup",
+            "territory", "territoryPeriodSeconds", "territoryLeadShare", "territoryRagged",
+            "tremor", "tremorCap", "tremorSlotSeconds", "tremorOneIn", "tremorFlickerSeconds", "tremorMaxFraction")
 GATES = (   # (setting, file, class, member) -- the setting must be read inside that member
     ("lightChannel", "RM_MapComponent_AtmosphericBase.cs", "RM_MapComponent_AtmosphericBase", "TakeOverRefusal"),
     ("lightChannel", "RM_MapComponent_AtmosphericBase.cs", "RM_MapComponent_AtmosphericBase", "Drive"),
@@ -67,6 +78,18 @@ GATES = (   # (setting, file, class, member) -- the setting must be read inside 
     ("RM_SchemeKernel.PaletteIndex", "RM_AtmosphericCompositor.cs", "RM_Compositor", "Evaluate"),
     ("RM_SchemeKernel.Errors", "RM_AtmosphericSchemeDef.cs", "RM_AtmosphericSchemeDef", "ConfigErrors"),
     ("realtimeSinceStartup", "RM_AtmosphericCompositor.cs", "RM_Compositor", "Update"),
+    # Phases 3-4
+    ("RankedMoods", "RM_AtmosphericCompositor.cs", "RM_Compositor", "Evaluate"),
+    ("CompareRank", "RM_MapComponent_AtmosphericBase.cs", "RM_MapComponent_AtmosphericBase", "RankedMoods"),
+    ("set.territory &&", "RM_AtmosphericCompositor.cs", "RM_Compositor", "Evaluate"),
+    ("TerritoryTuning", "RM_AtmosphericCompositor.cs", "RM_Compositor", "Evaluate"),
+    ("RM_TerritoryKernel.Allocate", "RM_AtmosphericCompositor.cs", "RM_Compositor", "Evaluate"),
+    ("RM_TerritoryKernel.ClockStep", "RM_AtmosphericCompositor.cs", "RM_Compositor", "Evaluate"),
+    ("set.tremor &&", "RM_AtmosphericCompositor.cs", "RM_Compositor", "Evaluate"),
+    ("TremorTuning", "RM_AtmosphericCompositor.cs", "RM_Compositor", "Evaluate"),
+    ("RM_TremorKernel.Assign", "RM_AtmosphericCompositor.cs", "RM_Compositor", "Evaluate"),
+    ("RestoreMoods", "RM_AtmosphericBaseProof.cs", "RM_AtmosphericBaseProof", "ProofCompositor"),
+    ("RestoreMoods", "RM_AtmosphericBaseProof.cs", "RM_AtmosphericBaseProof", "ProofTerritory"),
 )
 WIRING = (  # (file, needle, why)
     ("RM_GlowAccess.cs", '"glowColorOverride"', "the colour override field is no longer what is snapshotted"),
@@ -75,12 +98,18 @@ WIRING = (  # (file, needle, why)
     ("RM_MapComponent_AtmosphericBase.cs", 'Scribe_Values.Look(ref scenarioDecides', "a scenario's decision is lost on reload"),
     ("RM_AtmosphericDesignators.cs", "Find.ReverseDesignatorDatabase", "the buttons are never offered"),
     ("RM_AtmosphericDesignators.cs", "ReferenceEquals(list, registeredIn)", "a Reinit()'d designator list never gets the buttons back"),
-    ("RM_MapComponent_AtmosphericBase.cs", 'Scribe_Deep.Look(ref mood, "mood")', "a pushed mood is lost on reload"),
-    ("RM_AtmosphericCompositor.cs", "if (!tracker.Want(id, RM_ChangeTracker.Pack(mood.scheme.shortHash, idx))) { skippedUnchanged++; continue; }",
+    ("RM_MapComponent_AtmosphericBase.cs", 'Scribe_Collections.Look(ref moods, "moods", LookMode.Deep)', "pushed moods are lost on reload"),
+    ("RM_MapComponent_AtmosphericBase.cs", 'Scribe_Deep.Look(ref legacyMood, "mood")', "a Phase 2 save's one mood is lost on load"),
+    ("RM_AtmosphericCompositor.cs", "if (!tracker.Want(id, RM_ChangeTracker.Pack(scheme.shortHash, idx))) { skippedUnchanged++; return 0; }",
      "a driven fixture is rewritten when its value did not change (§2.6 step 6)"),
     ("RM_AtmosphericCompositor.cs", "if (!tracker.Want(id, RM_ChangeTracker.Substrate)) { skippedUnchanged++; continue; }",
      "a fixture is re-restored every evaluation (§2.6 step 6)"),
-    ("RM_AtmosphericCompositor.cs", "comp.Drive(t, mood.scheme.palette[idx])", "the compositor no longer writes a palette member by index (L4)"),
+    ("RM_AtmosphericCompositor.cs", "comp.Drive(t, scheme.palette[idx])", "the compositor no longer writes a palette member by index (L4)"),
+    ("RM_AtmosphericCompositor.cs", "int w = Show(comp, t, tremorMoods[tr.Key].scheme, tr.Value);", "a tremor flicker is not drawn from its own contributor's palette (L6)"),
+    ("RM_AtmosphericCompositor.cs", "owner = isLead ? lead : second;", "a territory fixture no longer shows its allocated claimant (L5)"),
+    ("RM_AtmosphericBaseSettings.cs", "TerritoryTuning => RM_TerritoryTuning.Clamp(", "territory tuning reaches the kernel unclamped"),
+    ("RM_AtmosphericBaseSettings.cs", "TremorTuning => RM_TremorTuning.Clamp(", "tremor tuning reaches the kernel unclamped (L6 cap)"),
+    ("Kernel/RM_TerritoryKernel.cs", "public const int LawCap = 3;", "the tremor's cap of three contributors (L6) moved"),
     ("RM_AtmosphericCompositor.cs", 'DefaultSchemeDefName = "RM_Scheme_Lamplight"', "the default scheme is no longer the shipped Lamplight"),
     ("Defs/RM_AtmosphericSchemes.xml", "<defName>RM_Scheme_Lamplight</defName>", "the default scheme the compositor names is not shipped"),
 )
@@ -345,4 +374,68 @@ def one_mood_proof(t):
         if t._guard():
             t.upstream_reason = ("UNMEASURED: needs a held fixture with its power cut mid-mood; instrument missing "
                                  "(the proof cannot cut power on the owner's map without leaving a trace)")
+            t.upstream_failed = True
+
+
+def _kv3(t):
+    r = t.bridge_call("jawa/static_call", type=_PROOF, method="ProofTerritory", args="go")
+    if not t._guard():
+        return None, ""
+    text = (r or {}).get("result") if isinstance(r, dict) else None
+    if text in (None, ""):
+        t.upstream_reason = "UNMEASURED: RM_AtmosphericBaseProof.ProofTerritory answered nothing (DLL not deployed?): %s" % (
+            str((r or {}).get("message") or (r or {}).get("error"))[:120])
+        t.upstream_failed = True
+        return None, ""
+    text = str(text)
+    if text.startswith("ERROR"):
+        raise ExpectationFailed("ProofTerritory: %s" % text)
+    kv = dict(re.findall(r"(\w+)=(\S+)", text))
+    if kv.get("map") == "-":
+        t.upstream_reason, t.upstream_failed = "UNMEASURED: no current map", True
+        return None, ""
+    if kv.get("schemes") != "True":
+        raise ExpectationFailed("the shipped schemes RM_Scheme_Lamplight / RM_Scheme_Fireflies are missing or invalid: %s" % text[:300])
+    try:
+        lit = int(kv.get("lit", "0"))
+    except ValueError:
+        lit = 0
+    if lit < 2:
+        _unmeasured(t, "fewer than two untaken player-owned LIT fixtures on this map", text)
+        return None, ""
+    return kv, text
+
+
+@suite.chain("territory_proof")
+def territory_proof(t):
+    with t.component("territory_every_fixture_one_claimant_one_palette", toggle="territory"):
+        kv, text = _kv3(t)
+        if kv:
+            _want(kv, text, ("one_owner", "own_palette", "territory_off_one_mood"))
+            if kv.get("palette_violations") != "0":
+                raise ExpectationFailed("a colour outside every palette reached Drive: %s" % text[:300])
+    with t.component("territory_both_presences_hold_ground", toggle="territory"):
+        kv, text = _kv3(t)
+        if kv:
+            _want(kv, text, ("both_sides",))
+    with t.component("territory_boundary_moves", toggle="territory"):
+        kv, text = _kv3(t)
+        if kv:
+            _want(kv, text, ("boundary_moves",))
+    with t.component("tremor_capped_at_three_in_own_palette", toggle="tremor"):
+        kv, text = _kv3(t)
+        if kv:
+            if kv.get("tremor_seen", "0") == "0":
+                _unmeasured(t, "no flicker fell inside the sampled turn on this few fixtures", text)
+            else:
+                _want(kv, text, ("tremor_cap_held", "tremor_fraction_held", "tremor_own_palette"))
+    with t.component("territory_release_restores_exactly", beyond_toggle=True):
+        kv, text = _kv3(t)
+        if kv:
+            _want(kv, text, ("released_exact",))
+    with t.component("territory_boundary_visible_and_tremor_reads_as_presence", beyond_toggle=True):
+        if t._guard():
+            t.upstream_reason = ("UNMEASURED: north-star bars territory_boundary_visible / tremor_reads_as_third_presence / "
+                                 "never_tremor_reads_as_territory are owner-eye judgements on the authored canvas "
+                                 "(ATMOSPHERIC_BASE_CANVAS_1), with ranks from NINEFOLD_LOUDNESS_FRONT_1; neither exists yet")
             t.upstream_failed = True

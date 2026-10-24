@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="..\Kernel\RM_AtmosphericKernel.cs" />
     <Compile Include="..\Kernel\RM_SchemeKernel.cs" />
+    <Compile Include="..\Kernel\RM_TerritoryKernel.cs" />
     <Compile Include="..\RM_GlowAccess.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>

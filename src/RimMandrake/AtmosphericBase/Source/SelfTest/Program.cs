@@ -1,4 +1,4 @@
-// Selftest for mandrake.rm.atmosphericbase (ATMOSPHERIC_BASE_BUILD_PROGRAM_1 Phases 1-2).
+// Selftest for mandrake.rm.atmosphericbase (ATMOSPHERIC_BASE_BUILD_PROGRAM_1 Phases 1-4).
 //
 // REAL, compiled from production source:
 //   RM_AtmosphericKernel.Classify - the hard exclusion list (pawn, plant, worn/equipment, hologram) beating
@@ -222,6 +222,192 @@ internal static class Program
         }
     }
 
+    // ================================================================== Phase 3: territory (L5) -- RM_TerritoryKernel
+    // REAL: ordering by rank, the wedge allocation, its own clock. NOT covered: the union over game groups and the
+    // write loop (ProofTerritory's business).
+
+    private static void Scatter(int n, int seed, List<int> ids, List<float> xs, List<float> zs)
+    {
+        var rng = new Random(seed);
+        for (int i = 0; i < n; i++) { ids.Add(1000 + i * 7 + seed); xs.Add((float)(rng.NextDouble() * 60)); zs.Add((float)(rng.NextDouble() * 25)); }
+    }
+
+    private static int Count(bool[] a) { int c = 0; foreach (bool b in a) if (b) c++; return c; }
+
+    private static void Phase3()
+    {
+        var tun = new RM_TerritoryTuning { periodSeconds = 900f, leadShare = 0.6f, ragged = 0.08f };
+        // rank is only ordered: higher first, ties by claimant ordinal, never by push order
+        int[] o1 = RM_TerritoryKernel.RankOrder(new float[] { 1f, 5f, 5f, -2f }, new[] { "d", "b", "a", "c" });
+        int[] o2 = RM_TerritoryKernel.RankOrder(new float[] { 5f, -2f, 1f, 5f }, new[] { "a", "c", "d", "b" });
+        Check("rank order: loudest first, ties by claimant ordinal", o1[0] == 2 && o1[1] == 1 && o1[2] == 0 && o1[3] == 3, string.Join(",", o1));
+        Check("rank order does not depend on push order", o2[0] == 0 && o2[1] == 3 && o2[2] == 2 && o2[3] == 1, string.Join(",", o2));
+
+        // exact shares; both claimants always hold ground
+        bool shares = true;
+        for (int n = 2; n <= 60; n++)
+            for (float sh = 0.5f; sh <= 0.8f; sh += 0.05f)
+            {
+                int k = RM_TerritoryKernel.LeadCount(n, sh);
+                if (k < 1 || k > n - 1 || k < Math.Ceiling(n * sh - 1e-6) - 0 && k != n - 1) shares = false;
+            }
+        Check("lead count = ceil(share * N), and the quieter claimant always keeps at least one fixture", shares
+              && RM_TerritoryKernel.LeadCount(11, 0.6f) == 7 && RM_TerritoryKernel.LeadCount(2, 0.8f) == 1 && RM_TerritoryKernel.LeadCount(1, 0.6f) == 1);
+
+        // the irregular 11-fixture canvas: both sides at every step of a turn, share exact, every fixture changes hands
+        var ids = new List<int>(); var xs = new List<float>(); var zs = new List<float>();
+        Scatter(11, 3, ids, xs, zs);
+        int salt = RM_TerritoryKernel.PairSalt("god.a", "god.b");
+        bool[] first = RM_TerritoryKernel.Allocate(ids, xs, zs, 0, salt, tun);
+        var flipsOf = new int[11];
+        bool exact = true; int maxStepFlips = 0, stepsWithChange = 0;
+        bool[] prev = first;
+        for (long st = 1; st <= RM_TerritoryKernel.StepsPerTurn; st++)
+        {
+            bool[] a = RM_TerritoryKernel.Allocate(ids, xs, zs, st, salt, tun);
+            if (Count(a) != 7) exact = false;
+            int f = 0;
+            for (int i = 0; i < 11; i++) if (a[i] != prev[i]) { f++; flipsOf[i]++; }
+            if (f > 0) stepsWithChange++;
+            maxStepFlips = Math.Max(maxStepFlips, f);
+            prev = a;
+        }
+        int minFlips = int.MaxValue; foreach (int f in flipsOf) minFlips = Math.Min(minFlips, f);
+        Check("11 irregular fixtures: the louder claimant holds exactly 7 at every step of a turn", exact);
+        Check("the boundary moves: every fixture changes hands at least twice per turn (no static heartland)", minFlips >= 2, "min=" + minFlips);
+        Check("the boundary moves a little at a time: at most 2 fixtures change per step, and not every step", maxStepFlips <= 2 && stepsWithChange < RM_TerritoryKernel.StepsPerTurn,
+              "max=" + maxStepFlips + " changing steps=" + stepsWithChange);
+        bool[] same = RM_TerritoryKernel.Allocate(ids, xs, zs, 0, salt, tun);
+        bool identical = true; for (int i = 0; i < 11; i++) identical &= same[i] == first[i];
+        bool[] quarter = RM_TerritoryKernel.Allocate(ids, xs, zs, RM_TerritoryKernel.StepsPerTurn / 4, salt, tun);
+        bool differs = false; for (int i = 0; i < 11; i++) differs |= quarter[i] != first[i];
+        Check("same step -> identical allocation; a quarter turn later -> a different one", identical && differs);
+        bool[] turned = RM_TerritoryKernel.Allocate(ids, xs, zs, RM_TerritoryKernel.StepsPerTurn, salt, tun);
+        bool periodic = true; for (int i = 0; i < 11; i++) periodic &= turned[i] == first[i];
+        Check("one full turn returns the boundary where it started", periodic);
+
+        // ragged = 0: the louder claimant's fixtures are exactly contiguous in bearing (a clean wedge)
+        var straight = new RM_TerritoryTuning { periodSeconds = 900f, leadShare = 0.6f, ragged = 0f };
+        var big = new List<int>(); var bx = new List<float>(); var bz = new List<float>();
+        Scatter(200, 11, big, bx, bz);
+        int[] ord = RM_TerritoryKernel.BearingOrder(big, bx, bz, 0f);
+        bool contiguous = true; int maxBig = 0;
+        bool[] pb = RM_TerritoryKernel.Allocate(big, bx, bz, 0, salt, straight);
+        for (long st = 0; st < RM_TerritoryKernel.StepsPerTurn; st += 7)
+        {
+            bool[] a = RM_TerritoryKernel.Allocate(big, bx, bz, st, salt, straight);
+            int runs = 0;
+            for (int i = 0; i < 200; i++) if (a[ord[i]] && !a[ord[(i + 199) % 200]]) runs++;
+            if (runs != 1) contiguous = false;
+        }
+        for (long st = 1; st <= 40; st++)
+        {
+            bool[] a = RM_TerritoryKernel.Allocate(big, bx, bz, st, salt, tun);
+            int f = 0; for (int i = 0; i < 200; i++) if (a[i] != pb[i]) f++;
+            maxBig = Math.Max(maxBig, f); pb = a;
+        }
+        Check("ragged 0: the louder claimant holds one contiguous wedge in bearing order", contiguous);
+        Check("200 fixtures: one clock step changes only the fixtures the fronts crossed (<= 4)", maxBig <= 4, "max=" + maxBig);
+
+        // its own slow clock
+        Check("clock: 240 steps per period, floor", RM_TerritoryKernel.ClockStep(899.9, 900f) == 239 && RM_TerritoryKernel.ClockStep(900, 900f) == 240
+              && RM_TerritoryKernel.ClockStep(3.74, 900f) == 0 && RM_TerritoryKernel.ClockStep(3.76, 900f) == 1);
+        RM_TerritoryTuning c = RM_TerritoryTuning.Clamp(new RM_TerritoryTuning { periodSeconds = 5f, leadShare = 0.99f, ragged = 9f });
+        RM_TerritoryTuning cn = RM_TerritoryTuning.Clamp(new RM_TerritoryTuning { periodSeconds = float.NaN, leadShare = float.NaN, ragged = float.NaN });
+        Check("tuning clamps: a fast boundary is refused, the quieter claimant keeps a fifth, NaN is harmless",
+              c.periodSeconds == RM_TerritoryKernel.MinPeriodSeconds && c.leadShare == RM_TerritoryKernel.MaxLeadShare && c.ragged == RM_TerritoryKernel.MaxRagged
+              && cn.periodSeconds == RM_TerritoryKernel.MinPeriodSeconds && cn.leadShare == 0.5f && cn.ragged == 0f);
+        Check("pair salt is stable and order-sensitive", RM_TerritoryKernel.PairSalt("a", "b") == RM_TerritoryKernel.PairSalt("a", "b")
+              && RM_TerritoryKernel.PairSalt("a", "b") != RM_TerritoryKernel.PairSalt("b", "a"));
+        Check("empty and single-fixture unions allocate without error", RM_TerritoryKernel.Allocate(new int[0], new float[0], new float[0], 3, salt, tun).Length == 0
+              && RM_TerritoryKernel.Allocate(new[] { 5 }, new[] { 1f }, new[] { 1f }, 3, salt, tun)[0]);
+    }
+
+    // ================================================================== Phase 4: tremor (L6) -- RM_TremorKernel
+    private static void Phase4()
+    {
+        var tu = new RM_TremorTuning { cap = 3, slotSeconds = 30f, flickerSeconds = 0.8f, oneIn = 4, maxFraction = 0.04f };
+        var srcs = new List<RM_TremorSource>();
+        int[] pals = { 3, 2, 4, 3, 2 };
+        for (int s = 0; s < 5; s++)
+        {
+            var m = new List<int>();
+            for (int i = 0; i < 300; i++) m.Add(5000 + i);
+            srcs.Add(new RM_TremorSource { paletteCount = pals[s], salt = RM_TerritoryKernel.PairSalt("tremor" + s, "tremor"), members = m });
+        }
+        bool capOk = true, fracOk = true, ownPal = true, everyone = true;
+        int seen = 0, maxNow = 0;
+        var contrib = new HashSet<int>();
+        var flickerLen = new Dictionary<int, double>(); double maxLen = 0; var startAt = new Dictionary<int, double>();
+        double dt = 0.1;
+        for (double t = 100; t < 400; t += dt)
+        {
+            Dictionary<int, KeyValuePair<int, int>> a = RM_TremorKernel.Assign(srcs, t, 300, tu);
+            if (a.Count > RM_TremorKernel.InstantCap(300, tu.maxFraction)) fracOk = false;
+            maxNow = Math.Max(maxNow, a.Count);
+            seen += a.Count;
+            foreach (KeyValuePair<int, KeyValuePair<int, int>> kv in a)
+            {
+                if (kv.Value.Key >= 3) capOk = false;
+                contrib.Add(kv.Value.Key);
+                if (kv.Value.Value < 0 || kv.Value.Value >= pals[kv.Value.Key]) ownPal = false;
+            }
+        }
+        Check("tremor: never more than three contributors though five are given (L6)", capOk && contrib.Count <= 3, "contributors=" + contrib.Count);
+        Check("tremor: every flicker is an index into its own contributor's palette", ownPal);
+        Check("tremor: at most 4% of 300 driven fixtures flicker at one instant (never reads as territory)", fracOk && maxNow <= 12, "max=" + maxNow);
+        Check("tremor is present: flickers happen, from more than one contributor", seen > 0 && contrib.Count >= 2, "seen=" + seen + " contributors=" + contrib.Count);
+
+        // one flicker is brief: a fixture's continuous flicker never outlasts flickerSeconds
+        bool brief = true;
+        for (int id = 0; id < 400; id++)
+        {
+            double run = 0;
+            for (double t = 0; t < 120; t += 0.05)
+            {
+                if (RM_TremorKernel.Flickers(id, 77, 3, t, RM_TremorTuning.Clamp(tu), out int ix)) { run += 0.05; if (run > tu.flickerSeconds + 0.051) brief = false; }
+                else run = 0;
+            }
+        }
+        Check("tremor: one flicker lasts no longer than flickerSeconds", brief);
+
+        RM_TremorTuning cl = RM_TremorTuning.Clamp(new RM_TremorTuning { cap = 9, slotSeconds = 0.5f, flickerSeconds = 50f, oneIn = 0, maxFraction = 0.9f });
+        Check("tremor clamps: cap <= 3, fraction <= 10%, slot >= 4 s, flicker <= a quarter slot and <= 2 s",
+              cl.cap == RM_TremorKernel.LawCap && cl.maxFraction == RM_TremorKernel.MaxFraction && cl.slotSeconds == RM_TremorKernel.MinSlotSeconds
+              && cl.flickerSeconds <= 1f && cl.oneIn == 1);
+        Check("tremor instant cap: at least one fixture, none on an empty ship", RM_TremorKernel.InstantCap(11, 0.04f) == 1
+              && RM_TremorKernel.InstantCap(0, 0.04f) == 0 && RM_TremorKernel.InstantCap(300, 0.04f) == 12);
+        Check("tremor switched to cap 0 or fraction 0 flickers nothing", RM_TremorKernel.Assign(srcs, 123, 300, new RM_TremorTuning { cap = 0, slotSeconds = 30, flickerSeconds = 0.8f, oneIn = 1, maxFraction = 0.04f }).Count == 0
+              && RM_TremorKernel.Assign(srcs, 123, 300, new RM_TremorTuning { cap = 3, slotSeconds = 30, flickerSeconds = 0.8f, oneIn = 1, maxFraction = 0f }).Count == 0);
+
+        // a fixture two contributors want goes to the louder; the choice is stable
+        var both = new List<RM_TremorSource> { new RM_TremorSource { paletteCount = 2, salt = 9, members = new[] { 1, 2, 3 } },
+                                               new RM_TremorSource { paletteCount = 2, salt = 9, members = new[] { 1, 2, 3 } } };
+        bool louder = true;
+        var loose = new RM_TremorTuning { cap = 3, slotSeconds = 4, flickerSeconds = 1f, oneIn = 1, maxFraction = 0.1f };
+        for (double t = 0; t < 40; t += 0.25)
+            foreach (KeyValuePair<int, KeyValuePair<int, int>> kv in RM_TremorKernel.Assign(both, t, 3, loose))
+                if (kv.Value.Key != 0) louder = false;
+        Check("tremor: a fixture two contributors want goes to the louder", louder);
+
+        // territory + tremor union: every driven fixture shows exactly one palette (the walk's step 3)
+        var ids = new List<int>(); var xs = new List<float>(); var zs = new List<float>();
+        Scatter(11, 5, ids, xs, zs);
+        var tun = new RM_TerritoryTuning { periodSeconds = 900f, leadShare = 0.6f, ragged = 0.08f };
+        bool exactlyOne = true;
+        var tsrc = new List<RM_TremorSource> { new RM_TremorSource { paletteCount = 3, salt = 4, members = ids } };
+        for (double t = 0; t < 900; t += 1.7)
+        {
+            bool[] lead = RM_TerritoryKernel.Allocate(ids, xs, zs, RM_TerritoryKernel.ClockStep(t, 900f), 31, tun);
+            Dictionary<int, KeyValuePair<int, int>> tr = RM_TremorKernel.Assign(tsrc, t, 11, tu);
+            if (tr.Count > 1) exactlyOne = false;
+            int a = 0, b = 0;
+            for (int i = 0; i < 11; i++) { if (tr.ContainsKey(ids[i])) continue; if (lead[i]) a++; else b++; }
+            if (a + b + tr.Count != 11 || a == 0 || b == 0) exactlyOne = false;
+        }
+        Check("11 fixtures, two territory moods and a tremor: each fixture one palette, both presences always hold ground, one flicker at most", exactlyOne);
+    }
+
     private static int Main()
     {
         // ---- the kernel
@@ -297,6 +483,8 @@ internal static class Program
         Check("snapshots with different colours differ", !a.SameAs(b));
 
         Phase2();
+        Phase3();
+        Phase4();
 
         if (Fails.Count > 0)
         {
