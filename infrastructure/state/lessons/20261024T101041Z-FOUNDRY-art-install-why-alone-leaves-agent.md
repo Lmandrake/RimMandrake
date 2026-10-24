@@ -1,0 +1,1 @@
+art install --why alone leaves an 'agent-why' reason that the commit-time ART_VERSION_WRANGLING_1 guard refuses; agent installs of artpipe renders need --reason artpipe-collect (with --why) or the commit is blocked. Also: audit job attribution came from the done job by sha (Vhorrin bad job was DessicatedCobra_v1_south, not Cobra_v1_south).
