@@ -1463,10 +1463,12 @@ def _letter_rank(l: str) -> tuple:
     return (LETTERS.index(l) if l in LETTERS else len(LETTERS), l)
 
 
-def _assign_letters(cols: list[dict], prev: dict, reserved=()) -> None:
+def _assign_letters(cols: list[dict], prev: dict, reserved=(), lanes=None, prev_lanes=None) -> None:
     """Reuse the remembered letter for a column whose pictures are unchanged; new columns take the next letter
     never used on this row before (remembered or reserved). Letters are append-only: a set keeps its letter for
-    good and a vanished set's letter is never handed to another set."""
+    good and a vanished set's letter is never handed to another set. LANES (parallel to COLS) and PREV_LANES (the
+    remembered graphic_of) send a remembered letter back to the column of its OWN lane first: enact installs a letter
+    to the lane graphic_of names, and two lanes can show the same pictures (_take_unseen)."""
     # faces -> EVERY letter they carried, in letter order: two columns of a row can hold the same pictures (a lane's
     # live column beside an earlier lane's render of those bytes, _take_unseen), and each keeps its own letter
     back: dict = {}
@@ -1474,13 +1476,17 @@ def _assign_letters(cols: list[dict], prev: dict, reserved=()) -> None:
         back.setdefault(tuple(sorted(f.items())), []).append(l)
     used = set((prev or {}).keys()) | set(reserved or ())
     taken = {c.get("letter") for c in cols if c.get("letter")}
-    for c in cols:
-        if c.get("letter"):
-            continue
-        l = next((x for x in back.get(_fkey(c), []) if x not in taken), None)
-        if l:
-            c["letter"] = l
-            taken.add(l)
+    lanes, prev_lanes = list(lanes or [None] * len(cols)), prev_lanes or {}
+    # pass 1: same pictures in the same lane; pass 2: same pictures, any lane (a set that moved lanes keeps its letter)
+    for same_lane in (True, False):
+        for c, lane in zip(cols, lanes):
+            if c.get("letter"):
+                continue
+            l = next((x for x in back.get(_fkey(c), []) if x not in taken
+                      and (not same_lane or (lane is not None and prev_lanes.get(x) == lane))), None)
+            if l:
+                c["letter"] = l
+                taken.add(l)
     free = (l for l in LETTERS if l not in used)
     if sum(1 for c in cols if not c.get("letter")) > sum(1 for l in LETTERS if l not in used):
         raise SystemExit(f"art_sheet: a row has more than {len(LETTERS)} picture sets — letters run out; hide or purge some (--hide-sets)")
@@ -3017,7 +3023,8 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
         # picture outside it is labelled "in game now, never shown"
         _shown_before = shown_base(r["key"], ruled, prev_rows)
         _base_of[r["key"]] = _shown_before
-        _assign_letters(allcols, mem.get("columns"), mem.get("reserved"))
+        _assign_letters(allcols, mem.get("columns"), mem.get("reserved"),
+                        lanes=[g["res"] or "_byname" for g in graphics for _c in g["cols"]], prev_lanes=mem.get("graphic_of"))
         kept = _kept_cols(allcols, mem, used_letters.get(r["key"]) or set())
         _k = [c for c in kept if not any(idx.is_purged(sh) for sh in c["faces"].values())]
         for c in kept:      # a set he picked that has since been purged is hidden from the page but its letter stays in the snapshot
