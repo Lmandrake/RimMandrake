@@ -54,6 +54,7 @@ MATE_SLIDE = 2.4
 MAX_LENGTH = 40.0      # a reel's hose
 SAMPLE_SUB = 2
 MAX_SEEDS = 24         # seeds tried per lay (shortest first)
+FREE_ARRIVALS = 8      # arrival headings of the free-end hook seeds (solve_free)
 RHOS = (1.05, 1.15, 1.3, 1.5, 1.8, 2.2, 3.0)   # Dubins seed radii, x 1 / KMAX
 # HOSE_EXPLORER_WIDEN_SEEDS_LONG_LEAD: the deep search a lead no ordinary seed fits gets before it counts as "no fit": every
 # Dubins word at 16 radii, each also stretched (a longer seed loops wider), plus seeded random curvature restarts around it.
@@ -64,6 +65,13 @@ RANDOM_DEEP = 12
 DEEP_X2 = dict(rhos=tuple(sorted(set(RHOS_DEEP + (1.08, 1.18, 1.26, 1.35, 1.45, 1.58, 1.72, 1.9, 2.4, 3.3, 4.0, 5.5)))),
                stretch=(1.0, 1.12, 1.25, 1.4, 1.6, 2.0), random=24)
 DEEP = dict(rhos=RHOS_DEEP, stretch=STRETCH_DEEP, random=RANDOM_DEEP)
+DEEP_X4 = dict(rhos=tuple(sorted(set(DEEP_X2["rhos"] + (1.03, 1.12, 1.2, 1.32, 1.55, 1.95, 2.3, 2.8, 3.8, 5.0, 6.5)))),
+               stretch=(1.0, 1.06, 1.12, 1.18, 1.25, 1.32, 1.4, 1.5, 1.6, 1.8, 2.0, 2.5), random=48)
+# The deep set each family is SWEPT with, and the one `saturate` probes it with (one step deeper). MEASURED 2026-10-24: free
+# "none" verdicts moved under DEEP_X2 and DEEP_X4 because solve_free had no seed for an end inside the turning circle; with the
+# hook seeds (FREE_ARRIVALS) every one fits at plain DEEP, so free sweeps at DEEP and is probed at X4 to keep proving it.
+SWEEP_DEEP = {"port": DEEP, "free": DEEP, "mate": DEEP}
+PROBE_DEEP = {"port": DEEP_X2, "free": DEEP_X4, "mate": DEEP_X2}
 # A lay's PREFERRED length: up to PREFER_DETOUR x the shortest Dubins path. The lead search runs inside it first, so a short
 # span shrinks its lead rather than loop round the room; only when no lead fits there is the lay searched again at any length
 # up to MAX_LENGTH. A long detour is legal (owner, relayed 2026-10-24), never a refusal.
@@ -297,10 +305,13 @@ def profile_nodes(pieces, n, length=None):
 class Hose:
     """One hose: straight lead0 from P0 along th0, a clothoid middle of n pieces, then an end.
     end = ("pose", P1, th1_unwrapped, lead1) | ("point", P1) | ("mateA",) | ("mateB", turns)
-    length: ("fixed", Lmid) | ("free", lo, hi)."""
+    length: ("fixed", Lmid) | ("free", lo, hi). own: the name of the box it leaves; only that box may touch the lead (a
+    second reel beside the mouth is an obstacle to the lead like any other, or a longer lead would be exempt where the
+    0.6 one is not, and fitting would stop being monotone in the lead)."""
 
-    def __init__(self, P0, th0, lead0, n, end, length, k0=None, h0=None, name=""):
+    def __init__(self, P0, th0, lead0, n, end, length, k0=None, h0=None, name="", own="reel"):
         self.P0, self.th0, self.lead0, self.n, self.end, self.length, self.name = np.asarray(P0, float), th0, lead0, n, end, length, name
+        self.own = own
         self.chain = Chain.get(n)
         self.free_end_k = end[0] == "point"
         self.nk = n - 1 + (1 if self.free_end_k else 0)
@@ -590,7 +601,7 @@ class Model:
                 sd = b.sd(c["tail"])[0]
                 if b.name != "fixture" and np.min(sd) < BODY_HALF - 1e-3:
                     return False, "end run touches " + (b.name or "a body")
-                if b.name != "reel":
+                if b.name != hs.own:
                     sd = b.sd(c["lead"])[0]
                     if np.min(sd) < BODY_HALF - 1e-3:
                         return False, "lead-out touches " + (b.name or "a body")
@@ -835,7 +846,7 @@ def largest_lead(fit, deep=DEEP):
     return lo, r, tried
 
 
-def solve_free(P0, th0, lead, P1, obstacles, ref_len, length=None, warm=None, deep=None, cap=MAX_LENGTH):
+def solve_free(P0, th0, lead, P1, obstacles, ref_len, length=None, warm=None, deep=None, cap=MAX_LENGTH, own="reel"):
     """A lay to a free end P1 (heading and end curvature free). length None: the whole lay free in [0.3, cap]; else the hose's
     whole length. deep: every radius of the deep set plus seeded random restarts of each seed."""
     Q0 = P0 + unit(th0) * lead
@@ -845,6 +856,14 @@ def solve_free(P0, th0, lead, P1, obstacles, ref_len, length=None, warm=None, de
     for rf in (deep["rhos"] if deep else RHOS):
         for w in turn_to_point(Q0, th0, P1, rf / KMAX):
             seeds.append(("w", w))
+    # An end inside the turning circle (or a wall in the way) needs a hook: turn_to_point has no word for it, so add the Dubins
+    # words that arrive at P1 under FREE_ARRIVALS fixed headings, shortest first (a free end's heading is still the solver's).
+    hooks = []
+    for rf in (deep["rhos"] if deep else RHOS):
+        for i in range(FREE_ARRIVALS):
+            hooks += dubins_words(Q0, th0, P1, th0 + 2 * math.pi * i / FREE_ARRIVALS, rf / KMAX)
+    hooks.sort(key=lambda w: sum(L for L, _ in w))
+    seeds += [("w", w) for w in hooks[:None if deep else MAX_SEEDS]]
     if deep:
         rng = _seed_rng(P0, th0, lead, P1)
         base = list(seeds)
@@ -879,7 +898,7 @@ def solve_free(P0, th0, lead, P1, obstacles, ref_len, length=None, warm=None, de
                 k0 = _perturbed(k0, sd[2])
         k0[-1] = k0[-2]
         spec = ("free", 0.3, cap - lead) if length is None else ("fixed", L)
-        hs = Hose(P0, th0, lead, n, ("point", np.asarray(P1, float)), spec, k0=k0, h0=L / n)
+        hs = Hose(P0, th0, lead, n, ("point", np.asarray(P1, float)), spec, k0=k0, h0=L / n, own=own)
         m = Model([hs], obstacles, ref_len=ref_len)
         x = m.solve(m.x0())
         ok, why = m.check(x)
@@ -954,7 +973,7 @@ def solve_mate(PA, thA, PB, thB, lead, LA, LB, C0, obstacles, phis=None, warm=No
             phi = thA + totA
             turns = round((thB + totB - phi - math.pi) / (2 * math.pi))
         hA = Hose(PA, thA, lead, nA, ("mateA",), ("fixed", LmA), k0=kA, name="A")
-        hB = Hose(PB, thB, lead, nB, ("mateB", turns), ("fixed", LmB), k0=kB, name="B")
+        hB = Hose(PB, thB, lead, nB, ("mateB", turns), ("fixed", LmB), k0=kB, name="B", own="reel B")
         m = Model([hA, hB], obstacles, mate={"C0": np.asarray(C0, float), "init": [C[0], C[1], phi]})
         x = m.solve(m.x0())
         ok, why = m.check(x)
@@ -968,6 +987,113 @@ def solve_mate(PA, thA, PB, thB, lead, LA, LB, C0, obstacles, phis=None, warm=No
 def frame(w, h):
     """HoseCurveChecks.Stations walls every station in: one cell outside each edge."""
     return [Box(-1, -1, w + 1, 0, "wall"), Box(-1, h, w + 1, h + 1, "wall"), Box(-1, 0, 0, h, "wall"), Box(w, 0, w + 1, h, "wall")]
+
+
+def lead_blocked(P0, th0, boxes):
+    """The box (other than the reel it leaves) that the LEAD_MIN lead itself runs into, as a reason, or None. Every lead
+    is at least LEAD_MIN, so this is a proof at any lead."""
+    inf = BODY_HALF - 2e-3
+    for b in boxes:
+        for t in np.linspace(0.02, LEAD_MIN, 30):
+            p = P0 + unit(th0) * t
+            if b.x0 - inf < p[0] < b.x1 + inf and b.z0 - inf < p[1] < b.z1 + inf:
+                return "%s %.2f in front of the reel's mouth" % (b.name, t)
+    return None
+
+
+def blocked_ahead(S, th, E, boxes):
+    """A proof that no curve with |kappa| <= KMAX runs from S (heading th) to E clear of `boxes`, or None.
+    Lemma: along such a curve, while |heading| < 90 deg, d(sin heading)/dx <= KMAX, so sin heading <= x KMAX and the lateral
+    offset |y(x)| <= R_k - sqrt(R_k^2 - x^2) (R_k = 1 / KMAX, the circle); the heading reaches 90 deg only at x >= R_k.
+    So a box face across the whole reachable lateral range at forward distance x0 < R_k is hit by every curve that
+    reaches x0, and a curve ending at x >= x0 must reach it. The clothoid ramp limit only tightens this (ignored)."""
+    rk = 1.0 / KMAX
+    u = unit(th)
+    v = np.array([-u[1], u[0]])
+    S, E = np.asarray(S, float), np.asarray(E, float)
+    ex = float(np.dot(E - S, u))
+    inf = BODY_HALF - 2e-3          # a hair under the check's clearance: the proof never claims more than the check
+    for b in boxes:
+        if b.x0 - inf < S[0] < b.x1 + inf and b.z0 - inf < S[1] < b.z1 + inf:
+            return "%s against the hose where its curve starts" % b.name
+        cx = [np.dot(np.array(c) - S, u) for c in ((b.x0, b.z0), (b.x0, b.z1), (b.x1, b.z0), (b.x1, b.z1))]
+        cy = [np.dot(np.array(c) - S, v) for c in ((b.x0, b.z0), (b.x0, b.z1), (b.x1, b.z0), (b.x1, b.z1))]
+        xa, ya, yb = min(cx) - inf, min(cy) - inf, max(cy) + inf
+        if not (0 < xa < rk) or ex < xa:
+            continue
+        yc = rk - math.sqrt(rk * rk - xa * xa)
+        if ya <= -yc and yb >= yc:
+            return "%s %.2f ahead spans the whole bend reach (+-%.2f; turning needs %.2f)" % (b.name, xa, yc, rk)
+    return None
+
+
+def port_proof(case):
+    """A port case no hose can serve at any lead (blocked_ahead from the 0.6 lead end forward, or from the end run back),
+    or None. Fitting is monotone in the lead (see _probe_lead), so a proof at LEAD_MIN covers every lead."""
+    rx, rz, fac = case["reel"]
+    fx, fz, face, tank = case["fixture"]
+    P0, th0 = reel_mouth(rx, rz, fac)
+    P1, th1 = port_end(fx, fz, face, tank)
+    obs = [Box(rx, rz, rx + 2, rz + 2, "reel"), Box(fx, fz, fx + 2, fz + 2, "fixture")] + [Box(*b) for b in case.get("walls", [])]
+    Q0, T = P0 + unit(th0) * LEAD_MIN, P1 - unit(th1) * END_STRAIGHT
+    why = lead_blocked(P0, th0, obs[1:]) or blocked_ahead(Q0, th0, T, obs)
+    if why:
+        return "too close for the hose to bend: leaving the reel, " + why
+    why = blocked_ahead(T, th1 + math.pi, Q0, obs)
+    return "too close for the hose to bend: coming off the port, " + why if why else None
+
+
+def free_proof(case):
+    rx, rz, fac = case["reel"]
+    P0, th0 = reel_mouth(rx, rz, fac)
+    obs = [Box(rx, rz, rx + 2, rz + 2, "reel")] + [Box(*b) for b in case.get("walls", [])]
+    why = lead_blocked(P0, th0, obs[1:]) or blocked_ahead(P0 + unit(th0) * LEAD_MIN, th0, np.array(case["end"], float), obs)
+    return "too close for the hose to bend: leaving the reel, " + why if why else None
+
+
+def mate_proof(case):
+    """A mate case one of whose two free lays no hose can make at any lead (free_proof's test, the other reel an obstacle)."""
+    (ax, az, fa), (bx, bz, fb) = case["reelA"], case["reelB"]
+    walls = [Box(*b) for b in case.get("walls", [])]
+    rA, rB = Box(ax, az, ax + 2, az + 2, "reel"), Box(bx, bz, bx + 2, bz + 2, "reel B")
+    for (x, z, f), E, others, side in (((ax, az, fa), case["endA"], [rB], "A"), ((bx, bz, fb), case["endB"], [rA], "B")):
+        P0, th0 = reel_mouth(x, z, f)
+        own = rA if side == "A" else rB
+        why = lead_blocked(P0, th0, others + walls) or blocked_ahead(P0 + unit(th0) * LEAD_MIN, th0, np.array(E, float), [own] + others + walls)
+        if why:
+            return "too close for the hose to bend: hose %s leaving its reel, %s" % (side, why)
+    return None
+
+
+def port_fit(case):
+    """(make_fit, ref) of a reel -> port case: make_fit(cap)(lead, warm, deep) -> solve_pose's (ok, why, model, x)."""
+    rx, rz, fac = case["reel"]
+    fx, fz, face, tank = case["fixture"]
+    P0, th0 = reel_mouth(rx, rz, fac)
+    P1, th1 = port_end(fx, fz, face, tank)
+    obs = [Box(rx, rz, rx + 2, rz + 2, "reel"), Box(fx, fz, fx + 2, fz + 2, "fixture")] + [Box(*b) for b in case.get("walls", [])]
+    ref = dubins_min(P0, th0, P1, th1)
+    return (lambda cap: lambda ld, warm, dp: solve_pose(P0, th0, ld, P1, th1, obs, ref, warm=warm, deep=dp, cap=cap)), ref
+
+
+def free_fit(case):
+    """(make_fit, ref) of a reel -> free end case."""
+    rx, rz, fac = case["reel"]
+    P0, th0 = reel_mouth(rx, rz, fac)
+    P1 = np.array(case["end"], float)
+    obs = [Box(rx, rz, rx + 2, rz + 2, "reel")] + [Box(*b) for b in case.get("walls", [])]
+    ref = max(dubins_min(P0, th0, P1, th0), math.hypot(*(P1 - P0)))
+    return (lambda cap: lambda ld, warm, dp: solve_free(P0, th0, ld, P1, obs, ref, warm=warm, deep=dp, cap=cap)), ref
+
+
+def mate_fit(case, LA, LB):
+    """fit(lead, warm, deep) of a mate case with both kept lengths given."""
+    (ax, az, fa), (bx, bz, fb) = case["reelA"], case["reelB"]
+    PA, thA = reel_mouth(ax, az, fa)
+    PB, thB = reel_mouth(bx, bz, fb)
+    C0 = (np.array(case["endA"], float) + np.array(case["endB"], float)) / 2
+    obs = [Box(ax, az, ax + 2, az + 2, "reel"), Box(bx, bz, bx + 2, bz + 2, "reel B")] + [Box(*b) for b in case.get("walls", [])]
+    return lambda ld, warm, dp: solve_mate(PA, thA, PB, thB, ld, LA, LB, C0, obs, warm=warm, deep=dp)
 
 
 def run_port(case):
@@ -986,7 +1112,7 @@ def run_port(case):
     lead_pts = np.array([P0 + unit(th0) * LEAD_MIN * q for q in np.linspace(0.05, 1, 6)])
     if np.min(obs[1].sd(lead_pts)[0]) < BODY_HALF - 1e-3:
         return dict(case, lead=None, why="layout: the fixture stands in the nozzle's way", layout=True, ms=0.0)
-    lead, r, tried, long_ = _tiers(lambda cap: lambda ld, warm, dp: solve_pose(P0, th0, ld, P1, th1, obs, ref, warm=warm, deep=dp, cap=cap), ref)
+    lead, r, tried, long_ = _tiers(port_fit(case)[0], ref)
     out = dict(case, lead=lead, why=r[1], ref=round(ref, 4), tried=_tried(tried), long_detour=long_)
     if r[0]:
         out["detour_ratio"] = round(r[2].curves(r[3])[0]["L"] / ref, 3)
@@ -1002,7 +1128,7 @@ def run_free(case):
     obs = [Box(rx, rz, rx + 2, rz + 2, "reel")] + [Box(*b) for b in case.get("walls", [])]
     ref = max(dubins_min(P0, th0, P1, th0), math.hypot(*(P1 - P0)))
     t = time.time()
-    lead, r, tried, long_ = _tiers(lambda cap: lambda ld, warm, dp: solve_free(P0, th0, ld, P1, obs, ref, warm=warm, deep=dp, cap=cap), ref)
+    lead, r, tried, long_ = _tiers(free_fit(case)[0], ref)
     out = dict(case, lead=lead, why=r[1], ref=round(ref, 4), tried=_tried(tried), long_detour=long_)
     if r[0]:
         out["detour_ratio"] = round(r[2].curves(r[3])[0]["L"] / ref, 3)
@@ -1018,17 +1144,23 @@ def run_mate(case):
     PA, thA = reel_mouth(ax, az, fa)
     PB, thB = reel_mouth(bx, bz, fb)
     EA, EB = np.array(case["endA"], float), np.array(case["endB"], float)
-    obs = [Box(ax, az, ax + 2, az + 2, "reel"), Box(bx, bz, bx + 2, bz + 2, "reel")] + [Box(*b) for b in case.get("walls", [])]
+    obs = [Box(ax, az, ax + 2, az + 2, "reel"), Box(bx, bz, bx + 2, bz + 2, "reel B")] + [Box(*b) for b in case.get("walls", [])]
     t = time.time()
     lens = []
-    for P, th, E, key in ((PA, thA, EA, "A"), (PB, thB, EB, "B")):
+    proof = mate_proof(case)
+    if proof:
+        return dict(case, lead=None, why=proof, proved=True, ms=round(1000 * (time.time() - t), 1))
+    for P, th, E, key, own in ((PA, thA, EA, "A", "reel"), (PB, thB, EB, "B", "reel B")):
         if "L" + key in case:
             lens.append(case["L" + key])
             continue
         ref = max(dubins_min(P, th, E, th), math.hypot(*(E - P)))
-        ld, r, _, _ = _tiers(lambda cap: lambda l, warm, dp: solve_free(P, th, l, E, obs, ref, warm=warm, deep=dp, cap=cap), ref)
+        ld, r, _, _ = _tiers(lambda cap: lambda l, warm, dp: solve_free(P, th, l, E, obs, ref, warm=warm, deep=dp, cap=cap, own=own), ref)
         if ld is None:
-            return dict(case, lead=None, why="the free lay " + key + " itself does not fit: " + r[1], ms=round(1000 * (time.time() - t), 1))
+            out = dict(case, lead=None, why="the free lay " + key + " itself does not fit: " + r[1], ms=round(1000 * (time.time() - t), 1))
+            if time.time() > _DEADLINE[0]:
+                out["budget_spent"] = True
+            return out
         lens.append(r[2].curves(r[3])[0]["L"] * case.get("slack", 1.0))
     C0 = (EA + EB) / 2
     lead, r, tried = largest_lead(lambda ld, warm, dp: solve_mate(PA, thA, PB, thB, ld, lens[0], lens[1], C0, obs, warm=warm, deep=dp),
@@ -1043,7 +1175,7 @@ def run_mate(case):
     return out
 
 
-# the deep set the sweep uses (DEEP); `saturate` swaps in DEEP_X2. A list so worker processes inherit it on fork.
+# the deep set of the family being run (SWEEP_DEEP; _run sets it). A list so worker processes inherit it on fork.
 _DEEP = [DEEP]
 # a mate case's wall-clock budget (s): one past it is reported "unsaturated", never "none" (the sweep's call has a hard limit)
 CASE_BUDGET = 420.0
@@ -1093,6 +1225,7 @@ RUN = {"port": run_port, "free": run_free, "mate": run_mate}
 
 def _run(item):
     fam, case = item
+    _DEEP[0] = SWEEP_DEEP[fam]
     try:
         r = RUN[fam](case)
     except Exception as e:      # a solver blow-up is a result to look at, not a crash of the sweep
@@ -1377,7 +1510,7 @@ def cmd_sweep(args):
             continue
         with Pool(args.workers) as pool, open(path, "a") as f:
             n = 0
-            for r in pool.imap_unordered(_run, todo, chunksize=2):
+            for r in pool.imap_unordered(_run, todo, chunksize=1):   # 1: two budget-bound cases in one chunk outlive the call
                 f.write(json.dumps(r) + "\n")
                 f.flush()      # every row: a run stopped from outside keeps what it finished
                 n += 1
@@ -1416,52 +1549,82 @@ def cmd_plot(args):
     print(json.dumps(summ, indent=1))
 
 
+# a saturation probe's wall-clock budget (s); a probe past it is "unsaturated", never a verdict
+SATURATE_BUDGET = 400.0
+
+
+def _probe_lead(fam, r1):
+    """The one lead whose fit would move r1's verdict. A lay with lead L is also a lay with lead 0.6 whose curve begins
+    with a straight of L - 0.6, so fitting is monotone in the lead: a none-at-0.6 moves iff 0.6 fits, a shrunk lead L
+    moves (by more than LEAD_TOL) iff L + 2 x LEAD_TOL fits. An unsaturated case that found a lead before its budget ran
+    out is probed above that lead, like a shrunk one."""
+    if r1.get("lead") is None:
+        return LEAD_MIN
+    return round(min(LEAD_OUT, r1["lead"] + 2 * LEAD_TOL), 4)
+
+
 def _saturate_one(item):
-    _DEEP[0] = DEEP_X2
+    """Probe one case under PROBE_DEEP: no fit -> the sweep's verdict stands; a fit -> it moved."""
+    fam, case, r1 = item
     _DEADLINE[0] = time.time() + SATURATE_BUDGET
-    r = _run(item)
+    lead = _probe_lead(fam, r1)
+    t = time.time()
+    try:
+        if fam == "mate":
+            if r1.get("LA") is None:
+                # the free lays themselves did not finish or fit: rerun the whole case one step deeper
+                _DEEP[0] = PROBE_DEEP[fam]
+                r2 = run_mate(case)
+                ok = None if r2.get("budget_spent") else r2.get("lead") is not None
+                return dict(key=case["key"], probe=lead, ok=ok, why=r2["why"], ms=round(1000 * (time.time() - t), 1))
+            fit = mate_fit(case, r1["LA"], r1["LB"])
+        else:
+            mk, ref = (port_fit if fam == "port" else free_fit)(case)
+            # a none, or a lay the sweep only found as a long detour, is probed at any length; a shrunk lay inside the
+            # preferred length
+            fit = mk(MAX_LENGTH if (lead == LEAD_MIN or r1.get("long_detour")) else PREFER_DETOUR * ref)
+        ok, why = fit(lead, None, PROBE_DEEP[fam])[:2]
+    except Exception as e:      # a blow-up is a result to look at
+        ok, why = None, "explorer error: %r" % (e,)
     if time.time() > _DEADLINE[0]:
-        r["budget_spent"] = True
-    return r
-
-
-SATURATE_BUDGET = 360.0
+        ok, why = None, "search time budget spent"
+    return dict(key=case["key"], probe=lead, ok=ok, why=why, ms=round(1000 * (time.time() - t), 1))
 
 
 def cmd_saturate(args):
-    """Every case the sweep did not keep at 2.2, rerun with DEEP_X2 (24+ radii, 6 stretches, 24 random restarts). A deeper
-    search that moves a verdict means the sweep's search was not saturated: widen DEEP and resweep."""
+    """Every case the sweep did not keep at 2.2 (shrunk: every n-th), probed once with PROBE_DEEP at the lead that would move
+    its verdict (_probe_lead). One wave of --limit cases per call (resumable; each probe is bounded by SATURATE_BUDGET).
+    A probe that fits means the sweep's search was not saturated there: widen DEEP and resweep."""
     from multiprocessing import Pool
-    moved, n, t0 = [], 0, time.time()
     path = os.path.join(args.out, "saturation.json")
     prev = json.load(open(path)) if os.path.exists(path) else {"checked": {}, "moved": []}
+    prev.setdefault("probes", {})
+    todo = []
     for fam in ("port", "free", "mate"):
         res = _load(os.path.join(args.out, "sweep_%s.jsonl" % fam))
-        cases = {c[1]["key"]: c for c in sweep_cases(fam)}
+        cases = {c[1]["key"]: c[1] for c in sweep_cases(fam)}
         shr = [k for k, r in sorted(res.items()) if classify(r) == "shrunk"]
         pick = set(shr[::args.shrunk_every]) | {k for k, r in res.items() if classify(r) in ("none at 0.6", "unsaturated")}
-        todo = [cases[k] for k in sorted(pick) if k in cases and (fam + " " + k) not in prev["checked"]]
-        print("%s: %d to recheck" % (fam, len(todo)), flush=True)
-        with Pool(args.workers) as pool:
-            for r2 in pool.imap_unordered(_saturate_one, todo, chunksize=1):
-                k = r2["key"]
-                r1 = res[k]
-                a1, a2 = (classify(r1), r1.get("lead")), (classify(r2), r2.get("lead"))
-                prev["checked"][fam + " " + k] = [a1[0], a1[1], a2[0], a2[1]]
-                if a2[0] != "unsaturated" and (a1[0] != a2[0] or (a1[1] is not None and a2[1] is not None and a2[1] > a1[1] + LEAD_TOL + 1e-9)):
-                    prev["moved"].append({"family": fam, "key": k, "sweep": a1, "x2": a2})
-                with open(path, "w") as f:
-                    json.dump(prev, f, indent=1)
-                n += 1
-                if time.time() - t0 > args.budget:
-                    pool.terminate()
-                    break
-        if time.time() - t0 > args.budget:
-            print("budget reached; rerun to resume", flush=True)
-            break
-    with open(path, "w") as f:
-        json.dump(prev, f, indent=1)
-    print("rechecked %d this run, %d total, moved %d -> %s" % (n, len(prev["checked"]), len(prev["moved"]), path))
+        proof = {"port": port_proof, "free": free_proof, "mate": mate_proof}.get(fam)
+        for k in sorted(pick):
+            pr = proof(cases[k]) if proof and classify(res[k]) == "none at 0.6" else None
+            if pr:
+                prev["probes"][fam + " " + k] = [classify(res[k]), None, LEAD_MIN, False, "proved: " + pr, 0.0]
+        left = [k for k in sorted(pick) if k in cases and (fam + " " + k) not in prev["probes"]]
+        print("%s: %d picked, %d left to probe" % (fam, len(pick), len(left)), flush=True)
+        todo += [(fam, cases[k], res[k]) for k in left]
+    todo = todo[:args.limit or args.workers]
+    with Pool(args.workers) as pool:
+        for (fam, _, r1), r2 in zip(todo, pool.imap(_saturate_one, todo, chunksize=1)):
+            k = fam + " " + r2["key"]
+            prev["probes"][k] = [classify(r1), r1.get("lead"), r2["probe"], r2["ok"], r2["why"], r2["ms"]]
+            if r2["ok"] and r2["probe"] > (r1.get("lead") or 0) + LEAD_TOL + 1e-9:
+                prev["moved"].append({"family": fam, "key": r2["key"], "sweep": [classify(r1), r1.get("lead")], "probe": r2["probe"]})
+            with open(path, "w") as f:
+                json.dump(prev, f, indent=1)
+    n_un = sum(1 for v in prev["probes"].values() if v[3] is None)
+    print("probed %d this call, %d total (%d unsaturated), moved %d -> %s" % (len(todo), len(prev["probes"]), n_un,
+                                                                              len(prev["moved"]), path))
 
 
 def cmd_oracle(args):
@@ -1501,7 +1664,7 @@ def main(argv=None):
     a.add_argument("--out", required=True)
     a.add_argument("--shrunk-every", type=int, default=4, help="every n-th shrunk case (every none case is rechecked)")
     a.add_argument("--workers", type=int, default=max(1, (os.cpu_count() or 2) - 2))
-    a.add_argument("--budget", type=float, default=480.0)
+    a.add_argument("--limit", type=int, default=0, help="probes this call (default: one per worker)")
     a = sub.add_parser("oracle")
     a.add_argument("--out", required=True)
     a.add_argument("--dest", required=True)
