@@ -22,7 +22,7 @@
     <size>(2,2)</size>
     <!-- REEL_OUTLET_DECIDE_ALWAYS_GOES_WEST (owner card 2026-10-22, "Player turns the reel"): the reel turns; its outlet,
          nozzle and picture turn with it (Graphic_HoseReel, HoseReelRect.Rot). West is the picture as drawn and the default;
-         east is it mirrored; north/south use the west picture turned as a stand-in until their pictures are drawn. -->
+         east is it mirrored; north/south draw their own pictures (REEL_FACINGS_REDRAW_NORTH_SOUTH_OWED, HoseReelRect.ArtPose). -->
     <rotatable>true</rotatable>
     <defaultPlacingRot>West</defaultPlacingRot>
     <placeWorkers><li>RimMandrake.FlowWorks.Hose.PlaceWorker_HoseReelOutlet</li></placeWorkers>
