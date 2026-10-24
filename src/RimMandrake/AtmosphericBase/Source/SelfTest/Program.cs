@@ -64,6 +64,33 @@ internal static class Program
         return null;
     }
 
+    /// <summary>A def's &lt;layers&gt; read field by field onto RM_Layer, as the game's XML loader does. An unknown
+    /// field name is a parse failure here (the loader would log it), so a typo in the shipped file reddens the test.</summary>
+    private static RM_Layer[] Layers(System.Xml.XmlNode node)
+    {
+        var ls = new List<RM_Layer>();
+        foreach (System.Xml.XmlNode li in node.ChildNodes)
+        {
+            if (li.NodeType != System.Xml.XmlNodeType.Element) continue;
+            var l = new RM_Layer();
+            foreach (System.Xml.XmlNode f in li.ChildNodes)
+            {
+                if (f.NodeType != System.Xml.XmlNodeType.Element) continue;
+                System.Reflection.FieldInfo fi = typeof(RM_Layer).GetField(f.Name);
+                if (fi == null) throw new FormatException("RM_Layer has no field <" + f.Name + ">");
+                string t = f.InnerText.Trim();
+                object val = fi.FieldType.IsEnum ? Enum.Parse(fi.FieldType, t)
+                           : fi.FieldType == typeof(float) ? float.Parse(t, System.Globalization.CultureInfo.InvariantCulture)
+                           : fi.FieldType == typeof(int) ? int.Parse(t)
+                           : fi.FieldType == typeof(bool) ? (object)(t == "true")
+                           : t;
+                fi.SetValue(l, val);
+            }
+            ls.Add(l);
+        }
+        return ls.ToArray();
+    }
+
     private static List<KeyValuePair<string, RM_SchemeData>> ShippedSchemes(string path)
     {
         var outp = new List<KeyValuePair<string, RM_SchemeData>>();
@@ -93,6 +120,7 @@ internal static class Program
                 flasherCount = int.Parse(v("flasherCount", "0")),
                 flasherPeriodSeconds = float.Parse(v("flasherPeriodSeconds", "0"), System.Globalization.CultureInfo.InvariantCulture),
             };
+            if (n["layers"] != null) s.layers = Layers(n["layers"]);
             outp.Add(new KeyValuePair<string, RM_SchemeData>(n["defName"].InnerText, s));
         }
         return outp;
@@ -223,6 +251,18 @@ internal static class Program
         if (xml == null) return;
         List<KeyValuePair<string, RM_SchemeData>> shipped = ShippedSchemes(xml);
         Check("the shipped file holds Lamplight (the default) and Fireflies", shipped.Exists(p => p.Key == "RM_Scheme_Lamplight") && shipped.Exists(p => p.Key == "RM_Scheme_Fireflies"));
+        var missing = new List<string>();
+        foreach (string dn in RM_PatternChoice.NeutralSchemes) if (!shipped.Exists(p => p.Key == dn)) missing.Add(dn);
+        Check("neutral set: every pattern the settings offer is a shipped scheme", missing.Count == 0, string.Join(", ", missing));
+        int layered = 0, widened = 0;
+        foreach (var p in shipped)
+        {
+            if (p.Value.layers != null) layered++;
+            RM_PatternChoice.GentleRange(p.Value, out int glo, out int ghi);
+            if (glo > 0 || ghi < p.Value.Count - 1) widened++;
+        }
+        Check("neutral set: the layered patterns are read from the file (tide, procession, ripple, sweep)", layered >= 4, layered + " layered");
+        Check("neutral set: Full plays more than Gentle on the four-entry patterns", widened >= 4, widened + " schemes wider at Full");
         // §9.3: the default palette is WIDER than the old (204,150,92)-(244,188,118) lamplight range, both ways
         RM_SchemeData lamp = shipped.Find(p => p.Key == "RM_Scheme_Lamplight").Value;
         int lo = int.MaxValue, hi = 0;
@@ -235,7 +275,12 @@ internal static class Program
             Check("shipped " + p.Key + " validates clean", errs.Count == 0, string.Join("; ", errs));
             int minMax = int.MaxValue;
             for (int i = 0; i < p.Value.Count; i++) minMax = Math.Min(minMax, Math.Max(p.Value.r[i], Math.Max(p.Value.g[i], p.Value.b[i])));
-            Check("shipped " + p.Key + ": every entry keeps a working-light max channel (>= 176)", minMax >= 176, "min of max channels = " + minMax);
+            if (p.Key == "RM_Scheme_Lamplight")
+                Check("shipped " + p.Key + ": every entry keeps a working-light max channel (>= 176)", minMax >= 176, "min of max channels = " + minMax);
+            // part (b): a neutral scheme may dip under the floor or flare above it at Full; Gentle (the shipped
+            // intensity) must show only working light
+            Check("shipped " + p.Key + ": every entry Gentle shows keeps a working-light max channel (>= " + RM_PatternChoice.WorkingFloor + ")",
+                  RM_PatternChoice.GentleIsWorking(p.Value));
             bool warm = true;
             for (int i = 0; i < p.Value.Count; i++) warm &= p.Value.r[i] >= p.Value.g[i] && p.Value.g[i] >= p.Value.b[i];
             Check("shipped " + p.Key + ": every entry is warm (r >= g >= b)", warm);

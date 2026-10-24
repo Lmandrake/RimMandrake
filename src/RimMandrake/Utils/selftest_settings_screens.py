@@ -24,6 +24,14 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # folder: (mod .cs, csproj, expected groups, extra setting names the screen resets that are not Scribe_Values fields)
 MODS = {
+    "AtmosphericBase": ("RM_AtmosphericBaseSettings.cs", "RM_AtmosphericBase.csproj", {   # every read is per evaluation / per frame / per button query
+        "Light channel": "Now",
+        "Hand-over buttons": "Now",
+        "Moods": "Now",
+        "Pattern (off the Utinni)": "Now",   # ATMOSPHERIC_BASE_BUILD_PROGRAM_1 (b): read by DefaultMood and the per-fixture loop each evaluation
+        "Territory (two moods at once)": "Now",
+        "Tremor (third and later moods)": "Now",
+    }, ()),
     "BlueDesert": ("RM_BlueDesertMod.cs", "RM_BlueDesert.csproj", {
         "Mod switch": "Now",
         "Natives, flora detonations and cues": "Now",

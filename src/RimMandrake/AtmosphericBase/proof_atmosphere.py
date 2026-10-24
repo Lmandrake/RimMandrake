@@ -439,7 +439,9 @@ def judge_defaults(d):
             bad.append("%s palette > 8" % dn)
     chk = (("territoryPeriodSeconds", lambda v: v >= MIN_PERIOD), ("territoryLeadShare", lambda v: MIN_LEAD <= v <= MAX_LEAD),
            ("territoryRagged", lambda v: 0 <= v <= MAX_RAGGED), ("tremorCap", lambda v: v <= LAW_CAP),
-           ("tremorMaxFraction", lambda v: v <= MAX_FRACTION), ("tremorFlickerSeconds", lambda v: v <= MAX_FLICKER))
+           ("tremorMaxFraction", lambda v: v <= MAX_FRACTION), ("tremorFlickerSeconds", lambda v: v <= MAX_FLICKER),
+           # part (b): the player's off-Utinni choice ships as Lamplight, its own tempo, Gentle
+           ("patternSet", lambda v: v == 0), ("patternTempo", lambda v: v == 1), ("patternIntensity", lambda v: v == 0))
     for k, ok in chk:
         if k not in d:
             bad.append("%s not readable" % k)
@@ -821,6 +823,47 @@ KERNEL_TERRITORY_CHECKS = ("pairing: Ishko leading Ta'Baa is a paired tide Core/
                            "a wedge plan is the old wedge allocation, bit for bit",
                            "share clock: within [0.2, 0.8] and one rise, one fall a turn")
 
+KERNEL_CHOICE_CHECKS = ("neutral set: every pattern the settings offer is a shipped scheme",
+                        "neutral set: the layered patterns are read from the file (tide, procession, ripple, sweep)",
+                        "neutral set: Full plays more than Gentle on the four-entry patterns",
+                        "choice: pattern set 0 is Lamplight and an out-of-range pick falls back to it",
+                        "tempo: Slow x1.5, Shipped x1, Lively x0.67, anything else x1",
+                        "tempo: Slow at 1.5 t shows what Shipped shows at t (periods stretched, nothing else)",
+                        "tempo: over 30 min Slow changes least and Lively most",
+                        "intensity: Gentle leaves Lamplight exactly as shipped",
+                        "intensity: Gentle plays a four-entry neutral palette's inner two (no dim floor entry, no flare)",
+                        "intensity: Full is as authored",
+                        "intensity: Gentle keeps a working-light floor on a dark palette (never black), Full reaches black",
+                        "shipped RM_Scheme_Tidewater: every entry Gentle shows keeps a working-light max channel",
+                        "shipped RM_Scheme_Lanternwalk: every entry Gentle shows keeps a working-light max channel",
+                        "shipped RM_Scheme_Rings: every entry Gentle shows keeps a working-light max channel",
+                        "shipped RM_Scheme_Duskfall: every entry Gentle shows keeps a working-light max channel")
+
+
+def judge_choice_log(text):
+    """D11: the neutral off-Utinni set and the player's tempo / intensity, from the kernel's own lines."""
+    return judge_kernel_lines(text, KERNEL_CHOICE_CHECKS,
+                              "kernel selftest drove the off-Utinni choice: every offered pattern is shipped and layered "
+                              "patterns parse, tempo stretches periods only, Gentle keeps a working floor and leaves "
+                              "Lamplight untouched, Full is as authored")
+
+
+def judge_neutral_wiring(compositor_cs, settings_cs):
+    """D11b: the choice reaches the lamps -- DefaultMood takes the picked scheme, the per-fixture loop re-tempos and
+    clamps the DEFAULT claimant only, and each setting is Scribed."""
+    need = (("DefaultMood reads the pattern set", r"NeutralScheme\(s\.patternSet\)", compositor_cs),
+            ("tempo applied to the default claimant only", r"mine \? RM_PatternChoice\.TempoTime\(time, set\.patternTempo\) : time", compositor_cs),
+            ("intensity applied to the default claimant only", r"if \(mine\) idx = RM_PatternChoice\.Apply\(data, idx, set\.patternIntensity\)", compositor_cs),
+            ("mine = the default claimant", r"bool mine = owner\.claimant == DefaultClaimant", compositor_cs),
+            ("patternSet Scribed", r'Scribe_Values\.Look\(ref patternSet, "patternSet", 0\)', settings_cs),
+            ("patternTempo Scribed", r'Scribe_Values\.Look\(ref patternTempo, "patternTempo", 1\)', settings_cs),
+            ("patternIntensity Scribed", r'Scribe_Values\.Look\(ref patternIntensity, "patternIntensity", 0\)', settings_cs))
+    miss = [n for n, rx, txt in need if not re.search(rx, txt)]
+    if miss:
+        return _r(FAIL, MOD, "the off-Utinni choice is not wired: %s" % "; ".join(miss))
+    return _r(PASS, MOD, "DefaultMood runs the picked neutral scheme; tempo and intensity shape the default claimant only; all three Scribed")
+
+
 def judge_kernel_lines(text, checks, passmsg):
     """Find each named check's line in a kernel selftest log. No log = UNMEASURED, never a pass."""
     if not text:
@@ -918,6 +961,8 @@ def offline_rows(rows, kernel_log=None):
     add(rows, "D8b.drawn_ember_layer", *judge_drawn_layer(kernel_cs()))
     add(rows, "D9.modifiers_behaviour", *judge_modifier_log(klog))
     add(rows, "D10.territory_shapes_behaviour", *judge_territory_log(klog))
+    add(rows, "D11.neutral_choice_behaviour", *judge_choice_log(klog))
+    add(rows, "D11b.neutral_choice_wiring", *judge_neutral_wiring(rd("RM_AtmosphericCompositor.cs"), rd("RM_AtmosphericBaseSettings.cs")))
     return d
 
 
@@ -1124,7 +1169,8 @@ def v_rows(I, rows, pick, kv_all, disk_defaults):
                                             "mayGoDark": bool(ds.get("mayGoDark")), "flasherCount": int(ds.get("flasherCount", 0))}}
         verdict = judge_defaults(d)
         if verdict[0] == PASS and disk_defaults:
-            diff = [k for k in ("territoryPeriodSeconds", "territoryLeadShare", "tremorCap", "tremorMaxFraction")
+            diff = [k for k in ("territoryPeriodSeconds", "territoryLeadShare", "tremorCap", "tremorMaxFraction",
+                                "patternSet", "patternTempo", "patternIntensity")
                     if k in disk_defaults and abs(float(disk_defaults[k]) - float(d.get(k, -1))) > 1e-6]
             if diff:
                 verdict = _r(INF, MOD, "live settings gentle but differ from the shipped defaults in %s (a saved Mod Setting?)" % diff)
@@ -1496,7 +1542,8 @@ class Stub(object):
             return {"lamp": self.ids[0], "forced": [LAMP[0], LAMP[1]], "a": LAMP[0], "b": b, "static_id": 999}, None
         if cmd == "settings":
             return {"settings": {"territoryPeriodSeconds": 900.0, "territoryLeadShare": 0.6, "territoryRagged": 0.08,
-                                 "tremorCap": 3, "tremorMaxFraction": 0.04, "tremorFlickerSeconds": 0.8},
+                                 "tremorCap": 3, "tremorMaxFraction": 0.04, "tremorFlickerSeconds": 0.8,
+                                 "patternSet": 0, "patternTempo": 1, "patternIntensity": 0},
                     "default_scheme": {"defName": "RM_Scheme_Lamplight", "palette": LAMP, "mayGoDark": False,
                                        "flasherCount": 0, "massPeriodSeconds": 120.0}}, None
         if cmd == "counters":
@@ -1610,8 +1657,9 @@ def metric_controls():
     out.append(("m_l10 frozen", m_l10([{"ticks_moved": 0, "values": ["a"] * 40}], [])[0], FAIL))
     out.append(("m_l10 control reports a scheme", m_l10([{"ticks_moved": 0, "values": ["a", "b"]}], ["x:0"])[0], FAIL))
     cs = "public float territoryPeriodSeconds = 900f; public float territoryLeadShare = 0.6f; public float territoryRagged = 0.08f;" \
-         " public int tremorCap = 3; public float tremorMaxFraction = 0.2f; public float tremorFlickerSeconds = 0.8f;"
-    xml = "<Defs><X><defName>A</defName><palette><li>(204,150,92,0)</li></palette></X></Defs>"
+         " public int tremorCap = 3; public float tremorMaxFraction = 0.2f; public float tremorFlickerSeconds = 0.8f;" \
+         " public int patternSet = 0; public int patternTempo = 1; public int patternIntensity = 0;"
+    xml ="<Defs><X><defName>A</defName><palette><li>(204,150,92,0)</li></palette></X></Defs>"
     out.append(("judge_defaults tremor 0.2", judge_defaults(read_defaults(cs, xml, 'DefaultSchemeDefName = "A"'))[0], FAIL))
     xml_w = "<Defs><X><defName>A</defName><palette><li>(250,250,250,0)</li></palette><flasherCount>2</flasherCount></X></Defs>"
     out.append(("judge_defaults white + flashers", judge_defaults(read_defaults(cs.replace("0.2f", "0.04f"), xml_w, 'DefaultSchemeDefName = "A"'))[0], FAIL))
@@ -1701,6 +1749,18 @@ def metric_controls():
     out.append(("judge_territory_log the hunt failed", judge_territory_log(tlog.replace("ok    hunt: the", "FAIL  hunt: the"))[0], FAIL))
     out.append(("judge_territory_log older build", judge_territory_log(mlog)[0], UNM))
     out.append(("judge_territory_log none", judge_territory_log("")[0], UNM))
+    clog = "\n".join("ok    " + n + " x" for n in KERNEL_CHOICE_CHECKS) + "\nall AtmosphericBase kernel selftests passed"
+    out.append(("judge_choice_log good", judge_choice_log(clog)[0], PASS))
+    out.append(("judge_choice_log Gentle lost its floor", judge_choice_log(clog.replace("ok    intensity: Gentle keeps", "FAIL  intensity: Gentle keeps"))[0], FAIL))
+    out.append(("judge_choice_log older build", judge_choice_log(mlog)[0], UNM))
+    out.append(("judge_choice_log none", judge_choice_log("")[0], UNM))
+    src_dir = os.path.join(HERE, "Source")
+    co_real = open(os.path.join(src_dir, "RM_AtmosphericCompositor.cs"), encoding="utf-8").read()
+    st_real = open(os.path.join(src_dir, "RM_AtmosphericBaseSettings.cs"), encoding="utf-8").read()
+    out.append(("judge_neutral_wiring real source", judge_neutral_wiring(co_real, st_real)[0], PASS))
+    out.append(("judge_neutral_wiring tempo on every claimant", judge_neutral_wiring(co_real.replace("mine ? RM_PatternChoice.TempoTime(time, set.patternTempo) : time", "RM_PatternChoice.TempoTime(time, set.patternTempo)"), st_real)[0], FAIL))
+    out.append(("judge_neutral_wiring intensity not Scribed", judge_neutral_wiring(co_real, st_real.replace('Scribe_Values.Look(ref patternIntensity, "patternIntensity", 0);', ""))[0], FAIL))
+    out.append(("judge_defaults Full by default", judge_defaults(read_defaults(cs.replace("0.2f", "0.04f") + " public int patternIntensity = 1;", xml, 'DefaultSchemeDefName = "A"'))[0], FAIL))
     out.append(("judge_drawn_layer not built", judge_drawn_layer("public const bool DrawnLayerBuilt = false;")[0], UNM))
     out.append(("judge_drawn_layer blind", judge_drawn_layer("")[0], UNM))
     for nm, lay, want in (("procession heads 9", {"heads": "9"}, 1), ("procession trace+Jump", {"trace": "1", "step": "Jump"}, 1),

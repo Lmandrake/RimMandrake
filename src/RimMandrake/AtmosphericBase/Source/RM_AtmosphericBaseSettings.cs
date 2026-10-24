@@ -17,6 +17,11 @@ namespace RimMandrake.AtmosphericBase
         public bool compositor = true;      // Phase 2: animate held lights at all
         public bool defaultMood = true;     // Phase 2: the gentle default (Lamplight) when nothing has pushed a mood
         public int defaultMoodGroup = 0;    // index into RM_SchemeKernel.DefaultGroups: ship, rooms, halls, exterior
+        // Part (b): the player's pattern off the Utinni (RM_PatternChoice). Defaults = the shipped gentle: Lamplight,
+        // its own tempo, Gentle. They shape the default mood only; a pushed mood is never re-tempoed or clamped.
+        public int patternSet = 0;          // index into RM_PatternChoice.NeutralSchemes (0 = Lamplight)
+        public int patternTempo = 1;        // RM_Tempo: 0 Slow (x1.5 periods), 1 Shipped, 2 Lively (x0.67)
+        public int patternIntensity = 0;    // RM_Intensity: 0 Gentle (inner entries, a working-light floor), 1 Full
         // Phase 3: territory. Only ever acts when TWO OR MORE claimants have pushed moods; the shipped default (one gentle
         // mood, nothing pushed) never reaches it, so none of these changes what an install with no consumer looks like.
         public bool territory = true;                 // the second-loudest mood holds ground beside the loudest (L5)
@@ -56,6 +61,9 @@ namespace RimMandrake.AtmosphericBase
             Scribe_Values.Look(ref compositor, "compositor", true);
             Scribe_Values.Look(ref defaultMood, "defaultMood", true);
             Scribe_Values.Look(ref defaultMoodGroup, "defaultMoodGroup", 0);
+            Scribe_Values.Look(ref patternSet, "patternSet", 0);
+            Scribe_Values.Look(ref patternTempo, "patternTempo", 1);
+            Scribe_Values.Look(ref patternIntensity, "patternIntensity", 0);
             Scribe_Values.Look(ref territory, "territory", true);
             Scribe_Values.Look(ref territoryPeriodSeconds, "territoryPeriodSeconds", 900f);
             Scribe_Values.Look(ref territoryLeadShare, "territoryLeadShare", 0.6f);
@@ -66,6 +74,24 @@ namespace RimMandrake.AtmosphericBase
             Scribe_Values.Look(ref tremorOneIn, "tremorOneIn", 4);
             Scribe_Values.Look(ref tremorFlickerSeconds, "tremorFlickerSeconds", 0.8f);
             Scribe_Values.Look(ref tremorMaxFraction, "tremorMaxFraction", 0.04f);
+        }
+
+        private static string PatternLabel(int i)
+        {
+            RM_AtmosphericSchemeDef d = DefDatabase<RM_AtmosphericSchemeDef>.GetNamedSilentFail(RM_PatternChoice.NeutralScheme(i));
+            string l = d != null ? d.LabelCap.ToString() : RM_PatternChoice.NeutralScheme(i);
+            return i == 0 ? l + " (the shipped default)" : l;
+        }
+
+        private static void Menu(int n, System.Func<int, string> label, System.Action<int> pick)
+        {
+            var opts = new List<FloatMenuOption>();
+            for (int i = 0; i < n; i++)
+            {
+                int k = i;
+                opts.Add(new FloatMenuOption(label(i), () => pick(k)));
+            }
+            Find.WindowStack.Add(new FloatMenu(opts));
         }
 
         private static readonly string[] GroupLabels = { "Every handed-over light", "Rooms only", "Halls only", "Outdoors only" };
@@ -179,7 +205,8 @@ namespace RimMandrake.AtmosphericBase
                     "On: handed-over lights show the mood running on this map, stepping through a few fixed colours. "
                   + "Off: they keep their own colour (they stay handed over) and nothing animates.");
                 list.CheckboxLabeled("Run the gentle default when nothing else does", ref defaultMood,
-                    "Lamplight: each room breathes slowly through three warm levels, all bright enough to work under. "
+                    "The pattern chosen below (Lamplight unless you pick another): Lamplight lets each room breathe slowly "
+                  + "through three warm levels, all bright enough to work under. "
                   + "Runs only on lights you handed over, and only while no scenario or mod has set a mood. "
                   + "Off: with no mood set, handed-over lights keep their own colour.");
                 int gi = defaultMoodGroup < 0 || defaultMoodGroup >= GroupLabels.Length ? 0 : defaultMoodGroup;
@@ -196,8 +223,24 @@ namespace RimMandrake.AtmosphericBase
                 list.GapLine();
             }
 
-            if (Group(list, "Territory (two moods at once)", RimMandrake.Shared.SettingScope.Now,
-                      new[] { "territory", "territoryPeriodSeconds", "territoryLeadShare", "territoryRagged" }))
+            if (Group(list, "Pattern (off the Utinni)", RimMandrake.Shared.SettingScope.Now, new[] { "patternSet", "patternTempo", "patternIntensity" }))
+            {
+                list.Label("The pattern the gentle default runs. Aboard a Utinni ship the ship decides; everywhere else you do.");
+                int si = RM_PatternChoice.ClampSet(patternSet);
+                if (list.ButtonText("Pattern: " + PatternLabel(si)))
+                    Menu(RM_PatternChoice.NeutralSchemes.Length, PatternLabel, k => patternSet = k);
+                int ti = patternTempo < 0 || patternTempo >= RM_PatternChoice.TempoLabels.Length ? 1 : patternTempo;
+                if (list.ButtonText("Tempo: " + RM_PatternChoice.TempoLabels[ti]))
+                    Menu(RM_PatternChoice.TempoLabels.Length, k => RM_PatternChoice.TempoLabels[k], k => patternTempo = k);
+                int ii = patternIntensity == 1 ? 1 : 0;
+                if (list.ButtonText("Intensity: " + RM_PatternChoice.IntensityLabels[ii]))
+                    Menu(RM_PatternChoice.IntensityLabels.Length, k => RM_PatternChoice.IntensityLabels[k], k => patternIntensity = k);
+                list.Label("Slow stretches every period by half again; Lively plays them a third faster. Gentle keeps every "
+                         + "light bright enough to work under and leaves out the brightest flare; Full plays the whole palette.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Territory (two moods at once)", RimMandrake.Shared.SettingScope.Now, new[] { "territory", "territoryPeriodSeconds", "territoryLeadShare", "territoryRagged" }))
             {
                 list.CheckboxLabeled("Two moods share the lights", ref territory,
                     "Only matters when two or more scenarios or mods have each set a mood. On: the louder holds most of the "
@@ -212,8 +255,7 @@ namespace RimMandrake.AtmosphericBase
                 list.GapLine();
             }
 
-            if (Group(list, "Tremor (third and later moods)", RimMandrake.Shared.SettingScope.Now,
-                      new[] { "tremor", "tremorCap", "tremorSlotSeconds", "tremorOneIn", "tremorFlickerSeconds", "tremorMaxFraction" }))
+            if (Group(list, "Tremor (third and later moods)", RimMandrake.Shared.SettingScope.Now, new[] { "tremor", "tremorCap", "tremorSlotSeconds", "tremorOneIn", "tremorFlickerSeconds", "tremorMaxFraction" }))
             {
                 list.CheckboxLabeled("Quieter moods stir the lights", ref tremor,
                     "Only matters when three or more moods are set. On: up to three quieter moods show as brief, scattered "

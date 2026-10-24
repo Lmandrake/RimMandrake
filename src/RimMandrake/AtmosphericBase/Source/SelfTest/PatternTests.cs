@@ -714,5 +714,6 @@ internal static class PatternTests
         WalkerTests.Run();
         ModifierTests.Run();
         TerritoryTests.Run();
+        ChoiceTests.Run();
     }
 }
