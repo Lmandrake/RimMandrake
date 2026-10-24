@@ -104,7 +104,9 @@ GATES = (   # (setting, file, class, member) -- the setting must be read inside 
     ("CompareRank", "RM_MapComponent_AtmosphericBase.cs", "RM_MapComponent_AtmosphericBase", "RankedMoods"),
     ("set.territory &&", "RM_AtmosphericCompositor.cs", "RM_Compositor", "Evaluate"),
     ("TerritoryTuning", "RM_AtmosphericCompositor.cs", "RM_Compositor", "Evaluate"),
-    ("RM_TerritoryKernel.Allocate", "RM_AtmosphericCompositor.cs", "RM_Compositor", "Evaluate"),
+    ("RM_TerritoryShapes.Allocate", "RM_AtmosphericCompositor.cs", "RM_Compositor", "Evaluate"),
+    ("RM_TerritoryShapes.Plan", "RM_AtmosphericCompositor.cs", "RM_Compositor", "Evaluate"),            # §9.15 pairings
+    ("RM_TerritoryKernel.Allocate", "Kernel/RM_TerritoryShapes.cs", "RM_TerritoryShapes", "Allocate"),     # wedge fallback
     ("RM_TerritoryKernel.ClockStep", "RM_AtmosphericCompositor.cs", "RM_Compositor", "Evaluate"),
     ("set.tremor &&", "RM_AtmosphericCompositor.cs", "RM_Compositor", "Evaluate"),
     ("TremorTuning", "RM_AtmosphericCompositor.cs", "RM_Compositor", "Evaluate"),
@@ -131,6 +133,7 @@ WIRING = (  # (file, needle, why)
     ("RM_AtmosphericBaseSettings.cs", "TerritoryTuning => RM_TerritoryTuning.Clamp(", "territory tuning reaches the kernel unclamped"),
     ("RM_AtmosphericBaseSettings.cs", "TremorTuning => RM_TremorTuning.Clamp(", "tremor tuning reaches the kernel unclamped (L6 cap)"),
     ("Kernel/RM_TerritoryKernel.cs", "public const int LawCap = 3;", "the tremor's cap of three contributors (L6) moved"),
+    ("RM_AtmosphericBase.csproj", 'Compile Include="Kernel\\RM_TerritoryShapes.cs"', "the territory shapes (TIDE, pairings) are left out of the build"),
     ("RM_AtmosphericCompositor.cs", 'DefaultSchemeDefName = "RM_Scheme_Lamplight"', "the default scheme is no longer the shipped Lamplight"),
     ("RM_MapComponent_AtmosphericBase.cs", 'Scribe_Deep.Look(ref lastLeft, "lastLeft")', "an edit made across a reload is not seen (§9.9)"),
     ("RM_AtmosphericCompositor.cs", "if (!g.Glows) { skippedUnlit++; continue; }",

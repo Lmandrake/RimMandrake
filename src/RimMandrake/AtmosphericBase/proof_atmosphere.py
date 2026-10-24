@@ -800,6 +800,27 @@ KERNEL_MODIFIER_CHECKS = ("M1 echo delay: calling rooms 0",
                           "S7 sweep accelerate NextChange")
 
 
+
+KERNEL_TERRITORY_CHECKS = ("pairing: Ishko leading Ta'Baa is a paired tide Core/Threshold",
+                           "pairing: the same rule read in the other rank order swaps the anchors",
+                           "pairing: Sh'kaar hunts Ishko whichever of them is louder",
+                           "elsewhere: an unpaired tide leader floods from its own anchor",
+                           "CIRCUIT runs as TIDE(Power)",
+                           "the plan does not depend on the order the rules were loaded in",
+                           "pairing (chain): Ta'Baa holds the threshold room at every step",
+                           "pairing (ring): one front between the two anchors",
+                           "pairing (branch): one front between the two anchors",
+                           "laws (branch, hunt-second): no fixture changes hands more than twice in a turn",
+                           "laws (ring, paired): both claimants always hold a fixture",
+                           "hunt (Sh'kaar quieter): the hunter's share reaches the 0.8 cap",
+                           "hunt (Sh'kaar louder): it stands at the peak",
+                           "hunt: the hunter's front starts from its own anchor",
+                           "leader tide: the leader holds every room nearer its anchor",
+                           "leader tide: input order never changes who holds a fixture",
+                           "degenerate: one room, every fixture in one room, or no graph runs the wedge exactly",
+                           "a wedge plan is the old wedge allocation, bit for bit",
+                           "share clock: within [0.2, 0.8] and one rise, one fall a turn")
+
 def judge_kernel_lines(text, checks, passmsg):
     """Find each named check's line in a kernel selftest log. No log = UNMEASURED, never a pass."""
     if not text:
@@ -862,6 +883,17 @@ def kernel_cs():
     return open(os.path.join(HERE, "Source", "Kernel", "RM_PatternKernel.cs"), encoding="utf-8").read()
 
 
+
+def judge_territory_log(text):
+    """D10: TIDE as a territory shape and the canon-pairing table, from the kernel's own lines."""
+    return judge_kernel_lines(text, KERNEL_TERRITORY_CHECKS,
+                              "kernel selftest drove the territory shapes: canon pairs plan as paired tides in either rank order "
+                              "(Ishko/Ta'Baa meet between core and threshold, Ta'Baa always holding the threshold room; Sh'kaar "
+                              "hunts Ishko, surging to the 0.8 cap, standing, falling back), the leader's shape elsewhere, CIRCUIT "
+                              "as TIDE(Power); one front, both sides hold a fixture, <= 2 hand-overs per fixture a turn on chain, "
+                              "ring and branch; degenerate canvases and wedge plans are the old wedge bit for bit (the compositor's "
+                              "signature lookup needs loaded defs: live-only, unmeasured)")
+
 def offline_rows(rows, kernel_log=None):
     src = os.path.join(HERE, "Source")
     proof_cs = open(os.path.join(src, "RM_AtmosphericBaseProof.cs"), encoding="utf-8").read()
@@ -885,6 +917,7 @@ def offline_rows(rows, kernel_log=None):
     add(rows, "D8.walkers_behaviour", *judge_walker_log(klog))
     add(rows, "D8b.drawn_ember_layer", *judge_drawn_layer(kernel_cs()))
     add(rows, "D9.modifiers_behaviour", *judge_modifier_log(klog))
+    add(rows, "D10.territory_shapes_behaviour", *judge_territory_log(klog))
     return d
 
 
@@ -1663,6 +1696,11 @@ def metric_controls():
     out.append(("judge_modifier_log a hush check failed", judge_modifier_log(mlog.replace("ok    M4 hush in", "FAIL  M4 hush in"))[0], FAIL))
     out.append(("judge_modifier_log older build", judge_modifier_log(wlog)[0], UNM))
     out.append(("judge_modifier_log none", judge_modifier_log("")[0], UNM))
+    tlog = "\n".join("ok    " + n + " x" for n in KERNEL_TERRITORY_CHECKS) + "\nall AtmosphericBase kernel selftests passed"
+    out.append(("judge_territory_log good", judge_territory_log(tlog)[0], PASS))
+    out.append(("judge_territory_log the hunt failed", judge_territory_log(tlog.replace("ok    hunt: the", "FAIL  hunt: the"))[0], FAIL))
+    out.append(("judge_territory_log older build", judge_territory_log(mlog)[0], UNM))
+    out.append(("judge_territory_log none", judge_territory_log("")[0], UNM))
     out.append(("judge_drawn_layer not built", judge_drawn_layer("public const bool DrawnLayerBuilt = false;")[0], UNM))
     out.append(("judge_drawn_layer blind", judge_drawn_layer("")[0], UNM))
     for nm, lay, want in (("procession heads 9", {"heads": "9"}, 1), ("procession trace+Jump", {"trace": "1", "step": "Jump"}, 1),
