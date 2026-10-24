@@ -1006,6 +1006,7 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
          "install_after_ingest": [], "queue": [], "queued_already": [], "refile": [], "awaiting_pick": [], "purge": [], "purged_already": 0,
          "cuts": [], "todo": [], "done": [], "conflicts": [], "in_game_not_ours": 0, "followed": {},
          "ignored_variants": [], "legacy_unconfirmed": [], "asks": [], "lane_resolved": []}
+    held_back: set = set()      # (row, letter) picks with a facing refused: no facing of them is installed
     decs = doc.get("decisions") or {}
     wd_ids = withdrawn_ids()
     confs = DV.confirmations()
@@ -1356,6 +1357,7 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                             P["conflicts"].append(f"{row}: {mod.rsplit('/', 1)[-1]}/{r} holds {live[:12]}, owner-kept "
                                                   f"on {Path(prot[0].get('via') or '').name or 'another ruling'}; "
                                                   f"pick {letter} not installed")
+                            held_back.add((row, letter))
                             continue
                         rul = keep_ruling(idx, row, letter, sha)
                         P["install"].append({"row": row, "mod": mod, "rel": r, "sha": sha, "letter": letter,
@@ -1630,6 +1632,17 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                               f"{', '.join(sorted({i['row'] + ' ' + i['letter'] for i in ins}))} all go to ONE file "
                               f"{k[1]} with different pictures — none installed; give each its own texture or pick one")
     P["install"] = [i for i in P["install"] if (i["mod"], i["rel"]) not in clash]
+    held_back |= {(i["row"], i["letter"]) for k in clash for i in by_file[k]}
+    # a pick with ONE facing refused (owner-kept, or a shared file) installs NO facing: its other facings would draw
+    # beside the old pictures of the refused one, a creature mixed from two sets (bug 2026-10-24, leaningscrub_2
+    # RM_TunnelSnake B north only, RM_Vurra B north+south); nor does anything it was to replace leave the game
+    for row, letter in sorted(held_back):
+        part = [i for i in P["install"] if i["row"] == row and i["letter"] == letter]
+        if part:
+            P["conflicts"].append(f"{row}: pick {letter} not installed at all — a facing of it was refused (above), so "
+                                  f"its other {len(part)} file(s) would mix two sets; nothing of it changes")
+    P["install"] = [i for i in P["install"] if (i["row"], i["letter"]) not in held_back]
+    P["retire"] = [rt for rt in P["retire"] if (rt["row"], rt.get("replaced_by")) not in held_back]
     for c in P["cuts"]:
         c["plan"] = plan_cut(src, biome, c["names"])
     return P
@@ -1962,7 +1975,7 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
     else:
         # 2 install (picks, then ticked variants), then the def edits that make the game draw them
         src = L.src_root()
-        rebinds, alts, ok_rows = {}, {}, set()
+        rebinds, alts, ok_rows, ok_picks = {}, {}, set(), set()
         for i in P["install"]:
             rid = i["ruling"] or (keep_ruling(L.cached_index(), i["row"], i["letter"], i["sha"]) or {}).get("id")
             if not rid:
@@ -1974,6 +1987,7 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
                     R["installed"] += r["status"] == "installed"
                     touched_mods.add(i["mod"])
                     ok_rows.add(i["row"])
+                    ok_picks.add((i["row"], i["letter"]))
                     if i.get("rebind"):
                         rebinds[(i["row"], i["rebind"]["old"], i["rebind"]["new"])] = i
                     if i.get("alt"):
@@ -1993,7 +2007,8 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
         for rt in P["retire"]:
             if rt.get("replaced_by"):
                 # retire + replace in one pass: only once the pick is in game, and never a file a def still draws
-                if rt["row"] not in ok_rows and not rt.get("pick_live"):
+                # (that pick's own install, not merely some install on the row: a ticked variant is not the pick)
+                if (rt["row"], rt["replaced_by"]) not in ok_picks and not rt.get("pick_live"):
                     R["conflicts"].append(f"{rt['row']}: {rt['retired']} not retired — its replacement "
                                           f"{rt['replaced_by']} was not installed")
                     continue
