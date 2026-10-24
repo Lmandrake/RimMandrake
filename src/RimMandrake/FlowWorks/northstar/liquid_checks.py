@@ -200,6 +200,31 @@ def filth_thickness(label):
     return int(m.group(1)) if m else None
 
 
+def filth_by_thing(things):
+    """{thing key: thickness} of the spill filths in a jawa/list_things page, or None when any thickness is unreadable."""
+    out = {}
+    for t in things:
+        if str(t.get("def") or t.get("defName") or "") not in SPILL_FILTHS:
+            continue
+        k = filth_thickness(t.get("label"))
+        if k is None:
+            return None
+        key = t.get("id") or t.get("thingId") or t.get("thingID") or "%s@%s,%s" % (t.get("def") or t.get("defName"), t.get("x"), t.get("z"))
+        out[str(key)] = out.get(str(key), 0) + k
+    return out
+
+
+def filth_rise(before, after):
+    """-> (thickness before of the pieces still there afterwards, thickness after, {key: thickness} of pieces gone).
+    SPILL_FILTH_DIAGNOSE_TWO_OF_THREE (2026-10-24): a reused rect held 6 thickness of older spill filth, and EG's
+    RM_Filth_WaterSpill ages out whole (disappearsInDays 0.5~1, timed from its last thickening), so one stale piece
+    vanishing inside the 900-tick window read +2 where the spill laid 3. A piece that left is not charged to the spill."""
+    if before is None or after is None:
+        return None, None, None
+    gone = {k: v for k, v in before.items() if k not in after}
+    return sum(v for k, v in before.items() if k in after), sum(after.values()), gone
+
+
 def spill_exits(net0, net1):
     """{exit: units moved between two net probes} for the drain/spill exits, or None when the probe predates the counters
     (an old DLL: no placedInWaterUnits field) or a reading is not an int."""
@@ -765,16 +790,9 @@ def main(argv=None):
             lt = B.call("jawa/list_things", rect="%d,%d,%d,%d" % frect, limit=200, includePawns=False) or {}
             if lt.get("success") is False:
                 return None
-            # thickness, not things: vanilla thickens the filth already on the cell (SPILL_FILTH_FIX_SOIL_SAYS_NO re-run)
-            tot = 0
-            for t in lt.get("things") or []:
-                if str(t.get("def") or t.get("defName") or "") not in SPILL_FILTHS:
-                    continue
-                k = filth_thickness(t.get("label"))
-                if k is None:
-                    return None
-                tot += k
-            return tot
+            # thickness, not things: vanilla thickens the filth already on the cell (SPILL_FILTH_FIX_SOIL_SAYS_NO re-run);
+            # per thing, so a pre-existing piece that ages out in the window is not read as a piece the spill never made
+            return filth_by_thing(lt.get("things") or [])
 
         def unplaced():
             v = sget(SPILL, "Unplaced")
@@ -808,8 +826,10 @@ def main(argv=None):
         lpf = sget(S_MACH, "litresPerFilth")
         per = int(float(lpf)) * UNITS_PER_LITRE if re.match(r"^\d+(\.\d+)?$", str(lpf)) else None   # a float setting may read back "400.0"
         want = filth_pieces(sp1 - sp0, per) if per and isinstance(sp0, int) and isinstance(sp1, int) else None
-        st, cls, det = spill_verdict(h0, h1, drained, n0, n1, u0, u1, pre, expected=want, exits=spill_exits(net0, net1))
-        row("L5_switched_off_hose_spills", st, cls, dict(det, heldLiquid=liq, rect=frect,
+        f0, f1, gone = filth_rise(n0, n1)
+        st, cls, det = spill_verdict(h0, h1, drained, f0, f1, u0, u1, pre, expected=want, exits=spill_exits(net0, net1))
+        row("L5_switched_off_hose_spills", st, cls, dict(det, heldLiquid=liq, rect=frect, agedOut=gone,
+                                                         filthBeforeAll=None if n0 is None else sum(n0.values()),
                                                          spilledUnits=[net0.get("spilledUnits"), net1.get("spilledUnits")]))
         if st != "PASS":
             row("L5_colonists_clean_spill", "UNMEASURED", "SITE", "no spill filth to clean (L5 spill row %s)" % st)

@@ -53,6 +53,16 @@ case(LC.spill_verdict(L, 0, L, None, 3, 0, 0)[0], "UNMEASURED", "filth unreadabl
 case(LC.spill_verdict(L, 0, 10000, 1, 4, 0, 0, expected=3)[0], "PASS", "the 2026-10-16b trace: one filth thickened 1 -> 4 by 3 pieces")
 case(LC.spill_verdict(L, 0, 10000, 1, 1, 0, 0, expected=3)[0], "FAIL", "spilled but the filth did not thicken")
 case(LC.spill_verdict(L, 0, 10000, 1, 2, 0, 0, expected=3)[0], "FAIL", "fewer pieces than FilthCount")
+# SPILL_FILTH_DIAGNOSE_TWO_OF_THREE: the c2b trace (6 -> 8 with 3 laid) where a stale 1-thick piece aged out
+_b = LC.filth_by_thing([{"def": "RM_Filth_WaterSpill", "id": "a", "label": "water spill x5"},
+                        {"def": "RM_Filth_WaterSpill", "id": "b", "label": "water spill x1"}])
+_a = LC.filth_by_thing([{"def": "RM_Filth_WaterSpill", "id": "a", "label": "water spill x5"},
+                        {"def": "RM_Filth_WaterSpill", "id": "c", "label": "water spill x3"}, {"def": "Filth_Dirt", "id": "d", "label": "dirt x2"}])
+_f0, _f1, _gone = LC.filth_rise(_b, _a)
+case((_f0, _f1, _gone), (5, 8, {"b": 1}), "filth_rise: a piece that aged out is dropped from the before-sum")
+case(LC.spill_verdict(L, 0, 10000, _f0, _f1, 0, 0, expected=3)[0], "PASS", "the c2b trace with the aged-out piece excluded is PASS")
+case(LC.spill_verdict(L, 0, 10000, 6, 8, 0, 0, expected=3)[0], "FAIL", "can-fail: the same rise with nothing aged out stays FAIL")
+case(LC.filth_rise(None, _a), (None, None, None), "filth_rise: an unreadable side stays unreadable")
 # live_session 20261022T235239: drained 10,000, SpilledUnits flat, no filth -- where did it go? (the exits ledger)
 _n0 = dict(spilledUnits=51345, placedInWaterUnits=0, placedNearbyUnits=0, returnedUnits=0, homedFarUnits=0, lostUnits=0)
 _wet = dict(_n0, placedInWaterUnits=10000)
