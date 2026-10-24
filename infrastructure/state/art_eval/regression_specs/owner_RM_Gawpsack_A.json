@@ -1,0 +1,34 @@
+{
+ "subject": "RM_Gawpsack",
+ "label": "gawpsack",
+ "template": "creature",
+ "module": "walker",
+ "candidate": "live",
+ "provenance": "owner-labelled regression case from run fauna_contagion_01; owner PICKED live Gawpsack (column A) on owner_escalations_contagion_sheet_2026-10-24; pipeline REALLY_BAD on DEPARTURE_MISSING",
+ "description": "A drifting translucent bag stuffed with mismatched eyes, all of them open, all of them looking up. It reads the cloud from canopy height and sinks, all at once, seconds before the sky tears.",
+ "tier": "RM_",
+ "invented": true,
+ "size": {
+  "drawSize": [
+   0.7,
+   0.7
+  ]
+ },
+ "source": "RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
+ "owner_kept": false,
+ "images": {
+  "south": "/home/mandrake/rm/foundry/Transient/art_eval_regress_owner_20261024/RM_Gawpsack_A/south.png",
+  "east": "/home/mandrake/rm/foundry/Transient/art_eval_regress_owner_20261024/RM_Gawpsack_A/east.png",
+  "north": "/home/mandrake/rm/foundry/Transient/art_eval_regress_owner_20261024/RM_Gawpsack_A/north.png",
+  "scale": "/home/mandrake/rm/foundry/Transient/art_eval_regress_owner_20261024/RM_Gawpsack_A/scale.png"
+ },
+ "departures": [
+  "a sagging, stuffed bag shape, not a jellyfish's domed bell",
+  "dozens of mismatched eyes of different sizes, shapes and colours crammed inside the body",
+  "eyes visible through translucent skin, packed tight enough to bulge the bag",
+  "every eye wide open and turned upward toward the sky",
+  "floats in open air at treetop height, not in water"
+ ],
+ "earth_body_named": false,
+ "body_plan": "flyer"
+}

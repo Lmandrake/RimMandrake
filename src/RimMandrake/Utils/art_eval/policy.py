@@ -19,6 +19,9 @@ Every rule below is that pipeline plus one of the seat's guards (skill `rimworld
                    "replaced your kept art" with a one-click revert; no revert record -> HOLD_KEPT
   catch items      follow their living creature: living REGEN/ESCALATE -> REGEN_AFTER_SOURCE
   incomplete card  HOLD_INPUT, never sent to a model
+  wrong canvas     a render the pipeline itself ordered (artpipe_job arteval_*) whose canvas is not the shipping rule
+                   for its drawSize (canvas_rule) -> HOLD_CANVAS, never sent to a model (the owner flagged regen
+                   renders at huge resolution, 2026-10-24: every r2 on the leaningscrub sheets was 1024)
 
 Severity is decided by `references/severity_policy.md` (a ```json policy block), never by the model; the
 model's own severity guess is kept beside it so disagreement is visible.
@@ -42,7 +45,8 @@ STATUSES = ("ok", "fail", "unreadable", "n/a")
 BANDS = ("GOOD", "WEAK", "REALLY_BAD")
 KEPT_ART_CARD = "Kept art judged really bad: may the pipeline redraw it on its own? → Yes, but show me after"
 KEPT_ART_EVENT = "1792763093645804582"          # the OWNER ledger event (tsn) carrying that card
-DECISIONS = ("ACCEPT", "REGEN", "ESCALATE", "HOLD_KEPT", "HOLD_INPUT", "REGEN_AFTER_SOURCE", "HOLD_ERROR")
+DECISIONS = ("ACCEPT", "REGEN", "ESCALATE", "HOLD_KEPT", "HOLD_INPUT", "REGEN_AFTER_SOURCE", "HOLD_ERROR",
+             "HOLD_CANVAS")
 DEFAULT_SETTINGS = {
     "max_regen_rounds": 3,
     "min_refute_evidence_chars": 15,
@@ -87,9 +91,15 @@ def prompt_version(path: Path) -> dict:
 
 
 # ------------------------------------------------------------------ card facts and checklist
-def card_facts(card: dict) -> set:
-    """The facts the policy's `when` / `polish_when` clauses test, derived from the card."""
+def card_facts(card: dict, policy: dict | None = None) -> set:
+    """The facts the policy's `when` / `polish_when` clauses test, derived from the card. With the policy, also the
+    MEASURED facts its `measured` block defines from the card's deterministic gates (cards.gates):
+    `size_steady` = every facing's visible height within `size_steady_max_spread` of the others."""
     f = set()
+    m = (policy or {}).get("measured") or {}
+    spread = (card.get("gates") or {}).get("height_spread")
+    if m.get("size_steady_max_spread") is not None and spread is not None and spread <= m["size_steady_max_spread"]:
+        f.add("size_steady")
     f.add("invented" if card.get("invented") else "not_invented")
     for key in ("departures", "canon", "siblings", "owner_notes", "flight", "swim_lane", "ports"):
         if card.get(key):
@@ -123,14 +133,22 @@ def missing_panels(template: dict, module: str, panels: dict) -> list:
     return [p for p in required_panels(template, module) if not panels.get(p)]
 
 
-def severity(code: str, facts: set, policy: dict) -> str:
+def severity(code: str, facts: set, policy: dict, confidence=None) -> str:
     """blocking | polish | gross | input. An unknown code is blocking (fail closed) — a reviewer inventing a code
-    must not be able to slip a defect past the policy."""
+    must not be able to slip a defect past the policy. A blocking code with `polish_below_confidence` is polish
+    when the reviewer's own confidence is below it (a doubt is recorded, never a regen on its own)."""
     c = policy["codes"].get(code)
     if c is None:
         return "blocking"
     if c["default"] == "blocking" and any(cond in facts for cond in c.get("polish_when", [])):
         return "polish"
+    floor = c.get("polish_below_confidence")
+    if c["default"] == "blocking" and floor is not None and confidence is not None:
+        try:
+            if float(confidence) < float(floor):
+                return "polish"
+        except (TypeError, ValueError):
+            pass
     return c["default"]
 
 
@@ -195,7 +213,7 @@ def validate_gpt(reply: dict, concerns: list) -> dict:
 def classify_findings(findings: list, facts: set, policy: dict) -> dict:
     out = {"blocking": [], "polish": [], "gross": []}
     for f in findings:
-        sev = severity(f["code"], facts, policy)
+        sev = severity(f["code"], facts, policy, f.get("confidence"))
         g = dict(f, policy_severity=sev)
         out.get(sev, out["blocking"]).append(g)
     return out
@@ -263,10 +281,39 @@ def gpt_outcome(reply: dict, concerns: list, facts: set, policy: dict, min_evide
 
 
 # ------------------------------------------------------------------ routing
+def canvas_rule(draw) -> int | None:
+    """The shipping canvas edge for a drawSize: smallest power of two >= drawSize x 128, clamped to [256, 1024]
+    (artpipe/common.canvas_for_cells, fauna_drive.canvas_for). None when the size is unknown."""
+    try:
+        d = float(draw[0] if isinstance(draw, (list, tuple)) else draw)
+    except (TypeError, ValueError, IndexError):
+        return None
+    if d <= 0:
+        return None
+    c = 256
+    while c < d * 128 and c < 1024:
+        c *= 2
+    return c
+
+
+def canvas_mismatch(card: dict) -> list:
+    """[(panel, [w, h], rule)] for a render the pipeline ordered (artpipe_job arteval_*) whose source canvas is not
+    the shipping rule for the card's drawSize. Installed / owner art and renders of unknown size are never checked:
+    their canvas is not ours to dictate, and a missing size must not hold anything."""
+    if not str(card.get("artpipe_job") or "").startswith("arteval_"):
+        return []
+    rule = canvas_rule(((card.get("size") or {}).get("drawSize")))
+    if rule is None:
+        return []
+    return [(k, wh, rule) for k, wh in sorted((card.get("canvas_px") or {}).items()) if list(wh) != [rule, rule]]
+
+
 def pre_route(card: dict, template: dict, living_decision: str | None) -> str | None:
     """A decision taken before any model is asked, or None to proceed."""
     if missing_panels(template, card.get("module", ""), card.get("panels", {})):
         return "HOLD_INPUT"
+    if canvas_mismatch(card):
+        return "HOLD_CANVAS"
     if card.get("module") == "catch" and living_decision in ("REGEN", "ESCALATE", "REGEN_AFTER_SOURCE"):
         return "REGEN_AFTER_SOURCE"
     return None

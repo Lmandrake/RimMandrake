@@ -55,7 +55,7 @@ python3 shadow.py build <run id>                        # the owner's quick shee
 python3 shadow.py ingest <sheet>.decisions.json --run <run id>   # his KEEP/OVERRIDE → shadow log + criteria ledger
 python3 shadow.py status                                # per-template streak vs the turn-off threshold
 python3 ledger.py add|fix|list                          # the criteria ledger (how the pipeline learns)
-python3 runner.py regress                               # re-run the regression set after ANY prompt/template/policy change
+python3 runner.py regress [--run-id <id> --max-new 4]  # re-run the regression set after ANY prompt/template/policy change (11 rows ~13 min: run in parts, resume with --run-id)
 python3 race.py run --race <tag> --rows <rows.jsonl>... --variant incumbent --variant <name>=<overlay dir>   # race prompt variants in parallel; race.py score --race <tag> --rows ...  (references/prompt_variants_2026-10-23.md)
 python3 selftest_art_eval.py                            # pure parts + a mocked end-to-end run
 ```

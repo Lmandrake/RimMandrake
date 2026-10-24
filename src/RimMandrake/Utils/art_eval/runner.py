@@ -8,7 +8,7 @@ their living animal, every decision logged with prompt versions, model ids and i
 
     python3 runner.py run --pilot RM_Huldu:C RM_HulduCatch:C:D --run-id e2e_20261023 --test
     python3 runner.py run --spec a.json b.json --run-id <id> [--record] [--file-regens]
-    python3 runner.py regress                        # re-run the regression set on the current prompt versions
+    python3 runner.py regress [--run-id ID --max-new N]   # re-run the regression set (resumable, in parts)
     python3 runner.py brief RM_Huldu                 # write the departures brief for an invented creature
 
 Reviewers: Opus = `claude -p` (Read tool only, cwd = the card directory), model from ART_EVAL_OPUS_MODEL, else
@@ -224,12 +224,18 @@ def evaluate(spec: dict, card_dir: Path, rev: Reviewers, policy: dict, settings:
            "source_files": {k: str(f) for k, f in C.source_files(spec).items()},
            "artpipe_job": spec.get("artpipe_job"), "gates": card["gates"], "prompt_versions": prompt_versions(spec["template"]),
            "models": {}, "opus": None, "gpt": None, "regen": None, "reasons": []}
+    draw = (card.get("size") or {}).get("drawSize")
+    if P.canvas_rule(draw):   # regen_jobs draws at the shipping canvas, never a fixed 1024
+        rec["canvas_rule"], rec["drawsize"] = P.canvas_rule(draw), draw[0] if isinstance(draw, (list, tuple)) else draw
     living_dec = living.get(card.get("depends_on")) if card.get("depends_on") else None
     pre = P.pre_route(card, tpl, living_dec)
     if pre:
         rec["decision"] = pre
         rec["reasons"].append(f"missing panels {P.missing_panels(tpl, card.get('module', ''), card['panels'])}"
-                              if pre == "HOLD_INPUT" else f"living {card['depends_on']} decision {living_dec}")
+                              if pre == "HOLD_INPUT" else
+                              "canvas not the shipping rule for drawSize %s: %s" % (
+                                  draw, "; ".join(f"{k} {w}x{h} != {c}x{c}" for k, (w, h), c in P.canvas_mismatch(card)))
+                              if pre == "HOLD_CANVAS" else f"living {card['depends_on']} decision {living_dec}")
         return rec
     if card.get("depends_on") and living_dec is None:
         rec["reasons"].append(f"living {card['depends_on']} not decided in this run or the log — judged on its own")
@@ -343,9 +349,12 @@ def run(specs: list, run_id: str, rev: Reviewers | None = None, test: bool = Fal
     work.mkdir(parents=True, exist_ok=True); out.mkdir(parents=True, exist_ok=True)
     rounds_file = STATE / "regen_rounds.json"
     rounds = {} if test else (json.loads(rounds_file.read_text()) if rounds_file.is_file() else {})
+    rs, seen_pics = {}, {}
     if not test:   # a reset subject (owner card 2026-10-24, round_series.py) counts its fresh series, not the old 3
         import round_series as RS
-        rounds = RS.apply_to_rounds(rounds, RS.decisions())
+        rs = RS.resets(RS.RESETS)
+        rounds = RS.apply_to_rounds(rounds, RS.decisions(STATE / "runs"), rs)
+        seen_pics = RS.regened_pictures(RS.production_decisions(STATE / "runs" if state_root is None else state_root), rs)
     living = {} if test else history_decisions()
     specs = sorted(specs, key=lambda s: s.get("module") == "catch")      # living animals first
     recs, done = [], set()
@@ -365,12 +374,25 @@ def run(specs: list, run_id: str, rev: Reviewers | None = None, test: bool = Fal
     for s in specs:
         if spec_key(s) in done:
             continue
+        if not test and RS.stopped(s["subject"], rs):
+            # a stopped series is over: nothing is judged for it until a new reset (ARTEVAL_RUNNER_FIX_JUDGES_STOPPED)
+            print(f"[art_eval] {s['subject']}: series STOPPED ({RS.stopped(s['subject'], rs).get('at')}) — not judged",
+                  file=sys.stderr)
+            continue
+        prev = None if test else seen_pics.get((s["subject"], spec_picture_key(s)))
+        view = rounds if prev is None else dict(rounds, **{s["subject"]: prev["round"] - 1})
         t0 = time.time()
-        rec = evaluate(s, work / spec_key(s), rev, policy, settings, living, rounds)
+        rec = evaluate(s, work / spec_key(s), rev, policy, settings, living, view)
         rec["seconds"] = round(time.time() - t0, 1)
         living[s["subject"]] = rec["decision"]
         if rec["decision"] == "REGEN" and not test:
-            rounds[s["subject"]] = rec["round"]
+            if prev is not None:   # the same picture judged again (two biome batches) spends no new round
+                rec["reasons"].append(f"same picture already REGEN in run {prev['run']} as round {prev['round']}: "
+                                      "round not advanced")
+            rounds[s["subject"]] = max(rounds.get(s["subject"], 0), rec["round"])
+            k = RS.picture_key(rec)
+            if k is not None:
+                seen_pics.setdefault((s["subject"], k), {"run": run_id, "round": rec["round"]})
         recs.append(rec)
         with (out / "decisions.jsonl").open("a") as fh:
             fh.write(json.dumps(rec) + "\n")
@@ -381,8 +403,10 @@ def run(specs: list, run_id: str, rev: Reviewers | None = None, test: bool = Fal
         with open(str(rounds_file) + ".lock", "w") as lk:
             fcntl.flock(lk, fcntl.LOCK_EX)
             cur = json.loads(rounds_file.read_text()) if rounds_file.is_file() else {}
-            for k, v in rounds.items():
-                cur[k] = max(cur.get(k, 0), v)
+            # only subjects this run REGENed: `rounds` also carries reset-series counts (apply_to_rounds), which
+            # round_series promises never to write here (a stopped, never-judged def used to land as round 1)
+            for k in {r["subject"] for r in recs if r["decision"] == "REGEN"}:
+                cur[k] = max(cur.get(k, 0), rounds.get(k, 0))
             rounds_file.write_text(json.dumps(cur, indent=1, sort_keys=True))
     jobs = regen_jobs(recs, run_id)
     if jobs:
@@ -458,6 +482,16 @@ def gate_clean_prompt(prompt: str, neutralize=None, hits=None) -> tuple:
     return new, how
 
 
+def spec_picture_key(spec: dict) -> frozenset | None:
+    """round_series.picture_key for a spec before it is judged: the facing source files' sha256 (None if any is
+    missing — then the picture is never merged with another)."""
+    import round_series as RS
+    fs = {k: v for k, v in C.source_files(spec).items() if k in RS.PICTURE_KEYS}
+    if not fs or not all(Path(v).is_file() for v in fs.values()):
+        return None
+    return RS.picture_key({"source_sha256": {k: C.sha256_file(v) for k, v in fs.items()}})
+
+
 def regen_jobs(recs: list, run_id: str, neutralize=None, hits=None) -> list:
     """fill_queue.py rows (JSON art list) for every REGEN — filed only with --file-regens. A row with facings gets a
     prompt the filing gate accepts (gate_clean_prompt); the row's style_notes say what was done."""
@@ -467,14 +501,17 @@ def regen_jobs(recs: list, run_id: str, neutralize=None, hits=None) -> list:
             continue
         rq = r["regen"]["request"]
         rows.append({"id": f"arteval_{spec_key(r)}_r{r.get('round', 1)}", "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
-                     "target_def": r["subject"], "prompt": rq["prompt"], "canvas_w": 1024, "canvas_h": 1024,
+                     "target_def": r["subject"], "prompt": rq["prompt"], "canvas_w": r.get("canvas_rule") or 1024, "canvas_h": r.get("canvas_rule") or 1024,
                      "facings": [] if r["module"] in ("catch", "ground_cover", "bush", "tree", "special") else ["south", "east", "north"],
                      "style_notes": "art_eval regen round %s; fixes: %s" % (r.get("round"), ", ".join(r["regen"]["findings"])),
                      "reference": "", "priority": 40, "source_run": run_id}
                     | ({"replaces_kept": True, "install_by_card": r["install_by_card"],
                         "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"%s\"; "
                                             "revert record in the run's decisions.jsonl" % r["install_by_card"]}
-                       if r.get("replaces_kept") else {}))
+                       if r.get("replaces_kept") else {})
+                    | ({"drawsize": r["drawsize"]} if r.get("drawsize") else {}))
+        if not r.get("canvas_rule"):
+            rows[-1]["style_notes"] += "; canvas 1024: the spec has no drawSize"
         if rows[-1]["facings"]:
             rows[-1]["prompt"], how = gate_clean_prompt(rows[-1]["prompt"], neutralize, hits)
             if how != "unchanged":
@@ -501,7 +538,7 @@ def summary(recs: list, run_id: str, test: bool) -> str:
         L.append(f"| {r['subject']} | {r.get('candidate') or ''} | {r['template']}/{r['module']} | "
                  f"{(r.get('opus') or {}).get('band', '-')} | {(g.get('reply') or {}).get('verdict', '-')} | **{r['decision']}** | "
                  f"{r.get('seconds', '')} | {'; '.join(r['reasons'])[:400]} |")
-    esc = [r for r in recs if r["decision"] in ("ESCALATE", "HOLD_ERROR") or "kept-but-flagged" in " ".join(r["reasons"])]
+    esc = [r for r in recs if r["decision"] in ("ESCALATE", "HOLD_ERROR", "HOLD_CANVAS") or "kept-but-flagged" in " ".join(r["reasons"])]
     if esc:
         L += ["", "## One line each for the owner"] + [f"- {r['subject']}: {r['decision']} — {r['reasons'][-1]}" for r in esc]
     models = sorted({m for r in recs for k in r["models"].values() for meta in (k if isinstance(k, list) else [k])
@@ -526,13 +563,26 @@ def write_brief(defname: str, rev_call=None) -> dict:
 
 
 # ------------------------------------------------------------------ regression
-def regress(rev: Reviewers | None = None) -> dict:
+def regress(rev: Reviewers | None = None, run_id: str | None = None, max_new: int | None = None) -> dict:
     """Re-run every regression row on the current prompt versions; a row passes when the decision lands in its
-    expected class (ACCEPT vs not). Writes infrastructure/state/art_eval/regression_runs/<versions>.json."""
+    expected class (ACCEPT vs not). Writes infrastructure/state/art_eval/regression_runs/<run>.json.
+    run_id resumes a regress run (the set outgrew one 8-minute call); max_new judges at most that many rows this
+    call and returns {"incomplete": n} until every row is decided. A resumed run on other prompt versions is refused."""
     rows = [json.loads(l) for l in (STATE / "regression.jsonl").read_text().splitlines() if l.strip()]
     specs = [C.pilot_spec(r["pilot"]) if r.get("pilot") else json.loads((ROOT / r["spec"]).read_text()) for r in rows]
-    rid = "regress_" + dt.datetime.now().strftime("%Y%m%dT%H%M%S")
-    recs = {spec_key(r): r for r in run(specs, rid, rev=rev, test=True)}
+    rid = run_id or "regress_" + dt.datetime.now().strftime("%Y%m%dT%H%M%S")
+    rdir = STATE / "runs" / rid
+    vk = versions_key(prompt_versions("creature"))
+    if (rdir / "run.json").is_file() and json.loads((rdir / "run.json").read_text()).get("versions_key") != vk:
+        raise SystemExit(f"{rid} was started on other prompt versions: start a new regress run")
+    done = set()
+    if (rdir / "decisions.jsonl").is_file():
+        done = {spec_key(json.loads(l)) for l in (rdir / "decisions.jsonl").read_text().splitlines() if l.strip()}
+    todo = [s for s in specs if spec_key(s) not in done]
+    recs = {spec_key(r): r for r in run(todo[:max_new] if max_new else todo, rid, rev=rev, test=True)}
+    missing = [spec_key(s) for s in specs if spec_key(s) not in recs]
+    if missing:
+        return {"run": rid, "incomplete": len(missing), "total": len(specs)}
     res = []
     for row, s in zip(rows, specs):
         d = recs[spec_key(s)]["decision"]
@@ -605,14 +655,20 @@ def main(argv=None):
     r.add_argument("--record", action="store_true", help="write infrastructure/state/delegated/<date>/<subject>.json")
     r.add_argument("--file-regens", action="store_true", help="file the regen jobs with artpipe fill_queue.py")
     b = sub.add_parser("brief"); b.add_argument("defs", nargs="+")
-    sub.add_parser("regress")
+    g = sub.add_parser("regress")
+    g.add_argument("--run-id", help="resume this regress run")
+    g.add_argument("--max-new", type=int, help="judge at most N rows this call (resume with --run-id)")
     a = ap.parse_args(argv)
     if a.cmd == "brief":
         for d in a.defs:
             print(d, json.dumps(write_brief(d))[:400])
         return 0
     if a.cmd == "regress":
-        o = regress()
+        o = regress(run_id=a.run_id, max_new=a.max_new)
+        if o.get("incomplete"):
+            print(f"regression {o['run']}: {o['incomplete']}/{o['total']} rows still to judge — "
+                  f"resume: runner.py regress --run-id {o['run']}")
+            return 2
         print(f"regression {o['passed']}/{o['total']} on {o['versions_key']}"
               + (f" — UNMEASURED {o['unmeasured']}/{o['total']} (HOLD_*: nothing decided; not a pass)" if o["unmeasured"] else ""))
         return 0 if o["passed"] == o["total"] else 1

@@ -1,0 +1,34 @@
+{
+ "subject": "RM_DecayDrake",
+ "label": "fermatalis",
+ "template": "creature",
+ "module": "walker",
+ "candidate": "r2",
+ "provenance": "owner-labelled regression case from run fauna_cauldron_r2_01; owner PICKED DecayDrake column C (r2) on owner_escalations_cauldron_sheet_2026-10-24; pipeline REGEN on F_SIZE_JUMP (CL-035)",
+ "description": "A heavy, flightless drake with stunted wings folded over a bloated, sour-sweet belly. The fermatalis breathes out a living haze of yeasts and enzymes that sets almost anything organic around it fermenting, and drives the change at a furious pace: within hours the greenery where it has rested slumps into soft, bubbling mounds of mash. It eats the result and is usually drunk on it \u2014 four separate livers keep it alive through the habit. Cooks of the delta count it among the most valuable beasts in the Miasma, for whatever it breathes on ferments in a fraction of the usual time. Hard to tame, but a fermatalis that accepts you, especially if you bring a drink, makes a fine hunting companion.",
+ "tier": "RM_",
+ "invented": true,
+ "size": {
+  "drawSize": [
+   2.75,
+   2.75
+  ]
+ },
+ "source": "RimMandrake/Miasma/Defs/ThingDefs_Races/RM_DecayDrake.xml",
+ "owner_kept": false,
+ "images": {
+  "south": "/home/mandrake/rm/foundry/Transient/art_eval_regress_owner_20261024/RM_DecayDrake_C/south.png",
+  "east": "/home/mandrake/rm/foundry/Transient/art_eval_regress_owner_20261024/RM_DecayDrake_C/east.png",
+  "north": "/home/mandrake/rm/foundry/Transient/art_eval_regress_owner_20261024/RM_DecayDrake_C/north.png",
+  "scale": "/home/mandrake/rm/foundry/Transient/art_eval_regress_owner_20261024/RM_DecayDrake_C/scale.png"
+ },
+ "departures": [
+  "Stunted, vestigial wings folded flat over the back and sides, too small for flight",
+  "Grossly bloated, distended belly, far rounder and heavier than any lizard's",
+  "A visible haze or cloud of yeast-mist breathed out from the mouth or nostrils",
+  "Heavy, squat drake body: a dragon-shaped head and frame, not a lizard's slender profile",
+  "Soft, bubbling mounds of fermenting mash on the ground where it rests"
+ ],
+ "earth_body_named": false,
+ "body_plan": "walker"
+}

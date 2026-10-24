@@ -1,0 +1,34 @@
+{
+ "subject": "RM_Durrok",
+ "label": "durrok",
+ "template": "creature",
+ "module": "walker",
+ "candidate": "r2",
+ "provenance": "owner-labelled regression case from run fauna_leaningscrub_r2_00; owner POOLED Durrok column B (r2) on owner_escalations_leaningscrub_1_sheet_2026-10-24; pipeline REGEN on F_SIZE_JUMP",
+ "description": "A low, barrel-bodied quadruped on four short, thick legs, so buried under long, pale, glossy hair that no head or neck shows - only a blunt front end and a tail-like fall of white cords behind. The hair hangs in heavy, wet-looking ropes to the ground, and mats of grey-green lichen cling in drifts across its back, shoulders and legs, trailing in strands where they slip. Smaller and less dangerous than its wetland kin for lack of water and rot to grow on, it plods through the scrub like a drowned haystack. Durroks release clumps of spores every few weeks to reproduce; the resulting young are wholly independent from birth, with no bond to their parent. Risky to hunt, but the raw fungus beneath the hide is edible.",
+ "tier": "RM_",
+ "invented": true,
+ "size": {
+  "drawSize": [
+   2.0,
+   2.0
+  ]
+ },
+ "source": "RimStarWars/SWBestiary/Defs/DesertPort/RSW_DesertPortMisc_Races.xml",
+ "owner_kept": false,
+ "images": {
+  "south": "/home/mandrake/rm/foundry/Transient/art_eval_regress_owner_20261024/RM_Durrok_B/south.png",
+  "east": "/home/mandrake/rm/foundry/Transient/art_eval_regress_owner_20261024/RM_Durrok_B/east.png",
+  "north": "/home/mandrake/rm/foundry/Transient/art_eval_regress_owner_20261024/RM_Durrok_B/north.png",
+  "scale": "/home/mandrake/rm/foundry/Transient/art_eval_regress_owner_20261024/RM_Durrok_B/scale.png"
+ },
+ "departures": [
+  "No head or neck visible at all: the front end is a blunt, featureless mound of hair with no horns, eyes, ears, muzzle or face",
+  "Long, pale, glossy hair hanging in heavy, wet-looking ropes or cords all the way to the ground, hiding the body's outline",
+  "Mats of grey-green lichen in drifts across the back, shoulders and legs, with loose strands trailing where they slip",
+  "No real tail: behind it there is only a tail-like fall of white cords",
+  "Low, barrel-shaped body on four short, thick legs that barely show under the hair, so it looks like a soaked haystack"
+ ],
+ "earth_body_named": false,
+ "body_plan": "walker"
+}

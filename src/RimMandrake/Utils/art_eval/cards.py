@@ -222,6 +222,8 @@ def build_card(spec: dict, out: Path) -> dict:
         shas["facings.png"] = sha256_file(out / "facings.png")
     g = gates({f: out / f"{f}.png" for f in facing_src} or ({"single": out / "single.png"} if "single" in panels else {}))
     card = {k: v for k, v in spec.items() if k != "images"}
+    # source canvas per facing (the shrunk panels hide it); policy.canvas_mismatch reads it, card.md does not show it
+    card["canvas_px"] = {f: list(Image.open(p).size) for f, p in facing_src.items()}
     card.update({"panels": panels, "image_sha256": shas, "source_sha256": src_shas, "gates": g,
                  "card_sha": hashlib.sha256(json.dumps([card.get("description"), shas], sort_keys=True).encode()).hexdigest()[:16]})
     (out / "card.json").write_text(json.dumps(card, indent=1))

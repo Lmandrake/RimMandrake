@@ -174,7 +174,7 @@ def write_prereview(sheet: Path, recs: list):
             row.update(verdict="FLAG", note="the picture the pipeline judged is NOT on this row (the sheet shows what is "
                                             "installed / found by name, and the candidate files); " + why)
             continue
-        flag = any(r["decision"] in ("ESCALATE", "HOLD_ERROR", "HOLD_KEPT", "HOLD_INPUT") or r.get("replaces_kept") for r in rs)
+        flag = any(r["decision"] in ("ESCALATE", "HOLD_ERROR", "HOLD_KEPT", "HOLD_INPUT", "HOLD_CANVAS") or r.get("replaces_kept") for r in rs)
         row.update(verdict="FLAG" if flag else "OK", note=why)
     counts = {}
     for r in recs:
@@ -206,11 +206,117 @@ def revert(rec: dict, apply: bool) -> list:
     return out
 
 
+PICKED, POOLED, PURGED, RETIRED, NOT_PICKED = "OWNER_PICKED", "OWNER_POOLED", "OWNER_PURGED", "OWNER_RETIRED", "NOT_PICKED"
+POSITIVE, NEGATIVE = (PICKED, POOLED), (PURGED, RETIRED)
+
+
+def pick_labels(row: dict, snap_row: dict) -> dict:
+    """{column letter: label} from his pick-one sheet row (SHADOW_INGEST_FIX_IGNORES_PICKS). On owner_escalations
+    sheets he never clicks the shadow buttons: he picks a column, adds columns to a random pool, retires the live
+    art or purges files. Picked/pooled = he wants that picture; purged/retired = he threw it out; anything else
+    on the row = NOT_PICKED (no evidence either way: an unpicked render is not a rejection). `qPrefill` is the
+    sheet's own default and never counts."""
+    cols = snap_row.get("columns") or {}
+    purge = set(row.get("purge") or [])
+    pooled = {L for p in (row.get("pool") or {}).values() for L in (p.get("add") or [])}
+    pooled -= {L for p in (row.get("pool") or {}).values() for L in (p.get("remove") or [])}
+    retired = {L for Ls in (row.get("retire") or {}).values() for L in Ls}
+    picked = {row["decision"]} if row.get("decision") in cols else set()
+    picked |= {s.get("pick") for s in (row.get("slots") or {}).values() if s.get("pick") in cols}
+    out = {}
+    for L, faces in cols.items():
+        shas = set((faces or {}).values())
+        out[L] = (PICKED if L in picked else POOLED if L in pooled else PURGED if shas & purge
+                  else RETIRED if L in retired else NOT_PICKED)
+    return out
+
+
+def answer_from_pick(label: str, decision: str):
+    """The shadow answer his pick implies for a judged picture, or None when the pick says nothing about it."""
+    regen = decision in ("REGEN", "ESCALATE")
+    if label in POSITIVE:
+        return "keep" if decision == "ACCEPT" else "should_accept" if regen else None
+    if label in NEGATIVE:
+        return "keep" if regen else "should_regen" if decision == "ACCEPT" else None
+    return None
+
+
+def facing_shas(rec: dict) -> set:
+    """The judged picture's own files (facings / single), not the card's scale panel or references."""
+    return {v for k, v in (rec.get("source_sha256") or {}).items() if k in REF_KEYS and v}
+
+
+def match_column(rec: dict, snap_row: dict) -> str | None:
+    """The sheet column showing the judged picture: every judged source sha on that column (one shared sha is not
+    enough — a render that reuses the live north would otherwise match the live column)."""
+    src = facing_shas(rec)
+    if not src:
+        return None
+    hits = [L for L, faces in (snap_row.get("columns") or {}).items() if src <= set((faces or {}).values())]
+    return hits[0] if len(hits) == 1 else None
+
+
+def picks_for(d: dict, recs: list) -> list:
+    """[(record, column, label, implied answer)] for every judged record whose picture is a column on his sheet."""
+    snap = json.loads((ROOT / d["snapshot"]).read_text()) if d.get("snapshot") else {"rows": {}}
+    groups = by_row(recs)
+    out = []
+    for subj, row in (d.get("decisions") or {}).items():
+        srow = (snap.get("rows") or {}).get(subj)
+        if not srow:
+            continue
+        labels = pick_labels(row, srow)
+        purge = set(row.get("purge") or [])
+        for r in groups.get(subj, []):
+            L = match_column(r, srow)
+            if L:
+                out.append((r, L, labels[L], answer_from_pick(labels[L], r.get("decision", ""))))
+            elif facing_shas(r) & purge:
+                # a purged render is often no column at all (the sheet hides files already queued for purge)
+                out.append((r, "-", PURGED, answer_from_pick(PURGED, r.get("decision", ""))))
+    return out
+
+
+def harvest(decision_paths: list, runs: list | None = None) -> list:
+    """Owner-labelled judged pictures across runs: one row per (sheet, record) whose picture he picked, pooled,
+    retired or purged — the tuning set for criteria changes. Labels are his; nothing here is a model guess."""
+    rdir = STATE / "runs"
+    recs = []
+    for rid in runs or sorted(p.name for p in rdir.iterdir() if (p / "decisions.jsonl").is_file()):
+        if rid.startswith(("regress_", "race_")):
+            continue
+        for r in load_run(rid):
+            recs.append(dict(r, _run=rid))
+    out = []
+    for dp in decision_paths:
+        d = json.loads(Path(dp).read_text())
+        for r, L, label, ans in picks_for(d, recs):
+            o, g = r.get("opus") or {}, r.get("gpt") or {}
+            out.append({"sheet": d.get("sheetId"), "subject": r["subject"], "run": r["_run"], "candidate": r.get("candidate"),
+                        "column": L, "label": label, "owner_wants": label in POSITIVE, "pipeline_decision": r.get("decision"),
+                        "implied_answer": ans, "round": r.get("round"),
+                        "severity": ((r.get("prompt_versions") or {}).get("severity") or {}).get("tag"),
+                        "opus_band": o.get("band"), "opus_overall": (o.get("reply") or {}).get("overall"),
+                        "opus_findings": [{k: f.get(k) for k in ("code", "confidence", "model_severity")} for f in (o.get("reply") or {}).get("findings") or []],
+                        "gpt_verdict": (g.get("reply") or {}).get("verdict"), "gpt_outcome": g.get("outcome"),
+                        "gpt_findings": [{k: f.get(k) for k in ("code", "confidence", "model_severity")} for f in (g.get("reply") or {}).get("findings") or []],
+                        "gates": r.get("gates"), "image_sha256": r.get("image_sha256"), "source_files": r.get("source_files")})
+    return out
+
+
 def ingest(decisions_path: Path, run_id: str, apply_reverts: bool = False) -> list:
     """His answers -> shadow_log.jsonl rows; every OVERRIDE also becomes a criteria-ledger entry (source
-    owner_override, his note as owner_said). Blank answers are skipped — silence is not agreement."""
+    owner_override, his note as owner_said). Blank answers are skipped — silence is not agreement — unless he
+    picked/pooled/retired/purged columns: then each judged picture on the row gets the answer his pick implies
+    (answer_from_pick; SHADOW_INGEST_FIX_IGNORES_PICKS)."""
     d = json.loads(Path(decisions_path).read_text())
-    groups = by_row(load_run(run_id))
+    recs = load_run(run_id)
+    groups = by_row(recs)
+    implied = {}
+    for r, L, label, ans in picks_for(d, recs) if d.get("snapshot") else []:
+        if ans:
+            implied.setdefault(row_id(r), []).append((r, ans, f"picks: column {L} {label}"))
+    known = {(e.get("subject"), e.get("run")) for e in LG.entries().values()}
     log = STATE / "shadow_log.jsonl"
     # re-ingesting the same answers must not log them twice: shadow_status counts rows, so a duplicate would grow the
     # clean streak (and re-file ledger entries, re-run reverts). A CHANGED answer is a new ruling and is logged.
@@ -226,16 +332,20 @@ def ingest(decisions_path: Path, run_id: str, apply_reverts: bool = False) -> li
         ans = (row.get("q") or {}).get(KEY)
         # a sheet row is a DEF (several plant cards share one); a sheet built before 2026-10-24 keyed it by card subject
         rs = groups.get(subj) or [r for g in groups.values() for r in g if r["subject"] == subj]
-        if not ans or not rs:
-            continue
-        for r in rs:
+        if ans and rs:
+            todo = [(r, ans, row.get("note", ""), False) for r in rs]
+        else:
+            todo = [(r, a, (f"{why}; {row['note']}" if row.get("note") else why), True) for r, a, why in implied.get(subj, [])]
+        for r, ans, note, from_picks in todo:
             override = ans != "keep"
             # a blocking override: he says the pipeline let bad art through, or regenerated art he would keep
             blocking = (ans == "should_regen" and r["decision"] == "ACCEPT") or (ans == "should_accept" and r["decision"] in ("REGEN", "ESCALATE")) \
                 or ans in ("other", "revert")
             e = {"at": row.get("at") or dt.datetime.now().astimezone().isoformat(timespec="seconds"), "run": run_id,
                  "subject": r["subject"], "template": r["template"], "pipeline_decision": r["decision"], "owner_answer": ans,
-                 "override": override, "blocking": blocking, "note": row.get("note", "")}
+                 "override": override, "blocking": blocking, "note": note}
+            if from_picks:
+                e["source"] = "picks"
             key = ingest_key(e)
             wants_revert = ans == "revert" and bool(r.get("replaces_kept"))
             if key in logged:
@@ -256,10 +366,12 @@ def ingest(decisions_path: Path, run_id: str, apply_reverts: bool = False) -> li
                     applied.add(key)
             with log.open("a") as fh:
                 fh.write(json.dumps(e) + "\n")
-            if override:
+            # a pick-derived override on a subject already hand-filed for this run is not filed twice
+            if override and not (from_picks and (r["subject"], run_id) in known):
+                known.add((r["subject"], run_id))
                 e["ledger"] = LG.add(r["subject"], r["template"], "owner_override",
                                      missed=f"pipeline {r['decision']}; owner {ans}", decision=r["decision"],
-                                     owner_said=row.get("note") or f"(card answer: {ans})", run=run_id)
+                                     owner_said=row.get("note") or (f"(sheet {note})" if from_picks else f"(card answer: {ans})"), run=run_id)
             out.append(e)
     return out
 
@@ -287,7 +399,20 @@ def main(argv=None):
     i = sub.add_parser("ingest"); i.add_argument("decisions"); i.add_argument("--run", required=True)
     i.add_argument("--apply-reverts", action="store_true", help="run art.py install for his REVERT clicks (default dry run)")
     sub.add_parser("status")
+    h = sub.add_parser("harvest", help="owner-labelled judged pictures from his pick-one sheets (jsonl to --out)")
+    h.add_argument("decisions", nargs="+"); h.add_argument("--runs", nargs="*"); h.add_argument("--out", required=True)
     a = ap.parse_args(argv)
+    if a.cmd == "harvest":
+        rows = harvest(a.decisions, a.runs)
+        Path(a.out).write_text("".join(json.dumps(r) + "\n" for r in rows))
+        n = {}
+        for r in rows:
+            k = (r["label"], r["pipeline_decision"])
+            n[k] = n.get(k, 0) + 1
+        print(f"{len(rows)} labelled judged pictures -> {a.out}")
+        for k, v in sorted(n.items()):
+            print(f"  {k[0]:14} pipeline {k[1]:10} {v}")
+        return 0
     if a.cmd == "build":
         print(build(a.run_id, a.name))
     elif a.cmd == "ingest":
