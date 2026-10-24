@@ -7,3 +7,4 @@
 - Judge reel nozzle: Transient/bridge_run_1_20261023/captures/br1_reel_nozzle_south_47-14.png
 - Shadow sheet: D:\Luke\dev\RimMandrake\Transient\biome_ffar\art_eval_shadow_modern_style_20261023_r4_ingame_sheet_2026-10-23.html
 - Evening walk save: RM_fw_walkthrough_20261023f (pending bridge driver)
+- Delete 3 now-unreferenced flat anchor singles you kept (RM_SuspensionAnchor_Rope/Steel/Heavy.png)? Needs your typed words (art ledger). New upright base anchors: D:\ClaudeWork\rimmandrake\scratch\anchorbase\base_new_contact.png
