@@ -62,6 +62,14 @@
       <li><from>RSW_SegnosaurusEggFertilized</from><to>RM_SegnosaurusEggFertilized</to><defType>ThingDef</defType></li>
       <li><from>RSW_TermitotronEggUnFertilized</from><to>RM_TermitotronEggUnFertilized</to><defType>ThingDef</defType></li>
       <li><from>RSW_TermitotronEggFertilized</from><to>RM_TermitotronEggFertilized</to><defType>ThingDef</defType></li>
+      <!-- batch 4 -->
+      <li><from>RSW_KarraskShedRaw</from><to>RM_KarraskShedRaw</to><defType>ThingDef</defType></li>
+      <li><from>RSW_KarraskPlate</from><to>RM_KarraskPlate</to><defType>ThingDef</defType></li>
+      <li><from>RSW_Karrask</from><to>RM_Karrask</to><defType>ThingDef</defType></li>
+      <li><from>Corpse_RSW_Karrask</from><to>Corpse_RM_Karrask</to><defType>ThingDef</defType></li>
+      <li><from>Meat_RSW_Karrask</from><to>Meat_RM_Karrask</to><defType>ThingDef</defType></li>
+      <li><from>RSW_Karrask</from><to>RM_Karrask</to><defType>PawnKindDef</defType></li>
+      <li><from>RSW_CureKarraskPlate</from><to>RM_CureKarraskPlate</to><defType>RecipeDef</defType></li>
     </aliases>
   </RimMandrake.EnvironmentalHazards.RM_DefAliasDef>
 </Defs>

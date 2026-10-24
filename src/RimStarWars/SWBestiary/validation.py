@@ -256,8 +256,9 @@ LIVESTOCK_SETTINGS = "RimMandrake.StarWars.Livestock.RSW_LivestockSettings"
 CORE_SPECIES = ["RSW_Bantha", "RSW_Jerba"]
 
 # One representative species per absorption wave the walk doc never covers.
+# RSW_Karrask left 2026-10-24: our own invented livestock, moved to the RM tier as RM_Karrask (mandrake.rm.biomes,
+# SWB_INVENTED_MIGRATE_TWENTY_LEFT); RSW_Onnik below still speaks for the Livestock wave.
 NEWLY_ABSORBED_SPECIES = [
-    "RSW_Karrask",        # Livestock
     "RSW_Onnik",          # LIVESTOCK_STARTER_TRIO_1 -- CompKilnBelly
     "RSW_Reefback",       # SeaBeasts / Colossi
     "RSW_Tellurox",       # HelixTellurox (the PawnKindDef; RSW_TelluroxShell is its leather ITEM -- a spawn of it never lists as a pawn, load 13)

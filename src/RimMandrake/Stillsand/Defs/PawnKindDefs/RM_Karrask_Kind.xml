@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- LIVESTOCK_STARTER_TRIO_1 - karrask PawnKindDef. Structural shape off
+<!--
+  SWB_INVENTED_MIGRATE_TWENTY_LEFT: our own invented livestock (LIVESTOCK_STARTER_TRIO_1), not a Star Wars creature (Q11a); moved to the RM tier with defNames RSW_ -> RM_ (aliases in src/RimMandrake/LeaningScrub/Defs/Misc/RM_SWBRehome_Aliases.xml).
+  Owner 2026-10-24: "Yes, it appears that a lot of alpha animal ports got
+  classified as Star Wars. We should move all of those."
+  Moved here (batch 4) from src/RimStarWars/SWBestiary/Defs/Livestock/PawnKindDefs/PawnKindDefs_Karrask.xml.
+ LIVESTOCK_STARTER_TRIO_1 - karrask PawnKindDef. Structural shape off
      vanilla Alpaca's PawnKindDef (ParentName AnimalKindBase, RimSage
      get_def_details) since karrask is tameable farm stock, not a wolf-
      line predator like this mod's existing Abyss PawnKindDefs.
      Single Graphic_Single texture per lifeStage at increasing drawSize,
      matching this mod's own Abyss precedent - see ThingDefs_Karrask.xml's
-     header; sprite generated under KARRASK_ART_MISSING_1. -->
+     header (now RM_Karrask.xml); sprite generated under KARRASK_ART_MISSING_1. -->
 <Defs>
 
   <PawnKindDef ParentName="AnimalKindBase">
-    <defName>RSW_Karrask</defName>
+    <defName>RM_Karrask</defName>
     <label>karrask</label>
     <labelPlural>karrasks</labelPlural>
-    <race>RSW_Karrask</race>
+    <race>RM_Karrask</race>
     <combatPower>45</combatPower>
     <ecoSystemWeight>0.5</ecoSystemWeight>
     <wildGroupSize>2~4</wildGroupSize>
@@ -21,14 +26,14 @@
         <label>karrask pup</label>
         <labelPlural>karrask pups</labelPlural>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Karrask/Karrask</texPath>
+          <texPath>Things/Pawn/Animal/RM_Karrask/RM_Karrask</texPath>
           <graphicClass>Graphic_Single</graphicClass>
           <drawSize>0.9</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Karrask/Karrask</texPath>
+          <texPath>Things/Pawn/Animal/RM_Karrask/RM_Karrask</texPath>
           <graphicClass>Graphic_Single</graphicClass>
           <drawSize>1.2</drawSize>
           <shadowData>
@@ -39,7 +44,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Karrask/Karrask</texPath>
+          <texPath>Things/Pawn/Animal/RM_Karrask/RM_Karrask</texPath>
           <graphicClass>Graphic_Single</graphicClass>
           <drawSize>1.5</drawSize>
           <shadowData>
