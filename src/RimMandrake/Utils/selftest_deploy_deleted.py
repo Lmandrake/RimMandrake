@@ -43,7 +43,7 @@ def fixture(tmp):
     files = {"About/About.xml": ABOUT, "Defs/Keep.xml": "<Defs />\n",
              "Defs/Guarded.xml": '<Defs><ThingDef MayRequire="old.folded"><defName>X'
                                  '</defName></ThingDef></Defs>\n',
-             "Textures/K.png": "png", "Textures/V.png": "png"}
+             "Textures/K.png": "png", "Textures/V.png": "png", "Textures/S.png": "png"}
     for f, t in files.items():
         write(os.path.join(mod, f), t)
         write(os.path.join(game, "ModA", f), t)
@@ -67,8 +67,14 @@ def main():
         os.remove(os.path.join(mod, "Textures", "K.png"))
         rc1, out1 = run(["--mod", "ModA"])
         line = [ln for ln in out1.splitlines() if "Textures/K.png" in ln]
+        # --- case 1b: tracked S.png deleted with `git rm` (STAGED, uncommitted)
+        git(os.path.join(tmp, "repo"), "rm", "-q", os.path.relpath(
+            os.path.join(mod, "Textures", "S.png"), os.path.join(tmp, "repo")))
+        rc1b, out1b = run(["--mod", "ModA"])
+        line1b = [ln for ln in out1b.splitlines() if "Textures/S.png" in ln]
         rc1a, out1a = run(["--mod", "ModA", "--apply"])
-        kept = os.path.exists(os.path.join(gmod, "Textures", "K.png"))
+        kept = (os.path.exists(os.path.join(gmod, "Textures", "K.png"))
+                and os.path.exists(os.path.join(gmod, "Textures", "S.png")))
 
         # --- case 2: staged copy (folded MayRequire) + V.png vanishes after staging
         bc.folded_ids = lambda root: {"old.folded": "new.composed"}
@@ -89,8 +95,11 @@ def main():
             ("... shows a `-` line", bool(line) and line[0].lstrip().startswith("-  ")),
             ("... labelled a repo-side deletion, not a hand edit",
              bool(line) and "deleted in repo working tree" in line[0]),
+            ("staged `git rm` (index delete): labelled a repo-side deletion too",
+             isinstance(rc1b, int) and bool(line1b)
+             and "deleted in repo working tree" in line1b[0]),
             ("... plain --apply does not crash", isinstance(rc1a, int)),
-            ("... plain --apply keeps it (uncommitted delete is not pruned)", kept),
+            ("... plain --apply keeps both (uncommitted deletes are not pruned)", kept),
             ("file vanishing after staging: plan does not crash", isinstance(rc2, int)),
             ("... vanished file reported as a `-` line", bool(line2)),
             ("staging really happened (instrument can see)", "MayRequire: rewrote" in out2),
