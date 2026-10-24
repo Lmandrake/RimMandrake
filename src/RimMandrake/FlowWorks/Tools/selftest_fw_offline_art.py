@@ -63,7 +63,9 @@ Each check must FAIL on the art he rejected (the shipped code, emulated as BEFOR
     SpikeDrawChecks, not here)
     parity              the Python layout/hash mirror == SpikeDrawChecks' fixture numbers
     approved kept       owner on 4f12810a3e: "spikes look great!" -- per variant the stakes' (w, h) and pitch == the pinned
-                        approved library; every atlas box == its approved sprite window with only the slivers' alpha cleared;
+                        approved library; every atlas box == its approved sprite window recoloured by stakes.pale (owner's
+                        pick "C", PIT_SPIKES_FIX_READ_AS_FUZZ_LIVE; no box keeps the dark colour) with only the slivers'
+                        alpha cleared; stakes.pale pinned on three pixels;
                         the approved UV boxes == the windows cut now, the shipped sprites == their pinned sha256; on
                         compare_pit (every stake drawn) the AFTER render == the approved render with the slivers' alpha
                         cleared, exactly, and that differs from the approved render only inside the slivers
@@ -441,18 +443,25 @@ def spikes():
              % (v, len(lib), len(alib), pitch, apitch))
         img, lib_uv, _ = st.atlas(v)
         H, W = img.shape[:2]
-        same = 0
+        same = dark = 0
         for (u0, v0, u1, v1), (X0, Y0, X1, Y1, win, foreign) in zip([q[2:] for q in lib_uv], st._cut(v)[0]):
             crop = img[int(round((1 - v1) * H)):int(round((1 - v0) * H)), int(round(u0 * W)):int(round(u1 * W))]
             keep = ~foreign
-            same += crop.shape == win.shape and (crop[keep] == win[keep]).all() and not crop[foreign][:, 3].any()
-        want(same == len(lib_uv) == len(alib), "variant %s: every atlas box == its approved sprite window, only the"
-             " slivers' alpha cleared (%d of %d, approved %d)" % (v, same, len(lib_uv), len(alib)))
+            win_c = win.copy()
+            win_c[..., :3] = st.pale(win[..., :3])   # the owner's pick "C": recoloured, nothing else
+            same += crop.shape == win.shape and (crop[keep] == win_c[keep]).all() and not crop[foreign][:, 3].any()
+            dark += crop.shape == win.shape and (crop[keep] == win[keep]).all()
+        want(same == len(lib_uv) == len(alib), "variant %s: every atlas box == its approved sprite window in colour C, only"
+             " the slivers' alpha cleared (%d of %d, approved %d)" % (v, same, len(lib_uv), len(alib)))
+        want(dark == 0, "variant %s: no atlas box keeps the shipped dark colour (%d boxes)" % (v, dark))
         try:
             n_sl = sum(bool(m.any()) for m in spk.approved_foreign(i).values())
             want(n_sl > 0, "variant %s: the approved UV boxes == the windows cut now, in order (%d with slivers)" % (v, n_sl))
         except ValueError as e:
             want(False, "variant %s: the approved UV boxes == the windows cut now (%s)" % (v, e))
+    # option C as the owner saw it on live_defects/SHEET_spikes_options_real_floor.png (spikes_options.py): pinned numbers
+    px_c = st.pale(np.array([[[40, 30, 20], [200, 120, 60], [250, 250, 250]]], np.uint8))[0].tolist()
+    want(px_c == [[67, 58, 50], [255, 245, 194], [255, 255, 255]], "stakes.pale == option C's formula (%s)" % px_c)
     pinned = dict(ln.split()[::-1] for ln in spk.APPROVED_PNG.read_text().split("\n") if ln.strip())
     now = {f: hashlib.sha256((st.TEX / f).read_bytes()).hexdigest() for f in pinned}
     want(len(pinned) == 3 and now == pinned, "the shipped RM_Spikes sprites == the ones the approved render sampled (%s)"

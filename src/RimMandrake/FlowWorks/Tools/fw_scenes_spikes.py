@@ -296,7 +296,7 @@ def render(pit, mode="after", P=160, faces=True, outline=True, atlases=None, flo
     """-> dict(img, spike_a (H,W float 0..1 spike-layer alpha), wall (H,W bool dry face bands + outline), cells, sliver,
     used {variant index: UV boxes drawn}). mode: "before" the shipped sprite on the whole cell; "after" the fix (stake
     atlas, or atlases[name] when given); "approved" the owner-approved layout sampling the sprite through the pinned
-    library, its `sliver` mask every scene pixel a neighbour's sliver inside a box can reach (dilated by SLIVER_REACH);
+    library, recoloured by stakes.pale (his later pick "C", which the atlases carry), its `sliver` mask every scene pixel a neighbour's sliver inside a box can reach (dilated by SLIVER_REACH);
     "approved_clean" the same with each box's slivers' alpha cleared. floor: "standin" (the approved sheet's grey),
     "real" (the game's dug-floor terrain: Gravel x the depth's def colour), "real_flat" (that, at the texture's mean)."""
     W, H = pit.W * P, pit.H * P
@@ -389,9 +389,11 @@ def render(pit, mode="after", P=160, faces=True, outline=True, atlases=None, flo
         for (qx, qz, qw, qh, u0, v0, u1, v1) in quads:
             crop = src.crop((round(u0 * SW), round((1 - v1) * SH), round(u1 * SW), round((1 - v0) * SH)))
             fm = foreign.get((u0, v0, u1, v1))
-            if mode == "approved_clean":
+            if lib:   # the approved layout in the owner's pick "C" colour (stakes.pale): the atlases carry the same
                 c = np.asarray(crop).copy()
-                c[fm, 3] = 0
+                c[..., :3] = STAKES.pale(c[..., :3])
+                if mode == "approved_clean":
+                    c[fm, 3] = 0
                 crop = Image.fromarray(c, "RGBA")
             r0, r1, c0, c1 = box(x, z, qx, qz, qx + qw, qz + qh)
             if r1 <= r0 or c1 <= c0:

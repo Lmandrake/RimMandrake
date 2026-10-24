@@ -50,6 +50,20 @@ MIP_CHECK = 5            # dirty_boxes checks mips 0..5; at mip 5 a box (<= 15 p
 ATLAS_W = 512
 
 
+# Owner 2026-10-24 on live_defects/SHEET_spikes_options_real_floor.png (PIT_SPIKES_FIX_READ_AS_FUZZ_LIVE): "C" -- pale
+# weathered wood. On the game's dug floor (lum ~28) the shipped dark stake bodies vanished and only their orange highlights
+# showed (fuzz). The stakes are recoloured only: every atlas pixel's RGB -> 1.9 x (0.55 luminance + 0.45 colour), clipped;
+# alpha, the selection, sizes, pitch and the UV library are the approved ones, untouched.
+PALE_GAIN, PALE_GREY = 1.9, 0.55
+_LUM = np.array([0.299, 0.587, 0.114], np.float32)
+
+
+def pale(rgb):
+    """Option C (uint8 RGB array of any shape -> uint8): what the owner picked, bit for bit as his sheet drew it."""
+    c = np.asarray(rgb, np.float32)
+    return np.clip((c @ _LUM)[..., None] * PALE_GREY * PALE_GAIN + c * (1 - PALE_GREY) * PALE_GAIN, 0, 255).astype(np.uint8)
+
+
 def atlas_name(variant):
     return "RM_SpikeStakes_%s" % variant
 
@@ -104,6 +118,7 @@ def atlas(variant, cell_w=CELL_W, cell_h=CELL_H, atlas_w=ATLAS_W):
         crop[foreign] = np.append(mean, 0)
         img[py:py + h, px:px + w] = crop
         lib.append((w / S, h / S, px / atlas_w, 1 - (py + h) / H, (px + w) / atlas_w, 1 - py / H))
+    img[..., :3] = pale(img[..., :3])
     return img, lib, (pitch, pitch)
 
 
