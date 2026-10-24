@@ -1,0 +1,7 @@
+
+--- stderr ---
+/home/mandrake/rm/bench/src/RimMandrake/Utils/art/art_sheet.py:2395: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  px = [q for q in Image.open(f).convert("RGBA").getdata() if q[3] > 8]
+GATE FAILED for SUBJECTS_art_eval_shadow_hose_join_flatface_20261023: sheet NOT written; the previous sheet (if any) is untouched
+FAIL art_eval_shadow_hose_join_flatface_20261023_sheet_2026-10-23.html  (1 failing: req 2)
+  FAIL req 2    scale panel + size source + measured ground on every row with art: no row has art — nothing to scale (zero panels is a failed build)
