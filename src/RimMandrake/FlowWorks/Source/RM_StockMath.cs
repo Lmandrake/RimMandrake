@@ -319,6 +319,48 @@ namespace RimMandrake.FlowWorks
 			return frontCell && !engineOwned;
 		}
 
+		/// <summary>TAR_GLASS_FLOOD_FIX_UNREACHABLE_PATH (GPT FA_core_sim_1.8, option A). A release only ever reaches dug cells
+		/// (CanLiquidEnter admits dug or natural-liquid cells) and <see cref="MayCoolToGlass"/> keeps the glass off dug cells,
+		/// so before this the glass edge of SUMP_TAR_HYDROLOGY_1 ruling 3 was never written. The edge now hardens OUTWARD: the
+		/// glass bank is every in-grid cardinal neighbour of a placed cell (row-major index on a width x height grid) that the
+		/// release never offered and that <paramref name="bankable"/> accepts (the caller's ground test: undug, not liquid, no
+		/// floor, no foundation, no edifice). Each cell once, in first-seen order over <paramref name="placed"/>.</summary>
+		public static System.Collections.Generic.List<int> GlassBankCells(int width, int height,
+			System.Collections.Generic.IList<int> placed, Func<int, bool> offered, Func<int, bool> bankable)
+		{
+			var bank = new System.Collections.Generic.List<int>();
+			var seen = new System.Collections.Generic.HashSet<int>();
+			if (placed == null || width <= 0 || height <= 0)
+			{
+				return bank;
+			}
+			for (int i = 0; i < placed.Count; i++)
+			{
+				int c = placed[i];
+				if (c < 0 || c >= width * height)
+				{
+					continue;
+				}
+				int x = c % width, z = c / width;
+				for (int d = 0; d < 4; d++)
+				{
+					int nx = x + (d == 1 ? 1 : d == 3 ? -1 : 0);
+					int nz = z + (d == 0 ? 1 : d == 2 ? -1 : 0);
+					if (nx < 0 || nz < 0 || nx >= width || nz >= height)
+					{
+						continue;
+					}
+					int n = nz * width + nx;
+					if (!seen.Add(n) || offered(n) || !bankable(n))
+					{
+						continue;
+					}
+					bank.Add(n);
+				}
+			}
+			return bank;
+		}
+
 		/// <summary>How a flood release treats one cell it may enter.</summary>
 		public enum FloodCellPolicy { ViaEngine, HandsOff, TempTerrain }
 
