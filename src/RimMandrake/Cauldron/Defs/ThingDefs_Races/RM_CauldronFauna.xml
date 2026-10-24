@@ -352,6 +352,12 @@
     <defName>RM_Vexxiss</defName>
     <label>vexxiss</label>
     <race>RM_Vexxiss</race>
+    <alternateGraphicChance>0.5</alternateGraphicChance>
+    <alternateGraphics>
+      <li>
+        <texPath>Things/Pawn/Animal/RM_Vexxiss/RM_VexxissV_E</texPath>
+      </li>
+    </alternateGraphics>
     <combatPower>600</combatPower>
     <wildGroupSize>1</wildGroupSize>
     <ecoSystemWeight>3.0</ecoSystemWeight>
