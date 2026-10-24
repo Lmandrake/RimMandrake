@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- HELIX_TELLUROX_BUILD_1. Tellurox — Ascendant Helix labour-line livestock,
-     HorrorWastes-native. karrask_opt3.png promoted mockup. Design row:
-     infrastructure/state/items/FORSAKEN_CRAGS_FAUNA_1.md (closed) and
-     infrastructure/state/items/HELIX_TELLUROX_BUILD_1.md (this build).
-
-     Registry name (invented, not owner-sourced — flag if he wants a
-     different Helix tie): "Helix Model GT-4". Per Alien_Bestiary.md's
-     vernacular/registry convention, the registry designation is lore-only
-     (description flavor), never the in-game <label> — Tellurox keeps its
-     vernacular name in the wild.
+<!--
+  SWB_INVENTED_MIGRATE_TWENTY_LEFT: our own invented draft beast, not a Star Wars creature (Q11a); moved to the RM tier with defNames RSW_ -> RM_ (aliases in src/RimMandrake/LeaningScrub/Defs/Misc/RM_SWBRehome_Aliases.xml). Owner card 2026-10-24 09:16 PDT: home RM tier, campaign lore removed from the descriptions.
+  Owner 2026-10-24: "Yes, it appears that a lot of alpha animal ports got
+  classified as Star Wars. We should move all of those."
+  Moved here (batch 5) from src/RimStarWars/SWBestiary/Defs/HelixTellurox/ThingDefs_Races/Races_Tellurox.xml.
+  History: built as HELIX_TELLUROX_BUILD_1 (campaign livestock; design rows
+     infrastructure/state/items/FORSAKEN_CRAGS_FAUNA_1.md and
+     HELIX_TELLUROX_BUILD_1.md). The campaign-faction / biome ties and the
+     invented registry name were cut from the descriptions on the move: this
+     tier is franchise- and campaign-free, so the beast stands on its own.
 
      Shell mechanism: PERMANENT, non-molting — deliberately NOT a
      CompHasGatherableBodyResource shear job (that is karrask's mechanism,
-     the opposite design). RSW_TelluroxShell is a bonus butcherProducts
+     the opposite design). RM_TelluroxShell is a bonus butcherProducts
      entry only, alongside the animal's ordinary leather/meat — first-rate
      plate comes only from slaughtering a mature working animal. -->
 <Defs>
 
   <ThingDef ParentName="LeatherBase">
-    <defName>RSW_TelluroxShell</defName>
+    <defName>RM_TelluroxShell</defName>
     <label>tellurox shell plate</label>
-    <description>A single hexagonal plate cut from a mature tellurox's permanent shell. Unlike a molted carapace, this plate never regrew — the beast wore it for its whole working life, and it shows: dense, weather-scarred, harder than any farmed chitin. The Ascendant Helix bred tellurox for exactly this: an unshedding shell an animal grows into rather than sheds, armor that outlives the beast wearing it.</description>
+    <description>A single hexagonal plate cut from a mature tellurox's permanent shell. Unlike a molted carapace, this plate never regrew — the beast wore it for its whole working life, and it shows: dense, weather-scarred, harder than any farmed chitin. That is the whole point of keeping tellurox: a shell the animal grows into rather than sheds, armor that outlives the beast wearing it.</description>
     <possessionCount>10</possessionCount>
     <graphicData>
       <texPath>Things/Item/Resource/Leather</texPath>
@@ -45,9 +45,9 @@
   </ThingDef>
 
   <ThingDef ParentName="AnimalThingBase">
-    <defName>RSW_TelluroxRace</defName>
+    <defName>RM_TelluroxRace</defName>
     <label>tellurox</label>
-    <description>A bull-sized draft beast the Ascendant Helix engineered for the HorrorWastes' bioweapon-scarred cold. Its most striking feature never sheds: a single continuous shell grows with the animal from birth to death, plates locking edge to edge as it ages rather than molting in cycles like a karrask. A tellurox is armored for life the moment it is born, and the Helix bred it that way on purpose — this is hostile ground, and they wanted their beast of burden to survive it wearing its own armor.</description>
+    <description>A bull-sized draft beast of bitter, poisoned cold. Its most striking feature never sheds: a single continuous shell grows with the animal from birth to death, plates locking edge to edge as it ages rather than molting in cycles like a karrask. A tellurox is armored for life the moment it is born, and herders prize it for exactly that — on hostile ground, a beast of burden that wears its own armor is one that survives.</description>
     <statBases>
       <MoveSpeed>2.8</MoveSpeed>
       <MarketValue>420</MarketValue>
@@ -65,7 +65,7 @@
          concatenated to a cross-ref on "RSW_TelluroxShell6" (null thingDef,
          corpse-gen NRE). The defName-as-element form is the only correct one. -->
     <butcherProducts>
-      <RSW_TelluroxShell>6</RSW_TelluroxShell>
+      <RM_TelluroxShell>6</RM_TelluroxShell>
     </butcherProducts>
     <tools>
       <li>
@@ -154,15 +154,15 @@
   </ThingDef>
 
   <PawnKindDef ParentName="AnimalKindBase">
-    <defName>RSW_Tellurox</defName>
+    <defName>RM_Tellurox</defName>
     <label>tellurox</label>
-    <race>RSW_TelluroxRace</race>
+    <race>RM_TelluroxRace</race>
     <combatPower>70</combatPower>
     <ecoSystemWeight>0.18</ecoSystemWeight>
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Tellurox/Tellurox</texPath>
+          <texPath>Things/Pawn/Animal/RM_Tellurox/RM_Tellurox</texPath>
           <graphicClass>Graphic_Single</graphicClass>
           <drawSize>1.3</drawSize>
         </bodyGraphicData>
@@ -173,7 +173,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Tellurox/Tellurox</texPath>
+          <texPath>Things/Pawn/Animal/RM_Tellurox/RM_Tellurox</texPath>
           <graphicClass>Graphic_Single</graphicClass>
           <drawSize>2.0</drawSize>
         </bodyGraphicData>
@@ -184,7 +184,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Tellurox/Tellurox</texPath>
+          <texPath>Things/Pawn/Animal/RM_Tellurox/RM_Tellurox</texPath>
           <graphicClass>Graphic_Single</graphicClass>
           <drawSize>2.6</drawSize>
           <shadowData>

@@ -255,11 +255,11 @@ CORE_SPECIES = ["RSW_Bantha", "RSW_Jerba"]
 
 # One representative species per absorption wave the walk doc never covers.
 # RSW_Karrask left 2026-10-24: our own invented livestock, moved to the RM tier as RM_Karrask (mandrake.rm.biomes,
-# SWB_INVENTED_MIGRATE_TWENTY_LEFT); RSW_Onnik below still speaks for the Livestock wave.
+# SWB_INVENTED_MIGRATE_TWENTY_LEFT); RSW_Onnik below still speaks for the Livestock wave. RSW_Tellurox (HelixTellurox)
+# left the same day as RM_Tellurox (SleepingIce, owner card 09:16 PDT); no other HelixTellurox species remains here.
 NEWLY_ABSORBED_SPECIES = [
     "RSW_Onnik",          # LIVESTOCK_STARTER_TRIO_1 -- CompKilnBelly
     "RSW_Reefback",       # SeaBeasts / Colossi
-    "RSW_Tellurox",       # HelixTellurox (the PawnKindDef; RSW_TelluroxShell is its leather ITEM -- a spawn of it never lists as a pawn, load 13)
     "RSW_Mynock",         # ShipVermin
     "RSW_Blarth",         # MIASMA_ROUND2_IMPORTS_1 (live: UNMEASURED)
     "RSW_Blixus",

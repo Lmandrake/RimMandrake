@@ -70,6 +70,12 @@
       <li><from>Meat_RSW_Karrask</from><to>Meat_RM_Karrask</to><defType>ThingDef</defType></li>
       <li><from>RSW_Karrask</from><to>RM_Karrask</to><defType>PawnKindDef</defType></li>
       <li><from>RSW_CureKarraskPlate</from><to>RM_CureKarraskPlate</to><defType>RecipeDef</defType></li>
+      <!-- batch 5 -->
+      <li><from>RSW_TelluroxShell</from><to>RM_TelluroxShell</to><defType>ThingDef</defType></li>
+      <li><from>RSW_TelluroxRace</from><to>RM_TelluroxRace</to><defType>ThingDef</defType></li>
+      <li><from>Corpse_RSW_TelluroxRace</from><to>Corpse_RM_TelluroxRace</to><defType>ThingDef</defType></li>
+      <li><from>Meat_RSW_TelluroxRace</from><to>Meat_RM_TelluroxRace</to><defType>ThingDef</defType></li>
+      <li><from>RSW_Tellurox</from><to>RM_Tellurox</to><defType>PawnKindDef</defType></li>
     </aliases>
   </RimMandrake.EnvironmentalHazards.RM_DefAliasDef>
 </Defs>
