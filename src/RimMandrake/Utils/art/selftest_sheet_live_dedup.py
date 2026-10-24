@@ -65,6 +65,17 @@ def main() -> int:
     check(sorted(m) == ["A", "C"], f"a later snapshot showing the pictures twice adds its extra letter (got {sorted(m)})")
     m2 = AS._merge_memory({"r": {"columns": {"A": w}}}, {"r": {"columns": {"C": w}}})["r"]["columns"]
     check(sorted(m2) == ["A"], f"a drifted letter for pictures the ruled snapshot has is not added (got {sorted(m2)})")
+    # a remembered letter goes back to the column in the SAME lane: B was GizkaW's installed column; a render with those
+    # bytes that now joins the earlier base lane must not take B (enact installs B to the lane graphic_of names, and the
+    # snapshot keeps its id when every old letter still holds the same pictures)
+    cols = [col("artpipe", w, "render canonregen_rsw_gizka_v1"), col("live", w, "IN GAME — GizkaW")]
+    AS._assign_letters(cols, {"A": base, "B": w}, ["A", "B"], lanes=["swanimals/Gizka/Gizka", "swanimals/Gizka/GizkaW"],
+                       prev_lanes={"A": "swanimals/Gizka/Gizka", "B": "swanimals/Gizka/GizkaW"})
+    check([c["letter"] for c in cols] == ["C", "B"],
+          f"a duplicate-picture column keeps the letter of its own lane (got {[c['letter'] for c in cols]})")
+    cols = [col("artpipe", w, "render moved lane")]
+    AS._assign_letters(cols, {"B": w}, ["B"], lanes=["_byname"], prev_lanes={"B": "swanimals/Gizka/GizkaW"})
+    check([c["letter"] for c in cols] == ["B"], "a set whose lane changed still keeps its letter when no column of its old lane claims it")
     print(f"\n{'FAIL' if FAILS else 'PASS'}: {len(FAILS)} failing")
     return 1 if FAILS else 0
 
