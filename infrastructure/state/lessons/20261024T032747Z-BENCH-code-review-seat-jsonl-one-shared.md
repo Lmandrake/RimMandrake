@@ -1,0 +1,1 @@
+code_review/<SEAT>.jsonl is one shared file per seat: in a parallel wave, helper A's mark-clean lines sit uncommitted beside helper B's, and the house hook forces path-scoped commits (working-tree content), so B cannot commit its own marks without sweeping A's. Commit mark-clean lines in the same Bash turn as the mark, or have the wave's last helper commit the file.
