@@ -12,7 +12,7 @@
       <texPath>RimMandrake/FlowWorks/Hose/Reel_PumpHookup</texPath>
       <graphicClass>RimMandrake.FlowWorks.Hose.Graphic_HoseReel</graphicClass>
       <drawSize>(2.15,2.15)</drawSize>
-      <shadowData><volume>(1.23, 0.35, 1.04)</volume></shadowData>
+      <shadowData><volume>(0.65, 0.35, 0.65)</volume></shadowData>
       <damageData><rect>(0.1,0.1,0.8,0.8)</rect></damageData>
     </graphicData>
     <altitudeLayer>Building</altitudeLayer>

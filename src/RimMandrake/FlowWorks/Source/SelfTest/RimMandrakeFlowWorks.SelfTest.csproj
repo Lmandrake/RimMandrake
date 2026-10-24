@@ -198,6 +198,7 @@
     <Compile Include="PipeStyleChecks.cs" />
     <Compile Include="LiquidJoinChecks.cs" />
     <Compile Include="ReelRiserShadowChecks.cs" />
+    <Compile Include="HoseEndLipChecks.cs" />
     <Compile Include="ContainerStyleChecks.cs" />
     <Compile Include="TankDebugChecks.cs" />
     <Compile Include="..\Thirst\RM_ThirstMath.cs" />

@@ -1374,6 +1374,20 @@ namespace RimMandrake.FlowWorks.Hose
         public const double WrapK = 1.3, WrapLength = 0.6;
         public static double WrapWidth(double visible) => WrapK * visible;
 
+        /// <summary>An open free end's wrap runs this far (cell) past the hose's cut, hiding its square end.</summary>
+        public const double WrapOverCut = 0.02;
+
+        /// <summary>HOSE_MOUTH_FIX_FACE_ON_DISC (art brief C6: a hose lying flat never shows its opening to the camera): the
+        /// open free end's Mouth piece drawn EDGE-ON, a lip line <paramref name="along"/> deep and <paramref name="across"/>
+        /// wide whose outer edge is the wrap's outer face; <paramref name="back"/> = its centre's distance behind the cut.
+        /// Was a 0.30 x 0.86 squashed disc that read as the end turned up at the camera.</summary>
+        public static void OpenEndLip(double visible, out double along, out double across, out double back)
+        {
+            across = 0.86 * visible;
+            along = 0.08 * visible;
+            back = along / 2 - WrapOverCut;
+        }
+
         /// <summary>Draw size of a fitting (canvas cells) on a hose of <paramref name="visible"/> width: matched to the hose
         /// by its hose band, but never so big that its widest part (<paramref name="maxBand"/>, canvas fraction) reads
         /// wider than 0.95 x the wrap (B22: "the fitting must not look wider than the wrap").</summary>

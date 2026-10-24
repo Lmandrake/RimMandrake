@@ -1078,7 +1078,7 @@ namespace RimMandrake.FlowWorks.Hose
 
         /// <summary>Both ends of every hose and both halves of every joiner (B22): a cloth binding wrap ~1.4 x the hose
         /// wide and 0.6 cell long covers the hose-to-fitting transition, then the fitting (sized never to read wider than
-        /// the wrap) or, at an open free end, a plain dark mouth. The wrap is drawn over the fitting's hose stub.</summary>
+        /// the wrap) or, at an open free end, an edge-on lip (HoseMath.OpenEndLip). The wrap is drawn over the fitting's hose stub.</summary>
         private void DrawEnds(CompHoseReel r, HoseLookMats hm, IList<int> joints, List<V2> pts, float vis, float y, bool lying)
         {
             int n = pts.Count;
@@ -1164,9 +1164,12 @@ namespace RimMandrake.FlowWorks.Hose
             else
             {
                 V2 e = pts[n - 1];
-                // the wrap runs right to the cut (it hides the hose's square end), the dark bore sits on its outer face
-                Wrap(hm, e - d1 * (HoseMath.WrapLength / 2 - 0.02), d1, vis, y + 0.0002f, wrapTint);
-                PieceXZ(hm.Mouth, e - d1 * (0.10 * vis), d1, 0.30f * vis, 0.86f * vis, y + 0.0003f, Color.white);
+                // the wrap runs right to the cut (it hides the hose's square end); HOSE_MOUTH_FIX_FACE_ON_DISC (art brief C6): the
+                // hose lies flat, so its opening faces along the ground and the Mouth piece is drawn edge-on, a lip line on the
+                // wrap's outer face (HoseMath.OpenEndLip), never the squashed face-on disc that read as the end bent up
+                Wrap(hm, e - d1 * (HoseMath.WrapLength / 2 - HoseMath.WrapOverCut), d1, vis, y + 0.0002f, wrapTint);
+                HoseMath.OpenEndLip(vis, out double lipAlong, out double lipAcross, out double lipBack);
+                PieceXZ(hm.Mouth, e - d1 * lipBack, d1, (float)lipAlong, (float)lipAcross, y + 0.0003f, Color.white);
             }
         }
 
