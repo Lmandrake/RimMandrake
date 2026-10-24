@@ -533,7 +533,9 @@ def repo_scheme_xml():
 
 PRIMITIVE_PARAMS = {   # independent of the C# kernel: what each built primitive must be given to be meaningful
     "Steady": (), "Breath": ("period",), "Spark": ("period", "rise", "oneIn"),
+    "Tide": ("period", "anchor", "ragged", "band", "hold", "low", "high"),
 }
+TIDE_ANCHORS = ("Core", "Medoid", "Threshold", "Open", "Grandest", "Shrine", "Power")   # design §1 P3
 
 
 def built_primitives(kernel_cs):
@@ -588,6 +590,17 @@ def judge_pattern_layers(xml_by_name, built):
                     bad.append("%s: rise longer than its slot" % at)
                 if "oneIn" in l and int(l["oneIn"]) < 1:
                     bad.append("%s: oneIn=%s" % (at, l["oneIn"]))
+                if prim == "Tide":
+                    if float(l.get("period", 120)) < 240:
+                        bad.append("%s: tide period %s < 240 s" % (at, l.get("period", 120)))
+                    if not 0 <= float(l.get("ragged", 0.04)) <= 0.2:
+                        bad.append("%s: ragged %s outside 0-0.2" % (at, l.get("ragged")))
+                    if not 0 <= float(l.get("hold", 0.1)) <= 0.4:
+                        bad.append("%s: hold %s outside 0-0.4" % (at, l.get("hold")))
+                    if not 0 <= float(l.get("low", 0)) < float(l.get("high", 1)) <= 1:
+                        bad.append("%s: low/high %s/%s" % (at, l.get("low", 0), l.get("high", 1)))
+                    if l.get("anchor", "Core") not in TIDE_ANCHORS:
+                        bad.append("%s: anchor %r" % (at, l.get("anchor")))
     if n_s == 0:
         return _r(UNM, HARNESS, "no scheme carries <layers> yet: nothing to judge (built: %s)" % ",".join(sorted(built)))
     if bad:
@@ -1371,6 +1384,12 @@ def metric_controls():
         {"l.xml": lay % "<li><primitive>Spark</primitive><period>2</period><rise>3</rise></li>"}, built)[0], FAIL))
     out.append(("judge_pattern_layers blind registry", judge_pattern_layers({"l.xml": lay % br}, set())[0], UNM))
     out.append(("judge_pattern_layers no layered scheme", judge_pattern_layers({}, built)[0], UNM))
+    tl = lay % "<li><primitive>Tide</primitive><period>300</period><anchor>Threshold</anchor><entries>0~1</entries></li>"
+    tb = built | {"Tide"}
+    out.append(("judge_pattern_layers tide good", judge_pattern_layers({"l.xml": tl}, tb)[0], PASS))
+    out.append(("judge_pattern_layers tide fast period", judge_pattern_layers({"l.xml": tl.replace("<period>300", "<period>120")}, tb)[0], FAIL))
+    out.append(("judge_pattern_layers tide bad anchor", judge_pattern_layers({"l.xml": tl.replace("Threshold", "Attic")}, tb)[0], FAIL))
+    out.append(("judge_pattern_layers tide unbuilt", judge_pattern_layers({"l.xml": tl}, built - {"Tide"})[0], FAIL))
     gcomp = ("g = RM_RoomGraph.Build(rooms, doors); if (Graph == null || Graph.TopologyKey != g.TopologyKey) Graph = g;\n"
              "RM_PatternCtx pc = RM_PatternCtx.Of(id, room, Graph, Fixtures);")
     gproj = '<Compile Include="Kernel\\RM_PatternGraph.cs" />'
