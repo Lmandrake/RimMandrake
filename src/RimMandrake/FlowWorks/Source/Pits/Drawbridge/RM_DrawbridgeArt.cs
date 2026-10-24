@@ -346,6 +346,10 @@ namespace RimMandrake.FlowWorks.Pits
 				p.angle = 0f;
 			}
 			p.ropes = RM_DrawbridgeCableMath.RopesFor(key, p.facing);   // upright bollards: per-facing attachment
+			if (p.ropes == null)
+			{
+				return null;   // no measured rope table for this print (a rotated single): prints as before
+			}
 			p.foot = RM_DrawbridgeCableMath.SlackFoot(key, p.facing);
 			p.center = a.TrueCenter() + g.DrawOffset(rot);
 			Vector3 dir = p.World(1, 0) - p.World(0, 0);
