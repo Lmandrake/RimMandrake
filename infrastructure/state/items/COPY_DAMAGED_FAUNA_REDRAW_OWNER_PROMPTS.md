@@ -35,5 +35,17 @@ the pipeline's own prompt (below) so it is not idle meanwhile.
 - Tests: `src/RimMandrake/Utils/art_eval/selftest_round_series.py` (12 checks) + selftest_art_eval.py, both PASS.
 - Skill: rimworld-art-evaluation SKILL.md "Fresh rounds and owner prompts".
 
-## Status / pending jobs
-(filled below)
+## Status / pending jobs (2026-10-24 07:20) — ALL FIVE SERIES STOPPED, nothing installed
+- s1r1 (15 jobs): no foreign copy; runs fauna_s1_r1_00/_01 judged all five REGEN.
+- s1r2 (15 jobs): no foreign copy against the WHOLE global codex cache (where the bollard / pipe-flange / belt-pack
+  sheets came from; probe: Crustweevil_r2_north still flags at 0.69). Evidence:
+  `D:\ClaudeWork\rimmandrake\fresh_rounds\nn_s1r2_full.txt`. Run fauna_s1_r2_00: Crustweevil REGEN, Dustflutter ACCEPT.
+  Fuzzrunner/Surrik/Peeper s1r2 renders were never judged.
+- STOPPED via `fauna_drive.py stop` (append-only stop lines in round_resets.jsonl; rows/candidates/install now refuse
+  the def): Crustweevil and Dustflutter (he kept the in-game art), Fuzzrunner (he chose its art on the leaningscrub
+  sheet), Surrik (he picked B earlier), Peeper (he kept A on the contagion sheet), all relayed by the coordinator.
+  The Dustflutter s1r2 ACCEPT is NOT installed; its delegated verdict file is a record only.
+- Pending jobs: none (artpipe pending/active hold no job for these five).
+- Owed: code review of round_series.py / fauna_drive.py / runner.py hunk (not marked CLEAN in code_review_status).
+- See FRESH_SERIES_STOP_FIX_AFTER_OWNER_KEEP: the stop is manual; an automatic refusal when a keep ruling postdates
+  the reset is still to build.

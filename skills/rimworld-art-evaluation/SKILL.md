@@ -73,7 +73,8 @@ python3 selftest_art_eval.py                            # pure parts + a mocked 
   `fauna_drive.py rows <source run> --only <DEF>... --out <rows.json> --file` files round 1. His prompt text for a
   creature (`fauna_drive.py owner-prompt <DEF> --text … --owner-said …`, or a note he typed on an
   `owner_escalations_*` sheet) is used VERBATIM inside the template's style sentences, never reworded; `fauna_drive.py
-  prompts` lists what was found. Code: `src/RimMandrake/Utils/art_eval/round_series.py`.
+  prompts` lists what was found. If he keeps or picks the creature's art meanwhile, end the series with
+  `fauna_drive.py stop <DEF>... --why|--by-card …` (rows/candidates/install then refuse it). Code: `src/RimMandrake/Utils/art_eval/round_series.py`.
 - A spec is JSON: `subject, label, template (creature|plant|machine), module, description, invented,
   earth_body_named, body_plan, departures[], canon{must_show, engine_limits}, owner_notes[], owner_kept,
   depends_on, artpipe_job, previous_prompt, images{south,east,north,west,single,scale,living_reference,

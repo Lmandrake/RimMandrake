@@ -1,0 +1,19 @@
+[
+ {
+  "id": "arteval_RM_Crustweevil__s1r2_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Crustweevil",
+  "prompt": "A single tiny crustweevil, a lichen-grazing weevil at centimetre scale, in painterly vanilla RimWorld sprite style, realistic, with a clean dark outline, on a fully transparent background. The body is a flat, wide, shallow carapace like a thin lid laid on the ground. Its height is about a quarter of its width, the top is nearly level with only a gentle rise along the midline, and the rim skirts the surface. The shell is earthy brown-grey, with small patches of soil crust and pale grey-green lichen growing on its back, so it reads as part of the crust it grazes. The shell fills about 80% of the canvas width and sits centred. The head ends in a broad, flat, wide grazing mouth plate held at ground level, with a short blunt muzzle. The mouth plate grips one small tuft of pale grey-green lichen, a few centimetres of fronds lifted at the mouth and bitten off at the ends, so the tuft reads as food being eaten and belongs to the animal's own silhouette. Six short legs fold in along the edges of the shell in a walking pose, with short antennae at the head. The silhouette ends at the grazing mouthparts and the tuft they hold. The space beneath and around the body, legs, mouth and tuft is clean, empty, fully transparent, with the animal alone in the frame in the south, east and north views alike.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: ALPHA_HALO, ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_s1_r2_00"
+ }
+]

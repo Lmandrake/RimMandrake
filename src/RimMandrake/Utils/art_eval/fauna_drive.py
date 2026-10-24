@@ -85,6 +85,9 @@ def cmd_rows(a):
         specs[s["subject"]] = s
 
     rs = RS.resets()
+    for t in sorted({r["target_def"] for r in rows if RS.stopped(r["target_def"], rs)}):
+        print(f"{t}: fresh series STOPPED ({RS.stopped(t, rs).get('why') or RS.stopped(t, rs).get('by_card')}) - no row")
+    rows = [r for r in rows if not RS.stopped(r["target_def"], rs)]
     nreg = RS.regen_counts(RS.decisions(), rs)
     owner = RS.owner_prompts()
     held = []
@@ -152,6 +155,9 @@ def cmd_candidates(a):
     judged = {(r["subject"], r.get("candidate")) for _, r in recs}
     nreg = RS.regen_counts(recs, rs)
     for d in a.defs:
+        if RS.stopped(d, rs):
+            print(f"{d}: fresh series STOPPED - no candidate")
+            continue
         if a.auto:
             a.round = min(nreg.get(d, 0), 3)
             if a.round == 0 or (d, RS.tag(d, a.round, rs)) in judged or (d, RS.tag(d, a.round + 1, rs)) in judged:
@@ -204,6 +210,9 @@ def cmd_install(a):
     art JUDGED REALLY BAD ... redraw on its own, show me after") — then the install carries that card and the revert
     (old kept sha) is logged in infrastructure/state/art_eval/fauna_installs.jsonl."""
     import shutil
+    if RS.stopped(a.defname):
+        print(f"{a.defname}: fresh series STOPPED ({RS.stopped(a.defname)}) - not installed")
+        return 2
     sys.path.insert(0, str(HERE.parent / "art"))
     import artledger as AL
     base = next(Path(a.specs).glob(f"**/{a.defname}.spec.json"))
@@ -289,6 +298,18 @@ def cmd_reset(a):
     return 0
 
 
+def cmd_stop(a):
+    for d in a.defs:
+        try:
+            rec = RS.add_stop(d, {"by_card": a.by_card, "owner_said": a.owner_said, "per_ruling": a.per_ruling,
+                                  "why": a.why})
+        except ValueError as e:
+            print(f"{d}: {e}")
+            return 2
+        print(f"{d}: series {rec['series']} STOPPED; rows/candidates/install now refuse it")
+    return 0
+
+
 def cmd_owner_prompt(a):
     if not (a.owner_said or a.by_card):
         print("the text must be his: give --owner-said (his words) or --by-card")
@@ -337,6 +358,12 @@ def main(argv=None):
     z.add_argument("--owner-said")
     z.add_argument("--per-ruling")
     z.add_argument("--why")
+    st = sub.add_parser("stop", help="end a fresh series (e.g. he kept/picked its art); appends round_resets.jsonl")
+    st.add_argument("defs", nargs="+")
+    st.add_argument("--by-card")
+    st.add_argument("--owner-said")
+    st.add_argument("--per-ruling")
+    st.add_argument("--why")
     o = sub.add_parser("owner-prompt", help="record the owner's prompt text for a creature (used verbatim)")
     o.add_argument("defname")
     o.add_argument("--text", required=True)
@@ -347,7 +374,7 @@ def main(argv=None):
     q.add_argument("defs", nargs="*")
     a = ap.parse_args(argv)
     return {"rows": cmd_rows, "candidates": cmd_candidates, "install": cmd_install, "reset": cmd_reset,
-            "owner-prompt": cmd_owner_prompt, "prompts": cmd_prompts}[a.cmd](a)
+            "stop": cmd_stop, "owner-prompt": cmd_owner_prompt, "prompts": cmd_prompts}[a.cmd](a)
 
 
 if __name__ == "__main__":

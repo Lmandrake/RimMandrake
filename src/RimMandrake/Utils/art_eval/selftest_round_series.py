@@ -47,6 +47,13 @@ def main():
         check("runner rounds use the series", rounds == {"D": 2, "E": 1})
         RS.add_reset("D", "fauna_x_00", {"by_card": "q → a"}, path=rp, now="2026-10-25T07:00:00-07:00")
         check("second reset is series 2", RS.tag("D", 1, RS.resets(rp)) == "s2r1")
+        RS.add_stop("D", {"why": "he kept the live art"}, path=rp, now="2026-10-25T08:00:00-07:00")
+        rs2 = RS.resets(rp)
+        check("stop marks the series stopped, series kept", RS.stopped("D", rs2) and RS.tag("D", 1, rs2) == "s2r1"
+              and not RS.stopped("E", rs2))
+        check("stop does not move the reset time", RS.regen_counts(later, rs2)["D"] == 1)
+        RS.add_reset("D", "fauna_x_00", {"by_card": "q → a"}, path=rp, now="2026-10-26T07:00:00-07:00")
+        check("a newer reset clears the stop", not RS.stopped("D", RS.resets(rp)) and RS.tag("D", 1, RS.resets(rp)) == "s3r1")
 
         # owner prompts: sheet note and jsonl, newest wins; prefill (empty) notes ignored
         root = td / "repo"
