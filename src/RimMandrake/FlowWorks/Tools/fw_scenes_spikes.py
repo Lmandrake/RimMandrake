@@ -29,7 +29,7 @@ Checks (each FAILS on the shipped drawing and PASSES on the fix; selftest_fw_off
                             at EVERY pixel, that render with only the slivers' alpha cleared (mode "approved_clean"), and
                             that one may differ from the approved render only inside the slivers' footprint (["sliver"])
 
-    python3 fw_scenes_spikes.py <out_dir>     # owner sheet SHEET_spikes.png + before/after scenes
+    python3 fw_scenes_spikes.py <out_dir>     # spikes_{before,approved,approved_clean,after}.png + the checks' verdicts
 """
 import math
 import re
@@ -326,8 +326,8 @@ def render(pit, mode="after", P=160, faces=True, outline=True, atlases=None, flo
                 if tex is None:
                     rgb[r0:r1, c0:c1] = real_floor_rgb(d)
                 else:
-                    n = tex.shape[0]
-                    rr, cc = np.arange(r0, r1) % n, np.arange(c0, c1) % n
+                    nt = tex.shape[0]      # not `n`: that is the north neighbour's depth, read by the faces below
+                    rr, cc = np.arange(r0, r1) % nt, np.arange(c0, c1) % nt
                     rgb[r0:r1, c0:c1] = tex[np.ix_(rr, cc)] * np.array(tint, np.float32)
             if not faces:
                 continue

@@ -52,7 +52,8 @@ Each check must FAIL on the art he rejected (the shipped code, emulated as BEFOR
     iron kept                     every pixel that is neither timber nor outline == v5's RGBA (hooks, brackets, bolts)
     pinned                        installed == art_source/Ladder/v7/rail_pale.build() pixel for pixel; west == east mirrored
   pit floor (PIT_SPIKES_FIX_READ_AS_FUZZ_LIVE): floor_matches_live FAILS on the approved sheet's grey stand-in, PASSES on
-    the game's dug floor (Gravel x RM_Channel_* colour) flat and textured (textured needs $RM_VANILLA_TEX or the extract)
+    the game's dug floor (Gravel x RM_Channel_* colour) flat and textured (textured needs $RM_VANILLA_TEX or the extract);
+    walls identical: the wall mask is the same on every floor (the textured branch once shadowed `n` and lost the far wall)
   pit spikes, a 4 m pit with a 2 m shelf and a 0..2 m water series (PIT_SPIKES_FIX_OVER_WALL_AND_SUBMERGE, fw_scenes_spikes):
     spikes_over_wall    FAIL on the shipped whole-cell sprite, PASS on Building_RM_Spikes' layout; also PASS with the
                         outline off; with the faces off it REFUSES (no wall mask), the no-walls can-fail; can-fail: no spikes
@@ -407,6 +408,12 @@ def spikes():
     for fl, expect in (("standin", False), ("real_flat", True), ("real", True)):
         ok, d = spk.floor_matches_live(fl)
         want(ok == expect, "floor_matches_live %s: %s (%s)" % (fl, "PASS" if ok else "FAIL", d))
+    # the floor is paint only: the walls (face bands + outline mask) must be the same over every floor. The textured
+    # branch once reused `n` (the north neighbour) for the texture size, dropping the far wall and its rim line
+    base_wall = spk.render(spk.check_pit(), "after", P=PX)["wall"]
+    for fl in ("real_flat", "real"):
+        w2 = spk.render(spk.check_pit(), "after", P=PX, floor=fl)["wall"]
+        want((w2 == base_wall).all(), "walls identical on floor=%s (%d px differ)" % (fl, int((w2 != base_wall).sum())))
     flat = spk.Pit([[0, 0, 0], [0, 8, 0], [0, 0, 0]], spikes=[])
     ok, d = spk.spikes_over_wall(spk.render(flat, "after", P=PX))
     want(not ok and d == "no spikes in the scene", "spikes_over_wall can-fail: no spikes (%s)" % d)
@@ -489,12 +496,13 @@ def spikes():
                     best = (int(win[y, x, 3]), name, img, int(round((1 - v1) * H)) + y, int(round(u0 * W)) + x)
     want(best is not None and best[0] >= 128, "a stake pixel (alpha >= 128) within 3 px of a sliver to recolour (%s)"
          % (best and best[:2],))
-    _, name, img, y, x = best
-    img = img.copy()
-    img[y, x, :3] = 255 - img[y, x, :3]
-    moved = spk.render(spk.compare_pit(), "after", P=PX, atlases={name: Image.fromarray(img, "RGBA")})
-    ok, d = spk.same_as_approved(moved, cmp["approved_clean"], cmp["approved"])
-    want(not ok, "same_as_approved can-fail: one stake pixel beside a sliver recoloured (%s)" % d)
+    if best is not None:     # else the FAIL above stands; unpacking None would crash the remaining checks
+        _, name, img, y, x = best
+        img = img.copy()
+        img[y, x, :3] = 255 - img[y, x, :3]
+        moved = spk.render(spk.compare_pit(), "after", P=PX, atlases={name: Image.fromarray(img, "RGBA")})
+        ok, d = spk.same_as_approved(moved, cmp["approved_clean"], cmp["approved"])
+        want(not ok, "same_as_approved can-fail: one stake pixel beside a sliver recoloured (%s)" % d)
     real_lib = dict(spk._LIB)
     try:     # can-fail, the r3 drift: a different pitch moves every stake
         spk._LIB.update({i: (lib, (p[0] * 1.1, p[1] * 1.1)) for i, (lib, p) in real_lib.items()})
@@ -523,6 +531,7 @@ def spikes():
     want(n > 0, "dirty_boxes can-fail: 24x64 cells mix stakes by mip %d (%d boxes)" % (st.MIP_CHECK, n))
     n = st.dirty_boxes(tight[..., 3], [q[2:] for q in tlib], levels=0)
     want(n == 0, "dirty_boxes: the same 24x64 atlas is clean at full resolution (the mip levels are what fail it)")
+
 
 def covers():
     for name, mk in cov.SCENES:

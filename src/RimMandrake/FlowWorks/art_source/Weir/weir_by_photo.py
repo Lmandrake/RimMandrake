@@ -333,7 +333,6 @@ def colours(look, P, wrap_v):
     shape = P.h.shape
     n1 = pnoise(shape, shape[1], 11 + LOOKS.index(look), wrap_v=wrap_v)
     n2 = pnoise(shape, shape[1], 23 + LOOKS.index(look), scales=(1.5, 3), wrap_v=wrap_v)
-    rng = np.random.default_rng(5 + LOOKS.index(look))
     glow = getattr(P, "glow", None)
 
     def fn(a):
@@ -414,26 +413,25 @@ def body_v(look):
     """N-S body, 128x256, downstream east: the plan is the E-W plan turned (across = screen x, along = screen y)."""
     Lp = round(256 / KY)                  # plan length whose screen image is exactly 256 rows
     ky = 256 / Lp
-    if True:
-        depth = {"Scrapper": 92, "Industrial": 64, "Modern": MODERN_D, "Futuristic": 74}[look]
-        xs = (128 - depth) // 2
-        if look == "Scrapper":
-            P = rubble(depth, Lp, 43, along_v=True)
-        elif look == "Futuristic":
-            P = labyrinth(depth, Lp, False, along_v=True, period=Lp / 4)   # two teeth a cell, as on the E-W art
-        else:
-            E = (stepped if look == "Industrial" else ogee)(1, depth, False)
-            P = Plan(depth, Lp)
-            P.h = np.repeat(E.h[:, :1].T, Lp * S, 0)
-            P.id = np.repeat(E.id[:, :1].T, Lp * S, 0)
-        # place the depth inside the 128 px canvas width
-        full = Plan(128, Lp)
-        full.h[:, xs * S:(xs + depth) * S] = P.h
-        full.id[:, xs * S:(xs + depth) * S] = P.id
-        if hasattr(P, "glow"):
-            full.glow = np.zeros(full.h.shape, bool)
-            full.glow[:, xs * S:(xs + depth) * S] = P.glow
-        P = full
+    depth = {"Scrapper": 92, "Industrial": 64, "Modern": MODERN_D, "Futuristic": 74}[look]
+    xs = (128 - depth) // 2
+    if look == "Scrapper":
+        P = rubble(depth, Lp, 43, along_v=True)
+    elif look == "Futuristic":
+        P = labyrinth(depth, Lp, False, along_v=True, period=Lp / 4)   # two teeth a cell, as on the E-W art
+    else:
+        E = (stepped if look == "Industrial" else ogee)(1, depth, False)
+        P = Plan(depth, Lp)
+        P.h = np.repeat(E.h[:, :1].T, Lp * S, 0)
+        P.id = np.repeat(E.id[:, :1].T, Lp * S, 0)
+    # place the depth inside the 128 px canvas width
+    full = Plan(128, Lp)
+    full.h[:, xs * S:(xs + depth) * S] = P.h
+    full.id[:, xs * S:(xs + depth) * S] = P.id
+    if hasattr(P, "glow"):
+        full.glow = np.zeros(full.h.shape, bool)
+        full.glow[:, xs * S:(xs + depth) * S] = P.glow
+    P = full
     own, z = project(P.h, P.id, ky, 0, 256, wrap=True)
     return shade_and_finish(own, z, P.h, P.id, colours(look, P, True), True)
 
@@ -444,7 +442,6 @@ def cap(look):
     P = Plan(Wp, Vp)
     x, v = np.broadcast_arrays(P.x - 64, P.v - 40)
     if look == "Scrapper":
-        rng = np.random.default_rng(9)
         best = np.zeros(P.h.shape, np.float32)
         for i, (cx, cv, r, lift) in enumerate([(-12, 4, 17, 0), (13, 6, 16, 0), (0, -9, 16, 4), (-3, 14, 13, 0),
                                               (2, 1, 15, 26), (-6, -3, 12, 44), (5, -2, 10, 58)]):

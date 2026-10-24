@@ -24,7 +24,8 @@ selftest_weir_looks.py runs both):
                       and the north art's cyan crest repeats every 64 rows +- 4 (two teeth a cell along a N-S run too)
 and on every look: canvases, clean alpha, seamless joins (E/W left == right column, N/S top == bottom row), the crest
 sheet on the wall (every sheet pixel inside the body's column span) with no bright bar across it (spill_no_white_bar),
-the north art's section ends no darker than any interior window (north_ends_drawn: a grey bar every 2 cells along a N-S run),
+the north art's section ends at most 12 lum darker than the darkest interior 16-row window (north_ends_drawn: else a grey
+bar every 2 cells along a N-S run),
 south == north mirrored, and facing
 (Industrial/Modern/Futuristic: in the east art the upstream crest rises higher on screen than in the west art; in the
 north art the crest sits on the upstream, left, half; Futuristic's falling-water bays lie downstream: lower in the east art
