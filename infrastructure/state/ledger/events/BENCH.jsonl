@@ -4916,3 +4916,5 @@
 {"seat":"BENCH","event":"file","id":"LADDER_PORTABLE_FIX_SOUTH_INVISIBLE","title":"Portable ladder rot 2 (south) in a 1x1 shaft nearly invisible: only two stubs below the south rim","kind":"bug","target":"v1","needs":"bridge","for":"BENCH","why":"seen live in fwclose_06; N/E/W read fine","ts":"2026-10-24T19:26:43Z","tsn":1792870003305864408}
 {"seat":"BENCH","event":"file","id":"RAIL_LADDER_FIX_UP_DOWN_ALIKE","title":"Rail ladder east wall: lowered and raised states look alike; ladder drawn half outside the shaft","kind":"bug","target":"v1","needs":"bridge","for":"BENCH","why":"seen live in fwclose_08 (8a down vs 8b up via DEV gizmo)","ts":"2026-10-24T19:26:45Z","tsn":1792870005813438134}
 {"seat":"BENCH","event":"bridge","state":"released","ts":"2026-10-24T19:28:04Z","tsn":1792870084237135152}
+{"seat":"BENCH","event":"bridge","state":"taken","purpose":"FlowWorks redeploy (tar glass, dug fill, art B-E)","ts":"2026-10-24T19:28:44Z","tsn":1792870124462771490}
+{"seat":"BENCH","event":"bridge","state":"released","ts":"2026-10-24T19:31:15Z","tsn":1792870275686315645}
