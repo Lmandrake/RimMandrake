@@ -39,6 +39,7 @@ namespace RimMandrake.AtmosphericBase
                         layers = layers?.ToArray(),
                     };
                     for (int i = 0; i < n; i++) { d.r[i] = palette[i].r; d.g[i] = palette[i].g; d.b[i] = palette[i].b; }
+                    if (d.layers == null) d.legacy = RM_PatternKernel.LegacyLayers(d);
                     data = d;
                 }
                 return data.Value;

@@ -607,6 +607,39 @@ internal static class PatternTests
               string.Join("; ", RM_SchemeKernel.Errors(r3)) + string.Join("; ", RM_SchemeKernel.Errors(tw)));
     }
 
+    private static void Step7Review()
+    {
+        // review fix: a def pre-builds its one-pattern form once (s.legacy); the pre-built path equals the per-call path
+        RM_SchemeData sp = One("<pattern>Sparks</pattern><massPeriodSeconds>12</massPeriodSeconds><sparkSeconds>2</sparkSeconds><sparkOneIn>2</sparkOneIn>");
+        RM_SchemeData pre = sp; pre.legacy = RM_PatternKernel.LegacyLayers(sp);
+        int d = 0;
+        for (int i = 0; i < 3000; i++) { double t = i * 0.9; if (RM_SchemeKernel.PaletteIndex(sp, i, i % 7, t, false) != RM_SchemeKernel.PaletteIndex(pre, i, i % 7, t, false)) d++; }
+        Check("review: the pre-built legacy layers (no per-tick allocation) give the same index as the per-call build", d == 0, "diff=" + d);
+        // large t (a long session, 10^7 s): fronts stay finite, NextChange stays after t and finite-or-Never
+        RM_RoomGraph g = Branch();
+        string three = "<li>(40,20,8,0)</li><li>(130,90,40,0)</li><li>(220,158,96,0)</li>";
+        string[] bodies = {
+            "<layers><li><primitive>Tide</primitive><period>300</period><anchor>Threshold</anchor></li></layers>",
+            "<layers><li><primitive>Ripple</primitive><period>60</period></li></layers>",
+            "<layers><li><primitive>Ripple</primitive><period>60</period><fill>Bloom</fill></li></layers>",
+            "<layers><li><primitive>Sweep</primitive><period>40</period><field>Toward</field></li></layers>" };
+        int bad = 0; string first = "";
+        foreach (string b in bodies)
+        {
+            RM_SchemeData s = One(b, three);
+            for (int i = 0; i < g.Count; i++)
+                foreach (double t0 in new[] { 1e7, 3.3e7 + 0.37 })
+                {
+                    RM_PatternCtx c = RM_PatternCtx.Of(i, g.roomIds[i], g, null);
+                    int v = RM_PatternEvaluator.Index(s, ref c, t0, false);
+                    double nc = RM_PatternEvaluator.NextChange(s, ref c, t0, false);
+                    if (v < 0 || v > 2 || double.IsNaN(nc) || !(nc > t0) || nc > t0 + 1000)
+                    { bad++; if (first == "") first = b.Substring(0, 60) + " room " + i + " t=" + t0 + " v=" + v + " nc=" + nc; }
+                }
+        }
+        Check("review: tide, ripple and sweep at t = 1e7..3e7 s: index in range, NextChange after t and within a period", bad == 0, "bad=" + bad + " " + first);
+    }
+
     private static bool Throws(Action a) { try { a(); return false; } catch (Exception) { return true; } }
 
     private static RM_PatternCtx ctxBox;
@@ -618,5 +651,6 @@ internal static class PatternTests
         Step4();
         Step5();
         Step6();
+        Step7Review();
     }
 }
