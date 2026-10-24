@@ -879,7 +879,8 @@ namespace RimMandrake.FlowWorks.Pits
 		/// live look at 1.6's draw batching.)</summary>
 		public override void MapComponentUpdate()
 		{
-			if (Find.CurrentMap != map)
+			// HOSE_DRAW_FIX_LEAKS_ONTO_WORLDMAP: Graphics.DrawMesh from an update draws over the planet unless the world view is skipped
+			if (Find.CurrentMap != map || RimWorld.Planet.WorldRendererUtility.WorldRendered)
 			{
 				return;
 			}

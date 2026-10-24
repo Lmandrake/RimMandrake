@@ -2109,6 +2109,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             LineReadoutChecks.Run(Case);       // PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 7: P9 readout lines for the four crossing cases, P8 gravship re-key (LineReadoutChecks.cs)
             HoseSpliceChecks.Run(Case);        // HOSE_SPLICE_BUILD_MATES_BY_SLOPE: G2 joiner (position, angle, curvature at both ends, |k| <= 1/MinBendRadius); two hose ends mate face to face (HoseSpliceChecks.cs)
             HoseDrawGeometryChecks.Run(Case);  // HOSE_BEND_FIX_SHAVES_WALL_CORNERS + HOSE_LEADIN_FIX_STUB_IN_THE_CANAL: the drawn hose clears wall corners and meets a side port with no stub (HoseDrawGeometryChecks.cs)
+            WorldMapDrawGuardChecks.Run(Case); // HOSE_DRAW_FIX_LEAKS_ONTO_WORLDMAP: every drawing MapComponentUpdate skips the world view (WorldMapDrawGuardChecks.cs)
             HoseWallSeamChecks.Run(Case);      // HOSE_CLEAR_FIX_WALL_SEAM_LOOPHOLE: wall test vs an independent ruler, seam lines refused, re-plans never cross a wall (HoseWallSeamChecks.cs)
             HoseBandChecks.Run(Case);          // PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 6: hoses into pits only by ramp or ladder, band-aware end reach, raised ladder hangs, dig re-plans once (HoseBandChecks.cs)
             SuspensionBridgeChecks.Run(Case);  // SUSPENSION_BRIDGE_BUILD_POSTS_AT_BOTH_ENDS: drag validator, spans, load, falls, wiring (SuspensionBridgeChecks.cs)
