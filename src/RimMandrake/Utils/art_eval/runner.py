@@ -307,6 +307,15 @@ def evaluate(spec: dict, card_dir: Path, rev: Reviewers, policy: dict, settings:
 
 
 # ------------------------------------------------------------------ run
+def _instant(at) -> dt.datetime:
+    """A record's `at` as a UTC instant, so records stamped either side of a DST change (-07:00 / -08:00) order by
+    time; ISO strings with different offsets do not sort as text. Missing or unparseable is the earliest instant."""
+    try:
+        return dt.datetime.fromisoformat(str(at)).astimezone(dt.timezone.utc)
+    except (TypeError, ValueError):
+        return dt.datetime.min.replace(tzinfo=dt.timezone.utc)
+
+
 def history_decisions() -> dict:
     """Latest non-test decision per subject across committed runs (for catch dependencies across runs). Latest is by
     the record's own `at`, never by run-dir name: run ids are free text, so their alphabetical order is not time."""
@@ -319,7 +328,7 @@ def history_decisions() -> dict:
             if not line.strip():
                 continue
             r = json.loads(line)
-            at = str(r.get("at") or "")
+            at = _instant(r.get("at"))
             if r["subject"] not in best or at >= best[r["subject"]][0]:
                 best[r["subject"]] = (at, r["decision"])
     return {k: v[1] for k, v in best.items()}

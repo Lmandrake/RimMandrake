@@ -47,6 +47,24 @@ def main() -> int:
     s3: set = set()
     same = AS._take_unseen([col("artpipe", w, "x"), col("artpipe", w, "y")], s3)
     check(len(same) == 2, "within one lane nothing is dropped (as before the fix)")
+    # the duplicate-picture columns _take_unseen now allows each keep their own letter across rebuilds (a second
+    # copy used to get a NEW letter every build, and his pick of it became a false "WAS in game" kept column)
+    snap: dict = {}
+    for build in range(4):
+        cols = [col("artpipe", w, "render canonregen_rsw_gizka_v1"), col("live", w, "IN GAME — GizkaW")]
+        mem = AS._merge_memory({"r": {"columns": dict(snap)}} if snap else {}, {"r": {"columns": dict(snap)}} if snap else {}).get("r") or {}
+        AS._assign_letters(cols, mem.get("columns"), mem.get("reserved"))
+        letters = [c["letter"] for c in cols]
+        kept = AS._kept_cols(cols, mem, {"B"}) if snap else []
+        if build == 0:
+            first = letters
+        snap = {c["letter"]: c["faces"] for c in cols}
+    check(first == ["A", "B"] and letters == ["A", "B"] and kept == [],
+          f"two columns with the same pictures keep letters A,B across rebuilds (got {first} then {letters}, kept {len(kept)})")
+    m = AS._merge_memory({"r": {"columns": {"A": w}}}, {"r": {"columns": {"A": w, "C": w}}})["r"]["columns"]
+    check(sorted(m) == ["A", "C"], f"a later snapshot showing the pictures twice adds its extra letter (got {sorted(m)})")
+    m2 = AS._merge_memory({"r": {"columns": {"A": w}}}, {"r": {"columns": {"C": w}}})["r"]["columns"]
+    check(sorted(m2) == ["A"], f"a drifted letter for pictures the ruled snapshot has is not added (got {sorted(m2)})")
     print(f"\n{'FAIL' if FAILS else 'PASS'}: {len(FAILS)} failing")
     return 1 if FAILS else 0
 
