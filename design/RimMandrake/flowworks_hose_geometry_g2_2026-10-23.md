@@ -325,6 +325,17 @@ Remaining failures with g2 on (`D:\ClaudeWork\rimmandrake\scratch\hose_geometry_
     - Tried and dropped: letting the reels pay out up to 3.2 more cells (with every slide ring) fixed no row, so the code does not ship.
   - TailOnto synthetic (1): unchanged from step 2.
 
+### Step 5 (2026-10-24): the ruler guards the default run
+- The synthetic TailOnto case asked for a port that no 9-cell hose can reach.
+  - At (8, 1.5) the 0.6 end straight leaves 0.9, which is less than R, so the turn must dip south first. The shortest path within R is then 6.74 + 1.98 + 0.6 = 9.32 cells.
+  - Moved to (7, 2), where the shortest path is about 8.3 cells. It now passes.
+- `HoseCurveChecks.Guard` runs the whole `--hose-curves` set inside the default FlowWorks selftest as one case. The case fails when:
+  - a row outside `Owed` fails (the 20 rows owed to HOSE_SHORT_SPAN_DECIDE_NO_CURVE);
+  - fewer than `Floor` rows pass;
+  - the row count is not 59.
+- MEASURED: 39/59 pass, floor 39. The full selftest is 936/936 and `run_selftests.py --only selftest_flowworks_stock.py` is GREEN (175.8 s).
+- Can-fail check: with the short prefix taken out of `Owed`, the case fails ("4 row(s) outside the owed set fail"). Logs: `full7.log` and `full7_canfail.log` in `D:\ClaudeWork\rimmandrake\scratch\hose_geometry_20261023\`.
+
 ## 7. Owner items
 
 - **Relay reel has one connector.** A relay's feed couples into its nozzle while its own hose leaves the same nozzle —
