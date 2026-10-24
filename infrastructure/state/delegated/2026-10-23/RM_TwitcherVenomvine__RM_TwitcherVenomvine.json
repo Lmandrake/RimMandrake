@@ -1,0 +1,70 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 31.7,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.3508862
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 23.8
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 11.0,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1213127
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_TwitcherVenomvine__RM_TwitcherVenomvine",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said good); blocking ['DUPLICATE']; polish []",
+  "gpt regen: unsettled ['K1'], own blocking ['DUPLICATE']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "plant@v3",
+   "sha": "bf05d6dbb0b8"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "single.png": "d15be07a89d2d7746d4d46badde2d2a06eb9a78f1f720a805c45f8c8c1b31c89",
+  "scale.png": "c1135ef25c09b9a51777a6ffb75b3a45a9791f1ed749d33eea32e7d27ef1d9ff",
+  "siblings.png": "ed8fda82d9195a0b53e9b990c5f382f8ae958b7f3b7a6438d6d45675b1eb2a8c"
+ }
+}

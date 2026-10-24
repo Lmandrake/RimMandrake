@@ -1,0 +1,70 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 30.5,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.340482
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 22.2
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 9.5,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.12015469999999999
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Grellspine__RM_Grellspine_c",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said weak); blocking ['SIBLING_MISMATCH', 'DESC_MISS']; polish ['STYLE_EARTHLY', 'LEGIB_32']",
+  "gpt regen: unsettled ['K1'], own blocking ['SIBLING_MISMATCH']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v1",
+   "sha": "a4850279ccbf"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v1",
+   "sha": "14056552e355"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "plant@v2",
+   "sha": "0469e8fe99c6"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "single.png": "7ad5e5cc870a547037e30e46b4499aed064ae299bbc07081380782f07615b09f",
+  "scale.png": "180cba14ec93e3cb401f1244b5af1a03570936f3ffe0d10e0b3b0b569cf54d35",
+  "siblings.png": "472da32e14f25008a5e04802562652d0c9f02be2cae1a43dd02bde86dc0c91e4"
+ }
+}

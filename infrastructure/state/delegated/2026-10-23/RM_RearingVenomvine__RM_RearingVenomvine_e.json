@@ -1,0 +1,70 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 29.2,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.06731480000000001
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 19.0
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 10.8,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1221887
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_RearingVenomvine__RM_RearingVenomvine_e",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said good); blocking ['SIBLING_MISMATCH', 'DESC_MISS']; polish []",
+  "gpt regen: unsettled ['K2'], own blocking ['DESC_MISS']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "plant@v3",
+   "sha": "bf05d6dbb0b8"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "single.png": "e47113ea362f909602cc86a2c26d5e8c2e29de860d3b56ddf15983b516525198",
+  "scale.png": "3bde24f0acefab9ed06e40250ededcfd3534e4a607bef27597ed56c927e15532",
+  "siblings.png": "e8e2f30b3aeea1da347ce967d5464c2304b4e2a2f02f2a49bc4193d3f420b8d2"
+ }
+}
