@@ -1,0 +1,21 @@
+[
+ {
+  "id": "arteval_RSW_Excretor_r1",
+  "rimflow_item_id": "EXCRETOR_PICTURE_ASK_KEPT_OR_OWN",
+  "target_def": "RSW_Excretor",
+  "prompt": "A single excretor, a bull-sized alien grazer that browses poisoned ruined ground and slowly concentrates the metals and salts it eats, drawn as a game sprite for RimWorld in a painterly, realistic vanilla RimWorld style with a thin clean dark outline and a transparent background. It is plainly not an Earth animal and not a bison: it has no fur at all. Its hide is thick, leathery slate-blue-grey skin armoured with overlapping, cracked mineral plates along the back, crusted with pale salt nodules and streaked with rust-orange and verdigris-green stains where metals leach out. Its low, wedge-shaped head carries exactly three horns: two thick, ridged horns curving outward and forward from the skull and a third, straight, pointed horn rising from the middle of the brow between them, all three dark bone tipped with pale salt crust, and all three always visible. It has a broad, flat, scoop-like lip-plate for scraping the ground, small deep-set glowing amber eyes, and a heavy swollen belly. Along each flank runs a row of knobbly, translucent amber gland sacs where dense, layered metal-salt pellets form. It stands on four thick, pillar-like legs ending in broad split hooves, all bearing its weight in a natural standing pose, with a short, thick tail ending in a rough mineral knob. One animal with consistent proportions, colour, horn count and rendering. A single centred subject on a transparent background, with no ground and no text.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "new picture of its own by owner card 2026-10-24 09:51 PDT ('Draw it a new picture, and make it more alien than Star Wars did'); keeps his 2026-10-05 ruling that the three horns show in every facing",
+  "owner_note": "Keep E, but N and S MUST have the three horns present in the image. | 2026-10-24 card: Draw it a new picture, and make it more alien than Star Wars did",
+  "install_to": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Excretor/RM_Excretor_{facing}.png",
+  "reference": "",
+  "priority": 5,
+  "source_run": "fauna_excretor_card_20261024"
+ }
+]

@@ -1,0 +1,34 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RSW_Excretor": {
+   "prefill": "keep",
+   "why": "PIPELINE: ACCEPT \u00b7 Opus WEAK: STYLE_EARTHLY \u00b7 GPT strong_accept",
+   "context": "judged candidate r1 (image sha b96af22d24); STYLE_EARTHLY: In profile the low-slung head, wrinkled grey skin and pillar legs read quite rhinoceros-like. The plates and pods carry the alien identity."
+  }
+ }
+}

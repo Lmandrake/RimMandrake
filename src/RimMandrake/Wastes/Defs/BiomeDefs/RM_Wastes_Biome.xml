@@ -160,6 +160,7 @@
       <!-- Wasteland sheet 2026-10-09 (owner): RSW_FleeceSpider "Redo Name and Description. RimMandrake tier, NOt star wars at all." and RSW_Maligoat "RimMandrake tier, NOT Star Wars. Never was." Ported to RM_Frethik / RM_Kroffa (Defs/ThingDefs_Races/), weights carried over from UtinniPatches' WildAnimals_Wastes.xml. -->
       <RM_Frethik>0.7</RM_Frethik>  <!-- frethik - wretched-small; salt-haired mite, pet -->
       <RM_Kroffa>0.4</RM_Kroffa>  <!-- kroffa - wretched-herd; plated milk-grazer -->
+      <RM_Excretor>0.15</RM_Excretor>  <!-- excretor - refiner-herd; moved from SWBestiary (RSW_Excretor) 2026-10-24, weight unchanged from the patch that cast it here -->
     </wildAnimals>
     <coastalWildAnimals />
 

@@ -1,55 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  RSW_Excretor.xml                       SWBestiary - COMMISSION_LEDGER_CLEANUP_1
+  RM_Excretor.xml                        RimMandrake: The Wastes
 
-  Resolves ledger slug
-  `wasteland:excretor-herd-creature-metal-salt-bezoar-product-def`
-  (design/Jawa/worldbuilding/biomes/wastes.md §4: "The excretors.
-  Creatures that metabolize contamination concentrate it — and shed what
-  they can't use as dense pellets, metal-salt bezoars, plated casts. A kept
-  herd is a slow refinery: graze them on ruined ground and they hand the
-  poison back as a compact, handleable object"; roster's own `new_defs`
-  entry, rosters/wastes.json, mechanic_load "mechanic EXISTS in donors
-  (59 timed-producer rows); bezoar def is new"; `_assignment_prep.md`'s own
-  §"Excretor" row: "body: reskin a producer; bezoar product = NEW DEF").
+  The excretor: a three-horned herd grazer of ruined ground that concentrates
+  the metals and salts it eats and sheds them as contaminant bezoars
+  (design/Jawa/worldbuilding/biomes/wastes.md §4, "The excretors": a kept herd
+  is a slow refinery; they extract, they never heal).
 
-  🔑 The "mechanic exists in donors" reading is vanilla, not a donor C#
-  class: RimWorld's own `CompProperties_Shearable` — already used by this
-  repo's `RSW_Bantha`/`RSW_FeralNerf`/`RSW_LavaFlea` — IS a "produce a
-  harvestable resource on a timer" comp, so no donor dependency or new C#
-  is needed at all, just retargeting the yield to a new resource def
-  (`RUT_MetalSaltBezoar`, this same commission).
+  History: first written in SWBestiary as RSW_Excretor (COMMISSION_LEDGER_CLEANUP_1,
+  WASTELAND_EXCRETOR_BEZOAR_1), borrowing another animal's pictures. Moved here
+  2026-10-24 (SWB_INVENTED_MIGRATE_TWENTY_LEFT) under its RM_ name; old saves load
+  through RM_SWBRehomeAliases (src/RimMandrake/LeaningScrub/Defs/Misc/
+  RM_SWBRehome_Aliases.xml). Its shear product is now this mod's own
+  RM_ContaminantBezoar (the excretor-family bezoar) instead of the campaign
+  layer's RUT_MetalSaltBezoar, so this mod needs nothing from RimUtinni.
 
-  Checked cast_assignment.csv first (per this item's own "watch out"): the
-  only body the prep doc names as a candidate ("reskin a producer") is a
-  generic herd grazer shape, not a specific donor row. `RSW_FeralNerf`
-  (already ported, MLIE_FAUNA_ABSORPTION_1 Wave C, vanilla Core
-  `QuadrupedAnimalWithHoovesAndHorn` body — no custom BodyDef) is NOT wired
-  into any RUT_ biome's wildAnimals (checked: only the bare donor rows
-  `FeralNerf`/arid_shrubland and `Nerf`/desert are cast, both DIFFERENT
-  tracked entities from this RSW_ port), so reusing its body/art asset here
-  does not double-book the species — same asset-reuse-without-species-reuse
-  pattern RSW_TunnelSnake used.
+  Art: its own pictures (Things/Pawn/Animal/RM_Excretor), drawn new and more
+  alien on the owner's card of 2026-10-24 (EXCRETOR_PICTURE_ASK_KEPT_OR_OWN), keeping his 2026-10-05 ruling that the three horns
+  show in every facing. Rendered as artpipe jobs arteval_RSW_Excretor_r1_*.
 
-  Mechanism: shearable comp retargeted from wool to `RUT_MetalSaltBezoar`;
-  milkable comp dropped (an excretor sheds pellets, it is not a dairy
-  animal). Wildness raised and trainability lowered from the donor's own
-  values — "a kept herd is a slow refinery" reads as tameable-but-not-cuddly
-  livestock, matching the sheet's own utilitarian framing rather than the
-  donor's exotic-pet-adjacent numbers.
-
-  Art: zero new PNGs — same texPath as RSW_FeralNerf (swanimals/FeralNerf/...);
-  checked infrastructure/artpipe/{done,pending,registry.jsonl} for
-  "excretor"/"bezoar" first — clean, confirming no prior job exists; none
-  filed here either, since the asset-reuse posture ships with zero new art
-  by design (same as RSW_TunnelSnake/RSW_VentStalker).
+  Mechanism: vanilla CompProperties_Shearable as a timed producer (no C#);
+  no milk (it sheds pellets, it is not a dairy animal).
 -->
 <Defs>
 
   <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
-    <defName>RSW_Excretor</defName>
+    <defName>RM_Excretor</defName>
     <label>excretor</label>
-    <description>A heavy-set, antlered grazer that browses the ruined ground everything else avoids, its body slowly concentrating the metals and salts it can't excrete any other way. Left to its own rhythm it sheds the concentrate as dense, layered pellets every few weeks — which makes a kept herd less a herd and more a slow, patient refinery that happens to also breathe.</description>
+    <description>A heavy-set, three-horned grazer that browses the ruined ground everything else avoids, its body slowly concentrating the metals and salts it can't excrete any other way. Left to its own rhythm it sheds the concentrate as dense, layered pellets every few weeks — which makes a kept herd less a herd and more a slow, patient refinery that happens to also breathe.</description>
     <statBases>
       <MoveSpeed>4.5</MoveSpeed>
       <MarketValue>260</MarketValue>
@@ -101,7 +79,7 @@
     </tools>
     <comps>
       <li Class="CompProperties_Shearable">
-        <woolDef>RUT_MetalSaltBezoar</woolDef>
+        <woolDef>RM_ContaminantBezoar</woolDef>
         <shearIntervalDays>22</shearIntervalDays>
         <woolAmount>4</woolAmount>
       </li>
@@ -153,41 +131,41 @@
   </ThingDef>
 
   <PawnKindDef ParentName="AnimalKindBase">
-    <defName>RSW_Excretor</defName>
+    <defName>RM_Excretor</defName>
     <label>excretor</label>
     <labelPlural>excretors</labelPlural>
-    <race>RSW_Excretor</race>
+    <race>RM_Excretor</race>
     <combatPower>95</combatPower>
     <ecoSystemWeight>1.0</ecoSystemWeight>
     <wildGroupSize>2~6</wildGroupSize>
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/FeralNerf/FeralNerf</texPath>
+          <texPath>Things/Pawn/Animal/RM_Excretor/RM_Excretor</texPath>
           <drawSize>1.25</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>swanimals/FeralNerf/FeralNerf_Dessicated</texPath>
+          <texPath>Things/Pawn/Animal/RM_Excretor/RM_Excretor_Dessicated</texPath>
           <drawSize>1.25</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/FeralNerf/FeralNerf</texPath>
+          <texPath>Things/Pawn/Animal/RM_Excretor/RM_Excretor</texPath>
           <drawSize>1.75</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>swanimals/FeralNerf/FeralNerf_Dessicated</texPath>
+          <texPath>Things/Pawn/Animal/RM_Excretor/RM_Excretor_Dessicated</texPath>
           <drawSize>1.75</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/FeralNerf/FeralNerf</texPath>
+          <texPath>Things/Pawn/Animal/RM_Excretor/RM_Excretor</texPath>
           <drawSize>2.0</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>swanimals/FeralNerf/FeralNerf_Dessicated</texPath>
+          <texPath>Things/Pawn/Animal/RM_Excretor/RM_Excretor_Dessicated</texPath>
           <drawSize>2.0</drawSize>
         </dessicatedBodyGraphicData>
       </li>

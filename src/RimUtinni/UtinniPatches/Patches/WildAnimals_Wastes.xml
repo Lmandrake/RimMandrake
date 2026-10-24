@@ -88,7 +88,8 @@
        verbatim from RUT_Wastes.xml.
        Wasteland sheet 2026-10-09: RSW_FleeceSpider and RSW_Maligoat removed —
        owner moved both to the RimMandrake tier as RM_Frethik and RM_Kroffa,
-       cast inline in RM_Wastes_Biome.xml. -->
+       cast inline in RM_Wastes_Biome.xml. 2026-10-24: RSW_Excretor likewise
+       moved to RimMandrake as RM_Excretor, cast inline there. -->
   <Operation Class="PatchOperationFindMod">
     <mods><li>RimMandrake: SW — Bestiary</li></mods>
     <match Class="PatchOperationConditional">
@@ -103,7 +104,6 @@
                wetter RUT_Cauldron to lay in the heat. Do not "fix" it by cutting either
                home. -->
           <RSW_Screecher>0.4</RSW_Screecher>  <!-- screecher - wretched-pack, import; hot end of the migration -->
-          <RSW_Excretor>0.15</RSW_Excretor>  <!-- excretor - refiner-herd, new-def (COMMISSION_LEDGER_CLEANUP_1 / WASTELAND_EXCRETOR_BEZOAR_1) -->
           <RSW_Borcatu>0.7</RSW_Borcatu>  <!-- Borcatu - wretched-small, keep; retargeted from the bare donor name to our own RSW_ port (MLIE_ABSORPTION_BIOME_WIRING_1, 2026-09-25) -->
         </value>
       </match>

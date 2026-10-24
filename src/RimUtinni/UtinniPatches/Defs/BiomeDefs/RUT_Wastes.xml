@@ -153,7 +153,7 @@
            them, and they are now wired in RUT_TheRot.xml instead. Leaving them
            here too would have doubled a species the owner moved out. -->
       <VAEWaste_Megatardi>0.18</VAEWaste_Megatardi>  <!-- megatardi - extremophile-odd, import; STAT_NORM_WAVE2_RETIRE_1 absorbed this def natively into UtinniPatches itself (Defs/Absorbed_VAEWasteMegatardi/), so it needs no MayRequire on the retired donor mod at all. The old gate on vanillaexpanded.vaewaste (not in the live mod list) was silently dropping this animal from the roster every load (DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave) -->
-      <RSW_Excretor MayRequire="mandrake.rsw.swbestiary">0.15</RSW_Excretor>  <!-- excretor - refiner-herd, new-def (COMMISSION_LEDGER_CLEANUP_1) -->
+      <RM_Excretor MayRequire="mandrake.rm.wastes">0.15</RM_Excretor>  <!-- excretor - refiner-herd, new-def (COMMISSION_LEDGER_CLEANUP_1); moved from SWBestiary RSW_Excretor 2026-10-24 -->
       <RUT_BrineBattery>0.1</RUT_BrineBattery>  <!-- brine battery - pool owner, new-def (COMMISSION_LEDGER_CLEANUP_1); discharge mechanic split to WASTELAND_BRINE_BATTERY_DISCHARGE_1 -->
     </wildAnimals>
     <coastalWildAnimals />
