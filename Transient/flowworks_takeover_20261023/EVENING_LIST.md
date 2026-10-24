@@ -8,3 +8,4 @@
 - Shadow sheet: D:\Luke\dev\RimMandrake\Transient\biome_ffar\art_eval_shadow_modern_style_20261023_r4_ingame_sheet_2026-10-23.html
 - Evening walk save: RM_fw_walkthrough_20261023f (pending bridge driver)
 - Delete 3 now-unreferenced flat anchor singles you kept (RM_SuspensionAnchor_Rope/Steel/Heavy.png)? Needs your typed words (art ledger). New upright base anchors: D:\ClaudeWork\rimmandrake\scratch\anchorbase\base_new_contact.png
+- Styled Heavy anchor south pictures (Scrapper/Industrial/Modern/Futuristic): replace your 4 kept flat ones with the upright redraws? Top row kept, bottom row new: D:\ClaudeWork\rimmandrake\scratch\anchor_kept_judge\compare_south.png. The pipeline could not judge them (no in-game capture), so it cannot swap them itself; until you say, local fe75c75067 cannot be pushed and blocks BENCH ./publish.
