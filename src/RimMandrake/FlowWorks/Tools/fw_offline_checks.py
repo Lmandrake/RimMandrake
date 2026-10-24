@@ -33,6 +33,10 @@ Portable ladder (LADDER_PORTABLE_REDRAW_NORTH_FROM_GROUND; his words: "the one l
                                the ground ladder at its own length/width, raised tilt +-4 deg with its wall (east) end up,
                                that end poking 10..60 px past the east rim column
   ladder_west_mirrors_east     west == east flipped left-right, pixel for pixel (it leans into its own wall)
+Wooden rail ladder (RAIL_LADDER_REDRAW_FAT_RUNG_FENCE; his words: "Not the yellower wood option. That's depricated. The paler
+ladder is much better and is thick enough"):
+  ladder_wood_matches_ground   the timber's median brightness, mean saturation and mean hue are the ground ladder's
+                               (RM_LadderPortableFlat) within tolerance; the deprecated yellow v5 wood is ~0.23 more saturated
 Each returns (ok, detail).
 """
 import math
@@ -351,3 +355,36 @@ def ladder_west_mirrors_east(west, east):
         return False, "sizes differ %s vs %s" % (w.shape, e.shape)
     diff = int(np.sum(np.any(w != e[:, ::-1], axis=2)))
     return diff == 0, "%d px differ from east mirrored" % diff
+
+
+WOOD_WARM_MIN = 8            # r - b above this is wood; iron (hooks, plates, bolts) is r ~ b grey
+WOOD_MIN_PX = 1000           # fewer warm opaque px than this: no wood drawn
+
+
+def _wood_stats(im):
+    """(n, median luma, mean HSV saturation, mean HSV hue) of the opaque warm (wood) pixels, or None if under WOOD_MIN_PX
+    (a facing that shows only iron hooks has a few hundred warm outline pixels round them, not wood)."""
+    p = np.asarray(im.convert("RGBA"), dtype=np.float64)
+    p = p[p[..., 3] >= 250][:, :3]
+    p = p[(p[:, 0] - p[:, 2]) > WOOD_WARM_MIN]
+    if len(p) < WOOD_MIN_PX:
+        return None
+    mx, mn = p.max(1), p.min(1)
+    sat = np.where(mx > 0, (mx - mn) / np.maximum(mx, 1e-9), 0)
+    r, g, b = p.T
+    d = np.maximum(mx - mn, 1e-9)
+    hue = np.where(mx == r, ((g - b) / d) % 6, np.where(mx == g, (b - r) / d + 2, (r - g) / d + 4)) / 6
+    hue = np.where(hue > 0.5, hue - 1, hue)  # hue is circular: a warm pixel with g < b sits near 1.0, i.e. just below 0
+    return len(p), float(np.median(p @ [0.299, 0.587, 0.114])), float(sat.mean()), float(hue.mean())
+
+
+def ladder_wood_matches_ground(im, flat, luma_tol=14, sat_tol=0.06, hue_tol=0.025):
+    """The ladder's wood (opaque pixels with r - b > WOOD_WARM_MIN) has the ground ladder's palette: median luma within
+    luma_tol, mean saturation within sat_tol, mean hue within hue_tol of RM_LadderPortableFlat's wood. Refuses an image
+    with no wood (a steel ladder is not a wooden one)."""
+    g, f = _wood_stats(im), _wood_stats(flat)
+    if g is None:
+        return False, "no wood pixels"
+    ok = abs(g[1] - f[1]) <= luma_tol and abs(g[2] - f[2]) <= sat_tol and abs(g[3] - f[3]) <= hue_tol
+    return ok, "%d wood px: luma %.0f vs ground %.0f, saturation %.3f vs %.3f, hue %.3f vs %.3f" % (
+        g[0], g[1], f[1], g[2], f[2], g[3], f[3])

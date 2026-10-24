@@ -4879,3 +4879,4 @@
 {"seat":"BENCH","event":"bridge","state":"released","ts":"2026-10-24T16:56:32Z","tsn":1792860992785579901}
 {"seat":"BENCH","event":"file","id":"MODCHECK_RUN_DIAGNOSE_TICK_ONE_STALL","title":"modcheck FlowWorks run stalls with the game paused at tick 1","kind":"task","target":"v1","needs":"bridge","for":"BENCH","why":"2026-10-24 16:43Z: after E2_rerun_determinism PASS the game sat paused at ticksGame 1 for ~25 min; Player.log no exception, 0 indeterminate bridge calls; runner stdout block-buffered so the stuck step is hidden. Rerun with python.exe -u. Log D:\\ClaudeWork\\scratch\\triage\\modcheck_p4b.log","ts":"2026-10-24T16:56:51Z","tsn":1792861011549347512}
 {"seat":"BENCH","event":"seat","state":"ready","ts":"2026-10-24T17:25:41Z","tsn":1792862741707532892}
+{"seat":"BENCH","event":"close","id":"LADDER_PORTABLE_DECIDE_EAST_WEST_FACING","sha":"3017ad0438c2ea401e7df891849e376db2230260","ts":"2026-10-24T17:31:08Z","tsn":1792863068707966634}

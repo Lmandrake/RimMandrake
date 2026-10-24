@@ -36,6 +36,13 @@ Each check must FAIL on the art he rejected (the shipped code, emulated as BEFOR
                                   candidate (tilt), east mirrored (leans away from its wall), squeezed 0.8x along
     ladder_west_mirrors_east      PASS installed; can-fail: the shipped v4 west against the installed east, east as west
     pinned                        installed E/W == portable_from_ground east_a / west_a pixel for pixel
+  wooden rail ladder RM_Ladder / RM_LadderRaised in the ground ladder's pale wood (RAIL_LADDER_REDRAW_FAT_RUNG_FENCE):
+    ladder_wood_matches_ground    PASS on the 7 installed facings that show timber (the lowered south is iron hooks only:
+                                  it REFUSES, no wood); FAIL on the deprecated yellow v5 wood (art_source/Ladder/v5/out);
+                                  refuses the steel set (no wood)
+    geometry kept                 installed alpha == v5 draw.py's WOOD alpha, every facing (approved perspectives untouched)
+    iron kept                     every pixel that is neither timber nor outline == v5's RGBA (hooks, brackets, bolts)
+    pinned                        installed == art_source/Ladder/v7/rail_pale.build() pixel for pixel; west == east mirrored
   pit spikes, a 4 m pit with a 2 m shelf and a 0..2 m water series (PIT_SPIKES_FIX_OVER_WALL_AND_SUBMERGE, fw_scenes_spikes):
     spikes_over_wall    FAIL on the shipped whole-cell sprite, PASS on Building_RM_Spikes' layout; also PASS with the
                         outline off; with the faces off it REFUSES (no wall mask), the no-walls can-fail; can-fail: no spikes
@@ -275,6 +282,49 @@ def ladder():
         want(np.array_equal(np.asarray(live), np.asarray(m)), "ladder %s: installed == portable_from_ground %s_%s" % (f, f, pg.PICK))
 
 
+def rail_ladder():
+    import importlib.util
+    import numpy as np
+    from PIL import Image
+    spec = importlib.util.spec_from_file_location("rail_pale", HERE.parent / "art_source/Ladder/v7/rail_pale.py")
+    rp = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(rp)
+    canals = HERE.parent / "Textures/Things/Building/FlowWorks/Canals"
+    flat = Image.open(rp.FLAT).convert("RGBA")
+    made = rp.build(None)
+    for raised, tag in ((False, "RM_Ladder"), (True, "RM_LadderRaised")):
+        ref = {"north": rp.v5.rail_north(rp.v5.WOOD, raised), "east": rp.v5.rail_east(rp.v5.WOOD, raised),
+               "south": rp.v5.rail_south(rp.v5.WOOD, raised)}
+        ref["west"] = ref["east"].transpose(Image.FLIP_LEFT_RIGHT)
+        for f in rp.FACINGS:
+            name = "%s_%s" % (tag, f)
+            live = Image.open(canals / (name + ".png")).convert("RGBA")
+            a, r = np.asarray(live), np.asarray(ref[f].convert("RGBA"))
+            want(np.array_equal(a, np.asarray(made[name])), "rail ladder %s: installed == rail_pale.build()" % name)
+            want(np.array_equal(a[..., 3], r[..., 3]), "rail ladder %s: alpha == v5 WOOD (geometry kept)" % name)
+            rf = r.astype(np.float64)
+            iron = ~rp.timber_mask(rf) & ~rp.outline_mask(rf) & (r[..., 3] > 0)
+            want(np.array_equal(a[iron], r[iron]), "rail ladder %s: iron unchanged (%d px)" % (name, int(iron.sum())))
+            tm = rp.timber_mask(rf)
+            if tm.any():  # masks come from v5's colours: the pale ramp's darkest shades must not be re-read as outline
+                edge = np.round(np.clip(rp._dark_edge(), 0, 255)).astype(np.uint8)
+                flat_n = int((a[tm][:, :3] == edge).all(-1).sum())
+                want(flat_n <= 0.01 * tm.sum(), "rail ladder %s: timber keeps its shading (%d of %d px flattened to the edge colour)"
+                     % (name, flat_n, int(tm.sum())))
+            ok, d = ck.ladder_wood_matches_ground(live, flat)
+            if name == "RM_Ladder_south":
+                want(not ok and d == "no wood pixels", "rail ladder %s: hooks only, refuses (%s)" % (name, d))
+                continue
+            want(ok, "rail ladder %s: pale ground wood (%s)" % (name, d))
+            yellow = HERE.parent / "art_source/Ladder/v5/out" / (name + ".png")
+            ok, d = ck.ladder_wood_matches_ground(Image.open(yellow), flat)
+            want(not ok, "rail ladder %s can-fail: the deprecated yellow v5 wood (%s)" % (name, d))
+        e, w = (np.asarray(Image.open(canals / ("%s_%s.png" % (tag, f))).convert("RGBA")) for f in ("east", "west"))
+        want(np.array_equal(w, e[:, ::-1]), "rail ladder %s: west == east mirrored" % tag)
+    ok, d = ck.ladder_wood_matches_ground(Image.open(canals / "RM_LadderSteel_east.png"), flat)
+    want(not ok and d == "no wood pixels", "rail ladder can-fail: the steel set has no wood (%s)" % d)
+
+
 def spikes():
     import numpy as np
     from PIL import Image
@@ -341,6 +391,7 @@ if __name__ == "__main__":
     sprinkler()
     modern_blue()
     ladder()
+    rail_ladder()
     spikes()
     print("%d FAIL" % len(fails) if fails else "ALL OK")
     sys.exit(1 if fails else 0)
