@@ -26,8 +26,9 @@
                                             also checked event -> PNG (the committed tree holds what the ledger says)
     art.py doctor    [--rev REV] [--out FILE]   every slot where the folded ledger and REV's committed tree
                                             (default HEAD) disagree, with the worktree bytes; read-only
-    art.py purge     <sha> --owner-said "..." [--release-keep]   reject+purge (owner only); a kept picture is
-                                            refused unless --release-keep names his words for releasing it
+    art.py purge     <sha> (--owner-said "..." | --by-card "q → option" | --per-ruling <item|event>) [--why "..."]
+                     [--release-keep]       reject+purge (owner only, one field per kind of his authority, as install);
+                                            a kept picture is refused unless --release-keep names his authority for it
     art.py unpurge   <sha> --owner-said "..."   reverse the latest purge of that picture on his newer, explicit
                                             words (owner only; append-only `unpurge` event, history kept). Restores
                                             no bytes (put them first) and no keep; a mechanical install stays refused
@@ -299,7 +300,7 @@ def cmd_kept_purged(a):
         ks = "<br>".join(f"{(k.get('ts') or k.get('at') or '')[:16]} · {cell(Path(k.get('via') or '').name)} · {cell(k.get('said'))}"
                          for k in r["keeps"])
         lines.append(f"| `{r['sha'][:16]}` | {'yes' if r['bytes_in_store'] else 'NO'} | {cell(', '.join(r['live_at']))} | "
-                     f"{(pv.get('ts') or '')[:16]} · {cell(Path(pv.get('via') or '').name)} · {cell(pv.get('said'))} | {ks} |")
+                     f"{(pv.get('ts') or '')[:16]} · {cell(Path(pv.get('via') or '').name)} · {cell(pv.get('said') or pv.get('by_card') or pv.get('per_ruling'))} | {ks} |")
     out.write_text("\n".join(lines) + "\n")
     print(f"  report -> {out}")
     return 0
@@ -312,7 +313,8 @@ def cmd_purge(a):
         print(f"REFUSED: {a.sha} matches {len(full)} known pictures")
         return 2
     try:
-        r = L.purge(full[0], owner_said=a.owner_said, release_keep=a.release_keep)
+        r = L.purge(full[0], owner_said=a.owner_said, by_card=a.by_card, per_ruling=a.per_ruling, why=a.why,
+                    release_keep=a.release_keep)
     except L.Refused as e:
         print(f"REFUSED: {e}")
         return 2
@@ -416,7 +418,10 @@ def main(argv=None):
     p = sp.add_parser("correct-provenance"); p.add_argument("ruling_ids", nargs="+")
     p.add_argument("--by-card"); p.add_argument("--per-ruling"); p.add_argument("--owner-said")
     p.add_argument("--why", required=True); p.add_argument("--dry-run", action="store_true")
-    p = sp.add_parser("purge"); p.add_argument("sha"); p.add_argument("--owner-said", required=True)
+    p = sp.add_parser("purge"); p.add_argument("sha"); p.add_argument("--owner-said")
+    p.add_argument("--by-card", help='a decision he took by question card: "question → picked option" (our label)')
+    p.add_argument("--per-ruling", help="a standing ruling of his, cited by item id or ledger event")
+    p.add_argument("--why", help="the agent's own reason (recorded; grants nothing)")
     p.add_argument("--release-keep", action="store_true")
     p = sp.add_parser("unpurge"); p.add_argument("sha"); p.add_argument("--owner-said", default="")
     p = sp.add_parser("ingest"); p.add_argument("decisions"); p.add_argument("--dry-run", action="store_true")
