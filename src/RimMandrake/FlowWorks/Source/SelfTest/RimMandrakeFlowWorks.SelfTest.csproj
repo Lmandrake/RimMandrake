@@ -91,6 +91,7 @@
     <Compile Include="LineDigBreakChecks.cs" />
     <Compile Include="..\Machinery\RM_PowerCordMath.cs" />
     <Compile Include="..\Machinery\RM_LineReadoutMath.cs" />
+    <Compile Include="..\Machinery\PipeStraightVariants.cs" />
     <Compile Include="PowerCordChecks.cs" />
     <Compile Include="..\Machinery\RM_DeckCollapseLinesMath.cs" />
     <Compile Include="..\Machinery\RM_PipePoleMath.cs" />
@@ -192,6 +193,7 @@
     <Compile Include="HoseNetChecks.cs" />
     <Compile Include="HoseNetCacheChecks.cs" />
     <Compile Include="HoseSwitchFlipChecks.cs" />
+    <Compile Include="PipeStraightVariantChecks.cs" />
     <Compile Include="HoseChecks.cs" />
     <Compile Include="HoseSelfTest.cs" />
     <Compile Include="HoseReviewChecks.cs" />

@@ -14,12 +14,12 @@ namespace RimMandrake.FlowWorks.Sprinklers
 	/// S+W, W+N) bend away: their centreline is a quarter arc of radius r about a corner point k*(sx,sz) on the elbow's
 	/// outer side, and the seat is that arc's midpoint, on the diagonal through the cell centre:
 	///   seat = (k - r/sqrt2) * (sx, sz),  sx = E ? +1 : -1,  sz = N ? +1 : -1.
-	/// Measured on the shipped atlases (art_source/pipe; 704 px atlas, 176 px tile, 132 px shown cell) by
-	/// Tools/selftest_pipe_seat.py, which fails if a redrawn atlas moves the arc by more than 1 px:
-	///   Scrapper (compose_scrapper_v2): arc radius C/2 about the SHOWN cell's corner: k = r = 0.5   -> 0.2071 along the diagonal
+	/// Measured on the shipped atlases (art_source/pipe; 704 px atlas, 176 px tile, 132 px shown cell; Scrapper v3 ships at 2x,
+	/// 1408 px, the same fractions) by Tools/selftest_pipe_seat.py, which fails if a redrawn atlas moves the arc by more than 1 px:
+	///   Scrapper (compose_scrapper_v3): arc radius C/2 about the SHOWN cell's corner: k = r = 0.5   -> 0.2071 along the diagonal
 	///   Industrial/Modern/Futuristic (build_pipe_atlas): radius 88 tile px about the TILE corner: k = r = 2/3 -> 0.2761
-	/// The lone stub (mask 0, a pipe with no neighbour) is a round flange: centred in three looks, but drawn 4 px east and
-	/// 4 px south of centre in the Scrapper atlas, so the seat follows it there.
+	/// The lone stub (mask 0, a pipe with no neighbour) is a round flange, centred in every look since Scrapper v3
+	/// (LoneStubScrapperPx keeps the hook should a look draw it off centre again).
 	/// A look this table does not know gets (0,0): the old behaviour, never a guess.
 	/// </summary>
 	public static class RM_PipeSeatMath
@@ -29,8 +29,10 @@ namespace RimMandrake.FlowWorks.Sprinklers
 		/// <summary>Pixels across the shown cell of a 704 px pipe atlas (176 px tile less 2 x 22 px padding).</summary>
 		public const float ShownCellPx = 132f;
 
-		/// <summary>How far east (and south) of centre the Scrapper lone-stub flange is drawn, in atlas pixels.</summary>
-		public const float LoneStubScrapperPx = 4f;
+		/// <summary>How far east (and south) of centre the Scrapper lone-stub flange is drawn, in pixels of a 132 px shown cell.
+		/// 0 since the v3 atlas (SCRAPPER_PIPE_REDRAW_BLURRY_AT_ZOOM, 2026-10-23): v2 drew its boss 4 px south-east because
+		/// compose_scrapper_v2 resized it to 44 px but placed it as build_pipe_atlas.HUB = 36; compose_scrapper_v3 centres it.</summary>
+		public const float LoneStubScrapperPx = 0f;
 
 		/// <summary>The elbow arc of a look: corner distance k and radius r, both in cells. False for an unknown look.</summary>
 		public static bool ElbowArc(string look, out float k, out float r)

@@ -2043,6 +2043,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             FuelFireChecks.Run(Case);          // CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL: chemfuel inferno + astrofuel detonation (FuelFireChecks.cs)
             RiverSwitchFlipChecks.Run(Case);   // RIVER_TOGGLE_PROOFS_BUILD_ELEVEN_UNCLAIMED
             HoseSwitchFlipChecks.Run(Case);    // hose port review S2/S3
+            PipeStraightVariantChecks.Run(Case);   // SCRAPPER_PIPE_REDRAW_ASKED_TWICE_NOW: straight-run variants by cell hash
             TransferChecks.Run(Case);          // liquid networks L1: the one transfer service (TransferChecks.cs)
             NetComponentChecks.Run(Case);      // liquid networks L2: components per topology revision (NetComponentChecks.cs)
             PlanChecks.Run(Case);              // liquid networks L3: fill/draw plans, split levels, consumer rotation (PlanChecks.cs)

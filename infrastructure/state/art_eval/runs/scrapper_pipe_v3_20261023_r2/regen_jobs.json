@@ -1,0 +1,19 @@
+[
+ {
+  "id": "arteval_RM_UniversalPipe_Scrapper__E_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_UniversalPipe_Scrapper",
+  "prompt": "A 4x4 atlas of top-down floor pipe tiles for RimWorld, Scrapper (salvage, junk-built) look, 1408 x 1408 px, 16 cells of 264 x 264 px, transparent background. Painterly vanilla RimWorld style, realistic, clean dark outline, crisp and sharp detail that holds up at full zoom. The pipe is ground clutter, drawn flat, low and thin: the tube is about 36 px wide in a 264 px cell, centred in the cell, and lies under pawns.\n\nMaterial: one oxidised copper tube with fine verdigris grain, warm copper brown with muted blue-green patina in the crevices. The tube is symmetric across its own axis, with matching highlight and shadow on both sides, and keeps exactly the same width, colour and surface texture in every cell. Plain tube surface only: no repeated blemish, patch or hardware along a straight run. Tube ends meet each cell edge at the exact centre with identical width and colour, so neighbouring cells join without a seam.\n\nThe 16 cells follow the RimWorld linked-graphic order, one tile per combination of neighbouring pipes (north, east, south, west):\n- lone cell with no neighbours: a short stub of tube with a bolted scrap-plate boss centred on it\n- four dead-end cells (one open side each): the tube runs from the open cell edge to the centre and closes with a bolted clamp-collar cap, a riveted steel band around the tube end\n- two straight cells: vertical and horizontal, tube running edge to edge through the centre\n- four elbow cells: a smooth bend on the pipe axis, the tube curving from one cell edge to the adjacent cell edge through the centre\n- four tee cells (three open sides): a bolted scrap-plate boss centred on the junction, with three tube arms leaving it\n- one cross cell (four open sides): a bolted scrap-plate boss centred on the junction, with four tube arms leaving it\n\nThe scrap-plate boss is a small square of dark riveted steel plate with four bolt heads, centred in the cell and slightly wider than the tube. All hardware is small, flat and low. Overall look: weathered salvage plumbing, believable and tidy, readable at 96 px and 48 px per cell. Transparent background around the tube, no ground, no shadow plate, no text.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: ",
+  "reference": "",
+  "priority": 40,
+  "source_run": "scrapper_pipe_v3_20261023_r2"
+ }
+]

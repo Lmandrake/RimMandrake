@@ -23,7 +23,6 @@ TEX = os.path.join(REPO, "src", "RimMandrake", "FlowWorks", "Textures", "RimMand
 sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils", "art"))
 REL_SCRIPT = os.path.relpath(os.path.abspath(__file__), REPO).replace(os.sep, "/")
 LOOKS = ("Scrapper", "Industrial", "Modern", "Futuristic")
-TILE = 176          # the atlas is 4 x 4 tiles of 176 px
 EW = (2, 1)         # Graphic_Linked index 10 (E + W): column 2, row 1 from the top
 OUT = (128, 32)
 
@@ -40,6 +39,7 @@ def seam(a):
 
 
 def span_strip(atlas):
+    TILE = atlas.shape[1] // 4      # the atlas is 4 x 4 tiles (176 px for a 704 atlas, 352 for Scrapper v3's 1408)
     cx, cy = EW
     tile = atlas[cy * TILE:(cy + 1) * TILE, cx * TILE:(cx + 1) * TILE]
     r0, r1 = band_of(tile)

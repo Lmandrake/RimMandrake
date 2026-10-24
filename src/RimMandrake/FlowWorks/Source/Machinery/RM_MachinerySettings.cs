@@ -82,6 +82,11 @@ namespace RimMandrake.FlowWorks.Machinery
 		/// SectionLayer_RM_PipeCentreStubs; RM_MapComponent_Hoses.DrawPortStub). Art only.</summary>
 		public static bool pipesUnderToCentre = true;
 
+		/// <summary>SCRAPPER_PIPE_REDRAW_ASKED_TWICE_NOW (owner 2026-10-23: a long run repeats the same spot every cell): a straight
+		/// pipe cell whose look ships a straights sheet draws one of its variants, picked from the cell alone
+		/// (PipeStraightVariants; Patch_Pipe_StraightVariants). Art only.</summary>
+		public static bool pipeStraightVariants = true;
+
 		/// <summary>PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE P2 (design/RimMandrake/flowworks_pipes_across_pits_design_2026-10-20.md): the
 		/// line crossing rules (RM_LineCrossing). On: rigid pipe and conduit are built on solid ground only (never a dug square,
 		/// a pit cover or any bridge deck); a flexible line (power cord) may lie on any bridge deck, rope included; a cover
@@ -166,6 +171,7 @@ namespace RimMandrake.FlowWorks.Machinery
 			Scribe_Values.Look(ref pipeLinksIntoMachines, "pipeLinksIntoMachines", true);
 			Scribe_Values.Look(ref joinFittings, "joinFittings", true);
 			Scribe_Values.Look(ref pipesUnderToCentre, "pipesUnderToCentre", true);
+			Scribe_Values.Look(ref pipeStraightVariants, "pipeStraightVariants", true);
 			Scribe_Values.Look(ref lineCrossingRulesEnabled, "lineCrossingRulesEnabled", true);
 			Scribe_Values.Look(ref pipePolesEnabled, "pipePolesEnabled", true);
 			Scribe_Values.Look(ref pipePoleMaxSpan, "pipePoleMaxSpan", 12f);
@@ -283,7 +289,7 @@ namespace RimMandrake.FlowWorks.Machinery
 					RM_PipePoles.RedrawSpans();   // the span shadows on the ground re-print now, not at the next unrelated dirty
 				}
 			}
-			bool linksWas = pipeLinksIntoMachines, fitWas = joinFittings, underWas = pipesUnderToCentre;
+			bool linksWas = pipeLinksIntoMachines, fitWas = joinFittings, underWas = pipesUnderToCentre, varWas = pipeStraightVariants;
 			list.CheckboxLabeled("Pipes run right up to the tanks and machines they join (art only)", ref pipeLinksIntoMachines,
 				"On: a pipe beside a tank, pump or still draws its run on to the shared edge, so you can see it joins. Off: it ends in a cap short of it. Needs a restart to take effect if it was off at startup.");
 			list.CheckboxLabeled("Connector fittings at liquid joins (art only)", ref joinFittings,
@@ -291,7 +297,9 @@ namespace RimMandrake.FlowWorks.Machinery
 				"each in its pipe look. Off: the joins draw no fittings. Art only.");
 			list.CheckboxLabeled("Pipes and hoses run on beneath tanks and machines to their centre (art only)", ref pipesUnderToCentre,
 				"On: a pipe or hose joining a tank, pump, bleed well, sprinkler or other liquid machine is drawn on underneath it to the middle of the building, so it shows through any see-through edges as if it plugs into the centre. Off: it stops at the building's edge.");
-			if ((linksWas != pipeLinksIntoMachines || fitWas != joinFittings || underWas != pipesUnderToCentre) && Current.ProgramState == ProgramState.Playing && Find.Maps != null)
+			list.CheckboxLabeled("Varied straight pipe runs (art only)", ref pipeStraightVariants,
+				"On: straight pipe in a look that has them (Scrapper) mixes a few different stretches and the odd repair, so a long run does not repeat the same pattern every square. Off: every straight square draws the same tile. Needs a restart to take effect if it was off at startup.");
+			if ((linksWas != pipeLinksIntoMachines || fitWas != joinFittings || underWas != pipesUnderToCentre || varWas != pipeStraightVariants) && Current.ProgramState == ProgramState.Playing && Find.Maps != null)
 			{
 				foreach (Map m in Find.Maps) m.mapDrawer.WholeMapChanged((ulong)MapMeshFlagDefOf.Buildings);
 			}
