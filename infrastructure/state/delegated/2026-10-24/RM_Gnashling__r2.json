@@ -1,0 +1,57 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 28.2,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.3727456
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Gnashling",
+ "decision": "ACCEPT",
+ "reasons": [
+  "opus band GOOD (model said good); blocking []; polish ['SCALE_WRONG']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "south.png": "0f77f7fa49f9dcfeba5edec398a9f96d0584a101bd380d4ebf0e982267d218e2",
+  "east.png": "f7c1ca11a79260a335ec76306aadbd755c7abbc714a2a8d7bc3c8b81556381c5",
+  "north.png": "1a95e84342ba7fe85545c17e08821b60d9227c667e4829e464bb4ee13020d6aa",
+  "scale.png": "5afdcea5ba4a4607e0e0eb31a6c361c03b8651125aa5a7d8a367381c3b5faf0a",
+  "facings.png": "56225c0a38b407d30948484b3ffaa5198141a1f78a9ba6f572cc26982345810c"
+ }
+}

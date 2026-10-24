@@ -1,0 +1,36 @@
+[
+ {
+  "id": "arteval_RM_Peeper__r2_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Peeper",
+  "prompt": "A painterly, realistic RimWorld creature sprite of the peeper, a once-predator gone soft and eye-studded, a docile browser of the goo margins. Its body is a slack, rounded former predator with a feline/canid-derived frame, a longer neck, and a narrow wolf-like muzzle gone flabby. Heavy loose hide sags over the once-lean frame into a rounded soft belly, with a relaxed posture and sturdy relaxed legs ending in padded paws with short, dulled, rounded claws. Worn, blunt fang tips show past the lips. The hide is visibly studded with open eyes across the whole body, so the eye-covered skin is the first thing noticed: eyes of varied sizes open in a row along the spine, scattered across both flanks and the haunches, and set on the upper legs, as well as a few on the head. The eyes along the back face upward and are all open and alert. The back line rises to one consistent body height. The creature is drawn at a single shared body scale across every facing: the side view is the same size as the front view and the rear view, with the same shoulder height, the same head size, the same torso depth and bulk, and the same standing leg length, so the side-view animal is as tall and as heavy-bodied as in the other facings, filling the same share of the frame. Clean dark outline in the painterly vanilla RimWorld style, on a transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_SIZE_JUMP, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_r2_03"
+ },
+ {
+  "id": "arteval_RM_Scaldhide__r2_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Scaldhide",
+  "prompt": "A single RimWorld creature sprite, the scaldhide, on a transparent background, in painterly vanilla RimWorld style, realistic, with a clean dark outline. The scaldhide is a low, broad, flat slab of scar tissue standing on four short, thick, sinewy, bare legs, a creature that walks out into the killing light and eats what it finds already cooked. The slab is a separate heavy mass resting on top of the legs: the legs rise as visible bare columns from the ground and meet the slab's flat underside, with a clear gap of open air between the ground and the underside of the slab, and no skirt, rim or shell edge enclosing them. The standing height is the same on every facing: the slab thickness and the leg length in the side view match the front and rear views exactly. The slab's upper surface is a flat, level plane with squared-off, near-vertical flanks, and the plate edges meet the top in sharp, irregular, jagged outlines with no roof slope, no curve and no descending rim. The upper surface is covered in thick, hard armour plates of clearly unequal size and shape, fused wrong at crooked, misaligned seams and off-centre: one flank is raised higher than the other and overlaps it, one large pale scar-white plate sits off to one side, and a smaller charred plate of a different shape sits on the opposite side, so the layout is lopsided on every facing. Each plate has a puckered, seared, glossy keloid-scar surface with cracked char and blistered edges, and raw red tissue shows in the crooked seams. At the leading end, a low, blunt, scarred feeding mouth and small dull eyes are set into the slab's own front face, flush with the slab mass. The opposite end is a plain edge of the slab with back plates and haunch legs; the rear view shows this plain plated edge with the eyes hidden. The creature is alien, a flat uneven scar-plated slab carried on legs, so no Earth animal comes to mind. Palette: scorched red-pink, pale scar-white, char brown and near-black seams.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_SIZE_JUMP, DEPARTURE_MISSING, F_SIZE_JUMP, DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_contagion_r2_03"
+ }
+]

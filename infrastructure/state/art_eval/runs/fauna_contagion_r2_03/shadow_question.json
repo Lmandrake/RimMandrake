@@ -1,0 +1,44 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RM_Peeper": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: F_SIZE_JUMP \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate r2 (image sha 8cae5949c1); F_SIZE_JUMP: On the shared-scale sheet the east profile stands about two-thirds as tall as south and north, and its body mass looks smaller rather than m"
+  },
+  "RM_Scaldhide": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: DEPARTURE_MISSING, F_SIZE_JUMP \u00b7 GPT regen, unsettled K1, K2",
+   "context": "judged candidate r2 (image sha 97e703f306); F_SIZE_JUMP: On the shared-scale panel the east profile is about 25\u201330% shorter from slab top to feet than south and north. Its legs look stubbier and th; DEPARTURE_MISSING: Plate edges are ragged and misfit, but the overall layout is mirror-symmetric (charred left, pale centre, charred right), and the top shows "
+  },
+  "RM_Sparkleech": {
+   "prefill": "keep",
+   "why": "PIPELINE: ACCEPT (regen round 2) \u00b7 Opus GOOD",
+   "context": "judged candidate r2 (image sha 2c3967ce97); "
+  }
+ }
+}

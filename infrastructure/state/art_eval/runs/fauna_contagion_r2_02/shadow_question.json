@@ -1,0 +1,44 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RM_Gorekite": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: CONSTRUCTED, F_INCONSISTENT \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate r2 (image sha 323db7b935); CONSTRUCTED: The domed canopy, its rib struts and the single curved 'handle' below add up to an umbrella or parasol silhouette, especially on south and n; F_INCONSISTENT: South's rib pattern is a central ridge with one arched panel, while north's is a radial web from the apex. The difference is small and could"
+  },
+  "RM_Meltgut": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: DEPARTURE_MISSING, F_SIZE_JUMP, STYLE_CARTOON \u00b7 GPT regen, unsettled K1, K2",
+   "context": "judged candidate r2 (image sha 30447fd8b5); DEPARTURE_MISSING: Departure 1 (house-sized, dwarfing pawns) is not visible in game because of the 1.8 drawSize. The art itself implies a huge size.; F_SIZE_JUMP: Measured height spread is 41%. Part of it is pose (the raised head on south, the long low profile on east), but the south body mass also loo; STYLE_CARTOON: The front face has a heavy pouting, frowning lip and two round glossy black dot eyes on stalks, which gives a slightly comic, grumpy-charact"
+  },
+  "RM_OcularJelly": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: ALPHA_HALO, DEPARTURE_MISSING, F_INCONSISTENT \u00b7 GPT regen",
+   "context": "judged candidate r2 (image sha eaa755a8db); ALPHA_HALO: On black, the semi-transparent edge pixels of the tentacles and the haze cloud show bright saturated red and yellow colour values, a colour ; F_INCONSISTENT: The haze comes from directly under the eye on south and runs forward on east, but on north it sits as a separate pink cloud to the lower lef; DEPARTURE_MISSING: At full resolution the haze is a fairly dense, solid pink blob rather than a faint drifting mist."
+  }
+ }
+}

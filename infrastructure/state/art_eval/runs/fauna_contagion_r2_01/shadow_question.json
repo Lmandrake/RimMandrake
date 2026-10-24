@@ -1,0 +1,44 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RM_Fleshsop": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: ALPHA_HALO, DEPARTURE_MISSING \u00b7 GPT regen, unsettled K1, K2",
+   "context": "judged candidate r2 (image sha 2dc8952aa7); DEPARTURE_MISSING: The creature stands upright on its own two pooled legs. Its posture is hunched but self-supporting, with no sideways lean that implies it is; ALPHA_HALO: A thin bright-red fringe on some silhouette edge pixels, visible against black. It is not noticeable on the checkerboard or in game."
+  },
+  "RM_Gawpsack": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: DEPARTURE_MISSING, STYLE_OFF \u00b7 GPT regen, unsettled K1, K2",
+   "context": "judged candidate r2 (image sha 907b1e40da); DEPARTURE_MISSING: The eyes sit in raised fleshy sockets on an opaque skin surface rather than glimmering through a translucent membrane. North's bulges show n; STYLE_OFF: The wet, glossy surface and the uniformly spherical eyeballs lean slightly toward a 3D-render look rather than vanilla painterly."
+  },
+  "RM_Gnashling": {
+   "prefill": "keep",
+   "why": "PIPELINE: ACCEPT (regen round 2) \u00b7 Opus GOOD",
+   "context": "judged candidate r2 (image sha 0f77f7fa49); "
+  }
+ }
+}

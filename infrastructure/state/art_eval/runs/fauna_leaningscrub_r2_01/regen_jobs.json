@@ -1,0 +1,53 @@
+[
+ {
+  "id": "arteval_RM_Dustflutter__r2_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Dustflutter",
+  "prompt": "A dense burst of many identical small ash-grey dustflutters rising from the ground in one grey shiver, game sprite for RimWorld, transparent background. Painterly vanilla RimWorld style, realistic, matte surfaces with visible brush texture, varied grey values from pale dust to charcoal shadow, and a clean dark outline around every body. Each individual is a realistic alien invertebrate: a low, flattened, wide oval body pressed into the dirt with a shallow back, short flat lobes splayed around it, and small compact appendages tucked close to its underside. The head is a small dusty textured wedge with tiny matte dark compound eyes set flush into it, with a neutral facial structure and no mouth or expression. The colour is a dull ash-grey the same as the dusty ground, plain and unpatterned, with no bright markings. The bodies are small and numerous, all alike, a swarm lifting off the dirt rather than a single insect at rest. The front view shows the heads with eyes toward the viewer; the side view shows the flat profile of the low bodies; the rear view shows the shallow backs and haunches with the eyes hidden. Same flattened bodies and the same matte painterly ash-grey finish in every view.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: STYLE_CARTOON, STYLE_OFF, DEPARTURE_MISSING, STYLE_CARTOON, STYLE_OFF, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_r2_01"
+ },
+ {
+  "id": "arteval_RM_Fuzzrunner__r2_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Fuzzrunner",
+  "prompt": "A single fuzzrunner, a RimWorld creature sprite, painted in the hand-painted vanilla RimWorld style: realistic proportions, a few soft painterly fur masses with simplified natural shading, and a restrained clean dark outline. Transparent background.\n\nBody: a near-spherical, plump ball swollen round with stored fog-fat, with almost no neck or waist, reading as a ball rather than an elongated rodent. A dense, even fuzz coat covers everything, so the head, body and limbs merge into one soft round mass. The fur is rendered as broad painted clumps, not individual strands.\n\nSilhouette: a smooth, rounded pebble that could pass for a stone when it is still. The tail is a tiny stub sunk flush into the rump fur. The short feet are tucked beneath the coat, so the outline is one continuous rounded shape and the soft underside of the body rests on the ground.\n\nShoulders: broad and rounded, with the fur compressed and swept smooth in one direction, sleeker and flatter than the fluffy coat elsewhere, as if polished by pushing along narrow stem runs.\n\nFace: an oversized array of fine white and pale-grey whiskers is the dominant facial feature, larger than the eyes. The eyes are small, reduced and dark, because the animal never stands in open light. The rear view shows the back, haunches and flush tail stub, with the eyes hidden.\n\nEdges: the whiskers are cut out with clean alpha. Each hair fades to full transparency, and every edge pixel of fur and whisker holds only its natural local fur or whisker color.\n\nKeep the palette and body plan of the previous render unchanged.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: ALPHA_HALO, DEPARTURE_MISSING, ALPHA_HALO, DEPARTURE_MISSING, DEPARTURE_MISSING, STYLE_OFF",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_r2_01"
+ },
+ {
+  "id": "arteval_RM_Fuzzviper__r2_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Fuzzviper",
+  "prompt": "A single RimWorld creature sprite, the fuzzviper, a venomous ambush snake that passes itself off as a plant root. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background, one creature only, centered. The body is one knobbly, irregular, unevenly thick root: brown and earthy, tapering like a root, with two or three swollen knots along its length and a thin tapering tail end. The whole surface is covered in fine fuzz like root hairs, fine hairy texture on every part of the body. The head end is a blunt, rounded root tip with the same fuzz, barely different from the rest of the root, with two small dark eyes set low and half hidden in the fuzz. The creature lies pressed flat along a vertical tunnel wall, following the wall the way a root would. Scale is identical in every view: the body is one fixed length of about 1.0 drawSize unit and about one-eighth of that in thickness, with the same head-end breadth and the same swelling dimensions in all three views. Side view: the whole body length shown running horizontally along the wall. Front view, eyes toward the viewer: the same body seen end-on running away from the viewer along the wall, foreshortened to a short compact span, head-end swelling centered and prominent. Rear view, seen from behind: the same body seen from the tail end, foreshortened to the same short compact span as the front view, tail taper and the same knobby swellings visible, eyes hidden. All three views are the same root body at the same scale, differing only by orientation and foreshortening.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_SIZE_JUMP, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_r2_01"
+ }
+]

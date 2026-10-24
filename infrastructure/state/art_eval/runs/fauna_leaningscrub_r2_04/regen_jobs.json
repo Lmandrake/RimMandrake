@@ -1,0 +1,53 @@
+[
+ {
+  "id": "arteval_RM_Tikkit__r2_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Tikkit",
+  "prompt": "Painterly vanilla RimWorld sprite, realistic, clean dark outline, transparent background. A small loose cluster of five to seven identical tikkits, tiny living alien plains creatures of the clicking nation, at ground level. Each tikkit has a small blunt head with small, dull, matte dark eyes set low and partly shaded by the overlapping head plates, like the eyes of a real small armoured animal, and only short, stiff sensory stubs, set on a squat, compact, low-slung body whose belly is close to the ground. Each body is built of overlapping dry, hard, ridged plates, like a seed pod or pinecone, in pale straw and bone-brown tones with darker ridge lines; the shoulders and flanks show interlocking serrated scutes that could rub together and click, and this ridged plating is the dominant feature of every body. The upper body is bare plate, wingless. All legs are short, similar in length and tucked close under the body. The creatures sit on bare dry ground beneath a few low blades of dry plain grass, the grass leaves overlapping in an arch and sheltering them, so they are hidden under the canopy and not perched on the stems. The grass blades are tan and straw coloured, and their soft edges fade to transparent in that same tan with no other hue at the edge. The cluster reads as one patch of the swarm, every individual the same creature, with the same grass, the same pale straw and bone-brown palette and the same soft organic silhouette. The composition fills the canvas: the grass arch and the swarm beneath it stand about 500 px tall, at the same large scale as the other facing views, with only a thin transparent margin around it. Muted dry-plains palette.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_SIZE_JUMP, ALPHA_HALO, STYLE_CARTOON",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_r2_04"
+ },
+ {
+  "id": "arteval_RM_TunnelSnake__r2_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_TunnelSnake",
+  "prompt": "RimWorld creature sprite, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background, clean alpha cut-out with no scenery. A long, low ambush predator called the yanker, dormant in a tight, packed coil wedged into a single narrow gap. The coil is compressed side to side, as if shaped by the walls of a narrow corridor: a narrow, elongated rectangle-like oval whose two outer flanks run straight and approximately parallel, with the stacked bands pressed tight against them, giving a narrow corridor-shaped footprint. The body is a wide, flat ribbon, visibly broader than it is thick: shallow, stacked, strap-like bands with a flattened cross-section and a low-slung build. The same low resting posture is shown in every facing: the head lies just above the top coil, at the height of the top band, and the whole creature is a low flat mass of equal height, width and bulk whichever way it is turned. Front view: eyes toward the viewer, the blunt wedge-shaped head with toothed mouth resting on the top band. Side view: the head lies along the top turn of the coil at that same low height. Rear view, seen from behind: the back, the tapering tail end and the stacked bands fill the silhouette at the same low height, the head tucked low behind the top band and eyes hidden. Beneath the jaw is a pair of large, jointed, hooked grasping arms, like barbed mandible-claws (about a third of the head-to-coil length), tucked close beside the head inside the coil's narrow footprint so the seize-and-yank signature reads at standard zoom. A fringe of fine tactile filaments lies folded flat and close along the two parallel flanks, with the tips just reaching out at the edges. The flat bands taper to a tail end. The silhouette is alien, its own species: flat ribbon body, big grasping arms and a fringe of flank filaments. Sized to read about 2.7 cells.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_SIZE_JUMP, DEPARTURE_MISSING, F_SIZE_JUMP, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_r2_04"
+ },
+ {
+  "id": "arteval_RM_Vissler__r2_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Vissler",
+  "prompt": "A single RimWorld creature sprite on a transparent background, painterly vanilla RimWorld style, realistic, clean dark outline. The vissler is a small, low, slippery, smooth-skinned, soft-bodied walker with a rounded head, two small eyes and four short legs. Its body is compact and small, with a body mass of steady volume, upright short legs, a level head and a consistent back height, neither lowered nor stretched. It has exactly one dominant arm: a big muscular arm about as long as the whole body and three times as thick as a leg, ending in a clear grippable hand, the obvious thing a hand would close on. The giant arm grows from the creature's own left shoulder, and where it meets the shoulder, a distinct pale seam or collar ring marks the clean break-line where it comes off. On the creature's own right shoulder, a small pale bud shows an arm regrowing in place of a full limb. The other limbs are plain short legs. The creature reads as a small body attached to one oversized, sheddable arm. Muted earthy body palette, with a warm orange accent on the break-line collar. Side placement is the same in every view: the large ringed arm belongs to the creature's own left shoulder and the small bud to its own right shoulder. Profile view with the creature's head toward the right of the image: its right side faces the viewer, so the near flank shows the small pale regrowth bud on the near shoulder and nothing else arm-related, while the giant ringed arm grows from the far left shoulder, partly hidden behind the body, with its upper arm and hand reaching forward past the head and the orange-accented collar ring visible where the arm emerges beyond the chest and head silhouette.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_r2_04"
+ }
+]

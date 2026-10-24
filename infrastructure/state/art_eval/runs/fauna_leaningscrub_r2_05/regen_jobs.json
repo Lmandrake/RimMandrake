@@ -1,0 +1,19 @@
+[
+ {
+  "id": "arteval_RM_Vurra__r2_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Vurra",
+  "prompt": "A single RimWorld creature sprite: the vurra, a massive alien worm of uncertain origin, painted fresh in the painterly vanilla RimWorld style, realistic, on a transparent background. The sprite has a clean charcoal-dark outline, and every edge pixel blends from that outline or from the adjacent armor and ivory spike colour smoothly into transparency, so the silhouette is crisp and cleanly cut. The body is thick and long, many times the girth of a human arm and long enough to loom over a lone traveler, nowhere near earthworm scale. The head is a predator's head that can threaten someone, with a strong armored brow, a broad jaw and a menacing, watchful look. The skin is plainly alien: overlapping hard plates in slate-violet and bone-grey with a mottled, pitted, faintly glossy texture and darker ridges between the plates. The palette is cool and neutral throughout: slate-violet, bone-grey, ivory and charcoal. Along the underside runs a row of small, pale ivory spiked legs, short and sharp like bone thorns, evenly spaced, all the same size and shape, each with a clean charcoal outline and crisp edges against the transparent background, including the legs on the left side of the body in the rear view and the front view. The creature is neither fast nor frenzied: it is heavy, deliberate and menacing, body resting low with the head slightly raised. Reference: none; build the body from this description.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: ALPHA_HALO, ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_r2_05"
+ }
+]

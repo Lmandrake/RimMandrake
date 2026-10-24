@@ -1,0 +1,44 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RM_Suush": {
+   "prefill": "keep",
+   "why": "PIPELINE: ACCEPT (regen round 2) \u00b7 Opus WEAK: DUPLICATE, STYLE_EARTHLY \u00b7 GPT strong_accept",
+   "context": "judged candidate r2 (image sha 069ee5a5a4); DUPLICATE: East has nearly the same layout of inner lumps and strands as south; only the strands differ slightly.; STYLE_EARTHLY: The overall outline of a dome over trailing strands still suggests a jellyfish at a glance, although the closed globe and the glowing conten"
+  },
+  "RM_Vexxiss": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: F_INCONSISTENT, F_SIZE_JUMP, STYLE_OFF \u00b7 GPT regen, unsettled K1, K2, K3",
+   "context": "judged candidate r2 (image sha 53d2704e33); F_INCONSISTENT: On east the crystal clusters show a broad fan face lengthwise along the spine. On south and north the same clusters are just as broad and fa; F_SIZE_JUMP: North is 906 px tall against 859 px for south, and in the shared panel its body looks slightly bulkier and sits lower; STYLE_OFF: The plates are fairly uniform, repeated tiles with an even rendered texture, a little toward a 3D render"
+  },
+  "RM_Zisska": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: DEPARTURE_MISSING, F_INCONSISTENT, F_NORTH_FACE \u00b7 GPT regen, unsettled K2, K3",
+   "context": "judged candidate r2 (image sha a56a1dc83c); F_NORTH_FACE: A head with an elongated yellow snout plate sits at the bottom centre of north, facing the camera between the front feet. It is effectively ; F_INCONSISTENT: The shell profile changes between facings: a rounded dome on south, a low flat shield on east, a tall conical peak on north.; DEPARTURE_MISSING: South and north show a raised dome or conical shell, which reads as a tortoise. Only east shows the low, flat shield outline the departure a"
+  }
+ }
+}

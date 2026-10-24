@@ -1,0 +1,72 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 42.6,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.3984168
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 65.5
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 12.0,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1276427
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_TunnelSnake",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said good); blocking ['F_SIZE_JUMP', 'DEPARTURE_MISSING']; polish ['LEGIB_32']",
+  "gpt regen: unsettled ['K1', 'K2'], own blocking ['F_SIZE_JUMP', 'DEPARTURE_MISSING']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "south.png": "411307d3d898c4a0f9665d10d36f8fe311e703ee35029fbf240a64d454967f4c",
+  "east.png": "ce2a3a121a4e53a1d376772376f866d7f068f90d76876a34bdac885881af2f27",
+  "north.png": "db06e149518b78e072b5306627564ad2f1b3fdf72d00d24d78415553267de814",
+  "scale.png": "35746dc3b88be4bf4f46a87eafe751e1916b81954b5d86af4e2c8946e45fd8ba",
+  "facings.png": "3bd8930da9c65364cee9f305aaf0ff64dd6e6ddc83bc02ec3f236686cde724cf"
+ }
+}

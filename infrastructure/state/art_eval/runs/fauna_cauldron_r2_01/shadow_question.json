@@ -1,0 +1,44 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RM_DecayDrake": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: ALPHA_HALO, F_INCONSISTENT, F_SIZE_JUMP \u00b7 GPT regen, unsettled K3",
+   "context": "judged candidate r2 (image sha ba1d4d9f8d); F_INCONSISTENT: On east the wing lies folded flat on the flank. On south and north the wings stand out from the shoulders in a slightly spread pose.; ALPHA_HALO: Bubbling mash mounds are drawn as separate blobs on the ground around the feet in every facing, so they move with the pawn sprite.; F_SIZE_JUMP: The measured height spread is 40%, but east is a long, low profile whose width matches the bulk shown on the other facings, so this is the p"
+  },
+  "RM_Mullgoth": {
+   "prefill": "keep",
+   "why": "PIPELINE: ESCALATE (regen round 3) \u00b7 Opus WEAK: DEPARTURE_MISSING, DUPLICATE, STYLE_CARTOON \u00b7 GPT regen",
+   "context": "judged candidate r3 (image sha fc5132a36c); DEPARTURE_MISSING: The hair stops above the feet, and the four legs read as distinct hairy columns with visible dark soles, so they are not 'nearly hidden'.; STYLE_CARTOON: The lilac lichen clusters are regular, flower-like rosettes that look pasted on top of the moss rather than growing in it.; DUPLICATE: South and north have almost the same silhouette and composition; only the lichen placement differs a little."
+  },
+  "RM_Rhossak": {
+   "prefill": "keep",
+   "why": "PIPELINE: ACCEPT (regen round 2) \u00b7 Opus WEAK: DEPARTURE_MISSING \u00b7 GPT strong_accept",
+   "context": "judged candidate r2 (image sha 98fe563561); DEPARTURE_MISSING: The 'sprouting ground' is shown only as leaf tufts at each foot, not as wider spreading growth. That is acceptable because ground patches ar"
+  }
+ }
+}

@@ -1,0 +1,36 @@
+[
+ {
+  "id": "arteval_RM_Vexxiss__r2_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Vexxiss",
+  "prompt": "A single RimWorld creature sprite, the vexxiss, on a transparent background, in painterly vanilla RimWorld style, realistic, with a clean dark outline. The vexxiss is a squat, heavy, four-legged walker whose body is a lumpy hill of slag. Its hide is made of grown-together plates of slag-like smelter-scab and old bark. The plates vary widely in size, from large slabs to small chips, and fuse into one another like slag and bark grown together, with irregular merged seams. The colour varies in broad hand-painted patches through dark charcoal, rust and bark brown. The surfaces are painted in broad, simple material shapes, with selective detail on a few plate edges and seams, soft hand-painted shading in place of sculpted bevels, and a clear dark contour that stays readable at normal play scale. The head is a blunt, smooth, featureless wedge of plate that carries no eyes, and the body is equally smooth of eyes. The silhouette is irregular and lumpy, with stacked plates breaking the outline, and the body has no clean domed shell. Down the midline of the back stands a single row of upright translucent pale crystal fans, each rooted at a fixed point on the spine, tallest near the shoulders and smaller near the haunches. Each fan is a flat, flared plate of four to six blades, splayed outward from a shared base like a vent grille, with its broad face lying lengthwise along the back. In the side view the full broad fan face is shown. In the front view, with the eyeless head toward the viewer, and in the rear view, seen from behind, the fans are seen nearly edge-on, as thin narrow upright blades stacked one behind another down the centreline of the back. The crystal fan edges are cleanly cut out against the transparent background, with crisp antialiased edges tinted the same pale translucent colour as the adjacent crystal blade. The legs are thick, planted columns of plate ending in broad, heavy feet, with the same foot size, the same limb thickness and the same standing height on every leg, all resting on one ground line. Front, rear and side views show the same animal at the same scale, with the same shoulder height, torso mass, leg thickness and foot size, filling about 80% of the canvas height, and all feet on the same baseline. The palette, the plate colours, the lumpy slag silhouette and the eyeless head match the previous render.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_INCONSISTENT, F_SIZE_JUMP, STYLE_OFF, F_INCONSISTENT, F_SIZE_JUMP, STYLE_OFF",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_cauldron_r2_02"
+ },
+ {
+  "id": "arteval_RM_Zisska__r2_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Zisska",
+  "prompt": "A single RimWorld creature sprite, the zisska, a low plated stone-eating grazer, on a transparent background. Painterly vanilla RimWorld style, realistic, clean dark outline. The body is one low, very wide, flat shield, about three times as wide as it is tall, a broad flat slab of stone plating with a nearly level top and a very slight rise at the centre. The carapace is barely higher than the short legs and hugs the ground, with the same low shell height, the same width and the same body volume in every view: the front view, the side view and the rear view all show this one flat shield at one shared scale. A broad scalloped apron of plates spreads outward from the centre and sits close to the ground, its rim nearly touching the surface, and the short legs are mostly hidden beneath the plated edge. Seen from the front, the flat shield reads as a wide low slab with the head and shoulders only slightly above the plate rim; seen from behind, it shows the same wide flat slab, with the short tail and heavy haunches at the back edge and the eyes hidden. Each plate is rough, matte, grey-brown stone with a granular, pitted surface and several concentric mineral rings like a cut agate or geode. Bright sulphur-yellow mineral crust builds up in the plate seams and rings and coats the snout plate and the mouth. The head is carried low and nose-down against the ground, with small eyes, and ends in a broad, flat rasping snout plate whose mouth is rimmed in yellow mineral. The overall form is a flat, wide stone disc pressed to the ground with a broad scraper snout. Even soft lighting, the creature centred and filling the frame by its width, nothing else in the image.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_INCONSISTENT, DEPARTURE_MISSING, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_cauldron_r2_02"
+ }
+]

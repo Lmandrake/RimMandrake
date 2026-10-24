@@ -1,0 +1,17 @@
+{
+ "RM_Fleshsop": [
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Fleshsop_r2_south/arteval_RM_Fleshsop_r2_south.png",
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Fleshsop_r2_east/arteval_RM_Fleshsop_r2_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Fleshsop_r2_north/arteval_RM_Fleshsop_r2_north.png"
+ ],
+ "RM_Gawpsack": [
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Gawpsack_r2_south/arteval_RM_Gawpsack_r2_south.png",
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Gawpsack_r2_east/arteval_RM_Gawpsack_r2_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Gawpsack_r2_north/arteval_RM_Gawpsack_r2_north.png"
+ ],
+ "RM_Gnashling": [
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Gnashling_r2_south/arteval_RM_Gnashling_r2_south.png",
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Gnashling_r2_east/arteval_RM_Gnashling_r2_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Gnashling_r2_north/arteval_RM_Gnashling_r2_north.png"
+ ]
+}

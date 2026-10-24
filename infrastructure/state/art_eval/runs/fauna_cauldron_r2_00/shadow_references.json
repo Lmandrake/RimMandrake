@@ -1,0 +1,17 @@
+{
+ "RM_BedBug": [
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_BedBug_r2_south/arteval_RM_BedBug_r2_south.png",
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_BedBug_r2_east/arteval_RM_BedBug_r2_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_BedBug_r2_north/arteval_RM_BedBug_r2_north.png"
+ ],
+ "RM_Bileworm": [
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Bileworm_r2_south/arteval_RM_Bileworm_r2_south.png",
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Bileworm_r2_east/arteval_RM_Bileworm_r2_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Bileworm_r2_north/arteval_RM_Bileworm_r2_north.png"
+ ],
+ "RM_CrystalMit": [
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_CrystalMit_r2_south/arteval_RM_CrystalMit_r2_south.png",
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_CrystalMit_r2_east/arteval_RM_CrystalMit_r2_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_CrystalMit_r2_north/arteval_RM_CrystalMit_r2_north.png"
+ ]
+}

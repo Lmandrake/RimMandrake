@@ -1,0 +1,53 @@
+[
+ {
+  "id": "arteval_RM_Shokka__r2_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Shokka",
+  "prompt": "A RimWorld creature sprite, painterly vanilla RimWorld style, realistic, clean thin dark brown outline, transparent background. The shokka is an ambush predator lying motionless and belly down, its body pressed completely flat to the ground, much wider than it is tall, with forelegs and hind legs folded under a compact body and hind paws tucked beside the haunches. A single slender tail lies flat along the ground. Its dappled pelt is in pale, dry barrens tones of sand, dust and pale grey-tan that blend into bare ground, and the pelt has a glossy sheen: bright soft specular highlights run along the back, shoulders and haunches where the light catches it, with the pale dappling visible beneath the shine. It rests at the edge of sparse low cover, facing open ground, perfectly still. All facings use the same low three-quarter camera, about 35 degrees above the ground, and the same body size: the front view shows the face with eyes toward the viewer; the side view shows the profile with the head forward; the rear view, seen from behind, shows low flat haunches, folded hind legs and the slender tail lying flat toward the viewer, the back rising in shallow perspective toward the head, eyes hidden, at the same width and height as the front view, a low wide shape no taller than the front silhouette. The cut-out edge is clean and crisp directly against full transparency, with no coloured fringe pixels around the silhouette.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_TOPDOWN, F_SIZE_JUMP, F_INCONSISTENT, DEPARTURE_MISSING, ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_r2_03"
+ },
+ {
+  "id": "arteval_RM_Surrik__r2_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Surrik",
+  "prompt": "A single RimWorld creature sprite of the surrik, a large root-crust swimmer, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. Body plan: a smooth, streamlined, heavy-bodied animal drawn half-sunk in a root-bound ground crust. The root mat parts and bulges around the body like a bow wave on water, with roots lifted into a rolling swell at the waterline. Massive broad shoulders form the leading edge that pushes through the mat. The head sits low, tucked beneath and behind the shoulder line. The skin is smooth and sleek, the forelimbs are streamlined fins or flippers held close to the body, and the haunches taper into a tail trailing in the mat. The mouth is a wide, low slit set on the underside of the head, opening upward to strike from below. The eyes are small and recessed. The expression is neutral, like an animal's. All views use the same low, angled game camera and the same body size, so the sprite occupies the same modest height in every facing. Front view (eyes toward the viewer): the broad shoulders and low head rise from the mat, with a neutral animal face, a wide straight mouth slit opening upward, small recessed eyes and a plain chin. Side view (profile): the shoulder hump is the forward-most mass, pushing the mat into a bow wave, with the head low beneath it and the upturned mouth opening upward. Rear view (seen from behind): the haunches and tail are toward the viewer, the shoulder lobes rise behind them, and the root mat bulges around the body at the waterline, at the same low angle and height as the front view. The mat edge fades cleanly into transparency with crisp dark outline pixels and no coloured fringe. Reference: none; build the body from this description.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_SIZE_JUMP, F_TOPDOWN, DEPARTURE_MISSING, ALPHA_HALO, STYLE_CARTOON",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_r2_03"
+ },
+ {
+  "id": "arteval_RM_Thornhold__r2_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Thornhold",
+  "prompt": "A single RimWorld colony-sim creature sprite, the thornhold: a low, narrow, elongated, weasel-long body built to thread tight tunnels, carried close to the ground on short strong legs. Brown fur on the body. A dense mane of long quills massed on the head, face and forequarters, all projecting forward, ahead of the muzzle, in a spread of points aimed at whatever approaches; the quills over the rump and flanks are short and lie flat. In the side view the longest quills reach past the nose in the facing direction; in the front view, eyes toward the viewer, the quills are foreshortened and point toward the viewer. A whip-like lash, a tail set with quills, is held raised and ready to strike. Each quill tip is visibly venomed: wet, stained yellow-green at the point, with the colour confined to the tips. The stance is braced and stubborn, head low and facing forward, never turning to flee. Every quill ends in a crisp, hard-edged point in its own yellow-green, and the cutout edge is clean, flat-coloured alpha matching the adjacent fur and quills, with the fur, face and tail edges keeping their own brown tones right up to the outline. Transparent background, painterly vanilla RimWorld style, realistic, clean dark outline, game-ready sprite at 1.0 draw size.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: ALPHA_HALO, ALPHA_HALO, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_r2_03"
+ }
+]

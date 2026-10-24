@@ -1,0 +1,44 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RM_BedBug": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: F_INCONSISTENT, F_TOPDOWN \u00b7 GPT regen, unsettled K1, K2",
+   "context": "judged candidate r2 (image sha 6cffff4f0a); F_INCONSISTENT: North shows only 4 legs (2 per side), east about 6\u20137 and south about 8\u201310, so the leg count changes between facings.; F_TOPDOWN: The north view is from a steep angle, with legs splayed symmetrically like a plan view. The abdomen tip still bulges toward the viewer."
+  },
+  "RM_Bileworm": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: ALPHA_HALO, F_SIZE_JUMP \u00b7 GPT regen, unsettled K2",
+   "context": "judged candidate r2 (image sha e1490b997e); F_SIZE_JUMP: North is 899 px tall against south's 648 (39% taller). It is the steep projection that stretches it, not the body.; ALPHA_HALO: A few isolated reddish fringe pixels along the alpha edge."
+  },
+  "RM_CrystalMit": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: DEPARTURE_MISSING, F_INCONSISTENT \u00b7 GPT regen, unsettled K3",
+   "context": "judged candidate r2 (image sha 9b005bb8d4); DEPARTURE_MISSING: On the front view the mandibles are short and small under the head and do not read as heavy crushing jaws; on east they are larger hooked pi; DEPARTURE_MISSING: The body plates are opaque speckled stone; only the crystal growths are translucent.; F_INCONSISTENT: South shows one tall central crystal spire rising behind the head; north shows two clusters on the left and right shoulders around a bare ce"
+  }
+ }
+}

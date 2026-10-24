@@ -1,0 +1,53 @@
+[
+ {
+  "id": "arteval_RM_Ribbonwhip__r2_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Ribbonwhip",
+  "prompt": "RimWorld creature sprite, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. The ribbonwhip is the thinnest predator on the plain. Its whole body is a single flat ribbon, like a blade of grass, no wider than one plant stem from the head to the tail tip, with a thin edge visible where it twists. The head is a small blunt taper of the same stem width, with two tiny eyes, and the middle sections are as slim as the ends. The ribbon rests across the top of a canopy of tall wind-bent plant stems and seed heads. All the stems lean one way in the same shallow curves, and the ribbon lies along their tips in that same shallow contour, sagging slightly between stems and bending over each stem it touches, so the contact points are visible. The whole body is held at canopy height by the stem tips, with the ground out of frame. The ribbon is pale olive-green like the stems, so it blends into the canopy line. Views: the south view shows the front, with the head and eyes toward the viewer. The north view shows the rear, seen from behind, with the tail end and the eyes hidden. The east view shows the side profile, with the body running left to right along the canopy line. Keep the palette and body plan of the previous accepted render.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_r2_02"
+ },
+ {
+  "id": "arteval_RM_Rollbug__r2_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Rollbug",
+  "prompt": "RimWorld creature sprite, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background, low game camera at a shallow three-quarter-height angle. A rollbug: a low, squat, dome-backed beetle-like scavenger whose body sits close to the floor, short legs folded in beneath its body sides, a plated tail end, dull brown-grey carapace with darker segment lines. It trundles forward pushing a packed ball with its front legs. The ball is a single sphere of compacted salvage about 1.6 times the length of the rollbug's body, clearly bigger than the bug and dominating the silhouette, built from bone and debris: a skull and jaw, curved ribs, a riveted metal plate, scraps of cloth and wire pressed into grey-brown packed grime. The ball has one fixed surface map and the bug and ball keep identical sizes on every facing. Front view (south), eyes toward the viewer, the ball beside and ahead of it with the skull and jaw side turned to the viewer. Side view (east), the bug in profile pushing the ball, the ball showing its ribs and riveted plate side, same ball diameter and body size as the front view. Rear view (north), seen from behind at the low game camera angle: the tail plate and domed back seen at a slant, legs tucked beneath the body sides, eyes hidden, the ball ahead showing its far side with a long leg bone, a cracked helmet shell, a coil of wire, a pelvis and tangled scrap cloth, a different arrangement from the skull and rib sides.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_SIZE_JUMP, DUPLICATE, F_TOPDOWN, F_SIZE_JUMP, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_r2_02"
+ },
+ {
+  "id": "arteval_RM_Shirrel__r2_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Shirrel",
+  "prompt": "RimWorld creature sprite, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background, single creature centered, top-down three-quarter game view. Subject: the shirrel, a plains glider that climbs a sweetline tree and opens like a kite to cross country on the wind. Body plan: a compact, wiry, tree-climbing body with strong gripping limbs ending in hooked, clasping digits suited to clinging to tree trunks, a narrow tapered head with small side-set eyes, and a short, slim, non-bushy tail. Its frame is made of stiff, spar-like struts that fold along the body. GROUND VIEWS (front view with eyes toward the viewer, side view, rear view seen from behind with the back and haunches showing and eyes hidden): the creature is closed into a compact folded bundle, the struts gathered tight against the flanks and back, no sail visible, body low and neat. FLIGHT / GLIDING VIEW: the creature is opened into one large flat, kite-shaped diamond sail seen from above; four stiff spar-like struts run from the central body out to the four corners of the diamond, a long spine strut along its length and a cross strut across its width, and the membrane is stretched taut and flat between the struts like cloth on a kite frame, with the head at the leading point, the tail at the trailing point, and the gripping limbs clamped along the spars. Colors: dry plains-grass tan and dusty brown membrane with darker brown struts and a paler underside, consistent across every view. Reference: none; build the body from this description.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_leaningscrub_r2_02"
+ }
+]
