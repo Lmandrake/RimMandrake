@@ -68,14 +68,32 @@ def biome_roster(xmlpath: str):
     return out
 
 
-def build_spec(defname: str, things, kinds, tex, outdir: Path) -> dict:
+def ledger_kept_install(files: list):
+    """[{mod, rel, sha}] for every file the art ledger says the owner kept (PROTECTED); None when the ledger could
+    not be read (UNMEASURED — the caller must not read that as 'not kept')."""
+    import hashlib
+    try:
+        import artledger as L
+        idx = L.Index()
+    except Exception:
+        return None
+    out = []
+    for p in files:
+        sha = hashlib.sha256(Path(p).read_bytes()).hexdigest()
+        if idx.protected(sha):
+            out.append({"mod": mod_of(p), "rel": p.split("/Textures/", 1)[1], "sha": sha})
+    return out
+
+
+def build_spec(defname: str, things, kinds, tex, outdir: Path, kept_lookup=ledger_kept_install) -> dict:
     f, d = things[defname]
     label = d.findtext("label")
     desc = " ".join((d.findtext("description") or "").split())
-    paths, draws = [], []
+    paths, draws, classes = [], [], []
     for _, k in kinds.get(defname, []):
         for bg in k.iter("bodyGraphicData"):
             paths.append(bg.findtext("texPath"))
+            classes.append((bg.findtext("graphicClass") or "Graphic_Multi").strip())
             ds = (bg.findtext("drawSize") or "1").replace("(", "").replace(")", "").split(",")
             draws.append(float(ds[0]))
     adult = max(range(len(draws)), key=lambda i: draws[i])
@@ -84,22 +102,36 @@ def build_spec(defname: str, things, kinds, tex, outdir: Path) -> dict:
     flyer = "flyingAnimationFramePathPrefix" in text or "MaxFlightTime" in text
     home = mod_of(f)
     imgs = {}
-    for face in ("south", "east", "north", "west"):
-        hits = tex.get(f"{tp}_{face}", [])
-        hits.sort(key=lambda p: mod_of(p) != home)
+    gclass = classes[adult]
+    if gclass == "Graphic_Single":
+        # the game draws exactly <texPath>.png for every facing: judge that one file, never _east/_north files
+        hits = sorted(tex.get(tp, []), key=lambda p: mod_of(p) != home)
         if hits:
-            imgs[face] = hits[0]
+            imgs["single"] = hits[0]
+    elif gclass == "Graphic_Random":
+        # texPath is a folder; the game picks one of its files at random
+        vs = sorted(p for k, v in tex.items() if k.startswith(tp + "/") for p in sorted(v, key=lambda p: mod_of(p) != home)[:1])
+        if vs:
+            imgs["variants"] = vs
+    else:
+        for face in ("south", "east", "north", "west"):
+            hits = tex.get(f"{tp}_{face}", [])
+            hits.sort(key=lambda p: mod_of(p) != home)
+            if hits:
+                imgs[face] = hits[0]
+    shown = imgs.get("south") or imgs.get("single") or (imgs.get("variants") or [None])[0]
     spec = {"subject": defname, "label": label, "template": "creature", "module": "flyer" if flyer else "walker",
-            "candidate": "live", "provenance": f"live installed art, texPath {tp} ({mod_of(imgs.get('south', f))})",
+            "candidate": "live", "provenance": f"live installed art, texPath {tp} ({mod_of(shown or f)}), graphicClass {gclass}",
             "description": desc, "tier": defname.split("_")[0] + "_", "invented": True,
             "size": {"drawSize": [draws[adult], draws[adult]]}, "source": f.replace(str(SRC) + "/", ""),
             "owner_kept": False}
     # true-scale panel beside the vanilla human
     import scale_panel as SP
     outdir.mkdir(parents=True, exist_ok=True)
-    if imgs.get("east"):
+    scale_src = imgs.get("east") or imgs.get("single") or (imgs.get("variants") or [None])[0]
+    if scale_src:
         compact, full = outdir / f"{defname}_scale.png", outdir / f"{defname}_scale_full.png"
-        SP.render_panel(Path(imgs["east"]).read_bytes(), {"kind": "animal", "drawSize": (draws[adult], draws[adult])},
+        SP.render_panel(Path(scale_src).read_bytes(), {"kind": "animal", "drawSize": (draws[adult], draws[adult])},
                         compact, full)
         imgs["scale"] = str(compact)
     if flyer:
@@ -119,6 +151,14 @@ def build_spec(defname: str, things, kinds, tex, outdir: Path) -> dict:
         spec["images_flight_note"] = {k: len(v) for k, v in frames.items()}
         imgs["flight"] = flight
     spec["images"] = imgs
+    spec["graphic_class"] = gclass
+    # owner keeps come from the art ledger (art.py status PROTECTED), never a hard-coded False
+    files = [v for k, v in imgs.items() if isinstance(v, str) and k != "scale"] + list(imgs.get("variants") or [])
+    kept = kept_lookup(files) if kept_lookup and files else []
+    if kept is None:
+        spec["owner_kept_unmeasured"] = "art ledger unreadable: owner_kept NOT established"
+    elif kept:
+        spec["owner_kept"], spec["kept_install"] = True, kept
     bf = C.BRIEFS / f"{defname}.json"
     if bf.is_file():
         b = json.loads(bf.read_text())

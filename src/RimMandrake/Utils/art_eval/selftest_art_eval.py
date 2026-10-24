@@ -372,6 +372,44 @@ def main():
     except (ImportError, AttributeError) as e:
         check("art_sheet importable", False, repr(e))
 
+    # --- fauna_spec reads graphicClass and the art ledger's keeps (ART_EVAL_SPEC_FIX_GRAPHIC_SINGLE_FACINGS)
+    try:
+        import xml.etree.ElementTree as ET
+        import fauna_spec as FS
+        from PIL import Image
+        with tempfile.TemporaryDirectory() as td:
+            td = Path(td)
+            tdir = td / "src/Mod/M/Textures/X"
+            tdir.mkdir(parents=True)
+            def png(rel):
+                f = td / "src/Mod/M/Textures" / (rel + ".png"); f.parent.mkdir(parents=True, exist_ok=True)
+                Image.new("RGBA", (64, 64), (200, 50, 50, 255)).save(f); return str(f)
+            tex = {"X/One": [png("X/One")], "X/One_east": [png("X/One_east")], "X/One_north": [png("X/One_north")],
+                   "X/Rnd/a": [png("X/Rnd/a")], "X/Rnd/b": [png("X/Rnd/b")],
+                   "X/Multi_south": [png("X/Multi_south")], "X/Multi_east": [png("X/Multi_east")]}
+            def mk(name, gc, path):
+                thing = ET.fromstring(f"<ThingDef><defName>{name}</defName><label>l</label><description>d</description></ThingDef>")
+                gcx = f"<graphicClass>{gc}</graphicClass>" if gc else ""
+                kind = ET.fromstring(f"<PawnKindDef><race>{name}</race><lifeStages><li><bodyGraphicData><texPath>{path}</texPath>"
+                                     f"{gcx}<drawSize>1</drawSize></bodyGraphicData></li></lifeStages></PawnKindDef>")
+                return {name: (str(td / "src/Mod/M/Defs/a.xml"), thing)}, {name: [("f", kind)]}
+            kept = lambda files: [{"mod": "Mod/M", "rel": "r", "sha": "s"}]
+            t1, k1 = mk("RM_One", "Graphic_Single", "X/One")
+            sp = FS.build_spec("RM_One", t1, k1, tex, td / "o", kept_lookup=lambda f: [])
+            check("Graphic_Single judged on the single file only", list(sp["images"]) == ["single", "scale"], sp["images"])
+            check("single spec records the class", sp["graphic_class"] == "Graphic_Single")
+            t2, k2 = mk("RM_Rnd", "Graphic_Random", "X/Rnd")
+            sp = FS.build_spec("RM_Rnd", t2, k2, tex, td / "o", kept_lookup=lambda f: [])
+            check("Graphic_Random fills variants", len(sp["images"].get("variants", [])) == 2 and "south" not in sp["images"], sp["images"])
+            t3, k3 = mk("RM_Multi", None, "X/Multi")
+            sp = FS.build_spec("RM_Multi", t3, k3, tex, td / "o", kept_lookup=kept)
+            check("default class keeps the facing files", "south" in sp["images"] and "single" not in sp["images"], sp["images"])
+            check("a PROTECTED picture sets owner_kept + kept_install", sp["owner_kept"] is True and sp["kept_install"][0]["mod"] == "Mod/M", sp)
+            sp = FS.build_spec("RM_Multi", t3, k3, tex, td / "o", kept_lookup=lambda f: None)
+            check("unreadable ledger is UNMEASURED, not 'not kept'", sp["owner_kept"] is False and "owner_kept_unmeasured" in sp)
+    except ImportError as e:
+        check("fauna_spec importable", False, repr(e))
+
     print(f"{'PASS' if not FAILS else 'FAIL'}: art_eval selftest, {len(FAILS)} failure(s)")
     return 1 if FAILS else 0
 
