@@ -26,7 +26,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Fuzzrunner</defName>
     <label>fuzzrunner</label>
-    <description>Nothing on the plain is more common and nothing is harder to see. A fuzzrunner is born, fed, bred and dead without once standing in open light - its whole nation lives in the worn runs under the canopy, navigated by smell and whisker, walls of stems polished by ten thousand shoulders before it. It is round with fog-fat against the lean days, and when the wind falters it stops mid-stride and becomes a stone until the canopy moves again. Dig where the runs cross and you can live here. The locals do.</description>
+    <description>A small, round animal padded with fat, the fuzzrunner lives in worn tunnels beneath the fuzz canopy, finding its way by smell and whiskers. When the wind stops, it freezes until the canopy moves again.</description>
     <statBases>
       <MoveSpeed>5.2</MoveSpeed>
       <Mass>2.0</Mass>
@@ -121,7 +121,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Thornhold</defName>
     <label>thornhold</label>
-    <description>Most small things on the plain answer trouble by running. The thornhold answers it by refusing. It dens in the venomvine stands, threading galleries nothing larger can follow, and it meets whatever reaches in with a lash of venomed quills and no negotiation. A thornhold does not flee its nest, ever - trappers say you can dig one out with a shovel and it will still be facing you when you get there. Handled young, they extend the same stubbornness to a homestead's walls.</description>
+    <description>A small, quilled animal that nests in narrow galleries inside venomvine stands. It lashes intruders with venomous quills and will not abandon its nest, even when dug out. Raised young, it can be trained to guard a homestead.</description>
     <statBases>
       <MoveSpeed>3.6</MoveSpeed>
       <Mass>9</Mass>
@@ -208,7 +208,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Shokka</defName>
     <label>shokka</label>
-    <description>Every runway has to surface somewhere - a fog-shadow behind a shrub, a farm's pale wake, ground too dry to grow cover - and the shokka owns those crossings the way a ferryman owns a river. It lies flat in the last of the fuzz with its dappled pelt matching the barrens beyond, and it does nothing at all, sometimes for a day, until something small commits to the open. Locals butcher one warily and waste nothing: the pelt takes dye badly and light beautifully, and a coat of it is the closest a person gets to being hard to see out here.</description>
+    <description>A low, broad ambush predator with a dappled pelt that blends into bare ground. It lies motionless at gaps in the fuzz until a small animal crosses. Its pelt takes dye poorly but makes effective camouflage clothing.</description>
     <statBases>
       <MoveSpeed>5.6</MoveSpeed>
       <Mass>60</Mass>
@@ -302,7 +302,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Zellik</defName>
     <label>zellik</label>
-    <description>On an ordinary day the zellik sits hunched on a sweetline bough or a turbine head and looks like a folded umbrella nobody wants. The wind that feeds everything else starves it: a shivering canopy tells it nothing. Then a cyclone far over the horizon swallows the Hadley flow, the wind dies, the plain goes still - and the zellik goes up. Over a stalled canopy every footfall underneath is a ring on a pond, and it drops through the roof onto things that believed, until that hour, that the roof was theirs.</description>
+    <description>A hunched aerial predator whose folded membranes resemble a battered umbrella. It roosts on sweetline branches and turbine heads, unable to distinguish movement beneath the wind-tossed fuzz. During a Stall, it hunts the ripples that footsteps make in the still canopy and drops onto prey below.</description>
     <statBases>
       <MoveSpeed>4.0</MoveSpeed>
       <Mass>8</Mass>
@@ -479,7 +479,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Surrik</defName>
     <label>surrik</label>
-    <description>Below the runs there is one more floor. The surrik swims the root-bound crust itself, shouldering through the mat like water, and takes what it takes from underneath.</description>
+    <description>A burrowing predator that forces its way through the root-bound crust beneath the fuzz runs. It hunts from below.</description>
     <!-- LEANINGSCRUB_RUNWAY_BLOOM_VISUALS_1: the bloom's burrower. It breaks up out of the crust and leaves
          an exit hole where it surfaced (the only crust-swimmer in the cast; the crustweevil grazes ON it). -->
     <modExtensions>
@@ -664,7 +664,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Vissler</defName>
     <label>vissler</label>
-    <description>Grab a vissler and you are holding an arm. The rest of it is already gone, and the arm is still moving - twitching in the run with a will of its own, and everything hungry comes to the twitch. It regrows the arm in a season. Hunters buy them.</description>
+    <description>A grabbed vissler sheds the trapped arm and escapes while the severed limb keeps twitching, drawing hungry animals to it. The arm regrows in a season; hunters buy visslers for bait.</description>
     <statBases>
       <MoveSpeed>2.0</MoveSpeed>
       <Mass>0.6</Mass>
@@ -758,7 +758,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Dustflutter</defName>
     <label>dustflutter</label>
-    <description>Walk the fuzz and the ground ahead of you bursts - a hundred dustflutters up in one grey shiver, over your head, and down again forty paces on. They cannot really fly. They can only be somewhere else.</description>
+    <description>Small, pale, mothlike animals that shelter beneath the fuzz. Disturb a flock and it rises in a grey shiver, clearing the canopy before settling farther along the scrub; dustflutters manage only short bursts of flight.</description>
     <statBases>
       <MoveSpeed>3.0</MoveSpeed>
       <Mass>0.05</Mass>
@@ -850,7 +850,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Shirrel</defName>
     <label>shirrel</label>
-    <description>Most of the plain spends a gale hiding. The shirrel spends the year waiting for one. It climbs a sweetline tree, opens like a kite, and crosses country in an afternoon that would take it a season on foot.</description>
+    <description>A lean, long-tailed climber with broad membranes folded along its flanks. During a gale it launches from sweetline trees and spreads those membranes into a kite, crossing in an afternoon what would take a season on foot.</description>
     <statBases>
       <MoveSpeed>4.4</MoveSpeed>
       <Mass>6</Mass>
@@ -944,7 +944,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Crustweevil</defName>
     <label>crustweevil</label>
-    <description>The crust is a country too. The crustweevil grazes its lichens on a scale of centimeters, and the runway nations grow fat on the crustweevil.</description>
+    <description>A small, low-slung animal protected by overlapping shell plates. Crustweevils graze lichens from the root-bound crust and are eaten in turn by the small animals living beneath the fuzz.</description>
     <statBases>
       <MoveSpeed>1.4</MoveSpeed>
       <Mass>0.05</Mass>
@@ -1111,7 +1111,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Tikkit</defName>
     <label>tikkit</label>
-    <description>The plain is not silent, whatever the old surveys say - put your head under the canopy and it clicks, horizon to horizon, a dry chorus riding the wind. That is the tikkit nation talking to itself. About what, nobody has ever needed to know.</description>
+    <description>A small, hard-bodied animal with long antennae that lives beneath the fuzz canopy. Its dry clicks carry on the wind, joining a chorus that runs across the plain.</description>
     <statBases>
       <MoveSpeed>2.4</MoveSpeed>
       <Mass>0.04</Mass>

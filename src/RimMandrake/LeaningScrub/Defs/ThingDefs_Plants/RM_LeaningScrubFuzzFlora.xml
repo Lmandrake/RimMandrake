@@ -22,7 +22,7 @@
     <defName>RM_Whipfuzz</defName>
 <altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>whipfuzz</label>
-    <description>The between-plant grass of the quincunx: thin silver blades that lie almost flat in the wind and never stop moving.</description>
+    <description>Thin silver blades fill the gaps between the larger fuzz plants, lying almost flat in the prevailing wind. They ripple with each gust and fall still during the Stall.</description>
     <statBases>
       <MaxHitPoints>40</MaxHitPoints>
       <Flammability>0</Flammability>

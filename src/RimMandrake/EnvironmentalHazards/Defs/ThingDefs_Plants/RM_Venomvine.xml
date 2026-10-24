@@ -153,7 +153,7 @@
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_VenomvineThicket</defName>
     <label>venomvine thicket</label>
-    <description>The shrubland lineage of the venomvine, and the only thing on this plain that grows in a mass. Where the desert form scatters, this one closes: runner over runner over runner until the tangle is chest-high, matted into itself, and lightless inside. Its thorns carry the same sap. A womprat runs the tangle at speed and a person can force a way in if they are patient and do not mind bleeding; nothing bigger gets past the first arm's length of it. The settlements plant it instead of building walls.</description>
+    <description>A chest-high mass of venom-bearing thorn canes, runner tangled over runner until the interior is lightless. Small animals thread its gaps; a person can force a way through with patience and some bleeding. Settlements grow it as a living wall.</description>
     <statBases>
       <!-- "Nearly impossible to cut down", and denser than the desert form:
            the fortification reading in §7 ("living venomvine — transplantable

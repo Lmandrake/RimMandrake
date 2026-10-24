@@ -26,7 +26,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Cannok</defName>
     <label>cannok</label>
-    <description>Cannoks were small, aggressive predators native to the moon of Dxun. They had a habit of eating anything that could fit in their mouths and were known as pests, due to a high reproduction rate and notable curiosity. Cannoks were however hardy and able to survive the rigors of many worlds.</description>
+    <description>A squat, mottled predator with stalked eyes, a tooth-filled jaw and a ridge of thin fleshy spines. Curious, hardy and quick to breed, cannoks eat almost anything that fits in their mouths and readily become pests.</description>
     <statBases>
       <MoveSpeed>4.6</MoveSpeed>
       <MarketValue>250</MarketValue>

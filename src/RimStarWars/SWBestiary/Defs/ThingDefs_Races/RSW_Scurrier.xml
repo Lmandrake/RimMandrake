@@ -36,7 +36,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Scurrier</defName>
     <label>scurrier</label>
-    <description>The scurrier was a rodent native to the planet Tatooine. They were fast breeding, curious omnivores that many considered a pest. The males could be distinguished from females by their curved display horns. They were known to find their way aboard docked freighters and transports, thus propagating the scurrier population across the galaxy.</description>
+    <description>A small, hairless rodent from Tatooine, with long tubular ears, a flat pink nose and a long thin tail. Curious omnivores and prolific breeders, scurriers readily become pests and spread aboard docked freighters. Some have horns, thicker and more curved in males.</description>
     <statBases>
       <MoveSpeed>4.5</MoveSpeed>
       <MarketValue>35</MarketValue>

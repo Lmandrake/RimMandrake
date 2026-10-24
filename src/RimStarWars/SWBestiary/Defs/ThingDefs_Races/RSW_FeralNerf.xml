@@ -38,7 +38,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_FeralNerf</defName>
     <label>feral nerf</label>
-    <description>Nerfs were a species of antlered, herbivorous mammalia found all across the galaxy. Because of the nerf's ability to easily adapt to harsh environments, several defined sub-species existed and were often referred to as 'feral' or 'wild' variants of the same animal.</description>
+    <description>A stocky, antlered grazer with a low, shaggy head and coarse brown fur. Nerfs adapt easily to harsh conditions, and feral herds are found across the galaxy.</description>
     <statBases>
       <MoveSpeed>5</MoveSpeed>
       <MarketValue>300</MarketValue>

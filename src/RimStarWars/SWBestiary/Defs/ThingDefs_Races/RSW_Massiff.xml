@@ -51,7 +51,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Massiff</defName>
     <label>massiff</label>
-    <description>Massiffs were reptilian creatures found on both Geonosis and Tatooine, although it's planet of origin is unknown. Massiffs were reptiles that had coarse skin, large jaws, toothy mouths, big dark eyes and a line of hard spikes along their backs. Canine in appearance with an armored hide, the beasts could be domesticated and used for sentry and guard tasks and were often exported to other worlds for this purpose.</description>
+    <description>A low, armoured reptilian predator found on Tatooine and Geonosis, with powerful jaws and a crest of backward-raked spines. Fiercely loyal when trained, massiffs serve as guards and trackers.</description>
     <statBases>
       <MoveSpeed>5.0</MoveSpeed>
       <MarketValue>400</MarketValue>

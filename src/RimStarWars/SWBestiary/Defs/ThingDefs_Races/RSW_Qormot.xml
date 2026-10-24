@@ -40,7 +40,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Qormot</defName>
     <label>qormot</label>
-    <description>Qormots were omnivorous forest creatures from the planet Yeshocq. During the mating season their ferocity increased, usually making anyone bold (or foolish) enough to stray into Qormot territory a likely target. However, much to the dismay of the game hunters who exported these creatures to various worlds, their seasonal aggression diminished heavily when transplanted.</description>
+    <description>A stocky forest omnivore with a single forehead eye and long quills along its spine and flanks. It becomes especially aggressive during the mating season.</description>
     <statBases>
       <MoveSpeed>4.8</MoveSpeed>
       <MarketValue>150</MarketValue>

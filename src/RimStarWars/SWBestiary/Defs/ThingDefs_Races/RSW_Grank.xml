@@ -32,7 +32,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Grank</defName>
     <label>Grank</label>
-    <description>The Grank (or 'saw-toothed grank') were a medium-sized carnivore believed to have originated on the planet Naboo. They were a species of predatory scavengers with sharp teeth and powerful jaws. Despite their fearsome gnarled appearance they were very affectionate when domesticated. This made them popular pets and lead to them establishing wild populations on multiple worlds as a result.</description>
+    <description>A low-slung predator and scavenger native to Naboo, with saw-like teeth and jaws strong enough to crack shells. Its body hairs sense vibrations in the air and ground. Granks are kept as pets and zoo animals; escapees scavenge in the lower levels of Coruscant.</description>
     <statBases>
       <MoveSpeed>5.0</MoveSpeed>
       <MarketValue>250</MarketValue>

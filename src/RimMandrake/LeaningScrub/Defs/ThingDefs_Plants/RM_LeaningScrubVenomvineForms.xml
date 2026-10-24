@@ -158,7 +158,7 @@
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_HollowVenomvine</defName>
     <label>hollow venomvine</label>
-    <description>Old stands die from the inside and stand anyway: tubes of grey cane, galleries wide enough that the runway nations thread them like streets - and a person the Jawas' size can crawl where the streets go.</description>
+    <description>An old venomvine stand hollowed from within, its grey canes still standing. Small animals use the galleries as sheltered runs, and a small person can crawl through the widest passages.</description>
     <statBases>
       <MaxHitPoints>350</MaxHitPoints>
       <Flammability>0.1</Flammability>
@@ -209,7 +209,7 @@
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_CrownVenomvine</defName>
     <label>crown venomvine</label>
-    <description>Rarest of all: a stand that crowns. It climbs past man-height-and-more into a single black column and flowers at the top - the only flower this plain owns - and when the wind drops, the dustflutters mob it in a grey cloud you can see from a day's walk.</description>
+    <description>A rare venomvine that grows above human height as a single black column, with flowers clustered at its crown. During a Stall, dustflutters gather around the flowers in a dense grey cloud.</description>
     <statBases>
       <MaxHitPoints>800</MaxHitPoints>
       <Flammability>0.1</Flammability>

@@ -30,7 +30,7 @@
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_RearingVenomvine</defName>
     <label>rearing venomvine</label>
-    <description>At rest its canes lie low in long sunward sweeps. Push into it and the whole stand snaps upright against the lean, a black fan with pale bone-banded undersides standing straight up on a plain where nothing else does. It does not strike. It tells. Raiders threading a hedge of it announce themselves; so does anyone creeping in to rob a nest. Only the Gale, roaring the canopy to white noise, hides a rear.</description>
+    <description>Its black canes lie low in long sunward sweeps, then snap upright when disturbed, exposing pale, bone-banded undersides. It does not strike; the noise gives away anyone pushing through a stand. During a Gale, the wind can drown it out.</description>
     <statBases>
       <MaxHitPoints>500</MaxHitPoints>
       <Flammability>0.1</Flammability>
@@ -98,7 +98,7 @@
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_WalkingVenomvine</defName>
     <label>walking venomvine</label>
-    <description>A long low wedge of a stand: old man-high black cane at the tail, tapering sunward into a fringe of thin rust-ochre runners laid flat along the ground. Every Gale it lays new runners downwind and lets its oldest cane die back, so across the years it crawls the plain the way the wind blows. The young runners are soft and thornless, safe and quick to cut; trim the front and it goes nowhere. Plant one upwind of where you want a wall and the wind will build it for you.</description>
+    <description>A long, low wedge of venomvine, with man-high black cane at its rear and soft, thornless rust-ochre runners lying flat downwind. Each Gale adds runners at the front while the oldest cane dies behind, slowly carrying the stand across the plain. Cutting the runners stops its advance; an untrimmed stand planted upwind will grow into a wall.</description>
     <statBases>
       <MaxHitPoints>400</MaxHitPoints>
       <Flammability>0.1</Flammability>
@@ -167,7 +167,7 @@
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_HoardVenomvine</defName>
     <label>hoard venomvine</label>
-    <description>A squat black knot, man-high, its canes coiled inward like a fist instead of leaning out. Anything left lying in it or against it is slowly grown in - dropped gear, a raider's lost rifle, the scrap the nest-birds let fall, the clothes and weapons of whatever died inside - until it glints, cold and metallic, deep in the cane. It is a scrap nest with no bird. Cut it down and it gives back everything it ever kept.</description>
+    <description>A squat, man-high knot of black venomvine, its thorned canes coiled inward. It slowly grows around discarded equipment and debris, leaving metal glinting between the coils. Cutting it down returns everything trapped inside.</description>
     <statBases>
       <MaxHitPoints>600</MaxHitPoints>
       <Flammability>0.1</Flammability>
@@ -232,7 +232,7 @@
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_QuenchVenomvine</defName>
     <label>quench venomvine</label>
-    <description>Thick near-black cane swollen at every hand-span into knuckles that carry a faint wet slate-blue sheen. When fire touches the stand the knuckles burst and drench everything around in sap that smothers flame. Fire-walls stall against it; a hedge grown of it does not burn. Each stand bursts once and then stands cracked and scorched for days while it swells again - burn it twice and the second fire takes.</description>
+    <description>A venomvine with thick, near-black canes and swollen knuckles carrying a faint wet slate-blue sheen. Fire bursts the knuckles, releasing sap that smothers nearby flames. It takes days to refill, and the cracked, scorched stand burns if fire reaches it again before then.</description>
     <statBases>
       <MaxHitPoints>550</MaxHitPoints>
       <Flammability>0.1</Flammability>
@@ -300,7 +300,7 @@
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_SwornVenomvine</defName>
     <label>sworn venomvine</label>
-    <description>A venomvine that has been cut and trained: canes bound in lines, the top flat and level, small knots of pale undyed fibre tied along it as the planters' marks. It is the only venomvine anyone sows. Its thorns spare whoever carries its sap-mark and take everyone else - raider, beast or guest - with the full venom, so a sworn hedge is a wall whose gate is a smell. Whoever wears the mark goes through, whoever they are; a raider carrying stolen mark walks in like family. Wild sworn hedges are what dead settlements leave behind.</description>
+    <description>The only venomvine people sow: a level-topped hedge of bound canes marked with knots of pale, undyed fibre. Its thorns spare anyone carrying its sap-mark, including a raider with a stolen mark; everyone else receives the full venom. Wild hedges persist around abandoned settlements.</description>
     <statBases>
       <MaxHitPoints>500</MaxHitPoints>
       <Flammability>0.1</Flammability>

@@ -48,7 +48,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Pufferpig</defName>
     <label>Pufferpig</label>
-    <description>Pufferpigs were a non-sentient, herbivorous porcine species native to the planet Kyryll. Puffer pigs were occasionally bred for their meat, which was consumable by several sentient species and resulted in the animal being exported to numerous planets. The true value of a Puffer pig was it's ability to sniff out certain precious metals.</description>
+    <description>A small, barrel-bodied herbivore with a flexible snout capable of detecting precious minerals. When frightened, it inflates its body to deter predators.</description>
     <statBases>
       <MoveSpeed>3.0</MoveSpeed>
       <MarketValue>1000</MarketValue>

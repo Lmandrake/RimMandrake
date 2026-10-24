@@ -31,7 +31,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Anooba</defName>
     <label>anooba</label>
-    <description>Anoobas were aggressive pack predators that lived throughout the Outer Rim Territories. Opportunistic hunters as well as scavengers, these wolflike canines would attack virtually anything smaller than themselves (such as scurriers).</description>
+    <description>A wolflike pack predator with heavy forequarters, a bare, wrinkled muzzle and a coarse ridge of pale mane. Anoobas hunt and scavenge, readily attacking animals smaller than themselves.</description>
     <statBases>
       <MoveSpeed>5.0</MoveSpeed>
       <MarketValue>400</MarketValue>

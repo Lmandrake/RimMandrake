@@ -30,7 +30,7 @@
          (and the harvested item, itself a reskin of the base's). Edit gameplay on RM_Salvessa, never here. -->
     <defName>RSW_Plant_Nysyllin_Wild</defName>
     <label>wild nysyllin plant</label>
-    <description>The Nysillin plants also known as nysillim was a healing herb grown as a common crop plant across the galaxy.</description>
+    <description>Nysillin is a red healing herb grown as a common crop across the galaxy. Its slender green stalks carry closed salmon-red pods marked with dark spots.</description>
     <graphicData>
       <texPath>swplants/Nysillin</texPath>
     </graphicData>

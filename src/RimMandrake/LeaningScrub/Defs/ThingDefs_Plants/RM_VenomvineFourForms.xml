@@ -17,7 +17,7 @@
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_StranglerVenomvine</defName>
     <label>strangler venomvine</label>
-    <description>Canes thin as cord and long as a rope, no thicker than a wrist anywhere, laid round whatever stands beside them in tight turns. A strangler does not strike. It holds. Along a wall it climbs and tightens, a little more each day, until the mortar gives; round a tree it does not let go until the tree is down. Whoever keeps a wall keeps a pair of cutters for it.</description>
+    <description>A climbing venomvine with rope-long canes, no thicker than a wrist, wound tightly around nearby trunks and walls. It does not strike; its coils tighten a little each day until mortar cracks or the supporting tree falls. Walls need regular clearing with cutters.</description>
     <statBases>
       <MaxHitPoints>550</MaxHitPoints>
       <Flammability>0.1</Flammability>
@@ -80,7 +80,7 @@
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_WeeperVenomvine</defName>
     <label>weeper venomvine</label>
-    <description>Every cane ends in a slow bead of venom the colour of old tea, and the ground beneath is wet with it. A weeper never stops. Where it has stood a season there is a dark ring of pools, and nothing green grows in the ring. It is not dangerous to pass; it is dangerous to farm beside.</description>
+    <description>Every cane ends in a slow bead of tea-brown venom, keeping the ground beneath it wet. After a season, dark pools ring the stand and nothing green grows there. It is safe to pass, but dangerous to farm beside.</description>
     <statBases>
       <MaxHitPoints>550</MaxHitPoints>
       <Flammability>0.1</Flammability>
@@ -145,7 +145,7 @@
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_SleeperVenomvine</defName>
     <label>dead venomvine</label>
-    <description>A snarl of grey, dry, dead-looking venomvine, canes brittle and bleached. It looks like what a fire or a smothering leaves behind. It is not. Anything with weight that steps beside it wakes it, and it is alive and black and angry before the foot comes down.</description>
+    <description>A dormant snarl of venomvine with brittle-looking, bleached grey canes. It resembles a stand killed by fire or smothering, but nearby weight wakes it: the canes turn black before the next foot comes down.</description>
     <statBases>
       <MaxHitPoints>550</MaxHitPoints>
       <Flammability>0.1</Flammability>
@@ -248,7 +248,7 @@
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_LureVenomvine</defName>
     <label>lure venomvine</label>
-    <description>Among the black canes hang fruit as pale and soft as a pearl, and sweet enough to smell from across a field. Every grazer for a mile knows the smell. The fruit is the bait; the thicket is the trap, and what follows the grazers is the rest of the story.</description>
+    <description>A black-caned thicket bearing pale, soft fruit with a powerful sweet scent. The fruit draws grazers into the thorns.</description>
     <statBases>
       <MaxHitPoints>550</MaxHitPoints>
       <Flammability>0.1</Flammability>

@@ -26,7 +26,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Whisperbird</defName>
     <label>whisperbird</label>
-    <description>Whisper birds were energetic avians native to the moon Yavin 4. They were known for their radiant plumage and gained their name due to their seemingly noiseless flight. They used their dexterous tongue to emit their sweet, low-pitched song or call. These traits made them popular pets with avian enthausiasts and wild populations soon appeared from escapees on numerous worlds (even on polluted worlds like Coruscant).</description>
+    <description>A golden bird native to the rainforests of Yavin 4, with a bare blue-grey head and neck and a long trailing tail. It feeds on fish and weeds, flying almost silently and giving a low-pitched call.</description>
     <statBases>
       <MoveSpeed>3.0</MoveSpeed>
       <MarketValue>80</MarketValue>

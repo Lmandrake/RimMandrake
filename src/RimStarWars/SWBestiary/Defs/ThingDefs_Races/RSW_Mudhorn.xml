@@ -23,7 +23,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Mudhorn</defName>
     <label>mudhorn</label>
-    <description>Mudhorns were large horned creatures that originated from the planet Arvala-7. The eggs of mudhorns were considered a delicacy by Jawas. It was this reason that populations of these creatures were established on other worlds as a result of unscrupulous bartering deals.</description>
+    <description>A large, low-slung quadruped from Arvala-7, covered in matted brown fur and armed with a single pale horn. It lays one large, woolly-shelled egg per clutch, prized as a delicacy by Jawas.</description>
     <statBases>
       <MoveSpeed>4.0</MoveSpeed>
       <ComfyTemperatureMin>-25</ComfyTemperatureMin>

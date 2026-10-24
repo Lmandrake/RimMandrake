@@ -42,7 +42,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Pikobis</defName>
     <label>pikobis</label>
-    <description>Pikobi were fast-moving, flightless reptavians which were native to the swamps of Naboo and the jungles of Onderon. Pikobis also had long, pointed beaks lined with sharp teeth that were used to spear and hold onto slippery prey which it usually swallowed in one gulp. Due to their small size they were often able to hide as stowaways aboard large cargo ships, surviving by scavenging and escaping to multiple planets.</description>
+    <description>A small, flightless reptavian with long legs, a whip-like tail and a narrow, toothed beak. Native to Naboo's swamps and also found on Onderon, it runs, wades and swims after small prey, which it swallows whole.</description>
     <statBases>
       <MoveSpeed>5</MoveSpeed>
       <MarketValue>150</MarketValue>

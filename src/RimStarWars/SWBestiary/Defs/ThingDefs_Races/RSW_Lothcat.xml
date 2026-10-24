@@ -55,7 +55,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Lothcat</defName>
     <label>loth-cat</label>
-    <description>Loth-cats were a non-sentient feline species from the planet Lothal. They were small, temperamental creatures, and while at times friendly, were still able hunters with sharp teeth and claws. They were often kept as pets.</description>
+    <description>A small feline from Lothal, with a plump, fluffy body, tall pointed ears and thin, clawed legs. A temperamental hunter of loth-rats and other small animals, it is often kept as a pet.</description>
     <statBases>
       <MoveSpeed>4.5</MoveSpeed>
       <MarketValue>100</MarketValue>
