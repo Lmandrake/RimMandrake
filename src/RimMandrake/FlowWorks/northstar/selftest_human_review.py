@@ -201,6 +201,28 @@ def main():
         json.dump(d, open(dec, "w"))
         H.build(real["out"])
         ok(json.load(open(dec))["decisions"].get("dig_canal", {}).get("decision") == "wrong", "rebuild leaves an existing decisions file alone")
+
+        # a stale proof PASS must never overwrite a current-hash validation FAIL (GPT FF_validation_suite_1.2)
+        ns = os.path.join(tmp, "ns_fresh"); os.makedirs(ns)
+        cur = None
+        try:
+            sys.path.insert(0, os.path.join(H.REPO, "src", "RimMandrake", "Utils", "modcheck"))
+            import status as _STm
+            cur = _STm.mod_hash(H.HERE)
+        except Exception:  # noqa: BLE001
+            cur = None
+        if cur:
+            json.dump({"mod_hash": cur, "rows": [{"id": "X1", "status": "FAIL", "detail": "now"}]},
+                      open(os.path.join(ns, "validation_v2_result_20260101.json"), "w"))
+            pf = os.path.join(ns, "proof_old.json")
+            json.dump({"mod_hash": "0" * 64, "rows": [{"id": "X1", "status": "PASS", "detail": "old"}]}, open(pf, "w"))
+            os.utime(pf, (4102444800, 4102444800))   # the proof is even NEWER by mtime
+            old_ns = H.NSDIR; H.NSDIR = ns
+            try:
+                lab, rws = H.latest_result()
+            finally:
+                H.NSDIR = old_ns
+            ok(rws.get("X1", ("",))[0] == "FAIL", "stale proof PASS does not overwrite a current validation FAIL: %r" % (rws.get("X1"),))
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     print("\n%s: %d failure(s)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
