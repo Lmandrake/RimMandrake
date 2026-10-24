@@ -1200,6 +1200,10 @@ def v_rows(I, rows, pick, kv_all, disk_defaults):
 
 
 def l10(I, rows, pick, scheme):
+    # Re-pick: the V rows' 'unlit' scenario flicks fixtures[0] off and back on while paused, and a paused PowerNet never
+    # re-powers it, so the run-start pick's first fixture is dark by now (live run 1, 2026-10-23: L10 read null x8).
+    if not I.fixture and pick is not None:
+        pick = I.hook("pick")[0] or pick
     fid = I.fixture or ((pick or {}).get("fixtures") or [None])[0]
     ctl = (pick or {}).get("untaken")
     if fid is None:
