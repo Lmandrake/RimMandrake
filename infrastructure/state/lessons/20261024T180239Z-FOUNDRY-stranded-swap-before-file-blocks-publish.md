@@ -1,0 +1,2 @@
+A modlist_swap 'before' file (deployed/config/ModsConfig.before-tier-flowworks.xml) left dirty in a seat clone while another seat committed a different version blocks ./publish (reset --keep refuses). deployed/config/ModsConfig.swap-active.json records the md5 of the dirty bytes, so do not just overwrite it: copy aside, restore HEAD bytes, publish, put the bytes back (FOUNDRY 2026-10-24, backup D:/ClaudeWork/rimmandrake/backups/foundry_moved_aside_2026-10-24).
+home: rimworld-load-round
