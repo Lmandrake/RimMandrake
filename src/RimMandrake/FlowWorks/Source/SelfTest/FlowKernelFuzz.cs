@@ -97,7 +97,11 @@ namespace RimMandrake.FlowWorks.SelfTest
 		}
 
 		public bool IsNaturalLiquid(int idx) => natural[idx];
-		public bool CanSupply(int idx) { var b = BodyAt(idx); return b == null || RM_StockMath.CanSupply(b.limitless, b.stock, (b.fluid ?? activeFluid).vpt); }
+		/// <summary>DISABLED_LIQUID_FIX_LIMITLESS_SOURCE: a liquid switched off in Mod Settings (the adapter's InputAllowed): its
+		/// natural bodies supply nothing and read as RM_FlowKernel.LevelBodyDisabled. Null = every liquid allowed.</summary>
+		public Fluid disabledFluid;
+		private bool Disabled(int idx) => disabledFluid != null && ((BodyAt(idx)?.fluid ?? activeFluid) == disabledFluid);
+		public bool CanSupply(int idx) { if (Disabled(idx)) return false; var b = BodyAt(idx); return b == null || RM_StockMath.CanSupply(b.limitless, b.stock, (b.fluid ?? activeFluid).vpt); }
 		public bool TryDebitLevel(int idx)
 		{
 			var b = BodyAt(idx);
@@ -119,7 +123,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 		public void ComponentResolved(List<int> component) { }
 
 		// ── RM_ILevelWorld (the exact kernel): a limited body's dL, its bed histogram over its undug cells ──
-		public int LevelBodyOf(int src) { var b = BodyAt(src); return b == null || b.limitless ? -1 : b.id; }
+		public int LevelBodyOf(int src) { if (Disabled(src)) return RM_FlowKernel.LevelBodyDisabled; var b = BodyAt(src); return b == null || b.limitless ? -1 : b.id; }
 		public long BodyStockDl(int body) => bodies[body].Dl();
 		public void SetBodyStockDl(int body, long dl) => bodies[body].SetDl(dl);
 		public int BedAt(int src) => bed.TryGetValue(src, out int v) ? v : RM_FlowKernel.Superdeep;

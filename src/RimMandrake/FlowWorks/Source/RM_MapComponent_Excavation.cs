@@ -3008,7 +3008,7 @@ namespace RimMandrake.FlowWorks
 			// FLUID_DISABLE_ALL_INPUTS_1: a natural body of a liquid switched off feeds no new liquid: not a node at all.
 			if (!InputAllowed(DonorFluid(c, true) ?? ActiveFluid))
 			{
-				return -2;
+				return RM_FlowKernel.LevelBodyDisabled;
 			}
 			return stock == null ? -1 : stock.LevelBodyOf(map, c, this);
 		}

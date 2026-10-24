@@ -81,5 +81,18 @@ namespace RimMandrake.FlowWorks.Drilling
 			if (s.reserve <= 0f) return Block.ReserveSpent;
 			return Block.None;
 		}
+
+		/// <summary>DRILL_FILL_FIX_LOSES_FRACTIONAL_BRIM: the pending units a drill write actually spent -- the decilitres that
+		/// LANDED in the outlet (<paramref name="afterDl"/> - <paramref name="beforeDl"/>) in level units, never the levels it
+		/// asked for. Filling a part-notch outlet to its brim lands less than a whole level (the brim write clears the part
+		/// notch); charging the whole level burned the difference unlogged. Never negative.</summary>
+		public static float SpentUnits(long beforeDl, long afterDl, long dlPerLevel, float unitPerLevel)
+		{
+			if (afterDl <= beforeDl || dlPerLevel <= 0)
+			{
+				return 0f;
+			}
+			return (float)((afterDl - beforeDl) / (double)dlPerLevel) * unitPerLevel;
+		}
 	}
 }

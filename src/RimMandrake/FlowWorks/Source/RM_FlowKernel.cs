@@ -40,7 +40,8 @@ namespace RimMandrake.FlowWorks
 	public interface RM_ILevelWorld
 	{
 		/// <summary>The LIMITED body behind source <paramref name="src"/> (an id), or -1 when it never runs down (limitless, or
-		/// the source budget off).</summary>
+		/// the source budget off), or <see cref="RM_FlowKernel.LevelBodyDisabled"/> (-2) when its liquid is switched off in Mod
+		/// Settings and it feeds nothing at all.</summary>
 		int LevelBodyOf(int src);
 		/// <summary>The body's water, a whole number of decilitres.</summary>
 		long BodyStockDl(int body);
@@ -148,6 +149,9 @@ namespace RimMandrake.FlowWorks
 		public Func<int, int, bool> returnLevel;
 		/// <summary>Superdeep: what a natural source reads as (RM_ExcavationDepth.Superdeep).</summary>
 		public const byte Superdeep = 4;
+		/// <summary>DISABLED_LIQUID_FIX_LIMITLESS_SOURCE: <see cref="RM_ILevelWorld.LevelBodyOf"/>'s answer for a source whose
+		/// liquid is switched off in Mod Settings (FLUID_DISABLE_ALL_INPUTS_1): not a node at all, never a limitless mouth.</summary>
+		public const int LevelBodyDisabled = -2;
 
 		/// <summary>PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT: the deepest a dug square can be (RM_DigDepthMath.MaxDigCeiling, 20 m).
 		/// The notch-level paths (exact level off) bucket surfaces over 0..this; they assumed 0..4 and indexed out of range on a
@@ -780,6 +784,10 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			int bid = lw.LevelBodyOf(s);
+			if (bid == LevelBodyDisabled)
+			{
+				return;   // DISABLED_LIQUID_FIX_LIMITLESS_SOURCE: a switched-off liquid is no node, never a limitless mouth
+			}
 			if (bid < 0)
 			{
 				exLimMouths.Add(cell);
