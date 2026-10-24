@@ -162,6 +162,54 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(!m.Contains("LoadSaveMode.PostLoadInit"), "can-fail: PostLoadInit sees fresh null locals, so the rebuild never ran");
                 Assert(m.Contains("cachedMap") && m.Contains("cachedComp.map == map"), "P1: Of() keeps a one-slot map-component cache");
             });
+
+            // SPRINKLER_HEAD_FIX_FLOATS_OFF_CURVE: the head sits on the pipe's drawn centreline (pixels: Tools/selftest_pipe_seat.py)
+            Case("Sprinkler_seat_on_the_drawn_bend", () =>
+            {
+                string[] looks = { "Scrapper", "Industrial", "Modern", "Futuristic" };
+                foreach (string look in looks)
+                {
+                    Assert(RM_PipeSeatMath.ElbowArc(look, out float k, out float r), "arc known for " + look);
+                    for (int mask = 0; mask < 16; mask++)
+                    {
+                        RM_PipeSeatMath.Seat(mask, look, out float x, out float z);
+                        if (RM_PipeSeatMath.IsElbow(mask))
+                        {
+                            float sx = (mask & 2) != 0 ? 1f : -1f, sz = (mask & 1) != 0 ? 1f : -1f;
+                            double toCorner = Math.Sqrt((k * sx - x) * (k * sx - x) + (k * sz - z) * (k * sz - z));
+                            Assert(Math.Abs(toCorner - r) < 1e-4, look + " mask " + mask + ": seat on the elbow arc");
+                            Assert(Math.Abs(x * sz - z * sx) < 1e-6 && x * sx > 0.1f, look + " mask " + mask + ": seat on the diagonal, toward the bend");
+                        }
+                        else if (mask != 0)
+                        {
+                            Assert(x == 0f && z == 0f, look + " mask " + mask + ": a straight, tee, cross or end sits at the centre");
+                        }
+                    }
+                }
+                RM_PipeSeatMath.Seat(0, "Scrapper", out float lx, out float lz);
+                Assert(Math.Abs(lx - 4f / 132f) < 1e-6 && Math.Abs(lz + 4f / 132f) < 1e-6, "Scrapper lone flange 4 px SE");
+                RM_PipeSeatMath.Seat(3, "Scrapper", out float sx3, out _);
+                RM_PipeSeatMath.Seat(3, "Modern", out float mx3, out _);
+                Assert(Math.Abs(sx3 * Math.Sqrt(2) - 0.2071) < 1e-3 && Math.Abs(mx3 * Math.Sqrt(2) - 0.2761) < 1e-3, "measured diagonal seats");
+                RM_PipeSeatMath.Seat(3, "Rusty", out float ux, out float uz);
+                Assert(ux == 0f && uz == 0f && !RM_PipeSeatMath.ElbowArc(null, out _, out _), "can-fail: an unknown look is never guessed");
+                Assert(RM_PipeSeatMath.IsElbow(3) && RM_PipeSeatMath.IsElbow(12) && !RM_PipeSeatMath.IsElbow(5) && !RM_PipeSeatMath.IsElbow(7), "elbow masks");
+
+                XDocument st = XDocument.Load(Path.Combine(ModRoot, "Defs", "Machinery", "RM_UniversalPipeStyles.xml"));
+                var tex = st.Descendants("texPath").Select(e => e.Value).Where(v => v.Contains("UniversalPipe_Atlas")).ToList();
+                Assert(tex.Count == 4 && tex.Select(RM_PipeSeatMath.LookOfTexPath).OrderBy(v => v).SequenceEqual(looks.OrderBy(v => v)), "each pipe style atlas names its look");
+                Assert(RM_PipeSeatMath.LookOfTexPath("RimMandrake/FlowWorks/Sprinkler/Scrapper/RM_SprinklerHead") == null, "can-fail: a non-pipe path names no look");
+            });
+            Case("Sprinkler_seat_wired_to_head_and_faucet", () =>
+            {
+                XDocument d = XDocument.Load(Path.Combine(ModRoot, "Defs", "Sprinklers", "RM_Sprinklers.xml"));
+                XElement head = d.Descendants("ThingDef").First(e => (string)e.Element("defName") == "RM_SprinklerHead");
+                Assert((string)head.Element("thingClass") == "RimMandrake.FlowWorks.Sprinklers.Building_RM_SprinklerHead", "the head prints through the seat");
+                string b = Src("Sprinklers/Building_RM_SprinklerHead.cs");
+                Assert(b.Contains("gl.ShouldLinkWith(c, pipe)") && b.Contains("GenAdj.CardinalDirections[i]"), "the mask is the one the pipe is drawn with");
+                Assert(b.Contains("comp.DontDrawParent()") && b.Contains("comp.PostPrintOnto(layer)") && b.Contains("ShadowGraphic"), "the rest of ThingWithComps.Print is kept");
+                Assert(Src("Thirst/Building_RM_PipeFaucet.cs").Contains("override void Print(SectionLayer layer) => Sprinklers.RM_PipeSeat.Print(layer, this)"), "the faucet sits on the bend too");
+            });
         }
 
         private static KeyValuePair<string, int> KV(string k, int v) => new KeyValuePair<string, int>(k, v);
