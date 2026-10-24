@@ -41,6 +41,10 @@ OLD_MARKER = '{"version": 5, "created_at": "2026-10-16T14:47:43.844442100+00:00"
 _REAL_ENSURE = ci.ensure_home_sandbox
 ci.ensure_home_sandbox = lambda home, base=None: (True, "selftest stub")
 
+# The foreign-copy guard's thumbnail index must never be written into the real scratch dir by a test.
+_THUMB_TMP = tempfile.TemporaryDirectory(prefix="selftest_thumbs_")
+ci.FOREIGN_THUMB_DIR = Path(_THUMB_TMP.name)
+
 
 def give_state(root: Path, marker: str = CUR_MARKER, users: str = '{"version": 5}') -> Path:
     """Write a sandbox state (marker + sandbox_users.json) into root."""
@@ -61,9 +65,9 @@ def check(name: str, cond: bool, detail: str = "") -> None:
         FAILURES.append(name)
 
 
-def tiny_png(path: Path, w: int = 4, h: int = 4) -> Path:
+def tiny_png(path: Path, w: int = 4, h: int = 4, rgba=(255, 0, 0, 255)) -> Path:
     """A real, valid RGBA PNG — png_info() must be able to read it back."""
-    raw = b"".join(b"\x00" + bytes([255, 0, 0, 255]) * w for _ in range(h))
+    raw = b"".join(b"\x00" + bytes(rgba) * w for _ in range(h))
 
     def chunk(tag: bytes, data: bytes) -> bytes:
         return (struct.pack(">I", len(data)) + tag + data
@@ -258,12 +262,135 @@ def test_timeout_still_harvests() -> None:
             def agent_postprocesses(prompt, images, workdir, timeout, verbose,
                                     model=None, hm=None, reasoning_effort=None, **_kw):
                 tiny_png(home / ci.GENERATED_SUBDIR / "sess6" / "exec-6.png", 8, 8)
-                tiny_png(Path(workdir) / "art6.png", 2, 2)
+                tiny_png(Path(workdir) / "art6.png", 2, 2, (0, 0, 255, 255))  # a colour no cache file has
                 return 0, "", False
             ci.run_codex = agent_postprocesses
             out6 = Path(td) / "art6.png"
             rc = ci.do_image(args_for(out6))
             check("untraceable agent file is kept", rc == 0 and ci.png_info(out6)["width"] == 2, f"rc={rc}")
+    finally:
+        ci.run_codex, ci.base_codex_home = real_run_codex, real_base
+        ci.HARVEST_GRACE_S = real_grace
+
+
+def pattern_png(path: Path, seed: int, w: int = 96, h: int = 96) -> Path:
+    """A busy, seed-unique opaque RGBA picture, so two seeds never look alike to the picture check."""
+    import random
+    from PIL import Image, ImageDraw
+    rnd = random.Random(seed)
+    im = Image.new("RGBA", (w, h), tuple(rnd.randrange(256) for _ in range(3)) + (255,))
+    d = ImageDraw.Draw(im)
+    for _ in range(40):
+        x, y = rnd.randrange(w), rnd.randrange(h)
+        d.ellipse([x, y, x + rnd.randrange(w // 8, w // 2), y + rnd.randrange(h // 8, h // 2)],
+                  fill=tuple(rnd.randrange(256) for _ in range(3)) + (255,))
+    path.parent.mkdir(parents=True, exist_ok=True)
+    im.save(path)
+    return path
+
+
+def resized_copy(src: Path, dst: Path, size: tuple[int, int], pad: int = 0, palette: bool = False) -> Path:
+    """What the round-3 workers did: resize a foreign image (optionally into a transparent margin, or
+    re-encoded as a palette PNG) before placing it, so its bytes match nothing in the cache."""
+    from PIL import Image
+    with Image.open(src) as im:
+        im = im.convert("RGBA").resize(size, Image.LANCZOS)
+    if pad:
+        canvas = Image.new("RGBA", (size[0] + 2 * pad, size[1] + 2 * pad), (0, 0, 0, 0))
+        canvas.paste(im, (pad, pad))
+        im = canvas
+    if palette:
+        im = im.convert("RGB").quantize(64).convert("RGBA")
+    dst.parent.mkdir(parents=True, exist_ok=True)
+    im.save(dst)
+    return dst
+
+
+def test_resized_foreign_copy() -> None:
+    """CODEX_FOREIGN_COPY_GUARD_FIX_RESIZED: a resized/padded/recompressed foreign copy is caught, both
+    from the cache and from another job's output, while an edit of this call's own input is not."""
+    real_run_codex, real_base = ci.run_codex, ci.base_codex_home
+    real_grace = ci.HARVEST_GRACE_S
+    try:
+        with tempfile.TemporaryDirectory() as td:
+            td = Path(td)
+            home = td / "codexhome"
+            (home / ci.GENERATED_SUBDIR).mkdir(parents=True)
+            ci.base_codex_home = lambda: home
+            ci.HARVEST_GRACE_S = 0.0
+            stranger = pattern_png(td / "otherhome" / ci.GENERATED_SUBDIR / "old" / "flange.png", 1, 192, 128)
+            n = [0]
+
+            def place(make):
+                def fake(prompt, images, workdir, timeout, verbose, model=None, hm=None,
+                         reasoning_effort=None, **_kw):
+                    n[0] += 1
+                    pattern_png(home / ci.GENERATED_SUBDIR / f"s{n[0]}" / f"exec-{n[0]}.png", 100 + n[0], 80, 80)
+                    make(Path(workdir))
+                    return 0, "", False
+                ci.run_codex = fake
+
+            for label, kw in (("resized smaller", {"size": (64, 64)}),
+                              ("resized into a transparent margin", {"size": (120, 80), "pad": 20}),
+                              ("resized and re-encoded as a palette PNG", {"size": (48, 48), "palette": True})):
+                out = td / f"res_{n[0]}.png"
+                placed = td / "probe" / out.name
+                resized_copy(stranger, placed, **kw)
+                check(f"[{label}] the old byte check alone misses it",
+                      ci._preexisting_twin(placed, home, ci.snapshot_generated(home)) is None)
+                place(lambda wd, out=out, kw=kw: resized_copy(stranger, wd / out.name, **kw))
+                rc = ci.do_image(args_for(out))
+                check(f"[{label}] foreign copy replaced by this run's own render",
+                      rc == 0 and ci.png_info(out)["width"] == 80, f"rc={rc}")
+                check(f"[{label}] foreign copy set aside", out.with_name(out.stem + ".foreign.png").is_file())
+
+            check("the thumbnail index was written outside the repo",
+                  any(Path(ci.FOREIGN_THUMB_DIR).glob("*.json")))
+
+            # A second look at the same cache decodes nothing but the placed file (the index answers).
+            probe = resized_copy(stranger, td / "probe" / "again.png", (64, 64))
+            ci.foreign_source(probe, home, ci.snapshot_generated(home))  # indexes this run's renders too
+            calls, real_thumb = [], ci._thumb
+            ci._thumb = lambda p: (calls.append(Path(p)), real_thumb(p))[1]
+            try:
+                hit = ci.foreign_source(probe, home, ci.snapshot_generated(home))
+                check("indexed cache: still caught", hit is not None and hit[0] == stranger, str(hit))
+                check("indexed cache: only the placed file is decoded", calls == [probe], str(calls))
+            finally:
+                ci._thumb = real_thumb
+
+            # Another job's output in the same run (artpipe layout <root>/<id>/<id>.png), no cache copy.
+            peer = pattern_png(td / "_artsrc" / "jobA" / "jobA.png", 3, 256, 256)
+            outB = td / "_artsrc" / "jobB" / "jobB.png"
+            place(lambda wd: resized_copy(peer, wd / "jobB.png", (200, 200)))
+            rc = ci.do_image(args_for(outB))
+            check("a resized copy of another job's output is replaced by this run's render",
+                  rc == 0 and ci.png_info(outB)["width"] == 80, f"rc={rc}")
+
+            # An EDIT whose input is itself a cache file legitimately resembles it: never foreign.
+            master = pattern_png(td / "otherhome" / ci.GENERATED_SUBDIR / "old" / "master.png", 4, 128, 128)
+            outE = td / "edit.png"
+            place(lambda wd: resized_copy(master, wd / "edit.png", (64, 64)))
+            a = args_for(outE)
+            a.image = [str(master)]
+            rc = ci.do_image(a)
+            check("an edit that resembles its own input image is kept",
+                  rc == 0 and ci.png_info(outE)["width"] == 64, f"rc={rc}")
+
+            # A placed picture that resembles nothing is kept as placed.
+            outU = td / "unique.png"
+            place(lambda wd: pattern_png(wd / "unique.png", 5, 50, 50))
+            rc = ci.do_image(args_for(outU))
+            check("a placed picture like no other image is kept",
+                  rc == 0 and ci.png_info(outU)["width"] == 50, f"rc={rc}")
+
+            # Calibration floor: two different pictures are far apart, a resize of one is near it.
+            t1, t2 = ci._thumb(stranger), ci._thumb(master)
+            t1r = ci._thumb(resized_copy(stranger, td / "probe" / "r.png", (96, 64)))
+            check("different pictures are not near", ci._thumb_dist(t1, t2) > ci.FOREIGN_NEAR * 3,
+                  f"{ci._thumb_dist(t1, t2):.2f}")
+            check("a resize is near its source", ci._thumb_dist(t1, t1r) <= ci.FOREIGN_NEAR,
+                  f"{ci._thumb_dist(t1, t1r):.2f}")
     finally:
         ci.run_codex, ci.base_codex_home = real_run_codex, real_base
         ci.HARVEST_GRACE_S = real_grace
@@ -936,7 +1063,7 @@ def test_ensure_home_sandbox_guard() -> None:
 
 def main() -> int:
     for fn in (test_prompt, test_staging_round_trip, test_run_codex_timeout, test_reasoning_effort_flag,
-               test_timeout_still_harvests,
+               test_timeout_still_harvests, test_resized_foreign_copy,
                test_force_regen_failure_does_not_report_stale_success,
                test_output_schema_passthrough,
                test_harvest_grace,

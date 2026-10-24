@@ -1,0 +1,2 @@
+A byte-identity guard against agent-placed foreign images is beaten by one resize: three r3 art-eval workers resized a cached pipe-flange render to 256x256 and shipped it as ok. Compare by picture (alpha-bbox crop, 16x16 box thumbnail, mean abs diff <= 4.0; copies measured 1.1-1.6, nearest legit pair 7.05), against the cache AND other jobs' outputs, and exclude candidates near the call's own --image inputs. Calibration: /mnt/d/ClaudeWork/rimmandrake/guard_resize/calib.json
+home: skills/generating-images
