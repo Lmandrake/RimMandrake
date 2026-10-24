@@ -1,0 +1,2 @@
+A piecewise inverse such as TimeOf(Passes(t)) must compare against the breakpoint with a tolerance: recomputing tau=(p-k)*period puts it a few ulps past the stop point, so a strict 'tau <= at' takes the wrong branch and returns a time one pause late, which breaks the 'never later than the true change' rule. AtmosphericBase RM_SweepPrimitive.TimeOf fixed with 'tau <= at + 1e-9'; ModifierTests caught it by checking TimeOf(Passes(t)) <= t.
+home: NONE
