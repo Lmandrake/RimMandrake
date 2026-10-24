@@ -558,11 +558,50 @@ namespace RimMandrake.FlowWorks
 				map.terrainGrid.SetTerrain(c, fluidDef.coolsToGlassEdge);
 				cooled++;
 			}
-			if (cooled > 0)
+			// TAR_GLASS_FLOOD_FIX_UNREACHABLE_PATH (GPT FA_core_sim_1.8, option A): every cell a release reaches is dug
+			// (CanLiquidEnter), so the loop above writes nothing for tar. The edge hardens outward instead: the undug ground
+			// the release never offered, cardinal to a placed cell, becomes the glass bank (ruling 3: flood edges harden).
+			CellIndices idx = map.cellIndices;
+			var placedIdx = new List<int>(placedCells.Count);
+			for (int i = 0; i < placedCells.Count; i++)
+			{
+				placedIdx.Add(idx.CellToIndex(placedCells[i]));
+			}
+			List<int> bank = RM_StockMath.GlassBankCells(map.Size.x, map.Size.z, placedIdx,
+				n => placedLookup.Contains(idx.IndexToCell(n)),
+				n => MayBankToGlass(map, idx.IndexToCell(n), excavation));
+			for (int i = 0; i < bank.Count; i++)
+			{
+				map.terrainGrid.SetTerrain(idx.IndexToCell(bank[i]), fluidDef.coolsToGlassEdge);
+			}
+			if (cooled > 0 || bank.Count > 0)
 			{
 				Log.Message("[RimMandrake.FlowWorks] " + fluidDef.defName + " release cooled " + cooled
-					+ " front cell(s) to " + fluidDef.coolsToGlassEdge.defName + " at " + Position + ".");
+					+ " front cell(s) and " + bank.Count + " bank cell(s) to " + fluidDef.coolsToGlassEdge.defName + " at " + Position + ".");
 			}
+		}
+
+		/// <summary>TAR_GLASS_FLOOD_FIX_UNREACHABLE_PATH: undug natural ground the glass bank may rewrite. Never the depth
+		/// engine's cell, a liquid cell (natural water, a liquid the engine admits, a temp puddle or ice), a constructed floor or
+		/// a foundation (the player's), a cell under an edifice (a wall, natural rock, a building), or a cell already glass.</summary>
+		private bool MayBankToGlass(Map map, IntVec3 c, RM_MapComponent_Excavation excavation)
+		{
+			TerrainGrid g = map.terrainGrid;
+			TerrainDef top = g.TerrainAt(c);
+			TerrainDef baseDef = g.BaseTerrainAt(c);
+			if (top == null || baseDef == null || top == fluidDef.coolsToGlassEdge || top.IsWater || baseDef.IsWater)
+			{
+				return false;
+			}
+			if (excavation != null && (excavation.IsExcavated(c) || excavation.CanLiquidEnter(c)))
+			{
+				return false;
+			}
+			if (g.TempTerrainAt(c) != null || g.UnderTerrainAt(c) != null || g.FoundationAt(c) != null)
+			{
+				return false;
+			}
+			return c.GetEdifice(map) == null;
 		}
 
 		/// <summary>A placed cell is a FRONT cell if any of its 4 cardinal

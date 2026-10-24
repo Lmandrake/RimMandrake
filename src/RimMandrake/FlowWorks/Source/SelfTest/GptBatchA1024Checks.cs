@@ -92,6 +92,25 @@ namespace RimMandrake.FlowWorks.SelfTest
                     Assert(got == "2,2,2", $"three depth-{dep} squares holding 3,2,1 level to 2,2,2 (old: past eight bands the solve gave up), got {got}");
                 }
             });
+
+            // TAR_GLASS_FLOOD_FIX_UNREACHABLE_PATH (FA_core_sim_1.8, option A): a tar release only reaches dug cells and dug
+            // cells never cool, so the old rule wrote no glass at all. The bank (undug ground beside the release) now hardens.
+            Case("GptA1024_tar_release_in_a_dug_channel_leaves_a_glass_bank", () =>
+            {
+                // 5 x 3 grid: a dug channel along row 1 (x = 1..3), all placed; (0,1) was offered and refused; (4,1) is rock.
+                const int W = 5, H = 3;
+                var placed = new System.Collections.Generic.List<int> { 1 * W + 1, 1 * W + 2, 1 * W + 3 };
+                var offered = new System.Collections.Generic.HashSet<int>(placed) { 1 * W + 0 };
+                int rock = 1 * W + 4;
+                Assert(!RM_StockMath.MayCoolToGlass(true, true), "the old rule alone: every placed cell is dug, so none cools");
+                var bank = RM_StockMath.GlassBankCells(W, H, placed, offered.Contains, n => n != rock);
+                var want = new System.Collections.Generic.HashSet<int> { 0 * W + 1, 0 * W + 2, 0 * W + 3, 2 * W + 1, 2 * W + 2, 2 * W + 3 };
+                Assert(bank.Count == want.Count && want.SetEquals(bank), "the six undug cells either side of the channel harden, got " + string.Join(",", bank));
+                Assert(!bank.Contains(1 * W + 0) && !bank.Contains(rock), "an offered cell and an unbankable cell never harden");
+                var corner = RM_StockMath.GlassBankCells(W, H, new[] { 0 }, n => n == 0, n => true);
+                Assert(corner.Count == 2 && corner.Contains(1) && corner.Contains(W), "a map-corner cell banks only its two in-grid neighbours");
+                Assert(RM_StockMath.GlassBankCells(W, H, new int[0], n => false, n => true).Count == 0, "no placed cell, no bank");
+            });
         }
     }
 }

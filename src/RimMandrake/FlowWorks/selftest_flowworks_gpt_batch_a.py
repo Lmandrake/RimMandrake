@@ -67,6 +67,21 @@ CASES = [
          [r"Scribe_Values\.Look \( ref heldUnits , \"rmHoseHeldUnits\" , 0 \) ;"
           r" Scribe_Values\.Look \( ref flowUntil , \"rmHoseFlowUntil\" , RimMandrake\.FlowWorks\.Machinery\.RM_LiquidNetKernel\.NoLease \) ;"],
          ("            Scribe_Values.Look(ref flowUntil, \"rmHoseFlowUntil\", RimMandrake.FlowWorks.Machinery.RM_LiquidNetKernel.NoLease);\n", "")),
+    # ── TAR_GLASS_FLOOD_FIX_UNREACHABLE_PATH (FA_core_sim_1.8, option A) ──
+    Case("TAR_GLASS_FLOOD_FIX_UNREACHABLE_PATH", "the undug bank beside the release hardens to glass", "Flood_FlowWorks.cs",
+         r"private void CoolFrontToGlass\(\)",
+         [r"List<int> bank = RM_StockMath\.GlassBankCells \( map\.Size\.x , map\.Size\.z , placedIdx ,"
+          r" n => placedLookup\.Contains \( idx\.IndexToCell \( n \) \) , n => MayBankToGlass \( map , idx\.IndexToCell \( n \) , excavation \) \) ;",
+          r"for \( int i = 0 ; i < bank\.Count ; i\+\+ \) \{ map\.terrainGrid\.SetTerrain \( idx\.IndexToCell \( bank \[ i \] \) , fluidDef\.coolsToGlassEdge \) ; \}"],
+         ("\t\t\t\tmap.terrainGrid.SetTerrain(idx.IndexToCell(bank[i]), fluidDef.coolsToGlassEdge);\n", ""),
+         order=(r"GlassBankCells", r"SetTerrain \( idx\.IndexToCell \( bank")),
+    Case("TAR_GLASS_FLOOD_FIX_UNREACHABLE_PATH", "the bank never rewrites engine, liquid, floor or edifice cells", "Flood_FlowWorks.cs",
+         r"private bool MayBankToGlass\(Map map, IntVec3 c, RM_MapComponent_Excavation excavation\)",
+         [r"top\.IsWater \|\| baseDef\.IsWater",
+          r"excavation\.IsExcavated \( c \) \|\| excavation\.CanLiquidEnter \( c \)",
+          r"g\.TempTerrainAt \( c \) != null \|\| g\.UnderTerrainAt \( c \) != null \|\| g\.FoundationAt \( c \) != null",
+          r"return c\.GetEdifice \( map \) == null ;"],
+         ("(excavation.IsExcavated(c) || excavation.CanLiquidEnter(c))", "(false)")),
 ]
 
 
