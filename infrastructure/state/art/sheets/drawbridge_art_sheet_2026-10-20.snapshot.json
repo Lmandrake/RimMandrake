@@ -1,9 +1,9 @@
 {
  "biome": "SUBJECTS_drawbridge_art",
- "built": "2026-10-21T20:55:09-0700",
+ "built": "2026-10-24T03:51:16-0700",
  "census": "Transient/biome_ffar/drawbridge_art.subjects.json",
  "census_git_head": null,
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 14 mods \u2014 a test list): 325 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 11 mods \u2014 a test list): 320 active",
  "rows": {
   "DB_Futuristic_Gate_Closed": {
    "columns": {},
@@ -96,22 +96,44 @@
    "subject_key": "db_futuristic_winch_timber"
   },
   "DB_Gate_Steel_Closed": {
-   "columns": {},
-   "graphic_of": {},
-   "labels": {},
+   "columns": {
+    "A": {
+     "east": "3227bd892fbd45921741befd0d9c0b56b8591168268b66e6ad7dbf8e5bb1b20b",
+     "south": "f1b00f79acba8a31c7c19701f1ff04056b34d0d9fb772c10bedd66f86df066a1"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Steel_Closed"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks"
+   },
    "pools": [],
-   "res": null,
-   "reserved": [],
+   "res": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Steel_Closed",
+   "reserved": [
+    "A"
+   ],
    "shownBase": [],
    "subject_key": "db_gate_steel_closed"
   },
   "DB_Gate_Steel_Open": {
-   "columns": {},
-   "graphic_of": {},
-   "labels": {},
+   "columns": {
+    "A": {
+     "east": "1b77194da4460edbd7f218cbd99dccc1670e2718242d4431835e73969f36663a",
+     "south": "447286e4f47e87a3c28105dcc9e9e0ca2d9c6687ef288a18737246836a2f43a7"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Steel_Open"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks"
+   },
    "pools": [],
-   "res": null,
-   "reserved": [],
+   "res": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Steel_Open",
+   "reserved": [
+    "A"
+   ],
    "shownBase": [],
    "subject_key": "db_gate_steel_open"
   },
@@ -120,61 +142,60 @@
     "A": {
      "east": "9b36e1a2f2185708c389b0f6088f1cc5bb8e7fd06335fbdc90c37d56ee2b3410",
      "south": "a12c6d80b9cdf022e2c037a891ddd56f87cfdb67f932f3e724c530e9abc9ba05"
+    },
+    "B": {
+     "east": "5651a938c0ed1eeffdda1b11e0bc2aefcf6b9b4e8461b5713f64f4ae9be3d7e3",
+     "south": "af662b90df930c6ef118c1040ca2fcb1bc0108d5958cb89506a57bd00d9ef981"
     }
    },
    "graphic_of": {
-    "A": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Timber_Closed"
+    "A": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Timber_Closed",
+    "B": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Timber_Closed"
    },
    "labels": {
-    "A": "render RM_DrawbridgeGate_Timber_Closed"
+    "A": "render RM_DrawbridgeGate_Timber_Closed",
+    "B": "IN GAME \u2014 FlowWorks"
    },
    "pools": [],
    "res": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Timber_Closed",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "9b36e1a2f2185708c389b0f6088f1cc5bb8e7fd06335fbdc90c37d56ee2b3410",
+    "a12c6d80b9cdf022e2c037a891ddd56f87cfdb67f932f3e724c530e9abc9ba05"
+   ],
    "subject_key": "db_gate_timber_closed"
   },
   "DB_Gate_Timber_Open": {
    "columns": {
     "A": {
      "east": "89969484f65efc32adf101d9a1ede57fc2737bac2f3a50a2999fe31cedffbe01"
+    },
+    "B": {
+     "east": "45f62b8e337f8d713f15e0044c2037b4b869512c57294e67417a64109d5397fc",
+     "south": "7ff92cfb82ca2579c3eb1564f6bae184a3ab6eed84ebbdbefefeb60ce741e8a3"
     }
    },
    "graphic_of": {
-    "A": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Timber_Open"
+    "A": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Timber_Open",
+    "B": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Timber_Open"
    },
    "labels": {
-    "A": "render RM_DrawbridgeGate_Timber_Open"
+    "A": "render RM_DrawbridgeGate_Timber_Open",
+    "B": "IN GAME \u2014 FlowWorks"
    },
    "pools": [],
    "res": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Timber_Open",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "89969484f65efc32adf101d9a1ede57fc2737bac2f3a50a2999fe31cedffbe01"
+   ],
    "subject_key": "db_gate_timber_open"
-  },
-  "DB_Icon_HoldRaised": {
-   "columns": {},
-   "graphic_of": {},
-   "labels": {},
-   "pools": [],
-   "res": null,
-   "reserved": [],
-   "shownBase": [],
-   "subject_key": "db_icon_holdraised"
-  },
-  "DB_Icon_Lower": {
-   "columns": {},
-   "graphic_of": {},
-   "labels": {},
-   "pools": [],
-   "res": null,
-   "reserved": [],
-   "shownBase": [],
-   "subject_key": "db_icon_lower"
   },
   "DB_Icon_Raise": {
    "columns": {
@@ -193,7 +214,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "fa75886ccc290df173b1c14acb7be93cf937681ba3a781922ff1f0aa358b2abf"
+   ],
    "subject_key": "db_icon_raise"
   },
   "DB_Industrial_Gate_Closed": {
@@ -310,18 +333,24 @@
    "columns": {
     "A": {
      "single": "2347bfc7b4eb6f080a8c2c912f490829a759cc56b42f04242305c44146e49697"
+    },
+    "B": {
+     "single": "1e6993369d837cd884338b68dd4f4d90b8f4b162b2ae38052c503faedf832845"
     }
    },
    "graphic_of": {
-    "A": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Steel_Edge"
+    "A": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Steel_Edge",
+    "B": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Steel_Edge"
    },
    "labels": {
-    "A": "render RM_DrawbridgeLeafUp_Steel_Edge"
+    "A": "render RM_DrawbridgeLeafUp_Steel_Edge",
+    "B": "IN GAME \u2014 FlowWorks"
    },
    "pools": [],
    "res": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Steel_Edge",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "shownBase": [],
    "subject_key": "db_leafup_steel_edge"
@@ -330,90 +359,112 @@
    "columns": {
     "A": {
      "single": "0314ce6fdae185326c5d02c503ab26df90aa87531129b0b06ffad66d094181c7"
+    },
+    "B": {
+     "single": "cbf412376ae8d0d1e251b0f1c99fa47c3f7aa003d543db9ce43813dbe7424a36"
     }
    },
    "graphic_of": {
-    "A": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Steel_Face"
+    "A": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Steel_Face",
+    "B": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Steel_Face"
    },
    "labels": {
-    "A": "render RM_DrawbridgeLeafUp_Steel_Face"
+    "A": "render RM_DrawbridgeLeafUp_Steel_Face",
+    "B": "IN GAME \u2014 FlowWorks"
    },
    "pools": [],
    "res": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Steel_Face",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "0314ce6fdae185326c5d02c503ab26df90aa87531129b0b06ffad66d094181c7"
+   ],
    "subject_key": "db_leafup_steel_face"
-  },
-  "DB_LeafUp_Steel_Underside": {
-   "columns": {},
-   "graphic_of": {},
-   "labels": {},
-   "pools": [],
-   "res": null,
-   "reserved": [],
-   "shownBase": [],
-   "subject_key": "db_leafup_steel_underside"
   },
   "DB_LeafUp_Timber_Edge": {
    "columns": {
     "A": {
      "single": "cdea3018aeda4fed5a8cf1b57bdf121c33ddf4288456fbe11fef295d7e5b8648"
+    },
+    "B": {
+     "single": "7d95eed3812b4b8498f6d8990c87918473c7db452cf8b54e20ddf6dcca4eadce"
     }
    },
    "graphic_of": {
-    "A": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Timber_Edge"
+    "A": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Timber_Edge",
+    "B": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Timber_Edge"
    },
    "labels": {
-    "A": "render RM_DrawbridgeLeafUp_Timber_Edge"
+    "A": "render RM_DrawbridgeLeafUp_Timber_Edge",
+    "B": "IN GAME \u2014 FlowWorks"
    },
    "pools": [],
    "res": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Timber_Edge",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "cdea3018aeda4fed5a8cf1b57bdf121c33ddf4288456fbe11fef295d7e5b8648"
+   ],
    "subject_key": "db_leafup_timber_edge"
   },
   "DB_LeafUp_Timber_Face": {
    "columns": {
     "A": {
      "single": "1c5ea68d77c2048f21d9ec549e034ac279fd657471f60bca40b34bbbc92502eb"
+    },
+    "B": {
+     "single": "a94a1e09a6a5388a4ba60e333711e000716d1f0a38fa8591b766251107416bb5"
     }
    },
    "graphic_of": {
-    "A": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Timber_Face"
+    "A": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Timber_Face",
+    "B": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Timber_Face"
    },
    "labels": {
-    "A": "render RM_DrawbridgeLeafUp_Timber_Face"
+    "A": "render RM_DrawbridgeLeafUp_Timber_Face",
+    "B": "IN GAME \u2014 FlowWorks"
    },
    "pools": [],
    "res": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Timber_Face",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "1c5ea68d77c2048f21d9ec549e034ac279fd657471f60bca40b34bbbc92502eb"
+   ],
    "subject_key": "db_leafup_timber_face"
   },
   "DB_LeafUp_Timber_Underside": {
    "columns": {
     "A": {
      "single": "9ff47af7fa77216f158e4365bd9e015d8279863a0f5aa630011d63b370e295c6"
+    },
+    "B": {
+     "single": "04156c6caa0bedd70dd249ee7e650a38df1b7da1aa095eb4ddec86a61b09e7c0"
     }
    },
    "graphic_of": {
-    "A": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Timber_Underside"
+    "A": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Timber_Underside",
+    "B": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Timber_Underside"
    },
    "labels": {
-    "A": "render RM_DrawbridgeLeafUp_Timber_Underside"
+    "A": "render RM_DrawbridgeLeafUp_Timber_Underside",
+    "B": "IN GAME \u2014 FlowWorks"
    },
    "pools": [],
    "res": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Timber_Underside",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "9ff47af7fa77216f158e4365bd9e015d8279863a0f5aa630011d63b370e295c6"
+   ],
    "subject_key": "db_leafup_timber_underside"
   },
   "DB_Modern_Gate_Closed": {
@@ -513,7 +564,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "f7812d5c6c49ff60e2f44a35959d044853b19827bd7751f8b3f7433f31201233"
+   ],
    "subject_key": "db_modern_winch_steel"
   },
   "DB_Modern_Winch_Timber": {
@@ -530,31 +583,29 @@
    "columns": {
     "A": {
      "single": "ea9009aaecacb8a1814ef98e834e4ad7c648c0ca3a17ecb7128516897a8f62ad"
+    },
+    "B": {
+     "single": "f3edec29957de8738c55cfaf724b83daa0cd3c3f857e0c367df1b70b671dd69c"
     }
    },
    "graphic_of": {
-    "A": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgePlanks_Steel"
+    "A": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgePlanks_Steel",
+    "B": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgePlanks_Steel"
    },
    "labels": {
-    "A": "render RM_DrawbridgePlanks_Steel"
+    "A": "render RM_DrawbridgePlanks_Steel",
+    "B": "IN GAME \u2014 FlowWorks"
    },
    "pools": [],
    "res": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgePlanks_Steel",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "ea9009aaecacb8a1814ef98e834e4ad7c648c0ca3a17ecb7128516897a8f62ad"
+   ],
    "subject_key": "db_planks_steel"
-  },
-  "DB_Planks_Timber": {
-   "columns": {},
-   "graphic_of": {},
-   "labels": {},
-   "pools": [],
-   "res": null,
-   "reserved": [],
-   "shownBase": [],
-   "subject_key": "db_planks_timber"
   },
   "DB_RaidPlank_Item": {
    "columns": {},
@@ -570,40 +621,56 @@
    "columns": {
     "A": {
      "single": "f01d114801a260e1573bb49cb76d063cb4ea5284da3af73ad31b6f8957ace9b9"
+    },
+    "B": {
+     "single": "1c8acdd0dd1e5bd7b9d533e05ab1291855a504791f3992ec0ca71ca64cc0dba7"
     }
    },
    "graphic_of": {
-    "A": "Things/Building/FlowWorks/Drawbridge/RM_RaidPlank_Laid"
+    "A": "Things/Building/FlowWorks/Drawbridge/RM_RaidPlank_Laid",
+    "B": "Things/Building/FlowWorks/Drawbridge/RM_RaidPlank_Laid"
    },
    "labels": {
-    "A": "render RM_RaidPlank_Laid"
+    "A": "render RM_RaidPlank_Laid",
+    "B": "IN GAME \u2014 FlowWorks"
    },
    "pools": [],
    "res": "Things/Building/FlowWorks/Drawbridge/RM_RaidPlank_Laid",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "f01d114801a260e1573bb49cb76d063cb4ea5284da3af73ad31b6f8957ace9b9"
+   ],
    "subject_key": "db_raidplank_laid"
   },
   "DB_RaidPlank_LaidEnd": {
    "columns": {
     "A": {
      "single": "1230754c2b3422416e90530a425b75ac12874b1bbb9138e67424089a9a0c3d34"
+    },
+    "B": {
+     "single": "be331079b54bdba22c7e542c58d46821253b90f967be758745048ea2ab53c065"
     }
    },
    "graphic_of": {
-    "A": "Things/Building/FlowWorks/Drawbridge/RM_RaidPlank_LaidEnd"
+    "A": "Things/Building/FlowWorks/Drawbridge/RM_RaidPlank_LaidEnd",
+    "B": "Things/Building/FlowWorks/Drawbridge/RM_RaidPlank_LaidEnd"
    },
    "labels": {
-    "A": "render RM_RaidPlank_LaidEnd"
+    "A": "render RM_RaidPlank_LaidEnd",
+    "B": "IN GAME \u2014 FlowWorks"
    },
    "pools": [],
    "res": "Things/Building/FlowWorks/Drawbridge/RM_RaidPlank_LaidEnd",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "1230754c2b3422416e90530a425b75ac12874b1bbb9138e67424089a9a0c3d34"
+   ],
    "subject_key": "db_raidplank_laidend"
   },
   "DB_Scrapper_Gate_Closed": {
@@ -624,7 +691,10 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "989c0f7e9266cab33a956ba935210bd24e679f56da9a963610c3a757dcfbc910",
+    "cd7e182067f5894aac0f88169b6608277a0fc2e1fc70305d113925e23d01c85d"
+   ],
    "subject_key": "db_scrapper_gate_closed"
   },
   "DB_Scrapper_Gate_Open": {
@@ -654,7 +724,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "07b2f5cd42d82d7173ea661f50e2adf5db92a7f819a493b422f90136fad863e8"
+   ],
    "subject_key": "db_scrapper_leafup_edge"
   },
   "DB_Scrapper_LeafUp_Face": {
@@ -725,7 +797,10 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "209b95b86bf5cf436de3bcd2bbac119645724527e7e0094cc775c7ea0beb9bcb",
+    "3ea624f28ae9fac5a71ab0e58806ff1654eb6e803f9616455d453e1dcd4eb7d6"
+   ],
    "subject_key": "db_scrapper_winch_steel"
   },
   "DB_Scrapper_Winch_Timber": {
@@ -746,7 +821,10 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "36eab012775364877ef8e0d9474cf11f033a4d62131f7a5a8af83f54208ccdc6",
+    "663b694cf2377b64fdda1a4f8a5476a9420e73a549f2516127508e30f6b49c3c"
+   ],
    "subject_key": "db_scrapper_winch_timber"
   },
   "DB_Winch_Steel": {
@@ -758,31 +836,38 @@
      "east": "3ea624f28ae9fac5a71ab0e58806ff1654eb6e803f9616455d453e1dcd4eb7d6",
      "south": "209b95b86bf5cf436de3bcd2bbac119645724527e7e0094cc775c7ea0beb9bcb"
     },
-    "C": {
-     "east": "43f88169f12efcabeb40c3a80a62eb31edcac12ac4f6d586aa234f7e8f5a07c3",
-     "north": "16737a1ea5579192acaa9eb5f5be574a56a58dd7068f66b124eb18c9285fc1f1",
-     "south": "cf148a6f3e73273e958ae09289c0f3dd141d988bf75629267fe9db633637765d"
-    },
     "D": {
      "east": "b6a2a8c408cde8db1ad8832584c8ce8ccb9b6018c0399f5c54526bc9b5555387"
     },
     "E": {
      "east": "c9a6284b4e6e452e659408ede73a523d0ff92a0d3dc548bf4b268f3e8b763be6"
+    },
+    "F": {
+     "east": "5475cd313eeffd7ed3a61b56dd28b84083e6b6a7de70c5ac0d9a687008634851",
+     "north": "8817cafaebd7ea5dcf991a4ae7a2e310974bbcf0534c14c2773a6d77278219b5",
+     "south": "7f6b9010534a13d44784d23e3a4bceffa8a6e28c2082fa6f672a21afbf6246de"
+    },
+    "G": {
+     "east": "43f88169f12efcabeb40c3a80a62eb31edcac12ac4f6d586aa234f7e8f5a07c3",
+     "north": "16737a1ea5579192acaa9eb5f5be574a56a58dd7068f66b124eb18c9285fc1f1",
+     "south": "cf148a6f3e73273e958ae09289c0f3dd141d988bf75629267fe9db633637765d"
     }
    },
    "graphic_of": {
     "A": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Steel",
     "B": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Steel",
-    "C": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Steel",
     "D": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Steel",
-    "E": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Steel"
+    "E": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Steel",
+    "F": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Steel",
+    "G": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Steel"
    },
    "labels": {
     "A": "render RM_DrawbridgeWinch_Steel_Modern",
     "B": "render RM_DrawbridgeWinch_Steel_Scrapper",
-    "C": "render RM_DrawbridgeWinch_Steel",
     "D": "render RM_DrawbridgeWinch_Steel_Futuristic",
-    "E": "render RM_DrawbridgeWinch_Steel_Industrial"
+    "E": "render RM_DrawbridgeWinch_Steel_Industrial",
+    "F": "IN GAME \u2014 FlowWorks",
+    "G": "render RM_DrawbridgeWinch_Steel"
    },
    "pools": [],
    "res": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Steel",
@@ -791,9 +876,16 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F",
+    "G"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "209b95b86bf5cf436de3bcd2bbac119645724527e7e0094cc775c7ea0beb9bcb",
+    "3ea624f28ae9fac5a71ab0e58806ff1654eb6e803f9616455d453e1dcd4eb7d6",
+    "43f88169f12efcabeb40c3a80a62eb31edcac12ac4f6d586aa234f7e8f5a07c3",
+    "f7812d5c6c49ff60e2f44a35959d044853b19827bd7751f8b3f7433f31201233"
+   ],
    "subject_key": "db_winch_steel"
   },
   "DB_Winch_Timber": {
@@ -809,29 +901,43 @@
     },
     "C": {
      "east": "d08f27284ad6f46e1e03dbd1a14189441d922563d38a1bb7e3e67c3df53b79b1"
+    },
+    "D": {
+     "east": "4005b866fb3e3529aaa420afeec78b30a5c7b73dc04fb6d98685400c2e6062a7",
+     "north": "cfbcf310c418cd29098e6022f1d050d78a94ef1fe4102a5b4b963cfa15c23058",
+     "south": "303971bb181ed9a6f2226a03c2f7cc4292047229e5a4b46915a154328592198a"
     }
    },
    "graphic_of": {
     "A": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Timber",
     "B": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Timber",
-    "C": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Timber"
+    "C": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Timber",
+    "D": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Timber"
    },
    "labels": {
     "A": "render RM_DrawbridgeWinch_Timber_Scrapper",
     "B": "render RM_DrawbridgeWinch_Timber",
-    "C": "render RM_DrawbridgeWinch_Timber_Industrial"
+    "C": "render RM_DrawbridgeWinch_Timber_Industrial",
+    "D": "IN GAME \u2014 FlowWorks"
    },
    "pools": [],
    "res": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Timber",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "1f5fced21c2bf5a4dfd9394a0b5459ac179856e361f64def208ac6a1469af220",
+    "36eab012775364877ef8e0d9474cf11f033a4d62131f7a5a8af83f54208ccdc6",
+    "663b694cf2377b64fdda1a4f8a5476a9420e73a549f2516127508e30f6b49c3c",
+    "e1ab3392dfd2159e55002dd6f984b73add7fed0f0bb3ccc6b3ef56aed93832b3",
+    "e9400a2aba5ecbbfd383b17027b41618750035bbbba7cf4fa9f7af449987d101"
+   ],
    "subject_key": "db_winch_timber"
   }
  },
  "sheetId": "drawbridge_art_sheet_2026-10-20",
- "snapshotId": "4fa760060ad1bafb"
+ "snapshotId": "404919828ad6bf16"
 }
