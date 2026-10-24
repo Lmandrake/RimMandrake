@@ -1,0 +1,19 @@
+[
+ {
+  "id": "arteval_RM_UniversalPipe_Scrapper_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_UniversalPipe_Scrapper",
+  "prompt": "A 4x4 atlas of RimWorld linked-graphic floor pipe tiles in the Scrapper (salvage, junk-built) look. Each cell is 132 px square and holds one tile. The pipe is flat, low ground clutter seen from directly above, 18 px thick and centred in its cell, drawn to sit under pawns. The atlas covers every neighbour combination: isolated stub, dead-end cap in each of four directions, straight horizontal and vertical runs, four elbows, four tees and one four-way cross.\n\nMaterial: a single uniform worn copper tube throughout, warm brown-orange with soft verdigris dulling at the edges, subtle scuffs and a few patched seams that read as scavenged plumbing. The colour is identical in every tile, so adjacent tiles join into one continuous tube with no visible seam. A narrow highlight runs along the top of the tube and a darker shade along its lower edge. A clean dark outline surrounds the pipe silhouette.\n\nStraights: the tube runs edge to edge through the cell centre. Its ends meet the cell border at exactly the same position and width in every tile, and a plain low flanged coupling sits mid-cell, well inside the cell.\n\nElbows: the tube bends in a smooth quarter curve whose centreline follows the pipe axis with a radius of half a cell. The elbow tube has the same width, colour and outline as the straights, and its two ends meet the cell edges at the centre point.\n\nTees and cross: a round, symmetric riveted boss, centred on the cell, sits at the junction. Its rivets are evenly spaced around its rim. Each branch leaves the boss on the pipe axis at the same width as a straight.\n\nEnd caps: the dead end is closed by a round bolted cap sitting flush on the pipe axis. It has four small bolts and a slightly wider rim, and it stays inside the cell with the tube leading to the opposite edge.\n\nView: orthographic top-down, the same lighting in every tile (light from upper left). Realistic painterly vanilla RimWorld style, fully transparent background, crisp edges, and a clean dark outline that stays legible when the sprite is scaled down.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: ",
+  "reference": "",
+  "priority": 40,
+  "source_run": "scrapper_pipe_v2_20261023"
+ }
+]

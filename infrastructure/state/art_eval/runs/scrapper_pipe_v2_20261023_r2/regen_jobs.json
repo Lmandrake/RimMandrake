@@ -1,0 +1,19 @@
+[
+ {
+  "id": "arteval_RM_UniversalPipe_Scrapper_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_UniversalPipe_Scrapper",
+  "prompt": "RimWorld floor pipe sprite atlas (4x4 Graphic_Linked cells, each 132 px, transparent background), painterly vanilla RimWorld style, realistic, clean dark outline. Subject: a salvaged, junk-built water pipe, drawn flat, low and thin (about 18 px of the 132 px cell) as ground clutter seen from above. Cells: straight runs (horizontal and vertical), elbows, tees, a cross and end caps, so neighbouring cells join up seamlessly.\n\nTube: one oxidised, weathered copper tube of uniform width and one colour band, identical along every straight cell so runs tile without banding. The surface is heavily corroded: broad, irregular verdigris blotches of varied size, in pale blue-green crusts over dull, darker brown-bronze patina, with dark oxide streaks. The blotches are uneven in size and spacing and form no regular dotted pattern. The centre highlight is dulled and broken by corrosion. Shallow dents show along the tube: three or four soft concave dimples per cell, drawn as small shading breaks and slight notches in the dark outline, each with a darker shadow side and a lighter rim. The tube keeps a consistent connection width at every cell edge so cells meet cleanly.\n\nElbows: bent smoothly on the pipe axis with radius half a cell, with the same patina, dents and width as the straights.\n\nJunctions: every 3-way and 4-way junction has a round, symmetric boss of scrap plate centred on the pipe axes. The plate is rust-brown with scratches and a worn, chipped edge. Its fasteners visibly mismatch: some dark iron bolts and some bright brass rivets, in different sizes, with a rust stain around each.\n\nEnd caps: on each dead end, a cap attached on the pipe axis, finished with a crude wire-wrapped solder collar with a lumpy solder blob, in the same corroded copper.\n\nAll fittings sit fully inside their cell, with the tube ends meeting the cell edges exactly on the axis.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: DESC_MISS, DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "scrapper_pipe_v2_20261023_r2"
+ }
+]

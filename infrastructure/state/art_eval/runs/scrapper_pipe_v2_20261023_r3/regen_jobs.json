@@ -1,0 +1,19 @@
+[
+ {
+  "id": "arteval_RM_UniversalPipe_Scrapper_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_UniversalPipe_Scrapper",
+  "prompt": "RimWorld floor pipe for water, Scrapper (salvage, junk-built) look, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background, seen from directly above as flat low ground clutter under pawns. Linked 4x4 atlas for Graphic_Linked, 132 px cells, tube 18 px thick, centred on the cell axis. Straight runs: one oxidised, darkened copper tube of uniform width and a single uniform colour band, the same along every cell. The tube surface is a very fine, low-contrast verdigris grain, evenly scattered at the same small scale and in the same muted dark-teal-green tone over the whole cell, with copper highlights and teal tones both held to a narrow value range; the surface has soft shallow dents and no isolated bright teal spots and no bright copper glints, so repeated cells read as one continuous weathered tube. The straight is cut as a single seamless, non-mirrored cell period whose left and right edges match exactly, with the oxidation texture distributed evenly across the full cell length and no feature concentrated at one position in the cell. Elbows are bent on the pipe axis with a radius of half a cell, the same tube width, colour and grain as the straights, so they join the straights with no kink. Tees and crosses: a round symmetric boss of scrap plate centred on the junction, with mismatched iron and brass fasteners, the pipe arms meeting it on the axis. Dead ends: the tube ends in a cap with a crude wire-wrapped solder collar, attached flush to the tube end. All tiles share the same copper colour, grain scale and outline weight, so the atlas assembles into a straight run with a tee, an elbow pair and three end caps that join up seamlessly.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_INCONSISTENT, DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "scrapper_pipe_v2_20261023_r3"
+ }
+]
