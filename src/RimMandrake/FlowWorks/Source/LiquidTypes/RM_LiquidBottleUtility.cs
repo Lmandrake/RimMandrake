@@ -327,6 +327,14 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                 {
                     continue;   // C2-F2: a spent pond body gives nothing; never walk a pawn to it
                 }
+                // DUG_FILL_FIX_WALKS_TO_SHEET: a dug cell pays from its own water (TryDebitTerrain), so a sheet thinner
+                // than one container is no source; walking a pawn to it failed the fill and the next scan picked it again.
+                if (ex != null && ex.IsExcavated(c) && RM_ContainerMaterialMath.DugCellDebitDl(
+                        container != null ? RM_ContainerMaterials.UnitsIn(container, candidate, size) : candidate.UnitsFor(size),
+                        ex.WaterDlAt(c), RM_MapComponent_Excavation.LevelExact, RM_LevelSolve.U) < 0)
+                {
+                    continue;
+                }
                 bool refused = container != null && !RM_ContainerMaterials.CanHold(container, candidate);
                 if (refused && refusal != null)
                 {
