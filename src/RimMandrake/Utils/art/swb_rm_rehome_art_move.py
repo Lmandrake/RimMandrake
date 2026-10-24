@@ -9,7 +9,8 @@ move all of those. Durrok and Mullgoth and Vura do need moving out of Star Wars,
 elsewhere. Identical bytes delete+add, so git sees a rename and `git log --follow` keeps the history.
 
 Each batch maps a SWBestiary texture folder (Textures-relative) to its destination mod and, for a defName rename
-RSW_X -> RM_X, the new folder; every PNG in the folder moves, with the old folder name in its filename rewritten.
+RSW_X -> RM_X, the new folder; every PNG in the folder moves, with the old folder name (or an explicit stem pair)
+in its filename rewritten.
 
     python3 src/RimMandrake/Utils/art/swb_rm_rehome_art_move.py --batch 1 [--apply]
 """
@@ -38,12 +39,18 @@ BATCHES = {
     # run 2: defName renames RSW_X -> RM_X, so the folder and filename stems follow
     "2": [(f"{ANIMAL}/RSW_Ikee", "Stillsand", f"{ANIMAL}/RM_Ikee"),
           ("swanimals/Korrum", "Scarlands", f"{ANIMAL}/RM_Korrum")],
+    # run 2 batch 3: the eight ex-Jurassic ports and their three shared egg pictures (eggs: filename prefix RSW_ -> RM_)
+    "3": [(f"swanimals/absorbed/{n}", "LeaningScrub", f"{ANIMAL}/RM_{n}")
+          for n in ("Baseopsis", "Diplocaulus", "Holcorobeus", "Platyhystrix", "Protosolpuga", "Protovermes",
+                    "Segnosaurus", "Termitotron")]
+         + [("swresource/AbsorbedEggs", "LeaningScrub", "Things/Item/Egg/RM_AbsorbedEggs", ("RSW_", "RM_"))],
 }
 
 
 def moves(batch: str):
-    for old_dir, mod, new_dir in BATCHES[batch]:
-        old_stem, new_stem = old_dir.rsplit("/", 1)[1], new_dir.rsplit("/", 1)[1]
+    for old_dir, mod, new_dir, *stems in BATCHES[batch]:
+        # the filename stem to rewrite: the folder names by default, or an explicit (old, new) pair
+        old_stem, new_stem = stems[0] if stems else (old_dir.rsplit("/", 1)[1], new_dir.rsplit("/", 1)[1])
         dst_root = REPO / "src/RimMandrake" / mod / "Textures"
         src_dir = SRC / old_dir
         dst_dir = dst_root / new_dir

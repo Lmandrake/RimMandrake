@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
+  SWB_RM_FAUNA_DECIDE_HOME_LIKE_CHIKKA: a Jurassic-donor port, not a Star Wars creature; moved to the RM tier with defNames RSW_ -> RM_ (aliases in src/RimMandrake/LeaningScrub/Defs/Misc/RM_SWBRehome_Aliases.xml).
+  Owner 2026-10-24: "Yes, it appears that a lot of alpha animal ports got
+  classified as Star Wars. We should move all of those."
+  Moved here (batch 3) from src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Absorbed_Protovermes.xml.
+
   JURASSIC_RETIREMENT_ABSORPTION, 2026-09-05 - ABSORBED CONTENT, DO NOT DELETE.
 
   Source mod: Jurassic Rimworld - Dinosaurs Only (Continued),
@@ -13,7 +18,7 @@
   WHICH: survives the recognizability pass STRANGE: a red slug-blob. It is also the only one of the eight already cast on Ash'karr (BiomeCast_Ashkarr.xml had it in AB_OcularForest); that cast entry was removed with the mod and its wildBiomes are declared here instead.
 
   WHAT CHANGED from the donor def, and why - nothing else was touched:
-   * defName JRWProtovermes -> RSW_Protovermes, per design/NAMING_SCHEME_PLAN.md; the donor
+   * defName JRWProtovermes -> RSW_Protovermes (RM_Protovermes since 2026-10-24), per design/NAMING_SCHEME_PLAN.md; the donor
      names are left free so the two can coexist during the changeover.
    * ParentName AnimalDinoThingBase (the donor's own abstract, Dino_Base.xml) ->
      vanilla AnimalThingBase, with that abstract's two statBases inlined.
@@ -27,7 +32,7 @@
      comp class lives in the donor's ExtraButcheringProducts.dll and its product
      (DinoChitin) is a donor item. Keeping it would throw at load.
    * eggs repointed to the RSW_ egg items in
-     Defs/ThingDefs_Items/RSW_Absorbed_Eggs.xml (absorbed with the creatures, so
+     Defs/ThingDefs_Items/RM_Absorbed_Eggs.xml (absorbed with the creatures, so
      they still breed).
    * tradeTags CarnivoreDinosaur / HerbivoreDinosaur (donor trader tags, no trader
      left to read them) -> vanilla AnimalUncommon.
@@ -39,7 +44,7 @@
      here because the Jurassic group in that generated file was deleted with the
      mod. BoneAmount is NOT baked - it is a modded StatDef and belongs in the
      generated doctrine patch, not in a def.
-   * texPath Things/Pawn/Animal/Protovermes -> swanimals/absorbed/Protovermes/Protovermes; the art
+   * texPath Things/Pawn/Animal/Protovermes -> Things/Pawn/Animal/RM_Protovermes/RM_Protovermes; the art
      was pulled out of the donor's AssetBundle via
      observed/inventory/bundle_textures/ (extract_bundle_textures.py) and lives in
      this mod's Textures/. Dessicated graphics point at VANILLA corpses because the
@@ -47,7 +52,7 @@
 -->
 <Defs>
   <ThingDef ParentName="AnimalThingBase">
-    <defName>RSW_Protovermes</defName>
+    <defName>RM_Protovermes</defName>
     <label>Protovermes</label>
     <description>-- > BIOSYN INTERNAL CASE FILE #028172-5500 [PROTOVERMES RIMIENSIS] CODENAME: NOSTALGIA >109
 
@@ -62,8 +67,8 @@ A blood-red cynodont that is peaceful unless disturbed. Its modern decendants ar
     </statBases>
     <comps>
       <li Class="CompProperties_EggLayer">
-        <eggFertilizedDef>RSW_ProtovermesEggFertilized</eggFertilizedDef>
-        <eggUnfertilizedDef>RSW_ProtovermesEggUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RM_ProtovermesEggFertilized</eggFertilizedDef>
+        <eggUnfertilizedDef>RM_ProtovermesEggUnFertilized</eggUnfertilizedDef>
         <eggFertilizationCountMax>1</eggFertilizationCountMax>
         <eggLayIntervalDays>20</eggLayIntervalDays>
         <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
@@ -163,15 +168,15 @@ A blood-red cynodont that is peaceful unless disturbed. Its modern decendants ar
     </tradeTags>
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
-    <defName>RSW_Protovermes</defName>
+    <defName>RM_Protovermes</defName>
     <label>Protovermes</label>
-    <race>RSW_Protovermes</race>
+    <race>RM_Protovermes</race>
     <combatPower>55</combatPower>
     <ecoSystemWeight>0.25</ecoSystemWeight>
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/absorbed/Protovermes/Protovermes</texPath>
+          <texPath>Things/Pawn/Animal/RM_Protovermes/RM_Protovermes</texPath>
           <drawSize>1</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
@@ -181,7 +186,7 @@ A blood-red cynodont that is peaceful unless disturbed. Its modern decendants ar
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/absorbed/Protovermes/Protovermes</texPath>
+          <texPath>Things/Pawn/Animal/RM_Protovermes/RM_Protovermes</texPath>
           <drawSize>1.5</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
@@ -191,7 +196,7 @@ A blood-red cynodont that is peaceful unless disturbed. Its modern decendants ar
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/absorbed/Protovermes/Protovermes</texPath>
+          <texPath>Things/Pawn/Animal/RM_Protovermes/RM_Protovermes</texPath>
           <drawSize>1.75</drawSize>
           <shadowData>
             <volume>(0.25, 0.3, 0.25)</volume>

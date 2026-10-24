@@ -18,6 +18,50 @@
       <li><from>Corpse_RSW_Korrum</from><to>Corpse_RM_Korrum</to><defType>ThingDef</defType></li>
       <li><from>Meat_RSW_Korrum</from><to>Meat_RM_Korrum</to><defType>ThingDef</defType></li>
       <li><from>RSW_Korrum</from><to>RM_Korrum</to><defType>PawnKindDef</defType></li>
+      <!-- batch 3 -->
+      <li><from>RSW_Baseopsis</from><to>RM_Baseopsis</to><defType>ThingDef</defType></li>
+      <li><from>Corpse_RSW_Baseopsis</from><to>Corpse_RM_Baseopsis</to><defType>ThingDef</defType></li>
+      <li><from>RSW_Baseopsis</from><to>RM_Baseopsis</to><defType>PawnKindDef</defType></li>
+      <li><from>RSW_Diplocaulus</from><to>RM_Diplocaulus</to><defType>ThingDef</defType></li>
+      <li><from>Corpse_RSW_Diplocaulus</from><to>Corpse_RM_Diplocaulus</to><defType>ThingDef</defType></li>
+      <li><from>Meat_RSW_Diplocaulus</from><to>Meat_RM_Diplocaulus</to><defType>ThingDef</defType></li>
+      <li><from>RSW_Diplocaulus</from><to>RM_Diplocaulus</to><defType>PawnKindDef</defType></li>
+      <li><from>RSW_Holcorobeus</from><to>RM_Holcorobeus</to><defType>ThingDef</defType></li>
+      <li><from>Corpse_RSW_Holcorobeus</from><to>Corpse_RM_Holcorobeus</to><defType>ThingDef</defType></li>
+      <li><from>RSW_Holcorobeus</from><to>RM_Holcorobeus</to><defType>PawnKindDef</defType></li>
+      <li><from>RSW_Platyhystrix</from><to>RM_Platyhystrix</to><defType>ThingDef</defType></li>
+      <li><from>Corpse_RSW_Platyhystrix</from><to>Corpse_RM_Platyhystrix</to><defType>ThingDef</defType></li>
+      <li><from>Meat_RSW_Platyhystrix</from><to>Meat_RM_Platyhystrix</to><defType>ThingDef</defType></li>
+      <li><from>RSW_Platyhystrix</from><to>RM_Platyhystrix</to><defType>PawnKindDef</defType></li>
+      <li><from>RSW_Protosolpuga</from><to>RM_Protosolpuga</to><defType>ThingDef</defType></li>
+      <li><from>Corpse_RSW_Protosolpuga</from><to>Corpse_RM_Protosolpuga</to><defType>ThingDef</defType></li>
+      <li><from>RSW_Protosolpuga</from><to>RM_Protosolpuga</to><defType>PawnKindDef</defType></li>
+      <li><from>RSW_Protovermes</from><to>RM_Protovermes</to><defType>ThingDef</defType></li>
+      <li><from>Corpse_RSW_Protovermes</from><to>Corpse_RM_Protovermes</to><defType>ThingDef</defType></li>
+      <li><from>RSW_Protovermes</from><to>RM_Protovermes</to><defType>PawnKindDef</defType></li>
+      <li><from>RSW_Segnosaurus</from><to>RM_Segnosaurus</to><defType>ThingDef</defType></li>
+      <li><from>Corpse_RSW_Segnosaurus</from><to>Corpse_RM_Segnosaurus</to><defType>ThingDef</defType></li>
+      <li><from>Meat_RSW_Segnosaurus</from><to>Meat_RM_Segnosaurus</to><defType>ThingDef</defType></li>
+      <li><from>RSW_Segnosaurus</from><to>RM_Segnosaurus</to><defType>PawnKindDef</defType></li>
+      <li><from>RSW_Termitotron</from><to>RM_Termitotron</to><defType>ThingDef</defType></li>
+      <li><from>Corpse_RSW_Termitotron</from><to>Corpse_RM_Termitotron</to><defType>ThingDef</defType></li>
+      <li><from>RSW_Termitotron</from><to>RM_Termitotron</to><defType>PawnKindDef</defType></li>
+      <li><from>RSW_BaseopsisEggUnFertilized</from><to>RM_BaseopsisEggUnFertilized</to><defType>ThingDef</defType></li>
+      <li><from>RSW_BaseopsisEggFertilized</from><to>RM_BaseopsisEggFertilized</to><defType>ThingDef</defType></li>
+      <li><from>RSW_DiplocaulusEggUnFertilized</from><to>RM_DiplocaulusEggUnFertilized</to><defType>ThingDef</defType></li>
+      <li><from>RSW_DiplocaulusEggFertilized</from><to>RM_DiplocaulusEggFertilized</to><defType>ThingDef</defType></li>
+      <li><from>RSW_HolcorobeusEggUnFertilized</from><to>RM_HolcorobeusEggUnFertilized</to><defType>ThingDef</defType></li>
+      <li><from>RSW_HolcorobeusEggFertilized</from><to>RM_HolcorobeusEggFertilized</to><defType>ThingDef</defType></li>
+      <li><from>RSW_PlatyhystrixEggUnFertilized</from><to>RM_PlatyhystrixEggUnFertilized</to><defType>ThingDef</defType></li>
+      <li><from>RSW_PlatyhystrixEggFertilized</from><to>RM_PlatyhystrixEggFertilized</to><defType>ThingDef</defType></li>
+      <li><from>RSW_ProtosolpugaEggUnFertilized</from><to>RM_ProtosolpugaEggUnFertilized</to><defType>ThingDef</defType></li>
+      <li><from>RSW_ProtosolpugaEggFertilized</from><to>RM_ProtosolpugaEggFertilized</to><defType>ThingDef</defType></li>
+      <li><from>RSW_ProtovermesEggUnFertilized</from><to>RM_ProtovermesEggUnFertilized</to><defType>ThingDef</defType></li>
+      <li><from>RSW_ProtovermesEggFertilized</from><to>RM_ProtovermesEggFertilized</to><defType>ThingDef</defType></li>
+      <li><from>RSW_SegnosaurusEggUnFertilized</from><to>RM_SegnosaurusEggUnFertilized</to><defType>ThingDef</defType></li>
+      <li><from>RSW_SegnosaurusEggFertilized</from><to>RM_SegnosaurusEggFertilized</to><defType>ThingDef</defType></li>
+      <li><from>RSW_TermitotronEggUnFertilized</from><to>RM_TermitotronEggUnFertilized</to><defType>ThingDef</defType></li>
+      <li><from>RSW_TermitotronEggFertilized</from><to>RM_TermitotronEggFertilized</to><defType>ThingDef</defType></li>
     </aliases>
   </RimMandrake.EnvironmentalHazards.RM_DefAliasDef>
 </Defs>

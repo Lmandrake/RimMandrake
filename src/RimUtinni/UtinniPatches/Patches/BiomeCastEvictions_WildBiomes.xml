@@ -4184,19 +4184,19 @@
     </match>
   </Operation>
 
-  <!-- 519. RSW_Baseopsis x AridShrubland -->
+  <!-- 519. RM_Baseopsis x AridShrubland -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_Baseopsis"]/race/wildBiomes/AridShrubland</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_Baseopsis"]/race/wildBiomes/AridShrubland</xpath>
     <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="RSW_Baseopsis"]/race/wildBiomes/AridShrubland</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_Baseopsis"]/race/wildBiomes/AridShrubland</xpath>
     </match>
   </Operation>
 
-  <!-- 520. RSW_Diplocaulus x AridShrubland -->
+  <!-- 520. RM_Diplocaulus x AridShrubland -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_Diplocaulus"]/race/wildBiomes/AridShrubland</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_Diplocaulus"]/race/wildBiomes/AridShrubland</xpath>
     <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="RSW_Diplocaulus"]/race/wildBiomes/AridShrubland</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_Diplocaulus"]/race/wildBiomes/AridShrubland</xpath>
     </match>
   </Operation>
 
@@ -4208,35 +4208,35 @@
     </match>
   </Operation>
 
-  <!-- 522. RSW_Platyhystrix x AridShrubland -->
+  <!-- 522. RM_Platyhystrix x AridShrubland -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_Platyhystrix"]/race/wildBiomes/AridShrubland</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_Platyhystrix"]/race/wildBiomes/AridShrubland</xpath>
     <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="RSW_Platyhystrix"]/race/wildBiomes/AridShrubland</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_Platyhystrix"]/race/wildBiomes/AridShrubland</xpath>
     </match>
   </Operation>
 
-  <!-- 523. RSW_Protosolpuga x AridShrubland -->
+  <!-- 523. RM_Protosolpuga x AridShrubland -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_Protosolpuga"]/race/wildBiomes/AridShrubland</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_Protosolpuga"]/race/wildBiomes/AridShrubland</xpath>
     <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="RSW_Protosolpuga"]/race/wildBiomes/AridShrubland</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_Protosolpuga"]/race/wildBiomes/AridShrubland</xpath>
     </match>
   </Operation>
 
-  <!-- 524. RSW_Protovermes x AridShrubland -->
+  <!-- 524. RM_Protovermes x AridShrubland -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_Protovermes"]/race/wildBiomes/AridShrubland</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_Protovermes"]/race/wildBiomes/AridShrubland</xpath>
     <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="RSW_Protovermes"]/race/wildBiomes/AridShrubland</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_Protovermes"]/race/wildBiomes/AridShrubland</xpath>
     </match>
   </Operation>
 
-  <!-- 525. RSW_Termitotron x AridShrubland -->
+  <!-- 525. RM_Termitotron x AridShrubland -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_Termitotron"]/race/wildBiomes/AridShrubland</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_Termitotron"]/race/wildBiomes/AridShrubland</xpath>
     <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="RSW_Termitotron"]/race/wildBiomes/AridShrubland</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_Termitotron"]/race/wildBiomes/AridShrubland</xpath>
     </match>
   </Operation>
 
@@ -8080,11 +8080,11 @@
     </match>
   </Operation>
 
-  <!-- 1006. RSW_Baseopsis x Desert -->
+  <!-- 1006. RM_Baseopsis x Desert -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_Baseopsis"]/race/wildBiomes/Desert</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_Baseopsis"]/race/wildBiomes/Desert</xpath>
     <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="RSW_Baseopsis"]/race/wildBiomes/Desert</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_Baseopsis"]/race/wildBiomes/Desert</xpath>
     </match>
   </Operation>
 
@@ -8096,19 +8096,19 @@
     </match>
   </Operation>
 
-  <!-- 1008. RSW_Protosolpuga x Desert -->
+  <!-- 1008. RM_Protosolpuga x Desert -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_Protosolpuga"]/race/wildBiomes/Desert</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_Protosolpuga"]/race/wildBiomes/Desert</xpath>
     <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="RSW_Protosolpuga"]/race/wildBiomes/Desert</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_Protosolpuga"]/race/wildBiomes/Desert</xpath>
     </match>
   </Operation>
 
-  <!-- 1009. RSW_Termitotron x Desert -->
+  <!-- 1009. RM_Termitotron x Desert -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_Termitotron"]/race/wildBiomes/Desert</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_Termitotron"]/race/wildBiomes/Desert</xpath>
     <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="RSW_Termitotron"]/race/wildBiomes/Desert</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_Termitotron"]/race/wildBiomes/Desert</xpath>
     </match>
   </Operation>
 
@@ -10896,11 +10896,11 @@
     </match>
   </Operation>
 
-  <!-- 1358. RSW_Baseopsis x ExtremeDesert -->
+  <!-- 1358. RM_Baseopsis x ExtremeDesert -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_Baseopsis"]/race/wildBiomes/ExtremeDesert</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_Baseopsis"]/race/wildBiomes/ExtremeDesert</xpath>
     <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="RSW_Baseopsis"]/race/wildBiomes/ExtremeDesert</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_Baseopsis"]/race/wildBiomes/ExtremeDesert</xpath>
     </match>
   </Operation>
 
@@ -10912,19 +10912,19 @@
     </match>
   </Operation>
 
-  <!-- 1360. RSW_Protosolpuga x ExtremeDesert -->
+  <!-- 1360. RM_Protosolpuga x ExtremeDesert -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_Protosolpuga"]/race/wildBiomes/ExtremeDesert</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_Protosolpuga"]/race/wildBiomes/ExtremeDesert</xpath>
     <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="RSW_Protosolpuga"]/race/wildBiomes/ExtremeDesert</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_Protosolpuga"]/race/wildBiomes/ExtremeDesert</xpath>
     </match>
   </Operation>
 
-  <!-- 1361. RSW_Termitotron x ExtremeDesert -->
+  <!-- 1361. RM_Termitotron x ExtremeDesert -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_Termitotron"]/race/wildBiomes/ExtremeDesert</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_Termitotron"]/race/wildBiomes/ExtremeDesert</xpath>
     <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="RSW_Termitotron"]/race/wildBiomes/ExtremeDesert</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_Termitotron"]/race/wildBiomes/ExtremeDesert</xpath>
     </match>
   </Operation>
 

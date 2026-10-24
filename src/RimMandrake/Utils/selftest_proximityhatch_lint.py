@@ -13,7 +13,7 @@ sys.path.insert(0, HERE)
 import lint_proximityhatch_defs as L  # noqa: E402
 
 BRAIN = "RimStarWars/BrainWorms/Defs/ThingDefs_Items/Items_BrainWormEggs.xml"
-PATCH = "RimStarWars/SWBestiary/Patches/ProximityHatch/RSW_ProtovermesEgg_ProximityHatch.xml"
+PATCH = "RimMandrake/LeaningScrub/Patches/ProximityHatch/RM_ProtovermesEgg_ProximityHatch.xml"
 GUZ = "RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Guzzka.xml"
 SETTINGS = "RimMandrake/ProximityHatch/Source/RM_ProximityHatchMod.cs"
 KERNEL = "RimMandrake/ProximityHatch/Source/Kernel/RM_ProximityHatchKernel.cs"
@@ -27,7 +27,7 @@ PLANTS = [
     ("radius huge", "xml", GUZ, "<triggerRadius>2.2</triggerRadius>", "<triggerRadius>90</triggerRadius>", "ph-fields"),
     ("interval zero", "xml", BRAIN, "<scanIntervalTicks>60</scanIntervalTicks>", "<scanIntervalTicks>0</scanIntervalTicks>", "ph-fields"),
     ("hatcher comp renamed on the egg", "xml", BRAIN, '<li Class="CompProperties_Hatcher">', '<li Class="CompProperties_Hatchr">', "ph-hatcher"),
-    ("patch targets an egg with no hatcher", "xml", PATCH, 'defName="RSW_ProtovermesEggFertilized"', 'defName="RSW_NoSuchEgg"', "ph-hatcher"),
+    ("patch targets an egg with no hatcher", "xml", PATCH, 'defName="RM_ProtovermesEggFertilized"', 'defName="RSW_NoSuchEgg"', "ph-hatcher"),
     ("patch loses its FindMod gate", "xml", PATCH, "RimMandrake: Proximity Hatch", "Some Other Mod", "ph-gate"),
     ("def drops MayRequire", "xml", GUZ, 'CompProperties_ProximityHatch" MayRequire="mandrake.rm.proximityhatch">', 'CompProperties_ProximityHatch">', "ph-gate"),
     ("two proximity comps on one egg", "xml", GUZ, '      <li Class="RimMandrake.ProximityHatch.CompProperties_ProximityHatch" MayRequire="mandrake.rm.proximityhatch">\n        <triggerRadius>2.2</triggerRadius>',

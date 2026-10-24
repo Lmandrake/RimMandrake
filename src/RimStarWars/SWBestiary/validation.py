@@ -251,7 +251,9 @@ IKEE_SETTINGS = "RimMandrake.StarWars.JawaIkee.RSW_JawaIkeeSettings"
 LIVESTOCK_SETTINGS = "RimMandrake.StarWars.Livestock.RSW_LivestockSettings"
 
 # Walk's own original scope (still valid, re-read against the shipped Defs).
-CORE_SPECIES = ["RSW_Bantha", "RSW_Jerba", "RSW_Baseopsis"]
+# RSW_Baseopsis left 2026-10-24: the ex-Jurassic wave moved to the RM tier as RM_Baseopsis (mandrake.rm.biomes,
+# SWB_RM_FAUNA_DECIDE_HOME_LIKE_CHIKKA), so this Star Wars-tier walk no longer spot-checks it.
+CORE_SPECIES = ["RSW_Bantha", "RSW_Jerba"]
 
 # One representative species per absorption wave the walk doc never covers.
 NEWLY_ABSORBED_SPECIES = [
@@ -276,8 +278,8 @@ def _races_present(t):
 @suite.chain("core_species_spawn")
 def core_species_spawn(t):
     """Walk steps 9-12, unchanged: Bantha (herd/pack), Jerba (new content,
-    desert pack/milk beast) and Baseopsis (spot-checks the absorbed
-    ex-Jurassic wave actually generates, not just parses)."""
+    desert pack/milk beast). Baseopsis (the ex-Jurassic spot-check) moved
+    to the RM tier on 2026-10-24 and is no longer this mod's to walk."""
     t.clear_area(size=30)
     with t.component("core_species_spawn_and_present", beyond_toggle=True):
         for kind in CORE_SPECIES:

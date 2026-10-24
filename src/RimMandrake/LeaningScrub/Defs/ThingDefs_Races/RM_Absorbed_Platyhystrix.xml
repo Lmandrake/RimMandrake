@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
+  SWB_RM_FAUNA_DECIDE_HOME_LIKE_CHIKKA: a Jurassic-donor port, not a Star Wars creature; moved to the RM tier with defNames RSW_ -> RM_ (aliases in src/RimMandrake/LeaningScrub/Defs/Misc/RM_SWBRehome_Aliases.xml).
+  Owner 2026-10-24: "Yes, it appears that a lot of alpha animal ports got
+  classified as Star Wars. We should move all of those."
+  Moved here (batch 3) from src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Absorbed_Platyhystrix.xml.
+
   JURASSIC_RETIREMENT_ABSORPTION, 2026-09-05 - ABSORBED CONTENT, DO NOT DELETE.
 
   Source mod: Jurassic Rimworld - Dinosaurs Only (Continued),
@@ -10,10 +15,10 @@
   ideoligion or any other mod depends on it, and only the creatures that pass
   design/Jawa/worldbuilding/creature_recognizability_rule.md are worth keeping.
 
-  WHICH: RESTORE_CANDIDATES.md #2 - a purple horned beetle-beast whose art reads as an alien armoured thing, not as a rhinoceros.
+  WHICH: survives the recognizability pass STRANGE: a sail-backed amphibian.
 
   WHAT CHANGED from the donor def, and why - nothing else was touched:
-   * defName JRWHolcorobeus -> RSW_Holcorobeus, per design/NAMING_SCHEME_PLAN.md; the donor
+   * defName JRWPlatyhystrix -> RSW_Platyhystrix (RM_Platyhystrix since 2026-10-24), per design/NAMING_SCHEME_PLAN.md; the donor
      names are left free so the two can coexist during the changeover.
    * ParentName AnimalDinoThingBase (the donor's own abstract, Dino_Base.xml) ->
      vanilla AnimalThingBase, with that abstract's two statBases inlined.
@@ -25,7 +30,7 @@
      comp class lives in the donor's ExtraButcheringProducts.dll and its product
      (DinoChitin) is a donor item. Keeping it would throw at load.
    * eggs repointed to the RSW_ egg items in
-     Defs/ThingDefs_Items/RSW_Absorbed_Eggs.xml (absorbed with the creatures, so
+     Defs/ThingDefs_Items/RM_Absorbed_Eggs.xml (absorbed with the creatures, so
      they still breed).
    * tradeTags CarnivoreDinosaur / HerbivoreDinosaur (donor trader tags, no trader
      left to read them) -> vanilla AnimalUncommon.
@@ -37,7 +42,7 @@
      here because the Jurassic group in that generated file was deleted with the
      mod. BoneAmount is NOT baked - it is a modded StatDef and belongs in the
      generated doctrine patch, not in a def.
-   * texPath Things/Pawn/Animal/Holcorobeus -> swanimals/absorbed/Holcorobeus/Holcorobeus; the art
+   * texPath Things/Pawn/Animal/Platyhystrix -> Things/Pawn/Animal/RM_Platyhystrix/RM_Platyhystrix; the art
      was pulled out of the donor's AssetBundle via
      observed/inventory/bundle_textures/ (extract_bundle_textures.py) and lives in
      this mod's Textures/. Dessicated graphics point at VANILLA corpses because the
@@ -45,35 +50,54 @@
 -->
 <Defs>
   <ThingDef ParentName="AnimalThingBase">
-    <defName>RSW_Holcorobeus</defName>
-    <label>Holcorobeus</label>
-    <description>-- > INGEN INTERNAL CASE FILE #02739-1992 [HOLCOROBEUS ATROSULCATUS] CODENAME: HERCULES >380
+    <defName>RM_Platyhystrix</defName>
+    <label>Platyhystrix</label>
+    <description>-- > INGEN INTERNAL CASE FILE #06281-1910 [PLATYHYSTRIX RUGOSUS] CODENAME: COOKIE >982
 
-A large extinct rhinoceros beetle that has a brilliant purple hue. Primitive, but gentle, they have often been used as hauling animals after their introduction on the rim.</description>
+A temnospondyl amphibian with a distinctive sail along its back, similar to synapsids such as Dimetrodon and Edaphosaurus. It is theorized that the large, lumpy sail was used to thermoregulate. The short, stocky build indicates a largly terrestial lifestyle, living in the swampy, sandy biomes of the early carboniferous to the late permian.</description>
     <statBases>
       <MeatAmount>210</MeatAmount>
       <LeatherAmount>30</LeatherAmount>
-      <MoveSpeed>2.5</MoveSpeed>
+      <MoveSpeed>3</MoveSpeed>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>
       <MarketValue>500</MarketValue>
       <Wildness>0.50</Wildness>
     </statBases>
     <tools>
       <li>
-        <label>head claw</label>
+        <label>left foot</label>
         <capacities>
-          <li>Cut</li>
+          <li>Blunt</li>
         </capacities>
-        <power>12</power>
-        <cooldownTime>2.6</cooldownTime>
-        <linkedBodyPartsGroup>HeadClaw</linkedBodyPartsGroup>
+        <power>3</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right foot</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>3</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>jaw</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>3</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
       </li>
       <li>
         <label>head</label>
         <capacities>
           <li>Blunt</li>
         </capacities>
-        <power>7</power>
+        <power>3</power>
         <cooldownTime>2</cooldownTime>
         <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
         <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
@@ -82,8 +106,8 @@ A large extinct rhinoceros beetle that has a brilliant purple hue. Primitive, bu
     </tools>
     <comps>
       <li Class="CompProperties_EggLayer">
-        <eggFertilizedDef>RSW_HolcorobeusEggFertilized</eggFertilizedDef>
-        <eggUnfertilizedDef>RSW_HolcorobeusEggUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RM_PlatyhystrixEggFertilized</eggFertilizedDef>
+        <eggUnfertilizedDef>RM_PlatyhystrixEggUnFertilized</eggUnfertilizedDef>
         <eggFertilizationCountMax>1</eggFertilizationCountMax>
         <eggLayIntervalDays>14.0</eggLayIntervalDays>
         <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
@@ -94,15 +118,15 @@ A large extinct rhinoceros beetle that has a brilliant purple hue. Primitive, bu
       </li>
     </comps>
     <race>
-      <body>BeetleLikeWithClaw</body>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
       <baseHungerRate>0.5</baseHungerRate>
       <baseBodySize>1.5</baseBodySize>
       <baseHealthScale>2.0</baseHealthScale>
-      <packAnimal>true</packAnimal>
+      <packAnimal>false</packAnimal>
       <predator>false</predator>
       <foodType>OmnivoreRoughAnimal</foodType>
-      <useMeatFrom>Megaspider</useMeatFrom>
-      <gestationPeriodDays>30</gestationPeriodDays>
+      <leatherDef>Leather_Lizard</leatherDef>
+      <gestationPeriodDays>15</gestationPeriodDays>
       <trainability>Advanced</trainability>
       <manhunterOnTameFailChance>0.25</manhunterOnTameFailChance>
       <manhunterOnDamageChance>0.05</manhunterOnDamageChance>
@@ -120,21 +144,21 @@ A large extinct rhinoceros beetle that has a brilliant purple hue. Primitive, bu
         <li>
           <def>AnimalAdult</def>
           <minAge>3.0</minAge>
-          <soundWounded>Pawn_Megascarab_Wounded</soundWounded>
-          <soundDeath>Pawn_Megascarab_Death</soundDeath>
-          <soundCall>Pawn_Megascarab_Call</soundCall>
-          <soundAngry>Pawn_Megascarab_Angry</soundAngry>
+          <soundWounded>Pawn_Iguana_Wounded</soundWounded>
+          <soundDeath>Pawn_Iguana_Death</soundDeath>
+          <soundCall>Pawn_Iguana_Call</soundCall>
+          <soundAngry>Pawn_Iguana_Angry</soundAngry>
         </li>
       </lifeStageAges>
       <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
       <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
       <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
       <wildBiomes>
+        <AridShrubland>0.4</AridShrubland> <!-- Ash'karr cast restored animal-side; the biome-side entry in BiomeCast_Ashkarr.xml went with the retired mod -->
         <TropicalRainforest>0.1</TropicalRainforest>
-        <TemperateSwamp>0.075</TemperateSwamp>
-        <TropicalSwamp>0.075</TropicalSwamp>
-        <TemperateForest>0.05</TemperateForest>
-        <BorealForest>0.05</BorealForest>
+        <TropicalSwamp>0.1</TropicalSwamp>
+        <TemperateForest>0.1</TemperateForest>
+        <TemperateSwamp>0.1</TemperateSwamp>
       </wildBiomes>
     </race>
     <tradeTags>
@@ -142,20 +166,20 @@ A large extinct rhinoceros beetle that has a brilliant purple hue. Primitive, bu
     </tradeTags>
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
-    <defName>RSW_Holcorobeus</defName>
-    <label>Holcorobeus</label>
-    <race>RSW_Holcorobeus</race>
+    <defName>RM_Platyhystrix</defName>
+    <label>Platyhystrix</label>
+    <race>RM_Platyhystrix</race>
     <combatPower>25</combatPower>
     <wildGroupSize>
-      <min>2</min>
-      <max>3</max>
+      <min>1</min>
+      <max>2</max>
     </wildGroupSize>
-    <ecoSystemWeight>0.2</ecoSystemWeight>
+    <ecoSystemWeight>1.5</ecoSystemWeight>
     <lifeStages>
       <li>
-        <label>Holcorobeus larvae</label>
+        <label>Platyhystrix hatchling</label>
         <bodyGraphicData>
-          <texPath>swanimals/absorbed/Holcorobeus/Holcorobeus</texPath>
+          <texPath>Things/Pawn/Animal/RM_Platyhystrix/RM_Platyhystrix</texPath>
           <drawSize>1.50</drawSize>
           <shadowData>
             <volume>(0.3, 0.3, 0.3)</volume>
@@ -163,13 +187,13 @@ A large extinct rhinoceros beetle that has a brilliant purple hue. Primitive, bu
           </shadowData>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Megaspider/Dessicated_Megaspider</texPath>
+          <texPath>Things/Pawn/Animal/Tortoise/Dessicated_Tortoise</texPath>
           <drawSize>1.0</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/absorbed/Holcorobeus/Holcorobeus</texPath>
+          <texPath>Things/Pawn/Animal/RM_Platyhystrix/RM_Platyhystrix</texPath>
           <drawSize>1.75</drawSize>
           <shadowData>
             <volume>(0.3, 0.3, 0.3)</volume>
@@ -177,13 +201,13 @@ A large extinct rhinoceros beetle that has a brilliant purple hue. Primitive, bu
           </shadowData>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Megaspider/Dessicated_Megaspider</texPath>
+          <texPath>Things/Pawn/Animal/Tortoise/Dessicated_Tortoise</texPath>
           <drawSize>2.0</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/absorbed/Holcorobeus/Holcorobeus</texPath>
+          <texPath>Things/Pawn/Animal/RM_Platyhystrix/RM_Platyhystrix</texPath>
           <drawSize>2</drawSize>
           <shadowData>
             <volume>(0.3, 0.3, 0.3)</volume>
@@ -191,7 +215,7 @@ A large extinct rhinoceros beetle that has a brilliant purple hue. Primitive, bu
           </shadowData>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Megaspider/Dessicated_Megaspider</texPath>
+          <texPath>Things/Pawn/Animal/Tortoise/Dessicated_Tortoise</texPath>
           <drawSize>2.0</drawSize>
         </dessicatedBodyGraphicData>
       </li>

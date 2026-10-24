@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
+  SWB_RM_FAUNA_DECIDE_HOME_LIKE_CHIKKA: the eight Jurassic-donor ports' eggs, moved with their layers; defNames RSW_ -> RM_.
+  Owner 2026-10-24: "Yes, it appears that a lot of alpha animal ports got
+  classified as Star Wars. We should move all of those."
+  Moved here (batch 3) from src/RimStarWars/SWBestiary/Defs/ThingDefs_Items/RSW_Absorbed_Eggs.xml.
+
   JURASSIC_RETIREMENT_ABSORPTION, 2026-09-05 - ABSORBED CONTENT, DO NOT DELETE.
 
   Source mod: Jurassic Rimworld - Dinosaurs Only (Continued),
@@ -20,11 +25,11 @@
 -->
 <Defs>
   <ThingDef ParentName="EggUnfertBase">
-    <defName>RSW_BaseopsisEggUnFertilized</defName>
+    <defName>RM_BaseopsisEggUnFertilized</defName>
     <label>Baseopsis egg (unfert.)</label>
     <description>An unfertilized egg. Behind a veil of light the vague shape of a young baseopsis lies curled safely within.</description>
     <graphicData>
-      <texPath>swresource/AbsorbedEggs/RSW_InsectEgg</texPath>
+      <texPath>Things/Item/Egg/RM_AbsorbedEggs/RM_InsectEgg</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <color>(245,245,245)</color>
     </graphicData>
@@ -34,11 +39,11 @@
   </ThingDef>
 
   <ThingDef ParentName="EggFertBase">
-    <defName>RSW_BaseopsisEggFertilized</defName>
+    <defName>RM_BaseopsisEggFertilized</defName>
     <label>Baseopsis egg (fert.)</label>
     <description>A fertilized egg. With enough care and patience, this egg will hatch into a baseopsis.</description>
     <graphicData>
-      <texPath>swresource/AbsorbedEggs/RSW_InsectEgg</texPath>
+      <texPath>Things/Item/Egg/RM_AbsorbedEggs/RM_InsectEgg</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <color>(245,245,245)</color>
     </graphicData>
@@ -48,17 +53,17 @@
     <comps>
       <li Class="CompProperties_Hatcher">
         <hatcherDaystoHatch>3</hatcherDaystoHatch>
-        <hatcherPawn>RSW_Baseopsis</hatcherPawn>
+        <hatcherPawn>RM_Baseopsis</hatcherPawn>
       </li>
     </comps>
   </ThingDef>
 
   <ThingDef ParentName="EggUnfertBase">
-    <defName>RSW_DiplocaulusEggUnFertilized</defName>
+    <defName>RM_DiplocaulusEggUnFertilized</defName>
     <label>Diplocaulus egg (unfert.)</label>
     <description>An unfertilized egg. Behind a veil of light the vague shape of a young diplocaulus lies curled safely within.</description>
     <graphicData>
-      <texPath>swresource/AbsorbedEggs/RSW_AmphibEgg</texPath>
+      <texPath>Things/Item/Egg/RM_AbsorbedEggs/RM_AmphibEgg</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <color>(245,245,245)</color>
     </graphicData>
@@ -68,11 +73,11 @@
   </ThingDef>
 
   <ThingDef ParentName="EggFertBase">
-    <defName>RSW_DiplocaulusEggFertilized</defName>
+    <defName>RM_DiplocaulusEggFertilized</defName>
     <label>Diplocaulus egg (fert.)</label>
     <description>A fertilized egg. With enough care and patience, this egg will hatch into a diplocaulus.</description>
     <graphicData>
-      <texPath>swresource/AbsorbedEggs/RSW_AmphibEgg</texPath>
+      <texPath>Things/Item/Egg/RM_AbsorbedEggs/RM_AmphibEgg</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <color>(245,245,245)</color>
     </graphicData>
@@ -82,17 +87,17 @@
     <comps>
       <li Class="CompProperties_Hatcher">
         <hatcherDaystoHatch>3</hatcherDaystoHatch>
-        <hatcherPawn>RSW_Diplocaulus</hatcherPawn>
+        <hatcherPawn>RM_Diplocaulus</hatcherPawn>
       </li>
     </comps>
   </ThingDef>
 
   <ThingDef ParentName="EggUnfertBase">
-    <defName>RSW_HolcorobeusEggUnFertilized</defName>
+    <defName>RM_HolcorobeusEggUnFertilized</defName>
     <label>Holcorobeus egg (unfert.)</label>
     <description>An unfertilized egg. Behind a veil of light the vague shape of a young holcorobeus lies curled safely within.</description>
     <graphicData>
-      <texPath>swresource/AbsorbedEggs/RSW_InsectEgg</texPath>
+      <texPath>Things/Item/Egg/RM_AbsorbedEggs/RM_InsectEgg</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <color>(245,245,245)</color>
     </graphicData>
@@ -102,11 +107,11 @@
   </ThingDef>
 
   <ThingDef ParentName="EggFertBase">
-    <defName>RSW_HolcorobeusEggFertilized</defName>
+    <defName>RM_HolcorobeusEggFertilized</defName>
     <label>Holcorobeus egg (fert.)</label>
     <description>A fertilized egg. With enough care and patience, this egg will hatch into a holcorobeus.</description>
     <graphicData>
-      <texPath>swresource/AbsorbedEggs/RSW_InsectEgg</texPath>
+      <texPath>Things/Item/Egg/RM_AbsorbedEggs/RM_InsectEgg</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <color>(245,245,245)</color>
     </graphicData>
@@ -116,17 +121,17 @@
     <comps>
       <li Class="CompProperties_Hatcher">
         <hatcherDaystoHatch>3</hatcherDaystoHatch>
-        <hatcherPawn>RSW_Holcorobeus</hatcherPawn>
+        <hatcherPawn>RM_Holcorobeus</hatcherPawn>
       </li>
     </comps>
   </ThingDef>
 
   <ThingDef ParentName="EggUnfertBase">
-    <defName>RSW_PlatyhystrixEggUnFertilized</defName>
+    <defName>RM_PlatyhystrixEggUnFertilized</defName>
     <label>Platyhystrix egg (unfert.)</label>
     <description>An unfertilized egg. Behind a veil of light the vague shape of a young platyhystrix lies curled safely within.</description>
     <graphicData>
-      <texPath>swresource/AbsorbedEggs/RSW_AmphibEgg</texPath>
+      <texPath>Things/Item/Egg/RM_AbsorbedEggs/RM_AmphibEgg</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <color>(245,245,245)</color>
     </graphicData>
@@ -136,11 +141,11 @@
   </ThingDef>
 
   <ThingDef ParentName="EggFertBase">
-    <defName>RSW_PlatyhystrixEggFertilized</defName>
+    <defName>RM_PlatyhystrixEggFertilized</defName>
     <label>Platyhystrix egg (fert.)</label>
     <description>A fertilized egg. With enough care and patience, this egg will hatch into a platyhystrix.</description>
     <graphicData>
-      <texPath>swresource/AbsorbedEggs/RSW_AmphibEgg</texPath>
+      <texPath>Things/Item/Egg/RM_AbsorbedEggs/RM_AmphibEgg</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <color>(245,245,245)</color>
     </graphicData>
@@ -150,17 +155,17 @@
     <comps>
       <li Class="CompProperties_Hatcher">
         <hatcherDaystoHatch>3</hatcherDaystoHatch>
-        <hatcherPawn>RSW_Platyhystrix</hatcherPawn>
+        <hatcherPawn>RM_Platyhystrix</hatcherPawn>
       </li>
     </comps>
   </ThingDef>
 
   <ThingDef ParentName="EggUnfertBase">
-    <defName>RSW_ProtosolpugaEggUnFertilized</defName>
+    <defName>RM_ProtosolpugaEggUnFertilized</defName>
     <label>Protosolpuga egg (unfert.)</label>
     <description>An unfertilized egg. Behind a veil of light the vague shape of a young protosolpuga lies curled safely within.</description>
     <graphicData>
-      <texPath>swresource/AbsorbedEggs/RSW_InsectEgg</texPath>
+      <texPath>Things/Item/Egg/RM_AbsorbedEggs/RM_InsectEgg</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <color>(245,245,245)</color>
     </graphicData>
@@ -170,11 +175,11 @@
   </ThingDef>
 
   <ThingDef ParentName="EggFertBase">
-    <defName>RSW_ProtosolpugaEggFertilized</defName>
+    <defName>RM_ProtosolpugaEggFertilized</defName>
     <label>Protosolpuga egg (fert.)</label>
     <description>A fertilized egg. With enough care and patience, this egg will hatch into a protosolpuga.</description>
     <graphicData>
-      <texPath>swresource/AbsorbedEggs/RSW_InsectEgg</texPath>
+      <texPath>Things/Item/Egg/RM_AbsorbedEggs/RM_InsectEgg</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <color>(245,245,245)</color>
     </graphicData>
@@ -184,17 +189,17 @@
     <comps>
       <li Class="CompProperties_Hatcher">
         <hatcherDaystoHatch>3</hatcherDaystoHatch>
-        <hatcherPawn>RSW_Protosolpuga</hatcherPawn>
+        <hatcherPawn>RM_Protosolpuga</hatcherPawn>
       </li>
     </comps>
   </ThingDef>
 
   <ThingDef ParentName="EggUnfertBase">
-    <defName>RSW_ProtovermesEggUnFertilized</defName>
+    <defName>RM_ProtovermesEggUnFertilized</defName>
     <label>Protovermes egg (unfert.)</label>
     <description>An unfertilized egg. Behind a veil of light the vague shape of a young protovermes lies curled safely within.</description>
     <graphicData>
-      <texPath>swresource/AbsorbedEggs/RSW_DinoEgg</texPath>
+      <texPath>Things/Item/Egg/RM_AbsorbedEggs/RM_DinoEgg</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <color>(245,245,245)</color>
     </graphicData>
@@ -204,11 +209,11 @@
   </ThingDef>
 
   <ThingDef ParentName="EggFertBase">
-    <defName>RSW_ProtovermesEggFertilized</defName>
+    <defName>RM_ProtovermesEggFertilized</defName>
     <label>Protovermes egg (fert.)</label>
     <description>A fertilized egg. With enough care and patience, this egg will hatch into a protovermes.</description>
     <graphicData>
-      <texPath>swresource/AbsorbedEggs/RSW_DinoEgg</texPath>
+      <texPath>Things/Item/Egg/RM_AbsorbedEggs/RM_DinoEgg</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <color>(245,245,245)</color>
     </graphicData>
@@ -218,17 +223,17 @@
     <comps>
       <li Class="CompProperties_Hatcher">
         <hatcherDaystoHatch>3</hatcherDaystoHatch>
-        <hatcherPawn>RSW_Protovermes</hatcherPawn>
+        <hatcherPawn>RM_Protovermes</hatcherPawn>
       </li>
     </comps>
   </ThingDef>
 
   <ThingDef ParentName="EggUnfertBase">
-    <defName>RSW_SegnosaurusEggUnFertilized</defName>
+    <defName>RM_SegnosaurusEggUnFertilized</defName>
     <label>Segnosaurus egg (unfert.)</label>
     <description>An unfertilized egg. Behind a veil of light the vague shape of a young segnosaurus lies curled safely within.</description>
     <graphicData>
-      <texPath>swresource/AbsorbedEggs/RSW_DinoEgg</texPath>
+      <texPath>Things/Item/Egg/RM_AbsorbedEggs/RM_DinoEgg</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <color>(245,245,245)</color>
     </graphicData>
@@ -238,11 +243,11 @@
   </ThingDef>
 
   <ThingDef ParentName="EggFertBase">
-    <defName>RSW_SegnosaurusEggFertilized</defName>
+    <defName>RM_SegnosaurusEggFertilized</defName>
     <label>Segnosaurus egg (fert.)</label>
     <description>A fertilized egg. With enough care and patience, this egg will hatch into a segnosaurus.</description>
     <graphicData>
-      <texPath>swresource/AbsorbedEggs/RSW_DinoEgg</texPath>
+      <texPath>Things/Item/Egg/RM_AbsorbedEggs/RM_DinoEgg</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <color>(245,245,245)</color>
     </graphicData>
@@ -252,17 +257,17 @@
     <comps>
       <li Class="CompProperties_Hatcher">
         <hatcherDaystoHatch>3</hatcherDaystoHatch>
-        <hatcherPawn>RSW_Segnosaurus</hatcherPawn>
+        <hatcherPawn>RM_Segnosaurus</hatcherPawn>
       </li>
     </comps>
   </ThingDef>
 
   <ThingDef ParentName="EggUnfertBase">
-    <defName>RSW_TermitotronEggUnFertilized</defName>
+    <defName>RM_TermitotronEggUnFertilized</defName>
     <label>Termitotron egg (unfert.)</label>
     <description>An unfertilized egg. Behind a veil of light the vague shape of a young termitotron lies curled safely within.</description>
     <graphicData>
-      <texPath>swresource/AbsorbedEggs/RSW_InsectEgg</texPath>
+      <texPath>Things/Item/Egg/RM_AbsorbedEggs/RM_InsectEgg</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <color>(245,245,245)</color>
     </graphicData>
@@ -272,11 +277,11 @@
   </ThingDef>
 
   <ThingDef ParentName="EggFertBase">
-    <defName>RSW_TermitotronEggFertilized</defName>
+    <defName>RM_TermitotronEggFertilized</defName>
     <label>Termitotron egg (fert.)</label>
     <description>A fertilized egg. With enough care and patience, this egg will hatch into a termitotron.</description>
     <graphicData>
-      <texPath>swresource/AbsorbedEggs/RSW_InsectEgg</texPath>
+      <texPath>Things/Item/Egg/RM_AbsorbedEggs/RM_InsectEgg</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <color>(245,245,245)</color>
     </graphicData>
@@ -286,7 +291,7 @@
     <comps>
       <li Class="CompProperties_Hatcher">
         <hatcherDaystoHatch>3</hatcherDaystoHatch>
-        <hatcherPawn>RSW_Termitotron</hatcherPawn>
+        <hatcherPawn>RM_Termitotron</hatcherPawn>
       </li>
     </comps>
   </ThingDef>
