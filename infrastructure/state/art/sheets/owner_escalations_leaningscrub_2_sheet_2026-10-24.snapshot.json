@@ -1,0 +1,307 @@
+{
+ "biome": "SUBJECTS_owner_escalations_leaningscrub_2",
+ "built": "2026-10-24T06:04:17-0700",
+ "census": "Transient/biome_ffar/owner_escalations_leaningscrub_2.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 14 mods \u2014 a test list): 320 active",
+ "rows": {
+  "RM_Rollbug": {
+   "columns": {
+    "A": {
+     "east": "366bf0c201edb535ac2572f8aec7983a47b9ef4329dec1d2785815959bac26dd",
+     "north": "5f34db4a132ddf922f5a68d3e3647783242e57a31f500a867927108ffd2be230",
+     "south": "f9edf95bc60b71e8ed4222529938a32138c0aaeef80ad273259eb566c51c3244"
+    },
+    "B": {
+     "east": "257d98b15908bac70458d848266c4714df1b838565f499e5103a4cc837d24cd9",
+     "north": "e5573180ff8dcda2ef9ae27971ad3183c89677cd6875b7ee622921dfff669aef",
+     "south": "6c2963438a45e66da8f05204122c357c81bd2ed0b49c851e496de50f8a030db4"
+    },
+    "C": {
+     "east": "3fabf2a04f07d6caa8dcaf05b3f8b65c603d30d28aba6fd0a23d6760514395e7",
+     "north": "3b1e2844bce51337e60549d7648c3ac8a57b1e934ae7854102db38b26ee49a5f",
+     "south": "a8e3861acd412e161ba1c855747a5bd7f76d1653edbe0d9bdd2b36c51bb7f2c6"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Rollbug/RM_Rollbug",
+    "B": "Things/Pawn/Animal/RM_Rollbug/RM_Rollbug",
+    "C": "Things/Pawn/Animal/RM_Rollbug/RM_Rollbug"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LeaningScrub",
+    "B": "render arteval_RM_Rollbug_r2",
+    "C": "render arteval_RM_Rollbug_r1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Rollbug/RM_Rollbug"
+   ],
+   "res": "Things/Pawn/Animal/RM_Rollbug/RM_Rollbug",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "rollbug"
+  },
+  "RM_Shirrel": {
+   "columns": {
+    "A": {
+     "east": "301642951b37a4620bf23957cfd65da2307a59acdbca5c91806b7bbe6ebd526f",
+     "north": "7b92b7acb89630ee36d2629a86b8675738078866b6f689db2314160ffaff9595",
+     "south": "f4d548d37d8d4ecdb4f43119f136b0f3b76f1d7c43930a327ba423c2ccf59038"
+    },
+    "B": {
+     "east": "f053796f5c66f66cf4b6cf82993789b7f2eb54585f8f892ca3dc094a9938e7c6",
+     "north": "f732d0aa474705397707bfb073efdeba4e44d2786c414442a627d00bbc0b420e",
+     "south": "37383ef2fa0ff88edb1637d32eabab00123df10ea99091aca9c2d5a6059b75c8"
+    },
+    "C": {
+     "east": "2e8bd43773ff9c2743cedaedd22fda8af22d773e3d133ce5390f44423ade94ac",
+     "north": "096562c8e34d011e6c2ed9a87c842cd47a14916c2e187b9dffef968b86ec6183",
+     "south": "d0019f3b78a608392ceda4bd7ca6bfaa99d37045f6c32f56d2755a0fbab4456e"
+    },
+    "D": {
+     "east": "301642951b37a4620bf23957cfd65da2307a59acdbca5c91806b7bbe6ebd526f",
+     "north": "52aca85288361f8d7f06d11268c1b81290fa9c8a8be369cdf1661eb3c9d8755b",
+     "south": "f4d548d37d8d4ecdb4f43119f136b0f3b76f1d7c43930a327ba423c2ccf59038"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Shirrel/RM_Shirrel",
+    "B": "Things/Pawn/Animal/RM_Shirrel/RM_Shirrel",
+    "C": "Things/Pawn/Animal/RM_Shirrel/RM_Shirrel",
+    "D": "Things/Pawn/Animal/RM_Shirrel/RM_Shirrel"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LeaningScrub",
+    "B": "render arteval_RM_Shirrel_r2",
+    "C": "render arteval_RM_Shirrel_r1",
+    "D": "render RM_Shirrel"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Shirrel/RM_Shirrel"
+   ],
+   "res": "Things/Pawn/Animal/RM_Shirrel/RM_Shirrel",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "shirrel"
+  },
+  "RM_Shokka": {
+   "columns": {
+    "A": {
+     "east": "498f06b9c98abac4cb9d01860e107feec27f3ca2a24aefde2ba9bc6eb4e8de80",
+     "north": "80f977012c6383c7754bae043c661894aefe0619144af1b57b68b99184cdc42e",
+     "south": "7df7fa435774f2a8aa05f893db898d3ad74a25a6e6b72ba95a535e8a1c47f52b"
+    },
+    "B": {
+     "east": "58c7e3805047dc9b97d2d832a45f4175834e8d34f3ec2bace2a03104f596fbed",
+     "north": "f6e2dd43d6740a8db9a654ae416a67d2085a1c68373ace4142f2ea5c6471c0d7",
+     "south": "232216cde86eeb5268bbef440964c73b03eed9dc316dba0ce5eec641dd195e2b"
+    },
+    "C": {
+     "east": "5c320ed1d952318a492ce89701c0d675c77e16eba269e3af5d63f9b3134a4aff",
+     "north": "502c5d8f8aaadc9d2b05538ee35845aa7680c30a001de581b7b0a33ee50fa879",
+     "south": "0ed1a904b338c3a83956f668ab5220913cb151a2fcaec0303c3b4de035b9f011"
+    },
+    "D": {
+     "east": "498f06b9c98abac4cb9d01860e107feec27f3ca2a24aefde2ba9bc6eb4e8de80",
+     "north": "80f977012c6383c7754bae043c661894aefe0619144af1b57b68b99184cdc42e",
+     "south": "93e06f129d44ba18e0a1eed919322d0dea7e915d0f9ce490d144acfb321b40ba"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Shokka/RM_Shokka",
+    "B": "Things/Pawn/Animal/RM_Shokka/RM_Shokka",
+    "C": "Things/Pawn/Animal/RM_Shokka/RM_Shokka",
+    "D": "Things/Pawn/Animal/RM_Shokka/RM_Shokka"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LeaningScrub",
+    "B": "render arteval_RM_Shokka_r2",
+    "C": "render arteval_RM_Shokka_r1",
+    "D": "render standtall_b1_rm_shokka"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Shokka/RM_Shokka"
+   ],
+   "res": "Things/Pawn/Animal/RM_Shokka/RM_Shokka",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "shokka"
+  },
+  "RM_Surrik": {
+   "columns": {
+    "A": {
+     "east": "1c07e30750ff1186381a8e94aaca051f8b9c559b708b196c98732141396a38f6",
+     "north": "ddc97417d93a67ec0ddfbaf27389e647b8464cf032a94a9cc604f9750d7f3d0e",
+     "south": "0c2f00f3da811ec7312d99f7895e40da03224b2d0ee16a1b05438be2eaa85bbf"
+    },
+    "B": {
+     "east": "c71f013ee9caea26fabaa58f65082ef12365f659a5d29a98352592004e9f5c19",
+     "north": "8a3d43550bd3b8588dbed3c65862b0bf8e32d3b26f9bb49edbc4e51b546d710b",
+     "south": "a1059b8e8979be58f4b9477add776af118464daca40dc77c10c506aae260e63f"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Surrik/RM_Surrik",
+    "B": "Things/Pawn/Animal/RM_Surrik/RM_Surrik"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LeaningScrub",
+    "B": "render arteval_RM_Surrik_r2"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Surrik/RM_Surrik"
+   ],
+   "res": "Things/Pawn/Animal/RM_Surrik/RM_Surrik",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "surrik"
+  },
+  "RM_TunnelSnake": {
+   "columns": {
+    "A": {
+     "east": "5f5c9c531370a8b7bb6acf365e1610f2681d806e05a5fab3b97d639d9bd9ba4d",
+     "north": "854aadcb1c79dc6e824f91dbca5ccedc21776801291fbf7019915cc7f8ef422e",
+     "south": "d19250d2b134d8038649ad3a9a146862df98a9a52ea85eaca6db1bfdbcbf90de"
+    },
+    "B": {
+     "east": "ad468db799fa0b1d9deee0f2ccd17330851e1c123a1710ea4bfc95e6c9a28434",
+     "north": "68ca8b84b6bf52e1848c2f0f199c2428aac0b9ab8bbd1ca8402bcd7ed339a128",
+     "south": "eaea80c90570cc466538f265414c1f9e58c5bf46404fd8f7d5039ab92a5c38c0"
+    },
+    "C": {
+     "east": "1c359ebccae8f4782d6fd56b33123b5bb52d3f3198da15f6f7ad671286644fba",
+     "north": "53d646ae80857dafe954807dada2c2e20439c366a144bd7cd25ac8f38f43626c",
+     "south": "309a83046ed58b070d383ebc18baaa1676a383e133d72761eb1b091c579269f3"
+    },
+    "D": {
+     "east": "5f5c9c531370a8b7bb6acf365e1610f2681d806e05a5fab3b97d639d9bd9ba4d",
+     "north": "640204f1eb8cfc3bc9bd87c7c1229fa9f5c9fbd94329e267651028655c8edb29",
+     "south": "d19250d2b134d8038649ad3a9a146862df98a9a52ea85eaca6db1bfdbcbf90de"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_TunnelSnake/RM_TunnelSnake",
+    "B": "Things/Pawn/Animal/RM_TunnelSnake/RM_TunnelSnake",
+    "C": "Things/Pawn/Animal/RM_TunnelSnake/RM_TunnelSnake",
+    "D": "Things/Pawn/Animal/RM_TunnelSnake/RM_TunnelSnake"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LeaningScrub",
+    "B": "render arteval_RM_TunnelSnake_r2",
+    "C": "render arteval_RM_TunnelSnake_r1",
+    "D": "render rsw_tunnelsnake_v1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_TunnelSnake/RM_TunnelSnake"
+   ],
+   "res": "Things/Pawn/Animal/RM_TunnelSnake/RM_TunnelSnake",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "tunnelsnake"
+  },
+  "RM_Vissler": {
+   "columns": {
+    "A": {
+     "east": "7ce1b88dd71215bb174389b730377f116f6c9eee2eddb178d6b2391bf6a2f12b",
+     "north": "6fa5c8e755ad27ffd6a162bcc8515b73c7602d018d5cb5e3c7303a1be4b04e7c",
+     "south": "8ff558e7314678fb713a8a6adb517b18ee3504bd8496049dcfd0847fe4321fa3"
+    },
+    "B": {
+     "east": "9d43b45753cbebc38ee0c3072fd3bc008fb22bd75b1310b0d71be83f41c9da58",
+     "north": "85f72253076df3369c1ab63e7626680b632b40769a7c138dafcf0f167b349862",
+     "south": "e8bdea3ca8716b6423d793fc032545964131fe858a50de8aec3addb00f36fdfa"
+    },
+    "C": {
+     "east": "a0879297ce10852a01f1fd92a6b6ada533f3d47dee41bdc3a11565b652d083cd",
+     "north": "df5f22da01f50c6c2a382dc60766b739d9a54f138ae1306a41065e6c82f70f08",
+     "south": "a9b0110a5ed0c677a462941e5c9426fa0292c74b0c16a8b9ef2ca072f9cfde7b"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Vissler/RM_Vissler",
+    "B": "Things/Pawn/Animal/RM_Vissler/RM_Vissler",
+    "C": "Things/Pawn/Animal/RM_Vissler/RM_Vissler"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LeaningScrub",
+    "B": "render arteval_RM_Vissler_r2",
+    "C": "render arteval_RM_Vissler_r1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Vissler/RM_Vissler"
+   ],
+   "res": "Things/Pawn/Animal/RM_Vissler/RM_Vissler",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "vissler"
+  },
+  "RM_Vurra": {
+   "columns": {
+    "A": {
+     "east": "d69453ddae76999c2f877c00d99c94065faf4e6f9c8419a37919268c083c5aa7",
+     "north": "1203e1a13fa147827b1c52ce47ec35617a7218600d6b0cb30be630ca5324f2f0",
+     "south": "aeb65a3bca6335c59402732c6913c329f230b7ff8cbe9ec68edb0b71613fa94f"
+    },
+    "B": {
+     "east": "cdc6ff7d06bc2a8a56576f9bc288db0e6dbda14c3a7a9fdd38ad13a24150305c",
+     "north": "ee05964077934382b5a88a3e6d39c6a70fe16bfceb76dcf5d26a5c332faff84d",
+     "south": "e4d3bd33e72bfd5065b00625023f63aac270bbb908a62a766e1ffc8d5fe0a07c"
+    },
+    "C": {
+     "east": "b8feca46a077caeb2e64af3821841bd67b0859845e69f5163594005ef1da5f61",
+     "north": "ae17b2ea48ac820eee83a571f4a0c81f2095a6b59bcd2555a76526ed22789117",
+     "south": "ca58052156284730204c507ebbbdb2047be95b099ba8f591e7fde0c25666efa3"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Vurra/RM_Vurra",
+    "B": "Things/Pawn/Animal/RM_Vurra/RM_Vurra",
+    "C": "Things/Pawn/Animal/RM_Vurra/RM_Vurra"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render arteval_RM_Vurra_r2",
+    "C": "render arteval_RM_Vurra_r1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Vurra/RM_Vurra"
+   ],
+   "res": "Things/Pawn/Animal/RM_Vurra/RM_Vurra",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "vurra"
+  }
+ },
+ "sheetId": "owner_escalations_leaningscrub_2_sheet_2026-10-24",
+ "snapshotId": "466c068825dbf376"
+}

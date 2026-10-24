@@ -1,0 +1,2 @@
+To keep a render set off an art_sheet, removing its artpipe job from --jobs is not enough: art_sheet also finds renders by name (arteval_<subject>_<cand>), so the set reappears as a pickable column. Pass --hide-sets <label substring> and then check by sha that the dropped files are absent from the built HTML. Caught 2026-10-24 while hiding bollard foreign copies from the owner_escalations sheets.
+home: rimworld-review-sheets

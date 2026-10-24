@@ -1,0 +1,33 @@
+{
+ "biome": "SUBJECTS_owner_escalations_leaningscrub_2",
+ "html": "Transient/biome_ffar/owner_escalations_leaningscrub_2_sheet_2026-10-24.html",
+ "decisions": "Transient/biome_ffar/owner_escalations_leaningscrub_2_sheet_2026-10-24.decisions.json",
+ "wrote_decisions": true,
+ "gate": "PASS v1",
+ "snapshot": "infrastructure/state/art/sheets/owner_escalations_leaningscrub_2_sheet_2026-10-24.snapshot.json",
+ "snapshotId": "466c068825dbf376",
+ "census_rows": 7,
+ "rows": 7,
+ "ruled_rows_gone_kept_in_snapshot": [],
+ "collapsed_ruled_elsewhere": 0,
+ "dropped_all_ruled": [],
+ "canon_rows": 0,
+ "canon_rows_with_images": 0,
+ "canon_rows_with_must_show": 0,
+ "linked_rows": 0,
+ "prefilled_sit1": 0,
+ "no_art": [],
+ "sets": 23,
+ "images": 9324
+}
+
+--- stderr ---
+/home/mandrake/rm/foundry/src/RimMandrake/Utils/art/art_sheet.py:2443: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  px = [q for q in Image.open(f).convert("RGBA").getdata() if q[3] > 8]
+NOTE RM_Rollbug: reference_textures ['/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Rollbug_r2_south/arteval_RM_Rollbug_r2_south.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Rollbug_r2_east/arteval_RM_Rollbug_r2_east.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Rollbug_r2_north/arteval_RM_Rollbug_r2_north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RM_Shirrel: reference_textures ['/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Shirrel_r2_south/arteval_RM_Shirrel_r2_south.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Shirrel_r2_east/arteval_RM_Shirrel_r2_east.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Shirrel_r2_north/arteval_RM_Shirrel_r2_north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RM_Shokka: reference_textures ['/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Shokka_r2_south/arteval_RM_Shokka_r2_south.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Shokka_r2_east/arteval_RM_Shokka_r2_east.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Shokka_r2_north/arteval_RM_Shokka_r2_north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RM_TunnelSnake: reference_textures ['/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_TunnelSnake_r2_south/arteval_RM_TunnelSnake_r2_south.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_TunnelSnake_r2_east/arteval_RM_TunnelSnake_r2_east.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_TunnelSnake_r2_north/arteval_RM_TunnelSnake_r2_north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RM_Vissler: reference_textures ['/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Vissler_r2_south/arteval_RM_Vissler_r2_south.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Vissler_r2_east/arteval_RM_Vissler_r2_east.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Vissler_r2_north/arteval_RM_Vissler_r2_north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RM_Vurra: reference_textures ['/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Vurra_r2_south/arteval_RM_Vurra_r2_south.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Vurra_r2_east/arteval_RM_Vurra_r2_east.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Vurra_r2_north/arteval_RM_Vurra_r2_north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RM_Surrik: reference_textures ['/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Surrik_r2_south/arteval_RM_Surrik_r2_south.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Surrik_r2_east/arteval_RM_Surrik_r2_east.png', '/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Surrik_r2_north/arteval_RM_Surrik_r2_north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references

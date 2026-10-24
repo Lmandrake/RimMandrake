@@ -1,0 +1,50 @@
+{
+ "run_id": "owner_escalations_leaningscrub2_20261024",
+ "test": true,
+ "composite": true,
+ "note": "owner review packet: every fauna_* run record of these subjects (round-3 escalations, Surrik, Mullgoth, owner-kept replacements Bileworm/CrystalMit/Suush); no judging happened in this run",
+ "sources": [
+  "fauna_guardfix_r3_00",
+  "fauna_leaningscrub_01",
+  "fauna_leaningscrub_02",
+  "fauna_leaningscrub_03",
+  "fauna_leaningscrub_r1_01",
+  "fauna_leaningscrub_r1_02",
+  "fauna_leaningscrub_r2_02",
+  "fauna_leaningscrub_r2_03",
+  "fauna_leaningscrub_r2_04",
+  "fauna_leaningscrub_r2_05",
+  "fauna_leaningscrub_r3_02",
+  "fauna_leaningscrub_r3_03",
+  "fauna_leaningscrub_r3_04"
+ ],
+ "subjects": [
+  "RM_Rollbug",
+  "RM_Shirrel",
+  "RM_Shokka",
+  "RM_TunnelSnake",
+  "RM_Vissler",
+  "RM_Vurra",
+  "RM_Surrik"
+ ],
+ "dropped": {
+  "RM_Crustweevil:r1": [
+   "south"
+  ],
+  "RM_Crustweevil:r2": [
+   "north"
+  ],
+  "RM_Surrik:r1": [
+   "east"
+  ],
+  "RM_Dustflutter:r1": [
+   "east"
+  ],
+  "RM_Fuzzrunner:r1": [
+   "east"
+  ],
+  "RM_Peeper:r3": [
+   "south"
+  ]
+ }
+}
