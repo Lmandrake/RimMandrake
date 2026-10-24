@@ -34,6 +34,13 @@ namespace RimMandrake.FlowWorks.SelfTest
             Console.WriteLine($"  {name}: {hoseN - n0 - (hoseFails - f0)}/{hoseN - n0}");
         }
 
+        /// <summary>The hose fuzz alone (SelfTest --hose-fuzz).</summary>
+        internal static int RunHoseFuzzOnly(string[] args)
+        {
+            HoseSuite("HoseFuzz", () => HoseFuzz.Run(args));
+            return hoseFails;
+        }
+
         internal static int RunHoseSuites(string[] args)
         {
             Console.WriteLine("\nhose suites (moved from Gimme Some Slack's SelfTest):");

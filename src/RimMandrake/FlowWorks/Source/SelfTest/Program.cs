@@ -160,13 +160,25 @@ namespace RimMandrake.FlowWorks.SelfTest
             // "report <path>" writes one line per drawn pose, "dump <path>" the drawn points as JSON for the previews
             if (args.Length > 0 && args[0] == "--hose-curves")
             {
-                // "g2" first: the clothoid G2 fit on (HoseMath.G2On is off in the game until the solver is fast)
-                if (args.Length > 1 && args[1] == "g2") { RimMandrake.FlowWorks.Hose.HoseMath.G2On = true; var rest = new string[args.Length - 1]; Array.Copy(args, 1, rest, 0, rest.Length); rest[0] = "--hose-curves"; args = rest; }
+                // "g2off" first: the clothoid G2 fit off (the shaped poses alone; HoseMath.G2On is on in the game since 2026-10-24);
+                // "g2" (on) is kept as a no-op for old command lines
+                if (args.Length > 1 && (args[1] == "g2" || args[1] == "g2off")) { RimMandrake.FlowWorks.Hose.HoseMath.G2On = args[1] == "g2"; var rest = new string[args.Length - 1]; Array.Copy(args, 1, rest, 0, rest.Length); rest[0] = "--hose-curves"; args = rest; }
                 if (args.Length > 2 && args[1] == "report") HoseCurveChecks.Report(args[2]);
                 if (args.Length > 2 && args[1] == "dump") HoseCurveChecks.Dump(args[2]);
                 HoseCurveChecks.Run(Case);
+                Console.WriteLine(HoseCurveChecks.SolverCost());
                 Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
                 return Fail.Count == 0 ? 0 : 1;
+            }
+            // HOSE_CURVE_REBUILD_SMOOTH_AS_PHYSICS: the hose fuzz alone with the clothoid solver's cost (fast loop); "g2off" = fit off
+            if (args.Length > 0 && args[0] == "--hose-fuzz")
+            {
+                if (args.Length > 1 && args[1] == "g2off") RimMandrake.FlowWorks.Hose.HoseMath.G2On = false;
+                if (args.Length > 1 && args[1] == "g2") RimMandrake.FlowWorks.Hose.HoseMath.G2On = true;
+                var clock = System.Diagnostics.Stopwatch.StartNew();
+                int fails = RunHoseFuzzOnly(args);
+                Console.WriteLine(HoseCurveChecks.SolverCost() + $", fuzz wall {clock.Elapsed.TotalSeconds:F2} s");
+                return fails == 0 ? 0 : 1;
             }
             if (args.Length > 0 && args[0] == "--oracle-scenes")
             {
