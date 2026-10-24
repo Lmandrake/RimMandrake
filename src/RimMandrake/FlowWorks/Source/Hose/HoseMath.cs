@@ -650,7 +650,7 @@ namespace RimMandrake.FlowWorks.Hose
             // short span), so the lead-out shrinks -- the largest lead in [LeadOutMin, full) whose lay is G2 (LeadSearch), never
             // shorter than that. A lead-out a wall blocks stays refused (card 2026-10-06); a hose that fits keeps the full lead.
             double full = FullLeadOut(p);
-            if (!OutletClear(w, a, startOutward.Value, full)) return lay;
+            if (!OutletClear(w, a, startOutward.Value, full)) return TooClose(lay, a, b, p);
             HoseLay best = null;
             double got = LeadSearch(full, ld =>
             {
@@ -659,12 +659,33 @@ namespace RimMandrake.FlowWorks.Hose
                 best = t;
                 return true;
             });
-            if (got <= 0) return lay;
+            if (got <= 0) return TooClose(lay, a, b, p);
             // the search's last fitting lay is the one at `got` (LeadSearch only moves its lower end onto a lead that fit)
             best.LeadShortened = true;
             LeadShortened++;
             return best;
         }
+
+        /// <summary>Step 5 (delegated call 2026-10-24, no kinked fallback): a nozzled reel's lay that no G2 curve carries at any
+        /// lead-out down to LeadOutMin is refused with <see cref="TooCloseToBend"/> instead of drawn as the shaped pose -- when
+        /// the target is within <see cref="TooCloseReach"/> of the mouth, the span the reason names. A longer route that misses
+        /// G2 (a 1-cell corridor that cannot hold the bend, HoseSelfTest maze 6: 11 of 300 seeds) is not "too close" and keeps
+        /// its shaped lay, as before step 5.</summary>
+        private static HoseLay TooClose(HoseLay shaped, V2 a, V2 b, HoseShapeParams p)
+        {
+            // already refused with its own reason, or never fitted (a stub under a cell: G2Fit leaves no G2Why)
+            if (!shaped.Ok || shaped.G2Why == null) return shaped;
+            if (V2.Dist(a, b) > TooCloseReach(p)) return shaped;
+            TooCloseRefused++;
+            return new HoseLay { Reason = TooCloseToBend, G2Why = shaped.G2Why, PathLen = shaped.PathLen };
+        }
+
+        /// <summary>The full lead-out plus one whole turn at the minimum bend: a target nearer the mouth than this is a span too
+        /// short to bend into (2.2 + 7.54 = 9.74 cells at the default 1.2 bend; the near ring's farthest port is ~7).</summary>
+        internal static double TooCloseReach(HoseShapeParams p) => FullLeadOut(p) + 2 * Math.PI * Math.Max(0.45, p.MinBendRadius);
+
+        /// <summary>Lays refused with <see cref="TooCloseToBend"/> since load (the selftest's cost line).</summary>
+        internal static int TooCloseRefused;
 
         private static HoseLay LayAlongAt(CordWorld w, V2 a, IList<Cell> route, V2 b, HoseShapeParams p, ulong seed, V2? endInward, V2? startOutward)
         {
@@ -696,6 +717,9 @@ namespace RimMandrake.FlowWorks.Hose
 
         /// <summary>Why a nozzled reel's hose was refused: no room for the straight lead-out (owner card 2026-10-06).</summary>
         public const string LeadOutBlocked = "no room for the straight lead-out from the nozzle";
+        /// <summary>HOSE_CURVE_REBUILD_SMOOTH_AS_PHYSICS step 5 (delegated call, no kinked fallback): no curve within the bend
+        /// limit joins the nozzle's lead-out to the end, so the lay is refused with this player-visible reason.</summary>
+        public const string TooCloseToBend = "Too close for the hose to bend \u2014 move the reel back";
         /// <summary>Why a hose was refused because, laid, it would be longer than the hose (GPT source read B3).</summary>
         public const string LaidTooLong = "route too long (the laid hose, lead-out included, is longer than the hose)";
 
@@ -1452,18 +1476,65 @@ namespace RimMandrake.FlowWorks.Hose
         /// port is laid onto the port itself -- ending half a cell out from the flange (<paramref name="portAt"/> - axis x 0.5),
         /// its last EndStraight dead straight along <paramref name="portAxis"/> -- so the clothoid fit owns the arrival. When that
         /// lay is refused or no G2 curve fits it (a run too short for the lead-out, the port and the bend radius together), the
-        /// end is laid as before, to <paramref name="cellEnd"/> with a free heading, and DrawnPose bends it onto the port; a lay
-        /// is never refused for the port's sake. <paramref name="layTo"/> lays to (end, endInward).</summary>
-        internal static HoseLay PortLay(Func<V2, V2?, HoseLay> layTo, V2 cellEnd, V2? inward, V2? portAt, V2 portAxis)
+        /// end is laid as before, to <paramref name="cellEnd"/> with a free heading, and DrawnPose bends it onto the port.
+        /// Step 4: <paramref name="bodyHit"/> (null = not checked) says where a candidate lay, as drawn, runs through its own
+        /// reel or the fixture (<see cref="BodyHit"/>); a lay drawn through either is never returned -- when both candidates
+        /// are, the lay is refused with <see cref="BodyInTheWay"/>. <paramref name="layTo"/> lays to (end, endInward).</summary>
+        internal static HoseLay PortLay(Func<V2, V2?, HoseLay> layTo, V2 cellEnd, V2? inward, V2? portAt, V2 portAxis,
+            Func<HoseLay, string> bodyHit = null)
         {
             if (!portAt.HasValue) return layTo(cellEnd, inward);
             V2 ax = portAxis.Norm();
             HoseLay onPort = layTo(portAt.Value - ax * 0.5, ax);
-            if (onPort.Ok && (onPort.G2 || !G2On)) return onPort;
+            string hitOn = onPort.Ok && bodyHit != null ? bodyHit(onPort) : null;
+            bool onOk = onPort.Ok && hitOn == null;
+            if (onOk && (onPort.G2 || !G2On)) return onPort;
             HoseLay old = layTo(cellEnd, inward);
-            if (!old.Ok) return onPort.Ok ? onPort : old;
-            old.PortWhy = onPort.Ok ? "no G2 curve onto the port axis: " + onPort.G2Why : "refused onto the port axis: " + onPort.Reason;
-            return old;
+            string hitOld = old.Ok && bodyHit != null ? bodyHit(old) : null;
+            if (old.Ok && hitOld == null)
+            {
+                old.PortWhy = onPort.Ok ? (hitOn != null ? "onto the port axis " + hitOn : "no G2 curve onto the port axis: " + onPort.G2Why)
+                    : "refused onto the port axis: " + onPort.Reason;
+                return old;
+            }
+            if (onOk) return onPort;
+            if (hitOn != null || hitOld != null)
+            {
+                BodyRefused++;
+                return new HoseLay { Reason = BodyInTheWay, PortWhy = hitOld ?? hitOn, PathLen = old.Ok ? old.PathLen : onPort.PathLen };
+            }
+            if (onPort.Ok) return onPort;
+            // both refused: the port's own reason when it is that no curve bends onto the port (step 5), else the cell lay's
+            return onPort.Reason == TooCloseToBend ? onPort : old;
+        }
+
+        /// <summary>Why a port lay was refused (step 4): every lay that reaches the port is drawn through the reel or the tank.</summary>
+        public const string BodyInTheWay = "The hose would run through the reel or the tank \u2014 move the reel back";
+        /// <summary>Lays refused with <see cref="BodyInTheWay"/> since load (the selftest's cost line).</summary>
+        internal static int BodyRefused;
+        /// <summary>The first stretch of the drawn hose that may lie on its own reel: the mouth sits up to 0.31 inside the reel's
+        /// rect (HoseReelRect.Mouth, N facing) and the lead-out leaves it along the nozzle.</summary>
+        internal const double OwnReelMouthRun = 0.5;
+
+        /// <summary>Step 4: where <paramref name="lay"/>, drawn steady flat and charged (DrawnPose, the port end bent on as
+        /// DrawAll does), runs with its centreline more than 0.02 inside its own reel (past <see cref="OwnReelMouthRun"/>)
+        /// or the fixture's footprint (cells x0..x0+w, z0..z0+h); null = clear of both.</summary>
+        internal static string BodyHit(HoseLay lay, V2? portAt, V2 portAxis, HoseReelRect reel, int x0, int z0, int w, int h)
+        {
+            const double inset = 0.02;
+            bool In(V2 q, double a0, double b0, double a1, double b1) => q.X > a0 + inset && q.X < a1 - inset && q.Z > b0 + inset && q.Z < b1 - inset;
+            foreach (double e in new[] { 0.0, 1.0 })
+            {
+                List<V2> pts = DrawnPose(lay, e, int.MaxValue / 2, 1, 0, portAt, portAxis);
+                double s = 0;
+                for (int i = 0; i < pts.Count; i++)
+                {
+                    if (i > 0) s += V2.Dist(pts[i - 1], pts[i]);
+                    if (s > OwnReelMouthRun && In(pts[i], reel.X0, reel.Z0, reel.X0 + reel.W, reel.Z0 + reel.H)) return (e == 0 ? "flat" : "charged") + " through the reel";
+                    if (In(pts[i], x0, z0, x0 + w, z0 + h)) return (e == 0 ? "flat" : "charged") + " through the tank";
+                }
+            }
+            return null;
         }
 
         /// <summary>True when pts ends on <paramref name="end"/> (within 0.02 cell) and its last EndStraight runs along

@@ -355,7 +355,7 @@ Owner by card 2026-10-24 "Shorten the lead-out" (option (b) of §7). Owner, rela
     - 72 have no fit even at 0.6. These are too close for the bend limit. A continuous S-bend bound gives a maximum lateral offset of 0.127, 0.398 and 0.941 cells at forward 1.33, 1.9 and 2.5.
   - free ends (1280): 1228 keep, 34 shrink, 18 have no fit.
   - mates (400): 208 keep, 77 shrink, 115 have no fit.
-  - These are findings about geometry, not new policy. A span with no fit at 0.6 keeps today's fallback (§7 (c)).
+  - These are findings about geometry, not new policy. A near span with no fit at 0.6 is now refused (step 5 below).
 - `--hose-curves`: 39/59 before, 47/59 after (MEASURED, `c_run10.txt` in the explore folder; the full FlowWorks selftest is 942/942 in `full_47b.txt`). short now fits at lead 0.8 and tankW at 1.85.
   - Solver total went from 915 ms to 1529 ms over 3985 solves.
   - `HoseCurveChecks.Floor` is now 47. With the floor at 48 the guard case fails ("47 rows pass, floor 48", `full_guard48.txt`).
@@ -367,13 +367,31 @@ Owner by card 2026-10-24 "Shorten the lead-out" (option (b) of §7). Owner, rela
   - C# shrinks more than the geometry needs (short 0.8 vs the explorer's 1.15), because it fits at a fixed length with leads padded to the node step: HOSE_FIT_HARDEN_FREE_LENGTH_SHORT_LEAD.
   - The explorer runs out of seeds above lead 1.4 on tankW, so its lead there is a lower bound: HOSE_EXPLORER_WIDEN_SEEDS_LONG_LEAD.
 
+### Steps 4-5 (2026-10-24): never drawn through a body; too close is refused
+
+- Step 4, layouts: when no G2 curve fits onto the port axis, `HoseMath.PortLay` falls back to the cell-centre lay. `DrawnPose` then bends that lay onto the flange, and 9 near placements drew the hose through the reel or the tank.
+  - `PortLay` now takes a body test (`HoseMath.BodyHit`). It draws the flat and charged poses and rejects a lay whose centreline runs inside the reel (past 0.5 of mouth run) or the fixture.
+  - If both lays are drawn through a body, the lay is refused with "The hose would run through the reel or the tank — move the reel back" (`HoseMath.BodyInTheWay`). `EnsureLay` passes the free end's port rect, and the selftest's `DrawAll` passes the tank.
+- Step 5, too close (delegated call 2026-10-24, no kinked fallback): a nozzled reel lay that no G2 curve carries at any lead down to 0.6 is refused with "Too close for the hose to bend — move the reel back" (`HoseMath.TooCloseToBend`).
+  - This applies only when the target is within `TooCloseReach` = full lead-out + one full turn at the minimum bend (9.74 cells at 1.2), the span the reason names.
+  - A longer route that misses G2 keeps its shaped lay as before. An example is the 1-cell maze corridor, `HoseSelfTest` maze 6, where 11 of 300 seeds miss G2. Refusing it would bring back the 2026-10-10 M4 red, with a reason that does not fit.
+- MEASURED on the near ring (|fx|, |fz| <= 3, 640 placements, `--hose-layouts report`):
+  - before: 533 clear, 98 refused, 9 drawn through.
+  - after: 512 clear, 128 refused, 0 drawn through. The refusals are 25 too close, 5 body in the way and 98 lead-out blocked.
+  - Evidence: `D:\ClaudeWork\rimmandrake\scratch\hose_geometry_20261023\step4\` (base.txt, fix4.txt).
+- Guard `HoseLayoutChecks.Run` is in the default selftest and checks 17 pinned placements:
+  - the 9 placements that were drawn through, each now refused or clear;
+  - 4 too-close placements, each refused with exactly the player reason;
+  - 4 roomy placements, each G2 and clear.
+- With steps 4 and 5 disabled, two of the three cases fail (`canfail_run.txt`). The whole ring runs as `--hose-layouts full` (about 210 s).
+
 ## 7. Owner items
 
 - **Relay reel has one connector.** A relay's feed couples into its nozzle while its own hose leaves the same nozzle —
   physically impossible (R5), drawn as the V in screenshot 20261023221228. Options: (a) a second fitting on the reel art (an
   inlet swivel on the drum's hub side) and the feed couples there; (b) the feed couples at the nozzle and the relay's own
   hose leaves from the drum's opposite face. Not decided here; joint_check keeps failing it live until he picks.
-- **Short and taut hoses that no G2 curve can carry** (step 4: short, tankW, mates and splice, 20 rows). DECIDED: owner by card 2026-10-24 "Shorten the lead-out" -- option (b), shrink the lead-out on short spans only, down to 0.6 (step 6). Options (a) refuse and (c) the shaped fallback were not picked; (c) remains only where no curve fits even at 0.6. short and tankW pass; the 12 mate/splice rows are owed to HOSE_MATE_REWIRE_CONTINUOUS_COUPLING.
+- **Short and taut hoses that no G2 curve can carry** (step 4: short, tankW, mates and splice, 20 rows). DECIDED: owner by card 2026-10-24 "Shorten the lead-out" -- option (b), shrink the lead-out on short spans only, down to 0.6 (step 6). Options (a) refuse and (c) the shaped fallback were not picked; (c) no longer ships for a near span: a reel whose target is within 9.74 cells and that no curve carries even at 0.6 is refused (step 5, §6). short and tankW pass; the 12 mate/splice rows are owed to HOSE_MATE_REWIRE_CONTINUOUS_COUPLING.
 
 ## 8. Rejected (GPT attack and own)
 

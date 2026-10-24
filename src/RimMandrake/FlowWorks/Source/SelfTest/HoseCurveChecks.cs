@@ -187,7 +187,10 @@ namespace RimMandrake.FlowWorks.SelfTest
                     HoseLay lay;
                     ulong sd = seed++;
                     // step 3: a tank-port end is laid onto the port's axis as EnsureLay does (HoseMath.PortLay)
-                    try { lay = HoseMath.PortLay((e1, in1) => HoseMath.LayAlong(w, r.Rect.Mouth, new List<Cell>(), e1, sp, sd, in1, outward), end, inward, portAt, portAxis); }
+                    // step 4: as EnsureLay, a port lay drawn through its reel or the tank is never kept (HoseMath.BodyHit)
+                    Func<HoseLay, string> hit = null;
+                    if (r.Tank != null) { var t = st.Tanks[r.Tank]; V2? pa = portAt; V2 pax = portAxis; HoseReelRect rr = r.Rect; hit = l => HoseMath.BodyHit(l, pa, pax, rr, t.x + Ox, t.z + Oz, 2, 2); }
+                    try { lay = HoseMath.PortLay((e1, in1) => HoseMath.LayAlong(w, r.Rect.Mouth, new List<Cell>(), e1, sp, sd, in1, outward), end, inward, portAt, portAxis, hit); }
                     finally { foreach (Cell c in held) { w.SetBlocked(c, BlockKind.None); w.SetExtraCost(c, HoseMath.BuildingCrossCost); } }
                     // the nozzle's straight run is owed by every reel (R2), the fed relay's included (KNOWN: it shares the nozzle)
                     V2 ax = r.Rect.Outward ?? new V2(r.Dir.X, r.Dir.Z);

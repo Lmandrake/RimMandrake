@@ -105,6 +105,7 @@
     <Compile Include="HoseDrawGeometryChecks.cs" />
     <Compile Include="WorldMapDrawGuardChecks.cs" />
     <Compile Include="HoseCurveChecks.cs" />
+    <Compile Include="HoseLayoutChecks.cs" />
     <Compile Include="HoseClothoidChecks.cs" />
     <Compile Include="HoseSpliceChecks.cs" />
     <Compile Include="PipePoleChecks.cs" />

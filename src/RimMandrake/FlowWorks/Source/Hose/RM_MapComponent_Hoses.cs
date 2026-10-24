@@ -519,7 +519,17 @@ namespace RimMandrake.FlowWorks.Hose
             var sw = System.Diagnostics.Stopwatch.StartNew();
             CordWorld w = World();
             IList<Cell> trail = r.TrailCells();
-            HoseLay lay = HoseMath.PortLay((e1, in1) => LayFrom(r, e1, in1, trail), end, inward, portAt, portAxis);
+            // step 4: a port lay drawn through its own reel or the tank is never kept (HoseMath.BodyHit)
+            Func<HoseLay, string> bodyHit = null;
+            if (portAt.HasValue)
+            {
+                HoseFreeEnd fe = FreeEndOf(r);
+                CellRect body = fe.Port.OccupiedRect();
+                V2? pa = portAt;
+                V2 pax = portAxis;
+                bodyHit = l => HoseMath.BodyHit(l, pa, pax, r.Rect, body.minX, body.minZ, body.Width, body.Height);
+            }
+            HoseLay lay = HoseMath.PortLay((e1, in1) => LayFrom(r, e1, in1, trail), end, inward, portAt, portAxis, bodyHit);
             // owner decision by question card 2026-10-06 (straight lead-out): no clear lead-out from the nozzle = refused with
             // the reason (HoseMath.LeadOutBlocked); the old fallback laid it without the outlet
             LastLayMs = (int)sw.ElapsedMilliseconds;
