@@ -667,6 +667,17 @@ dl = L.census_delta({"a": {"hediffs": ["Scar"]}}, {"a": {"hediffs": ["Bruise", "
 check(dl.get("a", {}).get("new") == ["Bruise"] and dl.get("b", {}).get("spawnedDuring") is True and len(dl) == 2,
       "census_delta names each colonist's NEW hediffs and marks one spawned during the script")
 check(L.census_delta({"a": {"hediffs": ["Bruise"]}}, {"a": {"hediffs": ["Bruise"]}}) == {}, "census_delta: nothing new reads empty")
+# GRENADE_COVER_DIAGNOSE_TRENCH_LEAKS_BLAST: the n=1 random-fragment draw (trench 13.33 vs open 20) is no longer a verdict
+_tr = lambda t, o, ok=True: dict(trench=t, open=o, ok=ok)
+_n = L.GRENADE_TRIALS
+check(L.grenade_verdict([_tr(13.33, 20.0)], True)[0] == "UNMEASURED", "grenade: one trial is UNMEASURED, never a verdict")
+check(L.grenade_verdict([_tr(13.33, 20.0)] + [_tr(20.0, 20.0)] * (_n - 1), True)[0] == "PASS",
+      "grenade: one short trench draw among %d averages out to PASS" % _n)
+check(L.grenade_verdict([_tr(10.0, 20.0)] * _n, True)[0] == "FAIL", "can-fail grenade: a trench halving every blast is FAIL")
+check(L.grenade_verdict([_tr(20.0, 0.0)] * _n, True)[0] == "UNMEASURED", "grenade: an unhurt open control measures nothing")
+check(L.grenade_verdict([_tr(20.0, 20.0)] * _n, False)[0] == "UNMEASURED", "grenade: unplaced/undrafted pawns are UNMEASURED")
+check(L.grenade_verdict([_tr(20.0, 20.0, False)] + [_tr(20.0, 20.0)] * (_n - 1), True)[0] == "UNMEASURED",
+      "grenade: one unread trial makes the row UNMEASURED")
 check("proof_hose.py" in L.PARK_EXEMPT, "proof_hose realflow keeps the map's colonists where they stand (it drives them)")
 
 # 9. --dry-run and --mock exit 0 offline
