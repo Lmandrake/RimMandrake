@@ -33,6 +33,15 @@ def main():
         git(repo, "add", "."); git(repo, "commit", "-qm", "one")
         git(repo, "rm", "-q", os.path.join(TIER, "Scarlands", "Defs", "Jar.xml"))
         git(repo, "commit", "-qm", "cut jar")
+        # a committed RENAME (git mv; rename detection would call it R, not D)
+        write(os.path.join(src, "Defs", "Moved.xml"), "<Defs><ThingDef><defName>M</defName>"
+              "<label>a long enough body that rename detection pairs it</label></ThingDef></Defs>\n")
+        git(repo, "add", "."); git(repo, "commit", "-qm", "add moved")
+        # renamed INSIDE the mod (pathspec sees both ends, so log pairs them R)
+        git(repo, "mv", os.path.join(TIER, "Scarlands", "Defs", "Moved.xml"),
+            os.path.join(TIER, "Scarlands", "Defs", "Renamed.xml"))
+        git(repo, "commit", "-qm", "rename in place")
+        moved = D.repo_deleted(src, [os.path.join("Defs", "Moved.xml")])
         D.SRC_ROOT = repo
         man = {"target": "T", "compose_wave": 1, "entries": [
             {"key": "Warscar", "source": "Scarlands", "wave": 1, "group": "biome"},
@@ -46,6 +55,8 @@ def main():
             ("game-only hand edit is not called a repo delete", hand not in got),
             ("path outside any entry is not called a repo delete", other not in got),
             ("empty gone -> empty set", D.composed_repo_deleted([], man) == set()),
+            ("file renamed inside the mod: old name counts as repo-deleted (UtinniPatches "
+             "RUT_Wasteland.xml, 80e0635c30)", bool(moved)),
         ]
         bad = 0
         for label, ok in cases:

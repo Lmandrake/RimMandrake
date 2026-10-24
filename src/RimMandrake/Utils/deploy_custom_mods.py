@@ -197,7 +197,10 @@ def repo_deleted(src, gone):
         return set()
     try:
         out = subprocess.run(
-            ["git", "-C", src, "log", "--diff-filter=D", "--name-only",
+            # --no-renames: a file `git mv`ed OUT of this mod (or renamed in
+            # place, Shyrack _44 -> _4) is a delete here; rename detection
+            # would report it R and --diff-filter=D would drop it.
+            ["git", "-C", src, "log", "--no-renames", "--diff-filter=D", "--name-only",
              "--pretty=format:", "--", "."],
             capture_output=True, text=True, timeout=120)
         top = subprocess.run(["git", "-C", src, "rev-parse", "--show-prefix"],
