@@ -314,6 +314,19 @@ def folder_slots(idx: L.Index, g: str) -> list[tuple[str, str, str]]:
     return [(m, r, ev["sha"]) for (m, r), ev in idx.live.items() if r.startswith(g + "/") and ev.get("sha")]
 
 
+def free_alt_res(idx: L.Index, stem: str, letter: str, taken=()) -> str | None:
+    """<stem>V_<letter>, or the first <stem>V_<A..Z> no live file of ours (any facing) and no planned install uses.
+    The sheet's column letter is not a name the game files already reserve: an alternate shipped from an OLDER sheet
+    under the same letter (FanV_C, kept by him) would otherwise be OVERWRITTEN by this sheet's variant C, its
+    alternateGraphics entry then drawing the new picture (the folder path's 2026-10-18 bug, on the alternate path).
+    `taken` holds the rels other installs of this plan will write; this variant's own facings must not be in it."""
+    used = {texpath_of(r) for (_m, r), ev in idx.live.items() if ev.get("sha")} | {texpath_of(t) for t in taken}
+    for lt in [letter] + [chr(65 + k) for k in range(26)]:
+        if f"{stem}V_{lt}" not in used:
+            return f"{stem}V_{lt}"
+    return None
+
+
 def own_slot(idx: L.Index, src, g: str, facing: str, letter: str, row: str, names: set,
              variant: bool = False, taken: set | None = None) -> dict | None:
     """Where a picked/variant picture of ours goes when no slot of ours ships `g` at this facing:
@@ -338,7 +351,9 @@ def own_slot(idx: L.Index, src, g: str, facing: str, letter: str, row: str, name
     if variant and facing != "single":
         base_slots = slots_for(idx, rel_for(g, facing)) or slots_for(idx, rel_for(g, "east"))
         if base_slots:
-            res = f"{g}V_{letter}"
+            res = free_alt_res(idx, g, letter, taken or ())
+            if res is None:
+                return None
             return {"mod": base_slots[0][0], "rel": rel_for(res, facing), "kind": "alt", "graphic": g, "res": res}
     if g.count("/") < 2:
         return None
@@ -349,7 +364,9 @@ def own_slot(idx: L.Index, src, g: str, facing: str, letter: str, row: str, name
     if variant:
         if facing == "single":
             return None
-        res = f"{new_res}V_{letter}"
+        res = free_alt_res(idx, new_res, letter, taken or ())
+        if res is None:
+            return None
         return {"mod": mod_of(hits[0]["file"]), "rel": rel_for(res, facing), "kind": "alt", "graphic": new_res,
                 "res": res, "rebind": {"old": g, "new": new_res}}
     return {"mod": mod_of(hits[0]["file"]), "rel": rel_for(new_res, facing), "kind": "rebind", "graphic": g,
@@ -1435,7 +1452,7 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                         partial_skip.setdefault((row, vl), f"{facing} already live at {idx.live_anywhere(sha)[0]}")
                         continue
                     own = own_slot(idx, src, gv, facing, vl, row, names, variant=True,
-                                   taken={i["rel"] for i in P["install"]})
+                                   taken={i["rel"] for i in P["install"] if (i["row"], i["letter"]) != (row, vl)})
                     if not own:
                         P["todo"].append(f"{row}: ticked variant {vl} {facing} has no slot it can ship in")
                         partial_skip.setdefault((row, vl), f"{facing} has no slot")

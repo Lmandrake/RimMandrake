@@ -476,6 +476,37 @@ def main():
             cpath.write_text(census0)
             kr["columns"]["B"].pop("north", None)
             sp.write_text(json.dumps(snap))
+
+        # 17 a ticked variant whose letter names an alternate ALREADY SHIPPED with another picture (FanV_C from an older
+        # sheet, which he kept): the variant goes to the next free <g>V_<letter>, every facing alike, and never
+        # overwrites the live alternate (the folder path's 2026-10-18 bug, on the alternateGraphics path)
+        OCC = "swanimals/Fan/FanV_C_north.png"
+        occ_sha = L.store_put_bytes(T.noise_png(990))
+
+        def run17(occupied):
+            def idx17(self, *a, **k):
+                idx0(self, *a, **k)
+                if occupied:
+                    self.live[(T.MOD, OCC)] = {"sha": occ_sha, "mod": T.MOD, "rel": OCC}
+            L.Index.__init__ = idx17
+            try:
+                d = json.loads(json.dumps(doc))
+                d["decisions"] = {"RSW_Fan": {"decision": "B", "at": at, "decidedAt": at, "note": "", "variants": ["C"]}}
+                p = F["root"] / "case_variant_alt_taken.decisions.json"
+                p.write_text(json.dumps(d))
+                E.reset_caches()
+                r = E.enact(p, apply=False, no_deploy=True)
+            finally:
+                L.Index.__init__ = idx0
+            return r, {i["rel"] for i in r["plan"]["install"] if i["row"] == "RSW_Fan" and i["letter"] == "C"}
+        r, vc0 = run17(False)
+        check(r["ok"] and vc0 and all(x.startswith("swanimals/Fan/FanV_C_") for x in vc0),
+              f"17 control: a ticked variant C with FanV_C free ships as FanV_C ({vc0} / {r['conflicts']})")
+        r, vc = run17(True)
+        check(r["ok"] and vc and not any(x.startswith("swanimals/Fan/FanV_C_") for x in vc)
+              and len({E.texpath_of(x) for x in vc}) == 1 and len(vc) == len(vc0),
+              f"17 ...with FanV_C_north live (another picture): every facing moves to ONE free alternate, never "
+              f"over FanV_C ({vc} / {r['conflicts']})")
     finally:
         os.environ.pop("ART_BIOME_SHEETS_DIR", None)
     print("\nALL PASS" if not FAILS else f"\n{len(FAILS)} FAILED")
