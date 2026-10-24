@@ -21,3 +21,12 @@ Rows where GPT says redo/cut and the owner has NO keep on record. Filed as a FIN
 - T075 (artpipe) redo: Recognisable miniature trees flank the lower stalk; remove baked vegetation and strengthen the mushroom's outline for normal zoom.
 - T076 (artpipe) cut: The large scene and inset repeat T074 while the single thumbnail shows a different specimen; re-sheet the actual candidate consistently before review.
 
+
+## Per-row outcome (FOUNDRY, 2026-10-24, delegated: GPT art triage)
+Gate = regen_eligibility.Gate over every texPath of the def; pipeline = infrastructure/state/art_eval/runs/*/decisions.jsonl; PROTECTED = art.py status live slots. Queued directly: NONE (no redo slot is NONE/PLACEHOLDER/DONOR; dessicated slots that are DONOR are not what GPT flagged).
+
+| def | gate | protected slots | art-eval runs so far | outcome |
+|---|---|---|---|---|
+| RSW_Mynock | REFUSED_REGEN | 0 | none | CANDIDATE: never judged; intake filed as GPTREDO_JUDGE_UNJUDGED_ROWS (art-eval run, not a direct regen). |
+| RM_Vexxiss | REFUSED_REGEN | 1 | {'REGEN@r1': 1, 'REGEN@r2': 1} | ALREADY A CANDIDATE: judged by the art-eval pipeline (fauna_cauldron_r1_00, latest REGEN r2); no second intake. Regens follow the pipeline loop. |
+| RM_GiantAgariTox | REFUSED_REGEN | 0 | {'REGEN@r1': 1} | ALREADY A CANDIDATE: judged by the art-eval pipeline (flora_cauldron_20261023, latest REGEN r1); no second intake. Regens follow the pipeline loop. |
