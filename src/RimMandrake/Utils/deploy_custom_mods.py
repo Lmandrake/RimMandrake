@@ -419,6 +419,12 @@ def wellformed(src, rels):
             ET.parse(path)
         except ET.ParseError as e:
             bad.append((rel, str(e)))
+        except OSError:
+            # vanished since compare() (a concurrent delete, or a staged link
+            # gone dangling): not malformed. copy() then records it as a failed
+            # write, which blocks pruning and fails verify -- instead of a
+            # traceback that skips every later mod.
+            continue
     return bad
 
 
@@ -715,13 +721,27 @@ def _run(args, targets, holds, mods_dir, active):
                 # report). The leftover file still shows up in g2 below, which
                 # already sets any_leftover — this only stops the exception.
                 pruned = 0
+                # Case-only rename (Foo.xml -> foo.xml; --no-renames makes the
+                # old spelling a repo delete): on the case-INSENSITIVE game
+                # folder copy() just wrote the new content INTO Foo.xml, so
+                # removing "Foo.xml" would delete the file just deployed. Fix
+                # the spelling instead. On a case-sensitive fs they are two
+                # files (samefile False) and the old one is pruned as usual.
+                by_case = {x.lower(): x for x in tree(src)}
                 for r in gone:
                     if not (args.prune or r in stale):
                         continue
                     if not inside(dst, r):
                         print("  ! REFUSING to delete %s: outside %s" % (r, dst))
                         continue
+                    twin = by_case.get(r.lower())
                     try:
+                        if (twin and twin != r and os.path.exists(os.path.join(dst, twin))
+                                and os.path.samefile(os.path.join(dst, r),
+                                                     os.path.join(dst, twin))):
+                            os.rename(os.path.join(dst, r), os.path.join(dst, twin))
+                            pruned += 1
+                            continue
                         os.remove(os.path.join(dst, r))
                         pruned += 1
                     except OSError as e:
