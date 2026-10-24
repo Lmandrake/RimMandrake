@@ -7,6 +7,7 @@ Each check must FAIL on the art he rejected (the shipped code, emulated as BEFOR
   pipe joins, every look (PIPE_JOINS_REDRAW_RISER_ELBOW_AND_COLLAR):
     collar_on_riser, end_cap_on_riser, riser_kinks   FAIL before, PASS after
     riser_gaps                                       PASS both; can-fail: the scene with its riser strips removed
+    all five riser checks                            can-fail: a scene with no risers (never pass vacuously)
     riser_rims_north                                 PASS after; can-fail: the review's west-going rim flip re-created
   parity: the emulation's constants are the C#'s (LiquidJoinRule ElbowRadius/BoreHalf/UnderNozzle, TankPortGeometry PortDz).
   sprinkler head, every look x nine stations (SPRINKLER_SEAT_FIX_HEAD_BESIDE_ELBOW):
@@ -14,7 +15,7 @@ Each check must FAIL on the art he rejected (the shipped code, emulated as BEFOR
                                         PASS on the installed squat heads at the Defs' drawOffset, at two scales (px 40, 64)
     head_clamp_straddles_pipe           PASS on the squat heads; can-fail: the head shifted 0.1 cell north, south or east
     head_seat_on_pipe                   PASS on the squat heads; can-fail: the elbow seat put back at the cell centre
-    both centroid and clamp checks can-fail on a blank head; every check passes for every head look on every pipe
+    centroid, clamp and squat checks can-fail on a blank head; every check passes for every head look on every pipe
     look (the seat follows the pipe's look in game)
   parity: fw_scenes_sprinkler.seat == RM_PipeSeatMath.Seat for all 16 masks x every look (k, r and the stub read from the
           C# source via selftest_pipe_seat's parser); the installed head PNGs == squat_heads.shipped(raw) pixel for pixel,
@@ -24,6 +25,12 @@ Each check must FAIL on the art he rejected (the shipped code, emulated as BEFOR
     no saturated red          FAIL on the red originals (ModernStyle/red, the squat red head), PASS installed
     alpha unchanged           installed alpha == the red original's byte for byte: every fit (atlas, joins, seat, ports) holds
     pinned                    installed == waterworks_blue.recolour(red original) pixel for pixel
+  portable ladder, north + south from the ground sprite (LADDER_PORTABLE_REDRAW_NORTH_FROM_GROUND):
+    ladder_north_not_compressed   FAIL on the shipped north (art_source/Ladder/v6/before), PASS installed; can-fail: the
+                                  installed north moved 60 px down or 20 px sideways (shape alone would pass), or squeezed 0.8x across
+    ladder_south_footprint        FAIL on the shipped south stub, PASS installed; can-fail: one nub only
+    both can-fail on a blank image
+    pinned                        installed N/S == portable_from_ground.north()/south() pixel for pixel
 """
 # selftest-timeout: 400
 import re
@@ -82,6 +89,11 @@ def pipe_joins():
         want(not ok, "%s can-fail: riser_gaps sees a riser with its strip missing (%s)" % (look, d))
         ok, d = ck.riser_rims_north(after)
         want(ok, "%s riser_rims_north passes on the fix (%s)" % (look, d))
+        bare = sp.look_scene(look, "after", PX)
+        bare.risers = []
+        for f in (ck.collar_on_riser, ck.end_cap_on_riser, ck.riser_kinks, ck.riser_gaps, ck.riser_rims_north):
+            ok, d = f(bare)
+            want(not ok, "%s can-fail: %s refuses a scene with no risers (%s)" % (look, f.__name__, d))
         ok, d = ck.riser_rims_north(sp.look_scene(look, "after", PX, flip_bug=True))
         want(not ok, "%s can-fail: riser_rims_north sees the west-going flip (%s)" % (look, d))
 
@@ -139,7 +151,7 @@ def sprinkler():
                          ("east 0.1", {"shift_x": 0.1})):
             ok, d = ck.head_clamp_straddles_pipe(ss.board(look, "after", PX, **kw))
             want(not ok, "%s can-fail: head_clamp_straddles_pipe sees the head shifted %s (%s)" % (look, what, d))
-        for f in (ck.head_centroid_on_axis, ck.head_clamp_straddles_pipe):
+        for f in (ck.head_centroid_on_axis, ck.head_clamp_straddles_pipe, ck.head_squat):
             ok, d = f(ss.board(look, "after", PX, head=blank))
             want(not ok, "%s can-fail: %s refuses a blank head (%s)" % (look, f.__name__, d))
     real = ss.seat
@@ -170,11 +182,54 @@ def modern_blue():
         want(np.array_equal(np.asarray(made), b), "modern blue: %s installed == recolour(red original)" % rel)
 
 
+def ladder():
+    import numpy as np
+    from PIL import Image
+    sys.path.insert(0, str(HERE.parent / "art_source" / "Ladder" / "v6"))
+    import portable_from_ground as pg
+    up = pg.upright()
+    blank = Image.new("RGBA", (pg.CANVAS, pg.CANVAS))
+    made = {"north": pg.north(), "south": pg.south()}
+    checks = {"north": lambda im: ck.ladder_north_not_compressed(im, up), "south": ck.ladder_south_footprint}
+    for f, chk in checks.items():
+        name = "RM_LadderPortable_%s.png" % f
+        old = Image.open(HERE.parent / "art_source/Ladder/v6/before" / name).convert("RGBA")
+        live = Image.open(pg.CANALS / name).convert("RGBA")
+        ok, d = chk(old)
+        want(not ok, "ladder %s: shipped BEFORE fails (%s)" % (f, d))
+        ok, d = chk(live)
+        want(ok, "ladder %s: installed passes (%s)" % (f, d))
+        want(not chk(blank)[0], "ladder %s can-fail: blank image" % f)
+        want(np.array_equal(np.asarray(live), np.asarray(made[f])), "ladder %s: installed == portable_from_ground.%s()" % (f, f))
+    moved = Image.new("RGBA", blank.size)
+    moved.alpha_composite(made["north"].crop((0, 0, pg.CANVAS, pg.CANVAS - 60)), (0, 60))
+    ok, d = ck.ladder_north_not_compressed(moved, up)
+    want(not ok, "ladder north can-fail: moved 60 px down off the far rim (%s)" % d)
+    narrow = Image.new("RGBA", blank.size)
+    nb = made["north"].getchannel("A").getbbox()
+    thin = made["north"].crop(nb).resize((round((nb[2] - nb[0]) * 0.8), nb[3] - nb[1]), Image.LANCZOS)
+    narrow.alpha_composite(thin, ((pg.CANVAS - thin.width) // 2, nb[1]))
+    ok, d = ck.ladder_north_not_compressed(narrow, up)
+    want(not ok, "ladder north can-fail: squeezed to 0.8x across (%s)" % d)
+    side = Image.new("RGBA", blank.size)
+    side.alpha_composite(made["north"].crop(nb), (nb[0] + 20, nb[1]))       # the whole sprite, 20 px east
+    ok, d = ck.ladder_north_not_compressed(side, up)
+    want(not ok and "centre +20 px" in d, "ladder north can-fail: moved 20 px off the cell centre, centring is what fails (%s)" % d)
+    sb = made["south"].getchannel("A").getbbox()
+    nub = made["south"].crop((sb[0], sb[1], (sb[0] + sb[2]) // 2, sb[3]))
+    nub = nub.crop(nub.getchannel("A").getbbox())
+    one = Image.new("RGBA", blank.size)
+    one.alpha_composite(nub, ((pg.CANVAS - nub.width) // 2, sb[3] - nub.height))   # one nub, centred, on the rim
+    ok, d = ck.ladder_south_footprint(one)
+    want(not ok and d.startswith("1 nubs"), "ladder south can-fail: one centred nub, the nub count is what fails (%s)" % d)
+
+
 if __name__ == "__main__":
     parity()
     pipe_joins()
     sprinkler_parity()
     sprinkler()
     modern_blue()
+    ladder()
     print("%d FAIL" % len(fails) if fails else "ALL OK")
     sys.exit(1 if fails else 0)

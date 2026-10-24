@@ -20,6 +20,11 @@ onto the pipe ... make the sprinkler object be shorter, squatter, and wider so t
   head_squat             drawn no taller than wide, and at least 2.5 bore widths wide so it straddles any pipe
   head_seat_on_pipe      the seat point (cell centre + RM_PipeSeatMath) lands on drawn pipe (within half a bore); seat MATH
                          only, it reads no head pixel (the art's seat row is pinned by the selftest's drawOffset parity)
+Portable ladder (LADDER_PORTABLE_REDRAW_NORTH_FROM_GROUND; his words: "the one laying on its side looks really good" /
+"yes I'd like to see the ground portable ladder used"; south "only small nubs sticking up"):
+  ladder_north_not_compressed  keeps the ground ladder's length/width and rung pitch/stringer span (0.92x..1.09x), >= 0.85 cell
+                               long, top poking past the far rim and foot on the face (placement, not just shape)
+  ladder_south_footprint       two or more small nubs standing on the near rim: area, height and foot row bounded
 Each returns (ok, detail).
 """
 import math
@@ -34,12 +39,16 @@ def _popcount(m):
 
 
 def collar_on_riser(scene):
+    if not scene.risers:
+        return False, "no risers in scene (nothing to measure)"
     im = np.asarray(scene.render(only=lambda m: m.get("kind") == "flange" and m.get("riser")))
     n = int((im[..., 3] > 32).sum())
     return n == 0, "%d flange pixels on riser pipes" % n
 
 
 def end_cap_on_riser(scene):
+    if not scene.risers:
+        return False, "no risers in scene (nothing to measure)"
     bad = sorted({(m["cell"], m["mask"]) for _, _, _, m in scene.draws
                   if m and m.get("kind") == "tile" and m.get("riser") and _popcount(m["mask"]) <= 1})
     return not bad, "dead-end tiles on riser cells: %s" % (bad or "none")
@@ -53,6 +62,8 @@ def _heading(seg, f):
 
 
 def riser_kinks(scene, tol=2.0):
+    if not scene.risers:
+        return False, "no risers in scene (nothing to measure)"
     worst, where = 0.0, None
     for cell, path in scene.risers:
         for a, b in zip(path, path[1:]):
@@ -63,6 +74,8 @@ def riser_kinks(scene, tol=2.0):
 
 
 def riser_gaps(scene, step=0.03, need=1.0):
+    if not scene.risers:
+        return False, "no risers in scene (nothing to measure)"
     im = np.asarray(scene.render(only=lambda m: m.get("kind") in ("tile", "strip", "stub")))
     H, W = im.shape[:2]
     worst, where = 1.0, None
@@ -94,23 +107,31 @@ def _probe_tile(n=64):
 
 
 def riser_rims_north(scene, half_w=0.12):
-    """Each riser strip, re-drawn on its own path with the scene's own orientation rule but a red-north/blue-south test
-    tile: on the level run into the tank, red must be on the north side of the centreline and blue on the south."""
+    """Each riser strip, re-drawn on its own path with the orientation the scene actually DREW it with (meta west_drawn,
+    set by Scene.strip) but a red-north/blue-south test tile: on the level run into the tank, red must be on the north
+    side of the centreline and blue on the south. A strip with no riser record or no west_drawn tag is a failure."""
     probe = _probe_tile()
     bad, n = [], 0
     for _, _, _, m in scene.draws:
         if not m or m.get("kind") != "strip":
+            continue
+        if not 0 <= m.get("id", -1) < len(scene.risers) or "west_drawn" not in m:
+            bad.append(("untracked strip", m.get("id")))
             continue
         cell, path = scene.risers[m["id"]]
         seg = path[-1]
         if seg[0] != "L" or abs(seg[4] - seg[2]) > 1e-9 or abs(seg[3] - seg[1]) < 0.1:
             continue
         t = fc.Scene(scene.w, scene.h, px=scene.P, ground=False)
-        t.strip(probe, path, half_w=half_w, west=m.get("west"), meta={"kind": "probe"})
+        t.strip(probe, path, half_w=half_w, west=m["west_drawn"], meta={"kind": "probe"})
         im = np.asarray(t.render(only=lambda q: True), np.int32)
+        H, W = im.shape[:2]
         x = (seg[1] + seg[3]) / 2
-        nx, ny = map(int, t.to_px(x, seg[2] + half_w * 0.5))
-        sx, sy = map(int, t.to_px(x, seg[2] - half_w * 0.5))
+        pts = [tuple(map(int, t.to_px(x, seg[2] + s * half_w * 0.5))) for s in (1, -1)]
+        if any(not (0 <= px < W and 0 <= py < H) for px, py in pts):
+            bad.append(("probe off canvas", cell))
+            continue
+        (nx, ny), (sx, sy) = pts
         north, south = im[ny, nx], im[sy, sx]
         n += 1
         if not (north[0] > north[2] and south[2] > south[0]):
@@ -181,6 +202,8 @@ def head_squat(scene, max_ratio=1.0, min_bores=2.5):
     bad = []
     for m in _heads(scene)[:1]:          # one art per board: every station draws the same texture at the same size
         ys, xs = np.nonzero(_alpha(scene, m) > 40)
+        if not len(xs):
+            return False, "head at mask %s draws no opaque pixel" % m["mask"]
         w, h = (xs.max() - xs.min() + 1) / scene.P, (ys.max() - ys.min() + 1) / scene.P
         if h / w > max_ratio or w < min_bores * BORE:
             bad.append("%.3f wide x %.3f tall (h/w %.2f, needs <= %.2f; width needs >= %.3f)"
@@ -205,3 +228,67 @@ def head_seat_on_pipe(scene):
 
 
 SPRINKLER_CHECKS = (head_centroid_on_axis, head_clamp_straddles_pipe, head_squat, head_seat_on_pipe)
+
+
+# ---- portable ladder (LADDER_PORTABLE_REDRAW_NORTH_FROM_GROUND) ------------------------------------------------------
+# Owner 2026-10-24: "the one laying on its side looks really good" / the installed north "looks much less suitable";
+# "yes I'd like to see the ground portable ladder used". On v5's south: "only small nubs sticking up".
+# Inputs are RGBA images; the installed rig (RM_LadderPortable, 384 px at drawSize 1.5) and the ground sprite
+# (RM_LadderPortableFlat, 256 px at drawSize 1) are both 256 px per cell.
+LADDER_PX_PER_CELL = 256
+LADDER_SOLID = 128           # alpha: opaque wood, not the soft contact shadow
+
+
+def _ladder_geom(im):
+    """(bbox x0, y0, x1, y1, mean rung pitch px) of an UPRIGHT ladder: rungs = opaque runs down its centre column."""
+    a = np.asarray(im.convert("RGBA"))[..., 3] >= LADDER_SOLID
+    ys, xs = np.nonzero(a)
+    if not len(xs):
+        return None
+    x0, x1, y0, y1 = xs.min(), xs.max(), ys.min(), ys.max()
+    col = a[:, (x0 + x1) // 2]
+    starts = [i for i in range(1, len(col)) if col[i] and not col[i - 1]]
+    pitch = float(np.mean(np.diff(starts))) if len(starts) >= 2 else None
+    return int(x0), int(y0), int(x1), int(y1), pitch
+
+
+def ladder_north_not_compressed(north, flat_upright, keep=0.92, min_cells=0.85, rim_row=128, poke=(30, 90),
+                                foot=(240, 330), centre_tol=8):
+    """The installed north keeps the ground ladder's proportions: length/width and rung pitch/stringer span each
+    within keep..1/keep x the ground sprite's (turned upright), it is at least min_cells long, and it stands where the rig shows a
+    ladder on the far wall: its top pokes poke[0]..poke[1] px past the far rim (canvas row rim_row) and its foot rests in
+    rows foot[0]..foot[1] (the face; a full face's foot is row 256), its wood centred on the canvas within centre_tol px.
+    Two-sided: the ratios must lie within [keep, 1/keep] x the ground's, so a ladder squeezed across (or along) fails."""
+    g, f = _ladder_geom(north), _ladder_geom(flat_upright)
+    if g is None:
+        return False, "north is blank"
+    if g[4] is None or f[4] is None:
+        return False, "fewer than two rungs found down the centre column (north %s, ground %s)" % (g[4], f[4])
+    asp = lambda q: (q[3] - q[1] + 1) / (q[2] - q[0] + 1)
+    rung = lambda q: q[4] / (q[2] - q[0] + 1)
+    length = (g[3] - g[1] + 1) / LADDER_PX_PER_CELL
+    off = (g[0] + g[2] + 1) / 2 - np.asarray(north).shape[1] / 2
+    placed = poke[0] <= rim_row - g[1] <= poke[1] and foot[0] <= g[3] + 1 <= foot[1] and abs(off) <= centre_tol
+    near = lambda a, b: keep * b <= a <= b / keep
+    ok = near(asp(g), asp(f)) and near(rung(g), rung(f)) and length >= min_cells and placed
+    return ok, "aspect %.2f vs ground %.2f, rung pitch/span %.2f vs %.2f, length %.2f cell, top row %d foot row %d, centre %+.0f px" % (
+        asp(g), asp(f), rung(g), rung(f), length, g[1], g[3] + 1, off)
+
+
+def ladder_south_footprint(south, rim_row=256, max_cells2=0.035, max_h_cells=0.12, rim_tol=8, min_nubs=2, centre_tol=8):
+    """The south (seen from the near rim) is small nubs: >= min_nubs separate opaque column runs at least 3 px wide,
+    opaque area <= max_cells2, height <= max_h_cells, standing on the rim, the pair centred within centre_tol px."""
+    a = np.asarray(south.convert("RGBA"))[..., 3] >= LADDER_SOLID
+    ys, xs = np.nonzero(a)
+    if not len(xs):
+        return False, "south is blank"
+    cols = np.concatenate(([False], a.any(0), [False]))
+    edges = np.flatnonzero(cols[1:] != cols[:-1]).reshape(-1, 2)
+    nubs = int(np.sum(edges[:, 1] - edges[:, 0] >= 3))
+    off = (xs.min() + xs.max() + 1) / 2 - a.shape[1] / 2
+    area = a.sum() / LADDER_PX_PER_CELL ** 2
+    h = (ys.max() - ys.min() + 1) / LADDER_PX_PER_CELL
+    ok = (nubs >= min_nubs and area <= max_cells2 and h <= max_h_cells and abs(int(ys.max()) + 1 - rim_row) <= rim_tol
+          and abs(off) <= centre_tol)
+    return ok, "%d nubs, area %.3f cell2, height %.3f cell, foot row %d (rim %d), centre %+.0f px" % (
+        nubs, area, h, ys.max() + 1, rim_row, off)
