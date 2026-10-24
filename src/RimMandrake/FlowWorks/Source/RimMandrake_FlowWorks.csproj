@@ -438,6 +438,8 @@
     <Compile Include="Sprinklers\RM_Sprinkle.cs" />
     <Compile Include="Sprinklers\CompRM_SprinklerHead.cs" />
     <Compile Include="Sprinklers\CompRM_SmartSprinkler.cs" />
+    <Compile Include="Sprinklers\RM_PipeSeatMath.cs" />
+    <Compile Include="Sprinklers\Building_RM_SprinklerHead.cs" />
   </ItemGroup>
 
   <!-- Bottled blood: Machinery\Logistics\. Blood-draw-only files go in this group.
