@@ -17,6 +17,10 @@ What it emulates (read from the C#, not guessed):
     to float precision (Layout); SpikeDrawChecks.Spikes_parity_fixture_matches_python holds the two together with
     PARITY below.
 
+Floors (PIT_SPIKES_FIX_READ_AS_FUZZ_LIVE): render(floor="standin") is the flat grey the owner-approved sheet was drawn on;
+floor="real" is the game's dug-floor terrain (vanilla Gravel x RM_Channel_* <color>), which live fwclose_03 matches.
+  floor_matches_live(floor) -> the D4 floor's luminance == live's: FAILS on "standin", PASSES on "real"/"real_flat"
+
 Checks (each FAILS on the shipped drawing and PASSES on the fix; selftest_fw_offline_art.py runs both):
   spikes_over_wall(res)  -> 0 spike pixels on the dry face bands or the outline
   spikes_submerged(res)  -> per spiked cell: visible dry, fading with every level of water, gone (alpha 0) from 1 m
@@ -198,8 +202,60 @@ WATER = (52, 92, 120, 150)
 
 
 def _floor(d):
+    """The STAND-IN floor the owner-approved 4f12810a3e sheet was composited on: a flat grey that darkens with depth.
+    It is NOT what the game draws (see real_floor) -- PIT_SPIKES_FIX_READ_AS_FUZZ_LIVE."""
     k = max(0.45, 1 - 0.08 * d)
     return tuple(int(c * k) for c in (92, 82, 70))
+
+
+# ---- the REAL dug floor (PIT_SPIKES_FIX_READ_AS_FUZZ_LIVE) -----------------------------------------------------------
+# A dry dug cell's terrain is RM_ExcavationDepth.DryTerrainFor(d): RM_Channel_Empty / _Mid / _Deep / _Superdeep (d >= 4),
+# every one the vanilla Terrain/Surfaces/Gravel texture times the def's <color> (read from the XML below, never typed in).
+# Gravel lives in the base game's resources.assets; the extract is read from $RM_VANILLA_TEX (a directory holding
+# Gravel.png). Without it the floor is the texture's measured mean, flat (GRAVEL_MEAN; the checks use only that).
+# Calibration, live fwclose_03 (3x3 D4 pit, 83 px/cell): floor lum 27.7 (rgb 36,26,16) against GRAVEL_MEAN x Superdeep
+# = lum 28.1 (rgb 35,27,19); the stand-in drew lum 56 grey there.
+TERRAIN_XML = FW / "Defs/Canals/TerrainDefs/FlowWorks_Terrain.xml"
+FLOOR_DEFS = ("RM_Channel_Empty", "RM_Channel_Mid", "RM_Channel_Deep", "RM_Channel_Superdeep")   # d = 1, 2, 3, >= 4
+GRAVEL_MEAN = (91.2, 73.6, 57.3)       # vanilla Gravel.png (1024 px), mean rgb over every pixel
+GRAVEL_CELLS = 10                      # cells one texture repeat spans: of 1..16 the closest to the live floor's grain
+VANILLA_TEX_DEFAULT = "/mnt/d/ClaudeWork/rimmandrake/scratch/vanilla_tex/ludeon.rimworld.core"
+
+
+def floor_tints():
+    """{d: (r, g, b) multiplier} from the terrain defs; a def with no <color> is white (TerrainDef's default)."""
+    import xml.etree.ElementTree as ET
+    found = {}
+    for t in ET.parse(TERRAIN_XML).getroot().iter("TerrainDef"):
+        name = t.findtext("defName")
+        if name in FLOOR_DEFS:
+            c = t.findtext("color")
+            found[name] = tuple(float(v) for v in c.strip("() ").split(",")[:3]) if c else (1.0, 1.0, 1.0)
+    missing = [n for n in FLOOR_DEFS if n not in found]
+    if missing:
+        raise SystemExit("fw_scenes_spikes: %s has no %s" % (TERRAIN_XML, missing))
+    return {i + 1: found[n] for i, n in enumerate(FLOOR_DEFS)}
+
+
+_GRAVEL = {}
+
+
+def gravel(P, flat=False):
+    """The Gravel texture at P px/cell, one repeat per GRAVEL_CELLS cells (float rgb), or None (flat / not extracted)."""
+    if flat:
+        return None
+    if P not in _GRAVEL:
+        import os
+        f = Path(os.environ.get("RM_VANILLA_TEX", VANILLA_TEX_DEFAULT)) / "Gravel.png"
+        side = round(GRAVEL_CELLS * P)
+        _GRAVEL[P] = np.asarray(Image.open(f).convert("RGB").resize((side, side), Image.LANCZOS), np.float32) \
+            if f.is_file() else None
+    return _GRAVEL[P]
+
+
+def real_floor_rgb(d):
+    t = floor_tints()[min(max(d, 1), 4)]
+    return tuple(m * k for m, k in zip(GRAVEL_MEAN, t))
 
 
 class Pit:
@@ -236,12 +292,13 @@ def _dilate(m, r):
     return out
 
 
-def render(pit, mode="after", P=160, faces=True, outline=True, atlases=None):
+def render(pit, mode="after", P=160, faces=True, outline=True, atlases=None, floor="standin"):
     """-> dict(img, spike_a (H,W float 0..1 spike-layer alpha), wall (H,W bool dry face bands + outline), cells, sliver,
     used {variant index: UV boxes drawn}). mode: "before" the shipped sprite on the whole cell; "after" the fix (stake
     atlas, or atlases[name] when given); "approved" the owner-approved layout sampling the sprite through the pinned
     library, its `sliver` mask every scene pixel a neighbour's sliver inside a box can reach (dilated by SLIVER_REACH);
-    "approved_clean" the same with each box's slivers' alpha cleared."""
+    "approved_clean" the same with each box's slivers' alpha cleared. floor: "standin" (the approved sheet's grey),
+    "real" (the game's dug-floor terrain: Gravel x the depth's def colour), "real_flat" (that, at the texture's mean)."""
     W, H = pit.W * P, pit.H * P
     rgb = np.zeros((H, W, 3), np.float32)
     wall = np.zeros((H, W), bool)
@@ -261,7 +318,17 @@ def render(pit, mode="after", P=160, faces=True, outline=True, atlases=None):
             if d <= 0:
                 continue
             f = pit.f[z][x]
-            fill_box(x, z, 0, 0, 1, 1, _floor(d))
+            if floor == "standin":
+                fill_box(x, z, 0, 0, 1, 1, _floor(d))
+            else:
+                tex, tint = gravel(P, floor == "real_flat"), floor_tints()[min(d, 4)]
+                r0, r1, c0, c1 = box(x, z, 0, 0, 1, 1)
+                if tex is None:
+                    rgb[r0:r1, c0:c1] = real_floor_rgb(d)
+                else:
+                    n = tex.shape[0]
+                    rr, cc = np.arange(r0, r1) % n, np.arange(c0, c1) % n
+                    rgb[r0:r1, c0:c1] = tex[np.ix_(rr, cc)] * np.array(tint, np.float32)
             if not faces:
                 continue
             # the faces as drawn (wet: water covers the foot) and as the wall really stands (dry: the check's mask)
@@ -344,6 +411,20 @@ def render(pit, mode="after", P=160, faces=True, outline=True, atlases=None):
     img = Image.fromarray(np.clip(out, 0, 255).astype(np.uint8), "RGB")
     return dict(img=img, spike_a=spike[..., 3], wall=wall, cells=cells, P=P, pit=pit, sliver=_dilate(sliver, SLIVER_REACH),
                 used=used)
+
+
+LIVE_FLOOR_D4 = (36, 26, 16)    # live fwclose_03 (2026-10-24, 83 px/cell): median of the 3x3 D4 pit's floor between stakes
+LIVE_FLOOR_TOL = 3.0            # luminance steps
+
+
+def floor_matches_live(floor):
+    """(ok, detail): the compositor's dry D4 floor (no stakes) has the live floor's luminance. FAILS on the stand-in the
+    approved sheet used (lum 56 grey vs live 28 brown: why stakes that read on the sheet read as fuzz in the game)."""
+    rows = [[4] * 3] * 3
+    img = np.asarray(render(Pit(rows), "after", P=83, floor=floor)["img"], np.float32)
+    lum = lambda c: float(np.dot(c, (0.299, 0.587, 0.114)))
+    got, want_l = float(np.median(img.reshape(-1, 3) @ np.array((0.299, 0.587, 0.114)))), lum(LIVE_FLOOR_D4)
+    return abs(got - want_l) <= LIVE_FLOOR_TOL, "floor=%s lum %.1f vs live %.1f (tol %.0f)" % (floor, got, want_l, LIVE_FLOOR_TOL)
 
 
 # ---- checks ------------------------------------------------------------------------------------------------------------

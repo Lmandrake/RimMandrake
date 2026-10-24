@@ -2337,3 +2337,4 @@
 {"seat":"OWNER","event":"close","id":"RAIL_LADDER_REDRAW_FAT_RUNG_FENCE","sha":"112e665d34","ownerSaid":"Ladders look great.","ts":"2026-10-24T18:38:19Z","tsn":1792867099847443792}
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"BENCH live: modcheck FlowWorks rerun (stall diagnosis) + art review scene","ts":"2026-10-24T18:40:42Z","tsn":1792867242046361438}
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"FlowWorks art review done; keeper saved, game closed","ts":"2026-10-24T19:28:00Z","tsn":1792870080743348160}
+{"seat":"OWNER","event":"close","id":"MODERN_BOTTLE_REDRAW_SODA_AND_ORANGE_PAIL","sha":"542246561926","reason":"bottle reverted to pilot bytes 8a3e1aec, orange pail kept; selftest_fw_offline_art pins both","ownerSaid":"I like the before bottles but the after buckets on the review sheet","ts":"2026-10-24T19:50:00Z","tsn":1792871400794671691}

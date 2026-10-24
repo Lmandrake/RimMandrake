@@ -51,6 +51,8 @@ Each check must FAIL on the art he rejected (the shipped code, emulated as BEFOR
     geometry kept                 installed alpha == v5 draw.py's WOOD alpha, every facing (approved perspectives untouched)
     iron kept                     every pixel that is neither timber nor outline == v5's RGBA (hooks, brackets, bolts)
     pinned                        installed == art_source/Ladder/v7/rail_pale.build() pixel for pixel; west == east mirrored
+  pit floor (PIT_SPIKES_FIX_READ_AS_FUZZ_LIVE): floor_matches_live FAILS on the approved sheet's grey stand-in, PASSES on
+    the game's dug floor (Gravel x RM_Channel_* colour) flat and textured (textured needs $RM_VANILLA_TEX or the extract)
   pit spikes, a 4 m pit with a 2 m shelf and a 0..2 m water series (PIT_SPIKES_FIX_OVER_WALL_AND_SUBMERGE, fw_scenes_spikes):
     spikes_over_wall    FAIL on the shipped whole-cell sprite, PASS on Building_RM_Spikes' layout; also PASS with the
                         outline off; with the faces off it REFUSES (no wall mask), the no-walls can-fail; can-fail: no spikes
@@ -399,6 +401,10 @@ def spikes():
         ok, d = spk.spikes_over_wall(spk.render(spk.check_pit(), "after", P=PX, faces=faces, outline=outline))
         # faces off: the walls layer draws nothing, so no mask; the check must refuse rather than pass vacuously
         want(ok if faces else (not ok and "no wall" in d), "spikes_over_wall faces=%s outline=%s (%s)" % (faces, outline, d))
+    # PIT_SPIKES_FIX_READ_AS_FUZZ_LIVE: the sheet's floor was a grey stand-in; the game's is dark brown gravel
+    for fl, expect in (("standin", False), ("real_flat", True), ("real", True)):
+        ok, d = spk.floor_matches_live(fl)
+        want(ok == expect, "floor_matches_live %s: %s (%s)" % (fl, "PASS" if ok else "FAIL", d))
     flat = spk.Pit([[0, 0, 0], [0, 8, 0], [0, 0, 0]], spikes=[])
     ok, d = spk.spikes_over_wall(spk.render(flat, "after", P=PX))
     want(not ok and d == "no spikes in the scene", "spikes_over_wall can-fail: no spikes (%s)" % d)
