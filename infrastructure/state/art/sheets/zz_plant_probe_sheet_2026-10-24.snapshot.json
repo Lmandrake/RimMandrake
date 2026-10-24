@@ -1,0 +1,51 @@
+{
+ "biome": "SUBJECTS_zz_plant_probe",
+ "built": "2026-10-24T02:29:52-0700",
+ "census": "Transient/biome_ffar/zz_plant_probe.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "live ModsConfig.xml: 320 active",
+ "rows": {
+  "RM_Ruskara": {
+   "columns": {
+    "A": {
+     "single": "c8ea9993f5a3954ab3ceac3764631799d7924cd363221d11f112b52e195df4a9"
+    },
+    "B": {
+     "single": "a1cc2985b9c3e526b4a648fcd895208ea421ad6c02c6e8063bd468517dbb10bd"
+    },
+    "C": {
+     "single": "723aa5da929a06e6e67a5f4640ec3c738aff2fffc1260b6138fc2503e2f67a2f"
+    },
+    "D": {
+     "single": "eaaa4d3e13a7c0f4be0d134c89fac1aa522b4264637e71b868b9cf6fbd87317b"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Ruskara",
+    "B": "Things/Plant/RM_Ruskara",
+    "C": "Things/Plant/RM_Ruskara",
+    "D": "Things/Plant/RM_Ruskara"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RM_Ruskara_a (1 of 4) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant RM_Ruskara_b (2 of 4) \u2014 TheRot",
+    "C": "IN GAME \u2014 random variant RM_Ruskara_c (3 of 4) \u2014 TheRot",
+    "D": "IN GAME \u2014 random variant RM_Ruskara_d (4 of 4) \u2014 TheRot"
+   },
+   "pools": [
+    "Things/Plant/RM_Ruskara"
+   ],
+   "res": "Things/Plant/RM_Ruskara",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "ruskara"
+  }
+ },
+ "sheetId": "zz_plant_probe_sheet_2026-10-24",
+ "snapshotId": "09e6cece4ff2ad70"
+}

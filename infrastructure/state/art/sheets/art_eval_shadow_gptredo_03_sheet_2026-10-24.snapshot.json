@@ -1,0 +1,43 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_gptredo_03",
+ "built": "2026-10-24T03:49:25-0700",
+ "census": "Transient/biome_ffar/art_eval_shadow_gptredo_03.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 11 mods \u2014 a test list): 320 active",
+ "rows": {
+  "RM_AgariluxPrime": {
+   "columns": {
+    "A": {
+     "single": "b0a767dc1f50d518df5181b0558ef2c8aef6bd98f36c56a10d406d83ab99347d"
+    },
+    "B": {
+     "single": "c93606ba387d96e7853b4195cd525ca057bf378b315a65cb547d7b209bbbcaff"
+    },
+    "C": {
+     "single": "85779af91a06483f2aaee457219fb5524d2ce4d18eda57334e9e598afffaf550"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plants/AB_AgariluxPrime",
+    "B": "Things/Plants/AB_AgariluxPrime",
+    "C": "Things/Plants/AB_AgariluxPrime"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot",
+    "B": "shipped, shadowed \u2014 UtinniPatches",
+    "C": "render rot_agariluxprime_v3"
+   },
+   "pools": [],
+   "res": "Things/Plants/AB_AgariluxPrime",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "agariluxprime"
+  }
+ },
+ "sheetId": "art_eval_shadow_gptredo_03_sheet_2026-10-24",
+ "snapshotId": "cef47343b4d51304"
+}

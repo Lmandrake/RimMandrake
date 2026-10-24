@@ -1,0 +1,151 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_gptredo_01",
+ "built": "2026-10-24T03:46:40-0700",
+ "census": "Transient/biome_ffar/art_eval_shadow_gptredo_01.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 11 mods \u2014 a test list): 320 active",
+ "rows": {
+  "RSW_Clodhopper": {
+   "columns": {
+    "A": {
+     "east": "00a75f52067020c99e5965fcfa31eec1b015289b6eacad9b4736f2d6fbd1f8ec",
+     "north": "570bd33b827805f786dc0ba8a91547e0d86213e477c424620a9210e805e906b4",
+     "south": "d0f077c2adf3d430a678b78bb841db73d17d3a9718108214b2c354474c309b32"
+    },
+    "B": {
+     "east": "33999095ace78eb2664043d96514db36ab777429e8a0c85f10c72e77d38ecfbe"
+    },
+    "C": {
+     "east": "00a75f52067020c99e5965fcfa31eec1b015289b6eacad9b4736f2d6fbd1f8ec",
+     "north": "075e3871f098ec5f2592a0163484bd58bbf398c3cd61d38e7f6a91b3b132a7f2",
+     "south": "d0f077c2adf3d430a678b78bb841db73d17d3a9718108214b2c354474c309b32"
+    },
+    "D": {
+     "east": "362215c3b0a3712b845cb355d45399918936ee7e84f64d3c2b8a3b16f6044a9f",
+     "north": "a0efe29482731428e51ef418cb44200393174953d7778c9b890f3e94904c8d26",
+     "south": "f05f838cac907fb6b6252d5f33da65047b8b264a6bd9af16bcbff98ccb2784b3"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/Clodhopper/Clodhopper",
+    "B": "swanimals/Clodhopper/Clodhopper",
+    "C": "swanimals/Clodhopper/Clodhopper",
+    "D": "swanimals/Clodhopper/Clodhopper"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render dregen_RSW_Clodhopper_Clodhopperd_v1",
+    "C": "render longshade_rsw_clodhopper_v1",
+    "D": "history SWBestiary 2026-09-12"
+   },
+   "pools": [
+    "swanimals/Clodhopper/Clodhopper"
+   ],
+   "res": "swanimals/Clodhopper/Clodhopper",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "clodhopper"
+  },
+  "RSW_Gizka": {
+   "columns": {
+    "A": {
+     "east": "974b7c73e1b7b590028d338fb29c6c37357eeedf68a140d1a29b1ebc5149fe9f",
+     "north": "22504283ae7eb467f1b320af323201436b8e74ee14917576ca22d02ebcdbbc14",
+     "south": "f54b6f747c50e2f26ed741111b03f07b7e07c07b5c1da2adfb1d100ac28b9ecb"
+    },
+    "B": {
+     "east": "974b7c73e1b7b590028d338fb29c6c37357eeedf68a140d1a29b1ebc5149fe9f",
+     "north": "c62be1390e393acd10b86bfdd318f8b675c0df61a305091ef43e1ae33b373489",
+     "south": "6479ef39d171dd8dfb335dd66fc4814f667ba1e1fe4e78dcc1be8173b2379d75"
+    },
+    "C": {
+     "east": "6bca3a6c5e7664deefc06104dc58afb94011aa76797fd0bf1662e55f792b2d0a",
+     "north": "1172ecf05b7536934c187a7b4ecfc50abe109c200cbbac3e53bc16a7857b30bd",
+     "south": "a2d1e6d4121300f1097d61e538e927369bad217661c36c1f900f7e33770eb133"
+    },
+    "D": {
+     "east": "6bca3a6c5e7664deefc06104dc58afb94011aa76797fd0bf1662e55f792b2d0a",
+     "north": "1172ecf05b7536934c187a7b4ecfc50abe109c200cbbac3e53bc16a7857b30bd",
+     "south": "a2d1e6d4121300f1097d61e538e927369bad217661c36c1f900f7e33770eb133"
+    },
+    "E": {
+     "east": "6bca3a6c5e7664deefc06104dc58afb94011aa76797fd0bf1662e55f792b2d0a",
+     "north": "3ac2823a74f47dbdd057342c7f469f248f99d8a0c0418bd97617c0d2dfe0bc90",
+     "south": "a2d1e6d4121300f1097d61e538e927369bad217661c36c1f900f7e33770eb133"
+    }
+   },
+   "graphic_of": {
+    "A": "RimStarWars/SWBestiary/Gizka/Gizka",
+    "B": "RimStarWars/SWBestiary/Gizka/Gizka",
+    "C": "RimStarWars/SWBestiary/Gizka/Gizka",
+    "D": "RimStarWars/SWBestiary/Gizka/GizkaW",
+    "E": "RimStarWars/SWBestiary/Gizka/GizkaW"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render standtall_b1_gizka",
+    "C": "render canonregen_rsw_gizka_v1 \u2014 grader flagged (advisory)",
+    "D": "IN GAME \u2014 SWBestiary",
+    "E": "render standtall_b1_gizkaw"
+   },
+   "pools": [
+    "RimStarWars/SWBestiary/Gizka/Gizka",
+    "RimStarWars/SWBestiary/Gizka/GizkaW"
+   ],
+   "res": "RimStarWars/SWBestiary/Gizka/Gizka",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "gizka"
+  },
+  "RSW_Mynock": {
+   "columns": {
+    "A": {
+     "east": "ae0b6deb62174d47fc6acc1c76cfb543f3d64a2e11effa1ee04b2c803c439eb5",
+     "north": "67d410678f11cc27ff3172f4159f7400c40bbbaf08d7e1fb1c033ff8732da747",
+     "single": "1597dc451316c23807ed8fbec59dd73cb7e450e58dd67e368be615393823c1b5"
+    },
+    "B": {
+     "east": "ae0b6deb62174d47fc6acc1c76cfb543f3d64a2e11effa1ee04b2c803c439eb5",
+     "north": "67d410678f11cc27ff3172f4159f7400c40bbbaf08d7e1fb1c033ff8732da747"
+    },
+    "C": {
+     "single": "1597dc451316c23807ed8fbec59dd73cb7e450e58dd67e368be615393823c1b5"
+    }
+   },
+   "graphic_of": {
+    "A": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock",
+    "B": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock",
+    "C": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render warscar_Mynock_v2",
+    "C": "history SWBestiary 2026-09-11"
+   },
+   "pools": [
+    "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock"
+   ],
+   "res": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "mynock"
+  }
+ },
+ "sheetId": "art_eval_shadow_gptredo_01_sheet_2026-10-24",
+ "snapshotId": "cb33733b79aee611"
+}
