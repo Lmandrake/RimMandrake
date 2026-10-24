@@ -117,6 +117,8 @@ class Scene:
         rim stays on the north. Blending is straight alpha "over" on a premultiplied-free canvas, as the game's
         Transparent shader does for one layer; overlapping segment ends blend twice (a hair darker at the seam)."""
         west = travels_west(path) if west is None else west   # west= forces it (a check's can-fail run)
+        if meta is not None:
+            meta = dict(meta, west_drawn=bool(west))          # what was actually drawn, for riser_rims_north
         T = np.asarray(tile, dtype=np.float32)
         th, tw = T.shape[:2]
 
