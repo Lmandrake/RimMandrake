@@ -1,0 +1,22 @@
+[
+ {
+  "id": "arteval_RM_Ladder__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Ladder",
+  "prompt": "A single game sprite for RimWorld: a steel fire-escape-style ladder fixed to the wall of a dug pit, shown in the north-facing view. The view looks straight at the pit wall, face-on and orthographic, with the camera level and square to the wall. The ladder runs vertically down the center of the canvas, receding down into the pit. Two parallel vertical steel rails, riveted and slightly weathered, carry evenly spaced round rungs from the top of the canvas to the bottom. The rungs are slightly worn and lighter along their upper edges where they catch the light. The tops of both rails curve outward in a smooth gooseneck arc, curling over the rim of the pit at the top of the frame so the hooked ends read clearly. Small bolted standoff brackets hold the rails to the wall at regular intervals. Behind the ladder is a section of the pit wall: packed brown earth with a few embedded stones and subtle strata, getting slightly darker toward the bottom to suggest depth. The steel is cool grey-blue with scuffed highlights and a few rust streaks against the warm brown earth. Soft light falls from the upper left and gives a gentle cast shadow from the rails onto the wall. Painterly vanilla RimWorld art style, realistic hand-painted shading, clean dark outline around the ladder, rails and wall section. Transparent background outside the wall section. Square 384x384 canvas, the ladder centered and filling most of the frame. Single object, no text, no characters.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: ",
+  "reference": "",
+  "priority": 40,
+  "source_run": "ladders_redraw_20261023_r2",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl"
+ }
+]

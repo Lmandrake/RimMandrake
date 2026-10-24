@@ -1,0 +1,22 @@
+[
+ {
+  "id": "arteval_RM_LadderPortable__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_LadderPortable",
+  "prompt": "A portable wooden ladder leaned against the north wall of a dug pit, seen face-on and receding down into the pit, painterly vanilla RimWorld style, realistic, clean dark outline. Two weathered wooden side rails with evenly spaced rungs, warm brown wood palette, slight perspective narrowing toward the bottom as the ladder descends into the pit. Metal foot brackets at the base of the rails. The feet of the ladder rails end in a crisp, hard-edged dark outline, and every pixel beyond that outline is fully transparent: the background is clean, fully transparent alpha with hard edges, with no cast shadow, glow, blur or grey softness below or around the foot brackets. 384x384 canvas, ladder centered, single object, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "ladders_redraw_20261023",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl"
+ }
+]

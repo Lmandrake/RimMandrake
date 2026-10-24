@@ -19,7 +19,8 @@
     <graphicData>
       <texPath>Things/Building/FlowWorks/Canals/RM_LadderPortable</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
-      <!-- art "portable ladder redraw 8" (owner by card 2026-10-22): upright, on RM_Ladder's rig (384 px canvas, drawSize 1.5, offsets) -->
+      <!-- art "portable ladder redraw 8" (owner by card 2026-10-22): upright, on RM_Ladder's rig (384 px canvas, drawSize 1.5, offsets).
+           North re-projected steeper (owner 2026-10-23): art_source/Ladder/v4/draw.py portable_north. -->
       <drawSize>(1.5,1.5)</drawSize>
       <drawOffsetNorth>(0,0,0.25)</drawOffsetNorth>
       <drawOffsetEast>(0,0,0.25)</drawOffsetEast>

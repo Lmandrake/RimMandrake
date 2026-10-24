@@ -32,7 +32,7 @@
        It deliberately does NOT change pathing, passability, line of sight
        or escape odds. Anything more is an elevation model in disguise.
 
-       Art: the wall-rails set below (graphicData comment; art_source/Ladder/v2).
+       Art: the wall-rails set below (graphicData comment; art_source/Ladder/v4).
        ================================================================== -->
   <ThingDef ParentName="BuildingBase">
     <defName>RM_Ladder</defName>
@@ -43,7 +43,7 @@
       <!-- PIT_LADDER_RAILS_ON_THE_WALL (owner spec 2026-10-18): rails fixed on the wall, the ladder slides on them.
            Rotation = the wall (north = far wall, whole apparatus face-on; south = near wall, only what stands above the
            near rim; east/west = angled side mounts), as vanilla TorchWallLamp. Both states share drawSize and offsets so
-           the rails do not move. Art: art_source/Ladder/v2 (compose.py holds the same offsets). -->
+           the rails do not move. Art: art_source/Ladder/v4/draw.py, steel fire-escape redraw (owner 2026-10-23), same offsets. -->
       <texPath>Things/Building/FlowWorks/Canals/RM_Ladder</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
       <drawSize>(1.5,1.5)</drawSize>
