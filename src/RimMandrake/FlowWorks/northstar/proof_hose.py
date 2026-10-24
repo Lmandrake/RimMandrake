@@ -31,6 +31,7 @@ _rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[4] / "src" / 
 from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import argparse
 import collections
+import hashlib
 import json
 import os
 import sys
@@ -698,6 +699,12 @@ class Proof(object):
             self.res["kept_pawns"] = V.keep_pawns_on_map(B)
         rm = B.call("jawa/running_mods", assembly="RimMandrakeFlowWorks", details=False) or {}
         running = [p.lower() for p in rm.get("packageIds") or []]
+        # the recording contract (Utils/modcheck/record.py, as validation_v2 writes it): the mod list the run ran ON,
+        # read now, so `modcheck record` can prove the tier instead of refusing "no env.running"
+        ms = (rm.get("assembly") or {}).get("matches") or []
+        self.res["env"] = dict(running=running or None,
+                               running_sha256=hashlib.sha256("\n".join(running).encode("utf-8")).hexdigest() if running else None,
+                               assembly_matches=len(ms), assembly_sha256=ms[0].get("sha256") if len(ms) == 1 else None)
         self.res["log_revive"] = V.log_revive(B)     # the log budget (Z) is blind once Verse.Log hit its 10,000 cap
         lg0 = B.call("rimbridge/list_logs", limit=500, minimumLevel="warning") or {}
         logs0 = lg0.get("logs") or []
