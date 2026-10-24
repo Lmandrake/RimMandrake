@@ -1,0 +1,49 @@
+[
+ {
+  "id": "arteval_RM_Vhorrin__V2_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Vhorrin",
+  "prompt": "A single RimWorld creature sprite on a transparent background: the vhorrin, an oversized pool fish, the murrin stock grown arm-long and deep-bodied. A living, fleshy fish with mottled grey-olive hide and a cream belly, solid smooth skin covering the whole body with soft scale texture, a full fleshy fish head with small dark eyes and a pair of short ivory tusks at the jaw, and a ragged reddish dorsal comb running along the back. Broad tail fin and rear fins. Painterly vanilla RimWorld style, realistic proportions, clean dark outline, soft top-left lighting. The body fills about 1.1 cells at the same scale in every view, with equal body mass and fin span across facings. Side view: the fish in profile, eye and tusked jaw visible, comb along the back. Rear view, seen from behind: the broad mottled back, the ragged comb down the centre, tail and rear fins spread, eyes hidden. Front view, eyes toward the viewer: the head with eyes and tusks, compact and foreshortened, fins held close so the silhouette matches the side and rear views in height and width. Reference: none; build the body from this description.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "gearpack_redraw_20261024b"
+ },
+ {
+  "id": "arteval_RSW_KowakianMonkeyLizard__V2_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_KowakianMonkeyLizard",
+  "prompt": "A single small creature sprite for RimWorld: a Kowakian monkey-lizard, a small, pot-bellied reptilian primate with enormous thin leathery ears, a hooked beak and a long tail. Realistic, painterly vanilla RimWorld art style with a clean dark outline, on a transparent background, one animal centered, filling the frame with a little margin.\n\nColor and surface, identical in every view: the forearms, hands, lower legs and feet are plain, even tan-pink reptilian skin with a fine scale texture and no stripes, bands or dark mottling; the belly is pale cream-tan and round; the back, shoulders and tail are olive-brown with the same soft darker patches in the same places in every view; the hooked beak is dull gold with a darker tip.\n\nEars: huge, thin, leathery membranes, broad at the base and drooping softly outward, curling gently to a rounded point; they stay soft and floppy in every view, with a faintly veined, translucent look and the same size, shape and tan-pink color.\n\nBody: compact crouched stance on four limbs, the potbelly hanging low between the limbs, the long tail trailing behind, tapering to a thin tip.\n\nThe same animal, with the same proportions, palette and markings, is used for each facing. Front view: seen from the front, eyes and beak toward the viewer, ears spread to each side, belly visible. Side view: profile, beak pointing along the facing direction, one ear visible in profile, the tail extending behind. Rear view: seen from behind, showing the back, haunches and tail base, ears at either side of the head, eyes and beak hidden.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "gearpack_redraw_20261024b"
+ },
+ {
+  "id": "arteval_RM_Venomvine__c_V2_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Venomvine",
+  "prompt": "A single low venomvine ground-cover plant for a RimWorld sprite: a flat, ground-hugging mat of sprawling rust-dark runners, seen from above at a slight three-quarter angle. The runners lie along the ground in a loose, overlapping network, rooting at their nodes, with the tips trailing outward and resting on the soil, spreading away from the centre in all directions. Low overlapping loops of runner stay close to the ground, and the whole mat keeps an even, shallow height, wider than it is tall, with a flat, spreading silhouette. Small recurved thorns curve out from beneath and between the runners, dark and hooked, catching the light at their tips. The runners are a deep rust-brown with slightly darker nodes and a few sparse, small, dull green-brown leaves lying flat against the vines. Painterly vanilla RimWorld style, realistic, clean dark outline, soft shading, centered on a fully transparent background, no ground or shadow plane.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: LUMP, DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "gearpack_redraw_20261024b"
+ }
+]

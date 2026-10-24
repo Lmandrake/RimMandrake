@@ -1,0 +1,32 @@
+[
+ {
+  "id": "arteval_RSW_KowakianMonkeyLizard__r2_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_KowakianMonkeyLizard",
+  "prompt": "A single small kowakian monkey-lizard for the game RimWorld: a small, pot-bellied reptilian primate with enormous leathery ears, a hooked beak and a long tail. Wrinkled, leathery greenish-gray reptilian skin covers the whole body. The ginger hair is sparse and wispy: one small tuft on the crown of the head and a few thin, separate tufts along the jaw, with the wrinkled scalp and skin clearly showing through between them. A shaggy ginger ruff sits on the shoulders only; below the shoulders the back is bare wrinkled leathery skin, plainly visible from behind, with no long mantle and no continuous mane. Pot belly rounded and bare-skinned, limbs thin and wiry, long tail trailing behind. Walker pose, standing on all fours, small animal scale. Views: front view with eyes toward the viewer, side view in profile, and rear view seen from behind showing the back, tail and haunches with the eyes hidden. Transparent background, painterly vanilla RimWorld style, realistic, clean dark outline.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: CANON_MISS, CANON_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "gearpack_redraw_20261024c"
+ },
+ {
+  "id": "arteval_RM_Venomvine__r2_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Venomvine",
+  "prompt": "A single RimWorld ground-cover plant sprite, the venomvine: a low, flat mat of rust-dark creeping runners rooted in the best shade, spreading to fill about 1.2 cells. Each runner is segmented like jointed chitin: a chain of short, swollen, rust-dark nodes with a pale seam at every joint, lying close to the ground in sinuous, interlocking curves. At every node a single asymmetric fused leaf blade grows out, a lopsided fan of rust and deep-maroon tissue with smooth edges and parallel ribs, one side much longer than the other, so the foliage reads as flat, uneven, unfamiliar shapes. Beneath and between the runners, venom hooks grow in matched pairs at each joint: two glossy, dark recurved claws curling toward each other like pincers, each tip carrying a small bead of sickly green-amber venom, visible where the runners lift slightly off the ground. Palette: deep rust, dark brown-red and maroon, with pale seams and small venom-green accents. Viewed from above at a slight three-quarter angle, the mat centred in the frame. Transparent background, painterly vanilla RimWorld style, realistic rendering, clean dark outline, no ground plate.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 2; fixes: STYLE_EARTHLY, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "gearpack_redraw_20261024c"
+ }
+]

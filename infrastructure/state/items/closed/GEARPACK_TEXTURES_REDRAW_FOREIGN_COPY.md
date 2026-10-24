@@ -38,3 +38,25 @@ original job rows from `D:\ClaudeWork\rimmandrake\artpipe\done\<job>.json`). Not
 
 The other cache source, `C:\Users\Mandrake\.codex\generated_images\01a0b7c0-...\exec-5dc619c6-...png` (the spiral
 desert-wrap cocoon, legitimate owner `Wraps_Female_east.png`), is installed nowhere else.
+
+## Outcome (FOUNDRY, 2026-10-24, delegated: art-eval)
+
+Owner-keep check: `art.py status` shows all eight as LIVE with no keep or ruling; a wrong picture is not a keep anyway.
+All eight redrawn through the dregen queue (fill_queue.py rows built from the done jobs) and installed via `art install --why "delegated: art-eval"`.
+Each new file is not the belt pack (old shas 36606d4bb51e / b108734ef13a / bb530a0e38c9 / d732a4bd7002 were the pack) and is 256x256 or 128x128 as the job said.
+
+CORRECTION to the table: the bad RM_Vhorrin_south job is `dregen_RM_Vhorrin_DessicatedCobra_v1_south` (the desiccated corpse, derive_from `..._v1_east`, whose output is the installed east/north), NOT `..._Cobra_v1_south`.
+Redrawn as `dregen_RM_Vhorrin_DessicatedCobra_r2_south_south`.
+
+| texture | accepted job | judged by |
+|---|---|---|
+| crystal_pearl | dregen_Force_KyberCrystal_crystalpearl_v2 | eyes (item; outside art_eval scope) |
+| Meat_Reptavian_a / _c | dregen_RSW_Reptavian_Meat_MeatReptavian{a,c}_v2 | eyes (items) |
+| Convor_Dessicated | dregen_RSW_Convor_ConvorDessicated_v2 | eyes (corpse item) |
+| Neebray_Dessicated | dregen_RSW_Neebray_NeebrayDessicated_r2 (v2 was alive-looking, refiled) | eyes |
+| RM_Vhorrin_south | DessicatedCobra_r2_south_south, derived from the installed east | eyes: same skeletal body as east/north |
+| RM_Venomvine_c | dregen_RM_Venomvine_RMVenomvinec_r3 | art_eval run gearpack_redraw_20261024d ACCEPT (r1,r2 REGEN: dome, bramble) |
+| KowakianMonkeyLizardE_south | ..._KowakianMonkeyLizardE_r3_south_south (derive_from v1_east) | art_eval run ...d ACCEPT (r1 inconsistent, r2 mane) |
+
+Pending: none. Owed: eyes-only judgments (6 of 8) were not pipeline-judged because the items and corpse textures are outside art_eval scope; a human sheet pass would still be welcome.
+Evidence: infrastructure/state/art_eval/runs/gearpack_redraw_2026102{4,4b,4c,4d}; copies in Transient/gearpack_redraw_20261024/.
