@@ -25,25 +25,10 @@
   ]
  ],
  "rows": {
-  "RM_Ruskara__a": {
+  "RM_Ruskara": {
    "prefill": "keep",
-   "why": "PIPELINE: ACCEPT \u00b7 Opus WEAK: STYLE_CARTOON \u00b7 GPT strong_accept",
-   "context": "judged candidate a (image sha b09da92196); STYLE_CARTOON: The sap drops are large, saturated orange and very glossy, a little like syrup or candy, which pushes this slightly toward illustration."
-  },
-  "RM_Ruskara__b": {
-   "prefill": "keep",
-   "why": "PIPELINE: ACCEPT \u00b7 Opus WEAK: DESC_MISS, STYLE_CARTOON \u00b7 GPT strong_accept",
-   "context": "judged candidate b (image sha 39b91a9c87); DESC_MISS: The sap is drawn as heavy, long, honey-like amber drips all around the rim, not as small beads.; STYLE_CARTOON: The cap highlights are glossy and slightly candy-like, close to an illustration."
-  },
-  "RM_Ruskara__c": {
-   "prefill": "keep",
-   "why": "PIPELINE: ACCEPT \u00b7 Opus WEAK: DESC_MISS, STYLE_CARTOON \u00b7 GPT strong_accept",
-   "context": "judged candidate c (image sha c27c5fe1d9); DESC_MISS: The sap is drawn as a few huge glossy teardrops, the largest about the size of the human's head at scale, rather than small beads along the ; STYLE_CARTOON: The candy-glossy orange-red drops with bright highlights lean slightly toward an illustrated or cartoon look compared with the painterly fle"
-  },
-  "RM_Ruskara__d": {
-   "prefill": "keep",
-   "why": "PIPELINE: ACCEPT \u00b7 Opus WEAK: DESC_MISS, STYLE_CARTOON \u00b7 GPT strong_accept",
-   "context": "judged candidate d (image sha 097cc47fcf); DESC_MISS: Two large, glossy, translucent amber sacs, nearly a fist-to-head size relative to the stalk, hang beside the stalk. The description names on; STYLE_CARTOON: The hooked, horn-like peak curling over on the right, together with the very regular teardrop drips, gives a slightly whimsical, fantasy-ill"
+   "why": "[a] PIPELINE: ACCEPT \u00b7 Opus WEAK: STYLE_CARTOON \u00b7 GPT strong_accept || [b] PIPELINE: ACCEPT \u00b7 Opus WEAK: DESC_MISS, STYLE_CARTOON \u00b7 GPT strong_accept || [c] PIPELINE: ACCEPT \u00b7 Opus WEAK: DESC_MISS, STYLE_CARTOON \u00b7 GPT strong_accept || [d] PIPELINE: ACCEPT \u00b7 Opus WEAK: DESC_MISS, STYLE_CARTOON \u00b7 GPT strong_accept",
+   "context": "[a] judged candidate a (image sha b09da92196); STYLE_CARTOON: The sap drops are large, saturated orange and very glossy, a little like syrup or candy, which pushes this slightly toward illustration. || [b] judged candidate b (image sha 39b91a9c87); DESC_MISS: The sap is drawn as heavy, long, honey-like amber drips all around the rim, not as small beads.; STYLE_CARTOON: The cap highlights are glossy and slightly candy-like, close to an illustration. || [c] judged candidate c (image sha c27c5fe1d9); DESC_MISS: The sap is drawn as a few huge glossy teardrops, the largest about the size of the human's head at scale, rather than small beads along the ; STYLE_CARTOON: The candy-glossy orange-red drops with bright highlights lean slightly toward an illustrated or cartoon look compared with the painterly fle || [d] judged candidate d (image sha 097cc47fcf); DESC_MISS: Two large, glossy, translucent amber sacs, nearly a fist-to-head size relative to the stalk, hang beside the stalk. The description names on; STYLE_CARTOON: The hooked, horn-like peak curling over on the right, together with the very regular teardrop drips, gives a slightly whimsical, fantasy-ill"
   }
  }
 }
