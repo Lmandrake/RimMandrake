@@ -45,7 +45,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_PitTrapMath.ArrivalDropsTooFar(0, 16, 2), "can-fail: a forced 8 m arrival still falls a person (gear is no parachute)");
                 string t = Src("Superdeep", "RM_SuperdeepTrap.cs");
                 RiverSwitchFlipChecks.Has(t, @"ArrivalDropsTooFar\(from, to, RM_PocketGrid\.NaturalClimbLimitOf\(p\)\)", "forced arrivals judged without the gear");
-                RiverSwitchFlipChecks.Has(t, @"LadderLetsOut\(map, pos, p\) \|\| \(walked && RM_PocketGrid\.ClimbsOnGear\(p\)\)", "a walked step down on the gear is a climb, not a fall");
+                RiverSwitchFlipChecks.Has(t, @"bool climbsDown = walked && \(RM_PocketGrid\.ClimbsOnGear\(p\) \|\|", "a walked step down on the gear is a climb, not a fall");
+                RiverSwitchFlipChecks.Has(t, @"LadderLetsOut\(map, pos, p\) \|\| climbsDown,", "the fall verdict reads the climb");
             });
             Case("PitAccess_gear_is_slow_only_past_the_natural_limit", () =>
             {
@@ -146,6 +147,25 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "a flyer set down in a pit is not a fall");
                 string s = Src("RimMandrakeFlowWorksMod.cs");
                 Assert(s.Contains("Scribe_Values.Look(ref pitFreeTravelEnabled,") && s.Contains("\"pitFreeTravelEnabled\""), "the setting is saved and listed");
+            });
+            // PIT_RAMP_FIX_WALKER_TAKES_FALL (GPT review FC_pits_superdeep_2.1): a captured walker stepping down a working ramp past
+            // its natural climb limit was judged a fall (only ladders and gear were exempt)
+            Case("PitRamp_walked_step_down_a_ramp_is_no_fall", () =>
+            {
+                string tr = Src("Superdeep", "RM_SuperdeepTrap.cs");
+                RiverSwitchFlipChecks.Has(tr, @"bool climbsDown = walked && \(RM_PocketGrid\.ClimbsOnGear\(p\) \|\| RM_PitRamp\.Joins\(map, prev, pos, RM_SuperdeepTrap\.StepDepthAt\(map, eng, prev\), RM_SuperdeepTrap\.StepDepthAt\(map, eng, pos\)\)\);",
+                    "can-fail: a walked step a ramp joins is climbing down, like a ladder or gear");
+                RiverSwitchFlipChecks.Has(tr, @"DescentFalls\(walked, RM_LadderRules\.LadderLetsOut\(map, pos, p\) \|\| climbsDown,", "the fall verdict reads it");
+                Assert(!RM_PitTrapMath.DescentFalls(true, true, false, true), "a captured raider climbing down (ladder, gear, ramp) does not fall");
+                Assert(RM_PitTrapMath.DescentFalls(false, true, false, true), "shoved off the ramp's top is still forced, still a fall");
+            });
+            // PIT_RESCUE_FIX_COUNTS_DOCTOR_OFF (GPT review FC_pits_superdeep_2.2): a colonist with Doctor unticked in the work tab
+            // (capable, never sent) counted as a rescuer and held the rescue ladder back for good
+            Case("PitRescue_only_a_colonist_assigned_Doctor_counts_as_a_rescuer", () =>
+            {
+                string a = Src("Superdeep", "RM_PitAccess.cs");
+                RiverSwitchFlipChecks.Has(a, @"!c\.WorkTypeIsDisabled\(WorkTypeDefOf\.Doctor\)\s*&& c\.workSettings != null && c\.workSettings\.WorkIsActive\(WorkTypeDefOf\.Doctor\)",
+                    "can-fail: the work-tab assignment is read, not only the capability");
             });
             Case("PitAccess_defs_and_settings_shipped", () =>
             {

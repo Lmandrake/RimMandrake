@@ -683,7 +683,9 @@ namespace RimMandrake.FlowWorks
 				{
 					// FLOWWORKS_PIT_FALL_ONLY_FORCED_1: who falls is decided by HOW the pawn arrived.
 					bool walked = walkedInto.TryGetValue(p, out IntVec3 w) && w == pos;
-					if (RM_PitTrapMath.DescentFalls(walked, RM_LadderRules.LadderLetsOut(map, pos, p) || (walked && RM_PocketGrid.ClimbsOnGear(p)),
+					// PIT_RAMP_FIX_WALKER_TAKES_FALL: a walked step a ramp joins is climbing down, like one on climbing gear
+					bool climbsDown = walked && (RM_PocketGrid.ClimbsOnGear(p) || RM_PitRamp.Joins(map, prev, pos, RM_SuperdeepTrap.StepDepthAt(map, eng, prev), RM_SuperdeepTrap.StepDepthAt(map, eng, pos)));
+					if (RM_PitTrapMath.DescentFalls(walked, RM_LadderRules.LadderLetsOut(map, pos, p) || climbsDown,
 						p.Faction == Faction.OfPlayer, RM_SuperdeepTrap.Captures(p)))
 					{
 						// FALL_GUARDRAILS_BUILD_REAL_OBJECT: shoved one cell over a railed lip: back onto the lip, no fall.

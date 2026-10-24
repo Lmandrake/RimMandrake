@@ -962,7 +962,7 @@ namespace RimMandrake.FlowWorks.Machinery
 		/// <summary>The eligibility predicate, re-run on a route's links at transfer time (FINAL §3.5).</summary>
 		public bool Live(RM_NetLink l)
 		{
-			return l?.Reel is CompHoseReel r && Eligible(r) && Spawned(l.A) && Spawned(l.B);
+			return l?.Reel is CompHoseReel r && Eligible(r) && !Pits.RM_Drawbridges.HoseCut(r) && Spawned(l.A) && Spawned(l.B);
 		}
 
 		private static bool Spawned(object v)
@@ -1009,6 +1009,12 @@ namespace RimMandrake.FlowWorks.Machinery
 		{
 			inlet = far = null;
 			if (!Eligible(r))
+			{
+				return false;
+			}
+			// DRAWBRIDGE_HOSE_FIX_STAYS_LINKED_RAISED: a hose over a raised leaf is cut (HoseEnds.Read: no end). Read it here, before
+			// the relay and before a null end is taken for a free Intake/Outflow port, or the cut hose keeps moving liquid.
+			if (Pits.RM_Drawbridges.HoseCut(r))
 			{
 				return false;
 			}

@@ -46,6 +46,16 @@ namespace RimMandrake.FlowWorks
 	/// <summary>The O(1) pair test both patches share.</summary>
 	public static class RM_SuperdeepShooting
 	{
+		/// <summary>UNDERPASS_SHOT_FIX_OVERRIDES_VANILLA_REJECT: the last CanHitTargetFrom on this thread was refused by the cliff
+		/// prefix itself (not by vanilla or another mod). Reset at the start of every call; read once by the floor-band postfix.</summary>
+		[System.ThreadStatic]
+		internal static bool cliffRejected;
+
+		/// <summary>True while the floor-band postfix re-asks CanHitTargetFrom: the cliff prefix stands aside, so the answer is
+		/// vanilla's own (walls, range, line of sight) plus every other mod's patch.</summary>
+		[System.ThreadStatic]
+		internal static bool floorBandReask;
+
 		private static Map cachedMap;
 
 		private static RM_MapComponent_Excavation cachedEngine;
@@ -138,6 +148,11 @@ namespace RimMandrake.FlowWorks
 		[HarmonyPrefix]
 		public static bool Prefix(Verb __instance, IntVec3 root, LocalTargetInfo targ, ref bool __result)
 		{
+			RM_SuperdeepShooting.cliffRejected = false;
+			if (RM_SuperdeepShooting.floorBandReask)
+			{
+				return true;
+			}
 			if (!RM_SuperdeepShooting.RuleAppliesTo(__instance))
 			{
 				return true;
@@ -160,6 +175,7 @@ namespace RimMandrake.FlowWorks
 			{
 				return true;
 			}
+			RM_SuperdeepShooting.cliffRejected = true;
 			__result = false;
 			return false;
 		}

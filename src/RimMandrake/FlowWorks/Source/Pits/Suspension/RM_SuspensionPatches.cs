@@ -308,11 +308,12 @@ namespace RimMandrake.FlowWorks.Pits
 			return RM_SuspensionSettings.grateFirePasses && GrateAt(map, c) != null;
 		}
 
-		/// <summary>Is this pawn down in the hole beneath a suspension deck (the floor band)? Then nothing about the deck
+		/// <summary>Is this pawn down in the hole beneath a suspension deck (the floor band) or beneath a lid laid over it? Then nothing above it
 		/// shields it: it is in the fire, the slime and the fill like anyone in the open hole.</summary>
 		public static bool UnderDeck(Pawn p)
 		{
-			return RM_SuspensionUnderpass.InFloorBand(p);
+			// CONCEALED_COVER_FIX_SHIELDS_FROM_LIQUID: a pawn beneath a lid laid over it is down in the same fill
+			return RM_SuspensionUnderpass.InFloorBand(p) || RM_PitCoverBeneath.IsBeneath(p);
 		}
 
 		/// <summary>How much of the hole's splash reaches this pawn on this square: 1 with no deck (or under one, in the floor
@@ -751,7 +752,15 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 			if (!__result)
 			{
-				// the cliff rule read the decked square at the deck's height: judge the floor band at the floor
+				// the cliff rule read the decked square at the deck's height: judge the floor band at the floor.
+				// UNDERPASS_SHOT_FIX_OVERRIDES_VANILLA_REJECT: only the cliff prefix's own refusal is reopened; a refusal by vanilla
+				// (a wall, range) or another mod stands, and a reopened shot is re-asked of vanilla below.
+				bool byCliff = RM_SuperdeepShooting.cliffRejected;
+				RM_SuperdeepShooting.cliffRejected = false;
+				if (!byCliff)
+				{
+					return;
+				}
 				if (!RM_SuperdeepShooting.RuleAppliesTo(__instance) || RM_SuperdeepTrap.EngineOf(map) == null)
 				{
 					return;
@@ -763,8 +772,21 @@ namespace RimMandrake.FlowWorks.Pits
 				{
 					return;
 				}
-				__result = !RM_RelativeRulesMath.ShotBlocked((x, z) => RM_SuspensionUnderpass.FloorViewDepthAt(map, eng, new IntVec3(x, 0, z)),
-					root.x, root.z, targ.Cell.x, targ.Cell.z, RM_SuperdeepShooting.CliffNotches);
+				if (RM_RelativeRulesMath.ShotBlocked((x, z) => RM_SuspensionUnderpass.FloorViewDepthAt(map, eng, new IntVec3(x, 0, z)),
+					root.x, root.z, targ.Cell.x, targ.Cell.z, RM_SuperdeepShooting.CliffNotches))
+				{
+					return;
+				}
+				// the floor band's cliff test passes: the shot is whatever vanilla (and every other patch) says without the cliff rule
+				RM_SuperdeepShooting.floorBandReask = true;
+				try
+				{
+					__result = __instance.CanHitTargetFrom(root, targ);
+				}
+				finally
+				{
+					RM_SuperdeepShooting.floorBandReask = false;
+				}
 				return;
 			}
 			bool sOnDeck = shooter != null && root == shooter.Position ? RM_SuspensionUnderpass.OnDeck(shooter) : RM_SpanUtility.DeckedAt(map, root);
