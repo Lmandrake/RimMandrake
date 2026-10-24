@@ -2,13 +2,13 @@
  "anchors": {
   "Futuristic/Heavy/east": [
    {
-    "attach": 0.625,
+    "attach": 0.42578,
     "end": 0.94922,
     "lateral": 0.21289,
     "thick": 0.05078
    },
    {
-    "attach": 0.625,
+    "attach": 0.42578,
     "end": 0.94922,
     "lateral": -0.21289,
     "thick": 0.05078
@@ -16,13 +16,13 @@
   ],
   "Futuristic/Heavy/north": [
    {
-    "attach": 0.625,
+    "attach": 0.60156,
     "end": 0.94922,
     "lateral": 0.21289,
     "thick": 0.05078
    },
    {
-    "attach": 0.625,
+    "attach": 0.60156,
     "end": 0.94922,
     "lateral": -0.21289,
     "thick": 0.05078
@@ -30,13 +30,13 @@
   ],
   "Futuristic/Heavy/south": [
    {
-    "attach": 0.625,
+    "attach": 0.37891,
     "end": 0.94922,
     "lateral": 0.21289,
     "thick": 0.05078
    },
    {
-    "attach": 0.625,
+    "attach": 0.37891,
     "end": 0.94922,
     "lateral": -0.21289,
     "thick": 0.05078
@@ -128,13 +128,13 @@
   ],
   "Industrial/Heavy/east": [
    {
-    "attach": 0.52344,
+    "attach": 0.42578,
     "end": 0.94922,
     "lateral": 0.2168,
     "thick": 0.05078
    },
    {
-    "attach": 0.52344,
+    "attach": 0.42578,
     "end": 0.94922,
     "lateral": -0.21875,
     "thick": 0.04688
@@ -142,13 +142,13 @@
   ],
   "Industrial/Heavy/north": [
    {
-    "attach": 0.52344,
+    "attach": 0.60156,
     "end": 0.94922,
     "lateral": 0.2168,
     "thick": 0.05078
    },
    {
-    "attach": 0.52344,
+    "attach": 0.60156,
     "end": 0.94922,
     "lateral": -0.21875,
     "thick": 0.04688
@@ -156,13 +156,13 @@
   ],
   "Industrial/Heavy/south": [
    {
-    "attach": 0.52344,
+    "attach": 0.37891,
     "end": 0.94922,
     "lateral": 0.2168,
     "thick": 0.05078
    },
    {
-    "attach": 0.52344,
+    "attach": 0.38281,
     "end": 0.94922,
     "lateral": -0.21875,
     "thick": 0.04688
@@ -254,13 +254,13 @@
   ],
   "Modern/Heavy/east": [
    {
-    "attach": 0.72656,
+    "attach": 0.42969,
     "end": 0.94922,
     "lateral": 0.20508,
     "thick": 0.04297
    },
    {
-    "attach": 0.72656,
+    "attach": 0.42969,
     "end": 0.94922,
     "lateral": -0.20898,
     "thick": 0.04297
@@ -268,13 +268,13 @@
   ],
   "Modern/Heavy/north": [
    {
-    "attach": 0.72656,
+    "attach": 0.60156,
     "end": 0.94922,
     "lateral": 0.20508,
     "thick": 0.04297
    },
    {
-    "attach": 0.72656,
+    "attach": 0.60156,
     "end": 0.94922,
     "lateral": -0.20898,
     "thick": 0.04297
@@ -282,13 +282,13 @@
   ],
   "Modern/Heavy/south": [
    {
-    "attach": 0.72656,
+    "attach": 0.38281,
     "end": 0.94922,
     "lateral": 0.20508,
     "thick": 0.04297
    },
    {
-    "attach": 0.72656,
+    "attach": 0.38281,
     "end": 0.94922,
     "lateral": -0.20898,
     "thick": 0.04297
@@ -380,13 +380,13 @@
   ],
   "Scrapper/Heavy/east": [
    {
-    "attach": 0.48438,
+    "attach": 0.42578,
     "end": 0.94922,
     "lateral": 0.21094,
     "thick": 0.04688
    },
    {
-    "attach": 0.48438,
+    "attach": 0.42578,
     "end": 0.94922,
     "lateral": -0.21484,
     "thick": 0.04688
@@ -394,13 +394,13 @@
   ],
   "Scrapper/Heavy/north": [
    {
-    "attach": 0.48438,
+    "attach": 0.60938,
     "end": 0.94922,
     "lateral": 0.21094,
     "thick": 0.04688
    },
    {
-    "attach": 0.48438,
+    "attach": 0.60938,
     "end": 0.94922,
     "lateral": -0.21484,
     "thick": 0.04688
@@ -408,13 +408,13 @@
   ],
   "Scrapper/Heavy/south": [
    {
-    "attach": 0.48438,
+    "attach": 0.37891,
     "end": 0.94922,
     "lateral": 0.21094,
     "thick": 0.04688
    },
    {
-    "attach": 0.48438,
+    "attach": 0.37891,
     "end": 0.94922,
     "lateral": -0.21484,
     "thick": 0.04688
@@ -506,13 +506,13 @@
   ],
   "base/Heavy/east": [
    {
-    "attach": 0.44141,
+    "attach": 0.44922,
     "end": 1.0,
     "lateral": 0.19336,
     "thick": 0.05078
    },
    {
-    "attach": 0.44141,
+    "attach": 0.45312,
     "end": 1.0,
     "lateral": -0.19531,
     "thick": 0.04688
@@ -520,13 +520,13 @@
   ],
   "base/Heavy/north": [
    {
-    "attach": 0.51953,
+    "attach": 0.60156,
     "end": 1.0,
     "lateral": 0.19336,
     "thick": 0.05078
    },
    {
-    "attach": 0.51953,
+    "attach": 0.60156,
     "end": 1.0,
     "lateral": -0.19531,
     "thick": 0.04688
@@ -534,13 +534,13 @@
   ],
   "base/Heavy/south": [
    {
-    "attach": 0.36328,
+    "attach": 0.38281,
     "end": 1.0,
     "lateral": 0.19336,
     "thick": 0.05078
    },
    {
-    "attach": 0.36719,
+    "attach": 0.38281,
     "end": 1.0,
     "lateral": -0.19531,
     "thick": 0.04688

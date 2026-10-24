@@ -856,7 +856,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(north >= 16, "graded only " + north + " upright _north ropes");
                 Assert(halo == north, $"can-fail: every coil placed ahead of a _north head must float off the foot ({halo}/{north})");
                 Assert(ring == north, $"can-fail: every coil ringed round a _north foot must reach behind the post ({ring}/{north})");
-                Assert(RM_DrawbridgeCableMath.SlackFoot("Scrapper/Heavy", "north") < 0 && RM_DrawbridgeCableMath.SlackFoot("base/Rope", "single") < 0
+                Assert(RM_DrawbridgeCableMath.SlackFoot("Scrapper/Heavy", "east") < 0 && RM_DrawbridgeCableMath.SlackFoot("base/Rope", "single") < 0
                     && RM_DrawbridgeCableMath.SlackFoot("Scrapper/Timber", "east") < 0, "the foot rule is for upright _north prints only");
                 Assert(wrongStood > 0, "can-fail: an E/W-shaped coil printed in N/S must read as standing up");
             });
@@ -877,6 +877,18 @@ namespace RimMandrake.FlowWorks.SelfTest
                         Assert(RM_DrawbridgeCableMath.Art.ContainsKey("base/" + m + "/" + f), "no rope table base/" + m + "/" + f);
                     }
                     Assert(RM_DrawbridgeCableMath.KeyOf("Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_" + m, true) == "base/" + m, "KeyOf must key the upright base " + m + " as base/" + m);
+                }
+            });
+
+            Case("Drawbridge_StyledHeavyAnchors_upright_per_facing", () =>
+            {
+                // ANCHOR_BASE_REDRAW_STILL_LYING_FLAT A2: the styled Heavy anchors stand upright like the styled Timber/Steel ones,
+                // so their rope attachment is per facing (look/Heavy/facing), not the one shared flat-fixture row
+                foreach (string look in new[] { "Scrapper", "Industrial", "Modern", "Futuristic" })
+                {
+                    foreach (string f in new[] { "south", "east", "north" })
+                        Assert(RM_DrawbridgeCableMath.Art.ContainsKey(look + "/Heavy/" + f), "no per-facing rope table " + look + "/Heavy/" + f + ": the styled Heavy anchor is still the flat fixture");
+                    Assert(!RM_DrawbridgeCableMath.Art.ContainsKey(look + "/Heavy"), look + "/Heavy still has the shared flat-fixture row");
                 }
             });
 

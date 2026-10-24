@@ -20,7 +20,86 @@ SHEET = os.path.join(HERE, "bollards_base_sheet.png")
 OLD = os.path.join(HERE, "anchor_ropes_pre_bollard_base.json")
 SRC = os.path.join(HERE, "base_pre_bollard")
 MATS = ["Rope", "Timber", "Steel", "Heavy"]
-WIDTHS = {"Rope": 44, "Timber": 50, "Steel": 50, "Heavy": 58}   # px; the Heavy footing is wider than its post
+WIDTHS = {"Rope": 44, "Timber": 50, "Steel": 50, "Heavy": 62}   # px; the Heavy footing is wider than its post
+
+
+def round_plinth(crop):
+    """The sheet's Heavy bollard stands on an ISOMETRIC square slab (a diamond with a pointed front corner), which the
+    orthographic ~35 deg building camera never shows (judge 2026-10-23): keep its post and concrete texture, drop the
+    slab, and stand the post on a round concrete disc like every other bollard (ellipse ratio 0.56, FLANGE_HALF)."""
+    a = np.array(crop).astype(np.float32)
+    al = a[:, :, 3] > 40
+    h, w = al.shape
+    widths = al.sum(1)
+    rows = np.where(al.any(1))[0]
+    mid = int(rows.min() + 0.57 * (rows.max() - rows.min()))     # the bare post below the iron band
+    cols = np.where(al[mid])[0]
+    cx = (cols.min() + cols.max()) / 2.0
+    body = float(widths[mid])
+    cut = next(y for y in range(mid, h) if widths[y] > body * 1.05)    # the row the slab begins to widen past the post
+    # concrete texture: a patch of the bare post, mirrored out so it tiles without seams
+    patch = a[mid - 60: mid + 20, int(cx - body * 0.4): int(cx + body * 0.4)]
+    tex = np.concatenate([patch, patch[:, ::-1]], 1)
+    tex = np.concatenate([tex, tex[::-1]], 0)
+    # the sheet's Heavy post is stubby (1:1); lengthen the bare shaft below the iron band to the 2:1 of the other bollards
+    seg0 = next(y for y in range(int(np.argmax(widths[:mid])), h) if widths[y] <= body * 1.01) + 2   # just below the band
+    seg = Image.fromarray(a[seg0:cut].astype(np.uint8)).resize((w, (cut - seg0) + 300), Image.LANCZOS)
+    a = np.concatenate([a[:seg0], np.array(seg).astype(np.float32), a[cut:]], 0)
+    extra = seg.height - (cut - seg0)
+    cut += extra
+    mid = seg0 + (cut - seg0) // 2
+    h = a.shape[0]
+    th, tw = tex.shape[:2]
+    rx = body * 0.72
+    ry = 0.56 * rx
+    thick = 0.30 * rx
+    yc = cut - 0.56 * body / 2.0                         # the post's foot: centre of the disc's top ellipse
+    H = int(np.ceil(yc + thick + ry + 6))
+    W = int(np.ceil(2 * rx + 8))
+    ox = W / 2.0
+    out = np.zeros((H, W, 4), np.float32)
+    ys, xs = np.mgrid[0:H, 0:W]
+    top = ((xs - ox) / rx) ** 2 + ((ys - yc) / ry) ** 2 <= 1
+    bot = ((xs - ox) / rx) ** 2 + ((ys - (yc + thick)) / ry) ** 2 <= 1
+    side = (np.abs(xs - ox) <= rx) & (ys >= yc) & (ys <= yc + thick)
+    disc = top | bot | side
+    sampled = tex[(ys % th), (xs % tw)]
+    out[disc] = sampled[disc]
+    out[disc, 3] = 255
+    out[(disc & ~top)][:, :3] *= 1.0
+    shade = np.where(top, 1.0, 0.72)
+    out[:, :, :3] *= shade[:, :, None]
+    # post: the original rows above the cut, then its own front arc down to the disc's top face
+    px0 = int(round(cx - ox))
+    post = np.zeros((H, W, 4), np.float32)
+    pr = body / 2.0
+    prb = 0.56 * pr
+    for y in range(min(int(cut) + 1, h)):
+        for x in range(W):
+            sx = x + px0
+            if not (0 <= sx < w and a[y, sx, 3] > 40):
+                continue
+            u = (x - ox) / pr
+            if y > yc and (abs(u) >= 1 or y > yc + prb * np.sqrt(1 - u * u)):
+                continue   # below the post's own front arc
+            post[y, x] = a[y, sx]
+    # the post's front arc as a dark line where it meets the disc
+    for x in range(W):
+        u = (x - ox) / pr
+        if abs(u) < 1:
+            yb = int(yc + prb * np.sqrt(1 - u * u))
+            for d in (0, 1, 2):
+                if 0 <= yb + d < H:
+                    post[yb + d - 1, x] = [22, 22, 22, 255]
+    # dark outline round the disc
+    edge = disc & ~(np.roll(disc, 1, 0) & np.roll(disc, -1, 0) & np.roll(disc, 1, 1) & np.roll(disc, -1, 1))
+    for _ in range(2):
+        edge = edge | (np.roll(edge, 1, 0) & disc) | (np.roll(edge, 1, 1) & disc)
+    out[edge, :3] = 22
+    # a contact line where the post meets the top face, then the post over the disc
+    m = post[:, :, 3] > 40
+    out[m] = post[m]
+    return Image.fromarray(out.clip(0, 255).astype(np.uint8))
 
 
 def bollards():
@@ -45,6 +124,8 @@ def bollards():
         x0, x1 = spans[col]
         ys, xs = np.where(m[:, x0:x1])
         crop = Image.fromarray(a[ys.min(): ys.max() + 1, x0 + xs.min(): x0 + xs.max() + 1])
+        if mat == "Heavy":
+            crop = round_plinth(crop)
         img = crop.resize((WIDTHS[mat], max(1, round(crop.height * WIDTHS[mat] / float(crop.width)))), Image.LANCZOS)
         arr = np.array(img)
         arr[arr[:, :, 3] < 10] = 0
