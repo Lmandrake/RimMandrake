@@ -130,6 +130,15 @@
     <defName>RM_CrystalMit</defName>
     <label>crystalmit</label>
     <race>RM_CrystalMit</race>
+    <alternateGraphicChance>0.667</alternateGraphicChance>
+    <alternateGraphics>
+      <li>
+        <texPath>Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMitV_B</texPath>
+      </li>
+      <li>
+        <texPath>Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMitV_C</texPath>
+      </li>
+    </alternateGraphics>
     <combatPower>50</combatPower>
     <ecoSystemWeight>0.2</ecoSystemWeight>
     <lifeStages>
