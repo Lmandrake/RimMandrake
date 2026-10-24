@@ -40,10 +40,8 @@ Grounded in the mod's actual source, read whole before writing this:
 and `Source/JawaIkee/ThoughtWorker_IkeeNearby.cs` (`RSW_Jawa_IkeeWatching`:
 stage 0/comforted if the pawn's xenotype is in `IkeeToleranceExtension.
 tolerantXenotypes`, stage 1/unsettled otherwise, checked against any
-"AA_Eyeling" pawn within `radius` cells -- `AA_Eyeling` confirmed as BOTH
-the ThingDef defName the C# compares against AND a real PawnKindDef defName
-via `RimUtinni/UtinniPatches/Defs/ScenarioDefs/Scenario_Utinni.xml`'s own
-`<animalKind>AA_Eyeling</animalKind>`, not guessed); `Source/Livestock/
+"RM_Ikee" or "RM_ContagionIkee" pawn (ThingDef defNames, formerly AA_Eyeling)
+within `radius` cells; `Source/Livestock/
 RSW_LivestockSettings.cs` (`kilnBellyEnabled`/`kilnCooldownMultiplier` for
 `CompKilnBelly`, plus the moornak fields) and `Source/Livestock/CompKilnBelly.cs`.
 (The skarnix's light-aversion comp and its two settings moved to the Abyss mod.)
