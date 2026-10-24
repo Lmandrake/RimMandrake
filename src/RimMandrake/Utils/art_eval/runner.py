@@ -227,6 +227,13 @@ def evaluate(spec: dict, card_dir: Path, rev: Reviewers, policy: dict, settings:
     draw = (card.get("size") or {}).get("drawSize")
     if P.canvas_rule(draw):   # regen_jobs draws at the shipping canvas, never a fixed 1024
         rec["canvas_rule"], rec["drawsize"] = P.canvas_rule(draw), draw[0] if isinstance(draw, (list, tuple)) else draw
+    if spec.get("owner_kept_unmeasured"):
+        # fauna_spec could not read the art ledger: owner_kept False here means "not established", not "not kept".
+        # Judging on would let a REALLY_BAD band regenerate owner-kept art with no revert record (policy: queue art
+        # only for NONE/PLACEHOLDER/DONOR) — hold it, no model call, until the ledger reads
+        rec["decision"] = "HOLD_INPUT"
+        rec["reasons"].append(f"owner_kept unmeasured ({spec['owner_kept_unmeasured']}) — re-spec when the art ledger reads")
+        return rec
     living_dec = living.get(card.get("depends_on")) if card.get("depends_on") else None
     pre = P.pre_route(card, tpl, living_dec)
     if pre:
