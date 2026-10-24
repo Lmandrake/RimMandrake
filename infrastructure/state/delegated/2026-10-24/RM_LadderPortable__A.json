@@ -3,17 +3,17 @@
   "opus": [
    {
     "model_requested": "opus",
-    "seconds": 50.2,
+    "seconds": 67.3,
     "models_reported": [
      "claude-opus-5-5"
     ],
-    "cost_usd": 0.4196322
+    "cost_usd": 0.44806900000000005
    }
   ],
   "gpt": [
    {
     "model_reported": "gpt-6.1-sol",
-    "seconds": 56.2
+    "seconds": 61.4
    }
   ]
  },
@@ -21,8 +21,8 @@
  "subject": "RM_LadderPortable",
  "decision": "ESCALATE",
  "reasons": [
-  "opus band WEAK (model said good); blocking ['OWNER_NOTE_IGNORED']; polish ['LEGIB_32']; unreadable ['BORE (n/a on an unconditional item)', 'PORTS (n/a on an unconditional item)', 'LAYERS (n/a on an unconditional item)']",
-  "gpt regen: unsettled ['K1', 'K4'], own blocking ['OWNER_NOTE_IGNORED']",
+  "opus band WEAK (model said good); blocking ['SIBLING_MISMATCH', 'OWNER_NOTE_IGNORED']; polish ['LEGIB_32']; unreadable ['BORE (n/a on an unconditional item)', 'PORTS (n/a on an unconditional item)', 'LAYERS (n/a on an unconditional item)']",
+  "gpt unsure: unsettled ['K1', 'K2', 'K5'], own blocking ['SIBLING_MISMATCH', 'OWNER_NOTE_IGNORED']",
   "still failing after 3 regen rounds \u2014 one line to the owner"
  ],
  "prompt_versions": {
@@ -56,13 +56,14 @@
   }
  },
  "image_sha256": {
-  "south.png": "ca043784e11fc56293e2c46aff8000f8ff087311055fc48ecdf545d756a46548",
-  "east.png": "c3419d8cffe8c0a41ab4118ba9d3027e9b6e8f6775e98296a2f0f159bb21c2d9",
+  "south.png": "1a2b437825e3db4bf198caf71955a895c3f5cd095f0da87fa1721d2cfca9df44",
+  "east.png": "0bfd3fd23ca8995849d7c878fd5ac3159de521011b63b17b62b735ce6b8e6811",
   "north.png": "be090e924e134d93d473b62dcea1c6dffd2e95cf836436353857a6610a086aa2",
-  "west.png": "08973aa11a96abc55627a817c252983f6c2e55e79a756d218b5910ac76c62caf",
-  "scale.png": "668ce836b900c727a1d9b079de67c25c21662cc7c6e2ebae04434d5963358862",
-  "variants_1.png": "c8ebed9fb9d433e49ba892fbe2f96371352fb5341bca34ff599918ead780044c",
-  "wall_context.png": "668ce836b900c727a1d9b079de67c25c21662cc7c6e2ebae04434d5963358862",
-  "facings.png": "d7650b2c38492a8383670092d96c20a106ee643d0b70fefc578f946a34c3ce2c"
+  "west.png": "aeb7a48e4f4137f244bfd611d4ec2b36f56de7effc00176c0cf79f82fb28eec8",
+  "scale.png": "24f1a21901b8f53d10118319a8ce60f9c45f65663dfbb8d32c20aacbec6eed46",
+  "variants_1.png": "03485d1aa20226178ca59d4bc33a2c6c241f2aec140eb0b0382090faeecf5a62",
+  "variants_2.png": "8578f54791343a68c927cd273fba889a84752e5639d851b37a77a63eb4bbfe8a",
+  "wall_context.png": "24f1a21901b8f53d10118319a8ce60f9c45f65663dfbb8d32c20aacbec6eed46",
+  "facings.png": "e15df3e74f7edb109d0706e4408aa047ea241ee5db58b2289dba4c7c7a924f86"
  }
 }
