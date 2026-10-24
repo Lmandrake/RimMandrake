@@ -109,6 +109,7 @@
     <li>ludeon.rimworld.odyssey</li>
     <li>mandrake.rut.rotsporekit</li>
     <li>mlie.preceptsandmemes</li>
+    <li>mandrake.rm.atmosphericbase</li>                    <!-- ATMOSPHERIC_BASE_BUILD_PROGRAM_1 T3: Defs/AtmosphericBase/RUT_NineSignatures.xml (the Nine's light, MayRequire) -->
   </loadAfter>
   <!-- Merged from RimUtinni/FactionSlate (mandrake.rut.patches, MOD_CONSOLIDATION_SPRINT_1):
        Patches/FactionSlate/OnlyOurFactions.xml zeroes startingCountAtWorldCreation on 48

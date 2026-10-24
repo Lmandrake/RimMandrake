@@ -17,6 +17,7 @@
 // MapComponentUpdate runs every frame, paused or not (Phase 0, Q1), which is where the reverse designators are kept
 // registered (RM_AtmosphericDesignators) and the channel switch is honoured.
 using System.Collections.Generic;
+using System.Linq;
 using Verse;
 
 namespace RimMandrake.AtmosphericBase
@@ -41,6 +42,12 @@ namespace RimMandrake.AtmosphericBase
     public class RM_MapComponent_AtmosphericBase : MapComponent
     {
         public bool scenarioDecides;
+        // T3 (c): the Nine's intensity aboard the Utinni, set by the scenario through the API (RM_GodGate.Apply). Saved.
+        // Gentle (the default) keeps a floor; Full is Full. Never a player setting: the settings name no god.
+        public int godIntensity = (int)RM_Intensity.Gentle;
+        private bool gravEngineCached;
+        private int gravEngineFrame = -9999;
+        private const int GravEngineEveryFrames = 250;
         private List<RM_TakenEmitter> taken = new List<RM_TakenEmitter>();
         // Phase 3: one mood per CLAIMANT (a push by the same claimant replaces its own). Saved. The compositor orders them
         // by the rank each consumer supplied: the top two hold territory, the next three at most are tremor.
@@ -264,7 +271,7 @@ namespace RimMandrake.AtmosphericBase
             {
                 RM_MoodClaim best = null;
                 foreach (RM_MoodClaim m in moods)
-                    if (m?.scheme != null && m.scheme.Valid && (best == null || RM_TerritoryKernel.CompareRank(m.rank, m.claimant, best.rank, best.claimant) < 0))
+                    if (m?.scheme != null && m.scheme.Valid && MayShow(m.scheme) && (best == null || RM_TerritoryKernel.CompareRank(m.rank, m.claimant, best.rank, best.claimant) < 0))
                         best = m;
                 return best;
             }
@@ -272,13 +279,36 @@ namespace RimMandrake.AtmosphericBase
 
         public int PushedMoodCount => moods.Count;
 
+        /// <summary>Does this map carry a player grav engine (a gravship)? Re-read every GravEngineEveryFrames frames.</summary>
+        public bool HasGravEngine
+        {
+            get
+            {
+                int f = UnityEngine.Time.frameCount;
+                if (f - gravEngineFrame >= GravEngineEveryFrames || f < gravEngineFrame)
+                {
+                    gravEngineFrame = f;
+                    gravEngineCached = map?.listerBuildings != null
+                        && map.listerBuildings.AllBuildingsColonistOfClass<RimWorld.Building_GravEngine>().Any();
+                }
+                return gravEngineCached;
+            }
+        }
+
+        /// <summary>T3 (c), owner ruling §9.12: a god's reading shows only aboard a Utinni gravship; elsewhere it is inert.</summary>
+        public bool MayShow(RM_AtmosphericSchemeDef scheme)
+        {
+            bool sig = RM_SignatureDef.ForScheme(scheme) != null;
+            return !sig || RM_GodGate.MayShow(true, scenarioDecides, HasGravEngine);
+        }
+
         /// <summary>Every live mood, loudest first (§2.6 step 1). Rank is the consumer's; it is only ORDERED here. With
         /// nothing pushed, the gentle default alone (or nothing when it is switched off).</summary>
         public List<RM_MoodClaim> RankedMoods()
         {
             var live = new List<RM_MoodClaim>();
             foreach (RM_MoodClaim m in moods)
-                if (m?.scheme != null && m.scheme.Valid && !string.IsNullOrEmpty(m.group)) live.Add(m);
+                if (m?.scheme != null && m.scheme.Valid && !string.IsNullOrEmpty(m.group) && MayShow(m.scheme)) live.Add(m);
             if (live.Count == 0)
             {
                 RM_MoodClaim d = RM_Compositor.DefaultMood();
@@ -365,6 +395,7 @@ namespace RimMandrake.AtmosphericBase
         {
             base.ExposeData();
             Scribe_Values.Look(ref scenarioDecides, "scenarioDecides", false);
+            Scribe_Values.Look(ref godIntensity, "godIntensity", (int)RM_Intensity.Gentle);
             Scribe_Collections.Look(ref taken, "taken", LookMode.Deep);
             Scribe_Collections.Look(ref moods, "moods", LookMode.Deep);
             // A Phase 2 save held ONE mood under "mood"; read it once and carry it into the list.

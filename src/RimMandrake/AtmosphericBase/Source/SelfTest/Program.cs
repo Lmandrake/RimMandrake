@@ -572,6 +572,7 @@ internal static class Program
         Phase3();
         Phase4();
         PatternTests.Run();
+        NineTests.Run();   // T3 (c): the Nine aboard the Utinni, read off the campaign tier's XML
 
         if (Fails.Count > 0)
         {

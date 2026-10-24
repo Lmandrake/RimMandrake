@@ -47,6 +47,7 @@
     <Compile Include="Kernel\RM_TerritoryKernel.cs" />
     <Compile Include="Kernel\RM_TerritoryShapes.cs" />
     <Compile Include="Kernel\RM_PatternChoice.cs" />
+    <Compile Include="Kernel\RM_GodGate.cs" />
     <Compile Include="RM_AtmosphericSchemeDef.cs" />
     <Compile Include="RM_SignatureDef.cs" />
     <Compile Include="RM_AtmosphericCompositor.cs" />
