@@ -32,17 +32,12 @@ namespace RimMandrake.GimmeSomeSlack
                 if (fog.IsFogged(idx)) { world.SetBlocked(cell, BlockKind.Rock); continue; }
                 Building ed = map.edificeGrid[idx];
                 if (ed is Building_Door) world.SetDoor(cell);
-                if (pg.WalkableFast(idx)) continue;
-                BlockKind k;
-                if (ed != null)
-                    k = ed.def.building != null && ed.def.building.isNaturalRock ? BlockKind.Rock :
-                        ed.TryGetComp<CompPower>() != null ? BlockKind.Device : BlockKind.Wall;
-                else
-                {
-                    TerrainDef t = map.terrainGrid.TerrainAt(idx);
-                    k = t != null && t.IsWater ? BlockKind.Water : BlockKind.Wall;
-                }
-                world.SetBlocked(cell, k);
+                // GSS_WATER_STUB_FIX_PASSED_LAST_WEEK: deep water is Water even when a swim mod (FlowWorks R12) makes the path grid walkable
+                TerrainDef t = map.terrainGrid.TerrainAt(idx);
+                BlockKind? k = SnapshotBlock.Of(pg.WalkableFast(idx), ed != null,
+                    ed?.def.building != null && ed.def.building.isNaturalRock, ed != null && ed.TryGetComp<CompPower>() != null,
+                    t != null && t.IsWater, t != null && t.passability == Traversability.Impassable);
+                if (k.HasValue) world.SetBlocked(cell, k.Value);
             }
             foreach (Plant p in map.listerThings.ThingsInGroup(ThingRequestGroup.Plant))
                 if (p.def.plant != null && p.def.plant.IsTree) world.SetExtraCost(C(p.Position), 1.5f);

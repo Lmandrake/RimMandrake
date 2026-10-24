@@ -90,6 +90,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             PhantomSparkChecks.Run();      // GSS_CORD_SILENCE_PHANTOM_SPARK (owner 2026-10-16): PhantomSparkChecks.cs
             LoopLassoChecks.Run();         // CORD_LOOP_UNTANGLE_LASSOED_A_PIPE (live 2026-10-23): LoopLassoChecks.cs
             CordSlideUnderChecks.Run();    // CORD_PLUG_FIX_FINDS_THE_PIPE_SLOT (owner walk 2026-10-23): CordSlideUnderChecks.cs
+            WaterStubChecks.Run();         // GSS_WATER_STUB_FIX_PASSED_LAST_WEEK (bridge run 1 2026-10-23): WaterStubChecks.cs
             UnroutableCensus.Checks();     // A7 (owner 2026-10-06): what stands between an unroutable cord's ends: UnroutableCensus.cs
             GptPreReleaseChecks.Run();     // GSS pre-release GPT consult 2026-10-15: GptPreReleaseChecks.cs
             GssFuzz.Run(args);             // approach B: seeded action-sequence fuzz (design/RimMandrake/gss_offline_fuzz_B.md)
