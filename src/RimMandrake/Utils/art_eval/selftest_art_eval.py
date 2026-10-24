@@ -154,7 +154,9 @@ def tuning_checks():
             import io, contextlib
             err = io.StringIO()
             with contextlib.redirect_stderr(err):
-                r1 = runner.run([big, ok, live, stop], "fauna_t_01", rev=Mock(), test=False, work_root=td / "w",
+                unk = dict(base, subject="RM_Unk", images=imgs(256, "unk"), owner_kept=False,
+                           owner_kept_unmeasured="art ledger unreadable: owner_kept NOT established")
+                r1 = runner.run([big, ok, live, stop, unk], "fauna_t_01", rev=Mock(), test=False, work_root=td / "w",
                                 state_root=td / "state" / "runs")
                 (td / "state" / "runs" / "fauna_t_01" / "run.json").write_text(json.dumps({"test": False, "subjects": []}))
                 r2 = runner.run([dict(ok)], "fauna_t_02", rev=Mock(), test=False, work_root=td / "w",
@@ -169,7 +171,11 @@ def tuning_checks():
                   d1["RM_Ok"]["decision"] == "REGEN" and d1["RM_Live"]["decision"] == "REGEN", {k: v["decision"] for k, v in d1.items()})
             check("runner: stopped series not judged, no decisions line, says series STOPPED",
                   "RM_Stop" not in d1 and "RM_Stop: series STOPPED" in err.getvalue(), err.getvalue()[-300:])
+            check("runner: owner_kept UNMEASURED is held before any model, never regenerated",
+                  d1["RM_Unk"]["decision"] == "HOLD_INPUT" and "RM_Unk" not in " ".join(calls)
+                  and "unmeasured" in " ".join(d1["RM_Unk"]["reasons"]), (d1["RM_Unk"]["decision"], calls))
             jobs = {j["target_def"]: j for j in runner.regen_jobs(r1, "fauna_t_01")}
+            check("runner: no regen job for an owner_kept-unmeasured subject", "RM_Unk" not in jobs, list(jobs))
             check("regen job canvas from drawSize (256 for 1.5), drawsize carried",
                   jobs["RM_Ok"]["canvas_w"] == 256 and jobs["RM_Ok"]["canvas_h"] == 256 and jobs["RM_Ok"]["drawsize"] == 1.5, jobs.get("RM_Ok"))
             check("regen job without a drawSize says why it is 1024",
