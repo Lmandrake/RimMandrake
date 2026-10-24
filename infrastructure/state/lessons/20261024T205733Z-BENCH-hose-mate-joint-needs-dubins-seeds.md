@@ -1,0 +1,2 @@
+Hose mates: the discrete ring-of-couplings + TailOnto re-shape cannot reach couplings that only a joint A+reversed-B clothoid chain finds; the chain needs Dubins-seeded guides over coupling rings out to 2.4 cells (near-C0 seeds never fit), and the ends must be drawn from the joint halves (TailOnto cannot reproduce them). Also: env vars reach the Windows dotnet selftest only via WSLENV=VAR.
+home: src/RimMandrake/FlowWorks/Source/Hose/HoseSpliceMath.cs
