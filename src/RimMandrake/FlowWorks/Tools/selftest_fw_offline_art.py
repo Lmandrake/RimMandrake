@@ -77,6 +77,13 @@ Each check must FAIL on the art he rejected (the shipped code, emulated as BEFOR
                               15% alpha, a cell with no cover
     deck_matches_ground       PASS on the shipped print of a deck over the whole pit (why it was ruled: pit_covered_invisible),
                               FAIL on the drawn lattice (the trade the owner is shown)
+  Modern bottle and bucket (MODERN_BOTTLE_REDRAW_SODA_AND_ORANGE_PAIL: "Modern bottle should look soda-like. Modern bucket
+  should be orange."), art_source/LiquidContainers/modern_soda_pail.py on the v1 pilot sprites:
+    bottle_reads_as_soda      FAIL on the pilot's swirl label, PASS installed; can-fail: the label greyed out
+    pail_is_orange            FAIL on the blue pilot pail, PASS installed; can-fail: the installed pail hue-turned to blue
+    liquid + trim untouched   installed == the pilot on every liquid (mask R) and trim (mask G) pixel, alpha and the
+                              CutoutComplex masks byte for byte (the tinting works as before)
+    pinned                    installed == modern_soda_pail.build pixel for pixel
 """
 # selftest-timeout: 400
 import hashlib
@@ -98,6 +105,8 @@ import top_heads  # noqa: E402
 import squat_heads  # noqa: E402,F401  (puts art_source/ModernStyle on the path; fw_scenes_sprinkler's "squat" mode uses it)
 import waterworks_blue as wb  # noqa: E402
 import firehose_reel as fr  # noqa: E402
+sys.path.insert(0, str(HERE.parent / "art_source" / "LiquidContainers"))
+import modern_soda_pail as msp  # noqa: E402
 
 PX = 40
 fails = []
@@ -517,6 +526,40 @@ def covers():
     want(not cov.cover_reads_as_material(blank, (2, 2))[0], "cover_reads_as_material can-fail: a cell with no cover")
 
 
+def soda_pail():
+    import numpy as np
+    from PIL import Image
+    tex = HERE.parent / "Textures"
+    for size, check in (("Bottle", msp.bottle_reads_as_soda), ("Bucket", msp.pail_is_orange)):
+        rel = msp.REL[size]
+        inst = Image.open(tex / rel).convert("RGBA")
+        pilot = Image.open(msp.SRC / size / "Modern" / ("RM_%s.png" % size)).convert("RGBA")
+        res = check(inst)
+        want(res[0], "%s check PASSES installed: %s" % (size, ", ".join("%.3g" % x for x in res[1:])))
+        res = check(pilot)
+        want(not res[0], "%s check FAILS the pilot: %s" % (size, ", ".join("%.3g" % x for x in res[1:])))
+        a, b = np.asarray(inst), np.asarray(pilot)
+        if size == "Bottle":
+            grey = a.copy()
+            lab = msp.label_region()
+            grey[lab, :3] = a[lab, :3].max(-1, keepdims=True)
+            want(not check(Image.fromarray(grey, "RGBA"))[0], "Bottle check can-fail: the label greyed out")
+        else:
+            blue = a.astype(float) / 255.0
+            _, s, v = msp.hsv(blue[..., :3])
+            body = (msp.blue_weight(b[..., :3].astype(float) / 255.0) > 0.5)
+            blue[body, :3] = msp.hsv_to_rgb(np.full(v.shape, msp.BLUE_H), s, v)[body]
+            want(not check(Image.fromarray(np.round(blue * 255).astype(np.uint8), "RGBA"))[0],
+                 "Bucket check can-fail: the installed pail hue-turned to blue")
+        mk_inst = np.asarray(Image.open(tex / rel.replace(".png", "_m.png")).convert("RGBA"))
+        mk_pilot = np.asarray(Image.open(msp.SRC / size / "Modern" / ("RM_%s_m.png" % size)).convert("RGBA"))
+        want((mk_inst == mk_pilot).all(), "%s mask unchanged (liquid R, trim G)" % size)
+        want((a[..., 3] == b[..., 3]).all(), "%s alpha unchanged" % size)
+        keep = (mk_pilot[..., 0] > 127) | (mk_pilot[..., 1] > 127)
+        want((a[keep] == b[keep]).all(), "%s liquid and trim pixels untouched (%d px)" % (size, int(keep.sum())))
+        want((a == np.asarray(msp.BUILD[size]())).all(), "%s installed == modern_soda_pail.build" % size)
+
+
 if __name__ == "__main__":
     parity()
     pipe_joins()
@@ -527,5 +570,6 @@ if __name__ == "__main__":
     rail_ladder()
     spikes()
     covers()
+    soda_pail()
     print("%d FAIL" % len(fails) if fails else "ALL OK")
     sys.exit(1 if fails else 0)
