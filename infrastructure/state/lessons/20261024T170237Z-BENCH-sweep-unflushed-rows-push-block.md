@@ -1,0 +1,2 @@
+A resumable multiprocessing sweep that flushes its JSONL only every N rows loses every finished row when an outer timeout kills it, so it looks as if it made no progress (hose explorer, 2026-10-24: 0 rows kept after 530 s). Flush every row. Separately, ./publish on bench is refused by the art pre-push guard because of commit b6a4c87772 (RM_SpikeStakes_a/b/c.png installed with reason 'agent-why'). That blocks every BENCH push until the art owner re-installs those PNGs with a mechanical reason or a ruling.
+home: NONE
