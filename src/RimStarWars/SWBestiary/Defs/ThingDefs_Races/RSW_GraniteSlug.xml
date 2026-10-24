@@ -38,7 +38,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_GraniteSlug</defName>
     <label>granite slug</label>
-    <description>The granite slug was a silica parasite native to the planet Coruscant. This small terrestrial mollusk has corrosive acidic green-gray slime blood. Its body consisted of four eyestalks, two retractable mouths, one foot, lung filaments, and suction pseudopods. One of their natural predators is the hawk-bat.</description>
+    <description>A small mineral-feeding slug from Coruscant, with orange-and-teal spotted skin, fleshy dorsal fronds and an upcurled tail. Its acidic saliva softens mineral surfaces, and two mouths consume the resulting slime, leaving scarred trails in duracrete.</description>
     <statBases>
       <ToxicResistance>1</ToxicResistance>
       <MoveSpeed>1.0</MoveSpeed>

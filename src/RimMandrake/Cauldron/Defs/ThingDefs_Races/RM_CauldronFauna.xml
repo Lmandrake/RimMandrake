@@ -109,7 +109,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Suush</defName>
     <label>suush</label>
-    <description>A translucent globe drifting a few feet off the ground, lit faintly from within by whatever it has most recently digested. A curtain of long, fine gathering tentacles hangs beneath it, combing the roiling gas for the chemistry it lives on. It never comes down, never attacks, and never seems to notice you. It is also, entirely, a bag of the same volatile vapor the Cauldron breathes -- and pays no mind at all to what happens if something punctures it.</description>
+    <description>A translucent globe that floats above the ground, gathering chemicals from the vent fog with a curtain of fine tentacles. Digested material gives it a faint internal glow. It never lands or attacks, but puncturing its bladder releases flammable vent gas.</description>
     <statBases>
       <MoveSpeed>1.6</MoveSpeed>
       <Mass>18</Mass>
@@ -240,7 +240,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Vexxiss</defName>
     <label>vexxiss</label>
-    <description>The ground here talks all day -- rush and groan and gurgle, the slow engine of the forest's chemistry -- and the vexxiss is the one thing that walks like it belongs in the machine. A hill of slag that moves: plates of smelter-scab and old bark grown together, crystal fans standing down the spine like vents on a boiler, no eyes anywhere on it because it has never needed to see anything. It drinks the ground's breath straight from the wellheads, it hates fire the way a lung hates smoke, and the crews that shear its plates say the trick is not the climbing. The trick is doing it without warming the shears.</description>
+    <description>A vast, eyeless animal armoured in overlapping plates of bark and mineral slag, with crystal fans rising along its spine. It drinks from vents, fouls water as it wades and attacks whoever starts a fire nearby. Tamed vexxiss can be shorn for acid-proof vexxith.</description>
     <statBases>
       <MoveSpeed>1.4</MoveSpeed>
       <Mass>3000</Mass>
@@ -374,7 +374,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Zisska</defName>
     <label>zisska</label>
-    <description>Low and broad as a dropped shield, plated like the stones it eats. The zisska spends its life nose-down against rock and old trunks, rasping off the mineral rings the forest paints on everything that stands still -- and everything it rasps stays in it. The farmers of other countries would call it livestock. Here the butchers wear gloves to the elbow, and the meat is worth the gloves. Corner one and it hawks the rasped sulphur back up in a burning gobbet: the stuff lights on the air, and a frightened herd can set a stand of trunks ablaze.</description>
+    <description>A low, broad grazer armoured in rough stone-like plates, the zisska rasps mineral deposits from rocks and old trunks. Its flesh is valued as meat, though accumulated contaminants make butchering it hazardous. When cornered, it spits sulphur-rich material that ignites in air; a frightened herd can set the forest burning.</description>
     <statBases>
       <MoveSpeed>2.2</MoveSpeed>
       <Mass>60</Mass>
@@ -475,7 +475,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Eskith</defName>
     <label>eskith</label>
-    <description>Knee-high, quick-footed, feet feathered out into wide soft pads that read the ground the way ears read air. Eskith talk in knocks -- a drummed code sent through the rock, felt in your boot soles under the engine's rumble. The forest is never quiet, so nobody listens for sound here; they listen for the drumming. When the eskith stop answering each other, the old hands are already walking for the roof.</description>
+    <description>A knee-high animal with broad, feathered foot pads that sense vibrations through stone. Eskith communicate by drumming those pads against the ground. Their sudden silence is a good reason to get under a roof.</description>
     <statBases>
       <MoveSpeed>4.6</MoveSpeed>
       <Mass>5</Mass>

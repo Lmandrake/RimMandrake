@@ -77,7 +77,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Lylek</defName>
     <label>lylek</label>
-    <description>The lylek was the most dangerous predator indigenous to the planet of Ryloth. It's strange biology made it one of the few creatures able to survive in the harsh heat of the Bright Lands. These dangerous creatures were popular exotic pets with certain criminal organisations and subsequently were transported to various worlds.</description>
+    <description>A large insectoid predator native to Ryloth's equatorial forests, standing high on spear-like legs beneath raised, spiked pincers. Powerful mandibles and two long tentacles crowd its mouth, while its ridged carapace can deflect blaster fire.</description>
     <statBases>
       <MoveSpeed>5</MoveSpeed>
       <ComfyTemperatureMin>-75</ComfyTemperatureMin>

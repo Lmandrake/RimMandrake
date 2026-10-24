@@ -60,7 +60,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RSW_Mynock</defName>
     <label>mynock</label>
-    <description>A leathery, wet-winged ship-leech that drifts through vacuum toward any hull with power still running through it. Cheap and quiet alone - a nuisance you barely notice - but they breed fast once a few take hold, and a real infestation will gnaw a ship's conduits and lights dead compartment by compartment. They never need air, warmth, or a roof; they were never built for any of those.</description>
+    <description>A small silicon-based parasite with broad leathery wings, a whip-like tail and a bristled sucker mouth. Mynocks survive in vacuum and feed on starship power supplies, damaging cables and energy conductors as an infestation spreads.</description>
     <statBases>
       <MoveSpeed>3.2</MoveSpeed>
       <MarketValue>8</MarketValue>

@@ -26,7 +26,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Radyak</defName>
     <label>ossrith</label>
-    <description>A grazer that eats poison and wears it. The ossrith's hide is bone-white plate over a lean, long-legged frame, and its face is a bare mask of bone with deep black sockets where the eyes sit. What it cannot digest from the Cauldron's tainted grass it pushes outward: hard green crystal that breaks up through the plates along its spine in a jagged ridge, thickest on old bulls. It is placid, and it feeds in herds without fear of anything. The crystal can be broken off periodically and refined into uranium at a biofuel refinery, which is the only reason anyone stands near one long.</description>
+    <description>A placid herd grazer with long legs, bone-white armour and a bare skull-like face. Green crystals grow through its spinal plates as it expels metals taken from the Cauldron's vegetation. The crystals can be harvested periodically and refined into uranium at a biofuel refinery.</description>
     <statBases>
       <MoveSpeed>4.5</MoveSpeed>
       <ComfyTemperatureMin>-65</ComfyTemperatureMin>
