@@ -27,7 +27,12 @@ Each check must FAIL on the art he rejected (the shipped code, emulated as BEFOR
   Modern waterworks blue, every recoloured piece + the Modern head (MODERN_PIPE_REDRAW_FIRETRUCK_RED_RETIRED):
     no saturated red          FAIL on the red originals (ModernStyle/red), PASS installed (and on the top-down Modern head)
     alpha unchanged           installed alpha == the red original's byte for byte: every fit (atlas, joins, seat, ports) holds
-    pinned                    installed == waterworks_blue.recolour(red original) pixel for pixel
+    pinned                    installed == waterworks_blue.recolour(red original) pixel for pixel (the reels: see below)
+  Modern hose reel, the drum's hose a red canvas firehose (HOSE_REEL_REDRAW_FIREHOSE_ON_THE_DRUM), the six reel textures:
+    no saturated red          as above, but outside firehose_reel.region only (the drum hose is red on purpose)
+    frame unchanged           outside the region installed == waterworks_blue.recolour(red original) pixel for pixel
+    drum_hose_reads_as_firehose   FAIL on the all-blue recolour and on the glossy red original, PASS installed
+    pinned                    installed == firehose_reel.build(name) pixel for pixel
   portable ladder, north + south from the ground sprite (LADDER_PORTABLE_REDRAW_NORTH_FROM_GROUND):
     ladder_north_not_compressed   FAIL on the shipped north (art_source/Ladder/v6/before), PASS installed; can-fail: the
                                   installed north moved 60 px down or 20 px sideways (shape alone would pass), or squeezed 0.8x across
@@ -92,6 +97,7 @@ sys.path.insert(0, str(HERE.parent / "art_source" / "Sprinkler"))
 import top_heads  # noqa: E402
 import squat_heads  # noqa: E402,F401  (puts art_source/ModernStyle on the path; fw_scenes_sprinkler's "squat" mode uses it)
 import waterworks_blue as wb  # noqa: E402
+import firehose_reel as fr  # noqa: E402
 
 PX = 40
 fails = []
@@ -229,16 +235,31 @@ def modern_blue():
     head = wb.saturated_red_share(Image.open(wb.TEX / wb.SPRINKLER).convert("RGBA"))
     want(head < 0.002, "modern blue: %s installed (top-down, cut from the Modern pump) has no saturated red (%.4f < 0.002)"
          % (wb.SPRINKLER, head))
+    reels = {fr.REL % n: n for n in fr.MASKS}
     for rel, red, path in pairs:
         live = Image.open(path).convert("RGBA")
-        before, after = wb.saturated_red_share(red), wb.saturated_red_share(live)
-        want(before > 0.3, "modern blue: %s red original is saturated red (%.3f > 0.3): the check can fail" % (rel, before))
-        want(after < 0.002, "modern blue: %s installed has no saturated red (%.4f < 0.002)" % (rel, after))
         a, b = np.asarray(red), np.asarray(live)
+        made, _ = wb.recolour(red, rel)
+        name = reels.get(rel)
+        if name:   # the reel: blue frame, red firehose on the drum
+            keep = ~fr.region(name, b.shape[:2])
+            sub = Image.fromarray(np.where(keep[..., None], b, 0).astype(np.uint8), "RGBA")
+            before, after = wb.saturated_red_share(red), wb.saturated_red_share(sub)
+            want(np.array_equal(np.asarray(made)[keep], b[keep]),
+                 "modern reel: %s outside the drum hose == recolour(red original) (frame unchanged)" % rel)
+            for lab, im, exp in (("all-blue recolour", made, False), ("glossy red original", red, False), ("installed", live, True)):
+                ok, canvas, weave, gloss = fr.drum_hose_reads_as_firehose(im, name)
+                want(ok == exp, "modern reel: %s drum_hose_reads_as_firehose %s on the %s (canvas %.2f weave %.3f gloss %.3f)"
+                     % (rel, "PASS" if exp else "FAIL", lab, canvas, weave, gloss))
+            want(np.array_equal(np.asarray(fr.build(name)), b), "modern reel: %s installed == firehose_reel.build" % rel)
+        else:
+            before, after = wb.saturated_red_share(red), wb.saturated_red_share(live)
+            want(np.array_equal(np.asarray(made), b), "modern blue: %s installed == recolour(red original)" % rel)
+        want(before > 0.3, "modern blue: %s red original is saturated red (%.3f > 0.3): the check can fail" % (rel, before))
+        want(after < 0.002, "modern blue: %s installed has no saturated red%s (%.4f < 0.002)"
+             % (rel, " outside the drum hose" if name else "", after))
         want(a.shape == b.shape and np.array_equal(a[..., 3], b[..., 3]),
              "modern blue: %s alpha == red original's byte for byte (fits unchanged)" % rel)
-        made, _ = wb.recolour(red, rel)
-        want(np.array_equal(np.asarray(made), b), "modern blue: %s installed == recolour(red original)" % rel)
 
 
 def ladder():
