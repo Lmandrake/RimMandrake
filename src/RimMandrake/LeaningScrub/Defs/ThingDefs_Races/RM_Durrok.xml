@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Durrok.xml                              SWB_RM_FAUNA_DECIDE_HOME_LIKE_CHIKKA
+
+  The durrok (our port of Alpha Animals AA_Wildpawn) is not a Star Wars creature.
+  Owner 2026-10-24: "Yes, it appears that a lot of alpha animal ports got
+  classified as Star Wars. We should move all of those. Durrok and Mullgoth and
+  Vura do need moving out of Star Wars, yes." It moved here, block verbatim, from
+  src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_DesertPortMisc_Races.xml.
+
+  defName RM_Durrok is unchanged, so a save holding one still resolves it while
+  this mod is active; no alias is needed. texPaths are unchanged: the pictures
+  moved to this mod's Textures/ at the same relative path through the art ledger.
+-->
+<Defs>
+
+	<ThingDef ParentName="AnimalThingBase">
+		<!-- Alpha Animals AA_Wildpawn -> RM_Durrok. AA_ToxicBite->Bite. Dropped: VEF.AnimalBehaviours.CompProperties_AsexualReproduction (spore-clump reproduction), CompProperties_HighlyFlammable (burn hediff on fire), CompProperties_AnimalProduct (periodic raw-fungus harvest) - all donor framework. hasGenders=false kept so vanilla asexual reproduction still applies; the spore-cloud VISUAL/reproduction event itself is what was dropped, not the ability to breed. -->
+		<defName>RM_Durrok</defName>
+		<label>durrok</label>
+		<description>A low, barrel-bodied quadruped on four short legs, its head and neck buried beneath pale, wet-looking ropes of hair and mats of grey-green lichen. Every few weeks it sheds clumps of spores that produce young needing no parental care. Hunting one is risky; the fungus beneath its hide can be eaten raw.</description>
+		<statBases>
+			<MoveSpeed>4</MoveSpeed>
+			<ComfyTemperatureMin>-15</ComfyTemperatureMin>
+			<MarketValue>200</MarketValue>
+			<LeatherAmount>0</LeatherAmount>
+			<ArmorRating_Blunt>0.75</ArmorRating_Blunt>
+			<ArmorRating_Heat>-100</ArmorRating_Heat>
+			<ArmorRating_Sharp>0.75</ArmorRating_Sharp>
+			<FilthRate>8</FilthRate>
+			<Wildness>0.75</Wildness>
+		</statBases>
+		<tools>
+			<li>
+				<label>left paw</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>11</power>
+				<cooldownTime>2.0</cooldownTime>
+				<linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<label>right paw</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>11</power>
+				<cooldownTime>2.0</cooldownTime>
+				<linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<capacities>
+					<li>Bite</li>
+				</capacities>
+				<power>6</power>
+				<cooldownTime>1.65</cooldownTime>
+				<linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<label>head</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>3</power>
+				<cooldownTime>1.65</cooldownTime>
+				<linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+				<chanceFactor>0.2</chanceFactor>
+			</li>
+		</tools>
+		<race>
+			<body>QuadrupedAnimalWithPaws</body>
+			<herdAnimal>false</herdAnimal>
+			<predator>false</predator>
+			<baseBodySize>1.4</baseBodySize>
+			<baseHealthScale>1.3</baseHealthScale>
+			<baseHungerRate>0.2</baseHungerRate>
+			<foodType>VegetarianRoughAnimal</foodType>
+			<specificMeatDef>RawFungus</specificMeatDef>
+			<trainability>Intermediate</trainability>
+			<manhunterOnTameFailChance>0.018</manhunterOnTameFailChance>
+			<lifeExpectancy>35</lifeExpectancy>
+			<hasGenders>false</hasGenders>
+			<lifeStageAges>
+				<li><def>AnimalBaby</def><minAge>0</minAge></li>
+				<li><def>AnimalJuvenile</def><minAge>0.25</minAge></li>
+				<li><def>AnimalAdult</def><minAge>0.5</minAge></li>
+			</lifeStageAges>
+			<soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+			<soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+			<soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+		</race>
+		<tradeTags>
+			<li>AnimalExotic</li>
+		</tradeTags>
+	</ThingDef>
+	<PawnKindDef ParentName="AnimalKindBase">
+		<defName>RM_Durrok</defName>
+		<label>durrok</label>
+		<race>RM_Durrok</race>
+		<alternateGraphicChance>0.5</alternateGraphicChance>
+		<alternateGraphics>
+		  <li>
+		    <texPath>Things/Pawn/Animal/RM_Durrok/RM_DurrokV_B</texPath>
+		  </li>
+		</alternateGraphics>
+		<combatPower>120</combatPower>
+		<ecoSystemWeight>1</ecoSystemWeight>
+		<wildGroupSize>
+			<min>1</min>
+			<max>3</max>
+		</wildGroupSize>
+		<lifeStages>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/RM_Durrok/RM_Durrok</texPath>
+					<drawSize>0.7</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/RM_Durrok/RM_Durrok</texPath>
+					<drawSize>1.5</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<texPath>Things/Pawn/Animal/RM_Durrok/RM_Durrok</texPath>
+					<drawSize>2</drawSize>
+				</bodyGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+</Defs>

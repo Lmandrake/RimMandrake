@@ -149,7 +149,7 @@
       <RM_SikkaSikka>0.15</RM_SikkaSikka>  <!-- giant crowned silkie - medium, keep -->
       <RM_DecayDrake>0.1</RM_DecayDrake>  <!-- fermatalis (decay drake) - medium, keep; our port of AA_DecayDrake, defined in the Miasma member (DONOR_CODE_PLAIN_PORTS_1) -->
       <RM_Bileworm MayRequire="mandrake.rm.warscar">0.1</RM_Bileworm>  <!-- helixien - giant, keep -->
-      <RM_Mullgoth MayRequire="mandrake.rsw.swbestiary">0.05</RM_Mullgoth>  <!-- wildpod - giant, keep -->
+      <RM_Mullgoth>0.05</RM_Mullgoth>  <!-- wildpod - giant, keep -->
       <!-- CAULDRON_RULED_CONTENT_1: three owned natives (one home each). -->
       <RM_Vexxiss>0.02</RM_Vexxiss>  <!-- vexxiss - the armoured living boiler-mound; shear-only vexxith -->
       <RM_Zisska>0.5</RM_Zisska>  <!-- zisska - herd rasper, toxic prized meat, steel on butcher -->
