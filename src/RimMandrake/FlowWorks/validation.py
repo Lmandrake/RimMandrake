@@ -380,12 +380,15 @@ _SELFTEST_CASES = {}
 
 def _selftest_cases():
     """Run the FlowWorks C# SelfTest once per process; {case name: "ok"|"FAIL"}, or raise UNMEASURED when it could not run.
-    Memoised (review 2026-10-17): ten chains read it and each run is ~80 s; the source cannot change within one suite run.
+    Memoised (review 2026-10-17): ten chains read it and one run took ~9 min live on
+    2026-10-24 (dotnet run of 325+ cases; the docstring used to say ~80 s); the source cannot change within one suite run.
     A failed run is not memoised, so each chain still reports its own UNMEASURED."""
     if _SELFTEST_CASES:
         return dict(_SELFTEST_CASES)
     import subprocess
     runner = os.path.join(os.path.dirname(os.path.dirname(HERE)), "RimMandrake", "Utils", "selftest_flowworks_stock.py")
+    print("[validation] running the FlowWorks C# SelfTest (offline, minutes; the game idles meanwhile)",
+          file=sys.stderr, flush=True)
     r = subprocess.run(_posix_python([runner]), capture_output=True, text=True, timeout=1200)
     cases = {}
     for ln in r.stdout.splitlines():

@@ -515,6 +515,12 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
             except Exception as e:                              # noqa: BLE001
                 world_before = dict(world_before or {}, pond={"error": "%s: %s" % (type(e).__name__, e)})
     for name, fn in suite.chains:
+        # One progress line per chain (MODCHECK_RUN_DIAGNOSE_TICK_ONE_STALL, LIVE 2026-10-24): the row lines in the
+        # log come from inside a chain, so an offline chain sitting minutes in a subprocess (rivers_switch_flips ->
+        # the C# SelfTest, ~9 min) read as a game stalled at tick 1. Name the running chain on stderr.
+        _chain_t0 = time.time()
+        print("[modcheck] chain %s START %s" % (name, time.strftime("%H:%M:%SZ", time.gmtime())),
+              file=sys.stderr, flush=True)
         watch = None
         _modal = None
         if situational:
@@ -613,6 +619,10 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
             session.sweep()
             if watch is not None:
                 watch.__exit__(None, None, None)
+        print("[modcheck] chain %s END %.0fs %s" % (
+            name, time.time() - _chain_t0,
+            " ".join("%s=%d" % (v, sum(1 for c in t.components if str(c.verdict).startswith(v)))
+                     for v in ("PASS", "FAIL", "UNMEASURED"))), file=sys.stderr, flush=True)
         chains_out.append({"name": name,
                            "components": [c.as_dict() for c in t.components],
                            "situational": watch.summary() if watch is not None else None,
