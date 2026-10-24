@@ -236,6 +236,23 @@ def test_timeout_still_harvests() -> None:
             out5 = Path(td) / "art5.png"
             rc = ci.do_image(args_for(out5))
             check("foreign copy with nothing generated fails", rc == 1 and not out5.exists(), f"rc={rc}")
+            check("the foreign copy is set aside as evidence, never at --out",
+                  (Path(td) / "art5.foreign.png").is_file())
+
+            # An alias spelling of our OWN home (symlink) among the searched roots must not make this
+            # run's render look foreign: the agent placed it correctly, so the twin search finds nothing.
+            alias = Path(td) / "alias_home"
+            alias.symlink_to(home, target_is_directory=True)
+            before7 = ci.snapshot_generated(home)
+            own7 = tiny_png(home / ci.GENERATED_SUBDIR / "sess7" / "exec-7.png", 9, 3)
+            placed7 = Path(td) / "art7.png"
+            shutil.copy2(own7, placed7)
+            ci.base_codex_home = lambda: alias
+            try:
+                check("an alias of our own home never marks our render foreign",
+                      ci._preexisting_twin(placed7, home, before7) is None)
+            finally:
+                ci.base_codex_home = lambda: home
 
             # A file we cannot trace to any cache (the agent post-processed or moved its own render) is kept.
             def agent_postprocesses(prompt, images, workdir, timeout, verbose,
@@ -307,14 +324,18 @@ def test_output_schema_passthrough() -> None:
     is that a caller who DOES pass them gets them on the actual run_codex call
     - not that the flags exist syntactically.
     """
-    real_run_codex = ci.run_codex
+    real_run_codex, real_base = ci.run_codex, ci.base_codex_home
     seen = {}
+    # Never let do_image snapshot/harvest the machine's REAL codex home from a selftest.
+    fake_home = Path(tempfile.mkdtemp()) / "codexhome"
+    (fake_home / ci.GENERATED_SUBDIR).mkdir(parents=True)
     try:
         def capture(prompt, images, workdir, timeout, verbose,
                    model=None, hm=None, reasoning_effort=None, **kw):
             seen.update(kw)
             return 0, "", False
         ci.run_codex = capture
+        ci.base_codex_home = lambda: fake_home
 
         with tempfile.TemporaryDirectory() as td:
             out = Path(td) / "art.png"
@@ -339,7 +360,8 @@ def test_output_schema_passthrough() -> None:
         check("no schema/message flags -> both stay None by default",
               seen.get("output_schema") is None and seen.get("output_last_message") is None)
     finally:
-        ci.run_codex = real_run_codex
+        ci.run_codex, ci.base_codex_home = real_run_codex, real_base
+        shutil.rmtree(fake_home.parent, ignore_errors=True)
 
 
 def test_harvest_grace() -> None:
@@ -670,7 +692,6 @@ def test_seed_sandbox_from_template_refuses_on_mismatch() -> None:
         (template / ".sandbox-bin").mkdir()
         (template / ".sandbox-bin" / "codex-command-runner-1.0.0.exe").write_bytes(b"y")
         os.environ["CODEX_SANDBOX_SEED"] = str(template)
-        real_env = None
         try:
             home = root / "doomed_worker"
             home.mkdir()
