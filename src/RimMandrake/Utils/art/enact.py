@@ -470,6 +470,24 @@ def row_names(row: str, v: dict, census_rows: dict) -> set[str]:
     return names
 
 
+ALIAS_TWIN = "tier_twin_same_stem"      # the census relation naming one creature under another tier's prefix
+
+
+def row_aliases(row: str, v: dict, srow: dict, census_rows: dict) -> set[str]:
+    """Other names THIS row's creature has carried: the decision's or snapshot row's `carriedFrom` (a rename), a census
+    twin of relation ALIAS_TWIN, and the same defName with RSW_ swapped for RM_ (a donor ported under our prefix; the
+    census cannot list it once the RSW_ def is gone: leaningscrub RM_Vurra / RSW_Vurra). Never a donor, a shared-texPath
+    twin or any other creature that merely shares a picture. (ENACT_ALIAS_KEEP_FIX_BLOCKS_NEWER_PICK)"""
+    out = {x for x in (v.get("carriedFrom"), (srow or {}).get("carriedFrom")) if x}
+    out |= {t.get("defName") for t in (census_rows.get(row) or {}).get("twins") or []
+            if isinstance(t, dict) and t.get("relation") == ALIAS_TWIN and t.get("defName")}
+    for a, b in (("RSW_", "RM_"), ("RM_", "RSW_")):
+        if row.startswith(a):
+            out.add(b + row[len(a):])
+    out.discard(row)
+    return out
+
+
 def census_rows_for(biome: str) -> dict:
     p = Path(os.environ.get("ENACT_CENSUS") or L.REPO_ROOT / "Transient" / "biome_ffar" / "census.json")
     try:
@@ -1047,6 +1065,7 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
             note = reopened[-1]
             past = [x for x in past if x != note]
         names = row_names(row, v, census)
+        aliases = row_aliases(row, v, srow, census)    # keeps by these rows are this row's own (keep_blocks_pick)
         xed = {s for s in (v.get("purge") or []) if s}     # his ✕ on this row: purged in step 4, never kept/installed
         confirmed, dropped = DV.legacy_answers(v, confs.get((sheet, row)))
         asks = DV.asks_of(v)
@@ -1359,7 +1378,8 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                         mine_at = I.ts(v.get("at"))
                         # an owner keep of that live picture from ANOTHER row, or from a LATER ruling on this row in
                         # another decisions file (re-enacting an old file must not undo his newer pick)
-                        prot = [k for k in idx.protected(live) if keep_blocks_pick(k, row, mine_at, I.rel_via(decisions))]
+                        prot = [k for k in idx.protected(live) if keep_blocks_pick(k, row, mine_at, I.rel_via(decisions),
+                                                                                  aliases)]
                         if prot:
                             P["conflicts"].append(f"{row}: {mod.rsplit('/', 1)[-1]}/{r} holds {live[:12]}, owner-kept "
                                                   f"on {Path(prot[0].get('via') or '').name or 'another ruling'}; "
@@ -1611,8 +1631,14 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
             kept_all = idx.protected(sha)
             # a keep minted by THIS row of THIS file (pick or default variant) does not protect a picture the same row
             # ✕'d: ingest used to record both (fixed there; this releases the keeps it already wrote)
+            # nor does an OLDER keep by an alias of this row (renamed, or RSW_X ported as RM_X): his newer ✕ on the
+            # renamed row releases it, as his newer pick replaces it; both times must be known, a purge is not undone
+            # by the next enact (ENACT_ALIAS_KEEP_FIX_BLOCKS_NEWER_PICK)
+            x_at = I.ts(v.get("at"))
             kept = [k for k in kept_all if not ((k.get("target") or {}).get("row") == row
-                                                and k.get("via") == I.rel_via(decisions))]
+                                                and k.get("via") == I.rel_via(decisions))
+                    and not ((k.get("target") or {}).get("row") in aliases and x_at and I.ts(k.get("at") or k.get("ts"))
+                             and I.ts(k.get("at") or k.get("ts")) < x_at)]
             # a ✕ on a picture that ships ONLY inside a Graphic_Random folder of ours (a random variant the sheet showed
             # as its own column, owner card 2026-10-10 "Put them on the sheet"): it leaves the folder, then is purged —
             # unless it is the folder's last picture, a pick/variant here, or kept by another ruling
@@ -1750,10 +1776,12 @@ def ruling_status(decisions: Path, idx: L.Index | None = None, jobs: list[dict] 
 
 # ──────────────────────────────────────────────────────────── applying ──
 
-def keep_blocks_pick(k: dict, row: str, mine_at, via: str) -> bool:
+def keep_blocks_pick(k: dict, row: str, mine_at, via: str, aliases=()) -> bool:
     """Does owner keep K on the live picture stop his pick on ROW (made at MINE_AT, in decisions file VIA) installing?
       * a keep from ANOTHER row: yes;
-      * a keep on THIS row from another decisions file: only when it is newer than his pick;
+      * a keep on THIS row, or on one of its ALIASES (row_aliases: the row renamed, or RSW_X ported as RM_X), from
+        another decisions file: only when it is newer than his pick (bug 2026-10-24, leaningscrub_2 RM_TunnelSnake B /
+        RM_Vurra B: keeps by RSW_TunnelSnake / RSW_Vurra from 2026-10-05 refused his newer pick for ever);
       * a row-less keep (`art install --owner-said`, e.g. the 2026-10-16 rescale card): only when it is newer than his
         pick, or either time is unknown. (bug 2026-10-22, picks_dessicated: 13 picks of his made that night were refused
         over 2026-10-16 mechanical rescale installs; and the ledger stamps rulings `ts`, never `at`, so the
@@ -1761,7 +1789,7 @@ def keep_blocks_pick(k: dict, row: str, mine_at, via: str) -> bool:
     k_at = I.ts(k.get("at") or k.get("ts"))
     krow = (k.get("target") or {}).get("row")
     newer = bool(mine_at and k_at and k_at > mine_at)
-    if krow == row:
+    if krow == row or krow in aliases:
         return k.get("via") != via and newer
     if not krow:
         return not (mine_at and k_at) or newer
