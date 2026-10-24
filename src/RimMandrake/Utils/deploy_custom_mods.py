@@ -177,7 +177,12 @@ def tree(root):
         dirnames[:] = [d for d in dirnames if d not in EXCLUDE_DIRS]
         for f in filenames:
             rel = os.path.relpath(os.path.join(dirpath, f), root)
-            if shippable(rel):
+            # A dangling symlink is not a file: a staged (MayRequire-rewritten)
+            # copy is a symlink farm over src/, and a source file deleted after
+            # staging -- another helper's move, mid-run -- left a link whose
+            # filecmp raised FileNotFoundError and killed the whole plan
+            # (DEPLOY_PLANNER_FIX_CRASH_ON_DELETED, SWBestiary Karrask.png).
+            if shippable(rel) and os.path.exists(os.path.join(dirpath, f)):
                 out.add(rel)
     return out
 
@@ -208,6 +213,27 @@ def repo_deleted(src, gone):
         if line.startswith(prefix):
             deleted.add(line[len(prefix):].replace("/", os.sep))
     return {g for g in gone if g.replace("/", os.sep) in deleted
+            and not os.path.exists(os.path.join(src, g))}
+
+
+def worktree_deleted(src, gone):
+    """Subset of `gone` that git still TRACKS but the working tree no longer
+    has: a delete or `git mv` not yet committed (often another helper's move in
+    progress). It is a repo-side removal, so the plan says so instead of
+    calling it a hand edit to --pull -- but it is UNCOMMITTED, so a plain
+    --apply does not prune it (only --prune does). Empty outside a git tree."""
+    import subprocess
+    if not gone or not os.path.isdir(src):
+        return set()
+    try:
+        out = subprocess.run(["git", "-C", src, "ls-files", "--deleted", "--", "."],
+                             capture_output=True, text=True, timeout=120)
+    except (OSError, subprocess.SubprocessError):
+        return set()
+    if out.returncode:
+        return set()
+    missing = {ln.strip().replace("/", os.sep) for ln in out.stdout.splitlines() if ln.strip()}
+    return {g for g in gone if g.replace("/", os.sep) in missing
             and not os.path.exists(os.path.join(src, g))}
 
 
@@ -306,9 +332,24 @@ def compare(src, dst):
     s, d = tree(src), tree(dst)
     new = sorted(s - d)
     gone = sorted(d - s)                       # deployed but no longer in repo
-    changed = sorted(r for r in (s & d)
-                     if not filecmp.cmp(os.path.join(src, r),
-                                        os.path.join(dst, r), shallow=False))
+    changed = []
+    for r in sorted(s & d):
+        try:
+            if not filecmp.cmp(os.path.join(src, r), os.path.join(dst, r), shallow=False):
+                changed.append(r)
+        except OSError:
+            # vanished between the walk and the compare (a concurrent delete):
+            # classify by what is there NOW instead of crashing the plan.
+            if not os.path.exists(os.path.join(src, r)):
+                s.discard(r)
+                gone.append(r)
+            elif not os.path.exists(os.path.join(dst, r)):
+                d.discard(r)
+                new.append(r)
+            else:
+                raise
+    new.sort()
+    gone.sort()
     # A list, not a count: DEPLOY_HOLD_SAME_BUCKET_BLIND_1 — a file that was
     # deployed byte-identical BEFORE it was added to DEPLOY_HOLD.txt never
     # shows up in new/changed/gone again, so a hold added after the fact was
@@ -499,7 +540,10 @@ def _run(args, targets, holds, mods_dir, active):
     for name, src in targets:
         dst = os.path.join(mods_dir, name)
         real_src = src
-        if not args.compose:
+        # the composed temp folder is not a git tree and is never re-staged;
+        # ordinary mods riding along with --compose (--with) are both.
+        composed = name == getattr(args, "compose_target", None)
+        if not composed:
             # ghost guards: MayRequire naming a folded packageId (see biomes_compose)
             fmap = biomes_compose.folded_ids(SRC_ROOT)
             nmap = biomes_compose.folded_names(SRC_ROOT)
@@ -527,8 +571,9 @@ def _run(args, targets, holds, mods_dir, active):
         held = held_new + held_changed + held_gone + held_same
         # Files the REPO deleted (git history) are stale deploys, not hand
         # edits: --apply prunes them without --prune. Hand-edits stay kept.
-        stale = repo_deleted(real_src, gone) if not args.compose else set()
+        stale = repo_deleted(real_src, gone) if not composed else set()
         stale = {r for r in stale if inside(dst, r)}
+        wt_gone = worktree_deleted(real_src, gone) if not composed else set()
 
         flags = []
         if not os.path.isdir(dst):
@@ -581,6 +626,10 @@ def _run(args, targets, holds, mods_dir, active):
             if r in stale:
                 why = ("; deleted in repo -- %s" % ("will be pruned" if args.apply
                        else "--apply prunes it"))
+            elif r in wt_gone:
+                why = ("; deleted in repo working tree, UNCOMMITTED -- %s"
+                       % ("will be deleted" if args.apply and args.prune
+                          else "kept; commit the delete, or --prune"))
             elif args.apply and args.prune:
                 why = "; will be deleted"
             else:
