@@ -62,6 +62,9 @@ namespace RimMandrake.FlowWorks
 		/// <summary>PHASE 5. The one boolean that makes a dug cell exitable.</summary>
 		public static ThingDef RM_Ladder;
 
+		/// <summary>LADDER_TEXT_RECONCILE_STEEL_NOT_WOOD: the steel wall ladder, same rules as RM_Ladder.</summary>
+		public static ThingDef RM_LadderSteel;
+
 		/// <summary>FLOWWORKS_RAIL_LADDER_BUILD_LOWER_FROM_ABOVE: the order to move a wall ladder, and the job that does it.</summary>
 		public static DesignationDef RM_OperateLadder;
 		public static JobDef RM_OperateLadderJob;
