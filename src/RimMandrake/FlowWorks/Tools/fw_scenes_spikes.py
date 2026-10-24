@@ -20,6 +20,10 @@ What it emulates (read from the C#, not guessed):
 Checks (each FAILS on the shipped drawing and PASSES on the fix; selftest_fw_offline_art.py runs both):
   spikes_over_wall(res)  -> 0 spike pixels on the dry face bands or the outline
   spikes_submerged(res)  -> per spiked cell: visible dry, fading with every level of water, gone (alpha 0) from 1 m
+  same_as_approved(after, clean, approved) -> the owner approved the 4f12810a3e render ("spikes look great!": the same
+                            layout sampling the sprite through approved/RM_SpikeStakes_4f12810a3e.cs.txt). AFTER must equal,
+                            at EVERY pixel, that render with only the slivers' alpha cleared (mode "approved_clean"), and
+                            that one may differ from the approved render only inside the slivers' footprint (["sliver"])
 
     python3 fw_scenes_spikes.py <out_dir>     # owner sheet SHEET_spikes.png + before/after scenes
 """
@@ -39,6 +43,9 @@ import stakes as STAKES  # noqa: E402
 TEXDIR = FW / "Textures/Things/Building/FlowWorks/Canals/RM_Spikes"
 MATH_CS = FW / "Source/Superdeep/RM_SpikeDrawMath.cs"
 WALL_CS = FW / "Source/RM_WallFaceMath.cs"
+APPROVED_CS = FW / "art_source/Spikes/approved/RM_SpikeStakes_4f12810a3e.cs.txt"   # the library the owner approved
+APPROVED_PNG = FW / "art_source/Spikes/approved/RM_Spikes_4f12810a3e.sha256"       # ... and the sprites it sampled
+SLIVER_REACH = 4                # scene px a sliver texel reaches: PIL's Lanczos has a 3-dest-px radius when downscaling, + 1
 
 
 def _cs_array(name):
@@ -107,19 +114,42 @@ def hash32(seed, k):
 
 
 _LIB = {}
+_r6 = lambda q: float(np.float32(float("%.6f" % q)))     # the C# reads these as %.6f float literals
 
 
 def library(variant):
     if variant not in _LIB:
         lib, pitch = STAKES.library(STAKES.VARIANTS[variant])
-        r6 = lambda q: float(np.float32(float("%.6f" % q)))     # the C# reads these as %.6f float literals
-        _LIB[variant] = [tuple(r6(q) for q in st) for st in lib], tuple(r6(q) for q in pitch)
+        _LIB[variant] = [tuple(_r6(q) for q in st) for st in lib], tuple(_r6(q) for q in pitch)
     return _LIB[variant]
 
 
-def layout(variant, seed, x0, z0, x1, z1):
-    """RM_SpikeDrawMath.Layout: [(x, z, w, h, u0, v0, u1, v1)] far (north) first."""
-    lib, (ppx, ppz) = library(variant)
+def approved_library(variant):
+    """The owner-approved (4f12810a3e) stakes and pitch of variant index `variant`, read from the pinned C#: UVs into the
+    shipped sprite, boxes carrying the neighbours' slivers."""
+    t = APPROVED_CS.read_text()
+    blocks = re.findall(r"new float\[\] \{(.*?)\}", t, re.S)
+    pitch = re.findall(r"\{ ([0-9.]+)f, ([0-9.]+)f \}", t)[variant]
+    lib = [tuple(_r6(float(q)) for q in re.findall(r"-?[0-9]+\.[0-9]+", ln)) for ln in blocks[variant].strip().split("\n")]
+    return lib, tuple(_r6(float(q)) for q in pitch)
+
+
+def approved_foreign(variant):
+    """{approved UV box: its foreign (sliver) mask in sprite px} for variant index `variant`. Raises unless the approved
+    boxes are exactly stakes._cut's windows, in order (the masks would otherwise sit on the wrong box)."""
+    lib, _ = approved_library(variant)
+    cut, _, S = STAKES._cut(STAKES.VARIANTS[variant])
+    uv = [tuple(_r6(q) for q in (X0 / S, 1 - (Y1 + 1) / S, (X1 + 1) / S, 1 - Y0 / S)) for X0, Y0, X1, Y1, _, _ in cut]
+    if [st[2:] for st in lib] != uv:
+        raise ValueError("variant %s: the approved boxes are not stakes._cut's windows (%d vs %d)"
+                         % (STAKES.VARIANTS[variant], len(lib), len(uv)))
+    return {u: c[5] for u, c in zip(uv, cut)}
+
+
+def layout(variant, seed, x0, z0, x1, z1, lib=None):
+    """RM_SpikeDrawMath.Layout: [(x, z, w, h, u0, v0, u1, v1)] far (north) first. lib: (stakes, pitch) to lay out instead
+    of the current library (the approved one, for the comparison render)."""
+    lib, (ppx, ppz) = lib or library(variant)
     n = len(lib)
     wmax, hmax = max(s[0] for s in lib), max(s[1] for s in lib)
     fw, fh = x1 - x0 - 2 * MARGIN, z1 - z0 - 2 * MARGIN
@@ -195,8 +225,23 @@ class Pit:
         return d, self.level(x, z + 1, d), self.level(x, z - 1, d), self.level(x - 1, z, d), self.level(x + 1, z, d)
 
 
-def render(pit, mode="after", P=160, faces=True, outline=True):
-    """-> dict(img, spike_a (H,W float 0..1 spike-layer alpha), wall (H,W bool dry face bands + outline), cells)."""
+def _dilate(m, r):
+    out = m.copy()
+    for dy in range(-r, r + 1):
+        for dx in range(-r, r + 1):
+            sh = np.zeros_like(m)
+            sh[max(0, dy):m.shape[0] + min(0, dy), max(0, dx):m.shape[1] + min(0, dx)] = \
+                m[max(0, -dy):m.shape[0] + min(0, -dy), max(0, -dx):m.shape[1] + min(0, -dx)]
+            out |= sh
+    return out
+
+
+def render(pit, mode="after", P=160, faces=True, outline=True, atlases=None):
+    """-> dict(img, spike_a (H,W float 0..1 spike-layer alpha), wall (H,W bool dry face bands + outline), cells, sliver,
+    used {variant index: UV boxes drawn}). mode: "before" the shipped sprite on the whole cell; "after" the fix (stake
+    atlas, or atlases[name] when given); "approved" the owner-approved layout sampling the sprite through the pinned
+    library, its `sliver` mask every scene pixel a neighbour's sliver inside a box can reach (dilated by SLIVER_REACH);
+    "approved_clean" the same with each box's slivers' alpha cleared."""
     W, H = pit.W * P, pit.H * P
     rgb = np.zeros((H, W, 3), np.float32)
     wall = np.zeros((H, W), bool)
@@ -246,12 +291,19 @@ def render(pit, mode="after", P=160, faces=True, outline=True):
                 a = WATER[3] / 255
                 rgb[r0:r1, c0:c1] = rgb[r0:r1, c0:c1] * (1 - a) + np.array(WATER[:3]) * a
     spike = np.zeros((H, W, 4), np.float32)
-    cells = {}
+    sliver = np.zeros((H, W), bool)
+    cells, used = {}, {}
     for (x, z) in sorted(pit.spikes):
         v = pit.variant_of.get((x, z), (x * 7 + z * 3) % 3)
         name = STAKES.VARIANTS[v]
-        src = Image.open(TEXDIR / ("RM_Spikes_%s.png" % name)).convert("RGBA") if mode == "before" else \
-            Image.open(STAKES.ATLAS_SRC / (STAKES.atlas_name(name) + ".png")).convert("RGBA")
+        if mode == "after":
+            src = (atlases or {}).get(name)
+            if src is None:
+                src = Image.open(STAKES.ATLAS_SRC / (STAKES.atlas_name(name) + ".png")).convert("RGBA")
+        else:
+            src = Image.open(TEXDIR / ("RM_Spikes_%s.png" % name)).convert("RGBA")
+        lib = approved_library(v) if mode.startswith("approved") else None
+        foreign = approved_foreign(v) if lib else {}
         SW, SH = src.size
         quads, alpha, laid = [], 1.0, 0
         if mode == "before":
@@ -262,17 +314,26 @@ def render(pit, mode="after", P=160, faces=True, outline=True):
             a = round(submerged_alpha(pit.f[z][x]) * ALPHA_STEPS)
             alpha = a / ALPHA_STEPS
             if d > 0:
-                quads = layout(v, pit.seeds.get((x, z), x * 1000 + z), *floor_rect(d, n, s, w, e, faces, outline))
+                quads = layout(v, pit.seeds.get((x, z), x * 1000 + z), *floor_rect(d, n, s, w, e, faces, outline), lib=lib)
                 laid = len(quads)          # the stakes the cell has dry: a deep cell must have some to hide
             if a <= 0:
                 quads = []
         cells[(x, z)] = dict(alpha=alpha, quads=len(quads), laid=laid, fill=pit.f[z][x])
         for (qx, qz, qw, qh, u0, v0, u1, v1) in quads:
             crop = src.crop((round(u0 * SW), round((1 - v1) * SH), round(u1 * SW), round((1 - v0) * SH)))
+            fm = foreign.get((u0, v0, u1, v1))
+            if mode == "approved_clean":
+                c = np.asarray(crop).copy()
+                c[fm, 3] = 0
+                crop = Image.fromarray(c, "RGBA")
             r0, r1, c0, c1 = box(x, z, qx, qz, qx + qw, qz + qh)
             if r1 <= r0 or c1 <= c0:
                 continue
+            used.setdefault(v, set()).add((u0, v0, u1, v1))    # laid out with scene px (may still sit under a later stake)
             t = np.asarray(crop.resize((c1 - c0, r1 - r0), Image.LANCZOS), np.float32) / 255
+            if fm is not None and fm.any():
+                fr = np.asarray(Image.fromarray(fm.astype(np.uint8) * 255).resize((c1 - c0, r1 - r0), Image.BOX)) > 0
+                sliver[r0:r1, c0:c1] |= fr
             t[..., 3] *= alpha
             dst = spike[r0:r1, c0:c1]
             a_new = t[..., 3:4]
@@ -281,7 +342,8 @@ def render(pit, mode="after", P=160, faces=True, outline=True):
     sa = spike[..., 3:4]
     out = rgb * (1 - sa) + spike[..., :3] * 255 * sa
     img = Image.fromarray(np.clip(out, 0, 255).astype(np.uint8), "RGB")
-    return dict(img=img, spike_a=spike[..., 3], wall=wall, cells=cells, P=P, pit=pit)
+    return dict(img=img, spike_a=spike[..., 3], wall=wall, cells=cells, P=P, pit=pit, sliver=_dilate(sliver, SLIVER_REACH),
+                used=used)
 
 
 # ---- checks ------------------------------------------------------------------------------------------------------------
@@ -329,6 +391,27 @@ def spikes_submerged(res):
     return not why, ("; ".join(why) + " | " if why else "") + table
 
 
+def same_as_approved(after, clean, approved):
+    """AFTER == the approved render but for the slivers: AFTER equals `clean` (render "approved_clean") at every pixel,
+    and `clean` differs from `approved` (render "approved") only inside approved["sliver"]. Refuses a scene with no
+    sliver or one that does not lay out every stake of every variant it draws (a stake never drawn is never compared)."""
+    sl = approved["sliver"]
+    if not sl.any():
+        return False, "scene has no sliver (vacuous)"
+    unused = ["%s %d/%d" % (STAKES.VARIANTS[v], len(u), len(approved_library(v)[0])) for v, u in sorted(approved["used"].items())
+              if len(u) != len(approved_library(v)[0])]
+    if unused or after["used"].keys() != approved["used"].keys():
+        return False, "scene does not draw every stake (%s)" % (", ".join(unused) or "variants drawn differ: %s vs %s"
+                                                               % (sorted(after["used"]), sorted(approved["used"])))
+    diff = lambda r, q: (np.asarray(r["img"], np.int16) != np.asarray(q["img"], np.int16)).any(-1) | \
+        (r["spike_a"] != q["spike_a"])
+    exact, near = int(diff(after, clean).sum()), diff(clean, approved)
+    out_n = int((near & ~sl).sum())
+    return exact == 0 and out_n == 0, ("%d px differ from the approved render minus slivers; vs the approved render %d px "
+                                       "differ outside the slivers, %d inside (footprint %d px)"
+                                       % (exact, out_n, int((near & sl).sum()), int(sl.sum())))
+
+
 # ---- scenes ------------------------------------------------------------------------------------------------------------
 def check_pit():
     """A 4 m-deep pit (8 levels) with a 2 m shelf on the east and a 0-4 level water series along its south row, spikes
@@ -351,10 +434,21 @@ def check_pit():
     return Pit(depth, fill, spikes)
 
 
+def compare_pit():
+    """A 4 m pit, 5 x 4 cells, spiked everywhere, its south row under 0.5 m: big enough that the layout draws every stake
+    of every variant (same_as_approved refuses a scene that does not), with the walls' cut and a half-faded row."""
+    depth = [[0] * 7] + [[0, 8, 8, 8, 8, 8, 0] for _ in range(4)] + [[0] * 7]
+    fill = [[0] * 7 for _ in range(4)] + [[0, 1, 1, 1, 1, 1, 0], [0] * 7]
+    return Pit(depth, fill, [(x, z) for x in range(1, 6) for z in range(1, 5)])
+
+
 if __name__ == "__main__":
     out = Path(sys.argv[1] if len(sys.argv) > 1 else ".")
     out.mkdir(parents=True, exist_ok=True)
-    for mode in ("before", "after"):
-        r = render(check_pit(), mode)
+    res = {}
+    for mode in ("before", "approved", "approved_clean", "after"):
+        res[mode] = r = render(check_pit(), mode)
         r["img"].save(out / ("spikes_%s.png" % mode))
         print(mode, spikes_over_wall(r), spikes_submerged(r))
+    cmp = {m: render(compare_pit(), m) for m in ("after", "approved_clean", "approved")}
+    print("after vs approved", same_as_approved(cmp["after"], cmp["approved_clean"], cmp["approved"]))

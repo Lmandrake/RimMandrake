@@ -52,11 +52,20 @@ Each check must FAIL on the art he rejected (the shipped code, emulated as BEFOR
     tables, so this is the check that a floor_rect drift from the walls is visible; the C# FloorRect is held by
     SpikeDrawChecks, not here)
     parity              the Python layout/hash mirror == SpikeDrawChecks' fixture numbers
+    approved kept       owner on 4f12810a3e: "spikes look great!" -- per variant the stakes' (w, h) and pitch == the pinned
+                        approved library; every atlas box == its approved sprite window with only the slivers' alpha cleared;
+                        the approved UV boxes == the windows cut now, the shipped sprites == their pinned sha256; on
+                        compare_pit (every stake drawn) the AFTER render == the approved render with the slivers' alpha
+                        cleared, exactly, and that differs from the approved render only inside the slivers
+                        (fw_scenes_spikes.same_as_approved); can-fail: the sliver pixels themselves, one stake pixel beside
+                        a sliver recoloured, a 10% wider pitch, a scene that skips a stake
     stakes.check()      RM_SpikeStakes.cs, art_source/Spikes/atlas/ and the installed stake atlases are current and every
-                        stake box holds one stake; can-fail: boxes cut straight from the shipped sprites (review s2c:
-                        neighbours' slivers) and one texel in a box's bilinear ring
+                        stake box holds one stake at every mip up to MIP_CHECK; can-fail: the approved boxes sampled straight
+                        from the shipped sprites (review s2c: neighbours' slivers), one texel in a box's bilinear ring, cells
+                        too small for the lower mips (review s3)
 """
 # selftest-timeout: 400
+import hashlib
 import re
 import sys
 from pathlib import Path
@@ -362,14 +371,75 @@ def spikes():
         spk.floor_rect, spk.submerged_alpha = real_rect, real_alpha
     hashes, (n, first, last) = spk.parity()
     want(hashes == [0, 2836592880, 1249282371], "spikes parity: hash fixture %s" % hashes)
-    fx = ((0.343608, 0.317331, 0.046875, 0.152344, 0.375000, 0.632812, 0.421875, 0.937500),
-          (0.890793, 0.075, 0.050781, 0.164062, 0.281250, 0.609375, 0.332031, 0.937500))
-    want(n == 26 and all(abs(a - b) < 1e-4 for q, f in zip((first, last), fx) for a, b in zip(q, f)),
-         "spikes parity: layout fixture (26 stakes, first/last quad) == SpikeDrawChecks")
+    fx = ((0.461250, 0.321039, 0.046875, 0.152344, 0.550781, 0.675781, 0.574219, 0.828125),
+          (0.803641, 0.075, 0.050781, 0.175781, 0.298828, 0.164062, 0.324219, 0.339844))
+    want(n == 24 and all(abs(a - b) < 1e-4 for q, f in zip((first, last), fx) for a, b in zip(q, f)),
+         "spikes parity: layout fixture (24 stakes, first/last quad) == SpikeDrawChecks")
     st = spk.STAKES
+    # the owner approved the 4f12810a3e render ("spikes look great!"): its selection, sizes and pitch stay, pinned
+    for i, v in enumerate(st.VARIANTS):
+        (lib, pitch), (alib, apitch) = spk.library(i), spk.approved_library(i)
+        want(pitch == apitch and [q[:2] for q in lib] == [q[:2] for q in alib],
+             "variant %s: stakes (w, h) and pitch == the approved library (%d vs %d stakes, pitch %s vs %s)"
+             % (v, len(lib), len(alib), pitch, apitch))
+        img, lib_uv, _ = st.atlas(v)
+        H, W = img.shape[:2]
+        same = 0
+        for (u0, v0, u1, v1), (X0, Y0, X1, Y1, win, foreign) in zip([q[2:] for q in lib_uv], st._cut(v)[0]):
+            crop = img[int(round((1 - v1) * H)):int(round((1 - v0) * H)), int(round(u0 * W)):int(round(u1 * W))]
+            keep = ~foreign
+            same += crop.shape == win.shape and (crop[keep] == win[keep]).all() and not crop[foreign][:, 3].any()
+        want(same == len(lib_uv) == len(alib), "variant %s: every atlas box == its approved sprite window, only the"
+             " slivers' alpha cleared (%d of %d, approved %d)" % (v, same, len(lib_uv), len(alib)))
+        try:
+            n_sl = sum(bool(m.any()) for m in spk.approved_foreign(i).values())
+            want(n_sl > 0, "variant %s: the approved UV boxes == the windows cut now, in order (%d with slivers)" % (v, n_sl))
+        except ValueError as e:
+            want(False, "variant %s: the approved UV boxes == the windows cut now (%s)" % (v, e))
+    pinned = dict(ln.split()[::-1] for ln in spk.APPROVED_PNG.read_text().split("\n") if ln.strip())
+    now = {f: hashlib.sha256((st.TEX / f).read_bytes()).hexdigest() for f in pinned}
+    want(len(pinned) == 3 and now == pinned, "the shipped RM_Spikes sprites == the ones the approved render sampled (%s)"
+         % sorted(f for f in pinned if now[f] != pinned[f]))
+    # the owner's render vs the fix, on a pit that lays out every stake of every variant (check_pit misses one)
+    cmp = {m: spk.render(spk.compare_pit(), m, P=PX) for m in ("after", "approved_clean", "approved")}
+    ok, d = spk.same_as_approved(cmp["after"], cmp["approved_clean"], cmp["approved"])
+    want(ok, "after == the approved render with only the slivers cleared (%s)" % d)
+    ok, d = spk.same_as_approved(after, spk.render(spk.check_pit(), "approved_clean", P=PX),
+                                 spk.render(spk.check_pit(), "approved", P=PX))
+    want(not ok and "every stake" in d, "same_as_approved can-fail: a scene that skips a stake is refused (%s)" % d)
+    cut = dict(cmp["approved"], sliver=np.zeros_like(cmp["approved"]["sliver"]))
+    cut["sliver"][0, 0] = True
+    ok, d = spk.same_as_approved(cmp["after"], cmp["approved_clean"], cut)
+    want(not ok, "same_as_approved can-fail: the sliver pixels themselves differ (%s)" % d)
+    # can-fail: the most opaque stake pixel within 3 px of a sliver, over all variants, recoloured in its atlas
+    best = None
+    for name in st.VARIANTS:
+        img, lib_uv, _ = st.atlas(name)
+        H, W = img.shape[:2]
+        for (u0, v0, u1, v1), (X0, Y0, X1, Y1, win, foreign) in zip([q[2:] for q in lib_uv], st._cut(name)[0]):
+            near = spk._dilate(foreign, 3)      # own pixels never 8-touch a foreign one (another component): within 3 px
+            for y, x in np.argwhere(near & ~foreign & (win[..., 3] > 0)):
+                if best is None or win[y, x, 3] > best[0]:
+                    best = (int(win[y, x, 3]), name, img, int(round((1 - v1) * H)) + y, int(round(u0 * W)) + x)
+    want(best is not None and best[0] >= 128, "a stake pixel (alpha >= 128) within 3 px of a sliver to recolour (%s)"
+         % (best and best[:2],))
+    _, name, img, y, x = best
+    img = img.copy()
+    img[y, x, :3] = 255 - img[y, x, :3]
+    moved = spk.render(spk.compare_pit(), "after", P=PX, atlases={name: Image.fromarray(img, "RGBA")})
+    ok, d = spk.same_as_approved(moved, cmp["approved_clean"], cmp["approved"])
+    want(not ok, "same_as_approved can-fail: one stake pixel beside a sliver recoloured (%s)" % d)
+    real_lib = dict(spk._LIB)
+    try:     # can-fail, the r3 drift: a different pitch moves every stake
+        spk._LIB.update({i: (lib, (p[0] * 1.1, p[1] * 1.1)) for i, (lib, p) in real_lib.items()})
+        ok, d = spk.same_as_approved(spk.render(spk.compare_pit(), "after", P=PX), cmp["approved_clean"], cmp["approved"])
+        want(not ok, "same_as_approved can-fail: a 10%% wider pitch (%s)" % d)
+    finally:
+        spk._LIB.clear()
+        spk._LIB.update(real_lib)
     bad = st.check()
     want(not bad, "stakes.py --check: .cs, atlas sources and installed atlases current, every box one stake (%s)" % bad)
-    # can-fail, the review s2c defect: stakes cut as padded bboxes straight out of the shipped sprite hold neighbours' pixels
+    # can-fail, the review s2c defect: the approved boxes, sampled straight from the shipped sprite, hold neighbours' slivers
     dirty = 0
     for v in st.VARIANTS:
         a = np.asarray(Image.open(st.TEX / ("RM_Spikes_%s.png" % v)).convert("RGBA"))[..., 3]
@@ -382,7 +452,11 @@ def spikes():
     x1 = int(round(lib[0][4] * img.shape[1]))
     smear[int(round((1 - lib[0][5]) * img.shape[0])) + 2, x1, 3] = 200      # one opaque texel in stake 0's bilinear ring
     want(st.dirty_boxes(smear[..., 3], [q[2:] for q in lib]) == 1, "dirty_boxes can-fail: a texel in the bilinear ring")
-
+    tight, tlib, _ = st.atlas("b", 24, 64, 256)       # review s3: cells too small for the lower mips
+    n = st.dirty_boxes(tight[..., 3], [q[2:] for q in tlib])
+    want(n > 0, "dirty_boxes can-fail: 24x64 cells mix stakes by mip %d (%d boxes)" % (st.MIP_CHECK, n))
+    n = st.dirty_boxes(tight[..., 3], [q[2:] for q in tlib], levels=0)
+    want(n == 0, "dirty_boxes: the same 24x64 atlas is clean at full resolution (the mip levels are what fail it)")
 
 if __name__ == "__main__":
     parity()

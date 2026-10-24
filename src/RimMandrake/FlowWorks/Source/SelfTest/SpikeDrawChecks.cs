@@ -149,9 +149,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                     && RM_SpikeDrawMath.Hash(-3, 99) == 1249282371u, "hash parity");
                 var quads = new List<float>();
                 int k = RM_SpikeDrawMath.Layout(1, 42, 0.04f, 0.065f, 0.96f, 0.5f, quads);
-                Assert(k == 26, "layout count parity: " + k);
-                float[] first = { 0.343608f, 0.317331f, 0.046875f, 0.152344f, 0.375000f, 0.632812f, 0.421875f, 0.937500f };
-                float[] last = { 0.890793f, 0.075f, 0.050781f, 0.164062f, 0.281250f, 0.609375f, 0.332031f, 0.937500f };
+                Assert(k == 24, "layout count parity: " + k);
+                float[] first = { 0.461250f, 0.321039f, 0.046875f, 0.152344f, 0.550781f, 0.675781f, 0.574219f, 0.828125f };
+                float[] last = { 0.803641f, 0.075f, 0.050781f, 0.175781f, 0.298828f, 0.164062f, 0.324219f, 0.339844f };
                 int o = (k - 1) * RM_SpikeDrawMath.Out;
                 for (int i = 0; i < RM_SpikeDrawMath.Out; i++)
                 {
