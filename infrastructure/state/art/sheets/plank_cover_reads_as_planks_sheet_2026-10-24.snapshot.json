@@ -1,0 +1,77 @@
+{
+ "biome": "SUBJECTS_plank_cover_reads_as_planks",
+ "built": "2026-10-24T11:41:29-0700",
+ "census": "Transient/biome_ffar/plank_cover_reads_as_planks.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 26 mods \u2014 a test list): 320 active",
+ "rows": {
+  "RM_PitCover_PlankLattice": {
+   "columns": {
+    "A": {
+     "single": "45e76350e71ecc3264a485aa63896ae0446fcb2cedf07f703554966e71c40593"
+    },
+    "B": {
+     "single": "2ad8ba58b457357a76154ba2cd07e83fc0efa946fe1ae6f047dae7d177cbdd1a"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Building/FlowWorks/Canals/RM_PitCover_PlankLattice",
+    "B": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render fwart_RM_PitCover_PlankLattice"
+   },
+   "pools": [],
+   "res": "Things/Building/FlowWorks/Canals/RM_PitCover_PlankLattice",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "pitcover_planklattice"
+  },
+  "RM_PitCover_ReinforcedFrame": {
+   "columns": {
+    "A": {
+     "single": "5d2cca237b4c4725f11b79d0af153e27d2b9e2f53d6e43bba7738870a930887e"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Building/FlowWorks/Canals/RM_PitCover_ReinforcedFrame"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks"
+   },
+   "pools": [],
+   "res": "Things/Building/FlowWorks/Canals/RM_PitCover_ReinforcedFrame",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "pitcover_reinforcedframe"
+  },
+  "RM_PitCover_WovenScrap": {
+   "columns": {
+    "A": {
+     "single": "40af6335eee99e8818f3bee175dc4b0eeb5298895a66995239789ac2b4b1f0af"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Building/FlowWorks/Canals/RM_PitCover_WovenScrap"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks"
+   },
+   "pools": [],
+   "res": "Things/Building/FlowWorks/Canals/RM_PitCover_WovenScrap",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "pitcover_wovenscrap"
+  }
+ },
+ "sheetId": "plank_cover_reads_as_planks_sheet_2026-10-24",
+ "snapshotId": "71a26c96eca5ab1c"
+}
