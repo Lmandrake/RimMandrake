@@ -868,24 +868,33 @@ def _sha(p: Path) -> str:
 
 
 def _preexisting_twin(out: Path, home: Path, before: set[Path]) -> Path | None:
-    """A cache image that existed BEFORE this run and is byte-identical to `out`, else None.
+    """A cache image that is NOT this run's render and is byte-identical to `out`, else None.
 
-    Searched: this home's pre-run snapshot, the shared base home, and sibling worker homes (home.parent/*).
+    Searched: this home's PRE-RUN snapshot (`before`; files this run made are skipped), then every file
+    in the shared base home and in sibling homes (home.parent/*) regardless of age — a render another
+    session made there, even mid-run, is still not ours. Roots are de-duplicated by resolved path, so an
+    alias of our own home (a `..` or symlink spelling) can never make this run's render look foreign.
     Size is compared first so only same-size files are hashed."""
-    roots = {home / GENERATED_SUBDIR}
+    own_root = home / GENERATED_SUBDIR
+    roots, seen = [own_root], set()
     try:
-        roots.add(base_codex_home() / GENERATED_SUBDIR)
+        roots.append(base_codex_home() / GENERATED_SUBDIR)
     except EnvError:
         pass
     try:
-        roots.update(d / GENERATED_SUBDIR for d in home.parent.iterdir() if d.is_dir())
+        roots.extend(d / GENERATED_SUBDIR for d in home.parent.iterdir() if d.is_dir())
     except OSError:
         pass
     size, digest = out.stat().st_size, None
     for root in roots:
-        if not root.is_dir():
+        try:
+            key = root.resolve()
+        except (OSError, RuntimeError):  # RuntimeError: a symlink loop on Python < 3.13
             continue
-        own = root == home / GENERATED_SUBDIR
+        if key in seen or not root.is_dir():
+            continue
+        seen.add(key)
+        own = root is own_root
         for p in root.rglob("*"):
             try:
                 if (own and p not in before) or not p.is_file() or p.stat().st_size != size:
@@ -1196,24 +1205,16 @@ def _do_image(args, finalize=None) -> int:
     # PNG" in the owner's global ~/.codex/generated_images (not its own CODEX_HOME) and copied an unrelated
     # image from another session (arteval_RM_TruffleMole_r1_south 2026-10-23: a sheet of 8 bollards, while
     # this run's two real mole renders sat unharvested in the worker home). A placed file whose bytes equal
-    # an image that ALREADY existed in a codex cache before this run is proven foreign: replace it with this
-    # run's newest render of the same type, or fail. A file we cannot trace (post-processed, or moved out of
-    # generated_images) is left alone — "source not found" is not proof.
-    if fresh:
-        foreign_src = _preexisting_twin(out, home, before)
-        if foreign_src is not None:
-            made = [p for p in harvest_new(home, before) if p.suffix.lower() == out.suffix.lower()]
-            if made:
-                shutil.copy2(made[-1], out)
-                print(f"note: agent placed a copy of {foreign_src} (not this run's render); replaced it "
-                      f"with {made[-1].name} from {GENERATED_SUBDIR}/", file=sys.stderr)
-            else:
-                foreign = out.with_name(out.stem + ".foreign" + out.suffix)
-                os.replace(out, foreign)
-                fresh = False
-                print(f"ERROR agent placed a copy of {foreign_src}, an image that existed before this "
-                      f"run, and this run left no render of its own (kept as {foreign.name}).",
-                      file=sys.stderr)
+    # a cache image that is not this run's (see _preexisting_twin) is proven foreign: it is set aside and the
+    # harvest below takes this run's own newest render, or the run fails. A file we cannot trace
+    # (post-processed, or moved out of generated_images) is left alone — "source not found" is not proof.
+    foreign_src = _preexisting_twin(out, home, before) if fresh else None
+    if foreign_src is not None:
+        foreign = out.with_name(out.stem + ".foreign" + out.suffix)
+        os.replace(out, foreign)
+        fresh = False
+        print(f"note: agent placed a copy of {foreign_src}, not this run's render; set aside as "
+              f"{foreign.name}, harvesting this run's own render instead", file=sys.stderr)
 
     # 🔴 Harvest on EVERY path, timeout included. The agent was asked to copy
     # the file here; whether it did, and whether our own ceiling expired while
@@ -1227,8 +1228,9 @@ def _do_image(args, finalize=None) -> int:
             chosen = candidates[-1]
             shutil.copy2(chosen, out)
             fresh = True
-            why = (f"timed out after {args.timeout}s"
-                   if timed_out else "agent did not place the file")
+            why = (f"timed out after {args.timeout}s" if timed_out
+                   else "agent placed a foreign copy" if foreign_src is not None
+                   else "agent did not place the file")
             print(f"note: {why}; harvested {chosen.name} from "
                   f"{GENERATED_SUBDIR}/", file=sys.stderr)
 
