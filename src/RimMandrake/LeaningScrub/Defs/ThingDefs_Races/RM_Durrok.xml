@@ -113,21 +113,21 @@
 		<lifeStages>
 			<li>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<!-- artpipe render (installed 2026-10-16); no longer the donor Alpha Animals placeholder -->
 					<texPath>Things/Pawn/Animal/RM_Durrok/RM_Durrok</texPath>
 					<drawSize>0.7</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<!-- artpipe render (installed 2026-10-16); no longer the donor Alpha Animals placeholder -->
 					<texPath>Things/Pawn/Animal/RM_Durrok/RM_Durrok</texPath>
 					<drawSize>1.5</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+					<!-- artpipe render (installed 2026-10-16); no longer the donor Alpha Animals placeholder -->
 					<texPath>Things/Pawn/Animal/RM_Durrok/RM_Durrok</texPath>
 					<drawSize>2</drawSize>
 				</bodyGraphicData>
