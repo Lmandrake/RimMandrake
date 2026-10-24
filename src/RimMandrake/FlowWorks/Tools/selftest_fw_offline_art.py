@@ -17,9 +17,13 @@ Each check must FAIL on the art he rejected (the shipped code, emulated as BEFOR
     both centroid and clamp checks can-fail on a blank head; every check passes for every head look on every pipe
     look (the seat follows the pipe's look in game)
   parity: fw_scenes_sprinkler.seat == RM_PipeSeatMath.Seat for all 16 masks x every look (k, r and the stub read from the
-          C# source via selftest_pipe_seat's parser); the installed head PNGs == squat_heads.squat(raw) pixel for pixel,
+          C# source via selftest_pipe_seat's parser); the installed head PNGs == squat_heads.shipped(raw) pixel for pixel,
           and every RM_SprinklerHead drawOffset z (the four styles and the base ThingDef) == (SEAT_Y - 128) / 256 to 3 dp
           -- together: the art's seat row lands on the pipe axis.
+  Modern waterworks blue, every recoloured piece + the Modern head (MODERN_PIPE_REDRAW_FIRETRUCK_RED_RETIRED):
+    no saturated red          FAIL on the red originals (ModernStyle/red, the squat red head), PASS installed
+    alpha unchanged           installed alpha == the red original's byte for byte: every fit (atlas, joins, seat, ports) holds
+    pinned                    installed == waterworks_blue.recolour(red original) pixel for pixel
 """
 # selftest-timeout: 400
 import re
@@ -35,6 +39,7 @@ import fw_scenes_sprinkler as ss  # noqa: E402
 import selftest_pipe_seat as ps  # noqa: E402
 sys.path.insert(0, str(HERE.parent / "art_source" / "Sprinkler"))
 import squat_heads  # noqa: E402
+import waterworks_blue as wb  # noqa: E402  (squat_heads put art_source/ModernStyle on the path)
 
 PX = 40
 fails = []
@@ -94,10 +99,10 @@ def sprinkler_parity():
     import numpy as np
     from PIL import Image
     for look in fc.LOOKS:
-        made, _ = squat_heads.squat(Image.open(ss.RAW / look / "RM_SprinklerHead.png").convert("RGBA"))
+        made, _ = squat_heads.shipped(look, Image.open(ss.RAW / look / "RM_SprinklerHead.png").convert("RGBA"))
         shipped = Image.open(fc.FW / "Textures/RimMandrake/FlowWorks/Sprinkler" / look / "RM_SprinklerHead.png").convert("RGBA")
         same = made.size == shipped.size and np.array_equal(np.asarray(made), np.asarray(shipped))
-        want(same, "parity: installed %s head == squat_heads.squat(raw/%s) pixel for pixel" % (look, look))
+        want(same, "parity: installed %s head == squat_heads.shipped(raw/%s) pixel for pixel" % (look, look))
     try:
         oz = ss.def_offsets(base=True)
     except ValueError as e:
@@ -143,10 +148,29 @@ def sprinkler():
         ss.seat = real
 
 
+def modern_blue():
+    import numpy as np
+    from PIL import Image
+    red_head, _ = squat_heads.squat(Image.open(ss.RAW / "Modern" / "RM_SprinklerHead.png").convert("RGBA"))
+    pairs = [(rel, Image.open(wb.RED / rel).convert("RGBA"), wb.TEX / rel) for rel in wb.PIECES]
+    pairs.append((wb.SPRINKLER, red_head, wb.TEX / wb.SPRINKLER))
+    for rel, red, path in pairs:
+        live = Image.open(path).convert("RGBA")
+        before, after = wb.saturated_red_share(red), wb.saturated_red_share(live)
+        want(before > 0.3, "modern blue: %s red original is saturated red (%.3f > 0.3): the check can fail" % (rel, before))
+        want(after < 0.002, "modern blue: %s installed has no saturated red (%.4f < 0.002)" % (rel, after))
+        a, b = np.asarray(red), np.asarray(live)
+        want(a.shape == b.shape and np.array_equal(a[..., 3], b[..., 3]),
+             "modern blue: %s alpha == red original's byte for byte (fits unchanged)" % rel)
+        made, _ = wb.recolour(red, rel)
+        want(np.array_equal(np.asarray(made), b), "modern blue: %s installed == recolour(red original)" % rel)
+
+
 if __name__ == "__main__":
     parity()
     pipe_joins()
     sprinkler_parity()
     sprinkler()
+    modern_blue()
     print("%d FAIL" % len(fails) if fails else "ALL OK")
     sys.exit(1 if fails else 0)
