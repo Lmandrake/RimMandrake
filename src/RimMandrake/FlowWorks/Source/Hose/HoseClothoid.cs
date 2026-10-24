@@ -93,7 +93,8 @@ namespace RimMandrake.FlowWorks.Hose
         private static readonly double[] GW = { 0.3478548451374538, 0.6521451548625461, 0.6521451548625461, 0.3478548451374538 };
 
         /// <summary>The curve's drawn samples (nodes and sub-samples), the end heading out.</summary>
-        internal static List<V2> Sample(V2 p0, double th0, double[] K, double l, int sub, out double thEnd)
+        /// <remarks>Node interval i is h[i] cells of hose long.</remarks>
+        internal static List<V2> Sample(V2 p0, double th0, double[] K, double[] h, int sub, out double thEnd)
         {
             var o = new List<V2>(K.Length * sub);
             V2 p = p0;
@@ -101,13 +102,53 @@ namespace RimMandrake.FlowWorks.Hose
             o.Add(p);
             for (int i = 0; i + 1 < K.Length; i++)
             {
-                for (int q = 1; q <= sub; q++) o.Add(Piece(p, th, K[i], K[i + 1], l, l * q / sub));
+                for (int q = 1; q <= sub; q++) o.Add(Piece(p, th, K[i], K[i + 1], h[i], h[i] * q / sub));
                 p = o[o.Count - 1];
-                th += 0.5 * l * (K[i] + K[i + 1]);
+                th += 0.5 * h[i] * (K[i] + K[i + 1]);
             }
             thEnd = th;
             return o;
         }
+
+        /// <summary>The curvature nodes' material positions: a node exactly at every end of a straight lead or span (so a run
+        /// is exactly its length plus <see cref="RunPad"/>, never rounded out to a uniform grid: HOSE_FIT_HARDEN_FREE_LENGTH_SHORT_LEAD, 2026-10-24 --
+        /// the rounding made a 0.6 lead act as ~0.85 and a 0.75 coupling as ~1.15, which no tight mate can afford), and each
+        /// stretch between breakpoints cut into equal intervals of at most <paramref name="step"/>. Breakpoints closer than
+        /// <see cref="MinGap"/> merge (the later one dropped, the hose end kept).</summary>
+        internal static double[] Nodes(Problem pr, double step, out List<(double a, double b)> runs)
+        {
+            double L = pr.L;
+            runs = new List<(double, double)>();
+            if (pr.Lead0 > 0) runs.Add((0, Math.Min(L, pr.Lead0 + RunPad)));
+            if (pr.Lead1 > 0) runs.Add((Math.Max(0, L - pr.Lead1 - RunPad), L));
+            foreach (var sp in pr.Straight) { double a = Clamp(sp.s0 - RunPad, 0, L), b = Clamp(sp.s1 + RunPad, 0, L); if (b > a) runs.Add((a, b)); }
+            var brk = new List<double> { 0, L };
+            foreach (var r in runs) { brk.Add(r.a); brk.Add(r.b); }
+            brk.Sort();
+            var B = new List<double> { 0 };
+            foreach (double b in brk)
+            {
+                if (b >= L - MinGap) break;
+                if (b - B[B.Count - 1] >= MinGap) B.Add(b);
+            }
+            B.Add(L);
+            var S = new List<double> { 0 };
+            for (int r = 0; r + 1 < B.Count; r++)
+            {
+                double len = B[r + 1] - B[r];
+                int n = Math.Max(1, (int)Math.Ceiling(len / step - 1e-9));
+                for (int q = 1; q <= n; q++) S.Add(q == n ? B[r + 1] : B[r] + len * q / n);
+            }
+            if (S.Count == 2) S.Insert(1, 0.5 * L);
+            return S.ToArray();
+        }
+
+        /// <summary>Breakpoints closer than this (cells) merge into one node.</summary>
+        public const double MinGap = 0.02;
+        /// <summary>A straight run's curved side moves out by this (cells), so the drawn sample at its release lies just past
+        /// the run and the ruler's three-point stencil at the run's last sample reads it straight (the old pad was a whole
+        /// drawn sample, 0.25).</summary>
+        public const double RunPad = 0.02;
 
         // ------------------------------------------------------------------------------------------------ solve
         /// <summary>Solves <paramref name="pr"/>. The result's points always come from the curve (never snapped onto the ends);
@@ -128,24 +169,24 @@ namespace RimMandrake.FlowWorks.Hose
             Solves++;
             var res = new Result();
             double kmax = pr.Kmax, J = pr.J > 0 ? pr.J : JerkPerKmax * pr.Kmax;
-            int N = Math.Max(2, (int)Math.Ceiling(pr.L / (pr.Step > 0 ? pr.Step : NodeStep) - 1e-9));
-            double l = pr.L / N;
+            double[] Sn0 = Nodes(pr, pr.Step > 0 ? pr.Step : NodeStep, out var runs);
+            int N = Sn0.Length - 1;
+            var h = new double[N];
+            for (int i = 0; i < N; i++) h[i] = Sn0[i + 1] - Sn0[i];
+            double l = pr.L / N; // the mean interval: the track and bending weights, and Result.Step (mean drawn-sample spacing)
             int sub = Math.Max(1, pr.Sub);
             res.Step = l / sub;
-            // fixed nodes: the start node at Kappa0, the end node at 0, every node of a straight lead or span
+            // fixed nodes: the start node at Kappa0, the end node at 0, both nodes of every interval inside a straight run
             var fixedK = new double?[N + 1];
             fixedK[0] = Clamp(pr.Kappa0, -kmax, kmax);
             fixedK[N] = 0;
-            // a straight run covers its length plus one drawn sample, so the ruler's stencil at its release reads it straight
-            double pad = res.Step + 1e-6;
-            for (int i = 0; i <= N; i++)
+            for (int i = 0; i < N; i++)
             {
-                double s = i * l;
-                if (pr.Lead0 > 0 && s <= pr.Lead0 + l + pad - 1e-9 && s <= Math.Ceiling((pr.Lead0 + pad) / l - 1e-9) * l + 1e-9) fixedK[i] = 0;
-                if (pr.Lead1 > 0 && pr.L - s <= Math.Ceiling((pr.Lead1 + pad) / l - 1e-9) * l + 1e-9) fixedK[i] = 0;
-                foreach (var sp in pr.Straight)
-                    if (s >= Math.Floor((sp.s0 - pad) / l) * l - 1e-9 && s <= Math.Ceiling((sp.s1 + pad) / l) * l + 1e-9) fixedK[i] = 0;
+                double mid = 0.5 * (Sn0[i] + Sn0[i + 1]);
+                foreach (var r in runs) if (mid >= r.a - 1e-9 && mid <= r.b + 1e-9) { fixedK[i] = 0; fixedK[i + 1] = 0; }
             }
+            var dkI = new double[N];
+            for (int i = 0; i < N; i++) dkI[i] = J * h[i];
             if (pr.Lead0 > 0 && Math.Abs(fixedK[0].Value) > 0) fixedK[0] = 0;
             var vars = new List<int>();
             for (int i = 0; i <= N; i++) if (!fixedK[i].HasValue) vars.Add(i);
@@ -160,7 +201,8 @@ namespace RimMandrake.FlowWorks.Hose
                 int j = 0;
                 for (int q = 0; q < ns; q++)
                 {
-                    double t = Lr * q / (ns - 1);
+                    int qi = Math.Min(N - 1, q / sub);
+                    double t = Lr * (Sn0[qi] + h[qi] * (q - qi * sub) / sub) / pr.L;
                     while (j < sr.Length - 2 && sr[j + 1] < t) j++;
                     double seg = sr[j + 1] - sr[j];
                     double u = seg < 1e-12 ? 0 : Clamp((t - sr[j]) / seg, 0, 1);
@@ -179,16 +221,16 @@ namespace RimMandrake.FlowWorks.Hose
                     double len = 0.5 * (u.Len + v.Len);
                     K[i] = len < 1e-9 ? 0 : Math.Atan2(u.X * v.Z - u.Z * v.X, u.X * v.X + u.Z * v.Z) / len;
                 }
-                MakeFeasible(K, fixedK, kmax, J * l);
-                if (!BoundsHold(K, kmax, J * l, 1e-9)) { Array.Clear(K, 0, K.Length); for (int i = 0; i <= N; i++) if (fixedK[i].HasValue) K[i] = fixedK[i].Value; MakeFeasible(K, fixedK, kmax, J * l); }
+                MakeFeasible(K, fixedK, kmax, dkI);
+                if (!BoundsHold(K, kmax, dkI, 1e-9)) { Array.Clear(K, 0, K.Length); for (int i = 0; i <= N; i++) if (fixedK[i].HasValue) K[i] = fixedK[i].Value; MakeFeasible(K, fixedK, kmax, dkI); }
             }
-            if (!BoundsHold(K, kmax, J * l, 1e-9)) { res.Why = "no curvature profile meets the straight runs and the ramp limit"; return Finish(res, pr, K, pr.Theta0 ?? 0, l, sub); }
+            if (!BoundsHold(K, kmax, dkI, 1e-9)) { res.Why = "no curvature profile meets the straight runs and the ramp limit"; return Finish(res, pr, K, pr.Theta0 ?? 0, h, sub); }
             double th0 = pr.Theta0 ?? Math.Atan2((Q[Math.Min(ns - 1, sub)] - Q[0]).Z, (Q[Math.Min(ns - 1, sub)] - Q[0]).X);
             // the end heading target, unwrapped to the turn the route makes
             double th1 = 0;
             if (pr.Theta1.HasValue)
             {
-                Sample(pr.P0, th0, K, l, sub, out double thE);
+                Sample(pr.P0, th0, K, h, sub, out double thE);
                 th1 = pr.Theta1.Value + Math.Round((thE - pr.Theta1.Value) / (2 * Math.PI)) * 2 * Math.PI;
             }
             // Gauss-Newton SQP on the node curvatures (2026-10-24, replaces a finite-difference Levenberg-Marquardt that cost
@@ -198,9 +240,13 @@ namespace RimMandrake.FlowWorks.Hose
             // constraints, solved through the KKT system's Schur complement. The Jacobian is analytic: past node j+1 a change of
             // kappa_j only turns the rest of the chain rigidly about node j+1, so every product of two columns over the track
             // rows is a closed form in suffix sums and the normal matrix costs O(nv^2) per iteration, not O(rows x nv^2).
-            double dk = J * l, kIn = kmax * 0.995, dIn = dk * 0.995;
+            double kIn = kmax * 0.995;
+            var dInI = new double[N];
+            for (int i = 0; i < N; i++) dInI[i] = dkI[i] * 0.995;
             int nE = 2 + (pr.Theta1.HasValue ? 1 : 0);
-            double wT2 = Math.Max(1e-9, pr.TrackWeight) * l, wF2 = 0.15 / l, wB2 = 0.02 * l, wI2 = 1e6;
+            double wT2 = Math.Max(1e-9, pr.TrackWeight) * l, wB2 = 0.02 * l, wI2 = 1e6;
+            var wF2 = new double[N];
+            for (int i = 0; i < N; i++) wF2[i] = 0.15 / h[i];
             var Qn = new V2[N + 1];
             for (int i = 0; i <= N; i++) Qn[i] = Q[Math.Min(ns - 1, i * sub)];
             int nk = vars.Count;
@@ -218,19 +264,19 @@ namespace RimMandrake.FlowWorks.Hose
                 thN[0] = t0;
                 for (int i = 0; i < N; i++)
                 {
-                    double x = 0, z = 0, x0 = 0, z0 = 0, x1 = 0, z1 = 0, k0 = KK[i], k1 = KK[i + 1], th = thN[i];
+                    double x = 0, z = 0, x0 = 0, z0 = 0, x1 = 0, z1 = 0, k0 = KK[i], k1 = KK[i + 1], th = thN[i], hl = h[i];
                     for (int g = 0; g < 4; g++)
                     {
-                        double tau = 0.5 * l * (1 + GX[g]);
-                        double q2 = tau * tau / (2 * l);
+                        double tau = 0.5 * hl * (1 + GX[g]);
+                        double q2 = tau * tau / (2 * hl);
                         double a = th + k0 * tau + (k1 - k0) * q2;
                         double c = Math.Cos(a) * GW[g], s = Math.Sin(a) * GW[g];
                         x += c; z += s;
                         if (derivs) { x0 += -s * (tau - q2); z0 += c * (tau - q2); x1 += -s * q2; z1 += c * q2; }
                     }
-                    pN[i + 1] = new V2(pN[i].X + 0.5 * l * x, pN[i].Z + 0.5 * l * z);
-                    thN[i + 1] = th + 0.5 * l * (k0 + k1);
-                    if (derivs) { E0[i] = new V2(0.5 * l * x0, 0.5 * l * z0); E1[i] = new V2(0.5 * l * x1, 0.5 * l * z1); }
+                    pN[i + 1] = new V2(pN[i].X + 0.5 * hl * x, pN[i].Z + 0.5 * hl * z);
+                    thN[i + 1] = th + 0.5 * hl * (k0 + k1);
+                    if (derivs) { E0[i] = new V2(0.5 * hl * x0, 0.5 * hl * z0); E1[i] = new V2(0.5 * hl * x1, 0.5 * hl * z1); }
                 }
             }
             V2 Rot(V2 a) => new V2(-a.Z, a.X);
@@ -238,7 +284,7 @@ namespace RimMandrake.FlowWorks.Hose
             {
                 double f = 0;
                 for (int q = 1; q <= N; q++) { V2 d = pN[q] - Qn[q]; f += wT2 * (d.X * d.X + d.Z * d.Z); }
-                for (int i = 0; i < N; i++) { double d = KK[i + 1] - KK[i]; f += wF2 * d * d; double o = Math.Abs(d) - dIn; if (o > 0) f += wI2 * o * o; }
+                for (int i = 0; i < N; i++) { double d = KK[i + 1] - KK[i]; f += wF2[i] * d * d; double o = Math.Abs(d) - dInI[i]; if (o > 0) f += wI2 * o * o; }
                 for (int i = 0; i <= N; i++) { f += wB2 * KK[i] * KK[i]; double o = Math.Abs(KK[i]) - kIn; if (o > 0) f += wI2 * o * o; }
                 return 0.5 * f;
             }
@@ -280,9 +326,9 @@ namespace RimMandrake.FlowWorks.Hose
                     {
                         int j = vars[v];
                         V2 Dj = j >= 1 ? E1[j - 1] : new V2(0, 0);
-                        double dth = j >= 1 ? 0.5 * l : 0;
-                        V2 dp1 = Dj + Rot(pN[j + 1] - pN[j]) * dth + E0[j];
-                        Cc[v] = dth + 0.5 * l;
+                        double dth = j >= 1 ? 0.5 * h[j - 1] : 0;
+                        V2 dp1 = (j < N ? Dj + Rot(pN[j + 1] - pN[j]) * dth + E0[j] : Dj);
+                        Cc[v] = dth + (j < N ? 0.5 * h[j] : 0);
                         U[v] = dp1 - Rot(pN[j + 1]) * Cc[v];
                         D[v] = Dj;
                         St[v] = j + 1;
@@ -313,9 +359,9 @@ namespace RimMandrake.FlowWorks.Hose
                             int fa = a < nk ? vars[a] : -1, fb = b < nk ? vars[b] : -1;
                             if (fa > fb) { lo = b; hi = a; }
                             int Q0 = St[hi];
-                            double h = Sn[Q0] * Dot(U[a], U[b]) + Cc[b] * Dot(U[a], SW[Q0]) + Cc[a] * Dot(U[b], SW[Q0]) + Cc[a] * Cc[b] * S2[Q0];
-                            if (hi < nk) { int jh = vars[hi]; if (jh >= 1) h += Dot(RigidAt(lo, jh), D[hi]); }
-                            H[a * nv + b] = H[b * nv + a] = wT2 * h;
+                            double hh = Sn[Q0] * Dot(U[a], U[b]) + Cc[b] * Dot(U[a], SW[Q0]) + Cc[a] * Dot(U[b], SW[Q0]) + Cc[a] * Cc[b] * S2[Q0];
+                            if (hi < nk) { int jh = vars[hi]; if (jh >= 1) hh += Dot(RigidAt(lo, jh), D[hi]); }
+                            H[a * nv + b] = H[b * nv + a] = wT2 * hh;
                         }
                         for (int e = 0; e < nE; e++) A[e * nv + a] = e < 2 ? (e == 0 ? RigidAt(a, N).X : RigidAt(a, N).Z) : Cc[a];
                     }
@@ -330,8 +376,8 @@ namespace RimMandrake.FlowWorks.Hose
                     for (int i = 0; i < N; i++)
                     {
                         double d = KC[i + 1] - KC[i];
-                        Pair(i, i + 1, wF2, d);
-                        double o = Math.Abs(d) - dIn;
+                        Pair(i, i + 1, wF2[i], d);
+                        double o = Math.Abs(d) - dInI[i];
                         if (o > 0) Pair(i, i + 1, wI2, Math.Sign(d) * o);
                     }
                     for (int v = 0; v < nk; v++)
@@ -351,7 +397,7 @@ namespace RimMandrake.FlowWorks.Hose
                             // chord to first order) is broken by one small deterministic drape, then made to hold the bounds
                             perturbed = restart = true;
                             for (int v = 0; v < nk; v++) KC[vars[v]] += 0.15 * kmax * Math.Cos(2 * Math.PI * vars[v] / N);
-                            MakeFeasible(KC, fixedK, kIn, dIn);
+                            MakeFeasible(KC, fixedK, kIn, dInI);
                             break;
                         }
                         if (d == null) { mu = Math.Max(1e-6, mu * 100); stall++; continue; }
@@ -391,8 +437,8 @@ namespace RimMandrake.FlowWorks.Hose
                     {
                         int j = vars[v];
                         V2 Dj = j >= 1 ? E1[j - 1] : new V2(0, 0);
-                        double dth = j >= 1 ? 0.5 * l : 0;
-                        double cj = dth + 0.5 * l;
+                        double dth = j >= 1 ? 0.5 * h[j - 1] : 0;
+                        double cj = dth + 0.5 * h[j];
                         V2 dpN = Dj + Rot(pN[j + 1] - pN[j]) * dth + E0[j] + Rot(pN[N] - pN[j + 1]) * cj;
                         A[v] = dpN.X; A[nv + v] = dpN.Z; if (nE == 3) A[2 * nv + v] = cj;
                     }
@@ -410,15 +456,15 @@ namespace RimMandrake.FlowWorks.Hose
                     KC = KN; thC = thT; cC = cN;
                 }
                 for (int i = 0; i <= N; i++) if (Math.Abs(KC[i]) > kIn + 1e-9) active++;
-                for (int i = 0; i < N; i++) if (Math.Abs(KC[i + 1] - KC[i]) > dIn + 1e-9) active++;
+                for (int i = 0; i < N; i++) if (Math.Abs(KC[i + 1] - KC[i]) > dInI[i] + 1e-9) active++;
             }
             res.Iterations = ran;
             double[] KF = KC;
             res.Theta0 = thC;
-            res = Finish(res, pr, KF, res.Theta0, l, sub);
-            res.HeadErr = pr.Theta1.HasValue ? Math.Abs(Sum(KF, l) + res.Theta0 - th1) : 0;
-            bool ok = res.EndErr < EndTol && res.HeadErr < EndTol && BoundsHold(KF, kmax, J * l, 1e-6);
-            if (!ok && res.EndErr < SnapFrac * pr.L) ok = Snap(res, pr, KF, l, kmax, J * l, th1);
+            res = Finish(res, pr, KF, res.Theta0, h, sub);
+            res.HeadErr = pr.Theta1.HasValue ? Math.Abs(Sum(KF, h) + res.Theta0 - th1) : 0;
+            bool ok = res.EndErr < EndTol && res.HeadErr < EndTol && BoundsHold(KF, kmax, dkI, 1e-6);
+            if (!ok && res.EndErr < SnapFrac * pr.L) ok = Snap(res, pr, KF, h, kmax, dkI, th1);
             res.Feasible = ok;
             if (!ok && res.Why == null) res.Why = $"ends not met (gap {res.EndErr:0.0000}, heading {res.HeadErr:0.0000}, {ran} it, {stall} stalls, {active} limits pressed, N {N}, free {vars.Count})";
             return res;
@@ -428,7 +474,7 @@ namespace RimMandrake.FlowWorks.Hose
         /// exactly: a uniform stretch (at most SnapFrac) and a turn (at most SnapTurn rad). A stretch or turn that small is
         /// invisible (well under a pixel per cell and 0.6 degrees) and keeps every derivative continuous; curvature scales by
         /// 1/stretch, so the bounds are re-checked on the scaled profile.</summary>
-        private static bool Snap(Result res, Problem pr, double[] K, double l, double kmax, double dk, double th1)
+        private static bool Snap(Result res, Problem pr, double[] K, double[] h, double kmax, double[] dk, double th1)
         {
             List<V2> P = res.Pts;
             V2 a = P[P.Count - 1] - pr.P0, b = pr.P1 - pr.P0;
@@ -439,8 +485,10 @@ namespace RimMandrake.FlowWorks.Hose
             double c = Math.Cos(phi) * sc, sn = Math.Sin(phi) * sc;
             var Ks = new double[K.Length];
             for (int i = 0; i < K.Length; i++) Ks[i] = K[i] / sc;
-            if (!BoundsHold(Ks, kmax, dk / sc, 1e-6)) return false;
-            double head = pr.Theta1.HasValue ? Math.Abs(Sum(K, l) + res.Theta0 + phi - th1) : 0;
+            var dks = new double[dk.Length];
+            for (int i = 0; i < dk.Length; i++) dks[i] = dk[i] / sc;
+            if (!BoundsHold(Ks, kmax, dks, 1e-6)) return false;
+            double head = pr.Theta1.HasValue ? Math.Abs(Sum(K, h) + res.Theta0 + phi - th1) : 0;
             if (head > SnapTurn) return false;
             for (int i = 0; i < P.Count; i++)
             {
@@ -456,36 +504,39 @@ namespace RimMandrake.FlowWorks.Hose
             return res.EndErr < EndTol;
         }
 
-        private static double Sum(double[] K, double l)
+        private static double Sum(double[] K, double[] h)
         {
             double t = 0;
-            for (int i = 0; i + 1 < K.Length; i++) t += 0.5 * l * (K[i] + K[i + 1]);
+            for (int i = 0; i + 1 < K.Length; i++) t += 0.5 * h[i] * (K[i] + K[i + 1]);
             return t;
         }
 
-        private static Result Finish(Result res, Problem pr, double[] K, double th0, double l, int sub)
+        private static Result Finish(Result res, Problem pr, double[] K, double th0, double[] h, int sub)
         {
             res.Kappa = K;
-            res.Pts = Sample(pr.P0, th0, K, l, sub, out _);
+            res.Pts = Sample(pr.P0, th0, K, h, sub, out _);
             res.EndErr = V2.Dist(res.Pts[res.Pts.Count - 1], pr.P1);
             return res;
         }
 
-        internal static bool BoundsHold(double[] K, double kmax, double dk, double tol)
+        /// <summary>|k| &lt;= kmax at every node and |k[i+1] - k[i]| &lt;= dk[i] over every interval, within tol.</summary>
+        internal static bool BoundsHold(double[] K, double kmax, double[] dk, double tol)
         {
             for (int i = 0; i < K.Length; i++)
             {
                 if (Math.Abs(K[i]) > kmax + tol) return false;
-                if (i + 1 < K.Length && Math.Abs(K[i + 1] - K[i]) > dk + tol) return false;
+                if (i + 1 < K.Length && Math.Abs(K[i + 1] - K[i]) > dk[i] + tol) return false;
             }
             return true;
         }
 
-        /// <summary>Moves the free nodes of K into |k| &lt;= kmax and |dk| &lt;= dk, pinned nodes kept: each free node is held inside
-        /// the envelope every pinned node allows it (pinned value +- dk x distance), then neighbours are relaxed in turn.</summary>
-        internal static void MakeFeasible(double[] K, double?[] fixedK, double kmax, double dk)
+        /// <summary>Moves the free nodes of K into |k| &lt;= kmax and |k[i+1] - k[i]| &lt;= dk[i], pinned nodes kept: each free node is held
+        /// inside the envelope every pinned node allows it (pinned value +- the summed dk between them), then neighbours are relaxed in turn.</summary>
+        internal static void MakeFeasible(double[] K, double?[] fixedK, double kmax, double[] dk)
         {
             int n = K.Length;
+            var cum = new double[n];
+            for (int i = 1; i < n; i++) cum[i] = cum[i - 1] + dk[i - 1];
             var lo = new double[n];
             var hi = new double[n];
             for (int i = 0; i < n; i++) { lo[i] = -kmax; hi[i] = kmax; }
@@ -494,7 +545,7 @@ namespace RimMandrake.FlowWorks.Hose
                 if (!fixedK[f].HasValue) continue;
                 for (int i = 0; i < n; i++)
                 {
-                    double r = dk * Math.Abs(i - f);
+                    double r = Math.Abs(cum[i] - cum[f]);
                     lo[i] = Math.Max(lo[i], fixedK[f].Value - r);
                     hi[i] = Math.Min(hi[i], fixedK[f].Value + r);
                 }
@@ -504,9 +555,9 @@ namespace RimMandrake.FlowWorks.Hose
             {
                 bool moved = false;
                 for (int i = 1; i < n; i++)
-                    if (!fixedK[i].HasValue && Math.Abs(K[i] - K[i - 1]) > dk) { K[i] = Clamp(K[i], K[i - 1] - dk, K[i - 1] + dk); moved = true; }
+                    if (!fixedK[i].HasValue && Math.Abs(K[i] - K[i - 1]) > dk[i - 1]) { K[i] = Clamp(K[i], K[i - 1] - dk[i - 1], K[i - 1] + dk[i - 1]); moved = true; }
                 for (int i = n - 2; i >= 0; i--)
-                    if (!fixedK[i].HasValue && Math.Abs(K[i] - K[i + 1]) > dk) { K[i] = Clamp(K[i], K[i + 1] - dk, K[i + 1] + dk); moved = true; }
+                    if (!fixedK[i].HasValue && Math.Abs(K[i] - K[i + 1]) > dk[i]) { K[i] = Clamp(K[i], K[i + 1] - dk[i], K[i + 1] + dk[i]); moved = true; }
                 if (!moved) break;
             }
         }
@@ -650,9 +701,13 @@ namespace RimMandrake.FlowWorks.Hose
                 double u = Clamp((sc - s[seg]) / Math.Max(1e-12, s[seg + 1] - s[seg]), 0, 1);
                 V2 P0 = pts[seg] + (pts[seg + 1] - pts[seg]) * u;
                 double th0 = HeadingAt(pts, s, sc);
-                // the kept hose's one-sided curvature at the cut: heading change over the 0.5 cell before it
+                // the kept hose's curvature AT the cut: the mean over the 0.5 cell before it lags a ramping curvature by half
+                // its ramp (up to ~0.45 /cell at the ramp limit, a curvature step the ruler reads as dk/ds over the cap), so
+                // where there is room the mean over the 0.5 before that sets the slope and the two extrapolate to the cut
                 double back = Math.Min(0.5, sc);
-                double k0 = back > 0.2 ? Wrap(th0 - HeadingAt(pts, s, sc - back)) / back : 0;
+                double hb = HeadingAt(pts, s, sc - back);
+                double k0 = back > 0.2 ? Wrap(th0 - hb) / back : 0;
+                if (back >= 0.5 && sc >= 2 * back) k0 += 0.5 * (k0 - Wrap(hb - HeadingAt(pts, s, sc - 2 * back)) / back);
                 // two guides, tried in turn: the old tail bent so it ends on the fitting (keeps the drape the hose had), then a
                 // plain approach (on along the cut's heading, round to a point a bend radius plus the straight back from the
                 // fitting, then in along its axis) for a fitting the old tail pointed away from
@@ -671,7 +726,9 @@ namespace RimMandrake.FlowWorks.Hose
                     if (!r.Feasible) { TailWhy += $" W{W:0.0}: {r.Why};"; continue; }
                     var o = new List<V2>(seg + 1 + r.Pts.Count);
                     for (int i = 0; i <= seg; i++) o.Add(pts[i]);
-                    if (V2.Dist(o[o.Count - 1], P0) < 1e-6) o.RemoveAt(o.Count - 1);
+                    // a kept sample closer to the cut than half its segment is dropped (never one inside the start lead): a
+                    // sliver segment there makes any three-point curvature reading of the drawn hose spike at the cut
+                    if (V2.Dist(o[o.Count - 1], P0) < 1e-6 || (seg > 0 && s[seg] > startLead + 1e-9 && sc - s[seg] < 0.5 * (s[seg + 1] - s[seg]))) o.RemoveAt(o.Count - 1);
                     int k = o.Count;
                     o.AddRange(r.Pts);
                     if (accept != null && !accept(o, k)) { TailWhy += $" W{W:0.0}: not accepted;"; continue; }

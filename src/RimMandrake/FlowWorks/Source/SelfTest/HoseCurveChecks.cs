@@ -304,8 +304,8 @@ namespace RimMandrake.FlowWorks.SelfTest
         {
             "HoseCurve hose_hard_fittings/mateA/", "HoseCurve hose_hard_fittings/mateB/", "HoseCurve splice hose_hard_fittings/",
         };
-        /// <summary>Rows that must pass (MEASURED 2026-10-24, step 6: 47 of 59). Raise it when a row starts passing; never lower it.</summary>
-        internal const int Floor = 47, Rows = 59;
+        /// <summary>Rows that must pass (MEASURED 2026-10-24: 47 of 59 at step 6; 48 of 60 after the exact-lead case). Raise it when a row starts passing; never lower it.</summary>
+        internal const int Floor = 48, Rows = 60;
 
         /// <summary>The default run's guard: <see cref="Run"/> over the hard stations, collected into one case. The case fails
         /// when fewer than <see cref="Floor"/> rows pass, when a row outside <see cref="Owed"/> fails, or when the row count is

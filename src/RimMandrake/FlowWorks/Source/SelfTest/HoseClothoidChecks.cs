@@ -56,6 +56,26 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Check("quarter", new HoseClothoid.Problem { P0 = o, Theta0 = 0, Lead0 = 1.6, P1 = new V2(4, 5), Theta1 = Math.PI / 2, Lead1 = 0.6,
                     L = Geo.Length(tr) * 1.03, Track = tr, Kmax = Kmax }, 1.6, 0.6);
             });
+            Case("HoseClothoid a straight lead is its own length, not rounded out to the node grid", () =>
+            {
+                // HOSE_FIT_HARDEN_FREE_LENGTH_SHORT_LEAD: the solver used to pin every node within a straight run rounded OUT to
+                // its uniform grid plus one drawn sample, so a 0.6 lead stayed dead straight to arc 1.0 (and a 0.75 coupling grew
+                // to ~1.15), which tight mates cannot afford. Can-fail: HEAD 8d64560c3f's solver draws heading 0 at arc 0.9 here.
+                var tr = new List<V2> { o, new V2(2.5, 0), new V2(4, 1.5), new V2(4, 5) };
+                var pr = new HoseClothoid.Problem { P0 = o, Theta0 = 0, Lead0 = 0.6, P1 = new V2(4, 5), Theta1 = Math.PI / 2, Lead1 = 0.6,
+                    L = Geo.Length(tr) * 1.03, Track = tr, Kmax = Kmax };
+                Check("exact-lead", pr, 0.6, 0.6);
+                List<V2> p = HoseClothoid.Solve(pr).Pts;
+                double[] s = Geo.CumLen(p);
+                double Head(double at)
+                {
+                    int i = 0;
+                    while (i < p.Count - 2 && s[i + 1] < at) i++;
+                    return Math.Atan2(p[i + 1].Z - p[i].Z, p[i + 1].X - p[i].X);
+                }
+                double h06 = Math.Abs(Head(0.59)), h09 = Math.Abs(Head(0.9));
+                if (h06 > 1e-9 || h09 < 1e-3) throw new Exception($"heading at arc 0.59 {h06:0.000000} (want 0), at 0.9 {h09:0.000000} (want > 0.001: the bend starts where the lead ends)");
+            });
             Case("HoseClothoid U-turn between fittings", () =>
             {
                 var tr = new List<V2> { o, new V2(4, 0), new V2(5.5, 1.5), new V2(4, 3), new V2(0, 3) };
