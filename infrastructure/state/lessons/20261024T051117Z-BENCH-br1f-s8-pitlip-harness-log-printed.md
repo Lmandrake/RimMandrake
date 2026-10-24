@@ -1,0 +1,1 @@
+br1f s8_pitlip harness log printed 'depths []' although every rect row was depth 4 (RM_Channel_Superdeep): the logger reads the wrong key. Trust the rect rows, not that log line, when judging pit depth (s8_pitlip.json, 2026-10-23).
