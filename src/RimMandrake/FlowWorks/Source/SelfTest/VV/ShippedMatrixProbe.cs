@@ -142,13 +142,14 @@ namespace RimMandrake.FlowWorks.SelfTest.VV
 			double cap = double.Parse(Arg(args, "--cap-seconds", "900"), System.Globalization.CultureInfo.InvariantCulture);
 			var fams = Arg(args, "--families", string.Join(",", Families.Keys)).Split(',', StringSplitOptions.RemoveEmptyEntries);
 			using var w = new StreamWriter(outPath, true);
+			bool anyUnmeasured = false;
 			foreach (string fam in fams)
 			{
 				var sw = Stopwatch.StartNew();
 				long hook0 = MatrixFlags.HookCalls;
 				int attempted = 0, completed = 0, failures = 0, errors = 0;
 				var seeds = new List<int>(); var examples = new List<string>();
-				bool timedOut = false;
+				bool timedOut = false, unmeasured = false;
 				if (fam.StartsWith("surface_random"))
 				{
 					// fixed-seed family (rng 20261016, 1000 scenes), already uncapped: parse its own counts
@@ -170,7 +171,10 @@ namespace RimMandrake.FlowWorks.SelfTest.VV
 				{
 					var (cases, fails, text) = HoseFamily(fam, n);
 					attempted = completed = cases; failures = fails;
-					if (fails > 0) examples.Add(text.Length > 2500 ? text.Substring(0, 2500) : text);
+					// cases < 0: the family never ran (VV_HOSE undefined) or its report did not parse. That is UNMEASURED,
+					// never a clean record: count it as an error, keep the explanation, and fail the process (GPT FE_cs_selftests_4.3)
+					if (cases < 0) { errors++; unmeasured = true; }
+					if (fails > 0 || cases < 0) examples.Add(text.Length > 2500 ? text.Substring(0, 2500) : text);
 				}
 				else
 				{
@@ -201,14 +205,15 @@ namespace RimMandrake.FlowWorks.SelfTest.VV
 				{
 					["config"] = config, ["family"] = fam, ["n_requested"] = fam.StartsWith("surface_random") ? 1000 : n, ["base_seed"] = baseSeed,
 					["attempted"] = attempted, ["completed"] = completed, ["failures"] = failures, ["exceptions"] = errors,
-					["timed_out"] = timedOut, ["seconds"] = Math.Round(sw.Elapsed.TotalSeconds, 2),
+					["timed_out"] = timedOut, ["unmeasured"] = unmeasured, ["seconds"] = Math.Round(sw.Elapsed.TotalSeconds, 2),
 					["kernel_pulses_hooked"] = MatrixFlags.HookCalls - hook0,
 					["failing_seeds"] = seeds, ["examples"] = examples,
 				};
+				anyUnmeasured |= unmeasured;
 				w.WriteLine(Json(rec)); w.Flush();
 				Console.WriteLine($"{config,-28} {fam,-32} {failures,6}/{completed,-7} {(timedOut ? "TIMEOUT " : "")}{sw.Elapsed.TotalSeconds,8:F1}s");
 			}
-			return 0;
+			return anyUnmeasured ? 3 : 0;
 		}
 
 		/// <summary>The hose/trail fuzz already counts every failure (HoseFuzz.Tally): run it at a scale and read its report.</summary>
