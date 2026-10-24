@@ -25,15 +25,10 @@
   ]
  ],
  "rows": {
-  "RM_AgariluxPrime__TheRot": {
+  "RM_AgariluxPrime": {
    "prefill": "keep",
-   "why": "PIPELINE: ACCEPT \u00b7 Opus WEAK: DESC_MISS \u00b7 GPT strong_accept",
-   "context": "judged candidate TheRot (image sha cc5fbcbe22); DESC_MISS: The crown is a cluster of several petal-like lobes, closer to a bloom or artichoke than to a single broad cap a creature could stand beneath"
-  },
-  "RM_AgariluxPrime__UtinniPatches": {
-   "prefill": "keep",
-   "why": "PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: DESC_MISS, STYLE_OFF \u00b7 GPT regen, unsettled K2",
-   "context": "judged candidate UtinniPatches (image sha 815f94c7e5); STYLE_OFF: A thick, uniform black keyline around the entire outline gives a slightly comic or illustrated look compared with vanilla's softer outline.; DESC_MISS: The base is a brown fibrous root flare. The pale hyphae spreading from the base, which the description names, are not distinctly shown.; DESC_MISS: The palette is olive-brown and ochre rather than the pale tones implied by 'elder of the pale forest'."
+   "why": "[TheRot] PIPELINE: ACCEPT \u00b7 Opus WEAK: DESC_MISS \u00b7 GPT strong_accept || [UtinniPatches] PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: DESC_MISS, STYLE_OFF \u00b7 GPT regen, unsettled K2",
+   "context": "[TheRot] judged candidate TheRot (image sha cc5fbcbe22); DESC_MISS: The crown is a cluster of several petal-like lobes, closer to a bloom or artichoke than to a single broad cap a creature could stand beneath || [UtinniPatches] judged candidate UtinniPatches (image sha 815f94c7e5); STYLE_OFF: A thick, uniform black keyline around the entire outline gives a slightly comic or illustrated look compared with vanilla's softer outline.; DESC_MISS: The base is a brown fibrous root flare. The pale hyphae spreading from the base, which the description names, are not distinctly shown.; DESC_MISS: The palette is olive-brown and ochre rather than the pale tones implied by 'elder of the pale forest'."
   }
  }
 }
