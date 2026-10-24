@@ -122,6 +122,8 @@ case(LC.clean_verdict("Human1", {"success": True}, 0, 9, 0, 750)[0], "UNMEASURED
 case(LC.clean_verdict("Human1", {"success": True}, 3, 9, 4, 3000)[0], "FAIL", "filth left after the wait")
 case(LC.clean_verdict("Human1", {"success": True}, 3, 9, None, 250)[:2], ("UNMEASURED", "HARNESS"), "filth unreadable")
 case(LC.clean_verdict(None, {"success": True}, 3, 9, 0, 750)[0], "UNMEASURED", "no cleaner spawned")
+case(LC.clean_verdict("Human1", {"success": True}, 3, {"F1": 5, "F2": 1}, {}, 500)[0], "PASS", "per-thing read: empty dict is a clean rect")
+case(LC.clean_verdict("Human1", {"success": True}, 3, {"F1": 5, "F2": 1}, {"F1": 2}, 3000)[0], "FAIL", "per-thing read: filth left")
 case(LC.free_end_verdict({}, "Ankor", True)[:2], ("UNMEASURED", "HARNESS"), "unread free end is not a MOD FAIL")
 case(LC.free_end_verdict({"describe": "to Ankor's tank", "portFaction": "Ankor"}, "Ankor", True)[0], "PASS", "names them")
 case(LC.free_end_verdict({"describe": "to a tank", "portFaction": None}, "Ankor", True)[0], "FAIL", "does not name them")

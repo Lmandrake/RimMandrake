@@ -289,7 +289,10 @@ def clean_verdict(cleaner, paint, readback, filth_before, filth_left, ticks):
             cleaner, (paint or {}).get("setCount"), readback))
     if filth_left is None:
         return "UNMEASURED", "HARNESS", dict(det, why="the spill filth was unreadable while waiting")
-    return ("PASS" if filth_left == 0 else "FAIL"), "MOD", det
+    # filth() reads per-thing thickness {thingId: n} since 793170bdc5; an empty dict is a clean rect (live 20261024:
+    # {} read FAIL under the old == 0 test). A bare count is still accepted.
+    left = sum(filth_left.values()) if isinstance(filth_left, dict) else filth_left
+    return ("PASS" if left == 0 else "FAIL"), "MOD", det
 
 
 def free_end_verdict(fe, fname, lay_ok):
@@ -835,10 +838,17 @@ def main(argv=None):
             row("L5_colonists_clean_spill", "UNMEASURED", "SITE", "no spill filth to clean (L5 spill row %s)" % st)
             return
         pa = B.call("jawa/paint_area", area="Home", ops="%d,%d,%d,%d" % frect, value=True, createIfMissing=True)
-        sp = B.call("jawa/spawn_pawn", kindDef="Colonist", faction="player", x=s.P(12, 11)[0], z=s.P(12, 11)[1], count=1,
-                    xenotype="Baseliner")
-        cid = ((sp.get("pawns") or [{}])[0]).get("id")
-        wp = B.call("jawa/set_work_priority", pawnId=cid, workType="Cleaning", priority=1) if cid else {}
+        # A random colonist's backstory can disable Cleaning (live 20261024: set_work_priority refused, readBack None, read
+        # UNMEASURED/SITE). Spawn up to 4 and keep the first that takes the priority; the refused ones are drafted aside.
+        cid, wp = None, {}
+        for _try in range(4):
+            sp = B.call("jawa/spawn_pawn", kindDef="Colonist", faction="player", x=s.P(12, 11)[0], z=s.P(12, 11)[1],
+                        count=1, xenotype="Baseliner")
+            cid = ((sp.get("pawns") or [{}])[0]).get("id")
+            wp = B.call("jawa/set_work_priority", pawnId=cid, workType="Cleaning", priority=1) if cid else {}
+            if not cid or wp.get("success") is not False or "Cleaning" not in str((wp.get("details") or {}).get("disabledWorkTypes")):
+                break
+            B.hp("pawn:%d=draft" % int(re.search(r"(\d+)$", str(cid)).group(1)))
         left, waited = n1, 0
         while left and waited < 3000:
             B.ticks(250)
