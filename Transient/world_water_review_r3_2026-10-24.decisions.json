@@ -1,0 +1,38 @@
+{
+  "criterion": "The prefill is the agent's lean: v3 panes match your numbers and read as glass, not speckle, at every zoom; the abyss is your pick.",
+  "decisions": {
+    "Chill_abyss": {
+      "decision": "",
+      "note": "",
+      "prefill": "pick"
+    },
+    "Chill_abyss_nofilm": {
+      "decision": "",
+      "note": "",
+      "prefill": "maybe"
+    },
+    "TwilightSea_glass_panes_r2": {
+      "decision": "",
+      "note": "",
+      "prefill": "no"
+    },
+    "TwilightSea_glass_panes_v3": {
+      "decision": "",
+      "note": "",
+      "prefill": "pick"
+    },
+    "TwilightSea_glass_panes_v3_small": {
+      "decision": "",
+      "note": "",
+      "prefill": "maybe"
+    }
+  },
+  "posture": "whitelist",
+  "reviewStatus": {
+    "at": null,
+    "by": null,
+    "evidence": "agent variations; no human has ruled",
+    "state": "prefill"
+  },
+  "sheetId": "world_water_review_r3_2026-10-24"
+}

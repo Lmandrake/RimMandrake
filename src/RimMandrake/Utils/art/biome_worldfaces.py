@@ -16,6 +16,8 @@ usage:
 DIR defaults to <agent storage>/rimmandrake/scratch/biomeart.
 Water faces only for RUT twins and mineral water: RM_GreySea/RM_TwilightSea/RM_TheScald point at vanilla
 World/Biomes/Ocean and RM_TheChill at Jawa_SickWater (2026-10-20 audit) - those are left alone.
+Since 2026-10-24 the Grey Sea and Twilight Sea faces (both twins) come from world_water_variants.py (owner picks,
+WORLD_SEA_FACES_INSTALL_PICKED_LOOKS); `install` skips them (PICKED_ELSEWHERE) so a rerun cannot revert his pick.
 """
 import argparse, colorsys, json, os, subprocess, sys
 import numpy as np
@@ -530,10 +532,15 @@ def report(res, nb, fails):
         if not x["ok"]: print("NEIGHBOUR", x)
 
 
+PICKED_ELSEWHERE = {"GreySea", "TwilightSea"}   # faces owned by world_water_variants.py (owner picks 2026-10-24)
+
+
 def install(dry, only=None):
     out = storage_root(); bad = 0
     for k, v in F.items():
         if only and k not in only: continue
+        if k in PICKED_ELSEWHERE:
+            print("skip", k, "- face owned by world_water_variants.py (owner pick)"); continue
         os.makedirs(os.path.join(REPO, "Transient", "biome_worldfaces_stage"), exist_ok=True)
         src = os.path.join(out, "tex", k + ".png")
         stage = os.path.join(REPO, "Transient", "biome_worldfaces_stage", k + ".png")   # art.py wants a file inside the clone
