@@ -117,7 +117,7 @@ namespace RimMandrake.FlowWorks.SelfTest
         /// nozzle's straight run skipped when it has one.</summary>
         internal static double LayOverlap(CordWorld w, HoseLay lay, out V2 at)
         {
-            double skip = lay.Outlet ? HoseMath.LeadOutStraight(new HoseShapeParams()) : 0.5;
+            double skip = lay.Outlet ? HoseMath.LeadOf(lay, new HoseShapeParams()) : 0.5;
             double of = BodyOverlap(w, lay.Flat, HoseMath.VisibleWidth(0, 1) / 2, skip, out V2 af), op = BodyOverlap(w, lay.Plump, HoseMath.VisibleWidth(1, 1) / 2, skip, out V2 ap);
             at = of >= op ? af : ap;
             return Math.Max(of, op);

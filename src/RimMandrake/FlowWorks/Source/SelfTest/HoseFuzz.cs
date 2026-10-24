@@ -237,7 +237,7 @@ namespace RimMandrake.FlowWorks.SelfTest
         {
             if (!outlet) { BendFree[seed] = Math.Min(HoseMath.MinBendRadius(lay.Flat, HoseMath.EndSkip), HoseMath.MinBendRadius(lay.Plump, HoseMath.EndSkip)); return; }
             if (!outward.HasValue) return;
-            double st = HoseMath.LeadOutStraight(p), bl = Math.Max(0, lay.LeadOutLen - st);   // 2026-10-06: the straight lead-out, then its join
+            double st = HoseMath.LeadOf(lay, p), bl = Math.Max(0, lay.LeadOutLen - st);   // 2026-10-06: the straight lead-out, then its join
             double mb = MinBendAt(lay.Flat, HoseMath.EndSkip, out double sAt);
             V2 h = HeadingAt(lay.Flat, st + bl + 0.25);
             V2 ab = b - a; double lab = Math.Sqrt(ab.X * ab.X + ab.Z * ab.Z);

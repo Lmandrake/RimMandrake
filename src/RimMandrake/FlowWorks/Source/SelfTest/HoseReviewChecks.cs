@@ -341,7 +341,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             Check(lay.Ok && lay.Outlet && lay.LeadOutLen > 0, "B5 seed 2 lays with a lead-out (" + (lay.Reason ?? "ok") + ")");
             if (lay.Ok)
             {
-                double S = HoseMath.LeadOutStraight(prm);
+                double S = HoseMath.LeadOf(lay, prm);
                 double off = 0;
                 double[] cs = Geo.CumLen(lay.Flat);
                 for (int i = 0; i < lay.Flat.Count && cs[i] <= S; i++) off = Math.Max(off, Math.Abs(lay.Flat[i].Z - c.Reel.Mouth.Z));

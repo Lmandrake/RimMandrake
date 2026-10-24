@@ -581,7 +581,11 @@ namespace RimMandrake.FlowWorks.Hose
             /// <summary>A's re-shaped end as the pair solve accepted it: B was judged clear of this body, so
             /// <see cref="MateEnd"/> re-solves B against it too.</summary>
             public List<V2> PtsA;
+            /// <summary>Each hose's straight lead-out as the pair solve kept it: the lay's own, or shorter when no pair fits
+            /// behind it (owner by card 2026-10-24 "Shorten the lead-out"); <see cref="MateEnd"/> keeps the same.</summary>
+            public double LeadA, LeadB;
         }
+
 
         /// <summary>Unit direction a polyline travels into its last point (chord over its last ~0.75 cell).</summary>
         internal static V2 Arrival(IList<V2> p)
@@ -611,7 +615,19 @@ namespace RimMandrake.FlowWorks.Hose
             var axes = new List<V2> { ua, -ub };
             V2 bis = ua - ub;
             if (bis.Len > 0.2) axes.Add(bis.Norm());
-            if (HoseMath.G2On) return MatePairG2(A, B, C, axes, straight, kmax, width, leadA, leadB, out Am, out Bm);
+            if (HoseMath.G2On)
+            {
+                Mate g = MatePairG2(A, B, C, axes, straight, kmax, width, leadA, leadB, out Am, out Bm);
+                if (g != null || Math.Max(leadA, leadB) <= HoseMath.LeadOutMin + 1e-9) return g;
+                // step 6 (owner by card 2026-10-24 "Shorten the lead-out"): no pair fits behind the full leads, so both shrink
+                // together to the largest common lead that fits (HoseMath.LeadSearch); a lead already shorter stays as it is
+                double full = Math.Max(leadA, leadB);
+                double got = HoseMath.LeadSearch(full, ld => MatePairG2(A, B, C, axes, straight, kmax, width, Math.Min(leadA, ld), Math.Min(leadB, ld), out _, out _) != null);
+                if (got <= 0) return null;
+                g = MatePairG2(A, B, C, axes, straight, kmax, width, Math.Min(leadA, got), Math.Min(leadB, got), out Am, out Bm);
+                if (g != null) MateLeadShortened++;
+                return g;
+            }
             Mate best = null;
             foreach (V2 u in axes)
             {
@@ -631,6 +647,9 @@ namespace RimMandrake.FlowWorks.Hose
             }
             return best;
         }
+
+        /// <summary>Mate pairs whose leads were shortened (selftest cost report).</summary>
+        internal static long MateLeadShortened;
 
         /// <summary>Rings (cells) the coupling point may slide back from <c>C</c> when the clothoid mate keeps both lengths.</summary>
         internal static readonly double[] MateSlide = { 0, 0.3, 0.6, 1.0, 1.6, 2.4 };
@@ -667,7 +686,7 @@ namespace RimMandrake.FlowWorks.Hose
                         if (b == null) continue;
                         if (!ClearOf(a, A, b, straight, width)) continue;
                         if (best != null && ca + cb >= best.Cost) continue;
-                        best = new Mate { C = Ci, Axis = u, Cost = ca + cb, PtsA = a };
+                        best = new Mate { C = Ci, Axis = u, Cost = ca + cb, PtsA = a, LeadA = leadA, LeadB = leadB };
                         Am = a; Bm = b;
                     }
                 }
@@ -686,7 +705,7 @@ namespace RimMandrake.FlowWorks.Hose
             V2 ax = isA ? m.Axis : -m.Axis;
             double straight = CouplingStraight(visible);
             IList<V2> partner = isA ? null : m.PtsA;
-            if (HoseMath.G2On) return MateTailG2(pts, m.C, ax, straight, kmax, partner, visible, startLead, out _);
+            if (HoseMath.G2On) return MateTailG2(pts, m.C, ax, straight, kmax, partner, visible, Math.Min(startLead, isA ? m.LeadA : m.LeadB), out _);
             return MateTail(pts, m.C, ax, straight, kmax, partner, isA ? m.SeedA : m.SeedB, out _, visible);
         }
 

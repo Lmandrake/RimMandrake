@@ -336,18 +336,44 @@ Remaining failures with g2 on (`D:\ClaudeWork\rimmandrake\scratch\hose_geometry_
 - MEASURED: 39/59 pass, floor 39. The full selftest is 936/936 and `run_selftests.py --only selftest_flowworks_stock.py` is GREEN (175.8 s).
 - Can-fail check: with the short prefix taken out of `Owed`, the case fails ("4 row(s) outside the owed set fail"). Logs: `full7.log` and `full7_canfail.log` in `D:\ClaudeWork\rimmandrake\scratch\hose_geometry_20261023\`.
 
+### Step 6 (2026-10-24): shorten the lead-out on short spans
+Owner by card 2026-10-24 "Shorten the lead-out" (option (b) of §7). Owner, relayed: "Write python to explore these arrangements rather than slowly waste time during the game, solve the problem completely, then implement".
+- The rule: a hose keeps the 2.2 lead-out when a G2 curve fits behind it. Only when none fits does the lead-out shrink. It takes the LARGEST lead in [0.6, 2.2) whose lay is G2.
+  - The search tries 1.8, 1.4, 1.0 and 0.6 in turn, then bisects to 0.05 (`HoseMath.LeadSearch`). Long hoses never enter it.
+  - A lead-out a wall blocks stays refused (card 2026-10-06).
+- How the C# code does it:
+  - `HoseMath.LayAlong` runs the search with `HoseShapeParams.WithLeadOut` and marks `HoseLay.LeadShortened`.
+  - Mates shrink one common lead for both halves (`HoseSpliceMath.MatePair`).
+  - A shortened lay fits on a 0.25 node step and scans length x{1.0, 0.97, 1.03, 0.94, 1.07} (`G2Fit.FitAt`).
+  - It is drawn without the transition wobble: a span at its bend limit has no room to wobble.
+  - A re-route (step 4) now tries guide lengths x{1.0, 1.05, 1.12, 1.2, 1.3}, not x{1.0, 1.05}. tankW's guide needs 1.12 or more.
+- The offline explorer is `src/RimMandrake/FlowWorks/Tools/hose_geometry_explore.py`. It is a free-length G2 solver with Dubins seeds, plus a continuous coupling for mates. Pictures and data are in `D:\ClaudeWork\rimmandrake\scratch\hose_geometry_20261023\explore\` (`rows.png`, `map_port.png`, `map_free.png`, `gallery_*_{shrunk,nofit}.png`, `summary.json`). MEASURED sweeps:
+  - port (4480 placements):
+    - 3966 keep 2.2 and 208 shrink (median lead 1.5, min 0.6).
+    - 126 are layout cases: the end run hits the reel or fixture.
+    - 108 are detour-only: they fit only at 2.41x the shortest path or more.
+    - 72 have no fit even at 0.6. These are too close for the bend limit. A continuous S-bend bound gives a maximum lateral offset of 0.127, 0.398 and 0.941 cells at forward 1.33, 1.9 and 2.5.
+  - free ends (1280): 1228 keep, 34 shrink, 18 have no fit.
+  - mates (400): 208 keep, 77 shrink, 115 have no fit.
+  - These are findings about geometry, not new policy. A span with no fit at 0.6 keeps today's fallback (§7 (c)).
+- `--hose-curves`: 39/59 before, 47/59 after (MEASURED, `c_run10.txt` in the explore folder; the full FlowWorks selftest is 942/942 in `full_47b.txt`). short now fits at lead 0.8 and tankW at 1.85.
+  - Solver total went from 915 ms to 1529 ms over 3985 solves.
+  - `HoseCurveChecks.Floor` is now 47. With the floor at 48 the guard case fails ("47 rows pass, floor 48", `full_guard48.txt`).
+- Still failing: mateA, mateB and splice (12 rows): "no mate fits".
+  - The explorer finds a mate at lead 1.05 (coupling (6.30, 10.12), axis -42.8 degrees).
+  - With the coupling fixed at any C# `MateSlide` candidate, it finds none at 1.0 or 0.6.
+  - So the discrete coupling slide is at fault, not the geometry. Owed to HOSE_MATE_REWIRE_CONTINUOUS_COUPLING.
+- Known gaps, filed:
+  - C# shrinks more than the geometry needs (short 0.8 vs the explorer's 1.15), because it fits at a fixed length with leads padded to the node step: HOSE_FIT_HARDEN_FREE_LENGTH_SHORT_LEAD.
+  - The explorer runs out of seeds above lead 1.4 on tankW, so its lead there is a lower bound: HOSE_EXPLORER_WIDEN_SEEDS_LONG_LEAD.
+
 ## 7. Owner items
 
 - **Relay reel has one connector.** A relay's feed couples into its nozzle while its own hose leaves the same nozzle —
   physically impossible (R5), drawn as the V in screenshot 20261023221228. Options: (a) a second fitting on the reel art (an
   inlet swivel on the drum's hub side) and the feed couples there; (b) the feed couples at the nozzle and the relay's own
   hose leaves from the drum's opposite face. Not decided here; joint_check keeps failing it live until he picks.
-- **Short and taut hoses that no G2 curve can carry** (step 4: short, tankW, mates and splice, 20 rows). Once the 2.2-cell lead-out and the 0.6-cell end straight are taken, no curve within R fits.
-  - The options:
-    - (a) refuse the lay with a reason the player sees;
-    - (b) shorten the lead-out on short spans, down to the 0.6 end straight;
-    - (c) keep today's fallback, which is shaped (not G2) and, for tankW, draws a kink at the flange.
-  - The default today is (c). The ruler fails these rows honestly; it is not stubbed to KNOWN.
+- **Short and taut hoses that no G2 curve can carry** (step 4: short, tankW, mates and splice, 20 rows). DECIDED: owner by card 2026-10-24 "Shorten the lead-out" -- option (b), shrink the lead-out on short spans only, down to 0.6 (step 6). Options (a) refuse and (c) the shaped fallback were not picked; (c) remains only where no curve fits even at 0.6. short and tankW pass; the 12 mate/splice rows are owed to HOSE_MATE_REWIRE_CONTINUOUS_COUPLING.
 
 ## 8. Rejected (GPT attack and own)
 
