@@ -148,7 +148,10 @@ def build(root: Path) -> dict:
         for e in evs:
             fh.write(json.dumps(e) + "\n")
     g = "Things/Pawn/Animal/RM_Foo/RM_Foo"
-    snap = {"sheetId": "test_sheet", "snapshotId": "s1", "biome": "RM_TestBiome", "rows": {
+    # every real snapshot carries its build time (art_sheet stamps `built`); enact refuses a pick whose lane it cannot
+    # prove against the sheet he clicked on, so an unstamped fixture would be refused wholesale
+    snap = {"sheetId": "test_sheet", "snapshotId": "s1", "biome": "RM_TestBiome", "built": "2026-10-01T00:00:00Z",
+            "rows": {
         "RM_Foo": {"columns": {"A": {"east": shas["old"]}, "B": {"east": shas["new"]}}, "graphic_of": {"A": g, "B": g},
                    "labels": {"A": "IN GAME — TestMod", "B": "render foo_v1"}, "res": g, "subject_key": "foo"},
         "RM_Redo": {"columns": {"A": {"east": shas["redo"]}}, "graphic_of": {"A": "Things/Pawn/Animal/RM_Redo/RM_Redo"},
