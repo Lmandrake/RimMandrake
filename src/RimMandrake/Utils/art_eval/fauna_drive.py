@@ -3,7 +3,17 @@
 
     python3 fauna_drive.py rows <run-id>... --out rows.json [--file]     # regen_jobs.json -> fill_queue rows
     python3 fauna_drive.py candidates <DEF>... --round N --out <dir>      # done arteval_<DEF>_rN_* renders -> specs
-    python3 fauna_drive.py install <DEF> --round N --run <run-id>         # accepted candidate -> art.py install
+    python3 fauna_drive.py install <DEF> --round N                        # accepted candidate -> art.py install
+    python3 fauna_drive.py reset <DEF>... --source-run <run> --by-card "<q -> pick>"   # fresh round series (owner's call)
+    python3 fauna_drive.py owner-prompt <DEF> --text "<his words>" --owner-said "<his words>"  # his prompt for DEF
+    python3 fauna_drive.py prompts [<DEF>...]                             # owner prompts found, and where from
+
+Fresh rounds: `reset` appends to round_resets.jsonl (round_series.py); from then on every counter here and in
+runner.py counts the new series (1 + REGENs after the reset, cap 3) and job ids carry it (arteval_<DEF>_s1r1_south),
+so nothing old is edited and no id collides. `rows <source run> --only <DEF>...` then files round 1 of the series.
+Owner prompts: `rows` uses his text VERBATIM, wrapped in the template's style/alpha/size sentences, instead of the
+pipeline's own regen prompt, and never sends it through the facing-neutral rewrite; if his text trips the per-facing
+gate the row is held (printed) rather than reworded. Notes he adds later are re-read on every `rows` call.
 
 Why `rows` rewrites the prompt: the regen prompt edit speaks about every facing at once ("the rear view shows ...",
 "all facings"), but each artpipe job draws exactly ONE facing and the daemon stamps that facing's view direction
@@ -26,6 +36,7 @@ sys.path.insert(0, str(HERE))
 import runner as R  # noqa: E402
 import cards as C  # noqa: E402
 import policy as P  # noqa: E402
+import round_series as RS  # noqa: E402
 
 ROOT = C.ROOT
 P_KEPT_CARD = P.KEPT_ART_CARD
@@ -63,25 +74,37 @@ def cmd_rows(a):
     rows = []
     for rid in a.runs:
         rows += json.loads((ROOT / f"infrastructure/state/art_eval/runs/{rid}/regen_jobs.json").read_text())
+    if a.only:
+        rows = [r for r in rows if r["target_def"] in a.only]
+        missing = sorted(set(a.only) - {r["target_def"] for r in rows})
+        if missing:
+            print(f"no regen row for {missing} in {a.runs}")
     specs = {}
     for p in Path(a.specs).glob("**/*.spec.json"):
         s = json.loads(p.read_text())
         specs[s["subject"]] = s
 
-    nreg = {}
-    for f in (ROOT / "infrastructure/state/art_eval/runs").glob("fauna_*/decisions.jsonl"):
-        for line in f.read_text().splitlines():
-            d = json.loads(line)
-            if d["decision"] == "REGEN":
-                nreg[d["subject"]] = nreg.get(d["subject"], 0) + 1
+    rs = RS.resets()
+    nreg = RS.regen_counts(RS.decisions(), rs)
+    owner = RS.owner_prompts()
+    held = []
 
     def fix(r):
-        # the round is the number of REGEN verdicts on the subject, counted from the decision logs (the shared
-        # regen_rounds.json lost updates under parallel runs); a subject's own two first-pass rows count once
-        r["id"] = f"arteval_{r['target_def']}_r{min(nreg.get(r['target_def'], 1), 3)}"
-        s = specs[r["target_def"]]
+        # the round is the number of REGEN verdicts on the subject in its current series, counted from the decision
+        # logs (the shared regen_rounds.json lost updates under parallel runs); round_series.py owns the count
+        t = r["target_def"]
+        r["id"] = f"arteval_{t}_{RS.tag(t, min(nreg.get(t, 1), 3), rs)}"
+        s = specs[t]
         d = s["size"]["drawSize"][0]
-        r["prompt"], r["_prompt_by"] = neutral_prompt(r["prompt"])
+        if t in owner:
+            r["prompt"] = RS.compose_owner_prompt(RS.label_of(s), owner[t]["text"])
+            r["_prompt_by"] = "owner"
+            r["style_notes"] = (r.get("style_notes", "") + f"; owner prompt verbatim from {owner[t]['source']}").lstrip("; ")
+            hits = R._gate_hits(r["prompt"])
+            if hits:
+                held.append((t, hits))
+        else:
+            r["prompt"], r["_prompt_by"] = neutral_prompt(r["prompt"])
         r["canvas_w"] = r["canvas_h"] = canvas_for(d)
         r["drawsize"] = d
         r["biome_neutral"] = True
@@ -90,8 +113,11 @@ def cmd_rows(a):
 
     with ThreadPoolExecutor(4) as ex:
         rows = list(ex.map(fix, rows))
+    for t, hits in held:
+        print(f"HELD {t}: the owner's prompt names {hits}, which the per-facing gate refuses; not reworded - ask him")
+    rows = [r for r in rows if r["target_def"] not in {t for t, _ in held}]
     for r in rows:
-        r.pop("_prompt_by", None)
+        print(f"{r['id']}: prompt by {r.pop('_prompt_by', None)}")
     Path(a.out).write_text(json.dumps(rows, indent=1))
     print(f"{len(rows)} rows -> {a.out}")
     if a.file:
@@ -121,57 +147,52 @@ def cmd_candidates(a):
         for r in json.loads(rf.read_text()):
             rows[r["id"]] = r
     made, waiting, readyrounds = [], [], []
-    judged = set()
-    nreg = {}
-    for f in (ROOT / "infrastructure/state/art_eval/runs").glob("fauna_*/decisions.jsonl"):
-        for line in f.read_text().splitlines():
-            r = json.loads(line)
-            judged.add((r["subject"], r.get("candidate")))
-            if r["decision"] == "REGEN":
-                nreg[r["subject"]] = nreg.get(r["subject"], 0) + 1
+    rs = RS.resets()
+    recs = list(RS.decisions())
+    judged = {(r["subject"], r.get("candidate")) for _, r in recs}
+    nreg = RS.regen_counts(recs, rs)
     for d in a.defs:
         if a.auto:
             a.round = min(nreg.get(d, 0), 3)
-            if a.round == 0 or (d, f"r{a.round}") in judged or (d, f"r{a.round + 1}") in judged:
+            if a.round == 0 or (d, RS.tag(d, a.round, rs)) in judged or (d, RS.tag(d, a.round + 1, rs)) in judged:
                 continue
+        tg = RS.tag(d, a.round, rs)
         base = next(Path(a.specs).glob(f"**/{d}.spec.json"), None)
         if base is None:
             continue
         s = json.loads(base.read_text())
-        jobs = {f: f"arteval_{d}_r{a.round}_{f}" for f in ("south", "east", "north")}
+        jobs = {f: f"arteval_{d}_{tg}_{f}" for f in ("south", "east", "north")}
         pngs = {f: job_png(j) for f, j in jobs.items()}
         if not all(pngs.values()):
             waiting.append(d)
             continue
         imgs = {f: str(p) for f, p in pngs.items()}
         sz = s["size"]["drawSize"][0]
-        cp = out / "panels" / f"{d}_r{a.round}_scale.png"
+        cp = out / "panels" / f"{d}_{tg}_scale.png"
         SP.render_panel(pngs["east"].read_bytes(), {"kind": "animal", "drawSize": (sz, sz)}, cp,
-                        out / "panels" / f"{d}_r{a.round}_scale_full.png")
+                        out / "panels" / f"{d}_{tg}_scale_full.png")
         imgs["scale"] = str(cp)
-        s.update({"candidate": f"r{a.round}", "images": imgs, "artpipe_job": f"arteval_{d}_r{a.round}",
-                  "provenance": f"art-eval regen round {a.round}, artpipe jobs arteval_{d}_r{a.round}_*",
-                  "previous_prompt": (rows.get(f"arteval_{d}_r{a.round}") or {}).get("prompt")})
+        s.update({"candidate": tg, "images": imgs, "artpipe_job": f"arteval_{d}_{tg}",
+                  "provenance": f"art-eval regen round {tg}, artpipe jobs arteval_{d}_{tg}_*",
+                  "previous_prompt": (rows.get(f"arteval_{d}_{tg}") or {}).get("prompt")})
         s.pop("images_flight_note", None)
-        (out / f"{d}_r{a.round}.spec.json").write_text(json.dumps(s, indent=1))
+        (out / f"{d}_{tg}.spec.json").write_text(json.dumps(s, indent=1))
         made.append(d)
-        readyrounds.append((d, a.round))
+        readyrounds.append((d, tg))
     print(f"candidate specs: {len(made)} made, {len(waiting)} waiting {waiting}")
     print(" ".join(made))
-    (out / "ready.txt").write_text("\n".join(str(out / f"{d}_r{rr}.spec.json") for d, rr in readyrounds) + "\n")
+    (out / "ready.txt").write_text("\n".join(str(out / f"{d}_{rr}.spec.json") for d, rr in readyrounds) + "\n")
 
 
 def latest(defname: str, cand: bool):
     """The latest decision record for the subject: candidate runs (…_rN_NN) or first-pass runs (…_NN)."""
     out = None
-    for f in sorted((ROOT / "infrastructure/state/art_eval/runs").glob("fauna_*/decisions.jsonl")):
-        iscand = "_r" in f.parent.name.split("fauna_", 1)[1]
-        if iscand != cand:
+    for run, r in RS.decisions():
+        iscand = "_r" in run.split("fauna_", 1)[1]
+        if iscand != cand or r["subject"] != defname:
             continue
-        for line in f.read_text().splitlines():
-            r = json.loads(line)
-            if r["subject"] == defname:
-                out = r
+        if out is None or RS._instant(r.get("at")) >= RS._instant(out.get("at")):   # newest by time, not run name
+            out = r
     return out
 
 
@@ -190,7 +211,11 @@ def cmd_install(a):
     verdict = f"infrastructure/state/delegated/2026-10-23/{a.defname}.json"
     cand = latest(a.defname, True)
     first = latest(a.defname, False)
-    cmpf = R.storage_root() / "fauna_cands" / "cmp" / f"{a.defname}_r{a.round}" / "compare.json"
+    tg = RS.tag(a.defname, a.round)
+    cmpf = R.storage_root() / "fauna_cands" / "cmp" / f"{a.defname}_{tg}" / "compare.json"
+    if cand and cand.get("candidate") != tg:
+        print(f"{a.defname}: newest candidate decision is for {cand.get('candidate')}, not {tg} - not installed")
+        return 3
     if not (cand and cand["decision"] == "ACCEPT"):
         print(f"{a.defname}: candidate decision is {cand and cand['decision']} - not installed")
         return 3
@@ -217,12 +242,12 @@ def cmd_install(a):
     done = []
     for fl in files:
         f = fl["face"]
-        src = job_png(f"arteval_{a.defname}_r{a.round}_{f}")
+        src = job_png(f"arteval_{a.defname}_{tg}_{f}")
         if not src:
             print(f"SKIP {f}: no render")
             rc = 1
             continue
-        local = dest / f"r{a.round}_{f}.png"
+        local = dest / f"{tg}_{f}.png"
         shutil.copy(src, local)
         cmd = [sys.executable, str(ROOT / "src/RimMandrake/Utils/art/art.py"), "install", fl["mod"], fl["rel"],
                "--file", str(local.relative_to(ROOT))]
@@ -239,7 +264,7 @@ def cmd_install(a):
             done.append(fl)
         rc |= r.returncode
     if done and not a.dry_run:
-        rec = {"at": R.now(), "def": a.defname, "round": a.round, "verdict": verdict, "compare": {k: cmp.get(k) for k in ("winner", "reason")},
+        rec = {"at": R.now(), "def": a.defname, "round": a.round, "tag": tg, "verdict": verdict, "compare": {k: cmp.get(k) for k in ("winner", "reason")},
                "replaced_kept": anykept, "files": done,
                "revert": [["python3", "src/RimMandrake/Utils/art/art.py", "install", x["mod"], x["rel"], x["old_sha"], "--by-card", P_KEPT_CARD]
                           for x in done if x["kept"]] +
@@ -250,6 +275,40 @@ def cmd_install(a):
     return rc
 
 
+def cmd_reset(a):
+    jobs = ROOT / f"infrastructure/state/art_eval/runs/{a.source_run}/regen_jobs.json"
+    have = {r["target_def"] for r in json.loads(jobs.read_text())} if jobs.is_file() else set()
+    for d in a.defs:
+        if d not in have:
+            print(f"{d}: no regen row in {jobs} - not reset")
+            return 2
+    for d in a.defs:
+        rec = RS.add_reset(d, a.source_run, {"by_card": a.by_card, "owner_said": a.owner_said,
+                                              "per_ruling": a.per_ruling, "why": a.why})
+        print(f"{d}: series {rec['series']} from {a.source_run}; next job arteval_{d}_{RS.tag(d, 1)}")
+    return 0
+
+
+def cmd_owner_prompt(a):
+    if not (a.owner_said or a.by_card):
+        print("the text must be his: give --owner-said (his words) or --by-card")
+        return 2
+    rec = {"at": R.now(), "def": a.defname, "text": a.text, "source": a.source}
+    rec.update({k: v for k, v in (("owner_said", a.owner_said), ("by_card", a.by_card)) if v})
+    with RS.OWNER_PROMPTS.open("a") as fh:
+        fh.write(json.dumps(rec) + "\n")
+    print(f"{a.defname}: owner prompt recorded; next `rows` uses it verbatim")
+    return 0
+
+
+def cmd_prompts(a):
+    found = RS.owner_prompts()
+    for d in (a.defs or sorted(found)):
+        f = found.get(d)
+        print(f"{d}: " + (f"{f['source']} @ {f['at']}: {f['text']}" if f else "no owner prompt"))
+    return 0
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -258,6 +317,7 @@ def main(argv=None):
     r.add_argument("--specs", default=str(R.storage_root() / "fauna_specs"))
     r.add_argument("--out", required=True)
     r.add_argument("--file", action="store_true")
+    r.add_argument("--only", nargs="+", help="only these defs' rows")
     c = sub.add_parser("candidates")
     c.add_argument("defs", nargs="+")
     c.add_argument("--round", type=int, default=1)
@@ -270,9 +330,25 @@ def main(argv=None):
     i.add_argument("--round", type=int, default=1)
     i.add_argument("--specs", default=str(R.storage_root() / "fauna_specs"))
     i.add_argument("--dry-run", action="store_true")
+    z = sub.add_parser("reset", help="start a fresh round series (owner's decision; appends round_resets.jsonl)")
+    z.add_argument("defs", nargs="+")
+    z.add_argument("--source-run", required=True, help="run whose regen_jobs.json row is round 1 of the series")
+    z.add_argument("--by-card")
+    z.add_argument("--owner-said")
+    z.add_argument("--per-ruling")
+    z.add_argument("--why")
+    o = sub.add_parser("owner-prompt", help="record the owner's prompt text for a creature (used verbatim)")
+    o.add_argument("defname")
+    o.add_argument("--text", required=True)
+    o.add_argument("--owner-said")
+    o.add_argument("--by-card")
+    o.add_argument("--source", default="chat")
+    q = sub.add_parser("prompts", help="owner prompts found and where from")
+    q.add_argument("defs", nargs="*")
     a = ap.parse_args(argv)
-    {"rows": cmd_rows, "candidates": cmd_candidates, "install": cmd_install}[a.cmd](a)
+    return {"rows": cmd_rows, "candidates": cmd_candidates, "install": cmd_install, "reset": cmd_reset,
+            "owner-prompt": cmd_owner_prompt, "prompts": cmd_prompts}[a.cmd](a)
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

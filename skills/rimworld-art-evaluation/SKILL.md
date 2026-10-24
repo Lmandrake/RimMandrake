@@ -66,6 +66,14 @@ python3 selftest_art_eval.py                            # pure parts + a mocked 
   add `--record` (writes `infrastructure/state/delegated/<date>/<subject>.json`, delegation_policy §3) and, when
   regens should actually be drawn, `--file-regens` (artpipe `fill_queue.py`; NONE/PLACEHOLDER/DONOR or candidate art,
   and owner-kept art only with its revert record — install with `art.py install --by-card` citing the card).
+- **Fresh rounds and owner prompts** (owner card 2026-10-24, "After round 3 fate → 1 + user improved prompts"):
+  never hand-edit `regen_rounds.json` or decision logs. `fauna_drive.py reset <DEF>... --source-run <run> --by-card
+  "…"` appends `infrastructure/state/art_eval/round_resets.jsonl`; every counter (runner cap, fauna_drive rows /
+  candidates / install) then counts the new series and job ids carry it (`arteval_<DEF>_s1r1_south`). Then
+  `fauna_drive.py rows <source run> --only <DEF>... --out <rows.json> --file` files round 1. His prompt text for a
+  creature (`fauna_drive.py owner-prompt <DEF> --text … --owner-said …`, or a note he typed on an
+  `owner_escalations_*` sheet) is used VERBATIM inside the template's style sentences, never reworded; `fauna_drive.py
+  prompts` lists what was found. Code: `src/RimMandrake/Utils/art_eval/round_series.py`.
 - A spec is JSON: `subject, label, template (creature|plant|machine), module, description, invented,
   earth_body_named, body_plan, departures[], canon{must_show, engine_limits}, owner_notes[], owner_kept,
   depends_on, artpipe_job, previous_prompt, images{south,east,north,west,single,scale,living_reference,

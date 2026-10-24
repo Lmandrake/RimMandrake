@@ -343,6 +343,9 @@ def run(specs: list, run_id: str, rev: Reviewers | None = None, test: bool = Fal
     work.mkdir(parents=True, exist_ok=True); out.mkdir(parents=True, exist_ok=True)
     rounds_file = STATE / "regen_rounds.json"
     rounds = {} if test else (json.loads(rounds_file.read_text()) if rounds_file.is_file() else {})
+    if not test:   # a reset subject (owner card 2026-10-24, round_series.py) counts its fresh series, not the old 3
+        import round_series as RS
+        rounds = RS.apply_to_rounds(rounds, RS.decisions())
     living = {} if test else history_decisions()
     specs = sorted(specs, key=lambda s: s.get("module") == "catch")      # living animals first
     recs, done = [], set()
