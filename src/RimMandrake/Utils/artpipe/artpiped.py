@@ -1761,7 +1761,7 @@ def placeholder_failure(png: Path) -> str:
 
 
 def run_validator(validator_script: Path, reference, candidate: Path,
-                   timeout: float = VALIDATOR_TIMEOUT_S):
+                   timeout: float = VALIDATOR_TIMEOUT_S, drawsize=None):
     """Returns (verdict, findings). `timeout` defaults to the real
     VALIDATOR_TIMEOUT_S; overridable so a selftest can prove the
     TimeoutExpired path never raises without actually waiting 60s for it.
@@ -1784,6 +1784,8 @@ def run_validator(validator_script: Path, reference, candidate: Path,
                              TimeoutExpired into the caller, which (before
                              this fix) could lose the job's channel/cost in
                              a generic exception fallback.
+    `drawsize` (the job's): passed as --drawsize so a render on the def's rule canvas at an exact multiple of
+    the reference is judged at scale, not refused for canvas size (ARTEVAL_VALIDATOR_FIX_REFUSES_HIRES_REDRAW).
     """
     if not reference:
         return None, ["no reference on this job — validator skipped, not a pass"]
@@ -1798,7 +1800,8 @@ def run_validator(validator_script: Path, reference, candidate: Path,
     try:
         proc = subprocess.run(
             [sys.executable, str(validator_script), "--reference", str(reference),
-             "--candidate", str(candidate)],
+             "--candidate", str(candidate)]
+            + (["--drawsize", str(drawsize)] if drawsize else []),
             capture_output=True, text=True, timeout=timeout)
     except subprocess.TimeoutExpired:
         return "validator_error", [f"validate_sprite.py did not finish within "
@@ -2030,7 +2033,7 @@ def _check_size_and_validate(result: dict, job: dict, reference, out_png: Path,
         result["width"], result["height"] = tw, th
         result["downscaled_from"] = f"{sw}x{sh}"
 
-    verdict, findings = run_validator(validator_script, reference, out_png)
+    verdict, findings = run_validator(validator_script, reference, out_png, drawsize=job.get("drawsize"))
     result["validator_findings"] = findings
     if verdict == "reject":
         result.update(status="failed", worker_status="worker_reported_ok_but_invalid",

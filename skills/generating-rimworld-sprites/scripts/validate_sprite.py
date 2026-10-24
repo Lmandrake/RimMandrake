@@ -247,7 +247,43 @@ def describe(s: dict) -> None:
     print(f"  sha256    {s['sha']}")
 
 
-def check(ref: dict, cand: dict) -> list[tuple[str, str]]:
+def rule_canvas_px(drawsize: float) -> int:
+    """The def's rule canvas for a drawSize, from the pipeline's OWN size code (artpipe/common.py
+    canvas_for_cells) — loaded by path, never re-derived here, so the two can never disagree."""
+    import importlib.util
+    src = Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils" / "artpipe" / "common.py"
+    spec = importlib.util.spec_from_file_location("artpipe_common_for_validator", src)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return int(mod.canvas_for_cells(float(drawsize)))
+
+
+def rule_scale(ref: dict, cand: dict, rule_px: int | None) -> float | None:
+    """ARTEVAL_VALIDATOR_FIX_REFUSES_HIRES_REDRAW: the factor by which a candidate's canvas legitimately differs from
+    the reference's — only when the candidate is square on the def's rule canvas AND an exact integer multiple (or
+    divisor) of the reference on BOTH axes by the same factor. None otherwise (the canvas check refuses as before)."""
+    if not rule_px or (cand["w"], cand["h"]) != (rule_px, rule_px):
+        return None
+    for big, small in ((cand, ref), (ref, cand)):
+        if big["w"] % small["w"] == 0 and big["h"] % small["h"] == 0:
+            kw, kh = big["w"] // small["w"], big["h"] // small["h"]
+            if kw == kh and kw >= 2:
+                return float(kw) if big is cand else 1.0 / kw
+    return None
+
+
+def scaled_reference(ref: dict, f: float) -> dict:
+    """The reference's geometry as it would sit on a canvas `f` times its size (coverage is a canvas fraction and
+    does not change). Only the fields the geometry checks read are scaled; the pixels are not resampled."""
+    r = dict(ref)
+    r["w"], r["h"] = round(ref["w"] * f), round(ref["h"] * f)
+    r["span_w"], r["span_h"] = round(ref["span_w"] * f), round(ref["span_h"] * f)
+    if ref["bbox"]:
+        r["bbox"] = tuple(round(v * f) for v in ref["bbox"])
+    return r
+
+
+def check(ref: dict, cand: dict, rule_px: int | None = None) -> list[tuple[str, str]]:
     out: list[tuple[str, str]] = []
 
     def add(level, msg):
@@ -269,9 +305,18 @@ def check(ref: dict, cand: dict) -> list[tuple[str, str]]:
 
     # --- canvas -------------------------------------------------------------
     if (cand["w"], cand["h"]) != (ref["w"], ref["h"]):
-        add(REJECT, f"canvas is {cand['w']}x{cand['h']}, reference is "
-                    f"{ref['w']}x{ref['h']}. RimWorld draws against the def's "
-                    f"drawSize; a mismatch shifts the art off its tiles.")
+        f = rule_scale(ref, cand, rule_px)
+        if f is None:
+            add(REJECT, f"canvas is {cand['w']}x{cand['h']}, reference is "
+                        f"{ref['w']}x{ref['h']}. RimWorld draws against the def's "
+                        f"drawSize; a mismatch shifts the art off its tiles."
+                        + (f" (the def's rule canvas is {rule_px}x{rule_px}; only an exact multiple of the "
+                           f"reference ON that canvas is judged at scale)" if rule_px else ""))
+        else:
+            add(INFO, f"canvas {cand['w']}x{cand['h']} is the def's rule canvas and exactly {f:g}x the "
+                      f"reference's {ref['w']}x{ref['h']} - geometry judged against the reference scaled "
+                      f"to it (ARTEVAL_VALIDATOR_FIX_REFUSES_HIRES_REDRAW)")
+            ref = scaled_reference(ref, f)
 
     # --- alpha health -------------------------------------------------------
     if not cand["has_alpha"]:
@@ -457,7 +502,21 @@ def main() -> int:
                     help="treat warnings as rejections")
     ap.add_argument("--upright-cylinder", action="store_true",
                     help="also check the building camera: top-rim ellipse of a vertical round subject")
+    ap.add_argument("--drawsize", help="the def's drawSize (cells): a candidate on its rule canvas "
+                                       "(artpipe canvas_for_cells) at an exact multiple of the reference is "
+                                       "judged at scale instead of refused for canvas size")
     args = ap.parse_args()
+
+    rule_px = None
+    if args.drawsize is not None:
+        try:
+            ds = float(args.drawsize)
+            if not ds > 0:
+                raise ValueError("drawSize must be > 0")
+            rule_px = rule_canvas_px(ds)
+        except Exception as e:        # noqa: BLE001 - an unusable drawSize is unusable input (2), never a verdict (1)
+            print(f"ERROR cannot derive the rule canvas from --drawsize {args.drawsize!r}: {e}", file=sys.stderr)
+            return 2
 
     ref_path = Path(args.reference)
     if not ref_path.is_file():
@@ -496,7 +555,7 @@ def main() -> int:
     describe(cand)
     print()
 
-    findings = check(ref, cand)
+    findings = check(ref, cand, rule_px)
     if args.upright_cylinder:
         findings.append(cylinder_finding(cand_path))
     rejects = [m for lvl, m in findings if lvl == REJECT]
