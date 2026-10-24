@@ -57,7 +57,6 @@ REMOVING a def that a save already references is not.
 """
 
 import argparse
-import filecmp
 import fnmatch
 import os
 import shutil
@@ -168,23 +167,57 @@ def shippable(rel):
     return os.path.splitext(name)[1].lower() not in EXCLUDE_EXTS
 
 
+# One inventory per root per run (DEPLOY_PLAN_FIX_REDUNDANT_TREE_PASSES). On the
+# /mnt/c game copy a stat costs ~1.7 ms and a full plan used to make ~116k of them:
+# tree() did an os.path.exists() per file, filecmp.cmp() stat'ed both sides again,
+# and the stale-hold scan walked every root a third time. Now each file is stat'ed
+# once (DirEntry.is_file() is free from d_type and follows links, so a dangling
+# symlink is still dropped; the one DirEntry.stat() gives the size compare() needs).
+_INV = {}
+
+
+def inventory(root):
+    """{rel: size} of every shippable file under root; cached until forget(root)."""
+    hit = _INV.get(root)
+    if hit is not None:
+        return hit
+    out = {}
+    if os.path.isdir(root):
+        stack = [""]
+        while stack:
+            rel_dir = stack.pop()
+            try:
+                it = list(os.scandir(os.path.join(root, rel_dir) if rel_dir else root))
+            except OSError:
+                continue
+            for e in it:
+                rel = os.path.join(rel_dir, e.name) if rel_dir else e.name
+                try:
+                    if e.is_dir():           # follows links, as os.walk(followlinks=False)
+                        if e.name not in EXCLUDE_DIRS and not e.is_symlink():
+                            stack.append(rel)
+                        continue
+                    # A dangling symlink is not a file: a staged (MayRequire-rewritten)
+                    # copy is a symlink farm over src/, and a source file deleted after
+                    # staging -- another helper's move, mid-run -- left a link whose
+                    # filecmp raised FileNotFoundError and killed the whole plan
+                    # (DEPLOY_PLANNER_FIX_CRASH_ON_DELETED, SWBestiary Karrask.png).
+                    if shippable(rel) and e.is_file():
+                        out[rel] = e.stat().st_size
+                except OSError:
+                    continue                 # vanished mid-walk: not a file now
+    _INV[root] = out
+    return out
+
+
+def forget(root):
+    """Drop root's cached inventory (after anything wrote or deleted under it)."""
+    _INV.pop(root, None)
+
+
 def tree(root):
     """relative paths of every shippable file under root"""
-    if not os.path.isdir(root):
-        return set()
-    out = set()
-    for dirpath, dirnames, filenames in os.walk(root):
-        dirnames[:] = [d for d in dirnames if d not in EXCLUDE_DIRS]
-        for f in filenames:
-            rel = os.path.relpath(os.path.join(dirpath, f), root)
-            # A dangling symlink is not a file: a staged (MayRequire-rewritten)
-            # copy is a symlink farm over src/, and a source file deleted after
-            # staging -- another helper's move, mid-run -- left a link whose
-            # filecmp raised FileNotFoundError and killed the whole plan
-            # (DEPLOY_PLANNER_FIX_CRASH_ON_DELETED, SWBestiary Karrask.png).
-            if shippable(rel) and os.path.exists(os.path.join(dirpath, f)):
-                out.add(rel)
-    return out
+    return set(inventory(root))
 
 
 def repo_deleted(src, gone):
@@ -361,14 +394,29 @@ def split_held(holds, name, rels):
     return free, held
 
 
+def same_bytes(a, b, size_a, size_b):
+    """Byte-equal? Differing sizes are differing bytes; equal sizes are READ, never
+    trusted on size+mtime alone."""
+    if size_a != size_b:
+        return False
+    with open(a, "rb") as fa, open(b, "rb") as fb:
+        while True:
+            x, y = fa.read(1 << 20), fb.read(1 << 20)
+            if x != y:
+                return False
+            if not x:
+                return True
+
+
 def compare(src, dst):
-    s, d = tree(src), tree(dst)
+    si, di = inventory(src), inventory(dst)
+    s, d = set(si), set(di)
     new = sorted(s - d)
     gone = sorted(d - s)                       # deployed but no longer in repo
     changed = []
     for r in sorted(s & d):
         try:
-            if not filecmp.cmp(os.path.join(src, r), os.path.join(dst, r), shallow=False):
+            if not same_bytes(os.path.join(src, r), os.path.join(dst, r), si[r], di[r]):
                 changed.append(r)
         except OSError:
             # vanished between the walk and the compare (a concurrent delete):
@@ -747,6 +795,7 @@ def _run(args, targets, holds, mods_dir, active):
                     except OSError as e:
                         print("  ! FAILED to delete %s: %s" % (r, e))
                 wrote += pruned
+            forget(dst)                # copy/prune wrote under it: re-inventory once
             n2, c2, g2, _ = compare(src, dst)
             # Held files legitimately still differ after a deploy — that is the
             # whole point of holding them. Without this filter the verify step

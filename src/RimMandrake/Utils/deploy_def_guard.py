@@ -70,13 +70,26 @@ def xml_files(root):
     out = {}
     if not os.path.isdir(root):
         return out
-    for dp, dn, fn in os.walk(root):
-        dn[:] = [d for d in dn if d not in ("Source", "__pycache__", ".git", "obj", "bin")]
-        for f in fn:
-            if f.lower().endswith(".xml"):
-                p = os.path.join(dp, f)
-                if os.path.exists(p):
-                    out[os.path.relpath(p, root).replace(os.sep, "/")] = p
+    # scandir: DirEntry.is_file() comes free from d_type and follows links, so a
+    # dangling link is skipped with no per-file stat (the old os.path.exists was one
+    # 1.7 ms /mnt/c stat per XML).
+    skip = ("Source", "__pycache__", ".git", "obj", "bin")
+    stack = [root]
+    while stack:
+        dp = stack.pop()
+        try:
+            it = list(os.scandir(dp))
+        except OSError:
+            continue
+        for e in it:
+            try:
+                if e.is_dir():
+                    if e.name not in skip and not e.is_symlink():
+                        stack.append(e.path)
+                elif e.name.lower().endswith(".xml") and e.is_file():
+                    out[os.path.relpath(e.path, root).replace(os.sep, "/")] = e.path
+            except OSError:
+                continue
     return out
 
 

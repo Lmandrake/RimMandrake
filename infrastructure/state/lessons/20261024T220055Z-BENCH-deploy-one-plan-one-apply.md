@@ -1,0 +1,2 @@
+Deploying: run ONE plan and ONE apply per batch (use --mod A --mod B in a single invocation), and trust its 'VERIFIED in sync' line. Do not add ad-hoc md5 / PNG-hash / XML census passes afterward: the plan already compares bytes, and a Foundry deploy session burned ~280 s of /mnt/c reads (each stat ~1.7 ms) re-proving it with a scratch verify script that had no failing exit status. Measured 2026-10-24: a full plan was 250 s / 143k stats before DEPLOY_PLAN_FIX_REDUNDANT_TREE_PASSES, 118 s / 72k after; every extra full pass costs that again.
+home: rimworld-deploy
