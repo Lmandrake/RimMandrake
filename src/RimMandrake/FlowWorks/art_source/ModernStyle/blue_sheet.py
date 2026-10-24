@@ -18,6 +18,8 @@ from PIL import Image, ImageDraw, ImageFont
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import waterworks_blue as wb  # noqa: E402
+sys.path.insert(0, str(HERE.parent / "Sprinkler"))
+import squat_heads  # noqa: E402
 
 GROUND = (112, 86, 62, 255)
 TILE, PAD, LABEL = 150, 10, 26
@@ -42,9 +44,17 @@ def on_ground(im, size):
     return cv
 
 
+def red_head(tmp):
+    """The red squat Modern head (squat of the tall raw head, before the recolour): the installed one is blue now."""
+    p = tmp / "red_head.png"
+    if not p.exists():
+        squat_heads.squat(Image.open(squat_heads.RAW / "Modern" / "RM_SprinklerHead.png").convert("RGBA"))[0].save(p)
+    return p
+
+
 def scenes(cand, heads, tmp):
     out = {}
-    for tag, root, head in (("before", wb.RED, wb.TEX / wb.SPRINKLER), ("after", cand, heads / "Modern/RM_SprinklerHead.png")):
+    for tag, root, head in (("before", wb.RED, red_head(tmp)), ("after", cand, heads / "Modern/RM_SprinklerHead.png")):
         flat = tmp / tag
         flat.mkdir()
         for rel in wb.PIECES:
@@ -65,17 +75,25 @@ def main(argv=None):
     ap.add_argument("--ref")
     a = ap.parse_args(argv)
     cand, heads = Path(a.cand), Path(a.heads)
-    rows = [(rel, wb.RED / rel, cand / rel) for rel in wb.PIECES]
-    rows.append((wb.SPRINKLER + " (squat head)", wb.TEX / wb.SPRINKLER, heads / "Modern/RM_SprinklerHead.png"))
+    names = [Path(rel).name for rel in wb.PIECES]
+    if len(set(names)) != len(names):
+        raise SystemExit("two PIECES share a file name; scene.py's flat --over directory needs them unique")
+    with tempfile.TemporaryDirectory() as t:
+        tmp = Path(t)
+        sc = scenes(cand, heads, tmp)
+        rows = [(rel, Image.open(wb.RED / rel), Image.open(cand / rel)) for rel in wb.PIECES]
+        rows.append((wb.SPRINKLER + " (squat head)", Image.open(red_head(tmp)).convert("RGBA"), Image.open(heads / "Modern/RM_SprinklerHead.png")))
     sw, sh = 2 * TILE + 3 * PAD, TILE + LABEL + 2 * PAD
     grid_w = COLS * sw
     grid_h = -(-len(rows) // COLS) * sh
-    with tempfile.TemporaryDirectory() as t:
-        sc = scenes(cand, heads, Path(t))
     scene_w = sc["before"].width
     ref_w = 520
     W = ref_w + PAD + max(grid_w, 2 * scene_w + 3 * PAD)
-    H = 60 + grid_h + LABEL + sc["before"].height + 3 * PAD
+    ref = None
+    if a.ref:
+        ref = Image.open(a.ref).convert("RGBA")
+        ref = ref.resize((ref_w - PAD, round(ref.height * (ref_w - PAD) / ref.width)), Image.LANCZOS)
+    H = 60 + max(grid_h + LABEL + sc["before"].height + 3 * PAD, LABEL + (ref.height if ref else 0) + PAD)
     sheet = Image.new("RGBA", (W, H), (34, 34, 38, 255))
     d = ImageDraw.Draw(sheet)
     f, fs = font(15), font(12)
@@ -85,16 +103,14 @@ def main(argv=None):
     d.text((PAD, 34), "Stations 1-%d: BEFORE left, AFTER right. %d-%d: offline scene mock (NOT in game). R: owner's reference."
            % (len(rows), len(rows) + 1, len(rows) + 2), fill=(200, 200, 200), font=fs)
     x0, y0 = ref_w + PAD, 60
-    if a.ref:
-        ref = Image.open(a.ref).convert("RGBA")
-        ref = ref.resize((ref_w - PAD, round(ref.height * (ref_w - PAD) / ref.width)), Image.LANCZOS)
+    if ref:
         sheet.alpha_composite(ref, (PAD, y0 + LABEL))
         d.text((PAD, y0 + 4), "R  owner's reference (stock photo, not in repo)", fill=(255, 220, 120), font=f)
     for i, (rel, before, after) in enumerate(rows):
         x, y = x0 + (i % COLS) * sw, y0 + (i // COLS) * sh
         d.text((x + PAD, y + 4), "%d  %s" % (i + 1, rel.replace("/Modern/", "/").replace(".png", "")), fill=(255, 220, 120), font=fs)
-        sheet.alpha_composite(on_ground(Image.open(before), TILE), (x + PAD, y + LABEL))
-        sheet.alpha_composite(on_ground(Image.open(after), TILE), (x + 2 * PAD + TILE, y + LABEL))
+        sheet.alpha_composite(on_ground(before, TILE), (x + PAD, y + LABEL))
+        sheet.alpha_composite(on_ground(after, TILE), (x + 2 * PAD + TILE, y + LABEL))
     ys = y0 + grid_h + PAD
     for k, tag in enumerate(("before", "after")):
         x = x0 + k * (scene_w + PAD)

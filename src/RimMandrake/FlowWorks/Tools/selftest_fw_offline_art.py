@@ -18,7 +18,7 @@ Each check must FAIL on the art he rejected (the shipped code, emulated as BEFOR
     look (the seat follows the pipe's look in game)
   parity: fw_scenes_sprinkler.seat == RM_PipeSeatMath.Seat for all 16 masks x every look (k, r and the stub read from the
           C# source via selftest_pipe_seat's parser); the installed head PNGs == squat_heads.shipped(raw) pixel for pixel,
-          and every RM_SprinklerHead drawOffset z (the four styles and the base ThingDef) == (SEAT_Y - 128) / 256 to 3 dp
+          and every RM_SprinklerHead drawSize == (1,1) and drawOffset z (the four styles and the base ThingDef) == (SEAT_Y - 128) / 256 to 3 dp
           -- together: the art's seat row lands on the pipe axis.
   Modern waterworks blue, every recoloured piece + the Modern head (MODERN_PIPE_REDRAW_FIRETRUCK_RED_RETIRED):
     no saturated red          FAIL on the red originals (ModernStyle/red, the squat red head), PASS installed
@@ -105,9 +105,13 @@ def sprinkler_parity():
         want(same, "parity: installed %s head == squat_heads.shipped(raw/%s) pixel for pixel" % (look, look))
     try:
         oz = ss.def_offsets(base=True)
+        ss.def_draw_sizes(base=True)
     except ValueError as e:
         want(False, "parity: sprinkler head drawOffsets readable (%s)" % e)
         return
+    sizes = ss.def_draw_sizes(base=True)
+    want(all(v == (1.0, 1.0) for v in sizes.values()),
+         "parity: RM_SprinklerHead (+ each style) drawSize %s == (1,1), which the seat formula below assumes" % sizes)
     need = round((squat_heads.SEAT_Y - 128) / 256, 3)
     want(all(abs(v - need) < 1e-9 for v in oz.values()),
          "parity: RM_SprinklerHead (+ each style) drawOffset z %s == (SEAT_Y %d - 128)/256 = %s" % (oz, squat_heads.SEAT_Y, need))
