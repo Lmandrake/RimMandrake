@@ -1,0 +1,147 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_fauna_contagion_r2_03",
+ "built": "2026-10-24T02:06:37-0700",
+ "census": "Transient/biome_ffar/art_eval_shadow_fauna_contagion_r2_03.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 11 mods \u2014 a test list): 320 active",
+ "rows": {
+  "RM_Peeper": {
+   "columns": {
+    "A": {
+     "east": "c188e79cae223511600cbeef6e53248fabe1d92e3c43308c86ff8333f7a99148",
+     "north": "bb976333012fd3fb90afc779b773d95c1548843cd257e8e8350ddf9ef625a7ff",
+     "south": "8b975ef975dc114d237367e58788e8d9379724b0c48926c54788159004b65541"
+    },
+    "B": {
+     "east": "4bb7b12d8e988a4425ad0df7dbc3d50eee688d6ea54f98847318a0e516d8caf7",
+     "north": "1a999aa5b2b4ee291515d5bcee5fe6d06499074a8a0dfac1c43d22b03ce76679",
+     "south": "ad7bd36658c4165a52405de31d82fd378094ade05f97ee0ce4bc659c707ec00c"
+    },
+    "C": {
+     "east": "a84d390a7bf3cbfe108ab01dd447043e6e3f1344063bf2e145f39818fa4c6973",
+     "north": "24490a6d87f09a54ec9b3b57d7f1373eed471d61f55d19af085b4228a53e6406",
+     "south": "51a642840a4383600b5ee65124ca2b715eafc9a81eff1e9dbc9610124fe66c40"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Peeper/RM_Peeper",
+    "B": "Things/Pawn/Animal/RM_Peeper/RM_Peeper",
+    "C": "Things/Pawn/Animal/RM_Peeper/RM_Peeper"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion",
+    "B": "render arteval_RM_Peeper_r2",
+    "C": "render arteval_RM_Peeper_r1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Peeper/RM_Peeper"
+   ],
+   "res": "Things/Pawn/Animal/RM_Peeper/RM_Peeper",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "peeper"
+  },
+  "RM_Scaldhide": {
+   "columns": {
+    "A": {
+     "east": "228246ab38ee253d1b27a4f72973cdf91a972a34bbac76cf8e72ad03a908388d",
+     "north": "1bb8d68516efc4b297f8e27579ac699e54736c428211787f14d3c202a18c5de3",
+     "south": "a59775c81f49f667cde078e0fdb6175967c1e5e7973295048d7072f210ff1e12"
+    },
+    "B": {
+     "east": "afe5a5b10db3a4f9e58bd4e8dfdd97f5bd2950e02d5c6e20dccac731f6bcdf9e",
+     "north": "83cdf496365fc3e015757b6ea76af61722d65b7318f9934933aa611b0acb10dd",
+     "south": "5477f2bd8f4fa2eee9b9034572e06ef7d17c90f4a9ccdb8ea4ceee47269a3976"
+    },
+    "C": {
+     "east": "dc94663f97a264a4a9a1ea941f14c3f80e4b5e6b5c8fe91d965dd4db1b99901c",
+     "north": "69a6e7907900c2442434b2ca9d6d9297bc4f27e4f19556f5617f56b3be2120c4",
+     "south": "a84db7fbaa9da90da43b732577130e4591596f7883d51d6cccd36606e6e747f9"
+    },
+    "D": {
+     "east": "228246ab38ee253d1b27a4f72973cdf91a972a34bbac76cf8e72ad03a908388d",
+     "north": "7be08d39d58e8f9b930d13d059af961dc92f70b227f878267dfb5b410abab631",
+     "south": "a59775c81f49f667cde078e0fdb6175967c1e5e7973295048d7072f210ff1e12"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Scaldhide/RM_Scaldhide",
+    "B": "Things/Pawn/Animal/RM_Scaldhide/RM_Scaldhide",
+    "C": "Things/Pawn/Animal/RM_Scaldhide/RM_Scaldhide",
+    "D": "Things/Pawn/Animal/RM_Scaldhide/RM_Scaldhide"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion",
+    "B": "render arteval_RM_Scaldhide_r2",
+    "C": "render arteval_RM_Scaldhide_r1",
+    "D": "render RM_Scaldhide"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Scaldhide/RM_Scaldhide"
+   ],
+   "res": "Things/Pawn/Animal/RM_Scaldhide/RM_Scaldhide",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "scaldhide"
+  },
+  "RM_Sparkleech": {
+   "columns": {
+    "A": {
+     "east": "0d40769ce16804fa0c6c77029bc43dfc33c5900411cffbe698d8726db6d32087",
+     "north": "0f89474654a08680bee6f8250365720777603cbcf3e261ceee42bd38797d8d18",
+     "south": "70a83735015b59f8f209bddb0b786169a25a6d6c81a0f1ddfbb0e500409251ef"
+    },
+    "B": {
+     "east": "e6ae0474a124a1e8c1022f7fcf1478ff1593605944d5b208a10b97f3d7eee34d",
+     "north": "b4001930db5a570f7984007787811d5b2bc4c2ff1212b7f603483e1cbbe3328a",
+     "south": "9fb048862592dfe1a1d39af24c013c29549d1922034bb1f92498b1f71d8c6107"
+    },
+    "C": {
+     "east": "df71221969917e088565c6fde2ce3fa02af6d3655fdab9286813debee211dea7",
+     "north": "d3df2356a1c4da32f350481a78928bb78f15b547aa04eb73f241bf728a0b5691",
+     "south": "0047eeba2b8eef48452d0d3f30bac25b3afa738ea262b1e3010feab78830a3aa"
+    },
+    "D": {
+     "east": "f7bc3bcb7cbc47f2d92169a8ad5c530a996e5b882f8c4885802f7cf947e01ce0",
+     "north": "77dec66a26e986bc0ac9c4b6a45a8ec668638563c3ed0109683f2473dc2b855b",
+     "south": "ea20689d29d2ed02b54411d5e44b82d3549f597ef71c2498edaa111e750881e3"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Sparkleech/RM_Sparkleech",
+    "B": "Things/Pawn/Animal/RM_Sparkleech/RM_Sparkleech",
+    "C": "Things/Pawn/Animal/RM_Sparkleech/RM_Sparkleech",
+    "D": "Things/Pawn/Animal/RM_Sparkleech/RM_Sparkleech"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion",
+    "B": "render arteval_RM_Sparkleech_r2",
+    "C": "render arteval_RM_Sparkleech_r1",
+    "D": "render enact_c6a3f569_sparkleech_v1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Sparkleech/RM_Sparkleech"
+   ],
+   "res": "Things/Pawn/Animal/RM_Sparkleech/RM_Sparkleech",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "sparkleech"
+  }
+ },
+ "sheetId": "art_eval_shadow_fauna_contagion_r2_03_sheet_2026-10-24",
+ "snapshotId": "23dbfbc54e66efb6"
+}

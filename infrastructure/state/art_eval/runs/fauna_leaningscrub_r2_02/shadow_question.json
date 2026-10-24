@@ -1,0 +1,44 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RM_Ribbonwhip": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: F_SIZE_JUMP, STYLE_CARTOON \u00b7 GPT regen",
+   "context": "judged candidate r2 (image sha 86be153faf); STYLE_CARTOON: The broad, frog-like wedge head has a mouth line that curves up at the corners into a faint smile, with round dark eyes.; F_SIZE_JUMP: North extends much farther vertically than east (measured spread 78%). The ribbon width and head size match, so this is posture rather than "
+  },
+  "RM_Rollbug": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: DUPLICATE, F_SIZE_JUMP, F_TOPDOWN \u00b7 GPT regen, unsettled K1, K2, K3",
+   "context": "judged candidate r2 (image sha 54da3c8710); F_SIZE_JUMP: In facings.png the ball on east is about 250 px across, against about 350\u2013370 px on south and north. The east figure as a whole reads smalle; DUPLICATE: The ball's surface is the identical arrangement on all three facings: skull at top right, ribs at centre, riveted plate at right. On north t; F_TOPDOWN: The bug's back on north is seen from a high angle, with legs splayed out around it almost like a plan view."
+  },
+  "RM_Shirrel": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: DEPARTURE_MISSING \u00b7 GPT unsure, unsettled K1",
+   "context": "judged candidate r2 (image sha 5e1b79fe5f); DEPARTURE_MISSING: The open diamond kite-sail held taut by struts is never shown. Only the closed, folded spar bundle is visible, and no flight frames were sup"
+  }
+ }
+}

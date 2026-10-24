@@ -1,0 +1,131 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_fauna_cauldron_r2_01",
+ "built": "2026-10-24T01:59:15-0700",
+ "census": "Transient/biome_ffar/art_eval_shadow_fauna_cauldron_r2_01.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 14 mods \u2014 a test list): 320 active",
+ "rows": {
+  "RM_DecayDrake": {
+   "columns": {
+    "A": {
+     "east": "ba98737edc7f536ecef779f7fd1353f6274358a61127e5e25e0259658b23f199",
+     "north": "ca8ff92b2d64e790002839d5abe86f4af8d660933bee1c79beef33e7224823d6",
+     "south": "6a1234293ef67df19a8aec0c7797b37619c165bae50c64be666b6501e5009342"
+    },
+    "B": {
+     "east": "3aa36d102afceeea0d410e41d8af5a4af22ba036eacfced26178f96d4877a6cb",
+     "north": "875c700ef8be505fdca4f41226a56824f9bf2f392c73d6bd1bbcf08270c1ba0c",
+     "south": "438fc20932968b785c996e385f333770198d9bb102c65d74978e87740f032597"
+    },
+    "C": {
+     "east": "3e6d1c4a693c055cc23d4fd4dcb3d005a73fa813bea5b42561f03acab77d8e86",
+     "north": "d8ecd1383e11df855bc5db54e0ee6b69520e9a491e355e7f227801e3a7d275d1",
+     "south": "ae788a400644d09e3da630d107a0a5284f158250511134c1b54f92c3e6282583"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_DecayDrake/RM_DecayDrake",
+    "B": "Things/Pawn/Animal/RM_DecayDrake/RM_DecayDrake",
+    "C": "Things/Pawn/Animal/RM_DecayDrake/RM_DecayDrake"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Miasma",
+    "B": "render arteval_RM_DecayDrake_r1",
+    "C": "render arteval_RM_DecayDrake_r2"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_DecayDrake/RM_DecayDrake"
+   ],
+   "res": "Things/Pawn/Animal/RM_DecayDrake/RM_DecayDrake",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "decaydrake"
+  },
+  "RM_Mullgoth": {
+   "columns": {
+    "A": {
+     "east": "c0dedfeb285204cbbed795a7d5e69e115a6658fe32ed6491b2ddebc3460251ac",
+     "north": "b9b8371b78698e470f8e66d6d198e668213c96a3b152e139a63867877df46c25",
+     "south": "bc89bf873cf8ce8389189e75066b894fc8c75a08a09395c8e2d47624217238b6"
+    },
+    "B": {
+     "east": "6207e39931a68709afce42b07b7db3a55675d7c5c66db1367b1984069bc2f1a2",
+     "north": "483d52cc107e8bea399ec8b5d28a9a977f035a3b06be4f6aa90f4989c7f1c559",
+     "south": "7ef4c1a7f31abc48e4a8fc749774274b434c7f2e9c3c3a120c6a4f3b023a82ed"
+    },
+    "C": {
+     "east": "c85b9a0bca7410000bb53c4931064791cb221f080b4c00a83e75aa5abb159629",
+     "north": "65a503ef373feff3c3f4f59e7940d25c5848fc03e0fbe32fc4585ac8f3ded404",
+     "south": "8bcd802e59d3cc85e2928f42091e5a75bfb3ef9c1f4d3c850f2a5ce0f1c2a34d"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Mullgoth/RM_Mullgoth",
+    "B": "Things/Pawn/Animal/RM_Mullgoth/RM_Mullgoth",
+    "C": "Things/Pawn/Animal/RM_Mullgoth/RM_Mullgoth"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render arteval_RM_Mullgoth_r1",
+    "C": "render arteval_RM_Mullgoth_r3"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Mullgoth/RM_Mullgoth"
+   ],
+   "res": "Things/Pawn/Animal/RM_Mullgoth/RM_Mullgoth",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "mullgoth"
+  },
+  "RM_Rhossak": {
+   "columns": {
+    "A": {
+     "east": "77b4614da6c779fc4cf11ee50f1d78998d94f2a5302388adf705b1a3404fc25d",
+     "north": "7f17b2f4fc08b1f38beb5b6cbc5ba550e53bfec6e86fee51a8842bd21de98c21",
+     "south": "33d2ed6f859b3a40d56defb1a6f6afb24a132444deb46f2060d060da4d70b33b"
+    },
+    "B": {
+     "east": "8a9c209dcdbb897f615386af696ead6318af0474d245aad5bfb68fc5f504b8c7",
+     "north": "20ae37c1796d41ceb9b0252e0106d41cc475959037c0663638532f3a5d6cb817",
+     "south": "39bb744eee200e4b6bdfae8e026501145b96dadb8626c0363a6eb707d8a8d336"
+    },
+    "C": {
+     "east": "b646618001c5149df72357cd792996e833658941fe1b934bae611218de923b80",
+     "north": "11f3710326df51bd10b269c89cc5e2c5b440bdb909b2947b26889ffe995e50f1",
+     "south": "190758600066c3ff787603199e7b570f6ea920187b22f0cbf68364425e35ec07"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Rhossak/RM_Rhossak",
+    "B": "Things/Pawn/Animal/RM_Rhossak/RM_Rhossak",
+    "C": "Things/Pawn/Animal/RM_Rhossak/RM_Rhossak"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Cauldron",
+    "B": "render arteval_RM_Rhossak_r1",
+    "C": "render arteval_RM_Rhossak_r2"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Rhossak/RM_Rhossak"
+   ],
+   "res": "Things/Pawn/Animal/RM_Rhossak/RM_Rhossak",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "rhossak"
+  }
+ },
+ "sheetId": "art_eval_shadow_fauna_cauldron_r2_01_sheet_2026-10-24",
+ "snapshotId": "2576968f1e996b1d"
+}

@@ -1,0 +1,59 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_fauna_contagion_r2_04",
+ "built": "2026-10-24T02:07:53-0700",
+ "census": "Transient/biome_ffar/art_eval_shadow_fauna_contagion_r2_04.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 26 mods \u2014 a test list): 320 active",
+ "rows": {
+  "RM_SparkleechGrub": {
+   "columns": {
+    "A": {
+     "east": "7ad3f065e798c75f63d4a7cadcd3f3478fb0c034716a2383850b1c89290b3016",
+     "north": "a8cb4503f26cde8f3df32dd4303f6a14a6edf7ebb80312ebbb903c00216b91bc",
+     "south": "9cdad7d3b0fc0a78a40bf14bf8ca309660a4b6bf63d941985bb242b9fe1e4d2a"
+    },
+    "B": {
+     "east": "2fb686fa65e7878f4a5c1ab5d701c544e48f30128b43de6ead28574a3078194b",
+     "north": "90b6dbd9a5c16efee25ce2b3169ea2b31f3b547d90f500bb9375a0f957c67f7c",
+     "south": "d11e0be77ffaada29c276cdfb9f3a39854bd3b751d5be82b44edeb873b9f8264"
+    },
+    "C": {
+     "east": "79d5367344a36cdbbaced9fd7781211e7b42cbf6960945a1ecebeeabfea1094a",
+     "north": "2eb2d8865e910cd98bafc944a25d5a2141516adbbe269853b584a80e0267777b",
+     "south": "e987608ea6e195322b743887fcb39dea7090ae8059d2034ab1cffd10cedb8e4a"
+    },
+    "D": {
+     "east": "7ad3f065e798c75f63d4a7cadcd3f3478fb0c034716a2383850b1c89290b3016",
+     "north": "d09f63f36c4c346a687429a723400a01c434026691cf50cd7eb4d40e7c44f6e3",
+     "south": "6ab62860d817a39231640767bc28cea87c894480d898b1da07c31024a7015158"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_SparkleechGrub/RM_SparkleechGrub",
+    "B": "Things/Pawn/Animal/RM_SparkleechGrub/RM_SparkleechGrub",
+    "C": "Things/Pawn/Animal/RM_SparkleechGrub/RM_SparkleechGrub",
+    "D": "Things/Pawn/Animal/RM_SparkleechGrub/RM_SparkleechGrub"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion",
+    "B": "render arteval_RM_SparkleechGrub_r2",
+    "C": "render arteval_RM_SparkleechGrub_r1",
+    "D": "render RM_SparkleechGrub"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_SparkleechGrub/RM_SparkleechGrub"
+   ],
+   "res": "Things/Pawn/Animal/RM_SparkleechGrub/RM_SparkleechGrub",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "sparkleechgrub"
+  }
+ },
+ "sheetId": "art_eval_shadow_fauna_contagion_r2_04_sheet_2026-10-24",
+ "snapshotId": "8895429bf244727f"
+}

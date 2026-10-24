@@ -1,0 +1,107 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_fauna_leaningscrub_r2_05",
+ "built": "2026-10-24T02:15:45-0700",
+ "census": "Transient/biome_ffar/art_eval_shadow_fauna_leaningscrub_r2_05.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 26 mods \u2014 a test list): 320 active",
+ "rows": {
+  "RM_Vurra": {
+   "columns": {
+    "A": {
+     "east": "d69453ddae76999c2f877c00d99c94065faf4e6f9c8419a37919268c083c5aa7",
+     "north": "1203e1a13fa147827b1c52ce47ec35617a7218600d6b0cb30be630ca5324f2f0",
+     "south": "aeb65a3bca6335c59402732c6913c329f230b7ff8cbe9ec68edb0b71613fa94f"
+    },
+    "B": {
+     "east": "cdc6ff7d06bc2a8a56576f9bc288db0e6dbda14c3a7a9fdd38ad13a24150305c",
+     "north": "ee05964077934382b5a88a3e6d39c6a70fe16bfceb76dcf5d26a5c332faff84d",
+     "south": "e4d3bd33e72bfd5065b00625023f63aac270bbb908a62a766e1ffc8d5fe0a07c"
+    },
+    "C": {
+     "east": "b8feca46a077caeb2e64af3821841bd67b0859845e69f5163594005ef1da5f61",
+     "north": "ae17b2ea48ac820eee83a571f4a0c81f2095a6b59bcd2555a76526ed22789117",
+     "south": "ca58052156284730204c507ebbbdb2047be95b099ba8f591e7fde0c25666efa3"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Vurra/RM_Vurra",
+    "B": "Things/Pawn/Animal/RM_Vurra/RM_Vurra",
+    "C": "Things/Pawn/Animal/RM_Vurra/RM_Vurra"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render arteval_RM_Vurra_r2",
+    "C": "render arteval_RM_Vurra_r1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Vurra/RM_Vurra"
+   ],
+   "res": "Things/Pawn/Animal/RM_Vurra/RM_Vurra",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "vurra"
+  },
+  "RM_Zellik": {
+   "columns": {
+    "A": {
+     "east": "a944771c07a4ba1e829d1096f8e92bc7ea305cbd50207660bde1fa144c951038",
+     "north": "505b3833a72dd3ba4384515c940110aef1012f625e2f1b380139cb415c099b1e",
+     "south": "7fcc4640ef3bb3bc17840d782be33a7c590d962e2869b004e080dd59efa6fb48"
+    },
+    "B": {
+     "east": "ada2565b75d94529f48f016eabbaa0b57bfb6814428682d8258a2a0503f29e83",
+     "north": "fc3132bae66203d742676beb6659b07fe06c3073386be4c8116bfeb896f09ced",
+     "south": "3188ba9bdde8c6dc61a6fd649b3db13a8144aad39476a101e910f1cad628a2d3"
+    },
+    "C": {
+     "east": "3611afec53e5d51a479ad804c08440c9339570af8ed2f3fc5d2c683931153754",
+     "north": "bac6c42ab5c266bc89c867037b8e0fb2ea75fb753165e767b798a06dfba3b6d4",
+     "south": "a0220df77339e223b9db5ed666a59a1b63cd5b0f0d8ee55799972a63bd0ce10f"
+    },
+    "D": {
+     "east": "ecce2c3cdfac0818d9bdcc60dd103de251fc38a9617e178d3cba98c02728e80c",
+     "north": "e206958cf6993fb0c4966a70753b98e7f33d4a4f940e996029e7aa4163878799",
+     "south": "0cbe1efe73721f4dd0ff8b6362312791d8db9e902fdf3fe761dff7e7060acdcb"
+    },
+    "E": {
+     "east": "a4847dbec0c1a5d010139adb8b3f33c4d4060d5e496a5cdaed8f5a07ca5022e6",
+     "north": "cd0b27136adf14fd13d9d019e1f2a2631df38e340f1cd6477b0d629461b6c3d9",
+     "south": "422d4408b786fe61c6e2f4b09113e70013d2a2829b5447b6e2c7ca91c37a87af"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Zellik/RM_Zellik",
+    "B": "Things/Pawn/Animal/RM_Zellik/RM_Zellik",
+    "C": "Things/Pawn/Animal/RM_Zellik/RM_Zellik",
+    "D": "Things/Pawn/Animal/RM_Zellik/RM_Zellik",
+    "E": "Things/Pawn/Animal/RM_Zellik/RM_Zellik"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LeaningScrub",
+    "B": "render arteval_RM_Zellik_r2",
+    "C": "render arteval_RM_Zellik_r1",
+    "D": "render regen_ls2_x_zellik_v2",
+    "E": "render regen_ls2_x_zellik_v3"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Zellik/RM_Zellik"
+   ],
+   "res": "Things/Pawn/Animal/RM_Zellik/RM_Zellik",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "zellik"
+  }
+ },
+ "sheetId": "art_eval_shadow_fauna_leaningscrub_r2_05_sheet_2026-10-24",
+ "snapshotId": "89a7bdd95a25b935"
+}

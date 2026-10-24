@@ -1,0 +1,169 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_fauna_cauldron_r2_00",
+ "built": "2026-10-24T02:17:07-0700",
+ "census": "Transient/biome_ffar/art_eval_shadow_fauna_cauldron_r2_00.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 26 mods \u2014 a test list): 320 active",
+ "rows": {
+  "RM_BedBug": {
+   "columns": {
+    "A": {
+     "east": "057b886d93e75e4ce395f32a7bd425c5032a7468a77fa59544ab952e12e18961",
+     "north": "dc5952fbeb5cc8e2a105030f3d8296023e06a4bd9eb65731b1609ebb1ad7d2da",
+     "south": "8a78ca5f2891954c43e951f7912e7e630cc92de0d7a0b4402825d55b1ae7224c"
+    },
+    "B": {
+     "east": "81bc82b74094d13525f89c25e32d34ff27e95f0ba7734f2798bfaf0d49977d45",
+     "north": "18d2a27d85627f008daba147c6fa2b6018cdaaa86c8789337cfaf2d7acf86564",
+     "south": "2266d85c7099a8cf643f8e79797471efec42a3330eeb4b736bf4c191cef9af7d"
+    },
+    "C": {
+     "east": "4291804ae70db7f78a961d008a750c0c2040331deb1950e34a44f947f80f5f7b",
+     "north": "65c2e361f9f3f53b35c8ef27676d4f2a4e5e9d592b8efa63fe95c54924577dec",
+     "south": "9e79486373c8fc4fa1f6ad8978a8c77b2de94b96bdd5a419bff715d9348585ee"
+    },
+    "D": {
+     "east": "ba60f423cd55f02804b67c8a2118b7b5cf2d9ec67ea714873b5cca475f90baa4",
+     "north": "d26ea30a5fcc5b8543f064b5c950c35ce55f46bdbbba7f63ea08c178a9ddae8e",
+     "south": "1dbbf3b2b67e52bc51bd4735fef9a45577ecd18905dd71225e50e9bcae66e12f"
+    },
+    "E": {
+     "east": "057b886d93e75e4ce395f32a7bd425c5032a7468a77fa59544ab952e12e18961",
+     "north": "2dd013ef65f9551fc7f787ed9a5bce521d62a6176ede7cef3e8d56a2f12710a6",
+     "south": "57c09404603735ce282f0e0ea7cc59e8f3955ec2f7c6e08b30d9a0be83aba028"
+    },
+    "F": {
+     "east": "2900a6a7dcf8f0e76df5a094d4a66ada6e5a12450aa3e393130d38d2b8a8614d",
+     "north": "13d24f1217a05ac42bed89e44764903fe35615b13f06701ec97042ca12d8613f",
+     "south": "96e5cdc8131a488a93f8ddbbbbc01b6d085b48c65bfdee00f0cb2333ba236b9c"
+    },
+    "G": {
+     "single": "8f4a2f73d82f7546fb3a9af1b15a1967b50023bf97647f098ffe10064abe7bc3"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_BedBug/RM_BedBug",
+    "B": "Things/Pawn/Animal/RM_BedBug/RM_BedBug",
+    "C": "Things/Pawn/Animal/RM_BedBug/RM_BedBug",
+    "D": "Things/Pawn/Animal/RM_BedBug/RM_BedBug",
+    "E": "Things/Pawn/Animal/RM_BedBug/RM_BedBug",
+    "F": "Things/Pawn/Animal/RM_BedBug/RM_BedBug",
+    "G": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Cauldron",
+    "B": "render arteval_RM_BedBug_r1",
+    "C": "render arteval_RM_BedBug_r2",
+    "D": "render enact_be511e0a_bedbug_v1",
+    "E": "render cauldronfix_bedbug_v2",
+    "F": "render gapall_AA_BedBug_v1",
+    "G": "render donorart_p2_bedbug_egg_v1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_BedBug/RM_BedBug"
+   ],
+   "res": "Things/Pawn/Animal/RM_BedBug/RM_BedBug",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
+   "shownBase": [],
+   "subject_key": "bedbug"
+  },
+  "RM_Bileworm": {
+   "columns": {
+    "A": {
+     "east": "7778ee23e92f8cebf8b12c6b1c16412f4f0ede6908f9da25ff9e88144e70f63e",
+     "north": "fb0a4cae2598c719ef11b8fcc9b87aa757a3a9d6e7e162c0ba6e09a3d28e65c4",
+     "south": "7dec057170bae3d2178b610e709036a4c3149dbf00b7b6a35d9aafc83a8a04bd"
+    },
+    "B": {
+     "east": "b843f3b3fbfd154db929a90acdaf540626b6878322667bb6939a9f32ab9a236b",
+     "north": "487a4c7a314a1a2b8ac79cc90adbd9f23632ecce116e2433f13674048860a8a0",
+     "south": "a1b6dd1a10af5cf67213b11724efee35a2af8af867bef885c811b5323166e526"
+    },
+    "C": {
+     "east": "6d7b75d174c929141b09db3e779e289d52cc854afb1d2a3705ee8e62ef4afd08",
+     "north": "4a4269d6c820953b2a13fc166addb51849021fd131b3cdeef2484d8e9ba3c606",
+     "south": "32c0286b6fb0dec9ad53f0fab21da6848a5eda92440a9b147f09d9cdecd43164"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Bileworm/RM_Bileworm",
+    "B": "Things/Pawn/Animal/RM_Bileworm/RM_Bileworm",
+    "C": "Things/Pawn/Animal/RM_Bileworm/RM_Bileworm"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Scarlands",
+    "B": "render arteval_RM_Bileworm_r1",
+    "C": "render arteval_RM_Bileworm_r2"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Bileworm/RM_Bileworm"
+   ],
+   "res": "Things/Pawn/Animal/RM_Bileworm/RM_Bileworm",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "bileworm"
+  },
+  "RM_CrystalMit": {
+   "columns": {
+    "A": {
+     "east": "c50de4b85c204bb94ca2098e994761c973c3990f693f0cb71218f7863ca1872c",
+     "north": "cb2c786fc2ec6a02b76ab8ae14281f4d815f113b5ce80c4dafbc757917092c3b",
+     "south": "b9ac78abe816592c882096f888e9e947be6b03b007232d7e54f4c1873e5e4417"
+    },
+    "B": {
+     "east": "73f5a881f4b0dac614bfcd93d798edd370799fba82ee7b8615986b747a6a9215",
+     "north": "2752feb810aa5bcd43b09de775ea53bde4332ada32ac8b5423b3fece91a87012",
+     "south": "dbd1169127396341a231d5e0937093fcc799dd79c4f90acb5505ba3f8285baf2"
+    },
+    "C": {
+     "east": "efb3ef238a5ca9bb5077c13f1707f68d50dbe9112ab2fb2944a15b795a628a79",
+     "north": "b4ea8ff160b4bc352262139dc7a6975b6e0e3a94b19cdfb3d3fa70abbc043585",
+     "south": "9ed0ecb55e73d74d2e007c7ee4c74670fe985b3d42afa21b5eb1f15a30b6fcf6"
+    },
+    "D": {
+     "east": "624dc66dd8a8beeac8c8815a531cd5035a0994de72be15e187a765bbb5cdeea0",
+     "north": "c0ef85c2210c8d324c56f6a1ab060867dcf2281be8c981a412a43c72be139f94",
+     "south": "918f4a66a4a40fdd3b1ff546d2f7ba1be6ca1a16af8cadd96f5a27eda3fbae00"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMit",
+    "B": "Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMit",
+    "C": "Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMit",
+    "D": "Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMit"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Cauldron",
+    "B": "render arteval_RM_CrystalMit_r1",
+    "C": "render arteval_RM_CrystalMit_r2",
+    "D": "render gapall_AA_CrystalMit_v1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMit"
+   ],
+   "res": "Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMit",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "crystalmit"
+  }
+ },
+ "sheetId": "art_eval_shadow_fauna_cauldron_r2_00_sheet_2026-10-24",
+ "snapshotId": "f8a75f7471671cdb"
+}

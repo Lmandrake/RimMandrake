@@ -1,0 +1,44 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RM_Shokka": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 3) \u00b7 Opus REALLY_BAD: ALPHA_HALO, DEPARTURE_MISSING, F_INCONSISTENT, F_SIZE_JUMP, F_TOPDOWN",
+   "context": "judged candidate r2 (image sha 6324c76e19); F_TOPDOWN: The north facing is drawn from steeply overhead: the whole back is spread out, the limbs are splayed flat to the sides, and the tail points ; F_SIZE_JUMP: North is 677 px tall against 349 for south and 247 for east, and it is visibly the largest silhouette on the shared-scale panel.; F_INCONSISTENT: The limbs splay out sideways like a frog or rug and the tail is broad and flipper-like. On south and east the legs fold under a compact body"
+  },
+  "RM_Surrik": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 3) \u00b7 Opus REALLY_BAD: ALPHA_HALO, DEPARTURE_MISSING, F_SIZE_JUMP, F_TOPDOWN, STYLE_CARTOON",
+   "context": "judged candidate r2 (image sha 7e9bd0c977); F_SIZE_JUMP: North is 649 px tall against 274/367 and visibly about twice the size in facings.png. The steeper camera lays the full body length and a lar; F_TOPDOWN: North looks down steeply onto the back, showing the whole body from tail to head and an oval mat patch spread flat, unlike the low angled so; DEPARTURE_MISSING: In profile the blunt, slightly hooked snout sits ahead of the shoulder hump rather than low behind it, and nothing clearly shows the mouth s"
+  },
+  "RM_Thornhold": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: ALPHA_HALO, F_INCONSISTENT \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate r2 (image sha ed6a49e10d); ALPHA_HALO: A few red or orange fringe pixels and a soft yellow glow haze along the quill tips, like a matting or colour-key artifact at the cut-out edg; F_INCONSISTENT: On north the hips and hind legs look broad and fairly upright, which reads a little stockier than the very low, narrow body on east."
+  }
+ }
+}

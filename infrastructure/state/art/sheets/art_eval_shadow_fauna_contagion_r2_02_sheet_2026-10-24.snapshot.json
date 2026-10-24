@@ -1,0 +1,186 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_fauna_contagion_r2_02",
+ "built": "2026-10-24T02:05:16-0700",
+ "census": "Transient/biome_ffar/art_eval_shadow_fauna_contagion_r2_02.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 14 mods \u2014 a test list): 320 active",
+ "rows": {
+  "RM_Gorekite": {
+   "columns": {
+    "A": {
+     "east": "2b24e6bd3055738f7c0516f99c5f67ca858764591b4042ae87fb819e5f233ed5",
+     "north": "a86f1717b2be4e22c725d8f6f1597cc01a3c3ef00b9d8c533b003fc791728d52",
+     "south": "b03f8db9a7b41d154b0490bea7dee273fb7d116e9550ca8b93695d0e1f872757"
+    },
+    "B": {
+     "east": "b8ef7a255647e48005ffecf30dd9ba65f8a9c5506e26e1e0df3453dcdfa88c22",
+     "north": "276778334283b92e7f01a4979b17b842e8f29feccccc2599a00d869a4bacedf7",
+     "south": "7ccb70778374f959182428135f985010f154f7907b180141d551aec225093de6"
+    },
+    "C": {
+     "east": "1bcf4a7bb3cd6002d3fdf6179b07b370dab84e3699d701628d5bf1eb68848487",
+     "north": "e4f4dc0fa0a22baa811f65f756c9886517b3ccef7b110b09a84c210ea707ff7d",
+     "south": "fc5d0e255976c70494ac841a3242b04e14f0f579695770e14a7371f834917f26"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Gorekite/RM_Gorekite",
+    "B": "Things/Pawn/Animal/RM_Gorekite/RM_Gorekite",
+    "C": "Things/Pawn/Animal/RM_Gorekite/RM_Gorekite"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion",
+    "B": "render arteval_RM_Gorekite_r2",
+    "C": "render arteval_RM_Gorekite_r1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Gorekite/RM_Gorekite"
+   ],
+   "res": "Things/Pawn/Animal/RM_Gorekite/RM_Gorekite",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "gorekite"
+  },
+  "RM_Meltgut": {
+   "columns": {
+    "A": {
+     "east": "1d8cf74a05cb33ef10947ddb1c77a04d6c85aae03d8ccdd4296eee5982f9586c",
+     "north": "7b30a40bb61fbbc351191e568b43df236039d15d642b547c50c94c36a5496eb4",
+     "south": "074538a8e6849cf7042f7d4c5a916dbade2df2ed8c3168d2eba9aaae30b13fb0"
+    },
+    "B": {
+     "east": "c5312c8904393c05477d22b29292649f9c0a36ac6bba1311dcd7d83474b1c45f",
+     "north": "9aa877a4826224900ebd7e57ca2733842a6574134ef7d477a709a8eb27c7c56c",
+     "south": "b2214c1fca592f0a397baffb1850c0d82dd3c776c4284d38c8a466c20b74cc1a"
+    },
+    "C": {
+     "east": "6ecefaa35338078e0cf8a3541855d2bbe800a183006a8f9d1cd69323bd98f8a4",
+     "north": "66a6051443019147ded6df52c57022d5469b8dd2f02d0ec4b9cccb823c654019",
+     "south": "82f983cf97a9b150676711a7da4e1105eb8d10be851029dc2c4dec38b73762b9"
+    },
+    "D": {
+     "east": "1d8cf74a05cb33ef10947ddb1c77a04d6c85aae03d8ccdd4296eee5982f9586c",
+     "north": "402731e583bdea73ffc32a36713b7e76b53e99a9519e1c62139e7fce47767fc9",
+     "south": "22832bea0e572c9b779d8c5f0a8e086c5491acf1493714660f442f13c84b4cff"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Meltgut/RM_Meltgut",
+    "B": "Things/Pawn/Animal/RM_Meltgut/RM_Meltgut",
+    "C": "Things/Pawn/Animal/RM_Meltgut/RM_Meltgut",
+    "D": "Things/Pawn/Animal/RM_Meltgut/RM_Meltgut"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion",
+    "B": "render arteval_RM_Meltgut_r2",
+    "C": "render arteval_RM_Meltgut_r1",
+    "D": "render RM_Meltgut"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Meltgut/RM_Meltgut"
+   ],
+   "res": "Things/Pawn/Animal/RM_Meltgut/RM_Meltgut",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "meltgut"
+  },
+  "RM_OcularJelly": {
+   "columns": {
+    "A": {
+     "east": "57a293332e475b6b8f74dc5bfab782a5bfa500100f42a2b0d19ff4d910e72767",
+     "north": "8ba2a523828595a6eff2f5086c0edec5085a09190d2eb225123ab0ebbd188b1a",
+     "south": "98a20cc1e67b8f1e77017e73ba53e3eb10fdd60745f22ab9d5d693175c703c7a"
+    },
+    "B": {
+     "east": "8e05041fce97b3746dd609a8d8cb748964014a9cfd8ee3518d72fee0d495595b",
+     "north": "d863e0b5c7a51430ed7c7e1a24fe057ac6607ecab4ef553f7f7ec8a50e0b6504",
+     "south": "6ffb05cfa25dc31f2b3e66114c2313064a777aca4d057d877834840bd7947b1b"
+    },
+    "C": {
+     "east": "0988a3a89156533ec697593e526083aebaa2cdbf0a486e5fcb8c5515830a99fe",
+     "north": "8a31afe57370ecbed8cc7d6de0e6af23be00f6a9a526d6c36824c4ed2a22c9f1",
+     "south": "a4d5fae92c258b1004985c02454116f2974ede69990c498eaa359f2cac0e37a6"
+    },
+    "D": {
+     "east": "12976aef0bc10369b4b3d0fb262c8b867d8ca82d99298c4e9a3517499c2aed68",
+     "north": "40fd0824416b90869361ca3865a48c15b0d26842fc2eaa67e1f98c0758887514",
+     "south": "368f039356561b6717f15b09e45332365dd9c2d828b5041be0dc89cdbb7ef80f"
+    },
+    "E": {
+     "east": "2f8ebce432fe54381f91b70922fd80959b67f48af82619da61b49e5cf18ca435",
+     "north": "df76884a4d8a9a3ed10871a8c21e13b2b58a9f941721e742a076a6ce566760db",
+     "south": "f7597cc8d1df002f7ff53d7a935fafe60a34002237b572c844c8a34d4eca8390"
+    },
+    "F": {
+     "east": "9d90ae9bb7aa417c33011c1e16c887826140f0bc2214239e00f392d5912ed618",
+     "north": "ab619cdb1b0304c06fcef057983e563e6c7715a45e0b3d694131385d6711d296",
+     "south": "2811230242f0ca9ce4f0037685b746007b133801e7622c28e3966e5467fe2c2a"
+    },
+    "G": {
+     "east": "88d54b0668a07e9873b74396bac0280c2eccdf15c2abc33a6e1ce9dde1753beb",
+     "north": "c1ebfbea6f0bd5c509cc2a96757451c9cf6dd38ba9599eaeb9ae900580cb0267",
+     "south": "9eaae69bbd977e7631804ac49b769d5b07b88bdd2fae2179596e73ba2ff72289"
+    },
+    "H": {
+     "east": "090bd5cca9cae6c2f0e727e2630728ab90e411b3945c01ce96c5d997830938c8",
+     "north": "e4df8b6f0e2b243d863a11d1b73ba90294b19e01951b69aa7f1250a281878642",
+     "south": "35941c1c51655edda044680c57b9a2168f5ff8697182337f99a7c42bbde19a2e"
+    },
+    "I": {
+     "east": "4c18eec7c063aa424be4327e160db954afc59b9fe28e413051f8f6684b0e115f",
+     "north": "24900a11e5f134ece06ded26d9415b5f9fc9e473282c96329e970a6b8fe851e9"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_OcularJelly/RM_OcularJelly",
+    "B": "Things/Pawn/Animal/RM_OcularJelly/RM_OcularJelly",
+    "C": "Things/Pawn/Animal/RM_OcularJelly/RM_OcularJelly",
+    "D": "Things/Pawn/Animal/RM_OcularJelly/RM_OcularJelly_Bell",
+    "E": "Things/Pawn/Animal/RM_OcularJelly/Tentacles/RM_OcularJelly_TentacleA",
+    "F": "Things/Pawn/Animal/RM_OcularJelly/Tentacles/RM_OcularJelly_TentacleB",
+    "G": "Things/Pawn/Animal/RM_OcularJelly/Tentacles/RM_OcularJelly_TentacleC",
+    "H": "Things/Pawn/Animal/RM_OcularJelly/Tentacles/RM_OcularJelly_TentacleD",
+    "I": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion",
+    "B": "render arteval_RM_OcularJelly_r2",
+    "C": "render arteval_RM_OcularJelly_r1",
+    "D": "IN GAME \u2014 Contagion",
+    "E": "IN GAME \u2014 Contagion",
+    "F": "IN GAME \u2014 Contagion",
+    "G": "IN GAME \u2014 Contagion",
+    "H": "IN GAME \u2014 Contagion",
+    "I": "render contagion_zhool"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_OcularJelly/RM_OcularJelly"
+   ],
+   "res": "Things/Pawn/Animal/RM_OcularJelly/RM_OcularJelly",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I"
+   ],
+   "shownBase": [],
+   "subject_key": "ocularjelly"
+  }
+ },
+ "sheetId": "art_eval_shadow_fauna_contagion_r2_02_sheet_2026-10-24",
+ "snapshotId": "195e56578e03de46"
+}

@@ -1,0 +1,139 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_fauna_leaningscrub_r2_03",
+ "built": "2026-10-24T02:13:20-0700",
+ "census": "Transient/biome_ffar/art_eval_shadow_fauna_leaningscrub_r2_03.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 26 mods \u2014 a test list): 320 active",
+ "rows": {
+  "RM_Shokka": {
+   "columns": {
+    "A": {
+     "east": "498f06b9c98abac4cb9d01860e107feec27f3ca2a24aefde2ba9bc6eb4e8de80",
+     "north": "80f977012c6383c7754bae043c661894aefe0619144af1b57b68b99184cdc42e",
+     "south": "7df7fa435774f2a8aa05f893db898d3ad74a25a6e6b72ba95a535e8a1c47f52b"
+    },
+    "B": {
+     "east": "58c7e3805047dc9b97d2d832a45f4175834e8d34f3ec2bace2a03104f596fbed",
+     "north": "f6e2dd43d6740a8db9a654ae416a67d2085a1c68373ace4142f2ea5c6471c0d7",
+     "south": "232216cde86eeb5268bbef440964c73b03eed9dc316dba0ce5eec641dd195e2b"
+    },
+    "C": {
+     "east": "5c320ed1d952318a492ce89701c0d675c77e16eba269e3af5d63f9b3134a4aff",
+     "north": "502c5d8f8aaadc9d2b05538ee35845aa7680c30a001de581b7b0a33ee50fa879",
+     "south": "0ed1a904b338c3a83956f668ab5220913cb151a2fcaec0303c3b4de035b9f011"
+    },
+    "D": {
+     "east": "498f06b9c98abac4cb9d01860e107feec27f3ca2a24aefde2ba9bc6eb4e8de80",
+     "north": "80f977012c6383c7754bae043c661894aefe0619144af1b57b68b99184cdc42e",
+     "south": "93e06f129d44ba18e0a1eed919322d0dea7e915d0f9ce490d144acfb321b40ba"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Shokka/RM_Shokka",
+    "B": "Things/Pawn/Animal/RM_Shokka/RM_Shokka",
+    "C": "Things/Pawn/Animal/RM_Shokka/RM_Shokka",
+    "D": "Things/Pawn/Animal/RM_Shokka/RM_Shokka"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LeaningScrub",
+    "B": "render arteval_RM_Shokka_r2",
+    "C": "render arteval_RM_Shokka_r1",
+    "D": "render standtall_b1_rm_shokka"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Shokka/RM_Shokka"
+   ],
+   "res": "Things/Pawn/Animal/RM_Shokka/RM_Shokka",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "shokka"
+  },
+  "RM_Surrik": {
+   "columns": {
+    "A": {
+     "east": "1c07e30750ff1186381a8e94aaca051f8b9c559b708b196c98732141396a38f6",
+     "north": "ddc97417d93a67ec0ddfbaf27389e647b8464cf032a94a9cc604f9750d7f3d0e",
+     "south": "0c2f00f3da811ec7312d99f7895e40da03224b2d0ee16a1b05438be2eaa85bbf"
+    },
+    "B": {
+     "east": "c71f013ee9caea26fabaa58f65082ef12365f659a5d29a98352592004e9f5c19",
+     "north": "8a3d43550bd3b8588dbed3c65862b0bf8e32d3b26f9bb49edbc4e51b546d710b",
+     "south": "a1059b8e8979be58f4b9477add776af118464daca40dc77c10c506aae260e63f"
+    },
+    "C": {
+     "east": "fb33d65788a3b9d603d203d15d6a005c126f8f8d8064576d7ca6bd63c9422916",
+     "north": "615e4a0ec381ca53d9e5cd28cf2ddf5a8f471122e343ae05a4fac1e2eeaf28fc",
+     "south": "f27e8368f603402a5a8e69a74f5d707f2b1ac281fc8cfd2e73e7c8716b6b48b8"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Surrik/RM_Surrik",
+    "B": "Things/Pawn/Animal/RM_Surrik/RM_Surrik",
+    "C": "Things/Pawn/Animal/RM_Surrik/RM_Surrik"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LeaningScrub",
+    "B": "render arteval_RM_Surrik_r2",
+    "C": "render arteval_RM_Surrik_r1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Surrik/RM_Surrik"
+   ],
+   "res": "Things/Pawn/Animal/RM_Surrik/RM_Surrik",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "surrik"
+  },
+  "RM_Thornhold": {
+   "columns": {
+    "A": {
+     "east": "9924fa31463406a7b44ac4fd5eda555b39900ebcd2334990519cfe0a9fd069f7",
+     "north": "c731474462cb98a28a14209d4fc2031e51443c58892f396be552e367c855301c",
+     "south": "ba6c5146be388e5edaeee422e46e80d4ceccf3fbbf9b73d5b70792320ef6d5cb"
+    },
+    "B": {
+     "east": "74fec681825a251248532b6fdba721b3db2cbd1e6372b219e5efd83ff1bafc11",
+     "north": "0771551c3e790507f3b3ba7f9e184564c4cd9dc8904a5f47f86c8bdfa9b9e248",
+     "south": "d10080bbe183849b8cac4e332724055c8be7c3dd3528384d17f95844c26d8203"
+    },
+    "C": {
+     "east": "216653de8703bad4c47c612d589fb5537aed873ab328ae71879ee477f449d75a",
+     "north": "06e1604f4ed703c64948df7afae073d659dc0ffd7db116ceb0174c5b1e31a691",
+     "south": "74aedaf7c131f1a005301df55fb523e299a56de87cfc5933ce7af4ce6db868c1"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Thornhold/RM_Thornhold",
+    "B": "Things/Pawn/Animal/RM_Thornhold/RM_Thornhold",
+    "C": "Things/Pawn/Animal/RM_Thornhold/RM_Thornhold"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LeaningScrub",
+    "B": "render arteval_RM_Thornhold_r2",
+    "C": "render arteval_RM_Thornhold_r1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Thornhold/RM_Thornhold"
+   ],
+   "res": "Things/Pawn/Animal/RM_Thornhold/RM_Thornhold",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "thornhold"
+  }
+ },
+ "sheetId": "art_eval_shadow_fauna_leaningscrub_r2_03_sheet_2026-10-24",
+ "snapshotId": "bdbea61528e18674"
+}

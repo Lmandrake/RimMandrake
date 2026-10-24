@@ -1,0 +1,39 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RM_Vurra": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: ALPHA_HALO, F_SIZE_JUMP \u00b7 GPT regen, unsettled K2",
+   "context": "judged candidate r2 (image sha a9e93290f0); F_SIZE_JUMP: North is 975 px tall against south's 745 and east's 595 (measured 64% spread). North's body is drawn long while south's is compressed.; ALPHA_HALO: There are faint reddish fringe pixels along the edges of a few left-side spike-legs."
+  },
+  "RM_Zellik": {
+   "prefill": "keep",
+   "why": "PIPELINE: ACCEPT (regen round 2) \u00b7 Opus WEAK: F_SOUTH_NOT_FRONT \u00b7 GPT strong_accept",
+   "context": "judged candidate r2 (image sha c3c270450d); F_SOUTH_NOT_FRONT: The only cue for the front is a small red slit low on the canopy, plus the toe direction. At normal zoom, south and north look almost identi"
+  }
+ }
+}

@@ -1,0 +1,139 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_fauna_leaningscrub_r2_02",
+ "built": "2026-10-24T02:12:01-0700",
+ "census": "Transient/biome_ffar/art_eval_shadow_fauna_leaningscrub_r2_02.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 26 mods \u2014 a test list): 320 active",
+ "rows": {
+  "RM_Ribbonwhip": {
+   "columns": {
+    "A": {
+     "east": "57050a772703d4083fc2bdeff543f4d9552f8f5aa9ff59e9f82466ea5a5535e7",
+     "north": "55b65d4412ac461cb9d135693539970ec7dc57bbeb267b1184f1e7c1473ddd3d",
+     "south": "ca3c3f1136d0c1b495871df539479ebca7acde4fab02ec37e1f72dfdbfd333c6"
+    },
+    "B": {
+     "east": "c47608d0da5cab3e7f621a96011589309ca834de701ce8c2b772d3b233a19afc",
+     "north": "647e82f36ff8c441666c9a951f576bcce1cf4e2cb79396c51afe0b3bedb5b03e",
+     "south": "59b79962ea10d3c3ba5e96ea64f88f5655ddf0867fb008f6a8f335929ef595d5"
+    },
+    "C": {
+     "east": "16aa61c2b264258e3398b93d5503ff8dd7127fc54d0027eafb57e55d0ef82c14",
+     "north": "93037176327e1a79cd63c0742cef4b2d72ab51a902238fe0d44f01bd95c187d6",
+     "south": "bbdd0967b27ab45249855941d783c62ab5fc2ba58b92fac4b5990b881485bc97"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Ribbonwhip/RM_Ribbonwhip",
+    "B": "Things/Pawn/Animal/RM_Ribbonwhip/RM_Ribbonwhip",
+    "C": "Things/Pawn/Animal/RM_Ribbonwhip/RM_Ribbonwhip"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LeaningScrub",
+    "B": "render arteval_RM_Ribbonwhip_r2",
+    "C": "render arteval_RM_Ribbonwhip_r1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Ribbonwhip/RM_Ribbonwhip"
+   ],
+   "res": "Things/Pawn/Animal/RM_Ribbonwhip/RM_Ribbonwhip",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "ribbonwhip"
+  },
+  "RM_Rollbug": {
+   "columns": {
+    "A": {
+     "east": "366bf0c201edb535ac2572f8aec7983a47b9ef4329dec1d2785815959bac26dd",
+     "north": "5f34db4a132ddf922f5a68d3e3647783242e57a31f500a867927108ffd2be230",
+     "south": "f9edf95bc60b71e8ed4222529938a32138c0aaeef80ad273259eb566c51c3244"
+    },
+    "B": {
+     "east": "257d98b15908bac70458d848266c4714df1b838565f499e5103a4cc837d24cd9",
+     "north": "e5573180ff8dcda2ef9ae27971ad3183c89677cd6875b7ee622921dfff669aef",
+     "south": "6c2963438a45e66da8f05204122c357c81bd2ed0b49c851e496de50f8a030db4"
+    },
+    "C": {
+     "east": "3fabf2a04f07d6caa8dcaf05b3f8b65c603d30d28aba6fd0a23d6760514395e7",
+     "north": "3b1e2844bce51337e60549d7648c3ac8a57b1e934ae7854102db38b26ee49a5f",
+     "south": "a8e3861acd412e161ba1c855747a5bd7f76d1653edbe0d9bdd2b36c51bb7f2c6"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Rollbug/RM_Rollbug",
+    "B": "Things/Pawn/Animal/RM_Rollbug/RM_Rollbug",
+    "C": "Things/Pawn/Animal/RM_Rollbug/RM_Rollbug"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LeaningScrub",
+    "B": "render arteval_RM_Rollbug_r2",
+    "C": "render arteval_RM_Rollbug_r1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Rollbug/RM_Rollbug"
+   ],
+   "res": "Things/Pawn/Animal/RM_Rollbug/RM_Rollbug",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "rollbug"
+  },
+  "RM_Shirrel": {
+   "columns": {
+    "A": {
+     "east": "301642951b37a4620bf23957cfd65da2307a59acdbca5c91806b7bbe6ebd526f",
+     "north": "7b92b7acb89630ee36d2629a86b8675738078866b6f689db2314160ffaff9595",
+     "south": "f4d548d37d8d4ecdb4f43119f136b0f3b76f1d7c43930a327ba423c2ccf59038"
+    },
+    "B": {
+     "east": "f053796f5c66f66cf4b6cf82993789b7f2eb54585f8f892ca3dc094a9938e7c6",
+     "north": "f732d0aa474705397707bfb073efdeba4e44d2786c414442a627d00bbc0b420e",
+     "south": "37383ef2fa0ff88edb1637d32eabab00123df10ea99091aca9c2d5a6059b75c8"
+    },
+    "C": {
+     "east": "2e8bd43773ff9c2743cedaedd22fda8af22d773e3d133ce5390f44423ade94ac",
+     "north": "096562c8e34d011e6c2ed9a87c842cd47a14916c2e187b9dffef968b86ec6183",
+     "south": "d0019f3b78a608392ceda4bd7ca6bfaa99d37045f6c32f56d2755a0fbab4456e"
+    },
+    "D": {
+     "east": "301642951b37a4620bf23957cfd65da2307a59acdbca5c91806b7bbe6ebd526f",
+     "north": "52aca85288361f8d7f06d11268c1b81290fa9c8a8be369cdf1661eb3c9d8755b",
+     "south": "f4d548d37d8d4ecdb4f43119f136b0f3b76f1d7c43930a327ba423c2ccf59038"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Shirrel/RM_Shirrel",
+    "B": "Things/Pawn/Animal/RM_Shirrel/RM_Shirrel",
+    "C": "Things/Pawn/Animal/RM_Shirrel/RM_Shirrel",
+    "D": "Things/Pawn/Animal/RM_Shirrel/RM_Shirrel"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LeaningScrub",
+    "B": "render arteval_RM_Shirrel_r2",
+    "C": "render arteval_RM_Shirrel_r1",
+    "D": "render RM_Shirrel"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Shirrel/RM_Shirrel"
+   ],
+   "res": "Things/Pawn/Animal/RM_Shirrel/RM_Shirrel",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "shirrel"
+  }
+ },
+ "sheetId": "art_eval_shadow_fauna_leaningscrub_r2_02_sheet_2026-10-24",
+ "snapshotId": "12ecf42c8b5d92d2"
+}
