@@ -18,7 +18,7 @@
 <ThingDef ParentName="AnimalThingBase">
     <defName>RSW_Porg</defName>
     <label>porg</label>
-    <description>The Porg.</description>
+    <description>A small, round seabird native to Ahch-To, with a flat, beakless face and short wings. Porgs dive for fish and crustaceans, and investigate shiny belongings with little regard for ownership.</description>
     <statBases>
       <MoveSpeed>2.1</MoveSpeed>
       <ComfyTemperatureMin>-15</ComfyTemperatureMin>

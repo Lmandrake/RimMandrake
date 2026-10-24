@@ -47,7 +47,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Kybuck</defName>
     <label>kybuck</label>
-    <description>Kybucks were bipedal ungulates native to the planet Kashyyyk, and similar in appearance to the tauntauns of Hoth. These herding pack animals were fast and sociable, which made domestication and export offworld common.</description>
+    <description>A swift, four-legged ungulate native to Kashyyyk, with a dark-brown coat, spiral horns and a prominent facial bone plate. Kybucks form sociable herds and are commonly domesticated and exported as pack animals.</description>
     <statBases>
       <MoveSpeed>6.0</MoveSpeed>
       <MarketValue>250</MarketValue>

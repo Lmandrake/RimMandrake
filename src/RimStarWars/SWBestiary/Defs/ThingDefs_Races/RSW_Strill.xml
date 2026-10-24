@@ -38,7 +38,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Strill</defName>
     <label>strill</label>
-    <description>Strills were a species of highly intelligent, six-legged carnivorous mammals native to the planet Mandalore. They had folds of leathery skin between their legs which allowed them to glide short distances with sufficient updraft and they purportedly had a very distinct (often unpleasant) smell. A number of Mandalorians took to keeping strills (or 'striile' in Mando'a) as pets, making use of their naturally ferocious predatory instincts as hunting animals. This resulted in small Strill populations being found on numerous worlds where Mandalorians were or had been.</description>
+    <description>A highly intelligent, six-legged predator from Mandalore, with loose skin folds that allow short glides on rising air. Strills grow thick brown winter fur and have a strong, often unpleasant smell. Mandalorians sometimes keep them as hunting companions.</description>
     <statBases>
       <MoveSpeed>3.5</MoveSpeed>
       <MarketValue>450</MarketValue>

@@ -53,7 +53,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 		<!-- Horrors (mlie) Terrorworm -> RM_Vurra. Donor's HiveMind thinkTreeMain dropped (that mod's own AI framework); default AnimalThingBase think tree applies. Tools verbatim, capacities/groups already vanilla. -->
 		<defName>RM_Vurra</defName>
 		<label>vurra</label>
-		<description>An alien worm of uncertain origin, large enough to threaten a lone traveler but neither fast nor especially ferocious. Vurras are usually found trailing larger, stranger things, as if playing a supporting role in something else's hunt.</description>
+		<description>An armoured alien worm large enough to threaten a lone traveler. It moves slowly, is not especially aggressive, and is often found trailing larger creatures on the hunt.</description>
 		<statBases>
 			<MoveSpeed>2.85</MoveSpeed>
 			<ComfyTemperatureMin>0</ComfyTemperatureMin>

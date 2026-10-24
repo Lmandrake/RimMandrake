@@ -44,7 +44,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Kreetle</defName>
     <label>kreetle</label>
-    <description>Kreetle were a fast breeding arthropod native to the planet Tatooine. They were was often found in cities, homes, and other urban areas and were universally considered a pest. They gave birth to young in the form of maggot-like larvae. Kreetles thrived on dead creatures, garbage and vegetable remains (including waste). They were found on many worlds having stowed away in supplies and once escaping establishing themselves in the wild.</description>
+    <description>A small, burrowing arthropod with a reddish-brown segmented shell and large curved mandibles. Native to Tatooine, kreetles spread between worlds in supplies and thrive on carrion, refuse and vegetable scraps. They breed rapidly, producing maggot-like larvae.</description>
     <statBases>
       <MoveSpeed>3.5</MoveSpeed>
       <ComfyTemperatureMin>-15</ComfyTemperatureMin>

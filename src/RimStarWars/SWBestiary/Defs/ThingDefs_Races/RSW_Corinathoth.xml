@@ -23,7 +23,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Corinathoth</defName>
     <label>corinathoth</label>
-    <description>Corinathoths were large, slow-moving herbivores native to the planet Maridun. Although large and intimidating, they were fairly harmless unless provoked. It is likely they were spread as a large game animal to several worlds due to their fearsome appearance.</description>
+    <description>A massive, slow-moving herbivore from Maridun, with mottled orange hide and a horned head frill. Its fearsome look is misleading: it is usually harmless unless provoked. It is hunted by the Amanin.</description>
     <statBases>
       <MoveSpeed>2.0</MoveSpeed>
       <MarketValue>500</MarketValue>

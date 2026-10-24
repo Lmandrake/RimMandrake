@@ -64,7 +64,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Igitz</defName>
     <label>igitz</label>
-    <description>Igitz were a species of small amphibians hailing from the planet Naboo. Those blue-skinned, omnivorous critters dwelled in the planet's many dense swamps. Because of the environment in which they had evolved, the igitz were well-adapted to both land and water: while their front paws were clawed for treading on land, their hindquarters were finned, allowing it speed when in water. The igitz were a popular pet in most Gungan civilizations and this lead to the species becoming present on other worlds.</description>
+    <description>A small, blue-skinned amphibian native to Naboo's swamps. Clawed forepaws support it on land, while finned hindquarters propel it through water. An omnivore commonly kept as a Gungan pet, it has been carried to other worlds.</description>
     <statBases>
       <MoveSpeed>4.0</MoveSpeed>
       <MarketValue>150</MarketValue>

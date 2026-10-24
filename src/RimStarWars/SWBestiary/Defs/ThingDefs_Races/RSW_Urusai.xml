@@ -21,7 +21,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Urusai</defName>
     <label>urusai</label>
-    <description>Urusai were winged reptavians native to the desert planet Tatooine. They were predominantly opportunistic scavengers of carrion that would use the thermal currents of their homeworld to travel far and wide in search of an easy meal. Their tolerance to harsh climates and propensity to be clean, efficive corpse disposal meant they were spread to numerous worlds by various corporate and criminal organisations.</description>
+    <description>A four-winged, blue-and-yellow reptavian native to Tatooine. It scavenges food from adult sarlaccs’ teeth and tentacles, keeping them clean. Sarlaccs in their spore stage are simply food.</description>
     <statBases>
       <MoveSpeed>3.0</MoveSpeed>
       <MarketValue>80</MarketValue>

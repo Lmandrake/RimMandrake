@@ -54,7 +54,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_ShrublandGiant</defName>
     <label>thunderstep</label>
-    <description>A colossal grazer that keeps the shrubland's fuzz-canopy open by walking and eating it, indifferent to everything around it that isn't the fuzz underfoot. It does not fight, does not flee, and does not appear to notice the intelligent races at all - it will walk through a wall on its grazing line and never register what it did. Its young walk behind it through the one size band nothing else here occupies, and any approach to them reads to the parent as attack.</description>
+    <description>A colossal, shaggy grazer that opens paths through the fuzz by eating as it walks. Adults usually ignore people and obstacles, sometimes walking straight through walls. They become dangerous when anyone approaches their young.</description>
     <statBases>
       <MoveSpeed>2.8</MoveSpeed>
       <MarketValue>1400</MarketValue>

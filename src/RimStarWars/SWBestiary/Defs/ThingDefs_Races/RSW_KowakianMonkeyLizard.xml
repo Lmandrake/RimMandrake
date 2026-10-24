@@ -44,7 +44,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_KowakianMonkeyLizard</defName>
     <label>kowakian monkey-lizard</label>
-    <description>Kowakian monkey-lizards were a bipedal reptillian primate species native to a jungle-like Outer Rim planet called Kowak. Their intelligence and cunning made them popular exports as exotic pets, with some specimens escaping and establishing wild colonies.</description>
+    <description>A small, pot-bellied reptilian primate with enormous leathery ears, a hooked beak and a long tail. Clever and cunning, it is often kept as an exotic pet. Escaped animals can establish wild colonies.</description>
     <statBases>
       <MoveSpeed>4.0</MoveSpeed>
       <MarketValue>100</MarketValue>

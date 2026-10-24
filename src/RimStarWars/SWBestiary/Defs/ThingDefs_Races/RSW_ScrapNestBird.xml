@@ -56,7 +56,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_ScrapNestBird</defName>
     <label>scrap-nest bird</label>
-    <description>A shrubland scavenger with an oil-dark gloss to it and an eye for anything that catches the light. It nests deep in venomvine, where nothing large can follow, and lines the nest with what it has stolen from the open ground - wire, lens-glass, chips of hull, a bead of gold. The nests are genuinely beautiful and genuinely valuable, which is why every Jawa knows what one looks like and why so few of them are ever robbed: the vine bites, and the thing coiled in the corridor bites harder.</description>
+    <description>An oil-dark scavenger that lines its venomvine nest with stolen wire, glass and bright metal. The scraps can be valuable, but collecting them means reaching through thorns and disturbing whatever else shelters there.</description>
     <statBases>
       <MoveSpeed>3.2</MoveSpeed>
       <MarketValue>110</MarketValue>
