@@ -112,8 +112,8 @@ class Scene:
     def strip(self, tile, path, half_w=0.12, alt="FloorEmplacement", dy=0.0, u0=0.0, meta=None, west=None):
         """The straight E-W tile's cross-section carried along a path: a list of ('L', x0, z0, x1, z1) and
         ('A', cx, cz, r, a0_deg, sweep_deg) segments (angles CCW from east, image-independent). u = distance along the path
-        (+u0, wrapped to the tile), v = 0.5 + offset to the LEFT of travel (the tile's north side is the left of an
-        eastward run). A path that ends west of its start swaps the rims (LiquidJoinRule.TravelsWest), so the tile's north
+        (+u0, wrapped to the tile), v = the tile's image-row fraction (0 = top = north rim): v = 0.5 - t, t = offset to
+        the LEFT of travel, so the left of an eastward run samples the tile's north (top) rows. A path that ends west of its start swaps the rims (LiquidJoinRule.TravelsWest), so the tile's north
         rim stays on the north. Blending is straight alpha "over" on a premultiplied-free canvas, as the game's
         Transparent shader does for one layer; overlapping segment ends blend twice (a hair darker at the seam)."""
         west = travels_west(path) if west is None else west   # west= forces it (a check's can-fail run)

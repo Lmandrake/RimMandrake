@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """Machine checks on fw_compositor renders: each owner-found art defect becomes a permanent check that reads the picture
-(or the draw list behind it), proven to FAIL on the art he rejected and PASS on the fix (selftest_fw_offline_art.py runs
+(or the draw list behind it), proven to FAIL on the art he rejected and PASS on the fix. The pipe-join checks read
+fw_scenes_pipejoins' Python EMULATION of the shipped (before) and fixed (after) C# draw code, tied to the C# only by the
+selftest's parity constants and the C# SelfTest (e.g. ReelRiserShadowChecks for LiquidJoinRule.TravelsWest); the
+sprinkler and ladder checks read the real installed PNGs (selftest_fw_offline_art.py runs
 them nightly through run_selftests.py). Owner 2026-10-24: "Please find ways to test for those defects in your own offline
 and in-game testing from now on, so we don't repeat mistakes."
 
@@ -109,7 +112,10 @@ def _probe_tile(n=64):
 def riser_rims_north(scene, half_w=0.12):
     """Each riser strip, re-drawn on its own path with the orientation the scene actually DREW it with (meta west_drawn,
     set by Scene.strip) but a red-north/blue-south test tile: on the level run into the tank, red must be on the north
-    side of the centreline and blue on the south. A strip with no riser record or no west_drawn tag is a failure."""
+    side of the centreline and blue on the south. A strip with no riser record or no west_drawn tag is a failure.
+    Scope: on an emulated scene whose strips take Scene.strip's default this verifies the emulation's own rule
+    (fw_compositor.travels_west) end to end; it catches a scene that forces the wrong west= (the review's flip). The C#
+    rule LiquidJoinRule.TravelsWest is held by the in-game SelfTest, not here."""
     probe = _probe_tile()
     bad, n = [], 0
     for _, _, _, m in scene.draws:
