@@ -52,6 +52,29 @@ namespace RimMandrake.AtmosphericBase
         public RM_SweepField field = RM_SweepField.Axis;    // Sweep: what the wave runs along
         public float angle = 270f;          // Sweep axis: the direction the wave travels, degrees (270 = falling, -z)
         public float lit = 0.25f;           // Sweep: the fraction of the period a fixture spends in the wave
+        // step 7 walkers (RM_PatternWalkers.cs)
+        public RM_WalkGraph graph = RM_WalkGraph.Adjacency;   // Procession: walk the fixtures, the rooms, or (fallback) conduits
+        public int heads = 1;               // Procession: how many heads walk at once
+        public float hop = 0.6f;            // Procession: seconds between one lamp and the next. Coil: seconds per step
+        public float dwell = 2f;            // Procession: seconds a head stands on one lamp
+        public RM_Step step = RM_Step.Walk; // Procession: walk the tour, or jump (vanish, reappear elsewhere)
+        public int tail = 0;                // Procession: lamps behind the head still lit, one entry lower each
+        public bool overlap;                // Procession: the next lamp lights before the last goes out
+        public int trace;                   // Procession: 1 = a lamp the head passed keeps entry lo for the rest of its lap
+        public bool pair;                   // Procession: two adjacent heads as one (the Eyes)
+        public bool drawnInBlack;           // Procession: ask for the drawn glow between fixtures (not built: no effect)
+        public int coils = 2;               // Coil: how many walks
+        public float turnChance = 0.2f;     // Coil: chance per step of turning off the straight line
+        public int length = 4;              // Coil: positions in one coil, head to tail
+        public float interval = 60f;        // Tell: one tell slot, seconds
+        public float beat = 1f;             // Tell: how long the stray colour shows. Count accumulate: one step
+        public int cap = -1;                // Tell: fixtures telling at once; -1 = 1 when 8+ fixtures, else 0
+        public int n = 1;                   // Count: marked fixtures (per room with perRoom)
+        public bool perRoom;                // Count: n is per room
+        public int markEntry = -1, restEntry = -1;   // Count: marked / rest entry (-1 = hi / Pass)
+        public RM_Pick pick = RM_Pick.Spread;        // Count: one per room round robin, or rooms nearest the anchor first
+        public bool tremble;                // Count: marked fixtures alternate two adjacent entries every 0.8-1.5 s
+        public bool accumulate;             // Count: one more marked per beat until the room is full, then clear
 
         [NonSerialized] private int lo = -2, hi = -2;
 
@@ -111,6 +134,10 @@ namespace RimMandrake.AtmosphericBase
             { RM_Primitive.Tide, new RM_TidePrimitive() },
             { RM_Primitive.Ripple, new RM_RipplePrimitive() },
             { RM_Primitive.Sweep, new RM_SweepPrimitive() },
+            { RM_Primitive.Procession, new RM_ProcessionPrimitive() },
+            { RM_Primitive.Coil, new RM_CoilPrimitive() },
+            { RM_Primitive.Tell, new RM_TellPrimitive() },
+            { RM_Primitive.Count, new RM_CountPrimitive() },
         };
 
         public static RM_IPrimitive Get(RM_Primitive p) => table.TryGetValue(p, out RM_IPrimitive x) ? x : null;
@@ -123,6 +150,8 @@ namespace RimMandrake.AtmosphericBase
     {
         public const int Pass = -1;
         public const double Never = double.PositiveInfinity;
+        /// <summary>No drawn layer exists in this mod: drawnInBlack is accepted and has no effect (design decision 4).</summary>
+        public const bool DrawnLayerBuilt = false;
 
         public static bool TryParseEntries(string s, int n, out int lo, out int hi)
         {
