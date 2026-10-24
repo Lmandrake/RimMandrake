@@ -97,6 +97,7 @@
     <Compile Include="HoseBandChecks.cs" />
     <Compile Include="HoseWallSeamChecks.cs" />
     <Compile Include="HoseDrawGeometryChecks.cs" />
+    <Compile Include="WorldMapDrawGuardChecks.cs" />
     <Compile Include="HoseSpliceChecks.cs" />
     <Compile Include="PipePoleChecks.cs" />
     <Compile Include="LineReadoutChecks.cs" />
