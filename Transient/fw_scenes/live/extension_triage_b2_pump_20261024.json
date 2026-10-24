@@ -1,0 +1,560 @@
+{
+ "chains": [
+  {
+   "name": "liquid_pump",
+   "components": [
+    {
+     "name": "pump_unpowered_idle",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "wait_ticks(600) [watched] -> 600 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 600,
+        "requested": 600
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofPump(System.String)",
+        "result": "PUMP running=False moved=0 pour=False tank=empty:0",
+        "thingArgs": [],
+        "ticksGame": 35911,
+        "operation": {
+         "OperationId": "op_caf7cc92a87c4a978ba7dc3f3698a47a",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 35911
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 81,
+         "z": 124
+        },
+        "depth": 2,
+        "fill": 2,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 3,
+        "ticksGame": 35911,
+        "operation": {
+         "OperationId": "op_094eb64ed4594b748962dec64e64565b",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 35911
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 82,
+         "z": 124
+        },
+        "depth": 2,
+        "fill": 2,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 3,
+        "ticksGame": 35911,
+        "operation": {
+         "OperationId": "op_6f6b0a6464ba498b926184f1b79c8aa4",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 46
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 35911
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 83,
+         "z": 124
+        },
+        "depth": 2,
+        "fill": 2,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 3,
+        "ticksGame": 35911,
+        "operation": {
+         "OperationId": "op_04bbcedf8ca342298172310d99433d79",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 35911
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 81,
+         "z": 124
+        },
+        "depth": 2,
+        "fill": 2,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 3,
+        "ticksGame": 35911,
+        "operation": {
+         "OperationId": "op_96be1cdde4c444489eb2ee24b68deb15",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 35911
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 82,
+         "z": 124
+        },
+        "depth": 2,
+        "fill": 2,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 3,
+        "ticksGame": 35911,
+        "operation": {
+         "OperationId": "op_b22f78a2e99a4869b77dfca471bff652",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 45
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 35911
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 83,
+         "z": 124
+        },
+        "depth": 2,
+        "fill": 2,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 3,
+        "ticksGame": 35911,
+        "operation": {
+         "OperationId": "op_f1809d4185ac43ed81f40834abcb8332",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 35911
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "pump_draws_into_tank",
+     "toggle": "liquidPumpEnabled",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: channel levels 2, expected 6 - moved 3",
+     "evidence": [
+      {
+       "call": "wait_ticks(800) [watched] -> 800 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 800,
+        "requested": 800
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofPump(System.String)",
+        "result": "PUMP running=True moved=3 pour=False tank=RM_Liquid_FreshWater:30000",
+        "thingArgs": [],
+        "ticksGame": 36711,
+        "operation": {
+         "OperationId": "op_f394fb77f6004eb191d01100d1167ae1",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 36711
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 81,
+         "z": 124
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 3,
+        "ticksGame": 36711,
+        "operation": {
+         "OperationId": "op_1a60477f05fe4e668a6d2c853dede8a2",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 44
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 36711
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 82,
+         "z": 124
+        },
+        "depth": 2,
+        "fill": 1,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 3,
+        "ticksGame": 36711,
+        "operation": {
+         "OperationId": "op_85e9e5c23b934680bd30fe084c590d4d",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 36711
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 83,
+         "z": 124
+        },
+        "depth": 2,
+        "fill": 1,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 3,
+        "ticksGame": 36711,
+        "operation": {
+         "OperationId": "op_dca19e2391b84d55ba8c76b30fd10f5b",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 36711
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "pump_off_idles",
+     "toggle": "liquidPumpEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "pump_pours_back",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 7 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 3,
+    "fed": 0,
+    "ticks_spent": 1400,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": [],
+    "runValidity": {
+     "verdict": "CLEAN",
+     "note": "CLEAN: no visitor observed",
+     "visitors": [],
+     "letters": [],
+     "disruptions": [],
+     "observationFailures": [],
+     "abortedBy": null
+    },
+    "receipts": [],
+    "receiptProblems": [],
+    "baselineScene": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\bench\\Transient\\modcheck\\surprises\\20261024T080845\\FlowWorksExtensions_liquid_pump_scene_baseline.json"
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x00000207737CF890>"
+ ],
+ "refused": "",
+ "walk": null,
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
+ "run_validity": "CLEAN",
+ "anchor": [
+  113,
+  118
+ ],
+ "site_save": null,
+ "wall_s": 47.4,
+ "chains_run": [
+  "liquid_pump"
+ ],
+ "chains_declared": [
+  "current",
+  "swept",
+  "taken_by_land",
+  "works",
+  "placer",
+  "plot_A_dug_channel",
+  "plot_B_fill_tiers",
+  "plot_C_limitless_canal",
+  "plot_C2_tar_and_fluids",
+  "plot_D_limited_pond",
+  "plot_E_fire",
+  "plot_F_slime",
+  "plot_H_depth_ladder",
+  "plot_G_pit",
+  "toggle_fill_in",
+  "toggle_fill_in_displacement",
+  "toggle_recession",
+  "toggle_refill",
+  "toggle_liquid_ignition",
+  "all_off_still_digs",
+  "toggle_canal_fire",
+  "toggle_liquid_corrosion",
+  "toggle_superdeep_capture",
+  "toggle_ladder_required",
+  "ladder_prison_door",
+  "pit_cover_fall",
+  "canal_spikes",
+  "flow_doors",
+  "toggle_superdeep_shooting",
+  "toggle_pit_exposure",
+  "toggle_pit_depth_draw",
+  "pit_fill_effects",
+  "toggle_pit_fill_effects",
+  "slime_slip",
+  "toggle_bottle_loop",
+  "toggle_bottle_dirty",
+  "toggle_tank_loop",
+  "toggle_liquid_drilling",
+  "toggle_typed_shores",
+  "toggle_trap_trigger",
+  "toggle_fall_damage",
+  "toggle_river_steam",
+  "fluid_identity_recorded",
+  "swale_enrichment",
+  "fire_explosion",
+  "fire_foam",
+  "fire_rain",
+  "fire_queue_origin",
+  "fuel_moat_chemfuel",
+  "fuel_moat_astrofuel",
+  "fuel_moat_propane",
+  "pit_prison_room",
+  "liquid_pump",
+  "bottle_revert",
+  "wall_faces",
+  "dig_finds",
+  "machinery_pipes",
+  "machinery_found_works",
+  "liquid_heat"
+ ],
+ "script": "extension_proof",
+ "mod": "FlowWorks",
+ "mode": "live",
+ "mod_hash": "108807f8e6c926918bf4dedc6357afbf19ea98adaaac8fc682ab2d3382e838d3",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks"
+  ],
+  "running_sha256": "c74dc4170b83fff4082e70e6271cb799ff3b0555962540423b5ac5ba62b0dd38",
+  "assembly_sha256": "b2f40b34d963d3c1c6a6caaaae9c4db2d66ee0cc1f5d11923820477006d84f9c",
+  "assembly_matches": 1
+ },
+ "aborted": null,
+ "site": "dry"
+}

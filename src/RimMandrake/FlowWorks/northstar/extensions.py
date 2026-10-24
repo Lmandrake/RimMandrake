@@ -998,6 +998,12 @@ def plot_H_depth_ladder(t):
             _diptych(t, a, b, "H_rises")
 
 
+# A pit ROOM needs pitRoomMinDepthMetres = 3.0 m (owner card 2026-10-18, 84737505c5) = 6 notches of 0.5 m
+# (RM_Volume.CentimetresPerNotch 50; RM_PitRooms.MinRoomNotches). A D=4 dig is 2.0 m: not a pit floor, so every
+# chain that needs IsPitFloor (rooms, exposure) digs ROOM_DEPTH, never 4 (HARNESS, live FAIL 2026-10-24).
+ROOM_DEPTH = 6
+
+
 def _pit_cells(x0, z0):
     return [(x0 + 6 + i, z0 + 5 + j) for i in range(3) for j in range(3)]
 
@@ -1420,10 +1426,15 @@ def canal_spikes(t):
     for i, (x, z) in enumerate(shallow):
         _dig(t, x, z, i + 1)
     with t.component("spikes_only_on_superdeep", toggle="spikesEnabled"):
-        deep = _spike_proof(t, "ProofPlacement", pit[4][0], pit[4][1])
+        # PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE (owner R7, V4): spikes need a SHEER DROP of spikeMinDropMetres (2 m =
+        # 4 notches) to a neighbour, at any depth. The pit's west EDGE cell drops 4 to open ground: accepted. The CENTRE
+        # is ringed by D=4 pit cells (drop 0): refused. (The old bar read the centre as "D=4 accepts": HARNESS, 2026-10-24.)
+        deep = _spike_proof(t, "ProofPlacement", pit[1][0], pit[1][1])
+        centre = _spike_proof(t, "ProofPlacement", pit[4][0], pit[4][1])
         shal = [_spike_proof(t, "ProofPlacement", x, z) for x, z in shallow]
         if t._guard():
-            _expect(deep.startswith("ACCEPT depth 4"), "spikes refused on a D=4 cell: %s" % deep)
+            _expect(deep.startswith("ACCEPT depth 4 drop 4"), "spikes refused on a 2 m sheer edge: %s" % deep)
+            _expect(centre.startswith("REFUSE depth 4 drop 0"), "spikes accepted with no sheer drop: %s" % centre)
             for i, txt in enumerate(shal):
                 _expect(txt.startswith("REFUSE depth %d" % (i + 1)), "spikes not refused on depth %d: %s" % (i + 1, txt))
     _stage(t, "jawa/spawn_batch", ops="%s:%d,%d" % (SPIKES, pit[4][0], pit[4][1]))
@@ -1541,7 +1552,7 @@ def toggle_pit_exposure(t):
     # (jawa/pawn_get hediffs[].def); UNMEASURED-tolerant via t._guard().
     x0, z0 = _prep_plot(t, "G")
     pit = _pit_cells(x0, z0)
-    _dig_run(t, pit, 4)
+    _dig_run(t, pit, ROOM_DEPTH)
 
     def _has_exposure(pid):
         r = t.bridge_call("jawa/pawn_get", pawn=pid)     # MEASURED 2026-10-05: pawn_health ADDS a hediff ("Give a HediffDef"); pawn_get lists them
@@ -1554,7 +1565,7 @@ def toggle_pit_exposure(t):
         pid = _spawn_pawn_at(t, "Colonist", pit[4][0], pit[4][1])
         _wait(t, 4 * 250)
         if t._guard():
-            _expect(_has_exposure(pid), "pawn left on an open D=4 cell gained no RM_PitExposure after 4 intervals")
+            _expect(_has_exposure(pid), "pawn left on an open 3 m pit floor gained no RM_PitExposure after 4 intervals")
     with t.component("pit_exposure_off", toggle="pitExposureEnabled"):
         with _setting(t, "pitExposureEnabled", False):
             pid2 = _spawn_pawn_at(t, "Colonist", pit[3][0], pit[3][1])
@@ -2691,7 +2702,7 @@ def pit_prison_room(t):
     from the lip, food dropped down (live walk owed), the width rule (C# selftest)."""
     x0, z0 = _prep_plot(t, "G")
     pit = _pit_cells(x0, z0)
-    _dig_run(t, pit, 4)
+    _dig_run(t, pit, ROOM_DEPTH)
     centre, west_edge, east_edge = pit[4], pit[1], pit[7]
     lip = (west_edge[0] - 1, west_edge[1])            # open ground touching the west edge cell
     far = (x0 + 1, centre[1])
