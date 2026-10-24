@@ -56,12 +56,40 @@ def _jsonl(p: Path) -> list:
 
 
 def resets(path: Path = RESETS) -> dict:
-    """{def: latest reset record}; the record's series = how many resets that def has had."""
-    out = {}
+    """{def: latest reset record}; the record's series = how many resets that def has had. A STOP line
+    ({"stop": true}) newer than the reset is attached as rec["stopped"] (the series is over: nothing is filed,
+    judged or installed for it until a new reset)."""
+    out, stops = {}, {}
     for r in _jsonl(path):
-        if r.get("def") and (r["def"] not in out or _instant(r["at"]) >= _instant(out[r["def"]]["at"])):
-            out[r["def"]] = r
+        if not r.get("def"):
+            continue
+        box = stops if r.get("stop") else out
+        if r["def"] not in box or _instant(r["at"]) >= _instant(box[r["def"]]["at"]):
+            box[r["def"]] = r
+    for d, s in stops.items():
+        if d in out and _instant(s["at"]) >= _instant(out[d]["at"]):
+            out[d] = dict(out[d], stopped=s)
     return out
+
+
+def stopped(defname: str, rs: dict | None = None):
+    """The stop record if the def's current series was stopped, else None."""
+    r = (resets() if rs is None else rs).get(defname)
+    return r.get("stopped") if r else None
+
+
+def add_stop(defname: str, prov: dict, path: Path = RESETS, now: str | None = None) -> dict:
+    """End the def's current series (e.g. the owner kept or picked its art meanwhile). Append-only, like a reset."""
+    if not any(prov.get(k) for k in ("by_card", "owner_said", "per_ruling", "why")):
+        raise ValueError("say why the series stops (--owner-said/--by-card/--per-ruling/--why)")
+    if defname not in resets(path):
+        raise ValueError(f"{defname} has no fresh series to stop")
+    rec = {"at": now or datetime.now().astimezone().isoformat(timespec="seconds"), "def": defname, "stop": True,
+           "series": series(defname, resets(path))}
+    rec.update({k: v for k, v in prov.items() if v})
+    with path.open("a") as fh:
+        fh.write(json.dumps(rec) + "\n")
+    return rec
 
 
 def series(defname: str, rs: dict | None = None) -> int:
