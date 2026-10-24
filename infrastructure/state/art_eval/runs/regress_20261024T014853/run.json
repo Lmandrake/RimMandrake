@@ -1,0 +1,14 @@
+{
+ "run_id": "regress_20261024T014853",
+ "test": true,
+ "started": "2026-10-24T01:48:53-07:00",
+ "subjects": [
+  "RM_Shadefern",
+  "RM_Huldu",
+  "RM_Ssurr",
+  "RM_Vellak",
+  "RM_Murrin",
+  "RM_Dewblade"
+ ],
+ "versions_key": "departures_brief@v2#9cda88+gpt_targeted_second_look@v1#cb6e32+opus_first_pass@v2#85b8f1+preamble@v2#7130aa+regen_prompt_edit@v1#861700+severity@v4#e9bbe1+creature@v3#fdc520"
+}

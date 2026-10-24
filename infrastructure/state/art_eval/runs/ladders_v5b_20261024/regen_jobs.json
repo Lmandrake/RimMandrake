@@ -1,0 +1,42 @@
+[
+ {
+  "id": "arteval_RM_LadderPortable__A_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_LadderPortable",
+  "prompt": "A portable wooden ladder for a RimWorld pit, side view, leaning against a pit wall, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background, fully inside the frame with transparent margin on every side. The ladder is built from two straight, parallel wooden rails of even width from foot to top, joined by flat wooden plank rungs set evenly along the rails; every rung joint is cross-lashed with tan rope, the same plank-and-lashing construction as the north and south views. Weathered mid-brown timber with darker grain lines and slightly worn edges. East facing: the ladder leans on the pit's east wall, its top resting at the east rim on the right, its foot standing on the pit floor to the west of the wall on the left; the ladder is foreshortened along the east-west axis, with the plank rungs shown as flat boards seen edge-on at a slant and the rails as straight bars running the full length. Each rail ends at the foot in a finished squared wooden foot with a rounded outline, fully inside the frame. For the west facing, render the exact mirror of the east image: top at the west rim on the left, foot on the pit floor to the east of the wall on the right. For the south facing, the posts end in finished post feet with their own outline, inside the frame with transparent margin below. Reference: keep the accepted north/south ladder art as the style and construction reference.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_INCONSISTENT, X_CROP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "ladders_v5b_20261024",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl"
+ },
+ {
+  "id": "arteval_RM_Ladder__A_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Ladder",
+  "prompt": "A top-down RimWorld sprite sheet of a wooden ladder on guide rails in a dug pit, RAISED state, transparent background, painterly vanilla RimWorld style, realistic, clean dark outline, 384x384 per view. The ladder is two weathered timber stringers with round rungs between them, fixed to a pair of continuous guide rails on one wall of the pit. The rail tops curl over the rim. In the raised state the ladder has slid up along its guides: nobody can climb it, and its foot is lifted clear of the pit wall.\n\nNorth view: the ladder is on the far wall, seen face-on, with the slid-up section rising above the rim toward the top of the image (keep this view as it is).\n\nEast and west views: the ladder is on a side wall, seen steeply on the wall-face band. The slid-up section stands upright above the rim and rises toward the top of the image, the same upward direction as in the north view. Its rails and rungs end in the air above the rim, and the ground beside the rim is bare. Two heavy timber stringers sit in clearly readable iron retaining brackets, bolted to continuous wall-mounted guide rails that run unbroken from the wall face up past the rim. The stringers overlap the guides along their whole length, so the ladder and its guides read as one supported sliding assembly with rungs spanning between the stringers.\n\nSouth view: only the top of the ladder that stands above the near rim is visible, rising toward the top of the image in the same way, held in the same brackets and guides.\n\nAll four views share the same warm weathered timber, dark iron brackets, rung spacing and scale.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_INCONSISTENT, F_INCONSISTENT, OWNER_NOTE_IGNORED",
+  "reference": "",
+  "priority": 40,
+  "source_run": "ladders_v5b_20261024",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl"
+ }
+]

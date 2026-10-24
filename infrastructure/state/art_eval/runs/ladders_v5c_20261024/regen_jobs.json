@@ -1,0 +1,39 @@
+[
+ {
+  "id": "arteval_RM_LadderSteel__A_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_LadderSteel",
+  "prompt": "A steel ladder on two guide rails fixed to one wall of a dug pit, for a RimWorld sprite. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background, 384x384. The same ladder construction appears in every view: two sturdy steel stringers joined by evenly built round rungs, nested between two continuous steel guide rails whose tops curl over the pit rim. LOWERED state: the ladder reaches down the wall into the pit and shows its full run of eight to ten rungs. North view: the ladder is on the far wall, seen face-on, receding down into the pit, with rung spacing narrowing with depth. East and west views: the ladder is on the side wall, seen steeply on the wall-face band, and shows the same full rung sequence as the north view, with spacing narrowing toward the pit end as the perspective compresses it. South view: only the rail tops and the ladder top that stand above the near rim are visible. RAISED state: the complete ladder is slid up so its top section stands above the pit rim, held between the two guide rails. The raised north, east and west views all show this same assembly: two continuous guide rails along the full wall face, curling over the rim, with the ladder (thick stringers, readable rungs) nested between them and shifted toward the rim, rising past the rim line onto the ground side. The raised east and west views are the north view's ladder-and-guide assembly projected onto the side wall plane, and read at a glance as a raised steel fire-escape ladder. Keep the palette, steel material and rail construction identical across all facings and both states.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, DESC_MISS, DESC_MISS, OWNER_NOTE_IGNORED, F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "ladders_v5c_20261024"
+ },
+ {
+  "id": "arteval_RM_Ladder__A_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Ladder",
+  "prompt": "RimWorld sprite, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background, 384x384. A wooden ladder fixed on two guide rails to one wall of a dug pit; the rail tops curl over the rim. The ladder slides along its rails: lowered, people climb it; raised, it is slid up and out past the rim. Timber construction: two thick stringers with evenly spaced round rungs, joined to the wall-fixed rails by visible iron guide brackets. All timber is painted with restrained hand-painted wood grain, knots and wear, varied warm tones from honey to dark umber, and soft uneven highlights following the grain, with a clean dark outline of slightly varying weight. RAISED STATE, all four facings: the whole ladder has moved the same distance up its rails, so about half of it stands above the pit rim and its lower part is still held in the bracket-fitted rails; the rails run only along the wall band below the rim and keep the same length and position in every facing. North view: the ladder seen face-on on the far wall, rising past the rim. East and west views: steep side view on the wall-face band, showing the same complete ladder as the lowered side view, slid outward and upward past the rim so its body rests on the ground beyond the wall, with substantial stringers and clearly readable rungs. South view: only the part of the ladder standing above the near rim is visible.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: OWNER_NOTE_IGNORED, F_INCONSISTENT, STYLE_OFF, OWNER_NOTE_IGNORED, STYLE_OFF",
+  "reference": "",
+  "priority": 40,
+  "source_run": "ladders_v5c_20261024",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl"
+ }
+]

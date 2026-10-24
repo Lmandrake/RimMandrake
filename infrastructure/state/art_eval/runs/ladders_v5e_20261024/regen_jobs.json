@@ -1,0 +1,19 @@
+[
+ {
+  "id": "arteval_RM_LadderSteel__A_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_LadderSteel",
+  "prompt": "Painterly vanilla RimWorld sprite, realistic, 384x384, transparent background. A steel ladder on two guide rails fixed to one wall of a dug pit, rail tops curling over the rim; it slides down (lowered, climbable) or up (raised). Brushed grey steel rails with evenly spaced round rungs, bolted rail brackets, rail tops curled over the rim. Front view of the north wall: the ladder seen face-on on the far wall, receding down. East and west views: the same ladder turned a quarter and squeezed narrow to the steep wall-face band, up the wall running screen-right on the east wall and screen-left on the west wall. South view: only the rail tops and upper rungs standing above the near rim. Raised state: the ladder top continues past the rim in the wall's up direction. Rendering of the metal: each rail, rung and bracket has a tight dark contact outline hugging the metal silhouette, with shading, highlights and rust-free steel gradients painted inside the silhouette; the pixels immediately outside every outline are fully transparent, so each part is a crisp flat cutout that reads cleanly on both light and dark backgrounds. Every facing is the ladder alone on a transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: ALPHA_HALO, ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "ladders_v5e_20261024"
+ }
+]

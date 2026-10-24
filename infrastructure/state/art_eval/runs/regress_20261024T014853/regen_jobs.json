@@ -1,0 +1,83 @@
+[
+ {
+  "id": "arteval_RM_Huldu__C_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Huldu",
+  "prompt": "A single RimWorld pet sprite on a transparent background: the Huldu, a small forearm-length velvet-skinned swimmer, painterly vanilla RimWorld style, realistic, clean dark outline. The body is compact and low, sized to press flat along a human arm, with smooth hairless velvet skin in a warm muted tone and a matte surface with damp highlights. A dorsal comb of dark wet strands lies folded flat along the spine from nape to tail base, so any fur-like look comes only from the comb. The head is small and blunt with tiny dull wet eyes set into the skin, a neutral closed mouth, and no whiskers and no external ears. Four short limbs end in broad soft gripping pads with splayed wrap-around digits made to cling to a forearm. A short, thick, velvet-skinned tail tapers behind. The silhouette is a distinct, compact swimmer that reads as no known mammal. Every facing shows the same body, the same four padded limbs and the same tail. Front view: eyes toward the viewer, face painted realistically. Side view: the comb is visible as a dark wet ridge of strands from nape to tail base. Rear view, seen from behind at the game's angled camera: haunches, back, comb and tail facing away, eyes hidden, the body rising with visible height. Reference: none; build the body from this description.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_EARTHLY, DEPARTURE_MISSING, DESC_MISS, F_INCONSISTENT, F_TOPDOWN, STYLE_CARTOON",
+  "reference": "",
+  "priority": 40,
+  "source_run": "regress_20261024T014853"
+ },
+ {
+  "id": "arteval_RM_Ssurr__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Ssurr",
+  "prompt": "A single RimWorld creature sprite on a transparent background: Ssurr, a hound-sized, hound-proportioned reptile with a sturdy body, strong legs and a long tail. The body is teal with a cream underside and dark spots and transverse banding. Its dominant feature is one enormous half-circle crest-fan, far larger than the head, rising from the neck and shoulders. The fan is a rigid upright disc: a half-circle with radiating spokes, standing across the body. Its outer rim carries a row of fine, closely spaced comb tines, thin and parallel like the teeth of a dew-comb, with one tine at the end of every spoke and several more between the spokes, so the edge reads as a comb. The fan keeps the same geometry in every view. In the front view (eyes toward the viewer) and the rear view (seen from behind, showing back, tail and haunches, eyes hidden) the fan is seen face-on as a full wheel, with the same span, about twice the head width, and the same height above the back in both views. In the side view the same disc is seen edge-on as a tall, narrow vertical blade rising behind the head and shoulders. The teal back with dark banding and spots is identical in all three views. The head is a reptilian wedge with a neutral closed mouth line and small, dark slit-pupil eyes. The style is painterly vanilla RimWorld, realistic: textured scales with soft tonal variation, a thin dark outline of even, light weight, and soft shading on the fan. reference: none.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT, STYLE_CARTOON, F_SIZE_JUMP, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "regress_20261024T014853"
+ },
+ {
+  "id": "arteval_RM_Vellak__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Vellak",
+  "prompt": "RimWorld creature sprite, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. A Vellak: a camel-tall strider of the dry country, with a very tall, long-legged build: thin stilt legs carry a lean body high off the ground, and the back carries no hump. Along the back, where a camel's hump would stand, rises a tall dorsal sail-comb: a fanned crest of spines with membrane between them, running lengthwise along the spine and held open and spread wide. Muted dry-country hides in sand, dust and ochre tones, with the sail membrane a slightly warmer, translucent tone.\n\nFour facings of the same animal, sharing one body plan, palette and proportions.\nEast and west views: side profile. The full length of the sail is visible as a tall fanned membrane above the back, spines spread wide, the stilt legs mid-stride.\nSouth view: front view, eyes toward the viewer, the head and chest forward. The body is symmetric about its centre line, with both front legs mirrored left and right. The sail is seen edge-on as a narrow upright crest centred exactly on the spine, rising symmetrically above the back, its thin spine tips fanned slightly left and right in equal measure.\nNorth view: rear view, seen from behind, showing the haunches, the tail and the back of the neck, eyes hidden. The body is symmetric about its centre line, with both hind legs mirrored. The same longitudinal sail appears as a narrow upright edge-on crest centred on the spine, rising symmetrically above the back, consistent with the east profile.\n\nMatch the east profile in every facing: the same sail height, spine count and colours, simply turned with the torso. Drawn at a 2x2 cell footprint, a lone animal with a clean silhouette.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "regress_20261024T014853"
+ },
+ {
+  "id": "arteval_RM_Murrin__C_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Murrin",
+  "prompt": "A single hand-length pool fish, the Murrin, for RimWorld: painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. Grey-brown scaled body, deep-keeled, with a forked tail and small pectoral fins at the sides. One tall comb-like dorsal fin runs along the back, its edge divided into separate comb teeth rather than one smooth sail, and it rises clearly above the waterline. This same comb-toothed fin appears on every facing: upright, edge-on and symmetric in the front and rear views, and in profile in the side view. Faint concentric ripple rings spread across the pool surface from the point where the fin cuts the water, drawn in perspective for the camera and treated the same way on every facing. The deep body tapers along the belly into one sharp, continuous, blade-like keel ridge: a crisp straight lower edge in side view, with no separate small ventral fins breaking it, and a sharp point at the bottom of the silhouette in front and rear views. Along both flanks, paint distinct nested ring markings, three or four concentric dark-edged rings each inside the last, large enough to read at normal play size and echoing the surface ripples. Front view, eyes toward the viewer: small, flat, matte fish eyes set on the sides of the head with subdued highlights, and a neutral, closed, natural fish mouth with no expression. Rear view, seen from behind at the game's oblique camera angle: the forked tail fin faces the viewer head-on, the deep body is foreshortened behind it, and the comb-fin rises edge-on above the body, with the same proportions as the front view. Side view: full profile showing the comb-toothed fin, the nested ring flank markings, and the keeled belly. Reference: none; build the body from this description.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, F_TOPDOWN, F_INCONSISTENT, STYLE_CARTOON, DEPARTURE_MISSING, DEPARTURE_MISSING, DEPARTURE_MISSING, F_TOPDOWN, DEPARTURE_MISSING, STYLE_CARTOON",
+  "reference": "",
+  "priority": 40,
+  "source_run": "regress_20261024T014853"
+ },
+ {
+  "id": "arteval_RM_Dewblade__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Dewblade",
+  "prompt": "A single shin-high tuft of the plant Dewblade for a RimWorld top-down-angled sprite, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. The tuft is a compact cluster of flat, broad strips of blade, each one a rigid ribbon standing upright and edge-on, stiff and straight with only a slight lean. Every blade in the tuft points the same direction, in tidy parallel rows, aligned like iron filings in a magnetic field, so the whole tuft reads as combed by one steady wind. Each blade narrows at its top to a distinct drip-point, and a small clear bead of water hangs at the tip of several blades, catching a highlight. The foliage is a muted, cool grey-green with slightly paler edges and darker bases, matte and dry-looking apart from the water beads. The tuft sits centered on the canvas with a small soft contact shadow at its base, fitting within about 0.8 of a tile, with the full silhouette visible and nothing cropped. Reference: none; build the plant from this description alone.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: ",
+  "reference": "",
+  "priority": 40,
+  "source_run": "regress_20261024T014853"
+ }
+]

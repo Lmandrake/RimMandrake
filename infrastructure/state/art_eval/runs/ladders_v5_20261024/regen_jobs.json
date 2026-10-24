@@ -1,0 +1,22 @@
+[
+ {
+  "id": "arteval_RM_LadderPortable__A_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_LadderPortable",
+  "prompt": "A single portable wooden ladder in painterly vanilla RimWorld sprite style, realistic, clean dark outline, transparent background, 384x384 square frame, object centered with a small margin. The ladder is plain weathered mid-brown timber: two parallel side rails joined by evenly spaced round rungs (about seven), slightly worn, rope-free, with small flat wooden feet at the bottom of the rails. It is seen in strict side profile, so both rails overlap into one thick rail with the rungs showing as short stubs and the ladder's thin edge facing the viewer, leaning at a gentle angle against a wall that is not drawn. EAST VIEW: the ladder leans to the right. Its top end touches the right edge of the frame area, where it rests on the rim of an unseen pit wall, and its foot stands on the ground at the lower left of the top, the ladder slanting up and toward the right. The upper end is on the right and high, the foot is on the left and low. WEST VIEW: the exact mirror image of the east view, the ladder leaning to the left, top end high on the left resting at the rim, foot low on the right. Both views use the same wood, the same rung count and the same lighting from the upper left. Only the ladder is drawn, with no wall, pit, ground or shadow plane, so it can be overlaid on the game map.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: ",
+  "reference": "",
+  "priority": 40,
+  "source_run": "ladders_v5_20261024",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl"
+ }
+]

@@ -1,0 +1,72 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 66.9,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.487686
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 52.1
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_LadderSteel",
+ "decision": "ESCALATE",
+ "reasons": [
+  "opus band WEAK (model said good); blocking ['F_INCONSISTENT']; polish ['LEGIB_32']; unreadable ['PORTS (n/a on an unconditional item)', 'LAYERS (n/a on an unconditional item)']",
+  "gpt unsure: unsettled ['K1', 'K3'], own blocking []",
+  "still failing after 3 regen rounds \u2014 one line to the owner"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "machine@v3",
+   "sha": "c807afc131b7"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "dadb69480440057c9f349e7d4fde4b98c4ee05b8e7419ebf323113a35b99c243",
+  "east.png": "04edc3c58831147bcfa101b0cddc9eaba98fd6bc709ef028f7bb2b8cb35956e9",
+  "north.png": "df9437083e056fbb4364464ea3b68da266f2ef62c1409ecd57c101036ea4d0d1",
+  "west.png": "9631e4340d5f4a1e79ce76fe7dd53049781668fa6aa626bc9bb2836564e9dab2",
+  "scale.png": "52c8c839f635edb89d3a8f323163acdadfb9acced08d74bf6a3ad5ff0196194d",
+  "variants_1.png": "fe1e0ab64c51d1979e0a1a6541ab7859b1040445feffad6a6c8cac1e36c397bc",
+  "variants_2.png": "4dc4a83376726f895db1528f8030686f2d794ad9f22b5de466eac404af80f5c4",
+  "variants_3.png": "30ee01f7215fdea2ba3031d334c54f7c9673e247fa4ae245d24e793b7ac70dd9",
+  "variants_4.png": "d02551161992a3ad1e6bc7bd2a30b2e5e3f4f67f878e171a68238addf79ca3b4",
+  "variants_5.png": "c706ea845567f768515623adcacb6e90b9c8fd63c4ad21998e472e77b21c4ac6",
+  "wall_context.png": "5c6a6db5c2bc9c667cdeafb66ed6736f948a93cc42835df61606dd0d72eed91c",
+  "facings.png": "5d3b0dae31d21de4fe409b0570baf0480d0b68e4c7d8029019956bcf07865857"
+ }
+}

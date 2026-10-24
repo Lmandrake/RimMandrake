@@ -1,0 +1,19 @@
+[
+ {
+  "id": "arteval_RM_LadderSteel__A_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_LadderSteel",
+  "prompt": "A steel ladder on two guide rails fixed to one wall of a dug pit, for a top-down RimWorld sprite, 384x384, transparent background, painterly vanilla RimWorld style, realistic, clean dark outline. The rail tops curl over the pit rim. The ladder slides down (lowered, people climb it) or up (raised, nobody climbs). Each wall face is drawn as a light band sloping toward the pit centre: up the wall is screen-up on the north wall, screen-right on the east wall, screen-left on the west wall. The north view shows the ladder on the far wall, face-on, receding down. The east and west views are the north view turned a quarter and squeezed to the width of the light wall band. The south view shows only what stands above the near rim. A raised ladder's top continues past the rim in the wall's up direction.\n\nSturdy steel throughout: stringers are round steel tubes with soft cylindrical shading, rungs are round steel bars, and small clamp collars join the stringers to the guide rails. In the raised east and west views, the slid ladder section has stringers as thick as the lowered side-view stringers, with the same shading and clamp collars, and round-bar rungs, so it matches the weight of the doubled guide rails behind it.\n\nThe lowered east and west ladder sits entirely inside the light wall-face band: rails, rail tips and brackets end a few pixels short of the band's pit-side edge, leaving a clear strip of light wall before the dark pit floor shading.\n\nEach tube, hook and rail end is shaded within its own outline, highlight on one side and darker steel on the other. Outlines are crisp, antialiased dark lines, and the pixels immediately beyond them are fully transparent. Colors: cool grey-blue steel with lighter highlights and darker shaded sides, consistent across all facings.\n\nreference: keep",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: OWNER_NOTE_IGNORED, FOOTPRINT, ALPHA_HALO, FOOTPRINT, ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "ladders_v5d_20261024"
+ }
+]
