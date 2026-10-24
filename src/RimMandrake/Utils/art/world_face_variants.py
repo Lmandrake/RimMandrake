@@ -331,12 +331,11 @@ def layout(qs, rs, seed=7):
 
 
 def render(faces, sea, hills_kind, decals, zoom, W_out, H_out, fbiome=None):
-    """faces: biome -> 512 RGB uint8.  Returns an RGB PIL image at (W_out, H_out)."""
-    size_out = 34.0 if zoom == "mid" else 7.5            # hex circumradius on screen
-    ss = 4 if zoom == "mid" else 9                          # supersample factor (mip-like box downsample)
-    size = size_out * ss / 2 if zoom == "mid" else size_out * ss / 2
-    ssf = 2                                                 # internal = 2x out for mid, 4.5x for far: keep memory sane
-    size = size_out * ssf if zoom == "mid" else size_out * 4.5
+    """faces: biome -> 512 RGB uint8.  Returns an RGB PIL image at (W_out, H_out).
+    zoom: "close" = one face texel per screen pixel (the file at 1:1, hex circumradius TEX_PER_HEX/sqrt3 px),
+          "mid" = hex circumradius 34 px, "far" = 7.5 px.  Internal supersample 1x / 2x / 4.5x, box-downsampled."""
+    size_out = {"close": TEX_PER_HEX / SQ3, "mid": 34.0, "far": 7.5}[zoom]   # hex circumradius on screen
+    size = size_out * {"close": 1.0, "mid": 2.0, "far": 4.5}[zoom]
     fac = size / size_out
     W, Hh = int(W_out * fac), int(H_out * fac)
     qs, rs = hex_ids(W, Hh, size)
@@ -376,7 +375,7 @@ def render(faces, sea, hills_kind, decals, zoom, W_out, H_out, fbiome=None):
         cx = size * (SQ3 * q + SQ3 / 2 * r); cy = size * 1.5 * r
         if cx < -size or cy < -size or cx > W + size or cy > Hh + size: continue
         b = lab[(q, r)]
-        if decals and zoom == "mid" and b != "Sea" and lv is None:   # decals fade out past mid zoom
+        if decals and zoom in ("mid", "close") and b != "Sea" and lv is None:   # decals fade out past mid zoom
             gl = gcache.setdefault(b, glyphs(b, np.random.default_rng(SEED[b])))
             for _ in range(2 + int(rng.integers(0, 2))):
                 g = gl[int(rng.integers(0, len(gl)))]
@@ -447,33 +446,52 @@ def biome_crop(scene, b, w=400, h=280):
     return scene.crop((x, y, x + w, y + h))
 
 
-def tiled(face, n=2, px=200):
+SCENE_W, SCENE_H = 1100, 640             # mid and far scenes; NEVER resized for the sheet (owner 2026-10-24: too low res)
+CLOSE_K = (TEX_PER_HEX / SQ3) / 34.0     # close scene = the mid map scaled so one face texel = one screen pixel
+
+
+def tiled(face, n=2):
+    """The face file tiled n x n at 1:1 pixels (no resampling): shows the texels and the seams/repeat as the file has them."""
     im = Image.fromarray(face); o = Image.new("RGB", (N * n, N * n))
     for i in range(n):
         for j in range(n): o.paste(im, (i * N, j * N))
-    return o.resize((px, px), Image.LANCZOS)
+    return o
 
 
 def thumbs(out, sets):
-    """Sheet pictures (opaque RGB composites, no cut-out alpha): one per approach and one per approach x biome."""
-    th = os.path.join(out, "sheet"); os.makedirs(th, exist_ok=True)
+    """Sheet pictures, all at 1:1 screen pixels (no downscale anywhere; the page shows them at natural size):
+       sheet/approach_<ap>_{far,mid}.jpg         whole scene, 1100x640
+       sheet/<B>_<ap>_file.png                   the face file 2x2 tiled, 1024x1024, lossless
+       sheet/<B>_<ap>_close.jpg                  close-zoom crop, 1024x640, one texel per pixel
+       sheet/<B>_<ap>_{mid,far}.jpg              640x400 crops of the mid / far scenes
+       sheet/<B>_<ap>.jpg                        small row icon only (the 64 px list thumbnail)
+       sheet/hills_<hk>_{far,mid}.jpg, sheet/hills_<hk>_close.jpg"""
+    th = os.path.join(out, "sheet")
+    if os.path.isdir(th):
+        for f in os.listdir(th): os.remove(os.path.join(th, f))
+    os.makedirs(th, exist_ok=True)
+    q = dict(quality=95, subsampling=0)
     for ap in APPROACHES:
         d = os.path.join(out, ap)
         mid = Image.open(os.path.join(d, "scene_mid.png")); far = Image.open(os.path.join(d, "scene_far.png"))
-        im = hstack([caption(far.resize((660, 384), Image.LANCZOS), "far zoom"), caption(mid.resize((660, 384), Image.LANCZOS), "mid zoom")])
-        caption(im, LABEL[ap], 22).save(os.path.join(th, f"approach_{ap}.jpg"), quality=90)
+        close = Image.open(os.path.join(d, "scene_close.png"))
+        far.save(os.path.join(th, f"approach_{ap}_far.jpg"), **q); mid.save(os.path.join(th, f"approach_{ap}_mid.jpg"), **q)
+        mid.resize((128, 74), Image.LANCZOS).save(os.path.join(th, f"approach_{ap}.jpg"), **q)
         for b in BIOMES:
-            im = hstack([caption(tiled(sets[ap][b], 2, 280), "face, 2x2 tiled"), caption(biome_crop(mid, b), "mid zoom"),
-                         caption(biome_crop(far, b), "far zoom")])
-            caption(im, f"{b}: {LABEL[ap]}", 20).save(os.path.join(th, f"{b}_{ap}.jpg"), quality=90)
+            tiled(sets[ap][b], 2).save(os.path.join(th, f"{b}_{ap}_file.png"))
+            biome_crop(close, b, 1024, 640).save(os.path.join(th, f"{b}_{ap}_close.jpg"), **q)
+            biome_crop(mid, b, 640, 400).save(os.path.join(th, f"{b}_{ap}_mid.jpg"), **q)
+            biome_crop(far, b, 640, 400).save(os.path.join(th, f"{b}_{ap}_far.jpg"), **q)
+            Image.fromarray(sets[ap][b]).resize((128, 128), Image.LANCZOS).save(os.path.join(th, f"{b}_{ap}.jpg"), **q)
     for hk in ("soft", "drawn"):
-        mid = Image.open(os.path.join(out, f"hills_{hk}_mid.png"))
-        far = Image.open(os.path.join(out, f"hills_{hk}_far.png"))
-        lab = {"soft": "Hills 1: soft relief (built, installed)", "drawn": "Hills 2: our own drawn mountain clumps (soft past mid zoom)"}[hk]
-        caption(hstack([caption(far.resize((660, 384), Image.LANCZOS), "far zoom"), caption(mid.resize((660, 384), Image.LANCZOS), "mid zoom")]), lab, 22).save(os.path.join(th, f"hills_{hk}.jpg"), quality=90)
+        for z in ("mid", "far"):
+            Image.open(os.path.join(out, f"hills_{hk}_{z}.png")).save(os.path.join(th, f"hills_{hk}_{z}.jpg"), **q)
+        close = Image.open(os.path.join(out, f"hills_{hk}_close.png"))
+        biome_crop(close, "LeaningScrub", 1024, 640).save(os.path.join(th, f"hills_{hk}_close.jpg"), **q)
+        Image.open(os.path.join(out, f"hills_{hk}_mid.png")).resize((128, 74), Image.LANCZOS).save(os.path.join(th, f"hills_{hk}.jpg"), **q)
     if os.path.exists(SEPT_SHOT):     # an in-game SCREENSHOT of 2026-09-11 (reference only; no donor texture is read)
         s = Image.open(SEPT_SHOT).convert("RGB")
-        caption(s.crop((60, 60, 1460, 1054)).resize((1100, 781), Image.LANCZOS), "Reference: September 2026-09-11 in game (WME era), Twilight Sea / Pyrelands", 22).save(os.path.join(th, "reference_september.jpg"), quality=90)
+        s.crop((60, 60, 1460, 1054)).save(os.path.join(th, "reference_september.jpg"), **q)   # 1:1, not resized
 
 
 def gen(out):
@@ -490,16 +508,14 @@ def gen(out):
             st[f"{ap}/{b}"] = stats(faces[b])
         sets[ap] = faces
         hk = "drawn" if ap == "decals" else "soft"
-        mid, _ = render(faces, sea, hk, ap == "decals", "mid", 1100, 640)
-        far, _ = render(faces, sea, hk, ap == "decals", "far", 1100, 640)
-        mid.save(os.path.join(d, "scene_mid.png")); far.save(os.path.join(d, "scene_far.png"))
+        CW, CH = round(SCENE_W * CLOSE_K), round(SCENE_H * CLOSE_K)     # same hexes as mid, so the same map
+        for z, (w, h) in (("mid", (SCENE_W, SCENE_H)), ("far", (SCENE_W, SCENE_H)), ("close", (CW, CH))):
+            render(faces, sea, hk, ap == "decals", z, w, h)[0].save(os.path.join(d, f"scene_{z}.png"))
         print(ap, "scenes done", flush=True)
     # hills comparison on today's faces' Stillsand + painted others (hills independent of the face)
     for hk in ("soft", "drawn"):
-        mid, _ = render(sets["painted"], sea, hk, False, "mid", 1100, 640)
-        mid.save(os.path.join(out, f"hills_{hk}_mid.png"))
-        far, _ = render(sets["painted"], sea, hk, False, "far", 1100, 640)
-        far.save(os.path.join(out, f"hills_{hk}_far.png"))
+        for z, (w, h) in (("mid", (SCENE_W, SCENE_H)), ("far", (SCENE_W, SCENE_H)), ("close", (CW, CH))):
+            render(sets["painted"], sea, hk, False, z, w, h)[0].save(os.path.join(out, f"hills_{hk}_{z}.png"))
     json.dump(st, open(os.path.join(out, "stats.json"), "w"), indent=1)
     thumbs(out, sets)
     return sets
@@ -518,9 +534,43 @@ HILLS = {"soft": ("Hills 1: soft relief (installed)", "Keep the built RM_Hills s
          "drawn": ("Hills 2: our own drawn mountain clumps", "Lit low-poly clumps tinted by biome, unrotated; soft relief past mid zoom. Needs our own hill pass.", "maybe")}
 
 
+FILE_CAP = "the face FILE, 2x2 tiled, 1:1 pixels (1024 px; each 512 px tile is the whole texture, exactly as on disk)"
+CLOSE_CAP = "close zoom, one texel per screen pixel (1024x640 crop; the face is not resampled)"
+MID_CAP = "mid zoom, offline render (640x400 crop, unscaled; face at ~0.37x, assumes ~3.2 hexes per face)"
+FAR_CAP = "far zoom, offline render (640x400 crop, unscaled; face at ~0.08x)"
+
+
+def _view(src, cap, w, h):
+    return {"src": src, "cap": cap, "w": w, "h": h}
+
+
+RENDER_JS = r"""
+window.itemBody = it => {
+  const marks = [];
+  for (const [k, v] of Object.entries(it.meta || {})) marks.push(`<span class="mark absent">${esc(k)}: ${esc(v)}</span>`);
+  const q = location.search || '';
+  const views = (it.views || []).map(v => `<figure class="wfv"><a href="${esc(v.src)}${esc(q)}" target="_blank" rel="noopener"
+      title="open this picture alone, 1:1"><img src="${esc(v.src)}" width="${v.w}" height="${v.h}" loading="lazy" decoding="async" alt=""></a>
+      <figcaption>${esc(v.cap)} · ${v.w}x${v.h} px</figcaption></figure>`).join('');
+  return `<div class="effect">${esc(it.effect || '')}</div>`
+       + (marks.length ? `<div class="marks">${marks.join('')}</div>` : '')
+       + (views ? `<div class="wfviews">${views}</div>` : '');
+};
+"""
+RENDER_CSS = """<style id="WFVIEWS">
+.wfviews{display:flex;flex-wrap:wrap;gap:14px;margin:10px 0 4px}
+.wfv{margin:0}
+.wfv img{display:block;max-width:calc(100vw - 80px);height:auto;image-rendering:auto;border:1px solid var(--line)}
+.wfv figcaption{font-size:12px;color:var(--dim);margin-top:4px;max-width:1024px}
+</style>"""
+
+
 def build_sheet(out):
     import shutil
-    tdir = os.path.join(REPO, "Transient"); img = os.path.join(tdir, STEM + "_img"); os.makedirs(img, exist_ok=True)
+    tdir = os.path.join(REPO, "Transient"); img = os.path.join(tdir, STEM + "_img")
+    if os.path.isdir(img):                       # the image dir is rebuilt whole: no stale picture survives a rebuild
+        for f in os.listdir(img): os.remove(os.path.join(img, f))
+    os.makedirs(img, exist_ok=True)
     src = os.path.join(out, "sheet")
     for f in os.listdir(src):
         shutil.copy(os.path.join(src, f), os.path.join(img, "wf_" + f))
@@ -530,19 +580,28 @@ def build_sheet(out):
     for ap in APPROACHES:
         items.append({"id": f"look_{ap}", "label": LABEL[ap], "group": "1. The whole look (one approach for every biome)",
                       "effect": EFFECT[ap], "thumb": rel + f"approach_{ap}.jpg", "prefill": PREFILL[ap],
-                      "trueSize": {"none": "a world face texture has no in-game size; shown at far and mid zoom"}})
+                      "views": [_view(rel + f"approach_{ap}_mid.jpg", "mid zoom, whole patch, unscaled offline render", SCENE_W, SCENE_H),
+                                _view(rel + f"approach_{ap}_far.jpg", "far zoom, whole patch, unscaled offline render", SCENE_W, SCENE_H)],
+                      "trueSize": {"none": "a world face texture has no in-game size; the file is shown 1:1 in group 3, scenes unscaled"}})
     for hk, (lab, eff, pf) in HILLS.items():
         items.append({"id": f"hills_{hk}", "label": lab, "group": "2. Hills and mountains", "effect": eff,
                       "thumb": rel + f"hills_{hk}.jpg", "prefill": pf,
-                      "trueSize": {"none": "a world hill decal has no in-game size; shown at far and mid zoom"}})
+                      "views": [_view(rel + f"hills_{hk}_close.jpg", "close zoom (Leaning Scrub area), face 1:1; hill cells are 128 px drawn ~1.4x", 1024, 640),
+                                _view(rel + f"hills_{hk}_mid.jpg", "mid zoom, whole patch, unscaled", SCENE_W, SCENE_H),
+                                _view(rel + f"hills_{hk}_far.jpg", "far zoom, whole patch, unscaled", SCENE_W, SCENE_H)],
+                      "trueSize": {"none": "a world hill decal has no in-game size; shown at close, mid and far zoom, unscaled"}})
     for b in BIOMES:
         for ap in APPROACHES:
             s = st[f"{ap}/{b}"]
             items.append({"id": f"{b}_{ap}", "label": f"{b}: {LABEL[ap]}", "group": f"3. Per biome: {b}",
                           "effect": EFFECT[ap], "thumb": rel + f"{b}_{ap}.jpg", "prefill": PREFILL[ap],
+                          "views": [_view(rel + f"{b}_{ap}_file.png", FILE_CAP, 2 * N, 2 * N),
+                                    _view(rel + f"{b}_{ap}_close.jpg", CLOSE_CAP, 1024, 640),
+                                    _view(rel + f"{b}_{ap}_mid.jpg", MID_CAP, 640, 400),
+                                    _view(rel + f"{b}_{ap}_far.jpg", FAR_CAP, 640, 400)],
                           "meta": {"mean RGB": ",".join(map(str, s["mean"])), "sd": str(s["sd"]), "blockiness": str(s["blk"]),
                                    "seam/nbr": f'{s["seam"]}/{s["nbr"]}'},
-                          "trueSize": {"none": "a world face texture has no in-game size; shown tiled, at mid and at far zoom"}})
+                          "trueSize": {"none": "a world face texture has no in-game size; the file is shown 1:1, tiled 2x2, plus close/mid/far zoom"}})
     brief = (
         "<p><b>Your order (card, 2026-10-23):</b> <i>\"Do a background deep dive for (3) [make our own face textures] right now "
         "... inspire yourself by World Map Enhanced's approaches and make variations to try out, then a sheet to select for the "
@@ -555,10 +614,15 @@ def build_sheet(out):
         "<p><b>These are offline renders, not the game.</b> A flat hex patch with each face projected, ~1-tile soft borders and a "
         "stand-in for the game's large-scale variation. How many hexes one face spans in game is unmeasured (assumed ~3), so the "
         "repeat at far zoom may look different live. Nothing is installed until you pick; the pick is tried on the planet first.</p>"
+        "<p><b>Rebuilt 2026-10-24 for resolution</b> (you: <i>\"the captured graphics are too low res for me to make a "
+        "determination of world map textures\"</i>). The old pictures squeezed each 512 px face to 140 px and shrank the scenes. "
+        "Now nothing is shrunk: in group 3 each row shows the face <b>file itself</b>, 2x2 tiled at 1:1 pixels (1024 px), then a "
+        "<b>close zoom</b> where one texel is one screen pixel, then mid and far crops of the map renders. Groups 1 and 2 show the whole "
+        "patch at full size. Click any picture to open it alone at 1:1. If your browser zoom is not 100%, set it to 100% (Ctrl+0).</p>"
         f"<p><img src=\"{rel}reference_september.jpg\" style=\"max-width:100%\" alt=\"September reference\"></p>"
         "<p>Design notes: <code>design/Jawa/worldbuilding/world_faces_own_art_2026-10-23.md</code>.</p>")
     cfg = {"sheetId": STEM, "title": "Our own world faces: pick a look",
-           "subtitle": "2026-10-23 · 4 looks × 4 shipping biomes + hills · WORLDMAP_FACES_DECIDE_SEPTEMBER_WAS_PRETTIER",
+           "subtitle": "2026-10-23, rebuilt 2026-10-24 at full resolution · 4 looks × 4 shipping biomes + hills · WORLDMAP_FACES_DECIDE_SEPTEMBER_WAS_PRETTIER",
            "briefHtml": brief,
            "criterion": "Rows are in the order today → A → B → C; the prefill is the agent's lean (C, then A), judged by fit to the September look and the biome sheets, not by cost.",
            "invented": ["The four tells per biome (ash smears, leaning shrubs, vents with steam, pustule clusters) are the agent's reading of the biome sheets.",
@@ -575,8 +639,12 @@ def build_sheet(out):
                  lambda m: m.group(1) + "\n" + json.dumps(cfg, indent=1).replace("</", "<\\/") + "\n" + m.group(3), tpl, count=1, flags=re.S)
     tpl = re.sub(r'(<script id="ITEMS" type="application/json">)(.*?)(</script>)',
                  lambda m: m.group(1) + "\n" + json.dumps(items, indent=1).replace("</", "<\\/") + "\n" + m.group(3), tpl, count=1, flags=re.S)
+    tpl = tpl.replace("</head>", RENDER_CSS + "\n</head>", 1)
+    tpl = tpl.replace('<script>\n"use strict";', '<script id="RENDER">' + RENDER_JS + '</script>\n<script>\n"use strict";', 1)
+    assert 'id="RENDER">' in tpl and 'id="WFVIEWS"' in tpl, "template changed: RENDER/CSS hook not inserted"
     html = os.path.join(tdir, STEM + ".html")
-    open(html, "w").write(tpl)
+    import nonart_sheet                # a rebuild must keep the non-art declaration, or serve_gated refuses the page
+    open(html, "w").write(nonart_sheet.declare(tpl))
     dec = os.path.join(tdir, STEM + ".decisions.json")
     if not os.path.exists(dec):       # never overwrite his picks
         json.dump({"sheetId": STEM, "posture": "whitelist", "criterion": cfg["criterion"],
