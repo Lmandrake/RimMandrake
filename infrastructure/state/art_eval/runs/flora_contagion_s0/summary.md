@@ -13,21 +13,12 @@
 | RM_HalfAlienTree__AB_HalfAlienTreeB | AB_HalfAlienTreeB | plant/tree | WEAK | regen | **REGEN** | 53.1 | opus band WEAK (model said good); blocking ['ALPHA_HALO']; polish ['LEGIB_32']; gpt regen: unsettled ['K1'], own blocking ['ALPHA_HALO'] |
 | RM_HalfmadeTree__RM_HalfmadeTree_b | RM_HalfmadeTree_b | plant/tree | WEAK | strong_accept | **ACCEPT** | 66.4 | opus band WEAK (model said good); blocking ['DESC_MISS']; polish []; gpt strong_accept: unsettled [], own blocking [] |
 | RM_HalfmadeTree__RM_HalfmadeTree_d | RM_HalfmadeTree_d | plant/tree | WEAK | regen | **REGEN** | 55.3 | opus band WEAK (model said good); blocking ['DESC_MISS']; polish []; gpt regen: unsettled ['K1'], own blocking ['DESC_MISS']; REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) — on the next shadow sheet with a revert |
-| RM_Lashgrass__RM_Lashgrass | RM_Lashgrass | plant/ground_cover | - | - | **HOLD_ERROR** | 7.7 | opus: You've hit your session limit · resets 1:10pm (America/Los_Angeles) |
-| RM_Rattlegrope__RM_Rattlegrope | RM_Rattlegrope | plant/bush | - | - | **HOLD_ERROR** | 6.8 | opus: You've hit your session limit · resets 1:10pm (America/Los_Angeles) |
-| RM_RedPlantsTall__GU_RedLeaves2 | GU_RedLeaves2 | plant/ground_cover | - | - | **HOLD_ERROR** | 9.3 | opus: You've hit your session limit · resets 1:10pm (America/Los_Angeles) |
-| RM_RustPuff__RustPuff_B | RustPuff_B | plant/bush | - | - | **HOLD_ERROR** | 7.6 | opus: You've hit your session limit · resets 1:10pm (America/Los_Angeles) |
-| RM_RustPuff__RustPuff_D | RustPuff_D | plant/bush | - | - | **HOLD_ERROR** | 7.9 | opus: You've hit your session limit · resets 1:10pm (America/Los_Angeles) |
-| RM_TentacularPlant__AB_TentacularPlant | AB_TentacularPlant | plant/tree | - | - | **HOLD_ERROR** | 8.7 | opus: You've hit your session limit · resets 1:10pm (America/Los_Angeles) |
-| RM_Wombpod__RM_Wombpod | RM_Wombpod | plant/special | - | - | **HOLD_ERROR** | 9.8 | opus: You've hit your session limit · resets 1:10pm (America/Los_Angeles) |
-
-## One line each for the owner
-- RM_Lashgrass__RM_Lashgrass: HOLD_ERROR — opus: You've hit your session limit · resets 1:10pm (America/Los_Angeles)
-- RM_Rattlegrope__RM_Rattlegrope: HOLD_ERROR — opus: You've hit your session limit · resets 1:10pm (America/Los_Angeles)
-- RM_RedPlantsTall__GU_RedLeaves2: HOLD_ERROR — opus: You've hit your session limit · resets 1:10pm (America/Los_Angeles)
-- RM_RustPuff__RustPuff_B: HOLD_ERROR — opus: You've hit your session limit · resets 1:10pm (America/Los_Angeles)
-- RM_RustPuff__RustPuff_D: HOLD_ERROR — opus: You've hit your session limit · resets 1:10pm (America/Los_Angeles)
-- RM_TentacularPlant__AB_TentacularPlant: HOLD_ERROR — opus: You've hit your session limit · resets 1:10pm (America/Los_Angeles)
-- RM_Wombpod__RM_Wombpod: HOLD_ERROR — opus: You've hit your session limit · resets 1:10pm (America/Los_Angeles)
+| RM_Lashgrass__RM_Lashgrass | RM_Lashgrass | plant/ground_cover | WEAK | strong_accept | **ACCEPT** | 39.6 | opus band WEAK (model said good); blocking ['STYLE_EARTHLY']; polish ['SCALE_WRONG']; gpt strong_accept: unsettled [], own blocking [] |
+| RM_Rattlegrope__RM_Rattlegrope | RM_Rattlegrope | plant/bush | WEAK | regen | **REGEN** | 46.8 | opus band WEAK (model said really_bad); blocking ['DESC_MISS']; polish []; gpt regen: unsettled ['K1'], own blocking ['DESC_MISS']; REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) — on the next shadow sheet with a revert |
+| RM_RedPlantsTall__GU_RedLeaves2 | GU_RedLeaves2 | plant/ground_cover | GOOD | - | **ACCEPT** | 21.8 | opus band GOOD (model said good); blocking []; polish ['WANTS_VARIANTS'] |
+| RM_RustPuff__RustPuff_B | RustPuff_B | plant/bush | WEAK | strong_accept | **ACCEPT** | 40.9 | opus band WEAK (model said good); blocking ['SIBLING_MISMATCH']; polish ['STYLE_EARTHLY']; gpt strong_accept: unsettled [], own blocking [] |
+| RM_RustPuff__RustPuff_D | RustPuff_D | plant/bush | GOOD | - | **ACCEPT** | 23.7 | opus band GOOD (model said good); blocking []; polish ['SCALE_WRONG'] |
+| RM_TentacularPlant__AB_TentacularPlant | AB_TentacularPlant | plant/tree | WEAK | unsure | **REGEN** | 47.1 | opus band WEAK (model said weak); blocking ['DONOR']; polish []; gpt unsure: unsettled ['K1'], own blocking [] |
+| RM_Wombpod__RM_Wombpod | RM_Wombpod | plant/special | WEAK | strong_accept | **ACCEPT** | 33.2 | opus band WEAK (model said good); blocking ['STYLE_EARTHLY']; polish []; gpt strong_accept: unsettled [], own blocking [] |
 
 Models reported: claude-opus-5-5, claude-sonnet-5-5, gpt-6.1-sol · prompt versions: `departures_brief@v2#9cda88+gpt_targeted_second_look@v1#cb6e32+opus_first_pass@v1#140565+preamble@v1#a48502+regen_prompt_edit@v1#861700+severity@v3#950903+plant@v2#0469e8`

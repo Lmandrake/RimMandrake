@@ -15,15 +15,9 @@
 | RM_HalfmadeTreeBlighted__RM_HalfmadeTreeBlighted | RM_HalfmadeTreeBlighted | plant/tree | GOOD | - | **ACCEPT** | 23.1 | opus band GOOD (model said good); blocking []; polish ['RES_LOW'] |
 | RM_Meatvine__RM_Meatvine | RM_Meatvine | plant/bush | WEAK | regen | **REGEN** | 52.7 | opus band WEAK (model said good); blocking ['DESC_MISS']; polish ['WANTS_VARIANTS']; gpt regen: unsettled ['K1'], own blocking ['DESC_MISS']; REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) — on the next shadow sheet with a revert |
 | RM_RedLeaves__GU_RedLeaves | GU_RedLeaves | plant/ground_cover | WEAK | regen | **REGEN** | 63.7 | opus band WEAK (model said good); blocking ['LUMP']; polish ['SCALE_WRONG', 'WANTS_VARIANTS']; gpt regen: unsettled ['K1'], own blocking ['LUMP'] |
-| RM_RustPuff__RustPuff_A | RustPuff_A | plant/bush | - | - | **HOLD_ERROR** | 10.2 | opus: You've hit your session limit · resets 1:10pm (America/Los_Angeles) |
-| RM_RustPuff__RustPuff_C | RustPuff_C | plant/bush | - | - | **HOLD_ERROR** | 11.7 | opus: You've hit your session limit · resets 1:10pm (America/Los_Angeles) |
-| RM_Sapblister__RM_Sapblister | RM_Sapblister | plant/bush | - | - | **HOLD_ERROR** | 13.3 | opus: You've hit your session limit · resets 1:10pm (America/Los_Angeles) |
-| RM_Toothmoss__RM_Toothmoss | RM_Toothmoss | plant/ground_cover | - | - | **HOLD_ERROR** | 13.3 | opus: You've hit your session limit · resets 1:10pm (America/Los_Angeles) |
-
-## One line each for the owner
-- RM_RustPuff__RustPuff_A: HOLD_ERROR — opus: You've hit your session limit · resets 1:10pm (America/Los_Angeles)
-- RM_RustPuff__RustPuff_C: HOLD_ERROR — opus: You've hit your session limit · resets 1:10pm (America/Los_Angeles)
-- RM_Sapblister__RM_Sapblister: HOLD_ERROR — opus: You've hit your session limit · resets 1:10pm (America/Los_Angeles)
-- RM_Toothmoss__RM_Toothmoss: HOLD_ERROR — opus: You've hit your session limit · resets 1:10pm (America/Los_Angeles)
+| RM_RustPuff__RustPuff_A | RustPuff_A | plant/bush | WEAK | regen | **REGEN** | 65.2 | opus band WEAK (model said weak); blocking ['STYLE_OFF']; polish ['STYLE_EARTHLY', 'SCALE_WRONG']; gpt regen: unsettled ['K1'], own blocking ['STYLE_OFF']; REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) — on the next shadow sheet with a revert |
+| RM_RustPuff__RustPuff_C | RustPuff_C | plant/bush | GOOD | - | **ACCEPT** | 23.8 | opus band GOOD (model said good); blocking []; polish ['STYLE_EARTHLY', 'SCALE_WRONG'] |
+| RM_Sapblister__RM_Sapblister | RM_Sapblister | plant/bush | WEAK | strong_accept | **ACCEPT** | 35.0 | opus band WEAK (model said good); blocking ['STYLE_CARTOON']; polish ['WANTS_VARIANTS']; gpt strong_accept: unsettled [], own blocking [] |
+| RM_Toothmoss__RM_Toothmoss | RM_Toothmoss | plant/ground_cover | GOOD | - | **ACCEPT** | 28.8 | opus band GOOD (model said good); blocking []; polish ['WANTS_VARIANTS', 'LEGIB_32'] |
 
 Models reported: claude-opus-5-5, claude-sonnet-5-5, gpt-6.1-sol · prompt versions: `departures_brief@v2#9cda88+gpt_targeted_second_look@v1#cb6e32+opus_first_pass@v1#140565+preamble@v1#a48502+regen_prompt_edit@v1#861700+severity@v3#950903+plant@v2#0469e8`
