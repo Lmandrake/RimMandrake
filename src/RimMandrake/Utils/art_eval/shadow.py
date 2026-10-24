@@ -60,6 +60,20 @@ def row_line(r: dict) -> tuple[str, str]:
     return why, ctx
 
 
+def row_id(r: dict) -> str:
+    """The sheet row a record belongs to: the DEF. A plant/pool card is judged per picture under `<def>__<tag>`
+    (RM_Ruskara__a, RM_AgariluxPrime__TheRot) but art_sheet --subjects takes defNames — handing it the card key
+    finds no art ("no row has art", ART_EVAL_SHADOW_FIX_PLANT_KEPT_ROWS). Several cards of one def share one row."""
+    return r["subject"].split("__", 1)[0]
+
+
+def by_row(recs: list) -> dict:
+    out = {}
+    for r in recs:
+        out.setdefault(row_id(r), []).append(r)
+    return out
+
+
 REF_KEYS = ("south", "east", "north", "west", "single")
 
 
@@ -72,7 +86,7 @@ def reference_map(recs: list) -> dict:
         files = [f for k, f in (r.get("source_files") or {}).items()
                  if k in REF_KEYS or re.match(r"(assembled|flight|variants)_\d+$", k)]
         if files:
-            out[r["subject"]] = files
+            out.setdefault(row_id(r), []).extend(f for f in files if f not in out.get(row_id(r), []))
     return out
 
 
@@ -95,9 +109,11 @@ def build(run_id: str, name: str | None = None) -> Path:
          "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE "
                     "teaches the criteria ledger. A blank answer counts as nothing.",
          "options": OPTIONS, "rows": {}}
-    for r in recs:
-        why, ctx = row_line(r)
-        q["rows"][r["subject"]] = {"prefill": "keep", "why": why, "context": ctx}
+    for rid, rs in by_row(recs).items():
+        lines = [row_line(r) for r in rs]
+        tag = lambda r: f"[{r['subject'].split('__', 1)[1]}] " if len(rs) > 1 and "__" in r["subject"] else ""
+        q["rows"][rid] = {"prefill": "keep", "why": " || ".join(tag(r) + w for r, (w, _c) in zip(rs, lines)),
+                          "context": " || ".join(tag(r) + c for r, (_w, c) in zip(rs, lines))}
     qdir = STATE / "runs" / run_id
     qf = qdir / "shadow_question.json"
     qf.write_text(json.dumps(q, indent=1))
@@ -108,10 +124,11 @@ def build(run_id: str, name: str | None = None) -> Path:
     refs = reference_map(recs)
     reff = qdir / "shadow_references.json"
     reff.write_text(json.dumps(refs, indent=1))
-    jobs = [f"{r['artpipe_job']}={r['subject']}" for r in recs if r.get("artpipe_job")]
-    cmd = [sys.executable, str(ART / "art_sheet.py"), "--subjects", *[r["subject"] for r in recs], "--name", name,
+    jobs = [f"{r['artpipe_job']}={row_id(r)}" for r in recs if r.get("artpipe_job")]
+    rows_ = list(by_row(recs))
+    cmd = [sys.executable, str(ART / "art_sheet.py"), "--subjects", *rows_, "--name", name,
            "--label", f"Art-eval shadow check — {run_id}", "--lead", lead, "--question", str(qf),
-           "--reopen", *[r["subject"] for r in recs]] + (["--jobs", *jobs] if jobs else []) \
+           "--reopen", *rows_] + (["--jobs", *jobs] if jobs else []) \
         + (["--references", str(reff)] if refs else [])
     p = subprocess.run(cmd, cwd=str(ROOT), capture_output=True, text=True, timeout=900)
     (qdir / "shadow_build.log").write_text(p.stdout[-4000:] + "\n--- stderr ---\n" + p.stderr[-4000:])
@@ -134,19 +151,20 @@ def write_prereview(sheet: Path, recs: list):
     rp = sheet.with_name(sheet.stem + ".prereview.json")
     doc = json.loads(rp.read_text())
     shown = sheet_shas(sheet)
-    by_subject = {r["subject"]: r for r in recs}
+    groups = by_row(recs)
     for rid, row in doc["rows"].items():
-        r = by_subject.get(rid)
-        if not r:
+        rs = groups.get(rid)
+        if not rs:
             row.update(verdict="FLAG", note="row not in the art-eval run: the pipeline did not judge it")
             continue
-        why, _ = row_line(r)
-        ref_shas = {h for h in map(file_sha, reference_map([r]).get(rid, [])) if h}
-        if not judged_on_row(r, shown.get(rid, set()), ref_shas):
+        why = " || ".join(row_line(r)[0] for r in rs)
+        missing = [r for r in rs
+                   if not judged_on_row(r, shown.get(rid, set()), {h for h in map(file_sha, reference_map([r]).get(rid, [])) if h})]
+        if missing:
             row.update(verdict="FLAG", note="the picture the pipeline judged is NOT on this row (the sheet shows what is "
                                             "installed / found by name, and the candidate files); " + why)
             continue
-        flag = r["decision"] in ("ESCALATE", "HOLD_ERROR", "HOLD_KEPT", "HOLD_INPUT") or r.get("replaces_kept")
+        flag = any(r["decision"] in ("ESCALATE", "HOLD_ERROR", "HOLD_KEPT", "HOLD_INPUT") or r.get("replaces_kept") for r in rs)
         row.update(verdict="FLAG" if flag else "OK", note=why)
     counts = {}
     for r in recs:
@@ -182,30 +200,32 @@ def ingest(decisions_path: Path, run_id: str, apply_reverts: bool = False) -> li
     """His answers -> shadow_log.jsonl rows; every OVERRIDE also becomes a criteria-ledger entry (source
     owner_override, his note as owner_said). Blank answers are skipped — silence is not agreement."""
     d = json.loads(Path(decisions_path).read_text())
-    recs = {r["subject"]: r for r in load_run(run_id)}
+    groups = by_row(load_run(run_id))
     log = STATE / "shadow_log.jsonl"
     out = []
     for subj, row in (d.get("decisions") or {}).items():
         ans = (row.get("q") or {}).get(KEY)
-        if not ans or subj not in recs:
+        # a sheet row is a DEF (several plant cards share one); a sheet built before 2026-10-24 keyed it by card subject
+        rs = groups.get(subj) or [r for g in groups.values() for r in g if r["subject"] == subj]
+        if not ans or not rs:
             continue
-        r = recs[subj]
-        override = ans != "keep"
-        # a blocking override: he says the pipeline let bad art through, or regenerated art he would keep
-        blocking = (ans == "should_regen" and r["decision"] == "ACCEPT") or (ans == "should_accept" and r["decision"] in ("REGEN", "ESCALATE")) \
-            or ans in ("other", "revert")
-        e = {"at": row.get("at") or dt.datetime.now().astimezone().isoformat(timespec="seconds"), "run": run_id,
-             "subject": subj, "template": r["template"], "pipeline_decision": r["decision"], "owner_answer": ans,
-             "override": override, "blocking": blocking, "note": row.get("note", "")}
-        if ans == "revert" and r.get("replaces_kept"):
-            e["revert"] = [{"cmd": c, "rc": rc, "out": o} for c, rc, o in revert(r, apply_reverts)]
-        with log.open("a") as fh:
-            fh.write(json.dumps(e) + "\n")
-        if override:
-            e["ledger"] = LG.add(subj, r["template"], "owner_override",
-                                 missed=f"pipeline {r['decision']}; owner {ans}", decision=r["decision"],
-                                 owner_said=row.get("note") or f"(card answer: {ans})", run=run_id)
-        out.append(e)
+        for r in rs:
+            override = ans != "keep"
+            # a blocking override: he says the pipeline let bad art through, or regenerated art he would keep
+            blocking = (ans == "should_regen" and r["decision"] == "ACCEPT") or (ans == "should_accept" and r["decision"] in ("REGEN", "ESCALATE")) \
+                or ans in ("other", "revert")
+            e = {"at": row.get("at") or dt.datetime.now().astimezone().isoformat(timespec="seconds"), "run": run_id,
+                 "subject": r["subject"], "template": r["template"], "pipeline_decision": r["decision"], "owner_answer": ans,
+                 "override": override, "blocking": blocking, "note": row.get("note", "")}
+            if ans == "revert" and r.get("replaces_kept"):
+                e["revert"] = [{"cmd": c, "rc": rc, "out": o} for c, rc, o in revert(r, apply_reverts)]
+            with log.open("a") as fh:
+                fh.write(json.dumps(e) + "\n")
+            if override:
+                e["ledger"] = LG.add(r["subject"], r["template"], "owner_override",
+                                     missed=f"pipeline {r['decision']}; owner {ans}", decision=r["decision"],
+                                     owner_said=row.get("note") or f"(card answer: {ans})", run=run_id)
+            out.append(e)
     return out
 
 
