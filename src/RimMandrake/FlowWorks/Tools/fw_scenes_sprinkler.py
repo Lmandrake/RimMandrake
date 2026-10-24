@@ -8,7 +8,9 @@ One board per look and mode: nine stations, each a 4x3 block (an empty column ap
 The head prints as RM_PipeSeat.Print does: the cell centre + the style's drawOffset + RM_PipeSeatMath.Seat(mask, look).
   before = the tall 2026-10-21 heads (art_source/Sprinkler/raw) with the drawOffsets they shipped with;
   after  = the shipped textures with the drawOffset now in Defs/Sprinklers/RM_Sprinklers.xml.
-Usage: fw_scenes_sprinkler.py [--out DIR] [--px N]   -> per-look boards + SHEET_sprinkler_matrix.png
+Usage: fw_scenes_sprinkler.py [--out DIR] [--px N] [--candidate DIR --offset-z Z]
+  -> per-look boards + SHEET_sprinkler_matrix.png. --candidate renders AFTER from <DIR>/<Look>/RM_SprinklerHead.png at
+  drawOffset z Z instead of the installed art and the Defs (so a candidate is judged before art.py install).
 """
 import argparse
 import math
@@ -29,6 +31,7 @@ STATIONS = (("N/S", N | S), ("E/W", E | W), ("elbow N+E", N | E), ("elbow E+S", 
             ("elbow W+N", W | N), ("end N", N), ("tee E+S+W", E | S | W), ("cross", 15))
 # the drawOffset z each look's TALL head shipped with (Defs comment: foot_y 139/180/173/163.5 of 256)
 TALL_OFFSET_Z = {"Scrapper": 0.04, "Industrial": 0.2, "Modern": 0.18, "Futuristic": 0.14}
+CANDIDATE = {"dir": None, "offset_z": None}    # set by --candidate / --offset-z
 
 
 def elbow_arc(look):
@@ -36,9 +39,15 @@ def elbow_arc(look):
     return {"Scrapper": (0.5, 0.5)}.get(look, (2 / 3, 2 / 3) if look in ("Industrial", "Modern", "Futuristic") else None)
 
 
+LONE_STUB_SCRAPPER_PX, SHOWN_CELL_PX = 0.0, 132.0     # RM_PipeSeatMath.LoneStubScrapperPx / ShownCellPx
+
+
 def seat(mask, look):
     """RM_PipeSeatMath.Seat: (x east, z north) offset of the drawn centreline from the cell centre."""
     mask &= 15
+    if mask == 0:
+        d = LONE_STUB_SCRAPPER_PX / SHOWN_CELL_PX if look == "Scrapper" else 0.0
+        return d, -d
     if mask not in (N | E, E | S, S | W, W | N) or elbow_arc(look) is None:
         return 0.0, 0.0
     k, r = elbow_arc(look)
@@ -59,6 +68,8 @@ def def_offsets():
 def head_tex(look, mode):
     if mode == "before":
         return Image.open(RAW / look / "RM_SprinklerHead.png").convert("RGBA")
+    if CANDIDATE["dir"]:
+        return Image.open(Path(CANDIDATE["dir"]) / look / "RM_SprinklerHead.png").convert("RGBA")
     return fc.tex("RimMandrake/FlowWorks/Sprinkler/%s/RM_SprinklerHead" % look)
 
 
@@ -67,7 +78,12 @@ def board(look, mode, px=96, head=None, offset_z=None):
     s = fc.Scene(4 * len(STATIONS), 3, px=px)
     atlas = fc.pipe_atlas(look)
     img = head if head is not None else head_tex(look, mode)
-    oz = offset_z if offset_z is not None else (TALL_OFFSET_Z[look] if mode == "before" else def_offsets()[look])
+    if offset_z is not None:
+        oz = offset_z
+    elif mode == "before":
+        oz = TALL_OFFSET_Z[look]
+    else:
+        oz = CANDIDATE["offset_z"] if CANDIDATE["offset_z"] is not None else def_offsets()[look]
     for i, (name, mask) in enumerate(STATIONS):
         cx, cz = 4 * i + 1, 1
         cells = {(cx, cz): mask}
@@ -108,13 +124,41 @@ def build(out, px):
         y += lh + im.height + pad
     p = out / "SHEET_sprinkler_matrix.png"
     sheet.save(p)
-    return [p]
+    return [p, dense(out, rows, px)]
+
+
+def dense(out, rows, px, half=1.0):
+    """The owner's dense sheet: every station cropped to +-`half` cell round its head, stations side by side, numbered.
+    Columns 1-9 are the stations; rows are look x BEFORE/AFTER, labelled."""
+    f, ft = fc.font(22), fc.font(26)
+    c = round(2 * half * px)
+    lw, top, pad = 420, 72, 4
+    sheet = Image.new("RGB", (lw + len(STATIONS) * (c + pad), top + len(rows) * (c + pad)), (28, 28, 28))
+    d = ImageDraw.Draw(sheet)
+    d.text((8, 6), "Sprinkler head seat - dense: columns = stations, rows = look x before/after (1 cell = %d px)" % px,
+           fill=(255, 255, 255), font=ft)
+    for i, (name, _) in enumerate(STATIONS):
+        d.text((lw + i * (c + pad) + 4, 40), "%d %s" % (i + 1, name), fill=(255, 230, 120), font=f)
+    for r, (title, im) in enumerate(rows):
+        y = top + r * (c + pad)
+        d.text((8, y + c // 2 - 12), "%s. %s" % ("ABCDEFGHIJ"[r], title.replace(" - ", "\n")), fill=(255, 230, 120), font=f)
+        for i in range(len(STATIONS)):
+            cx, cy = (4 * i + 1.5) * px, (3 - 1.5) * px          # the head cell's centre in board pixels
+            crop = im.crop((round(cx - half * px), round(cy - half * px), round(cx - half * px) + c, round(cy - half * px) + c))
+            sheet.paste(crop.convert("RGB"), (lw + i * (c + pad), y))
+            d.text((lw + i * (c + pad) + 3, y + 2), "%s%d" % ("ABCDEFGHIJ"[r], i + 1), fill=(255, 255, 255), font=f)
+    p = out / "SHEET_sprinkler_dense.png"
+    sheet.save(p)
+    return p
 
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default="/mnt/d/ClaudeWork/rimmandrake/fw_art_geometry_20261024/sprinkler")
     ap.add_argument("--px", type=int, default=96)
+    ap.add_argument("--candidate", help="dir of <Look>/RM_SprinklerHead.png to render as AFTER")
+    ap.add_argument("--offset-z", type=float, help="drawOffset z for the candidate (default: the Defs)")
     a = ap.parse_args()
+    CANDIDATE.update(dir=a.candidate, offset_z=a.offset_z)
     for p in build(Path(a.out), a.px):
         print(p)
