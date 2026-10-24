@@ -710,7 +710,9 @@ namespace RimMandrake.FlowWorks.Hose
             if (!RM_HoseEssentials.SaveSkipPatched) { UnhookMapEvents(); map.components.Remove(this); }
             if (!RM_HoseEssentials.SaveSkipPatched) return;
             HoseProbe.Service(map, this);
-            if (!RM_HoseSettings.enabled || Find.CurrentMap != map || reels.Count == 0) { FlushFrameMeshes(); return; }
+            // HOSE_DRAW_FIX_LEAKS_ONTO_WORLDMAP (owner 2026-10-23: "when I look at the worldmap, the hoses from the tile map show
+            // anyway!!!"): Find.CurrentMap stays this map while the planet is shown, so Graphics.DrawMesh here drew over the globe
+            if (!RM_HoseSettings.enabled || Find.CurrentMap != map || RimWorld.Planet.WorldRendererUtility.WorldRendered || reels.Count == 0) { FlushFrameMeshes(); return; }
             try { DrawAll(); }
             catch (Exception ex)
             {
