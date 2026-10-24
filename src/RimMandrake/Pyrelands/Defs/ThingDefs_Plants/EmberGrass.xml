@@ -25,7 +25,7 @@
   <ThingDef ParentName="PlantBase">
     <defName>RM_FE_Plant_EmberGrass</defName>
     <label>ember grass</label>
-    <description>A coarse, fast bunchgrass that carpets burned ground within days of the fire going out. It puts everything into height and nothing into water, so it is dry and brittle almost as soon as it is up — standing tinder, growing faster than anything can graze it down. The stems dry to a dull orange, which is where the name comes from, though it is a fair description of what happens next as well.</description>
+    <description>A coarse bunchgrass that regrows on burned ground in less than a day. Its tall stems dry to dull orange almost as quickly, laying fresh tinder over the ash before grazers can clear it.</description>
     <statBases>
       <MaxHitPoints>70</MaxHitPoints>
       <!-- Above every Core plant (grass tops out at 1.3): this is the

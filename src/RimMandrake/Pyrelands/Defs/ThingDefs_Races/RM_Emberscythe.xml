@@ -60,7 +60,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Emberscythe</defName>
     <label>emberscythe mantis</label>
-    <description>A large, quick-striking mantis with ember-dark chitin, native to the Pyrelands' fire-scoured edges. It follows burns to hunt what the flames flush out, and its shell shrugs off scorching that would cripple a duller predator. A second flame-edge hunter beside the anooba — where the anooba runs its prey down, the emberscythe waits in the ash and takes it in one cut.</description>
+    <description>A large mantis with ember-dark, scorch-resistant chitin and long cutting forelegs. It waits in the ash for prey driven from cover by a passing fire.</description>
     <statBases>
       <MoveSpeed>7.0</MoveSpeed>
       <Mass>55</Mass>

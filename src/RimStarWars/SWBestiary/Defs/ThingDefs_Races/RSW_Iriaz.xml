@@ -20,7 +20,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Iriaz</defName>
     <label>iriaz</label>
-    <description>A lean, greenish herd grazer from Dantooine, marked with yellow-orange spots and a pair of backward-sweeping horns. Usually docile, it can charge when cornered or escape in a short burst that soon leaves it winded.</description>
+    <description>A greenish herd grazer from Dantooine, with a long neck, two backward-sweeping horns and yellow-orange spots across its shoulders and back. Usually docile, iriaz can charge when provoked and flee in short, exhausting bursts.</description>
     <statBases>
       <MoveSpeed>4.0</MoveSpeed>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>

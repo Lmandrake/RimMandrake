@@ -8,7 +8,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Ullai</defName>
     <label>ullai</label>
-    <description>A tall, light-boned grazer of the burning savanna, all leg and neck, ash-grey above and soot-cream below, with black stockings as if it had waded through burnt ground. Ullai herds follow the burn and crop the regrowth sprint close to the ash, so where they graze is where the grass burned two days ago: a moving map of the fire's last address. They are the wealth of the Pyrelands, meat and hide, and a herd can be tamed by anyone patient enough to walk the black with them.</description>
+    <description>A tall, light-boned grazer with an ash-grey back, soot-cream belly and black lower legs. Its herds follow burns a few days old, cropping fresh shoots close to the ash. Patient handlers can tame them for meat and hides.</description>
     <statBases>
       <MoveSpeed>5.4</MoveSpeed>
       <MarketValue>240</MarketValue>

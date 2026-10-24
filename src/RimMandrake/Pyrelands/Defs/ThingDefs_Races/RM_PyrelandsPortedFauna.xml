@@ -97,7 +97,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Flamefang</defName>
     <label>flamefang</label>
-    <description>A serpent of the burning grass that reads a fire front the way other things read a scent trail. It beds down in the smoldering root-mat ahead of the flames and waits, coiled tight, until the heat rolls over it and drives every small thing running — then it strikes from the ash. Its bite carries a burning venom that keeps working long after the fangs are gone, a second, slower fire under the skin.</description>
+    <description>A venomous serpent that shelters in the smouldering root-mat ahead of a grass fire. It waits for the heat to flush small prey from cover, then strikes from the ash; its venom causes a lingering burning pain.</description>
     <statBases>
       <MoveSpeed>3</MoveSpeed>
       <ComfyTemperatureMin>-75</ComfyTemperatureMin>
@@ -253,7 +253,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Sytheclaw</defName>
     <label>sytheclaw</label>
-    <description>A low-slung pack predator built for the tall gold grass of the burning plains. Above, its plates are the same dry yellow-gold as the standing quickgrass, so a hunting sytheclaw is a ripple in the field and nothing more; below, its underside is a raw furnace red that the prey only sees late. It trails the fire fronts the way other things trail water, taking whatever the smoke pushes out of cover, and its serrated forelimb blades leave a wound that ash gets into and keeps.</description>
+    <description>A low-slung pack predator with dry gold plates, a furnace-red underside and serrated forelimb blades. It follows fire fronts through tall, dry grass, taking animals driven from cover by smoke. Ash packs into the wounds left by its blades.</description>
     <statBases>
       <MoveSpeed>4.00</MoveSpeed>
       <ComfyTemperatureMin>-50</ComfyTemperatureMin>
@@ -746,7 +746,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_FireWasp</defName>
     <label>fire wasp</label>
-    <description>A slow, drifting insect that lives inside the heat rather than beside it, plated in a scale that will not take a flame at all. Fire wasps hang over a burn in loose swarms, riding the column of hot air and dropping onto whatever the fire has already killed or crippled; a single one is barely a threat to a grown person, and a swarm of them over a fresh burn is a reason to walk the long way around.</description>
+    <description>A heatproof, scale-plated scavenging insect that drifts above grass fires in loose swarms. It feeds on animals killed or crippled by the burn; one is little danger to an adult human, but a swarm is worth avoiding.</description>
     <statBases>
       <MoveSpeed>1.5</MoveSpeed>
       <ComfyTemperatureMin>10</ComfyTemperatureMin>

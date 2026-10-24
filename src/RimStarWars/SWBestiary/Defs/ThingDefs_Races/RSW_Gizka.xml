@@ -35,7 +35,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Gizka</defName>
     <label>gizka</label>
-    <description>Whatever their native world, their extraordinary reproduction rate led to a fair amount of gizka on many worlds, even including uncharted planets such as Lehon, finding their way from the wreckage of crashed starships. It has been alternatively postulated that they came from that planet originally, spreading along with the Infinite Empire. Their exponential population growth led to them being considered pests on almost as many worlds as they inhabited, as they commonly ate electrical wiring. They were the source for the delicacy gizka steak.</description>
+    <description>A small bipedal reptile with a blunt head, tiny forelimbs and a thick balancing tail. Gizka breed rapidly, eat almost anything and infest ships, chewing through wiring and insulation. Their meat is prized more widely than their company.</description>
     <statBases>
       <MoveSpeed>3.0</MoveSpeed>
       <MarketValue>100</MarketValue>

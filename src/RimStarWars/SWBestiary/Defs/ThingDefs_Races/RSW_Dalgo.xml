@@ -21,7 +21,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Dalgo</defName>
     <label>dalgo</label>
-    <description>Dalgos were equine reptiles native to the planet of Onderon. Despite being carnivorous predators, they could still be domesticated and filled the same role as other beasts of burden. It is for this reason these creatures found themselves spread across many worlds.</description>
+    <description>A tall, rust-orange reptile from Onderon, with long running legs, a swept fan crest and a broad, blade-like tail tip. Dalgos are carnivores, but can be domesticated as mounts and beasts of burden.</description>
     <statBases>
       <MoveSpeed>5.6</MoveSpeed>
       <MarketValue>500</MarketValue>
