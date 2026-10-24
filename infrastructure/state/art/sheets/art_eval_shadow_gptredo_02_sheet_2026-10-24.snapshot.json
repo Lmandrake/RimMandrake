@@ -1,0 +1,185 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_gptredo_02",
+ "built": "2026-10-24T02:13:41-0700",
+ "census": "Transient/biome_ffar/art_eval_shadow_gptredo_02.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 26 mods \u2014 a test list): 320 active",
+ "rows": {
+  "RM_Dustveil": {
+   "columns": {
+    "A": {
+     "east": "359e8d2406f3d7420dcf3b3501567217171034ec44a18503539bb60b87f6ad14",
+     "north": "c7bb147e7fd8a3a1312b8dd4925a27ab03379e8e913017c32e19dbf73d5b873c",
+     "south": "9af1e702930b35151f1defb61fbb9c680f0cef52cc6da5ad326306acd9c7231b"
+    },
+    "B": {
+     "east": "e2a6ed98d3ce6b579b61375c3658727c389d67f7da3a45eb158039c49fbd3f97",
+     "north": "eafb295fe496fe595447fc9371fc2e1a2ee864a0ee5f69a1493eed335bbd0c69",
+     "south": "3c26a9a0fdb4dbaf0ec848ff78ef859e2f2d6cd6d353ae76a18ea85601e20989"
+    },
+    "C": {
+     "east": "c18a97ae21dbc06f1ebcad8b918e9797b8b3b51033000f797c1869b219a64c55",
+     "north": "f736543ea507b131111a7c72c9fbcec94a85afbb27bcdc4546363355cfb7a79f",
+     "south": "a5cc188e7d0416307620c73474e7f1172230b7015c5dff4e56078fe455740766"
+    },
+    "D": {
+     "south": "8ad29ceafc9fdb3ff23432858cd3e353463fd53211b9ddeef2a1ad5cde640d62"
+    },
+    "E": {
+     "east": "b8d5defaf35391db4b5e13ca5f0e766c0405c625e3795dcd5fee0e8f1bed18d0",
+     "north": "9e1cf0f9792c58427e18a98b5fd1a58f02fd03691d599ade7c1d3eed3d73152c"
+    },
+    "F": {
+     "east": "c18a97ae21dbc06f1ebcad8b918e9797b8b3b51033000f797c1869b219a64c55",
+     "north": "1c09783f7eb9e043385dd94313cd2034c821bdf0d1b8c34ae06fd25dcfd63b11",
+     "south": "1cb94df253f6342450f28bb635d37bfe0b30e6f59b22c57d8edd917b0dbeaf2f"
+    },
+    "G": {
+     "1_east": "6d28d9d2d9aa1f10c567967a30a3b500ee387bf3fb7e84c6e50fb852e7e91734",
+     "1_north": "5e1b3273fd0eaa621a1ae33d9a8457907cec488f5d0b3c9b370d23d9f23df3d6",
+     "1_south": "3a42f2c20cfae3135b77be00bcbffb81e7743e3f5e1af07f7d19eeda347dba58",
+     "2_east": "9939308397143471eb98bd84fff7e9b2b2672f8ecc35bb49d66c733c69769573",
+     "2_north": "46eb1c454aeedb38b651b10982c53d9ef2a5a360ee12ad28d2cdc5aa6e13e87b",
+     "2_south": "7f174a2d4da8f9d0618918fad96fd5bbb4c8fadd71a401126b1d029f65f70127",
+     "3_east": "36cd5d77990e4ff88351349bffedcf7aadce15cdf4ceb9ad3807a96dbf134b01",
+     "3_north": "444166c08fd8b8c81c8470b6c694a41fe8473ea3130061e09f238d13b3265c3d",
+     "3_south": "2ac57b25d34fb3373d2d7ed7ae872348f23368c70042d6c9c5a96b4fb8259fc8",
+     "4_east": "eef6c9c15934debff4aa3185d30e57d4545db800101de172a01aebb45280248e",
+     "4_north": "a992a9f4e10f8bedc4ffe06842d321cb69d83048408e06217f8460ad1011708c",
+     "4_south": "951af17af18d04337cc407e0488860dd9df516b8e2c71a6fb520bb0b8dbc4084",
+     "5_east": "20874457797eabf9acc13b7ee68e8d82822ed0de37d4f185f5f78f7e33283f1a",
+     "5_north": "684fa17b78701bf6fc3c5d2c7e621771fac6e9e2c85aab52d3333385e1a2ff34",
+     "5_south": "dde75161cea59656a5b47c9b646d82e935235c3e972a01d88210fc74cae19e83"
+    },
+    "H": {
+     "east": "639c14334ee8de4d436246658b549c887aa6cb17798b2487b58e641157deee80",
+     "north": "87b298083a94df096f33b16f4c9f911e036512cbef4c4b244ee8ef2dada54ee2",
+     "south": "28a30123dfd2f03921ee228edafa027c0aa7d042466de5f85dccbe6a0039ed13"
+    },
+    "I": {
+     "east": "639c14334ee8de4d436246658b549c887aa6cb17798b2487b58e641157deee80",
+     "north": "b410fe8152e0e1879e629ea342754a63b0c135430a30658bdda3d69d3163676a",
+     "south": "a8cea57a8a0761364830a74a16376782a34ef3bf3d621dd2b6c837d63f182a14"
+    },
+    "J": {
+     "single": "fe7b2f0b5e03fe7ced839bd72939c40bd8d741b6943d3e0feb225dc5512cb541"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSpecies/AngelMoth/AngelMoth",
+    "B": "RotSpecies/AngelMoth/AngelMoth",
+    "C": "RotSpecies/AngelMoth/AngelMoth",
+    "D": "RotSpecies/AngelMoth/AngelMoth",
+    "E": "RotSpecies/AngelMoth/AngelMoth",
+    "F": "RotSpecies/AngelMoth/AngelMoth_C",
+    "G": "_flip:RM_Dustveil",
+    "H": "Things/Pawn/Animal/RM_DustveilLarva/RM_DustveilLarva",
+    "I": "Things/Pawn/Animal/RM_DustveilLarva/RM_DustveilLarva",
+    "J": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot",
+    "B": "render angelmoth_option_b_v1",
+    "C": "render angelmoth_option_c_v1",
+    "D": "render rotrow_angelmoth_south_v1",
+    "E": "render gapall_AA_AngelMoth_v1",
+    "F": "IN GAME \u2014 TheRot",
+    "G": "flight frames Dustveil_Flying",
+    "H": "IN GAME \u2014 TheRot",
+    "I": "render donorart_p2_dustveil_larva_v1",
+    "J": "render donorart_p2_dustveil_egg_v1"
+   },
+   "pools": [
+    "RotSpecies/AngelMoth/AngelMoth",
+    "RotSpecies/AngelMoth/AngelMoth_C"
+   ],
+   "res": "RotSpecies/AngelMoth/AngelMoth",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J"
+   ],
+   "shownBase": [],
+   "subject_key": "dustveil"
+  },
+  "RM_Hwelgrue": {
+   "columns": {
+    "A": {
+     "east": "7365bb147f9c256792a2e7978250e32117cd37fd574160b9cb5ff45f6e819663",
+     "north": "35e207ee196635551a391adf3b7d6687189c233f21d1b9d4db1fe599c7a23377",
+     "south": "2747c77961f2abdd697ec41526beb40678be0d9eac1940b87910f35a5299a829"
+    },
+    "B": {
+     "east": "7365bb147f9c256792a2e7978250e32117cd37fd574160b9cb5ff45f6e819663",
+     "north": "fa5ed404a57a5013789a265650df2e8bdd8e1506fe5746dd068e66b89e0dfb6e",
+     "south": "8930474a2bf6898d4ebdca431a6b0f1749f80e8ebc10b05975d02be21fe0998b"
+    },
+    "C": {
+     "north": "fa5ed404a57a5013789a265650df2e8bdd8e1506fe5746dd068e66b89e0dfb6e"
+    },
+    "D": {
+     "east": "7365bb147f9c256792a2e7978250e32117cd37fd574160b9cb5ff45f6e819663",
+     "north": "8930474a2bf6898d4ebdca431a6b0f1749f80e8ebc10b05975d02be21fe0998b",
+     "south": "8930474a2bf6898d4ebdca431a6b0f1749f80e8ebc10b05975d02be21fe0998b"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_TheRot/Fauna/Hwelgrue/RM_Hwelgrue",
+    "B": "RM_TheRot/Fauna/Hwelgrue/RM_Hwelgrue",
+    "C": "RM_TheRot/Fauna/Hwelgrue/RM_Hwelgrue",
+    "D": "RM_TheRot/Fauna/Hwelgrue/RM_Hwelgrue"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot",
+    "B": "render RM_Hwelgrue",
+    "C": "history TheRot 2026-10-03",
+    "D": "history TheRot 2026-10-03"
+   },
+   "pools": [
+    "RM_TheRot/Fauna/Hwelgrue/RM_Hwelgrue"
+   ],
+   "res": "RM_TheRot/Fauna/Hwelgrue/RM_Hwelgrue",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "hwelgrue"
+  },
+  "RM_ThozzikColonyQueen": {
+   "columns": {
+    "A": {
+     "east": "17e50a5c3cc893ad5c9911165efc077f16a3eb52f5b14776f5748be5621512d9",
+     "north": "d4e13b31c09511ff8b4e3ce205f9aa91e13aa7faa6f5ef38206d4dd314ac55b3",
+     "south": "14dea1a2ddd8f12898e8cc1028f7d979e75c82a3569aa8117b4c78815f6b97e6"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_TheRot/Fauna/Redrawn/ThozzikQueen/ThozzikQueen"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot"
+   },
+   "pools": [
+    "RM_TheRot/Fauna/Redrawn/ThozzikQueen/ThozzikQueen"
+   ],
+   "res": "RM_TheRot/Fauna/Redrawn/ThozzikQueen/ThozzikQueen",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "thozzikcolonyqueen"
+  }
+ },
+ "sheetId": "art_eval_shadow_gptredo_02_sheet_2026-10-24",
+ "snapshotId": "cbc12f2e7f97b178"
+}

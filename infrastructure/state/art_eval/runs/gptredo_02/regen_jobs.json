@@ -1,0 +1,42 @@
+[
+ {
+  "id": "arteval_RM_Dustveil__live_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Dustveil",
+  "prompt": "A single RimWorld creature sprite, a dustveil: a large moth with unusually broad wings that hang downward around its body like a draped veil or curtain, the lower edges of the wings reaching near the ground. The wings are a soft, pale, powdery membrane in muted dust-grey and cream, with a fine fabric-like texture, gentle vertical folds and softly frayed lower edges, uniformly coloured and plain. The stout body is covered in a visible thick coat of fine pale moth-silk fur, with feathery antennae, six small legs and dark eyes. The wings hang in the same draped posture on every facing. Front view: seen from the front, eyes toward the viewer, face and antennae between the parted curtains of wings. Side view: seen in profile, head to one side, one broad wing hanging over the near flank like a cloak. Rear view: seen from behind at the game's slightly raised three-quarter camera, showing the back of the abdomen and the outer backs of the draped wings, with the head and antennae hidden behind the wings. Painterly vanilla RimWorld art style, realistic, clean dark outline, soft shading, transparent background, centered, one creature, full body in frame. No reference image; build the body from this description.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_TOPDOWN, DESC_MISS, DEPARTURE_MISSING, F_INCONSISTENT, F_NORTH_FACE",
+  "reference": "",
+  "priority": 40,
+  "source_run": "gptredo_02",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl"
+ },
+ {
+  "id": "arteval_RM_ThozzikColonyQueen__live_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_ThozzikColonyQueen",
+  "prompt": "Painterly vanilla RimWorld creature sprite, realistic, clean dark outline, transparent background. Subject: the thozzik colony queen, a domesticated matriarch of the kurreth: a large armoured insectoid standing on its own strong legs, built to move fast. Heavy dark kurreth armour plating covers the body; the plates are stretched and split around a hugely swollen brood chamber (abdomen) whose surface bears visible spore growths and pale spore sacs, rounded and organic, not a smooth segmented insect abdomen. A prominent stinger, larger than a worker's, curves from the end of the abdomen. The thorax and head are armoured and carry the eyes at the front. The camera is the game's oblique three-quarter tilt, looking slightly down at the creature, so the body shows height and depth rather than a flat map. Show this view: the NORTH facing, a rear view seen from behind and slightly above. The swollen spore-sac abdomen fills the foreground as the largest shape, with rounded volume and shading on its rear surface. The stinger curves out from the abdomen's tip toward the viewer, foreshortened, a dark point near the lower centre. The thorax and head sit beyond the abdomen, partly hidden behind it, with only the top of the armoured thorax and the back of the head visible above the abdomen, eyes hidden. The legs descend from beneath the body to the ground at uneven angles, seen from behind, the nearest legs overlapping the lower edge of the abdomen, the body raised on them. Compact silhouette that fills the frame, single creature, consistent palette of dark armoured chitin with pale spore sacs.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_TOPDOWN, F_TOPDOWN",
+  "reference": "",
+  "priority": 40,
+  "source_run": "gptredo_02",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl"
+ }
+]

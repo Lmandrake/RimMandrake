@@ -1,0 +1,26 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_gptredo_02",
+ "html": "Transient/biome_ffar/art_eval_shadow_gptredo_02_sheet_2026-10-24.html",
+ "decisions": "Transient/biome_ffar/art_eval_shadow_gptredo_02_sheet_2026-10-24.decisions.json",
+ "wrote_decisions": true,
+ "gate": "PASS v1",
+ "snapshot": "infrastructure/state/art/sheets/art_eval_shadow_gptredo_02_sheet_2026-10-24.snapshot.json",
+ "snapshotId": "cbc12f2e7f97b178",
+ "census_rows": 3,
+ "rows": 3,
+ "ruled_rows_gone_kept_in_snapshot": [],
+ "collapsed_ruled_elsewhere": 0,
+ "dropped_all_ruled": [],
+ "canon_rows": 0,
+ "canon_rows_with_images": 0,
+ "canon_rows_with_must_show": 0,
+ "linked_rows": 0,
+ "prefilled_sit1": 0,
+ "no_art": [],
+ "sets": 15,
+ "images": 8888
+}
+
+--- stderr ---
+/home/mandrake/rm/foundry/src/RimMandrake/Utils/art/art_sheet.py:2400: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  px = [q for q in Image.open(f).convert("RGBA").getdata() if q[3] > 8]

@@ -1,0 +1,48 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_gptredo_01b",
+ "built": "2026-10-24T02:12:24-0700",
+ "census": "Transient/biome_ffar/art_eval_shadow_gptredo_01b.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 26 mods \u2014 a test list): 320 active",
+ "rows": {
+  "RSW_Mynock": {
+   "columns": {
+    "A": {
+     "east": "ae0b6deb62174d47fc6acc1c76cfb543f3d64a2e11effa1ee04b2c803c439eb5",
+     "north": "67d410678f11cc27ff3172f4159f7400c40bbbaf08d7e1fb1c033ff8732da747",
+     "single": "1597dc451316c23807ed8fbec59dd73cb7e450e58dd67e368be615393823c1b5"
+    },
+    "B": {
+     "east": "ae0b6deb62174d47fc6acc1c76cfb543f3d64a2e11effa1ee04b2c803c439eb5",
+     "north": "67d410678f11cc27ff3172f4159f7400c40bbbaf08d7e1fb1c033ff8732da747"
+    },
+    "C": {
+     "single": "1597dc451316c23807ed8fbec59dd73cb7e450e58dd67e368be615393823c1b5"
+    }
+   },
+   "graphic_of": {
+    "A": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock",
+    "B": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock",
+    "C": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render warscar_Mynock_v2",
+    "C": "history SWBestiary 2026-09-11"
+   },
+   "pools": [
+    "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock"
+   ],
+   "res": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "mynock"
+  }
+ },
+ "sheetId": "art_eval_shadow_gptredo_01b_sheet_2026-10-24",
+ "snapshotId": "a51b54c2d36bc059"
+}

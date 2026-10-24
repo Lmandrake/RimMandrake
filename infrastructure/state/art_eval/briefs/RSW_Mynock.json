@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RSW_Mynock",
+ "nearest_earth_animal": "bat",
+ "earth_body_named": false,
+ "departures": [
+  "silicon-based body with a stony or mineral-textured hide instead of fur",
+  "a round bristled sucker mouth in place of a furred, snouted mammal face",
+  "a long, thin whip-like tail trailing behind the body",
+  "broad leathery wings forming most of its outline, attached to a small parasite body with no bat ears or bat face"
+ ],
+ "body_plan": "flyer",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-24T01:42:03-07:00",
+ "source": "description only (no image)"
+}

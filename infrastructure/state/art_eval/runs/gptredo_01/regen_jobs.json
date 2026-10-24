@@ -1,0 +1,59 @@
+[
+ {
+  "id": "arteval_RSW_Mynock__live_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Mynock",
+  "prompt": "A single RimWorld creature sprite on a transparent background: a mynock, a small silicon-based parasite, front view with the round bristled sucker mouth and eyes toward the viewer, drawn at the game's angled camera. The small body stands upright behind the face, covered in a brown, speckled, rust-flecked stony mineral hide with a rough, rocky texture. Two broad leathery finger-ribbed membrane wings with ragged trailing edges reach out to either side of the body, brown like the hide, each with a thumb claw at the wrist; the wings are raised and foreshortened, seen edge-on, and form most of the outline. Two small clawed hind legs hang below the body. A long, thin whip-like tail curves down and away behind the body and ends in a small spade. The head is a bare parasite head with a round bristled sucker mouth, with no ears and no snout. Painterly vanilla RimWorld style, realistic, clean dark outline, soft shading, transparent background, centered, full creature in frame.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, CANON_MISS, F_TOPDOWN",
+  "reference": "",
+  "priority": 40,
+  "source_run": "gptredo_01"
+ },
+ {
+  "id": "arteval_RSW_Gizka__live_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Gizka",
+  "prompt": "A single small gizka, a bipedal reptile of ship-pest size, for a top-down-friendly RimWorld colonist-scale sprite on a transparent background. Painterly vanilla RimWorld style, realistic. The body is compact and upright on two sturdy hind legs, with a blunt, short, rounded head, small eyes and a calm neutral expression. Tiny forelimbs are held close against the chest, far smaller than the hind legs. A disproportionately thick, heavy tail extends behind as a counterweight. The skin is natural fine reptilian scale with softly modeled form lighting: volume comes from gentle shading, local color shifts between back and belly, and soft highlights on the cheeks, knuckles and toes. Edges are defined by the contrast of skin tone against the transparent background, with only a thin darker rim of shadow tone on the underside of the form. Front view shows the face with eyes toward the viewer; side view shows the profile with the tail extended behind; rear view, seen from behind, shows the back, thick tail and haunches with eyes hidden. Muted earthy green-olive and tan palette, consistent across all facings.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_CARTOON, STYLE_OFF",
+  "reference": "",
+  "priority": 40,
+  "source_run": "gptredo_01",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl"
+ },
+ {
+  "id": "arteval_RSW_Clodhopper__live_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Clodhopper",
+  "prompt": "A single RimWorld creature sprite on a transparent background, painterly vanilla RimWorld style, realistic, clean thin dark outline: the clodhopper, a small wingless forager from Naboo, standing on four legs. Rear view, seen from behind, drawn from the game camera about 35 degrees above the horizon. Tough, bare, ridged brown skin covers the whole body, with no feathers or plumage and fine hide texture on the back and rounded haunches. Two hind legs are planted beneath the haunches, with a short stub of tail between them, and the large, powerful clawed forelegs, heavier than any bird's limbs, stand sturdy and planted at both flanks. The crimson neck dips forward and shows only as a tip above the shoulders; the head, with its pale beak, is carried low and forward and is hidden by the body, so eyes and beak are out of sight. All four legs are visible beneath the body. The animal fills the canvas at the same body size as its south and east views, in the same palette, brushwork and outline weight, so the three facings read as one commissioned painting of one animal. Reference: the accepted south and east views of this clodhopper.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, PLACEHOLDER, STYLE_CARTOON, F_SIZE_JUMP, F_TOPDOWN, F_NORTH_FACE, CANON_MISS, OWNER_NOTE_IGNORED, DONOR",
+  "reference": "",
+  "priority": 40,
+  "source_run": "gptredo_01",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl"
+ }
+]

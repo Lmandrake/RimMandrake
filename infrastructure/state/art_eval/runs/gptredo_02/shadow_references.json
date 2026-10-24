@@ -1,0 +1,17 @@
+{
+ "RM_Dustveil": [
+  "/home/mandrake/rm/foundry/src/RimMandrake/TheRot/Textures/RotSpecies/AngelMoth/AngelMoth_south.png",
+  "/home/mandrake/rm/foundry/src/RimMandrake/TheRot/Textures/RotSpecies/AngelMoth/AngelMoth_east.png",
+  "/home/mandrake/rm/foundry/src/RimMandrake/TheRot/Textures/RotSpecies/AngelMoth/AngelMoth_north.png"
+ ],
+ "RM_Hwelgrue": [
+  "/home/mandrake/rm/foundry/src/RimMandrake/TheRot/Textures/RM_TheRot/Fauna/Hwelgrue/RM_Hwelgrue_south.png",
+  "/home/mandrake/rm/foundry/src/RimMandrake/TheRot/Textures/RM_TheRot/Fauna/Hwelgrue/RM_Hwelgrue_east.png",
+  "/home/mandrake/rm/foundry/src/RimMandrake/TheRot/Textures/RM_TheRot/Fauna/Hwelgrue/RM_Hwelgrue_north.png"
+ ],
+ "RM_ThozzikColonyQueen": [
+  "/home/mandrake/rm/foundry/src/RimMandrake/TheRot/Textures/RM_TheRot/Fauna/Redrawn/ThozzikQueen/ThozzikQueen_south.png",
+  "/home/mandrake/rm/foundry/src/RimMandrake/TheRot/Textures/RM_TheRot/Fauna/Redrawn/ThozzikQueen/ThozzikQueen_east.png",
+  "/home/mandrake/rm/foundry/src/RimMandrake/TheRot/Textures/RM_TheRot/Fauna/Redrawn/ThozzikQueen/ThozzikQueen_north.png"
+ ]
+}

@@ -1,0 +1,66 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 43.4,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.3749792
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 13.0,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1272427
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Clodhopper",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band REALLY_BAD (model said really_bad); blocking ['F_INCONSISTENT', 'PLACEHOLDER', 'STYLE_CARTOON', 'F_SIZE_JUMP', 'F_TOPDOWN', 'F_NORTH_FACE', 'CANON_MISS', 'OWNER_NOTE_IGNORED', 'DONOR']; polish ['SCALE_WRONG']",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "south.png": "5f93208a68b6654dff96aa124b9395474f531fe9c076b05847bb520b3c01d745",
+  "east.png": "6a1df02e21921816abdd080de6a03ee9f23c26b13d3e92abd183f292bb83d8a1",
+  "north.png": "570bd33b827805f786dc0ba8a91547e0d86213e477c424620a9210e805e906b4",
+  "scale.png": "691b185f720de207c53423da6e1cbbd91efa7a5a265fb238c8676c965a5060e1",
+  "facings.png": "2a1a058de8eeba373d62a379ca0fd82a8103fc0f09c0ba1d1f23f5d9a3c8f7f3"
+ }
+}

@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_ThozzikColonyQueen",
+ "nearest_earth_animal": "termite queen",
+ "earth_body_named": false,
+ "departures": [
+  "a swollen brood chamber that visibly bears spores (spore growths or spore sacs on its surface), not a smooth, segmented insect abdomen",
+  "heavy kurreth armour plating over the body, with the plates stretched or split around the swollen brood chamber",
+  "a prominent stinger, larger than a worker's, clearly visible on the body",
+  "a body that still looks able to move fast, standing on its own legs rather than lying as an immobile egg sac"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-24T01:42:21-07:00",
+ "source": "description only (no image)"
+}

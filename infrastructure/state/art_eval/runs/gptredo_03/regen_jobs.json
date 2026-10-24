@@ -1,0 +1,15 @@
+[
+ {
+  "id": "arteval_RM_AgariluxPrime__UtinniPatches__UtinniPatches_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_AgariluxPrime__UtinniPatches",
+  "prompt": "A single vast elder mushroom tree of the pale forest, painterly vanilla RimWorld plant sprite, realistic, clean dark outline, transparent background, seen from above-front at a gentle angle. A towering pale cap, tree-scale, dwarfing a person, on a thick stalk. Pale, washed-out colouring throughout: bone-white, grey-cream and faint grey-green tones. A heavy, visible pall of spores settled as a low pale cloud on the ground beneath the cap. Pale hyphae spread outward from the base of the stalk across the ground as a branching network of long, thin, distinct white-grey threads, forking and reaching well beyond the base, clearly readable as a root mat at normal play size. The stalk base meets the hyphae network where the threads fan out in every direction.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "gptredo_03"
+ }
+]

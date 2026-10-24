@@ -1,0 +1,21 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Pirrik",
+ "nearest_earth_animal": "hummingbird",
+ "earth_body_named": true,
+ "departures": [
+  "iridescent sheen across the whole plumage that is reflected light only: no glowing, emissive or bioluminescent spots anywhere on the body",
+  "shown inside the dark shadow cast by a gloomcast, with the sunlit sand around that shadow left empty of the bird",
+  "palm-sized body drawn small next to the gloomcast whose shadow it lives in"
+ ],
+ "body_plan": "flyer",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-24T01:42:22-07:00",
+ "source": "description only (no image)"
+}
