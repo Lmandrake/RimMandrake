@@ -215,6 +215,13 @@ def forget(root):
     _INV.pop(root, None)
 
 
+def forget_all():
+    """Drop every cached inventory. The cache lives for ONE run: main() clears it on
+    entry and exit, and a tool that imports this module and calls tree()/compare()
+    over trees that may have changed since (preflight_bridge) clears it first."""
+    _INV.clear()
+
+
 def tree(root):
     """relative paths of every shippable file under root"""
     return set(inventory(root))
@@ -528,6 +535,7 @@ def main():
                          "run, so the def guard judges both together (e.g. --compose "
                          "biomes --with SWBestiary after a creature moved between them)")
     args = ap.parse_args()
+    forget_all()                               # a second main() in one process re-walks
     if args.compose and (args.mod or args.pull):
         ap.error("--compose builds one target; it does not combine with --mod/--pull "
                  "(use --with MOD to deploy an ordinary mod alongside it)")
@@ -609,6 +617,7 @@ def main():
     try:
         return _run(args, targets, holds, mods_dir, active)
     finally:
+        forget_all()
         for d in _STAGED:
             shutil.rmtree(d, ignore_errors=True)
         if compose_tmp:

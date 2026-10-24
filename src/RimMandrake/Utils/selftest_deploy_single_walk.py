@@ -168,6 +168,22 @@ def main():
         cases.append(("plan statted no more than 2 per file (%d stats)" % c2.n,
                       c2.n <= 2 * nfiles + 400))
 
+        # the cache must not outlive a run: a second main() in one process (selftests,
+        # tools importing the module) after the trees changed must see the changes
+        write(os.path.join(src, "Defs", "added_between_runs.xml"), "<Defs/>\n")
+        os.remove(os.path.join(dst, "Defs", "gone.xml"))
+        buf = io.StringIO()
+        with redirect_stdout(buf):
+            D.main()
+        out = buf.getvalue()
+        cases.append(("second main() in-process sees a file added since the first run",
+                      "added_between_runs.xml" in out))
+        cases.append(("second main() in-process does not list a game file deleted since",
+                      "gone.xml" not in out))
+        write(os.path.join(src, "Defs", "added_after.xml"), "<Defs/>\n")
+        cases.append(("tools calling tree() after a run see the live tree",
+                      os.path.join("Defs", "added_after.xml") in D.tree(src)))
+
         bad = 0
         for label, ok in cases:
             bad += not ok

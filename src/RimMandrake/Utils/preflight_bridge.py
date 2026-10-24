@@ -673,6 +673,7 @@ def c_deploy(ctx):
     with DEPLOY_HOLD.txt honoured and the composed RimMandrake.Biomes built once and compared whole. The deploy tool's
     own tree()/shippable()/holds decide what counts, so this cannot disagree with its plan about what ships."""
     import deploy_custom_mods as dm
+    dm.forget_all()                                            # repo/game may have changed since an earlier call in this process
     want = set(ctx.get('want') or intended(ctx)[0])
     holds = dm.load_holds()
     pairs = []                                                 # (deploy name, src dir, holds)
