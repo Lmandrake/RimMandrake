@@ -60,7 +60,68 @@ namespace RimMandrake.FlowWorks
 			return ed != null && ed.def.castEdgeShadows;
 		});
 
-		private void DrawEdgeShade(IntVec3 g, float l, float r, float a, float b, int casters, float y)
+		// PIT_COVER_FIX_DROPS_THE_SUN_SHADOW (save e C3: a lighter box under the boar between the lip and the wall). The cover also
+		// hid SectionLayer_SunShadows: each edifice with staticSunShadowHeight h is swept by h x _CastVect.xz and tinted by
+		// MatBases.SunShadow.color (SkyManager: lerp(white, sky shadow colour, shadow strength); a multiply, like EdgeShadow).
+		// Each shade vertex in that sweep (RM_PitDrawMath.SunShadowedBy) takes the tint on top of its edge shade, so one
+		// EdgeShadow-material mesh carries both shadows the cover hides. Read once per frame in MapComponentUpdate.
+		private bool sunOn;
+		private float sunVx, sunVz;
+		private Color sunCol = Color.white;
+		private static float sunHMax = -1f;
+
+		private System.Func<int, int, float> sunHeightAt;
+
+		private System.Func<int, int, float> SunHeightAt => sunHeightAt ?? (sunHeightAt = (x, z) =>
+		{
+			if (x < 0 || z < 0 || x >= map.Size.x || z >= map.Size.z) return 0f;
+			Building ed = map.edificeGrid[new IntVec3(x, 0, z)];
+			return ed != null ? ed.def.staticSunShadowHeight : 0f;
+		});
+
+		/// <summary>The tallest staticSunShadowHeight any def carries, so a shade vertex reads only the cells whose sweep can reach it.</summary>
+		private static float SunHMax
+		{
+			get
+			{
+				if (sunHMax < 0f)
+				{
+					sunHMax = 0f;
+					foreach (ThingDef td in DefDatabase<ThingDef>.AllDefs)
+					{
+						sunHMax = Mathf.Max(sunHMax, td.staticSunShadowHeight);
+					}
+				}
+				return sunHMax;
+			}
+		}
+
+		private void ReadSunShadow(bool shadowsDrawn)
+		{
+			sunOn = false;
+			if (!shadowsDrawn || MatBases.SunShadow == null || MatBases.SunShadow.shader == null || !MatBases.SunShadow.shader.isSupported)
+			{
+				return;
+			}
+			Vector4 cv = Shader.GetGlobalVector(ShaderPropertyIDs.MapSunLightDirection);
+			sunVx = cv.x;
+			sunVz = cv.z;
+			sunCol = MatBases.SunShadow.color;
+			sunOn = SunHMax > 0f && (sunCol.r < 0.995f || sunCol.g < 0.995f || sunCol.b < 0.995f) && (sunVx != 0f || sunVz != 0f);
+		}
+
+		private readonly System.Collections.Generic.List<(int x, int z, float h)> sunCasters = new System.Collections.Generic.List<(int x, int z, float h)>();
+
+		/// <summary>Gathers the casters whose sun shadow can reach a cover piece over [l,r]x[a,b] (RM_PitDrawMath.SunCasters);
+		/// false when none can, so the piece needs no sun shade.</summary>
+		private bool SunMayShade(float l, float r, float a, float b)
+		{
+			if (!sunOn) return false;
+			RM_PitDrawMath.SunCasters(l, r, a, b, sunVx, sunVz, SunHMax, SunHeightAt, sunCasters);
+			return sunCasters.Count > 0;
+		}
+
+		private void DrawEdgeShade(IntVec3 g, float l, float r, float a, float b, int casters, bool sun, float y)
 		{
 			if (edgeShadeMat == null)
 			{
@@ -76,12 +137,16 @@ namespace RimMandrake.FlowWorks
 				for (int ix = 0; ix <= nx; ix++)
 				{
 					float x = l + (r - l) * ix / nx, z = a + (b - a) * iz / nz;
-					float v = RM_WallFaceMath.EdgeShadeAt(x - g.x, z - g.z, casters);
-					if (v < 0.999f) any = true;
-					byte c = (byte)Mathf.RoundToInt(Mathf.Clamp01(v) * 255f);
+					float v = casters != 0 ? Mathf.Clamp01(RM_WallFaceMath.EdgeShadeAt(x - g.x, z - g.z, casters)) : 1f;
+					Color col = new Color(v, v, v, 1f);
+					if (sun && RM_PitDrawMath.SunShadowedBy(x, z, sunVx, sunVz, sunCasters))
+					{
+						col = new Color(v * sunCol.r, v * sunCol.g, v * sunCol.b, 1f);   // both multiply the ground: their product
+					}
+					if (col.r < 0.999f || col.g < 0.999f || col.b < 0.999f) any = true;
 					int k = iz * (nx + 1) + ix;
 					verts[k] = new Vector3(x, 0f, z);
-					cols[k] = new Color32(c, c, c, 255);
+					cols[k] = col;
 				}
 			if (!any) return;
 			var tris = new int[nx * nz * 6];
@@ -212,6 +277,7 @@ namespace RimMandrake.FlowWorks
 			Mesh mesh = Quad(Mathf.Clamp01(RimMandrakeFlowWorksSettings.pitLipOcclusion));
 			shadeUsed = 0;
 			bool edgeShadows = DebugViewSettings.drawShadows && map.Biome?.disableShadows != true;
+			ReadSunShadow(edgeShadows);   // SectionLayer_SunShadows.Visible's test; its Regenerate also needs SunShadow.shader.isSupported
 			float y = AltitudeLayer.Pawn.AltitudeFor() + Altitudes.AltInc * 0.9f;
 			bool rectsBuilt = false;
 			foreach (Pawn p in map.mapPawns.AllPawnsSpawned)
@@ -336,9 +402,10 @@ namespace RimMandrake.FlowWorks
 							float pl = pc == 0 ? l1 : l2, pr = pc == 0 ? r1 : r2;
 							Matrix4x4 m = Matrix4x4.TRS(new Vector3(pl, y, a), Quaternion.identity, new Vector3(pr - pl, 1f, b - a));
 							Graphics.DrawMesh(mesh, m, mat, 0);
-							if (casters != 0)
+							bool sun = SunMayShade(pl, pr, a, b);
+							if (casters != 0 || sun)
 							{
-								DrawEdgeShade(g, pl, pr, a, b, casters, y + Altitudes.AltInc * 0.05f);
+								DrawEdgeShade(g, pl, pr, a, b, casters, sun, y + Altitudes.AltInc * 0.05f);
 							}
 						}
 					}
