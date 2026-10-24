@@ -1,0 +1,71 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 35.1,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.3641082
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 41.0
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 11.7,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1267347
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_WalkingVenomvine__RM_WalkingVenomvine_b",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said weak); blocking ['DESC_MISS', 'DESC_MISS', 'ALPHA_HALO']; polish ['SCALE_WRONG']",
+  "gpt regen: unsettled ['K1', 'K2', 'K3'], own blocking ['DESC_MISS', 'DESC_MISS', 'ALPHA_HALO']",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "plant@v3",
+   "sha": "bf05d6dbb0b8"
+  },
+  "severity": {
+   "tag": "severity@v3",
+   "sha": "95090399e7e1"
+  }
+ },
+ "image_sha256": {
+  "single.png": "35a13feebc598a4b4369cefd4dda29cd7a1c45f5ffc4f21c7966b7424ad1e967",
+  "scale.png": "7f7d8b803a48d69eec45d862cfba1edeabcc0dbdb5fa60299870713cbca11ac8",
+  "siblings.png": "a45e5fa6892fe86bf12ac554e0eb1850c52ef7a12ec183e3b1e5fb5db53c900d"
+ }
+}

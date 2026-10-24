@@ -1,0 +1,2531 @@
+{
+ "biome": "SUBJECTS_gpt_review_therot",
+ "built": "2026-10-23T23:02:25-0700",
+ "census": "Transient/biome_ffar/gpt_review_therot.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 14 mods \u2014 a test list): 320 active",
+ "rows": {
+  "RM_AgaricusDomeCap": {
+   "columns": {
+    "A": {
+     "single": "5ea2fe11b31c1072de7687f7b2660c3a3f9717a69feaf5b9700f65b7b6b54702"
+    },
+    "B": {
+     "single": "5e86f0acb38e1f62b7edae88c8181ee2b9f892a330461f0079942ae8a0c164fb"
+    },
+    "C": {
+     "single": "07d0af160b434d89bcbfc04218c5b409ca9e8b8593a1ade53087b6ee6dbd498f"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plants/AB_AgaricusDomeCap",
+    "B": "Things/Plants/AB_AgaricusDomeCap",
+    "C": "Things/Plants/AB_AgaricusDomeCap"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot",
+    "B": "shipped, shadowed \u2014 UtinniPatches",
+    "C": "render rot_agaricusdomecap_v2"
+   },
+   "pools": [],
+   "res": "Things/Plants/AB_AgaricusDomeCap",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "agaricusdomecap"
+  },
+  "RM_AgariluxPrime": {
+   "columns": {
+    "A": {
+     "single": "b0a767dc1f50d518df5181b0558ef2c8aef6bd98f36c56a10d406d83ab99347d"
+    },
+    "B": {
+     "single": "c93606ba387d96e7853b4195cd525ca057bf378b315a65cb547d7b209bbbcaff"
+    },
+    "C": {
+     "single": "85779af91a06483f2aaee457219fb5524d2ce4d18eda57334e9e598afffaf550"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plants/AB_AgariluxPrime",
+    "B": "Things/Plants/AB_AgariluxPrime",
+    "C": "Things/Plants/AB_AgariluxPrime"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot",
+    "B": "shipped, shadowed \u2014 UtinniPatches",
+    "C": "render rot_agariluxprime_v3"
+   },
+   "pools": [],
+   "res": "Things/Plants/AB_AgariluxPrime",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "agariluxprime"
+  },
+  "RM_Agaripawn": {
+   "columns": {
+    "A": {
+     "east": "fc250aed26c6dc69029190e5a8a2830c3d34635065983dd499d63e97d7b73aff",
+     "north": "3a8c806760c7a7a7a01cef4c17b4be0b63fa711ca3a43fa53880154537b9ae08",
+     "south": "8c127dc52dfe1793fedd7464ff03172d871cf27d779b6aac742a573dd7460d46"
+    },
+    "B": {
+     "east": "fc250aed26c6dc69029190e5a8a2830c3d34635065983dd499d63e97d7b73aff",
+     "north": "d0685f7758527e5dc293083a813c9e87f2f6b183cd6f98c9a415d851ca1f15b6",
+     "south": "8c127dc52dfe1793fedd7464ff03172d871cf27d779b6aac742a573dd7460d46"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSpecies/Agaripawn/Agaripawn",
+    "B": "RotSpecies/Agaripawn/Agaripawn"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot",
+    "B": "render rot_agaripawn_v2"
+   },
+   "pools": [
+    "RotSpecies/Agaripawn/Agaripawn"
+   ],
+   "res": "RotSpecies/Agaripawn/Agaripawn",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "agaripawn"
+  },
+  "RM_Agaripod": {
+   "columns": {
+    "A": {
+     "east": "6bb23fdaa633e3018a6acf8c24feb78712584cf0753ab2c345bb579527bee5e0",
+     "north": "8f7163b46de1b7e205964bd11fd4ce796bb1f62420f4f92da51cb867644b5630",
+     "south": "7b42f67d859d1ad86a9cf9feaa3cbe28f2df526a0743a49f1fb2af590568e505"
+    },
+    "B": {
+     "north": "071cd1a53406026ce3b4f038638e6411170f439b3333095f27ee874e8d9cc2aa"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Agaripod/RM_Agaripod",
+    "B": "Things/Pawn/Animal/RM_Agaripod/RM_Agaripod"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot",
+    "B": "render facingfix_agaripod_north_v1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Agaripod/RM_Agaripod"
+   ],
+   "res": "Things/Pawn/Animal/RM_Agaripod/RM_Agaripod",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "agaripod"
+  },
+  "RM_AgelessCap": {
+   "columns": {
+    "A": {
+     "single": "7830b5f86a0ba11538060c9db234d273402a947ac0eb23a59da49d16660cfe94"
+    },
+    "B": {
+     "single": "6800368c9e2ee35421e18770a28012d90fbdddfa8bc52b98861199bc090aa294"
+    },
+    "C": {
+     "single": "a2be0710740e4d47e707e6973f0fc98e8192250f94dc0f9c3e704148efb92cfe"
+    },
+    "D": {
+     "single": "f7fa31b5554e081b371746401c6525d5b7cdb9cd8af339c97d37fe5dcee41722"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/AgelessCap",
+    "B": "RotSporeKit/Things/Plant/AgelessCap",
+    "C": "RotSporeKit/Things/Plant/AgelessCap",
+    "D": "RotSporeKit/Things/Plant/AgelessCap"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant AgelessCap_A (1 of 4) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant AgelessCap_B (2 of 4) \u2014 TheRot",
+    "C": "IN GAME \u2014 random variant AgelessCap_e (4 of 4) \u2014 TheRot",
+    "D": "render rot_agelesscap_v2"
+   },
+   "pools": [
+    "RotSporeKit/Things/Plant/AgelessCap"
+   ],
+   "res": "RotSporeKit/Things/Plant/AgelessCap",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "agelesscap"
+  },
+  "RM_AmbrosyxFungus": {
+   "columns": {
+    "A": {
+     "single": "8d449e564959990e923c5bfb63e365a0021269e1f1771743b621aca27ab4ec2d"
+    },
+    "B": {
+     "single": "39e2c999ecc4a124662ee80b9f49e747221d2983fc71455fcb8bdc096a18af56"
+    },
+    "C": {
+     "single": "1547d686d365b9105d3b7a600a20ff2fa91ad71d463f14588772db0ee53d00a2"
+    },
+    "D": {
+     "single": "63a1966f5fa04b19b053a03a053ad4a5c5c584a3b02d25e2c5805a11dd732058"
+    },
+    "E": {
+     "single": "48fced5f6585375d3f55bde3c0027a13f577a24b7cb8e3f90fb78e3c9770ecb2"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/Brightbell",
+    "B": "RotSporeKit/Things/Plant/Brightbell",
+    "C": "RotSporeKit/Things/Plant/Brightbell",
+    "D": "RotSporeKit/Things/Plant/Brightbell",
+    "E": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant Brightbell_A (1 of 5) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant Brightbell_B (2 of 5) \u2014 TheRot",
+    "C": "IN GAME \u2014 random variant Brightbell_p3b (5 of 5) \u2014 TheRot",
+    "D": "render dregen_RM_AmbrosyxFungus_Brightbellp3b_v1",
+    "E": "render rot_ambrosyx_v1"
+   },
+   "pools": [
+    "RotSporeKit/Things/Plant/Brightbell"
+   ],
+   "res": "RotSporeKit/Things/Plant/Brightbell",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "ambrosyxfungus"
+  },
+  "RM_ArbuscularMycorrhiza": {
+   "columns": {
+    "A": {
+     "single": "9fd5e040481b955152d5cff26e80c5275b104c0d5433016273e9c7d099185caf"
+    },
+    "B": {
+     "single": "ff638bf35f30dd9f8b6135bd2b602c0c8c009e7173ef7eed74d8dc7e9895eddd"
+    },
+    "C": {
+     "single": "26f5253c27051bac99e8d3c31ad8015290fb751bf70899683c11c82a4b6a2772"
+    },
+    "D": {
+     "single": "58275beaa21c92733dc56a9e1c64798119c868ff532d02bc83a11f9a8e9f71b6"
+    },
+    "E": {
+     "single": "91e165acfe5e1f7815edaf94270ad574028a5fba9256bb5d3105015f1b3dc934"
+    },
+    "F": {
+     "single": "dcd2dcbfce7e121a4e685d2ff294a8f5d27d3a5cdfc0ea3b7795fea885b44ac7"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plants/AB_ArbuscularMycorrhiza",
+    "B": "Things/Plants/AB_ArbuscularMycorrhiza",
+    "C": "Things/Plants/AB_ArbuscularMycorrhiza",
+    "D": "Things/Plants/AB_ArbuscularMycorrhiza",
+    "E": "Things/Plants/AB_ArbuscularMycorrhiza",
+    "F": "Things/Plants/AB_ArbuscularMycorrhiza"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant AB_ArbuscularMycorrhizaA (1 of 4) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant AB_ArbuscularMycorrhizaB (2 of 4) \u2014 TheRot",
+    "C": "IN GAME \u2014 random variant AB_ArbuscularMycorrhizaC (3 of 4) \u2014 TheRot",
+    "D": "IN GAME \u2014 random variant AB_ArbuscularMycorrhizaD (4 of 4) \u2014 TheRot",
+    "E": "shipped, shadowed \u2014 random variant AB_ArbuscularMycorrhizaA (1 of 1) \u2014 UtinniPatches",
+    "F": "render rot_arbuscularmycorrhiza_v2"
+   },
+   "pools": [
+    "Things/Plants/AB_ArbuscularMycorrhiza"
+   ],
+   "res": "Things/Plants/AB_ArbuscularMycorrhiza",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
+   "shownBase": [],
+   "subject_key": "arbuscularmycorrhiza"
+  },
+  "RM_Arpeau": {
+   "columns": {
+    "A": {
+     "single": "9115df0f8b6b673edef479f9ab88e122b4024d830286f5c2188af359203213e6"
+    },
+    "B": {
+     "single": "dc40b6256714c7fc8ff08cac293befb22a5bbb0c4cc722e1fc527324d6daac7d"
+    },
+    "C": {
+     "single": "a3f0cb02f3ac76ae09bf2df97b95efb4986ba66c5c9a9a5585fb58d7c44ec18a"
+    },
+    "D": {
+     "single": "5fb7333c371fd08b9562043ccac72d599b5ae8aa455a097e35d5a9abf28bced5"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/Arpeau",
+    "B": "RotSporeKit/Things/Plant/Arpeau",
+    "C": "RotSporeKit/Things/Plant/Arpeau",
+    "D": "RotSporeKit/Things/Plant/Arpeau"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant Arpeau_A (1 of 4) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant Arpeau_B (2 of 4) \u2014 TheRot",
+    "C": "IN GAME \u2014 random variant Arpeau_C (3 of 4) \u2014 TheRot",
+    "D": "render dregen_RM_Arpeau_ArpeauA_v1"
+   },
+   "pools": [
+    "RotSporeKit/Things/Plant/Arpeau"
+   ],
+   "res": "RotSporeKit/Things/Plant/Arpeau",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "arpeau"
+  },
+  "RM_BlastpodShroom": {
+   "columns": {
+    "A": {
+     "single": "08b09a2c998d9f579239061ef3a1dddb1c4950afb3d70fcc722cbb8b43d4d6a0"
+    },
+    "B": {
+     "single": "13bb9006ec751005475768ee4273db3e8138cbf32f5415e7049b2303b9ade2fa"
+    },
+    "C": {
+     "single": "a160f94f10c72db21294017e0b43b5eeef1fdaea479f77cd5743941e9f795c06"
+    },
+    "D": {
+     "single": "7068ac6171e655c34a29f5a97451d0e6f60680783bc5f96a7987b7f4efe589ae"
+    },
+    "E": {
+     "single": "54c70554cc59376cc6e34297a2bc0a4da5dd64b7338d8f82fa0a05f07b7a3879"
+    },
+    "F": {
+     "single": "00c49ae5b7da5c06c8a6ba5dc5a75482fdab5f61baa56099b3abdb07382f040d"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/RM_BlastpodShroom",
+    "B": "RotSporeKit/Things/Plant/RM_BlastpodShroom",
+    "C": "RotSporeKit/Things/Plant/RM_BlastpodShroom",
+    "D": "RotSporeKit/Things/Plant/RM_BlastpodShroom",
+    "E": "RotSporeKit/Things/Plant/Boomshroom/BoomshroomImmature",
+    "F": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RM_BlastpodShroom_a (1 of 2) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant RM_BlastpodShroom_b (2 of 2) \u2014 TheRot",
+    "C": "render rotvar_blastpodshroom_b_v1 \u2014 grader flagged (advisory)",
+    "D": "render rot_blastpodshroom_v2",
+    "E": "IN GAME \u2014 random variant BoomshroomImmature (1 of 1) \u2014 TheRot",
+    "F": "render rotvar_blastpodshroom_a_v1"
+   },
+   "pools": [
+    "RotSporeKit/Things/Plant/Boomshroom/BoomshroomImmature",
+    "RotSporeKit/Things/Plant/RM_BlastpodShroom"
+   ],
+   "res": "RotSporeKit/Things/Plant/RM_BlastpodShroom",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
+   "shownBase": [],
+   "subject_key": "blastpodshroom"
+  },
+  "RM_BleedingTooth": {
+   "columns": {
+    "A": {
+     "single": "03c159b3922849d431ebbf7d7a435f0a13d863323d9a19fa0dc838d9c9c3bba6"
+    },
+    "B": {
+     "single": "21448970612ae70710de7d1e4180cbb82c251b52cd03d230cf96b6a7bb6366d6"
+    },
+    "C": {
+     "single": "d7637867c84daa2991ee6df8390f289f823581cf48e7deacd0bdb1fc63bf45e1"
+    },
+    "D": {
+     "single": "b82b35378bdacce0406e0bea70812afd82ad038c34c274694aa65f7b082fd92d"
+    },
+    "E": {
+     "single": "22021eb019af1c1ecc97ac342ae787dc05f837053d66570161ccdbcdb116c3f3"
+    },
+    "F": {
+     "single": "2e3b178567790f3745be8c38d85db696548c1944d673346680f6bbc3cefc4cf1"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/BleedingTooth",
+    "B": "RotSporeKit/Things/Plant/BleedingTooth",
+    "C": "RotSporeKit/Things/Plant/BleedingTooth",
+    "D": "RotSporeKit/Things/Plant/BleedingTooth",
+    "E": "RotSporeKit/Things/Plant/BleedingTooth",
+    "F": "RotSporeKit/Things/Plant/BleedingTooth"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant BleedingTooth_A (1 of 3) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant BleedingTooth_p3a (2 of 3) \u2014 TheRot",
+    "C": "IN GAME \u2014 random variant BleedingTooth_p3b (3 of 3) \u2014 TheRot",
+    "D": "render rot_bleedingtooth_v3a",
+    "E": "render rot_bleedingtooth_v3b",
+    "F": "render rot_bleedingtooth_v2"
+   },
+   "pools": [
+    "RotSporeKit/Things/Plant/BleedingTooth"
+   ],
+   "res": "RotSporeKit/Things/Plant/BleedingTooth",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
+   "shownBase": [],
+   "subject_key": "bleedingtooth"
+  },
+  "RM_Brightbell": {
+   "columns": {
+    "A": {
+     "single": "8d449e564959990e923c5bfb63e365a0021269e1f1771743b621aca27ab4ec2d"
+    },
+    "B": {
+     "single": "39e2c999ecc4a124662ee80b9f49e747221d2983fc71455fcb8bdc096a18af56"
+    },
+    "C": {
+     "single": "1547d686d365b9105d3b7a600a20ff2fa91ad71d463f14588772db0ee53d00a2"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/Brightbell",
+    "B": "RotSporeKit/Things/Plant/Brightbell",
+    "C": "RotSporeKit/Things/Plant/Brightbell"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant Brightbell_A (1 of 5) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant Brightbell_B (2 of 5) \u2014 TheRot",
+    "C": "IN GAME \u2014 random variant Brightbell_p3b (5 of 5) \u2014 TheRot"
+   },
+   "pools": [
+    "RotSporeKit/Things/Plant/Brightbell"
+   ],
+   "res": "RotSporeKit/Things/Plant/Brightbell",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "brightbell"
+  },
+  "RM_Brogg": {
+   "columns": {
+    "A": {
+     "east": "bcbb8a4a68fbc9d462fc7dffbfa81cb10dc9bde86665df30c1a8e9dba88b85a0",
+     "north": "fa5a55af0cfe398f1b2080585e1e6179b0b383b22a5ddf9b27905e89200c4044",
+     "south": "9aa35cd9e2b7d4888b1d419ddaf116c8d4d696b5a4889fc63c7f3a57f0fa6b09"
+    },
+    "B": {
+     "east": "bcbb8a4a68fbc9d462fc7dffbfa81cb10dc9bde86665df30c1a8e9dba88b85a0",
+     "north": "4c06dce1bae89768dd6d3e32a969e7bbb457b769a7fc49bcd4146c0d73515245",
+     "south": "9aa35cd9e2b7d4888b1d419ddaf116c8d4d696b5a4889fc63c7f3a57f0fa6b09"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_TheRot/Fauna/Redrawn/Brogg/Brogg",
+    "B": "RM_TheRot/Fauna/Redrawn/Brogg/Brogg"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot",
+    "B": "render rot_brogg_b"
+   },
+   "pools": [
+    "RM_TheRot/Fauna/Redrawn/Brogg/Brogg"
+   ],
+   "res": "RM_TheRot/Fauna/Redrawn/Brogg/Brogg",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "brogg"
+  },
+  "RM_Brullith": {
+   "columns": {
+    "A": {
+     "east": "f3879ffb08a64fc534d213308ac731a399a0cb2ea08695abb69b718ac424cf94",
+     "north": "a9745b1fb70317271f024207ac448bb8fde47e20b7911fb9a9a80752bcedc320",
+     "south": "3f0d353930bedea257ba1a7db2bffc6cea5f0a8fbf1fedb5e043344a048dc743"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_TheRot/Fauna/Redrawn/Brullith/Brullith"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot"
+   },
+   "pools": [
+    "RM_TheRot/Fauna/Redrawn/Brullith/Brullith"
+   ],
+   "res": "RM_TheRot/Fauna/Redrawn/Brullith/Brullith",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "brullith"
+  },
+  "RM_Bryolux": {
+   "columns": {
+    "A": {
+     "single": "832da1f491ca2ab7bc2007d76f0ff8714db6d60845f03ac7d31d9be09b65c702"
+    },
+    "B": {
+     "single": "6311420e4c29e1cef217e3771dbfac8888f7b69d45b9594dd46f526b0865cbd5"
+    },
+    "C": {
+     "single": "46b8d93b0607813527a97e4c111646b71b3ed39d30ebd6d7b7dc2b21c9ac018c"
+    },
+    "D": {
+     "single": "d3565087381e7a4b38b689416bcb445f08962310276d8777289259008c148edc"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/Bryolux",
+    "B": "Things/Plant/Bryolux",
+    "C": "Things/Plant/Bryolux",
+    "D": "Things/Plant/Bryolux"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant BryoluxA (1 of 1) \u2014 UtinniPatches",
+    "B": "render rotvar_ab_bryolux_a_v1",
+    "C": "render rotvar_ab_bryolux_b_v1",
+    "D": "render rot_bryolux_v2"
+   },
+   "pools": [
+    "Things/Plant/Bryolux"
+   ],
+   "res": "Things/Plant/Bryolux",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "bryolux"
+  },
+  "RM_Chittik": {
+   "columns": {
+    "A": {
+     "east": "3034bea4ac29a39ded7f9eeed9a8889409ebcd663ca26b432a57383411ad2533",
+     "north": "b4fd29776c0a3925a41218bc50611251ccf5c65994a285bd9833b04349707333",
+     "south": "ebfd195560e44c30ee2fc39c2afc38c980d2f38d2c77ed11ba313b717a214bff"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Chittik/RM_Chittik"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Chittik/RM_Chittik"
+   ],
+   "res": "Things/Pawn/Animal/RM_Chittik/RM_Chittik",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "chittik"
+  },
+  "RM_CrimsonCap": {
+   "columns": {
+    "A": {
+     "single": "69c75d9052f7cec5b8bcbd42aa37e77cf368b347169535d51803af1c69056b94"
+    },
+    "B": {
+     "single": "1292f6bbfba2e776d07aa0ad8b2188127e76955396edb8a24e7fefeccace73a6"
+    },
+    "C": {
+     "single": "558e7a893646969690c33669c1b11975e05e15c2973a637faf190818699e54a8"
+    },
+    "D": {
+     "single": "db0b36156f6e7b1f2e5fd179f4630a1df2c9ae40341b5ea895df1bbc39702b0a"
+    },
+    "E": {
+     "single": "7c71e36391fda6ee65c0cc31aeb1250913a36cd7ccef86132e055c54f473f773"
+    },
+    "F": {
+     "single": "f228cedea80e61d384290b2754297ae2d9b7a10dd8e47ee247474e4c5de7e763"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/CrimsonCap",
+    "B": "RotSporeKit/Things/Plant/CrimsonCap",
+    "C": "RotSporeKit/Things/Plant/CrimsonCap",
+    "D": "RotSporeKit/Things/Plant/CrimsonCap",
+    "E": "RotSporeKit/Things/Plant/CrimsonCap",
+    "F": "RotSporeKit/Things/Plant/CrimsonCap"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant CrimsonCap_a (1 of 5) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant CrimsonCap_b (2 of 5) \u2014 TheRot",
+    "C": "IN GAME \u2014 random variant CrimsonCap_c (3 of 5) \u2014 TheRot",
+    "D": "IN GAME \u2014 random variant CrimsonCap_g (4 of 5) \u2014 TheRot",
+    "E": "IN GAME \u2014 random variant CrimsonCap_h (5 of 5) \u2014 TheRot",
+    "F": "render rotvar_crimsoncap_b_v2"
+   },
+   "pools": [
+    "RotSporeKit/Things/Plant/CrimsonCap"
+   ],
+   "res": "RotSporeKit/Things/Plant/CrimsonCap",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
+   "shownBase": [],
+   "subject_key": "crimsoncap"
+  },
+  "RM_Dewshrooms": {
+   "columns": {
+    "A": {
+     "single": "ba7ef0d389401cd7fbe04caff22e3b17ab4683b2909119941fe82c27abdc6748"
+    },
+    "B": {
+     "single": "5ebafdcd75c817563c684dc317f1092998155c363cb4051b80431dc07fb39cf3"
+    },
+    "C": {
+     "single": "80972f4065b3d828750162c2bf0d58b0146df66b686b0c705037c0d946a2cc83"
+    },
+    "D": {
+     "single": "95d857f6e64e1cbb155e0c4f4f301233ec47c1385c3df98b31fd57b030c2fb31"
+    },
+    "E": {
+     "single": "a3b942ed633a0e26adce8d4ec161a3531da173ef565d6b7c0b6436f193779131"
+    },
+    "F": {
+     "single": "1fa62377db397ce41e67996bbc7d1c38916bf44b21e1f7cab5c70c74ad76ac73"
+    },
+    "G": {
+     "single": "fcc115c9caf6192f9ad4d90726eb8128d3a84468925f7f1551f53adc10a05f11"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/Seadew",
+    "B": "RotSporeKit/Things/Plant/Seadew",
+    "C": "RotSporeKit/Things/Plant/Seadew",
+    "D": "RotSporeKit/Things/Plant/Seadew",
+    "E": "RotSporeKit/Things/Plant/Seadew",
+    "F": "RotSporeKit/Things/Plant/Seadew",
+    "G": "RotSporeKit/Things/Plant/Seadew"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant Seadew_A (1 of 3) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant Seadew_p3a (2 of 3) \u2014 TheRot",
+    "C": "IN GAME \u2014 random variant Seadew_p3b (3 of 3) \u2014 TheRot",
+    "D": "render rot_seadew_v3a",
+    "E": "render rot_seadew_v3b",
+    "F": "our deployed art \u2014 RimMandrake: Baroque Biomes",
+    "G": "render dregen_RM_Dewshrooms_SeadewA_v1"
+   },
+   "pools": [
+    "RotSporeKit/Things/Plant/Seadew"
+   ],
+   "res": "RotSporeKit/Things/Plant/Seadew",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
+   "shownBase": [],
+   "subject_key": "dewshrooms"
+  },
+  "RM_DribblingCap": {
+   "columns": {
+    "A": {
+     "single": "c8ea9993f5a3954ab3ceac3764631799d7924cd363221d11f112b52e195df4a9"
+    },
+    "B": {
+     "single": "a1cc2985b9c3e526b4a648fcd895208ea421ad6c02c6e8063bd468517dbb10bd"
+    },
+    "C": {
+     "single": "723aa5da929a06e6e67a5f4640ec3c738aff2fffc1260b6138fc2503e2f67a2f"
+    },
+    "D": {
+     "single": "eaaa4d3e13a7c0f4be0d134c89fac1aa522b4264637e71b868b9cf6fbd87317b"
+    },
+    "E": {
+     "single": "df90dbdd3b5717d583fd8e67d2a6367b2943c2e23534926a36ba92fcc7583cac"
+    },
+    "F": {
+     "single": "89ed71432ca3caa6f5f13cbde05281d31ea575a13fb4933086ecaa1442ec7912"
+    },
+    "G": {
+     "single": "18378be6d43e8091775a68713cf39822a263b590b52b98ba0d29d321d887ba8c"
+    },
+    "H": {
+     "single": "cd270c5f37c9f5f0b27af0eadabbbd9aef7aed1ae967f2192fe7fdcd34ad840a"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plants/AB_DribblingCap",
+    "B": "Things/Plants/AB_DribblingCap",
+    "C": "Things/Plants/AB_DribblingCap",
+    "D": "Things/Plants/AB_DribblingCap",
+    "E": "Things/Plants/AB_DribblingCap",
+    "F": "Things/Plants/AB_DribblingCap",
+    "G": "Things/Plants/AB_DribblingCap",
+    "H": "Things/Plants/AB_DribblingCap"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant AB_DribblingCapA (1 of 4) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant AB_DribblingCapB (2 of 4) \u2014 TheRot",
+    "C": "IN GAME \u2014 random variant AB_DribblingCapC (3 of 4) \u2014 TheRot",
+    "D": "IN GAME \u2014 random variant AB_DribblingCapD (4 of 4) \u2014 TheRot",
+    "E": "shipped, shadowed \u2014 random variant AB_DribblingCapA (1 of 1) \u2014 UtinniPatches",
+    "F": "render rotvar_ab_dribblingcap_a_v1",
+    "G": "render rotvar_ab_dribblingcap_b_v1",
+    "H": "render rot_dribblingcap_v2"
+   },
+   "pools": [
+    "Things/Plants/AB_DribblingCap"
+   ],
+   "res": "Things/Plants/AB_DribblingCap",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H"
+   ],
+   "shownBase": [],
+   "subject_key": "dribblingcap"
+  },
+  "RM_Durrok": {
+   "columns": {
+    "A": {
+     "east": "cf024497dad1b72f3dd711fd0f198e48a298fe0c17c2fe5dc4b649b95c23e372",
+     "north": "33f529b0b5daaa8f04b656afc58d863347d95526d7a86187e06a540569aa920c",
+     "south": "c1c75f694dd45511727d9637684623ef97e47b297f82a663c886eafc1c1e0137"
+    },
+    "B": {
+     "east": "38404a11e7e7171bf43c046f229e5bcf6925c7600ec318a39faabd3d8a987101",
+     "north": "5528b691f5a1f617a74fe438bd6d02d5bf95e560d0f16a5ca909780b7c8d0ca1",
+     "south": "c1f71f73dd7a8cf80116b53da1ed039f5754347fb7c01945dc3dfd2c96b39ffa"
+    },
+    "C": {
+     "east": "4982269898a9e0e62d8e9e45bb812d9cf7325daf0593e53b779f958e06f68fd6",
+     "north": "489f620dffbe631fc716dab5dbe186ad7edc6424a2550a9bbe09c1eea85f8c31",
+     "south": "b941093941c5c3ea4ac7b22d8cddde17b19a0fe77d804aaa6f24600d3f2c19e5"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Durrok/RM_Durrok",
+    "B": "Things/Pawn/Animal/RM_Durrok/RM_Durrok",
+    "C": "Things/Pawn/Animal/RM_Durrok/RM_Durrok"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render arteval_RM_Durrok_r2",
+    "C": "render arteval_RM_Durrok_r1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Durrok/RM_Durrok"
+   ],
+   "res": "Things/Pawn/Animal/RM_Durrok/RM_Durrok",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "durrok"
+  },
+  "RM_Dustveil": {
+   "columns": {
+    "A": {
+     "east": "359e8d2406f3d7420dcf3b3501567217171034ec44a18503539bb60b87f6ad14",
+     "north": "c7bb147e7fd8a3a1312b8dd4925a27ab03379e8e913017c32e19dbf73d5b873c",
+     "south": "9af1e702930b35151f1defb61fbb9c680f0cef52cc6da5ad326306acd9c7231b"
+    },
+    "B": {
+     "east": "e2a6ed98d3ce6b579b61375c3658727c389d67f7da3a45eb158039c49fbd3f97",
+     "north": "eafb295fe496fe595447fc9371fc2e1a2ee864a0ee5f69a1493eed335bbd0c69",
+     "south": "3c26a9a0fdb4dbaf0ec848ff78ef859e2f2d6cd6d353ae76a18ea85601e20989"
+    },
+    "C": {
+     "east": "c18a97ae21dbc06f1ebcad8b918e9797b8b3b51033000f797c1869b219a64c55",
+     "north": "f736543ea507b131111a7c72c9fbcec94a85afbb27bcdc4546363355cfb7a79f",
+     "south": "a5cc188e7d0416307620c73474e7f1172230b7015c5dff4e56078fe455740766"
+    },
+    "D": {
+     "south": "8ad29ceafc9fdb3ff23432858cd3e353463fd53211b9ddeef2a1ad5cde640d62"
+    },
+    "E": {
+     "east": "b8d5defaf35391db4b5e13ca5f0e766c0405c625e3795dcd5fee0e8f1bed18d0",
+     "north": "9e1cf0f9792c58427e18a98b5fd1a58f02fd03691d599ade7c1d3eed3d73152c"
+    },
+    "F": {
+     "east": "c18a97ae21dbc06f1ebcad8b918e9797b8b3b51033000f797c1869b219a64c55",
+     "north": "1c09783f7eb9e043385dd94313cd2034c821bdf0d1b8c34ae06fd25dcfd63b11",
+     "south": "1cb94df253f6342450f28bb635d37bfe0b30e6f59b22c57d8edd917b0dbeaf2f"
+    },
+    "G": {
+     "1_east": "6d28d9d2d9aa1f10c567967a30a3b500ee387bf3fb7e84c6e50fb852e7e91734",
+     "1_north": "5e1b3273fd0eaa621a1ae33d9a8457907cec488f5d0b3c9b370d23d9f23df3d6",
+     "1_south": "3a42f2c20cfae3135b77be00bcbffb81e7743e3f5e1af07f7d19eeda347dba58",
+     "2_east": "9939308397143471eb98bd84fff7e9b2b2672f8ecc35bb49d66c733c69769573",
+     "2_north": "46eb1c454aeedb38b651b10982c53d9ef2a5a360ee12ad28d2cdc5aa6e13e87b",
+     "2_south": "7f174a2d4da8f9d0618918fad96fd5bbb4c8fadd71a401126b1d029f65f70127",
+     "3_east": "36cd5d77990e4ff88351349bffedcf7aadce15cdf4ceb9ad3807a96dbf134b01",
+     "3_north": "444166c08fd8b8c81c8470b6c694a41fe8473ea3130061e09f238d13b3265c3d",
+     "3_south": "2ac57b25d34fb3373d2d7ed7ae872348f23368c70042d6c9c5a96b4fb8259fc8",
+     "4_east": "eef6c9c15934debff4aa3185d30e57d4545db800101de172a01aebb45280248e",
+     "4_north": "a992a9f4e10f8bedc4ffe06842d321cb69d83048408e06217f8460ad1011708c",
+     "4_south": "951af17af18d04337cc407e0488860dd9df516b8e2c71a6fb520bb0b8dbc4084",
+     "5_east": "20874457797eabf9acc13b7ee68e8d82822ed0de37d4f185f5f78f7e33283f1a",
+     "5_north": "684fa17b78701bf6fc3c5d2c7e621771fac6e9e2c85aab52d3333385e1a2ff34",
+     "5_south": "dde75161cea59656a5b47c9b646d82e935235c3e972a01d88210fc74cae19e83"
+    },
+    "H": {
+     "east": "639c14334ee8de4d436246658b549c887aa6cb17798b2487b58e641157deee80",
+     "north": "87b298083a94df096f33b16f4c9f911e036512cbef4c4b244ee8ef2dada54ee2",
+     "south": "28a30123dfd2f03921ee228edafa027c0aa7d042466de5f85dccbe6a0039ed13"
+    },
+    "I": {
+     "east": "639c14334ee8de4d436246658b549c887aa6cb17798b2487b58e641157deee80",
+     "north": "b410fe8152e0e1879e629ea342754a63b0c135430a30658bdda3d69d3163676a",
+     "south": "a8cea57a8a0761364830a74a16376782a34ef3bf3d621dd2b6c837d63f182a14"
+    },
+    "J": {
+     "single": "fe7b2f0b5e03fe7ced839bd72939c40bd8d741b6943d3e0feb225dc5512cb541"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSpecies/AngelMoth/AngelMoth",
+    "B": "RotSpecies/AngelMoth/AngelMoth",
+    "C": "RotSpecies/AngelMoth/AngelMoth",
+    "D": "RotSpecies/AngelMoth/AngelMoth",
+    "E": "RotSpecies/AngelMoth/AngelMoth",
+    "F": "RotSpecies/AngelMoth/AngelMoth_C",
+    "G": "_flip:RM_Dustveil",
+    "H": "Things/Pawn/Animal/RM_DustveilLarva/RM_DustveilLarva",
+    "I": "Things/Pawn/Animal/RM_DustveilLarva/RM_DustveilLarva",
+    "J": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot",
+    "B": "render angelmoth_option_b_v1",
+    "C": "render angelmoth_option_c_v1",
+    "D": "render rotrow_angelmoth_south_v1",
+    "E": "render gapall_AA_AngelMoth_v1",
+    "F": "IN GAME \u2014 TheRot",
+    "G": "flight frames Dustveil_Flying",
+    "H": "IN GAME \u2014 TheRot",
+    "I": "render donorart_p2_dustveil_larva_v1",
+    "J": "render donorart_p2_dustveil_egg_v1"
+   },
+   "pools": [
+    "RotSpecies/AngelMoth/AngelMoth",
+    "RotSpecies/AngelMoth/AngelMoth_C"
+   ],
+   "res": "RotSpecies/AngelMoth/AngelMoth",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J"
+   ],
+   "shownBase": [],
+   "subject_key": "dustveil"
+  },
+  "RM_EuphoricCrown": {
+   "columns": {
+    "A": {
+     "single": "a76e757b2141d8e1ef909e90c50df071c32361b7776652d75705aeabec41eef1"
+    },
+    "B": {
+     "single": "ce3215f8ebf69895be401b60a720a85393ec9c6e489d7637f822e1155c4eb3bf"
+    },
+    "C": {
+     "single": "d336df74f4d99946cf244fb5408e288862ecefeb3d24f8337a6fde01ae4bce2f"
+    },
+    "D": {
+     "single": "c7c6bb3caed13bfc30dd5857d77a67375657f2a823323d654abd4d5ca0a00dab"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/EuphoricCrown",
+    "B": "RotSporeKit/Things/Plant/EuphoricCrown",
+    "C": "RotSporeKit/Things/Plant/EuphoricCrown",
+    "D": "RotSporeKit/Things/Plant/EuphoricCrown"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant EuphoricCrown_A (1 of 1) \u2014 TheRot",
+    "B": "render rot_euphoriccrown_v2",
+    "C": "render rut_liveingredient_euphoriccrown_v1",
+    "D": "render dregen_RM_EuphoricCrown_EuphoricCrownA_v1"
+   },
+   "pools": [
+    "RotSporeKit/Things/Plant/EuphoricCrown"
+   ],
+   "res": "RotSporeKit/Things/Plant/EuphoricCrown",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "euphoriccrown"
+  },
+  "RM_FalseFruit": {
+   "columns": {
+    "A": {
+     "single": "cd1ab125d3b4f93a07fca7cf910d200fdbf65309b23ea24b579eeea5305278c7"
+    },
+    "B": {
+     "single": "22fcf37401e513706721a05cae109f8a5f7ecb2a055c6a923f3254451c6f109f"
+    },
+    "C": {
+     "single": "e55f14a8fadcca02d83197930a98e23a8b8715c3fc289d50ef85959ce73170c5"
+    },
+    "D": {
+     "single": "0931e7e2dde67bb6bb7861057d2fc8680888cb4fc85463a52bd8a2205457925d"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/FalseFruit",
+    "B": "RotSporeKit/Things/Plant/FalseFruit",
+    "C": "RotSporeKit/Things/Plant/FalseFruit",
+    "D": "RotSporeKit/Things/Plant/FalseFruit"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant FalseFruit_A (1 of 4) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant FalseFruit_B (2 of 4) \u2014 TheRot",
+    "C": "render rot_falsefruit_v2",
+    "D": "render rut_falsefruit_v1"
+   },
+   "pools": [
+    "RotSporeKit/Things/Plant/FalseFruit"
+   ],
+   "res": "RotSporeKit/Things/Plant/FalseFruit",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "falsefruit"
+  },
+  "RM_FlakespireFungus": {
+   "columns": {
+    "A": {
+     "single": "9c8e35e112c4b2189c81b5fa806ea7f83c3e2137da702261a5168eb25fd8aa65"
+    },
+    "B": {
+     "single": "be2e1c7bf6696dfc08b79d7771ca1b251d0b19462ca5f031f6d885f4f825b763"
+    },
+    "C": {
+     "single": "eb05e7dcdc6894a1a84940620d3a8bd82d62a69605938ce3e320de822b961190"
+    },
+    "D": {
+     "single": "f9e619e1d191c0ea07a5da4741ca4ec2d0beb2950d20be2ae08f2aa10d1d1336"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/FlakespireFungus",
+    "B": "RotSporeKit/Things/Plant/FlakespireFungus",
+    "C": "RotSporeKit/Things/Plant/FlakespireFungus",
+    "D": "RotSporeKit/Things/Plant/FlakespireFungus"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant FlakespireFungus_c (1 of 3) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant FlakespireFungus_d (2 of 3) \u2014 TheRot",
+    "C": "IN GAME \u2014 random variant Flakespirefungus_a (3 of 3) \u2014 TheRot",
+    "D": "render rotvar_flakespirefungus_b_v2"
+   },
+   "pools": [
+    "RotSporeKit/Things/Plant/FlakespireFungus"
+   ],
+   "res": "RotSporeKit/Things/Plant/FlakespireFungus",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "flakespirefungus"
+  },
+  "RM_FruitingBodies": {
+   "columns": {
+    "A": {
+     "single": "e30ab9925b27aa69e7a4e2e139329d17f68db50e85a2b76cfd0c25d3ffebb088"
+    },
+    "B": {
+     "single": "29d4a7932c0d4ac710cf7e62229dbc0d94b10644536a97bd7f2bc48b52d16d53"
+    },
+    "C": {
+     "single": "753c75cdd61bc89f646dd0ad1a6a5f43a7ef3580606613f0441b321e61e6e0df"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/FruitingBodies",
+    "B": "RotSporeKit/Things/Plant/FruitingBodies",
+    "C": "RotSporeKit/Things/Plant/FruitingBodies"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant FruitingBodies_A (1 of 4) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant FruitingBodies_B (2 of 4) \u2014 TheRot",
+    "C": "render rot_fruitingbodies_v2"
+   },
+   "pools": [
+    "RotSporeKit/Things/Plant/FruitingBodies"
+   ],
+   "res": "RotSporeKit/Things/Plant/FruitingBodies",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "fruitingbodies"
+  },
+  "RM_GiantAgarilux": {
+   "columns": {
+    "A": {
+     "single": "865acc39ad31e0376214641b585ed7269586663e7f08f407a242d3b7a2a18bc1"
+    },
+    "B": {
+     "single": "3f5f8ecdf02def8952782c0f5ef97f93696a5ea97a51cca1c2de2978b2abae64"
+    },
+    "C": {
+     "single": "7fc6feb0154afb14ac9f49dbf1d45f2c73aaa02a1e94cfdf49de975ba1cccec1"
+    },
+    "D": {
+     "single": "93903a9ba070f46990f0ef7d783a35cee4c22ab9c2bf038c76e825a7940c1a41"
+    },
+    "E": {
+     "single": "f316cfdc76321d184a7ffc5fdde04cf1cfdb7591f7819e9fbee554244ff50441"
+    },
+    "F": {
+     "single": "489c2e116801adcce94a9fbda481f2ebb43fb505e711a40a96bfb46d49c6c3b6"
+    },
+    "G": {
+     "single": "c8d84de13250c8ce3e94451554fcfbe9c5d27fc98e671b8746b14a18c274a216"
+    },
+    "H": {
+     "single": "38612d849a7ac6f8a15ddb882140c5623895ae463ba5414e9fc6c3e2e7e8dc0c"
+    },
+    "I": {
+     "single": "faa6d7e31322f0351f7e4782271edcab79dd5d175f24a9ca5f00700b537a39d0"
+    },
+    "J": {
+     "single": "36b0e1fb28b9ba8eb86c21c8d53313a01380a9883b6deff57238ef5eafde0a80"
+    },
+    "K": {
+     "single": "6a392571840af974a39d220490e80769f63598fbf42949d16b776720a822e8fc"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plants/AB_GiantAgarilux",
+    "B": "Things/Plants/AB_GiantAgarilux",
+    "C": "Things/Plants/AB_GiantAgarilux",
+    "D": "Things/Plants/AB_GiantAgarilux",
+    "E": "Things/Plants/AB_GiantAgarilux",
+    "F": "Things/Plants/AB_GiantAgarilux",
+    "G": "Things/Plants/AB_GiantAgarilux",
+    "H": "Things/Plants/AB_GiantAgarilux",
+    "I": "Things/Plants/AB_GiantAgarilux",
+    "J": "Things/Plants/AB_GiantAgarilux",
+    "K": "Things/Plants/AB_GiantAgarilux"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant AB_GiantAgariluxA (1 of 6) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant AB_GiantAgariluxB (2 of 6) \u2014 TheRot",
+    "C": "IN GAME \u2014 random variant AB_GiantAgariluxC (3 of 6) \u2014 TheRot",
+    "D": "IN GAME \u2014 random variant AB_GiantAgariluxD (4 of 6) \u2014 TheRot",
+    "E": "IN GAME \u2014 random variant AB_GiantAgariluxE (5 of 6) \u2014 TheRot",
+    "F": "IN GAME \u2014 random variant AB_GiantAgariluxF (6 of 6) \u2014 TheRot",
+    "G": "shipped, shadowed \u2014 random variant AB_GiantAgariluxA (1 of 1) \u2014 UtinniPatches",
+    "H": "render rotvar_ab_giantagarilux_a_v1",
+    "I": "render rotvar_ab_giantagarilux_b_v1 \u2014 grader flagged (advisory)",
+    "J": "render rotvar_ab_giantagarilux_b_v2",
+    "K": "render rot_giantagarilux_v2"
+   },
+   "pools": [
+    "Things/Plants/AB_GiantAgarilux"
+   ],
+   "res": "Things/Plants/AB_GiantAgarilux",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K"
+   ],
+   "shownBase": [],
+   "subject_key": "giantagarilux"
+  },
+  "RM_GlowingAgarilux": {
+   "columns": {
+    "A": {
+     "single": "d7ae4add10465ceae18b92a11e748bc5664142b3a04f6b437c5b4d8af319b22a"
+    },
+    "B": {
+     "single": "a3dff28387f7c532ce16f5c599e00674d6aaa4e1ecf8e822fe275da55ee7aa24"
+    },
+    "C": {
+     "single": "45c5cc1081193a2d33b0eeeea4babe378a1280189bdab752a369c1e098d29152"
+    },
+    "D": {
+     "single": "d1764618bcf514ee1245fdf80ea1cb5ae43debddf8d03670647258d6a4cffdb4"
+    },
+    "E": {
+     "single": "6f67f77bd8b782014d847567cf9fa3e71841da8a8c834a5356b2da526e1bd2f0"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/Agarilux",
+    "B": "Things/Plant/Agarilux",
+    "C": "_byname",
+    "D": "_byname",
+    "E": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant AgariluxA (1 of 1) \u2014 UtinniPatches",
+    "B": "render rot_agarilux_v3",
+    "C": "render rotvar_ab_glowingagarilux_a_v1",
+    "D": "render rotvar_ab_glowingagarilux_b_v1",
+    "E": "render rot_glowingagarilux_v2"
+   },
+   "pools": [
+    "Things/Plant/Agarilux"
+   ],
+   "res": "Things/Plant/Agarilux",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "glowingagarilux"
+  },
+  "RM_Glowstool": {
+   "columns": {
+    "A": {
+     "single": "925fe2201138a54fc83797e853830c5700ea4f9e8c1452b2e7a5ac4810cab787"
+    },
+    "B": {
+     "single": "623d63073a1e39be85ade1b15633f56c78b808534f3da909e2aedd59a9a8623e"
+    },
+    "C": {
+     "single": "fdabff9f2dbde276b49e1117dd7a9f7dc022a5d9d11e2481f94103e9ebfac935"
+    },
+    "D": {
+     "single": "11b913669a293262eed08221906ac3aa8f02b266a168f4c7b6f697f9f07ec533"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/Glowstool",
+    "B": "Things/Plant/Glowstool",
+    "C": "Things/Plant/Glowstool",
+    "D": "Things/Plant/Glowstool"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant GlowstoolA (1 of 1) \u2014 UtinniPatches",
+    "B": "render rotvar_ab_glowstool_a_v1",
+    "C": "render rotvar_ab_glowstool_b_v1",
+    "D": "render rot_glowstool_v2"
+   },
+   "pools": [
+    "Things/Plant/Glowstool"
+   ],
+   "res": "Things/Plant/Glowstool",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "glowstool"
+  },
+  "RM_Grellik": {
+   "columns": {
+    "A": {
+     "east": "8bf1dfb1fa8222aa99313b6928d7990e9b950123f47c669b37e1ef7a81e745c0",
+     "north": "6bb7dc5c632fe0e4e16cfcd1bb7072d450ea205639cbd8f8d3b68246aad7edeb",
+     "south": "16ff2485b8a728afa46efd6a64176516513710c9196b67ffcead7428832b28a6"
+    },
+    "B": {
+     "east": "8bf1dfb1fa8222aa99313b6928d7990e9b950123f47c669b37e1ef7a81e745c0",
+     "north": "6bb7dc5c632fe0e4e16cfcd1bb7072d450ea205639cbd8f8d3b68246aad7edeb",
+     "south": "2aed3bda2196102862607f34bbd404751b17823afbd1a858bd0388c16d4323d4"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_TheRot/Fauna/Redrawn/Grellik/Grellik",
+    "B": "RM_TheRot/Fauna/Redrawn/Grellik/Grellik"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot",
+    "B": "history TheRot 2026-10-03"
+   },
+   "pools": [
+    "RM_TheRot/Fauna/Redrawn/Grellik/Grellik"
+   ],
+   "res": "RM_TheRot/Fauna/Redrawn/Grellik/Grellik",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "grellik"
+  },
+  "RM_GreyLady": {
+   "columns": {
+    "A": {
+     "single": "b58d7c70d158477747683a174d4391af35440fc45b2a3e3b236fee025977de72"
+    },
+    "B": {
+     "single": "cff7c32a8a830d328c7e5c510d59f98352da501c90bac3ba6c2b52d46ef5d2cf"
+    },
+    "C": {
+     "single": "b02bc9e2464a1f47c2e6c5c27a5dbe1d44dcac98ef25a0a2031f30a0a13c7976"
+    },
+    "D": {
+     "single": "0ec42b4a5cf3b81d0028d980c701178634569b055a0d12c9fdbcb37c93d1ab85"
+    },
+    "E": {
+     "single": "a31f985818ba5a63683de257bc7ea2c6d5192ce62b7073f44854e0c228fabbc1"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/GreyLady/GreyLadyGrown",
+    "B": "RotSporeKit/Things/Plant/GreyLady/GreyLadyGrown",
+    "C": "RotSporeKit/Things/Plant/GreyLady/GreyLadyGrown",
+    "D": "RotSporeKit/Things/Plant/GreyLady/GreyLadyGrown",
+    "E": "RotSporeKit/Things/Plant/GreyLady/GreyLadyImmature"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant GreyLadyGrown_A (1 of 3) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant GreyLadyGrown_c (2 of 3) \u2014 TheRot",
+    "C": "IN GAME \u2014 random variant GreyLadyGrown_d (3 of 3) \u2014 TheRot",
+    "D": "render greyladygrown_a_v1",
+    "E": "IN GAME \u2014 random variant GreyLadyImmature_a (1 of 1) \u2014 TheRot"
+   },
+   "pools": [
+    "RotSporeKit/Things/Plant/GreyLady/GreyLadyGrown",
+    "RotSporeKit/Things/Plant/GreyLady/GreyLadyImmature"
+   ],
+   "res": "RotSporeKit/Things/Plant/GreyLady/GreyLadyGrown",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "greylady"
+  },
+  "RM_Hwelgrue": {
+   "columns": {
+    "A": {
+     "east": "7365bb147f9c256792a2e7978250e32117cd37fd574160b9cb5ff45f6e819663",
+     "north": "35e207ee196635551a391adf3b7d6687189c233f21d1b9d4db1fe599c7a23377",
+     "south": "2747c77961f2abdd697ec41526beb40678be0d9eac1940b87910f35a5299a829"
+    },
+    "B": {
+     "east": "7365bb147f9c256792a2e7978250e32117cd37fd574160b9cb5ff45f6e819663",
+     "north": "fa5ed404a57a5013789a265650df2e8bdd8e1506fe5746dd068e66b89e0dfb6e",
+     "south": "8930474a2bf6898d4ebdca431a6b0f1749f80e8ebc10b05975d02be21fe0998b"
+    },
+    "C": {
+     "north": "fa5ed404a57a5013789a265650df2e8bdd8e1506fe5746dd068e66b89e0dfb6e"
+    },
+    "D": {
+     "east": "7365bb147f9c256792a2e7978250e32117cd37fd574160b9cb5ff45f6e819663",
+     "north": "8930474a2bf6898d4ebdca431a6b0f1749f80e8ebc10b05975d02be21fe0998b",
+     "south": "8930474a2bf6898d4ebdca431a6b0f1749f80e8ebc10b05975d02be21fe0998b"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_TheRot/Fauna/Hwelgrue/RM_Hwelgrue",
+    "B": "RM_TheRot/Fauna/Hwelgrue/RM_Hwelgrue",
+    "C": "RM_TheRot/Fauna/Hwelgrue/RM_Hwelgrue",
+    "D": "RM_TheRot/Fauna/Hwelgrue/RM_Hwelgrue"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot",
+    "B": "render RM_Hwelgrue",
+    "C": "history TheRot 2026-10-03",
+    "D": "history TheRot 2026-10-03"
+   },
+   "pools": [
+    "RM_TheRot/Fauna/Hwelgrue/RM_Hwelgrue"
+   ],
+   "res": "RM_TheRot/Fauna/Hwelgrue/RM_Hwelgrue",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "hwelgrue"
+  },
+  "RM_Illoth": {
+   "columns": {
+    "A": {
+     "east": "2705c1e7c5ef6ea67194ec3a3100ed4ab1f58825f11da07a7fb7171bd1cbc1b9",
+     "north": "46287e82fd41d878f582165783c26c1fffc6074c85831a7dce878cef7f036aff",
+     "south": "f79178ada94af101cf91d2801cbd4109f8c82fb616dd497b4ff4af2b5c47822e"
+    },
+    "B": {
+     "east": "2705c1e7c5ef6ea67194ec3a3100ed4ab1f58825f11da07a7fb7171bd1cbc1b9",
+     "north": "46287e82fd41d878f582165783c26c1fffc6074c85831a7dce878cef7f036aff"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_TheRot/Fauna/Redrawn/Illoth/Illoth",
+    "B": "RM_TheRot/Fauna/Redrawn/Illoth/Illoth"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot",
+    "B": "history TheRot 2026-10-03"
+   },
+   "pools": [
+    "RM_TheRot/Fauna/Redrawn/Illoth/Illoth"
+   ],
+   "res": "RM_TheRot/Fauna/Redrawn/Illoth/Illoth",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "illoth"
+  },
+  "RM_LilacBeacon": {
+   "columns": {
+    "A": {
+     "single": "fac1237e6a7046368c547b18d453bf3064e7e4be5297ac1a01c613058602b58b"
+    },
+    "B": {
+     "single": "4fcd82077ed0c3f73b02ba5f4a345bda3ec84341de2e10b553658b997ce7bc72"
+    },
+    "C": {
+     "single": "e87dd3bfe9c0c67e4283c5a030d62ba0da4a8a4165c2128b5f1648b3b9234930"
+    },
+    "D": {
+     "single": "6f0033eb37e49046c0e5542a506445b18b6b8765874a88b135169dcb74911205"
+    },
+    "E": {
+     "single": "05b8e73fe481e9851897647040168932d87515ca04bea59f2b678607cc620e08"
+    },
+    "F": {
+     "single": "37606983c611688874f37f10f06e21f54ae84a00c4d729acd0c6ecf6bc5fb6ce"
+    },
+    "G": {
+     "single": "d0c0f977d67534c1e192a19d614db98ae53eaa30839434de87a95381d70d5e2f"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plants/AB_LilacBeacon",
+    "B": "Things/Plants/AB_LilacBeacon",
+    "C": "Things/Plants/AB_LilacBeacon",
+    "D": "Things/Plants/AB_LilacBeacon",
+    "E": "Things/Plants/AB_LilacBeacon",
+    "F": "Things/Plants/AB_LilacBeacon",
+    "G": "Things/Plants/AB_LilacBeacon"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant AB_LilacBeaconA (1 of 3) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant AB_LilacBeaconB (2 of 3) \u2014 TheRot",
+    "C": "IN GAME \u2014 random variant AB_LilacBeaconC (3 of 3) \u2014 TheRot",
+    "D": "shipped, shadowed \u2014 random variant AB_LilacBeaconA (1 of 1) \u2014 UtinniPatches",
+    "E": "render rotvar_ab_lilacbeacon_a_v1",
+    "F": "render rotvar_ab_lilacbeacon_b_v1",
+    "G": "render rot_lilacbeacon_v2"
+   },
+   "pools": [
+    "Things/Plants/AB_LilacBeacon"
+   ],
+   "res": "Things/Plants/AB_LilacBeacon",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
+   "shownBase": [],
+   "subject_key": "lilacbeacon"
+  },
+  "RM_MortalMorelPlant": {
+   "columns": {
+    "A": {
+     "single": "92d7fd135ced46208d43398237a105e34c44cd49de5f5fb6f4653974bef6538d"
+    },
+    "B": {
+     "single": "dc2760e8e8c8560622ec0ea4a2c12976960755aa9f9e8a263e3fde517966f20f"
+    },
+    "C": {
+     "single": "ef54a4d9de1296c592c0eca1d6a2e73fbff9cb928a93972747c5b4a8e95159c5"
+    },
+    "D": {
+     "single": "094319d50a64e5ec558138cc90d3ad911986e178e4c0927124b43aec9d79edb6"
+    },
+    "E": {
+     "single": "cf9a25a2014007a0c292f7d6d4779e2af4925bf5e37d79965a3b889bf45553f2"
+    },
+    "F": {
+     "single": "e7d329d02d1ab001e156f4dee898e66756e65d70653dc244f2a6efaca2eeb446"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/RM_MortalMorelPlant",
+    "B": "RotSporeKit/Things/Plant/RM_MortalMorelPlant",
+    "C": "RotSporeKit/Things/Plant/RM_MortalMorelPlant",
+    "D": "RotSporeKit/Things/Plant/RM_MortalMorelPlant",
+    "E": "_byname",
+    "F": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RM_MortalMorelPlant_a (1 of 2) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant RM_MortalMorelPlant_b (2 of 2) \u2014 TheRot",
+    "C": "render rotvar_mortalmorelplant_b_v1 \u2014 grader flagged (advisory)",
+    "D": "render rot_mortalmorelplant_v2",
+    "E": "render rot_mortalmorel_v3a",
+    "F": "render rot_mortalmorel_v3b"
+   },
+   "pools": [
+    "RotSporeKit/Things/Plant/RM_MortalMorelPlant"
+   ],
+   "res": "RotSporeKit/Things/Plant/RM_MortalMorelPlant",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
+   "shownBase": [],
+   "subject_key": "mortalmorelplant"
+  },
+  "RM_Mullgoth": {
+   "columns": {
+    "A": {
+     "east": "c0dedfeb285204cbbed795a7d5e69e115a6658fe32ed6491b2ddebc3460251ac",
+     "north": "b9b8371b78698e470f8e66d6d198e668213c96a3b152e139a63867877df46c25",
+     "south": "bc89bf873cf8ce8389189e75066b894fc8c75a08a09395c8e2d47624217238b6"
+    },
+    "B": {
+     "east": "6207e39931a68709afce42b07b7db3a55675d7c5c66db1367b1984069bc2f1a2",
+     "north": "483d52cc107e8bea399ec8b5d28a9a977f035a3b06be4f6aa90f4989c7f1c559",
+     "south": "7ef4c1a7f31abc48e4a8fc749774274b434c7f2e9c3c3a120c6a4f3b023a82ed"
+    },
+    "C": {
+     "east": "c85b9a0bca7410000bb53c4931064791cb221f080b4c00a83e75aa5abb159629",
+     "north": "65a503ef373feff3c3f4f59e7940d25c5848fc03e0fbe32fc4585ac8f3ded404",
+     "south": "8bcd802e59d3cc85e2928f42091e5a75bfb3ef9c1f4d3c850f2a5ce0f1c2a34d"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Mullgoth/RM_Mullgoth",
+    "B": "Things/Pawn/Animal/RM_Mullgoth/RM_Mullgoth",
+    "C": "Things/Pawn/Animal/RM_Mullgoth/RM_Mullgoth"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render arteval_RM_Mullgoth_r1",
+    "C": "render arteval_RM_Mullgoth_r3"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Mullgoth/RM_Mullgoth"
+   ],
+   "res": "Things/Pawn/Animal/RM_Mullgoth/RM_Mullgoth",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "mullgoth"
+  },
+  "RM_MycoidColossus": {
+   "columns": {
+    "A": {
+     "east": "b3cf87b80e9309e79ecb0fa9d3dc8c4934d153b8da871f2ead8b85d9b82e8db4",
+     "north": "329addea284828129e5907380e72d7d9a984ee8467caa0cfc7835be7ac3e9d40",
+     "south": "fa17e986b743fc7336232a3d7f8e46d05a882e21e7b8a8e22b6f7f26246ee67b"
+    },
+    "B": {
+     "north": "329addea284828129e5907380e72d7d9a984ee8467caa0cfc7835be7ac3e9d40"
+    },
+    "C": {
+     "east": "b3cf87b80e9309e79ecb0fa9d3dc8c4934d153b8da871f2ead8b85d9b82e8db4",
+     "north": "df051ef03180f8084fc7d04d5e9598b34ac5251a47f67256b766f82fdc9fdd6e",
+     "south": "fa17e986b743fc7336232a3d7f8e46d05a882e21e7b8a8e22b6f7f26246ee67b"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSpecies/MycoidColossus/MycoidColossus",
+    "B": "RotSpecies/MycoidColossus/MycoidColossus",
+    "C": "RotSpecies/MycoidColossus/MycoidColossus"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot",
+    "B": "render rot_mycoidcolossus_v3",
+    "C": "render rot_mycoidcolossus_v2"
+   },
+   "pools": [
+    "RotSpecies/MycoidColossus/MycoidColossus"
+   ],
+   "res": "RotSpecies/MycoidColossus/MycoidColossus",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "mycoidcolossus"
+  },
+  "RM_Nuitae": {
+   "columns": {
+    "A": {
+     "single": "4328ad61ef9321e749006768e6a11191ce515d9fb1375671aab1893f467df37f"
+    },
+    "B": {
+     "single": "3609da2015e9b3f233e4f5484fffadacbcf354d593afb9beffd170ee1e512476"
+    },
+    "C": {
+     "single": "1a53090dfe59bbf2c0da4952b2992dd5b73ad1fd5f7a9e94de01f2603c430e43"
+    },
+    "D": {
+     "single": "9b26c7887e633cbfec200eaec112fcf2fbbf78dd0260a956c7d6e0ba573636e6"
+    },
+    "E": {
+     "single": "ebc6f07ca5e19448d6593458f6bb94c828467131193253848e7f50161aefc6ad"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/Nuitae",
+    "B": "RotSporeKit/Things/Plant/Nuitae",
+    "C": "RotSporeKit/Things/Plant/Nuitae",
+    "D": "RotSporeKit/Things/Plant/Nuitae",
+    "E": "RotSporeKit/Things/Plant/Nuitae"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant Nuitae_A (1 of 7) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant Nuitae_B (2 of 7) \u2014 TheRot",
+    "C": "IN GAME \u2014 random variant Nuitae_C (3 of 7) \u2014 TheRot",
+    "D": "IN GAME \u2014 random variant Nuitae_g (5 of 7) \u2014 TheRot",
+    "E": "render rot_nuitae_v2"
+   },
+   "pools": [
+    "RotSporeKit/Things/Plant/Nuitae"
+   ],
+   "res": "RotSporeKit/Things/Plant/Nuitae",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "nuitae"
+  },
+  "RM_PaleTree": {
+   "columns": {
+    "A": {
+     "single": "d6b6f91caeac01f6f95171bb067243925e00e4cae9913ca352f300b7ec0c47d4"
+    },
+    "B": {
+     "single": "9f4aab8cfdb8b5dcd9a82f17dfa564b4d2c9200685a7f08b1f3f5858d3ff60ac"
+    },
+    "C": {
+     "single": "7e02de00583902fc0872bd4c5c6c57ef8f23de70099afad603e3a96197dc2190"
+    },
+    "D": {
+     "single": "b0ac53f1adbbd5abfcb1af097037ce1ed996346992b08c149794f415503bc73c"
+    },
+    "E": {
+     "single": "21f4283ee40c328728c7b833e88b81700aef4b4cf5f71887753101cee8168294"
+    },
+    "F": {
+     "single": "b8257ab9ba945eadaf949a2c9634e5c004bafbfb4167e9939d9c4206415f017a"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/PaleTree",
+    "B": "RotSporeKit/Things/Plant/PaleTree",
+    "C": "RotSporeKit/Things/Plant/PaleTree",
+    "D": "RotSporeKit/Things/Plant/PaleTree",
+    "E": "RotSporeKit/Things/Plant/PaleTree",
+    "F": "Things/Plant/TreeAnima_Immature"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant PaleTree_A (1 of 5) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant PaleTree_b (2 of 5) \u2014 TheRot",
+    "C": "IN GAME \u2014 random variant PaleTree_c (3 of 5) \u2014 TheRot",
+    "D": "IN GAME \u2014 random variant PaleTree_e (5 of 5) \u2014 TheRot",
+    "E": "render rot_paletree_v3",
+    "F": "IN GAME \u2014 ludeon.rimworld.royalty"
+   },
+   "pools": [
+    "RotSporeKit/Things/Plant/PaleTree"
+   ],
+   "res": "RotSporeKit/Things/Plant/PaleTree",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
+   "shownBase": [],
+   "subject_key": "paletree"
+  },
+  "RM_Pusmelon": {
+   "columns": {
+    "A": {
+     "single": "121e4172e33982a82962d9d6e8e537be36cbdc809e635de3cc03afa65ba3566b"
+    },
+    "B": {
+     "single": "44e5594533102e0e0ac6540591e859a0c0c3bbd72833700bf914604acb2cf266"
+    },
+    "C": {
+     "single": "0dbb121338e27d00ae5d149115a35e3352eda486c73201e50fb55bcfb8db419f"
+    },
+    "D": {
+     "single": "72d3ad9a630f2ad58ba9a56edcf67cf62a8f80e45598400024623acafd7c2006"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/Pusmelon",
+    "B": "RotSporeKit/Things/Plant/Pusmelon",
+    "C": "RotSporeKit/Things/Plant/Pusmelon",
+    "D": "RotSporeKit/Things/Plant/Pusmelon"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant Pusmelon_A (1 of 4) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant Pusmelon_B (2 of 4) \u2014 TheRot",
+    "C": "render rot_pusmelon_v2",
+    "D": "our deployed art \u2014 RimMandrake: Baroque Biomes"
+   },
+   "pools": [
+    "RotSporeKit/Things/Plant/Pusmelon"
+   ],
+   "res": "RotSporeKit/Things/Plant/Pusmelon",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "pusmelon"
+  },
+  "RM_RecurvedStropharia": {
+   "columns": {
+    "A": {
+     "single": "e3431a06e2aed97fc2bb7428e1b2b88fb75d14d8b5579233ad4c6c6e001e4b85"
+    },
+    "B": {
+     "single": "e56158571747f7f85a6eec6e1931621dec1152cd8751157f5540164e71b2fcfd"
+    },
+    "C": {
+     "single": "6173714afac0369b808de7c2bc36f8913aafff95b351b8bfceaec8bc3b6fafcf"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plants/AB_RecurvedStropharia",
+    "B": "Things/Plants/AB_RecurvedStropharia",
+    "C": "Things/Plants/AB_RecurvedStropharia"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot",
+    "B": "render rot_recurvedstropharia_v3",
+    "C": "render rot_recurvedstropharia_v2"
+   },
+   "pools": [],
+   "res": "Things/Plants/AB_RecurvedStropharia",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "recurvedstropharia"
+  },
+  "RM_RegenerantVeil": {
+   "columns": {
+    "A": {
+     "single": "93c962f2d7fa0ff4064ae3f011c3f1e98247aca92765c59268969fcdfb098749"
+    },
+    "B": {
+     "single": "86824802eb7ee499649e7e7bc39245f0faffbf6cd002d0cfc37262d5944b443c"
+    },
+    "C": {
+     "single": "cfa63202898cdf5306f548ca7a2374110b5eb49e7189b71e74579477c932216e"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/RegenerantVeil",
+    "B": "RotSporeKit/Things/Plant/RegenerantVeil",
+    "C": "RotSporeKit/Things/Plant/RegenerantVeil"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RegenerantVeil_A (1 of 4) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant RegenerantVeil_B (2 of 4) \u2014 TheRot",
+    "C": "render rot_regenerantveil_v2"
+   },
+   "pools": [
+    "RotSporeKit/Things/Plant/RegenerantVeil"
+   ],
+   "res": "RotSporeKit/Things/Plant/RegenerantVeil",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "regenerantveil"
+  },
+  "RM_Ruskara": {
+   "columns": {
+    "A": {
+     "single": "c8ea9993f5a3954ab3ceac3764631799d7924cd363221d11f112b52e195df4a9"
+    },
+    "B": {
+     "single": "a1cc2985b9c3e526b4a648fcd895208ea421ad6c02c6e8063bd468517dbb10bd"
+    },
+    "C": {
+     "single": "723aa5da929a06e6e67a5f4640ec3c738aff2fffc1260b6138fc2503e2f67a2f"
+    },
+    "D": {
+     "single": "eaaa4d3e13a7c0f4be0d134c89fac1aa522b4264637e71b868b9cf6fbd87317b"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Ruskara",
+    "B": "Things/Plant/RM_Ruskara",
+    "C": "Things/Plant/RM_Ruskara",
+    "D": "Things/Plant/RM_Ruskara"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RM_Ruskara_a (1 of 4) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant RM_Ruskara_b (2 of 4) \u2014 TheRot",
+    "C": "IN GAME \u2014 random variant RM_Ruskara_c (3 of 4) \u2014 TheRot",
+    "D": "IN GAME \u2014 random variant RM_Ruskara_d (4 of 4) \u2014 TheRot"
+   },
+   "pools": [
+    "Things/Plant/RM_Ruskara"
+   ],
+   "res": "Things/Plant/RM_Ruskara",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "ruskara"
+  },
+  "RM_Sagecrust": {
+   "columns": {
+    "A": {
+     "single": "1224d249f75bd2e50bf5616df607a814943caf7c1481cffb8f600c70dd00b489"
+    },
+    "B": {
+     "single": "0732bcdfd7226aa956d2f081be12c08c46b8689a9e68bb20b00911da2bc11d35"
+    },
+    "C": {
+     "single": "2620878044a5f8e7a062bb180b1493ca77601398c1b38825dbbfbefdbdad34ca"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/Sagecrust",
+    "B": "RotSporeKit/Things/Plant/Sagecrust",
+    "C": "RotSporeKit/Things/Plant/Sagecrust"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant Sagecrust_A (1 of 3) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant Sagecrust_B (2 of 3) \u2014 TheRot",
+    "C": "render rot_sagecrust_v2"
+   },
+   "pools": [
+    "RotSporeKit/Things/Plant/Sagecrust"
+   ],
+   "res": "RotSporeKit/Things/Plant/Sagecrust",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "sagecrust"
+  },
+  "RM_Shambles": {
+   "columns": {
+    "A": {
+     "east": "5b88ed6046bf16b892979f96bf28f30e962f5a81b5eefa0deacc88a5ebb55695",
+     "north": "9766cbacb85d1b6cc82812fdb8716a77578e138af7cb9bd7746c31eb85607835",
+     "south": "213c6d2777ae9a9826dacfacaddd896cf14ab115ec8ee5bb71485df280761a35"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Shambles/RM_Shambles"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Shambles/RM_Shambles"
+   ],
+   "res": "Things/Pawn/Animal/RM_Shambles/RM_Shambles",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "shambles"
+  },
+  "RM_Shinecap": {
+   "columns": {
+    "A": {
+     "single": "19dd20f4f2d1f596273dd54e3b556e247f84d7e94ab23d752ca946439b44e2c3"
+    },
+    "B": {
+     "single": "2128695880dac696ffc4b7d667cd4bb1e98ba0b4b0f8613a187402437672ac25"
+    },
+    "C": {
+     "single": "b3ea8db95a9444ba5473afbe92af22365ce9f7f5222cc1ad1146f4e0d1a2219c"
+    },
+    "D": {
+     "single": "d2018fafa986b0174549367673dbed79f1601355ac579f34a6782b2e4a5482a8"
+    },
+    "E": {
+     "single": "cec620f9fe6dbb4bb0ca8fdaca5ade74ae247bf5b2a510899430ac785921819c"
+    },
+    "F": {
+     "single": "9d96a90735f41eef90aae10b5b111af8bc467b85da07a8efdf24d3232bf5a7cb"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/Shinecap/ShinecapGrown",
+    "B": "RotSporeKit/Things/Plant/Shinecap/ShinecapGrown",
+    "C": "RotSporeKit/Things/Plant/Shinecap/ShinecapGrown",
+    "D": "RotSporeKit/Things/Plant/Shinecap/ShinecapGrown",
+    "E": "RotSporeKit/Things/Plant/Shinecap/ShinecapImmature",
+    "F": "RotSporeKit/Things/Plant/Shinecap/ShinecapImmature"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant ShinecapGrown_a (1 of 5) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant ShinecapGrown_b (2 of 5) \u2014 TheRot",
+    "C": "IN GAME \u2014 random variant ShinecapGrown_c (3 of 5) \u2014 TheRot",
+    "D": "render dregen_RM_Shinecap_ShinecapGrowna_v1",
+    "E": "IN GAME \u2014 random variant ShinecapImmature_d (1 of 2) \u2014 TheRot",
+    "F": "IN GAME \u2014 random variant ShinecapImmature_e (2 of 2) \u2014 TheRot"
+   },
+   "pools": [
+    "RotSporeKit/Things/Plant/Shinecap/ShinecapGrown",
+    "RotSporeKit/Things/Plant/Shinecap/ShinecapImmature"
+   ],
+   "res": "RotSporeKit/Things/Plant/Shinecap/ShinecapGrown",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
+   "shownBase": [],
+   "subject_key": "shinecap"
+  },
+  "RM_Skerrith": {
+   "columns": {
+    "A": {
+     "east": "fb43237ea89d4c20c957d4f9e75d4285e5c22581a301a1cb723438cb5b96911d",
+     "north": "e713aad586bcc162a1060e3b245c9d605385fa26883d5619325fb60b7493b639",
+     "south": "0bdfaf0fd45e71181dd341de9f4aed815c99ec42a902c8a164180b3dde8c6bb6"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_TheRot/Fauna/Redrawn/Skerrith/Skerrith"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot"
+   },
+   "pools": [
+    "RM_TheRot/Fauna/Redrawn/Skerrith/Skerrith"
+   ],
+   "res": "RM_TheRot/Fauna/Redrawn/Skerrith/Skerrith",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "skerrith"
+  },
+  "RM_Skulltop": {
+   "columns": {
+    "A": {
+     "single": "d29b4c46de42d5dc714dca4c7c876f3aa75a86baa52609534df815b2f3d33504"
+    },
+    "B": {
+     "single": "05c5af92bb2327f4a1f381b0140e6c953057ef63220b7dc697f4da559e3d405e"
+    },
+    "C": {
+     "single": "17fde8efab6447f507831a71e379c352ac9556763805abf22466d53f961a167f"
+    },
+    "D": {
+     "single": "518cde397786570339da13979a90557b1edbdd2d2a4ec814c3a3e42e333c222e"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/Skulltop/Skulltop",
+    "B": "RotSporeKit/Things/Plant/Skulltop/Skulltop",
+    "C": "RotSporeKit/Things/Plant/Skulltop/Skulltop",
+    "D": "RotSporeKit/Things/Plant/Skulltop/Skulltop"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant Skulltop_A (1 of 2) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant Skulltop_B (2 of 2) \u2014 TheRot",
+    "C": "render rotvar_skulltop_a_v1",
+    "D": "render dregen_RM_Skulltop_SkulltopA_v1"
+   },
+   "pools": [
+    "RotSporeKit/Things/Plant/Skulltop/Skulltop"
+   ],
+   "res": "RotSporeKit/Things/Plant/Skulltop/Skulltop",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "skulltop"
+  },
+  "RM_SlimyPholiota": {
+   "columns": {
+    "A": {
+     "single": "284a05d102ead19ce36bfd60814fa8af674eeacccbe737e6aa02884451442e7d"
+    },
+    "B": {
+     "single": "68a0d9b951e23c13c3549fad510e6d6562ebad8e9a278d76272ce8d913422ae9"
+    },
+    "C": {
+     "single": "bebc09fd621e941e944e19bbd30afd9f6b1c0a45141f9c71539edbc8425cc65b"
+    },
+    "D": {
+     "single": "5abcb8fc4914806a12b0e1f30aae9b1d128f32710403aacc8c9a79c308e3d64c"
+    },
+    "E": {
+     "single": "130633d36a4db6dfdb28d1fc3889b9f24503c6e0798298c3b57af2ac706bcef1"
+    },
+    "F": {
+     "single": "b9cb4014d23ccfcbd739aacd475690b1def96864b8134a90db5d661397cadc85"
+    },
+    "G": {
+     "single": "25e8c5b5a5c024b466559689633c5d13b31f1c334f0c89546b440bffb1e71260"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plants/AB_SlimyPholiota",
+    "B": "Things/Plants/AB_SlimyPholiota",
+    "C": "Things/Plants/AB_SlimyPholiota",
+    "D": "Things/Plants/AB_SlimyPholiota",
+    "E": "Things/Plants/AB_SlimyPholiota",
+    "F": "Things/Plants/AB_SlimyPholiota",
+    "G": "Things/Plants/AB_SlimyPholiota"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant AB_SlimyPholiotaA (1 of 4) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant AB_SlimyPholiotaA copy (2 of 4) \u2014 TheRot",
+    "C": "IN GAME \u2014 random variant AB_SlimyPholiotaB (3 of 4) \u2014 TheRot",
+    "D": "IN GAME \u2014 random variant AB_SlimyPholiotaC (4 of 4) \u2014 TheRot",
+    "E": "render rotvar_ab_slimypholiota_a_v1",
+    "F": "render rotvar_ab_slimypholiota_b_v1",
+    "G": "render rot_slimypholiota_v2"
+   },
+   "pools": [
+    "Things/Plants/AB_SlimyPholiota"
+   ],
+   "res": "Things/Plants/AB_SlimyPholiota",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
+   "shownBase": [],
+   "subject_key": "slimypholiota"
+  },
+  "RM_Thozzik": {
+   "columns": {
+    "A": {
+     "east": "3b4b9ca0612aa4fefa4d3f792ad868e34821a90484d715267382f9ac54f632ed",
+     "north": "a9a3cbe1d48c6834dece91f3d1153611de92c72f6634514f64539703c1bd9aeb",
+     "south": "63952bb227d2f6b3a27d4505568ed9f8d55cda641ff3cd7f297a4a23121a3b85"
+    },
+    "B": {
+     "east": "3b4b9ca0612aa4fefa4d3f792ad868e34821a90484d715267382f9ac54f632ed",
+     "north": "a9a3cbe1d48c6834dece91f3d1153611de92c72f6634514f64539703c1bd9aeb"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik",
+    "B": "RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot",
+    "B": "history TheRot 2026-10-03"
+   },
+   "pools": [
+    "RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik"
+   ],
+   "res": "RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "thozzik"
+  },
+  "RM_ThozzikColony": {
+   "columns": {
+    "A": {
+     "east": "3b4b9ca0612aa4fefa4d3f792ad868e34821a90484d715267382f9ac54f632ed",
+     "north": "a9a3cbe1d48c6834dece91f3d1153611de92c72f6634514f64539703c1bd9aeb",
+     "south": "63952bb227d2f6b3a27d4505568ed9f8d55cda641ff3cd7f297a4a23121a3b85"
+    },
+    "B": {
+     "east": "3b4b9ca0612aa4fefa4d3f792ad868e34821a90484d715267382f9ac54f632ed",
+     "north": "a9a3cbe1d48c6834dece91f3d1153611de92c72f6634514f64539703c1bd9aeb"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik",
+    "B": "RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot",
+    "B": "history TheRot 2026-10-03"
+   },
+   "pools": [
+    "RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik"
+   ],
+   "res": "RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "thozzikcolony"
+  },
+  "RM_ThozzikColonyQueen": {
+   "columns": {
+    "A": {
+     "east": "17e50a5c3cc893ad5c9911165efc077f16a3eb52f5b14776f5748be5621512d9",
+     "north": "d4e13b31c09511ff8b4e3ce205f9aa91e13aa7faa6f5ef38206d4dd314ac55b3",
+     "south": "14dea1a2ddd8f12898e8cc1028f7d979e75c82a3569aa8117b4c78815f6b97e6"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_TheRot/Fauna/Redrawn/ThozzikQueen/ThozzikQueen"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot"
+   },
+   "pools": [
+    "RM_TheRot/Fauna/Redrawn/ThozzikQueen/ThozzikQueen"
+   ],
+   "res": "RM_TheRot/Fauna/Redrawn/ThozzikQueen/ThozzikQueen",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "thozzikcolonyqueen"
+  },
+  "RM_ThozzikQueen": {
+   "columns": {
+    "A": {
+     "east": "17e50a5c3cc893ad5c9911165efc077f16a3eb52f5b14776f5748be5621512d9",
+     "north": "d4e13b31c09511ff8b4e3ce205f9aa91e13aa7faa6f5ef38206d4dd314ac55b3",
+     "south": "14dea1a2ddd8f12898e8cc1028f7d979e75c82a3569aa8117b4c78815f6b97e6"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_TheRot/Fauna/Redrawn/ThozzikQueen/ThozzikQueen"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot"
+   },
+   "pools": [
+    "RM_TheRot/Fauna/Redrawn/ThozzikQueen/ThozzikQueen"
+   ],
+   "res": "RM_TheRot/Fauna/Redrawn/ThozzikQueen/ThozzikQueen",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "thozzikqueen"
+  },
+  "RM_TollukCap": {
+   "columns": {
+    "A": {
+     "single": "b732474e5d7516f74b4f2875a0e28c1ab0db3a0209a660ff059ddff4b6a50556"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/TollukCap"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant TollukCap_A (1 of 1) \u2014 TheRot"
+   },
+   "pools": [
+    "RotSporeKit/Things/Plant/TollukCap"
+   ],
+   "res": "RotSporeKit/Things/Plant/TollukCap",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "tollukcap"
+  },
+  "RM_Ullumbra": {
+   "columns": {
+    "A": {
+     "single": "865acc39ad31e0376214641b585ed7269586663e7f08f407a242d3b7a2a18bc1"
+    },
+    "B": {
+     "single": "f316cfdc76321d184a7ffc5fdde04cf1cfdb7591f7819e9fbee554244ff50441"
+    },
+    "C": {
+     "single": "489c2e116801adcce94a9fbda481f2ebb43fb505e711a40a96bfb46d49c6c3b6"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Ullumbra",
+    "B": "Things/Plant/RM_Ullumbra",
+    "C": "Things/Plant/RM_Ullumbra"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RM_Ullumbra_a (1 of 3) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant RM_Ullumbra_b (2 of 3) \u2014 TheRot",
+    "C": "IN GAME \u2014 random variant RM_Ullumbra_c (3 of 3) \u2014 TheRot"
+   },
+   "pools": [
+    "Things/Plant/RM_Ullumbra"
+   ],
+   "res": "Things/Plant/RM_Ullumbra",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "ullumbra"
+  },
+  "RM_Vellugra": {
+   "columns": {
+    "A": {
+     "single": "68a0d9b951e23c13c3549fad510e6d6562ebad8e9a278d76272ce8d913422ae9"
+    },
+    "B": {
+     "single": "bebc09fd621e941e944e19bbd30afd9f6b1c0a45141f9c71539edbc8425cc65b"
+    },
+    "C": {
+     "single": "5abcb8fc4914806a12b0e1f30aae9b1d128f32710403aacc8c9a79c308e3d64c"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Vellugra",
+    "B": "Things/Plant/RM_Vellugra",
+    "C": "Things/Plant/RM_Vellugra"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RM_Vellugra_a (1 of 3) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant RM_Vellugra_b (2 of 3) \u2014 TheRot",
+    "C": "IN GAME \u2014 random variant RM_Vellugra_c (3 of 3) \u2014 TheRot"
+   },
+   "pools": [
+    "Things/Plant/RM_Vellugra"
+   ],
+   "res": "Things/Plant/RM_Vellugra",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "vellugra"
+  },
+  "RM_VioletWimple": {
+   "columns": {
+    "A": {
+     "single": "e972e8af905027810d917263fb40ba0325ac114d4ec62e4f8ca08c41dced65dd"
+    },
+    "B": {
+     "single": "0ccb0af62c238a4f3ccb76186d18e9ba988b16c9990fb5711d2e2a7c437d55eb"
+    },
+    "C": {
+     "single": "cd577c84d4069c5476192ebd4ea3bfbd58316a7f9ed0afdde828bc7ac215702b"
+    },
+    "D": {
+     "single": "ea7fed794d5a18d766b4144da031225c49723889494d421e36ff389849fb2656"
+    },
+    "E": {
+     "single": "be510f69bf160e079d0cfd65823f9384a3b6a27b61eb71a3e71ebd011f1b1d08"
+    },
+    "F": {
+     "single": "8bea816b1c8946a4c68e11cb3d7a2dc098bc41c5d5ad19ab85f758d2e0b9c9f8"
+    },
+    "G": {
+     "single": "2b302b742bb28efbb835581fc20fbcdaf8fb9468dac994f5fce82485d20b41af"
+    },
+    "H": {
+     "single": "bb530a0e38c9da281ba1e7e9e9a531d9a93c3e5b611cf70622d6b85508cc0fde"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/VioletWimple",
+    "B": "RotSporeKit/Things/Plant/VioletWimple",
+    "C": "RotSporeKit/Things/Plant/VioletWimple",
+    "D": "RotSporeKit/Things/Plant/VioletWimple",
+    "E": "RotSporeKit/Things/Plant/VioletWimple",
+    "F": "RotSporeKit/Things/Plant/VioletWimple",
+    "G": "RotSporeKit/Things/Plant/VioletWimple",
+    "H": "RotSporeKit/Things/Plant/VioletWimple"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant VioletWimple_A (1 of 3) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant VioletWimple_p3a (2 of 3) \u2014 TheRot",
+    "C": "IN GAME \u2014 random variant VioletWimple_p3b (3 of 3) \u2014 TheRot",
+    "D": "render rot_violetwimple_v3a",
+    "E": "render rot_violetwimple_v3b",
+    "F": "render rotvar_violetwimple_a_v2",
+    "G": "render rotvar_violetwimple_b_v2",
+    "H": "render dregen_RM_VioletWimple_VioletWimpleA_v1"
+   },
+   "pools": [
+    "RotSporeKit/Things/Plant/VioletWimple"
+   ],
+   "res": "RotSporeKit/Things/Plant/VioletWimple",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H"
+   ],
+   "shownBase": [],
+   "subject_key": "violetwimple"
+  },
+  "RM_WitchesOyster": {
+   "columns": {
+    "A": {
+     "single": "80500d8239a0ee86fb63860d5473e6226d3e49ea44c34a42702440674a2da8b9"
+    },
+    "B": {
+     "single": "bc51c3aebef0368c0dfe5099ffc3d4d1b6c5b08743a7827fdc2f2aed60594534"
+    },
+    "C": {
+     "single": "d707dbf7043780f1cfed17861bf57add4433aa0aef4cddd0d4365215f724ae38"
+    },
+    "D": {
+     "single": "780e22885637d57bafbad47e678a997348f32a754c61da0fc01fc74585438c28"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plants/AB_WitchesOyster",
+    "B": "Things/Plants/AB_WitchesOyster",
+    "C": "Things/Plants/AB_WitchesOyster",
+    "D": "Things/Plants/AB_WitchesOyster"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot",
+    "B": "render rotvar_ab_witchesoyster_a_v1",
+    "C": "render rotvar_ab_witchesoyster_b_v1",
+    "D": "render rot_witchesoyster_v2"
+   },
+   "pools": [],
+   "res": "Things/Plants/AB_WitchesOyster",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "witchesoyster"
+  },
+  "RM_Wrinklecap": {
+   "columns": {
+    "A": {
+     "single": "9ffbe202c53ff667a1a82398abf04756258a1443f960955b6304ad3de57a73d3"
+    },
+    "B": {
+     "single": "16b31393e849d1248dcf683ae64cc03581e9fd945fc3991254db36f83f90d371"
+    },
+    "C": {
+     "single": "abbd2f4201357dc09e588ed9195570ee3fc4e8f14a12bb8abd73fb989a0564cc"
+    },
+    "D": {
+     "single": "e11b0e1ee56c9097c6c6ab210fb602582f944a9021f8aaf6e766ae199dabf75c"
+    },
+    "E": {
+     "single": "bc92cf53af00ede2f4a6c731b0d3db30e68fecb73772d189aa356b1b8d4213e6"
+    },
+    "F": {
+     "single": "4d3340573c0540c8408867a76c2e16245119f3507ee711e8331bb747ce54ff47"
+    },
+    "G": {
+     "single": "0ee73783c7dc083204193dda2b4106c6f25597373f2312cded82c958a2b84f25"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/Wrinklecap",
+    "B": "RotSporeKit/Things/Plant/Wrinklecap",
+    "C": "RotSporeKit/Things/Plant/Wrinklecap",
+    "D": "RotSporeKit/Things/Plant/Wrinklecap",
+    "E": "RotSporeKit/Things/Plant/Wrinklecap",
+    "F": "RotSporeKit/Things/Plant/Wrinklecap",
+    "G": "RotSporeKit/Things/Plant/Wrinklecap"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant Wrinklecap_A (1 of 3) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant Wrinklecap_p3a (2 of 3) \u2014 TheRot",
+    "C": "IN GAME \u2014 random variant Wrinklecap_p3b (3 of 3) \u2014 TheRot",
+    "D": "render rot_wrinklecap_v3a",
+    "E": "render rot_wrinklecap_v3b",
+    "F": "render rotvar_wrinklecap_a_v2",
+    "G": "render rotvar_wrinklecap_b_v2"
+   },
+   "pools": [
+    "RotSporeKit/Things/Plant/Wrinklecap"
+   ],
+   "res": "RotSporeKit/Things/Plant/Wrinklecap",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
+   "shownBase": [],
+   "subject_key": "wrinklecap"
+  },
+  "RSW_ShiroTrap": {
+   "columns": {
+    "A": {
+     "east": "319a9d0a07c3f0dbe060e1dc38b55e98b1904a34eab5b9041fda230a2a0c485b",
+     "north": "7c010de897bf89f38df87914d5583c4cae8fb5fe3e2ef4d7ac91093560db027f",
+     "south": "9234254e26038b048656eeb66a7aecb0501e86b80b5112243966fd9c0d3df863"
+    },
+    "B": {
+     "east": "c15f31c73a543fea740004f8aa1b6e951d0f228f8054eec7c9729e16e6e3d764",
+     "north": "9ded9c265c32e51f4a62ac31b595c6e16abbcd58bf63e96fdf2553c0043e1791",
+     "south": "71bc818df17f50639a95e89317210a981d3a40cbb588d2951e5c51486a8ff622"
+    },
+    "C": {
+     "east": "c26ba72f3c99f7b199d9672b6601800ff89e317defd1400f32f8eab77456c05d",
+     "north": "335e7c919ba15bc6a9f499df86ce249304c000e4996ffd08c15c77459c605350",
+     "south": "3713dcf7f1c90ca94fd7facfd396f5329b11ba647d0a29ff1378d73a4968388d"
+    },
+    "D": {
+     "east": "1638eb06ac8ad05585fa0418a58f4f0a8fb1ced49edf1d10f8abefeea288a53d",
+     "north": "64e8a7b01468a6be75d7ff64e1939aef15980e72d7861e769244e1fe8d1c3fb5",
+     "south": "ab0eba0b16a0d64921d64ea8dd3917bf79b20bb6737fc686ab0d292035d9228f"
+    },
+    "E": {
+     "east": "7f87b2dde7d7a9c898fdd1d119986c6a01dd913182774c7451100fbeb4e37e1e",
+     "north": "5fd33f77bfa07c29286311a05162be018799a7eba28143de26b61c63dd07b094",
+     "south": "3be9ad845f817b75cef8a1d4106557f6a4fe7edcb81a96632edfc73dc0e429eb"
+    },
+    "F": {
+     "east": "0fb340316f7c162bdf1c1bfaf3bc507f4a025e3f199e6ea44e7afcb19e5ee8b1",
+     "north": "081005155dc2c73537267237f86b2e83c1ed423cbc4bb53d4d5a0d06b4be521a",
+     "south": "ce84c80fc922ee5bb95898af8236e06f95b7292641bc99013f471888302e3ceb"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/ShiroTrap/ShiroTrap",
+    "B": "swanimals/ShiroTrap/ShiroTrap",
+    "C": "swanimals/ShiroTrap/ShiroTrap_i",
+    "D": "swanimals/ShiroTrap/ShiroTrap_i",
+    "E": "swanimals/ShiroTrap/ShiroTrap_j",
+    "F": "swanimals/ShiroTrap/ShiroTrap_j"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "history SWBestiary 2026-09-18",
+    "C": "IN GAME \u2014 SWBestiary",
+    "D": "history SWBestiary 2026-09-18",
+    "E": "IN GAME \u2014 SWBestiary",
+    "F": "history SWBestiary 2026-09-18"
+   },
+   "pools": [
+    "swanimals/ShiroTrap/ShiroTrap"
+   ],
+   "res": "swanimals/ShiroTrap/ShiroTrap",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
+   "shownBase": [],
+   "subject_key": "shirotrap"
+  },
+  "RSW_Snoruuk": {
+   "columns": {
+    "A": {
+     "east": "664c6652ed3d2ebbb735e5e5975f590e2736dccbfdb492b13ef791c0e2623914",
+     "north": "26de43b29a8945a6601b0f823f46e9b9d79203a783f16edb64218c184dd19778",
+     "south": "71ed981ca7e4e8ab776ce82f1acb412480fa44c5220f184e69abbcc883e9be39"
+    },
+    "B": {
+     "east": "eec6a9d38156d6083344a9602bd1a4d131c73d6467367d4cb27f95177856cf01",
+     "north": "a8eb36c5a6abe72c3d5bb6dfdc306f3a1bc0ae9834cfdc8ff5bd57218d9937a7",
+     "south": "caf00969d413ecd782ddcfe71f0213f5b194636b65066964482aa692f5326e4d"
+    },
+    "C": {
+     "east": "3e1958999080bb22eb619579174b4781af245d9b0844418375ce63d5037d5662",
+     "north": "29070a7ac12391fc0b5cedab35eb655f783e6ad5ad914de7726cd1a9ab831e60",
+     "south": "3de19d73578d56e2c592a78d2380e73e4a8ee06df856391a01d3df5116b877dc"
+    },
+    "D": {
+     "east": "947011bf8f0434449594f139ca9ed68eb9590be738e111cfb3460e9965945853",
+     "north": "265de513c16acb68e14582707b8a7a2ccdc63b6f74cbdbca870fe2d130975898",
+     "south": "81b4fff2ecc319901517d16e11327ddbffcb733adc4233f00551e31a25752947"
+    },
+    "E": {
+     "east": "a4c6a36277e72f754db3e208f1bdca0309973219ab05c048d80aa43208642a6d",
+     "north": "e1c8c25f1b10ea4d4116fcba2276664be2f4e7fd25b2c5d6518b9a355e796c53",
+     "south": "a8e85102baba028883b2ac9e634b854e9cb05be8adb57269c9e3a07d2321a25b"
+    },
+    "F": {
+     "east": "82a36bcd0207f8a2313003e749e536088db24043106f4eb793dfaa4dc0e4eed7",
+     "north": "98c98b9964fe70abb225e20b29a8bd2428458fbab39cc13b3273d341af94a4e4",
+     "south": "3df343546467c021ba7b3149424dede8253b1e38d6142f1bd9257b54b2f65bde"
+    },
+    "G": {
+     "east": "dff78a6c457686442cf394993d2a0b52825a2ad19b6683bef81149c9755ffc2d",
+     "north": "cf6d17b5d9ddec6e11a1abe0c2a3209ceae17e2c0a6afff6e18d511a3c5043ab",
+     "south": "c9a0442b05e3010d3d393a1d376a60f004233738c0632e15b8e0ca95ccb0800d"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/Snoruuk/Snoruuk",
+    "B": "swanimals/Snoruuk/Snoruuk",
+    "C": "swanimals/Snoruuk/Snoruuk",
+    "D": "swanimals/Snoruuk/Snoruuk",
+    "E": "swanimals/Snoruuk/Snoruuk_j",
+    "F": "swanimals/Snoruuk/Snoruuk_Stationary",
+    "G": "swanimals/Snoruuk/Snoruuk_Stationary"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render dregen_RSW_Snoruuk_SnoruukjStationary_v1",
+    "C": "render dregen_RSW_Snoruuk_Snoruukj_v1",
+    "D": "render rotrow_snoruuk_v2",
+    "E": "IN GAME \u2014 SWBestiary",
+    "F": "IN GAME \u2014 SWBestiary",
+    "G": "donor original \u2014 ?"
+   },
+   "pools": [
+    "swanimals/Snoruuk/Snoruuk"
+   ],
+   "res": "swanimals/Snoruuk/Snoruuk",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
+   "shownBase": [],
+   "subject_key": "snoruuk"
+  }
+ },
+ "sheetId": "gpt_review_therot_sheet_2026-10-24",
+ "snapshotId": "815c13e1251a1c01"
+}

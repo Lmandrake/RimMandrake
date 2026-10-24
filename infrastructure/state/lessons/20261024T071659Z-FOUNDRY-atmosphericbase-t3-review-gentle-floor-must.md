@@ -1,0 +1,1 @@
+AtmosphericBase T3 review: Gentle floor must be applied at EVERY display path (owner, tremor, scar), not only the owner; D12b regexes that a method declaration satisfies pass on nothing - pin the call-site. Open: proof_atmosphere.py D12b tightening + 4 controls left uncommitted in the shared working tree beside another helper's taken_after_load hunks.
