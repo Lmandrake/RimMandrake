@@ -187,7 +187,18 @@ def main(argv=None):
             env["running_sha256"] = hashlib.sha256("\n".join(env["running"]).encode("utf-8")).hexdigest()
             ms = (rm.get("assembly") or {}).get("matches") or []
             env["assembly_matches"] = len(ms)
-            env["assembly_sha256"] = ms[0].get("sha256") if len(ms) == 1 else None
+            # the running_mods sha is of the file on disk NOW; only type_probe.mvidMatchesFile says the process loaded that
+            # file (a redeploy after launch changes the file, not the loaded code), as driver_stamp.py does
+            env["assembly_sha256"] = None
+            try:
+                tp = s.call("jawa/type_probe", typeName="RimMandrake.FlowWorks.RM_MapComponent_Excavation") or {}
+                if tp.get("mvidMatchesFile") is True and tp.get("assemblyFileSha256"):
+                    env["assembly_sha256"] = tp["assemblyFileSha256"]
+                else:
+                    env["assembly_why"] = "type_probe: mvidMatchesFile=%r sha=%r error=%r" % (
+                        tp.get("mvidMatchesFile"), tp.get("assemblyFileSha256"), tp.get("identityError"))
+            except Exception as ex:                    # noqa: BLE001 - identity stays absent, never the disk hash
+                env["assembly_why"] = repr(ex)
         site_save = a.site_save or ("river" if a.site == "river" else None)
         loaded = None
         if site_save and not a.current_map:
