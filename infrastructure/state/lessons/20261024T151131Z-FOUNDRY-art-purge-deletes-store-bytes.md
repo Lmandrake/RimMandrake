@@ -1,0 +1,2 @@
+art.py purge deletes the picture's bytes from the art store (artstore/xx/<sha>.png) by design; a brief saying 'originals recoverable from the art store' after a purge is wrong. Copy the shas out (sha-verified) before purging if they must stay recoverable — done for CrystalMit at D:\ClaudeWork\rimmandrake\purge_backup\crystalmit_20261024. Also: validate_sprite only accepts a hi-res redraw with --drawsize (artpiped passes job drawsize); a CLI run without it still refuses any canvas != reference.
+home: rimworld-review-sheets
