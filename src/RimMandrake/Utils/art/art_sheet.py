@@ -2513,6 +2513,9 @@ def _scale_for(R, row: dict, gitems: list, prefill_letter: str, dec: dict | None
     if size["status"] == "none":     # MEASURED no world size (UI-only def): the resolver exempts the row, not the author
         out.update({"def": size.get("def"), "why": "no world size — " + size["source"]})
         return out
+    # the read-only reference pictures are shown whether or not the row has a candidate of its own: a row with no art yet
+    # (a bridge part drawn by C# that nothing has rendered) is exactly where the reference is the only picture to judge by
+    out["refs"] = _reference_panels(row, size, imgdir)
     faces_order = THING_FACE if size.get("kind") == "thing" else SCALE_FACE
     prim = next((g for g in gitems if g["primary"]), None)
     if prim is None or not prim["cols"]:     # every set of the primary lane moved to UNASSIGNED / was hidden: nothing to scale
@@ -2552,7 +2555,6 @@ def _scale_for(R, row: dict, gitems: list, prefill_letter: str, dec: dict | None
                 "zoomPpc": m.get("zoomPpc"), "zoomFitted": m.get("zoomFitted"), "zoomCropped": m.get("zoomCropped"), "zoomFullPpc": m.get("zoomFullPpc"),
                 "sets": [{"l": l, "ppc": (round(px[0] / qx) if px and qx else None), "px": (px[0] if px else None)}
                          for l, _f, px in sets]})
-    out["refs"] = _reference_panels(row, size, imgdir)
     return out
 
 
@@ -2579,6 +2581,20 @@ def _reference_panels(row: dict, size: dict, imgdir: Path) -> list[dict]:
         if not (comp.exists() and full.exists()):
             SP.render_panel(b, esize, comp, full)
         out.append({"path": rel, "img": f"{imgdir.name}/{comp.name}", "full": f"{imgdir.name}/{full.name}"})
+    return out
+
+
+def _reference_dupes(row: dict, col_faces: list[dict]) -> list:
+    """The row's reference_textures entries whose bytes are ALREADY one of its columns (any face). A reference is a
+    picture shown read-only and never pickable; one that is also the installed art, a render or a history state is on the
+    row as that column (gate req 15 keeps installed bytes shown as installed), so listing it as a reference too would put
+    a reference in a pickable column. Those entries are the duplicates the build drops."""
+    shas = {s for f in col_faces for s in (f or {}).values()}
+    out = []
+    for ent in row.get("reference_textures") or []:
+        p = L.REPO_ROOT / (ent["path"] if isinstance(ent, dict) else ent)
+        if p.is_file() and hashlib.sha256(p.read_bytes()).hexdigest() in shas:
+            out.append(ent)
     return out
 
 
@@ -3111,6 +3127,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
     maxl = max([LETTERS.index(c["letter"]) + 1 for _, gs in built for g in gs for c in g["cols"]] + [1])
     items, snap_rows, prefills = [], {}, {}
     cluster_ids, n_sit1 = {}, 0
+    ref_dupes: dict = {}           # row key -> reference_textures entries that are already one of the row's columns
     for r, graphics in built:
         key = r["key"]
         keys = {L.subject_key(x) for x in [key] + list(r.get("defNames") or []) + [_stem(key)] if x}
@@ -3329,6 +3346,11 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                     sm[f] = thumb(sh, imgdir, size=thumb_size)
             if sm:
                 item["siblings"].append({"label": sb["label"], "res": sb["res"], "protected": sb["protected"], "imgs": sm})
+        _dup = _reference_dupes(r, [c["faces"] for g in gitems for c in g["cols"]]
+                                + [c["faces"] for c, _gk in hidden_kept.get(key, [])])
+        if _dup:
+            ref_dupes[key] = _dup
+            r["reference_textures"] = [e for e in r["reference_textures"] if e not in _dup]
         if scale_res is not None:
             item["scale"] = _scale_for(scale_res, r, gitems, letter, (old or {}).get("decisions", {}).get(key), imgdir)
             if item["scale"].get("status") == "fallback":     # req 2: a FALLBACK size is allowed but must be flagged
@@ -3344,6 +3366,15 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                                              | {c["letter"] for g in gitems for c in g["cols"]}, key=LETTERS.index),
                           "shownBase": sorted(_base_of.get(key) or ())}
 
+    if ref_dupes:
+        for key, ds in ref_dupes.items():
+            print(f"NOTE {key}: reference_textures {[e['path'] if isinstance(e, dict) else e for e in ds]} are already "
+                  "columns of this row (installed / render / history): shown there once, dropped as references", file=sys.stderr)
+        if b.get("subjects"):      # art_sheet's own census (--subjects / --textures): a refresh rebuild must not re-add them
+            for cr in b["rows"]:
+                if cr.get("key") in ref_dupes:
+                    cr["reference_textures"] = [e for e in cr.get("reference_textures") or [] if e not in ref_dupes[cr["key"]]]
+            Path(census_path).write_text(json.dumps(census, indent=1))
     for key, cs in hidden_kept.items():
         sr = snap_rows.get(key)
         if sr is None:
