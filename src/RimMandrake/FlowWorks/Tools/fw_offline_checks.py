@@ -26,7 +26,7 @@ onto the pipe ... make the sprinkler object be shorter, squatter, and wider so t
 Portable ladder (LADDER_PORTABLE_REDRAW_NORTH_FROM_GROUND; his words: "the one laying on its side looks really good" /
 "yes I'd like to see the ground portable ladder used"; south "only small nubs sticking up"):
   ladder_north_not_compressed  keeps the ground ladder's length/width and rung pitch/stringer span (0.92x..1.09x), >= 0.85 cell
-                               long, top poking past the far rim and foot on the face (placement, not just shape)
+                               long, top poking past the far rim and foot at the face/floor (placement, not just shape)
   ladder_south_footprint       two or more small nubs standing on the near rim: area, height and foot row bounded
 Each returns (ok, detail).
 """
@@ -260,10 +260,12 @@ def _ladder_geom(im):
 
 def ladder_north_not_compressed(north, flat_upright, keep=0.92, min_cells=0.85, rim_row=128, poke=(30, 90),
                                 foot=(240, 330), centre_tol=8):
-    """The installed north keeps the ground ladder's proportions: length/width and rung pitch/stringer span each
+    """The installed north keeps the ground ladder's proportions: length/width and rung pitch/opaque width each
     within keep..1/keep x the ground sprite's (turned upright), it is at least min_cells long, and it stands where the rig shows a
     ladder on the far wall: its top pokes poke[0]..poke[1] px past the far rim (canvas row rim_row) and its foot rests in
-    rows foot[0]..foot[1] (the face; a full face's foot is row 256), its wood centred on the canvas within centre_tol px.
+    rows foot[0]..foot[1] -- from just above a full (D4+) face's foot (row 256) to ~0.3 cell out onto the pit floor in front
+    of it: the ground ladder at its own scale is longer than the face, so the shipped foot lands at row 306 on the floor
+    (the placement on the owner sheet; this is not a check that the foot is on the face) -- its wood centred on the canvas within centre_tol px.
     Two-sided: the ratios must lie within [keep, 1/keep] x the ground's, so a ladder squeezed across (or along) fails."""
     g, f = _ladder_geom(north), _ladder_geom(flat_upright)
     if g is None:
