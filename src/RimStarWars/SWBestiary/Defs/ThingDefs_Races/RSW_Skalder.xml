@@ -50,7 +50,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Skalder</defName>
     <label>skalders</label>
-    <description>The skalder were a mammalian desert species of herbivorous quadrupeds native to the plains of the planet Florrum. They were not normally ridden by sentient beings, but were surprisingly fast if such a feat was managed. They made exceptional pack animals, even in toxic environments and so were exported by pirate bands for use offworld.</description>
+    <description>A thick-skinned herbivore from the acid-geyser plains of Florrum, with a heavy layered mantle, pale flank bands and two long tusks. It senses impending eruptions and runs surprisingly fast on its short legs; although seldom ridden, it makes a sturdy pack animal.</description>
     <statBases>
       <MoveSpeed>4.8</MoveSpeed>
       <MarketValue>650</MarketValue>

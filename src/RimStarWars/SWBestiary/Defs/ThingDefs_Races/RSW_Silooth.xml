@@ -4,7 +4,7 @@
   <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Silooth</defName>
     <label>silooth</label>
-    <description>The silooth were a large 'Sithspawn' acid spitting beetle bred by the Sith Empire for use as a warbeast. Silooth were ferocious creatures using their powerful mandibles to crush their prey or tear down trees and buildings. They were spread to numerous worlds either intentionally or accidentally by the Sith. These descendents whilst not as large and ferocious (another process of feral regression in the absence of their 'Sith masters') are still formidable.</description>
+    <description>A huge, six-legged Sithspawn beetle bred as a warbeast, with spiked rust-brown armour and heavy forward mandibles. It crushes prey and obstacles with its jaws and sprays acid from sacs in its maw.</description>
     <statBases>
       <MoveSpeed>5.0</MoveSpeed>
       <MarketValue>1500</MarketValue>

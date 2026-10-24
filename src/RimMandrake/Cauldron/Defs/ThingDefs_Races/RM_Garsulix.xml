@@ -26,7 +26,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Garsulix</defName>
     <label>garsulix</label>
-    <description>A hideous thing that hungers. A floating, chitinous, insect-like ball of gas: a swollen, veined sac held up by its own lift, plated over the top and hung beneath with hooked legs and a working mouth. It drifts ever closer, slowly but surely, intent on devouring your flesh. Its gas burns; a garsulix that dies close by takes you with it.</description>
+    <description>A floating, veined gas sac capped with chitin plates, with hooked legs and a working mouth hanging beneath. It drifts slowly toward living prey and feeds at close range. Its gas is flammable, and its death can catch nearby creatures in the blast.</description>
     <statBases>
       <MoveSpeed>2.5</MoveSpeed>
       <ComfyTemperatureMin>-50.3</ComfyTemperatureMin>

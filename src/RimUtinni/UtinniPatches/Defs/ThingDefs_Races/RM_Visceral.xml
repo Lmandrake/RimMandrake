@@ -78,7 +78,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Visceral</defName>
     <label>visceral</label>
-    <description>An alien (or at least unknown) creature of rigor and veracity. About the size of a human and much more dangerous. Armed with rending raptorial legs and a maw capable of tearing into even the toughest hide.</description>
+    <description>A lean, plated predator about the size of a human, with a long segmented tail, hooked raptorial limbs and a toothed maw. It can tear through thick hide.</description>
     <statBases>
       <MoveSpeed>3.85</MoveSpeed>
       <ComfyTemperatureMin>-40</ComfyTemperatureMin>

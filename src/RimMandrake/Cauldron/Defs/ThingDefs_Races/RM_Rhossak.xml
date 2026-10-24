@@ -98,7 +98,7 @@
   <ThingDef ParentName="RM_RhossakBase">
     <defName>RM_Rhossak</defName>
     <label>rhossak</label>
-    <description>A stag-shaped thing grown rather than born: its legs, flanks and branching crown are bundles of living root, wound tight and still slowly twisting. Along its back it carries swollen seed-husks that split as they ripen, showing wet red seed packed like teeth. Where a rhossak lies down to rest, the ground around it sprouts; three of them standing together long enough can root a whole new grove. Herds keep well clear of one.</description>
+    <description>A stag-shaped animal grown from tightly wound living roots, with branching antlers and split seed-husks exposing wet red seeds along its back. It binds to a nearby twisting thornwood and sprouts new growth where it rests. Three rhossaks standing together long enough can root a new thornwood.</description>
     <descriptionHyperlinks>
       <ThingDef>RM_TwistingThornwood</ThingDef>
     </descriptionHyperlinks>
@@ -157,7 +157,7 @@
   <ThingDef ParentName="RM_RhossakBase">
     <defName>RM_GalledRhossak</defName>
     <label>galled rhossak</label>
-    <description>A rhossak whose root-flesh has turned on itself. Pale, fleshy galls bloom across its trunk-body, its legs and even its antlers, under a skin of hanging moss, and new ones push up faster than old ones slough away. It is slower and gentler than its seed-bearing kin and carries no seed at all. The galls are edible: a meat substitute of questionable origin that nobody asks about twice.</description>
+    <description>A rhossak swollen with pale, fleshy galls beneath hanging moss, even along its legs and antlers. It binds to a twisting thornwood like its healthy kin, but is slower, gentler and carries no seed. It sheds the galls as new ones grow; they make a serviceable meat substitute.</description>
     <descriptionHyperlinks>
       <ThingDef>RM_TwistingThornwood</ThingDef>
     </descriptionHyperlinks>

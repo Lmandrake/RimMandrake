@@ -16,7 +16,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_CrystalMit</defName>
     <label>crystalmit</label>
-    <description>A Crystalmit is a Pebblemit that has been genetically modified to feed on minerals. Crystalmits have a partly silicon-based biology, so they can derive substenance from eating scattered rocks.\n\nCrystalmits were created as a quick way of removing rock rubble from mining operations, but wild ones may prove to be a nuisance for colonies who'd rather use rocks for something useful.</description>
+    <description>An engineered mineral-eater: a tangle of crystal growths, tough connective tissue and claw-like manipulators. Its partly silicon-based body turns loose stone into sustenance. Bred to clear mining rubble, wild crystalmits also consume stone a colony intended to use.</description>
     <statBases>
       <MoveSpeed>1.8</MoveSpeed>
       <ComfyTemperatureMin>-88.2</ComfyTemperatureMin>

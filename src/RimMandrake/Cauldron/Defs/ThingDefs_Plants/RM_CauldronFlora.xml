@@ -94,7 +94,7 @@
     <defName>RM_DarkCrust</defName>
 <altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>vein moss</label>
-    <description>A thin skin of phototrophic film, patched black, deep purple and blood-red, spread wherever a trunk or a stone faces the star's scattered light. It is not green because green is the wrong pigment for light this weak — it absorbs across the whole dim spectrum instead, and it is losing anyway. This is what grows on the things that actually won.</description>
+    <description>A thin black, deep-purple and blood-red film that spreads across light-facing bark and exposed stone. It gathers what little light reaches those surfaces beneath the Cauldron's permanent dusk.</description>
     <statBases>
       <MaxHitPoints>60</MaxHitPoints>
       <Flammability>0.3</Flammability>
@@ -176,7 +176,7 @@
   <ThingDef ParentName="PlantBase">
     <defName>RM_BloodBouquet</defName>
     <label>blood bouquet</label>
-    <description>Dark crimson flower heads bunched on a single stalk like a grim bouquet, heavy and wet-looking even when the air is dry. It gets its colour from the same iron the trees sweat, and nothing that eats it eats twice.</description>
+    <description>Dark crimson flower heads crowd above a tangle of black-green leaves. Iron drawn from the forest's metallic seep colours the blooms, and the plant is poisonous.</description>
     <statBases>
       <MaxHitPoints>60</MaxHitPoints>
       <Flammability>0.3</Flammability>
@@ -291,7 +291,7 @@
   <ThingDef ParentName="PlantBase">
     <defName>RM_GiantAgariTox</defName>
     <label>giant agaritox</label>
-    <description>A colossal toxic mushroom: a stout ridged stalk beneath a huge mottled purple-green cap that oozes a faint haze of spores at its rim. Nothing about it apologises for being poisonous. It stands where the fog is thickest and the ground is oldest, and it dwarfs the trees beside it.</description>
+    <description>A colossal toxic mushroom with a stout, ridged stalk beneath a broad cap mottled purple and green. A faint haze of spores leaks from the rim. It grows in the oldest, most fog-bound parts of the forest.</description>
     <statBases>
       <MaxHitPoints>300</MaxHitPoints>
       <Flammability>0.3</Flammability>
@@ -406,7 +406,7 @@
   <ThingDef ParentName="PlantBase">
     <defName>RM_Xithess</defName>
     <label>xithess</label>
-    <description>A pale trunk the height of a person, crowned with a fan of fine fronds that never stop moving -- not in wind, in chemistry, combing the fog for what the vents exhale. Watch a xithess for a minute and you understand the whole forest: nothing here drinks water. It filters. Harvesters take the frond-crowns whole and sell them as they are -- a xithess crown is a fistful of the forest's own refinery.</description>
+    <description>A person-high plant with a pale trunk and a crown of fine fronds that flex in response to vent gases. The fronds filter compounds from the metal-rich fog. Harvesters take the crowns whole and sell them for the material they collect.</description>
     <statBases>
       <MaxHitPoints>80</MaxHitPoints>
       <Flammability>0.6</Flammability>

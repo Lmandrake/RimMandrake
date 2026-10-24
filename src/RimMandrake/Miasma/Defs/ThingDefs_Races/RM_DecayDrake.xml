@@ -31,7 +31,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_DecayDrake</defName>
     <label>fermatalis</label>
-    <description>A heavy, flightless drake with stunted wings folded over a bloated, sour-sweet belly. The fermatalis breathes out a living haze of yeasts and enzymes that sets almost anything organic around it fermenting, and drives the change at a furious pace: within hours the greenery where it has rested slumps into soft, bubbling mounds of mash. It eats the result and is usually drunk on it — four separate livers keep it alive through the habit. Cooks of the delta count it among the most valuable beasts in the Miasma, for whatever it breathes on ferments in a fraction of the usual time. Hard to tame, but a fermatalis that accepts you, especially if you bring a drink, makes a fine hunting companion.</description>
+    <description>A heavy, flightless drake with stunted wings folded over a bloated belly. Its breath carries yeasts and enzymes that turn nearby vegetation into fermenting mash within hours; four livers keep it alive on the result. Difficult to tame, it is valuable for rapid fermentation and usually more cooperative when offered a drink.</description>
     <statBases>
       <MoveSpeed>4.00</MoveSpeed>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>

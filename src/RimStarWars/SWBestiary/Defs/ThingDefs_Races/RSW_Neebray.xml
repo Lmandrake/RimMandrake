@@ -39,7 +39,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Neebray</defName>
     <label>neebray</label>
-    <description>Neebray were flying, limbless creatures which varied greatly in size and habitat. They could be found on many worlds, such as Rugosa, Rishi moon, and Tatooine. There are several species of neebray, varying in size and appearance but all were tolerant to the vacuum of space.</description>
+    <description>A bird-sized juvenile neebray, with a limbless body, six eyes, two translucent wings and a smaller pair of tail fins. Young neebrays inhabit worlds such as Tatooine, Rugosa and Rishi Moon; the gigantic adults migrate through space and feed on stellar gases.</description>
     <statBases>
       <MoveSpeed>3.0</MoveSpeed>
       <MarketValue>10</MarketValue>

@@ -18,7 +18,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_BedBug</defName>
     <label>bedbug</label>
-    <description>These oversized insects are considered a pest and a nuisance in every world they manage to infest. While not particularly dangerous or powerful on their own, their bite carries a powerful toxin that paralyzes its prey, so one small bite is enough to down prey much larger than themselves. Thankfully, humans are way too large for them, unless they are somehow maddened beyond all reason... Hunters should be wary not to tackle a bedbug on their own!</description>
+    <description>An oversized insect with six glowing red eyes and a long stabbing proboscis. Its bite delivers a paralysing toxin capable of bringing down prey much larger than itself. Usually a nuisance, a maddened bedbug is dangerous to a lone hunter.</description>
     <statBases>
       <MoveSpeed>3.00</MoveSpeed>
       <ComfyTemperatureMin>-86.6</ComfyTemperatureMin>

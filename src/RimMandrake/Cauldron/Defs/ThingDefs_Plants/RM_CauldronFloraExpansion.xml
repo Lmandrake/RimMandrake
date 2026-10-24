@@ -69,7 +69,7 @@
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Fexxil</defName>
     <label>fexxil</label>
-    <description>A knee-high thicket of cobalt-blue glass burrs: branching spines tipped with tiny hooked crystals, deep blue at the core going pale ice-blue at the tips, each hook holding a bead of condensate. It reads as broken bottle-glass grown into a shrub, and the scratches it leaves carry a dose of the forest's poison.</description>
+    <description>A knee-high thicket of cobalt-blue glass spines with pale, hooked tips that collect beads of condensate. Its burrs scratch skin and carry the forest's poison into the wound.</description>
     <statBases>
       <MaxHitPoints>90</MaxHitPoints>
       <Flammability>0.1</Flammability>
@@ -153,7 +153,7 @@
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Kissaveth</defName>
     <label>kissaveth</label>
-    <description>A clump of pale lavender gas-bladders on short stalks, the skins thin enough to show deep violet fluid sloshing inside. Damage splits one and it leaks toxic gas, and so does cutting it down. It leaks, it does not burst.</description>
+    <description>A clump of pale lavender gas bladders on short stalks, with deep violet fluid visible through their thin skins. Damage or cutting opens a slow leak of toxic gas.</description>
     <statBases>
       <MaxHitPoints>30</MaxHitPoints>
       <Flammability>0.4</Flammability>
@@ -195,7 +195,7 @@
     <defName>RM_Selvix</defName>
 <altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>selvix</label>
-    <description>A flat star-shaped rosette of thick wet fuchsia arms, each rimmed with a frost of white crystal where it meets the air, a wine-red heart at the centre. It rings itself on stained ground. The arms are bitter and clean, and a poultice of them does what herbal medicine does.</description>
+    <description>A flat rosette of thick, wet fuchsia arms around a wine-red centre, each arm edged with white crystal. Selvix grows in rings on stained ground, and its bitter arms can be made into herbal medicine.</description>
     <statBases>
       <MaxHitPoints>35</MaxHitPoints>
       <Flammability>0.3</Flammability>

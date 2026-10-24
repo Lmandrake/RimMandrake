@@ -14,7 +14,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_SikkaSikka</defName>
     <label>Sikka Sikka</label>
-    <description>A large flightless bird, genetically modified to produce both edible eggs and a valuable silk-like textile. Sikka Sikka was designed from the ground up as a versatile farm animal, perfectly domesticated and -contrary to other ratites- showing very little aggression.\n\nIt is not uncommon to see flocks of silkies grazing in pastures all along the Rim. They are however not usually found in the wild, and when they are there is often a tale of violence behind their roaming around unprotected.</description>
+    <description>A large, docile flightless bird bred for edible eggs and long, silk-like plumage. Feral flocks usually descend from escaped farm stock.</description>
     <statBases>
       <MoveSpeed>3.0</MoveSpeed>
       <ComfyTemperatureMin>-65</ComfyTemperatureMin>

@@ -53,7 +53,7 @@
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_VentStalker</defName>
     <label>vent stalker</label>
-    <description>A low, blind ambusher that presses itself flat against a slick trunk and waits, reading the ground's constant chemical hum through its own splayed feet. It has no eyes worth the name — there is nothing here worth seeing, only worth feeling — and it does not move until the hum under something warm-blooded gets close enough to touch. Its stinger carries the same metal-tainted poison as everything else that lives here; it does not manufacture the toxin so much as fail to get rid of it, same as the trees.</description>
+    <description>A low, blind ambusher that clings flat to wet trunks, sensing approaching animals through broad, splayed feet. It strikes at close range with a stinger carrying metals accumulated from the Cauldron's food chain. The poison is waste it cannot shed.</description>
     <statBases>
       <MoveSpeed>3.0</MoveSpeed>
       <ComfyTemperatureMin>-15</ComfyTemperatureMin>
