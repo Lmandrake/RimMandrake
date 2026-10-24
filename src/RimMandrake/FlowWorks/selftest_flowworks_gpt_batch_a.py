@@ -37,6 +37,30 @@ CASES = [
           "pendingUnits -= levels * unitPerLevel;"),
          absent=[r"pendingUnits -= levels \* unitPerLevel"]),
 
+    # ── UNLIMITED_SINK_FIX_FRACTIONAL_WATER (FA_core_sim_1.4) ──
+    Case("UNLIMITED_SINK_FIX_FRACTIONAL_WATER", "the sink drains part-notch water", "MapControls/RM_FlowTaps.cs",
+         r"public class Building_RM_FlowSink[\s\S]*?public override void FlowPulse\(RM_MapComponent_Excavation ex\)",
+         [r"long w = ex\.WaterDlAt \( c \) ; if \( w > 0 &&",
+          r"long took = ex\.TryTakeDl \( candCells \[ pick \] , Math\.Min \( RM_LevelSolve\.U , dueDl - doneDl \) , out _ \) ;"
+          r" if \( took <= 0 \) \{ break ; \} doneDl \+= took ;",
+          r"ex\.NoteMapControlFlowDl \( 0 , doneDl \)"],
+         ("long w = ex.WaterDlAt(c);", "long w = ex.FillAt(c);"),
+         absent=[r"ex\.FillAt \(", r"ex\.TryTakeLevel \("]),
+    # ── LEVEL_HOLDER_FIX_REFILLS_FRACTIONAL_BASIN (FA_core_sim_2.3) ──
+    Case("LEVEL_HOLDER_FIX_REFILLS_FRACTIONAL_BASIN", "the holder measures held water in dL", "MapControls/RM_LevelHolder.cs",
+         r"private void Measure\(RM_MapComponent_Excavation ex, out long heldDl, out int capacity\)",
+         [r"capacity \+= ex\.DepthAt \( c \) ; heldDl \+= ex\.WaterDlAt \( c \) ;"],
+         ("heldDl += ex.WaterDlAt(c);", "heldDl += ex.FillAt(c);"),
+         absent=[r"ex\.FillAt \("]),
+    Case("LEVEL_HOLDER_FIX_REFILLS_FRACTIONAL_BASIN", "the holder drains part notches and steers on dL", "MapControls/RM_LevelHolder.cs",
+         r"private void HoldChannel\(RM_MapComponent_Excavation ex, int due\)",
+         [r"lastHeld = RM_MapControlMath\.HeldLevels \( heldDl , RM_LevelSolve\.U \) ;",
+          r"RM_MapControlMath\.HeldLevels \( heldDl \+ poured - taken , RM_LevelSolve\.U \)",
+          r"need < 0 && ex\.WaterDlAt \( c \) > 0 && Mine \( ex , c \)",
+          r"long took = ex\.TryTakeDl \( candCells \[ pick \] , RM_LevelSolve\.U , out _ \) ;",
+          r"ex\.NoteMapControlFlowDl \( poured , taken \)"],
+         ("need < 0 && ex.WaterDlAt(c) > 0 && Mine(ex, c)", "need < 0 && ex.FillAt(c) > 0 && Mine(ex, c)"),
+         absent=[r"ex\.TryTakeLevel \(", r"need < 0 && ex\.FillAt"]),
 ]
 
 

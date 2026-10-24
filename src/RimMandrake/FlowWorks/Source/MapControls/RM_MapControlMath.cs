@@ -113,6 +113,17 @@ namespace RimMandrake.FlowWorks.MapControls
 			return target - held;
 		}
 
+		/// <summary>LEVEL_HOLDER_FIX_REFILLS_FRACTIONAL_BASIN: the levels a reach holds, from its water in dL, rounded to the
+		/// nearest level (half away from zero), so a spread part-notch sheet counts. 0 for a non-positive level size.</summary>
+		public static int HeldLevels(long heldDl, long dlPerLevel)
+		{
+			if (dlPerLevel <= 0 || heldDl <= 0)
+			{
+				return 0;
+			}
+			return (int)Math.Min(int.MaxValue, Math.Round(heldDl / (double)dlPerLevel, MidpointRounding.AwayFromZero));
+		}
+
 		/// <summary>Timer switch modes.</summary>
 		public const int TimerByHours = 0;
 		public const int TimerByPeriod = 1;

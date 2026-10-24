@@ -4,6 +4,7 @@
 using System;
 using RimMandrake.FlowWorks.Drilling;
 using RimMandrake.FlowWorks.LiquidTypes;
+using RimMandrake.FlowWorks.MapControls;
 
 namespace RimMandrake.FlowWorks.SelfTest
 {
@@ -61,6 +62,18 @@ namespace RimMandrake.FlowWorks.SelfTest
                     else
                         Assert(wet > 0, "control: the same pond allowed does feed the channel (the scene can see a feed): " + wet);
                 }
+            });
+
+            // LEVEL_HOLDER_FIX_REFILLS_FRACTIONAL_BASIN (FA_core_sim_2.3): the holder measures held water in dL.
+            Case("GptA1024_level_holder_counts_a_spread_sheet", () =>
+            {
+                const long U = RM_LevelSolve.U;
+                // GPT's scene: five depth-1 squares, 50%, three levels spread as a 60% sheet (6,000 dL each, no whole notch).
+                int held = RM_MapControlMath.HeldLevels(5 * 6000, U);
+                Assert(held == 3, "a 60% sheet over five squares holds three levels, got " + held);
+                Assert(RM_MapControlMath.LevelHolderNeed(held, 5, 0.5f) == 0, "a satisfied basin needs nothing (old: read 0 held, poured 3)");
+                Assert(RM_MapControlMath.HeldLevels(900, U) == 0 && RM_MapControlMath.HeldLevels(U / 2, U) == 1, "rounds to the nearest level");
+                Assert(RM_MapControlMath.HeldLevels(-5, U) == 0 && RM_MapControlMath.HeldLevels(U, 0) == 0, "nothing from nothing");
             });
         }
     }

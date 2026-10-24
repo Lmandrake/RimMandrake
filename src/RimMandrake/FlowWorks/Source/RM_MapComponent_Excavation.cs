@@ -207,6 +207,13 @@ namespace RimMandrake.FlowWorks
 			mapControlDrainedTotal += drainedLevels;
 		}
 
+		/// <summary>UNLIMITED_SINK_FIX_FRACTIONAL_WATER: the same record in decilitres, for a control that moves part notches.</summary>
+		public void NoteMapControlFlowDl(long pouredDl, long drainedDl)
+		{
+			mapControlPouredTotal += pouredDl / (float)RM_LevelSolve.U;
+			mapControlDrainedTotal += drainedDl / (float)RM_LevelSolve.U;
+		}
+
 		public float MapControlPouredTotal => mapControlPouredTotal;
 		public float MapControlDrainedTotal => mapControlDrainedTotal;
 
