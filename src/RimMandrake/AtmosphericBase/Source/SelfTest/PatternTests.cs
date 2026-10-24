@@ -94,6 +94,8 @@ internal static class PatternTests
             mayGoDark = v("mayGoDark", "false") == "true",
             flasherCount = int.Parse(v("flasherCount", "0")),
             flasherPeriodSeconds = float.Parse(v("flasherPeriodSeconds", "0"), inv),
+            scarLinger = float.Parse(v("scarLinger", "0"), inv),
+            scarKeeps = v("scarKeeps", "false") == "true",
         };
         if (n["layers"] != null)
         {
@@ -710,5 +712,6 @@ internal static class PatternTests
         Step7Review();
         StepR1();
         WalkerTests.Run();
+        ModifierTests.Run();
     }
 }

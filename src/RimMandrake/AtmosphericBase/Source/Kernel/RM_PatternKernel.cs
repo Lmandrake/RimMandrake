@@ -75,6 +75,15 @@ namespace RimMandrake.AtmosphericBase
         public RM_Pick pick = RM_Pick.Spread;        // Count: one per room round robin, or rooms nearest the anchor first
         public bool tremble;                // Count: marked fixtures alternate two adjacent entries every 0.8-1.5 s
         public bool accumulate;             // Count: one more marked per beat until the room is full, then clear
+        // step 10 phrase modifiers (RM_PatternModifiers.cs), on any layer
+        public float echo = 0f;             // M1 ECHO: answering rooms replay the layer this many s later (0 = off)
+        public bool echoInvert;             // M1 ECHO: the answer is inverted (lo<->hi)
+        public int reach = 0;               // M2 APPROACH: door hops the front advances from `anchor` (0 = off)
+        public float approachEvery = 60f;   // M2 APPROACH: one approach-pause-withdraw, seconds
+        public RM_Withdraw withdraw = RM_Withdraw.Slow;   // M2 APPROACH: Slow (invitation) or Fast (warning)
+        public float pause = 8f;            // M2: the front's hold at full reach. Sweep: a pausing wave's hold, s
+        public float pauseChance = 0f;      // Sweep: the chance a pass stops and holds `pause` s at a random point
+        public float accelerate = 0f;       // Sweep: -1..1; > 0 starts each pass slow and finishes fast
 
         [NonSerialized] private int lo = -2, hi = -2;
 
@@ -194,6 +203,7 @@ namespace RimMandrake.AtmosphericBase
                 if (!Enum.IsDefined(typeof(RM_Combine), l.combine)) e.Add(at + "combine is not Over or Max");
                 var pe = new List<string>();
                 p.Errors(l, n, pe);
+                RM_Modifiers.Errors(l, n, pe);
                 foreach (string x in pe) e.Add(at + x);
             }
         }
@@ -234,7 +244,7 @@ namespace RimMandrake.AtmosphericBase
             {
                 RM_IPrimitive p = l == null ? null : RM_Primitives.Get(l.primitive);
                 if (p == null) continue;
-                int x = p.Index(l, n, ref c, t);
+                int x = RM_Modifiers.Any(l) ? RM_Modifiers.Index(p, l, n, ref c, t) : p.Index(l, n, ref c, t);
                 if (x == RM_PatternKernel.Pass) continue;
                 v = (l.combine == RM_Combine.Max && v != RM_PatternKernel.Pass) ? Math.Max(v, x) : x;
             }
@@ -257,7 +267,7 @@ namespace RimMandrake.AtmosphericBase
             {
                 RM_IPrimitive p = l == null ? null : RM_Primitives.Get(l.primitive);
                 if (p == null) continue;
-                double x = p.NextChange(l, n, ref c, t);
+                double x = RM_Modifiers.Any(l) ? RM_Modifiers.NextChange(p, l, n, ref c, t) : p.NextChange(l, n, ref c, t);
                 if (x < best) best = x;
             }
             return best;

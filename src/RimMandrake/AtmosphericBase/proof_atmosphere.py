@@ -541,6 +541,7 @@ PRIMITIVE_PARAMS = {   # independent of the C# kernel: what each built primitive
     "Tell": ("interval", "beat", "cap"),
     "Count": ("n", "perRoom", "markEntry", "restEntry", "pick", "tremble", "accumulate", "beat", "anchor"),
 }
+MODIFIER_PARAMS = ("echo", "echoInvert", "reach", "approachEvery", "withdraw", "pause", "pauseChance", "accelerate")   # design §1.2 M1/M2 + S7 sweep warp, on any layer
 WALK_GRAPHS = ("Adjacency", "Rooms", "Conduits")   # design S7; Conduits falls back to Adjacency (no conduit graph built)
 WALK_STEPS = ("Walk", "Jump")
 COUNT_PICKS = ("Spread", "NearestAnchor", "Brightest")   # Brightest falls back to Spread (no brightness read)
@@ -774,6 +775,26 @@ KERNEL_WALKER_CHECKS = ("S7 procession heads=3: exactly 3 lamps lit in each dwel
                         "S7 count tremble")
 
 
+KERNEL_MODIFIER_CHECKS = ("M1 echo delay: calling rooms 0",
+                          "M1 echo: an answering room shows exactly what the caller showed",
+                          "M1 echoInvert: the answer is the caller inverted",
+                          "M1 echo NextChange",
+                          "M2 approach envelope",
+                          "M2 approach: Slow withdraws three times the advance",
+                          "M2 approach: outside the front the layer is Pass",
+                          "M2 approach Slow NextChange",
+                          "M3 scar linger: capped at 30 s unless the scheme keeps",
+                          "M3 scar: the previous owner shows only on the new owner's lowest entry",
+                          "M4 hush weight: rises monotone",
+                          "M4 hush: an index narrows monotone",
+                          "M4 hush in a dark room: only the keeper holds the ember",
+                          "S7 sweep unwarped: pauseChance 0 and accelerate 0 are exactly the plain sweep",
+                          "S7 sweep warp: Passes never runs backward",
+                          "S7 sweep pause: pauseChance 1 holds every pass",
+                          "S7 sweep pause NextChange",
+                          "S7 sweep accelerate NextChange")
+
+
 def judge_kernel_lines(text, checks, passmsg):
     """Find each named check's line in a kernel selftest log. No log = UNMEASURED, never a pass."""
     if not text:
@@ -801,6 +822,16 @@ def judge_walker_log(text):
                               "(depth-first tour: a backtrack or the lap wrap may jump), ember procession moves in true black; coil "
                               "never repeats and flares at crossings within budget at 1000 lamps; tell's integer cap; count is still "
                               "at steady state and stable under membership change (Conduits graph and Brightest pick fall back, unmeasured)")
+
+
+def judge_modifier_log(text):
+    """D9: the phrase modifiers (ECHO, APPROACH, SCAR, HUSH) and the sweep's pause/accelerate, from the kernel's own lines."""
+    return judge_kernel_lines(text, KERNEL_MODIFIER_CHECKS,
+                              "kernel selftest drove the modifiers: echo delay within +-20%, the answer replays (or inverts) the "
+                              "caller; approach advance/hold/withdraw envelope, Slow 3x, Pass outside the front; scar linger capped at "
+                              "30 s unless kept, shown only on the new owner's lowest entry; hush settles monotone, a dark room keeps "
+                              "one ember; sweep pause/accelerate monotone with NextChange agreeing, unwarped unchanged (the compositor's "
+                              "SCAR/HUSH wiring and the shrine/power room reads are live-only, unmeasured)")
 
 
 def judge_drawn_layer(kernel):
@@ -848,6 +879,7 @@ def offline_rows(rows, kernel_log=None):
     add(rows, "D7b.graph_cache_behaviour", *judge_kernel_log(klog))
     add(rows, "D8.walkers_behaviour", *judge_walker_log(klog))
     add(rows, "D8b.drawn_ember_layer", *judge_drawn_layer(kernel_cs()))
+    add(rows, "D9.modifiers_behaviour", *judge_modifier_log(klog))
     return d
 
 
@@ -1621,6 +1653,11 @@ def metric_controls():
     out.append(("judge_walker_log good", judge_walker_log(wlog)[0], PASS))
     out.append(("judge_walker_log a walker check failed", judge_walker_log(wlog.replace("ok    S7 coil: no", "FAIL  S7 coil: no"))[0], FAIL))
     out.append(("judge_walker_log older build", judge_walker_log(klog)[0], UNM))
+    mlog = "\n".join("ok    " + n + " x" for n in KERNEL_MODIFIER_CHECKS) + "\nall AtmosphericBase kernel selftests passed"
+    out.append(("judge_modifier_log good", judge_modifier_log(mlog)[0], PASS))
+    out.append(("judge_modifier_log a hush check failed", judge_modifier_log(mlog.replace("ok    M4 hush in", "FAIL  M4 hush in"))[0], FAIL))
+    out.append(("judge_modifier_log older build", judge_modifier_log(wlog)[0], UNM))
+    out.append(("judge_modifier_log none", judge_modifier_log("")[0], UNM))
     out.append(("judge_drawn_layer not built", judge_drawn_layer("public const bool DrawnLayerBuilt = false;")[0], UNM))
     out.append(("judge_drawn_layer blind", judge_drawn_layer("")[0], UNM))
     for nm, lay, want in (("procession heads 9", {"heads": "9"}, 1), ("procession trace+Jump", {"trace": "1", "step": "Jump"}, 1),

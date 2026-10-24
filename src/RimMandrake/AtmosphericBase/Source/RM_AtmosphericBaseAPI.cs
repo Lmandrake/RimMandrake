@@ -54,6 +54,11 @@ namespace RimMandrake.AtmosphericBase
             return c != null && c.PushMood(claimant, group, scheme, rank, out _);
         }
 
+        /// <summary>M4 HUSH: the room's lamps narrow to one held mid entry over `settle` s, hold `hold` s, recover over
+        /// settle. Call it only from a witness-gated event (design L14): the framework does not check who saw what.</summary>
+        public static bool Hush(Map map, Room room, float settle = 4f, float hold = 20f) =>
+            room != null && (RM_MapComponent_AtmosphericBase.For(map)?.compositor.Hush(room.ID, settle, hold) ?? false);
+
         public static bool ReleaseMood(Map map, string claimant) => RM_MapComponent_AtmosphericBase.For(map)?.ReleaseMood(claimant) ?? false;
         public static RM_MoodClaim CurrentMood(Map map) => RM_MapComponent_AtmosphericBase.For(map)?.EffectiveMood;
         public static void RegisterGroup(Map map, string name, IEnumerable<Thing> members) => RM_MapComponent_AtmosphericBase.For(map)?.RegisterGroup(name, members);

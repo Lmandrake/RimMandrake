@@ -20,6 +20,8 @@ namespace RimMandrake.AtmosphericBase
         // The pattern grammar (design atmospheric_base_god_patterns_2026-10-24.md §4): a stack of primitives, bottom first.
         // Absent = the old one-pattern form above, run as one layer. Present but empty is a config error.
         public List<RM_Layer> layers;
+        public float scarLinger;        // M3 SCAR (RM_PatternModifiers.cs RM_Scar): 0 = off
+        public bool scarKeeps;
 
         [Unsaved] private RM_SchemeData? data;
 
@@ -36,7 +38,7 @@ namespace RimMandrake.AtmosphericBase
                         pattern = pattern, massPeriodSeconds = massPeriodSeconds, sparkSeconds = sparkSeconds,
                         sparkOneIn = sparkOneIn, mayGoDark = mayGoDark, flasherCount = flasherCount,
                         flasherPeriodSeconds = flasherPeriodSeconds,
-                        layers = layers?.ToArray(),
+                        layers = layers?.ToArray(), scarLinger = scarLinger, scarKeeps = scarKeeps,
                     };
                     for (int i = 0; i < n; i++) { d.r[i] = palette[i].r; d.g[i] = palette[i].g; d.b[i] = palette[i].b; }
                     if (d.layers == null) d.legacy = RM_PatternKernel.LegacyLayers(d);
