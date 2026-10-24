@@ -15,7 +15,9 @@ namespace RimMandrake.FlowWorks
 	/// Each frame, for every visible sunk pawn, this draws the near-lip ground (the lip cell's OWN terrain material,
 	/// so it matches the ground exactly) over the band of the sprite below the lip, at a render queue after pawns.
 	/// The lip is the north edge of the first cell south of the pawn, in each column the sprite spans, that is
-	/// shallower than the pawn's floor. Opacity is a Mod Setting (default 0.85: a faint ghost stays so a pawn at
+	/// shallower than the pawn's floor. PIT_LIP_FIX_MUFFALO_OVERHANGS_RIM: the SIDE banks hide too: in a column whose square
+	/// beside the opening's row is shallower (a muffalo on a corner square reaching over the west rim), the part of the
+	/// sprite below that bank's ground (RM_PitDrawMath.SideHiddenTop) is covered the same way; never past the far rim. Opacity is a Mod Setting (default 0.85: a faint ghost stays so a pawn at
 	/// D4 can still be found — assumption A2); where a terrain shader ignores vertex alpha the lip is simply opaque.
 	/// Render only: it changes no sight, shot or cover (trench cover is RM_TrenchCover).
 	/// Known trade (recorded): an item or pawn standing on the lip cell inside that band is drawn under the lip too.
@@ -186,16 +188,21 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>Half the drawn sprite's width (x) and height (y), in cells. An animal's real body graphic
-		/// drawSize, never less than the body-size estimate; humanlikes keep the estimate. The estimate alone
+		/// drawSize, never less than the body-size estimate; humanlikes keep the estimate's width. The estimate alone
 		/// (sqrt(bodySize) x 1.2) under-reads big animals — a muffalo draws 3 cells wide against an estimated
 		/// 1.86, so the cover stopped short of its flanks and showed as a hard-edged dirt rectangle across its
 		/// middle (PIT_LIP_OCCLUDES_OUTSIDE_1). Over plain ground a wider cover is invisible: terrain materials
-		/// are world-aligned, so the cover matches the ground it lies on.</summary>
+		/// are world-aligned, so the cover matches the ground it lies on. PIT_LIP_FIX_MUFFALO_OVERHANGS_RIM: a humanlike's
+		/// height is at least its body mesh's (the estimate left a colonist's feet showing below the cover).</summary>
 		private static Vector2 HalfExtent(Pawn p)
 		{
-			float est = 0.5f * Mathf.Clamp(Mathf.Sqrt(Mathf.Max(p.BodySize, 0.2f)) * 1.2f, 0.6f, 2.4f);
+			float est = RM_PitDrawMath.BodyEstimateHalf(p.BodySize);
 			Vector2 h = new Vector2(est, est);
-			if (p.RaceProps != null && !p.RaceProps.Humanlike)
+			if (p.RaceProps != null && p.RaceProps.Humanlike)
+			{
+				h.y = RM_PitDrawMath.HumanlikeHalfHeight(p.BodySize);
+			}
+			else if (p.RaceProps != null)
 			{
 				GraphicData g = p.ageTracker?.CurKindLifeStage?.bodyGraphicData;
 				if (g != null)
@@ -274,12 +281,15 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			CellRect view = Find.CameraDriver.CurrentViewRect.ExpandedBy(2);
-			Mesh mesh = Quad(Mathf.Clamp01(RimMandrakeFlowWorksSettings.pitLipOcclusion));
+			frameEng = eng;
+			frameView = view;
+			frameMesh = Quad(Mathf.Clamp01(RimMandrakeFlowWorksSettings.pitLipOcclusion));
 			shadeUsed = 0;
 			bool edgeShadows = DebugViewSettings.drawShadows && map.Biome?.disableShadows != true;
+			frameEdgeShadows = edgeShadows;
 			ReadSunShadow(edgeShadows);   // SectionLayer_SunShadows.Visible's test; its Regenerate also needs SunShadow.shader.isSupported
-			float y = AltitudeLayer.Pawn.AltitudeFor() + Altitudes.AltInc * 0.9f;
-			bool rectsBuilt = false;
+			frameY = AltitudeLayer.Pawn.AltitudeFor() + Altitudes.AltInc * 0.9f;
+			rectsBuilt = false;
 			foreach (Pawn p in map.mapPawns.AllPawnsSpawned)
 			{
 				if (p.Flying || !view.Contains(p.Position))
@@ -307,16 +317,24 @@ namespace RimMandrake.FlowWorks
 				float half = ext.x;
 				float bottom = dp.z - ext.y;
 				float top = dp.z + ext.y;
-				if (bottom >= p.Position.z)
-				{
-					continue;   // nothing hangs below the pawn's own cell
-				}
+				bool hangs = bottom < p.Position.z;   // something hangs below the pawn's own cell: the near lip may hide it
+				// PIT_LIP_FIX_MUFFALO_OVERHANGS_RIM: what reaches over a west/east bank is below that bank's ground up to here
+				float sideTop = RM_PitDrawMath.SideHiddenTop(bottom, top, d, RimMandrakeFlowWorksSettings.pitSinkPerLevel,
+					RM_PitDrawMath.BodyHeightCells(p.BodySize));
+				int pawnCol = Mathf.FloorToInt(dp.x);
 				int x0 = Mathf.FloorToInt(dp.x - half);
 				int x1 = Mathf.FloorToInt(dp.x + half);
 				for (int cx = x0; cx <= x1; cx++)
 				{
+					float left = Mathf.Max(cx, dp.x - half);
+					float right = Mathf.Min(cx + 1f, dp.x + half);
+					if (right <= left)
+					{
+						continue;
+					}
+					float southTop = bottom;   // the side band starts above what the near lip already covers in this column
 					IntVec3 lipCell = IntVec3.Invalid;
-					for (int k = 1; k <= 3; k++)   // never the pawn's own row: the lip is SOUTH of it
+					for (int k = 1; hangs && k <= 3; k++)   // never the pawn's own row: the lip is SOUTH of it
 					{
 						IntVec3 cand = new IntVec3(cx, 0, p.Position.z - k);
 						if (!cand.InBounds(map))
@@ -329,85 +347,115 @@ namespace RimMandrake.FlowWorks
 							break;
 						}
 					}
-					if (!lipCell.IsValid)
+					if (lipCell.IsValid)
 					{
-						continue;
-					}
-					float lipZ = lipCell.z + 1f;
-					if (!RM_WallFaceMath.OccludedBand(lipZ, bottom, top, out float z0, out float z1))
-					{
-						continue;
-					}
-					// PIT_SINK_FIX_SOIL_STRIP_OVER_WALL: never re-draw the ground under a wall (or any drawn edifice) over it
-					z0 = Mathf.Max(z0, RM_PitDrawMath.CoverStopZ(cx, lipZ, z0, BlocksCover));
-					if (z1 <= z0 + 0.001f)
-					{
-						continue;
-					}
-					float left = Mathf.Max(cx, dp.x - half);
-					float right = Mathf.Min(cx + 1f, dp.x + half);
-					if (right <= left)
-					{
-						continue;
-					}
-					// cover cell by cell so each piece is drawn in the ground it stands for
-					for (int cz = Mathf.FloorToInt(z0); cz < Mathf.CeilToInt(z1); cz++)
-					{
-						IntVec3 g = new IntVec3(cx, 0, cz);
-						if (!g.InBounds(map) || Pits.RM_SuspensionUnderpass.SeenDepthAt(map, eng, g) >= d)
+						float lipZ = lipCell.z + 1f;
+						if (RM_WallFaceMath.OccludedBand(lipZ, bottom, top, out float z0, out float z1))
 						{
-							continue;
-						}
-						// a lid square is drawn in the ground the lid prints, not the pit floor under it
-						Pits.Building_PitCover lid = eng.HollowDepthAt(g) > 0 ? Pits.RM_PitCoverUtility.CoverAt(map, g) : null;
-						TerrainDef t = lid != null ? lid.PrintedSurface : map.terrainGrid.TerrainAt(g);
-						if (t == null || t.IsWater)
-						{
-							continue;
-						}
-						Material mat = RM_FaceMaterial.OccluderMat(t);
-						if (mat == null)
-						{
-							continue;
-						}
-						float a = Mathf.Max(z0, cz);
-						float b = Mathf.Min(z1, cz + 1f);
-						if (b <= a)
-						{
-							continue;
-						}
-						if (!rectsBuilt)
-						{
-							// pawns a few cells beyond the view still count: a big sprite reaches into it
-							BuildFrameRects(eng, view.ExpandedBy(4));
-							rectsBuilt = true;
-						}
-						if (HitsShallowerPawn(p, d, left, right, a, b))
-						{
-							continue;   // never draw the cover over a pawn standing at ground level or on the lip
-						}
-						// FLOWWORKS_PIT_OCCUPANT_LIP_CUT_1: a window through the cover at the occupant, but only where the lip would
-						// hide more than half of it (PIT_LIP_FIX_BOAR_HANGS_OUT: with the sink clamp on, the part below the rim is hidden)
-						float l1 = left, r1 = right, l2 = 0f, r2 = 0f;
-						int pieces = 1;
-						if (RimMandrakeFlowWorksSettings.pitLipOccupantCutEnabled && RM_WallFaceMath.OccupantCutNeeded(lipZ, bottom, top))
-						{
-							float cw = 0.5f * Mathf.Max(0.1f, RimMandrakeFlowWorksSettings.pitLipOccupantCutWidth);
-							pieces = RM_WallFaceMath.CutCoverSpan(left, right, dp.x - cw, dp.x + cw, out l1, out r1, out l2, out r2);
-						}
-						// PIT_PAWN_FIX_CARRIES_A_SUNNY_SQUARE: the ground's own edge shadow, which the cover (drawn above it) hid
-						int casters = edgeShadows ? EdgeCasters(g) : 0;
-						for (int pc = 0; pc < pieces; pc++)
-						{
-							float pl = pc == 0 ? l1 : l2, pr = pc == 0 ? r1 : r2;
-							Matrix4x4 m = Matrix4x4.TRS(new Vector3(pl, y, a), Quaternion.identity, new Vector3(pr - pl, 1f, b - a));
-							Graphics.DrawMesh(mesh, m, mat, 0);
-							bool sun = SunMayShade(pl, pr, a, b);
-							if (casters != 0 || sun)
+							southTop = z1;
+							// PIT_SINK_FIX_SOIL_STRIP_OVER_WALL: never re-draw the ground under a wall (or any drawn edifice) over it
+							z0 = Mathf.Max(z0, RM_PitDrawMath.CoverStopZ(cx, lipZ, z0, BlocksCover));
+							if (z1 > z0 + 0.001f)
 							{
-								DrawEdgeShade(g, pl, pr, a, b, casters, sun, y + Altitudes.AltInc * 0.05f);
+								DrawBand(p, d, cx, left, right, z0, z1, dp.x, -1, RimMandrakeFlowWorksSettings.pitLipOccupantCutEnabled
+									&& RM_WallFaceMath.OccupantCutNeeded(lipZ, bottom, top));
 							}
 						}
+					}
+					// the side bank: only on ground beside the opening's rows (DrawBand tests each square), never under an edifice
+					float sideLo = Mathf.Max(bottom, southTop);
+					float sideHi = Mathf.Min(top, sideTop);
+					if (sideHi > sideLo + 0.001f)
+					{
+						DrawBand(p, d, cx, left, right, sideLo, sideHi, dp.x, pawnCol, false);
+					}
+				}
+			}
+		}
+
+		// one frame's drawing state, set at the top of MapComponentUpdate
+		private RM_MapComponent_Excavation frameEng;
+		private CellRect frameView;
+		private Mesh frameMesh;
+		private float frameY;
+		private bool frameEdgeShadows;
+		private bool rectsBuilt;
+
+		private System.Func<int, int, int> seenDepth;
+
+		/// <summary>The depth a square SHOWS on this map (frameEng), -1 off the map: RM_PitDrawMath.BesideOpening's lookup.</summary>
+		private System.Func<int, int, int> SeenDepth => seenDepth ?? (seenDepth = (x, z) =>
+		{
+			IntVec3 c = new IntVec3(x, 0, z);
+			return c.InBounds(map) && frameEng != null ? Pits.RM_SuspensionUnderpass.SeenDepthAt(map, frameEng, c) : -1;
+		});
+
+		/// <summary>Covers [left,right] x [z0,z1] of column <paramref name="cx"/> square by square, each piece in the ground it
+		/// stands for, over the pawn at depth <paramref name="d"/>. <paramref name="sideOf"/> &gt;= 0: a side-bank band, drawn
+		/// only on squares beside the opening in column sideOf (RM_PitDrawMath.BesideOpening) that hold no edifice.
+		/// <paramref name="cut"/>: open the occupant window (near-lip band only).</summary>
+		private void DrawBand(Pawn p, int d, int cx, float left, float right, float z0, float z1, float drawX, int sideOf, bool cut)
+		{
+			RM_MapComponent_Excavation eng = frameEng;
+			for (int cz = Mathf.FloorToInt(z0); cz < Mathf.CeilToInt(z1); cz++)
+			{
+				IntVec3 g = new IntVec3(cx, 0, cz);
+				if (!g.InBounds(map) || Pits.RM_SuspensionUnderpass.SeenDepthAt(map, eng, g) >= d)
+				{
+					continue;
+				}
+				if (sideOf >= 0 && (!RM_PitDrawMath.BesideOpening(cx, cz, sideOf, d, SeenDepth) || BlocksCover(cx, cz)))
+				{
+					continue;
+				}
+				// a lid square is drawn in the ground the lid prints, not the pit floor under it
+				Pits.Building_PitCover lid = eng.HollowDepthAt(g) > 0 ? Pits.RM_PitCoverUtility.CoverAt(map, g) : null;
+				TerrainDef t = lid != null ? lid.PrintedSurface : map.terrainGrid.TerrainAt(g);
+				if (t == null || t.IsWater)
+				{
+					continue;
+				}
+				Material mat = RM_FaceMaterial.OccluderMat(t);
+				if (mat == null)
+				{
+					continue;
+				}
+				float a = Mathf.Max(z0, cz);
+				float b = Mathf.Min(z1, cz + 1f);
+				if (b <= a)
+				{
+					continue;
+				}
+				if (!rectsBuilt)
+				{
+					// pawns a few cells beyond the view still count: a big sprite reaches into it
+					BuildFrameRects(eng, frameView.ExpandedBy(4));
+					rectsBuilt = true;
+				}
+				if (HitsShallowerPawn(p, d, left, right, a, b))
+				{
+					continue;   // never draw the cover over a pawn standing at ground level or on the lip
+				}
+				// FLOWWORKS_PIT_OCCUPANT_LIP_CUT_1: a window through the cover at the occupant, but only where the lip would
+				// hide more than half of it (PIT_LIP_FIX_BOAR_HANGS_OUT: with the sink clamp on, the part below the rim is hidden)
+				float l1 = left, r1 = right, l2 = 0f, r2 = 0f;
+				int pieces = 1;
+				if (cut)
+				{
+					float cw = 0.5f * Mathf.Max(0.1f, RimMandrakeFlowWorksSettings.pitLipOccupantCutWidth);
+					pieces = RM_WallFaceMath.CutCoverSpan(left, right, drawX - cw, drawX + cw, out l1, out r1, out l2, out r2);
+				}
+				// PIT_PAWN_FIX_CARRIES_A_SUNNY_SQUARE: the ground's own edge shadow, which the cover (drawn above it) hid
+				int casters = frameEdgeShadows ? EdgeCasters(g) : 0;
+				for (int pc = 0; pc < pieces; pc++)
+				{
+					float pl = pc == 0 ? l1 : l2, pr = pc == 0 ? r1 : r2;
+					Matrix4x4 m = Matrix4x4.TRS(new Vector3(pl, frameY, a), Quaternion.identity, new Vector3(pr - pl, 1f, b - a));
+					Graphics.DrawMesh(frameMesh, m, mat, 0);
+					bool sun = SunMayShade(pl, pr, a, b);
+					if (casters != 0 || sun)
+					{
+						DrawEdgeShade(g, pl, pr, a, b, casters, sun, frameY + Altitudes.AltInc * 0.05f);
 					}
 				}
 			}

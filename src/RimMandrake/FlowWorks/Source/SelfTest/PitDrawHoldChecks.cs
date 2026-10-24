@@ -63,8 +63,71 @@ namespace RimMandrake.FlowWorks.SelfTest
             return hit / (float)n;
         }
 
+        // PIT_LIP_FIX_MUFFALO_OVERHANGS_RIM: bridge run 1 br1f s8's pit, read from s8_pitlip.json's rect rows: 132-135 x 114-117
+        // dug to 4, ground (0) all round. The muffalo stood on 132,114 (SW corner), the colonist on 135,114 (SE corner).
+        private static int S8Pit(int x, int z)
+        {
+            if (x < 0 || z < 0 || x >= 250 || z >= 250) return -1;
+            return x >= 132 && x <= 135 && z >= 114 && z <= 117 ? 4 : 0;
+        }
+
         public static void Run(Action<string, Action> Case)
         {
+            Case("PitSide_s8_muffalo_west_overhang_is_hidden", () =>
+            {
+                // at rest on 132,114 the sink is clamped to the lip: drawn centre (132.5, 114.0). Adult Muffalo drawSize 3: box
+                // x 131..134, z 112.5..115.5. Measured in s8_pitlip_close.png: the visible body reaches x 131.73 and z 114.69.
+                float bottom = 112.5f, top = 115.5f;
+                Assert(RM_PitDrawMath.BesideOpening(131, 114, 132, 4, S8Pit), "can-fail: 131,114 is ground beside the pit's row 114");
+                Assert(RM_PitDrawMath.BesideOpening(131, 115, 132, 4, S8Pit), "131,115 is ground beside the pit's row 115");
+                Assert(!RM_PitDrawMath.BesideOpening(133, 114, 132, 4, S8Pit), "a pit column is never a side bank");
+                Assert(!RM_PitDrawMath.BesideOpening(131, 113, 132, 4, S8Pit), "row 113 is south of the pit: the near lip's job, not the side's");
+                float hid = RM_PitDrawMath.SideHiddenTop(bottom, top, 4, 0.3f, RM_PitDrawMath.BodyHeightCells(2.4f));
+                Assert(hid >= 114.69f, "D4: the side bank hides the flank up to the visible top 114.69, got " + hid);
+                Assert(hid <= top + 1e-4f, "never above the sprite's top");
+                // the old cover reached column 131 only below its south lip (114): the flank above 114 showed (the bug)
+                float lip = RM_PitDrawMath.LipZBelow(131, 114, 4, S8Pit, 16);
+                Assert(lip == 114f, "column 131's south lip is 114, got " + lip);
+                Assert(hid > lip + 0.5f, "can-fail: the side band adds cover above the south lip");
+            });
+
+            Case("PitSide_far_rim_and_shallow_depth", () =>
+            {
+                // muffalo on the north row 132,117: west ground on row 118 lies beyond the far (north) rim, so it stays drawn
+                Assert(!RM_PitDrawMath.BesideOpening(131, 118, 132, 4, S8Pit), "can-fail: beyond the far rim the sprite is not hidden");
+                Assert(RM_PitDrawMath.BesideOpening(131, 117, 132, 4, S8Pit), "the north row itself has a side bank");
+                Assert(!RM_PitDrawMath.BesideOpening(-1, 117, 0, 4, S8Pit), "off the map is no bank");
+                // D1 (0.5 m): only the lower part of a muffalo is below ground, so only that much goes behind the side bank
+                float h = RM_PitDrawMath.BodyHeightCells(2.4f);
+                float d1 = RM_PitDrawMath.SideHiddenTop(112.5f, 115.5f, 1, 0.3f, h);
+                Assert(d1 > 112.5f && d1 < 113.5f, "D1 hides under a third of the muffalo box, got " + d1);
+                Assert(RM_PitDrawMath.SideHiddenTop(112.5f, 115.5f, 0, 0.3f, h) == 112.5f, "D0: nothing hidden");
+                Assert(Math.Abs(RM_PitDrawMath.SideHiddenTop(13f, 14f, 8, 0.3f, RM_PitDrawMath.BodyHeightCells(1f)) - 14f) < 1e-4f,
+                    "a colonist at D8 is wholly below the bank");
+            });
+
+            Case("PitLip_s8_colonist_feet_under_the_cover", () =>
+            {
+                // the colonist on 135,114, drawn centre z 114.0; s8_pitlip_close.png shows the feet 0.75 cells below it (vanilla's
+                // humanlike body mesh is 1.5 x 1.5). The cover's bottom must reach them.
+                float est = RM_PitDrawMath.BodyEstimateHalf(1f);
+                Assert(114f - est > 113.25f + 1e-4f, "can-fail: the body-size estimate (" + est + ") stops above the feet (the bug)");
+                float half = RM_PitDrawMath.HumanlikeHalfHeight(1f);
+                Assert(114f - half <= 113.25f + 1e-4f, "the humanlike cover reaches the feet at 113.25, half " + half);
+                Assert(RM_PitDrawMath.HumanlikeHalfHeight(4f) >= RM_PitDrawMath.BodyEstimateHalf(4f), "never below the estimate");
+            });
+
+            Case("PitSide_lip_occlusion_wires_the_side_bank", () =>
+            {
+                string src = Src("Superdeep", "RM_PitLipOcclusion.cs");
+                string update = Between(src, "public override void MapComponentUpdate()", "private void DrawBand(");
+                Assert(update.Contains("RM_PitDrawMath.SideHiddenTop("), "the side band's height comes from the depth");
+                Assert(src.Contains("RM_PitDrawMath.BesideOpening("), "side pieces only on ground beside the opening");
+                string half = Between(src, "private static Vector2 HalfExtent(Pawn p)", "private struct PawnRect");
+                Assert(half.Contains("RM_PitDrawMath.HumanlikeHalfHeight("), "humanlikes cover their whole body mesh");
+            });
+
+
             Case("PitSun_save_e_east_wall_shades_the_band", () =>
             {
                 // C3's cover band: x 37.2..39.8, z 21..22, between the pit's south lip (22) and the south wall (row 20)
