@@ -1,0 +1,2 @@
+To trace a codex-placed image to its source, read the worker's rollout jsonl (manifest meter_after.rollout) for the agent's Copy-Item/cp command, which names the exact cache file. Do not exact-hash the placed file: workers resize to canvas, so 0 of 10,697 cache files matched by sha, even for genuine controls. Confirm by comparing alpha-cropped thumbnails (match <3 mean abs diff, non-match >19). The worker's self_report is not a check either: 7 of 8 foreign-copy installs self-reported ok.
+home: skills/generating-images
