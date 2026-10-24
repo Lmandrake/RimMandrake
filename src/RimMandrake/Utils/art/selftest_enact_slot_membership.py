@@ -10,7 +10,9 @@ a picture of the YOUNG lane, and enact installed Y's bytes at the adult texPath 
   2 slots[adult].pick = B (a set of the adult lane): still installs at the adult path, no refusal;
   3 a render assigned to the adult slot (assign[R] = adult) and picked there: allowed;
   5 a by-name render NOT assigned to the adult slot (row has two lanes) picked there: refused by name;
-  4 a slot key the snapshot does not know (an older build's path): not checked, no refusal (left as before).
+  4 a slot key the snapshot does not know (an older build's path) where nothing of ours ships: not membership-checked, no
+    refusal, and nothing written under the old path (ENACT_STALE_SLOT_KEY_MIGRATE_PATH: a stale key that ships is
+    refused, a rename is resolved — selftest_enact_stale_lane).
 Fixture under /home/mandrake/rm/scratch/BENCH (never /tmp), from selftest_enact_ws.
 """
 from __future__ import annotations
@@ -85,8 +87,11 @@ def main():
               and any(c.startswith("RSW_Kite: slot Kite pick R is an unassigned render") for c in r["conflicts"]),
               f"5 a by-name render never assigned to the adult slot (two lanes) is refused by name ({r['conflicts']})")
         r = plan({"decision": "B", "slots": {"oldfolder/Kite/Kite": slot("B")}})
-        check(not any("RSW_Kite: slot" in c for c in r["conflicts"]),
-              "4 a slot key the snapshot does not know is not membership-checked (no refusal)")
+        inst = [i for i in r["plan"]["install"] if i["row"] == "RSW_Kite"]
+        check(not any(i["rel"].startswith("oldfolder/") for i in inst)
+              and not any("RSW_Kite: slot" in c for c in r["conflicts"]),
+              f"4 a slot key the snapshot does not know, shipping nothing: no refusal, nothing at the old path "
+              f"({inst} / {r['conflicts']})")
     finally:
         os.environ.pop("ART_BIOME_SHEETS_DIR", None)
     print("\nALL PASS" if not FAILS else f"\n{len(FAILS)} FAILED")

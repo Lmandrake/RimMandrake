@@ -299,6 +299,7 @@ def our_defs_cached(src) -> dict:
 def reset_caches() -> None:
     _TEXPATHS.clear()
     _DEFS.clear()
+    _SNAP_REVS.clear()
 
 
 def defs_naming(src, names: set, texpath: str) -> list[dict]:
@@ -769,6 +770,101 @@ def gof_resolved(srow: dict, letter: str) -> str | None:
     return g
 
 
+# ─────────────────────────────────── the sheet he clicked on (stale lanes) ──
+# A rebuild that only ADDS columns keeps the snapshotId (art_sheet: `superset`) while it may rename or move lanes
+# (graphic_of), so the snapshot file on disk — and snapshot_by_id — can be a later build than the one he clicked on.
+# A slot key or a letter's lane from that earlier build installs at the OLD path (ENACT_STALE_SLOT_KEY_MIGRATE_PATH:
+# an RM_BrineElder pick keyed by RM_SaltChimney's texPath; SHEET_SCHEMA1_FIX_MOVED_LETTER). Enact therefore reads the
+# revision he saw (built at or before his click) and resolves the lane through it, or refuses by name. The record is
+# never rewritten: the resolution is derived on every run and reported in the plan (`lane_resolved`). Left as before:
+# a pick whose pictures all ship already (nothing is copied), and an old lane where nothing of ours ships (a donor's:
+# the install step sends it to the row's own path) unless the letter moved into a lane that already existed.
+
+_SNAP_REVS: dict = {}
+
+
+def _when(s) -> float | None:
+    from datetime import datetime
+    try:
+        return datetime.fromisoformat(str(s).replace("Z", "+00:00")).timestamp() if s else None
+    except ValueError:
+        return None
+
+
+def snapshot_revisions(snap_path: Path) -> list[dict]:
+    """Every version of a snapshot file: the one on disk, then each git revision, newest first (cached)."""
+    key = str(snap_path)
+    if key in _SNAP_REVS:
+        return _SNAP_REVS[key]
+    out = []
+    try:
+        out.append(json.loads(Path(snap_path).read_text()))
+    except (OSError, ValueError):
+        pass
+    try:
+        rel = Path(snap_path).resolve().relative_to(L.REPO_ROOT).as_posix()
+        revs = subprocess.run(["git", "-C", str(L.REPO_ROOT), "log", "--format=%H", "--", rel],
+                              capture_output=True, text=True, timeout=60).stdout.split()
+    except (ValueError, OSError, subprocess.SubprocessError):
+        revs = []
+    for h in revs:
+        r = subprocess.run(["git", "-C", str(L.REPO_ROOT), "show", f"{h}:{rel}"], capture_output=True, text=True,
+                           timeout=60)
+        if r.returncode:
+            continue
+        try:
+            out.append(json.loads(r.stdout))
+        except ValueError:
+            continue
+    _SNAP_REVS[key] = out
+    return out
+
+
+def ruled_snapshot(snap_path: Path, cur: dict, rev: str | None, at) -> dict | None:
+    """The snapshot he saw when he clicked at `at`: `cur` when it was built no later than that, else the newest
+    revision built at or before the click (one with his record's `rev` as snapshotId first). None: not provable."""
+    t = _when(at)
+    if t is None:
+        return None
+    b = _when(cur.get("built"))
+    if b is not None and b <= t:
+        return cur
+    seen = [s for s in snapshot_revisions(snap_path) if (_when(s.get("built")) or float("inf")) <= t]
+    seen.sort(key=lambda s: _when(s.get("built")), reverse=True)
+    return next((s for s in seen if rev and s.get("snapshotId") == rev), None) or (seen[0] if seen else None)
+
+
+def lanes_of(srow: dict) -> set:
+    lanes = {x for x in (srow.get("graphic_of") or {}).values() if x and x != "_byname" and not x.startswith("_reference")}
+    return lanes or ({srow["res"]} if srow.get("res") else set())
+
+
+def resolve_ruled_lane(ruled_row: dict, cur_row: dict, lane: str) -> tuple[str | None, str]:
+    """Where a lane of the sheet he ruled on lives on today's sheet: itself while today's snapshot has it, else the one
+    lane that is NEW today and holds every picture of the old lane under the same letter (a texPath rename).
+    (None, why) when that cannot be proved."""
+    if lane in lanes_of(cur_row):
+        return lane, "same"
+    ruled_lanes = lanes_of(ruled_row)
+    if lane not in ruled_lanes:
+        return None, "it is not a lane of the sheet you clicked on either"
+    rc, cc = ruled_row.get("columns") or {}, cur_row.get("columns") or {}
+    mine = [l for l in rc if gof_resolved(ruled_row, l) == lane]
+    if not mine:
+        return None, "no picture sat in that lane on the sheet you clicked on"
+    if any(cc.get(l) != rc[l] for l in mine):
+        return None, "its pictures are not under the same letters on today's sheet"
+    dests = {gof_resolved(cur_row, l) for l in mine}
+    if None in dests:
+        return None, "its pictures are unassigned (found by name) on today's sheet"
+    if len(dests) > 1:
+        return None, f"its pictures are split over {len(dests)} lanes on today's sheet"
+    d = dests.pop()
+    if d in ruled_lanes:
+        return None, f"its pictures moved to {d.rsplit('/', 1)[-1]}, a lane that already existed (not a rename)"
+    return d, "renamed"
+
+
 def catch_source(row: str, decs: dict) -> str | None:
     """RM_HulduCatch -> RM_Huldu, when that creature is a row of the same sheet."""
     if row.endswith(CATCH_SUFFIX) and len(row) > len(CATCH_SUFFIX):
@@ -862,7 +958,7 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
          "retire": [], "blocked": [], "withdraw": [],
          "install_after_ingest": [], "queue": [], "queued_already": [], "refile": [], "awaiting_pick": [], "purge": [], "purged_already": 0,
          "cuts": [], "todo": [], "done": [], "conflicts": [], "in_game_not_ours": 0, "followed": {},
-         "ignored_variants": [], "legacy_unconfirmed": [], "asks": []}
+         "ignored_variants": [], "legacy_unconfirmed": [], "asks": [], "lane_resolved": []}
     decs = doc.get("decisions") or {}
     wd_ids = withdrawn_ids()
     confs = DV.confirmations()
@@ -916,6 +1012,56 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
         picks: dict = {}
         if decided and not is_cut and (dec != "redo" or v2_slots):
             picks, conf = effective_picks(ov, srow) if dec != "redo" else ({}, [])
+            # a pick keyed by a lane today's snapshot does not have (an older build's texPath): resolved through the sheet
+            # he clicked on when that proves a rename, else refused by name — never installed at the old path
+            lanes_now = lanes_of(srow)
+            stale_refused: set = set()
+
+            def all_live(letter) -> bool:
+                """every picture of the letter already ships somewhere: the install step copies nothing for it,
+                whatever lane it is routed to, so an old lane name there is harmless (an enacted row)"""
+                shas = [x for x in (cols.get(letter) or {}).values() if x and x not in xed]
+                return bool(shas) and all(idx.live_anywhere(x) for x in shas)
+
+            def ships(lane, letter) -> bool:
+                """a file or folder of OURS ships at this lane: routing a pick there would overwrite it (an old path
+                still on disk, or another def's live path). A lane that ships nothing of ours is a donor's: the install
+                step routes its pick to the row's own path (own_slot) or names it a TODO, never writes at the lane"""
+                return bool(folder_slots(idx, lane)) or any(slots_for(idx, rel_for(lane, f))
+                                                            for f in (cols.get(letter) or {}))
+
+            def moved_in(rrow, old, letter) -> bool:
+                """today's sheet files the letter under a lane that already existed on the sheet he clicked on: a move
+                between two lanes of the row (a juvenile set filed under the adult), not a rename"""
+                now = gof_resolved(srow, letter)
+                return bool(rrow) and bool(now) and now != old and now in lanes_of(rrow)
+            for g in [g for g, st in v2_slots.items() if st.get("state") == "pick" and lanes_now and g not in lanes_now
+                      and not all_live(st.get("pick"))]:
+                st = v2_slots.pop(g)
+                letter = st.get("pick")
+                ruled = ruled_snapshot(snap_path, snap, v.get("rev"), st.get("at") or v.get("decidedAt") or v.get("at"))
+                rrow = ((ruled or {}).get("rows") or {}).get(row) or {}
+                if not rrow:
+                    new, why = None, "no copy of the sheet you clicked on is on disk or in git"
+                elif (rrow.get("columns") or {}).get(letter) != cols.get(letter):
+                    new, why = None, f"{letter} is not the same pictures on today's sheet"
+                elif gof_resolved(rrow, letter) != g and assign.get(letter) != g:
+                    new, why = None, f"{letter} was not a set of that lane on the sheet you clicked on either"
+                else:
+                    new, why = resolve_ruled_lane(rrow, srow, g)
+                if new and new in v2_slots:
+                    new, why = None, f"it was renamed to {new.rsplit('/', 1)[-1]}, which has a slot record of its own"
+                if new:
+                    v2_slots[new] = st
+                    P["lane_resolved"].append(f"{row}: slot {g} pick {letter} -> {new} (renamed since the sheet you "
+                                              f"clicked on, built {ruled.get('built')}; the record is unchanged)")
+                elif not ships(g, letter) and not moved_in(rrow, g, letter):
+                    v2_slots[g] = st        # a donor lane: routed as before (own_slot), nothing is written at it
+                else:
+                    stale_refused.add(letter)
+                    P["conflicts"].append(f"{row}: slot {g} pick {letter} names a lane today's sheet does not have and "
+                                          f"{why} — refused, nothing installed for it (not at the old path either); pick "
+                                          f"again on the current sheet")
             # schema 2: HIS per-slot choices (a click on the new sheet) win; a migrated slot is only a view of the above
             lanes = {x for x in (srow.get("graphic_of") or {}).values() if x != "_byname" and not x.startswith("_reference")}
             foreign = set()
@@ -925,7 +1071,7 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                     # a letter of ANOTHER lane of this snapshot written as this slot's pick (a sheet hotkey reached the
                     # primary slot with any letter, ART_SHEET_LANE_LETTERS_FIX_UNREVIEWED): its bytes would land at this
                     # slot's texPath. Refused by name; the slot installs nothing. A slot key the snapshot does not know
-                    # (an older build's path) cannot be checked here and is left as before.
+                    # (an older build's path) was resolved or refused above, so every key here is a lane of today.
                     foreign.add(st["pick"])
                     picks.pop(g, None)
                     lane_of = gof_resolved(srow, st["pick"]) or (srow.get("graphic_of") or {}).get(st["pick"]) or "?"
@@ -939,12 +1085,51 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                     conf = [x for x in conf if x[0] != st["pick"]]
                 elif st.get("state") in ("accept", "redraw", "not_drawn"):
                     picks.pop(g, None)
+            foreign |= stale_refused
             if foreign:
                 # the same letter also reached `decision`, which routes it to its own lane above: he never picked it
                 # there (the slot record says where he meant it), so it installs nowhere unless a slot of its own picks it
                 own_lane = {g for g, st in v2_slots.items() if st.get("state") == "pick" and st.get("pick") in foreign
                             and picks.get(g) == st["pick"]}
                 picks = {g: l for g, l in picks.items() if l not in foreign or g in own_lane}
+            # a row pick (`decision`) or a per-graphic `picks{lane}` (schema 1, or a migrated view) is routed by today's
+            # snapshot above; if the sheet was rebuilt after his click and the letter's lane moved or was renamed, route
+            # it by the sheet he clicked on (SHEET_SCHEMA1_FIX_MOVED_LETTER), or refuse by name
+            from_slot = {g for g, st in v2_slots.items() if st.get("state") == "pick" and picks.get(g) == st.get("pick")}
+            keyed = {g: l for g, l in (ov.get("picks") or {}).items() if g != "_byname"}
+            ruled1 = None
+            for g, letter in sorted(picks.items()):
+                if g in from_slot or not lanes_now or all_live(letter):
+                    continue
+                if ruled1 is None:
+                    ruled1 = ruled_snapshot(snap_path, snap, v.get("rev"), v.get("decidedAt") or v.get("at")) or {}
+                rrow = (ruled1.get("rows") or {}).get(row) or {}
+                same = letter in (rrow.get("columns") or {}) and rrow["columns"][letter] == cols.get(letter)
+                intended = g if keyed.get(g) == letter else (gof_resolved(rrow, letter) if same else None)
+                if intended == g and g in lanes_now:
+                    continue
+                if intended is None and g in lanes_now:
+                    continue        # cannot be verified against the sheet he saw: routed as before (remap owns letters)
+                if intended and not ships(intended, letter) and not moved_in(rrow, intended, letter):
+                    continue        # his lane was a donor's (or a path that ships nothing now): no lane of ours to keep
+                new, why = resolve_ruled_lane(rrow, srow, intended) if (same and intended) else (
+                    None, "today's sheet does not have that lane" + (
+                        "" if same else f", and {letter} cannot be checked against the sheet you clicked on"))
+                if new == g:
+                    continue
+                picks.pop(g)
+                if new and picks.get(new, letter) != letter:
+                    new, why = None, f"that lane ({new.rsplit('/', 1)[-1]}) has another pick, {picks[new]}"
+                if new:
+                    picks[new] = letter
+                    P["lane_resolved"].append(f"{row}: pick {letter} -> {new}, the lane it had on the sheet you clicked "
+                                              f"on (built {ruled1.get('built')}); "
+                                              + (f"the record names {g}" if keyed.get(g) == letter else
+                                                 f"today's sheet puts it in {g}") + " (the record is unchanged)")
+                else:
+                    P["conflicts"].append(f"{row}: pick {letter} was a set of {intended or g} on the sheet you clicked "
+                                          f"on and {why} — refused, nothing installed for it; pick again on the "
+                                          f"current sheet")
             for letter, c in conf:
                 shas = [x for x in (cols.get(letter) or {}).values() if x and x not in xed]
                 protect_here |= set(shas)
@@ -1844,6 +2029,10 @@ def report(R: dict) -> str:
         L_.append(f"  notes done {len(P['done'])}: " + "; ".join(d.split(':')[0] for d in P["done"]))
     for d in R["deploy"]:
         L_.append(f"  deploy     {d}")
+    if P.get("lane_resolved"):
+        L_.append(f"  lanes      {len(P['lane_resolved'])} pick(s) routed by the sheet you clicked on (a lane renamed "
+                  f"or moved since):")
+        L_ += [f"     {x}" for x in P["lane_resolved"]]
     L_.append(f"CONFLICTS ({len(R['conflicts'])}) — need the owner, nothing was done to them:")
     L_ += [f"  {c}" for c in R["conflicts"]] or ["  none"]
     L_.append(f"TODO ({len(R['todo'])}):")
