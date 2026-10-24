@@ -379,9 +379,28 @@ namespace RimMandrake.FlowWorks
 			}
 			if (a[0] == "form")
 			{
+				// DEEP_BEDS_FIX_FLOOR_STOPS_AT_FOUR: the floor is a seeded per-lake draw (a silted one stays at the deep notch whatever
+				// lakeDepthScale), so the line carries the generator's own draw for this footprint (re-run over the unchanged
+				// terrain with the map's params; the record was written from the same inputs) and this body's recorded deepest.
+				var footprint = new System.Collections.Generic.List<int>(body.cells.Count);
+				int bodyDeepest = 0;
+				foreach (IntVec3 c in body.cells)
+				{
+					footprint.Add(map.cellIndices.CellToIndex(c));
+					int bed = eng.BedLevelsAt(c);
+					if (bed > bodyDeepest) bodyDeepest = bed;
+				}
+				RM_LakeFloorMath.Traits draw = RM_LakeFloorMath.Floor(map.Size.x, map.Size.z, footprint, i =>
+				{
+					TerrainDef t = map.terrainGrid.BaseTerrainAt(map.cellIndices.IndexToCell(i));
+					return t != null && t.IsWater
+						&& RM_Volume.BedLevels(t.passability == Traversability.Impassable, t.pathCost) >= RM_Volume.LevelsPerSquare;
+				}, eng.LakeFloorParams(), new int[footprint.Count]);
 				return "BODY id=" + body.id + " cells=" + body.cells.Count + " limitless=" + body.limitless + " truncated=" + body.truncated
 					+ " capacity=" + body.capacity.ToString("F1") + " levelUnit=" + body.levelUnit.ToString("F3")
-					+ " bedSum=" + RM_LiquidStock.BedSum(body, eng) + " deepest=" + eng.DeepestRecordedBed();
+					+ " bedSum=" + RM_LiquidStock.BedSum(body, eng) + " deepest=" + eng.DeepestRecordedBed()
+					+ " bodyDeepest=" + bodyDeepest + " drawDeepest=" + draw.deepestNotches + " silted=" + draw.silted
+					+ " band=" + (draw.band ?? "none").Replace(' ', '_');
 			}
 			if (a[0] == "stock")
 			{

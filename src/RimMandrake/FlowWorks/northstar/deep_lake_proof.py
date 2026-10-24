@@ -13,8 +13,9 @@ terrain so no chance to fall in and get stuck." · ruling 7 a refilled pond retu
 
 Scene: a SIZE x SIZE rectangular lake (default 72 = 5,184 squares, past the old 4,000-square ocean cap) painted at --origin
 (default 60,60) by RM_NorthstarProofs.ProofDeepLake "paint" (WaterShallow 3 squares deep at the edge, WaterDeep inside), the
-site cleared first by validation_core.prepare_site. For the run lakeDepthScale = 2 (a deep floor whatever the debug
-map's hilliness; LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP replaced the radial slope) and deepBedMaxDepth = 20; restored after. Every read is jawa/static_call
+site cleared first by validation_core.prepare_site. For the run lakeDepthScale = 2 (deeper draws; LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP
+replaced the radial slope) and deepBedMaxDepth = 20; restored after. The scale cannot deepen a SILTED draw (2 to 2.5 m), so a
+footprint whose seeded draw stays at the deep notch is a SITE retry at the next origin (draw_verdict, DEEP_BEDS_FIX_FLOOR_STOPS_AT_FOUR). Every read is jawa/static_call
 RM_NorthstarProofs.ProofDeepLake ("BODY ..." / "STOCK ..." / "SHAPE ...", key=value tokens) or ProofClimb "pawn:<id>".
 The stock is SET by the proof (a stand-in for pumps); conservation of real pumping is the offline selftests'
 (DeepBed_drawdown_sheds_shallowest_first_and_refills_lifo_exact, northstar/selftest_conservation_roundtrip.py).
@@ -70,12 +71,33 @@ def _int(kv, k, default=None):
 
 
 def body_verdict(kv, size):
-    """DL_lake_over_4000_is_limited: the whole painted lake is ONE limited body past the old cap, with beds past 4."""
-    cells, deepest = _int(kv, "cells"), _int(kv, "deepest")
+    """DL_lake_over_4000_is_limited: the whole painted lake is ONE limited body past the old cap, with beds past 4.
+    DEEP_BEDS_FIX_FLOOR_STOPS_AT_FOUR: with the generator's draw on the line (drawDeepest), the lake's own recorded floor
+    (bodyDeepest) must equal it: the record is the draw, whatever the seed gave."""
+    cells, deepest = _int(kv, "cells"), _int(kv, "bodyDeepest", _int(kv, "deepest"))
     if cells is None or deepest is None:
         return "UNMEASURED", {"why": "no BODY line", "kv": kv}
     ok = cells == size * size and cells > OLD_CAP and kv.get("limitless") == "False" and kv.get("truncated") == "False" and deepest > 4
-    return ("PASS" if ok else "FAIL"), {"kv": kv, "want": {"cells": size * size, "limitless": "False", "deepest>": 4}}
+    want = {"cells": size * size, "limitless": "False", "deepest>": 4}
+    drawn = _int(kv, "drawDeepest")
+    if drawn is not None:
+        ok = ok and deepest == drawn
+        want["bodyDeepest=="] = drawn
+    return ("PASS" if ok else "FAIL"), {"kv": kv, "want": want}
+
+
+def draw_verdict(kv):
+    """SITE read-back (DEEP_BEDS_FIX_FLOOR_STOPS_AT_FOUR): the lake floor is a seeded per-lake draw (LAKE_FLOORS, owner R11) and
+    a SILTED draw sits at 2 to 2.5 m whatever lakeDepthScale (the scale multiplies only the excess over 2 m), so on a flat debug
+    map about half the painted lakes cannot show a bed past 4. A draw at or under the notch is the site's, not the mod's: try
+    the next origin (another footprint, another LakeKey, another draw)."""
+    drawn = _int(kv, "drawDeepest")
+    if drawn is None:
+        return "UNMEASURED", {"class": "HARNESS", "why": "BODY line has no drawDeepest (DLL older than the proof)", "kv": kv}
+    if drawn <= 4:
+        return "UNMEASURED", {"class": "SITE", "why": "this footprint's seeded floor draw is at the deep notch",
+                              "drawDeepest": drawn, "silted": kv.get("silted"), "band": kv.get("band")}
+    return "PASS", {"drawDeepest": drawn, "silted": kv.get("silted"), "band": kv.get("band")}
 
 
 def isolated_verdict(kv, size):
@@ -244,10 +266,18 @@ def main():
             kv, txt = lake("form;" + mid)
             st, det = isolated_verdict(kv, n)
             if st == "PASS":
-                break
+                st, det = draw_verdict(kv)
+                if st == "PASS":
+                    break
+                if det.get("class") == "HARNESS":
+                    res["site_attempts"] = tried
+                    row("DL_site", "UNMEASURED", "HARNESS", dict(det, txt=txt))
+                    return 2
             tried.append({"origin": o, "painted": painted, "txt": txt, "why": det.get("why")})
         else:
-            row("DL_site", "UNMEASURED", "SITE", {"why": "no origin gave an isolated painted lake", "tried": tried})
+            res["site_attempts"] = tried
+            row("DL_site", "UNMEASURED", "SITE", {"why": "no origin gave an isolated painted lake whose floor draw passes the notch",
+                                                  "tried": tried})
             return 2
         res["site_attempts"] = tried
         st, det = body_verdict(kv, n)
