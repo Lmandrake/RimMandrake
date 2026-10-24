@@ -1111,22 +1111,29 @@ def latest_result(path=None):
     """-> (label, {row_id: (status, detail)}). Newest validation_v2_result_*.json plus every proof_*.json."""
     files = [path] if path else sorted(glob.glob(os.path.join(NSDIR, "validation_v2_result_*.json")))[-1:]
     files += sorted(glob.glob(os.path.join(NSDIR, "proof_*.json"))) if not path else []
-    rows = {}
-    hashes = []
+    # Every source competes per row on (carries the CURRENT mod_hash, then mtime): an older or stale PASS never
+    # overwrites a current-hash FAIL, and a proof file's freshness is its own (GPT FF_validation_suite_1.2).
+    rows, best, fresh, src = {}, {}, {}, {}
     for f in files:
         try:
             d = json.load(open(f, encoding="utf-8"))
         except (OSError, ValueError):
             continue
-        if "validation_v2_result_" in os.path.basename(f):
-            hashes.append(d.get("mod_hash"))
+        h = d.get("mod_hash")
+        fr = _freshness(h)
+        fresh[f] = fr
+        rank = (1 if fr == "mod_hash current" else 0, os.path.getmtime(f))
         for r in d.get("rows", []):
-            if r.get("id"):
-                rows[r["id"]] = (str(r.get("status", "")), str(r.get("detail", "")))
-    label = ", ".join(os.path.basename(f) for f in files) or "(no result file)"
-    if hashes:
-        # a PASS from before a code change still reads "Works in game": say whether the evidence is at today's hash
-        label += " [%s]" % _freshness(hashes[0])
+            rid = r.get("id")
+            if rid and (rid not in best or rank >= best[rid]):
+                best[rid] = rank
+                src[rid] = f
+                rows[rid] = (str(r.get("status", "")), str(r.get("detail", "")))
+    label = ", ".join(os.path.basename(f) + " [%s]" % fresh[f] if f in fresh and "validation_v2_result_" in os.path.basename(f) else os.path.basename(f) for f in files) or "(no result file)"
+    # a row whose winning source is not at today's hash reads STALE (result_is_stale), proof file or validation alike
+    stale = sorted({os.path.basename(f) for f in src.values() if fresh[f].startswith("STALE:")})
+    if stale and "STALE:" not in label:
+        label += " [STALE: rows from %s not at today's mod_hash]" % ", ".join(stale)
     return label, rows
 
 
