@@ -1087,13 +1087,17 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                 """his lane `old` (on the sheet he clicked on) was a DONOR's and routing the pick to today's lane `new` is
                 proved: nothing of ours ships at `old`; `old` was the row's own graphic there (res: the def's texPath);
                 today no def of the row names `old` and one names `new`, which is where today's sheet files the letter;
-                `new` was not already a lane of that sheet (a move, not a repoint); and the letter shows the same
-                pictures on both sheets. The fish and catch items moving off a vanilla placeholder to our own path
-                (weepingstones RM_Duul, floodedcanyon RM_Tarruq B). Anything else on a donor lane is refused by name
-                (ENACT_DONOR_LANE_DECIDE_REFUSE_OR_ROUTE): it used to be routed by today's lane unproved."""
+                `new` was not already a lane of that sheet (a move, not a repoint); the letter was a set of `old` on
+                that sheet (or he assigned it there) — a slot or key naming the donor lane for a letter of another lane
+                (a juvenile set re-filed under the adult) proves nothing about where its pictures go; and the letter
+                shows the same pictures on both sheets. The fish and catch items moving off a vanilla placeholder to
+                our own path (weepingstones RM_Duul, floodedcanyon RM_Tarruq B). Anything else on a donor lane is
+                refused by name (ENACT_DONOR_LANE_DECIDE_REFUSE_OR_ROUTE): it used to be routed by today's lane
+                unproved."""
                 return (bool(rrow) and bool(old) and bool(new) and old != new and new in lanes_now
                         and gof_resolved(srow, letter) == new and letter in cols
                         and (rrow.get("columns") or {}).get(letter) == cols.get(letter)
+                        and (gof_resolved(rrow, letter) == old or assign.get(letter) == old)
                         and rrow.get("res") == old and not ships(old, letter) and not moved_in(rrow, old, letter)
                         and not defs_naming(src, names, old) and bool(defs_naming(src, names, new)))
             no_lanes = ("today's sheet has no lane data for this row (no graphic_of, no res), so the key cannot be "
@@ -1220,6 +1224,16 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                         P["conflicts"].append(f"{row}: pick {letter} is recorded for {g.rsplit('/', 1)[-1]} and {kwhy} "
                                               f"— refused, installed at neither lane; pick again on the current sheet")
                     continue
+                if is_keyed and clicked and clicked != g and assign.get(letter) != g:
+                    # a keyed pick whose lane is gone today, but the letter was a set of ANOTHER lane on the sheet he
+                    # clicked on: following the key's rename would put those pictures at the key's lane (a young set
+                    # at the adult path); the slot route refuses the same click
+                    picks.pop(g)
+                    P["conflicts"].append(f"{row}: pick {letter} is recorded for {g}, a lane "
+                                          f"today's sheet does not have, and it was a set of "
+                                          f"{clicked.rsplit('/', 1)[-1]} on the sheet you clicked on, not of that "
+                                          f"lane — refused, nothing installed for it; pick again on the current sheet")
+                    continue
                 if intended == g and g in lanes_now:
                     continue        # the lane it had on the sheet he saw is today's lane: proved unchanged
                 if intended is None and g in lanes_now:
@@ -1273,7 +1287,7 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                 if new:
                     picks[new] = letter
                     P["lane_resolved"].append(f"{row}: pick {letter} -> {new}, " + (
-                                              "where the row's def now points (the recorded lane was a donor's) on the "
+                                              "where the row's def now points (the recorded lane was a donor's) on "
                                               if donor else "the lane it had on ") + f"the sheet you clicked "
                                               f"on (built {ruled1.get('built')}); "
                                               + (f"the record names {g}" if keyed.get(g) == letter else
@@ -1603,6 +1617,19 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                 P["conflicts"].append(f"{row}: ✕ {sha[:12]} not purged — {why}")
                 continue
             P["purge"].append({"row": row, "sha": sha, "note": note, "release": [k["id"] for k in kept_all]})
+    # two picks bound for ONE file with different pictures (rows whose defs once shared a texPath — the bridge
+    # anchors' Heavy/Steel/Timber of a look): installing both keeps only whichever runs last, so his other picks
+    # vanish without a word. None of them is installed; each is listed (bug 2026-10-24, bridge_art_redraw)
+    by_file: dict = {}
+    for i in P["install"]:
+        by_file.setdefault((i["mod"], i["rel"]), []).append(i)
+    clash = {k for k, ins in by_file.items() if len({i["sha"] for i in ins}) > 1}
+    for k in sorted(clash):
+        ins = by_file[k]
+        P["conflicts"].append(f"{', '.join(sorted({i['row'] for i in ins}))}: picks "
+                              f"{', '.join(sorted({i['row'] + ' ' + i['letter'] for i in ins}))} all go to ONE file "
+                              f"{k[1]} with different pictures — none installed; give each its own texture or pick one")
+    P["install"] = [i for i in P["install"] if (i["mod"], i["rel"]) not in clash]
     for c in P["cuts"]:
         c["plan"] = plan_cut(src, biome, c["names"])
     return P

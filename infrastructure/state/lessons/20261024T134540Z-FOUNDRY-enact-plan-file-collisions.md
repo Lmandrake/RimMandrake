@@ -1,0 +1,2 @@
+A per-row enact review misses a cross-row defect. Several rows can share one lane, as the bridge anchors' Heavy, Steel and Timber of a look did; there, three different picks were planned onto ONE file, and the last one silently won. Checking any plan builder means scanning every real decisions file for (mod, rel) targets that two installs hit with different shas (/home/mandrake/.seat-tmp/FOUNDRY/enact_vet4/collide.py); per-row probes never see it. build_plan now refuses the collision by name.
+home: rimworld-review-sheets
