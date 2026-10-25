@@ -22,6 +22,17 @@ CASES = [  # (command, cwd, want_refused)
     ("git worktree add /tmp/claude-1000/merge-a origin/main", CWD, True),
     (f"git init /tmp/i && git -C /tmp/i fetch {URL}", CWD, True),
     (f"git clone {URL}", "/tmp", True),
+    # wave 7: an fd redirect used to leave `2`/`>&`/`1` behind as the "target" and pass
+    ("cp -r /home/mandrake/rm/bench /tmp/x 2>&1", CWD, True),
+    ("cp -r /home/mandrake/rm/bench /tmp/x 2>/dev/null", CWD, True),
+    ("cp -r /home/mandrake/rm/bench /tmp/x &>log", CWD, True),
+    (f"git clone {URL} /tmp/c 2>&1 | tail -3", CWD, True),
+    # wave 7: `-b <name>` took <name> as the path; `cp -t <dir>` names the target first
+    ("git work" + "tree add -b feat /tmp/wt origin/main", CWD, True),
+    ("cp -r -t /tmp/z /home/mandrake/rm/bench", CWD, True),
+    ("cp -r --target-directory=/tmp/z /home/mandrake/rm/bench", CWD, True),
+    ("rsync -at /home/mandrake/rm/bench/ /home/mandrake/rm/scratch/BENCH/r/", CWD, False),
+    ("ls /tmp 2>&1 && echo ok", CWD, False),
     (f"git clone {URL} /home/mandrake/rm/scratch/BENCH/a", CWD, False),
     ("echo hi > /tmp/f", CWD, False),
     ("python3 x.py --out /tmp/out.json", CWD, False),

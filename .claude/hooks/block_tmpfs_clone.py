@@ -35,6 +35,7 @@ CLONE_OPT_VAL = {"--reference", "--reference-if-able", "--depth", "-b", "--branc
                  "-c", "--config", "--separate-git-dir", "--template", "-j", "--jobs", "--filter",
                  "--shallow-since", "--shallow-exclude", "--server-option", "-u", "--upload-pack",
                  "--bundle-uri", "--ref-format"}
+WORKTREE_OPT_VAL = {"-b", "-B", "--reason"}
 SKIP_FIRST = {"echo", "printf", "grep", "rg", "cat", "sed", "awk", "man", "which", "type"}
 ASSIGN = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*=")
 
@@ -75,12 +76,15 @@ def segments(cmd):
     lex.commenters = ""
     seg, out = [], []
     for t in lex:
-        if t and set(t) <= set(";&|()"):
+        if t and set(t) <= set("<>&") and set(t) & set("<>"):
+            # redirect marker (>, 2>, >&, &>, <<); the next token is a file or fd, not an argument
+            if seg and seg[-1].isdigit():
+                seg.pop()  # the fd number of `2>&1` / `2>/dev/null`, not an argument either
+            seg.append("\x01")
+        elif t and set(t) <= set(";&|()"):
             if seg:
                 out.append(seg)
             seg = []
-        elif t and set(t) <= set("<>"):
-            seg.append("\x01")  # redirect marker; the next token is a file, not an argument
         else:
             seg.append(t)
     if seg:
@@ -157,7 +161,14 @@ def check(cmd, cwd0):
                 if tgt and is_tmpfs(tgt):
                     return tgt
             elif sub == "worktree" and rest[:1] == ["add"]:
-                pos = [a for a in rest[1:] if not a.startswith("-")]
+                pos, j = [], 1
+                while j < len(rest):
+                    a = rest[j]
+                    if a.startswith("-"):
+                        j += 2 if a in WORKTREE_OPT_VAL else 1  # `-b feat <path>`: feat is no path
+                        continue
+                    pos.append(a)
+                    j += 1
                 tgt = expand(pos[0], env, here) if pos else None
                 if tgt and is_tmpfs(tgt):
                     return tgt
@@ -173,7 +184,19 @@ def check(cmd, cwd0):
             rec = any(re.search("[" + letters + "]", f) for f in flags) or "--recursive" in longs or "--archive" in longs
             if not rec:
                 continue
-            pos = [a for a in args if not a.startswith("-")]
+            pos, tdir, j = [], None, 0
+            while j < len(args):
+                a = args[j]
+                if prog == "cp" and a in ("-t", "--target-directory") and j + 1 < len(args):  # rsync -t = times
+                    tdir, j = args[j + 1], j + 2  # `cp -r -t <dir> <src>...`: the target comes first
+                    continue
+                if prog == "cp" and a.startswith("--target-directory="):
+                    tdir = a.partition("=")[2]
+                elif not a.startswith("-"):
+                    pos.append(a)
+                j += 1
+            if tdir is not None:
+                pos.append(tdir)
             if len(pos) < 2:
                 continue
             tgt = expand(pos[-1], env, cwd)
