@@ -4,12 +4,12 @@
  "nearest_earth_animal": "mole",
  "earth_body_named": false,
  "departures": [
-  "body drawn half-sunk in a root-bound ground crust, the root mat parting and bulging around it like a bow wave on water, not a burrow hole or dirt mound",
-  "massive broad shoulders form the leading edge that pushes through the mat, with the head low behind or below the shoulder line, not a pointed snout out in front",
-  "smooth, streamlined swimming body that moves through the crust as through water, with no spade-like digging forepaws or claws",
-  "mouth placed to strike upward from below, suiting a creature that takes prey from underneath"
+  "creature hunkered down low, body resting directly on the ground surface (a flat, level resting pose), with NO surrounding terrain, crust, roots, vegetation, crater, nest, bow wave or wake painted: the creature alone on a transparent background",
+  "massive broad shoulders as the heaviest mass, with a blunt low head set directly on the shoulders with no neck, not a pointed snout out in front",
+  "seal-like streamlined bulk with smooth matte slate-brown hide and paler underside, small wide-set dark eyes, flipper stubs for forelimbs and no spade-like digging forepaws or claws",
+  "mouth a slit that opens upward, suiting a creature that takes prey from underneath"
  ],
- "body_plan": "swimmer",
+ "body_plan": "seal-like hunkered bulk resting on the ground",
  "by": [
   "claude-opus-5-5"
  ],
@@ -18,5 +18,6 @@
   "sha": "9cda888a5233"
  },
  "at": "2026-10-23T09:49:30-07:00",
- "source": "description only (no image)"
+ "source": "description only (no image)",
+ "owner_note": "2026-10-24 owner: show it hunkered down onto the surface, no terrain around it; judge must NOT demand visible crust-swimming"
 }
