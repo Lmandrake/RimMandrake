@@ -1,0 +1,2 @@
+Code review wave 3: 'except OSError: return default' to mean 'file missing' also swallows IsADirectory/permission errors, so an existing-but-unreadable config silently degrades (rimflow flowworks_lane routed nothing, fixed 2d5db864de: catch FileNotFoundError only, raise on other OSError). Same review: a selftest that does json.loads(m.group(1)) if m else [] passes vacuously when its regex stops matching; make the missing block a FAIL plus a total-count sanity probe (selftest_scale_panels, 7fb537fb70).
+home: NONE
