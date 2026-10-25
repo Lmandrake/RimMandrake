@@ -7756,3 +7756,13 @@
 {"seat":"FOUNDRY","event":"start","id":"ENACT_ALIAS_FIX_SWAP_SEPARATE_DEF","ts":"2026-10-25T22:22:08Z","tsn":1792966928302868907}
 {"seat":"FOUNDRY","event":"close","id":"ENACT_UNDRAWN_LANE_FIX_ORPHAN_INSTALL","sha":"92dc88fc018908e9c0a07ed3effd1502b1d5bafc","ts":"2026-10-25T22:23:14Z","tsn":1792966994280585466}
 {"seat":"FOUNDRY","event":"close","id":"ENACT_ALIAS_FIX_SWAP_SEPARATE_DEF","sha":"92dc88fc018908e9c0a07ed3effd1502b1d5bafc","ts":"2026-10-25T22:23:15Z","tsn":1792966995932535138}
+{"seat":"FOUNDRY","event":"lease","id":"CANON_START_SAVEGAME_SYNC_TO_R3","action":"take","token":"FOUNDRY.pid72431.81416811","expires":"2026-10-25T23:29:58Z","ts":"2026-10-25T22:44:58Z","tsn":1792968298463884332}
+{"seat":"FOUNDRY","event":"claim","id":"CANON_START_SAVEGAME_SYNC_TO_R3","ts":"2026-10-25T22:44:58Z","tsn":1792968298849403051}
+{"seat":"FOUNDRY","event":"start","id":"CANON_START_SAVEGAME_SYNC_TO_R3","ts":"2026-10-25T22:44:59Z","tsn":1792968299246002744}
+{"seat":"FOUNDRY","event":"lease","id":"DIRTY_CODE_REVIEW_STANDING_LOOP_1","action":"take","token":"FOUNDRY.pid82762.a28bbc37","expires":"2026-10-25T23:36:09Z","ts":"2026-10-25T22:51:09Z","tsn":1792968669715088313}
+{"seat":"FOUNDRY","event":"lease","id":"DIRTY_CODE_REVIEW_STANDING_LOOP_1","action":"renew","token":"FOUNDRY.pid82762.a28bbc37","expires":"2026-10-25T23:36:19Z","ts":"2026-10-25T22:51:19Z","tsn":1792968680273619389}
+{"seat":"FOUNDRY","event":"lease","id":"DIRTY_CODE_REVIEW_STANDING_LOOP_1","action":"renew","token":"FOUNDRY.pid82762.a28bbc37","ts":"2026-10-25T22:51:45Z","expires":"2026-10-25T23:36:45Z","tsn":1792968706026874459}
+{"seat":"FOUNDRY","event":"lease","id":"ROT_FAUNA_KIN_WIRING_1","action":"take","token":"FOUNDRY.pid85665.008bbc47","expires":"2026-10-25T23:36:48Z","ts":"2026-10-25T22:51:48Z","tsn":1792968708576405452}
+{"seat":"FOUNDRY","event":"claim","id":"ROT_FAUNA_KIN_WIRING_1","ts":"2026-10-25T22:51:48Z","tsn":1792968708929314065}
+{"seat":"FOUNDRY","event":"start","id":"ROT_FAUNA_KIN_WIRING_1","ts":"2026-10-25T22:51:49Z","tsn":1792968709282036843}
+{"seat":"FOUNDRY","event":"lease","id":"DIRTY_CODE_REVIEW_STANDING_LOOP_1","action":"renew","token":"FOUNDRY.pid82762.a28bbc37","ts":"2026-10-25T22:54:29Z","expires":"2026-10-25T23:39:29Z","tsn":1792968869882525137}
