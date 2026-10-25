@@ -145,6 +145,7 @@ class TestContext(object):
         # `watch` (modcheck.watch.Watch) is the situational envelope: bland map, tick budget, detector
         # sweeps, surprise evidence. None keeps every verb exactly as it was before it existed.
         self.watch = watch
+        self.fixture_ids = set()  # pawns this chain spawned, declared to the safe_advance stop rule (see _declare_fixture)
         self.upstream_failed = False
         self.upstream_reason = "upstream failed -- this chain's state is meaningless"
         self.components = []
@@ -256,8 +257,7 @@ class TestContext(object):
         pid = row.get("id")
         if pid:
             self.session.track("pawn", pid, x=x, z=z)
-            if self.watch is not None:
-                self.watch.expect_fixture(pid, row.get("name"))   # the TEST made it: not a surprise
+            self._declare_fixture(pid, row.get("name"))   # the TEST made it: not a surprise
         self._record("spawn_pawn %s hostile=%s" % (kindDef, hostile), r)
         self._receipt("jawa/spawn_pawn", kindDef, r)
         return pid
@@ -478,17 +478,30 @@ class TestContext(object):
         else:
             r = self.session.call(tool, **params)
         self._record("bridge_call %s" % tool, r)
+        if tool == "jawa/spawn_pawn":
+            # a pawn the test spawns through the escape valve is as much its own fixture as one made
+            # by spawn_pawn(): its injuries and its teardown death are not surprises (MEASURED live)
+            for row in (r or {}).get("pawns") or []:
+                if row.get("id"):
+                    self._declare_fixture(row["id"], row.get("name"))
         if self.watch is not None:
-            if tool == "jawa/spawn_pawn":
-                # a pawn the test spawns through the escape valve is as much its own fixture as one made
-                # by spawn_pawn(): its injuries and its teardown death are not surprises (MEASURED live)
-                for row in (r or {}).get("pawns") or []:
-                    if row.get("id"):
-                        self.watch.expect_fixture(row["id"], row.get("name"))
             self.watch.charge_verb("bridge_call:%s" % tool)
         if tool == "jawa/spawn_pawn":
             self._receipt(tool, params.get("kindDef"), r)
         return r
+
+    def _declare_fixture(self, pid, name=None):
+        """A pawn the TEST spawned. With a watch it is the watch's fixture (which declares it to clockgate); WITHOUT one
+        it is still declared to clockgate's safe_advance stop rule. MODCHECK_SITE_FIX_RAIDS_KILL_THE_RUN: both live
+        FlowWorks runs of 2026-10-24 ran `modcheck run FlowWorks` with no --situational, so no Watch existed and the
+        fix that declared fixtures only through Watch.expect_fixture never ran: every own-Pirate arrival still stopped
+        safe_advance (run4: declared=False on every hostile_arrival). The runner withdraws these at the suite's end."""
+        self.fixture_ids.add(pid)
+        if self.watch is not None:
+            self.watch.expect_fixture(pid, name)
+        else:
+            import clockgate  # noqa: E402 - modcheck dir is on sys.path wherever suite is importable
+            clockgate.declare_fixture(pid)
 
     def expect(self, kind, matcher, until_tick=None, max_count=None):
         """Declare something THIS chain causes on purpose, so the situational detectors do not call it a

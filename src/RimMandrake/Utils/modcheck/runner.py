@@ -433,8 +433,27 @@ def _default_anchor(session):
     return r.get("sizeX", 200) // 2, r.get("sizeZ", 200) // 2
 
 
+def _hold_site(session, tx, expected_ids):
+    """MODCHECK_SITE_FIX_MECHS_WAKE_MID_RUN: a live run WITHOUT --situational (both FlowWorks runs of 2026-10-24) built
+    no Watch, so prepare_bland_map never ran: the storyteller stayed on and nothing swept hostiles, mechs, wildlife or
+    threat structures between chains; a Pikeman+Scyther that arrived at tick 4801 shot the colony and voided 21 rows.
+    The Watch's own bland-map recipe, without its budget or detector. Returns the receipt (BlandReport.as_dict)."""
+    import helpers as _H  # noqa: E402
+    try:
+        # An earlier chain's spawned raider is a fixture (its corpse is litter, never contamination) but a LIVE one
+        # left behind is a threat to this chain: remove every hostile first, by vanish, before the fixture-aware recipe.
+        pre = _H.kill_hostiles(session, ())
+        rep = _H.prepare_bland_map(session, tx, sorted(expected_ids), kill=True, resurrect=False)
+    except Exception as e:     # noqa: BLE001 - a hold that could not run is a reason, never a crash
+        return {"bland": False, "problems": ["site hold raised %s: %s" % (type(e).__name__, e)]}
+    out = rep.as_dict()
+    out["steps"] = [pre.as_dict()] + list(out.get("steps") or [])
+    return out
+
+
 def run_suite(suite, session, debug=False, anchor=None, mod=None,
-              judge_runner=None, situational=False, policy="abort", bland_world=False, retile=False):
+              judge_runner=None, situational=False, policy="abort", bland_world=False, retile=False,
+              hold_site=False):
     """Run every chain in `suite` against an open `session`. Returns
     `{"chains": [...], "all_green": bool}`. Never raises on a component
     failure -- that is exactly what `suite.py`'s `component()` already
@@ -486,7 +505,10 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
     watch_dir = os.path.join(SHEET_DIR, "surprises", time.strftime("%Y%m%dT%H%M%S"))
     fixtures = set()      # pawns spawned and later torn down (this run, plus earlier runs on this game):
     #                       their corpses are the harness's own litter, never contamination
-    if situational:
+    # MODCHECK_SITE_FIX_MECHS_WAKE_MID_RUN: without --situational no Watch exists, so nothing held the site quiet (see
+    # _hold_site). `hold_site` (set by run(), the live path) gives that run the same bland map before every chain.
+    hold = bool(hold_site) and not situational and getattr(suite, "hold_site", True)
+    if situational or hold:
         try:
             import clockgate  # noqa: E402
             fixtures = load_fixtures(clockgate.read_ticks(session))
@@ -514,119 +536,166 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
                 world_before = dict(world_before or {}, pond=_BW.paint_pond(session))
             except Exception as e:                              # noqa: BLE001
                 world_before = dict(world_before or {}, pond={"error": "%s: %s" % (type(e).__name__, e)})
-    for name, fn in suite.chains:
-        # One progress line per chain (MODCHECK_RUN_DIAGNOSE_TICK_ONE_STALL, LIVE 2026-10-24): the row lines in the
-        # log come from inside a chain, so an offline chain sitting minutes in a subprocess (rivers_switch_flips ->
-        # the C# SelfTest, ~9 min) read as a game stalled at tick 1. Name the running chain on stderr.
-        _chain_t0 = time.time()
-        print("[modcheck] chain %s START %s" % (name, time.strftime("%H:%M:%SZ", time.gmtime())),
-              file=sys.stderr, flush=True)
-        watch = None
-        _modal = None
-        if situational:
-            # A force-pause dialog (the colony-naming dialog that surfaces mid-run, or a Mod Settings dialog a previous
-            # chain left open) is a modal_open SURPRISE that aborts and TAINTS the chain. Close them before every chain.
-            import run_identity as _RI  # noqa: E402
-            _modal = _RI.modal_sweep(session.call)                 # records what was found (observatory S1)
-            # The quicktest map's biome is whatever tile the game picked (TheRot LIVE 2026-10-03), and that biome's own
-            # ambient weather (the Sheen weathers) coated colonists with RM_SheenCoating mid-chain: a modal-free
-            # `colonist_injured_unexpectedly` that aborted every later component. Every chain starts under locked Clear;
-            # a chain that tests weather sets its own afterwards.
-            # Verse.Log stops writing after 1000 messages until ResetMessageCount (only called at data load), after which
-            # Player.log and jawa/drain_log are BLIND to every later error (MEASURED live 2026-10-03: log silent from 16:54,
-            # a spamming MCR logger). Reset it before every chain so log-based checks keep seeing.
-            try:
-                session.call("jawa/static_call", type="Verse.Log", method="ResetMessageCount")
-            except Exception:                                      # noqa: BLE001 - housekeeping, never a verdict
-                pass
-            try:
-                session.call("jawa/weather_set", weather="Clear", lockWeather=True)
-            except Exception:                                      # noqa: BLE001 - housekeeping, never a verdict
-                pass
-            # A previous chain's pad clean-up destroys walls but leaves their roofs, and the unsupported roof then COLLAPSES
-            # onto colonists mid-chain ("Roof collapse", Crush by nobody; LIVE 2026-10-03: lash, fire, vents chains). Every chain
-            # starts with no roof anywhere; a chain that needs one builds it itself (make_empty_room).
-            mi = {}        # stays usable by the gas sweeps below if map_info itself fails
-            try:
-                mi = session.call("jawa/map_info") or {}
-                session.call("jawa/set_roof_batch", ops="None:0,0,%d,%d" % (int(mi.get("sizeX", 250)), int(mi.get("sizeZ", mi.get("sizeX", 250)))),
-                             refresh=False)
-            except Exception:                                      # noqa: BLE001 - housekeeping, never a verdict
-                pass
-            # Gas left by a previous chain (a suush's ToxGas, a vent) poisons the next chain's colonists (ToxicBuildup surprise).
-            for _gas in ("ToxGas", "BlindSmoke", "RotStink", "DeadlifeDust"):
-                try:
-                    session.call("jawa/set_gas", action="clear", rect="0,0,%d,%d" % (int(mi.get("sizeX", 250)), int(mi.get("sizeZ", mi.get("sizeX", 250)))), gasType=_gas)
-                except Exception:                                  # noqa: BLE001 - housekeeping, never a verdict
-                    pass
-            # Alpha Biomes' AB_MycoticSpores (AlphaBiomes.Gas_Mycotic, FeverWood/TheRot) is a Gas THING, not a GasGrid gas:
-            # jawa/set_gas refuses its name (MEASURED 2026-10-04: 'Bad gasType'), destroy_batch Gas removes it (pawns never touched).
-            try:
-                session.call("jawa/destroy_batch", rects="0,0,%d,%d" % (int(mi.get("sizeX", 250)), int(mi.get("sizeZ", mi.get("sizeX", 250)))), categories="Gas")
-            except Exception:                                      # noqa: BLE001 - housekeeping, never a verdict
-                pass
-            from watch import Watch  # noqa: E402
-            cap_kw = ({"session_cap": suite.chain_caps[name]}
-                      if name in getattr(suite, "chain_caps", {}) else {})
-            watch = Watch(session, anchor, watch_dir, mod=mod or suite.name, chain=name, policy=policy,
-                          expected_ids=sorted(fixtures), resurrect=True, **cap_kw)
-            watch.__enter__()
-        t = TestContext(session, anchor=anchor, debug=debug,
-                        on_finding=findings.append, watch=watch)
-        t.mark_log()      # expect_log_contains reads only lines written after this point
-        if watch is not None and not watch.bland:
-            t.upstream_failed = True
-            t.upstream_reason = ("could not establish a bland map -- not a verdict on the mod: %s"
-                                 % "; ".join(watch.report.problems)[:300])
+    hold_tx = None
+    hold_err = None
+    if hold:
+        # One settings transaction for the whole suite (storyteller and random events off, wild spawner blocked),
+        # restored after the last chain; the per-chain Watch opens its own, this path has none.
+        import helpers as _H  # noqa: E402
         try:
-            try:
-                fn(t)
-            except Exception as e:  # noqa: BLE001
-                # A check or a wait OUTSIDE any `with t.component()` (chain setup) used to kill the whole
-                # run on the first failure (Droidworks' salvage_on_death, MEASURED live 2026-10-01). A failed
-                # expectation or a detector abort there is a RESULT: record it as a component and go on.
-                # Any other exception is still a genuine script bug and still propagates.
-                from suite import Component, FAIL, UNMEASURED  # noqa: E402
-                surprise = getattr(e, "is_surprise_abort", False)
-                if not (surprise or type(e).__name__ == "ExpectationFailed"):
-                    raise
-                comp = Component("<chain setup, outside any component>", None, False)
-                if surprise:
-                    comp.verdict, comp.surprises = UNMEASURED, e.summary()
-                    comp.detail = "%s: %s" % (e.kind, e)
-                elif str(e).startswith("UNMEASURED"):
-                    # The script says it could not ASK (e.g. spawn_pawn returned no id): a harness gap, never a mod
-                    # FAIL and never a finding -- same rule as inside a component (suite.Component.__exit__).
-                    comp.verdict, comp.detail = UNMEASURED, "%s: %s" % (type(e).__name__, e)
-                else:
-                    comp.verdict, comp.detail = FAIL, "%s: %s" % (type(e).__name__, e)
-                    findings.append(comp)
-                t.components.append(comp)
+            hold_tx = _H.SettingsTransaction(session)
+            hold_tx.__enter__()
+        except Exception as e:     # noqa: BLE001 - settings unreadable: every chain is UNMEASURED, never a crash
+            hold_tx = None
+            hold_err = "site hold could not open its settings transaction: %s: %s" % (type(e).__name__, e)
+    declared = set()      # fixture ids TestContext declared to clockgate WITHOUT a watch: withdrawn after the suite
+    try:
+        for name, fn in suite.chains:
+            # One progress line per chain (MODCHECK_RUN_DIAGNOSE_TICK_ONE_STALL, LIVE 2026-10-24): the row lines in the
+            # log come from inside a chain, so an offline chain sitting minutes in a subprocess (rivers_switch_flips ->
+            # the C# SelfTest, ~9 min) read as a game stalled at tick 1. Name the running chain on stderr.
+            _chain_t0 = time.time()
+            print("[modcheck] chain %s START %s" % (name, time.strftime("%H:%M:%SZ", time.gmtime())),
+                  file=sys.stderr, flush=True)
+            watch = None
+            _modal = None
+            _hold = (_hold_site(session, hold_tx, fixtures) if hold_tx is not None
+                     else {"bland": False, "problems": [hold_err]} if hold_err else None)
+            if situational:
+                # A force-pause dialog (the colony-naming dialog that surfaces mid-run, or a Mod Settings dialog a previous
+                # chain left open) is a modal_open SURPRISE that aborts and TAINTS the chain. Close them before every chain.
+                import run_identity as _RI  # noqa: E402
+                _modal = _RI.modal_sweep(session.call)                 # records what was found (observatory S1)
+                # The quicktest map's biome is whatever tile the game picked (TheRot LIVE 2026-10-03), and that biome's own
+                # ambient weather (the Sheen weathers) coated colonists with RM_SheenCoating mid-chain: a modal-free
+                # `colonist_injured_unexpectedly` that aborted every later component. Every chain starts under locked Clear;
+                # a chain that tests weather sets its own afterwards.
+                # Verse.Log stops writing after 1000 messages until ResetMessageCount (only called at data load), after which
+                # Player.log and jawa/drain_log are BLIND to every later error (MEASURED live 2026-10-03: log silent from 16:54,
+                # a spamming MCR logger). Reset it before every chain so log-based checks keep seeing.
+                try:
+                    session.call("jawa/static_call", type="Verse.Log", method="ResetMessageCount")
+                except Exception:                                      # noqa: BLE001 - housekeeping, never a verdict
+                    pass
+                try:
+                    session.call("jawa/weather_set", weather="Clear", lockWeather=True)
+                except Exception:                                      # noqa: BLE001 - housekeeping, never a verdict
+                    pass
+                # A previous chain's pad clean-up destroys walls but leaves their roofs, and the unsupported roof then COLLAPSES
+                # onto colonists mid-chain ("Roof collapse", Crush by nobody; LIVE 2026-10-03: lash, fire, vents chains). Every chain
+                # starts with no roof anywhere; a chain that needs one builds it itself (make_empty_room).
+                mi = {}        # stays usable by the gas sweeps below if map_info itself fails
+                try:
+                    mi = session.call("jawa/map_info") or {}
+                    session.call("jawa/set_roof_batch", ops="None:0,0,%d,%d" % (int(mi.get("sizeX", 250)), int(mi.get("sizeZ", mi.get("sizeX", 250)))),
+                                 refresh=False)
+                except Exception:                                      # noqa: BLE001 - housekeeping, never a verdict
+                    pass
+                # Gas left by a previous chain (a suush's ToxGas, a vent) poisons the next chain's colonists (ToxicBuildup surprise).
+                for _gas in ("ToxGas", "BlindSmoke", "RotStink", "DeadlifeDust"):
+                    try:
+                        session.call("jawa/set_gas", action="clear", rect="0,0,%d,%d" % (int(mi.get("sizeX", 250)), int(mi.get("sizeZ", mi.get("sizeX", 250)))), gasType=_gas)
+                    except Exception:                                  # noqa: BLE001 - housekeeping, never a verdict
+                        pass
+                # Alpha Biomes' AB_MycoticSpores (AlphaBiomes.Gas_Mycotic, FeverWood/TheRot) is a Gas THING, not a GasGrid gas:
+                # jawa/set_gas refuses its name (MEASURED 2026-10-04: 'Bad gasType'), destroy_batch Gas removes it (pawns never touched).
+                try:
+                    session.call("jawa/destroy_batch", rects="0,0,%d,%d" % (int(mi.get("sizeX", 250)), int(mi.get("sizeZ", mi.get("sizeX", 250)))), categories="Gas")
+                except Exception:                                      # noqa: BLE001 - housekeeping, never a verdict
+                    pass
+                from watch import Watch  # noqa: E402
+                cap_kw = ({"session_cap": suite.chain_caps[name]}
+                          if name in getattr(suite, "chain_caps", {}) else {})
+                watch = Watch(session, anchor, watch_dir, mod=mod or suite.name, chain=name, policy=policy,
+                              expected_ids=sorted(fixtures), resurrect=True, **cap_kw)
+                watch.__enter__()
+            t = TestContext(session, anchor=anchor, debug=debug,
+                            on_finding=findings.append, watch=watch)
+            t.mark_log()      # expect_log_contains reads only lines written after this point
+            if watch is not None and not watch.bland:
                 t.upstream_failed = True
-            if watch is not None and not t.upstream_failed:
-                watch.final()
+                t.upstream_reason = ("could not establish a bland map -- not a verdict on the mod: %s"
+                                     % "; ".join(watch.report.problems)[:300])
+            if _hold is not None and _hold.get("problems"):
+                t.upstream_failed = True
+                t.upstream_reason = ("could not hold the site quiet -- not a verdict on the mod: %s"
+                                     % "; ".join(str(p) for p in _hold["problems"])[:300])
+            try:
+                try:
+                    if _hold is not None and _hold.get("problems"):
+                        # The site could not be held quiet: do not run the chain's setup against verbs that now
+                        # return None (it could raise outside any component and abort the run); one UNMEASURED row.
+                        from suite import Component, UNMEASURED  # noqa: E402
+                        comp = Component("<site hold, before any component>", None, False)
+                        comp.verdict, comp.detail = UNMEASURED, t.upstream_reason
+                        t.components.append(comp)
+                    else:
+                        fn(t)
+                except Exception as e:  # noqa: BLE001
+                    # A check or a wait OUTSIDE any `with t.component()` (chain setup) used to kill the whole
+                    # run on the first failure (Droidworks' salvage_on_death, MEASURED live 2026-10-01). A failed
+                    # expectation or a detector abort there is a RESULT: record it as a component and go on.
+                    # Any other exception is still a genuine script bug and still propagates.
+                    from suite import Component, FAIL, UNMEASURED  # noqa: E402
+                    surprise = getattr(e, "is_surprise_abort", False)
+                    if not (surprise or type(e).__name__ == "ExpectationFailed"):
+                        raise
+                    comp = Component("<chain setup, outside any component>", None, False)
+                    if surprise:
+                        comp.verdict, comp.surprises = UNMEASURED, e.summary()
+                        comp.detail = "%s: %s" % (e.kind, e)
+                    elif str(e).startswith("UNMEASURED"):
+                        # The script says it could not ASK (e.g. spawn_pawn returned no id): a harness gap, never a mod
+                        # FAIL and never a finding -- same rule as inside a component (suite.Component.__exit__).
+                        comp.verdict, comp.detail = UNMEASURED, "%s: %s" % (type(e).__name__, e)
+                    else:
+                        comp.verdict, comp.detail = FAIL, "%s: %s" % (type(e).__name__, e)
+                        findings.append(comp)
+                    t.components.append(comp)
+                    t.upstream_failed = True
+                if watch is not None and not t.upstream_failed:
+                    watch.final()
+            finally:
+                fixtures.update(l["id"] for l in getattr(session, "litter", []) if l.get("kind") == "pawn")
+                if watch is not None:
+                    fixtures.update(watch.fixture_ids)
+                else:
+                    declared.update(t.fixture_ids)
+                fixtures.update(t.fixture_ids)
+                # MEASURED live 2026-09-12: a chain that raises during its own
+                # SETUP (before any `with t.component()`) used to skip this
+                # entirely -- the pit it had already spawned sat on the map
+                # forever, and the NEXT run's read-backs got confused by a
+                # stale pit/pawn from a run that technically failed. Build-up
+                # and tear-down are absolute (spec 1b) even when the chain
+                # itself is broken, not only when its components are.
+                session.sweep()
+                if watch is not None:
+                    watch.__exit__(None, None, None)
+            print("[modcheck] chain %s END %.0fs %s" % (
+                name, time.time() - _chain_t0,
+                " ".join("%s=%d" % (v, sum(1 for c in t.components if str(c.verdict).startswith(v)))
+                         for v in ("PASS", "FAIL", "UNMEASURED"))), file=sys.stderr, flush=True)
+            chains_out.append({"name": name,
+                               "components": [c.as_dict() for c in t.components],
+                               "situational": watch.summary() if watch is not None else None,
+                               "modal_check": _modal,
+                               "site_hold": _hold})
+    finally:
+        try:
+            if hold_tx is not None:
+                hold_tx.__exit__(None, None, None)
         finally:
-            fixtures.update(l["id"] for l in getattr(session, "litter", []) if l.get("kind") == "pawn")
-            if watch is not None:
-                fixtures.update(watch.fixture_ids)
-            # MEASURED live 2026-09-12: a chain that raises during its own
-            # SETUP (before any `with t.component()`) used to skip this
-            # entirely -- the pit it had already spawned sat on the map
-            # forever, and the NEXT run's read-backs got confused by a
-            # stale pit/pawn from a run that technically failed. Build-up
-            # and tear-down are absolute (spec 1b) even when the chain
-            # itself is broken, not only when its components are.
-            session.sweep()
-            if watch is not None:
-                watch.__exit__(None, None, None)
-        print("[modcheck] chain %s END %.0fs %s" % (
-            name, time.time() - _chain_t0,
-            " ".join("%s=%d" % (v, sum(1 for c in t.components if str(c.verdict).startswith(v)))
-                     for v in ("PASS", "FAIL", "UNMEASURED"))), file=sys.stderr, flush=True)
-        chains_out.append({"name": name,
-                           "components": [c.as_dict() for c in t.components],
-                           "situational": watch.summary() if watch is not None else None,
-                           "modal_check": _modal})
+            if declared:
+                import clockgate  # noqa: E402
+                for pid in declared:
+                    clockgate.withdraw_fixture(pid)
+    if hold:
+        try:
+            import clockgate  # noqa: E402
+            save_fixtures(fixtures, clockgate.read_ticks(session))
+        except Exception:     # noqa: BLE001
+            pass
     if situational:
         try:
             import run_identity as _RI  # noqa: E402
@@ -794,7 +863,7 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort"):
             from rimdrive import Session  # noqa: E402
             with Session(lock=None) as s:
                 summary = run_suite(suite, s, debug=debug, mod=mod_folder,
-                                    situational=situational, policy=policy)
+                                    situational=situational, policy=policy, hold_site=True)
             if situational:
                 try:           # SHADOW-mode Jev routing of FAIL components; absent key => one UNAVAILABLE row
                     import jev_triage  # noqa: E402

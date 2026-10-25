@@ -10,3 +10,6 @@ One row per attempt. **Saved Claude work** = yes / partial / no, judged by wheth
 | 2026-10-24 | BENCH | design session (BRIDGES_DIG_DESIGN_THREE_WAYS_EACH) | 3 options × 3 areas | 9 options with cost/gotchas; 2 claims rejected vs code | yes | pre-mode baseline |
 | 2026-10-24 | BENCH | second-workstation study | per-token value of a 2nd machine | conditional yes (script-driven runner only); overturned a wrong "80% offline" claim; its % gains unbaselined | partial | Sonnet still gathered all measurements |
 | 2026-10-24 | BENCH | SteveDesktop bring-up plan | enhance a Claude-drafted plan | concrete reorder, 8 risks, 7 simplifications, sharper Wed measurement, Lodestar criteria; adopted nearly whole | yes | one consult, ~8 KB reply, replaced a design subagent |
+| 2026-10-24 | BENCH | MODCHECK_SITE_FIX_RAIDS/MECHS fix review | full-file review of runner.py+suite.py diff | 3 real findings (fixture raiders exempt from later holds, tx enter/exit failures) fixed | yes | 1 of 3 passes |
+| 2026-10-24 | BENCH | same, re-review | verify fixes + remaining bugs | 2 more real (failed hold still ran chain setup; test could touch live fixture ledger) fixed | yes | 2 of 3 |
+| 2026-10-24 | BENCH | same, third pass | confirm NONE | NONE; files marked clean on it | yes | 3 of 3, 32 s |

@@ -647,7 +647,122 @@ def t_dependency_closure_and_composed_folders():
     check("composed: a mod with no tier has no closure", runner.tier_package_ids("NoSuchTierMod") == [])
 
 
+def t_fixture_declared_without_watch():
+    """MODCHECK_SITE_FIX_RAIDS_KILL_THE_RUN: both live FlowWorks runs of 2026-10-24 ran with no --situational, so no
+    Watch existed and c59c4ed212 (declare via Watch.expect_fixture only) never fired: every own-Pirate arrival stopped
+    safe_advance (run4: declared=False). A pawn the test spawns must be declared to clockgate WITHOUT a watch too, and
+    withdrawn when the suite ends."""
+    import clockgate as cg
+    suite = Suite("t_mod")
+    seen = {}
+
+    @suite.chain("c1")
+    def c1(t):
+        with t.component("spawns_its_own_pirate", beyond_toggle=True):
+            t.bridge_call("jawa/spawn_pawn", kind="Pirate", x=10, z=10, faction="Pirate")
+            seen["ids"] = set(cg.FIXTURE_IDS)
+
+    session = _fake_session()
+    session.call = lambda tool, **p: ({"success": True, "pawns": [{"id": "Human4263", "name": "Worm"}]}
+                                      if tool == "jawa/spawn_pawn" else {"success": True})
+    runner.run_suite(suite, session)
+    check("fixture: a pawn spawned with no watch is declared to the safe_advance stop rule",
+          4263 in seen.get("ids", ()), seen)
+    check("fixture: the suite withdraws its no-watch declarations at its end", 4263 not in cg.FIXTURE_IDS,
+          sorted(cg.FIXTURE_IDS))
+
+
+def t_site_held_between_chains_without_watch():
+    """MODCHECK_SITE_FIX_MECHS_WAKE_MID_RUN: without --situational nothing held the site quiet (storyteller on, no
+    hostile/mech/wildlife/threat-structure sweep), and a Pikeman+Scyther at tick 4801 voided 21 rows. With hold_site
+    (what run() passes) every chain starts from prepare_bland_map under one suite-wide settings transaction; a hold
+    that reports problems makes the chain UNMEASURED, never a mod verdict; hold_site off keeps the old behaviour."""
+    import inspect
+    import helpers as H
+    calls = []
+
+    class Tx(object):
+        def __init__(self, session):
+            calls.append("tx_init")
+
+        def __enter__(self):
+            calls.append("tx_enter")
+            return self
+
+        def __exit__(self, *a):
+            calls.append("tx_exit")
+
+    class Rep(object):
+        def __init__(self, problems):
+            self.problems = problems
+
+        def as_dict(self):
+            return {"bland": not self.problems, "problems": self.problems, "notes": [], "steps": []}
+
+    problems = []
+
+    def fake_prepare(session, tx, expected_ids=(), kill=True, resurrect=False):
+        calls.append(("hold", kill, resurrect))
+        return Rep(list(problems))
+
+    def make_suite():
+        suite = Suite("t_mod")
+        for n in ("c1", "c2"):
+            def body(t, n=n):
+                calls.append("chain_" + n)
+                with t.component("comp_" + n, beyond_toggle=True):
+                    pass
+            suite.chains.append((n, body))
+        return suite
+
+    class Res(object):
+        def as_dict(self):
+            return {"name": "kill_hostiles"}
+
+    def fake_kill(session, expected_ids=()):
+        calls.append(("kill_all_hostiles", tuple(expected_ids)))
+        return Res()
+
+    real = (H.prepare_bland_map, H.SettingsTransaction, H.kill_hostiles, runner.load_fixtures, runner.save_fixtures)
+    H.prepare_bland_map, H.SettingsTransaction, H.kill_hostiles = fake_prepare, Tx, fake_kill
+    runner.load_fixtures = lambda *a, **k: set()           # never read or overwrite the live fixture ledger
+    runner.save_fixtures = lambda *a, **k: calls.append("save_fixtures")
+    try:
+        r = runner.run_suite(make_suite(), _fake_session(), hold_site=True)
+        check("hold: one transaction around the suite, a bland-map hold before every chain",
+              calls == ["tx_init", "tx_enter", ("kill_all_hostiles", ()), ("hold", True, False), "chain_c1",
+                        ("kill_all_hostiles", ()), ("hold", True, False), "chain_c2", "tx_exit"]
+              + (["save_fixtures"] if "save_fixtures" in calls else []), calls)
+        check("hold: every chain carries its hold receipt",
+              all((ch.get("site_hold") or {}).get("bland") is True for ch in r["chains"]), r["chains"])
+        del calls[:]
+        problems.append("1 hostile pawn(s) present: Mech_Pikeman")
+        r = runner.run_suite(make_suite(), _fake_session(), hold_site=True)
+        verdicts = [c["verdict"] for ch in r["chains"] for c in ch["components"]]
+        check("hold: a site that could not be held quiet makes the chain UNMEASURED, not PASS/FAIL",
+              verdicts and all(v == UNMEASURED for v in verdicts) and not r["findings"], verdicts)
+        check("hold: a chain whose site was not held is not run at all", "chain_c1" not in calls, calls)
+        del calls[:]
+        runner.run_suite(make_suite(), _fake_session())
+        check("hold: off by default (offline/fake runs unchanged)", calls == ["chain_c1", "chain_c2"], calls)
+
+        def bad_enter(self):
+            raise RuntimeError("storyteller read refused")
+        Tx.__enter__ = bad_enter
+        r = runner.run_suite(make_suite(), _fake_session(), hold_site=True)
+        verdicts = [c["verdict"] for ch in r["chains"] for c in ch["components"]]
+        check("hold: settings that cannot be opened make every chain UNMEASURED, never a crash",
+              verdicts and all(v == UNMEASURED for v in verdicts), verdicts)
+    finally:
+        (H.prepare_bland_map, H.SettingsTransaction, H.kill_hostiles, runner.load_fixtures,
+         runner.save_fixtures) = real
+    check("hold: the live entry point run() turns the hold on",
+          "hold_site=True" in inspect.getsource(runner.run))
+
+
 TESTS = [
+    t_fixture_declared_without_watch,
+    t_site_held_between_chains_without_watch,
     t_dependency_closure_and_composed_folders,
     t_floor_uncovered,
     t_compose_test_list_appends_once_and_reads_back,
