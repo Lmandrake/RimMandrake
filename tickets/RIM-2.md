@@ -15,6 +15,9 @@ Audit every open item with blocked=true (99 at last count, 30 with --on): is the
 
 Audit done 2026-10-25: /Users/mandrake/ClaudeWork/rimflow/block-audit-2026-10-25.md. 99 blocked, 30 with --on, 0 blockers done so 0 lifts. 12 blocked on built/validated work (for --until), 7 owner decisions listed in the audit. Findings: 290/360 blocks set by FOUNDRY mid-pass, 329 carry no reason field, 69 of 99 are free text, 21 end-of-pass wording, 42 cite bridge/live/deploy timing that belongs in needs, 38 are doing items parked with block. Proposed: every new block carries --on, a needs window or --until; bare free-text blocks flagged at 7 days; next --seat lists that seat's 3 oldest blocks first.
 
+BENCH re-derivation 2026-10-25 (Linux): 91 open blocked, 31 with --on, 0 blockers done/dropped/superseded. 0 blocks lifted or re-stated: BENCH is refused block/unblock on FOUNDRY items (all 14 candidates are FOUNDRY's). Hand-off list of 6 lifts + 4 re-types + 1 re-point, plus 7 owner decisions with options and recommendations: Transient/rim2_owner_decisions.md. Still owed: FOUNDRY applies the list; the planning-step proposal.
+
 ## Log
 - 2026-10-24T20:46 mt-400028/ticket: new (agent)
 - 2026-10-24T20:58 mt-400028/ticket: note
+- 2026-10-25 BENCH/rim2: re-derived; decisions file written; lifts handed to FOUNDRY
