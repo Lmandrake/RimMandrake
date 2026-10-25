@@ -167,6 +167,57 @@ def rank(world, seat, target="v1", ctx=None):
     return out
 
 
+# ---------------------------------------------------------------------------
+# THE BLOCK FRONTIER (RIM-1, 2026-10-25): which `block --on` waits have ENDED.
+# ---------------------------------------------------------------------------
+# 🔑 DERIVED AT READ TIME, NEVER STORED, AND NEVER APPLIED. A blocker reaching its
+# level is EVIDENCE the block is stale, not proof, so nothing here lifts anything: it
+# NAMES the item, inside `next` and `why`, every time until a seat decides. The retro
+# replay (design/2026-10-25-rimflow-block-release.md) found 21 of 73 named blocks
+# outliving their blocker, six by 7 to 21 days, although `_announce_unblocks` had
+# printed each one once at close time. A one-shot notice is missed; a standing line is not.
+# ⛔ A DROPPED OR SUPERSEDED BLOCKER NEVER SATISFIES. It will not deliver, so its
+# dependents are listed as `confirm` for a human decision, never as released.
+SATISFIES = {"built": ("built", "validated", "done"),
+             "validated": ("validated", "done"),
+             "done": ("done",)}
+
+
+def block_frontier(world, seat=None, on=None):
+    """-> [(item, "satisfied"|"confirm", blocker)], confirm first. Open blocked items
+    whose `--on` target reached the block's `until` level (default done) or ended
+    dropped/superseded. `seat` keeps that seat's items; `on` keeps one blocker's. Pure.
+    A target that was never filed is skipped: there is nothing to report about it."""
+    out = []
+    for it in world.items.values():
+        if not (it.open and it.blocked and it.blocked_on) or it.blocked_on == it.id:
+            continue
+        if (seat and it.owner != seat) or (on and it.blocked_on != on):
+            continue
+        b = world.items.get(it.blocked_on)
+        if b is None:
+            continue
+        if b.state in ("dropped", "superseded"):
+            out.append((it, "confirm", b))
+        elif b.state in SATISFIES.get(it.blocked_until or "done", ("done",)):
+            out.append((it, "satisfied", b))
+    out.sort(key=lambda r: (r[1] != "confirm", r[0].id))
+    return out
+
+
+def frontier_line(it, kind, b):
+    """The one line `next`, `next --bench` and `why` print for a frontier entry."""
+    if kind == "satisfied":
+        return ("blocker now satisfied: %s  (on %s, now `%s`; block asked for %s). "
+                "Evidence, not proof: lift it if it delivered, "
+                "`rimflow unblock %s --reason \"%s %s\"`."
+                % (it.id, b.id, b.state, it.blocked_until or "done", it.id, b.id, b.state))
+    succ = (" by %s" % b.superseded_by) if b.state == "superseded" and b.superseded_by else ""
+    return ("blocker %s, confirm: %s  (on %s, %s%s; it will never deliver). NOT released: "
+            "unblock it, block it again --on the real prerequisite, or drop it."
+            % (b.state, it.id, b.id, b.state, succ))
+
+
 def next_item(world, seat, target="v1", ctx=None):
     r = rank(world, seat, target, ctx)
     return r[0] if r else None
@@ -279,6 +330,8 @@ def why_not(world, seat, iid, target="v1", ctx=None):
     if it.blocked:
         out.append("BLOCKED: %s%s" % (it.blocked_reason,
                                       (" (on %s)" % it.blocked_on) if it.blocked_on else ""))
+        out.extend(frontier_line(*f) for f in block_frontier(world, on=it.blocked_on)
+                   if f[0] is it)
     if target and it.target not in (None, target):
         out.append("targeted at %s, and the active version is %s. That is a planning "
                    "decision, not a defect." % (it.target, target))
