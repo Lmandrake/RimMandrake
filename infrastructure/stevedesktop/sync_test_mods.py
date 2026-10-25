@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 r"""Copy the third-party mods of the MINIMAL test list, and the JawaBench companion, to SteveDesktop.
 
-STEVEDESKTOP_MODS_INSTALL_BRIDGE_AND_MINIMAL (2026-10-25). SteveDesktop runs the test centre on
-Steve's own Steam login, which has none of our Workshop subscriptions, and we may not add a
-second login or subscribe on his account. So every non-Ludeon, non-`mandrake.*` mod on
+STEVEDESKTOP_MODS_INSTALL_BRIDGE_AND_MINIMAL (2026-10-25). SteveDesktop's Steam login has none
+of our Workshop subscriptions, and subscribing needs the Steam client's UI, which is not
+scriptable from here. So every non-Ludeon, non-`mandrake.*` mod on
 `infrastructure/state/modlists/ModsConfig.MINIMAL.xml` is copied from Archmagi's Workshop
-folder into Steve's `RimWorld\Mods\<workshop id>` as a local mod (RimWorld loads by packageId;
+folder into SteveDesktop's `RimWorld\Mods\<workshop id>` as a local mod (RimWorld loads by packageId;
 the folder name does not matter). Our own mods are not copied here: the runner clone deploys
 them with deploy_custom_mods.py, exactly as on Archmagi.
 

@@ -72,9 +72,8 @@ def _root(env, win, wsl):
 
     🔑 **One machine, one set of env vars** (GAME_PATHS_REWIRE_ONE_ENV_PER_MACHINE,
     2026-10-25). Archmagi sets none and keeps the literals below. SteveDesktop's game
-    lives on D:\\SteamLibrary under Windows user sjlewis, and its test runs keep their
-    own user-data folder (`-savedatafolder`) so Steve's ModsConfig and saves are never
-    touched. WSLENV `/p` hands Windows python the Windows form and WSL the /mnt form,
+    lives on D:\\SteamLibrary under Windows user sjlewis, whose LocalLow holds its
+    user data (the game there is ours outright, owner 2026-10-25). WSLENV `/p` hands Windows python the Windows form and WSL the /mnt form,
     so both forms are accepted here."""
     v = os.environ.get(env, "").strip()
     if not v:
@@ -86,7 +85,7 @@ def _root(env, win, wsl):
 
 # --- the roots everything else hangs off ---------------------------------
 #   RM_GAME_USERDATA  the game's save-data folder (Config, Saves, Ideos, DefDump);
-#                     the `-savedatafolder=` the game was launched with.
+#                     the LocalLow, or the `-savedatafolder=` if launched with one.
 #   RM_GAME_LOGDIR    where Unity writes Player.log (the Windows user's LocalLow);
 #                     defaults to RM_GAME_USERDATA's default, which is the same place.
 #   RM_STEAMAPPS      the Steam library's steamapps folder holding RimWorld.

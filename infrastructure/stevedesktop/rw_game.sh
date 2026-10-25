@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Start, stop and query the test-centre RimWorld on SteveDesktop. Runs in Steve's WSL
+# Start, stop and query the test-centre RimWorld on SteveDesktop. Runs in SteveDesktop's WSL
 # (from Archmagi: ssh mandrake@stevedesktop-wsl ~/rm/runner/infrastructure/stevedesktop/rw_game.sh up).
 #
 #   rw_game.sh status         running? pid, session, bridge port from Player.log
@@ -10,10 +10,11 @@
 #                             runInBackground True (game must be stopped for that half)
 #
 # STEVEDESKTOP_LAUNCH_WIRE_DESKTOP_SESSION (2026-10-25). Why it looks like this:
-#  - The game is started by running RimWorldWin64.exe directly (Steam must already be running,
-#    which it is after Steve's autologon). steam://rungameid cannot carry arguments, and the
-#    argument that matters is -savedatafolder: it keeps Config/ModsConfig.xml, Saves and DefDump
-#    in D:\RimTest\userdata so Steve's own mod list and saves are never touched.
+#  - The game on SteveDesktop is ours outright (owner, 2026-10-25: "Steve no longer plays
+#    Rimworld ... this game is ours to play with"). It runs with its normal save-data folder
+#    (sjlewis's LocalLow), so ModsConfig.xml, Prefs.xml and Saves there belong to the runner.
+#  - The game is started by running RimWorldWin64.exe directly; Steam must be running, and `up`
+#    starts it (logged in by its remembered account) when it is not.
 #  - powershell.exe is reached by its full /mnt/c path: a Tailscale SSH session has no Windows
 #    dirs on PATH. Started from WSL interop, the process lands in session 1 (the logged-in
 #    desktop), which is where a Unity game must run; from Windows OpenSSH it would land in
@@ -29,6 +30,7 @@ GAME_WSL="$RM_STEAMAPPS/common/RimWorld"
 EXE_WIN=$(winpath "$GAME_WSL/RimWorldWin64.exe")
 DIR_WIN=$(winpath "$GAME_WSL")
 DATA_WIN=$(winpath "$RM_GAME_USERDATA")
+STEAM_EXE_WIN=$(winpath "$(dirname "$RM_STEAMAPPS")")\\steam.exe
 LOG="$RM_GAME_LOGDIR/Player.log"
 
 ps_q() { "$PS" -NoProfile -NonInteractive -Command "\$ProgressPreference='SilentlyContinue'; $1" 2>/dev/null | tr -d '\r'; }
@@ -42,7 +44,6 @@ status() {
         local args; args=$(ps_q "(Get-CimInstance Win32_Process -Filter 'ProcessId=$pid').CommandLine")
         echo "running pid=$info"
         echo "  cmdline: $args"
-        case "$args" in *savedatafolder*) ;; *) echo "  WARNING: not launched with -savedatafolder: this is Steve's own game, not the test centre's" ;; esac
         echo "  bridge port in Player.log: $(port_in_log || echo none)"
         return 0
     fi
@@ -50,18 +51,31 @@ status() {
     return 3
 }
 
+steam_pid() { ps_q "(Get-Process steam -ErrorAction SilentlyContinue | Select-Object -First 1).Id"; }
+# Steam normally runs from the autologon (Run Steam when my computer starts). If it is not
+# running, start it: with a remembered login it signs in by itself. The Steam install is
+# taken as the folder above RM_STEAMAPPS; if steam.exe is not there, the registry's SteamExe.
+steam_up() {
+    [ -n "$(steam_pid)" ] && return 0
+    local exe="$STEAM_EXE_WIN"
+    [ -f "$(dirname "$RM_STEAMAPPS")/steam.exe" ] || exe=$(ps_q "(Get-ItemProperty 'HKCU:\\Software\\Valve\\Steam').SteamExe")
+    [ -n "$exe" ] || { echo "REFUSED: Steam is not running and steam.exe was not found"; return 2; }
+    echo "Steam not running: starting $exe -silent"
+    ps_q "Start-Process -FilePath '$exe' -ArgumentList '-silent'"
+    for _ in $(seq 24); do sleep 5; [ -n "$(steam_pid)" ] && { sleep 20; echo "Steam up (pid $(steam_pid))"; return 0; }; done
+    echo "FAILED: Steam did not start within 120 s"; return 2
+}
+
 up() {
     local pid; pid=$(pid_of)
     if [ -n "$pid" ]; then echo "already running (pid $pid)"; status; return 0; fi
-    ps_q "Get-Process steam -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty Id" | grep -q . \
-        || { echo "REFUSED: Steam is not running in Steve's session (it starts at his autologon). Without it the game exits at Steam init."; return 2; }
-    mkdir -p "$RM_GAME_USERDATA"
+    steam_up || return 2
     local t0; t0=$(date +%s)
-    ps_q "Start-Process -FilePath '$EXE_WIN' -WorkingDirectory '$DIR_WIN' -ArgumentList '-savedatafolder=$DATA_WIN'"
+    ps_q "Start-Process -FilePath '$EXE_WIN' -WorkingDirectory '$DIR_WIN'"
     sleep 5
     pid=$(pid_of)
     [ -n "$pid" ] || { echo "FAILED: no RimWorldWin64 process 5 s after Start-Process"; return 1; }
-    echo "started pid $pid (-savedatafolder=$DATA_WIN)"
+    echo "started pid $pid"
     [ "${1:-}" = --wait ] || return 0
     while [ $(( $(date +%s) - t0 )) -lt 600 ]; do
         if [ -f "$LOG" ] && [ "$(stat -c %Y "$LOG")" -ge "$t0" ] && port_in_log >/dev/null; then
@@ -76,8 +90,9 @@ up() {
 # A fresh or reset save-data folder lacks two files that modcheck run refuses without
 # (found on the first remote run, 2026-10-25):
 #  - JawaBench/companion_profile.json: with none the companion reports profile 'campaign'
-#    and ensure_test_profile raises. The folder holds no campaign saves, so 'test' is true;
-#    the expiry is renewed to 30 days ahead on every init.
+#    and ensure_test_profile raises. Every save in this folder is the runner's (the game is
+#    ours, owner 2026-10-25), so 'test' is true; the expiry is renewed to 30 days ahead on
+#    every init.
 #  - Config/Prefs.xml with runInBackground True: game_focus.preflight refuses
 #    (FocusRefused, runInBackground UNREADABLE) without it. The game writes Prefs.xml on a
 #    clean exit only, and rewrites it from memory then, so it can be seeded only while the
@@ -91,7 +106,7 @@ init() {
   "profile": "test",
   "expiresUtc": "$exp",
   "campaignSaves": "",
-  "why": "SteveDesktop test centre: -savedatafolder $esc holds no campaign saves (rw_game.sh init)"
+  "why": "SteveDesktop test centre: the game and every save in $esc are the runner's (rw_game.sh init)"
 }
 EOF
     echo "companion profile: test until $exp"

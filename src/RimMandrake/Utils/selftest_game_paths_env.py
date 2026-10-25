@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 r"""Selftest: game_paths.py honours the per-machine env vars (GAME_PATHS_REWIRE_ONE_ENV_PER_MACHINE).
 
-SteveDesktop's RimWorld lives on D:\SteamLibrary under Windows user sjlewis and its test runs use
-their own -savedatafolder. Without the overrides every tool there resolves Archmagi's C:\ paths and
+SteveDesktop's RimWorld lives on D:\SteamLibrary under Windows user sjlewis, with its user data in
+that user's LocalLow. Without the overrides every tool there resolves Archmagi's C:\ paths and
 fails by naming a missing file. Each case imports game_paths in a fresh interpreter, because the
 module resolves at import time.
 

@@ -1,20 +1,20 @@
-# SteveDesktop test-centre environment, sourced at the TOP of ~/.bashrc in Steve's WSL
+# SteveDesktop test-centre environment, sourced at the TOP of ~/.bashrc in SteveDesktop's WSL
 # (before the "not interactive -> return" line, so ssh commands get it too):
 #
 #     [ -f ~/rm/runner/infrastructure/stevedesktop/testcentre_env.sh ] && . ~/rm/runner/infrastructure/stevedesktop/testcentre_env.sh
 #
-# STEVEDESKTOP_USERDATA_FIX_STEVE_UNTOUCHED / GAME_PATHS_REWIRE_ONE_ENV_PER_MACHINE (2026-10-25).
-# game_paths.py reads these, so every tool in the runner clone resolves Steve's install and the
-# test-only save-data folder instead of Archmagi's C:\ paths. The game is launched with
-# -savedatafolder=D:\RimTest\userdata (rw_game.sh), so Steve's own ModsConfig and saves in his
-# LocalLow are never read or written. Unity still writes Player.log to his LocalLow.
+# GAME_PATHS_REWIRE_ONE_ENV_PER_MACHINE (2026-10-25). game_paths.py reads these, so every tool
+# in the runner clone resolves SteveDesktop's install (D:\SteamLibrary) and the Windows user
+# sjlewis's LocalLow instead of Archmagi's C:\ paths. The game there is ours outright (owner,
+# 2026-10-25: "this game is ours to play with"): it runs with its normal save-data folder, and the
+# runner owns ModsConfig.xml, Prefs.xml and Saves in it. Player.log is written to the same folder.
 #
 # WSLENV /p hands Windows python.exe (the only process that reaches the bridge on Windows
 # loopback) the D:\ form of each path, and hands it back to `wsl.exe python3` children.
 
 export RM_STEAMAPPS=/mnt/d/SteamLibrary/steamapps
-export RM_GAME_USERDATA=/mnt/d/RimTest/userdata
-export RM_GAME_LOGDIR="/mnt/c/Users/sjlewis/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios"
+export RM_GAME_USERDATA="/mnt/c/Users/sjlewis/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios"
+export RM_GAME_LOGDIR="$RM_GAME_USERDATA"
 export RM_DATA_ROOT=/mnt/d/RimTest/data
 
 for _v in RM_STEAMAPPS/p RM_GAME_USERDATA/p RM_GAME_LOGDIR/p RM_DATA_ROOT/p; do
