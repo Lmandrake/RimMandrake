@@ -371,9 +371,9 @@ namespace JawaBench.BridgeTools
         [Tool(
             "jawa/review_sign",
             Description = "DEV ONLY (human review maps). In-save signs that need no mod and no bridge to read: each is a " +
-                "vanilla Novel (Verse.Book) whose title and description ARE the sign, spawned forbidden. action=place: " +
+                "Verse.Book (an RM_StationSign when that def is loaded, else a vanilla Novel) whose title and description ARE the sign, spawned forbidden. action=place: " +
                 "ops = newline-separated 'x|z|title|body' (body may hold the escape \\n for line breaks). action=clear: " +
-                "destroys every Book on the current map whose title starts with 'prefix' (default 'SIGN '). action=list: " +
+                "destroys every sign Book (RM_StationSign or Novel) on the current map whose title starts with 'prefix' (default 'SIGN '). action=list: " +
                 "returns them. Mouse-over shows the title; the info card shows the body.",
             ResultDescription = "success, placed[] {id,x,z}, refused[], removed, count, signs[] for list.")]
         public static async Task<object> ReviewSign(
@@ -389,7 +389,7 @@ namespace JawaBench.BridgeTools
                 if (map == null) return Fail("No current map.");
                 ThingDef novel = DefDatabase<ThingDef>.GetNamedSilentFail(SignDef);
                 ThingDef def = DefDatabase<ThingDef>.GetNamedSilentFail(SignBoardDef) ?? novel;
-                if (def == null) return Fail("ThingDef " + SignDef + " not found (Core 1.5+).");
+                if (def == null) return Fail("Neither ThingDef " + SignBoardDef + " nor " + SignDef + " found (Novel is Core 1.5+).");
                 var fTitle = AccessTools.Field(typeof(Book), "title");
                 var fFlavor = AccessTools.Field(typeof(Book), "descriptionFlavor");
                 var fDesc = AccessTools.Field(typeof(Book), "description");
