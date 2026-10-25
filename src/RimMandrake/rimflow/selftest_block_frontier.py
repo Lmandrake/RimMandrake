@@ -9,7 +9,7 @@ What it pins:
   * a DROPPED or SUPERSEDED blocker is named `confirm` and NEVER released;
   * nothing in the frontier lifts a block (the item stays `blocked`, `rank()` still skips it);
   * the CLI refuses a self/cyclic wait and a dead target, warns on an unfiled one, and prints the
-    "blocker now satisfied" / "blocker dropped, confirm" lines in `next` and `why`;
+    "blocker reached requested level (L)" / "blocker dropped, confirm" lines in `next` and `why`;
   * a default block (`--until done`) is written WITHOUT the field, byte-compatible;
   * the reader as committed BEFORE this change (BASE_REF) replays a ledger carrying `until`
     with zero errors: it strips the field and keeps the block.
@@ -142,9 +142,9 @@ def t_satisfied_is_announced_never_applied():
     a = w.items["WAITER_A"]
     assert a.blocked and a not in priority.rank(w, "FOUNDRY")
     line = priority.frontier_line(*priority.block_frontier(w)[0])
-    assert line.startswith("blocker now satisfied: WAITER_A"), line
+    assert line.startswith("blocker reached requested level (done): WAITER_A"), line
     why = "\n".join(priority.why_not(w, "FOUNDRY", "WAITER_A"))
-    assert "blocker now satisfied: WAITER_A" in why, why
+    assert "blocker reached requested level (done): WAITER_A" in why, why
 
 
 def t_seat_and_closed_dependents_filtered():
@@ -160,6 +160,47 @@ def t_seat_and_closed_dependents_filtered():
 def t_unfiled_target_is_skipped_by_the_reader():
     w = world(ev(seat="FOUNDRY", event="block", id="WAITER_A", reason="r", on="NEVER_FILED_Z"))
     assert w.items["WAITER_A"].blocked and not kinds(w)
+
+
+def t_seventh_entry_is_never_hidden_and_kinds_alternate():
+    base = [filed("WAITER_%02d" % n) for n in range(9)] + [filed("DEAD_X"), filed("DONE_Y")]
+    evs = base + [ev(seat="BENCH", event="drop", id="DEAD_X", reason="no"),
+                  ev(seat="BENCH", event="close", id="DONE_Y", sha="598dec613")]
+    for n in range(9):
+        evs.append(ev(seat="FOUNDRY", event="block", id="WAITER_%02d" % n, reason="r",
+                      on="DEAD_X" if n < 7 else "DONE_Y"))
+    w = model.replay(evs, strict=True)
+    fr = priority.block_frontier(w, seat="FOUNDRY")
+    assert len(fr) == 9, len(fr)
+    assert [f[1] for f in fr[:4]] == ["confirm", "satisfied", "confirm", "satisfied"], \
+        "7 confirms starved the satisfied entries: %r" % [f[1] for f in fr]
+    shown = {f[0].id for f in fr[:priority.FRONTIER_FULL]}
+    more = priority.frontier_overflow(fr, priority.FRONTIER_FULL)
+    for f in fr:
+        assert f[0].id in shown or f[0].id in more, "%s hidden: %s" % (f[0].id, more)
+
+
+def t_frontier_is_current_state_regression_withdraws():
+    blk = ev(seat="FOUNDRY", event="block", id="WAITER_A", reason="r", on="BLOCKER_B",
+             until="built")
+    w = world(blk, ev(**IMPL))
+    assert kinds(w)
+    w = world(blk, ev(**IMPL), ev(seat="FOUNDRY", event="claim", id="BLOCKER_B"),
+              ev(seat="FOUNDRY", event="start", id="BLOCKER_B"))
+    assert w.items["BLOCKER_B"].state == "doing", w.items["BLOCKER_B"].state
+    assert not kinds(w), "a blocker that regressed still shows as reached"
+
+
+def t_read_time_diagnostics_flag_merged_cycles_and_unfiled():
+    # two clones each wrote one half of a cycle; both events stand, both are flagged
+    w = world(ev(seat="FOUNDRY", event="block", id="WAITER_A", reason="r", on="BLOCKER_B"),
+              ev(seat="FOUNDRY", event="block", id="BLOCKER_B", reason="r", on="WAITER_A"),
+              ev(seat="FOUNDRY", event="block", id="BLOCKER_C", reason="r", on="NEVER_FILED_Z"))
+    assert w.items["WAITER_A"].blocked and w.items["BLOCKER_B"].blocked, "an event was refused"
+    why = "\n".join(priority.why_not(w, "FOUNDRY", "WAITER_A"))
+    assert "wait CYCLE: WAITER_A -> BLOCKER_B -> WAITER_A" in why, why
+    why = "\n".join(priority.why_not(w, "FOUNDRY", "BLOCKER_C"))
+    assert "never been filed" in why, why
 
 
 # ---- CLI ------------------------------------------------------------------
@@ -239,15 +280,53 @@ def t_cli_drop_names_confirm_and_next_repeats_it():
     assert "blocker dropped, confirm: FRONTIER_WAITER_A_PROBE_FIXTURE" in why, why
     model.EVENTS = os.path.join(CTX["led"], "events.jsonl")
     assert model.replay(model.read()).items["FRONTIER_WAITER_A_PROBE_FIXTURE"].blocked, "drop released a dependent"
-    refused("will never deliver", "block", "FRONTIER_WAITER_A_PROBE_FIXTURE", "--reason", "r", "--on", "FRONTIER_BLOCKER_B_PROBE_FIXTURE")
+    # a dead target is WARNED and shown as confirm at once, never refused
+    rc, out, err = run("block", "FRONTIER_WAITER_A_PROBE_FIXTURE", "--reason", "r2", "--on",
+                       "FRONTIER_BLOCKER_B_PROBE_FIXTURE")
+    assert rc == 0 and "will never deliver" in err, (rc, out, err)
+    assert "replaces the current block: on FRONTIER_BLOCKER_B_PROBE_FIXTURE (until done)" in out, out
+    assert "already ended: blocker dropped, confirm: FRONTIER_WAITER_A_PROBE_FIXTURE" in out, out
 
 
 def t_cli_close_names_satisfied_and_bench_lists_it():
     out = ok("close", "FRONTIER_BLOCKER_C_PROBE_FIXTURE", "--sha", "598dec613")
-    assert "blocker now satisfied: FRONTIER_WAITER_D_PROBE_FIXTURE" in out, out
+    assert "blocker reached requested level (built): FRONTIER_WAITER_D_PROBE_FIXTURE" in out, out
     bench = ok("next", "--bench", seat="BENCH")
-    assert "BLOCKERS ENDED" in bench and "blocker now satisfied: FRONTIER_WAITER_D_PROBE_FIXTURE" in bench, bench
+    assert "BLOCKERS ENDED" in bench and "blocker reached requested level (built): FRONTIER_WAITER_D_PROBE_FIXTURE" in bench, bench
     assert "blocker dropped, confirm: FRONTIER_WAITER_A_PROBE_FIXTURE" in bench, bench
+
+
+def t_cli_already_satisfied_typed_cycle_is_accepted():
+    """A is built and waits on B; `block B --on A --until built` closes no live loop."""
+    a, b = "FRONTIER_TYPED_A_PROBE_FIXTURE", "FRONTIER_TYPED_B_PROBE_FIXTURE"
+    ok("file", a, "--for", "FOUNDRY", "--title", "t")
+    ok("file", b, "--for", "FOUNDRY", "--title", "t")
+    sha = subprocess.check_output(("git", "rev-parse", "origin/main"), cwd=REPO).decode().strip()
+    crit = os.path.join(CTX["root"], "crit.txt")
+    with open(crit, "w") as fh:
+        fh.write("O1 L0: compiles\nA1 L1: defs resolve\n")
+    rc, out, err = run("implemented", a, "--sha", sha[:12], "--criteria-file", crit)
+    assert rc == 0, (out, err)
+    ok("block", a, "--reason", "waits on b", "--on", b)
+    out = ok("block", b, "--reason", "waits on a built", "--on", a, "--until", "built")
+    assert "already ended: blocker reached requested level (built): %s" % b in out, out
+    refused("cycle refused", "block", b, "--reason", "x", "--on", a)   # until done: live loop
+
+
+def t_cli_seventh_entry_visible_in_next():
+    dead = "FRONTIER_SEVEN_DEAD_PROBE_FIXTURE"
+    ok("file", dead, "--for", "BENCH", "--title", "t")
+    ids = ["FRONTIER_SEVEN_%s_PROBE_FIXTURE" % c for c in "ABCDEFGH"]
+    for i in ids:
+        ok("file", i, "--for", "BENCH", "--title", "t", seat="BENCH")
+        ok("block", i, "--reason", "r", "--on", dead, seat="BENCH")
+    ok("drop", dead, "--reason", "abandoned", seat="BENCH")
+    nxt = ok("next", "--peek", seat="BENCH")
+    for i in ids:
+        assert i in nxt, "%s hidden from `next`:\n%s" % (i, nxt)
+    bench = ok("next", "--bench", seat="BENCH")
+    for i in ids:
+        assert i in bench, "%s hidden from `next --bench`" % i
 
 
 def t_base_reader_tolerates_until():
@@ -274,7 +353,8 @@ def t_base_reader_tolerates_until():
     assert p.returncode == 0, p.stderr.decode()
     r = json.loads(p.stdout.decode())
     assert r["errors"] == 0, r
-    assert [t[2] for t in r["tolerated"]] == [["until"]], r["tolerated"]
+    assert r["tolerated"] and all(t[1] == "block" and t[2] == ["until"]
+                                  for t in r["tolerated"]), r["tolerated"]
     assert r["d"] == [True, "FRONTIER_BLOCKER_C_PROBE_FIXTURE"], "the base reader lost the block: %r" % r
     ok("why", "FRONTIER_WAITER_D_PROBE_FIXTURE", cli=os.path.join(dest, "cli.py"))
 
@@ -290,6 +370,8 @@ if __name__ == "__main__":
                    t_cli_default_block_writes_no_until_field,
                    t_cli_drop_names_confirm_and_next_repeats_it,
                    t_cli_close_names_satisfied_and_bench_lists_it,
+                   t_cli_already_satisfied_typed_cycle_is_accepted,
+                   t_cli_seventh_entry_visible_in_next,
                    t_base_reader_tolerates_until):
             case(fn.__name__, fn)
     finally:

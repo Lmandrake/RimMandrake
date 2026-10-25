@@ -834,8 +834,14 @@ def cmd_bench(args, seat):
     print("\nBLOCKERS ENDED (the block may be stale; a seat decides): %d" % len(ended))
     for f in ended[:8]:
         print("  " + priority.frontier_line(*f))
-    if len(ended) > 8:
-        print("  ... +%d more" % (len(ended) - 8))
+    more = priority.frontier_overflow(ended, 8)
+    if more:
+        print("  " + more)
+    diag = [(i, d) for i in open_ for d in priority.block_diagnostics(w, i)]
+    if diag:
+        print("  BLOCK DIAGNOSTICS (merged histories; nothing refused): %d" % len(diag))
+        for i, d in diag:
+            print("    %s: %s" % (i.id, d))
 
     needs_him = [i for i in open_ if i.needs == "owner"]
     print("\nNEEDS HIM — %d" % len(needs_him))
@@ -1663,55 +1669,69 @@ def _lease_verb(action):
 
 
 def cmd_block(args, seat):
-    """`block [--on X [--until built|validated|done]]` (RIM-1). Refuses, on the writing
-    path only, what the frontier could never resolve: a self or cyclic wait, and a target
-    that is dropped or superseded (it will never deliver). An unfiled target is warned.
-    Old events are replayed as written; none of the 78 historical `--on` blocks hit any
-    of these (design/2026-10-25-rimflow-block-release.md)."""
+    """`block [--on X [--until built|validated|done]]` (RIM-1).
+    ONE blocker per item: a second `block` REPLACES the first (target, level and reason),
+    and says so. Waiting on several items at mixed levels is not supported; name the one
+    that gates, and the rest in --reason.
+    Refuses, on the writing path only, a self wait and a cycle of LIVE waits. A target
+    already at the requested level ends no cycle and is accepted (shown as ended). A
+    target never filed, or dropped/superseded, is WARNED (recording an abandoned
+    prerequisite is legitimate) and the dead one is shown as `confirm` at once.
+    Merged histories the write path never saw are flagged at read time
+    (priority.block_diagnostics, in `why` and `next --bench`)."""
     _, w = load()
     on = getattr(args, "on", None)
     until = getattr(args, "until", None)
     if until and not on:
         die("`block --until` is a level OF the --on item; give --on <ITEM>.")
+    cur = w.items.get(args.id)
+    if cur is not None and cur.blocked:
+        print("replaces the current block: on %s (until %s): %s"
+              % (cur.blocked_on or "(nothing named)",
+                 (cur.blocked_until or "done") if cur.blocked_on else "-",
+                 (cur.blocked_reason or "")[:100]))
     if on:
-        tgt, seen, cur = w.items.get(on), [args.id], on
+        tgt = w.items.get(on)
+        if on == args.id:
+            die("cycle refused: %s -> %s. An item cannot wait on itself." % (on, on))
         if tgt is None:
-            # ⚠️ A WARNING, not a refusal: another clone may have filed it unpulled, and
-            # the frontier resolves the id at read time, so it works once the item exists.
+            # another clone may have filed it unpulled; the frontier resolves it at read time
             sys.stderr.write("⚠️  %s has never been filed here, so nothing will report it "
                              "done until it is (`git pull`, or file it).\n" % on)
-        elif tgt.state in ("dropped", "superseded"):
-            die("%s is `%s`; it will never deliver. Block on %s instead."
-                % (on, tgt.state, tgt.superseded_by or "the real prerequisite"))
-        while cur is not None and cur not in seen:
-            seen.append(cur)
-            x = w.items.get(cur)
-            cur = x.blocked_on if (x is not None and x.blocked and x.open) else None
-        if cur == args.id:
-            die("cycle refused: %s. Nothing on it could ever finish first."
-                % " -> ".join(seen + [args.id]))
+        elif tgt.state in priority.DEAD:
+            sys.stderr.write("⚠️  %s is `%s`; it will never deliver%s. Recorded anyway; it "
+                             "shows as `confirm` until you decide.\n"
+                             % (on, tgt.state, (" (successor %s)" % tgt.superseded_by)
+                                if tgt.superseded_by else ""))
+        elif tgt.state not in priority.SATISFIES[until or "done"]:
+            cyc = priority.wait_cycle(w, args.id, on)
+            if cyc:
+                die("cycle refused: %s. Nothing on it could ever finish first."
+                    % " -> ".join(cyc))
     ev = {"seat": seat, "event": "block", "id": args.id, "reason": args.reason, "on": on,
           "until": until if until != "done" else None}   # default stays old-reader-identical
     _emit(ev, w, quiet=True)
     after = _replay_now()
     it = after.items.get(args.id)
     print("block %s -> %s" % (args.id, it.state if it else "?"))
-    for f in priority.block_frontier(after, on=on) if on else ():
-        if f[0] is it:              # e.g. `--until built` on an item already built
-            print("⚠️  already ended: " + priority.frontier_line(*f))
+    e = priority.frontier_entry(after, it) if it is not None else None
+    if e:
+        print("⚠️  already ended: " + priority.frontier_line(it, e[0], e[1]))
     return 0
 
 
 def _print_frontier(w, seat):
-    """`next`'s standing reminder: this seat's blocks whose blocker has ended."""
+    """`next`'s standing reminder: this seat's blocks whose blocker has ended. The first
+    FRONTIER_FULL in full, EVERY other one by id: nothing on the frontier is ever hidden."""
     ended = priority.block_frontier(w, seat=seat)
     if not ended:
         return
     print("")
-    for f in ended[:6]:
+    for f in ended[:priority.FRONTIER_FULL]:
         print(priority.frontier_line(*f))
-    if len(ended) > 6:
-        print("... +%d more: `rimflow why <ID>`" % (len(ended) - 6))
+    more = priority.frontier_overflow(ended, priority.FRONTIER_FULL)
+    if more:
+        print(more)
 
 
 def _simple(verb, extra=()):
