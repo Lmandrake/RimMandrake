@@ -40,8 +40,8 @@ Different tags never interact. Plumbing stays at shipped values (radius 12, shar
 | AA_Wildpod / AA_Wildpawn | RM_Mullgoth / RM_Durrok (LeaningScrub defs) | `src/RimMandrake/TheRot/Patches/RotSpecies_WoundSharing.xml` (xpath-guarded) |
 | AA_Swarmling | RM_Chittik | native, `src/RimMandrake/TheRot/Defs/Fauna/RM_Chittik.xml` |
 | AA_MycoidColossus | RM_MycoidColossus (vorrugath) | native, `RM_AgariPorts.xml` |
-| RSW_FungalWeevil, RSW_FungalMantis | unchanged (SWBestiary) | `src/RimUtinni/UtinniPatches/Patches/RotFauna_KinWiring.xml` |
-| BMT_ChemSnail, GiantSnail, GiantSlug, Pillbug, CaveSpider, GlowBat | **RULED CUT** 2026-09-11 (`design/Jawa/worldbuilding/biomes/caverns_replacement_scoping.md`) | none — no def exists; RotSlimekin is empty, RotBroodmates is weevils only |
+| RSW_FungalWeevil / RSW_FungalMantis | RM_Grellik (grellik) / RM_Skerrith (skerrith) | native, `src/RimMandrake/TheRot/Defs/Fauna/RM_TheRot_Fauna_ThingDefs_Races.xml` (ROTKIN_FIX_RULED_ON_RETIRED_TWIN); the SWBestiary bodies, cast only by the frozen campaign twin RUT_TheRot, get the same rows from `src/RimUtinni/UtinniPatches/Patches/RotFauna_KinWiring.xml` |
+| BMT_ChemSnail, GiantSnail, GiantSlug, Pillbug, CaveSpider, GlowBat | **RULED CUT** 2026-09-11 (`design/Jawa/worldbuilding/biomes/caverns_replacement_scoping.md`) | none — no def exists; RotSlimekin is empty, RotBroodmates is grelliks only |
 | RSW_BovineBeetle | **no def** (only its larva/pupa remain; its remake as the bodySize-4 Grabber was cut by the owner 2026-10-05, `RM_LanternDeeps.xml`) | none — the RotHerd row is moot |
 | RUT_Emberscythe | RM_Emberscythe | none, as ruled |
 

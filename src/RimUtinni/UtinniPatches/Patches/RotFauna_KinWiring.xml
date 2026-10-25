@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ============================================================================
-  RotFauna_KinWiring.xml                 UtinniPatches — ROT_FAUNA_KIN_WIRING_1
+  RotFauna_KinWiring.xml   UtinniPatches — ROT_FAUNA_KIN_WIRING_1, ROTKIN_FIX_RULED_ON_RETIRED_TWIN
   ============================================================================
 
   The owner's ruled Rot fauna table (2026-09-18, "stands AS DRAFTED for kin tag /
   wound-link / alarm"; kin-mend strength proportional to body size, one hediff;
-  copy in infrastructure/state/items/ROT_HEALTH_SHARING_1.md) on the two rows that
-  are Star Wars Bestiary defs. The RM_ rows carry their wiring natively in
-  mandrake.rm.biomes (TheRot Defs/Fauna, TheRot Patches/RotSpecies_WoundSharing.xml);
-  an RM_-tier mod may not name an RSW_ def (Q12), so these two live here.
+  copy in infrastructure/state/items/ROT_HEALTH_SHARING_1.md) lives on the Rot's own
+  RM_ rows, natively in mandrake.rm.biomes: RM_Grellik and RM_Skerrith in TheRot
+  Defs/Fauna/RM_TheRot_Fauna_ThingDefs_Races.xml. This patch gives the same rows to
+  the two Star Wars Bestiary bodies those were ported from, which only the frozen
+  campaign twin RUT_TheRot still casts (ROT_RM_CAST_MIGRATION_1 step 7), so a grellik
+  on a RUT_TheRot tile behaves like one on an RM_TheRot tile. An RM_-tier mod may not
+  name an RSW_ def (Q12), so these two live here.
 
-    RSW_FungalWeevil  RotBroodmates clique: kin-mending YES, wound-link no, alarm no.
-                      ("broods recover if survivors remain"; its ruled brood-mate
-                      BMT_Pillbug was cut 2026-09-11, so the clique is weevils only.)
-    RSW_FungalMantis  alarm-responder YES, no kin tag ("the trap you never saw answers").
+    RSW_FungalWeevil  as RM_Grellik: RotBroodmates clique, kin-mending YES,
+                      wound-link no, alarm no.
+    RSW_FungalMantis  as RM_Skerrith: alarm-responder YES, no kin tag.
 
   Guards: each op is a PatchOperationConditional on the def's own xpath (a
   top-level MayRequire is ignored by 1.6). The weevil's hediff reference is also

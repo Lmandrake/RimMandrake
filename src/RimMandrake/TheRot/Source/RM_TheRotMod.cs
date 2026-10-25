@@ -30,9 +30,10 @@ namespace RimMandrake.TheRot
     //                  ROT_WARM_MAT_BUILD_WORKS_FOR_FOOD); not routed through RM_KitFronts
     //   crossBiome*: opt-in donor (RM_TheRot's extensions) for non-Rot maps; Coverage scales their intensity
     //   healthSharing: the wound-link / kin-mending comps and the kin tag on every race tagged with a Rot clique
-    //                  (chittik, gromma, rennok natively; durrok, mullgoth by Patches/RotSpecies_WoundSharing.xml;
-    //                  RSW_FungalWeevil by UtinniPatches) are removed again at startup when off (restart to apply)
-    //                  - ROT_WOUND_SHARING_WIRING_1, ROT_HEALTHTOGGLE_FIX_WEEVIL_UNSTRIPPED
+    //                  (chittik, gromma, rennok, grellik natively; durrok, mullgoth by Patches/RotSpecies_WoundSharing.xml;
+    //                  the frozen twin RUT_TheRot's RSW_FungalWeevil by UtinniPatches) are removed again at startup
+    //                  when off (restart to apply) - ROT_WOUND_SHARING_WIRING_1, ROT_HEALTHTOGGLE_FIX_WEEVIL_UNSTRIPPED,
+    //                  ROTKIN_FIX_RULED_ON_RETIRED_TWIN
     // ════════════════════════════════════════════════════════════════════
     public class RM_TheRotSettings : ModSettings
     {
@@ -536,8 +537,8 @@ namespace RimMandrake.TheRot
 
         // Health sharing off: every race whose RM_WoundLinkExtension tag is a Rot clique ("Rot..." - RotSwarm,
         // RotAgarikin, RotWildkin, RotBroodmates) loses its wound-link comp, its kin-mending grant and the kin tag
-        // itself. Found by tag, not by defName, so a race wired by another tier (UtinniPatches' RSW_FungalWeevil,
-        // which an RM_ mod may not name) is stripped too - ROT_HEALTHTOGGLE_FIX_WEEVIL_UNSTRIPPED. Dropping the tag
+        // itself. Found by tag, not by defName, so a race wired by another tier (UtinniPatches' RSW_FungalWeevil, the
+        // frozen twin RUT_TheRot's body, which an RM_ mod may not name) is stripped too - ROT_HEALTHTOGGLE_FIX_WEEVIL_UNSTRIPPED. Dropping the tag
         // also silences a kin-mending hediff a saved pawn already carries (the comp finds no kin without a tag).
         // Other kin groups (LanternShoal) and unrelated hediff grants are left alone.
         public static int StripRotKinWiring()
