@@ -1,0 +1,2 @@
+Parsing a UTC '...Z' timestamp with time.mktime(strptime(...)) + time.timezone is an hour off whenever DST is in force (time.timezone is the STANDARD offset; mktime applies DST). driver_lock._alive read every heartbeat 3600 s old in PDT, so any holder it could not inspect by pid was always STALE against a 45 min window. Use calendar.timegm(time.strptime(s, fmt)). Grep for 'mktime' near 'timezone' when an age looks exactly 1 h too big. Fixed a7534e71d1.
+home: NONE
