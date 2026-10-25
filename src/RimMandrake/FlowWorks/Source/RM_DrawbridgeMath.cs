@@ -102,8 +102,18 @@ namespace RimMandrake.FlowWorks
 			return new List<LeafSpan> { new LeafSpan(last - near + 1, last, false), new LeafSpan(first, last - near, true) };
 		}
 
-		/// <summary>Ticks from lowered to raised for a leaf of this length.</summary>
-		public static int FullTicks(SuspensionTier t, int length, float speedMultiplier)
+		/// <summary>Lanes one winch lifts at its plain speed; each lane past this adds its share (WinchLoad).</summary>
+		public const int WinchLanesAtPlainSpeed = 3;
+
+		/// <summary>DRAWBRIDGE_WIDEN_FOUR_LANES_TO_MATCH (delegated: balance): the winch was sized for the old 1-to-3 widths, so
+		/// up to 3 lanes it lifts at its plain speed and a wider leaf is heavier in proportion (4 lanes: 4/3 the time).</summary>
+		public static float WinchLoad(int width)
+		{
+			return width <= WinchLanesAtPlainSpeed ? 1f : (float)width / WinchLanesAtPlainSpeed;
+		}
+
+		/// <summary>Ticks from lowered to raised for a leaf of this length and width (lanes).</summary>
+		public static int FullTicks(SuspensionTier t, int length, int width, float speedMultiplier)
 		{
 			if (length < 1)
 			{
@@ -111,7 +121,7 @@ namespace RimMandrake.FlowWorks
 			}
 			float m = speedMultiplier <= 0.01f ? 0.01f : speedMultiplier;
 			int raw = IsPowered(t) ? PoweredTicksPerLeaf : HandTicksPerSquare * length;
-			int ticks = (int)(raw / m + 0.5f);
+			int ticks = (int)(raw * WinchLoad(width) / m + 0.5f);
 			return ticks < length ? length : ticks;
 		}
 

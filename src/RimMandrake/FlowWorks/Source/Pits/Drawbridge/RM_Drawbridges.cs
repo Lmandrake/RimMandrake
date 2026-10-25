@@ -105,7 +105,7 @@ namespace RimMandrake.FlowWorks.Pits
 
 		public static int FullTicks(SuspensionBridgeRecord r, DrawbridgeLeaf l)
 		{
-			return RM_DrawbridgeMath.FullTicks(r.tier, l.Span.Length, SpeedMultiplier);
+			return RM_DrawbridgeMath.FullTicks(r.tier, l.Span.Length, r.width, SpeedMultiplier);
 		}
 
 		/// <summary>Whether this bridge can be a drawbridge: timber or steel, a bridge (not a jetty), no towers (a leaf swings

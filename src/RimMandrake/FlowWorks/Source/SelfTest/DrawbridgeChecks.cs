@@ -67,9 +67,15 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("Drawbridge_P1_leaf_is_rigid_off_its_seat_and_reversible", () =>
             {
                 LeafSpan a = new LeafSpan(1, 4, true);
-                int full = RM_DrawbridgeMath.FullTicks(SuspensionTier.Timber, 4, 1f);
+                int full = RM_DrawbridgeMath.FullTicks(SuspensionTier.Timber, 4, 1, 1f);
                 Assert(full == 4 * RM_DrawbridgeMath.HandTicksPerSquare, "timber: about 4 s per square");
-                Assert(RM_DrawbridgeMath.FullTicks(SuspensionTier.Steel, 8, 1f) == RM_DrawbridgeMath.PoweredTicksPerLeaf, "steel: about 2 s per leaf");
+                Assert(RM_DrawbridgeMath.FullTicks(SuspensionTier.Steel, 8, 1, 1f) == RM_DrawbridgeMath.PoweredTicksPerLeaf, "steel: about 2 s per leaf");
+                // DRAWBRIDGE_WIDEN_FOUR_LANES_TO_MATCH: 1 to 3 lanes lift at the plain speed; a 4-lane leaf takes 4/3 the time
+                Assert(RM_DrawbridgeMath.FullTicks(SuspensionTier.Timber, 4, 3, 1f) == full
+                    && RM_DrawbridgeMath.FullTicks(SuspensionTier.Steel, 8, 3, 1f) == RM_DrawbridgeMath.PoweredTicksPerLeaf, "up to 3 lanes: unchanged");
+                Assert(RM_DrawbridgeMath.FullTicks(SuspensionTier.Timber, 4, 4, 1f) == 1280
+                    && RM_DrawbridgeMath.FullTicks(SuspensionTier.Steel, 8, 4, 1f) == 160, "can-fail: a 4-lane leaf is heavier (4/3 the time)");
+                Assert(RM_DrawbridgeMath.FullTicks(SuspensionTier.Timber, 4, 4, 2f) == 640, "the speed setting still divides it");
                 for (int i = 1; i <= 4; i++) Assert(!RM_DrawbridgeMath.IsRaised(a, i, 0, full), "lowered: nothing raised");
                 for (int i = 1; i <= 4; i++) Assert(RM_DrawbridgeMath.IsRaised(a, i, 1, full),
                     "can-fail (phase 2): one tick off its seat, EVERY square of the leaf has stopped being ground (a tilted plank)");

@@ -49,6 +49,8 @@ the drag's first end, unless said):
      raised, 4 assault raiders 25 east; 3,000 ticks sampled every 250 -> RAID_UP
      (colonists hidden undrafted in a closed box, one raider carries a plank, jobs probed per sample), then the same with the lord
      built sappers=true 90 cells west (the winch giver lives only in the Sapper/Breaching duties). Run --fresh-map --only RAID_UP
+  M  z=82..85 steel 4-wide, one drag (5,82)-(0,85), trench 1..4 x 4 lanes; and a 5-lane trench (11..14, 82..86) dragged
+     (15,82)-(10,86) -> ONE_DRAG_FOUR_WIDE (raiseSpeed 1 for the section, restored)
   D  z=18  steel  1-wide (0,18)-(7,18), a drafted rider on (3,18); raiseSpeed 0.25; saved and loaded mid-raise
                                                            -> SAVE_MIDRAISE (runs LAST: the load replaces the map)
 
@@ -93,10 +95,12 @@ RAIDW = "RimMandrake.FlowWorks.Pits.JobGiver_RM_DrawbridgeWinch"
 TRAP = "RimMandrake.FlowWorks.RM_SuperdeepTrap"
 DEEP = 8          # notches: 4 m
 FULL_STEEL = 120  # RM_DrawbridgeMath.PoweredTicksPerLeaf at raiseSpeed 1
+FULL_STEEL_4 = 160  # the same for a 4-lane leaf: RM_DrawbridgeMath.WinchLoad(4) = 4/3 (DRAWBRIDGE_WIDEN_FOUR_LANES_TO_MATCH)
 
 ROW_IDS = ["RAISE_PATH", "RAISE_TIPS_RIDERS", "RAISE_SPARES_UNDERPASS", "LOWER_ONLY_FROM_WINCH", "TWO_LEAF_TIPS_OWN_HINGE",
            "HOSTILE_LOCKS", "STEEL_UNPOWERED_FREEZES", "WINCH_LOST_CRASHES",
-           "WINCH_DESPAWN_CRASHES", "RAID_UP", "RAID_PLANK", "ONE_DRAG_PACKAGE", "SAVE_MIDRAISE"]
+           "WINCH_DESPAWN_CRASHES", "RAID_UP", "RAID_PLANK", "ONE_DRAG_PACKAGE", "ONE_DRAG_FOUR_WIDE",
+           "SAVE_MIDRAISE"]
 
 # The C# the rows call (RM_DrawbridgeProofs; selftest_drawbridge_proof checks each method exists and answers its word). One
 # string arg each (the RM_SuspensionProofs convention: ';' inside), one line out: a word then key=value tokens; "REFUSED: why"
@@ -966,6 +970,50 @@ def one_drag_package(ctx):
                                                          "downAgain": td1})
 
 
+def one_drag_four_wide(ctx):
+    """DRAWBRIDGE_WIDEN_FOUR_LANES_TO_MATCH (owner card 2026-10-25 "Should drawbridges stay at most 3 wide? -> Allow 4 wide").
+    PROVE the production steel drawbridge button dragged 4 lanes wide over a 4-square moat (ProofOneDrag, god), raiseSpeed 1;
+    each lane's deck square read (ProofLeaf, RaisedAt), the gizmo's raise (ProofOrder now) driven by the powered winch; then a
+    5-lane drag over a 5-lane moat beside it.
+    EXPECT the 4-wide drag placed: one leaf, its winch on its planned square and linked, a gate on all 4 lanes; every lane's
+    square is the SAME leaf (full equal across lanes) with full = FULL_STEEL_4 (a 4-lane leaf is 4/3 slower); after full+30
+    ticks every lane's square raised (RaisedAt True, progress = full); the 5-lane drag refused "1 to 4 squares wide".
+    LIES: a drag that quietly kept 3 lanes would still place a leaf, so all 4 lanes are read and 4 gates counted; a 5-lane
+    refusal for another reason (no hole) would read refused, so the 5-lane moat is dug and the reason's words are matched."""
+    P, xz, row, dproof, typed, ticks = _c(ctx, "P", "xz", "row", "dproof", "typed", "ticks")
+    z0, lanes = 82, range(82, 86)
+    for zz in lanes:
+        for i in range(1, 5):
+            ctx["dig"](P(i, zz))
+    for zz in range(82, 87):
+        for i in range(11, 15):
+            ctx["dig"](P(i, zz))
+    with ctx["setting"]("raiseSpeed", 1.0):
+        kv, txt = dproof("ProofOneDrag", "%s;%s;steel" % (xz(P(5, z0)), xz(P(0, z0 + 3))))
+        if kv.get("ok") != "True" and "squares_wide" in (kv.get("reason") or ""):
+            row("ONE_DRAG_FOUR_WIDE", "FAIL", {"drag": txt, "why": "the 4-lane drag was refused for its width"})
+            return
+        V.require(kv.get("ok") == "True", "the 4-wide drag placed a drawbridge", txt)
+        placed = (kv.get("leaves") == "1" and kv.get("winches") == "1" and kv.get("linked") == "1" and num(kv, "gates", 0) == 4)
+        reads = [ctx["leaf"](P(2, zz)) for zz in lanes]
+        fulls = [num(k, "full", 0) for k, _ in reads]
+        V.require(all(fulls), "every lane's leaf read", [t for _, t in reads], cls="HARNESS")
+        if placed:
+            ctx["power"](P(2, z0), True)
+        dproof("ProofOrder", "%s;raise;now" % xz(P(2, z0)))
+        ticks(fulls[0] + 30)
+        ups = [ctx["leaf"](P(2, zz)) for zz in lanes]
+        raised_at = [typed(DB, "RaisedAt", "current|%s" % xz(P(2, zz))) for zz in lanes]
+        k5, t5 = dproof("ProofOneDrag", "%s;%s;steel" % (xz(P(15, z0)), xz(P(10, z0 + 4))))
+    one_leaf = len(set(fulls)) == 1 and fulls[0] == FULL_STEEL_4
+    all_up = all(k.get("target") == "raised" and num(k, "progress", -1) == num(k, "full", -2) for k, _ in ups) \
+        and all(r == "True" for r in raised_at)
+    five_refused = k5.get("ok") == "False" and "1_to_4_squares_wide" in (k5.get("reason") or "")
+    good = placed and one_leaf and all_up and five_refused
+    row("ONE_DRAG_FOUR_WIDE", "PASS" if good else "FAIL", {"drag": txt, "fulls": fulls, "raised": [t for _, t in ups],
+                                                           "raisedAt": raised_at, "fiveWide": t5})
+
+
 def save_midraise(ctx):
     """PROVE a steel leaf at raiseSpeed 0.25 (480 ticks) with a drafted rider, raised 100 ticks (tip done), saved, loaded.
     EXPECT after the load: progress within one drive step (5) of the save, tip=True, TippedCount unchanged (no replay), the
@@ -1022,7 +1070,8 @@ def _health(p):
 SCENES = {"RAISE_PATH": raise_path, "RAISE_TIPS_RIDERS": raise_tips_riders, "RAISE_SPARES_UNDERPASS": raise_spares_underpass,
           "LOWER_ONLY_FROM_WINCH": lower_only_from_winch, "TWO_LEAF_TIPS_OWN_HINGE": two_leaf_tips_own_hinge,
           "HOSTILE_LOCKS": hostile_locks, "STEEL_UNPOWERED_FREEZES": steel_unpowered_freezes,
-          "WINCH_LOST_CRASHES": winch_lost_crashes, "WINCH_DESPAWN_CRASHES": winch_despawn_crashes, "RAID_UP": raid_up, "RAID_PLANK": raid_plank, "ONE_DRAG_PACKAGE": one_drag_package, "SAVE_MIDRAISE": save_midraise}
+          "WINCH_LOST_CRASHES": winch_lost_crashes, "WINCH_DESPAWN_CRASHES": winch_despawn_crashes, "RAID_UP": raid_up, "RAID_PLANK": raid_plank, "ONE_DRAG_PACKAGE": one_drag_package,
+          "ONE_DRAG_FOUR_WIDE": one_drag_four_wide, "SAVE_MIDRAISE": save_midraise}
 
 
 # ====================================================================== offline stand-in
@@ -1047,10 +1096,12 @@ class FakeBridge(object):
       far_raiders      the raiders never come near (SITE)                      -> RAID_UP UNMEASURED/SITE
       dup_plank        MOD: the interrupted carrier's plank is laid as well    -> RAID_PLANK FAIL
       replay_tip       MOD: the load replays the tip                           -> SAVE_MIDRAISE FAIL
-      drag_unlinked    MOD: the drag's winch house does not link to its leaf   -> ONE_DRAG_PACKAGE FAIL"""
+      drag_unlinked    MOD: the drag's winch house does not link to its leaf   -> ONE_DRAG_PACKAGE FAIL
+      four_refused     MOD: a 4-lane drawbridge drag is refused (1 to 3 kept)  -> ONE_DRAG_FOUR_WIDE FAIL
+      wide_flat        MOD: a 4-lane leaf lifts as fast as a 1-lane one         -> ONE_DRAG_FOUR_WIDE FAIL"""
     FAULTS = ("far_reaches_winch", "no_proofs", "noclock", "no_free", "tip_all_fall", "no_repath", "underpass_tipped", "lower_from_far",
               "tip_colony_bank", "trapped_locks", "freeze_ignored", "no_crash", "despawn_stale", "raid_loop", "far_raiders", "dup_plank",
-              "replay_tip", "drag_unlinked")
+              "replay_tip", "drag_unlinked", "four_refused", "wide_flat")
 
     def __init__(self, faults=()):
         self.f = set(faults)
@@ -1073,8 +1124,9 @@ class FakeBridge(object):
                 return l
         return None
 
-    def _full(self, tier, n):
-        return int((120 if tier == "steel" else 240 * n) / self.speed + 0.5)
+    def _full(self, tier, n, w=1):
+        load = w / 3.0 if w > 3 and "wide_flat" not in self.f else 1.0   # RM_DrawbridgeMath.WinchLoad
+        return int((120 if tier == "steel" else 240 * n) * load / self.speed + 0.5)
 
     def _free_hostiles(self):
         return sum(1 for p in self.pawns.values() if p["hostile"] and not p.get("dead")
@@ -1309,8 +1361,8 @@ class FakeBridge(object):
                 w = (x1 - 1, z1) if h == "A" else (x2 + 1, z1)
                 winches.append(w)
                 self.leaves.append(dict(z0=min(z1, z2), z1=max(z1, z2), first=f_, last=l_, hinge=h, ax=x1, bx=x2, tier=tier,
-                                        progress=0, full=self._full(tier, l_ - f_ + 1), target="lowered", hold=False, auto=False,
-                                        pending="none", tip=False, winch=w, powered=False, frozen=False))
+                                        progress=0, full=self._full(tier, l_ - f_ + 1, abs(z2 - z1) + 1), target="lowered", hold=False, auto=False,
+                                        pending="none", tip=False, winch=w, powered=False, frozen=False, w=abs(z2 - z1) + 1))
             if x2 - x1 == 3 and tier == "steel":
                 self._islandz = min(z1, z2)
                 self._island = x1 - 4             # scene K: the island's centre is 4 west of the first anchor
@@ -1319,13 +1371,18 @@ class FakeBridge(object):
         if m == "ProofOneDrag":
             (x1, z1), (x2, z2), tier = cell(a[0]), cell(a[1]), a[2]
             lo, hi = min(x1, x2), max(x1, x2)
+            lanes = abs(z2 - z1) + 1
+            widest = 3 if "four_refused" in self.f else 4   # RM_SuspensionMath.DrawbridgeMaxWidth
+            if lanes > widest:
+                return ("ONEDRAG ok=False leaves=0 hinges=- hingeAt=- winches=0 linked=0 winchAt=- gates=0 "
+                        "reason=A_steel_drawbridge_is_1_to_%d_squares_wide." % widest)
             hinge = "A" if x1 == lo else "B"   # the leaf hinges on the bank the drag started on (x1,z1)
             w = (x1, z1 + 1)
             self.leaves.append(dict(z0=min(z1, z2), z1=max(z1, z2), first=lo + 1, last=hi - 1, hinge=hinge, ax=lo, bx=hi, tier=tier,
-                                    progress=0, full=self._full(tier, hi - lo - 1), target="lowered", hold=False, auto=False,
-                                    pending="none", tip=False, winch=w, powered=False, frozen=False))
-            return "ONEDRAG ok=True leaves=1 hinges=%s hingeAt=%d,%d winches=1 linked=%d winchAt=%d,%d gates=1 reason=-" % (
-                hinge, x1, z1, 0 if "drag_unlinked" in self.f else 1, w[0], w[1])
+                                    progress=0, full=self._full(tier, hi - lo - 1, lanes), target="lowered", hold=False, auto=False,
+                                    pending="none", tip=False, winch=w, powered=False, frozen=False, w=lanes))
+            return "ONEDRAG ok=True leaves=1 hinges=%s hingeAt=%d,%d winches=1 linked=%d winchAt=%d,%d gates=%d reason=-" % (
+                hinge, x1, z1, 0 if "drag_unlinked" in self.f else 1, w[0], w[1], lanes)
         if m == "ProofLeaf":
             x, z = cell(a[0])
             l = self._leaf_at(x, z)
@@ -1342,7 +1399,7 @@ class FakeBridge(object):
                 return "REFUSED: not a leaf"
             raise_ = a[1] == "raise"
             l.update(target="raised" if raise_ else "lowered", hold=raise_, pending="none")
-            l["full"] = self._full(l["tier"], l["last"] - l["first"] + 1)
+            l["full"] = self._full(l["tier"], l["last"] - l["first"] + 1, l.get("w", 1))
             if len(a) > 2 and a[2] == "instant":
                 if raise_ and l["progress"] == 0 and not l["tip"]:
                     self._tip(l)

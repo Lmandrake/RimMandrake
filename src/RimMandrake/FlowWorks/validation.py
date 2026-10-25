@@ -1327,6 +1327,8 @@ DRAWBRIDGE_LIVE = [
     ("RAID_PLANK", None, "an interrupted plank carrier makes no duplicate crossing: exactly one plank crossing laid"),
     ("ONE_DRAG_PACKAGE", None, "one drag of the steel drawbridge button builds the leaf hinged on the starting bank, its "
      "winch house on its planned square and linked, and a gate; the path crosses when down, not when raised, and again when lowered"),
+    ("ONE_DRAG_FOUR_WIDE", None, "one drag of the steel drawbridge button 4 lanes wide builds one leaf over all 4 lanes, its "
+     "winch linked and a gate per lane; the 4-lane leaf lifts in 4/3 the time and every lane rises; a 5-lane drag is refused"),
     ("SAVE_MIDRAISE", None, "saved and loaded mid-raise: progress kept, the tip not replayed, the raise completes"),
 ]
 

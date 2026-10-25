@@ -9,7 +9,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RM_DrawbridgeWinch_Timber</defName>
     <label>timber drawbridge winch house</label>
-    <description>The hand winch that raises and lowers one leaf of a timber drawbridge. It comes with the drawbridge, beside the anchor the leaf is hinged on. A colonist turns it to raise or lower the leaf. If it is destroyed while the leaf is up, the leaf crashes down on anything beneath it.</description>
+    <description>The hand winch that raises and lowers one leaf of a timber drawbridge. It comes with the drawbridge, beside the anchor the leaf is hinged on. A colonist turns it to raise or lower the leaf; a leaf 4 squares wide is heavier and takes a third longer. If it is destroyed while the leaf is up, the leaf crashes down on anything beneath it.</description>
     <thingClass>RimMandrake.FlowWorks.Pits.Building_DrawbridgeWinch</thingClass>
     <graphicData>
       <texPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Timber</texPath>
@@ -49,7 +49,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RM_DrawbridgeWinch_Steel</defName>
     <label>steel drawbridge winch house</label>
-    <description>The powered winch that raises and lowers one leaf of a steel drawbridge. It comes with the drawbridge, beside the anchor the leaf is hinged on; connect it to power. A colonist throws its lever; the motor does the rest. Without power the leaf stops where it is. If it is destroyed while the leaf is up, the leaf crashes down on anything beneath it.</description>
+    <description>The powered winch that raises and lowers one leaf of a steel drawbridge. It comes with the drawbridge, beside the anchor the leaf is hinged on; connect it to power. A colonist throws its lever; the motor does the rest, a third slower for a leaf 4 squares wide. Without power the leaf stops where it is. If it is destroyed while the leaf is up, the leaf crashes down on anything beneath it.</description>
     <thingClass>RimMandrake.FlowWorks.Pits.Building_DrawbridgeWinch</thingClass>
     <graphicData>
       <texPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Steel</texPath>
