@@ -8,6 +8,7 @@ Builds a throwaway repo with a linked worktree, so "shared" (main worktree) and
 """
 import json
 import os
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -25,7 +26,7 @@ def verdict(cmd, cwd):
 
 
 def main():
-    tmp = tempfile.mkdtemp()
+    tmp = tempfile.mkdtemp(prefix="stm_selftest_")
     main_wt, linked = os.path.join(tmp, "main"), os.path.join(tmp, "linked")
     g = lambda *a: subprocess.run(["git", *a], cwd=main_wt, check=True,
                                   capture_output=True)
@@ -60,6 +61,16 @@ def main():
         (DENY,  "git stash -u", S),
         (DENY,  "git clean -fd", S),
         (DENY,  "git checkout-index -f -a", S),
+        (DENY,  "git pull --rebase=false", S),               # wave 6: still a merge
+        (DENY,  "git pull --rebase=no origin main", S),
+        (DENY,  "git checkout HEAD .", S),                   # <ref> . discards all
+        (DENY,  "git checkout origin/main :/", S),
+        (DENY,  "git -c core.x=y -C %s merge feature" % S, P),  # -c before -C
+        (DENY,  "git switch --discard-changes main", S),
+        (DENY,  "git switch -f main", S),
+        (ALLOW, "git switch main", S),
+        (ALLOW, "git pull --rebase=merges", S),
+        (ALLOW, "git checkout HEAD -- src/a.xml", S),
         (ALLOW, "git reset --hard HEAD", P),
         (ALLOW, "git reset HEAD -- f.txt", S),
         (ALLOW, "git reset --soft HEAD~1", S),
@@ -126,6 +137,7 @@ def main():
             bad += 1
             print("FAIL want=%s got=%s  %s  (cwd=%s)" % (want, got, cmd, cwd))
     print("%d/%d passed" % (len(cases) - bad, len(cases)))
+    shutil.rmtree(tmp, ignore_errors=True)   # each run used to leak a repo + linked worktree
     return 1 if bad else 0
 
 

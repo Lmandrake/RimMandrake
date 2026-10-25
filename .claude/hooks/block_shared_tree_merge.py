@@ -33,9 +33,11 @@ WHAT IS BLOCKED (only in the main worktree — linked worktrees are free)
   git merge --squash <branch>    it still rewrites the shared worktree
   git pull                       unless --ff-only / --rebase / -r (pull.rebase is
                                  unset here, so a bare pull IS a merge)
-  git reset --hard/--merge, git checkout -f / . / -- .,
+  git reset --hard/--merge, git checkout -f / . / <ref> . / -- .,
+  git switch -f/--discard-changes,
   git restore . (worktree), git stash with no pathspec, git clean -f,
   git checkout-index -a          whole-tree discards
+  git pull --rebase=false/no     still a merge
 
 ADDED 2026-10-02 (git_workflow_plan_2026-10-01.md Phase 1) -- the D:\\ tree is guarded by PATH,
 not only by "main worktree": when the command's target tree (cwd, `cd X &&`, `git -C X`)
@@ -53,7 +55,8 @@ WHAT IS NOT BLOCKED
   git reset --keep                  aborts rather than touch a dirty file; it is how
                                     how a tree that keeps local edits moves forward
   git pull --ff-only / --rebase / -r
-  any merge inside a linked worktree (`git worktree add`, `isolation: worktree`)
+  any merge inside a linked worktree (worktrees are OFF since 2026-10-02 —
+                                    block_worktrees.py; use scratch_clone.py)
 
 Fails OPEN on any parse or git problem: a broken hook must never wedge a session.
 """
@@ -164,7 +167,9 @@ def offence(tok):
             return None                      # `git merge` alone just errors
         return "`git merge` rewrites the shared worktree"
     if sub == "pull":
-        if flags & PULL_SAFE or any(a.startswith("--rebase") for a in args):
+        rebase_off = any(a in ("--rebase=false", "--rebase=no") for a in args)
+        if not rebase_off and (flags & PULL_SAFE
+                               or any(a.startswith("--rebase") for a in args)):
             return None
         return "`git pull` without --ff-only/--rebase is a merge"
     # Whole-tree discards: each erases every peer's uncommitted edit at once.
@@ -172,10 +177,12 @@ def offence(tok):
     whole = not paths or any(p in (".", ":/", "*") for p in paths)
     if sub == "reset" and flags & {"--hard", "--merge"}:
         return "`git reset %s` discards the shared worktree" % " ".join(args)
+    tree_spec = any(p in (".", ":/", "*") for p in paths)   # `git checkout HEAD .` too
     if sub == "checkout" and ("-f" in flags or "--force" in flags
-                              or ("--" in args and whole)
-                              or paths == ["."]):
+                              or ("--" in args and whole) or tree_spec):
         return "`git checkout %s` discards the shared worktree" % " ".join(args)
+    if sub == "switch" and flags & {"-f", "--force", "--discard-changes"}:
+        return "`git switch %s` discards the shared worktree" % " ".join(args)
     if sub == "restore" and whole and not ({"--staged", "-S"} & flags
                                            and not {"--worktree", "-W"} & flags):
         return "`git restore %s` discards the shared worktree" % " ".join(args)
@@ -193,12 +200,13 @@ def offence(tok):
 
 
 def git_dir_arg(tok):
-    """The -C directory on a git command, if any."""
-    for j in range(1, len(tok) - 1):
+    """The -C directory on a git command, if any. Skips the value of every global
+    option that takes one (`git -c k=v -C dir ...` used to stop at `k=v`)."""
+    j = 1
+    while j < len(tok) - 1 and tok[j].startswith("-"):
         if tok[j] == "-C":
             return tok[j + 1]
-        if not tok[j].startswith("-"):
-            break
+        j += 2 if tok[j] in TAKES_ARG else 1
     return None
 
 
@@ -247,16 +255,18 @@ def deny(why):
         "hookEventName": "PreToolUse",
         "permissionDecision": "deny",
         "permissionDecisionReason": (
-            "Blocked by project house rule: %s, and this is the SHARED D:\\ tree "
-            "(or a worktree under /mnt/d).\n\n"
-            "Other windows have uncommitted work in it. A failed merge "
+            "Blocked by project house rule: %s, and this is a SHARED tree — the D:\\ "
+            "mirror, a seat clone (/home/mandrake/rm/<seat>, shared by every helper "
+            "of that seat), or a worktree under /mnt/d.\n\n"
+            "Others have uncommitted work in it. A failed merge "
             "hard-resets the tree internally — it erased 215 files' edits "
             "2026-09-25 07:54 — and a whole-tree reset/checkout/restore/stash/"
             "clean, or a checkout/restore from another ref, does the same directly.\n\n"
-            "Work in your ext4 clone instead: /home/mandrake/rm/<seat> "
-            "(bench, foundry; git status there is ~0.06 s vs ~15 s on D:\\), "
-            "or a private worktree under /home/mandrake/wt/. Publish with "
-            "`git pull --rebase origin main && git push origin HEAD:main`.\n"
+            "Merge in a private scratch clone instead (worktrees are OFF): "
+            "`python3 src/RimMandrake/Utils/scratch_clone.py clone \"merge <x>\" "
+            "--name merge-<x> --checkout --fetch`, merge and push from there. "
+            "Never edit the D:\\ mirror. Move a seat clone forward with "
+            "`git pull --rebase origin main`.\n"
             "Discard only YOUR paths here (`git checkout -- <file>`, "
             "`git stash push -- <file>`).\n\n"
             "NOTHING IN THAT COMMAND RAN — a compound command is refused whole." % why),
