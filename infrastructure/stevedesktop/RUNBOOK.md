@@ -264,6 +264,9 @@ Everything free, nothing signed in. Files: `kit/wt_settings.json` (Terminal sett
 | Already present | Git for Windows, 7-Zip, Tailscale, Chrome Remote Desktop, WSL git/gh/tmux/htop/jq/curl/rsync/python3/node | verified, not reinstalled |
 | WSL extras | `apt-get install ripgrep tree ncdu pipx fd-find bat` as root | |
 | Desktop shortcuts (all users) | `Terminal - Ubuntu`, `Terminal - SteveDesktop status` (runs `status.ps1`: uptime, disks, IPs, services, Steam, Tailscale, WSL), `Terminal - Archmagi (SSH)` | |
+| Desktop: `Claude - SteveDesktop test centre` | all-users desktop; `kit/shortcuts.ps1` | Terminal -> WSL -> `claude_session.sh centre`: `~/rm/runner`, bounded claude, `--name`, `--remote-control "SteveDesktop-Owner"`, opening prompt (read this RUNBOOK + the orchestration design) |
+| Desktop: `Claude - Lodestar` | same script | `claude_session.sh lodestar`: `~/dev/Lodestar`, remote-control `SteveDesktop-Lodestar`, for machine-maintenance work |
+| Archmagi desktop: `Claude on SteveDesktop` | `kit/archmagi_shortcut.ps1` (Archmagi's OneDrive Desktop) | Terminal -> ssh `mandrake@stevedesktop-wsl` -> `tmux new-session -A -s claude-centre` running the test-centre session (survives closing the window; re-attaches) |
 
 **Trap learned:** `winget install` of MSI and MSIX packages (PowerShell, Terminal) fails over SSH with
 `0x80070520 logon session does not exist`. Run it as a scheduled task with an Interactive principal for the

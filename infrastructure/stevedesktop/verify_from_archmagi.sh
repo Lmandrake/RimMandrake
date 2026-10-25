@@ -122,6 +122,13 @@ if echo "$kit" | grep -q '^end'; then
 else say FAIL kit_windows "no answer: $(echo "$kit" | tail -1)"; fi
 out=$(win 'wsl.exe -d Ubuntu -u mandrake -- which git gh tmux htop jq rg tree python3 pipx' | grep -c '^/')
 [ "$out" = 9 ] && say PASS kit_wsl "git gh tmux htop jq rg tree python3 pipx" || say FAIL kit_wsl "only $out of 9 tools found in WSL"
+# Claude shortcuts: two on SteveDesktop (Public Desktop), one on Archmagi's desktop, plus the launcher script and tmux.
+cl=$(win 'foreach($n in "Claude - SteveDesktop test centre","Claude - Lodestar"){ if(-not (Test-Path "C:\Users\Public\Desktop\$n.lnk")){ "missing $n" } }; "end"')
+cm=$(echo "$cl" | tr -d '\r' | grep '^missing' | tr '\n' ';')
+cs=$(ssh "${SSHO[@]}" "$WSL_USER@$TS_WSL" 'test -x ~/rm/runner/infrastructure/stevedesktop/claude_session.sh && command -v tmux >/dev/null && echo ok' 2>/dev/null)
+ad=$(powershell.exe -NoProfile -Command '[Environment]::GetFolderPath("Desktop")' 2>/dev/null | tr -d '\r')
+[ -f "$(wslpath "$ad" 2>/dev/null)/Claude on SteveDesktop.lnk" ] && am= || am="missing Archmagi 'Claude on SteveDesktop'"
+{ [ -z "$cm" ] && [ "$cs" = ok ] && [ -z "$am" ]; } && say PASS kit_claude "3 Claude shortcuts + claude_session.sh + tmux" || say FAIL kit_claude "${cm}${am} session_script=${cs:-missing}"
 
 # Runner can push to RimMandrake only (dry run, changes nothing; owner card 2026-10-25).
 out=$(win 'wsl.exe -d Ubuntu -u mandrake -- bash -c "cd ~/rm/runner && git push --dry-run origin HEAD:refs/heads/zz-probe 2>&1 | tail -1"')
