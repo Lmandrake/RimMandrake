@@ -4828,6 +4828,10 @@ def run_live(args, B=None):
     except Exception as ex:            # noqa: BLE001 - recorded as absent; record then refuses
         mod_hash = None
         L._log("- mod_hash unavailable: %s" % ex)
+    try:                               # runtime + test manifest at run start: what modcheck.reuse compares (option B)
+        manifest = _mc_status.run_manifest(MOD, os.path.abspath(__file__))
+    except Exception as ex:            # noqa: BLE001 - absent manifest = never reused
+        manifest = {"unresolved": ["manifest unavailable: %r" % ex]}
     ticks0 = None
     aborted = None
     fns = dict(L=phase_L, site=phase_site, S=phase_S, A=phase_A, B=phase_B, C=phase_C, R=phase_R, J=phase_J,
@@ -4852,7 +4856,7 @@ def run_live(args, B=None):
     except Abort as ex:                # the engine/map is gone (often why the run aborted): keep every collected row
         ticks1 = None
         L._log("- final engine_state unreadable: %s" % ex)
-    res = dict(script="validation_v2", mod="FlowWorks", mod_hash=mod_hash, env=env, kept_pawns=kept_pawns,
+    res = dict(script="validation_v2", mod="FlowWorks", mod_hash=mod_hash, manifest=manifest, env=env, kept_pawns=kept_pawns,
                mode="mock" if args.mock else "live", faults=list(args.fault or []),
                started=time.strftime("%Y-%m-%dT%H:%M:%S", time.localtime(t0)), wall_s=round(time.time() - t0, 1),
                ticks_spent=(ticks1 - ticks0) if (ticks0 is not None and ticks1 is not None) else None,

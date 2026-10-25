@@ -243,3 +243,101 @@ def config_tag(sel):
         return "full"
     return "TARGETED chains=%s%s" % (",".join(sel["chains"]),
                                      (" rows=%s" % ",".join(sel["rows"])) if sel.get("rows") else "")
+
+
+# ============================================================================ --changed (focused_testing_plan option B)
+# Changed files -> chains, as SUGGESTIONS only: `modcheck run <Mod> --changed <range|WORKTREE>` prints them and exits;
+# nothing runs from a guess. A file maps to a chain by (1) the chain's declared `inputs=` globs (Suite.chain_inputs:
+# shared helpers, inherited XML, patches its source does not name), (2) the chain source naming the file's basename or
+# stem as a token, (3) for XML, a defName on a changed line (or, with none, any defName in the file) named in the chain
+# source. A file no rule maps is listed as impact unknown: select explicitly, with a reason.
+_DEFNAME = re.compile(r"<defName>\s*([A-Za-z0-9_]+)\s*</defName>")
+
+
+def changed_files(mod_dir, rev_range="WORKTREE", root=None):
+    """[(path relative to mod_dir, changed text or None)] of files under `mod_dir` changed in `rev_range` PLUS the
+    uncommitted (staged, unstaged, untracked) ones; "WORKTREE" = uncommitted only. `changed text` is the +/- lines
+    of the diff (None for an untracked file). Raises TargetError when git cannot answer."""
+    import os
+    root = root or subprocess.run(["git", "rev-parse", "--show-toplevel"], cwd=mod_dir, capture_output=True,
+                                  text=True).stdout.strip()
+    if not root:
+        raise TargetError("--changed: %s is not inside a git work tree" % mod_dir)
+    rel_mod = os.path.relpath(os.path.abspath(mod_dir), root).replace(os.sep, "/")
+
+    def git(*a):
+        p = subprocess.run(["git"] + list(a), cwd=root, capture_output=True, text=True)
+        if p.returncode != 0:
+            raise TargetError("--changed: git %s failed: %s" % (" ".join(a), (p.stderr or p.stdout).strip()[-200:]))
+        return p.stdout
+
+    specs = [["HEAD"]] + ([] if rev_range in (None, "", "WORKTREE") else [[rev_range]])
+    names = {}
+    for sp in specs:
+        for n in git("diff", "--name-only", *sp, "--", rel_mod).splitlines():
+            names.setdefault(n.strip(), sp)
+    untracked = set(n.strip() for n in git("ls-files", "--others", "--exclude-standard", "--", rel_mod).splitlines())
+    out = []
+    for n in sorted(set(names) | untracked):
+        if not n:
+            continue
+        text = None
+        if n in names:
+            d = git("diff", "-U0", *names[n], "--", n)
+            text = "\n".join(l[1:] for l in d.splitlines() if l[:1] in "+-" and l[:3] not in ("+++", "---"))
+        out.append((os.path.relpath(os.path.join(root, n), os.path.join(root, rel_mod)).replace(os.sep, "/"), text))
+    return out
+
+
+def changed(suite, files, mod_dir=None):
+    """{"suggest": {chain: [reason, ...]}, "unknown": [file, ...]} for `files` [(rel path, changed text or None)].
+    Pure but for reading an XML file under `mod_dir` that has no defName on a changed line."""
+    import fnmatch
+    import os
+    srcs = {n: _chain_source(fn) for n, fn in suite.chains}
+    inputs = getattr(suite, "chain_inputs", {}) or {}
+    suggest, unknown = {}, []
+    for rel, text in files:
+        base = rel.rsplit("/", 1)[-1]
+        stem = base.rsplit(".", 1)[0]
+        hit = False
+        for n, _ in suite.chains:
+            why = None
+            for g in inputs.get(n, ()):
+                if fnmatch.fnmatch(rel, g):
+                    why = "%s matches declared input %s" % (rel, g)
+                    break
+            by_base = re.search(r"(?<![A-Za-z0-9_])%s(?![A-Za-z0-9_])" % re.escape(base), srcs[n]) is not None
+            if why is None and (by_base or (len(stem) > 3 and _names_in(srcs[n], stem))):
+                why = "chain source names %s" % (base if by_base else stem)
+            if why is None and base.lower().endswith(".xml"):
+                defs = _DEFNAME.findall(text or "")
+                if not defs and mod_dir:
+                    try:
+                        with open(os.path.join(mod_dir, rel), encoding="utf-8", errors="replace") as f:
+                            defs = _DEFNAME.findall(f.read())
+                    except OSError:
+                        defs = []
+                named = sorted(d for d in set(defs) if _names_in(srcs[n], d))
+                if named:
+                    why = "%s: defName %s named in chain source" % (base, ", ".join(named[:4]))
+            if why:
+                suggest.setdefault(n, []).append(why)
+                hit = True
+        if not hit:
+            unknown.append(rel)
+    return {"suggest": suggest, "unknown": unknown}
+
+
+def changed_report(res):
+    """Lines for `run --changed`: one per suggested chain with its reasons, then the files of unknown impact."""
+    out = ["changed files -> SUGGESTED chains (nothing runs from this; select with --chains/--rows/--item):"]
+    for n, why in res["suggest"].items():
+        out.append("  %s: %s" % (n, "; ".join(why)[:300]))
+    if not res["suggest"]:
+        out.append("  (none)")
+    for f in res["unknown"]:
+        out.append("  %s: impact unknown -- select explicitly with a reason" % f)
+    if res["suggest"]:
+        out.append("  e.g. modcheck run <Mod> --chains %s" % ",".join(res["suggest"]))
+    return out

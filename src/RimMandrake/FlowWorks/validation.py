@@ -180,6 +180,30 @@ def latest_core_result(mod_hash):
     return best
 
 
+def _reusable(pattern, certifiable=False):
+    """(reuse module, (path, d) or None): the newest result matching `pattern` that modcheck.reuse may reuse at this
+    runtime + test manifest and DLL (focused_testing_plan option B). Only consulted when no FRESH result exists; under
+    MODCHECK_REUSE=0 it is not looked for. Never raises: a broken reuse lookup leaves the fresh contract as it was."""
+    try:
+        from modcheck import reuse as _ru  # noqa: E402
+        if _ru.mode() == _ru.OFF:
+            return _ru, None
+        return _ru, _ru.newest(sorted(glob.glob(os.path.join(NS, pattern))), HERE, repo_dll_sha256(), certifiable)
+    except Exception:  # noqa: BLE001 - reuse is advisory; the fresh path stands alone
+        return None, None
+
+
+def _mark_reuse(t, ru, hit, ids):
+    """Tag the components `ids` with the freshness of reusable result `hit` (path, d); evidence names the file."""
+    if ru is None or hit is None:
+        return
+    name, f = os.path.basename(hit[0]), ru.tag(os.path.basename(hit[0]))
+    for c in t.components:
+        if c.name in set(ids):
+            c.freshness = f
+            c.evidence.append({"call": "reuse", "result": {"file": name, "freshness": f}})
+
+
 @suite.chain("core_offline", offline=True)
 def core_offline(t):
     """v2 offline tier: defs, shipped settings, UNBUILT register, geometry, pulse oracle (+ selftest), scene
@@ -208,18 +232,24 @@ def core_rows_from(found):
 @suite.chain("core_live_rows")
 def core_live_rows(t):
     """v2's live rows, read from the newest v2 result made at the current mod hash. 0 ticks."""
-    rows = []
+    rows, found, ru, hit = [], None, None, None
     if t._guard():
         from modcheck import status as _st  # noqa: E402
         found = latest_core_result(_st.mod_hash(HERE))
+        if not found:
+            ru, hit = _reusable("validation_v2_result_*.json")
         if found:
             rows = core_rows_from(found)
+        elif hit is not None and ru.mode() == ru.REUSE:
+            rows = core_rows_from(hit)
         else:
             rows = [{"id": rid, "status": "UNMEASURED", "cls": "HARNESS",
                      "detail": "no v2 live result at the current mod hash: run `python.exe "
                                "src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then "
                                "`modcheck record FlowWorks --result <json> --tier flowworks`"} for rid in CORE_LIVE_IDS]
     _report_rows(t, rows, declare=CORE_LIVE_IDS)
+    if rows and not found:
+        _mark_reuse(t, ru, hit, [r["id"] for r in rows])
 
 
 # ============================================================================ the flexible hose (hose port, 2026-10-11)
@@ -352,17 +382,23 @@ def hose_live_rows(t):
     """The hose block rows the hose live driver measures (northstar/proof_hose.py), read from its newest certifiable result
     made AT the current mod hash -- the same contract as core_live_rows; with none, each row is UNMEASURED and names the
     command, never PASS from a stale or missing result. 0 ticks."""
-    rows = []
+    rows, found, ru, hit = [], None, None, None
     if t._guard():
         from modcheck import status as _st  # noqa: E402
         found = latest_hose_result(_st.mod_hash(HERE))
+        if not found:
+            ru, hit = _reusable("proof_hose_*.json", certifiable=True)
         if found:
             rows = hose_rows_from(found)
+        elif hit is not None and ru.mode() == ru.REUSE:
+            rows = hose_rows_from(hit)
         else:
             rows = [{"id": rid, "status": "UNMEASURED", "cls": "HARNESS",
                      "detail": "no proof_hose result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/"
                                "proof_hose.py --live`, then `modcheck record FlowWorks --result <json>`"} for rid in HOSE_LIVE_IDS]
     _report_rows(t, rows, declare=HOSE_LIVE_IDS)
+    if rows and not found:
+        _mark_reuse(t, ru, hit, [r["id"] for r in rows])
 
 
 # RIVER_TOGGLE_PROOFS_BUILD_ELEVEN_UNCLAIMED: offline switch-flip proofs for the Rivers toggles no live component claims.
@@ -517,6 +553,12 @@ def _driver_bar_component(t, live_id, bar):
     if t._guard():
         from modcheck import status as _st  # noqa: E402
         got = driver_rows_at(_st.mod_hash(HERE), dll_sha=repo_dll_sha256())
+    ru, spare = None, {}
+    if got is not None and any(i not in got for i in ids):
+        ru, reu = driver_rows_reusable(exclude=got)
+        spare = {i: reu[i] for i in ids if i in reu}
+        if spare and ru.mode() == ru.REUSE:
+            got = dict(got, **spare)
     with t.component(live_id, shows=[bar]):
         if t._guard():
             miss = [i for i in ids if i not in got]
@@ -537,6 +579,10 @@ def _driver_bar_component(t, live_id, bar):
                 c.evidence.append({"call": "row %s (%s)" % (i, got[i][1]), "result": got[i][0]})
         if c.verdict == "PASS":
             c.detail = "; ".join("%s %s" % (got[i][1], i) for i in ids)[:380]
+        if spare:
+            c.freshness = ru.tag(sorted({v[1] for v in spare.values()})[-1])
+            c.evidence.append({"call": "reuse", "result": {"files": sorted({v[1] for v in spare.values()}),
+                                                           "freshness": c.freshness}})
 
 
 def _bar_chain(t, ran_id, cases, live_id, bar, owed):
@@ -1024,6 +1070,18 @@ def driver_rows_at(mod_hash, ns=None, dll_sha=None):
     return got
 
 
+def driver_rows_reusable(exclude=(), ns=None, dll_sha=None):
+    """(reuse module, {row id: (row, basename)}) from the driver results modcheck.reuse may reuse (manifest + DLL, see
+    modcheck/reuse.py), ids in `exclude` (the fresh rows) left out; ({}) under MODCHECK_REUSE=0. Never raises."""
+    try:
+        from modcheck import reuse as _ru  # noqa: E402
+        if _ru.mode() == _ru.OFF:
+            return _ru, {}
+        return _ru, _ru.rows(DRIVER_RESULTS, ns or NS, HERE, dll_sha if dll_sha is not None else repo_dll_sha256(), exclude)
+    except Exception:  # noqa: BLE001 - reuse is advisory; the fresh path stands alone
+        return None, {}
+
+
 def _driver_live_report(t, spec, default_driver, item):
     """One component per (id, toggle, bar) of `spec`, its verdict read from driver_rows_at (see above). Each row is an
     independent result, so a FAIL or UNMEASURED row does not blank the rows after it."""
@@ -1031,8 +1089,12 @@ def _driver_live_report(t, spec, default_driver, item):
     if t._guard():
         from modcheck import status as _st  # noqa: E402
         got = driver_rows_at(_st.mod_hash(HERE), dll_sha=repo_dll_sha256())
+    ru, reu = driver_rows_reusable(exclude=got) if got is not None and any(r not in got for r, _, _ in spec) else (None, {})
     for rid, toggle, bar in spec:
         found = got.get(rid) if got is not None else None
+        spare = reu.get(rid) if found is None else None
+        if spare is not None and ru.mode() == ru.REUSE:
+            found = spare
         drv = DRIVER_OF.get(rid, default_driver)
         with t.component(rid, toggle=toggle):
             if t._guard():
@@ -1052,6 +1114,9 @@ def _driver_live_report(t, spec, default_driver, item):
                 c.evidence.append({"call": "row %s (%s)" % (rid, found[1]), "result": found[0]})
                 if c.verdict == "PASS":
                     c.detail = "%s: %s" % (found[1], str(found[0].get("detail"))[:380])
+            if spare is not None:
+                c.freshness = ru.tag(spare[1])
+                c.evidence.append({"call": "reuse", "result": {"file": spare[1], "freshness": c.freshness}})
             t.upstream_failed = False        # this row only; it touched nothing
 
 

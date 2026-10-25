@@ -494,7 +494,7 @@ def _env_reset(session):
 
 def run_suite(suite, session, debug=False, anchor=None, mod=None,
               judge_runner=None, situational=False, policy="abort", bland_world=False, retile=False,
-              hold_site=False, floor_suite=None, scope=None):
+              hold_site=False, floor_suite=None, scope=None, canary=False, validity=False):
     """Run every chain in `suite` against an open `session`. Returns
     `{"chains": [...], "all_green": bool}`. Never raises on a component
     failure -- that is exactly what `suite.py`'s `component()` already
@@ -599,8 +599,30 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
             hold_tx = None
             hold_err = "site hold could not open its settings transaction: %s: %s" % (type(e).__name__, e)
     declared = set()      # fixture ids TestContext declared to clockgate WITHOUT a watch: withdrawn after the suite
+    # CANARY (focused_testing_plan option B, `run --canary`): a vanilla-only probe before the first chain; red -> every
+    # selected LIVE chain records one UNMEASURED/invalid HARNESS row and its body does not run (modcheck/validity.py);
+    # offline chains (suite.offline_chains) still run.
+    canary_res = None
+    # the CURRENT run manifests modcheck.reuse compares against are cached per process: recompute them for every suite
+    # run (validation.py imports the package module, the runner the bare one -- both caches)
+    for _rn in ("reuse", "modcheck.reuse"):
+        _rm = sys.modules.get(_rn)
+        if _rm is not None and hasattr(_rm, "_CURRENT"):
+            _rm._CURRENT.clear()
+    if canary:
+        import validity as _V  # noqa: E402
+        canary_res = _V.canary(session, anchor)
+        print("[modcheck] canary %s: %s" % ("GREEN" if canary_res["ok"] else "RED",
+                                             "; ".join(canary_res["problems"] or canary_res["steps"])[:300]),
+              file=sys.stderr, flush=True)
     try:
         for name, fn in suite.chains:
+            if canary_res is not None and not canary_res["ok"] and name not in getattr(suite, "offline_chains", ()):
+                import validity as _V  # noqa: E402 - an offline chain touches no game: a red canary does not void it
+                chains_out.append({"name": name, "components": [_V.canary_component(canary_res).as_dict()],
+                                   "situational": None, "modal_check": None, "site_hold": None, "env_reset": None,
+                                   "phase_s": {"hold": 0.0, "body": 0.0, "teardown": 0.0}})
+                continue
             # One progress line per chain (MODCHECK_RUN_DIAGNOSE_TICK_ONE_STALL, LIVE 2026-10-24): the row lines in the
             # log come from inside a chain, so an offline chain sitting minutes in a subprocess (rivers_switch_flips ->
             # the C# SelfTest, ~9 min) read as a game stalled at tick 1. Name the running chain on stderr.
@@ -630,6 +652,10 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
                 watch.__enter__()
             t = TestContext(session, anchor=anchor, debug=debug,
                             on_finding=findings.append, watch=watch)
+            if validity and name not in getattr(suite, "offline_chains", ()):
+                # the checks read the game: an offline chain's FAIL (XML, the C# SelfTest) is never voided by it
+                import validity as _V  # noqa: E402
+                t.validity_checks = _V.default_checks(fixtures)
             _sc = (scope or {}).get(name)
             if _sc and _sc.get("mode") == "prefix" and _sc.get("requested_rows"):
                 t.stop_after = set(_sc["requested_rows"])
@@ -757,6 +783,17 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
                                         for c in all_comps)
     summary = {"chains": chains_out, "all_green": all_green,
                "findings": findings, "refused": "", "walk": walk}
+    # option B fields: what was reused (never a fresh PASS), the canary, and the leads an invalid row kept
+    import reuse as _RU  # noqa: E402
+    summary["reuse"] = _RU.summarize(chains_out)
+    summary["fresh_green"] = all_green and not summary["reuse"]["reused"]
+    summary["invalid"] = ["%s/%s" % (ch["name"], c["name"]) for ch in chains_out for c in ch["components"]
+                          if c.get("validity") == "invalid"]
+    summary["leads"] = [{"row": "%s/%s" % (ch["name"], c["name"]), "cause": c.get("suspected_cause"),
+                         "confidence": c.get("cause_confidence"), "lead": c.get("lead")}
+                        for ch in chains_out for c in ch["components"] if c.get("lead")]
+    if canary_res is not None:
+        summary["canary"] = canary_res
     if situational:
         summary["modal_check_final"] = modal_final
         # owner rule 2026-10-10 (contract.py): a second dimension beside the verdicts. Only DISRUPTED owes a redo;
@@ -846,7 +883,8 @@ def file_findings(item_id, mod, findings, dry_run=False, seat=None):
     return filed
 
 
-def run(mods, debug=False, dry_run=False, situational=False, policy="abort", targets=None, seat=None):
+def run(mods, debug=False, dry_run=False, situational=False, policy="abort", targets=None, seat=None,
+        canary=False, validity=False):
     """`mods`: list of (mod_folder_name, item_id) pairs. Full orchestration
     per spec §2. `dry_run=True` skips every live/subprocess side effect and
     is how `selftest.py` exercises the sequencing without a game or a
@@ -855,7 +893,8 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort", tar
     `targets`: {mod: targeting.resolve() selection} -- run only those chains (owner 2026-10-25, targeted runs). The
     site hold still runs before every selected chain; the summary, sheet JSON and verify config carry the selection;
     and a targeted run never overwrites the mod's full-suite status entry (it is not a full-suite verdict).
-    `seat`: the ledger seat for verify/findings when the environment does not carry one (see verify_seat)."""
+    `seat`: the ledger seat for verify/findings when the environment does not carry one (see verify_seat).
+    `canary` / `validity`: option B guards passed to run_suite (modcheck/validity.py); both off by default."""
     targets = targets or {}
     from status import record_run  # noqa: E402
 
@@ -941,7 +980,8 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort", tar
             from rimdrive import Session  # noqa: E402
             with Session(lock=None) as s:
                 summary = run_suite(run_this, s, debug=debug, mod=mod_folder, floor_suite=suite,
-                                    situational=situational, policy=policy, hold_site=True)
+                                    situational=situational, policy=policy, hold_site=True,
+                                    canary=canary, validity=validity)
             if sel:
                 summary["targeted"] = dict(sel, of_chains=len(suite.chains))
             if situational:

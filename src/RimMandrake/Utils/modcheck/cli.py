@@ -71,6 +71,21 @@ def main(argv=None):
     p_run.add_argument("--full", action="store_true",
                        help="the whole suite: a scheduled sweep, at most daily (owner 2026-10-25). A run with no "
                             "--chains/--rows/--item ITEM_ID is refused without it")
+    # focused_testing_plan option B (all opt-in; without them a run behaves exactly as before)
+    p_run.add_argument("--reuse", choices=("off", "report", "on"), default=None,
+                       help="external-driver rows with no result at the current mod hash: 'report' (the default when "
+                            "unset) tags a result whose runtime+test manifest and DLL still match as reusable@<file> "
+                            "and leaves the row UNMEASURED; 'on' takes its status as reused@<file> (never fresh_green); "
+                            "'off' does not look (sets MODCHECK_REUSE, modcheck/reuse.py)")
+    p_run.add_argument("--canary", action="store_true",
+                       help="run the vanilla canary (Steel spawn/read-back/destroy, a live colonist, Playing) before "
+                            "the first chain; red -> every chain records one UNMEASURED HARNESS row, no body runs")
+    p_run.add_argument("--validity", action="store_true",
+                       help="arm the validity checks (menu drop, colonist count 0, hostile arrival): a FAIL they "
+                            "explain becomes UNMEASURED/invalid with the FAIL kept as a lead, no finding")
+    p_run.add_argument("--changed", default=None, metavar="RANGE|WORKTREE",
+                       help="print the chains a change (git range plus uncommitted files; WORKTREE = uncommitted "
+                            "only) SUGGESTS, and stop: nothing runs from a suggestion (one mod)")
     p_run.add_argument("--seat", default=None,
                        help="ledger seat for the run's verify/findings when RIMFLOW_SEAT/AGENT_SEAT do not reach "
                             "this process (Windows python.exe); with none the run is still recorded, ledger skipped")
@@ -288,6 +303,23 @@ def main(argv=None):
             print("REFUSED: --policy %s is read only by the situational envelope; add --situational or drop "
                   "--policy" % args.policy)
             return 2
+        if args.changed is not None:
+            import targeting
+            if len(args.mods) != 1:
+                print("REFUSED: --changed suggests chains for one mod")
+                return 2
+            try:
+                mod_dir = runner.find_mod_dir(args.mods[0])
+                suite = runner.load_validation(mod_dir)
+                res = targeting.changed(suite, targeting.changed_files(mod_dir, args.changed), mod_dir)
+            except (targeting.TargetError, RuntimeError) as ex:
+                print("REFUSED: %s" % ex)
+                return 2
+            for line in targeting.changed_report(res):
+                print(line)
+            return 0
+        if args.reuse is not None:
+            os.environ["MODCHECK_REUSE"] = {"off": "0", "report": "report", "on": "1"}[args.reuse]
         overrides = dict(kv.split("=", 1) for kv in args.item if "=" in kv)
         target_items = [kv for kv in args.item if "=" not in kv]
         chains = [c.strip() for c in args.chains.split(",") if c.strip()]
@@ -329,7 +361,7 @@ def main(argv=None):
                for m in args.mods]
         results = runner.run(mods, debug=args.debug, dry_run=args.dry_run,
                              situational=args.situational, policy=args.policy,
-                             targets=targets, seat=args.seat)
+                             targets=targets, seat=args.seat, canary=args.canary, validity=args.validity)
         bad = [m for m, r in results.items() if not r["all_green"]]
         for m, r in results.items():
             print("%-20s %s" % (m, _verdict_line(r)))

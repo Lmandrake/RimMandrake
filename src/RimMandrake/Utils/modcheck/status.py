@@ -161,6 +161,175 @@ def mod_hash(mod_dir):
     return h.hexdigest()
 
 
+# ------------------------------------------------------------------------------------------------- run manifests
+# focused_testing_plan_2026-10-25 option B: an external live driver's result is keyed on WHAT IT MEASURED, not on the
+# whole-mod hash -- so an edit that cannot change the measurement (C# source not yet rebuilt into the committed DLL, a
+# doc, a selftest, review tooling) no longer voids it. mod_hash is kept, unchanged, beside it: a result at the current
+# mod_hash is FRESH; a result whose manifest equals the current one is only REUSABLE (modcheck/reuse.py decides).
+MANIFEST_SCHEMA = 1
+# Under the mod dir, never part of the RUNTIME hash: the game cannot see them. Source/ is compiled into the committed
+# Assemblies/*.dll, which IS hashed -- so a C# change counts the moment the DLL is rebuilt, and an unbuilt change has
+# not reached the game. Mod-root *.py are selftests and review tooling (the runtime never runs Python).
+_NON_RUNTIME_DIRS = ("Source/", "art_source/")
+_DATA_EXT = (".json", ".xml", ".txt", ".yaml", ".yml", ".csv", ".md")
+
+
+def _non_runtime(rel):
+    return (any(rel.startswith(d) for d in _NON_RUNTIME_DIRS) or rel.lower().endswith(".md")
+            or ("/" not in rel and rel.endswith(".py")))
+
+
+def runtime_hash(mod_dir):
+    """SHA-256 over the files mod_hash covers MINUS what the game cannot load (_non_runtime): Defs, Patches, Languages,
+    Textures, Sounds, About, Tools and the committed Assemblies. Same (relpath, content) scheme as mod_hash."""
+    parts = []
+    ignore = _hashignore(mod_dir)
+    for root, dirs, files in os.walk(mod_dir):
+        dirs[:] = [d for d in dirs if d.lower() not in _EXCLUDED_BASENAMES and d != ".git"]
+        for name in sorted(files):
+            if name.lower() in _EXCLUDED_BASENAMES or name.endswith(".pyc"):
+                continue
+            path = os.path.join(root, name)
+            rel = os.path.relpath(path, mod_dir).replace(os.sep, "/")
+            if _non_runtime(rel) or any(rel == g or rel.startswith(g.rstrip("/") + "/")
+                                        or (g.endswith("*") and rel.startswith(g[:-1])) for g in ignore):
+                continue
+            with open(path, "rb") as f:
+                parts.append((rel, f.read()))
+    parts.sort(key=lambda kv: kv[0])
+    h = hashlib.sha256()
+    for rel, content in parts:
+        h.update(rel.encode("utf-8") + b"\0" + content + b"\0")
+    return h.hexdigest()
+
+
+def _import_dirs(mod_dir, script_dir):
+    utils = os.path.join(os.path.dirname(os.path.abspath(mod_dir)), "Utils")
+    return [script_dir, os.path.abspath(mod_dir), utils, os.path.join(utils, "modcheck")]
+
+
+def test_closure(script, mod_dir):
+    """(files, unresolved): `script` plus every LOCAL module it imports, transitively (AST: every `import`/`from`
+    anywhere in the file, function bodies included; every parent package __init__ of a dotted name; relative imports
+    against the importing file's package), resolved against the script's dir, the mod root, Utils/ and
+    Utils/modcheck/ -- plus every data file a string literal in those files names (a spec JSON) that exists beside
+    the file, under one of those dirs, or one directory below the file. An absolute name that resolves nowhere is
+    stdlib/third-party and is not hashed. `unresolved` lists what makes the closure unprovable (a non-literal
+    importlib/__import__, a relative import that resolves nowhere, an unreadable file): a manifest with any is never
+    reusable. LIMIT: a data path built at run time from pieces none of which is the file's own name (a computed
+    file name) is not seen. Pure but for the reads."""
+    import ast
+    script = os.path.abspath(script)
+    dirs = _import_dirs(mod_dir, os.path.dirname(script))
+    seen, unresolved, todo = set(), [], [script]
+
+    def _find(mod, among=None):
+        rel = mod.replace(".", os.sep)
+        for d in among or dirs:
+            for cand in (os.path.join(d, rel + ".py"), os.path.join(d, rel, "__init__.py")):
+                if os.path.isfile(cand):
+                    return os.path.abspath(cand)
+        return None
+
+    def _data(here, value):
+        """A data file a literal names: beside the file, under one of the import dirs, or one directory below the file
+        (os.path.join(HERE, "specs", "x.json") names only "x.json" as a data literal)."""
+        for d in [here] + dirs:
+            cand = os.path.join(d, value)
+            if os.path.isfile(cand):
+                return [os.path.abspath(cand)]
+        if "/" in value or os.sep in value:
+            return []
+        try:
+            subs = sorted(e.path for e in os.scandir(here) if e.is_dir() and e.name != "__pycache__")
+        except OSError:
+            return []
+        return [os.path.abspath(os.path.join(d, value)) for d in subs if os.path.isfile(os.path.join(d, value))]
+
+    while todo:
+        path = todo.pop()
+        if path in seen:
+            continue
+        seen.add(path)
+        if not path.endswith(".py"):
+            continue
+        try:
+            with open(path, encoding="utf-8") as f:
+                tree = ast.parse(f.read(), filename=path)
+        except (OSError, SyntaxError, ValueError) as ex:
+            unresolved.append("%s: %s" % (os.path.basename(path), type(ex).__name__))
+            continue
+        here = os.path.dirname(path)
+        for node in ast.walk(tree):
+            names = []
+            if isinstance(node, ast.Import):
+                names = [a.name for a in node.names]
+            elif isinstance(node, ast.ImportFrom) and node.level:
+                # relative import: resolved against the importing file's package; one that resolves nowhere makes the
+                # closure unprovable (it is always local code)
+                base = here
+                for _ in range(node.level - 1):
+                    base = os.path.dirname(base)
+                mods = [node.module] if node.module else []
+                mods += ["%s.%s" % (node.module, a.name) if node.module else a.name for a in node.names]
+                got = [p for p in (_find(m, [base]) for m in mods) if p]
+                if not got:
+                    unresolved.append("%s:%d relative import %s%s unresolved" % (
+                        os.path.basename(path), node.lineno, "." * node.level, node.module or ""))
+                todo.extend(got)
+                init = os.path.join(base, "__init__.py")
+                if os.path.isfile(init):
+                    todo.append(os.path.abspath(init))
+            elif isinstance(node, ast.ImportFrom) and node.module:
+                names = [node.module] + ["%s.%s" % (node.module, a.name) for a in node.names]
+            elif isinstance(node, ast.Call):
+                fn = node.func
+                fname = fn.attr if isinstance(fn, ast.Attribute) else getattr(fn, "id", None)
+                if fname in ("import_module", "__import__"):
+                    arg = node.args[0] if node.args else None
+                    if isinstance(arg, ast.Constant) and isinstance(arg.value, str):
+                        names = [arg.value]
+                    else:
+                        unresolved.append("%s:%d non-literal %s" % (os.path.basename(path), node.lineno, fname))
+            elif isinstance(node, ast.Constant) and isinstance(node.value, str) and node.value.lower().endswith(_DATA_EXT) \
+                    and "*" not in node.value and len(node.value) < 200:
+                todo.extend(_data(here, node.value))
+            for n in names:
+                # `import pkg.worker` also executes pkg/__init__.py: hash every parent package initializer
+                parts = n.split(".")
+                for k in range(1, len(parts) + 1):
+                    p = _find(".".join(parts[:k]))
+                    if p:
+                        todo.append(p)
+    return sorted(seen), unresolved
+
+
+def _rel_to(path, base):
+    return os.path.relpath(path, base).replace(os.sep, "/")
+
+
+def run_manifest(mod_dir, script):
+    """The reuse key of one live driver run (focused_testing_plan_2026-10-25 option B): {schema, script, runtime,
+    test, test_files, unresolved}. `runtime` = runtime_hash(mod_dir); `test` = sha over test_closure(script) by
+    (relpath to the mod's parent, content). The live mod list (env.running) and the DLL the game ran
+    (env.assembly_sha256) are already in a result's env and are judged there. Never raises: a field it cannot read is
+    None and the reason is in `unresolved`, which makes the manifest unusable for reuse."""
+    out = {"schema": MANIFEST_SCHEMA, "script": None, "runtime": None, "test": None, "test_files": [], "unresolved": []}
+    base = os.path.dirname(os.path.abspath(mod_dir))
+    try:
+        out["script"] = _rel_to(os.path.abspath(script), os.path.abspath(mod_dir))
+        out["runtime"] = runtime_hash(mod_dir)
+        files, unresolved = test_closure(script, mod_dir)
+        h = hashlib.sha256()
+        for p in files:
+            with open(p, "rb") as f:
+                h.update(_rel_to(p, base).encode("utf-8") + b"\0" + f.read() + b"\0")
+        out["test"], out["test_files"], out["unresolved"] = h.hexdigest(), [_rel_to(p, base) for p in files], unresolved
+    except Exception as ex:  # noqa: BLE001 - a manifest that cannot be computed is recorded as such, never raised
+        out["unresolved"].append("manifest: %s: %s" % (type(ex).__name__, ex))
+    return out
+
+
 def _git(args, timeout=10):
     try:
         r = subprocess.run(["git"] + args, cwd=ROOT, capture_output=True,

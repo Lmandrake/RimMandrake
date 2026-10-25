@@ -95,6 +95,17 @@ class Component(object):
         self.execution = "ran"      # "ran" | "not_run": execution state beside the verdict, never folded into it
         self.detail = ""
         self.surprises = None       # watch.SurpriseAbort.summary() when a detector ended the component
+        # focused_testing_plan option B, fields beside the verdict (never folded into it):
+        # freshness: "fresh" (measured by this run or a result at the current mod hash), "reused@<file>" / "reusable@<file>"
+        # (modcheck.reuse: an older result whose runtime + test manifest and DLL still match).
+        self.freshness = "fresh"
+        # validity (plan §3.1): None = not judged; "valid"; "invalid" = the measurement could not be trusted (re-run it,
+        # never score it). suspected_cause MOD/SITE/HARNESS/UNKNOWN with cause_confidence low/medium/high; `lead` keeps
+        # the withdrawn FAIL's detail -- an invalid row is never erased as noise.
+        self.validity = None
+        self.suspected_cause = None
+        self.cause_confidence = None
+        self.lead = None
 
     def as_dict(self):
         verdict = self.verdict
@@ -108,6 +119,8 @@ class Component(object):
             "checkpoints": self.checkpoints,
             "shows": list(self.shows),
             "surprises": self.surprises,
+            "freshness": self.freshness, "validity": self.validity, "suspected_cause": self.suspected_cause,
+            "cause_confidence": self.cause_confidence, "lead": self.lead,
         }
 
 
@@ -163,6 +176,10 @@ class TestContext(object):
         # TARGETED PREFIX (option A): the row ids still to record before the chain stops (StopAfter). None = run the
         # whole chain, the old behaviour.
         self.stop_after = None
+        # VALIDITY CHECKS (option B, plan §3.1): callables (ctx, component) -> None or (reason, cause, confidence), run when
+        # a component would end FAIL, before _on_finding publishes. A hit makes the row UNMEASURED/invalid with the FAIL kept
+        # as its `lead`. Empty = the old behaviour. modcheck.validity.default_checks() is what `run --validity` arms.
+        self.validity_checks = []
         self.components = []
         self._current = None
         self._on_finding = on_finding or (lambda component: None)
@@ -779,6 +796,20 @@ class _ComponentCtx(object):
         return "UNMEASURED (a precondition did not hold; %s withheld): %s -- %s" % (
             verdict, "; ".join("%s: %s" % (x["what"], x["why"]) for x in det["unmeasuredBecause"])[:400], str(detail or "")[:200])
 
+    def _invalid(self):
+        """The first validity check that says this component's measurement cannot be trusted: (reason, cause, conf), or
+        None. A check that raises is evidence, never a verdict."""
+        for chk in getattr(self.ctx, "validity_checks", None) or ():
+            try:
+                hit = chk(self.ctx, self.component)
+            except Exception as ex:  # noqa: BLE001
+                self.component.evidence.append({"call": "validity %s" % getattr(chk, "__name__", chk),
+                                                "result": {"error": "%s: %s" % (type(ex).__name__, ex)}})
+                continue
+            if hit:
+                return hit
+        return None
+
     def __exit__(self, exc_type, exc, tb):
         try:
             return self._exit(exc_type, exc, tb)
@@ -800,6 +831,7 @@ class _ComponentCtx(object):
             # A detector (or the harness's own budget/clock guard) ended the run. That is a statement
             # about the ENVIRONMENT, never a verdict on the mod: UNMEASURED, evidence named, no finding.
             c.verdict = UNMEASURED
+            c.validity, c.suspected_cause, c.cause_confidence = "invalid", "UNKNOWN", "low"
             c.surprises = exc.summary()
             c.detail = "%s: %s" % (exc.kind, exc)
             if c.surprises["evidence"]:
@@ -816,11 +848,21 @@ class _ComponentCtx(object):
             c.detail = "%s: %s" % (exc_type.__name__, exc)
             self.ctx.upstream_failed = True
             why = self._withheld(FAIL, c.detail)
+            bad = None if why else self._invalid()
             if why:
                 c.verdict, c.detail = UNMEASURED, why
+                c.validity, c.suspected_cause, c.cause_confidence = "invalid", "HARNESS", "medium"
                 self.ctx.upstream_reason = "an UNMEASURED component ended this chain earlier: " + why[:200]
+            elif bad:
+                reason, cause, conf = (tuple(bad) + (None, None))[:3]
+                c.lead, c.verdict = c.detail, UNMEASURED
+                c.validity, c.suspected_cause, c.cause_confidence = "invalid", cause or "UNKNOWN", conf or "low"
+                c.detail = "UNMEASURED (invalid: %s; FAIL withheld, kept as lead): %s" % (str(reason)[:300], c.lead[:200])
+                self.ctx.upstream_reason = "an invalid measurement ended this chain earlier: " + str(reason)[:200]
             else:
                 c.verdict = FAIL
+                if getattr(self.ctx, "validity_checks", None):
+                    c.validity, c.suspected_cause = "valid", "MOD"
                 self.ctx._on_finding(c)
         else:
             why = self._withheld(PASS, c.detail)
@@ -852,6 +894,9 @@ class Suite(object):
         self.chains = []          # [(name, fn)]
         self.chain_caps = {}      # name -> situational session tick cap override (default: watch.DEFAULT_SESSION_CAP)
         self.offline_chains = set()   # chains that need no game (T0): a targeted live run leaves them out; --full keeps them
+        # name -> [glob, ...] relative to the mod dir: files a chain depends on that its source does not name (shared
+        # helpers, inherited XML, patches) -- what `modcheck run --changed` maps a changed file through (targeting.changed)
+        self.chain_inputs = {}
         self.toggles = []         # Mod Settings toggle names this mod has
         self.biome = None         # bland-world runs: re-tile the map to this BiomeDef for the suite (bland_world.retile)
         self.tile_temperature = None   # ... and optionally set the tile temperature (C), e.g. cold-only flora
@@ -859,7 +904,7 @@ class Suite(object):
         # non-taking bridge_call can never be scored PASS or FAIL (see preconditions.py, TestContext.pre)
         self.preconditions = False
 
-    def chain(self, name, tick_cap=None, offline=False):
+    def chain(self, name, tick_cap=None, offline=False, inputs=None):
         """`tick_cap`: a chain that legitimately needs more in-game time than the default situational session
         cap (60000) declares its own total here; the watch still sweeps every chunk and caps each wait.
         `offline=True`: the chain touches no game (a Python mirror, the C# SelfTest); a targeted live run skips it
@@ -885,6 +930,8 @@ class Suite(object):
                 self.chain_caps[name] = int(tick_cap)
             if offline:
                 self.offline_chains.add(name)
+            if inputs:
+                self.chain_inputs[name] = list(inputs)
             return fn
         return deco
 

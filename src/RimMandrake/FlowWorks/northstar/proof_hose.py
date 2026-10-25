@@ -718,6 +718,10 @@ class Proof(object):
             self.res["mod_hash"] = _mc.mod_hash(MOD)
         except Exception as ex:  # noqa: BLE001
             self.res["mod_hash"], self.res["mod_hash_error"] = None, repr(ex)
+        try:                     # runtime + test manifest at run start: what modcheck.reuse compares (option B)
+            self.res["manifest"] = _mc.run_manifest(MOD, os.path.abspath(__file__))
+        except Exception as ex:  # noqa: BLE001 - absent manifest = never reused
+            self.res["manifest_error"] = repr(ex)
         self.gss_active = "mandrake.rm.gimmesomeslack" in running
         on = PKG in running
         # no game in Playing, or the flowworks tier not on the list, is the SITE: the run measured nothing (UNMEASURED, still aborts the

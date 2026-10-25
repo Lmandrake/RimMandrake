@@ -12,6 +12,22 @@ FW = os.path.dirname(HERE)
 UTILS = os.path.join(os.path.dirname(FW), "Utils")
 
 
+def manifest(mod_dir, script=None):
+    """modcheck status.run_manifest of the running driver (`script`, default the __main__ file) at run start: the runtime
+    + test hashes modcheck.reuse compares before it reuses this result after an unrelated edit (focused_testing_plan
+    option B). An unknown script or any error yields an `unresolved` manifest, which is never reused."""
+    try:
+        script = script or getattr(sys.modules.get("__main__"), "__file__", None)
+        if not script:
+            return {"unresolved": ["driver script unknown (no __main__.__file__)"]}
+        if os.path.join(UTILS, "modcheck") not in sys.path:
+            sys.path.insert(0, os.path.join(UTILS, "modcheck"))
+        import status as _mc  # noqa: E402
+        return _mc.run_manifest(mod_dir, os.path.abspath(script))
+    except Exception as ex:  # noqa: BLE001
+        return {"unresolved": ["manifest unavailable: %r" % ex]}
+
+
 def stamp(res, call):
     """Fill res['mode'|'mod'|'mod_hash'|'env'] in place. `call(name, **kw)` is the driver's bridge call."""
     res["mode"], res["mod"] = "live", "FlowWorks"
@@ -22,6 +38,7 @@ def stamp(res, call):
         res["mod_hash"] = _mc.mod_hash(FW)
     except Exception as ex:  # noqa: BLE001 - recorded; validation.py then reads nothing from this result
         res["mod_hash"], res["mod_hash_error"] = None, repr(ex)
+    res["manifest"] = manifest(FW)
     env = res.setdefault("env", {})
     try:
         rm = call("jawa/running_mods", assembly="RimMandrakeFlowWorks", details=False) or {}

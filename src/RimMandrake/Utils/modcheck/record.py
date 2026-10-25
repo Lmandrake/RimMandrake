@@ -35,6 +35,11 @@ the same entry as `step4`, judged like the core result:
   * no step-4 result supplied                  -> step4 UNMEASURED; a core that is otherwise green is REFUSED,
                                                   naming step 4. Never PASS.
 `status.check` and `modcheck floor --all` read `step4` back through status.step4_live.
+
+FRESHNESS / VALIDITY (focused_testing_plan option B). Fields beside a row's status, never folded into it: a row or
+component with `validity` "invalid" (the measurement could not be trusted) or `freshness` "reused@<file>" (read from an
+older result, modcheck/reuse.py) is never OK -- neither a fresh PASS nor a new failure -- and is listed in
+`components.invalid` / `components.reused` (step 4: `step4.invalid` / `step4.reused`).
 """
 import json
 import os
@@ -78,6 +83,14 @@ def provenance(res, mod, current_hash, expected_pids):
     return refusals
 
 
+def _invalid(r):
+    return r.get("validity") == "invalid"
+
+
+def _reused(r):
+    return str(r.get("freshness") or "").startswith("reused@")
+
+
 def judge(res, mod, current_hash, expected_pids):
     """(refusals, all_green, refused_reason, components). Pure: no file, no registry.
     `expected_pids` None means the tier could not be resolved -- that is a refusal, never a skip."""
@@ -87,6 +100,9 @@ def judge(res, mod, current_hash, expected_pids):
         refusals.append("result has no rows")
     t = tally(rows)
     bad = [i for st, ids in t.items() if st not in OK_ROWS for i in ids]
+    invalid = [r.get("id") for r in rows if _invalid(r)]
+    reused = [r.get("id") for r in rows if _reused(r)]
+    bad += [i for i in invalid + reused if i not in bad]
     all_green = bool(rows) and not bad and not res.get("aborted")
     open_bars = t.get("UNBUILT", []) + t.get("UNCOVERED", [])
     refused = ""
@@ -95,7 +111,8 @@ def judge(res, mod, current_hash, expected_pids):
             len(t.get("PASS", [])), len(t.get("UNBUILT", [])), len(t.get("UNCOVERED", [])),
             ", ".join(open_bars))
     components = {"counts": {k: len(v) for k, v in t.items()},
-                  "not_ok": bad, "unbuilt": t.get("UNBUILT", []), "uncovered": t.get("UNCOVERED", [])}
+                  "not_ok": bad, "unbuilt": t.get("UNBUILT", []), "uncovered": t.get("UNCOVERED", []),
+                  "invalid": invalid, "reused": reused}
     return refusals, all_green, refused, components
 
 
@@ -121,10 +138,15 @@ def judge_step4(ext, mod, current_hash, expected_pids):
     if not comps:
         refusals.append("step 4: result has no components")
     fail = ["%s/%s" % (n, c.get("name")) for n, c in comps if c.get("verdict") == "FAIL"]
-    unm = ["%s/%s" % (n, c.get("name")) for n, c in comps if not _passed(c.get("verdict")) and c.get("verdict") != "FAIL"]
+    unm = ["%s/%s" % (n, c.get("name")) for n, c in comps
+           if (not _passed(c.get("verdict")) and c.get("verdict") != "FAIL")
+           or (_passed(c.get("verdict")) and (_reused(c) or _invalid(c)))]
+    invalid = ["%s/%s" % (n, c.get("name")) for n, c in comps if _invalid(c)]
+    reused = ["%s/%s" % (n, c.get("name")) for n, c in comps if _reused(c)]
     st = "FAIL" if fail else ("UNMEASURED" if unm or not comps or not ext.get("all_green") else "PASS")
     step4 = {"status": st, "mod_hash": ext.get("mod_hash"), "components": len(comps),
              "pass": len(comps) - len(fail) - len(unm), "fail": fail, "unmeasured": unm,
+             "invalid": invalid, "reused": reused,
              "why": "" if st == "PASS" else ("all_green false with every component PASS" if not fail and not unm
                                              and comps else "")}
     return refusals, step4
