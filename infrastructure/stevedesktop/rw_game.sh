@@ -85,12 +85,13 @@ up() {
 init() {
     mkdir -p "$RM_GAME_USERDATA/JawaBench" "$RM_GAME_USERDATA/Config"
     local exp; exp=$(date -u -d '+30 days' +%Y-%m-%dT%H:%M:%SZ)
+    local esc; esc=$(printf '%s' "$DATA_WIN" | sed 's/\\/\\\\/g')   # JSON-escape the backslashes
     cat > "$RM_GAME_USERDATA/JawaBench/companion_profile.json" <<EOF
 {
   "profile": "test",
   "expiresUtc": "$exp",
   "campaignSaves": "",
-  "why": "SteveDesktop test centre: -savedatafolder $DATA_WIN holds no campaign saves (rw_game.sh init)"
+  "why": "SteveDesktop test centre: -savedatafolder $esc holds no campaign saves (rw_game.sh init)"
 }
 EOF
     echo "companion profile: test until $exp"
