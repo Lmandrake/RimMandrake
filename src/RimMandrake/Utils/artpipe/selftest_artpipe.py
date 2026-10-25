@@ -3715,6 +3715,40 @@ def test_requeue_flakes_refuses_without_pending_dir():
            and not (root / "_requeued_manifests").exists())
 
 
+def test_cancel_jobs_takes_pending_out_and_spares_running():
+    """ART_SERIES_WIRE_STOP_AND_CANCEL: a pending job can be cancelled; one a worker holds cannot."""
+    import io, contextlib
+    import cancel_jobs
+    import state_dir
+    with tempfile.TemporaryDirectory() as td:
+        root = Path(td)
+        for d in ("pending", "active", "done", "failed"):
+            (root / d).mkdir()
+        for d, j in (("pending", "arteval_X_s1r2_north"), ("pending", "arteval_X_s1r2_south"),
+                     ("pending", "arteval_Y_s1r1_north"), ("active", "arteval_X_s1r1_north")):
+            (root / d / f"{j}.json").write_text("{}")
+        saved = state_dir.STATE_ROOT
+        state_dir.STATE_ROOT = root
+        buf = io.StringIO()
+        try:
+            with contextlib.redirect_stdout(buf):
+                rc_dry = cancel_jobs.main(["--dry-run", "arteval_X_*"])
+                ok("cancel: dry-run moves nothing", (root / "pending" / "arteval_X_s1r2_north.json").is_file()
+                   and not (root / "cancelled").exists() and rc_dry == 3)
+                rc = cancel_jobs.main(["arteval_X_*"])
+                rc_none = cancel_jobs.main(["nope_*"])
+        finally:
+            state_dir.STATE_ROOT = saved
+        ok("cancel: both pending X jobs moved to cancelled/",
+           all((root / "cancelled" / f"arteval_X_s1r2_{f}.json").is_file() for f in ("north", "south"))
+           and not (root / "pending" / "arteval_X_s1r2_north.json").exists())
+        ok("cancel: other def's pending job untouched", (root / "pending" / "arteval_Y_s1r1_north.json").is_file())
+        ok("cancel: the running job is untouched and flagged (rc 3)",
+           (root / "active" / "arteval_X_s1r1_north.json").is_file() and rc == 3
+           and "RUNNING" in buf.getvalue(), buf.getvalue())
+        ok("cancel: nothing matching exits 2", rc_none == 2)
+
+
 def test_detector_selects_meter_by_declared_window_not_position():
     """ARTPIPE_METER_WINDOW_REMAP_1: the account's rate-limit report changed
     shape on 2026-09-26 — the weekly figure moved from the `secondary_*`
@@ -4178,6 +4212,7 @@ def main() -> int:
         test_job_art_info_unset_art_class_does_not_fall_through_to_drawsize,
         test_requeue_flakes_skips_and_reports_a_bad_manifest,
         test_requeue_flakes_refuses_without_pending_dir,
+        test_cancel_jobs_takes_pending_out_and_spares_running,
         test_detector_selects_meter_by_declared_window_not_position,
         test_read_auth_freshness_decodes_last_refresh_and_jwt_claims,
         test_resync_stale_worker_homes_updates_only_the_stale_ones,
