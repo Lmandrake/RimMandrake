@@ -1,0 +1,2 @@
+WSL interop (binfmt WSLInterop) vanished MID live session on 2026-10-25 ~19:10Z: python.exe that ran bridge calls a minute earlier then failed 'MZ: not found' / exec format error, also with the sandbox disabled, and Linux python cannot reach the bridge (Windows loopback, NAT). Effect: the game could not be shut down or even read; it was left running paused. Before a long live batch, have every step's state saved to disk so a lost interop leaves evidence, and restore ModsConfig from Linux (modlist_swap.py works without interop).
+home: skills/wsl-windows-plumbing/SKILL.md

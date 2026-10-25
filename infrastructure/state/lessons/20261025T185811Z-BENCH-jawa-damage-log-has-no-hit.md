@@ -1,0 +1,2 @@
+jawa/damage_log events carry NO hit-part field (keys: amount, damageDef, deflected, hediffsAdded, totalDealt, victim*, x, z, tick) despite the tool description promising 'hit part'. A runner that classifies wounds by e.get('hitPart') silently reads every hit as part '' (my spikes_live first-pass 'stab_on_covered' count was unsound for that reason). Read body parts from jawa/pawn_get hediffs (def+part+severity) instead. Measured 2026-10-25, spikes_A.json.
+home: skills/live-debugging-proof-harness/SKILL.md
