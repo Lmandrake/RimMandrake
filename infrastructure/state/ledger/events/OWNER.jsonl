@@ -2405,3 +2405,7 @@
 {"seat":"OWNER","event":"game","state":"DEPLOYING","ranBy":"BENCH","why":"FlowWorks deploy","ts":"2026-10-25T11:50:17Z","tsn":1792929017361441999}
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"relaunch after FlowWorks deploy for run7","ts":"2026-10-25T11:51:13Z","tsn":1792929073520588990}
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"FlowWorks run7 deploy landed, bridge answers","ts":"2026-10-25T12:02:41Z","tsn":1792929761132598882}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"BENCH","why":"deploy FlowWorks eabfb55709 (spike north-row + descent census) for run8 proofs","ts":"2026-10-25T14:08:41Z","tsn":1792937321568618874}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"deploy FlowWorks eabfb55709","ts":"2026-10-25T14:08:54Z","tsn":1792937334826513788}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"deploy FlowWorks eabfb55709","ts":"2026-10-25T14:10:47Z","tsn":1792937447453080399}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"FlowWorks eabfb55709 deployed, run8 proofs","ts":"2026-10-25T14:22:03Z","tsn":1792938123302925737}
