@@ -1,0 +1,2 @@
+A lazy 'import X' inside a function in a script dir that does not put X's directory on sys.path passes every selftest that injects a fake (get=fake) and crashes the real CLI: art_eval/shadow.py kept_references imported artledger (Utils/art) and every 'shadow.py build' died ModuleNotFoundError from 89ed48b095 to fix 8a06a09f9b. When a test injects a dependency, also exercise the default path once in a fresh 'python3 -I' process.
+home: NONE
