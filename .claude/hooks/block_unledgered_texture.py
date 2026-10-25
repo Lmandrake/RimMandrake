@@ -214,6 +214,11 @@ def evaluate(cmd, cwd):
                             "(%s..%s):\n%s\n\n%s" % (rng[0], rng[1], _fmt(bad), FIX))
             else:
                 paths = _commit_paths(args) if kind == "commit" else _publish_paths(args)
+                if kind == "commit" and paths:
+                    # git reads a pathspec relative to where it runs; check_commit reads
+                    # root-relative. `cd <Textures dir> && git commit x.png` used to match nothing.
+                    paths = [os.path.relpath(os.path.realpath(os.path.join(where, p)), root)
+                             for p in paths]
                 bad, shard = check_commit(root, paths)
                 if bad:
                     return ("this commit takes texture PNG changes the art ledger did not make:\n%s\n\n%s"

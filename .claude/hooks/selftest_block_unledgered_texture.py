@@ -92,6 +92,11 @@ def main():
         check(v == "deny" and "no art-ledger record" in out, "raw write + pathspec commit refused")
         v, _ = hook("./publish -m raw %s" % rel_raw, clone)
         check(v == "deny", "raw write + ./publish refused")
+        # git reads the pathspec relative to where it runs, not the repo root
+        v, _ = hook("git commit Raw_south.png -m raw", tex)
+        check(v == "deny", "raw write + pathspec commit run from the Textures dir refused")
+        v, _ = hook("cd src/FixMod && git commit Textures/Things/Beast/Raw_south.png -m raw", clone)
+        check(v == "deny", "raw write + `cd <subdir> && git commit <rel>` refused")
         git(clone, "add", rel_raw)
         v, _ = hook("git commit -m raw", clone)
         check(v == "deny", "raw write + index commit refused")
