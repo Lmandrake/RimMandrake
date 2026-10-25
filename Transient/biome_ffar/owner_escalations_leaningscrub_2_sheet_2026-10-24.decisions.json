@@ -98,46 +98,20 @@
     "RM_TunnelSnake": {
       "at": "2026-10-24T13:39:51.525Z",
       "decidedAt": "2026-10-24T13:39:15.642Z",
-      "decision": "B",
+      "decision": "hold",
       "note": "",
-      "pool": {
-        "Things/Pawn/Animal/RM_TunnelSnake/RM_TunnelSnake": {
-          "add": [
-            "C"
-          ],
-          "baseline": [
-            "6967a09259bda786"
-          ],
-          "remove": []
-        }
-      },
+      "pool": {},
       "prefill": "A",
-      "purge": [
-        "d19250d2b134d8038649ad3a9a146862df98a9a52ea85eaca6db1bfdbcbf90de",
-        "5f5c9c531370a8b7bb6acf365e1610f2681d806e05a5fab3b97d639d9bd9ba4d",
-        "640204f1eb8cfc3bc9bd87c7c1229fa9f5c9fbd94329e267651028655c8edb29"
-      ],
+      "purge": [],
       "purgeTouched": true,
       "qPrefill": {
         "pipeline_check": "keep"
       },
       "reject": {},
-      "retire": {
-        "Things/Pawn/Animal/RM_TunnelSnake/RM_TunnelSnake": [
-          "A"
-        ]
-      },
+      "retire": {},
       "rev": "466c068825dbf376",
       "schema": 2,
-      "slots": {
-        "Things/Pawn/Animal/RM_TunnelSnake/RM_TunnelSnake": {
-          "at": "2026-10-24T13:39:15.642Z",
-          "pick": "B",
-          "set_id": "cb16c54f19c78d10",
-          "slot_id": "RM_TunnelSnake/lifeStages[2].bodyGraphicData",
-          "state": "pick"
-        }
-      }
+      "slots": {}
     },
     "RM_Vissler": {
       "at": "2026-10-24T13:37:50.479Z",
@@ -174,35 +148,19 @@
     "RM_Vurra": {
       "at": "2026-10-24T13:38:28.227Z",
       "decidedAt": "2026-10-24T13:38:21.271Z",
-      "decision": "B",
+      "decision": "hold",
       "note": "",
       "prefill": "A",
-      "purge": [
-        "ca58052156284730204c507ebbbdb2047be95b099ba8f591e7fde0c25666efa3",
-        "b8feca46a077caeb2e64af3821841bd67b0859845e69f5163594005ef1da5f61",
-        "ae17b2ea48ac820eee83a571f4a0c81f2095a6b59bcd2555a76526ed22789117"
-      ],
+      "purge": [],
       "purgeTouched": true,
       "qPrefill": {
         "pipeline_check": "keep"
       },
       "reject": {},
-      "retire": {
-        "Things/Pawn/Animal/RM_Vurra/RM_Vurra": [
-          "A"
-        ]
-      },
+      "retire": {},
       "rev": "466c068825dbf376",
       "schema": 2,
-      "slots": {
-        "Things/Pawn/Animal/RM_Vurra/RM_Vurra": {
-          "at": "2026-10-24T13:38:21.271Z",
-          "pick": "B",
-          "set_id": "0baef8de90e64adf",
-          "slot_id": "RM_Vurra/lifeStages[2].bodyGraphicData",
-          "state": "pick"
-        }
-      }
+      "slots": {}
     }
   },
   "posture": "pick-one",
