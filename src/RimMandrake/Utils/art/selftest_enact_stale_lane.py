@@ -471,6 +471,14 @@ def main():
             got, purged, cf = run16("RSW_Other", old)
             check(not got and not purged and any(c.startswith("RSW_Kite: pick B not installed at all") for c in cf),
                   f"16 an older keep by a real other row still blocks pick and ✕ ({got} / {purged} / {cf})")
+            # 19 the pick's age is his CLICK (decidedAt), not the row's last touch (`at` moves with a later note edit):
+            # a keep landing between the click and the note edit is NEWER than the pick and blocks it
+            # (ENACT_KEEP_AGE_FIX_DECIDED_AT); the control, with the edit stamp equal to the click, agrees
+            got, purged, cf = run16("RSW_KiteOld", "2026-10-10T12:00:00Z", {"carriedFrom": "RSW_KiteOld", "at": "2026-10-11T00:00:00Z"})
+            check(not got and any(c.startswith("RSW_Kite: pick B not installed at all") for c in cf),
+                  f"19 a keep made after his click but before a later note edit still blocks the pick ({got} / {cf})")
+            got, purged, cf = run16("RSW_KiteOld", "2026-10-10T08:00:00Z", {"carriedFrom": "RSW_KiteOld", "at": "2026-10-11T00:00:00Z"})
+            check(got == {EAST, NORTH}, f"19 ...a keep older than the click does not ({got} / {cf})")
         finally:
             L.Index.protected, L.Index.__init__ = prot0, idx0
             cpath.write_text(census0)

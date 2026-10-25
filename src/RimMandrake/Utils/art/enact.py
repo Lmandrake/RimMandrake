@@ -1410,7 +1410,11 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                         if live == sha:
                             P["installed_already"].append((row, mod, r))
                             continue
-                        mine_at = I.ts(v.get("at"))
+                        # the time of HIS CLICK, not the row's last touch (`at` moves with a later note edit, which made
+                        # a keep landing between click and edit read as older: ENACT_KEEP_AGE_FIX_DECIDED_AT)
+                        st_ = v2_slots.get(g) or {}
+                        mine_at = I.ts((st_.get("at") if st_.get("pick") == letter else None)
+                                       or v.get("decidedAt") or v.get("at"))
                         # an owner keep of that live picture from ANOTHER row, or from a LATER ruling on this row in
                         # another decisions file (re-enacting an old file must not undo his newer pick)
                         prot = [k for k in idx.protected(live) if keep_blocks_pick(k, row, mine_at, I.rel_via(decisions),
