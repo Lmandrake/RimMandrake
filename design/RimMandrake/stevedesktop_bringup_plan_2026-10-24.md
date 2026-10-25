@@ -1,8 +1,8 @@
 # SteveDesktop: second test machine, bring-up plan (2026-10-24)
 
-**Status:** plan only. Nothing is installed. Two items carry it:
+**Status:** Phase 1 is now executable: `infrastructure/stevedesktop/RUNBOOK.md` (built 2026-10-25), the owner's hands-on steps through Monday morning 2026-10-26. Nothing is installed on SteveDesktop yet. Items:
+- `STEVEDESKTOP_BRINGUP_BUILD_SECOND_BENCH`: the whole bring-up, pulled forward from Friday by the owner on 2026-10-25. Its RUNBOOK steps are filed as 17 `STEVEDESKTOP_*` items, in order (listed on the item's note).
 - `STEVEDESKTOP_TRIAL_MEASURE_TOKEN_FREE_FIRST`: Wednesday 2026-10-28 after 16:00, after the accounts refresh. It runs on Archmagi only.
-- `STEVEDESKTOP_BRINGUP_BUILD_SECOND_BENCH`: Friday 2026-10-30, once the owner can power the machine on.
 
 The measured basis is `design/RimMandrake/second_workstation_study_2026-10-24.md` (bridge held about 19 h/day, held is not the same as busy, 127 restarts in 8 days, about 85% of tokens spent in subagents). GPT's enhancement pass is appended at the end of this file.
 
@@ -38,18 +38,13 @@ These steps are owned by the Wednesday item.
    For each, record its current cost on Archmagi (CPU, memory, its share of the 5+3 OOM kills) and whether moving it frees Archmagi.
 5. **Decide the Lodestar relationship.** Should SteveDesktop be a 4th Lodestar node (hourly sweep, board, registry) or a plain runner that Lodestar does not know about? Criteria: does it own any project (no), does it need the board (only to report runs), and what cross-machine sync cost would a node add? Write the decision as one line for the owner.
 
-## Phase 1: power-on and communication (Friday)
+## Phase 1: power-on, remote access and an unattended week
 
-1. Log in as the admin user. Name the host `SteveDesktop`. Give it a fixed LAN IP (a DHCP reservation on the router). Record the IP in Machinist.
-2. Enable OpenSSH Server on Windows. Add Archmagi's `~/.ssh/id_ed25519.pub` to the admin `authorized_keys`. Test `ssh SteveDesktop` from Archmagi WSL.
-3. Install WSL2 Ubuntu, then sshd inside WSL or a forwarded port. Install git, python3 and the gh CLI. Generate an SSH key and register it on GitHub as a read+push deploy key, or as the same account if the owner prefers.
-4. Windows prerequisites: the .NET SDK (for winbuild and SelfTest), the Python for Windows that the tools call as `python.exe`, and the codex CLI only if GPT consults will run there.
-5. Install the Claude Code CLI and log in (an interactive login, owner's hands). Do **not** turn on Remote Control there unless it is needed (see the RC skill's `/login` incident rule).
-6. Firewall: allow LAN-only traffic for SSH and the bridge port.
+Executable form: `infrastructure/stevedesktop/RUNBOOK.md`. One typed line on SteveDesktop runs `bootstrap.ps1`, which Archmagi serves on the LAN. It covers the hostname, Windows OpenSSH with Archmagi's key, a firewall that admits only the LAN and Tailscale, power and Wake-on-LAN, Windows Update restart policy, winget (Git, Python, .NET SDK 8, Tailscale, Chrome Remote Desktop), WSL2 Ubuntu via `bootstrap_wsl.sh` (git, gh, node, Claude Code, systemd, a WSL Tailscale node, a daily self-upgrade timer), a copy of Archmagi's WSL Keepalive task, and a report of IP, MAC, edition and Steam DLC folders back to Archmagi. The owner's hands are needed for the DHCP reservation, BIOS, Tailscale logins and key expiry, Autologon, Chrome Remote Desktop, the Claude `/login` and Steam. GitHub access is a deploy key added from Archmagi's gh. WSL is reached through Tailscale SSH or `wsl.exe` over Windows SSH, never an sshd plus port-forward inside WSL. `verify_from_archmagi.sh` checks every door.
 
 ## Phase 2: install the harness
 
-1. Clone RimMandrake to `/home/<user>/rm/runner` (ext4). It is a third seat clone, **RUNNER**. It never edits src/ and never commits code, only results and ledger shard events.
+1. The clone at `/home/mandrake/rm/runner` (ext4) is made in Phase 1 (RUNBOOK step A3). It is a third seat clone, **RUNNER**. It never edits src/ and never commits code, only results and ledger shard events.
 2. Make the hard-coded Steam path configurable: about 46 tool files name `C:\Program Files (x86)\Steam\...` (MEASURED in the study). Use one config or env var, read through the agent-storage helper pattern. This is real tooling work and has its own item.
 3. Set the agent storage root per machine (`agent_storage.py`) on SteveDesktop's own disk.
 4. Install the RimBridge server and the JawaBench companion DLL into that game's Mods folder, and copy the companion profile.
@@ -70,7 +65,7 @@ These steps are owned by the Wednesday item.
   - Divergent mod lists: the run list names the tier.
   - DLC missing on the second account: preflight refuses.
 
-## Open questions for the owner (Friday)
+## Open questions for the owner (before Monday 2026-10-26)
 
 - Does SteveDesktop's Steam account own all five DLCs?
 - RUNNER as a Lodestar node or not (Wednesday's answer).
@@ -116,7 +111,7 @@ For (2), replace or extend the failure-mode bullets with:
 
 For (3), simplify setup with these replacements:
 
-- **Use one SSH endpoint:** prefer Windows SSH plus a local runner launcher; add WSL only where the selected workload requires it. Omit WSL sshd, `gh`, Claude/Codex logins, Remote Control and mirrored agent environments initially.
+- **Use one SSH endpoint:** prefer Windows SSH plus a local runner launcher; add WSL only where the selected workload requires it. Omit WSL sshd, Remote Control and mirrored agent environments initially. (Corrected 2026-10-25: the owner now wants Claude Code logged in and self-upgrading on SteveDesktop, so WSL, `gh` and the Claude login are in Phase 1; see the RUNBOOK.)
 - **Keep the bridge local:** bind it to loopback and use SSH for administration. Open a LAN bridge port only if a demonstrated workflow requires direct access.
 - **Port the commissioning path first:** centralize configuration for GSS and its dependencies; reject unsupported paths explicitly. Track the remaining 46-file portability audit separately.
 - **Install only required Workshop dependencies:** commission minimal tiers first; download the full owner list when scheduling its actual acceptance test.
