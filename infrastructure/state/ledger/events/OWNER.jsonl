@@ -2400,3 +2400,8 @@
 {"seat":"OWNER","event":"game","state":"DEPLOYING","ranBy":"BENCH","why":"FlowWorks deploy","ts":"2026-10-25T08:57:11Z","tsn":1792918631377111494}
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"launched via Steam after FlowWorks deploy","ts":"2026-10-25T08:58:03Z","tsn":1792918683302802488}
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"bridge answers after FlowWorks deploy","ts":"2026-10-25T09:09:10Z","tsn":1792919350086477938}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"BENCH","why":"deploy FlowWorks e46b187dc2/21b236986f DLLs for run7 live proofs","ts":"2026-10-25T11:48:26Z","tsn":1792928906072516669}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"closed to deploy FlowWorks DLL (gravel/spikes fixes)","ts":"2026-10-25T11:50:16Z","tsn":1792929016024413368}
+{"seat":"OWNER","event":"game","state":"DEPLOYING","ranBy":"BENCH","why":"FlowWorks deploy","ts":"2026-10-25T11:50:17Z","tsn":1792929017361441999}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"relaunch after FlowWorks deploy for run7","ts":"2026-10-25T11:51:13Z","tsn":1792929073520588990}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"FlowWorks run7 deploy landed, bridge answers","ts":"2026-10-25T12:02:41Z","tsn":1792929761132598882}

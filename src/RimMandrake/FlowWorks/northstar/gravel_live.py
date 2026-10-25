@@ -230,8 +230,22 @@ def main():
         for p in (B.call("jawa/list_pawns", limit=400) or {}).get("pawns") or []:
             if not p.get("dead") and p.get("isPlayer"):
                 B.call("jawa/pawn_force_incapacitate", pawn=p.get("id"), action="vanish")
-        r = B.call("jawa/spawn_pawn", kindDef="Colonist", x=ox + 8, z=oz + 9, faction="player", count=1) or {}
-        cids = [p_.get("id") for p_ in r.get("pawns") or [] if p_.get("id")]
+        # HARNESS (run7 2026-10-25): a random Colonist can arrive DOWNED (an 80-year-old Gestor never stood up, so the fill and
+        # cut rows waited 6000 ticks on nobody); a downed one is vanished and re-rolled, never worked.
+        cids, rolls = [], []
+        for _ in range(6):
+            r = B.call("jawa/spawn_pawn", kindDef="Colonist", x=ox + 8, z=oz + 9, faction="player", count=1) or {}
+            got = [p_.get("id") for p_ in r.get("pawns") or [] if p_.get("id")]
+            if not got:
+                break
+            step(5)
+            st_ = {p_.get("id"): p_ for p_ in (B.call("jawa/list_pawns", limit=400) or {}).get("pawns") or []}.get(got[0]) or {}
+            rolls.append({"id": got[0], "downed": st_.get("downed"), "dead": st_.get("dead")})
+            if st_ and not st_.get("downed") and not st_.get("dead"):
+                cids = got
+                break
+            B.call("jawa/pawn_force_incapacitate", pawn=got[0], action="vanish", _answer=True)
+        res["colonist_rolls"] = rolls
         if not cids:
             unmeasured_rest("HARNESS", "no colonist spawned: %s" % str(r)[:200])
             return 2
@@ -247,6 +261,8 @@ def main():
         sp = B.call("jawa/flowworks_job_probe", x=sand[0], z=sand[1], kind="dig", pawnId=pid) or {}
         kp = B.call("jawa/flowworks_job_probe", x=soil[0], z=soil[1], kind="dig", pawnId=pid) or {}
         st, why = sand_verdict(sp, kp)
+        if sp.get("terrain") != "Sand":   # a set_terrain that did not take would judge the old ground as sand
+            st, why = "UNMEASURED", "sand square reads %s, not Sand" % sp.get("terrain")
         row("GS_sand_refused", st, "HARNESS" if st == "UNMEASURED" else "MOD",
             {"why": why, "sand": sp.get("designator"), "soil": kp.get("designator")})
 
@@ -257,6 +273,9 @@ def main():
         dry = B.call("jawa/flowworks_job_probe", x=fill[0], z=fill[1], kind="fillin", pawnId=pid) or {}
         B.call("rimworld/spawn_thing", defName=GRAVEL, stackCount=1, x=fill_mat[0], z=fill_mat[1])
         gv = things(fill_mat[0], fill_mat[1], 1, 1, GRAVEL)
+        # WorkGiver_FillInCanal caches "has material" per pawn per TICK: a probe in the same paused tick as the dry probe
+        # reads the dry answer back (run7: wetProbe hasJobOnCell False, true one tick on). Let a tick pass first.
+        step(2)
         g0 = stacks(things(ox, oz, 17, 17, GRAVEL), (GRAVEL,))[GRAVEL]
         wet = B.call("jawa/flowworks_job_probe", x=fill[0], z=fill[1], kind="fillin", pawnId=pid) or {}
         det = {"depth0": d0, "designate": str(des)[:200], "dryProbe": str(dry.get("workGiver"))[:200],
@@ -294,6 +313,8 @@ def main():
         order = B.call("jawa/ordered_job", pawnId=pid, jobDef="RM_DigCanalJob", targetAX=cut[0], targetAZ=cut[1], waitTicks=0) or {}
         job_ok, job_why = job_gate(probe, order, "RM_DigCanalJob")
         det = {"depth0": c0, "spoilBefore": s0, "designate": str(des)[:200], "probe": str(probe.get("designator"))[:200]}
+        if probe.get("terrain") != ROCK_TERRAIN:
+            job_ok, job_why = False, "cut square reads %s, not %s" % (probe.get("terrain"), ROCK_TERRAIN)
         if c0 != 0 or not job_ok:
             row("GS_rock_ground_cut_yields_gravel_or_chunk", "UNMEASURED", "SITE",
                 dict(det, why="not at D0 or the dig job was not taken: " + job_why))
@@ -342,11 +363,21 @@ def main():
         unmeasured_rest("HARNESS", str(e))
         return 2
     finally:
-        for c_ in cids:
-            B.call("jawa/pawn_force_incapacitate", pawn=c_, action="vanish", _answer=True)
+        # the run's colonist is LEFT standing: every other colonist was vanished above, and vanishing the last one ends the
+        # game ("Game Over" letter, run7 2026-10-25) under whatever runs next on this map
         for k, v in before.items():
             if v is not None:
-                sset(k, v)
+                try:
+                    sset(k, v)
+                except Exception as ex:  # noqa: BLE001 -- restore every field, whatever one throws
+                    print("RESTORE %s failed: %s" % (k, ex), flush=True)
+        try:
+            bad = {k: sget(k) for k, v in before.items() if v is not None and str(sget(k)).lower() != str(v).lower()}
+        except Exception as ex:  # noqa: BLE001
+            bad = {"readback": str(ex)}
+        res["settings_restore_failed"] = bad
+        if bad:
+            print("SETTINGS NOT RESTORED: %s" % bad, flush=True)
         res["finished"] = time.strftime("%Y-%m-%dT%H:%M:%S")
         save()
 
