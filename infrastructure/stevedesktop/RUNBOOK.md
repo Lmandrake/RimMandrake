@@ -224,6 +224,19 @@ The agent then gets PASS on every door.
 - **A5, during the week.** Run `verify_from_archmagi.sh` daily. Reboot it on purpose when
   `reboot_pending` shows. Phase 2 harness work continues under its own items.
 
+- **A6, switching Claude accounts remotely** (owner need 2026-10-25). `claude_account.sh` is installed as
+  `/usr/local/bin/claude-account` on `stevedesktop-wsl` (user `mandrake`), together with
+  `/etc/profile.d/claude-account.sh` and the first line of `~/.bashrc`, which export
+  `CLAUDE_CONFIG_DIR=~/.claude-active`. Each account is its own config dir under `~/.claude-accounts/`.
+  - **See them:** `ssh stevedesktop-wsl claude-account list`.
+  - **Switch:** `... claude-account use <name>`.
+  - **Add one:** `... claude-account login <name> [email]` prints a URL. He opens it on his phone, signed in
+    to that Google account. Then `... claude-account code <name> <code>`.
+
+  The first account, `gmail`, was imported 2026-10-25 from the `sjlewis` login (the Start-menu Ubuntu user);
+  both users then held the same token. Reinstall with
+  `scp claude_account.sh stevedesktop-wsl:/tmp/claude-account && ssh stevedesktop-wsl sudo install -m 755 /tmp/claude-account /usr/local/bin/claude-account`.
+
 ---
 
 ## Before you leave Monday: checklist
