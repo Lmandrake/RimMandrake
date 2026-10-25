@@ -176,8 +176,8 @@ FEATURES = [
     ("def", r"^ThingDef/RM_(DrawbridgeWinch_(Timber|Steel)|DrawbridgeGate)$", "Drawbridges: timber/steel winch house and gate leaf", M + "proved by northstar/drawbridge_proof.py (rows owed their first live run); no frozen station stages a drawbridge"),
     ("def", r"^(JobDef/RM_WorkDrawbridge|WorkGiverDef/RM_WorkDrawbridgeGiver)$", "Work-drawbridge order (raise/lower at the winch)", M + "pawn job; proved by drawbridge_proof.py, no frozen station"),
     ("def", r"^(ThingDef/RM_RaidPlank(_Laid)?|JobDef/RM_LayRaidPlank)$", "Raid planks raiders lay across a trench", M + "raider AI; proved by drawbridge_proof.py, no frozen station stages a raid"),
-    ("set", r"^(drawbridgesEnabled|raiseSpeed|maxLeafTimber|maxLeafSteel|raidsBringPlanks|raidPlankChance)$", "Drawbridge switches, speed, leaf length, raid planks", M + "state-read by drawbridge_proof.py (RM_DrawbridgeSettings)"),
-    ("gizmo", r'^"(Raise drawbridge|Lower drawbridge|Hold raised)"$', "Drawbridge raise/lower/hold buttons", M + "winch gizmos; driven by drawbridge_proof.py"),
+    ("set", r"^(drawbridgesEnabled|raiseSpeed|maxLeafTimber|maxLeafSteel|raidsBringPlanks|raidPlankChance|gatesWithDrag)$", "Drawbridge switches, speed, leaf length, raid planks, gates with the drag", M + "state-read by drawbridge_proof.py (RM_DrawbridgeSettings)"),
+    ("gizmo", r'^"(Raise drawbridge|Lower drawbridge|Hold raised|Place winch house)"$', "Drawbridge raise/lower/hold/place-winch buttons", M + "winch gizmos; driven by drawbridge_proof.py"),
     # before the hose reel's catch-all "DEV:" rule (first match wins): these are the drawbridge's own god-mode buttons
     ("gizmo", r'^"DEV: (make drawbridge"|" \+ \(l\.targetRaised)', "Drawbridge god-mode buttons (make drawbridge, raise/lower leaf N)", M + "dev-mode gizmos on a bridge anchor; drawbridge_proof.py drives the same calls through RM_DrawbridgeProofs"),
     ("tex", r"Things/Building/FlowWorks/Drawbridge/", "Drawbridge winch, gate and raised-leaf art (per material and look)", M + "no frozen station stages a drawbridge; judged on the bridge_art_redraw sheets, drawn by drawbridge_proof.py scenes"),

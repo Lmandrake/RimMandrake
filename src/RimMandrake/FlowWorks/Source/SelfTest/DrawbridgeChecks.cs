@@ -411,7 +411,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(d.Contains("public class Designator_Drawbridge_Timber : Designator_Drawbridge") && d.Contains("public class Designator_Drawbridge_Steel : Designator_Drawbridge"),
                     "timber and steel drawbridge buttons");
                 Assert(!d.Contains("Designator_Drawbridge_Rope") && !d.Contains("Designator_Drawbridge_Heavy"), "can-fail: no rope or heavy drawbridge");
-                Assert(d.Contains("if (why == null && Drawbridge && !RM_Drawbridges.MakeDrawbridge(r, RM_Drawbridges.ColonyEndIsFirst(map, r), out string dwhy))"),
+                Assert(d.Contains("if (why == null && Drawbridge && !RM_Drawbridges.MakeDrawbridge(r, HingeBankAtFirst(map, r), out string dwhy))"),
                     "can-fail: the drag is cut into leaves BEFORE it is placed, or refused");
                 Assert(Body(d, "public abstract class Designator_Drawbridge : Designator_SuspensionBridge").Contains("RM_DrawbridgeSettings.drawbridgesEnabled"),
                     "the buttons follow \"Drawbridges can be built\"");
@@ -586,6 +586,103 @@ namespace RimMandrake.FlowWorks.SelfTest
             });
 
             DrawbridgeCableChecks.Run(Case);   // DRAWBRIDGE_CABLES_FIX_STOP_SHORT
+
+            // ── DRAWBRIDGE_BUILD_ONE_DRAG_DOES_IT_ALL (owner ruling 2026-10-25, "Drawbridges: A: one drag") ──────────────
+
+            Case("Drawbridge_OneDrag_hinge_bank_is_where_the_drag_started", () =>
+            {
+                Assert(RM_DrawbridgePackageMath.HingeAtFirstFromDragStart(0, 8) == true, "started on anchor A: hinged on A");
+                Assert(RM_DrawbridgePackageMath.HingeAtFirstFromDragStart(7, 8) == false, "started on anchor B: hinged on B");
+                Assert(RM_DrawbridgePackageMath.HingeAtFirstFromDragStart(2, 8) == true && RM_DrawbridgePackageMath.HingeAtFirstFromDragStart(5, 8) == false,
+                    "a start inside the span takes the nearer bank");
+                Assert(RM_DrawbridgePackageMath.HingeAtFirstFromDragStart(3, 7) == null, "can-fail: the exact middle has no bank (colony guess)");
+                Assert(RM_DrawbridgePackageMath.HingeAtFirstFromDragStart(-1, 8) == null && RM_DrawbridgePackageMath.HingeAtFirstFromDragStart(8, 8) == null,
+                    "can-fail: a start off the bridge has no bank");
+            });
+
+            Case("Drawbridge_OneDrag_every_planned_winch_is_beside_its_own_hinge", () =>
+            {
+                // every legal deck length and width, one or two leaves, both banks, both sides: the planned winch stands where the
+                // old adjacency link would also find it (a save from before keeps working), never on a deck or anchor square, on
+                // the leaf's own hinge bank; gates sit one square further onto that bank, one per lane
+                int checkedLeaves = 0;
+                for (int maxLeaf = 2; maxLeaf <= 8; maxLeaf++)
+                for (int length = 3; length <= 2 * maxLeaf + 2; length++)
+                for (int width = 1; width <= 3; width++)
+                foreach (bool startA in new[] { true, false })
+                {
+                    var leaves = RM_DrawbridgeMath.SplitLeaves(1, length - 2, maxLeaf, startA);
+                    if (leaves == null) continue;
+                    var winchSquares = new HashSet<(int, int)>();
+                    foreach (LeafSpan l in leaves)
+                    foreach (bool other in new[] { false, true })
+                    {
+                        int h = RM_DrawbridgePackageMath.HingeAnchorIndex(l);
+                        Assert(h == 0 || h == length - 1, "the hinge is an anchor square (" + h + " of " + length + ")");
+                        Assert((h == 0) == l.HingeAtFirst, "the hinge anchor is on the leaf's own bank");
+                        int lane = RM_DrawbridgePackageMath.WinchLane(width, other);
+                        Assert(lane < 0 || lane >= width, "can-fail: the winch is never on a deck lane");
+                        Assert(RM_DrawbridgePackageMath.BesideHinge(l, width, lane, h), "the winch is beside its hinge anchor (old link agrees)");
+                        int g = RM_DrawbridgePackageMath.GateIndex(l);
+                        Assert(g < 0 || g > length - 1, "can-fail: a gate is never on the bridge");
+                        Assert(System.Math.Abs(g - h) == 1, "a gate is right behind its hinge anchor");
+                        for (int gl = 0; gl < width; gl++)
+                            Assert(RM_DrawbridgePackageMath.BesideHinge(l, width, gl, g), "the gate is beside its hinge anchor (LeafOfGate agrees)");
+                        if (!other) Assert(winchSquares.Add((lane, h)), "can-fail: two leaves never share a winch square");
+                        checkedLeaves++;
+                    }
+                    if (leaves.Count == 2)
+                        Assert(leaves[0].HingeAtFirst != leaves[1].HingeAtFirst, "two leaves: one winch on each bank");
+                    else
+                        Assert(leaves[0].HingeAtFirst == startA, "one leaf: hinged on the bank the drag started on");
+                }
+                Assert(checkedLeaves > 500, "the sweep saw " + checkedLeaves + " leaves (instrument check)");
+                Assert(!RM_DrawbridgePackageMath.BesideHinge(new LeafSpan(1, 4, true), 2, 1, 0), "can-fail: the far anchor's lane is not beside");
+                Assert(RM_DrawbridgePackageMath.OtherSideFromRotation(0) == false && RM_DrawbridgePackageMath.OtherSideFromRotation(2) == true,
+                    "Q/E flips the winch side");
+            });
+
+            Case("Drawbridge_OneDrag_designator_plans_and_places_the_whole_package", () =>
+            {
+                string d = Src("Pits", "Suspension", "Designator_SuspensionBridge.cs");
+                string des = Body(d, "public abstract class Designator_Drawbridge : Designator_SuspensionBridge");
+                Assert(des.Contains("AccessTools.FieldRefAccess<DesignationDragger, IntVec3>(\"startDragCell\")"), "reads where the drag started");
+                Assert(Body(des, "protected override bool HingeBankAtFirst(Map map, SuspensionBridgeRecord r)").Contains("HingeAtFirstFromDragStart"),
+                    "the hinge bank comes from the drag start");
+                Assert(Body(des, "protected override string PlanExtras(Map map, SuspensionBridgeRecord r)").Contains("RM_DrawbridgePackage.PlanParts("),
+                    "the drag plans winches and gates with the deck");
+                Assert(Body(des, "protected override void PlaceExtras(Map map, SuspensionBridgeRecord r)").Contains("RM_DrawbridgePackage.PlacePart("),
+                    "and places them with it");
+                string td = Body(d, "public string TryDesignate(List<IntVec3> cells)");
+                Assert(td.IndexOf("PlanDrag(") < td.IndexOf("Place(Map, r);") && td.IndexOf("Place(Map, r);") < td.IndexOf("PlaceExtras(Map, r);"),
+                    "can-fail: plan everything, then deck (registers the record), then the parts (so a god-mode winch finds its leaf)");
+                string plan = Body(d, "public string PlanDrag(List<IntVec3> cells, out SuspensionBridgeRecord planned)");
+                Assert(!plan.Contains("Place(") && plan.Contains("why = why ?? PlanExtras(map, r);"), "can-fail: planning (the preview) never places");
+                Assert(Body(des, "public override void SelectedUpdate()").Contains("GenDraw.DrawFieldEdges"), "the drag outlines the winch and gate squares");
+
+                string pk = Src("Pits", "Drawbridge", "RM_DrawbridgePackage.cs");
+                string pp = Body(pk, "public static bool PlanParts(");
+                Assert(pp.Contains("l.plannedWinch = w;"), "the plan is the link (plannedWinch)");
+                Assert(pp.Contains("IsResearchFinished"), "can-fail: a steel winch before Electricity refuses the drag");
+                Assert(pp.Contains("skippedGates++"), "a blocked gate square is skipped, not refused");
+
+                string db = Src("Pits", "Drawbridge", "RM_Drawbridges.cs");
+                string link = Body(db, "public static void LinkWinch(Building_DrawbridgeWinch w)");
+                int planned = link.IndexOf("l.plannedWinch == w.Position");
+                Assert(planned >= 0 && planned < link.IndexOf("AdjacentToCardinal"), "the planned square links first; adjacency is the old-save fallback");
+                Assert(db.Contains("Scribe_Values.Look(ref plannedWinch, \"plannedWinch\", IntVec3.Invalid);"), "saved; old saves load Invalid");
+                Assert(Body(db, "public static IEnumerable<Gizmo> Gizmos(Map map, SuspensionBridgeRecord r, DrawbridgeLeaf l)").Contains("RM_DrawbridgePackage.WinchGizmo("),
+                    "a leaf without its winch offers to place one");
+
+                string defs = File.ReadAllText(Path.Combine(Path.GetDirectoryName(RiverSwitchFlipChecks.SrcPath("RM_SpanMath.cs")), "..", "Defs", "Pits", "ThingDefs", "RM_Drawbridge.xml"));
+                foreach (string name in new[] { "RM_DrawbridgeWinch_Timber", "RM_DrawbridgeWinch_Steel", "RM_DrawbridgeGate" })
+                {
+                    int at = defs.IndexOf("<defName>" + name + "</defName>");
+                    int end = defs.IndexOf("</ThingDef>", at);
+                    Assert(at >= 0 && defs.Substring(at, end - at).Contains("<canGenerateDefaultDesignator>false</canGenerateDefaultDesignator>"),
+                        "can-fail: " + name + " has no Architect button of its own (one way to build a drawbridge)");
+                }
+            });
         }
 
         private static IEnumerable<int> Nbrs(int i, int w, int h)

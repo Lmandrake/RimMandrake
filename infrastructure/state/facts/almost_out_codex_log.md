@@ -14,3 +14,4 @@ One row per attempt. **Saved Claude work** = yes / partial / no, judged by wheth
 | 2026-10-24 | BENCH | same, re-review | verify fixes + remaining bugs | 2 more real (failed hold still ran chain setup; test could touch live fixture ledger) fixed | yes | 2 of 3 |
 | 2026-10-24 | BENCH | same, third pass | confirm NONE | NONE; files marked clean on it | yes | 3 of 3, 32 s |
 | 2026-10-25 | BENCH | FILL_IN_FIXTURE_FIX_CRUSHES_COLONIST unroof fix review | diff since clean mark + new selftest_plot_unroof.py | NO FINDINGS; marked clean on it | yes | 1 pass |
+| 2026-10-25 | BENCH | DRAWBRIDGE_BUILD_ONE_DRAG_DOES_IT_ALL review | diff since clean marks (C#+defs+northstar py) + new RM_DrawbridgePackage.cs, 77k chars | NO SIGNIFICANT FINDINGS; marked clean on it | yes | 1 pass |

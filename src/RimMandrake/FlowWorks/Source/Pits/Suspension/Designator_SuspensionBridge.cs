@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
+using HarmonyLib;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace RimMandrake.FlowWorks.Pits
@@ -68,6 +70,39 @@ namespace RimMandrake.FlowWorks.Pits
 		/// <summary>Validate the drag and place it. Null = placed; otherwise why not (nothing placed).</summary>
 		public string TryDesignate(List<IntVec3> cells)
 		{
+			string why = PlanDrag(cells, out SuspensionBridgeRecord r);
+			if (why != null)
+			{
+				return why;
+			}
+			Place(Map, r);
+			PlaceExtras(Map, r);
+			return null;
+		}
+
+		/// <summary>DRAWBRIDGE_BUILD_ONE_DRAG_DOES_IT_ALL: which bank the (larger) leaf hinges on. The plain bridge has none; the
+		/// drawbridge buttons take the bank the drag started on.</summary>
+		protected virtual bool HingeBankAtFirst(Map map, SuspensionBridgeRecord r)
+		{
+			return RM_Drawbridges.ColonyEndIsFirst(map, r);
+		}
+
+		/// <summary>DRAWBRIDGE_BUILD_ONE_DRAG_DOES_IT_ALL: plan the parts besides deck and anchors (null = fine, nothing to add).</summary>
+		protected virtual string PlanExtras(Map map, SuspensionBridgeRecord r)
+		{
+			return null;
+		}
+
+		/// <summary>DRAWBRIDGE_BUILD_ONE_DRAG_DOES_IT_ALL: place the parts PlanExtras planned, after the deck is registered.</summary>
+		protected virtual void PlaceExtras(Map map, SuspensionBridgeRecord r)
+		{
+		}
+
+		/// <summary>Validate the drag and plan it without touching the map. Null = planned (r is the record to place); otherwise
+		/// why not (r null).</summary>
+		public string PlanDrag(List<IntVec3> cells, out SuspensionBridgeRecord planned)
+		{
+			planned = null;
 			Map map = Map;
 			if (cells == null || cells.Count == 0)
 			{
@@ -114,13 +149,15 @@ namespace RimMandrake.FlowWorks.Pits
 				string why = Plan(map, r, dragged);
 				// DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS phase 6: a drawbridge button cuts the planned bridge into leaves (no towers,
 				// no longer than two leaves of its material), the colony's leaf hinged on the home bank
-				if (why == null && Drawbridge && !RM_Drawbridges.MakeDrawbridge(r, RM_Drawbridges.ColonyEndIsFirst(map, r), out string dwhy))
+				// DRAWBRIDGE_BUILD_ONE_DRAG_DOES_IT_ALL: hinged on the bank the drag started from, with its winch houses and gates
+				if (why == null && Drawbridge && !RM_Drawbridges.MakeDrawbridge(r, HingeBankAtFirst(map, r), out string dwhy))
 				{
 					why = "Not a drawbridge: " + dwhy + ".";
 				}
+				why = why ?? PlanExtras(map, r);
 				if (why == null)
 				{
-					Place(map, r);
+					planned = r;
 					return null;
 				}
 				first = first ?? why;
@@ -299,9 +336,28 @@ namespace RimMandrake.FlowWorks.Pits
 
 	/// <summary>DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS phase 6 (R1, answer 7/8): the drawbridge build buttons. The same drag as the
 	/// suspension bridge of that material; the planned bridge is cut into one leaf (or two, one hinged on each bank) by the
-	/// material's longest leaf (Mod Settings). Build a winch house beside each leaf's hinge anchor to work it.</summary>
+	/// material's longest leaf (Mod Settings). DRAWBRIDGE_BUILD_ONE_DRAG_DOES_IT_ALL (owner ruling 2026-10-25, "Drawbridges: A:
+	/// one drag"): the drag is the whole drawbridge. The leaf hinges on the bank the drag STARTED on; each leaf's winch house is
+	/// planned beside its hinge anchor (Q/E picks the side; the other side when the first is blocked) and, with the setting on,
+	/// a gate per lane behind it. All of it is placed together and linked by the plan (RM_DrawbridgePackage); while dragging,
+	/// the winch and gate squares are outlined.</summary>
 	public abstract class Designator_Drawbridge : Designator_SuspensionBridge
 	{
+		private static readonly AccessTools.FieldRef<DesignationDragger, IntVec3> DragStart =
+			AccessTools.FieldRefAccess<DesignationDragger, IntVec3>("startDragCell");
+
+		private static readonly Color WinchEdge = new Color(1f, 0.85f, 0.2f);
+		private static readonly Color GateEdge = new Color(0.4f, 0.85f, 1f);
+
+		private readonly List<DrawbridgePart> parts = new List<DrawbridgePart>();
+		private int skippedGates;
+		private IntVec3 proofStart = IntVec3.Invalid;
+
+		// the preview's cache: the drag it was planned for, and what to outline
+		private int previewKey = int.MinValue;
+		private readonly List<IntVec3> previewWinches = new List<IntVec3>();
+		private readonly List<IntVec3> previewGates = new List<IntVec3>();
+
 		protected Designator_Drawbridge(ThingDef deck, string label) : base(deck)
 		{
 			defaultLabel = label;
@@ -312,10 +368,108 @@ namespace RimMandrake.FlowWorks.Pits
 		public override bool Visible => RM_DrawbridgeSettings.drawbridgesEnabled && base.Visible;
 
 		public override string Desc => "A suspension bridge whose deck raises on a winch, so the moat under it is a whole pit again.\n\n"
-			+ "Drag it like a suspension bridge, from solid ground across a dug hole to solid ground, 1 to 3 squares wide, with no towers. "
-			+ "Up to " + RM_Drawbridges.MaxLeaf(Tier) + " squares it is one leaf hinged on your bank; up to " + (2 * RM_Drawbridges.MaxLeaf(Tier))
-			+ " it is two leaves, one hinged on each bank. Build a winch house beside each leaf's hinge anchor"
-			+ (RM_DrawbridgeMath.IsPowered(Tier) ? " and give it power" : "") + ". It raises from either bank and lowers only from the winch's.";
+			+ "Start the drag on the bank you want it hinged on and drag across the dug hole to solid ground, 1 to 3 squares wide, with no towers. "
+			+ "Up to " + RM_Drawbridges.MaxLeaf(Tier) + " squares it is one leaf hinged on your starting bank; up to " + (2 * RM_Drawbridges.MaxLeaf(Tier))
+			+ " it is two leaves, one hinged on each bank. The drag also plans each leaf's winch house beside its hinge anchor (rotate with Q/E to "
+			+ "put it on the other side)" + (RM_DrawbridgeSettings.gatesWithDrag ? " and a gate behind each lane" : "")
+			+ (RM_DrawbridgeMath.IsPowered(Tier) ? "; the winch needs power" : "") + ". It raises from either bank and lowers only from the winch's.";
+
+		/// <summary>The bank the drag started on (the nearer end of the bridge to the start square); the colony's bank when the
+		/// start square is off the bridge's line or in its exact middle.</summary>
+		protected override bool HingeBankAtFirst(Map map, SuspensionBridgeRecord r)
+		{
+			DesignationDragger dragger = Find.DesignatorManager?.Dragger;
+			IntVec3 start = proofStart.IsValid ? proofStart : dragger != null && DragStart != null ? DragStart(dragger) : IntVec3.Invalid;
+			if (start.IsValid && r.TryIndexOf(start, out _, out int i))
+			{
+				bool? first = RM_DrawbridgePackageMath.HingeAtFirstFromDragStart(i, r.length);
+				if (first.HasValue)
+				{
+					return first.Value;
+				}
+			}
+			return base.HingeBankAtFirst(map, r);
+		}
+
+		/// <summary>The live proof's drag (RM_DrawbridgeProofs.ProofOneDrag): TryDesignate as if the mouse went down on `start`
+		/// with the placing rotation picking the winch side. Production never calls it.</summary>
+		public string ProofDesignate(List<IntVec3> cells, IntVec3 start, bool otherSide)
+		{
+			proofStart = start;
+			placingRot = otherSide ? Rot4.South : Rot4.North;
+			try
+			{
+				return TryDesignate(cells);
+			}
+			finally
+			{
+				proofStart = IntVec3.Invalid;
+			}
+		}
+
+		protected override string PlanExtras(Map map, SuspensionBridgeRecord r)
+		{
+			bool otherSide = RM_DrawbridgePackageMath.OtherSideFromRotation(placingRot.AsInt);
+			return RM_DrawbridgePackage.PlanParts(map, r, otherSide, RM_DrawbridgeSettings.gatesWithDrag, parts, out skippedGates, out string why)
+				? null : "Not a drawbridge: " + why + ".";
+		}
+
+		protected override void PlaceExtras(Map map, SuspensionBridgeRecord r)
+		{
+			foreach (DrawbridgePart p in parts)
+			{
+				RM_DrawbridgePackage.PlacePart(map, p, r.look);
+			}
+			if (skippedGates > 0)
+			{
+				Messages.Message(skippedGates + " gate square" + (skippedGates == 1 ? "" : "s") + " behind the drawbridge would not take a gate; "
+					+ "the drawbridge works without one.", MessageTypeDefOf.CautionInput, false);
+			}
+			parts.Clear();
+		}
+
+		/// <summary>While dragging: outline where the winch houses (gold) and gates (blue) will go, re-planned only when the
+		/// drag or the rotation changes.</summary>
+		public override void SelectedUpdate()
+		{
+			base.SelectedUpdate();
+			DesignationDragger dragger = Find.DesignatorManager?.Dragger;
+			if (dragger == null || !dragger.Dragging || Map == null)
+			{
+				previewKey = int.MinValue;
+				return;
+			}
+			List<IntVec3> cells = dragger.DragCells;
+			int key = Gen.HashCombineInt(cells.Count, placingRot.AsInt);
+			if (cells.Count > 0)
+			{
+				key = Gen.HashCombineInt(key, cells[0].GetHashCode());
+				key = Gen.HashCombineInt(key, cells[cells.Count - 1].GetHashCode());
+			}
+			key = Gen.HashCombineInt(key, DragStart(dragger).GetHashCode());
+			if (key != previewKey)
+			{
+				previewKey = key;
+				previewWinches.Clear();
+				previewGates.Clear();
+				if (PlanDrag(cells, out _) == null)
+				{
+					foreach (DrawbridgePart p in parts)
+					{
+						(p.leaf >= 0 ? previewWinches : previewGates).Add(p.cell);
+					}
+				}
+				parts.Clear();
+			}
+			if (previewWinches.Count > 0)
+			{
+				GenDraw.DrawFieldEdges(previewWinches, WinchEdge);
+			}
+			if (previewGates.Count > 0)
+			{
+				GenDraw.DrawFieldEdges(previewGates, GateEdge);
+			}
+		}
 	}
 
 	public class Designator_Drawbridge_Timber : Designator_Drawbridge

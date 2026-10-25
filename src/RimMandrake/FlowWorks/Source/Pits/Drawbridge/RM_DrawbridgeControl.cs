@@ -19,6 +19,7 @@ namespace RimMandrake.FlowWorks.Pits
 		public static JobDef RM_WorkDrawbridge;
 		public static ThingDef RM_DrawbridgeWinch_Timber;
 		public static ThingDef RM_DrawbridgeWinch_Steel;
+		public static ThingDef RM_DrawbridgeGate;   // DRAWBRIDGE_BUILD_ONE_DRAG_DOES_IT_ALL: placed by the drag (RM_DrawbridgePackage)
 
 		static RM_DrawbridgeDefOf()
 		{

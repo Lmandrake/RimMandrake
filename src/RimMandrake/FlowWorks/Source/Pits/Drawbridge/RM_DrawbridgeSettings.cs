@@ -16,6 +16,8 @@ namespace RimMandrake.FlowWorks.Pits
 		public static bool raidsBringPlanks = true;
 		/// <summary>PROVISIONAL: "some raids bring their own planks": the share of raids (on a map with a drawbridge) that do.</summary>
 		public static float raidPlankChance = 0.35f;
+		/// <summary>DRAWBRIDGE_BUILD_ONE_DRAG_DOES_IT_ALL: the drawbridge drag also plans a gate per lane behind each hinge anchor.</summary>
+		public static bool gatesWithDrag = true;
 
 		// FLOWWORKS_RESET_BUILD_TWELVE_SCREENS_MISSING: shipped value of every public static bool/float/int setting above. MUST stay
 		// below the LAST public setting field (C# runs static initialisers in textual order).
@@ -35,6 +37,7 @@ namespace RimMandrake.FlowWorks.Pits
 			Scribe_Values.Look(ref maxLeafSteel, "rmDrawbridgeMaxLeafSteel", 8);
 			Scribe_Values.Look(ref raidsBringPlanks, "rmDrawbridgeRaidPlanks", true);
 			Scribe_Values.Look(ref raidPlankChance, "rmDrawbridgeRaidPlankChance", 0.35f);
+			Scribe_Values.Look(ref gatesWithDrag, "rmDrawbridgeGatesWithDrag", true);
 		}
 
 		public static void DoSettingsSection(Listing_Standard list)
@@ -46,6 +49,10 @@ namespace RimMandrake.FlowWorks.Pits
 				"On, a timber or steel suspension bridge can be built as a drawbridge: its leaf raises at a winch house and the moat "
 			  + "under it is a whole pit again. Off: no drawbridge is offered, and any existing one is set down (not crashed) and "
 			  + "stays a plain lowered bridge.");
+			list.CheckboxLabeled("  The drag places gates too", ref gatesWithDrag,
+				"On, dragging a drawbridge also plans a drawbridge gate on the bank square behind each lane's hinge anchor (in a wall "
+			  + "line there, it replaces that wall square). Off: only the deck, anchors and winch houses. The winch houses always come "
+			  + "with the drag. A drawbridge works without gates.");
 			list.Label("  Raise speed: x" + raiseSpeed.ToString("0.00"), tooltip:
 				"x1: a timber leaf about 4 s a square by hand, a steel leaf about 2 s by motor (PROVISIONAL).");
 			raiseSpeed = Mathf.Round(list.Slider(raiseSpeed, 0.25f, 4f) * 20f) / 20f;

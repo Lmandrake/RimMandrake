@@ -1208,7 +1208,9 @@ DRAWBRIDGE_CASES = [
     "Drawbridge_Cables_ropes_for_unmeasured_print_is_null_not_throw", "Drawbridge_Cables_slack_coil_lies_flat_canfail_old_hook",
     "Drawbridge_BaseAnchors_upright_multi_per_facing", "Drawbridge_StyledHeavyAnchors_upright_per_facing",
     "Drawbridge_hose_cut_by_a_raised_leaf_carries_no_liquid",
-    "Drawbridge_raid_plank_between_sunken_banks_lies_at_their_depth"]
+    "Drawbridge_raid_plank_between_sunken_banks_lies_at_their_depth",
+    "Drawbridge_OneDrag_hinge_bank_is_where_the_drag_started", "Drawbridge_OneDrag_every_planned_winch_is_beside_its_own_hinge",
+    "Drawbridge_OneDrag_designator_plans_and_places_the_whole_package"]
 DRAWBRIDGE_LIVE = [
     ("RAISE_PATH", None, "a colonist holding a path over a lowered steel leaf; raised: the production path no longer crosses "
      "it, ToggleCount and RepathCount rise within 10 ticks"),
@@ -1227,6 +1229,8 @@ DRAWBRIDGE_LIVE = [
     ("RAID_UP", None, "raised leaf, winch inside, decoy outside: raiders make legal progress (winch jobs, planks, trench, "
      "decoy) and no job loop"),
     ("RAID_PLANK", None, "an interrupted plank carrier makes no duplicate crossing: exactly one plank crossing laid"),
+    ("ONE_DRAG_PACKAGE", None, "one drag of the steel drawbridge button builds the leaf hinged on the starting bank, its "
+     "winch house on its planned square and linked, and a gate; the path crosses when down, not when raised, and again when lowered"),
     ("SAVE_MIDRAISE", None, "saved and loaded mid-raise: progress kept, the tip not replayed, the raise completes"),
 ]
 
@@ -1451,6 +1455,8 @@ TOGGLES_NOT_ON_FLOOR = ["blastsBreakPitCovers", "pitStuckAlertEnabled", "fallDea
                         # RM_DrawbridgeSettings registered 2026-10-20 (DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS): its live rows are
                         # northstar/drawbridge_proof.py (owed to its first live run), not yet a toggle chain
                         "drawbridgesEnabled", "raidsBringPlanks",
+                        # DRAWBRIDGE_BUILD_ONE_DRAG_DOES_IT_ALL (2026-10-25): the drag's gates; ONE_DRAG_PACKAGE reads it default-on
+                        "gatesWithDrag",
                         # PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 1 (2026-10-21): live rows owed on the item (L2), not yet a
                         # toggle chain
                         "lineCrossingRulesEnabled",

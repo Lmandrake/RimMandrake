@@ -268,6 +268,7 @@
     <Compile Include="Pits\Drawbridge\RM_DrawbridgeGravship.cs" />
     <Compile Include="Pits\Drawbridge\RM_DrawbridgeArt.cs" />
     <Compile Include="Pits\Drawbridge\RM_DrawbridgeProofs.cs" />
+    <Compile Include="Pits\Drawbridge\RM_DrawbridgePackage.cs" />
   </ItemGroup>
 
   <!-- ManyWaters, merged 2026-09-16. Namespace

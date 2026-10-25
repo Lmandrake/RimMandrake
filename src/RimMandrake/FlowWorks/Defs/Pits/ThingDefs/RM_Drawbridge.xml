@@ -9,7 +9,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RM_DrawbridgeWinch_Timber</defName>
     <label>timber drawbridge winch house</label>
-    <description>The hand winch that raises and lowers one leaf of a timber drawbridge. Build it beside the anchor the leaf is hinged on. A colonist turns it to raise or lower the leaf. If it is destroyed while the leaf is up, the leaf crashes down on anything beneath it.</description>
+    <description>The hand winch that raises and lowers one leaf of a timber drawbridge. It comes with the drawbridge, beside the anchor the leaf is hinged on. A colonist turns it to raise or lower the leaf. If it is destroyed while the leaf is up, the leaf crashes down on anything beneath it.</description>
     <thingClass>RimMandrake.FlowWorks.Pits.Building_DrawbridgeWinch</thingClass>
     <graphicData>
       <texPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Timber</texPath>
@@ -25,6 +25,8 @@
     <tickerType>Never</tickerType>
     <drawerType>MapMeshAndRealTime</drawerType>
     <designationCategory>Structure</designationCategory>
+    <!-- DRAWBRIDGE_BUILD_ONE_DRAG_DOES_IT_ALL: no Architect button of its own; the drawbridge drag places it (RM_DrawbridgePackage) -->
+    <canGenerateDefaultDesignator>false</canGenerateDefaultDesignator>
     <costList>
       <WoodLog>60</WoodLog>
     </costList>
@@ -47,7 +49,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RM_DrawbridgeWinch_Steel</defName>
     <label>steel drawbridge winch house</label>
-    <description>The powered winch that raises and lowers one leaf of a steel drawbridge. Build it beside the anchor the leaf is hinged on and connect it to power. A colonist throws its lever; the motor does the rest. Without power the leaf stops where it is. If it is destroyed while the leaf is up, the leaf crashes down on anything beneath it.</description>
+    <description>The powered winch that raises and lowers one leaf of a steel drawbridge. It comes with the drawbridge, beside the anchor the leaf is hinged on; connect it to power. A colonist throws its lever; the motor does the rest. Without power the leaf stops where it is. If it is destroyed while the leaf is up, the leaf crashes down on anything beneath it.</description>
     <thingClass>RimMandrake.FlowWorks.Pits.Building_DrawbridgeWinch</thingClass>
     <graphicData>
       <texPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Steel</texPath>
@@ -63,6 +65,8 @@
     <tickerType>Normal</tickerType>
     <drawerType>MapMeshAndRealTime</drawerType>
     <designationCategory>Structure</designationCategory>
+    <!-- DRAWBRIDGE_BUILD_ONE_DRAG_DOES_IT_ALL: no Architect button of its own; the drawbridge drag places it (RM_DrawbridgePackage) -->
+    <canGenerateDefaultDesignator>false</canGenerateDefaultDesignator>
     <costList>
       <Steel>80</Steel>
       <ComponentIndustrial>2</ComponentIndustrial>
@@ -99,7 +103,7 @@
   <ThingDef ParentName="DoorBase">
     <defName>RM_DrawbridgeGate</defName>
     <label>drawbridge gate</label>
-    <description>A heavy gate for the bank end of a drawbridge. In peacetime it opens for your people like a door. While hostiles are free on the map it stays shut unless you hold it open, and it never opens while its drawbridge leaf is raised. Build it beside the anchor the leaf is hinged on.</description>
+    <description>A heavy gate for the bank end of a drawbridge. In peacetime it opens for your people like a door. While hostiles are free on the map it stays shut unless you hold it open, and it never opens while its drawbridge leaf is raised. It comes with the drawbridge, behind the anchor the leaf is hinged on.</description>
     <thingClass>RimMandrake.FlowWorks.Pits.Building_DrawbridgeGate</thingClass>
     <graphicData>
       <texPath>Things/Building/Door/DoorSimple_Mover</texPath>
@@ -119,6 +123,8 @@
       <MaxHitPoints>260</MaxHitPoints>
     </statBases>
     <designationCategory>Structure</designationCategory>
+    <!-- DRAWBRIDGE_BUILD_ONE_DRAG_DOES_IT_ALL: no Architect button of its own; the drawbridge drag places it (RM_DrawbridgePackage) -->
+    <canGenerateDefaultDesignator>false</canGenerateDefaultDesignator>
   </ThingDef>
 
   <JobDef>

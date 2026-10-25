@@ -53,6 +53,73 @@ namespace RimMandrake.FlowWorks.Pits
 
 		private static string NoSpaces(string s) => (s ?? "-").Replace(' ', '_');
 
+		/// <summary>DRAWBRIDGE_BUILD_ONE_DRAG_DOES_IT_ALL: "x1,z1;x2,z2;timber|steel[;other]": the production drawbridge button's
+		/// drag (Designator_Drawbridge_*.ProofDesignate, god mode so the parts are built at once) from x1,z1 to x2,z2, the mouse
+		/// going down on x1,z1; 'other' = Q/E (the winch on the other side). Then reads what the one drag made: per leaf its hinge
+		/// bank and whether a spawned winch house stands on its planned square AND is linked to it; the gates on the map that
+		/// stand beside a hinge anchor of this bridge.
+		/// hingeAt is each leaf's hinge anchor square (lane 0), so a row can ask "the bank the drag started on" without knowing
+		/// which end the record numbers from.
+		/// → "ONEDRAG ok=b leaves=N hinges=A,B hingeAt=x,z|x,z winches=N linked=N winchAt=x,z|x,z gates=N reason=..."</summary>
+		public static string ProofOneDrag(string arg)
+		{
+			Map map = Find.CurrentMap;
+			string[] a = (arg ?? "").Split(';');
+			if (map == null || a.Length < 3 || !Cell(a[0], out IntVec3 c1) || !Cell(a[1], out IntVec3 c2) || (a[2] != "timber" && a[2] != "steel"))
+			{
+				return "REFUSED: arg must be x1,z1;x2,z2;timber|steel[;other] on the current map";
+			}
+			string Fail(string why, int leaves = 0) => "ONEDRAG ok=False leaves=" + leaves + " hinges=- hingeAt=- winches=0 linked=0 winchAt=- gates=0 reason=" + NoSpaces(why);
+			Designator_Drawbridge des = a[2] == "steel" ? (Designator_Drawbridge)new Designator_Drawbridge_Steel() : new Designator_Drawbridge_Timber();
+			bool was = DebugSettings.godMode;
+			DebugSettings.godMode = true;
+			string reason;
+			try
+			{
+				reason = des.ProofDesignate(CellRect.FromLimits(c1, c2).Cells.ToList(), c1, a.Length > 3 && a[3] == "other");
+			}
+			finally
+			{
+				DebugSettings.godMode = was;
+			}
+			if (reason != null)
+			{
+				return Fail(reason);
+			}
+			SuspensionBridgeRecord r = RM_MapComponent_SuspensionBridges.Of(map)?.RecordAt(c1);
+			if (r == null || !r.IsDrawbridge)
+			{
+				return Fail("the drag placed no drawbridge record at " + Xz(c1));
+			}
+			int winches = 0, linked = 0, gates = 0;
+			List<string> at = new List<string>();
+			foreach (DrawbridgeLeaf l in r.leaves)
+			{
+				Building_DrawbridgeWinch w = l.plannedWinch.IsValid ? l.plannedWinch.GetFirstThing<Building_DrawbridgeWinch>(map) : null;
+				if (w != null)
+				{
+					winches++;
+					at.Add(Xz(w.Position));
+					if (l.winch == w)
+					{
+						linked++;
+					}
+				}
+				int gi = RM_DrawbridgePackageMath.GateIndex(l.Span);
+				for (int lane = 0; lane < r.width; lane++)
+				{
+					IntVec3 g = r.Cell(lane, gi);
+					if (g.InBounds(map) && g.GetThingList(map).Any(t => t.def == RM_DrawbridgeDefOf.RM_DrawbridgeGate))
+					{
+						gates++;
+					}
+				}
+			}
+			return "ONEDRAG ok=True leaves=" + r.leaves.Count + " hinges=" + string.Join(",", r.leaves.Select(l => l.hingeAtFirst ? "A" : "B"))
+				+ " hingeAt=" + string.Join("|", r.leaves.Select(l => Xz(r.Cell(0, RM_DrawbridgePackageMath.HingeAnchorIndex(l.Span)))))
+				+ " winches=" + winches + " linked=" + linked + " winchAt=" + (at.Count > 0 ? string.Join("|", at) : "-") + " gates=" + gates + " reason=-";
+		}
+
 		/// <summary>"x1,z1;x2,z2;timber|steel;A|B[;winch]": RM_SuspensionProofs.ProofBuild (god) over the rectangle, then
 		/// MakeDrawbridge with the colony bank A (record index 0) or B; 'winch' spawns one player winch house per leaf on the
 		/// square beyond its hinge anchor (lane 0), linked by its own SpawnSetup (LinkWinch). A winch square holding a building

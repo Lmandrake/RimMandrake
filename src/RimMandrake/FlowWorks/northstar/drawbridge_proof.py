@@ -96,7 +96,7 @@ FULL_STEEL = 120  # RM_DrawbridgeMath.PoweredTicksPerLeaf at raiseSpeed 1
 
 ROW_IDS = ["RAISE_PATH", "RAISE_TIPS_RIDERS", "RAISE_SPARES_UNDERPASS", "LOWER_ONLY_FROM_WINCH", "TWO_LEAF_TIPS_OWN_HINGE",
            "HOSTILE_LOCKS", "STEEL_UNPOWERED_FREEZES", "WINCH_LOST_CRASHES",
-           "WINCH_DESPAWN_CRASHES", "RAID_UP", "RAID_PLANK", "SAVE_MIDRAISE"]
+           "WINCH_DESPAWN_CRASHES", "RAID_UP", "RAID_PLANK", "ONE_DRAG_PACKAGE", "SAVE_MIDRAISE"]
 
 # The C# the rows call (RM_DrawbridgeProofs; selftest_drawbridge_proof checks each method exists and answers its word). One
 # string arg each (the RM_SuspensionProofs convention: ';' inside), one line out: a word then key=value tokens; "REFUSED: why"
@@ -105,6 +105,9 @@ OWED_PROOFS = {
     "ProofMakeDrawbridge": "x1,z1;x2,z2;timber|steel;A|B;winch -> RM_SuspensionProofs.ProofBuild(god) then MakeDrawbridge(colony "
                            "bank A|B); 'winch' spawns one winch house per leaf beside its hinge anchor (LinkWinch). "
                            "'DRAW ok=True leaves=N tier=T hinges=A,B winchAt=x,z|x,z reason=-'",
+    "ProofOneDrag": "x1,z1;x2,z2;timber|steel[;other] -> the production drawbridge button's drag (ProofDesignate, god) with "
+                    "the mouse down on x1,z1; reads each leaf's hinge, its winch on the planned square and linked, the gates. "
+                    "'ONEDRAG ok=True leaves=N hinges=A,B hingeAt=x,z winches=N linked=N winchAt=x,z|x,z gates=N reason=-'",
     "ProofLeaf": "x,z (a deck square) -> 'LEAF leaf=k/n progress=P full=F target=raised|lowered raised=a/b frozen=T|F winch=T|F "
                  "powered=T|F hold=T|F auto=T|F pending=raise|lower|none tip=T|F hinge=A|B version=V'; 'LEAF none' off a leaf",
     "ProofDevSet": "x,z;raise|lower[;instant] -> RM_Drawbridges.DevSetTarget; 'instant' also sets progress to the target and runs "
@@ -914,6 +917,51 @@ def raid_plank(ctx):
     row("RAID_PLANK", "PASS" if good else "FAIL", {"give1": tg1, "interrupt": ti1, "give2": tg2, "ledger": tled, "laid": laid})
 
 
+def one_drag_package(ctx):
+    """DRAWBRIDGE_BUILD_ONE_DRAG_DOES_IT_ALL (owner 2026-10-25 "Drawbridges: A: one drag"). PROVE the production steel
+    drawbridge button (steel: its powered winch drives alone, a timber one needs a pawn at the crank), ONE drag from bank B's anchor square to bank A's over a 4-square moat (ProofOneDrag: ProofDesignate,
+    god so the parts are built at once; no winch is placed by hand), then the gizmo's order (ProofOrder now) and the drive,
+    the winch's power forced on (ProofWinchPower).
+    EXPECT one leaf hinged on the bank the drag STARTED on (hingeAt = the east anchor square), its winch house
+    built on its planned square and linked, one gate; lowered: the production path crosses the deck; raised by the drive:
+    the path no longer crosses it; lowered again: it crosses. LIES: a winch linked by adjacency alone also reads linked
+    (ProofOneDrag counts only a winch ON plannedWinch); a hinge on the colony bank by luck would match a start on A, so the
+    drag starts on the east bank; a path read while paused is stale (1.6 grid catches up on ticks), so tick after each change."""
+    P, xz, row, dproof, sproof, spawn, ticks = _c(ctx, "P", "xz", "row", "dproof", "sproof", "spawn", "ticks")
+    z = 76
+    for i in range(1, 5):
+        ctx["dig"](P(i, z))
+    # the moat's sides walled (x=1..4 only: the anchor columns x=0/x=5 stay free for the winch on either side)
+    ctx["walls"]([P(x, zz) for x in range(1, 5) for zz in (z - 1, z + 1)])
+    kv, txt = dproof("ProofOneDrag", "%s;%s;steel" % (xz(P(5, z)), xz(P(0, z))))
+    V.require(kv.get("ok") == "True", "the one drag placed a drawbridge", txt)
+    placed = (kv.get("leaves") == "1" and kv.get("hingeAt") == xz(P(5, z)) and kv.get("winches") == "1" and kv.get("linked") == "1"
+              and num(kv, "gates", 0) >= 1)
+    if placed:
+        ctx["power"](P(2, z), True)
+    ticks(10)
+    walker = spawn(P(8, z), draft=True)
+    down0, td0 = sproof("ProofPath", "%s;%s" % (walker, xz(P(-3, z))), answer=True)
+    dproof("ProofOrder", "%s;raise;now" % xz(P(2, z)))
+    k0, tk0 = ctx["leaf"](P(2, z))
+    full = num(k0, "full", 0) or 0
+    V.require(full > 0, "the leaf's full raise time read", tk0, cls="HARNESS")
+    ticks(full + 30)
+    kup, tup = ctx["leaf"](P(2, z))
+    up, tu = sproof("ProofPath", "%s;%s" % (walker, xz(P(-3, z))), answer=True)
+    dproof("ProofOrder", "%s;lower;now" % xz(P(2, z)))
+    ticks(full + 30)
+    kdn, tdn = ctx["leaf"](P(2, z))
+    down1, td1 = sproof("ProofPath", "%s;%s" % (walker, xz(P(-3, z))), answer=True)
+    crosses = lambda k: k.get("found") == "True" and num(k, "decked", 0) >= 4  # noqa: E731
+    raised = kup.get("target") == "raised" and num(kup, "progress", -1) == num(kup, "full", -2)
+    lowered = kdn.get("target") == "lowered" and num(kdn, "progress", -1) == 0
+    blocked = up.get("found") == "False" or num(up, "decked", 1) == 0
+    good = placed and crosses(down0) and raised and blocked and lowered and crosses(down1)
+    row("ONE_DRAG_PACKAGE", "PASS" if good else "FAIL", {"drag": txt, "downPath": td0, "raised": tup, "upPath": tu, "lowered": tdn,
+                                                         "downAgain": td1})
+
+
 def save_midraise(ctx):
     """PROVE a steel leaf at raiseSpeed 0.25 (480 ticks) with a drafted rider, raised 100 ticks (tip done), saved, loaded.
     EXPECT after the load: progress within one drive step (5) of the save, tip=True, TippedCount unchanged (no replay), the
@@ -970,7 +1018,7 @@ def _health(p):
 SCENES = {"RAISE_PATH": raise_path, "RAISE_TIPS_RIDERS": raise_tips_riders, "RAISE_SPARES_UNDERPASS": raise_spares_underpass,
           "LOWER_ONLY_FROM_WINCH": lower_only_from_winch, "TWO_LEAF_TIPS_OWN_HINGE": two_leaf_tips_own_hinge,
           "HOSTILE_LOCKS": hostile_locks, "STEEL_UNPOWERED_FREEZES": steel_unpowered_freezes,
-          "WINCH_LOST_CRASHES": winch_lost_crashes, "WINCH_DESPAWN_CRASHES": winch_despawn_crashes, "RAID_UP": raid_up, "RAID_PLANK": raid_plank, "SAVE_MIDRAISE": save_midraise}
+          "WINCH_LOST_CRASHES": winch_lost_crashes, "WINCH_DESPAWN_CRASHES": winch_despawn_crashes, "RAID_UP": raid_up, "RAID_PLANK": raid_plank, "ONE_DRAG_PACKAGE": one_drag_package, "SAVE_MIDRAISE": save_midraise}
 
 
 # ====================================================================== offline stand-in
@@ -994,10 +1042,11 @@ class FakeBridge(object):
       far_reaches_winch the far bank has a path round to the winch (SITE)     -> LOWER_ONLY_FROM_WINCH UNMEASURED/SITE
       far_raiders      the raiders never come near (SITE)                      -> RAID_UP UNMEASURED/SITE
       dup_plank        MOD: the interrupted carrier's plank is laid as well    -> RAID_PLANK FAIL
-      replay_tip       MOD: the load replays the tip                           -> SAVE_MIDRAISE FAIL"""
+      replay_tip       MOD: the load replays the tip                           -> SAVE_MIDRAISE FAIL
+      drag_unlinked    MOD: the drag's winch house does not link to its leaf   -> ONE_DRAG_PACKAGE FAIL"""
     FAULTS = ("far_reaches_winch", "no_proofs", "noclock", "no_free", "tip_all_fall", "no_repath", "underpass_tipped", "lower_from_far",
               "tip_colony_bank", "trapped_locks", "freeze_ignored", "no_crash", "despawn_stale", "raid_loop", "far_raiders", "dup_plank",
-              "replay_tip")
+              "replay_tip", "drag_unlinked")
 
     def __init__(self, faults=()):
         self.f = set(faults)
@@ -1263,6 +1312,16 @@ class FakeBridge(object):
                 self._island = x1 - 4             # scene K: the island's centre is 4 west of the first anchor
             return "DRAW ok=True leaves=%d tier=%s hinges=%s winchAt=%s reason=-" % (
                 len(spans), tier, ",".join(h for _, _, h in spans), "|".join("%d,%d" % w for w in winches))
+        if m == "ProofOneDrag":
+            (x1, z1), (x2, z2), tier = cell(a[0]), cell(a[1]), a[2]
+            lo, hi = min(x1, x2), max(x1, x2)
+            hinge = "A" if x1 == lo else "B"   # the leaf hinges on the bank the drag started on (x1,z1)
+            w = (x1, z1 + 1)
+            self.leaves.append(dict(z0=min(z1, z2), z1=max(z1, z2), first=lo + 1, last=hi - 1, hinge=hinge, ax=lo, bx=hi, tier=tier,
+                                    progress=0, full=self._full(tier, hi - lo - 1), target="lowered", hold=False, auto=False,
+                                    pending="none", tip=False, winch=w, powered=False, frozen=False))
+            return "ONEDRAG ok=True leaves=1 hinges=%s hingeAt=%d,%d winches=1 linked=%d winchAt=%d,%d gates=1 reason=-" % (
+                hinge, x1, z1, 0 if "drag_unlinked" in self.f else 1, w[0], w[1])
         if m == "ProofLeaf":
             x, z = cell(a[0])
             l = self._leaf_at(x, z)

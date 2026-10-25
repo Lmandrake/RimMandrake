@@ -809,4 +809,63 @@ namespace RimMandrake.FlowWorks
 			return System.Math.Atan2(dx, dz) * 180.0 / System.Math.PI;
 		}
 	}
+
+	/// <summary>
+	/// DRAWBRIDGE_BUILD_ONE_DRAG_DOES_IT_ALL (owner ruling 2026-10-25 on BRIDGES_DIG_DESIGN_THREE_WAYS_EACH, "Drawbridges: A:
+	/// one drag"): where the one drag puts the parts a drawbridge needs besides its deck and anchors. Record coordinates
+	/// (lane, index): index 0 and length-1 are the anchors, lanes 0..width-1. Per leaf: ONE winch house on its hinge bank,
+	/// level with the hinge anchor, just outside the deck on one side (lane width, the clockwise side, or lane -1); and,
+	/// optionally, one gate per lane on the bank square behind the hinge anchor. The hinge bank is the end the player started
+	/// the drag on. Pure; compiled into the FlowWorks SelfTest (DrawbridgeChecks).
+	/// </summary>
+	public static class RM_DrawbridgePackageMath
+	{
+		/// <summary>The hinge bank from where the drag started, as an index along the bridge (0 = anchor A end): the nearer
+		/// end; null when the start is off the bridge or exactly in its middle (the caller then guesses the colony bank).</summary>
+		public static bool? HingeAtFirstFromDragStart(int startIndex, int length)
+		{
+			if (length < 2 || startIndex < 0 || startIndex >= length || 2 * startIndex == length - 1)
+			{
+				return null;
+			}
+			return 2 * startIndex < length - 1;
+		}
+
+		/// <summary>The index of the anchor a leaf swings on.</summary>
+		public static int HingeAnchorIndex(LeafSpan l)
+		{
+			return l.HingeAtFirst ? l.First - 1 : l.Last + 1;
+		}
+
+		/// <summary>The lane the winch house stands in: just past the last lane (the clockwise side), or with otherSide just
+		/// before lane 0.</summary>
+		public static int WinchLane(int width, bool otherSide)
+		{
+			return otherSide ? -1 : width;
+		}
+
+		/// <summary>The index of the gate squares: one bank square behind the hinge anchor.</summary>
+		public static int GateIndex(LeafSpan l)
+		{
+			return l.HingeAtFirst ? l.First - 2 : l.Last + 2;
+		}
+
+		/// <summary>Whether a winch at (lane, index) stands cardinally beside one of this leaf's hinge anchors (the old
+		/// adjacency link, LinkWinch's fallback for drawbridges built before the one drag).</summary>
+		public static bool BesideHinge(LeafSpan l, int width, int lane, int index)
+		{
+			int h = HingeAnchorIndex(l);
+			if (index == h)
+			{
+				return lane == -1 || lane == width;
+			}
+			return (index == h - 1 || index == h + 1) && lane >= 0 && lane < width;
+		}
+
+		/// <summary>Q/E (the placing rotation) picks the winch side: north/east = the clockwise side, south/west = the other.</summary>
+		public static bool OtherSideFromRotation(int rotAsInt)
+		{
+			return rotAsInt >= 2;
+		}
+	}
 }

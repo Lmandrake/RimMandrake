@@ -220,7 +220,7 @@ SETTINGS = {
     # DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS (design R11; own static class, scribed from ExposeData)
     "RimMandrake.FlowWorks.Pits.RM_DrawbridgeSettings": {
         "drawbridgesEnabled": True, "raiseSpeed": 1.0, "maxLeafTimber": 4, "maxLeafSteel": 8, "raidsBringPlanks": True,
-        "raidPlankChance": 0.35,
+        "raidPlankChance": 0.35, "gatesWithDrag": True,
     },
     # FISH_ROLL_MEND_PONDS_BORN_BARREN
     "RimMandrake.FlowWorks.RM_WaterMendSettings": {

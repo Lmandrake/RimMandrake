@@ -39,6 +39,9 @@ namespace RimMandrake.FlowWorks.Pits
 		public bool autoLowering;
 		/// <summary>Phase 3: the winch house this leaf hangs on (one per leaf, on its own hinge bank). Null: none built (or lost).</summary>
 		public Building_DrawbridgeWinch winch;
+		/// <summary>DRAWBRIDGE_BUILD_ONE_DRAG_DOES_IT_ALL: the square the one drag planned this leaf's winch house on (the explicit
+		/// link: a winch built there takes this leaf). Invalid on a leaf from before the one drag: the old adjacency link.</summary>
+		public IntVec3 plannedWinch = IntVec3.Invalid;
 		/// <summary>A colonist is at the hand winch until this tick (not saved: a reload resumes the job, which sets it again).</summary>
 		public int workedUntilTick = -1;
 
@@ -59,6 +62,7 @@ namespace RimMandrake.FlowWorks.Pits
 			Scribe_Values.Look(ref pendingOrder, "pendingOrder", 0);
 			Scribe_Values.Look(ref autoLowering, "autoLowering", false);
 			Scribe_References.Look(ref winch, "winch");
+			Scribe_Values.Look(ref plannedWinch, "plannedWinch", IntVec3.Invalid);
 			if (Scribe.mode == LoadSaveMode.PostLoadInit)
 			{
 				version = RM_DrawbridgeMath.LeafRecordVersion;
@@ -675,13 +679,30 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 		}
 
-		/// <summary>A winch house was built: it takes the leaf whose hinge anchor it stands beside (one winch per leaf).</summary>
+		/// <summary>A winch house was built: it takes the leaf the one drag planned it for (DrawbridgeLeaf.plannedWinch); failing
+		/// that (a drawbridge from before the one drag, or a winch landed by gravship) the leaf whose hinge anchor it stands beside
+		/// (one winch per leaf).</summary>
 		public static void LinkWinch(Building_DrawbridgeWinch w)
 		{
 			RM_MapComponent_SuspensionBridges comp = RM_MapComponent_SuspensionBridges.Of(w.Map);
 			if (comp == null)
 			{
 				return;
+			}
+			foreach (SuspensionBridgeRecord r in comp.Bridges)
+			{
+				if (!r.IsDrawbridge)
+				{
+					continue;
+				}
+				foreach (DrawbridgeLeaf l in r.leaves)
+				{
+					if (l.plannedWinch == w.Position && (l.winch == null || !l.winch.Spawned))
+					{
+						l.winch = w;
+						return;
+					}
+				}
 			}
 			foreach (SuspensionBridgeRecord r in comp.Bridges)
 			{
@@ -888,6 +909,12 @@ namespace RimMandrake.FlowWorks.Pits
 				icon = RM_DrawbridgeArt.Icon("RM_DrawbridgeLower", TexCommand.ForbidOn),
 				action = () => Order(map, r, l, false),
 			};
+			// DRAWBRIDGE_BUILD_ONE_DRAG_DOES_IT_ALL: the winch house has no Architect button; a leaf without one offers it here
+			Command_Action place = RM_DrawbridgePackage.WinchGizmo(map, r, l);
+			if (place != null)
+			{
+				yield return place;
+			}
 			yield return new Command_Toggle
 			{
 				defaultLabel = "Hold raised",
