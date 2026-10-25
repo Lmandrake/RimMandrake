@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.minerals</packageId>
+  <name>RimMandrake: Minerals</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>MINERALS_WHERE_THEY_BELONG_1, wave R2 (MINERAL_POLICY_CODE_STARTUP_ZEROING). Each biome bears its own carefully selected minerals, driven by one registry (design/RimMandrake/mineral_abundance_registry_2026-10-03.csv, generated into Defs/RM_MineralRegistry.xml).
+
+At startup a policy service zeroes vanilla's planet-wide scatter and deep weights for every mineral the registry disables (mineable components and plasteel, donor duplicates) and for every governed mineral with no source in any biome. Governed veins that do have a biome keep their vanilla scatter until the per-biome placer (wave R3) is active; deep finds stay limited to home biomes by RimMandrake: Deep Drill. A mineral the registry has never heard of behaves as its mod intended unless "Suppress unregistered minerals" is turned on. The policy re-asserts whenever a game starts.
+
+Mod Settings (RimMandrake: Minerals): master toggle "Minerals follow the registry" (off restores every original weight), unregistered suppression, global multipliers, and a per-biome table of abundances in their own units (EPM = units per standard map), stored as your own values per edited cell. Registry numbers are PROVISIONAL until each biome's sitting rules them.</description>
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+      <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>mandrake.rm.biomes</li>
+    <li>mandrake.rm.deepdrill</li>
+  </loadAfter>
+</ModMetaData>

@@ -1,0 +1,112 @@
+# def dump modlist_fingerprint f1c87543b447bab6; columns: defName scatter deep minedItem isBuilding
+DV_MineablePyrinth	0	0	DV_Pyrinth	1
+DV_Pyrinth	0	0.4		0
+Diamond	0	0.4		0
+Force_CrystalFormation_Large	0	0	Force_KyberCrystal	1
+Force_CrystalFormation_Medium	0	0	Force_KyberCrystal	1
+Force_CrystalFormation_Small	0	0	Force_KyberCrystal	1
+Gold	0	0.5		0
+Granite	0	0	ChunkGranite	1
+Gravitonium	0	0.4		0
+Jade	0	0.5		0
+KOTOR_IngotCortosis	0	0.75		0
+KOTOR_LargeCrystal_cool	0	0	guy762_crystalitem_cyan	1
+KOTOR_LargeCrystal_warm	0	0	guy762_crystalitem_bronze	1
+KOTOR_MediumCrystal_cool	0	0	guy762_crystalitem_cyan	1
+KOTOR_MediumCrystal_soft	0	0	guy762_crystalitem_viridian	1
+KOTOR_MediumCrystal_warm	0	0	guy762_crystalitem_bronze	1
+KOTOR_MineableBeskar	0	0	KOTOR_RawBeskar	1
+KOTOR_MineableCortosis	0.065	0	KOTOR_IngotCortosis	1
+KOTOR_MineableDurasteel	0	0	KotORChunk_durasteel	1
+KOTOR_MineableJunk	0	0	Wastepack	1
+KOTOR_MineableRhydonium	0.0875	0	KOTOR_RawRhydonium	1
+KOTOR_MineableSpice	0.05	0	KOTOR_Spice	1
+KOTOR_RawRhydonium	0	1		0
+KOTOR_SmallCrystal_blue	0	0	guy762_crystalitem_blue	1
+KOTOR_SmallCrystal_green	0	0	guy762_crystalitem_green	1
+KOTOR_SmallCrystal_orange	0	0	guy762_crystalitem_orange	1
+KOTOR_SmallCrystal_purple	0	0	guy762_crystalitem_purple	1
+KOTOR_SmallCrystal_red	0	0	guy762_crystalitem_red	1
+KOTOR_SmallCrystal_white	0	0	guy762_crystalitem_white	1
+KOTOR_SmallCrystal_yellow	0	0	guy762_crystalitem_yellow	1
+KOTOR_StygiumCrystal	0	0	RSW_Stygium	1
+Limestone	0	0	ChunkLimestone	1
+Marble	0	0	ChunkMarble	1
+MineableComponentsIndustrial	1	0	ComponentIndustrial	1
+MineableDiamond	0.06	0	Diamond	1
+MineableGold	0.07	0	Gold	1
+MineableJade	0.065	0	Jade	1
+MineableObsidian	0	0	Obsidian	1
+MineablePlasteel	0.05	0	Plasteel	1
+MineableRuby	0.08	0	Ruby	1
+MineableSapphire	0.08	0	Sapphire	1
+MineableSilver	0.1	0	Silver	1
+MineableSteel	1	0	Steel	1
+MineableUranium	0.12	0	Uranium	1
+OuterRim_Beskar	0	0.001		0
+OuterRim_Tibanna	0	2		0
+Plasteel	0	1		0
+RM_BlueIceMineable	0	0	RM_BlueIce	1
+RM_BrineDeposit_BrinePlate	0	0	RM_BrinePlate	1
+RM_BrineDeposit_Drazz	0	0	RM_Drazz	1
+RM_BrineDeposit_Tekk	0	0	RM_Tekk	1
+RM_BrineEncasement	0	0	RM_RawSalt	1
+RM_BrineJacket	0	0	RM_RawSalt	1
+RM_CathedralDeckPlate	0	0	Steel	1
+RM_CreepCrust	0	0	RM_Lanternstone	1
+RM_FossilSeam_Impression	0	0	RM_FossilImpression	1
+RM_FossilSeam_Skeleton	0	0	RM_FossilSkeleton	1
+RM_FossilSeam_Unique	0	0	RM_FossilDeepStratum	1
+RM_GreatSaltCrystal_Amber	0	0	RM_SaltAmber	1
+RM_GreatSaltCrystal_Pink	0	0	RM_SaltPink	1
+RM_GreatSaltCrystal_Violet	0	0	RM_SaltViolet	1
+RM_GreatSaltCrystal_White	0	0	RM_SaltWhite	1
+RM_GreatboleHeartwood	0	0	RM_GreatboleHardwood	1
+RM_GreatboleTrunkSegment	0	0	RM_GreatboleHardwood	1
+RM_GrownBiosilicaWall	0	0	RM_Biosilica	1
+RM_Lanternstone	0	1		0
+RM_LanternstoneWall	0	0	RM_ChunkLanternstone	1
+RM_LivePatternMetal	0	4		0
+RM_MiddenshellSeam	0	0	RM_ContaminantBezoar	1
+RM_MiddenshellVitrifiedSeam	0	0	RM_VitrifiedBezoar	1
+RM_MineableDeadSmartsteel	0	0	RM_DeadSmartsteel	1
+RM_SaltDome	0	0	RM_RawSalt	1
+RM_SaltPillar	0	0	RM_RawSalt	1
+RM_Webwork_EggClutch	0	0	RM_OllathrixEgg	1
+RSW_MineableDoonium	0	0	RSW_DooniumOre	1
+RSW_MineablePhrikite	0	0	RSW_Phrikite	1
+RSW_MineableZersium	0	0	RSW_Zersium	1
+RSW_ResourceBlueCrystal	0	1		0
+RUT_BrineDeposit_BrinePlate	0	0	RM_BrinePlate	1
+RUT_BrineDeposit_Drazz	0	0	RUT_Drazz	1
+RUT_BrineDeposit_Tekk	0	0	RUT_Tekk	1
+RUT_FeverTrunkHeartwood	0	0	WoodLog	1
+RUT_MindstoneVein	0	0	RUT_Mindstone	1
+RUT_Webwork_SilkKnot	0	0	Hyperweave	1
+Ruby	0	0.5		0
+Sandstone	0	0	ChunkSandstone	1
+Sapphire	0	0.5		0
+Silver	0	0.5		0
+Slate	0	0	ChunkSlate	1
+SmoothedGranite	0	0	ChunkGranite	1
+SmoothedLimestone	0	0	ChunkLimestone	1
+SmoothedMarble	0	0	ChunkMarble	1
+SmoothedSandstone	0	0	ChunkSandstone	1
+SmoothedSlate	0	0	ChunkSlate	1
+SmoothedVacstone	0	0	ChunkVacstone	1
+Steel	0	4		0
+Uranium	0	1		0
+VCE_Salt	0	0.5		0
+VCHE_Deepchem	0	2		0
+VEE_MineableComponentSpacer	0	0	ComponentSpacer	1
+VEE_MineableJadeite	0	0	Jade	1
+VEE_SmoothedJadeite	0	0	Jade	1
+VGE_Compressed_Gold	0	0	Gold	1
+VGE_Compressed_Jade	0	0	Jade	1
+VGE_Compressed_Plasteel	0	0	Plasteel	1
+VGE_Compressed_Silver	0	0	Silver	1
+VGE_Compressed_Steel	0	0	Steel	1
+VGE_Compressed_Uranium	0	0	Uranium	1
+VGE_Compressed_Vacstone	0	0	ChunkVacstone	1
+VHGE_Helixien	0	1		0
+Vacstone	0	0	ChunkVacstone	1

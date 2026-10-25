@@ -24,8 +24,9 @@ What it does:
                       from the CSV. Dump-free and deterministic: every item/retire def except Steel; homes = the
                       biome columns whose cell is >0 or deep-only, when the row's deep_weight > 0; else none.
   --registry-out P    emit RM_MineralRegistryDef XML (one def per material group) for rows whose status is
-                      RULED/BUILT and whose every item/mineable/producer resolves. The def class lives in the
-                      planned mandrake.rm.minerals mod (wave R2); until it exists this output is a staged artifact.
+                      RULED/BUILT and whose every item/mineable/producer resolves. The def class lives in
+                      mandrake.rm.minerals (wave R2); the shipped copy is src/RimMandrake/Minerals/Defs/RM_MineralRegistry.xml
+                      (regenerate it with --registry-out at that path).
 
 Numbers in the CSV are PROVISIONAL agent guesses until a biome sitting rules them.
 Usage: gen_mineral_registry.py [--csv P] [--dump P] [--write-deep] [--registry-out P] [--no-dump]
