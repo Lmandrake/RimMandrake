@@ -981,7 +981,8 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort", tar
             with Session(lock=None) as s:
                 summary = run_suite(run_this, s, debug=debug, mod=mod_folder, floor_suite=suite,
                                     situational=situational, policy=policy, hold_site=True,
-                                    canary=canary, validity=validity)
+                                    canary=canary, validity=validity,
+                                    scope=(sel or {}).get("scope"))
             if sel:
                 summary["targeted"] = dict(sel, of_chains=len(suite.chains))
             if situational:
