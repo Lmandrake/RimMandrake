@@ -1,0 +1,2 @@
+A WorkGiverDef whose WorkGiver_Scanner yields PotentialWorkCellsGlobal needs <scanCells>true</scanCells> (and usually <scanThings>false</scanThings>): the def defaults to scanning things only, so JobGiver_Work never asks the cells and the order sits forever while a direct HasJobOnCell proof reads True. Pyrelands RM_ShovelTerrain shipped this way (SAND_SHOVEL_FIX_ORDER_NEVER_SCANNED); a proof that calls HasJobOnCell directly cannot see it, only an idle-colonist pickup row can.
+home: skills/rimworld-modding

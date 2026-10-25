@@ -50,7 +50,7 @@ namespace JawaBench.BridgeTools
                 "saying the designation is stale. Read-only otherwise.",
             ResultDescription =
                 "success, kind, cell, fogged, terrain, designationPresent, designator{accepted, reason}, " +
-                "workGiver{def, shouldSkip, cellInPotentialWorkCells, hasJobOnCell, jobDef, " +
+                "workGiver{def, shouldSkip, cellInPotentialWorkCells, hasJobOnCell, jobDef, failReason, " +
                 "designationDeletedByWorkGiver, designationRestored} or null, pawn{id, workType, " +
                 "workTypeDisabled, workActive, priority, giverInNormalList, missingCapacity, canReach} or " +
                 "null, ticksGame.")]
@@ -123,7 +123,12 @@ namespace JawaBench.BridgeTools
 
                         bool skip = worker.ShouldSkip(pawn, forced);
                         bool inCells = worker.PotentialWorkCellsGlobal(pawn).Contains(c);
+                        // SHOVELS (2026-10-25): the WorkGiver's own refusal text ("Needs a shovel ..."), as the
+                        // right-click menu would show it; null when it gave none.
+                        JobFailReason.Clear();
                         bool has = worker.HasJobOnCell(pawn, c, forced);
+                        string failReason = JobFailReason.HaveReason ? JobFailReason.Reason : null;
+                        JobFailReason.Clear();
                         bool deleted = desBefore && map.designationManager.DesignationAt(c, desDef) == null;
                         bool restored = false;
                         if (deleted)
@@ -145,6 +150,7 @@ namespace JawaBench.BridgeTools
                             cellInPotentialWorkCells = inCells,
                             hasJobOnCell = has,
                             jobDef,
+                            failReason,
                             designationDeletedByWorkGiver = deleted,
                             designationRestored = restored
                         };

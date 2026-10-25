@@ -26,6 +26,10 @@
     <verb>shovel</verb>
     <gerund>shovelling</gerund>
     <priorityInType>45</priorityInType>
+    <!-- SAND_SHOVEL_FIX_ORDER_NEVER_SCANNED: WorkGiverDef defaults to scanThings and no cells, so without these the
+         order sat forever (live 2026-10-25, shovels_live: idle colonist with a shovel, HasJobOnCell True, no pickup). -->
+    <scanCells>true</scanCells>
+    <scanThings>false</scanThings>
     <requiredCapacities>
       <li>Manipulation</li>
     </requiredCapacities>

@@ -1,0 +1,2 @@
+jawa/set_work_priority is a no-op for the number when Find.PlaySettings.useWorkPriorities is off (a fresh debug map): every active work type reads 3, so 'Hauling 0' / 'Cleaning 0' in a live runner does NOT turn the work off. gravel_live and shovels_live both assumed it did; read the reply's manualPrioritiesOn and treat a row that depends on work being off as unproven until a tool enables manual priorities.
+home: skills/rimbridge

@@ -219,6 +219,80 @@ namespace RimMandrake.FlowWorks
 			job.count = 1;
 			return job;
 		}
+
+		/// <summary>Bridge/debug read (jawa/static_call, northstar/shovels_live.py). "pawn:ID" -> "has=B needs=B ready=B";
+		/// "hostiles" -> "raiders=N holders=M ids=..." over spawned hostile tool-users; "scenario:DEF" -> each
+		/// ScenPart_StartingThing_Defined of that ScenarioDef that makes a digging tool, as "DEF/STUFF xN", and what its own
+		/// PlayerStartingThings() generates (the start-of-game spawn path, minus the drop).</summary>
+		public static string ProofShovelCensus(string arg)
+		{
+			string a = arg ?? "";
+			Map map = Find.CurrentMap;
+			if (a.StartsWith("pawn:"))
+			{
+				string id = a.Substring(5);
+				Pawn p = null;
+				if (map != null)
+				{
+					foreach (Pawn q in map.mapPawns.AllPawnsSpawned)
+					{
+						if (q.ThingID == id || q.thingIDNumber.ToString() == id)
+						{
+							p = q;
+							break;
+						}
+					}
+				}
+				return p == null ? "no pawn " + id : "has=" + HasShovel(p) + " needs=" + Needs(p) + " ready=" + Ready(p);
+			}
+			if (a == "hostiles")
+			{
+				if (map == null || Faction.OfPlayer == null)
+				{
+					return "no map";
+				}
+				int people = 0;
+				var ids = new List<string>();
+				foreach (Pawn q in map.mapPawns.AllPawnsSpawned)
+				{
+					if (q.Faction == null || !q.Faction.HostileTo(Faction.OfPlayer) || !RM_RaiderTrench.ToolUser(q))
+					{
+						continue;
+					}
+					people++;
+					if (HasShovel(q))
+					{
+						ids.Add(q.ThingID);
+					}
+				}
+				return "raiders=" + people + " holders=" + ids.Count + " ids=" + string.Join(",", ids);
+			}
+			if (a.StartsWith("scenario:"))
+			{
+				ScenarioDef sd = DefDatabase<ScenarioDef>.GetNamedSilentFail(a.Substring(9));
+				if (sd?.scenario == null)
+				{
+					return "no scenario " + a.Substring(9);
+				}
+				var parts = new List<string>();
+				foreach (ScenPart part in sd.scenario.AllParts)
+				{
+					if (!(part is ScenPart_StartingThing_Defined st))
+					{
+						continue;
+					}
+					foreach (Thing t in st.PlayerStartingThings())
+					{
+						if (IsShovel(t))
+						{
+							parts.Add(t.def.defName + "/" + (t.Stuff?.defName ?? "-") + " x" + t.stackCount);
+						}
+					}
+				}
+				return "shovels=" + parts.Count + " " + string.Join(",", parts);
+			}
+			return "args: pawn:ID | hostiles | scenario:DEF";
+		}
 	}
 
 	/// <summary>
