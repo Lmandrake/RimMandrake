@@ -1,0 +1,2 @@
+Live-test waste is selection, not capacity: run7 66% of chain-minutes (offline-in-live 32%, PASS->PASS known-good 32%, stale-only 2%), run6 64%; 58% of 6,492 re-executed rows across 95 historic runs were PASS->PASS; bridge 2026-10-25 held 449 min but call time only 31% of held. Measure with D:/ClaudeWork/rimmandrake/test_orch/{waste,history_waste,bridge_util}.py until modcheck metrics exists.
+home: design/RimMandrake/test_orchestration_two_machines_2026-10-25.md
