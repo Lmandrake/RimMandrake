@@ -33,6 +33,7 @@ def main():
     rgb, src = A.measure_ground("RM_LeaningScrub")
     check(rgb is not None and "Sand" in src, f"Leaning Scrub ground measured: {rgb} from {src}")
     source_xml_fallback()
+    runtime_offset_axes()
     print(f"{len(FAILS)} failed" if FAILS else "all passed")
     return 1 if FAILS else 0
 
@@ -60,6 +61,20 @@ def source_xml_fallback():
         check(n.get("cells") == 1.0 and "1 cell" in n["source"], "a non-plant missing from the dump keeps the 1-cell FALLBACK")
         m = R.size({"key": "ST_Absent", "defNames": ["ST_Absent"]})
         check(m.get("cells") == 1.0 and m["status"] == "fallback", "a def in neither dump nor src keeps the 1-cell FALLBACK")
+
+
+def runtime_offset_axes():
+    """A manifest offset of RimWorld's 3-axis drawOffset (x, y, z) is reduced to the panel's (x, z); other lengths refuse."""
+    import scale_panel as SP
+    base = {"drawSize": [2, 3], "source": "t"}
+    two = SP.runtime_size("K", dict(base, offset=[0.5, 1.0]))["offset"]
+    three = SP.runtime_size("K", dict(base, offset=[0.5, 9.0, 1.0]))["offset"]
+    check(two == [0.5, 1.0] and three == [0.5, 1.0], f"runtime offset (x,z) and (x,y,z) both give x,z: {two} {three}")
+    try:
+        SP.runtime_size("K", dict(base, offset=[1.0]))
+        check(False, "a 1-value offset is refused")
+    except ValueError as e:
+        check("K" in str(e), "a 1-value offset is refused, naming the key")
 
 
 if __name__ == "__main__":

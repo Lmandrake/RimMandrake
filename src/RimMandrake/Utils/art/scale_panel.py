@@ -112,7 +112,12 @@ def runtime_size(key: str, rs: dict) -> dict:
     fp = [int(x) for x in rs.get("footprint") or [1, 1]]
     # optional graphicData.drawOffset (x, z) cells: a proposed def taller than its footprint sits with its base on the
     # footprint's south edge (drawOffset.z = (drawSize.y - size.z)/2, the building camera); without it the panel centred it
-    off = [float(x) for x in (rs.get("offset") or [0.0, 0.0])]
+    raw = [float(x) for x in (rs.get("offset") or [0.0, 0.0])]
+    if len(raw) == 3:       # a RimWorld drawOffset (x, y, z): the panel is top-down, keep x and z
+        raw = [raw[0], raw[2]]
+    if len(raw) != 2:
+        raise ValueError("%s: manifest offset must be (x, z) or (x, y, z), got %d values" % (key, len(raw)))
+    off = raw
     return {"status": "measured", "kind": "thing", "category": "Building", "def": key, "drawSize": ds,
             "footprint": fp, "offset": off, "graphicClass": "runtime", "color": [1, 1, 1],
             "quad": ds[0], "cells": float(max(fp)), "mesh": 1,
