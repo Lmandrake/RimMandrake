@@ -387,6 +387,14 @@ happened yet.
 - **How to apply:** whenever a def/item is "missing art" or "owed new art",
   search first, generate only what the search comes up empty on.
 
+## Live runs are TARGETED; the full suite is a scheduled sweep — owner, 2026-10-25
+
+*"Targeted runs should always have been policy."* A live run after a change runs only the
+chains/rows that change touches (the item's own rows, plus the chains its files feed); the
+full `modcheck run <Mod>` is not the verification step for a fix. A full sweep runs at most
+once a day, or when a change is wide enough that its rows cannot be named. A brief that
+asks a live helper for the whole suite to prove one fix is the defect.
+
 ## The bridge is passed through one file
 
 One window drives the live game at a time — not for ownership, for attributability.
