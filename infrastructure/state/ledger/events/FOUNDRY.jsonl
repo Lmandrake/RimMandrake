@@ -7737,3 +7737,22 @@
 {"seat":"FOUNDRY","event":"start","id":"ENACT_STALE_SLOT_KEY_MIGRATE_PATH","ts":"2026-10-25T22:21:26Z","tsn":1792966886900464706}
 {"seat":"FOUNDRY","event":"close","id":"ARTEVAL_STRICTNESS_TUNE_KEEPS_REDRAWN","sha":"fbea2ea050","why":"V1cal raced and adopted in fbea2ea050 (agree 27->36, false accepts 0->0); residual 15 false rejects need a live round 2","ts":"2026-10-25T22:21:27Z","tsn":1792966887305377297}
 {"seat":"FOUNDRY","event":"block","id":"ART_EVAL_SIZEJUMP_TUNE_OVERBLOCK","reason":"needs live regeneration: tracked by ARTEVAL_JUDGE_LIVE_HEAD_TO_HEAD","why":"offline replay (f4436e4adc) shows size_jump thresholds cannot separate kept from purged; further tuning needs live head-to-head","ts":"2026-10-25T22:21:28Z","tsn":1792966888946655988}
+{"seat":"FOUNDRY","event":"lease","id":"ENACT_SCHEMA1_MOVE_FIX_OLD_LANE","action":"take","token":"FOUNDRY.pid35168.911fa83a","expires":"2026-10-25T23:06:39Z","ts":"2026-10-25T22:21:39Z","tsn":1792966899458426084}
+{"seat":"FOUNDRY","event":"close","id":"ART_SHEET_FIX_NEWEST_JOB_WINS","sha":"68310906b6b5","ts":"2026-10-25T22:21:39Z","tsn":1792966899651235874}
+{"seat":"FOUNDRY","event":"claim","id":"ENACT_SCHEMA1_MOVE_FIX_OLD_LANE","ts":"2026-10-25T22:21:39Z","tsn":1792966899838601396}
+{"seat":"FOUNDRY","event":"start","id":"ENACT_SCHEMA1_MOVE_FIX_OLD_LANE","ts":"2026-10-25T22:21:40Z","tsn":1792966900208623780}
+{"seat":"FOUNDRY","event":"close","id":"ART_SHEET_HARDEN_RECOMMEND_ON_REFRESH","sha":"68310906b6b5","ts":"2026-10-25T22:21:41Z","tsn":1792966901367586273}
+{"seat":"FOUNDRY","event":"drop","id":"ENACT_STALE_SLOT_KEY_MIGRATE_PATH","reason":"already fixed on main","why":"already fixed: slot_membership case 4 + stale-key resolve/refuse in build_plan (ENACT_DONOR_LANE_DECIDE_REFUSE_OR_ROUTE), selftests green","ts":"2026-10-25T22:21:44Z","tsn":1792966904310542829}
+{"seat":"FOUNDRY","event":"drop","id":"ENACT_SCHEMA1_MOVE_FIX_OLD_LANE","reason":"already fixed on main","why":"already fixed: enact.py moved-between-two-existing-lanes refusal (3ff777b26a), stale_lane case 4 asserts it, green","ts":"2026-10-25T22:21:52Z","tsn":1792966912570760273}
+{"seat":"FOUNDRY","event":"lease","id":"ENACT_SNAPREV_GIT_HARDEN_READS","action":"take","token":"FOUNDRY.pid35719.3d9e8c80","expires":"2026-10-25T23:06:54Z","ts":"2026-10-25T22:21:54Z","tsn":1792966914419340711}
+{"seat":"FOUNDRY","event":"claim","id":"ENACT_SNAPREV_GIT_HARDEN_READS","ts":"2026-10-25T22:21:54Z","tsn":1792966914800230489}
+{"seat":"FOUNDRY","event":"start","id":"ENACT_SNAPREV_GIT_HARDEN_READS","ts":"2026-10-25T22:21:55Z","tsn":1792966915173569630}
+{"seat":"FOUNDRY","event":"drop","id":"ENACT_SNAPREV_GIT_HARDEN_READS","reason":"already fixed on main","why":"already fixed: 3ff777b26a/399c470062 (bounded lazy reads, per-revision tolerance, real-git selftest_enact_snaprev_git, no-lane stale key refused), green","ts":"2026-10-25T22:22:03Z","tsn":1792966923357907170}
+{"seat":"FOUNDRY","event":"lease","id":"ENACT_UNDRAWN_LANE_FIX_ORPHAN_INSTALL","action":"take","token":"FOUNDRY.pid36078.c0665109","expires":"2026-10-25T23:07:04Z","ts":"2026-10-25T22:22:04Z","tsn":1792966925158335109}
+{"seat":"FOUNDRY","event":"claim","id":"ENACT_UNDRAWN_LANE_FIX_ORPHAN_INSTALL","ts":"2026-10-25T22:22:05Z","tsn":1792966925533384297}
+{"seat":"FOUNDRY","event":"start","id":"ENACT_UNDRAWN_LANE_FIX_ORPHAN_INSTALL","ts":"2026-10-25T22:22:05Z","tsn":1792966925921737021}
+{"seat":"FOUNDRY","event":"lease","id":"ENACT_ALIAS_FIX_SWAP_SEPARATE_DEF","action":"take","token":"FOUNDRY.pid36301.bf8583dd","expires":"2026-10-25T23:07:07Z","ts":"2026-10-25T22:22:07Z","tsn":1792966927528169399}
+{"seat":"FOUNDRY","event":"claim","id":"ENACT_ALIAS_FIX_SWAP_SEPARATE_DEF","ts":"2026-10-25T22:22:07Z","tsn":1792966927906264643}
+{"seat":"FOUNDRY","event":"start","id":"ENACT_ALIAS_FIX_SWAP_SEPARATE_DEF","ts":"2026-10-25T22:22:08Z","tsn":1792966928302868907}
+{"seat":"FOUNDRY","event":"close","id":"ENACT_UNDRAWN_LANE_FIX_ORPHAN_INSTALL","sha":"92dc88fc018908e9c0a07ed3effd1502b1d5bafc","ts":"2026-10-25T22:23:14Z","tsn":1792966994280585466}
+{"seat":"FOUNDRY","event":"close","id":"ENACT_ALIAS_FIX_SWAP_SEPARATE_DEF","sha":"92dc88fc018908e9c0a07ed3effd1502b1d5bafc","ts":"2026-10-25T22:23:15Z","tsn":1792966995932535138}
