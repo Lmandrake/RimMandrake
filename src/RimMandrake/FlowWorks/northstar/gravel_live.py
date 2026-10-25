@@ -86,7 +86,10 @@ ROW_ITEM = {"GS_ice_cut_yields_crushed_ice": ITEM_ICE, "GS_crushed_ice_melts_to_
 MUD_TERRAIN, RUBBLE_TERRAIN = "Mud", "Gravel"
 # GS_gravel_recipe_takes_gravel: Outer Rim's duracrete (one of RM_Gravel's mod-extension recipes) at its powered fabricator
 FAB, FAB_GIVER, FAB_RECIPE = "OuterRim_HypertechFabricator", "DoBills_OuterRim_HypertechFabricator", "OuterRim_DuracreteCrafting"
-FAB_OTHER, FAB_PRODUCT = ("OuterRim_Durasteel", 10), "OuterRim_Duracrete"
+# the recipe's durasteel: RSW Armoury removes OuterRim_Durasteel and renames every use to RSW_Durasteel
+# (RSW_DurasteelConvert_OuterRim.xml), so on the full list the Outer Rim name spawns nothing and the bill never starts
+# (live 2026-10-25, HARNESS); the first of these the game knows is spawned
+FAB_OTHERS, FAB_PRODUCT = (("RSW_Durasteel", 10), ("OuterRim_Durasteel", 10)), "OuterRim_Duracrete"
 ICE, ICE_TERRAIN, MELT_DL = "RM_CrushedIce", "Ice", 10000   # one notch (ICE_YIELD_DECIDE_ONE_CUT_FOUR_NOTCHES)
 LABOUR_RATIO = (3.0, 5.0)
 RUN_SETTINGS = {"sandMudSlidesBackEnabled": True, "digSpoilEnabled": True, "fillCostsSpoilEnabled": True,
@@ -625,7 +628,10 @@ def main():
                 else:
                     fid = fab[0].get("id")
                     det["power"] = (B.call("jawa/power_net", thing=fid, forcePowerOn=True) or {}).get("powerOnAfter")
-                    B.call("rimworld/spawn_thing", defName=FAB_OTHER[0], stackCount=FAB_OTHER[1], x=fab_at[0], z=fab_at[1] - 3)
+                    other = next((o for o in FAB_OTHERS if (B.call("jawa/get_def", defName=o[0], defType="ThingDef")
+                                                            or {}).get("success")), FAB_OTHERS[-1])
+                    det["coIngredient"] = other[0]
+                    B.call("rimworld/spawn_thing", defName=other[0], stackCount=other[1], x=fab_at[0], z=fab_at[1] - 3)
                     B.call("rimworld/spawn_thing", defName=GRAVEL, stackCount=1, x=fab_at[0] + 1, z=fab_at[1] - 3)
                     gv = things(fab_at[0] + 1, fab_at[1] - 3, 1, 1, GRAVEL)
                     det["bill"] = str(B.call("jawa/bill_add", giverId=fid, recipe=FAB_RECIPE, repeatMode="repeatcount",
