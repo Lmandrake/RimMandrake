@@ -56,6 +56,9 @@ reuse `validation_core` rather than writing a third harness.
 Run bridge-side under `python.exe` from the repo root, piping through `tr -d '\r'`.
 The offline gate runs under WSL `python3`. WSL cannot reach the bridge.
 
+🔴 **Run TARGETED first** (owner 2026-10-25): `modcheck run <Mod> --item <ITEM_ID>` or `--chains a,b` / `--rows r1,r2`
+(site hold still runs; the record says TARGETED and names its chains). `--full` is the scheduled sweep, at most daily.
+
 Read `references/run-checklists.md` before every full-list run. It holds the
 run-start and run-end checklists line by line.
 

@@ -453,7 +453,7 @@ def _hold_site(session, tx, expected_ids):
 
 def run_suite(suite, session, debug=False, anchor=None, mod=None,
               judge_runner=None, situational=False, policy="abort", bland_world=False, retile=False,
-              hold_site=False):
+              hold_site=False, floor_suite=None):
     """Run every chain in `suite` against an open `session`. Returns
     `{"chains": [...], "all_green": bool}`. Never raises on a component
     failure -- that is exactly what `suite.py`'s `component()` already
@@ -477,11 +477,14 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
     screenshots at the end. ⚠️ Omitting it gives a state-only verdict, which is
     exactly the hole the pit fell through; `run()` always passes it, and the one
     live Pits run of 2026-09-12 bypassed `run()` to call this directly.
+
+    `floor_suite`: a targeted run passes the mod's FULL suite here and the filtered one as `suite`: the visual floor is
+    a property of the whole suite (a subset would leave must-show lines uncovered and refuse every targeted run).
     """
     from suite import TestContext  # noqa: E402  (modcheck package, same dir)
     walk, ns = northstar_for(mod) if mod else (None, None)
     if mod:
-        fl = visual_floor(suite, ns)
+        fl = visual_floor(floor_suite or suite, ns)
         why = refusal(fl)
         if why:
             return {"chains": [], "all_green": False, "findings": [],
@@ -745,34 +748,52 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
     return summary
 
 
-def emit_verify(item_id, mod, config, result_summary, sheet_path, dry_run=False):
+def verify_seat(seat=None):
+    """The seat a run's `rimflow verify` is written under, or None. rimflow's own order minus its role file: an explicit
+    `--seat`, then RIMFLOW_SEAT, then AGENT_SEAT. Under Windows python.exe (detached or launched from WSL) none of
+    the env vars arrive and rimflow refuses "cannot tell which seat" -- run() then still writes the run's record."""
+    return seat or os.environ.get("RIMFLOW_SEAT") or os.environ.get("AGENT_SEAT") or None
+
+
+def emit_verify(item_id, mod, config, result_summary, sheet_path, dry_run=False, seat=None):
+    """Record the run on the ledger. With no resolvable seat (MODCHECK_VERIFY_FIX_SEAT_LOST_ON_WINDOWS,
+    MODCHECK_SEAT_FIX_DETACHED_RUN_NO_RECORD) the verify is NOT attempted: returns {"seat": "UNKNOWN", "skipped":
+    <the exact command to run by hand>} so the caller still writes the sheet, JSON and status record."""
     n_pass = sum(1 for chain in result_summary["chains"]
                 for c in chain["components"] if c["verdict"] != "FAIL"
                 and c["verdict"] != "UNMEASURED")
     n_total = sum(len(chain["components"]) for chain in result_summary["chains"])
     result = "pass" if result_summary["all_green"] else "fail"
-    cmd = py_cmd(RIMFLOW_CLI, "verify", item_id,
-                 "--result", result, "--config", config, "--evidence", _wsl_path(sheet_path)
-                 if os.name == "nt" else sheet_path)
-    if os.environ.get("RIMFLOW_SEAT"):  # wsl.exe drops the env var; the verb needs the seat spelled out
-        cmd += ["--seat", os.environ["RIMFLOW_SEAT"]]
+    args = ["verify", item_id, "--result", result, "--config", config,
+            "--evidence", _wsl_path(sheet_path) if os.name == "nt" else sheet_path]
+    cmd = py_cmd(RIMFLOW_CLI, *args)
+    who = verify_seat(seat)
+    if not who:
+        import shlex
+        return {"seat": "UNKNOWN", "n_pass": n_pass, "n_total": n_total,
+                "skipped": "python3 src/RimMandrake/rimflow/cli.py %s --seat <SEAT>" % shlex.join(args)}
+    cmd += ["--seat", who]  # wsl.exe drops the env var; the verb needs the seat spelled out
     if dry_run:
-        return {"cmd": cmd, "n_pass": n_pass, "n_total": n_total}
+        return {"cmd": cmd, "n_pass": n_pass, "n_total": n_total, "seat": who}
     r = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True)
     if r.returncode != 0:
         raise RuntimeError("rimflow verify FAILED: %s" % (r.stdout + r.stderr).strip())
-    return {"n_pass": n_pass, "n_total": n_total}
+    return {"n_pass": n_pass, "n_total": n_total, "seat": who}
 
 
-def file_findings(item_id, mod, findings, dry_run=False):
+def file_findings(item_id, mod, findings, dry_run=False, seat=None):
     """One `rimflow finding` per failed component, per spec §1's "auto-file
-    a rimflow finding (screenshot attached) and CONTINUE the run"."""
+    a rimflow finding (screenshot attached) and CONTINUE the run". Same seat rule as emit_verify: none -> not
+    attempted, [] (the sheet and JSON name every failed component)."""
     filed = []
+    who = verify_seat(seat)
+    if not who:
+        return filed
     for c in findings:
         name = ("MODCHECK_%s_%s" % (mod.upper(), c.name.upper()))[:60]
         cmd = py_cmd(RIMFLOW_CLI, "finding", "--from", item_id,
                      "--name", name, "--type", "modcheck-failure",
-                     "--severity", "major")
+                     "--severity", "major", "--seat", who)
         if dry_run:
             filed.append({"cmd": cmd})
             continue
@@ -784,11 +805,17 @@ def file_findings(item_id, mod, findings, dry_run=False):
     return filed
 
 
-def run(mods, debug=False, dry_run=False, situational=False, policy="abort"):
+def run(mods, debug=False, dry_run=False, situational=False, policy="abort", targets=None, seat=None):
     """`mods`: list of (mod_folder_name, item_id) pairs. Full orchestration
     per spec §2. `dry_run=True` skips every live/subprocess side effect and
     is how `selftest.py` exercises the sequencing without a game or a
-    filesystem write outside `Transient/`."""
+    filesystem write outside `Transient/`.
+
+    `targets`: {mod: targeting.resolve() selection} -- run only those chains (owner 2026-10-25, targeted runs). The
+    site hold still runs before every selected chain; the summary, sheet JSON and verify config carry the selection;
+    and a targeted run never overwrites the mod's full-suite status entry (it is not a full-suite verdict).
+    `seat`: the ledger seat for verify/findings when the environment does not carry one (see verify_seat)."""
+    targets = targets or {}
     from status import record_run  # noqa: E402
 
     results = {}
@@ -840,6 +867,8 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort"):
                 # disk, which is what lets a mod-agnostic selftest exercise it.
                 results[mod_folder] = {"chains": [], "all_green": True,
                                        "findings": [], "dry_run": True}
+                if targets.get(mod_folder):
+                    results[mod_folder]["targeted"] = targets[mod_folder]
                 continue
             mod_dir = find_mod_dir(mod_folder)
             suite = load_validation(mod_dir)
@@ -854,16 +883,26 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort"):
                            "visual_all_green": False, "state_all_green": False,
                            "walk": walk, "bar": fl["bar"]}
                 results[mod_folder] = summary
-                record_run(mod_folder, mod_dir,
-                          "%s@%d" % (mod_folder, int(time.time())),
-                          False, walk=walk, refused=why)
+                if not targets.get(mod_folder):     # a targeted run never writes the full-suite status entry
+                    record_run(mod_folder, mod_dir,
+                              "%s@%d" % (mod_folder, int(time.time())),
+                              False, walk=walk, refused=why)
                 continue
+            sel = targets.get(mod_folder)
+            run_this = suite
+            if sel:
+                import targeting  # noqa: E402
+                run_this = targeting.filtered(suite, sel["chains"])
+                print("[modcheck] %s TARGETED: %d of %d chains: %s" % (mod_folder, len(run_this.chains),
+                      len(suite.chains), ", ".join(sel["chains"])), file=sys.stderr)
             ensure_playing_map()
             ensure_test_profile()
             from rimdrive import Session  # noqa: E402
             with Session(lock=None) as s:
-                summary = run_suite(suite, s, debug=debug, mod=mod_folder,
+                summary = run_suite(run_this, s, debug=debug, mod=mod_folder, floor_suite=suite,
                                     situational=situational, policy=policy, hold_site=True)
+            if sel:
+                summary["targeted"] = dict(sel, of_chains=len(suite.chains))
             if situational:
                 try:           # SHADOW-mode Jev routing of FAIL components; absent key => one UNAVAILABLE row
                     import jev_triage  # noqa: E402
@@ -872,20 +911,34 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort"):
                     summary["jev_shadow"] = []
             results[mod_folder] = summary
             sheet_path = write_sheet(mod_folder, summary)
+            verify_err = None
             try:
-                emit_verify(item_id, mod_folder, "min+%s" % mod_folder, summary,
-                           sheet_path)
+                import targeting  # noqa: E402
+                v = emit_verify(item_id, mod_folder, "min+%s %s" % (mod_folder, targeting.config_tag(sel)), summary,
+                                sheet_path, seat=seat)
+                if v.get("seat") == "UNKNOWN":
+                    print("[modcheck] %s: seat UNKNOWN (no --seat, RIMFLOW_SEAT or AGENT_SEAT here): ledger verify "
+                          "and findings NOT written; record it by hand: %s" % (mod_folder, v["skipped"]), file=sys.stderr)
                 if summary["findings"]:
-                    file_findings(item_id, mod_folder, summary["findings"])
+                    file_findings(item_id, mod_folder, summary["findings"], seat=seat)
             except RuntimeError as ex:
-                if "never been filed" not in str(ex):
-                    raise
-                # No ledger item for this mod's run (the default MODCHECK_<MOD>_RUN_1 is never filed): the sheet and
-                # JSON are the evidence; a missing item must not abort the rest of a batch (LIVE 2026-10-07).
-                print("[modcheck] %s: no ledger item %s; sheet %s only" % (mod_folder, item_id, sheet_path), file=sys.stderr)
-            record_run(mod_folder, mod_dir,
-                      "%s@%d" % (mod_folder, int(time.time())),
-                      summary["all_green"], walk=walk)
+                if "never been filed" in str(ex):
+                    # No ledger item for this mod's run (the default MODCHECK_<MOD>_RUN_1 is never filed): the sheet and
+                    # JSON are the evidence; a missing item must not abort the rest of a batch (LIVE 2026-10-07).
+                    print("[modcheck] %s: no ledger item %s; sheet %s only" % (mod_folder, item_id, sheet_path),
+                          file=sys.stderr)
+                else:
+                    verify_err = ex      # raised AFTER the status record below: a ledger refusal never loses the run
+            if sel:
+                # A targeted run is not a full-suite verdict: the mod's status entry (its GREEN/RED) is left alone.
+                print("[modcheck] %s: targeted run, status entry untouched; sheet %s" % (mod_folder, sheet_path),
+                      file=sys.stderr)
+            else:
+                record_run(mod_folder, mod_dir,
+                          "%s@%d" % (mod_folder, int(time.time())),
+                          summary["all_green"], walk=walk)
+            if verify_err is not None:
+                raise verify_err
     finally:
         if not dry_run:
             restore_full()

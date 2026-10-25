@@ -393,7 +393,8 @@ happened yet.
 chains/rows that change touches (the item's own rows, plus the chains its files feed); the
 full `modcheck run <Mod>` is not the verification step for a fix. A full sweep runs at most
 once a day, or when a change is wide enough that its rows cannot be named. A brief that
-asks a live helper for the whole suite to prove one fix is the defect.
+asks a live helper for the whole suite to prove one fix is the defect. Executable since
+2026-10-25: `modcheck run <Mod> --item <ID>` / `--chains` / `--rows`; the whole suite needs `--full`.
 
 ## The bridge is passed through one file
 

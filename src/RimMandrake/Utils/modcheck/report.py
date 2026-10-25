@@ -69,6 +69,11 @@ def render(mod, summary):
         if summary.get("visual") and not summary.get("visual_all_green"):
             halves.append("appearance")
         overall = "RED" + (" (%s)" % ", ".join(halves) if halves else "")
+    tg = summary.get("targeted")
+    if tg:      # a subset's verdict never reads as the full suite's (owner 2026-10-25, targeted runs)
+        overall = "TARGETED %d/%d chains [%s]%s: %s" % (
+            len(tg["chains"]), tg.get("of_chains", 0), ", ".join(tg["chains"]),
+            (" rows [%s]" % ", ".join(tg["rows"])) if tg.get("rows") else "", overall)
     return """<!doctype html><html><head><meta charset="utf-8">
 <title>modcheck: %s</title>
 <style>

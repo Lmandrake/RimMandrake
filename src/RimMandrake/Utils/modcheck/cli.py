@@ -56,8 +56,20 @@ def main(argv=None):
     p_run.add_argument("mods", nargs="+",
                        help="mod folder name(s), e.g. Pits")
     p_run.add_argument("--item", action="append", default=[],
-                       help="rimflow item id for a mod, MOD=ITEM_ID; "
-                            "defaults to MODCHECK_<MOD>_RUN_1")
+                       help="ITEM_ID: TARGETED run of the chains that item maps to (its rows cite it, or its "
+                            "ledger text names a chain/row), recorded against it; refused if nothing maps. "
+                            "MOD=ITEM_ID: only the ledger item a run is recorded against (default "
+                            "MODCHECK_<MOD>_RUN_1)")
+    p_run.add_argument("--chains", default="",
+                       help="TARGETED: comma-separated chain names to run (one mod)")
+    p_run.add_argument("--rows", default="",
+                       help="TARGETED: comma-separated row ids; runs each row's whole chain (one mod)")
+    p_run.add_argument("--full", action="store_true",
+                       help="the whole suite: a scheduled sweep, at most daily (owner 2026-10-25). A run with no "
+                            "--chains/--rows/--item ITEM_ID is refused without it")
+    p_run.add_argument("--seat", default=None,
+                       help="ledger seat for the run's verify/findings when RIMFLOW_SEAT/AGENT_SEAT do not reach "
+                            "this process (Windows python.exe); with none the run is still recorded, ledger skipped")
     p_run.add_argument("--debug", action="store_true")
     p_run.add_argument("--situational", action="store_true",
                        help="wrap every chain in the situational envelope: bland map, python-enforced "
@@ -266,11 +278,51 @@ def main(argv=None):
 
     if args.cmd == "run":
         import runner
-        overrides = dict(kv.split("=", 1) for kv in args.item)
+        if args.policy != "abort" and not args.situational:
+            # MODCHECK_POLICY_FIX_RECORD_NEEDS_SITUATIONAL: only the situational Watch reads --policy; run4 was
+            # launched `--policy record` without it and the policy was silently never read.
+            print("REFUSED: --policy %s is read only by the situational envelope; add --situational or drop "
+                  "--policy" % args.policy)
+            return 2
+        overrides = dict(kv.split("=", 1) for kv in args.item if "=" in kv)
+        target_items = [kv for kv in args.item if "=" not in kv]
+        chains = [c.strip() for c in args.chains.split(",") if c.strip()]
+        rows = [r.strip() for r in args.rows.split(",") if r.strip()]
+        targeted = bool(chains or rows or target_items)
+        if targeted and args.full:
+            print("REFUSED: --full and a target (--chains/--rows/--item ITEM_ID) contradict each other")
+            return 2
+        if not targeted and not args.full:
+            print("REFUSED: a live run is TARGETED (owner 2026-10-25, standing_rulings.md \"Live runs are "
+                  "TARGETED\"): name what the change touches with --item ITEM_ID, --chains a,b or --rows r1,r2. "
+                  "The whole suite is a scheduled sweep (at most daily): add --full for that.")
+            return 2
+        targets = {}
+        if targeted:
+            if len(args.mods) != 1 or len(target_items) > 1:
+                print("REFUSED: a targeted run names one mod and at most one --item ITEM_ID")
+                return 2
+            import targeting
+            mod = args.mods[0]
+            try:
+                suite = runner.load_validation(runner.find_mod_dir(mod))
+                text = targeting.item_text(target_items[0]) if target_items else None
+                sel = targeting.resolve(suite, chains, rows, target_items[0] if target_items else None, text)
+            except (targeting.TargetError, RuntimeError) as ex:
+                print("REFUSED: %s" % ex)
+                return 2
+            for c in sel["chains"]:     # one line per chain: the first reasons, and how many more
+                why = [w.split(": ", 1)[1] for w in sel["by"] if w.startswith("chain %s:" % c)]
+                print("  target chain %s: %s%s" % (c, "; ".join(why[:2]),
+                                                   " (+%d more)" % (len(why) - 2) if len(why) > 2 else ""))
+            targets[mod] = sel
+            if target_items and mod not in overrides:
+                overrides[mod] = target_items[0]
         mods = [(m, overrides.get(m, "MODCHECK_%s_RUN_1" % m.upper()))
                for m in args.mods]
         results = runner.run(mods, debug=args.debug, dry_run=args.dry_run,
-                             situational=args.situational, policy=args.policy)
+                             situational=args.situational, policy=args.policy,
+                             targets=targets, seat=args.seat)
         bad = [m for m, r in results.items() if not r["all_green"]]
         for m, r in results.items():
             print("%-20s %s" % (m, _verdict_line(r)))
@@ -284,6 +336,10 @@ def _verdict_line(result):
     pit's real defect -- right state, absent appearance -- unnamed for a month."""
     if result.get("refused"):
         return "REFUSED  %s" % result["refused"]
+    tg = result.get("targeted")
+    if tg:      # never a bare GREEN/RED for a subset: it would read as the full-suite verdict
+        scope = "TARGETED %d/%d chains (%s)" % (len(tg["chains"]), tg.get("of_chains", 0), ",".join(tg["chains"]))
+        return scope + " " + _verdict_line(dict(result, targeted=None))
     if result["all_green"]:
         return "GREEN"
     failed = []
