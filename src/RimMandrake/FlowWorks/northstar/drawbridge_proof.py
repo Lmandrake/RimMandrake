@@ -932,7 +932,11 @@ def one_drag_package(ctx):
     for i in range(1, 5):
         ctx["dig"](P(i, z))
     # the moat's sides walled (x=1..4 only: the anchor columns x=0/x=5 stay free for the winch on either side)
-    ctx["walls"]([P(x, zz) for x in range(1, 5) for zz in (z - 1, z + 1)])
+    # live run6 2026-10-25: with only those 4-cell walls the walker's 12-cell path went AROUND them (decked=0 lowered), so
+    # an outer ring at z-2/z+2 from x=-4..10 closes the anchor columns' side cells: the short way over is the deck alone
+    # (x=4..6 left open at z-2: a wall beside the winch's planned square P(5,z-1) left it unlinked, linked=0, same run)
+    ctx["walls"]([P(x, zz) for x in range(1, 5) for zz in (z - 1, z + 1)]
+                 + [P(x, z + 2) for x in range(-4, 11)] + [P(x, z - 2) for x in range(-4, 11) if not 4 <= x <= 6])
     kv, txt = dproof("ProofOneDrag", "%s;%s;steel" % (xz(P(5, z)), xz(P(0, z))))
     V.require(kv.get("ok") == "True", "the one drag placed a drawbridge", txt)
     placed = (kv.get("leaves") == "1" and kv.get("hingeAt") == xz(P(5, z)) and kv.get("winches") == "1" and kv.get("linked") == "1"

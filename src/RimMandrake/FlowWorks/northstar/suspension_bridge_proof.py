@@ -715,10 +715,13 @@ def health_seen(rows):
 
 def islands(ctx):
     """SUSPENSION_ISLANDS_BUILD_TOWERS_COST_PLENTY (owner 2026-10-25: "Suspension: 2 or 3 (towers should be VERY expensive to
-    build, so using islands is important for resource savings)"). Rows at z 80-88 of the site, clear of every other section.
+    build, so using islands is important for resource savings)"). Rows at z 80-88 of the site (crossings x 6..25), clear of every other section.
     The island is UNDUG ground: a square filled back to the surface leaves the excavation grid (depth 0) and classifies the
     same, which the Restore ground row orders but does not wait for (filling is colonists' work)."""
-    P, xz, row, proof, dig = (ctx[k] for k in ("P", "xz", "row", "proof", "dig"))
+    P0, xz, row, proof, dig = (ctx[k] for k in ("P", "xz", "row", "proof", "dig"))
+    # the two crossings sit 6 columns east (x 6..25): looks() builds its bridges at z 80-86, x 0..4, and runs first in a
+    # default run (Codex review run6 2026-10-25); the Restore row keeps x 1..4 at z 88, which nothing else uses
+    P = lambda x, z: P0(x + 6, z) if z in (80, 84) else P0(x, z)  # noqa: E731
     with V.scope("SB_islands_cross"):
         for i in list(range(1, 9)) + list(range(11, 19)):      # 8 holes, island at 9-10, 8 holes; anchors at 0 and 19
             dig(P(i, 80))
@@ -733,7 +736,8 @@ def islands(ctx):
         good = kv.get("ok") == "False" and "at most 8" in txt and kv.get("anchors") == "0"
         row("SB_islands_control_no_island_refused", "PASS" if good else "FAIL", {"read": txt})
     with V.scope("SB_islands_tower_cost"):
-        kv, txt = proof("ProofTowerCost", "")
+        # "" reached jawa/static_call as 0 params (live run6: "No public static ProofTowerCost with 0 params")
+        kv, txt = proof("ProofTowerCost", "-")
         m = float(kv.get("mult") or "nan")
         want = lambda base: max(1, int(base * m + 0.5))         # noqa: E731  RM_SuspensionMath.ScaledCost
         charged = dict(x.split(":") for x in (kv.get("steelBuilt") or "").split(",") if ":" in x)
