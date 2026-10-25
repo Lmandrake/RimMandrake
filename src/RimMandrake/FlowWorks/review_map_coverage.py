@@ -191,6 +191,7 @@ FEATURES = [
     ("set", r"^lineCrossingRulesEnabled$", "Rigid pipe and conduit need solid ground", M + "build-rule switch (PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE); L1 table in SelfTest LineCrossingChecks, live rows owed (L2)"),
     ("set", r"^(trenchCoverEnabled|trenchCoverStrength|trenchCoverCap|trenchAiAvoidsCages)$", "Trench cover", M + S + "bars_trench (waist- and chest-deep colonist with a shooter); numbers read by ProofTrenchCover"),
     ("set", r"^(portableLadderEnabled|portableLadderMaxLevels|climbingGearEnabled|climbingGearSlowness|pitRescueLadderEnabled)$", "Portable ladder and climbing gear", M + S + "bars_access (portable ladder in a pit and on a 4 m wall, gear worn and on the ground)"),
+    ("set", r"^buildInDugWaterEnabled$", "Walls and pillars stand in flooded cuts", M + "build-rule switch (DEEP_WATER_BUILD_REFUSED_BY_LIGHT_AFFORDANCE); verdict in SelfTest DeepWaterBuildChecks, live rows owed"),
     ("set", r"^(pitJumpLandsSafe|pitTeleportLandsSafe)$", "Jumping or teleporting into a pit lands safe", M + "state read (live_session g_pit_access); nothing to look at"),
     ("set", r"^(wallClimbEnabled|wallClimbSlowFactor|wallClimbAutoRoute)$", "Climbing over walls", M + "pawn job; no pose call exists (owner_review_stage header), proved by WallClimbChecks"),
     ("set", r"^(raidersMayClimbWalls|raidersCarryClimbingGear|raiderGearChanceScale|breacherSapperGearChance)$", "Raiders climb walls and carry gear", M + "raid-run state read; no frozen station stages a raid"),

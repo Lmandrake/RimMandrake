@@ -113,12 +113,14 @@ SETTINGS = {
         "digDeepStoneEnabled": True,   # PIT_DEEPSTONE_BUILD_DIGGING_FINALLY_PAYS
         "sandMudSlidesBackEnabled": True, "digSpoilEnabled": True, "fillCostsSpoilEnabled": True,
         "mineGravelEnabled": True, "gravelRecipesEnabled": True,   # DIG_SPOIL_BUILD_GRAVEL_PAYS_ITS_WAY + PIT_DIG_FIX_SAND_SLIDES_BACK_IN
+        "iceDigEnabled": True, "digLabourMultiplier": 4.0,   # ICE_DIG_BUILD_CRUSHED_ICE_MELTS_DOWN + DIG_FILL_TUNE_HOURS_OF_SHOVEL_WORK
         "excavationWallMaterialEnabled": True, "pitLipOcclusionEnabled": True, "pitLipOcclusion": 0.85, "pitLipOccupantCutEnabled": True, "pitLipOccupantCutWidth": 1.0, "pitSinkClampEnabled": True,
         "liquidSurfaceMotionEnabled": True, "liquidWakesEnabled": True, "pitScorchEnabled": True,
         "pitScorchFadeDays": 20.0,                              # visual principles 1-5 (belt_fwvisuals 2026-10-05)
         "trenchCoverEnabled": True, "trenchCoverStrength": 1.0, "trenchCoverCap": 0.9, "trenchAiAvoidsCages": True,   # TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT
         "portableLadderEnabled": True, "portableLadderMaxLevels": 6, "climbingGearEnabled": True, "climbingGearSlowness": 3.0,
         "pitJumpLandsSafe": True, "pitTeleportLandsSafe": True, "pitFreeTravelEnabled": True, "pitRescueLadderEnabled": True,   # PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS
+        "buildInDugWaterEnabled": True,   # DEEP_WATER_BUILD_REFUSED_BY_LIGHT_AFFORDANCE (live rows owed on the item)
     },
     "RimMandrake.FlowWorks.ManyWaters.RiverSteamSettings": {
         "riverSteamEnabled": True, "puffRateMultiplier": 1.0,

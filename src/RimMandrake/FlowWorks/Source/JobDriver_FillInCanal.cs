@@ -21,12 +21,12 @@ namespace RimMandrake.FlowWorks
 				Map map = base.Map;
 				if (map == null || !job.targetA.IsValid)
 				{
-					return RM_ExcavationDepth.WorkPerLevel / 2;
+					return RM_DigDepthMath.LabourWork(RM_ExcavationDepth.WorkPerLevel / 2, RimMandrakeFlowWorksSettings.digLabourMultiplier);
 				}
 				IntVec3 c = job.targetA.Cell;
 				if (!c.InBounds(map))
 				{
-					return RM_ExcavationDepth.WorkPerLevel / 2;
+					return RM_DigDepthMath.LabourWork(RM_ExcavationDepth.WorkPerLevel / 2, RimMandrakeFlowWorksSettings.digLabourMultiplier);
 				}
 				RM_MapComponent_Excavation excavation = map.GetComponent<RM_MapComponent_Excavation>();
 				byte current = excavation != null
@@ -36,7 +36,8 @@ namespace RimMandrake.FlowWorks
 				{
 					current = 1;
 				}
-				return RM_ExcavationDepth.WorkToDeepen((byte)(current - 1)) / 2;
+				// DIG_FILL_TUNE_HOURS_OF_SHOVEL_WORK (owner card 2026-10-25): "... or filling a ditch takes hours".
+				return RM_DigDepthMath.LabourWork(RM_ExcavationDepth.WorkToDeepen((byte)(current - 1)) / 2, RimMandrakeFlowWorksSettings.digLabourMultiplier);
 			}
 		}
 
@@ -54,7 +55,7 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>Owner 2026-10-25: "it takes 1 gravel or 2 chunks to put it all back in again". With targetB set the filler
-		/// first carries one unit to the pit and tips it in as credit (gravel 2, chunk 1); short of a notch's 2 the job ends
+		/// first carries one unit to the pit and tips it in as credit (gravel or crushed ice 2, chunk 1); short of a notch's 2 the job ends
 		/// there with the order kept, and the work giver sends someone for more. Then vanilla's fill work, which runs only on
 		/// a paid-up pit.</summary>
 		protected override IEnumerable<Toil> MakeNewToils()
@@ -86,9 +87,9 @@ namespace RimMandrake.FlowWorks
 					EndJobWith(JobCondition.Incompletable);
 					return;
 				}
-				bool gravel = carried.def == RimMandrakeFlowWorks_DefOf.RM_Gravel;
+				// ICE_DIG_BUILD_CRUSHED_ICE_MELTS_DOWN: by kind (crushed ice pays as gravel does)
 				int n = carried.stackCount;
-				credit.AddCredit(TargetLocA, n * RM_GroundClassMath.CreditOf(gravel));
+				credit.AddCredit(TargetLocA, n * RM_GroundClassMath.CreditOf(RM_DigSpoil.FillKindOf(carried.def)));
 				carried.Destroy();
 			};
 			tip.defaultCompleteMode = ToilCompleteMode.Instant;

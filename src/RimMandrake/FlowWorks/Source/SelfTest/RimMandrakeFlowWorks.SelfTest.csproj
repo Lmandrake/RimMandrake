@@ -226,6 +226,8 @@
     <Compile Include="ReviewFixBatch01Checks.cs" />
     <Compile Include="LevelSetChecks.cs" />
     <Compile Include="RulingsWetDoorWakeBottleChecks.cs" />
+    <Compile Include="DeepWaterBuildChecks.cs" />
+    <Compile Include="SpikePierceChecks.cs" />
     <Compile Include="HoseLegacyChecks.cs" />
     <Compile Include="HoseFuzz.cs" />
     <Compile Include="GptEdge1016Checks.cs" />

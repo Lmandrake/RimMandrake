@@ -532,9 +532,44 @@ namespace RimMandrake.FlowWorks
 			{
 				return null;
 			}
+			// DIG_FILL_TUNE_HOURS_OF_SHOVEL_WORK (owner card 2026-10-25): "Everyone pays." A square not yet paid for is first
+			// paid for: the raider fetches gravel, crushed ice or a chunk from near by and tips it in (the colonists' fill credit);
+			// with none within reach the square is no fill job at all.
+			if (RimMandrakeFlowWorksSettings.fillCostsSpoilEnabled && RM_GroundClassMath.CreditShort(CreditAt(map, c)) > 0)
+			{
+				return FetchJob(p, c);
+			}
 			Warn(p, "RMFlow_RaidersFillTrench");
 			Job job = JobMaker.MakeJob(RM_RaiderTrenchDefOf.RM_RaiderFillTrench, c);
 			job.count = t[i];
+			return job;
+		}
+
+		/// <summary>DIG_FILL_TUNE_HOURS_OF_SHOVEL_WORK: how far a raider goes for fill material (squares, straight line). A raid
+		/// does not empty a colony's stockpile from across the map to cross one trench.</summary>
+		public const float FetchRadius = 40f;
+
+		internal static int CreditAt(Map map, IntVec3 c)
+		{
+			return map?.GetComponent<RM_MapComponent_FillCredit>()?.CreditAt(c) ?? 0;
+		}
+
+		/// <summary>Go for one unit of fill material and tip it into <paramref name="c"/>; null when none lies within
+		/// <see cref="FetchRadius"/> (the raid then has no fill job here: it waits, as with no ladder wood).</summary>
+		private static Job FetchJob(Pawn p, IntVec3 c)
+		{
+			if (RM_RaiderTrenchDefOf.RM_RaiderFetchFill == null)
+			{
+				return null;
+			}
+			Thing material = RM_DigSpoil.FindFillMaterial(p, false, FetchRadius);
+			if (material == null)
+			{
+				return null;
+			}
+			Warn(p, "RMFlow_RaidersFillTrench");
+			Job job = JobMaker.MakeJob(RM_RaiderTrenchDefOf.RM_RaiderFetchFill, c, material);
+			job.count = 1;
 			return job;
 		}
 
@@ -717,6 +752,9 @@ namespace RimMandrake.FlowWorks
 		public static JobDef RM_RaiderSetLadder;
 		public static JobDef RM_RaiderFillTrench;
 
+		/// <summary>DIG_FILL_TUNE_HOURS_OF_SHOVEL_WORK: fetch fill material and tip it into a trench square.</summary>
+		public static JobDef RM_RaiderFetchFill;
+
 		static RM_RaiderTrenchDefOf()
 		{
 			DefOfHelper.EnsureInitializedInCtor(typeof(RM_RaiderTrenchDefOf));
@@ -754,7 +792,9 @@ namespace RimMandrake.FlowWorks
 					RM_RaiderTrenchSettings.raiderLadderSpeed, RM_LadderParity.CarriedLadder(pawn) != null);
 			}
 			// CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP: one level of fill costs the same at every depth (not the deep-dig curve)
-			int work = RM_RaiderTrenchMath.FillWorkPerLevel;
+			// DIG_FILL_TUNE_HOURS_OF_SHOVEL_WORK (owner card 2026-10-25): "Everyone pays and it's backbreaking work": the colonists'
+			// labour multiplier applies to raiders too (the breach speed setting stays its own knob on top)
+			int work = RM_DigDepthMath.LabourWork(RM_RaiderTrenchMath.FillWorkPerLevel, RimMandrakeFlowWorksSettings.digLabourMultiplier);
 			float speed = StatDefOf.MiningSpeed.Worker.IsDisabledFor(pawn) ? 0.5f : pawn.GetStatValue(StatDefOf.MiningSpeed);
 			return RM_RaiderTrenchMath.FillTicks(work, speed, RM_RaiderTrenchSettings.raiderFillSpeed);
 		}
@@ -807,9 +847,22 @@ namespace RimMandrake.FlowWorks
 				{
 					if (eng.CanFillIn(c) && (job.count < 0 || RM_SuperdeepTrap.StepDepthAt(map, eng, c) > job.count))
 					{
+						// DIG_FILL_TUNE_HOURS_OF_SHOVEL_WORK: a level is filled only when paid for (another raider sharing the
+						// square may have spent the credit); the next think fetches more
+						RM_MapComponent_FillCredit credit = map.GetComponent<RM_MapComponent_FillCredit>();
+						bool costs = RimMandrakeFlowWorksSettings.fillCostsSpoilEnabled && credit != null;
+						if (costs && RM_GroundClassMath.CreditShort(credit.CreditAt(c)) > 0)
+						{
+							return;
+						}
 						// LADDER_PARITY_BUILD_NO_KEYS_REQUIRED: remember the depth for the Repair breach order
+						int before = eng.ExcavatedDepthAt(c);
 						RM_BreachScars.NoteFill(map, c);
 						eng.FillIn(c);
+						if (costs)
+						{
+							credit.SetCredit(c, RM_GroundClassMath.CreditAfterFill(credit.CreditAt(c), eng.ExcavatedDepthAt(c) != before));
+						}
 					}
 					return;
 				}
@@ -948,6 +1001,43 @@ namespace RimMandrake.FlowWorks
 			list.Label("  Breach filling speed: x" + raiderFillSpeed.ToString("0.00"), tooltip:
 				"How fast raiders shovel a breach causeway (shipped x0.5: digging in is slow; Orders > Repair breach digs it back out). At x1 one level of fill is half a first-notch dig at ANY depth (a gunner: about 2,800 ticks a level), up to three raiders to a square.");
 			raiderFillSpeed = Mathf.Round(list.Slider(raiderFillSpeed, 0.25f, 4f) * 20f) / 20f;
+		}
+	}
+
+	/// <summary>DIG_FILL_TUNE_HOURS_OF_SHOVEL_WORK (owner card 2026-10-25, "Everyone pays"): a raider carries one unit of fill
+	/// material (targetB) to a trench square (targetA) and tips it in as fill credit, as a colonist filler does
+	/// (JobDriver_FillInCanal). One toil layout always.</summary>
+	public class JobDriver_RM_RaiderFetchFill : JobDriver
+	{
+		public override bool TryMakePreToilReservations(bool errorOnFailed)
+		{
+			return pawn.Reserve(job.targetB, job, 10, 1, null, errorOnFailed);
+		}
+
+		protected override IEnumerable<Toil> MakeNewToils()
+		{
+			AddFinishAction(cond => RM_RaiderTrench.NoteWorkEnd(pawn, job, cond, CurToilIndex));
+			this.FailOn(() => !RM_RaiderTrench.On || !RimMandrakeFlowWorksSettings.fillCostsSpoilEnabled);
+			yield return Toils_Goto.GotoThing(TargetIndex.B, PathEndMode.ClosestTouch).FailOnDespawnedOrNull(TargetIndex.B)
+				.FailOnSomeonePhysicallyInteracting(TargetIndex.B);
+			yield return Toils_Haul.StartCarryThing(TargetIndex.B, false, true);
+			yield return Toils_Goto.GotoCell(TargetIndex.A, PathEndMode.Touch);
+			Toil tip = ToilMaker.MakeToil("RM_RaiderTipFill");
+			tip.initAction = delegate
+			{
+				Thing carried = pawn.carryTracker.CarriedThing;
+				RM_MapComponent_FillCredit credit = Map.GetComponent<RM_MapComponent_FillCredit>();
+				int each = carried == null ? 0 : RM_GroundClassMath.CreditOf(RM_DigSpoil.FillKindOf(carried.def));
+				if (credit == null || each <= 0)
+				{
+					EndJobWith(JobCondition.Incompletable);
+					return;
+				}
+				credit.AddCredit(job.targetA.Cell, carried.stackCount * each);
+				carried.Destroy();
+			};
+			tip.defaultCompleteMode = ToilCompleteMode.Instant;
+			yield return tip;
 		}
 	}
 }

@@ -58,6 +58,12 @@ namespace RimMandrake.FlowWorks
 			return RimMandrakeFlowWorksSettings.digSpoilEnabled && ClassAt(map, c) == RM_GroundClass.Rubble;
 		}
 
+		/// <summary>ICE_DIG_BUILD_CRUSHED_ICE_MELTS_DOWN: ice and packed snow dig at rock speed.</summary>
+		public static bool IsIceAt(Map map, IntVec3 c)
+		{
+			return RimMandrakeFlowWorksSettings.iceDigEnabled && ClassAt(map, c) == RM_GroundClass.Ice;
+		}
+
 		/// <summary>The one ground gate the designator and the work giver share. <paramref name="terrain"/> is the cell's top
 		/// terrain as the caller read it; a dug cell is judged by the ground it was cut from. Null: may be dug.</summary>
 		public static string DigRefusal(Map map, IntVec3 c, TerrainDef terrain, bool surface)
@@ -82,13 +88,23 @@ namespace RimMandrake.FlowWorks
 			{
 				return null;
 			}
-			return "Must designate diggable soil, rubble or bare rock ground.";
+			// ICE_DIG_BUILD_CRUSHED_ICE_MELTS_DOWN (owner card 2026-10-25): "Ice is definitely diggable."
+			if (RimMandrakeFlowWorksSettings.iceDigEnabled && ClassOf(terrain) == RM_GroundClass.Ice)
+			{
+				return null;
+			}
+			return "Must designate diggable soil, rubble, ice or bare rock ground.";
 		}
 
 		/// <summary>One gravel on the lip of the cut (merges into a stack there when it can). True when placed.</summary>
 		public static bool PlaceGravel(Map map, IntVec3 near, bool forbid)
 		{
-			ThingDef def = RimMandrakeFlowWorks_DefOf.RM_Gravel;
+			return PlaceSpoil(map, RimMandrakeFlowWorks_DefOf.RM_Gravel, near, forbid);
+		}
+
+		/// <summary>One unit of <paramref name="def"/> (gravel, crushed ice) on the lip of the cut. True when placed.</summary>
+		public static bool PlaceSpoil(Map map, ThingDef def, IntVec3 near, bool forbid)
+		{
 			if (def == null || map == null)
 			{
 				return false;
@@ -115,20 +131,42 @@ namespace RimMandrake.FlowWorks
 			return d != null && d.thingCategories != null && d.thingCategories.Contains(ThingCategoryDefOf.StoneChunks);
 		}
 
-		/// <summary>The material a filler fetches: the nearest reachable, unforbidden gravel it can take one of, else the nearest
-		/// stone chunk. Null when there is none.</summary>
-		public static Thing FindFillMaterial(Pawn pawn, bool forced)
+		/// <summary>What a fill material is, for its credit (RM_GroundClassMath.CreditOf): gravel, crushed ice, a stone chunk, or
+		/// none (not fill material).</summary>
+		public static RM_CutSpoil FillKindOf(ThingDef d)
 		{
-			ThingDef gravel = RimMandrakeFlowWorks_DefOf.RM_Gravel;
-			System.Predicate<Thing> ok = t => !t.IsForbidden(pawn) && pawn.CanReserve(t, 10, 1, null, forced);
-			Thing found = gravel == null ? null : GenClosest.ClosestThingReachable(pawn.Position, pawn.Map, ThingRequest.ForDef(gravel),
-				PathEndMode.ClosestTouch, TraverseParms.For(pawn), 9999f, ok);
-			if (found != null)
+			if (d == null)
 			{
-				return found;
+				return RM_CutSpoil.None;
+			}
+			if (d == RimMandrakeFlowWorks_DefOf.RM_Gravel)
+			{
+				return RM_CutSpoil.Gravel;
+			}
+			if (d == RimMandrakeFlowWorks_DefOf.RM_CrushedIce)
+			{
+				return RM_CutSpoil.CrushedIce;
+			}
+			return IsStoneChunk(d) ? RM_CutSpoil.Chunk : RM_CutSpoil.None;
+		}
+
+		/// <summary>The material a filler fetches: the nearest reachable, unforbidden gravel it can take one of, else crushed ice,
+		/// else the nearest stone chunk, within <paramref name="maxDistance"/>. Null when there is none.</summary>
+		public static Thing FindFillMaterial(Pawn pawn, bool forced, float maxDistance = 9999f)
+		{
+			System.Predicate<Thing> ok = t => !t.IsForbidden(pawn) && pawn.CanReserve(t, 10, 1, null, forced);
+			// ICE_DIG_BUILD_CRUSHED_ICE_MELTS_DOWN: crushed ice is a full load as gravel is, after gravel (it keeps no better)
+			foreach (ThingDef def in new[] { RimMandrakeFlowWorks_DefOf.RM_Gravel, RimMandrakeFlowWorks_DefOf.RM_CrushedIce })
+			{
+				Thing found = def == null ? null : GenClosest.ClosestThingReachable(pawn.Position, pawn.Map, ThingRequest.ForDef(def),
+					PathEndMode.ClosestTouch, TraverseParms.For(pawn), maxDistance, ok);
+				if (found != null)
+				{
+					return found;
+				}
 			}
 			return GenClosest.ClosestThingReachable(pawn.Position, pawn.Map, ThingRequest.ForGroup(ThingRequestGroup.Chunk),
-				PathEndMode.ClosestTouch, TraverseParms.For(pawn), 9999f, t => IsStoneChunk(t.def) && ok(t));
+				PathEndMode.ClosestTouch, TraverseParms.For(pawn), maxDistance, t => IsStoneChunk(t.def) && ok(t));
 		}
 	}
 

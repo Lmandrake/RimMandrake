@@ -49,6 +49,43 @@ namespace RimMandrake.FlowWorks
 
 		public const int TicksPerDay = 60000;
 
+		/// <summary>DIG_FILL_TUNE_HOURS_OF_SHOVEL_WORK (owner card 2026-10-25: "Everyone pays and it's backbreaking work. Like real
+		/// life. Digging a ditch or filling a ditch takes hours."): the default labour multiplier on every dig and fill (the
+		/// Mod Settings slider). At x4 a soil first notch is 12,800 work = 3.0 h for a digger at MiningSpeed 1.0, its fill
+		/// 6,400 = 1.5 h; rock and rubble x4 again (12 h a notch).</summary>
+		public const float DefaultLabourMultiplier = 4f;
+
+		public const float MinLabourMultiplier = 0.25f;
+
+		public const float MaxLabourMultiplier = 8f;
+
+		/// <summary>Vanilla ticks per in-game hour.</summary>
+		public const int TicksPerHour = 2500;
+
+		/// <summary>The setting as used: NaN or out of range is held to <see cref="MinLabourMultiplier"/>..<see cref="MaxLabourMultiplier"/>.</summary>
+		public static float ClampLabour(float multiplier)
+		{
+			if (float.IsNaN(multiplier))
+			{
+				return DefaultLabourMultiplier;
+			}
+			return multiplier < MinLabourMultiplier ? MinLabourMultiplier : (multiplier > MaxLabourMultiplier ? MaxLabourMultiplier : multiplier);
+		}
+
+		/// <summary>One job's work under the labour multiplier (at least 1, never overflowing an int).</summary>
+		public static int LabourWork(int work, float multiplier)
+		{
+			double w = Math.Round(Math.Max(1, work) * (double)ClampLabour(multiplier), MidpointRounding.AwayFromZero);
+			return w >= int.MaxValue ? int.MaxValue : (int)Math.Max(1.0, w);
+		}
+
+		/// <summary>In-game hours one digger takes for <paramref name="work"/> at a mining speed (vanilla's 1.7 work a tick at speed 1).</summary>
+		public static double HoursOfWork(long work, float miningSpeed = 1f)
+		{
+			float s = miningSpeed > 0f ? miningSpeed : 1f;
+			return work / (WorkPerTickAtSpeedOne * s * TicksPerHour);
+		}
+
 		/// <summary>The cap setting (a float slider in notches) as notches, rounded, held to 4..40.</summary>
 		public static int ClampCap(float notches)
 		{

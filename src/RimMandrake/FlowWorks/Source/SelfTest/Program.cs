@@ -2138,6 +2138,8 @@ namespace RimMandrake.FlowWorks.SelfTest
             ReviewFixChecks.Run(Case);         // code-review batches 2-4 behaviour fixes (2026-10-11)
             ReviewBatch56Checks.Run(Case);     // code-review batches 5+6 behaviour fixes (2026-10-11); also the d1898bef91 re-review fixes
             ReviewFixBatch01Checks.Run(Case);  // code-review fixes batch 01: natural tar, dig/fill designations, dig finds
+            DeepWaterBuildChecks.Run(Case);  // DEEP_WATER_BUILD_REFUSED_BY_LIGHT_AFFORDANCE; SUSPENSION_TOWER_DIAGNOSE_UNSUPPLIED_IN_POOL
+            SpikePierceChecks.Run(Case);     // SPIKES_PIERCE_TUNE_LIKE_VANILLA_TRAP
             RulingsWetDoorWakeBottleChecks.Run(Case);  // rulings #18 wet-cell doors, #19 wakes; the bottle-loop fix
             GptFixesAChecks.Run(Case);         // GPT consult fixes, builder A: liquid net, tanks, hoses, bottles (GptFixesAChecks.cs)
             GptBatchA1024Checks.Run(Case);     // GPT review 2026-10-23 batch A: liquid-sim core (GptBatchA1024Checks.cs)

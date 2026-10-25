@@ -373,6 +373,17 @@ namespace RimMandrake.FlowWorks
 
 		public const float SpikeDamagePerBodySize = 40f;
 
+		/// <summary>SPIKES_PIERCE_TUNE_LIKE_VANILLA_TRAP: armour penetration per point of spike damage, vanilla's spike trap
+		/// rule (Building_TrapDamager.SpringSub, 1.6 decompiled 2026-10-25: armorPenetration = damage x 0.015, the same 1.5%
+		/// vanilla gives a melee hit with no stated penetration).</summary>
+		public const float SpikeArmorPenetrationPerDamage = 0.015f;
+
+		/// <summary>Armour penetration of ONE spike hit of <paramref name="perHit"/> damage (vanilla trap rule).</summary>
+		public static float SpikeArmorPenetration(float perHit)
+		{
+			return Math.Max(0f, perHit) * SpikeArmorPenetrationPerDamage;
+		}
+
 		/// <summary>Damage of ONE spike hit: max(1, bodySize x 40 x multiplier / 3).</summary>
 		public static float SpikeDamagePerHit(float bodySize, float multiplier)
 		{
@@ -426,6 +437,28 @@ namespace RimMandrake.FlowWorks
 		public static bool FlowDoorStandsOn(bool vanillaAllows, bool isFlowDoor, int dugDepth, int fill)
 		{
 			return vanillaAllows || (isFlowDoor && dugDepth > 0 && fill > 0);
+		}
+
+		/// <summary>DEEP_WATER_BUILD_REFUSED_BY_LIGHT_AFFORDANCE (owner 2026-10-25: "Gotta think about building where it's
+		/// already underwater too: we should just let that happen, it needs to happen."). Which buildings stand in the water of
+		/// a flooded dug cell: the things that are built up from the floor and stand in water in life. Walls (any stuff, any
+		/// mod's wall: ThingDef.IsWall), fences, vanilla's column and any def carrying RM_StandsInWaterExtension (the opt-in for another mod's pillar or pier). Everything else (beds,
+		/// tables, benches, machines) keeps vanilla's refusal: the wet rungs are vanilla water terrain, and vanilla deep water
+		/// has no affordances at all. Suspension bridge parts are not decided here: RM_Patch_SuspensionAffordance owns them
+		/// (towers and decks already stand on any dug cell; an anchor is refused on a wet ledge on purpose).</summary>
+		public static bool StandsInWater(bool isWall, bool isFence, bool isColumn, bool optedIn)
+		{
+			return isWall || isFence || isColumn || optedIn;
+		}
+
+		/// <summary>DEEP_WATER_BUILD_REFUSED_BY_LIGHT_AFFORDANCE: may a water-standing structure's blueprint, frame or building
+		/// stand on a cell? Vanilla's yes stays; otherwise only with the setting on, a def that <see cref="StandsInWater"/>, a
+		/// cell somebody dug (<paramref name="dugDepth"/> &gt; 0) and liquid in it now (<paramref name="fill"/> &gt; 0). A natural
+		/// lake, river or ocean is never dug, so it stays refused (owner scope: OUR flooded cuts). Any depth of water: chest-deep
+		/// and deep rungs alike.</summary>
+		public static bool StandsInDugWater(bool vanillaAllows, bool enabled, bool standsInWater, int dugDepth, int fill)
+		{
+			return vanillaAllows || (enabled && standsInWater && dugDepth > 0 && fill > 0);
 		}
 
 		// ── PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP (design/RimMandrake/relative_depth_climb_design_2026-10-12.md §8) ──

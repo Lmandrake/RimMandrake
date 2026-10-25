@@ -43,12 +43,14 @@ namespace RimMandrake.FlowWorks
 				int work = RM_ExcavationDepth.WorkToDeepen(current);
 				// DIG_ROCK_TUNE_STONE_FIGHTS_BACK: digging through rock is much harder than soft ground.
 				// DIG_SPOIL_BUILD_GRAVEL_PAYS_ITS_WAY (card 2026-10-25): rubble (salt crust, asphalt, packed snow) digs at rock speed.
+				// ICE_DIG_BUILD_CRUSHED_ICE_MELTS_DOWN: ice and packed snow too.
 				if ((RimMandrakeFlowWorksSettings.digRockGroundEnabled && RM_DigDiscovery.RockGroundAt(map, c) != null)
-					|| RM_DigSpoil.IsRubbleAt(map, c))
+					|| RM_DigSpoil.IsRubbleAt(map, c) || RM_DigSpoil.IsIceAt(map, c))
 				{
 					work = RM_DigDiscoveryMath.RockWork(work, RimMandrakeFlowWorksSettings.digRockWorkMultiplier);
 				}
-				return work;
+				// DIG_FILL_TUNE_HOURS_OF_SHOVEL_WORK (owner card 2026-10-25): "Digging a ditch ... takes hours".
+				return RM_DigDepthMath.LabourWork(work, RimMandrakeFlowWorksSettings.digLabourMultiplier);
 			}
 		}
 

@@ -13,6 +13,9 @@ namespace RimMandrake.FlowWorks
 		Slumps,
 		Floor,
 		Water,
+		/// <summary>ICE_DIG_BUILD_CRUSHED_ICE_MELTS_DOWN (owner card 2026-10-25): "Cutting into packed snow or ice should give
+		/// crushed ice ... Ice is definitely diggable." Rock-speed digging; every cut leaves crushed ice.</summary>
+		Ice,
 	}
 
 	/// <summary>What one newly cut depth leaves on the lip.</summary>
@@ -21,26 +24,36 @@ namespace RimMandrake.FlowWorks
 		None,
 		Gravel,
 		Chunk,
+		/// <summary>ICE_DIG_BUILD_CRUSHED_ICE_MELTS_DOWN: "acts like gravel on cold maps".</summary>
+		CrushedIce,
 	}
 
 	public static class RM_GroundClassMath
 	{
-		/// <summary>Card ruling 2026-10-25: salt crusts, packed snow and asphalt dig as RUBBLE (rock-speed digging, gravel
+		/// <summary>Card ruling 2026-10-25: salt crusts and asphalt dig as RUBBLE (packed snow, on the first card, is ICE now:
+		/// see <see cref="IceTerrains"/>) (rock-speed digging, gravel
 		/// only, never chunks). Gravel ground and cooled lava are broken rock already. An explicit list, never a name
 		/// pattern: "contains Snow" would take loose snow too.</summary>
 		public static readonly HashSet<string> RubbleTerrains = new HashSet<string>
 		{
 			"RUT_Jawa_SaltCrust", "RM_MiasmaSaltCrust", "VEE_Salt",
 			"WastelandAsphalt", "RM_WastelandBrokenAsphalt", "BrokenAsphalt",
-			"RM_PackedSnow", "VEE_DenseSnow_Rough",
 			"Gravel", "CooledLava",
+		};
+
+		/// <summary>ICE_DIG_BUILD_CRUSHED_ICE_MELTS_DOWN (owner card 2026-10-25, superseding the rubble card for packed snow):
+		/// packed snow and ice dig as ICE. An explicit list again: loose snow is not on it.</summary>
+		public static readonly HashSet<string> IceTerrains = new HashSet<string>
+		{
+			"Ice", "RM_PackedIce", "RM_ChillIceBedrock",
+			"RM_PackedSnow", "VEE_DenseSnow_Rough",
 		};
 
 		/// <summary>Owner 2026-10-25: "you can't dig in sand or mud (just slides back in)". Name words for modded mud,
 		/// slime, quicksand and marsh that do not say so in their categoryType.</summary>
 		private static readonly string[] SlumpWords = { "Mud", "Slime", "Quicksand", "Marsh" };
 
-		/// <summary>Precedence: water, then the card's rubble list (it outranks a layerable flag and a Sand category: salt
+		/// <summary>Precedence: water, then the ice list, then the card's rubble list (it outranks a layerable flag and a Sand category: salt
 		/// crusts are categoryType Sand), then player floors, then everything that slides back in, then rock, then soil.</summary>
 		public static RM_GroundClass Classify(string defName, bool isWater, bool layerable, bool isRock, bool isSoil,
 			bool diggable, string categoryType)
@@ -48,6 +61,10 @@ namespace RimMandrake.FlowWorks
 			if (isWater)
 			{
 				return RM_GroundClass.Water;
+			}
+			if (defName != null && IceTerrains.Contains(defName))
+			{
+				return RM_GroundClass.Ice;
 			}
 			if (defName != null && RubbleTerrains.Contains(defName))
 			{
@@ -105,6 +122,8 @@ namespace RimMandrake.FlowWorks
 					return chunkRolled ? RM_CutSpoil.Chunk : RM_CutSpoil.Gravel;
 				case RM_GroundClass.Rubble:
 					return RM_CutSpoil.Gravel;
+				case RM_GroundClass.Ice:
+					return RM_CutSpoil.CrushedIce;
 				default:
 					return RM_CutSpoil.None;
 			}
@@ -116,6 +135,33 @@ namespace RimMandrake.FlowWorks
 		public static int CreditOf(bool gravel)
 		{
 			return gravel ? 2 : 1;
+		}
+
+		/// <summary>Credit one unit of fill material pays, by kind (Codex review 2026-10-25: crushed ice must not fall through to
+		/// the chunk rate). Gravel and crushed ice fund a notch each; a chunk half of one; anything else nothing.</summary>
+		public static int CreditOf(RM_CutSpoil kind)
+		{
+			switch (kind)
+			{
+				case RM_CutSpoil.Gravel:
+				case RM_CutSpoil.CrushedIce:
+					return CreditPerNotch;
+				case RM_CutSpoil.Chunk:
+					return 1;
+				default:
+					return 0;
+			}
+		}
+
+		/// <summary>ICE_DIG_BUILD_CRUSHED_ICE_MELTS_DOWN (owner: "Turns into water if warmed ... Also a full 1x1 tank of water
+		/// worth of course"): the water one crushed ice melts to, in dL: one tank square, 2 m deep (RM_Volume yardstick,
+		/// 4,000 L). The same number for melting where it lies and for the melter.</summary>
+		public const int CrushedIceUnits = RM_Volume.UnitsPerSquare;
+
+		/// <summary>The water a stack of <paramref name="count"/> crushed ice melts to (dL; never overflows).</summary>
+		public static long MeltUnits(int count)
+		{
+			return count <= 0 ? 0L : (long)count * CrushedIceUnits;
 		}
 
 		/// <summary>Credit still owed before a notch can be filled.</summary>

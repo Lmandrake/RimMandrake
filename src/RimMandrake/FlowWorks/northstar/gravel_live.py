@@ -18,7 +18,21 @@ PROVE  on a cleared 17x17 plot, with the five gravel toggles on, rock-ground dig
        GS_mined_rock_miss_yields_gravel
                                   4 spawned Granite walls, 4 apart, each mined by an ordered Mine job: each wall leaves exactly
                                   one of ChunkGranite or RM_Gravel within 1 square, all four measured, at least one leaving gravel.
-EXPECT the four rows PASS.
+       ICE_DIG_BUILD_CRUSHED_ICE_MELTS_DOWN (owner card 2026-10-25):
+       GS_ice_cut_yields_crushed_ice
+                                  an Ice square: an ordered cut D0 -> D1 leaves exactly 1 RM_CrushedIce, no gravel, no chunk.
+       GS_crushed_ice_melts_to_water
+                                  1 RM_CrushedIce spawned on open ground above 0 C: gone within 15000 ticks, and the world
+                                  release ledgers (RM_IceMelter.ProofMeltLedger: spilled + into water + nearby) rose by exactly
+                                  40000 dL (4,000 L, a 1x1 tank). A cold site -> UNMEASURED(SITE).
+       DIG_FILL_TUNE_HOURS_OF_SHOVEL_WORK (owner card 2026-10-25):
+       GS_dig_labour_multiplier_scales_the_cut
+                                  the same colonist cuts one soil square D0 -> D1 at digLabourMultiplier 1.0, then another at
+                                  4.0 (the default): the second takes 3x..5x the ticks of the first (walk time included).
+       Owed, not staged here: the ice melter filling a tank (power + tank + bill), and a raider fetching fill before filling
+       (a raid at a trench, raid_ladder_live.py) -- both pinned offline in GroundClassChecks.
+       The rows above run at digLabourMultiplier 1.0 (legacy work) so their 6000-tick waits hold.
+EXPECT the seven rows PASS.
 LIES   a job never taken or a cut never made measures nothing -> UNMEASURED(SITE); spoil already lying there is excluded by a
        before/after stack diff; four walls that all drop a chunk prove nothing about a miss -> UNMEASURED(MOD), never PASS;
        a deployed DLL without the gravel build has no RM_Gravel setting -> UNMEASURED(HARNESS).
@@ -34,16 +48,24 @@ if HERE not in sys.path:
     sys.path.insert(0, HERE)
 NSP = "RimMandrake.FlowWorks.RM_NorthstarProofs"
 S_FW = "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings"
+MELTER = "RimMandrake.FlowWorks.RM_IceMelter"
 ITEM = "DIG_SPOIL_BUILD_GRAVEL_PAYS_ITS_WAY"
 GRAVEL = "RM_Gravel"
 ROCK_TERRAIN, ROCK_WALL, ROCK_CHUNK = "Granite_Rough", "Granite", "ChunkGranite"
 SLIDE_WORDS = "slide back in"
 ROWS = ("GS_sand_refused", "GS_fill_costs_one_gravel", "GS_rock_ground_cut_yields_gravel_or_chunk",
-        "GS_mined_rock_miss_yields_gravel")
+        "GS_mined_rock_miss_yields_gravel", "GS_ice_cut_yields_crushed_ice", "GS_crushed_ice_melts_to_water",
+        "GS_dig_labour_multiplier_scales_the_cut")
+ITEM_ICE, ITEM_LABOUR = "ICE_DIG_BUILD_CRUSHED_ICE_MELTS_DOWN", "DIG_FILL_TUNE_HOURS_OF_SHOVEL_WORK"
+ROW_ITEM = {"GS_ice_cut_yields_crushed_ice": ITEM_ICE, "GS_crushed_ice_melts_to_water": ITEM_ICE,
+            "GS_dig_labour_multiplier_scales_the_cut": ITEM_LABOUR}
+ICE, ICE_TERRAIN, MELT_DL = "RM_CrushedIce", "Ice", 40000
+LABOUR_RATIO = (3.0, 5.0)
 RUN_SETTINGS = {"sandMudSlidesBackEnabled": True, "digSpoilEnabled": True, "fillCostsSpoilEnabled": True,
                 "mineGravelEnabled": True, "gravelRecipesEnabled": True, "digRockGroundEnabled": True,
                 "digRockChunksEnabled": True, "digRockChunkMultiplier": 1.0, "digDeepStoneEnabled": False,
-                "digFindsEnabled": False, "digCostRisesWithDepth": False}
+                "digFindsEnabled": False, "digCostRisesWithDepth": False,
+                "iceDigEnabled": True, "digLabourMultiplier": 1.0}
 
 
 class MeasureError(Exception):
@@ -121,6 +143,34 @@ def mine_verdict(per_wall, walls):
     return "PASS"
 
 
+def ice_cut_verdict(delta, depth1=1):
+    """One cut through ice ground: exactly one crushed ice, nothing else."""
+    if depth1 != 1:
+        return "FAIL"
+    return "PASS" if delta.get(ICE, 0) == 1 and not delta.get(GRAVEL) and not delta.get(ROCK_CHUNK) else "FAIL"
+
+
+def melt_verdict(gone, ledger0, ledger1):
+    """The ice is gone and the world took exactly MELT_DL more (spilled + into water + nearby)."""
+    if not gone or ledger0 is None or ledger1 is None:
+        return "UNMEASURED"
+    return "PASS" if sum(ledger1[:3]) - sum(ledger0[:3]) == MELT_DL else "FAIL"
+
+
+def labour_verdict(t1, t4):
+    if not t1 or not t4:
+        return "UNMEASURED"
+    return "PASS" if LABOUR_RATIO[0] <= t4 / float(t1) <= LABOUR_RATIO[1] else "FAIL"
+
+
+def parse_ledger(resp):
+    try:
+        v = (resp or {}).get("result")
+        return [int(x) for x in str(v).split(";")]
+    except (TypeError, ValueError):
+        return None
+
+
 def _same_number(a, b):
     try:
         return abs(float(a) - float(b)) < 1e-6
@@ -147,7 +197,7 @@ def main():
         os.replace(out + ".tmp", out)
 
     def row(rid, st, cls, det):
-        rows.append({"id": rid, "status": st, "class": cls, "item": ITEM, "detail": det})
+        rows.append({"id": rid, "status": st, "class": cls, "item": ROW_ITEM.get(rid, ITEM), "detail": det})
         print("%-44s %-10s %-6s %s" % (rid, st, cls, json.dumps(det, default=str)[:600]), flush=True)
         save()
 
@@ -173,10 +223,24 @@ def main():
         return things_of(B.call("jawa/list_things", **kw))
 
     def spoil_near(cx, cz, r):
-        return stacks(things(cx - r, cz - r, 2 * r + 1, 2 * r + 1), (GRAVEL, ROCK_CHUNK))
+        return stacks(things(cx - r, cz - r, 2 * r + 1, 2 * r + 1), (GRAVEL, ROCK_CHUNK, ICE))
 
     def depth(cx, cz):
         return (B.call("jawa/flowworks_excavation_drive", x=cx, z=cz, deepenLevels=0, setFill=-1) or {}).get("depth")
+
+    def cut_once(cx, cz, terrain, limit=6000):
+        """Order one cut at (cx, cz) on `terrain`; -> (ticks or None, depth after, detail)."""
+        B.call("jawa/set_terrain", terrainDef=terrain, x=cx, z=cz)
+        d0 = depth(cx, cz)
+        B.call("jawa/designate_batch", action="add", designation="RM_DigCanal", rect="%d,%d,1,1" % (cx, cz))
+        pr = B.call("jawa/flowworks_job_probe", x=cx, z=cz, kind="dig", pawnId=pid) or {}
+        od = B.call("jawa/ordered_job", pawnId=pid, jobDef="RM_DigCanalJob", targetAX=cx, targetAZ=cz, waitTicks=0) or {}
+        ok_, why_ = job_gate(pr, od, "RM_DigCanalJob")
+        det_ = {"terrain": pr.get("terrain"), "depth0": d0}
+        if pr.get("terrain") != terrain or d0 != 0 or not ok_:
+            return None, d0, dict(det_, why="not %s at D0 or the dig job was not taken: %s" % (terrain, why_))
+        at_, d1_ = wait_depth(cx, cz, d0, limit)
+        return at_, d1_, det_
 
     def wait_depth(cx, cz, d0, limit=6000):
         t = 0
@@ -192,6 +256,8 @@ def main():
     sand, soil = (ox + 2, oz + 12), (ox + 4, oz + 12)
     fill, fill_mat = (ox + 10, oz + 12), (ox + 13, oz + 12)
     cut = (ox + 5, oz + 6)
+    ice_cut, melt_at = (ox + 9, oz + 6), (ox + 13, oz + 6)
+    lab1, lab4 = (ox + 3, oz + 15), (ox + 7, oz + 15)
     walls = [(ox + 1 + 4 * i, oz + 1) for i in range(4)]
     if a.fresh_map:
         B.call("rimworld/go_to_main_menu")
@@ -358,6 +424,47 @@ def main():
         why = {"UNMEASURED": "a wall went unmeasured, or every wall dropped a chunk (the miss path never ran)"}.get(mv)
         row("GS_mined_rock_miss_yields_gravel", mv, "SITE" if not per_wall else "MOD",
             {"walls": wall_log, "perWall": per_wall, "why": why})
+
+        # 5. ICE_DIG: a cut through ice ground leaves one crushed ice
+        s0 = spoil_near(ice_cut[0], ice_cut[1], 3)
+        at, i1, det = cut_once(ice_cut[0], ice_cut[1], ICE_TERRAIN)
+        step(10)
+        delta = spoil_delta(s0, spoil_near(ice_cut[0], ice_cut[1], 3))
+        det.update(depth1=i1, cutAt=at, delta=delta)
+        if at is None:
+            row("GS_ice_cut_yields_crushed_ice", "UNMEASURED", "SITE", dict(det, why=det.get("why") or "no cut in 6000 ticks"))
+        else:
+            row("GS_ice_cut_yields_crushed_ice", ice_cut_verdict(delta, i1), "MOD", det)
+
+        # 6. ICE_DIG: loose crushed ice melts into a tank's worth of water, conserved. Row 5's crushed ice is cleared first:
+        # melting while this row measures, it would double the ledger delta.
+        for t5 in things(ice_cut[0] - 4, ice_cut[1] - 4, 9, 9, ICE):
+            B.call("jawa/destroy_batch", rects="%d,%d,1,1" % (t5.get("x"), t5.get("z")), categories="Item")
+        B.call("rimworld/spawn_thing", defName=ICE, stackCount=1, x=melt_at[0], z=melt_at[1])
+        lg0 = parse_ledger(B.call("jawa/static_call", type=MELTER, method="ProofMeltLedger", args=""))
+        placed = things(melt_at[0], melt_at[1], 1, 1, ICE)
+        t = 0
+        while placed and t < 15000 and things(melt_at[0], melt_at[1], 1, 1, ICE):
+            step(500)
+            t += 500
+        gone = bool(placed) and not things(melt_at[0], melt_at[1], 1, 1, ICE)
+        lg1 = parse_ledger(B.call("jawa/static_call", type=MELTER, method="ProofMeltLedger", args=""))
+        mv = melt_verdict(gone, lg0, lg1)
+        det = {"spawned": bool(placed), "gone": gone, "ticks": t, "ledger0": lg0, "ledger1": lg1}
+        why = None if mv != "UNMEASURED" else ("no crushed ice spawned" if not placed else "ledger unreadable (DLL older?)"
+                                                if lg0 is None or lg1 is None else "not melted in 15000 ticks (cold site?)")
+        row("GS_crushed_ice_melts_to_water", mv, "MOD" if mv != "UNMEASURED" else ("HARNESS" if placed and gone else "SITE"),
+            dict(det, why=why))
+
+        # 7. DIG_FILL: the labour multiplier scales a soil cut (x1, then x4 = the default)
+        t1, _, det1 = cut_once(lab1[0], lab1[1], "Soil", 6000)
+        sset("digLabourMultiplier", 4.0)
+        t4, _, det4 = cut_once(lab4[0], lab4[1], "Soil", 40000)
+        sset("digLabourMultiplier", 1.0)
+        lv = labour_verdict(t1, t4)
+        row("GS_dig_labour_multiplier_scales_the_cut", lv, "MOD" if lv != "UNMEASURED" else "SITE",
+            {"x1": det1, "x4": det4, "ticksX1": t1, "ticksX4": t4, "ratio": (t4 / float(t1)) if t1 and t4 else None,
+             "want": LABOUR_RATIO})
         return 0 if all(r["status"] == "PASS" for r in rows) else 1
     except MeasureError as e:
         unmeasured_rest("HARNESS", str(e))

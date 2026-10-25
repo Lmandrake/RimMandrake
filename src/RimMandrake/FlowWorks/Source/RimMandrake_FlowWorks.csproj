@@ -126,6 +126,7 @@
     <Compile Include="RM_DigDiscovery.cs" />
     <Compile Include="RM_GroundClassMath.cs" />
     <Compile Include="RM_DigSpoil.cs" />
+    <Compile Include="RM_IceMelter.cs" />
     <Compile Include="RM_DigDiscoveryMath.cs" />
     <Compile Include="RM_LegacyFillProof.cs" />
     <Compile Include="Superdeep\RM_PitRooms.cs" />
@@ -140,6 +141,7 @@
     <Compile Include="RM_SwimMath.cs" />
     <Compile Include="Swimming\RM_Swim.cs" />
     <Compile Include="Swimming\RM_WetCosts.cs" />
+    <Compile Include="Swimming\RM_SwimDelivery.cs" />   <!-- SUSPENSION_TOWER_DIAGNOSE_UNSUPPLIED_IN_POOL -->
     <Compile Include="RM_WetCostMath.cs" />
     <Compile Include="RM_PitFillEffects.cs" />
     <Compile Include="RM_SlimeMath.cs" />

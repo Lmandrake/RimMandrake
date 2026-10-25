@@ -340,12 +340,18 @@ namespace RimMandrake.FlowWorks
 	/// A flow door on a dug cell holding liquid passes it (RM_PitTrapMath.FlowDoorStandsOn). Early-outs on every
 	/// already-allowed call and every non-door def, so map generation pays one bool test.</summary>
 	[HarmonyPatch(typeof(GenConstruct), nameof(GenConstruct.CanBuildOnTerrain))]
-	[RimMandrake.Shared.PatchFeature("Sluices and grates stand on wet canal cells")]
+	[RimMandrake.Shared.PatchFeature("Sluices, grates, ladders, walls and pillars stand in flooded cuts")]
 	public static class RM_Patch_FlowDoorOnWetCanal
 	{
-		public static void Postfix(ref bool __result, BuildableDef entDef, IntVec3 c, Map map, Rot4 rot, Thing thingToIgnore)
+		public static void Postfix(ref bool __result, BuildableDef entDef, IntVec3 c, Map map, Rot4 rot, Thing thingToIgnore, ThingDef stuffDef)
 		{
-			if (__result || map == null || !(entDef is ThingDef td) || !(RM_FlowDoorRules.IsFlowDoorDef(td) || StandsInWetPit(td)))
+			if (__result || map == null || !(entDef is ThingDef td))
+			{
+				return;
+			}
+			bool door = RM_FlowDoorRules.IsFlowDoorDef(td) || StandsInWetPit(td);
+			bool standing = !door && RimMandrakeFlowWorksSettings.buildInDugWaterEnabled && StandsInWater(td);
+			if (!door && !standing)
 			{
 				return;
 			}
@@ -354,11 +360,21 @@ namespace RimMandrake.FlowWorks
 			{
 				return;
 			}
+			TerrainAffordanceDef need = td.GetTerrainAffordanceNeed(stuffDef);
 			CellRect rect = GenAdj.OccupiedRect(c, rot, td.Size);
 			foreach (IntVec3 cell in rect)
 			{
-				if (!cell.InBounds(map) || !RM_PitTrapMath.FlowDoorStandsOn(false, true, eng.ExcavatedDepthAt(cell), eng.FillAt(cell))
-					|| HasTerrainOrder(cell, map, thingToIgnore))
+				if (!cell.InBounds(map) || HasTerrainOrder(cell, map, thingToIgnore))
+				{
+					return;
+				}
+				if (need != null && cell.GetAffordances(map).Contains(need))
+				{
+					continue;   // a footprint cell vanilla's own affordance already carries (a part on the bank, part in the cut)
+				}
+				int dug = eng.ExcavatedDepthAt(cell), fill = eng.FillAt(cell);
+				if (door ? !RM_PitTrapMath.FlowDoorStandsOn(false, true, dug, fill)
+					: !RM_PitTrapMath.StandsInDugWater(false, true, true, dug, fill))
 				{
 					return;
 				}
@@ -376,6 +392,16 @@ namespace RimMandrake.FlowWorks
 				|| (td.thingClass != null && typeof(RM_Building_PitRamp).IsAssignableFrom(td.thingClass)));
 		}
 
+		/// <summary>DEEP_WATER_BUILD_REFUSED_BY_LIGHT_AFFORDANCE: the structures that stand in a flooded cut
+		/// (RM_PitTrapMath.StandsInWater decides; this reads the def). Vanilla's column is matched by defName.
+		/// A suspension bridge part is never in this set: RM_Patch_SuspensionAffordance owns it (and refuses an anchor on a wet
+		/// ledge on purpose), so a second postfix here must not overrule it.</summary>
+		public static bool StandsInWater(ThingDef td)
+		{
+			return td != null && td.category == ThingCategory.Building && !td.HasModExtension<Pits.RM_SuspensionExtension>()
+				&& RM_PitTrapMath.StandsInWater(td.IsWall, td.IsFence, td.defName == "Column", td.HasModExtension<RM_StandsInWaterExtension>());
+		}
+
 		/// <summary>A floor blueprint or frame under the door: any such order keeps the refusal (stricter than vanilla, which
 		/// refuses only a floor lacking the door's affordance; a floor cannot be ordered on a wet canal cell anyway). Only the
 		/// missing Light of the wet cell itself is overridden.</summary>
@@ -391,6 +417,13 @@ namespace RimMandrake.FlowWorks
 			}
 			return false;
 		}
+	}
+
+	/// <summary>DEEP_WATER_BUILD_REFUSED_BY_LIGHT_AFFORDANCE: the opt-in marker for a building that should stand in the water of
+	/// a flooded cut although it is not a wall, fence, column or bridge part (another mod's pillar or pier). Add it by XML
+	/// patch: <c>&lt;li Class="RimMandrake.FlowWorks.RM_StandsInWaterExtension" /&gt;</c> under the def's modExtensions.</summary>
+	public class RM_StandsInWaterExtension : DefModExtension
+	{
 	}
 
 	/// <summary>SLUICE_GATE_REWIRE_TURNS_LIKE_A_DOOR: vanilla re-turns every 1x1 door and door blueprint each frame it draws

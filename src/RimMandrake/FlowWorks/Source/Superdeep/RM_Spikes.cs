@@ -85,6 +85,8 @@ namespace RimMandrake.FlowWorks
 				return 0;
 			}
 			float perHit = RM_PitTrapMath.SpikeDamagePerHit(p.BodySize, RimMandrakeFlowWorksSettings.spikeDamageMultiplier);
+			// SPIKES_PIERCE_TUNE_LIKE_VANILLA_TRAP: pierces like vanilla's spike trap (damage x 0.015)
+			float pierce = RM_PitTrapMath.SpikeArmorPenetration(perHit);
 			int landed = 0;
 			for (int i = 0; i < RM_PitTrapMath.SpikeHits; i++)
 			{
@@ -92,7 +94,7 @@ namespace RimMandrake.FlowWorks
 				{
 					break;
 				}
-				DamageWorker.DamageResult r = p.TakeDamage(new DamageInfo(DamageDefOf.Stab, perHit));
+				DamageWorker.DamageResult r = p.TakeDamage(new DamageInfo(DamageDefOf.Stab, perHit, pierce));
 				results?.Add(r);
 				landed++;
 			}

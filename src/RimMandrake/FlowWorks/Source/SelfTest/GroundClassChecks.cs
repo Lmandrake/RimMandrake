@@ -36,14 +36,13 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(C("RM_DenseMud", "Misc", dig: true) == RM_GroundClass.Slumps, "RM_DenseMud must slump");
                 Assert(C("RM_Slime", "Misc") == RM_GroundClass.Slumps, "RM_Slime must slump");
             });
-            Case("ground class: card rubble (salt crust, asphalt, packed snow) outranks Sand category and layerable", () =>
+            Case("ground class: card rubble (salt crust, asphalt) outranks Sand category and layerable", () =>
             {
                 Assert(C("RUT_Jawa_SaltCrust", "Sand", dig: true) == RM_GroundClass.Rubble, "salt crust is rubble, not sand");
                 Assert(C("RM_MiasmaSaltCrust", "Sand") == RM_GroundClass.Rubble, "miasma salt crust is rubble");
                 Assert(C("VEE_Salt", "Sand") == RM_GroundClass.Rubble, "VEE_Salt is rubble");
                 Assert(C("WastelandAsphalt", "Misc") == RM_GroundClass.Rubble, "asphalt is rubble");
                 Assert(C("RM_WastelandBrokenAsphalt", "Misc") == RM_GroundClass.Rubble, "broken asphalt is rubble");
-                Assert(C("RM_PackedSnow", "Misc") == RM_GroundClass.Rubble, "packed snow is rubble");
                 Assert(C("CooledLava", "Misc", layer: true) == RM_GroundClass.Rubble, "cooled lava (layerable) is rubble");
                 Assert(C("Gravel", "Misc", soil: true, dig: true) == RM_GroundClass.Rubble, "gravel ground is rubble");
                 Assert(C("Snow", "Misc") != RM_GroundClass.Rubble, "loose snow is NOT on the card's list");
@@ -77,6 +76,45 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_GroundClassMath.CreditAfterFill(2, false) == 2, "a fill that changed nothing keeps the credit");
                 Assert(RM_GroundClassMath.CreditAfterFill(1, true) == 1, "an unfunded fill spends nothing");
             });
+            Case("IceDig_ice_and_packed_snow_cut_into_crushed_ice (ICE_DIG owner card 2026-10-25)", () =>
+            {
+                Assert(C("RM_PackedSnow", "Misc") == RM_GroundClass.Ice, "packed snow is ice ground (supersedes 'packed snow digs as rubble')");
+                Assert(C("Ice", "Misc") == RM_GroundClass.Ice, "vanilla Ice is ice ground");
+                Assert(C("RM_PackedIce", "Misc") == RM_GroundClass.Ice && C("RM_ChillIceBedrock", "Stone", rock: true) == RM_GroundClass.Ice, "our ice terrains outrank Stone");
+                Assert(C("VEE_DenseSnow_Rough", "Misc") == RM_GroundClass.Ice, "VEE dense snow is ice ground");
+                Assert(C("Ice", "Misc", water: true) == RM_GroundClass.Water, "water still outranks the ice list");
+                Assert(C("Snow", "Misc") != RM_GroundClass.Ice, "loose snow is not ice ground");
+                Assert(RM_GroundClassMath.CutYield(RM_GroundClass.Ice, true) == RM_CutSpoil.CrushedIce && RM_GroundClassMath.CutYield(RM_GroundClass.Ice, false) == RM_CutSpoil.CrushedIce, "every ice cut yields crushed ice");
+                Assert(RM_GroundClassMath.CreditOf(RM_CutSpoil.CrushedIce) == RM_GroundClassMath.CreditOf(RM_CutSpoil.Gravel) && RM_GroundClassMath.CreditShort(RM_GroundClassMath.CreditOf(RM_CutSpoil.CrushedIce)) == 0, "crushed ice fills like gravel: one funds a notch");
+                Assert(RM_GroundClassMath.CreditOf(RM_CutSpoil.Chunk) == 1 && RM_GroundClassMath.CreditOf(RM_CutSpoil.None) == 0, "a chunk is half a notch; nothing is nothing");
+                Assert(RM_GroundClassMath.CrushedIceUnits == 40000 && RM_GroundClassMath.CrushedIceUnits == RM_Volume.UnitsPerSquare, "one crushed ice melts to a 1x1 tank (4,000 L)");
+                Assert(RM_GroundClassMath.MeltUnits(25) == 1000000L && RM_GroundClassMath.MeltUnits(0) == 0L, "a stack melts to count x a tank");
+            });
+            Case("IceDig_blue_ice_blocks_go_into_the_melter (owner 2026-10-25)", () =>
+            {
+                // "the blue ice blocks that could be cut from the nightside should also be able to go into the melter."
+                string ice = File.ReadAllText(Path.Combine(ModRoot, "Defs", "Pits", "ThingDefs", "RM_CrushedIce.xml"));
+                Match r = Regex.Match(ice, @"<RecipeDef MayRequire=""mandrake\.rm\.bluedesert"">\s*<defName>RM_MeltBlueIceInMelter</defName>(.*?)</RecipeDef>", RegexOptions.Singleline);
+                Assert(r.Success, "a melter recipe for RM_BlueIce, loaded only with BlueDesert");
+                string b = r.Groups[1].Value;
+                Assert(b.Contains("<li>RM_IceMelter</li>") && b.Contains("<li>RM_BlueIce</li>") && b.Contains("RM_MeltRecipeExtension") && b.Contains("<liquid>RM_Liquid_FreshWater</liquid>"), "made at the melter from blue ice into fresh water");
+                int count = int.Parse(Regex.Match(b, @"<count>(\d+)</count>").Groups[1].Value);
+                int units = int.Parse(Regex.Match(b, @"<unitsPerCraft>(\d+)</unitsPerCraft>").Groups[1].Value);
+                string blue = File.ReadAllText(Path.Combine(ModRoot, "..", "BlueDesert", "Defs", "ThingDefs_Items", "RM_BlueIce.xml"));
+                int kg = int.Parse(Regex.Match(blue, @"<Mass>(\d+)</Mass>").Groups[1].Value);
+                Assert(count == 25 && units == count * kg * RM_Volume.UnitsPerLitre, "1 L per kg of block: " + count + " x " + kg + " kg = " + units + " dL");
+                Assert(units == 750, "a craft is 75 L");
+            });
+            Case("DigFill_hours_of_shovel_work_labour_multiplier (DIG_FILL owner card 2026-10-25)", () =>
+            {
+                Assert(RM_DigDepthMath.DefaultLabourMultiplier == 4f, "default labour x4");
+                Assert(RM_DigDepthMath.LabourWork(RM_DigDepthMath.WorkPerNotch, RM_DigDepthMath.DefaultLabourMultiplier) == 12800, "first soil notch dig = 12,800 work");
+                double digH = RM_DigDepthMath.HoursOfWork(12800), fillH = RM_DigDepthMath.HoursOfWork(6400);
+                Assert(digH > 2.9 && digH < 3.1 && fillH > 1.4 && fillH < 1.6, "at Mining 1.0: dig 3 h, fill 1.5 h; was " + digH + "/" + fillH);
+                Assert(RM_DigDepthMath.LabourWork(1600, 1f) == 1600, "x1 is the legacy work (proof harness runs at x1)");
+                Assert(RM_DigDepthMath.LabourWork(1, 0.25f) == 1 && RM_DigDepthMath.LabourWork(int.MaxValue, 8f) == int.MaxValue, "at least 1, never overflows");
+                Assert(RM_DigDepthMath.ClampLabour(float.NaN) == 4f && RM_DigDepthMath.ClampLabour(0f) == 0.25f && RM_DigDepthMath.ClampLabour(99f) == 8f, "multiplier clamped 0.25..8");
+            });
             Case("mining: a missed chunk gives gravel, a dropped chunk does not", () =>
             {
                 Assert(RM_GroundClassMath.MiningGivesGravel(3, 3), "no new chunk -> gravel");
@@ -95,7 +133,10 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(spoil.Contains("typeof(Map), typeof(bool), typeof(Pawn)"), "TrySpawnYield targeted by argument types: 1.6 keeps an [Obsolete] 4-arg overload");
                 string disc = Src("RM_DigDiscovery.cs");
                 Assert(disc.Contains("RM_GroundClassMath.CutYield("), "the cut yield goes through the classifier");
-                Assert(disc.Contains("rockChunk && RimMandrakeFlowWorksSettings.digSpoilEnabled"), "with spoil on, the finds roll drops its rock-chunk fallbacks (dirt makes no chunks)");
+                Assert(disc.Contains("yield == RM_CutSpoil.None || yield == RM_CutSpoil.CrushedIce"), "ice toggle off: an ice cut leaves nothing, never falls through to a stone chunk");
+                Assert(disc.Contains("else if (IceCut(map, c, newDepth))") && disc.Contains("bool iceCut = IceCut(map, c, newDepth);") && disc.Contains("&& RM_DeepStone.RockFor(map) != null"), "ice above the deep stone never rolls a stone chunk, every toggle combination");
+                Assert(disc.Contains("(rockChunk && (RimMandrakeFlowWorksSettings.digSpoilEnabled || iceCut))") && disc.Contains("if (RimMandrakeFlowWorksSettings.digSpoilEnabled || iceCut)"), "an ice cut above the deep stone drops the finds roll's rock-chunk fallbacks too");
+                Assert(disc.Contains("rockChunk && (RimMandrakeFlowWorksSettings.digSpoilEnabled || iceCut)"), "with spoil on, the finds roll drops its rock-chunk fallbacks (dirt makes no chunks)");
                 string dig = Src("JobDriver_DigCanal.cs");
                 Assert(dig.Contains("RM_DigSpoil.IsRubbleAt(") && dig.Contains("ClearCredit("), "rubble digs at rock speed; a cut clears fill credit");
                 string fill = Src("JobDriver_FillInCanal.cs");
@@ -113,7 +154,25 @@ namespace RimMandrake.FlowWorks.SelfTest
                     Assert(Regex.IsMatch(mod, @"public\s+static\s+bool\s+" + k + @"\s*=\s*true\s*;"), "setting field, default on: " + k);
                     Assert(Regex.Matches(mod, "\"" + k + "\"").Count >= 3, "setting keyed in Scribe, the dependency registry and its label: " + k);
                 }
+                // ICE_DIG + DIG_FILL wiring
+                Assert(dig.Contains("RM_DigSpoil.IsIceAt(") && dig.Contains("RM_DigDepthMath.LabourWork("), "ice digs at rock speed; dig work carries the labour multiplier");
+                Assert(Regex.Matches(fill, @"RM_DigDepthMath\.LabourWork\(").Count >= 1 && fill.Contains("RM_DigSpoil.FillKindOf("), "fill work carries the labour multiplier; credit by material kind");
+                Assert(spoil.Contains("RimMandrakeFlowWorks_DefOf.RM_CrushedIce") && disc.Contains("RM_CutSpoil.CrushedIce"), "fillers find crushed ice; ice cuts leave it");
+                string raid = Src(Path.Combine("Superdeep", "RM_RaiderTrench.cs"));
+                Assert(raid.Contains("RM_RaiderFetchFill") && raid.Contains("FindFillMaterial(") && raid.Contains("CreditAfterFill(") && raid.Contains("RM_DigDepthMath.LabourWork("), "raiders pay: fetch material, spend credit, same labour");
+                Assert(raid.Contains("class JobDriver_RM_RaiderFetchFill : JobDriver"), "fetch is its own driver (the trench-work toil layout is untouched: save safety)");
+                string ice = File.ReadAllText(Path.Combine(ModRoot, "Defs", "Pits", "ThingDefs", "RM_CrushedIce.xml"));
+                Assert(ice.Contains("<defName>RM_CrushedIce</defName>") && ice.Contains("<meltsToLiquid>RM_Liquid_FreshWater</meltsToLiquid>") && ice.Contains("<defName>RM_IceMelter</defName>") && ice.Contains("RM_MeltRecipeExtension"), "crushed ice melts to fresh water; the melter and its recipe exist");
+                Assert(Regex.IsMatch(ice, @"<giverClass>WorkGiver_DoBill</giverClass>[\s\S]*?<fixedBillGiverDefs>\s*<li>RM_IceMelter</li>"), "a DoBill work giver names the melter (else no pawn works its bills)");
+                string jobs = File.ReadAllText(Path.Combine(ModRoot, "Defs", "Canals", "JobDefs", "FlowWorks_RaiderTrench.xml"));
+                Assert(jobs.Contains("<defName>RM_RaiderFetchFill</defName>") && jobs.Contains("JobDriver_RM_RaiderFetchFill"), "raider fetch JobDef");
+                string melter = Src("RM_IceMelter.cs");
+                Assert(melter.Contains("FillPlan(") && melter.Contains("ReleaseHeld(") && melter.Contains("JobFailReason"), "melter waits for tank room and never loses the water");
+                Assert(Src(Path.Combine("Thirst", "RM_ThirstWaterSources.cs")).Contains("ReleaseHeld("), "loose crushed ice melts into the world, conserved");
+                Assert(mod.Contains("Scribe_Values.Look(ref iceDigEnabled") && Regex.Matches(mod, "\"iceDigEnabled\"").Count >= 3, "ice toggle saved and registered");
+                Assert(mod.Contains("Scribe_Values.Look(ref digLabourMultiplier") && Regex.Matches(mod, "\"digLabourMultiplier\"").Count >= 3, "labour multiplier saved and registered");
                 string proj = Src("RimMandrake_FlowWorks.csproj");
+                Assert(proj.Contains("RM_IceMelter.cs"), "the melter compiles into the mod");
                 Assert(proj.Contains("RM_GroundClassMath.cs") && proj.Contains("RM_DigSpoil.cs"), "both new files compile into the mod");
             });
         }

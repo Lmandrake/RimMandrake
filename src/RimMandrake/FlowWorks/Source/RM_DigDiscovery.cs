@@ -90,7 +90,7 @@ namespace RimMandrake.FlowWorks
 		public void OnCut(Map map, IntVec3 c, int newDepth, Pawn digger)
 		{
 			if ((!RimMandrakeFlowWorksSettings.digFindsEnabled && !RimMandrakeFlowWorksSettings.digRockChunksEnabled
-				&& !RimMandrakeFlowWorksSettings.digSpoilEnabled) || map == null || !c.InBounds(map))
+				&& !RimMandrakeFlowWorksSettings.digSpoilEnabled && !RimMandrakeFlowWorksSettings.iceDigEnabled) || map == null || !c.InBounds(map))
 			{
 				// a cut happened: an armed debug force is spent on it, never carried into a later, unrelated cut
 				ForceNextRoll = false;
@@ -119,7 +119,9 @@ namespace RimMandrake.FlowWorks
 			ThingDef def = RM_DigDiscovery.Draw(map, c, newDepth, out bool rockChunk);
 			// DIG_SPOIL_BUILD_GRAVEL_PAYS_ITS_WAY: with spoil on, a cut's rock comes only from the spoil roll above ("Dirt makes
 			// no chunks"); the finds roll keeps its minerals and drops its rock-chunk fallbacks.
-			if (def == null || (rockChunk && RimMandrakeFlowWorksSettings.digSpoilEnabled))
+			// ICE_DIG: ice above the deep stone is no stone, so it drops the rock-chunk fallbacks too (minerals kept).
+			bool iceCut = IceCut(map, c, newDepth);
+			if (def == null || (rockChunk && (RimMandrakeFlowWorksSettings.digSpoilEnabled || iceCut)))
 			{
 				return;
 			}
@@ -128,7 +130,7 @@ namespace RimMandrake.FlowWorks
 			if (!rockChunk && budgetLeft < cost)
 			{
 				// The land's loose share is spent: what is left is chunks of the rock itself (none while spoil is on, above).
-				if (RimMandrakeFlowWorksSettings.digSpoilEnabled)
+				if (RimMandrakeFlowWorksSettings.digSpoilEnabled || iceCut)
 				{
 					return;
 				}
@@ -178,6 +180,15 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
+		/// <summary>ICE_DIG: the cut is through ice ground and not into a deep stone that actually resolves here; such a cut
+		/// yields crushed ice (toggle on) and never a stone chunk, from either roll.</summary>
+		private static bool IceCut(Map map, IntVec3 c, int newDepth)
+		{
+			return RM_DigSpoil.ClassAt(map, c) == RM_GroundClass.Ice
+				&& !(RimMandrakeFlowWorksSettings.digDeepStoneEnabled && RM_DigDiscoveryMath.StrikesDeepStone(newDepth, RM_ExcavationDepth.Superdeep)
+					&& RM_DeepStone.RockFor(map) != null);
+		}
+
 		/// <summary>DIG_ROCK_TUNE_STONE_FIGHTS_BACK (owner 2026-10-16): a cut through ROCK ground rolls a chunk of that rock at
 		/// vanilla's wall-mining rate; a cut through anything else very rarely rolls a chunk of the local rock. Not budgeted:
 		/// a chunk is the land itself, as the mineral roll's own rock fallback is.</summary>
@@ -186,6 +197,17 @@ namespace RimMandrake.FlowWorks
 			// DIG_SPOIL_BUILD_GRAVEL_PAYS_ITS_WAY (owner 2026-10-25): with spoil on, a cut through rock leaves a chunk or else a
 			// gravel, rubble leaves gravel only, soil leaves nothing.
 			bool spoil = RimMandrakeFlowWorksSettings.digSpoilEnabled;
+			// ICE_DIG_BUILD_CRUSHED_ICE_MELTS_DOWN (owner card 2026-10-25): "Cutting into packed snow or ice should give crushed
+			// ice." Every cut through ice above the deep stone leaves one, whatever the gravel toggle says.
+			if (RimMandrakeFlowWorksSettings.iceDigEnabled && IceCut(map, c, newDepth)
+				&& RM_GroundClassMath.CutYield(RM_GroundClass.Ice, false) == RM_CutSpoil.CrushedIce)
+			{
+				if (RM_DigSpoil.PlaceSpoil(map, RimMandrakeFlowWorks_DefOf.RM_CrushedIce, RM_DigDiscovery.LipCellNear(map, c), false))
+				{
+					CrushedIce++;
+				}
+				return;
+			}
 			if (!RimMandrakeFlowWorksSettings.digRockChunksEnabled && !spoil)
 			{
 				return;
@@ -200,6 +222,11 @@ namespace RimMandrake.FlowWorks
 			if (deep != null)
 			{
 				rock = deep;
+			}
+			else if (IceCut(map, c, newDepth))
+			{
+				// ice above the deep stone never rolls a stone chunk, whatever the toggles say (crushed ice is placed above)
+				return;
 			}
 			if (rock != null)
 			{
@@ -225,8 +252,9 @@ namespace RimMandrake.FlowWorks
 					}
 					return;
 				}
-				if (yield == RM_CutSpoil.None)
+				if (yield == RM_CutSpoil.None || yield == RM_CutSpoil.CrushedIce)
 				{
+					// crushed ice is placed above (ice toggle on); with it off an ice cut leaves nothing, never a stone chunk
 					return;
 				}
 			}
@@ -263,9 +291,12 @@ namespace RimMandrake.FlowWorks
 		/// <summary>DIG_SPOIL_BUILD_GRAVEL_PAYS_ITS_WAY: gravel left by cuts since load (bridge/proof readout).</summary>
 		public int Gravel;
 
+		/// <summary>ICE_DIG_BUILD_CRUSHED_ICE_MELTS_DOWN: crushed ice left by cuts since load (bridge/proof readout).</summary>
+		public int CrushedIce;
+
 		public string Report(Map map)
 		{
-			return "DIGFINDS finds " + Finds + " | gravel " + Gravel + " | budget " + (budgetLeft < 0 ? "unset" : budgetLeft.ToString("F0"))
+			return "DIGFINDS finds " + Finds + " | gravel " + Gravel + " | ice " + CrushedIce + " | budget " + (budgetLeft < 0 ? "unset" : budgetLeft.ToString("F0"))
 				+ " | first-found " + found.Count + " | last " + LastFind;
 		}
 

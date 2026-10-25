@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ICE_DIG_BUILD_CRUSHED_ICE_MELTS_DOWN (owner card 2026-10-25): "Cutting into packed snow or ice should give crushed ice. Acts
+     like gravel on cold maps. Turns into water if warmed (a full dug ground units worth). Also a full 1x1 tank of water worth of
+     course. Should be a machine like a smelter where they can do that explicitly."
+     Left by every cut through ice or packed snow ground (RM_GroundClass.Ice, Source/RM_GroundClassMath.cs); fills a pit back
+     in as gravel does; a pile warmer than 0 C for 4 hours melts into 4,000 L of fresh water each (RM_Volume.UnitsPerSquare:
+     a 1x1 tank), into the water at the pile or as a puddle. The ice melter puts it into tanks instead.
+     Placeholder art: vanilla rubble tinted ice-blue and the electric smelter tinted (art item filed). -->
+<Defs>
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_CrushedIce</defName>
+    <label>crushed ice</label>
+    <description>Broken ice and packed snow: the spoil of a pit cut through frozen ground. One load fills a dug pit back in a level, as gravel does. Above freezing it melts into a whole tank's worth of water (4,000 L) where it lies; an ice melter puts that water into tanks instead.</description>
+    <thingClass>ThingWithComps</thingClass>
+    <tickerType>Rare</tickerType>
+    <graphicData>
+      <texPath>Things/Filth/RubbleRock</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(196,222,240)</color>
+    </graphicData>
+    <stackLimit>25</stackLimit>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <MarketValue>0.5</MarketValue>
+      <Mass>1</Mass>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>0</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <comps>
+      <li Class="RimMandrake.FlowWorks.Thirst.CompProperties_RM_Melt">
+        <meltsToLiquid>RM_Liquid_FreshWater</meltsToLiquid>
+        <unitsPerItem>40000</unitsPerItem>
+        <ticksAboveZero>10000</ticksAboveZero>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="BenchBase">
+    <defName>RM_IceMelter</defName>
+    <label>ice melter</label>
+    <description>An electric heating bath that melts crushed ice into fresh water and pipes it into the tanks on its liquid net (touching it or hosed to it). Each crushed ice is a whole tank's worth: 4,000 L. A bill waits until a tank has room.</description>
+    <thingClass>Building_WorkTable_HeatPush</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Production/ElectricSmelter</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(3.5,1.5)</drawSize>
+      <color>(170,200,225)</color>
+      <shadowData>
+        <volume>(2.6, 0.5, 0.9)</volume>
+      </shadowData>
+      <damageData>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+      </damageData>
+    </graphicData>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>0.20</staticSunShadowHeight>
+    <costList>
+      <Steel>120</Steel>
+      <ComponentIndustrial>1</ComponentIndustrial>
+    </costList>
+    <altitudeLayer>Building</altitudeLayer>
+    <fillPercent>0.5</fillPercent>
+    <useHitPoints>True</useHitPoints>
+    <statBases>
+      <WorkToBuild>2500</WorkToBuild>
+      <MaxHitPoints>180</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+      <Mass>40</Mass>
+    </statBases>
+    <size>(3,1)</size>
+    <designationCategory>Production</designationCategory>
+    <passability>PassThroughOnly</passability>
+    <pathCost>50</pathCost>
+    <hasInteractionCell>True</hasInteractionCell>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+    <surfaceType>Item</surfaceType>
+    <inspectorTabs>
+      <li>ITab_Bills</li>
+    </inspectorTabs>
+    <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
+    <building>
+      <spawnedConceptLearnOpportunity>BillsTab</spawnedConceptLearnOpportunity>
+      <heatPerTickWhileWorking>0.10</heatPerTickWhileWorking>
+    </building>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>350</basePowerConsumption>
+        <shortCircuitInRain>true</shortCircuitInRain>
+      </li>
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Breakdownable" />
+    </comps>
+    <placeWorkers>
+      <li>PlaceWorker_PreventInteractionSpotOverlap</li>
+    </placeWorkers>
+    <researchPrerequisites>
+      <li>Electricity</li>
+    </researchPrerequisites>
+  </ThingDef>
+
+  <RecipeDef>
+    <defName>RM_MeltCrushedIce</defName>
+    <label>melt crushed ice</label>
+    <description>Melt one crushed ice into 4,000 L of fresh water, piped into a tank on this melter's liquid net.</description>
+    <jobString>Melting crushed ice.</jobString>
+    <workAmount>400</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_CookMeal</soundWorking>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_CrushedIce</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_CrushedIce</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <recipeUsers>
+      <li>RM_IceMelter</li>
+    </recipeUsers>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.RM_MeltRecipeExtension">
+        <liquid>RM_Liquid_FreshWater</liquid>
+        <unitsPerCraft>40000</unitsPerCraft>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+  <!-- the melter's bills are worked like the smelter's (vanilla DoBillsSmelter): without this no pawn takes them -->
+  <WorkGiverDef>
+    <defName>RM_DoBillsIceMelter</defName>
+    <label>melt ice</label>
+    <giverClass>WorkGiver_DoBill</giverClass>
+    <workType>Crafting</workType>
+    <priorityInType>80</priorityInType>
+    <fixedBillGiverDefs>
+      <li>RM_IceMelter</li>
+    </fixedBillGiverDefs>
+    <verb>melt ice at</verb>
+    <gerund>melting ice at</gerund>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+    <prioritizeSustains>true</prioritizeSustains>
+  </WorkGiverDef>
+
+  <!-- Owner 2026-10-25: "the blue ice blocks that could be cut from the nightside should also be able to go into the
+       melter." RM_BlueIce (BlueDesert, a 3 kg block) melts at 1 L per kg like every other ice-to-water recipe here
+       (Thirst RM_MeltBlueIceIntoBucket: 5 blocks = 15 L): 3 L = 30 dL a block; a craft takes 25 blocks = 75 L = 750 dL.
+       Unlike crushed ice (a dug ground square's worth, 4,000 L) a block is a hand-cut brick. -->
+  <RecipeDef MayRequire="mandrake.rm.bluedesert">
+    <defName>RM_MeltBlueIceInMelter</defName>
+    <label>melt blue ice</label>
+    <description>Melt 25 blocks of blue ice into 75 L of fresh water, piped into a tank on this melter's liquid net.</description>
+    <jobString>Melting blue ice.</jobString>
+    <workAmount>400</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_CookMeal</soundWorking>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_BlueIce</li>
+          </thingDefs>
+        </filter>
+        <count>25</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_BlueIce</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <recipeUsers>
+      <li>RM_IceMelter</li>
+    </recipeUsers>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.RM_MeltRecipeExtension">
+        <liquid>RM_Liquid_FreshWater</liquid>
+        <unitsPerCraft>750</unitsPerCraft>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+</Defs>

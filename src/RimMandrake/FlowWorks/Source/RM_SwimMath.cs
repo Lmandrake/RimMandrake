@@ -143,6 +143,54 @@ namespace RimMandrake.FlowWorks
 			return cls;
 		}
 
+		/// <summary>SUSPENSION_TOWER_DIAGNOSE_UNSUPPLIED_IN_POOL: a hauler swimming material out to a build site keeps at least
+		/// this share of its base endurance (well above <see cref="SinkBelowEnduranceFactor"/>): it swims there and back
+		/// without sinking, in more trips. Run8: a colonist picking up 75 steel (37.5 kg on a 35 kg capacity) sank (class
+		/// None), so no delivery to a tower in the middle of a flooded cut ever started.</summary>
+		public const float SwimCarryEnduranceFloor = 0.5f;
+
+		/// <summary>The most a creature may carry (kg, on top of its gear) and keep <paramref name="floor"/> of its endurance
+		/// (<see cref="EnduranceFactor"/> inverted on the carried part of <see cref="Load"/>). 0 for a non-swimmer or when even
+		/// empty-handed it is under the floor; +infinity for the aquatic, with no capacity (Load ignores mass) or no weight
+		/// penalty while above the floor.</summary>
+		public static float MaxSwimCarryKg(SwimClass natural, float moving, float bodySize, float gearKg, float capacityKg,
+			float weightPenalty, float floor)
+		{
+			if (natural == SwimClass.None)
+			{
+				return 0f;
+			}
+			if (natural == SwimClass.Aquatic || !(capacityKg > 0f))
+			{
+				return float.PositiveInfinity;
+			}
+			float m = moving < 0f ? 0f : (moving > 1.5f ? 1.5f : moving);
+			float full = m * SizeFactor(bodySize) * (natural == SwimClass.Strong ? StrongEnduranceFactor : 1f);
+			if (!(full > 0f) || full < floor)
+			{
+				return 0f;
+			}
+			if (!(weightPenalty > 0f))
+			{
+				return float.PositiveInfinity;
+			}
+			float maxLoad = (1f - floor / full) / weightPenalty;
+			return Math.Max(0f, maxLoad * capacityKg - Math.Max(0f, gearKg));
+		}
+
+		/// <summary>How many of <paramref name="wanted"/> units of <paramref name="unitKg"/> each fit under
+		/// <paramref name="maxKg"/> (<see cref="MaxSwimCarryKg"/>); <paramref name="wanted"/> when mass does not bind. 0 means
+		/// not even one unit can be swum out.</summary>
+		public static int SwimCarryCount(int wanted, float unitKg, float maxKg)
+		{
+			if (wanted <= 0 || !(unitKg > 0f) || float.IsPositiveInfinity(maxKg))
+			{
+				return wanted;
+			}
+			int fits = (int)Math.Floor(maxKg / unitKg + 1e-4f);
+			return fits < wanted ? Math.Max(0, fits) : wanted;
+		}
+
 		/// <summary>Swim speed as a cost multiplier on the swim cell (1 = the shipped swim cost): load slows, weak Moving slows.
 		/// The aquatic and strong keep their vanilla waterCellCost and pay x1.</summary>
 		public static float CostFactor(SwimClass cls, float moving, float load, float weightSlowdown)

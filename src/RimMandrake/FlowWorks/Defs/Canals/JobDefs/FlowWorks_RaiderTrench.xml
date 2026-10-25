@@ -15,6 +15,14 @@
     <casualInterruptible>false</casualInterruptible>
     <allowOpportunisticPrefix>false</allowOpportunisticPrefix>
   </JobDef>
+  <!-- DIG_FILL_TUNE_HOURS_OF_SHOVEL_WORK (owner 2026-10-25, "Everyone pays"): a raider carries fill material to the trench first. -->
+  <JobDef>
+    <defName>RM_RaiderFetchFill</defName>
+    <driverClass>RimMandrake.FlowWorks.JobDriver_RM_RaiderFetchFill</driverClass>
+    <reportString>carrying fill to a trench.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+    <allowOpportunisticPrefix>false</allowOpportunisticPrefix>
+  </JobDef>
   <!-- LADDER_PARITY_BUILD_NO_KEYS_REQUIRED: a ladderless raider takes a standing portable ladder (Superdeep/RM_LadderParity.cs). -->
   <JobDef>
     <defName>RM_RaiderTakeLadder</defName>

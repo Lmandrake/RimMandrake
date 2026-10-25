@@ -611,6 +611,37 @@ def pit_travel_fly_jump_float(t):
                "(ProofForcedFlyer) takes no fall damage (FLOWWORKS_PIT_TRAVEL_BUILD_FLY_JUMP_FLOAT)")
 
 
+# ICE_DIG_BUILD_CRUSHED_ICE_MELTS_DOWN (owner card 2026-10-25: "Cutting into packed snow or ice should give crushed ice. Acts
+# like gravel on cold maps. Turns into water if warmed"; and "the blue ice blocks that could be cut from the nightside should
+# also be able to go into the melter."). Offline: Source/SelfTest/GroundClassChecks.cs. Live rows: northstar/gravel_live.py.
+ICE_DIG_CASES = ["IceDig_ice_and_packed_snow_cut_into_crushed_ice (ICE_DIG owner card 2026-10-25)",
+                 "IceDig_blue_ice_blocks_go_into_the_melter (owner 2026-10-25)"]
+
+
+@suite.chain("ice_dig_crushed_ice")
+def ice_dig_crushed_ice(t):
+    """Offline: ice ground cuts to crushed ice, which fills like gravel and melts to a 1x1 tank; blue ice melts at the melter."""
+    _bar_chain(t, "ice_dig_selftest_ran", ICE_DIG_CASES, "ice_dig_live", "ice_cuts_to_crushed_ice_that_melts",
+               "northstar/gravel_live.py rows GS_ice_cut_yields_crushed_ice + GS_crushed_ice_melts_to_water; then a powered "
+               "RM_IceMelter with a tank on its net melts a crushed ice (+40,000 dL) and 25 RM_BlueIce (+750 dL) "
+               "(ICE_DIG_BUILD_CRUSHED_ICE_MELTS_DOWN)")
+
+
+# DIG_FILL_TUNE_HOURS_OF_SHOVEL_WORK (owner card 2026-10-25: "Everyone pays and it's backbreaking work. Like real life. Digging
+# a ditch or filling a ditch takes hours."). Offline: GroundClassChecks + RaiderTrenchChecks. Live: northstar/gravel_live.py.
+DIG_FILL_CASES = ["DigFill_hours_of_shovel_work_labour_multiplier (DIG_FILL owner card 2026-10-25)",
+                  "RaiderTrench_breach_fits_a_raid"]
+
+
+@suite.chain("dig_fill_shovel_hours")
+def dig_fill_shovel_hours(t):
+    """Offline: dig and fill carry the labour multiplier (x4: 3 h a soil notch, 1.5 h to fill); raiders fetch fill and pay."""
+    _bar_chain(t, "dig_fill_selftest_ran", DIG_FILL_CASES, "dig_fill_live", "digging_takes_hours",
+               "northstar/gravel_live.py row GS_dig_labour_multiplier_scales_the_cut (x4 cut 3..5x the x1 cut); then a raid at "
+               "a trench (raid_ladder_live.py) shows a raider carrying gravel or a chunk (RM_RaiderFetchFill) before filling "
+               "(DIG_FILL_TUNE_HOURS_OF_SHOVEL_WORK)")
+
+
 # FLOWWORKS_PUMP_PORTS_REBUILD_ONE_PER_SIDE (bar pump_hose_joins_at_side_port; he typed 2026-10-20: "No. a HOSE must connect
 # at one of the four sides. A solid pipe must only be adjacent and is then drawn undernead to the center of the object as
 # ruled previously."). Offline: the port rule, hose couplings gated, pipes unchanged (Source/SelfTest/PumpChecks.cs). The
@@ -1420,6 +1451,9 @@ TOGGLES_NOT_ON_FLOOR = ["blastsBreakPitCovers", "pitStuckAlertEnabled", "fallDea
                         # GroundClassChecks; live rows northstar/gravel_live.py (owed)
                         "sandMudSlidesBackEnabled", "digSpoilEnabled", "fillCostsSpoilEnabled", "mineGravelEnabled",
                         "gravelRecipesEnabled",
+                        # ICE_DIG_BUILD_CRUSHED_ICE_MELTS_DOWN (2026-10-25): chain ice_dig_crushed_ice; live rows
+                        # northstar/gravel_live.py (owed)
+                        "iceDigEnabled",
                         # LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS (2026-10-16; absorbed into LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD): the cell readout's depth/litres line is UI text
                         # read by eye (review map station pond_bed); no live toggle chain yet
                         "mouseoverDepthEnabled",
@@ -1440,6 +1474,8 @@ TOGGLES_NOT_ON_FLOOR = ["blastsBreakPitCovers", "pitStuckAlertEnabled", "fallDea
                         # audit): their live rows are owed on the items (A1-A5), not yet a toggle chain
                         "trenchCoverEnabled", "trenchAiAvoidsCages", "portableLadderEnabled", "climbingGearEnabled",
                         "pitJumpLandsSafe", "pitTeleportLandsSafe", "pitFreeTravelEnabled", "reachSeesWallsAndCliffs", "pitRescueLadderEnabled", "pipesUnderToCentre",
+                        # DEEP_WATER_BUILD_REFUSED_BY_LIGHT_AFFORDANCE (2026-10-25): live rows owed on the item
+                        "buildInDugWaterEnabled",
                         # registered 2026-10-19 (settings audit catch-up): wall climb, raider trench, swim, water mend. Live
                         # rows are owed on their items; not yet a toggle chain
                         "wallClimbEnabled", "raidersMayClimbWalls", "wallClimbAutoRoute", "raidersCarryClimbingGear",

@@ -158,7 +158,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_RaiderTrenchMath.LipTick(true, 0, 2500, 2500, false, false) == 2500, "can-fail: an abandoned lip still expires");
                 Assert(RM_RaiderTrenchMath.LipTick(true, 0, 100, 2500, true, false) == -1, "planning alone does not renew it");
                 string r = Src("Superdeep", "RM_RaiderTrench.cs");
-                RiverSwitchFlipChecks.Has(r, @"int work = RM_RaiderTrenchMath\.FillWorkPerLevel;", "the driver prices fill flat");
+                RiverSwitchFlipChecks.Has(r, @"int work = RM_DigDepthMath\.LabourWork\(RM_RaiderTrenchMath\.FillWorkPerLevel, RimMandrakeFlowWorksSettings\.digLabourMultiplier\);", "the driver prices fill flat x the shared labour multiplier (DIG_FILL: everyone pays)");
                 RiverSwitchFlipChecks.Has(r, @"IsLadder \? 1 : RM_RaiderTrenchMath\.MaxFillersPerSquare", "fillers share a square, ladders do not");
                 RiverSwitchFlipChecks.Has(r, @"p\.CanReserve\(c, RM_RaiderTrenchMath\.MaxFillersPerSquare\)", "the giver asks for a shared slot");
                 RiverSwitchFlipChecks.Has(r, @"job\.count = t\[i\];", "the job carries the square's causeway target");

@@ -193,6 +193,18 @@ namespace RimMandrake.FlowWorks.Machinery
 			}
 		}
 
+		/// <summary>ICE_DIG_BUILD_CRUSHED_ICE_MELTS_DOWN: <paramref name="units"/> (dL) of <paramref name="liquid"/> released at
+		/// <paramref name="cell"/> by something that was holding it (melted crushed ice, a melter with no tank room): into the water
+		/// there, else a spill. Conserved like a hose's leftover; never silent.</summary>
+		public static void ReleaseHeld(Map map, IntVec3 cell, LiquidDef liquid, int units)
+		{
+			if (map == null || liquid == null || units <= 0 || !cell.IsValid)
+			{
+				return;
+			}
+			PlaceHeld(map, RM_SuperdeepTrap.EngineOf(map), cell, liquid, units);
+		}
+
 		/// <summary>Held liquid reaching the world (HOSE_LEFTOVER_FIX_NO_VANISHING_LITRES): into the water it lands in first, in
 		/// DECILITRES (a canal at or beside <paramref name="cell"/>, spreading over the squares it joins; or the pond there,
 		/// C1-F10), then <see cref="Spill"/> for the rest, which never lets a litre leave unannounced.</summary>

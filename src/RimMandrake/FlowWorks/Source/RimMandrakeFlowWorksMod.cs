@@ -274,6 +274,7 @@ namespace RimMandrake.FlowWorks
         public static bool pitFreeTravelEnabled = true;   // FLOWWORKS_PIT_TRAVEL_BUILD_FLY_JUMP_FLOAT
         public static bool reachSeesWallsAndCliffs = true;   // REACH_MAP_BUILD_WALLS_AND_DEPTH_AGREE (RM_WallReach)
         public static bool pitRescueLadderEnabled = true;
+        public static bool buildInDugWaterEnabled = true;   // DEEP_WATER_BUILD_REFUSED_BY_LIGHT_AFFORDANCE (RM_Patch_FlowDoorOnWetCanal)
         // PIT_LEGACY_CODE_RETIRE_1: the four survivors of the retired PitsMod screen
         // (same field names and defaults, so nothing that reads them changes meaning).
         // The cover's mass trigger (PIT_COVER_FALL_REWIRE_1) and the fall on any descent
@@ -496,6 +497,9 @@ namespace RimMandrake.FlowWorks
         public static bool fillCostsSpoilEnabled = true;
         public static bool mineGravelEnabled = true;
         public static bool gravelRecipesEnabled = true;
+        // ICE_DIG_BUILD_CRUSHED_ICE_MELTS_DOWN + DIG_FILL_TUNE_HOURS_OF_SHOVEL_WORK (owner cards 2026-10-25).
+        public static bool iceDigEnabled = true;
+        public static float digLabourMultiplier = RM_DigDepthMath.DefaultLabourMultiplier;
         public static bool swaleEnabled = true;
         public static float swaleRateMultiplier = 1f;
 
@@ -637,6 +641,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref pitFreeTravelEnabled, "pitFreeTravelEnabled", true);
             Scribe_Values.Look(ref reachSeesWallsAndCliffs, "reachSeesWallsAndCliffs", true);
             Scribe_Values.Look(ref pitRescueLadderEnabled, "pitRescueLadderEnabled", true);
+            Scribe_Values.Look(ref buildInDugWaterEnabled, "buildInDugWaterEnabled", true);
             Scribe_Values.Look(ref trapTriggerEnabled, "trapTriggerEnabled", true);
             Scribe_Values.Look(ref trapSensitivityMultiplier, "trapSensitivityMultiplier", 1f);
             Scribe_Values.Look(ref fallDamageEnabled, "fallDamageEnabled", true);
@@ -726,6 +731,8 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref fillCostsSpoilEnabled, "fillCostsSpoilEnabled", true);
             Scribe_Values.Look(ref mineGravelEnabled, "mineGravelEnabled", true);
             Scribe_Values.Look(ref gravelRecipesEnabled, "gravelRecipesEnabled", true);
+            Scribe_Values.Look(ref iceDigEnabled, "iceDigEnabled", true);
+            Scribe_Values.Look(ref digLabourMultiplier, "digLabourMultiplier", RM_DigDepthMath.DefaultLabourMultiplier);
             Scribe_Values.Look(ref swaleEnabled, "swaleEnabled", true);
             Scribe_Values.Look(ref swaleRateMultiplier, "swaleRateMultiplier", 1f);
             // ── Rivers (River Works, merged 2026-10-05): one settings file, unique keys ──
@@ -794,7 +801,7 @@ namespace RimMandrake.FlowWorks
             .Declare("digToDepthEnabled", "maxDigDepth", "digCostRisesWithDepth", "machineDigEnabled")
             .Declare("machineDigEnabled", "maxMachineDigDepth")
             .Declare("digRockChunksEnabled", "digRockChunkMultiplier", "digSoilChunkPercent", "digDeepStoneEnabled")
-            .Independent("sandMudSlidesBackEnabled", "digSpoilEnabled", "fillCostsSpoilEnabled", "mineGravelEnabled", "gravelRecipesEnabled")
+            .Independent("sandMudSlidesBackEnabled", "digSpoilEnabled", "fillCostsSpoilEnabled", "mineGravelEnabled", "gravelRecipesEnabled", "iceDigEnabled", "digLabourMultiplier")
             .Declare("liquidDrillingEnabled", "drillUnitsPerCycle")
             .Declare("swaleEnabled", "swaleRateMultiplier")
             .Independent("pulseIntervalTicks", "digToDepthEnabled", "drillYieldChanceMultiplier", "wardenFromLipEnabled", "waterBodyTypeFlipFixEnabled",
@@ -819,7 +826,7 @@ namespace RimMandrake.FlowWorks
             .Name("trapTriggerEnabled", "Concealed pits give way under enough weight")
             .Name("superdeepRoomsEnabled", "An enclosed pit is its own room")
             .Name("digFindsEnabled", "Digging a canal can turn up minerals")
-            .Name("digRockGroundEnabled", "Canals can be dug through rock ground").Name("digRockChunksEnabled", "Digging can turn up rock chunks").Name("digDeepStoneEnabled", "Pits 2 m deep reach a deeper stone").Name("sandMudSlidesBackEnabled", "Sand and mud slide back in").Name("digSpoilEnabled", "Digging leaves gravel").Name("fillCostsSpoilEnabled", "Filling in costs gravel or chunks").Name("mineGravelEnabled", "Mining a rock wall leaves gravel when no chunk drops").Name("gravelRecipesEnabled", "Gravel can stand in for stone chunks in recipes").Name("liquidDrillingEnabled", "Drilling and bleed wells")
+            .Name("digRockGroundEnabled", "Canals can be dug through rock ground").Name("digRockChunksEnabled", "Digging can turn up rock chunks").Name("digDeepStoneEnabled", "Pits 2 m deep reach a deeper stone").Name("sandMudSlidesBackEnabled", "Sand and mud slide back in").Name("digSpoilEnabled", "Digging leaves gravel").Name("fillCostsSpoilEnabled", "Filling in costs gravel or chunks").Name("mineGravelEnabled", "Mining a rock wall leaves gravel when no chunk drops").Name("gravelRecipesEnabled", "Gravel can stand in for stone chunks in recipes").Name("iceDigEnabled", "Ice and packed snow dig to crushed ice").Name("digLabourMultiplier", "Digging and filling labour").Name("liquidDrillingEnabled", "Drilling and bleed wells")
             .Name("swaleEnabled", "A watered swale enriches the ground around it");
 
         private static object GetField(string n)
@@ -1026,7 +1033,7 @@ namespace RimMandrake.FlowWorks
             }
 
             // ── FLOWWORKS_QUARRY_DIGGING_1 — what a canal cut turns up ────
-            if (Section(list, "Finds while digging", new[] { "digFindsEnabled", "digFindsLocalOnly", "digFindChanceMultiplier", "digFindBudgetPercent", "digFindLetterEnabled", "digRockGroundEnabled", "digRockWorkMultiplier", "digRockChunksEnabled", "digRockChunkMultiplier", "digSoilChunkPercent", "digDeepStoneEnabled", "sandMudSlidesBackEnabled", "digSpoilEnabled", "fillCostsSpoilEnabled", "mineGravelEnabled", "gravelRecipesEnabled" }))
+            if (Section(list, "Finds while digging", new[] { "digFindsEnabled", "digFindsLocalOnly", "digFindChanceMultiplier", "digFindBudgetPercent", "digFindLetterEnabled", "digRockGroundEnabled", "digRockWorkMultiplier", "digRockChunksEnabled", "digRockChunkMultiplier", "digSoilChunkPercent", "digDeepStoneEnabled", "sandMudSlidesBackEnabled", "digSpoilEnabled", "fillCostsSpoilEnabled", "mineGravelEnabled", "gravelRecipesEnabled", "iceDigEnabled", "digLabourMultiplier" }))
             {
             list.CheckboxLabeled("Digging a canal can turn up minerals", ref digFindsEnabled,
                 "Each time a square is cut a level deeper there is a small chance of a lump of something the land holds, "
@@ -1074,14 +1081,28 @@ namespace RimMandrake.FlowWorks
             }
             list.CheckboxLabeled("Sand and mud slide back in", ref sandMudSlidesBackEnabled,
                 "On: sand, soft sand, dry lake bed, marsh, mud and slime cannot be marked to dig: what is cut slides back in. "
-              + "Salt crust, asphalt and packed snow dig as rubble. Off: they dig as soft ground did before.");
+              + "Salt crust and asphalt dig as rubble. Off: they dig as soft ground did before.");
             list.CheckboxLabeled("Digging leaves gravel", ref digSpoilEnabled,
                 "On: each cut a level deeper through rock ground leaves a chunk (at the chance above) or else a gravel; rubble ground "
-              + "(salt crust, asphalt, packed snow, gravel, cooled lava) digs at rock speed and leaves gravel, never a chunk; soil "
+              + "(salt crust, asphalt, gravel, cooled lava) digs at rock speed and leaves gravel, never a chunk; soil "
               + "leaves nothing. Off: cuts give chunks only, as before.");
             list.CheckboxLabeled("Filling in costs gravel or chunks", ref fillCostsSpoilEnabled,
-                "On: each level filled back in takes 1 gravel or 2 stone chunks, carried to the pit by the filler. Raiders fill for free. "
+                "On: each level filled back in takes 1 gravel, 1 crushed ice or 2 stone chunks, carried to the pit by the filler. "
+              + "Everyone pays: raiders shovelling a way across a trench carry it too, and with none to hand they do not fill. "
               + "Off: filling in is free work.");
+            list.CheckboxLabeled("Ice and packed snow dig to crushed ice", ref iceDigEnabled,
+                "On: ice and packed snow can be marked to dig, at rock speed, and every cut leaves 1 crushed ice. Crushed ice fills "
+              + "a pit like gravel; left above 0 C it melts into " + (RM_GroundClassMath.CrushedIceUnits / RM_Volume.UnitsPerLitre).ToString("N0")
+              + " L of water (a full 1x1 tank), and an ice melter turns it into water in the tanks it is piped to. Off: ice cannot be dug.");
+            using (Dependent(list, "digLabourMultiplier"))
+            {
+                float labour = RM_DigDepthMath.ClampLabour(digLabourMultiplier);
+                int dig = RM_DigDepthMath.LabourWork(RM_DigDepthMath.WorkToCut(1), labour);
+                list.Label("Digging and filling labour: x" + labour.ToString("F2") + "  (first 0.5 m of soil: "
+                    + RM_DigDepthMath.HoursOfWork(dig).ToString("F1") + " h to dig, " + RM_DigDepthMath.HoursOfWork(System.Math.Max(1, dig / 2)).ToString("F1")
+                    + " h to fill, for a digger at 100% mining speed; rock takes the rock multiplier on top. Applies to raiders' fill too)");
+                digLabourMultiplier = list.Slider(digLabourMultiplier, RM_DigDepthMath.MinLabourMultiplier, RM_DigDepthMath.MaxLabourMultiplier);
+            }
             list.CheckboxLabeled("Mining a rock wall leaves gravel when no chunk drops", ref mineGravelEnabled,
                 "On: a colonist mining a natural rock wall that drops no chunk leaves 1 gravel instead. Explosions leave nothing extra.");
             list.CheckboxLabeled("Gravel can stand in for stone chunks in recipes", ref gravelRecipesEnabled,
@@ -1468,7 +1489,7 @@ namespace RimMandrake.FlowWorks
 
             }
 
-            if (Section(list, "Pits and climbing", new[] { "superdeepCaptureEnabled", "superdeepCapturesOwnFaction", "pitStuckAlertEnabled", "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "ladderRaiseLowerEnabled", "pitWidthBodySizeMultiplier", "pitRelativeClimbEnabled", "pitClimbAbilityMultiplier", "pitSlowClimbFactor", "pitRampsEnabled", "pitRampMaxSpan", "pitLadderSlowness", "portableLadderEnabled", "portableLadderMaxLevels", "climbingGearEnabled", "climbingGearSlowness", "pitJumpLandsSafe", "pitTeleportLandsSafe", "pitFreeTravelEnabled", "reachSeesWallsAndCliffs", "pitRescueLadderEnabled", "pitWalkNormalEnabled" }))
+            if (Section(list, "Pits and climbing", new[] { "superdeepCaptureEnabled", "superdeepCapturesOwnFaction", "pitStuckAlertEnabled", "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "ladderRaiseLowerEnabled", "pitWidthBodySizeMultiplier", "pitRelativeClimbEnabled", "pitClimbAbilityMultiplier", "pitSlowClimbFactor", "pitRampsEnabled", "pitRampMaxSpan", "pitLadderSlowness", "portableLadderEnabled", "portableLadderMaxLevels", "climbingGearEnabled", "climbingGearSlowness", "pitJumpLandsSafe", "pitTeleportLandsSafe", "pitFreeTravelEnabled", "reachSeesWallsAndCliffs", "pitRescueLadderEnabled", "buildInDugWaterEnabled", "pitWalkNormalEnabled" }))
             {
             list.Label("A pit is any dug pocket nothing can climb out of, nothing more: there is no pit building. "
                      + "What holds a creature is the height of the step it must climb against its own size, never the "
@@ -1571,6 +1592,12 @@ namespace RimMandrake.FlowWorks
               + "a ladder job is queued at the nearest pit wall: a spare portable ladder is carried there, else a portable one is "
               + "built, else (too deep) the fixed ladder. Anyone who can climb back out (climbing gear, a big creature) simply "
               + "goes. Off: you place the ladder yourself.");
+            list.CheckboxLabeled("Walls and pillars stand in flooded cuts", ref buildInDugWaterEnabled,
+                "On, walls, fences and columns can be placed and built on "
+              + "a dug square that is already under water, at any depth. Beds, furniture and machines still cannot: the water "
+              + "squares are vanilla water, which carries nothing. Natural lakes, rivers and the sea are not dug, so they stay as "
+              + "vanilla has them. Suspension bridge towers follow their own rule (Sunken bridges). Off: only sluices, grates, "
+              + "ladders and ramps stand in a flooded cut.");
 
             list.CheckboxLabeled("Walking along a pit floor is normal speed", ref pitWalkNormalEnabled,
                 "Only climbing into or out of a cut is slow (the deeper, the slower; a ladder too); walking around "

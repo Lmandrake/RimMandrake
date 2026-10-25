@@ -21,6 +21,9 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>DIG_SPOIL_BUILD_GRAVEL_PAYS_ITS_WAY: broken rock, the spoil of a cut and the cost of a fill.</summary>
 		public static ThingDef RM_Gravel;
+
+		/// <summary>ICE_DIG_BUILD_CRUSHED_ICE_MELTS_DOWN: the spoil of a cut through ice or packed snow; fills like gravel, melts to water.</summary>
+		public static ThingDef RM_CrushedIce;
 		public static JobDef RM_CaptureDown;
 
 		/// <summary>D = 1. Keeps its original defName so every save's dug cells

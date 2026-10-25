@@ -73,7 +73,7 @@ namespace RimMandrake.FlowWorks
 			return true;
 		}
 
-		private const string NoMaterialReason = "No gravel or stone chunks to fill with.";
+		private const string NoMaterialReason = "No gravel, crushed ice or stone chunks to fill with.";
 
 		private static bool Unpaid(Map map, IntVec3 c)
 		{

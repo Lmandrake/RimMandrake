@@ -156,6 +156,13 @@ namespace RimMandrake.FlowWorks.Thirst
 		public ThingDef meltsTo;
 		public int ticksAboveZero = 5000;
 
+		/// <summary>ICE_DIG_BUILD_CRUSHED_ICE_MELTS_DOWN (owner card 2026-10-25): melts into loose liquid instead of a filled
+		/// container: <see cref="unitsPerItem"/> dL each, into the water at the pile or as a puddle (never lost).</summary>
+		public LiquidDef meltsToLiquid;
+
+		/// <summary>dL released per item melted (crushed ice: a 1x1 tank, RM_GroundClassMath.CrushedIceUnits).</summary>
+		public int unitsPerItem = RM_GroundClassMath.CrushedIceUnits;
+
 		public CompProperties_RM_Melt()
 		{
 			compClass = typeof(CompRM_Melt);
@@ -170,7 +177,7 @@ namespace RimMandrake.FlowWorks.Thirst
 
 		public override void CompTickRare()
 		{
-			if (Props.meltsTo == null || parent.MapHeld == null)
+			if ((Props.meltsTo == null && Props.meltsToLiquid == null) || parent.MapHeld == null)
 			{
 				return;
 			}
@@ -185,6 +192,14 @@ namespace RimMandrake.FlowWorks.Thirst
 			Map map = parent.MapHeld;
 			IntVec3 at = parent.PositionHeld;
 			int n = parent.stackCount;
+			if (Props.meltsToLiquid != null)
+			{
+				// loose liquid: wherever the ice is held (a pile, a pawn's hands, a shelf), the water lands at that square
+				long units = (long)n * System.Math.Max(0, Props.unitsPerItem);
+				parent.Destroy();
+				RimMandrake.FlowWorks.Machinery.RM_LiquidSpill.ReleaseHeld(map, at, Props.meltsToLiquid, (int)System.Math.Min(units, int.MaxValue));
+				return;
+			}
 			if (parent.Spawned)
 			{
 				Thing water = RM_LiquidBottleUtility.MakeContainer(Props.meltsTo, parent);

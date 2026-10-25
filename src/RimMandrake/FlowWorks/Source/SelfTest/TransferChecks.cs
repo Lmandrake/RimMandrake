@@ -403,6 +403,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             "Machinery/Kits/RM_LiquidReaction.cs", "Machinery/Kits/RM_LiquidBath.cs", "Machinery/RM_LiquidNet.cs",
             "Sprinklers/RM_Sprinkle.cs",   // SPRINKLER_HEADS_BUILD_PUMP_REQUIRED: the sprinkler draw
             "Thirst/Building_RM_PipeFaucet.cs",   // PIPE_FAUCET_BUILD_TAP_NAME_NOW_FREE: a faucet's draw (drink or container)
+            "RM_IceMelter.cs",   // ICE_DIG_BUILD_CRUSHED_ICE_MELTS_DOWN: a finished melt bill fills the bench's tanks
         };
 
         /// <summary>Files that may mutate a tank outside the transfer service, each with its reason (anything new fails).</summary>
@@ -440,6 +441,8 @@ namespace RimMandrake.FlowWorks.SelfTest
             "credit site: gravity overflow",
             // PIPE_FAUCET_BUILD_TAP_NAME_NOW_FREE: a pipe faucet's draw for a drink or a container (a Sink)
             "credit site: faucet draw",
+            // ICE_DIG_BUILD_CRUSHED_ICE_MELTS_DOWN: a melt bill's water into the tanks on the melter's net (a World source)
+            "credit site: ice melter",
         };
 
         // review day 3: the decilitre movers (TryPourDl, TryDebitDl, CreditDl, TryReturnDl) joined the list; a site calling one
