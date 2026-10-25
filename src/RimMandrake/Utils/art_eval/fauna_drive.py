@@ -89,7 +89,7 @@ def cmd_rows(a):
     for t in sorted({r["target_def"] for r in rows if RS.stopped(r["target_def"], rs)}):
         print(f"{t}: fresh series STOPPED ({RS.stopped(t, rs).get('why') or RS.stopped(t, rs).get('by_card')}) - no row")
     rows = [r for r in rows if not RS.stopped(r["target_def"], rs)]
-    nreg = RS.regen_counts(RS.decisions(), rs)
+    nreg = RS.regen_counts(production(), rs)
     owner = RS.owner_prompts()
     held = []
 
@@ -98,7 +98,10 @@ def cmd_rows(a):
         # logs (the shared regen_rounds.json lost updates under parallel runs); round_series.py owns the count
         t = r["target_def"]
         r["id"] = f"arteval_{t}_{RS.tag(t, min(nreg.get(t, 1), 3), rs)}"
-        s = specs[t]
+        s = specs.get(t)
+        if s is None:
+            held.append((t, "no spec under --specs"))
+            return r
         d = s["size"]["drawSize"][0]
         if t in owner:
             r["prompt"] = RS.compose_owner_prompt(RS.label_of(s), owner[t]["text"])
@@ -118,6 +121,9 @@ def cmd_rows(a):
     with ThreadPoolExecutor(4) as ex:
         rows = list(ex.map(fix, rows))
     for t, hits in held:
+        if hits == "no spec under --specs":
+            print(f"HELD {t}: no spec under --specs; row not written")
+            continue
         print(f"HELD {t}: the owner's prompt names {hits}, which the per-facing gate refuses; not reworded - ask him")
     rows = [r for r in rows if r["target_def"] not in {t for t, _ in held}]
     for r in rows:
@@ -152,7 +158,7 @@ def cmd_candidates(a):
             rows[r["id"]] = r
     made, waiting, readyrounds = [], [], []
     rs = RS.resets()
-    recs = list(RS.decisions())
+    recs = list(production())
     judged = {(r["subject"], r.get("candidate")) for _, r in recs}
     nreg = RS.regen_counts(recs, rs)
     for d in a.defs:
@@ -191,16 +197,30 @@ def cmd_candidates(a):
     (out / "ready.txt").write_text("\n".join(str(out / f"{d}_{rr}.spec.json") for d, rr in readyrounds) + "\n")
 
 
-def latest(defname: str, cand: bool):
+def production():
+    """(run, record) for fauna_* runs that are not --test runs; test runs never count rounds or supply an ACCEPT."""
+    return [(run, r) for run, r in RS.production_decisions() if run.startswith("fauna_")]
+
+
+CAND_RUN = re.compile(r"(^|_)(s\d+_?)?r\d+_")   # …_r1_00, …_s1r1_00 / …_s1_r1_00; not a biome like glass_reef_00
+
+
+def latest(defname: str, cand: bool, recs=None):
     """The latest decision record for the subject: candidate runs (…_rN_NN) or first-pass runs (…_NN)."""
     out = None
-    for run, r in RS.decisions():
-        iscand = "_r" in run.split("fauna_", 1)[1]
+    for run, r in (production() if recs is None else recs):
+        iscand = bool(CAND_RUN.search(run.split("fauna_", 1)[1]))
         if iscand != cand or r["subject"] != defname:
             continue
         if out is None or RS._instant(r.get("at")) >= RS._instant(out.get("at")):   # newest by time, not run name
             out = r
     return out
+
+
+def render_is_judged(judged_shas: dict, face: str, sha: str) -> bool:
+    """The render about to be installed is the picture the pipeline ACCEPTed (decision record source_sha256)."""
+    want = (judged_shas or {}).get(face)
+    return bool(want) and want == sha
 
 
 def cmd_install(a):
@@ -255,6 +275,13 @@ def cmd_install(a):
         print(f"{a.defname}: owner keep(s) {sorted({k['id'] for k in newer})} made after the first-pass judgement "
               f"({first and first.get('at')}) - his newer word, not replaced")
         return 3
+    judged = (cand.get("source_sha256") or {})
+    for fl in files:
+        src = job_png(f"arteval_{a.defname}_{tg}_{fl['face']}")
+        if src and not render_is_judged(judged, fl["face"], AL.sha256_file(src)):
+            print(f"{a.defname}: {fl['face']} render {AL.sha256_file(src)[:12]} is not the picture judged "
+                  f"({str(judged.get(fl['face']))[:12]}) - re-rendered after judging, not installed")
+            return 3
     dest = ROOT / "Transient" / "fauna_regen" / a.defname
     dest.mkdir(parents=True, exist_ok=True)
     rc = 0
