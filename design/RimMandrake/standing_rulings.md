@@ -396,6 +396,12 @@ once a day, or when a change is wide enough that its rows cannot be named. A bri
 asks a live helper for the whole suite to prove one fix is the defect. Executable since
 2026-10-25: `modcheck run <Mod> --item <ID>` / `--chains` / `--rows`; the whole suite needs `--full`.
 
+Extended (owner, 2026-10-25): *"When we're building out content we should be focusing aggressive
+testing only on the highest value informative tests not rerunning other tests that happen to be
+nearby or ahead of it."* Run the rows that can change what we do next; never re-run a row only
+because it shares a chain with, or runs before, the row you need. Tiers and options:
+`design/RimMandrake/focused_testing_plan_2026-10-25.md`.
+
 ## The bridge is passed through one file
 
 One window drives the live game at a time — not for ownership, for attributability.
