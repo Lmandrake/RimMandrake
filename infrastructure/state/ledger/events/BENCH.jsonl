@@ -5247,3 +5247,11 @@
 {"seat":"BENCH","event":"start","id":"WORK_PRIORITY_FIX_ZERO_IGNORED_UNMANUAL","ts":"2026-10-25T22:15:42Z","tsn":1792966542850522351}
 {"seat":"BENCH","event":"note","id":"WORK_PRIORITY_FIX_ZERO_IGNORED_UNMANUAL","text":"40313a8473 (pub b889d6b9c3): set_work_priority gets manualPriorities param (C#; companion DLL build+deploy needed before live); work_bar.py asserts manualPrioritiesOn+readBack, runners go UNMEASURED/HARNESS otherwise. Re-run live after DLL deploy: shovels_live all rows (staging bars Hauling/Cleaning; SH_drift_clear_needs_shovel Mining 0), gravel_live all rows (Hauling 0). Not changed: Graffiti/validation.py Cleaning 0.","ts":"2026-10-25T22:20:29Z","tsn":1792966829223094265}
 {"seat":"BENCH","event":"note","id":"RAIDER_BREACH_TUNE_FOUR_TIMES_SLOWER","text":"close sha recorded as literal HEAD; HEAD was d0d945d10f (decision only, no code)","why":"correct literal-HEAD close","ts":"2026-10-25T22:21:36Z","tsn":1792966896627272913}
+{"seat":"BENCH","event":"lease","id":"ICE_YIELD_DECIDE_ONE_CUT_FOUR_NOTCHES","action":"take","token":"BENCH.pid36697.52edf57a","expires":"2026-10-25T23:07:14Z","ts":"2026-10-25T22:22:14Z","tsn":1792966934956978013}
+{"seat":"BENCH","event":"claim","id":"ICE_YIELD_DECIDE_ONE_CUT_FOUR_NOTCHES","ts":"2026-10-25T22:22:15Z","tsn":1792966935325714371}
+{"seat":"BENCH","event":"start","id":"ICE_YIELD_DECIDE_ONE_CUT_FOUR_NOTCHES","ts":"2026-10-25T22:22:15Z","tsn":1792966935698708157}
+{"seat":"BENCH","event":"start","id":"ICE_YIELD_DECIDE_ONE_CUT_FOUR_NOTCHES","ts":"2026-10-25T22:22:17Z","tsn":1792966937292673572}
+{"seat":"BENCH","event":"lease","id":"ICE_MELT_TAME_STACK_FLOOD","action":"take","token":"BENCH.pid36819.eb7173f6","expires":"2026-10-25T23:07:18Z","ts":"2026-10-25T22:22:18Z","tsn":1792966938997854785}
+{"seat":"BENCH","event":"claim","id":"ICE_MELT_TAME_STACK_FLOOD","ts":"2026-10-25T22:22:19Z","tsn":1792966939403217973}
+{"seat":"BENCH","event":"start","id":"ICE_MELT_TAME_STACK_FLOOD","ts":"2026-10-25T22:22:19Z","tsn":1792966939807112993}
+{"seat":"BENCH","event":"start","id":"ICE_MELT_TAME_STACK_FLOOD","ts":"2026-10-25T22:22:21Z","tsn":1792966941680085955}
