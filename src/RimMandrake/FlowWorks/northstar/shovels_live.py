@@ -44,6 +44,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 if HERE not in sys.path:
     sys.path.insert(0, HERE)
 import shovel_stage  # noqa: E402
+import work_bar  # noqa: E402
 
 NSP = "RimMandrake.FlowWorks.RM_NorthstarProofs"
 S_FW = "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings"
@@ -264,9 +265,10 @@ def main():
             unmeasured_rest("HARNESS", "no usable colonist spawned")
             return 2
         B.call("jawa/set_pawn_skill", pawn=pid, skill="Mining", level=10, _answer=True)
-        B.call("jawa/set_work_priority", pawnId=pid, workType="Mining", priority=1)
-        B.call("jawa/set_work_priority", pawnId=pid, workType="Hauling", priority=0)
-        B.call("jawa/set_work_priority", pawnId=pid, workType="Cleaning", priority=0)
+        bar_ok, bar_why = work_bar.set_all(B.call, pid, [("Mining", 1), ("Hauling", 0), ("Cleaning", 0)])
+        if not bar_ok:
+            unmeasured_rest("HARNESS", "work bar did not take: %s" % bar_why)
+            return 2
 
         # 1+2. bare hands refused; the same order with a shovel on the ground is fetched then cut (the control)
         if want("SH_bare_hands_refused", "SH_fetches_shovel_then_digs"):
@@ -427,8 +429,9 @@ def main():
         if want("SH_drift_clear_needs_shovel"):
             clear_orders()
             why = clear_shovels()
-            B.call("jawa/set_work_priority", pawnId=pid, workType="Mining", priority=0)
-            B.call("jawa/set_work_priority", pawnId=pid, workType="Cleaning", priority=1)
+            bar_ok, bar_why = work_bar.set_all(B.call, pid, [("Mining", 0), ("Cleaning", 1)])
+            if not bar_ok:
+                why = why or "work bar did not take: %s" % bar_why
             rect = "%d,%d,1,1" % drift_c
 
             def sand_at():
@@ -450,8 +453,7 @@ def main():
                         t = (i + 1) * 250
                         break
             finally:
-                B.call("jawa/set_work_priority", pawnId=pid, workType="Cleaning", priority=0)
-                B.call("jawa/set_work_priority", pawnId=pid, workType="Mining", priority=1)
+                work_bar.set_all(B.call, pid, [("Cleaning", 0), ("Mining", 1)])
                 B.call("jawa/paint_area", area="snow", ops=rect, value=False)
             det = {"sand0": s0, "sandBare2500": s1, "shovel": gv, "clearedAfterTicks": t, "sandAfter": s2}
             if why or s0 is None or s0 < 0.5 or not gv[0]:

@@ -58,6 +58,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 if HERE not in sys.path:
     sys.path.insert(0, HERE)
 import shovel_stage  # noqa: E402
+import work_bar  # noqa: E402
 NSP = "RimMandrake.FlowWorks.RM_NorthstarProofs"
 S_FW = "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings"
 MELTER = "RimMandrake.FlowWorks.RM_IceMelter"
@@ -363,9 +364,11 @@ def main():
             return 2
         for c_ in cids:
             B.call("jawa/set_pawn_skill", pawn=c_, skill="Mining", level=10, _answer=True)
-            B.call("jawa/set_work_priority", pawnId=c_, workType="Mining", priority=1)
             # one colonist, hauling off: nobody carries spoil out of the counted squares between polls
-            B.call("jawa/set_work_priority", pawnId=c_, workType="Hauling", priority=0)
+            bar_ok, bar_why = work_bar.set_all(B.call, c_, [("Mining", 1), ("Hauling", 0)])
+            if not bar_ok:
+                unmeasured_rest("HARNESS", "work bar did not take: %s" % bar_why)
+                return 2
         # SHOVELS_BUILD_NO_DIGGING_BARE_HANDED: no shovel, no dig or fill job; stage one so these rows measure gravel
         shovel_bad = [w for w in (shovel_stage.give_shovel(B.call, c_) for c_ in cids) if not w[0]]
         if shovel_bad:

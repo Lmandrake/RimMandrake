@@ -1509,7 +1509,9 @@ namespace JawaBench.BridgeTools
             [ToolParameter(Description = "WorkTypeDef defName, e.g. Cooking, Hauling, Firefighter.")]
             string workType = null,
             [ToolParameter(Description = "0 (off) to 4 (lowest active).")]
-            int priority = 3)
+            int priority = 3,
+            [ToolParameter(Description = "true = switch Find.PlaySettings.useWorkPriorities ON before writing, so a 0 really bars the work type and a 1-4 is the real stored number (a fresh debug map has it OFF and every active type reads 3). Omit to leave the flag unchanged.")]
+            bool? manualPriorities = null)
         {
             if (string.IsNullOrWhiteSpace(workType))
                 return Fail("workType is required, e.g. 'Cooking'.");
@@ -1547,6 +1549,8 @@ namespace JawaBench.BridgeTools
                             disabledWorkTypes = pawn.GetDisabledWorkTypes().Select(d => d.defName).ToList()
                         });
 
+                if (manualPriorities.HasValue && Find.PlaySettings != null)
+                    Find.PlaySettings.useWorkPriorities = manualPriorities.Value;
                 pawn.workSettings.SetPriority(wd, priority);
                 var readBack = pawn.workSettings.GetPriority(wd);
                 var manualPrioritiesOn = Find.PlaySettings?.useWorkPriorities ?? false;

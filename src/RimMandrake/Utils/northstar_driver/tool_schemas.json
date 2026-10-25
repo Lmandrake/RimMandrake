@@ -2836,6 +2836,7 @@
   },
   "jawa/set_work_priority": {
    "parameters": [
+    "manualPriorities",
     "pawnId",
     "priority",
     "workType"
