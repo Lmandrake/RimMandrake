@@ -1,0 +1,1 @@
+./publish rebases local commits onto origin, so every sha recorded before publishing (a commit message, a verify --sha, a note) is gone from origin afterwards; a clone fed those commits by bundle then diverges ('ahead 10, behind 27'). Close items with the sha printed by publish, and bring such a clone back with git rebase origin/main, which drops the already-applied duplicates.

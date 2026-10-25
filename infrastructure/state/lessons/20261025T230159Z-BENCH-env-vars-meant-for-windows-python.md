@@ -1,0 +1,1 @@
+Env vars meant for a Windows python.exe launched from WSL must be named in WSLENV, or the child never sees them: MODCHECK_SKIP_DEPLOY=1 was silently ignored on SteveDesktop until it was added (WSLENV=$WSLENV:MODCHECK_SKIP_DEPLOY); path vars need /p.

@@ -1,0 +1,1 @@
+SSH to a Windows OpenSSH host lands in cmd.exe, which mangles quotes, $, | and ; in an inline powershell -Command; send the script as -EncodedCommand (base64 UTF-16LE), as infrastructure/stevedesktop/sps.sh does, and keep it under cmd's 8191-char line cap. Processes started that way run in session 0 with no desktop: a Unity game started from there never shows.

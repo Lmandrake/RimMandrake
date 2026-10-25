@@ -1,0 +1,1 @@
+On SteveDesktop, WSL interop reached over Tailscale SSH starts Windows processes in session 1, the logged-in desktop, so the game is launched from there (rw_game.sh). But that SSH session has no Windows dirs on PATH; call powershell.exe/taskkill.exe by full /mnt/c path or source testcentre_env.sh.

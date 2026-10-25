@@ -1,0 +1,1 @@
+A Windows path written raw into a JSON file from bash (D:\RimTest\...) is an invalid escape; JawaBench then reads companion_profile.json as 'invalid profile file (bad escape)' and falls back to 'campaign'. JSON-escape the backslashes with sed before writing. Test such an escape with bash and printf, not zsh echo, which eats the backslashes itself.
