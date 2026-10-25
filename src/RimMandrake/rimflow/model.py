@@ -209,6 +209,8 @@ STATES = ("proposed", "ready", "doing", "built", "validated",
 # ⚠️ `claim`/`start` on a built item still move it to ready/doing (corrective work) —
 # unchanged on purpose; leases are step 3.
 OPEN_STATES = ("proposed", "ready", "doing", "built", "validated")
+# `block --until`: the levels a blocker can reach that satisfy a block, cheapest first.
+BLOCK_UNTIL = ("built", "validated", "done")
 
 # The validation ladder, cheapest first (addendum §"The levels that exist today").
 # L0 offline · L1 resolved-live on the minimal list · L2 behaviour gauntlet ·
@@ -368,7 +370,12 @@ VERBS = {
                   "opt": ("row", "target", "needs", "spec", "from")},
     "claim":     {"who": "owner", "req": (), "opt": ()},
     "start":     {"who": "owner", "req": (), "opt": ()},
-    "block":     {"who": "owner", "req": ("reason",), "opt": ("on",)},
+    # `until` (RIM-1, 2026-10-25): the level of `on` that SATISFIES this block,
+    # built|validated|done; absent means done. Satisfaction is only ever ANNOUNCED
+    # (priority.block_frontier), never applied: the block stays until a seat lifts it.
+    # ⚠️ The CLI writes `until` only when it is not `done`, so a default block stays
+    # byte-identical for old readers; a reader from step 2 on strips it (stricter, safe).
+    "block":     {"who": "owner", "req": ("reason",), "opt": ("on", "until")},
     "unblock":   {"who": "owner", "req": (), "opt": ("reason",)},
     # `level` / `criterion` (step 2): a pass naming an OUTSTANDING criterion of a built
     # item drops it, built -> validated, and the last one -> done. ⚠️ A reader older than
@@ -794,6 +801,12 @@ def _check_enums(ev):
                 "reconcile --verdict partial needs --remaining \"<what is left, one "
                 "line>\" — `next` prints that line instead of the whole spec, so the "
                 "next builder works the remainder rather than rebuilding the item.")
+    if verb == "block" and ev.get("until") is not None:
+        if ev["until"] not in BLOCK_UNTIL:
+            raise SchemaError("block --until must be %s (got %r)"
+                              % ("|".join(BLOCK_UNTIL), ev["until"]))
+        if not ev.get("on"):
+            raise SchemaError("block --until names a level OF the --on item; give --on.")
     if verb == "lease":
         if ev["action"] not in LEASE_ACTIONS:
             raise SchemaError("lease action must be %s (got %r)"
@@ -1446,7 +1459,7 @@ class Item(object):
     """The projection of one item. Rebuilt from the ledger every time; never stored."""
 
     __slots__ = ("id", "title", "kind", "owner", "row", "target", "needs", "state",
-                 "blocked", "blocked_reason", "blocked_on", "this_deployment",
+                 "blocked", "blocked_reason", "blocked_on", "blocked_until", "this_deployment",
                  "created_at", "created_index", "closed_sha", "superseded_by",
                  "runs", "findings", "history", "caused_by", "claim_ts",
                  "reconciles", "cited_shas",
@@ -1460,7 +1473,7 @@ class Item(object):
         self.needs = "offline"
         self.state = "proposed"
         self.blocked = False
-        self.blocked_reason = self.blocked_on = None
+        self.blocked_reason = self.blocked_on = self.blocked_until = None
         self.this_deployment = False
         self.created_at = None
         self.closed_sha = self.superseded_by = self.caused_by = None
@@ -1931,7 +1944,7 @@ def _apply_implemented(ev, item):
     else:
         item.closed_sha = ev["sha"]
         item.blocked = False
-        item.blocked_reason = item.blocked_on = None
+        item.blocked_reason = item.blocked_on = item.blocked_until = None
 
 
 def _verify_target(ev, item):
@@ -1973,7 +1986,7 @@ def _criterion_passed(item, cid, level, run, ev):
         _transition(item, "done")
         item.closed_sha = ev.get("sha") or item.built_sha
         item.blocked = False
-        item.blocked_reason = item.blocked_on = None
+        item.blocked_reason = item.blocked_on = item.blocked_until = None
         return
     if level != "L0" and item.state == "built":
         _transition(item, "validated")
@@ -2030,9 +2043,10 @@ def _apply_item_verb(ev, index, item, seat, world):
                    "and link it with caused_by." % (item.id, item.state))
         item.blocked = True
         item.blocked_reason, item.blocked_on = ev["reason"], ev.get("on")
+        item.blocked_until = ev.get("until")        # None = done (the default)
     elif verb == "unblock":
         item.blocked = False
-        item.blocked_reason = item.blocked_on = None
+        item.blocked_reason = item.blocked_on = item.blocked_until = None
     elif verb == "verify":
         level, cid = _verify_target(ev, item)       # refuses BEFORE the run is recorded
         n = sum(1 for r in item.runs if r.config == ev["config"]) + 1
@@ -2096,7 +2110,7 @@ def _apply_item_verb(ev, index, item, seat, world):
         # and the first view that reads the reason without the flag would report a
         # closed item as stuck on something that was resolved by the close.
         item.blocked = False
-        item.blocked_reason = item.blocked_on = None
+        item.blocked_reason = item.blocked_on = item.blocked_until = None
     elif verb == "drop":
         to("dropped")
         # ⚠️ SAME FIX AS `close`, same reason. Leaving `blocked`/`blocked_reason` set
@@ -2109,12 +2123,12 @@ def _apply_item_verb(ev, index, item, seat, world):
         # UTINNI_SHELL_DEFNAME_BUG_1). Dropping or superseding resolves the block the
         # same way closing does.
         item.blocked = False
-        item.blocked_reason = item.blocked_on = None
+        item.blocked_reason = item.blocked_on = item.blocked_until = None
     elif verb == "supersede":
         to("superseded")
         item.superseded_by = ev["by"]
         item.blocked = False
-        item.blocked_reason = item.blocked_on = None
+        item.blocked_reason = item.blocked_on = item.blocked_until = None
     elif verb == "note":
         for sha in CITED_SHA_RE.findall(str(ev.get("text") or "")):
             if sha not in item.cited_shas:

@@ -830,6 +830,13 @@ def cmd_bench(args, seat):
     if not scored:
         print("  nothing scores ≥3.")
 
+    ended = [f for f in priority.block_frontier(w) if f[0] in open_]
+    print("\nBLOCKERS ENDED (the block may be stale; a seat decides): %d" % len(ended))
+    for f in ended[:8]:
+        print("  " + priority.frontier_line(*f))
+    if len(ended) > 8:
+        print("  ... +%d more" % (len(ended) - 8))
+
     needs_him = [i for i in open_ if i.needs == "owner"]
     print("\nNEEDS HIM — %d" % len(needs_him))
     for it in needs_him[:8]:
@@ -885,10 +892,12 @@ def cmd_next(args, seat):
     skipped = ch["skipped"]
     if ch["kind"] == "nothing":
         _nothing(w, seat, args, ctx)
+        _print_frontier(w, seat)
         _print_skipped(skipped)
         return 0
     if ch["kind"] == "claimable":
         _offer_claimable(ch["claimable"], seat, held)
+        _print_frontier(w, seat)
         _print_skipped(skipped)
         return 0
     a = ch["offer"]
@@ -897,6 +906,7 @@ def cmd_next(args, seat):
         _print_reconcile(a, w, peek)
         _print_lapsed(it, ctx, idx, reconciling=True)
         _print_lease(held)
+        _print_frontier(w, seat)
         _print_skipped(skipped)
         return 0
 
@@ -963,6 +973,7 @@ def cmd_next(args, seat):
                  ", ".join(i.id for i in also[:4]),
                  "" if len(also) <= 4 else ", +%d" % (len(also) - 4)))
         print("    filed for you by another seat. `rimflow claim <ID>` to take one.")
+    _print_frontier(w, seat)
     _print_skipped(skipped)
     return 0
 
@@ -1622,6 +1633,9 @@ def cmd_claim(args, seat):
     _trigger_health_rebuild()
     it = _replay_now().items.get(args.id)
     print("claim %s -> %s" % (args.id, it.state if it else "?"))
+    if it is not None and it.blocked:
+        print("⚠️  %s is BLOCKED: %s%s. Claimed anyway; unblock it if that is stale."
+              % (it.id, it.blocked_reason, (" (on %s)" % it.blocked_on) if it.blocked_on else ""))
     _print_lease(held)
     return 0
 
@@ -1648,6 +1662,58 @@ def _lease_verb(action):
     return run
 
 
+def cmd_block(args, seat):
+    """`block [--on X [--until built|validated|done]]` (RIM-1). Refuses, on the writing
+    path only, what the frontier could never resolve: a self or cyclic wait, and a target
+    that is dropped or superseded (it will never deliver). An unfiled target is warned.
+    Old events are replayed as written; none of the 78 historical `--on` blocks hit any
+    of these (design/2026-10-25-rimflow-block-release.md)."""
+    _, w = load()
+    on = getattr(args, "on", None)
+    until = getattr(args, "until", None)
+    if until and not on:
+        die("`block --until` is a level OF the --on item; give --on <ITEM>.")
+    if on:
+        tgt, seen, cur = w.items.get(on), [args.id], on
+        if tgt is None:
+            # ⚠️ A WARNING, not a refusal: another clone may have filed it unpulled, and
+            # the frontier resolves the id at read time, so it works once the item exists.
+            sys.stderr.write("⚠️  %s has never been filed here, so nothing will report it "
+                             "done until it is (`git pull`, or file it).\n" % on)
+        elif tgt.state in ("dropped", "superseded"):
+            die("%s is `%s`; it will never deliver. Block on %s instead."
+                % (on, tgt.state, tgt.superseded_by or "the real prerequisite"))
+        while cur is not None and cur not in seen:
+            seen.append(cur)
+            x = w.items.get(cur)
+            cur = x.blocked_on if (x is not None and x.blocked and x.open) else None
+        if cur == args.id:
+            die("cycle refused: %s. Nothing on it could ever finish first."
+                % " -> ".join(seen + [args.id]))
+    ev = {"seat": seat, "event": "block", "id": args.id, "reason": args.reason, "on": on,
+          "until": until if until != "done" else None}   # default stays old-reader-identical
+    _emit(ev, w, quiet=True)
+    after = _replay_now()
+    it = after.items.get(args.id)
+    print("block %s -> %s" % (args.id, it.state if it else "?"))
+    for f in priority.block_frontier(after, on=on) if on else ():
+        if f[0] is it:              # e.g. `--until built` on an item already built
+            print("⚠️  already ended: " + priority.frontier_line(*f))
+    return 0
+
+
+def _print_frontier(w, seat):
+    """`next`'s standing reminder: this seat's blocks whose blocker has ended."""
+    ended = priority.block_frontier(w, seat=seat)
+    if not ended:
+        return
+    print("")
+    for f in ended[:6]:
+        print(priority.frontier_line(*f))
+    if len(ended) > 6:
+        print("... +%d more: `rimflow why <ID>`" % (len(ended) - 6))
+
+
 def _simple(verb, extra=()):
     def run(args, seat):
         _, w = load()
@@ -1669,44 +1735,34 @@ def _simple(verb, extra=()):
 
 
 def _announce_unblocks(target):
-    """Name the items whose live block waits on `target`, now that `target` is terminal.
+    """Name the items whose live block on `target` has just ENDED: `target` reached the
+    block's `--until` level (default done), or went dropped/superseded.
 
-    🔴 A BLOCK NEVER LIFTS ITSELF. `block --on X` records the dependency and nothing ever
-    reads it backwards, so an item can wait on a blocker that finished days ago and no
-    signal is produced. Measured 2026-08-24: `WEAPON_MONEY_ROLL_NOT_CEILING_1` sat blocked
-    43 h on `BARE_HANDS_REMEASURE_AFTER_LOAD_1`, which had been `done` for 15 of them. The
-    dependency was in the ledger the whole time; nobody was ever told.
+    🔴 A BLOCK NEVER LIFTS ITSELF. Measured 2026-08-24: `WEAPON_MONEY_ROLL_NOT_CEILING_1`
+    sat blocked 43 h on `BARE_HANDS_REMEASURE_AFTER_LOAD_1`, done for 15 of them.
 
-    ⛔ Deliberately does NOT auto-unblock. The blocker closing is EVIDENCE that the block
-    may be stale, never proof — a blocker can close `dropped`, or close without delivering
-    what the blocked item was actually waiting for. The seat still confirms. This only
-    makes the information arrive at the one moment it is free.
+    ⛔ Deliberately does NOT auto-unblock. The blocker reaching its level is EVIDENCE that
+    the block may be stale, never proof, and a dropped or superseded blocker will never
+    deliver at all: those are named `confirm`. The seat still decides. This makes the
+    news arrive at the one moment it is free; `next` and `why` keep repeating it after
+    (priority.block_frontier), because a one-shot notice was missed for up to 21 days.
     """
-    # ⚠️ NOT `_replay_now()`, on purpose. This is an ADVISORY printed after a close that
-    # has already landed, so a ledger it cannot read must leave the close reported and
+    # ⚠️ NOT `_replay_now()`, on purpose. This is an ADVISORY printed after a write that
+    # has already landed, so a ledger it cannot read must leave the write reported and
     # exit quietly — `_replay_now` would `die(2)` and make a successful close look failed.
     try:
         st = model.replay(model.read())                          # no path: see load()
     except Exception:                                            # noqa: BLE001
         return
-    waiting = [it for it in st.items.values()
-               if getattr(it, "blocked", False)
-               and getattr(it, "blocked_on", None) == target
-               and it.id != target]
-    if not waiting:
+    ended = priority.block_frontier(st, on=target)
+    if not ended:
         return
     print("")
-    print("🔑 %d item(s) are BLOCKED ON %s, which just went terminal:"
-          % (len(waiting), target))
-    for it in waiting:
-        print("   %s  (%s)" % (it.id, it.state))
-        print("     %s" % (it.blocked_reason or "")[:140])
-    print("   If %s delivered what they were waiting for, lift it — they will not lift"
-          % target)
-    print("   themselves, and nothing else will ever tell you:")
-    for it in waiting:
-        print("     python3 src/RimMandrake/rimflow/cli.py unblock %s --reason \"%s "
-              "closed\"" % (it.id, target))
+    print("🔑 %d item(s) BLOCKED ON %s, which is now `%s`. They will not lift themselves:"
+          % (len(ended), target, ended[0][2].state))
+    for f in ended:
+        print("   " + priority.frontier_line(*f))
+        print("     %s" % (f[0].blocked_reason or "")[:140])
 
 
 def cmd_close(args, seat):
@@ -1947,6 +2003,7 @@ def cmd_implemented(args, seat):
     print("  owes %s; cheapest %s -> needs %s"
           % (", ".join("%s %s" % (c["id"], c["level"]) for c in owed),
              after.next_level(), after.needs))
+    _announce_unblocks(args.id)                 # a `block --until built` has ended
     print("  never offered as build work again; listed by `rimflow next --acceptance`.")
     return 0
 
@@ -1987,6 +2044,8 @@ def cmd_verify(args, seat):
         print("%s: %s -> %s" % (args.id, before.state, it.state))
     if r.criterion and it.state in ("built", "validated"):
         print("  still owes %s (needs %s)" % (", ".join(it.owed_levels()), it.needs))
+        if before is not None and before.state != it.state:
+            _announce_unblocks(args.id)         # a `block --until validated` has ended
     if r.criterion and it.state == "done" and before is not None and before.state != "done":
         _announce_unblocks(args.id)
         moved = _move_prose_to_closed(args.id)
@@ -2863,11 +2922,13 @@ def build_parser():
                                     "the item is another seat's; the ledger records "
                                     "which seat ruled")
 
-    s = add("block", "something is WRONG (this is not `needs`)",
-            _simple("block", (("reason", "reason"), ("on", "on"))))
+    s = add("block", "something is WRONG (this is not `needs`)", cmd_block)
     s.add_argument("id")
     s.add_argument("--reason", required=True)
     s.add_argument("--on", help="the item this waits on")
+    s.add_argument("--until", choices=model.BLOCK_UNTIL,
+                   help="the level of --on that ends the wait (default done). Reaching "
+                        "it is ANNOUNCED in `next`/`why`, never applied: you unblock")
 
     s = add("unblock", "the wrong thing is fixed",
             _simple("unblock", (("reason", "reason"),)))

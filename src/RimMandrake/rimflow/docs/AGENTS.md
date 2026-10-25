@@ -68,6 +68,10 @@ not being offered.
    quotations are not checked against transcripts, so the honesty is yours.
 5. **`needs` is not `block`.** `needs` says when an item can be worked (`offline`, `deploy`,
    `game-up`, `bridge`, `harvest`, `owner`). `block` says something is wrong.
+   `block <ID> --on <OTHER> [--until built|validated|done]` (default done) names a
+   prerequisite. When OTHER reaches that level, `next`, `next --bench` and `why` print
+   "blocker now satisfied: <ID>"; when OTHER is dropped or superseded they print "blocker
+   dropped, confirm: <ID>". Neither lifts the block: you `unblock` (or re-block) it.
 6. **Names are retrieval keys.** New ids are `SUBJECT_INTENT_TWIST`, 3 to 7 words, at most 44
    characters, saying what is wrong or wanted. Check with `rimflow namecheck <NAME>` before `file`.
 
