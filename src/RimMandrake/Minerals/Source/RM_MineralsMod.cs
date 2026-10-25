@@ -99,8 +99,8 @@ namespace RimMandrake.Minerals
             Multiplier(list, "Trader stock [applies now]", ref tradeMultiplier, "Scales the registry's trader stock amounts.");
             list.GapLine();
 
-            list.Label("Per-biome abundance. Values are in each material's own unit: EPM = units you would get by mining out one standard "
-                     + "250x250 map. Edited cells are stored as your own values; a registry update still reaches every cell you did not edit.");
+            list.Label("Per-biome abundance. Ores are set in deposits per map (one deposit is ~30 cells); salvage, trade and deep shares "
+                     + "keep their own units. Edited cells are stored as your own values; a registry update still reaches every cell you did not edit.");
             if (list.ButtonText("Biome: " + (biome ?? "(pick one)")))
                 Find.WindowStack.Add(new FloatMenu(Biomes().Select(b => new FloatMenuOption(b, () => { biome = b; buffers.Clear(); })).ToList()));
             if (biome != null)
@@ -116,17 +116,24 @@ namespace RimMandrake.Minerals
                         continue;
                     }
                     float v = edited ? overrides[key] : (reg ?? 0f);
+                    // owner card 2026-10-03: the settings unit is DEPOSITS PER MAP. EPM rows are edited as deposits and stored as EPM.
+                    bool deposits = r.Unit == "EPM" && r.UnitsPerCellOrFind > 0f;
+                    float shown = deposits ? RM_MineralPolicyKernel.LumpsForEpm(v, r.UnitsPerCellOrFind) : v;
                     Rect row = list.GetRect(Text.LineHeight);
-                    Widgets.Label(row.LeftPart(0.45f), (edited ? "* " : "  ") + r.MaterialId + " (" + r.Unit + ")");
-                    if (!buffers.TryGetValue(key, out string buf)) buf = v.ToString("0.##", CultureInfo.InvariantCulture);
-                    float nv = v;
-                    Widgets.TextFieldNumeric(row.RightPart(0.55f).LeftPart(0.35f), ref nv, ref buf, 0f, 1000000f);
+                    Widgets.Label(row.LeftPart(0.45f), (edited ? "* " : "  ") + r.MaterialId + " (" + (deposits ? "deposits per map" : r.Unit) + ")");
+                    if (!buffers.TryGetValue(key, out string buf)) buf = shown.ToString("0.##", CultureInfo.InvariantCulture);
+                    float ns = shown;
+                    Widgets.TextFieldNumeric(row.RightPart(0.55f).LeftPart(0.35f), ref ns, ref buf, 0f, 1000000f);
                     buffers[key] = buf;
-                    if (r.Unit == "EPM") Widgets.Label(row.RightPart(0.55f).RightPart(0.6f), RM_MineralPolicyKernel.DescribeEpm(nv, r.UnitsPerCellOrFind));
+                    float nv = ns == shown ? v : (deposits ? RM_MineralPolicyKernel.EpmForLumps(ns, r.UnitsPerCellOrFind) : ns);
+                    if (deposits)
+                        Widgets.Label(row.RightPart(0.55f).RightPart(0.6f), "of ~" + RM_MineralPolicyKernel.MeanLumpCells.ToString("0", CultureInfo.InvariantCulture)
+                                    + " cells = " + nv.ToString("0", CultureInfo.InvariantCulture) + " units");
                     if (nv != v)
                     {
                         // back to the registry value = no override, so later registry updates reach this cell again
-                        if (reg != null && Mathf.Approximately(nv, reg.Value)) overrides.Remove(key);
+                        float regShown = reg == null ? -1f : deposits ? RM_MineralPolicyKernel.LumpsForEpm(reg.Value, r.UnitsPerCellOrFind) : reg.Value;
+                        if (reg != null && Mathf.Abs(ns - regShown) < 0.005f) overrides.Remove(key);   // the field shows 2 decimals
                         else overrides[key] = nv;
                     }
                 }

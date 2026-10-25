@@ -242,6 +242,14 @@ namespace RimMandrake.Minerals
             return epm / (unitsPerCell * MeanLumpCells);
         }
 
+        /// <summary>Inverse of LumpsForEpm: the settings screen edits deposits per map (owner card 2026-10-03), the registry and
+        /// overrides store EPM.</summary>
+        public static float EpmForLumps(float lumps, float unitsPerCell)
+        {
+            if (!(unitsPerCell > 0f) || !(lumps > 0f)) return 0f;
+            return lumps * unitsPerCell * MeanLumpCells;
+        }
+
         /// <summary>The settings-screen translation: "~ 1.3 deposits of ~30 cells".</summary>
         public static string DescribeEpm(float epm, float unitsPerCell)
         {

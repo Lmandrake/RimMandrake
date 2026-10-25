@@ -213,6 +213,10 @@ namespace RimMandrake.Minerals.SelfTest
             Check(tok != null && RM_MineralPolicyKernel.RegistryValue(tok, tok.Tokens.Keys.First()) == null, "token cell must be null (not a number)");
             Check(Math.Abs(RM_MineralPolicyKernel.LumpsForEpm(1200f, 40f) - 1f) < 1e-5f, "1200 EPM of a 40/cell ore is one lump");
             Check(RM_MineralPolicyKernel.DescribeEpm(1200f, 40f) == "~1.0 deposits of ~30 cells", "describe: " + RM_MineralPolicyKernel.DescribeEpm(1200f, 40f));
+            // owner card 2026-10-03: the settings unit is deposits per map; the screen converts and stores EPM
+            Check(Math.Abs(RM_MineralPolicyKernel.EpmForLumps(1f, 40f) - 1200f) < 1e-3f, "one deposit of a 40/cell ore is 1200 EPM");
+            Check(Math.Abs(RM_MineralPolicyKernel.EpmForLumps(RM_MineralPolicyKernel.LumpsForEpm(1777f, 25f), 25f) - 1777f) < 1e-2f, "deposits <-> EPM round trip");
+            Check(RM_MineralPolicyKernel.EpmForLumps(3f, 0f) == 0f && RM_MineralPolicyKernel.EpmForLumps(-1f, 40f) == 0f, "EpmForLumps guards");
             Check(RM_MineralPolicyKernel.DescribeEpm(0f, 40f) == "none" && RM_MineralPolicyKernel.LumpsForEpm(100f, 0f) == 0f, "zero guards");
 
             Console.WriteLine((fails == 0 ? "PASS " : "FAIL ") + (checks - fails) + "/" + checks + " checks; " + rows.Count + " registry rows, "

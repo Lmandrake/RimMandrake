@@ -235,9 +235,12 @@ point for each biome's sitting, never a ruling.
 2. **At startup** (C#, `StaticConstructorOnStartup`): for every def any row governs, zero
    `mineableScatterCommonality` and `deepCommonality`, clear `isResourceRock` on mineables that are not
    allowed in meteorites, and for MineralsFramework defs set `allowedBiomes` from the row (C2) — so
-   no vanilla or donor path can place it any more. **Unregistered minerals are suppressed by default**
-   (weights zeroed, one warning naming each), with a setting to leave them vanilla (GPT 3.4: leaving
-   them vanilla silently contradicts "carefully selected, period"). All of this lives in one
+   no vanilla or donor path can place it any more. **Unregistered minerals behave as their mod intended
+   by default** (owner card 2026-10-03: "an ore the registry has never heard of behaves as its mod
+   intended (no default-off)"; this overrules GPT 3.4), with a setting that suppresses them (weights
+   zeroed, one warning naming each). As built (R2), governed items keep their deep weight where they
+   have a deep home (Deep Drill filters picks), and governed veins with a surface source keep vanilla
+   scatter until the R3 placer registers. All of this lives in one
    **policy service** with one adapter per source (vein, framework, deep, quarry, meteorite, mutator,
    scanner, outpost), and pools are cached per biome × channel × settings revision (GPT 3.5).
    Ordering against other mods' static constructors is not guaranteed, so the service also re-asserts
@@ -292,8 +295,9 @@ by the loot/stock generators the salvage work (W6 of the 10-02 design) builds.
 One screen, `RimMandrake: Minerals`:
 
 - **Per-biome table**: pick a biome, see every material it bears with its EPM written in units
-  ("Gold — 1,500 per map ≈ 1 deposit of ~30 cells"), and a numeric field per material that edits the
-  EPM directly (not an abstract multiplier). "Reset to registry" per biome and global.
+  ("Gold — 1,500 per map ≈ 1 deposit of ~30 cells"), and a numeric field per material that edits
+  **deposits per map** (owner card 2026-10-03: "settings unit is DEPOSITS PER MAP (not amount)"; the
+  registry and the stored overrides stay EPM, converted at the screen). "Reset to registry" per biome and global.
 - **Global multipliers** (applied on top): all vein abundance, deep finds, quarry yield, salvage
   richness, trader stock. Default 1.0.
 - **Master toggle** "Minerals follow the registry": off restores vanilla weights untouched (all-off
@@ -349,7 +353,8 @@ CSV inlined. GPT numbered its points; citations above use them.
 - 3.2 deep scanner by **prefix** with an empty-pool path; quarry by **transpiler** on the one
   `TakeOne()` call with `singleSpawn` reset on fallback.
 - 3.3 nomadic factor and gravship value rules applied explicitly.
-- 3.4 unregistered minerals **suppressed by default**, not left vanilla.
+- 3.4 unregistered minerals suppressed by default: **overruled** by the owner card 2026-10-03 (they
+  behave as their mod intended; suppression is an opt-in setting).
 - 3.5 one policy service with per-source adapters; pool caches by revision; sparse absolute overrides;
   keep old defNames until migration.
 
@@ -366,7 +371,8 @@ CSV inlined. GPT numbered its points; citations above use them.
 
 `Transient/minerals_cards_2026-10-03.json` holds the cards: absorb-or-control (recommended: control,
 absorb only small subsets that retire integration burden), the primary unit (recommended: EPM), what
-happens to an unregistered mineral from a new mod (recommended: suppressed), and the quarry's
+happens to an unregistered mineral from a new mod (recommended: suppressed; RULED 2026-10-03: behaves as its mod
+intended, no default-off), and the quarry's
 behaviour on a biome with no quarryable minerals (recommended: local rock chunks only).
 
 ## 11. Build waves (FOUNDRY, after the cards)
@@ -374,7 +380,7 @@ behaviour on a biome with no quarryable minerals (recommended: local rock chunks
 | wave | what | size |
 |---|---|---|
 | R1 | `gen_mineral_registry.py`: CSV validate, coverage check against the def dump, emit `RM_MineralRegistryDef` for RULED/BUILT rows. BUILT 2026-10-25: also regenerates DeepDrill's `RM_DeepHomeTable.xml` (`--write-deep`), so R4's deep half already exists in mandrake.rm.deepdrill; the registry XML is a staged artifact (`--registry-out`) until R2 defines the class | S |
-| R2 | `RimMandrake.Minerals` policy service: startup zeroing, unregistered suppression, settings screen | M, C#, Opus |
+| R2 | `RimMandrake.Minerals` policy service: startup zeroing, opt-in unregistered suppression, settings screen | M, C#, Opus |
 | R3 | surface adapter: per-biome GenStep with stochastic lump counts + rock diagnostic | M |
 | R4 | deep adapter (prefix) and quarry adapter (transpiler) | S each |
 | R5 | MineralsFramework, meteorite, mineral-rich mutator, long-range scanner, VOE outpost adapters | M |
