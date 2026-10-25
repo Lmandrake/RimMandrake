@@ -100,6 +100,7 @@ class Watch(object):
             self.bland = self.report.bland
         for pid in self.expected_ids:                 # earlier chains' leftover fixtures stay the test's own
             self.exps.expect("fixture", {"id": pid})
+            clockgate.declare_fixture(pid)            # a pit-held pirate re-entering the spawned set is no raid
         if self.companion is None:
             self.companion = H.companion_available(self.session)
         self.baseline = S.Baseline(S.take_snapshot(self.session, "full", companion=self.companion))
@@ -142,6 +143,8 @@ class Watch(object):
                 self.tx.__exit__(et, ev, tb)
         except Exception as e:                                  # noqa: BLE001
             problems.append("settings not restored: %r" % (e,))
+        for pid in set(self.fixture_ids) | set(self.expected_ids):
+            clockgate.withdraw_fixture(pid)
         self.close_problems = problems
         return False
 
@@ -150,6 +153,7 @@ class Watch(object):
         """A pawn the TEST spawned. The Death letter names the pawn, not its id, so both are registered."""
         self.exps.expect("fixture", {"id": pid})
         self.fixture_ids.add(pid)
+        clockgate.declare_fixture(pid)      # its own arrival must not stop safe_advance (MODCHECK_SITE_FIX_RAIDS_KILL_THE_RUN)
         if name:
             self.exps.expect("fixture", {"name": name})
 

@@ -190,7 +190,11 @@ def main():
                 pid = r["pawns"][0]["id"]
                 w.at(w.ticks + 200, lambda world: world.kill(pid))
                 ctx.wait_ticks(900)
+                declared_inside = clockgate._thing_number(pid) in clockgate.FIXTURE_IDS
         check("bridge_call spawn_pawn registers a fixture: its death is not a surprise", ctx.components[0].verdict == "PASS" and pid in wt.fixture_ids, str(ctx.components[0].as_dict()["detail"]))
+        # MODCHECK_SITE_FIX_RAIDS_KILL_THE_RUN: the fixture is declared to the safe_advance stop rule for the watch's life only
+        check("a spawned fixture is declared to clockgate inside the watch and withdrawn at its close",
+              declared_inside and clockgate._thing_number(pid) not in clockgate.FIXTURE_IDS, repr((pid, sorted(clockgate.FIXTURE_IDS))))
 
         # ---- run_suite end to end: a map that cannot be made bland is UNMEASURED, not a mod FAIL
         w = bland_world(tmp)

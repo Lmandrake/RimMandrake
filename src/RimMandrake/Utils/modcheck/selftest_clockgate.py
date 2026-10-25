@@ -491,8 +491,62 @@ def test_expected_disturbance():
            "a predicate that raises never resumes a stop")
 
 
+def test_fixture_arrival_resumes():
+    """MODCHECK_SITE_FIX_RAIDS_KILL_THE_RUN (FlowWorks run 2026-10-24T19:13Z): the row's OWN spawned Pirate fixture
+    (spawn_pawn id Human16744) latched 'hostile_arrival' on the next safe_advance and killed the row; a declared fixture's
+    arrival resumes, while a real raider, a hurt colonist or a death still stops the clock."""
+    os.environ["RIMBRIDGE_GOVERNOR_LOG"] = ""
+    pirate = {"seq": 2, "kind": "hostile_arrival", "severity": "threat", "subjectId": 16744, "subject": "Worm",
+              "critical": False, "declared": False, "detail": "arrived: Human Pirate (humanlike)"}
+    gone = {"kind": "departed", "severity": "info", "subjectId": 16726, "critical": False, "declared": False}
+
+    class S(object):
+        def __init__(self, stop_by, triggers):
+            self.n, self.stop_by, self.triggers = 0, stop_by, triggers
+
+        def call(self, tool, **p):
+            if tool == "jawa/safe_advance" and not p.get("action"):
+                self.n += 1
+                if self.n == 1:
+                    return {"success": False, "state": "stopped", "requested": p["ticks"], "executed": 60,
+                            "stopBy": self.stop_by, "triggers": self.triggers}
+                return {"success": True, "state": "done", "requested": p["ticks"], "executed": p["ticks"]}
+            return {"success": True, "ticksGame": 1}
+
+    ok(cg._thing_number("Human16744") == 16744 and cg._thing_number(16744) == 16744 and cg._thing_number("x") is None,
+       "a spawn_pawn id and a companion subjectId name the same pawn")
+    try:
+        cg.advance_chunk(S(pirate, [pirate, gone]), 180)
+        ok(False, "can-fail: an undeclared hostile arrival (a real raid) stops the clock")
+    except cg.GovernorStop:
+        ok(True, "can-fail: an undeclared hostile arrival (a real raid) stops the clock")
+    cg.declare_fixture("Human16744")
+    try:
+        try:
+            got = cg.advance_chunk(S(pirate, [pirate, gone]), 180)
+        except cg.GovernorStop as e:
+            got = "GovernorStop %s" % e
+        ok(got == 180 and cg.BENIGN_STOPS[-1]["why"] == "fixture arrival",
+           "the test's own spawned pirate arriving resumes the chunk: %s" % (got,))
+        raider = dict(pirate, subjectId=99001, subject="Raider")
+        hurt = {"kind": "hurt", "severity": "damage", "subjectId": 432, "critical": False, "declared": False}
+        died = {"kind": "death", "severity": "damage", "subjectId": 432, "critical": False, "declared": False}
+        for label, sb, trig in (("a raider arriving with the fixture", pirate, [pirate, raider]),
+                                ("a raider alone", raider, [raider]),
+                                ("a colonist hurt as the fixture arrives", pirate, [pirate, hurt]),
+                                ("a death riding along", pirate, [pirate, died])):
+            try:
+                cg.advance_chunk(S(sb, trig), 180)
+                ok(False, "can-fail: %s still stops the clock" % label)
+            except cg.GovernorStop:
+                ok(True, "can-fail: %s still stops the clock" % label)
+    finally:
+        cg.withdraw_fixture("Human16744")
+    ok(not cg.FIXTURE_IDS, "a withdrawn fixture leaves no declaration behind")
+
+
 def main():
-    for t in (test_expected_disturbance, test_between_call_ticks_charged,
+    for t in (test_fixture_arrival_resumes, test_expected_disturbance, test_between_call_ticks_charged,
               test_step_charges_measured_and_records_overshoot,
               test_truncation_is_looped,
               test_negative_delta_new_epoch,

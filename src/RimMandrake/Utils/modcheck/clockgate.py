@@ -230,11 +230,58 @@ def expected_stop_label(r, expected=None):
     return None
 
 
+FIXTURE_IDS = set()        # thingIDNumbers of pawns the running test spawned itself; see declare_fixture()
+
+
+def _thing_number(pid):
+    """'Human16744' / 16744 / '16744' -> 16744 (the companion's subjectId), else None. Pure."""
+    s = str(pid or "")
+    digits = ""
+    for ch in reversed(s):
+        if not ch.isdigit():
+            break
+        digits = ch + digits
+    return int(digits) if digits else None
+
+
+def declare_fixture(pid):
+    """MODCHECK_SITE_FIX_RAIDS_KILL_THE_RUN: a pawn the TEST spawned (Watch.expect_fixture calls this). Its own arrival on
+    the map is not a raid: the FlowWorks run of 2026-10-24 lost 29 rows to 'hostile_arrival: Human Pirate' stops, every
+    one the row's own just-spawned Pirate fixture (subjectId == the spawn_pawn id), none a storyteller raid."""
+    n = _thing_number(pid)
+    if n is not None:
+        FIXTURE_IDS.add(n)
+    return n
+
+
+def withdraw_fixture(pid):
+    FIXTURE_IDS.discard(_thing_number(pid))
+
+
+def is_fixture_arrival(r, fixtures=None):
+    """True when the stop is ONLY the arrival of hostile pawns the test spawned itself: stopBy is a hostile_arrival of a
+    declared fixture, and every other trigger is either another declared fixture's arrival or an info ride-along of
+    nobody critical. A fixture that HURTS someone, any death, an undeclared hostile (a real raid) still stops. Pure."""
+    ids = FIXTURE_IDS if fixtures is None else fixtures
+    if not ids or not isinstance(r, dict) or r.get("state") != "stopped":
+        return False
+    sb = r.get("stopBy") or {}
+
+    def mine(t):
+        return t.get("kind") == "hostile_arrival" and _thing_number(t.get("subjectId")) in ids and not t.get("critical")
+    if not mine(sb):
+        return False
+    return all(mine(t) or (t.get("severity") == "info" and t.get("kind") in RIDE_ALONG_INFO and not t.get("critical"))
+               for t in (r.get("triggers") or []))
+
+
 def resumable_stop(r):
-    """-> a short reason when safe_advance may resume past this stop (a benign wild-animal downing, or a declared
-    expected disturbance), else None."""
+    """-> a short reason when safe_advance may resume past this stop (a benign wild-animal downing, the arrival of the
+    test's own spawned fixture, or a declared expected disturbance), else None."""
     if is_benign_stop(r):
         return "benign"
+    if is_fixture_arrival(r):
+        return "fixture arrival"
     lab = expected_stop_label(r)
     return ("expected: %s" % lab) if lab else None
 
