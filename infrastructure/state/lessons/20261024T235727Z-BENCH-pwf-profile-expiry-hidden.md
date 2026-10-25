@@ -1,0 +1,2 @@
+pit_water_fixes_live.py: when the JawaBench companion test profile expires (companion_profile.json expiresUtc), every jawa/static_call is REFUSED and SwimsAt/ProofPawnSink/RestingSinkAt rows go UNMEASURED 'did not answer' WITH NO refusal text in the row detail (could_not is cleared before those rows attach it). Run3 2026-10-24: 5 rows UNMEASURED at 23:53Z, profile expired 23:00Z; renewed, rerun 11/11 PASS. Check expiresUtc before any proof run, and the row should carry the REFUSED message.
+home: live-debugging-proof-harness
