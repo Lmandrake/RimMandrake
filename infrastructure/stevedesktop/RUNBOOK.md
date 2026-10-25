@@ -273,6 +273,8 @@ packages (VS Code, gh, Sysinternals) install fine straight over SSH. `winget sou
 
 `verify_from_archmagi.sh` has a `kit_*` check for all of the above.
 
+**Push access (owner card 2026-10-25: "Push to RimMandrake only"):** the runner's `origin` pushurl is the ssh alias `github-rimmandrake-write` (`~/.ssh/deploy_rimmandrake_write`, passphrase-less, write deploy key on RimMandrake only; the fetch key stays read-only); identity is the public-repo noreply. `verify_from_archmagi.sh` check `push_dryrun`.
+
 ---
 
 ## Test centre: running a modcheck there (proved 2026-10-25)
