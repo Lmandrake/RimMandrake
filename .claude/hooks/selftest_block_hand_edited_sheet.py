@@ -34,6 +34,11 @@ CASES = [
     ({"tool_name": "Bash", "tool_input": {"command": f"cd /home/mandrake/rm/bench && md5sum {S} > /tmp/m"}}, False),
     ({"tool_name": "Bash", "tool_input": {"command": f"cd /home/mandrake/rm/bench && rm {S}"}}, True),
     ({"tool_name": "Bash", "tool_input": {"command": f"cat x | tee {S}"}}, True),
+    # wave 7: a gated tool / read-only flag elsewhere on the line used to excuse the whole command
+    ({"tool_name": "Bash", "tool_input": {"command": f"python3 src/RimMandrake/Utils/art/art_sheet.py --help; rm {S}"}}, True),
+    ({"tool_name": "Bash", "tool_input": {"command": f"echo serve_gated.py && sed -i 's/a/b/' {S}"}}, True),
+    ({"tool_name": "Bash", "tool_input": {"command": "python3 src/RimMandrake/Utils/art/serve_gated.py --status; python3 ~/.claude/skills/review-sheets/assets/serve_sheet.py --sheet x_sheet_2026-10-05.html"}}, True),
+    ({"tool_name": "Bash", "tool_input": {"command": f"S={S}; rm $S"}}, True),
 ]
 # content-based (owner card 2026-10-11): a hand-written review sheet of game art is refused anywhere, decided by its pictures
 import base64, tempfile  # noqa: E401,E402

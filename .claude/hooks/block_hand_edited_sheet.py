@@ -86,9 +86,12 @@ def refused(tool: str, ti: dict) -> bool:
         return _game_art_sheet(disk, fp, edit=True)
     if tool == "Bash":
         cmd = str(ti.get("command") or "")
-        if SERVER.search(cmd) and not SERVER_READONLY.search(cmd) and "serve_gated.py" not in cmd:
+        # A gated tool excuses only the command it is part of: `art_sheet.py --help; rm <sheet>` used to
+        # pass because the exemption looked at the whole line (wave 7, DIRTY_CODE_REVIEW_STANDING_LOOP_1).
+        segs = [x for x in re.split(r"&&|\|\||;|\n", cmd) if x.strip()]
+        if any(SERVER.search(x) and not SERVER_READONLY.search(x) and "serve_gated.py" not in x for x in segs):
             return True
-        if SHEET_PATH.search(cmd) and WRITE_VERB.search(cmd) and not GATED_TOOLS.search(cmd):
+        if SHEET_PATH.search(cmd) and any(WRITE_VERB.search(x) and not GATED_TOOLS.search(x) for x in segs):
             return True
     return False
 
