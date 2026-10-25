@@ -130,6 +130,14 @@ def _prep_plot(t, key, terrain="Soil"):
     res = str((rs or {}).get("result", ""))
     if t._guard() and not (res.startswith("RESET") and res.endswith("left=0")):
         raise ExpectationFailed("plot %s excavation reset failed: %s" % (key, res or rs))
+    # FILL_IN_FIXTURE_FIX_CRUSHES_COLONIST (owner, live 2026-10-25: "All those brown block are collapsed mountain
+    # overhead"): destroy_batch carves the plot out of mountain but leaves the overhead-mountain roof, which collapses
+    # (Crush, collapsed rock) on the fixture pawns, and a thick roof stays over the rubble to fall again on the next
+    # chain's fixtures. Unroof the whole cleared rect BEFORE removing the rock that holds it up.
+    rr = _stage(t, "jawa/set_roof_batch", ops="None:" + r)
+    if t._guard() and isinstance(rr, dict) and rr.get("cellsFailedVerify"):
+        raise ExpectationFailed("UNMEASURED: plot %s unroof did not read back on %s cells: overhead mountain would "
+                                "collapse on the fixtures" % (key, rr.get("cellsFailedVerify")))
     t.bridge_call("jawa/destroy_batch", rects=r, categories="All")
     _stage(t, "jawa/set_terrain_batch", ops="%s:%s" % (terrain, r))
     t.bridge_call("jawa/weather_set", weather="Clear", lockWeather=True)
