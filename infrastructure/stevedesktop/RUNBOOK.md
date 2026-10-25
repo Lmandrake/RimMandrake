@@ -272,23 +272,74 @@ packages (VS Code, gh, Sysinternals) install fine straight over SSH. `winget sou
 
 ## Test centre: running a modcheck there (proved 2026-10-25)
 
+**The game is ours (owner, 2026-10-25, verbatim):** "Steve no longer plays Rimworld, so you never
+have to worry about 'disrupting his modlist' or 'harming his save games.' No such concerns, this
+game is ours to play with." The runner owns RimWorld's ModsConfig, Prefs and Saves on this
+machine; nothing here protects another player's state.
+
 First remote run GREEN: `JawaIonWeapons --chains def_wiring`, driven from Archmagi
-(STEVEDESKTOP_MODCHECK_PROVE_FIRST_REMOTE_RUN). The pieces, all in this folder:
+(STEVEDESKTOP_MODCHECK_PROVE_FIRST_REMOTE_RUN). First measured run, 2026-10-25 23:28Z:
+`--sync FlowWorks` then `--chains flow_doors,canal_spikes`, 9/9 PASS; sync 39 s, cold load 54 s
+(MINIMAL list, 26 mods), run 34 s. The pieces, all in this folder:
 
-- `testcentre_env.sh`: sourced from line 2 of `~/.bashrc` in Steve's WSL. Points game_paths at
-  `D:\SteamLibrary` and at the test-only save-data folder `D:\RimTest\userdata`.
-- `rw_game.sh status|up [--wait]|down|init`: runs the game with `-savedatafolder`, in session 1, so
-  Steve's own mod list and saves are never touched. `init` seeds the two files a fresh userdata
-  folder lacks (the test companion profile, and Prefs runInBackground).
+- `testcentre_env.sh`: sourced from line 2 of `~/.bashrc` in the WSL. Points game_paths at
+  `D:\SteamLibrary` and at the game's normal userdata folder (`sjlewis`'s LocalLow).
+- `rw_game.sh status|up [--wait]|down|init`: `up` starts Steam if it is not running (`-silent`),
+  then the game, in session 1 (the desktop), with no special arguments. `init` renews the test
+  companion profile and sets Prefs runInBackground.
 - `sync_test_mods.py [--apply]`: from Archmagi, copies the MINIMAL list's Workshop mods and the
-  JawaBench companion. Steve's Steam has no subscriptions, and we may not add any.
-- `remote_modcheck.sh <Mod> [modcheck args]`: from Archmagi. Runs init, then up --wait, then the run,
-  and copies the sheet back.
-- `sps.sh`: PowerShell over Windows OpenSSH, sent as `-EncodedCommand`.
+  JawaBench companion. Copying, not subscribing, because a Workshop subscription needs the Steam UI.
+- `remote_modcheck.sh [--sync] [--deploy M1,M2] [--no-run] <Mod> [modcheck args]`: from Archmagi.
+  **The one command for code updates is `--sync`:** the runner pulls origin/main, plans a deploy of
+  `<Mod>` and every `--deploy` mod, and only if anything drifted stops the game and applies it.
+  Then init, `up --wait`, the run, and the sheet is copied back. Prints `PHASE sync|load|run N s`.
+- `sps.sh`: PowerShell over Windows OpenSSH. Short scripts go as `-EncodedCommand`. Scripts over
+  8000 encoded characters (cmd.exe caps a command line at 8191) are copied over scp and run with
+  `-File`; the script deletes itself.
+- `kit/automation.ps1`: the idempotent "nobody at the keyboard" fixes, run elevated over SSH
+  (see the audit below).
 
-Before a run of changed code, with the game down: update `~/rm/runner`, then run
-`deploy_custom_mods.py --mod <M> --apply` there. Switch lists with `modlist_swap.py --minimal --apply`.
+Switch lists with `modlist_swap.py --minimal|--restore --apply` on the runner (game down).
 The runner is not a seat, so record the printed `rimflow verify` line from a seat clone.
+
+## Full-automation audit (2026-10-25)
+
+Owner, 2026-10-25, verbatim: "everything on SteveDesktop must be fully automated. I won't have
+physical access to it, so you need to be able to do anything needed for testing."
+
+| Area | State (measured over SSH) | Action |
+|---|---|---|
+| Remote admin | Windows OpenSSH sessions are elevated (admin); UAC left as shipped | none needed |
+| Sign-in | Autologon (`sjlewis`) | none needed |
+| Game launch | needs the desktop session: WSL interop lands in session 1; OpenSSH is session 0 | `rw_game.sh` launches through WSL interop |
+| Steam | AutoLoginUser + RememberPassword; Run key `steam.exe -silent` | `rw_game.sh up` starts it if absent |
+| Code update + deploy | was manual on the runner | `remote_modcheck.sh --sync` |
+| Crash dialogs | WER UI would block on a crash | `DontShowUI=1` (machine + user), `automation.ps1` |
+| Screensaver | Ribbons after 60 min | off (registry + applied live) |
+| Post-update "finish setting up" screen | possible after a feature update | `ScoobeSystemSettingEnabled=0`, suggestion content off |
+| Driver updates | could swap the GPU driver | `ExcludeWUDriversInQualityUpdate=1` |
+| Sleep / hibernate | standby on AC never | standby + hibernate never on AC, hibernate off |
+| Windows Update reboot | AUOptions=4, no auto reboot while signed in, active hours 7-1 | none needed |
+| WSL alive | `\WSL Keepalive` at logon | none needed |
+
+**Still needs a human (no remote route):** a Steam Guard code or re-login after a password change
+or token expiry (Steam UI plus the account's phone); anything before Windows starts (BIOS,
+BitLocker recovery, disk check), because every door runs inside Windows; the browser half of a
+Claude `/login` (phone). An RDP connection would take the console session that the game needs;
+`tscon <id> /dest:console` should hand it back (not measured), so use CRD, not RDP.
+
+## Claude support kit (WSL, 2026-10-25)
+
+- `~/dev`: Lodestar, Machinist, Dispatch, claude-remote-control, MandrakeWorkflows,
+  MandrakeVisualize. Each clone uses its own **read-only deploy key** `~/.ssh/deploy_<repo>`
+  (set as the clone's `core.sshCommand`; added from Archmagi with
+  `gh repo deploy-key add ... --title stevedesktop-wsl-readonly`). They pull, they cannot push.
+  `gh` stays logged out: no personal token on this machine. Household and private repos are not cloned.
+- `~/.claude/CLAUDE.md` is rendered by `~/dev/Lodestar/bin/claudeconf.py render` from machine key
+  `stevedesktop` (Lodestar `machines.md` row and `claude/global/machines/stevedesktop.md`);
+  `claudeconf.py skills --apply` links the skills whose repos are present.
+- Git identity: `sh ~/dev/Machinist/tools/install-git-identity.sh`.
+- Claude logins belong to the claude-remote-control account switcher; never edit them by hand.
 
 ## Before you leave Monday: checklist
 
@@ -300,7 +351,7 @@ The runner is not a seat, so record the printed `rimflow verify` line from a sea
 - [ ] Step 7: Autologon enabled
 - [ ] Step 8: Chrome Remote Desktop shows SteveDesktop **Online**, and you opened it once from Archmagi
 - [ ] Step 9: Claude Code logged in inside Ubuntu
-- [ ] Step 10: Steam remembers you, starts at login; all five DLCs installed (or the missing ones named)
+- [ ] Step 10: Steam remembers you, starts at login (rw_game.sh also starts it); all five DLCs installed (or the missing ones named)
 - [ ] Step 11: rebooted remotely, came back to the desktop alone
 - [ ] Step 12: power-cut restart worked; the WoL wake worked (wired only)
 - [ ] The agent's `verify_from_archmagi.sh` shows no FAIL

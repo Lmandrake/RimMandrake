@@ -123,4 +123,16 @@ else say FAIL kit_windows "no answer: $(echo "$kit" | tail -1)"; fi
 out=$(win 'wsl.exe -d Ubuntu -u mandrake -- which git gh tmux htop jq rg tree python3 pipx' | grep -c '^/')
 [ "$out" = 9 ] && say PASS kit_wsl "git gh tmux htop jq rg tree python3 pipx" || say FAIL kit_wsl "only $out of 9 tools found in WSL"
 
+# Nobody at the keyboard (RUNBOOK "Full-automation audit"; fixes in kit/automation.ps1).
+out=$(win '$w=(Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\Windows Error Reporting" -EA 0).DontShowUI; $s=(Get-ItemProperty "HKCU:\Control Panel\Desktop" -EA 0).ScreenSaveActive; $u=(Get-ItemProperty "HKCU:\Software\Valve\Steam" -EA 0).AutoLoginUser; $r=(Get-ItemProperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Run" -EA 0).Steam; "wer=$w saver=$s steamuser=$(if($u){"set"}else{"none"}) steamrun=$(if($r){"yes"}else{"no"})"')
+if [ "$out" = "wer=1 saver=0 steamuser=set steamrun=yes" ]; then say PASS unattended "$out"
+else say FAIL unattended "$out (want wer=1 saver=0 steamuser=set steamrun=yes: run kit/automation.ps1; Steam login needs CRD)"; fi
+
+# Claude support kit (RUNBOOK "Claude support kit"): clones, rendered CLAUDE.md, git identity.
+# The script travels base64-encoded: PowerShell would expand every $ in it.
+kitsh='n=0; for r in Lodestar Machinist Dispatch claude-remote-control MandrakeWorkflows MandrakeVisualize; do git -C ~/dev/$r rev-parse -q --verify HEAD >/dev/null 2>&1 && n=$((n+1)); done; c=$(grep -c SteveDesktop ~/.claude/CLAUDE.md 2>/dev/null); s=$(ls ~/.claude/skills 2>/dev/null | wc -l); e=$(git config --global user.email); echo clones=$n/6 claudemd=${c:-0} skills=$s email=${e:-none}'
+out=$(win "wsl.exe -d Ubuntu -u $WSL_USER -- bash -c 'echo $(printf %s "$kitsh" | base64 -w0) | base64 -d | bash'")
+if [[ "$out" =~ clones=6/6\ claudemd=[1-9].*email=[^n] ]]; then say PASS claude_kit "$out"
+else say FAIL claude_kit "${out:-no answer} (RUNBOOK Claude support kit)"; fi
+
 exit "$FAILS"
