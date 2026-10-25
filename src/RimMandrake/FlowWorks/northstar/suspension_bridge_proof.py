@@ -312,12 +312,13 @@ def posts(ctx):
              "originZ": oz, "ballast": ballast.get("success"),
              "afterSpans": [proof("ProofSpan", xz(P(c, 0)), answer=True)[1][:120] for c in (1, 6)]})
 
-    # T2: too long for timber (the refusal IS the claim: an ok=False answer is measured, never a fault)
+    # T2: too long for timber (the refusal IS the claim: an ok=False answer is measured, never a fault). Timber spans 8 between
+    # supports since SUSPENSION_ISLANDS_BUILD_TOWERS_COST_PLENTY (was 6: row SB_drag_7_timber_refused)
     with V.scope("T2"):
-        trench(4, 7)
-        kv, txt = proof("ProofBuild", "%s;%s;timber" % (xz(P(0, 4)), xz(P(8, 4))))
-        good = kv.get("ok") == "False" and "at most 6" in txt and kv.get("blueprints") == "0" and kv.get("anchors") == "0"
-        row("SB_drag_7_timber_refused", "PASS" if good else "FAIL", {"read": txt})
+        trench(4, 9)
+        kv, txt = proof("ProofBuild", "%s;%s;timber" % (xz(P(0, 4)), xz(P(10, 4))))
+        good = kv.get("ok") == "False" and "at most 8" in txt and kv.get("blueprints") == "0" and kv.get("anchors") == "0"
+        row("SB_drag_9_timber_refused", "PASS" if good else "FAIL", {"read": txt})
 
     # T3: railings. A fall needs an open edge: a dug square BESIDE the deck (OpenEdgeBeside). Under a 1-wide bridge over a
     # 1-wide trench every dug square is decked, so live 2026-10-19 read edge=False and 0 of 20 fell (SITE): dig z=9 too.
@@ -712,7 +713,45 @@ def health_seen(rows):
     return any(hediffs_of(p) is not None for p in rows.values())
 
 
-SECTIONS = {"posts": None, "grate": grate, "underpass": underpass, "waters": waters, "jetty": jetty, "looks": looks}
+def islands(ctx):
+    """SUSPENSION_ISLANDS_BUILD_TOWERS_COST_PLENTY (owner 2026-10-25: "Suspension: 2 or 3 (towers should be VERY expensive to
+    build, so using islands is important for resource savings)"). Rows at z 80-88 of the site, clear of every other section.
+    The island is UNDUG ground: a square filled back to the surface leaves the excavation grid (depth 0) and classifies the
+    same, which the Restore ground row orders but does not wait for (filling is colonists' work)."""
+    P, xz, row, proof, dig = (ctx[k] for k in ("P", "xz", "row", "proof", "dig"))
+    with V.scope("SB_islands_cross"):
+        for i in list(range(1, 9)) + list(range(11, 19)):      # 8 holes, island at 9-10, 8 holes; anchors at 0 and 19
+            dig(P(i, 80))
+        kv, txt = proof("ProofBuild", "%s;%s;timber;god" % (xz(P(0, 80)), xz(P(19, 80))))
+        good = kv.get("ok") == "True" and kv.get("records") == "2" and kv.get("anchors") == "4" and kv.get("decks") == "16"
+        row("SB_islands_mid_channel_two_bridges", "PASS" if good else "FAIL",
+            {"read": txt, "claim": "an 18-hole timber crossing (cap 8 per span) stands over a 2-square island as two bridges"})
+    with V.scope("SB_islands_control"):
+        for i in range(1, 19):                                  # the same channel with no island
+            dig(P(i, 84))
+        kv, txt = proof("ProofBuild", "%s;%s;timber;god" % (xz(P(0, 84)), xz(P(19, 84))))
+        good = kv.get("ok") == "False" and "at most 8" in txt and kv.get("anchors") == "0"
+        row("SB_islands_control_no_island_refused", "PASS" if good else "FAIL", {"read": txt})
+    with V.scope("SB_islands_tower_cost"):
+        kv, txt = proof("ProofTowerCost", "")
+        m = float(kv.get("mult") or "nan")
+        want = lambda base: max(1, int(base * m + 0.5))         # noqa: E731  RM_SuspensionMath.ScaledCost
+        charged = dict(x.split(":") for x in (kv.get("steelBuilt") or "").split(",") if ":" in x)
+        good = (m == m and kv.get("stuff") == str(want(200)) and kv.get("Steel") == str(want(100))
+                and kv.get("ComponentIndustrial") == str(want(6)) and float(kv.get("work") or 0) == want(12000)
+                and charged.get("Steel") == str(want(200) + want(100)) and charged.get("ComponentIndustrial") == str(want(6)))
+        row("SB_islands_tower_cost_charged", "PASS" if good else "FAIL",
+            {"read": txt, "want_at_x1": "stuff=200 Steel=100 ComponentIndustrial=6 work=12000 steelBuilt=Steel:300,ComponentIndustrial:6"})
+    with V.scope("SB_islands_restore"):
+        for i in range(1, 5):
+            dig(P(i, 88), 2)
+        kv, txt = proof("ProofRestore", "%s;%s" % (xz(P(1, 88)), xz(P(4, 88))))
+        good = kv.get("accepted") == "4" and int(kv.get("tracked") or 0) >= 4 and kv.get("fillOrders") == "4"
+        row("SB_islands_restore_ground_ordered", "PASS" if good else "FAIL", {"read": txt})
+
+
+SECTIONS = {"posts": None, "grate": grate, "underpass": underpass, "waters": waters, "jetty": jetty, "looks": looks,
+            "islands": islands}
 
 
 class FakeBridge(object):
@@ -766,9 +805,17 @@ class FakeBridge(object):
     def static(self, m, arg):
         if m == "ProofBuild":
             self.last_tier = arg.split(";")[2]
-            if arg.split(";")[2] == "timber" and "god" not in arg:
-                return "BUILD ok=False anchors=0 decks=0 blueprints=0 reason=A timber suspension bridge spans at most 6 squares"
-            return "BUILD ok=True anchors=2 decks=6 blueprints=0 reason=-"
+            z1 = int(arg.split(";")[0].split(",")[1]) - FakeBridge.floor_z
+            if (arg.split(";")[2] == "timber" and "god" not in arg) or z1 == 84:
+                return "BUILD ok=False anchors=0 decks=0 blueprints=0 records=0 reason=A timber suspension bridge spans at most 8 squares"
+            if z1 == 80:
+                return "BUILD ok=True anchors=4 decks=16 blueprints=0 records=2 reason=-"
+            return "BUILD ok=True anchors=2 decks=6 blueprints=0 records=1 reason=-"
+        if m == "ProofTowerCost":
+            return ("TOWERCOST stuff=200 Steel=100 ComponentIndustrial=6 work=12000 mult=1.00 "
+                    "steelBuilt=Steel:300,ComponentIndustrial:6")
+        if m == "ProofRestore":
+            return "RESTORE accepted=4 refused=0 tracked=4 fillOrders=4 first=-"
         if m == "ProofPath":
             return "PATH found=True cells=9 decked=6"
         if m == "ProofSpan" and self.last_tier == "jetty":

@@ -654,10 +654,10 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(Body(des, "protected override void PlaceExtras(Map map, SuspensionBridgeRecord r)").Contains("RM_DrawbridgePackage.PlacePart("),
                     "and places them with it");
                 string td = Body(d, "public string TryDesignate(List<IntVec3> cells)");
-                Assert(td.IndexOf("PlanDrag(") < td.IndexOf("Place(Map, r);") && td.IndexOf("Place(Map, r);") < td.IndexOf("PlaceExtras(Map, r);"),
+                Assert(td.IndexOf("PlanDragAll(") >= 0 && td.IndexOf("PlanDragAll(") < td.IndexOf("Place(Map, r);") && td.IndexOf("Place(Map, r);") < td.IndexOf("PlaceExtras(Map, r);"),
                     "can-fail: plan everything, then deck (registers the record), then the parts (so a god-mode winch finds its leaf)");
-                string plan = Body(d, "public string PlanDrag(List<IntVec3> cells, out SuspensionBridgeRecord planned)");
-                Assert(!plan.Contains("Place(") && plan.Contains("why = why ?? PlanExtras(map, r);"), "can-fail: planning (the preview) never places");
+                string plan = Body(d, "public string PlanDragAll(List<IntVec3> cells, out List<SuspensionBridgeRecord> planned)");
+                Assert(!plan.Contains("Place(") && plan.Contains("why = why ?? PlanExtras(map, p);"), "can-fail: planning (the preview) never places");
                 Assert(Body(des, "public override void SelectedUpdate()").Contains("GenDraw.DrawFieldEdges"), "the drag outlines the winch and gate squares");
 
                 string pk = Src("Pits", "Drawbridge", "RM_DrawbridgePackage.cs");

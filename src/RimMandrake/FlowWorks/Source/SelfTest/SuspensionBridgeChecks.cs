@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using RimMandrake.FlowWorks;
 
 namespace RimMandrake.FlowWorks.SelfTest
@@ -39,9 +40,12 @@ namespace RimMandrake.FlowWorks.SelfTest
         {
             Case("Suspension_tiers_are_the_items_numbers", () =>
             {
-                Assert(RM_SuspensionMath.BaseMaxLength(SuspensionTier.Rope) == 8 && RM_SuspensionMath.BaseMaxLength(SuspensionTier.Timber) == 6
-                    && RM_SuspensionMath.BaseMaxLength(SuspensionTier.Steel) == 10 && RM_SuspensionMath.BaseMaxLength(SuspensionTier.Heavy) == 14,
-                    "length 8/6/10/14 squares between supports");
+                Assert(RM_SuspensionMath.BaseMaxLength(SuspensionTier.Rope) == 12 && RM_SuspensionMath.BaseMaxLength(SuspensionTier.Timber) == 8
+                    && RM_SuspensionMath.BaseMaxLength(SuspensionTier.Steel) == 20 && RM_SuspensionMath.BaseMaxLength(SuspensionTier.Heavy) == 20,
+                    "SUSPENSION_ISLANDS_BUILD_TOWERS_COST_PLENTY: length 12/8/20/20 squares between supports (owner's sizes)");
+                Assert(RM_SuspensionMath.MaxWidthOf(SuspensionTier.Rope) == 1 && RM_SuspensionMath.MaxWidthOf(SuspensionTier.Timber) == 2
+                    && RM_SuspensionMath.MaxWidthOf(SuspensionTier.Steel) == 4 && RM_SuspensionMath.MaxWidthOf(SuspensionTier.Heavy) == 4
+                    && RM_SuspensionMath.DrawbridgeMaxWidth == 3, "width 1/2/4/4; drawbridges keep 1 to 3");
                 Assert(RM_SuspensionMath.BaseLoadKg(SuspensionTier.Rope) == 150f && RM_SuspensionMath.BaseLoadKg(SuspensionTier.Timber) == 600f
                     && RM_SuspensionMath.BaseLoadKg(SuspensionTier.Steel) == 2000f && RM_SuspensionMath.BaseLoadKg(SuspensionTier.Heavy) == 8000f,
                     "load 150/600/2,000/8,000 kg");
@@ -50,7 +54,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                     && RM_SuspensionMath.LentAffordances(SuspensionTier.Steel) == (RM_SuspensionMath.AffordLight | RM_SuspensionMath.AffordMedium)
                     && (RM_SuspensionMath.LentAffordances(SuspensionTier.Heavy) & RM_SuspensionMath.AffordHeavy) != 0,
                     "timber lends Light; steel Light/Medium; heavy all; rope none");
-                Assert(RM_SuspensionMath.MaxLength(SuspensionTier.Timber, 2f) == 12 && RM_SuspensionMath.MaxLength(SuspensionTier.Timber, 0.01f) == 1,
+                Assert(RM_SuspensionMath.MaxLength(SuspensionTier.Timber, 2f) == 16 && RM_SuspensionMath.MaxLength(SuspensionTier.Timber, 0.01f) == 1,
                     "can-fail: the length multiplier scales the cap and never below one square");
                 Assert(RM_SuspensionMath.RatingKg(SuspensionTier.Timber, 2, 1f) == 1200f && RM_SuspensionMath.RatingKg(SuspensionTier.Timber, 1, 0.5f) == 300f,
                     "rating = per-lane load × lanes × multiplier");
@@ -59,36 +63,92 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("Suspension_drag_validator_ends_middle_length_width", () =>
             {
                 SuspensionTier t = SuspensionTier.Timber;
-                Assert(RM_SuspensionMath.ValidateLane(Lane("GHHHHHHG"), null, t, 1f) == null, "verify L2 shape: a 6-square timber bridge over a trench is accepted");
-                string seven = RM_SuspensionMath.ValidateLane(Lane("GHHHHHHHG"), null, t, 1f);
-                Assert(seven != null && seven.Contains("at most 6 squares") && seven.Contains("this span: 7"), "a 7-square timber bridge is refused with the length reason: " + seven);
-                Assert(RM_SuspensionMath.ValidateLane(Lane("GHHHHHHHG"), null, SuspensionTier.Rope, 1f) == null, "can-fail: rope spans 8, so 7 is fine");
-                Assert(RM_SuspensionMath.ValidateLane(Lane("GHHHHHHHG"), null, t, 1.2f) == null, "the length multiplier reaches the validator");
+                Assert(RM_SuspensionMath.ValidateLane(Lane("GHHHHHHHHG"), null, t, 1f) == null, "verify L2 shape: an 8-square timber bridge over a trench is accepted");
+                string nine = RM_SuspensionMath.ValidateLane(Lane("GHHHHHHHHHG"), null, t, 1f);
+                Assert(nine != null && nine.Contains("at most 8 squares") && nine.Contains("this span: 9") && nine.Contains("ground island"),
+                    "a 9-square timber bridge is refused with the length reason naming both supports: " + nine);
+                Assert(RM_SuspensionMath.ValidateLane(Lane("GHHHHHHHHHG"), null, SuspensionTier.Rope, 1f) == null, "can-fail: rope spans 12, so 9 is fine");
+                Assert(RM_SuspensionMath.ValidateLane(Lane("GHHHHHHHHHG"), null, t, 1.2f) == null, "the length multiplier reaches the validator");
                 string start = RM_SuspensionMath.ValidateLane(Lane("HHHHG"), null, t, 1f);
                 Assert(start != null && start.Contains("start on solid"), "a drag starting over the hole is refused");
                 string end = RM_SuspensionMath.ValidateLane(Lane("GHHHX"), null, t, 1f);
                 Assert(end != null && end.Contains("end on solid"), "a drag ending on blocked ground is refused");
                 string touch = RM_SuspensionMath.ValidateLane(Lane("GHHGHHG"), null, t, 1f);
-                Assert(touch != null && touch.Contains("touching down"), "undug ground in the middle is refused (two bridges)");
+                Assert(touch != null && touch.Contains("touching down") && touch.Contains("at least 2 squares"),
+                    "one lane alone may not touch down; the reason says how big an island must be: " + touch);
                 string blocked = RM_SuspensionMath.ValidateLane(Lane("GHXHG"), null, t, 1f);
                 Assert(blocked != null && blocked.Contains("blocked"), "a blocked square in the middle is refused");
                 Assert(RM_SuspensionMath.ValidateLane(Lane("GG"), null, t, 1f) != null, "nothing to cross is refused");
                 // towers split a long crossing into spans
-                string twelve = RM_SuspensionMath.ValidateLane(Lane("GHHHHHHHHHHHHG"), null, t, 1f);
-                Assert(twelve != null, "12 squares of timber with no tower is refused");
-                Assert(RM_SuspensionMath.ValidateLane(Lane("GHHHHHHHHHHHHG"), new HashSet<int> { 7 }, t, 1f) == null,
-                    "a tower at square 7 makes two spans of 6 and it is accepted");
-                Assert(RM_SuspensionMath.ValidateLane(Lane("GHHHHHHHHHHHHG"), new HashSet<int> { 3 }, t, 1f) != null,
-                    "can-fail: a tower too near one end leaves a span of 9");
-                // width
-                List<IList<SpanGround>> three = new List<IList<SpanGround>> { Lane("GHHHG"), Lane("GHHHG"), Lane("GHHHG") };
-                Assert(RM_SuspensionMath.ValidateDrag(three, null, t, 1f) == null, "3 wide is fine");
+                string g17 = "G" + new string('H', 17) + "G";
+                Assert(RM_SuspensionMath.ValidateLane(Lane(g17), null, t, 1f) != null, "17 squares of timber with no tower is refused");
+                Assert(RM_SuspensionMath.ValidateLane(Lane(g17), new HashSet<int> { 9 }, t, 1f) == null,
+                    "a tower at square 9 makes two spans of 8 and it is accepted");
+                Assert(RM_SuspensionMath.ValidateLane(Lane(g17), new HashSet<int> { 3 }, t, 1f) != null,
+                    "can-fail: a tower too near one end leaves a span of 15");
+                // width by kind
+                List<IList<SpanGround>> two = new List<IList<SpanGround>> { Lane("GHHHG"), Lane("GHHHG") };
+                Assert(RM_SuspensionMath.ValidateDrag(two, null, t, 1f) == null, "timber 2 wide is fine");
+                List<IList<SpanGround>> three = new List<IList<SpanGround>>(two) { Lane("GHHHG") };
+                string w = RM_SuspensionMath.ValidateDrag(three, null, t, 1f);
+                Assert(w != null && w.Contains("1 to 2"), "timber 3 wide is refused: " + w);
+                Assert(RM_SuspensionMath.ValidateDrag(three, null, t, 1f, RM_SuspensionMath.DrawbridgeMaxWidth) == null, "a timber drawbridge may still be 3 wide");
+                string rope = RM_SuspensionMath.ValidateDrag(two, null, SuspensionTier.Rope, 1f);
+                Assert(rope != null && rope.Contains("1 square wide"), "rope 2 wide is refused: " + rope);
                 List<IList<SpanGround>> four = new List<IList<SpanGround>>(three) { Lane("GHHHG") };
-                string w = RM_SuspensionMath.ValidateDrag(four, null, t, 1f);
-                Assert(w != null && w.Contains("1 to 3"), "4 wide is refused");
+                Assert(RM_SuspensionMath.ValidateDrag(four, null, SuspensionTier.Steel, 1f) == null, "steel 4 wide is fine");
+                List<IList<SpanGround>> five = new List<IList<SpanGround>>(four) { Lane("GHHHG") };
+                string w5 = RM_SuspensionMath.ValidateDrag(five, null, SuspensionTier.Heavy, 1f);
+                Assert(w5 != null && w5.Contains("1 to 4"), "heavy 5 wide is refused: " + w5);
                 List<IList<SpanGround>> bad = new List<IList<SpanGround>> { Lane("GHHHG"), Lane("GHGHG") };
                 string row = RM_SuspensionMath.ValidateDrag(bad, null, t, 1f);
                 Assert(row != null && row.StartsWith("Row 2:"), "every lane must cross on its own; the refusal names the row");
+                // a tower holds the whole width: the rows are checked against the union of their towers (was: each row its own,
+                // then only row 1's kept)
+                List<IList<SpanGround>> wide = new List<IList<SpanGround>> { Lane(g17), Lane(g17) };
+                Assert(RM_SuspensionMath.ValidateDrag(wide, new List<ICollection<int>> { new HashSet<int>(), new HashSet<int> { 9 } }, t, 1f) == null,
+                    "can-fail: one tower on row 2 supports row 1 too");
+            });
+
+            Case("Suspension_islands_split_one_drag_into_bridges", () =>
+            {
+                List<IList<SpanGround>> L(params string[] rows) => rows.Select(r => (IList<SpanGround>)Lane(r)).ToList();
+                string why;
+                List<int[]> p = RM_SuspensionMath.SplitAtIslands(L("GHHGGHHG"), out why);
+                Assert(p != null && p.Count == 2 && p[0][0] == 0 && p[0][1] == 3 && p[1][0] == 4 && p[1][1] == 7,
+                    "a 2-square island: [0,3] and [4,7]");
+                p = RM_SuspensionMath.SplitAtIslands(L("GHHGGGHHG"), out why);
+                Assert(p != null && p.Count == 2 && p[0][1] == 3 && p[1][0] == 5 && p[1][1] == 8, "a 3-square island leaves its middle plain: [0,3], [5,8]");
+                p = RM_SuspensionMath.SplitAtIslands(L("GHHGHHG"), out why);
+                Assert(p == null && why != null && why.Contains("at least 2"), "can-fail: a 1-square island is refused: " + why);
+                p = RM_SuspensionMath.SplitAtIslands(L("GHHHG"), out why);
+                Assert(p != null && p.Count == 1 && p[0][0] == 0 && p[0][1] == 4 && why == null, "no island: one piece, the whole drag");
+                p = RM_SuspensionMath.SplitAtIslands(L("GGGHHG"), out why);
+                Assert(p != null && p.Count == 1, "ground at the ends is a bank, never an island (ValidateLane refuses it as before)");
+                p = RM_SuspensionMath.SplitAtIslands(L("GHHGGHHHG", "GHHHHGGHG"), out why);
+                Assert(p != null && p.Count == 1, "an island must be ground across the whole width; a staggered one does not split");
+                Assert(RM_SuspensionMath.ValidateDrag(L("GHHGGHHHG", "GHHHHGGHG"), null, SuspensionTier.Timber, 1f) != null,
+                    "...and the unsplit drag is then refused (touching down)");
+                p = RM_SuspensionMath.SplitAtIslands(L("GHHGGHHGGHHG"), out why);
+                Assert(p != null && p.Count == 3 && p[1][0] == 4 && p[1][1] == 7 && p[2][0] == 8, "two islands: three bridges");
+                // the shape the live row SB_islands_* repeats: 8 holes, a 2-square island, 8 holes crosses in timber; the same
+                // channel with no island is refused
+                string g8 = new string('H', 8);
+                List<IList<SpanGround>> withIsland = L("G" + g8 + "GG" + g8 + "G");
+                p = RM_SuspensionMath.SplitAtIslands(withIsland, out why);
+                Assert(p != null && p.Count == 2, "an 18-hole crossing over a mid-channel island is two bridges");
+                foreach (int[] piece in p)
+                {
+                    Assert(RM_SuspensionMath.ValidateDrag(RM_SuspensionMath.Slice(withIsland, piece[0], piece[1]), null, SuspensionTier.Timber, 1f) == null,
+                        "each timber piece (8 holes) is within the per-span limit");
+                }
+                Assert(RM_SuspensionMath.ValidateDrag(L("G" + g8 + "HH" + g8 + "G"), null, SuspensionTier.Timber, 1f) != null,
+                    "can-fail: the same channel with no island is refused");
+                HashSet<int> st = RM_SuspensionMath.SliceTowers(new HashSet<int> { 2, 9, 12 }, 9, 15);
+                Assert(st.Count == 1 && st.Contains(3), "towers re-index into their piece; one on the piece's end square is its anchor, not a tower");
+                Assert(RM_SuspensionMath.ScaledCost(200, 1f) == 200 && RM_SuspensionMath.ScaledCost(6, 0.25f) == 2
+                    && RM_SuspensionMath.ScaledCost(1, 0.25f) == 1 && RM_SuspensionMath.ScaledCost(0, 4f) == 0 && RM_SuspensionMath.ScaledCost(12000, 4f) == 48000,
+                    "tower cost multiplier: base × multiplier, rounded, never below 1, zero stays zero");
             });
 
             Case("Suspension_spans_supports_and_swing_order", () =>
@@ -164,6 +224,42 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string designator = Src("Pits", "Suspension", "Designator_SuspensionBridge.cs");
                 Assert(designator.Contains("public class Designator_SuspensionBridge_Timber : Designator_SuspensionBridge"), "designator classes exist");
                 Assert(designator.Contains("RM_SuspensionSettings.suspensionBridgesBuildable && base.Visible"), "settings off: no build button");
+            });
+
+            // SUSPENSION_ISLANDS_BUILD_TOWERS_COST_PLENTY: the designator splits at islands and places every piece; the tower is
+            // very expensive and scaled by a setting; Restore ground is on the Orders tab
+            Case("Islands_wiring_split_tower_cost_restore", () =>
+            {
+                string designator = Src("Pits", "Suspension", "Designator_SuspensionBridge.cs");
+                Assert(designator.Contains("RM_SuspensionMath.SplitAtIslands(lanes, out string iwhy)") && designator.Contains("PieceOf(r, from, to)")
+                    && designator.Contains("foreach (SuspensionBridgeRecord r in rs)"), "the plain bridge splits at islands and places each piece");
+                Assert(designator.Contains("RM_SuspensionMath.ValidateDrag(lanes, towers, r.tier, mult, RM_SuspensionMath.DrawbridgeMaxWidth)"),
+                    "a drawbridge never splits and keeps 1 to 3 wide");
+                Assert(!designator.Contains("r.towers = towers[0]"), "can-fail: the record keeps every row's towers, not row 1's");
+                string defs = ModFile("Defs", "Pits", "ThingDefs", "RM_SuspensionBridges.xml");
+                int tower = defs.IndexOf("<defName>RM_SuspensionTower</defName>");
+                string td = defs.Substring(tower, defs.IndexOf("</ThingDef>", tower) - tower);
+                Assert(td.Contains("<costStuffCount>200</costStuffCount>") && td.Contains("<Steel>100</Steel>")
+                    && td.Contains("<ComponentIndustrial>6</ComponentIndustrial>") && td.Contains("<WorkToBuild>12000</WorkToBuild>"),
+                    "the tower costs 200 stuff + 100 steel + 6 components and 12,000 work");
+                string settings = Src("Pits", "Suspension", "RM_SuspensionSettings.cs");
+                Assert(settings.Contains("Scribe_Values.Look(ref towerCostMultiplier, \"towerCostMultiplier\", 1f);")
+                    && settings.Contains("list.Slider(towerCostMultiplier, 0.25f, 4f)") && settings.Contains("RM_SuspensionTowerCost.Apply();"),
+                    "the tower cost multiplier is saved, drawn and applied (Reset too)");
+                string cost = Src("Pits", "Suspension", "RM_SuspensionTowerCost.cs");
+                Assert(cost.Contains("[StaticConstructorOnStartup]") && cost.Contains("RM_SuspensionMath.ScaledCost(baseStuff, m)"),
+                    "base costs captured once at startup and scaled, never multiplied again");
+                string orders = ModFile("Patches", "FlowWorks_OrdersPatch.xml");
+                Assert(orders.Contains("<li>RimMandrake.FlowWorks.Designator_RestoreGround</li>"), "Restore ground is on the Orders tab");
+                string restore = Src("Designator_RestoreGround.cs");
+                Assert(restore.Contains("class Designator_RestoreGround : Designator_FillInCanal") && restore.Contains("class RM_MapComponent_GroundRestore : MapComponent")
+                    && restore.Contains("forget.Add(c); // the order went without a job done: cancelled"),
+                    "restore = the fill order repeated until ground; cancelling it stops");
+                string csproj = Src("RimMandrake_FlowWorks.csproj");
+                Assert(csproj.Contains("Designator_RestoreGround.cs") && csproj.Contains("RM_SuspensionTowerCost.cs"), "new files compiled");
+                string proofs = Src("Pits", "Suspension", "RM_SuspensionProofs.cs");
+                Assert(proofs.Contains("public static string ProofTowerCost(") && proofs.Contains("public static string ProofRestore(")
+                    && proofs.Contains("\" records=\" + records.Count"), "the live row's proofs exist");
             });
             // SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP (parent design §4.1; Q4 spilled liquid only): verify row L1 and the wiring.
             Case("Grate_fire_attach_open_pit_times_three_quarters", () =>

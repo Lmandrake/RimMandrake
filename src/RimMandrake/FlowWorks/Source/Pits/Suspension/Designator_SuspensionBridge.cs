@@ -31,9 +31,12 @@ namespace RimMandrake.FlowWorks.Pits
 		/// <summary>DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS phase 6: this button places a drawbridge (timber or steel).</summary>
 		protected virtual bool Drawbridge => false;
 
-		public override string Desc => base.Desc + "\n\nDrag from solid ground, across a dug hole, to solid ground: 1 to 3 squares wide, at most "
+		public override string Desc => base.Desc + "\n\nDrag from solid ground, across a dug hole, to solid ground: "
+			+ (Drawbridge ? "1 to " + RM_SuspensionMath.DrawbridgeMaxWidth : RM_SuspensionMath.MaxWidthOf(Tier) == 1 ? "1"
+				: "1 to " + RM_SuspensionMath.MaxWidthOf(Tier)) + " squares wide, at most "
 			+ RM_SuspensionMath.MaxLength(Tier, RM_SuspensionSettings.suspensionLengthMultiplier)
-			+ " squares between supports (plan a tower on the hole floor first to go further). Anchors go on both ends and are built first.";
+			+ " squares between supports. To go further, restore a ground island in the hole first (Restore ground, cheap: the drag "
+			+ "becomes one bridge per hole) or plan a tower on the hole floor (very expensive). Anchors go on both ends and are built first.";
 
 		public override AcceptanceReport CanDesignateCell(IntVec3 c)
 		{
@@ -70,13 +73,18 @@ namespace RimMandrake.FlowWorks.Pits
 		/// <summary>Validate the drag and place it. Null = placed; otherwise why not (nothing placed).</summary>
 		public string TryDesignate(List<IntVec3> cells)
 		{
-			string why = PlanDrag(cells, out SuspensionBridgeRecord r);
+			string why = PlanDragAll(cells, out List<SuspensionBridgeRecord> rs);
 			if (why != null)
 			{
 				return why;
 			}
-			Place(Map, r);
-			PlaceExtras(Map, r);
+			// SUSPENSION_ISLANDS_BUILD_TOWERS_COST_PLENTY: a drag over ground islands places one bridge per hole, all planned
+			// and checked before the first is placed
+			foreach (SuspensionBridgeRecord r in rs)
+			{
+				Place(Map, r);
+				PlaceExtras(Map, r);
+			}
 			return null;
 		}
 
@@ -98,9 +106,18 @@ namespace RimMandrake.FlowWorks.Pits
 		{
 		}
 
-		/// <summary>Validate the drag and plan it without touching the map. Null = planned (r is the record to place); otherwise
-		/// why not (r null).</summary>
+		/// <summary>Validate the drag and plan it without touching the map. Null = planned (the first, or only, bridge of the
+		/// drag); otherwise why not (null).</summary>
 		public string PlanDrag(List<IntVec3> cells, out SuspensionBridgeRecord planned)
+		{
+			string why = PlanDragAll(cells, out List<SuspensionBridgeRecord> all);
+			planned = all != null && all.Count > 0 ? all[0] : null;
+			return why;
+		}
+
+		/// <summary>The same, every bridge of the drag: one, or (SUSPENSION_ISLANDS_BUILD_TOWERS_COST_PLENTY) one per hole when
+		/// the drag crosses restored-ground islands. Null = planned; otherwise why not (null list).</summary>
+		public string PlanDragAll(List<IntVec3> cells, out List<SuspensionBridgeRecord> planned)
 		{
 			planned = null;
 			Map map = Map;
@@ -146,7 +163,7 @@ namespace RimMandrake.FlowWorks.Pits
 						+ "dry ledges at the same depth inside the hole.";
 					continue;
 				}
-				string why = Plan(map, r, dragged);
+				string why = Plan(map, r, dragged, out List<SuspensionBridgeRecord> pieces);
 				// DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS phase 6: a drawbridge button cuts the planned bridge into leaves (no towers,
 				// no longer than two leaves of its material), the colony's leaf hinged on the home bank
 				// DRAWBRIDGE_BUILD_ONE_DRAG_DOES_IT_ALL: hinged on the bank the drag started from, with its winch houses and gates
@@ -154,10 +171,16 @@ namespace RimMandrake.FlowWorks.Pits
 				{
 					why = "Not a drawbridge: " + dwhy + ".";
 				}
-				why = why ?? PlanExtras(map, r);
 				if (why == null)
 				{
-					planned = r;
+					foreach (SuspensionBridgeRecord p in pieces)
+					{
+						why = why ?? PlanExtras(map, p);
+					}
+				}
+				if (why == null)
+				{
+					planned = pieces;
 					return null;
 				}
 				first = first ?? why;
@@ -166,9 +189,13 @@ namespace RimMandrake.FlowWorks.Pits
 		}
 
 		/// <summary>Classify every square of the planned bridge and run the rules (RM_SuspensionMath.ValidateDrag), then the
-		/// vanilla per-square placement check for each anchor and deck blueprint.</summary>
-		private string Plan(Map map, SuspensionBridgeRecord r, HashSet<IntVec3> dragged)
+		/// vanilla per-square placement check for each anchor and deck blueprint. SUSPENSION_ISLANDS_BUILD_TOWERS_COST_PLENTY:
+		/// a plain bridge is cut at restored-ground islands (RM_SuspensionMath.SplitAtIslands) into <paramref name="pieces"/>,
+		/// each checked on its own; <paramref name="r"/> itself is the one piece when there is no island (a drawbridge never
+		/// splits).</summary>
+		private string Plan(Map map, SuspensionBridgeRecord r, HashSet<IntVec3> dragged, out List<SuspensionBridgeRecord> pieces)
 		{
+			pieces = null;
 			List<IList<SpanGround>> lanes = new List<IList<SpanGround>>();
 			List<ICollection<int>> towers = new List<ICollection<int>>();
 			for (int lane = 0; lane < r.width; lane++)
@@ -187,13 +214,79 @@ namespace RimMandrake.FlowWorks.Pits
 				lanes.Add(g);
 				towers.Add(t);
 			}
-			string why = RM_SuspensionMath.ValidateDrag(lanes, towers, r.tier, RM_SuspensionSettings.suspensionLengthMultiplier);
-			if (why != null)
+			float mult = RM_SuspensionSettings.suspensionLengthMultiplier;
+			HashSet<int> all = RM_SuspensionMath.UnionTowers(towers);
+			List<SuspensionBridgeRecord> list = new List<SuspensionBridgeRecord>();
+			if (Drawbridge)
 			{
-				return why;
+				// drawbridges keep the 1-to-3 width ("None of these are drawbridges": the owner's new sizes are not theirs)
+				string dwhy = RM_SuspensionMath.ValidateDrag(lanes, towers, r.tier, mult, RM_SuspensionMath.DrawbridgeMaxWidth);
+				if (dwhy != null)
+				{
+					return dwhy;
+				}
+				r.towers = all.OrderBy(i => i).ToList();
+				list.Add(r);
 			}
-			// every lane shares the same tower squares (a tower holds the whole width): the record keeps lane 0's
-			r.towers = towers[0].ToList();
+			else
+			{
+				if (lanes.Count > RM_SuspensionMath.MaxWidthOf(r.tier))
+				{
+					return RM_SuspensionMath.ValidateDrag(lanes, towers, r.tier, mult);
+				}
+				List<int[]> split = RM_SuspensionMath.SplitAtIslands(lanes, out string iwhy);
+				if (split == null)
+				{
+					return iwhy;
+				}
+				for (int k = 0; k < split.Count; k++)
+				{
+					int from = split[k][0], to = split[k][1];
+					HashSet<int> t = RM_SuspensionMath.SliceTowers(all, from, to);
+					string pwhy = RM_SuspensionMath.ValidateDrag(RM_SuspensionMath.Slice(lanes, from, to), new List<ICollection<int>> { t },
+						r.tier, mult);
+					if (pwhy != null)
+					{
+						return split.Count == 1 ? pwhy : "Bridge " + (k + 1) + " of " + split.Count + ": " + pwhy;
+					}
+					SuspensionBridgeRecord p = split.Count == 1 ? r : PieceOf(r, from, to);
+					p.towers = t.OrderBy(i => i).ToList();
+					list.Add(p);
+				}
+			}
+			foreach (SuspensionBridgeRecord p in list)
+			{
+				string why = PlaceableWhy(map, p);
+				if (why != null)
+				{
+					return list.Count == 1 ? why : "Bridge " + (list.IndexOf(p) + 1) + " of " + list.Count + ": " + why;
+				}
+			}
+			pieces = list;
+			return null;
+		}
+
+		/// <summary>Drag squares [from..to] of <paramref name="r"/> as a bridge of their own (same kind, width, height, look).</summary>
+		private static SuspensionBridgeRecord PieceOf(SuspensionBridgeRecord r, int from, int to)
+		{
+			return new SuspensionBridgeRecord
+			{
+				tier = r.tier,
+				origin = r.Cell(0, from),
+				dir = r.dir,
+				length = to - from + 1,
+				width = r.width,
+				stuff = r.stuff,
+				grated = r.grated,
+				look = r.look,
+				deckNotches = r.deckNotches,
+			};
+		}
+
+		/// <summary>The vanilla per-square placement check for each anchor and deck blueprint of one planned bridge (null =
+		/// fine).</summary>
+		private static string PlaceableWhy(Map map, SuspensionBridgeRecord r)
+		{
 			ThingDef anchor = RM_SuspensionDefOf.AnchorOf(r.tier);
 			ThingDef deck = RM_SuspensionDefOf.DeckOf(r.tier, r.grated);
 			for (int lane = 0; lane < r.width; lane++)

@@ -38,12 +38,35 @@ namespace RimMandrake.FlowWorks
 	/// must be over a dug hole. The deck squares between two supports (the anchors, or a tower on the hole floor) form one
 	/// SPAN: its length is capped per type, its load is summed together, and it gives way whole.
 	///
-	/// Numbers are the item's playtest starting points (length 8/6/10/14 squares between supports, load 150/600/2,000/8,000 kg
-	/// per lane), never measurements. Compiled into the FlowWorks SelfTest (SuspensionBridgeChecks).
+	/// Numbers are the item's playtest starting points (load 150/600/2,000/8,000 kg per lane), never measurements.
+	/// SUSPENSION_ISLANDS_BUILD_TOWERS_COST_PLENTY (owner 2026-10-25, "Suspension: 2 or 3 (towers should be VERY expensive to
+	/// build, so using islands is important for resource savings)"; sizes from his 2026-10-24 words "Rope ... Only 1 square
+	/// wide possible but can reach up to 12 squares ... Timber ... up to 2 cells wide and 8 squares long ... Steel and Heavy
+	/// can be built up to 4 cells wide and up to 20 cells long"): the lengths are the longest run of deck squares BETWEEN TWO
+	/// SUPPORTS (unsupported squares: support index gap - 1). Supports are the anchors, a tower (very expensive), or a restored
+	/// ground island: one drag over an island becomes chained bridges, one per hole (SplitAtIslands).
+	/// Compiled into the FlowWorks SelfTest (SuspensionBridgeChecks).
 	/// </summary>
 	public static class RM_SuspensionMath
 	{
-		public const int MaxWidth = 3;
+		/// <summary>Drawbridges keep the old 1-to-3 rule (the owner's new sizes are for the four suspension kinds: "None of these
+		/// are drawbridges").</summary>
+		public const int DrawbridgeMaxWidth = 3;
+
+		/// <summary>Widest drag by kind: rope 1, timber 2, steel and heavy 4.</summary>
+		public static int MaxWidthOf(SuspensionTier t)
+		{
+			switch (t)
+			{
+				case SuspensionTier.Rope: return 1;
+				case SuspensionTier.Timber: return 2;
+				default: return 4;
+			}
+		}
+
+		/// <summary>Shortest restored-ground island along the drag: one square for the end post of the bridge before it, one
+		/// for the start post of the bridge after it (an anchor is never shared by two chained bridges).</summary>
+		public const int MinIslandSquares = 2;
 
 		/// <summary>The sag warning (and creak) starts at this share of the rating.</summary>
 		public const float SagFraction = 0.9f;
@@ -69,10 +92,10 @@ namespace RimMandrake.FlowWorks
 		{
 			switch (t)
 			{
-				case SuspensionTier.Rope: return 8;
-				case SuspensionTier.Timber: return 6;
-				case SuspensionTier.Steel: return 10;
-				default: return 14;
+				case SuspensionTier.Rope: return 12;
+				case SuspensionTier.Timber: return 8;
+				case SuspensionTier.Steel: return 20;
+				default: return 20;
 			}
 		}
 
@@ -243,7 +266,8 @@ namespace RimMandrake.FlowWorks
 			{
 				if (lane[i] == SpanGround.Ground)
 				{
-					return "A suspension bridge must cross a hole without touching down: square " + i + " of the drag is undug ground (build two bridges).";
+					return "A suspension bridge must cross a hole without touching down: square " + i + " of the drag is ground. A ground "
+						+ "island in the middle needs at least " + MinIslandSquares + " squares along the bridge, across its whole width.";
 				}
 				if (lane[i] != SpanGround.Hole)
 				{
@@ -258,34 +282,164 @@ namespace RimMandrake.FlowWorks
 				if (run > cap)
 				{
 					return "A " + TierLabel(tier) + " suspension bridge spans at most " + cap + " squares between supports (this span: "
-						+ run + "). Build a tower on the hole floor to go further.";
+						+ run + "). Fill a ground island back in (cheap) or build a tower on the hole floor (very expensive) to go further.";
 				}
 			}
 			return null;
 		}
 
-		/// <summary>The whole drag: a rectangle lenAlong × width (width 1 to 3, every lane parallel). Null = accepted.</summary>
+		/// <summary>The whole drag: a rectangle lenAlong × width (every lane parallel), at most MaxWidthOf(tier) wide. Null =
+		/// accepted.</summary>
 		public static string ValidateDrag(IList<IList<SpanGround>> lanes, IList<ICollection<int>> towersPerLane, SuspensionTier tier,
 			float lengthMultiplier)
+		{
+			return ValidateDrag(lanes, towersPerLane, tier, lengthMultiplier, MaxWidthOf(tier));
+		}
+
+		/// <summary>The same with an explicit widest drag (drawbridges: DrawbridgeMaxWidth). A tower on any row holds the whole
+		/// width (SUSPENSION_ISLANDS_BUILD_TOWERS_COST_PLENTY: every row is checked against the same supports, the union of the
+		/// rows' towers, which is what the bridge record keeps).</summary>
+		public static string ValidateDrag(IList<IList<SpanGround>> lanes, IList<ICollection<int>> towersPerLane, SuspensionTier tier,
+			float lengthMultiplier, int maxWidth)
 		{
 			if (lanes == null || lanes.Count == 0)
 			{
 				return "Drag a suspension bridge from solid ground, across a dug hole, to solid ground on the far side.";
 			}
-			if (lanes.Count > MaxWidth)
+			if (lanes.Count > maxWidth)
 			{
-				return "A suspension bridge is 1 to 3 squares wide.";
+				return "A " + TierLabel(tier) + " suspension bridge is " + (maxWidth == 1 ? "1 square" : "1 to " + maxWidth + " squares") + " wide.";
 			}
+			HashSet<int> towers = UnionTowers(towersPerLane);
 			for (int l = 0; l < lanes.Count; l++)
 			{
-				string r = ValidateLane(lanes[l], towersPerLane != null && l < towersPerLane.Count ? towersPerLane[l] : null, tier,
-					lengthMultiplier);
+				string r = ValidateLane(lanes[l], towers, tier, lengthMultiplier);
 				if (r != null)
 				{
 					return lanes.Count == 1 ? r : "Row " + (l + 1) + ": " + r;
 				}
 			}
 			return null;
+		}
+
+		/// <summary>Every tower index on any row (a tower holds the whole width).</summary>
+		public static HashSet<int> UnionTowers(IList<ICollection<int>> towersPerLane)
+		{
+			HashSet<int> u = new HashSet<int>();
+			if (towersPerLane != null)
+			{
+				foreach (ICollection<int> t in towersPerLane)
+				{
+					if (t != null)
+					{
+						u.UnionWith(t);
+					}
+				}
+			}
+			return u;
+		}
+
+		/// <summary>SUSPENSION_ISLANDS_BUILD_TOWERS_COST_PLENTY (option C): cut one drag into chained bridges at restored-ground
+		/// islands. An island is a run of interior squares that are Ground on EVERY row; it must be MinIslandSquares long or
+		/// more (the bridge before it ends on its first square, the next one starts on its last; squares between stay plain
+		/// ground). Ground runs touching either end of the drag are not islands: they stay inside the first/last piece so
+		/// ValidateLane refuses them as before. Returns the pieces as {from, to} drag indices (inclusive; one piece covering
+		/// the whole drag when there is no island) or null with the refusal in <paramref name="refusal"/>.</summary>
+		public static List<int[]> SplitAtIslands(IList<IList<SpanGround>> lanes, out string refusal)
+		{
+			refusal = null;
+			List<int[]> pieces = new List<int[]>();
+			if (lanes == null || lanes.Count == 0 || lanes[0] == null)
+			{
+				return pieces;
+			}
+			int n = lanes[0].Count;
+			System.Func<int, bool> allGround = i =>
+			{
+				foreach (IList<SpanGround> lane in lanes)
+				{
+					if (lane == null || i >= lane.Count || lane[i] != SpanGround.Ground)
+					{
+						return false;
+					}
+				}
+				return true;
+			};
+			int start = 0;
+			int k = 0;
+			while (k < n)
+			{
+				if (!allGround(k))
+				{
+					k++;
+					continue;
+				}
+				int a = k;
+				while (k < n && allGround(k))
+				{
+					k++;
+				}
+				int b = k - 1;
+				if (a == 0 || b == n - 1)
+				{
+					continue;   // a bank, not an island
+				}
+				if (b - a + 1 < MinIslandSquares)
+				{
+					refusal = "A ground island in the middle of a suspension bridge needs at least " + MinIslandSquares
+						+ " squares along the bridge (square " + a + " of the drag is a 1-square island): one for each bridge's post.";
+					return null;
+				}
+				pieces.Add(new[] { start, a });
+				start = b;
+			}
+			pieces.Add(new[] { start, n - 1 });
+			return pieces;
+		}
+
+		/// <summary>Rows [from..to] of a drag, re-indexed from 0 (one chained piece).</summary>
+		public static List<IList<SpanGround>> Slice(IList<IList<SpanGround>> lanes, int from, int to)
+		{
+			List<IList<SpanGround>> r = new List<IList<SpanGround>>();
+			foreach (IList<SpanGround> lane in lanes)
+			{
+				List<SpanGround> g = new List<SpanGround>();
+				for (int i = from; i <= to && i < lane.Count; i++)
+				{
+					g.Add(lane[i]);
+				}
+				r.Add(g);
+			}
+			return r;
+		}
+
+		/// <summary>The towers strictly inside piece [from..to], re-indexed from the piece's first square.</summary>
+		public static HashSet<int> SliceTowers(ICollection<int> towers, int from, int to)
+		{
+			HashSet<int> r = new HashSet<int>();
+			if (towers != null)
+			{
+				foreach (int t in towers)
+				{
+					if (t > from && t < to)
+					{
+						r.Add(t - from);
+					}
+				}
+			}
+			return r;
+		}
+
+		/// <summary>A tower's cost after the Mod Settings multiplier (0.25 to 4): base × multiplier rounded, never below 1 (a
+		/// zero base stays zero).</summary>
+		public static int ScaledCost(int baseCount, float multiplier)
+		{
+			if (baseCount <= 0)
+			{
+				return 0;
+			}
+			int n = (int)(baseCount * multiplier + 0.5f);
+			return n < 1 ? 1 : n;
 		}
 
 		// ── SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP (parent design §4.1, Q4, Q9) ───────────────────────────────────

@@ -39,7 +39,8 @@ namespace RimMandrake.FlowWorks.Pits
 		}
 
 		/// <summary>"x1,z1;x2,z2;tier[;god]": drag the bridge over the rectangle x1..x2 × z1..z2 (god = built at once).
-		/// → "BUILD ok=b anchors=N decks=N blueprints=N reason=..."</summary>
+		/// → "BUILD ok=b anchors=N decks=N blueprints=N records=N reason=..." (records: bridges registered over the rectangle;
+		/// SUSPENSION_ISLANDS_BUILD_TOWERS_COST_PLENTY: one per hole over restored-ground islands)</summary>
 		public static string ProofBuild(string arg)
 		{
 			Map map = Find.CurrentMap;
@@ -62,8 +63,15 @@ namespace RimMandrake.FlowWorks.Pits
 				DebugSettings.godMode = was;
 			}
 			int anchors = 0, decks = 0, bps = 0;
+			HashSet<SuspensionBridgeRecord> records = new HashSet<SuspensionBridgeRecord>();
+			RM_MapComponent_SuspensionBridges comp = map.GetComponent<RM_MapComponent_SuspensionBridges>();
 			foreach (IntVec3 c in cells)
 			{
+				SuspensionBridgeRecord rec = comp?.RecordAt(c);
+				if (rec != null)
+				{
+					records.Add(rec);
+				}
 				foreach (Thing t in c.GetThingList(map))
 				{
 					if (t is Building_SuspensionAnchor) anchors++;
@@ -72,7 +80,64 @@ namespace RimMandrake.FlowWorks.Pits
 				}
 			}
 			return "BUILD ok=" + (reason == null) + " anchors=" + anchors + " decks=" + decks + " blueprints=" + bps
-				+ " reason=" + (reason ?? "-");
+				+ " records=" + records.Count + " reason=" + (reason ?? "-");
+		}
+
+		/// <summary>SUSPENSION_ISLANDS_BUILD_TOWERS_COST_PLENTY: "" → what the tower def costs now and what a tower blueprint of
+		/// steel charges. → "TOWERCOST stuff=N Steel=N ComponentIndustrial=N work=N mult=x steelBuilt=Steel:N,ComponentIndustrial:N"</summary>
+		public static string ProofTowerCost(string arg)
+		{
+			ThingDef d = RM_SuspensionDefOf.RM_SuspensionTower;
+			if (d == null)
+			{
+				return "REFUSED: no tower def";
+			}
+			List<ThingDefCountClass> charged = d.CostListAdjusted(ThingDefOf.Steel, false);
+			return "TOWERCOST " + RM_SuspensionTowerCost.Describe() + " steelBuilt="
+				+ string.Join(",", charged.Select(c => c.thingDef.defName + ":" + c.count));
+		}
+
+		/// <summary>SUSPENSION_ISLANDS_BUILD_TOWERS_COST_PLENTY: "x1,z1;x2,z2" → order Restore ground over the rectangle and run
+		/// one pass of the restore component. → "RESTORE accepted=N refused=N tracked=N fillOrders=N first=reason"</summary>
+		public static string ProofRestore(string arg)
+		{
+			Map map = Find.CurrentMap;
+			string[] a = (arg ?? "").Split(';');
+			if (map == null || a.Length < 2 || !Cell(a[0], out IntVec3 c1) || !Cell(a[1], out IntVec3 c2))
+			{
+				return "REFUSED: arg must be x1,z1;x2,z2 on the current map";
+			}
+			Designator_RestoreGround des = new Designator_RestoreGround();
+			RM_MapComponent_GroundRestore comp = map.GetComponent<RM_MapComponent_GroundRestore>();
+			int ok = 0, no = 0, orders = 0;
+			string first = "-";
+			List<IntVec3> cells = CellRect.FromLimits(c1, c2).Cells.ToList();
+			foreach (IntVec3 c in cells)
+			{
+				AcceptanceReport r = des.CanDesignateCell(c);
+				if (r.Accepted)
+				{
+					des.DesignateSingleCell(c);
+					ok++;
+				}
+				else
+				{
+					no++;
+					if (first == "-")
+					{
+						first = r.Reason.NullOrEmpty() ? "refused" : r.Reason;
+					}
+				}
+			}
+			comp?.Step();
+			foreach (IntVec3 c in cells)
+			{
+				if (map.designationManager.DesignationAt(c, RimMandrakeFlowWorks_DefOf.RM_FillInCanal) != null)
+				{
+					orders++;
+				}
+			}
+			return "RESTORE accepted=" + ok + " refused=" + no + " tracked=" + (comp?.Count ?? -1) + " fillOrders=" + orders + " first=" + first;
 		}
 
 		/// <summary>"x,z": the span holding that deck square. → "SPAN tier= load= rating= state= decks=N line=Load a / b kg"</summary>

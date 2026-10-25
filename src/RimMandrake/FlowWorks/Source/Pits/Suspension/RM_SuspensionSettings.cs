@@ -28,6 +28,8 @@ namespace RimMandrake.FlowWorks.Pits
 		public static bool suspensionOverWater = true;
 		public static bool suspensionOverSea = true;
 		public static bool floodsDamageLightBridges = true;
+		// SUSPENSION_ISLANDS_BUILD_TOWERS_COST_PLENTY: scales the tower's materials and work (RM_SuspensionTowerCost)
+		public static float towerCostMultiplier = 1f;
 
 		// FLOWWORKS_RESET_BUILD_TWELVE_SCREENS_MISSING: shipped value of every public static bool/float/int setting above. MUST stay
 		// below the LAST public setting field (C# runs static initialisers in textual order).
@@ -38,6 +40,7 @@ namespace RimMandrake.FlowWorks.Pits
 		{
 			RM_SettingsReset.ResetAll(typeof(RM_SuspensionSettings), shippedDefaults);
 			RM_PocketGrid.SettingsChanged();   // the walk-under switch re-reads the pocket grid
+			RM_SuspensionTowerCost.Apply();
 		}
 
 		public static void ExposeData()
@@ -56,6 +59,7 @@ namespace RimMandrake.FlowWorks.Pits
 			Scribe_Values.Look(ref suspensionOverWater, "suspensionOverWater", true);
 			Scribe_Values.Look(ref suspensionOverSea, "suspensionOverSea", true);
 			Scribe_Values.Look(ref floodsDamageLightBridges, "floodsDamageLightBridges", true);
+			Scribe_Values.Look(ref towerCostMultiplier, "towerCostMultiplier", 1f);
 		}
 
 		public static void DoSettingsSection(Listing_Standard list)
@@ -64,7 +68,8 @@ namespace RimMandrake.FlowWorks.Pits
 			list.Label("Suspension bridges");
 			RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, ResetAll);
 			list.CheckboxLabeled("Suspension bridges can be built", ref suspensionBridgesBuildable,
-				"Drag a suspension bridge across a dug hole like a wall, 1 to 3 squares wide, from solid ground to solid ground; "
+				"Drag a suspension bridge across a dug hole like a wall (rope 1 square wide, timber up to 2, steel and heavy up to 4), from "
+				+ "solid ground to solid ground, over restored ground islands if you like (one bridge per hole); "
 				+ "posts (anchors) go at both ends and the deck is built from the anchors inward. Off: no build buttons; bridges "
 				+ "already built stay.");
 			list.CheckboxLabeled("Suspension bridges give way under weight", ref suspensionWeightCollapse,
@@ -73,8 +78,16 @@ namespace RimMandrake.FlowWorks.Pits
 				+ "from damage and lost anchors.");
 			list.Label("Load multiplier: x" + suspensionLoadMultiplier.ToString("0.00") + "  (rope 150, timber 600, steel 2,000, heavy 8,000 kg per lane)");
 			suspensionLoadMultiplier = Mathf.Round(list.Slider(suspensionLoadMultiplier, 0.25f, 4f) * 20f) / 20f;
-			list.Label("Length multiplier: x" + suspensionLengthMultiplier.ToString("0.00") + "  (rope 8, timber 6, steel 10, heavy 14 squares between supports)");
+			list.Label("Length multiplier: x" + suspensionLengthMultiplier.ToString("0.00") + "  (rope 12, timber 8, steel 20, heavy 20 squares between supports)");
 			suspensionLengthMultiplier = Mathf.Round(list.Slider(suspensionLengthMultiplier, 0.5f, 3f) * 20f) / 20f;
+			float towerCost = towerCostMultiplier;
+			list.Label("Tower cost multiplier: x" + towerCostMultiplier.ToString("0.00") + "  (at x1 a tower built from steel: 300 steel, 6 "
+				+ "components, 12,000 work, about a geothermal generator; restored ground islands are the cheap support)");
+			towerCostMultiplier = Mathf.Round(list.Slider(towerCostMultiplier, 0.25f, 4f) * 20f) / 20f;
+			if (towerCost != towerCostMultiplier)
+			{
+				RM_SuspensionTowerCost.Apply();
+			}
 			list.CheckboxLabeled("Bridges fall when an anchor or tower goes", ref suspensionAnchorLossFalls,
 				"On: losing an anchor or a tower (destroyed or deconstructed) swings the span it held down, square by square from the "
 				+ "lost end, dropping whoever is on it. Off: a bridge with no anchor stays up.");

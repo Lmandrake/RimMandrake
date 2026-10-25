@@ -181,6 +181,7 @@
     <Compile Include="WorkGiver_DigCanal.cs" />
     <Compile Include="JobDriver_DigCanal.cs" />
     <Compile Include="Designator_FillInCanal.cs" />
+    <Compile Include="Designator_RestoreGround.cs" />
     <Compile Include="WorkGiver_FillInCanal.cs" />
     <Compile Include="JobDriver_FillInCanal.cs" />
     <Compile Include="Flood_FlowWorks.cs" />
@@ -257,6 +258,7 @@
     <Compile Include="Pits\Suspension\RM_MapComponent_SuspensionBridges.cs" />
     <Compile Include="Pits\Suspension\RM_SuspensionPatches.cs" />
     <Compile Include="Pits\Suspension\RM_SuspensionProofs.cs" />
+    <Compile Include="Pits\Suspension\RM_SuspensionTowerCost.cs" />
     <Compile Include="Pits\Suspension\RM_SuspensionSettings.cs" />
     <Compile Include="RM_SpanMath.cs" />
     <Compile Include="RM_SuspensionMath.cs" />
