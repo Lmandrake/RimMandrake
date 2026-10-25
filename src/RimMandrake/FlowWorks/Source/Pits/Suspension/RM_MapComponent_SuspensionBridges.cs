@@ -6,8 +6,9 @@ using Verse;
 
 namespace RimMandrake.FlowWorks.Pits
 {
-	/// <summary>One dragged suspension bridge: lanes (1 to 3) of `length` squares from anchor A (index 0) to anchor B
-	/// (index length-1) along `dir`, towers at indices in the middle. Cell(lane, i) = origin + side × lane + dir × i.</summary>
+	/// <summary>One dragged suspension bridge: lanes (1 to 4) of `length` squares from anchor A (index 0) to anchor B
+	/// (index length-1) along `dir`, towers at indices in the middle (an index is kept only when every lane has its tower
+	/// there: a tower holds one lane, SUSPENSION_TOWER_TUNE_NO_CHIPS_IN_STONE). Cell(lane, i) = origin + side × lane + dir × i.</summary>
 	public class SuspensionBridgeRecord : IExposable
 	{
 		public int id;
@@ -1075,7 +1076,8 @@ namespace RimMandrake.FlowWorks.Pits
 			foreach ((List<int> cells, bool lowEnd) in lost)
 			{
 				List<int> order = RM_SuspensionMath.SwingOrder(cells, lowEnd);
-				// an anchor carries its own lane; a tower carries every lane (it stands under the whole deck width)
+				// an anchor carries its own lane; a row of towers carries every lane together (one tower gone and the row holds
+				// nothing: the support index left r.towers above)
 				for (int l = 0; l < r.width; l++)
 				{
 					if (!isTower && l != lane)
@@ -1105,7 +1107,8 @@ namespace RimMandrake.FlowWorks.Pits
 			return t;
 		}
 
-		/// <summary>A tower was built (a rebuilt one included) in the middle of a bridge: it is one of that bridge's supports again.
+		/// <summary>A tower was built (a rebuilt one included) in the middle of a bridge: once every lane has its built tower at
+		/// that index the row is one of that bridge's supports again (SUSPENSION_TOWER_TUNE_NO_CHIPS_IN_STONE: one per lane).
 		/// Never a drawbridge's (placement refuses it, PlaceWorker_SuspensionOverHole; a frame or rebuild blueprint laid before
 		/// the bridge became a drawbridge is refused here, with the same reason).</summary>
 		public void Notify_TowerBuilt(Building_SuspensionTower t)
@@ -1117,11 +1120,26 @@ namespace RimMandrake.FlowWorks.Pits
 					MessageTypeDefOf.RejectInput, false);
 				return;
 			}
-			if (r != null && !r.jetty && r.TryIndexOf(t.Position, out _, out int i) && i > 0 && i < r.length - 1 && !r.towers.Contains(i))
+			if (r != null && !r.jetty && r.TryIndexOf(t.Position, out _, out int i) && i > 0 && i < r.length - 1 && !r.towers.Contains(i)
+				&& TowerRowBuilt(r, i))
 			{
 				r.towers.Add(i);
 				r.towers.Sort();
 			}
+		}
+
+		/// <summary>Does every lane of this bridge have a built tower at index i?</summary>
+		private bool TowerRowBuilt(SuspensionBridgeRecord r, int i)
+		{
+			for (int l = 0; l < r.width; l++)
+			{
+				IntVec3 c = r.Cell(l, i);
+				if (!c.InBounds(map) || BuiltAt<Building_SuspensionTower>(map, c) == null)
+				{
+					return false;
+				}
+			}
+			return true;
 		}
 
 		public void Notify_DeckBuilt(Building_SuspensionDeck d)

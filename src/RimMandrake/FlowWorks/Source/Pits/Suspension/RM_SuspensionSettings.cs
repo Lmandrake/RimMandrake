@@ -81,8 +81,9 @@ namespace RimMandrake.FlowWorks.Pits
 			list.Label("Length multiplier: x" + suspensionLengthMultiplier.ToString("0.00") + "  (rope 12, timber 8, steel 20, heavy 20 squares between supports)");
 			suspensionLengthMultiplier = Mathf.Round(list.Slider(suspensionLengthMultiplier, 0.5f, 3f) * 20f) / 20f;
 			float towerCost = towerCostMultiplier;
-			list.Label("Tower cost multiplier: x" + towerCostMultiplier.ToString("0.00") + "  (at x1 a tower built from steel: 300 steel, 6 "
-				+ "components, 12,000 work, about a geothermal generator; restored ground islands are the cheap support)");
+			list.Label("Tower cost multiplier: x" + towerCostMultiplier.ToString("0.00") + "  (at x1 a tower built from steel: 300 steel and "
+				+ "12,000 work; a bridge needs one tower per square of width, so a 4-wide row is 1,200 steel; restored ground islands "
+				+ "are the cheap support)");
 			towerCostMultiplier = Mathf.Round(list.Slider(towerCostMultiplier, 0.25f, 4f) * 20f) / 20f;
 			if (towerCost != towerCostMultiplier)
 			{

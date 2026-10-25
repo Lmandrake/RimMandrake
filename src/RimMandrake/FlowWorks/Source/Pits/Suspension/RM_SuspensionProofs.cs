@@ -84,7 +84,8 @@ namespace RimMandrake.FlowWorks.Pits
 		}
 
 		/// <summary>SUSPENSION_ISLANDS_BUILD_TOWERS_COST_PLENTY: "" → what the tower def costs now and what a tower blueprint of
-		/// steel charges. → "TOWERCOST stuff=N Steel=N ComponentIndustrial=N work=N mult=x steelBuilt=Steel:N,ComponentIndustrial:N"</summary>
+		/// steel charges (one tower: a bridge needs one per lane). → "TOWERCOST stuff=N Steel=N work=N mult=x steelBuilt=Steel:N"
+		/// (no components since SUSPENSION_TOWER_TUNE_NO_CHIPS_IN_STONE)</summary>
 		public static string ProofTowerCost(string arg)
 		{
 			ThingDef d = RM_SuspensionDefOf.RM_SuspensionTower;

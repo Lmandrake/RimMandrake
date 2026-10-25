@@ -715,7 +715,8 @@ def health_seen(rows):
 
 def islands(ctx):
     """SUSPENSION_ISLANDS_BUILD_TOWERS_COST_PLENTY (owner 2026-10-25: "Suspension: 2 or 3 (towers should be VERY expensive to
-    build, so using islands is important for resource savings)"). Rows at z 80-88 of the site (crossings x 6..25), clear of every other section.
+    build, so using islands is important for resource savings)"). Rows at z 80-88 of the site (crossings x 6..25), clear of every other section;
+    SB_tower_row_per_lane (SUSPENSION_TOWER_TUNE_NO_CHIPS_IN_STONE, a tower per row) at z 90-91, x 0..18.
     The island is UNDUG ground: a square filled back to the surface leaves the excavation grid (depth 0) and classifies the
     same, which the Restore ground row orders but does not wait for (filling is colonists' work)."""
     P0, xz, row, proof, dig = (ctx[k] for k in ("P", "xz", "row", "proof", "dig"))
@@ -741,11 +742,32 @@ def islands(ctx):
         m = float(kv.get("mult") or "nan")
         want = lambda base: max(1, int(base * m + 0.5))         # noqa: E731  RM_SuspensionMath.ScaledCost
         charged = dict(x.split(":") for x in (kv.get("steelBuilt") or "").split(",") if ":" in x)
+        # SUSPENSION_TOWER_TUNE_NO_CHIPS_IN_STONE: no components on a tower (owner: "Not towers or the span itself")
         good = (m == m and kv.get("stuff") == str(want(200)) and kv.get("Steel") == str(want(100))
-                and kv.get("ComponentIndustrial") == str(want(6)) and float(kv.get("work") or 0) == want(12000)
-                and charged.get("Steel") == str(want(200) + want(100)) and charged.get("ComponentIndustrial") == str(want(6)))
+                and "ComponentIndustrial" not in kv and float(kv.get("work") or 0) == want(12000)
+                and charged.get("Steel") == str(want(200) + want(100)) and "ComponentIndustrial" not in charged)
         row("SB_islands_tower_cost_charged", "PASS" if good else "FAIL",
-            {"read": txt, "want_at_x1": "stuff=200 Steel=100 ComponentIndustrial=6 work=12000 steelBuilt=Steel:300,ComponentIndustrial:6"})
+            {"read": txt, "want_at_x1": "stuff=200 Steel=100 work=12000 steelBuilt=Steel:300 (no ComponentIndustrial)"})
+    with V.scope("SB_tower_row_per_lane"):
+        # SUSPENSION_TOWER_TUNE_NO_CHIPS_IN_STONE ("Tower scales with width"): a tower holds one row. A 2-wide timber crossing of
+        # 17 holes (cap 8 per span) at z 90-91, x 0..18: one tower at square 9 is refused with the count; the second tower
+        # beside it makes it one bridge on two spans. Spawned towers are BUILT (spawn_batch), so they are supports at once.
+        for i in range(1, 18):
+            for z in (90, 91):
+                dig(P0(i, z))
+        tw1 = ctx["B"].call("jawa/spawn_batch", ops="RM_SuspensionTower:%d,%d" % P0(9, 90)) or {}
+        k1, t1 = proof("ProofBuild", "%s;%s;timber;god" % (xz(P0(0, 90)), xz(P0(18, 91))))
+        tw2 = ctx["B"].call("jawa/spawn_batch", ops="RM_SuspensionTower:%d,%d" % P0(9, 91)) or {}
+        k2, t2 = proof("ProofBuild", "%s;%s;timber;god" % (xz(P0(0, 90)), xz(P0(18, 91))))
+        if "at most 8" in t1 and "holds one row" not in t1:
+            # refused on length as if no tower stood there: the first tower never spawned on the floor (SITE, not the rule)
+            row("SB_tower_row_per_lane", "UNMEASURED", {"why": "tower 1 not standing", "read": t1, "tw1": str(tw1)[:160]})
+        else:
+            good = (k1.get("ok") == "False" and "holds one row" in t1 and "needs 2 towers" in t1 and k1.get("anchors") == "0"
+                    and k2.get("ok") == "True" and k2.get("records") == "1" and k2.get("anchors") == "4"
+                    and int(k2.get("decks") or 0) >= 32)
+            row("SB_tower_row_per_lane", "PASS" if good else "FAIL",
+                {"one_tower": t1, "two_towers": t2, "claim": "a 2-wide bridge needs a tower under each row; one is refused with the count"})
     with V.scope("SB_islands_restore"):
         for i in range(1, 5):
             dig(P(i, 88), 2)
@@ -814,10 +836,15 @@ class FakeBridge(object):
                 return "BUILD ok=False anchors=0 decks=0 blueprints=0 records=0 reason=A timber suspension bridge spans at most 8 squares"
             if z1 == 80:
                 return "BUILD ok=True anchors=4 decks=16 blueprints=0 records=2 reason=-"
+            if z1 == 90:                                        # SB_tower_row_per_lane: one tower, then the row of two
+                self.tower_rows = getattr(self, "tower_rows", 0) + 1
+                if self.tower_rows == 1:
+                    return ("BUILD ok=False anchors=0 decks=0 blueprints=0 records=0 reason=A tower holds one row of the bridge: "
+                            "this one is 2 squares wide, so it needs 2 towers side by side at square 9 of the drag (there is 1).")
+                return "BUILD ok=True anchors=4 decks=34 blueprints=0 records=1 reason=-"
             return "BUILD ok=True anchors=2 decks=6 blueprints=0 records=1 reason=-"
         if m == "ProofTowerCost":
-            return ("TOWERCOST stuff=200 Steel=100 ComponentIndustrial=6 work=12000 mult=1.00 "
-                    "steelBuilt=Steel:300,ComponentIndustrial:6")
+            return "TOWERCOST stuff=200 Steel=100 work=12000 mult=1.00 steelBuilt=Steel:300"
         if m == "ProofRestore":
             return "RESTORE accepted=4 refused=0 tracked=4 fillOrders=4 first=-"
         if m == "ProofPath":

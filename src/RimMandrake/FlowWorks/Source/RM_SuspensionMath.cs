@@ -34,7 +34,7 @@ namespace RimMandrake.FlowWorks
 	/// <summary>
 	/// SUSPENSION_BRIDGE_BUILD_POSTS_AT_BOTH_ENDS (design/RimMandrake/suspension_bridge_construction_design_2026-10-18.md §1.2-§1.3,
 	/// §2, §4; parent design §6): the Verse-free rules of the surface suspension bridge. A bridge is dragged like a wall,
-	/// 1 to 3 squares wide; each lane must start and end on solid ground (an anchor goes on each end) and every square between
+	/// 1 to 4 squares wide (MaxWidthOf); each lane must start and end on solid ground (an anchor goes on each end) and every square between
 	/// must be over a dug hole. The deck squares between two supports (the anchors, or a tower on the hole floor) form one
 	/// SPAN: its length is capped per type, its load is summed together, and it gives way whole.
 	///
@@ -43,7 +43,8 @@ namespace RimMandrake.FlowWorks
 	/// build, so using islands is important for resource savings)"; sizes from his 2026-10-24 words "Rope ... Only 1 square
 	/// wide possible but can reach up to 12 squares ... Timber ... up to 2 cells wide and 8 squares long ... Steel and Heavy
 	/// can be built up to 4 cells wide and up to 20 cells long"): the lengths are the longest run of deck squares BETWEEN TWO
-	/// SUPPORTS (unsupported squares: support index gap - 1). Supports are the anchors, a tower (very expensive), or a restored
+	/// SUPPORTS (unsupported squares: support index gap - 1). Supports are the anchors, a row of towers (very expensive; one
+	/// tower under each lane, SUSPENSION_TOWER_TUNE_NO_CHIPS_IN_STONE, so the cost scales with the width), or a restored
 	/// ground island: one drag over an island becomes chained bridges, one per hole (SplitAtIslands).
 	/// Compiled into the FlowWorks SelfTest (SuspensionBridgeChecks).
 	/// </summary>
@@ -309,9 +310,10 @@ namespace RimMandrake.FlowWorks
 			return ValidateDrag(lanes, towersPerLane, tier, lengthMultiplier, MaxWidthOf(tier));
 		}
 
-		/// <summary>The same with an explicit widest drag (drawbridges: DrawbridgeMaxWidth). A tower on any row holds the whole
-		/// width (SUSPENSION_ISLANDS_BUILD_TOWERS_COST_PLENTY: every row is checked against the same supports, the union of the
-		/// rows' towers, which is what the bridge record keeps).</summary>
+		/// <summary>The same with an explicit widest drag (drawbridges: DrawbridgeMaxWidth). A tower holds ONE row
+		/// (SUSPENSION_TOWER_TUNE_NO_CHIPS_IN_STONE, owner 2026-10-25 "Tower scales with width"; was: one tower on any row held
+		/// the whole width): a square is a support only where every row has its tower (FullWidthTowers, which is what the bridge
+		/// record keeps), and a tower row short of the width is refused with how many it needs (PartialTowerRefusal).</summary>
 		public static string ValidateDrag(IList<IList<SpanGround>> lanes, IList<ICollection<int>> towersPerLane, SuspensionTier tier,
 			float lengthMultiplier, int maxWidth)
 		{
@@ -323,7 +325,12 @@ namespace RimMandrake.FlowWorks
 			{
 				return "A " + BridgeName(tier) + " is " + (maxWidth == 1 ? "1 square" : "1 to " + maxWidth + " squares") + " wide.";
 			}
-			HashSet<int> towers = UnionTowers(towersPerLane);
+			string partial = PartialTowerRefusal(towersPerLane);
+			if (partial != null)
+			{
+				return partial;
+			}
+			HashSet<int> towers = FullWidthTowers(towersPerLane);
 			for (int l = 0; l < lanes.Count; l++)
 			{
 				string r = ValidateLane(lanes[l], towers, tier, lengthMultiplier);
@@ -335,7 +342,7 @@ namespace RimMandrake.FlowWorks
 			return null;
 		}
 
-		/// <summary>Every tower index on any row (a tower holds the whole width).</summary>
+		/// <summary>Every tower index on any row (a drawbridge refuses all of them).</summary>
 		public static HashSet<int> UnionTowers(IList<ICollection<int>> towersPerLane)
 		{
 			HashSet<int> u = new HashSet<int>();
@@ -350,6 +357,70 @@ namespace RimMandrake.FlowWorks
 				}
 			}
 			return u;
+		}
+
+		/// <summary>SUSPENSION_TOWER_TUNE_NO_CHIPS_IN_STONE: the tower indices found on EVERY row (one collection per row; a
+		/// single collection stands for all rows; null or none = no towers). Only these hold the bridge up.</summary>
+		public static HashSet<int> FullWidthTowers(IList<ICollection<int>> towersPerLane)
+		{
+			HashSet<int> f = new HashSet<int>();
+			if (towersPerLane == null || towersPerLane.Count == 0)
+			{
+				return f;
+			}
+			if (towersPerLane[0] != null)
+			{
+				f.UnionWith(towersPerLane[0]);
+			}
+			for (int l = 1; l < towersPerLane.Count; l++)
+			{
+				if (towersPerLane[l] == null)
+				{
+					f.Clear();
+				}
+				else
+				{
+					f.IntersectWith(towersPerLane[l]);
+				}
+			}
+			return f;
+		}
+
+		/// <summary>The refusal for the first square (lowest index) where some rows have a tower and others do not, in the
+		/// player's words; null when every tower row is complete. A tower holds one row, so a bridge W wide needs W towers side
+		/// by side.</summary>
+		public static string PartialTowerRefusal(IList<ICollection<int>> towersPerLane)
+		{
+			if (towersPerLane == null || towersPerLane.Count < 2)
+			{
+				return null;
+			}
+			HashSet<int> any = UnionTowers(towersPerLane);
+			HashSet<int> full = FullWidthTowers(towersPerLane);
+			int first = -1;
+			foreach (int i in any)
+			{
+				if (!full.Contains(i) && (first < 0 || i < first))
+				{
+					first = i;
+				}
+			}
+			if (first < 0)
+			{
+				return null;
+			}
+			int have = 0;
+			foreach (ICollection<int> t in towersPerLane)
+			{
+				if (t != null && t.Contains(first))
+				{
+					have++;
+				}
+			}
+			int w = towersPerLane.Count;
+			return "A tower holds one row of the bridge: this one is " + w + " squares wide, so it needs " + w
+				+ " towers side by side at square " + first + " of the drag (there " + (have == 1 ? "is 1" : "are " + have)
+				+ "). Drag the tower across the hole to plan the rest.";
 		}
 
 		/// <summary>SUSPENSION_ISLANDS_BUILD_TOWERS_COST_PLENTY (option C): cut one drag into chained bridges at restored-ground

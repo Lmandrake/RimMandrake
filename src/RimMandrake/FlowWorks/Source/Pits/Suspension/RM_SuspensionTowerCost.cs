@@ -58,8 +58,8 @@ namespace RimMandrake.FlowWorks.Pits
 			StatUtility.SetStatValueInList(ref d.statBases, StatDefOf.WorkToBuild, RM_SuspensionMath.ScaledCost((int)baseWork, m));
 		}
 
-		/// <summary>What the tower costs now, for the proof and the settings label: "stuff=200 Steel=100 ComponentIndustrial=6
-		/// work=12000".</summary>
+		/// <summary>What one tower costs now, for the proof: "stuff=200 Steel=100 work=12000 mult=1.00" (a bridge needs one
+		/// tower per lane; no components since SUSPENSION_TOWER_TUNE_NO_CHIPS_IN_STONE).</summary>
 		public static string Describe()
 		{
 			ThingDef d = RM_SuspensionDefOf.RM_SuspensionTower;

@@ -18,7 +18,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RM_SuspensionDeck_Rope</defName>
     <label>rope suspension bridge</label>
-    <description>Planks lashed between two ropes. Light and long (up to 12 squares between supports) but it carries only about 150 kg on a span, and nothing can be built on it.\n\nA suspension bridge crosses dug ground: drag it like a wall, 1 square wide, from solid ground to solid ground. Posts go on both ends and are built first; the deck is built from the posts inward. The deck between two supports is one span: everything on it is weighed together, it sags and creaks near its rating, and over it the whole span gives way and everyone on it falls. Losing a post swings the span down from that end. A ground island restored in the hole (at least 2 squares along the bridge, as wide as it) is the cheap support in the middle: the drag becomes one bridge per hole. A tower on the hole floor is the very expensive one. Use the Railings switch to stop falls off the edges. People down in the hole walk under it where its floor is at least 2 m below the deck; shallower, it is a wall from below. If it falls, whoever is under it is hit as by a falling roof and the wreck blocks the floor until cleared. Dragged between two dry ledges at one depth inside a deeper hole, it is a sunken bridge.</description>
+    <description>Planks lashed between two ropes. Light and long (up to 12 squares between supports) but it carries only about 150 kg on a span, and nothing can be built on it.\n\nA suspension bridge crosses dug ground: drag it like a wall, 1 square wide, from solid ground to solid ground. Posts go on both ends and are built first; the deck is built from the posts inward. The deck between two supports is one span: everything on it is weighed together, it sags and creaks near its rating, and over it the whole span gives way and everyone on it falls. Losing a post swings the span down from that end. A ground island restored in the hole (at least 2 squares along the bridge, as wide as it) is the cheap support in the middle: the drag becomes one bridge per hole. A row of towers on the hole floor, one under each square of width, is the very expensive one. Use the Railings switch to stop falls off the edges. People down in the hole walk under it where its floor is at least 2 m below the deck; shallower, it is a wall from below. If it falls, whoever is under it is hit as by a falling roof and the wreck blocks the floor until cleared. Dragged between two dry ledges at one depth inside a deeper hole, it is a sunken bridge.</description>
     <thingClass>RimMandrake.FlowWorks.Pits.Building_SuspensionDeck</thingClass>
     <uiIconPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Rope</uiIconPath>
     <graphicData>
@@ -103,7 +103,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RM_SuspensionDeck_Timber</defName>
     <label>timber suspension bridge</label>
-    <description>Beams and boards. Spans up to 8 squares between supports and carries about 600 kg on a span; light furniture can stand on it.\n\nA suspension bridge crosses dug ground: drag it like a wall, 1 or 2 squares wide, from solid ground to solid ground. Posts go on both ends and are built first; the deck is built from the posts inward. The deck between two supports is one span: everything on it is weighed together, it sags and creaks near its rating, and over it the whole span gives way and everyone on it falls. Losing a post swings the span down from that end. A ground island restored in the hole (at least 2 squares along the bridge, as wide as it) is the cheap support in the middle: the drag becomes one bridge per hole. A tower on the hole floor is the very expensive one. Use the Railings switch to stop falls off the edges. People down in the hole walk under it where its floor is at least 2 m below the deck; shallower, it is a wall from below. If it falls, whoever is under it is hit as by a falling roof and the wreck blocks the floor until cleared. Dragged between two dry ledges at one depth inside a deeper hole, it is a sunken bridge.</description>
+    <description>Beams and boards. Spans up to 8 squares between supports and carries about 600 kg on a span for each square of width (1,200 kg at 2 wide); light furniture can stand on it.\n\nA suspension bridge crosses dug ground: drag it like a wall, 1 or 2 squares wide, from solid ground to solid ground. Posts go on both ends and are built first; the deck is built from the posts inward. The deck between two supports is one span: everything on it is weighed together, it sags and creaks near its rating, and over it the whole span gives way and everyone on it falls. Losing a post swings the span down from that end. A ground island restored in the hole (at least 2 squares along the bridge, as wide as it) is the cheap support in the middle: the drag becomes one bridge per hole. A row of towers on the hole floor, one under each square of width, is the very expensive one. Use the Railings switch to stop falls off the edges. People down in the hole walk under it where its floor is at least 2 m below the deck; shallower, it is a wall from below. If it falls, whoever is under it is hit as by a falling roof and the wreck blocks the floor until cleared. Dragged between two dry ledges at one depth inside a deeper hole, it is a sunken bridge.</description>
     <thingClass>RimMandrake.FlowWorks.Pits.Building_SuspensionDeck</thingClass>
     <uiIconPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Timber</uiIconPath>
     <graphicData>
@@ -194,7 +194,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RM_SuspensionDeck_Steel</defName>
     <label>steel suspension bridge</label>
-    <description>Girders and riveted plate. Spans up to 20 squares between supports and carries about 2,000 kg on a span; light and medium buildings can stand on it.\n\nA suspension bridge crosses dug ground: drag it like a wall, 1 to 4 squares wide, from solid ground to solid ground. Posts go on both ends and are built first; the deck is built from the posts inward. The deck between two supports is one span: everything on it is weighed together, it sags and creaks near its rating, and over it the whole span gives way and everyone on it falls. Losing a post swings the span down from that end. A ground island restored in the hole (at least 2 squares along the bridge, as wide as it) is the cheap support in the middle: the drag becomes one bridge per hole. A tower on the hole floor is the very expensive one. Use the Railings switch to stop falls off the edges. People down in the hole walk under it where its floor is at least 2 m below the deck; shallower, it is a wall from below. If it falls, whoever is under it is hit as by a falling roof and the wreck blocks the floor until cleared. Dragged between two dry ledges at one depth inside a deeper hole, it is a sunken bridge.</description>
+    <description>Girders and riveted plate. Spans up to 20 squares between supports and carries about 2,000 kg on a span for each square of width (8,000 kg at 4 wide); light and medium buildings can stand on it.\n\nA suspension bridge crosses dug ground: drag it like a wall, 1 to 4 squares wide, from solid ground to solid ground. Posts go on both ends and are built first; the deck is built from the posts inward. The deck between two supports is one span: everything on it is weighed together, it sags and creaks near its rating, and over it the whole span gives way and everyone on it falls. Losing a post swings the span down from that end. A ground island restored in the hole (at least 2 squares along the bridge, as wide as it) is the cheap support in the middle: the drag becomes one bridge per hole. A row of towers on the hole floor, one under each square of width, is the very expensive one. Use the Railings switch to stop falls off the edges. People down in the hole walk under it where its floor is at least 2 m below the deck; shallower, it is a wall from below. If it falls, whoever is under it is hit as by a falling roof and the wreck blocks the floor until cleared. Dragged between two dry ledges at one depth inside a deeper hole, it is a sunken bridge.</description>
     <thingClass>RimMandrake.FlowWorks.Pits.Building_SuspensionDeck</thingClass>
     <uiIconPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Steel</uiIconPath>
     <graphicData>
@@ -245,7 +245,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RM_SuspensionDeck_SteelGrated</defName>
     <label>grated steel suspension bridge</label>
-    <description>An open steel grating instead of plate: you can see the hole below through it. Fire in the hole reaches the people standing on it (they catch alight and take burns), and liquid spilled or poured on it drains into the hole below; items stay on it. Same span, load and building rules as the steel suspension bridge.\n\nA suspension bridge crosses dug ground: drag it like a wall, 1 to 4 squares wide, from solid ground to solid ground. Posts go on both ends and are built first; the deck is built from the posts inward. The deck between two supports is one span: everything on it is weighed together, it sags and creaks near its rating, and over it the whole span gives way and everyone on it falls. Losing a post swings the span down from that end. A ground island restored in the hole (at least 2 squares along the bridge, as wide as it) is the cheap support in the middle: the drag becomes one bridge per hole. A tower on the hole floor is the very expensive one. Use the Railings switch to stop falls off the edges. People down in the hole walk under it where its floor is at least 2 m below the deck; shallower, it is a wall from below. If it falls, whoever is under it is hit as by a falling roof and the wreck blocks the floor until cleared. Dragged between two dry ledges at one depth inside a deeper hole, it is a sunken bridge.</description>
+    <description>An open steel grating instead of plate: you can see the hole below through it. Fire in the hole reaches the people standing on it (they catch alight and take burns), and liquid spilled or poured on it drains into the hole below; items stay on it. Same span, load and building rules as the steel suspension bridge.\n\nA suspension bridge crosses dug ground: drag it like a wall, 1 to 4 squares wide, from solid ground to solid ground. Posts go on both ends and are built first; the deck is built from the posts inward. The deck between two supports is one span: everything on it is weighed together, it sags and creaks near its rating, and over it the whole span gives way and everyone on it falls. Losing a post swings the span down from that end. A ground island restored in the hole (at least 2 squares along the bridge, as wide as it) is the cheap support in the middle: the drag becomes one bridge per hole. A row of towers on the hole floor, one under each square of width, is the very expensive one. Use the Railings switch to stop falls off the edges. People down in the hole walk under it where its floor is at least 2 m below the deck; shallower, it is a wall from below. If it falls, whoever is under it is hit as by a falling roof and the wreck blocks the floor until cleared. Dragged between two dry ledges at one depth inside a deeper hole, it is a sunken bridge.</description>
     <thingClass>RimMandrake.FlowWorks.Pits.Building_SuspensionDeck</thingClass>
     <uiIconPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_SteelGrated</uiIconPath>
     <graphicData>
@@ -339,7 +339,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RM_SuspensionDeck_Heavy</defName>
     <label>heavy truss bridge</label>
-    <description>A steel truss: deep lattice girders either side of a plate deck. Spans up to 20 squares between supports and carries about 8,000 kg on a span; anything can be built on it.\n\nIt is laid like a suspension bridge, and like one it crosses dug ground: drag it like a wall, 1 to 4 squares wide, from solid ground to solid ground. Posts go on both ends and are built first; the deck is built from the posts inward. The deck between two supports is one span: everything on it is weighed together, it sags and creaks near its rating, and over it the whole span gives way and everyone on it falls. Losing a post swings the span down from that end. A ground island restored in the hole (at least 2 squares along the bridge, as wide as it) is the cheap support in the middle: the drag becomes one bridge per hole. A tower on the hole floor is the very expensive one. Use the Railings switch to stop falls off the edges. People down in the hole walk under it where its floor is at least 2 m below the deck; shallower, it is a wall from below. If it falls, whoever is under it is hit as by a falling roof and the wreck blocks the floor until cleared. Dragged between two dry ledges at one depth inside a deeper hole, it is a sunken bridge.</description>
+    <description>A steel truss: deep lattice girders either side of a plate deck. Spans up to 20 squares between supports and carries about 8,000 kg on a span for each square of width (32,000 kg at 4 wide); anything can be built on it.\n\nIt is laid like a suspension bridge, and like one it crosses dug ground: drag it like a wall, 1 to 4 squares wide, from solid ground to solid ground. Posts go on both ends and are built first; the deck is built from the posts inward. The deck between two supports is one span: everything on it is weighed together, it sags and creaks near its rating, and over it the whole span gives way and everyone on it falls. Losing a post swings the span down from that end. A ground island restored in the hole (at least 2 squares along the bridge, as wide as it) is the cheap support in the middle: the drag becomes one bridge per hole. A row of towers on the hole floor, one under each square of width, is the very expensive one. Use the Railings switch to stop falls off the edges. People down in the hole walk under it where its floor is at least 2 m below the deck; shallower, it is a wall from below. If it falls, whoever is under it is hit as by a falling roof and the wreck blocks the floor until cleared. Dragged between two dry ledges at one depth inside a deeper hole, it is a sunken bridge.</description>
     <thingClass>RimMandrake.FlowWorks.Pits.Building_SuspensionDeck</thingClass>
     <uiIconPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Heavy</uiIconPath>
     <graphicData>
@@ -360,7 +360,6 @@
     <uiOrder>2210</uiOrder>
     <costList>
       <Steel>20</Steel>
-      <ComponentIndustrial>1</ComponentIndustrial>
     </costList>
     <statBases>
       <MaxHitPoints>500</MaxHitPoints>
@@ -393,7 +392,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RM_SuspensionDeck_HeavyGrated</defName>
     <label>grated heavy truss bridge</label>
-    <description>An open heavy grating instead of plate: you can see the hole below through it. Fire in the hole reaches the people standing on it (they catch alight and take burns), and liquid spilled or poured on it drains into the hole below; items stay on it. Same span, load and building rules as the heavy truss bridge.\n\nIt is laid like a suspension bridge, and like one it crosses dug ground: drag it like a wall, 1 to 4 squares wide, from solid ground to solid ground. Posts go on both ends and are built first; the deck is built from the posts inward. The deck between two supports is one span: everything on it is weighed together, it sags and creaks near its rating, and over it the whole span gives way and everyone on it falls. Losing a post swings the span down from that end. A ground island restored in the hole (at least 2 squares along the bridge, as wide as it) is the cheap support in the middle: the drag becomes one bridge per hole. A tower on the hole floor is the very expensive one. Use the Railings switch to stop falls off the edges. People down in the hole walk under it where its floor is at least 2 m below the deck; shallower, it is a wall from below. If it falls, whoever is under it is hit as by a falling roof and the wreck blocks the floor until cleared. Dragged between two dry ledges at one depth inside a deeper hole, it is a sunken bridge.</description>
+    <description>An open heavy grating instead of plate: you can see the hole below through it. Fire in the hole reaches the people standing on it (they catch alight and take burns), and liquid spilled or poured on it drains into the hole below; items stay on it. Same span, load and building rules as the heavy truss bridge.\n\nIt is laid like a suspension bridge, and like one it crosses dug ground: drag it like a wall, 1 to 4 squares wide, from solid ground to solid ground. Posts go on both ends and are built first; the deck is built from the posts inward. The deck between two supports is one span: everything on it is weighed together, it sags and creaks near its rating, and over it the whole span gives way and everyone on it falls. Losing a post swings the span down from that end. A ground island restored in the hole (at least 2 squares along the bridge, as wide as it) is the cheap support in the middle: the drag becomes one bridge per hole. A row of towers on the hole floor, one under each square of width, is the very expensive one. Use the Railings switch to stop falls off the edges. People down in the hole walk under it where its floor is at least 2 m below the deck; shallower, it is a wall from below. If it falls, whoever is under it is hit as by a falling roof and the wreck blocks the floor until cleared. Dragged between two dry ledges at one depth inside a deeper hole, it is a sunken bridge.</description>
     <thingClass>RimMandrake.FlowWorks.Pits.Building_SuspensionDeck</thingClass>
     <uiIconPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_HeavyGrated</uiIconPath>
     <graphicData>
@@ -414,7 +413,6 @@
     <uiOrder>2211</uiOrder>
     <costList>
       <Steel>20</Steel>
-      <ComponentIndustrial>1</ComponentIndustrial>
     </costList>
     <statBases>
       <MaxHitPoints>500</MaxHitPoints>
@@ -465,7 +463,6 @@
     <canGenerateDefaultDesignator>false</canGenerateDefaultDesignator>
     <costList>
       <Steel>45</Steel>
-      <ComponentIndustrial>2</ComponentIndustrial>
     </costList>
     <statBases>
       <MaxHitPoints>1000</MaxHitPoints>
@@ -493,7 +490,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RM_SuspensionTower</defName>
     <label>suspension bridge tower</label>
-    <description>A column built on the floor of a dug hole that holds a suspension bridge in the middle, so a crossing longer than one span can be made of two. Very expensive (about what a geothermal generator costs): where you can, restore a ground island in the hole instead and drag the bridge over it, which makes one bridge per hole for the price of a few anchors. Build the tower first (someone has to get down to the floor), then drag the bridge over it; it holds the whole width. If it goes, the spans either side swing down.</description>
+    <description>A column built on the floor of a dug hole that holds one row of a suspension bridge in the middle, so a crossing longer than one span can be made of two. A bridge needs one tower under each square of its width, side by side across the hole (drag the tower like a wall), so a wide bridge costs a tower per row. Very expensive: where you can, restore a ground island in the hole instead and drag the bridge over it, which makes one bridge per hole for the price of a few anchors. Build the towers first (someone has to get down to the floor), then drag the bridge over them. If one goes, the spans either side swing down.</description>
     <thingClass>RimMandrake.FlowWorks.Pits.Building_SuspensionTower</thingClass>
     <graphicData>
       <texPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionTower</texPath>
@@ -514,14 +511,15 @@
       <li>Metallic</li>
     </stuffCategories>
     <!-- SUSPENSION_ISLANDS_BUILD_TOWERS_COST_PLENTY (owner 2026-10-25: "towers should be VERY expensive to build, so using
-         islands is important for resource savings"). Built from steel: 300 steel + 6 components + 12,000 work, against the
-         vanilla 1.6 geothermal generator's 340 steel + 8 components + 12,000 work (Core Buildings_Power.xml, read 2026-10-25)
-         and about 7x the heavy anchor (45 steel + 2 components, 2,500 work); was 40 stuff, 2,000 work. Mod Settings
-         "Tower cost multiplier" (0.25 to 4) scales all three (RM_SuspensionTowerCost). -->
+         islands is important for resource savings"). SUSPENSION_TOWER_TUNE_NO_CHIPS_IN_STONE (owner 2026-10-25: "Tower scales
+         with width. And I don't want components needed for bridges. They represent circuitry. Not needed in a tower."): no
+         components (was 6), one tower per lane (a W-wide bridge needs W towers side by side, RM_SuspensionMath.FullWidthTowers),
+         so a tower built from steel is 300 steel + 12,000 work and a 4-wide row is 1,200 steel + 48,000 work. Mod Settings
+         "Tower cost multiplier" (0.25 to 4) scales both (RM_SuspensionTowerCost). -->
+    <placingDraggableDimensions>1</placingDraggableDimensions>
     <costStuffCount>200</costStuffCount>
     <costList>
       <Steel>100</Steel>
-      <ComponentIndustrial>6</ComponentIndustrial>
     </costList>
     <statBases>
       <MaxHitPoints>400</MaxHitPoints>
@@ -660,7 +658,6 @@
     <uiOrder>2212</uiOrder>
     <costList>
       <Steel>20</Steel>
-      <ComponentIndustrial>1</ComponentIndustrial>
     </costList>
     <statBases>
       <MaxHitPoints>500</MaxHitPoints>

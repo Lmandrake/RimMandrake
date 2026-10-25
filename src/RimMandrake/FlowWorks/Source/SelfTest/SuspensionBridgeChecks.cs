@@ -103,11 +103,26 @@ namespace RimMandrake.FlowWorks.SelfTest
                 List<IList<SpanGround>> bad = new List<IList<SpanGround>> { Lane("GHHHG"), Lane("GHGHG") };
                 string row = RM_SuspensionMath.ValidateDrag(bad, null, t, 1f);
                 Assert(row != null && row.StartsWith("Row 2:"), "every lane must cross on its own; the refusal names the row");
-                // a tower holds the whole width: the rows are checked against the union of their towers (was: each row its own,
-                // then only row 1's kept)
+                // SUSPENSION_TOWER_TUNE_NO_CHIPS_IN_STONE ("Tower scales with width"): a tower holds ONE row, so a W-wide bridge
+                // needs W towers side by side (was: one tower on any row held the whole width)
                 List<IList<SpanGround>> wide = new List<IList<SpanGround>> { Lane(g17), Lane(g17) };
-                Assert(RM_SuspensionMath.ValidateDrag(wide, new List<ICollection<int>> { new HashSet<int>(), new HashSet<int> { 9 } }, t, 1f) == null,
-                    "can-fail: one tower on row 2 supports row 1 too");
+                string half = RM_SuspensionMath.ValidateDrag(wide, new List<ICollection<int>> { new HashSet<int>(), new HashSet<int> { 9 } }, t, 1f);
+                Assert(half != null && half.Contains("holds one row") && half.Contains("needs 2 towers") && half.Contains("square 9 ")
+                    && half.Contains("there is 1"), "can-fail: one tower under a 2-wide bridge is refused with how many it needs: " + half);
+                Assert(RM_SuspensionMath.ValidateDrag(wide, new List<ICollection<int>> { new HashSet<int> { 9 }, new HashSet<int> { 9 } }, t, 1f) == null,
+                    "a tower under each row at square 9 makes two spans of 8 on both rows");
+                Assert(RM_SuspensionMath.FullWidthTowers(new List<ICollection<int>> { new HashSet<int> { 3, 9 }, new HashSet<int> { 9, 12 } }).SetEquals(new[] { 9 })
+                    && RM_SuspensionMath.FullWidthTowers(new List<ICollection<int>> { new HashSet<int> { 9 }, null }).Count == 0
+                    && RM_SuspensionMath.FullWidthTowers(new List<ICollection<int>> { new HashSet<int> { 4 } }).SetEquals(new[] { 4 })
+                    && RM_SuspensionMath.FullWidthTowers(null).Count == 0,
+                    "only an index towered on every row is a support; a single collection stands for all rows");
+                Assert(RM_SuspensionMath.PartialTowerRefusal(new List<ICollection<int>> { new HashSet<int> { 9 } }) == null
+                    && RM_SuspensionMath.PartialTowerRefusal(new List<ICollection<int>> { new HashSet<int>(), new HashSet<int>() }) == null,
+                    "one row, or no towers at all, is never a partial tower row");
+                string three4 = RM_SuspensionMath.PartialTowerRefusal(new List<ICollection<int>>
+                    { new HashSet<int> { 5, 9 }, new HashSet<int> { 5, 9 }, new HashSet<int> { 9 }, new HashSet<int> { 5, 9 } });
+                Assert(three4 != null && three4.Contains("needs 4 towers") && three4.Contains("square 5 ") && three4.Contains("there are 3"),
+                    "a 4-wide row missing one tower names the first short square and the count: " + three4);
             });
 
             Case("Suspension_islands_split_one_drag_into_bridges", () =>
@@ -240,8 +255,18 @@ namespace RimMandrake.FlowWorks.SelfTest
                 int tower = defs.IndexOf("<defName>RM_SuspensionTower</defName>");
                 string td = defs.Substring(tower, defs.IndexOf("</ThingDef>", tower) - tower);
                 Assert(td.Contains("<costStuffCount>200</costStuffCount>") && td.Contains("<Steel>100</Steel>")
-                    && td.Contains("<ComponentIndustrial>6</ComponentIndustrial>") && td.Contains("<WorkToBuild>12000</WorkToBuild>"),
-                    "the tower costs 200 stuff + 100 steel + 6 components and 12,000 work");
+                    && td.Contains("<WorkToBuild>12000</WorkToBuild>"), "the tower costs 200 stuff + 100 steel and 12,000 work");
+                // SUSPENSION_TOWER_TUNE_NO_CHIPS_IN_STONE (owner: "Components make sense for drawbridges and winches. Not towers
+                // or the span itself."): no part of a plain suspension bridge needs a component; the winch still does
+                Assert(!defs.Contains("ComponentIndustrial"), "can-fail: no tower, deck, anchor, railing or jetty costs a component");
+                Assert(ModFile("Defs", "Pits", "ThingDefs", "RM_Drawbridge.xml").Contains("<ComponentIndustrial>"),
+                    "the drawbridge winch keeps its components (circuitry)");
+                Assert(td.Contains("<placingDraggableDimensions>1</placingDraggableDimensions>"),
+                    "the tower drags like a wall, so a row of them goes down across the hole in one drag");
+                Assert(designator.Contains("RM_SuspensionMath.PartialTowerRefusal(towers)") && designator.Contains("RM_SuspensionMath.FullWidthTowers(towers)"),
+                    "can-fail: the plain drag refuses a short tower row and keeps only full rows as supports");
+                string compSrc = Src("Pits", "Suspension", "RM_MapComponent_SuspensionBridges.cs");
+                Assert(compSrc.Contains("&& TowerRowBuilt(r, i))"), "a rebuilt tower rejoins the supports only once its whole row stands");
                 string settings = Src("Pits", "Suspension", "RM_SuspensionSettings.cs");
                 Assert(settings.Contains("Scribe_Values.Look(ref towerCostMultiplier, \"towerCostMultiplier\", 1f);")
                     && settings.Contains("list.Slider(towerCostMultiplier, 0.25f, 4f)") && settings.Contains("RM_SuspensionTowerCost.Apply();"),

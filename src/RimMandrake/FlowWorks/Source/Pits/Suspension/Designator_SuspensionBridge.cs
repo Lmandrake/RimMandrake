@@ -36,7 +36,7 @@ namespace RimMandrake.FlowWorks.Pits
 				: "1 to " + RM_SuspensionMath.MaxWidthOf(Tier)) + " squares wide, at most "
 			+ RM_SuspensionMath.MaxLength(Tier, RM_SuspensionSettings.suspensionLengthMultiplier)
 			+ " squares between supports. To go further, restore a ground island in the hole first (Restore ground, cheap: the drag "
-			+ "becomes one bridge per hole) or plan a tower on the hole floor (very expensive). Anchors go on both ends and are built first.";
+			+ "becomes one bridge per hole) or plan a row of towers on the hole floor, one under each square of width (very expensive). Anchors go on both ends and are built first.";
 
 		public override AcceptanceReport CanDesignateCell(IntVec3 c)
 		{
@@ -215,17 +215,22 @@ namespace RimMandrake.FlowWorks.Pits
 				towers.Add(t);
 			}
 			float mult = RM_SuspensionSettings.suspensionLengthMultiplier;
-			HashSet<int> all = RM_SuspensionMath.UnionTowers(towers);
 			List<SuspensionBridgeRecord> list = new List<SuspensionBridgeRecord>();
 			if (Drawbridge)
 			{
-				// drawbridges keep the 1-to-3 width ("None of these are drawbridges": the owner's new sizes are not theirs)
+				// a drawbridge stands on no tower at all, neither a full row nor one alone (CanBeDrawbridge says the same after
+				// placing); refused here first, or ValidateDrag would answer with the plain bridge's one-tower-per-row reason
+				if (RM_SuspensionMath.UnionTowers(towers).Count > 0)
+				{
+					return RM_DrawbridgeMath.TowerOnDrawbridgeRefused;
+				}
+				// a drawbridge is 1 to DrawbridgeMaxWidth wide and never splits
 				string dwhy = RM_SuspensionMath.ValidateDrag(lanes, towers, r.tier, mult, RM_SuspensionMath.DrawbridgeMaxWidth);
 				if (dwhy != null)
 				{
 					return dwhy;
 				}
-				r.towers = all.OrderBy(i => i).ToList();
+				r.towers = new List<int>();
 				list.Add(r);
 			}
 			else
@@ -234,6 +239,13 @@ namespace RimMandrake.FlowWorks.Pits
 				{
 					return RM_SuspensionMath.ValidateDrag(lanes, towers, r.tier, mult);
 				}
+				// SUSPENSION_TOWER_TUNE_NO_CHIPS_IN_STONE: a tower holds one row; only a square towered on every row is a support
+				string twhy = RM_SuspensionMath.PartialTowerRefusal(towers);
+				if (twhy != null)
+				{
+					return twhy;
+				}
+				HashSet<int> all = RM_SuspensionMath.FullWidthTowers(towers);
 				List<int[]> split = RM_SuspensionMath.SplitAtIslands(lanes, out string iwhy);
 				if (split == null)
 				{
@@ -461,7 +473,7 @@ namespace RimMandrake.FlowWorks.Pits
 		public override bool Visible => RM_DrawbridgeSettings.drawbridgesEnabled && base.Visible;
 
 		public override string Desc => "A suspension bridge whose deck raises on a winch, so the moat under it is a whole pit again.\n\n"
-			+ "Start the drag on the bank you want it hinged on and drag across the dug hole to solid ground, 1 to 3 squares wide, with no towers. "
+			+ "Start the drag on the bank you want it hinged on and drag across the dug hole to solid ground, 1 to " + RM_SuspensionMath.DrawbridgeMaxWidth + " squares wide, with no towers. "
 			+ "Up to " + RM_Drawbridges.MaxLeaf(Tier) + " squares it is one leaf hinged on your starting bank; up to " + (2 * RM_Drawbridges.MaxLeaf(Tier))
 			+ " it is two leaves, one hinged on each bank. The drag also plans each leaf's winch house beside its hinge anchor (rotate with Q/E to "
 			+ "put it on the other side)" + (RM_DrawbridgeSettings.gatesWithDrag ? " and a gate behind each lane" : "")
