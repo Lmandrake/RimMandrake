@@ -125,14 +125,27 @@ def main():
         root = os.path.dirname(os.path.dirname(os.path.dirname(_UTILS)))
         # Salvation Rites: its suite carries Ishko's landmarks since 2026-10-22 (was IshkoDarkLandmarks)
         plan = os.path.join(root, "src", "RimUtinni", "Rites", "northstar_plan.py")
+        # The five Ninefold chains (folded in 2026-10) read the live game's DevMode log lines and drive pawns, walls
+        # and pregnancies; the plan's mock models only the research gate, shipped defs and Ishko's landmarks, so
+        # those chains are live-only and are skipped here (they would die on "mock: unknown tool").
         rc = cli.main(["run", "--mock", "--mod", "Rites", "--plan", plan,
+                       "--skip-chains", "research_completed,mental_break_started,building_repaired_and_deconstructed,"
+                                        "birth_outcome,mood_walk_tick",
                        "--out", os.path.join(tmp, "rites_mock.json")])
-        check("Rites mock run is GREEN", rc == 0, "rc=%s" % rc)
+        # skipped live-only chains are UNMEASURED rows, so the run is honestly NOT green (rc 1) -- but only because of
+        # them: every row the mock can model must PASS (checked below).
+        check("Rites mock run is NOT green only for the skipped live-only chains (rc 1)", rc == 1, "rc=%s" % rc)
         check("mock run wrote no registry", not os.path.exists(status.LOG_PATH))
         res = json.load(open(os.path.join(tmp, "rites_mock.json")))
         check("mock result carries mod_hash", bool(res.get("mod_hash")))
-        check("mock result has the 12 functional rows (2 research, 2 shipped-defs, 8 Ishko)",
-              sum(1 for r in res["bars"] if r.get("functional")) == 12, str(len(res["bars"])))
+        fun = [r for r in res["bars"] if r.get("functional")]
+        ok = [r for r in fun if r.get("status") == "PASS"]
+        rest = [r for r in fun if r.get("status") != "PASS"]
+        check("mock result has the 12 PASS functional rows (2 research, 2 shipped-defs, 8 Ishko)",
+              len(ok) == 12, str(len(ok)))
+        check("every non-PASS row is an UNMEASURED skipped live-only chain",
+              len(rest) == 6 and all(r.get("status") == "UNMEASURED" and ".skipped#" in str(r.get("id")) for r in rest),
+              str([(r.get("id"), r.get("status")) for r in rest]))
     finally:
         status.LOG_PATH, status.LOCK_PATH = real
         shutil.rmtree(tmp, ignore_errors=True)

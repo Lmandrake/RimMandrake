@@ -31,7 +31,7 @@ LAT_MAX = 45.0                            # scratch world only: any temperate la
 # Natives: RM_LeaningScrub's MayRequire-free wildAnimals rows whose race is NOT a predator -- the Lean's scent row
 # needs "a wild non-predator" to flee a person standing upwind. selftest_leaningscrub_site.py re-derives this from
 # the BiomeDef + race defs and fails on drift.
-NATIVES = ("RM_Fuzzrunner", "RM_Thornhold", "RM_Vissler", "RM_Dustflutter", "RM_Shirrel", "RM_Crustweevil",
+NATIVES = ("RM_Vurra", "RM_Chikka", "RM_Durrok", "RM_Mullgoth", "RM_Fuzzrunner", "RM_Thornhold", "RM_Vissler", "RM_Dustflutter", "RM_Shirrel", "RM_Crustweevil",
            "RM_Rollbug", "RM_Tikkit")
 MIN_NATIVES = 1
 

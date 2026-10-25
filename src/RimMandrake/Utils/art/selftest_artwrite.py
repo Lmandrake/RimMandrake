@@ -50,6 +50,8 @@ def main():
 
     tex = tmp / "src" / "Fix" / "Textures" / "A"
     red, blue = png((255, 0, 0, 255)), png((0, 0, 255, 255))
+    # the ledger now refuses a mod that is not a real folder (Textures/ or About/About.xml): make src/Fix one
+    (tmp / "src" / "Fix" / "Textures").mkdir(parents=True)
     srcf = tmp / "red.png"
     srcf.write_bytes(red)
 
