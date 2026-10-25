@@ -598,8 +598,10 @@ def waters(ctx):
             k1, t1 = proof("ProofSpan", xz(cells[1]))
             k2, t2 = proof("ProofSpan", xz(cells[-2]))
             cap = 10
+            # the tower square is a deck of the span BEFORE it (RM_SuspensionMath.SegmentOf/SegmentCells), so span 1 reads one
+            # more deck than its holes: 10 holes + the tower = 11 is legal steel (live 2026-10-25, a 22-square drag, HARNESS)
             good = (kv.get("ok") == "True" and k1.get("span") == "1/2" and k2.get("span") == "2/2"
-                    and int(k1.get("decks", "99")) <= cap and int(k2.get("decks", "99")) <= cap)
+                    and int(k1.get("decks", "99")) - 1 <= cap and int(k2.get("decks", "99")) <= cap)
             row("WAT_lake_tower_two_spans", "PASS" if good else "FAIL", {"build": txt, "span1": t1, "span2": t2, "tower": str(tw)[:160]})
     else:
         row("WAT_lake_tower_two_spans", "UNMEASURED", {"why": "no --lake x1,z1,x2,z2 given (a crossing longer than 10 squares)"})
