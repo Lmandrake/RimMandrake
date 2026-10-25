@@ -1,0 +1,2 @@
+A generator that writes its own CLI flag (e.g. '--write-deep') or any free text into an XML comment emits illegal XML: '--' is forbidden inside <!-- -->, and RimWorld rejects the whole Defs file. gen_mineral_registry.py did this on its first run (2026-10-25); only a selftest that ET-parses the output caught it. Sanitise comment text (collapse '-{2,}') and parse every generated XML in its selftest.
+home: rimworld-modding
