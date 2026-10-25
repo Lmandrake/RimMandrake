@@ -477,14 +477,21 @@ def dustveil_checks(text=None):
 def planted_dustveil():
     """[(name, red?)]: each planted defect must turn dustveil_checks red; 'clean' must be green."""
     txt = open(DUSTVEIL_FILE, encoding="utf-8").read()
-    out = [("dv clean", not dustveil_checks(txt))]
-    out.append(("dv grounded", bool(dustveil_checks(re.sub(r"<MaxFlightTime>[^<]*<", "<MaxFlightTime>0<", txt)))))
-    out.append(("dv lab origin", bool(dustveil_checks(txt.replace("A broad-winged moth of the Rot,",
-                                                                 "A moth bred in a laboratory,", 1)))))
-    out.append(("dv no silk", bool(dustveil_checks(txt.replace("<resourceDef>RM_MothSilk<", "<resourceDef>Cloth<")))))
-    out.append(("dv pink flip", bool(dustveil_checks(txt.replace(
+    clean = not dustveil_checks(txt)
+    out = [("dv clean", clean)]
+
+    # A plant whose anchor no longer matches the shipped text leaves it unchanged; on a red file that read as a
+    # caught defect (511b30401c dropped "of the Rot," and "dv lab origin" stayed green on the rewrite's own
+    # "waste"). A plant counts only if it really changed the text AND the shipped file was clean.
+    def planted(mutated):
+        return clean and mutated != txt and bool(dustveil_checks(mutated))
+
+    out.append(("dv grounded", planted(re.sub(r"<MaxFlightTime>[^<]*<", "<MaxFlightTime>0<", txt))))
+    out.append(("dv lab origin", planted(re.sub(r"A broad-winged moth\b", "A moth bred in a laboratory", txt, count=1))))
+    out.append(("dv no silk", planted(txt.replace("<resourceDef>RM_MothSilk<", "<resourceDef>Cloth<"))))
+    out.append(("dv pink flip", planted(txt.replace(
         "<alternateGraphicChance>", "<flyingAnimationFramePathPrefix>RotSpecies/AngelMoth/Flying/NoSuch_Flying_"
-        "</flyingAnimationFramePathPrefix><flyingAnimationFrameCount>5</flyingAnimationFrameCount><alternateGraphicChance>", 1)))))
+        "</flyingAnimationFramePathPrefix><flyingAnimationFrameCount>5</flyingAnimationFrameCount><alternateGraphicChance>", 1))))
     return out
 
 

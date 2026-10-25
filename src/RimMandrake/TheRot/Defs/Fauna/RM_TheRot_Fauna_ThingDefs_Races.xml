@@ -1113,7 +1113,7 @@
   <ThingDef ParentName="RM_PollutedLands_BaseInsect">
     <defName>RM_ThozzikQueen</defName>
     <label>thozzik queen</label>
-    <description>A winged hive matriarch with an armoured abdomen swollen around a spore-bearing brood chamber. She is nearly as fast as her spawn and carries a stronger neurotoxin in her sting. Her bulk forces long rests between flights.</description>
+    <description>A winged hive matriarch with an armoured abdomen swollen around a spore-bearing brood chamber. She is nearly as fast as her spawn and carries a stronger neurotoxin in her sting. Her bulk demands long rests between flights.</description>
     <uiIconScale>1.5</uiIconScale>
     <statBases>
       <MoveSpeed>3.0</MoveSpeed>
