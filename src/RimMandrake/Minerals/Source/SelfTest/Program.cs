@@ -36,6 +36,8 @@ namespace RimMandrake.Minerals.SelfTest
                     UnitsPerCellOrFind = d.Element("unitsPerCellOrFind") != null ? F((string)d.Element("unitsPerCellOrFind")) : 0f,
                     DeepWeight = d.Element("deepWeight") != null ? F((string)d.Element("deepWeight")) : 0f,
                     OtherBiomes = d.Element("otherBiomes") != null ? F((string)d.Element("otherBiomes")) : 0f,
+                    QuarryLocal = (string)d.Element("quarryLocal") == "true",
+                    QuarryPer100Jobs = d.Element("quarryPer100Jobs") != null ? F((string)d.Element("quarryPer100Jobs")) : -1f,
                 };
                 units.Add(r.Unit);
                 foreach (string n in Lis(d, "items")) r.Items.Add(n);
@@ -239,6 +241,61 @@ namespace RimMandrake.Minerals.SelfTest
             Check(Math.Abs(RM_MineralPolicyKernel.EpmForLumps(RM_MineralPolicyKernel.LumpsForEpm(1777f, 25f), 25f) - 1777f) < 1e-2f, "deposits <-> EPM round trip");
             Check(RM_MineralPolicyKernel.EpmForLumps(3f, 0f) == 0f && RM_MineralPolicyKernel.EpmForLumps(-1f, 40f) == 0f, "EpmForLumps guards");
             Check(RM_MineralPolicyKernel.DescribeEpm(0f, 40f) == "none" && RM_MineralPolicyKernel.LumpsForEpm(100f, 0f) == 0f, "zero guards");
+
+            // --- quarry pool (MINERAL_QUARRY_WIRE_LOCAL_POOL, design §6.4) over the shipped registry
+            var qdict = new List<KeyValuePair<string, float>> {   // the Quarry mod's dictionary shape: mined item -> int weight
+                new KeyValuePair<string, float>("Steel", 100f), new KeyValuePair<string, float>("Gold", 10f),
+                new KeyValuePair<string, float>("Silver", 20f), new KeyValuePair<string, float>("Plasteel", 5f),
+                new KeyValuePair<string, float>("ComponentIndustrial", 15f), new KeyValuePair<string, float>("Jade", 0f) };
+            HashSet<string> gov = RM_QuarryKernel.GovernedItems(rows);
+            Check(gov.Contains("ComponentIndustrial") && gov.Contains("Plasteel") && !gov.Contains("Steel"),
+                  "governed items: components and plasteel governed, steel not (its row is unemitted)");
+            QuarryPlan vanilla = RM_QuarryKernel.Plan(rows, "TemperateForest", null, qdict, false);
+            Check(vanilla.Local.Count == 0, "a vanilla biome has no local quarry rows today (every local row has OTHER 0): " + string.Join(",", vanilla.Local.Select(e => e.MaterialId)));
+            Check(vanilla.Unregistered.Select(e => e.Item).OrderBy(s => s, StringComparer.Ordinal).SequenceEqual(new[] { "Gold", "Silver", "Steel" }),
+                  "unregistered slice = Quarry's own entries no row governs, weight > 0: " + string.Join(",", vanilla.Unregistered.Select(e => e.Item)));
+            Check(Math.Abs(vanilla.UnregisteredShare - 130f / 150f) < 1e-5f, "unregistered keep their exact share of Quarry's draws: " + vanilla.UnregisteredShare);
+            QuarryEntry inShare = RM_QuarryKernel.Draw(vanilla, 0.10, 0.0);
+            Check(inShare != null && inShare.MaterialId == null, "a draw inside the unregistered share yields an unregistered ore");
+            Check(RM_QuarryKernel.Draw(vanilla, 0.95, 0.5) == null, "the governed share on a biome with no local row yields local rock (null)");
+            QuarryPlan qsup = RM_QuarryKernel.Plan(rows, "TemperateForest", null, qdict, true);
+            Check(qsup.Unregistered.Count == 0 && qsup.UnregisteredShare == 0f && RM_QuarryKernel.Draw(qsup, 0.0, 0.0) == null,
+                  "suppress unregistered: nothing but local rows and rock");
+
+            QuarryPlan grey = RM_QuarryKernel.Plan(rows, "RM_GreySea", null, qdict, false);
+            Check(grey.Local.Count == 5 && grey.Local.All(e => e.MaterialId.StartsWith("salt_") && Math.Abs(e.Weight - 300f) < 1e-3f),
+                  "Grey Sea pool = five salts at 6000 EPM / 20 per cell: " + string.Join(",", grey.Local.Select(e => e.MaterialId + "=" + e.Weight)));
+            var seen = new HashSet<string>();
+            for (int i = 0; i < 200; i++) { QuarryEntry e = RM_QuarryKernel.Draw(grey, (i % 10) / 10.0, (i * 0.618) % 1.0); if (e != null) seen.Add(e.Item); }
+            Check(!seen.Contains("ComponentIndustrial") && !seen.Contains("Plasteel"), "components and plasteel never come out of a quarry");
+            Check(seen.Contains("RM_RawSalt") && seen.Contains("Steel"), "both slices reachable on the Grey Sea (probe): " + string.Join(",", seen));
+            var ovq = new Dictionary<string, float> { { RM_MineralPolicyKernel.OverrideKey("salt_raw", "RM_GreySea"), 0f } };
+            Check(RM_QuarryKernel.Plan(rows, "RM_GreySea", ovq, qdict, false).Local.All(e => e.MaterialId != "salt_raw"), "an override of 0 removes the row from the pool");
+            QuarryPlan lantern = RM_QuarryKernel.Plan(rows, "RM_LanternDeeps", null, qdict, false);
+            Check(lantern.Local.Any(e => e.MaterialId == "pyrinth" && Math.Abs(e.Weight - 60f) < 1e-3f) && lantern.Local.Any(e => e.MaterialId == "lanternstone"),
+                  "Lantern Deeps pool has pyrinth (600/10) and lanternstone");
+            Check(RM_QuarryKernel.Plan(rows, "RM_RustCathedral", null, qdict, false).Local.All(e => e.MaterialId != "live_pattern_metal"),
+                  "a deep-share/token row never enters the quarry pool");
+            int localRows = 0;
+            var biomesSeen = new HashSet<string>(rows.SelectMany(r => r.Cells.Keys)) { "TemperateForest", "RUT_GreySea" };
+            foreach (string bm in biomesSeen)
+                foreach (QuarryEntry e in RM_QuarryKernel.Plan(rows, bm, null, qdict, false).Local)
+                {
+                    localRows++;
+                    MineralRow src = rows.First(r => r.MaterialId == e.MaterialId);
+                    Check(src.QuarryLocal && src.Items.Contains(e.Item), bm + ": " + e.MaterialId + " entered the pool but is not quarry=local");
+                }
+            Check(localRows >= 10, "the pool sweep saw only " + localRows + " entries (probe)");
+            // planted: a row with a positive cell but quarry=no must stay out
+            var qno = new MineralRow { MaterialId = "qno", UnitsPerCellOrFind = 10f }; qno.Items.Add("QNo"); qno.Cells["RM_X"] = 500f;
+            Check(RM_QuarryKernel.Plan(new List<MineralRow> { qno }, "RM_X", null, null, false).Local.Count == 0, "quarry=no row with a cell stays out (planted)");
+            qno.QuarryLocal = true;
+            Check(RM_QuarryKernel.Plan(new List<MineralRow> { qno }, "RM_X", null, null, false).Local.Count == 1, "same row with quarry=local enters (probe)");
+            var two = new List<QuarryEntry> { new QuarryEntry("a", 1f, "a"), new QuarryEntry("b", 3f, "b") };
+            Check(RM_QuarryKernel.PickWeighted(two, 0.2).Item == "a" && RM_QuarryKernel.PickWeighted(two, 0.3).Item == "b"
+                  && RM_QuarryKernel.PickWeighted(two, 1.0).Item == "b", "weighted pick boundaries");
+            Check(RM_QuarryKernel.PickWeighted(new List<QuarryEntry>(), 0.5) == null
+                  && RM_QuarryKernel.PickWeighted(new List<QuarryEntry> { new QuarryEntry("z", 0f, "z") }, 0.5) == null, "empty / zero-weight pool picks nothing");
 
             Console.WriteLine((fails == 0 ? "PASS " : "FAIL ") + (checks - fails) + "/" + checks + " checks; " + rows.Count + " registry rows, "
                             + defs.Count + " fixture defs, " + on.Count + " decided");

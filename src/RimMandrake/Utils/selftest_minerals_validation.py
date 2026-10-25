@@ -40,8 +40,9 @@ def load(path):
 class FakeGame(object):
     """The parts of a running game the suite reads. Weights change only on an apply, as in RM_MineralPolicy."""
 
-    def __init__(self, v, reason):
+    def __init__(self, v, reason, quarry="ok"):
         self.v = v
+        self.quarry = quarry          # "ok" | "absent" | "leak" (a Grey Sea draw yields a component)
         self.settings = dict(v.DEFAULTS)
         self.rev = 2
         self.reason = reason
@@ -66,7 +67,31 @@ class FakeGame(object):
             out += ";%s=%s" % (n, "missing" if w is None else "%g/%g/%s" % w)
         return out
 
+    def proof_quarry(self, args):
+        """RM_MineralQuarryProof.ProofQuarry's format: draws count every roll, rock the empty-pool rolls."""
+        biome, _, n = args.partition(";")
+        n = int(n or 1)
+        if self.quarry == "absent":
+            return "quarry=0;wired=0;yield=0;on=1;biome=%s;share=0;local=;unreg=;draws=;rock=0" % biome
+        on = self.settings["quarryFollowsLocal"]
+        if biome == "RM_GreySea":
+            local = "salt_halite:RM_Halite:300,salt_sylvite:RM_Sylvite:300"
+            unreg, share = "", "0"
+            a = n // 2
+            draws = ("ComponentIndustrial:%d,RM_Halite:%d" if self.quarry == "leak" else "RM_Halite:%d,RM_Sylvite:%d") % (a, n - a)
+            rock = 0
+        else:
+            local, unreg, share = "", "Gold:20,Silver:50,Steel:60", "0.8667"
+            a = n * 13 // 15
+            draws, rock = "Steel:%d" % a, n - a
+        return "quarry=1;wired=%d;yield=1;on=%d;biome=%s;share=%s;local=%s;unreg=%s;draws=%s;rock=%d" % (
+            1 if on else 0, 1 if on else 0, biome, share, local, unreg, draws, rock)
+
     def call(self, tool, **kw):
+        if tool == "jawa/static_call" and kw.get("method") == "ProofQuarry":
+            if kw.get("type") != self.v.QUARRY_PROOF_TYPE:
+                return {"success": False, "error": "no such type %s" % kw.get("type")}
+            return {"success": True, "result": self.proof_quarry(kw.get("args", ""))}
         if tool == "jawa/static_call":
             if kw["method"] == "ProofState":
                 return {"success": True, "result": self.state(kw.get("args", ""))}
@@ -86,8 +111,8 @@ class FakeGame(object):
         return {"success": False, "error": "fake does not know %s" % tool}
 
 
-def run(v, reason):
-    game = FakeGame(v, reason)
+def run(v, reason, quarry="ok"):
+    game = FakeGame(v, reason, quarry)
     rows = {}
     for name, fn in v.suite.chains:
         t = TestContext(game)
@@ -123,6 +148,22 @@ def main():
                  "master_off_restores", "suppress_unregistered_zeroes_steel"):
         k, (vd, dt) = find(rows, comp)
         ok(vd == "PASS", "fresh game: %s is PASS against the faithful fake (got %s: %s)" % (k, vd, dt))
+
+    for comp in ("quarry_wired", "grey_sea_draws_local_salts", "vanilla_biome_keeps_unregistered"):
+        k, (vd, dt) = find(rows, comp)
+        ok(vd == "PASS", "fresh game: %s is PASS against the faithful fake (got %s: %s)" % (k, vd, dt))
+    k, (vd, _) = find(rows, "quarry_yields_salt_in_game")
+    ok(vd == "UNMEASURED", "the in-game quarry look is owed to eyes: %s is UNMEASURED (got %s)" % (k, vd))
+
+    rows, _ = run(v, "Game.FinalizeInit", quarry="leak")
+    k, (vd, _) = find(rows, "grey_sea_draws_local_salts")
+    ok(vd == "FAIL", "a Grey Sea quarry that yields a component: %s is FAIL (got %s)" % (k, vd))
+    rows, _ = run(v, "Game.FinalizeInit", quarry="absent")
+    for comp in ("quarry_wired", "grey_sea_draws_local_salts", "vanilla_biome_keeps_unregistered"):
+        k, (vd, _) = find(rows, comp)
+        ok(vd == "UNMEASURED", "Quarry not loaded: %s is UNMEASURED, never PASS (got %s)" % (k, vd))
+    k, (vd, _) = find(rows, "registry_loaded")
+    ok(vd == "PASS", "Quarry absent does not blank registry_loaded: got %s" % vd)
 
     rows, _ = run(v, "startup")
     key, (verdict, _) = find(rows, "reassert_on_game_init")

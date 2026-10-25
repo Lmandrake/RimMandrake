@@ -16,6 +16,7 @@ namespace RimMandrake.Minerals
         public static bool enabled = true;                 // "Minerals follow the registry"
         public static bool suppressUnregistered = false;   // owner card 2026-10-03: an unknown ore behaves as its mod intended
         public static bool coreSampleNonLocal = false;     // read by the core-sample-drill adapter (R5)
+        public static bool quarryFollowsLocal = true;      // read by the quarry adapter (R4, RM_MineralQuarry); off = the Quarry mod's own draw
         public static float veinMultiplier = 1f;           // read by the surface adapter (R3); new maps only
         public static float deepMultiplier = 1f;           // read by the deep adapter (R4)
         public static float quarryMultiplier = 1f;         // read by the quarry adapter (R4)
@@ -35,6 +36,7 @@ namespace RimMandrake.Minerals
             Scribe_Values.Look(ref enabled, "enabled", true);
             Scribe_Values.Look(ref suppressUnregistered, "suppressUnregistered", false);
             Scribe_Values.Look(ref coreSampleNonLocal, "coreSampleNonLocal", false);
+            Scribe_Values.Look(ref quarryFollowsLocal, "quarryFollowsLocal", true);
             Scribe_Values.Look(ref veinMultiplier, "veinMultiplier", 1f);
             Scribe_Values.Look(ref deepMultiplier, "deepMultiplier", 1f);
             Scribe_Values.Look(ref quarryMultiplier, "quarryMultiplier", 1f);
@@ -47,7 +49,7 @@ namespace RimMandrake.Minerals
 
         public static void ResetAll()
         {
-            enabled = true; suppressUnregistered = false; coreSampleNonLocal = false;
+            enabled = true; suppressUnregistered = false; coreSampleNonLocal = false; quarryFollowsLocal = true;
             veinMultiplier = deepMultiplier = quarryMultiplier = salvageMultiplier = tradeMultiplier = 1f;
             overrides.Clear(); buffers.Clear();
         }
@@ -83,6 +85,10 @@ namespace RimMandrake.Minerals
               + "zeroed and the log names each one. WORLDGEN-AFFECTING for veins: new maps only.");
             list.CheckboxLabeled("Core sample drills may yield non-local rock", ref coreSampleNonLocal,
                 "Off (default): core sample drills only find what this biome bears. Takes effect when the core-sample adapter ships.");
+            list.CheckboxLabeled("Quarry output follows local minerals", ref quarryFollowsLocal,
+                "On (default): a quarry's mineral finds come from what this biome bears (by how much of each the land holds), or local "
+              + "rock when it bears none; ores the registry has never heard of keep their share of the Quarry mod's draws. Components and "
+              + "plasteel never come out. Off: the Quarry mod's own planet-wide list. Needs the Quarry mod; applies now.");
             List<PolicyDecision> d = RM_MineralPolicy.LastDecisions;
             int unreg = d.Count(p => p.Unregistered);
             list.Label("Registry: " + RM_MineralPolicy.Rows.Count + " materials; " + d.Count + " defs decided, " + unreg + " unregistered"
@@ -94,7 +100,7 @@ namespace RimMandrake.Minerals
             list.Label("Global multipliers (on top of every per-biome value)");
             Multiplier(list, "Vein abundance [new maps only]", ref veinMultiplier, "Scales every per-biome vein value. Maps already generated keep their deposits.");
             Multiplier(list, "Deep finds [applies now]", ref deepMultiplier, "Scales deep-scanner finds.");
-            Multiplier(list, "Quarry yield [applies now]", ref quarryMultiplier, "Scales quarry mineral output.");
+            Multiplier(list, "Quarry yield [applies now]", ref quarryMultiplier, "Scales the stack size of quarry finds drawn from this biome's minerals (not rock, not ores the registry has never heard of).");
             Multiplier(list, "Salvage richness [applies now]", ref salvageMultiplier, "Scales the registry's salvage amounts.");
             Multiplier(list, "Trader stock [applies now]", ref tradeMultiplier, "Scales the registry's trader stock amounts.");
             list.GapLine();

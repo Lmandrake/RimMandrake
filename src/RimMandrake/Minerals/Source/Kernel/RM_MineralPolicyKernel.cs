@@ -15,6 +15,8 @@ namespace RimMandrake.Minerals
         public float UnitsPerCellOrFind;
         public float DeepWeight;
         public float OtherBiomes;                       // OTHER_vanilla_biomes: every biome that is not ours
+        public bool QuarryLocal;                        // registry `quarry` column = local: a quarry on this biome may yield it
+        public float QuarryPer100Jobs = -1f;            // -1 = "derive" (weight from the biome's EPM); explicit values not consumed yet
         public readonly HashSet<string> Items = new HashSet<string>();
         public readonly HashSet<string> Mineables = new HashSet<string>();
         public readonly HashSet<string> Producers = new HashSet<string>();
@@ -278,6 +280,115 @@ namespace RimMandrake.Minerals
             if (lumps <= 0f) return "none";
             return "~" + lumps.ToString(lumps < 10f ? "0.0" : "0", CultureInfo.InvariantCulture) + " deposits of ~"
                  + MeanLumpCells.ToString("0", CultureInfo.InvariantCulture) + " cells";
+        }
+    }
+
+    /// <summary>One thing a quarry may hand out: an item defName and its draw weight. MaterialId null = an ore no registry row governs.</summary>
+    public sealed class QuarryEntry
+    {
+        public string Item;
+        public float Weight;
+        public string MaterialId;
+        public QuarryEntry(string item, float weight, string materialId) { Item = item; Weight = weight; MaterialId = materialId; }
+    }
+
+    /// <summary>What a quarry on one biome draws from (registry design §6.4, MINERAL_QUARRY_WIRE_LOCAL_POOL).
+    /// Two slices of the Quarry mod's own planet-wide dictionary:
+    /// - the UNREGISTERED slice: entries whose item no registry row governs keep exactly the share of draws they had there, with
+    ///   Quarry's own weights (owner card 2026-10-03: an ore the registry has never heard of behaves as its mod intended);
+    /// - the GOVERNED slice (everything else, e.g. components, plasteel): its share now comes from this biome's local pool, rows with
+    ///   quarry=local and an effective value > 0, weighted by EPM / units per cell. An empty local pool means local rock chunks.</summary>
+    public sealed class QuarryPlan
+    {
+        public readonly List<QuarryEntry> Local = new List<QuarryEntry>();
+        public readonly List<QuarryEntry> Unregistered = new List<QuarryEntry>();
+        public float UnregisteredShare;   // 0..1: the unregistered entries' share of Quarry's own total weight
+    }
+
+    public static class RM_QuarryKernel
+    {
+        /// <summary>Every item defName a registry row governs (its items and the items it retires).</summary>
+        public static HashSet<string> GovernedItems(IEnumerable<MineralRow> rows)
+        {
+            var s = new HashSet<string>(StringComparer.Ordinal);
+            if (rows == null) return s;
+            foreach (MineralRow r in rows)
+            {
+                if (r == null) continue;
+                s.UnionWith(r.Items); s.UnionWith(r.RetiredItems);
+            }
+            return s;
+        }
+
+        /// <summary>Weight of one local row: its effective EPM in this biome divided by units per cell, i.e. proportional to the cells
+        /// of it the land holds. 0 = not in this biome's pool (not quarry=local, not an EPM row - another unit is not comparable -,
+        /// a token cell, no item, or value 0).</summary>
+        public static float LocalWeight(MineralRow r, string biome, IDictionary<string, float> overrides)
+        {
+            if (r == null || !r.QuarryLocal || r.Items.Count == 0 || r.Unit != "EPM") return 0f;
+            float? v = RM_MineralPolicyKernel.EffectiveValue(r, biome, overrides, 1f);
+            if (v == null || !(v.Value > 0f)) return 0f;
+            return r.UnitsPerCellOrFind > 0f ? v.Value / r.UnitsPerCellOrFind : v.Value;
+        }
+
+        /// <summary>Builds the plan for one biome. <paramref name="quarryDictionary"/> is the Quarry mod's (item, weight) list as it
+        /// draws from it today; entries with weight &lt;= 0 never come out there and do not here.</summary>
+        public static QuarryPlan Plan(IList<MineralRow> rows, string biome, IDictionary<string, float> overrides,
+                                      IEnumerable<KeyValuePair<string, float>> quarryDictionary, bool suppressUnregistered)
+        {
+            var p = new QuarryPlan();
+            if (rows != null)
+                foreach (MineralRow r in rows)
+                {
+                    float w = LocalWeight(r, biome, overrides);
+                    if (!(w > 0f)) continue;
+                    var items = new List<string>(r.Items);
+                    items.Sort(StringComparer.Ordinal);
+                    p.Local.Add(new QuarryEntry(items[0], w, r.MaterialId));
+                }
+            p.Local.Sort((a, b) => string.CompareOrdinal(a.MaterialId, b.MaterialId));
+
+            HashSet<string> governed = GovernedItems(rows);
+            float total = 0f, unreg = 0f;
+            if (quarryDictionary != null)
+                foreach (KeyValuePair<string, float> e in quarryDictionary)
+                {
+                    if (e.Key == null || !(e.Value > 0f)) continue;
+                    total += e.Value;
+                    if (governed.Contains(e.Key) || suppressUnregistered) continue;
+                    unreg += e.Value;
+                    p.Unregistered.Add(new QuarryEntry(e.Key, e.Value, null));
+                }
+            p.UnregisteredShare = total > 0f ? unreg / total : 0f;
+            return p;
+        }
+
+        /// <summary>Weighted pick; <paramref name="r01"/> in [0,1). Null for an empty list or no positive weight.</summary>
+        public static QuarryEntry PickWeighted(IList<QuarryEntry> pool, double r01)
+        {
+            if (pool == null) return null;
+            double total = 0;
+            foreach (QuarryEntry e in pool) if (e.Weight > 0f) total += e.Weight;
+            if (!(total > 0)) return null;
+            double x = Math.Max(0, Math.Min(r01, 1)) * total;
+            QuarryEntry last = null;
+            foreach (QuarryEntry e in pool)
+            {
+                if (!(e.Weight > 0f)) continue;
+                last = e;
+                if (x < e.Weight) return e;
+                x -= e.Weight;
+            }
+            return last;   // r01 == 1 or float rounding
+        }
+
+        /// <summary>One quarry draw. <paramref name="rSlice"/> picks the slice (unregistered with probability UnregisteredShare),
+        /// <paramref name="rPick"/> the entry within it. Null = the governed slice fell on an empty local pool: hand out local rock.</summary>
+        public static QuarryEntry Draw(QuarryPlan p, double rSlice, double rPick)
+        {
+            if (p == null) return null;
+            if (rSlice < p.UnregisteredShare && p.Unregistered.Count > 0) return PickWeighted(p.Unregistered, rPick);
+            return PickWeighted(p.Local, rPick);
         }
     }
 }

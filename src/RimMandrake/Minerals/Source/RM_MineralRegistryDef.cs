@@ -61,6 +61,8 @@ namespace RimMandrake.Minerals
                 UnitsPerCellOrFind = unitsPerCellOrFind,
                 DeepWeight = deepWeight,
                 OtherBiomes = otherBiomes,
+                QuarryLocal = quarryLocal,
+                QuarryPer100Jobs = quarryPer100Jobs,
             };
             if (items != null) foreach (ThingDef t in items) if (t != null) r.Items.Add(t.defName);
             if (mineables != null) foreach (ThingDef t in mineables) if (t != null) r.Mineables.Add(t.defName);

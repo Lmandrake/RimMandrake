@@ -9,7 +9,10 @@ Walk: design/validation_walks/RimMandrake/Minerals.md.
 OFFLINE: `python3 validation.py` -> static checks (`STATIC: PASS (0 findings)`); the kernel's behaviour over the shipped registry and the
 real def weights is src/RimMandrake/Utils/selftest_minerals.py.
 LIVE (owed; never run): the suite below, through modcheck. It reads state with the jawa/static_call hooks
-RM_MineralPolicyProof.ProofState / ProofApply and jawa/mod_settings_field. A component that cannot ask records UNMEASURED.
+RM_MineralPolicyProof.ProofState / ProofApply, RM_MineralQuarryProof.ProofQuarry and jawa/mod_settings_field. A component that
+cannot ask records UNMEASURED.
+QUARRY (MINERAL_QUARRY_WIRE_LOCAL_POOL, R4): with Quarry loaded, Building_Quarry.GiveResources draws its Resources roll from the
+biome's local registry pool (RM_QuarryKernel); Quarry entries the registry does not govern keep their own share and weights.
 """
 import os
 import re
@@ -20,12 +23,19 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 NS = "RimMandrake.Minerals."
 SETTINGS_TYPE = NS + "RM_MineralsSettings"
 PROOF_TYPE = NS + "RM_MineralPolicyProof"
+QUARRY_PROOF_TYPE = NS + "RM_MineralQuarryProof"
+# Quarry (ogliss.thewhitecrayon.quarry, workshop 2007576583): the adapter finds these members by name; a rename upstream un-wires it
+QUARRY_DLL = "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2007576583/1.6/Assemblies/Quarry.dll"
+QUARRY_NAMES = ["TakeOne", "GiveResources", "resourceModifer", "oreDictionary", "ChunksUnder", "ThingCountExposable",
+                "OreDictionary", "QuarrySettings", "Building_Quarry", "JobDriver_MineQuarry"]
 REGISTRY_CLASS = NS + "RM_MineralRegistryDef"
-SETTINGS = ["enabled", "suppressUnregistered", "coreSampleNonLocal", "veinMultiplier", "deepMultiplier", "quarryMultiplier",
+SETTINGS = ["enabled", "suppressUnregistered", "coreSampleNonLocal", "quarryFollowsLocal", "veinMultiplier", "deepMultiplier", "quarryMultiplier",
             "salvageMultiplier", "tradeMultiplier"]
-DEFAULTS = {"enabled": True, "suppressUnregistered": False, "coreSampleNonLocal": False, "veinMultiplier": 1.0,
+DEFAULTS = {"enabled": True, "suppressUnregistered": False, "coreSampleNonLocal": False, "quarryFollowsLocal": True,
+            "veinMultiplier": 1.0,
             "deepMultiplier": 1.0, "quarryMultiplier": 1.0, "salvageMultiplier": 1.0, "tradeMultiplier": 1.0}
-ALT = {"enabled": False, "suppressUnregistered": True, "coreSampleNonLocal": True, "veinMultiplier": 0.5, "deepMultiplier": 2.0,
+ALT = {"enabled": False, "suppressUnregistered": True, "coreSampleNonLocal": True, "quarryFollowsLocal": False,
+       "veinMultiplier": 0.5, "deepMultiplier": 2.0,
        "quarryMultiplier": 1.5, "salvageMultiplier": 0.25, "tradeMultiplier": 2.5}
 UNITS = {"EPM", "EPM/yr", "UPY", "deep share", "—"}     # == mineral_registry_check.UNITS
 # owner 2026-09-25: "fix that absurd thing in Vanilla where components and plasteel can be mined from rock"
@@ -70,6 +80,25 @@ def static_checks():
         if needle not in pol:
             bad.append("RM_MineralPolicy.cs lacks %s" % needle)
 
+    qa = _read("Source", "RM_MineralQuarry.cs")
+    for needle in ("public static bool Prepare() { return RM_MineralQuarry.QuarryLoaded; }", "TargetMethod()",
+                   "PatchFeature(\"Quarry output follows local minerals\", typeof(RM_MineralsSettings), "
+                   "nameof(RM_MineralsSettings.quarryFollowsLocal))", "RM_QuarryKernel.Plan(", "RM_QuarryKernel.Draw(",
+                   "public static string ProofQuarry(string args)"):
+        if needle not in qa:
+            bad.append("RM_MineralQuarry.cs lacks %s" % needle)
+    for n in QUARRY_NAMES:
+        if '"%s"' % n not in qa and '"Quarry.%s"' % n not in qa:
+            bad.append("RM_MineralQuarry.cs no longer names Quarry member %s (update QUARRY_NAMES with it)" % n)
+    if os.path.isfile(QUARRY_DLL):
+        with open(QUARRY_DLL, "rb") as f:
+            blob = f.read()
+        if b"QuarrySettings" not in blob:
+            bad.append("sanity: the Quarry.dll name scan cannot see QuarrySettings")
+        for n in QUARRY_NAMES:
+            if n.encode("ascii") not in blob:
+                bad.append("installed Quarry.dll no longer has %s: the adapter will not wire" % n)
+
     proj = _read("Source", "RimMandrake_Minerals.csproj")
     classes = set()
     for dp, _, files in os.walk(os.path.join(HERE, "Source")):
@@ -80,7 +109,8 @@ def static_checks():
                 if fn not in proj:
                     bad.append("%s is not in the csproj" % fn)
                 classes |= set(re.findall(r"\bclass (\w+)", _read(os.path.relpath(os.path.join(dp, fn), HERE))))
-    for c in ("RM_MineralRegistryDef", "RM_MineralBiomeCell", "RM_MineralsSettings", "RM_MineralPolicyProof"):
+    for c in ("RM_MineralRegistryDef", "RM_MineralBiomeCell", "RM_MineralsSettings", "RM_MineralPolicyProof",
+              "RM_MineralQuarryProof", "RM_QuarryKernel"):
         if c not in classes:
             bad.append("sanity: the class scan cannot see %s" % c)
 
@@ -271,6 +301,53 @@ def _build_suite():
             w = _weights(_call(t, "ProofState", "MineableSteel"), "MineableSteel")
             if w is None or w[0] != 1.0:
                 raise ExpectationFailed("suppression off: MineableSteel did not get scatter 1 back (%r)" % (w,))
+
+    def _quarry(t, args):
+        r = t.bridge_call("jawa/static_call", type=QUARRY_PROOF_TYPE, method="ProofQuarry", args=args)
+        if not isinstance(r, dict) or r.get("success") is False:
+            _unmeasured(t, "ProofQuarry could not run: %r" % (r,))
+            return None
+        s = _parse_state(str(r.get("result", "")))
+        if s.get("quarry") != "1":
+            _unmeasured(t, "Quarry (ogliss.thewhitecrayon.quarry) is not loaded on this list")
+            return None
+        return s
+
+    def _pairs(v):
+        out = {}
+        for part in (v or "").split(","):
+            if ":" in part:
+                k, n = part.rsplit(":", 1)
+                out[k] = float(n)
+        return out
+
+    # Every row is entered even after an UNMEASURED latch (Quarry not loaded), so each records UNMEASURED instead of vanishing.
+    @suite.chain("quarry")
+    def quarry(t):
+        with t.component("quarry_wired", toggle="quarryFollowsLocal"):
+            s = _quarry(t, "RM_GreySea;1") if _live(t) else None
+            if s is not None and (s.get("wired") != "1" or s.get("yield") != "1"):
+                raise ExpectationFailed("Quarry loaded but not wired: wired=%r yield=%r (a Quarry rename or a patch failure)"
+                                        % (s.get("wired"), s.get("yield")))
+        with t.component("grey_sea_draws_local_salts", toggle="quarryFollowsLocal"):
+            s = _quarry(t, "RM_GreySea;1000") if _live(t) and not t.upstream_failed else None
+            if s is not None:
+                local = [e.split(":", 1)[0] for e in (s.get("local") or "").split(",") if e]
+                if not local or any(not m.startswith("salt") for m in local):
+                    raise ExpectationFailed("Grey Sea local pool is not salts only: %r" % s.get("local"))
+                draws = _pairs(s.get("draws"))
+                if any(n in draws for n in ("ComponentIndustrial", "Plasteel")):
+                    raise ExpectationFailed("a Grey Sea quarry drew a component or plasteel: %r" % s.get("draws"))
+                if sum(draws.values()) + float(s.get("rock", 0)) != 1000:
+                    raise ExpectationFailed("draw count does not add up: %r rock=%r" % (s.get("draws"), s.get("rock")))
+        with t.component("vanilla_biome_keeps_unregistered", beyond_toggle=True):
+            s = _quarry(t, "TemperateForest;1000") if _live(t) and not t.upstream_failed else None
+            if s is not None and (float(s.get("share", 0)) <= 0.0 or "Steel" not in _pairs(s.get("unreg"))):
+                raise ExpectationFailed("an unregistered ore lost its Quarry share in a vanilla biome: share=%r unreg=%r"
+                                        % (s.get("share"), s.get("unreg")))
+        with t.component("quarry_yields_salt_in_game", beyond_toggle=True):
+            if _live(t) and not t.upstream_failed:
+                _unmeasured(t, "needs eyes: build a quarry on a RM_GreySea map, mine it, see salt stacks and no components")
 
     @suite.chain("settings_roundtrip")
     def settings_roundtrip(t):

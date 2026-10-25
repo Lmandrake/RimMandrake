@@ -39,6 +39,7 @@
     <Compile Include="RM_MineralRegistryDef.cs" />
     <Compile Include="RM_MineralPolicy.cs" />
     <Compile Include="RM_MineralsMod.cs" />
+    <Compile Include="RM_MineralQuarry.cs" />
   </ItemGroup>
 
   <ItemGroup>
