@@ -40,7 +40,8 @@ for root in (src, dst):
 put(src, "Assemblies/Zed.dll.srchash", b"abc123")
 put(dst, "Assemblies/Zed.dll.srchash", b"abc123")
 dm = types.SimpleNamespace(mod_dirs=lambda: {"Zed": src}, LOCAL_MODS=os.path.join(tmp, "mods"), ROOT=tmp,
-                           tree=real.tree, split_held=real.split_held, load_holds=lambda: [], compare=real.compare)
+                           tree=real.tree, split_held=real.split_held, load_holds=lambda: [], compare=real.compare,
+                           forget=real.forget)
 GIT = {"source": "mirror", "sha": "deadbeef00"}
 
 a = R.mod_fingerprint("Zed", dm)
@@ -63,6 +64,14 @@ put(src, "Defs/a.xml", b"<Defs><newer/></Defs>")
 put(dst, "Defs/a.xml", b"<Defs><newer/></Defs>")
 s1 = R.mod_fingerprint("Zed", dm)
 check("both in-sync but content moved mid-run => not proven", not R.proves_fresh(s0, s1, GIT)[0], R.proves_fresh(s0, s1, GIT)[1])
+
+# control 2b: a file ADDED to both sides mid-run (same process: deploy_custom_mods caches inventories) => not proven
+s2 = R.mod_fingerprint("Zed", dm)
+put(src, "Defs/extra.xml", b"<Defs/>"); put(dst, "Defs/extra.xml", b"<Defs/>")
+s3 = R.mod_fingerprint("Zed", dm)
+check("file added to both sides mid-run is seen at END (no stale inventory)", s3.get("n_src") == s2.get("n_src", 0) + 1, (s2.get("n_src"), s3.get("n_src")))
+check("file added mid-run => not proven", not R.proves_fresh(s2, s3, GIT)[0])
+os.remove(os.path.join(src, "Defs/extra.xml")); os.remove(os.path.join(dst, "Defs/extra.xml"))
 
 # control 3: missing end fingerprint / dirty tree / no repo identity / not deployed
 check("missing end fingerprint => not proven", not R.proves_fresh(s1, None, GIT)[0])
@@ -131,6 +140,54 @@ check("modal_sweep: the tool's 'No open window' refusal is a clean read (closed 
       not mn["errors"] and not mn["found_open"] and all(v == 0 for v in mn["dialogs"].values()), mn)
 mo = R.modal_sweep(lambda tool, **kw: {"success": False, "message": "No bridge session"})
 check("modal_sweep: any OTHER success:false stays an error (control)", mo["errors"] and all(v is None for v in mo["dialogs"].values()))
+
+mx = R.modal_sweep(lambda tool, **kw: {"success": True})
+check("modal_sweep: success without closedCount is an error, never a clean read",
+      mx["errors"] and all(v is None for v in mx["dialogs"].values()) and not mx["found_open"], mx)
+mw = R.modal_sweep(lambda tool, **kw: {"content": [{"text": "not json"}]})
+check("modal_sweep: an unparseable content reply is an error", len(mw["errors"]) == len(R.MODAL_DIALOGS), mw)
+
+# proves_fresh: unknowable dirtiness at END (not only start) blocks proof on a git checkout
+_clean = dict(s1, src_dirty=False)
+check("git checkout, clean start and end => proven (control)", R.proves_fresh(_clean, _clean, {"source": "git", "sha": "x"})[0])
+check("git checkout, dirtiness unknowable at END => not proven",
+      not R.proves_fresh(_clean, dict(s1, src_dirty=None), {"source": "git", "sha": "x"})[0])
+
+# an unreadable file on both sides hashes identically; it must make the fingerprint unknown, not in-sync
+_orig_sha = R._sha
+def _sha_fail(p):
+    if p.replace(os.sep, "/").endswith("Defs/a.xml"):
+        raise PermissionError(13, "denied", p)
+    return _orig_sha(p)
+R._sha = _sha_fail
+try:
+    u = R.mod_fingerprint("Zed", dm)
+finally:
+    R._sha = _orig_sha
+check("unreadable file on both sides => unknown, not in-sync", u["state"] == "unknown" and "Defs/a.xml" in (u["reason"] or ""), u.get("reason"))
+check("same tree readable => not unknown (control)", R.mod_fingerprint("Zed", dm)["state"] != "unknown")
+
+# src_dirty: the pathspec handed to git is repo-relative (an absolute path is a UNC string under Windows python,
+# which git inside WSL matches against nothing and reports clean)
+import subprocess
+_repo = os.path.join(tmp, "repo")
+os.makedirs(os.path.join(_repo, "src", "M"))
+_g = lambda *a: subprocess.run(["git", "-C", _repo] + list(a), capture_output=True, text=True, timeout=30)
+_g("init", "-q"); put(_repo, "src/M/a.xml", b"<a/>"); put(_repo, "src/N/b.xml", b"<b/>")
+_g("-c", "user.email=t@t", "-c", "user.name=t", "add", "src"); _g("-c", "user.email=t@t", "-c", "user.name=t", "commit", "-qm", "i")
+check("src_dirty: committed tree is clean (control)", R.src_dirty(os.path.join(_repo, "src", "M"), _repo) is False)
+put(_repo, "src/M/a.xml", b"<a2/>")
+check("src_dirty: edited file under the mod dir is dirty", R.src_dirty(os.path.join(_repo, "src", "M"), _repo) is True)
+check("src_dirty: sibling dir unaffected", R.src_dirty(os.path.join(_repo, "src", "N"), _repo) is False)
+_seen = []
+_orig_git = R._git
+R._git = lambda root, *a, **k: (_seen.append(a), _orig_git(root, *a, **k))[1]
+try:
+    R.src_dirty(os.path.join(_repo, "src", "M"), _repo)
+finally:
+    R._git = _orig_git
+check("src_dirty: pathspec is repo-relative", _seen and _seen[0][-1] == "src/M", _seen)
+check("src_dirty: a dir outside the checkout is unknowable", R.src_dirty(tmp, _repo) is None)
 
 # git_state is real here
 g = R.git_state()

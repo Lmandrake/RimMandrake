@@ -15,7 +15,7 @@ mid-run) and the repo side matched HEAD (clean tree in a git checkout, or the mi
 Anything else -- drift, not deployed, a hash that moved, a dirty tree, a missing end fingerprint -- is NOT
 proven, and a missing fingerprint is the old `deploy-fresh-unrecorded` unknown.
 
-Hash scope (stated, not hidden): .dll/.xml/.json/.cs-less data files are content-hashed in full; other
+Hash scope (stated, not hidden): .dll/.xml/.json/.txt/.cs files are content-hashed in full; other
 payload files (textures, sounds) are compared by SIZE only, because hashing a mod's art over drvfs on every
 run costs minutes. A texture swapped for one of identical byte length would not show here.
 """
@@ -46,7 +46,9 @@ def _sha(path):
     return h.hexdigest()[:16]
 
 
-def _rolled(root, rels):
+def _rolled(root, rels, unreadable=None):
+    """Rolled hash of `rels` under `root`. A file that cannot be read is appended to `unreadable` (when given): the
+    same unreadable file on both sides would otherwise hash identically and read as in-sync."""
     h = hashlib.sha256()
     for rel in sorted(rels):
         p = os.path.join(root, rel)
@@ -54,6 +56,8 @@ def _rolled(root, rels):
             tag = _sha(p) if os.path.splitext(rel)[1].lower() in HASHED_EXTS else "size:%d" % os.path.getsize(p)
         except OSError:
             tag = "unreadable"
+            if unreadable is not None:
+                unreadable.append(rel.replace(os.sep, "/"))
         h.update(("%s\0%s\n" % (rel.replace(os.sep, "/"), tag)).encode())
     return h.hexdigest()[:16]
 
@@ -97,8 +101,16 @@ def src_dirty(src_dir, root=ROOT):
     """True/False in a git checkout (uncommitted change under the mod's source dir); None when unknowable."""
     if not os.path.exists(os.path.join(root, ".git")):
         return None
+    # Repo-relative pathspec: under Windows python the absolute path is a \\wsl.localhost\... string that git inside
+    # WSL (see _git) takes as a relative name matching nothing -- empty output, rc 0, a dirty tree read as clean.
     try:
-        r = _git(root, "status", "--porcelain", "--", src_dir, timeout=60)
+        rel = os.path.relpath(os.path.abspath(src_dir), os.path.abspath(root))
+    except ValueError:                                            # different drives: not under this checkout
+        return None
+    if rel == os.pardir or rel.startswith(os.pardir + os.sep):
+        return None
+    try:
+        r = _git(root, "status", "--porcelain", "--", rel.replace(os.sep, "/"), timeout=60)
         return bool(r.stdout.strip()) if r.returncode == 0 else None
     except Exception:                                             # noqa: BLE001
         return None
@@ -143,6 +155,10 @@ def mod_fingerprint(mod, dm=None, mods_dir=None):
         if not os.path.isdir(dst):
             fp["state"], fp["reason"] = "not-deployed", dst
             return fp
+        # deploy_custom_mods caches each root's inventory until forget(): without this the END fingerprint reused the
+        # START walk, so a file added or deleted by a mid-run redeploy was invisible to tree() and compare()
+        dm.forget(src)
+        dm.forget(dst)
         s_all, d_all = dm.tree(src), dm.tree(dst)
         if own:
             s_all = {r for r in s_all if r.replace(os.sep, "/").startswith(own)}
@@ -157,11 +173,14 @@ def mod_fingerprint(mod, dm=None, mods_dir=None):
         new = [r for r in new if r not in held_set]
         changed = [r for r in changed if r not in held_set]
         gone = [r for r in gone if r not in held_set]
-        fp["src_hash"], fp["deployed_hash"] = _rolled(src, s_rels), _rolled(dst, d_rels)
+        unreadable = []
+        fp["src_hash"], fp["deployed_hash"] = _rolled(src, s_rels, unreadable), _rolled(dst, d_rels, unreadable)
         fp["n_src"], fp["n_deployed"], fp["n_held"] = len(s_rels), len(d_rels), len(held_set)
         fp["drift"] = {"new": len(new), "changed": len(changed), "gone": len(gone),
                        "sample": (new + changed + gone)[:5]}
         fp["state"] = "in-sync" if not (new or changed or gone) else "drift"
+        if unreadable:                       # unknown is never clean: an unread file proves nothing either way
+            fp["state"], fp["reason"] = "unknown", "unreadable: %s" % ", ".join(unreadable[:5])
         dlls = []
         for rel in sorted(r for r in d_rels if r.lower().endswith(".dll")):
             side = os.path.join(src, rel + ".srchash")
@@ -173,6 +192,8 @@ def mod_fingerprint(mod, dm=None, mods_dir=None):
         fp["state"], fp["reason"] = "unknown", "%s: %s" % (type(e).__name__, str(e)[:200])
     finally:
         if cleanup:
+            if dm is not None and hasattr(dm, "forget") and src:
+                dm.forget(src)                # the composed temp dir is gone; drop its cache entry too
             shutil.rmtree(cleanup, ignore_errors=True)
     return fp
 
@@ -193,7 +214,7 @@ def proves_fresh(start, end, git=None):
     if start["src_hash"] != end["src_hash"] or start["deployed_hash"] != end["deployed_hash"]:
         return False, "content changed between start and end of the run"
     src = (git or {}).get("source")
-    if src == "git" and start.get("src_dirty") is None:
+    if src == "git" and (start.get("src_dirty") is None or end.get("src_dirty") is None):
         return False, "git checkout but dirtiness unknowable"
     if src not in ("git", "mirror"):
         return False, "no repo identity (neither a git checkout nor a mirror stamp)"
@@ -228,6 +249,12 @@ def modal_sweep(call, dialogs=MODAL_DIALOGS):
                 out["errors"].append("%s: %s" % (d, (r or {}).get("message") if isinstance(r, dict) else r))
                 continue
             n = r.get("closedCount")
+            if not isinstance(n, int) or isinstance(n, bool):
+                # an unparseable reply or one without a count is unknown; modal_by_chain reads only `errors`, so an
+                # unrecorded None here would have read as a clean sweep
+                out["dialogs"][d] = None
+                out["errors"].append("%s: reply without closedCount: %s" % (d, str(r)[:100]))
+                continue
             out["dialogs"][d] = n
             if n:
                 out["found_open"] = True
