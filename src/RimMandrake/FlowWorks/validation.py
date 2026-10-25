@@ -180,7 +180,7 @@ def latest_core_result(mod_hash):
     return best
 
 
-@suite.chain("core_offline")
+@suite.chain("core_offline", offline=True)
 def core_offline(t):
     """v2 offline tier: defs, shipped settings, UNBUILT register, geometry, pulse oracle (+ selftest), scene
     predictions, schema lint, shared source, pit width, every offline check mutated red, and the --mock live tier
@@ -401,7 +401,7 @@ def _selftest_cases():
     return dict(cases)
 
 
-@suite.chain("rivers_switch_flips")
+@suite.chain("rivers_switch_flips", offline=True)
 def rivers_switch_flips(t):
     """Offline: each Rivers toggle flipped through its RM_RiverMath gate, plus its call site. 0 ticks, no bridge."""
     cases = {}
