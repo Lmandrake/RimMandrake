@@ -1,0 +1,2 @@
+tailscale serve on our tailnet blocks forever (prints an admin enable link, never exits) because Serve is not enabled for the tailnet; wrap it in timeout. Without Serve, a tailnet-only page can bind the node's 100.x IP and get the caller's identity from 'tailscale whois --json <peer ip>' (works as non-root), ignoring any Tailscale-User-Login header, which a direct client can forge. Archmagi's Windows side is not on the tailnet (only its WSL is), so Windows browsers there cannot reach 100.x pages.
+home: claude-remote-control

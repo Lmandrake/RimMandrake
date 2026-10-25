@@ -1,0 +1,2 @@
+A Claude subscription login copied to a second place becomes a superseded grant at the first refresh: measured on SteveDesktop 2026-10-25, a refresh changed the refresh-token hash (404b8b14 -> a0d930d5) and moved refreshTokenExpiresAt from Nov 21 to Nov 23; access tokens last 8 h. So never copy .credentials.json between users/dirs or restore one from a backup tar; move it (claude-account does). The sjlewis user's ~/.claude/.credentials.json on SteveDesktop is such a dead copy.
+home: claude-remote-control
