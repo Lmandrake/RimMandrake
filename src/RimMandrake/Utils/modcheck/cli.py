@@ -63,7 +63,11 @@ def main(argv=None):
     p_run.add_argument("--chains", default="",
                        help="TARGETED: comma-separated chain names to run (one mod)")
     p_run.add_argument("--rows", default="",
-                       help="TARGETED: comma-separated row ids; runs each row's whole chain (one mod)")
+                       help="TARGETED: comma-separated row ids; each row's chain runs as a PREFIX and stops after its "
+                            "last requested row, the tail recorded NOT_RUN (one mod)")
+    p_run.add_argument("--preview", action="store_true",
+                       help="TARGETED: print the per-chain plan (requested -> prerequisites -> executed -> skipped) "
+                            "and stop: no mod-list swap, no game")
     p_run.add_argument("--full", action="store_true",
                        help="the whole suite: a scheduled sweep, at most daily (owner 2026-10-25). A run with no "
                             "--chains/--rows/--item ITEM_ID is refused without it")
@@ -292,6 +296,9 @@ def main(argv=None):
         if targeted and args.full:
             print("REFUSED: --full and a target (--chains/--rows/--item ITEM_ID) contradict each other")
             return 2
+        if args.preview and not targeted:
+            print("REFUSED: --preview previews a TARGETED run; name --chains, --rows or --item ITEM_ID")
+            return 2
         if not targeted and not args.full:
             print("REFUSED: a live run is TARGETED (owner 2026-10-25, standing_rulings.md \"Live runs are "
                   "TARGETED\"): name what the change touches with --item ITEM_ID, --chains a,b or --rows r1,r2. "
@@ -311,10 +318,10 @@ def main(argv=None):
             except (targeting.TargetError, RuntimeError) as ex:
                 print("REFUSED: %s" % ex)
                 return 2
-            for c in sel["chains"]:     # one line per chain: the first reasons, and how many more
-                why = [w.split(": ", 1)[1] for w in sel["by"] if w.startswith("chain %s:" % c)]
-                print("  target chain %s: %s%s" % (c, "; ".join(why[:2]),
-                                                   " (+%d more)" % (len(why) - 2) if len(why) > 2 else ""))
+            for line in targeting.preview(sel):     # the exact plan, per chain, before anything launches
+                print(line)
+            if args.preview:
+                return 0
             targets[mod] = sel
             if target_items and mod not in overrides:
                 overrides[mod] = target_items[0]

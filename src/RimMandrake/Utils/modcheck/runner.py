@@ -451,9 +451,50 @@ def _hold_site(session, tx, expected_ids):
     return out
 
 
+def _env_reset(session):
+    """The hold's environment contract (focused_testing_plan_2026-10-25 §3.5; MODCHECK_HOLD_FIX_SITUATIONAL_ONLY_ROOF):
+    before EVERY chain on every live path -- it used to run only under --situational, and run5's Crush deaths on the
+    default path were roof collapses. Returns {step: "ok" | "refused: ..." | "raised ..."}: housekeeping, never a
+    verdict, but each step's outcome is read from its reply and recorded in the chain's record.
+      - Verse.Log stops writing after 1000 messages until ResetMessageCount (only called at data load), after which
+        Player.log and jawa/drain_log are BLIND to every later error (MEASURED live 2026-10-03: log silent from 16:54,
+        a spamming MCR logger). Reset before every chain -- and before the chain's mark_log -- so log checks keep seeing.
+      - The quicktest map's biome is whatever tile the game picked (TheRot LIVE 2026-10-03), and its own ambient weather
+        (the Sheen weathers) coated colonists with RM_SheenCoating mid-chain. Every chain starts under locked Clear; a
+        chain that tests weather sets its own afterwards.
+      - A previous chain's pad clean-up destroys walls but leaves their roofs, and the unsupported roof then COLLAPSES
+        onto colonists mid-chain ("Roof collapse", Crush by nobody; LIVE 2026-10-03: lash, fire, vents chains). Every
+        chain starts with no roof anywhere; a chain that needs one builds it itself (make_empty_room).
+      - Gas left by a previous chain (a suush's ToxGas, a vent) poisons the next chain's colonists (ToxicBuildup).
+        Alpha Biomes' AB_MycoticSpores is a Gas THING, not a GasGrid gas: jawa/set_gas refuses its name (MEASURED
+        2026-10-04: 'Bad gasType'); destroy_batch Gas removes it (pawns never touched)."""
+    out = {}
+
+    def step(key, tool, **kw):
+        try:
+            r = session.call(tool, **kw)
+        except Exception as e:     # noqa: BLE001 - housekeeping, never a verdict; the outcome is recorded
+            out[key] = "raised %s: %s" % (type(e).__name__, str(e)[:120])
+            return None
+        out[key] = ("refused: %s" % str((r or {}).get("error") or r)[:120]
+                    if isinstance(r, dict) and r.get("success") is False else "ok")
+        return r
+
+    step("log_reset", "jawa/static_call", type="Verse.Log", method="ResetMessageCount")
+    step("weather", "jawa/weather_set", weather="Clear", lockWeather=True)
+    mi = step("map_info", "jawa/map_info") or {}
+    sx = int(mi.get("sizeX", 250))
+    sz = int(mi.get("sizeZ", mi.get("sizeX", 250)))
+    step("unroof", "jawa/set_roof_batch", ops="None:0,0,%d,%d" % (sx, sz), refresh=False)
+    for gas in ("ToxGas", "BlindSmoke", "RotStink", "DeadlifeDust"):
+        step("gas_" + gas, "jawa/set_gas", action="clear", rect="0,0,%d,%d" % (sx, sz), gasType=gas)
+    step("gas_things", "jawa/destroy_batch", rects="0,0,%d,%d" % (sx, sz), categories="Gas")
+    return out
+
+
 def run_suite(suite, session, debug=False, anchor=None, mod=None,
               judge_runner=None, situational=False, policy="abort", bland_world=False, retile=False,
-              hold_site=False, floor_suite=None):
+              hold_site=False, floor_suite=None, scope=None):
     """Run every chain in `suite` against an open `session`. Returns
     `{"chains": [...], "all_green": bool}`. Never raises on a component
     failure -- that is exactly what `suite.py`'s `component()` already
@@ -480,8 +521,14 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
 
     `floor_suite`: a targeted run passes the mod's FULL suite here and the filtered one as `suite`: the visual floor is
     a property of the whole suite (a subset would leave must-show lines uncovered and refuse every targeted run).
+
+    `scope`: targeting.resolve()'s per-chain scope. A `prefix` chain stops after its last requested row
+    (suite.StopAfter: the chain unwinds through its own teardown, no later raw call runs) and its catalogue tail is
+    recorded NOT_RUN (execution "not_run"), which neither reddens nor greens the run.
+
+    Every chain records `phase_s` {hold, body, teardown} (monotonic seconds) and `env_reset` (_env_reset's receipt).
     """
-    from suite import TestContext  # noqa: E402  (modcheck package, same dir)
+    from suite import TestContext, StopAfter, Component, NOT_RUN  # noqa: E402  (modcheck package, same dir)
     walk, ns = northstar_for(mod) if mod else (None, None)
     if mod:
         fl = visual_floor(floor_suite or suite, ns)
@@ -558,6 +605,9 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
             # log come from inside a chain, so an offline chain sitting minutes in a subprocess (rivers_switch_flips ->
             # the C# SelfTest, ~9 min) read as a game stalled at tick 1. Name the running chain on stderr.
             _chain_t0 = time.time()
+            _m0 = time.monotonic()
+            _m_body = None    # set when the chain body starts; a held-back chain has no body
+            _env = None
             print("[modcheck] chain %s START %s" % (name, time.strftime("%H:%M:%SZ", time.gmtime())),
                   file=sys.stderr, flush=True)
             watch = None
@@ -569,43 +619,9 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
                 # chain left open) is a modal_open SURPRISE that aborts and TAINTS the chain. Close them before every chain.
                 import run_identity as _RI  # noqa: E402
                 _modal = _RI.modal_sweep(session.call)                 # records what was found (observatory S1)
-                # The quicktest map's biome is whatever tile the game picked (TheRot LIVE 2026-10-03), and that biome's own
-                # ambient weather (the Sheen weathers) coated colonists with RM_SheenCoating mid-chain: a modal-free
-                # `colonist_injured_unexpectedly` that aborted every later component. Every chain starts under locked Clear;
-                # a chain that tests weather sets its own afterwards.
-                # Verse.Log stops writing after 1000 messages until ResetMessageCount (only called at data load), after which
-                # Player.log and jawa/drain_log are BLIND to every later error (MEASURED live 2026-10-03: log silent from 16:54,
-                # a spamming MCR logger). Reset it before every chain so log-based checks keep seeing.
-                try:
-                    session.call("jawa/static_call", type="Verse.Log", method="ResetMessageCount")
-                except Exception:                                      # noqa: BLE001 - housekeeping, never a verdict
-                    pass
-                try:
-                    session.call("jawa/weather_set", weather="Clear", lockWeather=True)
-                except Exception:                                      # noqa: BLE001 - housekeeping, never a verdict
-                    pass
-                # A previous chain's pad clean-up destroys walls but leaves their roofs, and the unsupported roof then COLLAPSES
-                # onto colonists mid-chain ("Roof collapse", Crush by nobody; LIVE 2026-10-03: lash, fire, vents chains). Every chain
-                # starts with no roof anywhere; a chain that needs one builds it itself (make_empty_room).
-                mi = {}        # stays usable by the gas sweeps below if map_info itself fails
-                try:
-                    mi = session.call("jawa/map_info") or {}
-                    session.call("jawa/set_roof_batch", ops="None:0,0,%d,%d" % (int(mi.get("sizeX", 250)), int(mi.get("sizeZ", mi.get("sizeX", 250)))),
-                                 refresh=False)
-                except Exception:                                      # noqa: BLE001 - housekeeping, never a verdict
-                    pass
-                # Gas left by a previous chain (a suush's ToxGas, a vent) poisons the next chain's colonists (ToxicBuildup surprise).
-                for _gas in ("ToxGas", "BlindSmoke", "RotStink", "DeadlifeDust"):
-                    try:
-                        session.call("jawa/set_gas", action="clear", rect="0,0,%d,%d" % (int(mi.get("sizeX", 250)), int(mi.get("sizeZ", mi.get("sizeX", 250)))), gasType=_gas)
-                    except Exception:                                  # noqa: BLE001 - housekeeping, never a verdict
-                        pass
-                # Alpha Biomes' AB_MycoticSpores (AlphaBiomes.Gas_Mycotic, FeverWood/TheRot) is a Gas THING, not a GasGrid gas:
-                # jawa/set_gas refuses its name (MEASURED 2026-10-04: 'Bad gasType'), destroy_batch Gas removes it (pawns never touched).
-                try:
-                    session.call("jawa/destroy_batch", rects="0,0,%d,%d" % (int(mi.get("sizeX", 250)), int(mi.get("sizeZ", mi.get("sizeX", 250)))), categories="Gas")
-                except Exception:                                      # noqa: BLE001 - housekeeping, never a verdict
-                    pass
+            if situational or hold:
+                _env = _env_reset(session)
+            if situational:
                 from watch import Watch  # noqa: E402
                 cap_kw = ({"session_cap": suite.chain_caps[name]}
                           if name in getattr(suite, "chain_caps", {}) else {})
@@ -614,6 +630,10 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
                 watch.__enter__()
             t = TestContext(session, anchor=anchor, debug=debug,
                             on_finding=findings.append, watch=watch)
+            _sc = (scope or {}).get(name)
+            if _sc and _sc.get("mode") == "prefix" and _sc.get("requested_rows"):
+                t.stop_after = set(_sc["requested_rows"])
+            _stopped = None
             t.mark_log()      # expect_log_contains reads only lines written after this point
             if watch is not None and not watch.bland:
                 t.upstream_failed = True
@@ -633,7 +653,11 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
                         comp.verdict, comp.detail = UNMEASURED, t.upstream_reason
                         t.components.append(comp)
                     else:
+                        _m_body = time.monotonic()
                         fn(t)
+                except StopAfter as st:
+                    # the last requested row has recorded: the rest of this chain is NOT_RUN (written below)
+                    _stopped = str(st)
                 except Exception as e:  # noqa: BLE001
                     # A check or a wait OUTSIDE any `with t.component()` (chain setup) used to kill the whole
                     # run on the first failure (Droidworks' salvage_on_death, MEASURED live 2026-10-01). A failed
@@ -659,6 +683,7 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
                 if watch is not None and not t.upstream_failed:
                     watch.final()
             finally:
+                _m_td = time.monotonic()
                 fixtures.update(l["id"] for l in getattr(session, "litter", []) if l.get("kind") == "pawn")
                 if watch is not None:
                     fixtures.update(watch.fixture_ids)
@@ -675,15 +700,30 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
                 session.sweep()
                 if watch is not None:
                     watch.__exit__(None, None, None)
-            print("[modcheck] chain %s END %.0fs %s" % (
+            _m_end = time.monotonic()
+            _m_b = _m_td if _m_body is None else _m_body
+            _phase = {"hold": round(max(0.0, _m_b - _m0), 3), "body": round(max(0.0, _m_td - _m_b), 3),
+                      "teardown": round(max(0.0, _m_end - _m_td), 3)}
+            if _stopped is not None and _sc:
+                done = {c.name for c in t.components}
+                for r in _sc.get("skipped", ()):
+                    if r not in done:
+                        comp = Component(r, None, False)
+                        comp.verdict, comp.execution = NOT_RUN, "not_run"
+                        comp.detail = "not run: targeted prefix stopped after %s (catalogue row)" % _stopped
+                        t.components.append(comp)
+            print("[modcheck] chain %s END %.0fs %s hold=%.1fs body=%.1fs teardown=%.1fs" % (
                 name, time.time() - _chain_t0,
                 " ".join("%s=%d" % (v, sum(1 for c in t.components if str(c.verdict).startswith(v)))
-                         for v in ("PASS", "FAIL", "UNMEASURED"))), file=sys.stderr, flush=True)
+                         for v in ("PASS", "FAIL", "UNMEASURED", "NOT_RUN")),
+                _phase["hold"], _phase["body"], _phase["teardown"]), file=sys.stderr, flush=True)
             chains_out.append({"name": name,
                                "components": [c.as_dict() for c in t.components],
                                "situational": watch.summary() if watch is not None else None,
                                "modal_check": _modal,
-                               "site_hold": _hold})
+                               "site_hold": _hold,
+                               "env_reset": _env,
+                               "phase_s": _phase})
     finally:
         try:
             if hold_tx is not None:
@@ -711,7 +751,7 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
         except Exception:     # noqa: BLE001
             pass
     # a suite that recorded NO component at all measured nothing: never green (all() of nothing is True)
-    all_comps = [c for chain in chains_out for c in chain["components"]]
+    all_comps = [c for chain in chains_out for c in chain["components"] if c.get("execution") != "not_run"]
     all_green = bool(all_comps) and all(c["verdict"] == "PASS" or
                                         (isinstance(c["verdict"], str) and c["verdict"].startswith("PASS"))
                                         for c in all_comps)
@@ -761,8 +801,9 @@ def emit_verify(item_id, mod, config, result_summary, sheet_path, dry_run=False,
     <the exact command to run by hand>} so the caller still writes the sheet, JSON and status record."""
     n_pass = sum(1 for chain in result_summary["chains"]
                 for c in chain["components"] if c["verdict"] != "FAIL"
-                and c["verdict"] != "UNMEASURED")
-    n_total = sum(len(chain["components"]) for chain in result_summary["chains"])
+                and c["verdict"] != "UNMEASURED" and c.get("execution") != "not_run")
+    n_total = sum(1 for chain in result_summary["chains"] for c in chain["components"]
+                  if c.get("execution") != "not_run")
     result = "pass" if result_summary["all_green"] else "fail"
     args = ["verify", item_id, "--result", result, "--config", config,
             "--evidence", _wsl_path(sheet_path) if os.name == "nt" else sheet_path]

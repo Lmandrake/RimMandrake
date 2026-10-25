@@ -2814,8 +2814,9 @@ def fuel_moat_astrofuel(t):
             if t._guard():
                 _expect(fired.startswith("FIRED True"), "the investigating raid did not fire: %s" % fired)
             t.wait_ticks(60)
-            from modcheck import helpers as H
-            H.kill_hostiles(t.session)
+            if t._guard():     # the offline declaration probe has no session (row catalogue must stay complete)
+                from modcheck import helpers as H
+                H.kill_hostiles(t.session)
         _extinguish_all(t)
         _sc(t, RUT_BLAST, "ProofCancel", " ")
         slow = _line(x0 + 3, z0 + 11, 12)

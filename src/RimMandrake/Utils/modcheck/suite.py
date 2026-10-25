@@ -49,6 +49,17 @@ import time
 import preconditions as _PC
 
 PASS, FAIL, UNMEASURED = "PASS", "FAIL", "UNMEASURED"
+# A row a targeted PREFIX run deliberately did not execute (focused_testing_plan_2026-10-25 option A): written by the
+# runner from the chain's catalogue after a StopAfter, never by a component. Not a verdict on the mod and not "could
+# not measure" -- `Component.execution` says "not_run" beside it.
+NOT_RUN = "NOT_RUN"
+
+
+class StopAfter(BaseException):
+    """Raised when the last row a targeted prefix run asked for has recorded (TestContext.stop_after). A BaseException
+    so a chain's own `except Exception` cannot swallow it; it unwinds the chain through its `finally` teardown, so no
+    raw `session.call` or subprocess after that row runs. Deliberately NOT the `upstream_failed` latch: the latch
+    records later rows UNMEASURED and leaves raw calls running. The runner catches it and writes the tail NOT_RUN."""
 
 
 class ExpectationFailed(Exception):
@@ -80,7 +91,8 @@ class Component(object):
         # A `(change)` must-show line is judged on the last one (spec §4b).
         self.sequences = []
         self.checkpoints = []
-        self.verdict = None         # PASS / FAIL / UNMEASURED, set on exit
+        self.verdict = None         # PASS / FAIL / UNMEASURED, set on exit (NOT_RUN only from the runner's catalogue)
+        self.execution = "ran"      # "ran" | "not_run": execution state beside the verdict, never folded into it
         self.detail = ""
         self.surprises = None       # watch.SurpriseAbort.summary() when a detector ended the component
 
@@ -90,7 +102,7 @@ class Component(object):
             verdict = "PASS(UNVERIFIED %d)" % self.unverified
         return {
             "name": self.name, "toggle": self.toggle,
-            "beyond_toggle": self.beyond_toggle, "verdict": verdict,
+            "beyond_toggle": self.beyond_toggle, "verdict": verdict, "execution": self.execution,
             "detail": self.detail, "evidence": self.evidence,
             "screenshots": self.screenshots, "sequences": self.sequences,
             "checkpoints": self.checkpoints,
@@ -148,6 +160,9 @@ class TestContext(object):
         self.fixture_ids = set()  # pawns this chain spawned, declared to the safe_advance stop rule (see _declare_fixture)
         self.upstream_failed = False
         self.upstream_reason = "upstream failed -- this chain's state is meaningless"
+        # TARGETED PREFIX (option A): the row ids still to record before the chain stops (StopAfter). None = run the
+        # whole chain, the old behaviour.
+        self.stop_after = None
         self.components = []
         self._current = None
         self._on_finding = on_finding or (lambda component: None)
@@ -745,6 +760,8 @@ class _ComponentCtx(object):
         self.component = Component(name, toggle, beyond_toggle, shows)
 
     def __enter__(self):
+        # nested components: remember the enclosing row so evidence after the inner row still lands on it
+        self._prev = self.ctx._current
         self.ctx._current = self.component
         self._scope = None
         if self.ctx.pre is not None:
@@ -771,6 +788,11 @@ class _ComponentCtx(object):
 
     def _exit(self, exc_type, exc, tb):
         c = self.component
+        if exc_type is not None and issubclass(exc_type, StopAfter):
+            # a NESTED requested row stopped the chain inside this one: this outer row did not finish, so it is not
+            # scored (never a FAIL/finding); it records after its inner rows, so the runner writes it NOT_RUN
+            self.ctx._current = self._prev
+            return False
         if self.ctx.upstream_failed:
             c.verdict = UNMEASURED
             c.detail = self.ctx.upstream_reason
@@ -808,7 +830,12 @@ class _ComponentCtx(object):
                 self.ctx.upstream_failed = True
                 self.ctx.upstream_reason = "an UNMEASURED component ended this chain earlier: " + why[:200]
         self.ctx.components.append(c)
-        self.ctx._current = None
+        self.ctx._current = self._prev
+        stop = self.ctx.stop_after
+        if stop is not None and c.name in stop:
+            stop.discard(c.name)
+            if not stop:
+                raise StopAfter(c.name)
         # Suppress the exception (if any): the CHAIN function continues to
         # its next `with t.component()` block, which will see
         # upstream_failed=True and record UNMEASURED, per spec §1.
@@ -824,6 +851,7 @@ class Suite(object):
         self.name = name
         self.chains = []          # [(name, fn)]
         self.chain_caps = {}      # name -> situational session tick cap override (default: watch.DEFAULT_SESSION_CAP)
+        self.offline_chains = set()   # chains that need no game (T0): a targeted live run leaves them out; --full keeps them
         self.toggles = []         # Mod Settings toggle names this mod has
         self.biome = None         # bland-world runs: re-tile the map to this BiomeDef for the suite (bland_world.retile)
         self.tile_temperature = None   # ... and optionally set the tile temperature (C), e.g. cold-only flora
@@ -831,9 +859,11 @@ class Suite(object):
         # non-taking bridge_call can never be scored PASS or FAIL (see preconditions.py, TestContext.pre)
         self.preconditions = False
 
-    def chain(self, name, tick_cap=None):
+    def chain(self, name, tick_cap=None, offline=False):
         """`tick_cap`: a chain that legitimately needs more in-game time than the default situational session
-        cap (60000) declares its own total here; the watch still sweeps every chunk and caps each wait."""
+        cap (60000) declares its own total here; the watch still sweeps every chunk and caps each wait.
+        `offline=True`: the chain touches no game (a Python mirror, the C# SelfTest); a targeted live run skips it
+        (it runs at T0, before launch) and only `--full` runs it in the live slot."""
         def deco(fn):
             suite = self
 
@@ -853,6 +883,8 @@ class Suite(object):
             self.chains.append((name, chain_fn))
             if tick_cap:
                 self.chain_caps[name] = int(tick_cap)
+            if offline:
+                self.offline_chains.add(name)
             return fn
         return deco
 
