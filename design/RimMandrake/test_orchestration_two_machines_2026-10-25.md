@@ -284,6 +284,10 @@ orchestrates and integrates. FOUNDRY continues its content queue and touches no 
 - Interfaces between the two helpers (the job and result schemas) are committed first, in H-A's directory.
 
 ## 10. Owner questions (card-ready; recommendation marked)
+**Owner rulings by card, 2026-10-25 16:43 PDT:** Q1 → Archmagi dispatches over SSH · Q2 → new RUNNER record of its own ·
+Q3 → "Whenever I can, no schedule" (packets queue; agents never wait on him — act on delegated calls, park only §2 calls) ·
+Q5 → two helpers, split by folder. Q4 is moot: settled by his account-switching cards the same evening (whole-machine
+switch, close everything + relaunch; built in claude-remote-control).
 **Q1. How should Archmagi and SteveDesktop be coupled?**
 Context: GPT and Opus independently ranked these the same way. The choice sets the next 70 h of building.
 - **(Recommended) A central queue on Archmagi, an SSH dispatcher, and a durable worker on Steve.**
