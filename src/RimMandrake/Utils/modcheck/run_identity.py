@@ -133,6 +133,10 @@ def mod_fingerprint(mod, dm=None, mods_dir=None):
     try:
         if dm is None:
             import deploy_custom_mods as dm
+        # deploy_custom_mods caches each root's inventory until forgotten: without this the END fingerprint reused the
+        # START walk (and a folded mod's compose reused stale source walks), so a file added or deleted mid-run was
+        # invisible to tree() and compare()
+        dm.forget_all()
         dirs = dm.mod_dirs()
         src = dirs.get(mod)
         holds = dm.load_holds()
@@ -155,10 +159,6 @@ def mod_fingerprint(mod, dm=None, mods_dir=None):
         if not os.path.isdir(dst):
             fp["state"], fp["reason"] = "not-deployed", dst
             return fp
-        # deploy_custom_mods caches each root's inventory until forget(): without this the END fingerprint reused the
-        # START walk, so a file added or deleted by a mid-run redeploy was invisible to tree() and compare()
-        dm.forget(src)
-        dm.forget(dst)
         s_all, d_all = dm.tree(src), dm.tree(dst)
         if own:
             s_all = {r for r in s_all if r.replace(os.sep, "/").startswith(own)}

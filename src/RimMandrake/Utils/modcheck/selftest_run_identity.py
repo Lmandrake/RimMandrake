@@ -41,7 +41,7 @@ put(src, "Assemblies/Zed.dll.srchash", b"abc123")
 put(dst, "Assemblies/Zed.dll.srchash", b"abc123")
 dm = types.SimpleNamespace(mod_dirs=lambda: {"Zed": src}, LOCAL_MODS=os.path.join(tmp, "mods"), ROOT=tmp,
                            tree=real.tree, split_held=real.split_held, load_holds=lambda: [], compare=real.compare,
-                           forget=real.forget)
+                           forget=real.forget, forget_all=real.forget_all)
 GIT = {"source": "mirror", "sha": "deadbeef00"}
 
 a = R.mod_fingerprint("Zed", dm)
