@@ -27,7 +27,10 @@ REASON = (
     "Doc: design/RimMandrake/GIT_WORKFLOW.md"
 )
 
-WORKTREE_ADD = re.compile(r"\bgit\b(?:\s+-[cC]\s+\S+)*\s+worktree\s+add\b")
+# git's global options before the subcommand: `-C <dir>` / `-c <k=v>` (dir may be quoted),
+# and any `--long[=value]` (`--no-pager`, `--git-dir=x`) — those used to slip past.
+WORKTREE_ADD = re.compile(
+    r"\bgit\b(?:\s+(?:-[cC]\s+(?:\"[^\"]*\"|'[^']*'|\S+)|--[\w-]+(?:=\S+)?))*\s+worktree\s+add\b")
 
 
 def deny():

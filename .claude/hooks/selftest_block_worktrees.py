@@ -19,6 +19,10 @@ CASES = [
     ({"tool_name": "Agent", "tool_input": {"model": "sonnet"}}, False),
     ({"tool_name": "Bash", "tool_input": {"command": "git worktree add ../x origin/main"}}, True),
     ({"tool_name": "Bash", "tool_input": {"command": "cd /home/mandrake/rm/bench && git -C . worktree add /home/x"}}, True),
+    ({"tool_name": "Bash", "tool_input": {"command": "git --no-pager worktree add ../x"}}, True),
+    ({"tool_name": "Bash", "tool_input": {"command": "git --git-dir=/r/.git worktree add ../x"}}, True),
+    ({"tool_name": "Bash", "tool_input": {"command": 'git -C "/mnt/d/a b" worktree add ../x'}}, True),
+    ({"tool_name": "Bash", "tool_input": {"command": "git log --oneline -- worktree add"}}, False),
     ({"tool_name": "Bash", "tool_input": {"command": "git worktree list"}}, False),
     ({"tool_name": "Bash", "tool_input": {"command": "git worktree remove /home/x"}}, False),
 ]
