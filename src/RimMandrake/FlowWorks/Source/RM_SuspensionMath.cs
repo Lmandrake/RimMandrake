@@ -135,6 +135,19 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
+		/// <summary>HEAVY_BRIDGE_RENAME_TRUSS_LIKE_THE_PHOTO: the player-facing name of a bridge of tier <paramref name="t"/>
+		/// ("timber suspension bridge"; the heavy one is a truss, "heavy truss bridge").</summary>
+		public static string BridgeName(SuspensionTier t)
+		{
+			return t == SuspensionTier.Heavy ? "heavy truss bridge" : TierLabel(t) + " suspension bridge";
+		}
+
+		/// <summary>The readout's opening words: "Suspension bridge (steel)", or "Heavy truss bridge".</summary>
+		public static string ReadoutName(SuspensionTier t)
+		{
+			return t == SuspensionTier.Heavy ? "Heavy truss bridge" : "Suspension bridge (" + TierLabel(t) + ")";
+		}
+
 		/// <summary>The length cap after the Mod Settings multiplier (0.5 to 3), never below one square.</summary>
 		public static int MaxLength(SuspensionTier t, float lengthMultiplier)
 		{
@@ -166,13 +179,13 @@ namespace RimMandrake.FlowWorks
 		/// <summary>The P8 readout line: "Suspension bridge (timber) · deck at surface · load 210 / 600 kg".</summary>
 		public static string ReadoutLine(SuspensionTier t, float loadKg, float ratingKg)
 		{
-			return "Suspension bridge (" + TierLabel(t) + ") · deck at surface · load " + Kg(loadKg) + " / " + Kg(ratingKg) + " kg";
+			return ReadoutName(t) + " · deck at surface · load " + Kg(loadKg) + " / " + Kg(ratingKg) + " kg";
 		}
 
 		/// <summary>The readout line with the deck's height and what it is from below (SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD).</summary>
 		public static string ReadoutLine(SuspensionTier t, float loadKg, float ratingKg, int deckNotches, bool passesUnder)
 		{
-			return "Suspension bridge (" + TierLabel(t) + ") · " + HeightPhrase(deckNotches, passesUnder) + " · load " + Kg(loadKg)
+			return ReadoutName(t) + " · " + HeightPhrase(deckNotches, passesUnder) + " · load " + Kg(loadKg)
 				+ " / " + Kg(ratingKg) + " kg";
 		}
 
@@ -281,7 +294,7 @@ namespace RimMandrake.FlowWorks
 				int run = supports[k + 1] - supports[k] - 1;
 				if (run > cap)
 				{
-					return "A " + TierLabel(tier) + " suspension bridge spans at most " + cap + " squares between supports (this span: "
+					return "A " + BridgeName(tier) + " spans at most " + cap + " squares between supports (this span: "
 						+ run + "). Fill a ground island back in (cheap) or build a tower on the hole floor (very expensive) to go further.";
 				}
 			}
@@ -308,7 +321,7 @@ namespace RimMandrake.FlowWorks
 			}
 			if (lanes.Count > maxWidth)
 			{
-				return "A " + TierLabel(tier) + " suspension bridge is " + (maxWidth == 1 ? "1 square" : "1 to " + maxWidth + " squares") + " wide.";
+				return "A " + BridgeName(tier) + " is " + (maxWidth == 1 ? "1 square" : "1 to " + maxWidth + " squares") + " wide.";
 			}
 			HashSet<int> towers = UnionTowers(towersPerLane);
 			for (int l = 0; l < lanes.Count; l++)
@@ -603,7 +616,7 @@ namespace RimMandrake.FlowWorks
 		{
 			if (!MayBeJetty(tier))
 			{
-				return "Only steel and heavy suspension bridges reach out as a jetty.";
+				return "Only steel suspension and heavy truss bridges reach out as a jetty.";
 			}
 			int n = lane == null ? 0 : lane.Count - 1;
 			if (n < 1)

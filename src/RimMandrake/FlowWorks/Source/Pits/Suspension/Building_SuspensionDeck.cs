@@ -265,7 +265,7 @@ namespace RimMandrake.FlowWorks.Pits
 
 		protected override void CollapseMessage(Pawn first, List<Pawn> fallers)
 		{
-			Messages.Message("The " + RM_SuspensionMath.TierLabel(Tier) + " suspension bridge gave way under " + first.LabelShort
+			Messages.Message("The " + RM_SuspensionMath.BridgeName(Tier) + " gave way under " + first.LabelShort
 				+ (fallers.Count > 1 ? " and others." : "."), new LookTargets(fallers), MessageTypeDefOf.NegativeEvent);
 		}
 
@@ -273,7 +273,7 @@ namespace RimMandrake.FlowWorks.Pits
 		{
 			string s = base.GetInspectString();
 			SuspensionBridgeRecord r = Record;
-			string line = r == null ? "Suspension bridge (" + RM_SuspensionMath.TierLabel(Tier) + ")" : Bridges.InspectLines(r, Position);
+			string line = r == null ? RM_SuspensionMath.ReadoutName(Tier) : Bridges.InspectLines(r, Position);
 			if (r != null && r.IsDrawbridge && r.TryIndexOf(Position, out _, out int li) && RM_Drawbridges.LeafOf(r, li) is DrawbridgeLeaf leaf)
 			{
 				line += "\n" + RM_Drawbridges.InspectLine(Map, r, leaf);   // DRAWBRIDGE (R11)

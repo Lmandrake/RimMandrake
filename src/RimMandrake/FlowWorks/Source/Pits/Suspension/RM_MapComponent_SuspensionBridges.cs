@@ -842,7 +842,7 @@ namespace RimMandrake.FlowWorks.Pits
 						}
 						if (d != null && fallers.Count == 0)
 						{
-							Messages.Message("The " + RM_SuspensionMath.TierLabel(r.tier) + " suspension bridge gave way under its load ("
+							Messages.Message("The " + RM_SuspensionMath.BridgeName(r.tier) + " gave way under its load ("
 								+ RM_SuspensionMath.LoadLine(load, rating) + ").", new TargetInfo(cells[0], map), MessageTypeDefOf.NegativeEvent);
 						}
 						break;   // the record's spans changed under us; next pass sees the rest
