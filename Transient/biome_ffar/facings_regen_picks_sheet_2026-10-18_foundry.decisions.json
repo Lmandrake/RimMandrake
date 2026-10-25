@@ -1,0 +1,198 @@
+{
+  "biome": "SUBJECTS_facings_regen_picks",
+  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
+  "decidedCount": 7,
+  "decisions": {
+    "RSW_Lothcat_f": {
+      "at": "2026-10-25T03:03:43.043Z",
+      "decision": "A",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-25T03:03:43.043Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "I see valid yellow Lothcat in A(east), B(North) and C(south). Put those together, delete white examples, and call it accepted.",
+          "when": "2026-10-24T20:25:35-0700"
+        }
+      ],
+      "prefill": "A",
+      "rev": "56cf17d553e39270",
+      "schema": 2,
+      "slots": {}
+    },
+    "RSW_OpeeSeaKiller": {
+      "at": "2026-10-22T06:45:01.934Z",
+      "decidedAt": "2026-10-22T06:45:01.934Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "reject": {},
+      "retire": {},
+      "rev": "56cf17d553e39270",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/SeaBeasts/OpeeSeaKiller/OpeeSeaKiller": {
+          "at": "2026-10-22T06:45:01.934Z",
+          "pick": "A",
+          "set_id": "1671473262edc3cf",
+          "slot_id": "RSW_OpeeSeaKiller/lifeStages[2].bodyGraphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RSW_Strill": {
+      "at": "2026-10-25T03:04:42.503Z",
+      "decidedAt": "2026-10-25T03:04:36.791Z",
+      "decision": "A",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-22T06:45:49.012Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Redo South facing, that looks ridiculous. Too wide spread for all six feet. (actually seven showed anyway, one is behind another). Just redo south.",
+          "when": "2026-10-22T00:33:22-0700"
+        }
+      ],
+      "picks": {},
+      "prefill": "A",
+      "reject": {},
+      "retire": {
+        "_flip:swanimals/Strill/Strill_Flying_": [
+          "D"
+        ]
+      },
+      "rev": "56cf17d553e39270",
+      "schema": 2,
+      "slots": {
+        "_flip:swanimals/Strill/Strill_Flying_": {
+          "at": "2026-10-25T03:04:42.503Z",
+          "slot_id": "RSW_Strill/flyingAnimationFramePathPrefix",
+          "state": "redraw"
+        },
+        "swanimals/Strill/Strill": {
+          "at": "2026-10-25T03:04:36.791Z",
+          "pick": "A",
+          "set_id": "3d7601a0d92eb9ab",
+          "slot_id": "RSW_Strill/lifeStages[2].bodyGraphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RSW_TeeMuss": {
+      "at": "2026-10-25T03:05:08.660Z",
+      "decidedAt": "2026-10-22T06:45:54.938Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "9b306899086a2d40d2ea32a22ae5a07e8b26069e122f7de628b30f963d7449cb"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "56cf17d553e39270",
+      "schema": 2,
+      "slots": {
+        "swanimals/TeeMuss/TeeMuss": {
+          "at": "2026-10-22T06:45:54.938Z",
+          "pick": "A",
+          "set_id": "14ee234e63a72779",
+          "slot_id": "RSW_TeeMuss/lifeStages[2].bodyGraphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RSW_Varactyl_m": {
+      "at": "2026-10-22T06:47:36.516Z",
+      "decidedAt": "2026-10-22T06:46:27.609Z",
+      "decision": "hold",
+      "enactedBy": "BENCH helper: owner words relayed 2026-10-24; male draws Varactyl_f (ff44250a3f), redo withdrawn",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-22T06:47:36.516Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Varactyl has been correctly drawn on a different biome, use that. This is terrible and none of the art on this sheet should be kept for the Varactyl. Use the other one 100%.",
+          "when": "2026-10-24T20:25:35-0700"
+        }
+      ],
+      "prefill": "D",
+      "rev": "56cf17d553e39270",
+      "saidAt": "2026-10-24",
+      "schema": 2,
+      "slots": {},
+      "supersededRuling": {
+        "decidedAt": "2026-10-22T06:46:27.609Z",
+        "decision": "redo",
+        "note": "Totally unrealistic. Try again. None of these are actually Varactyl's. Look at the canon imagery. There's plenty of it. ",
+        "slots": {
+          "swanimals/Varactyl/Varactyl_m": {
+            "at": "2026-10-22T06:46:27.609Z",
+            "slot_id": null,
+            "state": "redraw"
+          }
+        }
+      }
+    },
+    "RSW_Whisperbird": {
+      "at": "2026-10-22T06:48:01.513Z",
+      "decision": "A",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-22T06:48:01.513Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "A + B is good, but your flying art is old and not modern.",
+          "when": "2026-10-22T00:33:22-0700"
+        }
+      ],
+      "picks": {
+        "_flip:swanimals/Whisperbird/Whisperbird_Flying_": "C"
+      },
+      "prefill": "A",
+      "rev": "56cf17d553e39270",
+      "schema": 2,
+      "slots": {}
+    },
+    "RSW_Yobshrimp": {
+      "at": "2026-10-22T06:48:21.485Z",
+      "decision": "A",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-22T06:48:21.485Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "A + B gets you there. ",
+          "when": "2026-10-22T00:33:22-0700"
+        }
+      ],
+      "prefill": "A",
+      "rev": "56cf17d553e39270",
+      "schema": 2,
+      "slots": {}
+    }
+  },
+  "posture": "pick-one",
+  "reviewStatus": {
+    "at": null,
+    "by": null,
+    "evidence": "generated by art_sheet.py --biome; rows marked sit1 carry the owner's desert sitting 1 picks, no human has ruled on this sheet",
+    "state": "prefill"
+  },
+  "savedAt": "2026-10-24T20:05:09-0700",
+  "savedBy": "review-sheet-sidecar",
+  "sheetId": "facings_regen_picks_sheet_2026-10-18",
+  "snapshot": "infrastructure/state/art/sheets/facings_regen_picks_sheet_2026-10-18.snapshot.json",
+  "snapshotId": "9e010383a02bfd16",
+  "writeCount": 31
+}
