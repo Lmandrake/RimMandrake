@@ -444,8 +444,10 @@ def flowworks_lane(path=None):
     try:
         with open(path, encoding="utf-8") as fh:
             d = json.load(fh)
-    except OSError:
+    except FileNotFoundError:
         return "BENCH", []
+    except OSError as e:   # exists but unreadable (a directory, no permission): loud, like bad JSON
+        raise LaneFileError("%s: unreadable (%s)" % (path, e))
     except ValueError as e:
         raise LaneFileError("%s: not valid JSON (%s)" % (path, e))
     if not isinstance(d, dict):

@@ -59,6 +59,17 @@ def t_a_bad_lane_file_raises_naming_the_file():
             os.unlink(fh.name)
 
 
+def t_an_unreadable_lane_file_raises_not_silently_unrouted():
+    import tempfile
+    with tempfile.TemporaryDirectory() as td:   # a directory where the file should be: exists, cannot be read
+        try:
+            priority.flowworks_lane(td)
+        except priority.LaneFileError as e:
+            assert td in str(e), str(e)
+        else:
+            raise AssertionError("an unreadable lane path silently degraded to no routing")
+
+
 CASES = [v for k, v in sorted(globals().items()) if k.startswith("t_") and callable(v)]
 
 if __name__ == "__main__":
