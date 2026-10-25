@@ -653,41 +653,28 @@
   "FlowWorks": {
     "components": {
       "counts": {
-        "FAIL": 10,
-        "PASS": 54,
-        "UNMEASURED": 4
+        "FAIL": 2,
+        "PASS": 61
       },
       "not_ok": [
-        "MX_H00_Flat_straight_L6",
-        "MX_H01_Flat_corner_L14",
-        "MX_H02_Flat_water_L24",
-        "MX_H03_Plump_straight_L14",
-        "MX_H04_Plump_corner_L24",
-        "MX_H05_Plump_water_L6",
-        "MX_H06_Filling50_straight_L24",
-        "MX_H07_Filling50_corner_L6",
-        "MX_H08_Filling50_water_L14",
-        "CR2_trail_follows_walk",
-        "NS_external_pipe_is_visual_only",
-        "SL4_carry_states_survive",
-        "PP1_preport_midcarry_save_loads",
-        "PP2_preport_midretract_save_loads"
+        "L2_tier_live",
+        "S5_sticky_limitless"
       ],
       "unbuilt": [],
       "uncovered": []
     },
-    "hash": "ef6861ef2870eba21d8675b98971f17f903f625d141f16429351b8b0086f94c9",
+    "hash": "0a5ad53d73b6f930446f260404f11e0a56ca8d966036c98b97f7576d19b0b410",
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "FlowWorks/proof_hose.py@proof_hose_20261024T031318.json",
+    "run_id": "FlowWorks/validation_v2@validation_v2_result_20261025T0152_run4.json",
     "source": {
-      "assembly_sha256": "52068a66bcea217266e8679321a2072a90a6391eb2a03fa8b6202adc82281bdb",
+      "assembly_sha256": "073f76f2fd73e5d1d4f8d320541693b93474359b731b023372903373e1460c90",
       "env_running_count": 11,
       "env_running_sha256": "c74dc4170b83fff4082e70e6271cb799ff3b0555962540423b5ac5ba62b0dd38",
-      "result": "src/RimMandrake/FlowWorks/northstar/proof_hose_20261024T031318.json",
-      "started": "2026-10-24T03:13:18",
-      "ticks_spent": null,
+      "result": "src/RimMandrake/FlowWorks/northstar/validation_v2_result_20261025T0152_run4.json",
+      "started": "2026-10-24T18:46:00",
+      "ticks_spent": 14408,
       "tier": "flowworks",
       "verb": "modcheck record"
     },
@@ -696,7 +683,7 @@
       "status": "UNMEASURED",
       "why": "no step-4 result supplied (--extensions)"
     },
-    "ts": 1792843125.720475
+    "ts": 1792894645.3908434
   },
   "GelatinousSlime": {
     "hash": "3f0c2444e7d23bd55c945fdbd268309a08a77e9a270e8168e38d7e2f85fd6e5e",
