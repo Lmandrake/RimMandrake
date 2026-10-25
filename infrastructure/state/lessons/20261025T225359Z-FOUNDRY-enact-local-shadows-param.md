@@ -1,0 +1,2 @@
+enact.py build_plan: a local list named `stale` (catch-row early jobs, ~L1570) rebound the function's `stale` argument (ingest's stale_rows dict), so every row after the first catch row lost its stale-click refusal and installed unverified picks. In a 700-line loop body, never reuse a parameter name for a local; selftest_enact now orders a catch row before a stale row. (ENACT_STALE_KEY_FIX_UNREVIEWED full review 2026-10-25)
+home: NONE

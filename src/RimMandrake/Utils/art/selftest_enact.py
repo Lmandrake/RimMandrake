@@ -255,6 +255,19 @@ def main():
         check(I.stale_letter_rows(d_car, ruled_r, now_r, versions=vs_diff) == {"R2": ["F"]}, "renamed carried row, changed sha: stale")
         P_st = E.build_plan(F["decisions"], ["vine"], stale={"RM_Foo": ["B"]})
         check(not P_st["install"] and any(c.startswith("RM_Foo: letter(s) B") for c in P_st["conflicts"]), "a stale row is a CONFLICT and does nothing")
+        # a catch row (RM_RedoCatch, redo) reached BEFORE the stale row once rebound build_plan's `stale` argument to its
+        # job list, so every later stale row installed unverified (ENACT_STALE_KEY_FIX_UNREVIEWED)
+        d_cat = json.loads(F["decisions"].read_text())
+        d_cat["decisions"] = {"RM_RedoCatch": {"decision": "redo", "at": "2026-10-08T10:00:00.000Z",
+                                               "decidedAt": "2026-10-08T10:00:00.000Z", "note": ""},
+                              **d_cat["decisions"]}
+        dp_cat = F["root"] / "test_sheet_catch.decisions.json"
+        dp_cat.write_text(json.dumps(d_cat))
+        P_cat = E.build_plan(dp_cat, ["vine"], stale={"RM_Foo": ["B"]})
+        check(not any(i["row"] == "RM_Foo" for i in P_cat["install"])
+              and any(c.startswith("RM_Foo: letter(s) B") for c in P_cat["conflicts"]),
+              "a stale row after a catch row is still a CONFLICT (the catch step does not rebind `stale`)")
+        dp_cat.unlink()
         # clear_followed: a sidecar save landing between read and replace is merged over, never lost
         cf = F["root"] / "cf.json"
         cf.write_text(json.dumps({"decisions": {"X": {"note": "do it", "at": "a"}, "Y": {"note": "", "decision": "A"}}}))

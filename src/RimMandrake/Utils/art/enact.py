@@ -1567,14 +1567,15 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                 settled, ref_sha, why = source_settled(src_row, decs, snap, jobs, idx, census)
                 # jobs drawn before the creature was settled (none carries it as reference) are superseded: withdrawn,
                 # never awaiting his pick (bug 2026-10-10: 8 catches rendered from no source at all)
-                stale = [j for j in match if not (settled and refs_sha(j, ref_sha))]
-                for j in stale:
+                # (not named `stale`: that is build_plan's stale-rows argument, read for every later row)
+                early = [j for j in match if not (settled and refs_sha(j, ref_sha))]
+                for j in early:
                     if j["_state"] == "active":
                         P["conflicts"].append(f"{row}: job {j['id']} is rendering now, drawn before {src_row} was settled "
                                               f"— withdraw it once it finishes")
                     else:
                         P["withdraw"].append({"row": row, "job": j, "why": f"drawn before {src_row} was settled ({why})"})
-                match = [j for j in match if j not in stale]
+                match = [j for j in match if j not in early]
                 if not settled:
                     P["blocked"].append(f"{row}: not filed — waiting for {src_row} to be settled ({why})")
                     cstate = "blocked"
@@ -1826,7 +1827,7 @@ def ruling_status(decisions: Path, idx: L.Index | None = None, jobs: list[dict] 
             st = "not_acted"
             detail = "; ".join([t.split(": ", 1)[1].split(" (art or def edit?")[0] for t in todo]
                                + (["redraw not yet filed"] if q else []) + (["pick not yet installed"] if inst else [])
-                               + (["✕ not yet purged"] if pur else []) + (["cut not yet done"] if cut and st else [])
+                               + (["✕ not yet purged"] if pur else []) + (["cut not yet done"] if any(c["plan"]["sites"] or c["plan"]["deleted"] for c in cut) else [])
                                + (["early renders not yet withdrawn"] if wdr else []))
         elif conf:
             st, detail = "conflict", "; ".join(c.split(": ", 1)[1] for c in conf)
