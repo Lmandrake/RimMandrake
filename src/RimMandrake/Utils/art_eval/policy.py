@@ -28,6 +28,7 @@ model's own severity guess is kept beside it so disagreement is visible.
 """
 from __future__ import annotations
 
+import datetime as dt
 import hashlib
 import json
 import os
@@ -381,12 +382,21 @@ def deterministic_regen_prompt(card: dict, findings: list) -> dict:
 
 
 # ------------------------------------------------------------------ shadow mode
+def _instant(at) -> dt.datetime:
+    """`at` as a UTC instant: ISO strings either side of a DST change (-07:00 / -08:00) do not order as text.
+    Missing or unparseable is the earliest instant (the sort is stable, so such rows keep their given order)."""
+    try:
+        return dt.datetime.fromisoformat(str(at)).astimezone(dt.timezone.utc)
+    except (TypeError, ValueError):
+        return dt.datetime.min.replace(tzinfo=dt.timezone.utc)
+
+
 def shadow_status(template: str, shadow_rows: list, settings: dict) -> dict:
     """Per template: consecutive owner-reviewed subjects since the last BLOCKING override, and whether the shadow
     sheet is still owed. shadow_rows are {template, at, override: bool, blocking: bool} in time order."""
     cfg = settings["shadow"].get(template, DEFAULT_SETTINGS["shadow"]["creature"])
     streak = 0
-    for r in sorted((r for r in shadow_rows if r.get("template") == template), key=lambda r: r.get("at", "")):
+    for r in sorted((r for r in shadow_rows if r.get("template") == template), key=lambda r: _instant(r.get("at"))):
         if r.get("override") and r.get("blocking"):
             streak = 0
         else:

@@ -347,6 +347,11 @@ def main():
     check("blocking override resets", P.shadow_status("creature", rows, s)["consecutive_clean"] == 0)
     rows.append({"template": "creature", "at": "99", "override": True, "blocking": False})
     check("polish override does not reset", P.shadow_status("creature", rows, s)["consecutive_clean"] == 1)
+    # DST: 01:30-08:00 is LATER than 01:45-07:00 but sorts earlier as text; the override is the later row
+    dst = [{"template": "creature", "at": "2026-11-01T01:30:00-08:00", "override": True, "blocking": True},
+           {"template": "creature", "at": "2026-11-01T01:45:00-07:00", "override": False}]
+    check("shadow_status orders by instant across a DST change",
+          P.shadow_status("creature", dst, s)["consecutive_clean"] == 0, P.shadow_status("creature", dst, s))
 
     # --- criteria ledger: add -> fix -> regression row; overrides need his words
     import ledger as LG
