@@ -228,18 +228,23 @@ The agent then gets PASS on every door.
 - **A5, during the week.** Run `verify_from_archmagi.sh` daily. Reboot it on purpose when
   `reboot_pending` shows. Phase 2 harness work continues under its own items.
 
-- **A6, switching Claude accounts remotely** (owner need 2026-10-25). `claude_account.sh` is installed as
-  `/usr/local/bin/claude-account` on `stevedesktop-wsl` (user `mandrake`), together with
-  `/etc/profile.d/claude-account.sh` and the first line of `~/.bashrc`, which export
-  `CLAUDE_CONFIG_DIR=~/.claude-active`. Each account is its own config dir under `~/.claude-accounts/`.
-  - **See them:** `ssh stevedesktop-wsl claude-account list`.
-  - **Switch:** `... claude-account use <name>`.
-  - **Add one:** `... claude-account login <name> [email]` prints a URL. He opens it on his phone, signed in
-    to that Google account. Then `... claude-account code <name> <code>`.
-
-  The first account, `gmail`, was imported 2026-10-25 from the `sjlewis` login (the Start-menu Ubuntu user);
-  both users then held the same token. Reinstall with
-  `scp claude_account.sh stevedesktop-wsl:/tmp/claude-account && ssh stevedesktop-wsl sudo install -m 755 /tmp/claude-account /usr/local/bin/claude-account`.
+- **A6, switching Claude accounts** (owner rulings 2026-10-25: whole machine, close every Claude window,
+  relaunch the Fleet). Built in `claude-remote-control` (`accounts/`, `scripts/claude_account*.py`);
+  design and owner steps: `D:\Luke\dev\claude-remote-control\docs\2026-10-25-account-switching-design.md`
+  sections 15-19. SteveDesktop was migrated off the old `~/.claude-active` / `CLAUDE_CONFIG_DIR` layout:
+  the live login is `~/.claude` + `~/.claude.json` (lukas), dormant logins sit in `~/.claude-accounts/<acct>/`.
+  - **See:** `ssh stevedesktop-wsl claude-account status`, or `http://stevedesktop-wsl:8765/` on the tailnet.
+  - **Switch:** `ssh -t stevedesktop-wsl claude-account-switch stevedesktop <lukas|steven|system>` (asks for the
+    machine name), the page, or Archmagi's desktop folder `Claude accounts`. Closes every Claude window here,
+    never the game.
+  - **Add a login:** the page's *Log in* button, or `claude-account enroll <acct>` then
+    `claude-account code <acct> --op <id>` (code at a hidden prompt, never in argv).
+  - **Fleet** (delegated call): `C:\SteveDesktop\claude_fleet.ps1` opens "Claude Server (SteveDesktop)"
+    (`claude remote-control`) and "Claude Runner (SteveDesktop)" in `~/rm/runner`. This supersedes step 9's
+    "do not turn on Remote Control" now that the owner wants SteveDesktop controllable from his phone.
+  - **Reinstall:** copy the repo to `~/src/claude-account` and run `bash accounts/install.sh stevedesktop`.
+  - The `sjlewis` user's `~/.claude/.credentials.json` is a superseded copy of the lukas grant (the token has
+    rotated since); do not use or copy it.
 
 ---
 
