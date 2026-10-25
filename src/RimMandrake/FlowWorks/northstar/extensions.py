@@ -86,6 +86,7 @@ suite.toggles = FW_TOGGLES + PITS_TOGGLES + RIVER_TOGGLES + MACH_TOGGLES
 # hose port step 4 (G5.10): owning class and shipped default of every toggle come from the ONE typed registry
 # (settings_registry.py, built from site_spec.SETTINGS + the C# Scribe keys), not from a hand table here
 import settings_registry as REG  # noqa: E402
+import shovel_stage  # noqa: E402
 DEFAULTS = REG.defaults(suite.toggles)
 SETTINGS_OF = REG.settings_of(suite.toggles)
 
@@ -463,6 +464,16 @@ def _spawn_pawn_at(t, kind, x, z, faction="player"):
         # a pawn that never spawned makes every `is not True` / "cover intact" check below pass vacuously
         raise ExpectationFailed("UNMEASURED: spawn_pawn %s at (%d,%d) returned no id: %r" % (kind, x, z, r))
     return row.get("id")
+
+
+def _stage_shovel(t, pid):
+    """SHOVELS_BUILD_NO_DIGGING_BARE_HANDED: a colonist with no shovel in its pack gets no dig or fill job, so a row that is
+    about the dig or the fill (not the shovel) stages one first. Not staged = UNMEASURED, never a mod FAIL."""
+    if not t._guard():
+        return
+    ok, why = shovel_stage.give_shovel(t.bridge_call, pid)
+    if not ok:
+        raise ExpectationFailed("UNMEASURED: shovel not staged for %s: %s" % (pid, why))
 
 
 def _pit_held(t, pid, cells):
@@ -1144,6 +1155,7 @@ def _order_fill_in(t, pid, cell):
     is UNMEASURED; the WorkGiver refusing a designated cell with fill-in ON is the mod's own answer (FAIL)."""
     if not t._guard():
         return
+    _stage_shovel(t, pid)
     # forced=True: the order below is a player order, and HasJobOnCell passes `forced` to its reservation check
     pr = t.bridge_call("jawa/flowworks_job_probe", x=cell[0], z=cell[1], kind="fillin", pawnId=pid, forced=True) or {}
     wg, pw = pr.get("workGiver") or {}, pr.get("pawn") or {}
@@ -3134,6 +3146,7 @@ def wall_faces(t):
 def _dig_by_hand(t, pid, c):
     """One real canal cut by a colonist's RM_DigCanalJob (the only caller of RM_DigDiscoveryState.OnCut). Done means
     the cell's DEPTH rose (live 19:38: a designation query reading 'gone' proved nothing -- no cut had happened)."""
+    _stage_shovel(t, pid)
     d0 = _rep(t, *c).get("depth") or 0
     _stage(t, "jawa/designate_batch", action="add", designation="RM_DigCanal", rect=_rect(c[0], c[1], 1, 1))
     t.bridge_call("jawa/ordered_job", pawnId=pid, jobDef="RM_DigCanalJob", targetAX=c[0], targetAZ=c[1])

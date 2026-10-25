@@ -121,11 +121,16 @@ namespace RimMandrake.Pyrelands
             // from under (the designator already refuses an edificed cell; the order outlives the check).
             if (c.GetEdifice(pawn.Map) != null) return false;
             if (c.IsForbidden(pawn)) return false;
-            return pawn.CanReserve(c, 1, -1, null, forced) && pawn.CanReach(c, PathEndMode.Touch, pawn.NormalMaxDanger());
+            if (!pawn.CanReserve(c, 1, -1, null, forced) || !pawn.CanReach(c, PathEndMode.Touch, pawn.NormalMaxDanger())) return false;
+            // SHOVELS_BUILD_NO_DIGGING_BARE_HANDED (owner 2026-10-25, Q2: sand shovelling needs a shovel too): FlowWorks' rule,
+            // read reflection-soft; no shovel and none free, no job (the order stays).
+            return RimMandrake.Shared.FlowWorksShovelRead.CanWorkOrFetch(pawn, forced);
         }
 
         public override Job JobOnCell(Pawn pawn, IntVec3 c, bool forced = false) =>
-            JobMaker.MakeJob(RM_TerrainDigDefOf.RM_ShovelTerrain_Job, c);
+            RimMandrake.Shared.FlowWorksShovelRead.Ready(pawn)
+                ? JobMaker.MakeJob(RM_TerrainDigDefOf.RM_ShovelTerrain_Job, c)
+                : RimMandrake.Shared.FlowWorksShovelRead.FetchJobFor(pawn, forced);
     }
 
     public class JobDriver_RM_ShovelTerrain : JobDriver
@@ -139,7 +144,8 @@ namespace RimMandrake.Pyrelands
         {
             this.FailOn(() => !RM_PyrelandsSettings.sandShovelEnabled
                 || Map.designationManager.DesignationAt(TargetA.Cell, RM_TerrainDigDefOf.RM_ShovelTerrain) == null
-                || TargetA.Cell.GetEdifice(Map) != null);
+                || TargetA.Cell.GetEdifice(Map) != null
+                || !RimMandrake.Shared.FlowWorksShovelRead.Ready(pawn));   // SHOVELS_BUILD_NO_DIGGING_BARE_HANDED
             yield return Toils_Goto.GotoCell(TargetIndex.A, PathEndMode.Touch);
             Toil dig = ToilMaker.MakeToil("RM_ShovelTerrain");
             dig.initAction = delegate
@@ -231,6 +237,18 @@ namespace RimMandrake.Pyrelands
             TerrainDef before = cell.GetTerrain(map);
             bool was = RM_PyrelandsSettings.sandShovelEnabled;
             Thing wall = null;
+            // SHOVELS_BUILD_NO_DIGGING_BARE_HANDED: this proof is about walls, not shovels; lend the colonist one when FlowWorks
+            // requires it (taken back below)
+            Thing lent = null;
+            if (!RimMandrake.Shared.FlowWorksShovelRead.Ready(col))
+            {
+                ThingDef shovel = DefDatabase<ThingDef>.GetNamedSilentFail("RM_Shovel");
+                if (shovel != null)
+                {
+                    lent = ThingMaker.MakeThing(shovel, ThingDefOf.WoodLog);
+                    if (!col.inventory.innerContainer.TryAdd(lent)) lent = null;
+                }
+            }
             try
             {
                 RM_PyrelandsSettings.sandShovelEnabled = true;
@@ -245,6 +263,7 @@ namespace RimMandrake.Pyrelands
             }
             finally
             {
+                if (lent != null && !lent.Destroyed) lent.Destroy();
                 if (wall != null && wall.Spawned) wall.Destroy();
                 Designation d = map.designationManager.DesignationAt(cell, RM_TerrainDigDefOf.RM_ShovelTerrain);
                 if (d != null) map.designationManager.RemoveDesignation(d);

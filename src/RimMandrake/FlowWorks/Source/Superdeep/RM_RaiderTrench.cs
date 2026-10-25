@@ -532,6 +532,14 @@ namespace RimMandrake.FlowWorks
 			{
 				return null;
 			}
+			// SHOVELS_BUILD_NO_DIGGING_BARE_HANDED (owner 2026-10-25: "raiders need shovels and a lot of time"): no shovel in the
+			// pack, no causeway. A loose one within FetchRadius (the colony's too) is picked up first; with none the square is no
+			// fill job (the raid then has ladders, jumps, or waits). Before the fill credit, so nobody fetches fill bare-handed.
+			if (RM_Shovels.Needs(p) && !RM_Shovels.HasShovel(p))
+			{
+				Thing shovel = RM_Shovels.FindShovelFor(p, false, FetchRadius, true);
+				return shovel == null ? null : RM_Shovels.TakeJob(shovel);
+			}
 			// DIG_FILL_TUNE_HOURS_OF_SHOVEL_WORK (owner card 2026-10-25): "Everyone pays." A square not yet paid for is first
 			// paid for: the raider fetches gravel, crushed ice or a chunk from near by and tips it in (the colonists' fill credit);
 			// with none within reach the square is no fill job at all.
@@ -816,6 +824,9 @@ namespace RimMandrake.FlowWorks
 			AddFinishAction(cond => RM_RaiderTrench.NoteWorkEnd(pawn, job, cond, CurToilIndex));
 			this.FailOn(() => !RM_RaiderTrench.On);
 			AddEndCondition(() => FillTargetMet() ? JobCondition.Succeeded : JobCondition.Ongoing);
+			// SHOVELS_BUILD_NO_DIGGING_BARE_HANDED: the fill branch only (ladders need no shovel); rechecked every tick, so a raider
+			// who lost the shovel, or a job issued before the setting went on, stops
+			this.FailOn(() => !IsLadder && !RM_Shovels.Ready(pawn));
 			yield return Toils_Goto.GotoCell(TargetIndex.A, PathEndMode.Touch);
 			Toil work = ToilMaker.MakeToil("RM_RaiderTrenchWork");
 			work.initAction = delegate
@@ -845,6 +856,10 @@ namespace RimMandrake.FlowWorks
 				}
 				if (!IsLadder)
 				{
+					if (!RM_Shovels.Ready(pawn))
+					{
+						return;   // SHOVELS_BUILD_NO_DIGGING_BARE_HANDED: the mutation itself is gated too
+					}
 					if (eng.CanFillIn(c) && (job.count < 0 || RM_SuperdeepTrap.StepDepthAt(map, eng, c) > job.count))
 					{
 						// DIG_FILL_TUNE_HOURS_OF_SHOVEL_WORK: a level is filled only when paid for (another raider sharing the
@@ -948,6 +963,12 @@ namespace RimMandrake.FlowWorks
 		public static float raiderFillSpeed = RM_LadderParityMath.DefaultRaiderFillSpeed;
 		/// <summary>PROVISIONAL: "some may have jump packs".</summary>
 		public static float raiderJumpPackShare = 0.1f;
+		/// <summary>SHOVELS_BUILD_NO_DIGGING_BARE_HANDED, PROVISIONAL (design §4a): the share of an assault raid's tool-users who
+		/// bring a shovel.</summary>
+		public static float raiderShovelShare = RM_ShovelMath.DefaultRaiderShovelShare;
+		/// <summary>SHOVELS_BUILD_NO_DIGGING_BARE_HANDED, PROVISIONAL: a sapper raid's share (owner: "Sappers however would bring
+		/// shovels &amp; ladders"). A siege brings none: it is mortar-based.</summary>
+		public static float sapperShovelShare = RM_ShovelMath.DefaultSapperShovelShare;
 
 		// FLOWWORKS_RESET_BUILD_TWELVE_SCREENS_MISSING: shipped value of every public static bool/float/int setting above. MUST stay
 		// below the LAST public setting field (C# runs static initialisers in textual order).
@@ -968,6 +989,8 @@ namespace RimMandrake.FlowWorks
 			Scribe_Values.Look(ref raiderLadderSpeed, "raiderLadderSpeed", 1f);
 			Scribe_Values.Look(ref raiderFillSpeed, "raiderFillSpeed", RM_LadderParityMath.DefaultRaiderFillSpeed);
 			Scribe_Values.Look(ref raiderJumpPackShare, "raiderJumpPackShare", 0.1f);
+			Scribe_Values.Look(ref raiderShovelShare, "raiderShovelShare", RM_ShovelMath.DefaultRaiderShovelShare);
+			Scribe_Values.Look(ref sapperShovelShare, "sapperShovelShare", RM_ShovelMath.DefaultSapperShovelShare);
 		}
 
 		public static void DoSettingsSection(Listing_Standard list)
@@ -997,7 +1020,17 @@ namespace RimMandrake.FlowWorks
 			raiderLadderSpeed = Mathf.Round(list.Slider(raiderLadderSpeed, 0.25f, 4f) * 20f) / 20f;
 			list.CheckboxLabeled("  Raiders breach by filling", ref raiderFillEnabled,
 				"When ladders cannot do it (too deep, too narrow, ladders off), raiders shovel earth into the trench until every "
-			  + "step of a one-square causeway is climbable, then walk across it.");
+			  + "step of a one-square causeway is climbable, then walk across it. Only raiders with a shovel do (with \"Digging and "
+			  + "filling need a shovel\" on): they bring their own, or pick up one lying near by, yours included.");
+			int shovelPct = Mathf.RoundToInt(raiderShovelShare * 100f);
+			list.Label("  Raiders who bring a shovel: " + shovelPct + "%", tooltip:
+				"On a map with a dug trench, this share of a neolithic-or-better raid's people arrive with a shovel in their pack "
+			  + "(wood below industrial, steel from industrial; never a siege). Their shovels are loot when they fall. 0% = only shovels they find.");
+			raiderShovelShare = Mathf.Round(list.Slider(raiderShovelShare, 0f, 1f) * 20f) / 20f;
+			int sapperPct = Mathf.RoundToInt(sapperShovelShare * 100f);
+			list.Label("  Sappers who bring a shovel: " + sapperPct + "%", tooltip:
+				"The same for a sapper raid (the raid that digs through your walls). A siege brings none: it shells you.");
+			sapperShovelShare = Mathf.Round(list.Slider(sapperShovelShare, 0f, 1f) * 20f) / 20f;
 			list.Label("  Breach filling speed: x" + raiderFillSpeed.ToString("0.00"), tooltip:
 				"How fast raiders shovel a breach causeway (shipped x0.5: digging in is slow; Orders > Repair breach digs it back out). At x1 one level of fill is half a first-notch dig at ANY depth (a gunner: about 2,800 ticks a level), up to three raiders to a square.");
 			raiderFillSpeed = Mathf.Round(list.Slider(raiderFillSpeed, 0.25f, 4f) * 20f) / 20f;
@@ -1018,6 +1051,8 @@ namespace RimMandrake.FlowWorks
 		{
 			AddFinishAction(cond => RM_RaiderTrench.NoteWorkEnd(pawn, job, cond, CurToilIndex));
 			this.FailOn(() => !RM_RaiderTrench.On || !RimMandrakeFlowWorksSettings.fillCostsSpoilEnabled);
+			// SHOVELS_BUILD_NO_DIGGING_BARE_HANDED: no shovel, no fill (FillJob gates new jobs; this one stops a running one)
+			this.FailOn(() => !RM_Shovels.Ready(pawn));
 			yield return Toils_Goto.GotoThing(TargetIndex.B, PathEndMode.ClosestTouch).FailOnDespawnedOrNull(TargetIndex.B)
 				.FailOnSomeonePhysicallyInteracting(TargetIndex.B);
 			yield return Toils_Haul.StartCarryThing(TargetIndex.B, false, true);
@@ -1028,7 +1063,7 @@ namespace RimMandrake.FlowWorks
 				Thing carried = pawn.carryTracker.CarriedThing;
 				RM_MapComponent_FillCredit credit = Map.GetComponent<RM_MapComponent_FillCredit>();
 				int each = carried == null ? 0 : RM_GroundClassMath.CreditOf(RM_DigSpoil.FillKindOf(carried.def));
-				if (credit == null || each <= 0)
+				if (credit == null || each <= 0 || !RM_Shovels.Ready(pawn))
 				{
 					EndJobWith(JobCondition.Incompletable);
 					return;

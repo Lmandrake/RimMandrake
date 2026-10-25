@@ -76,6 +76,8 @@
     <Compile Include="RaiderTrenchChecks.cs" />
     <Compile Include="..\Superdeep\RM_LadderParityMath.cs" />
     <Compile Include="LadderParityChecks.cs" />
+    <Compile Include="..\RM_ShovelMath.cs" />
+    <Compile Include="ShovelChecks.cs" />
     <Compile Include="..\RM_SpanMath.cs" />
     <Compile Include="..\RM_SuspensionMath.cs" />
     <Compile Include="SuspensionBridgeChecks.cs" />

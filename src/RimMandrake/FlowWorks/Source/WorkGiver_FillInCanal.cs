@@ -63,6 +63,12 @@ namespace RimMandrake.FlowWorks
 			{
 				return false;
 			}
+			// SHOVELS_BUILD_NO_DIGGING_BARE_HANDED (owner 2026-10-25: "You can't dig without them. Hands don't work"): no shovel
+			// in the pack and none free on the map, no job; the designation stays (someone with a shovel, or a machine, may come).
+			if (!RM_Shovels.CanWorkOrFetch(pawn, forced))
+			{
+				return false;
+			}
 			// DIG_SPOIL_BUILD_GRAVEL_PAYS_ITS_WAY: an unpaid pit with nothing to pay it is no job here, so the scanner can
 			// pick a paid-up pit instead of stopping at a nearer one JobOnCell would refuse.
 			if (Unpaid(pawn.Map, c) && !HasMaterial(pawn, forced))
@@ -103,6 +109,12 @@ namespace RimMandrake.FlowWorks
 
 		public override Job JobOnCell(Pawn pawn, IntVec3 c, bool forced = false)
 		{
+			// SHOVELS_BUILD_NO_DIGGING_BARE_HANDED: no shovel in the pack, fetch the nearest free one first (HasJobOnCell found
+			// it); the next scan, shovel in pack, gives this job.
+			if (!RM_Shovels.Ready(pawn))
+			{
+				return RM_Shovels.FetchJobFor(pawn, forced);
+			}
 			// DIG_SPOIL_BUILD_GRAVEL_PAYS_ITS_WAY (owner 2026-10-25): a notch costs 1 gravel or 2 chunks. A paid-up pit gets the
 			// work alone; otherwise the filler fetches one unit, nearest gravel first.
 			if (!Unpaid(pawn.Map, c))

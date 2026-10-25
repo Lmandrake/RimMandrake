@@ -62,6 +62,8 @@ namespace RimMandrake.FlowWorks
 		{
 			// One toil layout whether or not material is fetched: a save taken after the tip has a destroyed targetB, and a
 			// layout that dropped the fetch toils on load would put the saved toil index on the wrong toil.
+			// SHOVELS_BUILD_NO_DIGGING_BARE_HANDED: no shovel in the pack, no filling (the WorkGiver fetches one first)
+			this.FailOn(() => !RM_Shovels.Ready(pawn));
 			Toil check = ToilMaker.MakeToil("RM_FillPaidCheck");
 			check.initAction = delegate
 			{

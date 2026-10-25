@@ -603,7 +603,8 @@ namespace RimMandrake.FlowWorks
 
 	/// <summary>"Raiders should show up with ladders sometimes but not always, and certainly not on every raider": a stable
 	/// roll per raid (RaidBringsLadders), then PickCarriers among its tool-using people; each carrier gets one minified
-	/// portable ladder in its inventory. Never a siege.</summary>
+	/// portable ladder in its inventory. Never a siege. SHOVELS_BUILD_NO_DIGGING_BARE_HANDED (owner 2026-10-25, Q1: "Sappers
+	/// however would bring shovels &amp; ladders"): a sapper raid always passes the roll.</summary>
 	[HarmonyPatch(typeof(IncidentWorker_Raid), "PostProcessSpawnedPawns")]
 	[RimMandrake.Shared.PatchFeature("Raiders arrive with ladders")]
 	public static class RM_Patch_Raid_LadderCarriers
@@ -632,7 +633,8 @@ namespace RimMandrake.FlowWorks
 				byId[p.thingIDNumber] = p;
 				seed = Mathf.Min(seed, p.thingIDNumber);
 			}
-			if (people.Count < 2 || !RM_LadderParityMath.RaidBringsLadders(seed, RM_LadderParitySettings.raidLadderChance))
+			bool sappers = parms.raidStrategy?.Worker is RaidStrategyWorker_ImmediateAttackSappers;
+			if (people.Count < 2 || (!sappers && !RM_LadderParityMath.RaidBringsLadders(seed, RM_LadderParitySettings.raidLadderChance)))
 			{
 				return;
 			}
@@ -844,7 +846,7 @@ namespace RimMandrake.FlowWorks
 			  + "jumps, or slithers (no legs). A person is 1.0. Some creatures carry their own yes/no.");
 			ladderMaxClimberBodySize = Mathf.Round(list.Slider(ladderMaxClimberBodySize, 0.5f, 3f) * 10f) / 10f;
 			list.Label("  Raids that bring ladders: " + Mathf.RoundToInt(raidLadderChance * 100f) + "%", tooltip:
-				"This share of raids (never a siege) arrive with portable ladders. 0% = raiders build every ladder on the spot.");
+				"This share of raids (never a siege) arrive with portable ladders; a sapper raid always does. 0% = raiders build every ladder on the spot.");
 			raidLadderChance = Mathf.Round(list.Slider(raidLadderChance, 0f, 1f) * 20f) / 20f;
 			list.Label("  Raiders in such a raid who carry one: " + Mathf.RoundToInt(raidLadderCarrierShare * 100f) + "%", tooltip:
 				"At least one, never every raider. A carried ladder is set in about 4 s; one built on the spot takes about 10 s plus 1 s a metre.");

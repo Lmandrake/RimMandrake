@@ -88,11 +88,23 @@ namespace RimMandrake.FlowWorks
 					?? "Deeper than this digger may go.");
 				return false;
 			}
+			// SHOVELS_BUILD_NO_DIGGING_BARE_HANDED (owner 2026-10-25: "You can't dig without them. Hands don't work"): no shovel
+			// in the pack and none free on the map, no job; the designation stays (someone with a shovel, or a machine, may come).
+			if (!RM_Shovels.CanWorkOrFetch(pawn, forced))
+			{
+				return false;
+			}
 			return pawn.CanReserve(c, 1, -1, ReservationLayerDefOf.Floor, forced);
 		}
 
 		public override Job JobOnCell(Pawn pawn, IntVec3 c, bool forced = false)
 		{
+			// SHOVELS_BUILD_NO_DIGGING_BARE_HANDED: no shovel in the pack, fetch the nearest free one first (HasJobOnCell found
+			// it); the next scan, shovel in pack, gives this job.
+			if (!RM_Shovels.Ready(pawn))
+			{
+				return RM_Shovels.FetchJobFor(pawn, forced);
+			}
 			return JobMaker.MakeJob(RimMandrakeFlowWorks_DefOf.RM_DigCanalJob, c);
 		}
 	}

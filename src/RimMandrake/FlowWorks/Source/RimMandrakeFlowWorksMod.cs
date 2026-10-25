@@ -500,6 +500,8 @@ namespace RimMandrake.FlowWorks
         // ICE_DIG_BUILD_CRUSHED_ICE_MELTS_DOWN + DIG_FILL_TUNE_HOURS_OF_SHOVEL_WORK (owner cards 2026-10-25).
         public static bool iceDigEnabled = true;
         public static float digLabourMultiplier = RM_DigDepthMath.DefaultLabourMultiplier;
+        // SHOVELS_BUILD_NO_DIGGING_BARE_HANDED (owner 2026-10-25: "You can't dig without them. Hands don't work").
+        public static bool shovelRequired = true;
         public static bool swaleEnabled = true;
         public static float swaleRateMultiplier = 1f;
 
@@ -733,6 +735,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref gravelRecipesEnabled, "gravelRecipesEnabled", true);
             Scribe_Values.Look(ref iceDigEnabled, "iceDigEnabled", true);
             Scribe_Values.Look(ref digLabourMultiplier, "digLabourMultiplier", RM_DigDepthMath.DefaultLabourMultiplier);
+            Scribe_Values.Look(ref shovelRequired, "shovelRequired", true);
             Scribe_Values.Look(ref swaleEnabled, "swaleEnabled", true);
             Scribe_Values.Look(ref swaleRateMultiplier, "swaleRateMultiplier", 1f);
             // ── Rivers (River Works, merged 2026-10-05): one settings file, unique keys ──
@@ -801,7 +804,7 @@ namespace RimMandrake.FlowWorks
             .Declare("digToDepthEnabled", "maxDigDepth", "digCostRisesWithDepth", "machineDigEnabled")
             .Declare("machineDigEnabled", "maxMachineDigDepth")
             .Declare("digRockChunksEnabled", "digRockChunkMultiplier", "digSoilChunkPercent", "digDeepStoneEnabled")
-            .Independent("sandMudSlidesBackEnabled", "digSpoilEnabled", "fillCostsSpoilEnabled", "mineGravelEnabled", "gravelRecipesEnabled", "iceDigEnabled", "digLabourMultiplier")
+            .Independent("sandMudSlidesBackEnabled", "digSpoilEnabled", "fillCostsSpoilEnabled", "mineGravelEnabled", "gravelRecipesEnabled", "iceDigEnabled", "digLabourMultiplier", "shovelRequired")
             .Declare("liquidDrillingEnabled", "drillUnitsPerCycle")
             .Declare("swaleEnabled", "swaleRateMultiplier")
             .Independent("pulseIntervalTicks", "digToDepthEnabled", "drillYieldChanceMultiplier", "wardenFromLipEnabled", "waterBodyTypeFlipFixEnabled",
@@ -826,7 +829,7 @@ namespace RimMandrake.FlowWorks
             .Name("trapTriggerEnabled", "Concealed pits give way under enough weight")
             .Name("superdeepRoomsEnabled", "An enclosed pit is its own room")
             .Name("digFindsEnabled", "Digging a canal can turn up minerals")
-            .Name("digRockGroundEnabled", "Canals can be dug through rock ground").Name("digRockChunksEnabled", "Digging can turn up rock chunks").Name("digDeepStoneEnabled", "Pits 2 m deep reach a deeper stone").Name("sandMudSlidesBackEnabled", "Sand and mud slide back in").Name("digSpoilEnabled", "Digging leaves gravel").Name("fillCostsSpoilEnabled", "Filling in costs gravel or chunks").Name("mineGravelEnabled", "Mining a rock wall leaves gravel when no chunk drops").Name("gravelRecipesEnabled", "Gravel can stand in for stone chunks in recipes").Name("iceDigEnabled", "Ice and packed snow dig to crushed ice").Name("digLabourMultiplier", "Digging and filling labour").Name("liquidDrillingEnabled", "Drilling and bleed wells")
+            .Name("digRockGroundEnabled", "Canals can be dug through rock ground").Name("digRockChunksEnabled", "Digging can turn up rock chunks").Name("digDeepStoneEnabled", "Pits 2 m deep reach a deeper stone").Name("sandMudSlidesBackEnabled", "Sand and mud slide back in").Name("digSpoilEnabled", "Digging leaves gravel").Name("fillCostsSpoilEnabled", "Filling in costs gravel or chunks").Name("mineGravelEnabled", "Mining a rock wall leaves gravel when no chunk drops").Name("gravelRecipesEnabled", "Gravel can stand in for stone chunks in recipes").Name("iceDigEnabled", "Ice and packed snow dig to crushed ice").Name("digLabourMultiplier", "Digging and filling labour").Name("shovelRequired", "Digging and filling need a shovel").Name("liquidDrillingEnabled", "Drilling and bleed wells")
             .Name("swaleEnabled", "A watered swale enriches the ground around it");
 
         private static object GetField(string n)
@@ -1033,7 +1036,7 @@ namespace RimMandrake.FlowWorks
             }
 
             // ── FLOWWORKS_QUARRY_DIGGING_1 — what a canal cut turns up ────
-            if (Section(list, "Finds while digging", new[] { "digFindsEnabled", "digFindsLocalOnly", "digFindChanceMultiplier", "digFindBudgetPercent", "digFindLetterEnabled", "digRockGroundEnabled", "digRockWorkMultiplier", "digRockChunksEnabled", "digRockChunkMultiplier", "digSoilChunkPercent", "digDeepStoneEnabled", "sandMudSlidesBackEnabled", "digSpoilEnabled", "fillCostsSpoilEnabled", "mineGravelEnabled", "gravelRecipesEnabled", "iceDigEnabled", "digLabourMultiplier" }))
+            if (Section(list, "Finds while digging", new[] { "digFindsEnabled", "digFindsLocalOnly", "digFindChanceMultiplier", "digFindBudgetPercent", "digFindLetterEnabled", "digRockGroundEnabled", "digRockWorkMultiplier", "digRockChunksEnabled", "digRockChunkMultiplier", "digSoilChunkPercent", "digDeepStoneEnabled", "sandMudSlidesBackEnabled", "digSpoilEnabled", "fillCostsSpoilEnabled", "mineGravelEnabled", "gravelRecipesEnabled", "iceDigEnabled", "digLabourMultiplier", "shovelRequired" }))
             {
             list.CheckboxLabeled("Digging a canal can turn up minerals", ref digFindsEnabled,
                 "Each time a square is cut a level deeper there is a small chance of a lump of something the land holds, "
@@ -1103,6 +1106,12 @@ namespace RimMandrake.FlowWorks
                     + " h to fill, for a digger at 100% mining speed; rock takes the rock multiplier on top. Applies to raiders' fill too)");
                 digLabourMultiplier = list.Slider(digLabourMultiplier, RM_DigDepthMath.MinLabourMultiplier, RM_DigDepthMath.MaxLabourMultiplier);
             }
+            // SHOVELS_BUILD_NO_DIGGING_BARE_HANDED (design/RimMandrake/shovels_v1_2026-10-25.md §5)
+            list.CheckboxLabeled("Digging and filling need a shovel", ref shovelRequired,
+                "On: nobody digs a pit or canal, or fills one back in, with bare hands. A digger without a shovel in their pack "
+              + "fetches the nearest free one first and keeps it; with none free the order waits (an alert says so). Shovels are "
+              + "made at a crafting spot or smithy from wood or metal. Machines (mechanoids, droids) dig without. Raiders shovel a "
+              + "causeway only with a shovel, and some bring their own. Off: anyone digs bare-handed, raiders too.");
             list.CheckboxLabeled("Mining a rock wall leaves gravel when no chunk drops", ref mineGravelEnabled,
                 "On: a colonist mining a natural rock wall that drops no chunk leaves 1 gravel instead. Explosions leave nothing extra.");
             list.CheckboxLabeled("Gravel can stand in for stone chunks in recipes", ref gravelRecipesEnabled,

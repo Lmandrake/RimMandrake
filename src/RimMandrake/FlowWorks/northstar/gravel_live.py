@@ -57,6 +57,7 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 if HERE not in sys.path:
     sys.path.insert(0, HERE)
+import shovel_stage  # noqa: E402
 NSP = "RimMandrake.FlowWorks.RM_NorthstarProofs"
 S_FW = "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings"
 MELTER = "RimMandrake.FlowWorks.RM_IceMelter"
@@ -365,6 +366,11 @@ def main():
             B.call("jawa/set_work_priority", pawnId=c_, workType="Mining", priority=1)
             # one colonist, hauling off: nobody carries spoil out of the counted squares between polls
             B.call("jawa/set_work_priority", pawnId=c_, workType="Hauling", priority=0)
+        # SHOVELS_BUILD_NO_DIGGING_BARE_HANDED: no shovel, no dig or fill job; stage one so these rows measure gravel
+        shovel_bad = [w for w in (shovel_stage.give_shovel(B.call, c_) for c_ in cids) if not w[0]]
+        if shovel_bad:
+            unmeasured_rest("HARNESS", "shovel not staged: %s" % shovel_bad[0][1])
+            return 2
         pid = cids[0]
 
         # 1. sand slides back in; the soil control beside it is accepted

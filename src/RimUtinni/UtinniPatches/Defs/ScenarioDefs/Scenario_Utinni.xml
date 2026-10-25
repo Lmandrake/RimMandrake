@@ -173,6 +173,15 @@
           <bondToRandomPlayerPawnChance>1.0</bondToRandomPlayerPawnChance>
         </li>
 
+        <!-- SHOVELS_BUILD_NO_DIGGING_BARE_HANDED (owner 2026-10-25, Q3: every starting scenario we ship gets one shovel):
+             nobody digs or fills bare-handed, so the crew lands with one. MayRequire: FlowWorks owns RM_Shovel. -->
+        <li Class="ScenPart_StartingThing_Defined" MayRequire="mandrake.rm.flowworks">
+          <def>StartingThing_Defined</def>
+          <thingDef>RM_Shovel</thingDef>
+          <stuff>Steel</stuff>
+          <count>1</count>
+        </li>
+
         <!-- Already aboard the hull, not falling out of the sky. -->
         <li Class="ScenPart_PlayerPawnsArriveMethod">
           <def>PlayerPawnsArriveMethod</def>

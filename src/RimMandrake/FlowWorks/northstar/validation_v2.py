@@ -88,6 +88,7 @@ import time
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import level_water  # noqa: E402  (the exact-level reference, WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES)
+import shovel_stage  # noqa: E402  (SHOVELS_BUILD_NO_DIGGING_BARE_HANDED: the E7/E8 job pawns carry one)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 MOD = os.path.dirname(HERE)                       # src/RimMandrake/FlowWorks
@@ -2739,6 +2740,12 @@ def phase_J(L, args):
                 break
             if k not in pawns:
                 raise Abort("no mining-capable colonist in 5 rolls for %s" % k)
+        # SHOVELS_BUILD_NO_DIGGING_BARE_HANDED: no shovel in the pack, no dig or fill job (the WorkGiver offers a fetch,
+        # the driver fails). These rows are about the dig and the fill, so each job pawn carries one.
+        for k in pawns:
+            ok_, why_ = shovel_stage.give_shovel(B.call, pawns[k][0])
+            if not ok_:
+                raise Abort("shovel not staged for %s: %s" % (k, why_))
         speed = min(v[1] for v in pawns.values())
         L._log("    job pawns %s (rejected, mining disabled: %s)" % (pawns, rejected))
         # caps from the JobDriver work amounts: dig 3200 (WorkToDeepen(0)); fill-in D=1 -> 1600
@@ -4469,6 +4476,14 @@ class MockBridge(object):
 
     def t_jawa_pawn_stats(self, **kw):
         return dict(success=True, stats=[dict(defName="MiningSpeed", value=1.95)])
+
+    def t_jawa_pawn_gear(self, pawn=None, action=None, count=1, stuff=None, **kw):
+        """SHOVELS_BUILD_NO_DIGGING_BARE_HANDED staging: the job pawns' shovel goes in the pack (the mock does not model
+        the shovel rule itself; the live rows SH_* do)."""
+        if action != "inventory" or kw.get("def") != "RM_Shovel":
+            return dict(success=False, error="mock: only the RM_Shovel inventory staging is modelled")
+        self.shovels = getattr(self, "shovels", set()) | {pawn}
+        return dict(success=True, moved=count)
 
     def t_jawa_ordered_job(self, **kw):
         return dict(success=False, accepted=True, note="mock: queued")

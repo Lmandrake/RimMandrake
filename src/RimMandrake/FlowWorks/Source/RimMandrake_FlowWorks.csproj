@@ -161,6 +161,8 @@
     <Compile Include="RM_ExcavationDepth.cs" />
     <Compile Include="RM_DigDepthMath.cs" />
     <Compile Include="RM_DigLabor.cs" />
+    <Compile Include="RM_ShovelMath.cs" />
+    <Compile Include="RM_Shovels.cs" />
     <Compile Include="RM_DeepDigAlert.cs" />
     <Compile Include="RM_MapComponent_Excavation.cs" />
     <!-- The §5 stock arithmetic, Verse-free on purpose so Source/SelfTest/

@@ -24,6 +24,7 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 if HERE not in sys.path:
     sys.path.insert(0, HERE)
+import shovel_stage  # noqa: E402
 NSP = "RimMandrake.FlowWorks.RM_NorthstarProofs"
 DPROOF = "RimMandrake.FlowWorks.RM_DigDiscoveryProof"
 S_FW = "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings"
@@ -128,6 +129,11 @@ def main():
         for c_ in cids:
             B.call("jawa/set_pawn_skill", pawn=c_, skill="Mining", level=10, _answer=True)
             B.call("jawa/set_work_priority", pawnId=c_, workType="Mining", priority=1)
+        # SHOVELS_BUILD_NO_DIGGING_BARE_HANDED: no shovel, no dig job; stage one so the row measures deep stone
+        shovel_bad = [w for w in (shovel_stage.give_shovel(B.call, c_) for c_ in cids) if not w[0]]
+        if shovel_bad:
+            row("DS_superdeep_cut_turns_up_deep_stone", "UNMEASURED", "HARNESS", {"why": "shovel not staged: %s" % shovel_bad[0][1]})
+            return 2
 
         def things():
             lt = B.call("jawa/list_things", rect="%d,%d,13,13" % (c[0] - 6, c[1] - 6), limit=200) or {}

@@ -24,6 +24,9 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>ICE_DIG_BUILD_CRUSHED_ICE_MELTS_DOWN: the spoil of a cut through ice or packed snow; fills like gravel, melts to water.</summary>
 		public static ThingDef RM_CrushedIce;
+
+		/// <summary>SHOVELS_BUILD_NO_DIGGING_BARE_HANDED: nobody digs or fills bare-handed (RM_Shovels).</summary>
+		public static ThingDef RM_Shovel;
 		public static JobDef RM_CaptureDown;
 
 		/// <summary>D = 1. Keeps its original defName so every save's dug cells

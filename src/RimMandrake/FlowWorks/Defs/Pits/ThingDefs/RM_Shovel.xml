@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SHOVELS_BUILD_NO_DIGGING_BARE_HANDED (owner 2026-10-25: "You can't dig without them. Hands don't work"; "Shovels now
+     v1."). Design: design/RimMandrake/shovels_v1_2026-10-25.md §1. A plain stuffable TOOL item, not a weapon: no
+     equipmentType, no weaponTags, no verbs, so no weapon or inventory mod treats it as gear to equip. Carried in inventory;
+     a digger or filler without one fetches the nearest free one (RM_Shovels). Machines dig without (RM_DigLabor).
+     PLACEHOLDER art: vanilla spear texture until SHOVEL_SPRITE_SKETCH_BLADE_DOWN_HANDLE_UP lands
+     (Textures/Things/Item/Equipment/RM_Shovel.png). -->
+<Defs>
+  <ThingCategoryDef>
+    <defName>RM_Tools</defName>
+    <label>tools</label>
+    <parent>Manufactured</parent>
+    <iconPath>UI/Icons/ThingCategories/Manufactured</iconPath>
+  </ThingCategoryDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_Shovel</defName>
+    <label>shovel</label>
+    <description>A long-handled digging shovel. Nobody digs a pit or a canal, or fills one back in, with bare hands: a digger without a shovel in their pack fetches a free one first and keeps it. Machines dig without. Raiders who mean to shovel their way across a trench bring their own, or pick up yours.</description>
+    <graphicData>
+      <!-- PLACEHOLDER art -->
+      <texPath>Things/Item/Equipment/WeaponMelee/Spear</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <techLevel>Neolithic</techLevel>
+    <stackLimit>1</stackLimit>
+    <drawGUIOverlay>false</drawGUIOverlay>
+    <resourceReadoutPriority>Last</resourceReadoutPriority>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Mass>2</Mass>
+      <Flammability>1</Flammability>
+      <DeteriorationRate>2</DeteriorationRate>
+      <WorkToMake>1600</WorkToMake>
+      <Beauty>-2</Beauty>
+    </statBases>
+    <stuffCategories>
+      <li>Metallic</li>
+      <li>Woody</li>
+    </stuffCategories>
+    <costStuffCount>40</costStuffCount>
+    <smeltable>true</smeltable>
+    <thingCategories>
+      <li>RM_Tools</li>
+    </thingCategories>
+    <recipeMaker>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Crafting</workSkill>
+      <effectWorking>Smith</effectWorking>
+      <soundWorking>Recipe_Smith</soundWorking>
+      <recipeUsers>
+        <li>CraftingSpot</li>
+        <li>FueledSmithy</li>
+        <li>ElectricSmithy</li>
+      </recipeUsers>
+      <displayPriority>290</displayPriority>
+    </recipeMaker>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.RM_DiggingTool" />
+    </modExtensions>
+  </ThingDef>
+</Defs>

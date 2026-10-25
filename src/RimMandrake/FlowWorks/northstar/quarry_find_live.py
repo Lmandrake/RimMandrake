@@ -32,6 +32,7 @@ def main():
     ap.add_argument("--fresh-map", action="store_true")
     a = ap.parse_args()
     import proof_hose as PH  # noqa: E402
+    import shovel_stage  # noqa: E402
     V = PH.V
     B = PH.PB()
     out = a.out or os.path.join(HERE, "quarry_find_result_%s.json" % time.strftime("%Y%m%dT%H%M%S"))
@@ -80,6 +81,11 @@ def main():
         # SITE (belt live 2026-10-22): bridge-spawned colonists can come with the work type at priority 0 (job probe:
         # "priority 0, workActive False") -- they never dig. Set it on, and read the probe back into the result.
         B.call("jawa/set_work_priority", pawnId=c_, workType="Mining", priority=1)
+    # SHOVELS_BUILD_NO_DIGGING_BARE_HANDED: no shovel, no dig job; stage one so the row measures the find
+    shovel_bad = [w for w in (shovel_stage.give_shovel(B.call, c_) for c_ in cids) if not w[0]]
+    if shovel_bad:
+        row("QUARRY_FIND_DROPS_ON_LIP", "UNMEASURED", "HARNESS", {"why": "shovel not staged: %s" % shovel_bad[0][1]})
+        return 2
 
     def things():
         lt = B.call("jawa/list_things", rect="%d,%d,3,3" % (c[0] - 1, c[1] - 1), limit=50) or {}

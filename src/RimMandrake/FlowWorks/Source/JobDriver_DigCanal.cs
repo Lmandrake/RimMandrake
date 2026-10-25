@@ -104,6 +104,9 @@ namespace RimMandrake.FlowWorks
 					ex.SetDigTarget(c, 0);   // reached (or the cap now stops it): the order is done
 				}
 			});
+			// SHOVELS_BUILD_NO_DIGGING_BARE_HANDED: a digger whose shovel left the pack (dropped, stripped, a job made before the
+			// setting went on) stops; the designation stays (the WorkGiver fetches a shovel next)
+			Verse.AI.ToilFailConditions.FailOn(this, () => !RM_Shovels.Ready(pawn));
 			return base.MakeNewToils();
 		}
 

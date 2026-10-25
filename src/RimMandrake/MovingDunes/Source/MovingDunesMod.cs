@@ -55,6 +55,10 @@ namespace RimMandrake.MovingDunes
         /// (STILLSAND_GLASS_LENS_CHAIN_1 §1).</summary>
         internal static bool ClearYieldArmed;
 
+        /// <summary>True once shovelling drift needs a shovel (SHOVELS_BUILD_NO_DIGGING_BARE_HANDED; FlowWorks' rule, all
+        /// three hooks armed).</summary>
+        internal static bool ClearShovelArmed;
+
         static MovingDunesMod()
         {
             Harmony h = new Harmony(HarmonyId);
@@ -91,6 +95,18 @@ namespace RimMandrake.MovingDunes
                 rule: "clear-sand-yield",
                 detail: "armed; shovelling drift on a dune field whose biome names a clearYield "
                         + "drops it in proportion to the depth removed");
+
+            // SHOVELS_BUILD_NO_DIGGING_BARE_HANDED (owner 2026-10-25, Q2): drift shovelling needs a shovel (FlowWorks' rule)
+            bool shovelHas = Apply(h, AccessTools.DeclaredMethod(typeof(WorkGiver_ClearSnowOrSand), "HasJobOnCell"),
+                typeof(Patch_ClearSand_Shovel_HasJob), prefix: false, rule: "clear-sand-shovel-scan",
+                detail: "armed; a colonist with no shovel is offered no sandy cell unless one lies free to fetch");
+            bool shovelJob = Apply(h, AccessTools.DeclaredMethod(typeof(WorkGiver_ClearSnowOrSand), "JobOnCell"),
+                typeof(Patch_ClearSand_Shovel_JobOn), prefix: false, rule: "clear-sand-shovel-fetch",
+                detail: "armed; with no shovel in the pack the colonist fetches one before shovelling drift");
+            bool shovelRun = Apply(h, AccessTools.Method(typeof(JobDriver_ClearSnowAndSand), "MakeNewToils"),
+                typeof(Patch_ClearSand_Shovel_Driver), prefix: false, rule: "clear-sand-shovel-run",
+                detail: "armed; a drift clear stops when the shovel leaves the pack");
+            ClearShovelArmed = shovelHas && shovelJob && shovelRun;
 
             ApplyHideDepths();
         }

@@ -114,6 +114,7 @@ SETTINGS = {
         "sandMudSlidesBackEnabled": True, "digSpoilEnabled": True, "fillCostsSpoilEnabled": True,
         "mineGravelEnabled": True, "gravelRecipesEnabled": True,   # DIG_SPOIL_BUILD_GRAVEL_PAYS_ITS_WAY + PIT_DIG_FIX_SAND_SLIDES_BACK_IN
         "iceDigEnabled": True, "digLabourMultiplier": 4.0,   # ICE_DIG_BUILD_CRUSHED_ICE_MELTS_DOWN + DIG_FILL_TUNE_HOURS_OF_SHOVEL_WORK
+        "shovelRequired": True,   # SHOVELS_BUILD_NO_DIGGING_BARE_HANDED
         "excavationWallMaterialEnabled": True, "pitLipOcclusionEnabled": True, "pitLipOcclusion": 0.85, "pitLipOccupantCutEnabled": True, "pitLipOccupantCutWidth": 1.0, "pitSinkClampEnabled": True,
         "liquidSurfaceMotionEnabled": True, "liquidWakesEnabled": True, "pitScorchEnabled": True,
         "pitScorchFadeDays": 20.0,                              # visual principles 1-5 (belt_fwvisuals 2026-10-05)
@@ -204,6 +205,7 @@ SETTINGS = {
     "RimMandrake.FlowWorks.RM_RaiderTrenchSettings": {
         "raiderTrenchEnabled": True, "raiderJumpsEnabled": True, "raiderLaddersEnabled": True, "raiderFillEnabled": True,
         "raiderLadderSpeed": 1.0, "raiderFillSpeed": 0.5, "raiderJumpPackShare": 0.1,
+        "raiderShovelShare": 0.25, "sapperShovelShare": 0.5,   # SHOVELS_BUILD_NO_DIGGING_BARE_HANDED (PROVISIONAL)
     },
     # DEEP_WATER_BUILD_SWIM_OR_SINK (numeric defaults are RM_SwimMath consts)
     "RimMandrake.FlowWorks.Swimming.RM_SwimSettings": {
