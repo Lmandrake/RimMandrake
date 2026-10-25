@@ -227,6 +227,19 @@ def tree(root):
     return set(inventory(root))
 
 
+def _z(text):
+    """names from `git ... -z` output (NUL-separated, never quoted -- without -z
+    core.quotepath wraps non-ASCII/special names in "..." and they never match)."""
+    return [n for n in text.split("\0") if n]
+
+
+def _gone_for_good(src, g):
+    """True when no file of EXACTLY this spelling is in the repo working tree.
+    os.path.exists() is case-blind on a case-insensitive checkout, so a case-only
+    rename of a file or directory (Textures/Foo/a.png -> foo/a.png) looked alive."""
+    return g.replace("/", os.sep) not in tree(src)
+
+
 def repo_deleted(src, gone):
     """Subset of `gone` (game-only files) that the repo once TRACKED and later
     deleted -- as opposed to files that only ever existed in the game (hand
@@ -240,9 +253,15 @@ def repo_deleted(src, gone):
             # --no-renames: a file `git mv`ed OUT of this mod (or renamed in
             # place, Shyrack _44 -> _4) is a delete here; rename detection
             # would report it R and --diff-filter=D would drop it.
-            ["git", "-C", src, "log", "--no-renames", "--diff-filter=D", "--name-only",
+            ["git", "-C", src, "log", "-z", "--no-renames", "--diff-filter=D", "--name-only",
              "--pretty=format:", "--", "."],
-            capture_output=True, text=True, timeout=120)
+            capture_output=True, text=True, encoding="utf-8", timeout=120)
+        # Paths TRACKED at HEAD are not committed-stale even if some past commit
+        # deleted them (deleted, re-added, now deleted only in the worktree):
+        # worktree_deleted() owns those. A repo with no HEAD tracks nothing.
+        head = subprocess.run(["git", "-C", src, "ls-tree", "-r", "-z", "--name-only",
+                               "HEAD", "--", "."],
+                              capture_output=True, text=True, encoding="utf-8", timeout=120)
         top = subprocess.run(["git", "-C", src, "rev-parse", "--show-prefix"],
                              capture_output=True, text=True, timeout=30)
     except (OSError, subprocess.SubprocessError):
@@ -251,12 +270,14 @@ def repo_deleted(src, gone):
         return set()
     prefix = top.stdout.strip()          # e.g. src/RimMandrake/Pyrelands/
     deleted = set()
-    for line in out.stdout.splitlines():
-        line = line.strip()
+    for line in _z(out.stdout):
         if line.startswith(prefix):
             deleted.add(line[len(prefix):].replace("/", os.sep))
+    # ls-tree paths are relative to the cwd (src), already without the prefix
+    if not head.returncode:
+        deleted -= {n.replace("/", os.sep) for n in _z(head.stdout)}
     return {g for g in gone if g.replace("/", os.sep) in deleted
-            and not os.path.exists(os.path.join(src, g))}
+            and _gone_for_good(src, g)}
 
 
 def composed_repo_deleted(gone, man=None):
@@ -292,18 +313,33 @@ def worktree_deleted(src, gone):
     # (staged delete) is gone from the index, so ask the index-vs-HEAD diff too.
     # --no-renames: a staged `git mv` must read as a delete here, not a rename.
     try:
-        outs = [subprocess.run(cmd, capture_output=True, text=True, timeout=120) for cmd in (
-            ["git", "-C", src, "ls-files", "--deleted", "--", "."],
-            ["git", "-C", src, "diff", "--cached", "--no-renames", "--relative",
+        outs = [subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8",
+                                  timeout=120) for cmd in (
+            ["git", "-C", src, "ls-files", "-z", "--deleted", "--", "."],
+            ["git", "-C", src, "diff", "-z", "--cached", "--no-renames", "--relative",
              "--name-only", "--diff-filter=D", "--", "."])]
     except (OSError, subprocess.SubprocessError):
         return set()
     if any(o.returncode for o in outs):
         return set()
-    missing = {ln.strip().replace("/", os.sep) for o in outs
-               for ln in o.stdout.splitlines() if ln.strip()}
+    missing = {n.replace("/", os.sep) for o in outs for n in _z(o.stdout)}
     return {g for g in gone if g.replace("/", os.sep) in missing
-            and not os.path.exists(os.path.join(src, g))}
+            and _gone_for_good(src, g)}
+
+
+def respell(dst, rel):
+    """Make every component of dst/rel carry rel's spelling. On a case-insensitive
+    folder a directory case rename (Textures/Foo -> foo) never converges by copying:
+    the files land inside the OLD-spelled directory. A component that EXISTS but is
+    not listed under that exact name is the old spelling of the same entry; rename it."""
+    cur = dst
+    for part in rel.split(os.sep):
+        nxt = os.path.join(cur, part)
+        if os.path.lexists(nxt) and part not in os.listdir(cur):
+            old = [n for n in os.listdir(cur) if n.lower() == part.lower()]
+            if old:
+                os.rename(os.path.join(cur, old[0]), nxt)
+        cur = nxt
 
 
 def inside(dst, rel):
@@ -796,7 +832,7 @@ def _run(args, targets, holds, mods_dir, active):
                         if (twin and twin != r and os.path.exists(os.path.join(dst, twin))
                                 and os.path.samefile(os.path.join(dst, r),
                                                      os.path.join(dst, twin))):
-                            os.rename(os.path.join(dst, r), os.path.join(dst, twin))
+                            respell(dst, twin)
                             pruned += 1
                             continue
                         os.remove(os.path.join(dst, r))
