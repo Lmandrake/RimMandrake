@@ -437,8 +437,8 @@ def spikes():
         spk.floor_rect, spk.submerged_alpha = real_rect, real_alpha
     hashes, (n, first, last) = spk.parity()
     want(hashes == [0, 2836592880, 1249282371], "spikes parity: hash fixture %s" % hashes)
-    fx = ((0.85625, 0.185312, 0.09375, 0.304688, 0.550781, 0.675781, 0.574219, 0.828125),
-          (0.648454, 0.075, 0.101562, 0.34375, 0.298828, 0.664062, 0.324219, 0.835938))
+    fx = ((0.429432, 0.174196, 0.09375, 0.304688, 0.550781, 0.675781, 0.574219, 0.828125),
+          (0.85625, 0.075, 0.09375, 0.320312, 0.925781, 0.671875, 0.949219, 0.832031))
     want(n == 11 and all(abs(a - b) < 1e-4 for q, f in zip((first, last), fx) for a, b in zip(q, f)),
          "spikes parity: layout fixture (11 stakes, first/last quad) == SpikeDrawChecks")
     st = spk.STAKES

@@ -1582,12 +1582,22 @@ def canal_spikes(t):
     with t.component("descent_onto_spikes_stabs", toggle="spikesEnabled"):
         txt = _spike_proof(t, "ProofDescent", pit[4][0], pit[4][1])
         if t._guard():
-            _expect(txt.startswith("HITS 3") and "INJURIES Stab 0" not in txt, "no spike stabs on descent: %s" % txt)
+            _expect(spike_descent_stabbed(txt), "no spike stabs on descent: %s" % txt)
     with t.component("spikes_off_harmless", toggle="spikesEnabled"):
         with _setting(t, "spikesEnabled", False):
             txt = _spike_proof(t, "ProofDescent", pit[4][0], pit[4][1])
             if t._guard():
                 _expect(txt.startswith("HITS 0"), "spikesEnabled OFF but spikes still hit: %s" % txt)
+
+
+def spike_descent_stabbed(txt):
+    """SPIKE_DESCENT_FIX_STABS_NOT_COUNTED: did a ProofDescent line ("HITS n | INJURIES Stab k | bodySize b") land stabs?
+    ApplyDescent stops the moment the pawn dies, and the damage scales with BodySize (40 x body / 3 per hit), so a big
+    pirate (run6: bodySize 1.4) dies on hit 2 with 3 stab wounds: 1..3 hits and at least one Stab wound is a pass.
+    The old `startswith("HITS 3")` only held for a 1.0 body."""
+    import re
+    m = re.match(r"HITS (\d+) \| INJURIES Stab (\d+)", txt or "")
+    return bool(m) and 1 <= int(m.group(1)) <= 3 and int(m.group(2)) > 0
 
 
 def _door_proof(t, method, x, z):

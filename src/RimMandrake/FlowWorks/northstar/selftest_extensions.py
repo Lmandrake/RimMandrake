@@ -39,6 +39,12 @@ def main():
     V = vm.suite
     import validation_v2 as V2
     import extensions as EXT
+    # SPIKE_DESCENT_FIX_STABS_NOT_COUNTED: run6's big pirate dies on hit 2 with 3 stab wounds; that is a stabbed descent
+    for line, want in (("HITS 3 | INJURIES Stab 3 | bodySize 1", True), ("HITS 2 | INJURIES Stab 3 | bodySize 1.4", True),
+                       ("HITS 3 | INJURIES Stab 0 | bodySize 1", False), ("HITS 0 | INJURIES Stab 0 | bodySize 1", False),
+                       ("REFUSED: no pawn at (1, 0, 1)", False), ("HITS 4 | INJURIES Stab 4 | bodySize 1", False)):
+        if EXT.spike_descent_stabbed(line) is not want:
+            probs.append("spike_descent_stabbed(%r) != %s" % (line, want))
 
     class A(object):
         mock, fresh_map, reset_settings, progress, max_job_ticks, fault = True, False, False, None, 6000, []

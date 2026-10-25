@@ -80,8 +80,8 @@ namespace RimMandrake.FlowWorks
 		/// <summary>Floats per laid stake in Layout's output: x, z, w, h (cell-local), u0, v0, u1, v1.</summary>
 		public const int Out = 8;
 
-		/// <summary>Lays variant <paramref name="variant"/>'s stakes over the rect at its own density (a staggered grid at
-		/// RM_SpikeStakes.Pitch, each slot a hashed stake jittered by up to a quarter pitch), scaled down only if the rect
+		/// <summary>Lays variant <paramref name="variant"/>'s stakes over the rect at its own density (a cell-anchored staggered grid at
+		/// RM_SpikeStakes.Pitch, each slot a hashed stake jittered by up to a quarter pitch, kept where it fits the rect), scaled down only if the rect
 		/// is smaller than the tallest / widest stake. Every quad lies inside the rect less Margin. Output is sorted far
 		/// (north) first so nearer stakes overlap farther ones. Returns the stake count (0 for a rect too small).</summary>
 		public static int Layout(int variant, int seed, float x0, float z0, float x1, float z1, List<float> outQuads)
@@ -98,34 +98,41 @@ namespace RimMandrake.FlowWorks
 			float fw = x1 - x0 - 2f * Margin, fh = z1 - z0 - 2f * Margin;
 			if (n == 0 || fw <= 0f || fh <= 0f) return 0;
 			float s = Math.Min(1f, Math.Min(fh / hmax, fw / wmax));
-			float px = RM_SpikeStakes.Pitch[variant, 0] * s, pz = RM_SpikeStakes.Pitch[variant, 1] * s;
 			float lo = x0 + Margin, hi = x1 - Margin, bot = z0 + Margin, topz = z1 - Margin;
-			// PIT_SPIKES_INSTALL_TALLER_AND_FEWER: the grid is spread EVENLY over the rect (pitch rounded DOWN to a whole number of
-			// rows / columns, so the last row's tips reach the top and the first row stands on the bottom) -- the old grid ran
-			// out of room at its far edge, leaving a bare line at each cell-row join and a dense left / sparse right cell.
-			float span = Math.Max(0f, topz - hmax * s * 0.5f - bot);
-			int nrow = Math.Max(1, (int)Math.Floor(span / pz) + 1);
-			float rpz = nrow > 1 ? span / (nrow - 1) : 0f;
-			int ncol = Math.Max(1, (int)Math.Floor((hi - lo) / px));
-			float rpx = (hi - lo) / ncol;
-			int k = 0;
+			// PIT_SPIKES_TUNE_SOUTH_ROW_TOO_DENSE: ONE lattice per CELL, not per rect. The grid (whole rows / columns per cell at the
+			// variant's pitch) is anchored on the cell, and a stake is kept where its rect has room for it, so a cell the walls
+			// shorten (south lining, north face) shows the same stakes at the same pitch as its neighbours, the rows line up
+			// across cell joins, and nothing is respread (the old per-rect spread made short rects denser/thinner). s only
+			// shrinks stakes for a rect smaller than the tallest stake; the pitch never scales.
+			float span = Math.Max(0f, 1f - hmax * 0.5f);   // base rows run 0..1-hmax/2: the tallest stakes of the top rows are pulled down to the cell top
+			bool cellTop = topz >= 1f - Margin - 1e-4f;
+			int nrow = Math.Max(1, (int)Math.Floor(span / RM_SpikeStakes.Pitch[variant, 1]) + 1);
+			int ncol = Math.Max(1, (int)Math.Round(1f / RM_SpikeStakes.Pitch[variant, 0], MidpointRounding.AwayFromZero));
+			float rpz = nrow > 1 ? span / (nrow - 1) : 0f, rpx = 1f / ncol;
 			var rows = new List<float[]>();
-			for (int r = 0; r < nrow; r++)
+			for (int pass = 0; pass < 2 && rows.Count == 0; pass++)
 			{
-				float zb = bot + r * rpz;
-				bool odd = (r & 1) == 1;
-				int cols = odd ? ncol + 1 : ncol;
-				for (int col = 0; col < cols; col++, k++)
+				for (int r = 0; r < nrow; r++)
 				{
-					float xc = lo + (odd ? col : col + 0.5f) * rpx;
-					uint h = Hash(seed, k);
-					int j = (int)(h % (uint)n) * RM_SpikeStakes.Stride;
-					float w = lib[j] * s, ht = lib[j + 1] * s;
-					float jx = (((h >> 8) & 0xFF) / 255f - 0.5f) * 0.5f * rpx;
-					float jz = (((h >> 16) & 0xFF) / 255f - 0.5f) * 0.5f * rpz;
-					float x = Clamp(xc + jx - w * 0.5f, lo, hi - w);
-					float z = Clamp(zb + jz, bot, topz - ht);
-					rows.Add(new[] { x, z, w, ht, lib[j + 2], lib[j + 3], lib[j + 4], lib[j + 5], k });
+					bool odd = (r & 1) == 1;
+					int cols = odd ? ncol + 1 : ncol;
+					for (int col = 0; col < cols; col++)
+					{
+						int k = r * (ncol + 1) + col;
+						uint h = Hash(seed, k);
+						int j = (int)(h % (uint)n) * RM_SpikeStakes.Stride;
+						float w = lib[j] * s, ht = lib[j + 1] * s;
+						float xc = (odd ? col : col + 0.5f) * rpx;
+						float jx = (((h >> 8) & 0xFF) / 255f - 0.5f) * 0.5f * rpx;
+						float jz = (((h >> 16) & 0xFF) / 255f - 0.5f) * 0.5f * rpz;
+						if (xc + w * 0.5f <= lo || xc - w * 0.5f >= hi) continue;
+						float zb = r * rpz + jz;
+						// pass 0 keeps a stake only if it fits whole; pass 1 (a rect shorter than one row) clamps the first row in
+						if (pass == 0 ? ((zb + ht > topz && !cellTop) || (r > 0 && zb < bot)) : r != 0) continue;
+						float x = Clamp(xc + jx - w * 0.5f, lo, hi - w);
+						float z = Clamp(zb, bot, topz - ht);
+						rows.Add(new[] { x, z, w, ht, lib[j + 2], lib[j + 3], lib[j + 4], lib[j + 5], k });
+					}
 				}
 			}
 			rows.Sort((a, b) => a[1] != b[1] ? b[1].CompareTo(a[1]) : a[8].CompareTo(b[8]));

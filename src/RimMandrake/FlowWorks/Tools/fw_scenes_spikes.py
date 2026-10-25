@@ -156,32 +156,39 @@ def layout(variant, seed, x0, z0, x1, z1, lib=None):
     of the current library (the approved one, for the comparison render)."""
     lib, (ppx, ppz) = lib or library(variant)
     n = len(lib)
+    if n == 0:
+        return []
     wmax, hmax = max(s[0] for s in lib), max(s[1] for s in lib)
     fw, fh = x1 - x0 - 2 * MARGIN, z1 - z0 - 2 * MARGIN
     if n == 0 or fw <= 0 or fh <= 0:
         return []
     sc = min(1.0, fh / hmax, fw / wmax)
-    px, pz = ppx * sc, ppz * sc
     lo, hi, bot, top = x0 + MARGIN, x1 - MARGIN, z0 + MARGIN, z1 - MARGIN
     clamp = lambda v, a, b: a if v < a else (b if v > b else v)
-    span = max(0.0, top - hmax * sc * 0.5 - bot)
-    nrow = max(1, int(math.floor(span / pz)) + 1)
-    rpz = span / (nrow - 1) if nrow > 1 else 0.0
-    ncol = max(1, int(math.floor((hi - lo) / px)))
-    rpx = (hi - lo) / ncol
-    out, k = [], 0
-    for r in range(nrow):
-        zb = bot + r * rpz
-        odd = r & 1
-        for col in range(ncol + 1 if odd else ncol):
-            xc = lo + (col if odd else col + 0.5) * rpx
-            h = hash32(seed, k)
-            st = lib[h % n]
-            w, ht = st[0] * sc, st[1] * sc
-            jx = (((h >> 8) & 0xFF) / 255 - 0.5) * 0.5 * rpx
-            jz = (((h >> 16) & 0xFF) / 255 - 0.5) * 0.5 * rpz
-            out.append((clamp(xc + jx - w * 0.5, lo, hi - w), clamp(zb + jz, bot, top - ht), w, ht) + tuple(st[2:]) + (k,))
-            k += 1
+    span = max(0.0, 1.0 - hmax * 0.5)   # base rows run 0..1-hmax/2: the tallest stakes of the top rows are pulled down to the cell top
+    cell_top = top >= 1.0 - MARGIN - 1e-4
+    nrow, ncol = max(1, int(math.floor(span / ppz)) + 1), max(1, int(math.floor(1.0 / ppx + 0.5)))
+    rpz, rpx = (span / (nrow - 1) if nrow > 1 else 0.0), 1.0 / ncol
+    out = []
+    for pas in range(2):
+        if out:
+            break
+        for r in range(nrow):
+            odd = r & 1
+            for col in range(ncol + 1 if odd else ncol):
+                k = r * (ncol + 1) + col
+                h = hash32(seed, k)
+                st = lib[h % n]
+                w, ht = st[0] * sc, st[1] * sc
+                xc = (col if odd else col + 0.5) * rpx
+                jx = (((h >> 8) & 0xFF) / 255 - 0.5) * 0.5 * rpx
+                jz = (((h >> 16) & 0xFF) / 255 - 0.5) * 0.5 * rpz
+                if xc + w * 0.5 <= lo or xc - w * 0.5 >= hi:
+                    continue
+                zb = r * rpz + jz
+                if (((zb + ht > top and not cell_top) or (r > 0 and zb < bot)) if pas == 0 else r != 0):
+                    continue
+                out.append((clamp(xc + jx - w * 0.5, lo, hi - w), clamp(zb, bot, top - ht), w, ht) + tuple(st[2:]) + (k,))
     out.sort(key=lambda q: (-q[1], q[8]))
     return [q[:8] for q in out]
 

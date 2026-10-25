@@ -114,6 +114,25 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_SpikeDrawMath.Layout(0, 1, 0.4f, 0.4f, 0.41f, 0.9f, quads) == 0 && quads.Count == 0, "can-fail: no room, no stakes");
             });
 
+            Case("Spikes_cell_rows_same_size_and_density", () =>
+            {
+                // PIT_SPIKES_TUNE_SOUTH_ROW_TOO_DENSE: a cell the walls shorten (south lining / north face) must not respread or shrink.
+                var open = new List<float>(); var south = new List<float>(); var north = new List<float>();
+                for (int v = 0; v < RM_SpikeStakes.Variants.Length; v++)
+                {
+                    RM_SpikeDrawMath.FloorRect(8, 8, 8, 8, 8, true, true, out float a0, out float b0, out float a1, out float b1);
+                    int ko = RM_SpikeDrawMath.Layout(v, 7, a0, b0, a1, b1, open);
+                    RM_SpikeDrawMath.FloorRect(8, 8, 0, 8, 8, true, true, out a0, out b0, out a1, out b1);
+                    Assert(b0 > 0.05f, "the south cell's rect is shorter (lining)");
+                    int ks = RM_SpikeDrawMath.Layout(v, 7, a0, b0, a1, b1, south);
+                    Assert(ks >= ko - 1, "variant " + v + ": south-row cell " + ks + " stakes vs open " + ko);
+                    float sizeO = 0f, sizeS = 0f;
+                    for (int i = 0; i < open.Count; i += RM_SpikeDrawMath.Out) sizeO = Math.Max(sizeO, open[i + 3]);
+                    for (int i = 0; i < south.Count; i += RM_SpikeDrawMath.Out) sizeS = Math.Max(sizeS, south[i + 3]);
+                    Assert(sizeS >= sizeO * 0.95f, "variant " + v + ": south-row stakes keep their size " + sizeS + " vs " + sizeO);
+                }
+            });
+
             Case("Spikes_submerge_fast", () =>
             {
                 Assert(RM_SpikeDrawMath.SubmergedAlpha(0) == 1f, "dry: fully drawn");
@@ -150,8 +169,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                 var quads = new List<float>();
                 int k = RM_SpikeDrawMath.Layout(1, 42, 0.04f, 0.065f, 0.96f, 0.5f, quads);
                 Assert(k == 11, "layout count parity: " + k);
-                float[] first = { 0.85625f, 0.185312f, 0.09375f, 0.304688f, 0.550781f, 0.675781f, 0.574219f, 0.828125f };
-                float[] last = { 0.648454f, 0.075f, 0.101562f, 0.34375f, 0.298828f, 0.664062f, 0.324219f, 0.835938f };
+                float[] first = { 0.429432f, 0.174196f, 0.09375f, 0.304688f, 0.550781f, 0.675781f, 0.574219f, 0.828125f };
+                float[] last = { 0.85625f, 0.075f, 0.09375f, 0.320312f, 0.925781f, 0.671875f, 0.949219f, 0.832031f };
                 int o = (k - 1) * RM_SpikeDrawMath.Out;
                 for (int i = 0; i < RM_SpikeDrawMath.Out; i++)
                 {
