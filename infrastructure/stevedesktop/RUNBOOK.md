@@ -239,6 +239,33 @@ The agent then gets PASS on every door.
 
 ---
 
+## Maintenance kit (installed 2026-10-25 over SSH, for the owner logging in)
+
+Everything free, nothing signed in. Files: `kit/wt_settings.json` (Terminal settings) and `kit/status.ps1`, both copied to `C:\SteveDesktop\`.
+
+| Item | How | Notes |
+|---|---|---|
+| Windows Terminal 1.25 | `winget install -e --id Microsoft.WindowsTerminal` | Win10 19045 supports it. Settings from `kit/wt_settings.json` (old file kept as `settings.json.bak-kit`): Cascadia Code 11, 32000 lines scrollback, copy-on-select, Ctrl+Shift+C/V. Win10 has no OS-level "default terminal" switch, so the desktop shortcuts are the way in |
+| Terminal profiles | in `settings.json` | **Ubuntu (mandrake)** is the default, then Ubuntu (sjlewis), PowerShell 7, Windows PowerShell, cmd, **SSH Archmagi (WSL)** (`ssh mandrake@archmagi-wsl`, tested from SteveDesktop, Tailscale SSH, no password), SSH SteveDesktop WSL |
+| PowerShell 7.6 | `winget install -e --id Microsoft.PowerShell` | |
+| VS Code + extensions | `winget install -e --id Microsoft.VisualStudioCode`; `code --install-extension` ms-vscode-remote.remote-wsl, remote-ssh, ms-vscode.powershell | per-user (sjlewis); no Settings Sync sign-in |
+| GitHub CLI (Windows) | `winget install -e --id GitHub.cli` | not logged in |
+| Sysinternals | winget `Microsoft.Sysinternals.ProcessExplorer`, `.ProcessMonitor`, `.TCPView` | |
+| JetBrainsMono Nerd Font | winget `DEVCOM.JetBrainsMonoNerdFont` | installed; pick it per profile if wanted |
+| Already present | Git for Windows, 7-Zip, Tailscale, Chrome Remote Desktop, WSL git/gh/tmux/htop/jq/curl/rsync/python3/node | verified, not reinstalled |
+| WSL extras | `apt-get install ripgrep tree ncdu pipx fd-find bat` as root | |
+| Desktop shortcuts (all users) | `Terminal - Ubuntu`, `Terminal - SteveDesktop status` (runs `status.ps1`: uptime, disks, IPs, services, Steam, Tailscale, WSL), `Terminal - Archmagi (SSH)` | |
+
+**Trap learned:** `winget install` of MSI and MSIX packages (PowerShell, Terminal) fails over SSH with
+`0x80070520 logon session does not exist`. Run it as a scheduled task with an Interactive principal for the
+logged-on user (`Register-ScheduledTask ... -LogonType Interactive`, then `Start-ScheduledTask`); EXE/zip
+packages (VS Code, gh, Sysinternals) install fine straight over SSH. `winget source update` reports
+"Failed ... winget" but installs still work.
+
+`verify_from_archmagi.sh` has a `kit_*` check for all of the above.
+
+---
+
 ## Before you leave Monday: checklist
 
 - [ ] Step 1: green SSH READY box seen; the agent confirmed `lan_ssh PASS`

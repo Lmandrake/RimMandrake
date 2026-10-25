@@ -114,4 +114,13 @@ for p in d.get("Peer", {}).values():
 ' "$TS" "$TS_WSL"
 fi
 
+# Maintenance kit (RUNBOOK "Maintenance kit").
+kit=$(win 'foreach($p in "$env:LOCALAPPDATA\Microsoft\WindowsApps\wt.exe","$env:LOCALAPPDATA\Programs\Microsoft VS Code\bin\code.cmd","C:\Program Files\GitHub CLI\gh.exe","C:\Program Files\Git\bin\git.exe","C:\Program Files\7-Zip\7z.exe","C:\SteveDesktop\status.ps1","C:\Users\Public\Desktop\Terminal - Ubuntu.lnk","$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"){ if(-not (Test-Path $p)){ "missing " + (Split-Path $p -Leaf) } }; if(-not (Get-Command pwsh -EA 0)){"missing pwsh.exe"}; "end"')
+miss=$(echo "$kit" | grep '^missing' | sed 's/missing //' | tr '\n' ' ')
+if echo "$kit" | grep -q '^end'; then
+    [ -z "$miss" ] && say PASS kit_windows "wt, pwsh7, code, gh, git, 7z, status.ps1, shortcut, WT settings" || say FAIL kit_windows "missing: $miss"
+else say FAIL kit_windows "no answer: $(echo "$kit" | tail -1)"; fi
+out=$(win 'wsl.exe -d Ubuntu -u mandrake -- which git gh tmux htop jq rg tree python3 pipx' | grep -c '^/')
+[ "$out" = 9 ] && say PASS kit_wsl "git gh tmux htop jq rg tree python3 pipx" || say FAIL kit_wsl "only $out of 9 tools found in WSL"
+
 exit "$FAILS"

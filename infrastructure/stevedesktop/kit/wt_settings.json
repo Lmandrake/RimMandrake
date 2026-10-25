@@ -1,0 +1,97 @@
+{
+  "$help": "https://aka.ms/terminal-documentation",
+  "$schema": "https://aka.ms/terminal-profiles-schema",
+  "defaultProfile": "{5d000001-0000-4000-8000-000000000001}",
+  "copyOnSelect": true,
+  "copyFormatting": "none",
+  "confirmCloseAllTabs": false,
+  "multiLinePasteWarning": false,
+  "largePasteWarning": false,
+  "startOnUserLogin": false,
+  "launchMode": "default",
+  "theme": "dark",
+  "tabWidthMode": "equal",
+  "trimBlockSelection": true,
+  "profiles": {
+    "defaults": {
+      "font": {
+        "face": "Cascadia Code",
+        "size": 11
+      },
+      "scrollbarState": "visible",
+      "historySize": 32000
+    },
+    "list": [
+      {
+        "guid": "{5d000001-0000-4000-8000-000000000001}",
+        "name": "Ubuntu (mandrake)",
+        "commandline": "wsl.exe -d Ubuntu -u mandrake --cd ~",
+        "hidden": false,
+        "icon": "ms-appx:///ProfileIcons/{9acb9455-ca41-5af7-950f-6bca1bc9722f}.png"
+      },
+      {
+        "guid": "{5d000002-0000-4000-8000-000000000002}",
+        "name": "Ubuntu (sjlewis)",
+        "commandline": "wsl.exe -d Ubuntu --cd ~",
+        "hidden": false
+      },
+      {
+        "guid": "{5d000003-0000-4000-8000-000000000003}",
+        "name": "PowerShell 7",
+        "commandline": "pwsh.exe -NoLogo",
+        "hidden": false
+      },
+      {
+        "guid": "{5d000004-0000-4000-8000-000000000004}",
+        "name": "Windows PowerShell",
+        "commandline": "powershell.exe",
+        "hidden": false
+      },
+      {
+        "guid": "{5d000005-0000-4000-8000-000000000005}",
+        "name": "Command Prompt",
+        "commandline": "cmd.exe",
+        "hidden": false
+      },
+      {
+        "guid": "{5d000006-0000-4000-8000-000000000006}",
+        "name": "SSH Archmagi (WSL)",
+        "commandline": "ssh.exe mandrake@archmagi-wsl",
+        "hidden": false,
+        "tabTitle": "Archmagi"
+      },
+      {
+        "guid": "{5d000007-0000-4000-8000-000000000007}",
+        "name": "SSH SteveDesktop WSL (this PC, via tailnet)",
+        "commandline": "ssh.exe mandrake@stevedesktop-wsl",
+        "hidden": false
+      }
+    ]
+  },
+  "schemes": [],
+  "actions": [
+    {
+      "command": {
+        "action": "copy",
+        "singleLine": false
+      },
+      "keys": "ctrl+shift+c"
+    },
+    {
+      "command": "paste",
+      "keys": "ctrl+shift+v"
+    },
+    {
+      "command": {
+        "action": "splitPane",
+        "split": "auto",
+        "splitMode": "duplicate"
+      },
+      "keys": "alt+shift+d"
+    },
+    {
+      "command": "find",
+      "keys": "ctrl+shift+f"
+    }
+  ]
+}
