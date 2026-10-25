@@ -1,0 +1,1 @@
+At 11:40 on 2026-10-25 SteveDesktop answered NetBIOS as SLEWI147465 (its computer name reads STEVEDESKTOP later the same day), and BENCH dismissed it as another machine; match a probe by MAC or a bootstrap report, never by name. It is 192.168.86.87 (Wi-Fi, MAC 04-33-C2-68-51-5A), Tailscale stevedesktop 100.118.241.96 and stevedesktop-wsl 100.115.10.14.

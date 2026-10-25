@@ -1,0 +1,1 @@
+tail -F on a file under /mnt/d (drvfs) never sees appends made by a Windows process: a Monitor on D:\ClaudeWork\stevedesktop\serve\serve.log sat silent 30 min while SteveDesktop's bootstrap requests and reports were being logged. Poll the file size/mtime (or read it at the end) instead of tail -F for Windows-written files.
