@@ -233,13 +233,23 @@ def texpath_of(rel: str) -> str:
     return FACING_RE.sub("", rel.rsplit(".", 1)[0])
 
 
-def retire_replaced(idx, row: str, v: dict, cols: dict, picks: dict, protect: set, installs: list) -> list[dict]:
+def foreign_only(src, names: set, texpath: str) -> bool:
+    """True when some def of ours names `texpath` and none of them is one of `names` (the file is another def's)."""
+    pat = re.compile(r"<texPath>\s*" + re.escape(texpath) + r"\s*</texPath>")
+    owners = {n for n, ents in our_defs_cached(src).items() if any(pat.search(e["text"]) for e in ents)}
+    return bool(owners) and not (owners & set(names))
+
+
+def retire_replaced(idx, row: str, v: dict, cols: dict, picks: dict, protect: set, installs: list,
+                    src=None, names=None) -> list[dict]:
     """Retire AND replace in ONE pass (owner, 2026-10-12: "I need to be able to Retire the currently used art as well as
     long as I select another with "use this." Right now it requires TWO passes"). A live picture he ✕-retired in a slot
     where he also used another set leaves the game in the same enact as the pick's install. A file the pick's install
     overwrites needs nothing; any other live copy of the retired set is planned for retirement, and the apply step
     retires it only once no XML under src/ still names its texPath (so a slot is never left drawing nothing). With no
-    pick in the slot the retire stays a REDRAW: the picture stays until its replacement exists (unchanged)."""
+    pick in the slot the retire stays a REDRAW: the picture stays until its replacement exists (unchanged).
+    With `src` and `names` given, a live copy whose texPath is named only by ANOTHER def (RSW_TunnelSnake sharing
+    RM_TunnelSnake's bytes) is not this row's file and is never planned for retirement."""
     out = []
     planned = {(i["mod"], i["rel"]) for i in installs if i["row"] == row}
     for g, letters_ in sorted(DV.lists(v, "retire").items()):
@@ -255,6 +265,8 @@ def retire_replaced(idx, row: str, v: dict, cols: dict, picks: dict, protect: se
                     continue
                 for (m, r), ev in sorted(idx.live.items()):
                     if ev.get("sha") != sha or (m, r) in planned:
+                        continue
+                    if src is not None and names and foreign_only(src, names, texpath_of(r)):
                         continue
                     out.append({"row": row, "mod": m, "rel": r, "sha": sha, "replaced_by": pk, "retired": lt,
                                 "pick_live": bool(pick_shas) and all(idx.live_anywhere(s) for s in pick_shas)})
@@ -1489,7 +1501,7 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                 for m, r, live in folder_slots(idx, g):
                     if live not in fo["keep"]:
                         P["retire"].append({"row": row, "mod": m, "rel": r, "sha": live})
-            P["retire"] += retire_replaced(idx, row, v, cols, picks, protect_here, P["install"])
+            P["retire"] += retire_replaced(idx, row, v, cols, picks, protect_here, P["install"], src, names)
         # ── 3 queue / 6 todo
         # a note typed on a row he never clicked a letter on is still his ruling: it is followed or listed as a TODO,
         # never dropped (bug 2026-10-22, picks_dessicated RSW_Taozin: "The grub imagery obviously should not by in the
