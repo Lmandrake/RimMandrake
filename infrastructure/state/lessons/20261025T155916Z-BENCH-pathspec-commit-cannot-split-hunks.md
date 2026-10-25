@@ -1,0 +1,2 @@
+The house hook requires a pathspec on git commit, and git commit <path> commits the WORKING-TREE file, not the staged hunks. So when two helpers edit the same file at once (Mod.cs, csproj, validation.py), neither can commit only its own hunks: staging with git apply --cached is wasted work. Plan for it before editing a shared file: agree with the parent who commits the shared file whole (after both halves are reviewed), or land your edits there first and commit before the peer starts.
+home: git-efficiency
