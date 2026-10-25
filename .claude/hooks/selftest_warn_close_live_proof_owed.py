@@ -117,6 +117,22 @@ def main():
     cases.append(("no --sha, defaults to HEAD — still warns",
                   root, cmd, 1, "FAKE_ITEM_1"))
 
+    # Case 4b (wave 7): an option before the id — the old regex found no id and went quiet.
+    root = make_repo()
+    sha = commit(root, "a.txt",
+                 "Close FAKE_ITEM_1: builds clean\n\ndotnet build 0/0. Live proof still owed.\n")
+    cases.append(("option before the id (`close --why .. ID`) — still warns", root,
+                  'python3 src/RimMandrake/rimflow/cli.py close --why "offline only" FAKE_ITEM_1 --sha %s' % sha,
+                  1, "FAKE_ITEM_1"))
+
+    # Case 4c (wave 7): an earlier `close` word on the line — the old regex named `out`.
+    root = make_repo()
+    sha = commit(root, "a.txt",
+                 "Close FAKE_ITEM_1: builds clean\n\ndotnet build 0/0. Live proof still owed.\n")
+    cases.append(("earlier `close out` on the line — warns about the real id", root,
+                  'echo "close out" && python3 src/RimMandrake/rimflow/cli.py close FAKE_ITEM_1 --sha=%s' % sha,
+                  1, "FAKE_ITEM_1's commit"))
+
     # Case 5: not a `close` command at all — must be quiet.
     root = make_repo()
     cases.append(("unrelated command — not our business",

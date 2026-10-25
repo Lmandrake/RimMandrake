@@ -52,8 +52,40 @@ except ImportError:
 
 CLOSE_CMD_RE = re.compile(
     r"rimflow[/\\]cli\.py['\"]?\s+close\b")
-ID_RE = re.compile(r"\bclose\s+['\"]?([A-Za-z][A-Za-z0-9._-]*)")
-SHA_RE = re.compile(r"--sha[= ]\s*['\"]?([0-9a-fA-F]{4,40})")
+ID_RE = re.compile(r"^[A-Za-z][A-Za-z0-9._-]*$")
+SHA_RE = re.compile(r"^[0-9a-fA-F]{4,40}$")
+CLOSE_VALUE_OPTS = {"--seat", "--target", "--mode", "--owner-said", "--by-card", "--per-ruling",
+                    "--why", "--sha", "--reason"}
+
+
+def close_args(cmd, m):
+    """(id, sha-or-None) of the `close` that CLOSE_CMD_RE matched at `m`, parsed the way
+    argparse reads it. The old regexes took the first word after ANY `close` on the line
+    (`git commit -m "close out" && ... close REAL_ID` warned about `out`) and found no id
+    at all when an option came first (`close --why "..." REAL_ID`). Wave 7."""
+    import shlex
+    lex = shlex.shlex(cmd[m.end():], posix=True, punctuation_chars=";&|()")
+    lex.whitespace_split = True
+    iid = sha = None
+    toks = []
+    for t in lex:
+        if t and set(t) <= set(";&|()"):
+            break                      # the next shell command is not this close's argv
+        toks.append(t)
+    i = 0
+    while i < len(toks):
+        t = toks[i]
+        opt, eq, val = t.partition("=")
+        if opt in CLOSE_VALUE_OPTS:
+            if not eq:
+                val = toks[i + 1] if i + 1 < len(toks) else ""
+                i += 1
+            if opt == "--sha":
+                sha = val
+        elif not t.startswith("-") and iid is None:
+            iid = t
+        i += 1
+    return iid, sha
 
 
 def git(root, *args):
@@ -76,14 +108,12 @@ def main():
     cmd = (ev.get("tool_input") or {}).get("command") or ""
     if not CLOSE_CMD_RE.search(cmd):
         return 0
-    m = ID_RE.search(cmd)
-    if not m:
+    iid, sha = close_args(cmd, CLOSE_CMD_RE.search(cmd))
+    if not iid or not ID_RE.match(iid):
         return 0
-    iid = m.group(1)
 
     root = os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
-    m = SHA_RE.search(cmd)
-    sha = m.group(1) if m else git(root, "rev-parse", "--short", "HEAD")
+    sha = sha if sha and SHA_RE.match(sha) else git(root, "rev-parse", "--short", "HEAD")
     if not sha:
         return 0
 
