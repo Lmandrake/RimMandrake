@@ -46,10 +46,13 @@ STATIC (also): mat_root_checks -- ROT_WARM_MAT_BUILD_WORKS_FOR_FOOD (owner by ca
                      kernel's MatBudStep with the cap counting minified roots, the 21 C cap stays a def constant, the root
                      keeps the mat-square art (no new texPath), and the log's last site entry reveals RM_NavigatorLastCamp,
                      whose stash node adds RM_LivingMatRoot; --planted turns it red on six planted defects.
+STATIC (also): health_toggle_checks -- ROT_HEALTHTOGGLE_FIX_WEEVIL_UNSTRIPPED: Health sharing off strips every race whose
+                     RM_WoundLinkExtension tag starts "Rot" (by tag, never a defName list, so the UtinniPatches weevil is
+                     covered), and the tooltip names who mends; --planted turns it red on five planted defects.
 
 STATIC: `python3 validation.py` -> `STATIC: PASS (0 findings)`; needs no game. Nothing here has been run live.
 MOCK:   `python3 validation.py --mock` -> runs wound_link, dustveil and living_mat_root against a fake game, clean and
-        with 15 planted defects (MOCK_EXPECT); each defect must turn ITS row FAIL, or UNMEASURED when it blinds the
+        with every planted defect in MOCK_EXPECT; each defect must turn ITS row FAIL, or UNMEASURED when it blinds the
         instrument (control reads present, clock running, wrong map).
 """
 import fnmatch
@@ -151,6 +154,47 @@ def donor_name_checks(texts=None):
     return bad
 
 
+KIN_WIRING_PATCH = os.path.join(HERE, "..", "..", "RimUtinni", "UtinniPatches", "Patches", "RotFauna_KinWiring.xml")
+
+
+def health_toggle_checks(src, weevil_patch=None):
+    """ROT_HEALTHTOGGLE_FIX_WEEVIL_UNSTRIPPED: 'Health sharing' off must strip EVERY Rot-clique race, including
+    RSW_FungalWeevil (wired by UtinniPatches, which an RM_ mod may not name). The strip finds races by a "Rot"-prefixed
+    RM_WoundLinkExtension tag, never by a defName list; every ruled kin tag must carry that prefix, and the weevil's
+    patch must tag it with its ruled clique. src: RM_TheRotMod.cs text; weevil_patch: patch text (planting)."""
+    bad = []
+    body = src.split("static int StripRotKinWiring", 1)[1].split("GuardianGroveRows", 1)[0] \
+        if "static int StripRotKinWiring" in src else ""
+    if not body:
+        bad.append("Health sharing toggle has no StripRotKinWiring (a defName strip list misses other tiers' races)")
+    else:
+        for need in ('w.tag.StartsWith("Rot"', "CompProperties_WoundLink", "CompProperties_GrantHediff",
+                     "CompProperties_KinMending", "modExtensions.RemoveAll(IsRotKinTag)"):
+            if need not in body:
+                bad.append("StripRotKinWiring lacks %s" % need)
+        if re.search(r'"(RM|RSW)_\w+"', body):
+            bad.append("StripRotKinWiring names a defName: strip by Rot clique tag only")
+    if "HealthSharingBodies" in src:
+        bad.append("the retired HealthSharingBodies defName list is back")
+    if not re.search(r"healthSharing\)\s*\{\s*StripRotKinWiring\(\);", src):
+        bad.append("StripRotKinWiring is not called when health sharing (or the whole Rot) is off")
+    for row, (tag, _l, _m, _a) in sorted(RULED_KIN_ROWS.items()):
+        if tag and not tag.startswith("Rot"):
+            bad.append("%s's kin tag %s does not start with 'Rot': the health toggle would not strip it" % (row, tag))
+    wp = weevil_patch if weevil_patch is not None else open(KIN_WIRING_PATCH, encoding="utf-8").read()
+    if not re.search(r'RSW_FungalWeevil.*?RM_WoundLinkExtension">\s*<tag>%s</tag>'
+                     % RULED_KIN_ROWS["RSW_FungalWeevil"][0], wp, re.S):
+        bad.append("RotFauna_KinWiring.xml does not tag RSW_FungalWeevil %s" % RULED_KIN_ROWS["RSW_FungalWeevil"][0])
+    tip = re.search(r'"Health sharing \(restart to apply\)", ref healthSharing,(.*?)\);', src, re.S)
+    tip = re.sub(r'"\s*\+\s*"', "", tip.group(1)) if tip else ""
+    for word in ("gromma", "rennok", "mullgoth", "durrok", "grellik"):
+        if word not in tip.split("heal faster", 1)[0].split(";")[-1]:
+            bad.append("Health sharing tooltip does not say %s mends" % word)
+    if "Alpha Animals" in tip:
+        bad.append("Health sharing tooltip still says it needs Alpha Animals (the RM_ ports need no donor)")
+    return bad
+
+
 def static_checks():
     bad = []
     if len(SHIPPED) + len(HELD_DEFS) < 40:
@@ -211,10 +255,7 @@ def static_checks():
     for pat, what in ((r"float\s+radius\s*=\s*12f\b", "radius 12"), (r"int\s+kinMendingMinKin\s*=\s*2\b", "min kin 2")):
         if not re.search(pat, ke):
             bad.append("wound-link default changed (%s): bar 1's live threshold in rot_northstar_bars_draft must be re-derived" % what)
-    hs = re.search(r"HealthSharingBodies\s*=\s*\{([^}]*)\}", src)
-    hs_names = set(re.findall(r'"(\w+)"', hs.group(1))) if hs else set()
-    if hs_names != {"RM_Chittik", "RM_Agaripod", "RM_Agaripawn", "RM_Durrok", "RM_Mullgoth"}:
-        bad.append("Health sharing toggle strips %s, not the five RM_ bodies" % sorted(hs_names))
+    bad += health_toggle_checks(src)
     reader_text = re.sub(r"Scribe_Values\.Look\([^\n]*\n", "", src)
     ui_start = reader_text.index("public void DoWindowContents")
     ui_end = reader_text.index("public class RM_TheRotFront") if "public class RM_TheRotFront" in reader_text else reader_text.index("static class RM_TheRotFront")
@@ -616,6 +657,20 @@ def planted_mat_root():
     out.append(("mat no reward", bool(mat_root_checks(cs, xml, navcs, navxml.replace("<thingDef>RM_LivingMatRoot</thingDef>", "<thingDef>RM_SwallowedDriveCore</thingDef>", 1), k))))
     out.append(("mat camp unfired", bool(mat_root_checks(cs, xml, navcs.replace("SiteScriptFor(def, n)", "null", 1), navxml, k))))
     out.append(("mat camp not last", bool(mat_root_checks(cs, xml, navcs, navxml.replace("<lastCampEntry>8</lastCampEntry>", "<lastCampEntry>2</lastCampEntry>", 1), k))))
+    return out
+
+
+def planted_health_toggle():
+    """[(name, red?)]: each planted defect must turn health_toggle_checks red; 'hs clean' must be green."""
+    src = open(os.path.join(HERE, "Source", "RM_TheRotMod.cs"), encoding="utf-8").read()
+    wp = open(KIN_WIRING_PATCH, encoding="utf-8").read()
+    out = [("hs clean", not health_toggle_checks(src, wp))]
+    out.append(("hs by defName", bool(health_toggle_checks(src.replace(
+        "if (def.modExtensions == null", 'if (def.defName != "RM_Chittik" || def.modExtensions == null', 1), wp))))
+    out.append(("hs tag kept", bool(health_toggle_checks(src.replace("def.modExtensions.RemoveAll(IsRotKinTag);", "", 1), wp))))
+    out.append(("hs never called", bool(health_toggle_checks(src.replace("StripRotKinWiring();", "", 1), wp))))
+    out.append(("hs weevil retag", bool(health_toggle_checks(src, wp.replace("<tag>RotBroodmates</tag>", "<tag>Broodmates</tag>", 1)))))
+    out.append(("hs tip stale", bool(health_toggle_checks(src.replace("and grellik heal", "heal", 1), wp))))
     return out
 
 
@@ -1229,7 +1284,8 @@ def _build_suite():
         (TheRot's healthSharing strips the comps at STARTUP only, so it cannot be flipped live)."""
         state = {}
         with t.component("chittik_carries_wound_link", beyond_toggle=True):
-            rows = _link_defs(t, ["RM_Chittik"])
+            # A legal setting is not a defect: with the wiring stripped at startup this row cannot be judged.
+            rows = None if (_live(t) and _kin_stripped(t)) else _link_defs(t, ["RM_Chittik"])
             if rows is not None and _live(t):
                 if "RM_Chittik" not in rows:
                     raise ExpectationFailed("ThingDef/RM_Chittik does not resolve live")
@@ -1285,13 +1341,19 @@ def _build_suite():
             return None
         return out
 
+    def _kin_stripped(t):
+        """True after an UNMEASURED when this load started with the Rot kin wiring stripped: RM_TheRotFront runs
+        StripRotKinWiring when theRotEnabled OR healthSharing is off, so a missing comp is the setting, not a defect."""
+        for field in ("theRotEnabled", "healthSharing"):
+            v = str(_raw(t, "get", field).get("value")).lower()
+            if v != "true":
+                _unmeasured(t, "%s reads %r: off at startup it strips the Rot link and mending wiring, so the rows "
+                               "cannot be judged on this load" % (field, v))
+                return True
+        return False
+
     def _ruled_rows_check(t):
-        if not _live(t):
-            return
-        hs = str(_raw(t, "get", "healthSharing").get("value")).lower()
-        if hs != "true":
-            _unmeasured(t, "healthSharing reads %r: off at startup it strips the link and mending comps, so the rows "
-                           "cannot be judged on this load" % hs)
+        if not _live(t) or _kin_stripped(t):
             return
         names = sorted(RULED_KIN_ROWS)
         rows = _kin_rows(t, names)
@@ -1353,7 +1415,8 @@ class _MockRotSession(object):
     """--mock: answers like a game where wound_link, dustveil and living_mat_root work. `broken` plants ONE defect:
     nocomp (chittik lost the comp), noshare (ON arm mirrors nothing), offleaks (OFF arm still mirrors), blindctrl
     (get_defs control reads present), nobestiary (the RSW_ ruled rows absent), retagged (a gromma still reads
-    RotNetwork), durroklink (a durrok carries the wound link it was ruled out of), hsoff (Health sharing off), grounded (moth canEverFly false),
+    RotNetwork), durroklink (a durrok carries the wound link it was ruled out of), hsoff (Health sharing off), rotoff (the Rot
+    master switch off), grounded (moth canEverFly false),
     ctrlflies (the non-flier control reads true), ticking (the clock runs while the moth is spawned), nospread
     (5 fed sweeps lay 4 cells), hot (the mat room passes 21 C), nodieback (a starved root keeps its cells),
     rotmap (staged on an RM_TheRot map), nobudcap (budding passes the cap), nobud (a well-fed root never buds),
@@ -1399,6 +1462,8 @@ class _MockRotSession(object):
         if tool == "jawa/mod_settings_field":
             if kw.get("field") == "healthSharing":
                 return {"success": True, "value": "False" if b == "hsoff" else "True"}
+            if kw.get("field") == "theRotEnabled":
+                return {"success": True, "value": "False" if b == "rotoff" else "True"}
             if kw.get("action") == "set":
                 self.link_on = str(kw.get("value")).lower() == "true"
                 return {"success": True}
@@ -1496,7 +1561,10 @@ MOCK_EXPECT = {
     "nobestiary": {"wound_link/no_share_when_off": "PASS", "wound_link/ruled_kin_rows_live": "UNMEASURED"},
     "retagged": {"wound_link/chittik_carries_wound_link": "PASS", "wound_link/ruled_kin_rows_live": "FAIL"},
     "durroklink": {"wound_link/ruled_kin_rows_live": "FAIL"},
-    "hsoff": {"wound_link/no_share_when_off": "PASS", "wound_link/ruled_kin_rows_live": "UNMEASURED"},
+    # Stripped at startup, the chittik has no comp, so the arms after the first row cannot be judged either.
+    "hsoff": {"wound_link/chittik_carries_wound_link": "UNMEASURED", "wound_link/no_share_when_off": "UNMEASURED",
+              "wound_link/ruled_kin_rows_live": "UNMEASURED"},
+    "rotoff": {"wound_link/chittik_carries_wound_link": "UNMEASURED", "wound_link/ruled_kin_rows_live": "UNMEASURED"},
     "grounded": {"dustveil/flight_tracker_state_read": "FAIL"},
     "ctrlflies": {"dustveil/flight_tracker_state_read": "UNMEASURED"},
     "ticking": {"dustveil/flight_tracker_state_read": "UNMEASURED"},
@@ -1548,9 +1616,9 @@ if __name__ == "__main__":
         sys.path.insert(0, os.path.join(HERE, "..", "Utils", "modcheck"))
         sys.exit(mock_run())
     if "--planted" in sys.argv:
-        res = planted_ambrosyx() + planted_dustveil() + planted_core_reclaim() + planted_mat_root()
+        res = planted_ambrosyx() + planted_dustveil() + planted_core_reclaim() + planted_mat_root() + planted_health_toggle()
         for name, ok in res:
-            print("PLANTED %-16s %s" % (name, "RED as expected" if ok and name not in ("clean", "dv clean", "core clean", "mat clean") else ("GREEN" if ok else "MISSED")))
+            print("PLANTED %-16s %s" % (name, "RED as expected" if ok and name not in ("clean", "dv clean", "core clean", "mat clean", "hs clean") else ("GREEN" if ok else "MISSED")))
         sys.exit(0 if all(ok for _n, ok in res) else 1)
     problems = static_checks()
     print("STATIC: %s" % ("PASS (0 findings)" if not problems else "FAIL"))

@@ -29,9 +29,10 @@ namespace RimMandrake.TheRot
     //   portableWarmMat*: RM_LivingMatRoot.cs reads them directly on EVERY map (owner-ordered cross-biome exception,
     //                  ROT_WARM_MAT_BUILD_WORKS_FOR_FOOD); not routed through RM_KitFronts
     //   crossBiome*: opt-in donor (RM_TheRot's extensions) for non-Rot maps; Coverage scales their intensity
-    //   healthSharing: the wound-link / kin-mending comps on the five RM_ bodies (chittik, gromma, rennok natively;
-    //                  durrok, mullgoth by Patches/RotSpecies_WoundSharing.xml) are removed again
-    //                  at startup when off (restart to apply) - ROT_WOUND_SHARING_WIRING_1
+    //   healthSharing: the wound-link / kin-mending comps and the kin tag on every race tagged with a Rot clique
+    //                  (chittik, gromma, rennok natively; durrok, mullgoth by Patches/RotSpecies_WoundSharing.xml;
+    //                  RSW_FungalWeevil by UtinniPatches) are removed again at startup when off (restart to apply)
+    //                  - ROT_WOUND_SHARING_WIRING_1, ROT_HEALTHTOGGLE_FIX_WEEVIL_UNSTRIPPED
     // ════════════════════════════════════════════════════════════════════
     public class RM_TheRotSettings : ModSettings
     {
@@ -299,8 +300,9 @@ namespace RimMandrake.TheRot
             if (Group(list, "Wild spawns and kin bonds (restart)", RimMandrake.Shared.SettingScope.Now, new[] { "healthSharing", "guardianGroves", "paleTreeSpawn", "ambrosyxSpawn", "hwelgrue" }, "[next game start]"))
             {
                 list.CheckboxLabeled("Health sharing (restart to apply)", ref healthSharing,
-                    "Chittik, gromma and rennok split wounds with kin in their grove; mullgoth and durrok heal faster among kin. "
-                  + "Needs Alpha Animals. Applies on the next launch.");
+                    "Chittik, gromma and rennok split wounds with kin in their grove; gromma, rennok, mullgoth, durrok "
+                  + "and grellik heal faster among kin. Off: none of them share wounds or mend, including animals "
+                  + "already on the map. Applies on the next launch.");
                 list.CheckboxLabeled("Guardian groves (new maps, restart to apply)", ref guardianGroves,
                     "Defended tea-source mushrooms wild-spawn with the false-fruit lure ring. WORLDGEN-AFFECTING: "
                   + "applies to maps generated after the next launch.");
@@ -503,12 +505,7 @@ namespace RimMandrake.TheRot
 
             if (!RM_TheRotSettings.theRotEnabled || !RM_TheRotSettings.healthSharing)
             {
-                foreach (string body in HealthSharingBodies)
-                {
-                    ThingDef def = DefDatabase<ThingDef>.GetNamedSilentFail(body);
-                    def?.comps?.RemoveAll(c => c is RimMandrake.CreatureBehaviors.CompProperties_WoundLink
-                                               || c is RimMandrake.CreatureBehaviors.CompProperties_GrantHediff);
-                }
+                StripRotKinWiring();
             }
 
             // Wild-spawn gates take effect on the next launch (the roster is read at map generation).
@@ -537,7 +534,42 @@ namespace RimMandrake.TheRot
             }
         }
 
-        private static readonly string[] HealthSharingBodies = { "RM_Chittik", "RM_Agaripod", "RM_Agaripawn", "RM_Durrok", "RM_Mullgoth" };
+        // Health sharing off: every race whose RM_WoundLinkExtension tag is a Rot clique ("Rot..." - RotSwarm,
+        // RotAgarikin, RotWildkin, RotBroodmates) loses its wound-link comp, its kin-mending grant and the kin tag
+        // itself. Found by tag, not by defName, so a race wired by another tier (UtinniPatches' RSW_FungalWeevil,
+        // which an RM_ mod may not name) is stripped too - ROT_HEALTHTOGGLE_FIX_WEEVIL_UNSTRIPPED. Dropping the tag
+        // also silences a kin-mending hediff a saved pawn already carries (the comp finds no kin without a tag).
+        // Other kin groups (LanternShoal) and unrelated hediff grants are left alone.
+        public static int StripRotKinWiring()
+        {
+            int stripped = 0;
+            foreach (ThingDef def in DefDatabase<ThingDef>.AllDefsListForReading)
+            {
+                if (def.modExtensions == null || !def.modExtensions.Exists(IsRotKinTag))
+                {
+                    continue;
+                }
+                def.modExtensions.RemoveAll(IsRotKinTag);
+                def.comps?.RemoveAll(c => c is RimMandrake.CreatureBehaviors.CompProperties_WoundLink
+                                          || (c is RimMandrake.CreatureBehaviors.CompProperties_GrantHediff g && IsKinGrant(g)));
+                stripped++;
+            }
+            return stripped;
+        }
+
+        private static bool IsRotKinTag(DefModExtension e)
+        {
+            return e is RimMandrake.CreatureBehaviors.RM_WoundLinkExtension w
+                && w.tag != null && w.tag.StartsWith("Rot", System.StringComparison.Ordinal);
+        }
+
+        // A grant with no hediff is the wound-link carrier's inspect line only (the chittik's); one whose hediff
+        // carries the kin-mending comp is the mend itself.
+        private static bool IsKinGrant(RimMandrake.CreatureBehaviors.CompProperties_GrantHediff g)
+        {
+            return g.hediff == null
+                || (g.hediff.comps != null && g.hediff.comps.Exists(hc => hc is RimMandrake.CreatureBehaviors.CompProperties_KinMending));
+        }
         private static readonly string[] GuardianGroveRows = { "RM_AgelessCap", "RM_RegenerantVeil", "RM_EuphoricCrown", "RM_FalseFruit" };
     }
 

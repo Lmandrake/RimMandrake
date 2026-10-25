@@ -5,11 +5,12 @@
   Stats, tools, race fields and pawnkind numbers are the donor's own, as the creature the game shows today
   (our rename/tolerance patches on the donor def are folded in). Departures:
     - wildBiomes dropped (the biome roster casts it); AnimalStatExtension (donor stat defs) dropped.
-    - VEF.* comps and VEF_ abilities kept, guarded MayRequire OskarPotocki.VanillaFactionsExpanded.Core (a framework we keep, not the donor).
-    - texPath is OUR final path; the PNGs are owed through artpipe (no donor art is reused). Until the art is
-      installed through the art ledger this def has no picture: ART OWED, never a pass of the art bar.
+    - the donor carried no VEF comp or ability beyond AnimalStatExtension, so nothing here needs VEF.
+    - texPath is OUR final path; our art (no donor art reused) was installed 2026-10-15 (ce514e0193, owner batch-01 accept).
     - dessicated donor art and alternate random graphics dropped (vanilla fallback).
-    - folded 4 op(s) from src/RimMandrake/TheRot/Patches/RotSpecies_NamesAndSizes.xml
+    - folded 4 op(s) from src/RimMandrake/TheRot/Patches/RotSpecies_NamesAndSizes.xml (the adult drawn 0.5, "finger-long";
+      that patch shrank only the adult, so baby and juvenile were drawn at the donor's 1.3 / 1.5, far bigger than the
+      adult - now the donor's 1.3 : 1.5 : 1.75 proportions scaled to the 0.5 adult: 0.37 / 0.43, review 2026-10-25)
     - folded 2 op(s) from src/RimUtinni/UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml
     - folded 4 op(s) from src/RimUtinni/UtinniPatches/Patches/BiomeCastEvictions_WildBiomes.xml
     - useMeatFrom AA_Helixien -> Megaspider (vanilla; PROVISIONAL)
@@ -140,14 +141,14 @@
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Chittik/RM_Chittik</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>1.3</drawSize>
+          <drawSize>0.37</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Chittik/RM_Chittik</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>1.5</drawSize>
+          <drawSize>0.43</drawSize>
         </bodyGraphicData>
       </li>
       <li>
