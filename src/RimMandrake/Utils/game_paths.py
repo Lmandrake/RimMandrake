@@ -39,7 +39,7 @@ import re
 
 __all__ = ["MODS_CONFIG", "DEF_DUMP", "DUMP_ROOT", "CAPTURES", "PLAYER_LOG",
            "PREV_LOG", "IDEOS", "SAVES", "WORKSHOP", "LOCAL_MODS", "GAME_DATA",
-           "LOCALLOW", "STEAM", "resolve", "describe", "captures",
+           "LOCALLOW", "STEAM", "GAME_DIR", "resolve", "win_to_wsl", "wsl_to_win", "describe", "captures",
            "newest_capture", "KEEP_MARKER"]
 
 
@@ -51,14 +51,57 @@ def resolve(win, wsl):
     return win
 
 
-# --- the two roots everything else hangs off -----------------------------
-_LOW_WIN = r"C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios"
-_LOW_WSL = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios"
-_STEAM_WIN = r"C:\Program Files (x86)\Steam\steamapps"
-_STEAM_WSL = "/mnt/c/Program Files (x86)/Steam/steamapps"
+def win_to_wsl(p):
+    r"""`D:\a\b` -> `/mnt/d/a/b`. A path already in POSIX form is returned as is."""
+    m = re.match(r"^([A-Za-z]):[\\/]*(.*)$", p)
+    if not m:
+        return p
+    return "/mnt/%s/%s" % (m.group(1).lower(), m.group(2).replace("\\", "/"))
+
+
+def wsl_to_win(p):
+    r"""`/mnt/d/a/b` -> `D:\a\b`. Anything not under /mnt/<drive> is returned as is."""
+    m = re.match(r"^/mnt/([a-zA-Z])(?:/(.*))?$", p)
+    if not m:
+        return p
+    return "%s:\\%s" % (m.group(1).upper(), (m.group(2) or "").replace("/", "\\"))
+
+
+def _root(env, win, wsl):
+    """(win, wsl) for a root, overridden by env var `env` in either form.
+
+    🔑 **One machine, one set of env vars** (GAME_PATHS_REWIRE_ONE_ENV_PER_MACHINE,
+    2026-10-25). Archmagi sets none and keeps the literals below. SteveDesktop's game
+    lives on D:\\SteamLibrary under Windows user sjlewis, and its test runs keep their
+    own user-data folder (`-savedatafolder`) so Steve's ModsConfig and saves are never
+    touched. WSLENV `/p` hands Windows python the Windows form and WSL the /mnt form,
+    so both forms are accepted here."""
+    v = os.environ.get(env, "").strip()
+    if not v:
+        return win, wsl
+    if v.startswith("/"):
+        return wsl_to_win(v), v
+    return v, win_to_wsl(v)
+
+
+# --- the roots everything else hangs off ---------------------------------
+#   RM_GAME_USERDATA  the game's save-data folder (Config, Saves, Ideos, DefDump);
+#                     the `-savedatafolder=` the game was launched with.
+#   RM_GAME_LOGDIR    where Unity writes Player.log (the Windows user's LocalLow);
+#                     defaults to RM_GAME_USERDATA's default, which is the same place.
+#   RM_STEAMAPPS      the Steam library's steamapps folder holding RimWorld.
+_DEF_LOW_WIN = r"C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios"
+_DEF_LOW_WSL = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios"
+_LOW_WIN, _LOW_WSL = _root("RM_GAME_USERDATA", _DEF_LOW_WIN, _DEF_LOW_WSL)
+_LOG_WIN, _LOG_WSL = _root("RM_GAME_LOGDIR", _DEF_LOW_WIN, _DEF_LOW_WSL)
+_STEAM_WIN, _STEAM_WSL = _root("RM_STEAMAPPS", r"C:\Program Files (x86)\Steam\steamapps",
+                               "/mnt/c/Program Files (x86)/Steam/steamapps")
 
 LOCALLOW = resolve(_LOW_WIN, _LOW_WSL)
 STEAM = resolve(_STEAM_WIN, _STEAM_WSL)
+#: RimWorld's install folder (RimWorldWin64.exe, Data/, Mods/, BridgeTools/).
+GAME_DIR = resolve(os.path.join(_STEAM_WIN, r"common\RimWorld"),
+                   os.path.join(_STEAM_WSL, "common/RimWorld"))
 
 MODS_CONFIG = resolve(os.path.join(_LOW_WIN, r"Config\ModsConfig.xml"),
                       os.path.join(_LOW_WSL, "Config/ModsConfig.xml"))
@@ -115,13 +158,13 @@ def newest_capture(root=None):
 DEF_DUMP = newest_capture() or DUMP_ROOT
 # ⚠️ RimWorld's OWN Player.log, not the one under Ludeon Studios/RimWorld/. The
 # distinction has cost a session before: this is the file the game appends to.
-PLAYER_LOG = resolve(os.path.join(_LOW_WIN, "Player.log"),
-                     os.path.join(_LOW_WSL, "Player.log"))
+PLAYER_LOG = resolve(os.path.join(_LOG_WIN, "Player.log"),
+                     os.path.join(_LOG_WSL, "Player.log"))
 # Where the game keeps saved ideoligions (.rid) and savegames (.rws).
 # Unity rotates Player.log -> Player-prev.log at launch, PRESERVING the old
 # file's mtime, which makes it the anchor for "which run is this".
-PREV_LOG = resolve(os.path.join(_LOW_WIN, "Player-prev.log"),
-                   os.path.join(_LOW_WSL, "Player-prev.log"))
+PREV_LOG = resolve(os.path.join(_LOG_WIN, "Player-prev.log"),
+                   os.path.join(_LOG_WSL, "Player-prev.log"))
 IDEOS = resolve(os.path.join(_LOW_WIN, "Ideos"),
                 os.path.join(_LOW_WSL, "Ideos"))
 SAVES = resolve(os.path.join(_LOW_WIN, "Saves"),
@@ -142,7 +185,7 @@ def describe():
             ("Player.log", PLAYER_LOG), ("Ideos/", IDEOS),
             ("Saves/", SAVES),
             ("workshop/294100", WORKSHOP), ("Mods/", LOCAL_MODS),
-            ("Data/", GAME_DATA)]
+            ("Data/", GAME_DATA), ("game dir", GAME_DIR)]
     width = max(len(n) for n, _ in rows)
     for name, path in rows:
         print("  %-*s  %-7s %s" % (width, name,

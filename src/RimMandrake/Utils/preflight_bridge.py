@@ -52,8 +52,7 @@ TIER_FILES = {'full': 'ModsConfig.FULL.LATEST.xml', 'minimal': 'ModsConfig.MINIM
 BRIDGE_FILE = os.path.join(REPO, 'infrastructure', 'state', 'BRIDGE')
 COMPANION_REPO = os.path.join(REPO, 'src', 'RimMandrake', 'bridgetools', 'artifacts', 'BridgeTools', 'JawaBench',
                               'JawaBench.BridgeTools.dll')
-COMPANION_GAME = gp.resolve(r'C:\Program Files (x86)\Steam\steamapps\common\RimWorld\BridgeTools\JawaBench\JawaBench.BridgeTools.dll',
-                            '/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/BridgeTools/JawaBench/JawaBench.BridgeTools.dll')
+COMPANION_GAME = os.path.join(gp.GAME_DIR, 'BridgeTools', 'JawaBench', 'JawaBench.BridgeTools.dll')
 # by platform, NOT gp.resolve: resolve falls back to the Windows spelling when the WSL path does not exist YET, and
 # os.makedirs('D:\\...') under WSL then creates a literal directory of that name in the cwd
 SCRATCH = rm_win("scratch", "preflight") if os.name == 'nt' else rm_str("scratch", "preflight")
