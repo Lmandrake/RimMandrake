@@ -121,19 +121,20 @@ namespace RimMandrake.Minerals
                     float shown = deposits ? RM_MineralPolicyKernel.LumpsForEpm(v, r.UnitsPerCellOrFind) : v;
                     Rect row = list.GetRect(Text.LineHeight);
                     Widgets.Label(row.LeftPart(0.45f), (edited ? "* " : "  ") + r.MaterialId + " (" + (deposits ? "deposits per map" : r.Unit) + ")");
-                    if (!buffers.TryGetValue(key, out string buf)) buf = shown.ToString("0.##", CultureInfo.InvariantCulture);
+                    if (!buffers.TryGetValue(key, out string buf)) buf = RM_MineralPolicyKernel.ShowNumber(shown);
                     float ns = shown;
                     Widgets.TextFieldNumeric(row.RightPart(0.55f).LeftPart(0.35f), ref ns, ref buf, 0f, 1000000f);
                     buffers[key] = buf;
-                    float nv = ns == shown ? v : (deposits ? RM_MineralPolicyKernel.EpmForLumps(ns, r.UnitsPerCellOrFind) : ns);
+                    float? edit = RM_MineralPolicyKernel.SettingsEdit(shown, buf, ns, deposits, r.UnitsPerCellOrFind);
+                    float nv = edit ?? v;
                     if (deposits)
                         Widgets.Label(row.RightPart(0.55f).RightPart(0.6f), "of ~" + RM_MineralPolicyKernel.MeanLumpCells.ToString("0", CultureInfo.InvariantCulture)
                                     + " cells = " + nv.ToString("0", CultureInfo.InvariantCulture) + " units");
-                    if (nv != v)
+                    if (edit != null)
                     {
                         // back to the registry value = no override, so later registry updates reach this cell again
                         float regShown = reg == null ? -1f : deposits ? RM_MineralPolicyKernel.LumpsForEpm(reg.Value, r.UnitsPerCellOrFind) : reg.Value;
-                        if (reg != null && Mathf.Abs(ns - regShown) < 0.005f) overrides.Remove(key);   // the field shows 2 decimals
+                        if (reg != null && RM_MineralPolicyKernel.SameAsShown(ns, regShown)) overrides.Remove(key);
                         else overrides[key] = nv;
                     }
                 }

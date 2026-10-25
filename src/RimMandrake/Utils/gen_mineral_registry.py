@@ -277,7 +277,9 @@ def emit_registry(emit, index):
         cells = []
         for c in biome_cols(r):
             v = r[c].strip()
-            if v == "0":
+            # a missing cell reads 0 - except a RUT_ biome, which reads its RM_ twin's column (RM_MineralPolicyKernel.RegistryValue),
+            # so an explicit 0 in a RUT_ column that has a twin column must be written or the twin's value leaks in
+            if num(v) == 0 and not (c.startswith("RUT_") and "RM_" + c[4:] in r):
                 continue
             if num(v) is not None:
                 cells.append(f"<li><biome>{c}</biome><value>{v}</value></li>")

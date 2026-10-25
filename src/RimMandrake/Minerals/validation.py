@@ -183,6 +183,19 @@ def _build_suite():
 
     probe = ";".join(MUST_ZERO + list(STEEL) + ["Plasteel", "RM_NoSuchMineral_control"])
 
+    # Registered FIRST (chains run in registration order): read the last apply reason before any ProofApply - the toggles chain
+    # and every _restore re-apply and overwrite it. Its own chain, so its UNMEASURED latch cannot blank the defs_resolve rows.
+    @suite.chain("reassert")
+    def reassert(t):
+        with t.component("reassert_on_game_init", beyond_toggle=True):
+            if not _live(t):
+                return
+            reason = _call(t, "ProofState", "").get("reason", "")
+            if reason.startswith("proof:") or reason == "settings changed" or reason.startswith("surface placer registered"):
+                _unmeasured(t, "last apply was %r, after the game started; FinalizeInit is proven on a fresh load only" % reason)
+            elif reason != "Game.FinalizeInit":
+                raise ExpectationFailed("last apply reason %r in a running game: the FinalizeInit re-assert never ran" % reason)
+
     @suite.chain("defs_resolve")
     def defs_resolve(t):
         with t.component("registry_loaded", beyond_toggle=True):
@@ -258,14 +271,6 @@ def _build_suite():
             w = _weights(_call(t, "ProofState", "MineableSteel"), "MineableSteel")
             if w is None or w[0] != 1.0:
                 raise ExpectationFailed("suppression off: MineableSteel did not get scatter 1 back (%r)" % (w,))
-        with t.component("reassert_on_game_init", beyond_toggle=True):
-            if not _live(t):
-                return
-            reason = _call(t, "ProofState", "").get("reason", "")
-            if reason not in ("Game.FinalizeInit",) and not reason.startswith("proof:"):
-                raise ExpectationFailed("last apply reason %r: the FinalizeInit re-assert never ran" % reason)
-            if reason.startswith("proof:"):
-                _unmeasured(t, "an earlier proof call re-applied; FinalizeInit is proven on a fresh load only (read reason first)")
 
     @suite.chain("settings_roundtrip")
     def settings_roundtrip(t):

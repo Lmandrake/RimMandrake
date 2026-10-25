@@ -178,6 +178,27 @@ namespace RimMandrake.Minerals.SelfTest
             Check(offAfter["MineableGold"].Scatter == 0.5f, "master off after re-assert must restore the other mod's 0.5");
             Check(offAfter["XX_NewOre"].Unregistered, "a new unknown ore is unregistered");
 
+            // --- re-assert of a def we never wrote: a mineable that bore nothing at the snapshot (so no decision, no lastApplied)
+            // and an unknown mod's late static constructor gave it scatter -> adopted, so suppression and the unregistered count see it
+            var lateOrig = new Dictionary<string, MineralDefInfo> { { "XX_LateOre", new MineralDefInfo("XX_LateOre", 0f, 0f, "XX_LateItem", true) } };
+            var lateLast = new Dictionary<string, float[]>();
+            Check(RM_MineralPolicyKernel.Readopt(lateOrig, lateLast, new[] { new MineralDefInfo("XX_LateOre", 0f, 0f, "XX_LateItem", true) }).Count == 0,
+                  "re-assert adopted an unwritten def that did not change");
+            List<string> late = RM_MineralPolicyKernel.Readopt(lateOrig, lateLast, new[] { new MineralDefInfo("XX_LateOre", 0.6f, 0f, "XX_LateItem", true) });
+            Check(late.Contains("XX_LateOre") && lateOrig["XX_LateOre"].Scatter == 0.6f, "late weight on a never-written def must be adopted (got " + string.Join(",", late) + ")");
+            var lateSup = ByName(RM_MineralPolicyKernel.Decide(rows, lateOrig.Values.ToList(), new PolicyOptions { SuppressUnregistered = true }));
+            Check(lateSup.ContainsKey("XX_LateOre") && lateSup["XX_LateOre"].Unregistered && lateSup["XX_LateOre"].Scatter == 0f,
+                  "suppression on must reach an ore that got its weight after the snapshot");
+
+            // --- settings screen edit rule: an unfocused field re-parses its own 2-decimal display every frame
+            Check(RM_MineralPolicyKernel.SettingsEdit(1.234f, "1.23", 1.23f, true, 40f) == null, "viewing must not rewrite a stored 1.234 deposits as 1.23");
+            Check(RM_MineralPolicyKernel.SettingsEdit(0.125f, RM_MineralPolicyKernel.ShowNumber(0.125f), F(RM_MineralPolicyKernel.ShowNumber(0.125f)), true, 40f) == null,
+                  "a .xx5 rounding edge must not mint an override");
+            float? typed2 = RM_MineralPolicyKernel.SettingsEdit(1.234f, "2", 2f, true, 40f);
+            Check(typed2 != null && Math.Abs(typed2.Value - 2400f) < 1e-2f, "typing 2 deposits of a 40/cell ore stores 2400 EPM");
+            Check(RM_MineralPolicyKernel.SettingsEdit(5f, "7", 7f, false, 0f) == 7f, "non-deposit rows store what is typed");
+            Check(RM_MineralPolicyKernel.SameAsShown(1.33f, 1.3333f) && !RM_MineralPolicyKernel.SameAsShown(1.4f, 1.3333f), "same-as-registry is judged on the shown number");
+
             // --- synthetic: zero beats item; inferred governance through the mined item; retired yield
             var a = new MineralRow { MaterialId = "a", DeepWeight = 1f }; a.Items.Add("A"); a.Cells["RM_X"] = 100f;
             var z = new MineralRow { MaterialId = "z" }; z.ZeroProducers.Add("A"); z.RetiredItems.Add("R");

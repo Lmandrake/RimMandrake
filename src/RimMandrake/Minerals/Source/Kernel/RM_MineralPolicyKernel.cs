@@ -187,7 +187,10 @@ namespace RimMandrake.Minerals
                     adopted.Add(c.DefName);
                     continue;
                 }
-                if (!lastApplied.TryGetValue(c.DefName, out float[] last)) continue;
+                // never written by us (it was not bearing and not governed at the snapshot): whatever it holds now is someone
+                // else's value, so compare against the snapshot itself - or a late static constructor giving an unknown ore weight
+                // would never reach the policy (suppression, the unregistered count)
+                float[] last = lastApplied.TryGetValue(c.DefName, out float[] la) ? la : new[] { orig.Scatter, orig.Deep };
                 bool changed = false;
                 if (!Same(c.Scatter, last[0])) { orig.Scatter = c.Scatter; changed = true; }
                 if (!Same(c.Deep, last[1])) { orig.Deep = c.Deep; changed = true; }
@@ -249,6 +252,24 @@ namespace RimMandrake.Minerals
             if (!(unitsPerCell > 0f) || !(lumps > 0f)) return 0f;
             return lumps * unitsPerCell * MeanLumpCells;
         }
+
+        /// <summary>How the settings screen's numeric field shows a value (and so what an unfocused field re-parses every frame).</summary>
+        public static string ShowNumber(float v) { return v.ToString("0.##", CultureInfo.InvariantCulture); }
+
+        /// <summary>The settings screen's edit rule. <paramref name="shown"/> is the stored value in screen units (deposits for EPM
+        /// rows); <paramref name="typed"/>/<paramref name="parsed"/> are the field's buffer and number. Null = the player did not
+        /// change it: an unfocused field re-parses its own 2-decimal display, which must not rewrite a stored 1.234 as 1.23 (nor
+        /// mint an override at a .xx5 rounding edge) just because the screen was opened. Else the new value to store (EPM for
+        /// deposit rows).</summary>
+        public static float? SettingsEdit(float shown, string typed, float parsed, bool deposits, float unitsPerCell)
+        {
+            if (parsed == shown || typed == ShowNumber(shown)) return null;
+            return deposits ? EpmForLumps(parsed, unitsPerCell) : parsed;
+        }
+
+        /// <summary>True when a typed value is the registry value as the field shows it: store no override, so later registry
+        /// updates reach the cell again.</summary>
+        public static bool SameAsShown(float parsed, float registryShown) { return ShowNumber(parsed) == ShowNumber(registryShown); }
 
         /// <summary>The settings-screen translation: "~ 1.3 deposits of ~30 cells".</summary>
         public static string DescribeEpm(float epm, float unitsPerCell)

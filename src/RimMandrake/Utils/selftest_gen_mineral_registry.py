@@ -106,6 +106,12 @@ def test_analyse_and_registry():
     lis = {li.text: li.get("MayRequire") for d in defs for li in d.iter("li") if li.text}
     ok(lis.get("Gold") is None and lis.get("DV_Pyrinth") == "mandrake.rm.pyrinth", "MayRequire only off-Core")
     ok(defs[0].find("biomes/li/biome").text == "RM_B", "zero biome cells omitted, non-zero kept")
+    # a RUT_ biome with no cell reads its RM_ twin (kernel RegistryValue): an explicit 0 there must survive emission
+    twin = dict(row("Gold", "item:Gold", RM_B="40"), RUT_B="0", RUT_C="0.0")
+    tx = ET.fromstring(g.emit_registry([(twin, g.parse_bindings("Gold", "item:Gold")[0][0])], FakeIndex(known)).split("?>", 1)[1])
+    cells = {li.findtext("biome"): li.findtext("value") for li in tx.iter("li") if li.find("biome") is not None}
+    ok(cells.get("RUT_B") == "0", "explicit 0 in a RUT_ column with an RM_ twin is emitted (else the twin's 40 leaks in): %s" % cells)
+    ok("RUT_C" not in cells and "RM_A" not in cells, "zeros with no twin column stay omitted (0.0 included): %s" % cells)
     bad = g.analyse([row("x", "item:Gold", deep="1", other="5")], FakeIndex(known))
     ok(any("OTHER_vanilla_biomes" in h for h in bad["hard"]), "vanilla biomes + deep weight is hard")
     twice = g.analyse([row("a", "item:Gold"), row("b", "item:Gold")], FakeIndex(known))

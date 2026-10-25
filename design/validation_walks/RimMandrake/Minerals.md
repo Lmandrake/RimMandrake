@@ -13,7 +13,7 @@ Every line ends in `→ chain.component` (a suite component that reads the state
 - A mineral the registry has never heard of keeps its mod's weights by default (owner card 2026-10-03); today that includes steel, whose row is GUESS and not emitted. → zeroing.unregistered_steel_kept
 - Master toggle off restores every original weight (not "no ore"); back on zeroes again. → toggles.master_off_restores
 - "Suppress unregistered" on zeroes unregistered ores; off restores them. → toggles.suppress_unregistered_zeroes_steel
-- The policy re-asserts on every game start (Game.FinalizeInit), so a mod whose static constructor ran after ours cannot undo it. → toggles.reassert_on_game_init
+- The policy re-asserts on every game start (Game.FinalizeInit), so a mod whose static constructor ran after ours cannot undo it. → reassert.reassert_on_game_init (own chain, run first: any proof call overwrites the last reason, and an UNMEASURED there would blank later components of the same chain)
 - Governed deep weights agree with Deep Drill's home table: an item with a deep home keeps its deep weight, one without is zeroed. → UNCOVERED: offline only, `selftest_minerals.py` checks every shared item against `RM_DeepHomeTable.xml`; the live pick is Deep Drill's chain
 - Governed veins with a surface source keep vanilla scatter until a surface placer registers (R3). → UNCOVERED: no placer exists before R3; offline `selftest_minerals.py` (placer-active case)
 - All eight settings (enabled, suppressUnregistered, coreSampleNonLocal, veinMultiplier, deepMultiplier, quarryMultiplier, salvageMultiplier, tradeMultiplier) read their defaults, write, read back and restore. → settings_roundtrip.enabled_roundtrip, settings_roundtrip.suppressUnregistered_roundtrip, settings_roundtrip.coreSampleNonLocal_roundtrip, settings_roundtrip.veinMultiplier_roundtrip, settings_roundtrip.deepMultiplier_roundtrip, settings_roundtrip.quarryMultiplier_roundtrip, settings_roundtrip.salvageMultiplier_roundtrip, settings_roundtrip.tradeMultiplier_roundtrip
@@ -23,7 +23,7 @@ Every line ends in `→ chain.component` (a suite component that reads the state
 ## the walk
 1. [B] Tier: smallest list loading the mod (bridge + Harmony + every DLC + `mandrake.rm.deepdrill` + `mandrake.rm.minerals`), quicktest map.
 2. [L] Player.log: one `[RM Minerals] policy applied (startup)` line and one `(Game.FinalizeInit)` line; no config error naming `RM_MineralRegistryDef` or any registry def (e.g. `RM_Mineral_ComponentsIndustrial`); no "two registry defs share materialId".
-3. [B] Read `toggles.reassert_on_game_init` FIRST in a fresh session (any proof call overwrites the last reason), then `python3 -m modcheck.cli run Minerals --chains defs_resolve,zeroing,toggles,settings_roundtrip` from `src/RimMandrake/Utils`.
+3. [B] In a fresh session (any proof call overwrites the last reason) run `python3 -m modcheck.cli run Minerals --chains reassert,defs_resolve,zeroing,toggles,settings_roundtrip` from `src/RimMandrake/Utils`; `reassert` must come first.
 4. [B] Mod Settings > RimMandrake: Minerals: pick RM_LanternDeeps, edit one ore's deposits per map, close, reopen: starred and kept; set back: star gone.
 Offline: `python3 src/RimMandrake/Minerals/validation.py` (static) and `python3 src/RimMandrake/Utils/selftest_minerals.py` (kernel over the shipped registry and real def weights).
 
