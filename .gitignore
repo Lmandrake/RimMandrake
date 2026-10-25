@@ -337,3 +337,7 @@ infrastructure/state/art/render_subjects.json
 # except *.decisions.json and pins — Transient/.gitignore; these lines stay as a backstop.)
 Transient/**/*.serve.log
 Transient/biome_ffar/sheets_state.json
+
+# runtime state, never committed: the modlist swap marker and lockfiles
+deployed/config/ModsConfig.swap-active.json
+infrastructure/state/**/*.lock
