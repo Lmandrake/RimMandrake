@@ -869,12 +869,11 @@ def _plot_D_body(t, x0, z0):
             _expect(any(w > 0 for w in ws), "channel never took liquid from the pond: %s" % _fmt_levels(ws))
         after = _frame(t, *shot, name="D_after")
         _diptych(t, box.get("before"), after, "D_pond_draw")
-    with t.component("pond_shoreline_recedes", toggle="recessionEnabled",
-                     shows=["reservoir_shoreline_recedes"]):
-        far = _rep(t, px, pz) if t._guard() else {}
-        _expect(not far.get("isSourceCell", True) if far else None,
-                "far-edge pond cell is still a source cell after the draw: recession did not dry it")
-        _frame(t, *shot)
+    # pond_shoreline_recedes is DELETED (2026-10-24, FLOWWORKS_MODCHECK_FIX_SIX_STANDING_FAILS): this pond is FLAT, and
+    # under the owner's exactly-level surface (pond_depth_design_2026-10-16.md: dry squares are derived from one level
+    # surface) a flat pond has no edge that dries first -- its drained sub-level residue lies over every square, so the
+    # far corner stayed a source forever. reservoir_shoreline_recedes is now shown by toggle_recession's recession_on,
+    # on a shelving pond whose shallow rim really dries round a wet deep core.
     with t.component("pond_empty_stops_flow", shows=["empty_reservoir_stops_flow"]):
         # RULED OUT (2026-10-11 live, EXT_LIQUID_REDS_HUNT_FIVE_AT_ONCE): a "no-op re-dig" with deepenLevels=3 -- the
         # drive ADDS levels, so it cut D=3 -> D=4 and the still-stocked 125-unit pond fed the new room: tail [4,4,4]
@@ -1151,6 +1150,42 @@ def _order_fill_in(t, pid, cell):
         raise ExpectationFailed("UNMEASURED: the fill-in order was not taken (reservation?): %r" % o)
 
 
+FILL_IN_WORK = 1600    # JobDriver_FillInCanal.BaseWorkAmount at D=1: WorkToDeepen(0) / 2 = RM_DigDepthMath 3,200 x notch 1 / 2
+FILL_IN_TICKS_MAX = 20000   # a MiningSpeed-floor (0.1) pawn needs 16,000 ticks of work; walking and slack on top
+
+
+def _fill_in_budget(t, pid):
+    """Ticks to wait for `pid` to finish a D=1 fill-in: FILL_IN_WORK / its MiningSpeed (JobDriver_AffectFloor takes one
+    SpeedStat of work a tick) x 1.25 + 600 for the walk, capped at FILL_IN_TICKS_MAX. RULED OUT (2026-10-24 modcheck,
+    fill_in_on and fill_in_displacement_on both D=1): a flat 10-pulse (2,500-tick) wait -- a fresh random colonist with
+    Mining 0 works at the stat's 0.1 floor (vanilla MiningSpeed 0.04 + 0.12/level), 16,000 ticks for one notch; the
+    earlier PASS had drawn a skilled one. An unread speed takes the cap."""
+    sp = None
+    r = t.bridge_call("jawa/pawn_stats", pawn=pid, stats="MiningSpeed") or {}
+    for st in r.get("stats") or []:
+        if isinstance(st, dict) and (st.get("stat") or st.get("defName")) == "MiningSpeed":
+            try:
+                sp = float(st.get("value"))
+            except (TypeError, ValueError):
+                sp = None
+    if not sp or sp <= 0:
+        return FILL_IN_TICKS_MAX
+    return min(FILL_IN_TICKS_MAX, int(FILL_IN_WORK / sp * 1.25) + 600)
+
+
+def _wait_filled_in(t, pid, cell):
+    """Advance in 2-pulse steps until `cell` reads D=0 or `_fill_in_budget` runs out (the caller's _expect_state
+    decides). -> ticks waited."""
+    budget, spent = _fill_in_budget(t, pid), 0
+    while spent < budget and t._guard():
+        step = min(2 * PULSE, budget - spent)
+        _wait(t, step)
+        spent += step
+        if t._guard() and _rep(t, cell[0], cell[1]).get("depth") == 0:
+            break
+    return spent
+
+
 @suite.chain("toggle_fill_in")
 def toggle_fill_in(t):
     x0, z0 = _prep_plot(t, "E")
@@ -1163,7 +1198,7 @@ def toggle_fill_in(t):
         _stage(t, "jawa/designate_batch", action="add", designation="RM_FillInCanal", rect="%d,%d,1,1" % a)
         pid = _spawn_pawn_at(t, "Colonist", a[0] - 2, a[1])     # registered in _SPAWNED: the next chain vanishes it
         _order_fill_in(t, pid, a)
-        _wait(t, 10 * PULSE)
+        _wait_filled_in(t, pid, a)
         _expect_state(t, [a], depth=0, what="filled-in cell")
     with t.component("fill_in_off", toggle="fillInEnabled"):
         with _setting(t, "fillInEnabled", False):
@@ -1197,7 +1232,7 @@ def toggle_fill_in_displacement(t):
         r0 = [_rep(t, x, z) for x, z in cells] if t._guard() else []
         _stage(t, "jawa/designate_batch", action="add", designation="RM_FillInCanal", rect="%d,%d,1,1" % cells[1])
         _order_fill_in(t, pid, cells[1])
-        _wait(t, 10 * PULSE)
+        _wait_filled_in(t, pid, cells[1])
         if t._guard():
             r1 = [_rep(t, x, z) for x, z in cells]
             if any(r.get("fill") is None or r.get("overflowDestroyedTotal") is None for r in r0 + r1):
@@ -1212,17 +1247,75 @@ def toggle_fill_in_displacement(t):
         pass
 
 
+SHELF_FRACTION = 0.3    # recession_on stages its shelving pond at 0.3 of capacity (21 of 70 levels): see toggle_recession
+
+
+def _shelving_beds(px, pz, size=5):
+    """{(x, z): bed notches} of the shelving pond `_shelving_pond` paints: a WaterShallow rim (bed 2) round a 3x3
+    WaterDeep core (bed 4, RM_MapComponent_Excavation.BedLevelsAt: impassable or path cost >= 40), plus one deep
+    square in the east rim's middle so the channel's mouth (px+size, pz+size//2) meets deep water."""
+    beds = {}
+    for dx in range(size):
+        for dz in range(size):
+            core = 1 <= dx <= size - 2 and 1 <= dz <= size - 2
+            beds[(px + dx, pz + dz)] = 4 if core or (dx == size - 1 and dz == size // 2) else 2
+    return beds
+
+
+def _shelving_pond(t, key, dz=4, size=5):
+    """A size x size pond whose bed SHELVES: WaterShallow everywhere, then WaterDeep over the deep squares of
+    `_shelving_beds`, all before the body is classified. Under the owner's exactly-level surface (pond_depth_design
+    _2026-10-16.md, "one exactly level water surface per body"; the dry squares are DERIVED from that surface, w = 0)
+    a FLAT pond cannot recede at an edge: every square stands at the same height, and a drained flat pond's last
+    sub-level residue (a debit takes whole levels) lies as a film over all of it. Only a shelf dries first."""
+    px, pz = _limited_pond(t, key, size=size, dz=dz)
+    deep = sorted(c for c, b in _shelving_beds(px, pz, size).items() if b == 4)
+    _stage(t, "jawa/set_terrain_batch", ops=";".join("WaterDeep:%s" % _rect(x, z, 1, 1) for x, z in deep))
+    return px, pz
+
+
+def _level_water_by_square(beds, channel, depth, stock_levels):
+    """Each square's water (dL) once the pond's `stock_levels` share ONE level surface with an empty channel of
+    `depth` notches dug from it (the exactly-level ruling): the Python twin level_water.pond_square_water over the
+    pond+channel histogram. -> {cell: dL}."""
+    import level_water as LW
+    allb = dict(beds)
+    allb.update({c: depth for c in channel})
+    h = LW.histogram(list(allb.values()))
+    dl = int(round(stock_levels * LW.U))
+    return {c: LW.pond_square_water(b, h, dl) for c, b in allb.items()}
+
+
 @suite.chain("toggle_recession")
 def toggle_recession(t):
+    """recession_on: a small SHELVING pond (deep core, shallow rim) staged at SHELF_FRACTION and drawn by a 12-cell D=3
+    channel: the level surface falls below the rim's bed, so the far rim corner dries while the deep core stays wet --
+    the shoreline recedes (walk bar reservoir_shoreline_recedes; plot D's flat pond held it before and could not
+    show it under the exactly-level ruling, see _shelving_pond). The twin (_level_water_by_square) puts that surface
+    0.5 notch under the rim's bed (core 1.5 notches, channel 0.5), a margin of 11 levels against the refill trickle
+    over 40 pulses; at 0.4 the margin is only ~4."""
     x0, z0 = _prep_plot(t, "D")
-    px, pz = _limited_pond(t, "D")
+    px, pz = _shelving_pond(t, "D")
     cells = _channel_from(px + 5, pz + 2, 12)
-    with t.component("recession_on", toggle="recessionEnabled"):
-        _expect_fresh_pond(t, px, pz)
+    with t.component("recession_on", toggle="recessionEnabled", shows=["reservoir_shoreline_recedes"]):
+        r = _expect_fresh_pond(t, px, pz)
+        if t._guard():
+            if (r.get("body") or {}).get("limitless") is not False:
+                raise ExpectationFailed("UNMEASURED: the shelving pond is not a limited body: %r" % (r,))
+            rs = t.bridge_call("jawa/static_call", type="RimMandrake.FlowWorks.RM_NorthstarProofs",
+                               method="ProofSetBodyFraction", args="%d;%d;%s" % (px + 2, pz + 2, SHELF_FRACTION))
+            res = str((rs or {}).get("result", ""))
+            if not res.startswith("SET"):
+                raise ExpectationFailed("UNMEASURED: could not stage the pond at %s of capacity: %s" % (SHELF_FRACTION, res or rs))
         _dig_run(t, cells, 3)
         _wait(t, 40 * PULSE)
         far = _rep(t, px, pz) if t._guard() else {}
-        _expect(not far.get("isSourceCell", True) if far else None, "no pond cell dried with recession ON")
+        core = _rep(t, px + 2, pz + 2) if t._guard() else {}
+        if t._guard() and core and not core.get("isSourceCell"):
+            # the whole pond gone is not a receding SHORE: the deep core must still stand in water
+            raise ExpectationFailed("UNMEASURED: the shelving pond's deep core dried too (drained, not receded): %r" % (core,))
+        _expect(not far.get("isSourceCell", True) if far else None,
+                "the far rim corner is still a source cell with recession ON: the shoreline did not recede")
     x0, z0 = _prep_plot(t, "D")
     # its OWN rows (0-2, a 3x3 pond): re-ponding recession_on's rect inherited that body, drawn down already, so the
     # OFF side's "still a source" read a freshly painted cell and could not fail
@@ -1291,21 +1384,23 @@ def toggle_liquid_ignition(t):
         pass
 
 
+ALL_OFF_DRY_DZ = 1   # plot T row clear of plot_C2's tar strip (z0+4..z0+9) and of every pond this file stages on T
+
+
 @suite.chain("all_off_still_digs")
 def all_off_still_digs(t):
-    """FLOWWORKS_NORTHSTAR_SHIP_1 / MOD_OPTIONS ruling 2026-09-12: with EVERY FlowWorks toggle off the mod still
-    digs dry channels. A D=1 run dug beside a pond stays D=1 and dry across pulses (no flow, no rain, no fire).
+    """FLOWWORKS_NORTHSTAR_SHIP_1 / MOD_OPTIONS ruling 2026-09-12 (flowworks_mod_definition.md section 8: "all-off
+    leaving a mod that still digs dry channels"): with EVERY FlowWorks toggle off the mod still DIGS -- a D=1 run dug in
+    dry ground stays D=1 and dry across pulses (no rain fill, no refill, no fire).
     EVERY toggle is the registry's all-off fixture (settings_registry.all_off(): every section's bool switch), not the
-    50-name FW_TOGGLES + PITS_TOGGLES floor this chain used until the 2026-10-18 F2 settings audit, which left 100+
-    switches (rivers, machinery, hose, thirst, trench cover, pit access, looks ...) ON during the "all off" check."""
+    50-name FW_TOGGLES + PITS_TOGGLES floor this chain used until the 2026-10-18 F2 settings audit.
+    The run is NOT dug beside a pond any more (FLOWWORKS_MODCHECK_FIX_SIX_STANDING_FAILS): all-off is defined as the
+    pre-Phase-4 engine -- "dry digging, the sort-and-overflow pulse, limitless sources" (RimMandrakeFlowWorksMod.cs,
+    the Phase 4 switch block) -- so a channel opened onto a pond is SUPPOSED to fill from that limitless source. The
+    2026-10-24 F=1 at the pond mouth (ALL_OFF_DIG_DIAGNOSE_POND_STILL_FLOWS) was that contract, read as a defect."""
     import contextlib
     x0, z0 = _prep_plot(t, "T")
-    # dz=11, not the default 4: plot T is also plot_C2's, whose tar strip (rows z0+4..z0+9) stays a classified body for the
-    # life of the map (ruling 16), and the default pond sat ON that strip with the dug cell (px+5, pz+2) inside it. Moving
-    # clear of it did NOT clear the F=1 reading: on a fresh reload with no C2 run the dug cell still filled a full level
-    # (ALL_OFF_DIG_DIAGNOSE_POND_STILL_FLOWS), so that F=1 is the engine's, not C2's body.
-    px, pz = _limited_pond(t, "T", dz=11)
-    cells = _channel_from(px + 5, pz + 2, 4)
+    cells = _line(x0 + 4, z0 + ALL_OFF_DRY_DZ, 4)
     with contextlib.ExitStack() as stack:
         for cls, f, off in REG.all_off():
             stack.enter_context(_setting_in(t, cls, f, off))
@@ -1768,6 +1863,45 @@ def _slime_canal(t, x0, z0):
     return cells, pid
 
 
+def _report_cell(report, pid):
+    """(x, z) of `pid` in a ProofReport row "id@x,z ...", or None."""
+    for row in report.split(" | "):
+        if row.startswith(str(pid) + "@"):
+            m = re.match(r"\S+@(-?\d+),(-?\d+)", row)
+            if m:
+                return int(m.group(1)), int(m.group(2))
+    return None
+
+
+SLIME_STEP_TICKS = 60      # one wading step's wait = RM_SlimeMath.IntervalTicks, one slip roll a second
+
+
+def _wade(t, pid, cells, ticks, until_slip=False):
+    """Walk `pid` back and forth along the canal `cells` ONE CELL PER ORDER until `ticks` game ticks have run (or, with
+    until_slip, the census counts a slip). RULED OUT (2026-10-24 modcheck, slime_slips_the_wader 0 slips): one
+    `_march` to the far end -- the pather routed round the slow slime on the dry bank (the walk ended at (99,166), off
+    the canal row) and arrived after ~300 of the 1200 ticks, so the census rolled on a standing pawn; RM_SlimeSlip
+    rolls only for a pawn that is MOVING in a slimed cell. A one-cell step along the canal has no cheaper detour.
+    -> ticks spent."""
+    idx = {c: i for i, c in enumerate(cells)}
+    i = idx.get(_report_cell(_slime_report(t), pid))
+    if i is None:             # not on the canal: walk onto its west end first (positioning, not counted)
+        i = 0
+        t.bridge_call("jawa/order_pawn", pawnId=pid, x=cells[0][0], z=cells[0][1], waitTicks=600, draft=True)
+    spent, step, d = 0, 0, 1
+    while spent < ticks and step < 4 * (ticks // SLIME_STEP_TICKS + 1) and t._guard():
+        if not 0 <= i + d < len(cells):
+            d = -d
+        i += d
+        o = t.bridge_call("jawa/order_pawn", pawnId=pid, x=cells[i][0], z=cells[i][1], waitTicks=SLIME_STEP_TICKS,
+                          draft=True) or {}
+        spent += max(int(o.get("ticksElapsed") or 0), SLIME_STEP_TICKS // 2)
+        step += 1
+        if until_slip and step % 4 == 0 and int(_fx_row(_slime_report(t), pid).get("slips", 0) or 0) > 0:
+            break
+    return spent
+
+
 @suite.chain("slime_slip")
 def slime_slip(t):
     """SLIME_CROSSING_BUILD_SLIPPERY_SLOPE first script. Owner: "Slime has the particular property of being so slippery
@@ -1779,16 +1913,16 @@ def slime_slip(t):
     cells, pid = _slime_canal(t, x0, z0)
     with t.component("slime_slips_the_wader", toggle="slimeSlipEnabled"):
         _slime_report(t, "reset")
-        _march(t, pid, cells[-1][0], cells[-1][1], 20 * 60)
+        spent = _wade(t, pid, cells, 30 * 60, until_slip=True)
         row = _fx_row(_slime_report(t), pid)
         if t._guard():
             _expect(row.get("fluid") == "RM_Fluid_SlimeGreen" or int(row.get("slips", 0)) > 0,
                     "colonist not in the slime census: %r" % row)
-            _expect(int(row.get("slips", 0)) > 0, "20 s of walking in slime and no slip: %r" % row)
+            _expect(int(row.get("slips", 0)) > 0, "%d ticks of wading the slime canal and no slip: %r" % (spent, row))
     with t.component("slime_slip_off", toggle="slimeSlipEnabled"):
         with _setting(t, "slimeSlipEnabled", False):
             _slime_report(t, "reset")
-            _march(t, pid, cells[0][0], cells[0][1], 20 * 60)
+            _wade(t, pid, cells, 20 * 60)
             rep = _slime_report(t)
             row = _fx_row(rep, pid)
             if t._guard():
@@ -2838,14 +2972,21 @@ def pit_prison_room(t):
             t.bridge_call("jawa/pawn_force_incapacitate", pawn=pid, action="vanish")
 
 
+PUMP_DX = 12   # liquid_pump's channel starts at x0+PUMP_DX on plot D
+
+
 @suite.chain("liquid_pump")
 def liquid_pump(t):
     """FLOWWORKS_BUILD_PROGRAM_1 Phase 8 slice 1 (f3ab74a1b): a powered pump between a 3-cell D=2 water channel
     (F=2 each) and a 2x2 tank draws one level per 250-tick cycle into the tank as 10,000 units (1 kL, was 5 drums), and in pour mode returns
     them. Unpowered it does nothing; with liquidPumpEnabled off it does nothing even powered."""
     x0, z0 = _prep_plot(t, "D")
-    ch = _line(x0 + 4, z0 + 6, 3)
-    pump, tank, batt = (x0 + 5, z0 + 7), (x0 + 5, z0 + 8), (x0 + 9, z0 + 8)
+    # x0+12.. (2026-10-24, FLOWWORKS_MODCHECK_FIX_SIX_STANDING_FAILS): at x0+4..6 the channel sat INSIDE
+    # toggle_recession's 5x5 pond (x0+3..7, rows 4-8), a body that stays classified for the life of the map: its
+    # StagePond repainted the plot's prep Soil and the pond fed the channel, so the unpowered pump read level != 6.
+    # PUMP_DX keeps the whole fixture east of every plot-D pond and its 8-adjacent ring (x0+8).
+    ch = _line(x0 + PUMP_DX, z0 + 6, 3)
+    pump, tank, batt = (x0 + PUMP_DX + 1, z0 + 7), (x0 + PUMP_DX + 1, z0 + 8), (x0 + PUMP_DX + 5, z0 + 8)
     _dig_run(t, ch, 2)
     for x, z in ch:
         _fill(t, x, z, 2)

@@ -1387,6 +1387,10 @@ TOGGLES_NOT_ON_FLOOR = ["blastsBreakPitCovers", "pitStuckAlertEnabled", "fallDea
                         # PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL (2026-10-20): its live rows (two ponds level; pond and oil
                         # pit do not) are owed on the item, not yet a toggle chain
                         "gravityLevellingEnabled",
+                        # art-only switches (cf7b88f400 listed them in the settings table; nothing on the floor named them):
+                        # RM_PipeStraightVariantsDraw and RM_SprinklerSprayFx change a picture, never the flow -- their
+                        # proof is the C# self-checks (PipeStraightVariantChecks, SprinklerChecks), not a toggle chain
+                        "pipeStraightVariants", "sprinklerSprayEffects",
                         # POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD (2026-10-16): its live row is liquid_checks.pond_depth_verdict (L8, run
                         # with the bridge, selftested offline), not yet a toggle chain
                         "pondDepthEnabled", "pondHeadRuleEnabled",

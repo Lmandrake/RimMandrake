@@ -585,11 +585,13 @@ def _repair_probes(EXT, base):
                                            "jobDef": "RM_FillInCanalJob", "shouldSkip": False})
             if tl == "jawa/ordered_job":
                 return {"accepted": True}
-            if tl == "jawa/flowworks_excavation_report":    # the ON cell is read first and filled in; OFF's stays D=1
-                st_off["n"] += 1
-                return {"success": True, "depth": 0 if st_off["n"] == 1 else 1, "fill": 0}
+            if tl == "jawa/flowworks_excavation_drive" and "a" not in st_off:
+                st_off["a"] = p.get("x")                     # the chain digs the ON cell first
+            if tl == "jawa/flowworks_excavation_report":    # the ON cell is filled in (every read); OFF's stays D=1
+                # by CELL, not call order: _wait_filled_in polls the ON cell before _expect_state reads it
+                return {"success": True, "depth": 0 if p.get("x") == st_off.get("a") else 1, "fill": 0}
             return base(tl, p)
-        st_off = {"n": 0}
+        st_off = {}
         return h
     for has_job, want in ((False, "PASS"), (True, "FAIL")):
         got = _ext_run(EXT, "toggle_fill_in", fillin_off(has_job))
@@ -673,8 +675,10 @@ def _repair_probes(EXT, base):
         got = canal(dl, ok)
         if got != want:
             out.append("canal_fill_front dl=%d pitwater_ok=%s: %s, want %s" % (dl, ok, got, want))
-    # all_off_still_digs shares plot T with plot_C2: its pond and dug run must keep a dry row off C2's tar strip (a body
-    # stays classified for the map's life and 8-adjacency joins it). 2026-10-24 live: the run sat inside the strip, F=1.
+    # all_off_still_digs shares plot T with plot_C2: its dug run must keep a dry row off C2's tar strip (a body stays
+    # classified for the map's life and 8-adjacency joins it). 2026-10-24 live: the run sat inside the strip, F=1. And it
+    # digs in DRY ground: all-off keeps limitless sources (RimMandrakeFlowWorksMod.cs Phase 4 block), so a run opened onto
+    # a pond is SUPPOSED to fill (FLOWWORKS_MODCHECK_FIX_SIX_STANDING_FAILS) -- no liquid painted, none 8-adjacent.
     def painted(chain):
         cells, digs = set(), set()
 
@@ -692,10 +696,10 @@ def _repair_probes(EXT, base):
         return cells, digs
     tar, _ = painted("plot_C2_tar_and_fluids")
     pond, dug = painted("all_off_still_digs")
-    near = {(x + dx, z + dz) for x, z in tar for dx in (-1, 0, 1) for dz in (-1, 0, 1)}
-    if not tar or not pond or not dug or (pond | dug) & near:
-        out.append("all_off_still_digs pond/run touches plot_C2's tar strip (sticky body): %d pond, %d dug cells within 1 of %d tar"
-                   % (len(pond & near), len(dug & near), len(tar)))
+    near = {(x + dx, z + dz) for x, z in tar | pond for dx in (-1, 0, 1) for dz in (-1, 0, 1)}
+    if not tar or pond or not dug or dug & near:
+        out.append("all_off_still_digs must dig dry ground off plot_C2's tar strip: %d liquid cells painted, %d of %d dug"
+                   " cells within 1 of liquid (%d tar)" % (len(pond), len(dug & near), len(dug), len(tar)))
     # plot_F slime_occupant_look sets its colonist down INSIDE the D=3 run (a walk in from outside is a ladderless 1.5 m
     # drop the pit path veto refuses: 2026-10-24 live the pawn never left its spawn cell)
     spawns, runs = [], set()
@@ -929,33 +933,130 @@ def _new_probes(EXT, RIV, base):
             out.append("toggle_refill stocks=%s formed=%s: %s, want %s" % (stocks, formed, got, want))
 
     # recession: a fresh pond the channel drew down is measured; an undrawn one is UNMEASURED on the OFF side
-    def recession(stock_after, far_source):
+    # recession_on (FLOWWORKS_MODCHECK_FIX_SIX_STANDING_FAILS) is a SHELVING pond: its WaterDeep squares are the core,
+    # read wet or dry by `core`; every other square (the far rim corner on ON, the 3x3 pond on OFF) answers `rim`.
+    # rim_off overrides the OFF side's far read when given.
+    def recession_game(stock_after, rim, core=True, limitless=False, set_res="SET #1 frac 0.300 stock 21.00 of 70.00",
+                       rim_off=None, calls=None):
+        deep, n_body = set(), [0]
+
         def h(tl, p):
+            if calls is not None:
+                calls.append((tl, dict(p)))
+            if tl == "jawa/set_terrain_batch":
+                for op in str(p.get("ops", "")).split(";"):
+                    terr, _, r = op.partition(":")
+                    if terr == "WaterDeep" and r:
+                        x, z = (int(v) for v in r.split(",")[:2])
+                        deep.add((x, z))
+            if tl == "jawa/static_call" and p.get("method") == "ProofSetBodyFraction":
+                return {"result": set_res}
             if tl == "jawa/flowworks_body_report":
                 if p.get("classify") is not False:
-                    return {"success": True, "formedByThisCall": True, "body": {"id": 1, "capacity": 45.0, "stock": 45.0}}
-                return {"success": True, "body": {"id": 1, "stock": stock_after}}
+                    n_body[0] += 1
+                    cap = 70.0 if n_body[0] == 1 else 45.0
+                    return {"success": True, "formedByThisCall": True,
+                            "body": {"id": n_body[0], "capacity": cap, "stock": cap, "limitless": limitless}}
+                return {"success": True, "body": {"id": n_body[0], "stock": stock_after}}
             if tl == "jawa/flowworks_excavation_report":
-                return {"success": True, "depth": 0, "fill": 0, "isSourceCell": far_source}
+                cell = (int(p["x"]), int(p["z"]))
+                src = core if cell in deep else (rim_off if rim_off is not None and n_body[0] > 1 else rim)
+                return {"success": True, "depth": 0, "fill": 0, "isSourceCell": src}
             return base(tl, p)
-        return run(EXT, "toggle_recession", h)
-    got = recession(9.0, False)
+        return h
+    got = run(EXT, "toggle_recession", recession_game(9.0, False))
     if got.get("recession_on") != "PASS":
         out.append("recession_on with the far cell dried: %s" % got)
+    for kw, want in (({"rim": True}, "FAIL"),                      # the far rim corner still a source: no recession
+                     ({"rim": False, "core": False}, "UNMEASURED"),  # the whole pond drained, not a receding shore
+                     ({"rim": False, "limitless": True}, "UNMEASURED"),
+                     ({"rim": False, "set_res": "REFUSED no such method"}, "UNMEASURED")):
+        got = run(EXT, "toggle_recession", recession_game(9.0, **kw)).get("recession_on")
+        if got != want:
+            out.append("recession_on %s: %s, want %s" % (kw, got, want))
     for st, far, want in ((9.0, True, "PASS"), (9.0, False, "FAIL"), (45.0, True, "UNMEASURED")):
-        def h_on(tl, p, st=st, far=far):
-            if tl == "jawa/flowworks_body_report":
-                if p.get("classify") is not False:
-                    return {"success": True, "formedByThisCall": True, "body": {"id": 1, "capacity": 45.0, "stock": 45.0}}
-                return {"success": True, "body": {"id": 1, "stock": st}}
-            if tl == "jawa/flowworks_excavation_report":
-                # recession_on (first far read) sees a dried cell; recession_off's far cell answers `far`
-                h_on.n = getattr(h_on, "n", 0) + 1
-                return {"success": True, "depth": 0, "fill": 0, "isSourceCell": far if h_on.n > 1 else False}
-            return base(tl, p)
-        got = run(EXT, "toggle_recession", h_on).get("recession_off")
+        got = run(EXT, "toggle_recession", recession_game(st, False, rim_off=far)).get("recession_off")
         if got != want:
             out.append("recession_off stock=%s far source=%s: %s, want %s" % (st, far, got, want))
+    # (b) the ON side really shelves the pond (WaterDeep core painted) and stages it at SHELF_FRACTION of capacity
+    calls = []
+    run(EXT, "toggle_recession", recession_game(9.0, False, calls=calls))
+    deep_ops = [p for tl, p in calls if tl == "jawa/set_terrain_batch" and "WaterDeep:" in str(p.get("ops", ""))]
+    fr = [p for tl, p in calls if tl == "jawa/static_call" and p.get("method") == "ProofSetBodyFraction"]
+    if not deep_ops or len(fr) != 1 or not str(fr[0].get("args", "")).endswith(";%s" % EXT.SHELF_FRACTION):
+        out.append("toggle_recession must paint a WaterDeep core and stage it at SHELF_FRACTION: deep ops %d, fraction calls %s"
+                   % (len(deep_ops), fr))
+    # (a) the twin behind recession_on: the shelving pond at SHELF_FRACTION, drawn by the 12-cell D=3 channel, dries its
+    # far rim corner and keeps its core wet; the old FLAT 5x5 (all bed 2, 50 levels) keeps the corner wet -- why plot D's
+    # pond_shoreline_recedes could never pass under the exactly-level ruling
+    beds = EXT._shelving_beds(0, 0)
+    chan = EXT._channel_from(5, 2, 12)
+    cap = sum(beds.values())
+    ws = EXT._level_water_by_square(beds, chan, 3, cap * EXT.SHELF_FRACTION)
+    flat = EXT._level_water_by_square({c: 2 for c in beds}, chan, 3, 50)
+    if cap != 70 or ws[(0, 0)] != 0 or ws[(2, 2)] <= 0 or ws[(4, 2)] <= 0 or flat[(0, 0)] <= 0:
+        out.append("shelving twin: capacity %d (want 70), corner %.0f core %.0f spur %.0f (want 0, >0, >0); flat corner %.0f (want >0)"
+                   % (cap, ws[(0, 0)], ws[(2, 2)], ws[(4, 2)], flat[(0, 0)]))
+    # (c) liquid_pump's fixture stays clear of every plot-D recession pond and its 8-ring (a sticky body fed the old channel)
+    ponds = set()
+    for tl, p in calls:
+        if tl == "jawa/set_terrain_batch":
+            for op in str(p.get("ops", "")).split(";"):
+                terr, _, r = op.partition(":")
+                if terr.startswith("Water") and r:
+                    x, z, w, hh = (int(v) for v in r.split(",")[:4])
+                    ponds.update((x + i, z + j) for i in range(w) for j in range(hh))
+    ring = {(x + dx, z + dz) for x, z in ponds for dx in (-1, 0, 1) for dz in (-1, 0, 1)}
+    pump_cells = set()
+
+    def pump_h(tl, p):
+        if tl == "jawa/flowworks_excavation_drive" or (tl.startswith("jawa/spawn") and "x" in p and "z" in p):
+            pump_cells.add((int(p["x"]), int(p["z"])))
+        return base(tl, p)
+    run(EXT, "liquid_pump", pump_h)
+    if not ponds or not pump_cells or pump_cells & ring:
+        out.append("liquid_pump fixture inside a recession pond's footprint or 8-ring: %s" % sorted(pump_cells & ring))
+    # (d) slime_slips_the_wader wades ONE cell per order along the canal (one long _march let the pather detour on the bank)
+    canal, orders = [], []
+
+    def slime_h(tl, p):
+        if tl == "jawa/flowworks_excavation_drive":
+            canal.append((int(p["x"]), int(p["z"])))
+        if tl in ("jawa/order_pawn", "jawa/spawn_pawn"):
+            orders.append((int(p["x"]), int(p["z"])))      # the census reports the pawn where it was last sent
+        if tl == "jawa/static_call" and p.get("method") == "ProofFillWithFluid":
+            return {"result": "FILLED fluid=" + EXT.SLIME}
+        if tl == "jawa/static_call" and p.get("method") == "ProofReport" and orders:
+            return {"result": "P1@%d,%d fluid=%s slips=0" % (orders[-1][0], orders[-1][1], EXT.SLIME)}
+        return base(tl, p)
+    run(EXT, "slime_slip", slime_h)
+    jumps = [(a, b) for a, b in zip(orders, orders[1:]) if max(abs(a[0] - b[0]), abs(a[1] - b[1])) != 1]
+    if len(orders) < 10 or any(o not in canal for o in orders) or jumps:
+        out.append("slime_slip must wade one canal cell per order: %d orders, off-canal %s, jumps %s"
+                   % (len(orders), [o for o in orders if o not in canal][:3], jumps[:3]))
+    # (e) fill-in waits on the pawn's MiningSpeed: the 0.1 floor needs 16,000 ticks of work, not the old flat 2,500
+    class _FT(object):
+        ticks = 0
+
+        def __init__(self, speed):
+            self.speed = speed
+
+        def bridge_call(self, tool, **p):
+            if tool == "jawa/pawn_stats":
+                return {"stats": [{"stat": "MiningSpeed", "value": self.speed}]} if self.speed is not None else {}
+            return {"success": True, "depth": 1, "fill": 1}
+
+        def wait_ticks(self, n, _chunk=2000):
+            self.ticks += n
+
+        def _guard(self):
+            return True
+    slow, fast, unread = (EXT._fill_in_budget(_FT(s), "P1") for s in (0.1, 2.0, None))
+    ft = _FT(0.1)
+    waited = EXT._wait_filled_in(ft, "P1", (1, 1))
+    if slow < 16000 or not fast < slow or unread != EXT.FILL_IN_TICKS_MAX or waited < 16000 or ft.ticks < 16000:
+        out.append("fill-in budget: speed 0.1 -> %d, 2.0 -> %d, unread -> %d; waited %d (game ticks %d) on a D=1 cell that"
+                   " never filled (want >= 16000)" % (slow, fast, unread, waited, ft.ticks))
 
     # list_things with no `success` used to read as "no flame" (canal_fire OFF, explosion OFF PASSed blind)
     def fire(chain, lit_cells, shape=True):
