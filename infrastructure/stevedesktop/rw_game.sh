@@ -130,6 +130,17 @@ down() {
     echo "stopped (forced after 90 s)"
 }
 
+# One driver per game (BRIDGE_LOCK_WIDEN_ONE_PER_HOST): up/down/init take this machine's host guard for their own
+# run, or inherit it from a holder (the testq worker, `rimflow bridge take --host stevedesktop`). A window or job
+# already driving the game refuses them with exit 75. RW_GAME_GUARDED stops the re-exec looping.
+GUARD="$HERE/../../src/RimMandrake/rimflow/host_guard.py"
+case "${1:-status}" in
+    up|down|init)
+        if [ -z "${RW_GAME_GUARDED:-}" ]; then
+            RW_GAME_GUARDED=1 exec python3 "$GUARD" run --seat "${RM_GUARD_SEAT:-RUNNER}" --for "rw_game.sh $*" -- "$0" "$@"
+        fi ;;
+esac
+
 case "${1:-status}" in
     status) status ;;
     up) up "${2:-}" ;;

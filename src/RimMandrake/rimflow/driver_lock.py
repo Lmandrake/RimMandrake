@@ -19,6 +19,7 @@ RIMFLOW_DRIVER_LOCK names a path, so selftests never touch the real lock.
 import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
 _rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"))
 from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
+import calendar
 import json
 import os
 import socket
@@ -113,8 +114,19 @@ def _win_start(pid):
         return None
 
 
+def _local_host():
+    return socket.gethostname().lower()
+
+
 def process_alive(ident):
-    """True / False / None (cannot inspect). Same pid AND same start time, or it is a different process."""
+    """True / False / None (cannot inspect). Same pid AND same start time, or it is a different process.
+
+    A holder on ANOTHER machine (identity host differs; BRIDGE_LOCK_WIDEN_ONE_PER_HOST) cannot be inspected from
+    here: its pid means nothing in this machine's /proc, so it reads None and the heartbeat decides. Without this a
+    lock Archmagi took on SteveDesktop read as "process gone" at once and any local take broke it."""
+    host = (ident.get("host") or "").lower()
+    if host and host != _local_host():
+        return None
     plat = ident.get("platform")
     if plat == "wsl" and os.name != "nt":
         if ident.get("boot_id") and current_boot_id() and ident["boot_id"] != current_boot_id():
@@ -173,14 +185,17 @@ def _last_gen(path, cur=None):
 def _alive(cur):
     """Holder liveness: process identity first; heartbeat only when the process cannot be inspected."""
     ident = cur.get("identity") or {}
-    if ident.get("platform") == "wsl" and ident.get("boot_id") and current_boot_id() \
+    foreign = (ident.get("host") or "").lower() not in ("", _local_host())   # another machine's boot_id never matches
+    if not foreign and ident.get("platform") == "wsl" and ident.get("boot_id") and current_boot_id() \
             and ident["boot_id"] != current_boot_id():
         return False, "holder's machine has rebooted since (boot_id changed)"
     a = process_alive(ident)
     if a is not None:
         return a, "holder process pid %s %s" % (ident.get("pid"), "alive" if a else "gone")
     try:
-        age = time.time() - time.mktime(time.strptime(cur.get("heartbeat", ""), "%Y-%m-%dT%H:%M:%SZ")) + time.timezone
+        # calendar.timegm, not mktime + time.timezone: the latter is an hour off whenever DST is in force, so every
+        # heartbeat read 3600 s too old and a not-inspectable holder was ALWAYS stale (found 2026-10-25, PDT).
+        age = time.time() - calendar.timegm(time.strptime(cur.get("heartbeat", ""), "%Y-%m-%dT%H:%M:%SZ"))
     except (ValueError, OverflowError):
         age = None
     if age is not None and age < STALE_HEARTBEAT_S:

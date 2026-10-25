@@ -63,10 +63,10 @@ import sys
 import time
 
 try:                                                    # python3 -m rimflow.cli
-    from . import driver_lock, lease, model, priority, probe, reconcile
+    from . import driver_lock, host_guard, lease, model, priority, probe, reconcile
 except ImportError:                                     # python3 .../rimflow/cli.py
     sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    from rimflow import driver_lock, lease, model, priority, probe, reconcile   # noqa: F401
+    from rimflow import driver_lock, host_guard, lease, model, priority, probe, reconcile   # noqa: F401
 
 PROSE_BUDGET = 2400          # chars of items/<ID>.md that `next` will print, ~600 tokens
 
@@ -2218,7 +2218,7 @@ def _bridge_who(w, holder, since, purpose):
               "this clone's ledger does not know yet."
               % (shared["holder"], shared.get("clone") or "?", "?" if age is None else age // 60,
                  ", STALE" if age is None or age >= model.BRIDGE_STALE_SECONDS else ""))
-    dl = driver_lock.lock_path()
+    dl = _archmagi_lock_path()
     if dl:
         st = driver_lock.status(dl)
         print("driver lock: %s%s" % (st.get("state"), "" if st.get("state") in ("FREE",) else
@@ -2297,7 +2297,7 @@ def _bridge_give(args, seat, w, holder):
 
 def _driver_release(seat, force=None):
     """Free the process-keyed driver lock if THIS process holds it (or force). Never silent when it stays held."""
-    dl = driver_lock.lock_path()
+    dl = _archmagi_lock_path()
     if not dl:
         return
     r = driver_lock.release(dl, seat, driver_lock.my_identity(), force=force)
@@ -2433,7 +2433,7 @@ def _bridge_take(args, seat, w, holder, purpose):
                 "  check again    rimflow bridge who\n"
                 "  cut across it  rimflow bridge take --force --for \"<what for>\""
                 % fresh_holder)
-    dl = driver_lock.lock_path()
+    dl = _archmagi_lock_path()
     if dl:
         got = driver_lock.acquire(dl, seat, args.purpose, driver_lock.my_identity(),
                                   force=("bridge take --force by %s" % seat) if args.force else None)
@@ -2462,6 +2462,85 @@ def _bridge_take(args, seat, w, holder, purpose):
     return 0
 
 
+def _archmagi_lock_path():
+    """The driver lock of the DEFAULT (Archmagi) bridge, or None. driver_lock.lock_path() is THIS machine's lock, so
+    on SteveDesktop it is Steve's game's guard - a host-less take there must not lock Steve's game in Archmagi's
+    name (BRIDGE_LOCK_WIDEN_ONE_PER_HOST)."""
+    if host_guard.local_host() not in (None, model.DEFAULT_BRIDGE_HOST):
+        return None
+    return driver_lock.lock_path()
+
+
+def _guard_call(hk, args_list):
+    """Run a host_guard verb against host `hk`'s own driver lock: in-process when this IS that machine, else over
+    ssh in its runner clone. -> (exit code, output)."""
+    if host_guard.local_host() == hk:
+        import io
+        import contextlib as _cl
+        buf = io.StringIO()
+        with _cl.redirect_stdout(buf):
+            rc = host_guard.main(args_list)
+        return rc, buf.getvalue().strip()
+    return host_guard.remote(hk, args_list)
+
+
+def _bridge_other_host(args, seat, w, hk):
+    """`bridge take|release|who --host <machine>` for a game other than Archmagi's (BRIDGE_LOCK_WIDEN_ONE_PER_HOST).
+
+    The ledger records the take (host field) so it is attributable; the ENFORCING lock is that machine's own driver
+    lock - the same file its testq worker, modcheck and rw_game.sh take through host_guard - so a window and the batch
+    lane can never both drive it. Taken from another machine, the lock holds this window's identity, which the far
+    side cannot inspect: it lives on its heartbeat (45 min). Run `take` again to refresh it; `release` when done.
+    """
+    ent = w.bridge_hosts.get(hk) or {}
+    holder = ent.get("holder")
+    ident = json.dumps(driver_lock.my_identity())
+    if args.action == "give":
+        die("`bridge give` is the Archmagi bridge's owner switch; for %s use take/release (--force is recorded)." % hk)
+    if args.action == "who":
+        rc, out = _guard_call(hk, ["status"])
+        print("%s guard: %s" % (hk, out if rc in (0,) else "UNREACHABLE (exit %d) %s" % (rc, out)))
+        if not holder:
+            print("%s bridge FREE in the ledger — take it:  rimflow bridge take --host %s --for \"<what for>\"" % (hk, hk))
+        else:
+            print("%s bridge held by %s since %s%s" % (hk, holder, ent.get("since") or "?",
+                                                      ("  for: " + ent["purpose"]) if ent.get("purpose") else ""))
+        return 0
+    if args.action == "release":
+        rc, out = _guard_call(hk, ["release", "--seat", seat, "--identity-json", ident])
+        if rc != 0:
+            print("⚠️  %s guard not released (exit %d): %s" % (hk, rc, out))
+        ev = {"seat": seat, "event": "bridge", "state": "released", "host": hk}
+        if holder and holder != seat:
+            ev["override"] = "released the %s bridge out from under %s" % (hk, holder)
+        _emit(ev, w, quiet=True)
+        print("%s bridge released by %s" % (hk, seat))
+        return 0
+    why, refusal = _take_decision(holder, seat, _idle_seconds(w.last_seen.get(holder)) if holder else None,
+                                  args.force, args.purpose)
+    if refusal:
+        die(refusal.replace("rimflow bridge take", "rimflow bridge take --host %s" % hk))
+    take = ["take", "--seat", seat, "--for", args.purpose or "(no purpose given)", "--identity-json", ident]
+    if args.force:
+        take += ["--force", "bridge take --host %s --force by %s" % (hk, seat)]
+    rc, out = _guard_call(hk, take)
+    if rc != 0:
+        die("%s guard refused (exit %d): %s\n  Its own driver lock is held — the batch lane or another window is "
+            "driving that game.\n  check   rimflow bridge who --host %s\n  cut across it (recorded)  "
+            "rimflow bridge take --host %s --force --for \"<what for>\"" % (hk, rc, out, hk, hk))
+    ev = {"seat": seat, "event": "bridge", "state": "taken", "host": hk}
+    if args.purpose:
+        ev["purpose"] = args.purpose
+    if why:
+        ev["override"] = ("took the %s bridge with --force while %s still held it" % (hk, holder)
+                          if args.force else "took the %s bridge: %s" % (hk, why))
+    _emit(ev, w, quiet=True)
+    print("%s bridge taken by %s%s" % (hk, seat, ("  (%s)" % why) if why else ""))
+    print("  guard: %s\n  pass RM_HOST_GUARD_GEN to what you run there (rw_game.sh, modcheck) so it drives under "
+          "this take; re-run take within 45 min to keep it." % out)
+    return 0
+
+
 def cmd_bridge(args, seat):
     """Dispatch only. Each action is its own function so the take rule — the one piece
     with a real race in it — can be read and tested without the other three."""
@@ -2479,6 +2558,9 @@ def cmd_bridge(args, seat):
             "  what you probably meant:        rimflow bridge %s --for \"<what for>\""
             % (args.action, args.to, args.action))
 
+    hk = model.bridge_host_key(getattr(args, "host", None))
+    if hk != model.DEFAULT_BRIDGE_HOST:
+        return _bridge_other_host(args, seat, w, hk)
     if args.action == "who":
         return _bridge_who(w, holder, since, purpose)
     if args.action == "give":
@@ -3050,6 +3132,8 @@ def build_parser():
     s.add_argument("--force", action="store_true",
                    help="take it even though another window holds it and is awake. "
                         "Records that you did.")
+    s.add_argument("--host", default=None,
+                   help="which machine's game: archmagi (default) | stevedesktop. Each host has its own lock.")
 
     s = add("game", "OWNER only — announce the game state", cmd_game)
     s.add_argument("state", nargs="?", choices=model.GAME_STATES,

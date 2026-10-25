@@ -473,7 +473,9 @@ VERBS = {
     # `purpose` is what `--for` lands in: one line saying what the holder is driving
     # it FOR, mirrored into infrastructure/state/BRIDGE so the other window can judge
     # whether to wait or go offline. Optional — a take without one is still a take.
-    "bridge":    {"who": ("BENCH", "FOUNDRY", "CHECK"), "req": ("state",), "opt": ("purpose",)},
+    # `host` (BRIDGE_LOCK_WIDEN_ONE_PER_HOST, 2026-10-25): which machine's game. Absent means Archmagi, so every
+    # event written before the widening still reads as the Archmagi bridge it was.
+    "bridge":    {"who": ("BENCH", "FOUNDRY", "CHECK"), "req": ("state",), "opt": ("purpose", "host")},
     # 🔑 `text` is what --note lands in, and it was MISSING here until
     # 2026-08-23: cmd_game has always set ev["text"], so every `rimflow game
     # --note` and every `./game up "note"` raised SchemaError instead. The flag
@@ -982,6 +984,21 @@ def validate(ev):
 
 
 BRIDGE_FILE = os.path.join(STATE, "BRIDGE")
+
+# ── one bridge per HOST (BRIDGE_LOCK_WIDEN_ONE_PER_HOST, 2026-10-25) ───────────────────────────
+# Two machines each run a game: Archmagi (interactive) and SteveDesktop (the batch test centre). A take names its
+# host; absent means Archmagi, the only game there was before. Keys are lower-case machine names.
+DEFAULT_BRIDGE_HOST = "archmagi"
+BRIDGE_HOSTS = ("archmagi", "stevedesktop")
+
+
+def bridge_host_key(host):
+    """Normalise a host name to its key ('SteveDesktop' -> 'stevedesktop'); None/'' -> the default host.
+    An unknown name raises, so a typo can never open a third, imaginary lock."""
+    k = (host or DEFAULT_BRIDGE_HOST).strip().lower()
+    if k not in BRIDGE_HOSTS:
+        raise SchemaError("unknown bridge host %r (known: %s)" % (host, ", ".join(BRIDGE_HOSTS)))
+    return k
 
 # How long a holder may be silent before another window may simply take the bridge.
 # 🔑 The number exists to prevent MUTUAL LOCKOUT, which is the failure mode the owner
@@ -1550,6 +1567,9 @@ class World(object):
         self.bridge_holder = None
         self.bridge_since = None        # ts of the take/release that set the line above
         self.bridge_purpose = None      # what the holder said they were driving it FOR
+        # host -> {"holder", "since", "purpose"} for EVERY host's bridge (BRIDGE_LOCK_WIDEN_ONE_PER_HOST). The three
+        # fields above stay the Archmagi entry, so every reader written before the widening is unchanged.
+        self.bridge_hosts = {}
         self.last_seen = {}             # seat -> ts of its most recent event of any kind
         self.game = "DOWN"
         self.findings = {}              # name -> {"from":…, "type":…, "severity":…}
@@ -1875,6 +1895,11 @@ def _apply_itemless(ev, seat, world):
         return
     if verb == "bridge":
         taken = ev["state"] == "taken"
+        host = bridge_host_key(ev.get("host"))
+        world.bridge_hosts[host] = {"holder": seat if taken else None, "since": ev["ts"],
+                                    "purpose": ev.get("purpose") if taken else None}
+        if host != DEFAULT_BRIDGE_HOST:
+            return                      # another machine's game: the Archmagi lock is untouched
         world.bridge_holder = seat if taken else None
         world.bridge_since = ev["ts"]
         world.bridge_purpose = ev.get("purpose") if taken else None
@@ -2395,14 +2420,26 @@ def ambient_window_seat():
     return None
 
 
-def bridge_gate(seat):
+def bridge_gate(seat, host=None):
     """-> None if `seat` may touch the game (it holds the bridge here and no other clone holds it live),
-    else the refusal text. seat None (the owner) always passes."""
+    else the refusal text. seat None (the owner) always passes. `host` names which machine's game
+    (BRIDGE_LOCK_WIDEN_ONE_PER_HOST); another host's game is judged by that host's ledger entry alone - the
+    cross-clone shared file is Archmagi's, and the other host's own driver lock is checked by host_guard there."""
     if not seat:
         return None
+    hk = bridge_host_key(host)
     global EVENTS
     if os.environ.get("RIMFLOW_LEDGER"):                 # same redirect the CLI's _bind_paths makes
         EVENTS = os.environ["RIMFLOW_LEDGER"]
+    if hk != DEFAULT_BRIDGE_HOST:
+        try:
+            ent = replay(read()).bridge_hosts.get(hk) or {}
+        except Exception as e:
+            return None if os.environ.get("RIMFLOW_GATE_LENIENT") else "could not read the ledger to check the bridge: %s" % e
+        if ent.get("holder") != seat:
+            return "%s does not hold the %s bridge (holder: %s). Take it first: rimflow bridge take --host %s" % (
+                seat, hk, ent.get("holder") or "nobody", hk)
+        return None
     try:
         holder = replay(read()).bridge_holder
     except Exception as e:                               # an unreadable ledger must not wedge the owner's tools
