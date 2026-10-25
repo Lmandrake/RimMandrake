@@ -127,6 +127,29 @@ RULED_KIN_ROWS = {
 NATIVE_KIN_ROWS = ("RM_Agaripod", "RM_Agaripawn", "RM_Chittik", "RM_MycoidColossus")   # wired in Defs/Fauna
 ALARM_TAG = "RotGrove"      # a blank responder tag never answers (RM_ReactionResponders.Answers)
 
+# The Alpha Animals ports must not show the player a donor creature name: the chittik's own hediff/damage text said
+# "Swarmling" (a creature this game does not have) until the ROT_FAUNA_KIN_WIRING_1 review. Labels and descriptions
+# only; the provenance comments name the donor on purpose.
+PORT_FILES = ("RM_Chittik.xml", "RM_AgariPorts.xml")
+_DONOR_NAME = re.compile(r"swarmling|agaripod|agaripawn|wildpod|wildpawn|mycoid colossus|alpha animals", re.I)
+
+
+def donor_name_checks(texts=None):
+    """texts: {file name: xml text} (planting); default reads PORT_FILES from Defs/Fauna."""
+    bad = []
+    for fn in PORT_FILES:
+        txt = (texts or {}).get(fn)
+        if txt is None:
+            txt = open(os.path.join(HERE, "Defs", "Fauna", fn), encoding="utf-8").read()
+        for e in ET.fromstring(txt):
+            if not isinstance(e.tag, str):
+                continue
+            for field in ("label", "description", "labelShort"):
+                m = _DONOR_NAME.search(e.findtext(field) or "")
+                if m:
+                    bad.append("%s %s %s shows the donor name %r" % (fn, e.findtext("defName"), field, m.group(0)))
+    return bad
+
 
 def static_checks():
     bad = []
@@ -176,6 +199,7 @@ def static_checks():
         bad.append("exactly the two mending bodies (mullgoth, durrok) carry the kin-mending hediff")
     if "RotNetwork" in fauna or "<tag>RotNetwork</tag>" in ws:
         bad.append("the retired biome-wide RotNetwork tag is still wired (ruled: clique tags only)")
+    bad += donor_name_checks()
     # ROT_NORTHSTAR_BARS_DRAFT bar 1 (kin mending): the live threshold is derived from these defaults, so they are pinned here.
     cb = os.path.join(HERE, "..", "CreatureBehaviors", "Source")
     kp = open(os.path.join(cb, "CompProperties_KinMending.cs"), encoding="utf-8").read()

@@ -1,0 +1,2 @@
+A planted-defect selftest built with str.replace(anchor, defect) passes vacuously once the shipped text drops the anchor: replace() is a no-op, and if the shipped file is already red for another reason the 'plant' reads as caught. TheRot selftest_dustveil 'dv lab origin' stayed green after 511b30401c removed 'of the Rot,' because the rewrite's own 'waste' was red. Guard every plant: mutated != original AND the clean case green, else the plant fails (validation.planted_dustveil, b397822ce3).
+home: live-debugging-proof-harness

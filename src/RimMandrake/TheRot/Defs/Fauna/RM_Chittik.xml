@@ -161,7 +161,7 @@
   </PawnKindDef>
   <DamageDef ParentName="CutBase">
     <defName>RM_SwarmlingClaws</defName>
-    <label>swarmling claws</label>
+    <label>chittik claws</label>
     <additionalHediffs>
       <li>
         <hediff>RM_SwarmlingImplantation</hediff>
@@ -186,7 +186,7 @@
   </ManeuverDef>
   <ToolCapacityDef>
     <defName>RM_SwarmlingClaws</defName>
-    <label>swarmling claws</label>
+    <label>chittik claws</label>
   </ToolCapacityDef>
   <BodyDef>
     <defName>RM_ClawedSlug</defName>
@@ -304,8 +304,8 @@
   </BodyDef>
   <HediffDef ParentName="InfectionBase">
     <defName>RM_SwarmlingImplantation</defName>
-    <label>swarmling implantation</label>
-    <description>Affected by Swarmling implantation. If the disease is not properly treated, or if the creature dies when it is sufficiently advanced, Swarmling larvae will devour it from inside and hatch from its corpse.</description>
+    <label>chittik implantation</label>
+    <description>Chittik larvae laid in a bite wound. If the infestation is not properly treated, or if the host dies once it is advanced, the larvae devour it from inside and hatch from its corpse.</description>
     <makesSickThought>true</makesSickThought>
     <lethalSeverity>1</lethalSeverity>
     <scenarioCanAdd>false</scenarioCanAdd>
