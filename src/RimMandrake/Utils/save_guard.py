@@ -131,6 +131,8 @@ def _looks_like_save(path):
             head = fh.read(4096)
     except OSError:
         return False
+    if head.startswith(b"\xef\xbb\xbf"):     # SAVE_GUARD_FIX_BOM_READ_AS_BROKEN: RimWorld writes a UTF-8 BOM
+        head = head[3:]
     return head.lstrip().startswith(b"<?xml") and b"<savegame" in head
 
 

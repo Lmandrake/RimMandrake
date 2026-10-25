@@ -105,6 +105,17 @@ def main():
                      not r["verified"] and open(os.path.join(saves, "KEEPER_B.rws")).read().count("b") == 3000,
                      r["problems"]))
 
+    # SAVE_GUARD_FIX_BOM_READ_AS_BROKEN: a well-formed save with a UTF-8 BOM is good; real corruption is still caught
+    bd = tempfile.mkdtemp()
+    for name, raw in (("bom.rws", b"\xef\xbb\xbf" + (HEAD + "x" * 3000 + "</meta></savegame>\n").encode()),
+                      ("trunc.rws", b"\xef\xbb\xbfgarbage" + b"x" * 3000),
+                      ("plain_bad.rws", b"\x00" * 3000)):
+        with open(os.path.join(bd, name), "wb") as fh:
+            fh.write(raw)
+    good.append(case("a BOM-prefixed save is recognised", G._looks_like_save(os.path.join(bd, "bom.rws"))))
+    good.append(case("a BOM-prefixed non-save is still rejected", not G._looks_like_save(os.path.join(bd, "trunc.rws"))))
+    good.append(case("a binary blob is still rejected", not G._looks_like_save(os.path.join(bd, "plain_bad.rws"))))
+
     print("%d/%d" % (sum(good), len(good)))
     return 0 if all(good) else 1
 
