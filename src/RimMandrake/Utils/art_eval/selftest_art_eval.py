@@ -106,6 +106,14 @@ def tuning_checks():
         check("kept_references: replaced kept art written for the row; missing blob skipped loudly; non-replacing rec none",
               len(kr) == 1 and len(kf) == 1 and kf[0].read_bytes() == b"PNGBYTES" and "not in the art store" in eb.getvalue(),
               (kr, eb.getvalue()))
+        # the default store getter must import in a fresh `python3 shadow.py build` process, where only art_eval is on
+        # sys.path (artledger lives in Utils/art): every build crashed ModuleNotFoundError before this
+        import subprocess as _sp
+        pr = _sp.run([sys.executable, "-I", "-c", "import sys; sys.path.insert(0, sys.argv[1]); import shadow; "
+                      "print(shadow.kept_references([], __import__('pathlib').Path(sys.argv[2])))",
+                      str(Path(SH.__file__).resolve().parent), td], capture_output=True, text=True, timeout=120)
+        check("kept_references: default artledger getter imports in a fresh shadow.py process",
+              pr.returncode == 0 and pr.stdout.strip() == "{}", (pr.returncode, pr.stderr[-400:]))
 
     # --- (b)/(c) measured hooks: inert without the policy keys; floor fails closed on a missing confidence
     pol = P.load_policy()

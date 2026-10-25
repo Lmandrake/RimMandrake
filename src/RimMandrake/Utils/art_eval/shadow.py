@@ -97,6 +97,8 @@ def kept_references(recs: list, qdir: Path, get=None) -> dict:
     them keep-vs-revert is not a visual choice (SHADOW_SHEET_WIDEN_REPLACED_KEPT_ART). A sha the store cannot give is
     skipped with a stderr line, never invented."""
     if get is None:
+        if str(ART) not in sys.path:   # artledger lives in Utils/art, which nothing else here puts on the path
+            sys.path.insert(0, str(ART))
         import artledger
         get = artledger.store_get
     out = {}
