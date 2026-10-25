@@ -17,12 +17,16 @@ namespace RimMandrake.FlowWorks
 	{
 		public override PathEndMode PathEndMode => PathEndMode.Touch;
 
+		/// <summary>A materialised list, as WorkGiver_DigCanal: HasJobOnCell deletes stale designations while the scanner
+		/// walks this result, and a lazy enumerator over the live designation list throws "collection modified".</summary>
 		public override IEnumerable<IntVec3> PotentialWorkCellsGlobal(Pawn pawn)
 		{
+			List<IntVec3> cells = new List<IntVec3>();
 			foreach (Designation item in pawn.Map.designationManager.SpawnedDesignationsOfDef(RimMandrakeFlowWorks_DefOf.RM_FillInCanal))
 			{
-				yield return item.target.Cell;
+				cells.Add(item.target.Cell);
 			}
+			return cells;
 		}
 
 		public override bool ShouldSkip(Pawn pawn, bool forced = false)
@@ -55,12 +59,65 @@ namespace RimMandrake.FlowWorks
 			{
 				return false;
 			}
-			return pawn.CanReserve(c, 1, -1, ReservationLayerDefOf.Floor, forced);
+			if (!pawn.CanReserve(c, 1, -1, ReservationLayerDefOf.Floor, forced))
+			{
+				return false;
+			}
+			// DIG_SPOIL_BUILD_GRAVEL_PAYS_ITS_WAY: an unpaid pit with nothing to pay it is no job here, so the scanner can
+			// pick a paid-up pit instead of stopping at a nearer one JobOnCell would refuse.
+			if (Unpaid(pawn.Map, c) && !HasMaterial(pawn, forced))
+			{
+				JobFailReason.Is(NoMaterialReason);
+				return false;
+			}
+			return true;
+		}
+
+		private const string NoMaterialReason = "No gravel or stone chunks to fill with.";
+
+		private static bool Unpaid(Map map, IntVec3 c)
+		{
+			RM_MapComponent_FillCredit credit = map.GetComponent<RM_MapComponent_FillCredit>();
+			return RimMandrakeFlowWorksSettings.fillCostsSpoilEnabled && credit != null
+				&& RM_GroundClassMath.CreditShort(credit.CreditAt(c)) > 0;
+		}
+
+		// one material search per pawn per tick, however many pit cells the scanner asks about
+		private static int cachePawn = -1;
+		private static int cacheTick = -1;
+		private static bool cacheForced;
+		private static bool cacheHas;
+
+		private static bool HasMaterial(Pawn pawn, bool forced)
+		{
+			int tick = Find.TickManager.TicksGame;
+			if (cachePawn != pawn.thingIDNumber || cacheTick != tick || cacheForced != forced)
+			{
+				cachePawn = pawn.thingIDNumber;
+				cacheTick = tick;
+				cacheForced = forced;
+				cacheHas = RM_DigSpoil.FindFillMaterial(pawn, forced) != null;
+			}
+			return cacheHas;
 		}
 
 		public override Job JobOnCell(Pawn pawn, IntVec3 c, bool forced = false)
 		{
-			return JobMaker.MakeJob(RimMandrakeFlowWorks_DefOf.RM_FillInCanalJob, c);
+			// DIG_SPOIL_BUILD_GRAVEL_PAYS_ITS_WAY (owner 2026-10-25): a notch costs 1 gravel or 2 chunks. A paid-up pit gets the
+			// work alone; otherwise the filler fetches one unit, nearest gravel first.
+			if (!Unpaid(pawn.Map, c))
+			{
+				return JobMaker.MakeJob(RimMandrakeFlowWorks_DefOf.RM_FillInCanalJob, c);
+			}
+			Thing material = RM_DigSpoil.FindFillMaterial(pawn, forced);
+			if (material == null)
+			{
+				JobFailReason.Is(NoMaterialReason);
+				return null;
+			}
+			Job job = JobMaker.MakeJob(RimMandrakeFlowWorks_DefOf.RM_FillInCanalJob, c, material);
+			job.count = 1;
+			return job;
 		}
 	}
 }

@@ -93,6 +93,12 @@ namespace RimMandrake.FlowWorks
 			int cap = RM_DigLabor.DesignationCap;
 			if (depth != RM_ExcavationDepth.Surface)
 			{
+				// a pit cut in sand or mud before the rule existed is not deepened either: it slides back in
+				string slumps = RM_DigSpoil.DigRefusal(Map, c, terrain, false);
+				if (slumps != null)
+				{
+					return slumps;
+				}
 				if (!RM_DigDepthMath.MayDeepen(depth, cap))
 				{
 					return "Already " + RM_Volume.FormatFloorMetres(depth) + " deep: the deepest digging goes (" + RM_Volume.FormatFloorMetres(cap)
@@ -109,9 +115,12 @@ namespace RimMandrake.FlowWorks
 				}
 				return AcceptanceReport.WasAccepted;
 			}
-			if (!terrain.IsSoil && !(RimMandrakeFlowWorksSettings.digRockGroundEnabled && RM_DigDiscovery.RockOfTerrain(terrain) != null))
+			// PIT_DIG_FIX_SAND_SLIDES_BACK_IN / DIG_SPOIL_BUILD_GRAVEL_PAYS_ITS_WAY: one ground gate with the work giver (sand and mud
+			// refused, rubble accepted).
+			string refusal = RM_DigSpoil.DigRefusal(Map, c, terrain, true);
+			if (refusal != null)
 			{
-				return "Must designate diggable soil or bare rock ground.";
+				return refusal;
 			}
 			// POND_BED (owner by card 2026-10-14): a dry pond bed is dug from its own depth, one deeper.
 			if (eng != null && eng.NaturalBedDepthAt(c) > 0 && eng.FirstCutDepthAt(c) < 0)

@@ -111,6 +111,8 @@ SETTINGS = {
         "digRockChunkMultiplier": 1.0, "digSoilChunkPercent": 0.5,   # DIG_ROCK_TUNE_STONE_FIGHTS_BACK
           # FLOWWORKS_QUARRY_DIGGING_1 (FlowWorks half)
         "digDeepStoneEnabled": True,   # PIT_DEEPSTONE_BUILD_DIGGING_FINALLY_PAYS
+        "sandMudSlidesBackEnabled": True, "digSpoilEnabled": True, "fillCostsSpoilEnabled": True,
+        "mineGravelEnabled": True, "gravelRecipesEnabled": True,   # DIG_SPOIL_BUILD_GRAVEL_PAYS_ITS_WAY + PIT_DIG_FIX_SAND_SLIDES_BACK_IN
         "excavationWallMaterialEnabled": True, "pitLipOcclusionEnabled": True, "pitLipOcclusion": 0.85, "pitLipOccupantCutEnabled": True, "pitLipOccupantCutWidth": 1.0, "pitSinkClampEnabled": True,
         "liquidSurfaceMotionEnabled": True, "liquidWakesEnabled": True, "pitScorchEnabled": True,
         "pitScorchFadeDays": 20.0,                              # visual principles 1-5 (belt_fwvisuals 2026-10-05)
@@ -212,7 +214,7 @@ SETTINGS = {
     },
     # SUSPENSION_BRIDGE_BUILD_POSTS_AT_BOTH_ENDS + its grate / underpass / waters items (own static class, scribed from ExposeData)
     "RimMandrake.FlowWorks.Pits.RM_SuspensionSettings": {
-        "suspensionBridgesBuildable": True, "suspensionWeightCollapse": True, "suspensionLoadMultiplier": 1.0,
+        "suspensionBridgesBuildable": True, "suspensionWeightCollapse": True, "suspensionLoadMultiplier": 1.0, "towerCostMultiplier": 1.0,
         "suspensionLengthMultiplier": 1.0, "suspensionAnchorLossFalls": True, "vanillaBridgeRefusedOverDug": True,
         "suspensionOwnPeopleFall": True, "grateFirePasses": True, "grateDrainsSpills": True, "suspensionWalkUnder": True,
         "sunkenBridges": True, "suspensionOverWater": True, "suspensionOverSea": True, "floodsDamageLightBridges": True,

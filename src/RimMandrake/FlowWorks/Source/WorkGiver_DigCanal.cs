@@ -67,7 +67,8 @@ namespace RimMandrake.FlowWorks
 				|| c.GetEdifice(pawn.Map) != null
 				|| !RM_DigDepthMath.MayDeepen(depth, RM_DigLabor.OrderCap)
 				|| (target > 0 && depth >= target)
-				|| (depth == RM_ExcavationDepth.Surface && !terrain.IsSoil && !(RimMandrakeFlowWorksSettings.digRockGroundEnabled && RM_DigDiscovery.RockOfTerrain(terrain) != null))
+				// PIT_DIG_FIX_SAND_SLIDES_BACK_IN / DIG_SPOIL_BUILD_GRAVEL_PAYS_ITS_WAY: the designator's own ground gate
+				|| RM_DigSpoil.DigRefusal(pawn.Map, c, terrain, depth == RM_ExcavationDepth.Surface) != null
 				|| (depth != RM_ExcavationDepth.Surface && !RimMandrakeFlowWorksSettings.digToDepthEnabled)
 				// POND_BED (owner by card 2026-10-14): a dry bed already as deep as digging goes is never dug.
 				|| (depth == RM_ExcavationDepth.Surface && eng?.FirstCutDepthAt(c, RM_DigLabor.OrderCap) < 0);

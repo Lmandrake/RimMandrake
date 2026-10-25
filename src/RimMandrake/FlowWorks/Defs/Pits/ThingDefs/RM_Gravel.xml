@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- DIG_SPOIL_BUILD_GRAVEL_PAYS_ITS_WAY (owner 2026-10-25): "The gravel (broken rock) that it produces should be able to
+     satisfy some recipies"; "it takes 1 gravel or 2 chunks to put it all back in again". Left by cuts through rock or rubble
+     ground and by a rock wall mined without a chunk; spent filling pits back in. Not a StoneChunks thing: it is no chunk.
+     Placeholder art: vanilla rubble (art item filed). -->
+<Defs>
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_Gravel</defName>
+    <label>gravel</label>
+    <description>Broken rock: the spoil of a pit cut through stone or rubble, or of a rock wall that gave no whole chunk. One load fills a dug pit back in a level, and some concrete-making recipes take it in place of a stone chunk.</description>
+    <graphicData>
+      <texPath>Things/Filth/RubbleRock</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(150,145,138)</color>
+    </graphicData>
+    <stackLimit>25</stackLimit>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <MarketValue>0.5</MarketValue>
+      <Mass>1</Mass>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>0</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.RM_GravelRecipes">
+        <recipes>
+          <li>FT_Make_ConcreteByChunk</li>
+          <li>OuterRim_DuracreteCrafting</li>
+          <li>OuterRim_PermacreteCrafting</li>
+          <li>OuterRim_PlastcreteCrafting</li>
+          <li>KotORRecipe_Duracrete</li>
+          <li>KotORRecipe_5xDuracrete</li>
+        </recipes>
+      </li>
+    </modExtensions>
+  </ThingDef>
+</Defs>

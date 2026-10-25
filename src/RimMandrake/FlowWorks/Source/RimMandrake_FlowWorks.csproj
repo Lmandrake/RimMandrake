@@ -124,6 +124,8 @@
     <Compile Include="Hose\Jobs\FloatMenuOptionProvider_Hose.cs" />
     <Compile Include="RM_PitRoomMath.cs" />
     <Compile Include="RM_DigDiscovery.cs" />
+    <Compile Include="RM_GroundClassMath.cs" />
+    <Compile Include="RM_DigSpoil.cs" />
     <Compile Include="RM_DigDiscoveryMath.cs" />
     <Compile Include="RM_LegacyFillProof.cs" />
     <Compile Include="Superdeep\RM_PitRooms.cs" />

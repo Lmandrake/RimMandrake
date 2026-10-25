@@ -18,6 +18,9 @@ namespace RimMandrake.FlowWorks
 		public static DesignationDef RM_FillInCanal;
 
 		public static JobDef RM_FillInCanalJob;
+
+		/// <summary>DIG_SPOIL_BUILD_GRAVEL_PAYS_ITS_WAY: broken rock, the spoil of a cut and the cost of a fill.</summary>
+		public static ThingDef RM_Gravel;
 		public static JobDef RM_CaptureDown;
 
 		/// <summary>D = 1. Keeps its original defName so every save's dug cells

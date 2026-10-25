@@ -42,7 +42,9 @@ namespace RimMandrake.FlowWorks
 				}
 				int work = RM_ExcavationDepth.WorkToDeepen(current);
 				// DIG_ROCK_TUNE_STONE_FIGHTS_BACK: digging through rock is much harder than soft ground.
-				if (RimMandrakeFlowWorksSettings.digRockGroundEnabled && RM_DigDiscovery.RockGroundAt(map, c) != null)
+				// DIG_SPOIL_BUILD_GRAVEL_PAYS_ITS_WAY (card 2026-10-25): rubble (salt crust, asphalt, packed snow) digs at rock speed.
+				if ((RimMandrakeFlowWorksSettings.digRockGroundEnabled && RM_DigDiscovery.RockGroundAt(map, c) != null)
+					|| RM_DigSpoil.IsRubbleAt(map, c))
 				{
 					work = RM_DigDiscoveryMath.RockWork(work, RimMandrakeFlowWorksSettings.digRockWorkMultiplier);
 				}
@@ -122,6 +124,8 @@ namespace RimMandrake.FlowWorks
 				// FLOWWORKS_QUARRY_DIGGING_1: a cut that went deeper may turn up something the land holds.
 				if (after > before)
 				{
+					// DIG_SPOIL_BUILD_GRAVEL_PAYS_ITS_WAY: material tipped toward a fill is thrown out with the rest of the cut.
+					Map.GetComponent<RM_MapComponent_FillCredit>()?.ClearCredit(c);
 					excavation.DigDiscovery.OnCut(Map, c, after, pawn);
 				}
 			}

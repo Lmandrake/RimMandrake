@@ -490,6 +490,12 @@ namespace RimMandrake.FlowWorks
         public static float digSoilChunkPercent = 0.5f;
         // PIT_DEEPSTONE_BUILD_DIGGING_FINALLY_PAYS (owner card 2026-10-19): superdeep cuts break through to a deeper stone.
         public static bool digDeepStoneEnabled = true;
+        // DIG_SPOIL_BUILD_GRAVEL_PAYS_ITS_WAY + PIT_DIG_FIX_SAND_SLIDES_BACK_IN (owner 2026-10-25): gravel spoil, fill costs, sand refused.
+        public static bool sandMudSlidesBackEnabled = true;
+        public static bool digSpoilEnabled = true;
+        public static bool fillCostsSpoilEnabled = true;
+        public static bool mineGravelEnabled = true;
+        public static bool gravelRecipesEnabled = true;
         public static bool swaleEnabled = true;
         public static float swaleRateMultiplier = 1f;
 
@@ -715,6 +721,11 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref digRockChunkMultiplier, "digRockChunkMultiplier", 1f);
             Scribe_Values.Look(ref digSoilChunkPercent, "digSoilChunkPercent", 0.5f);
             Scribe_Values.Look(ref digDeepStoneEnabled, "digDeepStoneEnabled", true);
+            Scribe_Values.Look(ref sandMudSlidesBackEnabled, "sandMudSlidesBackEnabled", true);
+            Scribe_Values.Look(ref digSpoilEnabled, "digSpoilEnabled", true);
+            Scribe_Values.Look(ref fillCostsSpoilEnabled, "fillCostsSpoilEnabled", true);
+            Scribe_Values.Look(ref mineGravelEnabled, "mineGravelEnabled", true);
+            Scribe_Values.Look(ref gravelRecipesEnabled, "gravelRecipesEnabled", true);
             Scribe_Values.Look(ref swaleEnabled, "swaleEnabled", true);
             Scribe_Values.Look(ref swaleRateMultiplier, "swaleRateMultiplier", 1f);
             // ── Rivers (River Works, merged 2026-10-05): one settings file, unique keys ──
@@ -783,6 +794,7 @@ namespace RimMandrake.FlowWorks
             .Declare("digToDepthEnabled", "maxDigDepth", "digCostRisesWithDepth", "machineDigEnabled")
             .Declare("machineDigEnabled", "maxMachineDigDepth")
             .Declare("digRockChunksEnabled", "digRockChunkMultiplier", "digSoilChunkPercent", "digDeepStoneEnabled")
+            .Independent("sandMudSlidesBackEnabled", "digSpoilEnabled", "fillCostsSpoilEnabled", "mineGravelEnabled", "gravelRecipesEnabled")
             .Declare("liquidDrillingEnabled", "drillUnitsPerCycle")
             .Declare("swaleEnabled", "swaleRateMultiplier")
             .Independent("pulseIntervalTicks", "digToDepthEnabled", "drillYieldChanceMultiplier", "wardenFromLipEnabled", "waterBodyTypeFlipFixEnabled",
@@ -807,7 +819,7 @@ namespace RimMandrake.FlowWorks
             .Name("trapTriggerEnabled", "Concealed pits give way under enough weight")
             .Name("superdeepRoomsEnabled", "An enclosed pit is its own room")
             .Name("digFindsEnabled", "Digging a canal can turn up minerals")
-            .Name("digRockGroundEnabled", "Canals can be dug through rock ground").Name("digRockChunksEnabled", "Digging can turn up rock chunks").Name("digDeepStoneEnabled", "Pits 2 m deep reach a deeper stone").Name("liquidDrillingEnabled", "Drilling and bleed wells")
+            .Name("digRockGroundEnabled", "Canals can be dug through rock ground").Name("digRockChunksEnabled", "Digging can turn up rock chunks").Name("digDeepStoneEnabled", "Pits 2 m deep reach a deeper stone").Name("sandMudSlidesBackEnabled", "Sand and mud slide back in").Name("digSpoilEnabled", "Digging leaves gravel").Name("fillCostsSpoilEnabled", "Filling in costs gravel or chunks").Name("mineGravelEnabled", "Mining a rock wall leaves gravel when no chunk drops").Name("gravelRecipesEnabled", "Gravel can stand in for stone chunks in recipes").Name("liquidDrillingEnabled", "Drilling and bleed wells")
             .Name("swaleEnabled", "A watered swale enriches the ground around it");
 
         private static object GetField(string n)
@@ -1014,7 +1026,7 @@ namespace RimMandrake.FlowWorks
             }
 
             // ── FLOWWORKS_QUARRY_DIGGING_1 — what a canal cut turns up ────
-            if (Section(list, "Finds while digging", new[] { "digFindsEnabled", "digFindsLocalOnly", "digFindChanceMultiplier", "digFindBudgetPercent", "digFindLetterEnabled", "digRockGroundEnabled", "digRockWorkMultiplier", "digRockChunksEnabled", "digRockChunkMultiplier", "digSoilChunkPercent", "digDeepStoneEnabled" }))
+            if (Section(list, "Finds while digging", new[] { "digFindsEnabled", "digFindsLocalOnly", "digFindChanceMultiplier", "digFindBudgetPercent", "digFindLetterEnabled", "digRockGroundEnabled", "digRockWorkMultiplier", "digRockChunksEnabled", "digRockChunkMultiplier", "digSoilChunkPercent", "digDeepStoneEnabled", "sandMudSlidesBackEnabled", "digSpoilEnabled", "fillCostsSpoilEnabled", "mineGravelEnabled", "gravelRecipesEnabled" }))
             {
             list.CheckboxLabeled("Digging a canal can turn up minerals", ref digFindsEnabled,
                 "Each time a square is cut a level deeper there is a small chance of a lump of something the land holds, "
@@ -1060,6 +1072,21 @@ namespace RimMandrake.FlowWorks
                   + "map turns up comes with a letter. Same guard: filling in and re-digging pays nothing twice. "
                   + "Off: deep cuts turn up the same stone as shallow ones.");
             }
+            list.CheckboxLabeled("Sand and mud slide back in", ref sandMudSlidesBackEnabled,
+                "On: sand, soft sand, dry lake bed, marsh, mud and slime cannot be marked to dig: what is cut slides back in. "
+              + "Salt crust, asphalt and packed snow dig as rubble. Off: they dig as soft ground did before.");
+            list.CheckboxLabeled("Digging leaves gravel", ref digSpoilEnabled,
+                "On: each cut a level deeper through rock ground leaves a chunk (at the chance above) or else a gravel; rubble ground "
+              + "(salt crust, asphalt, packed snow, gravel, cooled lava) digs at rock speed and leaves gravel, never a chunk; soil "
+              + "leaves nothing. Off: cuts give chunks only, as before.");
+            list.CheckboxLabeled("Filling in costs gravel or chunks", ref fillCostsSpoilEnabled,
+                "On: each level filled back in takes 1 gravel or 2 stone chunks, carried to the pit by the filler. Raiders fill for free. "
+              + "Off: filling in is free work.");
+            list.CheckboxLabeled("Mining a rock wall leaves gravel when no chunk drops", ref mineGravelEnabled,
+                "On: a colonist mining a natural rock wall that drops no chunk leaves 1 gravel instead. Explosions leave nothing extra.");
+            list.CheckboxLabeled("Gravel can stand in for stone chunks in recipes", ref gravelRecipesEnabled,
+                "On: concrete and duracrete recipes that take stone chunks accept gravel as well (new bills; tick gravel in an "
+              + "existing bill's ingredients). Needs a restart.");
 
             }
 

@@ -79,6 +79,7 @@
     <Compile Include="..\RM_SpanMath.cs" />
     <Compile Include="..\RM_SuspensionMath.cs" />
     <Compile Include="SuspensionBridgeChecks.cs" />
+    <Compile Include="GroundClassChecks.cs" />
     <Compile Include="UnderpassReachChecks.cs" />
     <Compile Include="SpanBaseChecks.cs" />
     <Compile Include="..\Pits\RM_PitCoverBeneathMath.cs" />
@@ -136,6 +137,7 @@
     <Compile Include="..\RM_SlimeMath.cs" />
     <Compile Include="..\RM_PitRoomMath.cs" />
     <Compile Include="..\RM_DigDiscoveryMath.cs" />
+    <Compile Include="..\RM_GroundClassMath.cs" />
     <Compile Include="..\Quarry\RM_PlacerMath.cs" />
     <Compile Include="..\RM_PumpMath.cs" />
     <Compile Include="..\Machinery\RM_ConversionMath.cs" />

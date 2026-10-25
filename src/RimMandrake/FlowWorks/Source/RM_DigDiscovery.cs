@@ -89,7 +89,8 @@ namespace RimMandrake.FlowWorks
 		/// <summary>Called after a cut lands at <paramref name="newDepth"/>.</summary>
 		public void OnCut(Map map, IntVec3 c, int newDepth, Pawn digger)
 		{
-			if ((!RimMandrakeFlowWorksSettings.digFindsEnabled && !RimMandrakeFlowWorksSettings.digRockChunksEnabled) || map == null || !c.InBounds(map))
+			if ((!RimMandrakeFlowWorksSettings.digFindsEnabled && !RimMandrakeFlowWorksSettings.digRockChunksEnabled
+				&& !RimMandrakeFlowWorksSettings.digSpoilEnabled) || map == null || !c.InBounds(map))
 			{
 				// a cut happened: an armed debug force is spent on it, never carried into a later, unrelated cut
 				ForceNextRoll = false;
@@ -116,7 +117,9 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			ThingDef def = RM_DigDiscovery.Draw(map, c, newDepth, out bool rockChunk);
-			if (def == null)
+			// DIG_SPOIL_BUILD_GRAVEL_PAYS_ITS_WAY: with spoil on, a cut's rock comes only from the spoil roll above ("Dirt makes
+			// no chunks"); the finds roll keeps its minerals and drops its rock-chunk fallbacks.
+			if (def == null || (rockChunk && RimMandrakeFlowWorksSettings.digSpoilEnabled))
 			{
 				return;
 			}
@@ -124,7 +127,11 @@ namespace RimMandrake.FlowWorks
 			float cost = rockChunk ? 0f : count;
 			if (!rockChunk && budgetLeft < cost)
 			{
-				// The land's loose share is spent: what is left is chunks of the rock itself.
+				// The land's loose share is spent: what is left is chunks of the rock itself (none while spoil is on, above).
+				if (RimMandrakeFlowWorksSettings.digSpoilEnabled)
+				{
+					return;
+				}
 				def = RM_DigDiscovery.LocalRockChunk(map);
 				if (def == null)
 				{
@@ -176,7 +183,10 @@ namespace RimMandrake.FlowWorks
 		/// a chunk is the land itself, as the mineral roll's own rock fallback is.</summary>
 		private void RollRockChunk(Map map, IntVec3 c, int newDepth, Pawn digger)
 		{
-			if (!RimMandrakeFlowWorksSettings.digRockChunksEnabled)
+			// DIG_SPOIL_BUILD_GRAVEL_PAYS_ITS_WAY (owner 2026-10-25): with spoil on, a cut through rock leaves a chunk or else a
+			// gravel, rubble leaves gravel only, soil leaves nothing.
+			bool spoil = RimMandrakeFlowWorksSettings.digSpoilEnabled;
+			if (!RimMandrakeFlowWorksSettings.digRockChunksEnabled && !spoil)
 			{
 				return;
 			}
@@ -201,7 +211,26 @@ namespace RimMandrake.FlowWorks
 				chunk = RM_DigDiscovery.LocalRockChunk(map);
 				chance = RM_DigDiscoveryMath.SoilChunkChance(RimMandrakeFlowWorksSettings.digSoilChunkPercent);
 			}
-			if (chunk == null || !Rand.Chance(chance))
+			bool rolled = RimMandrakeFlowWorksSettings.digRockChunksEnabled && chunk != null && Rand.Chance(chance);
+			if (spoil)
+			{
+				// deep stone is rock whatever lay on top; otherwise the ground the cut came from decides
+				RM_GroundClass cls = rock != null ? RM_GroundClass.Rock : RM_DigSpoil.ClassAt(map, c);
+				RM_CutSpoil yield = RM_GroundClassMath.CutYield(cls, rolled && rock != null);
+				if (yield == RM_CutSpoil.Gravel)
+				{
+					if (RM_DigSpoil.PlaceGravel(map, RM_DigDiscovery.LipCellNear(map, c), false))
+					{
+						Gravel++;
+					}
+					return;
+				}
+				if (yield == RM_CutSpoil.None)
+				{
+					return;
+				}
+			}
+			else if (!rolled)
 			{
 				return;
 			}
@@ -231,9 +260,12 @@ namespace RimMandrake.FlowWorks
 				target, MessageTypeDefOf.PositiveEvent, false);
 		}
 
+		/// <summary>DIG_SPOIL_BUILD_GRAVEL_PAYS_ITS_WAY: gravel left by cuts since load (bridge/proof readout).</summary>
+		public int Gravel;
+
 		public string Report(Map map)
 		{
-			return "DIGFINDS finds " + Finds + " | budget " + (budgetLeft < 0 ? "unset" : budgetLeft.ToString("F0"))
+			return "DIGFINDS finds " + Finds + " | gravel " + Gravel + " | budget " + (budgetLeft < 0 ? "unset" : budgetLeft.ToString("F0"))
 				+ " | first-found " + found.Count + " | last " + LastFind;
 		}
 
