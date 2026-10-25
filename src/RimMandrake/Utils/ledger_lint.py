@@ -13,7 +13,8 @@ landing. So this lint does, refusing:
                  append would glue two events into one unparsable line
   NOT_APPEND     a line present on the base (origin/main) that is gone from the
                  checked revision: an edit or deletion in place. Union would keep BOTH
-                 the old and the new line on the next merge, so an edit never sticks
+                 the old and the new line on the next merge, so an edit never sticks.
+                 A shard emptied or deleted outright is the same finding, per line
   DUP_DIFFERENT  a NEW line (not on the base) with the same event identity —
                  (seat, verb, subject, ts) — as a line ALREADY ON THE BASE but different
                  content. That is the shape an edit-in-place leaves after a union: the
@@ -73,6 +74,9 @@ def shards_at(root, rev):
             out += ["%s/%s" % (sd, n) for n in names if n.endswith(".jsonl")]
         else:
             r = _git(root, "ls-tree", "--name-only", rev, sd + "/")
+            if r.returncode != 0:      # an unknown rev listed nothing and linted CLEAN
+                raise RuntimeError("git ls-tree %s failed: %s"
+                                   % (rev, r.stderr.decode(errors="replace").strip()))
             out += [p for p in r.stdout.decode().splitlines() if p.endswith(".jsonl")]
     return sorted(out)
 
@@ -95,9 +99,10 @@ def identity(ev):
 def lint_blob(path, data, base_data=None):
     """-> [(code, path, line_no, detail)] for one shard. Pure; the selftest drives it."""
     out = []
-    if not data:
+    data = data or b""          # a shard emptied or GONE at rev still loses every base line
+    if not data and not base_data:
         return out
-    if not data.endswith(b"\n"):
+    if data and not data.endswith(b"\n"):
         out.append(("NO_NEWLINE", path, data.count(b"\n") + 1,
                     "last line has no trailing newline"))
     lines = data.decode("utf-8", errors="replace").split("\n")
@@ -161,7 +166,10 @@ def lint(root=REPO_ROOT, rev=None, base="origin/main"):
         notes.append("no base ref %r — NOT_APPEND/FROZEN checks UNMEASURED, structure only"
                      % base)
     findings = []
-    for p in shards_at(root, rev):
+    paths = set(shards_at(root, rev))
+    if have_base:                # a shard deleted outright is the largest NOT_APPEND of all
+        paths |= set(shards_at(root, base))
+    for p in sorted(paths):
         data = content(root, rev, p)
         base_data = blob_at(root, base, p) if have_base else None
         findings.extend(lint_blob(p, data, base_data))
