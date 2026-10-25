@@ -6,6 +6,8 @@
 #   rw_game.sh up [--wait]    start the game unless running; --wait blocks until the bridge
 #                             announces its port in a Player.log written after the launch (max 600 s)
 #   rw_game.sh down           graceful taskkill, then /F after 90 s
+#   rw_game.sh init           renew the test companion profile; seed Prefs.xml if it lacks
+#                             runInBackground True (game must be stopped for that half)
 #
 # STEVEDESKTOP_LAUNCH_WIRE_DESKTOP_SESSION (2026-10-25). Why it looks like this:
 #  - The game is started by running RimWorldWin64.exe directly (Steam must already be running,
@@ -71,6 +73,37 @@ up() {
     echo "TIMEOUT: no bridge port in a fresh Player.log after 600 s"; return 1
 }
 
+# A fresh or reset save-data folder lacks two files that modcheck run refuses without
+# (found on the first remote run, 2026-10-25):
+#  - JawaBench/companion_profile.json: with none the companion reports profile 'campaign'
+#    and ensure_test_profile raises. The folder holds no campaign saves, so 'test' is true;
+#    the expiry is renewed to 30 days ahead on every init.
+#  - Config/Prefs.xml with runInBackground True: game_focus.preflight refuses
+#    (FocusRefused, runInBackground UNREADABLE) without it. The game writes Prefs.xml on a
+#    clean exit only, and rewrites it from memory then, so it can be seeded only while the
+#    game is stopped. Prefs.template.xml is Archmagi's Prefs minus the screen size.
+init() {
+    mkdir -p "$RM_GAME_USERDATA/JawaBench" "$RM_GAME_USERDATA/Config"
+    local exp; exp=$(date -u -d '+30 days' +%Y-%m-%dT%H:%M:%SZ)
+    cat > "$RM_GAME_USERDATA/JawaBench/companion_profile.json" <<EOF
+{
+  "profile": "test",
+  "expiresUtc": "$exp",
+  "campaignSaves": "",
+  "why": "SteveDesktop test centre: -savedatafolder $DATA_WIN holds no campaign saves (rw_game.sh init)"
+}
+EOF
+    echo "companion profile: test until $exp"
+    local prefs="$RM_GAME_USERDATA/Config/Prefs.xml"
+    if grep -q '<runInBackground>True</runInBackground>' "$prefs" 2>/dev/null; then
+        echo "Prefs.xml: runInBackground True"; return 0
+    fi
+    [ -z "$(pid_of)" ] || { echo "REFUSED: Prefs.xml lacks runInBackground True and the game is running (it would overwrite the fix on exit); run down, then init"; return 2; }
+    [ -f "$prefs" ] && cp "$prefs" "$prefs.pre-init" && echo "Prefs.xml: old copy kept as Prefs.xml.pre-init"
+    cp "$HERE/Prefs.template.xml" "$prefs"
+    echo "Prefs.xml: seeded from Prefs.template.xml"
+}
+
 down() {
     local pid; pid=$(pid_of)
     [ -n "$pid" ] || { echo "already stopped"; return 0; }
@@ -85,5 +118,6 @@ case "${1:-status}" in
     status) status ;;
     up) up "${2:-}" ;;
     down) down ;;
-    *) echo "usage: $0 status|up [--wait]|down"; exit 64 ;;
+    init) init ;;
+    *) echo "usage: $0 status|up [--wait]|down|init"; exit 64 ;;
 esac

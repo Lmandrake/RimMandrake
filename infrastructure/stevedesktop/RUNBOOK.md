@@ -266,6 +266,26 @@ packages (VS Code, gh, Sysinternals) install fine straight over SSH. `winget sou
 
 ---
 
+## Test centre: running a modcheck there (proved 2026-10-25)
+
+First remote run GREEN: `JawaIonWeapons --chains def_wiring`, driven from Archmagi
+(STEVEDESKTOP_MODCHECK_PROVE_FIRST_REMOTE_RUN). The pieces, all in this folder:
+
+- `testcentre_env.sh`: sourced from line 2 of `~/.bashrc` in Steve's WSL. Points game_paths at
+  `D:\SteamLibrary` and at the test-only save-data folder `D:\RimTest\userdata`.
+- `rw_game.sh status|up [--wait]|down|init`: runs the game with `-savedatafolder`, in session 1, so
+  Steve's own mod list and saves are never touched. `init` seeds the two files a fresh userdata
+  folder lacks (the test companion profile, and Prefs runInBackground).
+- `sync_test_mods.py [--apply]`: from Archmagi, copies the MINIMAL list's Workshop mods and the
+  JawaBench companion. Steve's Steam has no subscriptions, and we may not add any.
+- `remote_modcheck.sh <Mod> [modcheck args]`: from Archmagi. Runs init, then up --wait, then the run,
+  and copies the sheet back.
+- `sps.sh`: PowerShell over Windows OpenSSH, sent as `-EncodedCommand`.
+
+Before a run of changed code, with the game down: update `~/rm/runner`, then run
+`deploy_custom_mods.py --mod <M> --apply` there. Switch lists with `modlist_swap.py --minimal --apply`.
+The runner is not a seat, so record the printed `rimflow verify` line from a seat clone.
+
 ## Before you leave Monday: checklist
 
 - [ ] Step 1: green SSH READY box seen; the agent confirmed `lan_ssh PASS`
