@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- ROT_WOUND_SHARING_WIRING_1: real wound-sharing (chittik, gromma, rennok) and kin-mending (mullgoth, durrok), one shared
-     tag, RotNetwork, so they share across species. Wild and tamed alike: the comps filter on no faction. The Rot screen's
-     Health sharing toggle removes the comps again at startup (restart to apply; RM_TheRotFront.HealthSharingBodies).
+<!-- ROT_WOUND_SHARING_WIRING_1: real wound-sharing (chittik, gromma, rennok) and kin-mending (mullgoth, durrok). Wild and
+     tamed alike: the comps filter on no faction. The Rot screen's Health sharing toggle removes the comps again at startup
+     (restart to apply; RM_TheRotFront.HealthSharingBodies).
      Since the 2026-10-18 donor retirement the three Rot-owned ports (RM_Chittik, RM_Agaripod, RM_Agaripawn) carry the
      wiring natively in Defs/Fauna. This patch now wires only RM_Durrok and RM_Mullgoth, whose defs live in
      LeaningScrub (same composed mandrake.rm.biomes since 2026-10-24; before that SWBestiary): each op is guarded by PatchOperationConditional on the def's own xpath (a top-level
      MayRequire is ignored by 1.6, and FindMod would need the mod NAME). Restored 2026-10-22: the retirement commit
-     b28a7414f deleted the AA_ block without carrying the mending pair across. -->
+     b28a7414f deleted the AA_ block without carrying the mending pair across.
+     ROT_FAUNA_KIN_WIRING_1 (2026-10-25): brought onto the owner's ruled Rot fauna table (2026-09-18, "AS DRAFTED for kin
+     tag / wound-link / alarm"; copy in infrastructure/state/items/ROT_HEALTH_SHARING_1.md). Mullgoth + durrok are the
+     RotWildkin clique: kin-mending YES, wound-link NO ("the spec ruled the two variants land on DIFFERENT species; these
+     are the softer kinds and take the aura only"). The earlier wiring gave them a CompProperties_WoundLink and the
+     biome-wide RotNetwork tag, so a hit on a durrok bled into every agari and chittik in range; both are removed here.
+     The tag alone is enough for mending: RM_HediffComp_KinMending counts kin by tag, not by comp. -->
 <Patch>
   <!-- RM_Mullgoth: guarded on the def itself (it lives in LeaningScrub, composed with this mod); with the def absent both ops match nothing. -->
   <Operation Class="PatchOperationConditional">
@@ -14,7 +20,6 @@
     <match Class="PatchOperationAdd">
       <xpath>Defs/ThingDef[defName="RM_Mullgoth"]/comps</xpath>
       <value>
-            <li Class="RimMandrake.CreatureBehaviors.CompProperties_WoundLink" />
             <li Class="RimMandrake.CreatureBehaviors.CompProperties_GrantHediff">
               <hediff>RM_KinMendingNetwork</hediff>
               <inspectLine>Heals faster among its kin.</inspectLine>
@@ -27,7 +32,6 @@
         <xpath>Defs/ThingDef[defName="RM_Mullgoth"]</xpath>
         <value>
           <comps>
-            <li Class="RimMandrake.CreatureBehaviors.CompProperties_WoundLink" />
             <li Class="RimMandrake.CreatureBehaviors.CompProperties_GrantHediff">
               <hediff>RM_KinMendingNetwork</hediff>
               <inspectLine>Heals faster among its kin.</inspectLine>
@@ -43,7 +47,7 @@
       <xpath>Defs/ThingDef[defName="RM_Mullgoth"]</xpath>
       <value>
         <li Class="RimMandrake.CreatureBehaviors.RM_WoundLinkExtension">
-          <tag>RotNetwork</tag>
+          <tag>RotWildkin</tag>
         </li>
       </value>
     </match>
@@ -54,7 +58,6 @@
     <match Class="PatchOperationAdd">
       <xpath>Defs/ThingDef[defName="RM_Durrok"]/comps</xpath>
       <value>
-            <li Class="RimMandrake.CreatureBehaviors.CompProperties_WoundLink" />
             <li Class="RimMandrake.CreatureBehaviors.CompProperties_GrantHediff">
               <hediff>RM_KinMendingNetwork</hediff>
               <inspectLine>Heals faster among its kin.</inspectLine>
@@ -67,7 +70,6 @@
         <xpath>Defs/ThingDef[defName="RM_Durrok"]</xpath>
         <value>
           <comps>
-            <li Class="RimMandrake.CreatureBehaviors.CompProperties_WoundLink" />
             <li Class="RimMandrake.CreatureBehaviors.CompProperties_GrantHediff">
               <hediff>RM_KinMendingNetwork</hediff>
               <inspectLine>Heals faster among its kin.</inspectLine>
@@ -83,7 +85,7 @@
       <xpath>Defs/ThingDef[defName="RM_Durrok"]</xpath>
       <value>
         <li Class="RimMandrake.CreatureBehaviors.RM_WoundLinkExtension">
-          <tag>RotNetwork</tag>
+          <tag>RotWildkin</tag>
         </li>
       </value>
     </match>

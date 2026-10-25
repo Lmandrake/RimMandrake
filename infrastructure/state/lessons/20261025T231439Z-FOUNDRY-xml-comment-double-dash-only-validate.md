@@ -1,0 +1,2 @@
+A '--' inside an XML comment (here the text 'validate_patch.py (--live and --defs)') makes the whole patch file unparseable, so RimWorld would drop all its operations; my static check never parsed the file. validate_patch.py caught it (it reports the error near the first comment line, not at the real column). Never write CLI flags inside an XML comment; always run validate_patch.py on a new patch file before calling it done.
+home: skills/rimworld-modding

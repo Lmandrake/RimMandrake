@@ -115,6 +115,19 @@ def settings_fields():
     return dict((m.group(2), m.group(1)) for m in _FIELD.finditer(re.sub(r"//[^\n]*", "", body)))
 
 
+# ROT_FAUNA_KIN_WIRING_1 (2026-10-25): the owner's ruled Rot fauna table (2026-09-18, "AS DRAFTED for kin tag /
+# wound-link / alarm"; copy in infrastructure/state/items/ROT_HEALTH_SHARING_1.md) on today's rows.
+# Row -> (kin tag or None, wound link comp, kin-mending hediff, alarm responder). Different tags never interact.
+RULED_KIN_ROWS = {
+    "RM_Agaripod": ("RotAgarikin", True, True, False), "RM_Agaripawn": ("RotAgarikin", True, True, False),
+    "RM_Chittik": ("RotSwarm", True, False, True), "RM_MycoidColossus": (None, False, False, True),
+    "RM_Mullgoth": ("RotWildkin", False, True, False), "RM_Durrok": ("RotWildkin", False, True, False),
+    "RSW_FungalWeevil": ("RotBroodmates", False, True, False), "RSW_FungalMantis": (None, False, False, True),
+}
+NATIVE_KIN_ROWS = ("RM_Agaripod", "RM_Agaripawn", "RM_Chittik", "RM_MycoidColossus")   # wired in Defs/Fauna
+ALARM_TAG = "RotGrove"      # a blank responder tag never answers (RM_ReactionResponders.Answers)
+
+
 def static_checks():
     bad = []
     if len(SHIPPED) + len(HELD_DEFS) < 40:
@@ -140,20 +153,29 @@ def static_checks():
     fauna = ""
     for fn in ("RM_Chittik.xml", "RM_AgariPorts.xml"):
         fauna += open(os.path.join(HERE, "Defs", "Fauna", fn), encoding="utf-8").read()
-    for body in ("RM_Chittik", "RM_Agaripod", "RM_Agaripawn"):
+    # ROT_FAUNA_KIN_WIRING_1 (2026-10-25): RULED_KIN_ROWS replaced the one biome-wide RotNetwork tag with clique tags.
+    for body in NATIVE_KIN_ROWS:
+        tag, link, mend, alarm = RULED_KIN_ROWS[body]
         m = re.search(r"<ThingDef[^>]*>\s*<defName>%s</defName>(.*?)</ThingDef>" % body, fauna, re.S)
-        if not m or "CompProperties_WoundLink" not in m.group(1) or "<tag>RotNetwork</tag>" not in m.group(1):
-            bad.append("%s ThingDef does not carry a native wound link with the RotNetwork tag" % body)
+        b = m.group(1) if m else ""
+        got = (re.findall(r"RM_WoundLinkExtension\">\s*<tag>(\w+)</tag>", b) or [None])[0], \
+            "CompProperties_WoundLink" in b, "<hediff>RM_KinMendingNetwork</hediff>" in b, \
+            bool(re.search(r"RM_AlarmResponderExtension\">\s*<tag>%s</tag>" % ALARM_TAG, b))
+        if got != (tag, link, mend, alarm):
+            bad.append("%s wiring %s is not the ruled row %s (kin tag, wound link, kin mending, alarm)"
+                       % (body, got, (tag, link, mend, alarm)))
     ws = open(os.path.join(HERE, "Patches", "RotSpecies_WoundSharing.xml"), encoding="utf-8").read()
     for body in ("RM_Durrok", "RM_Mullgoth"):
         if 'defName="%s"' % body not in ws:
             bad.append("wound-sharing patch does not target %s" % body)
-    if ws.count("<tag>RotNetwork</tag>") < 2 or ws.count("CompProperties_WoundLink") < 4:
-        bad.append("wound-sharing patch lacks the shared RotNetwork tag or a wound link per patched body")
+    if ws.count("<tag>RotWildkin</tag>") != 2 or "<li Class=\"RimMandrake.CreatureBehaviors.CompProperties_WoundLink\"" in ws:
+        bad.append("wound-sharing patch must tag mullgoth + durrok RotWildkin and give them NO wound link (ruled: aura only)")
     if re.search(r"<Operation[^>]*MayRequire", ws):
         bad.append("wound-sharing patch must never use a top-level MayRequire (ignored by 1.6)")
     if ws.count("<hediff>RM_KinMendingNetwork</hediff>") != 4:
         bad.append("exactly the two mending bodies (mullgoth, durrok) carry the kin-mending hediff")
+    if "RotNetwork" in fauna or "<tag>RotNetwork</tag>" in ws:
+        bad.append("the retired biome-wide RotNetwork tag is still wired (ruled: clique tags only)")
     # ROT_NORTHSTAR_BARS_DRAFT bar 1 (kin mending): the live threshold is derived from these defaults, so they are pinned here.
     cb = os.path.join(HERE, "..", "CreatureBehaviors", "Source")
     kp = open(os.path.join(cb, "CompProperties_KinMending.cs"), encoding="utf-8").read()
@@ -846,7 +868,7 @@ def _build_suite():
                 _unmeasured(t, 'wild-spawned defended mushrooms with the false-fruit ring exist only on a map generated with the toggle on; the bridge cannot generate a map')
         with t.component("health_sharing", toggle="healthSharing"):
             if _live(t):
-                _unmeasured(t, 'bar 1 (design/RimMandrake/rot_northstar_bars_draft_2026-10-22.md): a bruise on a mullgoth with 2+ RotNetwork kin within 12 cells heals at least 0.5 x BodySize more over 15,000 ticks than the same bruise on an isolated one; needs a bridge wound tool and RSW bestiary spawns')
+                _unmeasured(t, 'bar 1 (design/RimMandrake/rot_northstar_bars_draft_2026-10-22.md): a bruise on a mullgoth with 2+ RotWildkin kin (mullgoth/durrok) within 12 cells heals at least 0.5 x BodySize more over 15,000 ticks than the same bruise on an isolated one; needs a bridge wound tool and RSW bestiary spawns')
         with t.component("pale_tree_wild_spawn", toggle="paleTreeSpawn"):
             if _live(t):
                 _unmeasured(t, 'a rare wild-spawned oddity exists only on a generated map; it is also Royalty-gated')
@@ -1193,16 +1215,72 @@ def _build_suite():
                 for pid in getattr(t, "_wound_pawns", []):
                     _remove(t, pid)
                 t._wound_pawns = []
-        with t.component("bestiary_kin_carry_wound_link", beyond_toggle=True):
-            rows = _link_defs(t, ["RM_Durrok", "RM_Mullgoth"])
-            if rows is not None and _live(t):
-                absent = [n for n in ("RM_Durrok", "RM_Mullgoth") if n not in rows]
-                lacking = [n for n in ("RM_Durrok", "RM_Mullgoth") if n in rows and not _has_link(rows[n])]
-                if lacking:
-                    raise ExpectationFailed("%s resolve but carry no CompProperties_WoundLink (Patches/"
-                                            "RotSpecies_WoundSharing.xml did not apply)" % lacking)
-                if absent:
-                    _unmeasured(t, "%s not loaded: they live in mandrake.rsw.swbestiary, absent from this tier" % absent)
+        with t.component("ruled_kin_rows_live", toggle="healthSharing"):
+            # ROT_FAUNA_KIN_WIRING_1: every row of the owner's ruled table (RULED_KIN_ROWS) reads back from the LIVE
+            # defs, so a patch that matched nothing (it logs nothing) or a stale RotNetwork tag turns this red.
+            _ruled_rows_check(t)
+
+    def _kin_rows(t, names):
+        """Live (kin tag, wound link, kin mending, alarm tag) per def, or None after an UNMEASURED. A shallow read gives
+        the comp / extension TYPE names, a deep one their fields (tag, hediff); the two lists zip by position."""
+        defs = ";".join(["ThingDef/" + n for n in names] + [LINK_CONTROL])
+        sh = t.bridge_call("jawa/get_defs", defs=defs, fields="comps,modExtensions", deep=False, limit=len(names) + 2)
+        dp = t.bridge_call("jawa/get_defs", defs=defs, fields="comps,modExtensions", deep=True, limit=len(names) + 2)
+        if not _live(t):
+            return None
+        for r in (sh, dp):
+            if not isinstance(r, dict) or r.get("success") is False:
+                raise ExpectationFailed("get_defs failed: %r" % (r,))
+        if not any("ZZ_NoSuchDef_Probe" in str(x) for x in (sh.get("notFound") or [])):
+            _unmeasured(t, "the control %s did not read notFound: the instrument cannot say absent" % LINK_CONTROL)
+            return None
+
+        def by_name(r):
+            return dict((d.get("defName"), d.get("fields") or {}) for d in (r.get("defs") or []) if isinstance(d, dict))
+        shallow, deep, out = by_name(sh), by_name(dp), {}
+        for n, f in shallow.items():
+            kinds = [str(x) for x in (f.get("modExtensions") or [])]
+            exts = (deep.get(n) or {}).get("modExtensions") or []
+            if len(kinds) != len(exts) or not all(isinstance(e, dict) for e in exts):
+                _unmeasured(t, "%s: shallow and deep modExtensions do not zip (%s vs %s)" % (n, kinds, str(exts)[:120]))
+                return None
+            link_tag = [e.get("tag") for k, e in zip(kinds, exts) if "RM_WoundLinkExtension" in k]
+            alarm_tag = [e.get("tag") for k, e in zip(kinds, exts) if "RM_AlarmResponderExtension" in k]
+            comps = json.dumps(f.get("comps"), default=str)
+            mend = "RM_KinMendingNetwork" in json.dumps((deep.get(n) or {}).get("comps"), default=str)
+            out[n] = ((link_tag or [None])[0] or None, _has_link(comps), mend, (alarm_tag or [None])[0] or None)
+        if out and not any("CompProperties" in json.dumps(f.get("comps"), default=str) for f in shallow.values()):
+            _unmeasured(t, "get_defs comps carry no class names, so a missing comp is invisible: %s" % str(shallow)[:160])
+            return None
+        return out
+
+    def _ruled_rows_check(t):
+        if not _live(t):
+            return
+        hs = str(_raw(t, "get", "healthSharing").get("value")).lower()
+        if hs != "true":
+            _unmeasured(t, "healthSharing reads %r: off at startup it strips the link and mending comps, so the rows "
+                           "cannot be judged on this load" % hs)
+            return
+        names = sorted(RULED_KIN_ROWS)
+        rows = _kin_rows(t, names)
+        if rows is None or not _live(t):
+            return
+        wrong = []
+        for n in names:
+            if n not in rows:
+                continue
+            tag, link, mend, alarm = RULED_KIN_ROWS[n]
+            want = (tag, link, mend, ALARM_TAG if alarm else None)
+            if rows[n] != want:
+                wrong.append("%s reads %s, ruled %s" % (n, rows[n], want))
+        absent = [n for n in names if n not in rows]
+        ours = [n for n in absent if not n.startswith("RSW_")]
+        if wrong or ours:
+            raise ExpectationFailed("(kin tag, wound link, kin mending, alarm tag): %s%s"
+                                    % ("; ".join(wrong), "; RM_ rows not loaded: %s" % ours if ours else ""))
+        if absent:
+            _unmeasured(t, "%s not loaded: they live in mandrake.rsw.swbestiary, absent from this list" % absent)
 
     def _wound_arms(t, state):
         """A3's two arms. The caller restores woundLinkEnabled and removes the pawns, whatever happens here."""
@@ -1243,7 +1321,8 @@ suite = _build_suite() if Suite is not None else None
 class _MockRotSession(object):
     """--mock: answers like a game where wound_link, dustveil and living_mat_root work. `broken` plants ONE defect:
     nocomp (chittik lost the comp), noshare (ON arm mirrors nothing), offleaks (OFF arm still mirrors), blindctrl
-    (get_defs control reads present), nobestiary (Durrok/Mullgoth absent), grounded (moth canEverFly false),
+    (get_defs control reads present), nobestiary (the RSW_ ruled rows absent), retagged (a gromma still reads
+    RotNetwork), durroklink (a durrok carries the wound link it was ruled out of), hsoff (Health sharing off), grounded (moth canEverFly false),
     ctrlflies (the non-flier control reads true), ticking (the clock runs while the moth is spawned), nospread
     (5 fed sweeps lay 4 cells), hot (the mat room passes 21 C), nodieback (a starved root keeps its cells),
     rotmap (staged on an RM_TheRot map), nobudcap (budding passes the cap), nobud (a well-fed root never buds),
@@ -1268,6 +1347,8 @@ class _MockRotSession(object):
             return {"success": True, "ticksGame": self.ticks}
         if tool == "jawa/get_defs":
             names = [d.split("/", 1)[1] for d in (kw.get("defs") or "").split(";") if d]
+            if kw.get("fields") == "comps,modExtensions":
+                return self._kin_defs(names, bool(kw.get("deep")))
             if kw.get("fields") == "statBases":
                 return {"success": True, "foundCount": 1, "notFound": [],
                         "defs": [{"defName": "RM_Dustveil", "fields": {"statBases": [{"stat": "MaxFlightTime", "value": 6}]}}]}
@@ -1285,6 +1366,8 @@ class _MockRotSession(object):
                 rows.append({"defName": n, "fields": {"comps": comps, "defName": n}})
             return {"success": True, "foundCount": len(rows), "notFound": nf, "defs": rows}
         if tool == "jawa/mod_settings_field":
+            if kw.get("field") == "healthSharing":
+                return {"success": True, "value": "False" if b == "hsoff" else "True"}
             if kw.get("action") == "set":
                 self.link_on = str(kw.get("value")).lower() == "true"
                 return {"success": True}
@@ -1341,11 +1424,35 @@ class _MockRotSession(object):
                     "(mat %d/25) | outdoor 5.0 | %s" % (2.0 if fed else 0.0, g0, self.grown, r0, self.room, self.grown, status)}
         return {"success": True}
 
+    def _kin_defs(self, names, deep):
+        """The ruled rows as a game that loaded the wiring answers them; `retagged`, `durroklink` and `nobestiary`
+        plant one defect each."""
+        b, rows, nf = self.broken, [], []
+        for n in names:
+            if n not in RULED_KIN_ROWS or (b == "nobestiary" and n.startswith("RSW_")):
+                nf.append("ThingDef/" + n)
+                continue
+            tag, link, mend, alarm = RULED_KIN_ROWS[n]
+            if b == "retagged" and n == "RM_Agaripod":
+                tag = "RotNetwork"
+            if b == "durroklink" and n == "RM_Durrok":
+                link = True
+            comps, exts = [], []
+            if link:
+                comps.append({"compClass": "RM_CompWoundLink"} if deep else "CompProperties_WoundLink")
+            comps.append({"hediff": "RM_KinMendingNetwork" if mend else None} if deep else "CompProperties_GrantHediff")
+            if tag:
+                exts.append({"tag": tag, "radius": 12} if deep else "RM_WoundLinkExtension")
+            if alarm:
+                exts.append({"tag": ALARM_TAG} if deep else "RM_AlarmResponderExtension")
+            rows.append({"defName": n, "fields": {"comps": comps, "modExtensions": exts}})
+        return {"success": True, "foundCount": len(rows), "notFound": nf, "defs": rows}
+
 
 MOCK_EXPECT = {
     # broken -> {chain/component: verdict it MUST read}; every other listed row of a clean run must PASS.
     None: {"wound_link/chittik_carries_wound_link": "PASS", "wound_link/wound_shared_with_kin_when_on": "PASS",
-           "wound_link/no_share_when_off": "PASS", "wound_link/bestiary_kin_carry_wound_link": "PASS",
+           "wound_link/no_share_when_off": "PASS", "wound_link/ruled_kin_rows_live": "PASS",
            "dustveil/flight_stat_live": "PASS", "dustveil/silk_defs_live": "PASS",
            "dustveil/flight_tracker_state_read": "PASS", "dustveil/flip_book_frames_cycle": "UNMEASURED",
            "living_mat_root/fed_root_spreads_and_eats": "PASS", "living_mat_root/mat_room_warms_to_cap": "PASS",
@@ -1355,7 +1462,10 @@ MOCK_EXPECT = {
     "noshare": {"wound_link/chittik_carries_wound_link": "PASS", "wound_link/wound_shared_with_kin_when_on": "FAIL"},
     "offleaks": {"wound_link/wound_shared_with_kin_when_on": "PASS", "wound_link/no_share_when_off": "FAIL"},
     "blindctrl": {"wound_link/chittik_carries_wound_link": "UNMEASURED"},
-    "nobestiary": {"wound_link/no_share_when_off": "PASS", "wound_link/bestiary_kin_carry_wound_link": "UNMEASURED"},
+    "nobestiary": {"wound_link/no_share_when_off": "PASS", "wound_link/ruled_kin_rows_live": "UNMEASURED"},
+    "retagged": {"wound_link/chittik_carries_wound_link": "PASS", "wound_link/ruled_kin_rows_live": "FAIL"},
+    "durroklink": {"wound_link/ruled_kin_rows_live": "FAIL"},
+    "hsoff": {"wound_link/no_share_when_off": "PASS", "wound_link/ruled_kin_rows_live": "UNMEASURED"},
     "grounded": {"dustveil/flight_tracker_state_read": "FAIL"},
     "ctrlflies": {"dustveil/flight_tracker_state_read": "UNMEASURED"},
     "ticking": {"dustveil/flight_tracker_state_read": "UNMEASURED"},

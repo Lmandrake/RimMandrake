@@ -11,6 +11,10 @@
     - our art paths RotSpecies/Agaripawn, RotSpecies/MycoidColossus  (same file)
     - wound sharing on rennok and gromma  (Patches/RotSpecies_WoundSharing.xml, ROT_WOUND_SHARING_WIRING_1;
       RM_TheRotMod's Health sharing toggle names these RM_ defs too)
+  ROT_FAUNA_KIN_WIRING_1 (owner's ruled Rot fauna table 2026-09-18, copied into
+  infrastructure/state/items/ROT_HEALTH_SHARING_1.md): rennok + gromma are the RotAgarikin clique —
+  wound-link AND kin-mending, a tag of their own (different tags never interact). The vorrugath has no
+  kin tag (solitary) but answers a guardian-grove alarm (RM_AlarmResponderExtension, tag RotGrove).
   Those patches still target the AA_ defs and stay: the frozen campaign twin RUT_TheRot casts the donor.
 
   DROPPED (donor assembly AlphaBehavioursAndEvents): CompProperties_GraphicsRefresher and renderTree
@@ -94,7 +98,8 @@
       </li>
       <li Class="RimMandrake.CreatureBehaviors.CompProperties_WoundLink" />
       <li Class="RimMandrake.CreatureBehaviors.CompProperties_GrantHediff">
-        <inspectLine>Shares wounds with its grove.</inspectLine>
+        <hediff>RM_KinMendingNetwork</hediff>
+        <inspectLine>Shares wounds with its grove, and heals faster among its kin.</inspectLine>
       </li>
     </comps>
     <race>
@@ -130,7 +135,7 @@
     </tradeTags>
     <modExtensions>
       <li Class="RimMandrake.CreatureBehaviors.RM_WoundLinkExtension">
-        <tag>RotNetwork</tag>
+        <tag>RotAgarikin</tag>
       </li>
     </modExtensions>
   </ThingDef>
@@ -243,7 +248,8 @@
       </li>
       <li Class="RimMandrake.CreatureBehaviors.CompProperties_WoundLink" />
       <li Class="RimMandrake.CreatureBehaviors.CompProperties_GrantHediff">
-        <inspectLine>Shares wounds with its grove.</inspectLine>
+        <hediff>RM_KinMendingNetwork</hediff>
+        <inspectLine>Shares wounds with its grove, and heals faster among its kin.</inspectLine>
       </li>
     </comps>
     <race>
@@ -279,7 +285,7 @@
     </tradeTags>
     <modExtensions>
       <li Class="RimMandrake.CreatureBehaviors.RM_WoundLinkExtension">
-        <tag>RotNetwork</tag>
+        <tag>RotAgarikin</tag>
       </li>
     </modExtensions>
   </ThingDef>
@@ -401,6 +407,13 @@
       <li>AnimalUncommon</li>
       <li>AnimalFighter</li>
     </tradeTags>
+    <!-- ROT_FAUNA_KIN_WIRING_1: harm a regenerant veil or false fruit near a vorrugath and the forest walks over.
+         A responder needs a NON-blank tag (RM_ReactionResponders.Answers); the grove plants' blank comp tag matches any. -->
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_AlarmResponderExtension">
+        <tag>RotGrove</tag>
+      </li>
+    </modExtensions>
   </ThingDef>
 
   <PawnKindDef ParentName="AnimalKindBase">

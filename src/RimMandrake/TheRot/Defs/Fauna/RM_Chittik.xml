@@ -106,7 +106,10 @@
     </tradeTags>
     <!-- ROT_WOUND_SHARING_WIRING_1, restored natively 2026-10-22: the description promises "shares every wound it takes".
          The wiring rode a FindMod patch on AA_Swarmling that the donor retirement (b28a7414f) deleted without carrying it
-         to this port. Same shape as RM_Agaripod/RM_Agaripawn; the Health sharing setting strips the comps when off. -->
+         to this port. Same shape as RM_Agaripod/RM_Agaripawn; the Health sharing setting strips the comps when off.
+         ROT_FAUNA_KIN_WIRING_1 (owner's ruled Rot fauna table 2026-09-18, items/ROT_HEALTH_SHARING_1.md): the RotSwarm
+         clique — wound-link YES (both ways: a grenade into a swarm mirrors across it), kin-mending NO (self-healing vermin
+         make clearance tedious), alarm YES (vermin boil out of the mat when a guardian grove screams). -->
     <comps>
       <li Class="RimMandrake.CreatureBehaviors.CompProperties_WoundLink" />
       <li Class="RimMandrake.CreatureBehaviors.CompProperties_GrantHediff">
@@ -115,7 +118,10 @@
     </comps>
     <modExtensions>
       <li Class="RimMandrake.CreatureBehaviors.RM_WoundLinkExtension">
-        <tag>RotNetwork</tag>
+        <tag>RotSwarm</tag>
+      </li>
+      <li Class="RimMandrake.CreatureBehaviors.RM_AlarmResponderExtension">
+        <tag>RotGrove</tag>
       </li>
     </modExtensions>
   </ThingDef>

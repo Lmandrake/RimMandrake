@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RotFauna_KinWiring.xml                 UtinniPatches — ROT_FAUNA_KIN_WIRING_1
+  ============================================================================
+
+  The owner's ruled Rot fauna table (2026-09-18, "stands AS DRAFTED for kin tag /
+  wound-link / alarm"; kin-mend strength proportional to body size, one hediff;
+  copy in infrastructure/state/items/ROT_HEALTH_SHARING_1.md) on the two rows that
+  are Star Wars Bestiary defs. The RM_ rows carry their wiring natively in
+  mandrake.rm.biomes (TheRot Defs/Fauna, TheRot Patches/RotSpecies_WoundSharing.xml);
+  an RM_-tier mod may not name an RSW_ def (Q12), so these two live here.
+
+    RSW_FungalWeevil  RotBroodmates clique: kin-mending YES, wound-link no, alarm no.
+                      ("broods recover if survivors remain"; its ruled brood-mate
+                      BMT_Pillbug was cut 2026-09-11, so the clique is weevils only.)
+    RSW_FungalMantis  alarm-responder YES, no kin tag ("the trap you never saw answers").
+
+  Guards: each op is a PatchOperationConditional on the def's own xpath (a
+  top-level MayRequire is ignored by 1.6). The weevil's hediff reference is also
+  guarded on RM_KinMendingNetwork existing, so no cross-reference can dangle.
+  A responder needs a NON-blank tag (RM_ReactionResponders.Answers); the grove
+  plants' blank comp tag matches any, so the mantis carries RotGrove like the
+  RM_ responders. A patch that matches nothing logs nothing: validate with
+  validate_patch.py, with both the live dump and the defs roots.
+-->
+<Patch>
+
+  <!-- RSW_FungalWeevil: the kin tag (mending counts kin by this tag alone). -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RSW_FungalWeevil"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>Defs/ThingDef[defName="RSW_FungalWeevil"]</xpath>
+      <value>
+        <li Class="RimMandrake.CreatureBehaviors.RM_WoundLinkExtension">
+          <tag>RotBroodmates</tag>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- RSW_FungalWeevil: the always-on kin-mending hediff, granted at spawn. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/HediffDef[defName="RM_KinMendingNetwork"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ThingDef[defName="RSW_FungalWeevil"]/comps</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="RSW_FungalWeevil"]/comps</xpath>
+        <value>
+          <li Class="RimMandrake.CreatureBehaviors.CompProperties_GrantHediff">
+            <hediff>RM_KinMendingNetwork</hediff>
+            <inspectLine>Heals faster among its brood.</inspectLine>
+          </li>
+        </value>
+      </match>
+      <nomatch Class="PatchOperationConditional">
+        <xpath>Defs/ThingDef[defName="RSW_FungalWeevil"]</xpath>
+        <match Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName="RSW_FungalWeevil"]</xpath>
+          <value>
+            <comps>
+              <li Class="RimMandrake.CreatureBehaviors.CompProperties_GrantHediff">
+                <hediff>RM_KinMendingNetwork</hediff>
+                <inspectLine>Heals faster among its brood.</inspectLine>
+              </li>
+            </comps>
+          </value>
+        </match>
+      </nomatch>
+    </match>
+  </Operation>
+
+  <!-- RSW_FungalMantis: answers a guardian-grove alarm. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RSW_FungalMantis"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>Defs/ThingDef[defName="RSW_FungalMantis"]</xpath>
+      <value>
+        <li Class="RimMandrake.CreatureBehaviors.RM_AlarmResponderExtension">
+          <tag>RotGrove</tag>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
