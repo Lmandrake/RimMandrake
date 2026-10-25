@@ -2479,3 +2479,4 @@
 {"seat":"OWNER","event":"close","id":"CANON_START_SAVEGAME_SYNC_TO_R3","sha":"463fe71630","byCard":"Which saved world should the project treat as the canonical start? -> Repoint to the 10-20 save","ts":"2026-10-25T22:45:01Z","tsn":1792968301138681207}
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ts":"2026-10-25T23:04:01Z","tsn":1792969441516097530}
 {"seat":"OWNER","event":"close","id":"DUSTVEIL_TEXT_FIX_REWRITE_UNDID_HYBRID","sha":"b397822ce3","reason":"Restored the 67cf5141b0 fungus-grown description (no waste/lab origin); ThozzikQueen 'forces'->'demands'; planted_dustveil plants must change text on a clean file; selftest_dustveil 5/5, TheRot static_checks []","perRuling":"DUSTVEIL_FLIGHT_BUILD_A_MOTH_THAT_WALKED","ts":"2026-10-25T23:18:53Z","tsn":1792970333057897663}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","ts":"2026-10-25T23:16:43Z","tsn":1792970203432129749}
