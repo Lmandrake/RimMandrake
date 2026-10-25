@@ -412,10 +412,11 @@ def run(specs: list, run_id: str, rev: Reviewers | None = None, test: bool = Fal
             cur = json.loads(rounds_file.read_text()) if rounds_file.is_file() else {}
             # only subjects this run REGENed: `rounds` also carries reset-series counts (apply_to_rounds), which
             # round_series promises never to write here (a stopped, never-judged def used to land as round 1)
-            for k in {r["subject"] for r in recs if r["decision"] == "REGEN"}:
+            for k in {r["subject"] for r in recs if r["decision"] == "REGEN" and not RS.stopped(r["subject"], rs)}:
                 cur[k] = max(cur.get(k, 0), rounds.get(k, 0))
             rounds_file.write_text(json.dumps(cur, indent=1, sort_keys=True))
-    jobs = regen_jobs(recs, run_id)
+    # a resumed REGEN record may predate a stop: a stopped series files nothing (ARTEVAL_RESUME_FIX_FILES_STOPPED)
+    jobs = regen_jobs([r for r in recs if test or not RS.stopped(r["subject"], rs)], run_id)
     if jobs:
         (out / "regen_jobs.json").write_text(json.dumps(jobs, indent=1))
         if file_regens and not test:

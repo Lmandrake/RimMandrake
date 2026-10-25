@@ -183,6 +183,14 @@ def tuning_checks():
             check("same picture judged again keeps its round", r2[0]["decision"] == "REGEN" and r2[0]["round"] == 1
                   and "round not advanced" in " ".join(r2[0]["reasons"]), (r2[0]["round"], r2[0]["reasons"][-1:]))
             check("a different picture advances the round", r3[0]["round"] == 2, r3[0]["round"])
+            # a crashed run resumed after its series was STOPPED must not file a regen for the stopped def
+            rdir = td / "state" / "runs" / "fauna_t_04"; rdir.mkdir()
+            (rdir / "decisions.jsonl").write_text("".join(json.dumps(x) + "\n" for x in (
+                dict(d1["RM_Ok"], subject="RM_Stop"), d1["RM_Ok"])))
+            with contextlib.redirect_stderr(io.StringIO()):
+                runner.run([], "fauna_t_04", rev=Mock(), test=False, work_root=td / "w", state_root=td / "state" / "runs")
+            rj = {j["target_def"] for j in json.loads((rdir / "regen_jobs.json").read_text())}
+            check("runner: resumed REGEN of a stopped series files no regen job", rj == {"RM_Ok"}, rj)
             rr = json.loads((td / "state" / "regen_rounds.json").read_text())
             check("regen_rounds.json: no double count", rr.get("RM_Ok") == 2 and "RM_Stop" not in rr, rr)
 
