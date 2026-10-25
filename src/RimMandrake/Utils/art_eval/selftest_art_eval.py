@@ -90,6 +90,22 @@ def tuning_checks():
                   [(h["run"], h["column"]) for h in hv] == [("run_b", "B")], [(h["run"], h["column"]) for h in hv])
         finally:
             SH.STATE = old_state
+        # replaced kept art is written beside the row as a reference; a sha the store lacks is skipped, not invented
+        kd = Path(td) / "kq"
+        krec = {"subject": "RM_K", "template": "creature", "replaces_kept": True,
+                "kept_install": [{"mod": "M", "rel": "Things/X/X_south.png", "sha": "ab" * 32},
+                                 {"mod": "M", "rel": "Things/X/X_east.png", "sha": "cd" * 32}]}
+        def fake_get(sha):
+            if sha.startswith("cd"):
+                raise FileNotFoundError(sha)
+            return b"PNGBYTES"
+        eb = io.StringIO()
+        with contextlib.redirect_stderr(eb):
+            kr = SH.kept_references([krec, dict(krec, subject="RM_N", replaces_kept=False)], kd, get=fake_get)
+        kf = [Path(v) for vs in kr.values() for v in vs]
+        check("kept_references: replaced kept art written for the row; missing blob skipped loudly; non-replacing rec none",
+              len(kr) == 1 and len(kf) == 1 and kf[0].read_bytes() == b"PNGBYTES" and "not in the art store" in eb.getvalue(),
+              (kr, eb.getvalue()))
 
     # --- (b)/(c) measured hooks: inert without the policy keys; floor fails closed on a missing confidence
     pol = P.load_policy()

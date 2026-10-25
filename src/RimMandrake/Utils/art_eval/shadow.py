@@ -91,6 +91,34 @@ def reference_map(recs: list) -> dict:
     return out
 
 
+def kept_references(recs: list, qdir: Path, get=None) -> dict:
+    """{row_id: [repo-relative PNG]} the owner-kept picture(s) a redraw replaced (rec `kept_install`, bytes from the art
+    ledger store by sha), written under the run dir so the sheet can show them beside the replacing render: without
+    them keep-vs-revert is not a visual choice (SHADOW_SHEET_WIDEN_REPLACED_KEPT_ART). A sha the store cannot give is
+    skipped with a stderr line, never invented."""
+    if get is None:
+        import artledger
+        get = artledger.store_get
+    out = {}
+    for r in recs:
+        if not r.get("replaces_kept"):
+            continue
+        for k in r.get("kept_install") or []:
+            try:
+                data = get(k["sha"])
+            except Exception as e:   # noqa: BLE001 — a missing blob must not stop the sheet
+                print(f"[art_eval] {r['subject']}: kept art {k['sha'][:12]} not in the art store ({e.__class__.__name__}) — "
+                      "NOT shown beside the row", file=sys.stderr)
+                continue
+            dst = qdir / "kept" / (f"kept_{re.sub(r'[^A-Za-z0-9]', '_', Path(k['rel']).stem)}_{k['sha'][:12]}.png")
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            dst.write_bytes(data)
+            rel = str(dst.relative_to(ROOT)) if dst.is_relative_to(ROOT) else str(dst)
+            if rel not in out.setdefault(row_id(r), []):
+                out[row_id(r)].append(rel)
+    return out
+
+
 def file_sha(path: str) -> str | None:
     import hashlib
     p = Path(path)
@@ -123,6 +151,8 @@ def build(run_id: str, name: str | None = None) -> Path:
             "Each row shows its decision and the reviewers' blocking reasons; press KEEP or an OVERRIDE. Skipping a "
             "row changes nothing.</p>" % run_id)
     refs = reference_map(recs)
+    for k, files in kept_references(recs, qdir).items():
+        refs.setdefault(k, []).extend(f for f in files if f not in refs.get(k, []))
     reff = qdir / "shadow_references.json"
     reff.write_text(json.dumps(refs, indent=1))
     jobs = [f"{r['artpipe_job']}={row_id(r)}" for r in recs if r.get("artpipe_job")]
