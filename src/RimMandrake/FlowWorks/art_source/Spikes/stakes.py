@@ -49,6 +49,16 @@ CELL_W, CELL_H = 64, 128  # one stake per cell, centred: power-of-two cells stay
 MIP_CHECK = 5            # dirty_boxes checks mips 0..5; at mip 5 a box (<= 15 px wide, measured) is half a texel
 ATLAS_W = 512
 
+# Owner 2026-10-24 on live_defects/SHEET_spikes_trial_x2size_halfdensity.png (PIT_SPIKES_INSTALL_TALLER_AND_FEWER): "yes the x2
+# spike size is better". Every stake's (w, h) x SIZE_K and the pitch x PITCH_K on both axes (sqrt 2: half the stakes per
+# area), on the SAME atlases and selection. approved/RM_SpikeStakes_4f12810a3e.cs.txt still pins the 1x library; the mirror's
+# approved_library applies this same factor, so the selftest compares like with like.
+SIZE_K, PITCH_K = 2.0, math.sqrt(2)
+
+
+def r6(v):
+    return float("%.6f" % v)
+
 
 # Owner 2026-10-24 on live_defects/SHEET_spikes_options_real_floor.png (PIT_SPIKES_FIX_READ_AS_FUZZ_LIVE): "C" -- pale
 # weathered wood. On the game's dug floor (lum ~28) the shipped dark stake bodies vanished and only their orange highlights
@@ -117,9 +127,9 @@ def atlas(variant, cell_w=CELL_W, cell_h=CELL_H, atlas_w=ATLAS_W):
         crop = win.copy()
         crop[foreign] = np.append(mean, 0)
         img[py:py + h, px:px + w] = crop
-        lib.append((w / S, h / S, px / atlas_w, 1 - (py + h) / H, (px + w) / atlas_w, 1 - py / H))
+        lib.append((r6(w / S) * SIZE_K, r6(h / S) * SIZE_K, px / atlas_w, 1 - (py + h) / H, (px + w) / atlas_w, 1 - py / H))
     img[..., :3] = pale(img[..., :3])
-    return img, lib, (pitch, pitch)
+    return img, lib, (r6(pitch) * PITCH_K, r6(pitch) * PITCH_K)
 
 
 def library(variant):

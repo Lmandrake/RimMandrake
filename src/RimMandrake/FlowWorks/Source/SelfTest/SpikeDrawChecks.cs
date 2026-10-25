@@ -136,8 +136,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                     Assert(lib.Length >= 10 * RM_SpikeStakes.Stride && lib.Length % RM_SpikeStakes.Stride == 0, "variant " + v + " has a stake library");
                     for (int i = 0; i < lib.Length; i += RM_SpikeStakes.Stride)
                     {
-                        Assert(lib[i] > 0f && lib[i + 1] > 0.1f && lib[i + 1] < 0.25f && lib[i + 4] > lib[i + 2] && lib[i + 5] > lib[i + 3],
-                            "a stake is one stake (0.1..0.25 cell tall) with a real UV box");
+                        Assert(lib[i] > 0f && lib[i + 1] > 0.2f && lib[i + 1] < 0.5f && lib[i + 4] > lib[i + 2] && lib[i + 5] > lib[i + 3],
+                            "a stake is one stake (0.2..0.5 cell tall: x2 size) with a real UV box");
                     }
                 }
             });
@@ -149,9 +149,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                     && RM_SpikeDrawMath.Hash(-3, 99) == 1249282371u, "hash parity");
                 var quads = new List<float>();
                 int k = RM_SpikeDrawMath.Layout(1, 42, 0.04f, 0.065f, 0.96f, 0.5f, quads);
-                Assert(k == 24, "layout count parity: " + k);
-                float[] first = { 0.461250f, 0.321039f, 0.046875f, 0.152344f, 0.550781f, 0.675781f, 0.574219f, 0.828125f };
-                float[] last = { 0.803641f, 0.075f, 0.050781f, 0.175781f, 0.298828f, 0.164062f, 0.324219f, 0.339844f };
+                Assert(k == 11, "layout count parity: " + k);
+                float[] first = { 0.85625f, 0.185312f, 0.09375f, 0.304688f, 0.550781f, 0.675781f, 0.574219f, 0.828125f };
+                float[] last = { 0.648454f, 0.075f, 0.101562f, 0.34375f, 0.298828f, 0.664062f, 0.324219f, 0.835938f };
                 int o = (k - 1) * RM_SpikeDrawMath.Out;
                 for (int i = 0; i < RM_SpikeDrawMath.Out; i++)
                 {

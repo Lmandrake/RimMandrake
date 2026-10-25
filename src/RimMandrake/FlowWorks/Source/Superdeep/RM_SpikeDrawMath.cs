@@ -100,20 +100,29 @@ namespace RimMandrake.FlowWorks
 			float s = Math.Min(1f, Math.Min(fh / hmax, fw / wmax));
 			float px = RM_SpikeStakes.Pitch[variant, 0] * s, pz = RM_SpikeStakes.Pitch[variant, 1] * s;
 			float lo = x0 + Margin, hi = x1 - Margin, bot = z0 + Margin, topz = z1 - Margin;
+			// PIT_SPIKES_INSTALL_TALLER_AND_FEWER: the grid is spread EVENLY over the rect (pitch rounded DOWN to a whole number of
+			// rows / columns, so the last row's tips reach the top and the first row stands on the bottom) -- the old grid ran
+			// out of room at its far edge, leaving a bare line at each cell-row join and a dense left / sparse right cell.
+			float span = Math.Max(0f, topz - hmax * s * 0.5f - bot);
+			int nrow = Math.Max(1, (int)Math.Floor(span / pz) + 1);
+			float rpz = nrow > 1 ? span / (nrow - 1) : 0f;
+			int ncol = Math.Max(1, (int)Math.Floor((hi - lo) / px));
+			float rpx = (hi - lo) / ncol;
 			int k = 0;
 			var rows = new List<float[]>();
-			for (int r = 0; bot + r * pz <= topz - hmax * s * 0.5f; r++)
+			for (int r = 0; r < nrow; r++)
 			{
-				float zb = bot + r * pz;
-				float x00 = lo + ((r & 1) == 1 ? px * 0.5f : 0f);
-				for (int col = 0; x00 + col * px <= hi; col++, k++)
+				float zb = bot + r * rpz;
+				bool odd = (r & 1) == 1;
+				int cols = odd ? ncol + 1 : ncol;
+				for (int col = 0; col < cols; col++, k++)
 				{
-					float xc = x00 + col * px;
+					float xc = lo + (odd ? col : col + 0.5f) * rpx;
 					uint h = Hash(seed, k);
 					int j = (int)(h % (uint)n) * RM_SpikeStakes.Stride;
 					float w = lib[j] * s, ht = lib[j + 1] * s;
-					float jx = (((h >> 8) & 0xFF) / 255f - 0.5f) * 0.5f * px;
-					float jz = (((h >> 16) & 0xFF) / 255f - 0.5f) * 0.5f * pz;
+					float jx = (((h >> 8) & 0xFF) / 255f - 0.5f) * 0.5f * rpx;
+					float jz = (((h >> 16) & 0xFF) / 255f - 0.5f) * 0.5f * rpz;
 					float x = Clamp(xc + jx - w * 0.5f, lo, hi - w);
 					float z = Clamp(zb + jz, bot, topz - ht);
 					rows.Add(new[] { x, z, w, ht, lib[j + 2], lib[j + 3], lib[j + 4], lib[j + 5], k });

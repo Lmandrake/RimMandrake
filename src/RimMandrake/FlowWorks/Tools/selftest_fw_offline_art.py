@@ -437,10 +437,10 @@ def spikes():
         spk.floor_rect, spk.submerged_alpha = real_rect, real_alpha
     hashes, (n, first, last) = spk.parity()
     want(hashes == [0, 2836592880, 1249282371], "spikes parity: hash fixture %s" % hashes)
-    fx = ((0.461250, 0.321039, 0.046875, 0.152344, 0.550781, 0.675781, 0.574219, 0.828125),
-          (0.803641, 0.075, 0.050781, 0.175781, 0.298828, 0.164062, 0.324219, 0.339844))
-    want(n == 24 and all(abs(a - b) < 1e-4 for q, f in zip((first, last), fx) for a, b in zip(q, f)),
-         "spikes parity: layout fixture (24 stakes, first/last quad) == SpikeDrawChecks")
+    fx = ((0.85625, 0.185312, 0.09375, 0.304688, 0.550781, 0.675781, 0.574219, 0.828125),
+          (0.648454, 0.075, 0.101562, 0.34375, 0.298828, 0.664062, 0.324219, 0.835938))
+    want(n == 11 and all(abs(a - b) < 1e-4 for q, f in zip((first, last), fx) for a, b in zip(q, f)),
+         "spikes parity: layout fixture (11 stakes, first/last quad) == SpikeDrawChecks")
     st = spk.STAKES
     # the owner approved the 4f12810a3e render ("spikes look great!"): its selection, sizes and pitch stay, pinned
     for i, v in enumerate(st.VARIANTS):

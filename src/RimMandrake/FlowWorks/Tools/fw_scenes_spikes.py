@@ -135,7 +135,8 @@ def approved_library(variant):
     blocks = re.findall(r"new float\[\] \{(.*?)\}", t, re.S)
     pitch = re.findall(r"\{ ([0-9.]+)f, ([0-9.]+)f \}", t)[variant]
     lib = [tuple(_r6(float(q)) for q in re.findall(r"-?[0-9]+\.[0-9]+", ln)) for ln in blocks[variant].strip().split("\n")]
-    return lib, tuple(_r6(float(q)) for q in pitch)
+    k, kp = STAKES.SIZE_K, STAKES.PITCH_K       # owner 2026-10-24 "yes the x2 spike size is better": the approved stakes, x2 / sqrt2
+    return ([(_r6(q[0] * k), _r6(q[1] * k)) + q[2:] for q in lib], tuple(_r6(_r6(float(q)) * kp) for q in pitch))
 
 
 def approved_foreign(variant):
@@ -163,22 +164,24 @@ def layout(variant, seed, x0, z0, x1, z1, lib=None):
     px, pz = ppx * sc, ppz * sc
     lo, hi, bot, top = x0 + MARGIN, x1 - MARGIN, z0 + MARGIN, z1 - MARGIN
     clamp = lambda v, a, b: a if v < a else (b if v > b else v)
-    out, k, r = [], 0, 0
-    while bot + r * pz <= top - hmax * sc * 0.5:
-        zb = bot + r * pz
-        x00 = lo + (px * 0.5 if r & 1 else 0.0)
-        col = 0
-        while x00 + col * px <= hi:
-            xc = x00 + col * px
+    span = max(0.0, top - hmax * sc * 0.5 - bot)
+    nrow = max(1, int(math.floor(span / pz)) + 1)
+    rpz = span / (nrow - 1) if nrow > 1 else 0.0
+    ncol = max(1, int(math.floor((hi - lo) / px)))
+    rpx = (hi - lo) / ncol
+    out, k = [], 0
+    for r in range(nrow):
+        zb = bot + r * rpz
+        odd = r & 1
+        for col in range(ncol + 1 if odd else ncol):
+            xc = lo + (col if odd else col + 0.5) * rpx
             h = hash32(seed, k)
             st = lib[h % n]
             w, ht = st[0] * sc, st[1] * sc
-            jx = (((h >> 8) & 0xFF) / 255 - 0.5) * 0.5 * px
-            jz = (((h >> 16) & 0xFF) / 255 - 0.5) * 0.5 * pz
+            jx = (((h >> 8) & 0xFF) / 255 - 0.5) * 0.5 * rpx
+            jz = (((h >> 16) & 0xFF) / 255 - 0.5) * 0.5 * rpz
             out.append((clamp(xc + jx - w * 0.5, lo, hi - w), clamp(zb + jz, bot, top - ht), w, ht) + tuple(st[2:]) + (k,))
-            col += 1
             k += 1
-        r += 1
     out.sort(key=lambda q: (-q[1], q[8]))
     return [q[:8] for q in out]
 
@@ -518,11 +521,11 @@ def check_pit():
 
 
 def compare_pit():
-    """A 4 m pit, 5 x 4 cells, spiked everywhere, its south row under 0.5 m: big enough that the layout draws every stake
+    """A 4 m pit, 8 x 6 cells, spiked everywhere, its south row under 0.5 m: big enough that the layout draws every stake
     of every variant (same_as_approved refuses a scene that does not), with the walls' cut and a half-faded row."""
-    depth = [[0] * 7] + [[0, 8, 8, 8, 8, 8, 0] for _ in range(4)] + [[0] * 7]
-    fill = [[0] * 7 for _ in range(4)] + [[0, 1, 1, 1, 1, 1, 0], [0] * 7]
-    return Pit(depth, fill, [(x, z) for x in range(1, 6) for z in range(1, 5)])
+    depth = [[0] * 10] + [[0, 8, 8, 8, 8, 8, 8, 8, 8, 0] for _ in range(6)] + [[0] * 10]
+    fill = [[0] * 10 for _ in range(6)] + [[0, 1, 1, 1, 1, 1, 1, 1, 1, 0], [0] * 10]
+    return Pit(depth, fill, [(x, z) for x in range(1, 9) for z in range(1, 7)])
 
 
 if __name__ == "__main__":
