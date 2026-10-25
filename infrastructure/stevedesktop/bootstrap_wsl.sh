@@ -87,7 +87,7 @@ user_keys() {
         grep -qxF "$k" "$H/.ssh/authorized_keys" || echo "$k" >> "$H/.ssh/authorized_keys"
         chown "$U:$U" "$H/.ssh/authorized_keys"; chmod 600 "$H/.ssh/authorized_keys"
     fi
-    as_user 'grep -q "^github.com " ~/.ssh/known_hosts 2>/dev/null || ssh-keyscan -t ed25519 github.com >> ~/.ssh/known_hosts 2>/dev/null'
+    as_user 'grep -q "^github.com " ~/.ssh/known_hosts 2>/dev/null || ssh-keyscan -T 10 -t ed25519 github.com >> ~/.ssh/known_hosts 2>/dev/null'
     as_user 'git config --global user.name >/dev/null || git config --global user.name "Lukas Mandrake"'
     as_user 'git config --global user.email >/dev/null || git config --global user.email "lukas.mandrake@gmail.com"'
     echo "WSL_PUBKEY: $(cat $H/.ssh/id_ed25519.pub)"

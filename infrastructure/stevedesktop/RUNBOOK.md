@@ -26,7 +26,7 @@ Times are hands-on minutes; waits are listed separately.
 
 1. **Archmagi serves it over HTTP on the LAN (chosen).** One typed line, no media. MEASURED
    2026-10-25 on Archmagi: Windows python serves `/b`, `/archmagi.pub` and `POST /report` on
-   192.168.86.221:8765 (`serve_bootstrap.sh --test`). Archmagi's LAN profile is Private, and the
+   192.168.86.221:8767 (`serve_bootstrap.sh --test`). Archmagi's LAN profile is Private, and the
    firewall already has an inbound Allow rule for the Store python3.13.exe on Private and Public.
    A request from another LAN machine is UNMEASURED until step 1. It needs Archmagi awake with
    the server running (AGENT step A0).
@@ -71,7 +71,7 @@ exist on Home.
 ```bash
 /home/mandrake/rm/bench/infrastructure/stevedesktop/serve_bootstrap.sh
 ```
-You should see: `serving: http://192.168.86.221:8765/b http=200`. The server exits by itself
+You should see: `serving: http://192.168.86.221:8767/b http=200`. The server exits by itself
 after 4 hours (`--stop` ends it sooner). Keep Archmagi awake until step 6 is done.
 
 ---
@@ -84,7 +84,7 @@ Log in to Windows with the account you normally use there. It must be an adminis
 1. Press **Win+R**, type `powershell`, press Enter.
 2. Type exactly this and press Enter:
    ```
-   irm http://192.168.86.221:8765/b | iex
+   irm http://192.168.86.221:8767/b | iex
    ```
 3. Click **Yes** on the User Account Control prompt. A second, blue admin window opens and does the work.
 

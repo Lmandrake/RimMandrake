@@ -9,7 +9,7 @@ set -euo pipefail
 HERE=$(cd "$(dirname "$0")" && pwd)
 SERVE=/mnt/d/ClaudeWork/stevedesktop/serve
 SERVE_WIN='D:\ClaudeWork\stevedesktop\serve'
-PORT=8765
+PORT=8767
 PUB=$HOME/.ssh/id_ed25519.pub
 
 stage() {

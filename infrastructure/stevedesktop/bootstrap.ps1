@@ -1,7 +1,7 @@
 # SteveDesktop bootstrap (Windows 10 Home or Pro). Run once; safe to run again.
 #
 # First command, typed in any PowerShell window on SteveDesktop (RUNBOOK.md step 1):
-#     irm http://192.168.86.221:8765/b | iex
+#     irm http://192.168.86.221:8767/b | iex
 #
 # What happens:
 #   1. Stage: the script copies itself, bootstrap_wsl.sh and archmagi.pub into C:\SteveDesktop
@@ -22,7 +22,7 @@
 $ErrorActionPreference = 'Stop'
 $ProgressPreference = 'SilentlyContinue'
 $Root = 'C:\SteveDesktop'
-$BaseUrl = 'http://192.168.86.221:8765'
+$BaseUrl = 'http://192.168.86.221:8767'
 if ($env:STEVE_BASE) { $BaseUrl = $env:STEVE_BASE }
 $StageFiles = @('bootstrap.ps1', 'bootstrap_wsl.sh', 'archmagi.pub')
 $WantName = 'SteveDesktop'
@@ -277,6 +277,7 @@ function Set-PrivateNetwork {
 
 # LAN + Tailscale only. LocalSubnet covers 192.168.86.0/24; 100.64.0.0/10 and fd7a:115c:a1e0::/48
 # are Tailscale's address ranges.
+$TaskUserSid = [Security.Principal.WindowsIdentity]::GetCurrent().User.Value  # SID: survives the pending hostname rename
 $AllowedRemote = @('LocalSubnet', '192.168.86.0/24', '100.64.0.0/10', 'fd7a:115c:a1e0::/48')
 
 function Set-SshFirewall {
@@ -428,7 +429,7 @@ function Install-WingetPackage([string]$id, [string]$override) {
     if (-not $script:Winget) { Initialize-Winget | Out-Null }
     Invoke-Native $script:Winget @('list', '--id', $id, '--exact', '--accept-source-agreements') | Out-Null
     if ($LASTEXITCODE -eq 0) { return "$id already installed" }
-    $a = @('install', '--id', $id, '--exact', '--silent', '--accept-package-agreements', '--accept-source-agreements')
+    $a = @('install', '--id', $id, '--exact', '--source', 'winget', '--silent', '--accept-package-agreements', '--accept-source-agreements')
     if ($override) { $a += @('--override', $override) }
     $o = Invoke-Native $script:Winget $a
     $code = $LASTEXITCODE
@@ -503,8 +504,8 @@ function Register-KeepaliveTask {
     )
     Set-Content -LiteralPath $vbs -Value $vbsText -Encoding ASCII
     $action = New-ScheduledTaskAction -Execute 'wscript.exe' -Argument "`"$vbs`""
-    $trigger = New-ScheduledTaskTrigger -AtLogOn -User "$env:USERDOMAIN\$env:USERNAME"
-    $principal = New-ScheduledTaskPrincipal -UserId "$env:USERDOMAIN\$env:USERNAME" -LogonType Interactive
+    $trigger = New-ScheduledTaskTrigger -AtLogOn
+    $principal = New-ScheduledTaskPrincipal -UserId $TaskUserSid -LogonType Interactive
     $settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries `
         -ExecutionTimeLimit ([TimeSpan]::Zero) -MultipleInstances IgnoreNew
     Register-ScheduledTask -TaskName 'WSL Keepalive' -TaskPath '\' -Action $action -Trigger $trigger `
@@ -531,7 +532,7 @@ function Register-SelfUpgradeTask {
     Set-Content -LiteralPath $ps -Value $body -Encoding ASCII
     $action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument "-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File `"$ps`""
     $trigger = New-ScheduledTaskTrigger -Weekly -DaysOfWeek Sunday -At '04:30'
-    $principal = New-ScheduledTaskPrincipal -UserId "$env:USERDOMAIN\$env:USERNAME" -LogonType Interactive -RunLevel Highest
+    $principal = New-ScheduledTaskPrincipal -UserId $TaskUserSid -LogonType Interactive -RunLevel Highest
     $settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -StartWhenAvailable -ExecutionTimeLimit (New-TimeSpan -Hours 2)
     Register-ScheduledTask -TaskName 'SteveDesktop SelfUpgrade' -TaskPath '\' -Action $action -Trigger $trigger `
         -Principal $principal -Settings $settings -Description 'winget upgrade --all, weekly' -Force | Out-Null
@@ -550,8 +551,8 @@ function Enable-StorageSense {
 
 function Register-ResumeTask {
     $action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument "-NoProfile -ExecutionPolicy Bypass -NoExit -File `"$Root\bootstrap.ps1`" -Resume"
-    $trigger = New-ScheduledTaskTrigger -AtLogOn -User "$env:USERDOMAIN\$env:USERNAME"
-    $principal = New-ScheduledTaskPrincipal -UserId "$env:USERDOMAIN\$env:USERNAME" -LogonType Interactive -RunLevel Highest
+    $trigger = New-ScheduledTaskTrigger -AtLogOn
+    $principal = New-ScheduledTaskPrincipal -UserId $TaskUserSid -LogonType Interactive -RunLevel Highest
     Register-ScheduledTask -TaskName $ResumeTask -TaskPath '\' -Action $action -Trigger $trigger -Principal $principal -Force | Out-Null
     return 'resume task registered for next logon'
 }
@@ -566,6 +567,11 @@ function Install-Ubuntu {
     $o = Invoke-Wsl @('--update')
     Write-Log "  wsl --update (exit $LASTEXITCODE): $o"
     $ver = Invoke-Wsl @('--version')
+    if ($LASTEXITCODE -ne 0) {
+        $o = Invoke-Wsl @('--update', '--web-download')
+        Write-Log "  wsl --update --web-download (exit $LASTEXITCODE): $o"
+        $ver = Invoke-Wsl @('--version')
+    }
     if ($LASTEXITCODE -ne 0 -or $ver -notmatch 'WSL[^:]*:\s*(\d+)\.(\d+)\.(\d+)') {
         throw "WSL is the old inbox version (wsl --version fails). Install the latest Windows updates (Win10 22H2 with KB5020030 or newer), reboot, rerun. Output: $ver"
     }
@@ -630,6 +636,10 @@ function Invoke-Main {
     $resume = $ScriptArgs -contains '-Resume'
     Write-Log "==== bootstrap start (resume=$resume, phase=$($script:Status.phase))"
 
+    # After a reboot the resume task can fire before the network is up.
+    for ($i = 0; $i -lt 24; $i++) {
+        try { [void][Net.Dns]::GetHostEntry('download.sysinternals.com'); break } catch { Start-Sleep -Seconds 5 }
+    }
     Invoke-Step 'facts' { Get-Facts }
     # Phase A: SSH first, so Archmagi has a door within minutes.
     Invoke-Step 'network_private' { Set-PrivateNetwork }
@@ -682,6 +692,12 @@ function Invoke-Main {
         }
         Invoke-Step 'resume_task' { Register-ResumeTask }
         Show-Banner 'PHASE B DONE - a reboot is needed (RUNBOOK step 5: BIOS on the way back up)' 'Yellow'
+        if ([Console]::IsInputRedirected) {
+            # Run over SSH or from a task with no console: Read-Host would hang. Do not reboot.
+            Show-Banner 'REBOOT NEEDED - not rebooting without a console; an agent reboots it on purpose' 'Yellow'
+            Send-Report 'reboot_needed_noconsole'
+            return
+        }
         Read-Host 'Press Enter to reboot now (or close this window to reboot later)'
         $script:Status.facts.bootstrap_reboots = $n + 1
         $script:Status.phase = 'rebooting'
@@ -717,9 +733,6 @@ function Invoke-Main {
     $missing = @($required | Where-Object { -not ($script:Status.steps[$_] -and $script:Status.steps[$_].ok) })
     if ($missing.Count -eq 0) {
         $script:Status.phase = 'C_done'
-        if (Get-ScheduledTask -TaskName $ResumeTask -ErrorAction SilentlyContinue) {
-            Unregister-ScheduledTask -TaskName $ResumeTask -Confirm:$false
-        }
     } else {
         # Keep the resume task: the next logon retries the missing steps.
         $script:Status.phase = 'C_incomplete'
@@ -729,6 +742,10 @@ function Invoke-Main {
     if ($failed.Count -eq 0) { Show-Banner 'BOOTSTRAP COMPLETE - go to RUNBOOK step 7' 'Green' }
     else { Show-Banner ("BOOTSTRAP DONE WITH FAILURES: " + ($failed -join ', ') + ' - agents fix these over SSH') 'Yellow' }
     if ($script:Status.facts.tailscale_auth_url) { Write-Host "Tailscale login (if not done yet): $($script:Status.facts.tailscale_auth_url)" }
+    # Last, and only now: deleting the resume task may end the very window that shows the banner.
+    if ($script:Status.phase -eq 'C_done' -and (Get-ScheduledTask -TaskName $ResumeTask -ErrorAction SilentlyContinue)) {
+        Unregister-ScheduledTask -TaskName $ResumeTask -Confirm:$false
+    }
 }
 
 $isStaged = $false

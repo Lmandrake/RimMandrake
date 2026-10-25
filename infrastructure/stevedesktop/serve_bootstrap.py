@@ -87,7 +87,7 @@ def make_handler(serve_dir, reports_dir, log_path):
 def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--dir", required=True, help="staged folder (Windows path)")
-    ap.add_argument("--port", type=int, default=8765)
+    ap.add_argument("--port", type=int, default=8767)
     ap.add_argument("--bind", default="0.0.0.0")
     ap.add_argument("--minutes", type=float, default=240)
     a = ap.parse_args()
