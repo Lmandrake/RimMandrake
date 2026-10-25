@@ -98,9 +98,19 @@ def main():
                 "unbland_chains": [], "surprises": [{"chain": "c", "sidecar": "/nonexistent.json", "png": None}]},
                {"mod": "Antiquities", "refused": "", "budget_unmeasured": ["reading/x"], "unbland_chains": ["reading"],
                 "surprises": []}]
-        rerun.judge(jb, bad, ["Ninefold: KeyError: x"])
-        check("situational_rerun judge FAILs each of: crash, FlowWorks refused, budget, unbland, missing evidence",
-              [c["ok"] for c in jb.checks] == [False] * 5, jb.checks)
+        rerun.judge(jb, bad, ["Ninefold: KeyError: x"],
+                    {"FlowWorks": "RECORDING FAILED (status NOT updated): OSError: x", "Antiquities": "recorded GREEN"})
+        check("situational_rerun judge FAILs each of: crash, FlowWorks refused, budget, unbland, missing evidence, "
+              "unrecorded summary (and 'a suite ran' holds)",
+              [c["ok"] for c in jb.checks] == [False] * 5 + [True, False], jb.checks)
+        jb0 = common.Job("judge_selftest_empty", dry_run=True)
+        rerun.judge(jb0, [], [])
+        check("situational_rerun judge: an empty plan FAILs 'at least one suite' instead of passing vacuously",
+              [c["ok"] for c in jb0.checks if c["name"].startswith("at least one")] == [False], jb0.checks)
+        jb1 = common.Job("judge_selftest_dry", dry_run=True)
+        rerun.judge(jb1, [dict(bad[1], budget_unmeasured=[], unbland_chains=[])], [], {"Antiquities": "dry run: not recorded"})
+        check("situational_rerun judge: a clean digest with a dry-run note passes every check (control)",
+              all(c["ok"] for c in jb1.checks), jb1.checks)
 
         # ---- status recording: dry run records nothing; a fake run lands in a TEMP status file only
         import status as _st

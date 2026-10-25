@@ -8,7 +8,9 @@ Checks (each can FAIL):
   * FlowWorks is NOT refused (its validated floor was 38/38 at f9d1b4c70);
   * no component is UNMEASURED by BudgetExceeded (Antiquities' 95000-tick chain now declares tick_cap);
   * every chain established a bland map (watch.bland) -- otherwise its verdicts are not verdicts;
-  * every recorded surprise has its evidence on disk (sidecar json; png when a screenshot was taken).
+  * every recorded surprise has its evidence on disk (sidecar json; png when a screenshot was taken);
+  * at least one suite produced a summary (an empty plan is not a pass);
+  * every live summary landed in modcheck_status.json (a failed recording leaves the old verdict standing).
 Surprises themselves are LISTED for attribution, not failed: deciding whether a hit is the chain's own act
 (Ninefold's induced break) is a reading of the chain, and the fix is a declared expectation in that suite.
 `--mods A,B` narrows the set (e.g. a re-run of two suites after a fix).
@@ -85,7 +87,7 @@ def record_summary(mod, summ, path, dry_run, _record=None, _resolve=None):
     return "recorded %s" % entry.get("status")
 
 
-def judge(job, digests, crashed):
+def judge(job, digests, crashed, recorded=None):
     job.check("no suite raised out of run_suite", not crashed, crashed)
     fw = [d for d in digests if d["mod"] == "FlowWorks"]
     if fw:
@@ -102,6 +104,12 @@ def judge(job, digests, crashed):
             if s.get("png") and not evidence_present(s["png"]):
                 missing.append("%s/%s png" % (d["mod"], s["chain"]))
     job.check("every recorded surprise has its evidence on disk", not missing, missing)
+    # an empty plan (--mods ",", an empty registry, every load crashed) passed every check above vacuously
+    job.check("at least one suite produced a summary", bool(digests), "%d digests" % len(digests))
+    # a summary the status file never received leaves the PREVIOUS verdict standing there while this job read PASS
+    unrec = ["%s: %s" % (m, n) for m, n in sorted((recorded or {}).items())
+             if str(n).startswith(("RECORDING FAILED", "not recorded"))]
+    job.check("every summary was recorded in modcheck_status.json", not unrec, unrec)
 
 
 def body(s, job):
@@ -167,7 +175,7 @@ def body(s, job):
                                                                      len(d["surprises"]), d["serious_detectors"]))
     job.note("digests", digests)
     job.note("status_recording", recorded)
-    judge(job, digests, crashed)
+    judge(job, digests, crashed, recorded)
 
 
 if __name__ == "__main__":
