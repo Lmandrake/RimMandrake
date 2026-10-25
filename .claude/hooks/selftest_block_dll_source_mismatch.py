@@ -10,6 +10,7 @@ checks the verdict, same shape as selftest_block_shared_tree_merge.py.
 
     python3 .claude/hooks/selftest_block_dll_source_mismatch.py
 """
+import atexit
 import hashlib
 import json
 import os
@@ -79,6 +80,7 @@ def paths(work):
 
 def main():
     tmp = tempfile.mkdtemp()
+    atexit.register(shutil.rmtree, tmp, True)  # also on a crash mid-setup, not just the happy end
     remote = os.path.join(tmp, "remote.git")
     work = os.path.join(tmp, "work")
 
@@ -161,6 +163,11 @@ def main():
           cmd="git push origin %s:main" % bad_sha)
     check("explicit HEAD:main refspec, clean HEAD -> allow", ALLOW,
           cmd="git push origin HEAD:main")
+    # 4c. `git -c k=v -C <repo> push` from outside the repo: the -C scan used to stop
+    #     at the `-c` value, check the wrong directory, and fail open.
+    results.append(("-c k=v before -C, run from outside the repo -> deny", DENY,
+                    verdict("git -c core.pager=cat -C %s push origin %s:main" % (work, bad_sha), tmp),
+                    "git -c core.pager=cat -C <work> push origin <bad>:main"))
 
     # 4. A mismatch already on origin/main (pre-existing) must not block a
     #    LATER, unrelated push that does not touch it.

@@ -42,12 +42,13 @@ DOTNET_CANDIDATES = [
 def git_dir_arg(tok):
     """The -C directory on a git command, if any (copied from
     block_shared_tree_merge.py's helper of the same name — keep them in sync
-    if that parsing pattern changes)."""
-    for j in range(1, len(tok) - 1):
+    if that parsing pattern changes). Skips the value of every global option
+    that takes one (`git -c k=v -C dir push` used to stop at `k=v`)."""
+    j = 1
+    while j < len(tok) - 1 and tok[j].startswith("-"):
         if tok[j] == "-C":
             return tok[j + 1]
-        if not tok[j].startswith("-"):
-            break
+        j += 2 if tok[j] in TAKES_ARG else 1
     return None
 
 
