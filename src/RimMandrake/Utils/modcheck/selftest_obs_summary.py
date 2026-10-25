@@ -1,5 +1,11 @@
 """Selftest for obs_summary on synthetic event streams. Each rule has a control that must not trigger it.
 Run: python3 selftest_obs_summary.py"""
+# selftest temp containment (wave 7, DIRTY_CODE_REVIEW_STANDING_LOOP_1): every mkdtemp/mkstemp below,
+# and every child process via TMPDIR, lands in one private dir removed at exit — this
+# test used to leave its temp dirs behind in the seat TMPDIR on every run.
+import atexit as _st_atexit, os as _st_os, shutil as _st_shutil, tempfile as _st_tempfile  # noqa: E401
+_st_tempfile.tempdir = _st_os.environ["TMPDIR"] = _st_tempfile.mkdtemp(prefix="st_selftest_obs_summary_")
+_st_atexit.register(_st_shutil.rmtree, _st_tempfile.tempdir, True)
 import json
 import os
 import sys

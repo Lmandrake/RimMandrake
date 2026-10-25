@@ -1,6 +1,12 @@
 """Selftest for run_identity (observatory S1): fingerprint states, the proves_fresh gate and modal_sweep.
 Each 'proven' case has a paired control that must NOT prove, so a gate that stops gating turns this red.
 Run: python3 selftest_run_identity.py"""
+# selftest temp containment (wave 7, DIRTY_CODE_REVIEW_STANDING_LOOP_1): every mkdtemp/mkstemp below,
+# and every child process via TMPDIR, lands in one private dir removed at exit — this
+# test used to leave its temp dirs behind in the seat TMPDIR on every run.
+import atexit as _st_atexit, os as _st_os, shutil as _st_shutil, tempfile as _st_tempfile  # noqa: E401
+_st_tempfile.tempdir = _st_os.environ["TMPDIR"] = _st_tempfile.mkdtemp(prefix="st_selftest_run_identity_")
+_st_atexit.register(_st_shutil.rmtree, _st_tempfile.tempdir, True)
 import os
 import sys
 import tempfile

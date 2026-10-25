@@ -8,6 +8,12 @@
 
 Pure logic only: no game, no dump is written, no process is opened. Written failing-first (2026-10-14).
 """
+# selftest temp containment (wave 7, DIRTY_CODE_REVIEW_STANDING_LOOP_1): every mkdtemp/mkstemp below,
+# and every child process via TMPDIR, lands in one private dir removed at exit — this
+# test used to leave its temp dirs behind in the seat TMPDIR on every run.
+import atexit as _st_atexit, os as _st_os, shutil as _st_shutil, tempfile as _st_tempfile  # noqa: E401
+_st_tempfile.tempdir = _st_os.environ["TMPDIR"] = _st_tempfile.mkdtemp(prefix="st_selftest_health_spikes_")
+_st_atexit.register(_st_shutil.rmtree, _st_tempfile.tempdir, True)
 import os
 import sys
 import tempfile

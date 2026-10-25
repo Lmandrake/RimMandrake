@@ -6,6 +6,12 @@ ShadowBlackboard.advance_fall_chain with no bridge: no full discovery without a 
 the threshold, one witnessed stage per poll, completion exactly once, the Hutt extraction priced, floored and
 refusable, faction-13 never turned on the player, and --disable-cathedral-fall keeping the chain off.
 CATHEDRAL_EXPOSURE_COMPLETION_1."""
+# selftest temp containment (wave 7, DIRTY_CODE_REVIEW_STANDING_LOOP_1): every mkdtemp/mkstemp below,
+# and every child process via TMPDIR, lands in one private dir removed at exit — this
+# test used to leave its temp dirs behind in the seat TMPDIR on every run.
+import atexit as _st_atexit, os as _st_os, shutil as _st_shutil, tempfile as _st_tempfile  # noqa: E401
+_st_tempfile.tempdir = _st_os.environ["TMPDIR"] = _st_tempfile.mkdtemp(prefix="st_selftest_gm_cathedral_fall_")
+_st_atexit.register(_st_shutil.rmtree, _st_tempfile.tempdir, True)
 import importlib.util
 import os
 import sys

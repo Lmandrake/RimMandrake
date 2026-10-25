@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
 """Selftest for remake/set_planet_type.py on a fake Config dir (never touches the real one)."""
+# selftest temp containment (wave 7, DIRTY_CODE_REVIEW_STANDING_LOOP_1): every mkdtemp/mkstemp below,
+# and every child process via TMPDIR, lands in one private dir removed at exit — this
+# test used to leave its temp dirs behind in the seat TMPDIR on every run.
+import atexit as _st_atexit, os as _st_os, shutil as _st_shutil, tempfile as _st_tempfile  # noqa: E401
+_st_tempfile.tempdir = _st_os.environ["TMPDIR"] = _st_tempfile.mkdtemp(prefix="st_selftest_set_planet_type_")
+_st_atexit.register(_st_shutil.rmtree, _st_tempfile.tempdir, True)
 import contextlib
 import io
 import os

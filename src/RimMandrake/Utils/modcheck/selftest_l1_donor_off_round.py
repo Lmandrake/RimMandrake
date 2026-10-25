@@ -14,6 +14,12 @@ Proves, against the REAL repo for the derive half and a scripted fake bridge for
     oomb growth PASSes when the kind changes and is UNMEASURED when it never does; the haze row refuses a map whose
     biome did not change and restores the rate it raised; the portal enters and exits; mapgen FAILs an empty map.
 """
+# selftest temp containment (wave 7, DIRTY_CODE_REVIEW_STANDING_LOOP_1): every mkdtemp/mkstemp below,
+# and every child process via TMPDIR, lands in one private dir removed at exit — this
+# test used to leave its temp dirs behind in the seat TMPDIR on every run.
+import atexit as _st_atexit, os as _st_os, shutil as _st_shutil, tempfile as _st_tempfile  # noqa: E401
+_st_tempfile.tempdir = _st_os.environ["TMPDIR"] = _st_tempfile.mkdtemp(prefix="st_selftest_l1_donor_off_round_")
+_st_atexit.register(_st_shutil.rmtree, _st_tempfile.tempdir, True)
 import json
 import os
 import re

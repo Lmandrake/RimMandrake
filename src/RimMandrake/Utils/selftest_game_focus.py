@@ -4,6 +4,12 @@ FOCUS_HEAL_TAME_HANDS_OFF_HIS_WINDOWS (owner ruling 2026-10-04: never fullscreen
 failing-first. PowerShell is faked: every script is captured, and a script that calls SetForegroundWindow,
 ShowWindow or AppActivate counts as a focus/minimise act.
 """
+# selftest temp containment (wave 7, DIRTY_CODE_REVIEW_STANDING_LOOP_1): every mkdtemp/mkstemp below,
+# and every child process via TMPDIR, lands in one private dir removed at exit — this
+# test used to leave its temp dirs behind in the seat TMPDIR on every run.
+import atexit as _st_atexit, os as _st_os, shutil as _st_shutil, tempfile as _st_tempfile  # noqa: E401
+_st_tempfile.tempdir = _st_os.environ["TMPDIR"] = _st_tempfile.mkdtemp(prefix="st_selftest_game_focus_")
+_st_atexit.register(_st_shutil.rmtree, _st_tempfile.tempdir, True)
 import os
 import sys
 import tempfile

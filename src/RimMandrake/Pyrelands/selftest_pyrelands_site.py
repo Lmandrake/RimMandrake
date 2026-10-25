@@ -8,6 +8,12 @@ the manifests/defaults cannot drift from validation.py and the C# source, and th
 runs end to end, restores its toggles on failure and never overwrites a save.
 Run: python3 src/RimMandrake/Pyrelands/selftest_pyrelands_site.py
 """
+# selftest temp containment (wave 7, DIRTY_CODE_REVIEW_STANDING_LOOP_1): every mkdtemp/mkstemp below,
+# and every child process via TMPDIR, lands in one private dir removed at exit — this
+# test used to leave its temp dirs behind in the seat TMPDIR on every run.
+import atexit as _st_atexit, os as _st_os, shutil as _st_shutil, tempfile as _st_tempfile  # noqa: E401
+_st_tempfile.tempdir = _st_os.environ["TMPDIR"] = _st_tempfile.mkdtemp(prefix="st_selftest_pyrelands_site_")
+_st_atexit.register(_st_shutil.rmtree, _st_tempfile.tempdir, True)
 import contextlib
 import csv
 import glob
