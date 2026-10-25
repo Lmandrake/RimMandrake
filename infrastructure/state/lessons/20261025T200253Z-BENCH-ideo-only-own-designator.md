@@ -1,0 +1,2 @@
+Under Ideology, a BuildableDef with canGenerateDefaultDesignator=false is treated as IDEO-ONLY: Ideo.MembersCanBuild returns false unless a meme/style/precept names it, so GenConstruct.CanConstruct refuses every non-classic-ideo colonist with 'Only Faithholders can build' and no WorkGiver offers a delivery or build job. Any def placed by its own custom designator hits this. FlowWorks fix c2474507fb (RM_OwnDesignatorBuildable.cs). Diagnose with jawa/workgiver_probe, which reports canConstruct and its fail reason per gate.
+home: rimworld-ideoligion
