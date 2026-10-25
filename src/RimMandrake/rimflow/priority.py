@@ -181,41 +181,110 @@ def rank(world, seat, target="v1", ctx=None):
 SATISFIES = {"built": ("built", "validated", "done"),
              "validated": ("validated", "done"),
              "done": ("done",)}
+DEAD = ("dropped", "superseded")
+# How many frontier entries `next` prints IN FULL. ⛔ Never a cap on what is NAMED: every
+# entry past it is still listed by id (`frontier_overflow`), and `why <ID>` gives its line.
+FRONTIER_FULL = 6
+
+
+def frontier_entry(world, it):
+    """-> ("satisfied"|"confirm", blocker) if `it`'s block has ended, else None. THE rule,
+    and the only copy of it: `block_frontier` and the retro both call this.
+    🔑 CURRENT STATE, not history: a blocker that regresses (built -> doing on a
+    re-implementation) withdraws the line. `validated` is the LIFECYCLE state (the first
+    non-L0 criterion passed), not a named criterion."""
+    if not (it.open and it.blocked and it.blocked_on) or it.blocked_on == it.id:
+        return None
+    b = world.items.get(it.blocked_on)
+    if b is None:
+        return None
+    if b.state in DEAD:
+        return ("confirm", b)
+    if b.state in SATISFIES.get(it.blocked_until or "done", ("done",)):
+        return ("satisfied", b)
+    return None
 
 
 def block_frontier(world, seat=None, on=None):
-    """-> [(item, "satisfied"|"confirm", blocker)], confirm first. Open blocked items
-    whose `--on` target reached the block's `until` level (default done) or ended
-    dropped/superseded. `seat` keeps that seat's items; `on` keeps one blocker's. Pure.
-    A target that was never filed is skipped: there is nothing to report about it."""
-    out = []
+    """-> [(item, "satisfied"|"confirm", blocker)]. Open blocked items whose `--on` target
+    reached the block's `until` level (default done) or ended dropped/superseded. `seat`
+    keeps that seat's items; `on` keeps one blocker's. Pure. An unfiled target is skipped
+    here and flagged by `block_diagnostics`.
+    ⚖️ FAIR ORDER: confirm and satisfied ALTERNATE (each by id), so a pile of one kind can
+    never push the other out of the lines printed in full."""
+    by = {"confirm": [], "satisfied": []}
     for it in world.items.values():
-        if not (it.open and it.blocked and it.blocked_on) or it.blocked_on == it.id:
-            continue
         if (seat and it.owner != seat) or (on and it.blocked_on != on):
             continue
-        b = world.items.get(it.blocked_on)
-        if b is None:
-            continue
-        if b.state in ("dropped", "superseded"):
-            out.append((it, "confirm", b))
-        elif b.state in SATISFIES.get(it.blocked_until or "done", ("done",)):
-            out.append((it, "satisfied", b))
-    out.sort(key=lambda r: (r[1] != "confirm", r[0].id))
+        e = frontier_entry(world, it)
+        if e:
+            by[e[0]].append((it, e[0], e[1]))
+    c, s_ = (sorted(by[k], key=lambda r: r[0].id) for k in ("confirm", "satisfied"))
+    out = []
+    for i in range(max(len(c), len(s_))):
+        out.extend(x[i] for x in (c, s_) if i < len(x))
     return out
+
+
+def frontier_overflow(entries, shown):
+    """-> one line naming EVERY entry past the first `shown`, by kind, or None."""
+    rest = entries[shown:]
+    if not rest:
+        return None
+    parts = []
+    for kind, word in (("confirm", "confirm"), ("satisfied", "reached level")):
+        ids = [r[0].id for r in rest if r[1] == kind]
+        if ids:
+            parts.append("%s: %s" % (word, ", ".join(ids)))
+    return "... +%d more (`rimflow why <ID>` for each): %s" % (len(rest), "; ".join(parts))
 
 
 def frontier_line(it, kind, b):
     """The one line `next`, `next --bench` and `why` print for a frontier entry."""
     if kind == "satisfied":
-        return ("blocker now satisfied: %s  (on %s, now `%s`; block asked for %s). "
-                "Evidence, not proof: lift it if it delivered, "
-                "`rimflow unblock %s --reason \"%s %s\"`."
-                % (it.id, b.id, b.state, it.blocked_until or "done", it.id, b.id, b.state))
+        lv = it.blocked_until or "done"
+        return ("blocker reached requested level (%s): %s  (on %s, now `%s`). Evidence, "
+                "not proof: lift it if it delivered, `rimflow unblock %s --reason \"%s %s\"`."
+                % (lv, it.id, b.id, b.state, it.id, b.id, b.state))
     succ = (" by %s" % b.superseded_by) if b.state == "superseded" and b.superseded_by else ""
     return ("blocker %s, confirm: %s  (on %s, %s%s; it will never deliver). NOT released: "
             "unblock it, block it again --on the real prerequisite, or drop it."
             % (b.state, it.id, b.id, b.state, succ))
+
+
+def wait_edge(world, x):
+    """-> the item `x` still waits on (an open, live, not-yet-ended block), else None."""
+    if x is None or not (x.open and x.blocked and x.blocked_on):
+        return None
+    return None if frontier_entry(world, x) else x.blocked_on
+
+
+def wait_cycle(world, start, first):
+    """-> the path [start, first, ..., start] if waiting on `first` closes a loop of LIVE
+    waits back to `start`, else None. Ended waits are not edges (they wait on nothing)."""
+    path, seen, cur = [start], {start}, first
+    while cur is not None and cur not in seen:
+        path.append(cur)
+        seen.add(cur)
+        cur = wait_edge(world, world.items.get(cur))
+    return path + [start] if cur == start else None
+
+
+def block_diagnostics(world, it):
+    """READ-TIME checks of one block, for histories merged from clones the write-time
+    checks could not see. Flags, never refuses: -> [str]."""
+    out = []
+    if not (it.blocked and it.blocked_on):
+        return out
+    if it.blocked_on not in world.items:
+        out.append("block target %s has never been filed in this ledger: nothing will ever "
+                   "report it done (pull, file it, or re-block)." % it.blocked_on)
+    elif wait_edge(world, it):
+        cyc = wait_cycle(world, it.id, it.blocked_on)
+        if cyc:
+            out.append("wait CYCLE: %s. None of these can finish first; unblock one."
+                       % " -> ".join(cyc))
+    return out
 
 
 def next_item(world, seat, target="v1", ctx=None):
@@ -330,8 +399,10 @@ def why_not(world, seat, iid, target="v1", ctx=None):
     if it.blocked:
         out.append("BLOCKED: %s%s" % (it.blocked_reason,
                                       (" (on %s)" % it.blocked_on) if it.blocked_on else ""))
-        out.extend(frontier_line(*f) for f in block_frontier(world, on=it.blocked_on)
-                   if f[0] is it)
+        e = frontier_entry(world, it)
+        if e:
+            out.append(frontier_line(it, e[0], e[1]))
+        out.extend(block_diagnostics(world, it))
     if target and it.target not in (None, target):
         out.append("targeted at %s, and the active version is %s. That is a planning "
                    "decision, not a defect." % (it.target, target))
