@@ -44,6 +44,21 @@ def t_a_missing_lane_file_degrades_to_no_routing():
     assert priority.flowworks_lane("/nonexistent/flowworks_lane.json")[1] == []
 
 
+def t_a_bad_lane_file_raises_naming_the_file():
+    import tempfile
+    for body in ("{not json", "[1, 2]", '{"id_patterns": ["(unclosed"]}', '{"id_patterns": "x"}', '{"id_patterns": [3]}'):
+        with tempfile.NamedTemporaryFile("w", suffix="_lane.json", delete=False) as fh:
+            fh.write(body)
+        try:
+            priority.flowworks_lane(fh.name)
+        except priority.LaneFileError as e:
+            assert fh.name in str(e), (body, str(e))
+        else:
+            raise AssertionError("no error for " + body)
+        finally:
+            os.unlink(fh.name)
+
+
 CASES = [v for k, v in sorted(globals().items()) if k.startswith("t_") and callable(v)]
 
 if __name__ == "__main__":

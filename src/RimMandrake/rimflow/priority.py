@@ -432,14 +432,31 @@ def acceptance_seat(level):
 FLOWWORKS_LANE_FILE = os.path.join(model.ROOT, "infrastructure", "state", "flowworks_lane.json")
 
 
+class LaneFileError(RuntimeError):
+    """The FlowWorks lane file exists but is unusable; the message names the file."""
+
+
 def flowworks_lane(path=None):
-    """-> (seat, [compiled id patterns]); ("BENCH", []) when the file is missing."""
+    """-> (seat, [compiled id patterns]); ("BENCH", []) when the file is missing.
+    A file that exists but is bad JSON, not an object, or holds a bad regex raises
+    LaneFileError naming the file (loud, never a silent no-routing)."""
+    path = path or FLOWWORKS_LANE_FILE
     try:
-        with open(path or FLOWWORKS_LANE_FILE, encoding="utf-8") as fh:
+        with open(path, encoding="utf-8") as fh:
             d = json.load(fh)
-    except (OSError, ValueError):
+    except OSError:
         return "BENCH", []
-    return d.get("seat") or "BENCH", [re.compile(p) for p in d.get("id_patterns", [])]
+    except ValueError as e:
+        raise LaneFileError("%s: not valid JSON (%s)" % (path, e))
+    if not isinstance(d, dict):
+        raise LaneFileError("%s: top level must be a JSON object, got %s" % (path, type(d).__name__))
+    pats = d.get("id_patterns", [])
+    if not isinstance(pats, list):
+        raise LaneFileError("%s: id_patterns must be a list" % path)
+    try:
+        return d.get("seat") or "BENCH", [re.compile(p) for p in pats]
+    except (re.error, TypeError) as e:
+        raise LaneFileError("%s: bad id_patterns entry (%s)" % (path, e))
 
 
 def flowworks_seat(iid, lane=None):
