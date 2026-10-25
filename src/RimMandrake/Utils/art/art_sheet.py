@@ -240,6 +240,24 @@ def full_image(sha: str, imgdir: Path) -> str:
 GENERIC_DIRS = {"plant", "plants", "things", "thing", "item", "items", "building", "buildings", "animal", "animals",
                 "pawn", "pawns", "terrain", "filth", "mote", "motes", "projectile", "weapon", "weapons", "apparel"}
 FAM_RE = re.compile(r"_(north|east|south|west)(_r\d+)?$")
+_JOB_ROUND = re.compile(r"_r(\d+)$")
+
+
+def job_rank(job: str, v: dict) -> tuple:
+    """Newest-first order of artpipe variants that collapse to one family/facing: registration time, then the job's
+    regen round (`_north_r2` beats `_north`)."""
+    m = _JOB_ROUND.search(job or "")
+    return (v.get("ts") or "", int(m.group(1)) if m else 0)
+
+
+def newest_job_takes(held: dict, key, job: str, v: dict, sha: str) -> bool:
+    """HELD[key] = (rank, job, sha) of whoever shows in that family/facing slot. The NEWEST job's bytes win (not the
+    first job iterated); a job re-registered with new bytes (a re-seat) beats its older self. Ties keep the first."""
+    rank = job_rank(job, v)
+    if key in held and rank <= held[key][0]:
+        return False
+    held[key] = (rank, job, sha)
+    return True
 
 
 def _def_slots(name: str) -> list[dict]:
@@ -330,14 +348,14 @@ def sibling_keeps(idx, row_res, keys, slots: dict) -> list[dict]:
     cand = set()
     for tp, ss in slots.items():
         if tp.lower() not in row_res and any(L.subject_key(s["subject"]) in kset for s in ss):
-            cand.add(tp)
+            cand.add(tp.lower())
     live = defaultdict(dict)
     for (mod, rel), ev in idx.live.items():
         pt = L.parse_texfile(rel)
         if pt["mask"] or pt["res"].lower() in row_res:
             continue
         parts = pt["res"].split("/")
-        if pt["res"] in cand or (len(parts) > 1 and parts[-2].lower() in folders):
+        if pt["res"].lower() in cand or (len(parts) > 1 and parts[-2].lower() in folders):
             live[pt["res"]].setdefault(pt["facing"], ev["sha"])
     out = []
     for res_, faces in sorted(live.items()):
@@ -457,12 +475,16 @@ def build_row(idx: L.Index, res: str, order: dict, slots: dict, former=()) -> di
             if fac not in FACINGS:
                 fm = re.search(r"_(north|east|south|west)(_r\d+)?$", job)
                 fac = fm.group(1) if fm else "single"
-            if fac not in fams[fam] or (job == fam_jobs[fam].get(fac) and (v.get("ts") or "") > fam_ts.get((fam, fac), "")):
-                fams[fam][fac] = sha                 # a job re-registered with new bytes (a re-seat): its NEWEST bytes show
-                fam_ts[(fam, fac)] = v.get("ts") or ""
-            fam_jobs[fam].setdefault(fac, job)
-            fam_meta[fam] = {"bound": bound or fam_meta.get(fam, {}).get("bound", False), "date": v.get("date", ""),
-                             "prompt": v.get("prompt", ""), "derive": v.get("derive_from"), "item": v.get("item")}
+            took = newest_job_takes(fam_ts, (fam, fac), job, v, sha)   # the NEWEST job's bytes show (a re-seat, a _rN regen)
+            if took:
+                fams[fam][fac] = sha
+                fam_jobs[fam][fac] = job
+            if took or fam not in fam_meta or job_rank(job, v) >= fam_meta[fam]["_rank"]:
+                fam_meta[fam] = {"bound": bound or fam_meta.get(fam, {}).get("bound", False), "date": v.get("date", ""),
+                                 "prompt": v.get("prompt", ""), "derive": v.get("derive_from"), "item": v.get("item"),
+                                 "_rank": job_rank(job, v)}
+            else:
+                fam_meta[fam]["bound"] = fam_meta[fam]["bound"] or bound
     for fam, faces in sorted(fams.items(), key=lambda kv: fam_meta[kv[0]]["date"], reverse=True):
         if not fam_meta[fam]["bound"] and ((NOT_BODY_JOB.search(fam) and not NOT_BODY_JOB.search(parts[-1]))
                                            or FLIP_FAM_RE.match(fam)):
@@ -1370,12 +1392,13 @@ def name_render_cols(idx: L.Index, words, exact, defs=(), exact_any=False) -> li
             if fac not in FACINGS:
                 fm = FAM_RE.search(job)
                 fac = fm.group(1) if fm else "single"
-            vts = v.get("ts") or ""
-            if fac not in fams[fam] or (job == jobs_of[fam].get(fac) and vts > seen_ts.get((fam, fac), "")):
-                fams[fam][fac] = sha                 # a job re-registered with new bytes (a re-seat): its NEWEST bytes show
-                seen_ts[(fam, fac)] = vts
-            jobs_of[fam].setdefault(fac, job)
-            meta[fam] = {"date": v.get("date", ""), "prompt": v.get("prompt", ""), "item": v.get("item")}
+            took = newest_job_takes(seen_ts, (fam, fac), job, v, sha)   # the NEWEST job's bytes show
+            if took:
+                fams[fam][fac] = sha
+                jobs_of[fam][fac] = job
+            if took or fam not in meta or job_rank(job, v) >= meta[fam]["_rank"]:
+                meta[fam] = {"date": v.get("date", ""), "prompt": v.get("prompt", ""), "item": v.get("item"),
+                             "_rank": job_rank(job, v)}
     fc = failed_canon_jobs()
     slots_of = job_slots()
     return [{"kind": "artpipe", "faces": f, "date": meta[k]["date"], "family": k,
@@ -1551,7 +1574,15 @@ def _kept_cols(cols: list[dict], mem: dict, used: set) -> list[dict]:
     return out
 
 
-RECOMMEND: dict = {}     # artpipe job family -> the agent's one-line reason (art_sheet --recommend FAM=WHY)
+RECOMMEND: dict = {}     # artpipe job family -> the agent's one-line reason, for the sheet being built (generate_biome:
+#                          RECOMMEND_CLI + the census entry's "recommend", so a refresh_sheets rebuild keeps the prefill)
+RECOMMEND_CLI: dict = {}  # --recommend FAM=WHY as typed
+
+
+def set_recommend(entry: dict | None) -> None:
+    """RECOMMEND for the sheet being built: the census entry's saved recommendations, then this run's CLI ones."""
+    RECOMMEND.clear()
+    RECOMMEND.update({**((entry or {}).get("recommend") or {}), **RECOMMEND_CLI})
 
 
 def _recommended(g: dict):
@@ -2765,6 +2796,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
     b = census["biomes"].get(biome)
     # --hide-sets is kept in the census entry, so a refresh_sheets rebuild (no CLI flags) still leaves those sets off
     HIDE_SETS[:] = list(dict.fromkeys(HIDE_CLI + list((b or {}).get("hide_sets") or [])))
+    set_recommend(b)           # --recommend is kept in the census entry too, like --hide-sets
     if b is None:
         raise SystemExit(f"biome {biome!r} not in {census_path} (have: {', '.join(census.get('biome_order', []))})")
     date = date or time.strftime("%Y-%m-%d")
@@ -3698,6 +3730,8 @@ def subjects_census(name: str, defs, jobs=(), label: str | None = None, lead_htm
         census["biomes"][key]["question"] = question
     if hide_sets:
         census["biomes"][key]["hide_sets"] = list(hide_sets)
+    if RECOMMEND_CLI:
+        census["biomes"][key]["recommend"] = dict(RECOMMEND_CLI)
     path.write_text(json.dumps(census, indent=1))
     return path, key
 
@@ -3835,7 +3869,7 @@ def main(argv=None):
             ap.error("--subjects/--jobs/--textures need --name")
         for spec in a.recommend:
             fam, _, why = spec.partition("=")
-            RECOMMEND[fam.strip()] = why.strip() or "the agent's pick"
+            RECOMMEND_CLI[fam.strip()] = why.strip() or "the agent's pick"
         cpath, key = subjects_with_textures(a.name, Path(a.textures), a.subjects, a.jobs, a.label, a.lead, a.reopen,
                                             load_question(a.question) if a.question else None, a.hide_sets,
                                             json.loads(Path(a.references).read_text()) if a.references else None)
@@ -3848,7 +3882,7 @@ def main(argv=None):
     elif a.subjects or a.jobs:
         for spec in a.recommend:
             fam, _, why = spec.partition("=")
-            RECOMMEND[fam.strip()] = why.strip() or "the agent's pick"
+            RECOMMEND_CLI[fam.strip()] = why.strip() or "the agent's pick"
         if not a.name:
             ap.error("--subjects/--jobs need --name")
         cpath, key = subjects_census(a.name, a.subjects, a.jobs, a.label, a.lead, a.reopen,
