@@ -87,8 +87,35 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_GroundClassMath.CutYield(RM_GroundClass.Ice, true) == RM_CutSpoil.CrushedIce && RM_GroundClassMath.CutYield(RM_GroundClass.Ice, false) == RM_CutSpoil.CrushedIce, "every ice cut yields crushed ice");
                 Assert(RM_GroundClassMath.CreditOf(RM_CutSpoil.CrushedIce) == RM_GroundClassMath.CreditOf(RM_CutSpoil.Gravel) && RM_GroundClassMath.CreditShort(RM_GroundClassMath.CreditOf(RM_CutSpoil.CrushedIce)) == 0, "crushed ice fills like gravel: one funds a notch");
                 Assert(RM_GroundClassMath.CreditOf(RM_CutSpoil.Chunk) == 1 && RM_GroundClassMath.CreditOf(RM_CutSpoil.None) == 0, "a chunk is half a notch; nothing is nothing");
-                Assert(RM_GroundClassMath.CrushedIceUnits == 40000 && RM_GroundClassMath.CrushedIceUnits == RM_Volume.UnitsPerSquare, "one crushed ice melts to a 1x1 tank (4,000 L)");
-                Assert(RM_GroundClassMath.MeltUnits(25) == 1000000L && RM_GroundClassMath.MeltUnits(0) == 0L, "a stack melts to count x a tank");
+                // ICE_YIELD_DECIDE_ONE_CUT_FOUR_NOTCHES (owner by card 2026-10-25, "Match what was dug (1x)")
+                Assert(RM_GroundClassMath.CrushedIceUnits == 10000 && RM_GroundClassMath.CrushedIceUnits == RM_Volume.UnitsPerLevel, "one crushed ice melts to the notch its cut removed (1,000 L), not a 1x1 tank");
+                Assert(RM_GroundClassMath.MeltUnits(25) == 250000L && RM_GroundClassMath.MeltUnits(0) == 0L, "a stack melts to count x a notch");
+            });
+            Case("IceMelt_one_pile_at_a_time_cools_the_room (ICE_MELT_TAME_STACK_FLOOD owner card 2026-10-25)", () =>
+            {
+                // "Melt one pile at a time" + "it lowers the temperature of the room substantially"
+                Assert(RM_GroundClassMath.PilesMeltingNow(9999, 10000, 25) == 0 && RM_GroundClassMath.PilesMeltingNow(10000, 10000, 25) == 1, "a pile melts after its own 4 h warm");
+                Assert(RM_GroundClassMath.PilesMeltingNow(1000000, 10000, 25) == 1, "never more than one pile at once, however long the stack sat warm");
+                Assert(RM_GroundClassMath.PilesMeltingNow(10000, 10000, 0) == 0 && RM_GroundClassMath.PilesMeltingNow(1, 0, 1) == 1, "an empty stack melts nothing; a zero clock still melts one");
+                Assert(RM_GroundClassMath.DefaultMeltCoolingPerSecond == 21f, "default: a vanilla cooler's 21 heat/s (Buildings_Temperature.xml Cooler energyPerSecond -21)");
+                float rare = RM_GroundClassMath.MeltHeatPerInterval(RM_GroundClassMath.DefaultMeltCoolingPerSecond, 250);
+                Assert(System.Math.Abs(rare - (-87.5f)) < 0.01f, "a rare tick (250 ticks = 4.17 s) pushes -87.5: " + rare);
+                Assert(RM_GroundClassMath.MeltHeatPerInterval(0f, 250) == 0f && RM_GroundClassMath.MeltHeatPerInterval(1e9f, 250) == -RM_GroundClassMath.MaxMeltCoolingPerSecond * 250 / 60f, "0 is off; the slider top holds");
+                Assert(RM_GroundClassMath.ClampMeltCooling(float.NaN) == 21f && RM_GroundClassMath.ClampMeltCooling(-5f) == 0f, "NaN is the default; never warms");
+                // a 25-stack in a 5x5 room: one pile's thaw (10,000 ticks) takes 87.5 x 40 = 3,500 heat = -140 C worth of
+                // a sealed 25-cell room before the room equalises; held near 0 C, where the thaw stops (substantial, bounded)
+                Assert(-rare * (10000 / 250) == 3500f, "one pile's whole thaw takes 3,500 heat out of its room");
+                string comp = Src(Path.Combine("Thirst", "RM_ThirstWaterSources.cs"));
+                Assert(comp.Contains("MeltLooseOne(") && comp.Contains("PilesMeltingNow(") && comp.Contains("SplitOff(1)") && comp.Contains("GenTemperature.PushHeat(at, map, heat)"), "loose melt takes one off the stack and pushes negative heat");
+                Assert(!Regex.IsMatch(comp, @"\(long\)n \* System\.Math\.Max\(0, Props\.unitsPerItem\)"), "the whole-stack flood is gone");
+                string ice = File.ReadAllText(Path.Combine(ModRoot, "Defs", "Pits", "ThingDefs", "RM_CrushedIce.xml"));
+                Assert(ice.Contains("<unitsPerItem>10000</unitsPerItem>") && ice.Contains("<coolsRoom>true</coolsRoom>"), "crushed ice: a notch each, and it cools");
+                Match craft = Regex.Match(ice, @"<defName>RM_MeltCrushedIce</defName>.*?<unitsPerCraft>(\d+)</unitsPerCraft>", RegexOptions.Singleline);
+                Assert(craft.Success && int.Parse(craft.Groups[1].Value) == RM_GroundClassMath.CrushedIceUnits, "the melter gives what loose melt gives");
+                Assert(Regex.IsMatch(ice, @"<defName>RM_IceMelter</defName>.*?<heatPerTickWhileWorking>0</heatPerTickWhileWorking>", RegexOptions.Singleline), "the melter is room-neutral (its bath pays the melt)");
+                Assert(!ice.Contains("4,000 L") && !ice.Contains("40000"), "no player text or number still says a 1x1 tank");
+                string mod = Src("RimMandrakeFlowWorksMod.cs");
+                Assert(mod.Contains(".Declare(\"iceDigEnabled\", \"iceMeltCoolingPerSecond\")") && mod.Contains("Scribe_Values.Look(ref iceMeltCoolingPerSecond"), "the cooling is a saved Mod Setting under the ice switch");
             });
             Case("IceDig_blue_ice_blocks_go_into_the_melter (owner 2026-10-25)", () =>
             {

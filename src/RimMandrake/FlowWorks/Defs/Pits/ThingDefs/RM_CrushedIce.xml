@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- ICE_DIG_BUILD_CRUSHED_ICE_MELTS_DOWN (owner card 2026-10-25): "Cutting into packed snow or ice should give crushed ice. Acts
      like gravel on cold maps. Turns into water if warmed (a full dug ground units worth). Also a full 1x1 tank of water worth of
-     course. Should be a machine like a smelter where they can do that explicitly."
+     course. Should be a machine like a smelter where they can do that explicitly." (the 1x1 tank yield is superseded below)
      Left by every cut through ice or packed snow ground (RM_GroundClass.Ice, Source/RM_GroundClassMath.cs); fills a pit back
-     in as gravel does; a pile warmer than 0 C for 4 hours melts into 4,000 L of fresh water each (RM_Volume.UnitsPerSquare:
-     a 1x1 tank), into the water at the pile or as a puddle. The ice melter puts it into tanks instead.
+     in as gravel does. ICE_YIELD_DECIDE_ONE_CUT_FOUR_NOTCHES (owner by card 2026-10-25, "Match what was dug (1x)"): one
+     crushed ice melts to the water its cut removed, one notch = 1,000 L (RM_Volume.UnitsPerLevel), not a 1x1 tank.
+     ICE_MELT_TAME_STACK_FLOOD (owner by card 2026-10-25, "Melt one pile at a time"; owner: "it lowers the temperature of the
+     room substantially"): a stack melts one crushed ice per 4 hours above 0 C, into the water at the pile or as a puddle,
+     and each melting pile cools its room (setting iceMeltCoolingPerSecond, default a vanilla cooler's 21 heat/s).
+     The ice melter puts the water into tanks instead and neither heats nor cools its room: its heating bath pays the melt.
      Placeholder art: vanilla rubble tinted ice-blue and the electric smelter tinted (art item filed). -->
 <Defs>
   <ThingDef ParentName="ResourceBase">
     <defName>RM_CrushedIce</defName>
     <label>crushed ice</label>
-    <description>Broken ice and packed snow: the spoil of a pit cut through frozen ground. One load fills a dug pit back in a level, as gravel does. Above freezing it melts into a whole tank's worth of water (4,000 L) where it lies; an ice melter puts that water into tanks instead.</description>
+    <description>Broken ice and packed snow: the spoil of a pit cut through frozen ground. One load fills a dug pit back in a level, as gravel does. Above freezing each one melts into the water its cut removed (1,000 L) where it lies, a stack one at a time, and the thaw cools the room around it as hard as a cooler; an ice melter puts that water into tanks instead.</description>
     <thingClass>ThingWithComps</thingClass>
     <tickerType>Rare</tickerType>
     <graphicData>
@@ -33,8 +37,9 @@
     <comps>
       <li Class="RimMandrake.FlowWorks.Thirst.CompProperties_RM_Melt">
         <meltsToLiquid>RM_Liquid_FreshWater</meltsToLiquid>
-        <unitsPerItem>40000</unitsPerItem>
+        <unitsPerItem>10000</unitsPerItem>
         <ticksAboveZero>10000</ticksAboveZero>
+        <coolsRoom>true</coolsRoom>
       </li>
     </comps>
   </ThingDef>
@@ -42,7 +47,7 @@
   <ThingDef ParentName="BenchBase">
     <defName>RM_IceMelter</defName>
     <label>ice melter</label>
-    <description>An electric heating bath that melts crushed ice into fresh water and pipes it into the tanks on its liquid net (touching it or hosed to it). Each crushed ice is a whole tank's worth: 4,000 L. A bill waits until a tank has room.</description>
+    <description>An electric heating bath that melts crushed ice into fresh water and pipes it into the tanks on its liquid net (touching it or hosed to it). Each crushed ice gives the water its cut removed: 1,000 L. Its heating bath pays for the melt, so the room is neither warmed nor cooled. A bill waits until a tank has room.</description>
     <thingClass>Building_WorkTable_HeatPush</thingClass>
     <graphicData>
       <texPath>Things/Building/Production/ElectricSmelter</texPath>
@@ -87,7 +92,8 @@
     <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
     <building>
       <spawnedConceptLearnOpportunity>BillsTab</spawnedConceptLearnOpportunity>
-      <heatPerTickWhileWorking>0.10</heatPerTickWhileWorking>
+      <!-- ICE_MELT_TAME_STACK_FLOOD: neutral (was 0.10): the bath's heat goes into the ice; loose ice melting cools instead -->
+      <heatPerTickWhileWorking>0</heatPerTickWhileWorking>
     </building>
     <comps>
       <li Class="CompProperties_Power">
@@ -109,7 +115,7 @@
   <RecipeDef>
     <defName>RM_MeltCrushedIce</defName>
     <label>melt crushed ice</label>
-    <description>Melt one crushed ice into 4,000 L of fresh water, piped into a tank on this melter's liquid net.</description>
+    <description>Melt one crushed ice into 1,000 L of fresh water, piped into a tank on this melter's liquid net.</description>
     <jobString>Melting crushed ice.</jobString>
     <workAmount>400</workAmount>
     <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
@@ -136,7 +142,7 @@
     <modExtensions>
       <li Class="RimMandrake.FlowWorks.RM_MeltRecipeExtension">
         <liquid>RM_Liquid_FreshWater</liquid>
-        <unitsPerCraft>40000</unitsPerCraft>
+        <unitsPerCraft>10000</unitsPerCraft>
       </li>
     </modExtensions>
   </RecipeDef>
@@ -162,7 +168,7 @@
   <!-- Owner 2026-10-25: "the blue ice blocks that could be cut from the nightside should also be able to go into the
        melter." RM_BlueIce (BlueDesert, a 3 kg block) melts at 1 L per kg like every other ice-to-water recipe here
        (Thirst RM_MeltBlueIceIntoBucket: 5 blocks = 15 L): 3 L = 30 dL a block; a craft takes 25 blocks = 75 L = 750 dL.
-       Unlike crushed ice (a dug ground square's worth, 4,000 L) a block is a hand-cut brick. -->
+       Unlike crushed ice (the notch its cut removed, 1,000 L) a block is a hand-cut brick. -->
   <RecipeDef MayRequire="mandrake.rm.bluedesert">
     <defName>RM_MeltBlueIceInMelter</defName>
     <label>melt blue ice</label>

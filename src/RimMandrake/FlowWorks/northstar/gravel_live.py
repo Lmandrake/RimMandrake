@@ -24,7 +24,14 @@ PROVE  on a cleared 17x17 plot, with the five gravel toggles on, rock-ground dig
        GS_crushed_ice_melts_to_water
                                   1 RM_CrushedIce spawned on open ground above 0 C: gone within 15000 ticks, and the world
                                   release ledgers (RM_IceMelter.ProofMeltLedger: spilled + into water + nearby) rose by exactly
-                                  40000 dL (4,000 L, a 1x1 tank). A cold site -> UNMEASURED(SITE).
+                                  10000 dL (1,000 L: the notch its cut removed, ICE_YIELD_DECIDE_ONE_CUT_FOUR_NOTCHES).
+                                  A cold site -> UNMEASURED(SITE).
+       ICE_MELT_TAME_STACK_FLOOD (owner card 2026-10-25, "Melt one pile at a time"):
+       GS_crushed_ice_stack_thaws_one_at_a_time
+                                  a stack of 2 RM_CrushedIce on open ground above 0 C: the first melt leaves exactly 1 behind
+                                  and the ledgers rose by exactly 10000 dL; the second melts later, +10000 dL more. The room
+                                  cooling is owed to a roofed-room row (outdoors pushes no heat); RM_IceMelter.ProofMeltCooling
+                                  is recorded in the detail.
        DIG_FILL_TUNE_HOURS_OF_SHOVEL_WORK (owner card 2026-10-25):
        GS_dig_labour_multiplier_scales_the_cut
                                   the same colonist cuts one soil square D0 -> D1 at digLabourMultiplier 1.0, then another at
@@ -43,7 +50,7 @@ PROVE  on a cleared 17x17 plot, with the five gravel toggles on, rock-ground dig
                                   Rim absent -> UNMEASURED(SITE); duracrete made with the gravel untouched -> UNMEASURED (a chunk
                                   paid).
        --only GS_a,GS_b runs just those rows (the mine row alone can outrun a 540 s call).
-EXPECT the ten rows PASS.
+EXPECT the eleven rows PASS.
 LIES   a job never taken or a cut never made measures nothing -> UNMEASURED(SITE); spoil already lying there is excluded by a
        before/after stack diff; four walls that all drop a chunk prove nothing about a miss -> UNMEASURED(MOD), never PASS;
        a deployed DLL without the gravel build has no RM_Gravel setting -> UNMEASURED(HARNESS).
@@ -68,17 +75,19 @@ ROCK_TERRAIN, ROCK_WALL, ROCK_CHUNK = "Granite_Rough", "Granite", "ChunkGranite"
 SLIDE_WORDS = "slide back in"
 ROWS = ("GS_sand_refused", "GS_fill_costs_one_gravel", "GS_rock_ground_cut_yields_gravel_or_chunk",
         "GS_mined_rock_miss_yields_gravel", "GS_ice_cut_yields_crushed_ice", "GS_crushed_ice_melts_to_water",
-        "GS_dig_labour_multiplier_scales_the_cut", "GS_mud_refused", "GS_rubble_cut_yields_gravel",
+        "GS_crushed_ice_stack_thaws_one_at_a_time", "GS_dig_labour_multiplier_scales_the_cut", "GS_mud_refused", "GS_rubble_cut_yields_gravel",
         "GS_gravel_recipe_takes_gravel")
 ITEM_PIT = "PIT_DIG_FIX_SAND_SLIDES_BACK_IN"
 ITEM_ICE, ITEM_LABOUR = "ICE_DIG_BUILD_CRUSHED_ICE_MELTS_DOWN", "DIG_FILL_TUNE_HOURS_OF_SHOVEL_WORK"
-ROW_ITEM = {"GS_ice_cut_yields_crushed_ice": ITEM_ICE, "GS_crushed_ice_melts_to_water": ITEM_ICE,
+ITEM_MELT = "ICE_MELT_TAME_STACK_FLOOD"
+ROW_ITEM = {"GS_ice_cut_yields_crushed_ice": ITEM_ICE, "GS_crushed_ice_melts_to_water": "ICE_YIELD_DECIDE_ONE_CUT_FOUR_NOTCHES",
+            "GS_crushed_ice_stack_thaws_one_at_a_time": ITEM_MELT,
             "GS_dig_labour_multiplier_scales_the_cut": ITEM_LABOUR, "GS_mud_refused": ITEM_PIT}
 MUD_TERRAIN, RUBBLE_TERRAIN = "Mud", "Gravel"
 # GS_gravel_recipe_takes_gravel: Outer Rim's duracrete (one of RM_Gravel's mod-extension recipes) at its powered fabricator
 FAB, FAB_GIVER, FAB_RECIPE = "OuterRim_HypertechFabricator", "DoBills_OuterRim_HypertechFabricator", "OuterRim_DuracreteCrafting"
 FAB_OTHER, FAB_PRODUCT = ("OuterRim_Durasteel", 10), "OuterRim_Duracrete"
-ICE, ICE_TERRAIN, MELT_DL = "RM_CrushedIce", "Ice", 40000
+ICE, ICE_TERRAIN, MELT_DL = "RM_CrushedIce", "Ice", 10000   # one notch (ICE_YIELD_DECIDE_ONE_CUT_FOUR_NOTCHES)
 LABOUR_RATIO = (3.0, 5.0)
 RUN_SETTINGS = {"sandMudSlidesBackEnabled": True, "digSpoilEnabled": True, "fillCostsSpoilEnabled": True,
                 "mineGravelEnabled": True, "gravelRecipesEnabled": True, "digRockGroundEnabled": True,
@@ -177,6 +186,19 @@ def melt_verdict(gone, ledger0, ledger1):
     if not gone or ledger0 is None or ledger1 is None:
         return "UNMEASURED"
     return "PASS" if sum(ledger1[:3]) - sum(ledger0[:3]) == MELT_DL else "FAIL"
+
+
+def thaw_verdict(left_after_first, ledger0, ledger1, ledger2):
+    """ICE_MELT_TAME_STACK_FLOOD: a stack of 2 melts one at a time. left_after_first is the stack left when the first
+    melt was seen (1 = one pile; 0 = the whole stack at once, the old flood); ledger1 at that moment, ledger2 when the
+    second is gone (None: not seen)."""
+    if left_after_first is None or ledger0 is None or ledger1 is None:
+        return "UNMEASURED"
+    if left_after_first != 1 or sum(ledger1[:3]) - sum(ledger0[:3]) != MELT_DL:
+        return "FAIL"
+    if ledger2 is None:
+        return "UNMEASURED"
+    return "PASS" if sum(ledger2[:3]) - sum(ledger0[:3]) == 2 * MELT_DL else "FAIL"
 
 
 def labour_verdict(t1, t4):
@@ -287,7 +309,7 @@ def main():
     sand, soil = (ox + 2, oz + 12), (ox + 4, oz + 12)
     fill, fill_mat = (ox + 10, oz + 12), (ox + 13, oz + 12)
     cut = (ox + 5, oz + 6)
-    ice_cut, melt_at = (ox + 9, oz + 6), (ox + 13, oz + 6)
+    ice_cut, melt_at, thaw_at = (ox + 9, oz + 6), (ox + 13, oz + 6), (ox + 15, oz + 9)
     lab1, lab4 = (ox + 3, oz + 15), (ox + 7, oz + 15)
     mud, rubble = (ox + 6, oz + 12), (ox + 1, oz + 9)
     fab_at = (ox + 21, oz + 5)   # off the 17x17 plot: its durasteel and gravel never enter the plot's stack counts
@@ -520,9 +542,9 @@ def main():
             else:
                 row("GS_ice_cut_yields_crushed_ice", ice_cut_verdict(delta, i1), "MOD", det)
 
-        # 6. ICE_DIG: loose crushed ice melts into a tank's worth of water, conserved. Row 5's crushed ice is cleared first:
+        # 6. ICE_DIG: loose crushed ice melts into the notch of water its cut removed, conserved. Row 5's crushed ice is cleared
+        # first: melting while this row measures, it would double the ledger delta.
         if want("GS_crushed_ice_melts_to_water"):
-            # melting while this row measures, it would double the ledger delta.
             for t5 in things(ice_cut[0] - 4, ice_cut[1] - 4, 9, 9, ICE):
                 B.call("jawa/destroy_batch", rects="%d,%d,1,1" % (t5.get("x"), t5.get("z")), categories="Item")
             B.call("rimworld/spawn_thing", defName=ICE, stackCount=1, x=melt_at[0], z=melt_at[1])
@@ -539,6 +561,42 @@ def main():
             why = None if mv != "UNMEASURED" else ("no crushed ice spawned" if not placed else "ledger unreadable (DLL older?)"
                                                     if lg0 is None or lg1 is None else "not melted in 15000 ticks (cold site?)")
             row("GS_crushed_ice_melts_to_water", mv, "MOD" if mv != "UNMEASURED" else ("HARNESS" if placed and gone else "SITE"),
+                dict(det, why=why))
+
+        # 6b. ICE_MELT_TAME_STACK_FLOOD: a stack thaws one pile at a time (row 5's and row 6's ice is cleared first, also when
+        # this row runs alone under --only: one melt at a time on the ledgers)
+        if want("GS_crushed_ice_stack_thaws_one_at_a_time"):
+            for t6 in things(ice_cut[0] - 4, ice_cut[1] - 4, 9, 9, ICE) + things(melt_at[0] - 1, melt_at[1] - 1, 3, 3, ICE):
+                B.call("jawa/destroy_batch", rects="%d,%d,1,1" % (t6.get("x"), t6.get("z")), categories="Item")
+            B.call("rimworld/spawn_thing", defName=ICE, stackCount=2, x=thaw_at[0], z=thaw_at[1])
+            cool0 = (B.call("jawa/static_call", type=MELTER, method="ProofMeltCooling", args="") or {}).get("result")
+            lg0 = parse_ledger(B.call("jawa/static_call", type=MELTER, method="ProofMeltLedger", args=""))
+
+            def left():
+                return stacks(things(thaw_at[0], thaw_at[1], 1, 1, ICE), (ICE,)).get(ICE, 0)
+
+            n0, t, left1, lg1, lg2 = left(), 0, None, None, None
+            while n0 == 2 and t < 15000:
+                step(500)
+                t += 500
+                n = left()
+                if n < 2:
+                    left1 = n
+                    lg1 = parse_ledger(B.call("jawa/static_call", type=MELTER, method="ProofMeltLedger", args=""))
+                    break
+            t1 = t
+            while left1 == 1 and t < t1 + 15000 and left() > 0:
+                step(500)
+                t += 500
+            if left1 == 1 and left() == 0:
+                lg2 = parse_ledger(B.call("jawa/static_call", type=MELTER, method="ProofMeltLedger", args=""))
+            cool1 = (B.call("jawa/static_call", type=MELTER, method="ProofMeltCooling", args="") or {}).get("result")
+            tv = thaw_verdict(left1, lg0, lg1, lg2)
+            det = {"spawned": n0, "leftAfterFirst": left1, "firstAt": t1, "ticks": t, "ledger0": lg0, "ledger1": lg1,
+                   "ledger2": lg2, "cooling0": cool0, "cooling1": cool1}
+            why = None if tv != "UNMEASURED" else ("stack of 2 not spawned" if n0 != 2 else "ledger unreadable (DLL older?)"
+                                                    if lg0 is None else "a pile did not melt in 15000 ticks (cold site?)")
+            row("GS_crushed_ice_stack_thaws_one_at_a_time", tv, "MOD" if tv != "UNMEASURED" else ("HARNESS" if n0 != 2 or lg0 is None else "SITE"),
                 dict(det, why=why))
 
         # 7. DIG_FILL: the labour multiplier scales a soil cut (x1, then x4 = the default)

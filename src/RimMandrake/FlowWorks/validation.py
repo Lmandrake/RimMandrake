@@ -661,16 +661,20 @@ def pit_travel_fly_jump_float(t):
 # like gravel on cold maps. Turns into water if warmed"; and "the blue ice blocks that could be cut from the nightside should
 # also be able to go into the melter."). Offline: Source/SelfTest/GroundClassChecks.cs. Live rows: northstar/gravel_live.py.
 ICE_DIG_CASES = ["IceDig_ice_and_packed_snow_cut_into_crushed_ice (ICE_DIG owner card 2026-10-25)",
-                 "IceDig_blue_ice_blocks_go_into_the_melter (owner 2026-10-25)"]
+                 "IceDig_blue_ice_blocks_go_into_the_melter (owner 2026-10-25)",
+                 "IceMelt_one_pile_at_a_time_cools_the_room (ICE_MELT_TAME_STACK_FLOOD owner card 2026-10-25)"]
 
 
 @suite.chain("ice_dig_crushed_ice")
 def ice_dig_crushed_ice(t):
-    """Offline: ice ground cuts to crushed ice, which fills like gravel and melts to a 1x1 tank; blue ice melts at the melter."""
+    """Offline: ice ground cuts to crushed ice, which fills like gravel and melts to the notch its cut removed
+    (ICE_YIELD_DECIDE_ONE_CUT_FOUR_NOTCHES), a stack one pile at a time, cooling its room (ICE_MELT_TAME_STACK_FLOOD);
+    blue ice melts at the melter."""
     _bar_chain(t, "ice_dig_selftest_ran", ICE_DIG_CASES, "ice_dig_live", "ice_cuts_to_crushed_ice_that_melts",
-               "northstar/gravel_live.py rows GS_ice_cut_yields_crushed_ice + GS_crushed_ice_melts_to_water; then a powered "
-               "RM_IceMelter with a tank on its net melts a crushed ice (+40,000 dL) and 25 RM_BlueIce (+750 dL) "
-               "(ICE_DIG_BUILD_CRUSHED_ICE_MELTS_DOWN)")
+               "northstar/gravel_live.py rows GS_ice_cut_yields_crushed_ice + GS_crushed_ice_melts_to_water + "
+               "GS_crushed_ice_stack_thaws_one_at_a_time; then a powered RM_IceMelter with a tank on its net melts a crushed "
+               "ice (+10,000 dL) and 25 RM_BlueIce (+750 dL); and crushed ice melting in a roofed room cools it "
+               "(ICE_DIG_BUILD_CRUSHED_ICE_MELTS_DOWN, ICE_YIELD_DECIDE_ONE_CUT_FOUR_NOTCHES, ICE_MELT_TAME_STACK_FLOOD)")
 
 
 # DIG_FILL_TUNE_HOURS_OF_SHOVEL_WORK (owner card 2026-10-25: "Everyone pays and it's backbreaking work. Like real life. Digging

@@ -19,7 +19,8 @@ namespace RimMandrake.FlowWorks
 	{
 		public LiquidDef liquid;
 
-		/// <summary>dL per craft; a crushed ice is a 1x1 tank (RM_GroundClassMath.CrushedIceUnits).</summary>
+		/// <summary>dL per craft; a crushed ice is the one notch its cut removed (RM_GroundClassMath.CrushedIceUnits,
+		/// ICE_YIELD_DECIDE_ONE_CUT_FOUR_NOTCHES).</summary>
 		public int unitsPerCraft = RM_GroundClassMath.CrushedIceUnits;
 	}
 
@@ -29,6 +30,16 @@ namespace RimMandrake.FlowWorks
 		public static long TankedUnits;
 
 		public static long ReleasedUnits;
+
+		/// <summary>State read (proof rows): heat loose melting crushed ice took out of rooms since load (positive = cooling;
+		/// ICE_MELT_TAME_STACK_FLOOD). The melter itself is neutral: its heating bath pays the melt's heat.</summary>
+		public static double CooledHeat;
+
+		/// <summary>Proof read: <see cref="CooledHeat"/>, vanilla heat units, F1.</summary>
+		public static string ProofMeltCooling()
+		{
+			return CooledHeat.ToString("F1", System.Globalization.CultureInfo.InvariantCulture);
+		}
 
 		/// <summary>Proof read (northstar/gravel_live.py GS_crushed_ice_melts_to_water): the world-release ledgers, dL,
 		/// "spilled;inWater;nearby;tanked;released".</summary>

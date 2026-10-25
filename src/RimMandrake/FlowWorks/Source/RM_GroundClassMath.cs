@@ -153,15 +153,50 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
-		/// <summary>ICE_DIG_BUILD_CRUSHED_ICE_MELTS_DOWN (owner: "Turns into water if warmed ... Also a full 1x1 tank of water
-		/// worth of course"): the water one crushed ice melts to, in dL: one tank square, 2 m deep (RM_Volume yardstick,
-		/// 4,000 L). The same number for melting where it lies and for the melter.</summary>
-		public const int CrushedIceUnits = RM_Volume.UnitsPerSquare;
+		/// <summary>ICE_YIELD_DECIDE_ONE_CUT_FOUR_NOTCHES (owner by card 2026-10-25, "Match what was dug (1x)": crushed ice
+		/// melts to the water the cut removed, not a 1x1 tank): the water one crushed ice melts to, in dL: one cut = one notch
+		/// (0.5 m of one square, 1,000 L). The same number for melting where it lies and for the melter.</summary>
+		public const int CrushedIceUnits = RM_Volume.UnitsPerLevel;
 
 		/// <summary>The water a stack of <paramref name="count"/> crushed ice melts to (dL; never overflows).</summary>
 		public static long MeltUnits(int count)
 		{
 			return count <= 0 ? 0L : (long)count * CrushedIceUnits;
+		}
+
+		/// <summary>ICE_MELT_TAME_STACK_FLOOD (owner by card 2026-10-25, "Melt one pile at a time"; owner: "it lowers the
+		/// temperature of the room substantially"): the default cooling of one melting crushed ice, in vanilla heat per second
+		/// (the unit of a cooler's CompTempControl energyPerSecond; a vanilla cooler is 21). One melting pile cools its room as
+		/// hard as a vanilla cooler running flat out.</summary>
+		public const float DefaultMeltCoolingPerSecond = 21f;
+
+		public const float MinMeltCoolingPerSecond = 0f;
+
+		public const float MaxMeltCoolingPerSecond = 100f;
+
+		/// <summary>The setting as used: NaN or out of range is held to the range (NaN = the default).</summary>
+		public static float ClampMeltCooling(float perSecond)
+		{
+			if (float.IsNaN(perSecond))
+			{
+				return DefaultMeltCoolingPerSecond;
+			}
+			return perSecond < MinMeltCoolingPerSecond ? MinMeltCoolingPerSecond : (perSecond > MaxMeltCoolingPerSecond ? MaxMeltCoolingPerSecond : perSecond);
+		}
+
+		/// <summary>The heat one melting pile pushes into its room per check of <paramref name="intervalTicks"/> ticks (a rare
+		/// tick is 250): negative (it cools), zero when the setting is 0. 60 ticks are one second.</summary>
+		public static float MeltHeatPerInterval(float perSecond, int intervalTicks)
+		{
+			return -ClampMeltCooling(perSecond) * System.Math.Max(0, intervalTicks) / 60f;
+		}
+
+		/// <summary>One pile at a time: after <paramref name="warmTicks"/> above 0 C (a pile melts after
+		/// <paramref name="ticksPerPile"/>), how many crushed ice of a <paramref name="stackCount"/> stack melt now: at most one,
+		/// never more than the stack.</summary>
+		public static int PilesMeltingNow(int warmTicks, int ticksPerPile, int stackCount)
+		{
+			return stackCount > 0 && warmTicks >= System.Math.Max(1, ticksPerPile) ? 1 : 0;
 		}
 
 		/// <summary>Credit still owed before a notch can be filled.</summary>

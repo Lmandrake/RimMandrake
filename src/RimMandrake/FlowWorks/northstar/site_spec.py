@@ -114,6 +114,7 @@ SETTINGS = {
         "sandMudSlidesBackEnabled": True, "digSpoilEnabled": True, "fillCostsSpoilEnabled": True,
         "mineGravelEnabled": True, "gravelRecipesEnabled": True,   # DIG_SPOIL_BUILD_GRAVEL_PAYS_ITS_WAY + PIT_DIG_FIX_SAND_SLIDES_BACK_IN
         "iceDigEnabled": True, "digLabourMultiplier": 4.0,   # ICE_DIG_BUILD_CRUSHED_ICE_MELTS_DOWN + DIG_FILL_TUNE_HOURS_OF_SHOVEL_WORK
+        "iceMeltCoolingPerSecond": 21.0,   # ICE_MELT_TAME_STACK_FLOOD: a melting crushed ice cools its room like a vanilla cooler
         "shovelRequired": True,   # SHOVELS_BUILD_NO_DIGGING_BARE_HANDED
         "excavationWallMaterialEnabled": True, "pitLipOcclusionEnabled": True, "pitLipOcclusion": 0.85, "pitLipOccupantCutEnabled": True, "pitLipOccupantCutWidth": 1.0, "pitSinkClampEnabled": True,
         "liquidSurfaceMotionEnabled": True, "liquidWakesEnabled": True, "pitScorchEnabled": True,

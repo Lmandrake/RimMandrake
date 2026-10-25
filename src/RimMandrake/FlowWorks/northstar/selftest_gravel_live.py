@@ -60,6 +60,21 @@ check("mine: nothing mined -> UNMEASURED", G.mine_verdict([], 4) == "UNMEASURED"
 check("mine: one gravel wall of four, three unmeasured -> UNMEASURED, never PASS", G.mine_verdict([(1, 0)], 4) == "UNMEASURED")
 check("mine: a bad wall among unmeasured ones -> FAIL", G.mine_verdict([(0, 0)], 4) == "FAIL")
 
+# ICE_YIELD_DECIDE_ONE_CUT_FOUR_NOTCHES + ICE_MELT_TAME_STACK_FLOOD (owner cards 2026-10-25)
+L0 = [0, 0, 0, 0, 0]
+check("melt: one crushed ice is one notch (10000 dL), not a 1x1 tank", G.MELT_DL == 10000)
+check("melt: +10000 -> PASS; +40000 (the old tank yield) -> FAIL",
+      G.melt_verdict(True, L0, [10000, 0, 0, 0, 0]) == "PASS" and G.melt_verdict(True, L0, [40000, 0, 0, 0, 0]) == "FAIL")
+check("thaw: one pile left after the first melt, +1 notch each time -> PASS",
+      G.thaw_verdict(1, L0, [0, 0, 10000, 0, 0], [5000, 0, 15000, 0, 0]) == "PASS")
+check("thaw: the whole stack at once (the old flood) -> FAIL", G.thaw_verdict(0, L0, [20000, 0, 0, 0, 0], None) == "FAIL")
+check("thaw: first melt right but the second never seen -> UNMEASURED, never PASS",
+      G.thaw_verdict(1, L0, [10000, 0, 0, 0, 0], None) == "UNMEASURED")
+check("thaw: nothing melted -> UNMEASURED", G.thaw_verdict(None, L0, None, None) == "UNMEASURED")
+check("thaw: tanked/released columns are not world water", G.thaw_verdict(1, L0, [0, 0, 0, 10000, 0], None) == "FAIL")
+check("thaw row is listed and tied to its item", "GS_crushed_ice_stack_thaws_one_at_a_time" in G.ROWS
+      and G.ROW_ITEM["GS_crushed_ice_stack_thaws_one_at_a_time"] == "ICE_MELT_TAME_STACK_FLOOD")
+
 P = {"success": True, "designationPresent": True, "workGiver": {"hasJobOnCell": True, "jobDef": "RM_FillInCanalJob"}, "pawn": {}}
 check("job_gate accepts the expected job", G.job_gate(P, {"accepted": True}, "RM_FillInCanalJob")[0])
 check("job_gate refuses a different job", not G.job_gate(P, {"accepted": True}, "RM_DigCanalJob")[0])

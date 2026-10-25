@@ -160,8 +160,13 @@ namespace RimMandrake.FlowWorks.Thirst
 		/// container: <see cref="unitsPerItem"/> dL each, into the water at the pile or as a puddle (never lost).</summary>
 		public LiquidDef meltsToLiquid;
 
-		/// <summary>dL released per item melted (crushed ice: a 1x1 tank, RM_GroundClassMath.CrushedIceUnits).</summary>
+		/// <summary>dL released per item melted (crushed ice: one dug notch, RM_GroundClassMath.CrushedIceUnits).</summary>
 		public int unitsPerItem = RM_GroundClassMath.CrushedIceUnits;
+
+		/// <summary>ICE_MELT_TAME_STACK_FLOOD (owner by card 2026-10-25): loose melt takes a stack one item at a time, each
+		/// after <see cref="ticksAboveZero"/> above 0 C, and each melting item cools its room (setting
+		/// RimMandrakeFlowWorksSettings.iceMeltCoolingPerSecond). Only with <see cref="meltsToLiquid"/>.</summary>
+		public bool coolsRoom;
 
 		public CompProperties_RM_Melt()
 		{
@@ -181,25 +186,24 @@ namespace RimMandrake.FlowWorks.Thirst
 			{
 				return;
 			}
+			bool warm = false;
 			if (parent.AmbientTemperature > 0f)
 			{
+				warm = true;
 				warmTicks += GenTicks.TickRareInterval;
+			}
+			Map map = parent.MapHeld;
+			IntVec3 at = parent.PositionHeld;
+			if (Props.meltsToLiquid != null)
+			{
+				MeltLooseOne(map, at, warm);
+				return;
 			}
 			if (warmTicks < Props.ticksAboveZero)
 			{
 				return;
 			}
-			Map map = parent.MapHeld;
-			IntVec3 at = parent.PositionHeld;
 			int n = parent.stackCount;
-			if (Props.meltsToLiquid != null)
-			{
-				// loose liquid: wherever the ice is held (a pile, a pawn's hands, a shelf), the water lands at that square
-				long units = (long)n * System.Math.Max(0, Props.unitsPerItem);
-				parent.Destroy();
-				RimMandrake.FlowWorks.Machinery.RM_LiquidSpill.ReleaseHeld(map, at, Props.meltsToLiquid, (int)System.Math.Min(units, int.MaxValue));
-				return;
-			}
 			if (parent.Spawned)
 			{
 				Thing water = RM_LiquidBottleUtility.MakeContainer(Props.meltsTo, parent);
@@ -215,6 +219,38 @@ namespace RimMandrake.FlowWorks.Thirst
 				parent.Destroy();
 				owner.TryAdd(water);
 			}
+		}
+
+		/// <summary>ICE_MELT_TAME_STACK_FLOOD: loose melt, one pile at a time. While warm the melting pile cools its room
+		/// (vanilla GenTemperature.PushHeat, negative, as a cooler does; an outdoor square takes none), so a room full of ice
+		/// is held near 0 C, where the thaw stops. When one pile has been warm long enough it alone melts into its water,
+		/// wherever the ice is held (a pile, a pawn's hands, a shelf), at that square; the rest of the stack starts its own
+		/// thaw from zero.</summary>
+		private void MeltLooseOne(Map map, IntVec3 at, bool warm)
+		{
+			if (warm && Props.coolsRoom && at.IsValid)
+			{
+				float heat = RM_GroundClassMath.MeltHeatPerInterval(RimMandrakeFlowWorksSettings.iceMeltCoolingPerSecond, GenTicks.TickRareInterval);
+				if (heat < 0f && GenTemperature.PushHeat(at, map, heat))
+				{
+					RM_IceMelter.CooledHeat -= heat;
+				}
+			}
+			if (RM_GroundClassMath.PilesMeltingNow(warmTicks, Props.ticksAboveZero, parent.stackCount) == 0)
+			{
+				return;
+			}
+			warmTicks = 0;
+			int units = System.Math.Max(0, Props.unitsPerItem);
+			if (parent.stackCount > 1)
+			{
+				parent.SplitOff(1).Destroy(DestroyMode.Vanish);
+			}
+			else
+			{
+				parent.Destroy(DestroyMode.Vanish);
+			}
+			RimMandrake.FlowWorks.Machinery.RM_LiquidSpill.ReleaseHeld(map, at, Props.meltsToLiquid, units);
 		}
 
 		public override void PostExposeData()

@@ -500,6 +500,9 @@ namespace RimMandrake.FlowWorks
         // ICE_DIG_BUILD_CRUSHED_ICE_MELTS_DOWN + DIG_FILL_TUNE_HOURS_OF_SHOVEL_WORK (owner cards 2026-10-25).
         public static bool iceDigEnabled = true;
         public static float digLabourMultiplier = RM_DigDepthMath.DefaultLabourMultiplier;
+        // ICE_MELT_TAME_STACK_FLOOD (owner: "it lowers the temperature of the room substantially"): heat per second one
+        // melting crushed ice takes out of its room (a vanilla cooler is 21).
+        public static float iceMeltCoolingPerSecond = RM_GroundClassMath.DefaultMeltCoolingPerSecond;
         // SHOVELS_BUILD_NO_DIGGING_BARE_HANDED (owner 2026-10-25: "You can't dig without them. Hands don't work").
         public static bool shovelRequired = true;
         public static bool swaleEnabled = true;
@@ -735,6 +738,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref gravelRecipesEnabled, "gravelRecipesEnabled", true);
             Scribe_Values.Look(ref iceDigEnabled, "iceDigEnabled", true);
             Scribe_Values.Look(ref digLabourMultiplier, "digLabourMultiplier", RM_DigDepthMath.DefaultLabourMultiplier);
+            Scribe_Values.Look(ref iceMeltCoolingPerSecond, "iceMeltCoolingPerSecond", RM_GroundClassMath.DefaultMeltCoolingPerSecond);
             Scribe_Values.Look(ref shovelRequired, "shovelRequired", true);
             Scribe_Values.Look(ref swaleEnabled, "swaleEnabled", true);
             Scribe_Values.Look(ref swaleRateMultiplier, "swaleRateMultiplier", 1f);
@@ -805,6 +809,7 @@ namespace RimMandrake.FlowWorks
             .Declare("machineDigEnabled", "maxMachineDigDepth")
             .Declare("digRockChunksEnabled", "digRockChunkMultiplier", "digSoilChunkPercent", "digDeepStoneEnabled")
             .Independent("sandMudSlidesBackEnabled", "digSpoilEnabled", "fillCostsSpoilEnabled", "mineGravelEnabled", "gravelRecipesEnabled", "iceDigEnabled", "digLabourMultiplier", "shovelRequired")
+            .Declare("iceDigEnabled", "iceMeltCoolingPerSecond")
             .Declare("liquidDrillingEnabled", "drillUnitsPerCycle")
             .Declare("swaleEnabled", "swaleRateMultiplier")
             .Independent("pulseIntervalTicks", "digToDepthEnabled", "drillYieldChanceMultiplier", "wardenFromLipEnabled", "waterBodyTypeFlipFixEnabled",
@@ -829,7 +834,7 @@ namespace RimMandrake.FlowWorks
             .Name("trapTriggerEnabled", "Concealed pits give way under enough weight")
             .Name("superdeepRoomsEnabled", "An enclosed pit is its own room")
             .Name("digFindsEnabled", "Digging a canal can turn up minerals")
-            .Name("digRockGroundEnabled", "Canals can be dug through rock ground").Name("digRockChunksEnabled", "Digging can turn up rock chunks").Name("digDeepStoneEnabled", "Pits 2 m deep reach a deeper stone").Name("sandMudSlidesBackEnabled", "Sand and mud slide back in").Name("digSpoilEnabled", "Digging leaves gravel").Name("fillCostsSpoilEnabled", "Filling in costs gravel or chunks").Name("mineGravelEnabled", "Mining a rock wall leaves gravel when no chunk drops").Name("gravelRecipesEnabled", "Gravel can stand in for stone chunks in recipes").Name("iceDigEnabled", "Ice and packed snow dig to crushed ice").Name("digLabourMultiplier", "Digging and filling labour").Name("shovelRequired", "Digging and filling need a shovel").Name("liquidDrillingEnabled", "Drilling and bleed wells")
+            .Name("digRockGroundEnabled", "Canals can be dug through rock ground").Name("digRockChunksEnabled", "Digging can turn up rock chunks").Name("digDeepStoneEnabled", "Pits 2 m deep reach a deeper stone").Name("sandMudSlidesBackEnabled", "Sand and mud slide back in").Name("digSpoilEnabled", "Digging leaves gravel").Name("fillCostsSpoilEnabled", "Filling in costs gravel or chunks").Name("mineGravelEnabled", "Mining a rock wall leaves gravel when no chunk drops").Name("gravelRecipesEnabled", "Gravel can stand in for stone chunks in recipes").Name("iceDigEnabled", "Ice and packed snow dig to crushed ice").Name("iceMeltCoolingPerSecond", "Melting ice cools its room").Name("digLabourMultiplier", "Digging and filling labour").Name("shovelRequired", "Digging and filling need a shovel").Name("liquidDrillingEnabled", "Drilling and bleed wells")
             .Name("swaleEnabled", "A watered swale enriches the ground around it");
 
         private static object GetField(string n)
@@ -1036,7 +1041,7 @@ namespace RimMandrake.FlowWorks
             }
 
             // ── FLOWWORKS_QUARRY_DIGGING_1 — what a canal cut turns up ────
-            if (Section(list, "Finds while digging", new[] { "digFindsEnabled", "digFindsLocalOnly", "digFindChanceMultiplier", "digFindBudgetPercent", "digFindLetterEnabled", "digRockGroundEnabled", "digRockWorkMultiplier", "digRockChunksEnabled", "digRockChunkMultiplier", "digSoilChunkPercent", "digDeepStoneEnabled", "sandMudSlidesBackEnabled", "digSpoilEnabled", "fillCostsSpoilEnabled", "mineGravelEnabled", "gravelRecipesEnabled", "iceDigEnabled", "digLabourMultiplier", "shovelRequired" }))
+            if (Section(list, "Finds while digging", new[] { "digFindsEnabled", "digFindsLocalOnly", "digFindChanceMultiplier", "digFindBudgetPercent", "digFindLetterEnabled", "digRockGroundEnabled", "digRockWorkMultiplier", "digRockChunksEnabled", "digRockChunkMultiplier", "digSoilChunkPercent", "digDeepStoneEnabled", "sandMudSlidesBackEnabled", "digSpoilEnabled", "fillCostsSpoilEnabled", "mineGravelEnabled", "gravelRecipesEnabled", "iceDigEnabled", "iceMeltCoolingPerSecond", "digLabourMultiplier", "shovelRequired" }))
             {
             list.CheckboxLabeled("Digging a canal can turn up minerals", ref digFindsEnabled,
                 "Each time a square is cut a level deeper there is a small chance of a lump of something the land holds, "
@@ -1095,8 +1100,16 @@ namespace RimMandrake.FlowWorks
               + "Off: filling in is free work.");
             list.CheckboxLabeled("Ice and packed snow dig to crushed ice", ref iceDigEnabled,
                 "On: ice and packed snow can be marked to dig, at rock speed, and every cut leaves 1 crushed ice. Crushed ice fills "
-              + "a pit like gravel; left above 0 C it melts into " + (RM_GroundClassMath.CrushedIceUnits / RM_Volume.UnitsPerLitre).ToString("N0")
-              + " L of water (a full 1x1 tank), and an ice melter turns it into water in the tanks it is piped to. Off: ice cannot be dug.");
+              + "a pit like gravel; left above 0 C each one melts into " + (RM_GroundClassMath.CrushedIceUnits / RM_Volume.UnitsPerLitre).ToString("N0")
+              + " L of water (the 0.5 m its cut removed), a stack one at a time, and an ice melter turns it into water in the tanks it is "
+              + "piped to. Off: ice cannot be dug.");
+            using (Dependent(list, "iceMeltCoolingPerSecond"))
+            {
+                float cool = RM_GroundClassMath.ClampMeltCooling(iceMeltCoolingPerSecond);
+                list.Label("Melting ice cools its room: " + cool.ToString("F0") + " heat/s per melting pile  (a vanilla cooler is 21; "
+                    + "a room of ice is held near 0 C, where the thaw stops; outdoors nothing is cooled; 0 = off)");
+                iceMeltCoolingPerSecond = list.Slider(iceMeltCoolingPerSecond, RM_GroundClassMath.MinMeltCoolingPerSecond, RM_GroundClassMath.MaxMeltCoolingPerSecond);
+            }
             using (Dependent(list, "digLabourMultiplier"))
             {
                 float labour = RM_DigDepthMath.ClampLabour(digLabourMultiplier);
