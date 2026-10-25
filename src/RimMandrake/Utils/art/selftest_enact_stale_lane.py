@@ -507,6 +507,47 @@ def main():
               and len({E.texpath_of(x) for x in vc}) == 1 and len(vc) == len(vc0),
               f"17 ...with FanV_C_north live (another picture): every facing moves to ONE free alternate, never "
               f"over FanV_C ({vc} / {r['conflicts']})")
+        # 18 a TICKED variant gets the picks' lane guards (ENACT_VARIANT_TICK_FIX_MOVED_LANE): C was a set of the young lane
+        # on the sheet he clicked on, today's rebuild files it under the Fan pool, both lanes exist: refused, nothing
+        # ships as a Fan alternate. Control: the same lane on both sheets installs.
+        FY = "swanimals/Fan/Fan_young"
+        fr = snap["rows"]["RSW_Fan"]
+        built_before = snap["built"]
+        snap["built"] = "2026-10-12T00:00:00-0700"      # today's build is AFTER his click
+        fr["columns"]["D"] = {"east": ys["ye"]}
+        fr["graphic_of"]["D"] = FY
+        fr["labels"]["D"] = "render fan_d"
+        sp.write_text(json.dumps(snap))
+
+        def older_fan(c_lane):
+            o = json.loads(json.dumps(snap))
+            o["built"] = "2026-10-10T02:00:00-0700"
+            o["rows"]["RSW_Fan"]["graphic_of"] = dict(fr["graphic_of"], C=c_lane)
+            return o
+
+        def fan_plan():
+            d = json.loads(json.dumps(doc))
+            d["decisions"] = {"RSW_Fan": {"decision": "B", "at": at, "decidedAt": at, "note": "", "variants": ["C"]}}
+            p = F["root"] / f"case_variant_moved_{len(history)}_{len(FAILS)}.decisions.json"
+            p.write_text(json.dumps(d))
+            E.reset_caches()
+            r = E.enact(p, apply=False, no_deploy=True)
+            return r, [i for i in r["plan"]["install"] if i["row"] == "RSW_Fan" and i["letter"] == "C"]
+        try:
+            history[:] = [older_fan(FY)]
+            r, vc = fan_plan()
+            check(r["ok"] and not vc and any(c.startswith("RSW_Fan: ticked variant C") for c in r["conflicts"]),
+                  f"18 a ticked variant re-filed from the young lane into the pool is refused by name ({vc} / {r['conflicts']})")
+            history[:] = [older_fan("swanimals/Fan/Fan")]
+            r, vc = fan_plan()
+            check(r["ok"] and vc and not any(c.startswith("RSW_Fan: ticked variant C") for c in r["conflicts"]),
+                  f"18 control: the same lane on both sheets installs the variant ({vc} / {r['conflicts']})")
+        finally:
+            history[:] = []
+            snap["built"] = built_before
+            for k in ("columns", "graphic_of", "labels"):
+                fr[k].pop("D", None)
+            sp.write_text(json.dumps(snap))
     finally:
         os.environ.pop("ART_BIOME_SHEETS_DIR", None)
     print("\nALL PASS" if not FAILS else f"\n{len(FAILS)} FAILED")

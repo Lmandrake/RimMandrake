@@ -1442,7 +1442,35 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                     refused.append(vl)
                     P["ignored_variants"].append(f"{row}: ignored variant tick {vl} on "
                                                  f"{(gv or 'an unassigned render').rsplit('/', 1)[-1]} — not a random pool")
-            explicit = [x for x in explicit if x not in refused]
+            # a ticked letter is placed by today's lane, so it gets the picks' guard: the sheet he clicked on must show the
+            # same pictures under that letter, in the same lane (when both lanes exist today a re-filed set is not
+            # provably his; a juvenile set would ship as an adult pool alternate). ENACT_VARIANT_TICK_FIX_MOVED_LANE
+            moved = []
+            for vl in explicit:
+                if vl in refused or assign.get(vl) or all_live(vl):
+                    continue
+                gv = gof_resolved(srow, vl)
+                if not gv or picks.get(gv) == vl:
+                    continue
+                if ruled1 is None:
+                    ruled1, rwhy1 = ruled_snapshot(snap_path, snap, v.get("decidedAt") or v.get("at"))
+                    ruled1 = ruled1 or {}
+                rrow = (ruled1.get("rows") or {}).get(row) or {}
+                if not rrow or vl not in (rrow.get("columns") or {}):
+                    continue        # the clicked sheet cannot be read: not provable either way (legacy behaviour)
+                if rrow["columns"][vl] != cols.get(vl):
+                    why = f"{vl} is not the same pictures on the sheet you clicked on as on today's sheet"
+                else:
+                    clicked = gof_resolved(rrow, vl)
+                    if not clicked or clicked == gv or clicked not in lanes_now or gv not in lanes_now:
+                        continue
+                    why = (f"it was a set of {clicked.rsplit('/', 1)[-1]} on the sheet you clicked on and today's sheet "
+                           f"files it under {gv.rsplit('/', 1)[-1]}; both lanes exist, so which one it belongs to "
+                           f"cannot be proved")
+                moved.append(vl)
+                P["conflicts"].append(f"{row}: ticked variant {vl}: {why} — refused, nothing installed for it; "
+                                      f"tick it again on the current sheet")
+            explicit = [x for x in explicit if x not in refused and x not in moved]
             # a folder this run fills keeps his ticks — and every legacy tick he has not ruled on yet: unknown is never
             # read as "take it out of the game"
             pending = [x for x in (v.get("legacyVariants") or []) if x not in dropped and x not in confirmed]
