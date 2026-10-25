@@ -61,7 +61,8 @@ DEFAULT_OUT = os.path.join(REPO, "world", "rescue_2026-10-19")
 DEFAULT_PROFILE = os.path.join(REPO, "deployed", "config", "ModsConfig.CANDIDATE_2026-10-19.xml")
 RENAME_MAP = os.path.join(REPO, "infrastructure", "state", "naming_rename_map.csv")
 PORT_MAP = os.path.join(REPO, "design", "RimMandrake", "retired_mutators_port_map.json")
-SAVE_NAME = "CANONICAL_ASHKARR_START_2026-09-12.rws"
+from canon_save import start_savegame_name  # noqa: E402
+SAVE_NAME = start_savegame_name()   # canon.yml planet.start_savegame
 BUMP = 16              # how far a ShortHashGiver collision bump is looked for (observed: +1)
 # Renames the save outlived that naming_rename_map.csv does not carry (each cited). Their OLD names
 # join the hash universe, so a save hash that only a retired name explains is still decoded.

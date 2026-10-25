@@ -20,7 +20,8 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."
 from game_paths import SAVES  # noqa: E402 - the one seam for the LocalLow Saves folder
 
 
-SAVE_NAME = "CANONICAL_ASHKARR_START_2026-09-12.rws"   # canon.yml planet.start_savegame (owner-ruled 2026-09-12)
+from canon_save import start_savegame_name  # noqa: E402
+SAVE_NAME = start_savegame_name()   # canon.yml planet.start_savegame
 SEEDER = "RimMandrake.Pyrelands.WorldComponent_RM_FurnaceHerdSeeder"   # cut 2026-10-23; only its absence is checked
 
 

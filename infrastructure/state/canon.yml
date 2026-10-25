@@ -83,7 +83,9 @@ planet:
   # new canonical frozen start savegame. Very exciting! This map is the first and
   # (in some sense) most important map the players will experience when loading
   # the campaign."
-  start_savegame: CANONICAL_ASHKARR_START_2026-09-12.rws
+  # Repointed 2026-10-25 by owner card "Which saved world should the project treat as the canonical start? -> Repoint to the 10-20 save".
+  # The frozen 09-12 file is kept as the record (see CANONICAL_SAVE.md), no longer the default.
+  start_savegame: ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws
   start_savegame_src: >
     Saves\CANONICAL_ASHKARR_START_2026-09-12.rws, written 10:20 2026-09-12 via
     rimworld/save_game with the Saves folder stat'd before and after (one new

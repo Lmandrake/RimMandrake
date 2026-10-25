@@ -93,10 +93,10 @@ has (repaint plan §1a).
 - `ASHKARR_FALLLINE_LABEL26_2026-09-21`, `ASHKARR_LABELSIZES_2026-09-26`, `ASHKARR_LABELSIZES_DRAWCENTERFIX_2026-09-26`
   (September label experiments on the old world).
 
-**Tool pointers.** No tool in `src/` names a Saves file that is missing. `world_hill_preview.py` reads the repo copy
-`world/ASHKARR_DEV_START_2026-10-20.rws`. That copy exists but is stale; the REPAINT_SAVES item replaces it.
-`world_peak_decals.py` defaults to R3. `ashkarr_settle.py`, `world_layers_export.py`, `vanilla_beast_carriers.py`,
-`saves_prune.py` and `Pyrelands/diag/save_world_check.py` default to the frozen 09-12 file, and
-`save_adoption_check.py` defaults to `.DONORFREE_CANDIDATE_2026-10-18`. Those files exist, but they are not the
-current world. Give these tools `--save`/the R3 name until one dev-start pointer is written. `canon.yml`
-`start_savegame` still names the frozen file, and only the owner can change that.
+**Canon repointed (owner card 2026-10-25).** "Which saved world should the project treat as the canonical start? ->
+Repoint to the 10-20 save." `canon.yml` `planet.start_savegame` now names
+`ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws`. Six tools resolve their default through
+`src/RimMandrake/Utils/canon_save.py` (reads that canon.yml line): `ashkarr_settle.py`, `world_layers_export.py`,
+`vanilla_beast_carriers.py`, `saves_prune.py`, `save_adoption_check.py`, `Pyrelands/diag/save_world_check.py`.
+`world_peak_decals.py` already defaulted to R3. The frozen 09-12 file above stays on disk as the owner's record
+(saves_prune still protects every `CANONICAL_*` save).

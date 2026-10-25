@@ -89,7 +89,9 @@ NEIGHBOURS = os.path.join(WORLD, "world_neighbors_sub7b.csv")
 # of live region/feature names. `world/ASHKARR_WORLDMAP_tiles.csv` is a RECORD
 # exported 2026-09-12, not the planet - a live edit after that date is invisible
 # to it. Never read region names from the CSV for this guard.
-CANONICAL_SAVE_NAME = "CANONICAL_ASHKARR_START_2026-09-12.rws"
+sys.path.insert(0, HERE) if HERE not in sys.path else None
+from canon_save import start_savegame_name  # noqa: E402
+CANONICAL_SAVE_NAME = start_savegame_name()   # canon.yml planet.start_savegame
 
 MIN_SPACING = 4            # hexes between any two settlements
 EMPTY_RADIUS = 6           # "empty" means no settlement within this many hexes

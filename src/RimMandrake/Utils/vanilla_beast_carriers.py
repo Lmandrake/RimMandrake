@@ -50,8 +50,9 @@ import xml.etree.ElementTree as ET
 import os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from game_paths import LOCALLOW  # noqa: E402
+from canon_save import start_savegame_name  # noqa: E402
 DB = os.path.join(LOCALLOW, "DefDump", "defs.sqlite")
-SAVE = os.path.join(LOCALLOW, "Saves", "CANONICAL_ASHKARR_START_2026-09-12.rws")
+SAVE = os.path.join(LOCALLOW, "Saves", start_savegame_name())
 ADD_XPATH = '/Defs/FactionDef/pawnGroupMakers/li[kindDef="Trader"]/carriers[not(RSW_Bantha)]'
 ADD_RE = re.compile(r'^/Defs/FactionDef/pawnGroupMakers/li\[kindDef="Trader"\]/carriers\[not\((\w+)\)\]$')
 SRC = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))

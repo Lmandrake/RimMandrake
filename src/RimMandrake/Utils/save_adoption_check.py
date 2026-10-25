@@ -4,7 +4,7 @@
     python3 src/RimMandrake/Utils/save_adoption_check.py [--save <.rws>] [--modlist <ModsConfig.xml>]
             [--universe-capture DIR] [--live-capture DIR] [--md out.md] [--json out.json]
 
-Defaults: the donor-free candidate save `CANONICAL_ASHKARR_START_2026-09-12.DONORFREE_CANDIDATE_2026-10-18.rws`
+Defaults: the canonical start save named by canon.yml `planet.start_savegame`
 (Saves/), the 544-mod `ModsConfig.FULL.CANDIDATE_DONORS_RETIRED_2026-10-18.xml`. Read-only on the save: it is
 parsed, never written, and nothing is written under Saves/. Item: DONOR_FOUR_RETIRE_JUST_GET_IT_DONE (A4/A5);
 runbook Transient/phase0_L1_runbook.md step 6. Doctrine: skills/rimworld-savegame.
@@ -43,7 +43,8 @@ if HERE not in sys.path:
     sys.path.insert(0, HERE)
 import defindex  # noqa: E402
 
-SAVE_NAME = "CANONICAL_ASHKARR_START_2026-09-12.DONORFREE_CANDIDATE_2026-10-18.rws"
+from canon_save import start_savegame_name  # noqa: E402
+SAVE_NAME = start_savegame_name()   # canon.yml planet.start_savegame (owner card 2026-10-25)
 MODLIST = os.path.join(REPO, "infrastructure", "state", "modlists",
                        "ModsConfig.FULL.CANDIDATE_DONORS_RETIRED_2026-10-18.xml")
 RETIRED_FOUR = ("mlie.starwarsanimalcollection", "sarg.alphaanimals", "daria40k.alphaanimalspatchoutposts",

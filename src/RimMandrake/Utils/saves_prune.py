@@ -42,7 +42,9 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[2]
-CANONICAL = "CANONICAL_ASHKARR_START_2026-09-12.rws"
+sys.path.insert(0, str(HERE))
+from canon_save import start_savegame_name  # noqa: E402
+CANONICAL = start_savegame_name()   # canon.yml planet.start_savegame; CANONICAL_* saves stay protected too
 AWAITING = ROOT / "infrastructure" / "state" / "saves_awaiting_review.txt"
 AUTOSAVE = re.compile(r"^Autosave-\d+\.rws$", re.I)
 BACKUP = re.compile(r"(\.bak|bak-pre|\.before[_-]|before_|_backup|\.prev|\.orig|pre_?edit|\.old$)", re.I)
