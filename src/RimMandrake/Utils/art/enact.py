@@ -1035,9 +1035,13 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
     bad_schema = DV.refuse_unknown(doc)
     if bad_schema:
         raise ValueError(bad_schema)
-    snap_path = Path(doc.get("snapshot") or "")
+    if not isinstance(doc.get("snapshot"), str) or not doc["snapshot"].strip():
+        raise ValueError(f"not a decisions doc: {decisions.name} names no snapshot (a '' would resolve to the repo root)")
+    snap_path = Path(doc["snapshot"])
     if not snap_path.is_absolute():
         snap_path = L.REPO_ROOT / snap_path
+    if not snap_path.is_file():
+        raise ValueError(f"snapshot missing: {snap_path} (named by {decisions.name})")
     snap = json.loads(snap_path.read_text())
     biome = doc.get("biome") or snap.get("biome")
     sheet = doc.get("sheetId") or snap.get("sheetId") or decisions.stem
