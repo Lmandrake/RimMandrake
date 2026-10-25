@@ -1702,11 +1702,18 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
             # nor does an OLDER keep by an alias of this row (renamed, or RSW_X ported as RM_X): his newer ✕ on the
             # renamed row releases it, as his newer pick replaces it; both times must be known, a purge is not undone
             # by the next enact (ENACT_ALIAS_KEEP_FIX_BLOCKS_NEWER_PICK)
-            x_at = I.ts(v.get("at"))
+            # the same age rule holds for an older keep by THIS row from ANOTHER decisions file (as keep_blocks_pick's
+            # pick side does); his ✕ is dated by his click (decidedAt), not the row's last touch
+            # (ENACT_PURGE_FIX_ALIAS_ASYMMETRY, ENACT_KEEP_AGE_FIX_DECIDED_AT)
+            x_at = I.ts(v.get("decidedAt") or v.get("at"))
+
+            def _older_own(k):
+                krow = (k.get("target") or {}).get("row")
+                k_at = I.ts(k.get("at") or k.get("ts"))
+                return (krow == row or krow in aliases) and bool(x_at and k_at and k_at < x_at)
             kept = [k for k in kept_all if not ((k.get("target") or {}).get("row") == row
                                                 and k.get("via") == I.rel_via(decisions))
-                    and not ((k.get("target") or {}).get("row") in aliases and x_at and I.ts(k.get("at") or k.get("ts"))
-                             and I.ts(k.get("at") or k.get("ts")) < x_at)]
+                    and not _older_own(k)]
             # a ✕ on a picture that ships ONLY inside a Graphic_Random folder of ours (a random variant the sheet showed
             # as its own column, owner card 2026-10-10 "Put them on the sheet"): it leaves the folder, then is purged —
             # unless it is the folder's last picture, a pick/variant here, or kept by another ruling

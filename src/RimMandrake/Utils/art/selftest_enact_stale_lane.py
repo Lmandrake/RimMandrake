@@ -479,6 +479,13 @@ def main():
                   f"19 a keep made after his click but before a later note edit still blocks the pick ({got} / {cf})")
             got, purged, cf = run16("RSW_KiteOld", "2026-10-10T08:00:00Z", {"carriedFrom": "RSW_KiteOld", "at": "2026-10-11T00:00:00Z"})
             check(got == {EAST, NORTH}, f"19 ...a keep older than the click does not ({got} / {cf})")
+            # 20 the ✕ side agrees with the pick side: an OLDER keep by the SAME row from another decisions file releases
+            # his ✕ (it used to block while an older alias keep released); a NEWER one still blocks (ENACT_PURGE_FIX_ALIAS_ASYMMETRY)
+            got, purged, cf = run16("RSW_Kite", old)
+            check(got == {EAST, NORTH} and purged,
+                  f"20 an older same-row keep from another file: pick installs and ✕ purged ({got} / {purged} / {cf})")
+            got, purged, cf = run16("RSW_Kite", new)
+            check(not purged, f"20 ...a NEWER same-row keep from another file still blocks the ✕ ({purged} / {cf})")
         finally:
             L.Index.protected, L.Index.__init__ = prot0, idx0
             cpath.write_text(census0)
