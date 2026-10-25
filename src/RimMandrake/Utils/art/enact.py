@@ -1394,7 +1394,9 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                                                  "letter": letter, "ruling": rul["id"] if rul else None,
                                                  "kind": own["kind"], "rebind": own.get("rebind"), "names": names})
                             if own["kind"] == "folder":
-                                folders.setdefault(g, {"mod": own["mod"], "keep": set()})["keep"].add(sha)
+                                fo_ = folders.setdefault(g, {"mod": own["mod"], "keep": set()})
+                                fo_["keep"].add(sha)
+                                fo_.setdefault("picks", set()).add(letter)
                         else:
                             P["todo"].append(f"{row}: pick {letter} {rel} has no slot in any of our mods "
                                              f"(donor art? needs an override texture or a def texPath)")
@@ -1500,7 +1502,8 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
             for g, fo in folders.items():
                 for m, r, live in folder_slots(idx, g):
                     if live not in fo["keep"]:
-                        P["retire"].append({"row": row, "mod": m, "rel": r, "sha": live})
+                        P["retire"].append({"row": row, "mod": m, "rel": r, "sha": live,
+                                            "gate": sorted(fo.get("picks") or ())})
             P["retire"] += retire_replaced(idx, row, v, cols, picks, protect_here, P["install"], src, names)
         # ── 3 queue / 6 todo
         # a note typed on a row he never clicked a letter on is still his ruling: it is followed or listed as a TODO,
@@ -2053,24 +2056,46 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
         # 2 install (picks, then ticked variants), then the def edits that make the game draw them
         src = L.src_root()
         rebinds, alts, ok_rows, ok_picks = {}, {}, set(), set()
+        # a pick lands WHOLE or not at all: every install of a (row, letter) group is pre-checked (dry run) and a group
+        # with one refused facing is skipped, so a creature is never drawn from two sets (ENACT_APPLY_REFUSED_HARDEN_PARTIAL_PICK)
+        groups: dict = {}
         for i in P["install"]:
-            rid = i["ruling"] or (keep_ruling(L.cached_index(), i["row"], i["letter"], i["sha"]) or {}).get("id")
-            if not rid:
-                R["conflicts"].append(f"{i['row']}: no keep ruling names {i['sha'][:12]} for pick {i['letter']} — not installed")
+            groups.setdefault((i["row"], i["letter"]), []).append(i)
+        for (grow, glet), members in groups.items():
+            bad = None
+            for i in members:
+                rid = i["ruling"] or (keep_ruling(L.cached_index(), i["row"], i["letter"], i["sha"]) or {}).get("id")
+                if not rid:
+                    bad = f"{i['row']}: no keep ruling names {i['sha'][:12]} for pick {i['letter']} — not installed"
+                    break
+                try:
+                    L.install(i["mod"], i["rel"], i["sha"], ruling_id=rid, dry_run=True)
+                except L.Refused as e:
+                    bad = f"{i['row']}: install {i['rel']} refused — {e}; pick {glet} not installed (no half sets)"
+                    break
+            if bad:
+                R["conflicts"].append(bad)
                 continue
-            try:
-                r = L.install(i["mod"], i["rel"], i["sha"], ruling_id=rid)
+            landed = []
+            for i in members:
+                rid = i["ruling"] or (keep_ruling(L.cached_index(), i["row"], i["letter"], i["sha"]) or {}).get("id")
+                try:
+                    r = L.install(i["mod"], i["rel"], i["sha"], ruling_id=rid)
+                except L.Refused as e:
+                    R["conflicts"].append(f"{i['row']}: install {i['rel']} refused — {e}")
+                    break
                 if r["status"] in ("installed", "already-live"):
                     R["installed"] += r["status"] == "installed"
                     touched_mods.add(i["mod"])
-                    ok_rows.add(i["row"])
-                    ok_picks.add((i["row"], i["letter"]))
+                    landed.append(i)
+            if len(landed) == len(members):
+                ok_rows.add(grow)
+                ok_picks.add((grow, glet))
+                for i in landed:
                     if i.get("rebind"):
                         rebinds[(i["row"], i["rebind"]["old"], i["rebind"]["new"])] = i
                     if i.get("alt"):
                         alts[(i["row"], i["alt"][0], i["alt"][1])] = i
-            except L.Refused as e:
-                R["conflicts"].append(f"{i['row']}: install {i['rel']} refused — {e}")
         for (row, old, new), i in sorted(rebinds.items()):
             for f in rebind_defs(src, i["names"], old, new):
                 R["rebound"] += 1
@@ -2094,6 +2119,8 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
                     R["conflicts"].append(f"{rt['row']}: {rt['retired']} at {rt['rel']} not retired — a def still draws "
                                           f"{tp}, and {rt['replaced_by']} does not cover that file")
                     continue
+            elif rt.get("gate") and not any((rt["row"], lt) in ok_picks for lt in rt["gate"]):
+                continue        # the folder's own pick did not land: nothing sheds (a ticked variant is not the pick)
             elif rt["row"] not in ok_rows and not rt.get("xed"):    # a ✕'d random-folder picture leaves on its own
                 continue
             try:
