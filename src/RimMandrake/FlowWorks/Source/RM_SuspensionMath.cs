@@ -50,9 +50,9 @@ namespace RimMandrake.FlowWorks
 	/// </summary>
 	public static class RM_SuspensionMath
 	{
-		/// <summary>Drawbridges keep the old 1-to-3 rule (the owner's new sizes are for the four suspension kinds: "None of these
-		/// are drawbridges").</summary>
-		public const int DrawbridgeMaxWidth = 3;
+		/// <summary>Widest drawbridge, timber or steel: 4, the widest plain bridge (DRAWBRIDGE_WIDEN_FOUR_LANES_TO_MATCH, owner card
+		/// 2026-10-25 "Should drawbridges stay at most 3 wide? → Allow 4 wide"; was 1 to 3).</summary>
+		public const int DrawbridgeMaxWidth = 4;
 
 		/// <summary>Widest drag by kind: rope 1, timber 2, steel and heavy 4.</summary>
 		public static int MaxWidthOf(SuspensionTier t)

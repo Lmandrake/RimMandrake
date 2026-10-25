@@ -45,7 +45,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "SUSPENSION_ISLANDS_BUILD_TOWERS_COST_PLENTY: length 12/8/20/20 squares between supports (owner's sizes)");
                 Assert(RM_SuspensionMath.MaxWidthOf(SuspensionTier.Rope) == 1 && RM_SuspensionMath.MaxWidthOf(SuspensionTier.Timber) == 2
                     && RM_SuspensionMath.MaxWidthOf(SuspensionTier.Steel) == 4 && RM_SuspensionMath.MaxWidthOf(SuspensionTier.Heavy) == 4
-                    && RM_SuspensionMath.DrawbridgeMaxWidth == 3, "width 1/2/4/4; drawbridges keep 1 to 3");
+                    && RM_SuspensionMath.DrawbridgeMaxWidth == 4, "width 1/2/4/4; drawbridges 1 to 4 (DRAWBRIDGE_WIDEN_FOUR_LANES_TO_MATCH)");
                 Assert(RM_SuspensionMath.BaseLoadKg(SuspensionTier.Rope) == 150f && RM_SuspensionMath.BaseLoadKg(SuspensionTier.Timber) == 600f
                     && RM_SuspensionMath.BaseLoadKg(SuspensionTier.Steel) == 2000f && RM_SuspensionMath.BaseLoadKg(SuspensionTier.Heavy) == 8000f,
                     "load 150/600/2,000/8,000 kg");
@@ -100,6 +100,11 @@ namespace RimMandrake.FlowWorks.SelfTest
                 List<IList<SpanGround>> five = new List<IList<SpanGround>>(four) { Lane("GHHHG") };
                 string w5 = RM_SuspensionMath.ValidateDrag(five, null, SuspensionTier.Heavy, 1f);
                 Assert(w5 != null && w5.Contains("1 to 4"), "heavy 5 wide is refused: " + w5);
+                Assert(RM_SuspensionMath.ValidateDrag(four, null, t, 1f, RM_SuspensionMath.DrawbridgeMaxWidth) == null
+                    && RM_SuspensionMath.ValidateDrag(four, null, SuspensionTier.Steel, 1f, RM_SuspensionMath.DrawbridgeMaxWidth) == null,
+                    "a timber or steel drawbridge may be 4 wide, the widest plain bridge");
+                string d5 = RM_SuspensionMath.ValidateDrag(five, null, SuspensionTier.Steel, 1f, RM_SuspensionMath.DrawbridgeMaxWidth);
+                Assert(d5 != null && d5.Contains("1 to 4"), "can-fail: a 5-wide drawbridge is refused: " + d5);
                 List<IList<SpanGround>> bad = new List<IList<SpanGround>> { Lane("GHHHG"), Lane("GHGHG") };
                 string row = RM_SuspensionMath.ValidateDrag(bad, null, t, 1f);
                 Assert(row != null && row.StartsWith("Row 2:"), "every lane must cross on its own; the refusal names the row");
@@ -249,7 +254,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(designator.Contains("RM_SuspensionMath.SplitAtIslands(lanes, out string iwhy)") && designator.Contains("PieceOf(r, from, to)")
                     && designator.Contains("foreach (SuspensionBridgeRecord r in rs)"), "the plain bridge splits at islands and places each piece");
                 Assert(designator.Contains("RM_SuspensionMath.ValidateDrag(lanes, towers, r.tier, mult, RM_SuspensionMath.DrawbridgeMaxWidth)"),
-                    "a drawbridge never splits and keeps 1 to 3 wide");
+                    "a drawbridge never splits and is 1 to DrawbridgeMaxWidth wide");
                 Assert(!designator.Contains("r.towers = towers[0]"), "can-fail: the record keeps every row's towers, not row 1's");
                 string defs = ModFile("Defs", "Pits", "ThingDefs", "RM_SuspensionBridges.xml");
                 int tower = defs.IndexOf("<defName>RM_SuspensionTower</defName>");
