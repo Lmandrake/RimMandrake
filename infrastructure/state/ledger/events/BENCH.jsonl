@@ -5207,3 +5207,5 @@
 {"seat":"BENCH","event":"lease","id":"MODCHECK_REUSE_BUILD_MANIFEST_VALIDITY","action":"renew","token":"BENCH.pid57201.41291a40","ts":"2026-10-25T19:27:20Z","expires":"2026-10-25T20:12:20Z","tsn":1792956441019041024}
 {"seat":"BENCH","event":"lease","id":"MODCHECK_REUSE_BUILD_MANIFEST_VALIDITY","action":"renew","token":"BENCH.pid57201.41291a40","ts":"2026-10-25T19:34:02Z","expires":"2026-10-25T20:19:02Z","tsn":1792956843302931827}
 {"seat":"BENCH","event":"close","id":"MODCHECK_REUSE_BUILD_MANIFEST_VALIDITY","sha":"a0c88def1d","why":"option B built: manifests/reuse/validity/canary/--changed/audit; codex 9/9 adopted; selftest_reuse 79 PASS, related 40/45 with 5 pre-existing reds","ts":"2026-10-25T19:35:41Z","tsn":1792956941922641344}
+{"seat":"BENCH","event":"close","id":"MODCHECK_ROWS_FIX_SCOPE_NEVER_PASSED","sha":"035ca8532cab","why":"runner.run now passes sel['scope'] to run_suite; selftest_targeting + selftest_reuse GREEN","ts":"2026-10-25T19:37:16Z","tsn":1792957036576441770}
+{"seat":"BENCH","event":"bridge","state":"taken","purpose":"tower supply diagnosis","ts":"2026-10-25T19:37:19Z","tsn":1792957039473032367}
