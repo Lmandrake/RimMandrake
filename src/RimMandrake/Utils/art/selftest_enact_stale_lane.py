@@ -462,6 +462,16 @@ def main():
             got, purged, cf = run16("RM_Kite", old)
             check(got == {EAST, NORTH} and purged,
                   f"16 an older keep by RM_Kite (RSW_ swapped for RM_): installs, ✕ purged ({got} / {purged} / {cf})")
+            # the swapped name is a census ROW of its own (both defs exist as separate creatures): not an alias, so its
+            # older keep still blocks (ENACT_ALIAS_FIX_SWAP_SEPARATE_DEF)
+            c_ = json.loads(census0)
+            c_["biomes"].setdefault(snap["biome"], {"rows": []})["rows"].append(
+                {"key": "RM_Kite", "defNames": ["RM_Kite"], "twins": []})
+            census0_real = census0
+            census0 = json.dumps(c_)
+            got, purged, cf = run16("RM_Kite", old)
+            census0 = census0_real
+            check(not got and not purged, f"16 ...RM_Kite a separate census row: its older keep still blocks ({got} / {purged})")
             got, purged, cf = run16("RUT_Kite", old, twins=[{"defName": "RUT_Kite", "relation": "tier_twin_same_stem"}])
             check(got == {EAST, NORTH} and purged,
                   f"16 an older keep by a census tier_twin_same_stem twin: installs ({got} / {purged} / {cf})")
@@ -562,6 +572,36 @@ def main():
             snap["built"] = built_before
             for k in ("columns", "graphic_of", "labels"):
                 fr[k].pop("D", None)
+            sp.write_text(json.dumps(snap))
+        # 21 the row's def was repointed to another texPath by hand (ENACT_UNDRAWN_LANE_FIX_ORPHAN_INSTALL): the old files
+        # still ship but no def draws them, today's sheet names only the new lane. A pick keyed by the old lane (no
+        # sheet copy proves a rename) must install nothing at the undrawn files.
+        saved_gof = dict(kr["graphic_of"])
+        saved_res = kr.get("res")
+        try:
+            NEW = "swanimals/Kite/Kite_Heavy"
+            for k in list(kr["graphic_of"]):
+                if kr["graphic_of"][k] == AD:
+                    kr["graphic_of"][k] = NEW
+            kr["res"] = NEW
+            sp.write_text(json.dumps(snap))
+            history[:] = []
+            for rec_ in ({"decision": "B", "slots": {AD: slot("B")}}, {"schema": None, "decision": "B", "picks": {AD: "B"}}):
+                r, inst = plan(rec_)
+                check(not any(i["rel"].startswith("swanimals/Kite/Kite_") and "Heavy" not in i["rel"]
+                              and i["letter"] == "B" and i["rel"] != "swanimals/Kite/Kite_young_east.png"
+                              for i in inst),
+                      f"21 a pick for a lane no def draws any more installs at none of the undrawn files ({inst})")
+                check(any("Kite" in c and "refused" in c for c in r["conflicts"]) or any(
+                    i["letter"] == "B" and "Heavy" in i["rel"] for i in inst),
+                      f"21 ...it is refused by name or resolved to the drawn lane ({inst} / {r['conflicts']})")
+        finally:
+            kr["graphic_of"].clear()
+            kr["graphic_of"].update(saved_gof)
+            if saved_res is None:
+                kr.pop("res", None)
+            else:
+                kr["res"] = saved_res
             sp.write_text(json.dumps(snap))
     finally:
         os.environ.pop("ART_BIOME_SHEETS_DIR", None)

@@ -505,14 +505,18 @@ ALIAS_TWIN = "tier_twin_same_stem"      # the census relation naming one creatur
 def row_aliases(row: str, v: dict, srow: dict, census_rows: dict) -> set[str]:
     """Other names THIS row's creature has carried: the decision's or snapshot row's `carriedFrom` (a rename), a census
     twin of relation ALIAS_TWIN, and the same defName with RSW_ swapped for RM_ (a donor ported under our prefix; the
-    census cannot list it once the RSW_ def is gone: leaningscrub RM_Vurra / RSW_Vurra). Never a donor, a shared-texPath
+    census cannot list it once the RSW_ def is gone: leaningscrub RM_Vurra / RSW_Vurra; a name the census DOES list
+    as a row is a separate creature and is not swapped in). Never a donor, a shared-texPath
     twin or any other creature that merely shares a picture. (ENACT_ALIAS_KEEP_FIX_BLOCKS_NEWER_PICK)"""
     out = {x for x in (v.get("carriedFrom"), (srow or {}).get("carriedFrom")) if x}
     out |= {t.get("defName") for t in (census_rows.get(row) or {}).get("twins") or []
             if isinstance(t, dict) and t.get("relation") == ALIAS_TWIN and t.get("defName")}
     for a, b in (("RSW_", "RM_"), ("RM_", "RSW_")):
-        if row.startswith(a):
-            out.add(b + row[len(a):])
+        other = b + row[len(a):]
+        # a census row of that name is a creature of its own in this biome (both defs exist): not this row's alias
+        # unless carriedFrom / an ALIAS_TWIN already said so (ENACT_ALIAS_FIX_SWAP_SEPARATE_DEF)
+        if row.startswith(a) and other not in census_rows:
+            out.add(other)
     out.discard(row)
     return out
 
