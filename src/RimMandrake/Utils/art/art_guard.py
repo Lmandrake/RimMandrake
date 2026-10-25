@@ -67,9 +67,34 @@ def _git(cwd, *args, input=None, text=True) -> str:
 
 # ───────────────────────────────────────────────────────────── the rule ──
 
+DELEGATED_ART = "delegated: art "
+
+
+def delegated_verdict(ev: dict):
+    """The verdict file of a delegated art install (`art.py install --why "delegated: art <verdict file>"`, delegation_policy.md
+    section 3), when the event carries that --why and the file exists inside this clone; else None. --why grants no owner
+    authority, so such an install is held to the mechanical rule: it may not displace an owner-kept picture."""
+    if ev.get("reason") != "agent-why":
+        return None
+    why = (ev.get("why") or "").strip()
+    if not why.startswith(DELEGATED_ART):
+        return None
+    tok = why[len(DELEGATED_ART):].strip().split()
+    if not tok:
+        return None
+    root = L.REPO_ROOT.resolve()
+    p = (root / tok[0]).resolve()
+    try:
+        p.relative_to(root)
+    except ValueError:
+        return None
+    return p if p.is_file() else None
+
+
 def _authorized(ev: dict, idx: L.Index) -> str | None:
     """None if this live event is an authorized transition, else the reason it is not."""
     reason = ev.get("reason") or ""
+    deleg = delegated_verdict(ev) is not None
     if ev.get("ruling_id"):
         r = next((r for r in idx.rulings if r["id"] == ev["ruling_id"]), None)
         if not r:
@@ -94,12 +119,12 @@ def _authorized(ev: dict, idx: L.Index) -> str | None:
                 return None                 # the owner's typed words on the event
             return ("`retire-duplicate` is not an authority — retire through artledger.retire with "
                     "script:<writer path>, or the owner's words / ruling when the picture is kept")
-        why = L.mechanical_refusal(reason)
+        why = None if deleg else L.mechanical_refusal(reason)
         if why:
             return f"live event has no ruling and no verifiable reason: {why}"
     elif reason in BOOKKEEPING:
         return None
-    if L.is_mechanical_reason(reason):
+    if deleg or L.is_mechanical_reason(reason):
         if ev.get("prev") and idx.protected(ev["prev"]) and not (
                 ev.get("sha") is None and L.held_elsewhere(idx, ev["prev"], (ev.get("mod"), ev.get("rel")))):
             return f"mechanical install ({reason}) displaced owner-kept {ev['prev'][:12]}"
