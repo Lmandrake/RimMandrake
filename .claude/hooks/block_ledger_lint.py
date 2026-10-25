@@ -6,6 +6,9 @@ a missing newline or an in-place edit from landing. `src/RimMandrake/Utils/ledge
 --rev HEAD --base <upstream>` does; this hook only runs it before a push and relays a
 refusal. Fails OPEN on any parse/git/subprocess problem — a broken guard must never
 wedge a push; the lint is runnable by hand and runs in run_selftests.py too.
+Failing open is never silent in git-native mode: a lint that could not run (exit 2)
+or crashed (any exit without its summary line — a traceback exits 1 too, which used to
+read as a refusal with no findings) prints a "NOT linted" warning to stderr.
 """
 import json
 import os
@@ -50,6 +53,20 @@ def push_refspec(tok):
 
 
 ZERO = "0" * 40
+SUMMARY = re.compile(r"^ledger_lint: \d+ findings? over ", re.M)
+
+
+def verdict(r):
+    """-> ("refuse", finding lines) | ("clean", []) | ("blind", reason lines) for one
+    finished ledger_lint run. Exit 1 is a refusal only when the lint reached its summary
+    line; exit 1 without it is a Python crash (traceback), not a finding."""
+    if r.returncode == 0 and SUMMARY.search(r.stdout or ""):
+        return "clean", []
+    if r.returncode == 1 and SUMMARY.search(r.stdout or ""):
+        return "refuse", [l for l in r.stdout.splitlines()
+                          if not l.startswith(("note:", "ledger_lint:"))]
+    tail = ((r.stdout or "") + (r.stderr or "")).strip().splitlines()[-3:]
+    return "blind", ["exit %s" % r.returncode] + tail
 
 
 def git_pre_push(stdin_lines, cwd):
@@ -68,8 +85,11 @@ def git_pre_push(stdin_lines, cwd):
         r = subprocess.run([sys.executable or "python3", script, "--rev", parts[1],
                             "--root", root, "--base", base],
                            capture_output=True, text=True, timeout=40)
-        if r.returncode == 1:
-            found = [l for l in r.stdout.splitlines() if not l.startswith(("note:", "ledger_lint:"))]
+        kind, found = verdict(r)
+        if kind == "blind":
+            sys.stderr.write("pre-push WARNING: ledger_lint could not run on %s — push NOT "
+                             "linted (failing open):\n  %s\n" % (parts[0], "\n  ".join(found)))
+        elif kind == "refuse":
             sys.stderr.write("pre-push REFUSED (ledger_lint) on %s:\n  %s\n" % (parts[0], "\n  ".join(found[:12])))
             return 1
     return 0
@@ -118,9 +138,9 @@ def main():
                                capture_output=True, text=True, timeout=40)
         except Exception:
             return 0
-        if r.returncode != 1:
-            continue                       # 0 clean, 2 could not run -> fail open
-        found = [l for l in r.stdout.splitlines() if not l.startswith(("note:", "ledger_lint:"))]
+        kind, found = verdict(r)
+        if kind != "refuse":
+            continue                       # clean, or blind -> fail open (git pre-push warns)
         print(json.dumps({"hookSpecificOutput": {
             "hookEventName": "PreToolUse",
             "permissionDecision": "deny",
