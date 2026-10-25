@@ -1,0 +1,1 @@
+A lapsed JawaBench companion_profile.json grant (expiresUtc) silently turns test-only bridge tools (flowworks_job_probe, static_call) into REFUSED, and a northstar runner then reads every row UNMEASURED(SITE) as if the work never happened; check jawa/companion_handshake effectiveProfile==test before a run and renew expiresUtc (gravel_live.py now refuses up front).
