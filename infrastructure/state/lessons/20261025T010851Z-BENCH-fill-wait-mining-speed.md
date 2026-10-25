@@ -1,0 +1,2 @@
+A live proof that waits a flat tick budget for a pawn job must scale the wait by the pawn's work stat. FlowWorks fill_in_on waited a flat 2,500 ticks for a D=1 fill-in (1600 work); a Mining-0 colonist sits at the MiningSpeed floor 0.1, so one notch takes 16,000 ticks and the row FAILed. The earlier PASS had simply drawn a skilled pawn. Fix in northstar/extensions.py _fill_in_budget/_wait_filled_in reads jawa/pawn_stats MiningSpeed and polls the cell depth (cfa085dba6). A PASS that depends on which colonist the harness picked is not a PASS.
+home: live-debugging-proof-harness
