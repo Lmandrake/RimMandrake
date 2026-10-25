@@ -135,5 +135,37 @@ check("can-fail: numbering with a hole is caught",
 h, hcaps, hops = dry_stage(("hoses", "picks"))
 check("optional rows are numbered too (hoses scenes, picks)", len(hops) == len(h.stations) >= 10 and
       all(c.split("  ")[0].isdigit() for c in hcaps["hoses"]["lines"] + hcaps["picks"]), len(hops))
+# REVIEW_STAGER_FIX_BARS_OFF_SMALL_MAP: the default origin must fit a 250 map; an off-map station is a failure, not a note.
+fo = ORS.fit_origin(100, 100, (250, 250))
+x0, z0, x1, z1 = ORS.site_extent(ORS.layout(*fo))
+check("fit_origin puts the whole site on a 250x250 map", x0 >= 0 and z0 >= 0 and x1 <= 250 and z1 <= 250, (fo, (x0, z0, x1, z1)))
+check("fit_origin leaves a map that already fits alone", ORS.fit_origin(20, 20, (400, 400)) == (20, 20))
+try:
+    ORS.fit_origin(100, 100, (150, 150))
+    check("a map smaller than the site is refused", False)
+except ValueError:
+    check("a map smaller than the site is refused", True)
+Lf = ORS.layout(*fo)
+df = ORS.Stage(None, True)
+with contextlib.redirect_stdout(io.StringIO()):
+    for row in ORS.BARS_ROWS:
+        ORS.ROWS[row](df, Lf)
+check("fitted bars stations are all on the 250 map", not ORS.offmap_problems(df.stations, (250, 250)), ORS.offmap_problems(df.stations, (250, 250))[:2])
+check("can-fail: the default origin 100,100 puts every bars station off a 250 map (old behaviour)",
+      len(ORS.offmap_problems(bars, (250, 250))) >= 24 - 4 and ORS.offmap_problems(bars, (250, 250)), len(ORS.offmap_problems(bars, (250, 250))))
+import subprocess  # noqa: E402
+r = subprocess.run([sys.executable, os.path.join(HERE, "owner_review_stage.py"), "--dry-run", "--origin", "100,100"], capture_output=True, text=True)
+check("an explicit origin that does not fit is refused (exit 4), nothing planned", r.returncode == 4 and "REFUSED" in r.stdout, (r.returncode, r.stdout[:200]))
+r = subprocess.run([sys.executable, os.path.join(HERE, "owner_review_stage.py"), "--dry-run"], capture_output=True, text=True)
+check("the default dry run fits the 250 map and succeeds", r.returncode == 0 and "origin moved" in r.stdout, (r.returncode, r.stdout[-200:]))
+# REVIEW_STAGER_FIX_BRIDGE_LANES_SWAPPED: the caption's lane word must match the map (RimWorld z grows north)
+brs = [st for st in d.stations if st["row"] == "bars_bridges" and "suspension" in st["text"]]
+def zof(st): return st["rect"][1]
+ok_lanes = True
+for tier in ("rope", "timber", "steel", "heavy"):
+    on = [st for st in brs if st["short"] == tier + " rails on"][0]
+    off_ = [st for st in brs if st["short"] == tier + " rails off"][0]
+    ok_lanes = ok_lanes and ("north lane" in on["text"] and "south lane" in off_["text"]) and zof(on) > zof(off_)
+check("railings-on bridges sit NORTH (higher z) of the railings-off ones, as the captions say", ok_lanes, [(st["short"], st["rect"][1]) for st in brs][:4])
 print("selftest_owner_review_stage: %d failure(s)" % len(FAILS))
 sys.exit(1 if FAILS else 0)

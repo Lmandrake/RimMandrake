@@ -3,7 +3,7 @@
   python.exe src/RimMandrake/FlowWorks/northstar/owner_review_stage.py --dry-run     # prints the plan, no bridge, no game
   python.exe src/RimMandrake/FlowWorks/northstar/owner_review_stage.py               # LIVE: bridge held, a Playing disposable map
   python.exe src/RimMandrake/FlowWorks/northstar/owner_review_stage.py --only ladders,gates --no-save
-  options: --origin X,Z (default 100,100)  --save-name NAME  --no-save  --no-shots  --mock (FakeGame, seconds)
+  options: --origin X,Z (default 100,100, moved to fit the map)  --save-name NAME  --no-save  --no-shots  --mock (FakeGame, seconds)
   Wrap the live run in save_guard for the keeper-saves check:
   python3 src/RimMandrake/Utils/save_guard.py run --current-slot none -- python.exe <this script>
 
@@ -28,7 +28,7 @@ Rows (each gets a labelled picture; the overview picture carries all of them):
   bars_trench  (default) a colonist waist-deep (1 m) and chest-deep (1.5 m) with a shooter on flat ground; ProofTrenchCover read into notes.
   bars_access  (default) portable ladder in a 2 m pit and against a 4 m wall; climbing gear on the ground; a geared and an ungeared
             colonist in 4 m sheer pits; a pit cover over a 2 m pit.
-  bars_bridges (default) suspension bridges rope/timber/steel/heavy over 4 m pits, railings on (north lane) and off (south lane), plus a
+  bars_bridges (default) suspension bridges rope/timber/steel/heavy over 4 m pits, railings on (north lane, higher z) and off (south lane), plus a
             pit cover beside them. Built with RM_SuspensionProofs.ProofBuild "...;god" and ProofRails (the proof script's own calls).
   bars_bridge_kinds (default) the other suspension parts: steel and heavy GRATED decks, steel and heavy JETTIES, and the steel bridge in
             each of the four looks (Scrapper/Industrial/Modern/Futuristic, railings on) via ProofLook. Own lane south of bars_bridges.
@@ -136,6 +136,41 @@ def layout(ox, oz):
         bars=(ox + 150, oz), bars_rect=(ox + 150, oz - 6, 62, 76),
         ladders=(ox, oz), spikes=(ox, oz + 8), gates_sluice=(ox, oz + 16), gates_grate=(ox, oz + 25),
         shallows=(ox, oz + 34), sprinklers=(ox, oz + 49), rect=(ox - 3, oz - 6, 64, 70))
+
+
+SITE_KEYS = ("rect", "hoses_rect", "picks_rect", "bars_rect")
+DEFAULT_MAP = (250, 250)          # a dry run has no map to ask: the debug quicktest size
+FIT_MARGIN = 2
+
+
+def site_extent(L):
+    """(x0, z0, x1, z1) bounding every site rect of the layout, x1/z1 exclusive (pure)."""
+    rs = [L[k] for k in SITE_KEYS]
+    return (min(r[0] for r in rs), min(r[1] for r in rs), max(r[0] + r[2] for r in rs), max(r[1] + r[3] for r in rs))
+
+
+def fit_origin(ox, oz, size, margin=FIT_MARGIN):
+    """REVIEW_STAGER_FIX_BARS_OFF_SMALL_MAP: the origin nearest (ox, oz) at which the whole site lies inside a map of `size`
+    (W, H) with `margin` to spare. Raises ValueError when the site is larger than the map (pure)."""
+    x0, z0, x1, z1 = site_extent(layout(ox, oz))
+    W, H = size
+    if x1 - x0 + 2 * margin > W or z1 - z0 + 2 * margin > H:
+        raise ValueError("the review site is %dx%d squares, the map %dx%d: it cannot fit" % (x1 - x0, z1 - z0, W, H))
+    dx = max(margin - x0, 0) + min(W - margin - x1, 0)
+    dz = max(margin - z0, 0) + min(H - margin - z1, 0)
+    return ox + dx, oz + dz
+
+
+def offmap_problems(stations, size):
+    """[str] every station whose rect (or label cell) is not wholly on a map of `size` (pure). Never a note: a hard failure."""
+    W, H = size
+    out = []
+    for st in stations:
+        x, z, w, h = st["rect"]
+        lx, lz = station_label_cell(st)
+        if x < 0 or z < 0 or x + w > W or z + h > H or not (0 <= lx < W and 0 <= lz < H):
+            out.append("station %s %r rect %s is off the %dx%d map" % (st["n"], st.get("short"), st["rect"], W, H))
+    return out
 
 
 # ------------------------------------------------------------------ Stage: plan + execution in ONE path
@@ -801,7 +836,7 @@ def row_bars_bridges(s, L):
     for k, tier in enumerate(("rope", "timber", "steel", "heavy")):
         x0 = bx + k * BRIDGE_PITCH
         for lane, rails in ((0, "on"), (1, "off")):
-            z = bz + 40 + lane * 4
+            z = bz + 44 - lane * 4          # RimWorld z grows NORTH: lane 0 (railings on) is the north lane
             span_pit(s, x0, z)
             s.proof(SUSP, "ProofBuild", "%d,%d;%d,%d;%s;god" % (x0, z, x0 + 5, z, tier))
             s.proof(SUSP, "ProofRails", "%d,%d;%s" % (x0 + 2, z, rails))
@@ -852,7 +887,7 @@ def main(argv=None):
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--mock", action="store_true", help="FakeGame instead of the bridge (needs no game)")
     ap.add_argument("--only", default="")
-    ap.add_argument("--origin", default="100,100")
+    ap.add_argument("--origin", default=None, help="X,Z (default 100,100 moved to fit the map; an explicit origin that does not fit is refused)")
     ap.add_argument("--save-name", default=None)
     ap.add_argument("--no-save", action="store_true")
     ap.add_argument("--no-shots", action="store_true")
@@ -862,7 +897,8 @@ def main(argv=None):
     for row in only:        # before any bridge call: an unknown row must not clear a site first
         if row not in ALL_ROWS + OPT_ROWS:
             ap.error("unknown row %r (rows: %s)" % (row, ", ".join(ALL_ROWS + OPT_ROWS)))
-    ox, oz = map(int, a.origin.split(","))
+    msize = DEFAULT_MAP if a.dry_run else None
+    ox, oz = map(int, (a.origin or "100,100").split(","))
     L = layout(ox, oz)
     name = a.save_name or "FLOWWORKS_OWNER_REVIEW_%s" % time.strftime("%Y%m%d_%H%M")
     w = None
@@ -873,6 +909,20 @@ def main(argv=None):
         out = os.path.join(C.REPO, "Transient", "owner_review_stage_mock" if a.mock else "owner_review_stage")
         w = C.make_walk(a, out)
     s = Stage(w, a.dry_run)
+    if msize is None:
+        msize = C.map_size(w)
+    try:
+        fit = fit_origin(ox, oz, msize)
+    except ValueError as e:
+        print("REFUSED: %s" % e)
+        return 4
+    if fit != (ox, oz):
+        if a.origin:
+            print("REFUSED: origin %s puts the site off the %dx%d map (it fits at %s); nothing was staged" % ((ox, oz), msize[0], msize[1], fit))
+            return 4
+        ox, oz = fit
+        L = layout(ox, oz)
+        s.notes.append("origin moved to %s to fit the %dx%d map" % (fit, msize[0], msize[1]))
     s.say("OWNER REVIEW MAP %s  origin %s  rect %s  rows %s" % (name, (ox, oz), L["rect"], only))
     if not a.dry_run and not a.mock:
         mi = s.w.call("jawa/map_info") or {}
@@ -912,6 +962,10 @@ def main(argv=None):
             caps["gates_grate"] = row_gates(s, L, "RM_SecurityGrateDoor", "gates_grate", "Steel")
         else:
             caps[row] = ROWS[row](s, L)
+    off = offmap_problems(s.stations, msize)
+    if off:        # backstop: fit_origin above already refuses a site that does not fit; an off-map station is never a note
+        print("REFUSED (not saved): %d station(s) off the map: %s" % (len(off), "; ".join(off[:3])))
+        return 4
     s.labels()                       # every station numbered in the world, the same number as its caption line
     for p in layout_problems(s.stations, rows=ALL_ROWS):
         s.notes.append("LAYOUT: " + p)
