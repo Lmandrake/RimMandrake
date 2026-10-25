@@ -70,6 +70,11 @@ def tuning_checks():
         got = [(c, l, a) for _, c, l, a in SH.picks_for({"snapshot": str(sp), "decisions": {"RM_P": row}}, [rec, purged_only])]
         check("picks_for: picked render the pipeline REGENed -> should_accept; purged off-sheet file ACCEPTed -> should_regen",
               got == [("B", SH.PICKED, "should_accept"), ("-", SH.PURGED, "should_regen")], got)
+        import io, contextlib
+        eb = io.StringIO()
+        with contextlib.redirect_stderr(eb):
+            gone = SH.picks_for({"snapshot": str(Path(td) / "culled.json"), "decisions": {"RM_P": row}}, [rec])
+        check("picks_for: a culled snapshot is UNMEASURED, not a crash", gone == [] and "picks UNMEASURED" in eb.getvalue(), eb.getvalue())
 
     # --- (b)/(c) measured hooks: inert without the policy keys; floor fails closed on a missing confidence
     pol = P.load_policy()

@@ -258,7 +258,14 @@ def match_column(rec: dict, snap_row: dict) -> str | None:
 
 def picks_for(d: dict, recs: list) -> list:
     """[(record, column, label, implied answer)] for every judged record whose picture is a column on his sheet."""
-    snap = json.loads((ROOT / d["snapshot"]).read_text()) if d.get("snapshot") else {"rows": {}}
+    snap = {"rows": {}}
+    if d.get("snapshot"):
+        try:
+            snap = json.loads((ROOT / d["snapshot"]).read_text())
+        except (OSError, ValueError) as e:   # culled from Transient: his explicit answers still ingest; picks cannot
+            print(f"[art_eval] sheet {d.get('sheetId')}: snapshot {d['snapshot']} unreadable ({e.__class__.__name__}) — "
+                  "picks UNMEASURED (explicit KEEP/OVERRIDE answers still ingest)", file=sys.stderr)
+            return []
     groups = by_row(recs)
     out = []
     for subj, row in (d.get("decisions") or {}).items():
