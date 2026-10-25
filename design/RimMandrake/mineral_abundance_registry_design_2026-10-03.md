@@ -213,8 +213,12 @@ GUESS rows stay in the sheet and are reported, not shipped. Rows that merge mate
 (salts, bezoars, brine beds, donor oddities) split into one material each at emission so each has its
 own setting.
 
-51 rows today: every one of the 73 inventoried materials is covered (donor oddities that never reach a
-map share one row), plus durasteel, duranium, doonium and the promised Scald materials.
+52 rows today (2026-10-25): every one of the 73 inventoried materials is covered (donor oddities that
+never reach a map share one row), plus durasteel, duranium, doonium and the promised Scald materials.
+Seep-salt and delta salt were merged into RM_RawSalt (coarse-salts row) and fulgurite was excised, so
+their rows are gone. The `bindings` column (grammar in the generator's docstring: `role:defName`
+tokens, roles id/item/mineable/producer/zero/retire, `" | "` splits a merged row) is what the
+generator reads; the free-text `defs` column is for people.
 **Every biome value is marked GUESS unless its status says otherwise**; the numbers are a starting
 point for each biome's sitting, never a ruling.
 
@@ -369,7 +373,7 @@ behaviour on a biome with no quarryable minerals (recommended: local rock chunks
 
 | wave | what | size |
 |---|---|---|
-| R1 | `gen_mineral_registry.py`: CSV validate, coverage check against the def dump, emit `RM_MineralRegistryDef` for RULED/BUILT rows | S |
+| R1 | `gen_mineral_registry.py`: CSV validate, coverage check against the def dump, emit `RM_MineralRegistryDef` for RULED/BUILT rows. BUILT 2026-10-25: also regenerates DeepDrill's `RM_DeepHomeTable.xml` (`--write-deep`), so R4's deep half already exists in mandrake.rm.deepdrill; the registry XML is a staged artifact (`--registry-out`) until R2 defines the class | S |
 | R2 | `RimMandrake.Minerals` policy service: startup zeroing, unregistered suppression, settings screen | M, C#, Opus |
 | R3 | surface adapter: per-biome GenStep with stochastic lump counts + rock diagnostic | M |
 | R4 | deep adapter (prefix) and quarry adapter (transpiler) | S each |
