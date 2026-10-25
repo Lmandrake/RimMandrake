@@ -31,7 +31,9 @@ WHAT IS BLOCKED
   Write/Edit/MultiEdit under design/validation_walks/ that introduces
       `state: VALIDATED`, or a `validated-hash:` with a value
   Write/Edit/MultiEdit to infrastructure/state/modcheck_status.json
-  Bash that writes either of those (`>`, `>>`, `tee`, `sed -i`)
+  Bash that writes either of those (`>`, `>>`, `tee`, `sed -i`, `perl -i`, `cp`, `mv`,
+      python `open(..,'w')` / `write_text` / `json.dump`); for a walk, only when the
+      command itself carries the forged `state: VALIDATED` / hash text
 
 WHAT IS NOT BLOCKED
 ===================
@@ -61,9 +63,14 @@ EDIT_TOOLS = ("Write", "Edit", "MultiEdit")
 FORGED_STATE = re.compile(r"^[ \t]*state:[ \t]*VALIDATED[ \t]*$", re.M | re.I)
 FORGED_HASH = re.compile(r"^[ \t]*validated-hash:[ \t]*\S+", re.M | re.I)
 
-BASH_WRITE = re.compile(r">>?\s*\S*%s|tee\s+\S*%s|sed\s+(-\w+\s+)*-i"
+BASH_WRITE = re.compile(r">>?\|?\s*\S*(?:%s|validation_walks)|\btee\b[^|;&]*(?:%s|validation_walks)|sed\s+(-\w+\s+)*-i|\bperl\s+-\w*i|"
+                        r"(?:^|[;&|(]|\bsudo)\s*(?:cp|mv|install|dd|truncate|rsync)\b|"
+                        r"\bwrite_text\b|\bjson\.dump\b|open\([^)]*[\"'][wa]\+?[\"']|\bshutil\.(?:copy|move)|\bos\.replace\b"
                         % (re.escape("modcheck_status.json"),
                            re.escape("modcheck_status.json")))
+# A Bash write into a walk is only an offence when it carries the forged text itself
+# (wave 7: `sed -i 's/state: DRAFT/state: VALIDATED/' design/validation_walks/..` passed).
+BASH_FORGED = re.compile(r"state:[ \t]*VALIDATED\b|validated-hash:[ \t]*[0-9a-f]{8}", re.I)
 
 VALIDATE_CMD = ('python3 src/RimMandrake/Utils/modcheck/cli.py validate <mod> '
                 '--owner-said "<his verbatim words>"')
@@ -90,6 +97,9 @@ def offence(tool, tool_input):
             return ("this writes %s by hand. That registry is the output of "
                     "`modcheck/status.py`'s GREEN gate, not a document"
                     % REGISTRY)
+        if "validation_walks" in cmd and BASH_WRITE.search(cmd) and BASH_FORGED.search(cmd):
+            return ("this writes `state: VALIDATED` or a `validated-hash:` value into a "
+                    "validation walk by hand. Only the owner validates a checklist")
         return None
 
     if tool not in EDIT_TOOLS:

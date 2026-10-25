@@ -54,6 +54,15 @@ CASES = [
     (DENY, "Bash", {"command": 'echo "{}" > %s' % REGISTRY}),
     (DENY, "Bash", {"command": "sed -i 's/RED/GREEN/' %s" % REGISTRY}),
     (DENY, "Bash", {"command": "cat x | tee %s" % REGISTRY}),
+    # wave 7: copy/move/python writes of the registry, and a Bash forgery of a walk
+    (DENY, "Bash", {"command": "cp /tmp/forged.json %s" % REGISTRY}),
+    (DENY, "Bash", {"command": "mv /tmp/forged.json %s" % REGISTRY}),
+    (DENY, "Bash", {"command": "python3 -c \"import json; json.dump({}, open('%s', 'w'))\"" % REGISTRY}),
+    (DENY, "Bash", {"command": "sed -i 's/state: DRAFT/state: VALIDATED/' %s" % WALK}),
+    (DENY, "Bash", {"command": "printf 'validated-hash: %s\\n' >> %s" % ("ab" * 32, WALK)}),
+    (DENY, "Bash", {"command": "cat x | tee -a %s" % REGISTRY}),
+    (ALLOW, "Bash", {"command": "sed -i 's/old step/new step/' %s" % WALK}),
+    (ALLOW, "Bash", {"command": "grep -n 'state: VALIDATED' %s" % WALK}),
 
     # ---- must ALLOW: drafting, which is the agent's actual job -------------
     (ALLOW, "Write", {"file_path": WALK, "content": DRAFT_SECTION}),
