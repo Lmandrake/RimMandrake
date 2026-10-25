@@ -16,5 +16,8 @@ set -o pipefail
 script="\$ProgressPreference='SilentlyContinue'
 $(cat)"
 enc=$(printf '%s' "$script" | iconv -f utf-8 -t utf-16le | base64 -w0)
+# cmd.exe caps a command line at 8191 chars; base64 of UTF-16 is ~2.7x the script, so a script
+# over ~2900 chars would be cut off. Refuse rather than run half a script.
+[ ${#enc} -le 8000 ] || { echo "sps.sh: script too long for cmd.exe (${#enc} encoded chars > 8000); copy a .ps1 over and run it with -File" >&2; exit 2; }
 exec timeout "${T:-120}" ssh -o BatchMode=yes -o ConnectTimeout=8 -o LogLevel=ERROR "${STEVE_WIN:-sjlewis@192.168.86.87}" \
     "powershell -NoProfile -NonInteractive -EncodedCommand $enc"
