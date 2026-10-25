@@ -75,6 +75,21 @@ def tuning_checks():
         with contextlib.redirect_stderr(eb):
             gone = SH.picks_for({"snapshot": str(Path(td) / "culled.json"), "decisions": {"RM_P": row}}, [rec])
         check("picks_for: a culled snapshot is UNMEASURED, not a crash", gone == [] and "picks UNMEASURED" in eb.getvalue(), eb.getvalue())
+        # harvest: one picture judged in two runs is one row (latest run); a --test run adds none
+        old_state = SH.STATE
+        SH.STATE = Path(td) / "st"
+        try:
+            for rid, test, dec in (("run_a", False, "REGEN"), ("run_b", False, "ACCEPT"), ("run_t", True, "REGEN")):
+                (SH.STATE / "runs" / rid).mkdir(parents=True)
+                (SH.STATE / "runs" / rid / "run.json").write_text(json.dumps({"test": test}))
+                (SH.STATE / "runs" / rid / "decisions.jsonl").write_text(json.dumps(dict(rec, decision=dec)) + "\n")
+            dpath = Path(td) / "d.json"
+            dpath.write_text(json.dumps({"sheetId": "S", "snapshot": str(sp), "decisions": {"RM_P": row}}))
+            hv = SH.harvest([dpath])
+            check("harvest: a picture judged in two runs is one row (the latest), a test run adds none",
+                  [(h["run"], h["column"]) for h in hv] == [("run_b", "B")], [(h["run"], h["column"]) for h in hv])
+        finally:
+            SH.STATE = old_state
 
     # --- (b)/(c) measured hooks: inert without the policy keys; floor fails closed on a missing confidence
     pol = P.load_policy()

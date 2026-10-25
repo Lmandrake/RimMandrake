@@ -31,6 +31,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import ledger as LG  # noqa: E402
 import policy as P  # noqa: E402
+import round_series as RSR  # noqa: E402
 
 ROOT = P.ROOT
 STATE = ROOT / "infrastructure/state/art_eval"
@@ -292,12 +293,29 @@ def harvest(decision_paths: list, runs: list | None = None) -> list:
     for rid in runs or sorted(p.name for p in rdir.iterdir() if (p / "decisions.jsonl").is_file()):
         if rid.startswith(("regress_", "race_")):
             continue
+        try:   # a --test run is a dry run, not a production judgement of the picture (missing run.json: kept)
+            if json.loads((rdir / rid / "run.json").read_text()).get("test"):
+                continue
+        except (OSError, ValueError):
+            pass
         for r in load_run(rid):
             recs.append(dict(r, _run=rid))
     out = []
     for dp in decision_paths:
         d = json.loads(Path(dp).read_text())
+        picked, seen = [], {}
         for r, L, label, ans in picks_for(d, recs):
+            # one picture judged in two runs is ONE tuning row (the latest judgement); a record with no source shas
+            # has no picture identity and is never merged
+            k = RSR.picture_key(r)
+            if k is None:
+                picked.append((r, L, label, ans))
+            elif (r["subject"], k) in seen:
+                picked[seen[(r["subject"], k)]] = (r, L, label, ans)
+            else:
+                seen[(r["subject"], k)] = len(picked)
+                picked.append((r, L, label, ans))
+        for r, L, label, ans in picked:
             o, g = r.get("opus") or {}, r.get("gpt") or {}
             out.append({"sheet": d.get("sheetId"), "subject": r["subject"], "run": r["_run"], "candidate": r.get("candidate"),
                         "column": L, "label": label, "owner_wants": label in POSITIVE, "pipeline_decision": r.get("decision"),
