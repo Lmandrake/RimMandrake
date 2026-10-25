@@ -39,7 +39,7 @@ rimflow file <ID> --for FOR --title TITLE [--kind K] [--row N]
              create work for ANY seat, including another's.
              --replaces ID supersedes ID in the same act (parent closes, names successor).
 
-rimflow claim <ID>          take ownership; always reaches `ready`
+rimflow claim <ID>          take ownership; lands in `doing` under a live lease (was `ready` before the 2026-10 lease redesign)
 rimflow start <ID>          begin work; never refused for missing prose
 
 rimflow close <ID> [--sha SHA] [--reason REASON]
