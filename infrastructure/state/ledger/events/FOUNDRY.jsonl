@@ -7726,3 +7726,14 @@
 {"seat":"FOUNDRY","event":"close","id":"ARTEVAL_CANON_CARD_FIX_LLAMA_SLIPPED","sha":"f51549835a","ts":"2026-10-25T22:20:47Z","tsn":1792966847757399498}
 {"seat":"FOUNDRY","event":"close","id":"ENACT_PURGE_FIX_ALIAS_ASYMMETRY","sha":"9f3704cf78","ts":"2026-10-25T22:20:49Z","tsn":1792966849635446268}
 {"seat":"FOUNDRY","event":"close","id":"ART_SERIES_WIRE_STOP_AND_CANCEL","sha":"736a9cd094f3","ts":"2026-10-25T22:20:49Z","tsn":1792966849824786282}
+{"seat":"FOUNDRY","event":"lease","id":"ARTEVAL_STRICTNESS_TUNE_KEEPS_REDRAWN","action":"take","token":"FOUNDRY.pid32890.251ad1f0","expires":"2026-10-25T23:06:03Z","ts":"2026-10-25T22:21:03Z","tsn":1792966863456140646}
+{"seat":"FOUNDRY","event":"claim","id":"ARTEVAL_STRICTNESS_TUNE_KEEPS_REDRAWN","ts":"2026-10-25T22:21:03Z","tsn":1792966863874261244}
+{"seat":"FOUNDRY","event":"start","id":"ARTEVAL_STRICTNESS_TUNE_KEEPS_REDRAWN","ts":"2026-10-25T22:21:04Z","tsn":1792966864267654788}
+{"seat":"FOUNDRY","event":"lease","id":"ART_EVAL_SIZEJUMP_TUNE_OVERBLOCK","action":"take","token":"FOUNDRY.pid33044.2cbe4f54","expires":"2026-10-25T23:06:05Z","ts":"2026-10-25T22:21:05Z","tsn":1792966866059466056}
+{"seat":"FOUNDRY","event":"claim","id":"ART_EVAL_SIZEJUMP_TUNE_OVERBLOCK","ts":"2026-10-25T22:21:06Z","tsn":1792966866529413244}
+{"seat":"FOUNDRY","event":"start","id":"ART_EVAL_SIZEJUMP_TUNE_OVERBLOCK","ts":"2026-10-25T22:21:06Z","tsn":1792966866936873185}
+{"seat":"FOUNDRY","event":"lease","id":"ENACT_STALE_SLOT_KEY_MIGRATE_PATH","action":"take","token":"FOUNDRY.pid33777.a77810eb","expires":"2026-10-25T23:06:25Z","ts":"2026-10-25T22:21:25Z","tsn":1792966886137333430}
+{"seat":"FOUNDRY","event":"claim","id":"ENACT_STALE_SLOT_KEY_MIGRATE_PATH","ts":"2026-10-25T22:21:26Z","tsn":1792966886524151614}
+{"seat":"FOUNDRY","event":"start","id":"ENACT_STALE_SLOT_KEY_MIGRATE_PATH","ts":"2026-10-25T22:21:26Z","tsn":1792966886900464706}
+{"seat":"FOUNDRY","event":"close","id":"ARTEVAL_STRICTNESS_TUNE_KEEPS_REDRAWN","sha":"fbea2ea050","why":"V1cal raced and adopted in fbea2ea050 (agree 27->36, false accepts 0->0); residual 15 false rejects need a live round 2","ts":"2026-10-25T22:21:27Z","tsn":1792966887305377297}
+{"seat":"FOUNDRY","event":"block","id":"ART_EVAL_SIZEJUMP_TUNE_OVERBLOCK","reason":"needs live regeneration: tracked by ARTEVAL_JUDGE_LIVE_HEAD_TO_HEAD","why":"offline replay (f4436e4adc) shows size_jump thresholds cannot separate kept from purged; further tuning needs live head-to-head","ts":"2026-10-25T22:21:28Z","tsn":1792966888946655988}
