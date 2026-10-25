@@ -443,88 +443,94 @@ def build(src_root, tree_fn, holds, log=print):
 
     # --- write
     tmp = tempfile.mkdtemp(prefix="compose_%s_" % target)
-    out = os.path.join(tmp, target)
-    os.makedirs(out)
-    extra_holds = []
-    fmap = {p: m["about"]["packageId"].lower() for p in drop_ids
-            if p != m["about"]["packageId"].lower()}
-    nfix = 0
-    tname = (m["about"].get("name") or "").strip()
-    nmap = {}
-    for e, sdir, pid, rels in plan:
-        try:
-            nm = (ET.parse(os.path.join(sdir, "About", "About.xml")).getroot().findtext("name") or "").strip()
-        except (OSError, ET.ParseError):
-            nm = ""
-        if nm and tname and nm.lower() != tname.lower():
-            nmap[nm.lower()] = tname
-    for e, sdir, pid, rels in plan:
-        d = dest_rel(e)
-        for r in rels:
-            t = os.path.join(out, d, r)
-            os.makedirs(os.path.dirname(t), exist_ok=True)
-            shutil.copy2(os.path.join(sdir, r), t)
-            if r.lower().endswith(".xml"):
-                try:
-                    with open(t, "rb") as fh:
-                        txt = fh.read().decode("utf-8")
-                except UnicodeDecodeError:
-                    txt = ""
-                new, nh = txt, 0
-                if "MayRequire" in new:
-                    new, hits = rewrite_mayrequire(new, fmap)
-                    nh += len(hits)
-                if nmap and "<mods>" in new.lower():
-                    new, hits = rewrite_findmod(new, nmap)
-                    nh += len(hits)
-                if nh:
-                    nfix += nh
-                    with open(t, "wb") as fh:
-                        fh.write(new.encode("utf-8"))
-            key = "%s/%s" % (e["source"], r.replace(os.sep, "/"))
-            for h in holds:
-                if fnmatch.fnmatch(key, h["pattern"]):
-                    h["hits"] += 1
-                    extra_holds.append({
-                        "pattern": "%s/%s/%s" % (target, d, r.replace(os.sep, "/")),
-                        "reason": "%s (hold DEPLOY_HOLD.txt:%d on %s)"
-                                  % (h["reason"], h["lineno"], key),
-                        "lineno": h["lineno"], "hits": 0})
-                    break
-        log("  compose  %-20s %-34s %4d file(s) -> %s" % (e["key"], pid, len(rels), d))
-    os.makedirs(os.path.join(out, "Assemblies"))
-    for p in shell_files:
-        shutil.copy2(p, os.path.join(out, "Assemblies", os.path.basename(p)))
-    log("  compose  %-20s %-34s %4d file(s) -> Assemblies/"
-        % ("(settings shell)", m["shell"]["source"], len(shell_files)))
+    try:
+        out = os.path.join(tmp, target)
+        os.makedirs(out)
+        extra_holds = []
+        fmap = {p: m["about"]["packageId"].lower() for p in drop_ids
+                if p != m["about"]["packageId"].lower()}
+        nfix = 0
+        tname = (m["about"].get("name") or "").strip()
+        nmap = {}
+        for e, sdir, pid, rels in plan:
+            try:
+                nm = (ET.parse(os.path.join(sdir, "About", "About.xml")).getroot().findtext("name") or "").strip()
+            except (OSError, ET.ParseError):
+                nm = ""
+            if nm and tname and nm.lower() != tname.lower():
+                nmap[nm.lower()] = tname
+        for e, sdir, pid, rels in plan:
+            d = dest_rel(e)
+            for r in rels:
+                t = os.path.join(out, d, r)
+                os.makedirs(os.path.dirname(t), exist_ok=True)
+                shutil.copy2(os.path.join(sdir, r), t)
+                if r.lower().endswith(".xml"):
+                    try:
+                        with open(t, "rb") as fh:
+                            txt = fh.read().decode("utf-8")
+                    except UnicodeDecodeError:
+                        txt = ""
+                    new, nh = txt, 0
+                    if "MayRequire" in new:
+                        new, hits = rewrite_mayrequire(new, fmap)
+                        nh += len(hits)
+                    if nmap and "<mods>" in new.lower():
+                        new, hits = rewrite_findmod(new, nmap)
+                        nh += len(hits)
+                    if nh:
+                        nfix += nh
+                        with open(t, "wb") as fh:
+                            fh.write(new.encode("utf-8"))
+                key = "%s/%s" % (e["source"], r.replace(os.sep, "/"))
+                for h in holds:
+                    if fnmatch.fnmatch(key, h["pattern"]):
+                        h["hits"] += 1
+                        extra_holds.append({
+                            "pattern": "%s/%s/%s" % (target, d, r.replace(os.sep, "/")),
+                            "reason": "%s (hold DEPLOY_HOLD.txt:%d on %s)"
+                                      % (h["reason"], h["lineno"], key),
+                            "lineno": h["lineno"], "hits": 0})
+                        break
+            log("  compose  %-20s %-34s %4d file(s) -> %s" % (e["key"], pid, len(rels), d))
+        os.makedirs(os.path.join(out, "Assemblies"))
+        for p in shell_files:
+            shutil.copy2(p, os.path.join(out, "Assemblies", os.path.basename(p)))
+        log("  compose  %-20s %-34s %4d file(s) -> Assemblies/"
+            % ("(settings shell)", m["shell"]["source"], len(shell_files)))
 
-    about_root, prov = union_about(abouts, drop_ids, m)
-    _write_xml(about_root, os.path.join(out, "About", "About.xml"))
+        about_root, prov = union_about(abouts, drop_ids, m)
+        _write_xml(about_root, os.path.join(out, "About", "About.xml"))
 
-    lf = ET.Element("loadFolders")
-    v = ET.SubElement(lf, "v" + m["about"]["supportedVersions"][-1])
-    ET.SubElement(v, "li").text = "/"
-    for e, *_ in plan:
-        ET.SubElement(v, "li").text = dest_rel(e)
-    _write_xml(lf, os.path.join(out, "LoadFolders.xml"))
+        lf = ET.Element("loadFolders")
+        v = ET.SubElement(lf, "v" + m["about"]["supportedVersions"][-1])
+        ET.SubElement(v, "li").text = "/"
+        for e, *_ in plan:
+            ET.SubElement(v, "li").text = dest_rel(e)
+        _write_xml(lf, os.path.join(out, "LoadFolders.xml"))
 
-    ro = ET.Element("BaroqueBiomesRoster")
-    ro.set("compose_wave", str(m.get("compose_wave", 0)))
-    for e, sdir, pid, _ in plan:
-        n = ET.SubElement(ro, "entry", {
-            "key": e["key"], "label": e["label"], "group": e.get("group", "biome"),
-            "sourcePackageId": pid})
-        ET.SubElement(n, "blurb").text = e.get("blurb", "")
-        for dn in biome_defnames(sdir):
-            ET.SubElement(n, "biomeDef").text = dn
-    _write_xml(ro, os.path.join(out, "Biomes.roster.xml"))
+        ro = ET.Element("BaroqueBiomesRoster")
+        ro.set("compose_wave", str(m.get("compose_wave", 0)))
+        for e, sdir, pid, _ in plan:
+            n = ET.SubElement(ro, "entry", {
+                "key": e["key"], "label": e["label"], "group": e.get("group", "biome"),
+                "sourcePackageId": pid})
+            ET.SubElement(n, "blurb").text = e.get("blurb", "")
+            for dn in biome_defnames(sdir):
+                ET.SubElement(n, "biomeDef").text = dn
+        _write_xml(ro, os.path.join(out, "Biomes.roster.xml"))
 
-    deps = [pid for (f, pid) in prov if f == "modDependencies"]
-    log("  compose  About.xml: %d hard dependencies (%s); %d folded packageId(s) "
-        "dropped from every list" % (len(deps), ", ".join(sorted(deps)),
-                                     len(drop_ids) - 1))
-    if nfix:
-        log("  compose  MayRequire: rewrote %d folded-id guard(s) to %s"
-            % (nfix, m["about"]["packageId"]))
-    log("  compose  LoadFolders.xml: / + %d root(s), manifest order\n" % len(plan))
-    return target, out, extra_holds
+        deps = [pid for (f, pid) in prov if f == "modDependencies"]
+        log("  compose  About.xml: %d hard dependencies (%s); %d folded packageId(s) "
+            "dropped from every list" % (len(deps), ", ".join(sorted(deps)),
+                                         len(drop_ids) - 1))
+        if nfix:
+            log("  compose  MayRequire: rewrote %d folded-id guard(s) to %s"
+                % (nfix, m["about"]["packageId"]))
+        log("  compose  LoadFolders.xml: / + %d root(s), manifest order\n" % len(plan))
+        return target, out, extra_holds
+    except BaseException:
+        # a refused/failed compose must not strand a ~470 MB tree (BIOMESCOMPOSE_FIX_TEMPDIR_LEAK); on
+        # success the caller owns the dir and deletes it
+        shutil.rmtree(tmp, ignore_errors=True)
+        raise

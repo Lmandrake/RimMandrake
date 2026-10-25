@@ -636,17 +636,21 @@ def main():
         except biomes_compose.ComposeError as e:
             sys.exit("deploy_custom_mods.py: REFUSING TO COMPOSE: %s" % e)
         compose_tmp = os.path.dirname(csrc)
-        holds = holds + extra
-        targets = [(cname, csrc)] + [(n, mod_dir(n)) for n in (args.with_mods or [])]
-        args.compose_target = cname
-        # A folded member's OWN packageId still active in ModsConfig loads that member a second time beside the
-        # composed copy (its defs and types twice). EXPLOSIVE_GROWTH_MERGE_COMES_HOME folded a mod that was live
-        # standalone; say so on every compose plan until the list is fixed. Never edits ModsConfig itself.
-        twice = sorted(set(biomes_compose.folded_ids(SRC_ROOT)) & active)
-        if twice:
-            print("WARNING: folded into %s but STILL ACTIVE standalone in ModsConfig.xml: %s\n"
-                  "  remove them from the mod list (and their old deployed folders) before the next load, or their "
-                  "defs and types load twice." % (cname, ", ".join(twice)))
+        try:
+            holds = holds + extra
+            targets = [(cname, csrc)] + [(n, mod_dir(n)) for n in (args.with_mods or [])]
+            args.compose_target = cname
+            # A folded member's OWN packageId still active in ModsConfig loads that member a second time beside the
+            # composed copy (its defs and types twice). EXPLOSIVE_GROWTH_MERGE_COMES_HOME folded a mod that was live
+            # standalone; say so on every compose plan until the list is fixed. Never edits ModsConfig itself.
+            twice = sorted(set(biomes_compose.folded_ids(SRC_ROOT)) & active)
+            if twice:
+                print("WARNING: folded into %s but STILL ACTIVE standalone in ModsConfig.xml: %s\n"
+                      "  remove them from the mod list (and their old deployed folders) before the next load, or their "
+                      "defs and types load twice." % (cname, ", ".join(twice)))
+        except BaseException:
+            shutil.rmtree(compose_tmp, ignore_errors=True)   # the build succeeded; nothing below may strand it
+            raise
     else:
         names = args.mod or sorted(known_mods)
         targets = [(n, mod_dir(n)) for n in names]
