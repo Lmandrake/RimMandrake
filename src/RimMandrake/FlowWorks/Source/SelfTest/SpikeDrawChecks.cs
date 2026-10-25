@@ -133,6 +133,32 @@ namespace RimMandrake.FlowWorks.SelfTest
                 }
             });
 
+            Case("Spikes_north_cell_keeps_density", () =>
+            {
+                // PIT_SPIKES_TUNE_NORTH_ROW_TOO_SPARSE: the cell under the north wall (face shortens its floor to ~half) drew
+                // about half a middle cell's stakes per area (rows that did not fit whole were dropped). Over 40 seeds its
+                // stakes per floor area must stay within 15% of an open cell's, every quad inside its rect.
+                var q = new List<float>();
+                for (int v = 0; v < RM_SpikeStakes.Variants.Length; v++)
+                {
+                    RM_SpikeDrawMath.FloorRect(8, 8, 8, 8, 8, true, true, out float a0, out float b0, out float a1, out float b1);
+                    RM_SpikeDrawMath.FloorRect(8, 0, 8, 8, 8, true, true, out float n0, out float m0, out float n1, out float m1);
+                    Assert(m1 < 0.8f, "the north cell's rect is shorter (face)");
+                    int ko = 0, kn = 0;
+                    for (int seed = 0; seed < 40; seed++)
+                    {
+                        ko += RM_SpikeDrawMath.Layout(v, seed, a0, b0, a1, b1, q);
+                        kn += RM_SpikeDrawMath.Layout(v, seed, n0, m0, n1, m1, q);
+                        for (int i = 0; i < q.Count; i += RM_SpikeDrawMath.Out)
+                        {
+                            Assert(q[i + 1] >= m0 && q[i + 1] + q[i + 3] <= m1 + 1e-5f, "variant " + v + ": a north stake leaves its rect");
+                        }
+                    }
+                    float ratio = (kn / ((n1 - n0) * (m1 - m0))) / (ko / ((a1 - a0) * (b1 - b0)));
+                    Assert(ratio > 0.85f && ratio < 1.15f, "variant " + v + ": north-cell density " + ratio + " of an open cell's");
+                }
+            });
+
             Case("Spikes_submerge_fast", () =>
             {
                 Assert(RM_SpikeDrawMath.SubmergedAlpha(0) == 1f, "dry: fully drawn");
@@ -168,8 +194,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                     && RM_SpikeDrawMath.Hash(-3, 99) == 1249282371u, "hash parity");
                 var quads = new List<float>();
                 int k = RM_SpikeDrawMath.Layout(1, 42, 0.04f, 0.065f, 0.96f, 0.5f, quads);
-                Assert(k == 11, "layout count parity: " + k);
-                float[] first = { 0.429432f, 0.174196f, 0.09375f, 0.304688f, 0.550781f, 0.675781f, 0.574219f, 0.828125f };
+                Assert(k == 18, "layout count parity: " + k);
+                float[] first = { 0.35623f, 0.193124f, 0.09375f, 0.296876f, 0.050781f, 0.675781f, 0.074219f, 0.824219f };
                 float[] last = { 0.85625f, 0.075f, 0.09375f, 0.320312f, 0.925781f, 0.671875f, 0.949219f, 0.832031f };
                 int o = (k - 1) * RM_SpikeDrawMath.Out;
                 for (int i = 0; i < RM_SpikeDrawMath.Out; i++)

@@ -109,6 +109,10 @@ namespace RimMandrake.FlowWorks
 			int nrow = Math.Max(1, (int)Math.Floor(span / RM_SpikeStakes.Pitch[variant, 1]) + 1);
 			int ncol = Math.Max(1, (int)Math.Round(1f / RM_SpikeStakes.Pitch[variant, 0], MidpointRounding.AwayFromZero));
 			float rpz = nrow > 1 ? span / (nrow - 1) : 0f, rpx = 1f / ncol;
+			// PIT_SPIKES_TUNE_NORTH_ROW_TOO_SPARSE: a rect the north face shortens keeps every row the cell top would keep: a
+			// base up to half a stake under the rect top, plus half a row pitch, is pulled down inside (as the cell top pulls in
+			// its top row) instead of being dropped, so the north cell keeps a middle cell's density on its shorter floor.
+			float cap = topz - hmax * s * 0.5f + 0.5f * rpz;
 			var rows = new List<float[]>();
 			for (int pass = 0; pass < 2 && rows.Count == 0; pass++)
 			{
@@ -127,8 +131,8 @@ namespace RimMandrake.FlowWorks
 						float jz = (((h >> 16) & 0xFF) / 255f - 0.5f) * 0.5f * rpz;
 						if (xc + w * 0.5f <= lo || xc - w * 0.5f >= hi) continue;
 						float zb = r * rpz + jz;
-						// pass 0 keeps a stake only if it fits whole; pass 1 (a rect shorter than one row) clamps the first row in
-						if (pass == 0 ? ((zb + ht > topz && !cellTop) || (r > 0 && zb < bot)) : r != 0) continue;
+						// pass 0 keeps a stake whose base is under cap (clamped in below); pass 1 (a rect shorter than one row) clamps the first row in
+						if (pass == 0 ? ((zb > cap && !cellTop) || (r > 0 && zb < bot)) : r != 0) continue;
 						float x = Clamp(xc + jx - w * 0.5f, lo, hi - w);
 						float z = Clamp(zb, bot, topz - ht);
 						rows.Add(new[] { x, z, w, ht, lib[j + 2], lib[j + 3], lib[j + 4], lib[j + 5], k });

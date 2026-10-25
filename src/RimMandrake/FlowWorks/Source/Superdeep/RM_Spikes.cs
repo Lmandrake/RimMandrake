@@ -72,7 +72,12 @@ namespace RimMandrake.FlowWorks
 		/// <summary>Lands the spike hits on a pawn that just dropped into <paramref name="cell"/>.
 		/// Returns the number of hits landed (0 when the cell is unspiked, the setting is off, or
 		/// the pawn is flying).</summary>
-		public static int ApplyDescent(Pawn p, IntVec3 cell)
+		public static int ApplyDescent(Pawn p, IntVec3 cell) => ApplyDescent(p, cell, null);
+
+		/// <summary>ApplyDescent, also handing back each hit's DamageResult (null to skip): the proof's wound census reads
+		/// what each hit actually did, because vanilla armor (ArmorUtility.ApplyArmor, AP 0 here) can deflect a stab or turn
+		/// it Blunt (Crush / Bruise / Crack), and a solid part takes Crack, not Stab.</summary>
+		public static int ApplyDescent(Pawn p, IntVec3 cell, List<DamageWorker.DamageResult> results)
 		{
 			if (p == null || p.Dead || !p.Spawned || !RimMandrakeFlowWorksSettings.spikesEnabled
 				|| p.Flying || !HasSpikes(p.Map, cell))
@@ -87,7 +92,8 @@ namespace RimMandrake.FlowWorks
 				{
 					break;
 				}
-				p.TakeDamage(new DamageInfo(DamageDefOf.Stab, perHit));
+				DamageWorker.DamageResult r = p.TakeDamage(new DamageInfo(DamageDefOf.Stab, perHit));
+				results?.Add(r);
 				landed++;
 			}
 			return landed;
@@ -106,7 +112,10 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>Bridge proof (jawa/static_call): the descent hook, fired directly on the pawn
 		/// standing on <paramref name="cell"/> (the pit's descent detector is the live route; this
-		/// isolates the spike half). Returns "HITS n | INJURIES Stab k" for the first pawn there.</summary>
+		/// isolates the spike half). Returns "HITS n | INJURIES Stab k | WOUNDS Def c,.. | DEFLECTED d | bodySize b" for the
+		/// first pawn there. SPIKE_DESCENT_FIX_STABS_NOT_COUNTED: the census is of the wounds THESE hits made (each hit's
+		/// DamageResult), by hediff def, never a pawn-wide count of Stab hediffs (an armored pirate's hits land as
+		/// Crush / Bruise / Crack or are deflected, and old wounds are not this descent's).</summary>
 		public static string ProofDescent(Map map, IntVec3 cell)
 		{
 			if (map == null)
@@ -117,16 +126,52 @@ namespace RimMandrake.FlowWorks
 			{
 				if (t is Pawn p)
 				{
-					int hits = ApplyDescent(p, cell);
-					int stabs = 0;
-					foreach (Hediff h in p.health.hediffSet.hediffs)
+					var results = new List<DamageWorker.DamageResult>();
+					int hits = ApplyDescent(p, cell, results);
+					var names = new List<string>();
+					var counts = new List<int>();
+					int deflected = 0;
+					foreach (DamageWorker.DamageResult r in results)
 					{
-						if (h is Hediff_Injury && h.def == DamageDefOf.Stab.hediff)
+						if (r == null)
 						{
-							stabs++;
+							continue;
+						}
+						if (r.deflected)
+						{
+							deflected++;
+						}
+						if (r.hediffs == null)
+						{
+							continue;
+						}
+						foreach (Hediff h in r.hediffs)
+						{
+							if (!(h is Hediff_Injury))
+							{
+								continue;
+							}
+							int i = names.IndexOf(h.def.defName);
+							if (i < 0)
+							{
+								names.Add(h.def.defName);
+								counts.Add(1);
+							}
+							else
+							{
+								counts[i]++;
+							}
 						}
 					}
-					return "HITS " + hits + " | INJURIES Stab " + stabs + " | bodySize " + p.BodySize.ToString("0.##");
+					int si = names.IndexOf(DamageDefOf.Stab.hediff.defName);
+					var wounds = new List<string>();
+					for (int i = 0; i < names.Count; i++)
+					{
+						wounds.Add(names[i] + " " + counts[i]);
+					}
+					return "HITS " + hits + " | INJURIES Stab " + (si < 0 ? 0 : counts[si])
+						+ " | WOUNDS " + (wounds.Count == 0 ? "none" : string.Join(",", wounds))
+						+ " | DEFLECTED " + deflected + " | bodySize " + p.BodySize.ToString("0.##");
 				}
 			}
 			return "REFUSED: no pawn at " + cell;

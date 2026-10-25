@@ -42,9 +42,19 @@ def main():
     # SPIKE_DESCENT_FIX_STABS_NOT_COUNTED: run6's big pirate dies on hit 2 with 3 stab wounds; that is a stabbed descent
     for line, want in (("HITS 3 | INJURIES Stab 3 | bodySize 1", True), ("HITS 2 | INJURIES Stab 3 | bodySize 1.4", True),
                        ("HITS 3 | INJURIES Stab 0 | bodySize 1", False), ("HITS 0 | INJURIES Stab 0 | bodySize 1", False),
-                       ("REFUSED: no pawn at (1, 0, 1)", False), ("HITS 4 | INJURIES Stab 4 | bodySize 1", False)):
+                       ("REFUSED: no pawn at (1, 0, 1)", False), ("HITS 4 | INJURIES Stab 4 | bodySize 1", False),
+                       # run7: an armored pirate's three hits land as Crush/Crack, not Stab: still wounded
+                       ("HITS 3 | INJURIES Stab 0 | WOUNDS Crush 2,Crack 1 | DEFLECTED 0 | bodySize 0.8", True),
+                       ("HITS 3 | INJURIES Stab 1 | WOUNDS Stab 1,Bruise 1 | DEFLECTED 1 | bodySize 0.8", True),
+                       ("HITS 3 | INJURIES Stab 0 | WOUNDS none | DEFLECTED 0 | bodySize 1", False),
+                       ("HITS 3 | INJURIES Stab 0 | WOUNDS none | DEFLECTED 3 | bodySize 1", False)):
         if EXT.spike_descent_stabbed(line) is not want:
             probs.append("spike_descent_stabbed(%r) != %s" % (line, want))
+    for line, want in (("HITS 3 | INJURIES Stab 0 | WOUNDS none | DEFLECTED 3 | bodySize 1", True),
+                       ("HITS 3 | INJURIES Stab 0 | WOUNDS none | DEFLECTED 2 | bodySize 1", False),
+                       ("HITS 3 | INJURIES Stab 0 | bodySize 0.8", False)):
+        if EXT.spike_descent_all_armored(line) is not want:
+            probs.append("spike_descent_all_armored(%r) != %s" % (line, want))
 
     class A(object):
         mock, fresh_map, reset_settings, progress, max_job_ticks, fault = True, False, False, None, 6000, []

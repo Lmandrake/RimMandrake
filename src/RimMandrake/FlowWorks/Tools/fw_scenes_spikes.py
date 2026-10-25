@@ -169,6 +169,10 @@ def layout(variant, seed, x0, z0, x1, z1, lib=None):
     cell_top = top >= 1.0 - MARGIN - 1e-4
     nrow, ncol = max(1, int(math.floor(span / ppz)) + 1), max(1, int(math.floor(1.0 / ppx + 0.5)))
     rpz, rpx = (span / (nrow - 1) if nrow > 1 else 0.0), 1.0 / ncol
+    # PIT_SPIKES_TUNE_NORTH_ROW_TOO_SPARSE: a rect the north face shortens keeps every row the cell top would keep: a
+    # base up to half a stake under the rect top, plus half a row pitch, is pulled down inside (as the cell top pulls in
+    # its top row) instead of being dropped, so the north cell keeps a middle cell's density on its shorter floor.
+    cap = top - hmax * sc * 0.5 + 0.5 * rpz
     out = []
     for pas in range(2):
         if out:
@@ -186,7 +190,7 @@ def layout(variant, seed, x0, z0, x1, z1, lib=None):
                 if xc + w * 0.5 <= lo or xc - w * 0.5 >= hi:
                     continue
                 zb = r * rpz + jz
-                if (((zb + ht > top and not cell_top) or (r > 0 and zb < bot)) if pas == 0 else r != 0):
+                if (((zb > cap and not cell_top) or (r > 0 and zb < bot)) if pas == 0 else r != 0):
                     continue
                 out.append((clamp(xc + jx - w * 0.5, lo, hi - w), clamp(zb, bot, top - ht), w, ht) + tuple(st[2:]) + (k,))
     out.sort(key=lambda q: (-q[1], q[8]))
@@ -419,7 +423,7 @@ def render(pit, mode="after", P=160, faces=True, outline=True, atlases=None, flo
             dst[..., :3] = t[..., :3] * a_new + dst[..., :3] * (1 - a_new)
             dst[..., 3:4] = a_new + dst[..., 3:4] * (1 - a_new)
     sa = spike[..., 3:4]
-    out = rgb * (1 - sa) + spike[..., :3] * 255 * sa
+    out = rgb * (1 - sa) + spike[..., :3] * 255     # spike RGB is already premultiplied by its alpha (the over-blend above)
     img = Image.fromarray(np.clip(out, 0, 255).astype(np.uint8), "RGB")
     return dict(img=img, spike_a=spike[..., 3], wall=wall, cells=cells, P=P, pit=pit, sliver=_dilate(sliver, SLIVER_REACH),
                 used=used)

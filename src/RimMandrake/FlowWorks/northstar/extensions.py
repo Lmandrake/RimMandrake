@@ -1582,7 +1582,10 @@ def canal_spikes(t):
     with t.component("descent_onto_spikes_stabs", toggle="spikesEnabled"):
         txt = _spike_proof(t, "ProofDescent", pit[4][0], pit[4][1])
         if t._guard():
-            _expect(spike_descent_stabbed(txt), "no spike stabs on descent: %s" % txt)
+            if spike_descent_all_armored(txt):
+                raise ExpectationFailed("UNMEASURED: every spike hit was deflected by the pawn's armor (vanilla "
+                                        "ArmorUtility, AP 0), so this pawn cannot show a wound: %s" % txt)
+            _expect(spike_descent_stabbed(txt), "no spike wounds on descent: %s" % txt)
     with t.component("spikes_off_harmless", toggle="spikesEnabled"):
         with _setting(t, "spikesEnabled", False):
             txt = _spike_proof(t, "ProofDescent", pit[4][0], pit[4][1])
@@ -1590,14 +1593,36 @@ def canal_spikes(t):
                 _expect(txt.startswith("HITS 0"), "spikesEnabled OFF but spikes still hit: %s" % txt)
 
 
-def spike_descent_stabbed(txt):
-    """SPIKE_DESCENT_FIX_STABS_NOT_COUNTED: did a ProofDescent line ("HITS n | INJURIES Stab k | bodySize b") land stabs?
-    ApplyDescent stops the moment the pawn dies, and the damage scales with BodySize (40 x body / 3 per hit), so a big
-    pirate (run6: bodySize 1.4) dies on hit 2 with 3 stab wounds: 1..3 hits and at least one Stab wound is a pass.
-    The old `startswith("HITS 3")` only held for a 1.0 body."""
+def _spike_descent_parse(txt):
+    """A ProofDescent line -> (hits, stabs, wounds, deflected) or None. wounds = every injury the hits made, by def
+    (None on the pre-2026-10-25 line, which had no WOUNDS field); deflected = hits armor stopped outright."""
     import re
-    m = re.match(r"HITS (\d+) \| INJURIES Stab (\d+)", txt or "")
-    return bool(m) and 1 <= int(m.group(1)) <= 3 and int(m.group(2)) > 0
+    m = re.match(r"HITS (\d+) \| INJURIES Stab (\d+)(?: \| WOUNDS ([^|]*?) \| DEFLECTED (\d+))?", txt or "")
+    if not m:
+        return None
+    wounds = None
+    if m.group(3) is not None:
+        wounds = 0 if m.group(3).strip() == "none" else sum(int(e.rsplit(" ", 1)[1]) for e in m.group(3).split(","))
+    return int(m.group(1)), int(m.group(2)), wounds, int(m.group(4) or 0)
+
+
+def spike_descent_stabbed(txt):
+    """SPIKE_DESCENT_FIX_STABS_NOT_COUNTED: did a ProofDescent line ("HITS n | INJURIES Stab k | WOUNDS Def c,.. |
+    DEFLECTED d | bodySize b") wound the pawn? ApplyDescent stops the moment the pawn dies (a big pawn dies on hit 2), so
+    1..3 hits. The wound is ANY injury the hits made: vanilla armor turns a Sharp hit Blunt (Crush / Bruise) or a solid
+    part takes Crack, so run7's flak-vested 0.8-body pirate showed "Stab 0" after three real hits. (Tried and wrong,
+    4ad5d8b947/21b236986f: loosening the hit count to 1..3; the defect was counting only Stab hediffs.)"""
+    got = _spike_descent_parse(txt)
+    if not got or not 1 <= got[0] <= 3:
+        return False
+    hits, stabs, wounds, _ = got
+    return (wounds if wounds is not None else stabs) > 0
+
+
+def spike_descent_all_armored(txt):
+    """Every hit landed and armor deflected each one: no wound is possible on this pawn (UNMEASURED, not a spike defect)."""
+    got = _spike_descent_parse(txt)
+    return bool(got) and got[0] >= 1 and got[2] == 0 and got[3] >= got[0]
 
 
 def _door_proof(t, method, x, z):
