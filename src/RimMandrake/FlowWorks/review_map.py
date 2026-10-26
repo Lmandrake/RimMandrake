@@ -470,6 +470,15 @@ SETUPS = {
                               "the south ladder lies on the rim beyond the near lip; the west one hangs down its wall"],
                         look="weak spot: a ladder lying loose in the pit instead of hung on its wall; slid up and "
                              "slid down drawn alike"),
+    "hold_ladder_steel": dict(short="Steel ladders in and out", notice="a 5x5 pit: a steel fire-escape ladder SLID DOWN "
+                              "on its west wall, another SLID UP on its south wall, a colonist in it and steel on its floor",
+                              s="hold", after="hold_ladder", probes=["xml:defName>RM_LadderSteel<"],
+                              dig=[_pit(5, 4, 5, 5)], spawn=[("RM_LadderSteel", 5, 6, None), ("RM_LadderSteel", 7, 4, None)],
+                              items=[("Steel", 20, 7, 6)], ladder=[(7, 4, "raise")],
+                              pawns=[("Colonist", 6, 5, "player", "drafted")],
+                              try_=["undraft him: he climbs out by the west steel ladder",
+                                    "select the south ladder: Ladder down; it lies slid up on the rim until then"],
+                              look="weak spot: a steel ladder drawn like the wooden one, or slid up and slid down drawn alike"),
     "hold_ladder_raised": dict(short="A raised ladder strands him", notice="the same pit: its only ladder SLID UP on the "
                                "north wall; a ladder slid down on the east wall of a sealed 1x1 shaft beside it",
                                s="hold", after="hold_ladder", caps=["H01", "J08"],
@@ -866,6 +875,13 @@ SETUPS = {
                                  marks=[(2, 12, "detox"), (7, 12, "tar refinery"), (12, 12, "pumping")],
                                  try_=["select each: what it needs and what it makes"],
                                  look="weak spot: a kludged and a repaired plant drawn alike"),
+    "ice_melter": dict(short="Ice melter and crushed ice", notice="an ice melter bench with a heap of crushed ice beside it",
+                       s="carry", after="industry_stages_more",
+                       probes=["xml:defName>RM_IceMelter<", "xml:defName>RM_CrushedIce<", "xml:defName>RM_MeltCrushedIce<"],
+                       build=[("RM_IceMelter", 7, 6, None, None)], items=[("RM_CrushedIce", 20, 6, 8)],
+                       marks=[(7, 4, "ice melter"), (6, 10, "crushed ice")],
+                       try_=["select the melter: its bills offer melt crushed ice (and melt blue ice); it needs power"],
+                       look="weak spot: crushed ice drawn like plain ice, or a melter with no melt bill"),
     "carry_kits": dict(short="Liquid kits", notice="a reaction vat between two tanks; the bath bills, scalding floods "
                        "and tar stains have nothing to show until a biome wires them in",
                        # the 2x2 tanks TOUCH the 1x1 vat (x5-6 | x7 | x8-9): TanksFor takes adj8 tanks only (review 7.8)
