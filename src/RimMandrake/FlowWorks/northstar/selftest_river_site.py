@@ -265,6 +265,47 @@ class StickyWorld(FakeWorld):
 w3 = StickyWorld({101: (FAST, ["north"], True), 102: (FAST, ["north", "west", "east"], False)})
 rc3, _ = run_main(w3)
 check("main can-fail: a candidate map that will not go is read back and fails the site (exit 3)", rc3 == 3, "rc %s" % rc3)
+
+
+class RetileWorld(FakeWorld):
+    """--biome: world_tile_set re-tiles and reads back (answer=None models an unanswered write)."""
+    def __init__(self, tiles, answer="readback"):
+        FakeWorld.__init__(self, tiles)
+        self.answer = answer
+        self.retiled = []
+
+    def call(self, tool, **kw):
+        if tool == "jawa/world_tile_get":
+            return {"success": True, "tiles": [{"tile": int(t), "riverCount": 2, "biome": "TemperateForest", "temperature": 16.0}
+                                               for t in kw["tiles"].split(",")]}
+        if tool == "jawa/world_tile_set":
+            self.calls.append((tool, kw))
+            if self.answer is None:
+                return None
+            self.retiled.append(int(kw["tiles"]))
+            return {"success": True, "tiles": [{"tile": int(kw["tiles"]), "biome": kw["biome"], "riverCount": 2}]}
+        return FakeWorld.call(self, tool, **kw)
+
+
+def run_main_biome(world, biome):
+    saved = R.BIOME
+    R.BIOME = biome
+    try:
+        return run_main(world)
+    except Exception as e:                      # a crash is the failure this guards, not a test-harness error
+        return "raised %s: %s" % (type(e).__name__, e), None
+    finally:
+        R.BIOME = saved
+
+
+w4 = RetileWorld({102: (FAST, ["north", "west", "east"], False)})
+rc4, _ = run_main_biome(w4, "RM_Pyrelands")
+check("main --biome: the river tile is re-tiled (read back) and becomes the site", rc4 == 0 and w4.retiled == [102],
+      "rc %s retiled %s" % (rc4, w4.retiled))
+w5 = RetileWorld({102: (FAST, ["north", "west", "east"], False)}, answer=None)
+rc5, _ = run_main_biome(w5, "RM_Pyrelands")
+check("main --biome can-fail: an unanswered world_tile_set skips the tile (exit 2), never crashes "
+      "(RIVERSITE_FIX_RETILE_NONE_CRASH)", rc5 == 2 and not any(t == "jawa/colony_found" for t, _ in w5.calls), "rc %s" % (rc5,))
 # RIVER_SWEEP_FIX_COLONISTS_RETURN_AS_NPCS: the returns_home row's same-pawn predicate, on the live R3.c shape.
 _b = {"thingIdNumber": 54279, "thingId": "Human54279", "name": "Ann Lee", "kindDef": "Colonist", "faction": "PlayerColony",
       "apparel": [{"def": "Apparel_Pants"}, {"def": "Apparel_BasicShirt"}], "equipment": [{"def": "Gun_Revolver"}]}

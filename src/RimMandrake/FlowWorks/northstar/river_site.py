@@ -255,8 +255,10 @@ def main():
             t = int(row["tile"])
             if BIOME:
                 # an edit of this existing world's tile (the way biome_site.retile does), written BEFORE the map reads it; no worldgen
+                # the tile keeps its MILD temperature (colonists live here); `or {}` is code, not comment: an unanswered
+                # write is a refusal, never an AttributeError that ends the whole run (RIVERSITE_FIX_RETILE_NONE_CRASH)
                 rt = s.call("jawa/world_tile_set", tiles=str(t), biome=BIOME,
-                             temperature=float(row["temperature"]), readBack=1)   # the tile keeps its MILD temperature (colonists live here) or {}
+                            temperature=float(row["temperature"]), readBack=1) or {}
                 back = {x.get("tile"): x for x in rt.get("tiles") or []}
                 if rt.get("success") is False or (back.get(t) or {}).get("biome") != BIOME:
                     print("tile", t, "re-tile to %s refused or read back wrong: %s" % (BIOME, str(rt)[:200]))
