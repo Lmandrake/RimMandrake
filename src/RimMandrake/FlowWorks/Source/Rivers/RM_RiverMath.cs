@@ -180,7 +180,8 @@ namespace RimMandrake.FlowWorks.Rivers
 		}
 
 		/// <summary>A breach's stake cascade: the snap order (cells) of a stake at offset (dx, dz) from the
-		/// weir, nearest-downstream first; -1 for a stake upstream of the weir (the breach does not reach it).
+		/// weir, nearest-downstream first, a stake at most 1 cell upstream (the weir's own row) at 0; -1 for one
+		/// further upstream (the breach does not reach it).
 		/// With no flow direction (dir &lt; 0) the plain distance orders it.</summary>
 		public static float StakeSnapOrder(int dx, int dz, int dir)
 		{
@@ -535,7 +536,7 @@ namespace RimMandrake.FlowWorks.Rivers
 			HashSet<long> onWall = new HashSet<long>();
 			for (int i = 0; i < wall.Count; i++)
 			{
-				onWall.Add(CellKey(wall[i][0], wall[i][1]));
+				onWall.Add(Key(wall[i][0], wall[i][1]));
 			}
 			HashSet<long> seen = new HashSet<long>();
 			List<int[]> intake = new List<int[]>();
@@ -544,13 +545,13 @@ namespace RimMandrake.FlowWorks.Rivers
 				for (int d = 0; d < 8; d++)
 				{
 					int nx = wall[i][0] + StepX[d], nz = wall[i][1] + StepZ[d];
-					long key = CellKey(nx, nz);
+					long key = Key(nx, nz);
 					if (onWall.Contains(key) || seen.Contains(key))
 					{
 						continue;
 					}
 					int f = dirAt(nx, nz);
-					if (f < 0 || f > 7 || !onWall.Contains(CellKey(nx + StepX[f], nz + StepZ[f])))
+					if (f < 0 || f > 7 || !onWall.Contains(Key(nx + StepX[f], nz + StepZ[f])))
 					{
 						continue;
 					}
@@ -560,8 +561,6 @@ namespace RimMandrake.FlowWorks.Rivers
 			}
 			return intake;
 		}
-
-		private static long CellKey(int x, int z) => ((long)x << 32) ^ (uint)z;
 
 		/// <summary>How many items a weir may lift onto its bank now: the room under the cap, never more than offered.</summary>
 		public static int WeirCaptureBudget(int held, int cap, int offered)

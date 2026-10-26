@@ -471,8 +471,6 @@ namespace RimMandrake.FlowWorks
 		/// bear); else K 4 (thrumbo). PROVISIONAL (design §8.2); the formula K = floor(0.7 × sqrt(b) / 0.3) only placed them.</summary>
 		public static readonly float[] ClimbBandEdges = { 0.75f, 1.65f, 3.0f };
 
-		/// <summary>The most levels this creature climbs in one N/S/E/W step (design §8.2). extraLevels: climbers and leapers
-		/// (+1 each, RM_ClimbAbility). Never below 1.</summary>
 		/// <summary>PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT: the largest climb limit any creature can have: the top size band (4)
 		/// plus a climber's and a leaper's extra notch. The pocket grid and the cliff masks keep one band per K = 1..this, sized
 		/// by WHO CLIMBS, never by how deep digging goes (with an 8 m dig a huge K 4 is held by a 3 m sheer wall, so the old "K
@@ -482,6 +480,8 @@ namespace RimMandrake.FlowWorks
 		/// <summary>Band array length for the pocket grid and the cliff masks: index K = 1..<see cref="MaxClimbLimit"/>.</summary>
 		public const int ClimbBands = MaxClimbLimit + 1;
 
+		/// <summary>The most levels this creature climbs in one N/S/E/W step (design §8.2). extraLevels: climbers and leapers
+		/// (+1 each, RM_ClimbAbility). Never below 1.</summary>
 		public static int ClimbLimit(float bodySize, int extraLevels = 0, float heightMultiplier = 1f)
 		{
 			float m = heightMultiplier > 0f ? heightMultiplier : 1f;

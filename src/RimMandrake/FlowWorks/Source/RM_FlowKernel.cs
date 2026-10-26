@@ -1657,7 +1657,8 @@ namespace RimMandrake.FlowWorks
 				comp.key = key;
 				comp.children.Sort((a, b) => lsComps[a].key.CompareTo(lsComps[b].key));
 			}
-			// Top down from each band-1 piece (the domain is connected, so there is one; a guard keeps any other honest).
+			// Top down from each band-1 piece. Usually there is one, but the L7 dry-gap join can join wet squares across a dry
+			// gap the rim cannot claim (CanClaim false keeps the gap out of the domain), leaving several: each keeps its own water.
 			int laid = 0;
 			for (int k = 0; k < lsCompCount; k++)
 			{
@@ -2061,7 +2062,7 @@ namespace RimMandrake.FlowWorks
 				int score;
 				if (levelBySurfaceEnabled)
 				{
-					// Surfaces relative to ground: a source is brim-full (0); a dug cell is fill - depth (-4..0).
+					// Surfaces relative to ground: a source is brim-full (0); a dug cell is fill - depth (-DepthCeiling..0).
 					int drop = (fn - dn) - (fill[r] - depthR);
 					if (drop < 1 || (drop == 1 && !source && levelSetEnabled))
 					{

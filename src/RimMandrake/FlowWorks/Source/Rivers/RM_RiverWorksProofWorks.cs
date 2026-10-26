@@ -7,9 +7,11 @@ namespace RimMandrake.FlowWorks.Rivers
 {
 	/// <summary>
 	/// Slice 2 probes for River Works' scripts (src/RimMandrake/FlowWorks/northstar/extensions_rivers.py and
-	/// river_site.py), via jawa/static_call. Each
+	/// northstar/river_scenes_walk.py), via jawa/static_call. Each
 	/// builds what it needs on the current map's own river (a test map is disposable), reads state,
 	/// and returns one line. "UNMEASURED ..." = the question could not be asked, never a pass.
+	/// RIVERPROOFWORKS_FIX_STALE_CALLER_AND_LEAKS: every probe destroys what it spawned in a finally, so a call that
+	/// throws mid-probe leaves no weir, stake, stack or flood behind to change the next probe's FindWeirSite.
 	/// </summary>
 	public static class RM_RiverWorksProofWorks
 	{
@@ -138,24 +140,29 @@ namespace RimMandrake.FlowWorks.Rivers
 			{
 				return why;
 			}
-			comp.MarkWorksDirty();
-			HashSet<int> pool = new HashSet<int>();
-			w.AddPoolCells(comp, pool);
-			int dropped = 0;
-			foreach (int i in pool)
+			try
 			{
-				IntVec3 c = map.cellIndices.IndexToCell(i);
-				int baseLane = RM_RiverCurrentLanes.LaneOf(c.GetTerrain(map));
-				if (comp.LaneAt(c) < baseLane) dropped++;
+				comp.MarkWorksDirty();
+				HashSet<int> pool = new HashSet<int>();
+				w.AddPoolCells(comp, pool);
+				int dropped = 0;
+				foreach (int i in pool)
+				{
+					IntVec3 c = map.cellIndices.IndexToCell(i);
+					int baseLane = RM_RiverCurrentLanes.LaneOf(c.GetTerrain(map));
+					if (comp.LaneAt(c) < baseLane) dropped++;
+				}
+				bool arrested = RM_CompRiverArrester.CellArrested(map, w.WaterCell);
+				return "POOL cells=" + pool.Count + " dropped=" + dropped + " arrestedWet=" + arrested + " at=" + w.Position
+					+ " " + FlowNeighbourhood(comp, w.WaterCell);
 			}
-			bool arrested = RM_CompRiverArrester.CellArrested(map, w.WaterCell);
-			string res = "POOL cells=" + pool.Count + " dropped=" + dropped + " arrestedWet=" + arrested + " at=" + w.Position
-				+ " " + FlowNeighbourhood(comp, w.WaterCell);
-			if (arg != "keep")
+			finally
 			{
-				w.Destroy();
+				if (arg != "keep")
+				{
+					DestroyIfSpawned(w);
+				}
 			}
-			return res;
 		}
 
 		/// <summary>WEIR_POOL_DIAGNOSE_DAMMED_AT_THE_EDGE: the evidence a pool count alone hides, one token per field
@@ -390,21 +397,27 @@ namespace RimMandrake.FlowWorks.Rivers
 			{
 				return why;
 			}
-			Thing catchThing = ThingMaker.MakeThing(ThingDefOf.RawPotatoes);
-			catchThing.stackCount = 10;
-			GenPlace.TryPlaceThing(catchThing, w.BankCell, map, ThingPlaceMode.Near);
-			int heldBefore = w.HeldCatch().Count;
-			w.HitPoints = 1;
-			w.Breach();
-			int heldAfter = w.HeldCatch().Count;
-			string res = "BREACH heldBefore=" + heldBefore + " heldAfter=" + heldAfter + " breaching=" + w.Breaching
-				+ " arrestOff=" + !w.ArrestActive + " at=" + w.Position;
-			if (arg != "keep")
+			Thing catchThing = null;
+			try
 			{
-				w.Destroy();
-				DestroyIfSpawned(catchThing);   // the probe's own stack, as ProofBreachNoRoom: no litter left to drift
+				catchThing = ThingMaker.MakeThing(ThingDefOf.RawPotatoes);
+				catchThing.stackCount = 10;
+				GenPlace.TryPlaceThing(catchThing, w.BankCell, map, ThingPlaceMode.Near);
+				int heldBefore = w.HeldCatch().Count;
+				w.HitPoints = 1;
+				w.Breach();
+				int heldAfter = w.HeldCatch().Count;
+				return "BREACH heldBefore=" + heldBefore + " heldAfter=" + heldAfter + " breaching=" + w.Breaching
+					+ " arrestOff=" + !w.ArrestActive + " at=" + w.Position;
 			}
-			return res;
+			finally
+			{
+				if (arg != "keep")
+				{
+					DestroyIfSpawned(w);
+					DestroyIfSpawned(catchThing);   // the probe's own stack, as ProofBreachNoRoom: no litter left to drift
+				}
+			}
 		}
 
 		/// <summary>breach.wash_no_room (A2 of WEIR_WASH_ITEM_LOSS_MEND_PLACE_FIRST): a breach whose strand has no
@@ -431,47 +444,53 @@ namespace RimMandrake.FlowWorks.Rivers
 			{
 				return why;
 			}
-			Thing catchThing = ThingMaker.MakeThing(ThingDefOf.RawPotatoes);
-			catchThing.stackCount = 10;
-			GenPlace.TryPlaceThing(catchThing, w.BankCell, map, ThingPlaceMode.Near);
-			List<Thing> held = w.HeldCatch();
-			List<IntVec3> from = held.Select(t => t.Position).ToList();
-			int unitsBefore = held.Sum(t => t.stackCount);
-			int asked = 0;
-			w.HitPoints = 1;
-			RM_Building_BankWeir.washPlaceValidator = c => { asked++; return false; };
+			Thing catchThing = null;
 			try
 			{
-				w.Breach();
+				catchThing = ThingMaker.MakeThing(ThingDefOf.RawPotatoes);
+				catchThing.stackCount = 10;
+				GenPlace.TryPlaceThing(catchThing, w.BankCell, map, ThingPlaceMode.Near);
+				List<Thing> held = w.HeldCatch();
+				List<IntVec3> from = held.Select(t => t.Position).ToList();
+				int unitsBefore = held.Sum(t => t.stackCount);
+				int asked = 0;
+				w.HitPoints = 1;
+				RM_Building_BankWeir.washPlaceValidator = c => { asked++; return false; };
+				try
+				{
+					w.Breach();
+				}
+				finally
+				{
+					RM_Building_BankWeir.washPlaceValidator = null;
+				}
+				int spawned = 0, atOld = 0, unitsAfter = 0;
+				for (int i = 0; i < held.Count; i++)
+				{
+					Thing t = held[i];
+					if (t.Destroyed || !t.Spawned || t.Map != map)
+					{
+						continue;
+					}
+					spawned++;
+					unitsAfter += t.stackCount;
+					if (t.Position == from[i])
+					{
+						atOld++;
+					}
+				}
+				return (asked == 0 ? "UNMEASURED wash never tried to place (no strand downstream) " : "")
+					+ "NOROOM asked=" + asked + " held=" + held.Count + " spawned=" + spawned + " atOld=" + atOld
+					+ " unitsBefore=" + unitsBefore + " unitsAfter=" + unitsAfter + " breaching=" + w.Breaching + " at=" + w.Position;
 			}
 			finally
 			{
-				RM_Building_BankWeir.washPlaceValidator = null;
-			}
-			int spawned = 0, atOld = 0, unitsAfter = 0;
-			for (int i = 0; i < held.Count; i++)
-			{
-				Thing t = held[i];
-				if (t.Destroyed || !t.Spawned || t.Map != map)
+				if (arg != "keep")
 				{
-					continue;
-				}
-				spawned++;
-				unitsAfter += t.stackCount;
-				if (t.Position == from[i])
-				{
-					atOld++;
+					DestroyIfSpawned(w);
+					DestroyIfSpawned(catchThing);
 				}
 			}
-			string res = (asked == 0 ? "UNMEASURED wash never tried to place (no strand downstream) " : "")
-				+ "NOROOM asked=" + asked + " held=" + held.Count + " spawned=" + spawned + " atOld=" + atOld
-				+ " unitsBefore=" + unitsBefore + " unitsAfter=" + unitsAfter + " breaching=" + w.Breaching + " at=" + w.Position;
-			if (arg != "keep")
-			{
-				w.Destroy();
-				DestroyIfSpawned(catchThing);
-			}
-			return res;
 		}
 
 		/// <summary>silt.richen_and_revert: spawns a trap on swappable soil; "SILT richened=B reverted=B".</summary>
@@ -659,74 +678,79 @@ namespace RimMandrake.FlowWorks.Rivers
 			{
 				return why;
 			}
-			int dir = w.FlowDirForProof;
-			if (dir < 0)
-			{
-				w.Destroy();
-				return "UNMEASURED the weir's wet cell has no flow direction";
-			}
 			List<Thing> stakes = new List<Thing>();
-			List<float> orders = new List<float>();
-			bool anyUp = false, anyDown = false;
-			foreach (IntVec3 c in GenRadial.RadialCellsAround(w.Position, 12f, false))
+			try
 			{
-				if (stakes.Count >= 12)
+				int dir = w.FlowDirForProof;
+				if (dir < 0)
 				{
-					break;
+					return "UNMEASURED the weir's wet cell has no flow direction";
 				}
-				if (!c.InBounds(map) || !c.Standable(map) || c.GetEdifice(map) != null || RM_RiverWorks.IsWaterCell(map, c)
-					|| c.GetFirstPawn(map) != null || w.OccupiedRect().Contains(c))
+				List<float> orders = new List<float>();
+				bool anyUp = false, anyDown = false;
+				foreach (IntVec3 c in GenRadial.RadialCellsAround(w.Position, 12f, false))
 				{
-					continue;
+					if (stakes.Count >= 12)
+					{
+						break;
+					}
+					if (!c.InBounds(map) || !c.Standable(map) || c.GetEdifice(map) != null || RM_RiverWorks.IsWaterCell(map, c)
+						|| c.GetFirstPawn(map) != null || w.OccupiedRect().Contains(c))
+					{
+						continue;
+					}
+					float order = RM_RiverMath.DownstreamDistance(c.x - w.Position.x, c.z - w.Position.z, dir);
+					if (order < -1f && anyUp && stakes.Count >= 6 && !anyDown)
+					{
+						continue; // keep room for downstream stakes
+					}
+					Thing s = ThingMaker.MakeThing(RM_RiverWorksDefOf.RM_BankStake);
+					s.SetFaction(Faction.OfPlayer);
+					GenSpawn.Spawn(s, c, map);
+					stakes.Add(s);
+					orders.Add(order);
+					anyUp |= order < -1f;
+					anyDown |= order > 1f;
 				}
-				float order = RM_RiverMath.DownstreamDistance(c.x - w.Position.x, c.z - w.Position.z, dir);
-				if (order < -1f && anyUp && stakes.Count >= 6 && !anyDown)
+				w.HitPoints = 1;
+				w.Breach();
+				int scheduled = 0, spared = 0;
+				bool upstreamSpared = true;
+				List<KeyValuePair<float, int>> down = new List<KeyValuePair<float, int>>();
+				for (int i = 0; i < stakes.Count; i++)
 				{
-					continue; // keep room for downstream stakes
+					int tick = w.CascadeTickFor(stakes[i]);
+					if (orders[i] < -1f)
+					{
+						if (tick >= 0) upstreamSpared = false;
+					}
+					else if (tick >= 0)
+					{
+						down.Add(new KeyValuePair<float, int>(orders[i], tick));
+					}
+					if (tick >= 0) scheduled++; else spared++;
 				}
-				Thing s = ThingMaker.MakeThing(RM_RiverWorksDefOf.RM_BankStake);
-				s.SetFaction(Faction.OfPlayer);
-				GenSpawn.Spawn(s, c, map);
-				stakes.Add(s);
-				orders.Add(order);
-				anyUp |= order < -1f;
-				anyDown |= order > 1f;
+				down.Sort((a, b) => a.Key.CompareTo(b.Key));
+				bool monotone = true;
+				for (int i = 1; i < down.Count; i++)
+				{
+					if (down[i].Value < down[i - 1].Value) monotone = false;
+				}
+				int downCount = 0;
+				for (int i = 0; i < orders.Count; i++) if (orders[i] >= -1f) downCount++;
+				bool allDownScheduled = down.Count == downCount;
+				return "CASCADE stakes=" + stakes.Count + " scheduled=" + scheduled + " spared=" + spared + " anyUp=" + anyUp
+					+ " anyDown=" + anyDown + " monotone=" + monotone + " upstreamSpared=" + upstreamSpared
+					+ " allDownScheduled=" + allDownScheduled;
 			}
-			w.HitPoints = 1;
-			w.Breach();
-			int scheduled = 0, spared = 0;
-			bool upstreamSpared = true;
-			List<KeyValuePair<float, int>> down = new List<KeyValuePair<float, int>>();
-			for (int i = 0; i < stakes.Count; i++)
+			finally
 			{
-				int tick = w.CascadeTickFor(stakes[i]);
-				if (orders[i] < -1f)
+				for (int i = 0; i < stakes.Count; i++)
 				{
-					if (tick >= 0) upstreamSpared = false;
+					DestroyIfSpawned(stakes[i]);
 				}
-				else if (tick >= 0)
-				{
-					down.Add(new KeyValuePair<float, int>(orders[i], tick));
-				}
-				if (tick >= 0) scheduled++; else spared++;
+				DestroyIfSpawned(w);
 			}
-			down.Sort((a, b) => a.Key.CompareTo(b.Key));
-			bool monotone = true;
-			for (int i = 1; i < down.Count; i++)
-			{
-				if (down[i].Value < down[i - 1].Value) monotone = false;
-			}
-			int downCount = 0;
-			for (int i = 0; i < orders.Count; i++) if (orders[i] >= -1f) downCount++;
-			bool allDownScheduled = down.Count == downCount;
-			for (int i = 0; i < stakes.Count; i++)
-			{
-				if (!stakes[i].Destroyed) stakes[i].Destroy();
-			}
-			w.Destroy();
-			return "CASCADE stakes=" + stakes.Count + " scheduled=" + scheduled + " spared=" + spared + " anyUp=" + anyUp
-				+ " anyDown=" + anyDown + " monotone=" + monotone + " upstreamSpared=" + upstreamSpared
-				+ " allDownScheduled=" + allDownScheduled;
 		}
 
 		/// <summary>levee.holds / levee.gap_leaks (the flood check): spawns a vanilla SeasonalFlood on the
@@ -757,42 +781,48 @@ namespace RimMandrake.FlowWorks.Rivers
 			{
 				return "UNMEASURED the flood found no cells to open from here";
 			}
-			IntVec3 stakeCell = IntVec3.Invalid, gapCell = IntVec3.Invalid;
-			foreach (IntVec3 c in GenRadial.RadialCellsAround(site, 10f, false))
-			{
-				if (!c.InBounds(map) || !c.Standable(map) || c.GetEdifice(map) != null || c.GetFirstPawn(map) != null
-					|| !(bool)pot.Invoke(flood, new object[] { c }))
-				{
-					continue;
-				}
-				if (!stakeCell.IsValid) stakeCell = c;
-				else if (!gapCell.IsValid) { gapCell = c; break; }
-			}
-			if (!gapCell.IsValid)
-			{
-				flood.Destroy();
-				return "UNMEASURED no two dry cells the flood could reach";
-			}
-			Thing s = ThingMaker.MakeThing(RM_RiverWorksDefOf.RM_BankStake);
-			s.SetFaction(Faction.OfPlayer);
-			GenSpawn.Spawn(s, stakeCell, map);
-			bool stakeHolds = !(bool)spread.Invoke(flood, new object[] { stakeCell });
-			bool gapLeaks = (bool)spread.Invoke(flood, new object[] { gapCell });
-			bool was = RM_RiversSettings.stakeLineLevee;
-			bool offLetsThrough;
+			Thing s = null;
 			try
 			{
-				RM_RiversSettings.stakeLineLevee = false;
-				offLetsThrough = (bool)spread.Invoke(flood, new object[] { stakeCell });
+				IntVec3 stakeCell = IntVec3.Invalid, gapCell = IntVec3.Invalid;
+				foreach (IntVec3 c in GenRadial.RadialCellsAround(site, 10f, false))
+				{
+					if (!c.InBounds(map) || !c.Standable(map) || c.GetEdifice(map) != null || c.GetFirstPawn(map) != null
+						|| !(bool)pot.Invoke(flood, new object[] { c }))
+					{
+						continue;
+					}
+					if (!stakeCell.IsValid) stakeCell = c;
+					else if (!gapCell.IsValid) { gapCell = c; break; }
+				}
+				if (!gapCell.IsValid)
+				{
+					return "UNMEASURED no two dry cells the flood could reach";
+				}
+				s = ThingMaker.MakeThing(RM_RiverWorksDefOf.RM_BankStake);
+				s.SetFaction(Faction.OfPlayer);
+				GenSpawn.Spawn(s, stakeCell, map);
+				bool stakeHolds = !(bool)spread.Invoke(flood, new object[] { stakeCell });
+				bool gapLeaks = (bool)spread.Invoke(flood, new object[] { gapCell });
+				bool was = RM_RiversSettings.stakeLineLevee;
+				bool offLetsThrough;
+				try
+				{
+					RM_RiversSettings.stakeLineLevee = false;
+					offLetsThrough = (bool)spread.Invoke(flood, new object[] { stakeCell });
+				}
+				finally
+				{
+					RM_RiversSettings.stakeLineLevee = was;
+				}
+				return "LEVEE stakeHolds=" + stakeHolds + " gapLeaks=" + gapLeaks + " offLetsThrough=" + offLetsThrough
+					+ " stake=" + stakeCell + " gap=" + gapCell;
 			}
 			finally
 			{
-				RM_RiversSettings.stakeLineLevee = was;
+				DestroyIfSpawned(s);
+				DestroyIfSpawned(flood);   // a live SeasonalFlood keeps spreading over the test map
 			}
-			s.Destroy();
-			flood.Destroy();
-			return "LEVEE stakeHolds=" + stakeHolds + " gapLeaks=" + gapLeaks + " offLetsThrough=" + offLetsThrough
-				+ " stake=" + stakeCell + " gap=" + gapCell;
 		}
 
 		/// <summary>ferry.undrafted_rope: strings a ferry, forces the path grid to recompute, and reads the

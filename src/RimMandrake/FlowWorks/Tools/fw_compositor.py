@@ -9,7 +9,7 @@ What it emulates (read from the defs and C#, not guessed):
     + 0.02 for the flange, - 0.002 for the stub layer); draws are sorted by that, ties keep call order (as a section mesh).
   * Graphic_Linked (Basic): mask = Up 1 | Right 2 | Down 4 | Left 8 of the cells it links with; the tile is
     MaterialAtlasPool.SubMaterialFromAtlas: block (mask % 4, mask // 4) counted from the atlas's BOTTOM-left, of which the
-    inner 3/16 (1/32 inset each side of the 1/4 block) is drawn on a 1x1 plane (same crop as art_source/Pump/preview_pipes.py).
+    inner 3/16 (1/32 inset each side of the 1/4 block) is drawn on a 1x1 plane.
   * Graphic_Single / Graphic_Multi: the texture on a drawSize plane centred on the thing's footprint centre + drawOffset
     (drawSize and drawOffset are passed by the scene, copied from the def; RM_LiquidTank is (2,2), no offset).
   * Printer_Plane rotation: Quaternion.Euler(0, a, 0) turns CLOCKWISE on screen for positive a (Unity's y-up, z-north).

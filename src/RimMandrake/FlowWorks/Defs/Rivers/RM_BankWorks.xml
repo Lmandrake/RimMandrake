@@ -5,9 +5,9 @@
   defines none of these. defNames kept (RM_BankStake / RM_BankWeir / RM_SiltTrap) so the sea genstep and
   saves still name them; classes live in RimMandrake.FlowWorks.Rivers (owner card 3: no save migration
   needed). Maintenance rides vanilla Repair (wear) and Haul (catch) - no new jobs.
-  ALL NUMBERS PROVISIONAL (costs, HP, work, sizes). Art in Textures/Things/Building/FlowWorks/Rivers: silt trap
-  from the 2026-10-06 commission; bank stake and ferry post still the earlier placeholders. The weir's art is
-  RimMandrake/FlowWorks/Weir/<Look>/ (2026-10-16 commission, RM_BankWeirStyles.xml).
+  ALL NUMBERS PROVISIONAL (costs, HP, work, sizes). Art: bank stake and silt trap in
+  RimMandrake/FlowWorks/Rivers/Scrapper/, the weir in RimMandrake/FlowWorks/Weir/<Look>/ (2026-10-16 commission,
+  RM_BankWeirStyles.xml). Only the ferry post (and its rope) in Things/Building/FlowWorks/Rivers is still placeholder art.
 -->
 <Defs>
 
@@ -165,6 +165,10 @@
     <label>ferry post</label>
     <description>A heavy post with a rope reel. Build a second one on the far bank, facing across moving water, and they string a rope between them: anyone on the rope line holds on and is not swept away, so drafted colonists can cross deep water without a bridge.</description>
     <thingClass>RimMandrake.FlowWorks.Rivers.RM_Building_FerryPost</thingClass>
+    <!-- FERRYROPE_FIX_VANISHES_OFFSCREEN_OWNER: the post is printed, the rope is drawn per frame in DrawAt;
+         drawOffscreen so the rope is not culled with the post's own cell. -->
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <drawOffscreen>true</drawOffscreen>
     <graphicData>
       <texPath>Things/Building/FlowWorks/Rivers/RM_FerryPost</texPath>
       <graphicClass>Graphic_Single</graphicClass>

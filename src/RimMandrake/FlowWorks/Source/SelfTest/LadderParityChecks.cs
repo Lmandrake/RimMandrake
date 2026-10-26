@@ -144,6 +144,19 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "colonists uninstall anyone's portable ladder (vanilla Designator_Uninstall's alwaysUninstallable)");
                 Assert(!d.Substring(at, end - at).Contains("trapped enemies"), "can-fail: the description no longer promises the key");
             });
+            Case("LadderParity_take_work_is_uninstall_work", () =>
+            {
+                // LADDERPARITY_FIX_TAKE_WORK_SAPPER_ZERO: the take used a fixed 120 ticks; it is the def's uninstallWork spent
+                // as vanilla JobDriver_RemoveBuilding spends it (ConstructionSpeed x 1.7 a tick).
+                Assert(RM_LadderParityMath.TakeLadderTicks(60f, 1f) == 36, "60 work at speed 1 = ceil(60 / 1.7) = 36 ticks");
+                Assert(RM_LadderParityMath.TakeLadderTicks(60f, 2f) == 18, "a faster builder takes it down faster");
+                Assert(RM_LadderParityMath.TakeLadderTicks(60f, 0f) > 0, "never zero or negative at no speed");
+                string p = Src("Superdeep", "RM_LadderParity.cs");
+                Assert(!p.Contains("work.defaultDuration = 120;"), "can-fail: no fixed 120-tick take");
+                RiverSwitchFlipChecks.Has(p, @"work\.defaultDuration = RM_LadderParityMath\.TakeLadderTicks\([^;]*uninstallWork[^;]*ConstructionSpeed",
+                    "the take reads the ladder's uninstallWork and the raider's ConstructionSpeed");
+                Assert(p.Contains("0% = no raid brings ladders, sappers included"), "the tooltip states that 0% stops sapper ladders too");
+            });
             Case("LadderParity_breach_scar_and_repair", () =>
             {
                 Assert(RM_LadderParityMath.ScarAfterFill(0, 8) == 8, "the first fill remembers the depth before it");

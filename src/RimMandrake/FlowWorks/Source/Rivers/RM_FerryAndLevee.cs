@@ -117,7 +117,6 @@ namespace RimMandrake.FlowWorks.Rivers
 			if (partner != null && partner.partner == this)
 			{
 				partner.partner = null;
-				RepaintRope(partner);
 			}
 			partner = null;
 			base.DeSpawn(mode);
@@ -154,8 +153,6 @@ namespace RimMandrake.FlowWorks.Rivers
 			partner = best;
 			best.partner = this;
 			Map.GetComponent<RM_MapComponent_RiverCurrent>()?.MarkWorksDirty();
-			RepaintRope(this);
-			RepaintRope(best);
 			return true;
 		}
 
@@ -188,22 +185,19 @@ namespace RimMandrake.FlowWorks.Rivers
 		}
 
 		// RIVER_WEIR_ART_JUDGE_CODEX_SQUINTS fix 9 (owner commission 2026-10-17): the rope is drawn, post to post, as the
-		// RM_FerryRope strip printed under the posts (at item altitude, so pawns crossing on it draw over it). Printed once,
-		// by the post with the lower thing id; pairing and unpairing re-print both sections.
+		// RM_FerryRope strip under the posts (at item altitude, so pawns crossing on it draw over it), once, by the post
+		// with the lower thing id.
+		// FERRYROPE_FIX_VANISHES_OFFSCREEN_OWNER: the rope (up to ferryMaxSpan cells) was PRINTED into the owner post's
+		// map section, and MapDrawer draws only visible sections, so it vanished whenever the owner's section was off
+		// screen though the river and the far post were in view. It is now drawn every frame from DrawAt; the def is
+		// MapMeshAndRealTime (the post itself stays printed) with drawOffscreen, so the dynamic draw manager does not cull
+		// it by the post's own cell. Pairing and unpairing need no re-print: the next frame reads Partner.
 		private const float RopeWidth = 0.3f;
 		private static Material ropeMat;
 
-		private static void RepaintRope(RM_Building_FerryPost p)
+		protected override void DrawAt(Vector3 drawLoc, bool flip = false)
 		{
-			if (p != null && p.Spawned)
-			{
-				p.Map.mapDrawer.MapMeshDirty(p.Position, MapMeshFlagDefOf.Things);
-			}
-		}
-
-		public override void Print(SectionLayer layer)
-		{
-			base.Print(layer);
+			base.DrawAt(drawLoc, flip);
 			RM_Building_FerryPost p = Partner;
 			if (p == null || !RM_RiversSettings.ferryEnabled || thingIDNumber > p.thingIDNumber)
 			{
@@ -216,7 +210,9 @@ namespace RimMandrake.FlowWorks.Rivers
 			Vector3 a = this.TrueCenter(), b = p.TrueCenter();
 			RM_RiverMath.RopePlane(a.x, a.z, b.x, b.z, out float cx, out float cz, out float len, out float rot);
 			Vector3 center = new Vector3(cx, AltitudeLayer.Item.AltitudeFor(), cz);
-			Printer_Plane.PrintPlane(layer, center, new Vector2(len, RopeWidth), ropeMat, rot);
+			// The section printer turned the plane by -rot radians in x-z; Quaternion.AngleAxis(rot, up) is the same turn.
+			Matrix4x4 m = Matrix4x4.TRS(center, Quaternion.AngleAxis(rot, Vector3.up), new Vector3(len, 1f, RopeWidth));
+			Graphics.DrawMesh(MeshPool.plane10, m, ropeMat, 0);
 		}
 
 		public override void DrawExtraSelectionOverlays()

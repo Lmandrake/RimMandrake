@@ -392,9 +392,60 @@ namespace RimMandrake.FlowWorks.SelfTest
                         "the strip's long axis points post to post, rot=" + rot);
                 }
                 string fp = RiverSwitchFlipChecks.Src(Path.Combine("Rivers", "RM_FerryAndLevee.cs"));
-                RiverSwitchFlipChecks.Has(fp, @"RM_RiverMath\.RopePlane\(", "the post prints the rope from the shared math");
+                RiverSwitchFlipChecks.Has(fp, @"RM_RiverMath\.RopePlane\(", "the post draws the rope from the shared math");
                 RiverSwitchFlipChecks.Has(fp, @"RM_FerryRope", "the rope strip texture is the one drawn");
-                RiverSwitchFlipChecks.Has(fp, @"MapMeshDirty\(", "pairing and unpairing re-print the rope");
+            });
+
+            Case("FerryRope_drawn_every_frame_not_printed", () =>
+            {
+                // FERRYROPE_FIX_VANISHES_OFFSCREEN_OWNER: a rope printed into the owner post's map section vanished while
+                // that section was culled (MapDrawer draws visible sections only). It must be drawn per frame from DrawAt,
+                // the def must be MapMeshAndRealTime with drawOffscreen, and nothing may print it any more.
+                string fp = RiverSwitchFlipChecks.Src(Path.Combine("Rivers", "RM_FerryAndLevee.cs"));
+                int cls = fp.IndexOf("class RM_Building_FerryPost", StringComparison.Ordinal);
+                Assert(cls >= 0, "found RM_Building_FerryPost");
+                int end = fp.IndexOf("public static class", cls, StringComparison.Ordinal);
+                string post = end > cls ? fp.Substring(cls, end - cls) : fp.Substring(cls);
+                Assert(!Regex.IsMatch(post, @"override void Print\("), "the ferry post no longer overrides Print (a printed rope is culled with its section)");
+                Assert(!post.Contains("Printer_Plane"), "nothing prints the rope plane");
+                RiverSwitchFlipChecks.Has(post, @"override void DrawAt\([^)]*\) \{ base\.DrawAt\(drawLoc, flip\);(?:(?!override ).)*RM_RiverMath\.RopePlane\((?:(?!override ).)*Graphics\.DrawMesh\(",
+                    "DrawAt draws the rope every frame from the shared RopePlane math");
+                string def = RiverSwitchFlipChecks.Src(Path.Combine("..", "Defs", "Rivers", "RM_BankWorks.xml"));
+                RiverSwitchFlipChecks.Has(def, @"<defName>RM_FerryPost</defName>(?:(?!</ThingDef>).)*<drawerType>MapMeshAndRealTime</drawerType>", "RM_FerryPost is MapMeshAndRealTime (post printed, rope drawn)");
+                RiverSwitchFlipChecks.Has(def, @"<defName>RM_FerryPost</defName>(?:(?!</ThingDef>).)*<drawOffscreen>true</drawOffscreen>", "RM_FerryPost draws offscreen (not culled by its own cell)");
+            });
+
+            Case("RiverProofWorks_probes_clean_up_in_finally", () =>
+            {
+                // RIVERPROOFWORKS_FIX_STALE_CALLER_AND_LEAKS: five probes destroyed their weir/stakes/stack/flood only on the
+                // straight path, so a throw mid-probe left them on the test map for the next probe's FindWeirSite.
+                string pw = RiverSwitchFlipChecks.Src(Path.Combine("Rivers", "RM_RiverWorksProofWorks.cs"));
+                foreach (var probe in new[] { ("ProofWeirPool", "DestroyIfSpawned(w)"), ("ProofBreach", "DestroyIfSpawned(w)"),
+                    ("ProofBreachNoRoom", "DestroyIfSpawned(w)"), ("ProofCascadeOrder", "DestroyIfSpawned(stakes[i])"), ("ProofLevee", "DestroyIfSpawned(flood)") })
+                {
+                    int at = pw.IndexOf("public static string " + probe.Item1 + "(", StringComparison.Ordinal);
+                    Assert(at >= 0, "found " + probe.Item1);
+                    int next = pw.IndexOf("public static string ", at + 10, StringComparison.Ordinal);
+                    string body = next > at ? pw.Substring(at, next - at) : pw.Substring(at);
+                    int fin = body.LastIndexOf("finally {", StringComparison.Ordinal);
+                    Assert(fin >= 0 && body.IndexOf(probe.Item2, fin, StringComparison.Ordinal) > fin,
+                        probe.Item1 + " destroys its spawns in a finally (" + probe.Item2 + ")");
+                }
+                Assert(pw.Contains("northstar/river_scenes_walk.py") && !pw.Contains("river_site.py"),
+                    "the class doc names its real callers (river_site.py calls RM_RiverWorksProof, not this class)");
+            });
+
+            Case("RiverCurrent_first_entry_warning_is_keyed", () =>
+            {
+                // RIVERCURRENT_FIX_STALE_DOC_AND_BARE_ENGLISH: the swept-colonist warning was bare English, and the class
+                // doc said only the warning flag is saved while ExposeData also scribes the flotsam list by reference.
+                string cur = RiverSwitchFlipChecks.Src(Path.Combine("Rivers", "RM_MapComponent_RiverCurrent.cs"));
+                Assert(cur.Contains("\"RMFlow_RiverSweptFirstEntry\".Translate(p.LabelShortCap)")
+                    && !cur.Contains("is being swept downstream by the river"), "first-entry warning is a Keyed string");
+                Assert(RiverSwitchFlipChecks.Src(Path.Combine("..", "Languages", "English", "Keyed", "FlowWorks_Keys.xml"))
+                    .Contains("<RMFlow_RiverSweptFirstEntry>{0} is being swept"), "key RMFlow_RiverSweptFirstEntry exists with {0}");
+                Assert(cur.Contains("\"rmRiverFlotsam\"") && cur.Contains("first-entry warning flag and the live flotsam list")
+                    && !cur.Contains("only thing saved is"), "class doc names both saved fields");
             });
 
             Case("Flotsam_wired_in_source", () =>

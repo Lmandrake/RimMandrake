@@ -481,7 +481,7 @@ namespace RimMandrake.FlowWorks
 			return pieces;
 		}
 
-		/// <summary>Rows [from..to] of a drag, re-indexed from 0 (one chained piece).</summary>
+		/// <summary>Squares [from..to] of every row of a drag, re-indexed from 0 (one chained piece).</summary>
 		public static List<IList<SpanGround>> Slice(IList<IList<SpanGround>> lanes, int from, int to)
 		{
 			List<IList<SpanGround>> r = new List<IList<SpanGround>>();
@@ -625,12 +625,17 @@ namespace RimMandrake.FlowWorks
 			return false;
 		}
 
+		/// <summary>"deck at surface" or "deck at 4 m (sunken)": the height half of every deck readout.</summary>
+		private static string DeckHeightText(int deckNotches)
+		{
+			return deckNotches <= 0 ? "deck at surface" : "deck at " + (deckNotches * RM_SpanMath.NotchM).ToString("0.#",
+				System.Globalization.CultureInfo.InvariantCulture) + " m (sunken)";
+		}
+
 		/// <summary>The P8 readout line for any deck height: "deck at surface" or "deck at 4 m (sunken)", plus who walks under.</summary>
 		public static string HeightPhrase(int deckNotches, bool passesUnder)
 		{
-			string h = deckNotches <= 0 ? "deck at surface" : "deck at " + (deckNotches * RM_SpanMath.NotchM).ToString("0.#",
-				System.Globalization.CultureInfo.InvariantCulture) + " m (sunken)";
-			return h + (passesUnder ? " · people below walk under it" : " · a wall from below");
+			return DeckHeightText(deckNotches) + (passesUnder ? " · people below walk under it" : " · a wall from below");
 		}
 
 		// ── SUSPENSION_WATERS_BUILD_MAY_BACKTRACK (parent design §3, §7; Q5) ─────────────────────────────────────────
@@ -715,8 +720,7 @@ namespace RimMandrake.FlowWorks
 		/// <summary>The jetty's inspect/readout line: "Jetty (steel) · deck at surface · load 70 / 120 kg".</summary>
 		public static string JettyReadoutLine(SuspensionTier t, float loadKg, float ratingKg, int deckNotches)
 		{
-			return "Jetty (" + TierLabel(t) + ") · " + (deckNotches <= 0 ? "deck at surface" : "deck at " + (deckNotches * RM_SpanMath.NotchM)
-				.ToString("0.#", System.Globalization.CultureInfo.InvariantCulture) + " m (sunken)") + " · load " + Kg(loadKg) + " / " + Kg(ratingKg) + " kg";
+			return "Jetty (" + TierLabel(t) + ") · " + DeckHeightText(deckNotches) + " · load " + Kg(loadKg) + " / " + Kg(ratingKg) + " kg";
 		}
 
 		/// <summary>The build-order rule (construction design §1.3): a deck square may be worked once the square next to it along

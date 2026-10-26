@@ -89,6 +89,16 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "the section layer and the pipe link patch are shipped");
                 Assert(draw.Contains("RM_LiquidJoins.DrawHosePortFitting(fe.Port"), "the hose port draws the pipe's fitting");
             });
+            Case("LiquidJoin_coupler_redraw_reaches_machine_section", () =>
+            {
+                // COUPLER_REDRAW_FIX_STALE_ACROSS_SECTIONS: the machine prints its couplers from its own Position's section, so a
+                // tank spawning/leaving beside it must dirty that Position, not only the ring round the tank.
+                string joins = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Machinery", "RM_LiquidJoins.cs"));
+                Assert(joins.Contains("t.Position == c && RM_LiquidNet.RoleOfKind(t) == RM_NetRole.Machine"),
+                    "precondition: the coupler is printed from the machine's Position cell");
+                RiverSwitchFlipChecks.Has(joins, @"public static void DirtyAround\(Map map, CellRect rect\) \{(?:(?!public static).)*RoleOfKind\([^)]*\) == RM_NetRole\.Machine(?:(?!public static).)*MapMeshDirty\(m\.Position,",
+                    "DirtyAround dirties the Position of each machine on the ring");
+            });
             // PIPE_ENDS_BUILD_MEET_IN_THE_MIDDLE (owner 2026-10-18): a pipe or hose beside a tank or machine is drawn on beneath it
             // to the centre of its footprint
             Case("PipeStub_1x1_runs_edge_to_centre", () =>

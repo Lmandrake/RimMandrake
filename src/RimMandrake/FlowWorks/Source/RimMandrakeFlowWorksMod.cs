@@ -199,10 +199,10 @@ namespace RimMandrake.FlowWorks
         // touch nothing around them, so a concurrent lane editing this file
         // does not have to rewrite these lines to land its own.
         //
-        // Defaults = what this phase ships. All three OFF degrades to the
+        // Defaults = what this phase ships. All four OFF degrades to the
         // pre-Phase-5 engine: nothing captures, nothing is stranded, and every
         // verb's line of fire is vanilla's again.
-        //  19. superdeepCaptureEnabled     — ruling 26, fall-in at D = 4
+        //  19. superdeepCaptureEnabled     — ruling 26, fall-in (held by relative step height, PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE)
         //  20. superdeepCapturesOwnFaction — whether your own hole takes you too
         //  21. ladderRequiredToExitEnabled — the jailer mechanic
         //  22. superdeepShootingRuleEnabled— ruling 23, across a cliff edge only (P7, V5)
@@ -313,7 +313,7 @@ namespace RimMandrake.FlowWorks
         public static float slimeClimbOutSlipFactor = 2f;
         public static float pitTemperatureCoupling = 3f;
         public static float pitResistanceLossMultiplier = 1f;
-        // CANAL_BOTTOM_SPIKES_1: RM_Spikes on a D=4 floor stab whoever drops in (3 Sharp hits, 40 x BodySize total, PROPOSED).
+        // CANAL_BOTTOM_SPIKES_1: RM_Spikes at the foot of a sheer drop (spikeMinDropMetres below, any depth) stab whoever drops in (3 Sharp hits, 40 x BodySize total, PROPOSED).
         public static bool spikesEnabled = true;
         public static float spikeDamageMultiplier = 1f;
         // PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE (owner R7, V4): spikes go on any square with a sheer drop of this many metres or

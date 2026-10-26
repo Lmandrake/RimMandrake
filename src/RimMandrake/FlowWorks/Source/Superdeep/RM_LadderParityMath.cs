@@ -122,6 +122,14 @@ namespace RimMandrake.FlowWorks
 			return (int)Math.Ceiling(Math.Max(1f, harvestWork) / Math.Max(0.1f, plantWorkSpeed));
 		}
 
+		/// <summary>LADDERPARITY_FIX_TAKE_WORK_SAPPER_ZERO: ticks for a raider to work a portable ladder loose, as vanilla's
+		/// JobDriver_Uninstall spends it: the def's building.uninstallWork at ConstructionSpeed x 1.7 a tick
+		/// (JobDriver_RemoveBuilding), so a raider takes a ladder down exactly as fast as a colonist uninstalls it.</summary>
+		public static int TakeLadderTicks(float uninstallWork, float constructionSpeed)
+		{
+			return (int)Math.Ceiling(Math.Max(1f, uninstallWork) / (Math.Max(0.1f, constructionSpeed) * 1.7f));
+		}
+
 		/// <summary>"Sometimes but not always": does this raid bring ladders? A stable roll on the raid's seed.</summary>
 		public static bool RaidBringsLadders(int raidSeed, float chance)
 		{

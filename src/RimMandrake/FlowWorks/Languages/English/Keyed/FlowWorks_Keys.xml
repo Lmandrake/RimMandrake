@@ -56,7 +56,7 @@
   <RMFlow_ClimbOverWallRoofed>roofed (the wall and both sides must be open to the sky)</RMFlow_ClimbOverWallRoofed>
   <RMFlow_ClimbOverWallNoWay>no open side to climb from, or too thick</RMFlow_ClimbOverWallNoWay>
   <RMFlow_SwaleNeedsExcavation>A swale is laid in a dug channel.</RMFlow_SwaleNeedsExcavation>
-  <!-- CANAL_BOTTOM_SPIKES_1, owner Q2: spikes only in the deepest pits. -->
+  <!-- CANAL_BOTTOM_SPIKES_1 + PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE (owner R7, V4): spikes at the foot of a sheer drop of spikeMinDropMetres, any depth. -->
   <RMFlow_SpikesNeedDrop>Spikes go only at the foot of a sheer drop of {1} or more. The tallest wall over this square is {0}.</RMFlow_SpikesNeedDrop>
   <RMFlow_GuardrailNeedsDrop>A guardrail goes only on the lip of a sheer drop: some neighbouring square must be at least 1.5 m lower.</RMFlow_GuardrailNeedsDrop>
 
@@ -107,8 +107,6 @@
   <RM_DrillPlaceSpent>Subsurface: this map's reserve is used up and never refills. A drill or bleed well here would never pour anything.</RM_DrillPlaceSpent>
   <RM_DrillPlaceOff>Drilling is switched off in the Flow Works settings: a drill or bleed well would sit idle.</RM_DrillPlaceOff>
   <RM_DrillNeedsOutlet>Needs a dug channel at its outlet — the cell it faces.</RM_DrillNeedsOutlet>
-  <RM_DrillLiquidHasNoCanalForm>The liquid below has no canal form and cannot be poured into a channel.</RM_DrillLiquidHasNoCanalForm>
-  <RM_DrillLiquidMismatch>The outlet already holds {0}; this drill's liquid cannot mix with it.</RM_DrillLiquidMismatch>
   <!-- BLEED_WELL_BUILD_SWITCH_AND_SAY_WHY -->
   <RM_DrillWhy_None>Running.</RM_DrillWhy_None>
   <RM_DrillWhy_DisabledInSettings>Not running: drilling is switched off in the Flow Works mod settings.</RM_DrillWhy_DisabledInSettings>
@@ -127,4 +125,6 @@
   <RMFlow_RaidersSetLadders>Raiders of {0} are setting scaling ladders against your trench.</RMFlow_RaidersSetLadders>
   <RMFlow_RaidersFillTrench>Raiders of {0} are shovelling a causeway into your trench.</RMFlow_RaidersFillTrench>
 
+  <!-- RIVERCURRENT_FIX_STALE_DOC_AND_BARE_ENGLISH: first time a colonist is swept by a fast river lane -->
+  <RMFlow_RiverSweptFirstEntry>{0} is being swept downstream by the river's current. Fast water cannot be waded out of; build a ford or a bridge to cross.</RMFlow_RiverSweptFirstEntry>
 </LanguageData>

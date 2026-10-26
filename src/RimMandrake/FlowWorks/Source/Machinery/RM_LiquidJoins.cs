@@ -202,13 +202,28 @@ namespace RimMandrake.FlowWorks.Machinery
             return PipeLook.DefaultLook;
         }
 
-        /// <summary>Redraw the join meshes round a tank's or machine's footprint (its partners may sit in a neighbouring section).</summary>
+        /// <summary>Redraw the join meshes round a tank's or machine's footprint (its partners may sit in a neighbouring section).
+        /// COUPLER_REDRAW_FIX_STALE_ACROSS_SECTIONS: a machine prints its tank couplers from the section holding its own
+        /// Position, which can lie in another section than every ring cell, so each machine touching the ring has its
+        /// Position section dirtied too.</summary>
         public static void DirtyAround(Map map, CellRect rect)
         {
             if (map == null) return;
+            HashSet<Thing> machines = null;
             foreach (IntVec3 c in rect.ExpandedBy(1).EdgeCells)
             {
-                if (c.InBounds(map)) map.mapDrawer.MapMeshDirty(c, (ulong)MapMeshFlagDefOf.Buildings, false, false);
+                if (!c.InBounds(map)) continue;
+                map.mapDrawer.MapMeshDirty(c, (ulong)MapMeshFlagDefOf.Buildings, false, false);
+                List<Thing> l = c.GetThingList(map);
+                for (int i = 0; i < l.Count; i++)
+                {
+                    if (RM_LiquidNet.RoleOfKind(l[i]) == RM_NetRole.Machine) (machines ??= new HashSet<Thing>()).Add(l[i]);
+                }
+            }
+            if (machines == null) return;
+            foreach (Thing m in machines)
+            {
+                if (m.Spawned && m.Map == map) map.mapDrawer.MapMeshDirty(m.Position, (ulong)MapMeshFlagDefOf.Buildings, false, false);
             }
         }
 

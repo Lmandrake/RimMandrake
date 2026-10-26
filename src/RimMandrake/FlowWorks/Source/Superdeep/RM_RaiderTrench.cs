@@ -22,12 +22,15 @@ namespace RimMandrake.FlowWorks
 	/// on a different climb-band component AND unreachable, so going around stays vanilla's and sieges (LordJob_Siege) never
 	/// reach it.
 	///
-	/// The ladders a raider sets are portable ladders of ITS faction. RM_LadderRules.LadderLetsOut lets a pawn climb a ladder
-	/// of its own faction (the prison-door rule still bars every other hostile), and RM_PitPathing's closed-ladder grid
-	/// leaves those cells open to that faction. Shoot the ladder (40 HP) and whoever is down there is in a pit.
+	/// The ladders a raider sets are portable ladders of ITS faction. With ladderNoKeys on (the default,
+	/// LADDER_PARITY_BUILD_NO_KEYS_REQUIRED) RM_LadderRules.MayClimb lets every creature that can climb use any lowered
+	/// ladder, the raid's and yours alike. With it off, RM_LadderRules.LadderLetsOut still lets a pawn climb a ladder of its
+	/// own faction (ClimbsOwnLadder) while the prison-door rule bars every other hostile, and RM_PitPathing's closed-ladder
+	/// grid leaves those cells open to that faction. Shoot the ladder (40 HP) and whoever is down there is in a pit.
 	///
 	/// TRENCH_CROSSING_FIX_DOWN_ACROSS_AND_UP: once the ladders stand, bank to bank is one reachability hop for the raid
-	/// (RM_SuperdeepTrap.RelativeVeto joins components through ladders this pawn may use: its own faction's), so TryCross
+	/// (RM_SuperdeepTrap.RelativeVeto joins components through ladders this pawn may use: any lowered ladder by default,
+	/// only its own faction's with ladderNoKeys off), so TryCross
 	/// sees the target reachable and vanilla's givers walk it down, across and up.
 	/// </summary>
 	public static class RM_RaiderTrench

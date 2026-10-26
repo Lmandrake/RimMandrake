@@ -259,9 +259,11 @@
     </placeWorkers>
   </ThingDef>
 
-  <!-- CANAL_BOTTOM_SPIKES_1 — spikes are per-cell hardware on a superdeep (D = 4) canal floor, the
-       ladder's shape: a Thing in the cell + placeworker + RM_SpikeUtility.HasSpikes. Owner Q2
-       2026-10-02 (by card): D = 4 only. Fire on descent only (RM_SuperdeepTrap.PitDescent), three
+  <!-- CANAL_BOTTOM_SPIKES_1 — spikes are per-cell hardware on a pit floor, the ladder's shape: a
+       Thing in the cell + placeworker + RM_SpikeUtility.HasSpikes. Where: owner Q2 2026-10-02 (by card)
+       said D = 4 only; the later relative rule (PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE, owner R7, V4)
+       replaced it: PlaceWorker_SpikesOnSuperdeep allows any square at the foot of a sheer drop of
+       spikeMinDropMetres (2 m) or more to a neighbour, at any depth. Fire on descent only (RM_SuperdeepTrap.PitDescent), three
        Sharp hits scaled by body size (numbers PROVISIONAL in RM_PitTrapMath: first guesses, tuned live later, owner ruling 2026-10-03).
        Art: Canals/RM_Spikes/ random pool (spokes_v3a/b/c). -->
   <ThingDef ParentName="BuildingBase">

@@ -12,7 +12,8 @@ namespace RimMandrake.FlowWorks.Rivers
 	/// Direction comes from vanilla's own per-cell river flow vector
 	/// (<c>map.waterInfo.riverFlowMap</c>, written by TileMutatorWorker_River and saved by
 	/// WaterInfo), quantised to 8 compass steps once per map. Nothing is authored here, and the
-	/// only thing saved is the one-time first-entry warning flag, so adding or removing the mod mid-game is safe. Lane is read live from the
+	/// only things saved are the one-time first-entry warning flag and the live flotsam list (by
+	/// reference, so a stack destroyed meanwhile loads as null and is dropped), so adding or removing the mod mid-game is safe. Lane is read live from the
 	/// terrain, so a bridge or ford laid later simply stops reading as river.
 	///
 	/// The shove itself is TerminalBiomes' proven idiom (register every 250 ticks, step every
@@ -688,8 +689,7 @@ namespace RimMandrake.FlowWorks.Rivers
 				return;
 			}
 			warnedThisMap = true;
-			Messages.Message(p.LabelShortCap + " is being swept downstream by the river's current. "
-			  + "Fast water cannot be waded out of; build a ford or a bridge to cross.",
+			Messages.Message("RMFlow_RiverSweptFirstEntry".Translate(p.LabelShortCap),
 				p, MessageTypeDefOf.NegativeEvent);
 		}
 	}
