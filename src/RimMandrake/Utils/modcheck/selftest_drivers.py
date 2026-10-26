@@ -119,6 +119,9 @@ def t_worker_passes_flag():
     w = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(w)
     ok("--drivers on" in getattr(w, "RUN_BASE", ""), "SteveDesktop worker run command passes --drivers on")
+    ok("MODCHECK_DRIVERS_BUDGET_S=1350 " in w.driver_budget_export(2700)
+       and "MODCHECK_DRIVERS_BUDGET_S=7200 " in w.driver_budget_export(14400),
+       "the driver budget is half the job timeout, capped at 7200 s")
 
 
 def _fw_suite():

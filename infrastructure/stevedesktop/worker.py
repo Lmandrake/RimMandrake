@@ -255,6 +255,14 @@ RUN_BASE = ("export MODCHECK_SKIP_DEPLOY=1 WSLENV=${WSLENV:+$WSLENV:}MODCHECK_SK
             "python.exe src/RimMandrake/Utils/modcheck/cli.py run --drivers on")
 
 
+
+def driver_budget_export(timeout_s):
+    """The drivers share at most half the job's run timeout (and never more than 2 h), so a targeted job whose chains
+    read a slow driver (thirst_live ~40 min) ends as a driver TIMEOUT receipt, not a whole-job HANG."""
+    budget = max(0, min(7200, int(timeout_s) // 2))
+    return ("export MODCHECK_DRIVERS_BUDGET_S=%d WSLENV=${WSLENV:+$WSLENV:}MODCHECK_DRIVERS_BUDGET_S; " % budget)
+
+
 class Stopped(Exception):
     pass
 
@@ -469,9 +477,9 @@ class Attempt:
 
     def run_modcheck(self):
         args = S.modcheck_args(self.job)
-        base = os.environ.get("TESTQ_CMD_RUN") or RUN_BASE
-        cmd = base + " " + " ".join(shlex.quote(a) for a in args)
         timeout = int(os.environ.get("TESTQ_RUN_TIMEOUT_S") or self.job.get("timeout_s", 2700))
+        base = os.environ.get("TESTQ_CMD_RUN") or (driver_budget_export(timeout) + RUN_BASE)
+        cmd = base + " " + " ".join(shlex.quote(a) for a in args)
         for attempt_no in (1, 2):
             rc, tail = self.sh(cmd, log_name="modcheck.log", timeout=timeout)
             if rc is not None:
