@@ -491,7 +491,9 @@ ART_EVAL_RUNS = REPO_ROOT / "infrastructure" / "state" / "art_eval" / "runs"
 
 
 def _art_eval_record(run: str, target: str, runs_root: Path | None = None) -> tuple[dict | None, str]:
-    """-> (the newest REGEN record for TARGET in production art-eval run RUN, why-not)."""
+    """-> (TARGET's latest record in production art-eval run RUN when that record is a REGEN, why-not). The latest
+    decision wins (FILLQUEUE_GATE_FIX_STALE_REGEN_AFTER_ESCALATE): a subject judged REGEN, REGEN, then ESCALATE at
+    round 3 is the owner's call now, and an older REGEN line must not still file a redraw."""
     if not isinstance(run, str) or not re.fullmatch(r"[A-Za-z0-9_.-]+", run or "") or run.startswith("."):
         return None, f"source_run {run!r} is not a run id"
     d = (runs_root or ART_EVAL_RUNS) / run
@@ -502,12 +504,15 @@ def _art_eval_record(run: str, target: str, runs_root: Path | None = None) -> tu
         if json.loads(meta.read_text()).get("test", True) is not False:
             return None, f"source_run {run} is a --test run (it may file nothing)"
         recs = [json.loads(ln) for ln in dec.read_text().splitlines() if ln.strip()]
-        hit = [r for r in recs if r.get("subject") == target and r.get("decision") == "REGEN"]
+        mine = [r for r in recs if r.get("subject") == target]
     except Exception as e:                                           # noqa: BLE001 — not a dict/list: fail closed
         return None, f"source_run {run}: unreadable ({type(e).__name__}: {e})"
-    if not hit:
+    if not any(r.get("decision") == "REGEN" for r in mine):
         return None, f"source_run {run} holds no REGEN decision for {target}"
-    return hit[-1], ""
+    if mine[-1].get("decision") != "REGEN":
+        return None, (f"source_run {run}: the latest decision for {target} is {mine[-1].get('decision')!r}, "
+                      f"not REGEN (an older REGEN does not file a redraw)")
+    return mine[-1], ""
 
 
 def _owner_redraw_why(v, slot) -> str:

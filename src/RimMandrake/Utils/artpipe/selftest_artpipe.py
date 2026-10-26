@@ -4233,7 +4233,11 @@ def test_fill_queue_eligibility_gate_refuses_kept_regen_unconfirmed_and_verifies
                                        {"subject": "ST_Unconf", "decision": "REGEN"},
                                        {"subject": "ST_Accepted", "decision": "ACCEPT"},
                                        {"subject": "ST_MixU", "decision": "REGEN"},
-                                       {"subject": "ST_MixK", "decision": "REGEN"}])
+                                       {"subject": "ST_MixK", "decision": "REGEN"},
+                                       # FILLQUEUE_GATE_FIX_STALE_REGEN_AFTER_ESCALATE: round 3 escalated it to the
+                                       # owner; the older REGEN records must not still file a redraw
+                                       {"subject": "ST_Esc", "decision": "REGEN"},
+                                       {"subject": "ST_Esc", "decision": "ESCALATE"}])
             run_dir("test_r1", True, [{"subject": "ST_RegenT", "decision": "REGEN"}])
             dec = td / "sheet.decisions.json"
             dec.write_text(json.dumps({"sheetId": "st_sheet", "decisions": {
@@ -4263,6 +4267,7 @@ def test_fill_queue_eligibility_gate_refuses_kept_regen_unconfirmed_and_verifies
                     row("ae_kept_no", "ST_KeptBare", source_run="prod_r1"),
                     row("ae_unconf_no", "ST_Unconf", source_run="prod_r1"),
                     row("ae_bad_id_no", "ST_Regen_b", source_run="../prod_r1"),
+                    row("ae_escalated_no", "ST_Esc", source_run="prod_r1"),
                     # FILLQUEUE_GATE_FIX_MIXED_FACING_EXEMPT: the exemption read only the WORST facing, so a REGEN
                     # facing hid an UNCONFIRMED or KEPT sibling and the art-eval marker filed the whole row
                     row("ae_mix_unconf_no", "ST_MixU", source_run="prod_r1", facings=["east", "south"]),
@@ -4285,7 +4290,7 @@ def test_fill_queue_eligibility_gate_refuses_kept_regen_unconfirmed_and_verifies
                         ("ST_Multi", "south"): "DONOR", ("ST_Multi", "north"): "REFUSED_KEPT",
                         "ST_Regen": "REFUSED_REGEN", "ST_RegenT": "REFUSED_REGEN", "ST_Accepted": "REFUSED_REGEN",
                         "ST_KeptOk": "REFUSED_KEPT", "ST_KeptBare": "REFUSED_KEPT", "ST_Unconf": "REFUSED_UNCONFIRMED",
-                        "ST_Regen_b": "REFUSED_REGEN", "ST_Ruled": "REFUSED_KEPT", "ST_NotRuled": "REFUSED_KEPT",
+                        "ST_Regen_b": "REFUSED_REGEN", "ST_Esc": "REFUSED_REGEN", "ST_Ruled": "REFUSED_KEPT", "ST_NotRuled": "REFUSED_KEPT",
                         "ST_SlotOk": "REFUSED_KEPT", "ST_Prefill": "REFUSED_KEPT", "ST_Delegated": "REFUSED_KEPT",
                         "ST_Keep": "REFUSED_KEPT", "ST_SlotPick": "REFUSED_KEPT", "ST_SlotPrefill": "REFUSED_KEPT",
                         "ST_Other": "REFUSED_KEPT",
@@ -4308,7 +4313,7 @@ def test_fill_queue_eligibility_gate_refuses_kept_regen_unconfirmed_and_verifies
                                  ("unconf_no", "REFUSED_UNCONFIRMED"), ("multi_no", "REFUSED_KEPT"),
                                  ("ae_test_no", "--test run"), ("ae_norec_no", "no REGEN decision"),
                                  ("ae_kept_no", "replaces_kept"), ("ae_unconf_no", "fail closed"),
-                                 ("ae_bad_id_no", "not a run id"), ("ruled_no", "no ruling on ST_NotRuled"),
+                                 ("ae_bad_id_no", "not a run id"), ("ae_escalated_no", "latest decision"), ("ruled_no", "no ruling on ST_NotRuled"),
                                  ("ae_mix_unconf_no", "REFUSED_UNCONFIRMED"), ("ae_mix_kept_no", "replaces_kept"),
                                  ("ruled_wrongrow_no", "is not target_def"),
                                  ("ruled_prefill_no", "agent prefill"), ("ruled_deleg_no", "agent prefill"),
