@@ -100,6 +100,11 @@ def untracked_upstream(g: Git, head: str, up: str) -> list[str]:
         subprocess.run(["git", "-C", td, "init", "-q"], capture_output=True, check=True)
         r = subprocess.run(["git", "-C", td, "check-ignore", "--no-index", "-z", "--stdin"],
                            input="\0".join(here) + "\0", capture_output=True, text=True)
+        # 0 = some ignored, 1 = none; anything else means the check never ran, and treating that as
+        # "nothing to keep" would let reset --keep delete every file upstream merely stopped tracking.
+        if r.returncode not in (0, 1):
+            raise Refused(f"check-ignore against upstream's .gitignore failed (exit {r.returncode}): "
+                          f"{(r.stderr or '').strip()[-300:]}; cannot tell which files upstream stopped tracking")
         return sorted(x for x in r.stdout.split("\0") if x)
 
 
@@ -220,7 +225,10 @@ def apply(g: Git, p: dict, seat: str) -> str:
         notes.append(f"{len(p['move'])} identical untracked file(s) moved to {dest}")
     for i in range(0, len(p["stage"]), 500):
         g.run("add", "-A", "--", *p["stage"][i:i + 500])
-    note = reset_keep(g, p["head"], p["up"], p["keep"])
+    try:
+        note = reset_keep(g, p["head"], p["up"], p["keep"])
+    except Refused as e:   # say what already happened (moved files, backup branch) before the refusal
+        raise Refused(f"{e}" + (f" (already done: {'; '.join(notes)})" if notes else ""))
     if note:
         notes.append(note)
     return "; ".join(notes)

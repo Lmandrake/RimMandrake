@@ -162,6 +162,24 @@ def owner_view(v):
     return {**v, "decision": "", "prefillOnly": (v.get("decision") or "").strip()}
 
 
+def _write_unless_changed(path: Path, raw: bytes, text: str) -> bool:
+    """Atomically replace PATH with TEXT unless it no longer holds RAW (the sheet's sidecar saved his clicks in
+    between: overwriting would lose them). False = nothing written."""
+    import os
+    import tempfile
+    fd, tmp = tempfile.mkstemp(dir=str(path.parent), prefix=".dv2-", suffix=".tmp")
+    try:
+        with os.fdopen(fd, "wb") as fh:
+            fh.write(text.encode("utf-8"))
+        if path.read_bytes() != raw:
+            return False
+        os.replace(tmp, path)
+        return True
+    finally:
+        if os.path.exists(tmp):
+            os.unlink(tmp)
+
+
 def returned(doc: dict) -> dict | None:
     """The owner's return of the whole sheet ({at, said, by}), or None. Only `mark_returned` writes it."""
     r = (doc or {}).get("returned")
@@ -173,7 +191,8 @@ def mark_returned(path: Path, said: str, apply: bool = False, at: str | None = N
     said = (said or "").strip()
     if len(said) < 8:
         return {"ok": False, "error": "--returned needs his words (the sentence where he said the sheet is done)"}
-    doc = json.loads(path.read_text())
+    raw = path.read_bytes()
+    doc = json.loads(raw.decode("utf-8"))
     if not (doc.get("savedBy") and int(doc.get("writeCount") or 0) > 0):
         return {"ok": False, "error": f"{path.name}: the sidecar never wrote this file — nothing of his landed; refusing to "
                                       f"stamp a return over the generator's prefill"}
@@ -183,8 +202,8 @@ def mark_returned(path: Path, said: str, apply: bool = False, at: str | None = N
     doc["reviewStatus"] = {**rs, "state": "ruled", "by": "owner", "at": at,
                            "evidence": "sheet returned (decisions_v2 --returned, his words in `returned.said`); slots he "
                                        "left alone keep their in-game art"}
-    if apply:
-        path.write_text(json.dumps(doc, indent=2) + "\n")
+    if apply and not _write_unless_changed(path, raw, json.dumps(doc, indent=2) + "\n"):
+        return {"ok": False, "error": f"{path.name}: the sheet saved while stamping; nothing written — run it again"}
     return {"ok": True, "file": str(path), "returned": doc["returned"], "applied": apply}
 
 
@@ -199,7 +218,8 @@ def accept_looks(path: Path, said: str, prefer: dict | None = None, apply: bool 
     said = (said or "").strip()
     if len(said) < 8:
         return {"ok": False, "error": "--accept-looks needs his words (the sentence where he accepted the art)"}
-    doc = json.loads(path.read_text())
+    raw = path.read_bytes()
+    doc = json.loads(raw.decode("utf-8"))
     if snapshot is None:
         import artledger as L
         snapshot = json.loads((L.REPO_ROOT / doc["snapshot"]).read_text())
@@ -244,7 +264,9 @@ def accept_looks(path: Path, said: str, prefer: dict | None = None, apply: bool 
         picked[row] = choice
     if apply and picked:
         doc["savedAt"], doc["savedBy"] = at, "decisions_v2 --accept-looks (owner's words)"
-        path.write_text(json.dumps(doc, indent=2) + "\n")
+        if not _write_unless_changed(path, raw, json.dumps(doc, indent=2) + "\n"):
+            return {"ok": False, "error": f"{path.name}: the sheet saved meanwhile; nothing written — run it again",
+                    "picked": picked, "unresolved": unresolved, "applied": False}
     return {"ok": not unresolved, "picked": picked, "unresolved": unresolved, "applied": apply and bool(picked)}
 
 
@@ -349,22 +371,24 @@ def fold_old_sheet_answers(apply: bool = False, path: Path | None = None, biomes
         if not f.is_file():
             res["no_row"] += [f"{sid}|{r}|{L}" for r, L, _ in items]
             continue
+        landed = False
         for _attempt in range(4):
             raw = f.read_bytes()
             doc = json.loads(raw.decode("utf-8"))
-            n = 0
+            n, no_row, already = 0, [], 0      # per attempt: a lost race must not count twice
             for row, L, d in items:
                 v = (doc.get("decisions") or {}).get(row)
                 if not isinstance(v, dict) or L not in (v.get("legacyVariants") or []):
-                    res["no_row"].append(f"{sid}|{row}|{L}")
+                    no_row.append(f"{sid}|{row}|{L}")
                     continue
                 if L in row_answers(v):
-                    res["already"] += 1
+                    already += 1
                     continue
                 v.setdefault("legacyRuled", {})[L] = {"v": d, "at": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
                                                      "from": CONFIRM_SHEET}
                 n += 1
             if not n or not apply:
+                landed = True
                 break
             fd, tmp = tempfile.mkstemp(dir=str(f.parent), prefix=".fold-", suffix=".tmp")
             try:
@@ -373,10 +397,16 @@ def fold_old_sheet_answers(apply: bool = False, path: Path | None = None, biomes
                 if f.read_bytes() != raw:
                     continue
                 os.replace(tmp, f)
+                landed = True
                 break
             finally:
                 if os.path.exists(tmp):
                     os.unlink(tmp)
+        res["no_row"] += no_row
+        res["already"] += already
+        if not landed:                         # four sidecar saves in between: nothing was written
+            res.setdefault("lost_race", []).append(f.name)
+            continue
         res["folded"] += n
         if n:
             res["files"].append(f.name)

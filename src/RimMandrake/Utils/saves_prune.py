@@ -50,6 +50,7 @@ AUTOSAVE = re.compile(r"^Autosave-\d+\.rws$", re.I)
 BACKUP = re.compile(r"(\.bak|bak-pre|\.before[_-]|before_|_backup|\.prev|\.orig|pre_?edit|\.old$)", re.I)
 KEEPER_STORE = Path(rm_str("scratch", "save_keepers"))
 TEXT_EXT = {".md", ".html", ".json", ".txt", ".yml", ".yaml", ".py", ".xml", ".csv"}
+CITE_ERRORS: list[str] = []   # filled by cited_by(): a citation search that failed to run
 
 
 def saves_dir() -> Path:
@@ -97,6 +98,11 @@ def cited_by(stems: list[str]) -> dict[str, str]:
     ]
     for cmd, where in runs:
         r = subprocess.run(cmd, input=pat, capture_output=True, text=True)
+        # exit 0 = hits, 1 = no hits; anything else means the search did not run (or ran partly), and a
+        # citation search that went blind would turn every cited save into PRUNE. main() refuses --apply.
+        if r.returncode not in (0, 1):
+            CITE_ERRORS.append("%s search exited %d: %s" % (where, r.returncode,
+                                                          (r.stderr or "").strip().splitlines()[:1]))
         for ln in r.stdout.splitlines():
             m = ln.rsplit(":", 1)[-1] if cmd[0] == "git" else ln
             if m in todo:
@@ -174,17 +180,31 @@ def main(argv=None) -> int:
         rows.append({"name": n, "verdict": v, "why": why, "bytes": sz, "age_d": round((now - mt) / 86400, 1)})
     if CANONICAL not in {r["name"] for r in rows}:
         print("WARNING: the canonical start save %s is NOT in %s" % (CANONICAL, sd))
+    for err in CITE_ERRORS:
+        print("UNMEASURED: citation search failed — %s" % err)
+    if a.apply and CITE_ERRORS:
+        print("REFUSED: --apply deletes nothing while a citation search is blind (a cited save would read as PRUNE)")
+        return 2
     freed = 0
     if a.apply:
         for r in rows:
             if r["verdict"] != "PRUNE" or r["name"] == CANONICAL or r["name"].startswith("CANONICAL_"):
                 continue
             p = sd / r["name"]
-            v, why = classify(r["name"], p.stat().st_mtime, time.time(), awaiting(), cites, a)
+            try:
+                mt = p.stat().st_mtime
+            except OSError:
+                r.update(verdict="HOLD", why="vanished since the scan")
+                continue
+            v, why = classify(r["name"], mt, time.time(), awaiting(), cites, a)
             if v != "PRUNE":
                 r.update(verdict=v, why="changed since the scan: " + why)
                 continue
-            p.unlink()
+            try:
+                p.unlink()
+            except OSError as e:   # e.g. the game holds it open on Windows: report it, keep going
+                r.update(verdict="HOLD", why="delete failed: %s" % e)
+                continue
             r["verdict"] = "PRUNED"
             freed += r["bytes"]
     seat_backups = []

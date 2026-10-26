@@ -142,6 +142,35 @@ def main() -> int:
         check("T/" not in git(seat, "status", "--porcelain"), "the kept files read as ignored, not dirty")
         check(not list(Path(seat, ".git").glob("rm-untrack-keep-*")), "the aside dir is cleaned up")
 
+        # the stop-tracking check itself fails (check-ignore exit 128): refuse, delete nothing. Before
+        # 2026-10-26 a failed check read as "nothing to keep" and reset --keep deleted the files.
+        peer_push(peer, {"U/k.html": "k\n"}, "U")
+        run(seat)
+        git(peer, "pull", "-q", "--ff-only", "origin", "main")
+        write(peer, "U/.gitignore", "*.html\n")
+        git(peer, "rm", "-q", "--cached", "--", "U/k.html")
+        git(peer, "add", "--", "U/.gitignore")
+        git(peer, "commit", "-q", "-m", "untrack U")
+        git(peer, "push", "-q", "origin", "HEAD:main")
+        real_run = S.subprocess.run
+
+        def blind(cmd, *a, **kw):
+            if "check-ignore" in cmd:
+                return subprocess.CompletedProcess(cmd, 128, stdout="", stderr="fatal: stub")
+            return real_run(cmd, *a, **kw)
+        S.subprocess.run = blind
+        before = git(seat, "rev-parse", "HEAD")
+        try:
+            rc, out = run(seat)
+        finally:
+            S.subprocess.run = real_run
+        check(rc == 1 and "check-ignore" in out, "a failed stop-tracking check refuses the sync")
+        check(git(seat, "rev-parse", "HEAD") == before and Path(seat, "U/k.html").is_file()
+              and Path(seat, "U/k.html").read_text() == "k\n",
+              "the refusal deletes nothing")
+        rc, out = run(seat)
+        check(rc == 0 and Path(seat, "U/k.html").is_file() and Path(seat, "U/k.html").read_text() == "k\n", "with the check working it syncs and keeps the file")
+
         # wrong branch / dry run
         git(seat, "checkout", "-q", "-b", "side")
         rc, out = run(seat)
