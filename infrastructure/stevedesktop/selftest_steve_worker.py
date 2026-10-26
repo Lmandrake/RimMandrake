@@ -414,10 +414,11 @@ def main():
 
         # keyed on the id check's own refusal: a bare rc != 0 also passed with the check deleted, since
         # cmd_result of a missing path answers "no result" with exit 1
-        for verb in ("result", "ack", "stop"):
-            rc, o = w([verb, "--attempt", "../../etc"])
+        # status --job reads p("jobs", <id>) too; with only --attempt checked (wave 72 mutation) a path passed here
+        for argv in (["result", "--attempt"], ["ack", "--attempt"], ["stop", "--attempt"], ["status", "--job"]):
+            rc, o = w(argv + ["../../etc"])
             check(rc == 2 and "not a job or attempt id" in o.get("raw", ""),
-                  "a path as an attempt id is refused by %s: rc %s %s" % (verb, rc, str(o)[-200:]))
+                  "a path as an id is refused by %s: rc %s %s" % (" ".join(argv), rc, str(o)[-200:]))
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     print("\n%d failed" % len(FAILS))
