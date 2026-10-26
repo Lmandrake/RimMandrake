@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- Unit gizmos and readout -->
+  <RM_ColdStorage_SetpointLower10>-10°</RM_ColdStorage_SetpointLower10>
+  <RM_ColdStorage_SetpointLower1>-1°</RM_ColdStorage_SetpointLower1>
+  <RM_ColdStorage_SetpointReset>Reset</RM_ColdStorage_SetpointReset>
+  <RM_ColdStorage_SetpointRaise1>+1°</RM_ColdStorage_SetpointRaise1>
+  <RM_ColdStorage_SetpointRaise10>+10°</RM_ColdStorage_SetpointRaise10>
+  <RM_ColdStorage_SetpointDesc>Set the temperature this unit holds its contents at. Now: {0}.</RM_ColdStorage_SetpointDesc>
+  <RM_ColdStorage_ChillReadout>{0}: {1} (set to {2})</RM_ColdStorage_ChillReadout>
+  <RM_ColdStorage_Drifting>- not running, drifting toward the room temperature</RM_ColdStorage_Drifting>
+  <RM_ColdStorage_StasisOffChilling>Stasis is switched off in Mod Settings: this unit chills instead.</RM_ColdStorage_StasisOffChilling>
+  <RM_ColdStorage_StasisHolding>{0}: field holding, nothing inside spoils</RM_ColdStorage_StasisHolding>
+  <RM_ColdStorage_StasisDown>{0}: field down, contents spoil as normal</RM_ColdStorage_StasisDown>
+  <RM_ColdStorage_SwitchedOff>Cold storage is switched off in Mod Settings: a plain shelf.</RM_ColdStorage_SwitchedOff>
+
+  <!-- Rot line causes -->
+  <RM_ColdStorage_Sealed>sealed</RM_ColdStorage_Sealed>
+  <RM_ColdStorage_InStasis>in stasis</RM_ColdStorage_InStasis>
+  <RM_ColdStorage_Preserved>preserved</RM_ColdStorage_Preserved>
+
+  <!-- Sealed goods -->
+  <RM_ColdStorage_BreakSeal>Break seal</RM_ColdStorage_BreakSeal>
+  <RM_ColdStorage_BreakSealDesc>Open these goods. Once opened they spoil as normal and cannot be resealed.</RM_ColdStorage_BreakSealDesc>
+  <RM_ColdStorage_SealBroken>Seal broken</RM_ColdStorage_SealBroken>
+  <RM_ColdStorage_SealedFor>{0} for {1}</RM_ColdStorage_SealedFor>
+  <RM_ColdStorage_SealedAging>{0} for {1}; becomes {2} in {3}</RM_ColdStorage_SealedAging>
+
+  <!-- Mod Settings -->
+  <RM_ColdStorage_SettingsCategory>RimMandrake: Cold Storage</RM_ColdStorage_SettingsCategory>
+  <RM_ColdStorage_SettingsEngine>Engine</RM_ColdStorage_SettingsEngine>
+  <RM_ColdStorage_SettingsAppliesNow>Changes apply at once, to units and goods already on the map.</RM_ColdStorage_SettingsAppliesNow>
+  <RM_ColdStorage_SettingChill>Chill units</RM_ColdStorage_SettingChill>
+  <RM_ColdStorage_SettingChillDesc>Units hold their own temperature and the goods on them read it. Off: chill units are plain shelves.</RM_ColdStorage_SettingChillDesc>
+  <RM_ColdStorage_SettingStasis>Stasis units</RM_ColdStorage_SettingStasis>
+  <RM_ColdStorage_SettingStasisDesc>Stasis fields stop spoiling and deterioration. Off: stasis units chill at -10°C instead. Sealed goods keep until opened either way.</RM_ColdStorage_SettingStasisDesc>
+  <RM_ColdStorage_SettingAging>Sealed goods age</RM_ColdStorage_SettingAging>
+  <RM_ColdStorage_SettingAgingDesc>Sealed goods that can age turn into their aged form after a while, with a small chance of ruin. Off: they stay as they are.</RM_ColdStorage_SettingAgingDesc>
+  <RM_ColdStorage_SettingsRates>Rates</RM_ColdStorage_SettingsRates>
+  <RM_ColdStorage_SettingPower>Power use: x{0}</RM_ColdStorage_SettingPower>
+  <RM_ColdStorage_SettingInsulation>Insulation (how slowly an unpowered unit warms): x{0}</RM_ColdStorage_SettingInsulation>
+  <RM_ColdStorage_SettingAgingTime>Aging time: x{0}</RM_ColdStorage_SettingAgingTime>
+  <RM_ColdStorage_SettingFailure>Chance of ruin when aging: x{0}</RM_ColdStorage_SettingFailure>
+  <RM_ColdStorage_SettingsMethods>Methods</RM_ColdStorage_SettingsMethods>
+  <RM_ColdStorage_SettingsMethodsNote>A method switched off hides its stations and recipes. Goods already made keep their properties.</RM_ColdStorage_SettingsMethodsNote>
+  <RM_ColdStorage_SettingResin>Resin sealing</RM_ColdStorage_SettingResin>
+  <RM_ColdStorage_SettingSandDry>Sand drying</RM_ColdStorage_SettingSandDry>
+  <RM_ColdStorage_SettingBrine>Brine pickling</RM_ColdStorage_SettingBrine>
+  <RM_ColdStorage_SettingCrock>Evaporative crocks</RM_ColdStorage_SettingCrock>
+  <RM_ColdStorage_SettingsBehaviour>Behaviour</RM_ColdStorage_SettingsBehaviour>
+  <RM_ColdStorage_SettingHopper>Units can feed a nutrient paste dispenser</RM_ColdStorage_SettingHopper>
+  <RM_ColdStorage_SettingHopperDesc>Units built to do so act as hoppers when placed against a dispenser.</RM_ColdStorage_SettingHopperDesc>
+  <RM_ColdStorage_SettingReadout>Show the unit temperature readout</RM_ColdStorage_SettingReadout>
+  <RM_ColdStorage_SettingsReset>Reset to defaults</RM_ColdStorage_SettingsReset>
+</LanguageData>

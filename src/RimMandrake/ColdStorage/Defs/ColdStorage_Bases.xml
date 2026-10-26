@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Abstract parents for cold storage units. A concrete unit adds its graphic, cost, size and a
+       CompProperties_StorageClimate naming its method (plus CompPowerTrader / CompRefuelable / CompFlickable as it needs).
+       Units keep vanilla shelf behaviour: Building_Storage, storage tab, three items a cell. -->
+
+  <ThingDef Name="RM_ColdStorageUnitBase" ParentName="StorageShelfBase" Abstract="True">
+    <tickerType>Rare</tickerType>
+    <building>
+      <storageGroupTag>RM_ColdStorageUnit</storageGroupTag>
+    </building>
+  </ThingDef>
+
+  <!-- Deep units: with LWM's Deep Storage loaded they hold several stacks a cell
+       (Patches/ColdStorage_LWMDeepStorage.xml); without it they are ordinary units. -->
+  <ThingDef Name="RM_ColdStorageDeepUnitBase" ParentName="RM_ColdStorageUnitBase" Abstract="True">
+  </ThingDef>
+</Defs>

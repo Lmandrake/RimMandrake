@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: Cold Storage</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rm.coldstorage</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>The cold storage engine: one shared climate and preservation component for storage buildings and sealed goods.
+
+Chill units hold their own temperature, and items on or in them read it, so vanilla rot follows the unit (powered, fuelled or passive; drifting back to the room when the power fails). Stasis units stop rot and deterioration while the field holds. Sealed goods never rot until opened, and may age into something else, with a chance of ruin. Preserved goods (sand-dried, pickled) rot at a fixed fraction of the normal rate.
+
+Every behaviour has a switch in Mod Settings; with everything off, units are plain shelves and food rots as in vanilla. Optional support for LWM's Deep Storage (deep units) and Replace Stuff (replacing one unit with another keeps its setpoint).
+
+This mod is the engine. The units, seals and presses come with the cold storage content.</description>
+
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>LWM.DeepStorage</li>
+    <li>Memegoddess.ReplaceStuff</li>
+  </loadAfter>
+
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+</ModMetaData>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- How a unit or item preserves (design/RimStarWars/cold_storage_line_2026-10-26.md §4.0). Units name a Chill or
+       Stasis method; sealed and preserved goods name a Sealed one. The gate ties a method to its Mod Settings switch. -->
+
+  <RimMandrake.ColdStorage.ColdStorageMethodDef>
+    <defName>RM_ColdMethod_Chill</defName>
+    <label>chilled</label>
+    <description>Kept cold by the unit it sits in.</description>
+    <mode>Chill</mode>
+  </RimMandrake.ColdStorage.ColdStorageMethodDef>
+
+  <RimMandrake.ColdStorage.ColdStorageMethodDef>
+    <defName>RM_ColdMethod_Stasis</defName>
+    <label>stasis</label>
+    <description>Held unchanging by a stasis field.</description>
+    <mode>Stasis</mode>
+  </RimMandrake.ColdStorage.ColdStorageMethodDef>
+
+  <RimMandrake.ColdStorage.ColdStorageMethodDef>
+    <defName>RM_ColdMethod_CarbonFreeze</defName>
+    <label>carbon-frozen</label>
+    <description>Encased in a frozen carbon block.</description>
+    <mode>Sealed</mode>
+    <sealedLabel>carbon-frozen</sealedLabel>
+  </RimMandrake.ColdStorage.ColdStorageMethodDef>
+
+  <RimMandrake.ColdStorage.ColdStorageMethodDef>
+    <defName>RM_ColdMethod_TarSeal</defName>
+    <label>tar-sealed</label>
+    <description>Sealed in a jar under a tar plug.</description>
+    <mode>Sealed</mode>
+    <sealedLabel>tar-sealed</sealedLabel>
+  </RimMandrake.ColdStorage.ColdStorageMethodDef>
+
+  <RimMandrake.ColdStorage.ColdStorageMethodDef>
+    <defName>RM_ColdMethod_ResinSeal</defName>
+    <label>resin-sealed</label>
+    <description>Sealed under a coat of hardened resin.</description>
+    <mode>Sealed</mode>
+    <sealedLabel>resin-sealed</sealedLabel>
+    <gate>Resin</gate>
+  </RimMandrake.ColdStorage.ColdStorageMethodDef>
+
+  <RimMandrake.ColdStorage.ColdStorageMethodDef>
+    <defName>RM_ColdMethod_SaltCrust</defName>
+    <label>salt-crusted</label>
+    <description>Packed in a hard crust of salt.</description>
+    <mode>Sealed</mode>
+    <sealedLabel>salt-crusted</sealedLabel>
+  </RimMandrake.ColdStorage.ColdStorageMethodDef>
+
+  <RimMandrake.ColdStorage.ColdStorageMethodDef>
+    <defName>RM_ColdMethod_SandDry</defName>
+    <label>sand-dried</label>
+    <description>Dried in hot sand until little is left to spoil.</description>
+    <mode>Sealed</mode>
+    <sealedLabel>sand-dried</sealedLabel>
+    <gate>SandDry</gate>
+  </RimMandrake.ColdStorage.ColdStorageMethodDef>
+
+  <RimMandrake.ColdStorage.ColdStorageMethodDef>
+    <defName>RM_ColdMethod_Canned</defName>
+    <label>canned</label>
+    <description>Sealed in a metal can.</description>
+    <mode>Sealed</mode>
+    <sealedLabel>canned</sealedLabel>
+  </RimMandrake.ColdStorage.ColdStorageMethodDef>
+
+  <RimMandrake.ColdStorage.ColdStorageMethodDef>
+    <defName>RM_ColdMethod_Brine</defName>
+    <label>pickled</label>
+    <description>Kept in brine.</description>
+    <mode>Sealed</mode>
+    <sealedLabel>pickled</sealedLabel>
+    <gate>Brine</gate>
+  </RimMandrake.ColdStorage.ColdStorageMethodDef>
+</Defs>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- LWM's Deep Storage (LWM.DeepStorage), optional: deep cold units hold 2-4 stacks a cell and get its contents tab.
+       Patched on the abstract parent, before inheritance, so every deep unit picks it up. -->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>LWM's Deep Storage</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[@Name="RM_ColdStorageDeepUnitBase"]</xpath>
+          <value>
+            <modExtensions>
+              <li Class="LWM.DeepStorage.Properties">
+                <minNumberStacks>2</minNumberStacks>
+                <maxNumberStacks>4</maxNumberStacks>
+              </li>
+            </modExtensions>
+            <inspectorTabs>
+              <li>LWM.DeepStorage.ITab_DeepStorage_Inventory</li>
+            </inspectorTabs>
+          </value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+</Patch>
