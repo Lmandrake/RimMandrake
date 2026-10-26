@@ -143,13 +143,14 @@ def _unmeasured(t, why):
 
 @contextlib.contextmanager
 def _comp(t, name, **kw):
-    before = t.upstream_failed
+    before, reason = t.upstream_failed, t.upstream_reason
     t._why = None
     with t.component(name, **kw):
         yield
     if getattr(t, "_why", None) and not before:
-        t.upstream_failed = False
-        t.upstream_reason = None
+        # restore, never None: a later plain FAIL latches without setting a reason, and every row after it shows
+        # upstream_reason (GRAFFITIIMPERIAL_VALIDATION_FIX_LOST_REASON)
+        t.upstream_failed, t.upstream_reason = False, reason
     t._why = None
 
 
