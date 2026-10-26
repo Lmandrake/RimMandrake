@@ -3,6 +3,7 @@
 //   ring    the projector-ring condition / salvage / repair state machine (RM_RingKernel) against a literal spec ledger
 //   settle  the Settling calm/wind hysteresis (RM_SettlingKernel) against a consecutive-sample oracle
 //   reveal  the buried-ordnance reveal rule, exhaustively
+//   tetchik the tetchik glower gate (RM_TetchikGateKernel): decision table, entry-cell band, edge-arrival regression
 // A failing action sequence is shrunk (delta debugging) and printed as `family seed N: message | actions`.
 using System;
 using System.Collections.Generic;
@@ -498,6 +499,52 @@ namespace RimMandrake.Scarlands.SelfTest
             return fails;
         }
 
+        // ════════════════════════ tetchik ════════════════════════
+        // The glower gate against its spec. The pre-fix gate (LegacyAllow: glower within 6 cells of loc, nothing else)
+        // starved ongoing arrivals, whose loc is a map-edge entry cell; the spec rows below fail on it by design.
+        private static bool LegacyAllow(bool entry, bool near, int mapGlower) { return near; }
+
+        private static bool TetchikSpec(bool entry, bool near, int mapGlower)
+        {
+            if (near) return true;                      // glower right there: always (map gen places herds by it)
+            if (!entry) return false;                   // interior loc with no glower near: never, whatever the map holds
+            return mapGlower >= 10;                     // arrival at the edge: the map must hold a stand of 10+
+        }
+
+        public static List<string> Tetchik(int n, int baseSeed)
+        {
+            var fails = new List<string>();
+            void T(bool ok, string m) { Cases++; Steps++; if (!ok && fails.Count < 10) fails.Add("tetchik " + m); }
+            T(RM_TetchikGateKernel.GlowerRadius == 6, "GlowerRadius changed from 6");
+            T(RM_TetchikGateKernel.MinMapGlower == 10, "MinMapGlower is not the spec's 10");
+            // decision table, exhaustive over the flags and across the count threshold
+            foreach (bool entry in new[] { false, true }) foreach (bool near in new[] { false, true })
+                for (int g = 0; g <= 40; g++)
+                {
+                    bool got = RM_TetchikGateKernel.Allow(entry, near, g);
+                    T(got == TetchikSpec(entry, near, g), $"Allow(entry={entry}, near={near}, mapGlower={g}) = {got}, spec {TetchikSpec(entry, near, g)}");
+                    if (g > 0 && RM_TetchikGateKernel.Allow(entry, near, g - 1)) T(got, $"more glower allowed less (entry={entry} near={near} g={g})");
+                }
+            // the regression row: an edge arrival on a glower map with none by the entry cell is let in; the old gate refused it
+            T(RM_TetchikGateKernel.Allow(true, false, 50), "edge arrival on a 50-glower map refused (edge-only regression)");
+            T(!LegacyAllow(true, false, 50), "instrument: LegacyAllow no longer models the pre-fix gate");
+            T(!RM_TetchikGateKernel.Allow(true, false, 0), "edge arrival on a glowerless map let in");
+            T(!RM_TetchikGateKernel.Allow(false, false, 1000), "interior loc with no glower near let in (map gen would scatter tetchik)");
+            // every cell vanilla's edge finder can return is an entry cell, over map sizes; centre cells never are
+            var r = new Random(baseSeed);
+            for (int k = 0; k < n; k++)
+            {
+                int sx = r.Next(50, 401), sz = r.Next(50, 401);
+                int x = r.Next(sx), z = r.Next(sz);
+                switch (r.Next(4)) { case 0: x = 0; break; case 1: x = sx - 1; break; case 2: z = 0; break; default: z = sz - 1; break; }
+                T(RM_TetchikGateKernel.IsEntryCell(x, z, sx, sz), $"edge cell ({x},{z}) on {sx}x{sz} not an entry cell");
+                T(!RM_TetchikGateKernel.IsEntryCell(sx / 2, sz / 2, sx, sz), $"centre cell on {sx}x{sz} read as an entry cell");
+                int ix = r.Next(2, sx - 2), iz = r.Next(2, sz - 2);
+                T(!RM_TetchikGateKernel.IsEntryCell(ix, iz, sx, sz), $"interior cell ({ix},{iz}) on {sx}x{sz} read as an entry cell");
+            }
+            return fails;
+        }
+
         public static bool Run(double scale, int? oneSeed, string only)
         {
             var sw = Stopwatch.StartNew();
@@ -510,6 +557,7 @@ namespace RimMandrake.Scarlands.SelfTest
                 ("ring", () => Rings(N(4000), S(1))),
                 ("settle", () => Settle(N(3000), S(1))),
                 ("reveal", () => Reveal(0, 0)),
+                ("tetchik", () => Tetchik(N(2000), S(1))),
             };
             foreach (var f in fam)
             {

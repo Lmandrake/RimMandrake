@@ -69,6 +69,7 @@
     <Compile Include="Kernel\RM_AerosolKernel.cs" />
     <Compile Include="Kernel\RM_RingKernel.cs" />
     <Compile Include="Kernel\RM_SettlingKernel.cs" />
+    <Compile Include="Kernel\RM_TetchikGateKernel.cs" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(HarmonyDll)' == ''">

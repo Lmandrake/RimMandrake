@@ -24,14 +24,14 @@ namespace RimMandrake.Scarlands
         }
     }
 
-    // WARSCAR_FREE_TIER_BODY_1: the tetchik "spawn-cell validator".
-    // WildAnimalSpawner weights kinds by CommonalityOfAnimalNow(kind, loc) for
-    // a random loc, so zeroing a kind there unless glower is near loc means a
-    // tetchik herd is only ever picked where glower grows.
+    // WARSCAR_FREE_TIER_BODY_1 / TETCHIK_GLOWERGATE_WIDEN_EDGE_ENTRY: tetchik come where glower grows.
+    // WildAnimalSpawner weights kinds by CommonalityOfAnimalNow(kind, loc). At map generation loc is the interior
+    // cell the herd is placed on, and glower near it is the gate. For ongoing arrivals loc is the map-edge entry
+    // cell, where glower almost never grows, so there the gate asks whether the map holds a glower stand
+    // (RM_TetchikGateKernel.MinMapGlower plants anywhere). The rule itself is RM_TetchikGateKernel.Allow.
     [HarmonyPatch(typeof(WildAnimalSpawner), "CommonalityOfAnimalNow")]
     public static class RM_WarscarPatches_TetchikGlowerGate
     {
-        private const int GlowerRadius = 6;
         private static ThingDef glowerDef;
 
         public static void Postfix(ref float __result, PawnKindDef def, IntVec3 loc, Map ___map)
@@ -41,13 +41,22 @@ namespace RimMandrake.Scarlands
             if (glowerDef == null) glowerDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_Glower");
             if (glowerDef == null) { __result = 0f; return; }
 
-            foreach (IntVec3 c in GenRadial.RadialCellsAround(loc, GlowerRadius, true))
-            {
-                if (!c.InBounds(___map)) continue;
-                Plant p = c.GetPlant(___map);
-                if (p != null && p.def == glowerDef) return;
-            }
+            bool entry = RM_TetchikGateKernel.IsEntryCell(loc.x, loc.z, ___map.Size.x, ___map.Size.z);
+            int mapGlower = entry ? ___map.listerThings.ThingsOfDef(glowerDef).Count : 0;
+            if (RM_TetchikGateKernel.Allow(entry, false, mapGlower)) return;   // cheap map-wide answer first
+            if (RM_TetchikGateKernel.Allow(entry, GlowerNear(loc, ___map), mapGlower)) return;
             __result = 0f;
+        }
+
+        private static bool GlowerNear(IntVec3 loc, Map map)
+        {
+            foreach (IntVec3 c in GenRadial.RadialCellsAround(loc, RM_TetchikGateKernel.GlowerRadius, true))
+            {
+                if (!c.InBounds(map)) continue;
+                Plant p = c.GetPlant(map);
+                if (p != null && p.def == glowerDef) return true;
+            }
+            return false;
         }
     }
 

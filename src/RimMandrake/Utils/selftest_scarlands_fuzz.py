@@ -3,10 +3,10 @@
 
 Seeded fuzz over the production kernels with explicit invariants: the aerosol-screen coverage union (aero), the
 projector-ring condition/salvage/repair state machine (ring), the Settling calm/wind hysteresis (settle) and the
-buried-ordnance reveal rule (reveal). The project is built through winbuild.stage_build (dotnet.exe is
+buried-ordnance reveal rule (reveal) and the tetchik glower gate (tetchik). The project is built through winbuild.stage_build (dotnet.exe is
 Windows-native), then run.
 
-    python3 src/RimMandrake/Utils/selftest_scarlands_fuzz.py [--fuzz-scale F] [--fuzz-seed N] [--fuzz-only aero|ring|settle|reveal]
+    python3 src/RimMandrake/Utils/selftest_scarlands_fuzz.py [--fuzz-scale F] [--fuzz-seed N] [--fuzz-only aero|ring|settle|reveal|tetchik]
 
 A failing case is shrunk and printed as `family seed N: message | actions`; --fuzz-seed N replays it.
 """

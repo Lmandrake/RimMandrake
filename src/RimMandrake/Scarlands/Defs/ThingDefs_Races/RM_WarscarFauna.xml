@@ -7,8 +7,8 @@
 
   RM_Chatrak     plated grazer / scaria host; leather RM_ChatrakPlate (RM_WarscarItems.xml)
   RM_Totchak     lives in RM_Totchak.xml (WARSCAR_TOTCHAK_WAKES_1); this item wires its art.
-  RM_Tetchik     tiny clicking beetle, inedible; spawns only near glower cells
-                 (RM_WarscarPatches.TetchikGlowerGate).
+  RM_Tetchik     tiny clicking beetle, inedible; placed near glower at map generation,
+                 arrives later only on a map with a glower stand (RM_WarscarPatches.TetchikGlowerGate).
   RM_Pallbearer  was RUT_MortuaryCrawler (retired, 0 occurrences in the canonical save).
                  Corpse-eating is vanilla CarnivoreAnimal behaviour; no extra filth def
                  is shipped (spec allowed "the vanilla dessicated state").

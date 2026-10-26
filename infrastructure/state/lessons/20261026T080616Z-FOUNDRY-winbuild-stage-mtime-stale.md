@@ -1,0 +1,2 @@
+winbuild.stage_build copies sources to D:\ClaudeWork\...\build\<stage> with mtime truncated to whole seconds; an edit made in the same second as the previous build (e.g. mutate-test-restore) gets a staged mtime OLDER than the obj dll, MSBuild calls it up-to-date and runs the stale binary. Seen 2026-10-26 on ScarlandsFuzzSelfTest: restored kernel still ran the mutated rule (RED). Workaround: touch the source and rebuild; fix: stage with ns mtime or pass --no-incremental / delete obj on any changed file.
+home: src/RimMandrake/Utils/winbuild.py
