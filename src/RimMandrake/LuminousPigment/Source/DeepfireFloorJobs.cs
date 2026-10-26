@@ -76,7 +76,15 @@ namespace RimMandrake.LuminousPigment
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
             if (!pawn.Reserve(Cell, job, 1, -1, ReservationLayerDefOf.Floor, errorOnFailed)) return false;
-            return pawn.Reserve(DeepfireStack, job, job.count, -1, null, errorOnFailed);
+            // PIGMENT_JOB_PAYMENT_ALLOCATION_1 (same fix as JobDriver_ApplyDeepfire): reserve job.count UNITS of a
+            // shareable stack. The old call passed the count as maxPawns with stackCount -1, reserving the whole stack
+            // for one floor cell and blocking every other painter. Re-resolve the stack if it no longer has room.
+            if (!pawn.CanReserve(DeepfireStack, DeepfireCostUtility.StackShareMaxPawns, job.count))
+            {
+                Thing other = DeepfireCostUtility.FindNearbyDeepfire(pawn, job.count, forced: true);
+                if (other != null) job.SetTarget(TargetIndex.B, other);
+            }
+            return pawn.Reserve(DeepfireStack, job, DeepfireCostUtility.StackShareMaxPawns, job.count, null, errorOnFailed);
         }
 
         protected override IEnumerable<Toil> MakeNewToils()
@@ -92,6 +100,7 @@ namespace RimMandrake.LuminousPigment
                 Map map = pawn.Map;
                 MapComponent_DeepfireLights mc = MapComponent_DeepfireLights.Get(map);
                 if (mc == null || !mc.CanAddFloorCoat(Cell)
+                    || pawn.carryTracker.CarriedThing == null
                     || map.designationManager.DesignationAt(Cell, DeepfireDefOf.RM_ApplyDeepfireFloorDesignation) == null)
                 {
                     EndJobWith(JobCondition.Incompletable);
@@ -101,8 +110,14 @@ namespace RimMandrake.LuminousPigment
                 workDone += pawn.GetStatValue(StatDefOf.WorkSpeedGlobal) * delta;
                 if (workDone >= WorkTicks)
                 {
+                    // PIGMENT_JOB_PAYMENT_ALLOCATION_1: the coat lands only when the carried deepfire covers
+                    // costFloorCell; surplus is dropped, never destroyed (the old line destroyed whatever was carried).
+                    if (!DeepfireCostUtility.TryPayCarried(pawn, System.Math.Max(1, LuminousPigmentSettings.costFloorCell)))
+                    {
+                        EndJobWith(JobCondition.Incompletable);
+                        return;
+                    }
                     pawn.skills?.Learn(SkillDefOf.Artistic, ArtisticXP);
-                    pawn.carryTracker.CarriedThing?.Destroy();
                     mc.AddFloorCoat(Cell);
                     map.designationManager.TryRemoveDesignation(Cell, DeepfireDefOf.RM_ApplyDeepfireFloorDesignation);
                     ReadyForNextToil();
