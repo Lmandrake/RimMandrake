@@ -204,6 +204,16 @@ ARMOUR_TIERS = [
 HAND_TUNED = ("VFEP_Warcasket_Hazard", "VFEP_WarcasketHelmet_Hazard",
               "VFEP_WarcasketShoulders_Hazard")
 
+# Apparel the keyword tiers catch by accident and that is not armour at all.
+# guy762_Backpack_scorch is labelled "backpack, commando's": "mando" matches
+# inside "commando", so it was tiered beskar (1.00/0.90/1.20, plus quality) on
+# a Belt-layer Torso backpack whose own stats are 0.1/0.1/0.1. Dead while its
+# gate named the retired KotOR donor; live from 61dcf6562d, removed by
+# SCORCHBACKPACK_FIX_NOT_BESKAR. The commando-labelled ARMOUR defs the same
+# substring catches are a balance call, filed as
+# ARMOURTIER_DECIDE_COMMANDO_NOT_MANDO, not skipped here.
+NOT_ARMOUR = ("guy762_Backpack_scorch",)
+
 # --- 3. armour penetration ------------------------------------------------
 LIGHTSABER_AP = 0.0     # see the header: any higher and cortosis stops working
 VIBRO_AP = (0.90, 1.60)  # scaled by weapon mass; an axe opens a warcasket
@@ -485,9 +495,9 @@ for rec in [r for t in APPAREL_TYPES for r in ds.of_type(t)]:
     if el.find("apparel") is None:
         continue
     dn = rec.defName or ""
-    if dn in HAND_TUNED:
+    if dn in HAND_TUNED or dn in NOT_ARMOUR:
         continue
-    blob = (dn + " " + (el.findtext("label") or "")).lower()
+    blob =(dn + " " + (el.findtext("label") or "")).lower()
     for tier, keys, vals in ARMOUR_TIERS:
         if not any(k in blob for k in keys):
             continue
