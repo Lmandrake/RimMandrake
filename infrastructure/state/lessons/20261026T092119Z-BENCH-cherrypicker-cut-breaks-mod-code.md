@@ -1,0 +1,2 @@
+A Cherry Picker removal of a def that a mod's C# looks up by name (DefDatabase.GetNamed) turns into an NRE in that mod, not just a 'Failed to find' line: RimFridge_PowerFactorSetting (cut in 909b30435f) makes RimFridgeComponent.StartedOrLoadedGame throw every new/loaded game and skip its ApplyFactor/ReifyLoadedGameDependentSettings. Before cutting a def, grep the owning mod's DLL strings for its defName; read the FIRST error (the GetNamed miss) not the NRE under it. Evidence: RIMFRIDGE_NEWGAME_DIAGNOSE_COMPONENT_NRE.
+home: rimworld-modding

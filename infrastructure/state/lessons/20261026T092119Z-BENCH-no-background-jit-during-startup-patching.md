@@ -1,0 +1,2 @@
+Companion code must not start background work that JIT-compiles new methods while startup Harmony patching is still running: a threadpool SHA-256 archive queued at bridge-registration crashed mono natively in a JIT trampoline (HashFinal), uncatchable from C#, ~1 start in 3 on SteveDesktop. Warm the code path on the main thread and defer the work until frames show no long event (JawaBenchTpsSampler.PumpArchive, 6010f2a3d6).
+home: rimbridge-companion
