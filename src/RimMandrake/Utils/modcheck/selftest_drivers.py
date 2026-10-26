@@ -89,6 +89,22 @@ def t_flag_and_plan():
         recs = D.run(_suite(), "/m", ["c1"], _call_fn=_fake([], rc=3), log=_Null())
         ok(recs[0]["status"] == "FAILED" and recs[0]["rc"] == 3, "rc 3 is a FAILED receipt")
 
+        class _Buf(object):
+            def __init__(self):
+                self.text = ""
+
+            def write(self, t):
+                self.text += t
+
+            def flush(self):
+                pass
+        for rc_, want in ((3, True), (0, False)):
+            b = _Buf()
+            D.run(_suite(), "/m", ["c1"], _call_fn=lambda a, c, t, r=rc_: (r, "Traceback ... ConnectionResetError"), log=b)
+            ok(("ConnectionResetError" in b.text) == want,
+               "a %s driver's output tail %s in the log (it outlives a lost sheet)" % ("failed" if want else "passing",
+                                                                                     "is" if want else "is not"))
+
         def boom(_r):
             raise RuntimeError("no map")
         recs = D.run(_suite(), "/m", ["c1", "c2"], after=boom, _call_fn=_fake([]), log=_Null())

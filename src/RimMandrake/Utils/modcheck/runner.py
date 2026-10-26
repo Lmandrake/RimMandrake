@@ -1029,7 +1029,22 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort", tar
             drv = _DRV.run(run_this, mod_dir, [n for n, _ in run_this.chains], cwd=ROOT,
                            after=lambda _rec: ensure_playing_map())
             if drv:
-                ensure_test_profile()
+                try:
+                    ensure_test_profile()
+                except RuntimeError as e:
+                    # a driver that died mid bridge call leaves an UNKNOWN outcome and every later mutating call is
+                    # refused (testq J20261026T182927Z-c2508c): write the sheet with the drivers' receipts, never crash
+                    why = "after the live drivers: %s" % e
+                    print("[modcheck] %s HARNESS %s" % (mod_folder, why), file=sys.stderr, flush=True)
+                    results[mod_folder] = {"chains": [], "all_green": False, "findings": [], "refused": why,
+                                           "walk": walk, "drivers": drv}
+                    if sel:
+                        results[mod_folder]["targeted"] = dict(sel, of_chains=len(suite.chains))
+                    try:
+                        write_sheet(mod_folder, results[mod_folder])
+                    except Exception as ex:  # noqa: BLE001 - the log line above and the drivers' tails still stand
+                        print("[modcheck] refused sheet not written: %s: %s" % (type(ex).__name__, ex), file=sys.stderr)
+                    continue
             gate = None
             import gate as _G  # noqa: E402
             if _G.mode() != _G.OFF:

@@ -113,6 +113,10 @@ def run_one(mod_dir, d, cwd=None, _call_fn=None, python=None, log=None):
     wall = round(time.monotonic() - t0, 1)
     status = "TIMEOUT" if rc is None else ("RC0" if rc == 0 else "FAILED")
     print("[modcheck] driver %s %s rc=%s in %.0f s" % (d["name"], status, rc, wall), file=log, flush=True)
+    if status != "RC0" and tail:
+        # testq J20261026T182927Z-c2508c: the driver died mid bridge call, the next bridge call refused (IndeterminateError)
+        # and modcheck exited with no sheet, so the receipt holding this tail was the only evidence and it was lost.
+        print("[modcheck] driver %s tail:\n%s" % (d["name"], tail[-1500:]), file=log, flush=True)
     return {"driver": d["name"], "argv": argv[1:], "chains": list(d.get("chains") or []), "status": status,
             "rc": rc, "wall_s": wall, "tail": tail}
 

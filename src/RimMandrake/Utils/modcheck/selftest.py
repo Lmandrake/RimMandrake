@@ -783,6 +783,8 @@ def t_site_held_between_chains_without_watch():
          runner.save_fixtures) = real
     check("hold: the live entry point run() turns the hold on",
           "hold_site=True" in inspect.getsource(runner.run))
+    check("a profile check that fails after the drivers writes a refused sheet carrying their receipts, never a crash",
+          '"refused": why,' in inspect.getsource(runner.run) and '"drivers": drv}' in inspect.getsource(runner.run))
 
 
 TESTS = [
