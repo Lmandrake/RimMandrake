@@ -61,7 +61,10 @@ namespace RimMandrake.Bazaar
 
             float m = session.MultiplierFor(__instance.ThingDef);
             if (m == 1f) return;
-            __result = Mathf.Max(__result * m, TradeUtility.MinimumBuyPrice);
+            // Vanilla's own floors (TradeUtility.GetPricePlayerBuy/Sell): 0.5 to buy, 0.01 to sell. Flooring a sale at
+            // the BUY minimum would pay 0.5 for anything vanilla values under it (up to 50x a 0.01 sale).
+            float floor = action == TradeAction.PlayerBuys ? TradeUtility.MinimumBuyPrice : TradeUtility.MinimumSellPrice;
+            __result = Mathf.Max(__result * m, floor);
             if (__result > 99.5f) __result = Mathf.Round(__result);
         }
     }
