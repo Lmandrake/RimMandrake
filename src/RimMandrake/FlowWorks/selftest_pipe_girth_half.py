@@ -41,7 +41,7 @@ CAPS_BAD_LOOKS = ("Industrial", "Modern", "Futuristic")
 # The shipped atlases are owner-KEPT, so the fix (art_source/pipe/fix_ns_end_caps.py) waits on his ruling. Until then these
 # looks report OPEN, provided the fix script's output passes the cap check; a look here whose shipped caps attach FAILs as
 # stale, so the entry cannot outlive the fix.
-CAPS_OPEN = ("Industrial", "Modern", "Futuristic")
+CAPS_OPEN = ()
 GIRTH = (0.12, 0.15)
 JOINT_MAX = 0.27
 CAP_MAX = 0.30
