@@ -56,6 +56,15 @@ def main():
     check(not refused(S.validate_result, res), "a DONE result validates")
     check(refused(S.validate_result, dict(res, outcome="INVALID")), "a non-DONE result without a cause is refused")
     check(refused(S.validate_result, dict(res, attempt="other.a1")), "an attempt id not under the job is refused")
+    import json
+    committed = json.load(open(S.SCHEMA_FILE))
+    check(committed == json.loads(json.dumps(S.json_schema())),
+          "testq_schema.json is the committed form of schema.py (regenerate: python3 schema.py --emit)")
+    jd, rd = committed["$defs"]["job"], committed["$defs"]["result"]
+    check(set(jd["required"]) <= set(j) and set(j) <= set(jd["properties"]),
+          "a made job carries every required key and only declared ones: %s" % sorted(set(j) - set(jd["properties"])))
+    check(set(rd["required"]) <= set(res) and jd["properties"]["purpose"]["enum"] == list(S.PURPOSES)
+          and rd["properties"]["cause"]["enum"] == list(S.CAUSES), "result keys and enums match the constants")
     print("\n%d failed" % len(FAILS))
     return 1 if FAILS else 0
 

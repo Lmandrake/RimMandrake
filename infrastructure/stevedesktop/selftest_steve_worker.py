@@ -60,6 +60,10 @@ if mode == "canary":
                                                          "detail": "vanilla canary red: not a verdict on the mod"}]}]}
 json.dump({"mod": "Mock", "summary": summary}, open(os.path.join(sheet_dir, name + ".json"), "w"))
 open(os.path.join(sheet_dir, name + ".html"), "w").write("<html/>")
+import subprocess
+print("HEAD_AT_RUN", subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip())
+if mode == "expect":
+    print('EXPECTED_ROWS ["r1", "r2", "r_lost"]')
 print("args:", " ".join(sys.argv[1:]))
 print("[modcheck] sheet \\\\wsl.localhost\\Ubuntu\\x\\Transient\\modcheck\\%s.html" % name)
 sys.exit(1)
@@ -260,6 +264,41 @@ def main():
         # 8. source_sha not in the runner
         rc, o = w(["start"], S.make_job("Mock", {"rows": ["r1"]}, "fix", "BENCH", "deadbeef00"))
         check(o.get("outcome") == "REFUSED" and o.get("cause") == "SOURCE_SHA_MISSING", "unknown source_sha refused")
+        # 9. bolt 2: a row the preview planned but the sheet lacks is NOT_RUN (no --rows needed)
+        jx = S.make_job("Mock", {"chains": ["c1"]}, "commission", "BENCH", head)
+        rc, o = w(["start"], jx, MOCK_MODE="expect")
+        res = wait_result(o.get("attempt", "x"))
+        vx = {r["row"]: r["verdict"] for r in res.get("rows", [])}
+        check(vx == {"r1": "PASS", "r2": "FAIL", "r_lost": "NOT_RUN"}, "EXPECTED_ROWS absent from the sheet -> NOT_RUN: %s" % vx)
+
+        # 10. bolt 1: the attempt runs at EXACTLY source_sha even when the clone's HEAD is newer; main comes back after
+        scratch = os.path.join(tmp, "clone")
+        os.makedirs(scratch)
+        def g(*a):
+            return subprocess.run(["git", "-C", scratch] + list(a), capture_output=True, text=True).stdout.strip()
+        g("init", "-q", "-b", "main")
+        for n in ("one", "two"):
+            open(os.path.join(scratch, n), "w").write(n)
+            g("add", n)
+            g("-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "-m", n)
+        first, second = g("rev-parse", "HEAD~1"), g("rev-parse", "HEAD")
+        jp = S.make_job("Mock", {"rows": ["r1"]}, "commission", "BENCH", first[:12])
+        rc, o = w(["start"], jp, TESTQ_CLONE=scratch)
+        res = wait_result(o.get("attempt", "x"))
+        log = open(os.path.join(home, "attempts", o["attempt"], "modcheck.log")).read()
+        check("HEAD_AT_RUN " + first in log and res.get("runner_sha") == first,
+              "the run saw source_sha, not the newer HEAD: runner_sha %s" % res.get("runner_sha"))
+        check(g("rev-parse", "HEAD") == second and g("symbolic-ref", "--short", "HEAD") == "main"
+              and not os.path.exists(os.path.join(home, "pinned_clone")), "the clone is back on main at the newer HEAD")
+        # a crash that left the clone pinned is healed by the next start
+        g("checkout", "-q", "--detach", first)
+        open(os.path.join(home, "pinned_clone"), "w").write(first)
+        jh = S.make_job("Mock", {"rows": ["r1"]}, "commission", "BENCH", second)
+        rc, o = w(["start"], jh, TESTQ_CLONE=scratch)
+        res = wait_result(o.get("attempt", "x"))
+        check(res.get("runner_sha") == second and g("symbolic-ref", "--short", "HEAD") == "main",
+              "a start heals a leftover pin before it runs: %s" % res.get("runner_sha"))
+
         rc, o = w(["result", "--attempt", "../../etc"])
         check(rc != 0, "a path as an attempt id is refused")
     finally:

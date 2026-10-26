@@ -16,7 +16,7 @@ How a job runs (one attempt at a time on this machine):
     duplicate delivery with the existing attempt (running or finished) instead of running the job twice.
     `--retry` is the only way to make attempt n+1.
   * It pulls the runner (`git pull --ff-only`) BEFORE the attempt starts, and refuses SOURCE_SHA_MISSING when
-    the job's source_sha is not in the pulled HEAD. The attempt is pinned to that HEAD: nothing pulls while
+    the job's source_sha is not in the pulled HEAD. The attempt is pinned: nothing pulls while
     TESTQ_HOME/current names a live attempt (the daily self-upgrade checks it too).
   * The attempt is detached as a transient systemd user unit (linger is on), so it survives the ssh session;
     without systemd-run it falls back to a new session.
@@ -26,7 +26,10 @@ How a job runs (one attempt at a time on this machine):
     what is deployed) -> run (modcheck, MODCHECK_SKIP_DEPLOY=1) -> result. state.json is rewritten every 15 s
     as the heartbeat. A run past the job's timeout_s is killed, the game restarted once, and the run retried
     once; a second hang is INVALID/HANG.
-  * Requested rows absent from the sheet are added as NOT_RUN, so partial output never reads as a pass.
+  * Requested rows absent from the sheet, and rows modcheck's preview planned (its EXPECTED_ROWS line) that never
+    reached the sheet, are added as NOT_RUN, so partial output never reads as a pass.
+  * The attempt runs at EXACTLY the job's source_sha: when the pulled HEAD is newer, the clone is detached at
+    source_sha for the attempt and put back on main when it ends (a crashed attempt is healed at the next start).
   * When load starts a FRESH game process, the bridge client's UNKNOWN-outcome markers older than that start are
     resolved as moot (their game is gone); otherwise one killed game refuses every later job's mutating calls.
 
@@ -57,6 +60,7 @@ import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 RUNNER = os.path.abspath(os.path.join(HERE, "..", ".."))
+CLONE = os.environ.get("TESTQ_CLONE") or RUNNER     # the git clone a job is pinned in (tests point it at a scratch repo)
 sys.path.insert(0, os.path.join(RUNNER, "src", "RimMandrake", "Utils", "testq"))
 sys.path.insert(0, os.path.join(RUNNER, "src", "RimMandrake", "rimflow"))
 import schema as S  # noqa: E402
@@ -111,8 +115,22 @@ def sha256_file(path):
     return h.hexdigest()
 
 
+def pin_marker():
+    return p("pinned_clone")
+
+
+def unpin():
+    """Put the clone back on main after an attempt that pinned it to a detached source_sha (idempotent)."""
+    if os.path.exists(pin_marker()):
+        rc, msg = git("checkout", "-q", "main")
+        if rc == 0:
+            os.remove(pin_marker())
+        return rc, msg
+    return 0, ""
+
+
 def git(*args):
-    r = subprocess.run(["git", "-C", RUNNER] + list(args), capture_output=True, text=True, timeout=300)
+    r = subprocess.run(["git", "-C", CLONE] + list(args), capture_output=True, text=True, timeout=300)
     return r.returncode, (r.stdout + r.stderr).strip()
 
 
@@ -149,6 +167,7 @@ def finalize_dead(aid, why):
     res = base_result(job.get("id") or aid.rsplit(".a", 1)[0], aid, st.get("runner_sha"))
     res.update(outcome="INTERRUPTED", cause="CRASH", note=why, phase_s=st.get("phase_s") or {})
     publish_result(d, res)
+    unpin()
     if read_text(p("current")) == aid:
         os.remove(p("current"))
 
@@ -199,6 +218,7 @@ def cmd_start(retry):
         S.dump(job, os.path.join(d, "job.json"))
         write_text(p("jobs", job["id"]), aid)
 
+        unpin()     # a crashed attempt can leave the clone on its detached pin: pull needs main
         if os.environ.get("TESTQ_SKIP_PULL") != "1":
             rc, msg = git("pull", "-q", "--ff-only", "origin", "main")
             if rc != 0:
@@ -213,6 +233,19 @@ def cmd_start(retry):
                        note="runner HEAD %s does not contain source_sha %s" % (head[:10], job["source_sha"]))
             publish_result(d, res)
             return out({"attempt": aid, "state": "finished", "outcome": "REFUSED", "cause": "SOURCE_SHA_MISSING"})
+        # the attempt runs at EXACTLY source_sha, not at whatever newer HEAD happens to contain it (bolt 1)
+        want = git("rev-parse", "--verify", job["source_sha"] + "^{commit}")[1]
+        # (tests that skip the pull must not move the real checkout: they pin only in a scratch TESTQ_CLONE)
+        no_pin = os.environ.get("TESTQ_SKIP_PULL") == "1" and CLONE == RUNNER
+        if want and want != head and not no_pin:
+            rc, msg = git("checkout", "-q", "--detach", want)
+            if rc != 0:
+                res = base_result(job["id"], aid, head)
+                res.update(outcome="REFUSED", cause="SYNC", note="could not pin the clone to %s: %s" % (want[:10], msg[-300:]))
+                publish_result(d, res)
+                return out({"attempt": aid, "state": "finished", "outcome": "REFUSED", "cause": "SYNC"})
+            write_text(pin_marker(), want)
+            head = want
         S.dump({"phase": "starting", "ts": S.utcnow(), "runner_sha": head}, os.path.join(d, "state.json"))
         write_text(p("current"), aid)
         unit = spawn(aid, d)
@@ -302,7 +335,7 @@ class Attempt:
         """Run a shell command in the runner clone; -> (rc or None on timeout, tail of output)."""
         logf = open(os.path.join(self.d, log_name or "worker.log"), "ab")
         self.say("$ " + cmd)
-        self.child = subprocess.Popen(["bash", "-c", cmd], cwd=RUNNER, stdin=subprocess.DEVNULL, stdout=logf,
+        self.child = subprocess.Popen(["bash", "-c", cmd], cwd=CLONE, stdin=subprocess.DEVNULL, stdout=logf,
                                       stderr=subprocess.STDOUT, start_new_session=True)
         try:
             rc = self.child.wait(timeout=timeout)
@@ -527,6 +560,14 @@ class Attempt:
             if w not in seen:
                 rows.append({"chain": None, "row": w, "verdict": "NOT_RUN", "validity": None, "freshness": None,
                              "detail": "requested, absent from the sheet"})
+                seen.add(w)
+        # bolt 2: modcheck's own preview (EXPECTED_ROWS) names every row the run was planned to execute, so a row
+        # that never reached the sheet is NOT_RUN here instead of silently absent
+        for w in expected_rows(text):
+            if w not in seen:
+                rows.append({"chain": None, "row": w, "verdict": "NOT_RUN", "validity": None, "freshness": None,
+                             "detail": "in modcheck's preview plan, absent from the sheet"})
+                seen.add(w)
         self.res["rows"] = rows
         for path in (sheet, sheet[:-5] + ".html", os.path.join(self.d, "modcheck.log")):
             if os.path.isfile(path):
@@ -565,10 +606,22 @@ class Attempt:
                 self.fail("INVALID", "HARNESS", "attempt ended in phase %s without a verdict" % self.phase)
             self.phase = "done"
             publish_result(self.d, self.res)
+            unpin()
             if read_text(p("current")) == self.aid:
                 os.remove(p("current"))
             self.say("result %s %s %s" % (self.res["outcome"], self.res["cause"], self.res["counts"]))
         return 0
+
+
+def expected_rows(log_text):
+    """Row ids modcheck's preview promised to execute (`EXPECTED_ROWS [json list]`); [] when it printed none."""
+    out = []
+    for m in re.finditer(r"^EXPECTED_ROWS (\[.*\])\s*$", log_text, re.M):
+        try:
+            out += [str(x) for x in json.loads(m.group(1))]
+        except ValueError:
+            pass
+    return out
 
 
 def cmd_run(aid):

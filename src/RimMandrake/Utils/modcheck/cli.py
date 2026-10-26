@@ -382,6 +382,8 @@ def main(argv=None):
                 return 2
             for line in targeting.preview(sel):     # the exact plan, per chain, before anything launches
                 print(line)
+            import json as _json                    # machine line: the worker marks planned rows that never ran NOT_RUN
+            print("EXPECTED_ROWS " + _json.dumps(list(sel.get("rows_run", []))))
             if args.preview:
                 return 0
             targets[mod] = sel

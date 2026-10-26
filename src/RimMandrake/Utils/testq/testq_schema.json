@@ -1,0 +1,301 @@
+{
+ "$defs": {
+  "job": {
+   "additionalProperties": false,
+   "defaults": {
+    "canary": true,
+    "deploy": [],
+    "item": null,
+    "lane": "stevedesktop",
+    "not_before": null,
+    "owner_gate": null,
+    "priority": 50,
+    "profile": "targeted",
+    "row_items": {},
+    "supersedes": null,
+    "timeout_s": 2700,
+    "validity": true
+   },
+   "properties": {
+    "canary": {
+     "type": "boolean"
+    },
+    "deploy": {
+     "items": {
+      "pattern": "^[A-Za-z0-9_.-]+$",
+      "type": "string"
+     },
+     "type": "array"
+    },
+    "id": {
+     "pattern": "^J\\d{8}T\\d{6}Z-[0-9a-f]{6}$",
+     "type": "string"
+    },
+    "item": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "lane": {
+     "enum": [
+      "stevedesktop",
+      "archmagi",
+      "any"
+     ]
+    },
+    "mod": {
+     "pattern": "^[A-Za-z0-9_.-]+$",
+     "type": "string"
+    },
+    "not_before": {
+     "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\dZ$",
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "owner_gate": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "priority": {
+     "type": "integer"
+    },
+    "profile": {
+     "enum": [
+      "targeted",
+      "full-list"
+     ]
+    },
+    "purpose": {
+     "enum": [
+      "fix",
+      "guard",
+      "sweep",
+      "sensitivity",
+      "flake",
+      "commission"
+     ]
+    },
+    "requested_by": {
+     "pattern": "^[A-Za-z0-9_.-]+$",
+     "type": "string"
+    },
+    "row_items": {
+     "additionalProperties": {
+      "pattern": "^[A-Za-z0-9_.-]+$",
+      "type": "string"
+     },
+     "type": "object"
+    },
+    "schema": {
+     "const": "testq.job/1"
+    },
+    "selector": {
+     "additionalProperties": false,
+     "minProperties": 1,
+     "properties": {
+      "chains": {
+       "items": {
+        "pattern": "^[A-Za-z0-9_.-]+$",
+        "type": "string"
+       },
+       "type": "array"
+      },
+      "full": {
+       "type": "boolean"
+      },
+      "item": {
+       "items": {
+        "pattern": "^[A-Za-z0-9_.-]+$",
+        "type": "string"
+       },
+       "type": "array"
+      },
+      "rows": {
+       "items": {
+        "pattern": "^[A-Za-z0-9_.-]+$",
+        "type": "string"
+       },
+       "type": "array"
+      }
+     },
+     "type": "object"
+    },
+    "source_sha": {
+     "pattern": "^[0-9a-f]{7,40}$",
+     "type": "string"
+    },
+    "submitted": {
+     "description": "UTC time make_job stamped",
+     "type": "string"
+    },
+    "supersedes": {
+     "pattern": "^J\\d{8}T\\d{6}Z-[0-9a-f]{6}$",
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "timeout_s": {
+     "maximum": 21600,
+     "minimum": 60,
+     "type": "integer"
+    },
+    "validity": {
+     "type": "boolean"
+    }
+   },
+   "required": [
+    "schema",
+    "id",
+    "mod",
+    "selector",
+    "purpose",
+    "requested_by",
+    "source_sha"
+   ],
+   "type": "object"
+  },
+  "result": {
+   "description": "a non-DONE outcome needs a cause; attempt is <job>.a<n>",
+   "properties": {
+    "artifacts": {
+     "items": {
+      "required": [
+       "name",
+       "path",
+       "sha256",
+       "bytes"
+      ],
+      "type": "object"
+     },
+     "type": "array"
+    },
+    "attempt": {
+     "type": "string"
+    },
+    "cause": {
+     "enum": [
+      null,
+      "GUARD_HELD",
+      "SOURCE_SHA_MISSING",
+      "SYNC",
+      "DEPLOY",
+      "LOAD",
+      "CANARY",
+      "HANG",
+      "HARNESS",
+      "BLOCKED_SELECTION",
+      "CRASH",
+      "GAME_DIED"
+     ]
+    },
+    "counts": {
+     "additionalProperties": {
+      "type": "integer"
+     },
+     "type": "object"
+    },
+    "deployed": {
+     "type": "object"
+    },
+    "finished": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "host": {
+     "type": "string"
+    },
+    "job": {
+     "pattern": "^J\\d{8}T\\d{6}Z-[0-9a-f]{6}$",
+     "type": "string"
+    },
+    "modcheck_exit": {
+     "type": [
+      "integer",
+      "null"
+     ]
+    },
+    "note": {
+     "type": "string"
+    },
+    "outcome": {
+     "enum": [
+      "DONE",
+      "INVALID",
+      "INTERRUPTED",
+      "REFUSED"
+     ]
+    },
+    "phase_s": {
+     "type": "object"
+    },
+    "retries": {
+     "type": "integer"
+    },
+    "rows": {
+     "items": {
+      "properties": {
+       "chain": {
+        "type": [
+         "string",
+         "null"
+        ]
+       },
+       "detail": {
+        "maxLength": 4000,
+        "type": "string"
+       },
+       "freshness": {},
+       "row": {
+        "type": "string"
+       },
+       "validity": {},
+       "verdict": {
+        "description": "usually one of PASS, FAIL, UNMEASURED, NOT_RUN, SKIP",
+        "type": "string"
+       }
+      },
+      "required": [
+       "chain",
+       "row",
+       "verdict"
+      ],
+      "type": "object"
+     },
+     "type": "array"
+    },
+    "runner_sha": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "schema": {
+     "const": "testq.result/1"
+    },
+    "started": {
+     "type": "string"
+    }
+   },
+   "required": [
+    "schema",
+    "job",
+    "attempt",
+    "outcome",
+    "cause",
+    "rows"
+   ],
+   "type": "object"
+  }
+ },
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "description": "generated by schema.py --emit from the constants in schema.py; do not edit by hand",
+ "title": "testq job and result records"
+}
