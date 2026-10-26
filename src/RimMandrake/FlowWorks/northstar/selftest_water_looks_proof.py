@@ -1,5 +1,10 @@
 """Offline checks for water_looks_proof.py: the ProofWaterLook line parses, every pure verdict can go red, and every
 FakeBridge fault (a planted defect) lands on its expected row. No bridge."""
+# selftest temp containment (BENCH, FLOWWORKS_SELFTESTS_FIX_TMPDIR_LEAKS): every mkdtemp/mkstemp below,
+# and every child process via TMPDIR, lands in one private dir removed at exit.
+import atexit as _st_atexit, os as _st_os, shutil as _st_shutil, tempfile as _st_tempfile  # noqa: E401
+_st_tempfile.tempdir = _st_os.environ["TMPDIR"] = _st_tempfile.mkdtemp(prefix="st_selftest_water_looks_proof_")
+_st_atexit.register(_st_shutil.rmtree, _st_tempfile.tempdir, True)
 import contextlib
 import io
 import json

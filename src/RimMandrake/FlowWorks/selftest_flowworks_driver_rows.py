@@ -8,6 +8,11 @@ the sprinkler driver measures) not reaching the thirst chain; a missing row read
 not failing its component; one FAIL/UNMEASURED row blanking the rows after it; a live row losing its toggle declaration.
 No game, no bridge, no files outside a temp dir.
 """
+# selftest temp containment (BENCH, FLOWWORKS_SELFTESTS_FIX_TMPDIR_LEAKS): every mkdtemp/mkstemp below,
+# and every child process via TMPDIR, lands in one private dir removed at exit.
+import atexit as _st_atexit, os as _st_os, shutil as _st_shutil, tempfile as _st_tempfile  # noqa: E401
+_st_tempfile.tempdir = _st_os.environ["TMPDIR"] = _st_tempfile.mkdtemp(prefix="st_selftest_flowworks_driver_rows_")
+_st_atexit.register(_st_shutil.rmtree, _st_tempfile.tempdir, True)
 import json
 import os
 import sys

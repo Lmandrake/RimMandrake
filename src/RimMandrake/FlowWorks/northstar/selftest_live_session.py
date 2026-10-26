@@ -1,5 +1,10 @@
 """Offline selftest of live_session.py: the shared-clock scheduler, the zone plan, the verdict folding, and that --dry-run
 and --mock both exit 0.  python3 src/RimMandrake/FlowWorks/northstar/selftest_live_session.py"""
+# selftest temp containment (BENCH, FLOWWORKS_SELFTESTS_FIX_TMPDIR_LEAKS): every mkdtemp/mkstemp below,
+# and every child process via TMPDIR, lands in one private dir removed at exit.
+import atexit as _st_atexit, os as _st_os, shutil as _st_shutil, tempfile as _st_tempfile  # noqa: E401
+_st_tempfile.tempdir = _st_os.environ["TMPDIR"] = _st_tempfile.mkdtemp(prefix="st_selftest_live_session_")
+_st_atexit.register(_st_shutil.rmtree, _st_tempfile.tempdir, True)
 import os
 import subprocess
 import sys

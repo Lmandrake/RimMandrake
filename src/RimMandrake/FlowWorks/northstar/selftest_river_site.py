@@ -1,6 +1,11 @@
 """Offline selftest of river_site: fish preference (RIVER_SITE_FIX_FISHLESS_ROT_RIVER), the downstream-edge rule and
 the mapId fix (TESTENV_RIVERSITE_HARDEN_RIVER_ENDS_AT_SEA), and no leftover candidate map
 (TESTENV_BUMBLEDRONE_HARDEN_UNINVITED_BUZZ). No bridge: main() runs against a fake world."""
+# selftest temp containment (BENCH, FLOWWORKS_SELFTESTS_FIX_TMPDIR_LEAKS): every mkdtemp/mkstemp below,
+# and every child process via TMPDIR, lands in one private dir removed at exit.
+import atexit as _st_atexit, os as _st_os, shutil as _st_shutil, tempfile as _st_tempfile  # noqa: E401
+_st_tempfile.tempdir = _st_os.environ["TMPDIR"] = _st_tempfile.mkdtemp(prefix="st_selftest_river_site_")
+_st_atexit.register(_st_shutil.rmtree, _st_tempfile.tempdir, True)
 import os
 import sys
 

@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 """Offline selftest of owner_review_stage.py: every failure a staging call can have must land in Stage.notes (never a silent
 success), and each bars row frames its OWN rect. No game: FakeGame. Run: python3 <this file>"""
+# selftest temp containment (BENCH, FLOWWORKS_SELFTESTS_FIX_TMPDIR_LEAKS): every mkdtemp/mkstemp below,
+# and every child process via TMPDIR, lands in one private dir removed at exit.
+import atexit as _st_atexit, os as _st_os, shutil as _st_shutil, tempfile as _st_tempfile  # noqa: E401
+_st_tempfile.tempdir = _st_os.environ["TMPDIR"] = _st_tempfile.mkdtemp(prefix="st_selftest_owner_review_stage_")
+_st_atexit.register(_st_shutil.rmtree, _st_tempfile.tempdir, True)
 import os
 import sys
 

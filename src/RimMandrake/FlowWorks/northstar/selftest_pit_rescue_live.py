@@ -10,6 +10,11 @@ back, so the tired rescuer claims nothing and the victim is carried out (all PAS
 own a medical bed), the not-out verdict is SITE with the bed census, not MOD; (4) a fake where nobody rescues despite a
 free bed stays FAIL MOD (the row can fail). A mock verdict is evidence about the DRIVER only, never about the mod.
 """
+# selftest temp containment (BENCH, FLOWWORKS_SELFTESTS_FIX_TMPDIR_LEAKS): every mkdtemp/mkstemp below,
+# and every child process via TMPDIR, lands in one private dir removed at exit.
+import atexit as _st_atexit, os as _st_os, shutil as _st_shutil, tempfile as _st_tempfile  # noqa: E401
+_st_tempfile.tempdir = _st_os.environ["TMPDIR"] = _st_tempfile.mkdtemp(prefix="st_selftest_pit_rescue_live_")
+_st_atexit.register(_st_shutil.rmtree, _st_tempfile.tempdir, True)
 import contextlib
 import io
 import json

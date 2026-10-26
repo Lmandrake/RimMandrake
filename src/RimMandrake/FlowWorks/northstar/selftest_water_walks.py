@@ -3,6 +3,11 @@
 ACCUMULATING index.html of river_scenes_walk.py / objects_sheet.py (WALKS_FIX, 2026-10-17). No game: the walk runs on
 water_scenes_mock.MockBridge. Proves the scripts' OWN paths and their pure arithmetic against the P3 numbers
 (Transient/fw_scenes/p3_build_log.md); proves nothing about the game. Run: python3 src/RimMandrake/FlowWorks/northstar/selftest_water_walks.py"""
+# selftest temp containment (BENCH, FLOWWORKS_SELFTESTS_FIX_TMPDIR_LEAKS): every mkdtemp/mkstemp below,
+# and every child process via TMPDIR, lands in one private dir removed at exit.
+import atexit as _st_atexit, os as _st_os, shutil as _st_shutil, tempfile as _st_tempfile  # noqa: E401
+_st_tempfile.tempdir = _st_os.environ["TMPDIR"] = _st_tempfile.mkdtemp(prefix="st_selftest_water_walks_")
+_st_atexit.register(_st_shutil.rmtree, _st_tempfile.tempdir, True)
 import contextlib
 import glob
 import io
