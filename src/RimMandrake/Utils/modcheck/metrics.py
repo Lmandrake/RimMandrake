@@ -123,6 +123,10 @@ def load_sources(sheet_dirs, testq_root):
             jobs.append(d)
         elif sch == "testq.result/1":
             results.append(d)
+        elif isinstance(d.get("result"), dict) and d["result"].get("schema") == "testq.result/1":
+            # testq's done/ (and cancelled/) record wraps the pair: {job: testq.job/1, result: testq.result/1, ...}
+            take(p, d.get("job"))
+            take(p, d["result"])
         elif isinstance(d.get("summary"), dict) and d.get("mod") and STAMP.match(str(d.get("stamp") or "")):
             runs.setdefault((d["mod"], d["stamp"]), (p, d))
     for sd in sheet_dirs:

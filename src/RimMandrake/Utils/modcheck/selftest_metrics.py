@@ -161,15 +161,28 @@ def t_alarms():
     ok(w is not None and near(w["waste"], 0.95), "20 classified minutes in the window: 19/20 waste", w)
 
 
+def t_done_wrapper(root):
+    """testq writes a finished job as done/<job>.json = {job: testq.job/1, result: testq.result/1, attempts, ...};
+    a loader that takes only top-level schemas sees none of them (Steve lane busy 10 min vs ~90 real, 2026-10-25)."""
+    q = os.path.join(root, "wrapq")
+    job = {"schema": "testq.job/1", "id": "J20261025T200000Z-dw01", "purpose": "fix", "mod": "ModA"}
+    res = {"schema": "testq.result/1", "job": job["id"], "attempt": job["id"] + ".a1", "host": "lane9",
+           "outcome": "DONE", "started": "2026-10-25T20:00:00Z", "finished": "2026-10-25T20:30:00Z", "phase_s": {}}
+    _w(os.path.join(q, "done", job["id"] + ".json"), {"job": job, "result": res, "attempts": [res["attempt"]]})
+    _, jobs, results = metrics.load_sources([], q)
+    ok([j.get("id") for j in jobs] == [job["id"]], "done wrapper: its job is loaded", jobs)
+    ok([r.get("attempt") for r in results] == [res["attempt"]], "done wrapper: its result is loaded", results)
+
+
 def main():
     root = tempfile.mkdtemp(prefix="metrics_selftest_")
     old_sheet, old_env = gate.SHEET_DIR, os.environ.pop(gate.ENV_HISTORY, None)
     gate.SHEET_DIR = os.path.join(root, "own_sheets")
     os.makedirs(gate.SHEET_DIR)
     try:
-        for t in (t_compute, t_alarms):
+        for t in (t_compute, t_alarms, t_done_wrapper):
             try:
-                t(root) if t is t_compute else t()
+                t() if t is t_alarms else t(root)
             except Exception as ex:     # noqa: BLE001 - one broken test must not hide the others
                 import traceback
                 traceback.print_exc()
