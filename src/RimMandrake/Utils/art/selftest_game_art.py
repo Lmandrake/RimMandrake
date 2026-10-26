@@ -129,6 +129,26 @@ def main() -> int:
         (repo / "notes.md").write_text("x")
         git("add", "--", "notes.md")
         check(git("commit", "-q", "-m", "y").returncode == 0, "pre-commit ignores a commit with no sheet")
+        # the hook judges what the COMMIT holds: a rename is not an exemption, and the staged blob is not the worktree
+        git("mv", "bad.html", "moved.html")
+        (repo / "moved.html").write_text((repo / "moved.html").read_text().replace("r0", "rX"))
+        git("add", "--", "moved.html")
+        r = git("commit", "-q", "-m", "rename+edit")
+        check(r.returncode != 0 and "pre-commit REFUSED" in r.stderr,
+              "pre-commit refuses a sheet renamed (git mv) and edited after the gate")
+        (repo / "moved.html").write_text(SG.stamp(sheet(["img/a1.png"])))      # re-gated: the rename may now land
+        git("add", "--", "moved.html")
+        r = git("commit", "-q", "-m", "rename, re-gated")
+        check(r.returncode == 0, "control: the renamed sheet re-stamped commits" + (f" ({r.stderr[:120]})" if r.returncode else ""))
+        (repo / "late.html").write_text(sheet(["img/a1.png"]))
+        git("add", "--", "late.html")
+        (repo / "late.html").write_text(SG.stamp(sheet(["img/a1.png"])))      # stamped on disk only, after staging
+        r = git("commit", "-q", "-m", "late")
+        check(r.returncode != 0 and "pre-commit REFUSED" in r.stderr,
+              "pre-commit judges the staged blob: an unstamped sheet stamped on disk after `git add` is refused")
+        git("add", "--", "late.html")
+        r = git("commit", "-q", "-m", "late2")
+        check(r.returncode == 0, "control: the same sheet with its stamp staged commits" + (f" ({r.stderr[:120]})" if r.returncode else ""))
 
     # gate: a resolver-confirmed 'none' row is exempt; an author-claimed one is not
     ctx = {"resolve_size": lambda d: {"status": "none"} if d == "Electricity" else {"status": "measured", "kind": "thing"}}
@@ -153,8 +173,11 @@ def main() -> int:
         check(g["kind"] == "thing" and g["category"] == "Item", "Gun_Revolver sizes as an item")
         e = R.size({"key": "Electricity"})
         check(e["status"] == "none" and "ResearchProjectDef" in e["source"], "a ResearchProjectDef has no world size")
-        f = R.size({"key": "Frame_RM_Sluice"}) if R._def("Frame_RM_Sluice", "ThingDef") else {"status": "none"}
-        check(f["status"] == "none", "a ThingDef with no graphicData texPath has no world size")
+        if R._def("Frame_RM_Sluice", "ThingDef"):        # absent from the dump -> say so, never a free pass
+            check(R.size({"key": "Frame_RM_Sluice"})["status"] == "none",
+                  "a ThingDef with no graphicData texPath has no world size")
+        else:
+            print("SKIP no-texPath test: Frame_RM_Sluice not in the def dump")
         p = R.size({"key": "Plant_Potato"})
         check(p["kind"] == "plant", "plants still size as plants")
 

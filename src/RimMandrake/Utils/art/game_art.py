@@ -169,11 +169,13 @@ def classify(html: str, html_path: Path | None = None) -> dict:
     return {"game_art": bool(ev), "evidence": ev, "probed": probed, "refs": len(refs)}
 
 
-def delivery_check(path) -> tuple[bool, str]:
-    """(ok, message). ok when the sheet shows no game art, or shows it and carries a valid scaled-review-gate stamp."""
+def delivery_check(path, html: str | None = None) -> tuple[bool, str]:
+    """(ok, message). ok when the sheet shows no game art, or shows it and carries a valid scaled-review-gate stamp.
+    HTML, when given, is the content to judge (the pre-commit passes the STAGED blob); PATH still places its pictures."""
     import scaled_review_gate as SG
     path = Path(path)
-    html = path.read_text(errors="replace")
+    if html is None:
+        html = path.read_text(errors="replace")
     c = classify(html, path)
     if not c["game_art"]:
         return True, f"no game art ({c['probed']} of {c['refs']} pictures probed)"
@@ -187,23 +189,34 @@ def delivery_check(path) -> tuple[bool, str]:
 
 
 def staged_sheets(repo: Path) -> list[Path]:
-    """HTML files the commit in progress adds or modifies (honours the temporary index of `git commit <paths>`)."""
+    """HTML files the commit in progress adds or modifies (honours the temporary index of `git commit <paths>`).
+    --no-renames: a renamed sheet is an add here, never an R entry the filter would drop (`git mv` + an edit after the
+    gate slipped through, review w90)."""
     import subprocess
-    r = subprocess.run(["git", "-C", str(repo), "diff", "--cached", "--name-only", "--diff-filter=AM", "-z", "--", "*.html"],
-                       capture_output=True, text=True)
+    r = subprocess.run(["git", "-C", str(repo), "diff", "--cached", "--no-renames", "--name-only", "--diff-filter=AM",
+                        "-z", "--", "*.html"], capture_output=True, text=True)
     return [repo / n for n in r.stdout.split("\0") if n]
+
+
+def staged_text(repo: Path, p: Path) -> str | None:
+    """The STAGED content of P (what the commit will hold), or None when git cannot show it. The worktree copy is not
+    what lands: a sheet staged unstamped and stamped afterwards on disk committed unstamped (review w90)."""
+    import subprocess
+    r = subprocess.run(["git", "-C", str(repo), "cat-file", "blob", ":" + p.relative_to(repo).as_posix()],
+                       capture_output=True)
+    return r.stdout.decode("utf-8", "replace") if r.returncode == 0 else None
 
 
 def precommit(repo: Path) -> int:
     """The commit chokepoint: refuse a commit that adds/changes a game-art sheet without a valid gate stamp."""
     bad = []
     for p in staged_sheets(repo):
-        if not p.is_file():
+        html = staged_text(repo, p)
+        if html is None:
             continue
-        html = p.read_text(errors="replace")
         if 'id="ITEMS"' not in html and "<img" not in html:
             continue            # not a review sheet / picture page
-        ok, msg = delivery_check(p)
+        ok, msg = delivery_check(p, html)
         if not ok:
             bad.append(msg)
     for m in bad:
