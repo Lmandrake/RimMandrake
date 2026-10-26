@@ -328,13 +328,18 @@ namespace RimMandrake.FlowWorks.SelfTest
                 foreach (var kv in new[] { new KeyValuePair<string, string>("RM_MapComponent_Hoses", comp), new KeyValuePair<string, string>("CompHoseReel", reel), new KeyValuePair<string, string>("HoseProbe", probe) })
                 {
                     string[] lines = kv.Value.Split('\n');
+                    int resets = 0;
                     for (int i = 0; i < lines.Length; i++)
                     {
                         if (!lines[i].Contains("layKey = null;")) continue;
+                        resets++;
                         bool bumped = false;
                         for (int k = Math.Max(0, i - 2); k <= Math.Min(lines.Length - 1, i + 2); k++) if (lines[k].Contains("layEpoch++")) bumped = true;
                         Assert(bumped, $"{kv.Key}:{i + 1} resets layKey without bumping layEpoch");
                     }
+                    // final review 2026-10-26: can-fail -- a reset spelled any other way (layKey = default, a helper) would leave
+                    // this scan checking nothing and passing; every file has at least one reset today (probe 1, reel 3, comp 2)
+                    Assert(resets > 0, $"{kv.Key}: no \"layKey = null;\" found -- the reset was respelled, the epoch scan sees nothing");
                 }
                 Assert(comp.Contains("layQueue.Ask(id, key, r.layEpoch, prepare)"), "LayLater asks under the reel's epoch");
                 int again = comp.IndexOf("private HoseLay LayAgain(", StringComparison.Ordinal);
