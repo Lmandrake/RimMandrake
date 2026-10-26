@@ -200,11 +200,15 @@ def staged_sheets(repo: Path) -> list[Path]:
 
 def staged_text(repo: Path, p: Path) -> str | None:
     """The STAGED content of P (what the commit will hold), or None when git cannot show it. The worktree copy is not
-    what lands: a sheet staged unstamped and stamped afterwards on disk committed unstamped (review w90)."""
+    what lands: a sheet staged unstamped and stamped afterwards on disk committed unstamped (review w90).
+    Newlines are universal, as Path.read_text gives every other chokepoint (serve, phone, deliver): a CRLF sheet
+    whose stamp verifies there was refused here on raw bytes (review w94)."""
     import subprocess
     r = subprocess.run(["git", "-C", str(repo), "cat-file", "blob", ":" + p.relative_to(repo).as_posix()],
                        capture_output=True)
-    return r.stdout.decode("utf-8", "replace") if r.returncode == 0 else None
+    if r.returncode != 0:
+        return None
+    return r.stdout.decode("utf-8", "replace").replace("\r\n", "\n").replace("\r", "\n")
 
 
 def precommit(repo: Path) -> int:

@@ -149,6 +149,26 @@ def main() -> int:
         git("add", "--", "late.html")
         r = git("commit", "-q", "-m", "late2")
         check(r.returncode == 0, "control: the same sheet with its stamp staged commits" + (f" ({r.stderr[:120]})" if r.returncode else ""))
+        # CRLF bytes: every other chokepoint reads with universal newlines (read_text) and accepts this stamp
+        crlf = SG.stamp(sheet(["img/a1.png"]).replace("<body>", "<body>\n"))
+        (repo / "crlf.html").write_bytes(crlf.replace("\n", "\r\n").encode())
+        check(G.delivery_check(repo / "crlf.html")[0], "sanity: a CRLF stamped sheet passes delivery_check (read_text)")
+        git("add", "--", "crlf.html")
+        r = git("commit", "-q", "-m", "crlf", "--", "crlf.html")
+        check(r.returncode == 0, "pre-commit agrees with delivery on a CRLF stamped sheet (staged blob, universal newlines)"
+              + (f" ({r.stderr[:120]})" if r.returncode else ""))
+        (repo / "crlf2.html").write_bytes(sheet(["img/a1.png"]).replace("<body>", "<body>\n").replace("\n", "\r\n").encode())
+        git("add", "--", "crlf2.html")
+        r = git("commit", "-q", "-m", "crlf2", "--", "crlf2.html")
+        check(r.returncode != 0 and "pre-commit REFUSED" in r.stderr, "control: an unstamped CRLF sheet is still refused")
+        git("rm", "-q", "--cached", "--", "crlf2.html")
+        # `git commit -- <path>` commits the WORKTREE through a temporary index: a stamp only in the index is no pass
+        (repo / "tmp_ix.html").write_text(SG.stamp(sheet(["img/a1.png"])))
+        git("add", "--", "tmp_ix.html")
+        (repo / "tmp_ix.html").write_text(sheet(["img/a1.png"]))
+        r = git("commit", "-q", "-m", "tmp_ix", "--", "tmp_ix.html")
+        check(r.returncode != 0 and "pre-commit REFUSED" in r.stderr,
+              "pre-commit judges the temporary index of `git commit -- <path>` (worktree unstamped, index stamped)")
 
     # gate: a resolver-confirmed 'none' row is exempt; an author-claimed one is not
     ctx = {"resolve_size": lambda d: {"status": "none"} if d == "Electricity" else {"status": "measured", "kind": "thing"}}
