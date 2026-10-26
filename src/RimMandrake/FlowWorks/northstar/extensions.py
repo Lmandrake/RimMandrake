@@ -1540,7 +1540,7 @@ def toggle_ladder_required(t):
         # every 250 ticks) queues a ladder for a colonist stuck in a pit; the stuck fixture colonist (or a spawned neighbour) builds it
         # and climbs out inside the 10-pulse wait (flaky: the job-J20261026T081140Z-d4950f evidence has hasLadder=True on a pit cell
         # and no pawn on any). That is the designed rescue, not a hole in ladderRequiredToExitEnabled, so this row holds it off.
-        with _setting(t, "superdeepCapturesOwnFaction", True), _setting(t, "pitRescueLadderEnabled", False):
+        with _setting(t, "superdeepCapturesOwnFaction", True), _setting_in(t, S_FW, "pitRescueLadderEnabled", False):
             pid = _spawn_pawn_at(t, "Colonist", pit[0][0] - 3, pit[0][1])
             _force_into(t, pid, pit[4][0], pit[4][1])     # a colonist never paths in (ruling 10-06); forced = a jumper
             _wait(t, 10 * PULSE)
