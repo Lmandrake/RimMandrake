@@ -390,6 +390,12 @@ BESKAR_FIXTURE = ("<Defs>"
     "<RecipeDef><defName>kotor_IngotBeskar_10xrecipe</defName><products><KOTOR_IngotBeskar>10</KOTOR_IngotBeskar></products></RecipeDef>"
     "</Defs>")
 BESKAR = ("KOTOR_IngotBeskar", "KOTOR_RawBeskar", "OuterRim_Beskar", "OuterRim_PureBeskar")
+# Outer Rim - Core alone (1.6 Stuff_Beskar.xml): Beskar carries its own deepCommonality, PureBeskar none.
+BESKAR_LIVE_FIXTURE = ("<Defs>"
+    "<ThingDef Name=\"OuterRimMetal\" Abstract=\"True\"><smeltable>true</smeltable></ThingDef>"
+    "<ThingDef ParentName=\"OuterRimMetal\"><defName>OuterRim_Beskar</defName><deepCommonality>0.001</deepCommonality></ThingDef>"
+    "<ThingDef ParentName=\"OuterRimMetal\"><defName>OuterRim_PureBeskar</defName></ThingDef>"
+    "</Defs>")
 
 
 def beskar_check(patch_path=None):
@@ -418,6 +424,16 @@ def beskar_check(patch_path=None):
         bad.append("mining worksite still loots beskar")
     if root.xpath('//GenStepDef[defName="Asteroid"]//MineableGold/text()') != ["33~42"] or not root.xpath('//li[thing="Gold"]'):
         bad.append("beskar patch removed more than beskar")
+    # BESKAR_FIX_DEEPDRILL_UNDER_LK_GATE: the load the owner runs has Outer Rim - Core but neither LK nor the KotOR
+    # donor (2026-10-26 dump), and Outer Rim ships OuterRim_Beskar deepCommonality 0.001 itself (1.6
+    # Defs/ThingDefs_Stuff/Stuff_Beskar.xml), so the zeroing must not hang off the LK gate.
+    live = LX.fromstring(BESKAR_LIVE_FIXTURE)
+    replay(live, LX.parse(patch_path), {"Outer Rim - Core"})
+    for n in ("OuterRim_Beskar", "OuterRim_PureBeskar"):
+        if live.xpath('//ThingDef[defName="%s"]/smeltable/text()' % n) != ["false"]:
+            bad.append("%s smelts back to beskar with Outer Rim and no LK" % n)
+        if live.xpath('//ThingDef[defName="%s"]/deepCommonality/text()' % n) not in (["0"], []):
+            bad.append("%s still a deep-drill deposit with Outer Rim and no LK" % n)
     return bad
 
 

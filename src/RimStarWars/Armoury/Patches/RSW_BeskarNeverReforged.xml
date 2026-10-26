@@ -12,7 +12,8 @@
       KOTOR_IngotBeskar is already not smeltable. The "lesser ores" half (steel and slag back instead) is C#:
       Source/CanonMaterials/RSW_BeskarSmelt.cs (Thing.Smeltable + Thing.SmeltProducts postfixes).
     * Mining routes produce nothing: LK's beskar rocks unscattered and dropped from PreciousLump and the Odyssey asteroid
-      counts; the deep-drill deposits LK adds to both Outer Rim beskars zeroed; the Ideology mining worksite beskar rows
+      counts; both Outer Rim beskars' deep-drill deposits zeroed under the Outer Rim gate (Outer Rim ships
+      OuterRim_Beskar deepCommonality 0.001 itself, LK raises both to .75; BESKAR_FIX_DEEPDRILL_UNDER_LK_GATE); the Ideology mining worksite beskar rows
       removed (beskar is salvage only). KOTOR_MineableBeskar is zeroed in source. Meteorite and MineralRich gates for all
       beskar rocks: RSW_ZeroedOreGates.xml. Mines 2.0 mine-shaft recipes: Source/CanonMaterials/RSW_MineShaftCanonGate.cs.
   Guards are PatchOperationFindMod per donor (a top-level Operation MayRequire is ignored by the engine). Display names are
@@ -64,6 +65,34 @@
             </match>
           </nomatch>
         </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="OuterRim_Beskar"]/deepCommonality</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="OuterRim_Beskar"]/deepCommonality</xpath>
+            <value><deepCommonality>0</deepCommonality></value>
+          </match>
+          <nomatch Class="PatchOperationConditional">
+            <xpath>/Defs/ThingDef[defName="OuterRim_Beskar"]</xpath>
+            <match Class="PatchOperationAdd">
+              <xpath>/Defs/ThingDef[defName="OuterRim_Beskar"]</xpath>
+              <value><deepCommonality>0</deepCommonality></value>
+            </match>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="OuterRim_PureBeskar"]/deepCommonality</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="OuterRim_PureBeskar"]/deepCommonality</xpath>
+            <value><deepCommonality>0</deepCommonality></value>
+          </match>
+          <nomatch Class="PatchOperationConditional">
+            <xpath>/Defs/ThingDef[defName="OuterRim_PureBeskar"]</xpath>
+            <match Class="PatchOperationAdd">
+              <xpath>/Defs/ThingDef[defName="OuterRim_PureBeskar"]</xpath>
+              <value><deepCommonality>0</deepCommonality></value>
+            </match>
+          </nomatch>
+        </li>
       </operations>
     </match>
   </Operation>
@@ -107,34 +136,6 @@
         <li Class="PatchOperationRemove">
           <success>Always</success>
           <xpath>/Defs/GenStepDef[defName="Asteroid" or defName="Asteroid_NoRuins" or defName="AsteroidBasic"]/genStep/mineableCounts/*[self::LKBeskar_Ore or self::LKPureBeskar_Ore]</xpath>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="OuterRim_Beskar"]/deepCommonality</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="OuterRim_Beskar"]/deepCommonality</xpath>
-            <value><deepCommonality>0</deepCommonality></value>
-          </match>
-          <nomatch Class="PatchOperationConditional">
-            <xpath>/Defs/ThingDef[defName="OuterRim_Beskar"]</xpath>
-            <match Class="PatchOperationAdd">
-              <xpath>/Defs/ThingDef[defName="OuterRim_Beskar"]</xpath>
-              <value><deepCommonality>0</deepCommonality></value>
-            </match>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="OuterRim_PureBeskar"]/deepCommonality</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="OuterRim_PureBeskar"]/deepCommonality</xpath>
-            <value><deepCommonality>0</deepCommonality></value>
-          </match>
-          <nomatch Class="PatchOperationConditional">
-            <xpath>/Defs/ThingDef[defName="OuterRim_PureBeskar"]</xpath>
-            <match Class="PatchOperationAdd">
-              <xpath>/Defs/ThingDef[defName="OuterRim_PureBeskar"]</xpath>
-              <value><deepCommonality>0</deepCommonality></value>
-            </match>
-          </nomatch>
         </li>
         <li Class="PatchOperationRemove">
           <success>Always</success>
