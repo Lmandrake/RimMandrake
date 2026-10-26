@@ -411,10 +411,18 @@ def pole_span(ctx):
     B, P, xz, row, lproof = _c(ctx, "B", "P", "xz", "row", "lproof")
     ctx["trench"](3, 6, 20, 28)
     ta, tb = P(-3, 24), P(10, 24)
-    ctx["build"]("RM_LiquidTank:%d,%d" % ta, "RM_UniversalPipe:%d,%d" % P(-1, 24), "RM_UniversalPipe:%d,%d" % P(0, 24),
-                 "RM_PipePole:%d,%d" % P(1, 24), "RM_PipePole:%d,%d" % P(8, 24), "RM_UniversalPipe:%d,%d" % P(9, 24),
-                 "RM_LiquidTank:%d,%d" % tb)
+    built = ctx["build"]("RM_LiquidTank:%d,%d" % ta, "RM_UniversalPipe:%d,%d" % P(-1, 24), "RM_UniversalPipe:%d,%d" % P(0, 24),
+                         "RM_PipePole:%d,%d" % P(1, 24), "RM_PipePole:%d,%d" % P(8, 24), "RM_UniversalPipe:%d,%d" % P(9, 24),
+                         "RM_LiquidTank:%d,%d" % tb)
     ctx["ticks"](2)
+    # LINES_PROOF_FIX_POLE_SPAN_SITE: a pole that is not on the map is a SITE/build fact, not a link refusal: say which cell and
+    # what build_batch replied (its 'failed' list) instead of the bare 'REFUSED no pipe pole'.
+    missing = [c for c in (P(1, 24), P(8, 24)) if not ctx["things"]("RM_PipePole", c)]
+    if missing:
+        row("POLE_SPAN_CARRIES_LIQUID", "UNMEASURED",
+            {"why": "RM_PipePole not on the map after build_batch at %s" % missing,
+             "buildReply": str(built.get("failed") or built)[:400]}, cls="SITE")
+        return
     kl, tl = lproof("ProofLinkPoles", "%s;%s" % (xz(P(1, 24)), xz(P(8, 24))))
     ctx["ticks"](2)
     kn, tn = lproof("ProofNet", "%s;%s" % (xz(ta), xz(tb)))
