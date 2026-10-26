@@ -86,6 +86,9 @@ namespace JawaBench.BridgeTools
             [ToolParameter(Description = "How many components to return, largest first (default 30).")] int top = 30)
         {
             if (ticks < 1) ticks = 1;
+            // The wait is the only bound on how long every MapComponentTick override stays patched (a paused game never
+            // reaches `ticks`): a typo'd maxSeconds must not leave timers installed for days.
+            maxSeconds = Math.Max(1, Math.Min(3600, maxSeconds));
             var failures = new List<string>();
             int patched = 0, startTick = 0;
             var sw = Stopwatch.StartNew();
@@ -136,6 +139,10 @@ namespace JawaBench.BridgeTools
                 return await ctx.MainThread.InvokeAsync(() =>
                 {
                     JawaBenchMapCompTimer.Armed = false;
+                    // The game may have gone to the menu or loaded another save while we waited: no TickManager, or a
+                    // tick count from a different game, would make every per-tick figure a lie (or throw).
+                    if (Current.Game == null || Find.TickManager == null || JawaBenchMapCompTimer.Target == null || !Find.Maps.Contains(JawaBenchMapCompTimer.Target))
+                        return Fail("The sampled map is gone (game left, reloaded, or the map was removed) - nothing to report; rerun.");
                     // ticksElapsed reports the real count (0 on a paused game); only the divisor is floored at 1.
                     int ticksRan = Find.TickManager.TicksGame - startTick;
                     int elapsed = Math.Max(1, ticksRan);
