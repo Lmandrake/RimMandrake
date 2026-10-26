@@ -1,0 +1,68 @@
+[
+ {
+  "id": "arteval_RM_Shoal__r2_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Shoal",
+  "prompt": "A creature sprite for RimWorld: the shoal. Many bodies sharing one blood: eight to fifteen small pale lozenge bodies strung on a single glowing yellow thread, moving as one loose net. ONE sprite shows the whole shoal, not a single animal: the lozenges are spread as one loose net with small gaps between each, all connected by the one thread, with a wide, open footprint and no single large body and no legs. The net keeps the same wide overall spread and the same spacing between lozenges in every facing: the rear view, seen from behind, spreads the net as wide as the front view, with the lozenges turned away from the camera, showing their backs, and the same number of bodies and the same gaps between them, so the shoal covers the same footprint from front and rear, and the same height. The lozenges are painted as living, slightly translucent tissue: pale, matte, with subtle uneven surface variation, small mottled tonal shifts and soft irregular brushwork, like hand-painted creature flesh. Highlights on each lozenge are small, restrained and irregular; each lozenge has a thin dark contour in a deeper shade of its own pale colour. The bright yellow glow is concentrated in the single thread that connects them, fading to a soft pale-yellow tint where the thread passes through each body. Realistic painterly vanilla RimWorld sprite style, hand-painted look with soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE shoal, centred, every lozenge fully visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261026_b1r2",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.7,
+  "module": "swimmer"
+ },
+ {
+  "id": "arteval_RM_Thermadon__r1_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Thermadon",
+  "prompt": "A creature sprite for RimWorld: the duskfire. A long-legged black chitin hunter the size of a crouching man, in a lean predator stance on long thin legs. Its body is covered in smooth-edged overlapping black chitin plates that follow the body contour, like polished armour; the back, neck and abdomen form one clean rounded silhouette with a spineless dorsal outline in every facing. The abdomen is swollen with paired chemical glands that show a dull ember-red glow through the chitin, as the light fails. The body is insectoid and alien, with smooth glossy black plating in black and deep charcoal, and ember-red only in the glands. It hunts at twilight along dry root-ridges and hurls burning fluid when threatened. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261026_b1r2",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 3.0,
+  "module": "walker"
+ },
+ {
+  "id": "arteval_RSW_Woolamander__r1_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Woolamander",
+  "prompt": "A creature sprite for RimWorld: the woolamander. Woolamanders were curious social creatures that originated on the jungle moon of Yavin 4. They fed on fruit and other vegetation that would ferment in their pot-bellies. Colourful primate often made for exotic pets; these sociable animals were spread to multiple worlds, where escaped wild populations soon established themselves. Visible features it must show: the canon Yavin 4 woolamander (see canon entry woolamander): ONE animal, alone, with no branch, perch or hanging ornament; a colourful furred primate; a round pot-belly. Keep the colourful furred primate body, the round pot-belly, the bare face and bare hands, and the palette exactly as in the previous render. Fur: painted as soft, irregular masses of colour with gentle tonal variation and natural light from above; individual hairs blend into the mass rather than appearing as separate drawn lines. The bare face and hands are smooth, modelled skin with natural painted light and shadow. Edges: soft and painted, a subtle slightly deeper shade of the local colour, just enough for readability. Tail, in every facing: a bare, hairless cord tail hangs straight down from the base of the spine, substantially longer than the body is tall, reaching far below the dangling hands, and ending in a rainbow-striped fur tuft well beneath the feet line; it hangs in a long pendant line close to the lower body. Realistic painterly vanilla RimWorld sprite style. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_CARTOON, STYLE_OFF, CANON_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261026_b1r2",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.5,
+  "module": "walker"
+ }
+]

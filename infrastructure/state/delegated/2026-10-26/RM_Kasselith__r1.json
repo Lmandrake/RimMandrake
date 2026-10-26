@@ -1,0 +1,57 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 36.5,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.33548219999999995
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Kasselith",
+ "decision": "ACCEPT",
+ "reasons": [
+  "opus band GOOD (model said good); blocking []; polish ['SCALE_WRONG', 'LEGIB_32']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "205c65d6b30b9bd6609c7743e98046d8bc72fcdc4df638eff2fe6cac4f9a4bf1",
+  "east.png": "4e17d23d8dab65bc60ae0e5ff02657ce893ccab3eec1b2f68193fe0eeff431a8",
+  "north.png": "5168ccc1bcf1ea31d14ad96ff58061981888e2eaebd72c4afba9f09670aca7f4",
+  "scale.png": "61af5c6742186f57603c69056c8dcd09b2767a7e08c6cd4531f129c480ee0643",
+  "facings.png": "9630611a063ff44539775a61f81a541387c89754ec012daed0364dc6a2760bfe"
+ }
+}
