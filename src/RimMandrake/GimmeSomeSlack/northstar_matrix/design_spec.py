@@ -56,6 +56,22 @@ STAGE = {
                        "tangle_min": 6, "cmax": 3},
 }
 ZOOM_ROOT = {"close": 11, "far": 30}
+# FlowWorks/Source/Hose/HoseMath.cs at WidthScale 1 (the default thickness): VisibleWidth = FlatVisible + PlumpExtra *
+# plumpAmount(1) * eased; WireVisibleWidth = the 0.08 strand x 25/32 opaque rows. Review 8.1: the spec kept the pre-2026-10-22
+# 0.38/0.085 widths and a 4.0 ratio, so every live hose scene failed a correct hose. selftest_falsepass_late reads these
+# three from HoseMath.cs. The ratio floor is the owner's "much thicker than the wires": 2.5x (flat is 2.88x, plump 3.68x).
+HOSE_FLAT_VISIBLE, HOSE_PLUMP_EXTRA, HOSE_WIRE_VISIBLE = 0.18, 0.05, 0.08 * 25.0 / 32.0
+HOSE_WIDTH_OVER_WIRE_GE = 2.5
+
+
+def hose_widths(state):
+    """[lo, hi] visible width a hose in `state` must read: Flat and Plump within 0.005 of the shipped width; Filling
+    (read half way, blend 0.2-0.8) strictly between the two."""
+    f, p = HOSE_FLAT_VISIBLE, HOSE_FLAT_VISIBLE + HOSE_PLUMP_EXTRA
+    return {"Flat": [round(f - 0.005, 4), round(f + 0.005, 4)], "Plump": [round(p - 0.005, 4), round(p + 0.005, 4)],
+            "Filling": [round(f + 0.001, 4), round(p - 0.001, 4)]}[state]
+
+
 BOARD_PITCH = [40, 30]
 DENSITY_SIDE = {1: 1, 10: 4, 100: 12, 1000: 34}
 
@@ -331,14 +347,14 @@ def hose_spec(r, k):
     ops.append({"op": "debug_hose", "a": gc(a), "b": gc(b), "maxLength": hose_max_length(L),
                 "fluid": {"water": "RM_Liquid_FreshWater", "tar": None, "chemfuel": None}[r["Fl"]], "fluid_key": r["Fl"],
                 "force_state": "Filling" if r["St"] == "Filling50" else r["St"]})
-    # HoseMath: VisibleWidth = FlatVisible 0.38 + PlumpExtra 0.085 * plumpAmount(1) * eased; Filling50 is read half way
-    # through the transition (validation_hose.py H6: blend in (0.2, 0.8)), so its width lies strictly between the two.
+    # HoseMath widths (HOSE_* above); Filling50 is read half way through the transition (validation_hose.py H6: blend in
+    # (0.2, 0.8)), so its width lies strictly between the two.
     state = "Filling" if r["St"] == "Filling50" else r["St"]
-    width = {"Flat": [0.375, 0.385], "Plump": [0.46, 0.47], "Filling": [0.381, 0.464]}[state]
+    width = hose_widths(state)
     dist = math.hypot(b[0] - a[0], b[1] - a[1])
     return {"id": "H%02d_%s_%s_L%d" % (k, r["St"], r["Ro"], L), "group": "hose", "factors": r, "plot": plot,
             "zoom_root": ZOOM_ROOT["close"], "settings": {}, "build": ops, "view": {"overlay": "none", "select_at": None},
-            "expect": {"intrinsic": {"state": state, "visible_width": width, "width_over_wire_ge": 4.0,
+            "expect": {"intrinsic": {"state": state, "visible_width": width, "width_over_wire_ge": HOSE_WIDTH_OVER_WIRE_GE,
                                      "blend": {"Flat": [0, 0], "Plump": [1, 1], "Filling": [0.2, 0.8]}[state],
                                      "min_bend_radius_ge": 1.2, "couplings_min": 2,   # the two end fittings; joiners only at bends (owner review 2026-10-04 B17)
                                      "self_intersections": 0, "unwalkable_points": 0}, "parity": None},

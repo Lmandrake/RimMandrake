@@ -638,13 +638,13 @@ class Proof(object):
         R = getattr(self, "matrix_run", None)
         if R is None:
             return
+        import run_live as RL                 # on sys.path since the matrix block ran (matrix_run is set)
         det = [s.get("determinism", {}).get("same") for s in R.scenes.values() if s.get("determinism")]
         self.row("session", "D1_zero_tick_rereads_same", "PASS" if det and all(det) else "FAIL", "MOD",
                  "%d/%d scenes: geometry hash + census identical on 2 re-reads after all view toggles" % (sum(1 for d in det if d), len(det)))
         # GPT deep review 2026-10-22 #7: an `extra` edge (cached, absent from a fresh build) is as stale as a missing one
-        bad = ["%s %s %s" % (b["id"], b["scenes"], {k: (b.get("fresh") or {}).get(k) for k in ("edges", "different", "missing", "extra")})
-               for b in R.boards_out if not b.get("fresh") or (b.get("fresh") or {}).get("different") or (b.get("fresh") or {}).get("missing")
-               or (b.get("fresh") or {}).get("extra")]
+        # review 8.4: a refused/timed-out fresh reply is a truthy dict with no counters -- RL.fresh_bad requires the counters
+        bad = RL.fresh_bad(R.boards_out)
         rings = [b["id"] for b in R.boards_out if any("_T3_" in s for s in b["scenes"])]
         self.row("session", "D2_fresh_builder_same", "PASS" if R.boards_out and not bad else "FAIL", "MOD",
                  bad or "%d boards (ring boards %s): a fresh CordBuilder on the same map reproduces every laid edge" % (len(R.boards_out), rings))
@@ -738,8 +738,12 @@ class Proof(object):
             "aerial(M16)": (VA._aerial_set(aer_a), VA._aerial_set(aer_b)),
             "mastStyles(S7)": (VS._snapshot(sty_a), VS._snapshot(sty_b)),
             "runStyles(S9e)": (VS._s9_snap(s9_a), VS._s9_snap(s9_b)),
+            # the floor cords themselves (GPT review 8.2): cords_a/cords_b were read and never compared, so a load
+            # that dropped or moved every laid cord still read SL3 PASS on the aerial + style sets alone
+            "floorCords": (V._cord_set(cords_a), V._cord_set(cords_b)),
         }
-        empty = [k for k, (a, b) in parts.items() if not a or (isinstance(a, tuple) and not a[0])]
+        empty = [k for k, (a, b) in parts.items() if not a or (isinstance(a, tuple) and not a[0])
+                 or (k == "floorCords" and not a.get("edgeHashes"))]
         differ = {}
         for k, (a, b) in parts.items():
             if a != b:

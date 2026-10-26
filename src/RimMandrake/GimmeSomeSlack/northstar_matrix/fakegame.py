@@ -24,7 +24,9 @@ REEL = "RM_HoseReel"
 # (selftest HO2). It is NOT the shipped hose (FlowWorks/Source/Hose/HoseMath.cs since round 4/6: a 40-cell hose,
 # DefaultMaxLength, and a taut any-angle route x RouteMargin 1.05). The live authority is FlowWorks' proof_hose.py.
 WIRE_VISIBLE = 0.08 * 25.0 / 32.0          # HoseMath.WireVisibleWidth (0.08 strand since cords round 5)
-FLAT_VISIBLE, PLUMP_EXTRA, MIN_BEND, MAX_LENGTH, TRANSITION = 0.38, 0.085, 1.2, 30.0, 30   # HoseMath/RM_HoseSettings, but MAX_LENGTH is the round-3 30 (OldDefaultMaxLength)
+# widths: HoseMath.FlatVisible/PlumpExtra (0.18/0.05 since 2026-10-22; the stale 0.38/0.085 hid the matrix's width drift,
+# review 8.1 -- selftest_falsepass_late reads them from HoseMath.cs); MAX_LENGTH is the round-3 30 (OldDefaultMaxLength)
+FLAT_VISIBLE, PLUMP_EXTRA, MIN_BEND, MAX_LENGTH, TRANSITION = 0.18, 0.05, 1.2, 30.0, 30
 REEL_W = REEL_H = 2                         # RM_HoseReel is 2x2 (round 3), never rotated: footprint x..x+1, z..z+1 from Position
 ROUTE_SLACK = 1.08                          # round 3's CheckInstall: (hop + 8-connected cell path) * 1.08 must fit the hose length
 CORRIDOR_TICKS = 250                        # RM_MapComponent_Hoses: the laid hose's corridor is re-checked this often

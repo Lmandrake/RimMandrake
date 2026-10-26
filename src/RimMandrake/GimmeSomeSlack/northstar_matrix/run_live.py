@@ -204,6 +204,40 @@ def make_boards(scenes, region=REGION, gap=GAP):
     return boards
 
 
+def fresh_bad(boards):
+    """D2: the boards whose `fresh` probe does NOT prove a fresh CordBuilder reproduced the laid edges -> ["id scenes
+    {...}"]. A reply is evidence only when it says success and carries integer edges/different/missing/extra; a refusal,
+    a timeout dict or an empty reply is bad, never a pass (review 8.4: {"success": False, "error": ...} was truthy and its
+    absent counters read as zero). An `extra` edge (cached, absent from a fresh build) is as stale as a missing one."""
+    keys = ("edges", "different", "missing", "extra")
+    bad = []
+    for b in boards:
+        f = b.get("fresh")
+        ok = (isinstance(f, dict) and f.get("success") is True
+              and all(isinstance(f.get(k), int) and not isinstance(f.get(k), bool) for k in keys)
+              and not (f["different"] or f["missing"] or f["extra"]))
+        if not ok:
+            bad.append("%s %s %s" % (b.get("id"), b.get("scenes"),
+                                     {k: f.get(k) for k in keys + ("success", "error")} if isinstance(f, dict) else f))
+    return bad
+
+
+def scene_status(group, mock, mism, site_fail, unstaged=()):
+    """-> (status, class) of one floor/aerial scene. A census that matches while the scene's own staging failed (a wall,
+    a battery, a mast never built) did not exercise the factor it names: UNMEASURED SITE, never PASS (review 8.5:
+    site_fail was consulted only once a mismatch had already failed the scene). A scene carrying factors its build never
+    stages (`unstaged`, the matrix catalog's aerial/hose levels, review 8.7) is UNMEASURED HARNESS for the same reason."""
+    if group == "aerial" and mock:
+        return "SKIP", "HARNESS"
+    if mism:
+        return "FAIL", ("SITE" if site_fail else "MOD")
+    if site_fail:
+        return "UNMEASURED", "SITE"
+    if unstaged:
+        return "UNMEASURED", "HARNESS"
+    return "PASS", ""
+
+
 def board_overlap_check(boards):
     """Every pair of plots on a board is >= GAP apart (no cord can reach a neighbour: reach R each side)."""
     bad = []
@@ -241,7 +275,10 @@ def load_catalog(which="design"):
                     "tangles": "True", "style": "CordStyle." + {"jawa": "StarWarsJawa", "extcord": "ExtensionCord",
                                                                  "cybertek": "Cybertek", "starwars": "StarWars"}[case["style"]]}
         e = O.expect(sc, case["tangle"])
-        scenes.append({"id": case["case"], "group": "matrix", "factors": case, "plot": [0, 0, sc["w"], sc["h"]], "zoom_root": 11,
+        # review 8.7: build_ops lays the floor only -- no aerial anchors/links, no hose -- so a case's aerial/hose level
+        # is NOT staged; the scene names it and cannot PASS on the floor census (scene_status -> UNMEASURED HARNESS)
+        unstaged = ["%s=%s" % (k, case.get(k)) for k in ("aerial", "hose") if case.get(k) not in (None, "none")]
+        scenes.append({"id": case["case"], "group": "matrix", "factors": case, "unstaged": unstaged, "plot": [0, 0, sc["w"], sc["h"]], "zoom_root": 11,
                        "settings": settings, "build": D.build_ops(sc), "view": {"overlay": "none", "select_at": None},
                        "expect": {"intrinsic": D.intrinsic(sc, "ropey", "normal")}, "shows": [], "notes": [],
                        "_cords_max": lv["cordsPerConnection"] * e["cord_edges"]})
@@ -478,6 +515,11 @@ def compare(exp, got, plot_game):
     return out
 
 
+def shot_run_dir(t, pid):
+    """The folder (under SHOTS) one run's screenshots go to: its start second and process id, unique per run."""
+    return "run_%s_%d" % (time.strftime("%Y%m%dT%H%M%S", time.localtime(t)), pid)
+
+
 def sprawl_check(rc, plot_game):
     bb = rc.get("strandBBox")
     if not bb:
@@ -501,6 +543,9 @@ class Run(object):
         self._copies = []
         self._pool = concurrent.futures.ThreadPoolExecutor(max_workers=4)
         self._framed = None                           # (key, t) of the last frame_cell_rect, to skip a redundant re-frame
+        # review 8.8: every run writes its PNGs into its OWN folder under SHOTS, and a record's "file" names that folder,
+        # so a later run can never overwrite the picture an earlier result (and its review sheet) points at
+        self.shot_run = shot_run_dir(time.time(), os.getpid())
 
     # ------------------------------------------------------------------ per-phase wall clock
     def _acc(self, name, d):
@@ -896,13 +941,9 @@ class Run(object):
                 rec["overlay_via"] = "battery selected, highlight off (no bridge tool holds the power overlay open)"
                 rec["overlay_select"] = sa.get("thing")
         rec["mismatches"] = mism
-        if sc["group"] == "aerial" and self.mock:
-            rec["status"], rec["class"] = "SKIP", "HARNESS"
-        elif not mism:
-            rec["status"], rec["class"] = "PASS", ""
-        else:
-            rec["status"] = "FAIL"
-            rec["class"] = "SITE" if site_fail else "MOD"
+        rec["status"], rec["class"] = scene_status(sc["group"], self.mock, mism, site_fail, sc.get("unstaged"))
+        if sc.get("unstaged"):
+            rec["unstaged"] = sc["unstaged"]
         frame_cap = (v.get("select_at") or v.get("overlay") == "power" or sc["group"] == "aerial")
         rec["shot"] = self.shot(sid, pg, root, frame=bool(frame_cap))
         sel_used = bool(v.get("select_at")) or (v.get("overlay") == "power")
@@ -920,7 +961,7 @@ class Run(object):
             art = "UNBUILT art (no Styles/%s folder)" % fam
         rec["art"] = art
         self.row("MX_" + sid, rec["status"], rec["class"] or "MOD",
-                 mism if mism else "graph ok: %d edges, %d strands, %d nets, hash %s%s" % (
+                 mism if mism else ("factors never staged %s; " % sc["unstaged"] if sc.get("unstaged") else "") + "graph ok: %d edges, %d strands, %d nets, hash %s%s" % (
                      got["cord_edges"] or 0, got["strands"] or 0, got["nets"] or 0, rec["geometryHash"], ("; " + art) if art else ""))
         return rec
 
@@ -1109,9 +1150,9 @@ class Run(object):
         rec = {"file": None, "kind": "frame" if frame else "cell_rect", "src": src,
                "ok": r.get("success"), "pad": PAD, "rect": pg}
         if src and os.path.exists(src):
-            dst = os.path.join(SHOTS, name + ".png")
-            os.makedirs(SHOTS, exist_ok=True)
-            rec["file"] = name + ".png"
+            rec["file"] = self.shot_run + "/" + name + ".png"          # relative to SHOTS, '/' in the JSON
+            dst = os.path.join(SHOTS, self.shot_run, name + ".png")
+            os.makedirs(os.path.dirname(dst), exist_ok=True)
             # the 2-3 MB copy across the WSL/Windows boundary overlaps with the next bridge calls; joined in finish_copies()
             self._copies.append((rec, name, self._pool.submit(shutil.copyfile, src, dst)))
         return rec
@@ -1294,9 +1335,7 @@ def run(args, B, mock=False):
               "%d/%d scenes: geometry hash + census identical on 2 re-reads after all view toggles" % (sum(det), len(det)))
     fr = [b.get("fresh") or {} for b in R.boards_out]
     if fr and not mock and not sweep_src:
-        bad = ["%s %s %s" % (b["id"], b["scenes"], {k: b["fresh"].get(k) for k in ("edges", "different", "missing", "extra")})
-               for b in R.boards_out if (b.get("fresh") or {}).get("different") or (b.get("fresh") or {}).get("missing")
-               or (b.get("fresh") or {}).get("extra")]   # GPT deep review 2026-10-22 #7
+        bad = fresh_bad(R.boards_out)       # GPT deep review 2026-10-22 #7; review 8.4 (a failed reply is not a pass)
         R.row("D2_fresh_builder_same", "PASS" if not bad else "FAIL", "MOD",
               bad or "%d boards: a fresh CordBuilder on the same map reproduces every laid edge" % len(fr))
     if not mock and not sweep_src:
@@ -1370,7 +1409,8 @@ def post(result_path):
         p = os.path.join(SHOTS, shot)
         if not os.path.exists(p):
             continue
-        off = os.path.join(SHOTS, sid + "_off.png") if (rec.get("shot_off") or {}).get("file") else None
+        off_f = (rec.get("shot_off") or {}).get("file")
+        off = os.path.join(SHOTS, off_f) if off_f else None      # the record's own file (review 8.8), not a shared name
         m = CS.metrics(p, off, None)
         im = Image.open(p)
         W, H = im.size
@@ -1601,7 +1641,20 @@ def main(argv=None):
             print("  %-34s %5d %8.1f %7.3f" % (k, v["n"], v["total_s"], v["avg_s"]))
     for b in (res["boards"] if not a.mock else []):
         print("  %-14s %s" % (b["id"], b.get("phases_s")))
-    return 0 if not res["aborted"] else 1
+    return run_exit(res)
+
+
+def run_exit(res):
+    """Process exit of a finished run: 1 aborted or any FAIL row, 2 any UNMEASURED row (or none at all), else 0 --
+    validation_core.rows_exit over the run's rows (review 8.6: a completed run with failed scenes, D1/D2 or the log
+    budget exited 0 whenever no Python exception had aborted it)."""
+    if res.get("aborted"):
+        return 1
+    utils = os.path.join(REPO, "src", "RimMandrake", "Utils")
+    if utils not in sys.path:
+        sys.path.insert(0, utils)
+    import validation_core as VC  # noqa: E402
+    return VC.rows_exit(res.get("rows"))
 
 
 if __name__ == "__main__":

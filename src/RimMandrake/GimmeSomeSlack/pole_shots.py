@@ -20,6 +20,13 @@ import run_live as RL  # noqa: E402
 LOOKS_ORDER = ["StarWars", "StarWarsJawa", "ExtensionCord", "Cybertek"]
 
 
+def default_look_masts(s):
+    """The masts of station s that follow the global look: a mast tuple's 4th field is a STORED look (stations 6 and 10
+    build theirs through the style verbs), which `set:style` leaves alone by design -- shooting those under every look
+    filename gave four identical pictures labelled as four looks (review 8.9)."""
+    return [m for m in s.get("masts") or [] if not (len(m) >= 4 and m[3])]
+
+
 def main(argv):
     out = argv[0] if argv else rm_win("scratch", "mc_poles")
     os.makedirs(out, exist_ok=True)
@@ -29,9 +36,10 @@ def main(argv):
         R.B.probe("set:style=%s" % style)
         time.sleep(1.5)
         # the stations were renumbered on the 33-station map (stations 7-9 hold no mast now): take every station with a mast
-        for s in [x for x in S if x["masts"]]:
+        # that follows the global look (a stored-look mast does not change with set:style)
+        for s in [x for x in S if default_look_masts(x)]:
             n = s["n"]
-            mx, mz = HR.g(s, s["masts"][0][1])
+            mx, mz = HR.g(s, default_look_masts(s)[0][1])
             rects = {"st": HR.rect_of(s, 2), "m0": (mx - 2, mz - 1, 16, 6)}
             for k, r in rects.items():
                 R.B.call("jawa/clear_ui", all=True)

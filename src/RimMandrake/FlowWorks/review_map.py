@@ -1358,7 +1358,8 @@ class Review(object):
             time.sleep(0.5)
         raise SystemExit("no fresh map")
 
-    def calm(self):
+    def calm(self, keep=()):
+        """keep: the rects a partial rebuild leaves standing (held_rects), so their held pawns survive the sweep."""
         B = self.B
         mi = B.call("jawa/map_info")
         if mi.get("sizeX") != MAP_SIZE:
@@ -1374,7 +1375,7 @@ class Review(object):
                 self.call("jawa/time_set_ticks", ticks=clk["ticksGame"] + add, timeException=True)
         self.call("jawa/incident_queue_clear")
         self.peaceful = B.call("jawa/storyteller_swap", difficultyDef="Peaceful").get("success")
-        self.sweep()
+        self.sweep(keep)
         self.call("jawa/research_bulk", mode="finish_all")
         self.call("rimworld/set_god_mode", enabled=True)
         self.call("jawa/screenshot_mode", enabled=False)
@@ -1400,12 +1401,25 @@ class Review(object):
                     out.append((s["origin"][0] - (PITCH_X - SW), s["origin"][1] - 1, PITCH_X - SW, SH + 3))
         return out
 
+    def held_rects(self, S, only):
+        """The held-pawn rects a PARTIAL rebuild must not sweep (review 7.7: --only visuals swept the gallery's animals
+        and prisoners map-wide and never respawned them, under signs still describing them). A full build and
+        --only gallery rebuild every held pawn, so nothing is held over."""
+        return self.keep_rects(S) if only == "visuals" else []
+
     def clear(self, S, doc, only=None):
         """Wipe our rects: labels, every non-pawn thing, dug cells filled back in, Soil, unfogged, unroofed; the pawns
-        a previous build stood there are handed to no faction and swept."""
+        a previous build stood there are handed to no faction and swept -- all but those held in the part a partial
+        rebuild leaves standing (held_rects)."""
         B = self.B
         B.call("jawa/review_label", action="clear", tag=TAG)
         rects = self.rects(S, doc, only)
+        for rx, rz, rw, rh in rects:
+            for p in B.call("jawa/list_pawns", rect="%d,%d,%d,%d" % (rx, rz, rw, rh), limit=200).get("pawns") or []:
+                if p.get("isPlayer") or p.get("faction"):
+                    B.call("jawa/set_pawn_faction", pawn=str(p.get("id")), faction="none")
+        # before the wipe, so a pawn killed (keep-rect route) leaves its corpse where destroy_batch removes it
+        self.sweep(self.held_rects(S, only))
         for rx, rz, rw, rh in rects:
             rr = "%d,%d,%d,%d" % (rx, rz, rw, rh)
             ex = B.call("jawa/flowworks_excavation_rect", x=rx, z=rz, w=rw, h=rh, onlyNonZero=True, includeTerrain=False)
@@ -1413,14 +1427,10 @@ class Review(object):
                 if c.get("isExcavated"):
                     B.call("jawa/flowworks_excavation_drive", x=c["x"], z=c["z"], deepenLevels=0, setFill=0,
                            fillInLevels=int(c.get("d") or 0))
-            for p in B.call("jawa/list_pawns", rect=rr, limit=200).get("pawns") or []:
-                if p.get("isPlayer") or p.get("faction"):
-                    B.call("jawa/set_pawn_faction", pawn=str(p.get("id")), faction="none")
             B.call("jawa/destroy_batch", rects=rr, categories="All")
             B.call("jawa/set_terrain_batch", ops="Soil:" + rr)
             B.call("jawa/set_fog", action="unfog", rect=rr)
             B.call("jawa/set_roof_batch", ops="None:" + rr)
-        B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
 
     def no_home(self, S, doc, only):
         for rx, rz, rw, rh in self.rects(S, doc, only):
@@ -2092,7 +2102,7 @@ def main(argv=None):
         if a.fresh_map:
             R.say("fresh quicktest map")
             R.fresh_map()
-        R.calm()
+        R.calm(R.held_rects(S, a.only))
         R.say("calm world (peaceful=%s)" % R.peaceful)
         R.clear(S, doc, a.only)
         R.say("cleared")
