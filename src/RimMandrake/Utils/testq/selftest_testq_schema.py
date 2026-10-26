@@ -77,6 +77,14 @@ def main():
     check(S.deploy_flags(["Pyrelands", "RimMandrake.Biomes", "UtinniPatches"], src) == [("--compose", "biomes"), ("--with", "UtinniPatches")],
           "folded + composed names collapse to one --compose biomes, the rest become --with: %s"
           % S.deploy_flags(["Pyrelands", "RimMandrake.Biomes", "UtinniPatches"], src))
+    # validators refuse malformed input with SchemaError, never AttributeError/TypeError
+    check(refused(S.validate_job, "not a dict") is not None and refused(S.validate_result, ["x"]) is not None,
+          "a non-object job/result is a SchemaError")
+    check(refused(S.validate_result, dict(res, rows=["str"])) is not None, "a non-object result row is a SchemaError")
+    check(refused(S.make_job, "FlowWorks", {"full": "yes"}, "sweep", "BENCH", "abc1234") is not None,
+          "selector.full must be a boolean")
+    check(refused(S.make_job, "FlowWorks", {"chains": ["x"]}, "fix", "BENCH", "abc1234", canary="false") is not None,
+          "canary must be a boolean (the string 'false' is truthy)")
     print("\n%d failed" % len(FAILS))
     return 1 if FAILS else 0
 

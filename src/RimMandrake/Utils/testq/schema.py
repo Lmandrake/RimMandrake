@@ -110,7 +110,7 @@ def validate_job(job):
     """Raise SchemaError on the first problem; return the job unchanged when it is sound."""
     def need(cond, msg):
         if not cond:
-            raise SchemaError("job %s: %s" % (job.get("id"), msg))
+            raise SchemaError("job %s: %s" % (job.get("id") if isinstance(job, dict) else None, msg))
     need(isinstance(job, dict), "not an object")
     need(job.get("schema") == JOB_SCHEMA, "schema must be %s" % JOB_SCHEMA)
     need(isinstance(job.get("id"), str) and JOB_ID_RE.match(job["id"]), "bad id")
@@ -120,6 +120,7 @@ def validate_job(job):
     for k in ("item", "chains", "rows"):
         need(isinstance(sel.get(k, []), list) and all(isinstance(x, str) and NAME_RE.match(x) for x in sel.get(k, [])),
              "selector.%s must be a list of names" % k)
+    need(sel.get("full") in (None, True, False), "selector.full must be a boolean")
     need(any(sel.get(k) for k in ("item", "chains", "rows", "full")), "selector selects nothing (no --full by default)")
     need(job.get("purpose") in PURPOSES, "purpose must be one of %s" % ", ".join(PURPOSES))
     need(not sel.get("full") or job["purpose"] == "sweep", "selector.full is for purpose=sweep only")
@@ -142,6 +143,8 @@ def validate_job(job):
                                       for k, v in ri.items()), "row_items must map a row id or chain name to an item id")
     need(isinstance(job.get("deploy"), list) and all(NAME_RE.match(str(m)) for m in job["deploy"]),
          "deploy must be a list of mod folder names")
+    for k in ("canary", "validity"):
+        need(isinstance(job.get(k), bool), "%s must be a boolean" % k)
     need(isinstance(job.get("timeout_s"), int) and 60 <= job["timeout_s"] <= 6 * 3600, "timeout_s 60..21600")
     return job
 
@@ -260,7 +263,7 @@ def count_verdicts(rows):
 def validate_result(res):
     def need(cond, msg):
         if not cond:
-            raise SchemaError("result %s: %s" % (res.get("attempt"), msg))
+            raise SchemaError("result %s: %s" % (res.get("attempt") if isinstance(res, dict) else None, msg))
     need(isinstance(res, dict) and res.get("schema") == RESULT_SCHEMA, "schema must be %s" % RESULT_SCHEMA)
     need(JOB_ID_RE.match(str(res.get("job"))), "bad job id")
     need(str(res.get("attempt", "")).startswith(res["job"] + ".a"), "attempt must be <job>.a<n>")
@@ -269,7 +272,7 @@ def validate_result(res):
     need(res["outcome"] == "DONE" or res.get("cause"), "a non-DONE outcome needs a cause")
     need(isinstance(res.get("rows"), list), "rows must be a list")
     for r in res["rows"]:
-        need(set(("chain", "row", "verdict")) <= set(r), "a row needs chain/row/verdict")
+        need(isinstance(r, dict) and set(("chain", "row", "verdict")) <= set(r), "a row needs chain/row/verdict")
     return res
 
 
