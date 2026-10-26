@@ -341,3 +341,6 @@ Transient/biome_ffar/sheets_state.json
 # runtime state, never committed: the modlist swap marker and lockfiles
 deployed/config/ModsConfig.swap-active.json
 infrastructure/state/**/*.lock
+
+# art_eval shadow sheets copy replaced kept art out of the art store by sha (shadow.py); derived, never committed
+infrastructure/state/art_eval/runs/*/kept/
