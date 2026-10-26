@@ -1,0 +1,417 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_facingfix_20261026_live",
+ "built": "2026-10-26T04:37:26-0700",
+ "census": "Transient/biome_ffar/art_eval_shadow_facingfix_20261026_live.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "live ModsConfig.xml: 320 active",
+ "rows": {
+  "RM_CanopySwinger": {
+   "columns": {
+    "A": {
+     "east": "9abc69ba8e6281a08cf7e478a7b5480cfab8577dcc5d4b073eeb712ba955ed62",
+     "north": "0ccb320bd2dc617a04afe3fcb5dfa5580c10b1a9e1064221214b2d25a1ac4a61",
+     "south": "5a9e0f10ec65c394c71872f33b301a5200037b843bd1b90b3a40d402fad7f98f"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_CanopySwinger/RM_CanopySwinger"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Greentide"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_CanopySwinger/RM_CanopySwinger"
+   ],
+   "res": "Things/Pawn/Animal/RM_CanopySwinger/RM_CanopySwinger",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "canopyswinger"
+  },
+  "RM_CoolantEel": {
+   "columns": {
+    "A": {
+     "east": "d322b949ab02c814485482f0f631c012109faba5cc1ecdb7cc11bc972b9e8374",
+     "north": "d89224a2070d27cb95b8bda4666bd4554edc184547ccd75c1e04e5a913b45e2b",
+     "south": "cc36e331325eb294b977bdad14fb69c8a889ac67a7282f141071c829dc15ac63"
+    },
+    "B": {
+     "east": "d322b949ab02c814485482f0f631c012109faba5cc1ecdb7cc11bc972b9e8374",
+     "north": "4ccb2beecc02030138a17535cf5087a5de34135c5c783c5aef0b4fefff811db4",
+     "south": "cc36e331325eb294b977bdad14fb69c8a889ac67a7282f141071c829dc15ac63"
+    },
+    "C": {
+     "east": "d322b949ab02c814485482f0f631c012109faba5cc1ecdb7cc11bc972b9e8374",
+     "north": "9c9b54168d25a9ff4467bdcdb76fc5cba20eb716488504c4d55f4547caaeadff",
+     "south": "cc36e331325eb294b977bdad14fb69c8a889ac67a7282f141071c829dc15ac63"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_CoolantEel/RM_CoolantEel",
+    "B": "Things/Pawn/Animal/RM_CoolantEel/RM_CoolantEel",
+    "C": "Things/Pawn/Animal/RM_CoolantEel/RM_CoolantEel"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RustCathedral",
+    "B": "render standtall_b1_rm_coolanteel",
+    "C": "render RM_CoolantEel"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_CoolantEel/RM_CoolantEel"
+   ],
+   "res": "Things/Pawn/Animal/RM_CoolantEel/RM_CoolantEel",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "coolanteel"
+  },
+  "RM_Dovvik": {
+   "columns": {
+    "A": {
+     "east": "55ce5c9d1a84c40755fea21d0581b56b9fde4d970d9f3285100a837a41f1899f",
+     "north": "1dba5b34c44768c87a9684ef19eb72639af099b8c1abfa8532f75d8418fb7897",
+     "south": "b5fc1315b61a54962343b8651a1bf78394271a353b01dfc0247bd0939af53dee"
+    },
+    "B": {
+     "east": "91343b9b5236926abc6d07738fb4ca5fa778b1622c4a4adb4f0984ab59154091",
+     "north": "a4ac897f818f59dcc6d1643ab36081fd81ed0873dc6af76db203851c14fb54ad",
+     "south": "245286304fe3ec07bd8f240095c74c41945cd23fcc2863cad2c5988315b37fbc"
+    },
+    "C": {
+     "east": "55ce5c9d1a84c40755fea21d0581b56b9fde4d970d9f3285100a837a41f1899f",
+     "north": "fb814f932cccf41c9a0f51991a1be25422848e89cd600e40af769632914793e0",
+     "south": "b5fc1315b61a54962343b8651a1bf78394271a353b01dfc0247bd0939af53dee"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Dovvik/RM_Dovvik",
+    "B": "Things/Pawn/Animal/RM_Dovvik/RM_Dovvik",
+    "C": "Things/Pawn/Animal/RM_Dovvik/RM_Dovvik"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 BlueDesert",
+    "B": "render enact_e3e8ae91_dovvik_v1",
+    "C": "render bluedesert_Dovvik_v2 \u2014 grader flagged (advisory)"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Dovvik/RM_Dovvik"
+   ],
+   "res": "Things/Pawn/Animal/RM_Dovvik/RM_Dovvik",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "dovvik"
+  },
+  "RM_FireWasp": {
+   "columns": {
+    "A": {
+     "east": "029f7aa9e27ce8b8472ce745f4e34bf9b451eb2ba1a2566ca740039d870c733a",
+     "north": "69b43fa0517e24d9ffda53e0d7fba6fa9e3236a2d156ccfa50b46ed5fe20701f",
+     "south": "af326d21048bfd45f7bfc0ac08dc0b55c5e87c1a34440bffe165c616c047c91c"
+    },
+    "B": {
+     "east": "7d07c98beb283420e8e78834058ddab34954032d592bf77bb9737c19364b88cc",
+     "north": "e866e93cdf465441ab38455143679989c1b34366ce22291833f08352c676a9da",
+     "south": "ac8a03da58da657fc59cb8a7582d9987c1c2da244ddab6d6d4e0322ba0cdd06a"
+    },
+    "C": {
+     "single": "e34a4477ffc04f9c954a8911b3dc99042598a59f1fad712f5defbd13963a86c7"
+    },
+    "D": {
+     "east": "774c704211a6cb102a453d75109b1358b727a1752769d5b0aefd1682e548ceb9",
+     "north": "dec2a9a8defa2c3be552738a5fe629470d0d6d000a64ef202dc61f7b6db46bcd",
+     "south": "e34a4477ffc04f9c954a8911b3dc99042598a59f1fad712f5defbd13963a86c7"
+    },
+    "E": {
+     "east": "a3b66c856889e41f4480b7ae7bd211ea4e2a6a8385f9767f542807521ba626fc",
+     "north": "a189159b72a9ec28a50d2f6af534ee49a81f8da9c0dcecb75f51ce6c9d626d30",
+     "south": "b63b017ea96f1b7477c2f9d05d64ee217ac25ebd606a15cad451140d68ed38f3"
+    },
+    "F": {
+     "1_east": "b5b70b2487df689cc243750d8d502fb3ade04fe151c86b7ec8cd4b9888380f76",
+     "1_north": "03bc70df127e8ca115416fc612df48cc1e0c17e7a57ecf442ec7a2bd88a93626",
+     "1_south": "ec847d3e66917a7af39b303fb643222f4da2fb271ae5f558400ae1071aab4666",
+     "2_east": "eb3fcc0d3c943a0e9f6668116fcc49d6c28ca6d5b3472519a3b6eb60ef1bc229",
+     "2_north": "fe000b1bcd41a0ea06f333e4f6e5370e5f34565242540bbff92a85b7482a1281",
+     "2_south": "aff779d73500acfd0af6dae715226dc84436f0f233a95b9f9688b95765437af7",
+     "3_east": "a0dbd1ccda8de56c8f98ec55be33ba327a2e3418b9cdee9787b79809a543d38b",
+     "3_north": "1cee70deccd6a1c5d7b0a448ed6ccba3c0c600b0f6359e867d8323217f830227",
+     "3_south": "f5410897d2d56d9ff84dc2101283f3994273b5acb9a11424034fb810723d9e2d",
+     "4_east": "2a83c28a6fc7d33ebefdde211e4bca6ecb57ccfbda2857d784c6da9a179eb64a",
+     "4_north": "40ee6240ad761ad7206cf55493e2aedd011c048a37d23b871dd59b04a36c40d0",
+     "4_south": "f3d06f7e3ea26ffe092f41173852ee98aaf01a12393c1e53939d1454f7963949",
+     "5_east": "f4d3418c78d443c4c7766086cfea1be5106399492cac91c2af2f4ebe6dc31d9e",
+     "5_north": "a8428faa7369949fccd448284164efd300e2be0aaa791e613d156b50add74d7b",
+     "5_south": "742af602bb99e1fe9c92527f703f7ace67fde114343aec32cb289a92c909b7c3",
+     "6_east": "a9a9892444fb2af953af1a5d5ee3e36fbd445223f437053563b87f0f938befe7",
+     "6_north": "ba25755e8f59b10c0ec7a9fb04f6fc9dc0096b022bac80d2a0423a6bed242332",
+     "6_south": "8f4c61d3ae61f1ba370c50d5b66548e8a80a7e6dcad50dd91dbc3a18fc260e01",
+     "7_east": "bdbc75edeff91085aaef47b090bb53e236c1cf85d41fe746d9bb59dcde66cb05",
+     "7_north": "20166049190d552d0368bdee530c7830bd45a9a442f518b8d7d1c59be006a2d9",
+     "7_south": "16ea9c1abd084bf190b08ee8ab732ef1a0b95c1cd6d63ef5137491ded8427c56",
+     "8_east": "6f0cb319646e1e3f34d11699b4b75fa202debaebaef9a47ce6b94a81c866de65",
+     "8_north": "78a1f6b267eac1f72c2041e5043fff45ea6b5d35dc3ace90c1381ebe25428c9f",
+     "8_south": "3ae4eb8cc3e681b4858d75e6d8d02c9bf9782c733fe894504cc5f047a3445039"
+    },
+    "G": {
+     "1_east": "b5b70b2487df689cc243750d8d502fb3ade04fe151c86b7ec8cd4b9888380f76",
+     "1_north": "03bc70df127e8ca115416fc612df48cc1e0c17e7a57ecf442ec7a2bd88a93626",
+     "1_south": "ec847d3e66917a7af39b303fb643222f4da2fb271ae5f558400ae1071aab4666",
+     "2_east": "eb3fcc0d3c943a0e9f6668116fcc49d6c28ca6d5b3472519a3b6eb60ef1bc229",
+     "2_north": "fe000b1bcd41a0ea06f333e4f6e5370e5f34565242540bbff92a85b7482a1281",
+     "2_south": "aff779d73500acfd0af6dae715226dc84436f0f233a95b9f9688b95765437af7",
+     "3_east": "a0dbd1ccda8de56c8f98ec55be33ba327a2e3418b9cdee9787b79809a543d38b",
+     "3_north": "1cee70deccd6a1c5d7b0a448ed6ccba3c0c600b0f6359e867d8323217f830227",
+     "3_south": "f5410897d2d56d9ff84dc2101283f3994273b5acb9a11424034fb810723d9e2d",
+     "4_east": "2a83c28a6fc7d33ebefdde211e4bca6ecb57ccfbda2857d784c6da9a179eb64a",
+     "4_north": "40ee6240ad761ad7206cf55493e2aedd011c048a37d23b871dd59b04a36c40d0",
+     "4_south": "f3d06f7e3ea26ffe092f41173852ee98aaf01a12393c1e53939d1454f7963949",
+     "5_east": "f4d3418c78d443c4c7766086cfea1be5106399492cac91c2af2f4ebe6dc31d9e",
+     "5_north": "a8428faa7369949fccd448284164efd300e2be0aaa791e613d156b50add74d7b",
+     "5_south": "742af602bb99e1fe9c92527f703f7ace67fde114343aec32cb289a92c909b7c3",
+     "6_east": "a9a9892444fb2af953af1a5d5ee3e36fbd445223f437053563b87f0f938befe7",
+     "6_north": "ba25755e8f59b10c0ec7a9fb04f6fc9dc0096b022bac80d2a0423a6bed242332",
+     "6_south": "8f4c61d3ae61f1ba370c50d5b66548e8a80a7e6dcad50dd91dbc3a18fc260e01",
+     "7_east": "bdbc75edeff91085aaef47b090bb53e236c1cf85d41fe746d9bb59dcde66cb05",
+     "7_north": "20166049190d552d0368bdee530c7830bd45a9a442f518b8d7d1c59be006a2d9",
+     "7_south": "16ea9c1abd084bf190b08ee8ab732ef1a0b95c1cd6d63ef5137491ded8427c56",
+     "8_north": "78a1f6b267eac1f72c2041e5043fff45ea6b5d35dc3ace90c1381ebe25428c9f",
+     "8_south": "3ae4eb8cc3e681b4858d75e6d8d02c9bf9782c733fe894504cc5f047a3445039"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp",
+    "B": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp",
+    "C": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp",
+    "D": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp",
+    "E": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp",
+    "F": "_flip:Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_Fly_",
+    "G": "_flip:Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_Fly_"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Pyrelands",
+    "B": "render arteval_RM_FireWasp_r1",
+    "C": "render AA_FireWasp_south_eyelevel_v1",
+    "D": "history UtinniPatches 2026-09-19",
+    "E": "history UtinniPatches 2026-09-20",
+    "F": "IN GAME \u2014 FireWasp_Fly_",
+    "G": "flight frames pyrelands_firewasp_flight8"
+   },
+   "pools": [
+    "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp"
+   ],
+   "res": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
+   "shownBase": [],
+   "subject_key": "firewasp"
+  },
+  "RM_Muttavaq": {
+   "columns": {
+    "A": {
+     "east": "2ce253dd2ccca19244d7f1f19d8c5d5c6143b61d82a6d798cef06b192a8846b7",
+     "north": "6ca5b0a1d048de33c1aa35cd7380eac35a4a900072ee7445a7beb22bc9126d2b",
+     "south": "6f8f8c6d887c6bcb9d697c09939e420d1dec33d56933a519f1eb8076c2137bcf"
+    },
+    "B": {
+     "south": "07c885ae00517ab3f8063debe64cae070e645ae90683565f55cedae2be352c31"
+    },
+    "C": {
+     "east": "8beab9075503d893a172c3bed26d535fd1a39f8aefa7e8b4c484acb2bba30e9f",
+     "north": "925c943b83df1c59b6f32fbd643308a5669926212dfcef0fa3820eacbd676e2e"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Muttavaq/RM_Muttavaq",
+    "B": "Things/Pawn/Animal/RM_Muttavaq/RM_Muttavaq",
+    "C": "Things/Pawn/Animal/RM_Muttavaq/RM_Muttavaq"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 CrackedLands",
+    "B": "render RM_Muttavaq_v2",
+    "C": "render RM_Muttavaq"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Muttavaq/RM_Muttavaq"
+   ],
+   "res": "Things/Pawn/Animal/RM_Muttavaq/RM_Muttavaq",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "muttavaq"
+  },
+  "RM_Thrummel": {
+   "columns": {
+    "A": {
+     "east": "4e7699d87f443498397e96568ecf5212cfa34503dccd894705d78cad40abb670",
+     "north": "27ba46c0f043bb096db1eea3b0d08d3b1ff9b34067df446f6dff058347fc2c0d",
+     "south": "7e3ed01ca7a79d2c3c45d218922eaaac6c4820474a0bac22467169893c1e1d34"
+    },
+    "B": {
+     "east": "688001e68c3ac6f6795eea5c7628e2c6e82f36c82a74535435b1c3c9293452c9",
+     "north": "813369780f50ef21646581703d8ac56e2cc4067a1f59b13dccf8e27c6ff9f2bd",
+     "south": "839e79145c50c2e6c179db394060d5d01b7d41ab2001ceb0db4522b5f37e96a2"
+    },
+    "C": {
+     "east": "4e7699d87f443498397e96568ecf5212cfa34503dccd894705d78cad40abb670",
+     "north": "27ba46c0f043bb096db1eea3b0d08d3b1ff9b34067df446f6dff058347fc2c0d",
+     "south": "0a440f60020d59ca8183c15674358637ee949905e38c52169df9a610d3de270e"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Thrummel/RM_Thrummel",
+    "B": "Things/Pawn/Animal/RM_Thrummel/RM_Thrummel",
+    "C": "Things/Pawn/Animal/RM_Thrummel/RM_Thrummel"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump",
+    "B": "render thesump_Thrummel_v2",
+    "C": "render RM_Thrummel"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Thrummel/RM_Thrummel"
+   ],
+   "res": "Things/Pawn/Animal/RM_Thrummel/RM_Thrummel",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "thrummel"
+  },
+  "RM_Vhorrin": {
+   "columns": {
+    "A": {
+     "east": "f5b0f1934c6e6ced01d06e0d1d390d4542da8a6cdac1d27cf7908a4147297d3b",
+     "north": "68fa21264cb9ab1dc599d7cf48cfef989858c863939387cf4cd80d7cb87358dc",
+     "south": "36c819e081ab6815c8abc29f4d30e0bf8d2361e1ec18de815a8fd17f6f2a14e1"
+    },
+    "B": {
+     "east": "f5b0f1934c6e6ced01d06e0d1d390d4542da8a6cdac1d27cf7908a4147297d3b",
+     "north": "3216c9d8a397f264273d41c8c0e4d8e573b573185c0a22063cd54436cc45e01a",
+     "south": "36c819e081ab6815c8abc29f4d30e0bf8d2361e1ec18de815a8fd17f6f2a14e1"
+    },
+    "C": {
+     "east": "2b5db77b2781004958c97f1403e06b0be9873d1a1b731e8c0b8559c57da0f42d",
+     "north": "62afd5e1a831ef7e90e4e4cfdc10a19d9b871abe23db3ec12a5483a05fe7f204",
+     "south": "f2823157f36322f296da39504eaf6d29adc0351b9d5be38fab546f6ee3aae40f"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Vhorrin/RM_Vhorrin",
+    "B": "Things/Pawn/Animal/RM_Vhorrin/RM_Vhorrin",
+    "C": "Things/Pawn/Animal/RM_Vhorrin/RM_Vhorrin"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 WeepingStones",
+    "B": "render dregen_RM_Vhorrin_Cobra_v1",
+    "C": "render weepingstones_vhorrin"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Vhorrin/RM_Vhorrin"
+   ],
+   "res": "Things/Pawn/Animal/RM_Vhorrin/RM_Vhorrin",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "vhorrin"
+  },
+  "RSW_Starmaw": {
+   "columns": {
+    "A": {
+     "east": "a4f87c7665d8a32cbabd4aacd6b0b953c024903b6934dc0d27ff840b28b2d461",
+     "north": "0bbb8e493582bfd208d0a56ff4a07a8005831339fcda5e3cf77fdd8821391934",
+     "south": "0c7d6585903fb400f3c656f00bbfdcfb50db5ed623430e47efe152bc1c33e6ed",
+     "west": "621e1dab1e9050da794fb3508ef0a5f794be4dbc205e1bf01be6a9b42773167b"
+    },
+    "B": {
+     "east": "a4f87c7665d8a32cbabd4aacd6b0b953c024903b6934dc0d27ff840b28b2d461",
+     "north": "19ad9750539d76973ddd4492a8eb10ef762d2bc6ff9797c3ffbc0008fff5a07b",
+     "south": "cde090ca91382e9a4b6a02783b6cb34d440a06722944548353ef51496b8f453c",
+     "west": "621e1dab1e9050da794fb3508ef0a5f794be4dbc205e1bf01be6a9b42773167b"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/SeaBeasts/Starmaw/Starmaw",
+    "B": "Things/Pawn/Animal/SeaBeasts/Starmaw/Starmaw"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "shipped, shadowed \u2014 TerminalBiomes"
+   },
+   "pools": [
+    "Things/Pawn/Animal/SeaBeasts/Starmaw/Starmaw"
+   ],
+   "res": "Things/Pawn/Animal/SeaBeasts/Starmaw/Starmaw",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "starmaw"
+  },
+  "RUT_BrineBattery": {
+   "columns": {
+    "A": {
+     "east": "197136bb300de71fcb8a3e5de97030939c1014f6db075902a6cf259100b9c27c",
+     "north": "09a6c40e17650dc690e2802d157ec218403ec1f957825889f7d2c8bac3c0a81a",
+     "south": "87bcba16241d14c2659ad76c9b8e694eb835177a16785f93248830e539757e52"
+    },
+    "B": {
+     "east": "bc86008b345c5789b144061b7aaadf9a490637c3b9200f9ff78a51832cfcd00a",
+     "north": "5927f6bb4010a1d68cbd4670e74009100e5a615c8e1b4df27cd43ad76451c608",
+     "south": "25f7089f0700ee5741b4ee33216c5f5ad8853dcb1402b986af7cf609ef43af8b"
+    },
+    "C": {
+     "east": "197136bb300de71fcb8a3e5de97030939c1014f6db075902a6cf259100b9c27c",
+     "north": "61f78e3a7e7429379753445ff18df9bff089e1002a0ee466167d3e2e146f0284",
+     "south": "0356ecf65292ef77cae68adf47b7c890b0076ca6da73f2b49f9085fc20583d03"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RUT_BrineBattery/RUT_BrineBattery",
+    "B": "Things/Pawn/Animal/RUT_BrineBattery/RUT_BrineBattery",
+    "C": "Things/Pawn/Animal/RUT_BrineBattery/RUT_BrineBattery"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 UtinniPatches",
+    "B": "render enact_f26c7759_brinebattery_v1",
+    "C": "history UtinniPatches 2026-10-03"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RUT_BrineBattery/RUT_BrineBattery"
+   ],
+   "res": "Things/Pawn/Animal/RUT_BrineBattery/RUT_BrineBattery",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "brinebattery"
+  }
+ },
+ "sheetId": "art_eval_shadow_facingfix_20261026_live_sheet_2026-10-26",
+ "snapshotId": "1bee212762a6f627"
+}
