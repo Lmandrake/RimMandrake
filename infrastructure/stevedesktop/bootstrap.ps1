@@ -109,8 +109,11 @@ function Send-Report([string]$why) {
     $script:Status.facts.report_reason = $why
     Save-Status
     try {
-        $body = Get-Content -LiteralPath $StatusFile -Raw
-        Invoke-RestMethod -UseBasicParsing -Method Post -Uri "$BaseUrl/report" -Body $body -ContentType 'application/json' -TimeoutSec 10 | Out-Null
+        # Send the file's own bytes: PS 5.1 re-encodes a string -Body as Latin-1, so any non-ASCII
+        # step detail (a mangled arrow from a tool's output) reached serve_bootstrap.py as invalid
+        # UTF-8 and the final report got 400 'not json' (STEVEDESKTOP_REPORT_FIX_FINAL_POST_REFUSED).
+        $body = [IO.File]::ReadAllBytes($StatusFile)
+        Invoke-RestMethod -UseBasicParsing -Method Post -Uri "$BaseUrl/report" -Body $body -ContentType 'application/json; charset=utf-8' -TimeoutSec 10 | Out-Null
         Write-Log "report sent to $BaseUrl ($why)"
     } catch {
         Write-Log "report NOT sent ($why): $($_.Exception.Message). Archmagi can read $StatusFile over SSH instead."

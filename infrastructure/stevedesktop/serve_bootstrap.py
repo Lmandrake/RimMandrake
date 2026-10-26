@@ -60,7 +60,12 @@ def make_handler(serve_dir, reports_dir, log_path):
                 return
             body = self.rfile.read(n)
             try:
-                doc = json.loads(body.decode("utf-8-sig"))
+                try:
+                    text = body.decode("utf-8-sig")
+                except UnicodeDecodeError:
+                    # an older bootstrap.ps1 posts a PS 5.1 string body, re-encoded as Latin-1
+                    text = body.decode("latin-1")
+                doc = json.loads(text)
             except ValueError:
                 self.send_error(400, "not json")
                 return
