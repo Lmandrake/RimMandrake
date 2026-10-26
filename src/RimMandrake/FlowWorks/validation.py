@@ -1075,7 +1075,8 @@ def container_styles(t):
 # both chains read one pool. Same contract as core_live_rows: never PASS from a stale or missing result.
 DRIVER_RESULTS = ("thirst_live_result_*.json", "sprinkler_live_result_*.json", "drawbridge_result_*.json", "lines_result_*.json",
                   "suspension_bridge_result_*.json", "trench_cover_proof_result_*.json", "live_session_result_*.json",
-                  "mission_fixture_result_*.json", "sheet_overflow_result_*.json")
+                  "mission_fixture_result_*.json", "sheet_overflow_result_*.json",
+                  "droid_dig_result_*.json")
 DRIVER_OF = {"T21_drinking_reserve": "sprinkler_live.py", "T22_no_brine_spray": "sprinkler_live.py"}
 
 
@@ -1541,6 +1542,26 @@ def canal_overflow(t):
     _driver_live_report(t, CANAL_OVERFLOW_LIVE, "sheet_overflow_proof.py", "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED")
 
 
+# DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL row 3: a Droidworks labour droid (RSW_DW_OuterRim_ImperialLaborDroid; Droidworks'
+# FlowWorks_DroidsDigDeep.xml puts RM_MachineDigger on RSW_DW_FleshType_Droid) cuts a 2 m square deeper while a colonist is
+# held at the shipped 2 m cap. Needs Droidworks deployed and running (testq --deploy Droidworks); without it every row is
+# UNMEASURED/HARNESS. Rows read northstar/droid_dig_live.py's result at the current mod hash.
+import droid_dig_live as _DDL  # noqa: E402  (pure python at import: ROW_IDS, no bridge)
+DROID_DIG_LIVE = [
+    ("DD_colonist_held_at_2m", None, "a colonist with Mining on is NOT offered RM_DigCanalJob on a D4 (2 m) square: the "
+     "colonist cap holds (the control)"),
+    ("DD_droid_digs_past_2m", None, "a Droidworks labour droid, no shovel, is offered RM_DigCanalJob on the D4 square "
+     "(census needs=False) and cuts it to D5"),
+]
+assert [r[0] for r in DROID_DIG_LIVE] == list(_DDL.ROW_IDS), "DROID_DIG_LIVE drifted from droid_dig_live.ROW_IDS"
+
+
+@suite.chain("droid_dig")
+def droid_dig(t):
+    """Live rows only: read from the newest droid_dig_live results at the current mod hash, else UNMEASURED."""
+    _driver_live_report(t, DROID_DIG_LIVE, "droid_dig_live.py", "DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL")
+
+
 # the extension suites, registered unchanged (their chains carry their own toggle=/shows= claims): the main
 # extensions and, since the River Works merge (409d1f57c), the rivers suite
 import extensions_rivers as RIV  # noqa: E402
@@ -1682,7 +1703,8 @@ for _name in ("rivers_switch_flips", "flow_door_facing", "ladder_hung_on_wall", 
 for _name in ("limitless_endless", "ladder_rails_raise_lower", "pit_travel_fly_jump_float", "ice_dig_crushed_ice",
               "dig_fill_shovel_hours", "pump_ports_one_per_side", "water_ladder_silt", "deep_water_swims",
               "pit_access_gear_ladders", "wall_scaling_gear", "suspension_bridges_and_covers", "pipes_meet_centre",
-              "thirst", "sprinklers", "drawbridges", "lines", "player_missions", "canal_overflow"):
+              "thirst", "sprinklers", "drawbridges", "lines", "player_missions", "canal_overflow",
+              "droid_dig"):
     suite.chain_inputs[_name] = GATE_SELFTEST_INPUTS + GATE_READER_INPUTS
 suite.chain_inputs["trench_cover_and_raiders"] = (["Source/**/*.cs", "Source/**/*.csproj",
                                                    "@closure:../Utils/selftest_flowworks_trench_cover.py"]
@@ -1736,6 +1758,9 @@ suite.live_drivers = [
     # row K polls up to 2 x 24,000 ticks) -> 1800.
     {"name": "sheet_overflow_proof", "script": "northstar/sheet_overflow_proof.py", "args": ["--origin", "30,30", "--fresh-map"],
      "chains": ["canal_overflow"], "timeout_s": 1800},
+    # DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL row 3: fresh map (~3-5 min) + two pawns + at most 15,000 ticks of digging -> 1200.
+    {"name": "droid_dig_live", "script": "northstar/droid_dig_live.py", "args": ["--origin", "40,40", "--fresh-map"],
+     "chains": ["droid_dig"], "timeout_s": 1200},
     # RIVER_CHAINS_WIRE_SWEEP_TO_RIVER_SITE: the river chains need a map with a river (they ran on AridShrubland). The
     # river site replaces the current map, so it is settled on demand by the FIRST river chain, which the composition
     # above puts after every other chain. toggle_river_steam's biome-gate half
