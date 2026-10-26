@@ -290,9 +290,9 @@ def main(argv=None):
         len0 = (B.call("jawa/mod_settings_field", typeName=HS, action="get", field="maxLength", _answer=True) or {}).get("value")
         if a.restore_length is not None:
             len0 = a.restore_length
-        lr80 = B.call("jawa/mod_settings_field", typeName=HS, action="set", field="maxLength", value="80", _answer=True) or {}
-        res["hoseMaxLength"] = {"before": len0, "set80": lr80.get("success")}
         try:
+            lr80 = B.call("jawa/mod_settings_field", typeName=HS, action="set", field="maxLength", value="80", _answer=True) or {}
+            res["hoseMaxLength"] = {"before": len0, "set80": lr80.get("success")}
             return _rigs_and_time(a, B, static, row, res, spots, lip_a, lip_b, staged_ok, size, finish, rows)
         finally:
             if len0 is not None and not a.no_time:

@@ -1526,10 +1526,19 @@ def prep(w):
     w.say("colonists fed (Food, Rest topped up; upkeep against the starving GovernorStop): %s" % w.feed())
     mi = w.call("jawa/map_info") or {}
     got = {}
+    prior = _load_prior()
     for f, v in SCENE_OVERRIDES.items():
+        if f not in prior:           # first poke wins: a re-run of prep must not record the already-overridden value as the prior
+            prior[f] = w.call("jawa/mod_settings_field", typeName=S_FW, action="get", field=f).get("value")
+            _save_prior(prior)       # BEFORE the set, so a death between the two still leaves the prior on disk for `restore`
+        if prior[f] is None:
+            w.say("  scene override %s SKIPPED: its current value could not be read, so it could not be put back" % f)
+            got[f] = None
+            continue
+        # restore-check: ok the prior is saved to scene_settings_prior.json just above; the `restore` verb (and `all`'s finally) writes it back
         w.call("jawa/mod_settings_field", typeName=S_FW, action="set", field=f, value=str(v))
         got[f] = w.call("jawa/mod_settings_field", typeName=S_FW, action="get", field=f).get("value")
-    off = {f: got[f] for f, v in SCENE_OVERRIDES.items() if str(got[f]).lower() != str(v).lower()}
+    off = {f: got[f] for f, v in SCENE_OVERRIDES.items() if prior.get(f) is not None and str(got[f]).lower() != str(v).lower()}
     if off:
         w.say("  SETTING NOT TAKEN (read back differs): %s -- the scenes would run on the wrong settings" % off)
     w.say("map %sx%s; settings at shipped defaults except the scene file's: %s (read back)" % (
@@ -1545,15 +1554,46 @@ def prep(w):
         "" if pristine is not False or not w.args.fresh_map else "  <-- a --fresh-map site that is not pristine"))
 
 
+def _prior_path():
+    return os.path.join(OUT, "scene_settings_prior.json")
+
+
+def _load_prior():
+    try:
+        with open(_prior_path()) as fh:
+            return json.load(fh)
+    except (OSError, ValueError):
+        return {}
+
+
+def _save_prior(d):
+    os.makedirs(OUT, exist_ok=True)
+    with open(_prior_path(), "w") as fh:
+        json.dump(d, fh)
+
+
 def restore(w):
+    """Put each scene override back to the value the player had BEFORE prep (recorded in scene_settings_prior.json), never to the
+    shipped default. A field with no readable recorded prior is left alone and said so."""
+    prior = _load_prior()
     got = {}
-    for f, v in SHIPPED.items():
+    for f, v in prior.items():
+        if v is None:
+            w.say("  RESTORE SKIPPED %s: no readable prior was recorded; set it by hand" % f)
+            continue
         w.call("jawa/mod_settings_field", typeName=S_FW, action="set", field=f, value=str(v))
         got[f] = w.call("jawa/mod_settings_field", typeName=S_FW, action="get", field=f).get("value")
-    w.say("shipped settings restored: %s" % got)
-    off = {f: got[f] for f, v in SHIPPED.items() if str(got[f]).lower() != str(v).lower()}
+    if not prior:
+        w.say("  nothing to restore: no recorded prior (prep did not run, or the scene settings are already restored)")
+    w.say("prior settings restored: %s" % got)
+    off = {f: got[f] for f in got if str(got[f]).lower() != str(prior[f]).lower()}
     if off:
         w.say("  RESTORE NOT TAKEN (read back differs): %s -- set them by hand" % off)
+    else:
+        try:
+            os.remove(_prior_path())
+        except OSError:
+            pass
 
 
 STAGE = {"S1": stage_S1, "S2": stage_S2, "S3": stage_S3, "S4": stage_S4, "S5": stage_S5, "S6": stage_S6}
@@ -1561,11 +1601,16 @@ RUN = {"S1": run_S1, "S2": run_S2, "S3": run_S3, "S4": run_S4, "S5": run_S5, "S6
 ORDER = ["S1", "S2", "S3", "S4", "S5", "S6"]
 
 
-def pin_scene_settings(w):
-    """Set SCENE_PIN; return {field: value before} for unpin_scene_settings (the previous value, not the shipped one)."""
-    before = {}
+def pin_scene_settings(w, before=None):
+    """Set SCENE_PIN; return {field: value before} for unpin_scene_settings (the previous value, not the shipped one). The caller
+    passes `before` and calls this inside its try, so a throw part-way still leaves the priors read so far to unpin."""
+    before = {} if before is None else before
     for f, v in SCENE_PIN.items():
         before[f] = w.call("jawa/mod_settings_field", typeName=S_FW, action="get", field=f).get("value")
+        if before[f] is None:
+            w.say("  site pin %s SKIPPED: its current value could not be read, so it could not be put back" % f)
+            continue
+        # restore-check: ok pin_scene_settings runs inside do_scene's try; its finally calls unpin_scene_settings with the priors read here
         w.call("jawa/mod_settings_field", typeName=S_FW, action="set", field=f, value=str(v))
         got = w.call("jawa/mod_settings_field", typeName=S_FW, action="get", field=f).get("value")
         w.say("  site pin: %s %s -> %s (read back %s); P11_FLOOR_ON_PAINTED_PONDS stays the owner's" % (f, before[f], v, got))
@@ -1577,7 +1622,9 @@ def unpin_scene_settings(w, before):
     for f, v in before.items():
         try:
             if v is None:
-                v = SHIPPED[f]
+                w.say("  site pin NOT released for %s: its value before the pin was unreadable, so none is guessed; set it by hand" % f)
+                continue
+            # restore-check: ok this IS the restore: it writes the prior read before the pin back (unpin_scene_settings, called in do_scene's finally)
             w.call("jawa/mod_settings_field", typeName=S_FW, action="set", field=f, value=str(v))
             got = w.call("jawa/mod_settings_field", typeName=S_FW, action="get", field=f).get("value")
             w.say("  site pin released: %s back to %s (read back %s)" % (f, v, got))
@@ -1586,8 +1633,9 @@ def unpin_scene_settings(w, before):
 
 
 def do_scene(w, sid, stage=True, go=True):
-    before = pin_scene_settings(w)
+    before = {}
     try:
+        pin_scene_settings(w, before)
         return _do_scene(w, sid, stage, go)
     finally:
         unpin_scene_settings(w, before)
@@ -1673,18 +1721,20 @@ def main(argv=None):
             prep(w)
         rc = 0 if do_scene(w, sid, stage=a.verb in ("stage", "go"), go=a.verb in ("run", "go")) else 1
     else:
-        for sid in ORDER[ORDER.index(a.start.upper()):]:
-            if a.fresh_map:
-                prep(w)
-            if not do_scene(w, sid):
-                rc = 1
-            if not a.no_wait:
-                w.say("%s done. Waiting for %s (create it to continue)..." % (sid, show_path(FLAG)))
-                while not os.path.exists(FLAG):
-                    time.sleep(2)
-                os.remove(FLAG)
-            w.log_lines, w.rows = [], []
-        restore(w)
+        try:
+            for sid in ORDER[ORDER.index(a.start.upper()):]:
+                if a.fresh_map:
+                    prep(w)
+                if not do_scene(w, sid):
+                    rc = 1
+                if not a.no_wait:
+                    w.say("%s done. Waiting for %s (create it to continue)..." % (sid, show_path(FLAG)))
+                    while not os.path.exists(FLAG):
+                        time.sleep(2)
+                    os.remove(FLAG)
+                w.log_lines, w.rows = [], []
+        finally:
+            restore(w)
     return rc
 
 

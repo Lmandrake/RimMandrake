@@ -807,9 +807,9 @@ def main(argv=None):
         # destroys the whole filth thing, by design: owner 2026-10-18 "spilled water as per wetting the ground, plant growth"),
         # so the rect's thickness is not conserved while EG reads spills. Its spill-water read is off for the window, restored.
         eg0 = sget(S_EG, "spillWaterEnabled")
-        if eg0 is not None:
-            B.call("jawa/mod_settings_field", typeName=S_EG, action="set", field="spillWaterEnabled", value="False")
         try:
+            if eg0 is not None:
+                B.call("jawa/mod_settings_field", typeName=S_EG, action="set", field="spillWaterEnabled", value="False")
             h0, liq = held()
             n0, u0 = filth(), unplaced()
             net0 = B.hp("net:%d,%d" % s.pump)

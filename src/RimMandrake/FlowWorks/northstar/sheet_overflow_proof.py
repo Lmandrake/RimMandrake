@@ -359,20 +359,20 @@ def main(argv=None):
         B.call("jawa/weather_set", weather="Clear", lockWeather=True)
     switch0 = sget(S_SHEET, "sheetOverflowEnabled")
     res["switchBefore"] = switch0
-    with V.scope("switch"):
-        on = sset(S_SHEET, "sheetOverflowEnabled", True)
-    if not on:
-        for rid in only:
-            row(rid, "UNMEASURED", {"why": "the master switch did not read back ON", "before": switch0}, cls="HARNESS")
-        return 2
-    L_START = ledger()
-    CTX["pulseTicks"] = L_START.get("pulseTicks") or 250
-    res["ledgerStart"] = L_START["_txt"]
+    try:      # the early returns below sit inside it too: the switch is flipped by the first line
+        with V.scope("switch"):
+            on = sset(S_SHEET, "sheetOverflowEnabled", True)
+        if not on:
+            for rid in only:
+                row(rid, "UNMEASURED", {"why": "the master switch did not read back ON", "before": switch0}, cls="HARNESS")
+            return 2
+        L_START = ledger()
+        CTX["pulseTicks"] = L_START.get("pulseTicks") or 250
+        res["ledgerStart"] = L_START["_txt"]
 
-    ctx = dict(a=a, B=B, P=P, xz=xz, row=row, prow=prow, sp=sp, ledger=ledger, ld=ld, srect=srect, scell=scell, spill=spill,
-               pitwater=pitwater, dig=dig, build=build, ticks=ticks, pulses=pulses, balance=balance, sset=sset, sget=sget,
-               ring=ring, res=res, save=save, feats=feats, L_START=L_START, CTX=CTX, only=only)
-    try:
+        ctx = dict(a=a, B=B, P=P, xz=xz, row=row, prow=prow, sp=sp, ledger=ledger, ld=ld, srect=srect, scell=scell, spill=spill,
+                   pitwater=pitwater, dig=dig, build=build, ticks=ticks, pulses=pulses, balance=balance, sset=sset, sget=sget,
+                   ring=ring, res=res, save=save, feats=feats, L_START=L_START, CTX=CTX, only=only)
         for rid in ROW_IDS:
             if rid == "SAVE_LOAD_CONTINUES_IDENTICAL" and not a.no_perf and not a.only.strip():
                 with V.scope("perf"):
@@ -526,6 +526,7 @@ def rain_spill(ctx):
     canal0 = _canal(ctx, 1, 6, 12)
     l0 = ledger()
     sset = ctx["sset"]
+    # restore-check: ok sset records each field's prior in TOUCHED on first touch and main()'s finally writes every TOUCHED prior back
     V.require(sset(S_FW, "rainFillsExcavationsEnabled", True) and sset(S_FW, "rainFillPerPulse", 1.0),
               "rain fill on at 1.0 a pulse", None, cls="HARNESS")
     w = B.call("jawa/weather_set", weather="Rain", lockWeather=True) or {}

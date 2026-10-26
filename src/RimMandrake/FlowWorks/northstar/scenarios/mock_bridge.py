@@ -205,6 +205,13 @@ class MockBridge(object):
                 self.hp["result"] = json.dumps(dict(success=True, mock=True, cmd=kw.get("value")))
                 return self._ok()
             return self._ok(value=self.hp.get(f))
+        if t == "jawa/mod_settings_field":      # any other mod setting: a store that reads back what was set ("True" before the first set)
+            sk = (kw.get("typeName"), kw.get("field"))
+            if kw.get("action") == "set":
+                self.mod_settings = getattr(self, "mod_settings", {})
+                self.mod_settings[sk] = kw.get("value")
+                return self._ok()
+            return self._ok(value=getattr(self, "mod_settings", {}).get(sk, "True"))
         if t == "jawa/set_thing_props":
             th = next((x for x in self.things if str(x["id"]) == str(kw.get("thing"))), None)
             if th is None:

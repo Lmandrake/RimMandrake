@@ -131,6 +131,24 @@ check("py: setter wrapper call sites are the pokes",
              _sset(b, "on", False)
              scenes(b)
          ''')] == [5])
+check("py: a setter-wrapper poke restored by a setter-wrapper call in the finally is clean; without the finally it is a hit",
+      [py('''
+         def _sset(b, field, value):
+             b.call("jawa/mod_settings_field", typeName=T, action="set", field=field, value=str(value))
+         def run(b, prior):
+             try:
+                 _sset(b, "on", False)
+                 scenes(b)
+             finally:
+                 _sset(b, "on", prior)
+         '''), [h["line"] for h in py('''
+         def _sset(b, field, value):
+             b.call("jawa/mod_settings_field", typeName=T, action="set", field=field, value=str(value))
+         def run(b, prior):
+             _sset(b, "on", False)
+             scenes(b)
+             _sset(b, "on", prior)
+         ''')]] == [[], [5, 7]])
 check("py: the mailbox field `request` is not a setting",
       py('def run(b):\n    b.call("jawa/mod_settings_field", typeName=T, action="set", field="request", value="x")\n') == [])
 check("py: Settings(\"reset\") outside any guard loses the player's values",

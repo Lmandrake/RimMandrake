@@ -73,7 +73,8 @@ def main():
         if "wetness0" not in st:
             st["wetness0"] = (B.call("jawa/mod_settings_field", typeName=S_FW, action="get", field="wetnessCutoffEnabled") or {}).get("value")
         st["inland"] = a.inland
-        if not a.inland:
+        if not a.inland and st.get("wetness0") is not None:    # an unread prior is never flipped (it could not be put back)
+            # restore-check: ok the prior is saved in st["wetness0"] (state file) and the pulse phase, which ends the run, puts it back in a finally
             B.call("jawa/mod_settings_field", typeName=S_FW, action="set", field="wetnessCutoffEnabled", value="False")
         rect = (0, oz - 2, ox + n + 2, n + 4) if not a.inland else (96, oz - 2, n + 14, n + 4)
         B.call("jawa/static_call", type=NSP, method="ProofResetRect", args="%d;%d;%d;%d" % rect)
@@ -110,21 +111,25 @@ def main():
     far = (ox + n - 1, oz + n - 1)
     batches = st.setdefault("batches", [])
     wet = False
-    while time.time() - t_start < a.max_seconds:
-        t0 = time.time()
-        r = B.call("jawa/flowworks_pulse", count=500, x=far[0], z=far[1], w=1, h=1, includeBodies=False) or {}
-        dt = (r.get("operation") or {}).get("DurationMs") or (time.time() - t0) * 1000
-        pulses = r.get("pulsesRun") or 0
-        last = (r.get("pulses") or [{}])[-1]
-        fill = (last.get("fill") or [0])[0]
-        batches.append({"pulses": pulses, "ms": dt, "msPerPulse": (dt / pulses) if pulses else None, "farFill": fill})
-        save()
-        print("batch %d: %d pulses, %.1f ms/pulse, far fill %s" % (len(batches), pulses, (dt / pulses) if pulses else -1, fill), flush=True)
-        if fill and fill > 0:
-            wet = True
-            break
-        if not pulses:
-            break
+    try:
+        while time.time() - t_start < a.max_seconds:
+            t0 = time.time()
+            r = B.call("jawa/flowworks_pulse", count=500, x=far[0], z=far[1], w=1, h=1, includeBodies=False) or {}
+            dt = (r.get("operation") or {}).get("DurationMs") or (time.time() - t0) * 1000
+            pulses = r.get("pulsesRun") or 0
+            last = (r.get("pulses") or [{}])[-1]
+            fill = (last.get("fill") or [0])[0]
+            batches.append({"pulses": pulses, "ms": dt, "msPerPulse": (dt / pulses) if pulses else None, "farFill": fill})
+            save()
+            print("batch %d: %d pulses, %.1f ms/pulse, far fill %s" % (len(batches), pulses, (dt / pulses) if pulses else -1, fill), flush=True)
+            if fill and fill > 0:
+                wet = True
+                break
+            if not pulses:
+                break
+    finally:
+        if st.get("wetness0") is not None:       # the prior only; an unread one was never flipped
+            B.call("jawa/mod_settings_field", typeName=S_FW, action="set", field="wetnessCutoffEnabled", value=str(st["wetness0"]))
     summ = B.call("jawa/flowworks_excavation_report") or {}
     st["report"] = {k: summ.get(k) for k in list(summ.keys())[:20] if k not in ("operation", "state")}
     total = sum(b["pulses"] for b in batches)
@@ -139,8 +144,6 @@ def main():
     st["rows"].append({"id": "FLOW_BIGNET_PULSE_COST", "status": "MEASURED", "class": "MOD", "item": ITEM,
                        "detail": {"msPerPulse": per, "meanMsPerPulse": (sum(per) / len(per)) if per else None,
                                   "note": "flowworks_pulse wall time incl. the bridge round trip, per 500-pulse batch"}})
-    B.call("jawa/mod_settings_field", typeName=S_FW, action="set", field="wetnessCutoffEnabled",
-           value="True" if st.get("wetness0") is None else str(st["wetness0"]))
     save()
     print(json.dumps(st["rows"][-2:] if st["rows"] else {}, default=str)[:800])
     return 0

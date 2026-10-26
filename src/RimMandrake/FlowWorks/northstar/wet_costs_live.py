@@ -112,11 +112,15 @@ def main():
                 dig((o[0] + i, o[1] + j), n, fill)
 
     def on_off(field, read):
-        fset(field, True)
-        r_on = read()
-        fset(field, False)
-        r_off = read()
-        fset(field, True)
+        prior = fget(field)           # put back what the player had, not a fixed True (and not at all when it cannot be read)
+        try:
+            fset(field, True)
+            r_on = read()
+            fset(field, False)
+            r_off = read()
+        finally:
+            if prior is not None:
+                fset(field, prior)
         return r_on, r_off
 
     if a.fresh_map:

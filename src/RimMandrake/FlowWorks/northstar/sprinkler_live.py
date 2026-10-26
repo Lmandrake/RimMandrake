@@ -149,6 +149,7 @@ def main(argv=None, bridge=None):
 
     def sfield(typ, field, value=None):
         if value is not None:
+            # restore-check: ok sfield is a get/set wrapper; every set call site is inside main()'s try, whose finally writes the `saved` priors back
             B.call("jawa/mod_settings_field", typeName=typ, action="set", field=field, value=str(value))
         got = (B.call("jawa/mod_settings_field", typeName=typ, action="get", field=field) or {}).get("value")
         if isinstance(value, bool) and str(got).lower() != str(value).lower():

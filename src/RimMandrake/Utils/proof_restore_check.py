@@ -58,28 +58,6 @@ BASELINE: dict[str, tuple[str, int]] = {
     'src/RimMandrake/FlowWorks/Source/Pits/Suspension/RM_SuspensionProofs.cs::unrestored-on-throw::DebugSettings.godMode': ('FLOWWORKS_PROOF_POKES_RESTORE_PRIOR', 3),
     'src/RimMandrake/FlowWorks/Source/RM_WaterLookProofs.cs::unrestored-on-throw::RM_WaterLookSettings.deepWaterTintEnabled': ('FLOWWORKS_PROOF_POKES_RESTORE_PRIOR', 1),
     'src/RimMandrake/FlowWorks/Source/RM_WaterLookProofs.cs::unrestored-on-throw::RM_WaterLookSettings.wetWallBandEnabled': ('FLOWWORKS_PROOF_POKES_RESTORE_PRIOR', 1),
-    'src/RimMandrake/FlowWorks/northstar/climb_proof.py::unrestored-on-throw::raw': ('FLOWWORKS_PROOF_POKES_RESTORE_PRIOR', 3),
-    'src/RimMandrake/FlowWorks/northstar/deep_lake_proof.py::unrestored-on-throw::raw': ('FLOWWORKS_PROOF_POKES_RESTORE_PRIOR', 1),
-    'src/RimMandrake/FlowWorks/northstar/deep_stone_live.py::unrestored-on-throw::raw': ('FLOWWORKS_PROOF_POKES_RESTORE_PRIOR', 1),
-    'src/RimMandrake/FlowWorks/northstar/depth_rebuild_proofs.py::unrestored-on-throw::raw': ('FLOWWORKS_PROOF_POKES_RESTORE_PRIOR', 4),
-    'src/RimMandrake/FlowWorks/northstar/droid_dig_live.py::unrestored-on-throw::raw': ('FLOWWORKS_PROOF_POKES_RESTORE_PRIOR', 1),
-    'src/RimMandrake/FlowWorks/northstar/flow_bignet_live.py::unrestored-on-throw::raw': ('FLOWWORKS_PROOF_POKES_RESTORE_PRIOR', 2),
-    'src/RimMandrake/FlowWorks/northstar/gravel_live.py::unrestored-on-throw::raw': ('FLOWWORKS_PROOF_POKES_RESTORE_PRIOR', 3),
-    'src/RimMandrake/FlowWorks/northstar/legacy_fill_live.py::unrestored-on-throw::raw': ('FLOWWORKS_PROOF_POKES_RESTORE_PRIOR', 1),
-    'src/RimMandrake/FlowWorks/northstar/liquid_checks.py::unrestored-on-throw::raw': ('FLOWWORKS_PROOF_POKES_RESTORE_PRIOR', 1),
-    'src/RimMandrake/FlowWorks/northstar/live_probes/fw_fluid_off.py::unrestored-on-throw::raw': ('FLOWWORKS_PROOF_POKES_RESTORE_PRIOR', 2),
-    'src/RimMandrake/FlowWorks/northstar/pipe_levelling_perf_proof.py::unrestored-on-throw::raw': ('FLOWWORKS_PROOF_POKES_RESTORE_PRIOR', 1),
-    'src/RimMandrake/FlowWorks/northstar/pit_superdeep_walk.py::unrestored-on-throw::raw': ('FLOWWORKS_PROOF_POKES_RESTORE_PRIOR', 3),
-    'src/RimMandrake/FlowWorks/northstar/pond_pump.py::unrestored-on-throw::raw': ('FLOWWORKS_PROOF_POKES_RESTORE_PRIOR', 3),
-    'src/RimMandrake/FlowWorks/northstar/raid_siege_live.py::unrestored-on-throw::raw': ('FLOWWORKS_PROOF_POKES_RESTORE_PRIOR', 2),
-    'src/RimMandrake/FlowWorks/northstar/scenarios_map.py::unrestored-on-throw::raw': ('FLOWWORKS_PROOF_POKES_RESTORE_PRIOR', 1),
-    'src/RimMandrake/FlowWorks/northstar/sheet_overflow_proof.py::unrestored-on-throw::raw': ('FLOWWORKS_PROOF_POKES_RESTORE_PRIOR', 6),
-    'src/RimMandrake/FlowWorks/northstar/shovels_live.py::unrestored-on-throw::raw': ('FLOWWORKS_PROOF_POKES_RESTORE_PRIOR', 2),
-    'src/RimMandrake/FlowWorks/northstar/sprinkler_live.py::unrestored-on-throw::raw': ('FLOWWORKS_PROOF_POKES_RESTORE_PRIOR', 1),
-    'src/RimMandrake/FlowWorks/northstar/suspension_settings_live.py::unrestored-on-throw::raw': ('FLOWWORKS_PROOF_POKES_RESTORE_PRIOR', 3),
-    'src/RimMandrake/FlowWorks/northstar/trench_cover_proof.py::unrestored-on-throw::raw': ('FLOWWORKS_PROOF_POKES_RESTORE_PRIOR', 1),
-    'src/RimMandrake/FlowWorks/northstar/water_scenes_walk.py::unrestored-on-throw::raw': ('FLOWWORKS_PROOF_POKES_RESTORE_PRIOR', 3),
-    'src/RimMandrake/FlowWorks/northstar/wet_costs_live.py::unrestored-on-throw::raw': ('FLOWWORKS_PROOF_POKES_RESTORE_PRIOR', 3),
     'src/RimMandrake/bridgetools/prove_sea_dive_floor.py::unrestored-on-throw::raw': ('SEA_DIVE_PROOF_RESTORE_PRIOR', 1),
 }
 
@@ -443,15 +421,15 @@ def _value_is_literal(call: ast.Call, env=None) -> bool:
     return False
 
 
-def _has_settings_write(nodes) -> bool:
+def _has_settings_write(nodes, setters=()) -> bool:
     for n in nodes:
         for c in ast.walk(n):
             if isinstance(c, ast.Call) and py_poke_kind(c) is not None:
                 return True
             if isinstance(c, ast.Call) and isinstance(c.func, (ast.Name, ast.Attribute)):
                 nm = c.func.id if isinstance(c.func, ast.Name) else c.func.attr
-                if re.search(r"restore", nm, re.I):
-                    return True
+                if re.search(r"restore", nm, re.I) or nm in setters:
+                    return True       # a call to a setter wrapper (sset/fset) in a finally is a settings write
     return False
 
 
@@ -550,7 +528,7 @@ def check_py(rel: str, text: str, harness_restores: bool, harness_tracks: bool =
             if kind == "reset" or (kind.startswith("raw") and _value_is_literal(c, _locals(fn))) or (kind == "harness" and _value_is_literal(c)):
                 hits.append({"path": rel, "line": line, "kind": "restores-fixed-value", "target": kind, "text": src})
             continue
-        guarded = any(isinstance(p, ast.Try) and ch in p.body and p.finalbody and _has_settings_write(p.finalbody)
+        guarded = any(isinstance(p, ast.Try) and ch in p.body and p.finalbody and _has_settings_write(p.finalbody, setters)
                       for p, ch in chain)
         if not guarded:
             # the statement right after the poke's statement is a try whose finally writes settings back
@@ -562,7 +540,7 @@ def check_py(rel: str, text: str, harness_restores: bool, harness_tracks: bool =
                     if isinstance(seq, list) and st in seq:
                         i = seq.index(st)
                         if i + 1 < len(seq) and isinstance(seq[i + 1], ast.Try) and seq[i + 1].finalbody and \
-                                _has_settings_write(seq[i + 1].finalbody):
+                                _has_settings_write(seq[i + 1].finalbody, setters):
                             guarded = True
         if kind == "reset" and not guarded:
             hits.append({"path": rel, "line": line, "kind": "reset-loses-player-values", "target": kind, "text": src})

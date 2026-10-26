@@ -570,6 +570,19 @@ def review_class():
                 sc, (ox, oz) = p["sc"], p["origin"]
                 u, n = sc["setup"], sc["id"]
                 for typ, field, value in u.get("settings", []):
+                    mock = isinstance(self.B, MockBridge)       # an offline run never writes the real priors file
+                    pri = getattr(self, "_mock_priors", {}) if mock else load_setting_priors()
+                    k = "%s|%s" % (typ, field)
+                    if k not in pri:      # first poke wins; written BEFORE the set, so `--restore-settings` has it whatever happens next
+                        pri[k] = (self.B.call("jawa/mod_settings_field", typeName=typ, action="get", field=field) or {}).get("value")
+                        if mock:
+                            self._mock_priors = pri
+                        else:
+                            save_setting_priors(pri)
+                    if pri[k] is None:
+                        self.notes.append("%s: setting %s NOT set: its current value is unreadable, so it could not be put back" % (n, field))
+                        continue
+                    # restore-check: ok the prior is recorded in the priors file just above; `scenarios_map.py --restore-settings` writes it back
                     self.call("jawa/mod_settings_field", typeName=typ, action="set", field=field, value=str(value))
                     back = (self.B.call("jawa/mod_settings_field", typeName=typ, action="get", field=field) or {}).get("value")
                     if back is not None and str(back).lower() != str(value).lower():
@@ -779,6 +792,42 @@ def review_class():
             return self.B.call("rimworld/frame_cell_rect", x=x - 2, z=z - 2, width=ww + 4, height=hh + 4, paddingCells=2)
 
     return ScenarioReview
+
+
+def _priors_path():
+    return os.path.join(REPO, "Transient", "fw_scenarios_setting_priors.json")
+
+
+def load_setting_priors():
+    try:
+        with open(_priors_path(), encoding="utf-8") as f:
+            return json.load(f)
+    except (OSError, ValueError):
+        return {}
+
+
+def save_setting_priors(d):
+    os.makedirs(os.path.dirname(_priors_path()), exist_ok=True)
+    with open(_priors_path(), "w", encoding="utf-8") as f:
+        json.dump(d, f)
+
+
+def restore_setting_priors(B):
+    """Write each scenario setting back to the value it held before the first build touched it (never a default). A prior
+    that was unreadable is left alone. Clears the record when every field reads back. -> list of problems."""
+    pri, bad = load_setting_priors(), []
+    for k, v in pri.items():
+        typ, field = k.split("|", 1)
+        if v is None:
+            bad.append("%s: no readable prior was recorded" % k)
+            continue
+        B.call("jawa/mod_settings_field", typeName=typ, action="set", field=field, value=str(v))
+        back = (B.call("jawa/mod_settings_field", typeName=typ, action="get", field=field) or {}).get("value")
+        if str(back).lower() != str(v).lower():
+            bad.append("%s reads %r, wanted %r" % (k, back, v))
+    if not bad and pri:
+        os.remove(_priors_path())
+    return bad
 
 
 def run_build(B, placed, log=None, fresh=False, soak=True, only=None):
@@ -1303,7 +1352,7 @@ def joint_gate_ok(B, allow_why=None):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    for f in ("plan", "dry-run", "mock", "build", "fresh-map", "soak", "labels", "save", "stage0", "river", "no-soak"):
+    for f in ("plan", "dry-run", "mock", "build", "fresh-map", "soak", "labels", "save", "stage0", "river", "no-soak", "restore-settings"):
         ap.add_argument("--" + f, action="store_true")
     ap.add_argument("--only", default=None, help="comma list of scenario ids (map C)")
     ap.add_argument("--goto", default=None)
@@ -1378,6 +1427,10 @@ def main(argv=None):
     # ---------------------------------------------------------------- live
     from modcheck import reviewmap as RM
     B = RM.LiveBridge()
+    if a.restore_settings:
+        bad = restore_setting_priors(B)
+        print("scenario settings restored to their priors" + ("; PROBLEMS: %s" % "; ".join(bad) if bad else ""))
+        return 1 if bad else 0
     if a.river:
         return river_main(B, a)
     if a.build and a.fresh_map and os.path.exists(MAP_R_PLACED):

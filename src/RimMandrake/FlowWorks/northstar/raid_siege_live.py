@@ -112,15 +112,19 @@ def main():
     # later was given to a SIEGE pawn.
     RTS = "RimMandrake.FlowWorks.RM_RaiderTrenchSettings"
     trench0 = (B.call("jawa/mod_settings_field", typeName=RTS, action="get", field="raiderTrenchEnabled") or {}).get("value")
-    B.call("jawa/mod_settings_field", typeName=RTS, action="set", field="raiderTrenchEnabled", value="False")
-    B.call("jawa/lord_assault_spawn", pawns=",".join(raiders))
-    lords = (B.call("jawa/lord_pawn_move", action="list") or {}).get("lords") or []
-    li = next((i for i, l in enumerate(lords) if l.get("faction") and fac and str(l.get("job")) == "LordJob_AssaultColony"), None)
-    lidx = lords[li].get("index", li) if li is not None else -1
-    sj = B.call("jawa/lord_set_job", lordIndex=lidx, lordJob="LordJob_Siege",
-                args="faction=%s;siegeSpot=%d,%d;blueprintPoints=300" % (fac, cx + 22, cz)) or {}
-    step(2)
-    B.call("jawa/mod_settings_field", typeName=RTS, action="set", field="raiderTrenchEnabled", value="True" if trench0 is None else str(trench0))
+    try:
+        if trench0 is not None:      # an unread prior is neither flipped nor guessed back
+            B.call("jawa/mod_settings_field", typeName=RTS, action="set", field="raiderTrenchEnabled", value="False")
+        B.call("jawa/lord_assault_spawn", pawns=",".join(raiders))
+        lords = (B.call("jawa/lord_pawn_move", action="list") or {}).get("lords") or []
+        li = next((i for i, l in enumerate(lords) if l.get("faction") and fac and str(l.get("job")) == "LordJob_AssaultColony"), None)
+        lidx = lords[li].get("index", li) if li is not None else -1
+        sj = B.call("jawa/lord_set_job", lordIndex=lidx, lordJob="LordJob_Siege",
+                    args="faction=%s;siegeSpot=%d,%d;blueprintPoints=300" % (fac, cx + 22, cz)) or {}
+        step(2)
+    finally:
+        if trench0 is not None:
+            B.call("jawa/mod_settings_field", typeName=RTS, action="set", field="raiderTrenchEnabled", value=str(trench0))
     lords2 = (B.call("jawa/lord_pawn_move", action="list") or {}).get("lords") or []
     res["lords"] = {"before": lords, "setJob": str(sj)[:400], "after": lords2}
     dec = {}
