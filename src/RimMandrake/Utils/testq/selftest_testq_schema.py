@@ -49,6 +49,8 @@ def main():
     rows = S.rows_from_summary(summary)
     check([r["verdict"] for r in rows] == ["PASS", "FAIL"] and rows[1]["freshness"] == "reused@r7",
           "rows come from chain components, verdicts upper-cased, freshness kept")
+    long_ = S.rows_from_summary({"chains": [{"name": "c", "components": [{"name": "r", "verdict": "fail", "detail": "d" * 2500}]}]})
+    check(len(long_[0]["detail"]) == 2500, "a 2,500-char row detail is kept whole (the old 300 cap hid FAIL evidence)")
     res = {"schema": S.RESULT_SCHEMA, "job": j["id"], "attempt": j["id"] + ".a1", "outcome": "DONE", "cause": None,
            "rows": rows}
     check(not refused(S.validate_result, res), "a DONE result validates")

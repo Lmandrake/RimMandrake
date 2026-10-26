@@ -791,6 +791,9 @@ def main(argv=None, bridge=None):
 
         # ---------------------------------------------------------------- T19 awkward access (bucket arm + bottle arm)
         if want("T19"):
+            # HARNESS (job J20261026T060806Z-09152f): T13's toxic strip and T10/T11's water were still on the map, so the pawn
+            # at 0.2 walked to RM_DrinkFromTerrain instead of the only bucket; dry the liquids first, like T15 does
+            dry_all()
             purge_drinks()
             pk = spawn_colonist(X0 + 2, Z0 + 20)
             m0 = mems(pk)

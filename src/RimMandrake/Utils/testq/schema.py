@@ -162,6 +162,10 @@ def modcheck_args(job):
     return a
 
 
+# A 300-char cap hid the evidence of a FAIL (THIRST_FIX_AWKWARD_ACCESS_ROW_FAILS): keep enough for a whole driver row.
+DETAIL_CAP = 4000
+
+
 def rows_from_summary(summary):
     """modcheck's sheet JSON `summary` -> result rows (one per chain component)."""
     rows = []
@@ -170,7 +174,7 @@ def rows_from_summary(summary):
             rows.append({"chain": ch.get("name"), "row": c.get("name"),
                          "verdict": str(c.get("verdict") or "UNMEASURED").upper(),
                          "validity": c.get("validity"), "freshness": c.get("freshness"),
-                         "detail": (c.get("detail") or "")[:300]})
+                         "detail": (c.get("detail") or "")[:DETAIL_CAP]})
     return rows
 
 
