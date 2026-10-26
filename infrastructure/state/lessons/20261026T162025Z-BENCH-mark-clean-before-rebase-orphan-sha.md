@@ -1,0 +1,2 @@
+code_review_status.py mark-clean records the CURRENT local HEAD; marking before 'git pull --rebase' leaves the clean record pointing at a pre-rebase sha that never reaches origin (3 Stillsand marks say 0618c3f7ed; published equivalent is a321d6f0e0). The check still passes (it is content-hashed), but the sha is unreachable. Either rebase first and then mark, or pass --sha with a published commit.
+home: NONE
