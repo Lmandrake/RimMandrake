@@ -95,6 +95,7 @@
     <Compile Include="RM_ScrubInjections.cs" />
     <Compile Include="Kernel\RM_StallHuntKernel.cs" />
     <Compile Include="RM_StallHunt.cs" />
+    <Compile Include="RM_ScrubDens.cs" />
     <Compile Include="Kernel\RM_GlideKernel.cs" />
     <Compile Include="RM_ShirrelGlide.cs" />
   </ItemGroup>

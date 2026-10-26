@@ -96,6 +96,11 @@ namespace RimMandrake.LeaningScrub
         public static bool sweetlineFeltApparelEnabled = true;
         // LEANINGSCRUB_VISSLER_ARM_SCAVENGERS_1 (RM_VisslerArm.cs)
         public static bool visslerArmFoodEnabled = true;
+        // THORNHOLD_DECIDE_DEN_AND_STAND + ROLLBUG_DECIDE_CARRION_BALL (RM_ScrubDens.cs). Defaults = the owner's choices.
+        public static bool thornholdDenEnabled = true;
+        public static bool thornholdStandEnabled = true;
+        public static bool rollbugCarrionEnabled = true;
+        public static bool rollbugTakesColonyCorpses = true;
 
         // LEANINGSCRUB_MECHANICS_BUILD_1 part 5 (RM_FireStamp.cs).
         public static bool fireStampEnabled = true;
@@ -195,6 +200,10 @@ namespace RimMandrake.LeaningScrub
             Scribe_Values.Look(ref sweetlineFeltApparelEnabled, "sweetlineFeltApparelEnabled", true, true);
             Scribe_Values.Look(ref visslerArmFoodEnabled, "visslerArmFoodEnabled", true, true);
             Scribe_Values.Look(ref fireStampEnabled, "fireStampEnabled", true, true);
+            Scribe_Values.Look(ref thornholdDenEnabled, "thornholdDenEnabled", true, true);
+            Scribe_Values.Look(ref thornholdStandEnabled, "thornholdStandEnabled", true, true);
+            Scribe_Values.Look(ref rollbugCarrionEnabled, "rollbugCarrionEnabled", true, true);
+            Scribe_Values.Look(ref rollbugTakesColonyCorpses, "rollbugTakesColonyCorpses", true, true);
             Scribe_Values.Look(ref rippleEnabled, "rippleEnabled", true, true);
             Scribe_Values.Look(ref leanWakesEnabled, "leanWakesEnabled", true, true);
             Scribe_Values.Look(ref leanPlantsEnabled, "leanPlantsEnabled", true, true);
@@ -243,7 +252,7 @@ namespace RimMandrake.LeaningScrub
         /// <summary>SETTINGS_KIT_BUILD_GREY_SWITCHES_AT_LAST: the master switch and each per-feature toggle with what it governs.
         /// "Mod enabled" gates every other setting (all read sites test modEnabled first), so turning it off greys the rest and keeps their values.</summary>
         internal static readonly RimMandrake.Shared.SettingDependencies Masters = new RimMandrake.Shared.SettingDependencies()
-            .Declare("modEnabled", "venomvinePassabilityEnabled", "stallFreezeEnabled", "stallFreezeMaxBodySize", "galeDeafenEnabled", "galeTurbineSurgeEnabled", "galeTurbineSurgeFactor", "galeTurbineBreakdownMtbDays", "galeRaidWeightingEnabled", "galeRaidWeightFactor", "twitcherLashEnabled", "twitcherLashDamageFactor", "twitcherLashRecoveryFactor", "smotherCraftEnabled", "smotherDays", "smotherYieldFactor", "leanEnabled", "leanScentEnabled", "leanScentRange", "leanFireEnabled", "leanFireBias", "leanWakesEnabled", "leanPlantsEnabled", "galeDustOverlayEnabled", "shirrelGlideEnabled", "drippingRegrowEnabled", "crownMobEnabled", "runwayBloomEnabled", "sweetlineStationsEnabled", "sweetlineVisitorsEnabled", "sweetlineVisitIntervalDays", "sweetlineScratchingEnabled", "sweetlineCoatReady", "sweetlineFeltShare", "sweetlineTreeMapChance", "sweetlineFeltComfortEnabled", "sweetlineFeltApparelEnabled", "visslerArmFoodEnabled", "fireStampEnabled", "rippleEnabled", "rippleMaxBodySize", "stallHuntEnabled", "callingPyreEnabled", "callingPyreRadius", "callingPyreHerdFactor", "scrubInjectionsEnabled", "scrubRuinsPerMap", "scrubCampsEnabled", "rearingEnabled", "rearingHours", "walkingEnabled", "walkingMaxCellsPerMap", "hoardEnabled", "hoardGrowInHours", "hoardKeepsDeadGear", "quenchEnabled", "quenchRecoveryDays", "swornSparesMarkedEnabled", "sheddingEnabled", "stranglerEnabled", "stranglerDamageFactor", "stranglerAutoTrim", "weeperEnabled", "weeperPollutes", "sleeperEnabled", "lureEnabled", "sheddingLength", "venomvineIslandsEnabled", "venomvineIslandShare", "venomvineIslandsMin", "venomvineIslandsMax", "venomvineIslandMaxCells", "venomvineIslandRoomsEnabled", "venomvineStartClearance", "venomvineCreepEnabled", "venomvineCreepDays", "venomvineCreepDownwindShare", "venomvineCreepCap")
+            .Declare("modEnabled", "venomvinePassabilityEnabled", "stallFreezeEnabled", "stallFreezeMaxBodySize", "galeDeafenEnabled", "galeTurbineSurgeEnabled", "galeTurbineSurgeFactor", "galeTurbineBreakdownMtbDays", "galeRaidWeightingEnabled", "galeRaidWeightFactor", "twitcherLashEnabled", "twitcherLashDamageFactor", "twitcherLashRecoveryFactor", "smotherCraftEnabled", "smotherDays", "smotherYieldFactor", "leanEnabled", "leanScentEnabled", "leanScentRange", "leanFireEnabled", "leanFireBias", "leanWakesEnabled", "leanPlantsEnabled", "galeDustOverlayEnabled", "shirrelGlideEnabled", "drippingRegrowEnabled", "crownMobEnabled", "runwayBloomEnabled", "sweetlineStationsEnabled", "sweetlineVisitorsEnabled", "sweetlineVisitIntervalDays", "sweetlineScratchingEnabled", "sweetlineCoatReady", "sweetlineFeltShare", "sweetlineTreeMapChance", "sweetlineFeltComfortEnabled", "sweetlineFeltApparelEnabled", "visslerArmFoodEnabled", "fireStampEnabled", "thornholdDenEnabled", "thornholdStandEnabled", "rollbugCarrionEnabled", "rollbugTakesColonyCorpses", "rippleEnabled", "rippleMaxBodySize", "stallHuntEnabled", "callingPyreEnabled", "callingPyreRadius", "callingPyreHerdFactor", "scrubInjectionsEnabled", "scrubRuinsPerMap", "scrubCampsEnabled", "rearingEnabled", "rearingHours", "walkingEnabled", "walkingMaxCellsPerMap", "hoardEnabled", "hoardGrowInHours", "hoardKeepsDeadGear", "quenchEnabled", "quenchRecoveryDays", "swornSparesMarkedEnabled", "sheddingEnabled", "stranglerEnabled", "stranglerDamageFactor", "stranglerAutoTrim", "weeperEnabled", "weeperPollutes", "sleeperEnabled", "lureEnabled", "sheddingLength", "venomvineIslandsEnabled", "venomvineIslandShare", "venomvineIslandsMin", "venomvineIslandsMax", "venomvineIslandMaxCells", "venomvineIslandRoomsEnabled", "venomvineStartClearance", "venomvineCreepEnabled", "venomvineCreepDays", "venomvineCreepDownwindShare", "venomvineCreepCap")
             .Declare("sweetlineStationsEnabled", "sweetlineVisitorsEnabled", "sweetlineVisitIntervalDays", "sweetlineScratchingEnabled", "sweetlineCoatReady", "sweetlineFeltShare", "sweetlineTreeMapChance")
             .Declare("leanEnabled", "leanScentEnabled", "leanScentRange", "leanFireEnabled", "leanFireBias", "leanPlantsEnabled")
             .Declare("stallFreezeEnabled", "stallFreezeMaxBodySize")
@@ -255,6 +264,8 @@ namespace RimMandrake.LeaningScrub
             .Declare("leanFireEnabled", "leanFireBias")
             .Declare("sweetlineVisitorsEnabled", "sweetlineVisitIntervalDays")
             .Declare("sweetlineScratchingEnabled", "sweetlineCoatReady", "sweetlineFeltShare")
+            .Declare("thornholdDenEnabled", "thornholdStandEnabled")
+            .Declare("rollbugCarrionEnabled", "rollbugTakesColonyCorpses")
             .Declare("rippleEnabled", "rippleMaxBodySize")
             .Declare("callingPyreEnabled", "callingPyreRadius", "callingPyreHerdFactor")
             .Declare("scrubInjectionsEnabled", "scrubRuinsPerMap")
@@ -542,6 +553,28 @@ namespace RimMandrake.LeaningScrub
                         "A blaze of five or more open fires close together (not under a roof or indoors; stoves "
                         + "and campfires never count) draws every wild giant that hates fire on the map to stamp "
                         + "it out, crushing whatever was burning. Off: the herds ignore fire.");
+                    list.GapLine();
+                }
+            }
+
+            if (Group(list, "Thornhold dens and the rollbug's larder", RimMandrake.Shared.SettingScope.Now, new[] { "thornholdDenEnabled", "thornholdStandEnabled", "rollbugCarrionEnabled", "rollbugTakesColonyCorpses" }))
+            {
+                using (Dependent(list, "thornholdDenEnabled", "thornholdStandEnabled", "rollbugCarrionEnabled", "rollbugTakesColonyCorpses"))
+                {
+                    list.CheckboxLabeled("Thornhold: dens in venomvine", ref thornholdDenEnabled,
+                        "A wild thornhold picks the nearest venomvine as its den and stays near it. "
+                        + "Off: it picks no den (it still keeps near where it first appeared) and never stands, below.");
+                    list.CheckboxLabeled("Thornhold: stands its ground at the den", ref thornholdStandEnabled,
+                        "Struck near its den, a wild thornhold fights back at whoever hit it instead of fleeing, "
+                        + "and stops once they are down or far from the den. Walking past is safe. "
+                        + "Off: it flees or goes manhunter like a vanilla animal.");
+                    list.CheckboxLabeled("Rollbug: rolls carrion to its larder", ref rollbugCarrionEnabled,
+                        "A wild rollbug carries any corpse in reach to its larder, strips it there (gear stays on "
+                        + "the ground) and eats it over days, one body part at a time. Off: it eats corpses where "
+                        + "they lie, like a vanilla scavenger.");
+                    list.CheckboxLabeled("Rollbug: takes the colony's dead too", ref rollbugTakesColonyCorpses,
+                        "On: dead colonists and the colony's dead animals are carrion like any other. "
+                        + "Off: the rollbug leaves the player's own dead alone.");
                     list.GapLine();
                 }
             }

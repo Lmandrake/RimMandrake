@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Scrub dens (Source/RM_ScrubDens.cs), both owner decisions by question card 2026-10-26.
+
+  RM_ThornholdStand: THORNHOLD_DECIDE_DEN_AND_STAND -> "Stand its ground". A wild
+  thornhold struck by a living attacker within its venomvine den radius stands
+  instead of fleeing: hostile to that attacker only (ScopedAggression, which routes
+  through vanilla JobGiver_Manhunter by class), ending when the attacker is downed,
+  gone, or farther than the disengage radius from the den. A pawn walking past is
+  never attacked; only a hit starts it.
+
+  RM_RollCarrion + splice: ROLLBUG_DECIDE_CARRION_BALL -> "Any corpse in reach".
+  A wild rollbug walks to the nearest flesh corpse within reach (any corpse: the
+  player's kills and dead colonists included; Mod Setting "Rollbug: takes the
+  colony's dead too" can exclude them), carries it to its larder and leaves it
+  stripped there; RM_CompCarrionLarder eats it over the following days. Spliced
+  at Core's Animal_PreWander behind an MTB node, like the sweetline scratching.
+-->
+<Defs>
+
+  <MentalStateDef>
+    <defName>RM_ThornholdStand</defName>
+    <label>defending its den</label>
+    <stateClass>RimMandrake.CreatureBehaviors.RM_MentalState_ScopedAggression</stateClass>
+    <category>Aggro</category>
+    <baseInspectLine>Defending its den</baseInspectLine>
+    <recoveryMessage>{0} has stopped defending its den.</recoveryMessage>
+    <nameColor>(0.85,0.7,0.15)</nameColor>
+    <minTicksBeforeRecovery>60</minTicksBeforeRecovery>
+    <recoveryMtbDays>0.2</recoveryMtbDays>
+    <stopsJobs>true</stopsJobs>
+    <recoverFromDowned>true</recoverFromDowned>
+    <recoverFromSleep>true</recoverFromSleep>
+    <inCaravanCanDo>false</inCaravanCanDo>
+  </MentalStateDef>
+
+  <JobDef>
+    <defName>RM_RollCarrion</defName>
+    <driverClass>RimMandrake.LeaningScrub.RM_JobDriver_RollCarrion</driverClass>
+    <reportString>rolling TargetA home.</reportString>
+    <casualInterruptible>true</casualInterruptible>
+  </JobDef>
+
+  <ThinkTreeDef>
+    <defName>RM_RollCarrion_Splice</defName>
+    <insertTag>Animal_PreWander</insertTag>
+    <insertPriority>40</insertPriority>
+    <thinkRoot Class="ThinkNode_ChancePerHour_Constant">
+      <mtbHours>4</mtbHours>
+      <subNodes>
+        <li Class="ThinkNode_Tagger">
+          <tagToGive>Misc</tagToGive>
+          <subNodes>
+            <li Class="RimMandrake.LeaningScrub.RM_JobGiver_RollCarrion" />
+          </subNodes>
+        </li>
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+
+</Defs>

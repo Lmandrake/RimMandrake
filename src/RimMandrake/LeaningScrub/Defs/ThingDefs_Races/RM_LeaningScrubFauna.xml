@@ -119,7 +119,10 @@
 
   <!-- BUILT (LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS): the quill lash is capacity RM_ThornholdQuillLash, a Scratch that carries
        the venomvine's own RM_VenomvineVenom (Defs/DamageDefs/RM_LeaningScrub_FaunaDamage.xml).
-       STUB: venomvine denning and forbid-rather-than-flee are THORNHOLD_DECIDE_DEN_AND_STAND (needs owner). -->
+       BUILT (THORNHOLD_DECIDE_DEN_AND_STAND, owner card 2026-10-26 "Stand its ground"): RM_CompVineDen (Source/RM_ScrubDens.cs)
+       dens it in the nearest venomvine and makes that its HomeTether home; struck there by a living attacker it starts
+       RM_ThornholdStand (Defs/JobDefs/RM_ScrubDens.xml), hostile to that attacker only, instead of fleeing. Walking past is
+       safe. ContactVenomImmunity: its own den does not poison it. Mod Settings: thornholdDenEnabled, thornholdStandEnabled. -->
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Thornhold</defName>
     <label>thornhold</label>
@@ -169,6 +172,38 @@
         <li><def>AnimalAdult</def><minAge>0.4</minAge></li>
       </lifeStageAges>
     </race>
+    <comps>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_HomeTether">
+        <tetherRadius>6</tetherRadius>
+      </li>
+      <li Class="RimMandrake.LeaningScrub.RM_CompProperties_VineDen">
+        <denPlants>
+          <li>RM_Venomvine</li>
+          <li>RM_VenomvineThicket</li>
+          <li>RM_CrownVenomvine</li>
+          <li>RM_DrippingVenomvine</li>
+          <li>RM_TwitcherVenomvine</li>
+          <li>RM_HollowVenomvine</li>
+          <li>RM_RearingVenomvine</li>
+          <li>RM_WalkingVenomvine</li>
+          <li>RM_HoardVenomvine</li>
+          <li>RM_QuenchVenomvine</li>
+          <li>RM_SwornVenomvine</li>
+          <li>RM_SheddingVenomvine</li>
+          <li>RM_WeeperVenomvine</li>
+          <li>RM_SleeperVenomvine</li>
+          <li>RM_SleeperVenomvineAwake</li>
+        </denPlants>
+        <searchRadius>30</searchRadius>
+        <standRadius>6</standRadius>
+        <disengageRadius>12</disengageRadius>
+        <maxChaseRadius>30</maxChaseRadius>
+        <standState>RM_ThornholdStand</standState>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.ContactVenomImmunity" />
+    </modExtensions>
     <tradeTags>
       <li>AnimalUncommon</li>
     </tradeTags>
@@ -1074,8 +1109,11 @@
     </lifeStages>
   </PawnKindDef>
 
-  <!-- STUB: carrion-ball rolling is ROLLBUG_DECIDE_CARRION_BALL (needs owner). -->
-  <ThingDef ParentName="AnimalThingBase">
+  <!-- BUILT (ROLLBUG_DECIDE_CARRION_BALL, owner card 2026-10-26 "Any corpse in reach"): a wild rollbug carries the nearest
+       flesh corpse within reach, ANY corpse (the player's kills and dead colonists included), to its larder (its HomeTether
+       home), strips it there (gear stays on the ground) and RM_CompCarrionLarder eats it over days, one body part per bite.
+       Source/RM_ScrubDens.cs, Defs/JobDefs/RM_ScrubDens.xml. Mod Settings: rollbugCarrionEnabled (off: no rolling, no
+       larder bites), rollbugTakesColonyCorpses (off: it leaves the player's own dead alone). Both default on. -->  <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Rollbug</defName>
     <label>rollbug</label>
     <description>Nothing dies in a run and stays there. The rollbug trundles the corridors on a fixed beat, packs whatever it finds into a ball bigger than itself, and rolls the runway clean back to its larder.</description>
@@ -1117,6 +1155,16 @@
         <li><def>AnimalAdult</def><minAge>0.4</minAge></li>
       </lifeStageAges>
     </race>
+    <comps>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_HomeTether">
+        <tetherRadius>10</tetherRadius>
+      </li>
+      <li Class="RimMandrake.LeaningScrub.RM_CompProperties_CarrionLarder">
+        <reachRadius>14</reachRadius>
+        <larderRadius>2</larderRadius>
+        <biteIntervalTicks>5000</biteIntervalTicks>
+      </li>
+    </comps>
     <tradeTags>
       <li>AnimalCommon</li>
     </tradeTags>

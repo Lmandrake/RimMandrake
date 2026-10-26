@@ -12,7 +12,16 @@ Rows (each one is checked on the real tree, then broken in memory to prove the r
              calls it; the ripple skips crust-swimmers only while the kit is on.
   ribbonwhip "moving when the wind moves" = the ripple: body size within rippleMaxBodySize's default, a wild animal,
              bloom response Sway. (The kernel's wind/Stall behaviour is pinned by SelfTest/LeaningScrubTonightCheck.cs.)
-  stubs      no STUB comment in RM_LeaningScrubFauna.xml names this (closing) item, and every one names an item id.
+  thornholdden  THORNHOLD_DECIDE_DEN_AND_STAND (owner card "Stand its ground"): HomeTether then RM_CompVineDen on the
+             thornhold, every den plant a real venomvine ThingDef, standState a ScopedAggression MentalStateDef,
+             ContactVenomImmunity; the comp's damage hook starts the stand only for a wild, in-den, not-already-mental
+             pawn hit by external violence from a living pawn, naming the attacker and anchoring on the den; both
+             settings default on.
+  rollbug    ROLLBUG_DECIDE_CARRION_BALL (owner card "Any corpse in reach"): HomeTether and RM_CompCarrionLarder on the
+             rollbug; JobDef/ThinkTree splice resolve to the C# classes; colony corpses are taken by default
+             (rollbugTakesColonyCorpses = true, his choice); the one Destroy of a ball is preceded by Strip (gear is
+             never eaten); the drop toil strips; an interrupted job drops the carried corpse.
+  stubs      no STUB comment in RM_LeaningScrubFauna.xml names a closed item, and every one names an item id.
 
 Live behaviour (surfacing in game, the ripple ignoring a submerged surrik) is NEXT for BENCH in the validation walk.
 
@@ -26,6 +35,8 @@ import xml.etree.ElementTree as ET
 HERE = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.dirname(HERE)
 THIS_ITEM = "LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS"
+# Items closed by building them; a STUB naming one is stale.
+CLOSED = (THIS_ITEM, "SHIRREL_DECIDE_GALE_GLIDE", "THORNHOLD_DECIDE_DEN_AND_STAND", "ROLLBUG_DECIDE_CARRION_BALL")
 
 FILES = {
     "fauna": "LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml",
@@ -39,7 +50,12 @@ FILES = {
     "bloom": "LeaningScrub/Source/RM_RunwayBloom.cs",
     "ripple": "LeaningScrub/Source/RM_Ripple.cs",
     "settings": "LeaningScrub/Source/RM_LeaningScrubMod.cs",
+    "dens": "LeaningScrub/Source/RM_ScrubDens.cs",
+    "densdefs": "LeaningScrub/Defs/JobDefs/RM_ScrubDens.xml",
 }
+
+# Every ThingDef defName in these plant folders is a candidate den plant.
+PLANT_DIRS = ("EnvironmentalHazards/Defs/ThingDefs_Plants", "LeaningScrub/Defs/ThingDefs_Plants")
 
 FAILED = []
 
@@ -67,6 +83,12 @@ def load():
         if rel is None:
             raise SystemExit("FAIL no LeaningScrub biome with terrainsByFertility found")
         tree[k] = open(os.path.join(SRC, rel), encoding="utf-8").read()
+    names = []
+    for d in PLANT_DIRS:
+        for f in sorted(os.listdir(os.path.join(SRC, d))):
+            if f.endswith(".xml"):
+                names += list(defs(open(os.path.join(SRC, d, f), encoding="utf-8").read(), "ThingDef"))
+    tree["plants"] = "\n".join(names) + "\n"
     return tree
 
 
@@ -240,6 +262,110 @@ def check_ribbonwhip(t):
     return errs
 
 
+TETHER = "RimMandrake.CreatureBehaviors.RM_CompProperties_HomeTether"
+
+
+def comp_classes(el):
+    return [li.get("Class", "") for li in el.findall("comps/li")]
+
+
+def check_settings(t, names):
+    errs = []
+    st = t["settings"]
+    for n in names:
+        m = re.search(r"public\s+static\s+bool\s+%s\s*=\s*(true|false)\s*;" % n, st)
+        if not m or m.group(1) != "true":
+            errs.append("setting %s does not default to true (the owner's choice)" % n)
+        if not re.search(r'Scribe_Values\.Look\(ref\s+%s\s*,\s*"%s"\s*,\s*true' % (n, n), st):
+            errs.append("setting %s is not saved with default true" % n)
+        if not re.search(r'\.Declare\([^)]*"%s"' % n, st):
+            errs.append("setting %s is not declared to the settings kit" % n)
+    return errs
+
+
+def check_thornholdden(t):
+    errs = []
+    th = defs(t["fauna"], "ThingDef").get("RM_Thornhold")
+    if th is None:
+        return ["no RM_Thornhold ThingDef"]
+    cls = comp_classes(th)
+    den = "RimMandrake.LeaningScrub.RM_CompProperties_VineDen"
+    if TETHER not in cls or den not in cls or cls.index(TETHER) > cls.index(den):
+        errs.append("thornhold comps %r: want HomeTether before RM_CompProperties_VineDen (the den sets the tether's home)" % cls)
+    li = [c for c in th.findall("comps/li") if c.get("Class") == den]
+    plants = set(t["plants"].split())
+    if len(plants) < 5:
+        errs.append("probe: only %d plant ThingDefs seen in %s" % (len(plants), PLANT_DIRS))
+    if li:
+        dp = [x.text.strip() for x in li[0].findall("denPlants/li")]
+        if not dp:
+            errs.append("RM_CompProperties_VineDen has no denPlants")
+        bad = [x for x in dp if x not in plants or "Venomvine" not in x]
+        if bad:
+            errs.append("den plants %r are not venomvine plant ThingDefs" % bad)
+        st = li[0].findtext("standState")
+        ms = defs(t["densdefs"], "MentalStateDef").get(st)
+        if ms is None or ms.findtext("stateClass") != "RimMandrake.CreatureBehaviors.RM_MentalState_ScopedAggression":
+            errs.append("standState %r is not a ScopedAggression MentalStateDef in RM_ScrubDens.xml" % st)
+    if "RimMandrake.EnvironmentalHazards.ContactVenomImmunity" not in [x.get("Class") for x in th.findall("modExtensions/li")]:
+        errs.append("thornhold lacks ContactVenomImmunity (its own den would poison it)")
+    cs = strip_comments(t["dens"])
+    hook = method_body(cs, r"public\s+override\s+void\s+PostPostApplyDamage\s*\(")
+    if hook is None or "WhyNotStand(dinfo.Instigator, dinfo.Def)" not in hook or "StartStand(" not in hook:
+        errs.append("PostPostApplyDamage does not gate on WhyNotStand(instigator, def) then StartStand")
+    why = method_body(cs, r"public\s+string\s+WhyNotStand\s*\(")
+    for need in ("StandOn", "Faction != null", "InMentalState", "standRadius", "ExternalViolenceFor(pawn)", "attacker.Dead"):
+        if why is None or need not in why:
+            errs.append("WhyNotStand lacks %r" % need)
+    start = method_body(cs, r"public\s+bool\s+StartStand\s*\(")
+    for need in ("otherPawn: attacker", "stand.anchorCell = den", "stand.disengageRadius"):
+        if start is None or need not in start:
+            errs.append("StartStand lacks %r" % need)
+    errs += check_settings(t, ("thornholdDenEnabled", "thornholdStandEnabled"))
+    return errs
+
+
+def check_rollbug(t):
+    errs = []
+    rb = defs(t["fauna"], "ThingDef").get("RM_Rollbug")
+    if rb is None:
+        return ["no RM_Rollbug ThingDef"]
+    cls = comp_classes(rb)
+    if TETHER not in cls or "RimMandrake.LeaningScrub.RM_CompProperties_CarrionLarder" not in cls:
+        errs.append("rollbug comps %r: want HomeTether and RM_CompProperties_CarrionLarder (the larder is the tether home)" % cls)
+    cs = strip_comments(t["dens"])
+    jd = defs(t["densdefs"], "JobDef").get("RM_RollCarrion")
+    drv = (jd.findtext("driverClass") or "") if jd is not None else ""
+    if not drv.startswith("RimMandrake.LeaningScrub.") or not re.search(r"class\s+%s\s*:\s*JobDriver\b" % re.escape(drv.split(".")[-1]), cs):
+        errs.append("JobDef RM_RollCarrion driver %r is not a JobDriver in RM_ScrubDens.cs" % drv)
+    if "public static JobDef RM_RollCarrion;" not in cs:
+        errs.append("RM_RollCarrion missing from the [DefOf] class")
+    tt = defs(t["densdefs"], "ThinkTreeDef").get("RM_RollCarrion_Splice")
+    giver = [li.get("Class") for li in tt.iter("li")] if tt is not None else []
+    if tt is None or tt.findtext("insertTag") != "Animal_PreWander" or "RimMandrake.LeaningScrub.RM_JobGiver_RollCarrion" not in giver:
+        errs.append("ThinkTree splice must insert RM_JobGiver_RollCarrion at Animal_PreWander")
+    if not re.search(r"class\s+RM_JobGiver_RollCarrion\s*:\s*ThinkNode_JobGiver\b", cs):
+        errs.append("RM_JobGiver_RollCarrion is not a ThinkNode_JobGiver")
+    bite = method_body(cs, r"public\s+static\s+string\s+Bite\s*\(")
+    if bite is None or "ball.Destroy()" not in bite or "ball.Strip(" not in bite or bite.index("ball.Strip(") > bite.index("ball.Destroy()"):
+        errs.append("Bite must Strip the ball before any Destroy (Corpse.Destroy eats gear)")
+    elif "HediffDefOf.MissingBodyPart" not in bite or "GetBestBodyPartToEat" not in bite or "corePart" not in bite:
+        errs.append("Bite is not the vanilla part-by-part shape (GetBestBodyPartToEat, MissingBodyPart, core part ends it)")
+    if cs.count(".Destroy(") != 1:
+        errs.append("RM_ScrubDens.cs has %d Destroy calls; only Bite's may destroy a ball" % cs.count(".Destroy("))
+    i = cs.find("class RM_JobDriver_RollCarrion")
+    toils = method_body(cs[i:], r"MakeNewToils\s*\(\s*\)") if i >= 0 else None
+    if toils is None or "AddFinishAction" not in toils or "TryDropCarriedThing(pawn.Position," not in toils:
+        errs.append("RollCarrion driver has no finish action dropping the carried corpse (ExitMap would destroy it)")
+    elif "ball.Strip(false)" not in toils:
+        errs.append("RollCarrion drop toil does not strip the ball at the larder")
+    why = method_body(cs, r"public\s+string\s+WhyNotRoll\s*\(")
+    if why is None or "rollbugTakesColonyCorpses" not in why or "Faction != null" not in why:
+        errs.append("WhyNotRoll must be wild-only and honour rollbugTakesColonyCorpses")
+    errs += check_settings(t, ("rollbugCarrionEnabled", "rollbugTakesColonyCorpses"))
+    return errs
+
+
 STUB = re.compile(r"STUB:([^>]*?)-->", re.S)
 ITEM = re.compile(r"\b[A-Z][A-Z0-9]+(?:_[A-Z0-9]+){2,}\b")
 
@@ -247,19 +373,23 @@ ITEM = re.compile(r"\b[A-Z][A-Z0-9]+(?:_[A-Z0-9]+){2,}\b")
 def check_stubs(t):
     errs = []
     stubs = STUB.findall(t["fauna"])
-    if len(stubs) < 4:   # five at birth; SHIRREL_DECIDE_GALE_GLIDE closed one (2026-10-26)
-        errs.append("probe: only %d STUB comments seen (expected the four still owed)" % len(stubs))
+    # five at birth; SHIRREL_DECIDE_GALE_GLIDE, THORNHOLD_DECIDE_DEN_AND_STAND and
+    # ROLLBUG_DECIDE_CARRION_BALL closed three (2026-10-26); SCRUBAMBUSHERS owns the rest.
+    if len(stubs) < 3:
+        errs.append("probe: only %d STUB comments seen (expected the three SCRUBAMBUSHERS ones still owed)" % len(stubs))
     for s in stubs:
         ids = ITEM.findall(s)
-        if THIS_ITEM in ids:
-            errs.append("a STUB still names %s: %s" % (THIS_ITEM, " ".join(s.split())[:90]))
+        closed = [i for i in ids if i in CLOSED]
+        if closed:
+            errs.append("a STUB still names closed %s: %s" % (closed[0], " ".join(s.split())[:90]))
         elif not ids:
             errs.append("a STUB names no owning item: %s" % " ".join(s.split())[:90])
     return errs
 
 
 ROWS = [("thornhold", check_thornhold), ("surrik", check_surrik), ("hooks", check_hooks),
-        ("ribbonwhip", check_ribbonwhip), ("stubs", check_stubs)]
+        ("ribbonwhip", check_ribbonwhip), ("thornholdden", check_thornholdden), ("rollbug", check_rollbug),
+        ("stubs", check_stubs)]
 
 # One planted break per row: (row, file key, old, new). Each must turn its row red.
 BREAKS = [
@@ -272,7 +402,20 @@ BREAKS = [
     ("hooks", "ripple", "&& !IsCrustSwimmer(p.def)", ""),
     ("hooks", "comp", "public void ForceSurface()", "internal void ForceSurface()"),
     ("ribbonwhip", "settings", "rippleMaxBodySize = 0.6f", "rippleMaxBodySize = 0.2f"),
-    ("stubs", "fauna", "ROLLBUG_DECIDE_CARRION_BALL", THIS_ITEM),
+    ("thornholdden", "fauna", "<standState>RM_ThornholdStand</standState>", "<standState>Manhunter</standState>"),
+    ("thornholdden", "fauna", "<li>RM_Venomvine</li>", "<li>RM_Venomvin</li>"),
+    ("thornholdden", "fauna", '<li Class="RimMandrake.EnvironmentalHazards.ContactVenomImmunity" />', ""),
+    ("thornholdden", "dens", "damage.ExternalViolenceFor(pawn)", "damage.Equals(pawn)"),
+    ("thornholdden", "dens", "otherPawn: attacker", "otherPawn: null"),
+    ("thornholdden", "settings", "thornholdStandEnabled = true", "thornholdStandEnabled = false"),
+    ("rollbug", "dens", "ball.Strip(false);\n            }\n            Pawn inner", "}\n            Pawn inner"),
+    ("rollbug", "dens", "ball.Strip(false);\n                }\n            };", "}\n            };"),
+    ("rollbug", "dens", "pawn.carryTracker.TryDropCarriedThing(pawn.Position, ThingPlaceMode.Near, out _);",
+     "pawn.carryTracker.GetHashCode();"),
+    ("rollbug", "settings", "rollbugTakesColonyCorpses = true", "rollbugTakesColonyCorpses = false"),
+    ("rollbug", "densdefs", "<insertTag>Animal_PreWander</insertTag>", "<insertTag>Humanlike_PreMain</insertTag>"),
+    ("rollbug", "fauna", "RimMandrake.LeaningScrub.RM_CompProperties_CarrionLarder", "RimMandrake.LeaningScrub.RM_CompProperties_Larder"),
+    ("stubs", "fauna", "SCRUBAMBUSHERS_BUILD_EDGE_RUN_CANOPY; plain predator here.", "ROLLBUG_DECIDE_CARRION_BALL; plain predator here."),
 ]
 
 

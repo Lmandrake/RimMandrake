@@ -1606,6 +1606,99 @@ def stallhunt_chain(t):
     _proof(t, "stallhawk_toggle_off_idle", "RM_StallHuntProof", "ProofStallHunt", "off", "stall hunt (off)", "stallHuntEnabled")
 
 
+# --------------------------------------------------------------------------- chain: dens
+
+@suite.chain("dens")
+def dens_chain(t):
+    """THORNHOLD_DECIDE_DEN_AND_STAND ("Stand its ground") and ROLLBUG_DECIDE_CARRION_BALL ("Any corpse in reach"),
+    both owner by card 2026-10-26 (RM_ScrubDens.cs). The proofs drive the shipped comp gates and the REAL job giver;
+    the 4 h MTB node above the giver and the stand's later chase are not exercised here."""
+    _prep(t, "spawn")
+    rect = _rect(t)
+    x, z = rect[0] + 4, rect[1] + 4
+
+    def call(method, args):
+        r = t.bridge_call("jawa/static_call", type="RimMandrake.LeaningScrub." + method[0], method=method[1], args=args)
+        return str((r or {}).get("result", "")) or "no result: %r" % (r,)
+
+    try:
+        ids = {}
+        if _live(t):
+            t.bridge_call("jawa/set_plants", ops="RM_Venomvine:%d,%d,1,1" % (x, z), growth=1.0)
+            ids["thorn"] = _spawn(t, "RM_Thornhold", x + 2, z)
+            ids["guest"] = _spawn(t, "Hare", x + 4, z, faction="player")
+        den_at = "current|%d,%d" % (x + 2, z)
+        with _comp(t, "thornhold_dens_in_venomvine", toggle="thornholdDenEnabled"):
+            if _live(t):
+                text = call(("RM_CompVineDen", "ProofDen"), den_at)
+                _note(t, "thornhold den proof", text)
+                if not text.startswith("DEN") or "den=(%d, 0, %d)" % (x, z) not in text:
+                    _fail("a wild thornhold 2 cells from a lone venomvine did not den on it: %s" % text)
+        with _comp(t, "thornhold_stand_toggle_off_refused", toggle="thornholdStandEnabled"):
+            if _live(t):
+                with _setting(t, "thornholdStandEnabled", False):
+                    text = call(("RM_CompVineDen", "ProofStand"), "%s|%d,%d" % (den_at, x + 4, z))
+                _note(t, "stand proof with the stand OFF", text)
+                if not text.startswith("REFUSED"):
+                    _fail("thornholdStandEnabled OFF but the thornhold still stood: %s" % text)
+        with _comp(t, "thornhold_stands_at_den", toggle="thornholdStandEnabled"):
+            if _live(t):
+                text = call(("RM_CompVineDen", "ProofStand"), "%s|%d,%d" % (den_at, x + 4, z))
+                _note(t, "stand proof", text)
+                if not text.startswith("STAND") or "state=RM_ThornholdStand" not in text:
+                    _fail("a thornhold struck at its den by a pawn did not take RM_ThornholdStand: %s" % text)
+                elif ids.get("guest") and ("target=" + ids["guest"]) not in text:
+                    _fail("the stand did not name the attacker %s: %s" % (ids["guest"], text))
+        # Rollbug: a player-faction hare corpse is the colony's own dead (the gate the setting guards).
+        bx, bz = x + 10, z + 6
+        if _live(t):
+            _remove_pawns_in(t.bridge_call, _rs(rect))    # the standing thornhold must not join in
+            ids["bug"] = _spawn(t, "RM_Rollbug", bx, bz)
+            ids["meat"] = _spawn(t, "Hare", bx + 5, bz, faction="player")
+            _ok(t.bridge_call("jawa/damage", damageDef="Bullet", amount=5000, thingId=ids["meat"],
+                              allowColonists=True), "damage(kill)")
+        bug_at = "current|%d,%d" % (bx, bz)
+        with _comp(t, "rollbug_colony_corpse_toggle_off_refused", toggle="rollbugTakesColonyCorpses"):
+            if _live(t):
+                with _setting(t, "rollbugTakesColonyCorpses", False):
+                    text = call(("RM_CompCarrionLarder", "ProofOrderRoll"), bug_at)
+                _note(t, "roll proof with colony corpses OFF", text)
+                if not text.startswith("REFUSED"):
+                    _fail("rollbugTakesColonyCorpses OFF but the rollbug took the colony's dead hare: %s" % text)
+        with _comp(t, "rollbug_rolls_any_corpse", toggle="rollbugCarrionEnabled"):
+            if _live(t):
+                text = call(("RM_CompCarrionLarder", "ProofOrderRoll"), bug_at)
+                _note(t, "roll proof", text)
+                if not text.startswith("ORDERED"):
+                    _fail("a wild rollbug 5 cells from a fresh corpse was not sent to roll it: %s" % text)
+                m = re.search(r"larder=\((\d+), 0, (\d+)\)", text)
+                if not m:
+                    _unmeasured(t, "roll proof named no larder cell: %s" % text)
+                larder = (int(m.group(1)), int(m.group(2)))
+                _wait(t, 1500)
+                row = _rows(t, rect=_rs(rect)).get(ids["bug"]) or {}
+                corpses = _things(t, "Corpse_Hare", _rs(rect))
+                _note(t, "rollbug and corpse after the roll", [_xz(row), [_xz(c) for c in corpses]])
+                if len(corpses) != 1:
+                    _fail("after the roll the pad holds %d hare corpses (expect exactly 1: no loss, no copy)"
+                          % len(corpses))
+                elif _dist(_xz(corpses[0]), larder) > 3:
+                    _fail("the corpse lies at %s, not within the larder's 2 cells of %s" % (_xz(corpses[0]), larder))
+        with _comp(t, "rollbug_bites_its_ball", toggle="rollbugCarrionEnabled"):
+            if _live(t):
+                at = _xz(_rows(t, rect=_rs(rect)).get(ids["bug"]) or {})
+                if at is None:
+                    _unmeasured(t, "rollbug position unreadable after the roll")
+                text = call(("RM_CompCarrionLarder", "ProofBite"), "current|%d,%d" % at)
+                _note(t, "bite proof", text)
+                if not (text.startswith("ATE") and ("BIT" in text or "FINISHED" in text)):
+                    _fail("a starving rollbug at its larder beside its ball did not bite it: %s" % text)
+    finally:
+        _remove_pawns_in(t.bridge_call, _rs(rect))
+        _stable(t, lambda: None)
+        _unlock_weather(t)
+
+
 # --------------------------------------------------------------------------- chain: pyre
 
 PYRE_CROP = "Plant_Potato"     # vanilla crop, Flammability 1: the "fields" the rite torches
